@@ -1,0 +1,22 @@
+parameters:
+	level: max
+	bootstrapFiles:
+	  - .tests/static-analysis/bootstrap.php
+	scanFiles:
+	  - wp-config.php
+	scanDirectories:
+		- wp
+		- wp-content/plugins
+		- wp-content/mu-plugins/travelopia
+		- vendor/wp-cli
+		- vendor/wp-phpunit
+		- .tests/php
+	paths:
+		- wp-content/mu-plugins/quark
+		- wp-content/themes/quark
+	excludePaths:
+		- wp-content/themes/quark/dist
+		- wp-content/themes/quark/src/front-end
+		- wp/wp-admin/includes/noop.php
+	ignoreErrors:
+		- '#Parameter \#1 \$value of function strval expects bool\|float\|int\|resource\|string\|null, (.*) given.#'

@@ -1,0 +1,66 @@
+version: '3'
+services:
+  redis:
+    image: 'redis:latest'
+    networks:
+      - quark-network
+  nginx:
+    image: 'nginx:latest'
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - './:/var/www/html:delegated'
+      - './.docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:delegated'
+      - './.docker/ssl:/etc/ssl:delegated'
+    depends_on:
+      - phpfpm
+    networks:
+      - quark-network
+  solr:
+    image: 'travelopia/solr:3.6.2'
+    ports:
+      - '8983:8983'
+    volumes:
+      - './.docker/solr/schema.xml:/opt/apache-solr-3.6.2/example/solr/conf/schema.xml:delegated'
+      - 'solrdata:/opt/apache-solr-3.6.2/example/solr'
+    networks:
+      - quark-network
+  phpfpm:
+    image: 'travelopia/wordpress-php-fpm:8.1'
+    environment:
+      XDEBUG_MODE: 'off'
+    volumes:
+      - './:/var/www/html:delegated'
+      - './.docker/php-fpm/wp-cli.yml:/var/www/html/wp-cli.yml:delegated'
+      - './.docker/php-fpm/custom.ini:/usr/local/etc/php/conf.d/custom.ini:delegated'
+    user: '33:33'
+    depends_on:
+      - redis
+      - database
+    networks:
+      - quark-network
+  database:
+    image: 'mariadb:latest'
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    networks:
+      - quark-network
+    volumes:
+      - 'db_data:/var/lib/mysql'
+      - './.docker/mysql/my.cnf:/etc/mysql/my.cnf'
+    ports:
+      - '3306:3306'
+  mailhog:
+    image: 'travelopia/mailhog:latest'
+    ports:
+      - '8025:8025'
+      - '1025:1025'
+    networks:
+      - quark-network
+networks:
+  quark-network:
+    driver: bridge
+volumes:
+  db_data:
+  solrdata:

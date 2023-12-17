@@ -1,0 +1,17 @@
+<phpunit
+	bootstrap=".tests/php/bootstrap.php"
+	backupGlobals="false"
+	colors="true"
+	convertErrorsToExceptions="true"
+	convertNoticesToExceptions="true"
+	convertWarningsToExceptions="true"
+>
+	<testsuites>
+		<testsuite name="et-tests">
+			<directory prefix="class-test-" suffix=".php">wp-content/mu-plugins/quark/quark-*/tests</directory>
+		</testsuite>
+	</testsuites>
+	<php>
+		<env name="WP_PHPUNIT__TESTS_CONFIG" value=".tests/php/wp-tests-config.php" />
+	</php>
+</phpunit>
