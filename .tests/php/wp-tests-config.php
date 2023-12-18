@@ -2,7 +2,7 @@
 /**
  * Test Config.
  *
- * @package tcs
+ * @package quark
  */
 
 // phpcs:ignoreFile PSR1.Files.SideEffects.FoundWithSymbols

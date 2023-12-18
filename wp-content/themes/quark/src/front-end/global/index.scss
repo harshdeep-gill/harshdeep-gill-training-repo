@@ -1,0 +1,16 @@
+/**
+ * Global Styles.
+ */
+
+// SCSS.
+@import "../scss";
+
+// Global styles.
+@import "normalize";
+@import "custom-properties";
+@import "placeholders";
+@import "typography";
+@import "grid";
+@import "buttons";
+@import "forms";
+@import "wordpress";

@@ -1,0 +1,13 @@
+/**
+ * Buttons.
+ */
+
+.btn {
+
+	@extend %btn;
+
+	&--outline {
+
+		@extend %btn--outline;
+	}
+}

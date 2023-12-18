@@ -1,0 +1,71 @@
+/**
+ * Variables.
+ */
+
+:root {
+	// Typography.
+	--font-family: "Untitled Sans", sans-serif;
+	--heading-font-family: "Domaine Display", serif;
+	--font-weight-default: 400;
+	--font-weight-light: 300;
+	--font-weight-medium: 500;
+	--font-weight-semibold: 600;
+	--font-weight-bold: 700;
+	--font-weight-extrabold: 800;
+	--line-height: 1.5;
+	--heading-line-height: 1.2;
+	--heading-letter-spacing: 0;
+	--h1-spacing: #{ calculate-em(10px, 54px) };
+	--h2-spacing: #{ calculate-em(9px, 40px) };
+	--h3-spacing: #{ calculate-em(10px, 32px) };
+	--h4-spacing: #{ calculate-em(10px, 25px) };
+	--h5-spacing: #{ calculate-em(4px, 22px) };
+	--h6-spacing: #{ calculate-em(4px, 18px) };
+	--typography-spacing: #{ calculate-em(30px) };
+	--button-spacing: 0.5em;
+	--wrap-width: #{ calculate-rem(1280px) };
+	--wrap-width-narrow: #{ calculate-rem(720px) };
+	--wrap-width-large: #{ calculate-rem(900px) };
+	--border-radius-large: 8px;
+	--border-radius-default: 5px;
+	--border-radius-small: 4px;
+	--border-radius-xsmall: 2px;
+	--header-z-index: 10;
+	--form-hero-width: 420px;
+
+	// Colors.
+	@each $name, $color in $colors {
+		--color-#{ $name }: #{ $color };
+	}
+
+	// Grid.
+	--grid-section-gutter: #{ calculate-rem(50px) };
+	--grid-row-gutter: #{ calculate-rem(20px) };
+	--grid-col-gutter: #{ calculate-rem(20px) };
+
+	@media screen and (min-width: grid-size(xs)) {
+		--grid-row-gutter: calc(2.08333vw + 6.66667px); // Calculated using Poly Fluid Sizing.
+		--grid-col-gutter: calc(2.08333vw + 6.66667px); // Calculated using Poly Fluid Sizing.
+	}
+
+	@media screen and (min-width: grid-size(md)) {
+		--grid-section-gutter: calc(3.33333vw + 12px); // Calculated using Poly Fluid Sizing.
+	}
+
+	@media screen and (min-width: grid-size(xl)) {
+		--grid-row-gutter: #{ calculate-rem(30px) };
+		--grid-col-gutter: #{ calculate-rem(30px) };
+	}
+
+	@media screen and (min-width: grid-size(xxxl)) {
+		--grid-section-gutter: #{ calculate-rem(60px) };
+	}
+
+	// Forms.
+	--forms-border-radius: 4px;
+	--forms-border-color: var(--color-gray-500);
+	--buttons-font-size: 13px;
+
+	// Misc.
+	--wp-admin-bar-height: 0px; // stylelint-disable-line
+}

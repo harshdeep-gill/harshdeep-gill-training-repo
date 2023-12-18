@@ -1,0 +1,46 @@
+/**
+ * Custom Editor CSS.
+ *
+ * Add CSS here related to the block editor, but outside
+ * the editor wrapper scope.
+ */
+
+@import "../front-end/scss";
+@import "../front-end/global/placeholders";
+
+.editor-styles-wrapper {
+	padding-left: var(--grid-col-gutter);
+	padding-right: var(--grid-col-gutter);
+}
+
+.editor-post-title__input {
+	font-family: var(--font-family-display);
+	margin-bottom: 1rem !important;
+}
+
+.wp-block {
+	max-width: var(--wrap-width);
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.block-library-block__reusable-block-container:has(> .full-width),
+.full-width {
+	max-width: none !important;
+}
+
+.section--narrow {
+	max-width: var(--wrap-width-narrow) !important;
+}
+
+.wp-block.is-reusable {
+
+	&:has(> .section) {
+
+		@extend %section;
+
+		&::before {
+			display: none !important;
+		}
+	}
+}

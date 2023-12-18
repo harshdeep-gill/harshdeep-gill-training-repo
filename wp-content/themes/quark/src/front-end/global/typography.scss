@@ -1,0 +1,175 @@
+/**
+ * Typography.
+ */
+
+body {
+	color: var(--color-bunker);
+	font-family: var(--font-family);
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	text-rendering: optimizelegibility;
+	line-height: var(--line-height);
+	font-weight: var(--font-weight-default);
+	overflow-x: hidden;
+
+	@include poly-fluid-sizing("font-size", $body_text_standard);
+}
+
+img {
+	display: block;
+	max-width: 100%;
+	height: auto;
+}
+
+a {
+	color: var(--color-bunker);
+	text-decoration: underline;
+
+	&:hover {
+		color: var(--color-bunker);
+		text-decoration: none;
+	}
+}
+
+@for $i from 1 through 6 {
+
+	h#{ $i },
+	.is-style-h#{ $i },
+	.h#{ $i } {
+
+		@extend %h#{ $i };
+	}
+}
+
+p,
+ul,
+ol,
+figure,
+blockquote {
+	margin-top: 0;
+	margin-bottom: var(--typography-spacing);
+
+	&:last-child {
+		margin-bottom: 0;
+	}
+}
+
+figure {
+	margin-left: 0;
+	margin-right: 0;
+}
+
+figcaption {
+	margin-top: 0.8em;
+	font-style: italic;
+	text-align: center;
+
+	@extend %body-text-small;
+}
+
+ul {
+	padding-left: 1em;
+
+	::marker {
+		color: var(--color-gray-500);
+
+		@include poly-fluid-sizing("font-size", $body_text_small);
+	}
+}
+
+ol {
+	padding-left: 1em;
+}
+
+hr {
+	height: 1px;
+	border: none;
+	background-color: var(--color-gray-200);
+}
+
+strong {
+	font-weight: var(--font-weight-bold);
+}
+
+blockquote {
+	border-left: 3px solid var(--color-gray-200);
+	padding: 0.6em 0 0.6em 1em;
+
+	@if ( $is-editor ) {
+
+		div.block-editor-rich-text__editable {
+			margin-bottom: var(--h4-spacing);
+		}
+	}
+
+	p {
+
+		@extend %h4;
+	}
+
+	cite {
+		font-style: normal;
+
+		@extend %body-text-small;
+	}
+}
+
+// Legacy IFRAME support (fallback).
+p > iframe {
+	width: 100%;
+	height: auto;
+	aspect-ratio: 16 / 9;
+	display: block;
+}
+
+.display-text,
+.is-style-display {
+
+	@extend %h1;
+}
+
+.body-text-large,
+.is-style-large {
+
+	@extend %body-text-large;
+}
+
+.body-text-standard {
+
+	@extend %body-text-standard;
+}
+
+.body-text-small {
+
+	@extend %body-text-small;
+}
+
+.body-text-tiny {
+
+	@extend %body-text-tiny;
+}
+
+.body-text-ui {
+
+	@extend %body-text-ui;
+}
+
+.body-text-ui-large {
+
+	@extend %body-text-ui-large;
+}
+
+.body-text-ui-small {
+
+	@extend %body-text-ui-small;
+}
+
+.body-text-ui-tiny {
+
+	@extend %body-text-ui-tiny;
+}
+
+.typography-spacing {
+
+	@extend %typography-spacing;
+}

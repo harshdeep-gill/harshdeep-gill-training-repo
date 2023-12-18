@@ -1,0 +1,125 @@
+/**
+ * Grid.
+ */
+
+@use "sass:math";
+
+// Disable scroll when modal opens.
+body.prevent-scroll {
+	overflow: hidden;
+}
+
+body.admin-bar {
+	--wp-admin-bar-height: 46px;
+
+	@media screen and (min-width: 783px) {
+		--wp-admin-bar-height: 32px;
+	}
+}
+
+.alignfull {
+
+	@extend %full-width;
+}
+
+.main {
+	padding-left: var(--grid-col-gutter);
+	padding-right: var(--grid-col-gutter);
+
+	> * {
+
+		@extend %wrap;
+	}
+
+	&--narrow {
+
+		> * {
+
+			@extend %narrow-wrap;
+		}
+	}
+
+	.full-width,
+	.alignfull {
+
+		@extend %full-width;
+	}
+
+	.narrow-wrap {
+
+		@extend %narrow-wrap;
+	}
+}
+
+.wrap {
+	width: 100%;
+	max-width: calc(var(--wrap-width) + (var(--grid-col-gutter) * 2));
+	margin-left: auto;
+	margin-right: auto;
+	padding-left: var(--grid-col-gutter);
+	padding-right: var(--grid-col-gutter);
+}
+
+.section {
+
+	@extend %section;
+
+	&--seamless {
+
+		@extend %section--seamless;
+	}
+
+	&--seamless-with-padding {
+
+		@extend %section--seamless-with-padding;
+	}
+
+	&--narrow {
+
+		@extend %section--narrow;
+	}
+
+	&--has-background {
+
+		@extend %section--has-background;
+	}
+}
+
+.grid {
+
+	@include grid();
+	@include grid-columns(1);
+
+	> * {
+		min-width: 0;
+	}
+
+	@media screen and (min-width: grid-size(sm)) {
+
+		&--cols-2,
+		&--cols-3,
+		&--cols-4,
+		&--cols-5 {
+
+			@include grid-columns(2);
+		}
+	}
+
+	@media screen and (min-width: grid-size(lg)) {
+
+		&--cols-3 {
+
+			@include grid-columns(3);
+		}
+
+		&--cols-4 {
+
+			@include grid-columns(4);
+		}
+
+		&--cols-5 {
+
+			@include grid-columns(5);
+		}
+	}
+}

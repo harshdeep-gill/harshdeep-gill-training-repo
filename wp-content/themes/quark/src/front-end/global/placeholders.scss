@@ -1,0 +1,342 @@
+@use "sass:list";
+
+// Grid.
+%section-border {
+
+	&::before {
+		margin: var(--grid-section-gutter) calc(-100vw / 2 + 100% / 2);
+		content: "";
+		width: 100vw;
+		display: block;
+		height: 0;
+		border-top: 1px solid var(--color-gray-200);
+		max-width: 100vw;
+	}
+}
+
+%section {
+	margin-top: var(--grid-section-gutter);
+	margin-bottom: var(--grid-section-gutter);
+
+	&:first-child {
+		margin-top: 0;
+	}
+
+	&:last-child {
+		margin-bottom: 0;
+	}
+
+	&:not(.section--seamless) + &:not(.section--no-border) {
+
+		@extend %section-border;
+	}
+}
+
+%section--seamless,
+%section--seamless-with-padding {
+
+	$self: &;
+
+	&:not(.section--seamless-with-border)::before {
+		display: none !important;
+	}
+
+	& + &,
+	.main > &:first-child {
+		margin-top: calc(var(--grid-section-gutter) * -1);
+	}
+
+	.main > &:last-child {
+		margin-bottom: calc(var(--grid-section-gutter) * -1);
+	}
+
+	#{$self} + .block-library-block__reusable-block-container:has(> &) {
+		margin-top: calc(var(--grid-section-gutter) * -1);
+	}
+}
+
+%section--narrow {
+
+	@extend %narrow-wrap;
+
+	.main > & {
+		max-width: var(--wrap-width-narrow);
+	}
+}
+
+%section--has-background {
+	background-color: var(--color-white);
+}
+
+%section--seamless-with-padding {
+	padding-top: var(--grid-section-gutter);
+	padding-bottom: var(--grid-section-gutter);
+}
+
+%wrap {
+	max-width: var(--wrap-width);
+	margin-left: auto;
+	margin-right: auto;
+}
+
+%full-width {
+
+	@if ( false == $is-editor ) {
+		margin-left: calc(-100vw / 2 + 100% / 2);
+		margin-right: calc(-100vw / 2 + 100% / 2);
+		max-width: 100vw;
+	} @else {
+		max-width: none !important;
+	}
+}
+
+%narrow-wrap {
+	max-width: var(--wrap-width-narrow);
+	margin-left: auto;
+	margin-right: auto;
+}
+
+// Buttons.
+%btn {
+	background-color: var(--color-tan);
+	border-radius: var(--forms-border-radius);
+	border: 1px solid transparent;
+	cursor: pointer;
+	color: var(--color-navy-dark) !important;
+	display: inline-block;
+	letter-spacing: 0.75px;
+	text-align: center;
+	text-transform: uppercase;
+	font-size: 12px;
+	font-weight: var(--font-weight-medium);
+	line-height: 1.167;
+	padding: 11px 24px;
+	text-decoration: none;
+
+	@media screen and (min-width: grid-size(md)) {
+		font-size: 13px;
+		line-height: 1.231;
+		padding: 13px 24px;
+	}
+
+	@if ( true == $is-editor ) {
+		padding: 13px 24px !important;
+	}
+
+	@include transition();
+
+	&:disabled {
+		background-color: rgba(color("black"), 0.5);
+		cursor: not-allowed;
+
+		&:hover {
+			background-color: rgba(color("black"), 0.5);
+		}
+	}
+
+	&:hover {
+		background-color: var(--color-tan-dark);
+	}
+
+	&--outline {
+		color: var(--color-tan) !important;
+		border: 1px solid rgba(color("black"), 0.5);
+		background-color: transparent;
+
+		&:hover {
+			border-color: rgba(color("black"), 0.9);
+			background-color: transparent;
+		}
+
+		&:disabled {
+			background-color: transparent;
+			border: 1px solid rgba(color("black"), 0.5);
+			color: rgba(color("black"), 0.5) !important;
+
+			&:hover {
+				background-color: transparent;
+			}
+		}
+	}
+
+	&--unstyled {
+		padding: 0;
+		background-color: transparent;
+		text-transform: initial;
+		color: var(--color-bunker) !important;
+		font-weight: var(--font-weight-default);
+
+		@include poly-fluid-sizing("font-size", $body_text_standard);
+
+		&:hover {
+			background-color: transparent;
+		}
+	}
+
+	@each $color in $button-colors {
+
+		&--#{ $color } {
+			background-color: var(--color-#{ $color });
+			color: var(--color-navy-dark) !important;
+
+			&:hover {
+				background-color: var(--color-#{ $color }-dark);
+			}
+
+			&:disabled {
+				background-color: rgba(color("#{ $color }"), 0.5);
+				cursor: not-allowed;
+
+				&:hover {
+					background-color: rgba(color("#{ $color }"), 0.5);
+				}
+			}
+		}
+
+		&--#{ $color }-outline {
+			color: var(--color-#{ $color }) !important;
+			border: 1px solid rgba(color($color), 0.5);
+			background-color: transparent;
+
+			&:hover {
+				border-color: rgba(color($color), 0.9);
+				background-color: transparent;
+			}
+
+			&:disabled {
+				border-color: rgba(color($color), 0.5);
+				background-color: transparent;
+				color: rgba(color("#{ $color }"), 0.5) !important;
+
+				&:hover {
+					background-color: transparent;
+				}
+			}
+		}
+	}
+}
+
+// Typography.
+%h1,
+%h2,
+%h3,
+%h4,
+%h5,
+%h6 {
+	margin-top: 0;
+	letter-spacing: var(--heading-letter-spacing);
+	line-height: var(--heading-line-height);
+	font-weight: var(--font-weight-medium);
+	font-family: var(--heading-font-family);
+	font-variant-numeric: oldstyle-nums; // Check if font ever changes.
+}
+
+%h1 {
+	margin-bottom: var(--h1-spacing);
+
+	@include poly-fluid-sizing("font-size", $h1_text);
+}
+
+%h2 {
+	margin-bottom: var(--h2-spacing);
+
+	@include poly-fluid-sizing("font-size", $h2_text);
+}
+
+%h3 {
+	margin-bottom: var(--h3-spacing);
+
+	@include poly-fluid-sizing("font-size", $h3_text);
+}
+
+%h4 {
+	margin-bottom: var(--h4-spacing);
+
+	@include poly-fluid-sizing("font-size", $h4_text);
+}
+
+%h5 {
+	margin-bottom: var(--h5-spacing);
+
+	@include poly-fluid-sizing("font-size", $h5_text);
+}
+
+%h6 {
+	margin-bottom: var(--h6-spacing);
+
+	@include poly-fluid-sizing("font-size", $h6_text);
+}
+
+@for $i from 1 through 6 {
+
+	%h#{ $i } {
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+}
+
+%typography-spacing {
+	margin-bottom: var(--typography-spacing);
+
+	&:last-child {
+		margin-bottom: 0;
+	}
+}
+
+%body-text-standard {
+
+	@include poly-fluid-sizing("font-size", $body_text_standard);
+}
+
+%body-text-large {
+
+	@include poly-fluid-sizing("font-size", $body_text_large);
+}
+
+%body-text-small {
+
+	@include poly-fluid-sizing("font-size", $body_text_small);
+}
+
+%body-text-tiny {
+	line-height: 1.3;
+
+	@include poly-fluid-sizing("font-size", $body_text_tiny);
+}
+
+%body-text-ui {
+	line-height: 1.2;
+	letter-spacing: 0.8px;
+	text-transform: uppercase;
+	font-weight: var(--font-weight-medium);
+
+	@include poly-fluid-sizing("font-size", $body_text_ui);
+}
+
+%body-text-ui-large {
+	line-height: 1.2;
+	letter-spacing: 0.8px;
+	text-transform: uppercase;
+	font-weight: var(--font-weight-medium);
+
+	@include poly-fluid-sizing("font-size", $body_text_ui_large);
+}
+
+%body-text-ui-small {
+	line-height: 1.2;
+	letter-spacing: 0.8px;
+	text-transform: uppercase;
+	font-weight: var(--font-weight-medium);
+
+	@include poly-fluid-sizing("font-size", $body_text_ui_small);
+}
+
+%body-text-ui-tiny {
+	line-height: 1.2;
+	letter-spacing: 0.8px;
+	text-transform: uppercase;
+	font-size: 11px;
+	font-weight: var(--font-weight-medium);
+}

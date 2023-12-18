@@ -8,7 +8,7 @@
     "build": "npm run clear-assets && webpack --config ./webpack.config.js --mode production --env=production && npm run build:php",
     "build:php": "php .bin/build-blade-cache.php",
     "dev": "npm run clear-assets && webpack --config ./webpack.config.js --mode production --env=development --watch",
-    "clear-assets": "rm -rf wp-content/themes/tcs/dist",
+    "clear-assets": "rm -rf wp-content/themes/quark/dist",
     "lint": "npm run lint:css && npm run lint:js && npm run lint:php",
     "lint:js": "eslint wp-content/themes/quark/src",
     "lint:css": "stylelint wp-content/themes/quark/src",
