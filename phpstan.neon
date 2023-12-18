@@ -13,10 +13,10 @@ parameters:
 		- .tests/php
 	paths:
 		- wp-content/mu-plugins/quark
-		- wp-content/themes/quark
+		- wp-content/themes/quarkexpeditions
 	excludePaths:
-		- wp-content/themes/quark/dist
-		- wp-content/themes/quark/src/front-end
+		- wp-content/themes/quarkexpeditions/dist
+		- wp-content/themes/quarkexpeditions/src/front-end
 		- wp/wp-admin/includes/noop.php
 	ignoreErrors:
 		- '#Parameter \#1 \$value of function strval expects bool\|float\|int\|resource\|string\|null, (.*) given.#'

@@ -12,7 +12,7 @@ const DependencyExtractionWebpackPlugin = require( '@wordpress/dependency-extrac
 const path = require( 'path' );
 
 // Theme path.
-const themePath = `./wp-content/themes/quark`;
+const themePath = `./wp-content/themes/quarkexpeditions`;
 const nodeModules = `./node_modules`;
 
 // Config.

@@ -3,7 +3,7 @@
 	<rule ref="Travelopia-WordPress" />
 
 	<file>./wp-content/mu-plugins/quark</file>
-	<file>./wp-content/themes/quark</file>
+	<file>./wp-content/themes/quarkexpeditions</file>
 	<file>./.tests</file>
 
 	<!--@see https://github.com/WordPress/WordPress-Coding-Standards/issues/2035#issuecomment-1325532520-->

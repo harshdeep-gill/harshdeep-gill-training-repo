@@ -19,5 +19,5 @@
     "sourceMap": true,
     "allowSyntheticDefaultImports": true
   },
-  "include": ["wp-content/themes/quark/src/**/*"]
+  "include": ["wp-content/themes/quarkexpeditions/src/**/*"]
 }

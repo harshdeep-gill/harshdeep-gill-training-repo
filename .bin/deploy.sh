@@ -51,7 +51,7 @@ cp -r $GITHUB_WORKSPACE/vendor .
 if [ -z "${RELEASE_VERSION:-}" ]; then
     RELEASE_VERSION=$(date +%Y%m%d%H%M%S)
 fi
-echo "<?php return [ 'version' => '$RELEASE_VERSION' ];" > wp-content/themes/quark/dist/site-assets.php
+echo "<?php return [ 'version' => '$RELEASE_VERSION' ];" > wp-content/themes/quarkexpeditions/dist/site-assets.php
 
 # Check if we have changes
 if [[ -z $(git status -s) ]]; then
