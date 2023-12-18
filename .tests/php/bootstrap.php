@@ -20,7 +20,6 @@ require_once __DIR__ . '/../../vendor/autoload.php';
 // Load secret environment variables from .env file.
 if ( file_exists( __DIR__ . '/../../.env' ) ) {
 	$dotenv = Dotenv\Dotenv::createUnsafeImmutable( __DIR__ . '/../../', [ '.env' ], false );
-
 	$dotenv->load();
 	$dotenv->required( [ 'WP_HOME', 'WP_SITEURL' ] );
 
