@@ -56,7 +56,7 @@ class Test_Pages extends WP_UnitTestCase {
 				'layout' => 'single',
 				'data'   => [
 					'post'           => $post_1,
-					'permalink'      => 'http://test.tcsworldtravel.com/test-post/',
+					'permalink'      => 'http://test.quarkexpeditions.com/test-post',
 					'post_thumbnail' => 0,
 					'post_content'   => "<p>Post content</p>\n",
 				],
@@ -83,7 +83,7 @@ class Test_Pages extends WP_UnitTestCase {
 				'layout' => 'something',
 				'data'   => [
 					'post'           => $post_1,
-					'permalink'      => 'http://test.tcsworldtravel.com/test-post/',
+					'permalink'      => 'http://test.quarkexpeditions.com/test-post',
 					'post_thumbnail' => 0,
 					'post_content'   => "<p>Post content</p>\n",
 				],
@@ -105,7 +105,7 @@ class Test_Pages extends WP_UnitTestCase {
 				'layout' => 'home',
 				'data'   => [
 					'post'           => $post_1,
-					'permalink'      => 'http://test.tcsworldtravel.com/',
+					'permalink'      => 'http://test.quarkexpeditions.com/',
 					'post_thumbnail' => 0,
 					'post_content'   => "<p>Post content</p>\n",
 				],
@@ -156,7 +156,7 @@ class Test_Pages extends WP_UnitTestCase {
 
 		// Assert post's expected permalink is correct is equal to actual permalink.
 		$this->assertEquals(
-			'http://test.tcsworldtravel.com/test-post/',
+			'http://test.quarkexpeditions.com/test-post',
 			$the_post['permalink']
 		);
 

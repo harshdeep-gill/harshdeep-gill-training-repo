@@ -33,6 +33,7 @@ function load_environment(): void {
 	$table_prefix = 'wptests_'; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 
 	// Options.
+	update_option( 'permalink_structure', '/%postname%' );
 	update_option( 'blogname', 'Quark' );
 	update_option( 'admin_email', 'admin@test.quarkexpeditions.com' );
 

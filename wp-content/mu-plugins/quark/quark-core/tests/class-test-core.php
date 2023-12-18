@@ -26,7 +26,11 @@ class Test_Core extends WP_UnitTestCase {
 		$original_data = [
 			'layout' => '',
 			'data'   => [
-				'social_links'       => [
+				'header'       => [
+					'logo_url' => 'http://test.quarkexpeditions.com',
+					'nav_menu' => "<div></div>\n",
+				],
+				'social_links' => [
 					'facebook'  => '',
 					'twitter'   => '',
 					'instagram' => '',

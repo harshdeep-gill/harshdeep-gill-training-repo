@@ -17,10 +17,10 @@ require_once __DIR__ . '/../../vendor/autoload.php';
 /**
  * Use Dotenv to set required environment variables and load .env file in root.
  */
-$dotenv = Dotenv\Dotenv::createImmutable( __DIR__ . '/../../' );
-
 // Load secret environment variables from .env file.
 if ( file_exists( __DIR__ . '/../../.env' ) ) {
+	$dotenv = Dotenv\Dotenv::createUnsafeImmutable( __DIR__ . '/../../', [ '.env' ], false );
+
 	$dotenv->load();
 	$dotenv->required( [ 'WP_HOME', 'WP_SITEURL' ] );
 
