@@ -16,6 +16,7 @@ require_once __DIR__ . '/vendor/autoload.php';
  * Set cache.
  */
 define( 'WP_CACHE', true );
+define( 'WP_REDIS_USE_CACHE_GROUPS', true );
 
 /**
  * Use Dotenv to set required environment variables and load .env file in root.
