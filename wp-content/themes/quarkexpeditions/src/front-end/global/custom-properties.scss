@@ -75,21 +75,14 @@
 	 */
 	--wrap-width: 1120px;
 	--narrow-wrap-width: 640px;
-	--grid-section-gutter: #{ calculate-rem(50px) };
-	--grid-row-gutter: #{ calculate-rem(20px) };
-	--grid-col-gutter: #{ calculate-rem(20px) };
+	--grid-section-gutter: #{ calculate-rem(64px) };
+	--grid-row-gutter: #{ calculate-rem(24px) };
+	--grid-col-gutter: #{ calculate-rem(24px) };
 
-	@media screen and (min-width: grid-size(md)) {
-		--grid-section-gutter: calc(3.33333vw + 12px); // Calculated using Poly Fluid Sizing.
-	}
-
-	@media screen and (min-width: grid-size(xl)) {
-		--grid-row-gutter: #{ calculate-rem(30px) };
-		--grid-col-gutter: #{ calculate-rem(30px) };
-	}
-
-	@media screen and (min-width: grid-size(xxxl)) {
-		--grid-section-gutter: #{ calculate-rem(60px) };
+	@media screen and (min-width: grid-size(lg)) {
+		--grid-row-gutter: #{ calculate-rem(32px) };
+		--grid-col-gutter: #{ calculate-rem(32px) };
+		--grid-section-gutter: #{ calculate-rem(96px) };
 	}
 
 	/**
