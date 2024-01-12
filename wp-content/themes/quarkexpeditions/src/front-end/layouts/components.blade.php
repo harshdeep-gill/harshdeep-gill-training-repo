@@ -1,4 +1,4 @@
 <x-layout>
-	Components
+	<p>Components</p>
 </x-layout>
 

@@ -23,31 +23,16 @@ body.admin-bar {
 }
 
 .main {
-	padding-left: var(--grid-col-gutter);
-	padding-right: var(--grid-col-gutter);
 
 	> * {
 
 		@extend %wrap;
 	}
 
-	&--narrow {
-
-		> * {
-
-			@extend %narrow-wrap;
-		}
-	}
-
 	.full-width,
 	.alignfull {
 
 		@extend %full-width;
-	}
-
-	.narrow-wrap {
-
-		@extend %narrow-wrap;
 	}
 }
 
@@ -67,21 +52,6 @@ body.admin-bar {
 	&--seamless {
 
 		@extend %section--seamless;
-	}
-
-	&--seamless-with-padding {
-
-		@extend %section--seamless-with-padding;
-	}
-
-	&--narrow {
-
-		@extend %section--narrow;
-	}
-
-	&--has-background {
-
-		@extend %section--has-background;
 	}
 }
 

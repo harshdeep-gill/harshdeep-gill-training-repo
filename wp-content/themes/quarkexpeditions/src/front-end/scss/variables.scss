@@ -7,97 +7,47 @@ $is-editor: false !default;
 
 // Colors.
 $colors: (
-	"black": #000,
+	// Primary.
+	"black": #232933,
 	"white": #fff,
-) !default;
+	"yellow": #fdb52b,
+	"dark-blue": #2a5f8c,
+	"blue": #4c8bbf,
+	"magenta": #a26792,
 
-$button-colors: (
-	"white"
-);
+	// Grayscale.
+	"gray-90": #383d49,
+	"gray-80": #454c5b,
+	"gray-70": #535b6d,
+	"gray-60": #6c768e,
+	"gray-50": #868fa3,
+	"gray-40": #a8aebd,
+	"gray-30": #c9cdd6,
+	"gray-20": #dadee5,
+	"gray-10": #eceef2,
+	"gray-5": #f5f7fb,
+
+	// States.
+	"success-100": #3a735d,
+	"success-50": #5bb291,
+	"success-10": #e6f2ee,
+	"attention-100": #c77413,
+	"attention-50": #f29b34,
+	"attention-10": #ffe5c7,
+	"error-100": #bf483b,
+	"error-50": #df5748,
+	"error-10": #fdddd9,
+	"information-100": #4b5059,
+	"information-50": #808999,
+	"information-10": #fafbff,
+) !default;
 
 // Grid.
 $grid-breakpoints: (
-	xs: 400px,
 	sm: 576px,
 	md: 768px,
-	lg: 1024px,
+	lg: 992px,
 	xl: 1280px,
-	xxl: 1400px,
+	xxl: 1440px,
 	xxxl: 1600px,
-) !default;
-
-// Spacing.
-$spacing: (
-	xs: 10px,
-	sm: 20px,
-	md: 30px,
-	lg: 40px,
-	xl: 50px,
-	xxl: 60px,
-) !default;
-
-// Typography.
-$body_text_standard: (
-	grid-size(xs): 14px,
-	grid-size(xxxl): 16px,
-) !default;
-
-$body_text_large: (
-	grid-size(xs): 16px,
-	grid-size(xxl): 19px,
-) !default;
-
-$body_text_small: (
-	grid-size(xs): 14px,
-	grid-size(xxl): 15px,
-) !default;
-
-$body_text_tiny: (
-	grid-size(xs): 12px,
-	grid-size(xxl): 13px,
-) !default;
-
-$body_text_ui: (
-	grid-size(xs): 12px,
-	grid-size(xxl): 13px,
-) !default;
-
-$body_text_ui_large: (
-	grid-size(xs): 13px,
-	grid-size(xxl): 16px,
-) !default;
-
-$body_text_ui_small: (
-	grid-size(xs): 11px,
-	grid-size(xxl): 12px,
-) !default;
-
-$h1_text: (
-	grid-size(xs): 28px,
-	grid-size(xxl): 68px,
-) !default;
-
-$h2_text: (
-	grid-size(xs): 24px,
-	grid-size(xxl): 46px,
-) !default;
-
-$h3_text: (
-	grid-size(xs): 22px,
-	grid-size(xxl): 32px,
-) !default;
-
-$h4_text: (
-	grid-size(xs): 19px,
-	grid-size(xxl): 26px,
-) !default;
-
-$h5_text: (
-	grid-size(xs): 17px,
-	grid-size(xxl): 20px,
-) !default;
-
-$h6_text: (
-	grid-size(xs): 16px,
-	grid-size(xxl): 18px,
 ) !default;

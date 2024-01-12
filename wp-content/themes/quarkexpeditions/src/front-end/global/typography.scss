@@ -8,11 +8,10 @@ body {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	text-rendering: optimizelegibility;
+	font-size: var(--font-size);
 	line-height: var(--line-height);
 	font-weight: var(--font-weight-default);
 	overflow-x: hidden;
-
-	@include poly-fluid-sizing("font-size", $body_text_standard);
 }
 
 img {
@@ -31,7 +30,7 @@ a {
 	}
 }
 
-@for $i from 1 through 6 {
+@for $i from 1 through 5 {
 
 	h#{ $i },
 	.is-style-h#{ $i },
@@ -61,19 +60,15 @@ figure {
 
 figcaption {
 	margin-top: 0.8em;
-	font-style: italic;
-	text-align: center;
 
-	@extend %body-text-small;
+	@extend %caption;
 }
 
 ul {
 	padding-left: 1em;
 
 	::marker {
-		color: var(--color-gray-500);
-
-		@include poly-fluid-sizing("font-size", $body_text_small);
+		color: var(--color-gray-5);
 	}
 }
 
@@ -81,37 +76,8 @@ ol {
 	padding-left: 1em;
 }
 
-hr {
-	height: 1px;
-	border: none;
-	background-color: var(--color-gray-200);
-}
-
 strong {
 	font-weight: var(--font-weight-bold);
-}
-
-blockquote {
-	border-left: 3px solid var(--color-gray-200);
-	padding: 0.6em 0 0.6em 1em;
-
-	@if ( $is-editor ) {
-
-		div.block-editor-rich-text__editable {
-			margin-bottom: var(--h4-spacing);
-		}
-	}
-
-	p {
-
-		@extend %h4;
-	}
-
-	cite {
-		font-style: normal;
-
-		@extend %body-text-small;
-	}
 }
 
 // Legacy IFRAME support (fallback).
@@ -122,54 +88,17 @@ p > iframe {
 	display: block;
 }
 
-.display-text,
-.is-style-display {
-
-	@extend %h1;
-}
-
-.body-text-large,
-.is-style-large {
-
-	@extend %body-text-large;
-}
-
-.body-text-standard {
-
-	@extend %body-text-standard;
-}
-
-.body-text-small {
-
-	@extend %body-text-small;
-}
-
-.body-text-tiny {
-
-	@extend %body-text-tiny;
-}
-
-.body-text-ui {
-
-	@extend %body-text-ui;
-}
-
-.body-text-ui-large {
-
-	@extend %body-text-ui-large;
-}
-
-.body-text-ui-small {
-
-	@extend %body-text-ui-small;
-}
-
-.body-text-ui-tiny {
-
-	@extend %body-text-ui-tiny;
-}
-
 .typography-spacing {
 
 	@extend %typography-spacing;
+}
+
+.body-small {
+
+	@extend %body-small;
+}
+
+.overline {
+
+	@extend %overline;
 }

@@ -2,8 +2,6 @@
  * Mixins.
  */
 
-@import "~poly-fluid-sizing/poly-fluid-sizing";
-
 @mixin grid( $gutter: var(--grid-col-gutter) ) {
 	display: grid;
 	grid-template-rows: auto;
