@@ -23,6 +23,8 @@ body.admin-bar {
 }
 
 .main {
+	padding-left: var(--grid-col-gutter);
+	padding-right: var(--grid-col-gutter);
 
 	> * {
 
