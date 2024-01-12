@@ -62,7 +62,73 @@
 
 // Buttons.
 %btn {
-	border: 0;
+	border: 1px solid var(--color-yellow);
+	font-family: var(--font-family);
+	font-style: normal;
+	font-weight: 700;
+	font-size: 14px;
+	line-height: 22px;
+	padding: 8px 20px;
+	color: var(--color-black);
+	background-color: var(--color-yellow);
+	border-radius: var(--border-radius);
+	text-decoration: none !important;
+	display: inline-block;
+
+	&:hover {
+		background-color: transparent;
+	}
+
+	&:active {
+		background-color: var(--color-attention-50);
+	}
+
+	&--outline:hover,
+	&--color-black:not(:hover) {
+		border-color: var(--color-black);
+		background-color: var(--color-black);
+		color: var(--color-white);
+	}
+
+	&--outline:not(:hover) {
+		background-color: transparent;
+		color: var(--color-black);
+	}
+
+	&--outline:active {
+		background-color: var(--color-gray-80);
+	}
+
+	&--size-big {
+		padding-top: 16px;
+		padding-bottom: 16px;
+	}
+
+	.color-context--dark & {
+
+		&:hover {
+			background-color: var(--color-white);
+		}
+
+		&:active {
+			background-color: var(--color-attention-50);
+		}
+
+		&--outline:not(:hover) {
+			background-color: var(--color-white);
+			color: var(--color-black);
+		}
+
+		&--outline:hover {
+			background-color: transparent;
+			border-color: var(--color-white);
+			color: var(--color-white);
+		}
+
+		&--outline:active {
+			background-color: var(--color-gray-80);
+		}
+	}
 }
 
 // Typography.

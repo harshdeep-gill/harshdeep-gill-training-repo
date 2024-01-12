@@ -22,6 +22,12 @@
 		@extend %btn;
 	}
 
+	.is-style-outline &__link {
+
+		@extend %btn--color-black;
+		@extend %btn--outline;
+	}
+
 	&.wp-block-button__width-25 {
 		width: calc(25% - var(--button-spacing));
 	}

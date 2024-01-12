@@ -3,7 +3,7 @@
  */
 
 body {
-	color: var(--color-bunker);
+	color: #000;
 	font-family: var(--font-family);
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
@@ -21,12 +21,14 @@ img {
 }
 
 a {
-	color: var(--color-bunker);
 	text-decoration: underline;
+	color: currentcolor;
+	text-decoration-color: currentcolor;
+	text-underline-offset: 0.3em;
 
 	&:hover {
-		color: var(--color-bunker);
-		text-decoration: none;
+		text-decoration: underline;
+		text-decoration-color: var(--color-yellow);
 	}
 }
 
@@ -68,7 +70,7 @@ ul {
 	padding-left: 1em;
 
 	::marker {
-		color: var(--color-gray-5);
+		color: currentcolor;
 	}
 }
 
@@ -101,4 +103,8 @@ p > iframe {
 .overline {
 
 	@extend %overline;
+}
+
+.color-context--dark {
+	color: var(--color-white);
 }

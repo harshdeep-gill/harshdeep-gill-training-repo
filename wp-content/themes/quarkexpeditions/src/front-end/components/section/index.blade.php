@@ -1,11 +1,9 @@
 @props( [
 	'title'         => '',
-	'heading_level' => '',
+	'heading_level' => '3',
 	'class'         => '',
 	'id'            => '',
-	'title_align'   => '',
 	'seamless'      => false,
-	'no_border'     => false,
 	'full_width'    => false,
 	'narrow'        => false,
 	'background'    => false,
@@ -33,10 +31,6 @@
 		$classes[] = 'section--seamless';
 	}
 
-	if ( ! empty( $no_border ) && true === boolval( $no_border ) ) {
-		$classes[] = 'section--no-border';
-	}
-
 	if ( ! empty( $narrow ) && true === boolval( $narrow ) ) {
 		$classes[] = 'section--narrow';
 	}
@@ -58,12 +52,8 @@
 
 	$section_title_classes = [ 'section__title' ];
 
-	if ( ! empty( $title_align ) && 'left' === $title_align ) {
-		$section_title_classes[] = 'section__title--left';
-	}
-
 	if ( ! empty( $heading_level ) ) {
-		$section_title_classes[] = $heading_level;
+		$section_title_classes[] = sprintf( 'h%s', $heading_level );
 	}
 @endphp
 

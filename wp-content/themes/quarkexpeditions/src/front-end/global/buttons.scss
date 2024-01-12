@@ -5,4 +5,19 @@
 .btn {
 
 	@extend %btn;
+
+	&--color-black {
+
+		@extend %btn--color-black;
+	}
+
+	&--outline {
+
+		@extend %btn--outline;
+	}
+
+	&--size-big {
+
+		@extend %btn--size-big;
+	}
 }

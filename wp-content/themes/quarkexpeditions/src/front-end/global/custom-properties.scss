@@ -17,7 +17,7 @@
 	--font-weight-extrabold: 800;
 	--font-weight-heading: 400;
 	--font-size: 16px;
-	--line-height: calculate-em(28px, 16px);
+	--line-height: #{ calculate-em(28px, 16px) };
 	--typography-spacing: 16px;
 
 	// Headings.
@@ -52,7 +52,7 @@
 		--h1-font-size: 56px;
 		--h1-line-height: 72px;
 		--h2-font-size: 48px;
-		--h2-line-height: 48;
+		--h2-line-height: 48px;
 		--h3-font-size: 32px;
 		--h3-line-height: 40px;
 		--h4-font-size: 24px;
@@ -62,8 +62,10 @@
 	}
 
 	/**
-	 * Colors.
+	 * Colors and Borders.
 	 */
+	--border-radius: 4px;
+
 	@each $name, $color in $colors {
 		--color-#{ $name }: #{ $color };
 	}
@@ -93,9 +95,7 @@
 	/**
 	 * Forms.
 	 */
-	--forms-border-radius: 4px;
-	--forms-border-color: var(--color-gray-500);
-	--buttons-font-size: 13px;
+	--forms-border-radius: var(--border-radius);
 
 	/**
 	 * Misc.
