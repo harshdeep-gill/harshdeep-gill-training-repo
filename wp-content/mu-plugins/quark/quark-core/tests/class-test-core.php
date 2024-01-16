@@ -53,7 +53,7 @@ class Test_Core extends WP_UnitTestCase {
 				'key' => 'value',
 			],
 		];
-		add_filter( 'tcs_front_end_data', fn () => $test_data );
+		add_filter( 'quark_front_end_data', fn () => $test_data );
 
 		// Original data without force.
 		$this->assertEquals(

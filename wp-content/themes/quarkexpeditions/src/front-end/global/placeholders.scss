@@ -24,13 +24,8 @@
 
 	$self: &;
 
-	& + &,
-	.main > &:first-child {
+	& + & {
 		margin-top: calc(var(--grid-section-gutter) * -1);
-	}
-
-	.main > &:last-child {
-		margin-bottom: calc(var(--grid-section-gutter) * -1);
 	}
 
 	#{$self} + .block-library-block__reusable-block-container:has(> &) {

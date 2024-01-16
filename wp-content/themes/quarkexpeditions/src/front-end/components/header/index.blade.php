@@ -1,10 +1,10 @@
 @props( [
-	'data' => [],
+	'logo_url' => '',
 ] )
 
-
-<header class="header">
-	<div class="header__wrap">
-		<x-header.logo :url="$data['logo_url'] ?? ''"/>
-	</div>
-</header>
+<x-section :seamless="true">
+	<header class="header">
+		<x-header.logo :url="$logo_url" />
+		<x-header.cta />
+	</header>
+</x-section>

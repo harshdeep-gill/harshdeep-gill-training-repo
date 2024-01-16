@@ -29,7 +29,7 @@ function bootstrap(): void {
 function layout(): void {
 	// Add single layout if viewing a single post.
 	if ( is_singular( POST_TYPE ) ) {
-		add_filter( 'tcs_front_end_data', __NAMESPACE__ . '\\layout_single' );
+		add_filter( 'quark_front_end_data', __NAMESPACE__ . '\\layout_single' );
 	}
 }
 
