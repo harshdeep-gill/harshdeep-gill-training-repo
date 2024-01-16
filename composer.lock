@@ -62,16 +62,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.295.10",
+            "version": "3.296.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "4d8b4f47639275248e212bd61b6bc51f9dd709f2"
+                "reference": "74dda6a5bf570ae4b394c2ed54edd573883426cc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/4d8b4f47639275248e212bd61b6bc51f9dd709f2",
-                "reference": "4d8b4f47639275248e212bd61b6bc51f9dd709f2",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/74dda6a5bf570ae4b394c2ed54edd573883426cc",
+                "reference": "74dda6a5bf570ae4b394c2ed54edd573883426cc",
                 "shasum": ""
             },
             "require": {
@@ -151,9 +151,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.295.10"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.296.2"
             },
-            "time": "2024-01-11T19:04:31+00:00"
+            "time": "2024-01-16T19:10:36+00:00"
         },
         {
             "name": "composer/installers",
@@ -1202,24 +1202,24 @@
         },
         {
             "name": "travelopia/advanced-custom-fields-pro",
-            "version": "6.2.4",
+            "version": "6.2.5",
             "source": {
                 "type": "git",
                 "url": "git@github.com:Travelopia/advanced-custom-fields-pro.git",
-                "reference": "7eba62737bb9f321314294ec67621e572af20ce5"
+                "reference": "cc270805c45038c6ddbfefcec01608efd140f022"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Travelopia/advanced-custom-fields-pro/zipball/7eba62737bb9f321314294ec67621e572af20ce5",
-                "reference": "7eba62737bb9f321314294ec67621e572af20ce5",
+                "url": "https://api.github.com/repos/Travelopia/advanced-custom-fields-pro/zipball/cc270805c45038c6ddbfefcec01608efd140f022",
+                "reference": "cc270805c45038c6ddbfefcec01608efd140f022",
                 "shasum": ""
             },
             "type": "wordpress-plugin",
             "support": {
-                "source": "https://github.com/Travelopia/advanced-custom-fields-pro/tree/6.2.4",
+                "source": "https://github.com/Travelopia/advanced-custom-fields-pro/tree/6.2.5",
                 "issues": "https://github.com/Travelopia/advanced-custom-fields-pro/issues"
             },
-            "time": "2023-12-06T23:16:13+00:00"
+            "time": "2024-01-16T22:52:48+00:00"
         },
         {
             "name": "travelopia/wordpress-packages",
@@ -1995,16 +1995,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "1.10.55",
+            "version": "1.10.56",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "9a88f9d18ddf4cf54c922fbeac16c4cb164c5949"
+                "reference": "27816a01aea996191ee14d010f325434c0ee76fa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/9a88f9d18ddf4cf54c922fbeac16c4cb164c5949",
-                "reference": "9a88f9d18ddf4cf54c922fbeac16c4cb164c5949",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/27816a01aea996191ee14d010f325434c0ee76fa",
+                "reference": "27816a01aea996191ee14d010f325434c0ee76fa",
                 "shasum": ""
             },
             "require": {
@@ -2053,7 +2053,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-01-08T12:32:40+00:00"
+            "time": "2024-01-15T10:43:00+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
