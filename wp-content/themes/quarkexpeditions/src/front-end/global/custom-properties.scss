@@ -37,6 +37,16 @@
 	--h5-line-height: 24px;
 	--h5-spacing: var(--typography-spacing);
 
+	// Shadows
+	--shadow-1: 0 1px 24px 0 rgba(0, 0, 0, 0.06);
+	--shadow-2:
+		0 4px 6px -2px rgba(0, 0, 0, 0.05),
+		0 10px 15px -3px rgba(0, 0, 0, 0.1);
+	--shadow-3: 0 4px 6px 0 rgba(0, 0, 0, 0.16);
+	--shadow-4: 0 2px 20px 0 rgba(0, 0, 0, 0.16);
+	--shadow-5: 0 4px 40px 0 rgba(0, 0, 0, 0.16);
+
+
 	@media screen and (min-width: grid-size(md)) {
 		--h1-font-size: 48px;
 		--h1-line-height: 60px;
