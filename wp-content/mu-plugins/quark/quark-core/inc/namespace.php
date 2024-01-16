@@ -24,7 +24,7 @@ function bootstrap(): void {
 	// Other hooks.
 	add_action( 'admin_menu', __NAMESPACE__ . '\\setup_settings' );
 	add_action( 'init', __NAMESPACE__ . '\\nav_menus' );
-	add_filter( 'tcs_front_end_data', __NAMESPACE__ . '\\core_front_end_data' );
+	add_filter( 'quark_front_end_data', __NAMESPACE__ . '\\core_front_end_data' );
 	add_filter( 'wp_mail_from', __NAMESPACE__ . '\\default_email_from_address' );
 	add_filter( 'wp_mail_from_name', __NAMESPACE__ . '\\default_email_from_name' );
 	add_action( 'admin_menu', __NAMESPACE__ . '\\reusable_blocks_menu_item' );
@@ -47,7 +47,7 @@ function bootstrap(): void {
 function layout(): void {
 	// Check if 404 page.
 	if ( is_404() ) {
-		add_filter( 'tcs_front_end_data', __NAMESPACE__ . '\\layout_404' );
+		add_filter( 'quark_front_end_data', __NAMESPACE__ . '\\layout_404' );
 	}
 }
 
@@ -242,7 +242,7 @@ function get_front_end_data( bool $force = false ): array {
 
 	// Get front-end data.
 	$template_data = (array) apply_filters(
-		'tcs_front_end_data',
+		'quark_front_end_data',
 		[
 			'layout' => '',
 			'data'   => [],
