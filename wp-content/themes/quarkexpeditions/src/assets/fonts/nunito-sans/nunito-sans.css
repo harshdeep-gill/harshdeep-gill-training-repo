@@ -1,0 +1,65 @@
+@font-face {
+	font-family: "Nunito Sans";
+	font-style: normal;
+	font-weight: 400;
+	font-stretch: 100%;
+	font-display: swap;
+	src:
+		local(""),
+		url(NunitoSans-Regular.woff2) format("woff2");
+}
+
+@font-face {
+	font-family: "Nunito Sans";
+	font-style: italic;
+	font-weight: 400;
+	font-stretch: 100%;
+	font-display: swap;
+	src:
+		local(""),
+		url(NunitoSans-RegularItalic.woff2) format("woff2");
+}
+
+@font-face {
+	font-family: "Nunito Sans";
+	font-style: normal;
+	font-weight: 500;
+	font-stretch: 100%;
+	font-display: swap;
+	src:
+		local(""),
+		url(NunitoSans-Medium.woff2) format("woff2");
+}
+
+@font-face {
+	font-family: "Nunito Sans";
+	font-style: italic;
+	font-weight: 500;
+	font-stretch: 100%;
+	font-display: swap;
+	src:
+		local(""),
+		url(NunitoSans-MediumItalic.woff2) format("woff2");
+}
+
+@font-face {
+	font-family: "Nunito Sans";
+	font-style: normal;
+	font-weight: 700;
+	font-stretch: 100%;
+	font-display: swap;
+	src:
+		local(""),
+		url(NunitoSans-Bold.woff2) format("woff2");
+}
+
+@font-face {
+	font-family: "Nunito Sans";
+	font-style: italic;
+	font-weight: 700;
+	font-stretch: 100%;
+	font-display: swap;
+	src:
+		local(""),
+		url(NunitoSans-BoldItalic.woff2) format("woff2");
+}
