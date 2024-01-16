@@ -38,10 +38,6 @@
 @media screen and (min-width: grid-size(md)) {
 
 	.header {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		background-color: var(--color-white);
 		padding: 1em 5em;
 
 		&__logo {
