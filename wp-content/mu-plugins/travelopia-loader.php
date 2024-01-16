@@ -30,6 +30,7 @@ $tp_mu_plugins = array(
 	'quark/quark-core/plugin.php',
 	'quark/quark-pages/plugin.php',
 	'quark/quark-landing-pages/plugin.php',
+	'quark/quark-leads/plugin.php',
 
 );
 
