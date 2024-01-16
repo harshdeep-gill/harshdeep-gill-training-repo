@@ -1,5 +1,9 @@
 <x-layout>
-
+	<x-component-demo :keys="[ 'header' ]">
+		<x-header
+			:data="quark_get_template_data( 'header', '' )"
+		/>
+	</x-component-demo>
 	<x-component-demo :keys="[ 'typography' ]">
 		<x-section title="Typography" heading_level="2">
 			<h1>Heading 1</h1>
