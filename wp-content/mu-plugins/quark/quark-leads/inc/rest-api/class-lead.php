@@ -1,0 +1,90 @@
+<?php
+/**
+ * Rest API: Lead.
+ *
+ * @package quark-leads
+ */
+
+namespace Quark\Leads\RestApi;
+
+use WP_REST_Controller;
+use WP_REST_Server;
+use WP_REST_Request;
+use WP_REST_Response;
+use WP_Error;
+
+use function Quark\Leads\create_lead;
+
+use const Quark\Leads\REST_API_NAMESPACE;
+
+/**
+ * Class Lead.
+ */
+class Lead extends WP_REST_Controller {
+
+	/**
+	 * The namespace of this controller's route.
+	 *
+	 * @var string
+	 */
+	protected $namespace = REST_API_NAMESPACE . '/leads';
+
+	/**
+	 * Register the routes for the objects of the controller.
+	 *
+	 * @return void
+	 */
+	public function register_routes(): void {
+		// Register rest route.
+		register_rest_route(
+			$this->namespace,
+			'/create',
+			[
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => [ $this, 'create_item' ],
+				'permission_callback' => '__return_true',
+				'args'                => [
+					'recaptcha_token' => [
+						'required'          => true,
+						'type'              => 'string',
+						'default'           => '',
+						'description'       => esc_html__( 'reCAPTCHA Token', 'tcs' ),
+						'sanitize_callback' => 'sanitize_text_field',
+					],
+					'fields'          => [
+						'required'          => true,
+						'type'              => 'object',
+						'description'       => esc_html__( 'Form Fields', 'tcs' ),
+						'validate_callback' => fn ( $param ) => is_array( $param ) && ! empty( $param ),
+					],
+				],
+			]
+		);
+	}
+
+	/**
+	 * Create a lead.
+	 *
+	 * @param WP_REST_Request $request Request data.
+	 *
+	 * @return WP_REST_Response|WP_Error
+	 */
+	public function create_item( $request ): WP_REST_Response|WP_Error { // phpcs:ignore
+		// Prepare lead data.
+		$lead_data = [
+			'recaptcha_token' => $request->get_param( 'recaptcha_token' ),
+			'fields'          => (array) $request->get_param( 'fields' ),
+		];
+
+		// Create lead.
+		$response = create_lead( $lead_data );
+
+		// Return response, if there is an error.
+		if ( $response instanceof WP_Error ) {
+			return $response;
+		}
+
+		// Return response.
+		return rest_ensure_response( $response );
+	}
+}

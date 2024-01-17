@@ -108,3 +108,8 @@ p > iframe {
 .color-context--dark {
 	color: var(--color-white);
 }
+
+.caption {
+
+	@extend %caption;
+}

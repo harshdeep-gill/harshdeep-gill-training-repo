@@ -87,8 +87,8 @@ function register_styles(): void {
 
 	// Enqueue styles.
 	wp_enqueue_style( 'tcs-global', get_template_directory_uri() . '/dist/global.css', [], $assets_version );
-	wp_enqueue_style( 'domaine-display', get_template_directory_uri() . '/src/assets/fonts/domaine-display/domaine-display.css', [], '1' );
-	wp_enqueue_style( 'untitled-sans', get_template_directory_uri() . '/src/assets/fonts/untitled-sans/untitled-sans.css', [], '1' );
+	wp_enqueue_style( 'nunito-sans', get_template_directory_uri() . '/src/assets/fonts/nunito-sans/nunito-sans.css', [], '1' );
+	wp_enqueue_style( 'source-serif-4', get_template_directory_uri() . '/src/assets/fonts/source-serif-4/source-serif-4.css', [], '1' );
 	wp_register_style( 'intl-tel-input-css', get_template_directory_uri() . '/dist/vendor/intltelinput.css', [], $assets_version );
 	wp_register_style( 'glightbox', get_template_directory_uri() . '/dist/vendor/glightbox.css', [], $assets_version );
 	wp_register_style( 'tp-slider', get_template_directory_uri() . '/dist/vendor/tpsliderelement.css', [], $assets_version );
@@ -97,8 +97,8 @@ function register_styles(): void {
 	add_filter(
 		'travelopia_defer_styles',
 		function ( $handles = [] ) {
-			$handles[] = 'domaine-display';
-			$handles[] = 'untitled-sans';
+			$handles[] = 'nunito-sans';
+			$handles[] = 'source-serif-4';
 			$handles[] = 'intl-tel-input-css';
 			$handles[] = 'glightbox';
 			$handles[] = 'tp-slider';
@@ -159,7 +159,7 @@ function blade_view_before_load( string $name = '' ): void {
 /**
  * Custom resource hints.
  *
- * @param string[] $urls          URLs to print for resource hints.
+ * @param string[] $urls URLs to print for resource hints.
  * @param string   $relation_type The relation type the URLs are printed for.
  *
  * @return string[]
@@ -185,7 +185,7 @@ function resource_hints( array $urls = [], string $relation_type = '' ): array {
 /**
  * Custom allowed HTML for `wp_kses_post`
  *
- * @param mixed[] $tags    Allowed HTML tags.
+ * @param mixed[] $tags Allowed HTML tags.
  * @param string  $context Context name.
  *
  * @return mixed[]

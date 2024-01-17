@@ -7,8 +7,8 @@
 	/**
 	 * Typography.
 	 */
-	--font-family: "Untitled Sans", sans-serif;
-	--heading-font-family: "Domaine Display", serif;
+	--font-family: "Nunito Sans", sans-serif;
+	--heading-font-family: "Source Serif 4", serif;
 	--font-weight-default: 400;
 	--font-weight-light: 300;
 	--font-weight-medium: 500;
@@ -71,18 +71,38 @@
 	}
 
 	/**
+	 * Elevation.
+	 */
+	--shadow-1: 0 1px 24px 0 rgba(0, 0, 0, 0.06);
+	--shadow-2:
+		0 4px 6px -2px rgba(0, 0, 0, 0.05),
+		0 10px 15px -3px rgba(0, 0, 0, 0.1);
+	--shadow-3: 0 4px 6px 0 rgba(0, 0, 0, 0.16);
+	--shadow-4: 0 2px 20px 0 rgba(0, 0, 0, 0.16);
+	--shadow-5: 0 4px 40px 0 rgba(0, 0, 0, 0.16);
+
+	/**
 	 * Grid.
 	 */
+	--spacing-1: 4px;
+	--spacing-2: 8px;
+	--spacing-3: 16px;
+	--spacing-4: 24px;
+	--spacing-5: 32px;
+	--spacing-6: 48px;
+	--spacing-7: 64px;
+	--spacing-8: 96px;
+
 	--wrap-width: 1120px;
 	--narrow-wrap-width: 640px;
-	--grid-section-gutter: #{ calculate-rem(64px) };
-	--grid-row-gutter: #{ calculate-rem(24px) };
-	--grid-col-gutter: #{ calculate-rem(24px) };
+	--grid-section-gutter: var(--spacing-7);
+	--grid-row-gutter: var(--spacing-4);
+	--grid-col-gutter: var(--spacing-4);
 
 	@media screen and (min-width: grid-size(lg)) {
-		--grid-row-gutter: #{ calculate-rem(32px) };
-		--grid-col-gutter: #{ calculate-rem(32px) };
-		--grid-section-gutter: #{ calculate-rem(96px) };
+		--grid-row-gutter: var(--spacing-5);
+		--grid-col-gutter: var(--spacing-5);
+		--grid-section-gutter: var(--spacing-9);
 	}
 
 	/**
