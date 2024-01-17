@@ -56,7 +56,7 @@
 
 		&__cta {
 			display: flex;
-			column-gap: 1em;
+			column-gap: var(--spacing-3);
 			align-items: center;
 			background-color: var(--color-gray-5);
 			padding: 12px;
