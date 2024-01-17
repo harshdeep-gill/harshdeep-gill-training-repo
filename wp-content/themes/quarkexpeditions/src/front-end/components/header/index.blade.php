@@ -3,7 +3,7 @@
 ] )
 
 <x-section seamless="true">
-	<header class="header full-width">
+	<header class="header">
 		<x-header.logo :url="$logo_url" />
 		<x-header.cta />
 	</header>

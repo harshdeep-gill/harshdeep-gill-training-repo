@@ -5,7 +5,7 @@
 	justify-content: space-between;
 	align-items: center;
 	background-color: var(--color-white);
-	padding: 1em 1.5em;
+	padding: var(--spacing-3) 0;
 
 	&__logo {
 		width: 125px;
@@ -38,7 +38,6 @@
 @media screen and (min-width: grid-size(md)) {
 
 	.header {
-		padding: 1em 5em;
 
 		&__logo {
 			width: 175px;
@@ -82,13 +81,6 @@
 				}
 			}
 		}
-	}
-}
-
-@media screen and (max-width: grid-size(lg)) {
-
-	.header {
-		padding: 1em 1.5em;
 	}
 }
 
