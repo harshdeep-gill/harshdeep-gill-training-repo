@@ -51,8 +51,8 @@ function block_editor_styles( ?WP_Screen $screen = null ): void {
 function enqueue_block_editor_assets(): void {
 	// CSS.
 	wp_enqueue_style( 'tcs-editor-custom', get_stylesheet_directory_uri() . '/dist/editor-custom.css', [], '1' );
-	wp_enqueue_style( 'domaine-display', get_template_directory_uri() . '/src/assets/fonts/domaine-display/domaine-display.css', [], '1' );
-	wp_enqueue_style( 'untitled-sans', get_template_directory_uri() . '/src/assets/fonts/untitled-sans/untitled-sans.css', [], '1' );
+	wp_enqueue_style( 'nunito-sans', get_template_directory_uri() . '/src/assets/fonts/nunito-sans/nunito-sans.css', [], '1' );
+	wp_enqueue_style( 'source-serif-4', get_template_directory_uri() . '/src/assets/fonts/source-serif-4/source-serif-4.css', [], '1' );
 
 	// JavaScript.
 	$assets_version = get_assets_version();

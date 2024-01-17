@@ -7,8 +7,8 @@
 	/**
 	 * Typography.
 	 */
-	--font-family: "Untitled Sans", sans-serif;
-	--heading-font-family: "Domaine Display", serif;
+	--font-family: "Nunito Sans", sans-serif;
+	--heading-font-family: "Source Serif 4", serif;
 	--font-weight-default: 400;
 	--font-weight-light: 300;
 	--font-weight-medium: 500;
@@ -69,6 +69,17 @@
 	@each $name, $color in $colors {
 		--color-#{ $name }: #{ $color };
 	}
+
+	/**
+	 * Elevation.
+	 */
+	--shadow-1: 0 1px 24px 0 rgba(0, 0, 0, 0.06);
+	--shadow-2:
+		0 4px 6px -2px rgba(0, 0, 0, 0.05),
+		0 10px 15px -3px rgba(0, 0, 0, 0.1);
+	--shadow-3: 0 4px 6px 0 rgba(0, 0, 0, 0.16);
+	--shadow-4: 0 2px 20px 0 rgba(0, 0, 0, 0.16);
+	--shadow-5: 0 4px 40px 0 rgba(0, 0, 0, 0.16);
 
 	/**
 	 * Grid.
