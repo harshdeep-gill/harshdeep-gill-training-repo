@@ -1,8 +1,8 @@
 ## Checklist
 - [ ] Jira ticket: https://tuispecialist.atlassian.net/browse/QE-xxx
-- [ ] My branch is named correctly. Ex: `feature/MR-xxx-my-feature-name`
-- [ ] I've added the ticket name to the Pull Request along with a title. Ex: "MR-xxx My Feature Name"
-- [ ] All my commit messages use the prefix of the Jira ticket. Ex: `MR-xxx update block attributes`
+- [ ] My branch is named correctly. Ex: `feature/QE-xxx-my-feature-name`
+- [ ] I've added the ticket name to the Pull Request along with a title. Ex: "QE-xxx My Feature Name"
+- [ ] All my commit messages use the prefix of the Jira ticket. Ex: `QE-xxx update block attributes`
 - [ ] My code passes all automated tests: `npm run lint-test`
 
 ### Front-End
