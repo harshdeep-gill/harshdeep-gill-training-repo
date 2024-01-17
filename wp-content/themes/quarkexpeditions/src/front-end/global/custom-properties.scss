@@ -84,16 +84,25 @@
 	/**
 	 * Grid.
 	 */
+	--spacing-1: 4px;
+	--spacing-2: 8px;
+	--spacing-3: 16px;
+	--spacing-4: 24px;
+	--spacing-5: 32px;
+	--spacing-6: 48px;
+	--spacing-7: 64px;
+	--spacing-8: 96px;
+
 	--wrap-width: 1120px;
 	--narrow-wrap-width: 640px;
-	--grid-section-gutter: #{ calculate-rem(64px) };
-	--grid-row-gutter: #{ calculate-rem(24px) };
-	--grid-col-gutter: #{ calculate-rem(24px) };
+	--grid-section-gutter: var(--spacing-7);
+	--grid-row-gutter: var(--spacing-4);
+	--grid-col-gutter: var(--spacing-4);
 
 	@media screen and (min-width: grid-size(lg)) {
-		--grid-row-gutter: #{ calculate-rem(32px) };
-		--grid-col-gutter: #{ calculate-rem(32px) };
-		--grid-section-gutter: #{ calculate-rem(96px) };
+		--grid-row-gutter: var(--spacing-5);
+		--grid-col-gutter: var(--spacing-5);
+		--grid-section-gutter: var(--spacing-9);
 	}
 
 	/**
