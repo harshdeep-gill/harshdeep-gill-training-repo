@@ -5,7 +5,7 @@
 		</span>
 		<p>
 			<x-escape
-				:content="__( 'By providing your email address, you agree to receive our exclusive trip announcements, travel inspiration and expert tips. You can unsubscribe at any time.', 'quark' )"/>
+				:content="__( 'By providing your email address, you agree to receive our exclusive trip announcements, travel inspiration and expert tips. You can unsubscribe at any time.', 'qrk' )"/>
 		</p>
 	</div>
 </div>
