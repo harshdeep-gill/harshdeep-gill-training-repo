@@ -80,22 +80,44 @@
 
 	<x-component-demo :keys="[ 'form' ]">
 		<x-section title="Form UI Elements" heading_level="2">
-			<div style="display: flex; flex-wrap: wrap; width: 100%; gap: 20px;">
-				<div style="display:flex; flex-wrap: wrap; flex-direction: column; gap: 10px;">
-					<x-form.field>
-						<x-form.input type="text" label="Name" placeholder="wowo"></x-form.input>
-					</x-form.field>
-					<x-form.field>
-						<x-form.phone label="phone"></x-form.phone>
-					</x-form.field>
-					<x-form.field>
-						<x-form.select label="select">
-							<option>Option 1</option>
-							<option>Option 2</option>
-							<option>Option 3</option>
-						</x-form.select>
-					</x-form.field>
-
+			<div style="display: flex; flex-wrap: wrap; width: 100%;" class="typography-spacing">
+				<div style="width: 50%; padding: 24px; border: 1px solid var(--color-black);">
+					<div style="display: flex; flex-wrap: wrap; width: 100%; gap: 20px;">
+						<div style="display:flex; flex-wrap: wrap; flex-direction: column; gap: 10px;">
+							<x-form.field>
+								<x-form.input type="text" label="Name" placeholder="wowo"></x-form.input>
+							</x-form.field>
+							<x-form.field>
+								<x-form.phone label="phone"></x-form.phone>
+							</x-form.field>
+							<x-form.field>
+								<x-form.select label="select">
+									<option>Option 1</option>
+									<option>Option 2</option>
+									<option>Option 3</option>
+								</x-form.select>
+							</x-form.field>
+						</div>
+					</div>
+				</div>
+				<div style="width: 50%; padding: 24px; background-color: var(--color-gray-80);" class="color-context--dark">
+					<div style="display: flex; flex-wrap: wrap; width: 100%; gap: 20px;">
+						<div style="display:flex; flex-wrap: wrap; flex-direction: column; gap: 10px;">
+							<x-form.field>
+								<x-form.input type="text" label="Name" placeholder="wowo"></x-form.input>
+							</x-form.field>
+							<x-form.field>
+								<x-form.phone label="phone"></x-form.phone>
+							</x-form.field>
+							<x-form.field>
+								<x-form.select label="select">
+									<option>Option 1</option>
+									<option>Option 2</option>
+									<option>Option 3</option>
+								</x-form.select>
+							</x-form.field>
+						</div>
+					</div>
 				</div>
 			</div>
 		</x-section>
