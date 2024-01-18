@@ -1,15 +1,15 @@
 @import "../../scss";
 
-.header {
+.lp-header {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 	background-color: var(--color-white);
 	padding: var(--spacing-3) 0;
 
-	&__logo {
-		width: 125px;
-		height: 60px;
+	&__logo svg {
+		height: 56px;
+		width: auto;
 	}
 
 	&__cta {
@@ -47,10 +47,9 @@
 
 @media screen and (min-width: grid-size(sm)) {
 
-	.header {
+	.lp-header {
 
-		&__logo {
-			width: 175px;
+		&__logo svg {
 			height: 80px;
 		}
 
@@ -70,12 +69,12 @@
 
 			&-avatar {
 				display: block;
-				height: 55px;
-				width: 55px;
 				margin-bottom: 0;
 
 				img {
 					border-radius: var(--border-radius);
+					height: 55px;
+					width: 55px;
 				}
 			}
 

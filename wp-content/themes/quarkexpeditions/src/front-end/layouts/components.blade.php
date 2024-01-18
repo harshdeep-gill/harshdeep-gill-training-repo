@@ -1,6 +1,6 @@
 <x-layout>
 	<x-component-demo :keys="[ 'header' ]">
-		<x-header />
+		<x-lp-header />
 	</x-component-demo>
 
 	<x-component-demo :keys="[ 'typography' ]">
