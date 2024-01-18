@@ -87,5 +87,11 @@
 		</x-section>
 	</x-component-demo>
 
+	<x-component-demo :keys="[ 'typography' ]">
+		<x-section title="Typography Table" heading_level="2">
+			<x-global-styles-demo.typography></x-global-styles-demo.typography>
+		</x-section>
+	</x-component-demo>
+
 </x-layout>
 
