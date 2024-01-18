@@ -1,4 +1,7 @@
 <x-layout>
+	<x-component-demo :keys="[ 'header' ]">
+		<x-lp-header />
+	</x-component-demo>
 
 	<x-component-demo :keys="[ 'typography' ]">
 		<x-section title="Typography" heading_level="2">

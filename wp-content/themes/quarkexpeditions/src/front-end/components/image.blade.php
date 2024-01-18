@@ -14,5 +14,9 @@
 		$attributes['args']['atts'][ $key ] = $value;
 	}
 
+	if ( ! isset( $attributes['args']['focal_point'] ) ) {
+		$attributes['args']['focal_point'] = true;
+	}
+
 	quark_dynamic_image( $attributes['args'] );
 @endphp
