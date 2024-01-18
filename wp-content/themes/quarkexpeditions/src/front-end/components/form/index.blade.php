@@ -9,7 +9,13 @@
 	'permalink'  => '',
 ] )
 
-<quark-form class="form {{ $class }}" data-action="{{ $action }}">
+<quark-form
+	class="form {{ $class }}"
+	data-action="{{ $action }}"
+	@if( ! empty( $style ) )
+		style="{{ $style }}"
+	@endif
+>
 	<tp-form prevent-submit="yes">
 		<form
 			action="#"
@@ -17,9 +23,6 @@
 			data-name="{{ $name }}"
 			method="{{ $method }}"
 			novalidate
-			@if( ! empty( $style ) )
-				style="{{ $style }}"
-			@endif
 		>
 			{{ $slot }}
 		</form>

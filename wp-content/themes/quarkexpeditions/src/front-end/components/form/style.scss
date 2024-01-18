@@ -4,107 +4,12 @@
 	display: block;
 
 	// International Tel No Library CSS.
-	.iti {
-		border: 1px solid var(--forms-border-color);
-		border-radius: var(--forms-border-radius);
-		display: inline-flex;
-		width: 100%;
-
-		&__flag {
-			box-sizing: content-box;
-			border: 1px solid var(--color-border);
-			background-image: url(../../../dist/assets/png/flags.png);
-			box-shadow: none;
-
-			@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-
-				background-image: url(../../../dist/assets/png/flags@2x.png);
-			}
-		}
-
-		&__flag-container {
-			background-color: var(--color-white);
-			border-radius: calc(var(--forms-border-radius) - 1px) 0 0 calc(var(--forms-border-radius) - 1px);
-			color: var(--color-bunker);
-			flex: 0 0 62px;
-			position: initial;
-		}
-
-		&__country-list {
-			margin: 1px 0 0 -2px;
-			width: 100%;
-		}
-
-		&__country-name,
-		&__dial-code {
-			font-size: 16px;
-		}
-
-		&__selected-flag,
-		&__country {
-			padding-left: 15px;
-		}
-
-		&__selected-flag:focus {
-			outline: none;
-		}
-
-		&__arrow {
-			margin-left: 8px;
-			position: relative;
-			border: none;
-
-			&::before {
-				content: "";
-				position: absolute;
-				width: 9px;
-				height: 5px;
-				top: 0;
-				bottom: 0;
-				margin: auto;
-				background-image: url(../../../src/assets/svg/chevron-down-small.svg);
-				background-size: cover;
-			}
-		}
-
-		&__flag-box {
-			margin-right: 8px;
-		}
-
-		.form__phone {
-			border-radius: 0 calc(var(--forms-border-radius) - 1px) calc(var(--forms-border-radius) - 1px) 0;
-			flex: 1;
-			min-width: 0;
-			z-index: 2;
-			float: right;
-			border-color: transparent;
-			transition: none;
-			padding-left: 9px;
-
-			@media screen and (min-width: grid-size(xl)) {
-				padding: 9px 10px;
-			}
-		}
-	}
-
 	&-submit {
 		display: block;
 		margin-top: var(--forms-field-spacing);
 	}
 
-	.valid .iti {
-		border-color: var(--color-green);
-		background-image: url(../../../src/assets/svg/check.svg);
-		background-repeat: no-repeat;
-		background-position: center right 10px;
-		background-size: 10px 8px;
-	}
-
 	.error {
-
-		.iti {
-			border-color: var(--color-red);
-		}
 
 		.form__phone {
 			background-image: url(../../../src/assets/svg/cross.svg);

@@ -73,6 +73,10 @@ textarea {
 	}
 }
 
+textarea {
+	resize: none;
+}
+
 select {
 	-webkit-appearance: none;
 	-moz-appearance: none;
@@ -85,7 +89,7 @@ select {
 	background-size: 12px;
 	opacity: 1;
 	text-overflow: ellipsis;
-	color: var(--color-bunker);
+	color: var(--color-black);
 
 	&:focus {
 
@@ -110,12 +114,9 @@ select {
 }
 
 .form-field {
-	margin-bottom: 15px;
-	width: 350px;
-
-	@media screen and (min-width: grid-size(sm)) {
-		margin-bottom: var(--typography-spacing);
-	}
+	margin-bottom: var(--forms-field-spacing);
+	display: block;
+	width: 100%;
 
 	&:last-child {
 		margin-bottom: 0;
