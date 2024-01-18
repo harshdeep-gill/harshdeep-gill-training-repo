@@ -81,5 +81,11 @@
 		</x-section>
 	</x-component-demo>
 
+	<x-component-demo :keys="[ 'color-palette' ]">
+		<x-section title="Color Palette" heading_level="2">
+			<x-global-styles-demo.color-palette></x-global-styles-demo.color-palette>
+		</x-section>
+	</x-component-demo>
+
 </x-layout>
 
