@@ -102,13 +102,13 @@
 	@media screen and (min-width: grid-size(lg)) {
 		--grid-row-gutter: var(--spacing-5);
 		--grid-col-gutter: var(--spacing-5);
-		--grid-section-gutter: var(--spacing-9);
+		--grid-section-gutter: var(--spacing-8);
 	}
 
 	/**
 	 * Forms.
 	 */
-	--forms-border-radius: var(--border-radius);
+	--forms-border-radius: 4px;
 
 	/**
 	 * Misc.
