@@ -108,7 +108,9 @@
 	/**
 	 * Forms.
 	 */
-	--forms-border-radius: 4px;
+	--forms-border-radius: 0;
+	--forms-border-color: var(--color-gray-40);
+	--forms-field-spacing: var(--spacing-3);
 
 	/**
 	 * Misc.
