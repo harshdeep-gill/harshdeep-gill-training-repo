@@ -84,32 +84,28 @@
 	<x-component-demo :keys="[ 'logo-grid' ]">
 		<x-section title="Logo Grid">
 			<div  style="display: flex; flex-direction: column; gap: 50px;">
-				<div>
-					<p><strong>Left alignment with 20px gap</strong></p>
-					<x-logo-grid gap="1">
-						@foreach ( [ 15, 15, 16, 16, 17] as $image_id )
-							<x-logo-grid.logo image_id="{{ $image_id }}" height="69"/>
+				<x-logo-grid gap="1">
+					@foreach ( [ 15, 15, 16, 16, 17 ] as $image_id )
+						<x-logo-grid.logo image_id="{{ $image_id }}" height="69"/>
+					@endforeach
+				</x-logo-grid>
+
+				<div style="background-color: var(--color-gray-90); padding-block:20px; padding-inline:10px" class="color-context--dark">
+					<x-logo-grid gap="2" justify="left" :wrap="false">
+						@foreach ( [ 11, 12, 10 ] as $image_id )
+							<x-logo-grid.logo image_id="{{ $image_id }}" height="52"/>
 						@endforeach
 					</x-logo-grid>
 				</div>
-				<div>
-					<p><strong>Center alignment with 24px gap</strong></p>
-					<x-logo-grid gap="2" justify="center">
-						@foreach ( [ 15, 15, 16, 16, 17] as $image_id )
-							<x-logo-grid.logo image_id="{{ $image_id }}" height="69"/>
-						@endforeach
-					</x-logo-grid>
-				</div>
-				<div>
-					<p><strong>Right alignment with 32px gap</strong></p>
-					<x-logo-grid gap="3" justify="right">
-						@foreach ( [ 15, 15, 16, 16, 17] as $image_id )
-							<x-logo-grid.logo image_id="{{ $image_id }}" height="69"/>
-						@endforeach
-					</x-logo-grid>
-				</div>
+
+				<x-logo-grid gap="3" justify="center">
+					@foreach ( [ 14, 13 ] as $image_id )
+						<x-logo-grid.logo image_id="{{ $image_id }}" height="80"/>
+					@endforeach
+				</x-logo-grid>
 			</div>
 		</x-section>
+		<x-section></x-section>
 	</x-component-demo>
 </x-layout>
 
