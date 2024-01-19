@@ -1,4 +1,7 @@
 <x-layout>
+	<x-component-demo :keys="[ 'header' ]">
+		<x-lp-header />
+	</x-component-demo>
 
 	<x-component-demo :keys="[ 'typography' ]">
 		<x-section title="Typography" heading_level="2">
@@ -103,5 +106,53 @@
 		</x-two-columns>
 	</x-component-demo>
 
+	<x-component-demo :keys="[ 'form' ]">
+		<x-section title="Form UI Elements" heading_level="2" style="display: flex; flex-wrap: wrap; width: 100%;" class="typography-spacing">
+			<div style="display: flex; flex-wrap: wrap; width: 100%; gap: 20px; justify-content: space-between;">
+				<x-form style="min-width: 300px; padding: 24px; border: 1px solid var(--color-black); display:flex; flex-wrap: wrap; flex-direction: column; flex-grow: 1;">
+					<x-form.field :validation="[ 'required' ]">
+						<x-form.input type="text" label="First Name" placeholder="Enter First Name" />
+					</x-form.field>
+					<x-form.field :validation="[ 'required' ]">
+						<x-form.select label="Country">
+							<option value="">Select...</option>
+							<option value="1">Option 1</option>
+							<option value="2">Option 2</option>
+							<option value="3">Option 3</option>
+						</x-form.select>
+					</x-form.field>
+					<x-form.field>
+						<x-form.textarea label="What else would you like us to know?" placeholder="eg Lorem ipsum"></x-form.textarea>
+					</x-form.field>
+					<x-form.buttons>
+						<x-button type="submit">Request a Quote</x-button>
+					</x-form.buttons>
+				</x-form>
+
+				<x-form
+					style="background-color: var(--color-black); min-width: 300px; padding: 24px; border: 1px solid var(--color-black); display:flex; flex-wrap: wrap; flex-direction: column; flex-grow: 1;"
+					class="color-context--dark">
+					<x-form.field :validation="[ 'required' ]">
+						<x-form.input type="text" label="First Name" placeholder="Enter First Name" />
+					</x-form.field>
+					<x-form.field :validation="[ 'required' ]">
+						<x-form.select label="Country">
+							<option value="">Select...</option>
+							<option value="1">Option 1</option>
+							<option value="2">Option 2</option>
+							<option value="3">Option 3</option>
+						</x-form.select>
+					</x-form.field>
+					<x-form.field>
+						<x-form.textarea label="What else would you like us to know?" placeholder="eg Lorem ipsum"></x-form.textarea>
+					</x-form.field>
+					<x-form.buttons>
+						<x-button type="submit">Request a Quote</x-button>
+					</x-form.buttons>
+				</x-form>
+			</div>
+		</x-section>
+	</x-component-demo>
+	<x-section></x-section>
 </x-layout>
 
