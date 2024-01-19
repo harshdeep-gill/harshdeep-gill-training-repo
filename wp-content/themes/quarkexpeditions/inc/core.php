@@ -196,47 +196,51 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 		$tags = array_merge(
 			$tags,
 			[
-				'tcs-form'                               => [
+				'quark-form'           => [
 					'class'       => true,
 					'data-action' => true,
+					'style'       => true,
 				],
-				'tcs-inquiry-form'                       => [
-					'id'            => true,
-					'class'         => true,
-					'thank-you-url' => true,
-					'api-endpoint'  => true,
-				],
-				'tcs-sticky-cta'                         => [
-					'class'           => true,
-					'target-id'       => true,
-					'visible-desktop' => true,
-				],
-				'tcs-itinerary-details-cards-select-pmt' => [
-					'class'  => true,
-					'option' => true,
-				],
-				'tp-slider'                              => [
+				'tp-slider'            => [
 					'class'           => true,
 					'flexible-height' => true,
 					'swipe'           => true,
 				],
-				'tp-slider-track'                        => [
+				'tp-slider-track'      => [
 					'class' => true,
 				],
-				'tp-slider-slides'                       => [
+				'tp-slider-slides'     => [
 					'class' => true,
 				],
-				'tp-slider-slide'                        => [
+				'tp-slider-slide'      => [
 					'class' => true,
 				],
-				'tp-slider-nav'                          => [
+				'tp-slider-nav'        => [
 					'class' => true,
 				],
-				'tp-slider-nav-item'                     => [
+				'tp-slider-nav-item'   => [
 					'class'   => true,
 					'current' => true,
 				],
-				'iframe'                                 => [
+				'tp-modal'             => [
+					'class'               => true,
+					'overlay-click-close' => true,
+					'open'                => true,
+				],
+				'tp-accordion'         => [
+					'class' => true,
+				],
+				'tp-accordion-item'    => [
+					'class'           => true,
+					'open-by-default' => true,
+				],
+				'tp-accordion-handle'  => [
+					'class' => true,
+				],
+				'tp-accordion-content' => [
+					'class' => true,
+				],
+				'iframe'               => [
 					'class'           => true,
 					'src'             => true,
 					'height'          => true,
@@ -245,7 +249,7 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'allowfullscreen' => true,
 					'title'           => true,
 				],
-				'svg'                                    => [
+				'svg'                  => [
 					'id'              => true,
 					'class'           => true,
 					'aria-hidden'     => true,
@@ -256,15 +260,15 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'height'          => true,
 					'viewbox'         => true,
 				],
-				'g'                                      => [
+				'g'                    => [
 					'fill'      => true,
 					'fill-rule' => true,
 					'transform' => true,
 				],
-				'title'                                  => [
+				'title'                => [
 					'title' => true,
 				],
-				'path'                                   => [
+				'path'                 => [
 					'id'             => true,
 					'd'              => true,
 					'fill'           => true,
@@ -276,16 +280,16 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'transform'      => true,
 					'opacity'        => true,
 				],
-				'mask'                                   => [
+				'mask'                 => [
 					'id'   => true,
 					'fill' => true,
 				],
-				'polygon'                                => [
+				'polygon'              => [
 					'id'     => true,
 					'points' => true,
 					'fill'   => true,
 				],
-				'circle'                                 => [
+				'circle'               => [
 					'cx'             => true,
 					'cy'             => true,
 					'r'              => true,
@@ -294,39 +298,39 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'stroke-opacity' => true,
 					'stroke-width'   => true,
 				],
-				'defs'                                   => true,
-				'use'                                    => [
+				'defs'                 => true,
+				'use'                  => [
 					'xlink:href' => true,
 				],
-				'lineargradient'                         => [
+				'lineargradient'       => [
 					'id' => true,
 					'x1' => true,
 					'x2' => true,
 					'y1' => true,
 					'y2' => true,
 				],
-				'stop'                                   => [
+				'stop'                 => [
 					'offset'     => true,
 					'stop-color' => true,
 				],
-				'form'                                   => [
+				'form'                 => [
 					'id'     => true,
 					'class'  => true,
 					'method' => true,
 					'action' => true,
 				],
-				'select'                                 => [
+				'select'               => [
 					'name'     => true,
 					'class'    => true,
 					'id'       => true,
 					'form'     => true,
 					'multiple' => true,
 				],
-				'option'                                 => [
+				'option'               => [
 					'value'    => true,
 					'selected' => true,
 				],
-				'input'                                  => [
+				'input'                => [
 					'class'        => true,
 					'type'         => true,
 					'autocomplete' => true,
@@ -336,77 +340,12 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'checked'      => true,
 					'value'        => true,
 				],
-				'textarea'                               => [
+				'textarea'             => [
 					'id'          => true,
 					'class'       => true,
 					'placeholder' => true,
 					'name'        => true,
 					'rows'        => true,
-				],
-				'tcs-fancy-video'                        => [
-					'class' => true,
-					'url'   => true,
-				],
-				'tcs-hero'                               => [
-					'class'       => true,
-					'style'       => true,
-					'overlay'     => true,
-					'align-title' => true,
-					'image-size'  => true,
-				],
-				'tcs-navbar-grid'                        => [
-					'class' => true,
-				],
-				'tcs-map-carousel'                       => [
-					'class' => true,
-				],
-				'tcs-open-modal'                         => [
-					'class'    => true,
-					'modal-id' => true,
-				],
-				'tp-modal'                               => [
-					'class'               => true,
-					'overlay-click-close' => true,
-					'open'                => true,
-				],
-				'tp-accordion'                           => [
-					'class' => true,
-				],
-				'tp-accordion-item'                      => [
-					'class'           => true,
-					'open-by-default' => true,
-				],
-				'tp-accordion-handle'                    => [
-					'class' => true,
-				],
-				'tp-accordion-content'                   => [
-					'class' => true,
-				],
-				'tcs-tooltip'                            => [
-					'class'     => true,
-					'behaviour' => true,
-					'open'      => true,
-				],
-				'tcs-media-text-carousel'                => [
-					'class' => true,
-				],
-				'tcs-tabs'                               => [
-					'class' => true,
-				],
-				'tcs-tabs-carouse'                       => [
-					'class'         => true,
-					'current-slide' => true,
-				],
-				'tcs-header-nav-menu'                    => [
-					'class' => true,
-				],
-				'tcs-header-hamburger'                   => [
-					'class'  => true,
-					'active' => true,
-				],
-				'tcs-search-header'                      => [
-					'class'  => true,
-					'active' => true,
 				],
 			]
 		);
