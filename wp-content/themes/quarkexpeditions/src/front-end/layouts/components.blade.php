@@ -81,5 +81,35 @@
 		</x-section>
 	</x-component-demo>
 
+	<x-component-demo :keys="[ 'logo-grid' ]">
+		<x-section title="Logo Grid">
+			<div  style="display: flex; flex-direction: column; gap: 50px;">
+				<div>
+					<p><strong>Left alignment with 20px gap</strong></p>
+					<x-logo-grid gap="1">
+						@foreach ( [ 15, 15, 16, 16, 17] as $image_id )
+							<x-logo-grid.logo image_id="{{ $image_id }}" height="69"/>
+						@endforeach
+					</x-logo-grid>
+				</div>
+				<div>
+					<p><strong>Center alignment with 24px gap</strong></p>
+					<x-logo-grid gap="2" justify="center">
+						@foreach ( [ 15, 15, 16, 16, 17] as $image_id )
+							<x-logo-grid.logo image_id="{{ $image_id }}" height="69"/>
+						@endforeach
+					</x-logo-grid>
+				</div>
+				<div>
+					<p><strong>Right alignment with 32px gap</strong></p>
+					<x-logo-grid gap="3" justify="right">
+						@foreach ( [ 15, 15, 16, 16, 17] as $image_id )
+							<x-logo-grid.logo image_id="{{ $image_id }}" height="69"/>
+						@endforeach
+					</x-logo-grid>
+				</div>
+			</div>
+		</x-section>
+	</x-component-demo>
 </x-layout>
 
