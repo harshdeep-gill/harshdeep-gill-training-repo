@@ -100,7 +100,6 @@ p > iframe {
 	@extend %body-small;
 
 	&--bold {
-		font-size: 14px;
 		font-weight: var(--font-weight-bold);
 	}
 }
