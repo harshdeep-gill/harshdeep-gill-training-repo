@@ -5,27 +5,44 @@
 @import "../../../scss";
 
 .typography {
-	padding: 0;
-
-	&__fonts {
-		display: grid;
-		gap: 30px;
-		grid-template-columns: 1fr;
-	}
 
 	&__title {
-		border-top: 1px solid var(--color-gray-100);
+		border-top: 1px solid var(--color-gray-90);
 		padding-top: 20px;
 		margin: 0 20px;
 	}
 
-	&__row {
+	&__view {
+		flex: 0 0 100%;
+		min-width: 0;
+
+		@media screen and (min-width: grid-size(md)) {
+			flex: 1;
+		}
+	}
+
+	&__details {
 		display: grid;
-		gap: 10px;
-		margin-bottom: 50px;
-		padding-top: 20px;
-		border-top: 1px solid var(--color-gray-100);
-		grid-template-columns: 1fr;
+		grid-template-columns: repeat(2, 1fr);
+		grid-gap: 50px;
+		align-self: flex-start;
+		width: 35%;
+	}
+
+	&__row {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		padding-top: var(--typography-spacing);
+		border-top: 1px solid var(--color-gray-90);
+		align-items: center;
+		gap: 40px;
+	}
+
+	&__style-box {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+		gap: 60px;
 	}
 
 	&__style-type {
@@ -52,32 +69,9 @@
 			&:first-child {
 				padding-bottom: 5px;
 				margin-bottom: 10px;
-				border-bottom: 1px solid var(--color-gray-100);
+				font-weight: var(--font-weight-bold);
+				border-bottom: 1px solid var(--color-gray-90);
 			}
-		}
-	}
-
-	@media screen and (min-width: grid-size(lg)) {
-		padding: 0 40px;
-
-		&__fonts {
-			grid-template-columns: 1fr;
-		}
-
-		&__text,
-		&__headlines {
-			display: grid;
-			grid-template-columns: 1fr 1fr;
-			column-gap: var(--grid-col-gutter);
-			row-gap: var(--grid-row-gutter);
-			justify-content: space-between;
-
-		}
-
-		&__row {
-			grid-template-columns: 220px auto;
-			gap: 30px;
-			margin-bottom: 20px;
 		}
 	}
 }
