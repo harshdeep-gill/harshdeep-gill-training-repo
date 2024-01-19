@@ -101,13 +101,6 @@ p > iframe {
 
 }
 
-.body-small-bold {
-
-	@extend %body-small;
-
-	font-weight: var(--font-weight-bold);
-}
-
 .overline {
 
 	@extend %overline;

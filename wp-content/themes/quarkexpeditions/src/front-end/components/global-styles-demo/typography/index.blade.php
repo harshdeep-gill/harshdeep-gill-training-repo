@@ -179,16 +179,20 @@
 	<div class="typography__row typography-spacing">
 		<div class="typography__view">
 			<h6>Body Text Small Bold</h6>
-			<p class="body-small-bold">
-				Lorem ipsum dolor sit, consectetur adipiscing elit. Vestibulum sit amet massa eget orci iaculis
-				ultricies alas non ante. Vivamus tempor purus quam, ac iaculis diam. Sed congue justo ac nisl efficitur
-				ultricies. Sed at lobortis eros. Pellentesque metus arcu, sodales non ullamcorper sed, ullamcorper a
-				sapien tempor.
+			<p class="body-small">
+				<strong>
+					Lorem ipsum dolor sit, consectetur adipiscing elit. Vestibulum sit amet massa eget orci iaculis
+					ultricies alas non ante. Vivamus tempor purus quam, ac iaculis diam. Sed congue justo ac nisl efficitur
+					ultricies. Sed at lobortis eros. Pellentesque metus arcu, sodales non ullamcorper sed, ullamcorper a
+					sapien tempor.
+				</strong>
 			</p>
-			<p class="body-small-bold">
-				Donec malesuada semper est, id lobortis sapien lobortis ac. Nullam pretium cursus ornare. Proin
-				hendrerit ultricies placerat. Praesent eu neque convallis, bibendum purus eu, finibus dui. Nulla
-				facilisi.
+			<p class="body-small">
+				<strong>
+					Donec malesuada semper est, id lobortis sapien lobortis ac. Nullam pretium cursus ornare. Proin
+					hendrerit ultricies placerat. Praesent eu neque convallis, bibendum purus eu, finibus dui. Nulla
+					facilisi.
+				</strong>
 			</p>
 		</div>
 		<div class="typography__details">
