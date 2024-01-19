@@ -5,10 +5,17 @@
 
 .logo-grid {
 	display: flex;
-	flex-wrap: wrap;
 
 	figure {
 		margin: 0;
+	}
+
+	&--wrap {
+		flex-wrap: wrap;
+	}
+
+	&--no-wrap {
+		flex-wrap: nowrap;
 	}
 
 	&--gap-1 {
@@ -25,15 +32,12 @@
 
 	&--justify-center {
 
-		@media screen and (min-width: grid-size(md)) {
-			justify-content: center;
-		}
+		justify-content: center;
 	}
 
 	&--justify-right {
 
-		@media screen and (min-width: grid-size(md)) {
-			justify-content: flex-end;
-		}
+		justify-content: flex-end;
 	}
+
 }

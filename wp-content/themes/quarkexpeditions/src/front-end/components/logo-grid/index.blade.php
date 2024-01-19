@@ -1,6 +1,7 @@
 @props( [
 	'justify'  => '',
-	'gap'    => '1'
+	'gap'      => '1',
+	'wrap'     => true
 ] )
 
 @php
@@ -24,6 +25,12 @@
 
 	if( ! empty( $gap ) && in_array( $gap, [ '1' , '2', '3' ], true ) ) {
 		$classes[] = 'logo-grid--gap-' . $gap;
+	}
+
+	if( empty( $wrap ) ) {
+		$classes[] = 'logo-grid--no-wrap';
+	} else {
+		$classes[] = 'logo-grid--wrap';
 	}
 
 @endphp
