@@ -30,6 +30,7 @@
 			</ol>
 		</x-section>
 	</x-component-demo>
+
 	<x-component-demo :keys="[ 'buttons' ]">
 		<x-section title="Buttons & Links" heading_level="2">
 			<h3>Links</h3>
@@ -63,8 +64,7 @@
 						<x-button size="big" color="black" appearance="outline">Solid button</x-button>
 					</div>
 				</div>
-				<div style="width: 50%; padding: 24px; background-color: var(--color-black);"
-					 class="color-context--dark">
+				<div style="width: 50%; padding: 24px; background-color: var(--color-black);" class="color-context--dark">
 					<div class="typography-spacing" style="display: flex; gap: 16px; flex-flow: row wrap;">
 						<x-button>Solid button</x-button>
 						<x-button color="black" appearance="outline">Solid button</x-button>
