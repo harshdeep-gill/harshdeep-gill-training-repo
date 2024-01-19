@@ -4,7 +4,7 @@
 	'class'      => '',
 	'style'      => '',
 	'method'     => 'post',
-	'action'     => quark_get_template_data( 'action', '' ),
+	'action'     => '',
 	'page_title' => '',
 	'permalink'  => '',
 ] )

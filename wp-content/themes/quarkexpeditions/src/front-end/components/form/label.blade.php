@@ -1,7 +1,7 @@
 @aware( [
-	'id'    => '',
-	'name'  => '',
-	'class' => '',
+	'id'         => '',
+	'name'       => '',
+	'validation' => [],
 ] )
 
 @php
@@ -19,7 +19,9 @@
 	@if ( ! empty( $for ) )
 		for="{{ $for }}"
 	@endif
-	@class( [ 'label', $class ] )
 >
-	<x-content :content="$slot"/>
+	{!! $slot !!}
+	@if ( in_array( 'required', $validation, true ) )
+		<span class="form__required-indicator">*</span>
+	@endif
 </label>
