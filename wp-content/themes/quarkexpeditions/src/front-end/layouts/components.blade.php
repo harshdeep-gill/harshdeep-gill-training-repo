@@ -81,48 +81,6 @@
 		</x-section>
 	</x-component-demo>
 
-	{{-- <x-component-demo :keys="[ 'reviews-carousel' ]">
-		<x-reviews-carousel title="What Guests are Saying">
-			<x-reviews-carousel.carousel>
-				<x-reviews-carousel.slide
-					image_id="18"
-					author="John Roth"
-					rating="5"
-				>
-					<p>This was a trip around the world with multiple iconic sites such as Machu Picchu, Easter Island, and the Taj Mahal etc. The company saw to every detail and made travel as easy as possible while providing marvelous activities and hotels. When a problem occurred that was out of their control, they made immediate arrangements to mitigate the situation.</p>
-				</x-reviews-carousel.slide>
-				<x-reviews-carousel.slide
-					image_id="18"
-					author="Kristi Lind"
-					rating="4"
-				>
-					<p>There are rare times in life when you set out on a trip and it becomes a transformative journey of discovery of a culture rich in history, with a people who are unfailingly gracious and kind. That was our experience in India thanks to Enchanting Travels.</p>
-				</x-reviews-carousel.slide>
-				<x-reviews-carousel.slide
-					image_id="18"
-					author="The Johnsons"
-					rating="3"
-				>
-					<p>There are rare times in life when you set out on a trip and it becomes a transformative journey of discovery of a culture rich in history, with a people who are unfailingly gracious and kind. That was our experience in India thanks to Enchanting Travels.</p>
-				</x-reviews-carousel.slide>
-				<x-reviews-carousel.slide
-					image_id="18"
-					author="Ethan and Yara"
-					rating="2"
-				>
-					<p>Through my conversations with Swati and some changes that evolved the trip was perfectly planned and brilliantly executed. Her interest into my goals on this trip, produced an incredible experience.</p>
-				</x-reviews-carousel.slide>
-				<x-reviews-carousel.slide
-					image_id="18"
-					author="Ethan and Yara"
-					rating="2"
-				>
-					<p>Through my conversations with Swati and some changes that evolved the trip was perfectly planned and brilliantly executed. Her interest into my goals on this trip, produced an incredible experience.</p>
-				</x-reviews-carousel.slide>
-			</x-reviews-carousel.carousel>
-		</x-reviews-carousel>
-	</x-component-demo> --}}
-
 	<x-component-demo :keys="[ 'reviews-carousel', 'two-columns' ]">
 		<x-two-columns :border="true">
 			<x-two-columns.column>
@@ -138,6 +96,16 @@
 				<x-reviews-carousel title="What Our Guests Have To Say" heading_level="3">
 					<x-reviews-carousel.carousel>
 						<x-reviews-carousel.slide
+							review_title="9 Day Spitsbergen Polar Bear Safari"
+							author="Carolyn T"
+							rating="4"
+						>
+							<p>Most exciting and wonderful, and educational experience of my life, thank
+								you to all the experts for sharing so much information on the animals and
+								arctic region, cruise staff and fellow passengers for making this trip one I
+								will remember forever.</p>
+						</x-reviews-carousel.slide>
+						<x-reviews-carousel.slide
 							review_title="An incredible trip to Antarctica"
 							author="Martine S."
 							rating="5"
@@ -145,30 +113,19 @@
 							<p>The whole experience was great. The World Explorer is a beautiful and very comfortable ship, the food was amazing. And of course the landings and cruising the area was a once in a lifetime experience.</p>
 						</x-reviews-carousel.slide>
 						<x-reviews-carousel.slide
-							review_title="An incredible trip to Antarctica"
-							author="Kristi Lind"
+							review_title="9 Day Spitsbergen Polar Bear Safari"
+							author="Carolyn T"
 							rating="4"
 						>
-							<p>The whole experience was great. The World Explorer is a beautiful and very comfortable ship, the food was amazing. And of course the landings and cruising the area was a once in a lifetime experience.</p>
+							<p>Most exciting and wonderful, and educational experience of my life, thank
+								you to all the experts for sharing so much information on the animals and
+								arctic region, cruise staff and fellow passengers for making this trip one I
+								will remember forever.</p>
 						</x-reviews-carousel.slide>
 						<x-reviews-carousel.slide
 							review_title="An incredible trip to Antarctica"
-							author="The Johnsons"
-							rating="3"
-						>
-							<p>The whole experience was great. The World Explorer is a beautiful and very comfortable ship, the food was amazing. And of course the landings and cruising the area was a once in a lifetime experience.</p>
-						</x-reviews-carousel.slide>
-						<x-reviews-carousel.slide
-							review_title="An incredible trip to Antarctica"
-							author="Ethan and Yara"
-							rating="2"
-						>
-							<p>The whole experience was great. The World Explorer is a beautiful and very comfortable ship, the food was amazing. And of course the landings and cruising the area was a once in a lifetime experience.</p>
-						</x-reviews-carousel.slide>
-						<x-reviews-carousel.slide
-							review_title="An incredible trip to Antarctica"
-							author="Ethan and Yara"
-							rating="2"
+							author="Martine S."
+							rating="3.5"
 						>
 							<p>The whole experience was great. The World Explorer is a beautiful and very comfortable ship, the food was amazing. And of course the landings and cruising the area was a once in a lifetime experience.</p>
 						</x-reviews-carousel.slide>

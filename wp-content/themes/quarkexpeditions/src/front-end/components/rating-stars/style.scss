@@ -2,27 +2,27 @@
  * Rating stars.
  */
 
- @import "../../scss";
+@import "../../scss";
 
- .rating-stars {
-	 --clip-spacing: calc(var(--rating) / 5 * 100%);
-	 --reduce-spacing: 2%; // reduce letter spacing
+.rating-stars {
+	--clip-spacing: calc(var(--rating) / 5 * 100%);
+	--reduce-spacing: 2%; // reduce letter spacing
 
-	 --percent: calc(var(--clip-spacing) - var(--reduce-spacing));
+	--percent: calc(var(--clip-spacing) - var(--reduce-spacing));
 
-	 display: inline-block;
-	 font-size: 20px;
-	 font-style: normal;
-	 letter-spacing: 2px;
-	 line-height: 1;
-	 vertical-align: middle;
+	display: inline-block;
+	font-size: 20px;
+	font-style: normal;
+	letter-spacing: 2px;
+	line-height: 1;
+	vertical-align: middle;
 
-	 &::before {
-		 content: "\2605\2605\2605\2605\2605";
-		 display: inline-block;
-		 background: linear-gradient(90deg, var(--color-yellow) var(--percent), var(--color-gray-50) var(--percent));
-		 background-clip: text;
-		 -webkit-background-clip: text;
-		 -webkit-text-fill-color: transparent;
-	 }
- }
+	&::before {
+		content: "\2605\2605\2605\2605\2605";
+		display: inline-block;
+		background: linear-gradient(90deg, var(--color-yellow) var(--percent), var(--color-gray-50) var(--percent));
+		background-clip: text;
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+	}
+}

@@ -33,7 +33,7 @@
 		grid-gap: var(--spacing-3);
 	}
 
-	&__author {
+	&__author-rating {
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
@@ -42,23 +42,6 @@
 
 	&__rating {
 		display: flex;
-		flex-direction: column;
-		align-items: flex-end;
-		justify-content: center;
-		grid-column: auto/span 4;
-		text-align: center;
-	}
-
-	&__rating-count {
-		display: block;
-		margin-top: 6px;
-		text-transform: capitalize;
-		font-weight: var(--font-weight-default);
-		font-size: 14px;
-	}
-
-	&__rating-number {
-		font-weight: var(--font-weight-default);
 	}
 
 	&__name {

@@ -15,19 +15,15 @@
 			</div>
 		@endif
 
-		<div class="reviews-carousel__author">
+		<div class="reviews-carousel__author-rating">
 			@if ( ! empty( $author ) )
 				<div class="reviews-carousel__name">
-					@if ( ! empty( $author ) )
-						<strong class="reviews-carousel__name"><x-escape :content="$author" /></strong>
-					@endif
+					<strong class="reviews-carousel__name"><x-escape :content="$author" /></strong>
 				</div>
 			@endif
 			@if( ! empty( $rating ) )
 				<div class="reviews-carousel__rating">
-					<div class="reviews-carousel__rating-inner">
-						<x-rating-stars rating="{{ $rating }}" />
-					</div>
+					<x-rating-stars rating="{{ $rating }}" />
 				</div>
 			@endif
 		</div>

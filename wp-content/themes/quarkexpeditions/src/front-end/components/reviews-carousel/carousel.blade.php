@@ -7,7 +7,7 @@
 	$slide_count = quark_get_slot_child_count( $slot );
 @endphp
 
-<tp-slider class="reviews-carousel__slider" flexible-height="no" swipe="yes" infinite="yes">
+<tp-slider class="reviews-carousel__slider" swipe="yes" infinite="yes">
 	<tp-slider-track class="reviews-carousel__track">
 		<tp-slider-slides>
 			{!! $slot !!}
