@@ -93,7 +93,7 @@
 				</ul>
 			</x-two-columns.column>
 			<x-two-columns.column>
-				<x-reviews-carousel title="What Our Guests Have To Say" heading_level="3">
+				<x-reviews-carousel title="What Our Guests Have To Say" heading_level="3" title_align="left">
 					<x-reviews-carousel.carousel>
 						<x-reviews-carousel.slide
 							review_title="9 Day Spitsbergen Polar Bear Safari"

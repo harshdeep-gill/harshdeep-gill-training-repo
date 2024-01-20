@@ -1,6 +1,7 @@
 @props( [
 	'title'         => '',
 	'heading_level' => '3',
+	'title_align'   => '',
 	'class'         => '',
 	'id'            => '',
 	'seamless'      => false,
@@ -54,6 +55,10 @@
 
 	if ( ! empty( $heading_level ) ) {
 		$section_title_classes[] = sprintf( 'h%s', $heading_level );
+	}
+
+	if ( ! empty( $title_align) && 'left' === $title_align ) {
+		$section_title_classes[] = 'section__title--left';
 	}
 @endphp
 
