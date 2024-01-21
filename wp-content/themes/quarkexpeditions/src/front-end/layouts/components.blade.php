@@ -1,8 +1,4 @@
 <x-layout>
-	<x-component-demo :keys="[ 'header' ]">
-		<x-lp-header />
-	</x-component-demo>
-
 	<x-component-demo :keys="[ 'global', 'color-palette' ]">
 		<x-section title="Color Palette" heading_level="2">
 			<x-global-styles-demo.color-palette />
@@ -62,31 +58,6 @@
 		</x-section>
 	</x-component-demo>
 
-	<x-component-demo :keys="[ 'two-columns' ]">
-		<x-two-columns :border="true">
-			<x-two-columns.column>
-				<h3>About Quark Expeditions</h3>
-				<p>When you venture into the untouched wilds of the Arctic and Antarctic, you need a great team around you. And we have the greatest. You’ll join elite guides trained at Quark Academy — which surpasses every standard imaginable for safety and preparedness in the Polar Regions—and interact directly with world-class polar experts. Our philosophy? The team that explores together, discovers more together.</p>
-				<ul>
-					<li>In nec mi vitae quam posuere aliquet eget sed leo.</li>
-					<li>Sed vel nisi ultricies, sodales risus non, ornare augue.</li>
-					<li>Nulla facilisi. Maecenas sit amet porta nulla commodo.</li>
-					<li>Rhoncus purus duis in urna ac lorem sagittis porta.</li>
-				</ul>
-			</x-two-columns.column>
-			<x-two-columns.column>
-				<h3>What Our Guests Have To Say</h3>
-				<p>When you venture into the untouched wilds of the Arctic and Antarctic, you need a great team around you. And we have the greatest. You’ll join elite guides trained at Quark Academy — which surpasses every standard imaginable for safety and preparedness in the Polar Regions—and interact directly with world-class polar experts. Our philosophy? The team that explores together, discovers more together.</p>
-				<ul>
-					<li>In nec mi vitae quam posuere aliquet eget sed leo.</li>
-					<li>Sed vel nisi ultricies, sodales risus non, ornare augue.</li>
-					<li>Nulla facilisi. Maecenas sit amet porta nulla commodo.</li>
-					<li>Rhoncus purus duis in urna ac lorem sagittis porta.</li>
-				</ul>
-			</x-two-columns.column>
-		</x-two-columns>
-	</x-component-demo>
-
 	<x-component-demo :keys="[ 'form' ]">
 		<x-section title="Form UI Elements" heading_level="2" style="display: flex; flex-wrap: wrap; width: 100%;" class="typography-spacing">
 			<div style="display: flex; flex-wrap: wrap; width: 100%; gap: 20px; justify-content: space-between;">
@@ -133,6 +104,35 @@
 				</x-form>
 			</div>
 		</x-section>
+	</x-component-demo>
+
+	<x-component-demo :keys="[ 'header' ]">
+		<x-lp-header />
+	</x-component-demo>
+
+	<x-component-demo :keys="[ 'two-columns' ]">
+		<x-two-columns :border="true">
+			<x-two-columns.column>
+				<h3>About Quark Expeditions</h3>
+				<p>When you venture into the untouched wilds of the Arctic and Antarctic, you need a great team around you. And we have the greatest. You’ll join elite guides trained at Quark Academy — which surpasses every standard imaginable for safety and preparedness in the Polar Regions—and interact directly with world-class polar experts. Our philosophy? The team that explores together, discovers more together.</p>
+				<ul>
+					<li>In nec mi vitae quam posuere aliquet eget sed leo.</li>
+					<li>Sed vel nisi ultricies, sodales risus non, ornare augue.</li>
+					<li>Nulla facilisi. Maecenas sit amet porta nulla commodo.</li>
+					<li>Rhoncus purus duis in urna ac lorem sagittis porta.</li>
+				</ul>
+			</x-two-columns.column>
+			<x-two-columns.column>
+				<h3>What Our Guests Have To Say</h3>
+				<p>When you venture into the untouched wilds of the Arctic and Antarctic, you need a great team around you. And we have the greatest. You’ll join elite guides trained at Quark Academy — which surpasses every standard imaginable for safety and preparedness in the Polar Regions—and interact directly with world-class polar experts. Our philosophy? The team that explores together, discovers more together.</p>
+				<ul>
+					<li>In nec mi vitae quam posuere aliquet eget sed leo.</li>
+					<li>Sed vel nisi ultricies, sodales risus non, ornare augue.</li>
+					<li>Nulla facilisi. Maecenas sit amet porta nulla commodo.</li>
+					<li>Rhoncus purus duis in urna ac lorem sagittis porta.</li>
+				</ul>
+			</x-two-columns.column>
+		</x-two-columns>
 	</x-component-demo>
 </x-layout>
 
