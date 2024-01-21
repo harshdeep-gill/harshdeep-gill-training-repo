@@ -1,40 +1,17 @@
 <x-layout>
-	<x-component-demo :keys="[ 'header' ]">
-		<x-lp-header />
-	</x-component-demo>
-
-	<x-component-demo :keys="[ 'typography' ]">
-		<x-section title="Typography" heading_level="2">
-			<h1>Heading 1</h1>
-			<h2>Heading 2</h2>
-			<h3>Heading 3</h3>
-			<h4>Heading 4</h4>
-			<h5>Heading 5</h5>
-			<h1>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</h1>
-			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-			<h2>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</h2>
-			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-			<h3>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</h3>
-			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-			<h4>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</h4>
-			<ul>
-				<li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</li>
-				<li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</li>
-				<li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</li>
-				<li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</li>
-				<li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</li>
-			</ul>
-			<ol>
-				<li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</li>
-				<li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</li>
-				<li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</li>
-				<li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</li>
-				<li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</li>
-			</ol>
+	<x-component-demo :keys="[ 'global', 'color-palette' ]">
+		<x-section title="Color Palette" heading_level="2">
+			<x-global-styles-demo.color-palette />
 		</x-section>
 	</x-component-demo>
 
-	<x-component-demo :keys="[ 'buttons' ]">
+	<x-component-demo :keys="[ 'global', 'typography' ]">
+		<x-section title="Typography" heading_level="2">
+			<x-global-styles-demo.typography />
+		</x-section>
+	</x-component-demo>
+
+	<x-component-demo :keys="[ 'global', 'buttons' ]">
 		<x-section title="Buttons & Links" heading_level="2">
 			<h3>Links</h3>
 
@@ -79,31 +56,6 @@
 				</div>
 			</div>
 		</x-section>
-	</x-component-demo>
-
-	<x-component-demo :keys="[ 'two-columns' ]">
-		<x-two-columns :border="true">
-			<x-two-columns.column>
-				<h3>About Quark Expeditions</h3>
-				<p>When you venture into the untouched wilds of the Arctic and Antarctic, you need a great team around you. And we have the greatest. You’ll join elite guides trained at Quark Academy — which surpasses every standard imaginable for safety and preparedness in the Polar Regions—and interact directly with world-class polar experts. Our philosophy? The team that explores together, discovers more together.</p>
-				<ul>
-					<li>In nec mi vitae quam posuere aliquet eget sed leo.</li>
-					<li>Sed vel nisi ultricies, sodales risus non, ornare augue.</li>
-					<li>Nulla facilisi. Maecenas sit amet porta nulla commodo.</li>
-					<li>Rhoncus purus duis in urna ac lorem sagittis porta.</li>
-				</ul>
-			</x-two-columns.column>
-			<x-two-columns.column>
-				<h3>What Our Guests Have To Say</h3>
-				<p>When you venture into the untouched wilds of the Arctic and Antarctic, you need a great team around you. And we have the greatest. You’ll join elite guides trained at Quark Academy — which surpasses every standard imaginable for safety and preparedness in the Polar Regions—and interact directly with world-class polar experts. Our philosophy? The team that explores together, discovers more together.</p>
-				<ul>
-					<li>In nec mi vitae quam posuere aliquet eget sed leo.</li>
-					<li>Sed vel nisi ultricies, sodales risus non, ornare augue.</li>
-					<li>Nulla facilisi. Maecenas sit amet porta nulla commodo.</li>
-					<li>Rhoncus purus duis in urna ac lorem sagittis porta.</li>
-				</ul>
-			</x-two-columns.column>
-		</x-two-columns>
 	</x-component-demo>
 
 	<x-component-demo :keys="[ 'form' ]">
@@ -153,6 +105,34 @@
 			</div>
 		</x-section>
 	</x-component-demo>
-	<x-section></x-section>
+
+	<x-component-demo :keys="[ 'header' ]">
+		<x-lp-header />
+	</x-component-demo>
+
+	<x-component-demo :keys="[ 'two-columns' ]">
+		<x-two-columns :border="true">
+			<x-two-columns.column>
+				<h3>About Quark Expeditions</h3>
+				<p>When you venture into the untouched wilds of the Arctic and Antarctic, you need a great team around you. And we have the greatest. You’ll join elite guides trained at Quark Academy — which surpasses every standard imaginable for safety and preparedness in the Polar Regions—and interact directly with world-class polar experts. Our philosophy? The team that explores together, discovers more together.</p>
+				<ul>
+					<li>In nec mi vitae quam posuere aliquet eget sed leo.</li>
+					<li>Sed vel nisi ultricies, sodales risus non, ornare augue.</li>
+					<li>Nulla facilisi. Maecenas sit amet porta nulla commodo.</li>
+					<li>Rhoncus purus duis in urna ac lorem sagittis porta.</li>
+				</ul>
+			</x-two-columns.column>
+			<x-two-columns.column>
+				<h3>What Our Guests Have To Say</h3>
+				<p>When you venture into the untouched wilds of the Arctic and Antarctic, you need a great team around you. And we have the greatest. You’ll join elite guides trained at Quark Academy — which surpasses every standard imaginable for safety and preparedness in the Polar Regions—and interact directly with world-class polar experts. Our philosophy? The team that explores together, discovers more together.</p>
+				<ul>
+					<li>In nec mi vitae quam posuere aliquet eget sed leo.</li>
+					<li>Sed vel nisi ultricies, sodales risus non, ornare augue.</li>
+					<li>Nulla facilisi. Maecenas sit amet porta nulla commodo.</li>
+					<li>Rhoncus purus duis in urna ac lorem sagittis porta.</li>
+				</ul>
+			</x-two-columns.column>
+		</x-two-columns>
+	</x-component-demo>
 </x-layout>
 
