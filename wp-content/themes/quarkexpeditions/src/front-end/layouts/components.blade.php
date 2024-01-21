@@ -63,10 +63,10 @@
 			<div style="display: flex; flex-wrap: wrap; width: 100%; gap: 20px; justify-content: space-between;">
 				<x-form style="min-width: 300px; padding: 24px; border: 1px solid var(--color-black); display:flex; flex-wrap: wrap; flex-direction: column; flex-grow: 1;">
 					<x-form.field :validation="[ 'required' ]">
-						<x-form.input type="text" label="First Name" placeholder="Enter First Name" />
+						<x-form.input type="text" label="First Name" placeholder="Enter First Name" name="fields[first_name]" />
 					</x-form.field>
 					<x-form.field :validation="[ 'required' ]">
-						<x-form.select label="Country">
+						<x-form.select label="Country" name="fields[country]">
 							<option value="">Select...</option>
 							<option value="1">Option 1</option>
 							<option value="2">Option 2</option>
@@ -74,10 +74,10 @@
 						</x-form.select>
 					</x-form.field>
 					<x-form.field>
-						<x-form.textarea label="What else would you like us to know?" placeholder="eg Lorem ipsum"></x-form.textarea>
+						<x-form.textarea label="What else would you like us to know?" placeholder="eg Lorem ipsum" name="fields[comments]"></x-form.textarea>
 					</x-form.field>
 					<x-form.buttons>
-						<x-button type="submit">Request a Quote</x-button>
+						<x-form.submit>Request a Quote</x-form.submit>
 					</x-form.buttons>
 				</x-form>
 
@@ -85,10 +85,10 @@
 					style="background-color: var(--color-black); min-width: 300px; padding: 24px; border: 1px solid var(--color-black); display:flex; flex-wrap: wrap; flex-direction: column; flex-grow: 1;"
 					class="color-context--dark">
 					<x-form.field :validation="[ 'required' ]">
-						<x-form.input type="text" label="First Name" placeholder="Enter First Name" />
+						<x-form.input type="text" label="First Name" placeholder="Enter First Name" name="fields[first_name]" />
 					</x-form.field>
 					<x-form.field :validation="[ 'required' ]">
-						<x-form.select label="Country">
+						<x-form.select label="Country" name="fields[country]">
 							<option value="">Select...</option>
 							<option value="1">Option 1</option>
 							<option value="2">Option 2</option>
@@ -96,10 +96,10 @@
 						</x-form.select>
 					</x-form.field>
 					<x-form.field>
-						<x-form.textarea label="What else would you like us to know?" placeholder="eg Lorem ipsum"></x-form.textarea>
+						<x-form.textarea label="What else would you like us to know?" placeholder="eg Lorem ipsum" name="fields[comments]"></x-form.textarea>
 					</x-form.field>
 					<x-form.buttons>
-						<x-button type="submit">Request a Quote</x-button>
+						<x-form.submit>Request a Quote</x-form.submit>
 					</x-form.buttons>
 				</x-form>
 			</div>

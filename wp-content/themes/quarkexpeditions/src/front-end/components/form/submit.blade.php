@@ -5,5 +5,7 @@
 @endphp
 
 <tp-form-submit class="form-submit" submitting-text="{{ __( 'Submitting...', 'qrk' ) }}">
-	{!! $slot !!}
+	<x-button type="submit">
+		{!! $slot !!}
+	</x-button>
 </tp-form-submit>
