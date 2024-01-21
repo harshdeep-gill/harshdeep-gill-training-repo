@@ -1,3 +1,30 @@
+<h1>Heading 1</h1>
+<h2>Heading 2</h2>
+<h3>Heading 3</h3>
+<h4>Heading 4</h4>
+<h5>Heading 5</h5>
+<h1>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</h1>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+<h2>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</h2>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+<h3>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</h3>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+<h4>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</h4>
+<ul>
+	<li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</li>
+	<li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</li>
+	<li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</li>
+	<li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</li>
+	<li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</li>
+</ul>
+<ol>
+	<li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</li>
+	<li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</li>
+	<li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</li>
+	<li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</li>
+	<li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</li>
+</ol>
+
 <div class="typography">
 	<div class="typography__row typography-spacing">
 		<div class="typography__view">
@@ -115,7 +142,7 @@
 	</div>
 	<div class="typography__row typography-spacing">
 		<div class="typography__view">
-			<h6>Body Text Standard</h6>
+			<h3>Body Text Standard</h3>
 			<p>Lorem ipsum dolor sit, consectetur adipiscing elit. Vestibulum sit amet massa eget orciiaculis
 				ultricies alas non ante. Vivamus tempor purus quam, ac iaculis diam. Sed congue justo ac nisl
 				efficitur ultricies. Sed at lobortis eros. Pellentesque metus arcu, sodales non ullamcorper sed,
@@ -144,7 +171,7 @@
 	</div>
 	<div class="typography__row typography-spacing">
 		<div class="typography__view">
-			<h6>Body Text Small</h6>
+			<h3>Body Text Small</h3>
 			<p class="body-small">
 				Lorem ipsum dolor sit, consectetur adipiscing elit. Vestibulum sit amet massa eget orci iaculis
 				ultricies alas non ante. Vivamus tempor purus quam, ac iaculis diam. Sed congue justo ac nisl efficitur
@@ -178,7 +205,7 @@
 
 	<div class="typography__row typography-spacing">
 		<div class="typography__view">
-			<h6>Body Text Small Bold</h6>
+			<h3>Body Text Small Bold</h3>
 			<p class="body-small">
 				<strong>
 					Lorem ipsum dolor sit, consectetur adipiscing elit. Vestibulum sit amet massa eget orci iaculis
@@ -216,7 +243,7 @@
 
 	<div class="typography__row typography-spacing">
 		<div class="typography__view">
-			<h6>Caption</h6>
+			<h3>Caption</h3>
 			<p class="caption">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
 		</div>
 		<div class="typography__details">
@@ -245,7 +272,7 @@
 
 	<div class="typography__row typography-spacing">
 		<div class="typography__view">
-			<h6>Overline</h6>
+			<h3>Overline</h3>
 			<p class="overline">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
 		</div>
 		<div class="typography__details">
