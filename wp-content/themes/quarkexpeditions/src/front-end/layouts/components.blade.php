@@ -81,49 +81,6 @@
 		</x-section>
 	</x-component-demo>
 
-	<x-component-demo :keys="[ 'reviews-carousel' ]">
-		<x-section title="Reviews Carousel" heading_level="2">
-			<x-reviews-carousel title="What Our Guests Have To Say" heading_level="3" title_align="left">
-				<x-reviews-carousel.carousel>
-					<x-reviews-carousel.slide
-						review_title="9 Day Spitsbergen Polar Bear Safari"
-						author="Carolyn T"
-						rating="4"
-					>
-						<p>Most exciting and wonderful, and educational experience of my life, thank
-							you to all the experts for sharing so much information on the animals and
-							arctic region, cruise staff and fellow passengers for making this trip one I
-							will remember forever.</p>
-					</x-reviews-carousel.slide>
-					<x-reviews-carousel.slide
-						review_title="An incredible trip to Antarctica"
-						author="Martine S."
-						rating="5"
-					>
-						<p>The whole experience was great. The World Explorer is a beautiful and very comfortable ship, the food was amazing. And of course the landings and cruising the area was a once in a lifetime experience.</p>
-					</x-reviews-carousel.slide>
-					<x-reviews-carousel.slide
-						review_title="9 Day Spitsbergen Polar Bear Safari"
-						author="Carolyn T"
-						rating="4"
-					>
-						<p>Most exciting and wonderful, and educational experience of my life, thank
-							you to all the experts for sharing so much information on the animals and
-							arctic region, cruise staff and fellow passengers for making this trip one I
-							will remember forever.</p>
-					</x-reviews-carousel.slide>
-					<x-reviews-carousel.slide
-						review_title="An incredible trip to Antarctica"
-						author="Martine S."
-						rating="3.5"
-					>
-						<p>The whole experience was great. The World Explorer is a beautiful and very comfortable ship, the food was amazing. And of course the landings and cruising the area was a once in a lifetime experience.</p>
-					</x-reviews-carousel.slide>
-				</x-reviews-carousel.carousel>
-			</x-reviews-carousel>
-		</x-section>
-	</x-component-demo>
-
 	<x-component-demo :keys="[ 'reviews-carousel', 'two-columns' ]">
 		<x-section title="Two Columns" heading_level="2">
 			<x-two-columns :border="true">
@@ -147,14 +104,14 @@
 								<p>Most exciting and wonderful, and educational experience of my life, thank
 									you to all the experts for sharing so much information on the animals and
 									arctic region, cruise staff and fellow passengers for making this trip one I
-									will remember forever.</p>
+									will remember forever. Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever.</p>
 							</x-reviews-carousel.slide>
 							<x-reviews-carousel.slide
 								review_title="An incredible trip to Antarctica"
 								author="Martine S."
 								rating="5"
 							>
-								<p>The whole experience was great. The World Explorer is a beautiful and very comfortable ship, the food was amazing. And of course the landings and cruising the area was a once in a lifetime experience.</p>
+								<p>The whole experience was great. The World Explorer is a beautiful and very comfortable ship, the food was amazing. And of course the landings and cruising the area was a once in a lifetime experience. Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever.</p>
 							</x-reviews-carousel.slide>
 							<x-reviews-carousel.slide
 								review_title="9 Day Spitsbergen Polar Bear Safari"
@@ -164,7 +121,7 @@
 								<p>Most exciting and wonderful, and educational experience of my life, thank
 									you to all the experts for sharing so much information on the animals and
 									arctic region, cruise staff and fellow passengers for making this trip one I
-									will remember forever.</p>
+									will remember forever. Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever.</p>
 							</x-reviews-carousel.slide>
 							<x-reviews-carousel.slide
 								review_title="An incredible trip to Antarctica"

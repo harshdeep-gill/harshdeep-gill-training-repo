@@ -33,6 +33,14 @@
 		grid-gap: var(--spacing-3);
 	}
 
+	&__content {
+		display: -webkit-box;
+		-webkit-line-clamp: 4;
+		-webkit-box-orient: vertical;
+		text-overflow: ellipsis;
+		overflow: hidden;
+	}
+
 	&__author-rating {
 		display: flex;
 		flex-direction: column;

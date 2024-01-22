@@ -18,7 +18,7 @@
 		<div class="reviews-carousel__author-rating">
 			@if ( ! empty( $author ) )
 				<div class="reviews-carousel__name">
-					<strong class="reviews-carousel__name"><x-escape :content="$author" /></strong>
+					<strong><x-escape :content="$author" /></strong>
 				</div>
 			@endif
 			@if( ! empty( $rating ) )
