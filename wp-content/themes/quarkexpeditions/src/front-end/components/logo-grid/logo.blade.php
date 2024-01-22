@@ -1,7 +1,5 @@
 @props( [
 	'image_id' => 0,
-	'width'  => 'auto',
-	'height' => 'auto'
 ] )
 
 @php
@@ -11,8 +9,8 @@
 
 	$image_args = [
 		'size' => [
-			'width'   => $width,
-			'height'  => $height,
+			'width'   => 400,
+			'height'  => 400,
 		],
 		'transform' => [
 			'crop' => 'fit',

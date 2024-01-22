@@ -5,29 +5,29 @@
 
 .logo-grid {
 	display: flex;
+	flex-wrap: wrap;
+	gap: 16px;
 
-	figure {
-		margin: 0;
+	img {
+		display: block;
+		height: 32px;
+		width: auto;
 	}
 
-	&--wrap {
-		flex-wrap: wrap;
-	}
-
-	&--no-wrap {
-		flex-wrap: nowrap;
-	}
-
-	&--gap-1 {
+	&--md {
 		gap: 20px;
+
+		img {
+			height: 40px;
+		}
 	}
 
-	&--gap-2 {
-		gap: var(--spacing-4);
-	}
+	&--lg {
+		gap: 24px;
 
-	&--gap-3 {
-		gap: var(--spacing-5);
+		img {
+			height: 64px;
+		}
 	}
 
 	&--justify-center {
@@ -40,4 +40,7 @@
 		justify-content: flex-end;
 	}
 
+	figure {
+		margin: 0;
+	}
 }
