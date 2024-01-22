@@ -95,9 +95,9 @@
 
 				<div
 					style="background-color: var(--color-gray-90); padding-block:20px; padding-inline:10px"
-					class="color-context--dark" siz="lg"
+					class="color-context--dark"
 				>
-					<x-logo-grid justify="center">
+					<x-logo-grid justify="center" size="lg">
 						<x-logo-grid.logo image_id="11"/>
 						<x-logo-grid.logo image_id="12"/>
 						<x-logo-grid.logo image_id="10"/>
