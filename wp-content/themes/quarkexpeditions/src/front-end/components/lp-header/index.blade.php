@@ -2,9 +2,9 @@
 	'logo_url' => '',
 ] )
 
-<x-section seamless="true">
-	<header class="lp-header">
+<header class="lp-header full-width">
+	<div class="lp-header__wrap">
 		<x-lp-header.logo :url="$logo_url" />
 		<x-lp-header.cta />
-	</header>
-</x-section>
+	</div>
+</header>
