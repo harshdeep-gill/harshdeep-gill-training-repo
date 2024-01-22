@@ -46,6 +46,7 @@
 		--h3-line-height: 36px;
 		--h4-font-size: 22px;
 		--h4-line-height: 30px;
+		--h5-line-height: 26px;
 	}
 
 	@media screen and (min-width: grid-size(lg)) {
@@ -117,4 +118,5 @@
 	 * Misc.
 	 */
 	--wp-admin-bar-height: 0px; // stylelint-disable-line
+	--lp-header-z-index: 10;
 }

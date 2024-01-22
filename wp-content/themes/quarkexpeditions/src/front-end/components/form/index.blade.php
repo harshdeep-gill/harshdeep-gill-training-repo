@@ -4,14 +4,14 @@
 	'class'      => '',
 	'style'      => '',
 	'method'     => 'post',
-	'action'     => '',
+	'action'     => quark_get_template_data( 'leads_api_endpoint', '#' ),
 	'page_title' => '',
 	'permalink'  => '',
+	'recaptcha'  => true,
 ] )
 
 <quark-form
 	class="form {{ $class }}"
-	data-action="{{ $action }}"
 	@if( ! empty( $style ) )
 		style="{{ $style }}"
 	@endif
@@ -24,6 +24,10 @@
 			method="{{ $method }}"
 			novalidate
 		>
+			@if ( true === $recaptcha )
+				<input type="hidden" name="recaptcha_token" value="" />
+			@endif
+
 			{{ $slot }}
 		</form>
 	</tp-form>

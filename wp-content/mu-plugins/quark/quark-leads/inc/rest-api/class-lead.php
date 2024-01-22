@@ -14,6 +14,7 @@ use WP_REST_Response;
 use WP_Error;
 
 use function Quark\Leads\create_lead;
+use function Travelopia\Security\validate_recaptcha;
 
 use const Quark\Leads\REST_API_NAMESPACE;
 
@@ -70,10 +71,37 @@ class Lead extends WP_REST_Controller {
 	 * @return WP_REST_Response|WP_Error
 	 */
 	public function create_item( $request ): WP_REST_Response|WP_Error { // phpcs:ignore
+		// Prepare reCAPTCHA data.
+		$recaptcha_data = [];
+
+		// Do we need to validate reCAPTCHA?
+		if ( apply_filters( 'travelopia_leads_check_recaptcha', true ) && function_exists( 'Travelopia\Security\validate_recaptcha' ) ) {
+			// Validate reCAPTCHA.
+			$recaptcha_validation = validate_recaptcha( strval( $request->get_param( 'recaptcha_token' ) ), 'leads' );
+
+			// Check validation.
+			if ( $recaptcha_validation instanceof WP_Error ) {
+				// Validation failed, trigger an action.
+				do_action( 'travelopia_leads_recaptcha_failed', $recaptcha_validation, $request );
+
+				// Check if we need to allow validation to fail.
+				// Ex: Maybe just send an email notification, but let the validation go through.
+				if ( apply_filters( 'travelopia_leads_allow_recaptcha_fail', true ) ) {
+					return $recaptcha_validation;
+				}
+
+				// Add error data to response.
+				$recaptcha_data = $recaptcha_validation->get_error_data();
+			} else {
+				// Add validation body to response.
+				$recaptcha_data = $recaptcha_validation;
+			}
+		}
+
 		// Prepare lead data.
 		$lead_data = [
-			'recaptcha_token' => $request->get_param( 'recaptcha_token' ),
-			'fields'          => (array) $request->get_param( 'fields' ),
+			'recaptcha' => $recaptcha_data,
+			'fields'    => (array) $request->get_param( 'fields' ),
 		];
 
 		// Create lead.

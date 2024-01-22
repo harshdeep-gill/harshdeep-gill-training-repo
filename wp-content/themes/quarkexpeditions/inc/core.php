@@ -201,6 +201,21 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'data-action' => true,
 					'style'       => true,
 				],
+				'tp-form'              => [
+					'class'          => true,
+					'prevent-submit' => true,
+				],
+				'tp-form-field'        => [
+					'class'      => true,
+					'required'   => true,
+					'email'      => true,
+					'min-length' => true,
+					'max-length' => true,
+				],
+				'tp-form-submit'       => [
+					'class'           => true,
+					'submitting-text' => true,
+				],
 				'tp-slider'            => [
 					'class'           => true,
 					'flexible-height' => true,
@@ -314,10 +329,11 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'stop-color' => true,
 				],
 				'form'                 => [
-					'id'     => true,
-					'class'  => true,
-					'method' => true,
-					'action' => true,
+					'id'         => true,
+					'class'      => true,
+					'method'     => true,
+					'action'     => true,
+					'novalidate' => true,
 				],
 				'select'               => [
 					'name'     => true,
