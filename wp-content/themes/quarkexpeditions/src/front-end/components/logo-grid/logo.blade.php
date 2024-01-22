@@ -13,7 +13,7 @@
 			'height'  => 400,
 		],
 		'transform' => [
-			'crop' => 'fit',
+			'crop'  => 'fit',
 		],
 	];
 @endphp

@@ -93,7 +93,10 @@
 				</x-logo-grid>
 
 
-				<div style="background-color: var(--color-gray-90); padding-block:20px; padding-inline:10px" class="color-context--dark" siz="lg">
+				<div
+					style="background-color: var(--color-gray-90); padding-block:20px; padding-inline:10px"
+					class="color-context--dark" siz="lg"
+				>
 					<x-logo-grid justify="center">
 						<x-logo-grid.logo image_id="11"/>
 						<x-logo-grid.logo image_id="12"/>
