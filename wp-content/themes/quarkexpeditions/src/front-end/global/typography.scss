@@ -98,6 +98,7 @@ p > iframe {
 .body-small {
 
 	@extend %body-small;
+
 }
 
 .overline {
@@ -107,6 +108,12 @@ p > iframe {
 
 .color-context--dark {
 	color: var(--color-white);
+
+	input,
+	textarea,
+	select {
+		color: var(--color-black);
+	}
 }
 
 .caption {

@@ -1,0 +1,77 @@
+/**
+ * Typography.
+ */
+
+@import "../../../scss";
+
+.typography {
+
+	&__title {
+		border-top: 1px solid var(--color-gray-90);
+		padding-top: 20px;
+		margin: 0 20px;
+	}
+
+	&__view {
+		flex: 0 0 100%;
+		min-width: 0;
+
+		@media screen and (min-width: grid-size(md)) {
+			flex: 1;
+		}
+	}
+
+	&__details {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		grid-gap: 50px;
+		align-self: flex-start;
+		width: 35%;
+	}
+
+	&__row {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		padding-top: var(--typography-spacing);
+		border-top: 1px solid var(--color-gray-90);
+		align-items: center;
+		gap: 40px;
+	}
+
+	&__style-box {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+		gap: 60px;
+	}
+
+	&__style-type {
+		display: grid;
+		gap: 10px;
+		font-size: 14px;
+	}
+
+	&__style-details {
+
+		p {
+			font-weight: var(--font-weight-bold);
+		}
+	}
+
+	&__style-specification {
+		margin-bottom: 20px;
+
+		p {
+			margin-bottom: 0;
+			display: flex;
+			justify-content: space-between;
+
+			&:first-child {
+				padding-bottom: 5px;
+				margin-bottom: 10px;
+				font-weight: var(--font-weight-bold);
+				border-bottom: 1px solid var(--color-gray-90);
+			}
+		}
+	}
+}

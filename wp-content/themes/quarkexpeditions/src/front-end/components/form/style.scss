@@ -1,0 +1,10 @@
+@import "../../scss";
+
+.form {
+	display: block;
+
+	&__required-indicator {
+		color: var(--color-error-50);
+	}
+}
+
