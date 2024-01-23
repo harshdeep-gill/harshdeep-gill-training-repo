@@ -136,7 +136,7 @@
 	</x-component-demo>
 	<x-component-demo :keys="[ 'logo-grid' ]">
 		<x-section title="Logo Grid">
-			<div  style="display: flex; flex-direction: column; gap: 50px;">
+			<div style="display: flex; flex-direction: column; gap: 50px;">
 				<x-logo-grid size="large">
 					<x-logo-grid.logo image_id="15"/>
 					<x-logo-grid.logo image_id="15"/>
@@ -163,7 +163,6 @@
 				</x-logo-grid>
 			</div>
 		</x-section>
-		<x-section></x-section>
 	</x-component-demo>
 </x-layout>
 
