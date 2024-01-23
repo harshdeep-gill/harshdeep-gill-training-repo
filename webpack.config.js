@@ -116,6 +116,28 @@ module.exports = ( env ) => {
 		],
 	};
 
+	// External libraries config.
+	const libConfig = {
+		...buildConfig,
+		entry: {
+			TPSliderElement: `${ themePath }/src/vendor/tp-slider.js`,
+		},
+		output: {
+			...buildConfig.output,
+			filename: ( { chunk: { name } } ) => `${ themePath }/dist/vendor/${ name.toLowerCase() }.js`,
+			library: {
+				type: 'window',
+				name: '[name]',
+				export: 'default',
+			},
+		},
+		plugins: [
+			new MiniCssExtractPlugin( {
+				filename: ( { chunk: { name } } ) => `${ themePath }/dist/vendor/${ name.toLowerCase() }.css`,
+			} ),
+		],
+	};
+
 	// Development environment.
 	if ( 'development' in env ) {
 		buildConfig.plugins.push( new WebpackNotifierPlugin( {
@@ -131,5 +153,5 @@ module.exports = ( env ) => {
 	}
 
 	// Return combined config.
-	return [ buildConfig, componentsConfig ];
+	return [ buildConfig, componentsConfig, libConfig ];
 };
