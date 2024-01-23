@@ -1,6 +1,6 @@
 @props( [
-	'justify'  => '',
-	'size'     => ''
+	'alignment'  => '',
+	'size'       => ''
 ] )
 
 @php
@@ -11,15 +11,15 @@
 	$classes = [ 'logo-grid' ];
 
 	if(
-		! empty( $justify ) && in_array(
-			$justify,
+		! empty( $alignment ) && in_array(
+			$alignment,
 			[ 'center', 'right', 'left' ],
 			true
 		)
 	) {
-		$classes[] = 'logo-grid--justify-' . $justify;
+		$classes[] = 'logo-grid--alignment-' . $alignment;
 	} else {
-		$classes[] = 'logo-grid--justify-left';
+		$classes[] = 'logo-grid--alignment-left';
 	}
 
 	if( ! empty( $size ) && in_array(

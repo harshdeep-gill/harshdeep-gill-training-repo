@@ -150,14 +150,14 @@
 					style="background-color: var(--color-gray-90); padding-block:20px; padding-inline:10px"
 					class="color-context--dark"
 				>
-					<x-logo-grid justify="center" size="lg">
+					<x-logo-grid alignment="center" size="lg">
 						<x-logo-grid.logo image_id="11"/>
 						<x-logo-grid.logo image_id="12"/>
 						<x-logo-grid.logo image_id="10"/>
 					</x-logo-grid>
 				</div>
 
-				<x-logo-grid size="lg" justify="center">
+				<x-logo-grid size="lg" alignment="center">
 					<x-logo-grid.logo image_id="14"/>
 					<x-logo-grid.logo image_id="13"/>
 				</x-logo-grid>
