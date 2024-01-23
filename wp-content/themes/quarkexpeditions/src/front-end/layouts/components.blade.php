@@ -58,62 +58,6 @@
 		</x-section>
 	</x-component-demo>
 
-	<x-component-demo :keys="[ 'reviews-carousel', 'two-columns' ]">
-		<x-section title="Two Columns" heading_level="2">
-			<x-two-columns :border="true">
-				<x-two-columns.column>
-					<h3>About Quark Expeditions</h3>
-					<p>When you venture into the untouched wilds of the Arctic and Antarctic, you need a great team around you. And we have the greatest. You'll join elite guides trained at Quark Academy — which surpasses every standard imaginable for safety and preparedness in the Polar Regions—and interact directly with world-class polar experts. Our philosophy? The team that explores together, discovers more together.</p>
-					<ul>
-						<li>In nec mi vitae quam posuere aliquet eget sed leo.</li>
-						<li>Sed vel nisi ultricies, sodales risus non, ornare augue.</li>
-						<li>Nulla facilisi. Maecenas sit amet porta nulla commodo.</li>
-					</ul>
-				</x-two-columns.column>
-				<x-two-columns.column>
-					<x-reviews-carousel title="What Our Guests Have To Say" heading_level="3" title_align="left">
-						<x-reviews-carousel.carousel>
-							<x-reviews-carousel.slide
-								title="9 Day Spitsbergen Polar Bear Safari."
-								author="Carolyn T"
-								rating="4"
-							>
-								<p>Most exciting and wonderful, and educational experience of my life, thank
-									you to all the experts for sharing so much information on the animals and
-									arctic region, cruise staff and fellow passengers for making this trip one I
-									will remember forever. Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever.</p>
-							</x-reviews-carousel.slide>
-							<x-reviews-carousel.slide
-								title="An incredible trip to Antarctica"
-								author="Martine S."
-								rating="5"
-							>
-								<p>The whole experience was great. The World Explorer is a beautiful and very comfortable ship, the food was amazing. And of course the landings and cruising the area was a once in a lifetime experience. Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever.</p>
-							</x-reviews-carousel.slide>
-							<x-reviews-carousel.slide
-								title="9 Day Spitsbergen Polar Bear Safari"
-								author="Carolyn T"
-								rating="4"
-							>
-								<p>Most exciting and wonderful, and educational experience of my life, thank
-									you to all the experts for sharing so much information on the animals and
-									arctic region, cruise staff and fellow passengers for making this trip one I
-									will remember forever. Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever.</p>
-							</x-reviews-carousel.slide>
-							<x-reviews-carousel.slide
-								title="An incredible trip to Antarctica"
-								author="Martine S."
-								rating="3.5"
-							>
-								<p>The whole experience was great. The World Explorer is a beautiful and very comfortable ship, the food was amazing. And of course the landings and cruising the area was a once in a lifetime experience.</p>
-							</x-reviews-carousel.slide>
-						</x-reviews-carousel.carousel>
-					</x-reviews-carousel>
-				</x-two-columns.column>
-			</x-two-columns>
-		</x-section>
-	</x-component-demo>
-
 	<x-component-demo :keys="[ 'form' ]">
 		<x-section title="Form UI Elements" heading_level="2" style="display: flex; flex-wrap: wrap; width: 100%;" class="typography-spacing">
 			<div style="display: flex; flex-wrap: wrap; width: 100%; gap: 20px; justify-content: space-between;">
@@ -166,29 +110,61 @@
 		<x-lp-header />
 	</x-component-demo>
 
-	<x-component-demo :keys="[ 'two-columns' ]">
-		<x-two-columns :border="true">
-			<x-two-columns.column>
-				<h3>About Quark Expeditions</h3>
-				<p>When you venture into the untouched wilds of the Arctic and Antarctic, you need a great team around you. And we have the greatest. You’ll join elite guides trained at Quark Academy — which surpasses every standard imaginable for safety and preparedness in the Polar Regions—and interact directly with world-class polar experts. Our philosophy? The team that explores together, discovers more together.</p>
-				<ul>
-					<li>In nec mi vitae quam posuere aliquet eget sed leo.</li>
-					<li>Sed vel nisi ultricies, sodales risus non, ornare augue.</li>
-					<li>Nulla facilisi. Maecenas sit amet porta nulla commodo.</li>
-					<li>Rhoncus purus duis in urna ac lorem sagittis porta.</li>
-				</ul>
-			</x-two-columns.column>
-			<x-two-columns.column>
-				<h3>What Our Guests Have To Say</h3>
-				<p>When you venture into the untouched wilds of the Arctic and Antarctic, you need a great team around you. And we have the greatest. You’ll join elite guides trained at Quark Academy — which surpasses every standard imaginable for safety and preparedness in the Polar Regions—and interact directly with world-class polar experts. Our philosophy? The team that explores together, discovers more together.</p>
-				<ul>
-					<li>In nec mi vitae quam posuere aliquet eget sed leo.</li>
-					<li>Sed vel nisi ultricies, sodales risus non, ornare augue.</li>
-					<li>Nulla facilisi. Maecenas sit amet porta nulla commodo.</li>
-					<li>Rhoncus purus duis in urna ac lorem sagittis porta.</li>
-				</ul>
-			</x-two-columns.column>
-		</x-two-columns>
+	<x-component-demo :keys="[ 'reviews-carousel', 'two-columns' ]">
+		<x-section title="Two Columns" heading_level="2">
+			<x-two-columns :border="true">
+				<x-two-columns.column>
+					<h3>About Quark Expeditions</h3>
+					<p>When you venture into the untouched wilds of the Arctic and Antarctic, you need a great team around you. And we have the greatest. You'll join elite guides trained at Quark Academy — which surpasses every standard imaginable for safety and preparedness in the Polar Regions—and interact directly with world-class polar experts. Our philosophy? The team that explores together, discovers more together.</p>
+					<ul>
+						<li>In nec mi vitae quam posuere aliquet eget sed leo.</li>
+						<li>Sed vel nisi ultricies, sodales risus non, ornare augue.</li>
+						<li>Nulla facilisi. Maecenas sit amet porta nulla commodo.</li>
+					</ul>
+				</x-two-columns.column>
+				<x-two-columns.column>
+					<h3>What Our Guests Have To Say</h3>
+					<x-reviews-carousel>
+						<x-reviews-carousel.carousel>
+							<x-reviews-carousel.slide
+								title="9 Day Spitsbergen Polar Bear Safari."
+								author="Carolyn T"
+								rating="4"
+							>
+								<p>Most exciting and wonderful, and educational experience of my life, thank
+									you to all the experts for sharing so much information on the animals and
+									arctic region, cruise staff and fellow passengers for making this trip one I
+									will remember forever. Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever.</p>
+							</x-reviews-carousel.slide>
+							<x-reviews-carousel.slide
+								title="An incredible trip to Antarctica"
+								author="Martine S."
+								rating="5"
+							>
+								<p>The whole experience was great. The World Explorer is a beautiful and very comfortable ship, the food was amazing. And of course the landings and cruising the area was a once in a lifetime experience. Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever.</p>
+							</x-reviews-carousel.slide>
+							<x-reviews-carousel.slide
+								title="9 Day Spitsbergen Polar Bear Safari"
+								author="Carolyn T"
+								rating="4"
+							>
+								<p>Most exciting and wonderful, and educational experience of my life, thank
+									you to all the experts for sharing so much information on the animals and
+									arctic region, cruise staff and fellow passengers for making this trip one I
+									will remember forever. Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever.</p>
+							</x-reviews-carousel.slide>
+							<x-reviews-carousel.slide
+								title="An incredible trip to Antarctica"
+								author="Martine S."
+								rating="3.5"
+							>
+								<p>The whole experience was great. The World Explorer is a beautiful and very comfortable ship, the food was amazing. And of course the landings and cruising the area was a once in a lifetime experience.</p>
+							</x-reviews-carousel.slide>
+						</x-reviews-carousel.carousel>
+					</x-reviews-carousel>
+				</x-two-columns.column>
+			</x-two-columns>
+		</x-section>
 	</x-component-demo>
 </x-layout>
 
