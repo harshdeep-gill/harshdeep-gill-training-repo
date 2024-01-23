@@ -137,7 +137,7 @@
 	<x-component-demo :keys="[ 'logo-grid' ]">
 		<x-section title="Logo Grid">
 			<div  style="display: flex; flex-direction: column; gap: 50px;">
-				<x-logo-grid size="lg">
+				<x-logo-grid size="large">
 					<x-logo-grid.logo image_id="15"/>
 					<x-logo-grid.logo image_id="15"/>
 					<x-logo-grid.logo image_id="16"/>
@@ -150,14 +150,14 @@
 					style="background-color: var(--color-gray-90); padding-block:20px; padding-inline:10px"
 					class="color-context--dark"
 				>
-					<x-logo-grid alignment="center" size="lg">
+					<x-logo-grid alignment="center">
 						<x-logo-grid.logo image_id="11"/>
 						<x-logo-grid.logo image_id="12"/>
 						<x-logo-grid.logo image_id="10"/>
 					</x-logo-grid>
 				</div>
 
-				<x-logo-grid size="lg" alignment="center">
+				<x-logo-grid size="large" alignment="center">
 					<x-logo-grid.logo image_id="14"/>
 					<x-logo-grid.logo image_id="13"/>
 				</x-logo-grid>

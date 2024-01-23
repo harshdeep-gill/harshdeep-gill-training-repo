@@ -6,15 +6,21 @@
 .logo-grid {
 	display: flex;
 	flex-wrap: wrap;
-	gap: 16px;
 
 	img {
 		display: block;
-		height: 32px;
 		width: auto;
 	}
 
-	&--md {
+	&--small {
+		gap: 16px;
+
+		img {
+			height: 32px;
+		}
+	}
+
+	&--medium {
 		gap: 20px;
 
 		img {
@@ -22,12 +28,16 @@
 		}
 	}
 
-	&--lg {
+	&--large {
 		gap: 24px;
 
 		img {
 			height: 64px;
 		}
+	}
+
+	&--alignment-left {
+		justify-content: flex-start;
 	}
 
 	&--alignment-center {

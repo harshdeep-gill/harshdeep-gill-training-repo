@@ -1,6 +1,6 @@
 @props( [
-	'alignment'  => '',
-	'size'       => ''
+	'alignment' => 'left',
+	'size'      => 'small',
 ] )
 
 @php
@@ -24,7 +24,7 @@
 
 	if( ! empty( $size ) && in_array(
 		$size,
-		[ 'md', 'lg' ],
+		[ 'small', 'medium', 'large' ],
 		true
 	) ) {
 		$classes[] = 'logo-grid--' . $size;
