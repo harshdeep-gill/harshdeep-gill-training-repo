@@ -166,5 +166,47 @@
 			</x-two-columns>
 		</x-section>
 	</x-component-demo>
+
+	<x-component-demo :keys="[ 'info-icon-columns' ]">
+		<x-section>
+			<x-icon-info-columns>
+				<x-icon-info-columns.column>
+					<x-icon-info-columns.icon icon="star" />
+					<x-icon-info-columns.title title="The Best Expedition Team" />
+					<x-icon-info-columns.info>
+						<p>Info goes here...</p>
+					</x-icon-info-columns.info>
+				</x-icon-info-columns.column>
+				<x-icon-info-columns.column>
+					<x-icon-info-columns.icon icon="compass" />
+					<x-icon-info-columns.title title="We Take You Deeper" />
+					<x-icon-info-columns.info>
+						<p>Info goes here...</p>
+					</x-icon-info-columns.info>
+				</x-icon-info-columns.column>
+				<x-icon-info-columns.column>
+					<x-icon-info-columns.icon icon="itinerary" />
+					<x-icon-info-columns.title title="Most Innovative Itineraries" />
+					<x-icon-info-columns.info>
+						<p>Info goes here...</p>
+					</x-icon-info-columns.info>
+				</x-icon-info-columns.column>
+				<x-icon-info-columns.column>
+					<x-icon-info-columns.icon icon="mountains" />
+					<x-icon-info-columns.title title="Most Adventure Options" />
+					<x-icon-info-columns.info>
+						<p>Info goes here...</p>
+					</x-icon-info-columns.info>
+				</x-icon-info-columns.column>
+				<x-icon-info-columns.column>
+					<x-icon-info-columns.icon icon="ship" />
+					<x-icon-info-columns.title title="Small Ships" />
+					<x-icon-info-columns.info>
+						<p>Info goes here...</p>
+					</x-icon-info-columns.info>
+				</x-icon-info-columns.column>
+			</x-icon-info-columns>
+		</x-section>
+	</x-component-demo>
 </x-layout>
 
