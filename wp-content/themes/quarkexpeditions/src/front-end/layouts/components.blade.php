@@ -166,5 +166,35 @@
 			</x-two-columns>
 		</x-section>
 	</x-component-demo>
+	<x-component-demo :keys="[ 'lp-footer']">
+		<x-lp-footer>
+			<x-lp-footer.columns>
+				<x-lp-footer.column>
+					<x-lp-footer.featured-on title="Featured on:">
+						<p>Logo Grid</p>
+					</x-lp-footer.featured-on>
+				</x-lp-footer.column>
+				<x-lp-footer.column>
+					<x-lp-footer.links>
+						<ul>
+							<li><a href="#">Terms of Use</a></li>
+							<li><a href="#">Privacy Policy</a></li>
+							<li>All rights reserved @ 2023</li>
+						</ul>
+					</x-lp-footer.links>
+				</x-lp-footer.column>
+				<x-lp-footer.column>
+					<p>Quark Expeditions</p>
+					<p>112 Merton St, Toronto ON, Canada.</p>
+					<x-lp-footer.social-links>
+						<x-lp-footer.social-link type="facebook" url="#" />
+						<x-lp-footer.social-link type="instagram" url="#" />
+						<x-lp-footer.social-link type="twitter" url="#" />
+						<x-lp-footer.social-link type="youtube" url="#" />
+					</x-lp-footer.social-links>
+				</x-lp-footer.column>
+			</x-lp-footer.columns>
+		</x-lp-footer>
+	</x-component-demo>
 </x-layout>
 
