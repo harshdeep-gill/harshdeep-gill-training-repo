@@ -28,7 +28,7 @@
 		position: relative;
 		flex: 1 0 0;
 		border-bottom: solid 1px var(--color-gray-20);
-		padding-bottom: 16px;
+		padding-bottom: var(--spacing-3);
 
 		&:last-child {
 			border: none;
@@ -49,7 +49,7 @@
 		@media (min-width: grid-size(md)) {
 			border-bottom: none;
 			border-right: solid 1px var(--color-gray-20);
-			padding-right: 16px;
+			padding-right: var(--spacing-3);
 			padding-bottom: 0;
 
 			&:hover {
@@ -74,42 +74,43 @@
 			}
 
 			&__tooltip {
-				display: none;
-				padding: var(--spacing-2);
-				position: absolute;
 				width: 100%;
 				max-width: 300px;
-				bottom: 100%;
+				max-height: 173px;
+				display: none;
+				position: absolute;
 				left: 50%;
 				transform: translateX(-50%);
+				bottom: calc(100% + 10px);
+				border: 1px solid var(--color-gray-80);
+				border-radius: 4px;
+				background: var(--color-white);
+				filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.16));
 
-				$tooltip: &;
-
-				&__wrapper {
-					border-radius: 4px;
-					border: 1px solid var(--color-gray-80);
-					background: var(--color-white);
-					position: relative;
-					box-shadow: var(--shadow-3);
-
-					p {
-						padding: 12px var(--spacing-3);
-
-						&::after {
-							content: "";
-							width: 48px;
-							height: 9px;
-							margin-inline: auto;
-							/* stylelint-disable-next-line function-url-quotes */
-							background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='10' viewBox='0 0 48 10' fill='none'%3E%3Cpath d='M32 2L16 2L24 10L32 2Z' fill='%238D939B'/%3E%3Cpath d='M32 0.500003L16 0.5L24 8.5L32 0.500003Z' fill='white'/%3E%3C/svg%3E");
-							border-top: var(--color-white);
-							position: absolute;
-							bottom: calc(-1 * var(--spacing-2));
-							left: 50%;
-							transform: translateX(-50%);
-						}
-					}
+				@media (min-width: grid-size(md)) {
+					width: calc(100% - var(--spacing-3));
+					transform: translateX(-50%) translateX(calc(-0.5 * var(--spacing-3)));
 				}
+
+				p {
+					padding: 12px var(--spacing-3);
+
+				}
+
+				&::after {
+					content: "";
+					width: 48px;
+					height: 9px;
+					margin-inline: auto;
+					/* stylelint-disable-next-line function-url-quotes */
+					background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='10' viewBox='0 0 48 10' fill='none'%3E%3Cpath d='M32 2L16 2L24 10L32 2Z' fill='%23454c5b'/%3E%3Cpath d='M32 0.500003L16 0.5L24 8.5L32 0.500003Z' fill='white'/%3E%3C/svg%3E");
+					border-top: var(--color-white);
+					position: absolute;
+					bottom: calc(-1 * var(--spacing-2));
+					left: 50%;
+					transform: translateX(-50%);
+				}
+
 			}
 		}
 	}
