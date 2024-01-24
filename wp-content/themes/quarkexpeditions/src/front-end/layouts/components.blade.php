@@ -168,48 +168,53 @@
 	</x-component-demo>
 
 	<x-component-demo :keys="[ 'info-icon-columns' ]">
-		<div class="full-width" style="padding: var(--spacing-7) var(--spacing-4);background-color: var(--color-gray-5);">
-			<h3 style="text-align: center">Why Quark Expeditions?</h3>
-			<div style="margin-top: var(--spacing-7); width: 100%; max-width: var(--wrap-width); margin-inline: auto;">
-				<x-icon-info-columns>
-					<x-icon-info-columns.column>
-						<x-icon-info-columns.icon icon="star" />
-						<x-icon-info-columns.title title="The Best Expedition Team" />
-						<x-icon-info-columns.info>
-							<p>Info goes here...</p>
-						</x-icon-info-columns.info>
-					</x-icon-info-columns.column>
-					<x-icon-info-columns.column>
-						<x-icon-info-columns.icon icon="compass" />
-						<x-icon-info-columns.title title="We Take You Deeper" />
-						<x-icon-info-columns.info>
-							<p>Info goes here...</p>
-						</x-icon-info-columns.info>
-					</x-icon-info-columns.column>
-					<x-icon-info-columns.column>
-						<x-icon-info-columns.icon icon="itinerary" />
-						<x-icon-info-columns.title title="Most Innovative Itineraries" />
-						<x-icon-info-columns.info>
-							<p>Info goes here...</p>
-						</x-icon-info-columns.info>
-					</x-icon-info-columns.column>
-					<x-icon-info-columns.column>
-						<x-icon-info-columns.icon icon="mountains" />
-						<x-icon-info-columns.title title="Most Adventure Options" />
-						<x-icon-info-columns.info>
-							<p>Info goes here...</p>
-						</x-icon-info-columns.info>
-					</x-icon-info-columns.column>
-					<x-icon-info-columns.column>
-						<x-icon-info-columns.icon icon="ship" />
-						<x-icon-info-columns.title title="Small Ships" />
-						<x-icon-info-columns.info>
-							<p>Info goes here...</p>
-						</x-icon-info-columns.info>
-					</x-icon-info-columns.column>
-				</x-icon-info-columns>
-			</div>
-		</div>
+		<x-section title="Why Quark Expeditions?" :background="true">
+			<x-icon-info-columns>
+				<x-icon-info-columns.column>
+					<x-icon-info-columns.icon icon="star" />
+					<x-icon-info-columns.title title="The Best Expedition Team" />
+					<x-icon-info-columns.info>
+						<p>Info goes here...</p>
+					</x-icon-info-columns.info>
+				</x-icon-info-columns.column>
+				<x-icon-info-columns.column>
+					<x-icon-info-columns.icon icon="compass" />
+					<x-icon-info-columns.title title="We Take You Deeper" />
+					<x-icon-info-columns.info>
+						<p>Info goes here...</p>
+					</x-icon-info-columns.info>
+				</x-icon-info-columns.column>
+				<x-icon-info-columns.column>
+					<x-icon-info-columns.icon icon="itinerary" />
+					<x-icon-info-columns.title title="Most Innovative Itineraries" />
+					<x-icon-info-columns.info>
+						<p>Info goes here...</p>
+					</x-icon-info-columns.info>
+				</x-icon-info-columns.column>
+				<x-icon-info-columns.column>
+					<x-icon-info-columns.icon icon="mountains" />
+					<x-icon-info-columns.title title="Most Adventure Options" />
+					<x-icon-info-columns.info>
+						<p>Info goes here...</p>
+					</x-icon-info-columns.info>
+				</x-icon-info-columns.column>
+				<x-icon-info-columns.column>
+					<x-icon-info-columns.icon icon="ship" />
+					<x-icon-info-columns.title title="Small Ships" />
+					<x-icon-info-columns.info>
+						<p>Info goes here...</p>
+					</x-icon-info-columns.info>
+				</x-icon-info-columns.column>
+			</x-icon-info-columns>
+		</x-section>
+	</x-component-demo>
+
+	<x-component-demo :keys="[ 'logo-grid', 'feel-safe' ]">
+		<x-section :narrow="true">
+			<h3 style="text-align: center;">Feel safe with a globally accredited company</h3>
+			<p style="text-align: center;">Quark Expeditions is a member of the United States Tour Operators Association and other international accreditation organizations. As a result, you can travel with compete peace of mind since your trip is financially protected.</p>
+			<p style="text-align: center;">(Logo Grid)</p>
+		</x-section>
 	</x-component-demo>
 </x-layout>
 

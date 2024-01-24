@@ -19,6 +19,11 @@
 	}
 }
 
+%section--seamless-with-padding {
+	padding-top: var(--grid-section-gutter);
+	padding-bottom: var(--grid-section-gutter);
+}
+
 %section--seamless,
 %section--seamless-with-padding {
 
@@ -36,7 +41,7 @@
 %section--narrow {
 
 	> * {
-		max-width: var(--narrow-wrap-width);
+		max-width: var(--narrow-wrap-width) !important;
 	}
 }
 

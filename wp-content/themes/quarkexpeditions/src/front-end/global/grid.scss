@@ -55,6 +55,16 @@ body.admin-bar {
 
 		@extend %section--seamless;
 	}
+
+	&--seamless-with-padding {
+
+		@extend %section--seamless-with-padding;
+	}
+
+	&--narrow {
+
+		@extend %section--narrow;
+	}
 }
 
 .grid {
