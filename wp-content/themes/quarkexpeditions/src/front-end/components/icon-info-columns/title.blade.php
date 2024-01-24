@@ -1,5 +1,5 @@
 @props( [
-	'title' => 'Insert title',
+	'title' => '',
 ] )
 
-<p class="icon-info__title"> {{ $title }} </p>
+<p class="icon-info__title"><x-escape content="{{ $title }}"/></p>
