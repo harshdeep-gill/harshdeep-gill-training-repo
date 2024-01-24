@@ -171,6 +171,7 @@
 			<x-lp-footer.columns>
 				<x-lp-footer.column>
 					<x-lp-footer.featured-on title="Featured on:">
+						<!-- TODO: Replace with Logo Grid Component. -->
 						<p>Logo Grid</p>
 					</x-lp-footer.featured-on>
 				</x-lp-footer.column>

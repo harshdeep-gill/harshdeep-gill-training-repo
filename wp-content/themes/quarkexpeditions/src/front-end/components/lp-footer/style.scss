@@ -31,7 +31,7 @@
 		justify-content: space-evenly;
 		gap: var(--spacing-5);
 
-		@media screen and (min-width: grid-size(lg)) {
+		@media screen and (min-width: grid-size(md)) {
 			flex-direction: row;
 			flex-wrap: wrap;
 		}
