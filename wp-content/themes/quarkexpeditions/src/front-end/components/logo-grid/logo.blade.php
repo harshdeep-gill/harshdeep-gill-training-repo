@@ -14,20 +14,21 @@
 	$image_args = [
 		'size'      => match ( $size ) {
 			'small'  =>  [
-				'width'  => 60,
-				'height' => 60,
+				'width'  => 'auto',
+				'height' => 32,
 			],
 			'medium' =>  [
-				'width'  => 100,
-				'height' => 100,
+				'width'  => 'auto',
+				'height' => 40,
 			],
 			'large'  =>  [
-				'width'  => 150,
-				'height' => 150,
+				'width'  => 'auto',
+				'height' => 64,
 			],
 		},
 		'transform' => [
-			'crop'  => 'fit',
+			'crop'    => 'fit',
+			'quality' => '100',
 		],
 	];
 @endphp
