@@ -1,0 +1,54 @@
+/**
+ * Logo Grid.
+ */
+@import "../../scss";
+
+.logo-grid {
+	display: flex;
+	flex-wrap: wrap;
+
+	img {
+		display: block;
+		width: auto;
+	}
+
+	&--small {
+		gap: 16px;
+
+		img {
+			height: 32px;
+		}
+	}
+
+	&--medium {
+		gap: 20px;
+
+		img {
+			height: 40px;
+		}
+	}
+
+	&--large {
+		gap: 24px;
+
+		img {
+			height: 64px;
+		}
+	}
+
+	&--alignment-left {
+		justify-content: flex-start;
+	}
+
+	&--alignment-center {
+		justify-content: center;
+	}
+
+	&--alignment-right {
+		justify-content: flex-end;
+	}
+
+	figure {
+		margin: 0;
+	}
+}

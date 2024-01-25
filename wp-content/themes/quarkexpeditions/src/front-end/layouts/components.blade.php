@@ -121,6 +121,13 @@
 						<li>Sed vel nisi ultricies, sodales risus non, ornare augue.</li>
 						<li>Nulla facilisi. Maecenas sit amet porta nulla commodo.</li>
 					</ul>
+					<x-logo-grid size="large">
+						<x-logo-grid.logo image_id="15"/>
+						<x-logo-grid.logo image_id="15"/>
+						<x-logo-grid.logo image_id="16"/>
+						<x-logo-grid.logo image_id="16"/>
+						<x-logo-grid.logo image_id="17"/>
+					</x-logo-grid>
 				</x-two-columns.column>
 				<x-two-columns.column>
 					<h3>What Our Guests Have To Say</h3>
@@ -166,13 +173,28 @@
 			</x-two-columns>
 		</x-section>
 	</x-component-demo>
-	<x-component-demo :keys="[ 'lp-footer']">
+
+	<x-component-demo :keys="[ 'logo-grid' ]">
+		<x-section title="Logo Grid">
+			<div style="display: flex; flex-direction: column; gap: 50px;">
+				<x-logo-grid size="large" alignment="center">
+					<x-logo-grid.logo image_id="14"/>
+					<x-logo-grid.logo image_id="13"/>
+				</x-logo-grid>
+			</div>
+		</x-section>
+	</x-component-demo>
+
+	<x-component-demo :keys="[ 'lp-footer', 'logo-grid' ]">
 		<x-lp-footer>
 			<x-lp-footer.columns>
 				<x-lp-footer.column>
 					<x-lp-footer.featured-on title="Featured on:">
-						<!-- TODO: Replace with Logo Grid Component. -->
-						<p>Logo Grid</p>
+						<x-logo-grid alignment="center">
+							<x-logo-grid.logo image_id="11"/>
+							<x-logo-grid.logo image_id="12"/>
+							<x-logo-grid.logo image_id="10"/>
+						</x-logo-grid>
 					</x-lp-footer.featured-on>
 				</x-lp-footer.column>
 				<x-lp-footer.column>
