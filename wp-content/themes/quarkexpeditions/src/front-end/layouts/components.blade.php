@@ -163,7 +163,7 @@
 	</x-component-demo>
 
 	<x-component-demo :keys="[ 'reviews-carousel', 'two-columns' ]">
-		<x-section title="Two Columns" heading_level="2">
+		<x-section>
 			<x-two-columns :border="true">
 				<x-two-columns.column>
 					<h3>About Quark Expeditions</h3>
