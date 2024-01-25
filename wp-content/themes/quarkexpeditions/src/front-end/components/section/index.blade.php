@@ -38,6 +38,7 @@
 	if ( ! empty( $background ) && true === boolval( $background ) ) {
 		$classes[] = 'section--has-background';
 		$classes[] = 'section--seamless';
+		$classes[] = 'section--seamless-with-padding';
 		$classes[] = 'full-width';
 		$wrap = true;
 	}
