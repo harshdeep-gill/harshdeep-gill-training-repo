@@ -110,6 +110,58 @@
 		<x-lp-header />
 	</x-component-demo>
 
+	<x-component-demo :keys="[ 'hero' ]">
+		<x-hero>
+			<x-hero.image image_id="123" />
+			<x-hero.content>
+				<x-hero.title title="Antarctic Voyages" />
+				<x-hero.sub-title title="Choose the Leader in Polar Adventure" />
+			</x-hero.content>
+			<x-hero.form>
+				<x-form>
+					<x-form.field :validation="[ 'required' ]">
+						<x-form.select label="When would you like to travel?" name="fields[country]">
+							<option value="">- Select -</option>
+							<option value="1">Option 1</option>
+							<option value="2">Option 2</option>
+							<option value="3">Option 3</option>
+						</x-form.select>
+					</x-form.field>
+					<x-form.field :validation="[ 'required' ]">
+						<x-form.select label="The most important factor for you?" name="fields[country]">
+							<option value="">- Select -</option>
+							<option value="1">Option 1</option>
+							<option value="2">Option 2</option>
+							<option value="3">Option 3</option>
+						</x-form.select>
+					</x-form.field>
+					<x-form.field :validation="[ 'required' ]">
+						<x-form.select label="How many guests?" name="fields[country]">
+							<option value="">- Select -</option>
+							<option value="1">Option 1</option>
+							<option value="2">Option 2</option>
+							<option value="3">Option 3</option>
+						</x-form.select>
+					</x-form.field>
+					<x-form.field>
+						<x-form.select label="Where would you like to go?" name="fields[country]">
+							<option value="">- Select -</option>
+							<option value="1">Option 1</option>
+							<option value="2">Option 2</option>
+							<option value="3">Option 3</option>
+						</x-form.select>
+					</x-form.field>
+					<x-form.buttons>
+						<x-button type="button">
+							<span>Request a Quote</span>
+							<span>It only takes 2 minutes!</span>
+						</x-button>
+					</x-form.buttons>
+				</x-form>
+			</x-hero.form>
+		</x-hero>
+	</x-component-demo>
+
 	<x-component-demo :keys="[ 'reviews-carousel', 'two-columns' ]">
 		<x-section title="Two Columns" heading_level="2">
 			<x-two-columns :border="true">

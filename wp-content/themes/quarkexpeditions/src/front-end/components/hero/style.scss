@@ -1,0 +1,108 @@
+@import "../../scss";
+
+.hero {
+	$self: &;
+
+	display: flex;
+	align-items: center;
+	min-height: 450px;
+	position: relative;
+	padding-top: var(--spacing-7);
+	padding-bottom: var(--spacing-7);
+	margin-top: 0;
+
+	@media screen and (min-width: grid-size(md)) {
+		min-height: 600px;
+		padding-top: var(--grid-section-gutter);
+		padding-bottom: var(--grid-section-gutter);
+	}
+
+	&__image {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	&__sub-title {
+		font-weight: var(--font-weight-bold);
+	}
+
+	&__image {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	&__wrap {
+		display: flex;
+		flex-direction: column;
+		width: var(--wrap-width);
+		height: 100%;
+		align-items: center;
+
+		@media screen and (max-width: 1120px) {
+			margin: 0 var(--grid-col-gutter);
+		}
+
+		@media screen and (min-width: grid-size(md)) {
+			flex-direction: row;
+			justify-content: space-between;
+			align-items: flex-start;
+		}
+	}
+
+	&__form {
+		width: 350px;
+		color: var(--color-white);
+		background-color: rgba( color("black"), 0.5 );
+		padding: var(--spacing-5);
+		margin-top: var(--spacing-5);
+		border-radius: var(--border-radius);
+		z-index: 2;
+
+		@media screen and (min-width: grid-size(md)) {
+			margin-top: 0;
+		}
+
+		button {
+			display: flex;
+			flex-direction: column;
+			width: 100%;
+			align-items: center;
+			text-transform: uppercase;
+
+			> span:nth-of-type(2) {
+				text-transform: none;
+				font-size: 12px;
+				font-weight: var(--font-weight-default);
+			}
+		}
+	}
+
+	&__content {
+		display: flex;
+		flex-direction: column;
+		margin-left: auto;
+		margin-right: auto;
+		text-align: center;
+		z-index: 2;
+
+		@media screen and (min-width: grid-size(md)) {
+			gap: var(--spacing-3);
+			margin-left: initial;
+			margin-right: inherit;
+			text-align: left;
+		}
+	}
+
+	// Form Button.
+	.form-field--buttons {
+		margin-top: var(--spacing-5);
+	}
+}
