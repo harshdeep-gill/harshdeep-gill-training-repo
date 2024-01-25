@@ -1,13 +1,12 @@
 @props( [
-	'form_name'  => '',
-	'name'       => '',
-	'class'      => '',
-	'style'      => '',
-	'method'     => 'post',
-	'action'     => quark_get_template_data( 'leads_api_endpoint', '#' ),
-	'page_title' => '',
-	'permalink'  => '',
-	'recaptcha'  => true,
+	'name'              => '',
+	'class'             => '',
+	'style'             => '',
+	'method'            => 'post',
+	'action'            => quark_get_template_data( 'leads_api_endpoint', '#' ),
+	'salesforce_object' => '',
+	'recaptcha'         => true,
+	'permalink'         => quark_get_template_data( 'current_url', '#' ),
 ] )
 
 <quark-form
@@ -24,6 +23,9 @@
 			method="{{ $method }}"
 			novalidate
 		>
+			<input type="hidden" name="salesforce_object" value="{{ $salesforce_object }}">
+			<input type="hidden" name="fields[Webform_URL__c]" value="{{ $permalink }}">
+
 			@if ( true === $recaptcha )
 				<input type="hidden" name="recaptcha_token" value="" />
 			@endif
