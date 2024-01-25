@@ -60,11 +60,11 @@ body.admin-bar {
 
 		@extend %section--seamless-with-padding;
 	}
+}
 
-	&--narrow {
+main .section--narrow {
 
-		@extend %section--narrow;
-	}
+	@extend %section--narrow;
 }
 
 .grid {
