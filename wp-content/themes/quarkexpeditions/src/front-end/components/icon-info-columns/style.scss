@@ -46,7 +46,7 @@
 			}
 		}
 
-		@media (min-width: grid-size(md)) {
+		@media (min-width: grid-size(lg)) {
 			border-bottom: none;
 			border-right: solid 1px var(--color-gray-20);
 			padding-right: var(--spacing-3);
@@ -75,8 +75,7 @@
 
 			&__tooltip {
 				width: 100%;
-				max-width: 300px;
-				max-height: 173px;
+				max-width: 80%;
 				display: none;
 				position: absolute;
 				left: 50%;
@@ -94,7 +93,6 @@
 
 				p {
 					padding: 12px var(--spacing-3);
-
 				}
 
 				&::after {

@@ -174,35 +174,35 @@
 					<x-icon-info-columns.icon icon="star" />
 					<x-icon-info-columns.title title="The Best Expedition Team" />
 					<x-icon-info-columns.info>
-						<p>Info goes here...</p>
+						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat</p>
 					</x-icon-info-columns.info>
 				</x-icon-info-columns.column>
 				<x-icon-info-columns.column>
 					<x-icon-info-columns.icon icon="compass" />
 					<x-icon-info-columns.title title="We Take You Deeper" />
 					<x-icon-info-columns.info>
-						<p>Info goes here...</p>
+						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
 					</x-icon-info-columns.info>
 				</x-icon-info-columns.column>
 				<x-icon-info-columns.column>
 					<x-icon-info-columns.icon icon="itinerary" />
 					<x-icon-info-columns.title title="Most Innovative Itineraries" />
 					<x-icon-info-columns.info>
-						<p>Info goes here...</p>
+						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
 					</x-icon-info-columns.info>
 				</x-icon-info-columns.column>
 				<x-icon-info-columns.column>
 					<x-icon-info-columns.icon icon="mountains" />
-					<x-icon-info-columns.title title="Most Adventure Options" />
+					<x-icon-info-columns.title title="Most Adventure Options Most Adventure" />
 					<x-icon-info-columns.info>
-						<p>Info goes here...</p>
+						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
 					</x-icon-info-columns.info>
 				</x-icon-info-columns.column>
 				<x-icon-info-columns.column>
 					<x-icon-info-columns.icon icon="ship" />
 					<x-icon-info-columns.title title="Small Ships" />
 					<x-icon-info-columns.info>
-						<p>Info goes here...</p>
+						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
 					</x-icon-info-columns.info>
 				</x-icon-info-columns.column>
 			</x-icon-info-columns>
