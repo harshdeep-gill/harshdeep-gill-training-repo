@@ -1223,16 +1223,16 @@
         },
         {
             "name": "travelopia/wordpress-packages",
-            "version": "1.18.0",
+            "version": "1.18.1",
             "source": {
                 "type": "git",
                 "url": "git@github.com:Travelopia/wordpress-packages.git",
-                "reference": "a110073cd99d7b5bf35f7ee33ec346394e4bca3e"
+                "reference": "7fcb0940fc9c4ae51a1e520008621745a3aac582"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Travelopia/wordpress-packages/zipball/a110073cd99d7b5bf35f7ee33ec346394e4bca3e",
-                "reference": "a110073cd99d7b5bf35f7ee33ec346394e4bca3e",
+                "url": "https://api.github.com/repos/Travelopia/wordpress-packages/zipball/7fcb0940fc9c4ae51a1e520008621745a3aac582",
+                "reference": "7fcb0940fc9c4ae51a1e520008621745a3aac582",
                 "shasum": ""
             },
             "require": {
@@ -1266,10 +1266,10 @@
             },
             "description": "Common WordPress packages for the Travelopia Network.",
             "support": {
-                "source": "https://github.com/Travelopia/wordpress-packages/tree/1.18.0",
+                "source": "https://github.com/Travelopia/wordpress-packages/tree/1.18.1",
                 "issues": "https://github.com/Travelopia/wordpress-packages/issues"
             },
-            "time": "2024-01-24T00:52:11+00:00"
+            "time": "2024-01-25T05:33:41+00:00"
         },
         {
             "name": "wpackagist-plugin/auto-cloudinary",
