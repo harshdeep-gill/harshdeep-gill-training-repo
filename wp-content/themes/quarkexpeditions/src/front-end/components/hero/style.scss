@@ -30,15 +30,6 @@
 		font-weight: var(--font-weight-bold);
 	}
 
-	&__image {
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-	}
-
 	&__wrap {
 		display: flex;
 		flex-direction: column;

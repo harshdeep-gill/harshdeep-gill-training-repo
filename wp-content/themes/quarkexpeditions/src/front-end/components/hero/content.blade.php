@@ -1,8 +1,3 @@
-@props( [
-	'title'     => '',
-	'sub_title' => '',
-] )
-
 @php
 	if ( empty( $slot ) ) {
 		return;
