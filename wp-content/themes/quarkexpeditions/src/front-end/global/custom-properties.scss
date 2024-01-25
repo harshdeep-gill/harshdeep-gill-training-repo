@@ -97,14 +97,14 @@
 
 	--wrap-width: 1120px;
 	--narrow-wrap-width: 640px;
-	--grid-section-gutter: var(--spacing-7);
-	--grid-row-gutter: var(--spacing-4);
-	--grid-col-gutter: var(--spacing-4);
+	--grid-section-gutter: var(--spacing-8);
+	--grid-row-gutter: var(--spacing-5);
+	--grid-col-gutter: var(--spacing-5);
 
 	@media screen and (min-width: grid-size(lg)) {
-		--grid-row-gutter: var(--spacing-5);
-		--grid-col-gutter: var(--spacing-5);
-		--grid-section-gutter: var(--spacing-8);
+		--grid-row-gutter: var(--spacing-6);
+		--grid-col-gutter: var(--spacing-6);
+		--grid-section-gutter: var(--spacing-9);
 	}
 
 	/**
@@ -113,7 +113,7 @@
 	--buttons-border-radius: 4px;
 	--forms-border-radius: 0;
 	--forms-border-color: var(--color-gray-40);
-	--forms-field-spacing: var(--spacing-3);
+	--forms-field-spacing: var(--spacing-4);
 
 	/**
 	 * Misc.
