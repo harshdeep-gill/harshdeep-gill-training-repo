@@ -10,7 +10,7 @@
 
 <div class="lp-footer__featured-on">
 	@if ( ! empty( $title ) )
-		<h5 class="lp-footer__featured-on-title">
+		<h5>
 			<x-escape :content="$title" />
 		</h5>
 	@endif
