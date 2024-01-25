@@ -6,8 +6,8 @@
 .lp-footer {
 	background-color: var(--color-gray-90);
 	color: var(--color-white);
-	padding-top: var(--spacing-6);
-	padding-bottom: var(--spacing-6);
+	padding-top: var(--spacing-7);
+	padding-bottom: var(--spacing-7);
 
 	&__wrap {
 		max-width: var(--wrap-width);
@@ -29,7 +29,7 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: space-evenly;
-		gap: var(--spacing-5);
+		gap: var(--spacing-6);
 
 		@media screen and (min-width: grid-size(md)) {
 			flex-direction: row;
@@ -52,6 +52,6 @@
 		gap: 20px;
 		justify-content: center;
 		align-items: center;
-		margin-top: var(--spacing-3);
+		margin-top: var(--spacing-4);
 	}
 }

@@ -11,7 +11,7 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		padding: var(--spacing-3) 0;
+		padding: var(--spacing-4) 0;
 		margin: auto;
 	}
 
@@ -73,7 +73,7 @@
 
 		&__cta {
 			display: flex;
-			column-gap: var(--spacing-3);
+			column-gap: var(--spacing-4);
 			align-items: center;
 			background-color: var(--color-gray-5);
 			padding: 12px;
