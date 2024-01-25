@@ -5,11 +5,11 @@
 	flex-direction: column;
 	justify-content: center;
 	align-items: flex-start;
-	gap: var(--spacing-3);
+	gap: var(--spacing-4);
+	font-size: 14px;
+	line-height: 22px;
 
 	@media (min-width: grid-size(lg)) {
-		font-size: 14px;
-		line-height: 22px;
 		flex-direction: row;
 		align-items: center;
 	}
@@ -22,20 +22,20 @@
 	&__column {
 		display: flex;
 		align-items: center;
-		gap: 12px;
+		gap: var(--spacing-3);
 		align-self: stretch;
 		justify-content: space-between;
 		position: relative;
 		flex: 1 0 0;
 		border-bottom: solid 1px var(--color-gray-20);
-		padding-bottom: var(--spacing-3);
+		padding-bottom: var(--spacing-4);
 
 		&:last-child {
 			border: none;
 			padding: 0;
 		}
 
-		@media (max-width: grid-size(md)) {
+		@media (max-width: grid-size(lg)) {
 
 			&:focus {
 				outline: none;
@@ -49,7 +49,7 @@
 		@media (min-width: grid-size(lg)) {
 			border-bottom: none;
 			border-right: solid 1px var(--color-gray-20);
-			padding-right: var(--spacing-3);
+			padding-right: var(--spacing-4);
 			padding-bottom: 0;
 
 			&:hover {
@@ -74,7 +74,6 @@
 			}
 
 			&__tooltip {
-				width: 100%;
 				max-width: 80%;
 				display: none;
 				position: absolute;
@@ -86,13 +85,13 @@
 				background: var(--color-white);
 				filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.16));
 
-				@media (min-width: grid-size(md)) {
-					width: calc(100% - var(--spacing-3));
-					transform: translateX(-50%) translateX(calc(-0.5 * var(--spacing-3)));
+				@media (min-width: grid-size(lg)) {
+					width: calc(100% - var(--spacing-4));
+					transform: translateX(-50%) translateX(calc(-0.5 * var(--spacing-4)));
 				}
 
 				p {
-					padding: 12px var(--spacing-3);
+					padding: var(--spacing-3) var(--spacing-4);
 				}
 
 				&::after {
