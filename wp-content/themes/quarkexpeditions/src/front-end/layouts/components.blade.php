@@ -174,7 +174,7 @@
 		</x-section>
 	</x-component-demo>
 
-	<x-component-demo :keys="[ 'info-icon-columns' ]">
+	<x-component-demo :keys="[ 'icon-info-columns' ]">
 		<x-section title="Why Quark Expeditions?" :background="true">
 			<x-icon-info-columns>
 				<x-icon-info-columns.column>
