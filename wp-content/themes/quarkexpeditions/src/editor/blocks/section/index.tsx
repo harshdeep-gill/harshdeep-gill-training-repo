@@ -42,10 +42,10 @@ import '../../../front-end/components/section/style.scss';
 export const name: string = 'quark/section';
 export const settings: BlockConfiguration = {
 	apiVersion: 2,
-	title: __( 'Section', 'quark' ),
-	description: __( 'Section block.', 'quark' ),
+	title: __( 'Section', 'qrk' ),
+	description: __( 'Section block.', 'qrk' ),
 	category: 'layout',
-	keywords: [ __( 'section', 'quark' ) ],
+	keywords: [ __( 'section', 'qrk' ) ],
 	attributes: {
 		anchor: {
 			type: 'string',
@@ -107,12 +107,12 @@ export const settings: BlockConfiguration = {
 		return (
 			<>
 				<InspectorControls>
-					<PanelBody title={ __( 'Section Options', 'quark' ) }>
+					<PanelBody title={ __( 'Section Options', 'qrk' ) }>
 						<ToggleControl
-							label={ __( 'Has Title', 'quark' ) }
+							label={ __( 'Has Title', 'qrk' ) }
 							checked={ attributes.hasTitle }
 							onChange={ () => setAttributes( { hasTitle: ! attributes.hasTitle } ) }
-							help={ __( 'Does this section have a title?', 'quark' ) }
+							help={ __( 'Does this section have a title?', 'qrk' ) }
 						/>
 						{ attributes.hasTitle && (
 							<SelectControl
@@ -126,38 +126,38 @@ export const settings: BlockConfiguration = {
 							/>
 						) }
 						<ToggleControl
-							label={ __( 'Has Description', 'quark' ) }
+							label={ __( 'Has Description', 'qrk' ) }
 							checked={ attributes.hasDescription }
 							onChange={ () =>
 								setAttributes( { hasDescription: ! attributes.hasDescription } )
 							}
-							help={ __( 'Does this section have an description?', 'quark' ) }
+							help={ __( 'Does this section have an description?', 'qrk' ) }
 						/>
 						<ToggleControl
-							label={ __( 'Has Border', 'quark' ) }
+							label={ __( 'Has Border', 'qrk' ) }
 							checked={ attributes.hasBorder }
 							onChange={ () => setAttributes( { hasBorder: ! attributes.hasBorder } ) }
-							help={ __( 'Does this section have a border?', 'quark' ) }
+							help={ __( 'Does this section have a border?', 'qrk' ) }
 						/>
 						<ToggleControl
-							label={ __( 'Has Background', 'quark' ) }
+							label={ __( 'Has Background', 'qrk' ) }
 							checked={ attributes.hasBackground }
 							onChange={ () => setAttributes( { hasBackground: ! attributes.hasBackground } ) }
-							help={ __( 'Does this section have a background colour?', 'quark' ) }
+							help={ __( 'Does this section have a background colour?', 'qrk' ) }
 						/>
 						{ attributes.hasBackground &&
 							<ToggleControl
-								label={ __( 'Has Padding', 'quark' ) }
+								label={ __( 'Has Padding', 'qrk' ) }
 								checked={ attributes.hasPadding }
 								onChange={ () => setAttributes( { hasPadding: ! attributes.hasPadding } ) }
-								help={ __( 'Does this section have a padding?', 'quark' ) }
+								help={ __( 'Does this section have a padding?', 'qrk' ) }
 							/>
 						}
 						<ToggleControl
-							label={ __( 'Has CTA', 'quark' ) }
+							label={ __( 'Has CTA', 'qrk' ) }
 							checked={ attributes.hasCta }
 							onChange={ () => setAttributes( { hasCta: ! attributes.hasCta } ) }
-							help={ __( 'Does this section have a CTA button?', 'quark' ) }
+							help={ __( 'Does this section have a CTA button?', 'qrk' ) }
 						/>
 					</PanelBody>
 				</InspectorControls>
@@ -171,7 +171,7 @@ export const settings: BlockConfiguration = {
 						<RichText
 							tagName="h2"
 							className={ 'section__title ' + headingClassName }
-							placeholder={ __( 'Write title…', 'quark' ) }
+							placeholder={ __( 'Write title…', 'qrk' ) }
 							value={ attributes.title }
 							onChange={ ( title ) => setAttributes( { title } ) }
 							allowedFormats={ [] }
@@ -181,7 +181,7 @@ export const settings: BlockConfiguration = {
 						<div className="section__description">
 							<RichText
 								tagName="p"
-								placeholder={ __( 'Write description…', 'quark' ) }
+								placeholder={ __( 'Write description…', 'qrk' ) }
 								value={ attributes.description }
 								onChange={ ( description ) => setAttributes( { description } ) }
 								allowedFormats={ [] }
