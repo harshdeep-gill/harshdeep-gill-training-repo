@@ -112,7 +112,7 @@
 
 	<x-component-demo :keys="[ 'hero' ]">
 		<x-hero>
-			<x-hero.image image_id="123" />
+			<x-hero.image image_id="26" />
 			<x-hero.content>
 				<x-hero.title title="Antarctic Voyages" />
 				<x-hero.sub-title title="Choose the Leader in Polar Adventure" />
@@ -153,8 +153,8 @@
 					</x-form.field>
 					<x-form.buttons>
 						<x-button type="button">
-							<span>Request a Quote</span>
-							<span>It only takes 2 minutes!</span>
+							Request a Quote
+							<x-button.sub-title title="It only takes 2 minutes!" />
 						</x-button>
 					</x-form.buttons>
 				</x-form>

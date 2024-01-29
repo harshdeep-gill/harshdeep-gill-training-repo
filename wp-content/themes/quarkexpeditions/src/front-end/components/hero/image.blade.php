@@ -20,7 +20,6 @@
 				'(min-width: 768px)'  => [ 900, 500 ],
 				'(min-width: 500px)'  => [ 700, 500 ],
 				'(min-width: 375px)'  => [ 500, 500 ],
-				'(min-width: 320px)'  => 500,
 			],
 		],
 		'transform' => [
@@ -30,10 +29,10 @@
 	];
 @endphp
 
-{{-- <x-image
+ <x-image
 	class="hero__image"
 	loading="eager"
+	fetchpriority="high"
 	:image_id="$image_id"
 	:args="$image_args"
-/> --}}
-<img class="hero__image" loading="eager" src="/wp-content/uploads/2024/01/LP1 - Hero_DavidMerron20141224-0A9A6655.jpg" alt="">
+/>

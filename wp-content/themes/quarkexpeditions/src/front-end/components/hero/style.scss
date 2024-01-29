@@ -43,7 +43,6 @@
 
 		@media screen and (min-width: grid-size(md)) {
 			flex-direction: row;
-			justify-content: space-between;
 			align-items: flex-start;
 		}
 	}
@@ -67,17 +66,12 @@
 			width: 100%;
 			align-items: center;
 			text-transform: uppercase;
-
-			> span:nth-of-type(2) {
-				text-transform: none;
-				font-size: 12px;
-				font-weight: var(--font-weight-default);
-			}
 		}
 	}
 
 	&__content {
 		display: flex;
+		flex: 2;
 		flex-direction: column;
 		margin-left: auto;
 		margin-right: auto;
