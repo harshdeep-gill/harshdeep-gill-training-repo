@@ -29,6 +29,7 @@ function register_blocks(): void {
 		'Section'    => 'section.php',
 		'LPHeader'   => 'lp-header.php',
 		'TwoColumns' => 'two-columns.php',
+		'LogoGrid'   => 'logo-grid.php',
 	];
 
 	// Register blocks.

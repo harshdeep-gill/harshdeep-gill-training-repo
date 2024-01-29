@@ -1,0 +1,13 @@
+.logo-grid {
+
+	.gumponents-select-image:not(.gumponents-select-image--selected) {
+		width: 90px;
+		height: 90px;
+		max-height: none !important;
+	}
+
+	.gumponents-select-image .components-placeholder {
+		align-items: center;
+		justify-content: center;
+	}
+}
