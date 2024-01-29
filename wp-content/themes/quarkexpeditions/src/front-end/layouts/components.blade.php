@@ -107,7 +107,11 @@
 	</x-component-demo>
 
 	<x-component-demo :keys="[ 'header' ]">
-		<x-lp-header />
+		<x-lp-header
+			tc_image_id="18"
+			phone_number="+1-877-585-1235"
+			cta_text="Talk to a Polar Expert"
+		/>
 	</x-component-demo>
 
 	<x-component-demo :keys="[ 'reviews-carousel', 'two-columns' ]">

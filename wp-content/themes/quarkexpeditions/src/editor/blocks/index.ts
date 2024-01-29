@@ -7,12 +7,14 @@ import { registerBlockType } from '@wordpress/blocks';
  * Import blocks.
  */
 import * as section from './section';
+import * as lpHeader from './lp-header';
 
 /**
  * Add blocks.
  */
 const blocks = [
 	section,
+	lpHeader,
 ];
 
 /**
