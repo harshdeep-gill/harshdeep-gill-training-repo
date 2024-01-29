@@ -122,33 +122,37 @@
 					<x-form.field :validation="[ 'required' ]">
 						<x-form.select label="When would you like to travel?" name="fields[country]">
 							<option value="">- Select -</option>
-							<option value="1">Option 1</option>
-							<option value="2">Option 2</option>
-							<option value="3">Option 3</option>
+							<option value="Antarctic Peninsula">Antarctic Peninsula</option>
+							<option value="Falklands &amp; South Georgia">Falklands &amp; South Georgia</option>
+							<option value="Patagonia">Patagonia</option>
+							<option value="Snow Hill Island">Snow Hill Island</option>
 						</x-form.select>
 					</x-form.field>
 					<x-form.field :validation="[ 'required' ]">
 						<x-form.select label="The most important factor for you?" name="fields[country]">
 							<option value="">- Select -</option>
-							<option value="1">Option 1</option>
-							<option value="2">Option 2</option>
-							<option value="3">Option 3</option>
+							<option value="adventure_activities">Adventure Activities</option>
+							<option value="budget">Budget</option>
+							<option value="region">Destination</option>
+							<option value="schedule">Schedule</option>
+							<option value="wildlife">Wildlife</option>
 						</x-form.select>
 					</x-form.field>
 					<x-form.field :validation="[ 'required' ]">
 						<x-form.select label="How many guests?" name="fields[country]">
 							<option value="">- Select -</option>
-							<option value="1">Option 1</option>
-							<option value="2">Option 2</option>
-							<option value="3">Option 3</option>
+							<option value="1">1</option>
+							<option value="2">2</option>
+							<option value="3">3</option>
+							<option value="4">4</option>
 						</x-form.select>
 					</x-form.field>
 					<x-form.field>
 						<x-form.select label="Where would you like to go?" name="fields[country]">
 							<option value="">- Select -</option>
-							<option value="1">Option 1</option>
-							<option value="2">Option 2</option>
-							<option value="3">Option 3</option>
+							<option value="2023-24">Antarctic 2023/24 (Nov '23 - Mar '24)</option>
+							<option value="2024-25">Antarctic 2024/25 (Nov '24 - Mar '25)</option>
+							<option value="2025-26">Antarctic 2025/26 (Nov '25 - Mar '26)</option>
 						</x-form.select>
 					</x-form.field>
 					<x-form.buttons>
