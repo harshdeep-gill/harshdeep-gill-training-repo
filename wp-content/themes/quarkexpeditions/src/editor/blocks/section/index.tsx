@@ -37,9 +37,13 @@ const { LinkButton } = gumponents.components;
 import '../../../front-end/components/section/style.scss';
 
 /**
- * Block data.
+ * Block name.
  */
 export const name: string = 'quark/section';
+
+/**
+ * Block configuration settings.
+ */
 export const settings: BlockConfiguration = {
 	apiVersion: 2,
 	title: __( 'Section', 'qrk' ),

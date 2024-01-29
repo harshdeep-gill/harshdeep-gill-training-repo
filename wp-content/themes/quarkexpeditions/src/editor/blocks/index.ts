@@ -8,6 +8,7 @@ import { registerBlockType } from '@wordpress/blocks';
  */
 import * as section from './section';
 import * as lpHeader from './lp-header';
+import * as twoColumns from './two-columns';
 
 /**
  * Add blocks.
@@ -15,6 +16,7 @@ import * as lpHeader from './lp-header';
 const blocks = [
 	section,
 	lpHeader,
+	twoColumns,
 ];
 
 /**
