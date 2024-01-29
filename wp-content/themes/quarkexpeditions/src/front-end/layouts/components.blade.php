@@ -234,7 +234,9 @@
 	</x-component-demo>
 	<x-component-demo :keys="[ 'modal' ]">
 		<x-modal id="header-cta-modal" :full_width_mobile="true" :explicit_close_button="false">
-			<x-modal.close-modal/>
+			<x-embedded-form title="Almost there!" subtitle="We just need a bit more info to help personalize your itinerary.">
+				<x-modal.close-modal/>
+			</x-embedded-form>
 		</x-modal>
 		<x-section>
 			<x-modal.open-modal modal_id="header-cta-modal">

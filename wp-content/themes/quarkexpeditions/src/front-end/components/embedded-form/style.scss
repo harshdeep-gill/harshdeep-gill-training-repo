@@ -1,0 +1,85 @@
+@import "../../scss";
+
+.embedded-form {
+	width: 100%;
+	min-width: 360px;
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-4);
+	position: relative;
+	padding: var(--spacing-5);
+
+	background-color: var(--color-gray-5);
+	border-radius: 8px 8px 0 0;
+
+	@media (min-width: grid-size(md)) {
+		width: 600px;
+		gap: var(--spacing-6);
+		border-radius: 8px;
+	}
+
+	.hide {
+		display: none;
+	}
+
+	tp-form-error {
+		display: none;
+	}
+
+	.modal__close-button {
+		position: absolute;
+		top: 0;
+		right: 0;
+	}
+
+	&__title-container {
+		padding-right: var(--spacing-4);
+
+		h3 {
+			color: var(--color-black);
+		}
+
+		p.embedded-form__subtitle {
+			color: var(--color-gray-60);
+		}
+
+		@media (min-width: grid-size(md)) {
+			padding-inline: var(--spacing-4);
+			text-align: center;
+		}
+	}
+
+	button[type="submit"] {
+		width: 100%;
+	}
+
+	textarea {
+		height: 88px;
+	}
+
+	.form-row {
+		display: grid;
+		grid-gap: 15px;
+		margin-bottom: 15px;
+		grid-template-columns: repeat(1, 1fr);
+		min-width: 0;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+
+		.form-field {
+			margin-bottom: 0;
+		}
+
+		@media screen and (min-width: grid-size(md)) {
+			grid-template-columns: repeat(auto-fit, minmax(264px, 1fr));
+		}
+
+	}
+
+	.form-field--buttons {
+		margin-top: -15px;
+	}
+
+}
