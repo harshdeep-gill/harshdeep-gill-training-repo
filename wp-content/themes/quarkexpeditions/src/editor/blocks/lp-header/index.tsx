@@ -31,9 +31,13 @@ import '../../../front-end/components/lp-header/style.scss';
 import './editor.scss';
 
 /**
- * Block data.
+ * Block name.
  */
 export const name: string = 'quark/lp-header';
+
+/**
+ * Block configuration settings.
+ */
 export const settings: BlockConfiguration = {
 	apiVersion: 2,
 	title: __( 'LP Header', 'qrk' ),
