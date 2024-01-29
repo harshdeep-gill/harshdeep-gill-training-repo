@@ -126,10 +126,10 @@
 						<li>Nulla facilisi. Maecenas sit amet porta nulla commodo.</li>
 					</ul>
 					<x-logo-grid size="large">
-						<x-logo-grid.logo image_id="15"/>
-						<x-logo-grid.logo image_id="15"/>
-						<x-logo-grid.logo image_id="16"/>
-						<x-logo-grid.logo image_id="16"/>
+						<x-logo-grid.logo image_id="25"/>
+						<x-logo-grid.logo image_id="24"/>
+						<x-logo-grid.logo image_id="21"/>
+						<x-logo-grid.logo image_id="20"/>
 						<x-logo-grid.logo image_id="17"/>
 					</x-logo-grid>
 				</x-two-columns.column>
@@ -238,9 +238,9 @@
 				<x-lp-footer.column>
 					<x-lp-footer.featured-on title="Featured on:">
 						<x-logo-grid alignment="center">
-							<x-logo-grid.logo image_id="11"/>
-							<x-logo-grid.logo image_id="12"/>
-							<x-logo-grid.logo image_id="10"/>
+							<x-logo-grid.logo image_id="22"/>
+							<x-logo-grid.logo image_id="23"/>
+							<x-logo-grid.logo image_id="19"/>
 						</x-logo-grid>
 					</x-lp-footer.featured-on>
 				</x-lp-footer.column>
