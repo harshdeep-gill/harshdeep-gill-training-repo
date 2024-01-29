@@ -232,6 +232,16 @@
 			</div>
 		</x-section>
 	</x-component-demo>
+	<x-component-demo :keys="[ 'modal' ]">
+		<x-modal id="header-cta-modal" :full_width_mobile="true" :explicit_close_button="false">
+			<x-modal.close-modal/>
+		</x-modal>
+		<x-section>
+			<x-modal.open-modal modal_id="header-cta-modal">
+				<x-button>Request a Quote</x-button>
+			</x-modal.open-modal>
+		</x-section>
+	</x-component-demo>
 	<x-component-demo :keys="[ 'lp-footer', 'logo-grid' ]">
 		<x-lp-footer>
 			<x-lp-footer.columns>

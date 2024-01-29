@@ -1,0 +1,47 @@
+@import "~@travelopia/web-components/dist/modal/style.css";
+@import "../../scss";
+
+.modal {
+
+	$self: &;
+
+	&__content {
+		background-color: transparent;
+		text-align: right;
+	}
+
+	&__close-button {
+		position: static;
+		display: inline-block;
+
+		button {
+			padding: 12px 12px 10px 12px;
+		}
+	}
+
+	&__content-wrap {
+		text-align: initial;
+	}
+
+	&__open-modal {
+		display: inline-block;
+	}
+
+	&--full-width-mobile {
+		padding: 0;
+
+		@media screen and (min-width: grid-size(md)) {
+			padding: 20px;
+		}
+
+		#{$self}__content {
+			padding: 0;
+			max-width: 100%;
+
+			@media screen and (min-width: grid-size(md)) {
+				padding: 20px;
+				max-width: 80ch;
+			}
+		}
+	}
+}
