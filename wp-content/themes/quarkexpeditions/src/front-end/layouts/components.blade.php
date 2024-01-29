@@ -244,6 +244,13 @@
 			</x-modal.open-modal>
 		</x-section>
 	</x-component-demo>
+
+	<x-component-demo :keys="[ 'toast' ]">
+		<x-section>
+			<x-toast message="Lorem ipsum dolor sit ipsum dolor now"/>
+			<x-toast type="error" message="Fields marked with an asterisk (*) are required"/>
+		</x-section>
+	</x-component-demo>
 	<x-component-demo :keys="[ 'lp-footer', 'logo-grid' ]">
 		<x-lp-footer>
 			<x-lp-footer.columns>

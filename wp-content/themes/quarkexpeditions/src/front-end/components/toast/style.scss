@@ -1,0 +1,25 @@
+.toast {
+	display: flex;
+	gap: var(--spacing-3);
+	padding: var(--spacing-3) 20px;
+	border-radius: 4px;
+	color: var(--color-white);
+
+	p {
+		width: 100%;
+		margin: 0;
+	}
+
+	&--success {
+		background-color: var(--color-success-50);
+	}
+
+	&--error {
+		background-color: var(--color-error-50);
+	}
+
+	svg {
+		min-width: 24px;
+		min-height: 24px;
+	}
+}
