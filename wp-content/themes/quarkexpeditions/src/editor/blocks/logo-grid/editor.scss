@@ -1,13 +1,44 @@
 .logo-grid {
 
-	.gumponents-select-image:not(.gumponents-select-image--selected) {
-		width: 90px;
-		height: 90px;
-		max-height: none !important;
-	}
-
 	.gumponents-select-image .components-placeholder {
 		align-items: center;
 		justify-content: center;
+	}
+
+	&__img.gumponents-select-image {
+		height: auto;
+	}
+
+	&--small {
+
+		--logo-grid-image-height: 32px;
+
+		img.gumponents-select-image__img {
+			height: var(--logo-grid-image-height) !important;
+		}
+	}
+
+	&--medium {
+
+		--logo-grid-image-height: 40px;
+
+		img.gumponents-select-image__img {
+			height: var(--logo-grid-image-height) !important;
+		}
+	}
+
+	&--large {
+
+		--logo-grid-image-height: 64px;
+
+		img.gumponents-select-image__img {
+			height: var(--logo-grid-image-height) !important;
+		}
+	}
+
+	.gumponents-select-image:not(.gumponents-select-image--selected) {
+		width: var(--logo-grid-image-height, 90px);
+		height: var(--logo-grid-image-height, 90px);
+		max-height: none !important;
 	}
 }
