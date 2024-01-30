@@ -235,6 +235,7 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'class' => true,
 				],
 				'tp-slider-arrow'      => [
+					'class' => true,
 					'direction' => true,
 				],
 				'tp-slider-nav-item'   => [
