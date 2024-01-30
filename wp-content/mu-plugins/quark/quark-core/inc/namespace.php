@@ -172,6 +172,7 @@ function core_front_end_data( array $data = [] ): array {
 	$data['data'] = array_merge(
 		$data['data'],
 		[
+			'current_url'  => get_permalink(),
 			'header'       => $header_options,
 			'social_links' => $social_options,
 		]
