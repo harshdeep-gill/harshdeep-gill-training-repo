@@ -126,7 +126,7 @@
 			</x-hero.content>
 			<x-hero.form
 				modal_id="hero-inquiry-form-modal"
-				form_id="hero-inquiry-form"
+				form_id="inquiry-form"
 				title="Almost there!"
 				subtitle="We just need a bit more info to help personalize your itinerary."
 			>
