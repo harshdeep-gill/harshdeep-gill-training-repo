@@ -15,13 +15,11 @@ import {
 /**
  * Child blocks.
  */
-import * as featuredOn from './featured-on';
 import * as socialLinks from './social-links';
 
 /**
  * Register child blocks.
  */
-registerBlockType( featuredOn.name, featuredOn.settings );
 registerBlockType( socialLinks.name, socialLinks.settings );
 
 /**
@@ -53,10 +51,14 @@ export const settings: BlockConfiguration = {
 
 		// eslint-disable-next-line react-hooks/rules-of-hooks
 		const innerBlockProps = useInnerBlocksProps( {}, {
-			allowedBlocks: [ 'core/paragraph', 'core/list', socialLinks.name, featuredOn.name ],
+			allowedBlocks: [ 'core/paragraph', 'core/list', socialLinks.name, 'core/heading' ],
 			template: [
 				[ 'core/paragraph', { placeholder: __( 'Add content here..', 'qrk' ) } ],
 			],
+			renderAppender: InnerBlocks.ButtonBlockAppender,
+
+			// @ts-ignore
+			orientation: 'vertical',
 		} );
 
 		// Return the block's markup.

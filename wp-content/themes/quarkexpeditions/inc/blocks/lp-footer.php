@@ -63,23 +63,9 @@ function render( ?string $content = null, array $block = [] ) : null | string {
 
 		// Build inner item content.
 		foreach ( $inner_block['innerBlocks'] as $inner_inner_block ) {
-			// Check for list block.
-			if ( 'core/list' === $inner_inner_block['blockName'] ) {
-				$inner_content .= quark_get_component(
-					COMPONENT . '.links',
-					[
-						'slot' => render_block( $inner_inner_block ),
-					],
-				);
-			} elseif ( 'quark/lp-footer-featured-on' === $inner_inner_block['blockName'] ) {
-				$inner_content .= quark_get_component(
-					COMPONENT . '.featured-on',
-					[
-						'title' => $inner_inner_block['attrs']['title'],
-						'slot'  => implode( '', array_map( 'render_block', $inner_block['innerBlocks'] ) ),
-					],
-				);
-			} elseif ( 'quark/lp-footer-social-links' === $inner_inner_block['blockName'] ) {
+
+			// Check for footer social links block.
+			if ( 'quark/lp-footer-social-links' === $inner_inner_block['blockName'] ) {
 				// Init social link slots.
 				$social_link_slots = '';
 
