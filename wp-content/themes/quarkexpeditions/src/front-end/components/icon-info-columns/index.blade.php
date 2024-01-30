@@ -7,6 +7,6 @@
 @endphp
 
 
-<div @class( $classes )>
+<x-section @class( $classes )>
 	{!! $slot !!}
-</div>
+</x-section>

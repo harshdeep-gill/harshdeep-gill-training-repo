@@ -26,9 +26,10 @@ function setup(): void {
 function register_blocks(): void {
 	// List of blocks to register.
 	$blocks = [
-		'Section'    => 'section.php',
-		'LPHeader'   => 'lp-header.php',
-		'TwoColumns' => 'two-columns.php',
+		'Section'         => 'section.php',
+		'LPHeader'        => 'lp-header.php',
+		'TwoColumns'      => 'two-columns.php',
+		'IconInfoColumns' => 'icon-info-columns.php',
 	];
 
 	// Register blocks.
@@ -103,22 +104,22 @@ function add_alignment_classes( ?string $block_content = '', array $block = [] )
 	// Construct classes based on block attributes.
 	if ( ! empty( $block['attrs']['layout']['type'] ) ) {
 		$classes = [
-			'tcs-block--display-' . $block['attrs']['layout']['type'],
+			'quark-block--display-' . $block['attrs']['layout']['type'],
 		];
 
 		// Add class to justify content based on block layout attrs.
 		if ( ! empty( $block['attrs']['layout']['justifyContent'] ) ) {
-			$classes[] = 'tcs-block--justify-content-' . $block['attrs']['layout']['justifyContent'];
+			$classes[] = 'quark-block--justify-content-' . $block['attrs']['layout']['justifyContent'];
 		}
 
 		// Add class to modify vertical alignment based on block layout attrs.
 		if ( ! empty( $block['attrs']['layout']['verticalAlignment'] ) ) {
-			$classes[] = 'tcs-block--vertical-alignment-' . $block['attrs']['layout']['verticalAlignment'];
+			$classes[] = 'quark-block--vertical-alignment-' . $block['attrs']['layout']['verticalAlignment'];
 		}
 
 		// Add class to modify orientation based on block layout attrs.
 		if ( ! empty( $block['attrs']['layout']['orientation'] ) ) {
-			$classes[] = 'tcs-block--orientation-' . $block['attrs']['layout']['orientation'];
+			$classes[] = 'quark-block--orientation-' . $block['attrs']['layout']['orientation'];
 		}
 	}
 
