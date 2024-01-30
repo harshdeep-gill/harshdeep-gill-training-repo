@@ -18,17 +18,27 @@ class QuarkToast extends HTMLElement {
 		this.dismissToastButton = this.querySelector( '.toast-dismiss' );
 
 		// Event
-		this.dismissToastButton?.addEventListener( 'click', this.removeSelf.bind( this ) );
+		this.dismissToastButton?.addEventListener( 'click', this.hide.bind( this ) );
 	}
 
 	/**
-	 * Removes self from the DOM
+	 * Hides the toast
 	 *
 	 * @memberof QuarkToast
 	 */
-	removeSelf() {
-		// Remove self from DOM.
-		this.parentElement?.removeChild( this );
+	hide() {
+		// Hide the toast.
+		this.classList.add( 'toast--hidden' );
+	}
+
+	/**
+	 * Shows the toast.
+	 *
+	 * @memberof QuarkToast
+	 */
+	show() {
+		// Show the toast
+		this.classList.remove( 'toast--hidden' );
 	}
 }
 

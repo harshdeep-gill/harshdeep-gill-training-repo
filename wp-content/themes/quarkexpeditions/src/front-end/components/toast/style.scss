@@ -4,6 +4,7 @@
 	padding: var(--spacing-3) 20px;
 	border-radius: 4px;
 	color: var(--color-white);
+	align-items: center;
 
 	p {
 		width: 100%;
@@ -21,5 +22,9 @@
 	svg {
 		min-width: 24px;
 		min-height: 24px;
+	}
+
+	&--hidden {
+		display: none;
 	}
 }

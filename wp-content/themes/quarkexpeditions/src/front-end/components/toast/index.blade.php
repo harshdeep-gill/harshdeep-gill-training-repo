@@ -4,7 +4,7 @@
 ] )
 
 @php
-	$classes = [ 'toast' ];
+	$classes = [ 'toast', 'toast--hidden' ];
 	$icon = '';
 
 

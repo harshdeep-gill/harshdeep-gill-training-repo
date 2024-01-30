@@ -423,6 +423,7 @@
 			</x-form.buttons>
 		</x-form>
 		<x-modal.close-modal/>
+		<x-toast type="error" message="Fields marked with an asterisk (*) are required"/>
 	</quark-inquiry-form>
 	<x-form.buttons>
 		<x-form.submit form="{{ $form_id }}">Request a Quote</x-form.submit>

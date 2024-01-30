@@ -35,6 +35,19 @@
 			height: auto;
 			margin-top: 0;
 		}
+
+		.toast {
+			position: absolute;
+			inset: var(--spacing-1) auto auto 50%;
+			width: 90%;
+			transform: translate(-50%);
+
+			@media (min-width: grid-size(md)) {
+				top: calc(-1 * var(--spacing-4));
+				width: fit-content;
+				min-width: 450px;
+			}
+		}
 	}
 
 	&__open-modal {

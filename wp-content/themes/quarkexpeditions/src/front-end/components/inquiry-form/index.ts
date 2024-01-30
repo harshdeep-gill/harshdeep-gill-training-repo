@@ -1,7 +1,7 @@
 /**
  * External dependency
  */
-import { TPFormFieldElement } from '@travelopia/web-components';
+import { TPFormElement, TPFormFieldElement } from '@travelopia/web-components';
 
 /**
  * InquiryForm Class.
@@ -14,6 +14,8 @@ class InquiryForm extends HTMLElement {
 	private stateSelectorAustralia: TPFormFieldElement | null;
 	private stateSelectorCanada: TPFormFieldElement | null;
 	private stateSelectorUS: TPFormFieldElement | null;
+	private errorToast: QuarkToast | null;
+	private tpForm: TPFormElement | null;
 
 	/**
 	 * Constructor.
@@ -27,6 +29,8 @@ class InquiryForm extends HTMLElement {
 		this.stateSelectorAustralia = this.querySelector( 'tp-form-field[data-country="AU"]' ) as TPFormFieldElement;
 		this.stateSelectorCanada = this.querySelector( 'tp-form-field[data-country="CA"]' ) as TPFormFieldElement;
 		this.stateSelectorUS = this.querySelector( 'tp-form-field[data-country="US"]' ) as TPFormFieldElement;
+		this.errorToast = this.querySelector( 'quark-toast' ) as QuarkToast;
+		this.tpForm = this.querySelector( 'tp-form' ) as TPFormElement;
 
 		// No point in setting up if the fields are not there.
 		if ( ! (
@@ -39,11 +43,12 @@ class InquiryForm extends HTMLElement {
 			return;
 		}
 
-		// Initial render
+		// Initial setup
 		this.renderAppropriateStateSelector();
 
 		// Events
 		this.countriesSelector.addEventListener( 'change', this.renderAppropriateStateSelector.bind( this ) );
+		this.tpForm.addEventListener( 'validation-error', this.showErrorToast.bind( this ) );
 	}
 
 	/**
@@ -93,6 +98,16 @@ class InquiryForm extends HTMLElement {
 		// Show selector
 		selector?.removeAttribute( 'data-hide' );
 		selector?.setAttribute( 'required', 'yes' );
+	}
+
+	/**
+	 * Shows the error toast
+	 *
+	 * @memberof InquiryForm
+	 */
+	showErrorToast() {
+		// Show the error toast
+		this.errorToast?.show();
 	}
 }
 
