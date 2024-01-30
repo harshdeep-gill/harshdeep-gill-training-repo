@@ -16,7 +16,7 @@
 	}
 
 	if ( ! empty( $appearance ) && 'outline' === $appearance ) {
-		$classes[] = sprintf( 'btn--outline' );
+		$classes[] = 'btn--outline';
 	}
 
 	if ( ! empty( $size ) ) {

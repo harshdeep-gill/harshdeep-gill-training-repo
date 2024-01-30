@@ -1,0 +1,14 @@
+/**
+Buttons
+ */
+
+@import "../../scss";
+
+.btn {
+
+	&__sub-title {
+		text-transform: none;
+		font-size: 12px;
+		font-weight: var(--font-weight-default);
+	}
+}

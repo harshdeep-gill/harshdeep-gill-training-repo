@@ -9,6 +9,7 @@ namespace Quark\Leads;
 
 use WP_Error;
 
+use function Travelopia\Salesforce\send_request;
 use function Travelopia\Security\validate_recaptcha;
 
 const REST_API_NAMESPACE = 'quark-leads/v1';
@@ -130,23 +131,82 @@ function setup_settings(): void {
  *
  * @param mixed[] $lead_data Request data.
  *
- * @return WP_Error|array{
- *      status: string,
- *      response: array<string, string>
- *  }
+ * @return WP_Error|mixed[]
  */
 function create_lead( array $lead_data = [] ): array|WP_Error {
-	// TODO.
-	// Dummy code below to make PHPStan happy.
-	if ( ! empty( $lead_data ) ) {
-		return [
-			'status'   => 'yes',
-			'response' => [],
-		];
-	} else {
-		// Error.
-		return new WP_Error( 'quark_error', 'error' );
+	// Get lead data.
+	$lead_data = wp_parse_args(
+		$lead_data,
+		[
+			'recaptcha'         => [],
+			'salesforce_object' => '',
+			'fields'            => [],
+		]
+	);
+
+	// Validate data.
+	if ( empty( $lead_data['recaptcha'] ) || empty( $lead_data['salesforce_object'] ) || empty( $lead_data['fields'] ) ) {
+		do_action( 'quark_leads_invalid_data' );
+
+		// Return an error.
+		return new WP_Error( 'quark_leads_invalid_data', 'Invalid data for leads.' );
 	}
+
+	// Build request URL.
+	$request_url = build_salesforce_request_uri( $lead_data['salesforce_object'] );
+
+	// Build request data.
+	$request_data = build_salesforce_request_data( $lead_data['fields'] );
+
+	// Send data to Salesforce.
+	$response = send_request( $request_url, $request_data );
+
+	// Check for valid response.
+	if ( $response instanceof WP_Error ) {
+		// Only show error on non-production environments.
+		if ( 'production' !== wp_get_environment_type() ) {
+			$error = $response;
+		} else {
+			$error = $response->get_error_message();
+		}
+
+		// Return an error.
+		return new WP_Error( 'quark_leads_salesforce_error', 'Salesforce error.', $error );
+	}
+
+	// Return response.
+	return $response;
+}
+
+/**
+ * Build Salesforce request URI.
+ *
+ * @param string $salesforce_object Salesforce object name.
+ *
+ * @return string
+ */
+function build_salesforce_request_uri( string $salesforce_object = '' ): string {
+	// Build request URI based on object name.
+	return sprintf( '/services/data/v51.0/sobjects/%s/', $salesforce_object );
+}
+
+/**
+ * Build Salesforce request data from fields.
+ *
+ * @param mixed[] $fields Fields.
+ *
+ * @return mixed[]
+ *
+ * @note This function is just a wrapper function for now,
+ *       but can be used to build a more complicated request in the future,
+ *       like composite requests, etc.
+ */
+function build_salesforce_request_data( array $fields = [] ): array {
+	// The fields are the only data required in the request.
+	return (array) apply_filters(
+		'quark_leads_input_data',
+		$fields
+	);
 }
 
 /**
