@@ -8,7 +8,7 @@
 namespace Quark\Theme\Blocks\LPFooter;
 
 const BLOCK_NAME = 'quark/lp-footer';
-const COMPONENT  = 'lp-footer';
+const COMPONENT  = 'parts.lp-footer';
 
 /**
  * Bootstrap this block.
@@ -44,10 +44,12 @@ function render( ?string $content = null, array $block = [] ) : null | string {
 		return $content;
 	}
 
-	// Initialize slot.
-	$slot = '';
+	// Build component attributes.
+	$attributes = [
+		'columns' => [],
+	];
 
-	// Build slot.
+	// Prepare block data.
 	foreach ( $block['innerBlocks'] as $inner_block ) {
 		// Check for inner block.
 		if (
@@ -58,7 +60,7 @@ function render( ?string $content = null, array $block = [] ) : null | string {
 			continue;
 		}
 
-		// Initialize inner content.
+		// Initialize inner content var.
 		$inner_content = '';
 
 		// Build inner item content.
@@ -66,31 +68,20 @@ function render( ?string $content = null, array $block = [] ) : null | string {
 
 			// Check for footer social links block.
 			if ( 'quark/lp-footer-social-links' === $inner_inner_block['blockName'] ) {
-				// Init social link slots.
-				$social_link_slots = '';
-
-				// Build social link slots.
+				// Fetch social link attributes.
 				foreach ( $inner_inner_block['innerBlocks'] as $social_link ) {
-					// Check if we have an url.
-					if ( empty( $social_link['attrs']['url'] ) ) {
-						continue;
-					}
-
 					// Add component to slot.
-					$social_link_slots .= quark_get_component(
-						COMPONENT . '.social-link',
-						[
-							'type' => $social_link['attrs']['type'] ?? 'facebook',
-							'url'  => $social_link['attrs']['url'],
-						]
-					);
+					$links[] = [
+						'type' => $social_link['attrs']['type'] ?? 'facebook',
+						'url'  => $social_link['attrs']['url'],
+					];
 				}
 
 				// Add component to slot.
 				$inner_content .= quark_get_component(
-					COMPONENT . '.social-links',
+					'parts.social-links',
 					[
-						'slot' => $social_link_slots,
+						'links' => $links ?? [],
 					],
 				);
 			} else {
@@ -98,24 +89,9 @@ function render( ?string $content = null, array $block = [] ) : null | string {
 			}
 		}
 
-		// Build component attributes.
-		$slot .= quark_get_component(
-			COMPONENT . '.column',
-			[
-				'slot' => $inner_content,
-			],
-		);
+		// prepare columns data.
+		$attributes['columns'][] = $inner_content;
 	}
-
-	// Build component attributes.
-	$attributes = [
-		'slot' => quark_get_component(
-			COMPONENT . '.columns',
-			[
-				'slot' => $slot,
-			],
-		),
-	];
 
 	// Return rendered component.
 	return quark_get_component( COMPONENT, $attributes );
