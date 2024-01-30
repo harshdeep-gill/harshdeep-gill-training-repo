@@ -61,12 +61,15 @@
 	<x-component-demo :keys="[ 'form' ]">
 		<x-section title="Form UI Elements" heading_level="2" style="display: flex; flex-wrap: wrap; width: 100%;" class="typography-spacing">
 			<div style="display: flex; flex-wrap: wrap; width: 100%; gap: 20px; justify-content: space-between;">
-				<x-form style="min-width: 300px; padding: 24px; border: 1px solid var(--color-black); display:flex; flex-wrap: wrap; flex-direction: column; flex-grow: 1;">
+				<x-form salesforce_object="Webform_Landing_Page__c" style="min-width: 300px; padding: 24px; border: 1px solid var(--color-black); display:flex; flex-wrap: wrap; flex-direction: column; flex-grow: 1;">
 					<x-form.field :validation="[ 'required' ]">
-						<x-form.input type="text" label="First Name" placeholder="Enter First Name" name="fields[first_name]" />
+						<x-form.input type="text" label="First Name" placeholder="Enter First Name" name="fields[FirstName__c]" />
 					</x-form.field>
 					<x-form.field :validation="[ 'required' ]">
-						<x-form.select label="Country" name="fields[country]">
+						<x-form.input type="text" label="Last Name" placeholder="Enter First Name" name="fields[LastName__c]" />
+					</x-form.field>
+					<x-form.field :validation="[ 'required' ]">
+						<x-form.select label="Country">
 							<option value="">Select...</option>
 							<option value="1">Option 1</option>
 							<option value="2">Option 2</option>
@@ -74,7 +77,7 @@
 						</x-form.select>
 					</x-form.field>
 					<x-form.field>
-						<x-form.textarea label="What else would you like us to know?" placeholder="eg Lorem ipsum" name="fields[comments]"></x-form.textarea>
+						<x-form.textarea label="What else would you like us to know?" placeholder="eg Lorem ipsum"></x-form.textarea>
 					</x-form.field>
 					<x-form.buttons>
 						<x-form.submit>Request a Quote</x-form.submit>

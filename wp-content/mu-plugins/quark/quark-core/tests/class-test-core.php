@@ -38,6 +38,7 @@ class Test_Core extends WP_UnitTestCase {
 					'youtube'   => '',
 				],
 				'leads_api_endpoint' => 'http://test.quarkexpeditions.com/wp-json/quark-leads/v1/leads/create',
+				'current_url'        => false,
 			],
 		];
 
