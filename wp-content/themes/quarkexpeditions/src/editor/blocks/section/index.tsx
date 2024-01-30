@@ -24,12 +24,6 @@ import Section from '../../components/section';
  * External dependencies.
  */
 import classnames from 'classnames';
-const { gumponents } = window;
-
-/**
- * External components.
- */
-const { LinkButton } = gumponents.components;
 
 /**
  * Styles.
