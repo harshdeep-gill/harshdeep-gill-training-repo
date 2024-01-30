@@ -1,6 +1,6 @@
 @import "../../scss";
 
-.embedded-form {
+.inquiry-form__modal {
 	width: 100%;
 	min-width: 360px;
 	display: flex;
@@ -8,7 +8,6 @@
 	gap: var(--spacing-4);
 	position: relative;
 	padding: var(--spacing-5);
-
 	background-color: var(--color-gray-5);
 	border-radius: 8px 8px 0 0;
 
@@ -18,7 +17,7 @@
 		border-radius: 8px;
 	}
 
-	.hide {
+	[data-country] {
 		display: none;
 	}
 
@@ -32,14 +31,14 @@
 		right: 0;
 	}
 
-	&__title-container {
+	&__modal-title-container {
 		padding-right: var(--spacing-4);
 
 		h3 {
 			color: var(--color-black);
 		}
 
-		p.embedded-form__subtitle {
+		p {
 			color: var(--color-gray-60);
 		}
 

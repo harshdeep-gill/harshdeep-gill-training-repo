@@ -39,9 +39,7 @@ class OpenModalCta extends HTMLElement {
 		this.modal = document.getElementById( this.modalId ) as TPModalElement;
 
 		// Event.
-		if ( this.parentElement ) {
-			this.parentElement.addEventListener( 'click', () => this.openModal() );
-		}
+		this.querySelector( 'button' )?.addEventListener( 'click', this.openModal.bind( this ) );
 	}
 
 	/**

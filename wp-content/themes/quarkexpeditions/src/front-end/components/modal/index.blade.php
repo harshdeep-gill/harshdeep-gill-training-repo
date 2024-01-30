@@ -2,7 +2,7 @@
 	'id'                    => '',
 	'class'                 => '',
 	'full_width_mobile'     => false,
-	'explicit_close_button' => true,
+	'close_button' => true,
 ] )
 
 @php
@@ -23,7 +23,7 @@
 	overlay-click-close="yes"
 >
 	<tp-modal-content class="modal__content">
-		@if ( ! empty( $explicit_close_button ) )
+		@if ( ! empty( $close_button ) )
 			<tp-modal-close class="modal__close-button">
 				<button><x-svg name="cross" /></button>
 			</tp-modal-close>

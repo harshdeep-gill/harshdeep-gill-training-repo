@@ -1,7 +1,7 @@
 /**
- * EmbeddedForm Class.
+ * InquiryForm Class.
  */
-class EmbeddedForm extends HTMLElement {
+class InquiryForm extends HTMLElement {
 	/**
 	 * Properties.
 	 */
@@ -41,7 +41,7 @@ class EmbeddedForm extends HTMLElement {
 	/**
 	 * Render appropriate state selector based on the selected country.
 	 *
-	 * @memberof EmbeddedForm
+	 * @memberof InquiryForm
 	 */
 	renderAppropriateStateSelector() {
 		// Hiding
@@ -67,4 +67,4 @@ class EmbeddedForm extends HTMLElement {
 /**
  * Initialize
  */
-customElements.define( 'quark-embedded-form', EmbeddedForm );
+customElements.define( 'quark-inquiry-form', InquiryForm );

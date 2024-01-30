@@ -1,6 +1,7 @@
 @props( [
 	'form_name'  => '',
 	'name'       => '',
+	'id'         => '',
 	'class'      => '',
 	'style'      => '',
 	'method'     => 'post',
@@ -12,7 +13,7 @@
 
 <quark-form
 	class="form {{ $class }}"
-	@if( ! empty( $style ) )
+	@if ( ! empty( $style ) )
 		style="{{ $style }}"
 	@endif
 >
@@ -23,6 +24,9 @@
 			data-name="{{ $name }}"
 			method="{{ $method }}"
 			novalidate
+			@if ( ! empty( $id ) )
+				id="{{ $id }}"
+			@endif
 		>
 			@if ( true === $recaptcha )
 				<input type="hidden" name="recaptcha_token" value="" />

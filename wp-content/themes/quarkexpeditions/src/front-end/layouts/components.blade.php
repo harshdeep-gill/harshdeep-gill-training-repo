@@ -124,7 +124,7 @@
 			<x-hero.form>
 				<x-form>
 					<x-form.field :validation="[ 'required' ]">
-						<x-form.select label="When would you like to travel?" name="fields[country]">
+						<x-form.select label="When would you like to travel?" name="fields[where_to_visit]" form="inquiry-form">
 							<option value="">- Select -</option>
 							<option value="Antarctic Peninsula">Antarctic Peninsula</option>
 							<option value="Falklands &amp; South Georgia">Falklands &amp; South Georgia</option>
@@ -133,7 +133,7 @@
 						</x-form.select>
 					</x-form.field>
 					<x-form.field :validation="[ 'required' ]">
-						<x-form.select label="The most important factor for you?" name="fields[country]">
+						<x-form.select label="The most important factor for you?" name="fields[country]" form="inquiry-form">
 							<option value="">- Select -</option>
 							<option value="adventure_activities">Adventure Activities</option>
 							<option value="budget">Budget</option>
@@ -143,7 +143,7 @@
 						</x-form.select>
 					</x-form.field>
 					<x-form.field :validation="[ 'required' ]">
-						<x-form.select label="How many guests?" name="fields[country]">
+						<x-form.select label="How many guests?" name="fields[country]" form="inquiry-form">
 							<option value="">- Select -</option>
 							<option value="1">1</option>
 							<option value="2">2</option>
@@ -152,7 +152,7 @@
 						</x-form.select>
 					</x-form.field>
 					<x-form.field>
-						<x-form.select label="Where would you like to go?" name="fields[country]">
+						<x-form.select label="Where would you like to go?" name="fields[country]" form="inquiry-form">
 							<option value="">- Select -</option>
 							<option value="2023-24">Antarctic 2023/24 (Nov '23 - Mar '24)</option>
 							<option value="2024-25">Antarctic 2024/25 (Nov '24 - Mar '25)</option>
@@ -160,10 +160,12 @@
 						</x-form.select>
 					</x-form.field>
 					<x-form.buttons>
-						<x-button type="button">
-							Request a Quote
-							<x-button.sub-title title="It only takes 2 minutes!" />
-						</x-button>
+						<x-modal.open-modal modal_id="inquiry-form">
+							<x-button type="button">
+								Request a Quote
+								<x-button.sub-title title="It only takes 2 minutes!" />
+							</x-button>
+						</x-modal.open-modal>
 					</x-form.buttons>
 				</x-form>
 			</x-hero.form>
@@ -289,10 +291,10 @@
 		</x-section>
 	</x-component-demo>
 	<x-component-demo :keys="[ 'modal' ]">
-		<x-modal id="header-cta-modal" :full_width_mobile="true" :explicit_close_button="false">
-			<x-embedded-form title="Almost there!" subtitle="We just need a bit more info to help personalize your itinerary.">
+		<x-modal id="header-cta-modal" :full_width_mobile="true" :close_button="false">
+			<x-inquiry-form title="Almost there!" subtitle="We just need a bit more info to help personalize your itinerary.">
 				<x-modal.close-modal/>
-			</x-embedded-form>
+			</x-inquiry-form>
 		</x-modal>
 		<x-section>
 			<x-modal.open-modal modal_id="header-cta-modal">

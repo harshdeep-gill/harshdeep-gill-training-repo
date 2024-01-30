@@ -3,19 +3,19 @@
 	'subtitle' => '',
 ] )
 
-<quark-embedded-form class="embedded-form">
+<quark-inquiry-form class="inquiry-form__modal">
 	@if ( ! empty( $title ) || ! empty( $subtitle ) )
-		<div class="embedded-form__title-container">
-			@if( ! empty( $title ) )
-			<h3>{{ $title }}</h3>
+		<div class="inquiry-form__modal-title-container">
+			@if ( ! empty( $title ) )
+				<h3>{{ $title }}</h3>
 			@endif
-			@if( ! empty( $subtitle ) )
-			<p class="embedded-form__subtitle">{{ $subtitle }}</p>
+			@if ( ! empty( $subtitle ) )
+				<p>{{ $subtitle }}</p>
 			@endif
 		</div>
 	@endif
 
-	<x-form>
+	<x-form id="inquiry-form">
 		<x-form.row>
 			<x-form.field :validation="[ 'required' ]">
 				<x-form.input type="text" label="First Name" placeholder="Enter First Name" name="fields[first_name]" />
@@ -34,7 +34,7 @@
 		</x-form.row>
 		<x-form.row>
 			<x-form.field :validation="[ 'required' ]">
-				<x-form.select label="Country" name="fields[country]" id="country-selector">
+				<x-form.select label="Country" name="fields[country]" class="inquiry-form-modal-country">
 					<option value="">- Select -</option>
 					<option value="AD">Andorra</option>
 					<option value="AE">United Arab Emirates</option>
@@ -289,8 +289,8 @@
 				</x-form.select>
 			</x-form.field>
 
-			<x-form.field :validation="[ 'required' ]" class="state-selector hide">
-				<x-form.select label="State/Province" name="fields[state]" id="state-selector-australia">
+			<x-form.field :validation="[ 'required' ]" data-country="AU">
+				<x-form.select label="State/Province" name="fields[state]">
 					<option value="">- Select -</option>
 					<option value="ACT">Australian Capital Territory</option>
 					<option value="JBT">Jervis Bay Territory</option>
@@ -304,8 +304,8 @@
 				</x-form.select>
 			</x-form.field>
 
-			<x-form.field :validation="[ 'required' ]" class="state-selector hide">
-				<x-form.select label="State/Province" name="fields[state]" id="state-selector-us">
+			<x-form.field :validation="[ 'required' ]" data-country="US">
+				<x-form.select label="State/Province" name="fields[state]">
 					<option value="">- Select -</option>
 					<option value="AA">Armed Forces Americas</option>
 					<option value="AE">Armed Forces Europe</option>
@@ -372,8 +372,8 @@
 				</x-form.select>
 			</x-form.field>
 
-			<x-form.field :validation="[ 'required' ]" class="state-selector hide">
-				<x-form.select label="State/Province" name="fields[state]" id="state-selector-canada">
+			<x-form.field :validation="[ 'required' ]" data-country="CA">
+				<x-form.select label="State/Province" name="fields[state]">
 					<option value="">- Select -</option>
 					<option value="AB">Alberta</option>
 					<option value="BC">British Columbia</option>
@@ -409,8 +409,9 @@
 		</x-form.row>
 
 		{!! $slot !!}
+
+		<x-form.buttons>
+			<x-form.submit>Request a Quote</x-form.submit>
+		</x-form.buttons>
 	</x-form>
-	<x-form.buttons>
-		<x-form.submit>Request a Quote</x-form.submit>
-	</x-form.buttons>
-</quark-embedded-form>
+</quark-inquiry-form>
