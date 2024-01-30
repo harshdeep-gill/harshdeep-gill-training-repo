@@ -1,4 +1,9 @@
 /**
+ * External dependency
+ */
+import { TPFormFieldElement } from '@travelopia/web-components';
+
+/**
  * InquiryForm Class.
  */
 class InquiryForm extends HTMLElement {
@@ -6,9 +11,9 @@ class InquiryForm extends HTMLElement {
 	 * Properties.
 	 */
 	private countriesSelector: HTMLSelectElement | null;
-	private stateSelectorAustralia: HTMLSelectElement | null;
-	private stateSelectorCanada: HTMLSelectElement | null;
-	private stateSelectorUS: HTMLSelectElement | null;
+	private stateSelectorAustralia: TPFormFieldElement | null;
+	private stateSelectorCanada: TPFormFieldElement | null;
+	private stateSelectorUS: TPFormFieldElement | null;
 
 	/**
 	 * Constructor.
@@ -18,10 +23,10 @@ class InquiryForm extends HTMLElement {
 		super();
 
 		// Initialize the select elements
-		this.countriesSelector = document.getElementById( 'country-selector' ) as HTMLSelectElement;
-		this.stateSelectorAustralia = document.getElementById( 'state-selector-australia' ) as HTMLSelectElement;
-		this.stateSelectorCanada = document.getElementById( 'state-selector-canada' ) as HTMLSelectElement;
-		this.stateSelectorUS = document.getElementById( 'state-selector-us' ) as HTMLSelectElement;
+		this.countriesSelector = this.querySelector( '.inquiry-form-modal-country' ) as HTMLSelectElement;
+		this.stateSelectorAustralia = this.querySelector( 'tp-form-field[data-country="AU"]' ) as TPFormFieldElement;
+		this.stateSelectorCanada = this.querySelector( 'tp-form-field[data-country="CA"]' ) as TPFormFieldElement;
+		this.stateSelectorUS = this.querySelector( 'tp-form-field[data-country="US"]' ) as TPFormFieldElement;
 
 		// No point in setting up if the fields are not there.
 		if ( ! (
@@ -34,6 +39,9 @@ class InquiryForm extends HTMLElement {
 			return;
 		}
 
+		// Initial render
+		this.renderAppropriateStateSelector();
+
 		// Events
 		this.countriesSelector.addEventListener( 'change', this.renderAppropriateStateSelector.bind( this ) );
 	}
@@ -45,20 +53,20 @@ class InquiryForm extends HTMLElement {
 	 */
 	renderAppropriateStateSelector() {
 		// Hiding
-		this.stateSelectorAustralia?.parentElement?.classList.add( 'hide' );
-		this.stateSelectorCanada?.parentElement?.classList.add( 'hide' );
-		this.stateSelectorUS?.parentElement?.classList.add( 'hide' );
+		this.stateSelectorAustralia?.setAttribute( 'data-hide', '' );
+		this.stateSelectorCanada?.setAttribute( 'data-hide', '' );
+		this.stateSelectorUS?.setAttribute( 'data-hide', '' );
 
 		// Check the value.
 		switch ( this.countriesSelector?.value ) {
 			case 'AU':
-				this.stateSelectorAustralia?.parentElement?.classList.remove( 'hide' );
+				this.stateSelectorAustralia?.removeAttribute( 'data-hide' );
 				break;
 			case 'CA':
-				this.stateSelectorCanada?.parentElement?.classList.remove( 'hide' );
+				this.stateSelectorCanada?.removeAttribute( 'data-hide' );
 				break;
 			case 'US':
-				this.stateSelectorUS?.parentElement?.classList.remove( 'hide' );
+				this.stateSelectorUS?.removeAttribute( 'data-hide' );
 				break;
 		}
 	}
