@@ -18,9 +18,12 @@
 	// Footer Links.
 	&__links {
 
-		* {
-			color: var(--color-white);
+		ul {
 			list-style-type: none;
+		}
+
+		a {
+			color: inherit;
 			text-decoration: none;
 		}
 	}

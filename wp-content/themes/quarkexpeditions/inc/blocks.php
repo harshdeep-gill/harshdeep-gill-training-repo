@@ -26,9 +26,10 @@ function setup(): void {
 function register_blocks(): void {
 	// List of blocks to register.
 	$blocks = [
-		'Section'    => 'section.php',
-		'LPHeader'   => 'lp-header.php',
-		'TwoColumns' => 'two-columns.php',
+		'Section'             => 'section.php',
+		'LPHeader'            => 'lp-header.php',
+		'TwoColumns'          => 'two-columns.php',
+		'LPFooter'            => 'lp-footer.php',
 	];
 
 	// Register blocks.
