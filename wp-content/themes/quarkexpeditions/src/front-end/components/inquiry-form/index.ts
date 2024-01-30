@@ -53,22 +53,46 @@ class InquiryForm extends HTMLElement {
 	 */
 	renderAppropriateStateSelector() {
 		// Hiding
-		this.stateSelectorAustralia?.setAttribute( 'data-hide', '' );
-		this.stateSelectorCanada?.setAttribute( 'data-hide', '' );
-		this.stateSelectorUS?.setAttribute( 'data-hide', '' );
+		this.hideStateSelector( this.stateSelectorAustralia );
+		this.hideStateSelector( this.stateSelectorCanada );
+		this.hideStateSelector( this.stateSelectorUS );
 
 		// Check the value.
 		switch ( this.countriesSelector?.value ) {
 			case 'AU':
-				this.stateSelectorAustralia?.removeAttribute( 'data-hide' );
+				this.showStateSelector( this.stateSelectorAustralia );
 				break;
 			case 'CA':
-				this.stateSelectorCanada?.removeAttribute( 'data-hide' );
+				this.showStateSelector( this.stateSelectorCanada );
 				break;
 			case 'US':
-				this.stateSelectorUS?.removeAttribute( 'data-hide' );
+				this.showStateSelector( this.stateSelectorUS );
 				break;
 		}
+	}
+
+	/**
+	 * Hide field.
+	 *
+	 * @param {TPFormFieldElement} selector
+	 * @memberof InquiryForm
+	 */
+	hideStateSelector( selector: TPFormFieldElement | null ) {
+		// Hide selector
+		selector?.setAttribute( 'data-hide', '' );
+		selector?.removeAttribute( 'required' );
+	}
+
+	/**
+	 * Show field.
+	 *
+	 * @param {(TPFormFieldElement | null)} selector
+	 * @memberof InquiryForm
+	 */
+	showStateSelector( selector: TPFormFieldElement | null ) {
+		// Show selector
+		selector?.removeAttribute( 'data-hide' );
+		selector?.setAttribute( 'required', 'yes' );
 	}
 }
 
