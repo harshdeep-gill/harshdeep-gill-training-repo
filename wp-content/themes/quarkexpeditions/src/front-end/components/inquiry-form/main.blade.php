@@ -11,7 +11,7 @@
 <x-form>
 	{!! $slot !!}
 	<x-form.buttons>
-		<x-modal.open-modal modal_id="{{ $modal_id }}">
+		<x-modal.open-modal class="inquiry-form__open-modal" modal_id="{{ $modal_id }}">
 			<x-button type="button">
 				Request a Quote
 				<x-button.sub-title title="It only takes 2 minutes!" />
