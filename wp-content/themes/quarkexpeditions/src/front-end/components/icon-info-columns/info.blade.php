@@ -4,9 +4,11 @@
 	}
 @endphp
 
-<div class="icon-info">
-	<x-svg name="info"/>
-	<div class="icon-info__tooltip">
+<div class="icon-info-columns__info">
+	<span class="icon-info-columns__info-icon">
+		<x-svg name="info" />
+	</span>
+	<div class="icon-info-columns__tooltip">
 		<x-content :content="$slot"/>
 	</div>
 </div>

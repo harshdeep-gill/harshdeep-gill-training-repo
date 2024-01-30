@@ -8,4 +8,6 @@
 	}
 @endphp
 
-<x-svg name="{{ $icon }}"/>
+<span class="icon-info-columns__icon">
+	<x-svg name="{{ $icon }}" />
+</span>
