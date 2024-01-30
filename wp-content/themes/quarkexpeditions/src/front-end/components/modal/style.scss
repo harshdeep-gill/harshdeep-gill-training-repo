@@ -8,6 +8,13 @@
 	&__content {
 		background-color: transparent;
 		text-align: right;
+		margin-top: 0;
+		margin-bottom: 0;
+
+		@media (min-width: grid-size(md)) {
+			margin-top: auto;
+			margin-bottom: auto;
+		}
 	}
 
 	&__close-button {
@@ -21,6 +28,13 @@
 
 	&__content-wrap {
 		text-align: initial;
+		height: 95vh;
+		margin-top: 5vh;
+
+		@media (min-width: grid-size(md)) {
+			height: auto;
+			margin-top: 0;
+		}
 	}
 
 	&__open-modal {
