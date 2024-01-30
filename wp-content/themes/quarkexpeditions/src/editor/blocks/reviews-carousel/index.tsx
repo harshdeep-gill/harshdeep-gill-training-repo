@@ -55,11 +55,7 @@ export const settings: BlockConfiguration = {
 		__( 'reviews', 'qrk' ),
 		__( 'carousel', 'qrk' ),
 	],
-	attributes: {
-		title: {
-			type: 'string',
-		},
-	},
+	attributes: {},
 	supports: {
 		alignWide: false,
 		anchor: true,

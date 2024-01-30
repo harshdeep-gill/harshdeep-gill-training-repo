@@ -7,8 +7,6 @@
 
 namespace Quark\Theme\Blocks\ReviewsCarousel;
 
-use function _PHPStan_8b6260c21\Symfony\Component\String\s;
-
 const BLOCK_NAME = 'quark/reviews-carousel';
 const COMPONENT  = 'reviews-carousel';
 
