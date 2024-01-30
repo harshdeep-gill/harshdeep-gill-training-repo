@@ -189,6 +189,7 @@ class Test_Leads extends WP_UnitTestCase {
 		$response = create_lead( $data );
 
 		// Assert data.
+		$this->assertInstanceOf( 'WP_Error', $response );
 		$this->assertEquals( 'quark_leads_salesforce_error', $response->get_error_code() );
 		$this->assertEquals( 'Salesforce error.', $response->get_error_message() );
 
@@ -219,7 +220,6 @@ class Test_Leads extends WP_UnitTestCase {
 	 * @return void
 	 */
 	public function test_build_salesforce_request_data(): void {
-
 		// build dummy data.
 		$data = [
 			'FirstName' => 'dummy',
