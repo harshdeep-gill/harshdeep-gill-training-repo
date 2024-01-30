@@ -49,6 +49,7 @@ class InquiryForm extends HTMLElement {
 		// Events
 		this.countriesSelector.addEventListener( 'change', this.renderAppropriateStateSelector.bind( this ) );
 		this.tpForm.addEventListener( 'validation-error', this.showErrorToast.bind( this ) );
+		this.tpForm.addEventListener( 'validation-success', this.hideErrorToast.bind( this ) );
 	}
 
 	/**
@@ -108,6 +109,16 @@ class InquiryForm extends HTMLElement {
 	showErrorToast() {
 		// Show the error toast
 		this.errorToast?.show();
+	}
+
+	/**
+	 * Shows the error toast
+	 *
+	 * @memberof InquiryForm
+	 */
+	hideErrorToast() {
+		// Show the error toast
+		this.errorToast?.hide();
 	}
 }
 
