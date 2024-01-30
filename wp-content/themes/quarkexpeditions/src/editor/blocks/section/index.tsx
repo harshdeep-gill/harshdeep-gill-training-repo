@@ -63,7 +63,7 @@ export const settings: BlockConfiguration = {
 		},
 		headingLevel: {
 			type: 'string',
-			default: 'h2',
+			default: 'h3',
 		},
 		hasDescription: {
 			type: 'boolean',
@@ -101,11 +101,11 @@ export const settings: BlockConfiguration = {
 	},
 	edit( { className, attributes, setAttributes }: BlockEditAttributes ) {
 		// eslint-disable-next-line react-hooks/rules-of-hooks
-		const innerBlocksProps = useInnerBlocksProps();
+		const innerBlocksProps = useInnerBlocksProps( { className: 'section__content' } );
 
 		// Prepare heading class.
-		const largeHeadingClassNames = [ 'h1', 'h2' ];
-		const headingClassName = largeHeadingClassNames.includes( attributes.headingLevel ) ? 'h2' : attributes.headingLevel;
+		const largeHeadingClassNames = [ 'h1', 'h2', 'h3' ];
+		const headingClassName = largeHeadingClassNames.includes( attributes.headingLevel ) ? 'h3' : attributes.headingLevel;
 
 		// Return block.
 		return (
@@ -125,6 +125,7 @@ export const settings: BlockConfiguration = {
 								options={ [
 									{ label: 'H1', value: 'h1' },
 									{ label: 'H2', value: 'h2' },
+									{ label: 'H3', value: 'h3' },
 								] }
 								onChange={ ( headingLevel ) => setAttributes( { headingLevel } ) }
 							/>
@@ -138,15 +139,12 @@ export const settings: BlockConfiguration = {
 							help={ __( 'Does this section have an description?', 'qrk' ) }
 						/>
 						<ToggleControl
-							label={ __( 'Has Border', 'qrk' ) }
-							checked={ attributes.hasBorder }
-							onChange={ () => setAttributes( { hasBorder: ! attributes.hasBorder } ) }
-							help={ __( 'Does this section have a border?', 'qrk' ) }
-						/>
-						<ToggleControl
 							label={ __( 'Has Background', 'qrk' ) }
 							checked={ attributes.hasBackground }
-							onChange={ () => setAttributes( { hasBackground: ! attributes.hasBackground } ) }
+							onChange={ () => setAttributes( {
+								hasBackground: ! attributes.hasBackground,
+								hasPadding: true,
+							} ) }
 							help={ __( 'Does this section have a background colour?', 'qrk' ) }
 						/>
 						{ attributes.hasBackground &&
@@ -157,16 +155,10 @@ export const settings: BlockConfiguration = {
 								help={ __( 'Does this section have a padding?', 'qrk' ) }
 							/>
 						}
-						<ToggleControl
-							label={ __( 'Has CTA', 'qrk' ) }
-							checked={ attributes.hasCta }
-							onChange={ () => setAttributes( { hasCta: ! attributes.hasCta } ) }
-							help={ __( 'Does this section have a CTA button?', 'qrk' ) }
-						/>
 					</PanelBody>
 				</InspectorControls>
 				<Section
-					className={ classnames( className, 'section', { 'section--no-border': ! attributes.hasBorder } ) }
+					className={ classnames( className, 'section' ) }
 					background={ attributes.hasBackground }
 					padding={ attributes.hasPadding }
 					seamless={ attributes.hasBackground }
@@ -192,19 +184,7 @@ export const settings: BlockConfiguration = {
 							/>
 						</div>
 					) }
-					<div className="section__content">
-						<div { ...innerBlocksProps } />
-						{ attributes.hasCta && (
-							<div className="section__cta-button">
-								<LinkButton
-									className="btn btn--teal-outline"
-									placeholder={ __( 'CTA Button' ) }
-									value={ attributes.ctaButton }
-									onChange={ ( ctaButton: Object ) => setAttributes( { ctaButton } ) }
-								/>
-							</div>
-						) }
-					</div>
+					<div { ...innerBlocksProps } />
 				</Section>
 			</>
 		);
