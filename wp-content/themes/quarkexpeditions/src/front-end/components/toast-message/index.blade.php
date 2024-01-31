@@ -16,7 +16,10 @@
 
 	$classes[] = 'toast-message--' . $valid_toast_type;
 
-	$icon = $valid_toast_type;
+	$icon = match( $type ) {
+		'error' => 'alert',
+		default => 'check'
+	};
 @endphp
 
 <quark-toast-message @class( $classes )
@@ -24,9 +27,9 @@
 		visible="true"
 	@endif
 >
-	<x-svg name="{{ $icon }}"/>
+	<span class="icon"><x-svg name="{{ $icon }}"/></span>
 	<p><x-escape :content="$message"/></p>
 	<button class="toast-message__close">
-		<x-svg name="cross-white"/>
+		<x-svg name="cross"/>
 	</button>
 </quark-toast-message>

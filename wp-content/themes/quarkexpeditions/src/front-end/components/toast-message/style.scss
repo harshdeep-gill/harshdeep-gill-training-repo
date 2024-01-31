@@ -11,20 +11,39 @@
 		margin: 0;
 	}
 
+	.icon {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		min-width: 24px;
+		min-height: 24px;
+	}
+
 	&[visible] {
 		display: flex;
 	}
 
 	&--success {
 		background-color: var(--color-success-50);
+
+		.icon {
+			background-color: var(--color-white);
+			border-radius: 50%;
+
+			polygon {
+				fill: var(--color-success-50);
+			}
+		}
 	}
 
 	&--error {
 		background-color: var(--color-error-50);
 	}
 
-	svg {
-		min-width: 24px;
-		min-height: 24px;
+	&__close {
+
+		path {
+			fill: var(--color-white);
+		}
 	}
 }
