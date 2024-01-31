@@ -254,8 +254,8 @@
 
 	<x-component-demo :keys="[ 'toast' ]">
 		<x-section>
-			<x-toast-message message="Lorem ipsum dolor sit ipsum dolor now"/>
-			<x-toast-message type="error" message="Fields marked with an asterisk (*) are required"/>
+			<x-toast-message message="Lorem ipsum dolor sit ipsum dolor now" :visible="true" />
+			<x-toast-message type="error" message="Fields marked with an asterisk (*) are required" :visible="true" />
 		</x-section>
 	</x-component-demo>
 	<x-component-demo :keys="[ 'lp-footer', 'logo-grid' ]">

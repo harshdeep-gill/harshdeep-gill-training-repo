@@ -1,6 +1,7 @@
 @props( [
 	'type'    => '',
-	'message' => ''
+	'message' => '',
+	'visible' => false,
 ] )
 
 @php
@@ -13,12 +14,16 @@
 		default => 'success'
 	};
 
-	$classes[] = 'toast--' . $valid_toast_type;
+	$classes[] = 'toast-message--' . $valid_toast_type;
 
 	$icon = $valid_toast_type;
 @endphp
 
-<quark-toast-message @class( $classes )>
+<quark-toast-message @class( $classes )
+	@if ( $visible )
+		visible="true"
+	@endif
+>
 	<x-svg name="{{ $icon }}"/>
 	<p><x-escape :content="$message"/></p>
 	<button class="toast-message__close">
