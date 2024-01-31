@@ -220,6 +220,7 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'class'           => true,
 					'flexible-height' => true,
 					'swipe'           => true,
+					'infinite'        => true,
 				],
 				'tp-slider-track'      => [
 					'class' => true,
@@ -232,6 +233,10 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 				],
 				'tp-slider-nav'        => [
 					'class' => true,
+				],
+				'tp-slider-arrow'      => [
+					'class'     => true,
+					'direction' => true,
 				],
 				'tp-slider-nav-item'   => [
 					'class'   => true,

@@ -30,6 +30,7 @@ function register_blocks(): void {
 		'LPHeader'        => 'lp-header.php',
 		'TwoColumns'      => 'two-columns.php',
 		'IconInfoColumns' => 'icon-info-columns.php',
+		'ReviewsCarousel' => 'reviews-carousel.php',
 		'LPFooter'        => 'lp-footer.php',
 	];
 
