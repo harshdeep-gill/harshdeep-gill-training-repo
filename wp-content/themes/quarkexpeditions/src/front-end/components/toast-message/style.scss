@@ -2,7 +2,7 @@
 	display: none;
 	gap: var(--spacing-3);
 	padding: var(--spacing-3) 20px;
-	border-radius: 4px;
+	border-radius: var(--border-radius);
 	color: var(--color-white);
 	align-items: center;
 
