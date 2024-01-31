@@ -172,13 +172,21 @@
 	<div class="typography__row typography-spacing">
 		<div class="typography__view">
 			<h3>Body Text Standard Bold</h3>
-			<strong>Lorem ipsum dolor sit, consectetur adipiscing elit. Vestibulum sit amet massa eget orciiaculis
-				ultricies alas non ante. Vivamus tempor purus quam, ac iaculis diam. Sed congue justo ac nisl
-				efficitur ultricies. Sed at lobortis eros. Pellentesque metus arcu, sodales non ullamcorper sed,
-				ullamcorper a sapien tempor.</strong>
-			<strong>Donec malesuada semper est, id lobortis sapien lobortis ac. Nullam pretium cursus ornare. Proin
-				hendrerit ultricies placerat. Praesent eu neque convallis, bibendum purus eu, finibus dui. Nulla
-				facilisi.</strong>
+			<p>
+				<strong>
+					Lorem ipsum dolor sit, consectetur adipiscing elit. Vestibulum sit amet massa eget orciiaculis
+					ultricies alas non ante. Vivamus tempor purus quam, ac iaculis diam. Sed congue justo ac nisl
+					efficitur ultricies. Sed at lobortis eros. Pellentesque metus arcu, sodales non ullamcorper sed,
+					ullamcorper a sapien tempor.
+				</strong>
+			</p>
+			<p>
+				<strong>
+					Donec malesuada semper est, id lobortis sapien lobortis ac. Nullam pretium cursus ornare. Proin
+					hendrerit ultricies placerat. Praesent eu neque convallis, bibendum purus eu, finibus dui. Nulla
+					facilisi.
+				</strong>
+			</p>
 		</div>
 		<div class="typography__details">
 			<div class="typography__style-specification">
