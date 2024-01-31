@@ -56,6 +56,14 @@
 		border-radius: var(--border-radius);
 		z-index: 2;
 
+		.btn {
+			width: 100%;
+		}
+
+		tp-form-error {
+			display: none;
+		}
+
 		@media screen and (min-width: grid-size(md)) {
 			margin-top: 0;
 		}
