@@ -34,6 +34,9 @@ class InquiryForm extends HTMLElement {
 		}
 		this.tpForm?.addEventListener( 'validation-error', this.showToastMessage.bind( this ) );
 		this.tpForm?.addEventListener( 'validation-success', this.hideToastMessage.bind( this ) );
+
+		// Trigger change in country.
+		this.changeCountry();
 	}
 
 	/**
@@ -54,8 +57,10 @@ class InquiryForm extends HTMLElement {
 			// Check if state's country matches current country.
 			if ( state.getAttribute( 'data-country' ) === country ) {
 				state.setAttribute( 'data-visible', 'true' );
+				state.querySelector( 'select' )?.setAttribute( 'name', state.getAttribute( 'data-name' ) ?? '' );
 			} else {
 				state.removeAttribute( 'data-visible' );
+				state.querySelector( 'select' )?.removeAttribute( 'name' );
 			}
 		} );
 	}

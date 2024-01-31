@@ -1,8 +1,9 @@
 @props( [
-	'title'    => '',
-	'subtitle' => '',
-	'form_id'  => '',
-	'modal_id' => '',
+	'title'             => '',
+	'subtitle'          => '',
+	'form_id'           => '',
+	'modal_id'          => '',
+	'salesforce_object' => '',
 ] )
 
 @php
@@ -24,26 +25,26 @@
 			</div>
 		@endif
 
-		<x-form id="{{ $form_id }}">
+		<x-form id="{{ $form_id }}" salesforce_object="{{ $salesforce_object }}">
 			<x-form.row>
 				<x-form.field :validation="[ 'required' ]">
-					<x-form.input type="text" label="First Name" placeholder="Enter First Name" name="fields[first_name]" />
+					<x-form.input type="text" label="First Name" placeholder="Enter First Name" name="fields[FirstName__c]" />
 				</x-form.field>
 				<x-form.field :validation="[ 'required' ]">
-					<x-form.input type="text" label="Last Name" placeholder="Enter Last Name" name="fields[last_name]" />
+					<x-form.input type="text" label="Last Name" placeholder="Enter Last Name" name="fields[LastName__c]" />
 				</x-form.field>
 			</x-form.row>
 			<x-form.row>
 				<x-form.field :validation="[ 'required' ]">
-					<x-form.input type="email" label="Email" placeholder="Enter Email" name="fields[email]" />
+					<x-form.input type="email" label="Email" placeholder="Enter Email" name="fields[Email__c]" />
 				</x-form.field>
 				<x-form.field :validation="[ 'required' ]">
-					<x-form.input type="tel" label="Phone Number" placeholder="eg. (123) 456 7890" name="fields[phone_number]" />
+					<x-form.input type="tel" label="Phone Number" placeholder="eg. (123) 456 7890" name="fields[Phone__c]" />
 				</x-form.field>
 			</x-form.row>
 			<x-form.row>
 				<x-form.field :validation="[ 'required' ]" class="inquiry-form__country">
-					<x-form.select label="Country" name="fields[country]">
+					<x-form.select label="Country" name="fields[Country_Code__c]">
 						<option value="">- Select -</option>
 						<option value="AU">Australia</option>
 						<option value="CA">Canada</option>
@@ -298,8 +299,8 @@
 					</x-form.select>
 				</x-form.field>
 
-				<x-form.field :validation="[ 'required' ]" data-country="AU" class="inquiry-form__state">
-					<x-form.select label="State/Province" name="fields[state]">
+				<x-form.field :validation="[ 'required' ]" data-country="AU" class="inquiry-form__state" data-name="fields[State_Code__c]">
+					<x-form.select label="State/Province">
 						<option value="">- Select -</option>
 						<option value="ACT">Australian Capital Territory</option>
 						<option value="JBT">Jervis Bay Territory</option>
@@ -313,8 +314,8 @@
 					</x-form.select>
 				</x-form.field>
 
-				<x-form.field :validation="[ 'required' ]" data-country="US" class="inquiry-form__state">
-					<x-form.select label="State/Province" name="fields[state]">
+				<x-form.field :validation="[ 'required' ]" data-country="US" class="inquiry-form__state" data-name="fields[State_Code__c]">
+					<x-form.select label="State/Province">
 						<option value="">- Select -</option>
 						<option value="AA">Armed Forces Americas</option>
 						<option value="AE">Armed Forces Europe</option>
@@ -381,8 +382,8 @@
 					</x-form.select>
 				</x-form.field>
 
-				<x-form.field :validation="[ 'required' ]" data-country="CA" class="inquiry-form__state">
-					<x-form.select label="State/Province" name="fields[state]">
+				<x-form.field :validation="[ 'required' ]" data-country="CA" class="inquiry-form__state" data-name="fields[State_Code__c]">
+					<x-form.select label="State/Province">
 						<option value="">- Select -</option>
 						<option value="AB">Alberta</option>
 						<option value="BC">British Columbia</option>
@@ -402,7 +403,7 @@
 			</x-form.row>
 			<x-form.row>
 				<x-form.field :validation="[ 'required' ]">
-					<x-form.select label="I would like to" name="fields[interest]">
+					<x-form.select label="I would like to" name="fields[Journey_Stage__c]">
 						<option value="">- Select -</option>
 						<option value="explore-wildlife">Explore wildlife</option>
 						<option value="explore-cuisine">Explore cuisine</option>
@@ -413,7 +414,7 @@
 
 			<x-form.row>
 				<x-form.field>
-					<x-form.textarea label="What else would you like us to know?" placeholder="eg. Lorem ipsum"/>
+					<x-form.textarea label="What else would you like us to know?" placeholder="eg. Lorem ipsum" name="fields[Comments__c]" />
 				</x-form.field>
 			</x-form.row>
 
