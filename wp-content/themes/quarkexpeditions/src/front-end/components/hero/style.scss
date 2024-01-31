@@ -56,15 +56,19 @@
 		border-radius: var(--border-radius);
 		z-index: 2;
 
+		.btn {
+			width: 100%;
+		}
+
+		tp-form-error {
+			display: none;
+		}
+
 		@media screen and (min-width: grid-size(md)) {
 			margin-top: 0;
 		}
 
 		button {
-			display: flex;
-			flex-direction: column;
-			width: 100%;
-			align-items: center;
 			text-transform: uppercase;
 		}
 	}

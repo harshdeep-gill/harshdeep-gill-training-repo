@@ -1,0 +1,56 @@
+@import "../../scss";
+
+.inquiry-form {
+
+	&__modal {
+
+		tp-modal-content {
+			width: 100%;
+			max-width: 600px;
+		}
+
+		tp-form-error {
+			display: none;
+		}
+
+		&-title-container {
+			padding-right: var(--spacing-5);
+			margin-bottom: var(--typography-spacing);
+
+			p {
+				color: var(--color-gray-60);
+			}
+
+			@media (min-width: grid-size(md)) {
+				padding-left: var(--spacing-5);
+				text-align: center;
+				margin-bottom: var(--spacing-6);
+			}
+		}
+
+		button[type="submit"] {
+			width: 100%;
+		}
+
+		textarea {
+			height: 88px;
+			resize: none;
+		}
+
+		.form-field--buttons {
+			margin-top: var(--spacing-4);
+
+			@media (min-width: grid-size(md)) {
+				margin-top: var(--spacing-6);
+			}
+		}
+	}
+
+	&__state {
+		display: none;
+
+		&[data-visible] {
+			display: block;
+		}
+	}
+}
