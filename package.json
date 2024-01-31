@@ -58,7 +58,7 @@
     "webpack-watched-glob-entries-plugin": "^2.2.6"
   },
   "dependencies": {
-    "@travelopia/web-components": "^0.5.3",
+    "@travelopia/web-components": "^0.5.11",
     "normalize.css": "^8.0.1"
   }
 }
