@@ -11,7 +11,7 @@
 
 	&--small {
 
-		--logo-grid-image-height: 32px;
+		--logo-grid-image-height: 48px;
 
 		img.gumponents-select-image__img {
 			height: var(--logo-grid-image-height) !important;
@@ -20,7 +20,7 @@
 
 	&--medium {
 
-		--logo-grid-image-height: 40px;
+		--logo-grid-image-height: 64px;
 
 		img.gumponents-select-image__img {
 			height: var(--logo-grid-image-height) !important;
@@ -29,7 +29,7 @@
 
 	&--large {
 
-		--logo-grid-image-height: 64px;
+		--logo-grid-image-height: 80px;
 
 		img.gumponents-select-image__img {
 			height: var(--logo-grid-image-height) !important;

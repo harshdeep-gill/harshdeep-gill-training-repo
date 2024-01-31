@@ -1,8 +1,5 @@
 @props( [
 	'image_id' => 0,
-] )
-
-@aware( [
 	'size' => 'small',
 ] )
 
@@ -15,15 +12,15 @@
 		'size'      => match ( $size ) {
 			'small'  =>  [
 				'width'  => 'auto',
-				'height' => 32,
+				'height' => 40,
 			],
 			'medium' =>  [
 				'width'  => 'auto',
-				'height' => 40,
+				'height' => 64,
 			],
 			'large'  =>  [
 				'width'  => 'auto',
-				'height' => 64,
+				'height' => 96,
 			],
 		},
 		'transform' => [

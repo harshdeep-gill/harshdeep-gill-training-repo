@@ -59,6 +59,7 @@ function render( ?string $content = null, array $block = [] ): null|string {
 			COMPONENT . '.logo',
 			[
 				'image_id' => $inner_block['attrs']['image']['id'],
+				'size'     => $block['attrs']['size'] ?? 'small',
 			]
 		);
 	}
