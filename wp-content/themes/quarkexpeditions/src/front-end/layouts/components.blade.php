@@ -61,12 +61,15 @@
 	<x-component-demo :keys="[ 'form' ]">
 		<x-section title="Form UI Elements" heading_level="2" style="display: flex; flex-wrap: wrap; width: 100%;" class="typography-spacing">
 			<div style="display: flex; flex-wrap: wrap; width: 100%; gap: 20px; justify-content: space-between;">
-				<x-form style="min-width: 300px; padding: 24px; border: 1px solid var(--color-black); display:flex; flex-wrap: wrap; flex-direction: column; flex-grow: 1;">
+				<x-form salesforce_object="Webform_Landing_Page__c" style="min-width: 300px; padding: 24px; border: 1px solid var(--color-black); display:flex; flex-wrap: wrap; flex-direction: column; flex-grow: 1;">
 					<x-form.field :validation="[ 'required' ]">
-						<x-form.input type="text" label="First Name" placeholder="Enter First Name" name="fields[first_name]" />
+						<x-form.input type="text" label="First Name" placeholder="Enter First Name" name="fields[FirstName__c]" />
 					</x-form.field>
 					<x-form.field :validation="[ 'required' ]">
-						<x-form.select label="Country" name="fields[country]">
+						<x-form.input type="text" label="Last Name" placeholder="Enter First Name" name="fields[LastName__c]" />
+					</x-form.field>
+					<x-form.field :validation="[ 'required' ]">
+						<x-form.select label="Country">
 							<option value="">Select...</option>
 							<option value="1">Option 1</option>
 							<option value="2">Option 2</option>
@@ -74,7 +77,7 @@
 						</x-form.select>
 					</x-form.field>
 					<x-form.field>
-						<x-form.textarea label="What else would you like us to know?" placeholder="eg Lorem ipsum" name="fields[comments]"></x-form.textarea>
+						<x-form.textarea label="What else would you like us to know?" placeholder="eg Lorem ipsum"></x-form.textarea>
 					</x-form.field>
 					<x-form.buttons>
 						<x-form.submit>Request a Quote</x-form.submit>
@@ -114,8 +117,64 @@
 		/>
 	</x-component-demo>
 
+	<x-component-demo :keys="[ 'hero' ]">
+		<x-hero>
+			<x-hero.image image_id="26" />
+			<x-hero.content>
+				<x-hero.title title="Antarctic Voyages" />
+				<x-hero.sub-title title="Choose the Leader in Polar Adventure" />
+			</x-hero.content>
+			<x-hero.form>
+				<x-form>
+					<x-form.field :validation="[ 'required' ]">
+						<x-form.select label="When would you like to travel?" name="fields[country]">
+							<option value="">- Select -</option>
+							<option value="Antarctic Peninsula">Antarctic Peninsula</option>
+							<option value="Falklands &amp; South Georgia">Falklands &amp; South Georgia</option>
+							<option value="Patagonia">Patagonia</option>
+							<option value="Snow Hill Island">Snow Hill Island</option>
+						</x-form.select>
+					</x-form.field>
+					<x-form.field :validation="[ 'required' ]">
+						<x-form.select label="The most important factor for you?" name="fields[country]">
+							<option value="">- Select -</option>
+							<option value="adventure_activities">Adventure Activities</option>
+							<option value="budget">Budget</option>
+							<option value="region">Destination</option>
+							<option value="schedule">Schedule</option>
+							<option value="wildlife">Wildlife</option>
+						</x-form.select>
+					</x-form.field>
+					<x-form.field :validation="[ 'required' ]">
+						<x-form.select label="How many guests?" name="fields[country]">
+							<option value="">- Select -</option>
+							<option value="1">1</option>
+							<option value="2">2</option>
+							<option value="3">3</option>
+							<option value="4">4</option>
+						</x-form.select>
+					</x-form.field>
+					<x-form.field>
+						<x-form.select label="Where would you like to go?" name="fields[country]">
+							<option value="">- Select -</option>
+							<option value="2023-24">Antarctic 2023/24 (Nov '23 - Mar '24)</option>
+							<option value="2024-25">Antarctic 2024/25 (Nov '24 - Mar '25)</option>
+							<option value="2025-26">Antarctic 2025/26 (Nov '25 - Mar '26)</option>
+						</x-form.select>
+					</x-form.field>
+					<x-form.buttons>
+						<x-button type="button">
+							Request a Quote
+							<x-button.sub-title title="It only takes 2 minutes!" />
+						</x-button>
+					</x-form.buttons>
+				</x-form>
+			</x-hero.form>
+		</x-hero>
+	</x-component-demo>
+
 	<x-component-demo :keys="[ 'reviews-carousel', 'two-columns' ]">
-		<x-section title="Two Columns" heading_level="2">
+		<x-section>
 			<x-two-columns :border="true">
 				<x-two-columns.column>
 					<h3>About Quark Expeditions</h3>
@@ -126,10 +185,10 @@
 						<li>Nulla facilisi. Maecenas sit amet porta nulla commodo.</li>
 					</ul>
 					<x-logo-grid size="large">
-						<x-logo-grid.logo image_id="15"/>
-						<x-logo-grid.logo image_id="15"/>
-						<x-logo-grid.logo image_id="16"/>
-						<x-logo-grid.logo image_id="16"/>
+						<x-logo-grid.logo image_id="25"/>
+						<x-logo-grid.logo image_id="24"/>
+						<x-logo-grid.logo image_id="21"/>
+						<x-logo-grid.logo image_id="20"/>
 						<x-logo-grid.logo image_id="17"/>
 					</x-logo-grid>
 				</x-two-columns.column>
@@ -238,9 +297,9 @@
 				<x-lp-footer.column>
 					<x-lp-footer.featured-on title="Featured on:">
 						<x-logo-grid alignment="center">
-							<x-logo-grid.logo image_id="11"/>
-							<x-logo-grid.logo image_id="12"/>
-							<x-logo-grid.logo image_id="10"/>
+							<x-logo-grid.logo image_id="22"/>
+							<x-logo-grid.logo image_id="23"/>
+							<x-logo-grid.logo image_id="19"/>
 						</x-logo-grid>
 					</x-lp-footer.featured-on>
 				</x-lp-footer.column>

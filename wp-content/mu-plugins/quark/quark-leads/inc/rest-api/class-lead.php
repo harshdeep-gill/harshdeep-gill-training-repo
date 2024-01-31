@@ -45,18 +45,25 @@ class Lead extends WP_REST_Controller {
 				'callback'            => [ $this, 'create_item' ],
 				'permission_callback' => '__return_true',
 				'args'                => [
-					'recaptcha_token' => [
+					'recaptcha_token'   => [
 						'required'          => true,
 						'type'              => 'string',
 						'default'           => '',
 						'description'       => esc_html__( 'reCAPTCHA Token', 'tcs' ),
 						'sanitize_callback' => 'sanitize_text_field',
 					],
-					'fields'          => [
+					'salesforce_object' => [
+						'required'          => true,
+						'type'              => 'string',
+						'default'           => '',
+						'description'       => esc_html__( 'Salesforce Object', 'tcs' ),
+						'sanitize_callback' => 'sanitize_text_field',
+					],
+					'fields'            => [
 						'required'          => true,
 						'type'              => 'object',
 						'description'       => esc_html__( 'Form Fields', 'tcs' ),
-						'validate_callback' => fn ( $param ) => is_array( $param ) && ! empty( $param ),
+						'validate_callback' => fn( $param ) => is_array( $param ) && ! empty( $param ),
 					],
 				],
 			]
@@ -100,8 +107,9 @@ class Lead extends WP_REST_Controller {
 
 		// Prepare lead data.
 		$lead_data = [
-			'recaptcha' => $recaptcha_data,
-			'fields'    => (array) $request->get_param( 'fields' ),
+			'recaptcha'         => $recaptcha_data,
+			'salesforce_object' => $request->get_param( 'salesforce_object' ),
+			'fields'            => (array) $request->get_param( 'fields' ),
 		];
 
 		// Create lead.
