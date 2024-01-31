@@ -123,8 +123,8 @@ label {
 
 .form-row {
 	display: grid;
-	grid-gap: 15px;
-	margin-bottom: 15px;
+	gap: var(--spacing-4);
+	margin-bottom: var(--spacing-4);
 	grid-template-columns: repeat(1, 1fr);
 	min-width: 0;
 
