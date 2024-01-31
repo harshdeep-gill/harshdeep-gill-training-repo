@@ -171,6 +171,35 @@
 	</div>
 	<div class="typography__row typography-spacing">
 		<div class="typography__view">
+			<h3>Body Text Standard Bold</h3>
+			<strong>Lorem ipsum dolor sit, consectetur adipiscing elit. Vestibulum sit amet massa eget orciiaculis
+				ultricies alas non ante. Vivamus tempor purus quam, ac iaculis diam. Sed congue justo ac nisl
+				efficitur ultricies. Sed at lobortis eros. Pellentesque metus arcu, sodales non ullamcorper sed,
+				ullamcorper a sapien tempor.</strong>
+			<strong>Donec malesuada semper est, id lobortis sapien lobortis ac. Nullam pretium cursus ornare. Proin
+				hendrerit ultricies placerat. Praesent eu neque convallis, bibendum purus eu, finibus dui. Nulla
+				facilisi.</strong>
+		</div>
+		<div class="typography__details">
+			<div class="typography__style-specification">
+				<p>L&nbsp;<span>Nunito Sans 700</span></p>
+				<p>Font Size:<span>16</span></p>
+				<p>Line Height:<span>1.75</span></p>
+			</div>
+			<div class="typography__style-specification">
+				<p>M&nbsp;<span>Nunito Sans 700</span></p>
+				<p>Font Size:<span>16</span></p>
+				<p>Line Height:<span>1.75</span></p>
+			</div>
+			<div class="typography__style-specification">
+				<p>S&nbsp;<span>Nunito Sans 700</span></p>
+				<p>Font Size:<span>16</span></p>
+				<p>Line Height:<span>1.75</span></p>
+			</div>
+		</div>
+	</div>
+	<div class="typography__row typography-spacing">
+		<div class="typography__view">
 			<h3>Body Text Small</h3>
 			<p class="body-small">
 				Lorem ipsum dolor sit, consectetur adipiscing elit. Vestibulum sit amet massa eget orci iaculis
