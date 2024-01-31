@@ -45,6 +45,10 @@
 				<x-form.field :validation="[ 'required' ]" class="inquiry-form__country">
 					<x-form.select label="Country" name="fields[country]">
 						<option value="">- Select -</option>
+						<option value="AU">Australia</option>
+						<option value="CA">Canada</option>
+						<option value="US">United States</option>
+						<option value="GB">United Kingdom</option>
 						<option value="AD">Andorra</option>
 						<option value="AE">United Arab Emirates</option>
 						<option value="AF">Afghanistan</option>
@@ -58,7 +62,6 @@
 						<option value="AR">Argentina</option>
 						<option value="AS">American Samoa</option>
 						<option value="AT">Austria</option>
-						<option value="AU">Australia</option>
 						<option value="AW">Aruba</option>
 						<option value="AX">Aland Islands</option>
 						<option value="AZ">Azerbaijan</option>
@@ -83,7 +86,6 @@
 						<option value="BW">Botswana</option>
 						<option value="BY">Belarus</option>
 						<option value="BZ">Belize</option>
-						<option value="CA">Canada</option>
 						<option value="CC">Cocos (Keeling) Islands</option>
 						<option value="CD">Congo, the Democratic Republic of the</option>
 						<option value="CF">Central African Republic</option>
@@ -122,7 +124,6 @@
 						<option value="FO">Faroe Islands</option>
 						<option value="FR">France</option>
 						<option value="GA">Gabon</option>
-						<option value="GB">United Kingdom</option>
 						<option value="GD">Grenada</option>
 						<option value="GE">Georgia</option>
 						<option value="GF">French Guiana</option>
@@ -278,7 +279,6 @@
 						<option value="UA">Ukraine</option>
 						<option value="UG">Uganda</option>
 						<option value="UM">United States Minor Outlying Islands</option>
-						<option value="US">United States</option>
 						<option value="UY">Uruguay</option>
 						<option value="UZ">Uzbekistan</option>
 						<option value="VA">Holy See (Vatican City State)</option>

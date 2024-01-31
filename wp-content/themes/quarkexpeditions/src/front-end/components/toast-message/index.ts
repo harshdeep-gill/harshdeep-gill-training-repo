@@ -15,7 +15,7 @@ class ToastMessage extends HTMLElement {
 		super();
 
 		// Elements.
-		this.closeButton = this.querySelector( '.toast-dismiss' );
+		this.closeButton = this.querySelector( '.toast-message__close' );
 
 		// Events.
 		this.closeButton?.addEventListener( 'click', this.hide.bind( this ) );

@@ -21,7 +21,7 @@
 <quark-toast-message @class( $classes )>
 	<x-svg name="{{ $icon }}"/>
 	<p><x-escape :content="$message"/></p>
-	<button class="toast-dismiss">
+	<button class="toast-message__close">
 		<x-svg name="cross-white"/>
 	</button>
 </quark-toast-message>

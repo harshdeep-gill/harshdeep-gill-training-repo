@@ -49,7 +49,7 @@ export default class Form extends HTMLElement {
 	 */
 	connectedCallback(): void {
 		// Events.
-		this.tpForm?.addEventListener( 'submit', this.formSubmitted.bind( this ) );
+		this.tpForm?.addEventListener( 'submit-validation-success', this.formSubmitted.bind( this ) );
 
 		// reCAPTCHA.
 		if ( this.recaptchaTokenField && null !== this.ownerDocument.defaultView ) {
@@ -62,15 +62,10 @@ export default class Form extends HTMLElement {
 	 *
 	 * @param {Event} e Form submit event.
 	 */
-	formSubmitted( e: SubmitEvent ) {
+	formSubmitted( e: any ) {
 		// Prevent default action.
 		e.preventDefault();
-
-		// Validate form.
-		if ( ! this?.tpForm?.validate() ) {
-			// Bail if the form isn't valid.
-			return;
-		}
+		e.stopImmediatePropagation();
 
 		// Trigger event before submit.
 		this.dispatchEvent( new CustomEvent( 'submit', {
