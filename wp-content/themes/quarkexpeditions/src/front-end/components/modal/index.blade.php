@@ -1,8 +1,6 @@
 @props( [
-	'id'                    => '',
-	'class'                 => '',
-	'full_width_mobile'     => false,
-	'close_button' => true,
+	'id'    => '',
+	'class' => '',
 ] )
 
 @php
@@ -11,7 +9,6 @@
 	}
 
 	$classes = [ 'modal', $class ];
-	$classes[] = $full_width_mobile ? 'modal--full-width-mobile' : '';
 
 @endphp
 
@@ -23,13 +20,7 @@
 	overlay-click-close="yes"
 >
 	<tp-modal-content class="modal__content">
-		@if ( ! empty( $close_button ) )
-			<tp-modal-close class="modal__close-button">
-				<button><x-svg name="cross" /></button>
-			</tp-modal-close>
-		@endif
-		<div class="modal__content-wrap">
-			{!! $slot !!}
-		</div>
+		<x-modal.close />
+		{!! $slot !!}
 	</tp-modal-content>
 </tp-modal>

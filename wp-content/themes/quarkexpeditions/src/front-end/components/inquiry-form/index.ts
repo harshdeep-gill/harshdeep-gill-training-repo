@@ -1,7 +1,7 @@
 /**
  * External dependency
  */
-import { TPFormElement, TPFormFieldElement } from '@travelopia/web-components';
+import { TPFormElement } from '@travelopia/web-components';
 
 /**
  * InquiryForm Class.
@@ -10,115 +10,70 @@ class InquiryForm extends HTMLElement {
 	/**
 	 * Properties.
 	 */
-	private countriesSelector: HTMLSelectElement | null;
-	private stateSelectorAustralia: TPFormFieldElement | null;
-	private stateSelectorCanada: TPFormFieldElement | null;
-	private stateSelectorUS: TPFormFieldElement | null;
-	private errorToast: QuarkToast | null;
-	private tpForm: TPFormElement | null;
+	private readonly countrySelector: HTMLElement | null;
+	private readonly stateSelectors: NodeListOf<HTMLElement> | null;
+	private readonly toastMessage: ToastMessage | null;
+	private readonly tpForm: TPFormElement | null;
 
 	/**
 	 * Constructor.
 	 */
 	constructor() {
-		// Initialize parent
+		// Initialize parent.
 		super();
 
-		// Initialize the select elements
-		this.countriesSelector = this.querySelector( '.inquiry-form-modal-country' ) as HTMLSelectElement;
-		this.stateSelectorAustralia = this.querySelector( 'tp-form-field[data-country="AU"]' ) as TPFormFieldElement;
-		this.stateSelectorCanada = this.querySelector( 'tp-form-field[data-country="CA"]' ) as TPFormFieldElement;
-		this.stateSelectorUS = this.querySelector( 'tp-form-field[data-country="US"]' ) as TPFormFieldElement;
-		this.errorToast = this.querySelector( 'quark-toast' ) as QuarkToast;
+		// Elements.
 		this.tpForm = this.querySelector( 'tp-form' ) as TPFormElement;
+		this.countrySelector = this.querySelector( '.inquiry-form__country' );
+		this.stateSelectors = this.querySelectorAll( '.inquiry-form__state' );
+		this.toastMessage = this.querySelector( 'quark-toast-message' );
 
-		// No point in setting up if the fields are not there.
-		if ( ! (
-			this.countriesSelector &&
-			this.stateSelectorAustralia &&
-			this.stateSelectorCanada &&
-			this.stateSelectorUS
-		) ) {
-			// Bail early.
+		// Events.
+		if ( this.stateSelectors ) {
+			this.countrySelector?.querySelector( 'select' )?.addEventListener( 'change', this.changeCountry.bind( this ) );
+		}
+		this.tpForm?.addEventListener( 'validation-error', this.showToastMessage.bind( this ) );
+		this.tpForm?.addEventListener( 'validation-success', this.hideToastMessage.bind( this ) );
+	}
+
+	/**
+	 * Event: Country changed.
+	 */
+	changeCountry(): void {
+		// Check if we have states.
+		if ( ! this.stateSelectors ) {
+			// No states found, bail early.
 			return;
 		}
 
-		// Initial setup
-		this.renderAppropriateStateSelector();
+		// Get country.
+		const country: string = this.countrySelector?.querySelector( 'select' )?.value ?? '';
 
-		// Events
-		this.countriesSelector.addEventListener( 'change', this.renderAppropriateStateSelector.bind( this ) );
-		this.tpForm.addEventListener( 'validation-error', this.showErrorToast.bind( this ) );
-		this.tpForm.addEventListener( 'validation-success', this.hideErrorToast.bind( this ) );
+		// Show / hide states based on country.
+		this.stateSelectors.forEach( ( state: HTMLElement ): void => {
+			// Check if state's country matches current country.
+			if ( state.getAttribute( 'data-country' ) === country ) {
+				state.setAttribute( 'data-visible', 'true' );
+			} else {
+				state.removeAttribute( 'data-visible' );
+			}
+		} );
 	}
 
 	/**
-	 * Render appropriate state selector based on the selected country.
-	 *
-	 * @memberof InquiryForm
+	 * Show toast message.
 	 */
-	renderAppropriateStateSelector() {
-		// Hiding
-		this.hideStateSelector( this.stateSelectorAustralia );
-		this.hideStateSelector( this.stateSelectorCanada );
-		this.hideStateSelector( this.stateSelectorUS );
-
-		// Check the value.
-		switch ( this.countriesSelector?.value ) {
-			case 'AU':
-				this.showStateSelector( this.stateSelectorAustralia );
-				break;
-			case 'CA':
-				this.showStateSelector( this.stateSelectorCanada );
-				break;
-			case 'US':
-				this.showStateSelector( this.stateSelectorUS );
-				break;
-		}
+	showToastMessage(): void {
+		// Show toast message.
+		this.toastMessage?.show();
 	}
 
 	/**
-	 * Hide field.
-	 *
-	 * @param {TPFormFieldElement} selector
-	 * @memberof InquiryForm
+	 * Hide toast message.
 	 */
-	hideStateSelector( selector: TPFormFieldElement | null ) {
-		// Hide selector
-		selector?.setAttribute( 'data-hide', '' );
-		selector?.removeAttribute( 'required' );
-	}
-
-	/**
-	 * Show field.
-	 *
-	 * @param {(TPFormFieldElement | null)} selector
-	 * @memberof InquiryForm
-	 */
-	showStateSelector( selector: TPFormFieldElement | null ) {
-		// Show selector
-		selector?.removeAttribute( 'data-hide' );
-		selector?.setAttribute( 'required', 'yes' );
-	}
-
-	/**
-	 * Shows the error toast
-	 *
-	 * @memberof InquiryForm
-	 */
-	showErrorToast() {
-		// Show the error toast
-		this.errorToast?.show();
-	}
-
-	/**
-	 * Shows the error toast
-	 *
-	 * @memberof InquiryForm
-	 */
-	hideErrorToast() {
-		// Show the error toast
-		this.errorToast?.hide();
+	hideToastMessage(): void {
+		// Hide toast message.
+		this.toastMessage?.hide();
 	}
 }
 

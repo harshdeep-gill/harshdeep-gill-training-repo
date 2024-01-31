@@ -1,5 +1,5 @@
 @props( [
-	'modal_id' => '',
+	'modal_id' => 'hero-inquiry-form-modal',
 	'form_id'  => '',
 	'title'    => '',
 	'subtitle' => '',
@@ -12,11 +12,52 @@
 @endphp
 
 <x-inquiry-form
-	:classes="[ 'hero__form', 'color-context--dark' ]"
+	class="hero__form color-context--dark"
 >
-	<x-inquiry-form.main modal_id="{{ $modal_id }}">
-		{!! $slot !!}
-	</x-inquiry-form.main>
+	<x-form.field :validation="[ 'required' ]">
+		<x-form.select label="When would you like to travel?" name="fields[where_to_visit]" form="inquiry-form">
+			<option value="">- Select -</option>
+			<option value="Antarctic Peninsula">Antarctic Peninsula</option>
+			<option value="Falklands &amp; South Georgia">Falklands &amp; South Georgia</option>
+			<option value="Patagonia">Patagonia</option>
+			<option value="Snow Hill Island">Snow Hill Island</option>
+		</x-form.select>
+	</x-form.field>
+	<x-form.field :validation="[ 'required' ]">
+		<x-form.select label="The most important factor for you?" name="fields[country]" form="inquiry-form">
+			<option value="">- Select -</option>
+			<option value="adventure_activities">Adventure Activities</option>
+			<option value="budget">Budget</option>
+			<option value="region">Destination</option>
+			<option value="schedule">Schedule</option>
+			<option value="wildlife">Wildlife</option>
+		</x-form.select>
+	</x-form.field>
+	<x-form.field :validation="[ 'required' ]">
+		<x-form.select label="How many guests?" name="fields[country]" form="inquiry-form">
+			<option value="">- Select -</option>
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+			<option value="4">4</option>
+		</x-form.select>
+	</x-form.field>
+	<x-form.field>
+		<x-form.select label="Where would you like to go?" name="fields[country]" form="inquiry-form">
+			<option value="">- Select -</option>
+			<option value="2023-24">Antarctic 2023/24 (Nov '23 - Mar '24)</option>
+			<option value="2024-25">Antarctic 2024/25 (Nov '24 - Mar '25)</option>
+			<option value="2025-26">Antarctic 2025/26 (Nov '25 - Mar '26)</option>
+		</x-form.select>
+	</x-form.field>
+	<x-form.buttons>
+		<x-modal.open-modal class="inquiry-form__open-modal" modal_id="{{ $modal_id }}">
+			<x-button type="button">
+				Request a Quote
+				<x-button.sub-title title="It only takes 2 minutes!" />
+			</x-button>
+		</x-modal.open-modal>
+	</x-form.buttons>
 	<x-inquiry-form.modal
 		title="{{ $title }}"
 		subtitle="{{ $subtitle }}"

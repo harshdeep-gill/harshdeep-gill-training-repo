@@ -2,73 +2,35 @@
 @import "../../scss";
 
 .modal {
-
 	$self: &;
 
 	&__content {
-		background-color: transparent;
-		text-align: right;
-		margin-top: 0;
-		margin-bottom: 0;
-
-		@media (min-width: grid-size(md)) {
-			margin-top: auto;
-			margin-bottom: auto;
-		}
+		background-color: var(--color-gray-5);
+		position: relative;
+		padding: var(--spacing-5);
+		border-radius: 8px;
 	}
 
 	&__close-button {
-		position: static;
-		display: inline-block;
-
-		button {
-			padding: 12px 12px 10px 12px;
-		}
+		position: absolute;
+		top: 0;
+		right: 0;
 	}
 
-	&__content-wrap {
-		text-align: initial;
-		height: 95vh;
-		margin-top: 5vh;
+	.toast-message {
+		position: absolute;
+		inset: var(--spacing-1) auto auto 50%;
+		width: 90%;
+		transform: translate(-50%);
 
 		@media (min-width: grid-size(md)) {
-			height: auto;
-			margin-top: 0;
-		}
-
-		.toast {
-			position: absolute;
-			inset: var(--spacing-1) auto auto 50%;
-			width: 90%;
-			transform: translate(-50%);
-
-			@media (min-width: grid-size(md)) {
-				top: calc(-1 * var(--spacing-4));
-				width: fit-content;
-				min-width: 450px;
-			}
+			top: calc(-1 * var(--spacing-4));
+			width: fit-content;
+			min-width: 450px;
 		}
 	}
 
 	&__open-modal {
-		display: inline-block;
-	}
-
-	&--full-width-mobile {
-		padding: 0;
-
-		@media screen and (min-width: grid-size(md)) {
-			padding: 20px;
-		}
-
-		#{$self}__content {
-			padding: 0;
-			max-width: 100%;
-
-			@media screen and (min-width: grid-size(md)) {
-				padding: 20px;
-				max-width: 80ch;
-			}
-		}
+		display: contents;
 	}
 }

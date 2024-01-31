@@ -11,8 +11,8 @@
 	}
 @endphp
 
-<x-modal id="{{ $modal_id }}" :full_width_mobile="true" :close_button="false">
-	<quark-inquiry-form class="inquiry-form__modal">
+<x-modal class="inquiry-form__modal" id="{{ $modal_id }}" :full_width_mobile="true" :close_button="false">
+	<quark-inquiry-form>
 		@if ( ! empty( $title ) || ! empty( $subtitle ) )
 			<div class="inquiry-form__modal-title-container">
 				@if ( ! empty( $title ) )
@@ -42,8 +42,8 @@
 				</x-form.field>
 			</x-form.row>
 			<x-form.row>
-				<x-form.field :validation="[ 'required' ]">
-					<x-form.select label="Country" name="fields[country]" class="inquiry-form-modal-country">
+				<x-form.field :validation="[ 'required' ]" class="inquiry-form__country">
+					<x-form.select label="Country" name="fields[country]">
 						<option value="">- Select -</option>
 						<option value="AD">Andorra</option>
 						<option value="AE">United Arab Emirates</option>
@@ -298,7 +298,7 @@
 					</x-form.select>
 				</x-form.field>
 
-				<x-form.field :validation="[ 'required' ]" data-country="AU">
+				<x-form.field :validation="[ 'required' ]" data-country="AU" class="inquiry-form__state">
 					<x-form.select label="State/Province" name="fields[state]">
 						<option value="">- Select -</option>
 						<option value="ACT">Australian Capital Territory</option>
@@ -313,7 +313,7 @@
 					</x-form.select>
 				</x-form.field>
 
-				<x-form.field :validation="[ 'required' ]" data-country="US">
+				<x-form.field :validation="[ 'required' ]" data-country="US" class="inquiry-form__state">
 					<x-form.select label="State/Province" name="fields[state]">
 						<option value="">- Select -</option>
 						<option value="AA">Armed Forces Americas</option>
@@ -381,7 +381,7 @@
 					</x-form.select>
 				</x-form.field>
 
-				<x-form.field :validation="[ 'required' ]" data-country="CA">
+				<x-form.field :validation="[ 'required' ]" data-country="CA" class="inquiry-form__state">
 					<x-form.select label="State/Province" name="fields[state]">
 						<option value="">- Select -</option>
 						<option value="AB">Alberta</option>
@@ -419,13 +419,9 @@
 
 			{!! $slot !!}
 			<x-form.buttons>
-				<x-form.submit form="{{ $form_id }}">Request a Quote</x-form.submit>
+				<x-form.submit>Request a Quote</x-form.submit>
 			</x-form.buttons>
 		</x-form>
-		<x-modal.close-modal/>
-		<x-toast type="error" message="Fields marked with an asterisk (*) are required"/>
+		<x-toast-message type="error" message="Fields marked with an asterisk (*) are required" />
 	</quark-inquiry-form>
-	<x-form.buttons>
-		<x-form.submit form="{{ $form_id }}">Request a Quote</x-form.submit>
-	</x-form.buttons>
 </x-modal>

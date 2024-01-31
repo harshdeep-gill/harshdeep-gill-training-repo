@@ -1,134 +1,33 @@
 @import "../../scss";
 
-.inquiry-form__modal {
-	width: 100%;
-	height: calc(100% - 80px);
-	min-width: 360px;
-	display: flex;
-	flex-direction: column;
-	gap: var(--spacing-4);
-	position: relative;
-	padding: var(--spacing-5);
-	background-color: var(--color-gray-5);
-	border-radius: 8px 8px 0 0;
+.inquiry-form {
 
-	@media (min-width: grid-size(md)) {
-		width: 600px;
-		gap: var(--spacing-6);
-		border-radius: 8px;
-		height: auto;
-	}
+	&__modal {
 
-	quark-form {
-		overflow-y: auto;
-		scrollbar-width: none;
-
-		&::-webkit-scrollbar {
+		tp-form-error {
 			display: none;
 		}
 
-		@media (min-width: grid-size(md)) {
-			overflow-y: hidden;
-		}
-	}
-
-	[data-hide] {
-		display: none;
-	}
-
-	tp-form-error {
-		display: none;
-	}
-
-	.modal__close-button {
-		position: absolute;
-		top: 0;
-		right: 0;
-	}
-
-	&-title-container {
-		padding-right: var(--spacing-4);
-
-		h3 {
-			color: var(--color-black);
-		}
-
-		p {
-			color: var(--color-gray-60);
-			font-size: 16px;
-		}
-
-		@media (min-width: grid-size(md)) {
-			padding-inline: var(--spacing-4);
+		&-title-container {
 			text-align: center;
+			margin-bottom: var(--typography-spacing);
+		}
+
+		button[type="submit"] {
+			width: 100%;
+		}
+
+		textarea {
+			height: 88px;
+			resize: none;
 		}
 	}
 
-	button[type="submit"] {
-		width: 100%;
-	}
-
-	textarea {
-		height: 88px;
-	}
-
-	.form-row {
-		display: grid;
-		grid-gap: 15px;
-		margin-bottom: 15px;
-		grid-template-columns: repeat(1, 1fr);
-		min-width: 0;
-
-		&:last-child {
-			margin-bottom: 0;
-		}
-
-		.form-field {
-			margin-bottom: 0;
-		}
-
-		@media screen and (min-width: grid-size(md)) {
-			grid-template-columns: repeat(auto-fit, minmax(264px, 1fr));
-		}
-
-	}
-
-	.form-field--buttons {
+	&__state {
 		display: none;
 
-		@media (min-width: grid-size(md)) {
+		&[data-visible] {
 			display: block;
 		}
-	}
-
-
-}
-
-
-quark-open-modal.inquiry-form__open-modal {
-	width: 100%;
-
-	button {
-		display: flex;
-		flex-direction: column;
-		width: 100%;
-		align-items: center;
-		text-transform: uppercase;
-	}
-}
-
-.modal__content-wrap > .form-field--buttons {
-	background-color: var(--color-white);
-	height: 80px;
-	padding: var(--spacing-3) var(--spacing-4);
-	box-shadow: var(--shadow-1);
-
-	button {
-		width: 100%;
-		height: 100%;
-	}
-
-	@media (min-width: grid-size(md)) {
-		display: none;
 	}
 }

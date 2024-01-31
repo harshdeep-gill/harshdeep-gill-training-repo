@@ -4,7 +4,7 @@
 ] )
 
 @php
-	$classes = [ 'toast', 'toast--hidden' ];
+	$classes = [ 'toast-message' ];
 	$icon = '';
 
 
@@ -18,10 +18,10 @@
 	$icon = $valid_toast_type;
 @endphp
 
-<quark-toast @class( $classes )>
+<quark-toast-message @class( $classes )>
 	<x-svg name="{{ $icon }}"/>
 	<p><x-escape :content="$message"/></p>
 	<button class="toast-dismiss">
 		<x-svg name="cross-white"/>
 	</button>
-</quark-toast>
+</quark-toast-message>

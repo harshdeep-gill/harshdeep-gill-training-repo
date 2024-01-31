@@ -1,10 +1,16 @@
 @props( [
-	'classes'  => [],
+	'class'  => '',
 ] )
 
 @php
 	if ( empty( $slot ) ) {
 		return;
+	}
+
+	$classes = [ 'inquiry-form' ];
+
+	if ( ! empty( $class ) ) {
+	    $classes[] = $class;
 	}
 @endphp
 

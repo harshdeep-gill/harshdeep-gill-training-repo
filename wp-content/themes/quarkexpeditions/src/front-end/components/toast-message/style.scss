@@ -1,5 +1,5 @@
-.toast {
-	display: flex;
+.toast-message {
+	display: none;
 	gap: var(--spacing-3);
 	padding: var(--spacing-3) 20px;
 	border-radius: 4px;
@@ -9,6 +9,10 @@
 	p {
 		width: 100%;
 		margin: 0;
+	}
+
+	[visible] {
+		display: flex;
 	}
 
 	&--success {
@@ -22,9 +26,5 @@
 	svg {
 		min-width: 24px;
 		min-height: 24px;
-	}
-
-	&--hidden {
-		display: none;
 	}
 }
