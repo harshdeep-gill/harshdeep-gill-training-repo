@@ -11,6 +11,8 @@ import * as lpHeader from './lp-header';
 import * as twoColumns from './two-columns';
 import * as iconInfoColumns from './icon-info-columns';
 import * as reviewsCarousel from './reviews-carousel';
+import * as hero from './hero';
+import * as inquiryForm from './inquiry-form';
 
 /**
  * Add blocks.
@@ -21,6 +23,8 @@ const blocks = [
 	twoColumns,
 	iconInfoColumns,
 	reviewsCarousel,
+	hero,
+	inquiryForm,
 ];
 
 /**

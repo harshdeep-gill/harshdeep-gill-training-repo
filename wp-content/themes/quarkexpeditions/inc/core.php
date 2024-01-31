@@ -201,6 +201,20 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'data-action' => true,
 					'style'       => true,
 				],
+				'quark-hero-form'      => [
+					'class' => true,
+				],
+				'quark-inquiry-form'   => [
+					'class' => true,
+				],
+				'quark-open-modal'     => [
+					'class'    => true,
+					'modal-id' => true,
+				],
+				'quark-toast-message'  => [
+					'class'   => true,
+					'visible' => true,
+				],
 				'tp-form'              => [
 					'class'          => true,
 					'prevent-submit' => true,
@@ -243,9 +257,16 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'current' => true,
 				],
 				'tp-modal'             => [
+					'id'                  => true,
 					'class'               => true,
 					'overlay-click-close' => true,
 					'open'                => true,
+				],
+				'tp-modal-content'     => [
+					'class' => true,
+				],
+				'tp-modal-close'       => [
+					'class' => true,
 				],
 				'tp-accordion'         => [
 					'class' => true,

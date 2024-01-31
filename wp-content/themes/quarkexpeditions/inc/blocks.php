@@ -31,6 +31,8 @@ function register_blocks(): void {
 		'TwoColumns'      => 'two-columns.php',
 		'IconInfoColumns' => 'icon-info-columns.php',
 		'ReviewsCarousel' => 'reviews-carousel.php',
+		'Hero'            => 'hero.php',
+		'InquiryForm'     => 'inquiry-form.php',
 	];
 
 	// Register blocks.
