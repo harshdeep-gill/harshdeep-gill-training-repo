@@ -107,7 +107,7 @@ export const settings: BlockConfiguration = {
 						/>
 					</PanelBody>
 				</InspectorControls>
-				<div { ...blocksProps } tabIndex={1}>
+				<div { ...blocksProps }>
 					<div className="icon-info-columns__icon">
 						{ selectedIcon }
 					</div>
