@@ -124,12 +124,14 @@
 				<x-hero.title title="Antarctic Voyages" />
 				<x-hero.sub-title title="Choose the Leader in Polar Adventure" />
 			</x-hero.content>
-			<x-hero.form
-				form_id="inquiry-form"
-				title="Almost there!"
-				subtitle="We just need a bit more info to help personalize your itinerary."
-				salesforce_object="Webform_Landing_Page__c"
-			/>
+			<x-hero.form>
+				<x-inquiry-form
+					form_id="inquiry-form"
+					title="Almost there!"
+					subtitle="We just need a bit more info to help personalize your itinerary."
+					salesforce_object="Webform_Landing_Page__c"
+				/>
+			</x-hero.form>
 		</x-hero>
 	</x-component-demo>
 
