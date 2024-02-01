@@ -226,6 +226,7 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'min-length' => true,
 					'max-length' => true,
 					'error'      => true,
+					'data-*'     => true,
 				],
 				'tp-form-submit'       => [
 					'class'           => true,
@@ -361,6 +362,7 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'method'     => true,
 					'action'     => true,
 					'novalidate' => true,
+					'data-*'     => true,
 				],
 				'select'               => [
 					'name'     => true,
