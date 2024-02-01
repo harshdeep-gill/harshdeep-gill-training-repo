@@ -19,10 +19,10 @@
 <div @class( $classes )>
 	<quark-hero-form>
 		<x-form.field :validation="[ 'required' ]">
-			<x-form.select label="When would you like to travel?" name="fields[Sub_Region__c]" form="inquiry-form">
+			<x-form.select label="Where would you like to travel?" name="fields[Sub_Region__c]" form="inquiry-form">
 				<option value="">- Select -</option>
 				<option value="Antarctic Peninsula">Antarctic Peninsula</option>
-				<option value="Falklands &amp; South Georgia">Falklands &amp; South Georgia</option>
+				<option value="Falklands & South Georgia">Falklands & South Georgia</option>
 				<option value="Patagonia">Patagonia</option>
 				<option value="Snow Hill Island">Snow Hill Island</option>
 			</x-form.select>
@@ -30,11 +30,11 @@
 		<x-form.field :validation="[ 'required' ]">
 			<x-form.select label="The most important factor for you?" name="fields[Most_Important_Factors__c]" form="inquiry-form">
 				<option value="">- Select -</option>
-				<option value="adventure_activities">Adventure Activities</option>
-				<option value="budget">Budget</option>
-				<option value="region">Destination</option>
-				<option value="schedule">Schedule</option>
-				<option value="wildlife">Wildlife</option>
+				<option value="Adventure Activities">Adventure Activities</option>
+				<option value="Budget">Budget</option>
+				<option value="Region">Destination</option>
+				<option value="Schedule">Schedule</option>
+				<option value="Wildlife">Wildlife</option>
 			</x-form.select>
 		</x-form.field>
 		<x-form.field :validation="[ 'required' ]">
