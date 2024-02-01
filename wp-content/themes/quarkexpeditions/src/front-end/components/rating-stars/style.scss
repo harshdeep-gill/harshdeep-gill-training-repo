@@ -20,7 +20,7 @@
 	&::before {
 		content: "\2605\2605\2605\2605\2605";
 		display: inline-block;
-		background: linear-gradient(90deg, var(--color-yellow) var(--percent), var(--color-gray-50) var(--percent));
+		background: linear-gradient(90deg, var(--color-yellow) var(--percent), var(--color-gray-10) var(--percent));
 		background-clip: text;
 		-webkit-background-clip: text;
 		-webkit-text-fill-color: transparent;
