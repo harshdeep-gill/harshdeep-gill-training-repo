@@ -51,14 +51,10 @@ export const settings: BlockConfiguration = {
 
 		// eslint-disable-next-line react-hooks/rules-of-hooks
 		const innerBlockProps = useInnerBlocksProps( {}, {
-			allowedBlocks: [ 'core/paragraph', 'core/list', socialLinks.name, 'core/heading' ],
+			allowedBlocks: [ 'core/paragraph', 'core/list', socialLinks.name, 'core/heading', 'quark/logo-grid' ],
 			template: [
-				[ 'core/paragraph', { placeholder: __( 'Add content here..', 'qrk' ) } ],
+				[ 'core/paragraph' ],
 			],
-			renderAppender: InnerBlocks.ButtonBlockAppender,
-
-			// @ts-ignore
-			orientation: 'vertical',
 		} );
 
 		// Return the block's markup.

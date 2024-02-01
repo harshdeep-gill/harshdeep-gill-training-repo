@@ -89,7 +89,7 @@ export const settings: BlockConfiguration = {
 				</InspectorControls>
 				<span { ...blocksProps }>
 					<span className="screen-reader-text">{ attributes.type }</span>
-					{ icons[ attributes.type ] }
+					{ icons[ `${ attributes.type }Circle` ] }
 				</span>
 			</>
 		);

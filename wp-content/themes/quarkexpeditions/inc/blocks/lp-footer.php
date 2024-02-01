@@ -73,7 +73,7 @@ function render( ?string $content = null, array $block = [] ) : null | string {
 					// Add component to slot.
 					$links[] = [
 						'type' => $social_link['attrs']['type'] ?? 'facebook',
-						'url'  => $social_link['attrs']['url'],
+						'url'  => $social_link['attrs']['url'] ?? '',
 					];
 				}
 

@@ -7,8 +7,9 @@ import {
 	registerBlockType,
 } from '@wordpress/blocks';
 import {
+	useBlockProps,
 	useInnerBlocksProps,
-	InnerBlocks, useBlockProps,
+	InnerBlocks,
 } from '@wordpress/block-editor';
 
 /**
@@ -46,25 +47,24 @@ export const settings: BlockConfiguration = {
 	},
 	edit(): JSX.Element {
 		// eslint-disable-next-line react-hooks/rules-of-hooks
-		const blockProps = useBlockProps();
+		const blockProps = useBlockProps( {
+			className: 'lp-footer__social-links',
+		} );
 
 		// eslint-disable-next-line react-hooks/rules-of-hooks
-		const innerBlockProps = useInnerBlocksProps( {
-			className: 'lp-footer__social-links',
-		}, {
+		const innerBlockProps = useInnerBlocksProps( { ...blockProps }, {
 			allowedBlocks: [ item.name ],
 			template: [
 				[ item.name, { type: 'facebook', url: 'https://www.facebook.com/' } ],
 				[ item.name, { type: 'instagram', url: 'https://www.instagram.com/' } ],
 				[ item.name, { type: 'twitter', url: 'https://www.twitter.com/' } ],
+				[ item.name, { type: 'youtube', url: 'https://www.youtube.com/' } ],
 			],
 		} );
 
 		// Return the block's markup.
 		return (
-			<div { ...blockProps } >
-				<div { ...innerBlockProps } />
-			</div>
+			<div { ...innerBlockProps } />
 		);
 	},
 	save() {

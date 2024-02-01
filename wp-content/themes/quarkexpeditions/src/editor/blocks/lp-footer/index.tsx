@@ -71,8 +71,6 @@ export const settings: BlockConfiguration = {
 			allowedBlocks: [ column.name ],
 			template: [
 				[ column.name ],
-				[ column.name ],
-				[ column.name ],
 			],
 
 			// @ts-ignore
