@@ -30,7 +30,7 @@ export class HeroForm extends HTMLElement {
 		this.fields = this.querySelectorAll( 'tp-form-field' );
 
 		// Events.
-		this.openModalButton?.addEventListener( 'click', this.modalButtonClicked.bind( this ) );
+		this.openModalButton?.addEventListener( 'click', this.modalButtonClicked.bind( this ), { capture: true } );
 	}
 
 	/**
