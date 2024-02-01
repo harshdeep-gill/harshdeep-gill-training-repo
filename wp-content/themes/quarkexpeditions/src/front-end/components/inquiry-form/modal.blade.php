@@ -434,8 +434,10 @@
 		@if ( empty( $thank_you_page ) )
 			<div class="inquiry-form__thank-you">
 				<x-svg name="logo" />
-				<h4>Thank you!</h4>
-				<p>A Quark Expeditions Polar Travel Advisor will be in touch with you shortly.</p>
+				<div class="inquiry-form__thank-you-text">
+					<h4 class="inquiry-form__thank-you-text-heading">Thank you!</h4>
+					<p class="inquiry-form__thank-you-text-body">A Quark Expeditions Polar Travel Advisor will be in touch with you shortly.</p>
+				</div>
 			</div>
 		@endif
 	</quark-inquiry-form>

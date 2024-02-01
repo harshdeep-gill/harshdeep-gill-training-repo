@@ -100,7 +100,7 @@ class InquiryForm extends HTMLElement {
 
 		// Hide content and show thank you instead.
 		this.content.style.display = 'none';
-		this.thankYou.style.display = 'block';
+		this.thankYou.style.display = 'flex';
 	}
 }
 
