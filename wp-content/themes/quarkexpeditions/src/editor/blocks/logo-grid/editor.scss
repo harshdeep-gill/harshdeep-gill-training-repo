@@ -1,4 +1,5 @@
 .logo-grid {
+	--logo-grid-image-height: 48px;
 
 	.gumponents-select-image .components-placeholder {
 		align-items: center;
@@ -9,36 +10,21 @@
 		height: auto;
 	}
 
-	&--small {
-
-		--logo-grid-image-height: 48px;
-
-		img.gumponents-select-image__img {
-			height: var(--logo-grid-image-height) !important;
-		}
+	img.gumponents-select-image__img {
+		height: var(--logo-grid-image-height) !important;
 	}
 
 	&--medium {
-
 		--logo-grid-image-height: 64px;
-
-		img.gumponents-select-image__img {
-			height: var(--logo-grid-image-height) !important;
-		}
 	}
 
 	&--large {
-
 		--logo-grid-image-height: 80px;
-
-		img.gumponents-select-image__img {
-			height: var(--logo-grid-image-height) !important;
-		}
 	}
 
 	.gumponents-select-image:not(.gumponents-select-image--selected) {
-		width: var(--logo-grid-image-height, 90px);
-		height: var(--logo-grid-image-height, 90px);
+		width: var(--logo-grid-image-height);
+		height: var(--logo-grid-image-height);
 		max-height: none !important;
 	}
 }
