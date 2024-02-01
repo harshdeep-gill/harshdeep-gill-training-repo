@@ -97,14 +97,15 @@ export const settings: BlockConfiguration = {
 								onChange={ ( ctaText: string ) => setAttributes( { ctaText } ) }
 								allowedFormats={ [] }
 							/>
-							<RichText
-								tagName="span"
-								className="lp-header__cta-content-phone-number"
-								placeholder={ __( 'Write CTA Number…', 'qrk' ) }
-								value={ attributes.ctaNumber }
-								onChange={ ( ctaNumber: string ) => setAttributes( { ctaNumber } ) }
-								allowedFormats={ [] }
-							/>
+							<span className="lp-header__cta-content-phone-number">
+								<RichText
+									tagName="span"
+									placeholder={ __( 'Write CTA Number…', 'qrk' ) }
+									value={ attributes.ctaNumber }
+									onChange={ ( ctaNumber: string ) => setAttributes( { ctaNumber } ) }
+									allowedFormats={ [] }
+								/>
+							</span>
 						</span>
 					</span>
 				</div>

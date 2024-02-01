@@ -13,7 +13,7 @@
 	];
 @endphp
 
-<a href="tel:{{ $phone_number }}" class="lp-header__cta">
+<a href="tel:{{ $phone_number }}" class="lp-header__cta InfinityNumber">
 	<figure class="lp-header__cta-avatar">
 		<x-image :image_id="$image_id" :args="$image_args" />
 	</figure>

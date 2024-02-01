@@ -28,7 +28,6 @@
 	}
 
 	&__column {
-		width: 350px;
 		text-align: center;
 
 		p {
@@ -42,6 +41,10 @@
 		a {
 			color: inherit;
 			text-decoration: none;
+		}
+
+		@media screen and (min-width: grid-size(md)) {
+			width: 350px;
 		}
 	}
 
