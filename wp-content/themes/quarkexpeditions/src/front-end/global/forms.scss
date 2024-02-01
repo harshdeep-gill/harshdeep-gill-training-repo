@@ -85,6 +85,8 @@ tp-form-error {
 
 textarea {
 	resize: none;
+	vertical-align: top; // Fixes extra space under textarea, that differs across browsers.
+	margin: 0;
 }
 
 select {
