@@ -145,11 +145,11 @@
 						<li>Nulla facilisi. Maecenas sit amet porta nulla commodo.</li>
 					</ul>
 					<x-logo-grid size="large">
-						<x-logo-grid.logo image_id="25"/>
-						<x-logo-grid.logo image_id="24"/>
-						<x-logo-grid.logo image_id="21"/>
-						<x-logo-grid.logo image_id="20"/>
-						<x-logo-grid.logo image_id="17"/>
+						<x-logo-grid.logo image_id="25" size="large"/>
+						<x-logo-grid.logo image_id="24" size="large"/>
+						<x-logo-grid.logo image_id="21" size="large"/>
+						<x-logo-grid.logo image_id="20" size="large"/>
+						<x-logo-grid.logo image_id="17" size="large"/>
 					</x-logo-grid>
 				</x-two-columns.column>
 				<x-two-columns.column>
@@ -245,8 +245,8 @@
 			<p style="text-align: center;">Quark Expeditions is a member of the United States Tour Operators Association and other international accreditation organizations. As a result, you can travel with compete peace of mind since your trip is financially protected.</p>
 			<div style="display: flex; flex-direction: column; gap: 50px;">
 				<x-logo-grid size="large" alignment="center">
-					<x-logo-grid.logo image_id="14"/>
-					<x-logo-grid.logo image_id="13"/>
+					<x-logo-grid.logo image_id="14" size="large"/>
+					<x-logo-grid.logo image_id="13" size="large"/>
 				</x-logo-grid>
 			</div>
 		</x-section>
