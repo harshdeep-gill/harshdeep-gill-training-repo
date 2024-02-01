@@ -27,7 +27,7 @@
 		visible="true"
 	@endif
 >
-	<span class="icon"><x-svg name="{{ $icon }}"/></span>
+	<span class="toast-message__icon"><x-svg name="{{ $icon }}"/></span>
 	<p><x-escape :content="$message"/></p>
 	<button class="toast-message__close">
 		<x-svg name="cross"/>
