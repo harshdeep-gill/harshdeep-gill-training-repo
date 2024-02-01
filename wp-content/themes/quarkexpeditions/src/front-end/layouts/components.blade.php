@@ -262,22 +262,19 @@
 		<x-lp-footer>
 			<x-lp-footer.columns>
 				<x-lp-footer.column>
-					<x-lp-footer.featured-on title="Featured on:">
-						<x-logo-grid alignment="center">
-							<x-logo-grid.logo image_id="22"/>
-							<x-logo-grid.logo image_id="23"/>
-							<x-logo-grid.logo image_id="19"/>
-						</x-logo-grid>
-					</x-lp-footer.featured-on>
+					<h5>Featured on:</h5>
+					<x-logo-grid alignment="center">
+						<x-logo-grid.logo image_id="22"/>
+						<x-logo-grid.logo image_id="23"/>
+						<x-logo-grid.logo image_id="19"/>
+					</x-logo-grid>
 				</x-lp-footer.column>
 				<x-lp-footer.column>
-					<x-lp-footer.links>
-						<ul>
-							<li><a href="#">Terms of Use</a></li>
-							<li><a href="#">Privacy Policy</a></li>
-							<li>All rights reserved @ 2023</li>
-						</ul>
-					</x-lp-footer.links>
+					<ul>
+						<li><a href="#">Terms of Use</a></li>
+						<li><a href="#">Privacy Policy</a></li>
+						<li>All rights reserved @ 2023</li>
+					</ul>
 				</x-lp-footer.column>
 				<x-lp-footer.column>
 					<p>Quark Expeditions</p>
