@@ -10,6 +10,6 @@
 	}
 @endphp
 
-<x-layout :header="false" :footer="false">
+<x-layout>
 	<x-content :content="$post_content" />
 </x-layout>
