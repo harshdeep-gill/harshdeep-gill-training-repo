@@ -24,11 +24,6 @@ import '../../../front-end/components/logo-grid/style.scss';
 import './editor.scss';
 
 /**
- * Internal dependencies.
- */
-import Section from '../../components/section';
-
-/**
  * External dependencies.
  */
 import classnames from 'classnames';
@@ -79,12 +74,12 @@ export const settings: BlockConfiguration = {
 	},
 	edit( { className, attributes, setAttributes }: BlockEditAttributes ): JSX.Element {
 		// eslint-disable-next-line react-hooks/rules-of-hooks
-		const blockProps = useBlockProps();
+		const blockProps = useBlockProps( {
+			className: classnames( className, 'logo-grid', 'typography-spacing', `logo-grid--alignment-${ attributes.alignment }`, `logo-grid--${ attributes.size }` ),
+		} );
 
 		// eslint-disable-next-line react-hooks/rules-of-hooks
-		const innerBlockProps = useInnerBlocksProps( {
-			className: classnames( className, 'logo-grid', `logo-grid--alignment-${ attributes.alignment }`, `logo-grid--${ attributes.size }` ),
-		}, {
+		const innerBlockProps = useInnerBlocksProps( { ...blockProps }, {
 			allowedBlocks: [ item.name ],
 			template: [ [ item.name ], [ item.name ] ],
 
@@ -121,9 +116,9 @@ export const settings: BlockConfiguration = {
 						/>
 					</PanelBody>
 				</InspectorControls>
-				<Section { ...blockProps } >
+				<div { ...blockProps } >
 					<div { ...innerBlockProps } />
-				</Section>
+				</div>
 			</>
 		);
 	},

@@ -1,9 +1,17 @@
 .logo-grid {
-	--logo-grid-image-height: 48px;
+	--logo-grid-image-height: 32px;
 
-	.gumponents-select-image .components-placeholder {
-		align-items: center;
-		justify-content: center;
+	.gumponents-select-image {
+		overflow: visible;
+
+		.components-placeholder {
+			align-items: center;
+			justify-content: center;
+		}
+
+		&__inline-menu {
+			top: -20px;
+		}
 	}
 
 	&__img.gumponents-select-image {
@@ -15,11 +23,11 @@
 	}
 
 	&--medium {
-		--logo-grid-image-height: 64px;
+		--logo-grid-image-height: 40px;
 	}
 
 	&--large {
-		--logo-grid-image-height: 80px;
+		--logo-grid-image-height: 64px;
 	}
 
 	.gumponents-select-image:not(.gumponents-select-image--selected) {

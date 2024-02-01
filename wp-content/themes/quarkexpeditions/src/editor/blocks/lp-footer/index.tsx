@@ -61,7 +61,7 @@ export const settings: BlockConfiguration = {
 	edit( { className }: BlockEditAttributes ): JSX.Element {
 		// eslint-disable-next-line react-hooks/rules-of-hooks
 		const blockProps = useBlockProps( {
-			className: classnames( className, 'lp-footer', 'full-width' ),
+			className: classnames( className, 'lp-footer', 'full-width', 'section', 'section--seamless' ),
 		} );
 
 		// eslint-disable-next-line react-hooks/rules-of-hooks
