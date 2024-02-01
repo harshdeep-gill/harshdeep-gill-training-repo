@@ -81,8 +81,8 @@ export const settings: BlockConfiguration = {
 
 		// eslint-disable-next-line react-hooks/rules-of-hooks
 		const innerBlockProps = useInnerBlocksProps( { className: 'hero__form color-context--dark' }, {
-			allowedBlocks: [ 'qrk/inquiry-form' ],
-			template: [ [ 'qrk/inquiry-form' ] ],
+			allowedBlocks: [ 'quark/inquiry-form' ],
+			template: [ [ 'quark/inquiry-form' ] ],
 			templateLock: 'all',
 		} );
 

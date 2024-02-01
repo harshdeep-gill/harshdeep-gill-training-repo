@@ -7,9 +7,7 @@
 
 namespace Quark\Theme\Blocks\InquiryForm;
 
-use WP_Post;
-
-const BLOCK_NAME = 'qrk/inquiry-form';
+const BLOCK_NAME = 'quark/inquiry-form';
 const COMPONENT  = 'inquiry-form';
 
 /**
@@ -46,6 +44,15 @@ function render( ?string $content = null, array $block = [] ): null|string {
 		return $content;
 	}
 
+	// Build attributes.
+	$attributes = [
+		'salesforce_object' => 'Webform_Landing_Page__c',
+		'title'             => 'Almost there!',
+		'form_id'           => 'inquiry-form',
+		'subtitle'          => 'We just need a bit more info to help personalize your itinerary.',
+		'thank_you_page'    => $block['attrs']['thankYouPageUrl'] ?? '',
+	];
+
 	// Return rendered component.
-	return quark_get_component( COMPONENT );
+	return quark_get_component( COMPONENT, $attributes );
 }

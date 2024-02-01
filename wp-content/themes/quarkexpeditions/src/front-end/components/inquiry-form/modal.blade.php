@@ -4,6 +4,7 @@
 	'form_id'           => '',
 	'modal_id'          => '',
 	'salesforce_object' => '',
+	'thank_you_page'    => '',
 ] )
 
 @php
@@ -25,7 +26,10 @@
 			</div>
 		@endif
 
-		<x-form id="{{ $form_id }}" salesforce_object="{{ $salesforce_object }}">
+		<x-form id="{{ $form_id }}"
+			salesforce_object="{{ $salesforce_object }}"
+			thank_you_page="{{ $thank_you_page }}"
+		>
 			<x-form.row>
 				<x-form.field :validation="[ 'required' ]">
 					<x-form.input type="text" label="First Name" placeholder="Enter First Name" name="fields[FirstName__c]" />

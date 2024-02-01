@@ -49,6 +49,7 @@ function render( ?string $content = null, array $block = [] ): null|string {
 		'image_id'  => 0,
 		'title'     => $block['attrs']['title'] ?? '',
 		'sub_title' => $block['attrs']['subTitle'] ?? '',
+		'slot'      => render_block( $block['innerBlocks'][0] ),
 	];
 
 	// Image.

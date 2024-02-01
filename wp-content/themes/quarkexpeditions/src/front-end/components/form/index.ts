@@ -129,7 +129,7 @@ export default class Form extends HTMLElement {
 				// Parse response JSON.
 				response.json().then( ( result ): void => {
 					// Did we get a valid status?
-					if ( 'status' in result && 'success' === result.status ) {
+					if ( 'success' in result && true === result.success ) {
 						// Is there a thank-you page?
 						if ( this.thankYouPageUrl ) {
 							// Redirect to thank you page, if present.

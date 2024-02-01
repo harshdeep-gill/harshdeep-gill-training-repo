@@ -197,9 +197,10 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 			$tags,
 			[
 				'quark-form'           => [
-					'class'       => true,
-					'data-action' => true,
-					'style'       => true,
+					'class'         => true,
+					'data-action'   => true,
+					'style'         => true,
+					'thank-you-url' => true,
 				],
 				'quark-hero-form'      => [
 					'class' => true,

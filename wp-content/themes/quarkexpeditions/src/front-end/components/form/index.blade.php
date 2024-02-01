@@ -9,12 +9,16 @@
 	'salesforce_object' => '',
 	'recaptcha'         => true,
 	'permalink'         => quark_get_template_data( 'current_url', '#' ),
+	'thank_you_page'    => '',
 ] )
 
 <quark-form
 	class="form {{ $class }}"
 	@if ( ! empty( $style ) )
 		style="{{ $style }}"
+	@endif
+	@if ( ! empty( $thank_you_page ) )
+		thank-you-url="{{ $thank_you_page }}"
 	@endif
 >
 	<tp-form prevent-submit="yes">
