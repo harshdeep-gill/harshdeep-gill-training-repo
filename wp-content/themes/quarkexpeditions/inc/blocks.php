@@ -33,6 +33,8 @@ function register_blocks(): void {
 		'ReviewsCarousel' => 'reviews-carousel.php',
 		'Hero'            => 'hero.php',
 		'InquiryForm'     => 'inquiry-form.php',
+		'LogoGrid'        => 'logo-grid.php',
+		'LPFooter'        => 'lp-footer.php',
 	];
 
 	// Register blocks.

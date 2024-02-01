@@ -8,7 +8,7 @@
 		return;
 	}
 
-	$classes = [ 'logo-grid' ];
+	$classes = [ 'logo-grid', 'typography-spacing' ];
 
 	if(
 		! empty( $alignment ) && in_array(

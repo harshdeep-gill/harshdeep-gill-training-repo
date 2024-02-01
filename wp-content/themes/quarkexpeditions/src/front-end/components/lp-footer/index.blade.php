@@ -4,8 +4,8 @@
 	}
 @endphp
 
-<footer class="lp-footer full-width">
+<x-section class="lp-footer" :full_width="true" :seamless="true">
 	<div class="lp-footer__wrap">
 		{!! $slot !!}
 	</div>
-</footer>
+</x-section>
