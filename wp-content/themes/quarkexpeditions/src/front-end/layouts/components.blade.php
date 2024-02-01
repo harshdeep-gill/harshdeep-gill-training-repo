@@ -124,52 +124,12 @@
 				<x-hero.title title="Antarctic Voyages" />
 				<x-hero.sub-title title="Choose the Leader in Polar Adventure" />
 			</x-hero.content>
-			<x-hero.form>
-				<x-form>
-					<x-form.field :validation="[ 'required' ]">
-						<x-form.select label="When would you like to travel?" name="fields[country]">
-							<option value="">- Select -</option>
-							<option value="Antarctic Peninsula">Antarctic Peninsula</option>
-							<option value="Falklands &amp; South Georgia">Falklands &amp; South Georgia</option>
-							<option value="Patagonia">Patagonia</option>
-							<option value="Snow Hill Island">Snow Hill Island</option>
-						</x-form.select>
-					</x-form.field>
-					<x-form.field :validation="[ 'required' ]">
-						<x-form.select label="The most important factor for you?" name="fields[country]">
-							<option value="">- Select -</option>
-							<option value="adventure_activities">Adventure Activities</option>
-							<option value="budget">Budget</option>
-							<option value="region">Destination</option>
-							<option value="schedule">Schedule</option>
-							<option value="wildlife">Wildlife</option>
-						</x-form.select>
-					</x-form.field>
-					<x-form.field :validation="[ 'required' ]">
-						<x-form.select label="How many guests?" name="fields[country]">
-							<option value="">- Select -</option>
-							<option value="1">1</option>
-							<option value="2">2</option>
-							<option value="3">3</option>
-							<option value="4">4</option>
-						</x-form.select>
-					</x-form.field>
-					<x-form.field>
-						<x-form.select label="Where would you like to go?" name="fields[country]">
-							<option value="">- Select -</option>
-							<option value="2023-24">Antarctic 2023/24 (Nov '23 - Mar '24)</option>
-							<option value="2024-25">Antarctic 2024/25 (Nov '24 - Mar '25)</option>
-							<option value="2025-26">Antarctic 2025/26 (Nov '25 - Mar '26)</option>
-						</x-form.select>
-					</x-form.field>
-					<x-form.buttons>
-						<x-button type="button">
-							Request a Quote
-							<x-button.sub-title title="It only takes 2 minutes!" />
-						</x-button>
-					</x-form.buttons>
-				</x-form>
-			</x-hero.form>
+			<x-hero.form
+				form_id="inquiry-form"
+				title="Almost there!"
+				subtitle="We just need a bit more info to help personalize your itinerary."
+				salesforce_object="Webform_Landing_Page__c"
+			/>
 		</x-hero>
 	</x-component-demo>
 
@@ -291,26 +251,30 @@
 			</div>
 		</x-section>
 	</x-component-demo>
+
+	<x-component-demo :keys="[ 'toast' ]">
+		<x-section>
+			<x-toast-message message="Lorem ipsum dolor sit ipsum dolor now" :visible="true" />
+			<x-toast-message type="error" message="Fields marked with an asterisk (*) are required" :visible="true" />
+		</x-section>
+	</x-component-demo>
 	<x-component-demo :keys="[ 'lp-footer', 'logo-grid' ]">
 		<x-lp-footer>
 			<x-lp-footer.columns>
 				<x-lp-footer.column>
-					<x-lp-footer.featured-on title="Featured on:">
-						<x-logo-grid alignment="center">
-							<x-logo-grid.logo image_id="22"/>
-							<x-logo-grid.logo image_id="23"/>
-							<x-logo-grid.logo image_id="19"/>
-						</x-logo-grid>
-					</x-lp-footer.featured-on>
+					<h5>Featured on:</h5>
+					<x-logo-grid alignment="center">
+						<x-logo-grid.logo image_id="22"/>
+						<x-logo-grid.logo image_id="23"/>
+						<x-logo-grid.logo image_id="19"/>
+					</x-logo-grid>
 				</x-lp-footer.column>
 				<x-lp-footer.column>
-					<x-lp-footer.links>
-						<ul>
-							<li><a href="#">Terms of Use</a></li>
-							<li><a href="#">Privacy Policy</a></li>
-							<li>All rights reserved @ 2023</li>
-						</ul>
-					</x-lp-footer.links>
+					<ul>
+						<li><a href="#">Terms of Use</a></li>
+						<li><a href="#">Privacy Policy</a></li>
+						<li>All rights reserved @ 2023</li>
+					</ul>
 				</x-lp-footer.column>
 				<x-lp-footer.column>
 					<p>Quark Expeditions</p>

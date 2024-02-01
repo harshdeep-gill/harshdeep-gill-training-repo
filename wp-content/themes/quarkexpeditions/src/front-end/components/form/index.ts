@@ -13,6 +13,7 @@ import { TPFormElement, TPFormSubmitElement } from '@travelopia/web-components';
  * Internal Dependencies.
  */
 import { getRecaptchaToken, setupRecaptcha } from './recaptcha';
+import './tracking';
 
 /**
  * Form Class.
@@ -42,6 +43,9 @@ export default class Form extends HTMLElement {
 		this.form = this.querySelector( 'form' );
 		this.recaptchaTokenField = this.querySelector( 'input[name="recaptcha_token"]' );
 		this.thankYouPageUrl = this.getAttribute( 'thank-you-url' ) || '';
+
+		// Events.
+		window.addEventListener( 'visitor-tracked', ( ( event: CustomEvent ) => this.updateCampaignParams( event ) ) as EventListener );
 	}
 
 	/**
@@ -49,7 +53,7 @@ export default class Form extends HTMLElement {
 	 */
 	connectedCallback(): void {
 		// Events.
-		this.tpForm?.addEventListener( 'submit', this.formSubmitted.bind( this ) );
+		this.tpForm?.addEventListener( 'submit-validation-success', this.formSubmitted.bind( this ) );
 
 		// reCAPTCHA.
 		if ( this.recaptchaTokenField && null !== this.ownerDocument.defaultView ) {
@@ -62,15 +66,10 @@ export default class Form extends HTMLElement {
 	 *
 	 * @param {Event} e Form submit event.
 	 */
-	formSubmitted( e: SubmitEvent ) {
+	formSubmitted( e: any ) {
 		// Prevent default action.
 		e.preventDefault();
-
-		// Validate form.
-		if ( ! this?.tpForm?.validate() ) {
-			// Bail if the form isn't valid.
-			return;
-		}
+		e.stopImmediatePropagation();
 
 		// Trigger event before submit.
 		this.dispatchEvent( new CustomEvent( 'submit', {
@@ -150,6 +149,29 @@ export default class Form extends HTMLElement {
 
 		// Send the request!
 		sendRequest();
+	}
+
+	/**
+	 * Update campaign params.
+	 *
+	 * @param {Event} e Tracking event.
+	 */
+	updateCampaignParams( e: CustomEvent ): void {
+		// Check if we have details.
+		if ( ! e.detail || 0 === e.detail.length ) {
+			// We don't, bail early.
+			return;
+		}
+
+		// Fill in the details into corresponding hidden fields.
+		for ( const key in e.detail ) {
+			const field: HTMLElement | null = this.querySelector( `.form__${ key.replace( '_', '-' ) }` );
+
+			// Update adwords data.
+			if ( field && 'value' in field ) {
+				field.value = decodeURIComponent( e.detail[ key ] );
+			}
+		}
 	}
 }
 

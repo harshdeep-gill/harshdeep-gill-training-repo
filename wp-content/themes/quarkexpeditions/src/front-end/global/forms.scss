@@ -123,13 +123,19 @@ label {
 
 .form-row {
 	display: grid;
-	grid-gap: 15px;
+	gap: var(--spacing-4);
+	margin-bottom: var(--spacing-4);
 	grid-template-columns: repeat(1, 1fr);
 	min-width: 0;
+
+	.form-field {
+		margin-bottom: 0;
+	}
 
 	@media screen and (min-width: grid-size(sm)) {
 		grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
 	}
+
 }
 
 .grecaptcha-badge {

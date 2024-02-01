@@ -8,6 +8,8 @@
 	@class( [ 'form-field', $class ] )
 	@foreach( $validation as $validation_name )
 		{{ $validation_name }}="yes"
-	@endforeach>
+	@endforeach
+	{{ $attributes }}
+>
 	{{ $slot }}
 </tp-form-field>

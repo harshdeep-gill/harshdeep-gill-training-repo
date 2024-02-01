@@ -12,6 +12,7 @@ import * as twoColumns from './two-columns';
 import * as iconInfoColumns from './icon-info-columns';
 import * as reviewsCarousel from './reviews-carousel';
 import * as logoGrid from './logo-grid';
+import * as lpFooter from './lp-footer';
 
 /**
  * Add blocks.
@@ -23,6 +24,7 @@ const blocks = [
 	iconInfoColumns,
 	reviewsCarousel,
 	logoGrid,
+	lpFooter,
 ];
 
 /**

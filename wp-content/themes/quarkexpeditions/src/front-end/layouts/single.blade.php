@@ -1,8 +1,7 @@
 @props( [
-	'post'           => $post,
-	'permalink'      => '',
-	'post_thumbnail' => 0,
-	'post_content'   => '',
+	'post'         => $post,
+	'permalink'    => '',
+	'post_content' => '',
 ] )
 
 @php
