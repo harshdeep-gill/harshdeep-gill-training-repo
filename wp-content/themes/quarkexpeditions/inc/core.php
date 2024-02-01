@@ -368,6 +368,11 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'name'        => true,
 					'rows'        => true,
 				],
+				'div'                  => [
+					'id'       => true,
+					'class'    => true,
+					'tabindex' => true,
+				],
 			]
 		);
 	}
