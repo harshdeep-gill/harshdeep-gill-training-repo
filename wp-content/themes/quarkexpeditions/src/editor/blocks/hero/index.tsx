@@ -102,13 +102,13 @@ export const settings: BlockConfiguration = {
 				</InspectorControls>
 				<Section { ...blockProps } fullWidth={ true } seamless={ true }>
 					<div className="hero__wrap">
+						{ attributes.image &&
+							<Img
+								className="hero__image"
+								value={ attributes.image }
+							/>
+						}
 						<div className="hero__content">
-							{ attributes.image &&
-								<Img
-									className="hero__image"
-									value={ attributes.image }
-								/>
-							}
 							<RichText
 								tagName="h1"
 								className="hero__title"
