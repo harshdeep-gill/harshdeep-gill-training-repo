@@ -4,6 +4,8 @@
 @import "../../scss";
 
 .lp-footer {
+	$self: &;
+
 	background-color: var(--color-gray-90);
 	color: var(--color-white);
 	padding-top: var(--spacing-7);
