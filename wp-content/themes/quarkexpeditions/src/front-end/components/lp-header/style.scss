@@ -5,6 +5,7 @@
 	background-color: var(--color-white);
 	top: var(--wp-admin-bar-height);
 	z-index: var(--lp-header-z-index);
+	box-shadow: var(--shadow-1);
 
 	&__wrap {
 		max-width: var(--wrap-width);
