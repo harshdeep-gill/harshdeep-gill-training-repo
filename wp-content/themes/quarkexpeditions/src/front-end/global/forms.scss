@@ -85,6 +85,8 @@ tp-form-error {
 
 textarea {
 	resize: none;
+	vertical-align: top; // Fixes extra space under textarea, that differs across browsers.
+	margin: 0;
 }
 
 select {
@@ -118,6 +120,10 @@ label {
 
 	&:last-child {
 		margin-bottom: 0;
+	}
+
+	&--buttons {
+		margin-top: var(--spacing-6);
 	}
 }
 
