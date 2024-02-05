@@ -94,5 +94,3 @@ export class OpenModalElement extends HTMLElement {
 		}, { once: true } );
 	}
 }
-
-
