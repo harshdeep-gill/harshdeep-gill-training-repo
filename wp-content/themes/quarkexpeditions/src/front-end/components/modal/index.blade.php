@@ -1,6 +1,9 @@
 @props( [
-	'id'    => '',
-	'class' => '',
+	'id'       => '',
+	'class'    => '',
+	'title'    => '',
+	'subtitle' => '',
+	'form_id'  => '',
 ] )
 
 @php
@@ -17,10 +20,28 @@
 		id="{{ $id }}"
 	@endif
 	@class( $classes )
-	overlay-click-close="yes"
 >
 	<tp-modal-content class="modal__content">
+		@if ( ! empty( $title ) || ! empty( $subtitle ) )
+			<header class="modal__header">
+				@if ( ! empty( $title ) )
+					<h3>{{ $title }}</h3>
+				@endif
+				@if ( ! empty( $subtitle ) )
+					<p>{{ $subtitle }}</p>
+				@endif
+			</header>
+		@endif
 		<x-modal.close />
-		{!! $slot !!}
+		<div class="modal__body">
+			{!! $slot !!}
+		</div>
+		@if ( $form_id )
+			<footer class="modal__footer">
+				<x-form.buttons>
+					<x-form.submit form="{{ $form_id }}">Request a Quote</x-form.submit>
+				</x-form.buttons>
+			</footer>
+		@endif
 	</tp-modal-content>
 </tp-modal>

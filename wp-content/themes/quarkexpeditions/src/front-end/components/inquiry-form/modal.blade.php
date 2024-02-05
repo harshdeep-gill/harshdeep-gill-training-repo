@@ -13,20 +13,9 @@
 	}
 @endphp
 
-<x-modal class="inquiry-form__modal" id="{{ $modal_id }}" :full_width_mobile="true" :close_button="false">
+<x-modal class="inquiry-form__modal" id="{{ $modal_id }}" :full_width_mobile="true" :close_button="false" title="{{ $title }}" subtitle="{{ $subtitle }}" form_id="{{ $form_id }}">
 	<quark-inquiry-form>
 		<div class="inquiry-form__content">
-			@if ( ! empty( $title ) || ! empty( $subtitle ) )
-				<div class="inquiry-form__modal-title-container">
-					@if ( ! empty( $title ) )
-						<h3>{{ $title }}</h3>
-					@endif
-					@if ( ! empty( $subtitle ) )
-						<p>{{ $subtitle }}</p>
-					@endif
-				</div>
-			@endif
-
 			<x-form id="{{ $form_id }}"
 				salesforce_object="{{ $salesforce_object }}"
 				thank_you_page="{{ $thank_you_page }}"

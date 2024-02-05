@@ -1,14 +1,124 @@
 @import "~@travelopia/web-components/dist/modal/style.css";
 @import "../../scss";
 
+@keyframes modal-slide-in {
+
+	from {
+		top: 150%;
+	}
+}
+
 .modal {
 	$self: &;
+	overflow-y: hidden;
 
 	&__content {
+		position: absolute;
+		top: var(--spacing-6);
+		left: 0;
+		height: calc(100% - var(--spacing-6));
 		background-color: var(--color-gray-5);
-		position: relative;
 		padding: var(--spacing-5);
-		border-radius: var(--border-radius);
+		border-radius: var(--border-radius) var(--border-radius) 0 0;
+		margin: 0;
+
+		@media (min-width: grid-size(sm)) {
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			height: auto;
+			border-radius: var(--border-radius);
+		}
+	}
+
+	&--open {
+
+		#{$self}__content {
+			animation-name: modal-slide-in;
+			animation-duration: 350ms;
+			animation-iteration-count: 1;
+			animation-timing-function: ease-out;
+		}
+	}
+
+	&--close {
+
+		#{$self}__content {
+			animation-name: modal-slide-in;
+			animation-duration: 350ms;
+			animation-iteration-count: 1;
+			animation-timing-function: ease-in;
+			animation-direction: reverse;
+		}
+	}
+
+	&__header {
+		padding-right: var(--spacing-5);
+		margin-bottom: var(--typography-spacing);
+		min-height: 88px;
+
+		h3 {
+			margin: 0;
+		}
+
+		p {
+			color: var(--color-gray-60);
+		}
+
+		@media (min-width: grid-size(md)) {
+			padding-left: var(--spacing-5);
+			text-align: center;
+			margin-bottom: var(--spacing-6);
+			min-height: 68px;
+		}
+	}
+
+	&__body {
+		height: calc(100% - 168px);
+		overflow-y: scroll;
+
+		-ms-overflow-style: none;
+		scrollbar-width: none;
+
+		&::-webkit-scrollbar {
+			display: none;
+		}
+
+		tp-form-submit {
+			display: none;
+
+			@media (min-width: grid-size(sm)) {
+				display: unset;
+			}
+		}
+
+		@media (min-width: grid-size(sm)) {
+			height: auto;
+			overflow-y: unset;
+		}
+	}
+
+	&__footer {
+		height: 80px;
+		padding-block: var(--spacing-3);
+		border-top: solid 1px rgba(0, 0, 0, 0.06);
+		margin-inline: calc(-1 * var(--grid-col-gutter));
+		padding-inline: var(--grid-col-gutter);
+		background-color: var(--color-white);
+
+		.form-field--buttons {
+			margin: 0;
+			height: 100%;
+
+			button {
+				height: 100%;
+			}
+		}
+
+
+		@media (min-width: grid-size(sm)) {
+			display: none;
+		}
 	}
 
 	&__close-button {
