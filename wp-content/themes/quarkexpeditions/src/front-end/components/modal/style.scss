@@ -34,21 +34,14 @@
 	&--open {
 
 		#{$self}__content {
-			animation-name: modal-slide-in;
-			animation-duration: 350ms;
-			animation-iteration-count: 1;
-			animation-timing-function: ease-out;
+			animation: modal-slide-in 350ms ease-out;
 		}
 	}
 
 	&--close {
 
 		#{$self}__content {
-			animation-name: modal-slide-in;
-			animation-duration: 350ms;
-			animation-iteration-count: 1;
-			animation-timing-function: ease-in;
-			animation-direction: reverse;
+			animation: modal-slide-in 350ms ease-in reverse;
 		}
 	}
 
@@ -77,6 +70,7 @@
 		height: calc(100% - 168px);
 		overflow-y: scroll;
 
+		// Hide scrollbar in modal__body
 		-ms-overflow-style: none;
 		scrollbar-width: none;
 
@@ -84,6 +78,7 @@
 			display: none;
 		}
 
+		// hide submit button when in mobile mode
 		tp-form-submit {
 			display: none;
 
@@ -114,7 +109,6 @@
 				height: 100%;
 			}
 		}
-
 
 		@media (min-width: grid-size(sm)) {
 			display: none;
