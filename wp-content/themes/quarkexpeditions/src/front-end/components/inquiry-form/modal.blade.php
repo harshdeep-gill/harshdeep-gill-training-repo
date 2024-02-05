@@ -13,7 +13,15 @@
 	}
 @endphp
 
-<x-modal class="inquiry-form__modal" id="{{ $modal_id }}" :full_width_mobile="true" :close_button="false" title="{{ $title }}" subtitle="{{ $subtitle }}" form_id="{{ $form_id }}">
+<x-modal
+	class="inquiry-form__modal"
+	id="{{ $modal_id }}"
+	:full_width_mobile="true"
+	:close_button="false"
+	title="{{ $title }}"
+	subtitle="{{ $subtitle }}"
+	form_id="{{ $form_id }}"
+>
 	<quark-inquiry-form>
 		<div class="inquiry-form__content">
 			<x-form id="{{ $form_id }}"
