@@ -13,8 +13,22 @@
 
 	&__close-button {
 		position: absolute;
-		top: 20px;
-		right: 20px;
+		top: 15px;
+		right: 15px;
+		border-radius: 50%;
+
+		button {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 24px;
+			width: 24px;
+			border-radius: 50%;
+		}
+
+		:hover {
+			background: var(--color-gray-30);
+		}
 	}
 
 	.toast-message {
