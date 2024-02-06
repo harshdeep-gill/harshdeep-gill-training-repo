@@ -22,6 +22,11 @@
 			transform: translate(-50%, -50%);
 			height: auto;
 			border-radius: var(--border-radius);
+			padding-bottom: var(--spacing-5);
+		}
+
+		#{$self}__body {
+			margin-bottom: 0;
 		}
 	}
 
