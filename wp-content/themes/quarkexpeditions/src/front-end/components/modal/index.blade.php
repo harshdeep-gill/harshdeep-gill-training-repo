@@ -20,6 +20,6 @@
 >
 	<tp-modal-content class="modal__content">
 		<x-modal.close-modal />
-		{{ $slot }}
+		{!! $slot !!}
 	</tp-modal-content>
 </tp-modal>
