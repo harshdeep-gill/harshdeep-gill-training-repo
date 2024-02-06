@@ -51,6 +51,7 @@ function render( ?string $content = null, array $block = [] ): null|string {
 		'description' => '',
 		'background'  => $block['attrs']['hasBackground'] ?? false,
 		'padding'     => $block['attrs']['hasPadding'] ?? false,
+		'narrow'      => $block['attrs']['isNarrow'] ?? false,
 		'slot'        => '',
 	];
 
