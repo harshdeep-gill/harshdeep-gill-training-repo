@@ -126,6 +126,159 @@
 	-ms-animation: fadein $ease $duration;
 }
 
+@mixin fade-out( $duration: var(--transition-time), $ease: var(--transition-easing) ) {
+
+	@keyframes fadeout {
+
+		0% {
+			opacity: 1;
+		}
+
+		100% {
+			opacity: 0;
+		}
+	}
+
+	@-moz-keyframes fadeout {
+
+		0% {
+			opacity: 1;
+		}
+
+		100% {
+			opacity: 0;
+		}
+	}
+
+	@-webkit-keyframes fadeout {
+
+		0% {
+			opacity: 1;
+		}
+
+		100% {
+			opacity: 0;
+		}
+	}
+
+	@-o-keyframes fadeout {
+
+		0% {
+			opacity: 1;
+		}
+
+		100% {
+			opacity: 0;
+		}
+	}
+
+	@-ms-keyframes fadeout {
+
+		0% {
+			opacity: 1;
+		}
+
+		100% {
+			opacity: 0;
+		}
+	}
+
+	transition: fadeout $duration $ease;
+	animation: fadeout $ease $duration;
+	-moz-animation: fadeout $ease $duration;
+	-o-animation: fadeout $ease $duration;
+	-ms-animation: fadeout $ease $duration;
+}
+
+@mixin slide-up( $duration: var(--transition-time), $ease: var(--transition-easing), $top: 150% ) {
+
+	@keyframes slideup {
+
+		0% {
+			top: $top;
+		}
+	}
+
+	@-moz-keyframes slideup {
+
+		0% {
+			top: $top;
+		}
+	}
+
+	@-webkit-keyframes slideup {
+
+		0% {
+			top: $top;
+		}
+	}
+
+	@-o-keyframes slideup {
+
+		0% {
+			top: $top;
+		}
+	}
+
+	@-ms-keyframes slideup {
+
+		0% {
+			top: $top;
+		}
+	}
+
+	transition: slideup $duration $ease;
+	animation: slideup $ease $duration;
+	-moz-animation: slideup $ease $duration;
+	-o-animation: slideup $ease $duration;
+	-ms-animation: slideup $ease $duration;
+}
+
+@mixin slide-down( $duration: var(--transition-time), $ease: var(--transition-easing), $top: 150% ) {
+
+	@keyframes slidedown {
+
+		100% {
+			top: $top;
+		}
+	}
+
+	@-moz-keyframes slidedown {
+
+		100% {
+			top: $top;
+		}
+	}
+
+	@-webkit-keyframes slidedown {
+
+		100% {
+			top: $top;
+		}
+	}
+
+	@-o-keyframes slidedown {
+
+		100% {
+			top: $top;
+		}
+	}
+
+	@-ms-keyframes slidedown {
+
+		100% {
+			top: $top;
+		}
+	}
+
+	transition: slidedown $duration $ease;
+	animation: slidedown $ease $duration;
+	-moz-animation: slidedown $ease $duration;
+	-o-animation: slidedown $ease $duration;
+	-ms-animation: slidedown $ease $duration;
+}
+
+
 @mixin css-triangle( $width: 11px, $height: 7px, $color: #000, $direction: "down" ) {
 	width: 0;
 	height: 0;

@@ -1,13 +1,6 @@
 @import "~@travelopia/web-components/dist/modal/style.css";
 @import "../../scss";
 
-@keyframes modal-slide-in {
-
-	from {
-		top: 150%;
-	}
-}
-
 .modal {
 	$self: &;
 	overflow-y: hidden;
@@ -60,15 +53,21 @@
 	&--open {
 
 		#{$self}__content {
-			animation: modal-slide-in 350ms ease-out;
+
+			@include slide-up();
 		}
+
+		@include fade-in();
 	}
 
 	&--close {
 
 		#{$self}__content {
-			animation: modal-slide-in 350ms ease-in reverse;
+
+			@include slide-down();
 		}
+
+		@include fade-out();
 	}
 
 	&__header {
