@@ -85,6 +85,10 @@ export const settings: BlockConfiguration = {
 		ctaButton: {
 			type: 'object',
 		},
+		isNarrow: {
+			type: 'boolean',
+			default: false,
+		},
 	},
 	supports: {
 		alignWide: false,
@@ -141,6 +145,14 @@ export const settings: BlockConfiguration = {
 							} ) }
 							help={ __( 'Does this section have a background colour?', 'qrk' ) }
 						/>
+						<ToggleControl
+							label={ __( 'Is Narrow', 'qrk' ) }
+							checked={ attributes.isNarrow }
+							onChange={ () => setAttributes( {
+								isNarrow: ! attributes.isNarrow,
+							} ) }
+							help={ __( 'Does this section have narrow width?', 'qrk' ) }
+						/>
 						{ attributes.hasBackground &&
 							<ToggleControl
 								label={ __( 'Has Padding', 'qrk' ) }
@@ -156,6 +168,7 @@ export const settings: BlockConfiguration = {
 					background={ attributes.hasBackground }
 					padding={ attributes.hasPadding }
 					seamless={ attributes.hasBackground }
+					narrow={ attributes.isNarrow }
 				>
 					{ attributes.hasTitle && (
 						<RichText
