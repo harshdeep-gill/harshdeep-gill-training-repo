@@ -1,7 +1,7 @@
 /**
  * External dependency
  */
-import { TPFormElement } from '@travelopia/web-components';
+import { TPFormElement, TPModalElement } from '@travelopia/web-components';
 
 /**
  * InquiryForm Class.
@@ -17,6 +17,7 @@ class InquiryForm extends HTMLElement {
 	private readonly quarkForm: HTMLElement | null;
 	private readonly thankYou: HTMLElement | null;
 	private readonly content: HTMLElement | null;
+	private readonly containingModal: TPModalElement | null;
 
 	/**
 	 * Constructor.
@@ -33,6 +34,7 @@ class InquiryForm extends HTMLElement {
 		this.toastMessage = this.querySelector( 'quark-toast-message' );
 		this.thankYou = this.querySelector( '.inquiry-form__thank-you' );
 		this.content = this.querySelector( '.inquiry-form__content' );
+		this.containingModal = this.closest( '.modal' );
 
 		// Events.
 		if ( this.stateSelectors ) {
@@ -101,6 +103,11 @@ class InquiryForm extends HTMLElement {
 		// Hide content and show thank you instead.
 		this.content.style.display = 'none';
 		this.thankYou.style.display = 'flex';
+
+		// Set modal content height.
+		if ( this.containingModal ) {
+			this.containingModal.setAttribute( 'form-submitted', '' );
+		}
 	}
 }
 
