@@ -1,11 +1,11 @@
 /**
  * Internal dependencies.
  */
-import { OpenModalElement } from './open-modal';
-import { QuarkModalCloseElement } from './close';
+import { QuarkOpenModalElement } from './open-modal';
+import { QuarkCloseModalElement } from './close-modal';
 
 /**
  * Initialize.
  */
-customElements.define( 'quark-open-modal', OpenModalElement );
-customElements.define( 'quark-modal-close', QuarkModalCloseElement );
+customElements.define( 'quark-open-modal', QuarkOpenModalElement );
+customElements.define( 'quark-close-modal', QuarkCloseModalElement );

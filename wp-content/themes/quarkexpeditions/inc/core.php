@@ -212,6 +212,9 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'class'    => true,
 					'modal-id' => true,
 				],
+				'quark-close-modal'    => [
+					'class' => true,
+				],
 				'quark-toast-message'  => [
 					'class'   => true,
 					'visible' => true,
@@ -397,6 +400,12 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'id'       => true,
 					'class'    => true,
 					'tabindex' => true,
+				],
+				'button'               => [
+					'form'  => true,
+					'class' => true,
+					'id'    => true,
+					'type'  => true,
 				],
 			]
 		);

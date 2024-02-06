@@ -10,9 +10,9 @@ import { TPModalElement } from '@travelopia/web-components';
 const { HTMLElement } = window;
 
 /**
- * OpenModalElement Class.
+ * QuarkOpenModalElement Class.
  */
-export class OpenModalElement extends HTMLElement {
+export class QuarkOpenModalElement extends HTMLElement {
 	/**
 	 * Properties.
 	 */

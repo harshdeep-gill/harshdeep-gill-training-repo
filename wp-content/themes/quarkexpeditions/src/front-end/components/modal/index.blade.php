@@ -19,7 +19,7 @@
 	@class( $classes )
 >
 	<tp-modal-content class="modal__content">
-		<x-modal.close />
+		<x-modal.close-modal />
 		{{ $slot }}
 	</tp-modal-content>
 </tp-modal>

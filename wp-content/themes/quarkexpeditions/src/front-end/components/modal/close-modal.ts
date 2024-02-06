@@ -7,7 +7,7 @@ import { TPModalElement } from '@travelopia/web-components';
 /**
  * TP Modal Close.
  */
-export class QuarkModalCloseElement extends HTMLElement {
+export class QuarkCloseModalElement extends HTMLElement {
 	/**
 	 * Connected callback.
 	 */
