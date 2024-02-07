@@ -190,40 +190,40 @@
 	-ms-animation: fadeout $ease $duration;
 }
 
-@mixin slide-up( $duration: var(--transition-time), $ease: var(--transition-easing), $top: 150% ) {
+@mixin slide-up( $duration: var(--transition-time), $ease: var(--transition-easing), $offset: 150% ) {
 
 	@keyframes slideup {
 
 		0% {
-			top: $top;
+			transform: translateY($offset);
 		}
 	}
 
 	@-moz-keyframes slideup {
 
 		0% {
-			top: $top;
+			transform: translateY($offset);
 		}
 	}
 
 	@-webkit-keyframes slideup {
 
 		0% {
-			top: $top;
+			transform: translateY($offset);
 		}
 	}
 
 	@-o-keyframes slideup {
 
 		0% {
-			top: $top;
+			transform: translateY($offset);
 		}
 	}
 
 	@-ms-keyframes slideup {
 
 		0% {
-			top: $top;
+			transform: translateY($offset);
 		}
 	}
 
@@ -239,35 +239,35 @@
 	@keyframes slidedown {
 
 		100% {
-			top: $top;
+			transform: translateY($top);
 		}
 	}
 
 	@-moz-keyframes slidedown {
 
 		100% {
-			top: $top;
+			transform: translateY($top);
 		}
 	}
 
 	@-webkit-keyframes slidedown {
 
 		100% {
-			top: $top;
+			transform: translateY($top);
 		}
 	}
 
 	@-o-keyframes slidedown {
 
 		100% {
-			top: $top;
+			transform: translateY($top);
 		}
 	}
 
 	@-ms-keyframes slidedown {
 
 		100% {
-			top: $top;
+			transform: translateY($top);
 		}
 	}
 

@@ -3,86 +3,80 @@
 
 .modal {
 	$self: &;
-	overflow-y: hidden;
+	justify-content: center;
+	overflow: hidden;
+	padding: var(--spacing-5) 0 0 0;
+	align-items: flex-end;
 
-	@media (min-width: grid-size(sm)) {
-		overflow-y: auto;
-	}
+	@include transition(padding);
 
-	&[form-submitted] {
-
-		#{$self}__footer,
-		#{$self}__header {
-			display: none;
-		}
-
-		#{$self}__content {
-			top: 50%;
-			left: 50%;
-			transform: translate(-50%, -50%);
-			height: auto;
-			border-radius: var(--border-radius);
-			padding-bottom: var(--spacing-5);
-		}
-
-		#{$self}__body {
-			margin-bottom: 0;
-		}
-	}
-
-	&__content {
-		display: flex;
-		flex-direction: column;
-		gap: var(--spacing-4);
-		position: absolute;
-		top: var(--spacing-6);
-		left: 0;
+	@media screen and (min-width: grid-size(sm)) and (min-height: grid-size(md)) {
 		padding: var(--spacing-5);
-		padding-bottom: 0;
-		height: calc(100% - var(--spacing-6));
-		background-color: var(--color-gray-5);
-		border-radius: var(--border-radius) var(--border-radius) 0 0;
-		margin: 0;
-
-		@media (min-width: grid-size(sm)) {
-			top: 50%;
-			left: 50%;
-			transform: translate(-50%, -50%);
-			height: unset;
-			border-radius: var(--border-radius);
-			display: block;
-			padding: var(--spacing-5);
-		}
+		align-items: center;
 	}
 
 	&--open {
 
 		#{$self}__content {
 
-			@include slide-up();
+			@include slide-up;
 		}
 
-		@include fade-in();
+		@include fade-in;
 	}
 
 	&--close {
 
 		#{$self}__content {
 
-			@include slide-down();
+			@include slide-down;
 		}
 
-		@include fade-out();
+		@include fade-out;
+	}
+
+	&[form-submitted] {
+		align-items: center;
+		padding: 20px;
+
+		#{$self}__content {
+			height: auto;
+			border-radius: var(--border-radius);
+			padding-bottom: var(--spacing-5);
+		}
+	}
+
+	&__content {
+		position: relative;
+		margin: 0;
+		border-radius: var(--border-radius) var(--border-radius) 0 0;
+		height: 100%;
+		max-height: 675px;
+		overflow: hidden;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		padding: var(--spacing-5) var(--spacing-5) 0 var(--spacing-5);
+
+		background-color: var(--color-gray-5);
+
+		@include transition(padding);
+
+		@media screen and (min-width: grid-size(sm)) {
+			max-height: 660px;
+		}
+
+		@media screen and (min-width: grid-size(sm)) and (min-height: grid-size(md)) {
+			border-radius: var(--border-radius);
+			padding-bottom: var(--spacing-5);
+			max-height: 705px;
+		}
 	}
 
 	&__header {
 		padding-right: var(--spacing-5);
 		min-height: 88px;
-		margin-bottom: 0;
-
-		@media (min-width: grid-size(sm)) {
-			margin-bottom: var(--typography-spacing);
-		}
+		margin-bottom: var(--spacing-4);
 
 		h3 {
 			margin: 0;
@@ -92,20 +86,21 @@
 			color: var(--color-gray-60);
 		}
 
-		@media (min-width: grid-size(md)) {
-			padding-left: var(--spacing-5);
-			text-align: center;
-			margin-bottom: var(--spacing-6);
+		@media screen and (min-width: grid-size(sm)) {
 			min-height: 68px;
+			text-align: center;
+			padding-left: var(--spacing-5);
+		}
+
+		@media screen and (min-width: grid-size(sm)) and (min-height: grid-size(md)) {
+			margin-bottom: 0;
 		}
 	}
 
 	&__body {
 		height: 100%;
-		overflow-y: scroll;
-		margin-bottom: calc(-1 * var(--spacing-4));
 
-		// Hide scrollbar in modal__body
+		overflow-y: scroll;
 		-ms-overflow-style: none;
 		scrollbar-width: none;
 
@@ -113,32 +108,25 @@
 			display: none;
 		}
 
-		@media (min-width: grid-size(sm)) {
+		.form-row:last-child {
 			margin-bottom: 0;
 		}
 
-		// hide submit button when in mobile mode
-		tp-form-submit {
-			display: none;
-
-			@media (min-width: grid-size(sm)) {
-				display: unset;
-			}
-		}
-
-		@media (min-width: grid-size(sm)) {
-			height: auto;
-			overflow-y: unset;
+		@media screen and (min-width: grid-size(sm)) and (min-height: grid-size(md)) {
+			height: fit-content;
+			margin-block: 0;
 		}
 	}
 
 	&__footer {
+		background: var(--color-white);
+		display: block;
 		height: 80px;
+		margin-top: 0;
 		padding-block: var(--spacing-3);
+		margin-inline: calc(-1 * var(--spacing-5));
+		padding-inline: var(--spacing-5);
 		border-top: solid 1px rgba(color("black"), 0.06);
-		margin-inline: calc(-1 * var(--grid-col-gutter));
-		padding-inline: var(--grid-col-gutter);
-		background-color: var(--color-white);
 
 		.form-field--buttons {
 			margin: 0;
@@ -149,8 +137,11 @@
 			}
 		}
 
-		@media (min-width: grid-size(sm)) {
-			display: none;
+		@media screen and (min-width: grid-size(sm)) and (min-height: grid-size(md)) {
+			background-color: transparent;
+			padding-block: 0;
+			height: fit-content;
+			margin-block: 0;
 		}
 	}
 

@@ -21,16 +21,16 @@
 	title="{{ $title }}"
 	subtitle="{{ $subtitle }}"
 >
-	<x-modal.header>
-		<h3>{{ $title }}</h3>
-		<p>{{ $subtitle }}</p>
-	</x-modal.header>
 	<quark-inquiry-form>
-		<div class="inquiry-form__content">
-			<x-form id="{{ $form_id }}"
-				salesforce_object="{{ $salesforce_object }}"
-				thank_you_page="{{ $thank_you_page }}"
-			>
+		<x-form id="{{ $form_id }}"
+		salesforce_object="{{ $salesforce_object }}"
+		thank_you_page="{{ $thank_you_page }}"
+		>
+			<div class="inquiry-form__content">
+				<x-modal.header>
+					<h3>{{ $title }}</h3>
+					<p>{{ $subtitle }}</p>
+				</x-modal.header>
 				<x-modal.body>
 					<x-form.row>
 						<x-form.field :validation="[ 'required' ]">
@@ -431,19 +431,17 @@
 						<x-form.submit>Request a Quote</x-form.submit>
 					</x-form.buttons>
 				</x-modal.footer>
-			</x-form>
+			</div>
 			<x-toast-message type="error" message="Fields marked with an asterisk (*) are required" />
-		</div>
+		</x-form>
 
 		@if ( empty( $thank_you_page ) )
 			<div class="inquiry-form__thank-you">
-				<x-modal.body>
-					<x-svg name="logo" />
-					<div class="inquiry-form__thank-you-text">
-						<h4 class="inquiry-form__thank-you-text-heading">Thank you!</h4>
-						<p class="inquiry-form__thank-you-text-body">A Quark Expeditions Polar Travel Advisor will be in touch with you shortly.</p>
-					</div>
-				</x-modal.body>
+				<x-svg name="logo" />
+				<div class="inquiry-form__thank-you-text">
+					<h4 class="inquiry-form__thank-you-text-heading">Thank you!</h4>
+					<p class="inquiry-form__thank-you-text-body">A Quark Expeditions Polar Travel Advisor will be in touch with you shortly.</p>
+				</div>
 			</div>
 		@endif
 	</quark-inquiry-form>
