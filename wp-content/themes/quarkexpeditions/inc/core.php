@@ -401,12 +401,6 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'class'    => true,
 					'tabindex' => true,
 				],
-				'button'               => [
-					'form'  => true,
-					'class' => true,
-					'id'    => true,
-					'type'  => true,
-				],
 			]
 		);
 	}
