@@ -10,6 +10,7 @@
 	overflow-x: hidden;
 
 	&__slider {
+		width: 100vw;
 		margin-inline: var(--grid-col-gutter);
 
 		@media screen and (min-width: 1120px) {
@@ -33,7 +34,6 @@
 		display: flex;
 		flex-direction: column;
 		max-width: 325px;
-		height: 435px;
 		padding: var(--spacing-5);
 		background-color: var(--color-white);
 		border-radius: var(--border-radius);
