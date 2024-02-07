@@ -41,6 +41,8 @@ export class QuarkOpenModalElement extends HTMLElement {
 		// Event.
 		this.querySelector( 'button' )?.addEventListener( 'click', this.openModal.bind( this ) );
 		this.modal?.addEventListener( 'click', this.handleModalClose.bind( this ) );
+		this.modal?.addEventListener( 'open', this.disableBodyScroll.bind( this ) );
+		this.modal?.addEventListener( 'close', this.enableBodyScroll.bind( this ) );
 	}
 
 	/**
@@ -92,5 +94,21 @@ export class QuarkOpenModalElement extends HTMLElement {
 			modal?.classList.remove( 'modal--close' );
 			modal?.close();
 		}, { once: true } );
+	}
+
+	/**
+	 * Disable scrolling when modal is opened.
+	 */
+	disableBodyScroll() {
+		// Disable scroll on body
+		document.querySelector( 'body' )?.setAttribute( 'modal-active', '' );
+	}
+
+	/**
+	 * Enable scrolling when modal is closed.
+	 */
+	enableBodyScroll() {
+		// Disable scroll on body
+		document.querySelector( 'body' )?.removeAttribute( 'modal-active' );
 	}
 }

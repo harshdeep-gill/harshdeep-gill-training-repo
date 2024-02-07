@@ -182,3 +182,7 @@
 		display: contents;
 	}
 }
+
+body[modal-active] {
+	overflow: hidden;
+}
