@@ -18,15 +18,20 @@
 	id="{{ $modal_id }}"
 	:full_width_mobile="true"
 	:close_button="false"
+	title="{{ $title }}"
+	subtitle="{{ $subtitle }}"
 >
-	<x-modal.header title="{{ $title }}" subtitle="{{ $subtitle }}" />
-	<x-modal.body>
-		<quark-inquiry-form>
-			<div class="inquiry-form__content">
-				<x-form id="{{ $form_id }}"
-					salesforce_object="{{ $salesforce_object }}"
-					thank_you_page="{{ $thank_you_page }}"
-				>
+	<x-modal.header>
+		<h3>{{ $title }}</h3>
+		<p>{{ $subtitle }}</p>
+	</x-modal.header>
+	<quark-inquiry-form>
+		<div class="inquiry-form__content">
+			<x-form id="{{ $form_id }}"
+				salesforce_object="{{ $salesforce_object }}"
+				thank_you_page="{{ $thank_you_page }}"
+			>
+				<x-modal.body>
 					<x-form.row>
 						<x-form.field :validation="[ 'required' ]">
 							<x-form.input type="text" label="First Name" placeholder="Enter First Name" name="fields[FirstName__c]" />
@@ -420,23 +425,26 @@
 					</x-form.row>
 
 					{!! $slot !!}
+				</x-modal.body>
+				<x-modal.footer>
 					<x-form.buttons>
 						<x-form.submit>Request a Quote</x-form.submit>
 					</x-form.buttons>
-				</x-form>
-				<x-toast-message type="error" message="Fields marked with an asterisk (*) are required" />
-			</div>
+				</x-modal.footer>
+			</x-form>
+			<x-toast-message type="error" message="Fields marked with an asterisk (*) are required" />
+		</div>
 
-			@if ( empty( $thank_you_page ) )
-				<div class="inquiry-form__thank-you">
+		@if ( empty( $thank_you_page ) )
+			<div class="inquiry-form__thank-you">
+				<x-modal.body>
 					<x-svg name="logo" />
 					<div class="inquiry-form__thank-you-text">
 						<h4 class="inquiry-form__thank-you-text-heading">Thank you!</h4>
 						<p class="inquiry-form__thank-you-text-body">A Quark Expeditions Polar Travel Advisor will be in touch with you shortly.</p>
 					</div>
-				</div>
-			@endif
-		</quark-inquiry-form>
-	</x-modal.body>
-	<x-modal.footer form_id="{{ $form_id }}"/>
+				</x-modal.body>
+			</div>
+		@endif
+	</quark-inquiry-form>
 </x-modal>

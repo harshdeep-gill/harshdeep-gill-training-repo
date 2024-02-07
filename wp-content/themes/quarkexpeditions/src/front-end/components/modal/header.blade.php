@@ -1,15 +1,9 @@
-@props( [
-	'title'    => '',
-	'subtitle' => '',
-] )
+@php
+	if( empty( $slot ) ) {
+		return;
+	}
+@endphp
 
-@if ( ! empty( $title ) || ! empty( $subtitle ) )
-	<header class="modal__header">
-		@if ( ! empty( $title ) )
-			<h3>{{ $title }}</h3>
-		@endif
-		@if ( ! empty( $subtitle ) )
-			<p>{{ $subtitle }}</p>
-		@endif
-	</header>
-@endif
+<header class="modal__header">
+	{!! $slot !!}
+</header>
