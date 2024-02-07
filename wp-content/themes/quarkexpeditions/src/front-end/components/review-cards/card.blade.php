@@ -14,7 +14,7 @@
 	@if ( ! empty( $title ) )
 		<h5 class="review-cards__card-title"><x-escape :content="$title"/></h5>
 	@endif
-		
+
 	<div class="review-cards__card-content">
 		@if ( ! empty( $slot ) )
 			<div class="review-cards__content">
