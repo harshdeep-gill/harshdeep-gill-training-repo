@@ -1,0 +1,106 @@
+/**
+ * Reviews Cards.
+ */
+
+@import "../../scss";
+
+.review-cards {
+	$self: &;
+
+	overflow-x: hidden;
+
+	&__slider {
+		margin-inline: var(--grid-col-gutter);
+
+		@media screen and (min-width: 1120px) {
+			margin-inline: 0;
+		}
+	}
+
+	&__track {
+		padding-left: var(--spacing-5);
+		margin-left: calc(-1 * var(--spacing-5));
+	}
+
+	&__nav {
+		display: flex;
+		column-gap: var(--spacing-5);
+		margin-top: var(--spacing-7);
+		margin-left: calc(-1 * var(--spacing-1));
+	}
+
+	&__card {
+		display: flex;
+		flex-direction: column;
+		max-width: 325px;
+		height: 435px;
+		padding: var(--spacing-5);
+		background-color: var(--color-white);
+		border-radius: var(--border-radius);
+		box-shadow: var(--shadow-1);
+
+		&:not(:last-child) {
+			margin-right: var(--spacing-5);
+		}
+
+		&-title {
+			height: 65px;
+			font-family: var(--font-family);
+			font-weight: var(--font-weight-bold);
+			display: -webkit-box;
+			-webkit-line-clamp: 2;
+			-webkit-box-orient: vertical;
+			text-overflow: ellipsis;
+			overflow: hidden;
+		}
+
+		&-content {
+			height: 225px;
+		}
+
+		@media screen and (min-width: grid-size(sm)) {
+			max-width: 350px;
+		}
+	}
+
+	&__content {
+		display: -webkit-box;
+		-webkit-line-clamp: 7;
+		-webkit-box-orient: vertical;
+		text-overflow: ellipsis;
+		overflow: hidden;
+	}
+
+	&__author {
+		font-size: 16px;
+		font-weight: var(--font-weight-bold);
+		margin-top: var(--spacing-6);
+	}
+
+	&__rating {
+		margin-bottom: var(--spacing-5);
+	}
+
+	&__arrow-button {
+		background-color: var(--color-black);
+		width: 32px;
+		height: 32px;
+		border-radius: 50%;
+		padding: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		cursor: pointer;
+
+		svg {
+			transform: scale(1.3);
+		}
+
+		&--right {
+
+			svg {
+				transform: rotate(180deg) scale(1.3);
+			}
+		}
+	}
+}
