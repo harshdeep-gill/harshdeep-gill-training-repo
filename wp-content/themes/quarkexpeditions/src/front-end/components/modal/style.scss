@@ -10,10 +10,15 @@
 
 	@include transition(padding);
 
-	@media screen and (min-width: grid-size(sm)) and (min-height: grid-size(md)) {
-		padding: var(--spacing-5);
-		align-items: center;
+	@media screen and (min-width: grid-size(sm)) {
+		padding-inline: var(--spacing-5);
 	}
+
+	@media screen and (min-width: grid-size(sm)) and (min-height: grid-size(md)) {
+		align-items: center;
+		padding: var(--spacing-5);
+	}
+
 
 	&--open {
 
@@ -50,9 +55,10 @@
 		position: relative;
 		margin: 0;
 		border-radius: var(--border-radius) var(--border-radius) 0 0;
+		width: 100%;
+		max-width: 600px;
 		height: 100%;
 		max-height: 675px;
-		overflow: hidden;
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
@@ -89,11 +95,14 @@
 		@media screen and (min-width: grid-size(sm)) {
 			min-height: 68px;
 			text-align: center;
-			padding-left: var(--spacing-5);
 		}
 
 		@media screen and (min-width: grid-size(sm)) and (min-height: grid-size(md)) {
 			margin-bottom: 0;
+		}
+
+		@media screen and (min-width: grid-size(md)) {
+			padding-left: var(--spacing-5);
 		}
 	}
 
