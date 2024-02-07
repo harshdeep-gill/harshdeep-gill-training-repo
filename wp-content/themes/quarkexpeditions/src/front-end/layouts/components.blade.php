@@ -235,10 +235,7 @@
 					author="Carolyn T"
 					rating="4"
 				>
-					<p>Most exciting and wonderful, and educational experience of my life, thank
-						you to all the experts for sharing so much information on the animals and
-						arctic region, cruise staff and fellow passengers for making this trip one I
-						will remember forever. Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever.</p>
+					<p>Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever. Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever.</p>
 				</x-review-cards.card>
 				<x-review-cards.card
 					title="An incredible trip to Antarctica"
