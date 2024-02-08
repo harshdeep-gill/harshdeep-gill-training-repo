@@ -15,7 +15,7 @@
 		</tp-slider-slides>
 	</tp-slider-track>
 
-	@if( $slide_count > 1 )
+	@if ( $slide_count > 1 )
 		<div class="review-cards__nav">
 			<tp-slider-arrow direction="previous">
 				<button class="review-cards__arrow-button review-cards__arrow-button--left">
