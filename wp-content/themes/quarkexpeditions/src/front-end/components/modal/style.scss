@@ -8,8 +8,6 @@
 	padding: var(--spacing-5) 0 0 0;
 	align-items: flex-end;
 
-	@include transition(padding);
-
 	@media screen and (min-width: grid-size(sm)) {
 		padding-inline: var(--spacing-5);
 	}
@@ -63,10 +61,7 @@
 		flex-direction: column;
 		justify-content: space-between;
 		padding: var(--spacing-5) var(--spacing-5) 0 var(--spacing-5);
-
 		background-color: var(--color-gray-5);
-
-		@include transition(padding);
 
 		@media screen and (min-width: grid-size(sm)) {
 			max-height: 660px;
