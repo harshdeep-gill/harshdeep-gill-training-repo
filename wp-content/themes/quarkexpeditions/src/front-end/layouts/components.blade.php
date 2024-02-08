@@ -201,50 +201,48 @@
 
 	<x-component-demo :keys="[ 'review-cards' ]">
 		<x-review-cards>
-			<x-review-cards.carousel>
-				<x-review-cards.card
-					title="Falkland, South Georgia and the Antarctic Circle"
-					author="Denise P."
-					rating="4"
-				>
-					<p>Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever. Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever.</p>
-				</x-review-cards.card>
-				<x-review-cards.card
-					title="An incredible trip to Antarctica"
-					author="Martine S."
-					rating="5"
-				>
-					<p>The whole experience was great. The World Explorer is a beautiful and very comfortable ship, the food was amazing. And of course the landings and cruising the area was a once in a lifetime experience. Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever.</p>
-				</x-review-cards.card>
-				<x-review-cards.card
-					title="Wonderful Antarctic Trip"
-					author="Roger C."
-					rating="4"
-				>
-					<p>Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region.</p>
-				</x-review-cards.card>
-				<x-review-cards.card
-					title="Falkland, South Georgia and Antarctica: Explorers and Kings"
-					author="Martine S."
-					rating="4"
-				>
-					<p>The whole experience was great. The World Explorer is a beautiful and very comfortable ship, the food was amazing. And of course the landings and cruising the area was a once in a lifetime experience.</p>
-				</x-review-cards.card>
-				<x-review-cards.card
-					title="9 Day Spitsbergen Polar Bear Safari"
-					author="Carolyn T"
-					rating="4"
-				>
-					<p>Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever. Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever.</p>
-				</x-review-cards.card>
-				<x-review-cards.card
-					title="An incredible trip to Antarctica"
-					author="Martine S."
-					rating="5"
-				>
-					<p>The whole experience was great. The World Explorer is a beautiful and very comfortable ship, the food was amazing. And of course the landings and cruising the area was a once in a lifetime experience. Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever.</p>
-				</x-review-cards.card>
-			</x-review-cards.carousel>
+			<x-review-cards.card
+				title="Falkland, South Georgia and the Antarctic Circle"
+				author="Denise P."
+				rating="4"
+			>
+				<p>Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever. Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever.</p>
+			</x-review-cards.card>
+			<x-review-cards.card
+				title="An incredible trip to Antarctica"
+				author="Martine S."
+				rating="5"
+			>
+				<p>The whole experience was great. The World Explorer is a beautiful and very comfortable ship, the food was amazing. And of course the landings and cruising the area was a once in a lifetime experience. Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever.</p>
+			</x-review-cards.card>
+			<x-review-cards.card
+				title="Wonderful Antarctic Trip"
+				author="Roger C."
+				rating="4"
+			>
+				<p>Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region.</p>
+			</x-review-cards.card>
+			<x-review-cards.card
+				title="Falkland, South Georgia and Antarctica: Explorers and Kings"
+				author="Martine S."
+				rating="4"
+			>
+				<p>The whole experience was great. The World Explorer is a beautiful and very comfortable ship, the food was amazing. And of course the landings and cruising the area was a once in a lifetime experience.</p>
+			</x-review-cards.card>
+			<x-review-cards.card
+				title="9 Day Spitsbergen Polar Bear Safari"
+				author="Carolyn T"
+				rating="4"
+			>
+				<p>Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever. Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever.</p>
+			</x-review-cards.card>
+			<x-review-cards.card
+				title="An incredible trip to Antarctica"
+				author="Martine S."
+				rating="5"
+			>
+				<p>The whole experience was great. The World Explorer is a beautiful and very comfortable ship, the food was amazing. And of course the landings and cruising the area was a once in a lifetime experience. Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever.</p>
+			</x-review-cards.card>
 		</x-review-cards>
 	</x-component-demo>
 

@@ -8,7 +8,7 @@
 @endphp
 
 <x-section class="review-cards" :full_width="true">
-	<div class="review-cards__wrap">
+	<x-review-cards.carousel>
 		{!! $slot !!}
-	</div>
+	</x-review-cards.carousel>
 </x-section>

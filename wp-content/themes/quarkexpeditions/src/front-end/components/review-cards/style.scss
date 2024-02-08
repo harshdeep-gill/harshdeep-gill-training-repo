@@ -13,6 +13,12 @@
 		width: 100vw;
 		margin-inline: var(--grid-col-gutter);
 
+		&:has(div.review-cards__nav) {
+			#{$self}__track {
+				margin-bottom: 0;
+			}
+		}
+
 		@media screen and (min-width: 1120px) {
 			margin-inline: 0;
 		}
@@ -21,6 +27,7 @@
 	&__track {
 		padding-left: var(--spacing-5);
 		margin-left: calc(-1 * var(--spacing-5));
+		margin-bottom: var(--spacing-7);
 	}
 
 	&__nav {
