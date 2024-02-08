@@ -135,6 +135,71 @@
 		</x-hero>
 	</x-component-demo>
 
+	<x-component-demo :keys="[ 'modal' ]">
+		<x-section title="Flexible Multipurpose modal">
+			<x-modal.modal-open modal_id="multipurpose-modal-demo">
+				<x-button type="button">
+					Open a sample modal
+					<x-button.sub-title title="It is dynamic" />
+				</x-button>
+			</x-modal.modal-open>
+			<x-modal id="multipurpose-modal-demo" >
+				<x-modal.header>
+					<h3>Lorem ipsum dolor sit amet.</h3>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur voluptate dolorum alias officiis minima nemo asperiores maxime velit itaque sapiente?</p>
+				</x-modal.header>
+
+				<x-modal.body>
+					Lorem ipsum dolor, sit amet consectetur adipisicing elit. Esse
+					excepturi blanditiis cum eum perspiciatis dignissimos dolorum minus
+					est, necessitatibus enim, quisquam quibusdam porro architecto nostrum
+					dolorem vero sed vel facere exercitationem soluta assumenda omnis,
+					voluptate non natus! Tenetur a deleniti recusandae. Molestiae nobis
+					quis odit optio dolorum facilis distinctio deleniti perferendis odio
+					commodi veniam voluptate provident pariatur voluptatum debitis
+					exercitationem asperiores reiciendis aperiam excepturi magni quae
+					cumque necessitatibus, cupiditate ipsum. Natus doloribus ullam
+					porro ad corporis minus expedita repellat temporibus earum.
+					Earum vero ea nostrum tenetur blanditiis commodi sed a id modi
+					minus iusto pariatur architecto odit non molestias rerum enim
+					tempora aspernatur porro nam unde, quas laboriosam facere. Aut,
+					porro labore molestias aperiam modi velit fugit vel sunt earum
+					harum tempora autem dolor aspernatur optio. Suscipit, eum ipsum
+					rem nisi qui ullam distinctio molestias modi ratione aut molestiae
+					laborum beatae iusto debitis magni quaerat eos ea deserunt commodi
+					quas fugiat provident. Quod, quidem deleniti. Totam, necessitatibus
+					mollitia veritatis assumenda dolorem reprehenderit esse fuga?
+					Eius explicabo in, animi quas, deleniti laboriosam voluptas hic dolore
+					ea incidunt totam saepe. Lorem ipsum dolor, sit amet consectetur
+					adipisicing elit. Esse excepturi blanditiis cum eum perspiciatis dignissimos
+					dolorum minus est, necessitatibus enim, quisquam quibusdam porro architecto nostrum
+					dolorem vero sed vel facere exercitationem soluta assumenda omnis,
+					voluptate non natus! Tenetur a deleniti recusandae. Molestiae nobis
+					quis odit optio dolorum facilis distinctio deleniti perferendis odio
+					commodi veniam voluptate provident pariatur voluptatum debitis
+					exercitationem asperiores reiciendis aperiam excepturi magni quae
+					cumque necessitatibus, cupiditate ipsum. Natus doloribus ullam
+					porro ad corporis minus expedita repellat temporibus earum.
+					Earum vero ea nostrum tenetur blanditiis commodi sed a id modi
+					minus iusto pariatur architecto odit non molestias rerum enim
+					tempora aspernatur porro nam unde, quas laboriosam facere. Aut,
+					porro labore molestias aperiam modi velit fugit vel sunt earum
+					harum tempora autem dolor aspernatur optio. Suscipit, eum ipsum
+					rem nisi qui ullam distinctio molestias modi ratione aut molestiae
+					laborum beatae iusto debitis magni quaerat eos ea deserunt commodi
+					quas fugiat provident. Quod, quidem deleniti. Totam, necessitatibus
+					mollitia veritatis assumenda dolorem reprehenderit esse fuga?
+					Eius explicabo in, animi quas, deleniti laboriosam voluptas hic dolore
+					ea incidunt totam saepe.
+				</x-modal.body>
+
+				<x-modal.footer>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis, rem?</p>
+				</x-modal.footer>
+			</x-modal>
+		</x-section>
+	</x-component-demo>
+
 	<x-component-demo :keys="[ 'reviews-carousel', 'two-columns' ]">
 		<x-section>
 			<x-two-columns :border="true">
