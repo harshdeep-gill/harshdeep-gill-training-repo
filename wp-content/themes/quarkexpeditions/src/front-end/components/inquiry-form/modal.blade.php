@@ -23,8 +23,8 @@
 >
 	<quark-inquiry-form>
 		<x-form id="{{ $form_id }}"
-		salesforce_object="{{ $salesforce_object }}"
-		thank_you_page="{{ $thank_you_page }}"
+			salesforce_object="{{ $salesforce_object }}"
+			thank_you_page="{{ $thank_you_page }}"
 		>
 			<div class="inquiry-form__content">
 				<x-modal.header>
