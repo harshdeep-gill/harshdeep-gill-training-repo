@@ -16,7 +16,6 @@
 <x-modal
 	class="inquiry-form__modal"
 	id="{{ $modal_id }}"
-	:close_button="false"
 	title="{{ $title }}"
 	subtitle="{{ $subtitle }}"
 >
