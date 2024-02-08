@@ -414,10 +414,9 @@
 					<x-form.row>
 						<x-form.field :validation="[ 'required' ]">
 							<x-form.select label="I would like to" name="fields[Journey_Stage__c]">
-								<option value="">- Select -</option>
-								<option value="explore-wildlife">Explore wildlife</option>
-								<option value="explore-cuisine">Explore cuisine</option>
-								<option value="go-sightseeing">Go sightseeing</option>
+							<option value="Dreaming">Learn more about Polar Travel</option>
+							<option value="Planning">Plan a trip</option>
+							<option value="Booking">Book a trip</option>
 							</x-form.select>
 						</x-form.field>
 					</x-form.row>

@@ -66,6 +66,7 @@
 	 * Colors and Borders.
 	 */
 	--border-radius: 8px;
+	--border-radius-large: 16px;
 
 	@each $name, $color in $colors {
 		--color-#{ $name }: #{ $color };
