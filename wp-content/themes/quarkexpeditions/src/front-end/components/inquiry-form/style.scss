@@ -6,11 +6,19 @@
 		display: flex;
 		flex-direction: column;
 		height: 100%;
-		justify-content: space-between;
+		gap: var(--spacing-6);
 
-		@media screen and (min-width: grid-size(sm)) and (min-height: grid-size(md)) {
-			gap: var(--spacing-6);
-			justify-content: flex-start;
+		@media screen and (max-width: calc(grid-size(sm) - 1px)),
+			screen and (max-height: calc(grid-size(md) - 1px) ) {
+			gap: unset;
+		}
+
+		.form-field--buttons {
+			margin: 0;
+		}
+
+		.form-row:last-child {
+			margin: 0;
 		}
 	}
 
@@ -83,6 +91,11 @@
 			@media (min-width: grid-size(sm)) {
 				padding-inline: var(--spacing-9);
 			}
+		}
+
+		@media screen and (max-width: calc(grid-size(sm) - 1px)),
+			screen and (max-height: calc(grid-size(md) - 1px) ) {
+			padding-bottom: var(--spacing-5);
 		}
 	}
 }
