@@ -25,10 +25,16 @@
 			thank_you_page="{{ $thank_you_page }}"
 		>
 			<div class="inquiry-form__content">
-				<x-modal.header>
-					<h3>{{ $title }}</h3>
-					<p>{{ $subtitle }}</p>
-				</x-modal.header>
+				@if( ! empty( $title ) || ! empty( $subtitle ) )
+					<x-modal.header>
+						@if ( ! empty( $title ) )
+							<h3>{{ $title }}</h3>
+						@endif
+						@if ( ! empty( $subtitle ) )
+							<p>{{ $subtitle }}</p>
+						@endif
+					</x-modal.header>
+				@endif
 				<x-modal.body>
 					<x-form.row>
 						<x-form.field :validation="[ 'required' ]">

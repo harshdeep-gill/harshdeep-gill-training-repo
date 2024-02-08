@@ -75,6 +75,7 @@
 		@media screen and (min-width: grid-size(sm)) and (min-height: grid-size(md)) {
 			border-radius: var(--border-radius);
 			padding-bottom: var(--spacing-5);
+			height: fit-content;
 			max-height: 705px;
 		}
 	}
