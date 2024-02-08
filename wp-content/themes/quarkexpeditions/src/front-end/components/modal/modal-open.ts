@@ -18,12 +18,9 @@ export class QuarkModalOpenElement extends HTMLElement {
 	 */
 	private modal: TPModalElement | null | undefined;
 	private modalId: string | null;
-
-	// @ts-ignore ts(2564)
-	private modalContentResizeObserver: ResizeObserver;
-
-	// @ts-ignore ts(2564)
-	private modalContentElement: HTMLElement | null;
+	private modalResizeObserver: ResizeObserver | undefined;
+	private modalContentElement: HTMLElement | null | undefined;
+	private modalOpenButtonElement: HTMLButtonElement | null | undefined;
 
 	/**
 	 * Constructor.
@@ -42,19 +39,32 @@ export class QuarkModalOpenElement extends HTMLElement {
 		}
 
 		// Get the modal element.
-		this.modal = document.getElementById( this.modalId ) as TPModalElement;
+		this.modal = document.getElementById( this.modalId ) as TPModalElement|null;
+
+		// Check if modal is found.
+		if ( ! this.modal ) {
+			// Modal not found, bail.
+			return;
+		}
 
 		// Events.
-		this.querySelector( 'button' )?.addEventListener( 'click', this.openModal.bind( this ) );
-		this.modal?.addEventListener( 'close', this.handleModalClose.bind( this ) );
+		this.modalOpenButtonElement = this.querySelector<HTMLButtonElement>( 'button' );
+		this.modalOpenButtonElement?.addEventListener( 'click', this.openModal.bind( this ) );
+		this.modal.addEventListener( 'close', this.handleModalClose.bind( this ) );
 
 		// Resize observer.
-		this.modalContentResizeObserver = new ResizeObserver( this.setModalBodyHeight.bind( this ) );
-		this.modalContentElement = this.modal.querySelector( '.modal__content' );
+		this.modalResizeObserver = new ResizeObserver( this.setModalBodyHeight.bind( this ) );
+		this.modalContentElement = this.modal.querySelector<HTMLElement>( '.modal__content' );
 
 		// Check if modalContent found
 		if ( this.modalContentElement ) {
-			this.modalContentResizeObserver.observe( this.modal );
+			/**
+			 * We are observing the modal instead of the modalContentElement
+			 * because the max height of modalContentElement depends on the
+			 * height of the viewport and modal is supposed to take up the whole
+			 * viewport.
+			 */
+			this.modalResizeObserver.observe( this.modal );
 		}
 	}
 
@@ -128,18 +138,21 @@ export class QuarkModalOpenElement extends HTMLElement {
 			}
 
 			// Get modal body.
-			const modalBodyElement = modalContentElement?.querySelector<HTMLElement>( '.modal__body' );
+			const modalBodyElement = modalContentElement.querySelector<HTMLElement>( '.modal__body' );
 
 			// Unobserve the element if modalBodyElement is not present.
-			if ( ! modalBodyElement && this.modalContentElement ) {
-				this.modalContentResizeObserver.unobserve( this.modalContentElement );
+			if ( ! modalBodyElement || ! this.modal ) {
+				// Check done to stop TS from complaining.
+				if ( this.modal ) {
+					this.modalResizeObserver?.unobserve( this.modal );
+				}
 
 				// Bail early.
 				return;
 			}
 
 			// Get the parent of modalBodyElement.
-			const modalBodyParent = modalBodyElement?.parentElement;
+			const modalBodyParent = modalBodyElement.parentElement;
 			const modalBodySiblingGap = parseInt( modalBodyParent ? getComputedStyle( modalBodyParent ).gap : '0' );
 
 			// Get modal content height.
@@ -158,26 +171,28 @@ export class QuarkModalOpenElement extends HTMLElement {
 			) + ( ! Number.isNaN( modalBodySiblingGap ) ? modalBodySiblingGap * 2 : 0 );
 
 			// Get header and footer.
-			const modalHeaderElement = modalContentElement?.querySelector<HTMLElement>( '.modal__header' );
-			const modalFooterElement = modalContentElement?.querySelector<HTMLElement>( '.modal__footer' );
+			const modalHeaderElement = modalContentElement.querySelector<HTMLElement>( '.modal__header' );
+			const modalFooterElement = modalContentElement.querySelector<HTMLElement>( '.modal__footer' );
 			let modalHeaderHeight = 0;
 			let modalFooterHeight = 0;
 
-			// Add header height.
+			// Get header height.
 			if ( modalHeaderElement ) {
 				modalHeaderHeight = modalHeaderElement.getBoundingClientRect().height;
 			}
 
-			// Add footer height.
+			// Get footer height.
 			if ( modalFooterElement ) {
 				modalFooterHeight = modalFooterElement.getBoundingClientRect().height;
 			}
 
-			// Check if body element exists.
-			if ( modalBodyElement ) {
-				// Set the modal body element height.
-				modalBodyElement.style.maxHeight = `${ Math.min( ( modalContentMaxHeight - paddingAndGap - modalFooterHeight - modalHeaderHeight ), modalBodyElement.scrollHeight ) }px`;
-			}
+			// New max height candidate for modal__body
+			const modalBodyMaxHeightCandidate = (
+				modalContentMaxHeight - paddingAndGap - modalFooterHeight - modalHeaderHeight
+			);
+
+			// Set the modal body element height.
+			modalBodyElement.style.maxHeight = `${ Math.min( modalBodyMaxHeightCandidate, modalBodyElement.scrollHeight ) }px`;
 		} );
 	}
 }
