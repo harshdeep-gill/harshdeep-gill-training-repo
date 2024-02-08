@@ -75,55 +75,8 @@
 		}
 	}
 
-	@-moz-keyframes fadein {
-
-		0% {
-			opacity: 0;
-		}
-
-		100% {
-			opacity: 1;
-		}
-	}
-
-	@-webkit-keyframes fadein {
-
-		0% {
-			opacity: 0;
-		}
-
-		100% {
-			opacity: 1;
-		}
-	}
-
-	@-o-keyframes fadein {
-
-		0% {
-			opacity: 0;
-		}
-
-		100% {
-			opacity: 1;
-		}
-	}
-
-	@-ms-keyframes fadein {
-
-		0% {
-			opacity: 0;
-		}
-
-		100% {
-			opacity: 1;
-		}
-	}
-
 	transition: fadein $duration $ease;
 	animation: fadein $ease $duration;
-	-moz-animation: fadein $ease $duration;
-	-o-animation: fadein $ease $duration;
-	-ms-animation: fadein $ease $duration;
 }
 
 @mixin fade-out( $duration: var(--transition-time), $ease: var(--transition-easing) ) {
@@ -139,55 +92,8 @@
 		}
 	}
 
-	@-moz-keyframes fadeout {
-
-		0% {
-			opacity: 1;
-		}
-
-		100% {
-			opacity: 0;
-		}
-	}
-
-	@-webkit-keyframes fadeout {
-
-		0% {
-			opacity: 1;
-		}
-
-		100% {
-			opacity: 0;
-		}
-	}
-
-	@-o-keyframes fadeout {
-
-		0% {
-			opacity: 1;
-		}
-
-		100% {
-			opacity: 0;
-		}
-	}
-
-	@-ms-keyframes fadeout {
-
-		0% {
-			opacity: 1;
-		}
-
-		100% {
-			opacity: 0;
-		}
-	}
-
 	transition: fadeout $duration $ease;
 	animation: fadeout $ease $duration;
-	-moz-animation: fadeout $ease $duration;
-	-o-animation: fadeout $ease $duration;
-	-ms-animation: fadeout $ease $duration;
 }
 
 @mixin slide-up( $duration: var(--transition-time), $ease: var(--transition-easing), $offset: 150% ) {
@@ -199,39 +105,8 @@
 		}
 	}
 
-	@-moz-keyframes slideup {
-
-		0% {
-			transform: translateY($offset);
-		}
-	}
-
-	@-webkit-keyframes slideup {
-
-		0% {
-			transform: translateY($offset);
-		}
-	}
-
-	@-o-keyframes slideup {
-
-		0% {
-			transform: translateY($offset);
-		}
-	}
-
-	@-ms-keyframes slideup {
-
-		0% {
-			transform: translateY($offset);
-		}
-	}
-
 	transition: slideup $duration $ease;
 	animation: slideup $ease $duration;
-	-moz-animation: slideup $ease $duration;
-	-o-animation: slideup $ease $duration;
-	-ms-animation: slideup $ease $duration;
 }
 
 @mixin slide-down( $duration: var(--transition-time), $ease: var(--transition-easing), $top: 150% ) {
@@ -243,39 +118,8 @@
 		}
 	}
 
-	@-moz-keyframes slidedown {
-
-		100% {
-			transform: translateY($top);
-		}
-	}
-
-	@-webkit-keyframes slidedown {
-
-		100% {
-			transform: translateY($top);
-		}
-	}
-
-	@-o-keyframes slidedown {
-
-		100% {
-			transform: translateY($top);
-		}
-	}
-
-	@-ms-keyframes slidedown {
-
-		100% {
-			transform: translateY($top);
-		}
-	}
-
 	transition: slidedown $duration $ease;
 	animation: slidedown $ease $duration;
-	-moz-animation: slidedown $ease $duration;
-	-o-animation: slidedown $ease $duration;
-	-ms-animation: slidedown $ease $duration;
 }
 
 
