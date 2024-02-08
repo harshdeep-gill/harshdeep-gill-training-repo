@@ -208,12 +208,9 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 				'quark-inquiry-form'   => [
 					'class' => true,
 				],
-				'quark-open-modal'     => [
+				'quark-modal-open'     => [
 					'class'    => true,
 					'modal-id' => true,
-				],
-				'quark-close-modal'    => [
-					'class' => true,
 				],
 				'quark-toast-message'  => [
 					'class'   => true,

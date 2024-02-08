@@ -17,9 +17,10 @@
 		id="{{ $id }}"
 	@endif
 	@class( $classes )
+	overlay-click-close="yes"
 >
 	<tp-modal-content class="modal__content">
-		<x-modal.close-modal />
+		<x-modal.modal-close />
 		{!! $slot !!}
 	</tp-modal-content>
 </tp-modal>

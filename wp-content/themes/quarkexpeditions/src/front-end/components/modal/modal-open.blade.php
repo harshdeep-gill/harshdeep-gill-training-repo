@@ -10,6 +10,6 @@
 	}
 @endphp
 
-<quark-open-modal @class( [ $class, 'modal__open-modal' ] ) modal-id="{{ $modal_id }}">
+<quark-modal-open @class( [ $class, 'modal__modal-open' ] ) modal-id="{{ $modal_id }}">
 	{!! $slot !!}
-</quark-open-modal>
+</quark-modal-open>

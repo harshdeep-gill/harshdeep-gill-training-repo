@@ -10,9 +10,9 @@ import { TPModalElement } from '@travelopia/web-components';
 const { HTMLElement } = window;
 
 /**
- * QuarkOpenModalElement Class.
+ * QuarkModalOpenElement Class.
  */
-export class QuarkOpenModalElement extends HTMLElement {
+export class QuarkModalOpenElement extends HTMLElement {
 	/**
 	 * Properties.
 	 */
@@ -40,15 +40,13 @@ export class QuarkOpenModalElement extends HTMLElement {
 
 		// Event.
 		this.querySelector( 'button' )?.addEventListener( 'click', this.openModal.bind( this ) );
-		this.modal?.addEventListener( 'click', this.handleModalClose.bind( this ) );
-		this.modal?.addEventListener( 'open', this.disableBodyScroll.bind( this ) );
-		this.modal?.addEventListener( 'close', this.enableBodyScroll.bind( this ) );
+		this.modal?.addEventListener( 'close', this.handleModalClose.bind( this ) );
 	}
 
 	/**
 	 * Event: 'click'.
 	 *
-	 * Open Modal On Element Click.
+	 * Opens Modal On Element Click.
 	 */
 	openModal() {
 		// Declare modal.
@@ -56,6 +54,11 @@ export class QuarkOpenModalElement extends HTMLElement {
 
 		// Open the modal.
 		modal?.open();
+
+		// Removes scroll from body.
+		document.querySelector( 'body' )?.classList?.add( 'prevent-scroll' );
+
+		// Add animation.
 		modal?.classList.add( 'modal--open' );
 		modal?.addEventListener( 'animationend',
 			() => modal?.classList.remove( 'modal--open' ),
@@ -64,21 +67,12 @@ export class QuarkOpenModalElement extends HTMLElement {
 	}
 
 	/**
-	 * Event: 'click'.
+	 * Event: 'close'.
 	 *
-	 * Close Modal On Modal clicked or close modal clicked.
-	 *
-	 * @param {Event} evt
+	 * Handles the close event of TPModalElement.
 	 */
-	handleModalClose( evt: Event ) {
-		//Handle modal closing.
-		if ( evt.target !== this.modal ) {
-			// Modal not clicked, bail.
-			return;
-		}
-
-		// Stop propagation.
-		evt.stopPropagation();
+	handleModalClose() {
+		// Assign for easy use in the event handler.
 		const modal = this.modal;
 
 		// Check if modal is there.
@@ -87,28 +81,16 @@ export class QuarkOpenModalElement extends HTMLElement {
 			return;
 		}
 
+		// Reopen the modal.
+		modal.setAttribute( 'open', 'yes' );
+
 		// Remove and add classes for slide out animation.
-		modal?.classList.add( 'modal--close' );
-		modal?.addEventListener( 'animationend', function() {
+		modal.classList.add( 'modal--close' );
+		modal.addEventListener( 'animationend', function() {
 			// Slide out.
-			modal?.classList.remove( 'modal--close' );
-			modal?.close();
+			modal.classList.remove( 'modal--close' );
+			modal.removeAttribute( 'open' );
+			document.querySelector( 'body' )?.classList?.remove( 'prevent-scroll' );
 		}, { once: true } );
-	}
-
-	/**
-	 * Disable scrolling when modal is opened.
-	 */
-	disableBodyScroll() {
-		// Disable scroll on body
-		document.querySelector( 'body' )?.setAttribute( 'modal-open', '' );
-	}
-
-	/**
-	 * Enable scrolling when modal is closed.
-	 */
-	enableBodyScroll() {
-		// Disable scroll on body
-		document.querySelector( 'body' )?.removeAttribute( 'modal-open' );
 	}
 }
