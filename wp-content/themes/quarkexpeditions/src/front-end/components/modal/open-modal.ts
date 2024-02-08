@@ -101,7 +101,7 @@ export class QuarkOpenModalElement extends HTMLElement {
 	 */
 	disableBodyScroll() {
 		// Disable scroll on body
-		document.querySelector( 'body' )?.setAttribute( 'modal-active', '' );
+		document.querySelector( 'body' )?.setAttribute( 'modal-open', '' );
 	}
 
 	/**
@@ -109,6 +109,6 @@ export class QuarkOpenModalElement extends HTMLElement {
 	 */
 	enableBodyScroll() {
 		// Disable scroll on body
-		document.querySelector( 'body' )?.removeAttribute( 'modal-active' );
+		document.querySelector( 'body' )?.removeAttribute( 'modal-open' );
 	}
 }
