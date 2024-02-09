@@ -155,7 +155,7 @@ export class QuarkModalOpenElement extends HTMLElement {
 		/**
 		 * When we increase the viewport height, the maxHeight and current Height
 		 * always have a difference of 1px when that resize happens. We want to
-		 * reintroduce that when the viewport height is increased to avoid discrepancies.
+		 * re-introduce that when the viewport height is decreased to avoid discrepancies.
 		 */
 		if ( modalContentMaxHeight === modalContentRect.height ) {
 			notBodyHeight++;
