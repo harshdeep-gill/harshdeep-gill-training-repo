@@ -56,7 +56,7 @@ textarea {
 	width: 100%;
 
 	@include transition(border);
-	@include placeholder-color(var(--color-gray-80));
+	@include placeholder-color(var(--color-gray-50));
 
 	&:disabled,
 	&.disabled {
