@@ -40,7 +40,7 @@
 					</x-form.field>
 				</x-form.row>
 				<x-form.row>
-					<x-form.field :validation="[ 'required' ]">
+					<x-form.field :validation="[ 'required', 'email' ]">
 						<x-form.input type="email" label="Email" placeholder="Enter Email" name="fields[Email__c]" />
 					</x-form.field>
 					<x-form.field :validation="[ 'required' ]">
