@@ -29,7 +29,11 @@
 >
 	<span class="toast-message__icon"><x-svg name="{{ $icon }}"/></span>
 	<p><x-escape :content="$message"/></p>
-	<button class="toast-message__close">
+	{{--
+		This needs to be type="button" so that it does not intefere with submit
+		functionality if it is ever placed inside a form.
+	--}}
+	<button type="button" class="toast-message__close">
 		<x-svg name="cross"/>
 	</button>
 </quark-toast-message>
