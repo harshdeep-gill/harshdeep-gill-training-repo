@@ -16,25 +16,16 @@
 		.form-field--buttons {
 			margin: 0;
 		}
-
-		.form-row:last-child {
-			margin: 0;
-		}
 	}
 
 	&__modal {
 
-		quark-inquiry-form {
+		quark-inquiry-form,
+		quark-form,
+		form,
+		tp-form {
 			display: block;
 			height: 100%;
-
-			quark-form,
-			form,
-			tp-form {
-				display: block;
-				height: inherit;
-			}
-
 		}
 
 		tp-form-error {
