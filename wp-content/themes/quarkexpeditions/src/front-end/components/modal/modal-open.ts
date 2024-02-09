@@ -53,7 +53,7 @@ export class QuarkModalOpenElement extends HTMLElement {
 		this.modal.addEventListener( 'close', this.handleModalClose.bind( this ) );
 
 		// Resize observer.
-		this.modalResizeObserver = new ResizeObserver( this.setModalBodyHeight.bind( this ) );
+		this.modalResizeObserver = new ResizeObserver( this.observeModalHeight.bind( this ) );
 		this.modalContentElement = this.modal.querySelector<HTMLElement>( '.modal__content' );
 
 		// Check if modalContent found
@@ -120,79 +120,84 @@ export class QuarkModalOpenElement extends HTMLElement {
 	}
 
 	/**
-	 * Resizes the body according to the size of its sibling
+	 * Observes and resizes the body according to the size of its sibling
 	 * elements and the containing modal__content.
 	 *
 	 * @param { ResizeObserverEntry[] } entries
 	 */
-	setModalBodyHeight( entries: ResizeObserverEntry[]|null[] ) {
+	observeModalHeight( entries: ResizeObserverEntry[]|null[] ): void {
 		// Loop over entries.
-		entries.forEach( () => {
-			// Assign the target.
-			const modalContentElement = this.modalContentElement;
+		entries.forEach( this.resizeModalBody.bind( this ) );
+	}
 
-			// Bail early if null.
-			if ( ! modalContentElement ) {
-				// Bail early.
-				return;
+	/**
+	 * Resizes the modal body dynamically.
+	 */
+	resizeModalBody(): void {
+		// Assign the target.
+		const modalContentElement = this.modalContentElement;
+
+		// Bail early if null.
+		if ( ! modalContentElement ) {
+			// Bail early.
+			return;
+		}
+
+		// Get modal body.
+		const modalBodyElement = modalContentElement.querySelector<HTMLElement>( '.modal__body' );
+
+		// Unobserve the element if modalBodyElement is not present.
+		if ( ! modalBodyElement || ! this.modal ) {
+			// Check done to stop TS from complaining.
+			if ( this.modal ) {
+				this.modalResizeObserver?.unobserve( this.modal );
 			}
 
-			// Get modal body.
-			const modalBodyElement = modalContentElement.querySelector<HTMLElement>( '.modal__body' );
+			// Bail early.
+			return;
+		}
 
-			// Unobserve the element if modalBodyElement is not present.
-			if ( ! modalBodyElement || ! this.modal ) {
-				// Check done to stop TS from complaining.
-				if ( this.modal ) {
-					this.modalResizeObserver?.unobserve( this.modal );
-				}
+		// Get the parent of modalBodyElement.
+		const modalBodyParent = modalBodyElement.parentElement;
+		const modalBodySiblingGap = parseInt( modalBodyParent ? getComputedStyle( modalBodyParent ).gap : '0' );
 
-				// Bail early.
-				return;
-			}
+		// Get modal content height.
+		let modalContentMaxHeight = parseInt( getComputedStyle( modalContentElement ).maxHeight );
+		modalContentMaxHeight = ! Number.isNaN( modalContentMaxHeight ) ? modalContentMaxHeight : 0;
+		const {
+			paddingTop: modalContentPaddingTop,
+			paddingBottom: modalContentPaddingBottom,
+		} = getComputedStyle( modalContentElement );
 
-			// Get the parent of modalBodyElement.
-			const modalBodyParent = modalBodyElement.parentElement;
-			const modalBodySiblingGap = parseInt( modalBodyParent ? getComputedStyle( modalBodyParent ).gap : '0' );
+		// Initialize the height to be subtracted.
+		const paddingAndGap = parseInt(
+			modalContentPaddingTop ? modalContentPaddingTop : '0'
+		) + parseInt(
+			modalContentPaddingBottom ? modalContentPaddingBottom : '0'
+		) + ( ! Number.isNaN( modalBodySiblingGap ) ? modalBodySiblingGap * 2 : 0 );
 
-			// Get modal content height.
-			let modalContentMaxHeight = parseInt( getComputedStyle( modalContentElement ).maxHeight );
-			modalContentMaxHeight = ! Number.isNaN( modalContentMaxHeight ) ? modalContentMaxHeight : 0;
-			const {
-				paddingTop: modalContentPaddingTop,
-				paddingBottom: modalContentPaddingBottom,
-			} = getComputedStyle( modalContentElement );
+		// Get header and footer.
+		const modalHeaderElement = modalContentElement.querySelector<HTMLElement>( '.modal__header' );
+		const modalFooterElement = modalContentElement.querySelector<HTMLElement>( '.modal__footer' );
+		let modalHeaderHeight = 0;
+		let modalFooterHeight = 0;
 
-			// Initialize the height to be subtracted.
-			const paddingAndGap = parseInt(
-				modalContentPaddingTop ? modalContentPaddingTop : '0'
-			) + parseInt(
-				modalContentPaddingBottom ? modalContentPaddingBottom : '0'
-			) + ( ! Number.isNaN( modalBodySiblingGap ) ? modalBodySiblingGap * 2 : 0 );
+		// Get header height.
+		if ( modalHeaderElement ) {
+			modalHeaderHeight = modalHeaderElement.getBoundingClientRect().height;
+		}
 
-			// Get header and footer.
-			const modalHeaderElement = modalContentElement.querySelector<HTMLElement>( '.modal__header' );
-			const modalFooterElement = modalContentElement.querySelector<HTMLElement>( '.modal__footer' );
-			let modalHeaderHeight = 0;
-			let modalFooterHeight = 0;
+		// Get footer height.
+		if ( modalFooterElement ) {
+			modalFooterHeight = modalFooterElement.getBoundingClientRect().height;
+		}
 
-			// Get header height.
-			if ( modalHeaderElement ) {
-				modalHeaderHeight = modalHeaderElement.getBoundingClientRect().height;
-			}
+		// New max height candidate for modal__body
+		const modalBodyMaxHeightCandidate = (
+			modalContentMaxHeight - paddingAndGap - modalFooterHeight - modalHeaderHeight
+		);
 
-			// Get footer height.
-			if ( modalFooterElement ) {
-				modalFooterHeight = modalFooterElement.getBoundingClientRect().height;
-			}
-
-			// New max height candidate for modal__body
-			const modalBodyMaxHeightCandidate = (
-				modalContentMaxHeight - paddingAndGap - modalFooterHeight - modalHeaderHeight
-			);
-
-			// Set the modal body element height.
-			modalBodyElement.style.maxHeight = `${ Math.min( modalBodyMaxHeightCandidate, modalBodyElement.scrollHeight ) }px`;
-		} );
+		// Set the modal body element height.
+		modalBodyElement.style.maxHeight = `${ Math.min( modalBodyMaxHeightCandidate, modalBodyElement.scrollHeight ) }px`;
 	}
 }
