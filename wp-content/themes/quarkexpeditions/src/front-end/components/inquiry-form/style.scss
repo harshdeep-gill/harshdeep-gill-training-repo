@@ -2,34 +2,30 @@
 
 .inquiry-form {
 
+	&__content {
+		height: 100%;
+
+		.form-field--buttons {
+			margin: 0;
+		}
+	}
+
 	&__modal {
 
-		tp-modal-content {
-			width: 100%;
-			max-width: 600px;
+		quark-inquiry-form,
+		quark-form,
+		form,
+		tp-form {
+			display: block;
+			height: 100%;
 		}
 
 		tp-form-error {
 			display: none;
 		}
 
-		&-title-container {
-			padding-right: var(--spacing-5);
-			margin-bottom: var(--typography-spacing);
-
-			h3 {
-				margin-bottom: 0;
-			}
-
-			p {
-				color: var(--color-gray-60);
-			}
-
-			@media (min-width: grid-size(md)) {
-				padding-left: var(--spacing-5);
-				text-align: center;
-				margin-bottom: var(--spacing-6);
-			}
+		button[type="submit"] {
+			width: 100%;
 		}
 
 		textarea {
@@ -78,6 +74,11 @@
 			@media (min-width: grid-size(sm)) {
 				padding-inline: var(--spacing-9);
 			}
+		}
+
+		@media screen and (max-width: calc(grid-size(sm) - 1px)),
+			screen and (max-height: calc(grid-size(md) - 1px) ) {
+			padding-bottom: var(--spacing-5);
 		}
 	}
 }

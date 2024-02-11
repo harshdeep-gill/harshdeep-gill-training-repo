@@ -55,12 +55,12 @@
 			</x-form.select>
 		</x-form.field>
 		<x-form.buttons>
-			<x-modal.open-modal class="inquiry-form__open-modal" modal_id="{{ $modal_id }}">
+			<x-modal.modal-open class="inquiry-form__modal-open" modal_id="{{ $modal_id }}">
 				<x-button type="button">
 					Request a Quote
 					<x-button.sub-title title="It only takes 2 minutes!" />
 				</x-button>
-			</x-modal.open-modal>
+			</x-modal.modal-open>
 		</x-form.buttons>
 	</quark-hero-form>
 	<x-inquiry-form.modal

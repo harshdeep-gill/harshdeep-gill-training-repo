@@ -138,10 +138,13 @@ label {
 		margin-bottom: 0;
 	}
 
+	&:last-child {
+		margin-bottom: 0;
+	}
+
 	@media screen and (min-width: grid-size(sm)) {
 		grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
 	}
-
 }
 
 .grecaptcha-badge {
