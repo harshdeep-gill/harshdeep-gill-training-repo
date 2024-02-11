@@ -136,10 +136,13 @@ export class QuarkModalOpenElement extends HTMLElement {
 	 * Resizes the modal body dynamically.
 	 */
 	resizeModalBody(): void {
-		/**
-		 * We can safely assume these are not null because if they were, this method
-		 * would never be called.
-		 */
+		// Check if we have content and element.
+		if ( ! this.modalContentElement || ! this.modalBodyElement ) {
+			// We need both for this.
+			return;
+		}
+
+		// Create references.
 		const modalContentElement = this.modalContentElement as HTMLElement;
 		const modalBodyElement = this.modalBodyElement as HTMLElement;
 
