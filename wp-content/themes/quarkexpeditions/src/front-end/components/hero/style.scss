@@ -11,6 +11,63 @@
 	padding-bottom: var(--spacing-7);
 	margin-top: 0;
 
+	// Immersive Mode.
+	&--immersive {
+		height: 750px;
+
+		@media screen and (min-width: grid-size(md)) {
+			height: 960px;
+		}
+
+		/* Add margin only if browser supports :has() */
+		@supports (selector(:has(*))) {
+			#{$self}__wrap {
+				margin-top: calculate-rem(122px);
+			}
+		}
+
+		#{$self}__form {
+			z-index: 4;
+		}
+
+		#{$self}__title {
+			text-align: left;
+		}
+
+		#{$self}__sub-title > h5 {
+			font-size: var(--font-size);
+			font-weight: var(--font-weight-default);
+			text-align: left;
+		}
+
+		&::after {
+			content: "";
+			display: block;
+			position: absolute;
+			z-index: 3;
+			left: 0;
+			right: 0;
+			bottom: -1px;
+			height: 100%;
+			background: linear-gradient(0deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 50%);
+
+			@media screen and (min-width: grid-size(md)) {
+				background: linear-gradient(0deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 30%);
+			}
+		}
+
+		// Any Component immediately preceded by Immersive Hero.
+		+ * {
+			margin-top: calculate-rem(240px);
+
+			@media screen and (min-width: grid-size(md)) {
+				position: relative;
+				z-index: 4;
+				margin-top: calculate-rem(-280px); //magic number.
+			}
+		}
+	}
+
 	@media screen and (min-width: grid-size(md)) {
 		min-height: 600px;
 		padding-top: var(--grid-section-gutter);
@@ -52,11 +109,12 @@
 	}
 
 	&__form {
-		width: 350px;
+		min-width: 310px;
+		max-width: 350px;
 		color: var(--color-white);
 		background-color: rgba(color("black"), 0.5);
 		padding: var(--spacing-5);
-		margin-top: var(--spacing-5);
+		margin-top: var(--spacing-6);
 		border-radius: var(--border-radius);
 		z-index: 2;
 
@@ -79,16 +137,22 @@
 
 	&__content {
 		display: flex;
-		flex: 2;
 		flex-direction: column;
 		margin-inline: auto;
 		text-align: center;
 		z-index: 2;
 		gap: var(--spacing-2);
+		margin-right: 0;
 
 		@media screen and (min-width: grid-size(md)) {
+			margin-right: var(--spacing-7);
+		}
+
+		@media screen and (min-width: grid-size(lg)) {
+			flex: 2;
 			gap: var(--spacing-4);
 			text-align: left;
+			margin-right: calc(2 * var(--spacing-8));
 		}
 	}
 }
