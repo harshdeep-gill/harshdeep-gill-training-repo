@@ -1,6 +1,8 @@
 @import "../../scss";
 
 .icon-columns {
+	$self: &;
+
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -12,12 +14,23 @@
 		align-items: stretch;
 		gap: var(--spacing-4);
 
-		path {
-			fill: var(--color-black);
+		&--dark {
+
+			#{$self}__column {
+				border-color: var(--color-black);
+			}
+
+			path {
+				fill: var(--color-black);
+			}
 		}
 
 		&--light {
 			color: var(--color-white);
+
+			#{$self}__column {
+				border-color: var(--color-white);
+			}
 
 			path {
 				fill: var(--color-white);
