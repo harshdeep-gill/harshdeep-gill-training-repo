@@ -63,7 +63,7 @@
 			@media screen and (min-width: grid-size(md)) {
 				position: relative;
 				z-index: 4;
-				margin-top: calculate-rem(-280px); //magic number.
+				margin-top: calculate-rem(-280px);
 			}
 		}
 	}
