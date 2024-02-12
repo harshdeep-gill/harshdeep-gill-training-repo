@@ -1,4 +1,81 @@
 <x-layout>
+	<x-component-demo :keys="[ 'header', 'hero-immersive' ]">
+		<x-lp-header
+			tc_image_id="18"
+			phone_number="+1-877-585-1235"
+			cta_text="Talk to a Polar Expert"
+		/>
+	</x-component-demo>
+
+	<x-component-demo :keys="[ 'hero', 'hero-immersive' ]">
+		<x-hero :immersive="true">
+			<x-hero.image image_id="26" />
+			<x-hero.content>
+				<x-hero.title title="Antarctic Voyages" />
+				<x-hero.sub-title title="When you venture into the untouched wilds of the Arctic and Antarctic, you need a great team around you. And we have the greatest. You’ll join elite guides trained at Quark Academy — which surpasses every standard imaginable for safety and preparedness in the Polar Regions—and interact directly with world-class polar experts. Our philosophy? The team that explores together, discovers more together." />
+			</x-hero.content>
+			<x-hero.form>
+				<x-inquiry-form
+					form_id="inquiry-form"
+					title="Almost there!"
+					subtitle="We just need a bit more info to help personalize your itinerary."
+					salesforce_object="Webform_Landing_Page__c"
+				/>
+			</x-hero.form>
+		</x-hero>
+	</x-component-demo>
+	<x-component-demo :keys="[ 'review-cards' ]">
+		<x-review-cards>
+			<x-review-cards.card
+				title="Falkland, South Georgia and the Antarctic Circle"
+				expedition_name="South Georgia and Antarctic Peninsula: Penguin Safari"
+				author="Denise P."
+				rating="4"
+			>
+				<p>Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever. Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever.</p>
+			</x-review-cards.card>
+			<x-review-cards.card
+				title="An incredible trip to Antarctica"
+				expedition_name="South Georgia and Antarctic Peninsula: Penguin Safari"
+				author="Martine S."
+				rating="5"
+			>
+				<p>The whole experience was great. The World Explorer is a beautiful and very comfortable ship, the food was amazing. And of course the landings and cruising the area was a once in a lifetime experience. Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever.</p>
+			</x-review-cards.card>
+			<x-review-cards.card
+				title="Wonderful Antarctic Trip"
+				expedition_name="South Georgia and Antarctic Peninsula: Penguin Safari"
+				author="Roger C."
+				rating="4"
+			>
+				<p>Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region.</p>
+			</x-review-cards.card>
+			<x-review-cards.card
+				title="Falkland, South Georgia and Antarctica: Explorers and Kings"
+				expedition_name="South Georgia and Antarctic Peninsula: Penguin Safari"
+				author="Martine S."
+				rating="4"
+			>
+				<p>The whole experience was great. The World Explorer is a beautiful and very comfortable ship, the food was amazing. And of course the landings and cruising the area was a once in a lifetime experience.</p>
+			</x-review-cards.card>
+			<x-review-cards.card
+				title="9 Day Spitsbergen Polar Bear Safari"
+				expedition_name="South Georgia and Antarctic Peninsula: Penguin Safari"
+				author="Carolyn T"
+				rating="4"
+			>
+				<p>Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever. Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever.</p>
+			</x-review-cards.card>
+			<x-review-cards.card
+				title="An incredible trip to Antarctica"
+				expedition_name="South Georgia and Antarctic Peninsula: Penguin Safari"
+				author="Martine S."
+				rating="5"
+			>
+				<p>The whole experience was great. The World Explorer is a beautiful and very comfortable ship, the food was amazing. And of course the landings and cruising the area was a once in a lifetime experience. Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever.</p>
+			</x-review-cards.card>
+		</x-review-cards>
+	</x-component-demo>
 	<x-component-demo :keys="[ 'global', 'color-palette' ]">
 		<x-section title="Color Palette" heading_level="2">
 			<x-global-styles-demo.color-palette />
