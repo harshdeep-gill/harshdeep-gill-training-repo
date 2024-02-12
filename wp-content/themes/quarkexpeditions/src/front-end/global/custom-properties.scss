@@ -117,6 +117,14 @@
 	--forms-field-spacing: var(--spacing-4);
 
 	/**
+	 * Transitions
+	 */
+	--ease-in-out-quart: cubic-bezier(0.87, 0, 0.13, 1);
+	--ease-in-out-quad: cubic-bezier(0.42, 0, 0.58, 1);
+	--transition-time: 0.3s;
+	--transition-easing: var(--ease-in-out-quad);
+
+	/**
 	 * Misc.
 	 */
 	--wp-admin-bar-height: 0px; // stylelint-disable-line
