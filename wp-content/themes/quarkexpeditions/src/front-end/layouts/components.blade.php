@@ -380,6 +380,41 @@
 		</x-section>
 	</x-component-demo>
 
+	<x-component-demo :keys="[ 'video-icons-card' ]">
+		<x-section>
+			<x-video-icons-card
+				url="https://storage.googleapis.com/web-dev-assets/video-and-source-tags/chrome.mp4"
+				image_id="26"
+				title="The Quark Experience"
+			>
+				<x-video-icons-card.icons>
+					<x-icon-columns>
+						<x-icon-columns.column>
+							<x-icon-columns.icon icon="duotone/person-check" />
+							<x-icon-columns.title title="Polar Specialists" />
+						</x-icon-columns.column>
+						<x-icon-columns.column>
+							<x-icon-columns.icon icon="duotone/person-compass" />
+							<x-icon-columns.title title="The Best Expedition Team" />
+						</x-icon-columns.column>
+						<x-icon-columns.column>
+							<x-icon-columns.icon icon="duotone/small-ship" />
+							<x-icon-columns.title title="Small Ship Experience" />
+						</x-icon-columns.column>
+						<x-icon-columns.column>
+							<x-icon-columns.icon icon="duotone/hiker" />
+							<x-icon-columns.title title="The Most Adventure Options" />
+						</x-icon-columns.column>
+						<x-icon-columns.column>
+							<x-icon-columns.icon icon="duotone/stars" />
+							<x-icon-columns.title title="4.7 Customer Rating" />
+						</x-icon-columns.column>
+					</x-icon-columns>
+				</x-video-icons-card.icons>
+			</x-video-icons-card>
+		</x-section>
+	</x-component-demo>
+
 	<x-component-demo :keys="[ 'logo-grid', 'feel-safe' ]">
 		<x-section :narrow="true">
 			<h3 style="text-align: center;">Feel safe with a globally accredited company</h3>
