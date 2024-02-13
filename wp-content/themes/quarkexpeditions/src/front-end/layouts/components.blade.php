@@ -9,7 +9,7 @@
 
 	<x-component-demo :keys="[ 'hero', 'hero-immersive' ]">
 		<x-hero :immersive="true">
-			<x-hero.image image_id="26" />
+			<x-hero.image image_id="29" />
 			<x-hero.content>
 				<x-hero.title title="Antarctic Voyages" />
 				<x-hero.sub-title title="When you venture into the untouched wilds of the Arctic and Antarctic, you need a great team around you. And we have the greatest. You’ll join elite guides trained at Quark Academy — which surpasses every standard imaginable for safety and preparedness in the Polar Regions—and interact directly with world-class polar experts. Our philosophy? The team that explores together, discovers more together." />

@@ -12,17 +12,18 @@
 	margin-top: 0;
 
 	// Immersive Mode.
-	&--immersive {
-		height: 750px;
-
-		@media screen and (min-width: grid-size(md)) {
-			height: 960px;
-		}
+	&.hero--immersive {
+		min-height: 520px;
 
 		/* Add margin only if browser supports :has() */
 		@supports (selector(:has(*))) {
 			#{$self}__wrap {
 				margin-top: calculate-rem(122px);
+				margin-bottom: calculate-rem(-200px);
+
+				@media screen and (min-width: grid-size(md)) {
+					margin-bottom: calculate-rem(168px);
+				}
 			}
 		}
 
@@ -58,7 +59,7 @@
 
 		// Any Component immediately preceded by Immersive Hero.
 		+ * {
-			margin-top: calculate-rem(240px);
+			margin-top: calculate-rem(200px);
 
 			@media screen and (min-width: grid-size(md)) {
 				position: relative;

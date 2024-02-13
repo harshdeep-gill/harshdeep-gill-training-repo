@@ -13,8 +13,6 @@
 	transition-duration: 0.2s;
 	transition-timing-function: ease-in-out;
 
-	//@include transition(background-color, 0.1s, ease-in-out);
-
 	/* LP Header is followed by Immersive Hero. */
 	&:has(+ .hero--immersive) {
 		background-color: transparent;
