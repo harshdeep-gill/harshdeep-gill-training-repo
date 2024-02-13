@@ -9,15 +9,11 @@
 
 	$classes = [ 'icon-columns' ];
 
-	if ( ! empty( $variant ) ) {
-		$variant_modifier = match ($variant) {
-			'light' => 'light',
-			'dark'  => 'dark',
-			default => ''
-		};
-
-		if ( ! empty( $variant_modifier ) ) {
-			$classes[] = 'icon-columns--' . $variant_modifier;
+	if ( ! empty( $variant ) && in_array( $variant, [ 'light', 'dark' ], true ) ) {
+		if( 'dark' === $variant ) {
+			$classes[] = 'color-context--dark';
+		} else {
+			$classes[] = 'icon-columns--light';
 		}
 	}
 @endphp

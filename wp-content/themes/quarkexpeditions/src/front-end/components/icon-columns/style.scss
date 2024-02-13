@@ -14,7 +14,7 @@
 		align-items: stretch;
 		gap: var(--spacing-4);
 
-		&--dark {
+		&--light {
 
 			#{$self}__column {
 				border-color: var(--color-black);
@@ -25,8 +25,7 @@
 			}
 		}
 
-		&--light {
-			color: var(--color-white);
+		&.color-context--dark {
 
 			#{$self}__column {
 				border-color: var(--color-white);
@@ -79,7 +78,6 @@
 		@media screen and (min-width: grid-size(md)) {
 			font-size: 20px;
 			font-weight: 700;
-			line-height: 28px;
 			text-align: center;
 		}
 	}
