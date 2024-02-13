@@ -20,7 +20,7 @@
 	overlay-click-close="yes"
 >
 	<tp-modal-content class="modal__content">
-		<x-modal.close />
+		<x-modal.modal-close />
 		{!! $slot !!}
 	</tp-modal-content>
 </tp-modal>

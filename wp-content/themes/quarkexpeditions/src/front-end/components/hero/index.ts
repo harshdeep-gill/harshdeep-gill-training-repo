@@ -15,7 +15,7 @@ export class HeroForm extends HTMLElement {
 	/**
 	 * Properties.
 	 */
-	private readonly openModalButton: HTMLButtonElement | null;
+	private readonly modalOpenButton: HTMLButtonElement | null;
 	private readonly fields: NodeListOf<TPFormFieldElement> | null;
 
 	/**
@@ -26,11 +26,11 @@ export class HeroForm extends HTMLElement {
 		super();
 
 		// Elements.
-		this.openModalButton = this.querySelector( 'quark-open-modal button' );
+		this.modalOpenButton = this.querySelector( 'quark-modal-open button' );
 		this.fields = this.querySelectorAll( 'tp-form-field' );
 
 		// Events.
-		this.openModalButton?.addEventListener( 'click', this.modalButtonClicked.bind( this ), { capture: true } );
+		this.modalOpenButton?.addEventListener( 'click', this.modalButtonClicked.bind( this ), { capture: true } );
 	}
 
 	/**
