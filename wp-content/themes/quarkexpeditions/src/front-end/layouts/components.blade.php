@@ -28,7 +28,7 @@
 		<x-review-cards>
 			<x-review-cards.card
 				title="Falkland, South Georgia and the Antarctic Circle"
-				expedition_name="South Georgia and Antarctic Peninsula: Penguin Safari"
+				author_details="South Georgia and Antarctic Peninsula: Penguin Safari"
 				author="Denise P."
 				rating="4"
 			>
@@ -36,7 +36,7 @@
 			</x-review-cards.card>
 			<x-review-cards.card
 				title="An incredible trip to Antarctica"
-				expedition_name="South Georgia and Antarctic Peninsula: Penguin Safari"
+				author_details="South Georgia and Antarctic Peninsula: Penguin Safari"
 				author="Martine S."
 				rating="5"
 			>
@@ -44,7 +44,7 @@
 			</x-review-cards.card>
 			<x-review-cards.card
 				title="Wonderful Antarctic Trip"
-				expedition_name="South Georgia and Antarctic Peninsula: Penguin Safari"
+				author_details="South Georgia and Antarctic Peninsula: Penguin Safari"
 				author="Roger C."
 				rating="4"
 			>
@@ -52,7 +52,7 @@
 			</x-review-cards.card>
 			<x-review-cards.card
 				title="Falkland, South Georgia and Antarctica: Explorers and Kings"
-				expedition_name="South Georgia and Antarctic Peninsula: Penguin Safari"
+				author_details="South Georgia and Antarctic Peninsula: Penguin Safari"
 				author="Martine S."
 				rating="4"
 			>
@@ -60,7 +60,7 @@
 			</x-review-cards.card>
 			<x-review-cards.card
 				title="9 Day Spitsbergen Polar Bear Safari"
-				expedition_name="South Georgia and Antarctic Peninsula: Penguin Safari"
+				author_details="South Georgia and Antarctic Peninsula: Penguin Safari"
 				author="Carolyn T"
 				rating="4"
 			>
@@ -68,7 +68,7 @@
 			</x-review-cards.card>
 			<x-review-cards.card
 				title="An incredible trip to Antarctica"
-				expedition_name="South Georgia and Antarctic Peninsula: Penguin Safari"
+				author_details="South Georgia and Antarctic Peninsula: Penguin Safari"
 				author="Martine S."
 				rating="5"
 			>

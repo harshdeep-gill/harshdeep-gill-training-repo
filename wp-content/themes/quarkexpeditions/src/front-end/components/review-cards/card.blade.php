@@ -1,6 +1,6 @@
 @props( [
 	'title'           => '',
-	'expedition_name' => '',
+	'author_details' => '',
 	'author'          => '',
 	'rating'          => '',
 ] )
@@ -30,7 +30,7 @@
 		</div>
 	@endif
 
-	@if ( ! empty( $expedition_name ) )
-		<div class="review-cards__expedition"><x-escape :content="$expedition_name" /></div>
+	@if ( ! empty( $author_details ) )
+		<div class="review-cards__author-details"><x-escape :content="$author_details" /></div>
 	@endif
 </tp-slider-slide>

@@ -97,12 +97,13 @@
 		font-size: 16px;
 		font-weight: var(--font-weight-bold);
 		margin-top: var(--spacing-6);
+
+		&-details {
+			color: var(--color-gray-70);
+			margin-top: var(--spacing-2);
+		}
 	}
 
-	&__expedition {
-		color: var(--color-gray-70);
-		margin-top: var(--spacing-2);
-	}
 
 	&__rating {
 		margin-bottom: var(--spacing-5);
