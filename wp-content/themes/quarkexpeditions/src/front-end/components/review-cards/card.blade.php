@@ -31,6 +31,6 @@
 	@endif
 
 	@if ( ! empty( $expedition_name ) )
-		<div class="review-cards__expedition-name"><x-escape :content="$expedition_name" /></div>
+		<div class="review-cards__expedition"><x-escape :content="$expedition_name" /></div>
 	@endif
 </tp-slider-slide>

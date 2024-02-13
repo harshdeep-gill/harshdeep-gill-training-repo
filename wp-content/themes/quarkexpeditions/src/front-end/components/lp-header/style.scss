@@ -9,8 +9,11 @@
 	top: var(--wp-admin-bar-height);
 	z-index: var(--lp-header-z-index);
 	box-shadow: var(--shadow-1);
+	transition-property: background-color, height;
+	transition-duration: 0.2s;
+	transition-timing-function: ease-in-out;
 
-	@include transition(0.1);
+	//@include transition(background-color, 0.1s, ease-in-out);
 
 	/* LP Header is followed by Immersive Hero. */
 	&:has(+ .hero--immersive) {
@@ -110,6 +113,9 @@
 			#{$self}__cta {
 				background-color: transparent;
 				border: 1px solid var(--color-black);
+				transition-property: background-color, color, padding, height, width;
+				transition-duration: 0.3s;
+				transition-timing-function: ease-in-out;
 
 				&:hover {
 					background-color: var(--color-white);
@@ -125,8 +131,6 @@
 						color: var(--color-white);
 					}
 				}
-
-				@include transition();
 			}
 
 			#{$self}__cta-content-text {
@@ -150,6 +154,9 @@
 				padding: 6px;
 				background-color: var(--color-gray-5);
 				border-color: var(--color-gray-5);
+				transition-property: background-color, color, padding, height, width;
+				transition-duration: 0.3s;
+				transition-timing-function: ease-in-out;
 
 				&-avatar img {
 					height: 44px;
@@ -243,8 +250,6 @@
 					color: var(--color-white);
 				}
 			}
-
-			@include transition();
 		}
 	}
 }
