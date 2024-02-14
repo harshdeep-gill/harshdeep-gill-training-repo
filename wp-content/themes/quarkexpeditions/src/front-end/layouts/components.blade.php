@@ -380,6 +380,27 @@
 		</x-section>
 	</x-component-demo>
 
+	<x-component-demo :keys="[ 'collage' ]">
+		<x-collage name="lp-collage">
+			<x-collage.video
+				size="medium"
+				image_id="33"
+				video_url="https://www.youtube.com/embed/KhVseF5ZD5g"
+				title="Video Caption"
+			/>
+			<x-collage.image size="small" image_id="26" title="Image 2" />
+			<x-collage.image size="small" image_id="32" title="Image 3" />
+			<x-collage.image size="small" image_id="36" title="Image 4" />
+			<x-collage.image size="large" image_id="31" title="Image 5" />
+			<x-collage.image size="medium" image_id="35" title="Image 6" />
+			<x-collage.image size="medium" image_id="30" title="Image 7" />
+			<x-collage.image size="x-large" image_id="34" title="Image 8" />
+			<x-collage.image size="small" image_id="32" />
+			<x-collage.image size="medium" image_id="33" />
+			<x-collage.image size="small" image_id="31" title="Image 11" />
+		</x-collage>
+	</x-component-demo>
+
 	<x-component-demo :keys="[ 'logo-grid', 'feel-safe' ]">
 		<x-section :narrow="true">
 			<h3 style="text-align: center;">Feel safe with a globally accredited company</h3>
