@@ -1,0 +1,241 @@
+/**
+ * Media Lightbox.
+ */
+@import "../../scss";
+
+.media-lightbox {
+	display: block;
+	height: 100%;
+
+	&__link {
+		border-radius: var(--border-radius-large);
+		display: block;
+		position: relative;
+		overflow: hidden;
+		height: inherit;
+
+		&:hover {
+
+			.media-lightbox__arrows {
+				opacity: 1;
+			}
+		}
+	}
+
+	&__arrows {
+		display: block;
+		position: absolute;
+		top: 10px;
+		right: 10px;
+		color: var(--color-black);
+		background-color: var(--color-white);
+		border-radius: var(--border-radius);
+		opacity: 0;
+
+		@include transition();
+
+		svg {
+			display: block;
+			width: 20px;
+			height: 20px;
+			padding: 3px;
+		}
+	}
+
+	&__image-wrap {
+		margin: 0;
+		height: 100%;
+	}
+
+	figcaption {
+		position: absolute;
+		bottom: 0;
+		width: 100%;
+		color: var(--color-white);
+		border-radius: 0 0 4px 4px;
+		background: rgba(0, 0, 0, 0.55);
+		text-align: left;
+		padding: 7px 12px;
+		font-style: normal;
+		display: none;
+
+		@media screen and (min-width: grid-size(sm)) {
+			display: block;
+		}
+
+		@media screen and (min-width: grid-size(md)) {
+			padding-top: 8px;
+			padding-bottom: 8px;
+		}
+	}
+
+	&__caption {
+		display: block;
+		max-width: calc(100% - 70px);
+	}
+}
+
+.glightbox-open {
+	height: 100% !important; // Override library style.
+}
+
+.glightbox-container {
+
+	.gslideInLeft,
+	.gslideOutLeft,
+	.gslideInRight,
+	.gslideOutRight {
+		animation-duration: 0.6s;
+	}
+
+	.gslide-image {
+		flex-direction: column;
+		align-items: flex-start;
+
+		img {
+			width: 100%;
+
+			@media screen and (min-width: grid-size(md)) {
+				max-height: 70vh !important;
+				max-width: 75vw;
+				border-radius: var(--border-radius-large);
+			}
+
+			@media screen and (min-width: grid-size(xl)) {
+				max-height: 80vh !important;
+				max-width: 85vw;
+				border-radius: var(--border-radius-large);
+			}
+		}
+	}
+
+	.glightbox-slide-index {
+		position: absolute;
+		top: 12px;
+		left: var(--grid-col-gutter);
+		color: var(--color-white);
+
+		@media screen and (min-width: grid-size(md)) {
+			left: 15px;
+		}
+	}
+
+	.gslide-description {
+		position: static !important; // Override library style.
+		padding: 0 !important; // Override library style.
+		flex: initial;
+		background: rgba(0, 0, 0, 0);
+
+		.gdesc-inner {
+			padding: 0 var(--grid-col-gutter);
+
+			@media screen and (min-width: grid-size(md)) {
+				flex-direction: row;
+				padding: 14px 0 0 0;
+			}
+		}
+
+		.gslide-title {
+			font-family: var(--font-family);
+			margin-top: 10px;
+			margin-bottom: 0;
+			line-height: 1.5;
+			color: var(--color-white);
+			text-align: center;
+
+			@media screen and (min-width: grid-size(md)) {
+				margin-top: 0;
+			}
+		}
+	}
+
+	.gprev {
+		position: absolute;
+		left: 15px;
+		top: 0;
+		bottom: 0;
+		margin: auto;
+	}
+
+	.gnext {
+		position: absolute;
+		right: 15px;
+		top: 0;
+		bottom: 0;
+		margin: auto;
+
+		&::before {
+			transform: rotate(180deg);
+		}
+	}
+
+	.gclose {
+		position: absolute;
+		top: 15px;
+		right: 15px;
+		background-color: transparent;
+		width: 15px;
+		height: 15px;
+		opacity: 1;
+
+		svg {
+			fill: var(--color-white);
+			width: 18px;
+			height: 18px;
+
+			@media screen and (min-width: grid-size(md)) {
+				width: 20px;
+				height: 20px;
+			}
+		}
+	}
+
+	.gprev,
+	.gnext {
+		background: var(--color-white);
+		border: 1px solid var(--color-gray-20);
+		border-radius: 50%;
+		width: 36px;
+		height: 36px;
+		padding: 0;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+
+		@media screen and (min-width: grid-size(lg)) {
+			width: 46px;
+			height: 46px;
+		}
+
+		@include transition(background-color);
+
+		&::before {
+			content: "";
+			background-image: url(../../../src/assets/svg/arrow-left.svg);
+			width: 10px;
+			height: 17px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			position: absolute;
+			scale: 0.8;
+			transform-origin: center;
+
+			@media screen and (min-width: grid-size(lg)) {
+				scale: 1;
+			}
+		}
+
+		svg {
+			display: none;
+		}
+
+		&:hover {
+			background-color: var(--color-gray-10);
+		}
+	}
+
+	.goverlay {
+		background: rgba(0, 0, 0, 0.9);
+	}
+}
