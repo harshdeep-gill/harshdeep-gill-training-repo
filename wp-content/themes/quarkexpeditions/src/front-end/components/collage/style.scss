@@ -25,6 +25,17 @@ Collage
 		min-height: 180px;
 		flex-grow: 1;
 
+		img {
+			transform: scale(1);
+			will-change: transform;
+
+			@include transition(transform, 0.2s);
+		}
+
+		:hover img {
+			transform: scale(1.03);
+		}
+
 		@media screen and (max-width: grid-size(md)) {
 
 			&:not(:last-child) {
