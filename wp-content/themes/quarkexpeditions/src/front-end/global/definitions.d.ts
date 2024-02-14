@@ -5,6 +5,21 @@
  */
 
 /**
+ * Glightbox.
+ */
+interface Glightbox<GLightbox> {
+	new( ...args: any ): GLightbox;
+	openAt: Function;
+	sourceElement: Object;
+	on: Function;
+	open: Function;
+	slidesContainer: HTMLElement;
+	modal: HTMLElement;
+	elements: Array<Object>;
+	index: number,
+}
+
+/**
  * Window Object.
  */
 interface Window {
@@ -15,4 +30,5 @@ interface Window {
 		ready: Function;
 		execute: Function;
 	},
+	GLightbox?: Glightbox<any>,
 }
