@@ -32,24 +32,26 @@
 	];
 @endphp
 
-<tp-slider-slide @class($classes)>
-	<x-media-lightbox
-		name="{{ $name }}"
-		path="{{ $video_url }}"
-		title="{{ $title }}"
-	>
-		<div class="collage__video-cover">
-			<x-image
-				class="collage__video-thumbnail"
-				:image_id="$image_id"
-				:args="$image_args"
-			/>
+@if ( ! empty( $name ) )
+	<tp-slider-slide @class($classes)>
+		<x-media-lightbox
+			name="{{ $name }}"
+			path="{{ $video_url }}"
+			title="{{ $title }}"
+		>
+			<div class="collage__video-cover">
+				<x-image
+					class="collage__video-thumbnail"
+					:image_id="$image_id"
+					:args="$image_args"
+				/>
 
-			<div class="collage__video-button-wrapper">
-				<button class="collage__video-button">
-					<x-svg name="play" />
-				</button>
+				<div class="collage__video-button-wrapper">
+					<button class="collage__video-button">
+						<x-svg name="play" />
+					</button>
+				</div>
 			</div>
-		</div>
-	</x-media-lightbox>
-</tp-slider-slide>
+		</x-media-lightbox>
+	</tp-slider-slide>
+@endif
