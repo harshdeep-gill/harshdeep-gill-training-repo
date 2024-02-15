@@ -32,8 +32,6 @@
 		border-radius: var(--border-radius);
 		opacity: 0;
 
-		@include transition();
-
 		svg {
 			display: block;
 			width: 20px;

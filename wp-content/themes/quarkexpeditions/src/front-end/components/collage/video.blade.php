@@ -1,7 +1,7 @@
 @props( [
 	'image_id'  => '',
 	'video_url' => '',
-	'size'      => '',
+	'size'      => 'medium',
 	'title'     => '',
 ] )
 
@@ -22,13 +22,21 @@
 
 	$image_args = [
 		'size' => [
-			'width'  => 1280,
-			'height' => 720,
+			'width'  => 1152,
+			'height' => 648,
 		],
 		'responsive' => [
-			'sizes'  => [ '(min-width: 720px) 720px', '100vw' ],
-			'widths' => [ 320, 375, 450, 500, 576, 650, 980, 1024, 1200, 1440 ],
+			'sizes'  => match( $size ) {
+				'small'   => [ '(min-width: 360px) 400px', '100vw' ],
+				'medium'  => [ '(min-width: 560px) 600px', '100vw' ],
+				'large'   => [ '(min-width: 840px) 900px', '100vw' ],
+				'x-large' => [ '(min-width: 992px) 1152px', '100vw' ],
+			},
+			'widths' => [ 360, 450, 576, 768, 992, 1120 ],
 		],
+		'transform' => [
+			'crop' => 'fill',
+		]
 	];
 @endphp
 

@@ -21,15 +21,16 @@
 	&__image-item,
 	&__video-item {
 		border-radius: var(--border-radius-large);
-		object-fit: cover;
 		min-height: 180px;
 		flex-grow: 1;
 
 		img {
 			transform: scale(1);
 			will-change: transform;
+			height: 100%;
+			object-fit: cover;
 
-			@include transition(transform, 0.2s);
+			@include transition(transform);
 		}
 
 		:hover img {
