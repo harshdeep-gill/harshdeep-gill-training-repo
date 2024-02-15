@@ -35,6 +35,7 @@ function register_blocks(): void {
 		'InquiryForm'     => 'inquiry-form.php',
 		'LogoGrid'        => 'logo-grid.php',
 		'LPFooter'        => 'lp-footer.php',
+		'Collage'         => 'collage.php',
 	];
 
 	// Register blocks.
