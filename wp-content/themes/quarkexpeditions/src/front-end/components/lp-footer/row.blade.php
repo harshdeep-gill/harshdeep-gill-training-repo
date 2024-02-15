@@ -4,6 +4,6 @@
 	}
 @endphp
 
-<div class="lp-footer__columns">
+<div class="lp-footer__row">
 	{!! $slot !!}
 </div>
