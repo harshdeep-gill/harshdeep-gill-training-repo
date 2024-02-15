@@ -7,7 +7,7 @@
 
 namespace Quark\Theme\Blocks\Hero;
 
-const BLOCK_NAME = 'qrk/hero';
+const BLOCK_NAME = 'quark/hero';
 const COMPONENT  = 'parts.hero';
 
 /**
@@ -50,6 +50,7 @@ function render( ?string $content = null, array $block = [] ): null|string {
 		'title'     => $block['attrs']['title'] ?? '',
 		'sub_title' => $block['attrs']['subTitle'] ?? '',
 		'slot'      => render_block( $block['innerBlocks'][0] ),
+		'immersive' => $block['attrs']['isImmersive'] ?? false,
 	];
 
 	// Image.
