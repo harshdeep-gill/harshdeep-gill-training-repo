@@ -64,12 +64,7 @@ function render( ?string $content = null, array $block = [] ): null|string {
 
 	// Build attributes.
 	$attributes = [
-		'slot' => quark_get_component(
-			COMPONENT . '.carousel',
-			[
-				'slot' => $slot,
-			]
-		),
+		'slot' => $slot,
 	];
 
 	// Return rendered component.
