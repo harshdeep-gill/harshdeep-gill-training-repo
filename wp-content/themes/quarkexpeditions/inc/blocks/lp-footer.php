@@ -46,51 +46,76 @@ function render( ?string $content = null, array $block = [] ) : null | string {
 
 	// Build component attributes.
 	$attributes = [
-		'columns' => [],
+		'rows' => [],
 	];
 
 	// Prepare block data.
-	foreach ( $block['innerBlocks'] as $inner_block ) {
-		// Check for inner block.
+	foreach ( $block['innerBlocks'] as $maybe_row_block ) {
+		// Check for row block.
 		if (
-			empty( $inner_block['innerBlocks'] )
-			|| ! is_array( $inner_block['innerBlocks'] )
-			|| 'quark/lp-footer-column' !== $inner_block['blockName']
+			empty( $maybe_row_block['innerBlocks'] )
+			|| ! is_array( $maybe_row_block['innerBlocks'] )
+			|| 'quark/lp-footer-row' !== $maybe_row_block['blockName']
 		) {
 			continue;
 		}
 
-		// Initialize inner content var.
-		$inner_content = '';
+		// Columns for this row.
+		$columns = [];
 
-		// Build inner item content.
-		foreach ( $inner_block['innerBlocks'] as $inner_inner_block ) {
-
-			// Check for footer social links block.
-			if ( 'quark/lp-footer-social-links' === $inner_inner_block['blockName'] ) {
-				// Fetch social link attributes.
-				foreach ( $inner_inner_block['innerBlocks'] as $social_link ) {
-					// Add component to slot.
-					$links[] = [
-						'type' => $social_link['attrs']['type'] ?? 'facebook',
-						'url'  => $social_link['attrs']['url'] ?? '',
-					];
-				}
-
-				// Add component to slot.
-				$inner_content .= quark_get_component(
-					'parts.social-links',
-					[
-						'links' => $links ?? [],
-					],
-				);
-			} else {
-				$inner_content .= render_block( $inner_inner_block );
+		// Build Column inner content.
+		foreach ( $maybe_row_block['innerBlocks'] as $maybe_column_block ) {
+			// Check for inner block.
+			if (
+				empty( $maybe_column_block['innerBlocks'] )
+				|| ! is_array( $maybe_column_block['innerBlocks'] )
+				|| 'quark/lp-footer-column' !== $maybe_column_block['blockName']
+			) {
+				continue;
 			}
+
+			// Initialize columns content.
+			$column_content = '';
+
+			// Build column content.
+			foreach ( $maybe_column_block['innerBlocks'] as $column_inner_block ) {
+
+				// Check for footer social links block.
+				if ( 'quark/lp-footer-social-links' === $column_inner_block['blockName'] ) {
+					// Fetch social link attributes.
+					foreach ( $column_inner_block['innerBlocks'] as $social_link ) {
+						// Add component to slot.
+						$links[] = [
+							'type' => $social_link['attrs']['type'] ?? 'facebook',
+							'url'  => $social_link['attrs']['url'] ?? '',
+						];
+					}
+
+					// Add component to slot.
+					$column_content .= quark_get_component(
+						'parts.social-links',
+						[
+							'links' => $links ?? [],
+						],
+					);
+				} elseif ( 'quark/lp-footer-icon' === $column_inner_block['blockName'] ) {
+					$column_content .= quark_get_component(
+						'lp-footer.icon',
+						[
+							'name' => $column_inner_block['attrs']['icon'] ?? '',
+						]
+					);
+				} else {
+					$column_content .= render_block( $column_inner_block );
+				}
+			}
+
+			// Add the column to the list.
+			$columns[] = $column_content;
 		}
 
-		// prepare columns data.
-		$attributes['columns'][] = $inner_content;
+		// Prepare Rows data.
+		$attributes['rows'][] = $columns;
 	}
 
 	// Return rendered component.
