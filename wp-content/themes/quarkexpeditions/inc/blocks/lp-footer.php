@@ -46,7 +46,7 @@ function render( ?string $content = null, array $block = [] ) : null | string {
 
 	// Build component attributes.
 	$attributes = [
-		'rows' => [],
+		'row_slots' => [],
 	];
 
 	// Prepare block data.
@@ -61,7 +61,7 @@ function render( ?string $content = null, array $block = [] ) : null | string {
 		}
 
 		// Columns for this row.
-		$columns = [];
+		$row_slots = '';
 
 		// Build Column inner content.
 		foreach ( $maybe_row_block['innerBlocks'] as $maybe_column_block ) {
@@ -111,11 +111,16 @@ function render( ?string $content = null, array $block = [] ) : null | string {
 			}
 
 			// Add the column to the list.
-			$columns[] = $column_content;
+			$row_slots .= quark_get_component(
+				'lp-footer.column',
+				[
+					'slot' => $column_content,
+				]
+			);
 		}
 
 		// Prepare Rows data.
-		$attributes['rows'][] = $columns;
+		$attributes['row_slots'][] = $row_slots;
 	}
 
 	// Return rendered component.

@@ -1,22 +1,17 @@
 @props( [
-	'rows' => [],
+	'row_slots' => [],
 ] )
 
 @php
-	if ( empty( $rows ) ) {
+	if ( empty( $row_slots ) ) {
 		return;
 	}
-
 @endphp
 
 <x-lp-footer>
-	@foreach ( $rows as $row)
+	@foreach ( $row_slots as $row_slot)
 		<x-lp-footer.row>
-			@foreach ( $row as $column )
-				<x-lp-footer.column>
-					{!! $column !!}
-				</x-lp-footer.column>
-			@endforeach
+			{!! $row_slot !!}
 		</x-lp-footer.row>
 	@endforeach
 </x-lp-footer>
