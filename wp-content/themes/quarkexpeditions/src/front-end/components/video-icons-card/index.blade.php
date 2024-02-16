@@ -15,14 +15,17 @@
 			'height'  => 800,
 			// To maintain 16:9 aspect ratio
 			'picture' => [
-				'(min-width: 1024px)' => [ 1120, 630 ],
+				'(min-width: 1600px)' => [ 1920, 1080 ],
+				'(min-width: 1400px)' => [ 1600, 900 ],
+				'(min-width: 1280px)' => [ 1400, 800 ],
+				'(min-width: 1024px)' => [ 1200, 675 ],
 				'(min-width: 768px)'  => [ 900, 506 ],
 				'(min-width: 500px)'  => [ 700, 394 ],
 				'(min-width: 375px)'  => [ 500, 281 ],
 			],
 		],
 		'transform' => [
-			'crop'    => 'lfill',
+			'crop'    => 'fill',
 			'quality' => 90,
 		],
 	];
