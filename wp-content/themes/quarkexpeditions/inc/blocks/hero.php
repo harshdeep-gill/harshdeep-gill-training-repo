@@ -7,7 +7,7 @@
 
 namespace Quark\Theme\Blocks\Hero;
 
-const BLOCK_NAME = 'quark/hero';
+const BLOCK_NAME = 'qrk/hero';
 const COMPONENT  = 'parts.hero';
 
 /**

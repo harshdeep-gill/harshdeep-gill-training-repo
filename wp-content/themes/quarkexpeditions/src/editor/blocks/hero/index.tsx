@@ -43,7 +43,7 @@ const {
 /**
  * Block name.
  */
-export const name: string = 'quark/hero';
+export const name: string = 'qrk/hero';
 
 /**
  * Block configuration settings.
