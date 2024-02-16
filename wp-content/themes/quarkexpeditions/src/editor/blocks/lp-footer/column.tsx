@@ -16,11 +16,13 @@ import {
  * Child blocks.
  */
 import * as socialLinks from './social-links';
+import * as icon from './icon';
 
 /**
  * Register child blocks.
  */
 registerBlockType( socialLinks.name, socialLinks.settings );
+registerBlockType( icon.name, icon.settings );
 
 /**
  * Block name.
