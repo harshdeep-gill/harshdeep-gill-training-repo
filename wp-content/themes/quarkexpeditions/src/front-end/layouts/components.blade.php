@@ -383,12 +383,12 @@
 	<x-component-demo :keys="[ 'video-icons-card' ]">
 		<x-section>
 			<x-video-icons-card
-				url="https://storage.googleapis.com/web-dev-assets/video-and-source-tags/chrome.mp4"
+				video_id="p0k52ec113"
 				image_id="26"
 				title="The Quark Experience"
 			>
 				<x-video-icons-card.icons>
-					<x-icon-columns>
+					<x-icon-columns variant="dark">
 						<x-icon-columns.column>
 							<x-icon-columns.icon icon="duotone/person-check" />
 							<x-icon-columns.title title="Polar Specialists" />

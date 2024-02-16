@@ -1,11 +1,11 @@
 @props( [
-	'url'      => '',
+	'video_id' => '',
 	'image_id' => '',
 	'title'    => '',
 ] )
 
 @php
-	if ( empty( $slot ) ) {
+	if ( empty( $slot ) || empty( $video_id ) ) {
 		return;
 	}
 
@@ -29,29 +29,41 @@
 			'quality' => 90,
 		],
 	];
+
+	$video_embed_classes = [
+		'video-icons-card__video',
+		'wistia_embed',
+		'seo=true',
+		'videoFoam=true',
+		'wistia_async_' . $video_id,
+	];
+
+	wp_enqueue_script( 'wistia-embed' );
 @endphp
 
 <quark-video-icons-card class="video-icons-card">
-	<div class="video-icons-card__overlay">
-		@if ( ! empty( $title ) )
-			<h2 class="video-icons-card__title">{{ $title }}</h2>
-		@endif
-
-		{!! $slot !!}
-	</div>
-
-	@if ( ! empty( $image_id ) )
-		<x-image
-			:args="$image_args"
-			class="video-icons-card__thumbnail"
-			image_id="{{ $image_id }}"
-		/>
+	@if ( ! empty( $title ) )
+		<h2 class="video-icons-card__title"><x-escape :content="$title"/></h2>
 	@endif
 
-	<video
-		width="1120"
-		height="630"
-		src="{{ $url }}"
-		class="video-icons-card__video"
-	></video>
+	<div class="video-icons-card__container">
+		<div class="video-icons-card__overlay">
+			@if ( ! empty( $title ) )
+				<h2 class="video-icons-card__title"><x-escape :content="$title"/></h2>
+			@endif
+			{!! $slot !!}
+		</div>
+
+		@if ( ! empty( $image_id ) )
+			<x-image
+				:args="$image_args"
+				class="video-icons-card__thumbnail"
+				image_id="{{ $image_id }}"
+			/>
+		@endif
+
+		<div @class( $video_embed_classes )></div>
+	</div>
+
+	{!! $slot !!}
 </quark-video-icons-card>
