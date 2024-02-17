@@ -41,7 +41,7 @@
 	wp_enqueue_script( 'wistia-embed' );
 @endphp
 
-<quark-video-icons-card class="video-icons-card">
+<quark-video-icons-card class="video-icons-card" video_id="{{ $video_id }}">
 	@if ( ! empty( $title ) )
 		<h2 class="video-icons-card__title"><x-escape :content="$title"/></h2>
 	@endif
