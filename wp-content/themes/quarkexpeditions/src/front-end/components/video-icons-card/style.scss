@@ -3,15 +3,16 @@
 .video-icons-card {
 	$self: &;
 
-	width: 100%;
-	aspect-ratio: 16 / 9;
-	display: block;
 	display: flex;
 	flex-direction: column;
 	gap: var(--spacing-6);
 
 	&__container {
 		position: relative;
+		width: 100%;
+		aspect-ratio: 16 / 9;
+		border-radius: var(--border-radius-large);
+		overflow: hidden;
 	}
 
 	&__overlay {
@@ -20,7 +21,11 @@
 		z-index: 2;
 		display: flex;
 		flex-direction: column;
-		justify-content: space-between;
+		justify-content: center;
+
+		@media screen and (min-width: grid-size(md)) {
+			justify-content: space-between;
+		}
 
 		#{$self}__title,
 		#{$self}__icons {
@@ -69,5 +74,9 @@
 		position: absolute;
 		inset: 0;
 		z-index: 1;
+	}
+
+	&__button {
+		align-self: center;
 	}
 }
