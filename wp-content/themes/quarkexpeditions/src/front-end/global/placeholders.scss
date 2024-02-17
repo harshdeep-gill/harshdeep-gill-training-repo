@@ -131,11 +131,11 @@
 
 	.color-context--dark & {
 
-		&:hover {
+		&:not(&--media):hover {
 			background-color: var(--color-white);
 		}
 
-		&:active {
+		&:not(&--media):active {
 			background-color: var(--color-attention-50);
 		}
 
