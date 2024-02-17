@@ -29,7 +29,6 @@
 
 		#{$self}__title,
 		#{$self}__icons {
-			color: var(--color-white);
 			display: none;
 
 			@media screen and (min-width: grid-size(md)) {
@@ -39,11 +38,24 @@
 		}
 
 		#{$self}__title {
-			background: linear-gradient(180deg, rgba(color("black"), 0.9) 0%, rgba(color("black"), 0) 100%);
+			color: var(--color-black);
+			background: linear-gradient(180deg, rgba(color("white"), 0.9) 0%, rgba(color("white"), 0) 100%);
 		}
 
 		#{$self}__icons {
-			background: linear-gradient(180deg, rgba(color("black"), 0) 0%, rgba(color("black"), 0.9) 74%);
+			background: linear-gradient(180deg, rgba(color("white"), 0) 0%, rgba(color("white"), 0.9) 74%);
+		}
+
+		.color-context--dark & {
+
+			#{$self}__title {
+				color: var(--color-white);
+				background: linear-gradient(180deg, rgba(color("black"), 0.9) 0%, rgba(color("black"), 0) 100%);
+			}
+
+			#{$self}__icons {
+				background: linear-gradient(180deg, rgba(color("black"), 0) 0%, rgba(color("black"), 0.9) 74%);
+			}
 		}
 	}
 
@@ -62,7 +74,6 @@
 	&__thumbnail,
 	&__video {
 		display: block;
-		width: 100%;
 		height: 100%;
 	}
 

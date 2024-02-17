@@ -2,6 +2,7 @@
 	'video_id' => '',
 	'image_id' => '',
 	'title'    => '',
+	'variant'  => '',
 ] )
 
 @php
@@ -38,6 +39,12 @@
 		'wistia_async_' . $video_id,
 	];
 
+	$container_classes = [ 'video-icons-card__container' ];
+
+	if ( ! empty( $variant ) && 'dark' === $variant ) {
+		$container_classes[] = 'color-context--dark';
+	}
+
 	wp_enqueue_script( 'wistia-embed' );
 @endphp
 
@@ -46,7 +53,7 @@
 		<h2 class="video-icons-card__title"><x-escape :content="$title"/></h2>
 	@endif
 
-	<div class="video-icons-card__container">
+	<div @class( $container_classes )>
 		<div class="video-icons-card__overlay">
 			@if ( ! empty( $title ) )
 				<h2 class="video-icons-card__title"><x-escape :content="$title"/></h2>

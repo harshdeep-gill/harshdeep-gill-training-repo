@@ -386,6 +386,7 @@
 				video_id="p0k52ec113"
 				image_id="26"
 				title="The Quark Experience"
+				variant="dark"
 			>
 				<x-video-icons-card.icons>
 					<x-icon-columns variant="dark">
