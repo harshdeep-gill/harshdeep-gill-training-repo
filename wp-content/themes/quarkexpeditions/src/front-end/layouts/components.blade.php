@@ -383,7 +383,7 @@
 	<x-component-demo :keys="[ 'video-icons-card' ]">
 		<x-section>
 			<x-video-icons-card
-				video_id="p0k52ec113"
+				url="https://quarkexpeditions.wistia.com/medias/p0k52ec113"
 				image_id="26"
 				title="The Quark Experience"
 				variant="dark"

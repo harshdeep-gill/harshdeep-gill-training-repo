@@ -78,3 +78,52 @@ function quark_get_slot_child_count( string $slot_content = '' ): int {
 	// Return found nodes.
 	return $count;
 }
+
+/**
+ * Parses Wistia embed url to extract the video_id from it.
+ *
+ * @param string $wistia_url The wistia embed URL.
+ *
+ * @return string|false Returns the id on success and false on failure.
+ */
+function quark_get_wistia_id( string $wistia_url = '' ): string|false {
+	// Get the clean URL.
+	$clean_url = esc_url_raw( $wistia_url, [ 'https' ] );
+
+	// Check if we got a URL back.
+	if ( empty( $clean_url ) ) {
+		return false; // Empty, bail.
+	}
+
+	// Get the parsed URL.
+	$parsed_url = wp_parse_url( $clean_url );
+
+	// Check if parsing failed.
+	if ( empty( $parsed_url ) || ! is_array( $parsed_url ) ) {
+		return false; // Failed, bail.
+	}
+
+	// Get the URL path and host.
+	$url_path = isset( $parsed_url['path'] ) ? $parsed_url['path'] : '';
+	$url_host = $parsed_url['host'];
+
+	// Get the path.
+	if ( empty( $url_path ) ) {
+		return false;
+	}
+
+	// Get the path components.
+	$url_path_components = array_values( array_filter( explode( '/', $url_path ) ) );
+
+	// Check if we have a valid URL.
+	if ( empty( $url_host ) ||
+		'quarkexpeditions.wistia.com' !== $url_host ||
+		count( $url_path_components ) !== 2 ||
+		'medias' !== $url_path_components[0]
+	) {
+		return false;
+	}
+
+	// Return the string.
+	return $url_path_components[1];
+}

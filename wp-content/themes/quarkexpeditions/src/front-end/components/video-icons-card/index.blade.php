@@ -1,12 +1,18 @@
 @props( [
-	'video_id' => '',
+	'url' => '',
 	'image_id' => '',
 	'title'    => '',
 	'variant'  => '',
 ] )
 
 @php
-	if ( empty( $slot ) || empty( $video_id ) ) {
+	if ( empty( $slot ) || empty( $url ) ) {
+		return;
+	}
+
+	$video_id = quark_get_wistia_id( $url );
+
+	if ( empty( $video_id ) ) {
 		return;
 	}
 
