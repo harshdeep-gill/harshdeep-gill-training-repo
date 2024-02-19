@@ -8,7 +8,7 @@
 namespace Quark\Theme\Blocks\Section;
 
 const BLOCK_NAME = 'quark/section';
-const COMPONENT  = 'section';
+const COMPONENT  = 'parts.section';
 
 /**
  * Bootstrap this block.
@@ -46,20 +46,16 @@ function render( ?string $content = null, array $block = [] ): null|string {
 
 	// Build component attributes.
 	$attributes = [
-		'id'          => $block['attrs']['anchor'] ?? '',
-		'title'       => '',
-		'description' => '',
-		'background'  => $block['attrs']['hasBackground'] ?? false,
-		'padding'     => $block['attrs']['hasPadding'] ?? false,
-		'narrow'      => $block['attrs']['isNarrow'] ?? false,
-		'slot'        => '',
+		'id'               => $block['attrs']['anchor'] ?? '',
+		'title'            => '',
+		'title_align'      => $block['attrs']['titleAlignment'] ?? 'center',
+		'description'      => '',
+		'background'       => $block['attrs']['hasBackground'] ?? false,
+		'background_color' => $block['attrs']['backgroundColor'] ?? '',
+		'padding'          => $block['attrs']['hasPadding'] ?? false,
+		'narrow'           => $block['attrs']['isNarrow'] ?? false,
+		'slot'             => '',
 	];
-
-	/**
-	 * If the attribute hasBorder is not set this means that block has the border as default.
-	 * When has border is set as an empty value, it means hasBorder is false.
-	 */
-	$attributes['has_border'] = ! isset( $block['attrs']['hasBorder'] );
 
 	// Set title if it exists.
 	if ( ( $block['attrs']['hasTitle'] ?? true ) && ! empty( $block['attrs']['title'] ) ) {
@@ -73,12 +69,7 @@ function render( ?string $content = null, array $block = [] ): null|string {
 
 	// Set description if it exists.
 	if ( ( $block['attrs']['hasDescription'] ?? false ) && ! empty( $block['attrs']['description'] ) ) {
-		$attributes['slot'] .= quark_get_component(
-			COMPONENT . '.description',
-			[
-				'slot' => $block['attrs']['description'],
-			]
-		);
+		$attributes['description'] = $block['attrs']['description'];
 	}
 
 	// Set slot if it exists.
@@ -88,14 +79,19 @@ function render( ?string $content = null, array $block = [] ): null|string {
 
 	// Set CTA if it exists.
 	if ( ( $block['attrs']['hasCta'] ?? false ) && ! empty( $block['attrs']['ctaButton'] ) ) {
-		$attributes['slot'] .= quark_get_component(
-			'section.cta',
-			[
-				'url'        => $block['attrs']['ctaButton']['url'] ?? '',
-				'text'       => $block['attrs']['ctaButton']['text'] ?? '',
-				'new_window' => $block['attrs']['ctaButton']['newWindow'] ?? '',
-			]
-		);
+		$attributes['cta_button'] = [
+			'url'        => $block['attrs']['ctaButton']['url'] ?? '',
+			'text'       => $block['attrs']['ctaButton']['text'] ?? '',
+			'new_window' => $block['attrs']['ctaButton']['newWindow'] ?? '',
+			'class'      => '',
+		];
+
+		if (
+			! empty( $block['attrs']['hasBackground'] ) &&
+			( ! empty( $block['attrs']['backgroundColor'] ) && 'black' === $block['attrs']['backgroundColor'] )
+		) {
+			$attributes['cta_button']['class'] = 'color-context--dark';
+		}
 	}
 
 	// Return rendered component.
