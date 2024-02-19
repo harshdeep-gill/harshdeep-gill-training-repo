@@ -47,18 +47,16 @@
 			path="{{ $video_url }}"
 			title="{{ $title }}"
 		>
-			<div class="collage__video-cover">
-				<x-image
-					class="collage__video-thumbnail"
-					:image_id="$image_id"
-					:args="$image_args"
-				/>
+			<x-image
+				class="collage__video-thumbnail"
+				:image_id="$image_id"
+				:args="$image_args"
+			/>
 
-				<div class="collage__video-button-wrapper">
-					<button class="collage__video-button">
-						<x-svg name="play" />
-					</button>
-				</div>
+			<div class="collage__video-button-wrapper">
+				<button class="collage__video-button">
+					<x-svg name="play" />
+				</button>
 			</div>
 		</x-media-lightbox>
 	</tp-slider-slide>

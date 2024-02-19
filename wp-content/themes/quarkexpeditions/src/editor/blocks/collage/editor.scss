@@ -1,0 +1,12 @@
+.collage {
+
+	&__image-item,
+	&__video-item {
+		background-color: var(--color-gray-30);
+	}
+
+	.block-editor-button-block-appender {
+		background-color: var(--color-gray-50);
+		border: 1px solid var(--color-black);
+	}
+}
