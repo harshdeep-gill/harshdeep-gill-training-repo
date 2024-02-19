@@ -221,6 +221,10 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'class'   => true,
 					'visible' => true,
 				],
+				'quark-media-lightbox' => [
+					'class' => true,
+					'name'  => true,
+				],
 				'tp-form'              => [
 					'class'          => true,
 					'prevent-submit' => true,
