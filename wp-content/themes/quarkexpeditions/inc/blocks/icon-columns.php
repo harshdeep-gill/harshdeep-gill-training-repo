@@ -70,7 +70,7 @@ function render( ?string $content = null, array $block = [] ): null|string {
 	// Build attributes.
 	$attributes = [
 		'slot'    => $slot,
-		'variant' => $block['attrs']['variant'],
+		'variant' => $block['attrs']['variant'] ?? '',
 	];
 
 	// Return rendered component.
