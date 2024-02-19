@@ -92,7 +92,6 @@ function render( ?string $content = null, array $block = [] ): null|string {
 			( ! empty( $block['attrs']['backgroundColor'] ) && 'black' === $block['attrs']['backgroundColor'] )
 		) {
 			$attributes['cta_button']['class'] = 'color-context--dark';
-			$attributes['cta_button']['class'] = 'color-context--dark';
 		}
 	}
 
