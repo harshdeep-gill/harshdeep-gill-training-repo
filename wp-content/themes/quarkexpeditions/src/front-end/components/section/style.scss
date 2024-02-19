@@ -9,10 +9,22 @@
 
 	&__title {
 		text-align: center;
+
+		&:has(+ .section) {
+			margin-bottom: var(--spacing-7);
+		}
+
+		&--left {
+			text-align: left;
+		}
 	}
 
 	&--has-background {
 		background-color: var(--color-gray-5);
+
+		&-black {
+			background-color: var(--color-black);
+		}
 	}
 
 	.section {
@@ -21,5 +33,10 @@
 
 	&--narrow {
 		max-width: var(--narrow-wrap-width) !important;
+	}
+
+	&__cta-button {
+		text-align: center;
+		margin-top: var(--spacing-7);
 	}
 }
