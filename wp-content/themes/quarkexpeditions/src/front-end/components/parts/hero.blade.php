@@ -2,6 +2,7 @@
 	'image_id'  => 0,
 	'title'     => '',
 	'sub_title' => '',
+	'immersive' => false,
 ] )
 
 @php
@@ -10,7 +11,7 @@
 	}
 @endphp
 
-<x-hero>
+<x-hero :immersive="$immersive">
 	<x-hero.image :image_id="$image_id" />
 	<x-hero.content>
 		@if ( ! empty( $title ) )
