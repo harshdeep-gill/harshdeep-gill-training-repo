@@ -6,12 +6,11 @@
 	if ( empty( $columns ) ) {
 		return;
 	}
-
 @endphp
 
 <x-lp-footer>
 	<x-lp-footer.row>
-		@foreach( $row as $column )
+		@foreach( $columns as $column )
 			<x-lp-footer.column>
 				{!! $column !!}
 			</x-lp-footer.column>
