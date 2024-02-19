@@ -1,7 +1,12 @@
 /**
+ * Global variables.
+ */
+const { customElements, HTMLElement } = window;
+
+/**
  * QuarkVideoIconsCardElement class
  */
-class QuarkVideoIconsCardElement extends HTMLElement {
+export default class QuarkVideoIconsCardElement extends HTMLElement {
 	/**
 	 * Properties.
 	 */
@@ -34,7 +39,7 @@ class QuarkVideoIconsCardElement extends HTMLElement {
 		window._wq.push( { id: videoId ?? '', onReady: this.setupVideoPlayer.bind( this ) } );
 
 		// Setup events.
-		this.overlay?.addEventListener( 'click', this.startPlay.bind( this ) );
+		this.overlay?.addEventListener( 'click', this.start.bind( this ) );
 	}
 
 	/**
@@ -45,13 +50,13 @@ class QuarkVideoIconsCardElement extends HTMLElement {
 	setupVideoPlayer( videoPlayer: WistiaVideo ): void {
 		// Assign video player.
 		this.videoPlayer = videoPlayer;
-		this.videoPlayer?.bind( 'pause', this.pausePlay.bind( this ) );
+		this.videoPlayer?.bind( 'pause', this.pause.bind( this ) );
 	}
 
 	/**
 	 * Starts the video player.
 	 */
-	startPlay() {
+	start() {
 		// Hide the overlay.
 		if ( this.overlay ) {
 			this.overlay.style.display = 'none';
@@ -69,7 +74,7 @@ class QuarkVideoIconsCardElement extends HTMLElement {
 	/**
 	 * Event: Runs on video pause.
 	 */
-	pausePlay() {
+	pause() {
 		// Display the overlay.
 		if ( this.overlay ) {
 			this.overlay.style.display = 'flex';
