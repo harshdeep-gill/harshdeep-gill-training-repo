@@ -1,17 +1,29 @@
 @props( [
-	'row_slots' => [],
+	'rows' => [],
 ] )
 
 @php
-	if ( empty( $row_slots ) ) {
+	if ( empty( $rows ) ) {
 		return;
 	}
 @endphp
 
 <x-lp-footer>
-	@foreach ( $row_slots as $row_slot)
+	@foreach ( $rows as $row)
 		<x-lp-footer.row>
-			{!! $row_slot !!}
+			@foreach ($row as $column)
+				<x-lp-footer.column>
+					@foreach ($column as $column_content)
+						@if ( 'icon' === $column_content['type'] )
+							<x-lp-footer.icon name="{{ $column_content['attributes']['name'] }}"/>
+						@elseif ( 'social-links' === $column_content['type'] )
+							<x-parts.social-links :links="$column_content['attributes']['links']"/>
+						@elseif ( 'block' === $column_content['type'] )
+							{!! $column_content['attributes']['content'] !!}
+						@endif
+					@endforeach
+				</x-lp-footer.column>
+			@endforeach
 		</x-lp-footer.row>
 	@endforeach
 </x-lp-footer>

@@ -46,7 +46,7 @@ function render( ?string $content = null, array $block = [] ) : null | string {
 
 	// Build component attributes.
 	$attributes = [
-		'row_slots' => [],
+		'rows' => [],
 	];
 
 	// Prepare block data.
@@ -61,7 +61,7 @@ function render( ?string $content = null, array $block = [] ) : null | string {
 		}
 
 		// Columns for this row.
-		$row_slots = '';
+		$columns = [];
 
 		// Build Column inner content.
 		foreach ( $maybe_row_block['innerBlocks'] as $maybe_column_block ) {
@@ -75,7 +75,7 @@ function render( ?string $content = null, array $block = [] ) : null | string {
 			}
 
 			// Initialize columns content.
-			$column_content = '';
+			$column_contents = [];
 
 			// Build column content.
 			foreach ( $maybe_column_block['innerBlocks'] as $column_inner_block ) {
@@ -92,35 +92,35 @@ function render( ?string $content = null, array $block = [] ) : null | string {
 					}
 
 					// Add component to slot.
-					$column_content .= quark_get_component(
-						'parts.social-links',
-						[
+					$column_contents[] = [
+						'type'       => 'social-links',
+						'attributes' => [
 							'links' => $links ?? [],
 						],
-					);
+					];
 				} elseif ( 'quark/lp-footer-icon' === $column_inner_block['blockName'] ) {
-					$column_content .= quark_get_component(
-						'lp-footer.icon',
-						[
+					$column_contents[] = [
+						'type'       => 'icon',
+						'attributes' => [
 							'name' => $column_inner_block['attrs']['icon'] ?? '',
-						]
-					);
+						],
+					];
 				} else {
-					$column_content .= render_block( $column_inner_block );
+					$column_contents[] = [
+						'type'       => 'block',
+						'attributes' => [
+							'content' => render_block( $column_inner_block ),
+						],
+					];
 				}
 			}
 
 			// Add the column to the list.
-			$row_slots .= quark_get_component(
-				'lp-footer.column',
-				[
-					'slot' => $column_content,
-				]
-			);
+			$columns[] = $column_contents;
 		}
 
 		// Prepare Rows data.
-		$attributes['row_slots'][] = $row_slots;
+		$attributes['rows'][] = $columns;
 	}
 
 	// Return rendered component.
