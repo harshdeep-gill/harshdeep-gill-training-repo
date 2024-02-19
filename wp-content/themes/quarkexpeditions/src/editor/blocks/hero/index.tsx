@@ -5,6 +5,7 @@ import { __ } from '@wordpress/i18n';
 import { BlockConfiguration } from '@wordpress/blocks';
 import {
 	PanelBody,
+	ToggleControl,
 } from '@wordpress/components';
 import {
 	InspectorControls,
@@ -65,6 +66,10 @@ export const settings: BlockConfiguration = {
 		subTitle: {
 			type: 'string',
 		},
+		isImmersive: {
+			type: 'boolean',
+			default: false,
+		},
 	},
 	supports: {
 		alignWide: false,
@@ -76,7 +81,7 @@ export const settings: BlockConfiguration = {
 	edit( { className, attributes, setAttributes }: BlockEditAttributes ): JSX.Element {
 		// eslint-disable-next-line react-hooks/rules-of-hooks
 		const blockProps = useBlockProps( {
-			className: classnames( className, 'hero' ),
+			className: classnames( className, 'hero', attributes.isImmersive ? 'hero--immersive' : '' ),
 		} );
 
 		// eslint-disable-next-line react-hooks/rules-of-hooks
@@ -98,9 +103,15 @@ export const settings: BlockConfiguration = {
 							help={ __( 'Choose an image', 'qrk' ) }
 							onChange={ ( image: object ) => setAttributes( { image } ) }
 						/>
+						<ToggleControl
+							label={ __( 'Immersive Mode', 'qrk' ) }
+							checked={ attributes.isImmersive }
+							help={ __( 'Is this hero immersive?', 'qrk' ) }
+							onChange={ ( isImmersive: boolean ) => setAttributes( { isImmersive } ) }
+						/>
 					</PanelBody>
 				</InspectorControls>
-				<Section { ...blockProps } fullWidth={ true } seamless={ true }>
+				<Section { ...blockProps } fullWidth={ true } seamless={ true } >
 					<div className="hero__wrap">
 						{ attributes.image &&
 							<Img

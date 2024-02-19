@@ -196,6 +196,11 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 		$tags = array_merge(
 			$tags,
 			[
+				'quark-lp-header'      => [
+					'class'  => true,
+					'data-*' => true,
+					'style'  => true,
+				],
 				'quark-form'           => [
 					'class'         => true,
 					'data-action'   => true,

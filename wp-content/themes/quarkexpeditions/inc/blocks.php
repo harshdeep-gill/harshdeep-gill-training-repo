@@ -36,6 +36,7 @@ function register_blocks(): void {
 		'LogoGrid'        => 'logo-grid.php',
 		'LPFooter'        => 'lp-footer.php',
 		'Collage'         => 'collage.php',
+		'ReviewCards'     => 'review-cards.php',
 	];
 
 	// Register blocks.
