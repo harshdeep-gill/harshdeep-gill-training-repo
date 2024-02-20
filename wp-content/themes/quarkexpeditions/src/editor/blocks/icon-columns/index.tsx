@@ -102,8 +102,8 @@ export const settings: BlockConfiguration = {
 				<InspectorControls>
 					<PanelBody title={ __( 'Columns Options', 'qrk' ) }>
 						<SelectControl
-							label={ __( 'Icon', 'qrk' ) }
-							help={ __( 'Select the icon.', 'qrk' ) }
+							label={ __( 'Variant', 'qrk' ) }
+							help={ __( 'Select the variant.', 'qrk' ) }
 							value={ attributes.variant }
 							options={ [
 								{ label: __( 'Duotone', 'qrk' ), value: '' },
