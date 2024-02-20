@@ -7,24 +7,24 @@
 	$slide_count = quark_get_slot_child_count( $slot );
 @endphp
 
-<div class="review-cards__carousel">
-	<tp-slider class="review-cards__slider" swipe="yes" infinite="yes">
-		<tp-slider-track class="review-cards__track">
-			<tp-slider-slides>
+<div class="collage__carousel">
+	<tp-slider class="collage__slider" swipe="yes" infinite="yes">
+		<tp-slider-track class="collage__track">
+			<tp-slider-slides class="collage__slides-container">
 				{!! $slot !!}
 			</tp-slider-slides>
 		</tp-slider-track>
 
 		@if ( $slide_count > 1 )
-			<div class="review-cards__nav">
+			<div class="collage__nav">
 				<tp-slider-arrow direction="previous">
-					<button class="review-cards__arrow-button review-cards__arrow-button--left">
+					<button class="collage__arrow-button collage__arrow-button--left">
 						<x-svg name="chevron-left" />
 					</button>
 				</tp-slider-arrow>
 
 				<tp-slider-arrow direction="next">
-					<button class="review-cards__arrow-button review-cards__arrow-button--right">
+					<button class="collage__arrow-button collage__arrow-button--right">
 						<x-svg name="chevron-left" />
 					</button>
 				</tp-slider-arrow>

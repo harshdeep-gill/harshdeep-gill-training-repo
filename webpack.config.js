@@ -87,6 +87,7 @@ module.exports = ( env ) => {
 		externals: {
 			wp: 'wp',
 			gumponents: 'gumponents',
+			GLightbox: 'GLightbox',
 		},
 		performance: {
 			hints: false,
@@ -121,6 +122,7 @@ module.exports = ( env ) => {
 		...buildConfig,
 		entry: {
 			TPSliderElement: `${ themePath }/src/vendor/tp-slider.js`,
+			GLightbox: `${ themePath }/src/vendor/glightbox.js`,
 		},
 		output: {
 			...buildConfig.output,
