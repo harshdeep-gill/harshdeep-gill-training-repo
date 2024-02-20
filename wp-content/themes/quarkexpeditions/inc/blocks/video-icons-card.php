@@ -64,11 +64,19 @@ function render( ?string $content = null, array $block = [] ) : null | string {
 		break;
 	}
 
+	// Image id for thumbnail.
+	$image_id = '';
+
+	// Check if it exists.
+	if ( isset( $block['attrs']['image'] ) && is_array( $block['attrs']['image'] ) ) {
+		$image_id = $block['attrs']['image']['id'];
+	}
+
 	// Build component attributes.
 	$attributes = [
 		'slot'     => $slot,
 		'variant'  => $block['attrs']['variant'] ?? '',
-		'image_id' => isset( $block['attrs']['image'] ) && is_array( $block['attrs']['image'] ) ? $block['attrs']['image']['id'] : '',
+		'image_id' => $image_id ?? '',
 		'title'    => $block['attrs']['title'] ?? '',
 		'url'      => $block['attrs']['url'] ?? '',
 	];
