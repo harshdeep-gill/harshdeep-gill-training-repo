@@ -12,8 +12,8 @@
 	@foreach ( $rows as $row)
 		<x-lp-footer.row>
 			@foreach ($row as $column)
-				<x-lp-footer.column>
-					@foreach ($column as $column_content)
+				<x-lp-footer.column url="{{ $column['url'] }}">
+					@foreach ($column['contents'] as $column_content)
 						@if ( 'icon' === $column_content['type'] )
 							<x-lp-footer.icon name="{{ $column_content['attributes']['name'] }}"/>
 						@elseif ( 'social-links' === $column_content['type'] )

@@ -115,8 +115,19 @@ function render( ?string $content = null, array $block = [] ) : null | string {
 				}
 			}
 
+			// Initialize url.
+			$column_url = '';
+
+			// Check if url is present.
+			if ( isset( $maybe_column_block['attrs'] ) && isset( $maybe_column_block['attrs']['url'] ) ) {
+				$column_url = $maybe_column_block['attrs']['url'];
+			}
+
 			// Add the column to the list.
-			$columns[] = $column_contents;
+			$columns[] = [
+				'url'      => $column_url,
+				'contents' => $column_contents,
+			];
 		}
 
 		// Prepare Rows data.

@@ -10,7 +10,9 @@ import {
 	useBlockProps,
 	useInnerBlocksProps,
 	InnerBlocks,
+	InspectorControls,
 } from '@wordpress/block-editor';
+import { PanelBody, TextControl } from '@wordpress/components';
 
 /**
  * Child blocks.
@@ -40,14 +42,19 @@ export const settings: BlockConfiguration = {
 	icon: 'columns',
 	category: 'layout',
 	keywords: [ __( 'column', 'qrk' ) ],
-	attributes: {},
+	attributes: {
+		url: {
+			type: 'string',
+			default: '',
+		},
+	},
 	supports: {
 		alignWide: false,
 		className: false,
 		html: false,
 		customClassName: false,
 	},
-	edit(): JSX.Element {
+	edit( { attributes, setAttributes }: BlockEditAttributes ): JSX.Element {
 		// eslint-disable-next-line react-hooks/rules-of-hooks
 		const blockProps = useBlockProps( { className: 'lp-footer__column' } );
 
@@ -61,9 +68,20 @@ export const settings: BlockConfiguration = {
 
 		// Return the block's markup.
 		return (
-			<div { ...blockProps } >
-				<div { ...innerBlockProps } />
-			</div>
+			<>
+				<InspectorControls>
+					<PanelBody title={ __( 'Column Options', 'qrk' ) }>
+						<TextControl
+							label="Enter URL for the block"
+							value={ attributes.url }
+							onChange={ ( url ) => setAttributes( { url } ) }
+						/>
+					</PanelBody>
+				</InspectorControls>
+				<div { ...blockProps } >
+					<div { ...innerBlockProps } />
+				</div>
+			</>
 		);
 	},
 	save() {
