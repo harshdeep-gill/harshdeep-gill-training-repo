@@ -457,6 +457,42 @@
 		</x-section>
 	</x-component-demo>
 
+	<x-component-demo :keys="[ 'video-icons-card' ]">
+		<x-section>
+			<x-video-icons-card
+				url="https://quarkexpeditions.wistia.com/medias/p0k52ec113"
+				image_id="26"
+				title="The Quark Experience"
+				variant="dark"
+			>
+				<x-video-icons-card.icons>
+					<x-icon-columns variant="dark">
+						<x-icon-columns.column>
+							<x-icon-columns.icon icon="duotone/person-check" />
+							<x-icon-columns.title title="Polar Specialists" />
+						</x-icon-columns.column>
+						<x-icon-columns.column>
+							<x-icon-columns.icon icon="duotone/person-compass" />
+							<x-icon-columns.title title="The Best Expedition Team" />
+						</x-icon-columns.column>
+						<x-icon-columns.column>
+							<x-icon-columns.icon icon="duotone/small-ship" />
+							<x-icon-columns.title title="Small Ship Experience" />
+						</x-icon-columns.column>
+						<x-icon-columns.column>
+							<x-icon-columns.icon icon="duotone/hiker" />
+							<x-icon-columns.title title="The Most Adventure Options" />
+						</x-icon-columns.column>
+						<x-icon-columns.column>
+							<x-icon-columns.icon icon="duotone/stars" />
+							<x-icon-columns.title title="4.7 Customer Rating" />
+						</x-icon-columns.column>
+					</x-icon-columns>
+				</x-video-icons-card.icons>
+			</x-video-icons-card>
+		</x-section>
+	</x-component-demo>
+
 	<x-component-demo :keys="[ 'collage' ]">
 		<x-collage name="lp-collage">
 			<x-collage.video

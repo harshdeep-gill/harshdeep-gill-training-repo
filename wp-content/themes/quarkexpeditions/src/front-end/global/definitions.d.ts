@@ -31,4 +31,21 @@ interface Window {
 		execute: Function;
 	},
 	GLightbox?: Glightbox<any>,
+	Wistia: {
+		api( matcher: String ) : WistiaVideo | null;
+	},
+	_wq: WistiaVideoMatcher[] | null,
 }
+
+/**
+ * WistiaVideo interface
+ */
+interface WistiaVideo {
+	play(): void;
+	bind( eventName: String, callback: Function ): void;
+}
+
+/**
+ * Video matcher interface.
+ */
+interface WistiaVideoMatcher { id: String, onReady: Function }
