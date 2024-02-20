@@ -84,15 +84,15 @@ function quark_get_slot_child_count( string $slot_content = '' ): int {
  *
  * @param string $wistia_url The wistia embed URL.
  *
- * @return string|false Returns the id on success and false on failure.
+ * @return string Returns the id on success and empty string on failure.
  */
-function quark_get_wistia_id( string $wistia_url = '' ): string|false {
+function quark_get_wistia_id( string $wistia_url = '' ): string {
 	// Get the clean URL.
 	$clean_url = esc_url_raw( $wistia_url, [ 'https' ] );
 
 	// Check if we got a URL back.
 	if ( empty( $clean_url ) ) {
-		return false; // Empty, bail.
+		return ''; // Empty, bail.
 	}
 
 	// Get the parsed URL.
@@ -100,7 +100,7 @@ function quark_get_wistia_id( string $wistia_url = '' ): string|false {
 
 	// Check if parsing failed.
 	if ( empty( $parsed_url ) || ! is_array( $parsed_url ) ) {
-		return false; // Failed, bail.
+		return ''; // Failed, bail.
 	}
 
 	// Get the URL path and host.
@@ -109,7 +109,7 @@ function quark_get_wistia_id( string $wistia_url = '' ): string|false {
 
 	// Get the path.
 	if ( empty( $url_path ) ) {
-		return false;
+		return '';
 	}
 
 	// Get the path components.
@@ -121,7 +121,7 @@ function quark_get_wistia_id( string $wistia_url = '' ): string|false {
 		count( $url_path_components ) !== 2 ||
 		'medias' !== $url_path_components[0]
 	) {
-		return false;
+		return '';
 	}
 
 	// Return the string.
