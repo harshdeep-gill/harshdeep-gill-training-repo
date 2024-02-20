@@ -1,6 +1,6 @@
 @props( [
 	'title'         => '',
-	'heading_level' => '3',
+	'heading_level' => 'h3',
 	'class'         => '',
 	'id'            => '',
 	'seamless'      => false,
@@ -54,7 +54,7 @@
 	$section_title_classes = [ 'section__title' ];
 
 	if ( ! empty( $heading_level ) ) {
-		$section_title_classes[] = sprintf( 'h%s', $heading_level );
+		$section_title_classes[] = $heading_level;
 	}
 @endphp
 
