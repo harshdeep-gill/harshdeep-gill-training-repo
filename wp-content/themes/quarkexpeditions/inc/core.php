@@ -197,6 +197,11 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 		$tags = array_merge(
 			$tags,
 			[
+				'quark-lp-header'      => [
+					'class'  => true,
+					'data-*' => true,
+					'style'  => true,
+				],
 				'quark-form'           => [
 					'class'         => true,
 					'data-action'   => true,
@@ -216,6 +221,10 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 				'quark-toast-message'  => [
 					'class'   => true,
 					'visible' => true,
+				],
+				'quark-media-lightbox' => [
+					'class' => true,
+					'name'  => true,
 				],
 				'tp-form'              => [
 					'class'          => true,
