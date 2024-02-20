@@ -1,0 +1,71 @@
+/**
+ * Season Highlights.
+ */
+
+@import "../../scss";
+
+.season-highlights {
+	$self: &;
+
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-6);
+
+	@media screen and (min-width: grid-size(sm)) {
+		flex-flow: row wrap;
+	}
+
+	&__season {
+		flex: 1;
+		min-width: 0;
+
+		@media screen and (min-width: grid-size(sm)) {
+			flex: 0 0 calc(50% - var(--spacing-6) / 2);
+		}
+
+		@media screen and (min-width: grid-size(lg)) {
+			flex: 1;
+		}
+
+		&:only-child {
+			flex: 1;
+		}
+	}
+
+	&__item-title {
+		color: var(--color-gray-50);
+		font-weight: var(--font-weight-bold);
+		margin-top: var(--spacing-5);
+		margin-bottom: var(--spacing-2);
+	}
+
+	&__highlight {
+		background-color: var(--color-gray-5);
+		border-radius: var(--border-radius);
+		border: 1px solid var(--color-gray-5);
+		display: flex;
+		align-items: center;
+		padding: var(--spacing-3) var(--spacing-4);
+		gap: var(--spacing-5);
+
+		& + & {
+			margin-top: var(--spacing-2);
+		}
+
+		#{$self}__item--light & {
+			background-color: transparent;
+			border-color: var(--color-gray-20);
+		}
+
+		svg {
+			color: var(--color-dark-blue);
+			flex: 0 0 64px;
+		}
+	}
+
+	&__highlight-title {
+		display: block;
+
+		@include line-clamp(2);
+	}
+}
