@@ -4,8 +4,6 @@
 	}
 @endphp
 
-{{-- <x-section class="season-highlights" no_border="true"> --}}
-	<div class="season-highlights">
-		{!! $slot !!}
-	</div>
-{{-- </x-section> --}}
+<div class="season-highlights typography-spacing">
+	{!! $slot !!}
+</div>
