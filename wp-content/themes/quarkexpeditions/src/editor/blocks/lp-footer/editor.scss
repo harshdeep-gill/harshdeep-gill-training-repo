@@ -10,14 +10,4 @@
 	.dashicons-no {
 		color: var(--color-gray-90);
 	}
-
-	&__columns {
-		display: flex;
-		justify-content: space-evenly;
-		gap: var(--spacing-6);
-
-		@media screen and (min-width: grid-size(md)) {
-			flex-wrap: wrap;
-		}
-	}
 }
