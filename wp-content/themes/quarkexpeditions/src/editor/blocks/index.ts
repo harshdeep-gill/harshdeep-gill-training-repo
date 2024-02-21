@@ -16,6 +16,8 @@ import * as inquiryForm from './inquiry-form';
 import * as logoGrid from './logo-grid';
 import * as lpFooter from './lp-footer';
 import * as iconColumns from './icon-columns';
+import * as collage from './collage';
+import * as reviewCards from './review-cards';
 
 /**
  * Add blocks.
@@ -31,6 +33,8 @@ const blocks = [
 	logoGrid,
 	lpFooter,
 	iconColumns,
+	collage,
+	reviewCards,
 ];
 
 /**
