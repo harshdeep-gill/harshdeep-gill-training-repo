@@ -353,6 +353,17 @@
 		</x-section>
 	</x-component-demo>
 
+	<x-component-demo :keys="['simple-cards']">
+		<x-simple-cards>
+			<x-simple-cards.card image_id="36" title="Camping" url="#" />
+			<x-simple-cards.card image_id="34" title="Flightseeing" />
+			<x-simple-cards.card image_id="31" title="Heli-hiking" url="#" />
+			<x-simple-cards.card image_id="32" title="Sea Kayaking" url="#" />
+			<x-simple-cards.card image_id="33" title="Zodiac Cruising" url="#" />
+			<x-simple-cards.card image_id="35" title="Wildlife Photography" url="#" />
+		</x-simple-cards>
+	</x-component-demo>
+
 	<x-component-demo :keys="[ 'icon-columns' ]">
 		<x-section title="Icon Columns">
 			<x-icon-columns>
