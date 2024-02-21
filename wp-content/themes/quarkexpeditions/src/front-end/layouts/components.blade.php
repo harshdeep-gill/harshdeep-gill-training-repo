@@ -37,21 +37,25 @@
 				<div style="width: 50%; padding: 24px; border: 1px solid var(--color-black);">
 					<div class="typography-spacing" style="display: flex; gap: 16px; flex-flow: row wrap;">
 						<x-button>Solid button</x-button>
-						<x-button color="black" appearance="outline">Solid button</x-button>
+						<x-button appearance="outline">Outline button</x-button>
+						<x-button color="black">Solid black button</x-button>
 					</div>
 					<div class="typography-spacing" style="display: flex; gap: 16px; flex-flow: row wrap;">
 						<x-button size="big">Solid button</x-button>
-						<x-button size="big" color="black" appearance="outline">Solid button</x-button>
+						<x-button size="big" appearance="outline">Outline button</x-button>
+						<x-button size="big" color="black">Solid black button</x-button>
 					</div>
 				</div>
 				<div style="width: 50%; padding: 24px; background-color: var(--color-black);" class="color-context--dark">
 					<div class="typography-spacing" style="display: flex; gap: 16px; flex-flow: row wrap;">
 						<x-button>Solid button</x-button>
-						<x-button color="black" appearance="outline">Solid button</x-button>
+						<x-button appearance="outline">Outline button</x-button>
+						<x-button color="black">Solid black button</x-button>
 					</div>
 					<div class="typography-spacing" style="display: flex; gap: 16px; flex-flow: row wrap;">
 						<x-button size="big">Solid button</x-button>
-						<x-button size="big" color="black" appearance="outline">Solid button</x-button>
+						<x-button size="big" appearance="outline">Outline button</x-button>
+						<x-button size="big" color="black">Solid black button</x-button>
 					</div>
 				</div>
 			</div>

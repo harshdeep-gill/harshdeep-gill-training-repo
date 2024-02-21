@@ -24,7 +24,6 @@
 
 	.is-style-outline &__link {
 
-		@extend %btn--color-black;
 		@extend %btn--outline;
 	}
 
