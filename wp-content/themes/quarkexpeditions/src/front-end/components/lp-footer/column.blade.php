@@ -1,3 +1,7 @@
+@props( [
+	'url' => '',
+] )
+
 @php
 	if ( empty( $slot ) ) {
 		return;

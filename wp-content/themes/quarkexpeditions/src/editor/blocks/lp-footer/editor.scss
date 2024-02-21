@@ -5,14 +5,9 @@
 		margin-right: 0;
 	}
 
-	&__columns {
-		display: flex;
-		justify-content: space-evenly;
-		gap: var(--spacing-6);
+	padding-inline: var(--spacing-5);
 
-		@media screen and (min-width: grid-size(md)) {
-			flex-direction: row;
-			flex-wrap: wrap;
-		}
+	.dashicons-no {
+		color: var(--color-gray-90);
 	}
 }

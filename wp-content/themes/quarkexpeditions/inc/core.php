@@ -133,6 +133,7 @@ function register_scripts(): void {
 	wp_register_script( 'glightbox', get_template_directory_uri() . '/dist/vendor/glightbox.js', [], $assets_version, true );
 	wp_register_script( 'tp-slider', get_template_directory_uri() . '/dist/vendor/tpsliderelement.js', [], $assets_version, true );
 	wp_register_script( 'trustpilot', 'https://widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js', [], $assets_version, true );
+	wp_register_script( 'wistia-embed', 'https://fast.wistia.com/assets/external/E-v1.js', [], $assets_version, true );
 
 	// Pass variables to script.
 	wp_localize_script(
@@ -196,6 +197,11 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 		$tags = array_merge(
 			$tags,
 			[
+				'quark-lp-header'      => [
+					'class'  => true,
+					'data-*' => true,
+					'style'  => true,
+				],
 				'quark-form'           => [
 					'class'         => true,
 					'data-action'   => true,
@@ -215,6 +221,10 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 				'quark-toast-message'  => [
 					'class'   => true,
 					'visible' => true,
+				],
+				'quark-media-lightbox' => [
+					'class' => true,
+					'name'  => true,
 				],
 				'tp-form'              => [
 					'class'          => true,

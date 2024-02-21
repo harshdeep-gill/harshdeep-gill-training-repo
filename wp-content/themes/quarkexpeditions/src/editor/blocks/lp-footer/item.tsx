@@ -15,29 +15,29 @@ import {
 /**
  * Child blocks.
  */
-import * as socialLinks from './social-links';
+import * as column from './column';
 
 /**
  * Register child blocks.
  */
-registerBlockType( socialLinks.name, socialLinks.settings );
+registerBlockType( column.name, column.settings );
 
 /**
  * Block name.
  */
-export const name: string = 'quark/lp-footer-column';
+export const name: string = 'quark/lp-footer-row';
 
 /**
  * Block configuration settings.
  */
 export const settings: BlockConfiguration = {
 	apiVersion: 2,
-	title: __( 'Footer Column', 'qrk' ),
-	description: __( 'Footer column block.', 'qrk' ),
+	title: __( 'Footer Row', 'qrk' ),
+	description: __( 'Footer row block.', 'qrk' ),
 	parent: [ 'quark/lp-footer' ],
-	icon: 'columns',
+	icon: 'layout',
 	category: 'layout',
-	keywords: [ __( 'column', 'qrk' ) ],
+	keywords: [ __( 'row', 'qrk' ) ],
 	attributes: {},
 	supports: {
 		alignWide: false,
@@ -47,13 +47,15 @@ export const settings: BlockConfiguration = {
 	},
 	edit(): JSX.Element {
 		// eslint-disable-next-line react-hooks/rules-of-hooks
-		const blockProps = useBlockProps( { className: 'lp-footer__column' } );
+		const blockProps = useBlockProps();
 
 		// eslint-disable-next-line react-hooks/rules-of-hooks
-		const innerBlockProps = useInnerBlocksProps( {}, {
-			allowedBlocks: [ 'core/paragraph', 'core/list', socialLinks.name, 'core/heading', 'quark/logo-grid' ],
+		const innerBlockProps = useInnerBlocksProps( { className: 'lp-footer__row' }, {
+			allowedBlocks: [ column.name ],
 			template: [
-				[ 'core/paragraph' ],
+				[ column.name ],
+				[ column.name ],
+				[ column.name ],
 			],
 		} );
 

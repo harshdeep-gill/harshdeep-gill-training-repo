@@ -20,4 +20,9 @@
 
 		@extend %btn--size-big;
 	}
+
+	&--media {
+
+		@extend %btn--media;
+	}
 }
