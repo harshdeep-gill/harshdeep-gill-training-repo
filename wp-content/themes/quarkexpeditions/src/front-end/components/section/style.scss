@@ -7,16 +7,25 @@
 .section {
 	$self: &;
 
-	&__title {
+	&__title,
+	&__description {
 		text-align: center;
+	}
+
+	&__title {
 
 		&:has(+ .section) {
 			margin-bottom: var(--spacing-7);
 		}
 
-		&--left {
+		&--left,
+		+ #{$self}__description {
 			text-align: left;
 		}
+	}
+
+	&__description {
+		margin-bottom: var(--spacing-7);
 	}
 
 	&--has-background {

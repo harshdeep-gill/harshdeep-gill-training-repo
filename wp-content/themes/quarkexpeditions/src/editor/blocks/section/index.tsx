@@ -235,15 +235,14 @@ export const settings: BlockConfiguration = {
 						/>
 					) }
 					{ attributes.hasDescription && (
-						<div className="section__description">
-							<RichText
-								tagName="p"
-								placeholder={ __( 'Write description…', 'qrk' ) }
-								value={ attributes.description }
-								onChange={ ( description ) => setAttributes( { description } ) }
-								allowedFormats={ [] }
-							/>
-						</div>
+						<RichText
+							tagName="p"
+							className="section__description"
+							placeholder={ __( 'Write description…', 'qrk' ) }
+							value={ attributes.description }
+							onChange={ ( description ) => setAttributes( { description } ) }
+							allowedFormats={ [] }
+						/>
 					) }
 					<div { ...innerBlocksProps } />
 					{ attributes.hasCta && (
