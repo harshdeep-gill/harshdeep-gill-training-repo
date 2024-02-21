@@ -212,6 +212,17 @@
 		</x-hero>
 	</x-component-demo>
 
+	<x-component-demo :keys="[ 'hero', 'hero-new-cta' ]">
+		<x-hero layout="column" size="big">
+			<x-hero.image image_id="26" />
+			<x-hero.content>
+				<x-hero.title title="Rethink your bucket list.<br/>Think an Antarctic Expedition." />
+				<x-hero.sub-title title="Starting from $12,908" />
+			</x-hero.content>
+			<x-hero.form-modal-cta>Get a Digital Brochure</x-hero.form-modal-cta>
+		</x-hero>
+	</x-component-demo>
+
 	<x-component-demo :keys="[ 'modal' ]">
 		<x-section title="Flexible Multipurpose modal">
 			<x-modal.modal-open modal_id="multipurpose-modal-demo">
