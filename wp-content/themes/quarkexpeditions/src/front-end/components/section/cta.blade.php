@@ -17,7 +17,7 @@
 	}
 @endphp
 
-<div @class($classes)>
+<div @class( $classes )>
 	<x-button :href="$url" :target="! empty( $new_window ) ? '_blank' : ''" >
 		<x-escape :content="$text" />
 	</x-button>
