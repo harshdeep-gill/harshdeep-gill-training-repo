@@ -67,8 +67,8 @@ export const settings: BlockConfiguration = {
 		if ( attributes.icon && '' !== attributes.icon ) {
 			// Kebab-case to camel-case.
 			let iconName: string = attributes.icon.replace( /-([a-z])/g, ( _: any, group:string ) => group.toUpperCase() );
-			iconName = iconName.replace( 'duotone/', '' ).concat( 'Duotone' );
-			selectedIcon = icons[ iconName ] ?? '';
+			iconName = iconName.replace( 'duotone/', '' );
+			selectedIcon = icons.duotone[ iconName ] ?? '';
 		}
 
 		// Fallback icon.

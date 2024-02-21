@@ -13,7 +13,7 @@ interface BlockEditAttributes {
  * Icons.
  */
 interface Icons {
-    [key: string]: JSX.Element;
+    [key: string]: any;
 }
 
 /**
