@@ -566,7 +566,7 @@
 					<ul>
 						<li><a href="#">Terms of Use</a></li>
 						<li><a href="#">Privacy Policy</a></li>
-						<li>All rights reserved @ 2023</li>
+						<li>All rights reserved @ 2024</li>
 					</ul>
 				</x-lp-footer.column>
 				<x-lp-footer.column>
