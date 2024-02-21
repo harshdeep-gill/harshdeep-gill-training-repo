@@ -8,12 +8,10 @@
 	}
 @endphp
 
-<div class="lp-footer__column">
-	@if ( ! empty( $url ) )
-		<a href="{{ $url }}">
-			{!! $slot !!}
-		</a>
-	@else
-		{!! $slot !!}
-	@endif
-</div>
+<x-maybe-link
+	href="{{ $url }}"
+	fallback_tag="div"
+	class="lp-footer__column"
+>
+	{!! $slot !!}
+</x-maybe-link>

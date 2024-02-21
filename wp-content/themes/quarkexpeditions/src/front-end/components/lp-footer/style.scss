@@ -38,6 +38,11 @@
 
 	&__column {
 		text-align: center;
+		display: block;
+
+		&:hover {
+			text-decoration: none;
+		}
 
 		p {
 			margin-bottom: 0;
@@ -50,7 +55,6 @@
 		a {
 			color: inherit;
 			text-decoration: none;
-			display: block;
 		}
 
 		@media screen and (min-width: grid-size(md)) {
