@@ -17,10 +17,14 @@
 		&:has(+ .section) {
 			margin-bottom: var(--spacing-7);
 		}
+	}
 
-		&--left,
+	&__title--left {
+
+		&,
 		+ #{$self}__description {
 			text-align: left;
+			max-width: none;
 		}
 	}
 
