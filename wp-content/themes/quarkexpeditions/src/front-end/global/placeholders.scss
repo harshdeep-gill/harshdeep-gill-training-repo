@@ -104,6 +104,8 @@
 	&--size-big {
 		padding-top: 16px;
 		padding-bottom: 16px;
+		font-size: var(--font-size);
+		line-height: var(--line-height);
 	}
 
 	&--media {
