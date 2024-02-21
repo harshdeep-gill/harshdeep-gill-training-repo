@@ -38,6 +38,11 @@
 
 	&__column {
 		text-align: center;
+		display: block;
+
+		&:hover {
+			text-decoration: none;
+		}
 
 		p {
 			margin-bottom: 0;
@@ -49,7 +54,6 @@
 
 		a {
 			color: inherit;
-			display: block;
 			text-decoration: none;
 		}
 

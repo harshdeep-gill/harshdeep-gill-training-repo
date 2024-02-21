@@ -403,26 +403,20 @@
 	<x-component-demo :keys="[ 'lp-footer', 'logo-grid' ]">
 		<x-lp-footer>
 			<x-lp-footer.row>
-				<x-lp-footer.column>
-					<a href="tel:+1(866)241-1602">
-						<x-lp-footer.icon name="call" />
-						<p>Need help planning? Call Us.</p>
-						<h5>+1 (866) 241-1602</h5>
-					</a>
+				<x-lp-footer.column url="tel:+1(866)241-1602">
+					<x-lp-footer.icon name="call" />
+					<p>Need help planning? Call Us.</p>
+					<h5>+1 (866) 241-1602</h5>
 				</x-lp-footer.column>
-				<x-lp-footer.column>
-					<a href="https://www.quarkexpeditions.com/brochures">
-						<x-lp-footer.icon name="brochure" />
-						<p>Get Quark Expeditions</p>
-						<h5>Arctic & Antarctic Brochures</h5>
-					</a>
+				<x-lp-footer.column url="https://www.quarkexpeditions.com/brochures">
+					<x-lp-footer.icon name="brochure" />
+					<p>Get Quark Expeditions</p>
+					<h5>Arctic & Antarctic Brochures</h5>
 				</x-lp-footer.column>
-				<x-lp-footer.column>
-					<a href="https://www.quarkexpeditions.com/subscribe-to-our-newsletter">
-						<x-lp-footer.icon name="mail" />
-						<p>Sign up for our</p>
-						<h5>Newsletters & Offers</h5>
-					</a>
+				<x-lp-footer.column url="https://www.quarkexpeditions.com/subscribe-to-our-newsletter">
+					<x-lp-footer.icon name="mail" />
+					<p>Sign up for our</p>
+					<h5>Newsletters & Offers</h5>
 				</x-lp-footer.column>
 			</x-lp-footer.row>
 			<x-lp-footer.row>

@@ -4,6 +4,10 @@
 	}
 @endphp
 
-<div class="lp-footer__column">
+<x-maybe-link
+	href="{{ $url }}"
+	fallback_tag="div"
+	class="lp-footer__column"
+>
 	{!! $slot !!}
-</div>
+</x-maybe-link>
