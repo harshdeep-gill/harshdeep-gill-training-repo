@@ -1,7 +1,8 @@
 @props( [
-	'title'  => '',
-	'author' => '',
-	'rating' => '',
+	'title'           => '',
+	'author_details' => '',
+	'author'          => '',
+	'rating'          => '',
 ] )
 
 <tp-slider-slide class="review-cards__card">
@@ -27,5 +28,9 @@
 		<div class="review-cards__author">
 			<strong><x-escape :content="$author" /></strong>
 		</div>
+	@endif
+
+	@if ( ! empty( $author_details ) )
+		<div class="review-cards__author-details"><x-escape :content="$author_details" /></div>
 	@endif
 </tp-slider-slide>

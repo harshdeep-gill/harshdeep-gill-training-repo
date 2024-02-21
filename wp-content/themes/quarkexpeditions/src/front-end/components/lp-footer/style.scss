@@ -15,9 +15,16 @@
 		max-width: var(--wrap-width);
 		margin-left: auto;
 		margin-right: auto;
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-7);
+
+		@media screen and (min-width: grid-size(md)) {
+			gap: var(--spacing-9);
+		}
 	}
 
-	&__columns {
+	&__row {
 		display: flex;
 		flex-direction: column;
 		justify-content: space-evenly;
@@ -31,6 +38,11 @@
 
 	&__column {
 		text-align: center;
+		display: block;
+
+		&:hover {
+			text-decoration: none;
+		}
 
 		p {
 			margin-bottom: 0;
@@ -57,5 +69,26 @@
 		justify-content: center;
 		align-items: center;
 		margin-top: var(--spacing-4);
+	}
+
+	&__icon {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		height: 48px;
+		width: 48px;
+		border-radius: 50%;
+		background-color: var(--color-white);
+		margin-inline: auto;
+		margin-bottom: var(--spacing-4);
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+
+		path {
+			fill: var(--color-gray-90);
+		}
+
 	}
 }

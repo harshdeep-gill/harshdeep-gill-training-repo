@@ -4,4 +4,10 @@
 		margin-left: 0;
 		margin-right: 0;
 	}
+
+	padding-inline: var(--spacing-5);
+
+	.dashicons-no {
+		color: var(--color-gray-90);
+	}
 }

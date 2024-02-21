@@ -9,6 +9,23 @@
 	align-items: flex-start;
 	gap: var(--spacing-2);
 
+	&.color-context--dark {
+		color: var(--color-black);
+
+		@media screen and (min-width: grid-size(md)) {
+
+			color: var(--color-white);
+			#{$self}__column {
+				border-color: var(--color-white);
+			}
+
+			path {
+				fill: var(--color-white);
+			}
+		}
+	}
+
+
 	@media screen and (min-width: grid-size(md)) {
 		flex-direction: row;
 		align-items: stretch;
@@ -24,18 +41,6 @@
 				fill: var(--color-black);
 			}
 		}
-
-		&.color-context--dark {
-
-			#{$self}__column {
-				border-color: var(--color-white);
-			}
-
-			path {
-				fill: var(--color-white);
-			}
-		}
-
 	}
 
 	&__column {
