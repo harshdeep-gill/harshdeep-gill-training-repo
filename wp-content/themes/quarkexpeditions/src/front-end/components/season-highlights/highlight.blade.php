@@ -11,7 +11,9 @@
 
 <div class="season-highlights__highlight">
 	@if ( ! empty( $icon ) )
-		<x-svg name="{{ $icon }}" />
+		<span class="season-highlights__icon">
+			<x-svg name="{{ $icon }}" />
+		</span>
 	@endif
 
 	@if ( ! empty( $title ) )

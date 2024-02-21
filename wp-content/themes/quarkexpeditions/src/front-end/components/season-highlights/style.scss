@@ -7,29 +7,12 @@
 .season-highlights {
 	$self: &;
 
-	display: flex;
-	flex-direction: column;
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 	gap: var(--spacing-6);
 
-	@media screen and (min-width: grid-size(sm)) {
-		flex-flow: row wrap;
-	}
-
 	&__season {
-		flex: 1;
 		min-width: 0;
-
-		@media screen and (min-width: grid-size(sm)) {
-			flex: 0 0 calc(50% - var(--spacing-6) / 2);
-		}
-
-		@media screen and (min-width: grid-size(lg)) {
-			flex: 1;
-		}
-
-		&:only-child {
-			flex: 1;
-		}
 	}
 
 	&__item-title {
@@ -42,7 +25,6 @@
 	&__highlight {
 		background-color: var(--color-gray-5);
 		border-radius: var(--border-radius);
-		outline: 1px solid var(--color-gray-5);
 		display: flex;
 		align-items: center;
 		padding: 0 var(--spacing-4);
@@ -54,13 +36,17 @@
 
 		#{$self}__item--light & {
 			background-color: transparent;
-			outline-color: var(--color-gray-20);
+			outline: 1px solid var(--color-gray-20);
 		}
+	}
 
-		svg {
-			color: var(--color-dark-blue);
-			flex: 0 0 64px;
-		}
+	&__icon {
+		color: var(--color-dark-blue);
+		flex: 0 0 64px;
+		height: 64px;
+		display: inline-flex;
+		justify-content: center;
+		align-items: center;
 	}
 
 	&__highlight-title {
