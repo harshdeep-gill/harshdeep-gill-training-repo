@@ -121,6 +121,7 @@
 		padding: 0;
 		background-color: var(--color-black);
 		border: none;
+		color: var(--color-white);
 
 		&:hover {
 			background-color: var(--color-gray-80);
@@ -130,8 +131,8 @@
 			background-color: var(--color-black);
 		}
 
-		path {
-			fill: var(--color-white);
+		svg {
+			max-width: 18px;
 		}
 	}
 
