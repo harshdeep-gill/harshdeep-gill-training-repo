@@ -35,9 +35,9 @@ function register_blocks(): void {
 		'InquiryForm'     => 'inquiry-form.php',
 		'LogoGrid'        => 'logo-grid.php',
 		'LPFooter'        => 'lp-footer.php',
+		'IconColumns'     => 'icon-columns.php',
 		'Collage'         => 'collage.php',
 		'ReviewCards'     => 'review-cards.php',
-		'IconColumns'     => 'icon-columns.php',
 		'VideoIconsCard'  => 'video-icons-card.php',
 	];
 
