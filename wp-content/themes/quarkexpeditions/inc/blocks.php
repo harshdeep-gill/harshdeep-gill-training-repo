@@ -37,6 +37,8 @@ function register_blocks(): void {
 		'LPFooter'        => 'lp-footer.php',
 		'Collage'         => 'collage.php',
 		'ReviewCards'     => 'review-cards.php',
+		'IconColumns'     => 'icon-columns.php',
+		'VideoIconsCard'  => 'video-icons-card.php',
 	];
 
 	// Register blocks.

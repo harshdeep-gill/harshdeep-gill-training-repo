@@ -17,6 +17,8 @@ import * as logoGrid from './logo-grid';
 import * as lpFooter from './lp-footer';
 import * as collage from './collage';
 import * as reviewCards from './review-cards';
+import * as iconColumns from './icon-columns';
+import * as videoIconsCard from './video-icons-card';
 
 /**
  * Add blocks.
@@ -33,6 +35,8 @@ const blocks = [
 	lpFooter,
 	collage,
 	reviewCards,
+	iconColumns,
+	videoIconsCard,
 ];
 
 /**
