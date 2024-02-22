@@ -5,7 +5,7 @@
 @endphp
 
 <x-section>
-	<div class="simple-cards grid">
+	<div class="simple-cards">
 		{!! $slot !!}
 	</div>
 </x-section>

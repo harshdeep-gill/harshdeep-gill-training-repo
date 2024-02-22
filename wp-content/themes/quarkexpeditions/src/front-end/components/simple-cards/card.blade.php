@@ -23,7 +23,7 @@
 @endphp
 
 <article class="simple-cards__card">
-	<x-maybe-link class="simple-cards__url" href="{{ $url }}" target="{{ $target }}" fallback_tag="div">
+	<x-maybe-link class="simple-cards__url" href="{{ $url }}" target="{{ $target }}">
 		<figure class="simple-cards__image-wrap">
 			<x-image
 				class="simple-cards__image"
@@ -32,12 +32,10 @@
 			/>
 		</figure>
 
-		<div class="simple-cards__overlay">
-			@if ( ! empty( $title ) )
-				<h5 class="simple-cards__title">
-					<x-escape :content="$title" />
-				</h5>
-			@endif
-		</div>
+		@if ( ! empty( $title ) )
+			<h5 class="simple-cards__title">
+				<x-escape :content="$title" />
+			</h5>
+		@endif
 	</x-maybe-link>
 </article>
