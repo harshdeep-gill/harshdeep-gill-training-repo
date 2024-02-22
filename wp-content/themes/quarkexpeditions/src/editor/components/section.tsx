@@ -14,16 +14,17 @@ import classnames from 'classnames';
 /**
  * Section component.
  *
- * @param {Object}  props            Component properties.
- * @param {Object}  props.innerRef   Inner ref.
- * @param {string}  props.className  Class.
- * @param {boolean} props.seamless   Seamless.
- * @param {boolean} props.fullWidth  Full width.
- * @param {boolean} props.narrow     Narrow.
- * @param {boolean} props.background Has background.
- * @param {boolean} props.padding    Has padding.
- * @param {boolean} props.noBorder   Has no border.
- * @param {Object}  props.children   Children.
+ * @param {Object}  props                 Component properties.
+ * @param {Object}  props.innerRef        Inner ref.
+ * @param {string}  props.className       Class.
+ * @param {boolean} props.seamless        Seamless.
+ * @param {boolean} props.fullWidth       Full width.
+ * @param {boolean} props.narrow          Narrow.
+ * @param {boolean} props.background      Has background.
+ * @param {boolean} props.backgroundColor Background Color.
+ * @param {boolean} props.padding         Has padding.
+ * @param {boolean} props.noBorder        Has no border.
+ * @param {Object}  props.children        Children.
  *
  * @return {JSX.Element} Section component.
  */
@@ -34,6 +35,7 @@ function MySection( {
 	fullWidth = false,
 	narrow = false,
 	background = false,
+	backgroundColor = 'gray',
 	padding = false,
 	noBorder = false,
 	children,
@@ -48,7 +50,8 @@ function MySection( {
 						'section--seamless': seamless,
 						'section--narrow': narrow,
 						'section--no-border': noBorder,
-						'section--has-background': background,
+						'section--has-background': background && 'gray' === backgroundColor,
+						'section--has-background-black': background && 'black' === backgroundColor,
 						'section--seamless-with-padding': padding,
 						'full-width': fullWidth || background,
 					} ),

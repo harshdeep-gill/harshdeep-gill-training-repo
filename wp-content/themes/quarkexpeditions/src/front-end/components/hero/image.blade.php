@@ -17,9 +17,9 @@
 				'(min-width: 1400px)' => [ 1600, 900 ],
 				'(min-width: 1280px)' => [ 1400, 800 ],
 				'(min-width: 1024px)' => [ 1200, 800 ],
-				'(min-width: 768px)'  => [ 900, 500 ],
-				'(min-width: 500px)'  => [ 700, 500 ],
-				'(min-width: 375px)'  => [ 500, 500 ],
+				'(min-width: 768px)'  => [ 900, 550 ],
+				'(min-width: 500px)'  => [ 700, 550 ],
+				'(min-width: 375px)'  => [ 550, 550 ],
 			],
 		],
 		'transform' => [

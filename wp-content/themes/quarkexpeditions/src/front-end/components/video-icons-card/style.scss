@@ -1,0 +1,97 @@
+@import "../../scss";
+
+.video-icons-card {
+	$self: &;
+
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-6);
+
+	&__container {
+		position: relative;
+		width: 100%;
+		aspect-ratio: 16 / 9;
+		border-radius: var(--border-radius-large);
+		overflow: hidden;
+	}
+
+	&__overlay {
+		position: absolute;
+		inset: 0;
+		z-index: 2;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+
+		@media screen and (min-width: grid-size(md)) {
+			justify-content: space-between;
+		}
+
+		#{$self}__title,
+		#{$self}__icons {
+			display: none;
+
+			@media screen and (min-width: grid-size(md)) {
+				display: block;
+				padding: var(--spacing-6);
+			}
+		}
+
+		#{$self}__title {
+			color: var(--color-black);
+			background: linear-gradient(180deg, rgba(color("white"), 0.9) 0%, rgba(color("white"), 0) 100%);
+		}
+
+		#{$self}__icons {
+			background: linear-gradient(180deg, rgba(color("white"), 0) 0%, rgba(color("white"), 0.9) 74%);
+		}
+
+		.color-context--dark & {
+
+			#{$self}__title {
+				color: var(--color-white);
+				background: linear-gradient(180deg, rgba(color("black"), 0.9) 0%, rgba(color("black"), 0) 100%);
+			}
+
+			#{$self}__icons {
+				background: linear-gradient(180deg, rgba(color("black"), 0) 0%, rgba(color("black"), 0.9) 74%);
+			}
+		}
+	}
+
+	&__title,
+	&__icons {
+		position: relative;
+		margin: 0;
+		color: var(--color-black);
+
+		@media screen and (min-width: grid-size(md)) {
+			display: none;
+		}
+	}
+
+	&__thumbnail,
+	&__video {
+		display: block;
+		height: 100%;
+	}
+
+	&__video {
+		position: relative;
+	}
+
+	&__thumbnail {
+		position: absolute;
+		inset: 0;
+		z-index: 1;
+		width: 100%;
+	}
+
+	&__button {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		z-index: 3;
+		transform: translate(-50%, -50%);
+	}
+}

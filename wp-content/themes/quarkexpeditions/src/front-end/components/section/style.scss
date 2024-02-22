@@ -7,19 +7,61 @@
 .section {
 	$self: &;
 
-	&__title {
+	&__title,
+	&__description {
 		text-align: center;
+	}
+
+	&__title {
+
+		&:has(+ .section) {
+			margin-bottom: var(--spacing-7);
+		}
+	}
+
+	&__title--left {
+
+		&,
+		+ #{$self}__description {
+			text-align: left;
+			max-width: none;
+		}
+	}
+
+	&__description {
+		margin-bottom: var(--spacing-7);
 	}
 
 	&--has-background {
 		background-color: var(--color-gray-5);
+
+		&-black {
+			background-color: var(--color-black);
+
+			#{$self}__title {
+				color: var(--color-white);
+			}
+		}
 	}
 
 	.section {
 		margin-top: 0;
 	}
 
+	> .section {
+		margin-top: var(--spacing-6);
+
+		@media screen and (min-width: grid-size(md)) {
+			margin-top: var(--spacing-7);
+		}
+	}
+
 	&--narrow {
 		max-width: var(--narrow-wrap-width) !important;
+	}
+
+	&__cta-button {
+		text-align: center;
+		margin-top: var(--spacing-7);
 	}
 }
