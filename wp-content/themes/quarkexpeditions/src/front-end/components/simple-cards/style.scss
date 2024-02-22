@@ -92,5 +92,7 @@
 		font-family: inherit;
 		color: var(--color-white);
 		text-shadow: 0 4px 4px rgba(color("black"), 0.25);
+
+		@include line-clamp(2);
 	}
 }
