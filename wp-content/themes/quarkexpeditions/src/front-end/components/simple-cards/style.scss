@@ -6,26 +6,30 @@
 .simple-cards {
 	$self: &;
 
-	@include grid-columns(1);
+	@include grid-columns(1, var(--spacing-5));
 
 	@media screen and (min-width: grid-size(sm)) {
 
-		@include grid-columns(2);
+		@include grid-columns(2, var(--spacing-5));
 	}
 
 	@media screen and (min-width: grid-size(lg)) {
 
-		@include grid-columns(3);
+		@include grid-columns(3, var(--spacing-5));
 	}
 
-	grid-gap: var(--spacing-5) !important; // overriding global styles, specific to component.
+	grid-column-gap: var(--spacing-5);
 
 	&__card {
-		min-width: 0;
 		position: relative;
+		height: 180px;
 
 		&:hover img {
 			transform: scale(1.03);
+		}
+
+		@media screen and (min-width: grid-size(sm)) {
+			height: 240px;
 		}
 	}
 
@@ -64,7 +68,8 @@
 		left: 0;
 		overflow: hidden;
 		width: 100%;
-		padding: var(--spacing-7) 0 var(--spacing-4) var(--spacing-4);
+		padding: var(--spacing-4);
+		padding-top: var(--spacing-6);
 
 		&::before {
 			content: "";
@@ -76,18 +81,16 @@
 			top: 0;
 			left: 0;
 		}
+
+		@media screen and (min-width: grid-size(md)) {
+			padding-top: var(--spacing-7);
+		}
 	}
 
 	&__title {
 		position: relative;
-		font-family: var(--font-family);
-		font-size: 1.25rem;
-		font-weight: var(--font-weight-bold);
+		font-family: inherit;
 		color: var(--color-white);
 		text-shadow: 0 4px 4px rgba(color("black"), 0.25);
-
-		@media screen and (min-width: grid-size(md)) {
-			font-size: 1.5rem;
-		}
 	}
 }
