@@ -533,9 +533,27 @@
 			<x-toast-message type="error" message="Fields marked with an asterisk (*) are required" :visible="true" />
 		</x-section>
 	</x-component-demo>
+
 	<x-component-demo :keys="[ 'lp-footer', 'logo-grid' ]">
 		<x-lp-footer>
-			<x-lp-footer.columns>
+			<x-lp-footer.row>
+				<x-lp-footer.column url="tel:+1(866)241-1602">
+					<x-lp-footer.icon name="call" />
+					<p>Need help planning? Call Us.</p>
+					<h5>+1 (866) 241-1602</h5>
+				</x-lp-footer.column>
+				<x-lp-footer.column url="https://www.quarkexpeditions.com/brochures">
+					<x-lp-footer.icon name="brochure" />
+					<p>Get Quark Expeditions</p>
+					<h5>Arctic & Antarctic Brochures</h5>
+				</x-lp-footer.column>
+				<x-lp-footer.column url="https://www.quarkexpeditions.com/subscribe-to-our-newsletter">
+					<x-lp-footer.icon name="mail" />
+					<p>Sign up for our</p>
+					<h5>Newsletters & Offers</h5>
+				</x-lp-footer.column>
+			</x-lp-footer.row>
+			<x-lp-footer.row>
 				<x-lp-footer.column>
 					<h5>Featured on:</h5>
 					<x-logo-grid alignment="center">
@@ -548,7 +566,7 @@
 					<ul>
 						<li><a href="#">Terms of Use</a></li>
 						<li><a href="#">Privacy Policy</a></li>
-						<li>All rights reserved @ 2023</li>
+						<li>All rights reserved @ 2024</li>
 					</ul>
 				</x-lp-footer.column>
 				<x-lp-footer.column>
@@ -561,12 +579,12 @@
 						<x-lp-footer.social-link type="youtube" url="#" />
 					</x-lp-footer.social-links>
 				</x-lp-footer.column>
-			</x-lp-footer.columns>
+			</x-lp-footer.row>
 		</x-lp-footer>
 	</x-component-demo>
 	<x-component-demo :keys="[ 'lp-footer' ]">
 		<x-lp-footer>
-			<x-lp-footer.columns>
+			<x-lp-footer.row>
 				<x-lp-footer.column>
 					<p>&copy; 2023 Quark Expeditions&reg; Inc.</p>
 					<x-lp-footer.social-links>
@@ -576,7 +594,7 @@
 						<x-lp-footer.social-link type="youtube" url="#" />
 					</x-lp-footer.social-links>
 				</x-lp-footer.column>
-			</x-lp-footer.columns>
+			</x-lp-footer.row>
 		</x-lp-footer>
 	</x-component-demo>
 </x-layout>

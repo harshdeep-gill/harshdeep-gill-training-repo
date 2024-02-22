@@ -24,14 +24,14 @@ import './editor.scss';
 import classnames from 'classnames';
 
 /**
- * Child block - LP Footer column.
+ * Child block - LP Footer row.
  */
-import * as column from './item';
+import * as item from './item';
 
 /**
  * Register child block.
  */
-registerBlockType( column.name, column.settings );
+registerBlockType( item.name, item.settings );
 
 /**
  * Block name.
@@ -66,11 +66,11 @@ export const settings: BlockConfiguration = {
 
 		// eslint-disable-next-line react-hooks/rules-of-hooks
 		const innerBlockProps = useInnerBlocksProps( {
-			className: 'lp-footer__columns',
+			className: 'lp-footer__wrap',
 		}, {
-			allowedBlocks: [ column.name ],
+			allowedBlocks: [ item.name ],
 			template: [
-				[ column.name ],
+				[ item.name ],
 			],
 
 			// @ts-ignore
@@ -80,9 +80,7 @@ export const settings: BlockConfiguration = {
 		// Return the block's markup.
 		return (
 			<footer { ...blockProps } >
-				<div className="lp-footer__wrap">
-					<div { ...innerBlockProps } />
-				</div>
+				<div { ...innerBlockProps } />
 			</footer>
 		);
 	},

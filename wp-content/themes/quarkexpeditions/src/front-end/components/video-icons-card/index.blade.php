@@ -1,12 +1,12 @@
 @props( [
-	'url' => '',
+	'url'      => '',
 	'image_id' => '',
 	'title'    => '',
 	'variant'  => '',
 ] )
 
 @php
-	if ( empty( $slot ) || empty( $url ) ) {
+	if ( empty( $url ) ) {
 		return;
 	}
 
