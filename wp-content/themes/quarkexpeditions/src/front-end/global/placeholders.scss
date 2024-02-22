@@ -136,36 +136,13 @@
 		}
 	}
 
-	&--media {
-		height: 56px;
-		width: 56px;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		padding: 0;
-		background-color: var(--color-black);
-		border: none;
-
-		&:hover {
-			background-color: var(--color-gray-80);
-		}
-
-		&:active {
-			background-color: var(--color-black);
-		}
-
-		path {
-			fill: var(--color-white);
-		}
-	}
-
 	.color-context--dark & {
 
-		&:not(&--media):hover {
+		&:hover {
 			background-color: var(--color-white);
 		}
 
-		&:not(&--media):active {
+		&:active {
 			background-color: var(--color-attention-50);
 		}
 
