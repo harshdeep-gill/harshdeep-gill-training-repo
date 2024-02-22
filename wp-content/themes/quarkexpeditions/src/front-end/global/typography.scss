@@ -3,7 +3,7 @@
  */
 
 body {
-	color: #000;
+	color: var(--color-black);
 	font-family: var(--font-family);
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;

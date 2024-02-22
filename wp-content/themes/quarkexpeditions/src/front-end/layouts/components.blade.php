@@ -534,6 +534,284 @@
 		</x-section>
 	</x-component-demo>
 
+	<x-component-demo :keys="[ 'season-highlights' ]">
+		<x-section title="Best Time to See" title_align="left">
+			<x-season-highlights>
+				<x-season-highlights.season title="October">
+					<x-season-highlights.item title="Penguin Breeding Cycle" :light="true">
+						<x-season-highlights.highlight
+							icon="court"
+							title="Courting"
+						/>
+					</x-season-highlights.item>
+					<x-season-highlights.item title="Highlights">
+						<x-season-highlights.highlight
+							icon="seal"
+							title="Seals"
+						/>
+						<x-season-highlights.highlight
+							icon="elephant-seal"
+							title="Elephant Seals"
+						/>
+						<x-season-highlights.highlight
+							icon="seabird"
+							title="Seabirds"
+						/>
+						<x-season-highlights.highlight
+							icon="glacier"
+							title="Pristine Glaciers"
+						/>
+					</x-season-highlights.item>
+				</x-season-highlights.season>
+			</x-season-highlights>
+		</x-section>
+
+		<x-section title="Best Time to See" title_align="left">
+			<x-season-highlights>
+				<x-season-highlights.season title="October">
+					<x-season-highlights.item title="Penguin Breeding Cycle" :light="true">
+						<x-season-highlights.highlight
+							icon="court"
+							title="Courting"
+						/>
+					</x-season-highlights.item>
+					<x-season-highlights.item title="Highlights">
+						<x-season-highlights.highlight
+							icon="seal"
+							title="Seals"
+						/>
+						<x-season-highlights.highlight
+							icon="elephant-seal"
+							title="Elephant Seals"
+						/>
+						<x-season-highlights.highlight
+							icon="seabird"
+							title="Seabirds"
+						/>
+						<x-season-highlights.highlight
+							icon="glacier"
+							title="Pristine Glaciers"
+						/>
+					</x-season-highlights.item>
+				</x-season-highlights.season>
+				<x-season-highlights.season title="November">
+					<x-season-highlights.item title="Penguin Breeding Cycle" :light="true">
+						<x-season-highlights.highlight
+							icon="nest"
+							title="Nesting"
+						/>
+					</x-season-highlights.item>
+					<x-season-highlights.item title="Highlights">
+						<x-season-highlights.highlight
+							icon="seal"
+							title="Seals"
+						/>
+						<x-season-highlights.highlight
+							icon="elephant-seal"
+							title="Elephant Seals"
+						/>
+						<x-season-highlights.highlight
+							icon="seabird"
+							title="Seabirds"
+						/>
+						<x-season-highlights.highlight
+							icon="glacier"
+							title="Pristine Glaciers"
+						/>
+					</x-season-highlights.item>
+				</x-season-highlights.season>
+			</x-season-highlights>
+		</x-section>
+
+		<x-section title="Best Time to See" title_align="left">
+			<x-season-highlights>
+				<x-season-highlights.season title="October">
+					<x-season-highlights.item title="Penguin Breeding Cycle" :light="true">
+						<x-season-highlights.highlight
+							icon="court"
+							title="Courting"
+						/>
+					</x-season-highlights.item>
+					<x-season-highlights.item title="Highlights">
+						<x-season-highlights.highlight
+							icon="seal"
+							title="Seals"
+						/>
+						<x-season-highlights.highlight
+							icon="elephant-seal"
+							title="Elephant Seals"
+						/>
+						<x-season-highlights.highlight
+							icon="seabird"
+							title="Seabirds"
+						/>
+						<x-season-highlights.highlight
+							icon="glacier"
+							title="Pristine Glaciers"
+						/>
+					</x-season-highlights.item>
+				</x-season-highlights.season>
+				<x-season-highlights.season title="November">
+					<x-season-highlights.item title="Penguin Breeding Cycle" :light="true">
+						<x-season-highlights.highlight
+							icon="nest"
+							title="Nesting"
+						/>
+					</x-season-highlights.item>
+					<x-season-highlights.item title="Highlights">
+						<x-season-highlights.highlight
+							icon="seal"
+							title="Seals"
+						/>
+						<x-season-highlights.highlight
+							icon="elephant-seal"
+							title="Elephant Seals"
+						/>
+						<x-season-highlights.highlight
+							icon="seabird"
+							title="Seabirds"
+						/>
+						<x-season-highlights.highlight
+							icon="glacier"
+							title="Pristine Glaciers"
+						/>
+					</x-season-highlights.item>
+				</x-season-highlights.season>
+				<x-season-highlights.season title="December">
+					<x-season-highlights.item title="Penguin Breeding Cycle" :light="true">
+						<x-season-highlights.highlight
+							icon="hatch"
+							title="Hatching"
+						/>
+					</x-season-highlights.item>
+					<x-season-highlights.item title="Highlights">
+						<x-season-highlights.highlight
+							icon="seal"
+							title="Seals"
+						/>
+						<x-season-highlights.highlight
+							icon="elephant-seal"
+							title="Elephant Seals"
+						/>
+						<x-season-highlights.highlight
+							icon="seabird"
+							title="Seabirds"
+						/>
+						<x-season-highlights.highlight
+							icon="glacier"
+							title="Pristine Glaciers"
+						/>
+					</x-season-highlights.item>
+				</x-season-highlights.season>
+			</x-season-highlights>
+		</x-section>
+
+		<x-section title="Best Time to See" title_align="left">
+			<x-season-highlights>
+				<x-season-highlights.season title="October">
+					<x-season-highlights.item title="Penguin Breeding Cycle" :light="true">
+						<x-season-highlights.highlight
+							icon="court"
+							title="Courting"
+						/>
+					</x-season-highlights.item>
+					<x-season-highlights.item title="Highlights">
+						<x-season-highlights.highlight
+							icon="seal"
+							title="Seals with the longest possible length"
+						/>
+						<x-season-highlights.highlight
+							icon="elephant-seal"
+							title="Elephant Seals"
+						/>
+						<x-season-highlights.highlight
+							icon="seabird"
+							title="Seabirds"
+						/>
+						<x-season-highlights.highlight
+							icon="glacier"
+							title="Pristine Glaciers"
+						/>
+					</x-season-highlights.item>
+				</x-season-highlights.season>
+				<x-season-highlights.season title="November">
+					<x-season-highlights.item title="Penguin Breeding Cycle" :light="true">
+						<x-season-highlights.highlight
+							icon="nest"
+							title="Nesting"
+						/>
+					</x-season-highlights.item>
+					<x-season-highlights.item title="Highlights">
+						<x-season-highlights.highlight
+							icon="seal"
+							title="Seals"
+						/>
+						<x-season-highlights.highlight
+							icon="elephant-seal"
+							title="Elephant Seals"
+						/>
+						<x-season-highlights.highlight
+							icon="seabird"
+							title="Seabirds"
+						/>
+						<x-season-highlights.highlight
+							icon="glacier"
+							title="Pristine Glaciers"
+						/>
+					</x-season-highlights.item>
+				</x-season-highlights.season>
+				<x-season-highlights.season title="December">
+					<x-season-highlights.item title="Penguin Breeding Cycle" :light="true">
+						<x-season-highlights.highlight
+							icon="hatch"
+							title="Hatching"
+						/>
+					</x-season-highlights.item>
+					<x-season-highlights.item title="Highlights">
+						<x-season-highlights.highlight
+							icon="seal"
+							title="Seals"
+						/>
+						<x-season-highlights.highlight
+							icon="elephant-seal"
+							title="Elephant Seals"
+						/>
+						<x-season-highlights.highlight
+							icon="seabird"
+							title="Seabirds"
+						/>
+						<x-season-highlights.highlight
+							icon="glacier"
+							title="Pristine Glaciers"
+						/>
+					</x-season-highlights.item>
+				</x-season-highlights.season>
+				<x-season-highlights.season title="January-March">
+					<x-season-highlights.item title="Penguin Breeding Cycle" :light="true">
+						<x-season-highlights.highlight
+							icon="penguin-chicks"
+							title="Penguin Chicks"
+						/>
+					</x-season-highlights.item>
+					<x-season-highlights.item title="Highlights">
+						<x-season-highlights.highlight
+							icon="seal"
+							title="Seals"
+						/>
+						<x-season-highlights.highlight
+							icon="seabird"
+							title="Seabirds"
+						/>
+						<x-season-highlights.highlight
+							icon="whale"
+							title="Whales"
+						/>
+					</x-season-highlights.item>
+				</x-season-highlights.season>
+			</x-season-highlights>
+		</x-section>
+	</x-component-demo>
+
 	<x-component-demo :keys="[ 'lp-footer', 'logo-grid' ]">
 		<x-lp-footer>
 			<x-lp-footer.row>
@@ -582,6 +860,7 @@
 			</x-lp-footer.row>
 		</x-lp-footer>
 	</x-component-demo>
+
 	<x-component-demo :keys="[ 'lp-footer' ]">
 		<x-lp-footer>
 			<x-lp-footer.row>
