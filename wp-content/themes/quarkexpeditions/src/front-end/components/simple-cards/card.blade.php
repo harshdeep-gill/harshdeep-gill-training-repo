@@ -34,7 +34,7 @@
 
 		<div class="simple-cards__overlay">
 			@if ( ! empty( $title ) )
-				<h5 class="simple-cards__title h5">
+				<h5 class="simple-cards__title">
 					<x-escape :content="$title" />
 				</h5>
 			@endif

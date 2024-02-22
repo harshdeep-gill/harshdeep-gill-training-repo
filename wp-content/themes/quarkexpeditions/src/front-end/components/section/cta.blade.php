@@ -3,7 +3,7 @@
 	'text'       => '',
 	'new_window' => false,
 	'class'      => '',
-	'color' => '',
+	'color'      => '',
 ] )
 
 @php
