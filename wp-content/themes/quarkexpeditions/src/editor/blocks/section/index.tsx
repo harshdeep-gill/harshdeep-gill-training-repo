@@ -24,6 +24,15 @@ import Section from '../../components/section';
  * External dependencies.
  */
 import classnames from 'classnames';
+const { gumponents } = window;
+
+/**
+ * External components.
+ */
+const {
+	LinkButton,
+	ColorPaletteControl,
+} = gumponents.components;
 
 /**
  * Styles.
@@ -34,6 +43,12 @@ import '../../../front-end/components/section/style.scss';
  * Block name.
  */
 export const name: string = 'quark/section';
+
+// Background colors.
+export const colors: { [key: string]: string }[] = [
+	{ name: __( 'Black', 'qrk' ), color: '#232933', slug: 'black' },
+	{ name: __( 'Gray', 'qrk' ), color: '#F5F7FB', slug: 'gray' },
+];
 
 /**
  * Block configuration settings.
@@ -55,9 +70,13 @@ export const settings: BlockConfiguration = {
 		title: {
 			type: 'string',
 		},
+		titleAlignment: {
+			type: 'string',
+			default: 'center',
+		},
 		headingLevel: {
 			type: 'string',
-			default: 'h3',
+			default: '3',
 		},
 		hasDescription: {
 			type: 'boolean',
@@ -73,6 +92,11 @@ export const settings: BlockConfiguration = {
 		hasBackground: {
 			type: 'boolean',
 			default: false,
+		},
+		backgroundColor: {
+			type: 'string',
+			default: 'gray',
+			enum: [ 'black', 'gray' ],
 		},
 		hasPadding: {
 			type: 'boolean',
@@ -101,10 +125,6 @@ export const settings: BlockConfiguration = {
 		// eslint-disable-next-line react-hooks/rules-of-hooks
 		const innerBlocksProps = useInnerBlocksProps( { className: 'section__content' } );
 
-		// Prepare heading class.
-		const largeHeadingClassNames = [ 'h1', 'h2', 'h3' ];
-		const headingClassName = largeHeadingClassNames.includes( attributes.headingLevel ) ? 'h3' : attributes.headingLevel;
-
 		// Return block.
 		return (
 			<>
@@ -116,18 +136,30 @@ export const settings: BlockConfiguration = {
 							onChange={ () => setAttributes( { hasTitle: ! attributes.hasTitle } ) }
 							help={ __( 'Does this section have a title?', 'qrk' ) }
 						/>
-						{ attributes.hasTitle && (
-							<SelectControl
-								label="Heading Level"
-								value={ attributes.headingLevel }
-								options={ [
-									{ label: 'H1', value: 'h1' },
-									{ label: 'H2', value: 'h2' },
-									{ label: 'H3', value: 'h3' },
-								] }
-								onChange={ ( headingLevel ) => setAttributes( { headingLevel } ) }
-							/>
-						) }
+						{ attributes.hasTitle &&
+							<>
+								<SelectControl
+									label="Heading Level"
+									value={ attributes.headingLevel }
+									options={ [
+										{ label: 'H1', value: '1' },
+										{ label: 'H2', value: '2' },
+										{ label: 'H3', value: '3' },
+									] }
+									onChange={ ( headingLevel ) => setAttributes( { headingLevel } ) }
+								/>
+								<SelectControl
+									label={ __( 'Text Alignment', 'qrk' ) }
+									help={ __( 'Select the text alignment for the title.', 'qrk' ) }
+									value={ attributes.titleAlignment }
+									options={ [
+										{ label: 'Center', value: 'center' },
+										{ label: 'Left', value: 'left' },
+									] }
+									onChange={ ( titleAlignment ) => setAttributes( { titleAlignment } ) }
+								/>
+							</>
+						}
 						<ToggleControl
 							label={ __( 'Has Description', 'qrk' ) }
 							checked={ attributes.hasDescription }
@@ -141,10 +173,27 @@ export const settings: BlockConfiguration = {
 							checked={ attributes.hasBackground }
 							onChange={ () => setAttributes( {
 								hasBackground: ! attributes.hasBackground,
-								hasPadding: true,
+								hasPadding: ! attributes.hasBackground,
 							} ) }
 							help={ __( 'Does this section have a background colour?', 'qrk' ) }
 						/>
+						{ attributes.hasBackground &&
+							<ColorPaletteControl
+								label={ __( 'Background Color', 'qrk' ) }
+								help={ __( 'Select the background color.', 'qrk' ) }
+								value={ colors.find( ( color ) => color.slug === attributes.backgroundColor )?.color }
+								colors={ colors.filter( ( color ) => [ 'black', 'gray' ].includes( color.slug ) ) }
+								onChange={ ( backgroundColor: {
+									color: string;
+									slug: string;
+								} ): void => {
+									// Set the background color attribute.
+									if ( backgroundColor.slug && [ 'black', 'gray' ].includes( backgroundColor.slug ) ) {
+										setAttributes( { backgroundColor: backgroundColor.slug } );
+									}
+								} }
+							/>
+						}
 						<ToggleControl
 							label={ __( 'Is Narrow', 'qrk' ) }
 							checked={ attributes.isNarrow }
@@ -153,19 +202,24 @@ export const settings: BlockConfiguration = {
 							} ) }
 							help={ __( 'Does this section have narrow width?', 'qrk' ) }
 						/>
-						{ attributes.hasBackground &&
-							<ToggleControl
-								label={ __( 'Has Padding', 'qrk' ) }
-								checked={ attributes.hasPadding }
-								onChange={ () => setAttributes( { hasPadding: ! attributes.hasPadding } ) }
-								help={ __( 'Does this section have a padding?', 'qrk' ) }
-							/>
-						}
+						<ToggleControl
+							label={ __( 'Has Padding', 'qrk' ) }
+							checked={ attributes.hasPadding }
+							onChange={ () => setAttributes( { hasPadding: ! attributes.hasPadding } ) }
+							help={ __( 'Does this section have a padding?', 'qrk' ) }
+						/>
+						<ToggleControl
+							label={ __( 'Has CTA', 'qrk' ) }
+							checked={ attributes.hasCta }
+							onChange={ () => setAttributes( { hasCta: ! attributes.hasCta } ) }
+							help={ __( 'Does this section have a CTA button?', 'qrk' ) }
+						/>
 					</PanelBody>
 				</InspectorControls>
 				<Section
 					className={ classnames( className, 'section' ) }
 					background={ attributes.hasBackground }
+					backgroundColor={ attributes.backgroundColor }
 					padding={ attributes.hasPadding }
 					seamless={ attributes.hasBackground }
 					narrow={ attributes.isNarrow }
@@ -173,7 +227,7 @@ export const settings: BlockConfiguration = {
 					{ attributes.hasTitle && (
 						<RichText
 							tagName="h2"
-							className={ 'section__title ' + headingClassName }
+							className={ `section__title section__title--${ attributes.titleAlignment } h${ attributes.headingLevel }` }
 							placeholder={ __( 'Write title…', 'qrk' ) }
 							value={ attributes.title }
 							onChange={ ( title ) => setAttributes( { title } ) }
@@ -181,17 +235,26 @@ export const settings: BlockConfiguration = {
 						/>
 					) }
 					{ attributes.hasDescription && (
-						<div className="section__description">
-							<RichText
-								tagName="p"
-								placeholder={ __( 'Write description…', 'qrk' ) }
-								value={ attributes.description }
-								onChange={ ( description ) => setAttributes( { description } ) }
-								allowedFormats={ [] }
+						<RichText
+							tagName="p"
+							className="section__description"
+							placeholder={ __( 'Write description…', 'qrk' ) }
+							value={ attributes.description }
+							onChange={ ( description ) => setAttributes( { description } ) }
+							allowedFormats={ [] }
+						/>
+					) }
+					<div { ...innerBlocksProps } />
+					{ attributes.hasCta && (
+						<div className="section__cta-button">
+							<LinkButton
+								className={ classnames( 'btn' ) }
+								placeholder={ __( 'CTA Button' ) }
+								value={ attributes.ctaButton }
+								onChange={ ( ctaButton: Object ) => setAttributes( { ctaButton } ) }
 							/>
 						</div>
 					) }
-					<div { ...innerBlocksProps } />
 				</Section>
 			</>
 		);

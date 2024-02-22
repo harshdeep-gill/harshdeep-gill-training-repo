@@ -6,6 +6,8 @@ Buttons
 
 .btn {
 
+	@include transition(background-color);
+
 	&__sub-title {
 		text-transform: none;
 		font-size: 12px;

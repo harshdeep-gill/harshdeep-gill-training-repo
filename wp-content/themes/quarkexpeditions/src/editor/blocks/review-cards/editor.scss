@@ -1,0 +1,20 @@
+.review-cards {
+
+	&__slider {
+		display: flex;
+		flex-wrap: wrap;
+		padding-left: var(--typography-spacing);
+	}
+
+	&__card {
+		margin-bottom: var(--typography-spacing);
+		width: 340px;
+	}
+
+	.block-list-appender {
+		position: relative;
+		border: 1px solid var(--color-gray-80);
+		width: 330px;
+		height: 100%;
+	}
+}

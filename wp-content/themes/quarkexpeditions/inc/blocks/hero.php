@@ -50,6 +50,7 @@ function render( ?string $content = null, array $block = [] ): null|string {
 		'title'     => $block['attrs']['title'] ?? '',
 		'sub_title' => $block['attrs']['subTitle'] ?? '',
 		'slot'      => render_block( $block['innerBlocks'][0] ),
+		'immersive' => $block['attrs']['isImmersive'] ?? false,
 	];
 
 	// Image.
