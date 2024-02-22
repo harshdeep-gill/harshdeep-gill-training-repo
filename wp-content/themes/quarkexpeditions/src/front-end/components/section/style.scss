@@ -19,6 +19,14 @@
 		margin-top: 0;
 	}
 
+	> .section {
+		margin-top: var(--spacing-6);
+
+		@media screen and (min-width: grid-size(md)) {
+			margin-top: var(--spacing-7);
+		}
+	}
+
 	&--narrow {
 		max-width: var(--narrow-wrap-width) !important;
 	}
