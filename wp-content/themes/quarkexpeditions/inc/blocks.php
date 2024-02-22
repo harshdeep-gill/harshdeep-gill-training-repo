@@ -38,7 +38,6 @@ function register_blocks(): void {
 		'IconColumns'     => 'icon-columns.php',
 		'Collage'         => 'collage.php',
 		'ReviewCards'     => 'review-cards.php',
-		'IconColumns'     => 'icon-columns.php',
 		'VideoIconsCard'  => 'video-icons-card.php',
 	];
 
