@@ -133,6 +133,7 @@ function register_scripts(): void {
 	wp_register_script( 'glightbox', get_template_directory_uri() . '/dist/vendor/glightbox.js', [], $assets_version, true );
 	wp_register_script( 'tp-slider', get_template_directory_uri() . '/dist/vendor/tpsliderelement.js', [], $assets_version, true );
 	wp_register_script( 'trustpilot', 'https://widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js', [], $assets_version, true );
+	wp_register_script( 'wistia-embed', 'https://fast.wistia.com/assets/external/E-v1.js', [], $assets_version, true );
 
 	// Pass variables to script.
 	wp_localize_script(
@@ -196,31 +197,44 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 		$tags = array_merge(
 			$tags,
 			[
-				'quark-form'           => [
+				'quark-lp-header'        => [
+					'class'  => true,
+					'data-*' => true,
+					'style'  => true,
+				],
+				'quark-form'             => [
 					'class'         => true,
 					'data-action'   => true,
 					'style'         => true,
 					'thank-you-url' => true,
 				],
-				'quark-hero-form'      => [
+				'quark-hero-form'        => [
 					'class' => true,
 				],
-				'quark-inquiry-form'   => [
+				'quark-inquiry-form'     => [
 					'class' => true,
 				],
-				'quark-modal-open'     => [
+				'quark-modal-open'       => [
 					'class'    => true,
 					'modal-id' => true,
 				],
-				'quark-toast-message'  => [
+				'quark-toast-message'    => [
 					'class'   => true,
 					'visible' => true,
 				],
-				'tp-form'              => [
+				'quark-media-lightbox'   => [
+					'class' => true,
+					'name'  => true,
+				],
+				'quark-video-icons-card' => [
+					'class'    => true,
+					'video_id' => true,
+				],
+				'tp-form'                => [
 					'class'          => true,
 					'prevent-submit' => true,
 				],
-				'tp-form-field'        => [
+				'tp-form-field'          => [
 					'class'      => true,
 					'required'   => true,
 					'email'      => true,
@@ -229,62 +243,62 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'error'      => true,
 					'data-*'     => true,
 				],
-				'tp-form-submit'       => [
+				'tp-form-submit'         => [
 					'class'           => true,
 					'submitting-text' => true,
 				],
-				'tp-slider'            => [
+				'tp-slider'              => [
 					'class'           => true,
 					'flexible-height' => true,
 					'swipe'           => true,
 					'infinite'        => true,
 				],
-				'tp-slider-track'      => [
+				'tp-slider-track'        => [
 					'class' => true,
 				],
-				'tp-slider-slides'     => [
+				'tp-slider-slides'       => [
 					'class' => true,
 				],
-				'tp-slider-slide'      => [
+				'tp-slider-slide'        => [
 					'class' => true,
 				],
-				'tp-slider-nav'        => [
+				'tp-slider-nav'          => [
 					'class' => true,
 				],
-				'tp-slider-arrow'      => [
+				'tp-slider-arrow'        => [
 					'class'     => true,
 					'direction' => true,
 				],
-				'tp-slider-nav-item'   => [
+				'tp-slider-nav-item'     => [
 					'class'   => true,
 					'current' => true,
 				],
-				'tp-modal'             => [
+				'tp-modal'               => [
 					'id'                  => true,
 					'class'               => true,
 					'overlay-click-close' => true,
 					'open'                => true,
 				],
-				'tp-modal-content'     => [
+				'tp-modal-content'       => [
 					'class' => true,
 				],
-				'tp-modal-close'       => [
+				'tp-modal-close'         => [
 					'class' => true,
 				],
-				'tp-accordion'         => [
+				'tp-accordion'           => [
 					'class' => true,
 				],
-				'tp-accordion-item'    => [
+				'tp-accordion-item'      => [
 					'class'           => true,
 					'open-by-default' => true,
 				],
-				'tp-accordion-handle'  => [
+				'tp-accordion-handle'    => [
 					'class' => true,
 				],
-				'tp-accordion-content' => [
+				'tp-accordion-content'   => [
 					'class' => true,
 				],
-				'iframe'               => [
+				'iframe'                 => [
 					'class'           => true,
 					'src'             => true,
 					'height'          => true,
@@ -293,7 +307,7 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'allowfullscreen' => true,
 					'title'           => true,
 				],
-				'svg'                  => [
+				'svg'                    => [
 					'id'              => true,
 					'class'           => true,
 					'aria-hidden'     => true,
@@ -303,16 +317,17 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'width'           => true,
 					'height'          => true,
 					'viewbox'         => true,
+					'fill'            => true,
 				],
-				'g'                    => [
+				'g'                      => [
 					'fill'      => true,
 					'fill-rule' => true,
 					'transform' => true,
 				],
-				'title'                => [
+				'title'                  => [
 					'title' => true,
 				],
-				'path'                 => [
+				'path'                   => [
 					'id'             => true,
 					'd'              => true,
 					'fill'           => true,
@@ -324,16 +339,16 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'transform'      => true,
 					'opacity'        => true,
 				],
-				'mask'                 => [
+				'mask'                   => [
 					'id'   => true,
 					'fill' => true,
 				],
-				'polygon'              => [
+				'polygon'                => [
 					'id'     => true,
 					'points' => true,
 					'fill'   => true,
 				],
-				'circle'               => [
+				'circle'                 => [
 					'cx'             => true,
 					'cy'             => true,
 					'r'              => true,
@@ -342,22 +357,22 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'stroke-opacity' => true,
 					'stroke-width'   => true,
 				],
-				'defs'                 => true,
-				'use'                  => [
+				'defs'                   => true,
+				'use'                    => [
 					'xlink:href' => true,
 				],
-				'lineargradient'       => [
+				'lineargradient'         => [
 					'id' => true,
 					'x1' => true,
 					'x2' => true,
 					'y1' => true,
 					'y2' => true,
 				],
-				'stop'                 => [
+				'stop'                   => [
 					'offset'     => true,
 					'stop-color' => true,
 				],
-				'form'                 => [
+				'form'                   => [
 					'id'         => true,
 					'class'      => true,
 					'method'     => true,
@@ -365,18 +380,18 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'novalidate' => true,
 					'data-*'     => true,
 				],
-				'select'               => [
+				'select'                 => [
 					'name'     => true,
 					'class'    => true,
 					'id'       => true,
 					'form'     => true,
 					'multiple' => true,
 				],
-				'option'               => [
+				'option'                 => [
 					'value'    => true,
 					'selected' => true,
 				],
-				'input'                => [
+				'input'                  => [
 					'class'        => true,
 					'type'         => true,
 					'autocomplete' => true,
@@ -386,14 +401,14 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'checked'      => true,
 					'value'        => true,
 				],
-				'textarea'             => [
+				'textarea'               => [
 					'id'          => true,
 					'class'       => true,
 					'placeholder' => true,
 					'name'        => true,
 					'rows'        => true,
 				],
-				'div'                  => [
+				'div'                    => [
 					'id'       => true,
 					'class'    => true,
 					'tabindex' => true,

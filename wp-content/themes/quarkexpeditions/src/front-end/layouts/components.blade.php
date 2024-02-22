@@ -1,4 +1,81 @@
 <x-layout>
+	<x-component-demo :keys="[ 'header', 'hero-immersive' ]">
+		<x-lp-header
+			tc_image_id="18"
+			phone_number="+1-877-585-1235"
+			cta_text="Talk to a Polar Expert"
+		/>
+	</x-component-demo>
+
+	<x-component-demo :keys="[ 'hero', 'hero-immersive' ]">
+		<x-hero :immersive="true">
+			<x-hero.image image_id="29" />
+			<x-hero.content>
+				<x-hero.title title="Antarctic Voyages" />
+				<x-hero.sub-title title="When you venture into the untouched wilds of the Arctic and Antarctic, you need a great team around you. And we have the greatest. You’ll join elite guides trained at Quark Academy — which surpasses every standard imaginable for safety and preparedness in the Polar Regions—and interact directly with world-class polar experts. Our philosophy? The team that explores together, discovers more together." />
+			</x-hero.content>
+			<x-hero.form>
+				<x-inquiry-form
+					form_id="inquiry-form"
+					title="Almost there!"
+					subtitle="We just need a bit more info to help personalize your itinerary."
+					salesforce_object="Webform_Landing_Page__c"
+				/>
+			</x-hero.form>
+		</x-hero>
+	</x-component-demo>
+	<x-component-demo :keys="[ 'review-cards' ]">
+		<x-review-cards>
+			<x-review-cards.card
+				title="Falkland, South Georgia and the Antarctic Circle"
+				author_details="South Georgia and Antarctic Peninsula: Penguin Safari"
+				author="Denise P."
+				rating="4"
+			>
+				<p>Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever. Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever.</p>
+			</x-review-cards.card>
+			<x-review-cards.card
+				title="An incredible trip to Antarctica"
+				author_details="South Georgia and Antarctic Peninsula: Penguin Safari"
+				author="Martine S."
+				rating="5"
+			>
+				<p>The whole experience was great. The World Explorer is a beautiful and very comfortable ship, the food was amazing. And of course the landings and cruising the area was a once in a lifetime experience. Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever.</p>
+			</x-review-cards.card>
+			<x-review-cards.card
+				title="Wonderful Antarctic Trip"
+				author_details="South Georgia and Antarctic Peninsula: Penguin Safari"
+				author="Roger C."
+				rating="4"
+			>
+				<p>Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region.</p>
+			</x-review-cards.card>
+			<x-review-cards.card
+				title="Falkland, South Georgia and Antarctica: Explorers and Kings"
+				author_details="South Georgia and Antarctic Peninsula: Penguin Safari"
+				author="Martine S."
+				rating="4"
+			>
+				<p>The whole experience was great. The World Explorer is a beautiful and very comfortable ship, the food was amazing. And of course the landings and cruising the area was a once in a lifetime experience.</p>
+			</x-review-cards.card>
+			<x-review-cards.card
+				title="9 Day Spitsbergen Polar Bear Safari"
+				author_details="South Georgia and Antarctic Peninsula: Penguin Safari"
+				author="Carolyn T"
+				rating="4"
+			>
+				<p>Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever. Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever.</p>
+			</x-review-cards.card>
+			<x-review-cards.card
+				title="An incredible trip to Antarctica"
+				author_details="South Georgia and Antarctic Peninsula: Penguin Safari"
+				author="Martine S."
+				rating="5"
+			>
+				<p>The whole experience was great. The World Explorer is a beautiful and very comfortable ship, the food was amazing. And of course the landings and cruising the area was a once in a lifetime experience. Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever.</p>
+			</x-review-cards.card>
+		</x-review-cards>
+	</x-component-demo>
 	<x-component-demo :keys="[ 'global', 'color-palette' ]">
 		<x-section title="Color Palette" heading_level="2">
 			<x-global-styles-demo.color-palette />
@@ -362,6 +439,90 @@
 		</x-section>
 	</x-component-demo>
 
+	<x-component-demo :keys="[ 'icon-columns' ]">
+		<x-section title="Icon Columns">
+			<x-icon-columns>
+				<x-icon-columns.column>
+					<x-icon-columns.icon icon="duotone/person-check" />
+					<x-icon-columns.title title="Polar Specialists" />
+				</x-icon-columns.column>
+				<x-icon-columns.column>
+					<x-icon-columns.icon icon="duotone/person-compass" />
+					<x-icon-columns.title title="The Best Expedition Team" />
+				</x-icon-columns.column>
+				<x-icon-columns.column>
+					<x-icon-columns.icon icon="duotone/small-ship" />
+					<x-icon-columns.title title="Small Ship Experience" />
+				</x-icon-columns.column>
+				<x-icon-columns.column>
+					<x-icon-columns.icon icon="duotone/hiker" />
+					<x-icon-columns.title title="The Most Adventure Options" />
+				</x-icon-columns.column>
+				<x-icon-columns.column>
+					<x-icon-columns.icon icon="duotone/stars" />
+					<x-icon-columns.title title="4.7 Customer Rating" />
+				</x-icon-columns.column>
+			</x-icon-columns>
+		</x-section>
+	</x-component-demo>
+
+	<x-component-demo :keys="[ 'video-icons-card' ]">
+		<x-section>
+			<x-video-icons-card
+				url="https://quarkexpeditions.wistia.com/medias/p0k52ec113"
+				image_id="26"
+				title="The Quark Experience"
+				variant="dark"
+			>
+				<x-video-icons-card.icons>
+					<x-icon-columns variant="dark">
+						<x-icon-columns.column>
+							<x-icon-columns.icon icon="duotone/person-check" />
+							<x-icon-columns.title title="Polar Specialists" />
+						</x-icon-columns.column>
+						<x-icon-columns.column>
+							<x-icon-columns.icon icon="duotone/person-compass" />
+							<x-icon-columns.title title="The Best Expedition Team" />
+						</x-icon-columns.column>
+						<x-icon-columns.column>
+							<x-icon-columns.icon icon="duotone/small-ship" />
+							<x-icon-columns.title title="Small Ship Experience" />
+						</x-icon-columns.column>
+						<x-icon-columns.column>
+							<x-icon-columns.icon icon="duotone/hiker" />
+							<x-icon-columns.title title="The Most Adventure Options" />
+						</x-icon-columns.column>
+						<x-icon-columns.column>
+							<x-icon-columns.icon icon="duotone/stars" />
+							<x-icon-columns.title title="4.7 Customer Rating" />
+						</x-icon-columns.column>
+					</x-icon-columns>
+				</x-video-icons-card.icons>
+			</x-video-icons-card>
+		</x-section>
+	</x-component-demo>
+
+	<x-component-demo :keys="[ 'collage' ]">
+		<x-collage name="lp-collage">
+			<x-collage.video
+				size="medium"
+				image_id="33"
+				video_url="https://www.youtube.com/embed/KhVseF5ZD5g"
+				title="Video Caption"
+			/>
+			<x-collage.image size="small" image_id="26" title="Image 2" />
+			<x-collage.image size="small" image_id="32" title="Image 3" />
+			<x-collage.image size="small" image_id="36" title="Image 4" />
+			<x-collage.image size="large" image_id="31" title="Image 5" />
+			<x-collage.image size="medium" image_id="35" title="Image 6" />
+			<x-collage.image size="medium" image_id="30" title="Image 7" />
+			<x-collage.image size="x-large" image_id="34" title="Image 8" />
+			<x-collage.image size="small" image_id="32" />
+			<x-collage.image size="medium" image_id="33" />
+			<x-collage.image size="small" image_id="31" title="Image 11" />
+		</x-collage>
+	</x-component-demo>
+
 	<x-component-demo :keys="[ 'logo-grid', 'feel-safe' ]">
 		<x-section :narrow="true">
 			<h3 style="text-align: center;">Feel safe with a globally accredited company</h3>
@@ -381,9 +542,305 @@
 			<x-toast-message type="error" message="Fields marked with an asterisk (*) are required" :visible="true" />
 		</x-section>
 	</x-component-demo>
+
+	<x-component-demo :keys="[ 'season-highlights' ]">
+		<x-section title="Best Time to See" title_align="left">
+			<x-season-highlights>
+				<x-season-highlights.season title="October">
+					<x-season-highlights.item title="Penguin Breeding Cycle" :light="true">
+						<x-season-highlights.highlight
+							icon="court"
+							title="Courting"
+						/>
+					</x-season-highlights.item>
+					<x-season-highlights.item title="Highlights">
+						<x-season-highlights.highlight
+							icon="seal"
+							title="Seals"
+						/>
+						<x-season-highlights.highlight
+							icon="elephant-seal"
+							title="Elephant Seals"
+						/>
+						<x-season-highlights.highlight
+							icon="seabird"
+							title="Seabirds"
+						/>
+						<x-season-highlights.highlight
+							icon="glacier"
+							title="Pristine Glaciers"
+						/>
+					</x-season-highlights.item>
+				</x-season-highlights.season>
+			</x-season-highlights>
+		</x-section>
+
+		<x-section title="Best Time to See" title_align="left">
+			<x-season-highlights>
+				<x-season-highlights.season title="October">
+					<x-season-highlights.item title="Penguin Breeding Cycle" :light="true">
+						<x-season-highlights.highlight
+							icon="court"
+							title="Courting"
+						/>
+					</x-season-highlights.item>
+					<x-season-highlights.item title="Highlights">
+						<x-season-highlights.highlight
+							icon="seal"
+							title="Seals"
+						/>
+						<x-season-highlights.highlight
+							icon="elephant-seal"
+							title="Elephant Seals"
+						/>
+						<x-season-highlights.highlight
+							icon="seabird"
+							title="Seabirds"
+						/>
+						<x-season-highlights.highlight
+							icon="glacier"
+							title="Pristine Glaciers"
+						/>
+					</x-season-highlights.item>
+				</x-season-highlights.season>
+				<x-season-highlights.season title="November">
+					<x-season-highlights.item title="Penguin Breeding Cycle" :light="true">
+						<x-season-highlights.highlight
+							icon="nest"
+							title="Nesting"
+						/>
+					</x-season-highlights.item>
+					<x-season-highlights.item title="Highlights">
+						<x-season-highlights.highlight
+							icon="seal"
+							title="Seals"
+						/>
+						<x-season-highlights.highlight
+							icon="elephant-seal"
+							title="Elephant Seals"
+						/>
+						<x-season-highlights.highlight
+							icon="seabird"
+							title="Seabirds"
+						/>
+						<x-season-highlights.highlight
+							icon="glacier"
+							title="Pristine Glaciers"
+						/>
+					</x-season-highlights.item>
+				</x-season-highlights.season>
+			</x-season-highlights>
+		</x-section>
+
+		<x-section title="Best Time to See" title_align="left">
+			<x-season-highlights>
+				<x-season-highlights.season title="October">
+					<x-season-highlights.item title="Penguin Breeding Cycle" :light="true">
+						<x-season-highlights.highlight
+							icon="court"
+							title="Courting"
+						/>
+					</x-season-highlights.item>
+					<x-season-highlights.item title="Highlights">
+						<x-season-highlights.highlight
+							icon="seal"
+							title="Seals"
+						/>
+						<x-season-highlights.highlight
+							icon="elephant-seal"
+							title="Elephant Seals"
+						/>
+						<x-season-highlights.highlight
+							icon="seabird"
+							title="Seabirds"
+						/>
+						<x-season-highlights.highlight
+							icon="glacier"
+							title="Pristine Glaciers"
+						/>
+					</x-season-highlights.item>
+				</x-season-highlights.season>
+				<x-season-highlights.season title="November">
+					<x-season-highlights.item title="Penguin Breeding Cycle" :light="true">
+						<x-season-highlights.highlight
+							icon="nest"
+							title="Nesting"
+						/>
+					</x-season-highlights.item>
+					<x-season-highlights.item title="Highlights">
+						<x-season-highlights.highlight
+							icon="seal"
+							title="Seals"
+						/>
+						<x-season-highlights.highlight
+							icon="elephant-seal"
+							title="Elephant Seals"
+						/>
+						<x-season-highlights.highlight
+							icon="seabird"
+							title="Seabirds"
+						/>
+						<x-season-highlights.highlight
+							icon="glacier"
+							title="Pristine Glaciers"
+						/>
+					</x-season-highlights.item>
+				</x-season-highlights.season>
+				<x-season-highlights.season title="December">
+					<x-season-highlights.item title="Penguin Breeding Cycle" :light="true">
+						<x-season-highlights.highlight
+							icon="hatch"
+							title="Hatching"
+						/>
+					</x-season-highlights.item>
+					<x-season-highlights.item title="Highlights">
+						<x-season-highlights.highlight
+							icon="seal"
+							title="Seals"
+						/>
+						<x-season-highlights.highlight
+							icon="elephant-seal"
+							title="Elephant Seals"
+						/>
+						<x-season-highlights.highlight
+							icon="seabird"
+							title="Seabirds"
+						/>
+						<x-season-highlights.highlight
+							icon="glacier"
+							title="Pristine Glaciers"
+						/>
+					</x-season-highlights.item>
+				</x-season-highlights.season>
+			</x-season-highlights>
+		</x-section>
+
+		<x-section title="Best Time to See" title_align="left">
+			<x-season-highlights>
+				<x-season-highlights.season title="October">
+					<x-season-highlights.item title="Penguin Breeding Cycle" :light="true">
+						<x-season-highlights.highlight
+							icon="court"
+							title="Courting"
+						/>
+					</x-season-highlights.item>
+					<x-season-highlights.item title="Highlights">
+						<x-season-highlights.highlight
+							icon="seal"
+							title="Seals with the longest possible length"
+						/>
+						<x-season-highlights.highlight
+							icon="elephant-seal"
+							title="Elephant Seals"
+						/>
+						<x-season-highlights.highlight
+							icon="seabird"
+							title="Seabirds"
+						/>
+						<x-season-highlights.highlight
+							icon="glacier"
+							title="Pristine Glaciers"
+						/>
+					</x-season-highlights.item>
+				</x-season-highlights.season>
+				<x-season-highlights.season title="November">
+					<x-season-highlights.item title="Penguin Breeding Cycle" :light="true">
+						<x-season-highlights.highlight
+							icon="nest"
+							title="Nesting"
+						/>
+					</x-season-highlights.item>
+					<x-season-highlights.item title="Highlights">
+						<x-season-highlights.highlight
+							icon="seal"
+							title="Seals"
+						/>
+						<x-season-highlights.highlight
+							icon="elephant-seal"
+							title="Elephant Seals"
+						/>
+						<x-season-highlights.highlight
+							icon="seabird"
+							title="Seabirds"
+						/>
+						<x-season-highlights.highlight
+							icon="glacier"
+							title="Pristine Glaciers"
+						/>
+					</x-season-highlights.item>
+				</x-season-highlights.season>
+				<x-season-highlights.season title="December">
+					<x-season-highlights.item title="Penguin Breeding Cycle" :light="true">
+						<x-season-highlights.highlight
+							icon="hatch"
+							title="Hatching"
+						/>
+					</x-season-highlights.item>
+					<x-season-highlights.item title="Highlights">
+						<x-season-highlights.highlight
+							icon="seal"
+							title="Seals"
+						/>
+						<x-season-highlights.highlight
+							icon="elephant-seal"
+							title="Elephant Seals"
+						/>
+						<x-season-highlights.highlight
+							icon="seabird"
+							title="Seabirds"
+						/>
+						<x-season-highlights.highlight
+							icon="glacier"
+							title="Pristine Glaciers"
+						/>
+					</x-season-highlights.item>
+				</x-season-highlights.season>
+				<x-season-highlights.season title="January-March">
+					<x-season-highlights.item title="Penguin Breeding Cycle" :light="true">
+						<x-season-highlights.highlight
+							icon="penguin-chicks"
+							title="Penguin Chicks"
+						/>
+					</x-season-highlights.item>
+					<x-season-highlights.item title="Highlights">
+						<x-season-highlights.highlight
+							icon="seal"
+							title="Seals"
+						/>
+						<x-season-highlights.highlight
+							icon="seabird"
+							title="Seabirds"
+						/>
+						<x-season-highlights.highlight
+							icon="whale"
+							title="Whales"
+						/>
+					</x-season-highlights.item>
+				</x-season-highlights.season>
+			</x-season-highlights>
+		</x-section>
+	</x-component-demo>
+
 	<x-component-demo :keys="[ 'lp-footer', 'logo-grid' ]">
 		<x-lp-footer>
-			<x-lp-footer.columns>
+			<x-lp-footer.row>
+				<x-lp-footer.column url="tel:+1(866)241-1602">
+					<x-lp-footer.icon name="call" />
+					<p>Need help planning? Call Us.</p>
+					<h5>+1 (866) 241-1602</h5>
+				</x-lp-footer.column>
+				<x-lp-footer.column url="https://www.quarkexpeditions.com/brochures">
+					<x-lp-footer.icon name="brochure" />
+					<p>Get Quark Expeditions</p>
+					<h5>Arctic & Antarctic Brochures</h5>
+				</x-lp-footer.column>
+				<x-lp-footer.column url="https://www.quarkexpeditions.com/subscribe-to-our-newsletter">
+					<x-lp-footer.icon name="mail" />
+					<p>Sign up for our</p>
+					<h5>Newsletters & Offers</h5>
+				</x-lp-footer.column>
+			</x-lp-footer.row>
+			<x-lp-footer.row>
 				<x-lp-footer.column>
 					<h5>Featured on:</h5>
 					<x-logo-grid alignment="center">
@@ -396,7 +853,7 @@
 					<ul>
 						<li><a href="#">Terms of Use</a></li>
 						<li><a href="#">Privacy Policy</a></li>
-						<li>All rights reserved @ 2023</li>
+						<li>All rights reserved @ 2024</li>
 					</ul>
 				</x-lp-footer.column>
 				<x-lp-footer.column>
@@ -409,12 +866,13 @@
 						<x-lp-footer.social-link type="youtube" url="#" />
 					</x-lp-footer.social-links>
 				</x-lp-footer.column>
-			</x-lp-footer.columns>
+			</x-lp-footer.row>
 		</x-lp-footer>
 	</x-component-demo>
+
 	<x-component-demo :keys="[ 'lp-footer' ]">
 		<x-lp-footer>
-			<x-lp-footer.columns>
+			<x-lp-footer.row>
 				<x-lp-footer.column>
 					<p>&copy; 2023 Quark Expeditions&reg; Inc.</p>
 					<x-lp-footer.social-links>
@@ -424,7 +882,7 @@
 						<x-lp-footer.social-link type="youtube" url="#" />
 					</x-lp-footer.social-links>
 				</x-lp-footer.column>
-			</x-lp-footer.columns>
+			</x-lp-footer.row>
 		</x-lp-footer>
 	</x-component-demo>
 </x-layout>
