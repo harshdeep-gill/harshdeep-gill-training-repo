@@ -1,14 +1,16 @@
 @props( [
-	'title'         => '',
-	'heading_level' => '3',
-	'class'         => '',
-	'id'            => '',
-	'seamless'      => false,
-	'full_width'    => false,
-	'narrow'        => false,
-	'background'    => false,
-	'padding'       => false,
-	'wrap'          => false,
+	'title'            => '',
+	'title_align'      => '',
+	'heading_level'    => '3',
+	'class'            => '',
+	'id'               => '',
+	'seamless'         => false,
+	'full_width'       => false,
+	'narrow'           => false,
+	'background'       => false,
+	'background_color' => 'gray',
+	'padding'          => false,
+	'wrap'             => false,
 ] )
 
 @php
@@ -41,6 +43,15 @@
 		$classes[] = 'section--seamless-with-padding';
 		$classes[] = 'full-width';
 		$wrap = true;
+
+		// Add background color class, if set.
+		if ( ! empty( $background_color ) ) {
+			$background_colors = [ 'black', 'gray' ];
+
+			if ( in_array( $background_color, $background_colors, true ) ) {
+				$classes[] = sprintf( 'section--has-background-%s', $background_color );
+			}
+		}
 	}
 
 	if ( ! empty( $padding ) && true === boolval( $padding ) ) {
@@ -55,6 +66,10 @@
 
 	if ( ! empty( $heading_level ) ) {
 		$section_title_classes[] = sprintf( 'h%s', $heading_level );
+	}
+
+	if ( ! empty( $title_align ) && 'left' === $title_align ) {
+		$section_title_classes[] = 'section__title--left';
 	}
 @endphp
 
