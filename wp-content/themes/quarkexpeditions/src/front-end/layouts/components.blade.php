@@ -137,8 +137,8 @@
 				</div>
 			</div>
 			<div style="display: flex; width: 100%; gap: 16px;" class="typography-spacing">
-				<x-button class="btn--media"><x-svg name="play" /></x-button>
-				<x-button class="btn--media"><x-svg name="pause" /></x-button>
+				<x-button variant="media"><x-svg name="play" /></x-button>
+				<x-button variant="media"><x-svg name="pause" /></x-button>
 			</div>
 
 		</x-section>
