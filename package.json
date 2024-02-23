@@ -59,6 +59,7 @@
   },
   "dependencies": {
     "@travelopia/web-components": "^0.5.11",
+    "glightbox": "^3.2.0",
     "normalize.css": "^8.0.1"
   }
 }
