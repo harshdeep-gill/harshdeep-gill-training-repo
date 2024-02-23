@@ -52,7 +52,7 @@
 	@media screen and (min-width: grid-size(lg)) {
 		--h1-font-size: 56px;
 		--h1-line-height: 72px;
-		--h2-font-size: 48px;
+		--h2-font-size: 40px;
 		--h2-line-height: 48px;
 		--h3-font-size: 32px;
 		--h3-line-height: 40px;
@@ -111,10 +111,15 @@
 	/**
 	 * Forms.
 	 */
-	--buttons-border-radius: 8px;
-	--forms-border-radius: 8px;
+	--buttons-border-radius: var(--border-radius);
+	--forms-border-radius: var(--border-radius);
 	--forms-border-color: var(--color-gray-20);
 	--forms-field-spacing: var(--spacing-4);
+
+	/**
+	 * Images
+	 */
+	--border-radius-images: var(--border-radius);
 
 	/**
 	 * Transitions

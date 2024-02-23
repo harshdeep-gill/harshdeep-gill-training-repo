@@ -1,12 +1,12 @@
 @props( [
-	'url' => '',
+	'url'      => '',
 	'image_id' => '',
 	'title'    => '',
 	'variant'  => '',
 ] )
 
 @php
-	if ( empty( $slot ) || empty( $url ) ) {
+	if ( empty( $url ) ) {
 		return;
 	}
 
@@ -65,7 +65,7 @@
 				<h2 class="video-icons-card__title"><x-escape :content="$title"/></h2>
 			@endif
 
-			<x-button type="button" class="btn--media video-icons-card__button"><x-svg name="play"/></x-button>
+			<x-button type="button" variant="media" class="video-icons-card__button"><x-svg name="play"/></x-button>
 
 			{!! $slot !!}
 		</div>

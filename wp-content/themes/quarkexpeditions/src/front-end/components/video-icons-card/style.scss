@@ -61,7 +61,6 @@
 
 	&__title,
 	&__icons {
-		z-index: 3;
 		position: relative;
 		margin: 0;
 		color: var(--color-black);
@@ -85,9 +84,14 @@
 		position: absolute;
 		inset: 0;
 		z-index: 1;
+		width: 100%;
 	}
 
 	&__button {
-		align-self: center;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		z-index: 3;
+		transform: translate(-50%, -50%);
 	}
 }

@@ -226,6 +226,10 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'class' => true,
 					'name'  => true,
 				],
+				'quark-video-icons-card'   => [
+					'class'    => true,
+					'video_id' => true,
+				],
 				'tp-form'                  => [
 					'class'          => true,
 					'prevent-submit' => true,
@@ -313,6 +317,7 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'width'           => true,
 					'height'          => true,
 					'viewbox'         => true,
+					'fill'            => true,
 				],
 				'g'                        => [
 					'fill'      => true,
