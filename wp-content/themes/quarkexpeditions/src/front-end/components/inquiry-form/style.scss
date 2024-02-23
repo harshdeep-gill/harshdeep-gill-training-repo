@@ -81,4 +81,8 @@
 			padding-bottom: var(--spacing-5);
 		}
 	}
+
+	.modal__modal-open {
+		display: contents;
+	}
 }

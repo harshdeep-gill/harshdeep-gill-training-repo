@@ -126,13 +126,14 @@
 				margin-inline: 0;
 			}
 
-			#{$self}__form {
+			#{$self}__form-modal-cta {
 				margin-top: var(--spacing-6);
 			}
 		}
 	}
 
-	&__form {
+	&__form,
+	&__form-modal-cta {
 		min-width: 310px;
 		max-width: 350px;
 		color: var(--color-white);
@@ -160,21 +161,18 @@
 	}
 
 	&__form-modal-cta {
-		background: none;
 		padding: 0;
+		background-color: transparent;
 
 		.btn {
 			text-transform: none;
 			font-size: var(--font-size);
 			line-height: var(--line-height);
+			width: 100%;
 
 			@media screen and (min-width: grid-size(lg)) {
 				width: auto;
 			}
-		}
-
-		.form-field--buttons {
-			margin-top: 0;
 		}
 	}
 
