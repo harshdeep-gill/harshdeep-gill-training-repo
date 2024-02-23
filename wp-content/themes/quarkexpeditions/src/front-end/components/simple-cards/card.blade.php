@@ -33,9 +33,9 @@
 		</figure>
 
 		@if ( ! empty( $title ) )
-			<h5 class="simple-cards__title">
+			<h3 class="simple-cards__title h5">
 				<x-escape :content="$title" />
-			</h5>
+			</h3>
 		@endif
 	</x-maybe-link>
 </article>
