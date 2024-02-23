@@ -92,18 +92,24 @@
 		color: var(--color-white);
 	}
 
-	&--outline:not(:hover) {
+	&--outline:not(:hover),
+	&--color-black:hover {
 		background-color: transparent;
 		color: var(--color-black);
+		border-color: var(--color-black);
 	}
 
-	&--outline:active {
+	&--outline:active,
+	&--color-black:active {
 		background-color: var(--color-gray-80);
+		color: var(--color-white);
 	}
 
 	&--size-big {
 		padding-top: 16px;
 		padding-bottom: 16px;
+		font-size: var(--font-size);
+		line-height: var(--line-height);
 	}
 
 	&--media {
@@ -115,6 +121,7 @@
 		padding: 0;
 		background-color: var(--color-black);
 		border: none;
+		color: var(--color-white);
 
 		&:hover {
 			background-color: var(--color-gray-80);
@@ -124,34 +131,47 @@
 			background-color: var(--color-black);
 		}
 
-		path {
-			fill: var(--color-white);
+		svg {
+			max-width: 18px;
 		}
 	}
 
 	.color-context--dark & {
 
-		&:not(&--media):hover {
+		&:hover {
 			background-color: var(--color-white);
 		}
 
-		&:not(&--media):active {
+		&:active {
 			background-color: var(--color-attention-50);
 		}
 
-		&--outline:not(:hover) {
+		&--media:hover {
+			background-color: var(--color-gray-80);
+		}
+
+		&--media:active {
+			background-color: var(--color-black);
+		}
+
+		&--color-black:not(:hover),
+		&--outline:hover {
 			background-color: var(--color-white);
 			color: var(--color-black);
 		}
 
-		&--outline:hover {
+		&--color-black:hover,
+		&--outline:not(:hover) {
 			background-color: transparent;
 			border-color: var(--color-white);
 			color: var(--color-white);
 		}
 
-		&--outline:active {
+		&--outline:active,
+		&--color-black:active {
 			background-color: var(--color-gray-80);
+			border-color: var(--color-white);
+			color: var(--color-white);
 		}
 	}
 }
