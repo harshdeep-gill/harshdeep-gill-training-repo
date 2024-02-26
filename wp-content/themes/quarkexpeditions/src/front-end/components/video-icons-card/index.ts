@@ -13,6 +13,7 @@ export default class QuarkVideoIconsCardElement extends HTMLElement {
 	private overlay: HTMLElement | null;
 	private thumbnail: HTMLElement | null;
 	private videoPlayer: WistiaVideo | null;
+	private videoIntersectionObserver: IntersectionObserver | null;
 
 	/**
 	 * Constructor
@@ -25,6 +26,7 @@ export default class QuarkVideoIconsCardElement extends HTMLElement {
 		this.overlay = this.querySelector( '.video-icons-card__overlay' );
 		this.thumbnail = this.querySelector( '.video-icons-card__thumbnail' );
 		this.videoPlayer = null;
+		this.videoIntersectionObserver = null;
 	}
 
 	/**
@@ -40,6 +42,17 @@ export default class QuarkVideoIconsCardElement extends HTMLElement {
 
 		// Setup events.
 		this.overlay?.addEventListener( 'click', this.start.bind( this ) );
+
+		// Intersection observer.
+		this.videoIntersectionObserver = new IntersectionObserver(
+			this.intersectionObserverCallback.bind( this ),
+			{
+				root: document.body,
+				threshold: 0,
+				rootMargin: '-150px 0px 0px 0px', // -150px to approximately account for the sticky header.
+			}
+		);
+		this.videoIntersectionObserver.observe( this );
 	}
 
 	/**
@@ -50,7 +63,7 @@ export default class QuarkVideoIconsCardElement extends HTMLElement {
 	setupVideoPlayer( videoPlayer: WistiaVideo ): void {
 		// Assign video player.
 		this.videoPlayer = videoPlayer;
-		this.videoPlayer?.bind( 'pause', this.pause.bind( this ) );
+		this.videoPlayer?.bind( 'pause', this.onPause.bind( this ) );
 	}
 
 	/**
@@ -74,7 +87,7 @@ export default class QuarkVideoIconsCardElement extends HTMLElement {
 	/**
 	 * Event: Runs on video pause.
 	 */
-	pause() {
+	onPause() {
 		// Display the overlay.
 		if ( this.overlay ) {
 			this.overlay.style.display = 'flex';
@@ -84,6 +97,21 @@ export default class QuarkVideoIconsCardElement extends HTMLElement {
 		if ( this.thumbnail ) {
 			this.thumbnail.style.display = 'flex';
 		}
+	}
+
+	/**
+	 * Callback for intersection observer.
+	 *
+	 * @param { IntersectionObserverEntry[] } entries
+	 */
+	intersectionObserverCallback( entries: IntersectionObserverEntry[] ): void {
+		// Loop through entries.
+		entries.forEach( ( entry ) => {
+			// Check if video is visible.
+			if ( ! entry.isIntersecting ) {
+				this.videoPlayer?.pause();
+			}
+		} );
 	}
 }
 
