@@ -126,7 +126,8 @@
 				margin-inline: 0;
 			}
 
-			#{$self}__form-modal-cta {
+			#{$self}__form-modal-cta,
+			#{$self}__form {
 				margin-top: var(--spacing-6);
 			}
 		}
