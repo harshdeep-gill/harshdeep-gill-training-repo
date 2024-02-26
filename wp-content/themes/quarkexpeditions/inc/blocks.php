@@ -39,6 +39,7 @@ function register_blocks(): void {
 		'Collage'         => 'collage.php',
 		'ReviewCards'     => 'review-cards.php',
 		'VideoIconsCard'  => 'video-icons-card.php',
+		'SimpleCards'     => 'simple-cards.php',
 	];
 
 	// Register blocks.
