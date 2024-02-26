@@ -35,6 +35,7 @@
 			:url="$cta_button['url']"
 			:new_window="$cta_button['new_window']"
 			:text="$cta_button['text']"
+			:color="$cta_button['color']"
 		/>
 	@endif
 </x-section>

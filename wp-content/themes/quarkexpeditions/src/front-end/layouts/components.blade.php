@@ -513,6 +513,20 @@
 		</x-section>
 	</x-component-demo>
 
+	<x-component-demo :keys="['simple-cards']">
+		<x-section title="Off Ship Adventure" :background="true" background_color="black" title_align="left">
+			<x-simple-cards>
+				<x-simple-cards.card image_id="36" title="Camping" url="#" />
+				<x-simple-cards.card image_id="34" title="Flightseeing" />
+				<x-simple-cards.card image_id="31" title="Heli-hiking" url="#" />
+				<x-simple-cards.card image_id="32" title="Sea Kayaking" url="#" />
+				<x-simple-cards.card image_id="33" title="Zodiac Cruising" url="#" />
+				<x-simple-cards.card image_id="35" title="Wildlife Photography" url="#" />
+			</x-simple-cards>
+			<x-section.cta class="color-context--dark" text="Learn More" url="#" color="black" />
+		</x-section>
+	</x-component-demo>
+
 	<x-component-demo :keys="[ 'collage' ]">
 		<x-collage name="lp-collage">
 			<x-collage.video

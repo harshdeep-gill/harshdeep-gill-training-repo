@@ -84,6 +84,7 @@ function render( ?string $content = null, array $block = [] ): null|string {
 			'text'       => $block['attrs']['ctaButton']['text'] ?? '',
 			'new_window' => $block['attrs']['ctaButton']['newWindow'] ?? '',
 			'class'      => '',
+			'color'      => '',
 		];
 
 		// If background is dark, then add dark context class.
@@ -92,6 +93,7 @@ function render( ?string $content = null, array $block = [] ): null|string {
 			( ! empty( $block['attrs']['backgroundColor'] ) && 'black' === $block['attrs']['backgroundColor'] )
 		) {
 			$attributes['cta_button']['class'] = 'color-context--dark';
+			$attributes['cta_button']['color'] = 'black';
 		}
 	}
 
