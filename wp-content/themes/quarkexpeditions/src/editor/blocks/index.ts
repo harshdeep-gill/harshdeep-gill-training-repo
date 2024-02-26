@@ -36,7 +36,6 @@ const blocks = [
 	iconColumns,
 	collage,
 	reviewCards,
-	iconColumns,
 	videoIconsCard,
 ];
 
