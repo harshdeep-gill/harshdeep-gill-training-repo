@@ -246,10 +246,12 @@ export const settings: BlockConfiguration = {
 					) }
 					<div { ...innerBlocksProps } />
 					{ attributes.hasCta && (
-						<div className="section__cta-button">
+						<div className={
+							`section__cta-button ${ 'black' === attributes.backgroundColor && attributes.hasBackground ? 'color-context--dark' : '' }`
+						}>
 							<LinkButton
-								className={ classnames( 'btn' ) }
-								placeholder={ __( 'CTA Button' ) }
+								className={ classnames( 'btn', 'btn--color-black' ) }
+								placeholder={ __( 'Enter CTA Text' ) }
 								value={ attributes.ctaButton }
 								onChange={ ( ctaButton: Object ) => setAttributes( { ctaButton } ) }
 							/>

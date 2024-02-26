@@ -24,7 +24,6 @@
 		&,
 		+ #{$self}__description {
 			text-align: left;
-			max-width: none;
 		}
 	}
 
@@ -38,7 +37,8 @@
 		&-black {
 			background-color: var(--color-black);
 
-			#{$self}__title {
+			#{$self}__title,
+			#{$self}__description {
 				color: var(--color-white);
 			}
 		}
@@ -66,6 +66,7 @@
 		margin-top: var(--spacing-6);
 
 		.btn {
+			min-width: 200px;
 			padding-block: var(--spacing-4);
 
 			@media screen and (max-width: grid-size(sm)) {
