@@ -181,11 +181,10 @@
 	&__content {
 		display: flex;
 		flex-direction: column;
-		margin-inline: auto;
 		text-align: center;
 		z-index: 2;
 		gap: var(--spacing-2);
-		margin-right: 0;
+		margin-inline: 0;
 
 		@media screen and (min-width: grid-size(md)) {
 			margin-right: var(--spacing-7);
