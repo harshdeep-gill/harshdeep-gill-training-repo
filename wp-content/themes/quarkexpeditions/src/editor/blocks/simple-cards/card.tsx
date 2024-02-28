@@ -68,16 +68,16 @@ export const settings: BlockConfiguration = {
 				<InspectorControls>
 					<PanelBody title={ __( 'Simple Card Options', 'qrk' ) }>
 						<ImageControl
-							label={ __( 'Background Image', 'qrk' ) }
+							label={ __( 'Image', 'qrk' ) }
 							value={ attributes.image ? attributes.image.id : null }
-							size="large"
-							help={ __( 'Select an image for the card background.', 'qrk' ) }
+							size="medium"
+							help={ __( 'Select an image for the card', 'qrk' ) }
 							onChange={ ( image: object ) => setAttributes( { image } ) }
 						/>
 						<LinkControl
 							label={ __( 'Select URL', 'qrk' ) }
 							value={ attributes.url }
-							help={ __( 'Enter an URL', 'qrk' ) }
+							help={ __( 'Enter an URL for this card', 'qrk' ) }
 							onChange={ ( url: object ) => setAttributes( { url } ) }
 						/>
 					</PanelBody>
@@ -87,8 +87,8 @@ export const settings: BlockConfiguration = {
 						<Img value={ attributes.image } />
 					</figure>
 					<RichText
-						tagName="h5"
-						className="simple-cards__title"
+						tagName="h3"
+						className="simple-cards__title h5"
 						placeholder={ __( 'Write title…', 'qrk' ) }
 						value={ attributes.title }
 						onChange={ ( title: string ) => setAttributes( { title } ) }
