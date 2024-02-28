@@ -14,10 +14,6 @@ import {
  */
 import classnames from 'classnames';
 
-/**
- * Internal dependencies.
- */
-import Section from '../../components/section';
 
 /**
  * Styles.
