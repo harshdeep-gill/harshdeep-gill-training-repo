@@ -43,13 +43,24 @@ export default class QuarkVideoIconsCardElement extends HTMLElement {
 		// Setup events.
 		this.overlay?.addEventListener( 'click', this.start.bind( this ) );
 
+		// Default to 0px.
+		let rootMarginTop = '0px';
+
+		// Sticky header.
+		const stickyHeader = document.querySelector( '.lp-header' ) as HTMLElement;
+
+		// Check if sticky header exists.
+		if ( stickyHeader ) {
+			rootMarginTop = `-${ getComputedStyle( stickyHeader ).height }`;
+		}
+
 		// Intersection observer.
 		this.videoIntersectionObserver = new IntersectionObserver(
 			this.intersectionObserverCallback.bind( this ),
 			{
 				root: document.body,
 				threshold: 0,
-				rootMargin: '-150px 0px 0px 0px', // -150px to approximately account for the sticky header.
+				rootMargin: `${ rootMarginTop } 0px 0px 0px`,
 			}
 		);
 		this.videoIntersectionObserver.observe( this );
