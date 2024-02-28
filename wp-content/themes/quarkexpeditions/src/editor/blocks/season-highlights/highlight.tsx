@@ -87,7 +87,7 @@ export const settings: BlockConfiguration = {
 					<PanelBody title={ __( 'Season Highlight Options', 'qrk' ) }>
 						<SelectControl
 							label={ __( 'Icon', 'qrk' ) }
-							help={ __( 'Select the icon.', 'qrk' ) }
+							help={ __( 'Select the icon for this highlight', 'qrk' ) }
 							value={ attributes.icon }
 							options={ [
 								{ label: __( 'Select Icon…', 'qrk' ), value: '' },
