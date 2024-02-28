@@ -83,6 +83,7 @@ function render( ?string $content = null, array $block = [] ): null|string {
 			$season_item['title'] = $season_item_block['attrs']['title'];
 			$season_item['light'] = $season_item_block['attrs']['hasLightBackground'] ?? false;
 
+			// Loop through highlights.
 			foreach ( $season_item_block['innerBlocks'] as $highlight_block ) {
 				if ( 'quark/season-highlights-highlight' !== $highlight_block['blockName'] ) {
 					continue;

@@ -48,7 +48,7 @@ export const settings: BlockConfiguration = {
 		title: {
 			type: 'string',
 			default: '',
-		}
+		},
 	},
 	supports: {
 		alignWide: false,
@@ -75,12 +75,12 @@ export const settings: BlockConfiguration = {
 		return (
 			<div { ...blockProps } >
 				<RichText
-				tagName="h4"
-				className="season-highlights__season-title"
-				placeholder={ __( 'Write Season Title…', 'qrk' ) }
-				value={ attributes.title }
-				onChange={ ( title: string ) => setAttributes( { title } ) }
-				allowedFormats={ [] }
+					tagName="h4"
+					className="season-highlights__season-title"
+					placeholder={ __( 'Write Season Title…', 'qrk' ) }
+					value={ attributes.title }
+					onChange={ ( title: string ) => setAttributes( { title } ) }
+					allowedFormats={ [] }
 				/>
 				<div { ...innerBlockProps } />
 			</div>

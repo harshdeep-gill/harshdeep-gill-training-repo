@@ -57,7 +57,7 @@ export const settings: BlockConfiguration = {
 		hasLightBackground: {
 			type: 'boolean',
 			default: false,
-		}
+		},
 	},
 	supports: {
 		alignWide: false,
@@ -76,7 +76,7 @@ export const settings: BlockConfiguration = {
 		} );
 
 		// eslint-disable-next-line react-hooks/rules-of-hooks
-		const innerBlockProps = useInnerBlocksProps( { ...blockProps}, {
+		const innerBlockProps = useInnerBlocksProps( { ...blockProps }, {
 			allowedBlocks: [ highlight.name ],
 			template: [
 				[ highlight.name ],
