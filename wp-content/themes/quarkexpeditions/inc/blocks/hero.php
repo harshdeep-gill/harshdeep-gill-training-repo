@@ -44,13 +44,27 @@ function render( ?string $content = null, array $block = [] ): null|string {
 		return $content;
 	}
 
+	// Initialize the slot.
+	$slot = '';
+
+	// Get inner block.
+	$inner_block = $block['innerBlocks'][0];
+
+	// Check the inner block name.
+	if ( isset( $block['attrs']['showForm'] ) && ! $block['attrs']['showForm'] ) {
+		$slot = $inner_block['attrs']['text'] ?? '';
+	} else {
+		$slot = render_block( $inner_block );
+	}
+
 	// Build component attributes.
 	$attributes = [
 		'image_id'  => 0,
 		'title'     => $block['attrs']['title'] ?? '',
 		'sub_title' => $block['attrs']['subTitle'] ?? '',
-		'slot'      => render_block( $block['innerBlocks'][0] ),
+		'slot'      => $slot,
 		'immersive' => $block['attrs']['isImmersive'] ?? false,
+		'show_form' => $block['attrs']['showForm'] ?? true,
 	];
 
 	// Image.

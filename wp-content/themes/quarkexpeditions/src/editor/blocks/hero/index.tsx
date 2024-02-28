@@ -2,7 +2,7 @@
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-import { BlockConfiguration } from '@wordpress/blocks';
+import { BlockConfiguration, registerBlockType } from '@wordpress/blocks';
 import {
 	PanelBody,
 	ToggleControl,
@@ -41,6 +41,16 @@ const {
 } = gumponents.components;
 
 /**
+ * Child block.
+ */
+import * as formCta from './form-cta';
+
+/**
+ * Register child block.
+ */
+registerBlockType( formCta.name, formCta.settings );
+
+/**
  * Block name.
  */
 export const name: string = 'qrk/hero';
@@ -70,6 +80,10 @@ export const settings: BlockConfiguration = {
 			type: 'boolean',
 			default: false,
 		},
+		showForm: {
+			type: 'boolean',
+			default: true,
+		},
 	},
 	supports: {
 		alignWide: false,
@@ -81,15 +95,29 @@ export const settings: BlockConfiguration = {
 	edit( { className, attributes, setAttributes }: BlockEditAttributes ): JSX.Element {
 		// eslint-disable-next-line react-hooks/rules-of-hooks
 		const blockProps = useBlockProps( {
-			className: classnames( className, 'hero', attributes.isImmersive ? 'hero--immersive' : '' ),
+			className: classnames(
+				className,
+				'hero',
+				attributes.isImmersive ? 'hero--immersive' : '',
+				attributes.showForm ? '' : 'hero--big'
+			),
 		} );
 
 		// eslint-disable-next-line react-hooks/rules-of-hooks
-		const innerBlockProps = useInnerBlocksProps( { className: 'hero__form color-context--dark' }, {
-			allowedBlocks: [ 'quark/inquiry-form' ],
-			template: [ [ 'quark/inquiry-form' ] ],
-			templateLock: 'all',
-		} );
+		const innerBlockProps = useInnerBlocksProps(
+			{
+				className: `${
+					attributes.showForm
+						? 'hero__form '
+						: ''
+				} color-context--dark`,
+			},
+			{
+				allowedBlocks: [ 'quark/inquiry-form', formCta.name ],
+				template: [ [ attributes.showForm ? 'quark/inquiry-form' : formCta.name ] ],
+				templateLock: 'all',
+			}
+		);
 
 		// Return the block's markup.
 		return (
@@ -109,10 +137,24 @@ export const settings: BlockConfiguration = {
 							help={ __( 'Is this hero immersive?', 'qrk' ) }
 							onChange={ ( isImmersive: boolean ) => setAttributes( { isImmersive } ) }
 						/>
+						<ToggleControl
+							label={ __( 'Has Form', 'qrk' ) }
+							checked={ attributes.showForm }
+							help={ __( 'Does the hero have a form', 'qrk' ) }
+							onChange={ ( showForm: boolean ) => setAttributes( { showForm } ) }
+						/>
 					</PanelBody>
 				</InspectorControls>
 				<Section { ...blockProps } fullWidth={ true } seamless={ true } >
-					<div className="hero__wrap">
+					<div
+						className={
+							`hero__wrap ${
+								attributes.showForm
+									? ''
+									: 'hero__wrap--column'
+							}`
+						}
+					>
 						{ attributes.image &&
 							<Img
 								className="hero__image"
