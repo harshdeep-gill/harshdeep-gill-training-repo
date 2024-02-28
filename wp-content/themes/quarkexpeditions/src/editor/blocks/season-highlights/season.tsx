@@ -75,8 +75,8 @@ export const settings: BlockConfiguration = {
 		return (
 			<div { ...blockProps } >
 				<RichText
-					tagName="h4"
-					className="season-highlights__season-title"
+					tagName="p"
+					className="season-highlights__season-title h4"
 					placeholder={ __( 'Write Season Title…', 'qrk' ) }
 					value={ attributes.title }
 					onChange={ ( title: string ) => setAttributes( { title } ) }

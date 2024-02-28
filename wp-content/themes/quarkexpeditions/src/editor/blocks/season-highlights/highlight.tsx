@@ -106,11 +106,11 @@ export const settings: BlockConfiguration = {
 					</PanelBody>
 				</InspectorControls>
 				<div { ...blockProps }>
-					<div className="season-highlights__icon">
+					<span className="season-highlights__icon">
 						{ selectedIcon }
-					</div>
+					</span>
 					<RichText
-						tagName="p"
+						tagName="span"
 						className="season-highlights__highlight-title"
 						placeholder={ __( 'Highlight Name…', 'qrk' ) }
 						value={ attributes.title }
