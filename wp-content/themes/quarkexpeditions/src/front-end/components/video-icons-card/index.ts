@@ -43,6 +43,9 @@ export default class QuarkVideoIconsCardElement extends HTMLElement {
 		// Setup events.
 		this.overlay?.addEventListener( 'click', this.start.bind( this ) );
 
+		// Get the wistia embed
+		const wistiaEmbed = this.querySelector( '.wistia_embed' );
+
 		// Default to 0px.
 		let rootMarginTop = '0px';
 
@@ -54,16 +57,19 @@ export default class QuarkVideoIconsCardElement extends HTMLElement {
 			rootMarginTop = `-${ getComputedStyle( stickyHeader ).height }`;
 		}
 
-		// Intersection observer.
-		this.videoIntersectionObserver = new IntersectionObserver(
-			this.intersectionObserverCallback.bind( this ),
-			{
-				root: document.body,
-				threshold: 0,
-				rootMargin: `${ rootMarginTop } 0px 0px 0px`,
-			}
-		);
-		this.videoIntersectionObserver.observe( this );
+		// Check if the embed is there.
+		if ( wistiaEmbed ) {
+			// Intersection observer.
+			this.videoIntersectionObserver = new IntersectionObserver(
+				this.intersectionObserverCallback.bind( this ),
+				{
+					root: document.body,
+					threshold: 0,
+					rootMargin: `${ rootMarginTop } 0px 0px 0px`,
+				}
+			);
+			this.videoIntersectionObserver.observe( wistiaEmbed );
+		}
 	}
 
 	/**
