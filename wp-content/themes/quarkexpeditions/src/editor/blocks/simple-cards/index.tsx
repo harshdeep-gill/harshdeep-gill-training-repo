@@ -77,7 +77,7 @@ export const settings: BlockConfiguration = {
 
 		// Return the block's markup.
 		return (
-			<Section { ...innerBlockProps } />
+			<div { ...innerBlockProps } />
 		);
 	},
 	save() {
