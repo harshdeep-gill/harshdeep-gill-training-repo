@@ -43,12 +43,12 @@ const {
 /**
  * Child block.
  */
-import * as item from './item';
+import * as formCta from './form-cta';
 
 /**
  * Register child block.
  */
-registerBlockType( item.name, item.settings );
+registerBlockType( formCta.name, formCta.settings );
 
 /**
  * Block name.
@@ -113,8 +113,8 @@ export const settings: BlockConfiguration = {
 				} color-context--dark`,
 			},
 			{
-				allowedBlocks: [ 'quark/inquiry-form', item.name ],
-				template: [ [ attributes.showForm ? 'quark/inquiry-form' : item.name ] ],
+				allowedBlocks: [ 'quark/inquiry-form', formCta.name ],
+				template: [ [ attributes.showForm ? 'quark/inquiry-form' : formCta.name ] ],
 				templateLock: 'all',
 			}
 		);

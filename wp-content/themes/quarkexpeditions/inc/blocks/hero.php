@@ -50,12 +50,9 @@ function render( ?string $content = null, array $block = [] ): null|string {
 	// Get inner block.
 	$inner_block = $block['innerBlocks'][0];
 
-	// Inner block name.
-	$inner_block_name = $inner_block['blockName'];
-
 	// Check the inner block name.
-	if ( 'quark/hero-form-cta' === $inner_block_name ) {
-		$slot = $inner_block['attrs']['text'];
+	if ( isset( $block['attrs']['showForm'] ) && ! $block['attrs']['showForm'] ) {
+		$slot = $inner_block['attrs']['text'] ?? '';
 	} else {
 		$slot = render_block( $inner_block );
 	}
