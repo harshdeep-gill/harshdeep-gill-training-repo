@@ -14,7 +14,7 @@
 }
 
 .editor-post-title__input {
-	font-family: var(--font-family-display);
+	font-family: var(--heading-font-family);
 	margin-bottom: 1rem !important;
 }
 
@@ -48,4 +48,12 @@
 .quark-url-control .components-base-control__field input {
 	width: 100%;
 	border: 1px solid #e0e0e0;
+}
+
+.block-list-appender {
+	height: fit-content;
+}
+
+.block-editor-button-block-appender {
+	background-color: var(--color-gray-30);
 }
