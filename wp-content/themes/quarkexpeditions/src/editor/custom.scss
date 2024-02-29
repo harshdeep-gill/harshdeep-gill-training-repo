@@ -14,7 +14,7 @@
 }
 
 .editor-post-title__input {
-	font-family: var(--font-family-display);
+	font-family: var(--heading-font-family);
 	margin-bottom: 1rem !important;
 }
 
@@ -51,7 +51,6 @@
 }
 
 .block-list-appender {
-	position: relative;
 	height: fit-content;
 }
 
