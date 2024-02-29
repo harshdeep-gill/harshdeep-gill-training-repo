@@ -40,7 +40,7 @@ function register_blocks(): void {
 		'ReviewCards'      => 'review-cards.php',
 		'VideoIconsCard'   => 'video-icons-card.php',
 		'SeasonHighlights' => 'season-highlights.php',
-		'SimpleCards'     => 'simple-cards.php',
+		'SimpleCards'      => 'simple-cards.php',
 	];
 
 	// Register blocks.
