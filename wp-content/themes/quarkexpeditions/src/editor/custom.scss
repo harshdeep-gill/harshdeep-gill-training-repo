@@ -49,3 +49,12 @@
 	width: 100%;
 	border: 1px solid #e0e0e0;
 }
+
+.block-list-appender {
+	position: relative;
+	height: fit-content;
+}
+
+.block-editor-button-block-appender {
+	background-color: var(--color-gray-30);
+}
