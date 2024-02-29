@@ -16,6 +16,7 @@ import {
  * Styles.
  */
 import '../../../front-end/components/season-highlights/style.scss';
+import './editor.scss';
 
 /**
  * External dependencies.

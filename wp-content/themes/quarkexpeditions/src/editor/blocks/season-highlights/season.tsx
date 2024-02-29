@@ -22,6 +22,7 @@ import classnames from 'classnames';
  * Child blocks.
  */
 import * as seasonItem from './season-item';
+import * as highlight from './highlight';
 
 /**
  * Register child blocks.
@@ -66,8 +67,8 @@ export const settings: BlockConfiguration = {
 		const innerBlockProps = useInnerBlocksProps( { ...blockProps }, {
 			allowedBlocks: [ seasonItem.name ],
 			template: [
-				[ seasonItem.name ],
-				[ seasonItem.name ],
+				[ seasonItem.name, { hasLightBackground: true } ],
+				[ seasonItem.name, {}, [ [ highlight.name ], [ highlight.name ] ] ],
 			],
 		} );
 

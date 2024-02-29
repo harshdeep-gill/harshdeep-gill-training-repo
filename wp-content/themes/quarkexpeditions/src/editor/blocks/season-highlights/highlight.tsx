@@ -77,7 +77,7 @@ export const settings: BlockConfiguration = {
 
 		// Fallback icon.
 		if ( ! selectedIcon || '' === selectedIcon ) {
-			selectedIcon = <Icon icon="no" />;
+			selectedIcon = <Icon className="season-highlights__cross-icon" icon="no" />;
 		}
 
 		// Return the block's markup.
