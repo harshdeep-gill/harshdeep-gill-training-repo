@@ -26,20 +26,21 @@ function setup(): void {
 function register_blocks(): void {
 	// List of blocks to register.
 	$blocks = [
-		'Section'         => 'section.php',
-		'LPHeader'        => 'lp-header.php',
-		'TwoColumns'      => 'two-columns.php',
-		'IconInfoColumns' => 'icon-info-columns.php',
-		'ReviewsCarousel' => 'reviews-carousel.php',
-		'Hero'            => 'hero.php',
-		'InquiryForm'     => 'inquiry-form.php',
-		'LogoGrid'        => 'logo-grid.php',
-		'LPFooter'        => 'lp-footer.php',
-		'IconColumns'     => 'icon-columns.php',
-		'Collage'         => 'collage.php',
-		'ReviewCards'     => 'review-cards.php',
-		'VideoIconsCard'  => 'video-icons-card.php',
-		'SimpleCards'     => 'simple-cards.php',
+		'Section'          => 'section.php',
+		'LPHeader'         => 'lp-header.php',
+		'TwoColumns'       => 'two-columns.php',
+		'IconInfoColumns'  => 'icon-info-columns.php',
+		'ReviewsCarousel'  => 'reviews-carousel.php',
+		'Hero'             => 'hero.php',
+		'InquiryForm'      => 'inquiry-form.php',
+		'LogoGrid'         => 'logo-grid.php',
+		'LPFooter'         => 'lp-footer.php',
+		'IconColumns'      => 'icon-columns.php',
+		'Collage'          => 'collage.php',
+		'ReviewCards'      => 'review-cards.php',
+		'VideoIconsCard'   => 'video-icons-card.php',
+		'SeasonHighlights' => 'season-highlights.php',
+		'SimpleCards'      => 'simple-cards.php',
 	];
 
 	// Register blocks.
