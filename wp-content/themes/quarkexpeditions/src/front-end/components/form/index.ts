@@ -7,7 +7,7 @@ const { customElements, HTMLElement } = window;
  * External dependencies.
  */
 import '@travelopia/web-components/dist/form';
-import { TPFormElement, TPFormSubmitElement } from '@travelopia/web-components';
+import { TPFormElement, TPFormFieldElement, TPFormSubmitElement } from '@travelopia/web-components';
 
 /**
  * Internal Dependencies.
@@ -29,6 +29,7 @@ export default class Form extends HTMLElement {
 	private readonly form: HTMLFormElement | null;
 	private readonly recaptchaTokenField: HTMLInputElement | null;
 	private thankYouPageUrl: string = '';
+	private fields: NodeListOf<TPFormFieldElement> | null;
 
 	/**
 	 * Constructor.
@@ -43,6 +44,7 @@ export default class Form extends HTMLElement {
 		this.form = this.querySelector( 'form' );
 		this.recaptchaTokenField = this.querySelector( 'input[name="recaptcha_token"]' );
 		this.thankYouPageUrl = this.getAttribute( 'thank-you-url' ) || '';
+		this.fields = this.querySelectorAll( 'tp-form-field' );
 
 		// Events.
 		window.addEventListener( 'visitor-tracked', ( ( event: CustomEvent ) => this.updateCampaignParams( event ) ) as EventListener );
@@ -70,6 +72,49 @@ export default class Form extends HTMLElement {
 		// Prevent default action.
 		e.preventDefault();
 		e.stopImmediatePropagation();
+
+		// Check for fields
+		if ( ! this.fields ) {
+			// Fields not available.
+			return;
+		}
+
+		// Validate fields.
+		let valid: boolean = true;
+		this.fields.forEach( ( field: TPFormFieldElement ) => {
+			// Get the underlying input.
+			const inputField = field.getField();
+
+			// Valid name fields.
+			const nameFields = [ 'fields[FirstName__c]', 'fields[LastName__c]' ];
+
+			// Input field not found.
+			if ( ! ( inputField && nameFields.includes( inputField.name ) ) ) {
+				// bail.
+				return;
+			}
+
+			// Check if field is valid.
+			if ( ! /^[a-z ]+$/i.test( inputField.value.trim() ?? '' ) ) {
+				valid = false;
+				field.removeAttribute( 'valid' );
+				field.setAttribute( 'error', 'Invalid values' );
+			} else {
+				field.removeAttribute( 'error' );
+				field.setAttribute( 'valid', 'yes' );
+			}
+		} );
+
+		// If not valid
+		if ( ! valid ) {
+			this.tpForm?.dispatchEvent( new CustomEvent( 'validation-error' ) );
+
+			// Remove the submitting text
+			this.tpFormSubmit?.removeAttribute( 'submitting' );
+
+			// bail
+			return;
+		}
 
 		// Trigger event before submit.
 		this.dispatchEvent( new CustomEvent( 'submit', {
