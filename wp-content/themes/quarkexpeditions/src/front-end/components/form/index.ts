@@ -132,6 +132,17 @@ export default class Form extends HTMLElement {
 			// Display error and enable button.
 			alert( error ); // eslint-disable-line
 			this.tpFormSubmit?.removeAttribute( 'submitting' );
+
+			// Enable fields.
+			this.fields?.forEach( ( field: TPFormFieldElement ) => {
+				// Get the underlying field
+				const inputField = field.getField();
+
+				// Check for null.
+				if ( inputField ) {
+					inputField.disabled = false;
+				}
+			} );
 		};
 
 		/**
@@ -156,6 +167,17 @@ export default class Form extends HTMLElement {
 
 			// Save visitor info.
 			const formData = new FormData( this.form );
+
+			// Disable fields.
+			this.fields?.forEach( ( field: TPFormFieldElement ) => {
+				// Get the underlying field
+				const inputField = field.getField();
+
+				// Check for null.
+				if ( inputField ) {
+					inputField.disabled = true;
+				}
+			} );
 
 			// Send form request.
 			fetch( this.form.getAttribute( 'data-action' ) ?? '', {
