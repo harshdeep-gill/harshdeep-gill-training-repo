@@ -8,5 +8,3 @@
 	<span class="media-content-card__content-info-label"><x-escape :content="$label" /></span>
 	<span class="media-content-card__content-info-value"><x-escape :content="$value" /></span>
 </x-maybe-link>
-
-
