@@ -66,14 +66,6 @@
 			cursor: pointer;
 			text-decoration: none;
 
-			&:hover {
-				text-decoration: none;
-				background-color: var(--color-black);
-				color: var(--color-white);
-
-				@include transition(background-color, 200ms);
-			}
-
 			@media screen and (max-width: calc( grid-size(sm) - 1px )) {
 				display: flex;
 				flex-direction: column;
@@ -85,6 +77,14 @@
 				&:not(:last-child) {
 					margin-bottom: var(--spacing-2);
 				}
+
+				&:hover {
+					text-decoration: none;
+					background-color: var(--color-black);
+					color: var(--color-white);
+				}
+
+				@include transition(background-color, 200ms);
 			}
 
 			&-value {
