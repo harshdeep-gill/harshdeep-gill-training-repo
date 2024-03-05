@@ -3,91 +3,93 @@
 .hero {
 	$self: &;
 
-	display: flex;
-	align-items: flex-start;
-	min-height: 450px;
 	position: relative;
-	padding-top: var(--spacing-7);
-	padding-bottom: var(--spacing-7);
+	padding-block: var(--spacing-8);
+	min-height: 540px;
 	margin-top: 0;
 
-	// Immersive Mode.
-	&.hero--immersive {
-		min-height: 520px;
+	@media screen and (min-width: grid-size(lg)) {
+		padding-block: var(--spacing-9);
+	}
 
-		/* Add margin only if browser supports :has() */
+	&--immersive {
+		$image_bleed_top: 112px;
+		$image_bleed_bottom: 192px;
+		$image_bleed_bottom_mobile: 96px;
+
 		@supports (selector(:has(*))) {
-			#{$self}__wrap {
-				margin-top: calculate-rem(122px);
-				margin-bottom: calculate-rem(-200px);
+			padding-top: calc(var(--spacing-8) + $image_bleed_top);
+			padding-bottom: calc(var(--spacing-8) + $image_bleed_bottom_mobile);
+			margin-bottom: -$image_bleed_bottom_mobile;
 
-				@media screen and (min-width: grid-size(md)) {
-					margin-bottom: calculate-rem(168px);
-				}
+			@media screen and (min-width: grid-size(lg)) {
+				padding-top: calc(var(--spacing-9) + $image_bleed_top);
+				padding-bottom: calc(var(--spacing-9) + $image_bleed_bottom);
+				margin-bottom: -$image_bleed_bottom;
 			}
-		}
 
-		#{$self}__form {
-			z-index: 4;
-		}
-
-		#{$self}__title {
-			text-align: left;
-		}
-
-		#{$self}__sub-title > h5 {
-			font-size: var(--font-size);
-			font-weight: var(--font-weight-default);
-			text-align: left;
+			+ * {
+				margin-top: 0;
+			}
 		}
 
 		&::after {
 			content: "";
 			display: block;
 			position: absolute;
-			z-index: 3;
+			z-index: -1;
 			left: 0;
 			right: 0;
 			bottom: -1px;
 			height: 100%;
 			background: linear-gradient(0deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 50%);
 
-			@media screen and (min-width: grid-size(md)) {
+			@media screen and (min-width: grid-size(lg)) {
 				background: linear-gradient(0deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 30%);
 			}
 		}
 
-		// Any Component immediately preceded by Immersive Hero.
-		+ * {
-			margin-top: calculate-rem(200px);
+	}
 
-			@media screen and (min-width: grid-size(md)) {
-				position: relative;
-				z-index: 4;
-				margin-top: calculate-rem(-280px);
+	&--text-left {
+
+		#{$self}__title-container {
+			max-width: 350px;
+
+			@media screen and (min-width: grid-size(lg)) {
+				max-width: unset;
 			}
 		}
 	}
 
-	&.hero--big {
-		min-height: 680px;
-		padding-top: var(--spacing-8);
-		padding-bottom: var(--spacing-8);
+	&--text-center {
+
+		#{$self}__title-container {
+			text-align: center;
+			max-width: unset;
+
+			@media screen and (min-width: grid-size(lg)) {
+				text-align: unset;
+			}
+		}
 	}
 
-	@media screen and (min-width: grid-size(md)) {
-		min-height: 600px;
-		padding-top: var(--grid-section-gutter);
-		padding-bottom: var(--grid-section-gutter);
+	&__wrap {
+		max-width: var(--wrap-width);
+		height: 100%;
+
+		@media screen and (max-width: 1120px) {
+			margin: 0 var(--grid-col-gutter);
+		}
 	}
 
 	&__image {
 		position: absolute;
-		top: 0;
-		left: 0;
+		inset: 0;
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
+		z-index: -1;
 	}
 
 	&__title {
@@ -98,78 +100,84 @@
 		font-weight: var(--font-weight-bold);
 	}
 
-	&__wrap {
+	&__content {
 		display: flex;
 		flex-direction: column;
-		width: var(--wrap-width);
-		height: 100%;
 		align-items: center;
+		gap: var(--spacing-6);
 
-		@media screen and (max-width: 1120px) {
-			margin: 0 var(--grid-col-gutter);
-		}
-
-		@media screen and (min-width: grid-size(md)) {
+		@media screen and (min-width: grid-size(lg)) {
 			flex-direction: row;
+			gap: 128px;
+			justify-content: space-between;
 			align-items: flex-start;
 		}
+	}
 
-		&--column {
-			flex-direction: column;
-			align-items: center;
+	&__left,
+	&__right {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-6);
+	}
 
-			@media screen and (min-width: grid-size(lg)) {
-				align-items: flex-start;
-			}
+	&__left {
+		align-items: center;
 
-			#{$self}__content {
-				margin-inline: 0;
-			}
-
-			#{$self}__form-modal-cta,
-			#{$self}__form {
-				margin-top: var(--spacing-6);
-			}
+		@media screen and (min-width: grid-size(lg)) {
+			max-width: 640px;
+			align-items: flex-start;
 		}
 	}
 
-	&__form,
+	&__right,
+	&__tag,
 	&__form-modal-cta {
-		min-width: 310px;
 		max-width: 350px;
-		color: var(--color-white);
-		background-color: rgba(color("black"), 0.5);
-		padding: var(--spacing-5);
-		margin-top: var(--spacing-6);
-		border-radius: var(--border-radius-large);
+		width: 100%;
+	}
 
-		z-index: 2;
+	&__title-container {
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-4);
+		width: 100%;
 
-		.btn {
-			width: 100%;
+		@media screen and (min-width: grid-size(lg)) {
+			max-width: unset;
+		}
+	}
+
+	&__overline {
+		color: var(--color-blue);
+	}
+
+	&__tag {
+		display: flex;
+		gap: var(--spacing-2);
+		padding: var(--spacing-2) var(--spacing-4);
+		align-items: center;
+		justify-content: center;
+		width: 100%;
+		background-color: var(--color-attention-100);
+		box-shadow: var(--shadow-4);
+		border-radius: var(--border-radius);
+
+		@media screen and (min-width: grid-size(lg)) {
+			justify-content: flex-start;
+			max-width: fit-content;
 		}
 
-		tp-form-error {
-			display: none;
-		}
-
-		@media screen and (min-width: grid-size(md)) {
-			margin-top: 0;
-		}
-
-		button {
-			text-transform: uppercase;
+		&-icon {
+			height: 24px;
+			width: 24px;
 		}
 	}
 
 	&__form-modal-cta {
-		padding: 0;
-		background-color: transparent;
 
 		.btn {
-			text-transform: none;
-			font-size: var(--font-size);
-			line-height: var(--line-height);
 			width: 100%;
 
 			@media screen and (min-width: grid-size(lg)) {
@@ -178,23 +186,14 @@
 		}
 	}
 
-	&__content {
-		display: flex;
-		flex-direction: column;
-		text-align: center;
-		z-index: 2;
-		gap: var(--spacing-2);
-		margin-inline: 0;
+	&__form {
+		padding: var(--spacing-5);
+		background-color: rgba(color("black"), 0.5);
+		border-radius: var(--border-radius-large);
 
-		@media screen and (min-width: grid-size(md)) {
-			margin-right: var(--spacing-7);
-		}
-
-		@media screen and (min-width: grid-size(lg)) {
-			flex: 2;
-			gap: var(--spacing-4);
-			text-align: left;
-			margin-right: calc(2 * var(--spacing-8));
+		.btn {
+			width: 100%;
+			text-transform: uppercase;
 		}
 	}
 }

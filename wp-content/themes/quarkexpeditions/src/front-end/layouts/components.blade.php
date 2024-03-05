@@ -24,7 +24,43 @@
 			</x-hero.form>
 		</x-hero>
 	</x-component-demo>
-	<x-component-demo :keys="[ 'review-cards' ]">
+
+	<x-component-demo :keys="[ 'header', 'hero-refactor' ]">
+		<x-lp-header
+			tc_image_id="18"
+			phone_number="+1-877-585-1235"
+			cta_text="Talk to a Polar Expert"
+		/>
+	</x-component-demo>
+
+	<x-component-demo :keys="[ 'hero', 'hero-refactor' ]">
+		<x-hero size="big" :immersive="true">
+			<x-hero.image image_id="26" />
+			<x-hero.content>
+				<x-hero.left>
+					<x-hero.title-container>
+						<x-hero.overline>Antarctic 2024</x-hero.overline>
+						<x-hero.title title="Antarctic Voyages" />
+						<x-hero.sub-title title="Choose the Leader in Polar Adventure" />
+					</x-hero.title-container>
+					<x-hero.tag icon="alert" text="Limited Cabins Available" />
+					<x-hero.form-modal-cta>Get a Digital Brochure</x-hero.form-modal-cta>
+				</x-hero.left>
+				<x-hero.right>
+					<x-hero.form>
+						<x-inquiry-form
+							form_id="inquiry-form"
+							title="Almost there!"
+							subtitle="We just need a bit more info to help personalize your itinerary."
+							salesforce_object="Webform_Landing_Page__c"
+						/>
+					</x-hero.form>
+				</x-hero.right>
+			</x-hero.content>
+		</x-hero>
+	</x-component-demo>
+
+	<x-component-demo :keys="[ 'review-cards', 'hero-refactor' ]">
 		<x-review-cards>
 			<x-review-cards.card
 				title="Falkland, South Georgia and the Antarctic Circle"
