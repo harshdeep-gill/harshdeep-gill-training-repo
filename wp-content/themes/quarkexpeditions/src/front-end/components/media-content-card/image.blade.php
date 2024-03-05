@@ -19,10 +19,9 @@
 	];
 @endphp
 
-<div class="media-content-card__image-wrap">
+<figure class="media-content-card__image">
 	<x-image
-		class="media-content-card__image"
 		:image_id="$image_id"
 		:args="$image_args"
 	/>
-</div>
+</figure>
