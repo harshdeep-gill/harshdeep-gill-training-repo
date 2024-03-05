@@ -582,6 +582,98 @@
 			</x-lp-footer.row>
 		</x-lp-footer>
 	</x-component-demo>
+
+	<x-component-demo :keys="[ 'product-cards' ]">
+		<x-product-cards>
+			<x-product-cards.card>
+				<x-product-cards.image
+					image_id="36"
+					:is_immersive="true"
+				>
+					<x-product-cards.badge-cta text="Save 50%" />
+					<x-product-cards.badge-time text="Just Added" />
+					{{-- <x-product-cards.info-ribbon>Additional 10% savings text</x-product-cards.info-ribbon> --}}
+				</x-product-cards.image>
+				<x-product-cards.reviews
+					total_reviews="19 Reviews"
+					review_rating="5"
+				/>
+				<x-product-cards.itinerary departure_date="April 28, 2024" duration="14" />
+				<x-product-cards.title title="Arctic Saga" />
+				<x-product-cards.subtitle title="Exploring Spitsbergen via the Faroes & Jan Mayen" />
+				<x-product-cards.description>
+					<p>This itinerary allows you to venture to some of the most remote islands on Earth</p>
+				</x-product-cards.description>
+				<x-product-cards.price
+					original_price="$9,395 USD"
+					discounted_price="$7,271 USD"
+				/>
+				<x-product-cards.buttons :columns="1">
+					<x-button>Book: +1 (866) 220-1915</x-button>
+				</x-product-cards.buttons>
+			</x-product-cards.card>
+
+			<x-product-cards.card>
+				<x-product-cards.image
+					image_id="36"
+					:is_immersive="false"
+				>
+					<x-product-cards.badge-sold-out />
+					<x-product-cards.badge-time text="Just Added" />
+					<x-product-cards.info-ribbon>Additional 10% savings text</x-product-cards.info-ribbon>
+				</x-product-cards.image>
+				<x-product-cards.reviews
+					total_reviews="100 Reviews"
+					review_rating="4"
+				/>
+				<x-product-cards.itinerary departure_date="April 28, 2024" duration="14" />
+				<x-product-cards.title title="Arctic Saga" />
+				<x-product-cards.subtitle title="Exploring Spitsbergen via the Faroes & Jan Mayen" />
+				<x-product-cards.description>
+					<p>This itinerary allows you to venture to some of the most remote islands on Earth</p>
+				</x-product-cards.description>
+				<x-product-cards.price
+					original_price="$9,395 USD"
+					discounted_price="$7,271 USD"
+				/>
+				<x-product-cards.buttons :columns="2">
+					<x-button>Request a Quote</x-button>
+					<x-button>Learn More</x-button>
+				</x-product-cards.buttons>
+			</x-product-cards.card>
+
+			<x-product-cards.card>
+				<x-product-cards.image
+					image_id="36"
+					:is_immersive="false"
+				>
+					{{-- <x-product-cards.badge-cta text="Save 50%" /> --}}
+					<x-product-cards.badge-sold-out />
+					<x-product-cards.badge-time text="Just Added" />
+					<x-product-cards.info-ribbon>Additional 10% savings text</x-product-cards.info-ribbon>
+				</x-product-cards.image>
+				<x-product-cards.reviews
+					total_reviews="9999 Reviews"
+					review_rating="3"
+				/>
+				<x-product-cards.itinerary departure_date="April 28, 2024" duration="14" />
+				<x-product-cards.title title="Arctic Saga" />
+				<x-product-cards.subtitle title="Exploring Spitsbergen via the Faroes & Jan Mayen" />
+				<x-product-cards.description>
+					<p>This itinerary allows you to venture to some of the most remote islands on Earth</p>
+				</x-product-cards.description>
+				<x-product-cards.price
+					original_price="$9,395 USD"
+					discounted_price="$7,271 USD"
+				/>
+				<x-product-cards.buttons :columns="2">
+					<x-button>Request a Quote</x-button>
+					<x-button>Learn More</x-button>
+				</x-product-cards.buttons>
+			</x-product-cards.card>
+		</x-product-cards>
+	</x-component-demo>
+
 	<x-component-demo :keys="[ 'lp-footer' ]">
 		<x-lp-footer>
 			<x-lp-footer.row>
