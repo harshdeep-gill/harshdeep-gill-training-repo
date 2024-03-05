@@ -79,43 +79,6 @@ export default class Form extends HTMLElement {
 			return;
 		}
 
-		// Validate fields.
-		let valid: boolean = true;
-		this.fields.forEach( ( field: TPFormFieldElement ) => {
-			// Get the underlying input.
-			const inputField = field.getField();
-
-			// Valid name fields.
-			const nameFields = [ 'fields[FirstName__c]', 'fields[LastName__c]' ];
-
-			// Input field not found.
-			if ( ! ( inputField && nameFields.includes( inputField.name ) ) ) {
-				// bail.
-				return;
-			}
-
-			// Check if field is valid.
-			if ( ! /^[a-z ]+$/i.test( inputField.value.trim() ?? '' ) ) {
-				valid = false;
-				field.removeAttribute( 'valid' );
-				field.setAttribute( 'error', 'Invalid values' );
-			} else {
-				field.removeAttribute( 'error' );
-				field.setAttribute( 'valid', 'yes' );
-			}
-		} );
-
-		// If not valid
-		if ( ! valid ) {
-			this.tpForm?.dispatchEvent( new CustomEvent( 'validation-error' ) );
-
-			// Remove the submitting text
-			this.tpFormSubmit?.removeAttribute( 'submitting' );
-
-			// bail
-			return;
-		}
-
 		// Trigger event before submit.
 		this.dispatchEvent( new CustomEvent( 'submit', {
 			detail: {
