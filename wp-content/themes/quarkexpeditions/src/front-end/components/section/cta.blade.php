@@ -3,6 +3,7 @@
 	'text'       => '',
 	'new_window' => false,
 	'class'      => '',
+	'color'      => '',
 ] )
 
 @php
@@ -18,7 +19,11 @@
 @endphp
 
 <div @class( $classes )>
-	<x-button :href="$url" :target="! empty( $new_window ) ? '_blank' : ''" >
+	<x-button
+		href="{{ $url }}"
+		:target="! empty( $new_window ) ? '_blank' : ''"
+		color='black'
+	>
 		<x-escape :content="$text" />
 	</x-button>
 </div>

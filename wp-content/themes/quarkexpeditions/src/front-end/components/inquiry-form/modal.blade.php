@@ -19,7 +19,7 @@
 	title="{{ $title }}"
 	subtitle="{{ $subtitle }}"
 >
-	<quark-inquiry-form>
+	<quark-inquiry-form-modal>
 		<x-form id="{{ $form_id }}"
 			salesforce_object="{{ $salesforce_object }}"
 			thank_you_page="{{ $thank_you_page }}"
@@ -447,5 +447,5 @@
 				</div>
 			</div>
 		@endif
-	</quark-inquiry-form>
+	</quark-inquiry-form-modal>
 </x-modal>

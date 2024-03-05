@@ -43,6 +43,7 @@ interface Window {
 interface WistiaVideo {
 	play(): void;
 	bind( eventName: String, callback: Function ): void;
+	pause(): void;
 }
 
 /**
