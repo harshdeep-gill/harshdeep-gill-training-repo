@@ -7,7 +7,7 @@ const { customElements, HTMLElement } = window;
  * External dependencies.
  */
 import '@travelopia/web-components/dist/form';
-import { TPFormElement, TPFormFieldElement, TPFormSubmitElement } from '@travelopia/web-components';
+import { TPFormElement, TPFormSubmitElement } from '@travelopia/web-components';
 
 /**
  * Internal Dependencies.
@@ -29,7 +29,6 @@ export default class Form extends HTMLElement {
 	private readonly form: HTMLFormElement | null;
 	private readonly recaptchaTokenField: HTMLInputElement | null;
 	private thankYouPageUrl: string = '';
-	private fields: NodeListOf<TPFormFieldElement> | null;
 
 	/**
 	 * Constructor.
@@ -44,7 +43,6 @@ export default class Form extends HTMLElement {
 		this.form = this.querySelector( 'form' );
 		this.recaptchaTokenField = this.querySelector( 'input[name="recaptcha_token"]' );
 		this.thankYouPageUrl = this.getAttribute( 'thank-you-url' ) || '';
-		this.fields = this.querySelectorAll( 'tp-form-field' );
 
 		// Events.
 		window.addEventListener( 'visitor-tracked', ( ( event: CustomEvent ) => this.updateCampaignParams( event ) ) as EventListener );
@@ -73,12 +71,6 @@ export default class Form extends HTMLElement {
 		e.preventDefault();
 		e.stopImmediatePropagation();
 
-		// Check for fields
-		if ( ! this.fields ) {
-			// Fields not available.
-			return;
-		}
-
 		// Trigger event before submit.
 		this.dispatchEvent( new CustomEvent( 'submit', {
 			detail: {
@@ -96,16 +88,8 @@ export default class Form extends HTMLElement {
 			alert( error ); // eslint-disable-line
 			this.tpFormSubmit?.removeAttribute( 'submitting' );
 
-			// Enable fields.
-			this.fields?.forEach( ( field: TPFormFieldElement ) => {
-				// Get the underlying field
-				const inputField = field.getField();
-
-				// Check for null.
-				if ( inputField ) {
-					inputField.disabled = false;
-				}
-			} );
+			// Enable the whole form.
+			this.form?.removeAttribute( 'inert' );
 		};
 
 		/**
@@ -117,6 +101,9 @@ export default class Form extends HTMLElement {
 				// Nope, bail.
 				return;
 			}
+
+			// Disable the form.
+			this.form.setAttribute( 'inert', '' );
 
 			// Add reCAPTCHA token if field exists.
 			if ( this.recaptchaTokenField ) {
@@ -130,17 +117,6 @@ export default class Form extends HTMLElement {
 
 			// Save visitor info.
 			const formData = new FormData( this.form );
-
-			// Disable fields.
-			this.fields?.forEach( ( field: TPFormFieldElement ) => {
-				// Get the underlying field
-				const inputField = field.getField();
-
-				// Check for null.
-				if ( inputField ) {
-					inputField.disabled = true;
-				}
-			} );
 
 			// Send form request.
 			fetch( this.form.getAttribute( 'data-action' ) ?? '', {
