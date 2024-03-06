@@ -11,5 +11,5 @@
 
 <div class="product-cards__reviews">
 	<x-rating-stars rating="{{ $review_rating }}" />
-	<x-escape :content="$total_reviews" />
+	<span class="product-cards__reviews-text"><x-escape :content="$total_reviews" /></span>
 </div>

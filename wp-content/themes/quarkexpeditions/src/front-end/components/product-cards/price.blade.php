@@ -9,7 +9,8 @@
 	}
 @endphp
 
-<div class="product-cards__price-container">
+<div class="product-cards__price-wrap">
+	<div class="product-cards__price-title">{{ __( 'Sale price from', 'qrk' ) }}</div>
 
 	@if ( ! empty( $discounted_price ) )
 		@if ( $discounted_price !== $original_price )
