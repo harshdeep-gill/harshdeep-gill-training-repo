@@ -8,6 +8,6 @@
 	}
 @endphp
 
-<div class="product-cards__badge-sold-out">
+<div class="product-cards__badge-sold-out h5">
 	<x-escape :content="$text" />
 </div>

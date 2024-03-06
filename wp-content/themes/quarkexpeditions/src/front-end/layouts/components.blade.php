@@ -585,7 +585,7 @@
 
 	<x-component-demo :keys="[ 'product-cards' ]">
 		<x-product-cards>
-			<x-product-cards.card>
+			<x-product-cards.card url="#">
 				<x-product-cards.image
 					image_id="29"
 					:is_immersive="true"
@@ -613,7 +613,7 @@
 				</x-product-cards.buttons>
 			</x-product-cards.card>
 
-			<x-product-cards.card>
+			<x-product-cards.card url="#">
 				<x-product-cards.image
 					image_id="36"
 					:is_immersive="false"
@@ -642,7 +642,7 @@
 				</x-product-cards.buttons>
 			</x-product-cards.card>
 
-			<x-product-cards.card>
+			<x-product-cards.card url="#">
 				<x-product-cards.image
 					image_id="32"
 					:is_immersive="false"
@@ -673,7 +673,7 @@
 		</x-product-cards>
 
 		<x-product-cards>
-			<x-product-cards.card>
+			<x-product-cards.card url="#">
 				<x-product-cards.image
 					image_id="29"
 				>
@@ -699,7 +699,7 @@
 				</x-product-cards.buttons>
 			</x-product-cards.card>
 
-			<x-product-cards.card>
+			<x-product-cards.card url="#">
 				<x-product-cards.image
 					image_id="36"
 					:is_immersive="false"
@@ -726,7 +726,7 @@
 				</x-product-cards.buttons>
 			</x-product-cards.card>
 
-			<x-product-cards.card>
+			<x-product-cards.card url="#">
 				<x-product-cards.image
 					image_id="32"
 					:is_immersive="false"

@@ -14,7 +14,7 @@
 
 	@if ( ! empty( $discounted_price ) )
 		@if ( $discounted_price !== $original_price )
-			<strong class="product-cards__price product-cards__price-now">{{ $discounted_price }}</strong>
+			<strong class="product-cards__price product-cards__price-now h4">{{ $discounted_price }}</strong>
 			<strong><del class="product-cards__price price-was">{{ $original_price }}</del></strong>
 		@else
 			<span class="product-cards__price">{{ $original_price }}</span>
