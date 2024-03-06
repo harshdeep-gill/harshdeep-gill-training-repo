@@ -6,6 +6,7 @@
 	'appearance' => '',
 	'type'       => '',
 	'size'       => '',
+	'variant'    => '',
 ] )
 
 @php
@@ -25,6 +26,10 @@
 
 	if ( ! empty( $class ) ) {
 		$classes[] = $class;
+	}
+
+	if ( ! empty( $variant ) && 'media' === $variant ) {
+		$classes[] = 'btn--media';
 	}
 
 	$classes = implode( ' ', $classes );

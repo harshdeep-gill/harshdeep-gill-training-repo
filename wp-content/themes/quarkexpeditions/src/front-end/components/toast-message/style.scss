@@ -1,4 +1,6 @@
 .toast-message {
+	$self: &;
+
 	display: none;
 	gap: var(--spacing-3);
 	padding: var(--spacing-3) 20px;
@@ -26,7 +28,7 @@
 	&--success {
 		background-color: var(--color-success-50);
 
-		&__icon {
+		#{$self}__icon {
 			background-color: var(--color-white);
 			border-radius: 50%;
 

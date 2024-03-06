@@ -19,7 +19,7 @@
 	title="{{ $title }}"
 	subtitle="{{ $subtitle }}"
 >
-	<quark-inquiry-form>
+	<quark-inquiry-form-modal>
 		<x-form id="{{ $form_id }}"
 			salesforce_object="{{ $salesforce_object }}"
 			thank_you_page="{{ $thank_you_page }}"
@@ -37,10 +37,10 @@
 				@endif
 				<x-modal.body>
 					<x-form.row>
-						<x-form.field :validation="[ 'required' ]">
+						<x-form.field :validation="[ 'required', 'no-empty-spaces' ]">
 							<x-form.input type="text" label="First Name" placeholder="Enter First Name" name="fields[FirstName__c]" />
 						</x-form.field>
-						<x-form.field :validation="[ 'required' ]">
+						<x-form.field :validation="[ 'required', 'no-empty-spaces' ]">
 							<x-form.input type="text" label="Last Name" placeholder="Enter Last Name" name="fields[LastName__c]" />
 						</x-form.field>
 					</x-form.row>
@@ -447,5 +447,5 @@
 				</div>
 			</div>
 		@endif
-	</quark-inquiry-form>
+	</quark-inquiry-form-modal>
 </x-modal>

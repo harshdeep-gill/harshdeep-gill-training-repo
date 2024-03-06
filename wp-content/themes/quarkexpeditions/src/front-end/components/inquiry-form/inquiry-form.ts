@@ -1,7 +1,7 @@
 /**
  * Global variables.
  */
-const { customElements, HTMLElement } = window;
+const { HTMLElement } = window;
 
 /**
  * External dependency
@@ -9,9 +9,9 @@ const { customElements, HTMLElement } = window;
 import { TPFormFieldElement } from '@travelopia/web-components';
 
 /**
- * HeroForm Class.
+ * InquiryForm Class.
  */
-export class HeroForm extends HTMLElement {
+export default class InquiryForm extends HTMLElement {
 	/**
 	 * Properties.
 	 */
@@ -65,8 +65,3 @@ export class HeroForm extends HTMLElement {
 		e.stopImmediatePropagation();
 	}
 }
-
-/**
- * Initialize
- */
-customElements.define( 'quark-hero-form', HeroForm );

@@ -19,6 +19,8 @@ import * as iconColumns from './icon-columns';
 import * as collage from './collage';
 import * as reviewCards from './review-cards';
 import * as videoIconsCard from './video-icons-card';
+import * as seasonHighlights from './season-highlights';
+import * as simpleCards from './simple-cards';
 
 /**
  * Add blocks.
@@ -36,8 +38,9 @@ const blocks = [
 	iconColumns,
 	collage,
 	reviewCards,
-	iconColumns,
 	videoIconsCard,
+	seasonHighlights,
+	simpleCards,
 ];
 
 /**

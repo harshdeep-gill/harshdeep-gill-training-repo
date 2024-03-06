@@ -112,10 +112,15 @@
 	/**
 	 * Forms.
 	 */
-	--buttons-border-radius: 8px;
-	--forms-border-radius: 8px;
+	--buttons-border-radius: var(--border-radius);
+	--forms-border-radius: var(--border-radius);
 	--forms-border-color: var(--color-gray-20);
 	--forms-field-spacing: var(--spacing-4);
+
+	/**
+	 * Images
+	 */
+	--border-radius-images: var(--border-radius);
 
 	/**
 	 * Transitions
