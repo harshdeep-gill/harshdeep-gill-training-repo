@@ -1,0 +1,13 @@
+.media-content-card {
+	width: 100%;
+
+	&__image {
+		width: 100%;
+		aspect-ratio: calc(760/480);
+		background-color: var(--color-gray-30);
+	}
+
+	&__content-info-label {
+		padding-inline: var(--spacing-2);
+	}
+}
