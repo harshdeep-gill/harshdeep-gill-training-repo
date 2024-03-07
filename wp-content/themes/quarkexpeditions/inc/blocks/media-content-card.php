@@ -55,23 +55,21 @@ function render( ?string $content = null, array $block = [] ): null|string {
 		'content'    => [],
 	];
 
-	// Build attributes.
+	// Add Image Id.
 	$attributes['image_id'] = $block['attrs']['image']['id'];
 
-	// abcd.
-	if ( ! empty( $block['innerBlocks'] ) ) {
-		foreach ( $block['innerBlocks'] as $index => $inner_block ) {
-			foreach ( $inner_block['innerBlocks'] as $inner_inner_block ) {
-				if ( 'quark/media-content-info' !== $inner_inner_block['blockName'] ) {
-					$attributes['content'][ $index ]['slot'] = implode( '', array_map( 'render_block', $inner_block['innerBlocks'] ) );
-				} else {
-					$attributes['content'][ $index ]['content_info'][] = [
-						'label'  => $inner_inner_block['attrs']['label'] ?? '',
-						'value'  => $inner_inner_block['attrs']['value'] ?? '',
-						'url'    => ! empty( $inner_inner_block['attrs']['url']['url'] ) ? $inner_inner_block['attrs']['url']['url'] : '',
-						'target' => ! empty( $inner_inner_block['attrs']['url']['newWindow'] ) ? '_blank' : '',
-					];
-				}
+	// Loop through innerblocks and build attributes.
+	foreach ( $block['innerBlocks'] as $index => $inner_block ) {
+		foreach ( $inner_block['innerBlocks'] as $inner_inner_block ) {
+			if ( 'quark/media-content-info' !== $inner_inner_block['blockName'] ) {
+				$attributes['content'][ $index ]['slot'] = implode( '', array_map( 'render_block', $inner_block['innerBlocks'] ) );
+			} else {
+				$attributes['content'][ $index ]['content_info'][] = [
+					'label'  => $inner_inner_block['attrs']['label'] ?? '',
+					'value'  => $inner_inner_block['attrs']['value'] ?? '',
+					'url'    => ! empty( $inner_inner_block['attrs']['url']['url'] ) ? $inner_inner_block['attrs']['url']['url'] : '',
+					'target' => ! empty( $inner_inner_block['attrs']['url']['newWindow'] ) ? '_blank' : '',
+				];
 			}
 		}
 	}
