@@ -154,24 +154,11 @@
 	}
 
 	&__tag {
-		display: flex;
-		gap: var(--spacing-2);
-		padding: var(--spacing-2) var(--spacing-4);
-		align-items: center;
-		justify-content: center;
 		width: 100%;
-		background-color: var(--color-attention-100);
-		box-shadow: var(--shadow-4);
-		border-radius: var(--border-radius);
+		max-width: 350px;
 
 		@media screen and (min-width: grid-size(lg)) {
-			justify-content: flex-start;
 			max-width: fit-content;
-		}
-
-		&-icon {
-			height: 24px;
-			width: 24px;
 		}
 	}
 

@@ -43,7 +43,7 @@
 						<x-hero.title title="Antarctic Voyages" />
 						<x-hero.sub-title title="Choose the Leader in Polar Adventure" />
 					</x-hero.title-container>
-					<x-hero.tag icon="alert" text="Limited Cabins Available" />
+					<x-hero.tag background_color="attention-100" icon="alert" text="Limited Cabins Available" />
 					<x-hero.form-modal-cta>Get a Digital Brochure</x-hero.form-modal-cta>
 				</x-hero.left>
 				<x-hero.right>

@@ -127,3 +127,52 @@ function quark_get_wistia_id( string $wistia_url = '' ): string {
 	// Return the string.
 	return $url_path_components[1];
 }
+
+/**
+ * Returns the class to apply background color based on the color slug.
+ *
+ * @param string $color_slug The slug of the color.
+ *
+ * @return string
+ */
+function quark_get_background_color_class( string $color_slug = '' ): string {
+	// Valid color slugs.
+	$valid_color_slugs = [
+		'black',
+		'white',
+		'yellow',
+		'dark-blue',
+		'blue',
+		'magenta',
+		'gray-90',
+		'gray-80',
+		'gray-70',
+		'gray-60',
+		'gray-50',
+		'gray-40',
+		'gray-30',
+		'gray-20',
+		'gray-10',
+		'gray-5',
+		'success-100',
+		'success-50',
+		'success-10',
+		'attention-100',
+		'attention-50',
+		'attention-10',
+		'error-100',
+		'error-50',
+		'error-10',
+		'information-100',
+		'information-50',
+		'information-10',
+	];
+
+	// Check if color was passed.
+	if ( empty( $color_slug ) || ! in_array( $color_slug, $valid_color_slugs, true ) ) {
+		return '';
+	}
+
+	// Return the CSS class.
+	return sprintf( 'has-background--%s', $color_slug );
+}
