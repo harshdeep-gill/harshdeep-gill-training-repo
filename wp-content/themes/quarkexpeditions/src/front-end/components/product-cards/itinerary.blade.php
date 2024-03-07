@@ -11,7 +11,7 @@
 
 <div class="product-cards__itinerary">
 	<span class="product-cards__departure-date">
-		<x-escape :content="$departure_date" />
+		{{ __( 'Departing', 'qrk' ) }} <x-escape :content="$departure_date" />
 	</span>
 
 	<span class="product-cards__duration">

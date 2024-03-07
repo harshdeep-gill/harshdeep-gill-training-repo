@@ -11,5 +11,5 @@
 
 <div class="product-cards__reviews">
 	<x-rating-stars rating="{{ $review_rating }}" />
-	<span class="product-cards__reviews-text"><x-escape :content="$total_reviews" /></span>
+	<span class="product-cards__reviews-text"><x-escape :content="$total_reviews" /> {{ __( 'Reviews', 'qrk' ) }}</span>
 </div>

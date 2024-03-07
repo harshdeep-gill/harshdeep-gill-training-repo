@@ -906,10 +906,10 @@
 					<x-product-cards.badge-time text="Just Added" />
 				</x-product-cards.image>
 				<x-product-cards.reviews
-					total_reviews="19 Reviews"
+					total_reviews="19"
 					review_rating="5"
 				/>
-				<x-product-cards.itinerary departure_date="Departing May 20, 2024" duration="10" />
+				<x-product-cards.itinerary departure_date="May 20, 2024" duration="10" />
 				<x-product-cards.title title="Introduction to Spitsbergen" />
 				<x-product-cards.subtitle title="Fjords, Glaciers, and Wildlife of Svalbard" />
 				<x-product-cards.description>
@@ -921,7 +921,7 @@
 				/>
 				<x-product-cards.buttons :columns="1">
 					<x-button>Request a Quote</x-button>
-					<x-button appearance="outline" color="black">Learn More</x-button>
+					<x-button appearance="outline">Learn More</x-button>
 				</x-product-cards.buttons>
 			</x-product-cards.card>
 
@@ -930,16 +930,15 @@
 					image_id="36"
 					:is_immersive="false"
 				>
-					{{-- <x-product-cards.badge-cta text="Save 50%" /> --}}
 					<x-product-cards.badge-sold-out />
 					<x-product-cards.badge-time text="Just Added" />
 					<x-product-cards.info-ribbon>Additional 10% savings text</x-product-cards.info-ribbon>
 				</x-product-cards.image>
 				<x-product-cards.reviews
-					total_reviews="9999 Reviews"
+					total_reviews="9999"
 					review_rating="3"
 				/>
-				<x-product-cards.itinerary departure_date="Departing May 28, 2024" duration="12" />
+				<x-product-cards.itinerary departure_date="May 28, 2024" duration="12" />
 				<x-product-cards.title title="Spitsbergen Explorer" />
 				<x-product-cards.subtitle title="Wildlife Capital of the Arctic" />
 				<x-product-cards.description>
@@ -950,7 +949,7 @@
 					discounted_price="$7,361 USD"
 				/>
 				<x-product-cards.buttons :columns="2">
-					<x-button>Book: +1 (866) 220-1915</x-button>
+					<x-button icon="phone">Book: +1 (866) 220-1915</x-button>
 				</x-product-cards.buttons>
 			</x-product-cards.card>
 
@@ -964,10 +963,10 @@
 					<x-product-cards.info-ribbon>Additional 10% savings text</x-product-cards.info-ribbon>
 				</x-product-cards.image>
 				<x-product-cards.reviews
-					total_reviews="100 Reviews"
+					total_reviews="100"
 					review_rating="4"
 				/>
-				<x-product-cards.itinerary departure_date="Departing July 14, 2024" duration="11" />
+				<x-product-cards.itinerary departure_date="July 14, 2024" duration="11" />
 				<x-product-cards.title title="Gems of West Greenland" />
 				<x-product-cards.subtitle title="Fjords, Icebergs, and Culture" />
 				<x-product-cards.description>
@@ -979,7 +978,7 @@
 				/>
 				<x-product-cards.buttons :columns="2">
 					<x-button>Request a Quote</x-button>
-					<x-button appearance="outline" color="black">Learn More</x-button>
+					<x-button appearance="outline">Learn More</x-button>
 				</x-product-cards.buttons>
 			</x-product-cards.card>
 		</x-product-cards>
@@ -992,10 +991,10 @@
 					<x-product-cards.badge-cta text="Save 50%" />
 				</x-product-cards.image>
 				<x-product-cards.reviews
-					total_reviews="19 Reviews"
+					total_reviews="19"
 					review_rating="5"
 				/>
-				<x-product-cards.itinerary departure_date="Departing May 20, 2024" duration="10" />
+				<x-product-cards.itinerary departure_date="May 20, 2024" duration="10" />
 				<x-product-cards.title title="Introduction to Spitsbergen" />
 				<x-product-cards.subtitle title="Fjords, Glaciers, and Wildlife of Svalbard" />
 				<x-product-cards.description>
@@ -1007,7 +1006,7 @@
 				/>
 				<x-product-cards.buttons :columns="2">
 					<x-button>Request a Quote</x-button>
-					<x-button appearance="outline" color="black">Learn More</x-button>
+					<x-button appearance="outline">Learn More</x-button>
 				</x-product-cards.buttons>
 			</x-product-cards.card>
 
@@ -1020,10 +1019,10 @@
 					<x-product-cards.badge-time text="Just Added" />
 				</x-product-cards.image>
 				<x-product-cards.reviews
-					total_reviews="9999 Reviews"
+					total_reviews="9999"
 					review_rating="3"
 				/>
-				<x-product-cards.itinerary departure_date="Departing May 28, 2024" duration="12" />
+				<x-product-cards.itinerary departure_date="May 28, 2024" duration="12" />
 				<x-product-cards.title title="Spitsbergen Explorer" />
 				<x-product-cards.subtitle title="Wildlife Capital of the Arctic" />
 				<x-product-cards.description>
@@ -1034,7 +1033,7 @@
 					discounted_price="$7,361 USD"
 				/>
 				<x-product-cards.buttons :columns="2">
-					<x-button>Book: +1 (866) 220-1915</x-button>
+					<x-button icon="phone">Book: +1 (866) 220-1915</x-button>
 				</x-product-cards.buttons>
 			</x-product-cards.card>
 
@@ -1046,10 +1045,10 @@
 					<x-product-cards.badge-time text="Just Added" />
 				</x-product-cards.image>
 				<x-product-cards.reviews
-					total_reviews="100 Reviews"
+					total_reviews="100"
 					review_rating="4"
 				/>
-				<x-product-cards.itinerary departure_date="Departing July 14, 2024" duration="11" />
+				<x-product-cards.itinerary departure_date="July 14, 2024" duration="11" />
 				<x-product-cards.title title="Gems of West Greenland" />
 				<x-product-cards.subtitle title="Fjords, Icebergs, and Culture" />
 				<x-product-cards.description>
@@ -1061,7 +1060,7 @@
 				/>
 				<x-product-cards.buttons :columns="2">
 					<x-button>Request a Quote</x-button>
-					<x-button appearance="outline" color="black">Learn More</x-button>
+					<x-button appearance="outline">Learn More</x-button>
 				</x-product-cards.buttons>
 			</x-product-cards.card>
 		</x-product-cards>
