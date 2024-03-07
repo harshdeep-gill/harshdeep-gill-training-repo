@@ -27,7 +27,7 @@ function register_taxonomies() : void {
 	/**
 	 * Taxonomies configuration list.
 	 *
-	 * @var array $taxonomies_list Taxonomies list.
+	 * @var array<string, mixed> $taxonomies_list Taxonomies list.
 	 */
 	$taxonomies_list = [
 		'accommodation_types'            => [
@@ -209,7 +209,7 @@ function register_post_types() : void {
 	/**
 	 * Post types list.
 	 *
-	 * @var array<array> $post_types Post types list.
+	 * @var array<string, mixed> $post_types Post types list.
 	 */
 	$post_types = [
 		'adventure_option'            => [
