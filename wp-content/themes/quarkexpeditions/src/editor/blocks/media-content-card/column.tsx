@@ -48,7 +48,6 @@ export const settings: BlockConfiguration = {
 			allowedBlocks: [ 'core/paragraph', 'core/heading' ],
 		} );
 
-
 		// Return the block's markup.
 		return (
 			<div { ...innerBlocksProps } />

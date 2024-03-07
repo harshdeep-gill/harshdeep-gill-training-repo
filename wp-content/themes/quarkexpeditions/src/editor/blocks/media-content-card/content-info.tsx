@@ -82,7 +82,7 @@ export const settings: BlockConfiguration = {
 					<RichText
 						tagName="span"
 						className="media-content-card__content-info-label"
-						placeholder={ __( 'Enter label... ', 'qrk' ) }
+						placeholder={ __( 'Enter label… ', 'qrk' ) }
 						value={ attributes.label }
 						onChange={ ( label: string ) => setAttributes( { label } ) }
 						allowedFormats={ [] }
@@ -90,7 +90,7 @@ export const settings: BlockConfiguration = {
 					<RichText
 						tagName="strong"
 						className="media-content-card__content-info-value"
-						placeholder={ __( 'Enter value...', 'qrk' ) }
+						placeholder={ __( 'Enter value…', 'qrk' ) }
 						value={ attributes.value }
 						onChange={ ( value: string ) => setAttributes( { value } ) }
 						allowedFormats={ [] }

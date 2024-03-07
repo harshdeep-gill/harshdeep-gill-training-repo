@@ -86,33 +86,32 @@ export const settings: BlockConfiguration = {
 
 		// eslint-disable-next-line react-hooks/rules-of-hooks
 		const innerBlockProps = useInnerBlocksProps( {
-				className: classnames( 'media-content-card__content' ),
-			},
-			{
-				allowedBlocks: [ column.name ],
-				template: [
+			className: classnames( 'media-content-card__content' ),
+		},
+		{
+			allowedBlocks: [ column.name ],
+			template: [
+				[
+					column.name,
+					{},
 					[
-						column.name,
-						{},
-						[
-							[ 'core/heading', { placeholder: __( 'Write Heading...', 'qrk' ), level: 4 } ],
-							[ 'core/paragraph', { placeholder: __( 'Write content...', 'qrk' ) } ]
-						]
-					],
-					[
-						column.name,
-						{},
-						[
-							[ info.name ],
-							[ info.name ]
-						]
+						[ 'core/heading', { placeholder: __( 'Write Heading…', 'qrk' ), level: 4 } ],
+						[ 'core/paragraph', { placeholder: __( 'Write content…', 'qrk' ) } ],
 					],
 				],
+				[
+					column.name,
+					{},
+					[
+						[ info.name ],
+						[ info.name ],
+					],
+				],
+			],
 
-				// @ts-ignore.
-				orientation: 'horizontal',
-			},
-		);
+			// @ts-ignore.
+			orientation: 'horizontal',
+		} );
 
 		// Return the block's markup.
 		return (
@@ -134,13 +133,13 @@ export const settings: BlockConfiguration = {
 						/>
 					</PanelBody>
 				</InspectorControls>
-				<div {...blockProps} >
+				<div { ...blockProps } >
 					<figure className="media-content-card__image">
 						<Img
 							value={ attributes.image }
 						/>
 					</figure>
-					<div {...innerBlockProps} />
+					<div { ...innerBlockProps } />
 				</div>
 			</>
 		);
