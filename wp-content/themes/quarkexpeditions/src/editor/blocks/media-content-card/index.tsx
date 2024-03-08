@@ -95,7 +95,7 @@ export const settings: BlockConfiguration = {
 					column.name,
 					{},
 					[
-						[ 'core/heading', { placeholder: __( 'Write Heading…', 'qrk' ), level: 4 } ],
+						[ 'core/heading', { placeholder: __( 'Write Heading…', 'qrk' ) } ],
 						[ 'core/paragraph', { placeholder: __( 'Write content…', 'qrk' ) } ],
 					],
 				],
