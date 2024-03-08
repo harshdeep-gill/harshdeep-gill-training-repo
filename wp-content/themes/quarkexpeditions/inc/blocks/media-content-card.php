@@ -60,6 +60,9 @@ function render( ?string $content = null, array $block = [] ): null|string {
 
 	// Loop through innerblocks and build attributes.
 	foreach ( $block['innerBlocks'] as $index => $inner_block ) {
+		$attributes['content'][ $index ]['heading'] = $inner_block['attrs']['heading'] ?? '';
+
+		// Loop through inner inner blocks.
 		foreach ( $inner_block['innerBlocks'] as $inner_inner_block ) {
 			if ( 'quark/media-content-info' !== $inner_inner_block['blockName'] ) {
 				$attributes['content'][ $index ]['slot'] = implode( '', array_map( 'render_block', $inner_block['innerBlocks'] ) );

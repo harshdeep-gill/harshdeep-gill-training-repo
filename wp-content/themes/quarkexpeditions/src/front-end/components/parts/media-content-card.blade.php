@@ -14,7 +14,7 @@
 	<x-media-content-card.image :image_id="$image_id" />
 	<x-media-content-card.content>
 		@foreach ( $content as $column )
-			<x-media-content-card.content-column>
+			<x-media-content-card.content-column :heading="$column['heading']">
 				@if ( ! empty( $column['slot' ] ) )
 					<x-content :content="$column['slot']" />
 				@endif
