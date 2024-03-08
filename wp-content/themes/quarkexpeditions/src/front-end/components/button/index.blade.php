@@ -60,7 +60,7 @@
 			<span class="btn__content">
 		@endif
 
-			{{ $slot }}
+			{!! $slot !!}
 
 		{{-- Close - Added text wrapper if icon not empty --}}
 		@if ( ! empty( $icon ) )
@@ -94,7 +94,7 @@
 			<span class="btn__content">
 		@endif
 
-			{{ $slot }}
+			{!! $slot !!}
 
 		{{-- Close - Added text wrapper if icon not empty --}}
 		@if ( ! empty( $icon ) )

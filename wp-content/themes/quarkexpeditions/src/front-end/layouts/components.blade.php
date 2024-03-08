@@ -906,10 +906,10 @@
 					<x-product-cards.badge-time text="Just Added" />
 				</x-product-cards.image>
 				<x-product-cards.reviews
-					total_reviews="19"
+					total_reviews_text="19 Reviews"
 					review_rating="5"
 				/>
-				<x-product-cards.itinerary departure_date="May 20, 2024" duration="10" />
+				<x-product-cards.itinerary departure_date_text="Departing May 20, 2024" duration_text="10 Days" />
 				<x-product-cards.title title="Introduction to Spitsbergen" />
 				<x-product-cards.subtitle title="Fjords, Glaciers, and Wildlife of Svalbard" />
 				<x-product-cards.description>
@@ -935,10 +935,10 @@
 					<x-product-cards.info-ribbon>Additional 10% savings text</x-product-cards.info-ribbon>
 				</x-product-cards.image>
 				<x-product-cards.reviews
-					total_reviews="9999"
+					total_reviews_text="9999 Reviews"
 					review_rating="3"
 				/>
-				<x-product-cards.itinerary departure_date="May 28, 2024" duration="12" />
+				<x-product-cards.itinerary departure_date_text="Departing May 28, 2024" duration_text="12 Days" />
 				<x-product-cards.title title="Spitsbergen Explorer" />
 				<x-product-cards.subtitle title="Wildlife Capital of the Arctic" />
 				<x-product-cards.description>
@@ -963,10 +963,10 @@
 					<x-product-cards.info-ribbon>Additional 10% savings text</x-product-cards.info-ribbon>
 				</x-product-cards.image>
 				<x-product-cards.reviews
-					total_reviews="100"
+					total_reviews_text="100 Reviews"
 					review_rating="4"
 				/>
-				<x-product-cards.itinerary departure_date="July 14, 2024" duration="11" />
+				<x-product-cards.itinerary departure_date_text="Departing July 14, 2024" duration_text="11 Days" />
 				<x-product-cards.title title="Gems of West Greenland" />
 				<x-product-cards.subtitle title="Fjords, Icebergs, and Culture" />
 				<x-product-cards.description>
@@ -991,10 +991,10 @@
 					<x-product-cards.badge-cta text="Save 50%" />
 				</x-product-cards.image>
 				<x-product-cards.reviews
-					total_reviews="19"
+					total_reviews_text="19 Reviews"
 					review_rating="5"
 				/>
-				<x-product-cards.itinerary departure_date="May 20, 2024" duration="10" />
+				<x-product-cards.itinerary departure_date_text="Departing May 20, 2024" duration_text="10 Days" />
 				<x-product-cards.title title="Introduction to Spitsbergen" />
 				<x-product-cards.subtitle title="Fjords, Glaciers, and Wildlife of Svalbard" />
 				<x-product-cards.description>
@@ -1019,10 +1019,10 @@
 					<x-product-cards.badge-time text="Just Added" />
 				</x-product-cards.image>
 				<x-product-cards.reviews
-					total_reviews="9999"
+					total_reviews_text="9999 Reviews"
 					review_rating="3"
 				/>
-				<x-product-cards.itinerary departure_date="May 28, 2024" duration="12" />
+				<x-product-cards.itinerary departure_date_text="Departing May 28, 2024" duration_text="12 Days" />
 				<x-product-cards.title title="Spitsbergen Explorer" />
 				<x-product-cards.subtitle title="Wildlife Capital of the Arctic" />
 				<x-product-cards.description>
@@ -1045,10 +1045,10 @@
 					<x-product-cards.badge-time text="Just Added" />
 				</x-product-cards.image>
 				<x-product-cards.reviews
-					total_reviews="100"
+					total_reviews_text="100 Reviews"
 					review_rating="4"
 				/>
-				<x-product-cards.itinerary departure_date="July 14, 2024" duration="11" />
+				<x-product-cards.itinerary departure_date_text="Departing July 14, 2024" duration_text="11 Days" />
 				<x-product-cards.title title="Gems of West Greenland" />
 				<x-product-cards.subtitle title="Fjords, Icebergs, and Culture" />
 				<x-product-cards.description>

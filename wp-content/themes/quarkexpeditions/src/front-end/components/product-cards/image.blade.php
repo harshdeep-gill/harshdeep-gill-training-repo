@@ -25,7 +25,7 @@
 	$classes = [ 'product-cards__image' ];
 
 	// Check if the `is_immersive` is set.
-	if ( ! empty( $is_immersive) && true === boolval( $is_immersive ) ) {
+	if ( ! empty( $is_immersive) && true === $is_immersive ) {
 		$classes[] = 'product-cards__image-immersive';
 	}
 @endphp

@@ -1,5 +1,5 @@
 /**
- * Product Cards
+ * Product Cards.
  */
 @import "../../scss";
 
@@ -14,15 +14,6 @@
 		flex-direction: column;
 		overflow: hidden;
 		padding: var(--spacing-5);
-		position: relative;
-	}
-
-	&__link {
-		position: absolute;
-		left: 0;
-		top: 0;
-		width: 100%;
-		height: 100%;
 	}
 
 	&__info-ribbon {
@@ -162,8 +153,6 @@
 		display: flex;
 		flex-direction: column;
 		gap: var(--spacing-3);
-		position: relative;
-		z-index: 1;
 
 		&--cols-2 {
 
