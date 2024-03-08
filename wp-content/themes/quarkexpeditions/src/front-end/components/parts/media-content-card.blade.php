@@ -1,8 +1,8 @@
 @props( [
 	'is_compact' => false,
 	'image_id'   => 0,
-	'content'    => '',
-])
+	'content'    => [],
+] )
 
 @php
 	if ( empty( $image_id ) || empty( $content ) ) {
@@ -16,10 +16,10 @@
 		@foreach ( $content as $column )
 			<x-media-content-card.content-column>
 				@if ( ! empty( $column['slot' ] ) )
-					{!! $column['slot'] !!}
+					<x-content :content="$column['slot']" />
 				@endif
 				@if ( ! empty( $column['content_info' ] ) )
-					@foreach ($column['content_info' ] as $info)
+					@foreach ( $column['content_info' ] as $info )
 						<x-media-content-card.content-info
 							:label="$info['label']"
 							:value="$info['value']"

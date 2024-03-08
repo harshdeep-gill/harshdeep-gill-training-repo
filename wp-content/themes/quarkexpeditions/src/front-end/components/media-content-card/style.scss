@@ -91,7 +91,6 @@
 
 	// Compact Mode.
 	&--compact {
-		min-width: 312px;
 		max-width: 360px;
 
 		#{$self}__content {
