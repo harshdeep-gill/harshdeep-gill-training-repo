@@ -1,30 +1,4 @@
 <x-layout>
-	<x-component-demo :keys="[ 'header', 'hero-immersive' ]">
-		<x-lp-header
-			tc_image_id="18"
-			phone_number="+1-877-585-1235"
-			cta_text="Talk to a Polar Expert"
-		/>
-	</x-component-demo>
-
-	<x-component-demo :keys="[ 'hero', 'hero-immersive' ]">
-		<x-hero :immersive="true">
-			<x-hero.image image_id="29" />
-			<x-hero.content>
-				<x-hero.title title="Antarctic Voyages" />
-				<x-hero.sub-title title="When you venture into the untouched wilds of the Arctic and Antarctic, you need a great team around you. And we have the greatest. You’ll join elite guides trained at Quark Academy — which surpasses every standard imaginable for safety and preparedness in the Polar Regions—and interact directly with world-class polar experts. Our philosophy? The team that explores together, discovers more together." />
-			</x-hero.content>
-			<x-hero.form>
-				<x-inquiry-form
-					form_id="inquiry-form"
-					title="Almost there!"
-					subtitle="We just need a bit more info to help personalize your itinerary."
-					salesforce_object="Webform_Landing_Page__c"
-				/>
-			</x-hero.form>
-		</x-hero>
-	</x-component-demo>
-
 	<x-component-demo :keys="[ 'header', 'hero-refactor' ]">
 		<x-lp-header
 			tc_image_id="18"
@@ -48,12 +22,7 @@
 				</x-hero.left>
 				<x-hero.right>
 					<x-hero.form>
-						<x-inquiry-form
-							form_id="inquiry-form"
-							title="Almost there!"
-							subtitle="We just need a bit more info to help personalize your itinerary."
-							salesforce_object="Webform_Landing_Page__c"
-						/>
+						<x-inquiry-form />
 					</x-hero.form>
 				</x-hero.right>
 			</x-hero.content>
@@ -112,6 +81,7 @@
 			</x-review-cards.card>
 		</x-review-cards>
 	</x-component-demo>
+
 	<x-component-demo :keys="[ 'global', 'color-palette' ]">
 		<x-section title="Color Palette" heading_level="2">
 			<x-global-styles-demo.color-palette />
@@ -237,35 +207,6 @@
 			phone_number="+1-877-585-1235"
 			cta_text="Talk to a Polar Expert"
 		/>
-	</x-component-demo>
-
-	<x-component-demo :keys="[ 'hero' ]">
-		<x-hero>
-			<x-hero.image image_id="26" />
-			<x-hero.content>
-				<x-hero.title title="Antarctic Voyages" />
-				<x-hero.sub-title title="Choose the Leader in Polar Adventure" />
-			</x-hero.content>
-			<x-hero.form>
-				<x-inquiry-form
-					form_id="inquiry-form"
-					title="Almost there!"
-					subtitle="We just need a bit more info to help personalize your itinerary."
-					salesforce_object="Webform_Landing_Page__c"
-				/>
-			</x-hero.form>
-		</x-hero>
-	</x-component-demo>
-
-	<x-component-demo :keys="[ 'hero', 'hero-new-cta' ]">
-		<x-hero layout="column" size="big">
-			<x-hero.image image_id="26" />
-			<x-hero.content>
-				<x-hero.title title="Rethink your bucket list.<br/>Think an Antarctic Expedition." />
-				<x-hero.sub-title title="Starting from $12,908" />
-			</x-hero.content>
-			<x-hero.form-modal-cta>Get a Digital Brochure</x-hero.form-modal-cta>
-		</x-hero>
 	</x-component-demo>
 
 	<x-component-demo :keys="[ 'modal' ]">

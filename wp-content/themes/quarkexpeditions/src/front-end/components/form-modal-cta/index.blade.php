@@ -24,6 +24,8 @@
 
 @switch( $form_id )
 	@case( 'inquiry-form' )
-		<x-inquiry-form.modal thank_you_page="{{ $thank_you_page }}" />
+		<x-once :id="$modal_id">
+			<x-inquiry-form.modal thank_you_page="{{ $thank_you_page }}" />
+		</x-once>
 		@break
 @endswitch

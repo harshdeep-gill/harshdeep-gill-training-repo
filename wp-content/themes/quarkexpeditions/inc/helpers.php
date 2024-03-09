@@ -176,3 +176,26 @@ function quark_get_background_color_class( string $color_slug = '' ): string {
 	// Return the CSS class.
 	return sprintf( 'has-background--%s', $color_slug );
 }
+
+/**
+ * Checks if the component with the given ID has been rendered before.
+ *
+ * @param  string $id The ID of the component to check.
+ *
+ * @return boolean true if it has been rendered, false otherwise.
+ */
+function quark_has_this_rendered_once( string $id = '' ): bool {
+	// A record for rendered IDs.
+	static $has_rendered_once = [];
+
+	// Check if it has already rendered.
+	if ( empty( $id ) || isset( $has_rendered_once[ $id ] ) ) {
+		return true;
+	}
+
+	// Set the record to true.
+	$has_rendered_once[ $id ] = true;
+
+	// It has not been rendered before.
+	return false;
+}
