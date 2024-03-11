@@ -34,14 +34,15 @@ export const settings: BlockConfiguration = {
 		alignWide: false,
 		className: false,
 		html: false,
-		customClassName: false,
+		customClassName: true,
 	},
 	edit( { className }: BlockEditAttributes ) : JSX.Element {
 		// eslint-disable-next-line react-hooks/rules-of-hooks
-		const innerBlockProps = useInnerBlocksProps(
+		const blockProps = useBlockProps( { className: classnames( className, 'form-modal-cta' ) } );
 
-			// eslint-disable-next-line react-hooks/rules-of-hooks
-			{ ...useBlockProps(), className: classnames( className, 'form-modal-cta' ) },
+		// eslint-disable-next-line react-hooks/rules-of-hooks
+		const innerBlockProps = useInnerBlocksProps(
+			{ ...blockProps },
 			{
 				allowedBlocks: [ 'core/buttons' ],
 				template: [ [ 'core/buttons' ] ],
