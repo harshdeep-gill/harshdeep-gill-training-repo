@@ -13,7 +13,7 @@ import {
  * Internal dependencies.
  */
 import * as formModalCta from '../form-modal-cta';
-import * as iconBadge from '../icon-bade';
+import * as iconBadge from '../icon-badge';
 
 /**
  * External dependencies.
