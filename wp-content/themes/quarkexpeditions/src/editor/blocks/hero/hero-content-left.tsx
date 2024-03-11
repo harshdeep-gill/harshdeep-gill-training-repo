@@ -2,7 +2,7 @@
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-import { BlockConfiguration } from '@wordpress/blocks';
+import { BlockConfiguration, registerBlockType } from '@wordpress/blocks';
 import {
 	useBlockProps,
 	useInnerBlocksProps,
@@ -19,6 +19,16 @@ import * as iconBadge from '../icon-badge';
  * External dependencies.
  */
 import classnames from 'classnames';
+
+/**
+ * Children blocks
+ */
+import * as overline from './overline';
+
+/**
+ * Register children blocks
+ */
+registerBlockType( overline.name, overline.settings );
 
 /**
  * Block name.
@@ -57,8 +67,9 @@ export const settings: BlockConfiguration = {
 		const innerBlockProps = useInnerBlocksProps(
 			{ ...blockProps },
 			{
-				allowedBlocks: [ iconBadge.name, formModalCta.name ],
+				allowedBlocks: [ iconBadge.name, formModalCta.name, overline.name ],
 				template: [
+					[ overline.name ],
 					[ iconBadge.name, { className: 'hero__tag' } ],
 					[ formModalCta.name, { className: 'hero__form-modal-cta' } ],
 				],
