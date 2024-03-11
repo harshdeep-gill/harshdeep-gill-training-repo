@@ -79,7 +79,7 @@ export const settings: BlockConfiguration = {
 		textAlign: {
 			type: 'string',
 			default: '',
-		}
+		},
 	},
 	supports: {
 		alignWide: false,
