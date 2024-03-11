@@ -15,12 +15,11 @@
 	&--immersive {
 		$image_bleed_top: 112px;
 		$image_bleed_bottom: 192px;
-		$image_bleed_bottom_mobile: 96px;
 
 		@supports (selector(:has(*))) {
 			padding-top: calc(var(--spacing-8) + $image_bleed_top);
-			padding-bottom: calc(var(--spacing-8) + $image_bleed_bottom_mobile);
-			margin-bottom: -$image_bleed_bottom_mobile;
+			padding-bottom: calc(var(--spacing-8) + ($image_bleed_bottom / 2));
+			margin-bottom: calc(-1 * $image-bleed-bottom / 2);
 
 			@media screen and (min-width: grid-size(lg)) {
 				padding-top: calc(var(--spacing-9) + $image_bleed_top);
