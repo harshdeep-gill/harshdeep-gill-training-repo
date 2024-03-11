@@ -22,6 +22,7 @@ import * as videoIconsCard from './video-icons-card';
 import * as seasonHighlights from './season-highlights';
 import * as simpleCards from './simple-cards';
 import * as iconBadge from './icon-bade';
+import * as formModalCta from './form-modal-cta';
 
 /**
  * Add blocks.
@@ -43,6 +44,7 @@ const blocks = [
 	seasonHighlights,
 	simpleCards,
 	iconBadge,
+	formModalCta,
 ];
 
 /**

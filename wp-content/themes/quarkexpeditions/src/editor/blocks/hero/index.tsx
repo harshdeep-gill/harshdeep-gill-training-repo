@@ -2,7 +2,7 @@
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-import { BlockConfiguration, registerBlockType } from '@wordpress/blocks';
+import { BlockConfiguration } from '@wordpress/blocks';
 import {
 	PanelBody,
 	ToggleControl,
@@ -25,6 +25,7 @@ import './editor.scss';
  * Internal dependencies.
  */
 import Section from '../../components/section';
+import * as formCta from '../form-modal-cta';
 
 /**
  * External dependencies.
@@ -39,16 +40,6 @@ const {
 	ImageControl,
 	Img,
 } = gumponents.components;
-
-/**
- * Child block.
- */
-import * as formCta from './form-cta';
-
-/**
- * Register child block.
- */
-registerBlockType( formCta.name, formCta.settings );
 
 /**
  * Block name.
