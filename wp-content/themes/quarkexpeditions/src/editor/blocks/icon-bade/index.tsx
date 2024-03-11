@@ -104,7 +104,7 @@ export const settings: BlockConfiguration = {
 		anchor: true,
 		className: false,
 		html: false,
-		customClassName: false,
+		customClassName: true,
 	},
 	edit( { className, attributes, setAttributes }: BlockEditAttributes ): JSX.Element {
 		// eslint-disable-next-line react-hooks/rules-of-hooks
