@@ -5,6 +5,7 @@ import { __ } from '@wordpress/i18n';
 import { BlockConfiguration, registerBlockType } from '@wordpress/blocks';
 import {
 	PanelBody,
+	SelectControl,
 	ToggleControl,
 } from '@wordpress/components';
 import {
@@ -75,6 +76,10 @@ export const settings: BlockConfiguration = {
 			type: 'boolean',
 			default: false,
 		},
+		textAlign: {
+			type: 'string',
+			default: '',
+		}
 	},
 	supports: {
 		alignWide: false,
@@ -119,6 +124,16 @@ export const settings: BlockConfiguration = {
 							checked={ attributes.isImmersive }
 							help={ __( 'Is this hero immersive?', 'qrk' ) }
 							onChange={ ( isImmersive: boolean ) => setAttributes( { isImmersive } ) }
+						/>
+						<SelectControl
+							label={ __( 'Text Alignment', 'qrk' ) }
+							help={ __( 'Select the text alignment', 'qrk' ) }
+							value={ attributes.textAlign }
+							options={ [
+								{ label: __( 'Left', 'qrk' ), value: 'left' },
+								{ label: __( 'Center', 'qrk' ), value: 'center' },
+							] }
+							onChange={ ( textAlign: string ) => setAttributes( { textAlign } ) }
 						/>
 					</PanelBody>
 				</InspectorControls>
