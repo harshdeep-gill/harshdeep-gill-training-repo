@@ -24,8 +24,8 @@
 @endphp
 
 <div @class( $classes )>
-	<span class="icon-badge-icon">
+	<span class="icon-badge__icon">
 		<x-svg name="{{ $icon }}" />
 	</span>
-	<span class="icon-badge-description"><x-escape :content="$text" /></span>
+	<span class="icon-badge__description"><x-escape :content="$text" /></span>
 </div>
