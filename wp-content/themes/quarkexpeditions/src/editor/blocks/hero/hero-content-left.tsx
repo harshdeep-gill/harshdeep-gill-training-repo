@@ -24,11 +24,13 @@ import classnames from 'classnames';
  * Children blocks
  */
 import * as overline from './overline';
+import * as heroTitle from './hero-title';
 
 /**
  * Register children blocks
  */
 registerBlockType( overline.name, overline.settings );
+registerBlockType( heroTitle.name, heroTitle.settings );
 
 /**
  * Block name.
@@ -67,9 +69,10 @@ export const settings: BlockConfiguration = {
 		const innerBlockProps = useInnerBlocksProps(
 			{ ...blockProps },
 			{
-				allowedBlocks: [ iconBadge.name, formModalCta.name, overline.name ],
+				allowedBlocks: [ iconBadge.name, formModalCta.name, overline.name, heroTitle.name ],
 				template: [
 					[ overline.name ],
+					[ heroTitle.name ],
 					[ iconBadge.name, { className: 'hero__tag' } ],
 					[ formModalCta.name, { className: 'hero__form-modal-cta' } ],
 				],

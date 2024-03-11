@@ -18,6 +18,7 @@ import {
  * Styles.
  */
 import '../../../front-end/components/hero/style.scss';
+import './editor.scss';
 
 /**
  * Internal dependencies.
