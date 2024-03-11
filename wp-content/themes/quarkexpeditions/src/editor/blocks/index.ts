@@ -21,7 +21,7 @@ import * as reviewCards from './review-cards';
 import * as videoIconsCard from './video-icons-card';
 import * as seasonHighlights from './season-highlights';
 import * as simpleCards from './simple-cards';
-import * as iconBadge from './icon-bade';
+import * as iconBadge from './icon-badge';
 
 /**
  * Add blocks.
