@@ -16,7 +16,7 @@
 		$background_color_class = 'has-background--attention-100';
 	}
 
-	$classes = [ 'alert', $background_color_class, $class ];
+	$classes = [ 'icon-badge', $background_color_class, $class ];
 
 	if ( empty( $icon ) ) {
 		$icon = 'alert';
@@ -24,8 +24,8 @@
 @endphp
 
 <div @class( $classes )>
-	<span class="alert-icon">
+	<span class="icon-badge-icon">
 		<x-svg name="{{ $icon }}" />
 	</span>
-	<span class="alert-description"><x-escape :content="$text" /></span>
+	<span class="icon-badge-description"><x-escape :content="$text" /></span>
 </div>
