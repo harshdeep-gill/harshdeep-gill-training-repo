@@ -46,11 +46,7 @@ function render( ?string $content = null, array $block = [] ): null|string {
 
 	// Build attributes.
 	$attributes = [
-		'salesforce_object' => 'Webform_Landing_Page__c',
-		'title'             => 'Almost there!',
-		'form_id'           => 'inquiry-form',
-		'subtitle'          => 'We just need a bit more info to help personalize your itinerary.',
-		'thank_you_page'    => $block['attrs']['thankYouPageUrl'] ?? '',
+		'thank_you_page' => $block['attrs']['thankYouPageUrl'] ?? '',
 	];
 
 	// Return rendered component.
