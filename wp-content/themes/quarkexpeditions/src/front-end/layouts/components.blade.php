@@ -523,6 +523,59 @@
 		</x-section>
 	</x-component-demo>
 
+	<x-component-demo :keys="['media-content-card']">
+			<x-section title="Media Content Card 2-column">
+				<x-media-content-card>
+					<x-media-content-card.image image_id="33"/>
+					<x-media-content-card.content>
+						<x-media-content-card.content-column>
+							<h4>Start Your Adventure</h4>
+							<p>Call us and one of our Polar Travel Advisors will secure the offer for you.</p>
+						</x-media-content-card.content-column>
+						<x-media-content-card.content-column>
+							<x-media-content-card.content-info
+								label="North America (Toll Free)"
+								value="+1 (866) 257-3345"
+								url="tel:+1 (866) 257-3345"
+							/>
+							<x-media-content-card.content-info
+								label="U.K. (Toll Free)"
+								value="0808 134 9986"
+								url="tel:0808 134 9986"
+							/>
+							<x-media-content-card.content-info
+								label="Australia (Toll Free)"
+								value="+61 1800 959 390"
+								url="tel:+61 1800 959 390"
+							/>
+							<x-media-content-card.content-info
+								label="France (Toll Free)"
+								value="08 05 08 66 46"
+								url="tel:08 05 08 66 46"
+							/>
+						</x-media-content-card.content-column>
+					</x-media-content-card.content>
+				</x-media-content-card>
+			</x-section>
+			<x-section title="Media Content Card 1-column">
+				<x-media-content-card :is_compact="true" >
+					<x-media-content-card.image image_id="33"/>
+					<x-media-content-card.content>
+						<x-media-content-card.content-column>
+							<h4>Start Your Adventure</h4>
+							<p>Call us and one of our Polar Travel Advisors will secure the offer for you.</p>
+						</x-media-content-card.content-column>
+						<x-media-content-card.content-column>
+							<x-media-content-card.content-info label="North America (Toll Free)" value="+1 (866) 257-3345" />
+							<x-media-content-card.content-info label="U.K. (Toll Free)" value="0808 134 9986" />
+							<x-media-content-card.content-info label="Australia (Toll Free)" value="+61 1800 959 390" />
+							<x-media-content-card.content-info label="France (Toll Free)" value="08 05 08 66 46" />
+						</x-media-content-card.content-column>
+					</x-media-content-card.content>
+				</x-media-content-card>
+			</x-section>
+	</x-component-demo>
+
 	<x-component-demo :keys="[ 'collage' ]">
 		<x-collage name="lp-collage">
 			<x-collage.video

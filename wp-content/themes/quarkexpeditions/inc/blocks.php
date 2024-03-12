@@ -43,6 +43,7 @@ function register_blocks(): void {
 		'SimpleCards'      => 'simple-cards.php',
 		'IconBadge'        => 'icon-badge.php',
 		'FormModalCta'     => 'form-modal-cta.php',
+		'MediaContentCard' => 'media-content-card.php',
 	];
 
 	// Register blocks.
