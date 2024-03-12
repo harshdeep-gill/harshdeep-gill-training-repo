@@ -225,7 +225,7 @@ function reusable_blocks_menu_item(): void {
  *
  * All front-end data goes through this function.
  *
- * @param bool $force Force uncached version.
+ * @param bool $force Force uncached version. Use with caution!.
  *
  * @return array{
  *     layout: string,
@@ -244,7 +244,7 @@ function get_front_end_data( bool $force = false ): array {
 
 	// Check if this function is already active.
 	// This is to avoid recursively calling this function.
-	if ( $active ) {
+	if ( false === $force && $active ) {
 		return [
 			'layout' => '',
 			'data'   => [],
