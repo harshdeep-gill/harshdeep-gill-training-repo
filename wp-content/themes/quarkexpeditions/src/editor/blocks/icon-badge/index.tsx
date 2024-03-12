@@ -22,12 +22,12 @@ import '../../../front-end/components/icon-badge/style.scss';
  * Internal dependencies.
  */
 import icons from '../icons';
+import { getAllBackgroundColors } from '../utils';
 
 /**
  * External dependencies.
  */
 import classnames from 'classnames';
-import { quarkGetBackgroundColors } from '../utils';
 const { gumponents } = window;
 
 /**
@@ -43,7 +43,7 @@ export const name: string = 'quark/icon-badge';
 /**
  * Background colors.
  */
-export const colors = quarkGetBackgroundColors();
+export const colors = getAllBackgroundColors();
 
 /**
  * Block configuration settings.

@@ -6,7 +6,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Returns the background colors available.
  */
-export function quarkGetBackgroundColors(): { [key: string]: string }[] {
+export function getAllBackgroundColors(): { [key: string]: string }[] {
 	// Return the values.
 	return [
 		{ name: __( 'Black', 'qrk' ), color: '#232933', slug: 'black' },
