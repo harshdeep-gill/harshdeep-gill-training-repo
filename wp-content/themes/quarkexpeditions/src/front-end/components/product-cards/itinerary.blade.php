@@ -1,20 +1,20 @@
 @props( [
-	'departure_date_text' => '',
-	'duration_text'       => '',
+	'departure_date' => '',
+	'duration'       => '',
 ] )
 
 @php
-	if ( empty( $departure_date_text ) || empty( $duration_text ) ) {
+	if ( empty( $departure_date ) || empty( $duration ) ) {
 		return;
 	}
 @endphp
 
 <div class="product-cards__itinerary">
 	<span class="product-cards__departure-date-text">
-		<x-escape :content="$departure_date_text" />
+		<x-escape :content="$departure_date" />
 	</span>
 
 	<span class="product-cards__duration-text">
-		| {{ $duration_text }}
+		| {{ $duration }}
 	</span>
 </div>
