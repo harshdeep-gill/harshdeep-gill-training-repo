@@ -107,7 +107,7 @@
 
 		@media screen and (min-width: grid-size(lg)) {
 			flex-direction: row;
-			gap: 128px;
+			gap: calc(2 * var(--spacing-8));
 			justify-content: space-between;
 			align-items: flex-start;
 		}
