@@ -2,7 +2,7 @@
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-import { BlockConfiguration, registerBlockType } from '@wordpress/blocks';
+import { BlockConfiguration } from '@wordpress/blocks';
 import {
 	InnerBlocks,
 	useBlockProps,
@@ -24,11 +24,6 @@ import classnames from 'classnames';
  * Child block.
  */
 import * as info from './content-info';
-
-/**
- * Register child block.
- */
-registerBlockType( info.name, info.settings );
 
 /**
  * Block name.

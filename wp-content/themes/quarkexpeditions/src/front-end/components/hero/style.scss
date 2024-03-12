@@ -156,7 +156,8 @@
 		font-weight: var(--font-weight-bold);
 	}
 
-	&__tag {
+	&__tag,
+	.icon-badge {
 		width: 100%;
 		max-width: 350px;
 

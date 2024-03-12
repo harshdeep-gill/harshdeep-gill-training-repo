@@ -58,6 +58,7 @@ export const settings: BlockConfiguration = {
 			{
 				allowedBlocks: [ inquiryForm.name ],
 				template: [ [ inquiryForm.name ] ],
+				templateLock: 'all',
 			}
 		);
 
