@@ -4,5 +4,5 @@
 	}
 @endphp
 <div class="hero__overline overline">
-	<x-escape :content="$slot"/>
+	<x-content :content="$slot"/>
 </div>
