@@ -1,5 +1,5 @@
 @props( [
-	'heading' => '',
+	'title' => '',
 ] )
 
 @php
@@ -9,8 +9,8 @@
 @endphp
 
 <div class="media-content-card__content-column">
-	@if ( ! empty( $heading ) )
-		<p class="h4"><x-content :content="$heading" /></p>
+	@if ( ! empty( $title ) )
+		<p class="h4"><x-escape :content="$title" /></p>
 	@endif
 	{!! $slot !!}
 </div>
