@@ -30,10 +30,6 @@ export const settings: BlockConfiguration = {
 	category: 'layout',
 	keywords: [ __( 'price', 'qrk' ) ],
 	attributes: {
-		priceTitle: {
-			type: 'string',
-			default: '',
-		},
 		priceNow: {
 			type: 'string',
 			default: '',
@@ -58,14 +54,7 @@ export const settings: BlockConfiguration = {
 		// Return the block's markup.
 		return (
 			<div { ...blockProps }>
-				<RichText
-					tagName='div'
-					className='product-cards__price-title'
-					placeholder={ __( 'Enter Price Title', 'qrk' ) }
-					value={ attributes.priceTitle }
-					onChange={ ( priceTitle: string ) => setAttributes( { priceTitle } ) }
-					allowedFormats={ [] }
-				/>
+				<div className='product-cards__price-title'>{ __( 'Sale Price From', 'qrk' ) }</div>
 				<RichText
 					tagName='strong'
 					className='product-cards__price product-cards__price-now h4'
