@@ -225,7 +225,7 @@ function reusable_blocks_menu_item(): void {
  *
  * All front-end data goes through this function.
  *
- * @param bool $force Force uncached version.
+ * @param bool $force Force uncached version. Use with caution!.
  *
  * @return array{
  *     layout: string,
@@ -235,11 +235,24 @@ function reusable_blocks_menu_item(): void {
 function get_front_end_data( bool $force = false ): array {
 	// Set cached version.
 	static $template_data = null;
+	static $active        = false;
 
 	// Check for cached version.
 	if ( false === $force && null !== $template_data ) {
 		return $template_data;
 	}
+
+	// Check if this function is already active.
+	// This is to avoid recursively calling this function.
+	if ( false === $force && $active ) {
+		return [
+			'layout' => '',
+			'data'   => [],
+		];
+	}
+
+	// Function not active, mark it as such.
+	$active = true;
 
 	// Get front-end data.
 	$template_data = (array) apply_filters(

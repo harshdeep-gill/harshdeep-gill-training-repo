@@ -17,7 +17,7 @@
 						<x-hero.title title="Antarctic Voyages" />
 						<x-hero.sub-title title="Choose the Leader in Polar Adventure" />
 					</x-hero.title-container>
-					<x-hero.tag background_color="attention-100" icon="alert" text="Limited Cabins Available" />
+					<x-icon-badge class="hero__tag" background_color="attention-100" icon="alert" text="Limited Cabins Available" />
 					<x-hero.form-modal-cta>Get a Digital Brochure</x-hero.form-modal-cta>
 				</x-hero.left>
 				<x-hero.right>
@@ -80,6 +80,25 @@
 				<p>The whole experience was great. The World Explorer is a beautiful and very comfortable ship, the food was amazing. And of course the landings and cruising the area was a once in a lifetime experience. Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever.</p>
 			</x-review-cards.card>
 		</x-review-cards>
+	</x-component-demo>
+
+	<x-component-demo :keys="[ 'hero', 'hero-refactor' ]">
+		<x-hero text_align="center" :immersive="false">
+			<x-hero.image image_id="26" />
+			<x-hero.content>
+				<x-hero.left>
+					<x-hero.title-container>
+						<x-hero.overline>Antarctic 2024</x-hero.overline>
+						<x-hero.title title="Antarctic Voyages" />
+						<x-hero.sub-title title="Choose the Leader in Polar Adventure" />
+					</x-hero.title-container>
+					<x-icon-badge class="hero__tag" background_color="attention-100" icon="alert" text="Limited Cabins Available" />
+					<x-hero.form-modal-cta>Get a Digital Brochure</x-hero.form-modal-cta>
+				</x-hero.left>
+				<x-hero.right>
+				</x-hero.right>
+			</x-hero.content>
+		</x-hero>
 	</x-component-demo>
 
 	<x-component-demo :keys="[ 'global', 'color-palette' ]">
