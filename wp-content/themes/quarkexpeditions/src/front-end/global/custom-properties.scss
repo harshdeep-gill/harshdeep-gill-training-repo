@@ -67,6 +67,7 @@
 	/**
 	 * Colors and Borders.
 	 */
+	--border-small: 4px;
 	--border-radius: 8px;
 	--border-radius-large: 16px;
 
@@ -122,6 +123,11 @@
 	 * Images
 	 */
 	--border-radius-images: var(--border-radius);
+
+	/**
+	 * Misc
+	 */
+	--scale-size: 1.03;
 
 	/**
 	 * Transitions
