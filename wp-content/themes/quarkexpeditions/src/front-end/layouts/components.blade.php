@@ -973,8 +973,8 @@
 					discounted_price="$6,171 USD"
 				/>
 				<x-product-cards.buttons :columns="1">
-					<x-button>Request a Quote</x-button>
-					<x-button appearance="outline">Learn More</x-button>
+					<x-button size="big">Request a Quote</x-button>
+					<x-button size="big" appearance="outline">Learn More</x-button>
 				</x-product-cards.buttons>
 			</x-product-cards.card>
 
@@ -1002,7 +1002,7 @@
 					discounted_price="$7,361 USD"
 				/>
 				<x-product-cards.buttons :columns="2">
-					<x-button icon="phone">Book: +1 (866) 220-1915</x-button>
+					<x-button size="big" icon="phone">Book: +1 (866) 220-1915</x-button>
 				</x-product-cards.buttons>
 			</x-product-cards.card>
 
@@ -1030,8 +1030,8 @@
 					discounted_price="$8,571 USD"
 				/>
 				<x-product-cards.buttons :columns="2">
-					<x-button>Request a Quote</x-button>
-					<x-button appearance="outline">Learn More</x-button>
+					<x-button size="big">Request a Quote</x-button>
+					<x-button size="big" appearance="outline">Learn More</x-button>
 				</x-product-cards.buttons>
 			</x-product-cards.card>
 		</x-product-cards>
@@ -1058,8 +1058,8 @@
 					discounted_price="$6,171 USD"
 				/>
 				<x-product-cards.buttons :columns="2">
-					<x-button>Request a Quote</x-button>
-					<x-button appearance="outline">Learn More</x-button>
+					<x-button size="big">Request a Quote</x-button>
+					<x-button size="big" appearance="outline">Learn More</x-button>
 				</x-product-cards.buttons>
 			</x-product-cards.card>
 
@@ -1086,7 +1086,7 @@
 					discounted_price="$7,361 USD"
 				/>
 				<x-product-cards.buttons :columns="2">
-					<x-button icon="phone">Book: +1 (866) 220-1915</x-button>
+					<x-button size="big" icon="phone">Book: +1 (866) 220-1915</x-button>
 				</x-product-cards.buttons>
 			</x-product-cards.card>
 
@@ -1112,8 +1112,8 @@
 					discounted_price="$8,571 USD"
 				/>
 				<x-product-cards.buttons :columns="2">
-					<x-button>Request a Quote</x-button>
-					<x-button appearance="outline">Learn More</x-button>
+					<x-button size="big">Request a Quote</x-button>
+					<x-button size="big" appearance="outline">Learn More</x-button>
 				</x-product-cards.buttons>
 			</x-product-cards.card>
 		</x-product-cards>
