@@ -71,7 +71,22 @@
 				@endif
 
 				@if ( ! empty( $card['buttons'] ) )
-					@if ( ! empty( $card['buttons']['call_cta_text'] ) && ! empty( $card['buttons']['call_cta_url'] ) )
+					@if ( ! empty( $card['buttons']['form_modal_cta'] ) && ! empty( $card['buttons']['secondary_btn'] ) )
+					<x-product-cards.buttons>
+						<x-form-modal-cta form_id="inquiry-form">
+							<x-button type="button" size="big">
+								<x-escape :content="$card['buttons']['form_modal_cta']['text']" />
+							</x-button>
+						</x-form-modal-cta>
+						<x-button
+							size="big"
+							appearance="outline"
+							:href="$card['buttons']['secondary_btn']['url']"
+						>
+							<x-escape :content="$card['buttons']['secondary_btn']['text']" />
+						</x-button>
+					</x-product-cards.buttons>
+					@elseif ( ! empty( $card['buttons']['call_cta_text'] ) && ! empty( $card['buttons']['call_cta_url'] ) )
 						<x-product-cards.buttons>
 							<x-button icon="phone" size="big" :href="$card['buttons']['call_cta_url']">
 								<x-escape :content="$card['buttons']['call_cta_text']" />

@@ -15,6 +15,6 @@
 	</span>
 
 	<span class="product-cards__duration-text">
-		| {{ $duration }}
+		{{ $duration }}
 	</span>
 </div>

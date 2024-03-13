@@ -135,14 +135,37 @@ function render( ?string $content = null, array $block = [] ): null|string {
 
 					// Buttons.
 					if ( 'quark/product-cards-card-buttons' === $inner_inner_block['blockName'] ) {
-						// Add Call CTA Text.
-						if ( ! empty( $inner_inner_block['attrs']['callCtaText'] ) ) {
-							$card_attributes['buttons']['call_cta_text'] = $inner_inner_block['attrs']['callCtaText'];
-						}
+						// Check if has Call CTA.
+						if ( ! empty( $inner_inner_block['attrs']['hasCallCta'] ) ) {
 
-						// Add Call CTA URL.
-						if ( ! empty( $inner_inner_block['attrs']['callCtaUrl']['url'] ) ) {
-							$card_attributes['buttons']['call_cta_url'] = $inner_inner_block['attrs']['callCtaUrl']['url'];
+							// Add Call CTA Text.
+							if ( ! empty( $inner_inner_block['attrs']['callCtaText'] ) ) {
+								$card_attributes['buttons']['call_cta_text'] = $inner_inner_block['attrs']['callCtaText'];
+							}
+
+							// Add Call CTA URL.
+							if ( ! empty( $inner_inner_block['attrs']['callCtaUrl']['url'] ) ) {
+								$card_attributes['buttons']['call_cta_url'] = $inner_inner_block['attrs']['callCtaUrl']['url'];
+							}
+						} else {
+							// Add Secondary Button Attributes.
+							if ( ! empty( $inner_inner_block['attrs']['secondaryBtn'] ) ) {
+								$card_attributes['buttons']['secondary_btn']['text'] = $inner_inner_block['attrs']['secondaryBtn']['text'];
+								$card_attributes['buttons']['secondary_btn']['url']  = $inner_inner_block['attrs']['secondaryBtn']['url'];
+							}
+
+							// Loop through inner blocks of buttons.
+							if ( ! empty( $inner_inner_block['innerBlocks'] ) ) {
+								foreach ( $inner_inner_block['innerBlocks'] as $button_inner_block ) {
+
+									// Check if inner block is Form Modal CTA block.
+									if ( 'quark/form-modal-cta' === $button_inner_block['blockName'] ) {
+
+										// Add Form Modal CTA Text.
+										$card_attributes['buttons']['form_modal_cta']['text'] = ! empty( $button_inner_block['attrs']['text'] ) ? $button_inner_block['attrs']['text'] : '';
+									}
+								}
+							}
 						}
 					}
 				}

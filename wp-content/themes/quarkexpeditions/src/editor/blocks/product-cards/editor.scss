@@ -9,7 +9,8 @@
 		min-height: 75px;
 	}
 
-	&__badge-time {
+	&__badge-time,
+	.btn--has-icon {
 		display: flex;
 	}
 
@@ -19,5 +20,9 @@
 
 	.block-list-appender {
 		position: relative;
+	}
+
+	.btn {
+		height: 56px;
 	}
 }

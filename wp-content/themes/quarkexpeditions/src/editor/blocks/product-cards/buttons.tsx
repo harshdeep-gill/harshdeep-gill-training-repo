@@ -62,7 +62,11 @@ export const settings: BlockConfiguration = {
 		},
 		callCtaUrl: {
 			type: 'object',
-			default: '',
+			default: {},
+		},
+		secondaryBtn: {
+			text: 'object',
+			default: {},
 		},
 	},
 	supports: {
@@ -86,8 +90,9 @@ export const settings: BlockConfiguration = {
 			{
 				allowedBlocks: [ 'quark/form-modal-cta' ],
 				template: [
-					[ 'quark/form-modal-cta', { text: __( 'Request a Quote', 'qrk' ) } ],
+					[ 'quark/form-modal-cta' ],
 				],
+				templateLock: 'all',
 			},
 		);
 
@@ -135,8 +140,8 @@ export const settings: BlockConfiguration = {
 							<LinkButton
 								className="btn btn--outline btn--size-big"
 								placeholder={ __( 'Enter Text' ) }
-								value={ attributes.ctaButton }
-								onChange={ ( ctaButton: Object ) => setAttributes( { ctaButton } ) }
+								value={ attributes.secondaryBtn }
+								onChange={ ( secondaryBtn: object ) => setAttributes( { secondaryBtn } ) }
 							/>
 						</>
 					}
