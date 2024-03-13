@@ -72,7 +72,9 @@
 
 				@if ( ! empty( $card['buttons'] ) )
 					<x-product-cards.buttons :columns="2">
-						<x-button><x-escape :content="$card['buttons']['call_cta_text']" /></x-button>
+						<x-button icon="phone" >
+							<x-escape :content="$card['buttons']['call_cta_text']" />
+						</x-button>
 					</x-product-cards.buttons>
 				@endif
 			</x-product-cards.card>
