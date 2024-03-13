@@ -17,7 +17,7 @@
 						<x-hero.title title="Antarctic Voyages" />
 						<x-hero.sub-title title="Choose the Leader in Polar Adventure" />
 					</x-hero.title-container>
-					<x-hero.tag background_color="attention-100" icon="alert" text="Limited Cabins Available" />
+					<x-icon-badge class="hero__tag" background_color="attention-100" icon="alert" text="Limited Cabins Available" />
 					<x-hero.form-modal-cta>Get a Digital Brochure</x-hero.form-modal-cta>
 				</x-hero.left>
 				<x-hero.right>
@@ -80,6 +80,25 @@
 				<p>The whole experience was great. The World Explorer is a beautiful and very comfortable ship, the food was amazing. And of course the landings and cruising the area was a once in a lifetime experience. Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever.</p>
 			</x-review-cards.card>
 		</x-review-cards>
+	</x-component-demo>
+
+	<x-component-demo :keys="[ 'hero', 'hero-refactor' ]">
+		<x-hero text_align="center" :immersive="false">
+			<x-hero.image image_id="26" />
+			<x-hero.content>
+				<x-hero.left>
+					<x-hero.title-container>
+						<x-hero.overline>Antarctic 2024</x-hero.overline>
+						<x-hero.title title="Antarctic Voyages" />
+						<x-hero.sub-title title="Choose the Leader in Polar Adventure" />
+					</x-hero.title-container>
+					<x-icon-badge class="hero__tag" background_color="attention-100" icon="alert" text="Limited Cabins Available" />
+					<x-hero.form-modal-cta>Get a Digital Brochure</x-hero.form-modal-cta>
+				</x-hero.left>
+				<x-hero.right>
+				</x-hero.right>
+			</x-hero.content>
+		</x-hero>
 	</x-component-demo>
 
 	<x-component-demo :keys="[ 'global', 'color-palette' ]">
@@ -502,6 +521,59 @@
 			</x-simple-cards>
 			<x-section.cta class="color-context--dark" text="Learn More" url="#" color="black" />
 		</x-section>
+	</x-component-demo>
+
+	<x-component-demo :keys="['media-content-card']">
+			<x-section title="Media Content Card 2-column">
+				<x-media-content-card>
+					<x-media-content-card.image image_id="33"/>
+					<x-media-content-card.content>
+						<x-media-content-card.content-column>
+							<h4>Start Your Adventure</h4>
+							<p>Call us and one of our Polar Travel Advisors will secure the offer for you.</p>
+						</x-media-content-card.content-column>
+						<x-media-content-card.content-column>
+							<x-media-content-card.content-info
+								label="North America (Toll Free)"
+								value="+1 (866) 257-3345"
+								url="tel:+1 (866) 257-3345"
+							/>
+							<x-media-content-card.content-info
+								label="U.K. (Toll Free)"
+								value="0808 134 9986"
+								url="tel:0808 134 9986"
+							/>
+							<x-media-content-card.content-info
+								label="Australia (Toll Free)"
+								value="+61 1800 959 390"
+								url="tel:+61 1800 959 390"
+							/>
+							<x-media-content-card.content-info
+								label="France (Toll Free)"
+								value="08 05 08 66 46"
+								url="tel:08 05 08 66 46"
+							/>
+						</x-media-content-card.content-column>
+					</x-media-content-card.content>
+				</x-media-content-card>
+			</x-section>
+			<x-section title="Media Content Card 1-column">
+				<x-media-content-card :is_compact="true" >
+					<x-media-content-card.image image_id="33"/>
+					<x-media-content-card.content>
+						<x-media-content-card.content-column>
+							<h4>Start Your Adventure</h4>
+							<p>Call us and one of our Polar Travel Advisors will secure the offer for you.</p>
+						</x-media-content-card.content-column>
+						<x-media-content-card.content-column>
+							<x-media-content-card.content-info label="North America (Toll Free)" value="+1 (866) 257-3345" />
+							<x-media-content-card.content-info label="U.K. (Toll Free)" value="0808 134 9986" />
+							<x-media-content-card.content-info label="Australia (Toll Free)" value="+61 1800 959 390" />
+							<x-media-content-card.content-info label="France (Toll Free)" value="08 05 08 66 46" />
+						</x-media-content-card.content-column>
+					</x-media-content-card.content>
+				</x-media-content-card>
+			</x-section>
 	</x-component-demo>
 
 	<x-component-demo :keys="[ 'collage' ]">

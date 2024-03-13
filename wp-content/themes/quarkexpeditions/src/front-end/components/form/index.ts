@@ -87,6 +87,9 @@ export default class Form extends HTMLElement {
 			// Display error and enable button.
 			alert( error ); // eslint-disable-line
 			this.tpFormSubmit?.removeAttribute( 'submitting' );
+
+			// Enable the whole form.
+			this.form?.removeAttribute( 'inert' );
 		};
 
 		/**
@@ -98,6 +101,9 @@ export default class Form extends HTMLElement {
 				// Nope, bail.
 				return;
 			}
+
+			// Disable the form.
+			this.form.setAttribute( 'inert', '' );
 
 			// Add reCAPTCHA token if field exists.
 			if ( this.recaptchaTokenField ) {
