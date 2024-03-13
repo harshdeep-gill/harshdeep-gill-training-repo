@@ -1,0 +1,44 @@
+/**
+ * Media Text CTA.
+ */
+@import "../../scss";
+
+.media-text-cta {
+	$self: &;
+
+	& + & {
+		margin-top: var(--spacing-8);
+	}
+
+	&__image-wrap {
+		border-radius: var(--border-radius-large);
+		overflow: hidden;
+		position: relative;
+
+		#{$self}--media-align-right & {
+
+			@media screen and (min-width: grid-size(md)) {
+				order: 2;
+			}
+		}
+	}
+
+	&__badge {
+		background-color: var(--color-magenta);
+		box-shadow: var(--shadow-4);
+		color: var(--color-white);
+		font-weight: var(--font-weight-bold);
+		position: absolute;
+		top: 0;
+		left: 0;
+		letter-spacing: 2px;
+		padding: 6px 20px 6px 14px;
+		text-transform: uppercase;
+		clip-path: polygon(0% 0%, 100% 0%, 94% 100%, 0% 100%);
+	}
+
+	&__image {
+		width: 100%;
+		object-fit: cover;
+	}
+}
