@@ -139,6 +139,11 @@ function render( ?string $content = null, array $block = [] ): null|string {
 						if ( ! empty( $inner_inner_block['attrs']['callCtaText'] ) ) {
 							$card_attributes['buttons']['call_cta_text'] = $inner_inner_block['attrs']['callCtaText'];
 						}
+
+						// Add Call CTA URL.
+						if ( ! empty( $inner_inner_block['attrs']['callCtaUrl']['url'] ) ) {
+							$card_attributes['buttons']['call_cta_url'] = $inner_inner_block['attrs']['callCtaUrl']['url'];
+						}
 					}
 				}
 			}

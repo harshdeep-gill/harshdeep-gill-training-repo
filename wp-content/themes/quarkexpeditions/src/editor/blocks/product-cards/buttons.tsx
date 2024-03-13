@@ -32,7 +32,7 @@ const { gumponents } = window;
 /**
  * External components.
  */
-const { LinkButton } = gumponents.components;
+const { LinkButton, LinkControl } = gumponents.components;
 
 /**
  * Block name.
@@ -57,6 +57,10 @@ export const settings: BlockConfiguration = {
 		},
 		callCtaText: {
 			type: 'string',
+			default: '',
+		},
+		callCtaUrl: {
+			type: 'object',
 			default: '',
 		},
 	},
@@ -87,6 +91,15 @@ export const settings: BlockConfiguration = {
 							onChange={ () => setAttributes( { hasCallCta: ! attributes.hasCallCta } ) }
 							help={ __( 'Does the card have a Call CTA?', 'qrk' ) }
 						/>
+						{
+							attributes.hasCallCta &&
+							<LinkControl
+								label={ __( 'Call CTA URL', 'qrk' ) }
+								value={ attributes.callCtaUrl }
+								help={ __( 'Choose an URL for this Call CTA', 'qrk' ) }
+								onChange={ ( callCtaUrl: object ) => setAttributes( { callCtaUrl } ) }
+							/>
+						}
 					</PanelBody>
 				</InspectorControls>
 				<div { ...blockProps } >
@@ -105,8 +118,7 @@ export const settings: BlockConfiguration = {
 							/>
 						</button>
 					}
-					{
-						! attributes.hasCallCta &&
+					{ ! attributes.hasCallCta &&
 						<LinkButton
 							className="btn btn--outline btn--size-big"
 							placeholder={ __( 'Enter Text' ) }

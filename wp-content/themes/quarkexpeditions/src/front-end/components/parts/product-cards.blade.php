@@ -71,9 +71,9 @@
 				@endif
 
 				@if ( ! empty( $card['buttons'] ) )
-					@if ( ! empty( $card['buttons']['call_cta_text'] ) )
+					@if ( ! empty( $card['buttons']['call_cta_text'] ) && ! empty( $card['buttons']['call_cta_url'] ) )
 						<x-product-cards.buttons>
-							<x-button icon="phone" size="big" >
+							<x-button icon="phone" size="big" :href="$card['buttons']['call_cta_url']">
 								<x-escape :content="$card['buttons']['call_cta_text']" />
 							</x-button>
 						</x-product-cards.buttons>
