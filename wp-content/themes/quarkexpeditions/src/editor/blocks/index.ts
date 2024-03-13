@@ -21,6 +21,7 @@ import * as reviewCards from './review-cards';
 import * as videoIconsCard from './video-icons-card';
 import * as seasonHighlights from './season-highlights';
 import * as simpleCards from './simple-cards';
+import * as iconBadge from './icon-badge';
 import * as mediaContentCard from './media-content-card';
 
 /**
@@ -42,6 +43,7 @@ const blocks = [
 	videoIconsCard,
 	seasonHighlights,
 	simpleCards,
+	iconBadge,
 	mediaContentCard,
 ];
 
