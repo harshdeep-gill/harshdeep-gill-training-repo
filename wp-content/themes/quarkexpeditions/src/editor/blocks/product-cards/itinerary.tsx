@@ -55,16 +55,16 @@ export const settings: BlockConfiguration = {
 		return (
 			<div { ...blockProps }>
 				<RichText
-					tagName='span'
-					className='product-cards__departure-date-text'
+					tagName="span"
+					className="product-cards__departure-date-text"
 					placeholder={ __( 'Departs Month DD, YYYY', 'qrk' ) }
 					value={ attributes.departureDate }
 					onChange={ ( departureDate: string ) => setAttributes( { departureDate } ) }
 					allowedFormats={ [] }
 				/>
 				<RichText
-					tagName='span'
-					className='product-cards__duration-text'
+					tagName="span"
+					className="product-cards__duration-text"
 					placeholder={ __( 'X Days', 'qrk' ) }
 					value={ attributes.durationText }
 					onChange={ ( durationText: string ) => setAttributes( { durationText } ) }
@@ -74,6 +74,7 @@ export const settings: BlockConfiguration = {
 		);
 	},
 	save() {
+		// Return.
 		return null;
 	},
 };

@@ -25,6 +25,16 @@ import classnames from 'classnames';
 import icons from '../icons';
 
 /**
+ * External dependencies.
+ */
+const { gumponents } = window;
+
+/**
+ * External components.
+ */
+const { LinkButton } = gumponents.components;
+
+/**
  * Block name.
  */
 export const name: string = 'quark/product-cards-card-buttons';
@@ -43,7 +53,7 @@ export const settings: BlockConfiguration = {
 	attributes: {
 		hasCallCta: {
 			type: 'boolean',
-			default: true,
+			default: false,
 		},
 		callCtaText: {
 			type: 'string',
@@ -79,22 +89,31 @@ export const settings: BlockConfiguration = {
 						/>
 					</PanelBody>
 				</InspectorControls>
-				<div { ...blockProps }>
-						{ attributes.hasCallCta &&
-							<button className='btn btn--has-icon'>
-								<span className='btn__icon btn__icon-left'>
-									{ icons.phone }
-								</span>
-								<RichText
-									tagName='span'
-									className='btn__content'
-									placeholder={ __( 'Book: +9 (999) 999-999', 'qrk' ) }
-									value={ attributes.callCtaText }
-									onChange={ ( callCtaText: string ) => setAttributes( { callCtaText } ) }
-									allowedFormats={ [] }
-								/>
-							</button>
-						}
+				<div { ...blockProps } >
+					{ attributes.hasCallCta &&
+						<button className="btn btn--has-icon">
+							<span className="btn__icon btn__icon-left">
+								{ icons.phone }
+							</span>
+							<RichText
+								tagName="span"
+								className="btn__content"
+								placeholder={ __( 'Book: +9 (999) 999-999', 'qrk' ) }
+								value={ attributes.callCtaText }
+								onChange={ ( callCtaText: string ) => setAttributes( { callCtaText } ) }
+								allowedFormats={ [] }
+							/>
+						</button>
+					}
+					{
+						! attributes.hasCallCta &&
+						<LinkButton
+							className={ classnames( 'btn', 'btn--outline' ) }
+							placeholder={ __( 'Enter Text' ) }
+							value={ attributes.ctaButton }
+							onChange={ ( ctaButton: Object ) => setAttributes( { ctaButton } ) }
+						/>
+					}
 				</div>
 			</>
 		);

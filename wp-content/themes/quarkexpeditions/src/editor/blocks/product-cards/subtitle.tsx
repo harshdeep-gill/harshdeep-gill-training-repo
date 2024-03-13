@@ -51,8 +51,8 @@ export const settings: BlockConfiguration = {
 		return (
 			<div { ...blockProps }>
 				<RichText
-					tagName='div'
-					className='product-cards__subtitle'
+					tagName="div"
+					className="product-cards__subtitle"
 					placeholder={ __( 'Enter Subtitle', 'qrk' ) }
 					value={ attributes.subtitle }
 					onChange={ ( subtitle: string ) => setAttributes( { subtitle } ) }
@@ -62,6 +62,7 @@ export const settings: BlockConfiguration = {
 		);
 	},
 	save() {
+		// Return.
 		return null;
 	},
 };

@@ -131,7 +131,7 @@ export const settings: BlockConfiguration = {
 		const innerBlockProps = useInnerBlocksProps( {},
 			{
 				allowedBlocks: [
-					title.name, subtitle.name, description.name, reviews.name, price.name, itinerary.name, buttons.name
+					title.name, subtitle.name, description.name, reviews.name, price.name, itinerary.name, buttons.name,
 				],
 				template: [
 					[ reviews.name ],
@@ -199,8 +199,8 @@ export const settings: BlockConfiguration = {
 						<Img value={ attributes.image } />
 						{ attributes.hasCtaBadge &&
 							<RichText
-								tagName='div'
-								className='product-cards__badge-cta body-small'
+								tagName="div"
+								className="product-cards__badge-cta body-small"
 								placeholder={ __( 'CTA Badge Text', 'qrk' ) }
 								value={ attributes.ctaBadgeText }
 								onChange={ ( ctaBadgeText: string ) => setAttributes( { ctaBadgeText } ) }
@@ -208,7 +208,7 @@ export const settings: BlockConfiguration = {
 							/>
 						}
 						{ attributes.hasTimeBadge &&
-							<div className='product-cards__badge-time body-small'>
+							<div className="product-cards__badge-time body-small">
 								{ icons.time }
 								<RichText
 									placeholder={ __( 'Time Badge Text', 'qrk' ) }
@@ -220,8 +220,8 @@ export const settings: BlockConfiguration = {
 						}
 						{ attributes.isSoldOut &&
 							<RichText
-								tagName='div'
-								className='product-cards__badge-sold-out h5'
+								tagName="div"
+								className="product-cards__badge-sold-out h5"
 								placeholder={ __( 'Sold Out Text', 'qrk' ) }
 								value={ attributes.soldOutText }
 								onChange={ ( soldOutText: string ) => setAttributes( { soldOutText } ) }
@@ -230,8 +230,8 @@ export const settings: BlockConfiguration = {
 						}
 						{ attributes.hasInfoRibbon &&
 							<RichText
-								tagName='div'
-								className='product-cards__info-ribbon body-small'
+								tagName="div"
+								className="product-cards__info-ribbon body-small"
 								placeholder={ __( 'Info Ribbon Text', 'qrk' ) }
 								value={ attributes.infoRibbonText }
 								onChange={ ( infoRibbonText: string ) => setAttributes( { infoRibbonText } ) }

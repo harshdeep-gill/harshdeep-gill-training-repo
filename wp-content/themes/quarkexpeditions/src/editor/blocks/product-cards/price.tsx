@@ -54,10 +54,10 @@ export const settings: BlockConfiguration = {
 		// Return the block's markup.
 		return (
 			<div { ...blockProps }>
-				<div className='product-cards__price-title'>{ __( 'Sale Price From', 'qrk' ) }</div>
+				<div className="product-cards__price-title">{ __( 'Sale Price From', 'qrk' ) }</div>
 				<RichText
-					tagName='strong'
-					className='product-cards__price product-cards__price-now h4'
+					tagName="strong"
+					className="product-cards__price product-cards__price-now h4"
 					placeholder={ __( '$ XXXX USD', 'qrk' ) }
 					value={ attributes.priceNow }
 					onChange={ ( priceNow: string ) => setAttributes( { priceNow } ) }
@@ -65,8 +65,8 @@ export const settings: BlockConfiguration = {
 				/>
 				<strong>
 					<RichText
-						tagName='del'
-						className='product-cards__price price-was'
+						tagName="del"
+						className="product-cards__price price-was"
 						placeholder={ __( '$ XXXX USD', 'qrk' ) }
 						value={ attributes.priceWas }
 						onChange={ ( priceWas: string ) => setAttributes( { priceWas } ) }
@@ -77,6 +77,7 @@ export const settings: BlockConfiguration = {
 		);
 	},
 	save() {
+		// Return.
 		return null;
 	},
 };

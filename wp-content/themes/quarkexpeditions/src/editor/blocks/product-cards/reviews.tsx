@@ -10,7 +10,7 @@ import {
 } from '@wordpress/block-editor';
 import {
 	PanelBody,
-	RangeControl
+	RangeControl,
 } from '@wordpress/components';
 
 /**
@@ -47,7 +47,7 @@ export const settings: BlockConfiguration = {
 		reviewsText: {
 			type: 'string',
 			default: '',
-		}
+		},
 	},
 	supports: {
 		alignWide: false,
@@ -86,8 +86,8 @@ export const settings: BlockConfiguration = {
 						<RatingStars rating={ attributes.rating } />
 					}
 					<RichText
-						tagName='span'
-						className='product-cards__reviews-text'
+						tagName="span"
+						className="product-cards__reviews-text"
 						placeholder={ __( 'X Reviews', 'qrk' ) }
 						value={ attributes.reviewsText }
 						onChange={ ( reviewsText: string ) => setAttributes( { reviewsText } ) }
@@ -98,6 +98,7 @@ export const settings: BlockConfiguration = {
 		);
 	},
 	save() {
+		// Return.
 		return null;
 	},
 };
