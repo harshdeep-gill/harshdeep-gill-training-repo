@@ -71,11 +71,13 @@
 				@endif
 
 				@if ( ! empty( $card['buttons'] ) )
-					<x-product-cards.buttons :columns="2">
-						<x-button icon="phone" >
-							<x-escape :content="$card['buttons']['call_cta_text']" />
-						</x-button>
-					</x-product-cards.buttons>
+					@if ( ! empty( $card['buttons']['call_cta_text'] ) )
+						<x-product-cards.buttons>
+							<x-button icon="phone" size="big" >
+								<x-escape :content="$card['buttons']['call_cta_text']" />
+							</x-button>
+						</x-product-cards.buttons>
+					@endif
 				@endif
 			</x-product-cards.card>
 			@elseif( 'media-content-card' === $card['type'] )

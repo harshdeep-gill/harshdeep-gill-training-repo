@@ -91,7 +91,7 @@ export const settings: BlockConfiguration = {
 				</InspectorControls>
 				<div { ...blockProps } >
 					{ attributes.hasCallCta &&
-						<button className="btn btn--has-icon">
+						<button className="btn btn--has-icon btn--size-big">
 							<span className="btn__icon btn__icon-left">
 								{ icons.phone }
 							</span>
@@ -108,7 +108,7 @@ export const settings: BlockConfiguration = {
 					{
 						! attributes.hasCallCta &&
 						<LinkButton
-							className={ classnames( 'btn', 'btn--outline' ) }
+							className="btn btn--outline btn--size-big"
 							placeholder={ __( 'Enter Text' ) }
 							value={ attributes.ctaButton }
 							onChange={ ( ctaButton: Object ) => setAttributes( { ctaButton } ) }
