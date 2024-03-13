@@ -26,11 +26,6 @@ import classnames from 'classnames';
 import * as info from './content-info';
 
 /**
- * Register child block.
- */
-registerBlockType( info.name, info.settings );
-
-/**
  * Block name.
  */
 export const name: string = 'quark/media-content-card-column';
