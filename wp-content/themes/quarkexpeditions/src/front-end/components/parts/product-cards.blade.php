@@ -44,8 +44,8 @@
 
 				@if ( ! empty( $card['itinerary'] ) )
 					<x-product-cards.itinerary
-						:departure_date_text="$card['itinerary']['departure_date_text']"
-						:duration_text="$card['itinerary']['duration_text']"
+						:departure_date="$card['itinerary']['departure_date_text']"
+						:duration="$card['itinerary']['duration_text']"
 					/>
 				@endif
 

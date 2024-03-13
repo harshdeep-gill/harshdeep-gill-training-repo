@@ -8,6 +8,7 @@ import {
 	InnerBlocks,
 	RichText,
 	InspectorControls,
+	useInnerBlocksProps,
 } from '@wordpress/block-editor';
 import {
 	PanelBody,
@@ -80,6 +81,16 @@ export const settings: BlockConfiguration = {
 			className: classnames( className, 'product-cards__buttons product-cards__buttons--cols-2' ),
 		} );
 
+		// eslint-disable-next-line react-hooks/rules-of-hooks
+		const innerBlockProps = useInnerBlocksProps( {},
+			{
+				allowedBlocks: [ 'quark/form-modal-cta' ],
+				template: [
+					[ 'quark/form-modal-cta', { text: __( 'Request a Quote', 'qrk' ) } ],
+				],
+			},
+		);
+
 		// Return the block's markup.
 		return (
 			<>
@@ -119,12 +130,15 @@ export const settings: BlockConfiguration = {
 						</button>
 					}
 					{ ! attributes.hasCallCta &&
-						<LinkButton
-							className="btn btn--outline btn--size-big"
-							placeholder={ __( 'Enter Text' ) }
-							value={ attributes.ctaButton }
-							onChange={ ( ctaButton: Object ) => setAttributes( { ctaButton } ) }
-						/>
+						<>
+							<div { ...innerBlockProps } />
+							<LinkButton
+								className="btn btn--outline btn--size-big"
+								placeholder={ __( 'Enter Text' ) }
+								value={ attributes.ctaButton }
+								onChange={ ( ctaButton: Object ) => setAttributes( { ctaButton } ) }
+							/>
+						</>
 					}
 				</div>
 			</>

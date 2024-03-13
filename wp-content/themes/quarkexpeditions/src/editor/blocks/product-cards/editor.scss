@@ -5,12 +5,8 @@
 		background-color: var(--color-gray-30);
 	}
 
-	&__subtitle {
-		min-height: 50px;
-	}
-
 	&__description {
-		min-height: 100px;
+		min-height: 75px;
 	}
 
 	&__badge-time {
@@ -23,9 +19,5 @@
 
 	.block-list-appender {
 		position: relative;
-	}
-
-	.btn {
-		display: flex;
 	}
 }

@@ -125,6 +125,11 @@
 	--border-radius-images: var(--border-radius);
 
 	/**
+	 * Misc
+	 */
+	--scale-size: 1.03;
+
+	/**
 	 * Transitions
 	 */
 	--ease-in-out-quart: cubic-bezier(0.87, 0, 0.13, 1);
