@@ -42,6 +42,8 @@ function register_blocks(): void {
 		'SeasonHighlights' => 'season-highlights.php',
 		'SimpleCards'      => 'simple-cards.php',
 		'ProductCards'     => 'product-cards.php',
+		'IconBadge'        => 'icon-badge.php',
+		'FormModalCta'     => 'form-modal-cta.php',
 		'MediaContentCard' => 'media-content-card.php',
 	];
 

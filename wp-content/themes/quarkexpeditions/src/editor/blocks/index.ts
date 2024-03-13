@@ -22,6 +22,8 @@ import * as videoIconsCard from './video-icons-card';
 import * as seasonHighlights from './season-highlights';
 import * as simpleCards from './simple-cards';
 import * as productCards from './product-cards';
+import * as iconBadge from './icon-badge';
+import * as formModalCta from './form-modal-cta';
 import * as mediaContentCard from './media-content-card';
 
 /**
@@ -44,6 +46,8 @@ const blocks = [
 	seasonHighlights,
 	simpleCards,
 	productCards,
+	iconBadge,
+	formModalCta,
 	mediaContentCard,
 ];
 
