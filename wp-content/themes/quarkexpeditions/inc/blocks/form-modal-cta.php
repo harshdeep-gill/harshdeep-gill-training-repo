@@ -8,7 +8,7 @@
 namespace Quark\Theme\Blocks\FormModalCta;
 
 const BLOCK_NAME = 'quark/form-modal-cta';
-const COMPONENT  = 'form-modal-cta';
+const COMPONENT  = 'parts.form-modal-cta';
 
 /**
  * Bootstrap this block.
@@ -40,27 +40,13 @@ function register() : void {
  */
 function render( ?string $content = null, array $block = [] ) : null | string {
 	// Check for block.
-	if ( BLOCK_NAME !== $block['blockName'] || empty( $block['innerBlocks'] || ! is_array( $block['innerBlocks'] ) ) ) {
+	if ( BLOCK_NAME !== $block['blockName'] ) {
 		return $content;
-	}
-
-	// Initialize slot.
-	$slot = '';
-
-	// Build slot.
-	foreach ( $block['innerBlocks'] as $innerblock ) {
-		if ( 'core/buttons' !== $innerblock['blockName'] ) {
-			continue;
-		}
-
-		// Render the buttons block.
-		$slot = render_block( $innerblock );
-		break;
 	}
 
 	// Build component attributes.
 	$attributes = [
-		'slot'    => $slot,
+		'text'    => $block['attrs']['text'] ?? '',
 		'form_id' => 'inquiry-form',
 		'class'   => $block['attrs']['className'] ?? '',
 	];

@@ -77,7 +77,7 @@ export const settings: BlockConfiguration = {
 					[ heroTitle.name ],
 					[ heroSubtitle.name ],
 					[ iconBadge.name, { className: 'hero__tag' } ],
-					[ formModalCta.name, { className: 'hero__form-modal-cta' } ],
+					[ formModalCta.name, { className: 'hero__form-modal-cta color-context--dark' } ],
 				],
 			}
 		);

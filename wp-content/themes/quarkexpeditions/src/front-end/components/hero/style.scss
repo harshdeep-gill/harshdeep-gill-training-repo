@@ -168,24 +168,11 @@
 
 	&__form-modal-cta {
 
-		.btn,
-		.wp-element-button,
-		.wp-block-button {
+		.btn {
 			width: 100%;
 
 			@media screen and (min-width: grid-size(lg)) {
 				width: auto;
-			}
-		}
-
-		.wp-element-button {
-			padding: var(--spacing-4) 20px;
-			text-align: center;
-			font-size: var(--font-size);
-			font-weight: var(--font-weight-bold);
-
-			&:hover {
-				background-color: var(--color-white);
 			}
 		}
 	}

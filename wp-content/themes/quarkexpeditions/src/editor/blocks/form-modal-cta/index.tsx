@@ -4,9 +4,8 @@
 import { __ } from '@wordpress/i18n';
 import { BlockConfiguration } from '@wordpress/blocks';
 import {
-	InnerBlocks,
+	RichText,
 	useBlockProps,
-	useInnerBlocksProps,
 } from '@wordpress/block-editor';
 
 /**
@@ -29,34 +28,38 @@ export const settings: BlockConfiguration = {
 	icon: 'button',
 	category: 'widgets',
 	keywords: [ __( 'cta', 'qrk' ), __( 'form', 'qrk' ), __( 'modal', 'qrk' ) ],
-	attributes: {},
+	attributes: {
+		text: {
+			type: 'string',
+			default: '',
+		},
+	},
 	supports: {
 		alignWide: false,
 		className: false,
 		html: false,
 		customClassName: true,
 	},
-	edit( { className }: BlockEditAttributes ) : JSX.Element {
+	edit( { className, attributes, setAttributes }: BlockEditAttributes ) : JSX.Element {
 		// eslint-disable-next-line react-hooks/rules-of-hooks
 		const blockProps = useBlockProps( { className: classnames( className, 'form-modal-cta' ) } );
 
-		// eslint-disable-next-line react-hooks/rules-of-hooks
-		const innerBlockProps = useInnerBlocksProps(
-			{ ...blockProps },
-			{
-				allowedBlocks: [ 'core/buttons' ],
-				template: [ [ 'core/buttons' ] ],
-				templateLock: 'all',
-			},
-		);
-
 		// Return the block's markup.
 		return (
-			<div { ...innerBlockProps } />
+			<div { ...blockProps }>
+				<RichText
+					tagName="span"
+					className={ classnames( 'btn', 'btn--size-big' ) }
+					placeholder={ __( 'Write CTA text…', 'qrk' ) }
+					value={ attributes.text }
+					onChange={ ( text: string ) => setAttributes( { text } ) }
+					allowedFormats={ [] }
+				/>
+			</div>
 		);
 	},
 	save() {
 		// Don't save anything.
-		return <InnerBlocks.Content />;
+		return null;
 	},
 };
