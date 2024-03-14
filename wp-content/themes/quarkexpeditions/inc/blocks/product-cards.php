@@ -196,38 +196,8 @@ function render( ?string $content = null, array $block = [] ): null|string {
 						// Add block type.
 						$buttons['type'] = 'buttons';
 
-						// Check if has Call CTA.
-						if ( ! empty( $inner_inner_block['attrs']['hasCallCta'] ) ) {
-
-							// Add Call CTA Text.
-							if ( ! empty( $inner_inner_block['attrs']['callCtaText'] ) ) {
-								$buttons['call_cta_text'] = $inner_inner_block['attrs']['callCtaText'];
-							}
-
-							// Add Call CTA URL.
-							if ( ! empty( $inner_inner_block['attrs']['callCtaUrl']['url'] ) ) {
-								$buttons['call_cta_url'] = $inner_inner_block['attrs']['callCtaUrl']['url'];
-							}
-						} else {
-							// Add Secondary Button Attributes.
-							if ( ! empty( $inner_inner_block['attrs']['secondaryBtn'] ) ) {
-								$buttons['secondary_btn']['text'] = $inner_inner_block['attrs']['secondaryBtn']['text'];
-								$buttons['secondary_btn']['url']  = $inner_inner_block['attrs']['secondaryBtn']['url'];
-							}
-
-							// Loop through inner blocks of buttons.
-							if ( ! empty( $inner_inner_block['innerBlocks'] ) ) {
-								foreach ( $inner_inner_block['innerBlocks'] as $button_inner_block ) {
-
-									// Check if inner block is Form Modal CTA block.
-									if ( 'quark/form-modal-cta' === $button_inner_block['blockName'] ) {
-
-										// Add Form Modal CTA Text.
-										$buttons['form_modal_cta']['text'] = ! empty( $button_inner_block['attrs']['text'] ) ? $button_inner_block['attrs']['text'] : '';
-									}
-								}
-							}
-						}
+						// Get the slot.
+						$buttons['slot'] = render_block( $inner_inner_block );
 
 						// Add buttons to children.
 						$card_attributes['children'][] = $buttons;

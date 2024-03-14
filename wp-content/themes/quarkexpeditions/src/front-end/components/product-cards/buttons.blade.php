@@ -5,5 +5,5 @@
 @endphp
 
 <div class="product-cards__buttons">
-	{!! $slot !!}
+	<x-content :content="$slot" />
 </div>

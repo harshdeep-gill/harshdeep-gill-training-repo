@@ -25,6 +25,7 @@ import * as productCards from './product-cards';
 import * as iconBadge from './icon-badge';
 import * as formModalCta from './form-modal-cta';
 import * as mediaContentCard from './media-content-card';
+import * as iconButton from './icon-button';
 
 /**
  * Add blocks.
@@ -49,6 +50,7 @@ const blocks = [
 	iconBadge,
 	formModalCta,
 	mediaContentCard,
+	iconButton,
 ];
 
 /**
