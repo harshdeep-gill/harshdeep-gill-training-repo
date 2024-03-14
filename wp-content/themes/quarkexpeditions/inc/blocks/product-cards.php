@@ -89,16 +89,16 @@ function render( ?string $content = null, array $block = [] ): null|string {
 			if ( ! empty( $inner_block['innerBlocks'] ) ) {
 				foreach ( $inner_block['innerBlocks'] as $inner_inner_block ) {
 					// Reviews.
-					if ( 'quark/product-cards-card-reviews' === $inner_inner_block['blockName'] ) {
+					if ( 'quark/product-cards-reviews' === $inner_inner_block['blockName'] ) {
 						// Add rating.
 						$card_attributes['reviews']['rating'] = ! empty( $inner_inner_block['attrs']['rating'] ) ? $inner_inner_block['attrs']['rating'] : '';
 
 						// Add reviews text.
-						$card_attributes['reviews']['total_reviews_text'] = ! empty( $inner_inner_block['attrs']['reviewsText'] ) ? $inner_inner_block['attrs']['reviewsText'] : '';
+						$card_attributes['reviews']['total_reviews_text'] = ! empty( $inner_inner_block['attrs']['reviewsText'] ) ? $inner_inner_block['attrs']['reviewsText'] : '5';
 					}
 
 					// Itinerary.
-					if ( 'quark/product-cards-card-itinerary' === $inner_inner_block['blockName'] ) {
+					if ( 'quark/product-cards-itinerary' === $inner_inner_block['blockName'] ) {
 						// Add deaprture date text.
 						$card_attributes['itinerary']['departure_date_text'] = ! empty( $inner_inner_block['attrs']['departureDate'] ) ? $inner_inner_block['attrs']['departureDate'] : '';
 
@@ -107,25 +107,25 @@ function render( ?string $content = null, array $block = [] ): null|string {
 					}
 
 					// Title.
-					if ( 'quark/product-cards-card-title' === $inner_inner_block['blockName'] ) {
+					if ( 'quark/product-cards-title' === $inner_inner_block['blockName'] ) {
 						// Add title.
 						$card_attributes['title'] = ! empty( $inner_inner_block['attrs']['title'] ) ? $inner_inner_block['attrs']['title'] : '';
 					}
 
 					// Subtitle.
-					if ( 'quark/product-cards-card-subtitle' === $inner_inner_block['blockName'] ) {
+					if ( 'quark/product-cards-subtitle' === $inner_inner_block['blockName'] ) {
 						// Add subtitle.
 						$card_attributes['subtitle'] = ! empty( $inner_inner_block['attrs']['subtitle'] ) ? $inner_inner_block['attrs']['subtitle'] : '';
 					}
 
 					// Description.
-					if ( 'quark/product-cards-card-description' === $inner_inner_block['blockName'] ) {
+					if ( 'quark/product-cards-description' === $inner_inner_block['blockName'] ) {
 						// Add description.
 						$card_attributes['description'] = ! empty( $inner_inner_block['attrs']['description'] ) ? $inner_inner_block['attrs']['description'] : '';
 					}
 
 					// Price.
-					if ( 'quark/product-cards-card-price' === $inner_inner_block['blockName'] ) {
+					if ( 'quark/product-cards-price' === $inner_inner_block['blockName'] ) {
 						// Add price now.
 						$card_attributes['price']['discounted'] = ! empty( $inner_inner_block['attrs']['priceNow'] ) ? $inner_inner_block['attrs']['priceNow'] : '';
 

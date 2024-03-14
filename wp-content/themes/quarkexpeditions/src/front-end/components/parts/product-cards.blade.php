@@ -2,15 +2,15 @@
 	'items' => [],
 ] )
 
-<?php
+@php
 	if ( empty( $items ) ) {
 		return;
 	}
-?>
+@endphp
 
 <x-product-cards>
 	@foreach ( $items as $card )
-		@if( 'product-card' === $card['type'] )
+		@if ( 'product-card' === $card['type'] )
 			<x-product-cards.card>
 				<x-product-cards.image
 					:image_id="$card['image']['id']"
@@ -30,7 +30,7 @@
 
 					@if( ! empty( $card['info_ribbon_text'] ) )
 						<x-product-cards.info-ribbon>
-							<x-content :content="$card['info_ribbon_text']" />
+							{!! $card['info_ribbon_text'] !!}
 						</x-product-cards.info-ribbon>
 					@endif
 				</x-product-cards.image>
@@ -95,7 +95,8 @@
 					@endif
 				@endif
 			</x-product-cards.card>
-			@elseif( 'media-content-card' === $card['type'] )
+
+			@elseif ( 'media-content-card' === $card['type'] )
 				<x-parts.media-content-card
 					:is_compact="$card['is_compact']"
 					:image_id="$card['image_id']"

@@ -16,7 +16,7 @@ import classnames from 'classnames';
 /**
  * Block name.
  */
-export const name: string = 'quark/product-cards-card-title';
+export const name: string = 'quark/product-cards-title';
 
 /**
  * Block configuration settings.

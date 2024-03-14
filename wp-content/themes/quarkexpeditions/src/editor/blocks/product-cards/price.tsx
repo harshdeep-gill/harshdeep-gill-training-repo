@@ -16,7 +16,7 @@ import classnames from 'classnames';
 /**
  * Block name.
  */
-export const name: string = 'quark/product-cards-card-price';
+export const name: string = 'quark/product-cards-price';
 
 /**
  * Block configuration settings.
@@ -30,11 +30,11 @@ export const settings: BlockConfiguration = {
 	category: 'layout',
 	keywords: [ __( 'price', 'qrk' ) ],
 	attributes: {
-		priceNow: {
+		price: {
 			type: 'string',
 			default: '',
 		},
-		priceWas: {
+		originalPrice: {
 			type: 'string',
 			default: '',
 		},
@@ -59,17 +59,17 @@ export const settings: BlockConfiguration = {
 					tagName="strong"
 					className="product-cards__price product-cards__price-now h4"
 					placeholder={ __( '$ X,XXX USD…', 'qrk' ) }
-					value={ attributes.priceNow }
-					onChange={ ( priceNow: string ) => setAttributes( { priceNow } ) }
+					value={ attributes.price }
+					onChange={ ( price: string ) => setAttributes( { price } ) }
 					allowedFormats={ [] }
 				/>
 				<strong>
 					<RichText
 						tagName="del"
-						className="product-cards__price price-was"
+						className="product-cards__price product-cards__price--original"
 						placeholder={ __( '$ X,XXX USD…', 'qrk' ) }
-						value={ attributes.priceWas }
-						onChange={ ( priceWas: string ) => setAttributes( { priceWas } ) }
+						value={ attributes.originalPrice }
+						onChange={ ( originalPrice: string ) => setAttributes( { originalPrice } ) }
 						allowedFormats={ [] }
 					/>
 				</strong>

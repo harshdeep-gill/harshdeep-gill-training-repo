@@ -26,7 +26,7 @@ import RatingStars from '../../components/rating-stars';
 /**
  * Block name.
  */
-export const name: string = 'quark/product-cards-card-reviews';
+export const name: string = 'quark/product-cards-reviews';
 
 /**
  * Block configuration settings.
@@ -42,7 +42,7 @@ export const settings: BlockConfiguration = {
 	attributes: {
 		rating: {
 			type: 'string',
-			default: '',
+			default: '5',
 		},
 		reviewsText: {
 			type: 'string',

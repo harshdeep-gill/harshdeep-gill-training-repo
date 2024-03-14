@@ -115,13 +115,6 @@
 		gap: var(--spacing-2);
 	}
 
-	&__departure-date-text {
-
-		&::after {
-			content: " | ";
-		}
-	}
-
 	&__title {
 		margin-bottom: 0;
 		margin-top: var(--spacing-1);
