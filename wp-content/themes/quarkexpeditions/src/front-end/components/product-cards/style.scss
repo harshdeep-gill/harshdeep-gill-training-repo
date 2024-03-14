@@ -113,6 +113,10 @@
 		display: flex;
 		align-items: center;
 		gap: var(--spacing-2);
+
+		&:not(:first-child) {
+			margin-top: var(--spacing-2);
+		}
 	}
 
 	&__title {
@@ -123,15 +127,20 @@
 	&__subtitle {
 		font-weight: var(--font-weight-bold);
 		margin-top: var(--spacing-1);
+		margin-bottom: 0;
 	}
 
 	&__description {
 		color: var(--color-gray-70);
+		margin-top: var(--spacing-1);
 	}
 
 	&__itinerary {
 		color: var(--color-gray-70);
-		margin-top: var(--spacing-1);
+
+		&:not(:first-child) {
+			margin-top: var(--spacing-1);
+		}
 	}
 
 	&__price-wrap {
@@ -160,11 +169,8 @@
 		flex-direction: column;
 		gap: var(--spacing-3);
 
-		&--cols-2 {
-
-			@media screen and (min-width: grid-size(lg)) {
-				flex-direction: row;
-			}
+		@media screen and (min-width: grid-size(lg)) {
+			flex-direction: row;
 		}
 
 		> * {

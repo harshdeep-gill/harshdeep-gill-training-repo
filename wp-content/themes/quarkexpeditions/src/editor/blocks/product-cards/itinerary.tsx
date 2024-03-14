@@ -56,15 +56,16 @@ export const settings: BlockConfiguration = {
 			<div { ...blockProps }>
 				<RichText
 					tagName="span"
-					className="product-cards__departure-date-text"
+					className="product-cards__departure-date"
 					placeholder={ __( 'Departs Month DD, YYYY…', 'qrk' ) }
 					value={ attributes.departureDate }
 					onChange={ ( departureDate: string ) => setAttributes( { departureDate } ) }
 					allowedFormats={ [] }
 				/>
+				&nbsp;|&nbsp;
 				<RichText
 					tagName="span"
-					className="product-cards__duration-text"
+					className="product-cards__duration"
 					placeholder={ __( 'X Days…', 'qrk' ) }
 					value={ attributes.durationText }
 					onChange={ ( durationText: string ) => setAttributes( { durationText } ) }

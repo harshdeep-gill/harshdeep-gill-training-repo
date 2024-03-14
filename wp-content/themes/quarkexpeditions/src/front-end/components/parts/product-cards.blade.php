@@ -35,73 +35,71 @@
 					@endif
 				</x-product-cards.image>
 
-				@if ( ! empty( $card['reviews'] ) )
-					<x-product-cards.reviews
-						:total_reviews_text="$card['reviews']['total_reviews_text']"
-						:review_rating="$card['reviews']['rating']"
-					/>
-				@endif
+				@foreach ( $card['children'] as $child_item )
+					@if ( 'reviews' === $child_item['type'] )
+						<x-product-cards.reviews
+							:total_reviews="$child_item['total_reviews_text']"
+							:review_rating="$child_item['rating']"
+						/>
+					@endif
 
-				@if ( ! empty( $card['itinerary'] ) )
-					<x-product-cards.itinerary
-						:departure_date="$card['itinerary']['departure_date_text']"
-						:duration="$card['itinerary']['duration_text']"
-					/>
-				@endif
+					@if ( 'itinerary' === $child_item['type'] )
+						<x-product-cards.itinerary
+							:departure_date="$child_item['departure_date_text']"
+							:duration="$child_item['duration_text']"
+						/>
+					@endif
 
-				@if ( ! empty( $card['title'] ) )
-					<x-product-cards.title :title="$card['title']" />
-				@endif
+					@if ( 'title' === $child_item['type'] )
+						<x-product-cards.title :title="$child_item['title']" />
+					@endif
 
-				@if ( ! empty( $card['subtitle'] ) )
-					<x-product-cards.subtitle :title="$card['subtitle']" />
-				@endif
+					@if ( 'subtitle' === $child_item['type'] )
+						<x-product-cards.subtitle :title="$child_item['subtitle']" />
+					@endif
 
-				@if ( ! empty( $card['description'] ) )
-					<x-product-cards.description>
-						<x-content :content="$card['description']" />
-					</x-product-cards.description>
-				@endif
+					@if ( 'description' === $child_item['type'] )
+						<x-product-cards.description>
+							{!! $child_item['description'] !!}
+						</x-product-cards.description>
+					@endif
 
-				@if ( ! empty( $card['price'] ) )
-					<x-product-cards.price
-						:original_price="$card['price']['original']"
-						:discounted_price="$card['price']['discounted']"
-					/>
-				@endif
+					@if ( 'price' === $child_item['type'] )
+						<x-product-cards.price
+							:original_price="$child_item['original']"
+							:discounted_price="$child_item['discounted']"
+						/>
+					@endif
 
-				@if ( ! empty( $card['buttons'] ) )
-					@if ( ! empty( $card['buttons']['form_modal_cta'] ) && ! empty( $card['buttons']['secondary_btn'] ) )
-					<x-product-cards.buttons>
-						<x-form-modal-cta form_id="inquiry-form">
-							<x-button type="button" size="big">
-								<x-escape :content="$card['buttons']['form_modal_cta']['text']" />
-							</x-button>
-						</x-form-modal-cta>
-						<x-button
-							size="big"
-							appearance="outline"
-							:href="$card['buttons']['secondary_btn']['url']"
-						>
-							<x-escape :content="$card['buttons']['secondary_btn']['text']" />
-						</x-button>
-					</x-product-cards.buttons>
-					@elseif ( ! empty( $card['buttons']['call_cta_text'] ) && ! empty( $card['buttons']['call_cta_url'] ) )
+					@if ( 'buttons' === $child_item['type'] )
+						@if ( ! empty( $child_item['form_modal_cta'] ) && ! empty( $child_item['secondary_btn'] ) )
 						<x-product-cards.buttons>
-							<x-button icon="phone" size="big" :href="$card['buttons']['call_cta_url']">
-								<x-escape :content="$card['buttons']['call_cta_text']" />
+							<x-form-modal-cta form_id="inquiry-form">
+								<x-button type="button" size="big">
+									<x-escape :content="$child_item['form_modal_cta']['text']" />
+								</x-button>
+							</x-form-modal-cta>
+							<x-button
+								size="big"
+								appearance="outline"
+								:href="$child_item['secondary_btn']['url']"
+							>
+								<x-escape :content="$child_item['secondary_btn']['text']" />
 							</x-button>
 						</x-product-cards.buttons>
+						@elseif ( ! empty( $child_item['call_cta_text'] ) && ! empty( $child_item['call_cta_url'] ) )
+							<x-product-cards.buttons>
+								<x-button icon="phone" size="big" :href="$child_item['call_cta_url']">
+									<x-escape :content="$child_item['call_cta_text']" />
+								</x-button>
+							</x-product-cards.buttons>
+						@endif
 					@endif
-				@endif
+				@endforeach
 			</x-product-cards.card>
 
 			@elseif ( 'media-content-card' === $card['type'] )
-				<x-parts.media-content-card
-					:is_compact="$card['is_compact']"
-					:image_id="$card['image_id']"
-					:content="$card['content']"
-				/>
+				{!! $card['slot'] !!}
 		@endif
 	@endforeach
 </x-product-cards>

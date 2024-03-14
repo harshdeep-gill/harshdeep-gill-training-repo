@@ -58,7 +58,8 @@ function render( ?string $content = null, array $block = [] ): null|string {
 
 			// Initialize current card attributes.
 			$card_attributes = [
-				'type' => 'product-card',
+				'type'     => 'product-card',
+				'children' => [],
 			];
 
 			// Add Image attributes.
@@ -90,68 +91,128 @@ function render( ?string $content = null, array $block = [] ): null|string {
 				foreach ( $inner_block['innerBlocks'] as $inner_inner_block ) {
 					// Reviews.
 					if ( 'quark/product-cards-reviews' === $inner_inner_block['blockName'] ) {
+						// Initialize reviews array.
+						$reviews = [];
+
+						// Add block type.
+						$reviews['type'] = 'reviews';
+
 						// Add rating.
-						$card_attributes['reviews']['rating'] = ! empty( $inner_inner_block['attrs']['rating'] ) ? $inner_inner_block['attrs']['rating'] : '';
+						$reviews['rating'] = ! empty( $inner_inner_block['attrs']['rating'] ) ? $inner_inner_block['attrs']['rating'] : '5';
 
 						// Add reviews text.
-						$card_attributes['reviews']['total_reviews_text'] = ! empty( $inner_inner_block['attrs']['reviewsText'] ) ? $inner_inner_block['attrs']['reviewsText'] : '5';
+						$reviews['total_reviews_text'] = ! empty( $inner_inner_block['attrs']['reviewsText'] ) ? $inner_inner_block['attrs']['reviewsText'] : '';
+
+						// Add reviews to children.
+						$card_attributes['children'][] = $reviews;
 					}
 
 					// Itinerary.
 					if ( 'quark/product-cards-itinerary' === $inner_inner_block['blockName'] ) {
-						// Add deaprture date text.
-						$card_attributes['itinerary']['departure_date_text'] = ! empty( $inner_inner_block['attrs']['departureDate'] ) ? $inner_inner_block['attrs']['departureDate'] : '';
+						// Initialize Itinerary.
+						$itinerary = [];
+
+						// Add block type.
+						$itinerary['type'] = 'itinerary';
+
+						// Add departure date text.
+						$itinerary['departure_date_text'] = ! empty( $inner_inner_block['attrs']['departureDate'] ) ? $inner_inner_block['attrs']['departureDate'] : '';
 
 						// Add duration text.
-						$card_attributes['itinerary']['duration_text'] = ! empty( $inner_inner_block['attrs']['durationText'] ) ? $inner_inner_block['attrs']['durationText'] : '';
+						$itinerary['duration_text'] = ! empty( $inner_inner_block['attrs']['durationText'] ) ? $inner_inner_block['attrs']['durationText'] : '';
+
+						// Add itinerary to children.
+						$card_attributes['children'][] = $itinerary;
 					}
 
 					// Title.
 					if ( 'quark/product-cards-title' === $inner_inner_block['blockName'] ) {
+						// Initialize title.
+						$title = [];
+
+						// Add block type.
+						$title['type'] = 'title';
+
 						// Add title.
-						$card_attributes['title'] = ! empty( $inner_inner_block['attrs']['title'] ) ? $inner_inner_block['attrs']['title'] : '';
+						$title['title'] = ! empty( $inner_inner_block['attrs']['title'] ) ? $inner_inner_block['attrs']['title'] : '';
+
+						// Add title to children.
+						$card_attributes['children'][] = $title;
 					}
 
 					// Subtitle.
 					if ( 'quark/product-cards-subtitle' === $inner_inner_block['blockName'] ) {
+						// Initialize subtitle.
+						$subtitle = [];
+
+						// Add block type.
+						$subtitle['type'] = 'subtitle';
+
 						// Add subtitle.
-						$card_attributes['subtitle'] = ! empty( $inner_inner_block['attrs']['subtitle'] ) ? $inner_inner_block['attrs']['subtitle'] : '';
+						$subtitle['subtitle'] = ! empty( $inner_inner_block['attrs']['subtitle'] ) ? $inner_inner_block['attrs']['subtitle'] : '';
+
+						// Add title to children.
+						$card_attributes['children'][] = $subtitle;
 					}
 
 					// Description.
 					if ( 'quark/product-cards-description' === $inner_inner_block['blockName'] ) {
+						// Initialize description.
+						$description = [];
+
+						// Add block type.
+						$description['type'] = 'description';
+
 						// Add description.
-						$card_attributes['description'] = ! empty( $inner_inner_block['attrs']['description'] ) ? $inner_inner_block['attrs']['description'] : '';
+						$description['description'] = ! empty( $inner_inner_block['attrs']['description'] ) ? $inner_inner_block['attrs']['description'] : '';
+
+						// Add description to children.
+						$card_attributes['children'][] = $description;
 					}
 
 					// Price.
 					if ( 'quark/product-cards-price' === $inner_inner_block['blockName'] ) {
+						// Initialize price.
+						$price = [];
+
+						// Add block type.
+						$price['type'] = 'price';
+
 						// Add price now.
-						$card_attributes['price']['discounted'] = ! empty( $inner_inner_block['attrs']['priceNow'] ) ? $inner_inner_block['attrs']['priceNow'] : '';
+						$price['discounted'] = ! empty( $inner_inner_block['attrs']['price'] ) ? $inner_inner_block['attrs']['price'] : '';
 
 						// Add price was.
-						$card_attributes['price']['original'] = ! empty( $inner_inner_block['attrs']['priceWas'] ) ? $inner_inner_block['attrs']['priceWas'] : '';
+						$price['original'] = ! empty( $inner_inner_block['attrs']['originalPrice'] ) ? $inner_inner_block['attrs']['originalPrice'] : '';
+
+						// Add price to children.
+						$card_attributes['children'][] = $price;
 					}
 
 					// Buttons.
 					if ( 'quark/product-cards-card-buttons' === $inner_inner_block['blockName'] ) {
+						// Initialize buttons.
+						$buttons = [];
+
+						// Add block type.
+						$buttons['type'] = 'buttons';
+
 						// Check if has Call CTA.
 						if ( ! empty( $inner_inner_block['attrs']['hasCallCta'] ) ) {
 
 							// Add Call CTA Text.
 							if ( ! empty( $inner_inner_block['attrs']['callCtaText'] ) ) {
-								$card_attributes['buttons']['call_cta_text'] = $inner_inner_block['attrs']['callCtaText'];
+								$buttons['call_cta_text'] = $inner_inner_block['attrs']['callCtaText'];
 							}
 
 							// Add Call CTA URL.
 							if ( ! empty( $inner_inner_block['attrs']['callCtaUrl']['url'] ) ) {
-								$card_attributes['buttons']['call_cta_url'] = $inner_inner_block['attrs']['callCtaUrl']['url'];
+								$buttons['call_cta_url'] = $inner_inner_block['attrs']['callCtaUrl']['url'];
 							}
 						} else {
 							// Add Secondary Button Attributes.
 							if ( ! empty( $inner_inner_block['attrs']['secondaryBtn'] ) ) {
-								$card_attributes['buttons']['secondary_btn']['text'] = $inner_inner_block['attrs']['secondaryBtn']['text'];
-								$card_attributes['buttons']['secondary_btn']['url']  = $inner_inner_block['attrs']['secondaryBtn']['url'];
+								$buttons['secondary_btn']['text'] = $inner_inner_block['attrs']['secondaryBtn']['text'];
+								$buttons['secondary_btn']['url']  = $inner_inner_block['attrs']['secondaryBtn']['url'];
 							}
 
 							// Loop through inner blocks of buttons.
@@ -162,52 +223,28 @@ function render( ?string $content = null, array $block = [] ): null|string {
 									if ( 'quark/form-modal-cta' === $button_inner_block['blockName'] ) {
 
 										// Add Form Modal CTA Text.
-										$card_attributes['buttons']['form_modal_cta']['text'] = ! empty( $button_inner_block['attrs']['text'] ) ? $button_inner_block['attrs']['text'] : '';
+										$buttons['form_modal_cta']['text'] = ! empty( $button_inner_block['attrs']['text'] ) ? $button_inner_block['attrs']['text'] : '';
 									}
 								}
 							}
 						}
+
+						// Add buttons to children.
+						$card_attributes['children'][] = $buttons;
 					}
 				}
 			}
 
 			// Add card attributes.
 			$attributes['items'][] = $card_attributes;
-		}
-
-		// Media Content Card.
-		if ( 'quark/media-content-card' === $inner_block['blockName'] ) {
-
-			// Initialize attributes.
+		} else {
+			// Media Content Card.
 			$media_content_card_attributes = [
-				'type'       => 'media-content-card',
-				'is_compact' => ! empty( $inner_block['attrs']['isCompact'] ) ? true : false,
-				'content'    => [],
+				'type' => 'media-content-card',
+				'slot' => render_block( $inner_block ),
 			];
 
-			// Add Image Id.
-			$media_content_card_attributes['image_id'] = $inner_block['attrs']['image']['id'];
-
-			// Loop through innerblocks and build attributes.
-			foreach ( $inner_block['innerBlocks'] as $index => $child_block ) {
-				$media_content_card_attributes['content'][ $index ]['heading'] = $child_block['attrs']['heading'] ?? '';
-
-				// Loop through inner inner blocks.
-				foreach ( $child_block['innerBlocks'] as $grand_child_block ) {
-					if ( 'quark/media-content-info' !== $grand_child_block['blockName'] ) {
-						$media_content_card_attributes['content'][ $index ]['slot'] = implode( '', array_map( 'render_block', $child_block['innerBlocks'] ) );
-					} else {
-						$media_content_card_attributes['content'][ $index ]['content_info'][] = [
-							'label'  => $grand_child_block['attrs']['label'] ?? '',
-							'value'  => $grand_child_block['attrs']['value'] ?? '',
-							'url'    => ! empty( $grand_child_block['attrs']['url']['url'] ) ? $grand_child_block['attrs']['url']['url'] : '',
-							'target' => ! empty( $grand_child_block['attrs']['url']['newWindow'] ) ? '_blank' : '',
-						];
-					}
-				}
-			}
-
-			// Add media content card attributes.
+			// Add attributes.
 			$attributes['items'][] = $media_content_card_attributes;
 		}
 	}

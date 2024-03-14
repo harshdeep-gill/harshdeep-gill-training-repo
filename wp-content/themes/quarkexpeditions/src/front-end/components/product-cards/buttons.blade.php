@@ -4,6 +4,6 @@
 	}
 @endphp
 
-<div class="product-cards__buttons product-cards__buttons--cols-2">
+<div class="product-cards__buttons">
 	{!! $slot !!}
 </div>

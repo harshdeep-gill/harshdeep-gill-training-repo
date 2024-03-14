@@ -82,7 +82,7 @@ export const settings: BlockConfiguration = {
 	}: BlockEditAttributes ): JSX.Element {
 		// eslint-disable-next-line react-hooks/rules-of-hooks
 		const blockProps = useBlockProps( {
-			className: classnames( className, 'product-cards__buttons product-cards__buttons--cols-2' ),
+			className: classnames( className, 'product-cards__buttons' ),
 		} );
 
 		// eslint-disable-next-line react-hooks/rules-of-hooks

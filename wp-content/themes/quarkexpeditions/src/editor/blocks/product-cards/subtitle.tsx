@@ -44,21 +44,19 @@ export const settings: BlockConfiguration = {
 	edit( { className, attributes, setAttributes }: BlockEditAttributes ): JSX.Element {
 		// eslint-disable-next-line react-hooks/rules-of-hooks
 		const blockProps = useBlockProps( {
-			className: classnames( className ),
+			className: classnames( className, 'product-cards__subtitle' ),
 		} );
 
 		// Return the block's markup.
 		return (
-			<div { ...blockProps }>
-				<RichText
-					tagName="div"
-					className="product-cards__subtitle"
-					placeholder={ __( 'Write Subtitle…', 'qrk' ) }
-					value={ attributes.subtitle }
-					onChange={ ( subtitle: string ) => setAttributes( { subtitle } ) }
-					allowedFormats={ [] }
-				/>
-			</div>
+			<RichText
+				{ ...blockProps }
+				tagName="p"
+				placeholder={ __( 'Write Subtitle…', 'qrk' ) }
+				value={ attributes.subtitle }
+				onChange={ ( subtitle: string ) => setAttributes( { subtitle } ) }
+				allowedFormats={ [] }
+			/>
 		);
 	},
 	save() {
