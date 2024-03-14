@@ -853,11 +853,11 @@
 			</x-media-text-cta.image>
 
 			<x-media-text-cta.content>
-				<h3>South Georgia and Antarctic Peninsula: Penguin Safari</h3>
+				<h2>South Georgia and Antarctic Peninsula: Penguin Safari</h2>
 				<p>This is the fastest way to visit both the Antarctic Peninsula and remote, wildlife rich South Georgia, where the beaches are teaming with King penguins and elephant seals. From here you sail south where Antarctica awaits with its soaring peaks and staggering expanse.</p>
 				<x-media-text-cta.secondary-text text="16/18 days | Starting from $12,946 USD" />
 				<x-media-text-cta.cta>
-					<x-button>Request a Quote</x-button>
+					<x-button size="big" color="black">Request a Quote</x-button>
 				</x-media-text-cta.cta>
 			</x-media-text-cta.content>
 		</x-media-text-cta>
@@ -866,24 +866,26 @@
 			<x-media-text-cta.image image_id="32" />
 
 			<x-media-text-cta.content>
-				<h3>Falklands, South Georgia, and Antarctica: Explorers & Kings</h3>
+				<h2>Falklands, South Georgia, and Antarctica: Explorers & Kings</h2>
 				<p>The quickest way to get to the rarely visited Falkland Islands and South Georgia before stepping foot on the 7th Continent. Both islands are known as meccas for wildlife with epic displays of animals congregating by the thousands. Then, explore the stunning Antarctic Peninsula and enter a world of ice, snow and natural wonders.</p>
 				<x-media-text-cta.secondary-text text="20 days | Starting From $14,621 USD" />
 				<x-media-text-cta.cta>
-					<x-button>Request a Quote</x-button>
+					<x-button size="big" color="black">Request a Quote</x-button>
 				</x-media-text-cta.cta>
 			</x-media-text-cta.content>
 		</x-media-text-cta>
 
-		<x-media-text-cta media_align="right">
-			<x-media-text-cta.image image_id="32" />
+		<x-media-text-cta>
+			<x-media-text-cta.image image_id="32">
+				<x-media-text-cta.badge text="Featured Expedition" />
+			</x-media-text-cta.image>
 
 			<x-media-text-cta.content>
-				<h3>Epic Antarctica: Crossing the Circle via Falklands & South Georgia</h3>
+				<h2>Epic Antarctica: Crossing the Circle via Falklands & South Georgia</h2>
 				<p>Our Epic Antarctica voyage is called so for a reason—it includes all of the major Antarctic highlights you can imagine. </p>
 				<x-media-text-cta.secondary-text text="23 days | Starting From $26,979 USD" />
 				<x-media-text-cta.cta>
-					<x-button>Request a Quote</x-button>
+					<x-button size="big" color="black">Request a Quote</x-button>
 				</x-media-text-cta.cta>
 			</x-media-text-cta.content>
 		</x-media-text-cta>
