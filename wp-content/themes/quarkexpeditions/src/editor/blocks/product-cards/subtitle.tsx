@@ -53,7 +53,7 @@ export const settings: BlockConfiguration = {
 				<RichText
 					tagName="div"
 					className="product-cards__subtitle"
-					placeholder={ __( 'Enter Subtitle', 'qrk' ) }
+					placeholder={ __( 'Write Subtitle…', 'qrk' ) }
 					value={ attributes.subtitle }
 					onChange={ ( subtitle: string ) => setAttributes( { subtitle } ) }
 					allowedFormats={ [] }

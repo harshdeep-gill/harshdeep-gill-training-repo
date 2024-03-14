@@ -201,7 +201,7 @@ export const settings: BlockConfiguration = {
 							<RichText
 								tagName="div"
 								className="product-cards__badge-cta body-small"
-								placeholder={ __( 'CTA Badge Text', 'qrk' ) }
+								placeholder={ __( 'CTA Badge Text…', 'qrk' ) }
 								value={ attributes.ctaBadgeText }
 								onChange={ ( ctaBadgeText: string ) => setAttributes( { ctaBadgeText } ) }
 								allowedFormats={ [] }
@@ -211,7 +211,7 @@ export const settings: BlockConfiguration = {
 							<div className="product-cards__badge-time body-small">
 								{ icons.time }
 								<RichText
-									placeholder={ __( 'Time Badge Text', 'qrk' ) }
+									placeholder={ __( 'Time Badge Text…', 'qrk' ) }
 									value={ attributes.timeBadgeText }
 									onChange={ ( timeBadgeText: string ) => setAttributes( { timeBadgeText } ) }
 									allowedFormats={ [] }
@@ -222,7 +222,7 @@ export const settings: BlockConfiguration = {
 							<RichText
 								tagName="div"
 								className="product-cards__badge-sold-out h5"
-								placeholder={ __( 'Sold Out Text', 'qrk' ) }
+								placeholder={ __( 'Sold Out Text…', 'qrk' ) }
 								value={ attributes.soldOutText }
 								onChange={ ( soldOutText: string ) => setAttributes( { soldOutText } ) }
 								allowedFormats={ [] }
@@ -232,7 +232,7 @@ export const settings: BlockConfiguration = {
 							<RichText
 								tagName="div"
 								className="product-cards__info-ribbon body-small"
-								placeholder={ __( 'Info Ribbon Text', 'qrk' ) }
+								placeholder={ __( 'Info Ribbon Text…', 'qrk' ) }
 								value={ attributes.infoRibbonText }
 								onChange={ ( infoRibbonText: string ) => setAttributes( { infoRibbonText } ) }
 								allowedFormats={ [] }

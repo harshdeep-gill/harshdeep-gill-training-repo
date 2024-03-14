@@ -57,7 +57,7 @@ export const settings: BlockConfiguration = {
 				<RichText
 					tagName="span"
 					className="product-cards__departure-date-text"
-					placeholder={ __( 'Departs Month DD, YYYY', 'qrk' ) }
+					placeholder={ __( 'Departs Month DD, YYYY…', 'qrk' ) }
 					value={ attributes.departureDate }
 					onChange={ ( departureDate: string ) => setAttributes( { departureDate } ) }
 					allowedFormats={ [] }
@@ -65,7 +65,7 @@ export const settings: BlockConfiguration = {
 				<RichText
 					tagName="span"
 					className="product-cards__duration-text"
-					placeholder={ __( 'X Days', 'qrk' ) }
+					placeholder={ __( 'X Days…', 'qrk' ) }
 					value={ attributes.durationText }
 					onChange={ ( durationText: string ) => setAttributes( { durationText } ) }
 					allowedFormats={ [] }

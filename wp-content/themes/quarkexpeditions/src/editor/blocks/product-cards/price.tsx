@@ -58,7 +58,7 @@ export const settings: BlockConfiguration = {
 				<RichText
 					tagName="strong"
 					className="product-cards__price product-cards__price-now h4"
-					placeholder={ __( '$ XXXX USD', 'qrk' ) }
+					placeholder={ __( '$ X,XXX USD…', 'qrk' ) }
 					value={ attributes.priceNow }
 					onChange={ ( priceNow: string ) => setAttributes( { priceNow } ) }
 					allowedFormats={ [] }
@@ -67,7 +67,7 @@ export const settings: BlockConfiguration = {
 					<RichText
 						tagName="del"
 						className="product-cards__price price-was"
-						placeholder={ __( '$ XXXX USD', 'qrk' ) }
+						placeholder={ __( '$ X,XXX USD…', 'qrk' ) }
 						value={ attributes.priceWas }
 						onChange={ ( priceWas: string ) => setAttributes( { priceWas } ) }
 						allowedFormats={ [] }

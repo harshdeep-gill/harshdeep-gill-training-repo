@@ -88,7 +88,7 @@ export const settings: BlockConfiguration = {
 					<RichText
 						tagName="span"
 						className="product-cards__reviews-text"
-						placeholder={ __( 'X Reviews', 'qrk' ) }
+						placeholder={ __( 'X Reviews…', 'qrk' ) }
 						value={ attributes.reviewsText }
 						onChange={ ( reviewsText: string ) => setAttributes( { reviewsText } ) }
 						allowedFormats={ [] }
