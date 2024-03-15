@@ -12,7 +12,7 @@ namespace Quark\POC;
  *
  * @return void
  */
-function bootstrap(): void {
+function bootstrap() : void {
 	// Register Hooks.
 	add_action( 'init', __NAMESPACE__ . '\\register_post_types' );
 	add_action( 'init', __NAMESPACE__ . '\\register_taxonomies' );
@@ -38,7 +38,7 @@ function register_taxonomies() : void {
 			],
 		],
 		'adventure_options'              => [
-			'label'        => 'adventure_options',
+			'label'        => 'Adventure Options',
 			'hierarchical' => false,
 			'post_types'   => [
 				'adventure_option',
@@ -85,7 +85,7 @@ function register_taxonomies() : void {
 		],
 		'departure_locations'            => [
 			'label'        => 'Departure Locations',
-			'hierarchical' => false,
+			'hierarchical' => true,
 			'post_types'   => [
 				'itinerary',
 			],
@@ -212,7 +212,7 @@ function register_post_types() : void {
 	 * @var array<string, string[]> $post_types Post types list.
 	 */
 	$post_types = [
-		'adventure_option'            => [
+		'adventure_option'     => [
 			'labels'       => [
 				'name'          => 'Adventure Options',
 				'singular_name' => 'Adventure Option',
@@ -225,7 +225,7 @@ function register_post_types() : void {
 			'menu_icon'    => 'dashicons-location-alt',
 			'show_in_rest' => true,
 		],
-		'agent_page'                  => [
+		'agent_page'           => [
 			'labels'       => [
 				'name'          => 'Agent Pages',
 				'singular_name' => 'Agent Page',
@@ -240,7 +240,7 @@ function register_post_types() : void {
 				'thumbnail',
 			],
 		],
-		'agent_update'                => [
+		'agent_update'         => [
 			'labels'       => [
 				'name'          => 'Agent Updates',
 				'singular_name' => 'Agent Update',
@@ -254,7 +254,7 @@ function register_post_types() : void {
 				'editor',
 			],
 		],
-		'cabin_category'              => [
+		'cabin_category'       => [
 			'labels'       => [
 				'name'          => 'Cabin Categories',
 				'singular_name' => 'Cabin Category',
@@ -268,7 +268,7 @@ function register_post_types() : void {
 				'editor',
 			],
 		],
-		'departure'                   => [
+		'departure'            => [
 			'labels'       => [
 				'name'          => 'Departures',
 				'singular_name' => 'Departure',
@@ -282,7 +282,7 @@ function register_post_types() : void {
 				'editor',
 			],
 		],
-		'expedition'                  => [
+		'expedition'           => [
 			'labels'       => [
 				'name'          => 'Expeditions',
 				'singular_name' => 'Expedition',
@@ -296,7 +296,7 @@ function register_post_types() : void {
 				'editor',
 			],
 		],
-		'inclusion_exclusion_set'     => [
+		'inclusion_exclusion'  => [
 			'labels'       => [
 				'name'          => 'Inclusion / Exclusion Sets',
 				'singular_name' => 'Inclusion / Exclusion Set',
@@ -310,7 +310,7 @@ function register_post_types() : void {
 				'editor',
 			],
 		],
-		'itinerary'                   => [
+		'itinerary'            => [
 			'labels'       => [
 				'name'          => 'Iitineraries',
 				'singular_name' => 'Itinerary',
@@ -324,7 +324,21 @@ function register_post_types() : void {
 				'editor',
 			],
 		],
-		'landing_page'                => [
+		'itinerary_day'        => [
+			'labels'       => [
+				'name'          => 'Itinerary Days',
+				'singular_name' => 'Itinerary Day',
+			],
+			'public'       => false,
+			'show_ui'      => true,
+			'show_in_menu' => true,
+			'menu_icon'    => 'dashicons-list-view',
+			'supports'     => [
+				'title',
+				'editor',
+			],
+		],
+		'landing_page'         => [
 			'labels'       => [
 				'name'          => 'Landing Pages',
 				'singular_name' => 'Landing Page',
@@ -338,7 +352,7 @@ function register_post_types() : void {
 				'editor',
 			],
 		],
-		'marketing_promotion_landing' => [
+		'marketing_promotion'  => [
 			'labels'       => [
 				'name'          => 'Marketing Promotion Landing Pages',
 				'singular_name' => 'Marketing Promotion Landing Page',
@@ -352,7 +366,7 @@ function register_post_types() : void {
 				'editor',
 			],
 		],
-		'office'                      => [
+		'office'               => [
 			'labels'       => [
 				'name'          => 'Office',
 				'singular_name' => 'Office',
@@ -366,7 +380,7 @@ function register_post_types() : void {
 				'editor',
 			],
 		],
-		'photographic_journal'        => [
+		'photographic_journal' => [
 			'labels'       => [
 				'name'          => 'Photographic Journals',
 				'singular_name' => 'Photographic Journal',
@@ -380,7 +394,7 @@ function register_post_types() : void {
 				'editor',
 			],
 		],
-		'pre_post_trip_option'        => [
+		'pre_post_trip_option' => [
 			'labels'       => [
 				'name'          => 'Pre/Post-Trip Options',
 				'singular_name' => 'Pre/Post-Trip Option',
@@ -394,7 +408,7 @@ function register_post_types() : void {
 				'editor',
 			],
 		],
-		'press_release'               => [
+		'press_release'        => [
 			'labels'       => [
 				'name'          => 'Press Releases',
 				'singular_name' => 'Press Release',
@@ -408,7 +422,7 @@ function register_post_types() : void {
 				'editor',
 			],
 		],
-		'region_landing_page'         => [
+		'region_landing_page'  => [
 			'labels'       => [
 				'name'          => 'Region Landing Pages',
 				'singular_name' => 'Region Landing Page',
@@ -422,7 +436,7 @@ function register_post_types() : void {
 				'editor',
 			],
 		],
-		'ship'                        => [
+		'ship'                 => [
 			'labels'       => [
 				'name'          => 'Ships',
 				'singular_name' => 'Ship',
@@ -436,7 +450,7 @@ function register_post_types() : void {
 				'editor',
 			],
 		],
-		'ship_deck'                   => [
+		'ship_deck'            => [
 			'labels'       => [
 				'name'          => 'Ship Deck',
 				'singular_name' => 'Ship Deck',
@@ -450,7 +464,7 @@ function register_post_types() : void {
 				'editor',
 			],
 		],
-		'staff_insight'               => [
+		'staff_insight'        => [
 			'labels'       => [
 				'name'          => 'Staff Insights',
 				'singular_name' => 'Staff Insight',
@@ -464,7 +478,7 @@ function register_post_types() : void {
 				'editor',
 			],
 		],
-		'staff_member'                => [
+		'staff_member'         => [
 			'labels'       => [
 				'name'          => 'Staff Members',
 				'singular_name' => 'Staff Member',
@@ -478,7 +492,7 @@ function register_post_types() : void {
 				'editor',
 			],
 		],
-		'agreement'                   => [
+		'agreement'            => [
 			'labels'       => [
 				'name'          => 'Terms and Conditions / Policy Pages',
 				'singular_name' => 'Terms and Conditions / Policy Page',
@@ -492,7 +506,7 @@ function register_post_types() : void {
 				'editor',
 			],
 		],
-		'testimonial'                 => [
+		'testimonial'          => [
 			'labels'       => [
 				'name'          => 'Testimonials',
 				'singular_name' => 'Testimonial',
