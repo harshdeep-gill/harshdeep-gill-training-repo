@@ -5,5 +5,5 @@
 @endphp
 
 <div class="media-text-cta__content">
-	{!! $slot !!}
+	<x-content :content="$slot" />
 </div>
