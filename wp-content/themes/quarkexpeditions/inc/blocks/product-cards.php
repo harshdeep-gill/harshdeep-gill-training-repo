@@ -189,7 +189,7 @@ function render( ?string $content = null, array $block = [] ): null|string {
 					}
 
 					// Buttons.
-					if ( 'quark/product-cards-card-buttons' === $inner_inner_block['blockName'] ) {
+					if ( 'quark/product-cards-buttons' === $inner_inner_block['blockName'] ) {
 						// Initialize buttons.
 						$buttons = [];
 
