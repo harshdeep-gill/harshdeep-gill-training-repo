@@ -32,14 +32,14 @@ function register_taxonomies() : void {
 	$taxonomies_list = [
 		'accommodation_types'            => [
 			'label'        => 'Accommodation Types',
-			'hierarchical' => false,
+			'hierarchical' => true,
 			'post_types'   => [
 				'ship',
 			],
 		],
 		'adventure_options'              => [
 			'label'        => 'Adventure Options',
-			'hierarchical' => false,
+			'hierarchical' => true,
 			'post_types'   => [
 				'adventure_option',
 				'departure',
@@ -47,40 +47,41 @@ function register_taxonomies() : void {
 		],
 		'audiences'                      => [
 			'label'        => 'Audiences',
-			'hierarchical' => false,
+			'hierarchical' => true,
 			'post_types'   => [
+				'm_p_landing',
 				'marketing_promotion',
 			],
 		],
 		'branding'                       => [
 			'label'        => 'Branding',
-			'hierarchical' => false,
+			'hierarchical' => true,
 			'post_types'   => [],
 		],
 		'cabin_classes'                  => [
 			'label'        => 'Cabin Classes',
-			'hierarchical' => false,
+			'hierarchical' => true,
 			'post_types'   => [
 				'cabin_category',
 			],
 		],
 		'charter_companies'              => [
 			'label'        => 'Charter Companies',
-			'hierarchical' => false,
+			'hierarchical' => true,
 			'post_types'   => [
 				'departure',
 			],
 		],
 		'departments'                    => [
 			'label'        => 'Departments',
-			'hierarchical' => false,
+			'hierarchical' => true,
 			'post_types'   => [
 				'staff_member',
 			],
 		],
 		'departure_destinations'         => [
 			'label'        => 'Departure Destinations',
-			'hierarchical' => false,
+			'hierarchical' => true,
 			'post_types'   => [],
 		],
 		'departure_locations'            => [
@@ -92,7 +93,7 @@ function register_taxonomies() : void {
 		],
 		'departure_staff_roles'          => [
 			'label'        => 'Departure Staff Roles',
-			'hierarchical' => false,
+			'hierarchical' => true,
 			'post_types'   => [
 				'staff_member',
 			],
@@ -103,37 +104,38 @@ function register_taxonomies() : void {
 			'post_types'   => [
 				'adventure_option',
 				'expedition',
-				'marketing_promotion',
+				'm_p_landing',
 				'region_landing_page',
+				'marketing_promotion',
 			],
 		],
 		'expedition_categories'          => [
 			'label'        => 'Expedition Categories',
-			'hierarchical' => false,
+			'hierarchical' => true,
 			'post_types'   => [
 				'expedition',
 			],
 		],
 		'expedition_types'               => [
 			'label'        => 'Expedition Types',
-			'hierarchical' => false,
+			'hierarchical' => true,
 			'post_types'   => [],
 		],
 		'icons'                          => [
 			'label'        => 'Icons',
-			'hierarchical' => false,
+			'hierarchical' => true,
 			'post_types'   => [],
 		],
 		'inclusion_exclusion_categories' => [
 			'label'        => 'Inclusion Exclusion Categories',
-			'hierarchical' => false,
+			'hierarchical' => true,
 			'post_types'   => [
-				'inclusion_exclusion_set',
+				'inclusion_exclusion',
 			],
 		],
 		'languages'                      => [
 			'label'        => 'Languages',
-			'hierarchical' => false,
+			'hierarchical' => true,
 			'post_types'   => [
 				'departure',
 				'staff_member',
@@ -141,39 +143,40 @@ function register_taxonomies() : void {
 		],
 		'newspaper_editions'             => [
 			'label'        => 'Newspaper Editions',
-			'hierarchical' => false,
+			'hierarchical' => true,
 			'post_types'   => [],
 		],
 		'ports'                          => [
 			'label'        => 'Ports',
-			'hierarchical' => false,
+			'hierarchical' => true,
 			'post_types'   => [
 				'itinerary',
 			],
 		],
 		'promotion_tags'                 => [
 			'label'        => 'Promotion Tags',
-			'hierarchical' => false,
+			'hierarchical' => true,
 			'post_types'   => [
 				'expedition',
+				'm_p_landing',
 				'marketing_promotion',
 			],
 		],
 		'ship_categories'                => [
 			'label'        => 'Ship Categories',
-			'hierarchical' => false,
+			'hierarchical' => true,
 			'post_types'   => [
 				'ship',
 			],
 		],
 		'sources_of_awareness'           => [
 			'label'        => 'Sources of Awareness',
-			'hierarchical' => false,
+			'hierarchical' => true,
 			'post_types'   => [],
 		],
 		'special_interests'              => [
 			'label'        => 'Special Interests',
-			'hierarchical' => false,
+			'hierarchical' => true,
 			'post_types'   => [],
 		],
 	];
@@ -279,7 +282,6 @@ function register_post_types() : void {
 			'menu_icon'    => 'dashicons-airplane',
 			'supports'     => [
 				'title',
-				'editor',
 			],
 		],
 		'expedition'           => [
@@ -307,7 +309,6 @@ function register_post_types() : void {
 			'menu_icon'    => 'dashicons-networking',
 			'supports'     => [
 				'title',
-				'editor',
 			],
 		],
 		'itinerary'            => [
@@ -335,7 +336,6 @@ function register_post_types() : void {
 			'menu_icon'    => 'dashicons-list-view',
 			'supports'     => [
 				'title',
-				'editor',
 			],
 		],
 		'landing_page'         => [
@@ -353,6 +353,20 @@ function register_post_types() : void {
 			],
 		],
 		'marketing_promotion'  => [
+			'labels'       => [
+				'name'          => 'Marketing Promotions (TO BE DEPRECATED)',
+				'singular_name' => 'Marketing Promotion (TO BE DEPRECATED)',
+			],
+			'public'       => false,
+			'show_ui'      => true,
+			'show_in_menu' => true,
+			'menu_icon'    => 'dashicons-analytics',
+			'supports'     => [
+				'title',
+				'editor',
+			],
+		],
+		'm_p_landing'          => [
 			'labels'       => [
 				'name'          => 'Marketing Promotion Landing Pages',
 				'singular_name' => 'Marketing Promotion Landing Page',
@@ -377,7 +391,6 @@ function register_post_types() : void {
 			'menu_icon'    => 'dashicons-schedule',
 			'supports'     => [
 				'title',
-				'editor',
 			],
 		],
 		'photographic_journal' => [
@@ -391,7 +404,6 @@ function register_post_types() : void {
 			'menu_icon'    => 'dashicons-embed-photo',
 			'supports'     => [
 				'title',
-				'editor',
 			],
 		],
 		'pre_post_trip_option' => [
@@ -475,7 +487,6 @@ function register_post_types() : void {
 			'menu_icon'    => 'dashicons-money',
 			'supports'     => [
 				'title',
-				'editor',
 			],
 		],
 		'staff_member'         => [
@@ -517,7 +528,6 @@ function register_post_types() : void {
 			'menu_icon'    => 'dashicons-format-quote',
 			'supports'     => [
 				'title',
-				'editor',
 			],
 		],
 	];
