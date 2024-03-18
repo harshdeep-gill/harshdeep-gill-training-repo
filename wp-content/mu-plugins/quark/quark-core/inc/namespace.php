@@ -9,6 +9,7 @@ namespace Quark\Core;
 
 use JB\Cloudinary\Core as Cloudinary_Core;
 use JB\Cloudinary\Frontend as Cloudinary_Frontend;
+use WP_Post;
 
 use function Travelopia\Core\cached_nav_menu;
 
@@ -271,4 +272,45 @@ function get_front_end_data( bool $force = false ): array {
 
 	// Return updated front-end data.
 	return $template_data;
+}
+
+/**
+ * Update attachment meta data for SVG.
+ *
+ * @param int $post_id Attachment ID.
+ *
+ * @return void
+ */
+function update_svg_content( int $post_id = 0 ): void {
+	// Get Attachment.
+	$post = get_post( $post_id );
+
+	// If post is not instance of WP_Post then bail out.
+	if ( ! $post instanceof WP_Post ) {
+		return;
+	}
+
+	// If attachment is not SVG then bail out.
+	if ( 'attachment' !== $post->post_type || 'image/svg+xml' !== $post->post_mime_type ) {
+		return;
+	}
+
+	// Get attached file.
+	$attached_file = get_attached_file( $post_id );
+
+	// If Attached file is empty then bail out.
+	if ( empty( $attached_file ) ) {
+		return;
+	}
+
+	// Get SVG content.
+	$content = file_get_contents( $attached_file );  // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
+
+	// If SVG content is empty then bail out.
+	if ( empty( $content ) ) {
+		return;
+	}
+
+	// Update SVG content.
+	update_post_meta( $post_id, 'svg_content', wp_kses_post( $content ) );
 }
