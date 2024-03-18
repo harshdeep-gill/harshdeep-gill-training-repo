@@ -45,7 +45,7 @@ function register_blocks(): void {
 		'IconBadge'        => 'icon-badge.php',
 		'FormModalCta'     => 'form-modal-cta.php',
 		'MediaContentCard' => 'media-content-card.php',
-		'IconButton'       => 'icon-button.php',
+		'Button'           => 'button.php',
 	];
 
 	// Register blocks.

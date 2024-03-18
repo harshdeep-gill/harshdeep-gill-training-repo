@@ -6,6 +6,10 @@
 	if ( empty( $items ) ) {
 		return;
 	}
+
+	echo '<pre>';
+	// print_r( $items );
+	echo '</pre>';
 @endphp
 
 <x-product-cards>
@@ -39,21 +43,17 @@
 
 				@foreach ( $card['children'] as $child_item )
 					@if ( 'reviews' === $child_item['type'] )
-						@if ( ! empty( $child_item['total_reviews_text'] ) || ! empty( $child_item['rating'] ) )
-							<x-product-cards.reviews
-								:total_reviews="$child_item['total_reviews_text']"
-								:review_rating="$child_item['rating']"
-							/>
-						@endif
+						<x-product-cards.reviews
+							:total_reviews="$child_item['total_reviews_text'] ?? ''"
+							:review_rating="$child_item['rating'] ?? ''"
+						/>
 					@endif
 
 					@if ( 'itinerary' === $child_item['type'] )
-						@if ( ! empty( $child_item['departure_date_text'] ) || ! empty( $child_item['duration_text'] ) )
-							<x-product-cards.itinerary
-								:departure_date="$child_item['departure_date_text']"
-								:duration="$child_item['duration_text']"
-							/>
-						@endif
+						<x-product-cards.itinerary
+							:departure_date="$child_item['departure_date_text'] ?? ''"
+							:duration="$child_item['duration_text'] ?? ''"
+						/>
 					@endif
 
 					@if ( 'title' === $child_item['type'] )
@@ -77,12 +77,10 @@
 					@endif
 
 					@if ( 'price' === $child_item['type'] )
-						@if ( ! empty( $child_item['original'] ) && ! empty( $child_item['discounted'] ) )
-							<x-product-cards.price
-								:original_price="$child_item['original']"
-								:discounted_price="$child_item['discounted']"
-							/>
-						@endif
+						<x-product-cards.price
+							:original_price="$child_item['original'] ?? ''"
+							:discounted_price="$child_item['discounted'] ?? ''"
+						/>
 					@endif
 
 					@if ( 'buttons' === $child_item['type'] )

@@ -1,13 +1,13 @@
 <?php
 /**
- * Block: IconButton.
+ * Block: Button.
  *
  * @package quark
  */
 
-namespace Quark\Theme\Blocks\IconButton;
+namespace Quark\Theme\Blocks\Button;
 
-const BLOCK_NAME = 'quark/icon-button';
+const BLOCK_NAME = 'quark/button';
 const COMPONENT  = 'button';
 
 /**
@@ -48,7 +48,7 @@ function render( ?string $content = null, array $block = [] ): null|string {
 	$attributes = [
 		'color'        => $block['attrs']['backgroundColor'] ?? '',
 		'href'         => $block['attrs']['url']['url'] ?? '',
-		'target'       => ! empty( $block['attrs']['url']['target'] ) ? $block['attrs']['url']['target'] : '_blank',
+		'target'       => ! empty( $block['attrs']['url']['newWindow'] ) ? '_blank' : '',
 		'appearance'   => $block['attrs']['appearance'] ?? '',
 		'size'         => ! empty( $block['attrs']['isSizeBig'] ) ? 'big' : '',
 		'icon'         => $block['attrs']['icon'] ?? '',

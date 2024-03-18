@@ -49,7 +49,7 @@ const {
 /**
  * Block name.
  */
-export const name: string = 'quark/icon-button';
+export const name: string = 'quark/button';
 
 // Background colors.
 export const colors: { [key: string]: string }[] = [
@@ -62,11 +62,11 @@ export const colors: { [key: string]: string }[] = [
  */
 export const settings: BlockConfiguration = {
 	apiVersion: 2,
-	title: __( 'Icon Button', 'qrk' ),
-	description: __( 'Button Block with Icon', 'qrk' ),
+	title: __( 'Button', 'qrk' ),
+	description: __( 'Custom Quark Button Block', 'qrk' ),
 	icon: 'button',
 	category: 'layout',
-	keywords: [ __( 'icon', 'qrk' ), __( 'button', 'qrk' ) ],
+	keywords: [ __( 'button', 'qrk' ) ],
 	attributes: {
 		url: {
 			type: 'object',
@@ -119,7 +119,7 @@ export const settings: BlockConfiguration = {
 			className: classnames(
 				className,
 				'btn',
-				'btn--has-icon',
+				attributes.hasIcon ? 'btn--has-icon' : '',
 				attributes.isSizeBig ? 'btn--size-big' : '',
 				'black' === attributes.backgroundColor ? 'btn--color-black' : '',
 				'outline' === attributes.appearance ? 'btn--outline' : '',
@@ -145,7 +145,7 @@ export const settings: BlockConfiguration = {
 		return (
 			<>
 				<InspectorControls>
-					<PanelBody title={ __( 'Icon Button Options', 'qrk' ) }>
+					<PanelBody title={ __( 'Button Options', 'qrk' ) }>
 						<LinkControl
 							label={ __( 'Select URL', 'qrk' ) }
 							value={ attributes.url }
@@ -227,7 +227,7 @@ export const settings: BlockConfiguration = {
 					<RichText
 						tagName="span"
 						className="btn__content"
-						placeholder={ __( 'Enter Button Text…', 'qrk' ) }
+						placeholder={ __( 'Button Text…', 'qrk' ) }
 						value={ attributes.btnText }
 						onChange={ ( btnText ) => setAttributes( { btnText } ) }
 						allowedFormats={ [] }
