@@ -108,3 +108,6 @@ export default class InquiryFormModal extends HTMLElement {
 		this.thankYou.style.display = 'flex';
 	}
 }
+
+// Define element.
+customElements.define( 'quark-inquiry-form-modal', InquiryFormModal );

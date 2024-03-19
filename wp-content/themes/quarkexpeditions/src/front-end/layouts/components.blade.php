@@ -22,7 +22,9 @@
 				</x-hero.left>
 				<x-hero.right>
 					<x-hero.form>
-						<x-inquiry-form />
+						<x-inquiry-form>
+							<x-forms.inquiry-form />
+						</x-inquiry-form>
 					</x-hero.form>
 				</x-hero.right>
 			</x-hero.content>
@@ -96,6 +98,11 @@
 					<x-hero.form-modal-cta>Get a Digital Brochure</x-hero.form-modal-cta>
 				</x-hero.left>
 				<x-hero.right>
+					<x-hero.form>
+						<x-inquiry-form>
+							<x-forms.inquiry-form-compact />
+						</x-inquiry-form>
+					</x-hero.form>
 				</x-hero.right>
 			</x-hero.content>
 		</x-hero>

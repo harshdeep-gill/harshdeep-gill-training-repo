@@ -9,23 +9,33 @@
 		return;
 	}
 
-	$modal_id = $form_id . '-modal';
-
 	$classes = [ 'form-modal-cta' ];
 
 	if ( ! empty( $class ) ) {
 		$classes[] = $class;
 	}
+
+	switch ( $form_id ) {
+		case 'inquiry-form':
+
+		case 'inquiry-form-compact':
+			$modal_id = 'inquiry-form-modal';
+			break;
+
+		default:
+			return;
+	}
 @endphp
 
-<x-modal.modal-open @class( $classes ) :modal_id="$modal_id">
+<x-modal.modal-open @class( $classes ) modal_id="{{ $modal_id }}">
 	<x-content :content="$slot" />
 </x-modal.modal-open>
 
-@switch( $form_id )
-	@case( 'inquiry-form' )
-		<x-once :id="$modal_id">
-			<x-inquiry-form.modal thank_you_page="{{ $thank_you_page }}" />
-		</x-once>
-		@break
-@endswitch
+<x-once id="{{ $modal_id }}">
+	@switch ( $form_id )
+		@case ( 'inquiry-form' )
+		@case ( 'inquiry-form-compact' )
+			<x-form-modals.inquiry-form-modal thank_you_page="{{ $thank_you_page }}" />
+			@break
+		@endswitch
+</x-once>

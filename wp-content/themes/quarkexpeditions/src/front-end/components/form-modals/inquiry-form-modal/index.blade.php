@@ -4,14 +4,14 @@
 
 @php
 	$form_id           = 'inquiry-form';
-	$modal_id          = $form_id . '-modal';
+	$modal_id          = 'inquiry-form-modal';
 	$title             = 'Almost there!';
 	$subtitle          = 'We just need a bit more info to help personalize your itinerary.';
 	$salesforce_object = 'Webform_Landing_Page__c';
 @endphp
 
 <x-modal
-	class="inquiry-form__modal"
+	class="inquiry-form-modal"
 	id="{{ $modal_id }}"
 	title="{{ $title }}"
 	subtitle="{{ $subtitle }}"
