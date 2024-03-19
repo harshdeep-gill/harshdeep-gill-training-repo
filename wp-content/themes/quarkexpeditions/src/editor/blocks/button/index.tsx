@@ -63,7 +63,7 @@ export const colors: { [key: string]: string }[] = [
 export const settings: BlockConfiguration = {
 	apiVersion: 2,
 	title: __( 'Button', 'qrk' ),
-	description: __( 'Custom Quark Button Block', 'qrk' ),
+	description: __( 'Prompt visitors to take action with a group of button-style links.', 'qrk' ),
 	icon: 'button',
 	category: 'layout',
 	keywords: [ __( 'button', 'qrk' ) ],
