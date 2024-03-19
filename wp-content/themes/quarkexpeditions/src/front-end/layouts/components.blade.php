@@ -863,7 +863,8 @@
 		</x-media-text-cta>
 
 		<x-media-text-cta media_align="right">
-			<x-media-text-cta.image image_id="32" />
+			{{-- <x-media-text-cta.image image_id="32" /> --}}
+			<x-media-text-cta.video name="video" image_id="32" video_url="https://youtu.be/dKXlo1XQpds" />
 
 			<x-media-text-cta.content>
 				<h2>Falklands, South Georgia, and Antarctica: Explorers & Kings</h2>

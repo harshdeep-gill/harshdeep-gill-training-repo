@@ -60,4 +60,20 @@
 			min-width: 200px;
 		}
 	}
+
+	&__video {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		height: 100%;
+	}
+
+	&__video-button {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 45px;
+		height: 45px;
+		position: absolute;
+	}
 }
