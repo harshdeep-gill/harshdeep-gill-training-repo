@@ -133,8 +133,8 @@ function register_taxonomies() : void {
 				'inclusion_exclusion',
 			],
 		],
-		'languages'                      => [
-			'label'        => 'Languages',
+		'spoken_languages'               => [
+			'label'        => 'Spoken Languages',
 			'hierarchical' => true,
 			'post_types'   => [
 				'departure',
@@ -297,6 +297,7 @@ function register_post_types() : void {
 				'title',
 				'editor',
 			],
+			'show_in_rest' => true,
 		],
 		'inclusion_exclusion'  => [
 			'labels'       => [
@@ -461,6 +462,7 @@ function register_post_types() : void {
 				'title',
 				'editor',
 			],
+			'show_in_rest' => true,
 		],
 		'ship_deck'            => [
 			'labels'       => [
