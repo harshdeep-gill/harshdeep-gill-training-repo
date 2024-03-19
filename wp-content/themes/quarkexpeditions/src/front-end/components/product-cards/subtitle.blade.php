@@ -8,6 +8,6 @@
 	}
 @endphp
 
-<div class="product-cards__subtitle">
+<p class="product-cards__subtitle">
 	<x-content :content="$title" />
-</div>
+</p>

@@ -54,7 +54,8 @@ export const name: string = 'quark/media-content-card';
 export const settings: BlockConfiguration = {
 	apiVersion: 2,
 	title: __( 'Media Content Card', 'qrk' ),
-	description: __( 'Add a media content card into a grid', 'qrk' ),
+	description: __( 'Add a Media Content Card into a grid', 'qrk' ),
+	parent: [ 'quark/product-cards' ],
 	category: 'layout',
 	keywords: [ __( 'media content card', 'qrk' ) ],
 	attributes: {

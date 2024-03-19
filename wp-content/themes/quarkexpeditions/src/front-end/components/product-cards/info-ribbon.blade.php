@@ -5,5 +5,5 @@
 @endphp
 
 <div class="product-cards__info-ribbon body-small">
-	{!! $slot !!}
+	<x-content :content="$slot" />
 </div>
