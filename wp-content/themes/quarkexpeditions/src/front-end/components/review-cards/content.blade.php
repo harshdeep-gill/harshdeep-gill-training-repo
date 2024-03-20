@@ -4,6 +4,6 @@
 	}
 @endphp
 
-<tp-slider-slide class="review-cards__card">
+<div class="review-cards__content">
 	{!! $slot !!}
-</tp-slider-slide>
+</div>
