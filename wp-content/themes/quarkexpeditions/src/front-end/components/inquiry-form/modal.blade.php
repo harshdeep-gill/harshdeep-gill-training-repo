@@ -1,16 +1,13 @@
 @props( [
-	'title'             => '',
-	'subtitle'          => '',
-	'form_id'           => '',
-	'modal_id'          => '',
-	'salesforce_object' => '',
-	'thank_you_page'    => '',
+	'thank_you_page' => '',
 ] )
 
 @php
-	if ( empty( $form_id ) || empty( $modal_id ) ) {
-		return;
-	}
+	$form_id           = 'inquiry-form';
+	$modal_id          = $form_id . '-modal';
+	$title             = 'Almost there!';
+	$subtitle          = 'We just need a bit more info to help personalize your itinerary.';
+	$salesforce_object = 'Webform_Landing_Page__c';
 @endphp
 
 <x-modal

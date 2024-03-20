@@ -1,42 +1,55 @@
 @props( [
-	'image_id'  => 0,
-	'title'     => '',
-	'sub_title' => '',
-	'immersive' => false,
-	'show_form' => true,
+	'image_id'   => 0,
+	'immersive'  => false,
+	'text_align' => '',
+	'left'       => [
+		'overline' => '',
+		'title'    => '',
+		'subtitle' => '',
+		'tag'      => '',
+		'cta'      => '',
+	],
+	'right'      => [
+		'form' => '',
+	],
 ] )
 
 @php
 	if ( empty( $image_id ) ) {
 		return;
 	}
-
-	$size   = '';
-	$layout = '';
-
-	if ( empty( $show_form ) ) {
-		$size   = 'big';
-		$layout = 'column';
-	}
 @endphp
 
-<x-hero :immersive="$immersive" :size="$size" :layout="$layout">
+<x-hero :immersive="$immersive" :text_align="$text_align">
 	<x-hero.image :image_id="$image_id" />
 	<x-hero.content>
-		@if ( ! empty( $title ) )
-			<x-hero.title :title="$title" />
-		@endif
-		@if ( ! empty( $sub_title ) )
-			<x-hero.sub-title :title="$sub_title" />
-		@endif
+		<x-hero.left>
+			<x-hero.title-container>
+				@if ( ! empty( $left['overline'] ) )
+					<x-hero.overline>{!! $left['overline'] !!}</x-hero.overline>
+				@endif
+				@if ( ! empty( $left['title'] ) )
+					<x-hero.title :title="$left['title']" />
+				@endif
+				@if ( ! empty( $left['subtitle'] ) )
+					<x-hero.sub-title :title="$left['subtitle']" />
+				@endif
+			</x-hero.title-container>
+
+			@if ( ! empty( $left['tag'] ) )
+				{!! $left['tag'] !!}
+			@endif
+
+			@if ( ! empty( $left['cta'] ) )
+				{!! $left['cta'] !!}
+			@endif
+		</x-hero.left>
+		<x-hero.right>
+			@if ( ! empty( $right['form'] ) )
+				<x-hero.form>
+					{!! $right['form'] !!}
+				</x-hero.form>
+			@endif
+		</x-hero.right>
 	</x-hero.content>
-	@if ( ! empty( $show_form ) )
-		<x-hero.form>
-			{!! $slot !!}
-		</x-hero.form>
-	@else
-		<x-hero.form-modal-cta>
-			{!! $slot !!}
-		</x-hero.form-modal-cta>
-	@endif
 </x-hero>
