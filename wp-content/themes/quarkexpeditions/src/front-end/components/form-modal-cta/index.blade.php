@@ -15,16 +15,16 @@
 		$classes[] = $class;
 	}
 
-	switch ( $form_id ) {
-		case 'inquiry-form':
+	$form_modal_mapping = [
+		'inquiry-form'         => 'inquiry-form-modal',
+		'inquiry-form-compact' => 'inquiry-form-modal',
+	];
 
-		case 'inquiry-form-compact':
-			$modal_id = 'inquiry-form-modal';
-			break;
-
-		default:
-			return;
+	if ( ! array_key_exists( $form_id, $form_modal_mapping ) ) {
+		return;
 	}
+
+	$modal_id = $form_modal_mapping[ $form_id ];
 @endphp
 
 <x-modal.modal-open @class( $classes ) modal_id="{{ $modal_id }}">
