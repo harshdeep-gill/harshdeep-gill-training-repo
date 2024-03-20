@@ -410,9 +410,10 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'rows'        => true,
 				],
 				'div'                      => [
-					'id'       => true,
-					'class'    => true,
-					'tabindex' => true,
+					'id'               => true,
+					'class'            => true,
+					'tabindex'         => true,
+					'data-is-carousel' => true,
 				],
 			]
 		);

@@ -8,6 +8,6 @@
 	}
 @endphp
 
-<div class="review-cards__author">
-	<strong><x-escape :content="$name" /></strong>
-</div>
+<strong class="review-cards__author">
+	<x-escape :content="$name" />
+</strong>

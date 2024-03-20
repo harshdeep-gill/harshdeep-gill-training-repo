@@ -1,5 +1,5 @@
 @props( [
-	'rating' => '',
+	'rating' => '5',
 ] )
 
 @php
