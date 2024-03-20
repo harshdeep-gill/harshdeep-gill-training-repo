@@ -19,7 +19,7 @@
 	];
 @endphp
 
-<div class="media-text-cta__image-wrap">
+<div class="media-text-cta__media-wrap">
 	<x-image
 		class="media-text-cta__image"
 		:args="$image_args"
