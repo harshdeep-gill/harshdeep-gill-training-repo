@@ -1,3 +1,7 @@
+@props( [
+	'thank_you_page' => '',
+] )
+
 @php
 	$form_id  = 'inquiry-form-compact';
 @endphp

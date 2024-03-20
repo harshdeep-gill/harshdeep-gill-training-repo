@@ -1,6 +1,5 @@
 @props( [
 	'class'          => '',
-	'thank_you_page' => '',
 ] )
 
 @php
