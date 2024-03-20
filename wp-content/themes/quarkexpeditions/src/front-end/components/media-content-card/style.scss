@@ -46,6 +46,10 @@
 	&__content-column {
 		flex: 1;
 
+		> p:not(:first-child) {
+			color: var(--color-gray-70);
+		}
+
 		@media screen and (min-width: grid-size(md)) {
 
 			&:first-child {
