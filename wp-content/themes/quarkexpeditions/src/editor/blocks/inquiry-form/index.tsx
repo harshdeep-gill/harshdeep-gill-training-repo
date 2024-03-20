@@ -7,6 +7,7 @@ import {
 	PanelBody,
 	Placeholder,
 	BaseControl,
+	SelectControl,
 } from '@wordpress/components';
 import {
 	InspectorControls,
@@ -45,6 +46,9 @@ export const settings: BlockConfiguration = {
 		thankYouPageUrl: {
 			type: 'string',
 		},
+		formType: {
+			type: 'string',
+		},
 	},
 	supports: {
 		alignWide: false,
@@ -64,6 +68,16 @@ export const settings: BlockConfiguration = {
 			<>
 				<InspectorControls>
 					<PanelBody title={ __( 'Inquiry Form Options', 'qrk' ) }>
+						<SelectControl
+							label={ __( 'Form Type', 'qrk' ) }
+							help={ __( 'Select the form to display here.', 'qrk' ) }
+							value={ attributes.formType }
+							options={ [
+								{ label: __( 'Inquiry Form', 'qrk' ), value: 'inquiry-form' },
+								{ label: __( 'Inquiry Form Compact', 'qrk' ), value: 'inquiry-form-compact' },
+							] }
+							onChange={ ( formType: string ) => setAttributes( { formType } ) }
+						/>
 						<BaseControl
 							id="quark-url-control"
 							label={ __( 'Thank You Page URL', 'qrk' ) }
