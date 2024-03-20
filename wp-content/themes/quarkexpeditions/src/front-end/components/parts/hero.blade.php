@@ -34,6 +34,11 @@
 				@if ( ! empty( $left['subtitle'] ) )
 					<x-hero.sub-title :title="$left['subtitle']" />
 				@endif
+				@if ( ! empty( $left['description'] ) )
+					<x-hero.description>
+						{!! $left['description'] !!}
+					</x-hero.description>
+				@endif
 			</x-hero.title-container>
 
 			@if ( ! empty( $left['tag'] ) )

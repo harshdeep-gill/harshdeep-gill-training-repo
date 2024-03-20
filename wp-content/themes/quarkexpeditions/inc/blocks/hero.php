@@ -92,6 +92,11 @@ function render( ?string $content = null, array $block = [] ): null|string {
 					$attributes['left']['subtitle'] = $inner_inner_block['attrs']['subtitle'] ?? '';
 					break;
 
+				// Description.
+				case 'quark/hero-description':
+					$attributes['left']['description'] = $inner_inner_block['attrs']['description'] ?? '';
+					break;
+
 				// Hero tag.
 				case 'quark/icon-badge':
 					$inner_inner_block['attrs']['className'] = 'hero__tag';

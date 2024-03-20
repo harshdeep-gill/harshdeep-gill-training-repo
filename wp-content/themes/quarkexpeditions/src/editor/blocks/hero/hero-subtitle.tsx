@@ -4,6 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { BlockConfiguration } from '@wordpress/blocks';
 import {
+	useBlockProps,
 	RichText,
 } from '@wordpress/block-editor';
 
@@ -45,11 +46,16 @@ export const settings: BlockConfiguration = {
 		customClassName: false,
 	},
 	edit( { className, attributes, setAttributes }: BlockEditAttributes ): JSX.Element {
+		// eslint-disable-next-line react-hooks/rules-of-hooks
+		const blockProps = useBlockProps( {
+			className: classnames( className, 'hero__sub-title' ),
+		} );
+
 		// Return the block's markup.
 		return (
 			<RichText
+				{ ...blockProps }
 				tagName="h5"
-				className={ classnames( className, 'hero__sub-title' ) }
 				placeholder={ __( 'Write the Subtitle…', 'qrk' ) }
 				value={ attributes.subtitle }
 				onChange={ ( subtitle: string ) => setAttributes( { subtitle } ) }

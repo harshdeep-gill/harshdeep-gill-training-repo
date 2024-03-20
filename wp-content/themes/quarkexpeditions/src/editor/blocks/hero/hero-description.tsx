@@ -16,23 +16,21 @@ import classnames from 'classnames';
 /**
  * Block name.
  */
-export const name: string = 'quark/hero-overline';
+export const name: string = 'quark/hero-description';
 
 /**
  * Block configuration settings.
  */
 export const settings: BlockConfiguration = {
 	apiVersion: 2,
-	title: __( 'Hero Overline', 'qrk' ),
-	description: __( 'Overline text.', 'qrk' ),
+	title: __( 'Hero Description', 'qrk' ),
+	description: __( 'Hero Description text.', 'qrk' ),
 	category: 'widgets',
 	keywords: [
-		__( 'hero', 'qrk' ),
-		__( 'overline', 'qrk' ),
-		__( 'text', 'qrk' ),
+		__( 'description', 'qrk' ),
 	],
 	attributes: {
-		overline: {
+		description: {
 			type: 'string',
 			default: '',
 		},
@@ -48,19 +46,20 @@ export const settings: BlockConfiguration = {
 	edit( { className, attributes, setAttributes }: BlockEditAttributes ): JSX.Element {
 		// eslint-disable-next-line react-hooks/rules-of-hooks
 		const blockProps = useBlockProps( {
-			className: classnames( className, 'hero__overline', 'overline' ),
+			className: classnames( className, 'hero__description' ),
 		} );
 
 		// Return the block's markup.
 		return (
-			<RichText
-				{ ...blockProps }
-				tagName="span"
-				placeholder={ __( 'Write overline text…', 'qrk' ) }
-				value={ attributes.overline }
-				onChange={ ( overline: string ) => setAttributes( { overline } ) }
-				allowedFormats={ [] }
-			/>
+			<div { ...blockProps }>
+				<RichText
+					tagName="p"
+					placeholder={ __( 'Write description…', 'qrk' ) }
+					value={ attributes.description }
+					onChange={ ( description: string ) => setAttributes( { description } ) }
+					allowedFormats={ [] }
+				/>
+			</div>
 		);
 	},
 	save() {
