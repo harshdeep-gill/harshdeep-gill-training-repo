@@ -4,8 +4,9 @@
 import { __ } from '@wordpress/i18n';
 import { BlockConfiguration } from '@wordpress/blocks';
 import {
+	InnerBlocks,
 	useBlockProps,
-	RichText,
+	useInnerBlocksProps,
 } from '@wordpress/block-editor';
 
 /**
@@ -29,12 +30,7 @@ export const settings: BlockConfiguration = {
 	keywords: [
 		__( 'description', 'qrk' ),
 	],
-	attributes: {
-		description: {
-			type: 'string',
-			default: '',
-		},
-	},
+	attributes: {},
 	parent: [ 'quark/hero-content-left' ],
 	supports: {
 		alignWide: false,
@@ -43,27 +39,25 @@ export const settings: BlockConfiguration = {
 		html: false,
 		customClassName: false,
 	},
-	edit( { className, attributes, setAttributes }: BlockEditAttributes ): JSX.Element {
+	edit( { className }: BlockEditAttributes ): JSX.Element {
 		// eslint-disable-next-line react-hooks/rules-of-hooks
 		const blockProps = useBlockProps( {
 			className: classnames( className, 'hero__description' ),
 		} );
 
+		// eslint-disable-next-line react-hooks/rules-of-hooks
+		const innerBlockProps = useInnerBlocksProps( { ...blockProps }, {
+			allowedBlocks: [ 'core/paragraph' ],
+			template: [ [ 'core/paragraph', { placeholder: __( 'Write description…', 'qrk' ) } ] ],
+		} );
+
 		// Return the block's markup.
 		return (
-			<div { ...blockProps }>
-				<RichText
-					tagName="p"
-					placeholder={ __( 'Write description…', 'qrk' ) }
-					value={ attributes.description }
-					onChange={ ( description: string ) => setAttributes( { description } ) }
-					allowedFormats={ [] }
-				/>
-			</div>
+			<div { ...innerBlockProps } />
 		);
 	},
 	save() {
 		// Save inner block content.
-		return null;
+		return <InnerBlocks.Content />;
 	},
 };

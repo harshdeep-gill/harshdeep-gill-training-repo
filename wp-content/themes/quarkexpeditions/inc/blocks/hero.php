@@ -124,7 +124,7 @@ function render( ?string $content = null, array $block = [] ): null|string {
 					];
 
 					// Add description.
-					$description['description'] = $inner_inner_block['attrs']['description'] ?? '';
+					$description['description'] = implode( '', array_map( 'render_block', $inner_inner_block['innerBlocks'] ) );
 
 					// Add to attributes.
 					$attributes['left'][] = $description;
