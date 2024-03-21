@@ -30,14 +30,14 @@ function register_taxonomies() : void {
 	 * @var array<string, string[]> $taxonomies_list Taxonomies list.
 	 */
 	$taxonomies_list = [
-		'qrk_accommodation_types'            => [
+		'qrk_accommodation_types'          => [
 			'label'        => 'Accommodation Types',
 			'hierarchical' => true,
 			'post_types'   => [
 				'qrk_ship',
 			],
 		],
-		'qrk_adventure_option_category'      => [
+		'qrk_adventure_option_category'    => [
 			'label'        => 'Adventure Options',
 			'hierarchical' => true,
 			'post_types'   => [
@@ -45,59 +45,54 @@ function register_taxonomies() : void {
 				'qrk_departure',
 			],
 		],
-		'qrk_audiences'                      => [
+		'qrk_audiences'                    => [
 			'label'        => 'Audiences',
 			'hierarchical' => true,
 			'post_types'   => [
 				'qrk_marketing_promotion',
 			],
 		],
-		'branding'                           => [
-			'label'        => 'Branding',
-			'hierarchical' => true,
-			'post_types'   => [],
-		],
-		'qrk_cabin_classes'                  => [
+		'qrk_cabin_classes'                => [
 			'label'        => 'Cabin Classes',
 			'hierarchical' => true,
 			'post_types'   => [
 				'qrk_cabin_category',
 			],
 		],
-		'qrk_charter_companies'              => [
+		'qrk_charter_companies'            => [
 			'label'        => 'Charter Companies',
 			'hierarchical' => true,
 			'post_types'   => [
 				'qrk_departure',
 			],
 		],
-		'qrk_departments'                    => [
+		'qrk_departments'                  => [
 			'label'        => 'Departments',
 			'hierarchical' => true,
 			'post_types'   => [
 				'qrk_staff_member',
 			],
 		],
-		'qrk_departure_destinations'         => [
+		'qrk_departure_destinations'       => [
 			'label'        => 'Departure Destinations',
 			'hierarchical' => true,
 			'post_types'   => [],
 		],
-		'qrk_departure_locations'            => [
+		'qrk_departure_locations'          => [
 			'label'        => 'Departure Locations',
 			'hierarchical' => true,
 			'post_types'   => [
 				'qrk_itinerary',
 			],
 		],
-		'qrk_departure_staff_roles'          => [
+		'qrk_departure_staff_roles'        => [
 			'label'        => 'Departure Staff Roles',
 			'hierarchical' => true,
 			'post_types'   => [
 				'qrk_staff_member',
 			],
 		],
-		'qrk_destinations'                   => [
+		'qrk_destinations'                 => [
 			'label'        => 'Destinations',
 			'hierarchical' => true,
 			'post_types'   => [
@@ -107,32 +102,27 @@ function register_taxonomies() : void {
 				'qrk_region',
 			],
 		],
-		'qrk_expedition_categories'          => [
+		'qrk_expedition_categories'        => [
 			'label'        => 'Expedition Categories',
 			'hierarchical' => true,
 			'post_types'   => [
 				'qrk_expedition',
 			],
 		],
-		'qrk_expedition_types'               => [
-			'label'        => 'Expedition Types',
-			'hierarchical' => true,
-			'post_types'   => [],
-		],
-		'qrk_icons'                          => [
+		'qrk_icons'                        => [
 			'label'        => 'Icons',
 			'hierarchical' => true,
 			'post_types'   => [],
 		],
-		'qrk_inclusion_exclusion_categories' => [
-			'label'        => 'Inclusion Exclusion Categories',
+		'qrk_inclusion_exclusion_category' => [
+			'label'        => 'Category',
 			'hierarchical' => true,
 			'post_types'   => [
 				'qrk_inclusion_set',
 				'qrk_exclusion_set',
 			],
 		],
-		'qrk_spoken_languages'               => [
+		'qrk_spoken_languages'             => [
 			'label'        => 'Spoken Languages',
 			'hierarchical' => true,
 			'post_types'   => [
@@ -140,42 +130,53 @@ function register_taxonomies() : void {
 				'qrk_staff_member',
 			],
 		],
-		'qrk_newspaper_editions'             => [
-			'label'        => 'Newspaper Editions',
-			'hierarchical' => true,
-			'post_types'   => [],
-		],
-		'qrk_ports'                          => [
-			'label'        => 'Ports',
-			'hierarchical' => true,
-			'post_types'   => [
-				'qrk_itinerary',
-			],
-		],
-		'qrk_promotion_tags'                 => [
+		'qrk_promotion_tags'               => [
 			'label'        => 'Promotion Tags',
 			'hierarchical' => true,
 			'post_types'   => [
-				'qrk_expedition',
 				'qrk_marketing_promotion',
 			],
 		],
-		'qrk_ship_categories'                => [
+		'qrk_ship_categories'              => [
 			'label'        => 'Ship Categories',
 			'hierarchical' => true,
 			'post_types'   => [
 				'qrk_ship',
 			],
 		],
-		'sources_of_awareness'               => [
+		'qrk_tax_type'                     => [
+			'label'        => 'Tax Type',
+			'hierarchical' => true,
+			'post_types'   => [
+				'qrk_itinerary',
+			],
+		],
+		'sources_of_awareness'             => [
 			'label'        => 'Sources of Awareness',
 			'hierarchical' => true,
 			'post_types'   => [],
 		],
-		'qrk_special_interests'              => [
+		'qrk_special_interests'            => [
 			'label'        => 'Special Interests',
 			'hierarchical' => true,
 			'post_types'   => [],
+		],
+		'qrk_newspaper_editions'           => [
+			'label'        => 'Newspaper Editions',
+			'hierarchical' => true,
+			'post_types'   => [],
+		],
+		'qrk_branding'                     => [
+			'label'        => 'Branding',
+			'hierarchical' => true,
+			'post_types'   => [],
+		],
+		'qrk_season'                       => [
+			'label'        => 'Seasons',
+			'hierarchical' => true,
+			'post_types'   => [
+				'qrk_staff_member',
+			],
 		],
 	];
 
@@ -325,7 +326,7 @@ function register_post_types() : void {
 		],
 		'qrk_itinerary'        => [
 			'labels'       => [
-				'name'          => 'Iitineraries',
+				'name'          => 'Itineraries',
 				'singular_name' => 'Itinerary',
 			],
 			'public'       => false,
@@ -373,6 +374,7 @@ function register_post_types() : void {
 			'public'       => false,
 			'show_ui'      => true,
 			'show_in_menu' => true,
+			'show_in_rest' => true,
 			'menu_icon'    => 'dashicons-analytics',
 			'supports'     => [
 				'title',
@@ -427,6 +429,7 @@ function register_post_types() : void {
 			'public'       => false,
 			'show_ui'      => true,
 			'show_in_menu' => true,
+			'show_in_rest' => true,
 			'menu_icon'    => 'dashicons-welcome-write-blog',
 			'supports'     => [
 				'title',
@@ -471,6 +474,7 @@ function register_post_types() : void {
 			'public'       => false,
 			'show_ui'      => true,
 			'show_in_menu' => true,
+			'show_in_rest' => true,
 			'menu_icon'    => 'dashicons-button',
 			'supports'     => [
 				'title',
@@ -529,6 +533,20 @@ function register_post_types() : void {
 			'menu_icon'    => 'dashicons-format-quote',
 			'supports'     => [
 				'title',
+			],
+		],
+		'qrk_port'             => [
+			'labels'       => [
+				'name'          => 'Ports',
+				'singular_name' => 'Port',
+			],
+			'public'       => false,
+			'show_ui'      => true,
+			'show_in_menu' => true,
+			'menu_icon'    => 'dashicons-location',
+			'supports'     => [
+				'title',
+				'editor',
 			],
 		],
 	];
