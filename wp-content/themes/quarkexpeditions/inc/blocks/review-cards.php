@@ -72,7 +72,7 @@ function render( ?string $content = null, array $block = [] ): null|string {
 						$review['type'] = 'review';
 
 						// Add review text.
-						$review['review'] = ! empty( $inner_inner_block['attrs']['review'] ) ? $inner_inner_block['attrs']['review'] : '';
+						$review['review'] = implode( '', array_map( 'render_block', $inner_inner_block['innerBlocks'] ) );
 
 						// Add review to children.
 						$card_attributes['children'][] = $review;

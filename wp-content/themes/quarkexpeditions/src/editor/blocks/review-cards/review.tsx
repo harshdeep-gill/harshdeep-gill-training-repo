@@ -4,8 +4,9 @@
 import { __ } from '@wordpress/i18n';
 import { BlockConfiguration } from '@wordpress/blocks';
 import {
-	RichText,
+	InnerBlocks,
 	useBlockProps,
+	useInnerBlocksProps,
 } from '@wordpress/block-editor';
 
 /**
@@ -29,39 +30,35 @@ export const settings: BlockConfiguration = {
 	icon: 'screenoptions',
 	category: 'layout',
 	keywords: [ __( 'review', 'qrk' ) ],
-	attributes: {
-		review: {
-			type: 'string',
-			default: '',
-		},
-	},
+	attributes: {},
 	supports: {
 		alignWide: false,
 		className: false,
 		html: false,
 		customClassName: false,
 	},
-	edit( { className, attributes, setAttributes }: BlockEditAttributes ) : JSX.Element {
+	edit( { className }: BlockEditAttributes ) : JSX.Element {
 		// eslint-disable-next-line react-hooks/rules-of-hooks
-		const blocksProps = useBlockProps( {
+		const blockProps = useBlockProps( {
 			className: classnames( className, 'review-cards__content' ),
 		} );
 
+		// eslint-disable-next-line react-hooks/rules-of-hooks
+		const innerBlockProps = useInnerBlocksProps(
+			{ ...blockProps },
+			{
+				allowedBlocks: [ 'core/paragraph' ],
+				template: [ [ 'core/paragraph', { placeholder: __( 'Write description…', 'qrk' ) } ] ],
+			}
+		);
+
 		// Return the block's markup.
 		return (
-			<div { ...blocksProps }>
-				<RichText
-					tagName="p"
-					placeholder={ __( 'Write review…', 'qrk' ) }
-					value={ attributes.review }
-					onChange={ ( review: string ) => setAttributes( { review } ) }
-					allowedFormats={ [] }
-				/>
-			</div>
+			<div { ...innerBlockProps } />
 		);
 	},
 	save() {
-		// Don't save anything.
-		return null;
+		// Save inner block content.
+		return <InnerBlocks.Content />;
 	},
 };
