@@ -5,5 +5,5 @@
 @endphp
 
 <div class="offer-cards__help-text body-small">
-	{!! $slot !!}
+	<x-content :content="$slot" />
 </div>

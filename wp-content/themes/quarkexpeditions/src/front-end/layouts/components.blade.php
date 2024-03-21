@@ -851,14 +851,14 @@
 			<x-offer-cards.card>
 				<x-offer-cards.heading>BIGGEST SALE OF THE YEAR</x-offer-cards.heading>
 				<x-offer-cards.content>
-				<x-offer-cards.title title="Up to 50% Off" />
-				<x-offer-cards.promotion text="Save up to $14,000" />
-				<x-offer-cards.cta>
-					<x-button size="big" color="black">View Offers</x-button>
-				</x-offer-cards.cta>
-				<x-offer-cards.help-text>
-					<p>Select Antarctic 2023-24 voyages and Arctic 2024 voyages</p>
-				</x-offer-cards.help-text>
+					<x-offer-cards.title title="Up to 50% Off" />
+					<x-offer-cards.promotion text="Save up to $14,000" />
+					<x-offer-cards.cta>
+						<x-button size="big" color="black">View Offers</x-button>
+					</x-offer-cards.cta>
+					<x-offer-cards.help-text>
+						<p>Select Antarctic 2023-24 voyages and Arctic 2024 voyages</p>
+					</x-offer-cards.help-text>
 				</x-offer-cards.content>
 			</x-offer-cards.card>
 		</x-offer-cards>
@@ -867,27 +867,27 @@
 			<x-offer-cards.card>
 				<x-offer-cards.heading>BIGGEST SALE OF THE YEAR</x-offer-cards.heading>
 				<x-offer-cards.content>
-				<x-offer-cards.title title="Up to 50% Off" />
-				<x-offer-cards.promotion text="Save up to $14,000" />
-				<x-offer-cards.cta>
-					<x-button size="big" color="black">View Offers</x-button>
-				</x-offer-cards.cta>
-				<x-offer-cards.help-text>
-					<p>Select Antarctic 2023-24 voyages and Arctic 2024 voyages</p>
-				</x-offer-cards.help-text>
+					<x-offer-cards.title title="Up to 50% Off" />
+					<x-offer-cards.promotion text="Save up to $14,000" />
+					<x-offer-cards.cta>
+						<x-button size="big" color="black">View Offers</x-button>
+					</x-offer-cards.cta>
+					<x-offer-cards.help-text>
+						<p>Select Antarctic 2023-24 voyages and Arctic 2024 voyages</p>
+					</x-offer-cards.help-text>
 				</x-offer-cards.content>
 			</x-offer-cards.card>
 			<x-offer-cards.card>
 				<x-offer-cards.heading>BIGGEST SALE OF THE YEAR</x-offer-cards.heading>
 				<x-offer-cards.content>
-				<x-offer-cards.title title="Free Cabin Upgrades" />
-				<x-offer-cards.promotion text="Save up to $3,700" />
-				<x-offer-cards.cta>
-					<x-button size="big" color="black">View Offers</x-button>
-				</x-offer-cards.cta>
-				<x-offer-cards.help-text>
-					<p>Select Antarctic 2024-25 season"</p>
-				</x-offer-cards.help-text>
+					<x-offer-cards.title title="Free Cabin Upgrades" />
+					<x-offer-cards.promotion text="Save up to $3,700" />
+					<x-offer-cards.cta>
+						<x-button size="big" color="black">View Offers</x-button>
+					</x-offer-cards.cta>
+					<x-offer-cards.help-text>
+						<p>Select Antarctic 2024-25 season"</p>
+					</x-offer-cards.help-text>
 				</x-offer-cards.content>
 			</x-offer-cards.card>
 		</x-offer-cards>
@@ -896,40 +896,40 @@
 			<x-offer-cards.card>
 				<x-offer-cards.heading>BIGGEST SALE OF THE YEAR</x-offer-cards.heading>
 				<x-offer-cards.content>
-				<x-offer-cards.title title="Up to 50% Off" />
-				<x-offer-cards.promotion text="Save up to $14,000" />
-				<x-offer-cards.cta>
-					<x-button size="big" color="black">View Offers</x-button>
-				</x-offer-cards.cta>
-				<x-offer-cards.help-text>
-					<p>Select Antarctic 2023-24 voyages and Arctic 2024 voyages</p>
-				</x-offer-cards.help-text>
+					<x-offer-cards.title title="Up to 50% Off" />
+					<x-offer-cards.promotion text="Save up to $14,000" />
+					<x-offer-cards.cta>
+						<x-button size="big" color="black">View Offers</x-button>
+					</x-offer-cards.cta>
+					<x-offer-cards.help-text>
+						<p>Select Antarctic 2023-24 voyages and Arctic 2024 voyages</p>
+					</x-offer-cards.help-text>
 				</x-offer-cards.content>
 			</x-offer-cards.card>
 			<x-offer-cards.card>
 				<x-offer-cards.heading>BIGGEST SALE OF THE YEAR</x-offer-cards.heading>
 				<x-offer-cards.content>
-				<x-offer-cards.title title="Free Cabin Upgrades" />
-				<x-offer-cards.promotion text="Save up to $3,700" />
-				<x-offer-cards.cta>
-					<x-button size="big" color="black">View Offers</x-button>
-				</x-offer-cards.cta>
-				<x-offer-cards.help-text>
-					<p>Select Antarctic 2024-25 season"</p>
-				</x-offer-cards.help-text>
+					<x-offer-cards.title title="Free Cabin Upgrades" />
+					<x-offer-cards.promotion text="Save up to $3,700" />
+					<x-offer-cards.cta>
+						<x-button size="big" color="black">View Offers</x-button>
+					</x-offer-cards.cta>
+					<x-offer-cards.help-text>
+						<p>Select Antarctic 2024-25 season"</p>
+					</x-offer-cards.help-text>
 				</x-offer-cards.content>
 			</x-offer-cards.card>
 			<x-offer-cards.card>
 				<x-offer-cards.heading>BIGGEST SALE OF THE YEAR</x-offer-cards.heading>
 				<x-offer-cards.content>
-				<x-offer-cards.title title="Up to 50% Off" />
-				<x-offer-cards.promotion text="Save up to $14,000" />
-				<x-offer-cards.cta>
-					<x-button size="big" color="black">View Offers</x-button>
-				</x-offer-cards.cta>
-				<x-offer-cards.help-text>
-					<p>Select Antarctic 2023-24 voyages and Arctic 2024 voyages</p>
-				</x-offer-cards.help-text>
+					<x-offer-cards.title title="Up to 50% Off" />
+					<x-offer-cards.promotion text="Save up to $14,000" />
+					<x-offer-cards.cta>
+						<x-button size="big" color="black">View Offers</x-button>
+					</x-offer-cards.cta>
+					<x-offer-cards.help-text>
+						<p>Select Antarctic 2023-24 voyages and Arctic 2024 voyages</p>
+					</x-offer-cards.help-text>
 				</x-offer-cards.content>
 			</x-offer-cards.card>
 		</x-offer-cards>
