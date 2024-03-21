@@ -39,13 +39,13 @@
 				:args="$image_args"
 			/>
 
-			<div class="fancy-video__content">
-				@if ( ! empty( $title ) )
-					<h3 @class(['fancy-video__title'])>
+			@if ( ! empty( $title ) )
+				<div class="fancy-video__content">
+					<h3 class="fancy-video__title">
 						<x-escape :content="$title" />
 					</h3>
-				@endif
-			</div>
+				</div>
+			@endif
 
 			<div class="fancy-video__play-btn-wrapper">
 				<button class="fancy-video__play-btn">
