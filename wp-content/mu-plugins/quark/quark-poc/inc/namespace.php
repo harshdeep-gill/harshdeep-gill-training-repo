@@ -37,7 +37,7 @@ function register_taxonomies() : void {
 				'qrk_ship',
 			],
 		],
-		'qrk_adventure_options'              => [
+		'qrk_adventure_option_category'      => [
 			'label'        => 'Adventure Options',
 			'hierarchical' => true,
 			'post_types'   => [
@@ -104,7 +104,7 @@ function register_taxonomies() : void {
 				'qrk_adventure_option',
 				'qrk_expedition',
 				'qrk_marketing_promotion',
-				'qrk_region_landing_page',
+				'qrk_region',
 			],
 		],
 		'qrk_expedition_categories'          => [
@@ -128,7 +128,8 @@ function register_taxonomies() : void {
 			'label'        => 'Inclusion Exclusion Categories',
 			'hierarchical' => true,
 			'post_types'   => [
-				'qrk_inclusion_exclusion',
+				'qrk_inclusion_set',
+				'qrk_exclusion_set',
 			],
 		],
 		'qrk_spoken_languages'               => [
@@ -212,20 +213,20 @@ function register_post_types() : void {
 	 * @var array<string, string[]> $post_types Post types list.
 	 */
 	$post_types = [
-		'qrk_adventure_option'     => [
+		'qrk_adventure_option' => [
 			'labels'       => [
 				'name'          => 'Adventure Options',
 				'singular_name' => 'Adventure Option',
 			],
 			'public'       => true,
+			'show_in_rest' => true,
+			'menu_icon'    => 'dashicons-location-alt',
 			'supports'     => [
 				'title',
 				'editor',
 			],
-			'menu_icon'    => 'dashicons-location-alt',
-			'show_in_rest' => true,
 		],
-		'qrk_agent_page'           => [
+		'qrk_agent_page'       => [
 			'labels'       => [
 				'name'          => 'Agent Pages',
 				'singular_name' => 'Agent Page',
@@ -240,7 +241,7 @@ function register_post_types() : void {
 				'thumbnail',
 			],
 		],
-		'qrk_agent_update'         => [
+		'qrk_agent_update'     => [
 			'labels'       => [
 				'name'          => 'Agent Updates',
 				'singular_name' => 'Agent Update',
@@ -254,7 +255,7 @@ function register_post_types() : void {
 				'editor',
 			],
 		],
-		'qrk_cabin_category'       => [
+		'qrk_cabin_category'   => [
 			'labels'       => [
 				'name'          => 'Cabin Categories',
 				'singular_name' => 'Cabin Category',
@@ -268,7 +269,7 @@ function register_post_types() : void {
 				'editor',
 			],
 		],
-		'qrk_departure'            => [
+		'qrk_departure'        => [
 			'labels'       => [
 				'name'          => 'Departures',
 				'singular_name' => 'Departure',
@@ -281,7 +282,7 @@ function register_post_types() : void {
 				'title',
 			],
 		],
-		'qrk_expedition'           => [
+		'qrk_expedition'       => [
 			'labels'       => [
 				'name'          => 'Expeditions',
 				'singular_name' => 'Expedition',
@@ -296,10 +297,10 @@ function register_post_types() : void {
 			],
 			'show_in_rest' => true,
 		],
-		'qrk_inclusion_exclusion'  => [
+		'qrk_inclusion_set'    => [
 			'labels'       => [
-				'name'          => 'Inclusion / Exclusion Sets',
-				'singular_name' => 'Inclusion / Exclusion Set',
+				'name'          => 'Inclusion Sets',
+				'singular_name' => 'Inclusion Set',
 			],
 			'public'       => false,
 			'show_ui'      => true,
@@ -309,7 +310,20 @@ function register_post_types() : void {
 				'title',
 			],
 		],
-		'qrk_itinerary'            => [
+		'qrk_exclusion_set'    => [
+			'labels'       => [
+				'name'          => 'Exclusion Sets',
+				'singular_name' => 'Exclusion Set',
+			],
+			'public'       => false,
+			'show_ui'      => true,
+			'show_in_menu' => true,
+			'menu_icon'    => 'dashicons-networking',
+			'supports'     => [
+				'title',
+			],
+		],
+		'qrk_itinerary'        => [
 			'labels'       => [
 				'name'          => 'Iitineraries',
 				'singular_name' => 'Itinerary',
@@ -323,7 +337,7 @@ function register_post_types() : void {
 				'editor',
 			],
 		],
-		'qrk_itinerary_day'        => [
+		'qrk_itinerary_day'    => [
 			'labels'       => [
 				'name'          => 'Itinerary Days',
 				'singular_name' => 'Itinerary Day',
@@ -336,7 +350,7 @@ function register_post_types() : void {
 				'title',
 			],
 		],
-		'qrk_landing_page'         => [
+		'qrk_landing_page'     => [
 			'labels'       => [
 				'name'          => 'Landing Pages',
 				'singular_name' => 'Landing Page',
@@ -344,16 +358,17 @@ function register_post_types() : void {
 			'public'       => false,
 			'show_ui'      => true,
 			'show_in_menu' => true,
+			'show_in_rest' => true,
 			'menu_icon'    => 'dashicons-id-alt',
 			'supports'     => [
 				'title',
 				'editor',
 			],
 		],
-		'qrk_marketing_promotion'  => [
+		'qrk_offers'           => [
 			'labels'       => [
-				'name'          => 'Marketing Promotion Landing Pages',
-				'singular_name' => 'Marketing Promotion Landing Page',
+				'name'          => 'Offers',
+				'singular_name' => 'Offer',
 			],
 			'public'       => false,
 			'show_ui'      => true,
@@ -364,7 +379,7 @@ function register_post_types() : void {
 				'editor',
 			],
 		],
-		'qrk_office'               => [
+		'qrk_office'           => [
 			'labels'       => [
 				'name'          => 'Office',
 				'singular_name' => 'Office',
@@ -377,7 +392,7 @@ function register_post_types() : void {
 				'title',
 			],
 		],
-		'qrk_photographic_journal' => [
+		'qrk_photo_journal'    => [
 			'labels'       => [
 				'name'          => 'Photographic Journals',
 				'singular_name' => 'Photographic Journal',
@@ -390,7 +405,7 @@ function register_post_types() : void {
 				'title',
 			],
 		],
-		'qrk_pre_post_trip_option' => [
+		'qrk_pre_post_trip'    => [
 			'labels'       => [
 				'name'          => 'Pre/Post-Trip Options',
 				'singular_name' => 'Pre/Post-Trip Option',
@@ -404,7 +419,7 @@ function register_post_types() : void {
 				'editor',
 			],
 		],
-		'qrk_press_release'        => [
+		'qrk_press_release'    => [
 			'labels'       => [
 				'name'          => 'Press Releases',
 				'singular_name' => 'Press Release',
@@ -418,21 +433,22 @@ function register_post_types() : void {
 				'editor',
 			],
 		],
-		'qrk_region_landing_page'  => [
+		'qrk_region'           => [
 			'labels'       => [
-				'name'          => 'Region Landing Pages',
-				'singular_name' => 'Region Landing Page',
+				'name'          => 'Regions',
+				'singular_name' => 'Region',
 			],
 			'public'       => false,
 			'show_ui'      => true,
 			'show_in_menu' => true,
+			'show_in_rest' => true,
 			'menu_icon'    => 'dashicons-admin-site',
 			'supports'     => [
 				'title',
 				'editor',
 			],
 		],
-		'qrk_ship'                 => [
+		'qrk_ship'             => [
 			'labels'       => [
 				'name'          => 'Ships',
 				'singular_name' => 'Ship',
@@ -440,14 +456,14 @@ function register_post_types() : void {
 			'public'       => false,
 			'show_ui'      => true,
 			'show_in_menu' => true,
+			'show_in_rest' => true,
 			'menu_icon'    => 'dashicons-sos',
 			'supports'     => [
 				'title',
 				'editor',
 			],
-			'show_in_rest' => true,
 		],
-		'qrk_ship_deck'            => [
+		'qrk_ship_deck'        => [
 			'labels'       => [
 				'name'          => 'Ship Deck',
 				'singular_name' => 'Ship Deck',
@@ -461,7 +477,7 @@ function register_post_types() : void {
 				'editor',
 			],
 		],
-		'qrk_staff_insight'        => [
+		'qrk_staff_insight'    => [
 			'labels'       => [
 				'name'          => 'Staff Insights',
 				'singular_name' => 'Staff Insight',
@@ -474,7 +490,7 @@ function register_post_types() : void {
 				'title',
 			],
 		],
-		'qrk_staff_member'         => [
+		'qrk_staff_member'     => [
 			'labels'       => [
 				'name'          => 'Staff Members',
 				'singular_name' => 'Staff Member',
@@ -488,7 +504,7 @@ function register_post_types() : void {
 				'editor',
 			],
 		],
-		'qrk_agreement'            => [
+		'qrk_agreement'        => [
 			'labels'       => [
 				'name'          => 'Terms and Conditions / Policy Pages',
 				'singular_name' => 'Terms and Conditions / Policy Page',
@@ -502,7 +518,7 @@ function register_post_types() : void {
 				'editor',
 			],
 		],
-		'qrk_testimonial'          => [
+		'qrk_testimonial'      => [
 			'labels'       => [
 				'name'          => 'Testimonials',
 				'singular_name' => 'Testimonial',
