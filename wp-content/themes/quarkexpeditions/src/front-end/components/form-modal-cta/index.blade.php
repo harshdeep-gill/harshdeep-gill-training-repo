@@ -15,16 +15,23 @@
 		$classes[] = $class;
 	}
 
-	$form_modal_mapping = [
+	// Appropriate modal components for each form.
+	$form_modal_component_mapping = [
 		'inquiry-form'         => 'inquiry-form-modal',
 		'inquiry-form-compact' => 'inquiry-form-modal',
 	];
 
-	if ( ! array_key_exists( $form_id, $form_modal_mapping ) ) {
+	// Check if $form_id is valid.
+	if ( ! array_key_exists( $form_id, $form_modal_component_mapping ) ) {
+		// Invalid, bail.
 		return;
 	}
 
-	$modal_id = $form_modal_mapping[ $form_id ];
+	// Get the modal component name for the $form_id
+	$modal_component = $form_modal_component_mapping[ $form_id ];
+
+	// $modal_id will be different for each $form_id.
+	$modal_id = $form_id . '-modal';
 @endphp
 
 <x-modal.modal-open @class( $classes ) modal_id="{{ $modal_id }}">
@@ -32,10 +39,14 @@
 </x-modal.modal-open>
 
 <x-once id="{{ $modal_id }}">
-	@switch ( $form_id )
-		@case ( 'inquiry-form' )
-		@case ( 'inquiry-form-compact' )
-			<x-form-modals.inquiry-form-modal thank_you_page="{{ $thank_you_page }}" />
-			@break
-		@endswitch
+	{!!
+		quark_get_component(
+			$modal_component,
+			[
+				'thank_you_page' => $thank_you_page,
+				'form_id'        => $form_id,
+				'modal_id'       => $modal_id,
+			]
+		)
+	!!}
 </x-once>
