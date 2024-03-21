@@ -31,7 +31,7 @@
 	$modal_component = $form_modal_component_mapping[ $form_id ];
 
 	// $modal_id will be different for each $form_id.
-	$modal_id = $form_id . '-modal';
+	$modal_id = $form_id . quark_url_to_css_id( $thank_you_page ) . '-modal';
 @endphp
 
 <x-modal.modal-open @class( $classes ) modal_id="{{ $modal_id }}">

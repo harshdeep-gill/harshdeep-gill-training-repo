@@ -34,7 +34,7 @@
 	</x-form.select>
 </x-form.field>
 <x-form.buttons>
-	<x-form-modal-cta class="inquiry-form__modal-open" form_id="{{ $form_id }}">
+	<x-form-modal-cta class="inquiry-form__modal-open" form_id="{{ $form_id }}" thank_you_page="{{ $thank_you_page }}">
 		<x-button type="button">
 			Request a Quote
 			<x-button.sub-title title="It only takes 2 minutes!" />

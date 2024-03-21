@@ -199,3 +199,34 @@ function quark_has_this_rendered_once( string $id = '' ): bool {
 	// It has not been rendered before.
 	return false;
 }
+
+/**
+ * Converts a URL into a valid CSS id.
+ *
+ * @param string $url The url to convert.
+ *
+ * @return string Might return an empty string in case the conversion fails.
+ */
+function quark_url_to_css_id( string $url = '' ): string {
+	// Check if $url is empty.
+	if ( empty( $url ) ) {
+		// Empty, bail.
+		return '';
+	}
+
+	// Initialize id.
+	$valid_css_id = '';
+
+	// For replacement.
+	$regex_for_normalization = '/[^a-z]/i';
+	$valid_css_id            = preg_replace( $regex_for_normalization, '-', $url ) ?? '';
+
+	// Convert consecutive hyphens to a single hyphen.
+	$valid_css_id = preg_replace( '/[-]+/', '-', $valid_css_id ) ?? '';
+
+	// Trim hyphens from beginning and end.
+	$valid_css_id = trim( $valid_css_id, '-' );
+
+	// Return valid id.
+	return $valid_css_id;
+}
