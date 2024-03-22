@@ -15,20 +15,8 @@
 		$classes[] = $class;
 	}
 
-	// Appropriate modal components for each form.
-	$form_modal_component_mapping = [
-		'inquiry-form'         => 'inquiry-form-modal',
-		'inquiry-form-compact' => 'inquiry-form-modal',
-	];
-
-	// Check if $form_id is valid.
-	if ( ! array_key_exists( $form_id, $form_modal_component_mapping ) ) {
-		// Invalid, bail.
-		return;
-	}
-
 	// Get the modal component name for the $form_id
-	$modal_component = $form_modal_component_mapping[ $form_id ];
+	$modal_component = 'inquiry-form-modal';
 
 	// $modal_id will be different for each $form_id.
 	$modal_id = $form_id . quark_url_to_css_id( $thank_you_page ) . '-modal';
