@@ -235,6 +235,7 @@ function register_post_types() : void {
 			'public'       => false,
 			'show_ui'      => true,
 			'show_in_menu' => true,
+			'show_in_rest' => true,
 			'menu_icon'    => 'dashicons-admin-users',
 			'supports'     => [
 				'title',
@@ -250,6 +251,7 @@ function register_post_types() : void {
 			'public'       => false,
 			'show_ui'      => true,
 			'show_in_menu' => true,
+			'show_in_rest' => true,
 			'menu_icon'    => 'dashicons-edit-page',
 			'supports'     => [
 				'title',
@@ -263,7 +265,7 @@ function register_post_types() : void {
 			],
 			'public'       => false,
 			'show_ui'      => true,
-			'show_in_menu' => true,
+			'show_in_menu' => 'edit.php?post_type=qrk_ship_deck',
 			'menu_icon'    => 'dashicons-category',
 			'supports'     => [
 				'title',
@@ -399,7 +401,7 @@ function register_post_types() : void {
 			],
 			'public'       => false,
 			'show_ui'      => true,
-			'show_in_menu' => true,
+			'show_in_menu' => 'edit.php?post_type=qrk_expedition',
 			'menu_icon'    => 'dashicons-tickets-alt',
 			'supports'     => [
 				'title',
@@ -466,19 +468,6 @@ function register_post_types() : void {
 				'editor',
 			],
 		],
-		'qrk_staff_insight'    => [
-			'labels'       => [
-				'name'          => 'Staff Insights',
-				'singular_name' => 'Staff Insight',
-			],
-			'public'       => false,
-			'show_ui'      => true,
-			'show_in_menu' => true,
-			'menu_icon'    => 'dashicons-money',
-			'supports'     => [
-				'title',
-			],
-		],
 		'qrk_staff_member'     => [
 			'labels'       => [
 				'name'          => 'Staff Members',
@@ -487,10 +476,12 @@ function register_post_types() : void {
 			'public'       => false,
 			'show_ui'      => true,
 			'show_in_menu' => true,
+			'show_in_rest' => true,
 			'menu_icon'    => 'dashicons-groups',
 			'supports'     => [
 				'title',
 				'editor',
+				'thumbnail',
 			],
 		],
 		'qrk_agreement'        => [
@@ -501,6 +492,7 @@ function register_post_types() : void {
 			'public'       => false,
 			'show_ui'      => true,
 			'show_in_menu' => true,
+			'show_in_rest' => true,
 			'menu_icon'    => 'dashicons-media-document',
 			'supports'     => [
 				'title',
@@ -515,9 +507,11 @@ function register_post_types() : void {
 			'public'       => false,
 			'show_ui'      => true,
 			'show_in_menu' => true,
+			'show_in_rest' => true,
 			'menu_icon'    => 'dashicons-format-quote',
 			'supports'     => [
 				'title',
+				'editor',
 			],
 		],
 		'qrk_port'             => [
@@ -527,7 +521,7 @@ function register_post_types() : void {
 			],
 			'public'       => false,
 			'show_ui'      => true,
-			'show_in_menu' => true,
+			'show_in_menu' => 'edit.php?post_type=qrk_itinerary',
 			'menu_icon'    => 'dashicons-location',
 			'supports'     => [
 				'title',
