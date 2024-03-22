@@ -351,21 +351,6 @@ function register_post_types() : void {
 				'title',
 			],
 		],
-		'qrk_landing_page'     => [
-			'labels'       => [
-				'name'          => 'Landing Pages',
-				'singular_name' => 'Landing Page',
-			],
-			'public'       => false,
-			'show_ui'      => true,
-			'show_in_menu' => true,
-			'show_in_rest' => true,
-			'menu_icon'    => 'dashicons-id-alt',
-			'supports'     => [
-				'title',
-				'editor',
-			],
-		],
 		'qrk_offers'           => [
 			'labels'       => [
 				'name'          => 'Offers',
