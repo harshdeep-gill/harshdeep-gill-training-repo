@@ -18,8 +18,8 @@
 	// Get the modal component name for the $form_id
 	$modal_component = 'inquiry-form-modal';
 
-	// $modal_id will be different for each $form_id.
-	$modal_id = $form_id . quark_url_to_css_id( $thank_you_page ) . '-modal';
+	// $modal_id will be different for each $form_id and $thank_you_page url.
+	$modal_id = substr( md5( $form_id . $thank_you_page ), 0, 10 );
 @endphp
 
 <x-modal.modal-open @class( $classes ) modal_id="{{ $modal_id }}">
