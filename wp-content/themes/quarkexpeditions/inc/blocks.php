@@ -46,6 +46,7 @@ function register_blocks(): void {
 		'FormModalCta'     => 'form-modal-cta.php',
 		'MediaContentCard' => 'media-content-card.php',
 		'Button'           => 'button.php',
+		'MediaTextCTA'     => 'media-text-cta.php',
 	];
 
 	// Register blocks.

@@ -39,3 +39,19 @@ export function getAllBackgroundColors(): { [key: string]: string }[] {
 		{ name: __( 'Information 10', 'qrk' ), color: '#fafbff', slug: 'information-10' },
 	];
 }
+
+/**
+ * Convert a YouTube URL to an Embed URL.
+ *
+ * @param {string} videoUrl Video URL.
+ */
+export function convertToEmbedUrl( videoUrl: string ): string {
+	// Convert YouTube video url to embed URL.
+	if ( videoUrl.includes( 'youtube' ) && videoUrl.includes( 'v=' ) ) {
+		const videoId = videoUrl.split( 'v=' )[ 1 ];
+		videoUrl = `https://www.youtube.com/embed/${ videoId }`;
+	}
+
+	// Return converted Video URL.
+	return videoUrl;
+}
