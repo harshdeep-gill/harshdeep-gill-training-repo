@@ -25,4 +25,29 @@
 
 		@extend %btn--media;
 	}
+
+	&--has-icon {
+		display: inline-flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	&__icon {
+		display: inline-flex;
+
+		svg {
+			max-height: 18px;
+			max-width: 18px;
+			height: auto;
+			width: auto;
+		}
+	}
+
+	&__icon-left {
+		margin-right: var(--spacing-2);
+	}
+
+	&__icon-right {
+		margin-left: var(--spacing-2);
+	}
 }

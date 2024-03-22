@@ -1,7 +1,13 @@
 .hero {
-	background-color: var(--color-gray-30);
 
-	&--immersive {
-		margin-top: -125px;
+	&__title {
+		max-width: 100%;
+	}
+
+	.form-modal-cta {
+
+		.btn:hover {
+			background-color: var(--color-white);
+		}
 	}
 }

@@ -1,5 +1,5 @@
 <x-layout>
-	<x-component-demo :keys="[ 'header', 'hero-immersive' ]">
+	<x-component-demo :keys="[ 'header', 'hero-refactor' ]">
 		<x-lp-header
 			tc_image_id="18"
 			phone_number="+1-877-585-1235"
@@ -7,24 +7,29 @@
 		/>
 	</x-component-demo>
 
-	<x-component-demo :keys="[ 'hero', 'hero-immersive' ]">
-		<x-hero :immersive="true">
-			<x-hero.image image_id="29" />
+	<x-component-demo :keys="[ 'hero', 'hero-refactor' ]">
+		<x-hero text_align="left" :immersive="true">
+			<x-hero.image image_id="26" />
 			<x-hero.content>
-				<x-hero.title title="Antarctic Voyages" />
-				<x-hero.sub-title title="When you venture into the untouched wilds of the Arctic and Antarctic, you need a great team around you. And we have the greatest. You’ll join elite guides trained at Quark Academy — which surpasses every standard imaginable for safety and preparedness in the Polar Regions—and interact directly with world-class polar experts. Our philosophy? The team that explores together, discovers more together." />
+				<x-hero.left>
+					<x-hero.title-container>
+						<x-hero.overline>Antarctic 2024</x-hero.overline>
+						<x-hero.title title="Antarctic Voyages" />
+						<x-hero.sub-title title="Choose the Leader in Polar Adventure" />
+					</x-hero.title-container>
+					<x-icon-badge class="hero__tag" background_color="attention-100" icon="alert" text="Limited Cabins Available" />
+					<x-hero.form-modal-cta>Get a Digital Brochure</x-hero.form-modal-cta>
+				</x-hero.left>
+				<x-hero.right>
+					<x-hero.form>
+						<x-inquiry-form />
+					</x-hero.form>
+				</x-hero.right>
 			</x-hero.content>
-			<x-hero.form>
-				<x-inquiry-form
-					form_id="inquiry-form"
-					title="Almost there!"
-					subtitle="We just need a bit more info to help personalize your itinerary."
-					salesforce_object="Webform_Landing_Page__c"
-				/>
-			</x-hero.form>
 		</x-hero>
 	</x-component-demo>
-	<x-component-demo :keys="[ 'review-cards' ]">
+
+	<x-component-demo :keys="[ 'review-cards', 'hero-refactor' ]">
 		<x-review-cards>
 			<x-review-cards.card
 				title="Falkland, South Georgia and the Antarctic Circle"
@@ -76,6 +81,26 @@
 			</x-review-cards.card>
 		</x-review-cards>
 	</x-component-demo>
+
+	<x-component-demo :keys="[ 'hero', 'hero-refactor' ]">
+		<x-hero text_align="center" :immersive="false">
+			<x-hero.image image_id="26" />
+			<x-hero.content>
+				<x-hero.left>
+					<x-hero.title-container>
+						<x-hero.overline>Antarctic 2024</x-hero.overline>
+						<x-hero.title title="Antarctic Voyages" />
+						<x-hero.sub-title title="Choose the Leader in Polar Adventure" />
+					</x-hero.title-container>
+					<x-icon-badge class="hero__tag" background_color="attention-100" icon="alert" text="Limited Cabins Available" />
+					<x-hero.form-modal-cta>Get a Digital Brochure</x-hero.form-modal-cta>
+				</x-hero.left>
+				<x-hero.right>
+				</x-hero.right>
+			</x-hero.content>
+		</x-hero>
+	</x-component-demo>
+
 	<x-component-demo :keys="[ 'global', 'color-palette' ]">
 		<x-section title="Color Palette" heading_level="2">
 			<x-global-styles-demo.color-palette />
@@ -201,35 +226,6 @@
 			phone_number="+1-877-585-1235"
 			cta_text="Talk to a Polar Expert"
 		/>
-	</x-component-demo>
-
-	<x-component-demo :keys="[ 'hero' ]">
-		<x-hero>
-			<x-hero.image image_id="26" />
-			<x-hero.content>
-				<x-hero.title title="Antarctic Voyages" />
-				<x-hero.sub-title title="Choose the Leader in Polar Adventure" />
-			</x-hero.content>
-			<x-hero.form>
-				<x-inquiry-form
-					form_id="inquiry-form"
-					title="Almost there!"
-					subtitle="We just need a bit more info to help personalize your itinerary."
-					salesforce_object="Webform_Landing_Page__c"
-				/>
-			</x-hero.form>
-		</x-hero>
-	</x-component-demo>
-
-	<x-component-demo :keys="[ 'hero', 'hero-new-cta' ]">
-		<x-hero layout="column" size="big">
-			<x-hero.image image_id="26" />
-			<x-hero.content>
-				<x-hero.title title="Rethink your bucket list.<br/>Think an Antarctic Expedition." />
-				<x-hero.sub-title title="Starting from $12,908" />
-			</x-hero.content>
-			<x-hero.form-modal-cta>Get a Digital Brochure</x-hero.form-modal-cta>
-		</x-hero>
 	</x-component-demo>
 
 	<x-component-demo :keys="[ 'modal' ]">
@@ -525,6 +521,59 @@
 			</x-simple-cards>
 			<x-section.cta class="color-context--dark" text="Learn More" url="#" color="black" />
 		</x-section>
+	</x-component-demo>
+
+	<x-component-demo :keys="['media-content-card']">
+			<x-section title="Media Content Card 2-column">
+				<x-media-content-card>
+					<x-media-content-card.image image_id="33"/>
+					<x-media-content-card.content>
+						<x-media-content-card.content-column>
+							<h4>Start Your Adventure</h4>
+							<p>Call us and one of our Polar Travel Advisors will secure the offer for you.</p>
+						</x-media-content-card.content-column>
+						<x-media-content-card.content-column>
+							<x-media-content-card.content-info
+								label="North America (Toll Free)"
+								value="+1 (866) 257-3345"
+								url="tel:+1 (866) 257-3345"
+							/>
+							<x-media-content-card.content-info
+								label="U.K. (Toll Free)"
+								value="0808 134 9986"
+								url="tel:0808 134 9986"
+							/>
+							<x-media-content-card.content-info
+								label="Australia (Toll Free)"
+								value="+61 1800 959 390"
+								url="tel:+61 1800 959 390"
+							/>
+							<x-media-content-card.content-info
+								label="France (Toll Free)"
+								value="08 05 08 66 46"
+								url="tel:08 05 08 66 46"
+							/>
+						</x-media-content-card.content-column>
+					</x-media-content-card.content>
+				</x-media-content-card>
+			</x-section>
+			<x-section title="Media Content Card 1-column">
+				<x-media-content-card :is_compact="true" >
+					<x-media-content-card.image image_id="33"/>
+					<x-media-content-card.content>
+						<x-media-content-card.content-column>
+							<h4>Start Your Adventure</h4>
+							<p>Call us and one of our Polar Travel Advisors will secure the offer for you.</p>
+						</x-media-content-card.content-column>
+						<x-media-content-card.content-column>
+							<x-media-content-card.content-info label="North America (Toll Free)" value="+1 (866) 257-3345" />
+							<x-media-content-card.content-info label="U.K. (Toll Free)" value="0808 134 9986" />
+							<x-media-content-card.content-info label="Australia (Toll Free)" value="+61 1800 959 390" />
+							<x-media-content-card.content-info label="France (Toll Free)" value="08 05 08 66 46" />
+						</x-media-content-card.content-column>
+					</x-media-content-card.content>
+				</x-media-content-card>
+			</x-section>
 	</x-component-demo>
 
 	<x-component-demo :keys="[ 'collage' ]">
@@ -946,6 +995,177 @@
 				</x-lp-footer.column>
 			</x-lp-footer.row>
 		</x-lp-footer>
+	</x-component-demo>
+
+	<x-component-demo :keys="[ 'product-cards' ]">
+		<x-product-cards>
+			<x-product-cards.card url="#">
+				<x-product-cards.image
+					image_id="29"
+					:is_immersive="true"
+				>
+					<x-product-cards.badge-cta text="Save 50%" />
+					<x-product-cards.badge-time text="Just Added" />
+				</x-product-cards.image>
+				<x-product-cards.reviews
+					total_reviews="19 Reviews"
+					review_rating="5"
+				/>
+				<x-product-cards.itinerary departure_date="Departing May 20, 2024" duration="10 Days" />
+				<x-product-cards.title title="Introduction to Spitsbergen" />
+				<x-product-cards.subtitle title="Fjords, Glaciers, and Wildlife of Svalbard" />
+				<x-product-cards.description>
+					<p>This fascinating expedition provides a taste of everything Spitsbergen has to offer!</p>
+				</x-product-cards.description>
+				<x-product-cards.price
+					original_price="$7,395 USD"
+					discounted_price="$6,171 USD"
+				/>
+				<x-product-cards.buttons :columns="1">
+					<x-button size="big">Request a Quote</x-button>
+					<x-button size="big" appearance="outline">Learn More</x-button>
+				</x-product-cards.buttons>
+			</x-product-cards.card>
+
+			<x-product-cards.card url="#">
+				<x-product-cards.image
+					image_id="36"
+					:is_immersive="false"
+				>
+					<x-product-cards.badge-sold-out />
+					<x-product-cards.badge-time text="Just Added" />
+					<x-product-cards.info-ribbon>Additional 10% savings text</x-product-cards.info-ribbon>
+				</x-product-cards.image>
+				<x-product-cards.reviews
+					total_reviews="9999 Reviews"
+					review_rating="3"
+				/>
+				<x-product-cards.itinerary departure_date="Departing May 28, 2024" duration="12 Days" />
+				<x-product-cards.title title="Spitsbergen Explorer" />
+				<x-product-cards.subtitle title="Wildlife Capital of the Arctic" />
+				<x-product-cards.description>
+					<p>Witness the remarkable array of creatures who call this spectacular environment home.</p>
+				</x-product-cards.description>
+				<x-product-cards.price
+					original_price="$9,095 USD"
+					discounted_price="$7,361 USD"
+				/>
+				<x-product-cards.buttons :columns="2">
+					<x-button size="big" icon="phone">Book: +1 (866) 220-1915</x-button>
+				</x-product-cards.buttons>
+			</x-product-cards.card>
+
+			<x-product-cards.card url="#">
+				<x-product-cards.image
+					image_id="32"
+					:is_immersive="false"
+				>
+					<x-product-cards.badge-sold-out />
+					<x-product-cards.badge-time text="Just Added" />
+					<x-product-cards.info-ribbon>Additional 10% savings text</x-product-cards.info-ribbon>
+				</x-product-cards.image>
+				<x-product-cards.reviews
+					total_reviews="100 Reviews"
+					review_rating="4"
+				/>
+				<x-product-cards.itinerary departure_date="Departing July 14, 2024" duration="11 Days" />
+				<x-product-cards.title title="Gems of West Greenland" />
+				<x-product-cards.subtitle title="Fjords, Icebergs, and Culture" />
+				<x-product-cards.description>
+					<p>Features the best sites of West Greenland & delivers an in-depth experience in just 12 days.</p>
+				</x-product-cards.description>
+				<x-product-cards.price
+					original_price="$9,395 USD"
+					discounted_price="$8,571 USD"
+				/>
+				<x-product-cards.buttons :columns="2">
+					<x-button size="big">Request a Quote</x-button>
+					<x-button size="big" appearance="outline">Learn More</x-button>
+				</x-product-cards.buttons>
+			</x-product-cards.card>
+		</x-product-cards>
+
+		<x-product-cards>
+			<x-product-cards.card url="#">
+				<x-product-cards.image
+					image_id="29"
+				>
+					<x-product-cards.badge-cta text="Save 50%" />
+				</x-product-cards.image>
+				<x-product-cards.reviews
+					total_reviews="19 Reviews"
+					review_rating="5"
+				/>
+				<x-product-cards.itinerary departure_date="Departing May 20, 2024" duration="10 Days" />
+				<x-product-cards.title title="Introduction to Spitsbergen" />
+				<x-product-cards.subtitle title="Fjords, Glaciers, and Wildlife of Svalbard" />
+				<x-product-cards.description>
+					<p>This fascinating expedition provides a taste of everything Spitsbergen has to offer!</p>
+				</x-product-cards.description>
+				<x-product-cards.price
+					original_price="$7,395 USD"
+					discounted_price="$6,171 USD"
+				/>
+				<x-product-cards.buttons :columns="2">
+					<x-button size="big">Request a Quote</x-button>
+					<x-button size="big" appearance="outline">Learn More</x-button>
+				</x-product-cards.buttons>
+			</x-product-cards.card>
+
+			<x-product-cards.card url="#">
+				<x-product-cards.image
+					image_id="36"
+					:is_immersive="false"
+				>
+					<x-product-cards.badge-cta text="Save 50%" />
+					<x-product-cards.badge-time text="Just Added" />
+				</x-product-cards.image>
+				<x-product-cards.reviews
+					total_reviews="9999 Reviews"
+					review_rating="3"
+				/>
+				<x-product-cards.itinerary departure_date="Departing May 28, 2024" duration="12 Days" />
+				<x-product-cards.title title="Spitsbergen Explorer" />
+				<x-product-cards.subtitle title="Wildlife Capital of the Arctic" />
+				<x-product-cards.description>
+					<p>Witness the remarkable array of creatures who call this spectacular environment home.</p>
+				</x-product-cards.description>
+				<x-product-cards.price
+					original_price="$9,095 USD"
+					discounted_price="$7,361 USD"
+				/>
+				<x-product-cards.buttons :columns="2">
+					<x-button size="big" icon="phone">Book: +1 (866) 220-1915</x-button>
+				</x-product-cards.buttons>
+			</x-product-cards.card>
+
+			<x-product-cards.card url="#">
+				<x-product-cards.image
+					image_id="32"
+					:is_immersive="false"
+				>
+					<x-product-cards.badge-time text="Just Added" />
+				</x-product-cards.image>
+				<x-product-cards.reviews
+					total_reviews="100 Reviews"
+					review_rating="4"
+				/>
+				<x-product-cards.itinerary departure_date="Departing July 14, 2024" duration="11 Days" />
+				<x-product-cards.title title="Gems of West Greenland" />
+				<x-product-cards.subtitle title="Fjords, Icebergs, and Culture" />
+				<x-product-cards.description>
+					<p>Features the best sites of West Greenland & delivers an in-depth experience in just 12 days.</p>
+				</x-product-cards.description>
+				<x-product-cards.price
+					original_price="$9,395 USD"
+					discounted_price="$8,571 USD"
+				/>
+				<x-product-cards.buttons :columns="2">
+					<x-button size="big">Request a Quote</x-button>
+					<x-button size="big" appearance="outline">Learn More</x-button>
+				</x-product-cards.buttons>
+			</x-product-cards.card>
+		</x-product-cards>
 	</x-component-demo>
 
 	<x-component-demo :keys="[ 'lp-footer' ]">

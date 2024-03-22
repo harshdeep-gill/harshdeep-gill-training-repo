@@ -105,7 +105,9 @@ function layout_single( array $data = [] ): array {
 	$data['data'] = array_merge( $data['data'] ?? [], $page );
 
 	// Post content.
+	remove_filter( 'quark_front_end_data', __FUNCTION__ );
 	$data['data']['post_content'] = strval( apply_filters( 'the_content', $page['post']->post_content ) );
+	add_filter( 'quark_front_end_data', __FUNCTION__ );
 
 	// Return front-end data.
 	return $data;
