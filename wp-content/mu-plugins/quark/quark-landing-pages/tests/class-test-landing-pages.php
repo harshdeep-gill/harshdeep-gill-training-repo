@@ -56,7 +56,7 @@ class Test_Landing_Pages extends WP_UnitTestCase {
 				'data'   => [
 					'post'         => $post_1,
 					'permalink'    => 'http://test.quarkexpeditions.com/ppc-landing-pages/test-post',
-					'post_content' => "Post content\n",
+					'post_content' => 'Post content',
 				],
 			],
 			$layout
