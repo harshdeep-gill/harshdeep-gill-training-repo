@@ -56,11 +56,14 @@ class Test_Landing_Pages extends WP_UnitTestCase {
 				'data'   => [
 					'post'         => $post_1,
 					'permalink'    => 'http://test.quarkexpeditions.com/ppc-landing-pages/test-post',
-					'post_content' => "<p>Post content</p>\n",
+					'post_content' => "Post content\n",
 				],
 			],
 			$layout
 		);
+
+		// Simulate front-end.
+		do_action( 'quark_get_front_end_data' );
 
 		// Assert expected post content is equal to actual post content.
 		$this->assertEquals(
