@@ -1,10 +1,7 @@
 @props( [
 	'thank_you_page' => '',
+	'form_id'        => 'inquiry-form-compact',
 ] )
-
-@php
-	$form_id  = 'inquiry-form-compact';
-@endphp
 
 <x-form.field :validation="[ 'required' ]">
 	<x-form.select label="When would you like to go?" name="fields[Season__c]" form="{{ $form_id }}">
