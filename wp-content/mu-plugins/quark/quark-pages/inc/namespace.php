@@ -9,6 +9,8 @@ namespace Quark\Pages;
 
 use WP_Post;
 
+use function Quark\Core\prepare_content_with_blocks;
+
 const POST_TYPE = 'page';
 
 /**
@@ -70,7 +72,10 @@ function layout_single( array $data = [] ): array {
 	$data['data'] = array_merge( $data['data'] ?? [], $page );
 
 	// Post content.
-	$data['data']['post_content'] = strval( apply_filters( 'the_content', $page['post']->post_content ) );
+	$data['data']['post_content'] = $page['post']->post_content;
+
+	// Prepare blocks.
+	prepare_content_with_blocks( $data['data']['post_content'] );
 
 	// Return front-end data.
 	return $data;
