@@ -38,6 +38,7 @@ const { ImageControl, Img } = gumponents.components;
  * Styles.
  */
 import '../../../front-end/components/media-text-cta/style.scss';
+import '../../../front-end/components/fancy-video/style.scss';
 import './editor.scss';
 
 /**
@@ -139,7 +140,7 @@ export const settings: BlockConfiguration = {
 			// Convert to Embed URL.
 			videoUrl = convertToEmbedUrl( videoUrl );
 
-			// Set attribute.
+			// Set attributes.
 			setAttributes( { videoUrl } );
 		};
 
@@ -197,8 +198,8 @@ export const settings: BlockConfiguration = {
 						<Img className="media-text-cta__image" value={ attributes.image } />
 						{
 							'video' === attributes.mediaType &&
-							<div className="collage__video-button-wrapper">
-								<button className="collage__video-button">
+							<div className="fancy-video__play-btn-wrapper">
+								<button className="fancy-video__play-btn">
 									{ icons.play }
 								</button>
 							</div>

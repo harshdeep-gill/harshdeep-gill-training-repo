@@ -106,7 +106,7 @@ function render( ?string $content = null, array $block = [] ): null|string {
 			];
 
 			// Get the slot.
-			$slot['slot'] .= render_block( $inner_block );
+			$slot['slot'] = render_block( $inner_block );
 
 			// Add to content.
 			$attributes['content'][] = $slot;
