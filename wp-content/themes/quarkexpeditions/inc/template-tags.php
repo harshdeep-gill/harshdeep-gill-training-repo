@@ -37,33 +37,14 @@ function quark_front_end(): void {
  * @return mixed
  */
 function quark_get_template_data( string $key = '', mixed $fallback = null ): mixed {
-	/**
-	 * Prevent infinite loops
-	 * This happens when this function is called from within a block.
-	 */
-	static $in_progress = false;
-
-	// If we're already in progress, bail early.
-	if ( true === $in_progress ) {
-		return false;
-	}
-
-	// Mark as in progress.
-	$in_progress = true;
-
 	// Get data.
 	$template_data = Quark\Core\get_front_end_data();
 
 	// Check if the key we want exists.
 	if ( empty( $template_data['data'] ) || ! isset( $template_data['data'][ $key ] ) ) {
-		$in_progress = false;
-
 		// It doesn't, return fallback instead.
 		return $fallback;
 	}
-
-	// Mark as done.
-	$in_progress = false;
 
 	// Return data.
 	return $template_data['data'][ $key ];
