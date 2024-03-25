@@ -48,7 +48,6 @@
 	<x-form.field>
 		<x-form.select label="When would you like to go?" name="fields[Season__c]" form="inquiry-form">
 			<option value="">- Select -</option>
-			<option value="2023-24">Antarctic 2023/24 (Nov '23 - Mar '24)</option>
 			<option value="2024-25">Antarctic 2024/25 (Nov '24 - Mar '25)</option>
 			<option value="2025-26">Antarctic 2025/26 (Nov '25 - Mar '26)</option>
 		</x-form.select>
