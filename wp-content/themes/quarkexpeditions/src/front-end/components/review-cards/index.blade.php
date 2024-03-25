@@ -1,3 +1,7 @@
+@props( [
+	'is_carousel' => 'true',
+] )
+
 @php
 	if ( empty( $slot ) ) {
 		return;
@@ -8,7 +12,7 @@
 @endphp
 
 <x-section class="review-cards" :full_width="true">
-	<x-review-cards.carousel>
+	<x-review-cards.carousel :is_carousel="$is_carousel">
 		{!! $slot !!}
 	</x-review-cards.carousel>
 </x-section>

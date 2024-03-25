@@ -4,8 +4,8 @@
 import { __ } from '@wordpress/i18n';
 import { BlockConfiguration } from '@wordpress/blocks';
 import {
-	useBlockProps,
 	RichText,
+	useBlockProps,
 } from '@wordpress/block-editor';
 
 /**
@@ -16,47 +16,43 @@ import classnames from 'classnames';
 /**
  * Block name.
  */
-export const name: string = 'quark/hero-title';
+export const name: string = 'quark/review-cards-title';
 
 /**
  * Block configuration settings.
  */
 export const settings: BlockConfiguration = {
 	apiVersion: 2,
-	title: __( 'Hero Title', 'qrk' ),
-	description: __( 'Hero Title text.', 'qrk' ),
-	category: 'widgets',
-	keywords: [
-		__( 'hero', 'qrk' ),
-		__( 'title', 'qrk' ),
-		__( 'text', 'qrk' ),
-	],
+	title: __( 'Review Cards Title', 'qrk' ),
+	description: __( 'Individual review card item title.', 'qrk' ),
+	parent: [ 'quark/review-cards-card' ],
+	icon: 'screenoptions',
+	category: 'layout',
+	keywords: [ __( 'title', 'qrk' ) ],
 	attributes: {
 		title: {
 			type: 'string',
-			default: '',
 		},
 	},
-	parent: [ 'quark/hero-content-left' ],
 	supports: {
 		alignWide: false,
-		anchor: true,
 		className: false,
 		html: false,
 		customClassName: false,
 	},
-	edit( { className, attributes, setAttributes }: BlockEditAttributes ): JSX.Element {
+	edit( { className, attributes, setAttributes }: BlockEditAttributes ) : JSX.Element {
 		// eslint-disable-next-line react-hooks/rules-of-hooks
-		const blockProps = useBlockProps( {
-			className: classnames( className, 'hero__title' ),
+		const blocksProps = useBlockProps( {
+			className: classnames( className ),
 		} );
 
 		// Return the block's markup.
 		return (
 			<RichText
-				{ ...blockProps }
-				tagName="h1"
-				placeholder={ __( 'Write the Title…', 'qrk' ) }
+				{ ...blocksProps }
+				tagName="h5"
+				className="review-cards__card-title"
+				placeholder={ __( 'Write title…', 'qrk' ) }
 				value={ attributes.title }
 				onChange={ ( title: string ) => setAttributes( { title } ) }
 				allowedFormats={ [] }
@@ -64,7 +60,7 @@ export const settings: BlockConfiguration = {
 		);
 	},
 	save() {
-		// Save inner block content.
+		// Don't save anything.
 		return null;
 	},
 };

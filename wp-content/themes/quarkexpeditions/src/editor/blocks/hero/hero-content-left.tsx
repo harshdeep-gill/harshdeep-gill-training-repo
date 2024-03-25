@@ -26,6 +26,7 @@ import classnames from 'classnames';
 import * as overline from './overline';
 import * as heroTitle from './hero-title';
 import * as heroSubtitle from './hero-subtitle';
+import * as heroDescription from './hero-description';
 
 /**
  * Register children blocks
@@ -33,6 +34,7 @@ import * as heroSubtitle from './hero-subtitle';
 registerBlockType( overline.name, overline.settings );
 registerBlockType( heroTitle.name, heroTitle.settings );
 registerBlockType( heroSubtitle.name, heroSubtitle.settings );
+registerBlockType( heroDescription.name, heroDescription.settings );
 
 /**
  * Block name.
@@ -71,11 +73,14 @@ export const settings: BlockConfiguration = {
 		const innerBlockProps = useInnerBlocksProps(
 			{ ...blockProps },
 			{
-				allowedBlocks: [ iconBadge.name, formModalCta.name, overline.name, heroTitle.name, heroSubtitle.name ],
+				allowedBlocks: [
+					iconBadge.name, formModalCta.name, overline.name, heroTitle.name, heroSubtitle.name, heroDescription.name,
+				],
 				template: [
 					[ overline.name ],
 					[ heroTitle.name ],
 					[ heroSubtitle.name ],
+					[ heroDescription.name ],
 					[ iconBadge.name, { className: 'hero__tag' } ],
 					[ formModalCta.name, { className: 'hero__form-modal-cta color-context--dark' } ],
 				],

@@ -4,8 +4,9 @@
 import { __ } from '@wordpress/i18n';
 import { BlockConfiguration } from '@wordpress/blocks';
 import {
+	InnerBlocks,
 	useBlockProps,
-	RichText,
+	useInnerBlocksProps,
 } from '@wordpress/block-editor';
 
 /**
@@ -16,27 +17,20 @@ import classnames from 'classnames';
 /**
  * Block name.
  */
-export const name: string = 'quark/hero-title';
+export const name: string = 'quark/hero-description';
 
 /**
  * Block configuration settings.
  */
 export const settings: BlockConfiguration = {
 	apiVersion: 2,
-	title: __( 'Hero Title', 'qrk' ),
-	description: __( 'Hero Title text.', 'qrk' ),
+	title: __( 'Hero Description', 'qrk' ),
+	description: __( 'Hero Description text.', 'qrk' ),
 	category: 'widgets',
 	keywords: [
-		__( 'hero', 'qrk' ),
-		__( 'title', 'qrk' ),
-		__( 'text', 'qrk' ),
+		__( 'description', 'qrk' ),
 	],
-	attributes: {
-		title: {
-			type: 'string',
-			default: '',
-		},
-	},
+	attributes: {},
 	parent: [ 'quark/hero-content-left' ],
 	supports: {
 		alignWide: false,
@@ -45,26 +39,25 @@ export const settings: BlockConfiguration = {
 		html: false,
 		customClassName: false,
 	},
-	edit( { className, attributes, setAttributes }: BlockEditAttributes ): JSX.Element {
+	edit( { className }: BlockEditAttributes ): JSX.Element {
 		// eslint-disable-next-line react-hooks/rules-of-hooks
 		const blockProps = useBlockProps( {
-			className: classnames( className, 'hero__title' ),
+			className: classnames( className, 'hero__description' ),
+		} );
+
+		// eslint-disable-next-line react-hooks/rules-of-hooks
+		const innerBlockProps = useInnerBlocksProps( { ...blockProps }, {
+			allowedBlocks: [ 'core/paragraph' ],
+			template: [ [ 'core/paragraph', { placeholder: __( 'Write description…', 'qrk' ) } ] ],
 		} );
 
 		// Return the block's markup.
 		return (
-			<RichText
-				{ ...blockProps }
-				tagName="h1"
-				placeholder={ __( 'Write the Title…', 'qrk' ) }
-				value={ attributes.title }
-				onChange={ ( title: string ) => setAttributes( { title } ) }
-				allowedFormats={ [] }
-			/>
+			<div { ...innerBlockProps } />
 		);
 	},
 	save() {
 		// Save inner block content.
-		return null;
+		return <InnerBlocks.Content />;
 	},
 };

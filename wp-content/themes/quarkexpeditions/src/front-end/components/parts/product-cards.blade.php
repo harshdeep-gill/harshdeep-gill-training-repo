@@ -7,9 +7,6 @@
 		return;
 	}
 
-	echo '<pre>';
-	// print_r( $items );
-	echo '</pre>';
 @endphp
 
 <x-product-cards>
