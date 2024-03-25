@@ -19,12 +19,14 @@
 		border-radius: var(--border-radius-large);
 		overflow: hidden;
 		position: relative;
+		aspect-ratio: 1 / 1;
+
+		@media screen and (min-width: grid-size(sm)) {
+			aspect-ratio: initial;
+		}
 
 		#{$self}--media-align-right & {
-
-			@media screen and (min-width: grid-size(md)) {
-				order: 2;
-			}
+			order: 2;
 		}
 	}
 
@@ -58,6 +60,11 @@
 
 		.btn {
 			min-width: 200px;
+			width: 100%;
+
+			@media screen and (min-width: grid-size(sm)) {
+				width: auto;
+			}
 		}
 	}
 

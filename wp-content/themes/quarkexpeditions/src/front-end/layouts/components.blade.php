@@ -609,6 +609,7 @@
 				</x-media-content-card>
 			</x-section>
 			<x-section title="Media Content Card 1-column">
+				<x-section.description>Call us and one of our Polar Travel Advisors will secure the offer for you.</x-section.description>
 				<x-media-content-card :is_compact="true" >
 					<x-media-content-card.image image_id="33"/>
 					<x-media-content-card.content>
