@@ -13,9 +13,10 @@
 	}
 
 	&__title {
+		margin-bottom: var(--spacing-7);
 
-		&:has(+ .section) {
-			margin-bottom: var(--spacing-7);
+		+ #{$self}__description {
+			margin-top: calc(-1 * var(--spacing-6));
 		}
 	}
 
