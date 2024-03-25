@@ -76,10 +76,7 @@ export const settings: BlockConfiguration = {
 	}: BlockEditAttributes ): JSX.Element {
 		// eslint-disable-next-line react-hooks/rules-of-hooks
 		const blockProps = useBlockProps( {
-			className: classnames(
-				className,
-				'fancy-video typography-spacing',
-			),
+			className: classnames( className, 'fancy-video typography-spacing' ),
 		} );
 
 		/**
@@ -104,12 +101,12 @@ export const settings: BlockConfiguration = {
 							label={ __( 'Image', 'qrk' ) }
 							value={ attributes.image ? attributes.image.id : null }
 							size="large"
-							help={ __( 'Choose a cover image for this video', 'qrk' ) }
+							help={ __( 'Choose a cover image for this video.', 'qrk' ) }
 							onChange={ ( image: object ) => setAttributes( { image } ) }
 						/>
 						<TextControl
 							label={ __( 'Video URL', 'qrk' ) }
-							help={ __( 'Add the video URL here', 'qrk' ) }
+							help={ __( 'Enter a YouTube Video URL.', 'qrk' ) }
 							value={ attributes.videoUrl }
 							onChange={ handleUrlChange }
 						/>
