@@ -19,9 +19,9 @@
 	</figure>
 	<span class="lp-header__cta-content">
 		@if ( ! empty( $cta_text ) )
-			<span class="lp-header__cta-content-text">
+			<div class="lp-header__cta-content-text">
 				<x-escape :content="$cta_text" />
-			</span>
+			</div>
 		@endif
 		<span class="lp-header__cta-content-phone-number">
 			<span><x-escape :content="$phone_number" /></span>

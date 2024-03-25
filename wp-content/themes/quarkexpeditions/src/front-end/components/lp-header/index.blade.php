@@ -18,7 +18,7 @@
 	<div class="lp-header__wrap">
 		<x-lp-header.logo
 			:url="$logo_url"
-			:dark_mode="true"
+			:dark_mode="$dark_mode"
 		/>
 		<x-lp-header.cta
 			:image_id="$tc_image_id"
