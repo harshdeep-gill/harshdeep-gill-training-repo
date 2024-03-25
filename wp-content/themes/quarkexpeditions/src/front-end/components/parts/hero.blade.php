@@ -2,16 +2,8 @@
 	'image_id'   => 0,
 	'immersive'  => false,
 	'text_align' => '',
-	'left'       => [
-		'overline' => '',
-		'title'    => '',
-		'subtitle' => '',
-		'tag'      => '',
-		'cta'      => '',
-	],
-	'right'      => [
-		'form' => '',
-	],
+	'left'       => [],
+	'right'      => [],
 ] )
 
 @php
@@ -25,31 +17,61 @@
 	<x-hero.content>
 		<x-hero.left>
 			<x-hero.title-container>
-				@if ( ! empty( $left['overline'] ) )
-					<x-hero.overline>{!! $left['overline'] !!}</x-hero.overline>
-				@endif
-				@if ( ! empty( $left['title'] ) )
-					<x-hero.title :title="$left['title']" />
-				@endif
-				@if ( ! empty( $left['subtitle'] ) )
-					<x-hero.sub-title :title="$left['subtitle']" />
-				@endif
+				@foreach ( $left as $item )
+					@if (  'overline' === $item['type'] )
+						@if ( ! empty( $item['overline']['text'] ) )
+							<x-hero.overline :color="$item['overline']['color']">
+								{!! $item['overline']['text'] !!}
+							</x-hero.overline>
+						@endif
+					@endif
+
+					@if ( 'title' === $item['type'] )
+						@if ( ! empty( $item['title'] ) )
+							<x-hero.title :title="$item['title']" />
+						@endif
+					@endif
+
+					@if ( 'subtitle' === $item['type'] )
+						@if ( ! empty( $item['subtitle'] ) )
+							<x-hero.sub-title :title="$item['subtitle']" />
+						@endif
+					@endif
+
+					@if ( 'description' === $item['type'] )
+						@if ( ! empty( $item['description'] ) )
+							<x-hero.description>
+								{!! $item['description'] !!}
+							</x-hero.description>
+						@endif
+					@endif
+				@endforeach
 			</x-hero.title-container>
 
-			@if ( ! empty( $left['tag'] ) )
-				{!! $left['tag'] !!}
-			@endif
+			@foreach ( $left as $item )
+				@if( 'tag' === $item['type'])
+					@if ( ! empty( $item['tag'] ) )
+						{!! $item['tag'] !!}
+					@endif
+				@endif
 
-			@if ( ! empty( $left['cta'] ) )
-				{!! $left['cta'] !!}
-			@endif
+				@if( 'cta' === $item['type'])
+					@if ( ! empty( $item['cta'] ) )
+						{!! $item['cta'] !!}
+					@endif
+				@endif
+			@endforeach
 		</x-hero.left>
 		<x-hero.right>
-			@if ( ! empty( $right['form'] ) )
-				<x-hero.form>
-					{!! $right['form'] !!}
-				</x-hero.form>
-			@endif
+			@foreach ( $right as $item )
+				@if( 'form' === $item['type'] )
+					@if ( ! empty( $item['form'] ) )
+						<x-hero.form>
+							{!! $item['form'] !!}
+						</x-hero.form>
+					@endif
+				@endif
+			@endforeach
 		</x-hero.right>
 	</x-hero.content>
 </x-hero>
