@@ -1,17 +1,17 @@
 @props( [
 	'thank_you_page' => '',
+	'form_id'        => 'inquiry-form',
+	'modal_id'       => 'inquiry-form-modal',
 ] )
 
 @php
-	$form_id           = 'inquiry-form';
-	$modal_id          = $form_id . '-modal';
 	$title             = 'Almost there!';
 	$subtitle          = 'We just need a bit more info to help personalize your itinerary.';
 	$salesforce_object = 'Webform_Landing_Page__c';
 @endphp
 
 <x-modal
-	class="inquiry-form__modal"
+	class="inquiry-form-modal"
 	id="{{ $modal_id }}"
 	title="{{ $title }}"
 	subtitle="{{ $subtitle }}"
@@ -423,8 +423,6 @@
 							<x-form.textarea label="What else would you like us to know?" placeholder="eg. Lorem ipsum" name="fields[Comments__c]" />
 						</x-form.field>
 					</x-form.row>
-
-					{!! $slot !!}
 				</x-modal.body>
 				<x-modal.footer>
 					<x-form.buttons>
