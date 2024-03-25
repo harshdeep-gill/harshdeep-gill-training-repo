@@ -47,6 +47,7 @@ function register_blocks(): void {
 		'MediaContentCard' => 'media-content-card.php',
 		'Button'           => 'button.php',
 		'MediaTextCTA'     => 'media-text-cta.php',
+		'FancyVideo'       => 'fancy-video.php',
 	];
 
 	// Register blocks.

@@ -3,6 +3,9 @@
  */
 import { __ } from '@wordpress/i18n';
 
+// Regular expression for YouTube video URLs.
+export const YOUTUBE_VIDEO_URL_REGEX = /https?:\/\/(?:www\.)?(?:youtube\.com\/(v\/|e\/|watch[\/#?])|youtu\.be\/).*/i;
+
 /**
  * Returns the background colors available.
  */
@@ -47,11 +50,77 @@ export function getAllBackgroundColors(): { [key: string]: string }[] {
  */
 export function convertToEmbedUrl( videoUrl: string ): string {
 	// Convert YouTube video url to embed URL.
-	if ( videoUrl.includes( 'youtube' ) && videoUrl.includes( 'v=' ) ) {
-		const videoId = videoUrl.split( 'v=' )[ 1 ];
+	const videoId = getYouTubeVideoId( videoUrl );
+
+	// If videoId exists, build embed url.
+	if ( videoId ) {
 		videoUrl = `https://www.youtube.com/embed/${ videoId }`;
 	}
 
 	// Return converted Video URL.
 	return videoUrl;
 }
+
+/**
+ * Extract YouTube video ID from URL.
+ *
+ * @param {string} videoURL YouTube video URL.
+ *
+ * @return {string|false} YouTube video ID or false if URL is not matching the regular expression.
+ */
+export const getYouTubeVideoId = ( videoURL: string ): string | false => {
+	// Return false if video URL is not matching the regular expression.
+	if ( ! YOUTUBE_VIDEO_URL_REGEX.test( videoURL ) ) {
+		// Return false.
+		return false;
+	}
+
+	// Create URL object.
+	const url = new URL( videoURL );
+
+	// If URL object is not valid, return false.
+	if ( ! url || ! url.hostname || ! url.pathname || ! url.searchParams ) {
+		// Return false.
+		return false;
+	}
+
+	// Get query variables from URL object.
+	const queryVars = Object.fromEntries( url.searchParams );
+
+	/**
+	 * If video ID is not found in query variables, return false.
+	 * Example: https://www.youtube.com/watch?v=VIDEO_ID
+	 */
+	if ( queryVars.v || queryVars.vi ) {
+		// Return video ID.
+		return queryVars.v || queryVars.vi;
+	}
+
+	// Get segments from URL object pathname.
+	const segments = url.pathname.split( '/' ).filter( Boolean );
+
+	// If no segments are found, return false.
+	if ( ! segments.length ) {
+		// Return false.
+		return false;
+	}
+
+	// For YouTube short URLs, video is the first path segment. Example: https://youtu.be/VIDEO_ID
+	if ( 'youtu.be' === url.hostname ) {
+		// Return video ID.
+		return segments[ 0 ];
+	}
+
+	/**
+	 * For YouTube long URLs, video id is the second path segment. Example: https://www.youtube.com/watch/VIDEO_ID
+	 * Other top-level segments indicate non-video URLs. There are examples of URLs having segments including
+	 * 'v', 'vi', and 'e' but these do not work anymore. In any case, they are added here for completeness.
+	 */
+	if ( [ 'watch', 'embed', 'v', 'vi', 'e' ].includes( segments[ 0 ] ) ) {
+		// Return video ID.
+		return segments[ 1 ];
+	}
+
+	// Return false.
+	return false;
+};
