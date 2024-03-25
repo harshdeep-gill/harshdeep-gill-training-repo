@@ -14,6 +14,7 @@ import {
  * Styles.
  */
 import '../../../front-end/components/fancy-video/style.scss';
+import './editor.scss';
 
 /**
  * Internal dependencies.
