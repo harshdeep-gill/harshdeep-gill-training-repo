@@ -6,6 +6,7 @@ import { BlockConfiguration } from '@wordpress/blocks';
 import {
 	useBlockProps,
 	RichText,
+	InspectorControls,
 } from '@wordpress/block-editor';
 
 /**
@@ -29,6 +30,7 @@ const { SelectImage } = gumponents.components;
  */
 import '../../../front-end/components/lp-header/style.scss';
 import './editor.scss';
+import { PanelBody, ToggleControl } from '@wordpress/components';
 
 /**
  * Block name.
@@ -57,6 +59,10 @@ export const settings: BlockConfiguration = {
 		ctaNumber: {
 			type: 'string',
 		},
+		darkMode: {
+			type: 'boolean',
+			default: false,
+		},
 	},
 	supports: {
 		alignWide: false,
@@ -67,49 +73,61 @@ export const settings: BlockConfiguration = {
 	},
 	edit( { className, attributes, setAttributes }: BlockEditAttributes ) {
 		// eslint-disable-next-line react-hooks/rules-of-hooks
-		const blockProps = useBlockProps( { className: classnames( 'lp-header full-width', className ) } );
+		const blockProps = useBlockProps( { className: classnames( `lp-header full-width ${ attributes.darkMode ? 'color-context--dark' : '' }`, className ) } );
 
 		// Return block.
 		return (
-			<div { ...blockProps }>
-				<div className="lp-header__wrap">
-					<span className="lp-header__logo">
-						{ icons.logo }
-					</span>
-					<span className="lp-header__cta">
-						<figure className="lp-header__cta-avatar">
-							<SelectImage
-								image={ attributes.tcImage }
-								size="thumbnail"
-								onChange={ ( tcImage: Object ): void => {
-									// Set image.
-									setAttributes( { tcImage: null } );
-									setAttributes( { tcImage } );
-								} }
-							/>
-						</figure>
-						<span className="lp-header__cta-content">
-							<RichText
-								tagName="span"
-								className="lp-header__cta-content-text"
-								placeholder={ __( 'Write CTA Text…', 'qrk' ) }
-								value={ attributes.ctaText }
-								onChange={ ( ctaText: string ) => setAttributes( { ctaText } ) }
-								allowedFormats={ [] }
-							/>
-							<span className="lp-header__cta-content-phone-number">
+			<>
+				<InspectorControls>
+					<PanelBody title={ __( 'LP Header Options', 'qrk' ) }>
+						<ToggleControl
+							label={ __( 'Is dark mode?', 'qrk' ) }
+							checked={ attributes.darkMode }
+							help={ __( 'Is this a dark mode header?', 'qrk' ) }
+							onChange={ ( darkMode: boolean ) => setAttributes( { darkMode } ) }
+						/>
+					</PanelBody>
+				</InspectorControls>
+				<div { ...blockProps }>
+					<div className="lp-header__wrap">
+						<span className="lp-header__logo">
+							{ attributes.darkMode ? icons.logoDark : icons.logo }
+						</span>
+						<span className="lp-header__cta">
+							<figure className="lp-header__cta-avatar">
+								<SelectImage
+									image={ attributes.tcImage }
+									size="thumbnail"
+									onChange={ ( tcImage: Object ): void => {
+										// Set image.
+										setAttributes( { tcImage: null } );
+										setAttributes( { tcImage } );
+									} }
+								/>
+							</figure>
+							<span className="lp-header__cta-content">
 								<RichText
 									tagName="span"
-									placeholder={ __( 'Write CTA Number…', 'qrk' ) }
-									value={ attributes.ctaNumber }
-									onChange={ ( ctaNumber: string ) => setAttributes( { ctaNumber } ) }
+									className="lp-header__cta-content-text"
+									placeholder={ __( 'Write CTA Text…', 'qrk' ) }
+									value={ attributes.ctaText }
+									onChange={ ( ctaText: string ) => setAttributes( { ctaText } ) }
 									allowedFormats={ [] }
 								/>
+								<span className="lp-header__cta-content-phone-number">
+									<RichText
+										tagName="span"
+										placeholder={ __( 'Write CTA Number…', 'qrk' ) }
+										value={ attributes.ctaNumber }
+										onChange={ ( ctaNumber: string ) => setAttributes( { ctaNumber } ) }
+										allowedFormats={ [] }
+									/>
+								</span>
 							</span>
 						</span>
-					</span>
+					</div>
 				</div>
-			</div>
+			</>
 		);
 	},
 	save() {
