@@ -11,19 +11,55 @@
 
 	@include transition(#{"background-color, height"});
 
+	&.color-context--dark,
+	&--compact {
+		background-color: var(--color-black);
+
+		#{$self}__cta {
+
+			@media screen and (min-width: grid-size(sm)) {
+
+				background-color: var(--color-gray-80);
+				border-color: var(--color-gray-80);
+
+				&:hover {
+					background-color: var(--color-gray-90);
+					border-color: var(--color-gray-90);
+				}
+
+				&:active {
+					background-color: var(--color-gray-5);
+					border-color: var(--color-gray-5);
+
+					span {
+						color: var(--color-black);
+					}
+				}
+			}
+		}
+	}
+
 	&:has(+ .hero--immersive) {
 		margin-bottom: calculate-rem(-122px);
 		box-shadow: none;
 
-		@media screen and (min-width: grid-size(sm)) {
+		&.color-context--dark {
+			background-color: transparent;
 
 			#{$self}__cta {
+				border-color: var(--color-white);
+			}
+		}
+
+		#{$self}__cta {
+
+			@media screen and (min-width: grid-size(sm)) {
 				background-color: transparent;
 				border: 1px solid var(--color-black);
 
 				&:hover {
-					background-color: var(--color-white);
-					border-color: var(--color-white);
+					background-color: var(--color-gray-5);
+					border-color: var(--color-gray-5);
 					text-decoration: none;
 				}
 
@@ -126,7 +162,7 @@
 				flex-direction: column;
 
 				&-text {
-					display: block;
+					display: inline;
 				}
 
 				&-phone-number {
@@ -164,6 +200,10 @@
 	&--compact {
 		background-color: var(--color-white);
 
+		&.color-context--dark {
+			background-color: var(--color-black);
+		}
+
 		#{$self}__logo {
 			display: none;
 
@@ -199,6 +239,29 @@
 
 		&:has(+ .hero--immersive) {
 			box-shadow: var(--shadow-1);
+
+			&.color-context--dark {
+				background-color: var(--color-black);
+
+				#{$self}__cta {
+					background-color: var(--color-gray-80);
+					border-color: var(--color-gray-80);
+
+					&:hover {
+						background-color: var(--color-gray-90);
+						border-color: var(--color-gray-90);
+					}
+
+					&:active {
+						background-color: var(--color-gray-5);
+						border-color: var(--color-gray-5);
+
+						span {
+							color: var(--color-black);
+						}
+					}
+				}
+			}
 
 			#{$self}__cta {
 				border-color: var(--color-gray-5);

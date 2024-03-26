@@ -7,7 +7,7 @@
 	$logo_name = 'logo';
 
 	if ( true === $dark_mode ) {
-		$logo_name = $logo_name . '-dark';
+		$logo_name = 'dark/' . $logo_name;
 	}
 @endphp
 
@@ -17,5 +17,5 @@
 
 {{--Logo displayed on compact version of lp-header.--}}
 <a href="{{ $url }}" class="lp-header__logo lp-header__logo--compact">
-	<x-svg name="logo-compact" />
+	<x-svg name="{{ $logo_name . '-compact' }}" />
 </a>
