@@ -7,8 +7,8 @@
 
 namespace Quark\Theme\Blocks\FormModalCta;
 
-const BLOCK_NAME = 'quark/form-modal-cta';
-const COMPONENT  = 'parts.form-modal-cta';
+const BLOCK_NAME = 'quark/lp-form-modal-cta';
+const COMPONENT  = 'parts.lp-form-modal-cta';
 
 /**
  * Bootstrap this block.
@@ -46,9 +46,10 @@ function render( ?string $content = null, array $block = [] ) : null | string {
 
 	// Build component attributes.
 	$attributes = [
-		'text'    => $block['attrs']['text'] ?? '',
-		'form_id' => 'inquiry-form',
-		'class'   => $block['attrs']['className'] ?? '',
+		'text'          => $block['attrs']['text'] ?? '',
+		'form_id'       => 'inquiry-form',
+		'class'         => $block['attrs']['className'] ?? '',
+		'hidden_fields' => $block['attrs']['fields'] ?? '',
 	];
 
 	// Return rendered component.

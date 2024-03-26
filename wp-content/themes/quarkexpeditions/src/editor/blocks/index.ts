@@ -23,7 +23,7 @@ import * as seasonHighlights from './season-highlights';
 import * as simpleCards from './simple-cards';
 import * as productCards from './product-cards';
 import * as iconBadge from './icon-badge';
-import * as formModalCta from './form-modal-cta';
+import * as lpFormModalCta from './lp-form-modal-cta';
 import * as mediaContentCard from './media-content-card';
 import * as button from './button';
 
@@ -48,7 +48,7 @@ const blocks = [
 	simpleCards,
 	productCards,
 	iconBadge,
-	formModalCta,
+	lpFormModalCta,
 	mediaContentCard,
 	button,
 ];

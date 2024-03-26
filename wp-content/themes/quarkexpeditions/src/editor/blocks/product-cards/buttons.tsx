@@ -46,9 +46,9 @@ export const settings: BlockConfiguration = {
 		// eslint-disable-next-line react-hooks/rules-of-hooks
 		const innerBlockProps = useInnerBlocksProps( { ...blockProps },
 			{
-				allowedBlocks: [ 'quark/form-modal-cta', 'quark/button' ],
+				allowedBlocks: [ 'quark/lp-form-modal-cta', 'quark/button' ],
 				template: [
-					[ 'quark/form-modal-cta' ],
+					[ 'quark/lp-form-modal-cta' ],
 					[ 'quark/button', { isSizeBig: true } ],
 				],
 			},

@@ -2,6 +2,7 @@
 	'class'          => '',
 	'form_id'        => '',
 	'thank_you_page' => '',
+	'hidden_fields'  => [],
 ] )
 
 @php
@@ -11,7 +12,7 @@
 
 	$modal_id = $form_id . '-modal';
 
-	$classes = [ 'form-modal-cta' ];
+	$classes = [ 'lp-form-modal-cta' ];
 
 	if ( ! empty( $class ) ) {
 		$classes[] = $class;
@@ -25,7 +26,7 @@
 @switch( $form_id )
 	@case( 'inquiry-form' )
 		<x-once :id="$modal_id">
-			<x-inquiry-form.modal thank_you_page="{{ $thank_you_page }}" />
+			<x-inquiry-form.modal thank_you_page="{{ $thank_you_page }}" :hidden_fields="$hidden_fields" />
 		</x-once>
 		@break
 @endswitch
