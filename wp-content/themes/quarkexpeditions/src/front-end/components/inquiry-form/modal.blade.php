@@ -22,23 +22,23 @@
 			salesforce_object="{{ $salesforce_object }}"
 			thank_you_page="{{ $thank_you_page }}"
 		>
-			@if( ! empty( $hidden_fields['polarRegion'] ) )
+			@if ( ! empty( $hidden_fields['polarRegion'] ) )
 				<input type="hidden" name="fields[Polar_Region__c]" value="{{ $hidden_fields['polarRegion'] ?? '' }}">
 			@endif
 
-			@if( ! empty( $hidden_fields['season'] ) )
+			@if ( ! empty( $hidden_fields['season'] ) )
 				<input type="hidden" name="fields[Season__c]" value="{{ $hidden_fields['season'] ?? '' }}">
 			@endif
 
-			@if( ! empty( $hidden_fields['ship'] ) )
+			@if ( ! empty( $hidden_fields['ship'] ) )
 				<input type="hidden" name="fields[Ship__c]" value="{{ $hidden_fields['ship'] ?? '' }}">
 			@endif
 
-			@if( ! empty( $hidden_fields['subRegion'] ) )
+			@if ( ! empty( $hidden_fields['subRegion'] ) )
 				<input type="hidden" name="fields[Sub_Region__c]" value="{{ $hidden_fields['subRegion'] ?? '' }}">
 			@endif
 
-			@if( ! empty( $hidden_fields['expedition'] ) )
+			@if ( ! empty( $hidden_fields['expedition'] ) )
 				<input type="hidden" name="fields[Expedition__c]" value="{{ $hidden_fields['expedition'] ?? '' }}">
 			@endif
 

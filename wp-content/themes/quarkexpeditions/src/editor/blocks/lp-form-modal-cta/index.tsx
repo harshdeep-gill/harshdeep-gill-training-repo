@@ -41,7 +41,7 @@ export const settings: BlockConfiguration = {
 		fields: {
 			type: 'object',
 			default: {},
-		}
+		},
 	},
 	supports: {
 		alignWide: false,
@@ -62,7 +62,7 @@ export const settings: BlockConfiguration = {
 							label={ __( 'Polar Region', 'qrk' ) }
 							help={ __( 'Enter the value for Polar Region.', 'qrk' ) }
 							value={ attributes.fields.polarRegion }
-							onChange={ ( polarRegion: string ) => setAttributes( { fields: { ...attributes.fields,polarRegion } } ) }
+							onChange={ ( polarRegion: string ) => setAttributes( { fields: { ...attributes.fields, polarRegion } } ) }
 						/>
 						<TextControl
 							label={ __( 'Season', 'qrk' ) }
