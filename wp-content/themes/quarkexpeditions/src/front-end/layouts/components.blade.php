@@ -18,7 +18,7 @@
 						<x-hero.sub-title title="Choose the Leader in Polar Adventure" />
 					</x-hero.title-container>
 					<x-icon-badge class="hero__tag" background_color="attention-100" icon="alert" text="Limited Cabins Available" />
-					<x-hero.lp-form-modal-cta>Get a Digital Brochure</x-hero.lp-form-modal-cta>
+					<x-hero.form-modal-cta>Get a Digital Brochure</x-hero.form-modal-cta>
 				</x-hero.left>
 				<x-hero.right>
 					<x-hero.form>
@@ -93,7 +93,7 @@
 						<x-hero.sub-title title="Choose the Leader in Polar Adventure" />
 					</x-hero.title-container>
 					<x-icon-badge class="hero__tag" background_color="attention-100" icon="alert" text="Limited Cabins Available" />
-					<x-hero.lp-form-modal-cta>Get a Digital Brochure</x-hero.lp-form-modal-cta>
+					<x-hero.form-modal-cta>Get a Digital Brochure</x-hero.form-modal-cta>
 				</x-hero.left>
 				<x-hero.right>
 				</x-hero.right>
