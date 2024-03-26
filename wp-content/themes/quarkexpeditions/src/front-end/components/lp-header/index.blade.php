@@ -24,6 +24,7 @@
 			:image_id="$tc_image_id"
 			:phone_number="$phone_number"
 			:cta_text="$cta_text"
+			:dark_mode="$dark_mode"
 		/>
 	</div>
 </quark-lp-header>

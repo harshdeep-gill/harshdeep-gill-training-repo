@@ -3,75 +3,70 @@
 .lp-header {
 	$self: &;
 
+	// Properties.
+	--lp-header-bg-color: var(--color-white);
+	--lp-header-cta-phone-bg-color: var(--color-black);
+	--lp-header-cta-bg-color: var(--color-gray-5);
+	--lp-header-cta-bg-color-hover: var(--color-gray-10);
+	--lp-header-cta-bg-color-active: var(--color-gray-90);
+	--lp-header-cta-font-color-active: var(--color-white);
+	--lp-header-cta-border-color: var(--color-gray-5);
+
 	display: block;
 	position: sticky;
 	top: 0;
 	z-index: var(--lp-header-z-index);
 	box-shadow: var(--shadow-1);
+	background-color: var(--lp-header-bg-color);
 
 	@include transition(#{"background-color, height"});
 
-	&.color-context--dark,
-	&--compact {
-		background-color: var(--color-black);
-
-		#{$self}__cta {
-
-			@media screen and (min-width: grid-size(sm)) {
-
-				background-color: var(--color-gray-80);
-				border-color: var(--color-gray-80);
-
-				&:hover {
-					background-color: var(--color-gray-90);
-					border-color: var(--color-gray-90);
-				}
-
-				&:active {
-					background-color: var(--color-gray-5);
-					border-color: var(--color-gray-5);
-
-					span {
-						color: var(--color-black);
-					}
-				}
-			}
-		}
+	&.color-context--dark {
+		--lp-header-bg-color: var(--color-black);
+		--lp-header-cta-phone-bg-color: var(--color-white);
+		--lp-header-cta-bg-color: var(--color-gray-80);
+		--lp-header-cta-border-color: var(--color-gray-80);
+		--lp-header-cta-bg-color-hover: var(--color-gray-90);
+		--lp-header-cta-bg-color-active: var(--color-gray-5);
+		--lp-header-cta-font-color-active: var(--color-black);
 	}
 
-	&:has(+ .hero--immersive) {
+	&:not(#{$self}--compact):has(+ .hero--immersive) {
 		margin-bottom: calculate-rem(-122px);
 		box-shadow: none;
 
-		&.color-context--dark {
-			background-color: transparent;
+		--lp-header-bg-color: transparent;
+		--lp-header-cta-bg-color: transparent;
+		--lp-header-cta-border-color: var(--color-white);
+		--lp-header-cta-bg-color-hover: var(--color-gray-90);
+		--lp-header-cta-bg-color-active: var(--color-black);
+		--lp-header-cta-font-color-active: var(--color-white);
 
-			#{$self}__cta {
-				border-color: var(--color-white);
+		&:not(.color-context--dark) {
+			--lp-header-cta-border-color: var(--color-black);
+			--lp-header-cta-bg-color-hover: var(--color-white);
+		}
+	}
+
+	&--compact {
+
+		#{$self}__logo {
+			display: none;
+
+			&--compact {
+				display: block;
+
+				svg {
+					height: 56px;
+				}
 			}
 		}
 
 		#{$self}__cta {
-
-			@media screen and (min-width: grid-size(sm)) {
-				background-color: transparent;
-				border: 1px solid var(--color-black);
-
-				&:hover {
-					background-color: var(--color-gray-5);
-					border-color: var(--color-gray-5);
-					text-decoration: none;
-				}
-
-				&:active {
-					background-color: var(--color-gray-90);
-					border-color: var(--color-gray-90);
-
-					span {
-						color: var(--color-white);
-					}
-				}
-			}
+			gap: var(--spacing-2);
+			padding: 6px;
+			font-size: 14px;
+			line-height: calculate-em(24px);
 		}
 	}
 
@@ -107,6 +102,8 @@
 
 	&__cta {
 
+		@include transition(#{"background-color, color, padding, height, width"});
+
 		&-avatar {
 			display: none;
 		}
@@ -123,7 +120,7 @@
 				justify-content: center;
 				height: 42px;
 				width: 42px;
-				background-color: var(--color-black);
+				background-color: var(--lp-header-cta-phone-bg-color);
 				border-radius: var(--border-radius);
 
 				span {
@@ -137,14 +134,17 @@
 		}
 
 		@media screen and (min-width: grid-size(sm)) {
+			--lp-header-cta-phone-bg-color: transparent;
+
+			border-radius: var(--border-radius);
+			background-color: var(--lp-header-cta-bg-color);
 			display: flex;
 			gap: var(--spacing-4);
 			align-items: center;
 			padding: var(--spacing-3);
-			background-color: var(--color-gray-5);
-			border-radius: var(--border-radius);
 			text-decoration: none;
 			cursor: pointer;
+			border: 1px solid var(--lp-header-cta-border-color);
 
 			&-avatar {
 				display: block;
@@ -169,7 +169,6 @@
 					height: auto;
 					width: 100%;
 					justify-content: flex-start;
-					background-color: unset;
 					font-weight: var(--font-weight-bold);
 
 					span {
@@ -183,108 +182,17 @@
 			}
 
 			&:hover {
-				background-color: var(--color-gray-10);
+				--lp-header-cta-bg-color: var(--lp-header-cta-bg-color-hover);
+				--lp-header-cta-border-color: var(--lp-header-cta-bg-color-hover);
 				text-decoration: none;
 			}
 
 			&:active {
-				background-color: var(--color-gray-90);
+				--lp-header-cta-bg-color: var(--lp-header-cta-bg-color-active);
+				--lp-header-cta-border-color: var(--lp-header-cta-bg-color-active);
 
 				span {
-					color: var(--color-white);
-				}
-			}
-		}
-	}
-
-	&--compact {
-		background-color: var(--color-white);
-
-		&.color-context--dark {
-			background-color: var(--color-black);
-		}
-
-		#{$self}__logo {
-			display: none;
-
-			&--compact {
-				display: block;
-
-				svg {
-					height: 56px;
-				}
-			}
-		}
-
-		#{$self}__cta {
-			gap: var(--spacing-2);
-			padding: 6px;
-
-			@include transition(#{"background-color, color, padding, height, width"});
-
-			&-avatar img {
-				height: 44px;
-				width: 44px;
-			}
-
-			&-content {
-
-				&-text,
-				&-phone-number {
-					font-size: 14px;
-					line-height: calculate-em(24px);
-				}
-			}
-		}
-
-		&:has(+ .hero--immersive) {
-			box-shadow: var(--shadow-1);
-
-			&.color-context--dark {
-				background-color: var(--color-black);
-
-				#{$self}__cta {
-					background-color: transparent;
-
-					@media screen and (min-width: grid-size(sm)) {
-
-						background-color: var(--color-gray-80);
-						border-color: var(--color-gray-80);
-
-						&:hover {
-							background-color: var(--color-gray-90);
-							border-color: var(--color-gray-90);
-						}
-
-						&:active {
-							background-color: var(--color-gray-5);
-							border-color: var(--color-gray-5);
-
-							span {
-								color: var(--color-black);
-							}
-						}
-					}
-				}
-			}
-
-			#{$self}__cta {
-				border-color: var(--color-gray-5);
-				background-color: var(--color-gray-5);
-
-				&:hover {
-					background-color: var(--color-gray-10);
-					border-color: var(--color-gray-10);
-					text-decoration: none;
-				}
-
-				&:active {
-					background-color: var(--color-gray-90);
-					border-color: var(--color-gray-90);
-
-					span {
-						color: var(--color-white);
-					}
+					color: var(--lp-header-cta-font-color-active);
 				}
 			}
 		}
