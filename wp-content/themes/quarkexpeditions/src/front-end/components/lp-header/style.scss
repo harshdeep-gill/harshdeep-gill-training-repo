@@ -244,20 +244,25 @@
 				background-color: var(--color-black);
 
 				#{$self}__cta {
-					background-color: var(--color-gray-80);
-					border-color: var(--color-gray-80);
+					background-color: transparent;
 
-					&:hover {
-						background-color: var(--color-gray-90);
-						border-color: var(--color-gray-90);
-					}
+					@media screen and (min-width: grid-size(sm)) {
 
-					&:active {
-						background-color: var(--color-gray-5);
-						border-color: var(--color-gray-5);
+						background-color: var(--color-gray-80);
+						border-color: var(--color-gray-80);
 
-						span {
-							color: var(--color-black);
+						&:hover {
+							background-color: var(--color-gray-90);
+							border-color: var(--color-gray-90);
+						}
+
+						&:active {
+							background-color: var(--color-gray-5);
+							border-color: var(--color-gray-5);
+
+							span {
+								color: var(--color-black);
+							}
 						}
 					}
 				}
