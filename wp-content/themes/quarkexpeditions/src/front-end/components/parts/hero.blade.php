@@ -4,6 +4,7 @@
 	'text_align' => '',
 	'left'       => [],
 	'right'      => [],
+	'dark_mode'  => false,
 ] )
 
 @php
@@ -12,7 +13,7 @@
 	}
 @endphp
 
-<x-hero :immersive="$immersive" :text_align="$text_align">
+<x-hero :immersive="$immersive" :text_align="$text_align" :dark_mode="$dark_mode">
 	<x-hero.image :image_id="$image_id" />
 	<x-hero.content>
 		<x-hero.left>
