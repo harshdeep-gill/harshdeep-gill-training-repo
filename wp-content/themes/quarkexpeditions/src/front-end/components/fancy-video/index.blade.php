@@ -41,9 +41,9 @@
 
 			@if ( ! empty( $title ) )
 				<div class="fancy-video__content">
-					<h3 class="fancy-video__title">
+					<p class="h2" class="fancy-video__title">
 						<x-escape :content="$title" />
-					</h3>
+					</p>
 				</div>
 			@endif
 

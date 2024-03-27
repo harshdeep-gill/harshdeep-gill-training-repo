@@ -27,6 +27,7 @@ import * as formModalCta from './form-modal-cta';
 import * as mediaContentCard from './media-content-card';
 import * as button from './button';
 import * as mediaTextCta from './media-text-cta';
+import * as fancyVideo from './fancy-video';
 
 /**
  * Add blocks.
@@ -53,6 +54,7 @@ const blocks = [
 	mediaContentCard,
 	button,
 	mediaTextCta,
+	fancyVideo,
 ];
 
 /**
