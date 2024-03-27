@@ -1,6 +1,5 @@
 @props( [
 	'thank_you_page' => '',
-	'hidden_fields'  => [],
 ] )
 
 @php
@@ -22,25 +21,11 @@
 			salesforce_object="{{ $salesforce_object }}"
 			thank_you_page="{{ $thank_you_page }}"
 		>
-			@if ( ! empty( $hidden_fields['polarRegion'] ) )
-				<input type="hidden" name="fields[Polar_Region__c]" value="{{ $hidden_fields['polarRegion'] ?? '' }}">
-			@endif
-
-			@if ( ! empty( $hidden_fields['season'] ) )
-				<input type="hidden" name="fields[Season__c]" value="{{ $hidden_fields['season'] ?? '' }}">
-			@endif
-
-			@if ( ! empty( $hidden_fields['ship'] ) )
-				<input type="hidden" name="fields[Ship__c]" value="{{ $hidden_fields['ship'] ?? '' }}">
-			@endif
-
-			@if ( ! empty( $hidden_fields['subRegion'] ) )
-				<input type="hidden" name="fields[Sub_Region__c]" value="{{ $hidden_fields['subRegion'] ?? '' }}">
-			@endif
-
-			@if ( ! empty( $hidden_fields['expedition'] ) )
-				<input type="hidden" name="fields[Expedition__c]" value="{{ $hidden_fields['expedition'] ?? '' }}">
-			@endif
+			<input type="hidden" name="fields[Polar_Region__c]" value="" class="form__polar-region-field">
+			<input type="hidden" name="fields[Season__c]" value="" class="form__season-field">
+			<input type="hidden" name="fields[Ship__c]" value="" class="form__ship-field">
+			<input type="hidden" name="fields[Sub_Region__c]" value="" class="form__sub-region-field">
+			<input type="hidden" name="fields[Expedition__c]" value="" class="form__expedition-field">
 
 			<div class="inquiry-form__content">
 				@if( ! empty( $title ) || ! empty( $subtitle ) )

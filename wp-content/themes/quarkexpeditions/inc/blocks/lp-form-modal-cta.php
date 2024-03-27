@@ -1,11 +1,11 @@
 <?php
 /**
- * Block: Form Modal CTA.
+ * Block: LP Form Modal CTA.
  *
  * @package quark
  */
 
-namespace Quark\Theme\Blocks\FormModalCta;
+namespace Quark\Theme\Blocks\LPFormModalCta;
 
 const BLOCK_NAME = 'quark/lp-form-modal-cta';
 const COMPONENT  = 'parts.lp-form-modal-cta';
@@ -49,8 +49,34 @@ function render( ?string $content = null, array $block = [] ) : null | string {
 		'text'          => $block['attrs']['text'] ?? '',
 		'form_id'       => 'inquiry-form',
 		'class'         => $block['attrs']['className'] ?? '',
-		'hidden_fields' => $block['attrs']['fields'] ?? '',
+		'hidden_fields' => [
+			'polar_region' => '',
+			'season'       => '',
+			'ship'         => '',
+			'sub_region'   => '',
+			'expedition'   => '',
+		],
 	];
+
+	// Set if is landing page.
+	static $is_landing_page = false;
+
+	// Check if is landing page.
+	if ( ! $is_landing_page && \Quark\LandingPages\POST_TYPE === get_post_type() ) {
+		$is_landing_page = true;
+	}
+
+	// Only add hidden field values, if this block is being used on a Landing Page.
+	if ( $is_landing_page ) {
+		// Get the hidden fields values.
+		$attributes['hidden_fields'] = [
+			'polar_region' => $block['attrs']['polarRegion'] ?? '',
+			'season'       => $block['attrs']['season'] ?? '',
+			'ship'         => $block['attrs']['ship'] ?? '',
+			'sub_region'   => $block['attrs']['subRegion'] ?? '',
+			'expedition'   => $block['attrs']['expedition'] ?? '',
+		];
+	}
 
 	// Return rendered component.
 	return quark_get_component( COMPONENT, $attributes );

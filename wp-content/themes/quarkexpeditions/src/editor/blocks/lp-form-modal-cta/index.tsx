@@ -11,6 +11,7 @@ import {
 import {
 	PanelBody,
 	TextControl,
+	SelectControl,
 } from '@wordpress/components';
 
 /**
@@ -31,16 +32,32 @@ export const settings: BlockConfiguration = {
 	title: __( 'Landing Page - Form modal CTA', 'qrk' ),
 	description: __( 'A CTA to open up a Landing Page Form Modal.', 'qrk' ),
 	icon: 'button',
-	category: 'widgets',
+	category: 'forms',
 	keywords: [ __( 'landing', 'qrk' ), __( 'cta', 'qrk' ), __( 'form', 'qrk' ), __( 'modal', 'qrk' ) ],
 	attributes: {
 		text: {
 			type: 'string',
 			default: '',
 		},
-		fields: {
-			type: 'object',
-			default: {},
+		polarRegion: {
+			type: 'string',
+			default: '',
+		},
+		season: {
+			type: 'string',
+			default: '',
+		},
+		ship: {
+			type: 'string',
+			default: '',
+		},
+		subRegion: {
+			type: 'string',
+			default: '',
+		},
+		expedition: {
+			type: 'string',
+			default: '',
 		},
 	},
 	supports: {
@@ -58,35 +75,65 @@ export const settings: BlockConfiguration = {
 			<>
 				<InspectorControls>
 					<PanelBody title={ __( 'Form Modal CTA Hidden Fields', 'qrk' ) }>
-						<TextControl
+						<SelectControl
 							label={ __( 'Polar Region', 'qrk' ) }
-							help={ __( 'Enter the value for Polar Region.', 'qrk' ) }
-							value={ attributes.fields.polarRegion }
-							onChange={ ( polarRegion: string ) => setAttributes( { fields: { ...attributes.fields, polarRegion } } ) }
+							help={ __( 'Select the value for Polar Region.', 'qrk' ) }
+							value={ attributes.polarRegion }
+							options={ [
+								{ label: __( 'Select Polar Region…', 'qrk' ), value: '' },
+								{ label: __( 'Arctic(ARC)', 'qrk' ), value: 'ARC' },
+								{ label: __( 'Antarctic(ANT)', 'qrk' ), value: 'ANT' },
+							] }
+							onChange={ ( polarRegion: string ) => setAttributes( { polarRegion } ) }
 						/>
-						<TextControl
+						<SelectControl
 							label={ __( 'Season', 'qrk' ) }
-							help={ __( 'Enter the value for Season.', 'qrk' ) }
-							value={ attributes.fields.season }
-							onChange={ ( season: string ) => setAttributes( { fields: { ...attributes.fields, season } } ) }
+							help={ __( 'Select the value for Season.', 'qrk' ) }
+							value={ attributes.season }
+							options={ [
+								{ label: __( 'Select season…', 'qrk' ), value: '' },
+								{ label: __( '2024', 'qrk' ), value: '2024' },
+								{ label: __( '2024-25', 'qrk' ), value: '2024-25' },
+								{ label: __( '2025', 'qrk' ), value: '2023-24' },
+								{ label: __( '2025-26', 'qrk' ), value: '2025-26' },
+							] }
+							onChange={ ( season: string ) => setAttributes( { season } ) }
 						/>
-						<TextControl
+						<SelectControl
 							label={ __( 'Ship', 'qrk' ) }
-							help={ __( 'Enter the value for Ship.', 'qrk' ) }
-							value={ attributes.fields.ship }
-							onChange={ ( ship: string ) => setAttributes( { fields: { ...attributes.fields, ship } } ) }
+							help={ __( 'Select the value for Ship.', 'qrk' ) }
+							value={ attributes.ship }
+							options={ [
+								{ label: __( 'Select Ship…', 'qrk' ), value: '' },
+								{ label: __( 'ULT', 'qrk' ), value: 'ULT' },
+								{ label: __( 'WEX', 'qrk' ), value: 'WEX' },
+								{ label: __( 'OEX', 'qrk' ), value: 'OEX' },
+							] }
+							onChange={ ( ship: string ) => setAttributes( { ship } ) }
 						/>
-						<TextControl
+						<SelectControl
 							label={ __( 'Sub Region', 'qrk' ) }
-							help={ __( 'Enter the value for Sub Region.', 'qrk' ) }
-							value={ attributes.fields.subRegion }
-							onChange={ ( subRegion: string ) => setAttributes( { fields: { ...attributes.fields, subRegion } } ) }
+							help={ __( 'Select the value for Sub Region.', 'qrk' ) }
+							value={ attributes.subRegion }
+							options={ [
+								{ label: __( 'Select Sub Region…', 'qrk' ), value: '' },
+								{ label: __( 'Antarctic Peninsula', 'qrk' ), value: 'Antarctic Peninsula' },
+								{ label: __( 'Falklands & South Georgia', 'qrk' ), value: 'Falklands & South Georgia' },
+								{ label: __( 'Patagonia', 'qrk' ), value: 'Patagonia' },
+								{ label: __( 'Snow Hill Island', 'qrk' ), value: 'Snow Hill Island' },
+								{ label: __( 'Greenland', 'qrk' ), value: 'Greenland' },
+								{ label: __( 'Svalbard', 'qrk' ), value: 'Svalbard' },
+								{ label: __( 'Canadian High Arctic', 'qrk' ), value: 'Canadian High Arctic' },
+								{ label: __( 'North Pole', 'qrk' ), value: 'North Pole' },
+								{ label: __( 'Russian High Arctic', 'qrk' ), value: 'Russian High Arctic' },
+							] }
+							onChange={ ( subRegion: string ) => setAttributes( { subRegion } ) }
 						/>
 						<TextControl
 							label={ __( 'Expedition', 'qrk' ) }
 							help={ __( 'Enter the value for Expedition.', 'qrk' ) }
-							value={ attributes.fields.expedition }
-							onChange={ ( expedition: string ) => setAttributes( { fields: { ...attributes.fields, expedition } } ) }
+							value={ attributes.expedition }
+							onChange={ ( expedition: string ) => setAttributes( { expedition } ) }
 						/>
 					</PanelBody>
 				</InspectorControls>

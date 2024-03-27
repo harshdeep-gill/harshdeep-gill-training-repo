@@ -19,14 +19,26 @@
 	}
 @endphp
 
-<x-modal.modal-open @class( $classes ) :modal_id="$modal_id">
-	<x-content :content="$slot" />
-</x-modal.modal-open>
+<quark-lp-form-modal-cta
+	@class( $classes )
+	data-polar-region="{{ $hidden_fields['polar_region'] ?? '' }}"
+	data-season="{{ $hidden_fields['season'] ?? '' }}"
+	data-ship="{{ $hidden_fields['ship'] ?? '' }}"
+	data-sub-region="{{ $hidden_fields['sub_region'] ?? '' }}"
+	data-expedition="{{ $hidden_fields['expedition'] ?? '' }}"
+	data-modal-id="{{ $modal_id }}"
+>
+	<x-modal.modal-open @class( $classes) :modal_id="$modal_id">
+		<x-content :content="$slot" />
+	</x-modal.modal-open>
 
-@switch( $form_id )
-	@case( 'inquiry-form' )
-		<x-once :id="$modal_id">
-			<x-inquiry-form.modal thank_you_page="{{ $thank_you_page }}" :hidden_fields="$hidden_fields" />
-		</x-once>
-		@break
-@endswitch
+	@switch( $form_id )
+		@case( 'inquiry-form' )
+			<x-once :id="$modal_id">
+				<x-inquiry-form.modal thank_you_page="{{ $thank_you_page }}" />
+			</x-once>
+			@break
+	@endswitch
+
+</quark-lp-form-modal-cta>
+
