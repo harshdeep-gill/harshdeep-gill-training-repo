@@ -4,6 +4,6 @@
 	}
 @endphp
 
-<div class="product-departures-card__content grid grid--cols-2">
+<div class="product-departures-card__content grid">
 	{!! $slot !!}
 </div>

@@ -576,32 +576,26 @@
 				</x-product-departures-card.images>
 
 				<x-product-departures-card.content>
-					<x-product-departures-card.content-left>
-						<x-product-departures-card.title title="Antarctic Explorer: Discovering the 7th Continent" />
-						<x-product-departures-card.cta>
-							<x-button size="big" icon="phone">Call to Book: +1 (866) 220-1915</x-button>
-						</x-product-departures-card.cta>
-					</x-product-departures-card.content-left>
-
-					<x-product-departures-card.content-right>
+					<x-product-departures-card.title title="Antarctic Explorer: Discovering the 7th Continent" />
+					<x-product-departures-card.cta>
+						<x-button size="big" icon="phone">Book: +1 (866) 220-1915</x-button>
+					</x-product-departures-card.cta>
+					<x-product-departures-card.departures>
 						<x-product-departures-card.overline text="Departure Dates" />
-						<x-product-departures-card.departures>
-							<x-product-departures-card.dates>
-								<x-product-departures-card.departure-dates>
-									<p>Nov 22, 2024</p>
-									<p>Nov 23, 2024</p>
-								</x-product-departures-card.departure-dates>
-								<x-product-departures-card.offer offer="30% Off" offer_text="Save up to $3,700 USD" />
-							</x-product-departures-card.dates>
-
-							<x-product-departures-card.dates>
-								<x-product-departures-card.departure-dates>
-									<p>Nov 16, 2024</p>
-								</x-product-departures-card.departure-dates>
-								<x-product-departures-card.offer offer="30% Off" offer_text="Save up to $3,700 USD" :sold_out="true" />
-							</x-product-departures-card.dates>
-						</x-product-departures-card.departures>
-					</x-product-departures-card.content-right>
+						<x-product-departures-card.dates>
+							<x-product-departures-card.departure-dates>
+								<p>Nov 22, 2024</p>
+								<p>Nov 23, 2024</p>
+							</x-product-departures-card.departure-dates>
+							<x-product-departures-card.offer offer="30% Off" offer_text="Save up to $3,700 USD" />
+						</x-product-departures-card.dates>
+						<x-product-departures-card.dates>
+							<x-product-departures-card.departure-dates>
+								<p>Nov 16, 2024</p>
+							</x-product-departures-card.departure-dates>
+							<x-product-departures-card.offer offer="30% Off" offer_text="Save up to $3,700 USD" :sold_out="true" />
+						</x-product-departures-card.dates>
+					</x-product-departures-card.departures>
 				</x-product-departures-card.content>
 			</x-product-departures-card>
 
@@ -611,38 +605,33 @@
 				</x-product-departures-card.images>
 
 				<x-product-departures-card.content>
-					<x-product-departures-card.content-left>
-						<x-product-departures-card.title title="Antarctic Explorer: Discovering the 7th Continent" />
-						<x-product-departures-card.cta>
-							<x-button size="big" icon="phone">Call to Book: +1 (866) 220-1915</x-button>
-						</x-product-departures-card.cta>
-					</x-product-departures-card.content-left>
-
-					<x-product-departures-card.content-right>
+					<x-product-departures-card.title title="Antarctic Explorer: Discovering the 7th Continent" />
+					<x-product-departures-card.cta>
+						<x-button size="big" icon="phone">Book: +1 (866) 220-1915</x-button>
+					</x-product-departures-card.cta>
+					<x-product-departures-card.departures>
 						<x-product-departures-card.overline text="Departure Dates" />
-						<x-product-departures-card.departures>
-							<x-product-departures-card.dates>
-								<x-product-departures-card.departure-dates>
-									<p>Nov 22, 2024</p>
-									<p>Nov 23, 2024</p>
-								</x-product-departures-card.departure-dates>
-								<x-product-departures-card.offer offer="30% Off" offer_text="Save up to $3,700 USD" />
-							</x-product-departures-card.dates>
-							<x-product-departures-card.dates>
-								<x-product-departures-card.departure-dates>
-									<p>Nov 22, 2024</p>
-									<p>Nov 23, 2024</p>
-								</x-product-departures-card.departure-dates>
-								<x-product-departures-card.offer offer="30% Off" offer_text="Save up to $3,700 USD" />
-							</x-product-departures-card.dates>
-							<x-product-departures-card.dates>
-								<x-product-departures-card.departure-dates>
-									<p>Nov 16, 2024</p>
-								</x-product-departures-card.departure-dates>
-								<x-product-departures-card.offer offer="30% Off" offer_text="Save up to $3,700 USD" :sold_out="true" />
-							</x-product-departures-card.dates>
-						</x-product-departures-card.departures>
-					</x-product-departures-card.content-right>
+						<x-product-departures-card.dates>
+							<x-product-departures-card.departure-dates>
+								<p>Nov 22, 2024</p>
+								<p>Nov 23, 2024</p>
+							</x-product-departures-card.departure-dates>
+							<x-product-departures-card.offer offer="30% Off" offer_text="Save up to $3,700 USD" />
+						</x-product-departures-card.dates>
+						<x-product-departures-card.dates>
+							<x-product-departures-card.departure-dates>
+								<p>Nov 22, 2024</p>
+								<p>Nov 23, 2024</p>
+							</x-product-departures-card.departure-dates>
+							<x-product-departures-card.offer offer="30% Off" offer_text="Save up to $3,700 USD" />
+						</x-product-departures-card.dates>
+						<x-product-departures-card.dates>
+							<x-product-departures-card.departure-dates>
+								<p>Nov 16, 2024</p>
+							</x-product-departures-card.departure-dates>
+							<x-product-departures-card.offer offer="30% Off" offer_text="Save up to $3,700 USD" :sold_out="true" />
+						</x-product-departures-card.dates>
+					</x-product-departures-card.departures>
 				</x-product-departures-card.content>
 			</x-product-departures-card>
 		</x-section>
