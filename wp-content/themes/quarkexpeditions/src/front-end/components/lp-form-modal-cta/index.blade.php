@@ -28,7 +28,7 @@
 	data-expedition="{{ $hidden_fields['expedition'] ?? '' }}"
 	data-modal-id="{{ $modal_id }}"
 >
-	<x-modal.modal-open @class( $classes) :modal_id="$modal_id">
+	<x-modal.modal-open :modal_id="$modal_id">
 		<x-content :content="$slot" />
 	</x-modal.modal-open>
 
