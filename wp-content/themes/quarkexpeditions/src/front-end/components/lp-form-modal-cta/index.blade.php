@@ -17,6 +17,12 @@
 	if ( ! empty( $class ) ) {
 		$classes[] = $class;
 	}
+
+	$show_hidden_fields = false;
+
+	if ( ! empty( $hidden_fields ) ) {
+		$show_hidden_fields = true;
+	}
 @endphp
 
 <quark-lp-form-modal-cta
@@ -35,7 +41,7 @@
 	@switch( $form_id )
 		@case( 'inquiry-form' )
 			<x-once :id="$modal_id">
-				<x-inquiry-form.modal thank_you_page="{{ $thank_you_page }}" />
+				<x-inquiry-form.modal thank_you_page="{{ $thank_you_page }}" :show_hidden_fields="$show_hidden_fields" />
 			</x-once>
 			@break
 	@endswitch

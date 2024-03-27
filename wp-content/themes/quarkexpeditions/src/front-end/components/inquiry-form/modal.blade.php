@@ -1,5 +1,6 @@
 @props( [
-	'thank_you_page' => '',
+	'thank_you_page'     => '',
+	'show_hidden_fields' => false,
 ] )
 
 @php
@@ -21,11 +22,14 @@
 			salesforce_object="{{ $salesforce_object }}"
 			thank_you_page="{{ $thank_you_page }}"
 		>
-			<input type="hidden" name="fields[Polar_Region__c]" value="" class="form__polar-region-field">
-			<input type="hidden" name="fields[Season__c]" value="" class="form__season-field">
-			<input type="hidden" name="fields[Ship__c]" value="" class="form__ship-field">
-			<input type="hidden" name="fields[Sub_Region__c]" value="" class="form__sub-region-field">
-			<input type="hidden" name="fields[Expedition__c]" value="" class="form__expedition-field">
+
+			@if ( true === $show_hidden_fields )
+				<input type="hidden" name="fields[Polar_Region__c]" value="" class="form__polar-region-field">
+				<input type="hidden" name="fields[Season__c]" value="" class="form__season-field">
+				<input type="hidden" name="fields[Ship__c]" value="" class="form__ship-field">
+				<input type="hidden" name="fields[Sub_Region__c]" value="" class="form__sub-region-field">
+				<input type="hidden" name="fields[Expedition__c]" value="" class="form__expedition-field">
+			@endif
 
 			<div class="inquiry-form__content">
 				@if( ! empty( $title ) || ! empty( $subtitle ) )
