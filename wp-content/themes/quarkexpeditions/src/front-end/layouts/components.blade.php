@@ -8,7 +8,7 @@
 	</x-component-demo>
 
 	<x-component-demo :keys="[ 'hero', 'hero-refactor' ]">
-		<x-hero text_align="left" :immersive="true">
+		<x-hero text_align="left" :immersive="true" :dark_mode="true">
 			<x-hero.image image_id="26" />
 			<x-hero.content>
 				<x-hero.left>
@@ -16,6 +16,11 @@
 						<x-hero.overline>Antarctic 2024</x-hero.overline>
 						<x-hero.title title="Antarctic Voyages" />
 						<x-hero.sub-title title="Choose the Leader in Polar Adventure" />
+						<x-hero.description>
+							<p>
+								This is the description of this hero section. Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt odio illum tempora doloremque. Suscipit obcaecati necessitatibus, exercitationem nostrum voluptatibus eligendi laudantium possimus quaerat reiciendis molestiae sit sunt iusto! Ex facere quidem cupiditate ullam dolorum consectetur delectus recusandae. Minima, itaque eaque!
+							</p>
+						</x-hero.description>
 					</x-hero.title-container>
 					<x-icon-badge class="hero__tag" background_color="attention-100" icon="alert" text="Limited Cabins Available" />
 					<x-hero.form-modal-cta>Get a Digital Brochure</x-hero.form-modal-cta>

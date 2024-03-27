@@ -1,6 +1,7 @@
 @props( [
 	'immersive'  => false,
 	'text_align' => '',
+	'dark_mode'  => false,
 ] )
 
 @php
@@ -18,6 +19,10 @@
 		$classes[] = 'hero--text-' . $text_align;
 	} else {
 		$classes[] = 'hero--text-left';
+	}
+
+	if ( !empty( $dark_mode ) ) {
+		$classes[] = 'color-context--dark';
 	}
 @endphp
 
