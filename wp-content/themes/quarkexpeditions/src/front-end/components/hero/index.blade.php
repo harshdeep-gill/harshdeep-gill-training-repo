@@ -1,7 +1,6 @@
 @props( [
-	'immersive' => false,
-	'layout'    => 'row',
-	'size'      => '',
+	'immersive'  => false,
+	'text_align' => '',
 ] )
 
 @php
@@ -15,19 +14,15 @@
 		$classes[] = 'hero--immersive';
 	}
 
-	if ( ! empty( $size ) && 'big' === $size ) {
-		$classes[] = 'hero--big';
-	}
-
-	$hero_wrap_classes = [ 'hero__wrap' ];
-
-	if ( ! empty( $layout ) && 'column' === $layout ) {
-		$hero_wrap_classes[] = 'hero__wrap--column';
+	if ( ! empty( $text_align ) && in_array( $text_align, [ 'center', 'left' ], true ) ) {
+		$classes[] = 'hero--text-' . $text_align;
+	} else {
+		$classes[] = 'hero--text-left';
 	}
 @endphp
 
 <x-section full_width="true" seamless="true" @class( $classes )>
-	<div @class( $hero_wrap_classes )>
+	<div class="hero__wrap">
 		{!! $slot !!}
 	</div>
 </x-section>

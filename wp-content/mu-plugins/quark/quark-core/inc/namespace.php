@@ -222,11 +222,36 @@ function reusable_blocks_menu_item(): void {
 }
 
 /**
+ * Hook into `quark_get_front_end_data` and only then render content
+ * within blocks. This is to avoid recursion and infinite loops.
+ *
+ * Example: Front end -> get_front_end_data() -> `quark_front_end_data` -> get_front_end_data().
+ *
+ * @param string $content Original content.
+ *
+ * @return void
+ */
+function prepare_content_with_blocks( string &$content = '' ): void {
+	// Wait for the `quark_get_front_end_data` hook to render blocks.
+	add_action(
+		'quark_get_front_end_data',
+		function () use ( &$content ) {
+			/**
+			 * Apply `the_content` to render blocks on the content passed by reference.
+			 *
+			 * @see https://www.php.net/manual/en/language.references.pass.php
+			 */
+			$content = strval( apply_filters( 'the_content', $content ) );
+		}
+	);
+}
+
+/**
  * Get front-end data.
  *
  * All front-end data goes through this function.
  *
- * @param bool $force Force uncached version. Use with caution!.
+ * @param bool $force Force uncached version.
  *
  * @return array{
  *     layout: string,
@@ -235,25 +260,17 @@ function reusable_blocks_menu_item(): void {
  */
 function get_front_end_data( bool $force = false ): array {
 	// Set cached version.
-	static $template_data = null;
-	static $active        = false;
+	static $template_data = [];
 
-	// Check for cached version.
-	if ( false === $force && null !== $template_data ) {
+	// Check if template data is already set and not forced.
+	if ( false === $force && ! empty( $template_data ) ) {
 		return $template_data;
 	}
 
-	// Check if this function is already active.
-	// This is to avoid recursively calling this function.
-	if ( false === $force && $active ) {
-		return [
-			'layout' => '',
-			'data'   => [],
-		];
+	// Check for recursion.
+	if ( doing_filter( 'quark_front_end_data' ) ) {
+		_doing_it_wrong( __FUNCTION__, 'Recursive `get_front_end_data` detected. Try using `prepare_content_with_blocks`.', '1.0.0' );
 	}
-
-	// Function not active, mark it as such.
-	$active = true;
 
 	// Get front-end data.
 	$template_data = (array) apply_filters(
@@ -263,6 +280,9 @@ function get_front_end_data( bool $force = false ): array {
 			'data'   => [],
 		]
 	);
+
+	// Fire a hook once we have data.
+	do_action( 'quark_get_front_end_data', $template_data );
 
 	// Set front-end data.
 	$template_data = [

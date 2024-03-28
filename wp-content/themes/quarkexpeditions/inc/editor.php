@@ -21,6 +21,7 @@ function setup(): void {
 	add_action( 'current_screen', __NAMESPACE__ . '\\block_editor_styles' );
 	add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\\enqueue_block_editor_assets' );
 	add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\\remove_styles_from_tinymce' );
+	add_filter( 'block_categories_all', __NAMESPACE__ . '\\custom_block_categories', 10, 2 );
 }
 
 /**
@@ -50,7 +51,7 @@ function block_editor_styles( ?WP_Screen $screen = null ): void {
  */
 function enqueue_block_editor_assets(): void {
 	// CSS.
-	wp_enqueue_style( 'tcs-editor-custom', get_stylesheet_directory_uri() . '/dist/editor-custom.css', [], '1' );
+	wp_enqueue_style( 'quark-editor-custom', get_stylesheet_directory_uri() . '/dist/editor-custom.css', [], '1' );
 	wp_enqueue_style( 'nunito-sans', get_template_directory_uri() . '/src/assets/fonts/nunito-sans/nunito-sans.css', [], '1' );
 	wp_enqueue_style( 'source-serif-4', get_template_directory_uri() . '/src/assets/fonts/source-serif-4/source-serif-4.css', [], '1' );
 
@@ -71,7 +72,7 @@ function enqueue_block_editor_assets(): void {
 
 	// Enqueue editor JavaScript.
 	wp_enqueue_script(
-		'tcs-editor',
+		'quark-editor',
 		get_stylesheet_directory_uri() . '/dist/editor.js',
 		$deps,
 		$assets_version,
@@ -87,4 +88,22 @@ function enqueue_block_editor_assets(): void {
 function remove_styles_from_tinymce(): void {
 	// Remove default editor styles for TinyMCE.
 	remove_editor_styles();
+}
+
+/**
+ * Custom Block Categories.
+ *
+ * @param array<mixed> $block_categories Block Categories.
+ *
+ * @return array<mixed>
+ */
+function custom_block_categories( array $block_categories = [] ): array {
+	// Add 'forms' block category.
+	$block_categories[] = [
+		'slug'  => 'forms',
+		'title' => __( 'Forms', 'qrk' ),
+	];
+
+	// Return block categories.
+	return $block_categories;
 }
