@@ -47,7 +47,32 @@ function render( ?string $content = null, array $block = [] ): null|string {
 	// Build attributes.
 	$attributes = [
 		'thank_you_page' => $block['attrs']['thankYouPageUrl'] ?? '',
+		'hidden_fields'  => [
+			'polar_region' => '',
+			'sub_region'   => '',
+			'ship'         => '',
+			'expedition'   => '',
+		],
 	];
+
+	// Set if is landing page.
+	static $is_landing_page = false;
+
+	// Check if is landing page.
+	if ( ! $is_landing_page && \Quark\LandingPages\POST_TYPE === get_post_type() ) {
+		$is_landing_page = true;
+	}
+
+	// Only add hidden field values, if this block is being used on a Landing Page.
+	if ( $is_landing_page ) {
+		// Get the hidden fields values.
+		$attributes['hidden_fields'] = [
+			'polar_region' => $block['attrs']['polarRegion'] ?? '',
+			'ship'         => $block['attrs']['ship'] ?? '',
+			'subRegion'    => $block['attrs']['subRegion'] ?? '',
+			'expedition'   => $block['attrs']['expedition'] ?? '',
+		];
+	}
 
 	// Return rendered component.
 	return quark_get_component( COMPONENT, $attributes );

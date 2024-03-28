@@ -1,6 +1,7 @@
 @props( [
 	'class'          => '',
 	'thank_you_page' => '',
+	'hidden_fields'  => [],
 ] )
 
 @php
@@ -52,7 +53,7 @@
 		</x-form.select>
 	</x-form.field>
 	<x-form.buttons>
-		<x-lp-form-modal-cta class="inquiry-form__modal-open" form_id="{{ $form_id }}">
+		<x-lp-form-modal-cta class="inquiry-form__modal-open" form_id="{{ $form_id }}" :hidden_fields="$hidden_fields">
 			<x-button type="button">
 				Request a Quote
 				<x-button.sub-title title="It only takes 2 minutes!" />
