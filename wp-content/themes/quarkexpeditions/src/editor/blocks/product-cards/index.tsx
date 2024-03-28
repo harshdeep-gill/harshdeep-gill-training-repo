@@ -7,6 +7,7 @@ import {
 	useBlockProps,
 	useInnerBlocksProps,
 	InnerBlocks,
+	InspectorControls,
 } from '@wordpress/block-editor';
 
 /**
@@ -24,6 +25,7 @@ import './editor.scss';
  * Child block.
  */
 import * as card from './card';
+import { PanelBody, ToggleControl } from '@wordpress/components';
 
 /**
  * Register child block.
@@ -47,7 +49,12 @@ export const settings: BlockConfiguration = {
 		__( 'product cards', 'qrk' ),
 		__( 'expeditions', 'qrk' ),
 	],
-	attributes: {},
+	attributes: {
+		isCompact: {
+			type: 'boolean',
+			default: false,
+		},
+	},
 	supports: {
 		alignWide: false,
 		anchor: true,
@@ -55,14 +62,15 @@ export const settings: BlockConfiguration = {
 		html: false,
 		customClassName: false,
 	},
-	edit( { className }: BlockEditAttributes ): JSX.Element {
+	edit( { className, attributes, setAttributes }: BlockEditAttributes ): JSX.Element {
 		// eslint-disable-next-line react-hooks/rules-of-hooks
-		const blockProps = useBlockProps( {
-			className: classnames( className, 'product-cards', 'grid', 'grid--cols-3' ),
-		} );
+		const blockProps = useBlockProps();
 
 		// eslint-disable-next-line react-hooks/rules-of-hooks
-		const innerBlockProps = useInnerBlocksProps( { ...blockProps },
+		const innerBlockProps = useInnerBlocksProps(
+			{
+				className: classnames( className, 'product-cards', 'grid', attributes.isCompact ? 'grid--cols-2' : 'grid--cols-3' ),
+			},
 			{
 				allowedBlocks: [ card.name ],
 				template: [ [ card.name ], [ card.name ], [ card.name ] ],
@@ -75,7 +83,21 @@ export const settings: BlockConfiguration = {
 
 		// Return the block's markup.
 		return (
-			<div { ...innerBlockProps } />
+			<>
+				<InspectorControls>
+					<PanelBody title={ __( 'Product Cards Grid Options', 'qrk' ) }>
+						<ToggleControl
+							label={ __( 'Is the product cards grid compact?', 'qrk' ) }
+							checked={ attributes.isCompact }
+							onChange={ ( isCompact ) => setAttributes( { isCompact } ) }
+							help={ __( 'Does the grid have 2 columns instead of 3?', 'qrk' ) }
+						/>
+					</PanelBody>
+				</InspectorControls>
+				<div { ...blockProps }>
+					<div { ...innerBlockProps } />
+				</div>
+			</>
 		);
 	},
 	save() {
