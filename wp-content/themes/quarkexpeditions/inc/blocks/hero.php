@@ -51,6 +51,7 @@ function render( ?string $content = null, array $block = [] ): null|string {
 		'text_align' => $block['attrs']['textAlign'] ?? '',
 		'left'       => [],
 		'right'      => [],
+		'dark_mode'  => $block['attrs']['darkMode'] ?? false,
 	];
 
 	// Parse inner blocks.
