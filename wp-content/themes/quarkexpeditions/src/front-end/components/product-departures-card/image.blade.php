@@ -15,7 +15,7 @@
 			'height'  => 240,
 		],
 		'responsive' => [
-			'sizes'  => [ '(min-width: 1280px) 360px', '(min-width: 1024px) 30vw', '(min-width: 576px) 60vw', '100vw' ],
+			'sizes'  => [ '(min-width: 1280px) 360px', '(min-width: 1024px) 50vw', '100vw' ],
 			'widths' => [ 320, 380, 480, 600, 720 ],
 		],
 	];
