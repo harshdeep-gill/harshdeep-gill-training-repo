@@ -58,11 +58,14 @@ class Test_Pages extends WP_UnitTestCase {
 					'post'           => $post_1,
 					'permalink'      => 'http://test.quarkexpeditions.com/test-post',
 					'post_thumbnail' => 0,
-					'post_content'   => "<p>Post content</p>\n",
+					'post_content'   => 'Post content',
 				],
 			],
 			$layout
 		);
+
+		// Simulate front-end.
+		do_action( 'quark_get_front_end_data' );
 
 		// Assert expected post content is equal to actual post content.
 		$this->assertEquals(
@@ -85,7 +88,7 @@ class Test_Pages extends WP_UnitTestCase {
 					'post'           => $post_1,
 					'permalink'      => 'http://test.quarkexpeditions.com/test-post',
 					'post_thumbnail' => 0,
-					'post_content'   => "<p>Post content</p>\n",
+					'post_content'   => 'Post content',
 				],
 			],
 			\Quark\Pages\layout_single()
@@ -107,7 +110,7 @@ class Test_Pages extends WP_UnitTestCase {
 					'post'           => $post_1,
 					'permalink'      => 'http://test.quarkexpeditions.com/',
 					'post_thumbnail' => 0,
-					'post_content'   => "<p>Post content</p>\n",
+					'post_content'   => 'Post content',
 				],
 			],
 			\Quark\Pages\layout_single()

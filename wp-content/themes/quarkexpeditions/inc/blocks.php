@@ -41,6 +41,11 @@ function register_blocks(): void {
 		'VideoIconsCard'   => 'video-icons-card.php',
 		'SeasonHighlights' => 'season-highlights.php',
 		'SimpleCards'      => 'simple-cards.php',
+		'ProductCards'     => 'product-cards.php',
+		'IconBadge'        => 'icon-badge.php',
+		'LPFormModalCta'   => 'lp-form-modal-cta.php',
+		'MediaContentCard' => 'media-content-card.php',
+		'Button'           => 'button.php',
 	];
 
 	// Register blocks.
