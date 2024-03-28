@@ -16,21 +16,21 @@ import classnames from 'classnames';
 /**
  * Block name.
  */
-export const name: string = 'quark/hero-form-cta';
+export const name: string = 'quark/product-cards-description';
 
 /**
  * Block configuration settings.
  */
 export const settings: BlockConfiguration = {
 	apiVersion: 2,
-	title: __( 'Form modal CTA', 'qrk' ),
-	description: __( 'A CTA to open up the inquiry form modal.', 'qrk' ),
-	parent: [ 'qrk/hero' ],
-	icon: 'button',
-	category: 'widgets',
-	keywords: [ __( 'cta', 'qrk' ), __( 'form', 'qrk' ), __( 'modal', 'qrk' ) ],
+	title: __( 'Card Description', 'qrk' ),
+	description: __( 'Individual Card Description for product cards.', 'qrk' ),
+	parent: [ 'quark/product-cards-card' ],
+	icon: 'screenoptions',
+	category: 'layout',
+	keywords: [ __( 'description', 'qrk' ) ],
 	attributes: {
-		text: {
+		description: {
 			type: 'string',
 			default: '',
 		},
@@ -41,28 +41,27 @@ export const settings: BlockConfiguration = {
 		html: false,
 		customClassName: false,
 	},
-	edit( { className, attributes, setAttributes }: BlockEditAttributes ) : JSX.Element {
+	edit( { className, attributes, setAttributes }: BlockEditAttributes ): JSX.Element {
 		// eslint-disable-next-line react-hooks/rules-of-hooks
-		const blocksProps = useBlockProps( {
-			className: classnames( className, 'hero__form-modal-cta' ),
+		const blockProps = useBlockProps( {
+			className: classnames( className, 'product-cards__description' ),
 		} );
 
 		// Return the block's markup.
 		return (
-			<div { ...blocksProps }>
+			<div { ...blockProps }>
 				<RichText
 					tagName="p"
-					className={ classnames( 'btn', 'btn--size-big' ) }
-					placeholder={ __( 'Write CTA text…', 'qrk' ) }
-					value={ attributes.text }
-					onChange={ ( text: string ) => setAttributes( { text } ) }
+					placeholder={ __( 'Enter Description…', 'qrk' ) }
+					value={ attributes.description }
+					onChange={ ( description: string ) => setAttributes( { description } ) }
 					allowedFormats={ [] }
 				/>
 			</div>
 		);
 	},
 	save() {
-		// Don't save anything.
+		// Return.
 		return null;
 	},
 };

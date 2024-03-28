@@ -16,7 +16,7 @@
 	/* LP Header is followed by Immersive Hero. */
 	&:has(+ .hero--immersive) {
 		background-color: transparent;
-		margin-top: calculate-rem(-122px);
+		margin-bottom: calculate-rem(-122px);
 		box-shadow: none;
 	}
 

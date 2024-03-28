@@ -127,3 +127,75 @@ function quark_get_wistia_id( string $wistia_url = '' ): string {
 	// Return the string.
 	return $url_path_components[1];
 }
+
+/**
+ * Returns the class to apply background color based on the color slug.
+ *
+ * @param string $color_slug The slug of the color.
+ *
+ * @return string
+ */
+function quark_get_background_color_class( string $color_slug = '' ): string {
+	// Valid color slugs.
+	$valid_color_slugs = [
+		'black',
+		'white',
+		'yellow',
+		'dark-blue',
+		'blue',
+		'magenta',
+		'gray-90',
+		'gray-80',
+		'gray-70',
+		'gray-60',
+		'gray-50',
+		'gray-40',
+		'gray-30',
+		'gray-20',
+		'gray-10',
+		'gray-5',
+		'success-100',
+		'success-50',
+		'success-10',
+		'attention-100',
+		'attention-50',
+		'attention-10',
+		'error-100',
+		'error-50',
+		'error-10',
+		'information-100',
+		'information-50',
+		'information-10',
+	];
+
+	// Check if color was passed.
+	if ( empty( $color_slug ) || ! in_array( $color_slug, $valid_color_slugs, true ) ) {
+		return '';
+	}
+
+	// Return the CSS class.
+	return sprintf( 'has-background--%s', $color_slug );
+}
+
+/**
+ * Checks if the component with the given ID has been rendered before.
+ *
+ * @param  string $id The ID of the component to check.
+ *
+ * @return boolean true if it has been rendered, false otherwise.
+ */
+function quark_has_this_rendered_once( string $id = '' ): bool {
+	// A record for rendered IDs.
+	static $has_rendered_once = [];
+
+	// Check if it has already rendered.
+	if ( empty( $id ) || isset( $has_rendered_once[ $id ] ) ) {
+		return true;
+	}
+
+	// Set the record to true.
+	$has_rendered_once[ $id ] = true;
+
+	// It has not been rendered before.
+	return false;
+}
