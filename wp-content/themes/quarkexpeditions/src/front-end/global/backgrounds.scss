@@ -1,0 +1,57 @@
+@use "sass:list";
+
+/**
+ * Returns the font color for a given background color.
+ */
+@function get-font-color($name) {
+	$colors-with-white-font: (
+		"black",
+		"dark-blue",
+		"blue",
+		"magenta",
+		"gray-90",
+		"gray-80",
+		"gray-70",
+		"gray-60",
+		"gray-50",
+		"success-100",
+		"success-50",
+		"attention-100",
+		"attention-50",
+		"error-100",
+		"error-50",
+		"information-100",
+		"information-50"
+	);
+
+	$other-color-fonts: (
+		"success-10": color("success-100"),
+		"attention-10": color("attention-100"),
+		"error-10": color("error-100"),
+		"information-10": color("information-100"),
+	);
+
+	// If the background color is supposed to have a white font color
+	@if list.index($colors-with-white-font, $name) {
+
+		@return color("white");
+	} @else {
+
+		@return map-get($other-color-fonts, $name);
+	}
+}
+
+.has-background {
+
+	@each $name, $color in $colors {
+
+		&--#{$name} {
+			background-color: #{$color};
+
+			// Some background colors require a font color other than default.
+			@if get-font-color($name) {
+				color: get-font-color($name);
+			}
+		}
+	}
+}

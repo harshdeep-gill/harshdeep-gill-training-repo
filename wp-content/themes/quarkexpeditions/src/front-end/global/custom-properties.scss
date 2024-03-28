@@ -17,7 +17,9 @@
 	--font-weight-extrabold: 800;
 	--font-weight-heading: 400;
 	--font-size: 16px;
+	--font-size-small: 14px;
 	--line-height: #{ calculate-em(28px, 16px) };
+	--line-height-small: #{ calculate-em(22px, 14px) };
 	--typography-spacing: 16px;
 
 	// Headings.
@@ -65,6 +67,7 @@
 	/**
 	 * Colors and Borders.
 	 */
+	--border-small: 4px;
 	--border-radius: 8px;
 	--border-radius-large: 16px;
 
@@ -120,6 +123,11 @@
 	 * Images
 	 */
 	--border-radius-images: var(--border-radius);
+
+	/**
+	 * Misc
+	 */
+	--scale-size: 1.03;
 
 	/**
 	 * Transitions
