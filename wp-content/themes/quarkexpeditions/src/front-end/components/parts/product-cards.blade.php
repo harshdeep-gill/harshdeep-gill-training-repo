@@ -1,5 +1,6 @@
 @props( [
-	'items' => [],
+	'is_compact' => false,
+	'items'      => [],
 ] )
 
 @php
@@ -12,7 +13,7 @@
 	echo '</pre>';
 @endphp
 
-<x-product-cards>
+<x-product-cards :is_compact="$is_compact">
 	@foreach ( $items as $card )
 		@if ( 'product-card' === $card['type'] )
 			<x-product-cards.card>

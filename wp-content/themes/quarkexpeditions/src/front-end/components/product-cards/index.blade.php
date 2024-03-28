@@ -1,5 +1,5 @@
 @props( [
-	'compact' => false,
+	'is_compact' => false,
 ] )
 
 @php
@@ -9,7 +9,7 @@
 
 	$classes = [ 'product-cards', 'grid' ];
 
-	if ( ! empty( $compact ) ) {
+	if ( ! empty( $is_compact ) ) {
 		$classes[] = 'grid--cols-2';
 	} else {
 		$classes[] = 'grid--cols-3';

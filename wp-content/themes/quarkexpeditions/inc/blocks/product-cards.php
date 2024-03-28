@@ -45,7 +45,9 @@ function render( ?string $content = null, array $block = [] ): null|string {
 	}
 
 	// Initialize attributes.
-	$attributes = [];
+	$attributes = [
+		'is_compact' => $block['attrs']['isCompact'] ?? false,
+	];
 
 	// Build slot.
 	foreach ( $block['innerBlocks'] as $inner_block ) {
