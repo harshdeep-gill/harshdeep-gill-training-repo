@@ -1,0 +1,85 @@
+/**
+ * Offer Cards.
+ */
+@import "../../scss";
+
+.offer-cards {
+	$self: &;
+	--offer-cards-columns: 12;
+
+	grid-template-columns: repeat(var(--offer-cards-columns), 1fr);
+	gap: var(--spacing-5);
+
+	&__card {
+		background: var(--color-white);
+		border: 3px solid var(--color-yellow);
+		box-shadow: var(--shadow-1);
+		border-radius: var(--border-radius-large);
+		position: relative;
+		overflow: hidden;
+		min-width: 0;
+		grid-column: auto / span var(--offer-cards-columns);
+
+		@media screen and (min-width: grid-size(sm)) {
+			grid-column: auto / span 6;
+		}
+
+		@media screen and (min-width: grid-size(md)) {
+			grid-column: auto / span 4;
+		}
+
+		#{$self}--cols-1 & {
+
+			@media screen and (min-width: grid-size(sm)) {
+				grid-column-start: 4;
+			}
+
+			@media screen and (min-width: grid-size(md)) {
+				grid-column-start: 5;
+			}
+		}
+
+		#{$self}--cols-2 &:first-child {
+
+			@media screen and (min-width: grid-size(md)) {
+				grid-column-start: 3;
+			}
+		}
+	}
+
+	&__heading {
+		background-color: var(--color-yellow);
+		display: flex;
+		align-items: flex-start;
+		justify-content: center;
+		font-weight: var(--font-weight-bold);
+		padding: var(--spacing-3) var(--spacing-4);
+	}
+
+	&__content {
+		padding: var(--spacing-5) var(--spacing-6) var(--spacing-4);
+		text-align: center;
+	}
+
+	&__title {
+		font-weight: var(--font-weight-bold);
+		margin: 0;
+	}
+
+	&__promotion {
+		color: var(--color-success-100);
+		font-weight: var(--font-weight-bold);
+		margin-top: var(--spacing-1);
+	}
+
+	&__cta {
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-5);
+		margin-top: var(--spacing-5);
+	}
+
+	&__help-text {
+		margin-top: var(--spacing-4);
+	}
+}
