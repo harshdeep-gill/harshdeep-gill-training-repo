@@ -72,9 +72,9 @@ function prepare_for_migration(): void {
  *
  * @param int $drupal_mid Drupal media ID.
  *
- * @return int|string|WP_Error WordPress attachment ID on success otherwise error.
+ * @return int|WP_Error WordPress's attachment ID on success otherwise error.
  */
-function download_file_by_mid( int $drupal_mid = 0 ): int|string|WP_Error {
+function download_file_by_mid( int $drupal_mid = 0 ): int|WP_Error {
 	// Check the Drupal mid.
 	if ( empty( $drupal_mid ) ) {
 		return 0;
@@ -117,9 +117,9 @@ function download_file_by_mid( int $drupal_mid = 0 ): int|string|WP_Error {
  *
  * @param string $url Drupal URL.
  *
- * @return int|string|WP_Error WordPress attachment ID on success otherwise error.
+ * @return int|WP_Error WordPress's attachment ID on success otherwise error.
  */
-function download_file_by_url( string $url = '' ): int|string|WP_Error {
+function download_file_by_url( string $url = '' ): int|WP_Error {
 	// Check the Drupal URL.
 	if ( empty( $url ) ) {
 		return 0;
@@ -163,17 +163,22 @@ function download_file_by_url( string $url = '' ): int|string|WP_Error {
 /**
  * Get WordPress attachment ID by Drupal FID and MID.
  *
- * @param int $drupal_fid Drupal FID.
  * @param int $drupal_mid Drupal MID.
+ * @param int $drupal_fid Drupal FID.
  *
  * @return int WordPress attachment ID on success otherwise 0.
  */
-function get_wp_attachment_id( int $drupal_fid = 0, int $drupal_mid = 0 ): int {
+function get_wp_attachment_id( int $drupal_mid = 0, int $drupal_fid = 0 ): int {
 	// Global $wpdb instance.
 	global $wpdb;
 
-	// Check whether Media ID is provided or not.
-	if ( ! empty( $drupal_mid ) ) {
+	// Check whether MID is provided or not.
+	if ( empty( $drupal_mid ) ) {
+		return 0;
+	}
+
+	// Check whether file ID is provided or not.
+	if ( ! empty( $drupal_fid ) ) {
 		$attachment = $wpdb->get_row(
 			$wpdb->prepare(
 				"
@@ -205,19 +210,19 @@ function get_wp_attachment_id( int $drupal_fid = 0, int $drupal_mid = 0 ): int {
 			$wpdb->prepare(
 				"
 					SELECT
-						postmeta_fid.meta_value AS drupal_image_id,
+						postmeta_mid.meta_value AS drupal_image_id,
 						$wpdb->posts.ID AS id
 					FROM
 						$wpdb->posts
-					INNER JOIN $wpdb->postmeta AS `postmeta_fid`
-						ON $wpdb->posts.ID = postmeta_fid.post_id
+					INNER JOIN $wpdb->postmeta AS `postmeta_mid`
+						ON $wpdb->posts.ID = postmeta_mid.post_id
 					WHERE
 						$wpdb->posts.post_type = 'attachment'
 						AND $wpdb->posts.post_status = 'inherit'
-						AND ( postmeta_fid.meta_key = 'drupal_fid' AND postmeta_fid.meta_value = %d )
+						AND ( postmeta_mid.meta_key = 'drupal_mid' AND postmeta_mid.meta_value = %d )
 					",
 				[
-					$drupal_fid,
+					$drupal_mid,
 				]
 			),
 			ARRAY_A
@@ -238,19 +243,25 @@ function get_wp_attachment_id( int $drupal_fid = 0, int $drupal_mid = 0 ): int {
  *
  * @param array<string, mixed> $file_data File data.
  *
- * @return int|string|WP_Error
+ * @return int|WP_Error
  */
-function download_file( array $file_data = [] ): int|string|WP_Error {
+function download_file( array $file_data = [] ): int|WP_Error {
 	// Drupal FID, and MID.
 	$drupal_fid = absint( $file_data['fid'] );
 	$drupal_mid = absint( $file_data['mid'] ?? 0 );
+	$bundle     = $file_data['bundle'] ?? 'image';
 
 	// Get existing attachment ID if exists.
-	$wp_attachment_id = get_wp_attachment_id( $drupal_fid, $drupal_mid );
+	$wp_attachment_id = get_wp_attachment_id( drupal_mid: $drupal_mid, drupal_fid: $drupal_fid );
 
 	// If Attachment ID already exists then bail out.
 	if ( ! empty( $wp_attachment_id ) ) {
 		return $wp_attachment_id;
+	}
+
+	// if uri starts with private:// then bail out.
+	if ( is_string( $file_data['uri'] ) && str_starts_with( $file_data['uri'], 'private://' ) ) {
+		return new WP_Error( 'QUARK_migration_media_private', 'The media file is private.', $file_data['uri'] );
 	}
 
 	// Get file name.
@@ -265,7 +276,7 @@ function download_file( array $file_data = [] ): int|string|WP_Error {
 
 		// If File is not exists then bail out.
 		if ( ! file_exists( $path ) ) {
-			return new WP_Error( 'QUARK_migration_media_not_exists', 'The media file does not exist at this path.' );
+			return new WP_Error( 'QUARK_migration_media_not_exists', 'The media file does not exist at this path.', $path );
 		}
 
 		// Create temporary file.
@@ -277,7 +288,7 @@ function download_file( array $file_data = [] ): int|string|WP_Error {
 
 		// If Failed to download media file then bail out.
 		if ( is_wp_error( $tmp ) || ! is_string( $tmp ) ) {
-			return $tmp;
+			return new WP_Error( 'QUARK_migration_media_download_failed', 'Failed to download media file.', 'https://www.quarkexpeditions.com/sites/default/files/' . $file_name );
 		}
 	}
 
@@ -290,6 +301,7 @@ function download_file( array $file_data = [] ): int|string|WP_Error {
 		'post_name'   => $post_name,
 		'meta_input'  => [
 			'drupal_fid' => $drupal_fid,
+			'bundle'     => $bundle,
 		],
 	];
 
@@ -300,14 +312,24 @@ function download_file( array $file_data = [] ): int|string|WP_Error {
 
 	// Media Alt Text.
 	if ( ! empty( $file_data['thumbnail__alt'] ) ) {
-		$post_data['meta_input']['_wp_attachment_image_alt'] = trim( strval( $file_data['thumbnail__alt'] ) );
+		$post_data['meta_input']['_wp_attachment_image_alt'] = trim( strval( $file_data['field_media_image_alt'] ) );
 	}
 
 	// Media Title.
 	if ( ! empty( $file_data['thumbnail__title'] ) ) {
-		$post_data['post_title'] = trim( strval( $file_data['thumbnail__title'] ) );
+		$post_data['post_title'] = trim( strval( $file_data['field_media_image_title'] ) );
 	} elseif ( ! empty( $file_data['name'] ) ) {
 		$post_data['post_title'] = trim( strval( $file_data['name'] ) );
+	}
+
+	// Media Caption.
+	if ( ! empty( $file_data['field_image_caption_value'] ) ) {
+		$post_data['post_excerpt'] = trim( strval( $file_data['field_image_caption_value'] ) );
+	}
+
+	// Media Description.
+	if ( ! empty( $file_data['field_media_file_description'] ) ) {
+		$post_data['post_content'] = trim( strval( $file_data['field_media_file_description'] ) );
 	}
 
 	// Create WordPress attachment.
