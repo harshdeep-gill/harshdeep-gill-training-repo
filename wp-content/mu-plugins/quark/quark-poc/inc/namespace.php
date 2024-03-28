@@ -307,7 +307,7 @@ function register_post_types() : void {
 			],
 			'public'       => false,
 			'show_ui'      => true,
-			'show_in_menu' => true,
+			'show_in_menu' => 'edit.php?post_type=qrk_itinerary',
 			'menu_icon'    => 'dashicons-networking',
 			'supports'     => [
 				'title',
@@ -320,7 +320,7 @@ function register_post_types() : void {
 			],
 			'public'       => false,
 			'show_ui'      => true,
-			'show_in_menu' => true,
+			'show_in_menu' => 'edit.php?post_type=qrk_itinerary',
 			'menu_icon'    => 'dashicons-networking',
 			'supports'     => [
 				'title',
@@ -347,10 +347,11 @@ function register_post_types() : void {
 			],
 			'public'       => false,
 			'show_ui'      => true,
-			'show_in_menu' => true,
 			'menu_icon'    => 'dashicons-list-view',
+			'show_in_menu' => 'edit.php?post_type=qrk_itinerary',
 			'supports'     => [
 				'title',
+				'thumbnail',
 			],
 		],
 		'qrk_offers'           => [
@@ -460,8 +461,8 @@ function register_post_types() : void {
 			],
 			'public'       => false,
 			'show_ui'      => true,
-			'show_in_menu' => true,
 			'show_in_rest' => true,
+			'show_in_menu' => 'edit.php?post_type=qrk_ship',
 			'menu_icon'    => 'dashicons-button',
 			'supports'     => [
 				'title',
@@ -494,21 +495,6 @@ function register_post_types() : void {
 			'show_in_menu' => true,
 			'show_in_rest' => true,
 			'menu_icon'    => 'dashicons-media-document',
-			'supports'     => [
-				'title',
-				'editor',
-			],
-		],
-		'qrk_testimonial'      => [
-			'labels'       => [
-				'name'          => 'Testimonials',
-				'singular_name' => 'Testimonial',
-			],
-			'public'       => false,
-			'show_ui'      => true,
-			'show_in_menu' => true,
-			'show_in_rest' => true,
-			'menu_icon'    => 'dashicons-format-quote',
 			'supports'     => [
 				'title',
 				'editor',
