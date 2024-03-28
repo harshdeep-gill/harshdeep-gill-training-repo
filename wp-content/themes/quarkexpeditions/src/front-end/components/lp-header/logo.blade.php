@@ -1,14 +1,9 @@
 @props( [
 	'url'       => '',
-	'dark_mode' => false,
 ] )
 
 @php
 	$logo_name = 'logo';
-
-	if ( true === $dark_mode ) {
-		$logo_name = 'dark/' . $logo_name;
-	}
 @endphp
 
 <a href="{{ $url }}" class="lp-header__logo">

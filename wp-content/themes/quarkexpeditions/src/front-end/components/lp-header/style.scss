@@ -122,6 +122,11 @@
 				width: 42px;
 				background-color: var(--lp-header-cta-phone-bg-color);
 				border-radius: var(--border-radius);
+				color: var(--color-white);
+
+				#{$self}.color-context--dark & {
+					color: var(--color-black);
+				}
 
 				span {
 					display: none;
@@ -170,6 +175,11 @@
 					width: 100%;
 					justify-content: flex-start;
 					font-weight: var(--font-weight-bold);
+					color: var(--color-black);
+
+					#{$self}.color-context--dark & {
+						color: var(--color-white);
+					}
 
 					span {
 						display: inline;

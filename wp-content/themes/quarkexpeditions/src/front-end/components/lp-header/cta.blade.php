@@ -2,7 +2,6 @@
 	'image_id'     => 0,
 	'phone_number' => '',
 	'cta_text'     => '',
-	'dark_mode'    => '',
 ] )
 
 @php
@@ -14,10 +13,6 @@
 	];
 
 	$icon_name = 'call';
-
-	if ( true === $dark_mode ) {
-		$icon_name = 'dark/' . $icon_name;
-	}
 @endphp
 
 <a href="tel:{{ $phone_number }}" class="lp-header__cta InfinityNumber">

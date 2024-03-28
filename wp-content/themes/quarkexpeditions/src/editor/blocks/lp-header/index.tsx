@@ -91,7 +91,7 @@ export const settings: BlockConfiguration = {
 				<div { ...blockProps }>
 					<div className="lp-header__wrap">
 						<span className="lp-header__logo">
-							{ attributes.darkMode ? icons.logoDark : icons.logo }
+							{ icons.logo }
 						</span>
 						<span className="lp-header__cta">
 							<figure className="lp-header__cta-avatar">
