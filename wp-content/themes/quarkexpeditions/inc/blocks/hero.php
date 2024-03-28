@@ -99,7 +99,7 @@ function render( ?string $content = null, array $block = [] ): null|string {
 					break;
 
 				// CTA.
-				case 'quark/form-modal-cta':
+				case 'quark/lp-form-modal-cta':
 					$inner_inner_block['attrs']['className'] = 'hero__form-modal-cta color-context--dark';
 					$attributes['left']['cta']               = render_block( $inner_inner_block );
 					break;

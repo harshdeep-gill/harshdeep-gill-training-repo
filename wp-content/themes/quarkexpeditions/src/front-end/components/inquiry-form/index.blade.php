@@ -52,11 +52,11 @@
 		</x-form.select>
 	</x-form.field>
 	<x-form.buttons>
-		<x-form-modal-cta class="inquiry-form__modal-open" form_id="{{ $form_id }}">
+		<x-lp-form-modal-cta class="inquiry-form__modal-open" form_id="{{ $form_id }}">
 			<x-button type="button">
 				Request a Quote
 				<x-button.sub-title title="It only takes 2 minutes!" />
 			</x-button>
-		</x-form-modal-cta>
+		</x-lp-form-modal-cta>
 	</x-form.buttons>
 </quark-inquiry-form>

@@ -36,7 +36,7 @@ export const settings: BlockConfiguration = {
 	apiVersion: 2,
 	title: __( 'Inquiry Form', 'qrk' ),
 	description: __( 'Display an inquiry form.', 'qrk' ),
-	category: 'layout',
+	category: 'forms',
 	keywords: [
 		__( 'inquiry', 'qrk' ),
 		__( 'form', 'qrk' ),
