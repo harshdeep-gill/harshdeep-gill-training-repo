@@ -1,0 +1,88 @@
+/*
+ * Contact Cover Card.
+ */
+
+@import "../../scss";
+
+.contact-cover-card {
+	$self: &;
+
+	position: relative;
+	margin-left: calc(-1 * var(--grid-col-gutter));
+	margin-right: calc(-1 * var(--grid-col-gutter));
+
+	@media screen and (min-width: grid-size(sm)) {
+		border-radius: var(--border-radius-large);
+		overflow: hidden;
+		padding: 85px 0;
+		margin-left: 0;
+		margin-right: 0;
+	}
+
+	&__image-wrap {
+		margin: 0;
+		position: absolute;
+		height: 100%;
+		width: 100%;
+		left: 0;
+		top: 0;
+		display: none;
+
+		@media screen and (min-width: grid-size(sm)) {
+			display: block;
+		}
+	}
+
+	&__image {
+		height: 100%;
+		width: 100%;
+		object-fit: cover;
+	}
+
+	&__content {
+		position: relative;
+		padding: var(--spacing-5);
+		background-color: rgba(color("yellow"), 0.96);
+		margin: 0;
+
+		@media screen and (min-width: grid-size(sm)) {
+			border-radius: 0 var(--border-radius-large) var(--border-radius-large) 0;
+			max-width: 410px;
+			padding: var(--spacing-7);
+		}
+	}
+
+	&__contact-info {
+		margin-top: var(--spacing-4);
+
+		@media screen and (min-width: grid-size(sm)) {
+			border-left: 2px solid var(--color-black);
+			padding-left: var(--spacing-5);
+		}
+	}
+
+	&__contact-info-item {
+		margin-top: var(--spacing-3);
+	}
+
+	.btn {
+		width: 100%;
+		padding-left: var(--spacing-1);
+		padding-right: var(--spacing-1);
+		text-align: center;
+
+		@media screen and (min-width: grid-size(sm)) {
+			background-color: transparent;
+			color: inherit;
+			font-size: inherit;
+			border: 0;
+			padding: 0;
+			width: auto;
+		}
+	}
+
+	&__contact-info-item-label {
+		font-size: 14px;
+		font-weight: var(--font-weight-default);
+	}
+}

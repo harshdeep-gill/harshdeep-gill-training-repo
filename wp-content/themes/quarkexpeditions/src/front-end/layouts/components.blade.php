@@ -561,6 +561,42 @@
 		</x-section>
 	</x-component-demo>
 
+	<x-component-demo :keys="[ 'contact-cover-card' ]">
+		<x-section background="true" background_color="black">
+			<x-contact-cover-card>
+				<x-contact-cover-card.image image_id="34" />
+				<x-contact-cover-card.content>
+					<x-contact-cover-card.title title="How To Book" />
+					<x-contact-cover-card.description>
+						<p>Call us and one of our Polar Travel<br /> Advisors will secure the offer for you.</p>
+					</x-contact-cover-card.description>
+					<x-contact-cover-card.contact-info>
+						<x-contact-cover-card.contact-info-item
+							label="North America (Toll Free)"
+							value="+1 (866) 257-3345"
+							url="tel:+1 (866) 257-3345"
+						/>
+						<x-contact-cover-card.contact-info-item
+							label="U.K. (Toll Free)"
+							value="0808 134 9986"
+							url="tel:0808 134 9986"
+						/>
+						<x-contact-cover-card.contact-info-item
+							label="Australia (Toll Free)"
+							value="+61 1800 959 390"
+							url="tel:+61 1800 959 390"
+						/>
+						<x-contact-cover-card.contact-info-item
+							label="France (Toll Free)"
+							value="08 05 08 66 46"
+							url="tel:08 05 08 66 46"
+						/>
+					</x-contact-cover-card.contact-info>
+				</x-contact-cover-card.content>
+			</x-contact-cover-card>
+		</x-section>
+	</x-component-demo>
+
 	<x-component-demo :keys="[ 'toast' ]">
 		<x-section>
 			<x-toast-message message="Lorem ipsum dolor sit ipsum dolor now" :visible="true" />
