@@ -5,7 +5,7 @@
 ] )
 
 @php
-	if ( empty( $url ) || empty( $label) ) {
+	if ( empty( $url ) || empty( $value ) || empty( $label ) ) {
 		return;
 	}
 @endphp
