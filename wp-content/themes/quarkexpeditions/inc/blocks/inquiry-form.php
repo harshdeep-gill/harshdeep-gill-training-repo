@@ -7,6 +7,8 @@
 
 namespace Quark\Theme\Blocks\InquiryForm;
 
+use const Quark\LandingPages\POST_TYPE as LANDING_PAGE_POST_TYPE;
+
 const BLOCK_NAME = 'quark/inquiry-form';
 const COMPONENT  = 'inquiry-form';
 
@@ -59,7 +61,7 @@ function render( ?string $content = null, array $block = [] ): null|string {
 	static $is_landing_page = false;
 
 	// Check if is landing page.
-	if ( ! $is_landing_page && \Quark\LandingPages\POST_TYPE === get_post_type() ) {
+	if ( ! $is_landing_page && LANDING_PAGE_POST_TYPE === get_post_type() ) {
 		$is_landing_page = true;
 	}
 
