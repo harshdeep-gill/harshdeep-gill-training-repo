@@ -25,8 +25,11 @@
 	// Get the modal component name for the $form_id
 	$modal_component = 'inquiry-form-modal';
 
-	// $modal_id will be different for each $form_id and $thank_you_page url.
-	$modal_id = substr( md5( $form_id . $thank_you_page ), 0, 10 );
+	/**
+	 * $modal_id will be different for each $form_id and $thank_you_page url.
+	 * The character 'm' has been added to prevent the id starting with a digit.
+	 */
+	$modal_id = 'm' . substr( md5( $form_id . $thank_you_page ), 0, 9 );
 @endphp
 
 <quark-lp-form-modal-cta
