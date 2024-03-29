@@ -27,6 +27,26 @@ class Media {
 	/**
 	 * Migrate media.
 	 *
+	 * ## OPTIONS
+	 *
+	 * [--ids=<1,2>]
+	 * : Comma separated list of media IDs.
+	 *
+	 * [--from-id=<number>]
+	 * : Media ID from where to start migration.
+	 *
+	 * [--chunk=<number>]
+	 * : Chunk number to migrate.
+	 *
+	 * [--total-chunks=<number>]
+	 * : Total number of items per chunk.
+	 *
+	 * ## EXAMPLES
+	 *    wp quark migrate media all
+	 *    wp quark migrate media all --ids=1,2,3
+	 *    wp quark migrate media all --from-id=1
+	 *    wp quark migrate media all --chunk=1 --total-chunks=50
+	 *
 	 * @param mixed[] $args       WP CLI arguments.
 	 * @param mixed[] $args_assoc WP CLI associative arguments.
 	 *
