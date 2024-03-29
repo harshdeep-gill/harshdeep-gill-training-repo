@@ -1,0 +1,24 @@
+.product-cards {
+
+	&__image {
+		height: 240px;
+		background-color: var(--color-gray-30);
+	}
+
+	&__description {
+		min-height: 75px;
+	}
+
+	&__badge-time,
+	.btn--has-icon {
+		display: flex;
+	}
+
+	&__badge-sold-out {
+		display: inline-block;
+	}
+
+	.block-list-appender {
+		position: relative;
+	}
+}
