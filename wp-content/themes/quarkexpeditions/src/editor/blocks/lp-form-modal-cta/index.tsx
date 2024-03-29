@@ -95,7 +95,7 @@ export const settings: BlockConfiguration = {
 		return (
 			<>
 				<InspectorControls>
-					<PanelBody title={ __( 'Form Modal CTA Options', 'qrk' ) }>
+					<PanelBody title={ __( 'LP Form Modal CTA Options', 'qrk' ) }>
 						<ColorPaletteControl
 							label={ __( 'Background Color', 'qrk' ) }
 							help={ __( 'Select the background color.', 'qrk' ) }
