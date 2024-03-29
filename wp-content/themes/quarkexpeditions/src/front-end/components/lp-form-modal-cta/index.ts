@@ -1,13 +1,7 @@
-
 /**
  * Global variables.
-*/
-const { customElements, HTMLElement } = window;
-
-/**
- * Internal dependencies.
  */
-import InquiryForm from "../inquiry-form";
+const { customElements, HTMLElement } = window;
 
 /**
  * LPFormModalCTA Class.
@@ -18,7 +12,6 @@ export default class LPFormModalCTA extends HTMLElement {
 	 */
 	private modalOpenBtn: HTMLElement | null;
 	private readonly modalId: String | null;
-	private inquiryForm : InquiryForm | null;
 
 	/**
 	 * Constructor.
@@ -30,7 +23,6 @@ export default class LPFormModalCTA extends HTMLElement {
 		// Elements.
 		this.modalOpenBtn = this.querySelector( 'quark-modal-open' );
 		this.modalId = this.dataset.modalId ?? '';
-		this.inquiryForm = this.closest( 'quark-inquiry-form' );
 
 		// Events
 		this.modalOpenBtn?.addEventListener( 'click', this.handleModalOpenBtnClick.bind( this ) );
@@ -74,21 +66,6 @@ export default class LPFormModalCTA extends HTMLElement {
 			// Skip, if form field is not present.
 			if ( ! formFieldEl ) {
 				continue;
-			}
-
-			/**
-			 * Prevent name collision for input fields.
-			 * If a field exists in the outer form with the same name, then disable
-			 * the field inside of the modal.
-			 */
-			if (
-				this.inquiryForm &&
-				// Check if a field with the same name exists outside.
-				this.inquiryForm.querySelector( `[name="${ formFieldEl.getAttribute('name') ?? '' }"]`)
-			) {
-				formFieldEl.setAttribute( 'disabled', 'disabled' );
-			} else {
-				formFieldEl.removeAttribute( 'disabled' );
 			}
 
 			// Set the attribute for the form field.
