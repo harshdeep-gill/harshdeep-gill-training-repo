@@ -568,6 +568,28 @@
 		</x-section>
 	</x-component-demo>
 
+	<x-component-demo :keys="[ 'fancy-video' ]">
+		<x-section>
+			<x-two-columns :border="false">
+				<x-two-columns.column>
+					<x-fancy-video
+						url="https://www.youtube.com/embed/0fRAL7xROZg"
+						image_id="32"
+						title="Hear from fellow solo traveler Charlotte"
+					/>
+				</x-two-columns.column>
+
+				<x-two-columns.column>
+					<x-fancy-video
+						url="https://www.youtube.com/embed/0fRAL7xROZg"
+						image_id="35"
+						title="Interact with fellow travellers in Tundra to Table: Inuit Culinary Experience"
+					/>
+				</x-two-columns.column>
+			</x-two-columns>
+		</x-section>
+	</x-component-demo>
+
 	<x-component-demo :keys="[ 'season-highlights' ]">
 		<x-section title="Best Time to See" title_align="left">
 			<x-season-highlights>

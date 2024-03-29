@@ -218,6 +218,10 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'class'    => true,
 					'modal-id' => true,
 				],
+				'quark-fancy-video'        => [
+					'class' => true,
+					'url'   => true,
+				],
 				'quark-toast-message'      => [
 					'class'   => true,
 					'visible' => true,
