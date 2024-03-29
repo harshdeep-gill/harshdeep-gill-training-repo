@@ -29,6 +29,7 @@
 				<input type="hidden" name="fields[Sub_Region__c]" value="" class="form__sub-region-field">
 				<input type="hidden" name="fields[Expedition__c]" value="" class="form__expedition-field">
 			@endif
+
 			<div class="inquiry-form__content">
 				@if( ! empty( $title ) || ! empty( $subtitle ) )
 					<x-modal.header>

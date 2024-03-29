@@ -51,6 +51,7 @@ function render( ?string $content = null, array $block = [] ) : null | string {
 		'text'          => $block['attrs']['text'] ?? '',
 		'form_id'       => 'inquiry-form',
 		'class'         => $block['attrs']['className'] ?? '',
+		'color'         => $block['attrs']['backgroundColor'] ?? '',
 		'hidden_fields' => [
 			'polar_region' => '',
 			'season'       => '',

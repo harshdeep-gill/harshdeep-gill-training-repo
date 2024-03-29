@@ -63,6 +63,22 @@ export const settings: BlockConfiguration = {
 			type: 'string',
 			default: '',
 		},
+		polarRegion: {
+			type: 'string',
+			default: '',
+		},
+		subRegion: {
+			type: 'string',
+			default: '',
+		},
+		ship: {
+			type: 'string',
+			default: '',
+		},
+		expedition: {
+			type: 'string',
+			default: '',
+		},
 	},
 	supports: {
 		alignWide: false,
