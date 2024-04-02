@@ -55,7 +55,7 @@
 			}
 
 			img {
-				transform: scale(var(--scale-size));
+				transform: scale(var(--scale-size, 1.03));
 			}
 		}
 	}
