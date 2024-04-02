@@ -176,6 +176,7 @@ function get_wp_attachment_id_by_mid( int $drupal_mid = 0 ): int {
 		return 0;
 	}
 
+	// Get attachment ID.
 	$attachment = $wpdb->get_row(
 		$wpdb->prepare(
 			"
