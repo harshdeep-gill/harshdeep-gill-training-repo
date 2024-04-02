@@ -9,15 +9,6 @@
 
 namespace Quark\Migration\WordPress;
 
-use WP_Error;
-
-use function Quark\Migration\Drupal\download_file_by_mid;
-use function Quark\Migration\Drupal\download_file_by_url;
-use function Quark\Migration\Drupal\get_database;
-use function Quark\Migration\Drupal\get_post_by_id;
-use function Quark\Migration\Drupal\get_term_by_id;
-use function Quark\Migration\Drupal\get_wp_attachment_id;
-
 /**
  * Sanitize attributes
  *

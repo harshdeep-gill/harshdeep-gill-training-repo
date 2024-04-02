@@ -11,6 +11,8 @@ use WP_CLI;
 use WP_CLI\ExitException;
 use cli\progress\Bar;
 
+use function Quark\Migration\Drupal\download_file_by_fid;
+use function Quark\Migration\Drupal\download_file_by_mid;
 use function Quark\Migration\Drupal\prepare_for_migration;
 use function Quark\Migration\Drupal\get_term_by_id;
 use function Quark\Migration\Drupal\get_database;
@@ -19,19 +21,22 @@ use function WP_CLI\Utils\make_progress_bar;
 
 const POST_TAG_TAXONOMY      = 'post_tag';
 const POST_CATEGORY_TAXONOMY = 'category';
-const ACCOMMODATION_TYPES    = 'qrk_accommodation_types';
-const AUDIENCES              = 'qrk_audiences';
-const BRANDING               = 'qrk_branding';
-const CABIN_CLASSES          = 'qrk_cabin_classes';
-const CHARTER_COMPANIES      = 'qrk_charter_companies';
-const DEPARTMENTS            = 'qrk_departments';
-const DEPARTURE_STAFF_ROLES  = 'qrk_departure_staff_roles';
-const EXPEDITION_CATEGORIES  = 'qrk_expedition_categories';
-const INCLUSION_EXCLUSION    = 'qrk_inclusion_exclusion_category';
-const PROMOTION_TAGS         = 'qrk_promotion_tags';
-const SHIP_CATEGORIES        = 'qrk_ship_categories';
-const SOURCE_OF_AWARENESS    = 'qrk_sources_of_awareness';
-const EXPEDITION_TYPES       = 'qrk_expedition_types';
+
+// TODO:: Use these slugs from specific CPT/taxonomy mu-plugins.
+const ACCOMMODATION_TYPES   = 'qrk_accommodation_types';
+const AUDIENCES             = 'qrk_audiences';
+const BRANDING              = 'qrk_branding';
+const CABIN_CLASSES         = 'qrk_cabin_classes';
+const CHARTER_COMPANIES     = 'qrk_charter_companies';
+const DEPARTMENTS           = 'qrk_departments';
+const DEPARTURE_STAFF_ROLES = 'qrk_departure_staff_roles';
+const EXPEDITION_CATEGORIES = 'qrk_expedition_categories';
+const INCLUSION_EXCLUSION   = 'qrk_inclusion_exclusion_category';
+const PROMOTION_TAGS        = 'qrk_promotion_tags';
+const SHIP_CATEGORIES       = 'qrk_ship_categories';
+const SOURCE_OF_AWARENESS   = 'qrk_sources_of_awareness';
+const EXPEDITION_TYPES      = 'qrk_expedition_types';
+const ADVENTURE_OPTIONS     = 'qrk_adventure_option_category';
 
 /**
  * Class Media.
@@ -68,6 +73,7 @@ class Taxonomies {
 		SHIP_CATEGORIES        => 'ship_categories',
 		SOURCE_OF_AWARENESS    => 'sources_of_awareness',
 		EXPEDITION_TYPES       => 'expedition_types',
+		ADVENTURE_OPTIONS      => 'adventure_options',
 	];
 
 	/**
@@ -112,6 +118,7 @@ class Taxonomies {
 		// Migrate taxonomies.
 		foreach ( $valid_taxonomies as $taxonomy ) {
 			// Migrate taxonomy.
+			WP_CLI::log( sprintf( 'Migrating "%s" Taxonomy', $taxonomy ) );
 			$this->migrate_taxonomy( $taxonomy );
 			WP_CLI::log( '' );
 		}
@@ -155,7 +162,7 @@ class Taxonomies {
 		WP_CLI::log( WP_CLI::colorize( '%BTotal Found: %n' . count( $data ) ) );
 
 		// Initialize progress bar.
-		$progress = make_progress_bar( sprintf( 'Migrating "%s" Taxonomy', $taxonomy ), count( $data ) );
+		$progress = make_progress_bar( $taxonomy, count( $data ) );
 
 		// Check if progress bar exists or not.
 		if ( ! $progress instanceof Bar ) {
@@ -179,6 +186,10 @@ class Taxonomies {
 		WP_CLI::log( 'Initiating parent-child relationship...' );
 		$this->map_parent_child_relation( $data, $taxonomy );
 		WP_CLI::success( 'Successfully mapped relationships.' );
+
+		// Allow script to breath for a second,
+		// Sleep for 1 second.
+		sleep( 1 );
 	}
 
 	/**
@@ -389,6 +400,56 @@ class Taxonomies {
 					],
 				];
 				break;
+
+			// Prepare arguments taxonomy.
+			case ADVENTURE_OPTIONS:
+				// Define variables.
+				$name = '';
+				$slug = '';
+
+				// Prepare name.
+				if ( is_string( $item['name'] ) && ! empty( trim( $item['name'] ) ) ) {
+					$name = trim( $item['name'] );
+				}
+
+				// Prepare slug.
+				if ( is_string( $item['name'] ) ) {
+					$slug = trim( $item['name'] );
+					$slug = sanitize_title( $slug );
+				}
+
+				// Prepare arguments.
+				$prepared_args = [
+					'name'        => $name,
+					'slug'        => $slug,
+					'taxonomy'    => $taxonomy,
+					'parent'      => ! empty( $item['parent_id'] ) ? $item['parent_id'] : 0,
+					'description' => ! empty( $item['description__value'] ) ? $item['description__value'] : '',
+					'meta'        => [
+						'drupal_term_id' => ! empty( $item['tid'] ) ? $item['tid'] : '',
+					],
+				];
+
+				// Prepare for ACF data for icon.
+				if ( ! empty( $item['field_icon_target_id'] ) ) {
+					$icon = download_file_by_fid( absint( $item['field_icon_target_id'] ) );
+
+					// Assign icon to meta.
+					if ( ! empty( $icon ) ) {
+						$prepared_args['meta']['icon'] = $icon;
+					}
+				}
+
+				// Prepare for ACF data for Gereric image.
+				if ( ! empty( $item['field_image_target_id'] ) ) {
+					$image = download_file_by_mid( absint( $item['field_image_target_id'] ) );
+
+					// Assign image to meta.
+					if ( ! empty( $image ) ) {
+						$prepared_args['meta']['generic_image'] = $image;
+					}
+				}
+				break;
 		}
 
 		// Sanitize the name.
@@ -453,7 +514,7 @@ class Taxonomies {
 		// Switch based on taxonomy and prepare drupal query.
 		switch ( $taxonomy ) {
 
-			// Post Tag drupal query.
+			// Simple taxonomies.
 			case POST_TAG_TAXONOMY:
 			case POST_CATEGORY_TAXONOMY:
 			case ACCOMMODATION_TYPES:
@@ -489,6 +550,32 @@ class Taxonomies {
 						term.`vid` = '{$drupal_term_slug}'
 					ORDER BY
 						parent.`parent_target_id` ASC;";
+				break;
+
+			// Adventure options taxonomy drupal query.
+			case ADVENTURE_OPTIONS:
+					$query = "
+						SELECT
+							term.`tid`,
+							term.`vid`,
+							term.langcode,
+							parent.`parent_target_id` AS `parent_id`,
+							field_data.`name`,
+							field_data.`description__value`,
+							( SELECT alias AS drupal_url FROM path_alias WHERE path = CONCAT( '/taxonomy/term/', term.tid ) ORDER BY id DESC LIMIT 0, 1 ) AS drupal_url,
+							field_icon.field_icon_target_id AS `field_icon_target_id`,
+							field_image.field_image_target_id AS `field_image_target_id`
+						FROM
+							taxonomy_term_data AS term
+							LEFT JOIN taxonomy_term__parent AS parent ON term.`tid` = parent.`entity_id` AND term.langcode = parent.langcode
+							LEFT JOIN taxonomy_term_field_data AS field_data ON term.`tid` = field_data.`tid` AND term.langcode = field_data.langcode
+							LEFT JOIN `taxonomy_term__field_icon` AS `field_icon` ON term.tid = field_icon.entity_id AND term.langcode = field_icon.langcode
+							LEFT JOIN `taxonomy_term__field_image` AS `field_image` ON term.tid = field_image.entity_id AND term.langcode = field_image.langcode
+						WHERE
+							term.`vid` = 'adventure_options'
+						ORDER BY
+							parent.`parent_target_id` ASC;
+					";
 				break;
 		}
 

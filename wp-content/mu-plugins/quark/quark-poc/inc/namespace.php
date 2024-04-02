@@ -109,6 +109,13 @@ function register_taxonomies() : void {
 				'qrk_expedition',
 			],
 		],
+		'qrk_expedition_types'             => [
+			'label'        => 'Expedition Types',
+			'hierarchical' => true,
+			'post_types'   => [
+				'qrk_expedition',
+			],
+		],
 		'qrk_icons'                        => [
 			'label'        => 'Icons',
 			'hierarchical' => true,
@@ -151,7 +158,7 @@ function register_taxonomies() : void {
 				'qrk_itinerary',
 			],
 		],
-		'sources_of_awareness'             => [
+		'qrk_sources_of_awareness'         => [
 			'label'        => 'Sources of Awareness',
 			'hierarchical' => true,
 			'post_types'   => [],
