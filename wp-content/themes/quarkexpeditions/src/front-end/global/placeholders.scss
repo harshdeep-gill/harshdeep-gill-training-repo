@@ -70,7 +70,7 @@
 	font-weight: 700;
 	font-size: 14px;
 	line-height: 22px;
-	padding: 8px 20px;
+	padding: 8px 16px;
 	color: var(--color-black);
 	background-color: var(--color-yellow);
 	border-radius: var(--buttons-border-radius);
@@ -106,8 +106,8 @@
 	}
 
 	&--size-big {
-		padding-top: 16px;
-		padding-bottom: 16px;
+		padding-top: 13px;
+		padding-bottom: 13px;
 		font-size: var(--font-size);
 		line-height: var(--line-height);
 	}
