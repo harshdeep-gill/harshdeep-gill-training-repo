@@ -227,6 +227,7 @@ class Media {
 		// Update season data for media.
 		$this->update_season_data();
 	}
+
 	/**
 	 * Update metadata for SVG.
 	 *
