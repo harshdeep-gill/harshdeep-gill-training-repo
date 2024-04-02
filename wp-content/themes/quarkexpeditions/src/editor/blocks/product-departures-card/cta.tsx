@@ -50,7 +50,6 @@ export const settings: BlockConfiguration = {
 				template: [
 					[ 'quark/button', { isSizeBig: true } ],
 				],
-				templateLock: 'all',
 			},
 		);
 

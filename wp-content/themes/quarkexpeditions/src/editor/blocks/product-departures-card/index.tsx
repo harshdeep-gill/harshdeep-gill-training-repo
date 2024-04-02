@@ -101,6 +101,7 @@ export const settings: BlockConfiguration = {
 		}, {
 			allowedBlocks: [ title.name, cta.name, departures.name ],
 			template: [ [ title.name ], [ cta.name ], [ departures.name ] ],
+			templateLock: 'all',
 		} );
 
 		// Return the block's markup.
