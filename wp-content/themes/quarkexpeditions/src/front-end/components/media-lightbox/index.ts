@@ -10,7 +10,7 @@ export default class MediaLightbox extends HTMLElement {
 	/**
 	 * Properties.
 	 */
-	public lightbox: typeof GLightbox;
+	public lightbox: typeof GLightbox | undefined;
 	private readonly slideIndexElement: HTMLDivElement | null;
 
 	/**
