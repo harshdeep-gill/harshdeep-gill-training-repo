@@ -16,7 +16,7 @@ use function Quark\Core\update_svg_content;
 use function Quark\Migration\Drupal\download_file;
 use function Quark\Migration\Drupal\get_database;
 use function Quark\Migration\Drupal\prepare_for_migration;
-use function Quark\Migration\Drupal\get_wp_attachment_id;
+use function Quark\Migration\Drupal\get_wp_attachment_id_by_mid;
 use function WP_CLI\Utils\make_progress_bar;
 
 /**
@@ -374,7 +374,7 @@ class Media {
 			// If there is no meta value then bail out.
 			if ( ! empty( $meta_value ) ) {
 				// Get attachment ID.
-				$attachment_id = get_wp_attachment_id( drupal_mid: $media_id );
+				$attachment_id = get_wp_attachment_id_by_mid( drupal_mid: $media_id );
 
 				// If there is no attachment ID then bail out.
 				if ( $attachment_id ) {
