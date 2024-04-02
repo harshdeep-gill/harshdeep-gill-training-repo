@@ -161,14 +161,13 @@ function download_file_by_url( string $url = '' ): int|WP_Error {
 }
 
 /**
- * Get WordPress attachment ID by Drupal FID and MID.
+ * Get WordPress attachment ID by Drupal MID.
  *
  * @param int $drupal_mid Drupal MID.
- * @param int $drupal_fid Drupal FID.
  *
- * @return int WordPress attachment ID on success otherwise 0.
+ * @return int WordPress's attachment ID on success otherwise 0.
  */
-function get_wp_attachment_id( int $drupal_mid = 0, int $drupal_fid = 0 ): int {
+function get_wp_attachment_id_by_mid( int $drupal_mid = 0 ): int {
 	// Global $wpdb instance.
 	global $wpdb;
 
@@ -177,57 +176,76 @@ function get_wp_attachment_id( int $drupal_mid = 0, int $drupal_fid = 0 ): int {
 		return 0;
 	}
 
-	// Check whether file ID is provided or not.
-	if ( ! empty( $drupal_fid ) ) {
-		$attachment = $wpdb->get_row(
-			$wpdb->prepare(
-				"
+	// Get attachment ID.
+	$attachment = $wpdb->get_row(
+		$wpdb->prepare(
+			"
+				SELECT
+					postmeta_mid.meta_value AS drupal_image_id,
+					$wpdb->posts.ID AS id
+				FROM
+					$wpdb->posts
+				INNER JOIN $wpdb->postmeta AS `postmeta_mid`
+					ON $wpdb->posts.ID = postmeta_mid.post_id
+				WHERE
+					$wpdb->posts.post_type = 'attachment'
+					AND $wpdb->posts.post_status = 'inherit'
+					AND ( postmeta_mid.meta_key = 'drupal_mid' AND postmeta_mid.meta_value = %d )
+				",
+			[
+				$drupal_mid,
+			]
+		),
+		ARRAY_A
+	);
+
+	// If attachment ID found then send it.
+	if ( ! empty( $attachment['id'] ) ) {
+		return absint( $attachment['id'] );
+	}
+
+	// If attachment ID not found then return 0.
+	return 0;
+}
+
+/**
+ * Get WordPress attachment ID by Drupal FID.
+ *
+ * @param int $drupal_fid Drupal FID.
+ *
+ * @return int WordPress's attachment ID on success otherwise 0.
+ */
+function get_wp_attachment_id_by_fid( int $drupal_fid = 0 ): int {
+	// Global $wpdb instance.
+	global $wpdb;
+
+	// Check whether FID is provided or not.
+	if ( empty( $drupal_fid ) ) {
+		return 0;
+	}
+
+	// Get attachment ID.
+	$attachment = $wpdb->get_row(
+		$wpdb->prepare(
+			"
 					SELECT
 						postmeta_fid.meta_value AS drupal_image_id,
-						postmeta_mid.meta_value AS drupal_media_id,
 						$wpdb->posts.ID AS id
 					FROM
 						$wpdb->posts
 					INNER JOIN $wpdb->postmeta AS `postmeta_fid`
 						ON $wpdb->posts.ID = postmeta_fid.post_id
-					INNER JOIN $wpdb->postmeta AS `postmeta_mid`
-						ON $wpdb->posts.ID = postmeta_mid.post_id
 					WHERE
 						$wpdb->posts.post_type = 'attachment'
 						AND $wpdb->posts.post_status = 'inherit'
 						AND ( postmeta_fid.meta_key = 'drupal_fid' AND postmeta_fid.meta_value = %d )
-						AND ( postmeta_mid.meta_key = 'drupal_mid' AND postmeta_mid.meta_value = %d )
 					",
-				[
-					$drupal_fid,
-					$drupal_mid,
-				]
-			),
-			ARRAY_A
-		);
-	} else {
-		$attachment = $wpdb->get_row(
-			$wpdb->prepare(
-				"
-					SELECT
-						postmeta_mid.meta_value AS drupal_image_id,
-						$wpdb->posts.ID AS id
-					FROM
-						$wpdb->posts
-					INNER JOIN $wpdb->postmeta AS `postmeta_mid`
-						ON $wpdb->posts.ID = postmeta_mid.post_id
-					WHERE
-						$wpdb->posts.post_type = 'attachment'
-						AND $wpdb->posts.post_status = 'inherit'
-						AND ( postmeta_mid.meta_key = 'drupal_mid' AND postmeta_mid.meta_value = %d )
-					",
-				[
-					$drupal_mid,
-				]
-			),
-			ARRAY_A
-		);
-	}
+			[
+				$drupal_fid,
+			]
+		),
+		ARRAY_A
+	);
 
 	// If attachment ID found then send it.
 	if ( ! empty( $attachment['id'] ) ) {
@@ -252,7 +270,7 @@ function download_file( array $file_data = [] ): int|WP_Error {
 	$bundle     = $file_data['bundle'] ?? 'image';
 
 	// Get existing attachment ID if exists.
-	$wp_attachment_id = get_wp_attachment_id( drupal_mid: $drupal_mid, drupal_fid: $drupal_fid );
+	$wp_attachment_id = get_wp_attachment_id_by_fid( drupal_fid: $drupal_fid );
 
 	// If Attachment ID already exists then bail out.
 	if ( ! empty( $wp_attachment_id ) ) {

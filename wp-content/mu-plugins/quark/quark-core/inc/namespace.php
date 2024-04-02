@@ -34,6 +34,9 @@ function bootstrap(): void {
 	add_action( 'rest_api_init', __NAMESPACE__ . '\\init_auto_cloudinary' );
 	add_filter( 'cloudinary_allow_rest_api_call', '__return_true' );
 
+	// Filter for Attachments.
+	add_filter( 'add_attachment', __NAMESPACE__ . '\\update_svg_content', 10, 4 );
+
 	// Custom fields.
 	if ( is_admin() ) {
 		require_once __DIR__ . '/../custom-fields/options-social.php';
