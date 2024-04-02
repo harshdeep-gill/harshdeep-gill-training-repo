@@ -10,6 +10,11 @@ import {
 } from '@wordpress/block-editor';
 
 /**
+ * Internal dependencies.
+ */
+import * as lpFormModalCta from '../lp-form-modal-cta';
+
+/**
  * External dependencies.
  */
 import classnames from 'classnames';
@@ -46,9 +51,9 @@ export const settings: BlockConfiguration = {
 		// eslint-disable-next-line react-hooks/rules-of-hooks
 		const innerBlockProps = useInnerBlocksProps( { ...blockProps },
 			{
-				allowedBlocks: [ 'quark/lp-form-modal-cta', 'quark/button' ],
+				allowedBlocks: [ lpFormModalCta.name, 'quark/button' ],
 				template: [
-					[ 'quark/lp-form-modal-cta' ],
+					[ lpFormModalCta.name ],
 					[ 'quark/button', { isSizeBig: true } ],
 				],
 			},
