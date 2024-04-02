@@ -212,15 +212,18 @@ class Media {
 		// Update SVG meta data.
 		$this->update_svg_meta_data();
 
-		// Update branding term data for media.
-		$this->update_branding_data();
-
-		// Update destination term data for media.
-		$this->update_destination_data();
-
 		// Update photographer credit data for media.
 		$this->update_photographer_credit_data();
 
+		// TODO: Verify the usage of branding data for media if not required remove it.
+		// Update branding term data for media.
+		$this->update_branding_data();
+
+		// TODO: Verify the usage of destination data for media if not required remove it.
+		// Update destination term data for media.
+		$this->update_destination_data();
+
+		// TODO: Verify the usage of season data for media if not required remove it.
 		// Update season data for media.
 		$this->update_season_data();
 	}
