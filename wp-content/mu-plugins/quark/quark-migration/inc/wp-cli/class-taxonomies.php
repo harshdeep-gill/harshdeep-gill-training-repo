@@ -37,6 +37,7 @@ const ADVENTURE_OPTIONS     = 'qrk_adventure_option_category';
 const ICONS                 = 'qrk_icons';
 const DEPARTURE_LOCATIONS   = 'qrk_departure_locations';
 const DESTINATIONS          = 'qrk_destinations';
+const SPOKEN_LANGUAGES      = 'qrk_spoken_languages';
 
 /**
  * Class Media.
@@ -74,6 +75,7 @@ class Taxonomies {
 		ICONS                  => 'icons',
 		DEPARTURE_LOCATIONS    => 'departure_locations',
 		DESTINATIONS           => 'destinations',
+		SPOKEN_LANGUAGES       => 'languages',
 	];
 
 	/**
@@ -551,6 +553,42 @@ class Taxonomies {
 					}
 				}
 				break;
+
+			// Prepare arguments for spoken languages taxonomy.
+			case SPOKEN_LANGUAGES:
+				// Prepare name.
+				if ( is_string( $item['name'] ) && ! empty( trim( $item['name'] ) ) ) {
+					$name = trim( $item['name'] );
+				}
+
+				// Prepare slug.
+				if ( is_string( $item['name'] ) ) {
+					$slug = trim( $item['name'] );
+					$slug = sanitize_title( $slug );
+				}
+
+				// Prepare arguments.
+				$prepared_args = [
+					'name'        => $name,
+					'slug'        => $slug,
+					'taxonomy'    => $taxonomy,
+					'parent'      => ! empty( $item['parent_id'] ) ? $item['parent_id'] : 0,
+					'description' => ! empty( $item['description__value'] ) ? $item['description__value'] : '',
+					'meta'        => [
+						'drupal_term_id' => ! empty( $item['tid'] ) ? $item['tid'] : '',
+					],
+				];
+
+				// Prepare for ACF data for language code field.
+				if ( ! empty( $item['field_language_code_value'] ) && is_string( $item['field_language_code_value'] ) ) {
+					$language_code = trim( $item['field_language_code_value'] );
+
+					// Assign language code to meta.
+					if ( ! empty( $language_code ) ) {
+						$prepared_args['meta']['language_code'] = $language_code;
+					}
+				}
+				break;
 		}
 
 		// Sanitize the name.
@@ -730,6 +768,25 @@ class Taxonomies {
 					LEFT JOIN `taxonomy_term__field_destination_id` AS `field_destination_id` ON term.tid = field_destination_id.entity_id AND term.langcode = field_destination_id.langcode
 				WHERE
 					term.`vid` = 'destinations'
+				ORDER BY
+					parent.`parent_target_id` ASC;";
+				break;
+
+			// Language taxonomy drupal query.
+			case SPOKEN_LANGUAGES:
+				$query = "SELECT
+					term.`tid`,
+					parent.`parent_target_id` AS `parent_id`,
+					field_data.`name`,
+					field_data.`description__value`,
+					field_language_code.field_language_code_value AS `field_language_code_value`
+				FROM
+					taxonomy_term_data AS term
+					LEFT JOIN taxonomy_term__parent AS parent ON term.`tid` = parent.`entity_id` AND term.langcode = parent.langcode
+					LEFT JOIN taxonomy_term_field_data AS field_data ON term.`tid` = field_data.`tid` AND term.langcode = field_data.langcode
+					LEFT JOIN `taxonomy_term__field_language_code` AS `field_language_code` ON term.tid = field_language_code.entity_id AND term.langcode = field_language_code.langcode
+				WHERE
+					term.`vid` = 'languages'
 				ORDER BY
 					parent.`parent_target_id` ASC;";
 				break;
