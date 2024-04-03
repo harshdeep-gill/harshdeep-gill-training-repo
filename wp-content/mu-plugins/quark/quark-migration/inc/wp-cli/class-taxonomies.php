@@ -37,6 +37,7 @@ const SHIP_CATEGORIES       = 'qrk_ship_categories';
 const SOURCE_OF_AWARENESS   = 'qrk_sources_of_awareness';
 const EXPEDITION_TYPES      = 'qrk_expedition_types';
 const ADVENTURE_OPTIONS     = 'qrk_adventure_option_category';
+const ICONS                 = 'qrk_icons';
 
 /**
  * Class Media.
@@ -74,6 +75,7 @@ class Taxonomies {
 		SOURCE_OF_AWARENESS    => 'sources_of_awareness',
 		EXPEDITION_TYPES       => 'expedition_types',
 		ADVENTURE_OPTIONS      => 'adventure_options',
+		ICONS                  => 'icons',
 	];
 
 	/**
@@ -357,7 +359,7 @@ class Taxonomies {
 		// Switch to prepare args.
 		switch ( $taxonomy ) {
 
-			// Prepare arguments taxonomy.
+			// Prepare arguments generic taxonomies.
 			case POST_TAG_TAXONOMY:
 			case POST_CATEGORY_TAXONOMY:
 			case ACCOMMODATION_TYPES:
@@ -401,7 +403,7 @@ class Taxonomies {
 				];
 				break;
 
-			// Prepare arguments taxonomy.
+			// Prepare arguments for adventure Options taxonomy.
 			case ADVENTURE_OPTIONS:
 				// Define variables.
 				$name = '';
@@ -447,6 +449,46 @@ class Taxonomies {
 					// Assign image to meta.
 					if ( ! empty( $image ) ) {
 						$prepared_args['meta']['generic_image'] = $image;
+					}
+				}
+				break;
+
+			// Prepare arguments for icons taxonomy.
+			case ICONS:
+				// Define variables.
+				$name = '';
+				$slug = '';
+
+				// Prepare name.
+				if ( is_string( $item['name'] ) && ! empty( trim( $item['name'] ) ) ) {
+					$name = trim( $item['name'] );
+				}
+
+				// Prepare slug.
+				if ( is_string( $item['field_symbol_id_value'] ) ) {
+					$slug = trim( $item['field_symbol_id_value'] );
+					$slug = sanitize_title( $slug );
+				}
+
+				// Prepare arguments.
+				$prepared_args = [
+					'name'        => $name,
+					'slug'        => $slug,
+					'taxonomy'    => $taxonomy,
+					'parent'      => ! empty( $item['parent_id'] ) ? $item['parent_id'] : 0,
+					'description' => ! empty( $item['description__value'] ) ? $item['description__value'] : '',
+					'meta'        => [
+						'drupal_term_id' => ! empty( $item['tid'] ) ? $item['tid'] : '',
+					],
+				];
+
+				// Prepare for ACF data for SVG.
+				if ( ! empty( $item['field_svg_file_target_id'] ) ) {
+					$svg_icon = download_file_by_fid( absint( $item['field_svg_file_target_id'] ) );
+
+					// Assign svg to meta.
+					if ( ! empty( $svg_icon ) ) {
+						$prepared_args['meta']['svg'] = $svg_icon;
 					}
 				}
 				break;
@@ -554,28 +596,52 @@ class Taxonomies {
 
 			// Adventure options taxonomy drupal query.
 			case ADVENTURE_OPTIONS:
-					$query = "
-						SELECT
-							term.`tid`,
-							term.`vid`,
-							term.langcode,
-							parent.`parent_target_id` AS `parent_id`,
-							field_data.`name`,
-							field_data.`description__value`,
-							( SELECT alias AS drupal_url FROM path_alias WHERE path = CONCAT( '/taxonomy/term/', term.tid ) ORDER BY id DESC LIMIT 0, 1 ) AS drupal_url,
-							field_icon.field_icon_target_id AS `field_icon_target_id`,
-							field_image.field_image_target_id AS `field_image_target_id`
-						FROM
-							taxonomy_term_data AS term
-							LEFT JOIN taxonomy_term__parent AS parent ON term.`tid` = parent.`entity_id` AND term.langcode = parent.langcode
-							LEFT JOIN taxonomy_term_field_data AS field_data ON term.`tid` = field_data.`tid` AND term.langcode = field_data.langcode
-							LEFT JOIN `taxonomy_term__field_icon` AS `field_icon` ON term.tid = field_icon.entity_id AND term.langcode = field_icon.langcode
-							LEFT JOIN `taxonomy_term__field_image` AS `field_image` ON term.tid = field_image.entity_id AND term.langcode = field_image.langcode
-						WHERE
-							term.`vid` = 'adventure_options'
-						ORDER BY
-							parent.`parent_target_id` ASC;
-					";
+				$query = "
+					SELECT
+						term.`tid`,
+						term.`vid`,
+						term.langcode,
+						parent.`parent_target_id` AS `parent_id`,
+						field_data.`name`,
+						field_data.`description__value`,
+						( SELECT alias AS drupal_url FROM path_alias WHERE path = CONCAT( '/taxonomy/term/', term.tid ) ORDER BY id DESC LIMIT 0, 1 ) AS drupal_url,
+						field_icon.field_icon_target_id AS `field_icon_target_id`,
+						field_image.field_image_target_id AS `field_image_target_id`
+					FROM
+						taxonomy_term_data AS term
+						LEFT JOIN taxonomy_term__parent AS parent ON term.`tid` = parent.`entity_id` AND term.langcode = parent.langcode
+						LEFT JOIN taxonomy_term_field_data AS field_data ON term.`tid` = field_data.`tid` AND term.langcode = field_data.langcode
+						LEFT JOIN `taxonomy_term__field_icon` AS `field_icon` ON term.tid = field_icon.entity_id AND term.langcode = field_icon.langcode
+						LEFT JOIN `taxonomy_term__field_image` AS `field_image` ON term.tid = field_image.entity_id AND term.langcode = field_image.langcode
+					WHERE
+						term.`vid` = 'adventure_options'
+					ORDER BY
+						parent.`parent_target_id` ASC;
+				";
+				break;
+
+			// Icons taxonomy drupal query.
+			case ICONS:
+				$query = "SELECT
+					term.`tid`,
+					term.`vid`,
+					term.langcode,
+					parent.`parent_target_id` AS `parent_id`,
+					field_data.`name`,
+					field_data.`description__value`,
+					( SELECT alias AS drupal_url FROM path_alias WHERE path = CONCAT( '/taxonomy/term/', term.tid ) ORDER BY id DESC LIMIT 0, 1 ) AS drupal_url,
+					field_svg_file.field_svg_file_target_id AS `field_svg_file_target_id`,
+					field_symbol_id.field_symbol_id_value AS `field_symbol_id_value`
+				FROM
+					taxonomy_term_data AS term
+					LEFT JOIN taxonomy_term__parent AS parent ON term.`tid` = parent.`entity_id` AND term.langcode = parent.langcode
+					LEFT JOIN taxonomy_term_field_data AS field_data ON term.`tid` = field_data.`tid` AND term.langcode = field_data.langcode
+					LEFT JOIN `taxonomy_term__field_svg_file` AS `field_svg_file` ON term.tid = field_svg_file.entity_id AND term.langcode = field_svg_file.langcode
+					LEFT JOIN `taxonomy_term__field_symbol_id` AS `field_symbol_id` ON term.tid = field_symbol_id.entity_id AND term.langcode = field_symbol_id.langcode
+				WHERE
+					term.`vid` = 'icons'
+				ORDER BY
+					parent.`parent_target_id` ASC;";
 				break;
 		}
 
