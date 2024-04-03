@@ -36,6 +36,7 @@ const SHIP_CATEGORIES       = 'qrk_ship_categories';
 const ADVENTURE_OPTIONS     = 'qrk_adventure_option_category';
 const ICONS                 = 'qrk_icons';
 const DEPARTURE_LOCATIONS   = 'qrk_departure_locations';
+const DESTINATIONS          = 'qrk_destinations';
 
 /**
  * Class Media.
@@ -72,6 +73,7 @@ class Taxonomies {
 		ADVENTURE_OPTIONS      => 'adventure_options',
 		ICONS                  => 'icons',
 		DEPARTURE_LOCATIONS    => 'departure_locations',
+		DESTINATIONS           => 'destinations',
 	];
 
 	/**
@@ -513,6 +515,42 @@ class Taxonomies {
 					}
 				}
 				break;
+
+			// Prepare arguments for destinations taxonomy.
+			case DESTINATIONS:
+				// Prepare name.
+				if ( is_string( $item['name'] ) && ! empty( trim( $item['name'] ) ) ) {
+					$name = trim( $item['name'] );
+				}
+
+				// Prepare slug.
+				if ( is_string( $item['name'] ) ) {
+					$slug = trim( $item['name'] );
+					$slug = sanitize_title( $slug );
+				}
+
+				// Prepare arguments.
+				$prepared_args = [
+					'name'        => $name,
+					'slug'        => $slug,
+					'taxonomy'    => $taxonomy,
+					'parent'      => ! empty( $item['parent_id'] ) ? $item['parent_id'] : 0,
+					'description' => ! empty( $item['description__value'] ) ? $item['description__value'] : '',
+					'meta'        => [
+						'drupal_term_id' => ! empty( $item['tid'] ) ? $item['tid'] : '',
+					],
+				];
+
+				// Prepare for ACF data for destination ID field.
+				if ( ! empty( $item['field_destination_id_value'] ) && is_string( $item['field_destination_id_value'] ) ) {
+					$destination_id = trim( $item['field_destination_id_value'] );
+
+					// Assign destination ID to meta.
+					if ( ! empty( $destination_id ) ) {
+						$prepared_args['meta']['softrip_id'] = $destination_id;
+					}
+				}
+				break;
 		}
 
 		// Sanitize the name.
@@ -596,8 +634,6 @@ class Taxonomies {
 				// Drupal query.
 				$query = "SELECT
 						term.`tid`,
-						term.`vid`,
-						term.langcode,
 						parent.`parent_target_id` AS `parent_id`,
 						field_data.`name`,
 						field_data.`description__value`,
@@ -617,8 +653,6 @@ class Taxonomies {
 				$query = "
 					SELECT
 						term.`tid`,
-						term.`vid`,
-						term.langcode,
 						parent.`parent_target_id` AS `parent_id`,
 						field_data.`name`,
 						field_data.`description__value`,
@@ -642,8 +676,6 @@ class Taxonomies {
 			case ICONS:
 				$query = "SELECT
 					term.`tid`,
-					term.`vid`,
-					term.langcode,
 					parent.`parent_target_id` AS `parent_id`,
 					field_data.`name`,
 					field_data.`description__value`,
@@ -666,8 +698,6 @@ class Taxonomies {
 			case DEPARTURE_LOCATIONS:
 				$query = "SELECT
 					term.`tid`,
-					term.`vid`,
-					term.langcode,
 					parent.`parent_target_id` AS `parent_id`,
 					field_data.`name`,
 					field_data.`description__value`,
@@ -680,6 +710,26 @@ class Taxonomies {
 					LEFT JOIN `taxonomy_term__field_departure_country` AS `field_departure_country` ON term.tid = field_departure_country.entity_id AND term.langcode = field_departure_country.langcode
 				WHERE
 					term.`vid` = 'departure_locations'
+				ORDER BY
+					parent.`parent_target_id` ASC;";
+				break;
+
+			// Destinations taxonomy drupal query.
+			case DESTINATIONS:
+				$query = "SELECT
+					term.`tid`,
+					parent.`parent_target_id` AS `parent_id`,
+					field_data.`name`,
+					field_data.`description__value`,
+					( SELECT alias AS drupal_url FROM path_alias WHERE path = CONCAT( '/taxonomy/term/', term.tid ) ORDER BY id DESC LIMIT 0, 1 ) AS drupal_url,
+					field_destination_id.field_destination_id_value AS `field_destination_id_value`
+				FROM
+					taxonomy_term_data AS term
+					LEFT JOIN taxonomy_term__parent AS parent ON term.`tid` = parent.`entity_id` AND term.langcode = parent.langcode
+					LEFT JOIN taxonomy_term_field_data AS field_data ON term.`tid` = field_data.`tid` AND term.langcode = field_data.langcode
+					LEFT JOIN `taxonomy_term__field_destination_id` AS `field_destination_id` ON term.tid = field_destination_id.entity_id AND term.langcode = field_destination_id.langcode
+				WHERE
+					term.`vid` = 'destinations'
 				ORDER BY
 					parent.`parent_target_id` ASC;";
 				break;
