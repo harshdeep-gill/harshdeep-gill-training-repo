@@ -147,9 +147,7 @@
 				</x-hero.left>
 				<x-hero.right>
 					<x-hero.form>
-						<x-inquiry-form>
-							<x-forms.inquiry-form-compact />
-						</x-inquiry-form>
+						<x-form-two-step-compact />
 					</x-hero.form>
 				</x-hero.right>
 			</x-hero.content>
