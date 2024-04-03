@@ -11,12 +11,15 @@
 	// Image arguments.
 	$image_args = [
 		'size' =>       [
-			'width'   => 360,
-			'height'  => 240,
+			'width'   => 736,
+			'height'  => 262,
 		],
 		'responsive' => [
-			'sizes'  => [ '(min-width: 1280px) 360px', '(min-width: 1024px) 30vw', '(min-width: 576px) 60vw', '100vw' ],
-			'widths' => [ 320, 380, 480, 600, 720 ],
+			'sizes'  => [ '(min-width: 1280px) 736px', '100vw' ],
+			'widths' => [ 320, 380, 480, 600, 720, 900, 1200, 1600 ],
+		],
+		'transform' => [
+			'crop' => 'fit',
 		],
 	];
 @endphp

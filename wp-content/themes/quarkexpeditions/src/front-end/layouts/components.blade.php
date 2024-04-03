@@ -1035,74 +1035,129 @@
 
 	<x-component-demo :keys="[ 'lp-offer-masthead' ]">
 		<x-lp-offer-masthead>
-			<x-lp-offer-masthead.image image_id="26" />
+			<x-lp-offer-masthead.image image_id="35" />
 			<x-lp-offer-masthead.content>
-				<x-lp-offer-masthead.logo image_id="26" />
-				<x-lp-offer-masthead.offer-image image_id="26" />
+				<x-lp-offer-masthead.logo image_id="48" />
+				<x-lp-offer-masthead.offer-image image_id="47" />
 				<x-lp-offer-masthead.caption>
 					<p>New voyages added and Black Friday Sale extended to December 5th, 2023!</p>
 				</x-lp-offer-masthead.caption>
 
-				<x-offer-cards>
-				<x-offer-cards.card>
-					<x-offer-cards.heading>BIGGEST SALE OF THE YEAR</x-offer-cards.heading>
-					<x-offer-cards.content>
-						<x-offer-cards.title title="Up to 50% Off" />
-						<x-offer-cards.promotion text="Save up to $14,000" />
-						<x-offer-cards.cta>
-							<x-button size="big" color="black">View Offers</x-button>
-						</x-offer-cards.cta>
-						<x-offer-cards.help-text>
-							<p>Select Antarctic 2023-24 voyages and Arctic 2024 voyages</p>
-						</x-offer-cards.help-text>
-					</x-offer-cards.content>
-				</x-offer-cards.card>
-				<x-offer-cards.card>
-					<x-offer-cards.heading>BIGGEST SALE OF THE YEAR</x-offer-cards.heading>
-					<x-offer-cards.content>
-						<x-offer-cards.title title="Free Cabin Upgrades" />
-						<x-offer-cards.promotion text="Save up to $3,700" />
-						<x-offer-cards.cta>
-							<x-button size="big" color="black">View Offers</x-button>
-						</x-offer-cards.cta>
-						<x-offer-cards.help-text>
-							<p>Select Antarctic 2024-25 season"</p>
-						</x-offer-cards.help-text>
-					</x-offer-cards.content>
-				</x-offer-cards.card>
-			</x-offer-cards>
+				<x-lp-offer-masthead.inner-content>
+					<x-offer-cards>
+						<x-offer-cards.card>
+							<x-offer-cards.heading>BIGGEST SALE OF THE YEAR</x-offer-cards.heading>
+							<x-offer-cards.content>
+								<x-offer-cards.title title="Up to 50% Off" />
+								<x-offer-cards.promotion text="Save up to $14,000" />
+								<x-offer-cards.cta>
+									<x-button size="big" color="black">View Offers</x-button>
+								</x-offer-cards.cta>
+								<x-offer-cards.help-text>
+									<p>Select Antarctic 2023-24 voyages and Arctic 2024 voyages</p>
+								</x-offer-cards.help-text>
+							</x-offer-cards.content>
+						</x-offer-cards.card>
+						<x-offer-cards.card>
+							<x-offer-cards.heading>BIGGEST SALE OF THE YEAR</x-offer-cards.heading>
+							<x-offer-cards.content>
+								<x-offer-cards.title title="Free Cabin Upgrades" />
+								<x-offer-cards.promotion text="Save up to $3,700" />
+								<x-offer-cards.cta>
+									<x-button size="big" color="black">View Offers</x-button>
+								</x-offer-cards.cta>
+								<x-offer-cards.help-text>
+									<p>Select Antarctic 2024-25 season"</p>
+								</x-offer-cards.help-text>
+							</x-offer-cards.content>
+						</x-offer-cards.card>
+					</x-offer-cards>
+				</x-lp-offer-masthead.inner-content>
 			</x-lp-offer-masthead.content>
 		</x-lp-offer-masthead>
 
-		<x-section>
-			<x-offer-cards>
-				<x-offer-cards.card>
-					<x-offer-cards.heading>BIGGEST SALE OF THE YEAR</x-offer-cards.heading>
-					<x-offer-cards.content>
-						<x-offer-cards.title title="Up to 50% Off" />
-						<x-offer-cards.promotion text="Save up to $14,000" />
-						<x-offer-cards.cta>
-							<x-button size="big" color="black">View Offers</x-button>
-						</x-offer-cards.cta>
-						<x-offer-cards.help-text>
-							<p>Select Antarctic 2023-24 voyages and Arctic 2024 voyages</p>
-						</x-offer-cards.help-text>
-					</x-offer-cards.content>
-				</x-offer-cards.card>
-				<x-offer-cards.card>
-					<x-offer-cards.heading>BIGGEST SALE OF THE YEAR</x-offer-cards.heading>
-					<x-offer-cards.content>
-						<x-offer-cards.title title="Free Cabin Upgrades" />
-						<x-offer-cards.promotion text="Save up to $3,700" />
-						<x-offer-cards.cta>
-							<x-button size="big" color="black">View Offers</x-button>
-						</x-offer-cards.cta>
-						<x-offer-cards.help-text>
-							<p>Select Antarctic 2024-25 season"</p>
-						</x-offer-cards.help-text>
-					</x-offer-cards.content>
-				</x-offer-cards.card>
-			</x-offer-cards>
+		<x-section background="true" background_color="black" title="Our Biggest Savings! 50% off these Antarctic 2024 Voyages">
+			<x-product-cards>
+				<x-product-cards.card url="#">
+					<x-product-cards.image
+						image_id="29"
+					>
+						<x-product-cards.badge-cta text="Save 50%" />
+					</x-product-cards.image>
+					<x-product-cards.reviews
+						total_reviews="19 Reviews"
+						review_rating="5"
+					/>
+					<x-product-cards.itinerary departure_date="Departing May 20, 2024" duration="10 Days" />
+					<x-product-cards.title title="Introduction to Spitsbergen" />
+					<x-product-cards.subtitle title="Fjords, Glaciers, and Wildlife of Svalbard" />
+					<x-product-cards.description>
+						<p>This fascinating expedition provides a taste of everything Spitsbergen has to offer!</p>
+					</x-product-cards.description>
+					<x-product-cards.price
+						original_price="$7,395 USD"
+						discounted_price="$6,171 USD"
+					/>
+					<x-product-cards.buttons :columns="2">
+						<x-button size="big">Request a Quote</x-button>
+						<x-button size="big" appearance="outline">Learn More</x-button>
+					</x-product-cards.buttons>
+				</x-product-cards.card>
+
+				<x-product-cards.card url="#">
+					<x-product-cards.image
+						image_id="36"
+						:is_immersive="false"
+					>
+						<x-product-cards.badge-cta text="Save 50%" />
+						<x-product-cards.badge-time text="Just Added" />
+					</x-product-cards.image>
+					<x-product-cards.reviews
+						total_reviews="9999 Reviews"
+						review_rating="3"
+					/>
+					<x-product-cards.itinerary departure_date="Departing May 28, 2024" duration="12 Days" />
+					<x-product-cards.title title="Spitsbergen Explorer" />
+					<x-product-cards.subtitle title="Wildlife Capital of the Arctic" />
+					<x-product-cards.description>
+						<p>Witness the remarkable array of creatures who call this spectacular environment home.</p>
+					</x-product-cards.description>
+					<x-product-cards.price
+						original_price="$9,095 USD"
+						discounted_price="$7,361 USD"
+					/>
+					<x-product-cards.buttons :columns="2">
+						<x-button size="big" icon="phone">Book: +1 (866) 220-1915</x-button>
+					</x-product-cards.buttons>
+				</x-product-cards.card>
+
+				<x-product-cards.card url="#">
+					<x-product-cards.image
+						image_id="32"
+						:is_immersive="false"
+					>
+						<x-product-cards.badge-time text="Just Added" />
+					</x-product-cards.image>
+					<x-product-cards.reviews
+						total_reviews="100 Reviews"
+						review_rating="4"
+					/>
+					<x-product-cards.itinerary departure_date="Departing July 14, 2024" duration="11 Days" />
+					<x-product-cards.title title="Gems of West Greenland" />
+					<x-product-cards.subtitle title="Fjords, Icebergs, and Culture" />
+					<x-product-cards.description>
+						<p>Features the best sites of West Greenland & delivers an in-depth experience in just 12 days.</p>
+					</x-product-cards.description>
+					<x-product-cards.price
+						original_price="$9,395 USD"
+						discounted_price="$8,571 USD"
+					/>
+					<x-product-cards.buttons :columns="2">
+						<x-button size="big">Request a Quote</x-button>
+						<x-button size="big" appearance="outline">Learn More</x-button>
+					</x-product-cards.buttons>
+				</x-product-cards.card>
+			</x-product-cards>
 		</x-section>
 	</x-component-demo>
 

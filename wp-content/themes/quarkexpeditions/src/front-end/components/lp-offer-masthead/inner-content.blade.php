@@ -4,6 +4,6 @@
 	}
 @endphp
 
-<div class="lp-offer-masthead__content wrap">
+<div class="lp-offer-masthead__inner-content">
 	{!! $slot !!}
 </div>
