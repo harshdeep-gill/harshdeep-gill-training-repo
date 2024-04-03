@@ -48,6 +48,7 @@ function register_blocks(): void {
 		'Button'           => 'button.php',
 		'MediaTextCTA'     => 'media-text-cta.php',
 		'FancyVideo'       => 'fancy-video.php',
+		'FormTwoStep'      => 'form-two-step.php',
 	];
 
 	// Register blocks.

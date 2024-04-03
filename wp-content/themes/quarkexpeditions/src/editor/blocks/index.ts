@@ -28,6 +28,7 @@ import * as mediaContentCard from './media-content-card';
 import * as button from './button';
 import * as mediaTextCta from './media-text-cta';
 import * as fancyVideo from './fancy-video';
+import * as formTwoStep from './form-two-step';
 
 /**
  * Add blocks.
@@ -55,6 +56,7 @@ const blocks = [
 	button,
 	mediaTextCta,
 	fancyVideo,
+	formTwoStep,
 ];
 
 /**

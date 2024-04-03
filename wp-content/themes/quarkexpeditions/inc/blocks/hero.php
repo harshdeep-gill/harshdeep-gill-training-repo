@@ -65,7 +65,8 @@ function render( ?string $content = null, array $block = [] ): null|string {
 		foreach ( $inner_block['innerBlocks'] as $inner_inner_block ) {
 			switch ( $inner_inner_block['blockName'] ) {
 
-				// Inquiry form.
+				// Hero form.
+				case 'quark/form-two-step':
 				case 'quark/inquiry-form':
 					$form = [
 						'type' => 'form',
