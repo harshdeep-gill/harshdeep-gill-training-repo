@@ -974,12 +974,6 @@
 		</x-section>
 	</x-component-demo>
 
-	<x-component-demo :keys="[ 'fancy-video' ]">
-		<x-fancy-video url="https://www.youtube.com/embed/xOF2Arwgclo" image_id="32" title="Wildlife & Natural Wonders Luxury Tour" tag="Watch" />
-
-		<x-fancy-video align="center" url="https://www.youtube.com/embed/xOF2Arwgclo" image_id="32" title="Wildlife & Natural Wonders Luxury Tour" />
-	</x-component-demo>
-
 	<x-component-demo :keys="[ 'media-text-cta' ]">
 		<x-media-text-cta>
 			<x-media-text-cta.image image_id="32">
