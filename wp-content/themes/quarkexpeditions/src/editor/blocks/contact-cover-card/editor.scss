@@ -1,0 +1,12 @@
+.contact-cover-card {
+	width: 100%;
+	aspect-ratio: 1120/520;
+
+	&__image-wrap {
+		background-color: var(--color-gray-30);
+	}
+
+	&__contact-info-item-label {
+		padding-right: var(--spacing-1);
+	}
+}
