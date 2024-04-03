@@ -45,13 +45,6 @@ function register_taxonomies() : void {
 				'qrk_departure',
 			],
 		],
-		'qrk_audiences'                    => [
-			'label'        => 'Audiences',
-			'hierarchical' => true,
-			'post_types'   => [
-				'qrk_marketing_promotion',
-			],
-		],
 		'qrk_cabin_classes'                => [
 			'label'        => 'Cabin Classes',
 			'hierarchical' => true,
@@ -98,19 +91,11 @@ function register_taxonomies() : void {
 			'post_types'   => [
 				'qrk_adventure_option',
 				'qrk_expedition',
-				'qrk_marketing_promotion',
 				'qrk_region',
 			],
 		],
 		'qrk_expedition_categories'        => [
 			'label'        => 'Expedition Categories',
-			'hierarchical' => true,
-			'post_types'   => [
-				'qrk_expedition',
-			],
-		],
-		'qrk_expedition_types'             => [
-			'label'        => 'Expedition Types',
 			'hierarchical' => true,
 			'post_types'   => [
 				'qrk_expedition',
@@ -137,13 +122,6 @@ function register_taxonomies() : void {
 				'qrk_staff_member',
 			],
 		],
-		'qrk_promotion_tags'               => [
-			'label'        => 'Promotion Tags',
-			'hierarchical' => true,
-			'post_types'   => [
-				'qrk_marketing_promotion',
-			],
-		],
 		'qrk_ship_categories'              => [
 			'label'        => 'Ship Categories',
 			'hierarchical' => true,
@@ -158,21 +136,6 @@ function register_taxonomies() : void {
 				'qrk_itinerary',
 			],
 		],
-		'qrk_sources_of_awareness'         => [
-			'label'        => 'Sources of Awareness',
-			'hierarchical' => true,
-			'post_types'   => [],
-		],
-		'qrk_special_interests'            => [
-			'label'        => 'Special Interests',
-			'hierarchical' => true,
-			'post_types'   => [],
-		],
-		'qrk_newspaper_editions'           => [
-			'label'        => 'Newspaper Editions',
-			'hierarchical' => true,
-			'post_types'   => [],
-		],
 		'qrk_branding'                     => [
 			'label'        => 'Branding',
 			'hierarchical' => true,
@@ -184,6 +147,11 @@ function register_taxonomies() : void {
 			'post_types'   => [
 				'qrk_staff_member',
 			],
+		],
+		'qrk_audiences'                    => [
+			'label'        => 'Audiences',
+			'hierarchical' => true,
+			'post_types'   => [],
 		],
 	];
 

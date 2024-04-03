@@ -32,12 +32,10 @@ const DEPARTMENTS           = 'qrk_departments';
 const DEPARTURE_STAFF_ROLES = 'qrk_departure_staff_roles';
 const EXPEDITION_CATEGORIES = 'qrk_expedition_categories';
 const INCLUSION_EXCLUSION   = 'qrk_inclusion_exclusion_category';
-const PROMOTION_TAGS        = 'qrk_promotion_tags';
 const SHIP_CATEGORIES       = 'qrk_ship_categories';
-const SOURCE_OF_AWARENESS   = 'qrk_sources_of_awareness';
-const EXPEDITION_TYPES      = 'qrk_expedition_types';
 const ADVENTURE_OPTIONS     = 'qrk_adventure_option_category';
 const ICONS                 = 'qrk_icons';
+const DEPARTURE_LOCATIONS   = 'qrk_departure_locations';
 
 /**
  * Class Media.
@@ -70,12 +68,10 @@ class Taxonomies {
 		DEPARTURE_STAFF_ROLES  => 'departure_staff_roles',
 		EXPEDITION_CATEGORIES  => 'expedition_categories',
 		INCLUSION_EXCLUSION    => 'inclusion_exclusion_categories',
-		PROMOTION_TAGS         => 'promotion_tags',
 		SHIP_CATEGORIES        => 'ship_categories',
-		SOURCE_OF_AWARENESS    => 'sources_of_awareness',
-		EXPEDITION_TYPES       => 'expedition_types',
 		ADVENTURE_OPTIONS      => 'adventure_options',
 		ICONS                  => 'icons',
+		DEPARTURE_LOCATIONS    => 'departure_locations',
 	];
 
 	/**
@@ -356,6 +352,10 @@ class Taxonomies {
 			return $prepared_args;
 		}
 
+		// Define variables.
+		$name = '';
+		$slug = '';
+
 		// Switch to prepare args.
 		switch ( $taxonomy ) {
 
@@ -371,14 +371,7 @@ class Taxonomies {
 			case DEPARTURE_STAFF_ROLES:
 			case EXPEDITION_CATEGORIES:
 			case INCLUSION_EXCLUSION:
-			case PROMOTION_TAGS:
 			case SHIP_CATEGORIES:
-			case SOURCE_OF_AWARENESS:
-			case EXPEDITION_TYPES:
-				// Define variables.
-				$name = '';
-				$slug = '';
-
 				// Prepare name.
 				if ( is_string( $item['name'] ) && ! empty( trim( $item['name'] ) ) ) {
 					$name = trim( $item['name'] );
@@ -405,10 +398,6 @@ class Taxonomies {
 
 			// Prepare arguments for adventure Options taxonomy.
 			case ADVENTURE_OPTIONS:
-				// Define variables.
-				$name = '';
-				$slug = '';
-
 				// Prepare name.
 				if ( is_string( $item['name'] ) && ! empty( trim( $item['name'] ) ) ) {
 					$name = trim( $item['name'] );
@@ -455,10 +444,6 @@ class Taxonomies {
 
 			// Prepare arguments for icons taxonomy.
 			case ICONS:
-				// Define variables.
-				$name = '';
-				$slug = '';
-
 				// Prepare name.
 				if ( is_string( $item['name'] ) && ! empty( trim( $item['name'] ) ) ) {
 					$name = trim( $item['name'] );
@@ -489,6 +474,42 @@ class Taxonomies {
 					// Assign svg to meta.
 					if ( ! empty( $svg_icon ) ) {
 						$prepared_args['meta']['svg'] = $svg_icon;
+					}
+				}
+				break;
+
+			// Prepare arguments for departure locations taxonomy.
+			case DEPARTURE_LOCATIONS:
+				// Prepare name.
+				if ( is_string( $item['name'] ) && ! empty( trim( $item['name'] ) ) ) {
+					$name = trim( $item['name'] );
+				}
+
+				// Prepare slug.
+				if ( is_string( $item['name'] ) ) {
+					$slug = trim( $item['name'] );
+					$slug = sanitize_title( $slug );
+				}
+
+				// Prepare arguments.
+				$prepared_args = [
+					'name'        => $name,
+					'slug'        => $slug,
+					'taxonomy'    => $taxonomy,
+					'parent'      => ! empty( $item['parent_id'] ) ? $item['parent_id'] : 0,
+					'description' => ! empty( $item['description__value'] ) ? $item['description__value'] : '',
+					'meta'        => [
+						'drupal_term_id' => ! empty( $item['tid'] ) ? $item['tid'] : '',
+					],
+				];
+
+				// Prepare for ACF data for country field.
+				if ( ! empty( $item['field_departure_country_value'] ) && is_string( $item['field_departure_country_value'] ) ) {
+					$country = trim( $item['field_departure_country_value'] );
+
+					// Assign country to meta.
+					if ( ! empty( $country ) ) {
+						$prepared_args['meta']['departure_country'] = $country;
 					}
 				}
 				break;
@@ -568,10 +589,7 @@ class Taxonomies {
 			case DEPARTURE_STAFF_ROLES:
 			case EXPEDITION_CATEGORIES:
 			case INCLUSION_EXCLUSION:
-			case PROMOTION_TAGS:
 			case SHIP_CATEGORIES:
-			case SOURCE_OF_AWARENESS:
-			case EXPEDITION_TYPES:
 				// Get drupal term slug.
 				$drupal_term_slug = $this->taxonomies[ $taxonomy ];
 
@@ -640,6 +658,28 @@ class Taxonomies {
 					LEFT JOIN `taxonomy_term__field_symbol_id` AS `field_symbol_id` ON term.tid = field_symbol_id.entity_id AND term.langcode = field_symbol_id.langcode
 				WHERE
 					term.`vid` = 'icons'
+				ORDER BY
+					parent.`parent_target_id` ASC;";
+				break;
+
+			// Departure locations taxonomy drupal query.
+			case DEPARTURE_LOCATIONS:
+				$query = "SELECT
+					term.`tid`,
+					term.`vid`,
+					term.langcode,
+					parent.`parent_target_id` AS `parent_id`,
+					field_data.`name`,
+					field_data.`description__value`,
+					( SELECT alias AS drupal_url FROM path_alias WHERE path = CONCAT( '/taxonomy/term/', term.tid ) ORDER BY id DESC LIMIT 0, 1 ) AS drupal_url,
+					field_departure_country.field_departure_country_value AS `field_departure_country_value`
+				FROM
+					taxonomy_term_data AS term
+					LEFT JOIN taxonomy_term__parent AS parent ON term.`tid` = parent.`entity_id` AND term.langcode = parent.langcode
+					LEFT JOIN taxonomy_term_field_data AS field_data ON term.`tid` = field_data.`tid` AND term.langcode = field_data.langcode
+					LEFT JOIN `taxonomy_term__field_departure_country` AS `field_departure_country` ON term.tid = field_departure_country.entity_id AND term.langcode = field_departure_country.langcode
+				WHERE
+					term.`vid` = 'departure_locations'
 				ORDER BY
 					parent.`parent_target_id` ASC;";
 				break;
