@@ -6,13 +6,8 @@
 .lp-offer-masthead {
 	$self: &;
 
-	background-color: var(--color-black);
 	padding-top: var(--spacing-8);
 	position: relative;
-
-	+ .section--has-background-black {
-		padding-top: 0;
-	}
 
 	&__image-wrap {
 		position: absolute;
