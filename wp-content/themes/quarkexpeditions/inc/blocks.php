@@ -32,7 +32,6 @@ function register_blocks(): void {
 		'IconInfoColumns'    => 'icon-info-columns.php',
 		'ReviewsCarousel'    => 'reviews-carousel.php',
 		'Hero'               => 'hero.php',
-		'InquiryForm'        => 'inquiry-form.php',
 		'LogoGrid'           => 'logo-grid.php',
 		'LPFooter'           => 'lp-footer.php',
 		'IconColumns'        => 'icon-columns.php',

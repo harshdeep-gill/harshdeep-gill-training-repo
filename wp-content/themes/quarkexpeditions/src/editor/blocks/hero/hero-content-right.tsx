@@ -12,7 +12,6 @@ import {
 /**
  * Internal dependencies.
  */
-import * as inquiryForm from '../inquiry-form';
 import * as formTwoStep from '../form-two-step';
 import * as formTwoStepCompact from '../form-two-step-compact';
 
@@ -58,7 +57,7 @@ export const settings: BlockConfiguration = {
 		const innerBlockProps = useInnerBlocksProps(
 			{ ...blockProps },
 			{
-				allowedBlocks: [ inquiryForm.name, formTwoStep.name, formTwoStepCompact.name ],
+				allowedBlocks: [ formTwoStep.name, formTwoStepCompact.name ],
 				template: [ [ formTwoStep.name ] ],
 			}
 		);

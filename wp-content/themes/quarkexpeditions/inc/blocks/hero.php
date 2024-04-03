@@ -68,7 +68,6 @@ function render( ?string $content = null, array $block = [] ): null|string {
 				// Hero form.
 				case 'quark/form-two-step':
 				case 'quark/form-two-step-compact':
-				case 'quark/inquiry-form':
 					$form = [
 						'type' => 'form',
 					];

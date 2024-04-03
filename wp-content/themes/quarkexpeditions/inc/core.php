@@ -208,9 +208,6 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'style'         => true,
 					'thank-you-url' => true,
 				],
-				'quark-inquiry-form'                    => [
-					'class' => true,
-				],
 				'quark-inquiry-form-modal'              => [
 					'class' => true,
 				],
