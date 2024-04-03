@@ -25,7 +25,7 @@
 
 			@if ( 'contact-info' === $item['type'] )
 				<x-contact-cover-card.contact-info>
-					@if( ! empty( $item['children'] ) )
+					@if ( ! empty( $item['children'] ) )
 						@foreach ( $item['children'] as $info_item )
 							<x-contact-cover-card.contact-info-item
 								:label="$info_item['label'] ?? ''"
