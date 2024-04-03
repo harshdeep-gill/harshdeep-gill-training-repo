@@ -46,7 +46,7 @@ function render( ?string $content = null, array $block = [] ): null|string {
 
 	// Initialize attributes.
 	$attributes = [
-		'items' => [],
+		'cards' => [],
 	];
 
 	// Build slot.
@@ -128,7 +128,7 @@ function render( ?string $content = null, array $block = [] ): null|string {
 			}
 
 			// Add card attributes.
-			$attributes['items'][] = $current_card;
+			$attributes['cards'][] = $current_card;
 		}
 	}
 

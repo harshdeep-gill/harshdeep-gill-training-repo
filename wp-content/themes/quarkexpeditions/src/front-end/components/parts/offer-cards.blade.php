@@ -1,20 +1,20 @@
 @props( [
-	'items' => [],
+	'cards' => [],
 ] )
 
 @php
-	if ( empty( $items ) ) {
+	if ( empty( $cards ) ) {
 		return;
 	}
 @endphp
 
 <x-offer-cards>
-	@foreach ( $items as $item )
+	@foreach ( $cards as $card )
 		<x-offer-cards.card>
-			<x-offer-cards.heading> {{ $item['heading'] }}</x-offer-cards.heading>
+			<x-offer-cards.heading> {{ $card['heading'] }}</x-offer-cards.heading>
 			<x-offer-cards.content>
-				@if ( ! empty( $item['children'] ) )
-					@foreach ( $item['children'] as $child )
+				@if ( ! empty( $card['children'] ) )
+					@foreach ( $card['children'] as $child )
 						@if ( 'title' === $child['type'] )
 							<x-offer-cards.title :title="$child['title'] ?? ''" />
 						@endif
