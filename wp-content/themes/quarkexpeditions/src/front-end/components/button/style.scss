@@ -6,6 +6,8 @@ Buttons
 
 .btn {
 
+	text-align: center;
+
 	@include transition(background-color);
 
 	&__sub-title {

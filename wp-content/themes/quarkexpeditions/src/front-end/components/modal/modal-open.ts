@@ -20,7 +20,6 @@ export class QuarkModalOpenElement extends HTMLElement {
 	private modalId: string | null;
 	private modalResizeObserver: ResizeObserver | undefined;
 	private modalContentElement: HTMLElement | null | undefined;
-	private modalOpenButtonElement: HTMLElement | null | undefined;
 	private modalBodyElement: HTMLElement | null | undefined;
 
 	/**
@@ -49,8 +48,7 @@ export class QuarkModalOpenElement extends HTMLElement {
 		}
 
 		// Events.
-		this.modalOpenButtonElement = this.querySelector( 'button' );
-		this.modalOpenButtonElement?.addEventListener( 'click', this.openModal.bind( this ) );
+		this.addEventListener( 'click', this.openModal.bind( this ) );
 		this.modal.addEventListener( 'close', this.handleModalClose.bind( this ) );
 
 		// Initialize remaining properties.

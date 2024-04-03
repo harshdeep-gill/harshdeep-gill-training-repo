@@ -1,5 +1,5 @@
 <x-layout>
-	<x-component-demo :keys="[ 'header', 'hero-immersive' ]">
+	<x-component-demo :keys="[ 'header', 'hero-refactor' ]">
 		<x-lp-header
 			tc_image_id="18"
 			phone_number="+1-877-585-1235"
@@ -7,75 +7,156 @@
 		/>
 	</x-component-demo>
 
-	<x-component-demo :keys="[ 'hero', 'hero-immersive' ]">
-		<x-hero :immersive="true">
-			<x-hero.image image_id="29" />
+	<x-component-demo :keys="[ 'hero', 'hero-refactor' ]">
+		<x-hero text_align="left" :immersive="true" :dark_mode="true">
+			<x-hero.image image_id="26" />
 			<x-hero.content>
-				<x-hero.title title="Antarctic Voyages" />
-				<x-hero.sub-title title="When you venture into the untouched wilds of the Arctic and Antarctic, you need a great team around you. And we have the greatest. You’ll join elite guides trained at Quark Academy — which surpasses every standard imaginable for safety and preparedness in the Polar Regions—and interact directly with world-class polar experts. Our philosophy? The team that explores together, discovers more together." />
+				<x-hero.left>
+					<x-hero.title-container>
+						<x-hero.overline>Antarctic 2024</x-hero.overline>
+						<x-hero.title title="Antarctic Voyages" />
+						<x-hero.sub-title title="Choose the Leader in Polar Adventure" />
+						<x-hero.description>
+							<p>
+								This is the description of this hero section. Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt odio illum tempora doloremque. Suscipit obcaecati necessitatibus, exercitationem nostrum voluptatibus eligendi laudantium possimus quaerat reiciendis molestiae sit sunt iusto! Ex facere quidem cupiditate ullam dolorum consectetur delectus recusandae. Minima, itaque eaque!
+							</p>
+						</x-hero.description>
+					</x-hero.title-container>
+					<x-icon-badge class="hero__tag" background_color="attention-100" icon="alert" text="Limited Cabins Available" />
+					<x-hero.form-modal-cta>Get a Digital Brochure</x-hero.form-modal-cta>
+				</x-hero.left>
+				<x-hero.right>
+					<x-hero.form>
+						<x-inquiry-form>
+							<x-forms.inquiry-form />
+						</x-inquiry-form>
+					</x-hero.form>
+				</x-hero.right>
 			</x-hero.content>
-			<x-hero.form>
-				<x-inquiry-form
-					form_id="inquiry-form"
-					title="Almost there!"
-					subtitle="We just need a bit more info to help personalize your itinerary."
-					salesforce_object="Webform_Landing_Page__c"
-				/>
-			</x-hero.form>
 		</x-hero>
 	</x-component-demo>
-	<x-component-demo :keys="[ 'review-cards' ]">
+
+	<x-component-demo :keys="[ 'review-cards', 'hero-refactor' ]">
 		<x-review-cards>
-			<x-review-cards.card
-				title="Falkland, South Georgia and the Antarctic Circle"
-				author_details="South Georgia and Antarctic Peninsula: Penguin Safari"
-				author="Denise P."
-				rating="4"
-			>
-				<p>Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever. Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever.</p>
+			<x-review-cards.card>
+				<x-review-cards.rating rating="4" />
+				<x-review-cards.title title="Falkland, South Georgia and the Antarctic Circle" />
+				<x-review-cards.content>
+					<p>
+						Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever. Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever.
+					</p>
+				</x-review-cards.content>
+				<x-review-cards.author name="Denise P." />
+				<x-review-cards.author-details text="South Georgia and Antarctic Peninsula: Penguin Safari South Georgia and Antarctic Peninsula: Penguin Safari" />
 			</x-review-cards.card>
-			<x-review-cards.card
-				title="An incredible trip to Antarctica"
-				author_details="South Georgia and Antarctic Peninsula: Penguin Safari"
-				author="Martine S."
-				rating="5"
-			>
-				<p>The whole experience was great. The World Explorer is a beautiful and very comfortable ship, the food was amazing. And of course the landings and cruising the area was a once in a lifetime experience. Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever.</p>
+			<x-review-cards.card>
+				<x-review-cards.rating rating="4" />
+				<x-review-cards.title title="Antartica with quark – experience of a lifetime" />
+				<x-review-cards.content>
+					<p>
+						In a phrase, going to Antartica with Quark was “simply amazing”. Antartica is gorgeous and the team at Quark made it possible for us to enjoy every bit of it with their impeccable planning and attention to every detail.
+					</p>
+				</x-review-cards.content>
+				<x-review-cards.author name="Madhuchanda D." />
+				<x-review-cards.author-details text="Antarctic Express: Crossing the Circle" />
 			</x-review-cards.card>
-			<x-review-cards.card
-				title="Wonderful Antarctic Trip"
-				author_details="South Georgia and Antarctic Peninsula: Penguin Safari"
-				author="Roger C."
-				rating="4"
-			>
-				<p>Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region.</p>
+			<x-review-cards.card>
+				<x-review-cards.rating rating="4" />
+				<x-review-cards.title title="Falkland, South Georgia and the Antarctic Circle" />
+				<x-review-cards.content>
+					<p>
+						Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever. Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever.
+					</p>
+				</x-review-cards.content>
+				<x-review-cards.author name="Denise P." />
+				<x-review-cards.author-details text="South Georgia and Antarctic Peninsula: Penguin Safari" />
 			</x-review-cards.card>
-			<x-review-cards.card
-				title="Falkland, South Georgia and Antarctica: Explorers and Kings"
-				author_details="South Georgia and Antarctic Peninsula: Penguin Safari"
-				author="Martine S."
-				rating="4"
-			>
-				<p>The whole experience was great. The World Explorer is a beautiful and very comfortable ship, the food was amazing. And of course the landings and cruising the area was a once in a lifetime experience.</p>
+			<x-review-cards.card>
+				<x-review-cards.rating rating="4" />
+				<x-review-cards.title title="Falkland, South Georgia and the Antarctic Circle" />
+				<x-review-cards.content>
+					<p>
+						Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever. Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever.
+					</p>
+				</x-review-cards.content>
+				<x-review-cards.author name="Denise P." />
+				<x-review-cards.author-details text="South Georgia and Antarctic Peninsula: Penguin Safari" />
 			</x-review-cards.card>
-			<x-review-cards.card
-				title="9 Day Spitsbergen Polar Bear Safari"
-				author_details="South Georgia and Antarctic Peninsula: Penguin Safari"
-				author="Carolyn T"
-				rating="4"
-			>
-				<p>Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever. Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever.</p>
-			</x-review-cards.card>
-			<x-review-cards.card
-				title="An incredible trip to Antarctica"
-				author_details="South Georgia and Antarctic Peninsula: Penguin Safari"
-				author="Martine S."
-				rating="5"
-			>
-				<p>The whole experience was great. The World Explorer is a beautiful and very comfortable ship, the food was amazing. And of course the landings and cruising the area was a once in a lifetime experience. Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever.</p>
+			<x-review-cards.card>
+				<x-review-cards.rating rating="4" />
+				<x-review-cards.title title="Falkland, South Georgia and the Antarctic Circle" />
+				<x-review-cards.content>
+					<p>
+						Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever. Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever.
+					</p>
+				</x-review-cards.content>
+				<x-review-cards.author name="Denise P." />
+				<x-review-cards.author-details text="South Georgia and Antarctic Peninsula: Penguin Safari" />
 			</x-review-cards.card>
 		</x-review-cards>
 	</x-component-demo>
+	<x-component-demo :keys="[ 'review-cards-no-carousel' ]">
+		<x-section title="South Georgia Expedition Reviews">
+			<x-review-cards is_carousel="false">
+				<x-review-cards.card>
+					<x-review-cards.rating rating="5" />
+					<x-review-cards.title title="Falkland, South Georgia and the Antarctic Circle" />
+					<x-review-cards.content>
+						Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever. Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever.
+					</x-review-cards.content>
+					<x-review-cards.author name="Denise P." />
+					<x-review-cards.author-details text="South Georgia and Antarctic Peninsula: Penguin Safari" />
+				</x-review-cards.card>
+				<x-review-cards.card>
+					<x-review-cards.rating rating="4" />
+					<x-review-cards.title title="Antartica with quark – experience of a lifetime" />
+					<x-review-cards.content>
+						<p>
+							In a phrase, going to Antartica with Quark was “simply amazing”. Antartica is gorgeous and the team at Quark made it possible for us to enjoy every bit of it with their impeccable planning and attention to every detail.
+						</p>
+					</x-review-cards.content>
+					<x-review-cards.author name="Madhuchanda D." />
+					<x-review-cards.author-details text="Antarctic Express: Crossing the Circle" />
+				</x-review-cards.card>
+				<x-review-cards.card>
+					<x-review-cards.rating rating="4" />
+					<x-review-cards.title title="Falkland, South Georgia and the Antarctic Circle" />
+					<x-review-cards.content>
+						<p>
+							Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever. Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever.
+						</p>
+					</x-review-cards.content>
+					<x-review-cards.author name="Denise P." />
+					<x-review-cards.author-details text="South Georgia and Antarctic Peninsula: Penguin Safari" />
+				</x-review-cards.card>
+			</x-review-cards>
+		</x-section>
+	</x-component-demo>
+
+	<x-component-demo :keys="[ 'hero', 'hero-refactor' ]">
+		<x-hero text_align="center" :immersive="false">
+			<x-hero.image image_id="26" />
+			<x-hero.content>
+				<x-hero.left>
+					<x-hero.title-container>
+						<x-hero.overline>Antarctic 2024</x-hero.overline>
+						<x-hero.title title="Antarctic Voyages" />
+						<x-hero.sub-title title="Choose the Leader in Polar Adventure" />
+					</x-hero.title-container>
+					<x-icon-badge class="hero__tag" background_color="attention-100" icon="alert" text="Limited Cabins Available" />
+					<x-hero.form-modal-cta>Get a Digital Brochure</x-hero.form-modal-cta>
+				</x-hero.left>
+				<x-hero.right>
+					<x-hero.form>
+						<x-inquiry-form>
+							<x-forms.inquiry-form-compact />
+						</x-inquiry-form>
+					</x-hero.form>
+				</x-hero.right>
+			</x-hero.content>
+		</x-hero>
+	</x-component-demo>
+
 	<x-component-demo :keys="[ 'global', 'color-palette' ]">
 		<x-section title="Color Palette" heading_level="2">
 			<x-global-styles-demo.color-palette />
@@ -201,35 +282,6 @@
 			phone_number="+1-877-585-1235"
 			cta_text="Talk to a Polar Expert"
 		/>
-	</x-component-demo>
-
-	<x-component-demo :keys="[ 'hero' ]">
-		<x-hero>
-			<x-hero.image image_id="26" />
-			<x-hero.content>
-				<x-hero.title title="Antarctic Voyages" />
-				<x-hero.sub-title title="Choose the Leader in Polar Adventure" />
-			</x-hero.content>
-			<x-hero.form>
-				<x-inquiry-form
-					form_id="inquiry-form"
-					title="Almost there!"
-					subtitle="We just need a bit more info to help personalize your itinerary."
-					salesforce_object="Webform_Landing_Page__c"
-				/>
-			</x-hero.form>
-		</x-hero>
-	</x-component-demo>
-
-	<x-component-demo :keys="[ 'hero', 'hero-new-cta' ]">
-		<x-hero layout="column" size="big">
-			<x-hero.image image_id="26" />
-			<x-hero.content>
-				<x-hero.title title="Rethink your bucket list.<br/>Think an Antarctic Expedition." />
-				<x-hero.sub-title title="Starting from $12,908" />
-			</x-hero.content>
-			<x-hero.form-modal-cta>Get a Digital Brochure</x-hero.form-modal-cta>
-		</x-hero>
 	</x-component-demo>
 
 	<x-component-demo :keys="[ 'modal' ]">
@@ -525,6 +577,60 @@
 			</x-simple-cards>
 			<x-section.cta class="color-context--dark" text="Learn More" url="#" color="black" />
 		</x-section>
+	</x-component-demo>
+
+	<x-component-demo :keys="['media-content-card']">
+			<x-section title="Media Content Card 2-column">
+				<x-media-content-card>
+					<x-media-content-card.image image_id="33"/>
+					<x-media-content-card.content>
+						<x-media-content-card.content-column>
+							<h4>Start Your Adventure</h4>
+							<p>Call us and one of our Polar Travel Advisors will secure the offer for you.</p>
+						</x-media-content-card.content-column>
+						<x-media-content-card.content-column>
+							<x-media-content-card.content-info
+								label="North America (Toll Free)"
+								value="+1 (866) 257-3345"
+								url="tel:+1 (866) 257-3345"
+							/>
+							<x-media-content-card.content-info
+								label="U.K. (Toll Free)"
+								value="0808 134 9986"
+								url="tel:0808 134 9986"
+							/>
+							<x-media-content-card.content-info
+								label="Australia (Toll Free)"
+								value="+61 1800 959 390"
+								url="tel:+61 1800 959 390"
+							/>
+							<x-media-content-card.content-info
+								label="France (Toll Free)"
+								value="08 05 08 66 46"
+								url="tel:08 05 08 66 46"
+							/>
+						</x-media-content-card.content-column>
+					</x-media-content-card.content>
+				</x-media-content-card>
+			</x-section>
+			<x-section title="Media Content Card 1-column">
+				<x-section.description>Call us and one of our Polar Travel Advisors will secure the offer for you.</x-section.description>
+				<x-media-content-card :is_compact="true" >
+					<x-media-content-card.image image_id="33"/>
+					<x-media-content-card.content>
+						<x-media-content-card.content-column>
+							<h4>Start Your Adventure</h4>
+							<p>Call us and one of our Polar Travel Advisors will secure the offer for you.</p>
+						</x-media-content-card.content-column>
+						<x-media-content-card.content-column>
+							<x-media-content-card.content-info label="North America (Toll Free)" value="+1 (866) 257-3345" />
+							<x-media-content-card.content-info label="U.K. (Toll Free)" value="0808 134 9986" />
+							<x-media-content-card.content-info label="Australia (Toll Free)" value="+61 1800 959 390" />
+							<x-media-content-card.content-info label="France (Toll Free)" value="08 05 08 66 46" />
+						</x-media-content-card.content-column>
+					</x-media-content-card.content>
+				</x-media-content-card>
+			</x-section>
 	</x-component-demo>
 
 	<x-component-demo :keys="[ 'collage' ]">
@@ -868,6 +974,59 @@
 		</x-section>
 	</x-component-demo>
 
+	<x-component-demo :keys="[ 'fancy-video' ]">
+		<x-fancy-video url="https://www.youtube.com/embed/xOF2Arwgclo" image_id="32" title="Wildlife & Natural Wonders Luxury Tour" tag="Watch" />
+
+		<x-fancy-video align="center" url="https://www.youtube.com/embed/xOF2Arwgclo" image_id="32" title="Wildlife & Natural Wonders Luxury Tour" />
+	</x-component-demo>
+
+	<x-component-demo :keys="[ 'media-text-cta' ]">
+		<x-media-text-cta>
+			<x-media-text-cta.image image_id="32">
+				<x-media-text-cta.badge text="Featured Expedition" />
+			</x-media-text-cta.image>
+
+			<x-media-text-cta.content>
+				<h2>South Georgia and Antarctic Peninsula: Penguin Safari</h2>
+				<p>This is the fastest way to visit both the Antarctic Peninsula and remote, wildlife rich South Georgia, where the beaches are teaming with King penguins and elephant seals. From here you sail south where Antarctica awaits with its soaring peaks and staggering expanse.</p>
+				<x-media-text-cta.secondary-text text="16/18 days | Starting from $12,946 USD" />
+				<x-media-text-cta.cta>
+					<x-button size="big" color="black">Request a Quote</x-button>
+				</x-media-text-cta.cta>
+			</x-media-text-cta.content>
+		</x-media-text-cta>
+
+		<x-media-text-cta media_align="right">
+			<x-media-text-cta.video>
+				<x-fancy-video url="https://www.youtube.com/embed/0fRAL7xROZg" image_id="32" />
+			</x-media-text-cta.video>
+
+			<x-media-text-cta.content>
+				<h2>Falklands, South Georgia, and Antarctica: Explorers & Kings</h2>
+				<p>The quickest way to get to the rarely visited Falkland Islands and South Georgia before stepping foot on the 7th Continent. Both islands are known as meccas for wildlife with epic displays of animals congregating by the thousands. Then, explore the stunning Antarctic Peninsula and enter a world of ice, snow and natural wonders.</p>
+				<x-media-text-cta.secondary-text text="20 days | Starting From $14,621 USD" />
+				<x-media-text-cta.cta>
+					<x-button size="big" color="black">Request a Quote</x-button>
+				</x-media-text-cta.cta>
+			</x-media-text-cta.content>
+		</x-media-text-cta>
+
+		<x-media-text-cta>
+			<x-media-text-cta.image image_id="32">
+				<x-media-text-cta.badge text="Featured Expedition" />
+			</x-media-text-cta.image>
+
+			<x-media-text-cta.content>
+				<h2>Epic Antarctica: Crossing the Circle via Falklands & South Georgia</h2>
+				<p>Our Epic Antarctica voyage is called so for a reason—it includes all of the major Antarctic highlights you can imagine. </p>
+				<x-media-text-cta.secondary-text text="23 days | Starting From $26,979 USD" />
+				<x-media-text-cta.cta>
+					<x-button size="big" color="black">Request a Quote</x-button>
+				</x-media-text-cta.cta>
+			</x-media-text-cta.content>
+		</x-media-text-cta>
+	</x-component-demo>
+
 	<x-component-demo :keys="[ 'lp-footer', 'logo-grid' ]">
 		<x-lp-footer>
 			<x-lp-footer.row>
@@ -915,6 +1074,177 @@
 				</x-lp-footer.column>
 			</x-lp-footer.row>
 		</x-lp-footer>
+	</x-component-demo>
+
+	<x-component-demo :keys="[ 'product-cards' ]">
+		<x-product-cards>
+			<x-product-cards.card url="#">
+				<x-product-cards.image
+					image_id="29"
+					:is_immersive="true"
+				>
+					<x-product-cards.badge-cta text="Save 50%" />
+					<x-product-cards.badge-time text="Just Added" />
+				</x-product-cards.image>
+				<x-product-cards.reviews
+					total_reviews="19 Reviews"
+					review_rating="5"
+				/>
+				<x-product-cards.itinerary departure_date="Departing May 20, 2024" duration="10 Days" />
+				<x-product-cards.title title="Introduction to Spitsbergen" />
+				<x-product-cards.subtitle title="Fjords, Glaciers, and Wildlife of Svalbard" />
+				<x-product-cards.description>
+					<p>This fascinating expedition provides a taste of everything Spitsbergen has to offer!</p>
+				</x-product-cards.description>
+				<x-product-cards.price
+					original_price="$7,395 USD"
+					discounted_price="$6,171 USD"
+				/>
+				<x-product-cards.buttons :columns="1">
+					<x-button size="big">Request a Quote</x-button>
+					<x-button size="big" appearance="outline">Learn More</x-button>
+				</x-product-cards.buttons>
+			</x-product-cards.card>
+
+			<x-product-cards.card url="#">
+				<x-product-cards.image
+					image_id="36"
+					:is_immersive="false"
+				>
+					<x-product-cards.badge-sold-out />
+					<x-product-cards.badge-time text="Just Added" />
+					<x-product-cards.info-ribbon>Additional 10% savings text</x-product-cards.info-ribbon>
+				</x-product-cards.image>
+				<x-product-cards.reviews
+					total_reviews="9999 Reviews"
+					review_rating="3"
+				/>
+				<x-product-cards.itinerary departure_date="Departing May 28, 2024" duration="12 Days" />
+				<x-product-cards.title title="Spitsbergen Explorer" />
+				<x-product-cards.subtitle title="Wildlife Capital of the Arctic" />
+				<x-product-cards.description>
+					<p>Witness the remarkable array of creatures who call this spectacular environment home.</p>
+				</x-product-cards.description>
+				<x-product-cards.price
+					original_price="$9,095 USD"
+					discounted_price="$7,361 USD"
+				/>
+				<x-product-cards.buttons :columns="2">
+					<x-button size="big" icon="phone">Book: +1 (866) 220-1915</x-button>
+				</x-product-cards.buttons>
+			</x-product-cards.card>
+
+			<x-product-cards.card url="#">
+				<x-product-cards.image
+					image_id="32"
+					:is_immersive="false"
+				>
+					<x-product-cards.badge-sold-out />
+					<x-product-cards.badge-time text="Just Added" />
+					<x-product-cards.info-ribbon>Additional 10% savings text</x-product-cards.info-ribbon>
+				</x-product-cards.image>
+				<x-product-cards.reviews
+					total_reviews="100 Reviews"
+					review_rating="4"
+				/>
+				<x-product-cards.itinerary departure_date="Departing July 14, 2024" duration="11 Days" />
+				<x-product-cards.title title="Gems of West Greenland" />
+				<x-product-cards.subtitle title="Fjords, Icebergs, and Culture" />
+				<x-product-cards.description>
+					<p>Features the best sites of West Greenland & delivers an in-depth experience in just 12 days.</p>
+				</x-product-cards.description>
+				<x-product-cards.price
+					original_price="$9,395 USD"
+					discounted_price="$8,571 USD"
+				/>
+				<x-product-cards.buttons :columns="2">
+					<x-button size="big">Request a Quote</x-button>
+					<x-button size="big" appearance="outline">Learn More</x-button>
+				</x-product-cards.buttons>
+			</x-product-cards.card>
+		</x-product-cards>
+
+		<x-product-cards>
+			<x-product-cards.card url="#">
+				<x-product-cards.image
+					image_id="29"
+				>
+					<x-product-cards.badge-cta text="Save 50%" />
+				</x-product-cards.image>
+				<x-product-cards.reviews
+					total_reviews="19 Reviews"
+					review_rating="5"
+				/>
+				<x-product-cards.itinerary departure_date="Departing May 20, 2024" duration="10 Days" />
+				<x-product-cards.title title="Introduction to Spitsbergen" />
+				<x-product-cards.subtitle title="Fjords, Glaciers, and Wildlife of Svalbard" />
+				<x-product-cards.description>
+					<p>This fascinating expedition provides a taste of everything Spitsbergen has to offer!</p>
+				</x-product-cards.description>
+				<x-product-cards.price
+					original_price="$7,395 USD"
+					discounted_price="$6,171 USD"
+				/>
+				<x-product-cards.buttons :columns="2">
+					<x-button size="big">Request a Quote</x-button>
+					<x-button size="big" appearance="outline">Learn More</x-button>
+				</x-product-cards.buttons>
+			</x-product-cards.card>
+
+			<x-product-cards.card url="#">
+				<x-product-cards.image
+					image_id="36"
+					:is_immersive="false"
+				>
+					<x-product-cards.badge-cta text="Save 50%" />
+					<x-product-cards.badge-time text="Just Added" />
+				</x-product-cards.image>
+				<x-product-cards.reviews
+					total_reviews="9999 Reviews"
+					review_rating="3"
+				/>
+				<x-product-cards.itinerary departure_date="Departing May 28, 2024" duration="12 Days" />
+				<x-product-cards.title title="Spitsbergen Explorer" />
+				<x-product-cards.subtitle title="Wildlife Capital of the Arctic" />
+				<x-product-cards.description>
+					<p>Witness the remarkable array of creatures who call this spectacular environment home.</p>
+				</x-product-cards.description>
+				<x-product-cards.price
+					original_price="$9,095 USD"
+					discounted_price="$7,361 USD"
+				/>
+				<x-product-cards.buttons :columns="2">
+					<x-button size="big" icon="phone">Book: +1 (866) 220-1915</x-button>
+				</x-product-cards.buttons>
+			</x-product-cards.card>
+
+			<x-product-cards.card url="#">
+				<x-product-cards.image
+					image_id="32"
+					:is_immersive="false"
+				>
+					<x-product-cards.badge-time text="Just Added" />
+				</x-product-cards.image>
+				<x-product-cards.reviews
+					total_reviews="100 Reviews"
+					review_rating="4"
+				/>
+				<x-product-cards.itinerary departure_date="Departing July 14, 2024" duration="11 Days" />
+				<x-product-cards.title title="Gems of West Greenland" />
+				<x-product-cards.subtitle title="Fjords, Icebergs, and Culture" />
+				<x-product-cards.description>
+					<p>Features the best sites of West Greenland & delivers an in-depth experience in just 12 days.</p>
+				</x-product-cards.description>
+				<x-product-cards.price
+					original_price="$9,395 USD"
+					discounted_price="$8,571 USD"
+				/>
+				<x-product-cards.buttons :columns="2">
+					<x-button size="big">Request a Quote</x-button>
+					<x-button size="big" appearance="outline">Learn More</x-button>
+				</x-product-cards.buttons>
+			</x-product-cards.card>
+		</x-product-cards>
 	</x-component-demo>
 
 	<x-component-demo :keys="[ 'lp-footer' ]">

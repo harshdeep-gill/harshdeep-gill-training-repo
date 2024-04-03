@@ -44,13 +44,24 @@ function render( ?string $content = null, array $block = [] ): null|string {
 		return $content;
 	}
 
+	// Setup valid form types and a default.
+	$valid_form_types = [ 'inquiry-form', 'inquiry-form-compact' ];
+	$form_type        = 'inquiry-form';
+
+	// Set form type if not empty or default.
+	if ( ! empty( $block['attrs']['formType'] ) && in_array( $block['attrs']['formType'], $valid_form_types, true ) ) {
+		$form_type = $block['attrs']['formType'];
+	}
+
+	// Component name for the form.
+	$form_component = sprintf( 'forms.%s', $form_type );
+
 	// Build attributes.
 	$attributes = [
-		'salesforce_object' => 'Webform_Landing_Page__c',
-		'title'             => 'Almost there!',
-		'form_id'           => 'inquiry-form',
-		'subtitle'          => 'We just need a bit more info to help personalize your itinerary.',
-		'thank_you_page'    => $block['attrs']['thankYouPageUrl'] ?? '',
+		'slot' => quark_get_component(
+			$form_component,
+			[ 'thank_you_page' => $block['attrs']['thankYouPageUrl'] ?? '' ]
+		),
 	];
 
 	// Return rendered component.

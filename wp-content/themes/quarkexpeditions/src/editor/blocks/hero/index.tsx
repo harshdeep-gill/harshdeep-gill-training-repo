@@ -5,13 +5,13 @@ import { __ } from '@wordpress/i18n';
 import { BlockConfiguration, registerBlockType } from '@wordpress/blocks';
 import {
 	PanelBody,
+	SelectControl,
 	ToggleControl,
 } from '@wordpress/components';
 import {
 	InspectorControls,
 	useBlockProps,
 	useInnerBlocksProps,
-	RichText,
 	InnerBlocks,
 } from '@wordpress/block-editor';
 
@@ -41,19 +41,21 @@ const {
 } = gumponents.components;
 
 /**
- * Child block.
+ * Children blocks
  */
-import * as formCta from './form-cta';
+import * as heroContentLeft from './hero-content-left';
+import * as heroContentRight from './hero-content-right';
 
 /**
  * Register child block.
  */
-registerBlockType( formCta.name, formCta.settings );
+registerBlockType( heroContentLeft.name, heroContentLeft.settings );
+registerBlockType( heroContentRight.name, heroContentRight.settings );
 
 /**
  * Block name.
  */
-export const name: string = 'qrk/hero';
+export const name: string = 'quark/hero';
 
 /**
  * Block configuration settings.
@@ -70,19 +72,17 @@ export const settings: BlockConfiguration = {
 		image: {
 			type: 'object',
 		},
-		title: {
-			type: 'string',
-		},
-		subTitle: {
-			type: 'string',
-		},
 		isImmersive: {
 			type: 'boolean',
 			default: false,
 		},
-		showForm: {
+		textAlign: {
+			type: 'string',
+			default: '',
+		},
+		darkMode: {
 			type: 'boolean',
-			default: true,
+			default: false,
 		},
 	},
 	supports: {
@@ -99,23 +99,16 @@ export const settings: BlockConfiguration = {
 				className,
 				'hero',
 				attributes.isImmersive ? 'hero--immersive' : '',
-				attributes.showForm ? '' : 'hero--big'
+				attributes.darkMode ? 'color-context--dark' : ''
 			),
 		} );
 
 		// eslint-disable-next-line react-hooks/rules-of-hooks
 		const innerBlockProps = useInnerBlocksProps(
+			{ className: 'hero__content' },
 			{
-				className: `${
-					attributes.showForm
-						? 'hero__form '
-						: ''
-				} color-context--dark`,
-			},
-			{
-				allowedBlocks: [ 'quark/inquiry-form', formCta.name ],
-				template: [ [ attributes.showForm ? 'quark/inquiry-form' : formCta.name ] ],
-				templateLock: 'all',
+				allowedBlocks: [ heroContentLeft.name, heroContentRight.name ],
+				template: [ [ heroContentLeft.name ], [ heroContentRight.name ] ],
 			}
 		);
 
@@ -138,49 +131,31 @@ export const settings: BlockConfiguration = {
 							onChange={ ( isImmersive: boolean ) => setAttributes( { isImmersive } ) }
 						/>
 						<ToggleControl
-							label={ __( 'Has Form', 'qrk' ) }
-							checked={ attributes.showForm }
-							help={ __( 'Does the hero have a form', 'qrk' ) }
-							onChange={ ( showForm: boolean ) => setAttributes( { showForm } ) }
+							label={ __( 'Dark Mode', 'qrk' ) }
+							checked={ attributes.darkMode }
+							help={ __( 'Is this hero in dark mode?', 'qrk' ) }
+							onChange={ ( darkMode: boolean ) => setAttributes( { darkMode } ) }
+						/>
+						<SelectControl
+							label={ __( 'Text Alignment', 'qrk' ) }
+							help={ __( 'Select the text alignment', 'qrk' ) }
+							value={ attributes.textAlign }
+							options={ [
+								{ label: __( 'Left', 'qrk' ), value: 'left' },
+								{ label: __( 'Center', 'qrk' ), value: 'center' },
+							] }
+							onChange={ ( textAlign: string ) => setAttributes( { textAlign } ) }
 						/>
 					</PanelBody>
 				</InspectorControls>
 				<Section { ...blockProps } fullWidth={ true } seamless={ true } >
-					<div
-						className={
-							`hero__wrap ${
-								attributes.showForm
-									? ''
-									: 'hero__wrap--column'
-							}`
-						}
-					>
+					<div className="hero__wrap">
 						{ attributes.image &&
 							<Img
 								className="hero__image"
 								value={ attributes.image }
 							/>
 						}
-						<div className="hero__content">
-							<RichText
-								tagName="h1"
-								className="hero__title"
-								placeholder={ __( 'Write title…', 'qrk' ) }
-								value={ attributes.title }
-								onChange={ ( title: string ) => setAttributes( { title } ) }
-								allowedFormats={ [] }
-							/>
-							<div className="hero__sub-title">
-								<RichText
-									tagName="h5"
-									className="h5"
-									placeholder={ __( 'Write sub-title…', 'qrk' ) }
-									value={ attributes.subTitle }
-									onChange={ ( subTitle: string ) => setAttributes( { subTitle } ) }
-									allowedFormats={ [] }
-								/>
-							</div>
-						</div>
 						<div { ...innerBlockProps } />
 					</div>
 				</Section>

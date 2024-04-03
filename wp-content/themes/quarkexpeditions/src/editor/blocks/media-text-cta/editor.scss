@@ -1,0 +1,7 @@
+.media-text-cta {
+
+	&__media-wrap {
+		aspect-ratio: calc(540 / 360);
+		background-color: var(--color-gray-30);
+	}
+}

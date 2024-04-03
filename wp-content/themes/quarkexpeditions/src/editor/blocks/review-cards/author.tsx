@@ -4,8 +4,8 @@
 import { __ } from '@wordpress/i18n';
 import { BlockConfiguration } from '@wordpress/blocks';
 import {
-	useBlockProps,
 	RichText,
+	useBlockProps,
 } from '@wordpress/block-editor';
 
 /**
@@ -16,21 +16,21 @@ import classnames from 'classnames';
 /**
  * Block name.
  */
-export const name: string = 'quark/hero-form-cta';
+export const name: string = 'quark/review-cards-author';
 
 /**
  * Block configuration settings.
  */
 export const settings: BlockConfiguration = {
 	apiVersion: 2,
-	title: __( 'Form modal CTA', 'qrk' ),
-	description: __( 'A CTA to open up the inquiry form modal.', 'qrk' ),
-	parent: [ 'qrk/hero' ],
-	icon: 'button',
-	category: 'widgets',
-	keywords: [ __( 'cta', 'qrk' ), __( 'form', 'qrk' ), __( 'modal', 'qrk' ) ],
+	title: __( 'Review Cards Author', 'qrk' ),
+	description: __( 'Individual review card item author.', 'qrk' ),
+	parent: [ 'quark/review-cards-card' ],
+	icon: 'screenoptions',
+	category: 'layout',
+	keywords: [ __( 'author', 'qrk' ) ],
 	attributes: {
-		text: {
+		author: {
 			type: 'string',
 			default: '',
 		},
@@ -43,19 +43,18 @@ export const settings: BlockConfiguration = {
 	},
 	edit( { className, attributes, setAttributes }: BlockEditAttributes ) : JSX.Element {
 		// eslint-disable-next-line react-hooks/rules-of-hooks
-		const blocksProps = useBlockProps( {
-			className: classnames( className, 'hero__form-modal-cta' ),
+		const blockProps = useBlockProps( {
+			className: classnames( className, 'review-cards__author' ),
 		} );
 
 		// Return the block's markup.
 		return (
-			<div { ...blocksProps }>
+			<div { ...blockProps }>
 				<RichText
-					tagName="p"
-					className={ classnames( 'btn', 'btn--size-big' ) }
-					placeholder={ __( 'Write CTA text…', 'qrk' ) }
-					value={ attributes.text }
-					onChange={ ( text: string ) => setAttributes( { text } ) }
+					tagName="strong"
+					placeholder={ __( 'Write name…', 'qrk' ) }
+					value={ attributes.author }
+					onChange={ ( author: string ) => setAttributes( { author } ) }
 					allowedFormats={ [] }
 				/>
 			</div>

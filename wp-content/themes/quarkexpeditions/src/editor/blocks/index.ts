@@ -21,6 +21,13 @@ import * as reviewCards from './review-cards';
 import * as videoIconsCard from './video-icons-card';
 import * as seasonHighlights from './season-highlights';
 import * as simpleCards from './simple-cards';
+import * as productCards from './product-cards';
+import * as iconBadge from './icon-badge';
+import * as formModalCta from './form-modal-cta';
+import * as mediaContentCard from './media-content-card';
+import * as button from './button';
+import * as mediaTextCta from './media-text-cta';
+import * as fancyVideo from './fancy-video';
 
 /**
  * Add blocks.
@@ -41,6 +48,13 @@ const blocks = [
 	videoIconsCard,
 	seasonHighlights,
 	simpleCards,
+	productCards,
+	iconBadge,
+	formModalCta,
+	mediaContentCard,
+	button,
+	mediaTextCta,
+	fancyVideo,
 ];
 
 /**
