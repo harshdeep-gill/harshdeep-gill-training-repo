@@ -199,3 +199,29 @@ function quark_has_this_rendered_once( string $id = '' ): bool {
 	// It has not been rendered before.
 	return false;
 }
+
+/**
+ * Generates a DOM id of a specified length with an input as a base.
+ *
+ * @param string  $input The string to encode as the id.
+ * @param integer $length The length of the id can be 2 <= $length <= 32.
+ *
+ * @return string The hashed id.
+ */
+function quark_generate_dom_id( string $input = '', int $length = 10 ) : string {
+	// Check for empty input.
+	if ( empty( $input ) ) {
+		return '';
+	}
+
+	// Correct for invalid $length values.
+	if ( $length < 2 || $length > 32 ) {
+		// Set the default value of 10.
+		$length = 10;
+	}
+
+	/**
+	 * The character 'm' has been added to prevent the id starting with a digit.
+	 */
+	return 'm' . substr( md5( $input ), 0, $length - 1 );
+}
