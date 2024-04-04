@@ -10,7 +10,7 @@
 @endphp
 
 <x-contact-cover-card>
-	<x-contact-cover-card.image :image_id="$image_id ?? ''" />
+	<x-contact-cover-card.image :image_id="$image_id ?? 0" />
 	<x-contact-cover-card.content>
 		@foreach ( $content as $item )
 			@if ( 'title' === $item['type'] )
