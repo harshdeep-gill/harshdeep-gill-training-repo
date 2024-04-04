@@ -653,6 +653,75 @@
 		</x-section>
 	</x-component-demo>
 
+	<x-component-demo :keys="[ 'product-departures-card' ]">
+		<x-section background="true" background_color="black" heading_level="2" title="Upgrade Your Cabin for Freeon select Antarctic 2024 voyages">
+			<x-product-departures-card>
+				<x-product-departures-card.images :image_ids="[ 32, 34]">
+					<x-product-departures-card.badge-cta text="Free Cabin Upgrade" />
+				</x-product-departures-card.images>
+
+				<x-product-departures-card.content>
+					<x-product-departures-card.title title="Antarctic Explorer: Discovering the 7th Continent" />
+					<x-product-departures-card.cta>
+						<x-button size="big" icon="phone">Book: +1 (866) 220-1915</x-button>
+					</x-product-departures-card.cta>
+					<x-product-departures-card.departures>
+						<x-product-departures-card.overline text="Departure Dates" />
+						<x-product-departures-card.dates>
+							<x-product-departures-card.departure-dates>
+								<p>Nov 22, 2024</p>
+								<p>Nov 23, 2024</p>
+							</x-product-departures-card.departure-dates>
+							<x-product-departures-card.offer offer="30% Off" offer_text="Save up to $3,700 USD" />
+						</x-product-departures-card.dates>
+						<x-product-departures-card.dates>
+							<x-product-departures-card.departure-dates>
+								<p>Nov 16, 2024</p>
+							</x-product-departures-card.departure-dates>
+							<x-product-departures-card.offer offer="30% Off" offer_text="Save up to $3,700 USD" :sold_out="true" />
+						</x-product-departures-card.dates>
+					</x-product-departures-card.departures>
+				</x-product-departures-card.content>
+			</x-product-departures-card>
+
+			<x-product-departures-card>
+				<x-product-departures-card.images :image_ids="[ 32, 34]">
+					<x-product-departures-card.badge-cta text="Free Cabin Upgrade" />
+				</x-product-departures-card.images>
+
+				<x-product-departures-card.content>
+					<x-product-departures-card.title title="Antarctic Explorer: Discovering the 7th Continent" />
+					<x-product-departures-card.cta>
+						<x-button size="big" icon="phone">Book: +1 (866) 220-1915</x-button>
+					</x-product-departures-card.cta>
+					<x-product-departures-card.departures>
+						<x-product-departures-card.overline text="Departure Dates" />
+						<x-product-departures-card.dates>
+							<x-product-departures-card.departure-dates>
+								<p>Nov 22, 2024</p>
+								<p>Nov 23, 2024</p>
+							</x-product-departures-card.departure-dates>
+							<x-product-departures-card.offer offer="30% Off" offer_text="Save up to $3,700 USD" />
+						</x-product-departures-card.dates>
+						<x-product-departures-card.dates>
+							<x-product-departures-card.departure-dates>
+								<p>Nov 22, 2024</p>
+								<p>Nov 23, 2024</p>
+							</x-product-departures-card.departure-dates>
+							<x-product-departures-card.offer offer="30% Off" offer_text="Save up to $3,700 USD" />
+						</x-product-departures-card.dates>
+						<x-product-departures-card.dates>
+							<x-product-departures-card.departure-dates>
+								<p>Nov 16, 2024</p>
+							</x-product-departures-card.departure-dates>
+							<x-product-departures-card.offer offer="30% Off" offer_text="Save up to $3,700 USD" :sold_out="true" />
+						</x-product-departures-card.dates>
+					</x-product-departures-card.departures>
+				</x-product-departures-card.content>
+			</x-product-departures-card>
+		</x-section>
+	</x-component-demo>
+
 	<x-component-demo :keys="[ 'season-highlights' ]">
 		<x-section title="Best Time to See" title_align="left">
 			<x-season-highlights>
