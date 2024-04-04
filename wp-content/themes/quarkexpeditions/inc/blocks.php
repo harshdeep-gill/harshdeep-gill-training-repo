@@ -49,6 +49,7 @@ function register_blocks(): void {
 		'ProductDeparturesCard' => 'product-departures-card.php',
 		'ContactCoverCard'      => 'contact-cover-card.php',
 		'OfferCards'            => 'offer-cards.php',
+		'LPOfferMasthead'       => 'lp-offer-masthead.php',
 	];
 
 	// Register blocks.

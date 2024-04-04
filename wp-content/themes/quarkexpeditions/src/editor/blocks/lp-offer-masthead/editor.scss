@@ -1,0 +1,15 @@
+.lp-offer-masthead {
+
+	&__logo .gumponents-select-image {
+		width: 220px;
+	}
+
+	&__offer-image .gumponents-select-image {
+		width: 730px;
+		height: 260px;
+	}
+
+	&__inner-content {
+		margin-top: var(--spacing-7);
+	}
+}

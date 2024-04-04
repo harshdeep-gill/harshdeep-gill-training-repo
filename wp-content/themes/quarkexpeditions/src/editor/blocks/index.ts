@@ -29,6 +29,7 @@ import * as button from './button';
 import * as productDeparturesCard from './product-departures-card';
 import * as contactCoverCard from './contact-cover-card';
 import * as offerCards from './offer-cards';
+import * as lpOfferMasthead from './lp-offer-masthead';
 
 /**
  * Add blocks.
@@ -57,6 +58,7 @@ const blocks = [
 	productDeparturesCard,
 	contactCoverCard,
 	offerCards,
+	lpOfferMasthead,
 ];
 
 /**
