@@ -27,6 +27,7 @@ import * as lpFormModalCta from './lp-form-modal-cta';
 import * as mediaContentCard from './media-content-card';
 import * as button from './button';
 import * as contactCoverCard from './contact-cover-card';
+import * as offerCards from './offer-cards';
 
 /**
  * Add blocks.
@@ -53,6 +54,7 @@ const blocks = [
 	mediaContentCard,
 	button,
 	contactCoverCard,
+	offerCards,
 ];
 
 /**
