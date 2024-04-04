@@ -47,6 +47,8 @@ function register_blocks(): void {
 		'MediaContentCard'      => 'media-content-card.php',
 		'Button'                => 'button.php',
 		'ProductDeparturesCard' => 'product-departures-card.php',
+		'ContactCoverCard' => 'contact-cover-card.php',
+		'OfferCards'       => 'offer-cards.php',
 	];
 
 	// Register blocks.
