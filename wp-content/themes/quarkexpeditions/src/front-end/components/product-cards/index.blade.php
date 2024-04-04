@@ -1,19 +1,19 @@
-@props( [
-	'is_compact' => false,
-] )
-
 @php
 	if ( empty( $slot ) ) {
 		return;
 	}
 
-	$classes = [ 'product-cards', 'grid' ];
+	// Get cards count.
+	$cards_count = quark_get_slot_child_count( $slot );
 
-	if ( ! empty( $is_compact ) ) {
-		$classes[] = 'grid--cols-2';
+	$classes = [ 'product-cards' ];
+
+	if ( 2 === $cards_count ) {
+		$classes[] = 'product-cards--cols-2';
 	} else {
 		$classes[] = 'grid--cols-3';
 	}
+	$classes[] = 'grid';
 @endphp
 
 <x-section>

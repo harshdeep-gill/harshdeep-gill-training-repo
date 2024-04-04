@@ -5,14 +5,10 @@
 
 .product-cards {
 	$self: &;
+	--product-cards-columns: 12;
 
-	&.grid--cols-2 {
-
-		@media screen and (min-width: grid-size(sm)) {
-			justify-content: center;
-			max-width: fit-content;
-		}
-	}
+	grid-template-columns: repeat(var(--product-cards-columns), 1fr);
+	gap: var(--spacing-5);
 
 	&__card {
 		background-color: var(--color-white);
@@ -22,7 +18,23 @@
 		flex-direction: column;
 		overflow: hidden;
 		padding: var(--spacing-5);
-		max-width: 350px;
+		grid-column: auto / span var(--product-cards-columns);
+
+		@media screen and (min-width: grid-size(sm)) {
+			max-width: 352px;
+			grid-column: auto / span 6;
+		}
+
+		@media screen and (min-width: grid-size(md)) {
+			grid-column: auto / span 4;
+		}
+
+		#{$self}--cols-2 &:first-child {
+
+			@media screen and (min-width: grid-size(md)) {
+				grid-column-start: 3;
+			}
+		}
 
 		&:hover img {
 			transform: scale(var(--scale-size));

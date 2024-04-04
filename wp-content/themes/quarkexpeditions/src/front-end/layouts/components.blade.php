@@ -1323,35 +1323,6 @@
 					<x-button size="big" icon="phone">Book: +1 (866) 220-1915</x-button>
 				</x-product-cards.buttons>
 			</x-product-cards.card>
-
-			<x-product-cards.card url="#">
-				<x-product-cards.image
-					image_id="32"
-					:is_immersive="false"
-				>
-					<x-product-cards.badge-sold-out />
-					<x-product-cards.badge-time text="Just Added" />
-					<x-product-cards.info-ribbon>Additional 10% savings text</x-product-cards.info-ribbon>
-				</x-product-cards.image>
-				<x-product-cards.reviews
-					total_reviews="100 Reviews"
-					review_rating="4"
-				/>
-				<x-product-cards.itinerary departure_date="Departing July 14, 2024" duration="11 Days" />
-				<x-product-cards.title title="Gems of West Greenland" />
-				<x-product-cards.subtitle title="Fjords, Icebergs, and Culture" />
-				<x-product-cards.description>
-					<p>Features the best sites of West Greenland & delivers an in-depth experience in just 12 days.</p>
-				</x-product-cards.description>
-				<x-product-cards.price
-					original_price="$9,395 USD"
-					discounted_price="$8,571 USD"
-				/>
-				<x-product-cards.buttons :columns="2">
-					<x-button size="big">Request a Quote</x-button>
-					<x-button size="big" appearance="outline">Learn More</x-button>
-				</x-product-cards.buttons>
-			</x-product-cards.card>
 		</x-product-cards>
 
 		<x-product-cards>
