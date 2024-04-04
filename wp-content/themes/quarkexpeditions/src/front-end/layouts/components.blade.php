@@ -4,6 +4,7 @@
 			tc_image_id="18"
 			phone_number="+1-877-585-1235"
 			cta_text="Talk to a Polar Expert"
+			:dark_mode="true"
 		/>
 	</x-component-demo>
 
