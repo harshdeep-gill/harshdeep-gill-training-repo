@@ -36,7 +36,7 @@ const { gumponents } = window;
 const { ImageControl, Img, SelectImage } = gumponents.components;
 
 /**
- * Children blocks
+ * Child blocks.
  */
 import * as offerImage from './offer-image';
 import * as caption from './caption';
