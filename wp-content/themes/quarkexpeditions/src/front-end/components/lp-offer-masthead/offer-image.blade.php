@@ -28,5 +28,7 @@
 	<x-image
 		:image_id="$image_id"
 		:args="$image_args"
+		loading="eager"
+		fetchpriority="high"
 	/>
 </figure>

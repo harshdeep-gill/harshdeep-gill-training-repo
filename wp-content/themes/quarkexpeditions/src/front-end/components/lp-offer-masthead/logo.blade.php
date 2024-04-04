@@ -20,7 +20,9 @@
 
 <figure class="lp-offer-masthead__logo">
 	<x-image
-		:args="$image_args"
 		:image_id="$image_id"
+		:args="$image_args"
+		loading="eager"
+		fetchpriority="high"
 	/>
 </figure>
