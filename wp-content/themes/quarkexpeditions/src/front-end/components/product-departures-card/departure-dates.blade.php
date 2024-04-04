@@ -5,5 +5,5 @@
 @endphp
 
 <div class="product-departures-card__departure-dates">
-	{!! $slot !!}
+	<x-content :content="$slot" />
 </div>
