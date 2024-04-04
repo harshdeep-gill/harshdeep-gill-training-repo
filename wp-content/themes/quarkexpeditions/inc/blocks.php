@@ -46,6 +46,7 @@ function register_blocks(): void {
 		'LPFormModalCta'   => 'lp-form-modal-cta.php',
 		'MediaContentCard' => 'media-content-card.php',
 		'Button'           => 'button.php',
+		'ContactCoverCard' => 'contact-cover-card.php',
 		'OfferCards'       => 'offer-cards.php',
 	];
 
