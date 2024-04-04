@@ -8,11 +8,6 @@
 @import "../front-end/scss";
 @import "../front-end/global/placeholders";
 
-.editor-styles-wrapper {
-	padding-left: var(--grid-col-gutter);
-	padding-right: var(--grid-col-gutter);
-}
-
 .editor-post-title__input {
 	font-family: var(--heading-font-family);
 	margin-bottom: 1rem !important;
