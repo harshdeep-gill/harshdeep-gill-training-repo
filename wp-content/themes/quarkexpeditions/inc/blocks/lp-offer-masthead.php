@@ -48,9 +48,7 @@ function render( ?string $content = null, array $block = [] ): null|string {
 	$attributes = [
 		'background_image_id' => $block['attrs']['bgImage']['id'] ?? 0,
 		'logo_image_id'       => $block['attrs']['logoImage']['id'] ?? 0,
-		'offer_image_id'      => 0,
-		'caption'             => '',
-		'inner_content'       => '',
+		'content'             => [],
 	];
 
 	// Parse inner blocks.
@@ -59,17 +57,41 @@ function render( ?string $content = null, array $block = [] ): null|string {
 
 			// Offer Image.
 			case 'quark/lp-offer-masthead-offer-image':
-				$attributes['offer_image_id'] = $inner_block['attrs']['offerImage']['id'] ?? 0;
+				$offer_image = [
+					'type' => 'offer-image',
+				];
+
+				// Add offer image.
+				$offer_image['offer_image_id'] = $inner_block['attrs']['offerImage']['id'] ?? 0;
+
+				// Add to attributes.
+				$attributes['content'][] = $offer_image;
 				break;
 
 			// Caption.
 			case 'quark/lp-offer-masthead-caption':
-				$attributes['caption'] = implode( '', array_map( 'render_block', $inner_block['innerBlocks'] ) );
+				$caption = [
+					'type' => 'caption',
+				];
+
+				// Add caption.
+				$caption['caption'] = implode( '', array_map( 'render_block', $inner_block['innerBlocks'] ) );
+
+				// Add to attributes.
+				$attributes['content'][] = $caption;
 				break;
 
 			// Content.
 			case 'quark/lp-offer-masthead-content':
-				$attributes['inner_content'] = implode( '', array_map( 'render_block', $inner_block['innerBlocks'] ) );
+				$inner_content = [
+					'type' => 'inner-content',
+				];
+
+				// Add inner content.
+				$inner_content['inner_content'] = implode( '', array_map( 'render_block', $inner_block['innerBlocks'] ) );
+
+				// Add to attributes.
+				$attributes['content'][] = $inner_content;
 				break;
 		}
 	}

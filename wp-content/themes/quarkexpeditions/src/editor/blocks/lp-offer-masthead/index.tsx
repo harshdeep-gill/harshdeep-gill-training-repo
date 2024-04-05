@@ -93,7 +93,6 @@ export const settings: BlockConfiguration = {
 			{
 				allowedBlocks: [ offerImage.name, caption.name, content.name ],
 				template: [ [ offerImage.name ], [ caption.name ], [ content.name ] ],
-				templateLock: 'insert',
 			}
 		);
 

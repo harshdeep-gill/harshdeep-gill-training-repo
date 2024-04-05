@@ -53,7 +53,6 @@ export const settings: BlockConfiguration = {
 			{
 				allowedBlocks: [ 'core/paragraph' ],
 				template: [ [ 'core/paragraph', { placeholder: __( 'Write caption…', 'qrk' ) } ] ],
-				templateLock: 'insert',
 			}
 		);
 
