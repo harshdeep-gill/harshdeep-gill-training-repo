@@ -46,7 +46,7 @@ function render( ?string $content = null, array $block = [] ): null|string {
 
 	// Initialize attributes.
 	$attributes = [
-		'is_compact' => $block['attrs']['isCompact'] ?? false,
+		'align_center' => $block['attrs']['alignCenter'] ?? false,
 	];
 
 	// Build slot.

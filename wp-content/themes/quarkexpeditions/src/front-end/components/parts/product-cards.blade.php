@@ -1,5 +1,5 @@
 @props( [
-	'is_compact' => false,
+	'align_center' => false,
 	'items'      => [],
 ] )
 
@@ -13,7 +13,7 @@
 	echo '</pre>';
 @endphp
 
-<x-product-cards :is_compact="$is_compact">
+<x-product-cards :align_center="$align_center">
 	@foreach ( $items as $card )
 		@if ( 'product-card' === $card['type'] )
 			<x-product-cards.card>

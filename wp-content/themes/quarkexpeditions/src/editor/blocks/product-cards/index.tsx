@@ -50,7 +50,7 @@ export const settings: BlockConfiguration = {
 		__( 'expeditions', 'qrk' ),
 	],
 	attributes: {
-		isCompact: {
+		alignCenter: {
 			type: 'boolean',
 			default: false,
 		},
@@ -69,7 +69,7 @@ export const settings: BlockConfiguration = {
 		// eslint-disable-next-line react-hooks/rules-of-hooks
 		const innerBlockProps = useInnerBlocksProps(
 			{
-				className: classnames( className, 'product-cards', 'grid', attributes.isCompact ? 'grid--cols-2' : 'grid--cols-3' ),
+				className: classnames( className, 'product-cards', 'grid', attributes.alignCenter ? 'product-cards--align-center' : 'grid--cols-3' ),
 			},
 			{
 				allowedBlocks: [ card.name ],
@@ -87,10 +87,10 @@ export const settings: BlockConfiguration = {
 				<InspectorControls>
 					<PanelBody title={ __( 'Product Cards Grid Options', 'qrk' ) }>
 						<ToggleControl
-							label={ __( 'Is the product cards grid compact?', 'qrk' ) }
-							checked={ attributes.isCompact }
-							onChange={ ( isCompact ) => setAttributes( { isCompact } ) }
-							help={ __( 'Does the grid have 2 columns instead of 3?', 'qrk' ) }
+							label={ __( 'Is the product cards grid centered?', 'qrk' ) }
+							checked={ attributes.alignCenter }
+							onChange={ ( alignCenter ) => setAttributes( { alignCenter } ) }
+							help={ __( 'Does the grid have center aligned items?', 'qrk' ) }
 						/>
 					</PanelBody>
 				</InspectorControls>

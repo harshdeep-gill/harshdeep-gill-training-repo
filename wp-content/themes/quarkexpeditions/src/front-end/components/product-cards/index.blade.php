@@ -1,19 +1,21 @@
+@props( [
+	'align_center' => false,
+] )
+
 @php
 	if ( empty( $slot ) ) {
 		return;
 	}
 
-	// Get cards count.
-	$cards_count = quark_get_slot_child_count( $slot );
+	$classes = [ 'product-cards', 'grid' ];
 
-	$classes = [ 'product-cards' ];
+	var_dump( $align_center );
 
-	if ( 2 === $cards_count ) {
-		$classes[] = 'product-cards--cols-2';
+	if ( ! empty( $align_center ) ) {
+		$classes[] = 'product-cards--align-center';
 	} else {
 		$classes[] = 'grid--cols-3';
 	}
-	$classes[] = 'grid';
 @endphp
 
 <x-section>
