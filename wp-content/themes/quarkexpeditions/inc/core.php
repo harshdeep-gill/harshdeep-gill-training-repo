@@ -230,6 +230,10 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'class' => true,
 					'name'  => true,
 				],
+				'quark-lp-form-modal-cta'  => [
+					'class'  => true,
+					'data-*' => true,
+				],
 				'quark-video-icons-card'   => [
 					'class'    => true,
 					'video_id' => true,

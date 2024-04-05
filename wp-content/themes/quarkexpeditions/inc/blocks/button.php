@@ -51,7 +51,7 @@ function render( ?string $content = null, array $block = [] ): null|string {
 		'target'       => ! empty( $block['attrs']['url']['newWindow'] ) ? '_blank' : '',
 		'appearance'   => $block['attrs']['appearance'] ?? '',
 		'size'         => ! empty( $block['attrs']['isSizeBig'] ) ? 'big' : '',
-		'icon'         => $block['attrs']['icon'] ?? '',
+		'icon'         => ! empty( $block['attrs']['hasIcon'] ) && ! empty( $block['attrs']['icon'] ) ? $block['attrs']['icon'] : '',
 		'iconPosition' => $block['attrs']['iconPosition'] ?? '',
 		'slot'         => $block['attrs']['btnText'] ?? '',
 	];

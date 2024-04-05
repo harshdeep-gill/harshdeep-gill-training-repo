@@ -51,7 +51,7 @@
     "wpackagist-plugin/wp-redis": "*"
   },
   "require-dev": {
-    "roots/wordpress": "6.4.3",
+    "roots/wordpress": "6.5.0",
     "vlucas/phpdotenv": "^v5.4.1",
     "oscarotero/env": "^v2.1.0",
     "squizlabs/php_codesniffer": "*",

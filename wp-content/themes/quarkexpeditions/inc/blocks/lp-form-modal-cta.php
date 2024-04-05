@@ -1,23 +1,23 @@
 <?php
 /**
- * Block: Inquiry Form.
+ * Block: LP Form Modal CTA.
  *
  * @package quark
  */
 
-namespace Quark\Theme\Blocks\InquiryForm;
+namespace Quark\Theme\Blocks\LPFormModalCta;
 
 use const Quark\LandingPages\POST_TYPE as LANDING_PAGE_POST_TYPE;
 
-const BLOCK_NAME = 'quark/inquiry-form';
-const COMPONENT  = 'inquiry-form';
+const BLOCK_NAME = 'quark/lp-form-modal-cta';
+const COMPONENT  = 'parts.lp-form-modal-cta';
 
 /**
  * Bootstrap this block.
  *
  * @return void
  */
-function bootstrap(): void {
+function bootstrap() : void {
 	// Register this block only on the front-end.
 	add_action( 'template_redirect', __NAMESPACE__ . '\\register' );
 }
@@ -27,7 +27,7 @@ function bootstrap(): void {
  *
  * @return void
  */
-function register(): void {
+function register() : void {
 	// Fire hooks.
 	add_filter( 'pre_render_block', __NAMESPACE__ . '\\render', 10, 2 );
 }
@@ -40,31 +40,22 @@ function register(): void {
  *
  * @return null|string
  */
-function render( ?string $content = null, array $block = [] ): null|string {
+function render( ?string $content = null, array $block = [] ) : null | string {
 	// Check for block.
 	if ( BLOCK_NAME !== $block['blockName'] ) {
 		return $content;
 	}
 
-	// Setup valid form types and a default.
-	$valid_form_types = [ 'inquiry-form', 'inquiry-form-compact' ];
-	$form_type        = 'inquiry-form';
-
-	// Set form type if not empty or default.
-	if ( ! empty( $block['attrs']['formType'] ) && in_array( $block['attrs']['formType'], $valid_form_types, true ) ) {
-		$form_type = $block['attrs']['formType'];
-	}
-
-	// Component name for the form.
-	$form_component = sprintf( 'forms.%s', $form_type );
-
-	// Build attributes.
+	// Build component attributes.
 	$attributes = [
-		'thank_you_page' => $block['attrs']['thankYouPageUrl'] ?? '',
-		'hidden_fields'  => [
+		'text'          => $block['attrs']['text'] ?? '',
+		'form_id'       => 'inquiry-form',
+		'class'         => $block['attrs']['className'] ?? '',
+		'hidden_fields' => [
 			'polar_region' => '',
-			'sub_region'   => '',
+			'season'       => '',
 			'ship'         => '',
+			'sub_region'   => '',
 			'expedition'   => '',
 		],
 	];
@@ -82,8 +73,9 @@ function render( ?string $content = null, array $block = [] ): null|string {
 		// Get the hidden fields values.
 		$attributes['hidden_fields'] = [
 			'polar_region' => $block['attrs']['polarRegion'] ?? '',
+			'season'       => $block['attrs']['season'] ?? '',
 			'ship'         => $block['attrs']['ship'] ?? '',
-			'subRegion'    => $block['attrs']['subRegion'] ?? '',
+			'sub_region'   => $block['attrs']['subRegion'] ?? '',
 			'expedition'   => $block['attrs']['expedition'] ?? '',
 		];
 	}
