@@ -159,6 +159,18 @@ function render( ?string $content = null, array $block = [] ): null|string {
 					// Add to attributes.
 					$attributes['left'][] = $cta;
 					break;
+
+				// Quark button.
+				case 'quark/button':
+					$button = [
+						'type' => 'button',
+					];
+
+					// Add button.
+					$button['button'] = render_block( $inner_inner_block );
+
+					// Add to attributes.
+					$attributes['left'][] = $button;
 			}
 		}
 	}

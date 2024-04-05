@@ -14,6 +14,7 @@ import {
  */
 import * as formModalCta from '../lp-form-modal-cta';
 import * as iconBadge from '../icon-badge';
+import * as quarkButton from '../button';
 
 /**
  * External dependencies.
@@ -74,7 +75,13 @@ export const settings: BlockConfiguration = {
 			{ ...blockProps },
 			{
 				allowedBlocks: [
-					iconBadge.name, formModalCta.name, overline.name, heroTitle.name, heroSubtitle.name, heroDescription.name,
+					iconBadge.name,
+					formModalCta.name,
+					overline.name,
+					heroTitle.name,
+					heroSubtitle.name,
+					heroDescription.name,
+					quarkButton.name,
 				],
 				template: [
 					[ overline.name ],

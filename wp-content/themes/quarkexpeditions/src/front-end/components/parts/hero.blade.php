@@ -61,6 +61,12 @@
 						{!! $item['cta'] !!}
 					@endif
 				@endif
+
+				@if( 'button' === $item['type'])
+					@if ( ! empty( $item['button'] ) )
+						{!! $item['button'] !!}
+					@endif
+				@endif
 			@endforeach
 		</x-hero.left>
 		<x-hero.right>
