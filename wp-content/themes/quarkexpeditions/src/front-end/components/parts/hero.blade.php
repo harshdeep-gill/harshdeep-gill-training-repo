@@ -1,15 +1,16 @@
 @props( [
-	'image_id'   => 0,
-	'immersive'  => false,
-	'text_align' => '',
-	'left'       => [
+	'image_id'        => 0,
+	'immersive'       => false,
+	'text_align'      => '',
+	'overlay_opacity' => 0,
+	'left'            => [
 		'overline' => '',
 		'title'    => '',
 		'subtitle' => '',
 		'tag'      => '',
 		'cta'      => '',
 	],
-	'right'      => [
+	'right'           => [
 		'form' => '',
 	],
 ] )
@@ -20,7 +21,7 @@
 	}
 @endphp
 
-<x-hero :immersive="$immersive" :text_align="$text_align">
+<x-hero :immersive="$immersive" :text_align="$text_align" :overlay_opacity="$overlay_opacity">
 	<x-hero.image :image_id="$image_id" />
 	<x-hero.content>
 		<x-hero.left>

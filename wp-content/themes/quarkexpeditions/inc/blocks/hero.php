@@ -46,17 +46,18 @@ function render( ?string $content = null, array $block = [] ): null|string {
 
 	// Initialize the attrs.
 	$attributes = [
-		'image_id'   => 0,
-		'immersive'  => $block['attrs']['isImmersive'] ?? false,
-		'text_align' => $block['attrs']['textAlign'] ?? '',
-		'left'       => [
+		'image_id'        => 0,
+		'immersive'       => $block['attrs']['isImmersive'] ?? false,
+		'text_align'      => $block['attrs']['textAlign'] ?? '',
+		'overlay_opacity' => $block['attrs']['overlayOpacity'] ?? 0,
+		'left'            => [
 			'overline' => '',
 			'title'    => '',
 			'subtitle' => '',
 			'tag'      => '',
 			'cta'      => '',
 		],
-		'right'      => [
+		'right'           => [
 			'form' => '',
 		],
 	];

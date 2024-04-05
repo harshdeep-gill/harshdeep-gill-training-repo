@@ -234,6 +234,10 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'class'    => true,
 					'video_id' => true,
 				],
+				'quark-hero-overlay'       => [
+					'class'  => true,
+					'data-*' => true,
+				],
 				'tp-form'                  => [
 					'class'          => true,
 					'prevent-submit' => true,
