@@ -146,7 +146,7 @@ function render( ?string $content = null, array $block = [] ): null|string {
 					break;
 
 				// CTA.
-				case 'quark/form-modal-cta':
+				case 'quark/lp-form-modal-cta':
 					$cta = [
 						'type' => 'cta',
 					];
