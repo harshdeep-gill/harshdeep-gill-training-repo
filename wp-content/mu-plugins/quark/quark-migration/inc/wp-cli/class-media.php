@@ -197,18 +197,21 @@ class Media {
 		// All done!
 		$progress->finish();
 		WP_CLI::success( "Migrated $count out of $total_images media." );
-
-		// Update metadata for media files.
-		$this->update_meta_data();
 	}
 
 	/**
-	 * Update meta data.
+	 * Migrate media metadata.
+	 *
+	 * ## EXAMPLES
+	 *    wp quark-migrate media metadata
+	 *
+	 * @param mixed[] $args       WP CLI arguments.
+	 * @param mixed[] $args_assoc WP CLI associative arguments.
 	 *
 	 * @return void
-	 * @throws ExitException Exception on Error.
+	 * @throws ExitException Exception on error.
 	 */
-	public function update_meta_data() : void {
+	public function metadata( array $args = [], array $args_assoc = [] ) : void {
 		// Update SVG meta data.
 		$this->update_svg_meta_data();
 
