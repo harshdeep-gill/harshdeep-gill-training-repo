@@ -9,8 +9,6 @@
 
 	$classes = [ 'product-cards', 'grid' ];
 
-	var_dump( $align_center );
-
 	if ( ! empty( $align_center ) ) {
 		$classes[] = 'product-cards--align-center';
 	} else {
