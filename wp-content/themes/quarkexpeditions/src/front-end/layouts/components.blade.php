@@ -28,7 +28,28 @@
 				</x-hero.left>
 				<x-hero.right>
 					<x-hero.form>
-						<x-form-two-step />
+						<x-form-two-step
+							:countries="[
+								'IN' => 'India',
+								'AU' => 'Australia',
+								'US' => 'United States',
+								'CA' => 'Canada',
+							]"
+							:states="[
+								'AU' => [
+									'ACT' => 'Australian Capital Territory',
+									'JBT' => 'Jervis Bay Territory',
+								],
+								'US' => [
+									'AA' => 'Armed Forces Americas',
+									'AE' => 'Armed Forces Europe',
+								],
+								'CA' => [
+									'AB' => 'Alberta',
+									'BC' => 'British Columbia',
+								],
+							]"
+						/>
 					</x-hero.form>
 				</x-hero.right>
 			</x-hero.content>
@@ -147,7 +168,28 @@
 				</x-hero.left>
 				<x-hero.right>
 					<x-hero.form>
-						<x-form-two-step-compact />
+						<x-form-two-step-compact
+							:countries="[
+								'IN' => 'India',
+								'AU' => 'Australia',
+								'US' => 'United States',
+								'CA' => 'Canada',
+							]"
+							:states="[
+								'AU' => [
+									'ACT' => 'Australian Capital Territory',
+									'JBT' => 'Jervis Bay Territory',
+								],
+								'US' => [
+									'AA' => 'Armed Forces Americas',
+									'AE' => 'Armed Forces Europe',
+								],
+								'CA' => [
+									'AB' => 'Alberta',
+									'BC' => 'British Columbia',
+								],
+							]"
+						/>
 					</x-hero.form>
 				</x-hero.right>
 			</x-hero.content>

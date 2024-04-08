@@ -3,8 +3,8 @@
 	'form_id'            => 'form-two-step-compact',
 	'modal_id'           => 'form-two-step-compact-modal',
 	'show_hidden_fields' => false,
-	'countries'          => \Quark\Leads\Forms\get_countries(),
-	'states'             => \Quark\Leads\Forms\get_states(),
+	'countries'          => [],
+	'states'             => [],
 ] )
 
 @php

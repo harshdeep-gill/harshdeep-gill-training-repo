@@ -3,8 +3,8 @@
 	'form_id'            => 'inquiry-form',
 	'modal_id'           => 'inquiry-form-modal',
 	'show_hidden_fields' => false,
-	'countries'          => \Quark\Leads\Forms\get_countries(),
-	'states'             => \Quark\Leads\Forms\get_states(),
+	'countries'          => [],
+	'states'             => [],
 ] )
 
 @php
