@@ -4,6 +4,7 @@
 	'modal_id'           => 'form-two-step-compact-modal',
 	'show_hidden_fields' => false,
 	'countries'          => \Quark\Leads\Forms\get_countries(),
+	'states'             => \Quark\Leads\Forms\get_states(),
 ] )
 
 @php
@@ -67,107 +68,16 @@
 							</x-form.select>
 						</x-form.field>
 
-						<x-form.field :validation="[ 'required' ]" data-country="AU" class="form-two-step-compact__state" data-name="fields[State_Code__c]">
-							<x-form.select label="State/Province">
-								<option value="">- Select -</option>
-								<option value="ACT">Australian Capital Territory</option>
-								<option value="JBT">Jervis Bay Territory</option>
-								<option value="NSW">New South Wales</option>
-								<option value="NT">Northern Territory</option>
-								<option value="QLD">Queensland</option>
-								<option value="SA">South Australia</option>
-								<option value="TAS">Tasmania</option>
-								<option value="VIC">Victoria</option>
-								<option value="WA">Western Australia</option>
-							</x-form.select>
-						</x-form.field>
-
-						<x-form.field :validation="[ 'required' ]" data-country="US" class="form-two-step-compact__state" data-name="fields[State_Code__c]">
-							<x-form.select label="State/Province">
-								<option value="">- Select -</option>
-								<option value="AA">Armed Forces Americas</option>
-								<option value="AE">Armed Forces Europe</option>
-								<option value="AK">Alaska</option>
-								<option value="AL">Alabama</option>
-								<option value="AP">Armed Forces Pacific</option>
-								<option value="AR">Arkansas</option>
-								<option value="AS">American Samoa</option>
-								<option value="AZ">Arizona</option>
-								<option value="CA">California</option>
-								<option value="CO">Colorado</option>
-								<option value="CT">Connecticut</option>
-								<option value="DC">District of Columbia</option>
-								<option value="DE">Delaware</option>
-								<option value="FL">Florida</option>
-								<option value="FM">Federated Micronesia</option>
-								<option value="GA">Georgia</option>
-								<option value="GU">Guam</option>
-								<option value="HI">Hawaii</option>
-								<option value="IA">Iowa</option>
-								<option value="ID">Idaho</option>
-								<option value="IL">Illinois</option>
-								<option value="IN">Indiana</option>
-								<option value="KS">Kansas</option>
-								<option value="KY">Kentucky</option>
-								<option value="LA">Louisiana</option>
-								<option value="MA">Massachusetts</option>
-								<option value="MD">Maryland</option>
-								<option value="ME">Maine</option>
-								<option value="MH">Marshall Islands</option>
-								<option value="MI">Michigan</option>
-								<option value="MN">Minnesota</option>
-								<option value="MO">Missouri</option>
-								<option value="MP">Northern Mariana Islands</option>
-								<option value="MS">Mississippi</option>
-								<option value="MT">Montana</option>
-								<option value="NC">North Carolina</option>
-								<option value="ND">North Dakota</option>
-								<option value="NE">Nebraska</option>
-								<option value="NH">New Hampshire</option>
-								<option value="NJ">New Jersey</option>
-								<option value="NM">New Mexico</option>
-								<option value="NV">Nevada</option>
-								<option value="NY">New York</option>
-								<option value="OH">Ohio</option>
-								<option value="OK">Oklahoma</option>
-								<option value="OR">Oregon</option>
-								<option value="PA">Pennsylvania</option>
-								<option value="PR">Puerto Rico</option>
-								<option value="PW">Palau</option>
-								<option value="RI">Rhode Island</option>
-								<option value="SC">South Carolina</option>
-								<option value="SD">South Dakota</option>
-								<option value="TN">Tennessee</option>
-								<option value="TX">Texas</option>
-								<option value="UM">United States Minor Outlying Islands</option>
-								<option value="UT">Utah</option>
-								<option value="VA">Virginia</option>
-								<option value="VI">US Virgin Islands</option>
-								<option value="VT">Vermont</option>
-								<option value="WA">Washington</option>
-								<option value="WI">Wisconsin</option>
-								<option value="WV">West Virginia</option>
-							</x-form.select>
-						</x-form.field>
-
-						<x-form.field :validation="[ 'required' ]" data-country="CA" class="form-two-step-compact__state" data-name="fields[State_Code__c]">
-							<x-form.select label="State/Province">
-								<option value="">- Select -</option>
-								<option value="AB">Alberta</option>
-								<option value="BC">British Columbia</option>
-								<option value="MB">Manitoba</option>
-								<option value="NB">New Brunswick</option>
-								<option value="NL">Newfoundland and Labrador</option>
-								<option value="NS">Nova Scotia</option>
-								<option value="NT">Northwest Territories</option>
-								<option value="NU">Nunavut</option>
-								<option value="ON">Ontario</option>
-								<option value="PE">Prince Edward Island</option>
-								<option value="QC">Quebec</option>
-								<option value="SK">Saskatchewan</option>
-								<option value="YT">Yukon Territories</option>
-							</x-form.select>
-						</x-form.field>
+						@foreach ( $states as $country_code => $country_states )
+							<x-form.field :validation="[ 'required' ]" data-country="{{ $country_code }}" class="form-two-step-compact__state" data-name="fields[State_Code__c]">
+								<x-form.select label="State/Province">
+									<option value="">- Select -</option>
+									@foreach ( $country_states as $state_code => $state_name )
+										<option value={{ $state_code }}>{{ $state_name }}</option>
+									@endforeach
+								</x-form.select>
+							</x-form.field>
+						@endforeach
 					</x-form.row>
 					<x-form.row>
 						<x-form.field :validation="[ 'required' ]">

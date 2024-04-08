@@ -270,3 +270,107 @@ function get_countries(): array {
 	// Return the countries.
 	return $countries;
 }
+
+/**
+ * Gets the key value pair of country-code/<state-code/state-name>.
+ *
+ * @return array<string,array<string,string>>
+ */
+function get_states(): array {
+	// Mapping for states with respective countries.
+	static $states = [
+		'AU' => [
+			'ACT' => 'Australian Capital Territory',
+			'JBT' => 'Jervis Bay Territory',
+			'NSW' => 'New South Wales',
+			'NT'  => 'Northern Territory',
+			'QLD' => 'Queensland',
+			'SA'  => 'South Australia',
+			'TAS' => 'Tasmania',
+			'VIC' => 'Victoria',
+			'WA'  => 'Western Australia',
+		],
+		'US' => [
+			'AA' => 'Armed Forces Americas',
+			'AE' => 'Armed Forces Europe',
+			'AK' => 'Alaska',
+			'AL' => 'Alabama',
+			'AP' => 'Armed Forces Pacific',
+			'AR' => 'Arkansas',
+			'AS' => 'American Samoa',
+			'AZ' => 'Arizona',
+			'CA' => 'California',
+			'CO' => 'Colorado',
+			'CT' => 'Connecticut',
+			'DC' => 'District of Columbia',
+			'DE' => 'Delaware',
+			'FL' => 'Florida',
+			'FM' => 'Federated Micronesia',
+			'GA' => 'Georgia',
+			'GU' => 'Guam',
+			'HI' => 'Hawaii',
+			'IA' => 'Iowa',
+			'ID' => 'Idaho',
+			'IL' => 'Illinois',
+			'IN' => 'Indiana',
+			'KS' => 'Kansas',
+			'KY' => 'Kentucky',
+			'LA' => 'Louisiana',
+			'MA' => 'Massachusetts',
+			'MD' => 'Maryland',
+			'ME' => 'Maine',
+			'MH' => 'Marshall Islands',
+			'MI' => 'Michigan',
+			'MN' => 'Minnesota',
+			'MO' => 'Missouri',
+			'MP' => 'Northern Mariana Islands',
+			'MS' => 'Mississippi',
+			'MT' => 'Montana',
+			'NC' => 'North Carolina',
+			'ND' => 'North Dakota',
+			'NE' => 'Nebraska',
+			'NH' => 'New Hampshire',
+			'NJ' => 'New Jersey',
+			'NM' => 'New Mexico',
+			'NV' => 'Nevada',
+			'NY' => 'New York',
+			'OH' => 'Ohio',
+			'OK' => 'Oklahoma',
+			'OR' => 'Oregon',
+			'PA' => 'Pennsylvania',
+			'PR' => 'Puerto Rico',
+			'PW' => 'Palau',
+			'RI' => 'Rhode Island',
+			'SC' => 'South Carolina',
+			'SD' => 'South Dakota',
+			'TN' => 'Tennessee',
+			'TX' => 'Texas',
+			'UM' => 'United States Minor Outlying Islands',
+			'UT' => 'Utah',
+			'VA' => 'Virginia',
+			'VI' => 'US Virgin Islands',
+			'VT' => 'Vermont',
+			'WA' => 'Washington',
+			'WI' => 'Wisconsin',
+			'WV' => 'West Virginia',
+		],
+		'CA' => [
+			'AB' => 'Alberta',
+			'BC' => 'British Columbia',
+			'MB' => 'Manitoba',
+			'NB' => 'New Brunswick',
+			'NL' => 'Newfoundland and Labrador',
+			'NS' => 'Nova Scotia',
+			'NT' => 'Northwest Territories',
+			'NU' => 'Nunavut',
+			'ON' => 'Ontario',
+			'PE' => 'Prince Edward Island',
+			'QC' => 'Quebec',
+			'SK' => 'Saskatchewan',
+			'YT' => 'Yukon Territories',
+		],
+	];
+
+	// Return the states.
+	return $states;
+}
