@@ -14,6 +14,8 @@ use WP_Query;
 use WP_Term_Query;
 use WP_Term;
 
+use function Quark\Migration\WordPress\convert_to_blocks;
+
 /**
  * Get the Drupal database object.
  *
@@ -434,4 +436,192 @@ function get_post_by_id( int $drupal_id = 0, string $post_type = 'post' ): WP_Po
 
 	// Return post.
 	return $posts->posts[0];
+}
+
+/**
+ * Prepare content for migration.
+ *
+ * @param string $content Original content.
+ *
+ * @return string
+ */
+function prepare_content( string $content = '' ): string {
+	// Transform shortcodes.
+	$content = transform_drupal_media_tags( $content );
+	$content = transform_image_tags( $content );
+
+	// Convert to blocks and return output.
+	return convert_to_blocks( $content );
+}
+
+/**
+ * Transform a drupal media tag into IMG tags.
+ *  i.e. - <drupal-media data-entity-type="media" alt="alternate text" data-entity-uuid="b3a11cbc-53a9-419d-b9b5-2497ac0ba2ba" data-align="center" data-caption="caption text">.
+ *
+ * @param string $string Input string.
+ *
+ * @return string
+ */
+function transform_drupal_media_tags( string $string = '' ): string {
+	// Look for shortcode pattern.
+	// preg_match_all with that has <drupal-media> tag.
+	preg_match_all( '#<drupal-media .*?data-entity-uuid="(.*?)".*?>#', $string, $matches );
+
+	// If no matches found then bail out.
+	if ( empty( $matches[0] ) || empty( $matches[1] ) ) {
+		return $string;
+	}
+
+	// Traverse results.
+	foreach ( $matches[1] as $key => $uuid ) {
+		// Look for Drupal media tag.
+		if ( empty( $matches[0][ $key ] ) ) {
+			continue;
+		}
+
+		// get alt, align and caption.
+		preg_match( '/alt="(.*?)"/', $matches[0][ $key ], $alt );
+		preg_match( '/data-align="(.*?)"/', $matches[0][ $key ], $align );
+		preg_match( '/data-caption="(.*?)"/', $matches[0][ $key ], $caption );
+
+		// Get Drupal media based on UUID.
+		$drupal_db = get_database();
+		$media     = $drupal_db->get_row(
+			strval(
+				$drupal_db->prepare(
+					'
+					SELECT
+						*
+					FROM
+						media
+					WHERE
+						media.`uuid` = %s
+					LIMIT 1
+					',
+					[
+						$uuid,
+					]
+				)
+			),
+			ARRAY_A
+		);
+
+		// If no media found then bail out.
+		if ( empty( $media['mid'] ) ) {
+			continue;
+		}
+
+		// Get the image on WordPress.
+		$image = download_file_by_mid( $media['mid'] );
+
+		// If image found then build HTML.
+		if ( is_integer( $image ) && ! empty( $image ) ) {
+			// Build HTML tag and replace the shortcode.
+			$src = wp_get_attachment_image_src( $image, 'large' );
+
+			// If image found then build HTML.
+			if ( ! empty( $src ) && is_array( $src ) ) {
+
+				// Get alt text.
+				if ( empty( $alt ) ) {
+					$alt = trim( wp_strip_all_tags( strval( get_post_meta( $image, '_wp_attachment_image_alt', true ) ) ) );
+				} else {
+					$alt = $alt[1];
+				}
+
+				// Build image HTML.
+				$image_html = sprintf(
+					'<img class="%s wp-image-%d size-large" src="%s" alt="%s" width="%d" height="%d" />',
+					$align[1] ?? 'alignnone',
+					$image,
+					$src[0],
+					$alt,
+					$src[1],
+					$src[2]
+				);
+
+				// if caption is available then add it.
+				if ( ! empty( $caption ) ) {
+					$image_html = sprintf(
+						'<figure class="wp-block-image %s">%s<figcaption>%s</figcaption></figure>',
+						$align[1] ?? 'alignnone',
+						$image_html,
+						$caption[1]
+					);
+				}
+
+				// Replace the drupal-media tag.
+				$string = str_replace( $matches[0][ $key ], $image_html, $string );
+			}
+		}
+	}
+
+	// Return output.
+	return $string;
+}
+
+/**
+ * Transform an IMG tag to have the correct paths.
+ *
+ * @param string $string Input string.
+ *
+ * @return string
+ */
+function transform_image_tags( string $string = '' ): string {
+	// Look for shortcode pattern.
+	preg_match_all( '#<img .*?src="(.*?)".*?>#', $string, $matches );
+
+	// If no matches found then bail out.
+	if ( empty( $matches[0] ) || empty( $matches[1] ) ) {
+		return $string;
+	}
+
+	// Traverse results.
+	foreach ( $matches[1] as $key => $image_src ) {
+		// Look for IMG tag.
+		if ( empty( $matches[0][ $key ] ) ) {
+			continue;
+		}
+
+		// Parse image SRC.
+		$parsed_src = wp_parse_url( $image_src );
+
+		// Ignore external images and invalid paths.
+		if (
+			! is_array( $parsed_src )
+			|| empty( $parsed_src['path'] )
+			|| ! str_contains( $parsed_src['path'], '/sites/default' )
+			|| ( ! empty( $parsed_src['host'] ) && ! str_contains( 'quarkexpeditions', $parsed_src['host'] ) )
+		) {
+			continue;
+		}
+
+		// Get Drupal image based on file name.
+		$image = download_file_by_url( $parsed_src['path'] );
+
+		// If image found then build HTML.
+		if ( is_integer( $image ) && ! empty( $image ) ) {
+			// Build HTML tag and replace the shortcode.
+			$src = wp_get_attachment_image_src( $image, 'large' );
+
+			// If image found then build HTML.
+			if ( ! empty( $src ) && is_array( $src ) ) {
+				$alt        = trim( wp_strip_all_tags( strval( get_post_meta( $image, '_wp_attachment_image_alt', true ) ) ) );
+				$image_html = sprintf(
+					'<img class="alignnone wp-image-%d size-large" src="%s" alt="%s" width="%d" height="%d" />',
+					$image,
+					$src[0],
+					$alt,
+					$src[1],
+					$src[2]
+				);
+
+				// Replace the new IMG tag in string.
+				$string = str_replace( $matches[0][ $key ], $image_html, $string );
+			}
+		}
+	}
+
+	// Return output.
+	return $string;
 }

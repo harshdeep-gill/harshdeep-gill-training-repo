@@ -48,7 +48,9 @@
     "wpackagist-plugin/stream": "*",
     "wpackagist-plugin/two-factor": "*",
     "wpackagist-plugin/wordpress-seo": "*",
-    "wpackagist-plugin/wp-redis": "*"
+    "wpackagist-plugin/wp-redis": "*",
+    "ext-dom": "*",
+    "ext-libxml": "*"
   },
   "require-dev": {
     "roots/wordpress": "6.5.0",
