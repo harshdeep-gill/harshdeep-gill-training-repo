@@ -197,23 +197,29 @@ class Media {
 		// All done!
 		$progress->finish();
 		WP_CLI::success( "Migrated $count out of $total_images media." );
-
-		// Update metadata for media files.
-		$this->update_meta_data();
 	}
 
 	/**
-	 * Update meta data.
+	 * Migrate media metadata.
+	 *
+	 * ## EXAMPLES
+	 *    wp quark-migrate media metadata
+	 *
+	 * @param mixed[] $args       WP CLI arguments.
+	 * @param mixed[] $args_assoc WP CLI associative arguments.
 	 *
 	 * @return void
-	 * @throws ExitException Exception on Error.
+	 * @throws ExitException Exception on error.
 	 */
-	public function update_meta_data() : void {
+	public function metadata( array $args = [], array $args_assoc = [] ) : void {
 		// Update SVG meta data.
 		$this->update_svg_meta_data();
 
 		// Update photographer credit data for media.
 		$this->update_photographer_credit_data();
+
+		// Update External URL for pdf media.
+		$this->update_url_data();
 
 		// TODO: Verify the usage of branding data for media if not required remove it.
 		// Update branding term data for media.
@@ -314,6 +320,17 @@ class Media {
 	public function update_photographer_credit_data() : void {
 		// Update photographer credit data for media.
 		$this->process_meta_data( table_name: 'media__field_photographer_credit', field_name: 'field_photographer_credit_value', meta_key: 'photographer_credit' );
+	}
+
+	/**
+	 * Update External URL for pdf media.
+	 *
+	 * @return void
+	 * @throws ExitException Exception on Error.
+	 */
+	public function update_url_data() : void {
+		// Update photographer credit data for media.
+		$this->process_meta_data( table_name: 'media__field_url', field_name: 'field_url_uri', meta_key: 'external_url' );
 	}
 
 	/**
