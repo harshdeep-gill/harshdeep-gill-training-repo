@@ -2,6 +2,8 @@
 	'class'          => '',
 	'form_id'        => '',
 	'thank_you_page' => '',
+	'countries'      => [],
+	'states'         => [],
 	'hidden_fields'  => [],
 ] )
 
@@ -53,6 +55,8 @@
 					'form_id'            => $form_id,
 					'modal_id'           => $modal_id,
 					'show_hidden_fields' => $show_hidden_fields,
+					'countries'          => $countries,
+					'states'             => $states,
 				]
 			)
 		!!}

@@ -9,6 +9,9 @@ namespace Quark\Theme\Blocks\FormTwoStepCompact;
 
 use const Quark\LandingPages\POST_TYPE as LANDING_PAGE_POST_TYPE;
 
+use function Quark\Leads\Forms\get_countries;
+use function Quark\Leads\Forms\get_states;
+
 const BLOCK_NAME = 'quark/form-two-step-compact';
 const COMPONENT  = 'form-two-step-compact';
 
@@ -49,6 +52,8 @@ function render( ?string $content = null, array $block = [] ): null|string {
 	// Initialize attributes.
 	$attributes = [
 		'thank_you_page' => $block['attrs']['thankYouPageUrl'] ?? '',
+		'countries'      => get_countries(),
+		'states'         => get_states(),
 		'hidden_fields'  => [],
 	];
 
