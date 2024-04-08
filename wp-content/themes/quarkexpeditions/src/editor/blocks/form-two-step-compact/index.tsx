@@ -37,7 +37,7 @@ export const name: string = 'quark/form-two-step-compact';
 export const settings: BlockConfiguration = {
 	apiVersion: 2,
 	title: __( 'Two Step Compact Form', 'qrk' ),
-	description: __( 'Display an two step compact form.', 'qrk' ),
+	description: __( 'Display a two step compact form.', 'qrk' ),
 	category: 'forms',
 	keywords: [
 		__( 'two', 'qrk' ),
