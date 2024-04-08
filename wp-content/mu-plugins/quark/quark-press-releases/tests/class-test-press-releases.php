@@ -2,7 +2,7 @@
 /**
  * Pages test suite.
  *
- * @package quark-pages
+ * @package quark-press-release
  */
 
 namespace Quark\Pages\Tests;
@@ -18,7 +18,7 @@ class Test_Press_Releases extends WP_UnitTestCase {
 	/**
 	 * Test single layout.
 	 *
-	 * @covers \Quark\Pages\layout_single()
+	 * @covers \Quark\PressRelease\layout_single()
 	 *
 	 * @return void
 	 */
@@ -26,7 +26,7 @@ class Test_Press_Releases extends WP_UnitTestCase {
 		// No post.
 		$this->assertEquals(
 			[],
-			\Quark\Pages\layout_single()
+			\Quark\PressRelease\layout_single()
 		);
 
 		// Create post.
@@ -35,7 +35,7 @@ class Test_Press_Releases extends WP_UnitTestCase {
 				'post_title'   => 'Test Post',
 				'post_content' => 'Post content',
 				'post_status'  => 'publish',
-				'post_type'    => \Quark\Pages\POST_TYPE,
+				'post_type'    => \Quark\PressRelease\POST_TYPE,
 			]
 		);
 
@@ -44,21 +44,19 @@ class Test_Press_Releases extends WP_UnitTestCase {
 
 		// Replace current post.
 		global $post;
-		$post_backup = $post;
-		$post        = $post_1; // phpcs:ignore
+		$post = $post_1; // phpcs:ignore
 
 		// Test with post.
-		$layout = \Quark\Pages\layout_single();
+		$layout = \Quark\PressRelease\layout_single();
 
 		// Assert expected layout is equal to actual layout.
 		$this->assertEquals(
 			[
 				'layout' => 'single',
 				'data'   => [
-					'post'           => $post_1,
-					'permalink'      => 'http://test.quarkexpeditions.com/test-post',
-					'post_thumbnail' => 0,
-					'post_content'   => 'Post content',
+					'post'         => $post_1,
+					'permalink'    => 'http://test.quarkexpeditions.com/press-releases/test-post',
+					'post_content' => 'Post content',
 				],
 			],
 			$layout
@@ -72,61 +70,12 @@ class Test_Press_Releases extends WP_UnitTestCase {
 			"<p>Post content</p>\n",
 			$layout['data']['post_content'] // @phpstan-ignore-line
 		);
-
-		// Assert expected post thumbnail is equal to actual post thumbnail.
-		$this->assertEquals(
-			0,
-			$layout['data']['post_thumbnail'] // @phpstan-ignore-line
-		);
-
-		// Test page template.
-		update_post_meta( $post_1->ID, '_wp_page_template', 'templates/something.php' );
-		$this->assertEquals(
-			[
-				'layout' => 'something',
-				'data'   => [
-					'post'           => $post_1,
-					'permalink'      => 'http://test.quarkexpeditions.com/test-post',
-					'post_thumbnail' => 0,
-					'post_content'   => 'Post content',
-				],
-			],
-			\Quark\Pages\layout_single()
-		);
-
-		// Test home page.
-		global $wp_query;
-		$wp_query_backup = $wp_query;
-		update_option( 'show_on_front', 'page' );
-		update_option( 'page_on_front', $post_1->ID );
-		$wp_query->is_page        = true;
-		$wp_query->queried_object = $post_1;
-
-		// Assert expected layout is equal to actual layout.
-		$this->assertEquals(
-			[
-				'layout' => 'home',
-				'data'   => [
-					'post'           => $post_1,
-					'permalink'      => 'http://test.quarkexpeditions.com/',
-					'post_thumbnail' => 0,
-					'post_content'   => 'Post content',
-				],
-			],
-			\Quark\Pages\layout_single()
-		);
-
-		// Clean up.
-		$post     = $post_backup;  // phpcs:ignore
-		$wp_query = $wp_query_backup;  // phpcs:ignore
-		update_option( 'show_on_front', 'posts' );
-		update_option( 'page_on_front', '0' );
 	}
 
 	/**
 	 * Test single layout.
 	 *
-	 * @covers \Quark\Pages\get()
+	 * @covers Quark\PressRelease\get()
 	 *
 	 * @return void
 	 */
@@ -137,7 +86,7 @@ class Test_Press_Releases extends WP_UnitTestCase {
 				'post_title'   => 'Test Post',
 				'post_content' => 'Post content',
 				'post_status'  => 'publish',
-				'post_type'    => \Quark\Pages\POST_TYPE,
+				'post_type'    => \Quark\PressRelease\POST_TYPE,
 			]
 		);
 
@@ -155,28 +104,21 @@ class Test_Press_Releases extends WP_UnitTestCase {
 		$this->assertTrue( $post_2 instanceof WP_Post );
 
 		// Test getting post.
-		$the_post = \Quark\Pages\get( $post_1->ID );
+		$the_post = \Quark\PressRelease\get( $post_1->ID );
 
 		// Assert post's expected permalink is correct is equal to actual permalink.
 		$this->assertEquals(
-			'http://test.quarkexpeditions.com/test-post',
+			'http://test.quarkexpeditions.com/press-releases/test-post',
 			$the_post['permalink']
-		);
-
-		// Assert post's expected post thumbnail is correct is equal to actual post thumbnail.
-		$this->assertEquals(
-			0,
-			$the_post['post_thumbnail']
 		);
 
 		// Test getting incorrect post.
 		$this->assertEquals(
 			[
-				'post'           => null,
-				'permalink'      => '',
-				'post_thumbnail' => 0,
+				'post'      => null,
+				'permalink' => '',
 			],
-			\Quark\Pages\get( $post_2->ID )
+			\Quark\PressRelease\get( $post_2->ID )
 		);
 	}
 }
