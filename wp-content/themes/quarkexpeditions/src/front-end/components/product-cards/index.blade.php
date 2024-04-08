@@ -1,5 +1,5 @@
 @props( [
-	'align_center' => false,
+	'align' => 'left',
 ] )
 
 @php
@@ -9,7 +9,7 @@
 
 	$classes = [ 'product-cards', 'grid' ];
 
-	if ( ! empty( $align_center ) ) {
+	if ( ! empty( $align ) && 'center' === $align ) {
 		$classes[] = 'product-cards--align-center';
 	} else {
 		$classes[] = 'grid--cols-3';

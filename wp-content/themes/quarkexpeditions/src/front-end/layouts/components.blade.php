@@ -1267,7 +1267,7 @@
 	</x-component-demo>
 
 	<x-component-demo :keys="[ 'product-cards' ]">
-		<x-product-cards :align_center="true">
+		<x-product-cards align="center">
 			<x-product-cards.card url="#">
 				<x-product-cards.image
 					image_id="29"

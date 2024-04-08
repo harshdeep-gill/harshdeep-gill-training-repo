@@ -1,19 +1,15 @@
 @props( [
-	'align_center' => false,
-	'items'      => [],
+	'align' => 'left',
+	'items' => [],
 ] )
 
 @php
 	if ( empty( $items ) ) {
 		return;
 	}
-
-	echo '<pre>';
-	// print_r( $items );
-	echo '</pre>';
 @endphp
 
-<x-product-cards :align_center="$align_center">
+<x-product-cards :align="$align">
 	@foreach ( $items as $card )
 		@if ( 'product-card' === $card['type'] )
 			<x-product-cards.card>

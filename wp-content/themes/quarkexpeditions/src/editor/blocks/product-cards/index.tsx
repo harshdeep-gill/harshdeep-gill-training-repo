@@ -25,7 +25,7 @@ import './editor.scss';
  * Child block.
  */
 import * as card from './card';
-import { PanelBody, ToggleControl } from '@wordpress/components';
+import { PanelBody, SelectControl } from '@wordpress/components';
 
 /**
  * Register child block.
@@ -46,13 +46,14 @@ export const settings: BlockConfiguration = {
 	description: __( 'Add product cards to the page.', 'qrk' ),
 	category: 'layout',
 	keywords: [
-		__( 'product cards', 'qrk' ),
+		__( 'product', 'qrk' ),
+		__( 'cards', 'qrk' ),
 		__( 'expeditions', 'qrk' ),
 	],
 	attributes: {
-		alignCenter: {
-			type: 'boolean',
-			default: false,
+		align: {
+			type: 'string',
+			default: 'left',
 		},
 	},
 	supports: {
@@ -69,7 +70,7 @@ export const settings: BlockConfiguration = {
 		// eslint-disable-next-line react-hooks/rules-of-hooks
 		const innerBlockProps = useInnerBlocksProps(
 			{
-				className: classnames( className, 'product-cards', 'grid', attributes.alignCenter ? 'product-cards--align-center' : 'grid--cols-3' ),
+				className: classnames( className, 'product-cards', 'grid', 'center' === attributes.align ? 'product-cards--align-center' : 'grid--cols-3' ),
 			},
 			{
 				allowedBlocks: [ card.name ],
@@ -86,11 +87,15 @@ export const settings: BlockConfiguration = {
 			<>
 				<InspectorControls>
 					<PanelBody title={ __( 'Product Cards Grid Options', 'qrk' ) }>
-						<ToggleControl
-							label={ __( 'Is the product cards grid centered?', 'qrk' ) }
-							checked={ attributes.alignCenter }
-							onChange={ ( alignCenter ) => setAttributes( { alignCenter } ) }
-							help={ __( 'Does the grid have center aligned items?', 'qrk' ) }
+						<SelectControl
+							label={ __( 'Product Cards Alignment', 'qrk' ) }
+							help={ __( 'Select the cards alignment', 'qrk' ) }
+							value={ attributes.align }
+							options={ [
+								{ label: __( 'Left', 'qrk' ), value: 'left' },
+								{ label: __( 'Center', 'qrk' ), value: 'center' },
+							] }
+							onChange={ ( align: string ) => setAttributes( { align } ) }
 						/>
 					</PanelBody>
 				</InspectorControls>

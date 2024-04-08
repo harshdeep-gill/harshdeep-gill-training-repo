@@ -46,7 +46,7 @@ function render( ?string $content = null, array $block = [] ): null|string {
 
 	// Initialize attributes.
 	$attributes = [
-		'align_center' => $block['attrs']['alignCenter'] ?? false,
+		'align' => $block['attrs']['align'] ?? 'left',
 	];
 
 	// Build slot.
