@@ -18,12 +18,6 @@
 		$classes[] = $class;
 	}
 
-	$show_hidden_fields = false;
-
-	if ( ! empty( $hidden_fields ) ) {
-		$show_hidden_fields = true;
-	}
-
 	/**
 	 * $modal_id will be different for each $form_id and $thank_you_page url.
 	 */
@@ -46,7 +40,6 @@
 			:thank_you_page="$thank_you_page"
 			:form_id="$form_id"
 			:modal_id="$modal_id"
-			:show_hidden_fields="$show_hidden_fields"
 			:countries="$countries"
 			:states="$states"
 		/>

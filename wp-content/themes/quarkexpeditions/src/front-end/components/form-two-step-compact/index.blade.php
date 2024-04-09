@@ -2,6 +2,8 @@
 	'class'          => '',
 	'thank_you_page' => '',
 	'form_id'        => 'form-two-step-compact',
+	'countries'      => [],
+	'states'         => [],
 	'hidden_fields'  => [],
 ] )
 

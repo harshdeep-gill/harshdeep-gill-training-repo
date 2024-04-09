@@ -1,10 +1,9 @@
 @props( [
-	'thank_you_page'     => '',
-	'form_id'            => 'form-two-step',
-	'modal_id'           => 'form-two-step-modal',
-	'show_hidden_fields' => false,
-	'countries'          => [],
-	'states'             => [],
+	'thank_you_page' => '',
+	'form_id'        => 'form-two-step',
+	'modal_id'       => 'form-two-step-modal',
+	'countries'      => [],
+	'states'         => [],
 ] )
 
 @php
@@ -24,11 +23,9 @@
 			salesforce_object="{{ $salesforce_object }}"
 			thank_you_page="{{ $thank_you_page }}"
 		>
-			@if ( true === $show_hidden_fields )
-				<input type="hidden" name="fields[Polar_Region__c]" value="" class="form__polar-region-field">
-				<input type="hidden" name="fields[Ship__c]" value="" class="form__ship-field">
-				<input type="hidden" name="fields[Expedition__c]" value="" class="form__expedition-field">
-			@endif
+			<input type="hidden" name="fields[Polar_Region__c]" value="" class="form__polar-region-field">
+			<input type="hidden" name="fields[Ship__c]" value="" class="form__ship-field">
+			<input type="hidden" name="fields[Expedition__c]" value="" class="form__expedition-field">
 
 			<div class="form-two-step__content">
 				@if( ! empty( $title ) || ! empty( $subtitle ) )

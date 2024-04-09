@@ -18,12 +18,6 @@
 		$classes[] = $class;
 	}
 
-	$show_hidden_fields = false;
-
-	if ( ! empty( $hidden_fields ) ) {
-		$show_hidden_fields = true;
-	}
-
 	// Get the modal component name for the $form_id
 	$modal_component = 'inquiry-form-modal';
 
@@ -54,7 +48,6 @@
 					'thank_you_page'     => $thank_you_page,
 					'form_id'            => $form_id,
 					'modal_id'           => $modal_id,
-					'show_hidden_fields' => $show_hidden_fields,
 					'countries'          => $countries,
 					'states'             => $states,
 				]

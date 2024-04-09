@@ -2,7 +2,6 @@
 	'thank_you_page'     => '',
 	'form_id'            => 'inquiry-form',
 	'modal_id'           => 'inquiry-form-modal',
-	'show_hidden_fields' => false,
 	'countries'          => [],
 	'states'             => [],
 ] )
@@ -24,13 +23,11 @@
 			salesforce_object="{{ $salesforce_object }}"
 			thank_you_page="{{ $thank_you_page }}"
 		>
-			@if ( true === $show_hidden_fields )
-				<input type="hidden" name="fields[Polar_Region__c]" value="" class="form__polar-region-field">
-				<input type="hidden" name="fields[Season__c]" value="" class="form__season-field">
-				<input type="hidden" name="fields[Ship__c]" value="" class="form__ship-field">
-				<input type="hidden" name="fields[Sub_Region__c]" value="" class="form__sub-region-field">
-				<input type="hidden" name="fields[Expedition__c]" value="" class="form__expedition-field">
-			@endif
+			<input type="hidden" name="fields[Polar_Region__c]" value="" class="form__polar-region-field">
+			<input type="hidden" name="fields[Season__c]" value="" class="form__season-field">
+			<input type="hidden" name="fields[Ship__c]" value="" class="form__ship-field">
+			<input type="hidden" name="fields[Sub_Region__c]" value="" class="form__sub-region-field">
+			<input type="hidden" name="fields[Expedition__c]" value="" class="form__expedition-field">
 
 			<div class="inquiry-form__content">
 				@if( ! empty( $title ) || ! empty( $subtitle ) )
