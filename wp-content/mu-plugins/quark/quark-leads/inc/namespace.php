@@ -30,9 +30,6 @@ function bootstrap(): void {
 	// Admin stuff.
 	add_action( 'admin_menu', __NAMESPACE__ . '\\setup_settings' );
 
-	// Helper functions for Forms.
-	require_once __DIR__ . '/forms/namespace.php';
-
 	// Custom fields.
 	if ( is_admin() ) {
 		require_once __DIR__ . '/../custom-fields/leads.php';

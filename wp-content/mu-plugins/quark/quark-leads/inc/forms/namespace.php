@@ -1,6 +1,6 @@
 <?php
 /**
- * Helper functions for lead forms.
+ * Forms namespace.
  *
  * @package quark-leads
  */
