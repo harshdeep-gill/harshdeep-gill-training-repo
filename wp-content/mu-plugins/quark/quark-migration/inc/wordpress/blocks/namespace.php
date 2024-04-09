@@ -22,22 +22,21 @@ use function Quark\Migration\WordPress\convert_to_blocks;
  */
 function bootstrap(): void {
 	// Add filters.
-	add_filter( 'qr_convert_to_blocks_fallback', __NAMESPACE__ . '\\convert_node_html', 10, 2 );
-	add_filter( 'qr_convert_to_blocks_h1', __NAMESPACE__ . '\\convert_node_heading', 10, 2 );
-	add_filter( 'qr_convert_to_blocks_h2', __NAMESPACE__ . '\\convert_node_heading', 10, 2 );
-	add_filter( 'qr_convert_to_blocks_h3', __NAMESPACE__ . '\\convert_node_heading', 10, 2 );
-	add_filter( 'qr_convert_to_blocks_h4', __NAMESPACE__ . '\\convert_node_heading', 10, 2 );
-	add_filter( 'qr_convert_to_blocks_h5', __NAMESPACE__ . '\\convert_node_heading', 10, 2 );
-	add_filter( 'qr_convert_to_blocks_h6', __NAMESPACE__ . '\\convert_node_heading', 10, 2 );
-	add_filter( 'qr_convert_to_blocks_p', __NAMESPACE__ . '\\convert_node_paragraph', 10, 2 );
-	add_filter( 'qr_convert_to_blocks_ul', __NAMESPACE__ . '\\convert_node_list', 10, 2 );
-	add_filter( 'qr_convert_to_blocks_ol', __NAMESPACE__ . '\\convert_node_list', 10, 2 );
-	add_filter( 'qr_convert_to_blocks_figure', __NAMESPACE__ . '\\convert_node_figure', 10, 2 );
-	add_filter( 'qr_convert_to_blocks_img', __NAMESPACE__ . '\\convert_node_image', 10, 2 );
-	add_filter( 'qr_convert_to_blocks_div', __NAMESPACE__ . '\\convert_node_div', 10, 2 );
-	add_filter( 'qr_convert_to_blocks_a', __NAMESPACE__ . '\\convert_node_link', 10, 2 );
-	add_filter( 'qr_convert_to_blocks_span', __NAMESPACE__ . '\\convert_node_span', 10, 2 );
-	add_filter( 'qr_convert_to_blocks_iframe', __NAMESPACE__ . '\\convert_node_iframe', 10, 2 );
+	add_filter( 'qrk_convert_to_blocks_fallback', __NAMESPACE__ . '\\convert_node_html', 10, 2 );
+	add_filter( 'qrk_convert_to_blocks_h1', __NAMESPACE__ . '\\convert_node_heading', 10, 2 );
+	add_filter( 'qrk_convert_to_blocks_h2', __NAMESPACE__ . '\\convert_node_heading', 10, 2 );
+	add_filter( 'qrk_convert_to_blocks_h3', __NAMESPACE__ . '\\convert_node_heading', 10, 2 );
+	add_filter( 'qrk_convert_to_blocks_h4', __NAMESPACE__ . '\\convert_node_heading', 10, 2 );
+	add_filter( 'qrk_convert_to_blocks_h5', __NAMESPACE__ . '\\convert_node_heading', 10, 2 );
+	add_filter( 'qrk_convert_to_blocks_h6', __NAMESPACE__ . '\\convert_node_heading', 10, 2 );
+	add_filter( 'qrk_convert_to_blocks_p', __NAMESPACE__ . '\\convert_node_paragraph', 10, 2 );
+	add_filter( 'qrk_convert_to_blocks_ul', __NAMESPACE__ . '\\convert_node_list', 10, 2 );
+	add_filter( 'qrk_convert_to_blocks_ol', __NAMESPACE__ . '\\convert_node_list', 10, 2 );
+	add_filter( 'qrk_convert_to_blocks_figure', __NAMESPACE__ . '\\convert_node_figure', 10, 2 );
+	add_filter( 'qrk_convert_to_blocks_img', __NAMESPACE__ . '\\convert_node_image', 10, 2 );
+	add_filter( 'qrk_convert_to_blocks_div', __NAMESPACE__ . '\\convert_node_div', 10, 2 );
+	add_filter( 'qrk_convert_to_blocks_a', __NAMESPACE__ . '\\convert_node_link', 10, 2 );
+	add_filter( 'qrk_convert_to_blocks_iframe', __NAMESPACE__ . '\\convert_node_iframe', 10, 2 );
 }
 
 /**
@@ -232,36 +231,32 @@ function convert_node_paragraph( string $output = '', ?DOMElement $node = null )
 
 	// Traverse child nodes.
 	foreach ( $node->childNodes as $child_node ) {
-		// Check element is valid DOMElement.
-		if ( $child_node instanceof DOMElement ) {
-			// If any child is a button, convert this into a button block.
-			if (
-				'a' === $child_node->tagName
-				&& str_contains( $child_node->getAttribute( 'class' ), 'btn btn-primary' )
-			) {
-				$button = convert_node_link( '', $node->childNodes[0] );
+		// If any child is a button, convert this into a button block.
+		if (
+			$child_node instanceof DOMElement
+			&& 'a' === $child_node->tagName
+			&& str_contains( $child_node->getAttribute( 'class' ), 'btn btn-primary' )
+		) {
+			$button = convert_node_link( '', $child_node );
 
-				// check if button is not empty.
-				if ( ! empty( $button ) ) {
-					$inner_html .= $button;
-				}
+			// check if button is not empty.
+			if ( ! empty( $button ) ) {
+				return $button;
 			}
+		}
 
-			// if any child is an image, convert this into an image block.
-			if ( $child_node instanceof DOMElement && 'img' === $child_node->tagName ) {
-				$inner_html .= convert_node_to_block( $child_node );
-			}
+		// if any child is an image, convert this into an image block.
+		if ( $child_node instanceof DOMElement && 'img' === $child_node->tagName ) {
+			$inner_html .= convert_node_to_block( $child_node );
+		}
 
-			// if any child is a span, remove span tag.
-			if ( $child_node instanceof DOMElement && 'span' === $child_node->tagName ) {
-				$inner_html .= convert_node_span( '', $child_node );
-			}
+		// If any child is an IFRAME, convert this into an IFRAME block.
+		if ( $child_node instanceof DOMElement && 'iframe' === $child_node->tagName ) {
+			return convert_node_iframe( '', $child_node );
+		}
 
-			// If any child is an IFRAME, convert this into an IFRAME block.
-			if ( $child_node instanceof DOMElement && 'iframe' === $child_node->tagName ) {
-				$inner_html .= convert_node_iframe( '', $child_node );
-			}
-		} elseif ( $child_node->ownerDocument instanceof DOMDocument ) {
+		// Get HTML of current child node.
+		if ( $child_node->ownerDocument instanceof DOMDocument ) {
 			$inner_html .= $child_node->ownerDocument->saveHTML( $child_node );
 		}
 	}
@@ -651,34 +646,6 @@ function convert_node_link( string $output = '', DOMElement $node = null ): stri
 			),
 		]
 	);
-}
-
-/**
- * Convert a span node into a block.
- *
- * @param string          $output Block output.
- * @param DOMElement|null $node   Node element.
- *
- * @return string
- */
-function convert_node_span( string $output = '', ?DOMElement $node = null ): string {
-	// Check for correct node.
-	if ( ! $node instanceof DOMElement ) {
-		return $output;
-	}
-
-	// Prepare inner HTML.
-	$inner_html = '';
-
-	// Get inner HTML.
-	foreach ( $node->childNodes as $child_node ) {
-		if ( $child_node->ownerDocument instanceof DOMDocument ) {
-			$inner_html .= $child_node->ownerDocument->saveHTML( $child_node );
-		}
-	}
-
-	// Return block output.
-	return $inner_html;
 }
 
 /**

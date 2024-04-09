@@ -117,7 +117,7 @@ function convert_node_to_block( ?DOMElement $node = null ): string {
 	}
 
 	// Convert node to block.
-	$block = apply_filters( 'qr_convert_to_blocks_' . $node->tagName, '', $node );
+	$block = apply_filters( 'qrk_convert_to_blocks_' . $node->tagName, '', $node );
 
 	// Fallback to generic block.
 	if ( empty( $block ) ) {

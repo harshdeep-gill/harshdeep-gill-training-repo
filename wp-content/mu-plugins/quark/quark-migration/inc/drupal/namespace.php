@@ -259,6 +259,53 @@ function get_wp_attachment_id_by_fid( int $drupal_fid = 0 ): int {
 }
 
 /**
+ * Get WordPress attachment ID by Drupal media path.
+ *
+ * @param string $drupal_path Drupal media (relative) path.
+ *
+ * @return int WordPress's attachment ID on success otherwise 0.
+ */
+function get_wp_attachment_id_by_drupal_url( string $drupal_path = '' ): int {
+	// Global $wpdb instance.
+	global $wpdb;
+
+	// Check whether path is provided or not.
+	if ( empty( $drupal_path ) ) {
+		return 0;
+	}
+
+	// Get attachment ID.
+	$attachment = $wpdb->get_row(
+		$wpdb->prepare(
+			"
+					SELECT
+						$wpdb->posts.ID AS id
+					FROM
+						$wpdb->posts
+					INNER JOIN $wpdb->postmeta AS `postmeta`
+						ON $wpdb->posts.ID = postmeta.post_id
+					WHERE
+						$wpdb->posts.post_type = 'attachment'
+						AND $wpdb->posts.post_status = 'inherit'
+						AND ( postmeta.meta_key = 'drupal_path' AND postmeta.meta_value = %s )
+					",
+			[
+				$drupal_path,
+			]
+		),
+		ARRAY_A
+	);
+
+	// If attachment ID found then send it.
+	if ( ! empty( $attachment['id'] ) ) {
+		return absint( $attachment['id'] );
+	}
+
+	// If attachment ID not found then return 0.
+	return 0;
+}
+
+/**
  * Download the file.
  *
  * @param array<string, mixed> $file_data File data.
@@ -356,6 +403,80 @@ function download_file( array $file_data = [] ): int|WP_Error {
 	return media_handle_sideload(
 		[
 			'name'     => basename( $file_name ),
+			'tmp_name' => $tmp,
+		],
+		0,
+		null,
+		$post_data
+	);
+}
+
+/**
+ * Get Drupal media by URL.
+ * Some Drupal media in content are not tagged with drupal_mid or drupal_fid.
+ * This function will try to get the media based on URL.
+ *
+ * @param string $url Drupal media path.
+ *
+ * @return int|WP_Error
+ */
+function get_media_by_url( string $url = '' ): int|WP_Error {
+	// Check the URL.
+	if ( empty( $url ) ) {
+		return new WP_Error( 'QUARK_migration_media_url_empty', 'The media URL is empty.', $url );
+	}
+
+	// Check valid media url, starts with /sites/default/files/.
+	if ( ! str_starts_with( $url, '/sites/default/files/' ) ) {
+		return new WP_Error( 'QUARK_migration_media_url_invalid', 'The media URL is invalid.', $url );
+	}
+
+	// Check media is already imported.
+	$attachment = get_wp_attachment_id_by_drupal_url( $url );
+
+	// If attachment found then return it.
+	if ( ! empty( $attachment ) ) {
+		return $attachment;
+	}
+
+	// Download the file and send attachment ID.
+	$tmp = download_url( 'https://www.quarkexpeditions.com' . $url );
+
+	// If Failed to download media file then bail out.
+	if ( is_wp_error( $tmp ) || ! is_string( $tmp ) ) {
+		return new WP_Error( 'QUARK_migration_media_download_failed', 'Failed to download media file by URL.', 'https://www.quarkexpeditions.com' . $url );
+	}
+
+	// Parse image SRC.
+	$parsed_src = wp_parse_url( 'https://www.quarkexpeditions.com' . $url );
+
+	// Ignore external images and invalid paths.
+	if (
+		! is_array( $parsed_src )
+		|| empty( $parsed_src['path'] )
+		|| ! str_contains( $parsed_src['path'], '/sites/default' )
+	) {
+		$post_name = sanitize_title_with_dashes( str_replace( '/sites/default/', '', $url ) );
+	} else {
+		// Get post name.
+		$post_name = basename( $parsed_src['path'] );
+	}
+
+	// Attachment data.
+	$post_data = [
+		'post_author' => 1,
+		'post_name'   => $post_name,
+		'post_title'  => $post_name,
+		'meta_input'  => [
+			'drupal_path' => $url,
+			'bundle'      => 'image',
+		],
+	];
+
+	// Create WordPress attachment.
+	return media_handle_sideload(
+		[
+			'name'     => $post_name,
 			'tmp_name' => $tmp,
 		],
 		0,
@@ -598,6 +719,11 @@ function transform_image_tags( string $string = '' ): string {
 
 		// Get Drupal image based on file name.
 		$image = download_file_by_url( $parsed_src['path'] );
+
+		// If image found then build HTML.
+		if ( 0 === $image ) {
+			$image = get_media_by_url( $parsed_src['path'] );
+		}
 
 		// If image found then build HTML.
 		if ( is_integer( $image ) && ! empty( $image ) ) {
