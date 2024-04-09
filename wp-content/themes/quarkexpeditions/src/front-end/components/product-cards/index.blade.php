@@ -7,7 +7,7 @@
 		return;
 	}
 
-	$classes = [ 'product-cards', 'grid' ];
+	$classes = [ 'product-cards' ];
 
 	if ( ! empty( $align ) && 'center' === $align ) {
 		$classes[] = 'product-cards--align-center';

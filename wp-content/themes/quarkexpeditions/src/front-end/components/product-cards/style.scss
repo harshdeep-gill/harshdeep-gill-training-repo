@@ -5,10 +5,17 @@
 
 .product-cards {
 	$self: &;
-	--product-cards-columns: 12;
 
-	grid-template-columns: repeat(var(--product-cards-columns), 1fr);
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(285px, max-content));
 	gap: var(--spacing-5);
+
+	&--align-center {
+
+		@media screen and (min-width: grid-size(md)) {
+			justify-content: center;
+		}
+	}
 
 	&__card {
 		background-color: var(--color-white);
@@ -18,26 +25,13 @@
 		flex-direction: column;
 		overflow: hidden;
 		padding: var(--spacing-5);
-		grid-column: auto / span var(--product-cards-columns);
-
-		@media screen and (min-width: grid-size(sm)) {
-			max-width: 352px;
-			grid-column: auto / span 6;
-		}
-
-		@media screen and (min-width: grid-size(md)) {
-			grid-column: auto / span 4;
-		}
-
-		#{$self}--align-center &:nth-child(2n + 1) {
-
-			@media screen and (min-width: grid-size(md)) {
-				grid-column-start: 3;
-			}
-		}
 
 		&:hover img {
 			transform: scale(var(--scale-size));
+		}
+
+		@media screen and (min-width: grid-size(lg)) {
+			max-width: 352px;
 		}
 	}
 
