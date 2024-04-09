@@ -45,11 +45,11 @@
 			quark_get_component(
 				$modal_component,
 				[
-					'thank_you_page'     => $thank_you_page,
-					'form_id'            => $form_id,
-					'modal_id'           => $modal_id,
-					'countries'          => $countries,
-					'states'             => $states,
+					'thank_you_page' => $thank_you_page,
+					'form_id'        => $form_id,
+					'modal_id'       => $modal_id,
+					'countries'      => $countries,
+					'states'         => $states,
 				]
 			)
 		!!}
