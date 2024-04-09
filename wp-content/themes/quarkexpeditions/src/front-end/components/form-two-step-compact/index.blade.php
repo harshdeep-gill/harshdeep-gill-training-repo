@@ -43,7 +43,14 @@
 		</x-form.select>
 	</x-form.field>
 	<x-form.buttons>
-		<x-form-two-step-compact.modal-cta class="form-two-step-compact__modal-open" form_id="{{ $form_id }}" thank_you_page="{{ $thank_you_page }}" :hidden_fields="$hidden_fields">
+		<x-form-two-step-compact.modal-cta
+			class="form-two-step-compact__modal-open"
+			form_id="{{ $form_id }}"
+			thank_you_page="{{ $thank_you_page }}"
+			:hidden_fields="$hidden_fields"
+			:countries="$countries"
+			:states="$states"
+		>
 			<x-button type="button">
 				Request a Quote
 				<x-button.sub-title title="It only takes 2 minutes!" />

@@ -1,6 +1,8 @@
 @props( [
 	'class'          => '',
 	'form_id'        => '',
+	'countries'      => [],
+	'states'         => [],
 	'thank_you_page' => '',
 	'hidden_fields'  => [],
 ] )
