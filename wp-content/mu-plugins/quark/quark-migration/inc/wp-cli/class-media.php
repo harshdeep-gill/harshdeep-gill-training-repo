@@ -9,6 +9,7 @@ namespace Quark\Migration\WP_CLI;
 
 use WP_CLI;
 use WP_CLI\ExitException;
+use WP_Error;
 use WP_Post;
 use cli\progress\Bar;
 
@@ -56,7 +57,7 @@ class Media {
 	 * @return void
 	 * @throws ExitException Exception on error.
 	 */
-	public function all( array $args = [], array $args_assoc = [] ) : void {
+	public function all( array $args = [], array $args_assoc = [] ): void {
 		// Get options.
 		$options = wp_parse_args(
 			$args_assoc,
@@ -179,7 +180,7 @@ class Media {
 			$wp_attachment_id = download_file( $image );
 
 			// If there is any error then show warning.
-			if ( ! is_int( $wp_attachment_id ) && is_wp_error( $wp_attachment_id ) ) {
+			if ( $wp_attachment_id instanceof WP_Error ) {
 				WP_CLI::warning(
 					sprintf(
 						'Error while migrating image: %s - %s',
@@ -205,13 +206,10 @@ class Media {
 	 * ## EXAMPLES
 	 *    wp quark-migrate media metadata
 	 *
-	 * @param mixed[] $args       WP CLI arguments.
-	 * @param mixed[] $args_assoc WP CLI associative arguments.
-	 *
 	 * @return void
 	 * @throws ExitException Exception on error.
 	 */
-	public function metadata( array $args = [], array $args_assoc = [] ) : void {
+	public function metadata(): void {
 		// Update SVG meta data.
 		$this->update_svg_meta_data();
 
@@ -240,7 +238,7 @@ class Media {
 	 * @return void
 	 * @throws ExitException Exception on Error.
 	 */
-	public function update_svg_meta_data() : void {
+	public function update_svg_meta_data(): void {
 		// Get all SVG attachments.
 		$attachments = get_posts(
 			[
@@ -295,7 +293,7 @@ class Media {
 	 * @return void
 	 * @throws ExitException Exception on Error.
 	 */
-	public function update_branding_data() : void {
+	public function update_branding_data(): void {
 		// Update branding data for media.
 		$this->process_meta_data( table_name: 'media__field_branding', field_name: 'field_branding_target_id', meta_key: 'branding_term_id' );
 	}
@@ -306,7 +304,7 @@ class Media {
 	 * @return void
 	 * @throws ExitException Exception on Error.
 	 */
-	public function update_destination_data() : void {
+	public function update_destination_data(): void {
 		// Update destination data for media.
 		$this->process_meta_data( table_name: 'media__field_destinations', field_name: 'field_destinations_target_id', meta_key: 'destinations_term_id' );
 	}
@@ -317,7 +315,7 @@ class Media {
 	 * @return void
 	 * @throws ExitException Exception on Error.
 	 */
-	public function update_photographer_credit_data() : void {
+	public function update_photographer_credit_data(): void {
 		// Update photographer credit data for media.
 		$this->process_meta_data( table_name: 'media__field_photographer_credit', field_name: 'field_photographer_credit_value', meta_key: 'photographer_credit' );
 	}
@@ -328,7 +326,7 @@ class Media {
 	 * @return void
 	 * @throws ExitException Exception on Error.
 	 */
-	public function update_url_data() : void {
+	public function update_url_data(): void {
 		// Update photographer credit data for media.
 		$this->process_meta_data( table_name: 'media__field_url', field_name: 'field_url_uri', meta_key: 'external_url' );
 	}
@@ -339,7 +337,7 @@ class Media {
 	 * @return void
 	 * @throws ExitException Exception on Error.
 	 */
-	public function update_season_data() : void {
+	public function update_season_data(): void {
 		// Update season data for media.
 		$this->process_meta_data( table_name: 'media__field_season', field_name: 'field_season_value', meta_key: 'season_term_id' );
 	}
@@ -354,7 +352,7 @@ class Media {
 	 * @return void
 	 * @throws ExitException Exception on Error.
 	 */
-	public function process_meta_data( string $table_name = '', string $field_name = '', string $meta_key = '' ) : void {
+	public function process_meta_data( string $table_name = '', string $field_name = '', string $meta_key = '' ): void {
 		// validate table name, field name and meta key.
 		if ( empty( $table_name ) || empty( $field_name ) || empty( $meta_key ) ) {
 			WP_CLI::error( 'Table name, field name and meta key are required!' );
