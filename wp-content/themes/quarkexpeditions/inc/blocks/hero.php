@@ -65,8 +65,9 @@ function render( ?string $content = null, array $block = [] ): null|string {
 		foreach ( $inner_block['innerBlocks'] as $inner_inner_block ) {
 			switch ( $inner_inner_block['blockName'] ) {
 
-				// Inquiry form.
-				case 'quark/inquiry-form':
+				// Hero form.
+				case 'quark/form-two-step':
+				case 'quark/form-two-step-compact':
 					$form = [
 						'type' => 'form',
 					];
@@ -158,6 +159,18 @@ function render( ?string $content = null, array $block = [] ): null|string {
 					// Add to attributes.
 					$attributes['left'][] = $cta;
 					break;
+
+				// Quark button.
+				case 'quark/button':
+					$button = [
+						'type' => 'button',
+					];
+
+					// Add button.
+					$button['button'] = render_block( $inner_inner_block );
+
+					// Add to attributes.
+					$attributes['left'][] = $button;
 			}
 		}
 	}

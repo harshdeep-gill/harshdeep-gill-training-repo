@@ -1,9 +1,9 @@
 @props( [
-	'thank_you_page'     => '',
-	'form_id'            => 'inquiry-form',
-	'modal_id'           => 'inquiry-form-modal',
-	'countries'          => [],
-	'states'             => [],
+	'thank_you_page' => '',
+	'form_id'        => 'form-two-step',
+	'modal_id'       => 'form-two-step-modal',
+	'countries'      => [],
+	'states'         => [],
 ] )
 
 @php
@@ -13,23 +13,21 @@
 @endphp
 
 <x-modal
-	class="inquiry-form-modal"
+	class="form-two-step__modal"
 	id="{{ $modal_id }}"
 	title="{{ $title }}"
 	subtitle="{{ $subtitle }}"
 >
-	<quark-inquiry-form-modal>
+	<quark-form-two-step-modal>
 		<x-form id="{{ $form_id }}"
 			salesforce_object="{{ $salesforce_object }}"
 			thank_you_page="{{ $thank_you_page }}"
 		>
 			<input type="hidden" name="fields[Polar_Region__c]" value="" class="form__polar-region-field">
-			<input type="hidden" name="fields[Season__c]" value="" class="form__season-field">
 			<input type="hidden" name="fields[Ship__c]" value="" class="form__ship-field">
-			<input type="hidden" name="fields[Sub_Region__c]" value="" class="form__sub-region-field">
 			<input type="hidden" name="fields[Expedition__c]" value="" class="form__expedition-field">
 
-			<div class="inquiry-form__content">
+			<div class="form-two-step__content">
 				@if( ! empty( $title ) || ! empty( $subtitle ) )
 					<x-modal.header>
 						@if ( ! empty( $title ) )
@@ -58,7 +56,7 @@
 						</x-form.field>
 					</x-form.row>
 					<x-form.row>
-						<x-form.field :validation="[ 'required' ]" class="inquiry-form__country">
+						<x-form.field :validation="[ 'required' ]" class="form-two-step__country">
 							<x-form.select label="Country" name="fields[Country_Code__c]">
 								<option value="">- Select -</option>
 								@foreach ( $countries as $country_code => $country_name )
@@ -68,7 +66,7 @@
 						</x-form.field>
 
 						@foreach ( $states as $country_code => $country_states )
-							<x-form.field :validation="[ 'required' ]" data-country="{{ $country_code }}" class="inquiry-form__state" data-name="fields[State_Code__c]">
+							<x-form.field :validation="[ 'required' ]" data-country="{{ $country_code }}" class="form-two-step__state" data-name="fields[State_Code__c]">
 								<x-form.select label="State/Province">
 									<option value="">- Select -</option>
 									@foreach ( $country_states as $state_code => $state_name )
@@ -104,13 +102,13 @@
 		</x-form>
 
 		@if ( empty( $thank_you_page ) )
-			<div class="inquiry-form__thank-you">
+			<div class="form-two-step__thank-you">
 				<x-svg name="logo" />
-				<div class="inquiry-form__thank-you-text">
-					<h4 class="inquiry-form__thank-you-text-heading">Thank you!</h4>
-					<p class="inquiry-form__thank-you-text-body">A Quark Expeditions Polar Travel Advisor will be in touch with you shortly.</p>
+				<div class="form-two-step__thank-you-text">
+					<h4 class="form-two-step__thank-you-text-heading">Thank you!</h4>
+					<p class="form-two-step__thank-you-text-body">A Quark Expeditions Polar Travel Advisor will be in touch with you shortly.</p>
 				</div>
 			</div>
 		@endif
-	</quark-inquiry-form-modal>
+	</quark-form-two-step-modal>
 </x-modal>

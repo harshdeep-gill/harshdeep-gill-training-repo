@@ -1,17 +1,17 @@
 <?php
 /**
- * Block: LP Form Modal CTA.
+ * Block: Two step form.
  *
  * @package quark
  */
 
-namespace Quark\Theme\Blocks\LPFormModalCta;
+namespace Quark\Theme\Blocks\FormTwoStep;
 
 use function Quark\Leads\Forms\get_countries;
 use function Quark\Leads\Forms\get_states;
 
-const BLOCK_NAME = 'quark/lp-form-modal-cta';
-const COMPONENT  = 'parts.lp-form-modal-cta';
+const BLOCK_NAME = 'quark/form-two-step';
+const COMPONENT  = 'form-two-step';
 
 /**
  * Bootstrap this block.
@@ -47,19 +47,14 @@ function render( ?string $content = null, array $block = [] ): null|string {
 		return $content;
 	}
 
-	// Build component attributes.
+	// Initialize attributes.
 	$attributes = [
-		'text'          => $block['attrs']['text'] ?? '',
-		'form_id'       => 'inquiry-form',
-		'class'         => $block['attrs']['className'] ?? '',
-		'color'         => $block['attrs']['backgroundColor'] ?? '',
-		'countries'     => get_countries(),
-		'states'        => get_states(),
-		'hidden_fields' => [
+		'thank_you_page' => $block['attrs']['thankYouPageUrl'] ?? '',
+		'countries'      => get_countries(),
+		'states'         => get_states(),
+		'hidden_fields'  => [
 			'polar_region' => $block['attrs']['polarRegion'] ?? '',
-			'season'       => $block['attrs']['season'] ?? '',
 			'ship'         => $block['attrs']['ship'] ?? '',
-			'sub_region'   => $block['attrs']['subRegion'] ?? '',
 			'expedition'   => $block['attrs']['expedition'] ?? '',
 		],
 	];

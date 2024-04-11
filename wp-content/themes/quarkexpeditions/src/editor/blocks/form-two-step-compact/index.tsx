@@ -19,7 +19,7 @@ import {
 /**
  * Styles.
  */
-import '../../../front-end/components/inquiry-form/style.scss';
+import '../../../front-end/components/form-two-step-compact/style.scss';
 
 /**
  * External dependencies.
@@ -29,18 +29,20 @@ import classnames from 'classnames';
 /**
  * Block name.
  */
-export const name: string = 'quark/inquiry-form';
+export const name: string = 'quark/form-two-step-compact';
 
 /**
  * Block configuration settings.
  */
 export const settings: BlockConfiguration = {
 	apiVersion: 2,
-	title: __( 'Inquiry Form', 'qrk' ),
-	description: __( 'Display an inquiry form.', 'qrk' ),
+	title: __( 'Two Step Compact Form', 'qrk' ),
+	description: __( 'Display a two step compact form.', 'qrk' ),
 	category: 'forms',
 	keywords: [
-		__( 'inquiry', 'qrk' ),
+		__( 'two', 'qrk' ),
+		__( 'step', 'qrk' ),
+		__( 'compact', 'qrk' ),
 		__( 'form', 'qrk' ),
 	],
 	attributes: {
@@ -48,10 +50,6 @@ export const settings: BlockConfiguration = {
 			type: 'string',
 		},
 		polarRegion: {
-			type: 'string',
-			default: '',
-		},
-		subRegion: {
 			type: 'string',
 			default: '',
 		},
@@ -74,24 +72,14 @@ export const settings: BlockConfiguration = {
 	edit( { className, attributes, setAttributes }: BlockEditAttributes ): JSX.Element {
 		// eslint-disable-next-line react-hooks/rules-of-hooks
 		const blockProps = useBlockProps( {
-			className: classnames( className, 'inquiry-form' ),
+			className: classnames( className, 'form-two-step-compact' ),
 		} );
 
 		// Return the block's markup.
 		return (
 			<>
 				<InspectorControls>
-					<PanelBody title={ __( 'Inquiry Form Options', 'qrk' ) }>
-						<SelectControl
-							label={ __( 'Form Type', 'qrk' ) }
-							help={ __( 'Select the form to display here.', 'qrk' ) }
-							value={ attributes.formType }
-							options={ [
-								{ label: __( 'Inquiry Form', 'qrk' ), value: 'inquiry-form' },
-								{ label: __( 'Inquiry Form Compact', 'qrk' ), value: 'inquiry-form-compact' },
-							] }
-							onChange={ ( formType: string ) => setAttributes( { formType } ) }
-						/>
+					<PanelBody title={ __( 'Two Step Compact Form Options', 'qrk' ) }>
 						<BaseControl
 							id="quark-url-control"
 							label={ __( 'Thank You Page URL', 'qrk' ) }
@@ -104,7 +92,7 @@ export const settings: BlockConfiguration = {
 							/>
 						</BaseControl>
 					</PanelBody>
-					<PanelBody title={ __( 'Inquiry Form Hidden Fields', 'qrk' ) }>
+					<PanelBody title={ __( 'Two Step Compact Form Hidden Fields', 'qrk' ) }>
 						<SelectControl
 							label={ __( 'Polar Region', 'qrk' ) }
 							help={ __( 'Select the value for Polar Region.', 'qrk' ) }
@@ -115,24 +103,6 @@ export const settings: BlockConfiguration = {
 								{ label: __( 'Antarctic(ANT)', 'qrk' ), value: 'ANT' },
 							] }
 							onChange={ ( polarRegion: string ) => setAttributes( { polarRegion } ) }
-						/>
-						<SelectControl
-							label={ __( 'Sub Region', 'qrk' ) }
-							help={ __( 'Select the value for Sub Region, only if the field is not present in the Inquiry Form.', 'qrk' ) }
-							value={ attributes.subRegion }
-							options={ [
-								{ label: __( 'Select Sub Region…', 'qrk' ), value: '' },
-								{ label: __( 'Antarctic Peninsula', 'qrk' ), value: 'Antarctic Peninsula' },
-								{ label: __( 'Falklands & South Georgia', 'qrk' ), value: 'Falklands & South Georgia' },
-								{ label: __( 'Patagonia', 'qrk' ), value: 'Patagonia' },
-								{ label: __( 'Snow Hill Island', 'qrk' ), value: 'Snow Hill Island' },
-								{ label: __( 'Greenland', 'qrk' ), value: 'Greenland' },
-								{ label: __( 'Svalbard', 'qrk' ), value: 'Svalbard' },
-								{ label: __( 'Canadian High Arctic', 'qrk' ), value: 'Canadian High Arctic' },
-								{ label: __( 'North Pole', 'qrk' ), value: 'North Pole' },
-								{ label: __( 'Russian High Arctic', 'qrk' ), value: 'Russian High Arctic' },
-							] }
-							onChange={ ( subRegion: string ) => setAttributes( { subRegion } ) }
 						/>
 						<SelectControl
 							label={ __( 'Ship', 'qrk' ) }
@@ -156,7 +126,7 @@ export const settings: BlockConfiguration = {
 				</InspectorControls>
 				<div { ...blockProps }>
 					<Placeholder
-						label={ __( 'Inquiry Form', 'qrk' ) }
+						label={ __( 'Two Step Compact Form', 'qrk' ) }
 						icon="layout"
 					>
 						<p>{ __( 'This form will render on the front-end.', 'qrk' ) }</p>

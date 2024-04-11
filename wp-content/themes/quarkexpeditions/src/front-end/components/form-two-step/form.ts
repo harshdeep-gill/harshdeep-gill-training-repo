@@ -9,9 +9,9 @@ const { HTMLElement } = window;
 import { TPFormFieldElement } from '@travelopia/web-components';
 
 /**
- * InquiryForm Class.
+ * FormTwoStep Class.
  */
-export default class InquiryForm extends HTMLElement {
+export default class FormTwoStep extends HTMLElement {
 	/**
 	 * Properties.
 	 */
@@ -65,8 +65,3 @@ export default class InquiryForm extends HTMLElement {
 		e.stopImmediatePropagation();
 	}
 }
-
-/**
- * Initialize
- */
-customElements.define( 'quark-inquiry-form', InquiryForm );

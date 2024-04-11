@@ -16,6 +16,8 @@ use function Quark\Leads\create_lead;
 use function Quark\Leads\security_public_rest_api_routes;
 use function Quark\Leads\build_salesforce_request_uri;
 use function Quark\Leads\build_salesforce_request_data;
+use function Quark\Leads\Forms\get_countries;
+use function Quark\Leads\Forms\get_states;
 
 use const Quark\Leads\REST_API_NAMESPACE;
 
@@ -243,5 +245,37 @@ class Test_Leads extends WP_UnitTestCase {
 
 		// Remove callback from filter.
 		remove_filter( 'quark_leads_input_data', $request_callback );
+	}
+
+	/**
+	 * Test Country list for forms.
+	 *
+	 * @covers \Quark\Leads\Forms\get_countries()
+	 *
+	 * @return void
+	 */
+	public function test_forms_countries_list() {
+		// Test the count of countries.
+		$this->assertEquals( 250, count( get_countries() ) );
+	}
+
+	/**
+	 * Test States list for forms.
+	 *
+	 * @covers \Quark\Leads\Forms\get_states()
+	 *
+	 * @return void
+	 */
+	public function test_forms_states_list() {
+		// Top level array keys.
+		$keys_to_test = [ 'AU', 'US', 'CA' ];
+
+		// Get the states.
+		$states = get_states();
+
+		// Check for keys.
+		foreach ( $keys_to_test as $key ) {
+			$this->assertArrayHasKey( $key, $states );
+		}
 	}
 }
