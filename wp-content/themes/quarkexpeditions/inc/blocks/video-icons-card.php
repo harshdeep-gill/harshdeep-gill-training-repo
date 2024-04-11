@@ -15,7 +15,7 @@ const COMPONENT  = 'video-icons-card';
  *
  * @return void
  */
-function bootstrap() : void {
+function bootstrap(): void {
 	// Register this block only on the front-end.
 	add_action( 'template_redirect', __NAMESPACE__ . '\\register' );
 }
@@ -25,7 +25,7 @@ function bootstrap() : void {
  *
  * @return void
  */
-function register() : void {
+function register(): void {
 	// Fire hooks.
 	add_filter( 'pre_render_block', __NAMESPACE__ . '\\render', 10, 2 );
 }
@@ -38,7 +38,7 @@ function register() : void {
  *
  * @return null|string
  */
-function render( ?string $content = null, array $block = [] ) : null | string {
+function render( ?string $content = null, array $block = [] ): null|string {
 	// Check for block.
 	if ( BLOCK_NAME !== $block['blockName'] || ! is_array( $block['innerBlocks'] ) ) {
 		return $content;
