@@ -33,6 +33,7 @@ $tp_mu_plugins = array(
 	'quark/quark-landing-pages/plugin.php',
 	'quark/quark-leads/plugin.php',
 	'quark/quark-press-releases/plugin.php',
+	'quark/quark-blog/plugin.php',
 	'quark/quark-migration/plugin.php',
 );
 

@@ -1,15 +1,15 @@
 <?php
 /**
- * Plugin Name: Quark Expedition Press Releases
+ * Plugin Name: Quark Expedition Blog
  * Description: Press Releases for Quark Expedition.
  * Author: Travelopia Team
  * Author URI: https://www.travelopia.com
  * Version: 1.0.0
  *
- * @package quark-press-release
+ * @package quark-blog
  */
 
-namespace Quark\PressRelease;
+namespace Quark\Blog;
 
 require_once __DIR__ . '/inc/namespace.php';
 

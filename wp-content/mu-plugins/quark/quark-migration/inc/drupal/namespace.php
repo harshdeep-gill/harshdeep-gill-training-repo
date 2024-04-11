@@ -376,12 +376,12 @@ function download_file( array $file_data = [] ): int|WP_Error {
 	}
 
 	// Media Alt Text.
-	if ( ! empty( $file_data['thumbnail__alt'] ) ) {
+	if ( ! empty( $file_data['field_media_image_alt'] ) ) {
 		$post_data['meta_input']['_wp_attachment_image_alt'] = trim( strval( $file_data['field_media_image_alt'] ) );
 	}
 
 	// Media Title.
-	if ( ! empty( $file_data['thumbnail__title'] ) ) {
+	if ( ! empty( $file_data['field_media_image_title'] ) ) {
 		$post_data['post_title'] = trim( strval( $file_data['field_media_image_title'] ) );
 	} elseif ( ! empty( $file_data['name'] ) ) {
 		$post_data['post_title'] = trim( strval( $file_data['name'] ) );
