@@ -123,7 +123,7 @@ export const settings: BlockConfiguration = {
 						<div className="fancy-video__content">
 							<RichText
 								tagName="p"
-								className="fancy-video__title h2"
+								className="fancy-video__title h4"
 								placeholder={ __( 'Write title…', 'qrk' ) }
 								value={ attributes.title }
 								onChange={ ( title: string ) => setAttributes( { title } ) }

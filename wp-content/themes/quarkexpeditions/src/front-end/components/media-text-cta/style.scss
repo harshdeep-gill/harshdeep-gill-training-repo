@@ -12,18 +12,18 @@
 	}
 
 	& + & {
-		margin-top: var(--spacing-8);
+		margin-top: var(--spacing-6);
+
+		@media screen and (min-width: grid-size(md)) {
+			margin-top: var(--spacing-8);
+		}
 	}
 
 	&__media-wrap {
 		border-radius: var(--border-radius-large);
 		overflow: hidden;
 		position: relative;
-		aspect-ratio: 1 / 1;
-
-		@media screen and (min-width: grid-size(sm)) {
-			aspect-ratio: initial;
-		}
+		aspect-ratio: initial;
 
 		#{$self}--media-align-right & {
 			order: 2;

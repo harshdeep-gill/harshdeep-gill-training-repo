@@ -31,20 +31,23 @@
 		--lp-header-cta-font-color-active: var(--color-black);
 	}
 
-	&:not(#{$self}--compact):has(+ .hero--immersive) {
+	&:has(+ .hero--immersive) {
 		margin-bottom: calculate-rem(-122px);
-		box-shadow: none;
 
-		--lp-header-bg-color: transparent;
-		--lp-header-cta-bg-color: transparent;
-		--lp-header-cta-border-color: var(--color-white);
-		--lp-header-cta-bg-color-hover: var(--color-gray-90);
-		--lp-header-cta-bg-color-active: var(--color-black);
-		--lp-header-cta-font-color-active: var(--color-white);
+		&:not(#{$self}--compact) {
+			box-shadow: none;
 
-		&:not(.color-context--dark) {
-			--lp-header-cta-border-color: var(--color-black);
-			--lp-header-cta-bg-color-hover: var(--color-white);
+			--lp-header-bg-color: transparent;
+			--lp-header-cta-bg-color: transparent;
+			--lp-header-cta-border-color: var(--color-white);
+			--lp-header-cta-bg-color-hover: var(--color-gray-90);
+			--lp-header-cta-bg-color-active: var(--color-black);
+			--lp-header-cta-font-color-active: var(--color-white);
+
+			&:not(.color-context--dark) {
+				--lp-header-cta-border-color: var(--color-black);
+				--lp-header-cta-bg-color-hover: var(--color-white);
+			}
 		}
 	}
 

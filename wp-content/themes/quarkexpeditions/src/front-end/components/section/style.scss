@@ -13,10 +13,18 @@
 	}
 
 	&__title {
-		margin-bottom: var(--spacing-7);
+		margin-bottom: var(--spacing-6);
 
 		+ #{$self}__description {
-			margin-top: calc(-1 * var(--spacing-6));
+			margin-top: calc(-1 * var(--spacing-5));
+		}
+
+		@media screen and (min-width: grid-size(md)) {
+			margin-bottom: var(--spacing-8);
+
+			+ #{$self}__description {
+				margin-top: calc(-1 * var(--spacing-7));
+			}
 		}
 	}
 
@@ -29,7 +37,11 @@
 	}
 
 	&__description {
-		margin-bottom: var(--spacing-7);
+		margin-bottom: var(--spacing-6);
+
+		@media screen and (min-width: grid-size(md)) {
+			margin-bottom: var(--spacing-8);
+		}
 	}
 
 	&--has-background {

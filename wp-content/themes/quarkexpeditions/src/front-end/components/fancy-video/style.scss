@@ -6,6 +6,7 @@
 
 .fancy-video {
 	$self: &;
+	display: block;
 
 	&__wrapper {
 
@@ -32,16 +33,13 @@
 	&__cover {
 		opacity: 1;
 		visibility: visible;
-
-		@media screen and (min-width: grid-size(md)) {
-			height: 100%;
-			width: 100%;
-			position: absolute;
-			top: 0;
-			left: 0;
-			right: 0;
-			bottom: 0;
-		}
+		height: 100%;
+		width: 100%;
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
 
 		#{$self}[active] & {
 			opacity: 0;
@@ -83,6 +81,13 @@
 
 	&__title {
 		margin: 0;
+
+		@media screen and (max-width: calc(grid-size(md) - 1px)) {
+			font-family: var(--heading-font-family);
+			font-size: var(--h2-font-size);
+			font-weight: var(--font-weight-default);
+			line-height: var(--h2-line-height);
+		}
 	}
 
 	&__play-btn-wrapper {
