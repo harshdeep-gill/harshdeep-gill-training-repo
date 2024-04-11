@@ -15,7 +15,7 @@ const COMPONENT  = 'parts.lp-footer';
  *
  * @return void
  */
-function bootstrap() : void {
+function bootstrap(): void {
 	// Register this block only on the front-end.
 	add_action( 'template_redirect', __NAMESPACE__ . '\\register' );
 }
@@ -25,7 +25,7 @@ function bootstrap() : void {
  *
  * @return void
  */
-function register() : void {
+function register(): void {
 	// Fire hooks.
 	add_filter( 'pre_render_block', __NAMESPACE__ . '\\render', 10, 2 );
 }
@@ -38,7 +38,7 @@ function register() : void {
  *
  * @return null|string
  */
-function render( ?string $content = null, array $block = [] ) : null | string {
+function render( ?string $content = null, array $block = [] ): null|string {
 	// Check for block.
 	if ( BLOCK_NAME !== $block['blockName'] || empty( $block['innerBlocks'] ) || ! is_array( $block['innerBlocks'] ) ) {
 		return $content;
@@ -79,7 +79,6 @@ function render( ?string $content = null, array $block = [] ) : null | string {
 
 			// Build column content.
 			foreach ( $maybe_column_block['innerBlocks'] as $column_inner_block ) {
-
 				// Check for footer social links block.
 				if ( 'quark/lp-footer-social-links' === $column_inner_block['blockName'] ) {
 					// Fetch social link attributes.

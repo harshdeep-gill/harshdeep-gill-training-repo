@@ -64,7 +64,6 @@ function render( ?string $content = null, array $block = [] ): null|string {
 
 	// Build slot.
 	foreach ( $block['innerBlocks'] as $inner_block ) {
-
 		// Title.
 		if ( 'quark/product-departures-card-title' === $inner_block['blockName'] ) {
 			// Add title.
@@ -90,7 +89,6 @@ function render( ?string $content = null, array $block = [] ): null|string {
 
 			// Loop through inner blocks.
 			if ( ! empty( $inner_block['innerBlocks'] ) ) {
-
 				// Initialize current departure date.
 				$current_departure_date = [];
 
