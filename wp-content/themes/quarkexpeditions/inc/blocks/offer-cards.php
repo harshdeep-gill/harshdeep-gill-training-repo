@@ -53,7 +53,6 @@ function render( ?string $content = null, array $block = [] ): null|string {
 	foreach ( $block['innerBlocks'] as $inner_block ) {
 		// Offer Card.
 		if ( 'quark/offer-cards-card' === $inner_block['blockName'] ) {
-
 			// Initialize current card attributes.
 			$current_card = [
 				'children' => [],
