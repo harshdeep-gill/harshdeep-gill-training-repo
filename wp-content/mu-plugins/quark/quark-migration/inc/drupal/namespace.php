@@ -277,8 +277,7 @@ function get_wp_attachment_id_by_drupal_url( string $drupal_path = '' ): int {
 	// Get attachment ID.
 	$attachment = $wpdb->get_row(
 		$wpdb->prepare(
-			"
-					SELECT
+			"SELECT
 						$wpdb->posts.ID AS id
 					FROM
 						$wpdb->posts
