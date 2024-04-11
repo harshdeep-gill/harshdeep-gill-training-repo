@@ -208,7 +208,7 @@ function quark_has_this_rendered_once( string $id = '' ): bool {
  *
  * @return string The hashed id.
  */
-function quark_generate_dom_id( string $input = '', int $length = 10 ) : string {
+function quark_generate_dom_id( string $input = '', int $length = 10 ): string {
 	// Check for empty input.
 	if ( empty( $input ) ) {
 		return '';
