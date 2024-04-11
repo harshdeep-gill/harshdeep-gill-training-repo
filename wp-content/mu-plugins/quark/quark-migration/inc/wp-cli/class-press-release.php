@@ -9,6 +9,7 @@ namespace Quark\Migration\WP_CLI;
 
 use cli\progress\Bar;
 use WP_CLI;
+use WP_Error;
 use WP_CLI\ExitException;
 
 use function Quark\Migration\Drupal\get_database;
@@ -33,7 +34,7 @@ class Press_Release {
 	 * @return void
 	 * @throws ExitException Exit on failure of command.
 	 */
-	public function posts() : void {
+	public function posts(): void {
 		// Prepare for migration.
 		prepare_for_migration();
 
@@ -80,7 +81,7 @@ class Press_Release {
 	 *
 	 * @return void
 	 */
-	public function insert_post( array $drupal_post = [] ) : void {
+	public function insert_post( array $drupal_post = [] ): void {
 		// Normalize drupal post data.
 		$normalized_post = $this->normalize_drupal_post( $drupal_post );
 
@@ -104,7 +105,7 @@ class Press_Release {
 		}
 
 		// Check if post inserted/updated or not.
-		if ( is_wp_error( $output ) ) {
+		if ( $output instanceof WP_Error ) {
 			// Print error.
 			WP_CLI::warning( 'Unable to insert/update post!' );
 		}
@@ -134,7 +135,7 @@ class Press_Release {
 	 *     }
 	 * }
 	 */
-	public function normalize_drupal_post( array $item = [] ) : array {
+	public function normalize_drupal_post( array $item = [] ): array {
 		// Bail out if empty.
 		if ( empty( $item ) ) {
 			return [];
@@ -268,7 +269,7 @@ class Press_Release {
 	 *
 	 * @throws ExitException Exit on failure to fetch data.
 	 */
-	public function get_drupal_data() : array {
+	public function get_drupal_data(): array {
 		// Get database connection.
 		$drupal_database = get_database();
 

@@ -79,7 +79,6 @@ function serialize_block( array $block = [] ): string {
 			$opening_tag_suffix
 		);
 	} else {
-
 		// Return block output with inner block content.
 		return sprintf(
 			'<!-- wp:%1$s%2$s -->' . "\n" . '%3$s' . "\n" . '<!-- /wp:%1$s -->',

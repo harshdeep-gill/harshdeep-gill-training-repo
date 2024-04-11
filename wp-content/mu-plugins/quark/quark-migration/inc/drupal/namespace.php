@@ -278,16 +278,15 @@ function get_wp_attachment_id_by_drupal_url( string $drupal_path = '' ): int {
 	$attachment = $wpdb->get_row(
 		$wpdb->prepare(
 			"SELECT
-						$wpdb->posts.ID AS id
-					FROM
-						$wpdb->posts
-					INNER JOIN $wpdb->postmeta AS `postmeta`
-						ON $wpdb->posts.ID = postmeta.post_id
-					WHERE
-						$wpdb->posts.post_type = 'attachment'
-						AND $wpdb->posts.post_status = 'inherit'
-						AND ( postmeta.meta_key = 'drupal_path' AND postmeta.meta_value = %s )
-					",
+				$wpdb->posts.ID AS id
+			FROM
+				$wpdb->posts
+				INNER JOIN $wpdb->postmeta AS `postmeta` ON $wpdb->posts.ID = postmeta.post_id
+			WHERE
+				$wpdb->posts.post_type = 'attachment'
+				AND $wpdb->posts.post_status = 'inherit'
+				AND ( postmeta.meta_key = 'drupal_path' AND postmeta.meta_value = %s )
+			",
 			[
 				$drupal_path,
 			]
@@ -442,7 +441,7 @@ function get_media_by_url( string $url = '' ): int|WP_Error {
 	$tmp = download_url( 'https://www.quarkexpeditions.com' . $url );
 
 	// If Failed to download media file then bail out.
-	if ( is_wp_error( $tmp ) || ! is_string( $tmp ) ) {
+	if ( $tmp instanceof WP_Error ) {
 		return new WP_Error( 'QUARK_migration_media_download_failed', 'Failed to download media file by URL.', 'https://www.quarkexpeditions.com' . $url );
 	}
 
@@ -573,18 +572,18 @@ function prepare_content( string $content = '' ): string {
  * Transform a drupal media tag into IMG tags.
  *  i.e. - <drupal-media data-entity-type="media" alt="alternate text" data-entity-uuid="b3a11cbc-53a9-419d-b9b5-2497ac0ba2ba" data-align="center" data-caption="caption text">.
  *
- * @param string $string Input string.
+ * @param string $content Input string.
  *
  * @return string
  */
-function transform_drupal_media_tags( string $string = '' ): string {
+function transform_drupal_media_tags( string $content = '' ): string {
 	// Look for shortcode pattern.
 	// preg_match_all with that has <drupal-media> tag.
-	preg_match_all( '#<drupal-media .*?data-entity-uuid="(.*?)".*?>#', $string, $matches );
+	preg_match_all( '#<drupal-media .*?data-entity-uuid="(.*?)".*?>#', $content, $matches );
 
 	// If no matches found then bail out.
 	if ( empty( $matches[0] ) || empty( $matches[1] ) ) {
-		return $string;
+		return $content;
 	}
 
 	// Traverse results.
@@ -636,7 +635,6 @@ function transform_drupal_media_tags( string $string = '' ): string {
 
 			// If image found then build HTML.
 			if ( ! empty( $src ) && is_array( $src ) ) {
-
 				// Get alt text.
 				if ( empty( $alt ) ) {
 					$alt = trim( wp_strip_all_tags( strval( get_post_meta( $image, '_wp_attachment_image_alt', true ) ) ) );
@@ -666,29 +664,29 @@ function transform_drupal_media_tags( string $string = '' ): string {
 				}
 
 				// Replace the drupal-media tag.
-				$string = str_replace( $matches[0][ $key ], $image_html, $string );
+				$content = str_replace( $matches[0][ $key ], $image_html, $content );
 			}
 		}
 	}
 
 	// Return output.
-	return $string;
+	return $content;
 }
 
 /**
  * Transform an IMG tag to have the correct paths.
  *
- * @param string $string Input string.
+ * @param string $content Input string.
  *
  * @return string
  */
-function transform_image_tags( string $string = '' ): string {
+function transform_image_tags( string $content = '' ): string {
 	// Look for shortcode pattern.
-	preg_match_all( '#<img .*?src="(.*?)".*?>#', $string, $matches );
+	preg_match_all( '#<img .*?src="(.*?)".*?>#', $content, $matches );
 
 	// If no matches found then bail out.
 	if ( empty( $matches[0] ) || empty( $matches[1] ) ) {
-		return $string;
+		return $content;
 	}
 
 	// Traverse results.
@@ -737,11 +735,11 @@ function transform_image_tags( string $string = '' ): string {
 				);
 
 				// Replace the new IMG tag in string.
-				$string = str_replace( $matches[0][ $key ], $image_html, $string );
+				$content = str_replace( $matches[0][ $key ], $image_html, $content );
 			}
 		}
 	}
 
 	// Return output.
-	return $string;
+	return $content;
 }
