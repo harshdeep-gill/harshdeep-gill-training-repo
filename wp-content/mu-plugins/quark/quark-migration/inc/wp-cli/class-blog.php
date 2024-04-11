@@ -79,21 +79,21 @@ class Blog {
 		FROM
 			node
 		LEFT JOIN
-				node_field_data AS field_data ON node.nid = field_data.nid AND node.langcode = field_data.langcode
+			node_field_data AS field_data ON node.nid = field_data.nid AND node.langcode = field_data.langcode
 		LEFT JOIN
-				node__body AS body ON node.nid = body.entity_id AND node.langcode = body.langcode
+			node__body AS body ON node.nid = body.entity_id AND node.langcode = body.langcode
 		LEFT JOIN
-				node__field_blog_image AS field_blog_image ON node.nid = field_blog_image.entity_id AND node.langcode = field_blog_image.langcode
+			node__field_blog_image AS field_blog_image ON node.nid = field_blog_image.entity_id AND node.langcode = field_blog_image.langcode
 		LEFT JOIN
-				node__field_blog_read_time AS field_blog_read_time ON node.nid = field_blog_read_time.entity_id AND node.langcode = field_blog_read_time.langcode
+			node__field_blog_read_time AS field_blog_read_time ON node.nid = field_blog_read_time.entity_id AND node.langcode = field_blog_read_time.langcode
 		LEFT JOIN
-				node__field_blog_url AS field_blog_url ON node.nid = field_blog_url.entity_id AND node.langcode = field_blog_url.langcode
+			node__field_blog_url AS field_blog_url ON node.nid = field_blog_url.entity_id AND node.langcode = field_blog_url.langcode
 		LEFT JOIN
-				node__field_metatags AS field_metatags ON node.nid = field_metatags.entity_id AND node.langcode = field_metatags.langcode
+			node__field_metatags AS field_metatags ON node.nid = field_metatags.entity_id AND node.langcode = field_metatags.langcode
 		LEFT JOIN
-				node__field_primary_blog_category AS field_primary_blog_category ON node.nid = field_primary_blog_category.entity_id AND node.langcode = field_primary_blog_category.langcode
+			node__field_primary_blog_category AS field_primary_blog_category ON node.nid = field_primary_blog_category.entity_id AND node.langcode = field_primary_blog_category.langcode
 		LEFT JOIN
-				path_alias ON path = CONCAT( '/node/', node.nid )
+			path_alias ON path = CONCAT( '/node/', node.nid )
 		WHERE
 			node.type = 'blog'";
 
