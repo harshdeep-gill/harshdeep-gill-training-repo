@@ -1,7 +1,7 @@
 <?php
 /**
- * Plugin Name: Quark World Travel Press Releases
- * Description: Press Releases for Quark World Travel.
+ * Plugin Name: Quark Expedition Press Releases
+ * Description: Press Releases for Quark Expedition.
  * Author: Travelopia Team
  * Author URI: https://www.travelopia.com
  * Version: 1.0.0

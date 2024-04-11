@@ -38,7 +38,7 @@ class Press_Release {
 		// Prepare for migration.
 		prepare_for_migration();
 
-		// Fetch testimonial data from drupal database.
+		// Fetch press releases data from drupal database.
 		$data = $this->get_drupal_data();
 
 		// Return if unable to fetch data.
@@ -63,9 +63,9 @@ class Press_Release {
 			return;
 		}
 
-		// Start inserting terms.
+		// Start inserting posts.
 		foreach ( $data as $item ) {
-			// Insert terms.
+			// Insert post.
 			$progress->tick();
 			$this->insert_post( $item );
 		}
@@ -184,14 +184,11 @@ class Press_Release {
 
 		// Post name.
 		if ( ! empty( $item['drupal_url'] ) && is_string( $item['drupal_url'] ) ) {
-			// remove /deprecated from url.
-			$drupal_url = str_replace( '/deprecated', '', $item['drupal_url'] );
-
 			/**
 			 * Break the url into parts and use the last part as post name.
 			 * i.e. - /press-releases/2013/12/quark-expeditions-celebrates-world-travel-award.
 			 */
-			$parts     = explode( '/', $drupal_url );
+			$parts     = explode( '/', $item['drupal_url'] );
 			$post_name = end( $parts );
 		}
 

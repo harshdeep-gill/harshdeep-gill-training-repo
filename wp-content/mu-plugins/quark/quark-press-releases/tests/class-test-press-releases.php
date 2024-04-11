@@ -1,11 +1,11 @@
 <?php
 /**
- * Pages test suite.
+ * Press Release test suite.
  *
  * @package quark-press-release
  */
 
-namespace Quark\Pages\Tests;
+namespace Quark\PressRelease\Tests;
 
 use WP_Post;
 use WP_UnitTestCase;
