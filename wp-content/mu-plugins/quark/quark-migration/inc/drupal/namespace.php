@@ -353,7 +353,7 @@ function download_file( array $file_data = [] ): int|WP_Error {
 		$tmp = download_url( 'https://www.quarkexpeditions.com/sites/default/files/' . $file_name );
 
 		// If Failed to download media file then bail out.
-		if ( is_wp_error( $tmp ) || ! is_string( $tmp ) ) {
+		if ( $tmp instanceof WP_Error || ! is_string( $tmp ) ) {
 			return new WP_Error( 'QUARK_migration_media_download_failed', 'Failed to download media file.', 'https://www.quarkexpeditions.com/sites/default/files/' . $file_name );
 		}
 	}
@@ -538,11 +538,6 @@ function get_post_by_id( int $drupal_id = 0, string $post_type = 'post' ): WP_Po
 
 	// Query post.
 	$posts = new WP_Query( $arguments );
-
-	// If WP_Error then bail out.
-	if ( is_wp_error( $posts ) ) {
-		return false;
-	}
 
 	// If no post found then bail out.
 	if ( empty( $posts->posts ) ) {

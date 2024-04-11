@@ -229,13 +229,12 @@ function validate_recaptcha_token( string $recaptcha_token = '' ): bool|WP_Error
 	$recaptcha_validation = validate_recaptcha( $recaptcha_token, 'leads' );
 
 	// Handle errors.
-	if ( is_wp_error( $recaptcha_validation ) ) {
+	if ( $recaptcha_validation instanceof WP_Error ) {
 		// Get the value of 'allow_recaptcha_to_fail' from options table.
 		$allow_recaptcha_to_fail = absint( get_option( 'options_allow_recaptcha_to_fail', 0 ) );
 
 		// If 'allow_recaptcha_to_fail' is zero, return error.
 		if ( 0 === $allow_recaptcha_to_fail ) {
-
 			// Return error.
 			return new WP_Error( 'quark_leads_recaptcha_failed', 'reCAPTCHA validation failed' );
 		}
