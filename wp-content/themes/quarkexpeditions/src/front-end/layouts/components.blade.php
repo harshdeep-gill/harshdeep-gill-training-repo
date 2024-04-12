@@ -4,11 +4,12 @@
 			tc_image_id="18"
 			phone_number="+1-877-585-1235"
 			cta_text="Talk to a Polar Expert"
+			:dark_mode="true"
 		/>
 	</x-component-demo>
 
 	<x-component-demo :keys="[ 'hero', 'hero-refactor' ]">
-		<x-hero text_align="left" :immersive="true">
+		<x-hero text_align="left" :immersive="true" :dark_mode="true">
 			<x-hero.image image_id="26" />
 			<x-hero.content>
 				<x-hero.left>
@@ -16,13 +17,39 @@
 						<x-hero.overline>Antarctic 2024</x-hero.overline>
 						<x-hero.title title="Antarctic Voyages" />
 						<x-hero.sub-title title="Choose the Leader in Polar Adventure" />
+						<x-hero.description>
+							<p>
+								This is the description of this hero section. Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt odio illum tempora doloremque. Suscipit obcaecati necessitatibus, exercitationem nostrum voluptatibus eligendi laudantium possimus quaerat reiciendis molestiae sit sunt iusto! Ex facere quidem cupiditate ullam dolorum consectetur delectus recusandae. Minima, itaque eaque!
+							</p>
+						</x-hero.description>
 					</x-hero.title-container>
 					<x-icon-badge class="hero__tag" background_color="attention-100" icon="alert" text="Limited Cabins Available" />
 					<x-hero.form-modal-cta>Get a Digital Brochure</x-hero.form-modal-cta>
 				</x-hero.left>
 				<x-hero.right>
 					<x-hero.form>
-						<x-inquiry-form />
+						<x-form-two-step
+							:countries="[
+								'IN' => 'India',
+								'AU' => 'Australia',
+								'US' => 'United States',
+								'CA' => 'Canada',
+							]"
+							:states="[
+								'AU' => [
+									'ACT' => 'Australian Capital Territory',
+									'JBT' => 'Jervis Bay Territory',
+								],
+								'US' => [
+									'AA' => 'Armed Forces Americas',
+									'AE' => 'Armed Forces Europe',
+								],
+								'CA' => [
+									'AB' => 'Alberta',
+									'BC' => 'British Columbia',
+								],
+							]"
+						/>
 					</x-hero.form>
 				</x-hero.right>
 			</x-hero.content>
@@ -31,55 +58,99 @@
 
 	<x-component-demo :keys="[ 'review-cards', 'hero-refactor' ]">
 		<x-review-cards>
-			<x-review-cards.card
-				title="Falkland, South Georgia and the Antarctic Circle"
-				author_details="South Georgia and Antarctic Peninsula: Penguin Safari"
-				author="Denise P."
-				rating="4"
-			>
-				<p>Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever. Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever.</p>
+			<x-review-cards.card>
+				<x-review-cards.rating rating="4" />
+				<x-review-cards.title title="Falkland, South Georgia and the Antarctic Circle" />
+				<x-review-cards.content>
+					<p>
+						Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever. Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever.
+					</p>
+				</x-review-cards.content>
+				<x-review-cards.author name="Denise P." />
+				<x-review-cards.author-details text="South Georgia and Antarctic Peninsula: Penguin Safari South Georgia and Antarctic Peninsula: Penguin Safari" />
 			</x-review-cards.card>
-			<x-review-cards.card
-				title="An incredible trip to Antarctica"
-				author_details="South Georgia and Antarctic Peninsula: Penguin Safari"
-				author="Martine S."
-				rating="5"
-			>
-				<p>The whole experience was great. The World Explorer is a beautiful and very comfortable ship, the food was amazing. And of course the landings and cruising the area was a once in a lifetime experience. Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever.</p>
+			<x-review-cards.card>
+				<x-review-cards.rating rating="4" />
+				<x-review-cards.title title="Antartica with quark – experience of a lifetime" />
+				<x-review-cards.content>
+					<p>
+						In a phrase, going to Antartica with Quark was “simply amazing”. Antartica is gorgeous and the team at Quark made it possible for us to enjoy every bit of it with their impeccable planning and attention to every detail.
+					</p>
+				</x-review-cards.content>
+				<x-review-cards.author name="Madhuchanda D." />
+				<x-review-cards.author-details text="Antarctic Express: Crossing the Circle" />
 			</x-review-cards.card>
-			<x-review-cards.card
-				title="Wonderful Antarctic Trip"
-				author_details="South Georgia and Antarctic Peninsula: Penguin Safari"
-				author="Roger C."
-				rating="4"
-			>
-				<p>Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region.</p>
+			<x-review-cards.card>
+				<x-review-cards.rating rating="4" />
+				<x-review-cards.title title="Falkland, South Georgia and the Antarctic Circle" />
+				<x-review-cards.content>
+					<p>
+						Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever. Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever.
+					</p>
+				</x-review-cards.content>
+				<x-review-cards.author name="Denise P." />
+				<x-review-cards.author-details text="South Georgia and Antarctic Peninsula: Penguin Safari" />
 			</x-review-cards.card>
-			<x-review-cards.card
-				title="Falkland, South Georgia and Antarctica: Explorers and Kings"
-				author_details="South Georgia and Antarctic Peninsula: Penguin Safari"
-				author="Martine S."
-				rating="4"
-			>
-				<p>The whole experience was great. The World Explorer is a beautiful and very comfortable ship, the food was amazing. And of course the landings and cruising the area was a once in a lifetime experience.</p>
+			<x-review-cards.card>
+				<x-review-cards.rating rating="4" />
+				<x-review-cards.title title="Falkland, South Georgia and the Antarctic Circle" />
+				<x-review-cards.content>
+					<p>
+						Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever. Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever.
+					</p>
+				</x-review-cards.content>
+				<x-review-cards.author name="Denise P." />
+				<x-review-cards.author-details text="South Georgia and Antarctic Peninsula: Penguin Safari" />
 			</x-review-cards.card>
-			<x-review-cards.card
-				title="9 Day Spitsbergen Polar Bear Safari"
-				author_details="South Georgia and Antarctic Peninsula: Penguin Safari"
-				author="Carolyn T"
-				rating="4"
-			>
-				<p>Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever. Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever.</p>
-			</x-review-cards.card>
-			<x-review-cards.card
-				title="An incredible trip to Antarctica"
-				author_details="South Georgia and Antarctic Peninsula: Penguin Safari"
-				author="Martine S."
-				rating="5"
-			>
-				<p>The whole experience was great. The World Explorer is a beautiful and very comfortable ship, the food was amazing. And of course the landings and cruising the area was a once in a lifetime experience. Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever.</p>
+			<x-review-cards.card>
+				<x-review-cards.rating rating="4" />
+				<x-review-cards.title title="Falkland, South Georgia and the Antarctic Circle" />
+				<x-review-cards.content>
+					<p>
+						Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever. Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever.
+					</p>
+				</x-review-cards.content>
+				<x-review-cards.author name="Denise P." />
+				<x-review-cards.author-details text="South Georgia and Antarctic Peninsula: Penguin Safari" />
 			</x-review-cards.card>
 		</x-review-cards>
+	</x-component-demo>
+	<x-component-demo :keys="[ 'review-cards-no-carousel' ]">
+		<x-section title="South Georgia Expedition Reviews">
+			<x-review-cards is_carousel="false">
+				<x-review-cards.card>
+					<x-review-cards.rating rating="5" />
+					<x-review-cards.title title="Falkland, South Georgia and the Antarctic Circle" />
+					<x-review-cards.content>
+						Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever. Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever.
+					</x-review-cards.content>
+					<x-review-cards.author name="Denise P." />
+					<x-review-cards.author-details text="South Georgia and Antarctic Peninsula: Penguin Safari" />
+				</x-review-cards.card>
+				<x-review-cards.card>
+					<x-review-cards.rating rating="4" />
+					<x-review-cards.title title="Antartica with quark – experience of a lifetime" />
+					<x-review-cards.content>
+						<p>
+							In a phrase, going to Antartica with Quark was “simply amazing”. Antartica is gorgeous and the team at Quark made it possible for us to enjoy every bit of it with their impeccable planning and attention to every detail.
+						</p>
+					</x-review-cards.content>
+					<x-review-cards.author name="Madhuchanda D." />
+					<x-review-cards.author-details text="Antarctic Express: Crossing the Circle" />
+				</x-review-cards.card>
+				<x-review-cards.card>
+					<x-review-cards.rating rating="4" />
+					<x-review-cards.title title="Falkland, South Georgia and the Antarctic Circle" />
+					<x-review-cards.content>
+						<p>
+							Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever. Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever.
+						</p>
+					</x-review-cards.content>
+					<x-review-cards.author name="Denise P." />
+					<x-review-cards.author-details text="South Georgia and Antarctic Peninsula: Penguin Safari" />
+				</x-review-cards.card>
+			</x-review-cards>
+		</x-section>
 	</x-component-demo>
 
 	<x-component-demo :keys="[ 'hero', 'hero-refactor' ]">
@@ -96,6 +167,30 @@
 					<x-hero.form-modal-cta>Get a Digital Brochure</x-hero.form-modal-cta>
 				</x-hero.left>
 				<x-hero.right>
+					<x-hero.form>
+						<x-form-two-step-compact
+							:countries="[
+								'IN' => 'India',
+								'AU' => 'Australia',
+								'US' => 'United States',
+								'CA' => 'Canada',
+							]"
+							:states="[
+								'AU' => [
+									'ACT' => 'Australian Capital Territory',
+									'JBT' => 'Jervis Bay Territory',
+								],
+								'US' => [
+									'AA' => 'Armed Forces Americas',
+									'AE' => 'Armed Forces Europe',
+								],
+								'CA' => [
+									'AB' => 'Alberta',
+									'BC' => 'British Columbia',
+								],
+							]"
+						/>
+					</x-hero.form>
 				</x-hero.right>
 			</x-hero.content>
 		</x-hero>
@@ -558,6 +653,7 @@
 				</x-media-content-card>
 			</x-section>
 			<x-section title="Media Content Card 1-column">
+				<x-section.description>Call us and one of our Polar Travel Advisors will secure the offer for you.</x-section.description>
 				<x-media-content-card :is_compact="true" >
 					<x-media-content-card.image image_id="33"/>
 					<x-media-content-card.content>
@@ -719,6 +815,27 @@
 					</x-product-departures-card.departures>
 				</x-product-departures-card.content>
 			</x-product-departures-card>
+		</x-section>
+	</x-component-demo>
+	<x-component-demo :keys="[ 'fancy-video' ]">
+		<x-section>
+			<x-two-columns :border="false">
+				<x-two-columns.column>
+					<x-fancy-video
+						url="https://www.youtube.com/embed/0fRAL7xROZg"
+						image_id="32"
+						title="Hear from fellow solo traveler Charlotte"
+					/>
+				</x-two-columns.column>
+
+				<x-two-columns.column>
+					<x-fancy-video
+						url="https://www.youtube.com/embed/0fRAL7xROZg"
+						image_id="35"
+						title="Interact with fellow travellers in Tundra to Table: Inuit Culinary Experience"
+					/>
+				</x-two-columns.column>
+			</x-two-columns>
 		</x-section>
 	</x-component-demo>
 
@@ -1087,6 +1204,52 @@
 				</x-offer-cards.content>
 			</x-offer-cards.card>
 		</x-offer-cards>
+	</x-component-demo>
+	<x-component-demo :keys="[ 'media-text-cta' ]">
+		<x-media-text-cta>
+			<x-media-text-cta.image image_id="32">
+				<x-media-text-cta.badge text="Featured Expedition" />
+			</x-media-text-cta.image>
+
+			<x-media-text-cta.content>
+				<h2>South Georgia and Antarctic Peninsula: Penguin Safari</h2>
+				<p>This is the fastest way to visit both the Antarctic Peninsula and remote, wildlife rich South Georgia, where the beaches are teaming with King penguins and elephant seals. From here you sail south where Antarctica awaits with its soaring peaks and staggering expanse.</p>
+				<x-media-text-cta.secondary-text text="16/18 days | Starting from $12,946 USD" />
+				<x-media-text-cta.cta>
+					<x-button size="big" color="black">Request a Quote</x-button>
+				</x-media-text-cta.cta>
+			</x-media-text-cta.content>
+		</x-media-text-cta>
+
+		<x-media-text-cta media_align="right">
+			<x-media-text-cta.video>
+				<x-fancy-video url="https://www.youtube.com/embed/0fRAL7xROZg" image_id="32" />
+			</x-media-text-cta.video>
+
+			<x-media-text-cta.content>
+				<h2>Falklands, South Georgia, and Antarctica: Explorers & Kings</h2>
+				<p>The quickest way to get to the rarely visited Falkland Islands and South Georgia before stepping foot on the 7th Continent. Both islands are known as meccas for wildlife with epic displays of animals congregating by the thousands. Then, explore the stunning Antarctic Peninsula and enter a world of ice, snow and natural wonders.</p>
+				<x-media-text-cta.secondary-text text="20 days | Starting From $14,621 USD" />
+				<x-media-text-cta.cta>
+					<x-button size="big" color="black">Request a Quote</x-button>
+				</x-media-text-cta.cta>
+			</x-media-text-cta.content>
+		</x-media-text-cta>
+
+		<x-media-text-cta>
+			<x-media-text-cta.image image_id="32">
+				<x-media-text-cta.badge text="Featured Expedition" />
+			</x-media-text-cta.image>
+
+			<x-media-text-cta.content>
+				<h2>Epic Antarctica: Crossing the Circle via Falklands & South Georgia</h2>
+				<p>Our Epic Antarctica voyage is called so for a reason—it includes all of the major Antarctic highlights you can imagine. </p>
+				<x-media-text-cta.secondary-text text="23 days | Starting From $26,979 USD" />
+				<x-media-text-cta.cta>
+					<x-button size="big" color="black">Request a Quote</x-button>
+				</x-media-text-cta.cta>
+			</x-media-text-cta.content>
+		</x-media-text-cta>
 	</x-component-demo>
 
 	<x-component-demo :keys="[ 'lp-footer', 'logo-grid' ]">

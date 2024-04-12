@@ -7,6 +7,11 @@ import {
 	registerBlockType,
 } from '@wordpress/blocks';
 import {
+	PanelBody,
+	ToggleControl,
+} from '@wordpress/components';
+import {
+	InspectorControls,
 	useBlockProps,
 	useInnerBlocksProps,
 	InnerBlocks,
@@ -55,7 +60,12 @@ export const settings: BlockConfiguration = {
 		__( 'reviews', 'qrk' ),
 		__( 'cards', 'qrk' ),
 	],
-	attributes: {},
+	attributes: {
+		isCarousel: {
+			type: 'boolean',
+			default: true,
+		},
+	},
 	supports: {
 		alignWide: false,
 		anchor: true,
@@ -63,7 +73,7 @@ export const settings: BlockConfiguration = {
 		html: false,
 		customClassName: false,
 	},
-	edit( { className }: BlockEditAttributes ): JSX.Element {
+	edit( { className, attributes, setAttributes }: BlockEditAttributes ): JSX.Element {
 		// eslint-disable-next-line react-hooks/rules-of-hooks
 		const blockProps = useBlockProps( {
 			className: classnames( className, 'review-cards' ),
@@ -84,6 +94,16 @@ export const settings: BlockConfiguration = {
 		// Return the block's markup.
 		return (
 			<>
+				<InspectorControls>
+					<PanelBody title={ __( 'Review Cards Options', 'qrk' ) }>
+						<ToggleControl
+							label={ __( 'Is Carousel?', 'qrk' ) }
+							checked={ attributes.isCarousel }
+							help={ __( 'Show carousel navigation arrows in desktop', 'qrk' ) }
+							onChange={ ( isCarousel: boolean ) => setAttributes( { isCarousel } ) }
+						/>
+					</PanelBody>
+				</InspectorControls>
 				<Section { ...blockProps }>
 					<div { ...innerBlockProps } />
 				</Section>
