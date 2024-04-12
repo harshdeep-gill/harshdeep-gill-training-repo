@@ -128,7 +128,7 @@ function download_file_by_url( string $url = '' ): int|WP_Error {
 	}
 
 	// Convert URL to Drupal public path.
-	$url = str_replace( '/sites/default/files/', 'public://', $url );
+	$url = str_replace( '/sites/default/files/', 'public://', urldecode( $url ) );
 
 	// Drupal database instance.
 	$drupal_db = get_database();
@@ -703,7 +703,7 @@ function transform_image_tags( string $content = '' ): string {
 		if (
 			! is_array( $parsed_src )
 			|| empty( $parsed_src['path'] )
-			|| ! str_contains( $parsed_src['path'], '/sites/default' )
+			|| ! str_contains( $parsed_src['path'], '/sites/default/files/' )
 			|| ( ! empty( $parsed_src['host'] ) && ! str_contains( 'quarkexpeditions', $parsed_src['host'] ) )
 		) {
 			continue;
@@ -712,7 +712,7 @@ function transform_image_tags( string $content = '' ): string {
 		// Get Drupal image based on file name.
 		$image = download_file_by_url( $parsed_src['path'] );
 
-		// If image found then build HTML.
+		// If image not found in database, download orphan media using image src path.
 		if ( 0 === $image ) {
 			$image = get_media_by_url( $parsed_src['path'] );
 		}
