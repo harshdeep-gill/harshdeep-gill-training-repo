@@ -49,16 +49,9 @@ function render( ?string $content = null, array $block = [] ): null|string {
 		'image_id'   => 0,
 		'immersive'  => $block['attrs']['isImmersive'] ?? false,
 		'text_align' => $block['attrs']['textAlign'] ?? '',
-		'left'       => [
-			'overline' => '',
-			'title'    => '',
-			'subtitle' => '',
-			'tag'      => '',
-			'cta'      => '',
-		],
-		'right'      => [
-			'form' => '',
-		],
+		'left'       => [],
+		'right'      => [],
+		'dark_mode'  => $block['attrs']['darkMode'] ?? false,
 	];
 
 	// Parse inner blocks.
@@ -72,37 +65,112 @@ function render( ?string $content = null, array $block = [] ): null|string {
 		foreach ( $inner_block['innerBlocks'] as $inner_inner_block ) {
 			switch ( $inner_inner_block['blockName'] ) {
 
-				// Inquiry form.
-				case 'quark/inquiry-form':
-					$attributes['right']['form'] = render_block( $inner_inner_block );
+				// Hero form.
+				case 'quark/form-two-step':
+				case 'quark/form-two-step-compact':
+					$form = [
+						'type' => 'form',
+					];
+
+					// Add the form.
+					$form['form'] = render_block( $inner_inner_block );
+
+					// Add to attributes.
+					$attributes['right'][] = $form;
 					break;
 
 				// Overline.
 				case 'quark/hero-overline':
-					$attributes['left']['overline'] = $inner_inner_block['attrs']['overline'] ?? '';
+					$overline = [
+						'type' => 'overline',
+					];
+
+					// Add overline.
+					$overline['overline']['text']  = $inner_inner_block['attrs']['overline'] ?? '';
+					$overline['overline']['color'] = $inner_inner_block['attrs']['textColor'] ?? 'blue';
+
+					// Add to attributes.
+					$attributes['left'][] = $overline;
 					break;
 
 				// Title.
 				case 'quark/hero-title':
-					$attributes['left']['title'] = $inner_inner_block['attrs']['title'] ?? '';
+					$title = [
+						'type' => 'title',
+					];
+
+					// Add title.
+					$title['title'] = $inner_inner_block['attrs']['title'] ?? '';
+
+					// Add to attributes.
+					$attributes['left'][] = $title;
 					break;
 
 				// Subtitle.
 				case 'quark/hero-subtitle':
-					$attributes['left']['subtitle'] = $inner_inner_block['attrs']['subtitle'] ?? '';
+					$subtitle = [
+						'type' => 'subtitle',
+					];
+
+					// Add subtitle.
+					$subtitle['subtitle'] = $inner_inner_block['attrs']['subtitle'] ?? '';
+
+					// Add to attributes.
+					$attributes['left'][] = $subtitle;
+					break;
+
+				// Description.
+				case 'quark/hero-description':
+					$description = [
+						'type' => 'description',
+					];
+
+					// Add description.
+					$description['description'] = implode( '', array_map( 'render_block', $inner_inner_block['innerBlocks'] ) );
+
+					// Add to attributes.
+					$attributes['left'][] = $description;
 					break;
 
 				// Hero tag.
 				case 'quark/icon-badge':
+					$tag = [
+						'type' => 'tag',
+					];
+
+					// Add tag.
 					$inner_inner_block['attrs']['className'] = 'hero__tag';
-					$attributes['left']['tag']               = render_block( $inner_inner_block );
+					$tag['tag']                              = render_block( $inner_inner_block );
+
+					// Add to attributes.
+					$attributes['left'][] = $tag;
 					break;
 
 				// CTA.
 				case 'quark/lp-form-modal-cta':
+					$cta = [
+						'type' => 'cta',
+					];
+
+					// Add cta.
 					$inner_inner_block['attrs']['className'] = 'hero__form-modal-cta color-context--dark';
-					$attributes['left']['cta']               = render_block( $inner_inner_block );
+					$cta['cta']                              = render_block( $inner_inner_block );
+
+					// Add to attributes.
+					$attributes['left'][] = $cta;
 					break;
+
+				// Quark button.
+				case 'quark/button':
+					$button = [
+						'type' => 'button',
+					];
+
+					// Add button.
+					$button['button'] = render_block( $inner_inner_block );
+
+					// Add to attributes.
+					$attributes['left'][] = $button;
 			}
 		}
 	}

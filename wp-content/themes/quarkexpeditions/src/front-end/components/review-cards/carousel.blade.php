@@ -1,3 +1,7 @@
+@props( [
+	'is_carousel' => 'true',
+] )
+
 @php
 	if ( empty( $slot ) ) {
 		return;
@@ -8,15 +12,19 @@
 @endphp
 
 <div class="review-cards__carousel">
-	<tp-slider class="review-cards__slider" swipe="yes" infinite="yes">
+	<tp-slider
+		class="review-cards__slider"
+		swipe="yes"
+		infinite="yes"
+	>
 		<tp-slider-track class="review-cards__track">
-			<tp-slider-slides>
+			<tp-slider-slides class="review-cards__slides">
 				{!! $slot !!}
 			</tp-slider-slides>
 		</tp-slider-track>
 
 		@if ( $slide_count > 1 )
-			<div class="review-cards__nav">
+			<div class="review-cards__nav" data-is-carousel="{{ $is_carousel }}">
 				<tp-slider-arrow direction="previous">
 					<button class="review-cards__arrow-button review-cards__arrow-button--left">
 						<x-svg name="chevron-left" />

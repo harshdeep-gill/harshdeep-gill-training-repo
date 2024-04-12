@@ -51,6 +51,7 @@ function render( ?string $content = null, array $block = [] ): null|string {
 		'tc_image_id'  => 0,
 		'phone_number' => $block['attrs']['ctaNumber'] ?? '',
 		'cta_text'     => $block['attrs']['ctaText'] ?? '',
+		'dark_mode'    => $block['attrs']['darkMode'] ?? false,
 	];
 
 	// TC Image.

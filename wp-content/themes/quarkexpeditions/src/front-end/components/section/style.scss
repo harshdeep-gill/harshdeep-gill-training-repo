@@ -13,9 +13,18 @@
 	}
 
 	&__title {
+		margin-bottom: var(--spacing-6);
 
-		&:has(+ .section) {
-			margin-bottom: var(--spacing-7);
+		+ #{$self}__description {
+			margin-top: calc(-1 * var(--spacing-5));
+		}
+
+		@media screen and (min-width: grid-size(md)) {
+			margin-bottom: var(--spacing-8);
+
+			+ #{$self}__description {
+				margin-top: calc(-1 * var(--spacing-7));
+			}
 		}
 	}
 
@@ -28,7 +37,11 @@
 	}
 
 	&__description {
-		margin-bottom: var(--spacing-7);
+		margin-bottom: var(--spacing-6);
+
+		@media screen and (min-width: grid-size(md)) {
+			margin-bottom: var(--spacing-8);
+		}
 	}
 
 	&--has-background {
@@ -47,6 +60,10 @@
 	.section {
 		margin-top: 0;
 		margin-bottom: var(--spacing-7);
+
+		&:last-child {
+			margin-bottom: 0;
+		}
 	}
 
 	> .section {

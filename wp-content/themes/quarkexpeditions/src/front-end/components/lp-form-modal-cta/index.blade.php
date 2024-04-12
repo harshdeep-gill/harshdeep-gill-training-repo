@@ -2,6 +2,8 @@
 	'class'          => '',
 	'form_id'        => '',
 	'thank_you_page' => '',
+	'countries'      => [],
+	'states'         => [],
 	'hidden_fields'  => [],
 ] )
 
@@ -10,19 +12,19 @@
 		return;
 	}
 
-	$modal_id = $form_id . '-modal';
-
 	$classes = [ 'lp-form-modal-cta' ];
 
 	if ( ! empty( $class ) ) {
 		$classes[] = $class;
 	}
 
-	$show_hidden_fields = false;
+	// Get the modal component name for the $form_id
+	$modal_component = 'inquiry-form-modal';
 
-	if ( ! empty( $hidden_fields ) ) {
-		$show_hidden_fields = true;
-	}
+	/**
+	 * $modal_id will be different for each $form_id and $thank_you_page url.
+	 */
+	$modal_id = quark_generate_dom_id( $form_id . $thank_you_page );
 @endphp
 
 <quark-lp-form-modal-cta
@@ -38,13 +40,20 @@
 		<x-content :content="$slot" />
 	</x-modal.modal-open>
 
-	@switch( $form_id )
-		@case( 'inquiry-form' )
-			<x-once :id="$modal_id">
-				<x-inquiry-form.modal thank_you_page="{{ $thank_you_page }}" :show_hidden_fields="$show_hidden_fields" />
-			</x-once>
-			@break
-	@endswitch
+	<x-once id="{{ $modal_id }}">
+		{!!
+			quark_get_component(
+				$modal_component,
+				[
+					'thank_you_page' => $thank_you_page,
+					'form_id'        => $form_id,
+					'modal_id'       => $modal_id,
+					'countries'      => $countries,
+					'states'         => $states,
+				]
+			)
+		!!}
+	</x-once>
 
 </quark-lp-form-modal-cta>
 
