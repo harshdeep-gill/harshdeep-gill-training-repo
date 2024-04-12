@@ -19,7 +19,7 @@ use function Quark\Migration\Drupal\prepare_content;
 use function Quark\Migration\WordPress\qrk_sanitize_attribute;
 use function WP_CLI\Utils\make_progress_bar;
 
-use const Quark\PressRelease\POST_TYPE;
+use const Quark\PressReleases\POST_TYPE;
 
 /**
  * Class Press_Release.
