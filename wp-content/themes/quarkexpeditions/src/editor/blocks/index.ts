@@ -25,6 +25,10 @@ import * as iconBadge from './icon-badge';
 import * as lpFormModalCta from './lp-form-modal-cta';
 import * as mediaContentCard from './media-content-card';
 import * as button from './button';
+import * as productDeparturesCard from './product-departures-card';
+import * as contactCoverCard from './contact-cover-card';
+import * as offerCards from './offer-cards';
+import * as lpOfferMasthead from './lp-offer-masthead';
 import * as mediaTextCta from './media-text-cta';
 import * as fancyVideo from './fancy-video';
 import * as formTwoStep from './form-two-step';
@@ -53,6 +57,10 @@ const blocks = [
 	lpFormModalCta,
 	mediaContentCard,
 	button,
+	productDeparturesCard,
+	contactCoverCard,
+	offerCards,
+	lpOfferMasthead,
 	mediaTextCta,
 	fancyVideo,
 	formTwoStep,

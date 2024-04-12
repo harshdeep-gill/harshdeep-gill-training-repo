@@ -1,4 +1,5 @@
 @props( [
+	'align' => 'left',
 	'items' => [],
 ] )
 
@@ -6,10 +7,9 @@
 	if ( empty( $items ) ) {
 		return;
 	}
-
 @endphp
 
-<x-product-cards>
+<x-product-cards :align="$align">
 	@foreach ( $items as $card )
 		@if ( 'product-card' === $card['type'] )
 			<x-product-cards.card>

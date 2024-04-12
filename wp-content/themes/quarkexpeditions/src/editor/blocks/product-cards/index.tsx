@@ -7,6 +7,7 @@ import {
 	useBlockProps,
 	useInnerBlocksProps,
 	InnerBlocks,
+	InspectorControls,
 } from '@wordpress/block-editor';
 
 /**
@@ -24,6 +25,7 @@ import './editor.scss';
  * Child block.
  */
 import * as card from './card';
+import { PanelBody, SelectControl } from '@wordpress/components';
 
 /**
  * Register child block.
@@ -44,10 +46,16 @@ export const settings: BlockConfiguration = {
 	description: __( 'Add product cards to the page.', 'qrk' ),
 	category: 'layout',
 	keywords: [
-		__( 'product cards', 'qrk' ),
+		__( 'product', 'qrk' ),
+		__( 'cards', 'qrk' ),
 		__( 'expeditions', 'qrk' ),
 	],
-	attributes: {},
+	attributes: {
+		align: {
+			type: 'string',
+			default: 'left',
+		},
+	},
 	supports: {
 		alignWide: false,
 		anchor: true,
@@ -55,14 +63,15 @@ export const settings: BlockConfiguration = {
 		html: false,
 		customClassName: false,
 	},
-	edit( { className }: BlockEditAttributes ): JSX.Element {
+	edit( { className, attributes, setAttributes }: BlockEditAttributes ): JSX.Element {
 		// eslint-disable-next-line react-hooks/rules-of-hooks
-		const blockProps = useBlockProps( {
-			className: classnames( className, 'product-cards', 'grid', 'grid--cols-3' ),
-		} );
+		const blockProps = useBlockProps();
 
 		// eslint-disable-next-line react-hooks/rules-of-hooks
-		const innerBlockProps = useInnerBlocksProps( { ...blockProps },
+		const innerBlockProps = useInnerBlocksProps(
+			{
+				className: classnames( className, 'product-cards', 'grid', 'center' === attributes.align ? 'product-cards--align-center' : 'grid--cols-3' ),
+			},
 			{
 				allowedBlocks: [ card.name ],
 				template: [ [ card.name ], [ card.name ], [ card.name ] ],
@@ -75,7 +84,25 @@ export const settings: BlockConfiguration = {
 
 		// Return the block's markup.
 		return (
-			<div { ...innerBlockProps } />
+			<>
+				<InspectorControls>
+					<PanelBody title={ __( 'Product Cards Grid Options', 'qrk' ) }>
+						<SelectControl
+							label={ __( 'Product Cards Alignment', 'qrk' ) }
+							help={ __( 'Select the cards alignment', 'qrk' ) }
+							value={ attributes.align }
+							options={ [
+								{ label: __( 'Left', 'qrk' ), value: 'left' },
+								{ label: __( 'Center', 'qrk' ), value: 'center' },
+							] }
+							onChange={ ( align: string ) => setAttributes( { align } ) }
+						/>
+					</PanelBody>
+				</InspectorControls>
+				<div { ...blockProps }>
+					<div { ...innerBlockProps } />
+				</div>
+			</>
 		);
 	},
 	save() {
