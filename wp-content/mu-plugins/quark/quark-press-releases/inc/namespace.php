@@ -2,10 +2,10 @@
 /**
  * Namespace functions.
  *
- * @package quark-press-release
+ * @package quark-press-releases
  */
 
-namespace Quark\PressRelease;
+namespace Quark\PressReleases;
 
 use WP_Post;
 

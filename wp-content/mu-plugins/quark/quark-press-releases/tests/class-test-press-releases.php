@@ -2,10 +2,10 @@
 /**
  * Press Release test suite.
  *
- * @package quark-press-release
+ * @package quark-press-releases
  */
 
-namespace Quark\PressRelease\Tests;
+namespace Quark\PressReleases\Tests;
 
 use WP_Post;
 use WP_UnitTestCase;
@@ -18,7 +18,7 @@ class Test_Press_Releases extends WP_UnitTestCase {
 	/**
 	 * Test single layout.
 	 *
-	 * @covers \Quark\PressRelease\layout_single()
+	 * @covers \Quark\PressReleases\layout_single()
 	 *
 	 * @return void
 	 */
@@ -26,7 +26,7 @@ class Test_Press_Releases extends WP_UnitTestCase {
 		// No post.
 		$this->assertEquals(
 			[],
-			\Quark\PressRelease\layout_single()
+			\Quark\PressReleases\layout_single()
 		);
 
 		// Create post.
@@ -35,7 +35,7 @@ class Test_Press_Releases extends WP_UnitTestCase {
 				'post_title'   => 'Test Post',
 				'post_content' => 'Post content',
 				'post_status'  => 'publish',
-				'post_type'    => \Quark\PressRelease\POST_TYPE,
+				'post_type'    => \Quark\PressReleases\POST_TYPE,
 			]
 		);
 
@@ -47,7 +47,7 @@ class Test_Press_Releases extends WP_UnitTestCase {
 		$post = $post_1; // phpcs:ignore
 
 		// Test with post.
-		$layout = \Quark\PressRelease\layout_single();
+		$layout = \Quark\PressReleases\layout_single();
 
 		// Assert expected layout is equal to actual layout.
 		$this->assertEquals(
@@ -75,7 +75,7 @@ class Test_Press_Releases extends WP_UnitTestCase {
 	/**
 	 * Test single layout.
 	 *
-	 * @covers Quark\PressRelease\get()
+	 * @covers Quark\PressReleases\get()
 	 *
 	 * @return void
 	 */
@@ -86,7 +86,7 @@ class Test_Press_Releases extends WP_UnitTestCase {
 				'post_title'   => 'Test Post',
 				'post_content' => 'Post content',
 				'post_status'  => 'publish',
-				'post_type'    => \Quark\PressRelease\POST_TYPE,
+				'post_type'    => \Quark\PressReleases\POST_TYPE,
 			]
 		);
 
@@ -104,7 +104,7 @@ class Test_Press_Releases extends WP_UnitTestCase {
 		$this->assertTrue( $post_2 instanceof WP_Post );
 
 		// Test getting post.
-		$the_post = \Quark\PressRelease\get( $post_1->ID );
+		$the_post = \Quark\PressReleases\get( $post_1->ID );
 
 		// Assert post's expected permalink is correct is equal to actual permalink.
 		$this->assertEquals(
@@ -118,7 +118,7 @@ class Test_Press_Releases extends WP_UnitTestCase {
 				'post'      => null,
 				'permalink' => '',
 			],
-			\Quark\PressRelease\get( $post_2->ID )
+			\Quark\PressReleases\get( $post_2->ID )
 		);
 	}
 }
