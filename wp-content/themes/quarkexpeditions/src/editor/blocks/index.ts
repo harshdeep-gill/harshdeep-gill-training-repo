@@ -12,7 +12,6 @@ import * as twoColumns from './two-columns';
 import * as iconInfoColumns from './icon-info-columns';
 import * as reviewsCarousel from './reviews-carousel';
 import * as hero from './hero';
-import * as inquiryForm from './inquiry-form';
 import * as logoGrid from './logo-grid';
 import * as lpFooter from './lp-footer';
 import * as iconColumns from './icon-columns';
@@ -30,6 +29,10 @@ import * as productDeparturesCard from './product-departures-card';
 import * as contactCoverCard from './contact-cover-card';
 import * as offerCards from './offer-cards';
 import * as lpOfferMasthead from './lp-offer-masthead';
+import * as mediaTextCta from './media-text-cta';
+import * as fancyVideo from './fancy-video';
+import * as formTwoStep from './form-two-step';
+import * as formTwoStepCompact from './form-two-step-compact';
 
 /**
  * Add blocks.
@@ -41,7 +44,6 @@ const blocks = [
 	iconInfoColumns,
 	reviewsCarousel,
 	hero,
-	inquiryForm,
 	logoGrid,
 	lpFooter,
 	iconColumns,
@@ -59,6 +61,10 @@ const blocks = [
 	contactCoverCard,
 	offerCards,
 	lpOfferMasthead,
+	mediaTextCta,
+	fancyVideo,
+	formTwoStep,
+	formTwoStepCompact,
 ];
 
 /**

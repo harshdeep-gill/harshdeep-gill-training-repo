@@ -32,7 +32,6 @@ function register_blocks(): void {
 		'IconInfoColumns'       => 'icon-info-columns.php',
 		'ReviewsCarousel'       => 'reviews-carousel.php',
 		'Hero'                  => 'hero.php',
-		'InquiryForm'           => 'inquiry-form.php',
 		'LogoGrid'              => 'logo-grid.php',
 		'LPFooter'              => 'lp-footer.php',
 		'IconColumns'           => 'icon-columns.php',
@@ -50,6 +49,10 @@ function register_blocks(): void {
 		'ContactCoverCard'      => 'contact-cover-card.php',
 		'OfferCards'            => 'offer-cards.php',
 		'LPOfferMasthead'       => 'lp-offer-masthead.php',
+		'MediaTextCTA'          => 'media-text-cta.php',
+		'FancyVideo'            => 'fancy-video.php',
+		'FormTwoStep'           => 'form-two-step.php',
+		'FormTwoStepCompact'    => 'form-two-step-compact.php',
 	];
 
 	// Register blocks.

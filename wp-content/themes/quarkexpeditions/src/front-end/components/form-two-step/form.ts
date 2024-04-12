@@ -9,9 +9,9 @@ const { HTMLElement } = window;
 import { TPFormFieldElement } from '@travelopia/web-components';
 
 /**
- * InquiryForm Class.
+ * FormTwoStep Class.
  */
-export default class InquiryForm extends HTMLElement {
+export default class FormTwoStep extends HTMLElement {
 	/**
 	 * Properties.
 	 */
@@ -26,7 +26,7 @@ export default class InquiryForm extends HTMLElement {
 		super();
 
 		// Elements.
-		this.modalOpenButton = this.querySelector( 'quark-modal-open button' );
+		this.modalOpenButton = this.querySelector( 'quark-modal-open' );
 		this.fields = this.querySelectorAll( 'tp-form-field' );
 
 		// Events.

@@ -9,9 +9,9 @@ const { HTMLElement } = window;
 import { TPFormElement } from '@travelopia/web-components';
 
 /**
- * InquiryFormModal Class.
+ * FormTwoStepModal Class.
  */
-export default class InquiryFormModal extends HTMLElement {
+export default class FormTwoStepModal extends HTMLElement {
 	/**
 	 * Properties.
 	 */
@@ -33,11 +33,11 @@ export default class InquiryFormModal extends HTMLElement {
 		// Elements.
 		this.quarkForm = this.querySelector( 'quark-form' );
 		this.tpForm = this.querySelector( 'tp-form' );
-		this.countrySelector = this.querySelector( '.inquiry-form__country' );
-		this.stateSelectors = this.querySelectorAll( '.inquiry-form__state' );
+		this.countrySelector = this.querySelector( '.form-two-step-compact__country' );
+		this.stateSelectors = this.querySelectorAll( '.form-two-step-compact__state' );
 		this.toastMessage = this.querySelector( 'quark-toast-message' );
-		this.thankYou = this.querySelector( '.inquiry-form__thank-you' );
-		this.content = this.querySelector( '.inquiry-form__content' );
+		this.thankYou = this.querySelector( '.form-two-step-compact__thank-you' );
+		this.content = this.querySelector( '.form-two-step-compact__content' );
 
 		// Events.
 		if ( this.stateSelectors ) {

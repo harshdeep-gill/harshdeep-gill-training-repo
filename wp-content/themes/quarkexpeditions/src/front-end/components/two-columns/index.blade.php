@@ -7,7 +7,7 @@
 		return;
 	}
 
-	$classes = [ 'two-columns grid grid--cols-2' ];
+	$classes = [ 'two-columns grid' ];
 
 	if ( true === $border ) {
 		$classes[] = 'two-columns--has-border';
