@@ -20,6 +20,11 @@
 				opacity: 1;
 			}
 		}
+
+		button {
+			display: block;
+			height: 100%;
+		}
 	}
 
 	&__arrows {
@@ -45,37 +50,12 @@
 		height: 100%;
 	}
 
-	figcaption {
-		position: absolute;
-		bottom: 0;
-		width: 100%;
-		color: var(--color-white);
-		border-radius: 0 0 4px 4px;
-		background: rgba(0, 0, 0, 0.55);
-		text-align: left;
-		padding: 7px 12px;
-		font-style: normal;
-		display: none;
-
-		@media screen and (min-width: grid-size(sm)) {
-			display: block;
-		}
-
-		@media screen and (min-width: grid-size(md)) {
-			padding-top: 8px;
-			padding-bottom: 8px;
-		}
-	}
-
 	&__caption {
 		display: block;
 		max-width: calc(100% - 70px);
 	}
 }
 
-.glightbox-open {
-	height: 100% !important; // Override library style.
-}
 
 .glightbox-container {
 

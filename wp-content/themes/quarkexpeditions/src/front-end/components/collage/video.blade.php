@@ -54,9 +54,9 @@
 			/>
 
 			<div class="collage__video-button-wrapper">
-				<button class="collage__video-button">
+				<div role="button" class="collage__video-button">
 					<x-svg name="play" />
-				</button>
+				</div>
 			</div>
 		</x-media-lightbox>
 	</tp-slider-slide>

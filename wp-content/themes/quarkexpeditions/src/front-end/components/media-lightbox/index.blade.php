@@ -6,25 +6,16 @@
 ] )
 
 @php
-	if ( empty( $name ) || empty( $slot ) ) {
+	if ( empty( $name ) || empty( $slot ) || empty( $path ) ) {
 		return;
 	}
 
-	quark_enqueue_style( 'glightbox' );
-	quark_enqueue_script( 'glightbox' );
+	quark_enqueue_style( 'tp-lightbox' );
+	quark_enqueue_script( 'tp-lightbox' );
 @endphp
 
-<quark-media-lightbox class="media-lightbox" name="{{ $name }}">
-	<a
-		href="{{ $path }}"
-		class="media-lightbox__link glightbox"
-		data-gallery="{{ $name }}"
-		data-zoomable="false"
-		data-draggable="false"
-	   	@if ( ! empty( $title ) )
-		   data-glightbox="title: {{ $title }}"
-		@endif
-	>
+<tp-lightbox-trigger class="media-lightbox__link" lightbox="media-lightbox" group="{{ $name }}">
+	<button>
 		@if ( true === $media )
 			<figure class="media-lightbox__image-wrap">
 				{!! $slot !!}
@@ -32,5 +23,38 @@
 		@else
 			{!! $slot !!}
 		@endif
-	</a>
-</quark-media-lightbox>
+	</button>
+	<template>
+		@if ( str_starts_with( $path, 'https://youtube.com' ) )
+			<iframe
+				src="{{ $path }}"
+				allow="modestbranding; accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+				allowfullscreen
+			></iframe>
+		@else
+			<img src="{{ $path }}"/>
+		@endif
+	</template>
+</tp-lightbox-trigger>
+
+<x-once id="media-lightbox">
+	<tp-lightbox id="media-lightbox" class="media-lightbox" close-on-overlay-click="yes">
+		<dialog class="media-ligthbox__dialog">
+			<tp-lightbox-close class="media-ligthbox__close">
+				<button><x-svg name="cross" /></button>
+			</tp-lightbox-close>
+
+			<tp-lightbox-previous class="media-ligthbox__prev">
+				<button><x-svg name="chevron-left" /></button>
+			</tp-lightbox-previous>
+
+			<tp-lightbox-next class="media-ligthbox__next">
+				<button><x-svg name="chevron-left" /></button>
+			</tp-lightbox-next>
+
+			<tp-lightbox-content class="media-ligthbox__content"></tp-lightbox-content>
+
+			<tp-lightbox-count format="$current of $total"></tp-lightbox-count>
+		</dialog>
+	</tp-lightbox>
+</x-once>
