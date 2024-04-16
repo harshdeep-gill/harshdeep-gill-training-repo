@@ -54,166 +54,114 @@
 		display: block;
 		max-width: calc(100% - 70px);
 	}
-}
 
+	dialog {
 
-.glightbox-container {
+		&::backdrop {
+			background-color: rgba(0, 0, 0, 0.9);
+		}
 
-	.gslideInLeft,
-	.gslideOutLeft,
-	.gslideInRight,
-	.gslideOutRight {
-		animation-duration: 0.6s;
+		/* stylelint-disable-next-line selector-pseudo-class-no-unknown */
+		&:modal {
+			max-width: 100%;
+			max-height: 100%;
+			background-color: transparent;
+
+			@media screen and (min-width: grid-size(md)) {
+				max-width: 1220px;
+				max-height: 785px;
+				margin-inline: 80px;
+			}
+
+			@media screen and (min-width: grid-size(xxl)) {
+				margin-inline: auto;
+			}
+		}
 	}
 
-	.gslide-image {
-		flex-direction: column;
-		align-items: flex-start;
+	&__content {
+		border-radius: var(--border-radius-large);
+		overflow: hidden;
+		max-width: 1280px;
+		max-height: 720px;
+		aspect-ratio: 16 / 9;
+		width: 100%;
 
-		img {
+		img,
+		iframe {
+			width: 100%;
+			display: block;
+			border: none;
+		}
+	}
+
+	&__close {
+		display: block;
+		position: fixed;
+		inset: 15px 15px auto auto;
+		width: 16px;
+		height: 16px;
+
+		button {
+			display: block;
+			color: var(--color-white);
+			height: 100%;
 			width: 100%;
 
-			@media screen and (min-width: grid-size(md)) {
-				max-height: 70vh !important;
-				max-width: 75vw;
-				border-radius: var(--border-radius-large);
-			}
-
-			@media screen and (min-width: grid-size(xl)) {
-				max-height: 80vh !important;
-				max-width: 85vw;
-				border-radius: var(--border-radius-large);
+			svg {
+				width: 100%;
+				height: 100%;
 			}
 		}
 	}
 
-	.glightbox-slide-index {
-		position: absolute;
-		top: 12px;
-		left: var(--grid-col-gutter);
+	&__count {
+		display: block;
+		position: fixed;
+		inset: 15px auto auto 15px;
 		color: var(--color-white);
-
-		@media screen and (min-width: grid-size(md)) {
-			left: 15px;
-		}
 	}
 
-	.gslide-description {
-		position: static !important; // Override library style.
-		padding: 0 !important; // Override library style.
-		flex: initial;
-		background: rgba(0, 0, 0, 0);
-
-		.gdesc-inner {
-			padding: 0 var(--grid-col-gutter);
-
-			@media screen and (min-width: grid-size(md)) {
-				flex-direction: row;
-				padding: 14px 0 0 0;
-			}
-		}
-
-		.gslide-title {
-			font-family: var(--font-family);
-			margin-top: 10px;
-			margin-bottom: 0;
-			line-height: 1.5;
-			color: var(--color-white);
-			text-align: center;
-
-			@media screen and (min-width: grid-size(md)) {
-				margin-top: 0;
-			}
-		}
-	}
-
-	.gprev {
-		position: absolute;
+	&__prev {
 		left: 15px;
-		top: 0;
-		bottom: 0;
-		margin: auto;
+		transform: translateY(-50%);
 	}
 
-	.gnext {
-		position: absolute;
+	&__next {
 		right: 15px;
-		top: 0;
-		bottom: 0;
-		margin: auto;
+		transform: translateY(-50%);
 
-		&::before {
+		svg {
 			transform: rotate(180deg);
 		}
 	}
 
-	.gclose {
-		position: absolute;
-		top: 15px;
-		right: 15px;
-		background-color: transparent;
-		width: 15px;
-		height: 15px;
-		opacity: 1;
-
-		svg {
-			fill: var(--color-white);
-			width: 18px;
-			height: 18px;
-
-			@media screen and (min-width: grid-size(md)) {
-				width: 20px;
-				height: 20px;
-			}
-		}
-	}
-
-	.gprev,
-	.gnext {
-		background: var(--color-white);
-		border: 1px solid var(--color-gray-20);
+	&__prev,
+	&__next {
+		position: fixed;
+		top: 50%;
+		width: 44px;
+		height: 44px;
 		border-radius: 50%;
-		width: 36px;
-		height: 36px;
-		padding: 0;
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
+		background-color: var(--color-white);
+		z-index: 2;
 
-		@media screen and (min-width: grid-size(lg)) {
-			width: 46px;
-			height: 46px;
-		}
 
-		@include transition(background-color);
-
-		&::before {
-			content: "";
-			background-image: url(../../../src/assets/svg/arrow-left.svg);
-			width: 10px;
-			height: 17px;
+		button {
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			position: absolute;
-			scale: 0.8;
-			transform-origin: center;
+			width: 100%;
+			height: 100%;
 
-			@media screen and (min-width: grid-size(lg)) {
-				scale: 1;
+			svg {
+				height: 15px;
+				width: auto;
+
+				path {
+					fill: var(--color-black);
+				}
 			}
 		}
-
-		svg {
-			display: none;
-		}
-
-		&:hover {
-			background-color: var(--color-gray-10);
-		}
-	}
-
-	.goverlay {
-		background: rgba(0, 0, 0, 0.9);
 	}
 }

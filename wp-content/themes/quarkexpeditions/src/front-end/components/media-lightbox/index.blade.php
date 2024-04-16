@@ -25,7 +25,7 @@
 		@endif
 	</button>
 	<template>
-		@if ( str_starts_with( $path, 'https://youtube.com' ) )
+		@if ( str_contains( $path, 'youtube.com' ) )
 			<iframe
 				src="{{ $path }}"
 				allow="modestbranding; accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -54,7 +54,7 @@
 
 			<tp-lightbox-content class="media-lightbox__content"></tp-lightbox-content>
 
-			<tp-lightbox-count format="$current of $total"></tp-lightbox-count>
+			<tp-lightbox-count class="media-lightbox__count" format="$current of $total"></tp-lightbox-count>
 		</dialog>
 	</tp-lightbox>
 </x-once>
