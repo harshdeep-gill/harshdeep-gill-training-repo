@@ -39,20 +39,20 @@
 
 <x-once id="media-lightbox">
 	<tp-lightbox id="media-lightbox" class="media-lightbox" close-on-overlay-click="yes">
-		<dialog class="media-ligthbox__dialog">
-			<tp-lightbox-close class="media-ligthbox__close">
+		<dialog class="media-lightbox__dialog">
+			<tp-lightbox-close class="media-lightbox__close">
 				<button><x-svg name="cross" /></button>
 			</tp-lightbox-close>
 
-			<tp-lightbox-previous class="media-ligthbox__prev">
+			<tp-lightbox-previous class="media-lightbox__prev">
 				<button><x-svg name="chevron-left" /></button>
 			</tp-lightbox-previous>
 
-			<tp-lightbox-next class="media-ligthbox__next">
+			<tp-lightbox-next class="media-lightbox__next">
 				<button><x-svg name="chevron-left" /></button>
 			</tp-lightbox-next>
 
-			<tp-lightbox-content class="media-ligthbox__content"></tp-lightbox-content>
+			<tp-lightbox-content class="media-lightbox__content"></tp-lightbox-content>
 
 			<tp-lightbox-count format="$current of $total"></tp-lightbox-count>
 		</dialog>
