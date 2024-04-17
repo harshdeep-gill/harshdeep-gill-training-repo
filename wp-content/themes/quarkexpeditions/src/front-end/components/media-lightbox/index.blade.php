@@ -28,7 +28,10 @@
 		@if ( str_contains( $path, 'youtube.com' ) )
 			<iframe
 				src="{{ $path }}"
-				allow="modestbranding; accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+				title="YouTube video player"
+				frameborder="0"
+				allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+				referrerpolicy="strict-origin-when-cross-origin"
 				allowfullscreen
 			></iframe>
 		@else
@@ -44,6 +47,8 @@
 				<button><x-svg name="cross" /></button>
 			</tp-lightbox-close>
 
+			<tp-lightbox-content class="media-lightbox__content"></tp-lightbox-content>
+
 			<tp-lightbox-previous class="media-lightbox__prev">
 				<button><x-svg name="chevron-left" /></button>
 			</tp-lightbox-previous>
@@ -51,8 +56,6 @@
 			<tp-lightbox-next class="media-lightbox__next">
 				<button><x-svg name="chevron-left" /></button>
 			</tp-lightbox-next>
-
-			<tp-lightbox-content class="media-lightbox__content"></tp-lightbox-content>
 
 			<tp-lightbox-count class="media-lightbox__count" format="$current of $total"></tp-lightbox-count>
 		</dialog>

@@ -64,34 +64,39 @@
 		/* stylelint-disable-next-line selector-pseudo-class-no-unknown */
 		&:modal {
 			max-width: 100%;
-			max-height: 100%;
 			background-color: transparent;
+			width: 100%;
 
 			@media screen and (min-width: grid-size(md)) {
-				max-width: 1220px;
-				max-height: 785px;
-				margin-inline: 80px;
-			}
-
-			@media screen and (min-width: grid-size(xxl)) {
-				margin-inline: auto;
+				max-width: 80%;
+				margin-inline: 10%;
 			}
 		}
 	}
 
 	&__content {
-		border-radius: var(--border-radius-large);
 		overflow: hidden;
-		max-width: 1280px;
-		max-height: 720px;
-		aspect-ratio: 16 / 9;
 		width: 100%;
+		height: 100%;
+
+		@media screen and (min-width: grid-size(md)) {
+			border-radius: var(--border-radius-large);
+		}
 
 		img,
 		iframe {
 			width: 100%;
 			display: block;
 			border: none;
+		}
+
+		iframe {
+			aspect-ratio: 16 / 9;
+			height: 100%;
+		}
+
+		img {
+			object-fit: cover;
 		}
 	}
 
