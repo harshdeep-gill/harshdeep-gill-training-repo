@@ -1,7 +1,12 @@
 /**
  * Global variables.
  */
-const { customElements, HTMLElement, GLightbox } = window;
+const { customElements, HTMLElement } = window;
+
+/**
+ * External dependencies.
+ */
+import { TPLightboxTriggerElement } from '@travelopia/web-components';
 
 /**
  * MediaLightbox Class.
@@ -10,8 +15,9 @@ export default class MediaLightbox extends HTMLElement {
 	/**
 	 * Properties.
 	 */
-	public lightbox: typeof GLightbox | undefined;
-	private readonly slideIndexElement: HTMLDivElement | null;
+	private readonly triggerElement: TPLightboxTriggerElement | null;
+	private readonly triggerButton: HTMLButtonElement | null | undefined;
+	private readonly dialogElement: HTMLDialogElement | undefined;
 
 	/**
 	 * Constructor.
@@ -20,79 +26,66 @@ export default class MediaLightbox extends HTMLElement {
 		// Initialize parent.
 		super();
 
-		// Create slide index element.
-		this.slideIndexElement = document.createElement( 'div' );
-		this.slideIndexElement.classList.add( 'glightbox-slide-index' );
+		// Get trigger element.
+		this.triggerElement = this.querySelector( '.media-lightbox__link' );
 
-		// Initialize lightbox.
-		this.initialize();
-	}
-
-	/**
-	 * Initialize lightbox.
-	 */
-	initialize(): void {
-		// Check if GLightbox exists.
-		if ( ! GLightbox ) {
-			// Bail early.
+		// Do we have triggerElement?
+		if ( ! this.triggerElement ) {
+			// No, we don't.
 			return;
 		}
 
-		// Initialize the lightbox.
-		this.lightbox = new GLightbox( {
-			touchNavigation: true,
-			loop: false,
-			openEffect: 'fade',
-			closeEffect: 'fade',
-			autoplayVideos: true,
-			videosWidth: '1280px',
-			onClose: () => this.clearSlideIndexText(),
-			afterSlideChange: ( _prev: any, next: { index: any } ) => {
-				// Check if next and slide index element is available.
-				if ( next && this.slideIndexElement ) {
-					// Add the slide count in the text.
-					this.slideIndexElement.innerText = `${ next.index + 1 } of ${ this.lightbox?.elements.length }`;
-				}
-			},
-		} );
+		// Get trigger button.
+		this.triggerButton = this.triggerElement.querySelector( 'button' );
 
-		// Add captions and slide indexes.
-		this.addSlideIndex();
+		// Get lightbox id
+		const lightboxID = this.triggerElement.getAttribute( 'lightbox' ) ?? '';
+
+		// Check for lightboxID
+		if ( lightboxID ) {
+			// Get the dialog element.
+			this.dialogElement = document.querySelector( `#${ lightboxID } dialog` ) as HTMLDialogElement ?? undefined;
+
+			// Setup close event.
+			this.dialogElement?.addEventListener( 'close', this.handleModalClose.bind( this ) );
+		}
+
+		// Events.
+		this.triggerButton?.addEventListener( 'click', this.handleTriggerClick.bind( this ) );
 	}
 
 	/**
-	 * Add slide index.
+	 * Handles the click on the lightbox trigger.
 	 */
-	addSlideIndex() {
-		// Prepare slider counter on 'open' event.
-		this.lightbox?.on( 'open', () => {
-			// If slideIndexElement is not present return.
-			if ( ! this.slideIndexElement ) {
-				// Return.
-				return;
-			}
+	handleTriggerClick(): void {
+		// Get the iframe.
+		const videoIframe = this.querySelector( 'template' )?.content.querySelector( 'iframe' );
 
-			// Add slide index element inside slide container.
-			this.lightbox?.slidesContainer.after( this.slideIndexElement );
-
-			// Events: Immediately hide the counter when the close button is click or the overlay is clicked.
-			this.lightbox?.modal?.querySelector( '.gclose.gbtn' )?.addEventListener( 'click', this.clearSlideIndexText.bind( this ) );
-			this.lightbox?.slidesContainer?.addEventListener( 'click', this.clearSlideIndexText.bind( this ) );
-		} );
-	}
-
-	/**
-	 * Clear slide index text.
-	 */
-	clearSlideIndexText() {
-		// If slide index element is not available return.
-		if ( ! this.slideIndexElement ) {
-			// Early return.
+		// Check if we have iframe.
+		if ( ! videoIframe ) {
+			// We don't.
 			return;
 		}
 
-		// Set the slide index element text to empty.
-		this.slideIndexElement.innerText = '';
+		// Set autoplay.
+		videoIframe.src = `${ videoIframe.dataset.path }?autoplay=1`;
+	}
+
+	/**
+	 * Handles the modal close event.
+	 */
+	handleModalClose(): void {
+		// Get the iframe.
+		const videoIframe = this.dialogElement?.querySelector( 'iframe' );
+
+		// Check if we have iframe.
+		if ( ! videoIframe ) {
+			// We don't.
+			return;
+		}
+
+		// Unset autoplay.
+		videoIframe.src = `${ videoIframe.dataset.path }`;
 	}
 }
 

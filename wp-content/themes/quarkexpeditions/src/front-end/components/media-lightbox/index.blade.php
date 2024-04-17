@@ -14,31 +14,38 @@
 	quark_enqueue_script( 'tp-lightbox' );
 @endphp
 
-<tp-lightbox-trigger class="media-lightbox__link" lightbox="media-lightbox" group="{{ $name }}">
-	<button>
-		@if ( true === $media )
-			<figure class="media-lightbox__image-wrap">
+<quark-media-lightbox>
+	<tp-lightbox-trigger
+		class="media-lightbox__link"
+		lightbox="media-lightbox"
+		group="{{ $name }}"
+	>
+		<button>
+			@if ( true === $media )
+				<figure class="media-lightbox__image-wrap">
+					{!! $slot !!}
+				</figure>
+			@else
 				{!! $slot !!}
-			</figure>
-		@else
-			{!! $slot !!}
-		@endif
-	</button>
-	<template>
-		@if ( str_contains( $path, 'youtube.com' ) )
-			<iframe
-				src="{{ $path }}"
-				title="YouTube video player"
-				frameborder="0"
-				allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-				referrerpolicy="strict-origin-when-cross-origin"
-				allowfullscreen
-			></iframe>
-		@else
-			<img src="{{ $path }}"/>
-		@endif
-	</template>
-</tp-lightbox-trigger>
+			@endif
+		</button>
+		<template>
+			@if ( str_contains( $path, 'youtube.com' ) )
+				<iframe
+					data-path="{{ $path }}"
+					src="{{ $path }}"
+					title="YouTube video player"
+					frameborder="0"
+					allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+					referrerpolicy="strict-origin-when-cross-origin"
+					allowfullscreen
+				></iframe>
+			@else
+				<img src="{{ $path }}"/>
+			@endif
+		</template>
+	</tp-lightbox-trigger>
+</quark-media-lightbox>
 
 <x-once id="media-lightbox">
 	<tp-lightbox id="media-lightbox" class="media-lightbox" close-on-overlay-click="yes">
