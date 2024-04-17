@@ -47,7 +47,7 @@
 </quark-media-lightbox>
 
 <x-once id="media-lightbox">
-	<tp-lightbox id="media-lightbox" class="media-lightbox" close-on-overlay-click="yes">
+	<tp-lightbox id="media-lightbox" class="media-lightbox">
 		<dialog class="media-lightbox__dialog">
 			<tp-lightbox-close class="media-lightbox__close">
 				<button><x-svg name="cross" /></button>
