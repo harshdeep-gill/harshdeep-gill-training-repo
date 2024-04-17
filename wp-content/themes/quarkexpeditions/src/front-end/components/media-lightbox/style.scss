@@ -173,3 +173,33 @@
 		}
 	}
 }
+
+tp-lightbox.media-lightbox[loading] {
+
+	@keyframes lightbox-loading {
+
+		from {
+			rotate: 0deg;
+		}
+
+		to {
+			rotate: 360deg;
+		}
+	}
+
+	tp-lightbox-content::after {
+		content: "";
+		display: block;
+		inset: 50% auto auto 50%;
+		border: 2px solid var(--color-white);
+		border-right-color: rgba(0, 0, 0, 0);
+		border-radius: 50%;
+		width: 25px;
+		height: 25px;
+		animation: lightbox-loading 0.8s infinite linear;
+	}
+
+	.media-lightbox__caption {
+		display: none;
+	}
+}
