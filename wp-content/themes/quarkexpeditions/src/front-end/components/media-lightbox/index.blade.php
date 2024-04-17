@@ -14,9 +14,8 @@
 	quark_enqueue_script( 'tp-lightbox' );
 @endphp
 
-<quark-media-lightbox>
+<quark-media-lightbox class="media-lightbox__link">
 	<tp-lightbox-trigger
-		class="media-lightbox__link"
 		lightbox="media-lightbox"
 		group="{{ $name }}"
 	>

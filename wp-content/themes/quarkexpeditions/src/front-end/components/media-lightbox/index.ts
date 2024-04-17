@@ -27,7 +27,7 @@ export default class MediaLightbox extends HTMLElement {
 		super();
 
 		// Get trigger element.
-		this.triggerElement = this.querySelector( '.media-lightbox__link' );
+		this.triggerElement = this.querySelector( 'tp-lightbox-trigger' );
 
 		// Do we have triggerElement?
 		if ( ! this.triggerElement ) {
