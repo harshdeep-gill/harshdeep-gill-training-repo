@@ -33,7 +33,7 @@
 				<iframe
 					data-path="{{ $path }}"
 					src="{{ $path }}"
-					title="YouTube video player"
+					title="{{ $title }}"
 					frameborder="0"
 					allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
 					referrerpolicy="strict-origin-when-cross-origin"

@@ -7,6 +7,8 @@
 
 namespace Quark\Theme\Core;
 
+use QM;
+
 /**
  * Setup.
  *
@@ -326,6 +328,29 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 				'tp-accordion-content'                  => [
 					'class' => true,
 				],
+				'tp-lightbox-trigger'                   => [
+					'lightbox' => true,
+					'group'    => true,
+				],
+				'tp-lightbox'                           => [
+					'id'    => true,
+					'class' => true,
+				],
+				'tp-lightbox-close'                     => [
+					'class' => true,
+				],
+				'tp-lightbox-content'                   => [
+					'class' => true,
+				],
+				'tp-lightbox-previous'                  => [
+					'class' => true,
+				],
+				'tp-lightbox-next'                      => [
+					'class' => true,
+				],
+				'tp-lightbox-count'                     => [
+					'class' => true,
+				],
 				'iframe'                                => [
 					'class'           => true,
 					'src'             => true,
@@ -334,6 +359,8 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'allow'           => true,
 					'allowfullscreen' => true,
 					'title'           => true,
+					'frameborder'     => true,
+					'data-*'          => true,
 				],
 				'svg'                                   => [
 					'id'              => true,
@@ -441,6 +468,12 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'id'       => true,
 					'class'    => true,
 					'data-*'   => true,
+				],
+				'dialog'                                => [
+					'class' => true,
+				],
+				'template'                              => [
+					'class' => true,
 				],
 			]
 		);
