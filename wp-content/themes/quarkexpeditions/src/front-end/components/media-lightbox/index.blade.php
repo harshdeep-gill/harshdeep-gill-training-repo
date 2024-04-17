@@ -42,6 +42,7 @@
 			@else
 				<img src="{{ $path }}"/>
 			@endif
+			<p class="media-lightbox__caption">{{ $title }}</p>
 		</template>
 	</tp-lightbox-trigger>
 </quark-media-lightbox>

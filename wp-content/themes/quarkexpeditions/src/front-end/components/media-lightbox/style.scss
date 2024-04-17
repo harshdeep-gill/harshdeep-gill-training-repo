@@ -52,7 +52,10 @@
 
 	&__caption {
 		display: block;
-		max-width: calc(100% - 70px);
+		color: var(--color-white);
+		margin-top: var(--spacing-4);
+		margin-inline: auto;
+		width: fit-content;
 	}
 
 	dialog {
@@ -79,15 +82,15 @@
 		width: 100%;
 		height: 100%;
 
-		@media screen and (min-width: grid-size(md)) {
-			border-radius: var(--border-radius-large);
-		}
-
 		img,
 		iframe {
 			width: 100%;
 			display: block;
 			border: none;
+
+			@media screen and (min-width: grid-size(md)) {
+				border-radius: var(--border-radius-large);
+			}
 		}
 
 		iframe {
@@ -96,7 +99,7 @@
 		}
 
 		img {
-			object-fit: cover;
+			max-height: 80vh;
 		}
 	}
 
