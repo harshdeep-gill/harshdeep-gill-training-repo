@@ -86,18 +86,7 @@
 
 		> * {
 
-			@keyframes content-fade-in {
-
-				0% {
-					opacity: 0;
-				}
-
-				100% {
-					opacity: 1;
-				}
-			}
-
-			animation: content-fade-in 0.8s var(--transition-easing);
+			@include fade-in(0.8s);
 		}
 
 		img,
