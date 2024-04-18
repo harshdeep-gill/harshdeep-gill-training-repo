@@ -84,6 +84,22 @@
 		width: 100%;
 		height: 100%;
 
+		> * {
+
+			@keyframes content-fade-in {
+
+				0% {
+					opacity: 0;
+				}
+
+				100% {
+					opacity: 1;
+				}
+			}
+
+			animation: content-fade-in 0.8s var(--transition-easing);
+		}
+
 		img,
 		iframe {
 			width: 100%;
@@ -199,6 +215,6 @@ tp-lightbox.media-lightbox[loading] {
 		border-radius: 50%;
 		width: 25px;
 		height: 25px;
-		animation: lightbox-loading 0.8s infinite linear;
+		animation: lightbox-loading 0.8s infinite var(--transition-easing);
 	}
 }
