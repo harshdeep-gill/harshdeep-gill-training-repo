@@ -1,21 +1,21 @@
 @props( [
 	'class'          => '',
 	'thank_you_page' => '',
+	'form_id'        => 'form-two-step',
+	'countries'      => [],
+	'states'         => [],
 	'hidden_fields'  => [],
 ] )
 
 @php
-	$classes = [ 'inquiry-form' ];
+	$classes = [ 'form-two-step' ];
 
 	if ( ! empty( $class ) ) {
 		$classes[] = $class;
 	}
-
-	$form_id  = 'inquiry-form';
-	$modal_id = $form_id . '-modal';
 @endphp
 
-<quark-inquiry-form @class( $classes )>
+<quark-form-two-step @class( $classes )>
 	<x-form.field :validation="[ 'required' ]">
 		<x-form.select label="Where would you like to travel?" name="fields[Sub_Region__c]" form="{{ $form_id }}">
 			<option value="">- Select -</option>
@@ -47,17 +47,23 @@
 	<x-form.field>
 		<x-form.select label="When would you like to go?" name="fields[Season__c]" form="{{ $form_id }}">
 			<option value="">- Select -</option>
-			<option value="2023-24">Antarctic 2023/24 (Nov '23 - Mar '24)</option>
 			<option value="2024-25">Antarctic 2024/25 (Nov '24 - Mar '25)</option>
 			<option value="2025-26">Antarctic 2025/26 (Nov '25 - Mar '26)</option>
 		</x-form.select>
 	</x-form.field>
 	<x-form.buttons>
-		<x-lp-form-modal-cta class="inquiry-form__modal-open" form_id="{{ $form_id }}" :hidden_fields="$hidden_fields">
+		<x-form-two-step.modal-cta
+			class="form-two-step__modal-open"
+			form_id="{{ $form_id }}"
+			thank_you_page="{{ $thank_you_page }}"
+			:hidden_fields="$hidden_fields"
+			:countries="$countries"
+			:states="$states"
+		>
 			<x-button type="button">
 				Request a Quote
 				<x-button.sub-title title="It only takes 2 minutes!" />
 			</x-button>
-		</x-lp-form-modal-cta>
+		</x-form-two-step.modal-cta>
 	</x-form.buttons>
-</quark-inquiry-form>
+</quark-form-two-step>

@@ -1,0 +1,16 @@
+.media-text-cta {
+
+	&__media-wrap {
+		aspect-ratio: calc(540 / 360);
+		background-color: var(--color-gray-30);
+	}
+
+	.fancy-video {
+		height: 100%;
+
+		&__play-btn-wrapper {
+			position: absolute;
+			inset: 0;
+		}
+	}
+}

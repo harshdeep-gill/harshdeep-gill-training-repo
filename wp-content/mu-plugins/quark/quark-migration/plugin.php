@@ -14,6 +14,9 @@ namespace Quark\Migration;
 require_once __DIR__ . '/inc/autoload.php';
 require_once __DIR__ . '/inc/namespace.php';
 require_once __DIR__ . '/inc/drupal/namespace.php';
+require_once __DIR__ . '/inc/wordpress/namespace.php';
+require_once __DIR__ . '/inc/wordpress/blocks/namespace.php';
 
 // Kick it off.
 add_action( 'plugins_loaded', __NAMESPACE__ . '\\bootstrap' );
+add_action( 'plugins_loaded', __NAMESPACE__ . '\\WordPress\\Blocks\\bootstrap' );

@@ -81,6 +81,10 @@ export const settings: BlockConfiguration = {
 			type: 'string',
 			default: '',
 		},
+		darkMode: {
+			type: 'boolean',
+			default: false,
+		},
 		overlayOpacity: {
 			type: 'number',
 			default: 0,
@@ -99,7 +103,8 @@ export const settings: BlockConfiguration = {
 			className: classnames(
 				className,
 				'hero',
-				attributes.isImmersive ? 'hero--immersive' : ''
+				attributes.isImmersive ? 'hero--immersive' : '',
+				attributes.darkMode ? 'color-context--dark' : ''
 			),
 		} );
 
@@ -136,6 +141,12 @@ export const settings: BlockConfiguration = {
 							checked={ attributes.isImmersive }
 							help={ __( 'Is this hero immersive?', 'qrk' ) }
 							onChange={ ( isImmersive: boolean ) => setAttributes( { isImmersive } ) }
+						/>
+						<ToggleControl
+							label={ __( 'Dark Mode', 'qrk' ) }
+							checked={ attributes.darkMode }
+							help={ __( 'Is this hero in dark mode?', 'qrk' ) }
+							onChange={ ( darkMode: boolean ) => setAttributes( { darkMode } ) }
 						/>
 						<SelectControl
 							label={ __( 'Text Alignment', 'qrk' ) }

@@ -1,6 +1,7 @@
 @props( [
 	'immersive'       => false,
 	'text_align'      => '',
+	'dark_mode'       => false,
 	'overlay_opacity' => 0,
 ] )
 
@@ -19,6 +20,10 @@
 		$classes[] = 'hero--text-' . $text_align;
 	} else {
 		$classes[] = 'hero--text-left';
+	}
+
+	if ( !empty( $dark_mode ) ) {
+		$classes[] = 'color-context--dark';
 	}
 
 	$overlay_opacity = $overlay_opacity / 100;

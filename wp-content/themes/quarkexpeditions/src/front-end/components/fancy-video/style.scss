@@ -1,0 +1,148 @@
+/**
+ * Fancy Video.
+ */
+
+@import "../../scss";
+
+.fancy-video {
+	$self: &;
+	display: block;
+
+	&__wrapper {
+
+		@media screen and (min-width: grid-size(md)) {
+			border-radius: var(--border-radius-large);
+			overflow: hidden;
+			aspect-ratio: 16/9;
+			position: relative;
+		}
+	}
+
+	&__cover-wrap {
+		border-radius: var(--border-radius-large);
+		overflow: hidden;
+		aspect-ratio: 16/9;
+		margin-top: var(--spacing-6);
+		position: relative;
+
+		@media screen and (min-width: grid-size(md)) {
+			margin-top: 0;
+		}
+	}
+
+	&__cover {
+		opacity: 1;
+		visibility: visible;
+		height: 100%;
+		width: 100%;
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+
+		#{$self}[active] & {
+			opacity: 0;
+			visibility: hidden;
+		}
+
+		&:hover {
+
+			&::before {
+				opacity: 1;
+			}
+
+			img {
+				transform: scale(var(--scale-size, 1.03));
+			}
+		}
+	}
+
+	&__content {
+
+		@media screen and (min-width: grid-size(md)) {
+			background: linear-gradient(180deg, rgba(35, 41, 51, 0.9) 0%, rgba(35, 41, 51, 0) 100%);
+			color: var(--color-white);
+			position: absolute;
+			top: 0;
+			padding: var(--spacing-6) var(--spacing-6) var(--spacing-8);
+			width: 100%;
+			z-index: 2;
+		}
+
+		#{$self}[active] & {
+
+			@media screen and (min-width: grid-size(md)) {
+				opacity: 0;
+				visibility: hidden;
+			}
+		}
+	}
+
+	&__title {
+		margin: 0;
+
+		@media screen and (max-width: calc(grid-size(md) - 1px)) {
+			font-family: var(--heading-font-family);
+			font-size: var(--h2-font-size);
+			font-weight: var(--font-weight-default);
+			line-height: var(--h2-line-height);
+		}
+	}
+
+	&__play-btn-wrapper {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		height: 100%;
+		position: relative;
+		z-index: 2;
+
+		:hover {
+			background-color: var(--color-gray-80);
+		}
+
+		@include transition(background-color);
+	}
+
+	&__play-btn {
+		background: var(--color-black);
+		border-radius: var(--border-radius);
+		color: var(--color-white);
+		cursor: pointer;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 56px;
+		height: 56px;
+
+		&::before {
+			content: "";
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 100%;
+			height: 100%;
+		}
+	}
+
+	&__image {
+		border-radius: var(--border-radius);
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		z-index: 1;
+		object-fit: cover;
+
+		@include transition();
+	}
+
+	&__iframe {
+		border: 0;
+		position: absolute;
+		width: 100%;
+		height: 100%;
+	}
+}

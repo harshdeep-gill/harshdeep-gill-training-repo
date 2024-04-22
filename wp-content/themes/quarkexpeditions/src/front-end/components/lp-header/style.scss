@@ -3,29 +3,75 @@
 .lp-header {
 	$self: &;
 
+	// Properties.
+	--lp-header-bg-color: var(--color-white);
+	--lp-header-cta-phone-bg-color: var(--color-black);
+	--lp-header-cta-bg-color: var(--color-gray-5);
+	--lp-header-cta-bg-color-hover: var(--color-gray-10);
+	--lp-header-cta-bg-color-active: var(--color-gray-90);
+	--lp-header-cta-font-color-active: var(--color-white);
+	--lp-header-cta-border-color: var(--color-gray-5);
+
 	display: block;
 	position: sticky;
-	background-color: var(--color-white);
 	top: 0;
 	z-index: var(--lp-header-z-index);
 	box-shadow: var(--shadow-1);
-	transition-property: background-color, height;
-	transition-duration: 0.2s;
-	transition-timing-function: ease-in-out;
+	background-color: var(--lp-header-bg-color);
 
-	/* LP Header is followed by Immersive Hero. */
+	@include transition(#{"background-color, height"});
+
+	&.color-context--dark {
+		--lp-header-bg-color: var(--color-black);
+		--lp-header-cta-phone-bg-color: var(--color-white);
+		--lp-header-cta-bg-color: var(--color-gray-80);
+		--lp-header-cta-border-color: var(--color-gray-80);
+		--lp-header-cta-bg-color-hover: var(--color-gray-90);
+		--lp-header-cta-bg-color-active: var(--color-gray-5);
+		--lp-header-cta-font-color-active: var(--color-black);
+	}
+
 	&:has(+ .hero--immersive) {
-		background-color: transparent;
 		margin-bottom: calculate-rem(-122px);
-		box-shadow: none;
+
+		&:not(#{$self}--compact) {
+			box-shadow: none;
+
+			--lp-header-bg-color: transparent;
+			--lp-header-cta-bg-color: transparent;
+			--lp-header-cta-border-color: var(--color-white);
+			--lp-header-cta-bg-color-hover: var(--color-gray-90);
+			--lp-header-cta-bg-color-active: var(--color-black);
+			--lp-header-cta-font-color-active: var(--color-white);
+
+			&:not(.color-context--dark) {
+				--lp-header-cta-border-color: var(--color-black);
+				--lp-header-cta-bg-color-hover: var(--color-white);
+			}
+		}
 	}
 
-	/* Compact Version */
-	&.lp-header--compact:has(+ .hero--immersive) {
-		background-color: var(--color-white);
-		box-shadow: var(--shadow-1);
-	}
+	&--compact {
 
+		#{$self}__logo {
+			display: none;
+
+			&--compact {
+				display: block;
+
+				svg {
+					height: 56px;
+				}
+			}
+		}
+
+		#{$self}__cta {
+			gap: var(--spacing-2);
+			padding: 6px;
+			font-size: 14px;
+			line-height: calculate-em(24px);
+		}
+	}
 
 	&__wrap {
 		max-width: var(--wrap-width);
@@ -34,22 +80,32 @@
 		align-items: center;
 		padding: var(--spacing-4) 0;
 		margin: auto;
+
+		@media screen and (max-width: 1120px) {
+			margin: 0 var(--grid-col-gutter);
+		}
 	}
 
 	&__logo {
 		display: block;
 
-		&-compact {
+		&--compact {
 			display: none;
 		}
 
 		svg {
 			height: 56px;
 			width: auto;
+
+			@media screen and (min-width: grid-size(sm)) {
+				height: 80px;
+			}
 		}
 	}
 
 	&__cta {
+
+		@include transition(#{"background-color, color, padding, height, width"});
 
 		&-avatar {
 			display: none;
@@ -67,8 +123,13 @@
 				justify-content: center;
 				height: 42px;
 				width: 42px;
-				background-color: var(--color-black);
+				background-color: var(--lp-header-cta-phone-bg-color);
 				border-radius: var(--border-radius);
+				color: var(--color-white);
+
+				#{$self}.color-context--dark & {
+					color: var(--color-black);
+				}
 
 				span {
 					display: none;
@@ -79,122 +140,19 @@
 				}
 			}
 		}
-	}
-}
 
-@media screen and (max-width: 1120px) {
+		@media screen and (min-width: grid-size(sm)) {
+			--lp-header-cta-phone-bg-color: transparent;
 
-	.lp-header {
-
-		&__wrap {
-			margin: 0 var(--grid-col-gutter);
-		}
-	}
-}
-
-@media screen and (min-width: grid-size(sm)) {
-
-	.lp-header {
-		$self: &;
-
-		&__logo svg {
-			height: 80px;
-		}
-
-		&__logo-compact svg {
-			height: 56px;
-		}
-
-		/* LP Header is followed by Immersive Hero. */
-		&:has(+ .hero--immersive) {
-
-			#{$self}__cta {
-				background-color: transparent;
-				border: 1px solid var(--color-black);
-				transition-property: background-color, color, padding, height, width;
-				transition-duration: 0.3s;
-				transition-timing-function: ease-in-out;
-
-				&:hover {
-					background-color: var(--color-white);
-					border-color: var(--color-white);
-					text-decoration: none;
-				}
-
-				&:active {
-					background-color: var(--color-gray-90);
-					border-color: var(--color-gray-90);
-
-					span {
-						color: var(--color-white);
-					}
-				}
-			}
-
-			#{$self}__cta-content-text {
-				color: var(--color-black);
-			}
-		}
-
-		/* Compact Version. */
-		&.lp-header--compact:has(+ .hero--immersive) {
-
-			#{$self}__logo {
-				display: none;
-
-				&-compact {
-					display: block;
-				}
-			}
-
-			#{$self}__cta {
-				column-gap: var(--spacing-2);
-				padding: 6px;
-				background-color: var(--color-gray-5);
-				border-color: var(--color-gray-5);
-				transition-property: background-color, color, padding, height, width;
-				transition-duration: 0.3s;
-				transition-timing-function: ease-in-out;
-
-				&-avatar img {
-					height: 44px;
-					width: 44px;
-				}
-
-				&-content {
-
-					&-text,
-					&-phone-number {
-						font-size: 14px;
-						line-height: calculate-em(24px);
-					}
-				}
-
-				&:hover {
-					background-color: var(--color-gray-10);
-					text-decoration: none;
-				}
-
-				&:active {
-					background-color: var(--color-gray-90);
-					border-color: var(--color-gray-90);
-
-					span {
-						color: var(--color-white);
-					}
-				}
-			}
-		}
-
-		&__cta {
-			display: flex;
-			column-gap: var(--spacing-4);
-			align-items: center;
-			background-color: var(--color-gray-5);
-			padding: 12px;
 			border-radius: var(--border-radius);
+			background-color: var(--lp-header-cta-bg-color);
+			display: flex;
+			gap: var(--spacing-4);
+			align-items: center;
+			padding: var(--spacing-3);
 			text-decoration: none;
 			cursor: pointer;
+			border: 1px solid var(--lp-header-cta-border-color);
 
 			&-avatar {
 				display: block;
@@ -212,19 +170,19 @@
 				flex-direction: column;
 
 				&-text {
-					display: block;
-					font-family: var(--font-family);
-					color: var(--color-gray-80);
+					display: inline;
 				}
 
 				&-phone-number {
-					display: flex;
 					height: auto;
 					width: 100%;
 					justify-content: flex-start;
-					background-color: transparent;
-					font-family: var(--font-family);
 					font-weight: var(--font-weight-bold);
+					color: var(--color-black);
+
+					#{$self}.color-context--dark & {
+						color: var(--color-white);
+					}
 
 					span {
 						display: inline;
@@ -237,15 +195,17 @@
 			}
 
 			&:hover {
-				background-color: var(--color-gray-10);
+				--lp-header-cta-bg-color: var(--lp-header-cta-bg-color-hover);
+				--lp-header-cta-border-color: var(--lp-header-cta-bg-color-hover);
 				text-decoration: none;
 			}
 
 			&:active {
-				background-color: var(--color-gray-90);
+				--lp-header-cta-bg-color: var(--lp-header-cta-bg-color-active);
+				--lp-header-cta-border-color: var(--lp-header-cta-bg-color-active);
 
 				span {
-					color: var(--color-white);
+					color: var(--lp-header-cta-font-color-active);
 				}
 			}
 		}

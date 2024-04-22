@@ -164,6 +164,14 @@
 	&__overline {
 		color: var(--color-blue);
 		font-weight: var(--font-weight-bold);
+
+		&-color--blue {
+			color: var(--color-blue);
+		}
+
+		&-color--black {
+			color: var(--color-black);
+		}
 	}
 
 	&__tag,

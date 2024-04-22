@@ -43,6 +43,14 @@
 		}
 	}
 
+	&__inner-content {
+		margin-top: var(--spacing-6);
+
+		@media screen and (min-width: grid-size(md)) {
+			margin-top: var(--spacing-8);
+		}
+	}
+
 	&__image {
 		position: absolute;
 		inset: 0;
