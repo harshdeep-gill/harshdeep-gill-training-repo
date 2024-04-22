@@ -100,7 +100,8 @@ function render( ?string $content = null, array $block = [] ): null|string {
 					];
 
 					// Add title.
-					$title['title'] = $inner_inner_block['attrs']['title'] ?? '';
+					$title['title']      = $inner_inner_block['attrs']['title'] ?? '';
+					$title['text_color'] = $inner_inner_block['attrs']['textColor'] ?? '';
 
 					// Add to attributes.
 					$attributes['left'][] = $title;
