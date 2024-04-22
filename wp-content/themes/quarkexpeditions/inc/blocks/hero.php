@@ -50,17 +50,8 @@ function render( ?string $content = null, array $block = [] ): null|string {
 		'immersive'       => $block['attrs']['isImmersive'] ?? false,
 		'text_align'      => $block['attrs']['textAlign'] ?? '',
 		'overlay_opacity' => $block['attrs']['overlayOpacity'] ?? 0,
-		'left'            => [
-			'overline' => '',
-			'title'    => '',
-			'subtitle' => '',
-			'tag'      => '',
-			'cta'      => '',
-		],
-		'right'           => [
-			'form' => '',
-		],
-		'dark_mode'       => $block['attrs']['darkMode'] ?? false,
+		'left'            => [],
+		'right'           => [],
 	];
 
 	// Parse inner blocks.
@@ -136,6 +127,7 @@ function render( ?string $content = null, array $block = [] ): null|string {
 
 					// Add description.
 					$description['description'] = implode( '', array_map( 'render_block', $inner_inner_block['innerBlocks'] ) );
+					$description['text_color']  = $inner_inner_block['attrs']['textColor'] ?? '';
 
 					// Add to attributes.
 					$attributes['left'][] = $description;

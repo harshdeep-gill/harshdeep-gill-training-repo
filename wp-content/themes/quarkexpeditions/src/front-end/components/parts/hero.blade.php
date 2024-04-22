@@ -3,16 +3,8 @@
 	'immersive'       => false,
 	'text_align'      => '',
 	'overlay_opacity' => 0,
-	'left'            => [
-		'overline' => '',
-		'title'    => '',
-		'subtitle' => '',
-		'tag'      => '',
-		'cta'      => '',
-	],
-	'right'           => [
-		'form' => '',
-	],
+	'left'            => [],
+	'right'           => [],
 	'dark_mode'       => false,
 ] )
 
@@ -22,7 +14,7 @@
 	}
 @endphp
 
-<x-hero :immersive="$immersive" :text_align="$text_align" :dark_mode="$dark_mode" :overlay_opacity="$overlay_opacity">
+<x-hero :immersive="$immersive" :text_align="$text_align" :overlay_opacity="$overlay_opacity">
 	<x-hero.image :image_id="$image_id" />
 	<x-hero.content>
 		<x-hero.left>
@@ -50,7 +42,7 @@
 
 					@if ( 'description' === $item['type'] )
 						@if ( ! empty( $item['description'] ) )
-							<x-hero.description>
+							<x-hero.description :text_color="$item['text_color']">
 								{!! $item['description'] !!}
 							</x-hero.description>
 						@endif

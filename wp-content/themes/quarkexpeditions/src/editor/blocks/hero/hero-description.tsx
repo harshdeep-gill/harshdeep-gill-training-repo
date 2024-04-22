@@ -5,6 +5,7 @@ import { __ } from '@wordpress/i18n';
 import { BlockConfiguration } from '@wordpress/blocks';
 import {
 	InnerBlocks,
+	InspectorControls,
 	useBlockProps,
 	useInnerBlocksProps,
 } from '@wordpress/block-editor';
@@ -13,11 +14,26 @@ import {
  * External dependencies.
  */
 import classnames from 'classnames';
+import { PanelBody } from '@wordpress/components';
+const { gumponents } = window;
+
+/**
+ * External components.
+ */
+const {
+	ColorPaletteControl,
+} = gumponents.components;
 
 /**
  * Block name.
  */
 export const name: string = 'quark/hero-description';
+
+// Text colors.
+export const colors: { [key: string]: string }[] = [
+	{ name: __( 'Black', 'qrk' ), color: '#232933', slug: 'black' },
+	{ name: __( 'White', 'qrk' ), color: '#ffffff', slug: 'white' },
+];
 
 /**
  * Block configuration settings.
@@ -30,7 +46,13 @@ export const settings: BlockConfiguration = {
 	keywords: [
 		__( 'description', 'qrk' ),
 	],
-	attributes: {},
+	attributes: {
+		textColor: {
+			type: 'string',
+			default: 'black',
+			enum: [ 'white', 'black' ],
+		},
+	},
 	parent: [ 'quark/hero-content-left' ],
 	supports: {
 		alignWide: false,
@@ -39,10 +61,10 @@ export const settings: BlockConfiguration = {
 		html: false,
 		customClassName: false,
 	},
-	edit( { className }: BlockEditAttributes ): JSX.Element {
+	edit( { className, attributes, setAttributes }: BlockEditAttributes ): JSX.Element {
 		// eslint-disable-next-line react-hooks/rules-of-hooks
 		const blockProps = useBlockProps( {
-			className: classnames( className, 'hero__description' ),
+			className: classnames( className, 'hero__description', 'white' === attributes.textColor ? 'color-context--dark' : '' ),
 		} );
 
 		// eslint-disable-next-line react-hooks/rules-of-hooks
@@ -53,7 +75,28 @@ export const settings: BlockConfiguration = {
 
 		// Return the block's markup.
 		return (
-			<div { ...innerBlockProps } />
+			<>
+				<InspectorControls>
+					<PanelBody title={ __( 'Description Options', 'qrk' ) }>
+						<ColorPaletteControl
+							label={ __( 'Description Color', 'qrk' ) }
+							help={ __( 'Select the text color for the description', 'qrk' ) }
+							value={ colors.find( ( color ) => color.slug === attributes.textColor )?.color }
+							colors={ colors.filter( ( color ) => [ 'white', 'black' ].includes( color.slug ) ) }
+							onChange={ ( textColor: {
+								color: string;
+								slug: string;
+							} ): void => {
+								// Set the background color attribute.
+								if ( textColor.slug && [ 'white', 'black' ].includes( textColor.slug ) ) {
+									setAttributes( { textColor: textColor.slug } );
+								}
+							} }
+						/>
+					</PanelBody>
+				</InspectorControls>
+				<div { ...innerBlockProps } />
+			</>
 		);
 	},
 	save() {

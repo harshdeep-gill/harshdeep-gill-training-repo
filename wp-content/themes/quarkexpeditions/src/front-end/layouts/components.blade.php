@@ -9,7 +9,7 @@
 	</x-component-demo>
 
 	<x-component-demo :keys="[ 'hero', 'hero-refactor' ]">
-		<x-hero text_align="left" :immersive="true" :dark_mode="true" :overlay_opacity="10">
+		<x-hero text_align="left" :immersive="true" :overlay_opacity="10">
 			<x-hero.image image_id="26" />
 			<x-hero.content>
 				<x-hero.left>
