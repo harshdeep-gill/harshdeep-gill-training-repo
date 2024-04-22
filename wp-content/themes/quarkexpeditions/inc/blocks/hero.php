@@ -114,7 +114,8 @@ function render( ?string $content = null, array $block = [] ): null|string {
 					];
 
 					// Add subtitle.
-					$subtitle['subtitle'] = $inner_inner_block['attrs']['subtitle'] ?? '';
+					$subtitle['subtitle']   = $inner_inner_block['attrs']['subtitle'] ?? '';
+					$subtitle['text_color'] = $inner_inner_block['attrs']['textColor'] ?? '';
 
 					// Add to attributes.
 					$attributes['left'][] = $subtitle;

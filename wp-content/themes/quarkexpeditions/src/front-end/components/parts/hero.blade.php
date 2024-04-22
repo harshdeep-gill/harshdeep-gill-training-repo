@@ -36,7 +36,7 @@
 
 					@if ( 'subtitle' === $item['type'] )
 						@if ( ! empty( $item['subtitle'] ) )
-							<x-hero.sub-title :title="$item['subtitle']" />
+							<x-hero.sub-title :title="$item['subtitle']" :text_color="$item['text_color']" />
 						@endif
 					@endif
 
