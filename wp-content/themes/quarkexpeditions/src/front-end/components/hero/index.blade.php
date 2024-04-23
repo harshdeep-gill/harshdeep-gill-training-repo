@@ -27,10 +27,10 @@
 @endphp
 
 <x-section full_width="true" seamless="true" @class( $classes )>
-	<quark-hero-overlay
+	<div
 		class="hero__overlay"
-		data-style={!! $overlay_style !!}
-	></quark-hero-overlay>
+		style={!! $overlay_style !!}
+	></div>
 	<div class="hero__wrap">
 		{!! $slot !!}
 	</div>

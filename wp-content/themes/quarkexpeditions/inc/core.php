@@ -443,6 +443,7 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'id'       => true,
 					'class'    => true,
 					'data-*'   => true,
+					'style'    => true,
 				],
 			]
 		);
