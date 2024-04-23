@@ -23,7 +23,7 @@
 
 	$overlay_opacity = $overlay_opacity / 100;
 
-	$overlay_style = "background-color:rgba(0,0,0,$overlay_opacity);";
+	$overlay_style = "--hero-overlay-background-opacity:$overlay_opacity;";
 @endphp
 
 <x-section full_width="true" seamless="true" @class( $classes )>
