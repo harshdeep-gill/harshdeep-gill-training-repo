@@ -237,5 +237,5 @@ function quark_generate_unique_dom_id( int $length = 10 ): string {
 	/**
 	 * The character 'm' has been added to prevent the id starting with a digit.
 	 */
-	return 'm' . substr( md5( strval( time() ) ), 0, $length - 1 );
+	return 'm' . substr( md5( strval( random_bytes( 32 ) ) ), 0, $length - 1 );
 }

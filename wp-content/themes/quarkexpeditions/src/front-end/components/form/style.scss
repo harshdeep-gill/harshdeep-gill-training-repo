@@ -74,5 +74,13 @@
 	&__file-size {
 		font-weight: var(--font-weight-default);
 		color: var(--color-gray-70);
+
+		.color-context--dark & {
+			color: var(--color-white);
+		}
+	}
+
+	.color-context--dark &__discard {
+		color: var(--color-white);
 	}
 }
