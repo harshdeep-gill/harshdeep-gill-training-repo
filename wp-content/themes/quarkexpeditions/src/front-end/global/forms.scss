@@ -103,6 +103,10 @@ select {
 	color: var(--color-black);
 }
 
+input[type="file"] {
+	display: none;
+}
+
 label {
 	display: block;
 	margin-bottom: var(--spacing-1);
@@ -110,6 +114,13 @@ label {
 	font-style: normal;
 	font-weight: 700;
 	line-height: calculate-em(22px, 14px);
+
+	&:has(+ input[type="file"]) {
+
+		.btn {
+			width: 100%;
+		}
+	}
 }
 
 .form-field {

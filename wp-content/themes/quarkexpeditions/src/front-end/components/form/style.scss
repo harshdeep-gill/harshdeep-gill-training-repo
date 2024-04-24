@@ -8,3 +8,27 @@
 	}
 }
 
+.quark-file-input {
+	$self: &;
+
+	display: block;
+
+	&[file_selected="yes"] {
+
+		#{$self}__preview {
+			display: flex;
+		}
+
+		#{$self}__btn {
+			display: none;
+		}
+	}
+
+	&__btn {
+		display: block;
+	}
+
+	&__preview {
+		display: none;
+	}
+}
