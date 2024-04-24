@@ -79,9 +79,7 @@ textarea {
 }
 
 tp-form-error {
-	color: var(--color-error-50);
-	font-size: 14px;
-	margin-top: var(--spacing-1);
+	display: none;
 }
 
 textarea {
