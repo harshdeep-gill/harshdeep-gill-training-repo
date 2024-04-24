@@ -285,6 +285,9 @@
 					<x-form.field>
 						<x-form.textarea label="What else would you like us to know?" placeholder="eg Lorem ipsum"></x-form.textarea>
 					</x-form.field>
+					<x-form.field>
+						<x-form.file label="Choose File" />
+					</x-form.field>
 					<x-form.buttons>
 						<x-form.submit>Request a Quote</x-form.submit>
 					</x-form.buttons>
@@ -306,6 +309,9 @@
 					</x-form.field>
 					<x-form.field>
 						<x-form.textarea label="What else would you like us to know?" placeholder="eg Lorem ipsum" name="fields[comments]"></x-form.textarea>
+					</x-form.field>
+					<x-form.field>
+						<x-form.file label="Choose File" />
 					</x-form.field>
 					<x-form.buttons>
 						<x-form.submit>Request a Quote</x-form.submit>

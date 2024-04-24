@@ -32,13 +32,16 @@
 			<div class="quark-file-input__mime-type">
 				<p></p>
 			</div>
-			<div class="quark-file-input__file-info">
-				<p class="quark-file-input__file-name"></p>
-				<p class="quark-file-input__file-size"></p>
+			<div class="quark-file-input__preview-body">
+				<div class="quark-file-input__file-info">
+					<p class="quark-file-input__file-name"></p>
+					<p class="quark-file-input__file-size"></p>
+				</div>
+
+				<button class="quark-file-input__discard">
+					<x-svg name="cross" />
+				</button>
 			</div>
-			<button class="quark-file-input__discard">
-				<x-svg name="cross" />
-			</button>
 		</div>
 	</label>
 

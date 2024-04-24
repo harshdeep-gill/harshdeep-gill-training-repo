@@ -12,11 +12,19 @@
 	$self: &;
 
 	display: block;
+	width: fit-content;
+
+	label {
+		font-size: var(--font-size);
+		font-weight: var(--font-weight-bold);
+		line-height: var(--line-height);
+	}
 
 	&[file_selected="yes"] {
 
 		#{$self}__preview {
 			display: flex;
+			overflow: hidden;
 		}
 
 		#{$self}__btn {
@@ -30,5 +38,41 @@
 
 	&__preview {
 		display: none;
+	}
+
+	&__mime-type {
+		padding-inline: var(--spacing-4);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background-color: var(--color-error-50);
+		color: var(--color-white);
+		text-transform: uppercase;
+		border: 1px solid var(--color-error-50);
+		border-left: none;
+		border-radius: var(--border-radius-large) 0 0 var(--border-radius-large);
+	}
+
+	&__preview-body {
+		padding-block: var(--spacing-3);
+		padding-inline: var(--spacing-4);
+		display: flex;
+		justify-content: space-between;
+		gap: var(--spacing-4);
+		border: 1px solid var(--color-gray-20);
+		border-left: none;
+		border-radius: 0 var(--border-radius-large) var(--border-radius-large) 0;
+	}
+
+	&__file-info {
+
+		> * {
+			margin: 0;
+		}
+	}
+
+	&__file-size {
+		font-weight: var(--font-weight-default);
+		color: var(--color-gray-70);
 	}
 }
