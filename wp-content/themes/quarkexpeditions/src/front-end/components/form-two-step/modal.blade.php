@@ -60,7 +60,7 @@
 							<x-form.select label="Country" name="fields[Country_Code__c]">
 								<x-form.option value="">- Select -</x-form.option>
 								@foreach ( $countries as $country_code => $country_name )
-									<x-form.option value={{ $country_code }} label="{{ $country_name }}">{{ $country_name }}</x-form.option>
+									<x-form.option value="{{ $country_code }}" label="{{ $country_name }}">{{ $country_name }}</x-form.option>
 								@endforeach
 							</x-form.select>
 						</x-form.field>
@@ -70,7 +70,7 @@
 								<x-form.select label="State/Province">
 									<x-form.option value="">- Select -</x-form.option>
 									@foreach ( $country_states as $state_code => $state_name )
-										<x-form.option value={{ $state_code }} label="$state_name">{{ $state_name }}</x-form.option>
+										<x-form.option value="{{ $state_code }}" label="{{ $state_name }}">{{ $state_name }}</x-form.option>
 									@endforeach
 								</x-form.select>
 							</x-form.field>
