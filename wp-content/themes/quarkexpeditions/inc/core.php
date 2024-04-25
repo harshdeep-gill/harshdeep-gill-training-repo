@@ -326,6 +326,51 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 				'tp-accordion-content'                  => [
 					'class' => true,
 				],
+				'tp-multi-select'                       => [
+					'name'            => true,
+					'class'           => true,
+					'id'              => true,
+					'form'            => true,
+					'multiple'        => true,
+					'close-on-select' => true,
+				],
+				'tp-multi-select-field'                 => [
+					'class' => true,
+					'id'    => true,
+				],
+				'tp-multi-select-pills'                 => [
+					'class' => true,
+					'id'    => true,
+				],
+				'tp-multi-select-search'                => [
+					'class' => true,
+					'id'    => true,
+				],
+				'tp-multi-select-placeholder'           => [
+					'class' => true,
+					'id'    => true,
+				],
+				'tp-multi-select-status'                => [
+					'class'  => true,
+					'id'     => true,
+					'format' => true,
+				],
+				'tp-multi-select-options'               => [
+					'class' => true,
+					'id'    => true,
+				],
+				'tp-multi-select-option'                => [
+					'class' => true,
+					'id'    => true,
+					'value' => true,
+					'label' => true,
+				],
+				'tp-multi-select-select-all'            => [
+					'class'         => true,
+					'id'            => true,
+					'select-text'   => true,
+					'unselect-text' => true,
+				],
 				'iframe'                                => [
 					'class'           => true,
 					'src'             => true,
