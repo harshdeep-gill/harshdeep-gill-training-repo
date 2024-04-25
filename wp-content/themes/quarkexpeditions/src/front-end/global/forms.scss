@@ -42,7 +42,8 @@ input[type="tel"],
 input[type="number"],
 input[type="password"],
 select,
-textarea {
+textarea,
+tp-multi-select-field {
 	background-color: var(--color-white);
 	font-family: var(--font-family);
 	font-weight: var(--font-weight-default);
