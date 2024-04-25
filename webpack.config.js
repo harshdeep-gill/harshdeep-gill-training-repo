@@ -123,6 +123,7 @@ module.exports = ( env ) => {
 		entry: {
 			TPSliderElement: `${ themePath }/src/vendor/tp-slider.js`,
 			GLightbox: `${ themePath }/src/vendor/glightbox.js`,
+			TPMultiSelectElement: `${ themePath }/src/vendor/tp-multi-select.js`,
 		},
 		output: {
 			...buildConfig.output,
