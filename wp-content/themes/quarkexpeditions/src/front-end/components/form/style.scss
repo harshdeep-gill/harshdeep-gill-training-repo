@@ -124,5 +124,8 @@ tp-multi-select {
 		border-radius: var(--border-radius-large);
 		background-color: var(--color-gray-10);
 		padding: var(--spacing-3);
+		max-height: 200px;
+		overflow-x: hidden;
+		overflow-y: auto;
 	}
 }
