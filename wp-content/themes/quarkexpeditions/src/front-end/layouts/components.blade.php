@@ -276,10 +276,10 @@
 					</x-form.field>
 					<x-form.field :validation="[ 'required' ]">
 						<x-form.select label="Country">
-							<option value="">Select...</option>
-							<option value="1">Option 1</option>
-							<option value="2">Option 2</option>
-							<option value="3">Option 3</option>
+							<x-form.option value="">Select...</x-form.option>
+							<x-form.option value="1" label="Option 1">Option 1</x-form.option>
+							<x-form.option value="2" label="Option 2">Option 2</x-form.option>
+							<x-form.option value="3" label="Option 3">Option 3</x-form.option>
 						</x-form.select>
 					</x-form.field>
 					<x-form.field>
@@ -301,10 +301,10 @@
 					</x-form.field>
 					<x-form.field :validation="[ 'required' ]">
 						<x-form.select label="Country" name="fields[country]">
-							<option value="">Select...</option>
-							<option value="1">Option 1</option>
-							<option value="2">Option 2</option>
-							<option value="3">Option 3</option>
+							<x-form.option value="">Select...</x-form.option>
+							<x-form.option value="1" label="Option 1">Option 1</x-form.option>
+							<x-form.option value="2" label="Option 2">Option 2</x-form.option>
+							<x-form.option value="3" label="Option 3">Option 3</x-form.option>
 						</x-form.select>
 					</x-form.field>
 					<x-form.field>
