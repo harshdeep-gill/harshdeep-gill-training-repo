@@ -350,6 +350,11 @@ function download_file( array $file_data = [] ): int|WP_Error {
 		$post_data['post_content'] = trim( strval( $file_data['field_media_file_description'] ) );
 	}
 
+	// Photographer Credit.
+	if ( ! empty( $file_data['field_photographer_credit_value'] ) ) {
+		$post_data['meta_input']['photographer_credit'] = trim( strval( $file_data['field_photographer_credit_value'] ) );
+	}
+
 	// Create WordPress attachment.
 	return media_handle_sideload(
 		[
