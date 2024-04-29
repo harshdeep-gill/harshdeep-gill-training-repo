@@ -42,6 +42,7 @@ input[type="tel"],
 input[type="number"],
 input[type="password"],
 input[type="checkbox"],
+input[type="radio"],
 select,
 textarea,
 tp-multi-select-field {
@@ -130,6 +131,32 @@ input[type="checkbox"]:checked {
 		background-position: center center;
 		position: absolute;
 		inset: 0;
+	}
+}
+
+input[type="radio"] {
+	appearance: none;
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	padding: 0;
+}
+
+input[type="radio"]:checked {
+	background-color: var(--color-yellow);
+	position: relative;
+	border-color: var(--color-yellow);
+
+	&::before {
+		content: "";
+		/* stylelint-disable-next-line function-url-quotes */
+		background-color: var(--color-black);
+		height: 10px;
+		width: 10px;
+		border-radius: 50%;
+		position: absolute;
+		inset: 50% auto auto 50%;
+		transform: translate(-50%, -50%);
 	}
 }
 

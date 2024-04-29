@@ -130,7 +130,8 @@ tp-multi-select {
 	}
 }
 
-.checkbox-container {
+.checkbox-container,
+.radio-container {
 	display: flex;
 	gap: var(--spacing-2);
 	align-items: center;
