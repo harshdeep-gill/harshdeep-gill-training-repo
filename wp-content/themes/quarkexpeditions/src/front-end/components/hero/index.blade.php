@@ -1,7 +1,7 @@
 @props( [
-	'immersive'  => false,
-	'text_align' => '',
-	'dark_mode'  => false,
+	'immersive'       => false,
+	'text_align'      => '',
+	'overlay_opacity' => 0,
 ] )
 
 @php
@@ -21,12 +21,16 @@
 		$classes[] = 'hero--text-left';
 	}
 
-	if ( !empty( $dark_mode ) ) {
-		$classes[] = 'color-context--dark';
-	}
+	$overlay_opacity = $overlay_opacity / 100;
+
+	$overlay_style = "--hero-overlay-background-opacity:$overlay_opacity;";
 @endphp
 
 <x-section full_width="true" seamless="true" @class( $classes )>
+	<div
+		class="hero__overlay"
+		style={!! $overlay_style !!}
+	></div>
 	<div class="hero__wrap">
 		{!! $slot !!}
 	</div>

@@ -5,6 +5,7 @@ import { __ } from '@wordpress/i18n';
 import { BlockConfiguration, registerBlockType } from '@wordpress/blocks';
 import {
 	PanelBody,
+	RangeControl,
 	SelectControl,
 	ToggleControl,
 } from '@wordpress/components';
@@ -80,9 +81,9 @@ export const settings: BlockConfiguration = {
 			type: 'string',
 			default: '',
 		},
-		darkMode: {
-			type: 'boolean',
-			default: false,
+		overlayOpacity: {
+			type: 'number',
+			default: 0,
 		},
 	},
 	supports: {
@@ -98,8 +99,7 @@ export const settings: BlockConfiguration = {
 			className: classnames(
 				className,
 				'hero',
-				attributes.isImmersive ? 'hero--immersive' : '',
-				attributes.darkMode ? 'color-context--dark' : ''
+				attributes.isImmersive ? 'hero--immersive' : ''
 			),
 		} );
 
@@ -124,17 +124,18 @@ export const settings: BlockConfiguration = {
 							help={ __( 'Choose an image', 'qrk' ) }
 							onChange={ ( image: object ) => setAttributes( { image } ) }
 						/>
+						<RangeControl
+							label={ __( 'Overlay opacity in percent', 'qrk' ) }
+							value={ attributes.overlayOpacity }
+							onChange={ ( overlayOpacity ) => setAttributes( { overlayOpacity } ) }
+							min={ 0 }
+							max={ 100 }
+						/>
 						<ToggleControl
 							label={ __( 'Immersive Mode', 'qrk' ) }
 							checked={ attributes.isImmersive }
 							help={ __( 'Is this hero immersive?', 'qrk' ) }
 							onChange={ ( isImmersive: boolean ) => setAttributes( { isImmersive } ) }
-						/>
-						<ToggleControl
-							label={ __( 'Dark Mode', 'qrk' ) }
-							checked={ attributes.darkMode }
-							help={ __( 'Is this hero in dark mode?', 'qrk' ) }
-							onChange={ ( darkMode: boolean ) => setAttributes( { darkMode } ) }
 						/>
 						<SelectControl
 							label={ __( 'Text Alignment', 'qrk' ) }
@@ -149,6 +150,12 @@ export const settings: BlockConfiguration = {
 					</PanelBody>
 				</InspectorControls>
 				<Section { ...blockProps } fullWidth={ true } seamless={ true } >
+					<div
+						className="hero__overlay"
+						style={ {
+							backgroundColor: `rgba(0,0,0,${ attributes.overlayOpacity / 100 })`,
+						} }
+					></div>
 					<div className="hero__wrap">
 						{ attributes.image &&
 							<Img

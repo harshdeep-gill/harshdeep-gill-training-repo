@@ -235,6 +235,10 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'class'    => true,
 					'video_id' => true,
 				],
+				'quark-hero-overlay'                    => [
+					'class'  => true,
+					'data-*' => true,
+				],
 				'quark-form-two-step'                   => [
 					'class' => true,
 				],
@@ -439,6 +443,7 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'id'       => true,
 					'class'    => true,
 					'data-*'   => true,
+					'style'    => true,
 				],
 			]
 		);

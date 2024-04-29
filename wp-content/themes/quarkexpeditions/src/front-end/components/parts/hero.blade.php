@@ -1,10 +1,11 @@
 @props( [
-	'image_id'   => 0,
-	'immersive'  => false,
-	'text_align' => '',
-	'left'       => [],
-	'right'      => [],
-	'dark_mode'  => false,
+	'image_id'        => 0,
+	'immersive'       => false,
+	'text_align'      => '',
+	'overlay_opacity' => 0,
+	'left'            => [],
+	'right'           => [],
+	'dark_mode'       => false,
 ] )
 
 @php
@@ -13,7 +14,7 @@
 	}
 @endphp
 
-<x-hero :immersive="$immersive" :text_align="$text_align" :dark_mode="$dark_mode">
+<x-hero :immersive="$immersive" :text_align="$text_align" :overlay_opacity="$overlay_opacity">
 	<x-hero.image :image_id="$image_id" />
 	<x-hero.content>
 		<x-hero.left>
@@ -29,19 +30,19 @@
 
 					@if ( 'title' === $item['type'] )
 						@if ( ! empty( $item['title'] ) )
-							<x-hero.title :title="$item['title']" />
+							<x-hero.title :title="$item['title']" :text_color="$item['text_color']" />
 						@endif
 					@endif
 
 					@if ( 'subtitle' === $item['type'] )
 						@if ( ! empty( $item['subtitle'] ) )
-							<x-hero.sub-title :title="$item['subtitle']" />
+							<x-hero.sub-title :title="$item['subtitle']" :text_color="$item['text_color']" />
 						@endif
 					@endif
 
 					@if ( 'description' === $item['type'] )
 						@if ( ! empty( $item['description'] ) )
-							<x-hero.description>
+							<x-hero.description :text_color="$item['text_color']">
 								{!! $item['description'] !!}
 							</x-hero.description>
 						@endif

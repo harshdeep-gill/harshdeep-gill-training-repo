@@ -46,12 +46,12 @@ function render( ?string $content = null, array $block = [] ): null|string {
 
 	// Initialize the attrs.
 	$attributes = [
-		'image_id'   => 0,
-		'immersive'  => $block['attrs']['isImmersive'] ?? false,
-		'text_align' => $block['attrs']['textAlign'] ?? '',
-		'left'       => [],
-		'right'      => [],
-		'dark_mode'  => $block['attrs']['darkMode'] ?? false,
+		'image_id'        => 0,
+		'immersive'       => $block['attrs']['isImmersive'] ?? false,
+		'text_align'      => $block['attrs']['textAlign'] ?? '',
+		'overlay_opacity' => $block['attrs']['overlayOpacity'] ?? 0,
+		'left'            => [],
+		'right'           => [],
 	];
 
 	// Parse inner blocks.
@@ -100,7 +100,8 @@ function render( ?string $content = null, array $block = [] ): null|string {
 					];
 
 					// Add title.
-					$title['title'] = $inner_inner_block['attrs']['title'] ?? '';
+					$title['title']      = $inner_inner_block['attrs']['title'] ?? '';
+					$title['text_color'] = $inner_inner_block['attrs']['textColor'] ?? '';
 
 					// Add to attributes.
 					$attributes['left'][] = $title;
@@ -113,7 +114,8 @@ function render( ?string $content = null, array $block = [] ): null|string {
 					];
 
 					// Add subtitle.
-					$subtitle['subtitle'] = $inner_inner_block['attrs']['subtitle'] ?? '';
+					$subtitle['subtitle']   = $inner_inner_block['attrs']['subtitle'] ?? '';
+					$subtitle['text_color'] = $inner_inner_block['attrs']['textColor'] ?? '';
 
 					// Add to attributes.
 					$attributes['left'][] = $subtitle;
@@ -127,6 +129,7 @@ function render( ?string $content = null, array $block = [] ): null|string {
 
 					// Add description.
 					$description['description'] = implode( '', array_map( 'render_block', $inner_inner_block['innerBlocks'] ) );
+					$description['text_color']  = $inner_inner_block['attrs']['textColor'] ?? '';
 
 					// Add to attributes.
 					$attributes['left'][] = $description;
