@@ -1,8 +1,8 @@
 @props( [
-	'counter'        => false,
-	'class'          => '',
-	'id'             => '',
-	'full_border'    => false,
+	'counter'     => false,
+	'class'       => '',
+	'id'          => '',
+	'full_border' => false,
 ] )
 
 @php
