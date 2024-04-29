@@ -1,10 +1,10 @@
 @props( [
-	'class'          => '',
-	'thank_you_page' => '',
-	'form_id'        => 'form-two-step',
-	'countries'      => [],
-	'states'         => [],
-	'hidden_fields'  => [],
+	'class'            => '',
+	'thank_you_page'   => '',
+	'form_id'          => 'form-two-step',
+	'countries'        => [],
+	'states'           => [],
+	'hidden_fields'    => [],
 	'background_color' => 'black',
 ] )
 
