@@ -3,6 +3,7 @@
 	'label'              => '',
 	'name'               => '',
 	'allowed_file_types' => [],
+	'form'               => '',
 ] )
 
 @php
@@ -22,7 +23,7 @@
 <quark-file-input class="quark-file-input">
 	<label
 		for="{{ $dom_id }}"
-		{{ $attributes->filter( fn ( $value, $key ) => ! in_array( $key, [ 'label', 'id', 'name', 'allow' ] ) ) }}
+		{{ $attributes->filter( fn ( $value, $key ) => ! in_array( $key, [ 'label', 'id', 'name', 'allowed_file_types', 'form' ] ) ) }}
 	>
 		<div role="button" class="quark-file-input__btn btn btn--outline btn--size-big">
 			{{ $label }}
@@ -38,7 +39,7 @@
 					<p class="quark-file-input__file-size"></p>
 				</div>
 
-				<button class="quark-file-input__discard">
+				<button class="quark-file-input__discard" type="button">
 					<x-svg name="cross" />
 				</button>
 			</div>
@@ -50,5 +51,6 @@
 		name="{{ $name }}"
 		id="{{ $dom_id }}"
 		accept="{{ $allowed_file_types }}"
+		form="{{ $form }}"
 	>
 </quark-file-input>
