@@ -7,7 +7,7 @@
 	$id = quark_get_form_field_id( $id ?? '' );
 @endphp
 
-<div class="checkbox-container">
+<div class="radio-container">
 	<input
 		type="radio"
 		{{ $attributes->filter( fn ( $value, $key ) => $key !== 'label' )->merge( [ 'id' => $id ] ) }}
