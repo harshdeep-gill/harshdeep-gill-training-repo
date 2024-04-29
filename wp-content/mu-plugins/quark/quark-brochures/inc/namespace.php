@@ -24,6 +24,11 @@ function bootstrap(): void {
 
 	// Layout.
 	add_action( 'template_redirect', __NAMESPACE__ . '\\layout' );
+
+	// Custom fields.
+	if ( is_admin() ) {
+		require_once __DIR__ . '/../custom-fields/brochures.php';
+	}
 }
 
 /**
