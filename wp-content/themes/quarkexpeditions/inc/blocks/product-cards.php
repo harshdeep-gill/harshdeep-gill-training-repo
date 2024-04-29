@@ -45,7 +45,9 @@ function render( ?string $content = null, array $block = [] ): null|string {
 	}
 
 	// Initialize attributes.
-	$attributes = [];
+	$attributes = [
+		'align' => $block['attrs']['align'] ?? 'left',
+	];
 
 	// Build slot.
 	foreach ( $block['innerBlocks'] as $inner_block ) {

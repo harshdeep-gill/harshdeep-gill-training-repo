@@ -84,7 +84,9 @@
 	@endif
 
 	@if ( ! empty( $title ) )
-		<h2 @class( $section_title_classes )>{{ $title }}</h2>
+		<h2 @class( $section_title_classes )>
+			<x-content :content="$title" />
+		</h2>
 	@endif
 
 	{!! $slot !!}

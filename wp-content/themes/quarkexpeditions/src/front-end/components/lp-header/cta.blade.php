@@ -11,6 +11,8 @@
 			'height'  => 120,
 		],
 	];
+
+	$icon_name = 'call';
 @endphp
 
 <a href="tel:{{ $phone_number }}" class="lp-header__cta InfinityNumber">
@@ -25,7 +27,7 @@
 		@endif
 		<span class="lp-header__cta-content-phone-number">
 			<span><x-escape :content="$phone_number" /></span>
-			<x-svg name="call" />
+			<x-svg :name="$icon_name" />
 		</span>
 	</span>
 </a>

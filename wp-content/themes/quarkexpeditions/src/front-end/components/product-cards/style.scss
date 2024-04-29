@@ -6,6 +6,17 @@
 .product-cards {
 	$self: &;
 
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(285px, max-content));
+	gap: var(--spacing-5);
+
+	&--align-center {
+
+		@media screen and (min-width: grid-size(md)) {
+			justify-content: center;
+		}
+	}
+
 	&__card {
 		background-color: var(--color-white);
 		border-radius: var(--border-radius-large);
@@ -17,6 +28,10 @@
 
 		&:hover img {
 			transform: scale(var(--scale-size));
+		}
+
+		@media screen and (min-width: grid-size(lg)) {
+			max-width: 352px;
 		}
 	}
 

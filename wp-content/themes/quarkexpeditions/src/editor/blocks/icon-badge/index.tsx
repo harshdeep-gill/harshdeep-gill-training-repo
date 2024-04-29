@@ -137,7 +137,7 @@ export const settings: BlockConfiguration = {
 					</span>
 					<RichText
 						tagName="span"
-						className={ classnames( 'icon-bade__description' ) }
+						className={ classnames( 'icon-badge__description' ) }
 						placeholder={ __( 'Write badge description…', 'qrk' ) }
 						value={ attributes.text }
 						onChange={ ( text: string ) => setAttributes( { text } ) }

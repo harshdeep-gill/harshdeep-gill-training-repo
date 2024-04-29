@@ -1,11 +1,23 @@
+@props( [
+	'align' => 'left',
+] )
+
 @php
 	if ( empty( $slot ) ) {
 		return;
 	}
+
+	$classes = [ 'product-cards' ];
+
+	if ( ! empty( $align ) && 'center' === $align ) {
+		$classes[] = 'product-cards--align-center';
+	} else {
+		$classes[] = 'grid--cols-3';
+	}
 @endphp
 
 <x-section>
-	<div class="product-cards grid grid--cols-3">
+	<div @class( $classes )>
 		{!! $slot !!}
 	</div>
 </x-section>

@@ -1,8 +1,23 @@
+@props( [
+	'color' => 'blue',
+] )
+
 @php
 	if ( empty( $slot ) ) {
 		return;
 	}
+
+	$classes = [ 'hero__overline', 'overline' ];
+
+	if ( ! empty( $color ) ) {
+		$colors = [ 'blue', 'black' ];
+
+		if ( in_array( $color, $colors, true ) ) {
+			$classes[] = sprintf( 'hero__overline-color--%s', $color );
+		}
+	}
 @endphp
-<div class="hero__overline overline">
+
+<div @class( $classes) >
 	<x-content :content="$slot"/>
 </div>
