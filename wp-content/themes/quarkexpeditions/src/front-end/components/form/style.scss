@@ -129,3 +129,14 @@ tp-multi-select {
 		overflow-y: auto;
 	}
 }
+
+.checkbox-container {
+	display: flex;
+	gap: var(--spacing-2);
+	align-items: center;
+
+	> label {
+		margin: 0;
+		height: fit-content;
+	}
+}

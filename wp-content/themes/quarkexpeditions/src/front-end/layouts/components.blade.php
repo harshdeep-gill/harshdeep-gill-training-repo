@@ -288,6 +288,9 @@
 					<x-form.field>
 						<x-form.file label="Choose File" />
 					</x-form.field>
+					<x-form.field>
+						<x-form.checkbox label="Checkbox example" />
+					</x-form.field>
 					<x-form.buttons>
 						<x-form.submit>Request a Quote</x-form.submit>
 					</x-form.buttons>
@@ -312,6 +315,9 @@
 					</x-form.field>
 					<x-form.field>
 						<x-form.file label="Choose File" />
+					</x-form.field>
+					<x-form.field>
+						<x-form.checkbox label="Checkbox example" />
 					</x-form.field>
 					<x-form.buttons>
 						<x-form.submit>Request a Quote</x-form.submit>
