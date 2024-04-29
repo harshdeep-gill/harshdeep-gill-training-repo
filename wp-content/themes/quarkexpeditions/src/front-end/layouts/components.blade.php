@@ -339,6 +339,52 @@
 		</x-section>
 	</x-component-demo>
 
+	<x-component-demo :keys="[ 'field-group' ]">
+		<x-section>
+			<x-form>
+				<x-form.field-group title="Example field group. Radio" :validation="[ 'required' ]">
+					<x-form.radio name="radio-example" label="Radio example" />
+					<x-form.radio name="radio-example" label="Radio example" />
+					<x-form.radio name="radio-example" label="Radio example" />
+					<x-form.radio name="radio-example" label="Radio example" />
+					<x-form.radio name="radio-example" label="Radio example" />
+					<x-form.radio name="radio-example" label="Radio example" />
+					<x-form.radio name="radio-example" label="Radio example" />
+					<x-form.radio name="radio-example" label="Radio example" />
+					<x-form.radio name="radio-example" label="Radio example" />
+					<x-form.radio name="radio-example" label="Radio example" />
+					<x-form.radio name="radio-example" label="Radio example" />
+					<x-form.radio name="radio-example" label="Radio example" />
+					<x-form.radio name="radio-example" label="Radio example with text that is longer than usual" />
+					<x-form.radio name="radio-example" label="Radio example" />
+					<x-form.radio name="radio-example" label="Radio example" />
+					<x-form.radio name="radio-example" label="Radio example" />
+				</x-form.field-group>
+				<x-form.field-group title="Example field group. Checkbox">
+					<x-form.checkbox name="checkbox-example" label="Radio example" />
+					<x-form.checkbox name="checkbox-example" label="Radio example" />
+					<x-form.checkbox name="checkbox-example" label="Radio example" />
+					<x-form.checkbox name="checkbox-example" label="Radio example" />
+					<x-form.checkbox name="checkbox-example" label="Radio example" />
+					<x-form.checkbox name="checkbox-example" label="Radio example" />
+					<x-form.checkbox name="checkbox-example" label="Radio example" />
+					<x-form.checkbox name="checkbox-example" label="Radio example" />
+					<x-form.checkbox name="checkbox-example" label="Radio example" />
+					<x-form.checkbox name="checkbox-example" label="Radio example" />
+					<x-form.checkbox name="checkbox-example" label="Radio example" />
+					<x-form.checkbox name="checkbox-example" label="Radio example" />
+					<x-form.checkbox name="checkbox-example" label="Radio example with text that is longer than usual" />
+					<x-form.checkbox name="checkbox-example" label="Radio example" />
+					<x-form.checkbox name="checkbox-example" label="Radio example" />
+					<x-form.checkbox name="checkbox-example" label="Radio example" />
+				</x-form.field-group>
+				<x-form.buttons>
+					<x-form.submit>Request a Quote</x-form.submit>
+				</x-form.buttons>
+			</x-form>
+		</x-section>
+	</x-component-demo>
+
 	<x-component-demo :keys="[ 'header' ]">
 		<x-lp-header
 			tc_image_id="18"
