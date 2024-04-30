@@ -16,6 +16,7 @@ use cli\progress\Bar;
 use function Quark\Core\update_svg_content;
 use function Quark\Migration\Drupal\download_file;
 use function Quark\Migration\Drupal\get_database;
+use function Quark\Migration\Drupal\get_wp_brochure_id_by_mid;
 use function Quark\Migration\Drupal\prepare_for_migration;
 use function Quark\Migration\Drupal\download_file_by_mid;
 use function Quark\Migration\Drupal\download_file_by_fid;
@@ -283,7 +284,7 @@ class Media {
 		$drupal_db = get_database();
 		$query     = '
 		SELECT
-			mid, mfd.bundle as "bundle", name, created, changed, status,
+			mfd.mid, mfd.bundle as "bundle", mfd.name, mfd.created, mfd.changed, mfd.status,
 			field_pdf_image_target_id,
 			field_pdf_is_gated_value,
 			field_url_uri,
@@ -339,8 +340,17 @@ class Media {
 				return;
 			}
 
-			// Insert post.
-			$output = wp_insert_post( $normalized_post );
+			// Check post exist or not.
+			$wp_post = get_wp_brochure_id_by_mid( $normalized_post['meta_input']['drupal_mid'] );
+
+			// Insert/update post.
+			if ( ! empty( $wp_post ) ) {
+				$normalized_post['ID'] = $wp_post->ID;
+				$output                = wp_update_post( $normalized_post );
+			} else {
+				// Insert post.
+				$output = wp_insert_post( $normalized_post );
+			}
 
 			// Check if post inserted/updated or not.
 			if ( $output instanceof WP_Error ) {
@@ -448,7 +458,7 @@ class Media {
 
 			// Set PDF file.
 			if ( ! empty( $wp_pdf_id ) && is_int( $wp_pdf_id ) ) {
-				$data['meta_input']['pdf_file'] = $wp_pdf_id;
+				$data['meta_input']['brochure_pdf'] = $wp_pdf_id;
 			}
 		}
 

@@ -16,6 +16,8 @@ use WP_Term;
 
 use function Quark\Migration\WordPress\convert_to_blocks;
 
+use const Quark\Brochures\POST_TYPE as BROCHURE_POST_TYPE;
+
 /**
  * Get the Drupal database object.
  *
@@ -251,6 +253,40 @@ function get_wp_attachment_id_by_mid( int $drupal_mid = 0 ): int {
 
 	// If attachment ID not found then return 0.
 	return 0;
+}
+
+/**
+ * Get WordPress Brochure ID by Drupal MID.
+ *
+ * @param int $drupal_mid Drupal MID.
+ *
+ * @return WP_Post|false WordPress's Brochure post on success otherwise false.
+ */
+function get_wp_brochure_id_by_mid( int $drupal_mid = 0 ): WP_Post|false {
+	// Prepare arguments.
+	$arguments = [
+		'post_type'     => BROCHURE_POST_TYPE,
+		'meta_key'      => 'drupal_mid',
+		'meta_value'    => $drupal_mid,
+		'post_status'   => 'any',
+		'post_per_page' => 1,
+	];
+
+	// Query post.
+	$posts = new WP_Query( $arguments );
+
+	// If no post found then bail out.
+	if ( empty( $posts->posts ) ) {
+		return false;
+	}
+
+	// If not instance of WP_Post then bail out.
+	if ( ! $posts->posts[0] instanceof WP_Post ) {
+		return false;
+	}
+
+	// Return post.
+	return $posts->posts[0];
 }
 
 /**
