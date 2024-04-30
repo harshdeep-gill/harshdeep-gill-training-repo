@@ -115,6 +115,49 @@ function download_file_by_mid( int $drupal_mid = 0 ): int|WP_Error {
 }
 
 /**
+ * Download file by Drupal fid (File ID).
+ *
+ * @param int $drupal_fid Drupal file ID.
+ *
+ * @return int|WP_Error WordPress's attachment ID on success otherwise error.
+ */
+function download_file_by_fid( int $drupal_fid = 0 ): int|WP_Error {
+	// Check the Drupal fid.
+	if ( empty( $drupal_fid ) ) {
+		return 0;
+	}
+
+	// Drupal database instance.
+	$drupal_db = get_database();
+
+	// Build and execute query.
+	$file_data = $drupal_db->get_row(
+		strval(
+			$drupal_db->prepare(
+				'
+				SELECT
+					*
+				FROM
+					file_managed
+				WHERE
+					fid=%d
+			',
+				absint( $drupal_fid )
+			)
+		),
+		ARRAY_A
+	);
+
+	// If not data found then bail out.
+	if ( empty( $file_data ) || ! is_array( $file_data ) ) {
+		return 0;
+	}
+
+	// Download the file and send attachment ID.
+	return download_file( $file_data );
+}
+
+/**
  * Download file by Drupal URL.
  *
  * @param string $url Drupal URL.
