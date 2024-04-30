@@ -76,7 +76,7 @@ tp-multi-select-field {
 		border-color: var(--color-black);
 	}
 
-	tp-form-field[error] & {
+	tp-form-field[error] &:not(input[type="radio"], input[type="checkbox"]) {
 		border-color: var(--color-error-50);
 	}
 }

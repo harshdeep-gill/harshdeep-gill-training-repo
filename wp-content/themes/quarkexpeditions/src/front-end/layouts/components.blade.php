@@ -342,7 +342,7 @@
 	<x-component-demo :keys="[ 'field-group' ]">
 		<x-section>
 			<x-form>
-				<x-form.field-group title="Example field group. Radio" :validation="[ 'required' ]">
+				<x-form.field-group title="Example field group. Radio" :validation="[ 'radio' ]">
 					<x-form.radio name="radio-example" label="Radio example" />
 					<x-form.radio name="radio-example" label="Radio example" />
 					<x-form.radio name="radio-example" label="Radio example" />
@@ -360,7 +360,7 @@
 					<x-form.radio name="radio-example" label="Radio example" />
 					<x-form.radio name="radio-example" label="Radio example" />
 				</x-form.field-group>
-				<x-form.field-group title="Example field group. Checkbox">
+				<x-form.field-group title="Example field group. Checkbox" :validation="[ 'checkbox' ]">
 					<x-form.checkbox name="checkbox-example" label="Radio example" />
 					<x-form.checkbox name="checkbox-example" label="Radio example" />
 					<x-form.checkbox name="checkbox-example" label="Radio example" />
