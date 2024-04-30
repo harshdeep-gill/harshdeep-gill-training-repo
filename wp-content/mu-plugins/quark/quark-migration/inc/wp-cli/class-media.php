@@ -22,8 +22,7 @@ use function Quark\Migration\Drupal\download_file_by_fid;
 use function Quark\Migration\WordPress\qrk_sanitize_attribute;
 use function WP_CLI\Utils\make_progress_bar;
 
-// TODO:: Use the post type const from mu-plugins/quark/quark-brochures/inc/namespace.php.
-const POST_TYPE = 'qrk_brochures';
+use const Quark\Brochures\POST_TYPE;
 
 /**
  * Class Media.
