@@ -1,12 +1,8 @@
 @import "~@travelopia/web-components/dist/accordion/style.css";
 @import "../../scss";
 
-
 .accordion {
 	$self: &;
-
-	--accordion-counter-min-width: 27px;
-	--accordion-counter-margin-right: 10px;
 
 	&__content {
 
@@ -54,41 +50,10 @@
 	}
 
 	&__content-inner {
-		padding-bottom: var(--grid-row-gutter);
+		padding-bottom: var(--spacing-5);
 
 		a {
 			color: inherit;
-		}
-	}
-
-	&--counter {
-		counter-reset: accordion_counter;
-
-		#{$self}__handle-btn {
-
-			align-items: center;
-
-			&::before {
-				counter-increment: accordion_counter;
-				content: counter(accordion_counter);
-				border: 1px solid rgba(color("black"), 0.15);
-				line-height: 1;
-				letter-spacing: 0.8px;
-				text-transform: uppercase;
-				font-weight: var(--font-weight-medium);
-				border-radius: 50%;
-				padding: 2px;
-				height: 27px;
-				min-width: var(--accordion-counter-min-width);
-				display: inline-flex;
-				align-items: center;
-				justify-content: center;
-				margin-right: var(--accordion-counter-margin-right);
-			}
-		}
-
-		#{$self}__content-inner {
-			padding-left: calc(var(--accordion-counter-min-width) + var(--accordion-counter-margin-right));
 		}
 	}
 
@@ -104,10 +69,10 @@
 
 		#{$self}__content-inner {
 			border-top: 2px solid var(--color-gray-20);
+			padding: var(--spacing-5) 20px;
 		}
 
-		#{$self}__handle-btn,
-		#{$self}__content-inner {
+		#{$self}__handle-btn {
 			padding: var(--spacing-3) 20px;
 		}
 	}
