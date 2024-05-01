@@ -9,9 +9,9 @@ namespace Quark\Brochures;
 
 use WP_Post;
 
-use function Quark\Core\prepare_content_with_blocks;
-
-const POST_TYPE = 'qrk_brochures';
+const POST_TYPE   = 'qrk_brochures';
+const CACHE_KEY   = POST_TYPE;
+const CACHE_GROUP = POST_TYPE;
 
 /**
  * Bootstrap plugin.
@@ -22,24 +22,12 @@ function bootstrap(): void {
 	// Register post type.
 	add_action( 'init', __NAMESPACE__ . '\\register_brochures_post_type' );
 
-	// Layout.
-	add_action( 'template_redirect', __NAMESPACE__ . '\\layout' );
+	// Other hooks.
+	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
 
 	// Custom fields.
 	if ( is_admin() ) {
 		require_once __DIR__ . '/../custom-fields/brochures.php';
-	}
-}
-
-/**
- * Layout for this post type.
- *
- * @return void
- */
-function layout(): void {
-	// Add single layout if viewing a single post.
-	if ( is_singular( POST_TYPE ) ) {
-		add_filter( 'quark_front_end_data', __NAMESPACE__ . '\\layout_single' );
 	}
 }
 
@@ -91,29 +79,18 @@ function register_brochures_post_type(): void {
 }
 
 /**
- * Layout: Single.
+ * Busts cache for this post type.
  *
- * @param mixed[] $data Front-end data.
+ * @param int $post_id Post ID.
  *
- * @return mixed[]
+ * @return void
  */
-function layout_single( array $data = [] ): array {
-	// Get post.
-	$page = get();
+function bust_post_cache( int $post_id = 0 ): void {
+	// Clear cache for this post.
+	wp_cache_delete( CACHE_KEY . "_$post_id", CACHE_GROUP );
 
-	// Bail if post does not exist or not an instance of WP_Post.
-	if ( empty( $page['post'] ) || ! $page['post'] instanceof WP_Post ) {
-		return $data;
-	}
-
-	// Layout.
-	$data['layout'] = 'single';
-
-	// Build data.
-	$data['data'] = array_merge( $data['data'] ?? [], $page );
-
-	// Return front-end data.
-	return $data;
+	// Trigger action to clear cache for this post.
+	do_action( 'qe_brochure_post_cache_busted', $post_id );
 }
 
 /**
@@ -123,24 +100,66 @@ function layout_single( array $data = [] ): array {
  *
  * @return array{
  *     post: WP_Post|null,
- *     permalink: string,
+ *     post_thumbnail: int,
+ *     post_meta: mixed[]
  * }
  */
 function get( int $post_id = 0 ): array {
-	// Get post.
-	$post = get_post( $post_id );
+	// Get post ID.
+	if ( 0 === $post_id ) {
+		$post_id = absint( get_the_ID() );
+	}
 
-	// Return empty array fields if post type does not match or not an instance of WP_Post.
-	if ( ! $post instanceof WP_Post || POST_TYPE !== $post->post_type ) {
+	// Check for cached version.
+	$cache_key    = CACHE_KEY . "_$post_id";
+	$cached_value = wp_cache_get( $cache_key, CACHE_GROUP );
+
+	// Check for cached value.
+	if ( is_array( $cached_value ) && ! empty( $cached_value['post'] ) && $cached_value['post'] instanceof WP_Post ) {
 		return [
-			'post'      => null,
-			'permalink' => '',
+			'post'           => $cached_value['post'],
+			'post_thumbnail' => $cached_value['post_thumbnail'] ?? 0,
+			'post_meta'      => $cached_value['post_meta'] ?? [],
 		];
 	}
 
-	// Return post data.
-	return [
-		'post'      => $post,
-		'permalink' => strval( get_permalink( $post ) ? : '' ),
+	// Get post.
+	$post = get_post( $post_id );
+
+	// Check for post.
+	if ( ! $post instanceof WP_Post || POST_TYPE !== $post->post_type ) {
+		return [
+			'post'           => null,
+			'post_thumbnail' => 0,
+			'post_meta'      => [],
+		];
+	}
+
+	// Build data.
+	$data = [
+		'post'           => $post,
+		'post_thumbnail' => get_post_thumbnail_id( $post ) ?: 0,
+		'post_meta'      => [],
 	];
+
+	// Get all post meta.
+	$meta = get_post_meta( $post->ID );
+
+	// Check for post meta.
+	if ( ! empty( $meta ) && is_array( $meta ) ) {
+		$data['post_meta'] = array_filter(
+			array_map(
+				fn( $value ) => maybe_unserialize( $value[0] ?? '' ),
+				$meta
+			),
+			fn( $key ) => ! str_starts_with( $key, '_' ),
+			ARRAY_FILTER_USE_KEY
+		);
+	}
+
+	// Set cache and return data.
+	wp_cache_set( $cache_key, $data, CACHE_GROUP );
+
+	// Return data.
+	return $data;
 }
