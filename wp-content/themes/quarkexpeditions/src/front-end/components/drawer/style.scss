@@ -1,6 +1,31 @@
+@import "../../scss";
+
+
 .drawer {
+	$self: &;
+
 	padding: 0;
 	justify-content: end;
+
+	&--open {
+
+		#{$self}__content {
+
+			@include slide-in;
+		}
+
+		@include fade-in;
+	}
+
+	&--close {
+
+		#{$self}__content {
+
+			@include slide-out;
+		}
+
+		@include fade-out;
+	}
 
 	&__content {
 		margin: 0;
