@@ -6,7 +6,7 @@ Migration script for media from drupal to WordPress.
 ## Usage
 
 1. [Media migration](#media-commands)
-2. [Media metadata migration](#media-metadata-migration)
+2. [PDF Media migration](#pdf-media-migration)
 
 ---
 
@@ -48,9 +48,9 @@ wp quark migrate media all --chunk=1 --total-chunks=50
 ```
 ---
 
-### Media Metadata migration
+### PDF Media migration
 
-Once media migration completed successfully, you can run the following command to migrate media metadata:
+Once media migration completed successfully, run the following command to migrate pdf media:
 
 ```bash
 wp quark-migrate media metadata
