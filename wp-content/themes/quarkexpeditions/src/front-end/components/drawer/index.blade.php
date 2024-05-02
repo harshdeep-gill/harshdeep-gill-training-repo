@@ -1,6 +1,7 @@
 @props( [
-	'id'    => '',
-	'class' => '',
+	'id'                  => '',
+	'class'               => '',
+	'animation_direction' => '',
 ] )
 
 @php
@@ -20,6 +21,7 @@
 	@endif
 	@class( $classes )
 	overlay-click-close="yes"
+	data-animation_direction="{{ $animation_direction }}"
 >
 	<tp-modal-content class="drawer__content">
 		{!! $slot !!}

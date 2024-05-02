@@ -314,6 +314,7 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'class'               => true,
 					'overlay-click-close' => true,
 					'open'                => true,
+					'data-*'              => true,
 				],
 				'tp-modal-content'                      => [
 					'class' => true,
