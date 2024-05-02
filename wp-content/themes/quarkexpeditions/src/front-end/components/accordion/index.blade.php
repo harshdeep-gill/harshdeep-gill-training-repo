@@ -18,6 +18,9 @@
 	if ( true === $full_border ) {
 		$classes[] = 'accordion--full-border';
 	}
+
+	quark_enqueue_style( 'tp-accordion' );
+	quark_enqueue_script( 'tp-accordion' );
 @endphp
 
 <tp-accordion
