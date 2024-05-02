@@ -227,15 +227,13 @@ function quark_generate_dom_id( string $input = '', int $length = 10 ): string {
 }
 
 /**
- * Generates a unique DOM id of a specified length.
+ * Generates a unique DOM id.
  *
- * @param integer $length The length of the id can be 2 <= $length <= 32.
- *
- * @return string The hashed id.
+ * @return string The DOM id.
  */
-function quark_generate_unique_dom_id( int $length = 10 ): string {
+function quark_generate_unique_dom_id(): string {
 	/**
-	 * The character 'm' has been added to prevent the id starting with a digit.
+	 * The character prefix has been added to prevent the id starting with a digit.
 	 */
-	return 'm' . substr( md5( strval( random_bytes( 32 ) ) ), 0, $length - 1 );
+	return wp_unique_id( 'quark_uid_' );
 }
