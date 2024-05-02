@@ -47,11 +47,6 @@ select,
 textarea,
 tp-multi-select-field {
 	background-color: var(--color-white);
-	font-family: var(--font-family);
-	font-weight: var(--font-weight-default);
-	font-size: 15px;
-	color: var(--color-black);
-	line-height: 1.6;
 	border-radius: var(--forms-border-radius);
 	padding: 9px 10px;
 	outline: none;
@@ -65,7 +60,6 @@ tp-multi-select-field {
 	&.disabled,
 	*[inert] & {
 		background-color: var(--color-gray-20);
-		color: var(--color-black);
 	}
 
 	&:hover {
@@ -78,6 +72,28 @@ tp-multi-select-field {
 
 	tp-form-field[error] &:not(input[type="radio"], input[type="checkbox"]) {
 		border-color: var(--color-error-50);
+	}
+}
+
+input[type="text"],
+input[type="email"],
+input[type="search"],
+input[type="tel"],
+input[type="number"],
+input[type="password"],
+select,
+textarea,
+tp-multi-select-field {
+	font-family: var(--font-family);
+	font-weight: var(--font-weight-default);
+	font-size: 15px;
+	color: var(--color-black);
+	line-height: 1.6;
+
+	&:disabled,
+	&.disabled,
+	*[inert] & {
+		color: var(--color-black);
 	}
 }
 
