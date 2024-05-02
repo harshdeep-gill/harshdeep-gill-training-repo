@@ -29,5 +29,26 @@
 
 	&__content {
 		margin: 0;
+		position: relative;
+
+		@media screen and (min-width: grid-size(md)) {
+			border-radius: var(--border-radius-large) 0 0 var(--border-radius-large);
+		}
+	}
+
+	&__header {
+		display: flex;
+		justify-content: space-between;
+		gap: var(--spacing-3);
+	}
+
+	&__drawer-close {
+
+		svg {
+			height: 15px;
+			width: 15px;
+		}
+
+		position: static;
 	}
 }

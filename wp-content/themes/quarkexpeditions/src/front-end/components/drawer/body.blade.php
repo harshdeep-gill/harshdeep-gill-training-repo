@@ -1,9 +1,13 @@
+@props( [
+	'class' => '',
+] )
+
 @php
 	if ( empty( $slot ) ) {
 		return;
 	}
 @endphp
 
-<div class="drawer__body">
+<div @class( [ $class, 'drawer__body' ] ) >
 	{!! $slot !!}
 </div>

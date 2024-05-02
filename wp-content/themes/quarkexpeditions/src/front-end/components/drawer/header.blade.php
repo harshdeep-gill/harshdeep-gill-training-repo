@@ -1,10 +1,16 @@
+@props( [
+	'class' => '',
+] )
+
 @php
 	if( empty( $slot ) ) {
 		return;
 	}
 @endphp
 
-<header class="drawer__header">
-	{!! $slot !!}
+<header @class( [ $class, 'drawer__header' ] )>
+	<div class="drawer__header-content">
+		{!! $slot !!}
+	</div>
 	<x-drawer.drawer-close />
 </header>
