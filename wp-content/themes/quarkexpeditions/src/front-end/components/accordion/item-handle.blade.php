@@ -10,9 +10,9 @@
 
 <x-accordion.item-handle-container>
 	<x-accordion.item-handle-button>
-		<h5 class="accordion__handle-btn-text body-text-large">
+		<h3 class="h5 accordion__handle-btn-text body-text-large">
 			<x-escape :content="$title" />
-		</h5>
+		</h3>
 		<x-accordion.item-handle-icon />
 	</x-accordion.item-handle-button>
 </x-accordion.item-handle-container>
