@@ -86,13 +86,13 @@ function register_styles(): void {
 	$assets_version = get_assets_version();
 
 	// Enqueue styles.
+	wp_register_style( 'tp-multi-select', get_template_directory_uri() . '/dist/vendor/tpmultiselectelement.css', [], $assets_version );
 	wp_enqueue_style( 'qrk-global', get_template_directory_uri() . '/dist/global.css', [], $assets_version );
 	wp_enqueue_style( 'nunito-sans', get_template_directory_uri() . '/src/assets/fonts/nunito-sans/nunito-sans.css', [], '1' );
 	wp_enqueue_style( 'source-serif-4', get_template_directory_uri() . '/src/assets/fonts/source-serif-4/source-serif-4.css', [], '1' );
 	wp_register_style( 'intl-tel-input-css', get_template_directory_uri() . '/dist/vendor/intltelinput.css', [], $assets_version );
 	wp_register_style( 'glightbox', get_template_directory_uri() . '/dist/vendor/glightbox.css', [], $assets_version );
 	wp_register_style( 'tp-slider', get_template_directory_uri() . '/dist/vendor/tpsliderelement.css', [], $assets_version );
-	wp_register_style( 'tp-multi-select', get_template_directory_uri() . '/dist/vendor/tpmultiselectelement.css', [], $assets_version );
 
 	// Defer certain styles.
 	add_filter(
