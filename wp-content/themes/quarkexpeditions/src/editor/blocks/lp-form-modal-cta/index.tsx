@@ -20,9 +20,25 @@ import {
 import classnames from 'classnames';
 
 /**
+ * External dependencies.
+ */
+const { gumponents } = window;
+
+/**
+ * External components.
+ */
+const { ColorPaletteControl } = gumponents.components;
+
+/**
  * Block name.
  */
 export const name: string = 'quark/lp-form-modal-cta';
+
+// Background colors.
+export const colors: { [key: string]: string }[] = [
+	{ name: __( 'Yellow', 'qrk' ), color: '#fdb52b', slug: 'yellow' },
+	{ name: __( 'Black', 'qrk' ), color: '#232933', slug: 'black' },
+];
 
 /**
  * Block configuration settings.
@@ -38,6 +54,11 @@ export const settings: BlockConfiguration = {
 		text: {
 			type: 'string',
 			default: '',
+		},
+		backgroundColor: {
+			type: 'string',
+			default: 'yellow',
+			enum: [ 'yellow', 'black' ],
 		},
 		polarRegion: {
 			type: 'string',
@@ -74,6 +95,23 @@ export const settings: BlockConfiguration = {
 		return (
 			<>
 				<InspectorControls>
+					<PanelBody title={ __( 'LP Form Modal CTA Options', 'qrk' ) }>
+						<ColorPaletteControl
+							label={ __( 'Background Color', 'qrk' ) }
+							help={ __( 'Select the background color.', 'qrk' ) }
+							value={ colors.find( ( color ) => color.slug === attributes.backgroundColor )?.color }
+							colors={ colors.filter( ( color ) => [ 'black', 'yellow' ].includes( color.slug ) ) }
+							onChange={ ( backgroundColor: {
+								color: string;
+								slug: string;
+							} ): void => {
+								// Set the background color attribute.
+								if ( backgroundColor.slug && [ 'black', 'yellow' ].includes( backgroundColor.slug ) ) {
+									setAttributes( { backgroundColor: backgroundColor.slug } );
+								}
+							} }
+						/>
+					</PanelBody>
 					<PanelBody title={ __( 'Form Modal CTA Hidden Fields', 'qrk' ) }>
 						<SelectControl
 							label={ __( 'Polar Region', 'qrk' ) }
@@ -140,7 +178,7 @@ export const settings: BlockConfiguration = {
 				<div { ...blockProps }>
 					<RichText
 						tagName="span"
-						className={ classnames( 'btn', 'btn--size-big' ) }
+						className={ classnames( 'btn', 'btn--size-big', 'black' === attributes.backgroundColor ? 'btn--color-black' : '', ) }
 						placeholder={ __( 'Write CTA text…', 'qrk' ) }
 						value={ attributes.text }
 						onChange={ ( text: string ) => setAttributes( { text } ) }

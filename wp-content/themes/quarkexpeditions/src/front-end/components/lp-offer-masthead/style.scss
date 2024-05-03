@@ -1,0 +1,96 @@
+/**
+ * LP offer masthead.
+ */
+@import "../../scss";
+
+.lp-offer-masthead {
+	$self: &;
+
+	padding-top: var(--spacing-8);
+	position: relative;
+
+	&__image-wrap {
+		position: absolute;
+		left: 0;
+		top: 0;
+		width: 100%;
+		height: 100%;
+		max-height: 720px;
+		max-width: none;
+
+		&::after {
+			content: "";
+			display: block;
+			position: absolute;
+			z-index: 0;
+			left: 0;
+			right: 0;
+			bottom: -1px;
+			height: 100%;
+			background: linear-gradient(0deg, rgba(35, 41, 51, 1) 0%, rgba(35, 41, 51, 0) 50%);
+
+			@media screen and (min-width: grid-size(lg)) {
+				background: linear-gradient(0deg, rgba(35, 41, 51, 1) 0%, rgba(35, 41, 51, 0) 30%);
+			}
+		}
+	}
+
+	&__content {
+		position: relative;
+
+		> * + * {
+			margin-top: var(--spacing-7);
+		}
+	}
+
+	&__inner-content {
+		margin-top: var(--spacing-6);
+
+		@media screen and (min-width: grid-size(md)) {
+			margin-top: var(--spacing-8);
+		}
+	}
+
+	&__image {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		filter: brightness(0.6);
+	}
+
+	&__logo,
+	&__offer-image {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	&__logo {
+		max-width: 200px;
+		margin-left: auto;
+		margin-right: auto;
+
+		img {
+			object-fit: contain;
+		}
+	}
+
+	&__offer-image {
+		margin-bottom: 0;
+		margin-top: var(--spacing-9);
+
+		img {
+			max-height: 262px;
+			width: auto;
+		}
+	}
+
+	&__caption {
+		color: var(--color-white);
+		margin-bottom: 0;
+		margin-top: var(--spacing-5);
+		text-align: center;
+	}
+}

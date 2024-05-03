@@ -40,6 +40,7 @@ function bootstrap(): void {
 	// Custom fields.
 	if ( is_admin() ) {
 		require_once __DIR__ . '/../custom-fields/options-social.php';
+		require_once __DIR__ . '/../custom-fields/attachments.php';
 	}
 }
 

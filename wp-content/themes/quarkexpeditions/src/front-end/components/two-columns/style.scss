@@ -8,10 +8,8 @@
 	$self: &;
 
 	grid-gap: var(--spacing-6);
-	grid-template-columns: repeat(1, 1fr);
 
 	@media screen and (min-width: grid-size(md)) {
-		grid-gap: calc(var(--spacing-6) * 2);
 		grid-template-columns: repeat(2, 1fr);
 	}
 
@@ -25,6 +23,7 @@
 	&--has-border {
 
 		@media screen and (min-width: grid-size(md)) {
+			grid-gap: calc(var(--spacing-6) * 2);
 			position: relative;
 
 			&::after {

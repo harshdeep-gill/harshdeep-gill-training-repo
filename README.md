@@ -7,7 +7,7 @@ Custom WordPress website for Quark Expeditions.
 
 ## Local Setup
 
-Make sure you have PHP 8.1, Docker, NodeJS 18 and Composer 2 or greater installed. You should preferably name your project directory as `quarkexpeditions`.
+Make sure you have PHP 8.2, Docker, NodeJS 18 and Composer 2 or greater installed. You should preferably name your project directory as `quarkexpeditions`.
 
 1. Clone this repository
 2. Get the `.env` file from one of your colleague and add that to the project.

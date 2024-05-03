@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Quark Expedition Blog
- * Description: Press Releases for Quark Expedition.
+ * Description: Blog Posts for Quark Expedition.
  * Author: Travelopia Team
  * Author URI: https://www.travelopia.com
  * Version: 1.0.0
