@@ -11,7 +11,7 @@ import { getErrorMessage } from '../utility';
 /**
  * Name.
  */
-export const name: string = 'checkbox';
+export const name: string = 'checkbox-group-required';
 
 /**
  * Error message.

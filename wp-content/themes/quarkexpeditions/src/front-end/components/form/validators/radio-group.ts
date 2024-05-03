@@ -11,7 +11,7 @@ import { getErrorMessage } from '../utility';
 /**
  * Name.
  */
-export const name: string = 'radio';
+export const name: string = 'radio-group-required';
 
 /**
  * Error message.
