@@ -103,6 +103,8 @@ class Test_Blog extends WP_UnitTestCase {
 					'post_meta'       => [
 						'meta_1' => 'value_1',
 						'meta_2' => 'value_2',
+						'read_time_minutes' => 0,
+						'read_time_seconds' => 0,
 					],
 					'post_taxonomies' => [
 						'category' => [
@@ -212,8 +214,10 @@ class Test_Blog extends WP_UnitTestCase {
 				'permalink'       => 'http://test.quarkexpeditions.com/test-post',
 				'post_thumbnail'  => 0,
 				'post_meta'       => [
-					'meta_1' => 'value_1',
-					'meta_2' => 'value_2',
+					'meta_1'            => 'value_1',
+					'meta_2'            => 'value_2',
+					'read_time_minutes' => 0,
+					'read_time_seconds' => 0,
 				],
 				'post_taxonomies' => [
 					'category' => [
