@@ -216,16 +216,6 @@ class Blog {
 				}
 			}
 
-			// Set Read time metadata.
-			if ( ! empty( $blog_post['read_time_minutes'] ) ) {
-				$data['meta_input']['read_time_minutes'] = absint( $blog_post['read_time_minutes'] );
-			}
-
-			// Set read time seconds.
-			if ( ! empty( $blog_post['read_time_seconds'] ) ) {
-				$data['meta_input']['read_time_seconds'] = absint( $blog_post['read_time_seconds'] );
-			}
-
 			// Check post exist or not.
 			$wp_post = get_post_by_id( $blog_post['drupal_id'], POST_TYPE );
 
