@@ -1,13 +1,12 @@
 /**
  * Import Styles.
  */
-
 import '@travelopia/web-components/dist/modal/style.css';
 
 // Import the slider element.
-import { TPSliderElement } from '@travelopia/web-components/dist/modal';
+import { TPModalElement } from '@travelopia/web-components/dist/modal';
 
 /**
- * Export TPSliderElement.
+ * Export TPModalElement.
  */
-export default TPSliderElement;
+export default TPModalElement;
