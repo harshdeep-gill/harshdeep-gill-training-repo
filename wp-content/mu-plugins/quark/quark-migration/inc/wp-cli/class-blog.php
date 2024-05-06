@@ -21,7 +21,7 @@ use function Quark\Migration\Drupal\get_term_by_id;
 use function WP_CLI\Utils\make_progress_bar;
 
 use const Quark\Blog\POST_TYPE;
-use const Quark\BlogAuthors\POST_TYPE as AUTHOR_POST_TYPE;
+use const Quark\Blog\Authors\POST_TYPE as AUTHOR_POST_TYPE;
 
 /**
  * Class Blog.
