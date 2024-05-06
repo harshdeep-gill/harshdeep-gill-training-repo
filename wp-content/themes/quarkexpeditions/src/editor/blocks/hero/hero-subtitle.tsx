@@ -76,10 +76,10 @@ export const settings: BlockConfiguration = {
 		return (
 			<>
 				<InspectorControls>
-					<PanelBody title={ __( 'Description Options', 'qrk' ) }>
+					<PanelBody title={ __( 'Subtitle Options', 'qrk' ) }>
 						<ColorPaletteControl
-							label={ __( 'Description Color', 'qrk' ) }
-							help={ __( 'Select the text color for the description', 'qrk' ) }
+							label={ __( 'Subtitle Color', 'qrk' ) }
+							help={ __( 'Select the text color for the subtitle', 'qrk' ) }
 							value={ colors.find( ( color ) => color.slug === attributes.textColor )?.color }
 							colors={ colors.filter( ( color ) => [ 'white', 'black' ].includes( color.slug ) ) }
 							onChange={ ( textColor: {
