@@ -103,8 +103,7 @@ class Test_Blog extends WP_UnitTestCase {
 					'post_meta'       => [
 						'meta_1' => 'value_1',
 						'meta_2' => 'value_2',
-						'read_time_minutes' => 0,
-						'read_time_seconds' => 0,
+						'read_time_minutes' => 1,
 					],
 					'post_taxonomies' => [
 						'category' => [
@@ -216,8 +215,7 @@ class Test_Blog extends WP_UnitTestCase {
 				'post_meta'       => [
 					'meta_1'            => 'value_1',
 					'meta_2'            => 'value_2',
-					'read_time_minutes' => 0,
-					'read_time_seconds' => 0,
+					'read_time_minutes' => 1,
 				],
 				'post_taxonomies' => [
 					'category' => [

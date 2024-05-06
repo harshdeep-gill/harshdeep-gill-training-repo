@@ -256,10 +256,8 @@ function calculate_post_reading_time( int $post_id = 0, WP_Post $post = null ): 
 	$words_count = str_word_count( wp_strip_all_tags( $content ) );
 
 	// Calculate reading time.
-	$minutes = floor( $words_count / WORDS_PER_MINUTE );
-	$seconds = floor( $words_count % WORDS_PER_MINUTE / ( WORDS_PER_MINUTE / MINUTE_IN_SECONDS ) );
+	$minutes = ceil( $words_count / WORDS_PER_MINUTE );
 
 	// Save data to post meta.
 	update_post_meta( $post_id, 'read_time_minutes', absint( $minutes ) );
-	update_post_meta( $post_id, 'read_time_seconds', absint( $seconds ) );
 }
