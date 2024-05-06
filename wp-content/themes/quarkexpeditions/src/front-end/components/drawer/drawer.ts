@@ -38,20 +38,34 @@ export class QuarkDrawerElement extends HTMLElement {
 
 		// Removes scroll from body.
 		document.querySelector( 'body' )?.classList?.add( 'prevent-scroll' );
+
+		// Add animation.
+		this?.classList.add( 'drawer--open' );
+		this?.addEventListener( 'animationend',
+			() => this?.classList.remove( 'drawer--open' ),
+			{ once: true }
+		);
 	}
 
 	/**
 	 * Close the drawer.
 	 */
 	close(): void {
-		// Remove the open attribute.
-		this.removeAttribute( 'open' );
+		// Remove and add classes for slide out animation.
+		this.classList.add( 'drawer--close' );
+		this.addEventListener( 'animationend', function() {
+			// Slide out.
+			this.classList.remove( 'drawer--close' );
 
-		// Dispatch the close event.
-		this.dispatchEvent( new CustomEvent( 'close', { bubbles: true } ) );
+			// Remove the open attribute.
+			this.removeAttribute( 'open' );
 
-		// Enable body scroll again.
-		document.querySelector( 'body' )?.classList?.remove( 'prevent-scroll' );
+			// Dispatch the close event.
+			this.dispatchEvent( new CustomEvent( 'close', { bubbles: true } ) );
+
+			// Enable body scroll again.
+			document.querySelector( 'body' )?.classList?.remove( 'prevent-scroll' );
+		}, { once: true } );
 	}
 
 	/**

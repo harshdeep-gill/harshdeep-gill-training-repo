@@ -58,15 +58,5 @@ export class QuarkDrawerOpenElement extends HTMLElement {
 
 		// Open the drawer.
 		drawer?.open();
-
-		// Removes scroll from body.
-		document.querySelector( 'body' )?.classList?.add( 'prevent-scroll' );
-
-		// Add animation.
-		drawer?.classList.add( 'drawer--open' );
-		drawer?.addEventListener( 'animationend',
-			() => drawer?.classList.remove( 'drawer--open' ),
-			{ once: true }
-		);
 	}
 }
