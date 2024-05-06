@@ -16,7 +16,7 @@
 
 <x-section
 	@class( $classes )
-	:full_width="$full_width"
+	:$full_width
 >
 	<x-thumbnail-cards.carousel :is_carousel="$is_carousel">
 		{!! $slot !!}

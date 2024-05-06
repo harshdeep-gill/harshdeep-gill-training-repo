@@ -139,7 +139,11 @@
 			height: 240px;
 
 			&:not(:last-child) {
-				margin-right: var(--spacing-6);
+				margin-right: var(--spacing-4);
+
+				@media screen and (min-width: grid-size(lg)) {
+					margin-right: var(--spacing-6);
+				}
 			}
 
 			&.thumbnail-cards__card--orient-landscape {

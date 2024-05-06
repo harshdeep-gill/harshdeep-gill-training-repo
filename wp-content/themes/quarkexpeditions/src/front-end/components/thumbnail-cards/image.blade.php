@@ -30,13 +30,13 @@
 		],
 		'responsive' => [
 			'sizes'  => match( $size_orientation_key ) {
-				'small-portrait'   => [ '(min-width: 1024px) 180px', '100vw' ],
-				'small-landscape'  => [ '(min-width: 1024px) 250px', '100vw' ],
-				'medium-portrait'  => [ '(min-width: 1024px) 220px', '100vw' ],
-				'medium-landscape' => [ '(min-width: 1024px) 350px', '100vw' ],
-				'large-portrait'   => [ '(min-width: 1024px) 400px', '100vw' ],
+				'small-portrait'   => [ '180px' ],
+				'small-landscape'  => [ '250px' ],
+				'medium-portrait'  => [ '220px' ],
+				'medium-landscape' => [ '350px' ],
+				'large-portrait'   => [ '400px' ],
 			},
-			'widths' => [ 180, 250, 315, 350, 768, 1120 ],
+			'widths' => [ 180, 220, 250, 350, 400 ],
 		],
 		'transform' => [
 			'crop' => 'fill',
