@@ -26,6 +26,8 @@
 		<tp-multi-select-status format="$value"></tp-multi-select-status>
 	</tp-multi-select-field>
 	<tp-multi-select-options>
-		{!! $slot !!}
+		<div class="tp-multi-select-options-container">
+			{!! $slot !!}
+		</div>
 	</tp-multi-select-options>
 </tp-multi-select>

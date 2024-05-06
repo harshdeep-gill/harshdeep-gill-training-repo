@@ -414,9 +414,13 @@ tp-multi-select {
 		background-color: var(--color-gray-10);
 		padding-block: var(--spacing-3);
 		padding-inline: var(--spacing-1);
-		max-height: 200px;
-		overflow-x: hidden;
-		overflow-y: auto;
+		overflow: hidden;
+
+		> div {
+			overflow-x: hidden;
+			overflow-y: auto;
+			max-height: 200px;
+		}
 	}
 
 	&-placeholder {
