@@ -69,6 +69,8 @@ const blacklistBlocks = [
 	'core/post-author',
 	'core/read-more',
 	'core/post-author-biography',
+	'core/buttons',
+	'core/button',
 	'yoast/how-to-block',
 	'yoast/faq-block',
 	'yoast-seo/breadcrumbs',
