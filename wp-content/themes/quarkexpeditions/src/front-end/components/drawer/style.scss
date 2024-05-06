@@ -4,9 +4,17 @@
 .drawer {
 	$self: &;
 
-	padding: 0;
-	justify-content: end;
-	align-items: end;
+	display: none;
+
+	&[open] {
+		display: flex;
+		justify-content: end;
+		align-items: end;
+		position: fixed;
+		inset: 0;
+		padding: 0;
+		background-color: rgba(0, 0, 0, 0.5);
+	}
 
 	&--open {
 
@@ -55,10 +63,14 @@
 		position: relative;
 		max-height: 100vh;
 		border-radius: var(--border-radius-large) var(--border-radius-large) 0 0;
+		background-color: var(--color-white);
+		display: flex;
+		flex-direction: column;
 
 
 		@media screen and (min-width: grid-size(md)) {
 			border-radius: var(--border-radius-large) 0 0 var(--border-radius-large);
+			height: 100%;
 		}
 
 		@media screen and (max-width: grid-size(md)) {
@@ -78,6 +90,7 @@
 		-ms-overflow-style: none;
 		scrollbar-width: none;
 		-webkit-overflow-scrolling: touch;
+		flex-grow: 1;
 
 		&::-webkit-scrollbar {
 			display: none;
@@ -85,6 +98,7 @@
 	}
 
 	&__drawer-close {
+		display: block;
 
 		svg {
 			height: 15px;
