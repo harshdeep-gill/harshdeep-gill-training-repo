@@ -36,6 +36,7 @@ $tp_mu_plugins = array(
 	'quark/quark-brochures/plugin.php',
 	'quark/quark-blog/plugin.php',
 	'quark/quark-adventure-options/plugin.php',
+	'quark/quark-cabin-categories/plugin.php',
 	'quark/quark-migration/plugin.php',
 );
 

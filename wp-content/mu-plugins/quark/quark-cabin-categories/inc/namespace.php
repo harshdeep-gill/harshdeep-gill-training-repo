@@ -2,19 +2,19 @@
 /**
  * Namespace functions.
  *
- * @package quark-adventure-options
+ * @package quark-cabin-categories
  */
 
-namespace Quark\AdventureOptions;
+namespace Quark\CabinCategories;
 
 use WP_Post;
 
 use function Quark\Core\prepare_content_with_blocks;
 
-const POST_TYPE                 = 'qrk_adventure_option';
-const ADVENTURE_OPTION_CATEGORY = 'qrk_adventure_option_category';
-const CACHE_KEY                 = POST_TYPE;
-const CACHE_GROUP               = POST_TYPE;
+const POST_TYPE   = 'qrk_cabin_category';
+const CABIN_CLASS = 'qrk_cabin_class';
+const CACHE_KEY   = POST_TYPE;
+const CACHE_GROUP = POST_TYPE;
 
 /**
  * Bootstrap plugin.
@@ -23,11 +23,11 @@ const CACHE_GROUP               = POST_TYPE;
  */
 function bootstrap(): void {
 	// Post type and taxonomies.
-	add_action( 'init', __NAMESPACE__ . '\\register_adventure_option_post_type' );
-	add_action( 'init', __NAMESPACE__ . '\\register_adventure_option_category_taxonomy' );
+	add_action( 'init', __NAMESPACE__ . '\\register_cabin_category_post_type' );
+	add_action( 'init', __NAMESPACE__ . '\\register_cabin_classes_taxonomy' );
 
 	// Opt into stuff.
-	add_filter( 'qe_adventure_options_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
+	add_filter( 'qe_cabin_classes_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
 
 	// Layout.
 	add_action( 'template_redirect', __NAMESPACE__ . '\\layout' );
@@ -35,35 +35,35 @@ function bootstrap(): void {
 	// Admin stuff.
 	if ( is_admin() ) {
 		// Custom fields.
-		require_once __DIR__ . '/../custom-fields/adventure-option-category.php';
+		require_once __DIR__ . '/../custom-fields/cabin-categories.php';
 	}
 }
 
 /**
- * Register adventure option post type.
+ * Register Cabin category post type.
  *
  * @return void
  */
-function register_adventure_option_post_type(): void {
+function register_cabin_category_post_type(): void {
 	// Post type arguments.
 	$args = [
 		'labels'              => [
-			'name'               => 'Adventure Options',
-			'singular_name'      => 'Adventure Option',
+			'name'               => 'Cabin Categories',
+			'singular_name'      => 'Cabin Category',
 			'add_new'            => 'Add New',
-			'add_new_item'       => 'Add New Adventure Option',
-			'edit_item'          => 'Edit Adventure Option',
-			'new_item'           => 'New Adventure Option',
-			'view_item'          => 'View Adventure Option',
-			'search_items'       => 'Search Adventure Options',
-			'not_found'          => 'No Adventure Options found',
-			'not_found_in_trash' => 'No Adventure Options found in Trash',
-			'parent_item_colon'  => 'Parent Adventure Option:',
-			'menu_name'          => 'Adventure Options',
+			'add_new_item'       => 'Add New Cabin Category',
+			'edit_item'          => 'Edit Cabin Category',
+			'new_item'           => 'New Cabin Category',
+			'view_item'          => 'View Cabin Category',
+			'search_items'       => 'Search Cabin Categories',
+			'not_found'          => 'No Cabin Categories found',
+			'not_found_in_trash' => 'No Cabin Categories found in Trash',
+			'parent_item_colon'  => 'Parent Cabin Category:',
+			'menu_name'          => 'Cabin Categories',
 		],
-		'public'              => true,
+		'public'              => false,
 		'show_in_rest'        => true,
-		'menu_icon'           => 'dashicons-location-alt',
+		'menu_icon'           => 'dashicons-category',
 		'hierarchical'        => false,
 		'supports'            => [
 			'title',
@@ -80,10 +80,7 @@ function register_adventure_option_post_type(): void {
 		'has_archive'         => false,
 		'query_var'           => true,
 		'can_export'          => true,
-		'rewrite'             => [
-			'slug'       => 'adventure-option',
-			'with_front' => false,
-		],
+		'rewrite'             => false,
 		'capability_type'     => 'post',
 	];
 
@@ -92,28 +89,28 @@ function register_adventure_option_post_type(): void {
 }
 
 /**
- * Register Adventure Options taxonomy.
+ * Register Cabin Classes taxonomy.
  *
  * @return void
  */
-function register_adventure_option_category_taxonomy(): void {
+function register_cabin_classes_taxonomy(): void {
 	// Prepare labels.
 	$labels = [
-		'name'                       => 'Adventure Options',
-		'singular_name'              => 'Adventure Option',
-		'search_items'               => 'Search Adventure Options',
-		'popular_items'              => 'Popular Adventure Options',
-		'all_items'                  => 'All Adventure Options',
-		'parent_item'                => 'Parent Adventure Option',
-		'parent_item_colon'          => 'Parent Adventure Option:',
-		'edit_item'                  => 'Edit Adventure Option',
-		'update_item'                => 'Update Adventure Option',
-		'add_new_item'               => 'Add New Adventure Option',
-		'new_item_name'              => 'New Adventure Option',
-		'separate_items_with_commas' => 'Separate Adventure Options with commas',
-		'add_or_remove_items'        => 'Add or remove Adventure Options',
-		'choose_from_most_used'      => 'Choose from the most used Adventure Options',
-		'menu_name'                  => 'Adventure Option Categories',
+		'name'                       => 'Cabin Classes',
+		'singular_name'              => 'Cabin Class',
+		'search_items'               => 'Search Cabin Classes',
+		'popular_items'              => 'Popular Cabin Classes',
+		'all_items'                  => 'All Cabin Classes',
+		'parent_item'                => 'Parent Cabin Class',
+		'parent_item_colon'          => 'Parent Cabin Class:',
+		'edit_item'                  => 'Edit Cabin Class',
+		'update_item'                => 'Update Cabin Class',
+		'add_new_item'               => 'Add New Cabin Class',
+		'new_item_name'              => 'New Cabin Class',
+		'separate_items_with_commas' => 'Separate Cabin Classes with commas',
+		'add_or_remove_items'        => 'Add or remove Cabin Classes',
+		'choose_from_most_used'      => 'Choose from the most used Cabin Classes',
+		'menu_name'                  => 'Cabin Classes',
 	];
 
 	// Prepare args for registering taxonomy.
@@ -132,7 +129,7 @@ function register_adventure_option_category_taxonomy(): void {
 	];
 
 	// Register taxonomy.
-	register_taxonomy( ADVENTURE_OPTION_CATEGORY, (array) apply_filters( 'qe_adventure_options_taxonomy_post_types', [] ), $args );
+	register_taxonomy( CABIN_CLASS, (array) apply_filters( 'qe_cabin_classes_taxonomy_post_types', [] ), $args );
 }
 
 /**
@@ -143,7 +140,7 @@ function register_adventure_option_category_taxonomy(): void {
  * @return string[]
  */
 function opt_in( array $post_types = [] ): array {
-	// Append Adventure Option post type for taxonomy.
+	// Append Cabin Categories post type for taxonomy.
 	$post_types[] = POST_TYPE;
 
 	// Return modified array.
@@ -206,11 +203,11 @@ function bust_post_cache( int $post_id = 0 ): void {
 	wp_cache_delete( CACHE_KEY . "_$post_id", CACHE_GROUP );
 
 	// Trigger action to clear cache for this post.
-	do_action( 'qe_adventure_option_post_cache_busted', $post_id );
+	do_action( 'qe_cabin_category_post_cache_busted', $post_id );
 }
 
 /**
- * Get an Adventure Option.
+ * Get a Cabin Category.
  *
  * @param int $post_id Post ID.
  *
