@@ -66,11 +66,19 @@
 		background-color: var(--color-white);
 		display: flex;
 		flex-direction: column;
+		height: 100%;
+
+		#{$self}[data-animation_direction="slide_up"] & {
+			height: unset;
+
+			@media screen and (min-width: grid-size(md)) {
+				height: 100%;
+			}
+		}
 
 
 		@media screen and (min-width: grid-size(md)) {
 			border-radius: var(--border-radius-large) 0 0 var(--border-radius-large);
-			height: 100%;
 		}
 
 		@media screen and (max-width: grid-size(md)) {
