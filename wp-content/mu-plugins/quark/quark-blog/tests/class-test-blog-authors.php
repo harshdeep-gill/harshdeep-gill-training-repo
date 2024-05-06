@@ -5,12 +5,12 @@
  * @package quark-blog-authors
  */
 
-namespace Quark\BlogAuthors\Tests;
+namespace Quark\Blog\Tests;
 
 use WP_UnitTestCase;
 use WP_Post;
 
-use const Quark\BlogAuthors\POST_TYPE;
+use const Quark\Blog\Authors\POST_TYPE;
 
 /**
  * Class Test_Blog_Authors.
@@ -20,19 +20,19 @@ class Test_Blog_Authors extends WP_UnitTestCase {
 	/**
 	 * Test bootstrap.
 	 *
-	 * @covers \Quark\BlogAuthors\bootstrap()
+	 * @covers \Quark\Blog\Authors\bootstrap()
 	 *
 	 * @return void
 	 */
 	public function test_bootstrap(): void {
 		// Test if post type hook is registered.
-		$this->assertEquals( 10, has_filter( 'init', 'Quark\BlogAuthors\register_blog_authors_post_type' ) );
+		$this->assertEquals( 10, has_filter( 'init', 'Quark\Blog\Authors\register_blog_authors_post_type' ) );
 	}
 
 	/**
 	 * Make sure post type is registered.
 	 *
-	 * @covers \Quark\BlogAuthors\register_blog_authors_post_type()
+	 * @covers \Quark\Blog\Authors\register_blog_authors_post_type()
 	 *
 	 * @return void
 	 */
@@ -44,7 +44,7 @@ class Test_Blog_Authors extends WP_UnitTestCase {
 	/**
 	 * Test getting a base.
 	 *
-	 * @covers \Quark\BlogAuthors\get()
+	 * @covers \Quark\Blog\Authors\get()
 	 *
 	 * @return void
 	 */
@@ -75,7 +75,7 @@ class Test_Blog_Authors extends WP_UnitTestCase {
 					'meta_2' => 'value_2',
 				],
 			],
-			\Quark\BlogAuthors\get( $post_1->ID )
+			\Quark\Blog\Authors\get( $post_1->ID )
 		);
 	}
 }

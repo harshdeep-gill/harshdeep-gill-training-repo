@@ -1,11 +1,11 @@
 <?php
 /**
- * Namespace functions.
+ * Namespace functions for Blog Authors.
  *
- * @package quark-blog-authors
+ * @package quark-blog
  */
 
-namespace Quark\BlogAuthors;
+namespace Quark\Blog\Authors;
 
 use WP_Post;
 
@@ -27,7 +27,7 @@ function bootstrap(): void {
 
 	// Custom fields.
 	if ( is_admin() ) {
-		require_once __DIR__ . '/../custom-fields/blog-authors.php';
+		require_once __DIR__ . '/../../custom-fields/blog-authors.php';
 	}
 }
 
@@ -64,7 +64,7 @@ function register_blog_authors_post_type(): void {
 		'exclude_from_search' => true,
 		'publicly_queryable'  => false,
 		'show_ui'             => true,
-		'show_in_menu'        => true,
+		'show_in_menu'        => 'edit.php',
 		'menu_icon'           => 'dashicons-admin-users',
 		'show_in_nav_menus'   => false,
 		'has_archive'         => false,
