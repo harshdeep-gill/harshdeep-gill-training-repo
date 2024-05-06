@@ -10,12 +10,9 @@
 	}
 
 	$classes = [ 'drawer', $class ];
-
-	wp_enqueue_script( 'tp-modal' );
-	wp_enqueue_style( 'tp-modal' );
 @endphp
 
-<tp-modal
+<quark-drawer
 	@if ( ! empty( $id ) )
 		id="{{ $id }}"
 	@endif
@@ -23,7 +20,7 @@
 	overlay-click-close="yes"
 	data-animation_direction="{{ $animation_direction }}"
 >
-	<tp-modal-content class="drawer__content">
+	<quark-drawer-content class="drawer__content">
 		{!! $slot !!}
-	</tp-modal-content>
-</tp-modal>
+	</quark-drawer-content>
+</quark-drawer>

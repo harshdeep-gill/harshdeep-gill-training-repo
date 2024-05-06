@@ -1,3 +1,3 @@
-<tp-modal-close class="drawer__drawer-close">
+<quark-drawer-close class="drawer__drawer-close">
 	<button type="button"><x-svg name="cross" /></button>
-</tp-modal-close>
+</quark-drawer-close>

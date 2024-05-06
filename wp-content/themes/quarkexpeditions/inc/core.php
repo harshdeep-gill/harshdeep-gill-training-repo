@@ -217,10 +217,6 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'class'    => true,
 					'modal-id' => true,
 				],
-				'quark-drawer-open'                     => [
-					'class'     => true,
-					'drawer_id' => true,
-				],
 				'quark-fancy-video'                     => [
 					'class' => true,
 					'url'   => true,
@@ -264,6 +260,23 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 				'quark-form-two-step-compact-modal-cta' => [
 					'class'  => true,
 					'data-*' => true,
+				],
+				'quark-drawer'                          => [
+					'id'                  => true,
+					'class'               => true,
+					'overlay-click-close' => true,
+					'open'                => true,
+					'data-*'              => true,
+				],
+				'quark-drawer-content'                  => [
+					'class' => true,
+				],
+				'quark-drawer-close'                    => [
+					'class' => true,
+				],
+				'quark-drawer-open'                     => [
+					'class'     => true,
+					'drawer_id' => true,
 				],
 				'tp-form'                               => [
 					'class'          => true,
