@@ -8,6 +8,12 @@ import { QuarkDrawerElement } from './drawer';
  */
 export class QuarkDrawerCloseElement extends HTMLElement {
 	/**
+	 * Properties
+	 */
+	private drawer: QuarkDrawerElement | null;
+	private button: HTMLButtonElement | null;
+
+	/**
 	 * Constructor.
 	 */
 	constructor() {
@@ -15,20 +21,20 @@ export class QuarkDrawerCloseElement extends HTMLElement {
 		super();
 
 		// Get the button inside.
-		const button: HTMLButtonElement | null = this.querySelector( 'button' );
+		this.button = this.querySelector( 'button' );
 
 		// Events
-		button?.addEventListener( 'click', this.closeDrawer.bind( this ) );
+		this.button?.addEventListener( 'click', this.closeDrawer.bind( this ) );
+
+		// Get the drawer
+		this.drawer = this.closest( 'quark-drawer' );
 	}
 
 	/**
 	 * Close the drawer.
 	 */
 	closeDrawer(): void {
-		// Get the drawer
-		const drawer: QuarkDrawerElement | null = this.closest( 'quark-drawer' );
-
 		// close the drawer
-		drawer?.close();
+		this.drawer?.close();
 	}
 }
