@@ -12,7 +12,7 @@
 
 <quark-drawer-open
 	@class( [ $class, 'drawer__drawer-open' ] )
-	drawer_id="{{ $drawer_id }}"
+	drawer-id="{{ $drawer_id }}"
 >
 	{!! $slot !!}
 </quark-drawer-open>

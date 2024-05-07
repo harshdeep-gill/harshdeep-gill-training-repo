@@ -23,7 +23,7 @@
 			@include slide-in;
 		}
 
-		&[data-animation_direction="slide_up"] {
+		&[animation-direction="up"] {
 
 			@media screen and (max-width: grid-size(md)) {
 
@@ -44,7 +44,7 @@
 			@include slide-out;
 		}
 
-		&[data-animation_direction="slide_up"] {
+		&[animation-direction="up"] {
 
 			@media screen and (max-width: grid-size(md)) {
 
@@ -68,7 +68,7 @@
 		flex-direction: column;
 		height: 100%;
 
-		#{$self}[data-animation_direction="slide_up"] & {
+		#{$self}[animation-direction="up"] & {
 			height: unset;
 			border-radius: var(--border-radius-large) var(--border-radius-large) 0 0;
 

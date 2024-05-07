@@ -395,7 +395,7 @@
 				Open a sample drawer
 			</x-button>
 		</x-drawer.drawer-open>
-		<x-drawer id="multipurpose-drawer-sample" animation_direction="slide_up">
+		<x-drawer id="multipurpose-drawer-sample" animation_direction="up">
 			<x-drawer.header>
 				<h3>Lorem ipsum dolor sit amet.</h3>
 				<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur voluptate dolorum alias officiis minima nemo asperiores maxime velit itaque sapiente?</p>

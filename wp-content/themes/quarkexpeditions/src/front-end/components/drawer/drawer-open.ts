@@ -26,7 +26,7 @@ export class QuarkDrawerOpenElement extends HTMLElement {
 		super();
 
 		// Elements.
-		this.drawerId = this.getAttribute( 'drawer_id' );
+		this.drawerId = this.getAttribute( 'drawer-id' );
 
 		// Check if drawer id is not available, return.
 		if ( ! this.drawerId ) {

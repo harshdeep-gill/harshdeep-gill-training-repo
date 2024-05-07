@@ -1,7 +1,7 @@
 @props( [
 	'id'                  => '',
 	'class'               => '',
-	'animation_direction' => '',
+	'animation_direction' => 'left',
 ] )
 
 @php
@@ -18,7 +18,7 @@
 	@endif
 	@class( $classes )
 	overlay-click-close="yes"
-	data-animation_direction="{{ $animation_direction }}"
+	animation-direction="{{ $animation_direction }}"
 >
 	<quark-drawer-content class="drawer__content">
 		{!! $slot !!}
