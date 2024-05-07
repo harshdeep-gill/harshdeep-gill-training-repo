@@ -1571,6 +1571,29 @@
 		</x-product-cards>
 	</x-component-demo>
 
+	<x-component-demo :keys="[ 'breadcrumbs' ]">
+		<x-breadcrumbs
+			:breadcrumbs="[
+				[
+					'title' => 'Home',
+					'url'   => '#',
+				],
+				[
+					'title' => 'Blog',
+					'url'   => '#',
+				],
+				[
+					'title' => 'Antarctica',
+					'url'   => '#',
+				],
+				[
+					'title' => 'Can I Travel Antarctica?',
+					'url'   => '#',
+				],
+			]"
+		/>
+	</x-component-demo>
+
 	<x-component-demo :keys="[ 'lp-footer' ]">
 		<x-lp-footer>
 			<x-lp-footer.row>
