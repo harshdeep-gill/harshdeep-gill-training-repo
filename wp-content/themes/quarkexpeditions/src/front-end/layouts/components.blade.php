@@ -402,28 +402,31 @@
 			</x-drawer.header>
 
 			<x-drawer.body>
-				Lorem ipsum dolor, sit amet consectetur adipisicing elit. Esse
-				excepturi blanditiis cum eum perspiciatis dignissimos dolorum minus
-				est, necessitatibus enim, quisquam quibusdam porro architecto nostrum
-				dolorem vero sed vel facere exercitationem soluta assumenda omnis,
-				voluptate non natus! Tenetur a deleniti recusandae. Molestiae nobis
-				quis odit optio dolorum facilis distinctio deleniti perferendis odio
-				commodi veniam voluptate provident pariatur voluptatum debitis
-				exercitationem asperiores reiciendis aperiam excepturi magni quae
-				cumque necessitatibus, cupiditate ipsum. Natus doloribus ullam
-				porro ad corporis minus expedita repellat temporibus earum.
-				Earum vero ea nostrum tenetur blanditiis commodi sed a id modi
-				minus iusto pariatur architecto odit non molestias rerum enim
-				tempora aspernatur porro nam unde, quas laboriosam facere. Aut,
-				porro labore molestias aperiam modi velit fugit vel sunt earum
-				harum tempora autem dolor aspernatur optio. Suscipit, eum ipsum
-				rem nisi qui ullam distinctio molestias modi ratione aut molestiae
-				laborum beatae iusto debitis magni quaerat eos ea deserunt commodi
-				quas fugiat provident. Quod, quidem deleniti. Totam, necessitatibus
-				mollitia veritatis assumenda dolorem reprehenderit esse fuga?
-				Eius explicabo in, animi quas, deleniti laboriosam voluptas hic dolore
-				ea incidunt totam saepe. Lorem ipsum dolor, sit amet consectetur
-				adipisicing elit.
+				<p>
+					Lorem ipsum dolor, sit amet consectetur adipisicing elit. Esse
+					excepturi blanditiis cum eum perspiciatis dignissimos dolorum minus
+					est, necessitatibus enim, quisquam quibusdam porro architecto nostrum
+					dolorem vero sed vel facere exercitationem soluta assumenda omnis,
+					voluptate non natus! Tenetur a deleniti recusandae. Molestiae nobis
+					quis odit optio dolorum facilis distinctio deleniti perferendis odio
+					commodi veniam voluptate provident pariatur voluptatum debitis
+					exercitationem asperiores reiciendis aperiam excepturi magni quae
+					cumque necessitatibus, cupiditate ipsum. Natus doloribus ullam
+					porro ad corporis minus expedita repellat temporibus earum.
+					Earum vero ea nostrum tenetur blanditiis commodi sed a id modi
+					minus iusto pariatur architecto odit non molestias rerum enim
+					tempora aspernatur porro nam unde, quas laboriosam facere. Aut,
+					porro labore molestias aperiam modi velit fugit vel sunt earum
+					harum tempora autem dolor aspernatur optio. Suscipit, eum ipsum
+					rem nisi qui ullam distinctio molestias modi ratione aut molestiae
+					laborum beatae iusto debitis magni quaerat eos ea deserunt commodi
+					quas fugiat provident. Quod, quidem deleniti. Totam, necessitatibus
+					mollitia veritatis assumenda dolorem reprehenderit esse fuga?
+					Eius explicabo in, animi quas, deleniti laboriosam voluptas hic dolore
+					ea incidunt totam saepe. Lorem ipsum dolor, sit amet consectetur
+					adipisicing elit.
+
+				</p>
 			</x-drawer.body>
 
 			<x-drawer.footer>
