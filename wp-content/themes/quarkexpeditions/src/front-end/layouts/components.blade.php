@@ -1,12 +1,12 @@
 <x-layout>
-	{{-- <x-component-demo :keys="[ 'header', 'hero-refactor' ]">
+	<x-component-demo :keys="[ 'header', 'hero-refactor' ]">
 		<x-lp-header
 			tc_image_id="18"
 			phone_number="+1-877-585-1235"
 			cta_text="Talk to a Polar Expert"
 			:dark_mode="true"
 		/>
-	</x-component-demo> --}}
+	</x-component-demo>
 
 	<x-component-demo :keys="[ 'hero', 'hero-refactor' ]">
 		<x-hero text_align="left" :immersive="true" :overlay_opacity="10">
