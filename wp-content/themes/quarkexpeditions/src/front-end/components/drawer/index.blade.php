@@ -21,6 +21,6 @@
 	animation-direction="{{ $animation_direction }}"
 >
 	<quark-drawer-content class="drawer__content">
-		{!! $slot !!}
+		<x-content :content="$slot" />
 	</quark-drawer-content>
 </quark-drawer>
