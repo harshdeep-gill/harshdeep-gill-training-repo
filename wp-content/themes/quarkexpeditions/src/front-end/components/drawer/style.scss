@@ -65,13 +65,6 @@
 		border-radius: var(--border-radius-large) 0 0 var(--border-radius-large);
 		height: 100%;
 
-		*:has( > #{$self}__body, > #{$self}__header, > #{self}__footer),
-		&:has( > #{$self}__body, > #{$self}__header, > #{self}__footer) {
-			max-height: 100vh;
-			display: flex;
-			flex-direction: column;
-		}
-
 		#{$self}[animation-direction="up"] & {
 			height: unset;
 			border-radius: var(--border-radius-large) var(--border-radius-large) 0 0;
@@ -87,6 +80,13 @@
 			width: 100%;
 		}
 	}
+
+	*:has( > #{$self}__body, > #{$self}__header, > #{self}__footer) {
+		max-height: 100vh;
+		display: flex;
+		flex-direction: column;
+	}
+
 
 	&__header {
 		display: flex;
