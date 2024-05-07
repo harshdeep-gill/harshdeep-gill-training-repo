@@ -53,10 +53,7 @@ export class QuarkDrawerOpenElement extends HTMLElement {
 	 * Opens Drawer On Element Click.
 	 */
 	openDrawer() {
-		// Declare drawer.
-		const drawer = this.drawer;
-
 		// Open the drawer.
-		drawer?.open();
+		this.drawer?.open();
 	}
 }
