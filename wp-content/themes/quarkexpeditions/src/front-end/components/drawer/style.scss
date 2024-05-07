@@ -61,12 +61,16 @@
 	&__content {
 		margin: 0;
 		position: relative;
-		max-height: 100vh;
 		background-color: var(--color-white);
 		border-radius: var(--border-radius-large) 0 0 var(--border-radius-large);
-		display: flex;
-		flex-direction: column;
 		height: 100%;
+
+		*:has( > #{$self}__body, > #{$self}__header, > #{self}__footer),
+		&:has( > #{$self}__body, > #{$self}__header, > #{self}__footer) {
+			max-height: 100vh;
+			display: flex;
+			flex-direction: column;
+		}
 
 		#{$self}[animation-direction="up"] & {
 			height: unset;
