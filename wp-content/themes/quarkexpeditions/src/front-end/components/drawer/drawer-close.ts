@@ -10,7 +10,10 @@ export class QuarkDrawerCloseElement extends HTMLElement {
 	/**
 	 * Constructor.
 	 */
-	connectedCallback() {
+	constructor() {
+		// super
+		super();
+
 		// Get the button inside.
 		const button: HTMLButtonElement | null = this.querySelector( 'button' );
 

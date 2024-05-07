@@ -16,12 +16,7 @@ export class QuarkDrawerElement extends HTMLElement {
 
 		// Move drawer as a direct descendent of body to avoid z-index issues.
 		document.querySelector( 'body' )?.appendChild( this );
-	}
 
-	/**
-	 * Connected callback.
-	 */
-	connectedCallback() {
 		// Event listeners.
 		this.addEventListener( 'click', this.handleClick.bind( this ) );
 	}
