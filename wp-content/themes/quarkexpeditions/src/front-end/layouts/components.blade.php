@@ -1,12 +1,12 @@
 <x-layout>
-	<x-component-demo :keys="[ 'header', 'hero-refactor' ]">
+	{{-- <x-component-demo :keys="[ 'header', 'hero-refactor' ]">
 		<x-lp-header
 			tc_image_id="18"
 			phone_number="+1-877-585-1235"
 			cta_text="Talk to a Polar Expert"
 			:dark_mode="true"
 		/>
-	</x-component-demo>
+	</x-component-demo> --}}
 
 	<x-component-demo :keys="[ 'hero', 'hero-refactor' ]">
 		<x-hero text_align="left" :immersive="true" :overlay_opacity="10">
@@ -1344,6 +1344,106 @@
 			</x-lp-offer-masthead.content>
 		</x-lp-offer-masthead>
 
+		<x-section background="true" background_color="black" title="Our Biggest Savings! 50% off these Antarctic 2024 Voyages">
+			<x-product-cards>
+				<x-product-cards.card url="#">
+					<x-product-cards.image
+						image_id="29"
+					>
+						<x-product-cards.badge-cta text="Save 50%" />
+					</x-product-cards.image>
+					<x-product-cards.reviews
+						total_reviews="19 Reviews"
+						review_rating="5"
+					/>
+					<x-product-cards.itinerary departure_date="Departing May 20, 2024" duration="10 Days" />
+					<x-product-cards.title title="Introduction to Spitsbergen" />
+					<x-product-cards.subtitle title="Fjords, Glaciers, and Wildlife of Svalbard" />
+					<x-product-cards.description>
+						<p>This fascinating expedition provides a taste of everything Spitsbergen has to offer!</p>
+					</x-product-cards.description>
+					<x-product-cards.price
+						original_price="$7,395 USD"
+						discounted_price="$6,171 USD"
+					/>
+					<x-product-cards.buttons :columns="2">
+						<x-button size="big">Request a Quote</x-button>
+						<x-button size="big" appearance="outline">Learn More</x-button>
+					</x-product-cards.buttons>
+				</x-product-cards.card>
+
+				<x-product-cards.card url="#">
+					<x-product-cards.image
+						image_id="36"
+						:is_immersive="false"
+					>
+						<x-product-cards.badge-cta text="Save 50%" />
+						<x-product-cards.badge-time text="Just Added" />
+					</x-product-cards.image>
+					<x-product-cards.reviews
+						total_reviews="9999 Reviews"
+						review_rating="3"
+					/>
+					<x-product-cards.itinerary departure_date="Departing May 28, 2024" duration="12 Days" />
+					<x-product-cards.title title="Spitsbergen Explorer" />
+					<x-product-cards.subtitle title="Wildlife Capital of the Arctic" />
+					<x-product-cards.description>
+						<p>Witness the remarkable array of creatures who call this spectacular environment home.</p>
+					</x-product-cards.description>
+					<x-product-cards.price
+						original_price="$9,095 USD"
+						discounted_price="$7,361 USD"
+					/>
+					<x-product-cards.buttons :columns="2">
+						<x-button size="big" icon="phone">Book: +1 (866) 220-1915</x-button>
+					</x-product-cards.buttons>
+				</x-product-cards.card>
+
+				<x-product-cards.card url="#">
+					<x-product-cards.image
+						image_id="32"
+						:is_immersive="false"
+					>
+						<x-product-cards.badge-time text="Just Added" />
+					</x-product-cards.image>
+					<x-product-cards.reviews
+						total_reviews="100 Reviews"
+						review_rating="4"
+					/>
+					<x-product-cards.itinerary departure_date="Departing July 14, 2024" duration="11 Days" />
+					<x-product-cards.title title="Gems of West Greenland" />
+					<x-product-cards.subtitle title="Fjords, Icebergs, and Culture" />
+					<x-product-cards.description>
+						<p>Features the best sites of West Greenland & delivers an in-depth experience in just 12 days.</p>
+					</x-product-cards.description>
+					<x-product-cards.price
+						original_price="$9,395 USD"
+						discounted_price="$8,571 USD"
+					/>
+					<x-product-cards.buttons :columns="2">
+						<x-button size="big">Request a Quote</x-button>
+						<x-button size="big" appearance="outline">Learn More</x-button>
+					</x-product-cards.buttons>
+				</x-product-cards.card>
+			</x-product-cards>
+		</x-section>
+	</x-component-demo>
+
+	<x-component-demo :keys="[ 'sidebar-grid' ]">
+		<h1>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi, velit.</h1>
+		<x-sidebar-grid>
+			<x-sidebar-grid.content>
+				<h2>Sidebar Grid: Content</h2>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sit amet massa eget orci iaculis ultricies alas non ante. Vivamus tempor purus quam, ac iaculis diam. Sed congue justo ac nisl efficitur ultricies. Sed at lobortis eros. Pellentesque metus arcu, sodales non ullamcorper sed, ullamcorper a sapien tempor.</p>
+				<ul><li>In nec mi vitae quam posuere aliquet eget sed leo.</li><li>Sed vel nisi ultricies, sodales risus non, ornare augue.</li><li>Nulla facilisi. Maecenas sit amet porta nulla commodo.</li><li>Rhoncus purus duis in urna ac lorem sagittis porta.</li></ul>
+				Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad commodi animi veritatis autem iusto ea ut deserunt earum ipsum ipsam facilis at dolores recusandae odit cupiditate, reprehenderit cum unde inventore velit pariatur. Aut sit quibusdam accusantium, temporibus aliquam quidem corporis aliquid delectus doloribus quo placeat ad repellendus sint officia, voluptates repellat voluptatum, suscipit tenetur debitis? Obcaecati mollitia saepe distinctio at libero recusandae fugiat porro vitae maiores ex veritatis eaque tenetur fuga molestiae, laudantium tempore, sed quae provident tempora delectus ad. Facilis distinctio sint ea maxime quae! Exercitationem amet sit obcaecati officiis neque atque autem, nam deleniti, numquam eligendi at excepturi optio inventore fuga sequi. Odio eum ab at iusto eveniet aut eligendi quo velit necessitatibus corrupti ex, vel aliquam dignissimos quidem distinctio assumenda excepturi iure recusandae, suscipit laborum? Consequuntur cupiditate a, officia natus veritatis nihil excepturi! Tempora quae facilis dolorum molestiae esse ab praesentium? Excepturi, corrupti! Suscipit, ad iure tempore facere facilis exercitationem, assumenda fuga quae iusto eligendi ipsum ut iste alias labore id soluta! Ipsa, dolores nam quidem officia commodi velit aspernatur vitae sint impedit sapiente quam obcaecati? Magni recusandae iure natus dolores enim, totam quibusdam atque possimus repudiandae quam voluptates aspernatur, expedita fuga officia in quasi rerum reprehenderit vitae. Ut, harum. Blanditiis incidunt dolore neque deserunt error eius consectetur deleniti reprehenderit quia quibusdam. Ducimus hic nihil provident quo, nesciunt, velit dolor dicta aspernatur exercitationem necessitatibus maiores officiis illum voluptatem eos quidem architecto. Porro aspernatur ullam aperiam optio facere quia eligendi, obcaecati totam natus dicta error illum aut magni eius maxime ab animi voluptas. Magnam eaque iure eius doloribus atque. Consequuntur quis enim sit velit cumque. Tempore a quas ducimus voluptatibus. Ad possimus accusamus a voluptatibus nobis? Esse debitis earum sapiente, eos, rem quisquam minima modi natus rerum consequatur beatae! Aliquid qui officiis fuga fugit omnis distinctio cupiditate in molestiae, libero eius sapiente dolorem numquam similique consectetur ducimus, itaque quia doloribus? Numquam pariatur quisquam eius neque. Natus sequi dolore consequuntur totam. Provident facere ipsum, modi mollitia vitae nostrum sequi ipsa repellat alias recusandae vero esse enim, ullam natus ut, ipsam molestias deleniti dolor magnam saepe eveniet at nihil rerum minima. Itaque saepe quibusdam non dicta! Eius rem necessitatibus aut ab autem. Consequuntur eius ex autem enim, consequatur aliquam suscipit natus. Unde aspernatur velit ut a fugiat facere tempora dolorum eligendi explicabo amet aliquid sit, laudantium laborum cum nisi tempore accusantium? Ab fugiat nisi totam. Accusamus doloremque quidem temporibus reiciendis tempore corrupti culpa earum cumque porro itaque magnam distinctio facilis veritatis mollitia dignissimos quae numquam sequi eos, consequuntur vitae repudiandae dicta, inventore eligendi voluptatibus. Iste sequi error pariatur facilis quas sint, suscipit voluptas accusamus sed? Suscipit tempora minus rerum reprehenderit labore, facilis commodi nobis eum corrupti quos quis est molestiae quod nihil? Velit dicta officia doloremque repellat enim soluta qui facere eveniet nisi laborum, minima odit laboriosam veritatis voluptatem numquam quo? Reiciendis laudantium deserunt nostrum voluptatem, sed sapiente, veniam ducimus deleniti explicabo debitis, accusamus ipsum cumque quo veritatis possimus non eaque sint iusto dolorum animi numquam! Molestias porro enim minus?
+				Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem labore quia aliquam molestiae expedita laboriosam deserunt, amet cupiditate pariatur unde quasi corrupti ut rerum fugit optio vero nobis ea delectus. Reiciendis et sit, doloribus molestiae commodi amet libero quisquam possimus iste provident officia ratione quasi porro blanditiis inventore explicabo eos totam odio praesentium dolorem. Asperiores unde doloremque officia minima deleniti provident excepturi, cumque vel, assumenda, magni explicabo aliquid? Id aspernatur aliquam error omnis placeat in sequi ullam, libero, inventore rem nulla quis illum! Quae mollitia facere tempora quam repellendus! Architecto, adipisci? Necessitatibus itaque nisi cupiditate quisquam vel perferendis ipsa harum obcaecati impedit vero saepe ad esse in, exercitationem expedita illo incidunt dolore eius officiis optio sapiente dolores quis enim. Ducimus obcaecati unde ab explicabo praesentium architecto quia magni laboriosam deleniti incidunt ratione odio rerum, quam inventore nam nemo veniam iusto earum id nulla quibusdam officiis rem doloremque suscipit! Natus, sunt earum id, laudantium et quasi asperiores sed assumenda dolore provident quas esse quibusdam error. Ducimus architecto blanditiis enim quibusdam perspiciatis? Tenetur laudantium facilis et commodi quam quisquam, similique eveniet, praesentium, eligendi neque perferendis facere illo deserunt. Possimus et nam qui quia. Incidunt natus blanditiis ut, quibusdam officia quis aliquid aliquam quaerat saepe ex ipsa repellat molestias, odit recusandae optio laborum minus deserunt consequatur sequi adipisci odio placeat est provident quidem? Commodi labore, exercitationem mollitia cum totam perspiciatis, architecto odio a sapiente quas, fuga fugit! Veniam quos consectetur maiores delectus dolorem! Possimus illum porro quae recusandae fugit ea obcaecati dolor consectetur ducimus placeat voluptas, cumque quam numquam neque voluptatibus tempore? Voluptates odio veniam accusantium laudantium dicta corporis, harum asperiores quia dolor! Ullam molestiae quidem tempore a quod maxime recusandae hic, sit labore laborum vel similique delectus, ipsum veritatis nam voluptate soluta vitae. Modi consequuntur accusantium nisi veritatis? Enim obcaecati voluptas reprehenderit vero perferendis quasi recusandae qui, eligendi voluptatem deleniti quam, assumenda suscipit a excepturi autem sunt nihil odit? Nihil dignissimos quisquam, temporibus deleniti, quas esse mollitia, praesentium officiis facilis perferendis eligendi quasi voluptates. Maiores necessitatibus, dolore numquam reprehenderit harum culpa sunt aliquam atque vero totam dolores ex rerum animi veniam ab architecto obcaecati repellat iure error beatae voluptatibus. Eaque voluptate commodi asperiores esse, repellat ullam delectus unde voluptatem, ex voluptas nisi excepturi. Ullam assumenda perspiciatis officia velit pariatur ratione maxime eius repellat veniam architecto illo et accusantium non ab natus, laborum necessitatibus quod dolore quas voluptatem. A cumque asperiores libero, eum quo iste fuga reprehenderit distinctio et ea sunt cum dignissimos voluptate? Nihil debitis non autem maiores unde natus qui porro hic rem quidem! Autem perferendis sit harum omnis ullam nam fugit ab ipsa ducimus dolorem voluptates alias saepe ex aspernatur ipsam, possimus sint hic accusamus. Delectus laboriosam voluptates facilis, optio assumenda dolorum non maiores tenetur repudiandae nobis ab saepe corrupti doloremque sunt sapiente fugit molestiae et dolor! Quas ad iste eos delectus fugit, facere praesentium ea aliquam commodi! Adipisci officiis voluptas iusto recusandae, debitis et, accusantium dolores dolorum officia praesentium labore quaerat, aspernatur laborum dolor? Quibusdam voluptates tenetur exercitationem saepe?
+			</x-sidebar-grid.content>
+			<x-sidebar-grid.sidebar :sticky="true">
+				<h4>Sidebar Grid: Sidebar</h4>
+				Lorem ipsum dolor sit, amet consectetur adipisicing elit. Libero accusantium illo doloremque quam? Aliquam modi accusamus nobis saepe consequatur iste enim quo ex vel, sequi maiores pariatur est doloremque animi qui, eligendi similique possimus. Quidem soluta iste nemo tempora quas sit ipsam distinctio dolore, magnam sed culpa, amet expedita fugiat!
+			</x-sidebar-grid.sidebar>
+		</x-sidebar-grid>
 		<x-section background="true" background_color="black" title="Our Biggest Savings! 50% off these Antarctic 2024 Voyages">
 			<x-product-cards>
 				<x-product-cards.card url="#">
