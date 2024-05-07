@@ -92,7 +92,6 @@ function register_styles(): void {
 	wp_register_style( 'intl-tel-input-css', get_template_directory_uri() . '/dist/vendor/intltelinput.css', [], $assets_version );
 	wp_register_style( 'glightbox', get_template_directory_uri() . '/dist/vendor/glightbox.css', [], $assets_version );
 	wp_register_style( 'tp-slider', get_template_directory_uri() . '/dist/vendor/tpsliderelement.css', [], $assets_version );
-	wp_register_style( 'tp-modal', get_template_directory_uri() . '/dist/vendor/tpmodalelement.css', [], $assets_version );
 
 	// Defer certain styles.
 	add_filter(
@@ -133,7 +132,6 @@ function register_scripts(): void {
 	wp_register_script( 'pristine-js', get_template_directory_uri() . '/dist/vendor/pristine.js', [], $assets_version, true );
 	wp_register_script( 'glightbox', get_template_directory_uri() . '/dist/vendor/glightbox.js', [], $assets_version, true );
 	wp_register_script( 'tp-slider', get_template_directory_uri() . '/dist/vendor/tpsliderelement.js', [], $assets_version, true );
-	wp_register_script( 'tp-modal', get_template_directory_uri() . '/dist/vendor/tpmodalelement.js', [], $assets_version, true );
 	wp_register_script( 'trustpilot', 'https://widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js', [], $assets_version, true );
 	wp_register_script( 'wistia-embed', 'https://fast.wistia.com/assets/external/E-v1.js', [], $assets_version, true );
 

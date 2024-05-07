@@ -9,9 +9,6 @@
 	}
 
 	$classes = [ 'modal', $class ];
-
-	wp_enqueue_script( 'tp-modal' );
-	wp_enqueue_style( 'tp-modal' );
 @endphp
 
 <tp-modal

@@ -1,6 +1,7 @@
 /**
  * External Dependencies.
  */
+import '@travelopia/web-components/dist/modal';
 import { TPModalElement } from '@travelopia/web-components';
 
 /**
