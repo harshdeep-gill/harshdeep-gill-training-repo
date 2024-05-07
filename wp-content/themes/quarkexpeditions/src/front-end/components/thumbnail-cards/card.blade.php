@@ -1,5 +1,5 @@
 @props( [
-	'url'         => '#',
+	'url'         => '',
 	'size'        => 'medium',
 	'orientation' => 'portrait',
 	'image_id'    => 0,
