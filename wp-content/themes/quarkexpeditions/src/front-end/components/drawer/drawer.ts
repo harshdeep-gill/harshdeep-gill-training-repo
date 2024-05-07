@@ -29,7 +29,7 @@ export class QuarkDrawerElement extends HTMLElement {
 		this.setAttribute( 'open', 'yes' );
 
 		// Dispatch open event.
-		this.dispatchEvent( new CustomEvent( 'open', { bubbles: true } ) );
+		this.dispatchEvent( new CustomEvent( 'open' ) );
 
 		// Removes scroll from body.
 		document.querySelector( 'body' )?.classList?.add( 'prevent-scroll' );
@@ -56,7 +56,7 @@ export class QuarkDrawerElement extends HTMLElement {
 			this.removeAttribute( 'open' );
 
 			// Dispatch the close event.
-			this.dispatchEvent( new CustomEvent( 'close', { bubbles: true } ) );
+			this.dispatchEvent( new CustomEvent( 'close' ) );
 
 			// Enable body scroll again.
 			document.querySelector( 'body' )?.classList?.remove( 'prevent-scroll' );
