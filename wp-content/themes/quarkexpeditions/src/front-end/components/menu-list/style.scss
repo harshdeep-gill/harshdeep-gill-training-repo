@@ -1,0 +1,29 @@
+/**
+ * Menu List.
+ */
+@import "../../scss";
+
+.menu-list {
+	background-color: var(--color-sand);
+	border-radius: var(--border-radius-large);
+	padding: 25px;
+
+	@media screen and (min-width: grid-size(md)) {
+		padding: 40px;
+	}
+
+	&__title {
+		text-align: center;
+	}
+
+	&__list {
+		gap: 10px;
+		margin-top: 20px;
+		padding-left: 0;
+	}
+
+	&__item {
+		display: flex;
+		font-weight: var(--font-weight-medium);
+	}
+}

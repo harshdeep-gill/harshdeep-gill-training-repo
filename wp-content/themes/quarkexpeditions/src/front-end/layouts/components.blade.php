@@ -1,4 +1,94 @@
 <x-layout>
+	<x-header>
+		<x-header.site-logo url="https://www.quarkexpeditions.com"/>
+
+		<x-header.primary-nav>
+			{{-- // If URL is passed, then dropdown content shouldn't be toggled. --}}
+			<x-header.nav-item title="Destinations" icon="" url="">
+				<x-header.nav-item-dropdown-content>
+					<x-header.nav-item-dropdown-content-column>
+						<x-header.nav-item-featured image_id="32">
+							<x-header.nav-item-featured-title title="Explore Polar Regions" />
+							<x-header.nav-item-featured-subtitle subtitle="Incididunt ut labore et dolore magna aliqua." />
+							<x-button size="big">Explore Polar Regions</x-button>
+						</x-header.nav-item-featured>
+					</x-header.nav-item-dropdown-content-column>
+					<x-header.nav-item-dropdown-content-column>
+						<x-two-columns :border="true">
+							<x-two-columns.column>
+								<x-menu-list title="Antarctic Regions">
+									<x-menu-list.item title="Antarctic Peninsula" url="#" />
+									<x-menu-list.item title="Falkland Islands" url="#" />
+									<x-menu-list.item title="Patagonia" url="#" />
+									<x-menu-list.item title="South Georgia" url="#" />
+									<x-menu-list.item title="Snow Hill Island" url="#" />
+								</x-menu-list>
+							</x-two-columns.column>
+							<x-two-columns.column>
+								
+							</x-two-columns.column>
+						</x-two-columns>
+					</x-header.nav-item-dropdown-content-column>
+				</x-header.nav-item-dropdown-content>
+			</x-header.nav-item>
+
+			<x-header.nav-item title="Expeditions" icon="" url="">
+				<x-header.nav-item-dropdown-content>
+					<x-header.nav-item-dropdown-content-column>
+						<x-header.nav-item-featured image_id="32">
+							<x-header.nav-item-featured-title title="Explore Polar Regions" />
+							<x-header.nav-item-featured-subtitle subtitle="Incididunt ut labore et dolore magna aliqua." />
+							<x-button size="big">Explore Polar Regions</x-button>
+						</x-header.nav-item-featured>
+					</x-header.nav-item-dropdown-content-column>
+					<x-header.nav-item-dropdown-content-column>
+						<x-two-columns :border="true">
+							<x-two-columns.column>
+								<x-menu-list title="Antarctic Regions">
+									<x-menu-list.item title="Antarctic Peninsula" url="#" />
+									<x-menu-list.item title="Falkland Islands" url="#" />
+									<x-menu-list.item title="Patagonia" url="#" />
+									<x-menu-list.item title="South Georgia" url="#" />
+									<x-menu-list.item title="Snow Hill Island" url="#" />
+								</x-menu-list>
+							</x-two-columns.column>
+							<x-two-columns.column>
+								
+							</x-two-columns.column>
+						</x-two-columns>
+					</x-header.nav-item-dropdown-content-column>
+				</x-header.nav-item-dropdown-content>
+			</x-header.nav-item>
+			<x-header.nav-item title="Ships" icon="" url="#">				
+			</x-header.nav-item>
+			<x-header.nav-item title="Offers" icon="" url="#">
+			</x-header.nav-item>
+			<x-header.nav-item title="About Us" icon="" url="#">
+			</x-header.nav-item>
+		</x-header.primary-nav>
+
+		<x-header.primary-nav>
+			{{-- // If icon is passed then the title shouldn't be displayed. --}}
+			{{-- <x-header.nav-item title="Search" icon="search">
+				<x-header.nav-item-dropdown-content>
+					// Slot -> Search Component
+				</x-header.nav-item-dropdown-content>
+			</x-header.nav-item> --}}
+			<x-header.nav-item title="Dates & Prices" icon="" url="/dates-prices" />
+			<x-header.nav-item title="Travel Advisors" icon="" url="/travel-advisors" />
+		</x-header.primary-nav>
+
+		<x-header.cta-buttons>
+			<x-button href="tel:+1-877-585-1235" size="big" color="white" appearance="outline">+1-877-585-1235</x-button>
+			<x-button size="big">Request a Quote</x-button>
+
+			{{-- // For Tablet and mobile. // Subject to change based on Drawer Component. --}}
+			{{-- <x-header.drawer-cta>
+				<x-button size="big" icon="hamburger" />
+			</x-header.drawer-cta> --}}
+		</x-header.cta-buttons>
+	</x-header>
+
 	<x-component-demo :keys="[ 'header', 'hero-refactor' ]">
 		<x-lp-header
 			tc_image_id="18"

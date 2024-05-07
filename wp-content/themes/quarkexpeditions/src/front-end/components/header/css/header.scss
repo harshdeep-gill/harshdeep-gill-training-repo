@@ -1,0 +1,46 @@
+@import "../../../scss";
+
+.header {
+	background: var(--color-black);
+	color: var(--color-white);
+	display: flex;
+	align-items: center;
+	height: var(--header-height);
+	padding: 0 var(--spacing-5);
+	position: sticky;
+	top: var(--wp-admin-bar-height);
+	z-index: 99;
+	gap: var(--spacing-5);
+
+	> *:nth-child(3) {
+		margin-left: auto;
+	}
+
+	a {
+
+		@include transition();
+
+		color: var(--color-white);
+		transition-property: background-color, border-color, color;
+		text-decoration: none;
+	}
+
+	&__logo {
+		display: inline-flex;
+		overflow: hidden;
+
+		svg {
+			width: 157px;
+			height: auto;
+		}
+	}
+
+	&__cta-buttons {
+		display: flex;
+		gap: var(--spacing-5);
+	}
+}
+
+.has-mobile-navigation-open {
+	overflow: hidden;
+}
