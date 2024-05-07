@@ -17,8 +17,10 @@ class Sidebar extends HTMLElement {
 		// Data.
 		this.isStickySidebar = this.dataset.isSticky ?? '';
 
-		// Set styles.
-		this.setStyles();
+		// Set styles only if the screen width is more than 1024px.
+		if ( window.screen.width > 1024 ) {
+			this.setStyles();
+		}
 	}
 
 	/**
