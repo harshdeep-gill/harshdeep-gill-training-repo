@@ -1571,6 +1571,16 @@
 		</x-product-cards>
 	</x-component-demo>
 
+	<x-component-demo :keys="[ 'post-author-info' ]">
+		<x-post-author-info>
+			<x-post-author-info.image :image_id="18" />
+			<x-post-author-info.info>
+				<x-post-author-info.name title="Daven Hafey" />
+				<x-post-author-info.read-time duration="11" />
+			</x-post-author-info.info>
+		</x-post-author-info>
+	</x-component-demo>
+
 	<x-component-demo :keys="[ 'lp-footer' ]">
 		<x-lp-footer>
 			<x-lp-footer.row>
