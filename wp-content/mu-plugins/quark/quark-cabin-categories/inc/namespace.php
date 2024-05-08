@@ -9,12 +9,10 @@ namespace Quark\CabinCategories;
 
 use WP_Post;
 
-use function Quark\Core\prepare_content_with_blocks;
-
-const POST_TYPE   = 'qrk_cabin_category';
-const CABIN_CLASS = 'qrk_cabin_class';
-const CACHE_KEY   = POST_TYPE;
-const CACHE_GROUP = POST_TYPE;
+const POST_TYPE            = 'qrk_cabin_category';
+const CABIN_CLASS_TAXONOMY = 'qrk_cabin_class';
+const CACHE_KEY            = POST_TYPE;
+const CACHE_GROUP          = POST_TYPE;
 
 /**
  * Bootstrap plugin.
@@ -28,6 +26,9 @@ function bootstrap(): void {
 
 	// Opt into stuff.
 	add_filter( 'qe_cabin_classes_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
+
+	// Other hooks.
+	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
 
 	// Admin stuff.
 	if ( is_admin() ) {
@@ -126,7 +127,7 @@ function register_cabin_classes_taxonomy(): void {
 	];
 
 	// Register taxonomy.
-	register_taxonomy( CABIN_CLASS, (array) apply_filters( 'qe_cabin_classes_taxonomy_post_types', [] ), $args );
+	register_taxonomy( CABIN_CLASS_TAXONOMY, (array) apply_filters( 'qe_cabin_classes_taxonomy_post_types', [] ), $args );
 }
 
 /**

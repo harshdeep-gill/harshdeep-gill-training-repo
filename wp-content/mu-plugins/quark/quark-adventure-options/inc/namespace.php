@@ -32,6 +32,9 @@ function bootstrap(): void {
 	// Layout.
 	add_action( 'template_redirect', __NAMESPACE__ . '\\layout' );
 
+	// Cache Purge.
+	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
+
 	// Admin stuff.
 	if ( is_admin() ) {
 		// Custom fields.

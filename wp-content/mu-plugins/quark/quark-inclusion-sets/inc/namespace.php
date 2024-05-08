@@ -2,17 +2,17 @@
 /**
  * Namespace functions.
  *
- * @package quark-departures
+ * @package quark-inclusion-sets
  */
 
-namespace Quark\Departures;
+namespace Quark\InclusionSets;
 
 use WP_Post;
 
-const POST_TYPE                = 'qrk_departure';
-const SPOKEN_LANGUAGE_TAXONOMY = 'qrk_spoken_languages';
-const CACHE_KEY                = POST_TYPE;
-const CACHE_GROUP              = POST_TYPE;
+const POST_TYPE                    = 'qrk_inclusion_set';
+const INCLUSION_EXCLUSION_CATEGORY = 'qrk_inclusion_exclusion_category';
+const CACHE_KEY                    = POST_TYPE;
+const CACHE_GROUP                  = POST_TYPE;
 
 /**
  * Bootstrap plugin.
@@ -21,12 +21,11 @@ const CACHE_GROUP              = POST_TYPE;
  */
 function bootstrap(): void {
 	// Post type and taxonomies.
-	add_action( 'init', __NAMESPACE__ . '\\register_departure_post_type' );
-	add_action( 'init', __NAMESPACE__ . '\\register_spoken_languages_taxonomy' );
+	add_action( 'init', __NAMESPACE__ . '\\register_inclusion_set_post_type' );
+	add_action( 'init', __NAMESPACE__ . '\\register_inclusion_exclusion_category_taxonomy' );
 
 	// Opt into stuff.
-	add_filter( 'qe_adventure_options_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
-	add_filter( 'qe_spoken_languages_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
+	add_filter( 'qe_inclusion_exclusion_category_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
 
 	// Other hooks.
 	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
@@ -34,39 +33,38 @@ function bootstrap(): void {
 	// Admin stuff.
 	if ( is_admin() ) {
 		// Custom fields.
-		require_once __DIR__ . '/../custom-fields/departures.php';
+		require_once __DIR__ . '/../custom-fields/inclusion-exclusion-set.php';
 	}
 }
 
 /**
- * Register Departure post type.
+ * Register Inclusion Set post type.
  *
  * @return void
  */
-function register_departure_post_type(): void {
+function register_inclusion_set_post_type(): void {
 	// Post type arguments.
 	$args = [
 		'labels'              => [
-			'name'               => 'Departures',
-			'singular_name'      => 'Departure',
+			'name'               => 'Inclusion Sets',
+			'singular_name'      => 'Inclusion Set',
 			'add_new'            => 'Add New',
-			'add_new_item'       => 'Add New Departure',
-			'edit_item'          => 'Edit Departure',
-			'new_item'           => 'New Departure',
-			'view_item'          => 'View Departure',
-			'search_items'       => 'Search Departures',
-			'not_found'          => 'No Departures found',
-			'not_found_in_trash' => 'No Departures found in Trash',
-			'parent_item_colon'  => 'Parent Departure:',
-			'menu_name'          => 'Departures',
+			'add_new_item'       => 'Add New Inclusion Set',
+			'edit_item'          => 'Edit Inclusion Set',
+			'new_item'           => 'New Inclusion Set',
+			'view_item'          => 'View Inclusion Set',
+			'search_items'       => 'Search Inclusion Sets',
+			'not_found'          => 'No Inclusion Sets found',
+			'not_found_in_trash' => 'No Inclusion Sets found in Trash',
+			'parent_item_colon'  => 'Parent Inclusion Set:',
+			'menu_name'          => 'Inclusion Sets',
 		],
 		'public'              => false,
 		'show_in_rest'        => true,
-		'menu_icon'           => 'dashicons-airplane',
+		'menu_icon'           => 'dashicons-networking',
 		'hierarchical'        => false,
 		'supports'            => [
 			'title',
-			'revisions',
 		],
 		'show_ui'             => true,
 		'show_in_menu'        => true,
@@ -77,7 +75,6 @@ function register_departure_post_type(): void {
 		'query_var'           => true,
 		'can_export'          => true,
 		'rewrite'             => false,
-		'capability_type'     => 'post',
 	];
 
 	// Register post type.
@@ -85,28 +82,28 @@ function register_departure_post_type(): void {
 }
 
 /**
- * Register Spoken Languages taxonomy.
+ * Register Inclusion Exclusion Category taxonomy.
  *
  * @return void
  */
-function register_spoken_languages_taxonomy(): void {
+function register_inclusion_exclusion_category_taxonomy(): void {
 	// Prepare labels.
 	$labels = [
-		'name'                       => 'Spoken Languages',
-		'singular_name'              => 'Spoken Language',
-		'search_items'               => 'Search Spoken Languages',
-		'popular_items'              => 'Popular Spoken Languages',
-		'all_items'                  => 'All Spoken Languages',
-		'parent_item'                => 'Parent Spoken Language',
-		'parent_item_colon'          => 'Parent Spoken Language:',
-		'edit_item'                  => 'Edit Spoken Language',
-		'update_item'                => 'Update Spoken Language',
-		'add_new_item'               => 'Add New Spoken Language',
-		'new_item_name'              => 'New Spoken Language',
-		'separate_items_with_commas' => 'Separate Spoken Languages with commas',
-		'add_or_remove_items'        => 'Add or remove Spoken Languages',
-		'choose_from_most_used'      => 'Choose from the most used Spoken Languages',
-		'menu_name'                  => 'Spoken Languages',
+		'name'                       => 'Sets Categories',
+		'singular_name'              => 'Sets Category',
+		'search_items'               => 'Search Sets Categories',
+		'popular_items'              => 'Popular Sets Categories',
+		'all_items'                  => 'All Sets Categories',
+		'parent_item'                => 'Parent Sets Category',
+		'parent_item_colon'          => 'Parent Sets Category:',
+		'edit_item'                  => 'Edit Sets Category',
+		'update_item'                => 'Update Sets Category',
+		'add_new_item'               => 'Add New Sets Category',
+		'new_item_name'              => 'New Sets Category',
+		'separate_items_with_commas' => 'Separate Sets Categories with commas',
+		'add_or_remove_items'        => 'Add or remove Sets Categories',
+		'choose_from_most_used'      => 'Choose from the most used Sets Categories',
+		'menu_name'                  => 'Sets Categories',
 	];
 
 	// Prepare args for registering taxonomy.
@@ -125,7 +122,7 @@ function register_spoken_languages_taxonomy(): void {
 	];
 
 	// Register taxonomy.
-	register_taxonomy( SPOKEN_LANGUAGE_TAXONOMY, (array) apply_filters( 'qe_spoken_languages_taxonomy_post_types', [] ), $args );
+	register_taxonomy( INCLUSION_EXCLUSION_CATEGORY, (array) apply_filters( 'qe_inclusion_exclusion_category_taxonomy_post_types', [] ), $args );
 }
 
 /**
@@ -136,7 +133,7 @@ function register_spoken_languages_taxonomy(): void {
  * @return string[]
  */
 function opt_in( array $post_types = [] ): array {
-	// Append Departure post type for taxonomy.
+	// Append Inclusion Set post type for taxonomy.
 	$post_types[] = POST_TYPE;
 
 	// Return modified array.
@@ -155,11 +152,11 @@ function bust_post_cache( int $post_id = 0 ): void {
 	wp_cache_delete( CACHE_KEY . "_$post_id", CACHE_GROUP );
 
 	// Trigger action to clear cache for this post.
-	do_action( 'qe_departure_post_cache_busted', $post_id );
+	do_action( 'qe_inclusion_sets_post_cache_busted', $post_id );
 }
 
 /**
- * Get a Departure.
+ * Get an Inclusion Set.
  *
  * @param int $post_id Post ID.
  *
