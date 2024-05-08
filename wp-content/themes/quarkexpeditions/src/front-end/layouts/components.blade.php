@@ -1613,18 +1613,30 @@
 				<x-accordion.item>
 					<x-accordion.item-handle title="What are the Health and Safety requirements for expedition travel?" />
 					<x-accordion.item-content>
+						<ul>
+							<li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
+							<li>Temporibus, aperiam. Error provident pariatur explicabo, totam culpa quam dolores quisquam, doloremque perspiciatis consequatur recusandae ipsam a facere eos? Aspernatur.</li>
+						</ul>
 						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant. <a href=>See FAQs for details</a></p>
 					</x-accordion.item-content>
 				</x-accordion.item>
 				<x-accordion.item>
 					<x-accordion.item-handle title="What are the Terms & Conditions for booking?" />
 					<x-accordion.item-content>
+						<ul>
+							<li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
+							<li>Temporibus, aperiam. Error provident pariatur explicabo, totam culpa quam dolores quisquam, doloremque perspiciatis consequatur recusandae ipsam a facere eos? Aspernatur.</li>
+						</ul>
 						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.</p>
 					</x-accordion.item-content>
 				</x-accordion.item>
 				<x-accordion.item>
 					<x-accordion.item-handle title="What is Quark Expeditions' Protection Promise to make your expedition worry-free?" />
 					<x-accordion.item-content>
+						<ul>
+							<li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
+							<li>Temporibus, aperiam. Error provident pariatur explicabo, totam culpa quam dolores quisquam, doloremque perspiciatis consequatur recusandae ipsam a facere eos? Aspernatur.</li>
+						</ul>
 						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.</p>
 					</x-accordion.item-content>
 				</x-accordion.item>
