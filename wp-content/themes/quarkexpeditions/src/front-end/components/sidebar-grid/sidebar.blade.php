@@ -1,5 +1,6 @@
 @props( [
-	'sticky' => false,
+	'sticky'            => false,
+	'show_on_mobile' => false,
 ] )
 
 @php
@@ -12,8 +13,12 @@
 	if ( ! empty( $sticky ) ) {
 		$classes[] = 'sidebar-grid__sidebar--sticky';
 	}
+
+	if ( ! empty( $show_on_mobile ) ) {
+		$classes[] = 'sidebar-grid__sidebar--show-on-mobile';
+	}
 @endphp
 
-<quark-sidebar @class( $classes ) data-is-sticky="{{ $sticky }}">
+<aside @class( $classes )>
 	{!! $slot !!}
-</quark-sidebar>
+</aside>
