@@ -43,6 +43,7 @@ $tp_mu_plugins = array(
 	'quark/quark-inclusion-sets/plugin.php',
 	'quark/quark-itineraries/plugin.php',
 	'quark/quark-itinerary-days/plugin.php',
+	'quark/quark-offers/plugin.php',
 	'quark/quark-migration/plugin.php',
 );
 
