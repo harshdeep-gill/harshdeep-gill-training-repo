@@ -71,7 +71,7 @@ function register_cabin_category_post_type(): void {
 			'revisions',
 		],
 		'show_ui'             => true,
-		'show_in_menu'        => true,
+		'show_in_menu'        => 'edit.php?post_type=qrk_ship',
 		'show_in_nav_menus'   => false,
 		'publicly_queryable'  => true,
 		'exclude_from_search' => true,

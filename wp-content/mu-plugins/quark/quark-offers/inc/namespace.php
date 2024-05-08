@@ -111,20 +111,6 @@ function layout_single( array $data = [] ): array {
 	// Layout.
 	$data['layout'] = 'single';
 
-	// Add layout based on page template.
-	if ( is_front_page() ) {
-		// Add home page layout.
-		$data['layout'] = 'home';
-	} else {
-		// Get template based on post.
-		$template = get_page_template_slug( $page['post'] );
-
-		// Add layout if template exists.
-		if ( ! empty( $template ) ) {
-			$data['layout'] = str_replace( '.php', '', basename( $template ) );
-		}
-	}
-
 	// Build data.
 	$data['data'] = array_merge( $data['data'] ?? [], $page );
 
