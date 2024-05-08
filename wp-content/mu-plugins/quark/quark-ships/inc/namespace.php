@@ -43,7 +43,7 @@ function bootstrap(): void {
 }
 
 /**
- * Register Regions post type.
+ * Register Ship post type.
  *
  * @return void
  */
@@ -144,7 +144,7 @@ function register_ship_categories_taxonomy(): void {
  * @return string[]
  */
 function opt_in( array $post_types = [] ): array {
-	// Append Expeditions post type for taxonomy.
+	// Append Ship post type for taxonomy.
 	$post_types[] = POST_TYPE;
 
 	// Return modified array.
@@ -213,21 +213,22 @@ function bust_post_cache( int $post_id = 0 ): void {
 /**
  * Get a Ship page.
  *
- * @param int $page_id Ship Post ID.
+ * @param int $post_id Ship Post ID.
  *
  * @return array{
  *     post: WP_Post|null,
  *     permalink: string,
+ *     post_meta: mixed[],
  * }
  */
-function get( int $page_id = 0 ): array {
+function get( int $post_id = 0 ): array {
 	// Get post ID.
-	if ( 0 === $page_id ) {
-		$page_id = absint( get_the_ID() );
+	if ( 0 === $post_id ) {
+		$post_id = absint( get_the_ID() );
 	}
 
 	// Check for cached version.
-	$cache_key    = CACHE_KEY . "_$page_id";
+	$cache_key    = CACHE_KEY . "_$post_id";
 	$cached_value = wp_cache_get( $cache_key, CACHE_GROUP );
 
 	// Check for cached value.
@@ -235,25 +236,43 @@ function get( int $page_id = 0 ): array {
 		return [
 			'post'      => $cached_value['post'],
 			'permalink' => $cached_value['permalink'] ?? '',
+			'post_meta' => $cached_value['post_meta'] ?? [],
 		];
 	}
 
 	// Get post.
-	$page = get_post( $page_id );
+	$post = get_post( $post_id );
 
 	// Return empty array fields if post type does not match or not an instance of WP_Post.
-	if ( ! $page instanceof WP_Post || POST_TYPE !== $page->post_type ) {
+	if ( ! $post instanceof WP_Post || POST_TYPE !== $post->post_type ) {
 		return [
 			'post'      => null,
 			'permalink' => '',
+			'post_meta' => [],
 		];
 	}
 
 	// Build data.
 	$data = [
-		'post'      => $page,
-		'permalink' => strval( get_permalink( $page ) ? : '' ),
+		'post'      => $post,
+		'permalink' => strval( get_permalink( $post ) ? : '' ),
+		'post_meta' => [],
 	];
+
+	// Get all post meta.
+	$meta = get_post_meta( $post->ID );
+
+	// Check for post meta.
+	if ( ! empty( $meta ) && is_array( $meta ) ) {
+		$data['post_meta'] = array_filter(
+			array_map(
+				fn( $value ) => maybe_unserialize( $value[0] ?? '' ),
+				$meta
+			),
+			fn( $key ) => ! str_starts_with( $key, '_' ),
+			ARRAY_FILTER_USE_KEY
+		);
+	}
 
 	// Set cache and return data.
 	wp_cache_set( $cache_key, $data, CACHE_GROUP );

@@ -8,7 +8,7 @@
 // Check if ACF function exists or not.
 if ( function_exists( 'acf_add_local_field_group' ) ) :
 
-	// Add local filed group for Itinerary Day POST.
+	// Add local filed group for Ship POST.
 	acf_add_local_field_group(
 		[
 			'key'                   => 'group_65f43877f2766',
