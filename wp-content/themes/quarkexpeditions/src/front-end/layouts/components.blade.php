@@ -390,12 +390,25 @@
 
 <x-component-demo :keys="[ 'drawer' ]">
 	<x-section title="Flexible Multipurpose drawer">
+		<style>
+			.multipurpose-drawer-sample .drawer__content {
+				max-width: 768px;
+				padding: var(--spacing-5);
+				gap: var(--spacing-4);
+			}
+
+			.multipurpose-drawer-sample .drawer__footer {
+				border-top: solid 1px var(--color-gray-20);
+				padding-inline: var(--spacing-5);
+				margin-inline: calc(-1 * var(--spacing-5));
+			}
+		</style>
 		<x-drawer.drawer-open drawer_id="multipurpose-drawer-sample">
 			<x-button type="button" size="big">
 				Open a sample drawer
 			</x-button>
 		</x-drawer.drawer-open>
-		<x-drawer id="multipurpose-drawer-sample" animation_direction="up">
+		<x-drawer id="multipurpose-drawer-sample" animation_direction="up" class="multipurpose-drawer-sample">
 			<x-drawer.header>
 				<h3>Lorem ipsum dolor sit amet.</h3>
 				<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur voluptate dolorum alias officiis minima nemo asperiores maxime velit itaque sapiente?</p>
@@ -425,7 +438,74 @@
 					Eius explicabo in, animi quas, deleniti laboriosam voluptas hic dolore
 					ea incidunt totam saepe. Lorem ipsum dolor, sit amet consectetur
 					adipisicing elit.
+				</p>
+				<p>
+					Lorem ipsum dolor, sit amet consectetur adipisicing elit. Esse
+					excepturi blanditiis cum eum perspiciatis dignissimos dolorum minus
+					est, necessitatibus enim, quisquam quibusdam porro architecto nostrum
+					dolorem vero sed vel facere exercitationem soluta assumenda omnis,
+					voluptate non natus! Tenetur a deleniti recusandae. Molestiae nobis
+					quis odit optio dolorum facilis distinctio deleniti perferendis odio
+					commodi veniam voluptate provident pariatur voluptatum debitis
+					exercitationem asperiores reiciendis aperiam excepturi magni quae
+					cumque necessitatibus, cupiditate ipsum. Natus doloribus ullam
+					porro ad corporis minus expedita repellat temporibus earum.
+					Earum vero ea nostrum tenetur blanditiis commodi sed a id modi
+					minus iusto pariatur architecto odit non molestias rerum enim
+					tempora aspernatur porro nam unde, quas laboriosam facere. Aut,
+					porro labore molestias aperiam modi velit fugit vel sunt earum
+					harum tempora autem dolor aspernatur optio. Suscipit, eum ipsum
+					rem nisi qui ullam distinctio molestias modi ratione aut molestiae
+					laborum beatae iusto debitis magni quaerat eos ea deserunt commodi
+					quas fugiat provident. Quod, quidem deleniti. Totam, necessitatibus
+					mollitia veritatis assumenda dolorem reprehenderit esse fuga?
+					Eius explicabo in, animi quas, deleniti laboriosam voluptas hic dolore
+					ea incidunt totam saepe. Lorem ipsum dolor, sit amet consectetur
+					adipisicing elit.
+				</p>
+			</x-drawer.body>
 
+			<x-drawer.footer>
+				<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis, rem?</p>
+			</x-drawer.footer>
+		</x-drawer>
+		<br><br>
+
+		<x-drawer.drawer-open drawer_id="multipurpose-drawer-sample-2">
+			<x-button type="button" size="big">
+				Open another drawer
+			</x-button>
+		</x-drawer.drawer-open>
+		<x-drawer id="multipurpose-drawer-sample-2" animation_direction="up" class="multipurpose-drawer-sample">
+			<x-drawer.header>
+				<h3>Lorem ipsum dolor sit amet.</h3>
+				<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur voluptate dolorum alias officiis minima nemo asperiores maxime velit itaque sapiente?</p>
+			</x-drawer.header>
+
+			<x-drawer.body>
+				<p>
+					Lorem ipsum dolor, sit amet consectetur adipisicing elit. Esse
+					excepturi blanditiis cum eum perspiciatis dignissimos dolorum minus
+					est, necessitatibus enim, quisquam quibusdam porro architecto nostrum
+					dolorem vero sed vel facere exercitationem soluta assumenda omnis,
+					voluptate non natus! Tenetur a deleniti recusandae. Molestiae nobis
+					quis odit optio dolorum facilis distinctio deleniti perferendis odio
+					commodi veniam voluptate provident pariatur voluptatum debitis
+					exercitationem asperiores reiciendis aperiam excepturi magni quae
+					cumque necessitatibus, cupiditate ipsum. Natus doloribus ullam
+					porro ad corporis minus expedita repellat temporibus earum.
+					Earum vero ea nostrum tenetur blanditiis commodi sed a id modi
+					minus iusto pariatur architecto odit non molestias rerum enim
+					tempora aspernatur porro nam unde, quas laboriosam facere. Aut,
+					porro labore molestias aperiam modi velit fugit vel sunt earum
+					harum tempora autem dolor aspernatur optio. Suscipit, eum ipsum
+					rem nisi qui ullam distinctio molestias modi ratione aut molestiae
+					laborum beatae iusto debitis magni quaerat eos ea deserunt commodi
+					quas fugiat provident. Quod, quidem deleniti. Totam, necessitatibus
+					mollitia veritatis assumenda dolorem reprehenderit esse fuga?
+					Eius explicabo in, animi quas, deleniti laboriosam voluptas hic dolore
+					ea incidunt totam saepe. Lorem ipsum dolor, sit amet consectetur
+					adipisicing elit.
 				</p>
 			</x-drawer.body>
 
