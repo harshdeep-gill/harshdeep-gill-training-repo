@@ -9,7 +9,7 @@
 @endphp
 
 <div class="breadcrumbs">
-	@foreach ($breadcrumbs as $breadcrumb)
+	@foreach ( $breadcrumbs as $breadcrumb )
 		<div class="breadcrumbs__breadcrumb">
 			<span class="breadcrumbs__breadcrumb-separator">
 				<x-svg name="chevron-left" />
