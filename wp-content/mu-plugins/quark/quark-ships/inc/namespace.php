@@ -34,6 +34,12 @@ function bootstrap(): void {
 
 	// Other hooks.
 	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
+
+	// Admin stuff.
+	if ( is_admin() ) {
+		// Custom fields.
+		require_once __DIR__ . '/../custom-fields/ships.php';
+	}
 }
 
 /**
