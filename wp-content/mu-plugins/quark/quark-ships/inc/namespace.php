@@ -30,7 +30,7 @@ function bootstrap(): void {
 	add_action( 'template_redirect', __NAMESPACE__ . '\\layout' );
 
 	// Opt into stuff.
-	add_filter( 'qe_ship_taxonomy_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
+	add_filter( 'qe_ship_category_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
 
 	// Other hooks.
 	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
@@ -133,7 +133,7 @@ function register_ship_categories_taxonomy(): void {
 	];
 
 	// Register taxonomy.
-	register_taxonomy( SHIP_CATEGORY_TAXONOMY, (array) apply_filters( 'qe_ship_taxonomy_taxonomy_post_types', [] ), $args );
+	register_taxonomy( SHIP_CATEGORY_TAXONOMY, (array) apply_filters( 'qe_ship_category_taxonomy_post_types', [] ), $args );
 }
 
 /**
