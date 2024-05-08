@@ -2,17 +2,18 @@
 /**
  * Namespace functions.
  *
- * @package quark-inclusion-sets
+ * @package quark-itineraries
  */
 
-namespace Quark\InclusionSets;
+namespace Quark\Itineraries;
 
 use WP_Post;
 
-const POST_TYPE                    = 'qrk_inclusion_set';
-const INCLUSION_EXCLUSION_CATEGORY = 'qrk_inclusion_exclusion_category';
-const CACHE_KEY                    = POST_TYPE;
-const CACHE_GROUP                  = POST_TYPE;
+const POST_TYPE                   = 'qrk_itinerary';
+const DEPARTURE_LOCATION_TAXONOMY = 'qrk_departure_locations';
+const TAX_TYPE_TAXONOMY           = 'qrk_tax_type';
+const CACHE_KEY                   = POST_TYPE;
+const CACHE_GROUP                 = POST_TYPE;
 
 /**
  * Bootstrap plugin.
@@ -21,11 +22,13 @@ const CACHE_GROUP                  = POST_TYPE;
  */
 function bootstrap(): void {
 	// Post type and taxonomies.
-	add_action( 'init', __NAMESPACE__ . '\\register_inclusion_set_post_type' );
-	add_action( 'init', __NAMESPACE__ . '\\register_inclusion_exclusion_category_taxonomy' );
+	add_action( 'init', __NAMESPACE__ . '\\register_itinerary_post_type' );
+	add_action( 'init', __NAMESPACE__ . '\\register_departure_location_taxonomy' );
+	add_action( 'init', __NAMESPACE__ . '\\register_tax_type_taxonomy' );
 
 	// Opt into stuff.
-	add_filter( 'qe_inclusion_exclusion_category_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
+	add_filter( 'qe_departure_locations_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
+	add_filter( 'qe_tax_types_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
 
 	// Other hooks.
 	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
@@ -33,44 +36,44 @@ function bootstrap(): void {
 	// Admin stuff.
 	if ( is_admin() ) {
 		// Custom fields.
-		require_once __DIR__ . '/../custom-fields/inclusion-exclusion-set.php';
-
-		// Taxonomy menu position.
-		add_action( 'admin_menu', __NAMESPACE__ . '\\set_taxonomy_menu_position' );
+		require_once __DIR__ . '/../custom-fields/itineraries.php';
 	}
 }
 
 /**
- * Register Inclusion Set post type.
+ * Register Itinerary post type.
  *
  * @return void
  */
-function register_inclusion_set_post_type(): void {
+function register_itinerary_post_type(): void {
 	// Post type arguments.
 	$args = [
 		'labels'              => [
-			'name'               => 'Inclusion Sets',
-			'singular_name'      => 'Inclusion Set',
+			'name'               => 'Itineraries',
+			'singular_name'      => 'Exclusion Set',
 			'add_new'            => 'Add New',
-			'add_new_item'       => 'Add New Inclusion Set',
-			'edit_item'          => 'Edit Inclusion Set',
-			'new_item'           => 'New Inclusion Set',
-			'view_item'          => 'View Inclusion Set',
-			'search_items'       => 'Search Inclusion Sets',
-			'not_found'          => 'No Inclusion Sets found',
-			'not_found_in_trash' => 'No Inclusion Sets found in Trash',
-			'parent_item_colon'  => 'Parent Inclusion Set:',
-			'menu_name'          => 'Inclusion Sets',
+			'add_new_item'       => 'Add New Itinerary',
+			'edit_item'          => 'Edit Itinerary',
+			'new_item'           => 'New Itinerary',
+			'view_item'          => 'View Itinerary',
+			'search_items'       => 'Search Itineraries',
+			'not_found'          => 'No Itineraries found',
+			'not_found_in_trash' => 'No Itineraries found in Trash',
+			'parent_item_colon'  => 'Parent Itinerary:',
+			'menu_name'          => 'Itineraries',
 		],
 		'public'              => false,
-		'show_in_rest'        => true,
-		'menu_icon'           => 'dashicons-networking',
+		'show_in_rest'        => false,
+		'menu_icon'           => 'dashicons-list-view',
 		'hierarchical'        => false,
 		'supports'            => [
 			'title',
+			'editor',
+			'excerpt',
+			'revisions',
 		],
 		'show_ui'             => true,
-		'show_in_menu'        => 'edit.php?post_type=qrk_itinerary',
+		'show_in_menu'        => true,
 		'show_in_nav_menus'   => false,
 		'publicly_queryable'  => false,
 		'exclude_from_search' => true,
@@ -85,28 +88,28 @@ function register_inclusion_set_post_type(): void {
 }
 
 /**
- * Register Inclusion Exclusion Category taxonomy.
+ * Register Departure Location taxonomy.
  *
  * @return void
  */
-function register_inclusion_exclusion_category_taxonomy(): void {
+function register_departure_location_taxonomy(): void {
 	// Prepare labels.
 	$labels = [
-		'name'                       => 'Inclusion Exclusion Set Categories',
-		'singular_name'              => 'Sets Category',
-		'search_items'               => 'Search Sets Categories',
-		'popular_items'              => 'Popular Sets Categories',
-		'all_items'                  => 'All Sets Categories',
-		'parent_item'                => 'Parent Sets Category',
-		'parent_item_colon'          => 'Parent Sets Category:',
-		'edit_item'                  => 'Edit Sets Category',
-		'update_item'                => 'Update Sets Category',
-		'add_new_item'               => 'Add New Sets Category',
-		'new_item_name'              => 'New Sets Category',
-		'separate_items_with_commas' => 'Separate Sets Categories with commas',
-		'add_or_remove_items'        => 'Add or remove Sets Categories',
-		'choose_from_most_used'      => 'Choose from the most used Sets Categories',
-		'menu_name'                  => 'Inclusion Exclusion Set Categories',
+		'name'                       => 'Departure Locations',
+		'singular_name'              => 'Departure Location',
+		'search_items'               => 'Search Departure Locations',
+		'popular_items'              => 'Popular Departure Locations',
+		'all_items'                  => 'All Departure Locations',
+		'parent_item'                => 'Parent Departure Location',
+		'parent_item_colon'          => 'Parent Departure Location:',
+		'edit_item'                  => 'Edit Departure Location',
+		'update_item'                => 'Update Departure Location',
+		'add_new_item'               => 'Add New Departure Location',
+		'new_item_name'              => 'New Departure Location',
+		'separate_items_with_commas' => 'Separate Departure Locations with commas',
+		'add_or_remove_items'        => 'Add or remove Departure Locations',
+		'choose_from_most_used'      => 'Choose from the most used Departure Locations',
+		'menu_name'                  => 'Departure Locations',
 	];
 
 	// Prepare args for registering taxonomy.
@@ -115,7 +118,6 @@ function register_inclusion_exclusion_category_taxonomy(): void {
 		'public'            => false,
 		'show_in_nav_menus' => false,
 		'show_ui'           => true,
-		'show_in_menu'      => false,
 		'show_tagcloud'     => false,
 		'show_admin_column' => true,
 		'hierarchical'      => true,
@@ -126,23 +128,51 @@ function register_inclusion_exclusion_category_taxonomy(): void {
 	];
 
 	// Register taxonomy.
-	register_taxonomy( INCLUSION_EXCLUSION_CATEGORY, (array) apply_filters( 'qe_inclusion_exclusion_category_taxonomy_post_types', [] ), $args );
+	register_taxonomy( DEPARTURE_LOCATION_TAXONOMY, (array) apply_filters( 'qe_departure_locations_taxonomy_post_types', [] ), $args );
 }
 
 /**
- * Set taxonomy menu position.
+ * Register Tax Type taxonomy.
  *
  * @return void
  */
-function set_taxonomy_menu_position(): void {
-	// Add taxonomy page under CPT.
-	add_submenu_page(
-		'edit.php?post_type=qrk_itinerary',
-		'Inclusion Exclusion Set Categories',
-		'Inclusion Exclusion Set Categories',
-		'manage_categories',
-		'edit-tags.php?taxonomy=' . INCLUSION_EXCLUSION_CATEGORY . '&post_type=' . POST_TYPE,
-	);
+function register_tax_type_taxonomy(): void {
+	// Prepare labels.
+	$labels = [
+		'name'                       => 'Tax Types',
+		'singular_name'              => 'Tax Type',
+		'search_items'               => 'Search Tax Types',
+		'popular_items'              => 'Popular Tax Types',
+		'all_items'                  => 'All Tax Types',
+		'parent_item'                => 'Parent Tax Type',
+		'parent_item_colon'          => 'Parent Tax Type:',
+		'edit_item'                  => 'Edit Tax Type',
+		'update_item'                => 'Update Tax Type',
+		'add_new_item'               => 'Add New Tax Type',
+		'new_item_name'              => 'New Tax Type',
+		'separate_items_with_commas' => 'Separate Tax Types with commas',
+		'add_or_remove_items'        => 'Add or remove Tax Types',
+		'choose_from_most_used'      => 'Choose from the most used Tax Types',
+		'menu_name'                  => 'Tax Types',
+	];
+
+	// Prepare args for registering taxonomy.
+	$args = [
+		'labels'            => $labels,
+		'public'            => false,
+		'show_in_nav_menus' => false,
+		'show_ui'           => true,
+		'show_tagcloud'     => false,
+		'show_admin_column' => true,
+		'hierarchical'      => true,
+		'rewrite'           => false,
+		'query_var'         => true,
+		'capabilities'      => [],
+		'show_in_rest'      => true,
+	];
+
+	// Register taxonomy.
+	register_taxonomy( TAX_TYPE_TAXONOMY, (array) apply_filters( 'qe_tax_types_taxonomy_post_types', [] ), $args );
 }
 
 /**
@@ -153,7 +183,7 @@ function set_taxonomy_menu_position(): void {
  * @return string[]
  */
 function opt_in( array $post_types = [] ): array {
-	// Append Inclusion Set post type for taxonomy.
+	// Append Itinerary post type for taxonomy.
 	$post_types[] = POST_TYPE;
 
 	// Return modified array.
@@ -172,11 +202,11 @@ function bust_post_cache( int $post_id = 0 ): void {
 	wp_cache_delete( CACHE_KEY . "_$post_id", CACHE_GROUP );
 
 	// Trigger action to clear cache for this post.
-	do_action( 'qe_inclusion_sets_post_cache_busted', $post_id );
+	do_action( 'qe_itinerary_post_cache_busted', $post_id );
 }
 
 /**
- * Get an Inclusion Set.
+ * Get an Itinerary.
  *
  * @param int $post_id Post ID.
  *

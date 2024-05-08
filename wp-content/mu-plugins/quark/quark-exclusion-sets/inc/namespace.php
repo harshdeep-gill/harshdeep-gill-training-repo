@@ -59,7 +59,7 @@ function register_exclusion_set_post_type(): void {
 			'title',
 		],
 		'show_ui'             => true,
-		'show_in_menu'        => true,
+		'show_in_menu'        => 'edit.php?post_type=qrk_itinerary',
 		'show_in_nav_menus'   => false,
 		'publicly_queryable'  => false,
 		'exclude_from_search' => true,
