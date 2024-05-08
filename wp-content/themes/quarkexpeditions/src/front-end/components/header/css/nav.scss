@@ -1,12 +1,12 @@
 @import "../../../scss";
 
 .header {
+	$self: &;
 
 	&__primary-nav {
 		margin: 0 calc(-1 * var(--grid-col-gutter));
 		opacity: 0;
 		visibility: hidden;
-		z-index: 5;
 
 		&[active] {
 			opacity: 1;
@@ -21,7 +21,9 @@
 	}
 
 	&__nav-item-link {
-		display: block;
+		color: inherit;
+		display: flex;
+		line-height: inherit;
 		padding: 10px var(--spacing-4);
 
 		&:hover {
@@ -30,6 +32,11 @@
 				background-color: var(--color-gray-90);
 				border-radius: var(--border-radius);
 			}
+		}
+
+		[active] & {
+			background-color: var(--color-gray-90);
+			border-radius: var(--border-radius);
 		}
 	}
 
@@ -91,18 +98,45 @@
 		}
 	}
 
+	&__nav-item-dropdown-content-wrap {
+		position: absolute;
+		top: calc(var(--header-height) - 16px);
+		width: calc(100vw - 464px); // 80 + 80 + 152 + 152 (Header spacing left and right + logo width).
+		left: 0;
+		opacity: 0;
+		visibility: hidden;
+
+		quark-header-nav-menu-link[active] + & {
+			opacity: 1;
+			visibility: visible;
+		}
+	}
+
 	&__nav-item-dropdown-content {
 		background-color: var(--color-white);
 		box-shadow: var(--shadow-1);
 		border-radius: var(--border-radius-large);
 		color: var(--color-black);
-		position: absolute;
-		top: var(--header-height);
-		width: 100%;
 		overflow: hidden;
-		display: flex;
-		align-items: center;
-		left: 0;
+		display: inline-flex;
+
+		.two-columns {
+			margin-top: var(--spacing-7);
+			margin-bottom: var(--spacing-7);
+		}
+
+		.two-columns__column {
+			padding-left: var(--spacing-7);
+			padding-right: var(--spacing-7);
+		}
+
+		.two-columns--has-border {
+			gap: 0;
+		}
+	}
+
+	&__nav-item-dropdown-content-column {
+		min-width: 22vw;
 	}
 
 	&__nav-item-featured-image {

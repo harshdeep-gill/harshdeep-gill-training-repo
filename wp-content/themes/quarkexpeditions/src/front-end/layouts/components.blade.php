@@ -25,7 +25,11 @@
 								</x-menu-list>
 							</x-two-columns.column>
 							<x-two-columns.column>
-								
+								<x-menu-list title="Arctic Regions">
+									<x-menu-list.item title="Canadian High Arctic" url="#" />
+									<x-menu-list.item title="Greenland" url="#" />
+									<x-menu-list.item title="Svalbard" url="#" />
+								</x-menu-list>
 							</x-two-columns.column>
 						</x-two-columns>
 					</x-header.nav-item-dropdown-content-column>
@@ -52,9 +56,6 @@
 									<x-menu-list.item title="Snow Hill Island" url="#" />
 								</x-menu-list>
 							</x-two-columns.column>
-							<x-two-columns.column>
-								
-							</x-two-columns.column>
 						</x-two-columns>
 					</x-header.nav-item-dropdown-content-column>
 				</x-header.nav-item-dropdown-content>
@@ -74,6 +75,7 @@
 					// Slot -> Search Component
 				</x-header.nav-item-dropdown-content>
 			</x-header.nav-item> --}}
+			<x-header.nav-item title="" icon="search" url="" />
 			<x-header.nav-item title="Dates & Prices" icon="" url="/dates-prices" />
 			<x-header.nav-item title="Travel Advisors" icon="" url="/travel-advisors" />
 		</x-header.primary-nav>

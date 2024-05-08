@@ -4,19 +4,13 @@
 const { customElements, HTMLElement } = window;
 
 /**
- * Internal Dependencies.
- */
-import { slideElementDown, slideElementUp } from '../../../global/utility';
-
-/**
  * HeaderNavMenu Class.
  */
 export default class HeaderNavMenu extends HTMLElement {
 	/**
 	 * Properties.
 	 */
-	private subMenuArrows: NodeListOf<HTMLElement>;
-	private hamburgerEl: HTMLElement | null;
+	private menuButton: HTMLButtonElement | null;
 
 	/**
 	 * Constructor.
@@ -26,71 +20,79 @@ export default class HeaderNavMenu extends HTMLElement {
 		super();
 
 		// Elements.
-		this.subMenuArrows = this.querySelectorAll( '.menu-item-has-children > .sub-menu-arrow' );
-		this.hamburgerEl = document.querySelector( '.header__hamburger' );
+		this.menuButton = this.querySelector( 'button.header__nav-item-link' );
 	}
 
 	/**
 	 * Contected callback.
 	 */
 	connectedCallback() {
-		// Event for toggling child menus.
-		this.subMenuArrows?.forEach( ( arrowEl: HTMLElement ): void => {
-			// Add event.
-			arrowEl.addEventListener( 'click', this.toggleChildMenus.bind( this ) );
-		} );
+		// Event for Search Button.
+		this.menuButton?.addEventListener( 'click', this.open.bind( this ) );
+
+		// Event to close the search form on keydown.
+		this.ownerDocument.defaultView?.addEventListener( 'keydown', this.handleDropdownCloseOnKeyDown.bind( this ) );
+
+		// Event to close search form on document click.
+		this.ownerDocument.defaultView?.addEventListener( 'click', this.handleDropdownCloseOnDocumentClick.bind( this ) );
 	}
 
 	/**
-	 * Check if it's a desktop menu.
-	 *
-	 * @return {boolean} Is desktop menu.
+	 * Open search bar.
 	 */
-	isDesktopMenu() {
-		// Return true if hamburger element is not visible, which means it's a desktop menu.
-		return this.hamburgerEl && 'none' === getComputedStyle( this.hamburgerEl ).display;
+	open() {
+		// Toggle active attribute.
+		this.toggleAttribute( 'active' );
 	}
 
 	/**
-	 * Handles click event of the sub-menu arrows.
-	 *
-	 * @param {Event} event Event object.
+	 * Close Search.
 	 */
-	toggleChildMenus( event: Event ) {
+	close() {
+		// Remove 'active' attribute.
+		this.removeAttribute( 'active' );
+	}
+
+	/**
+	 * Event: 'keydown'
+	 *
+	 * @param {KeyboardEvent} event Event.
+	 */
+	handleDropdownCloseOnKeyDown( event: KeyboardEvent ) {
+		// If the escape key is pressed, return.
+		if ( 'Escape' !== event.key ) {
+			// Early return.
+			return;
+		}
+
+		// Close search form.
+		event.preventDefault();
+		this.close();
+	}
+
+	/**
+	 * Handle Search Close,
+	 * if we click on anywhere else on the
+	 * HTML document.
+	 *
+	 * @param {Event} event Event.
+	 */
+	handleDropdownCloseOnDocumentClick( event: Event ) {
 		// Get target element.
 		const targetEl = event.target as HTMLElement;
 
-		// If it's a desktop menu, return, because then we don't need the toggle menu option in desktop.
-		if ( this.isDesktopMenu() ) {
+		// If user has clicked inside search filter or search button cta, return.
+		if ( targetEl.closest( '.header__nav-item' ) || targetEl.closest( '.header__nav-item-dropdown-content' ) ) {
 			// Early return.
 			return;
 		}
 
-		// Toggle child menus.
-		const parentNode = targetEl.parentNode as HTMLElement;
-		const subMenuEl = parentNode?.querySelector( '.sub-menu' ) as HTMLElement;
-
-		// Check submenu.
-		if ( ! subMenuEl ) {
-			// Early return.
-			return;
-		}
-
-		// Toggle attribute.
-		parentNode.toggleAttribute( 'active' );
-
-		// If parent node has active attribute, slide down.
-		if ( parentNode.hasAttribute( 'active' ) ) {
-			// Slide down.
-			slideElementDown( subMenuEl, 600 );
-		} else {
-			// Slide up.
-			slideElementUp( subMenuEl, 600 );
-		}
+		// Close the search.
+		this.close();
 	}
 }
 
 /**
  * Initialize.
  */
-customElements.define( 'tcs-header-nav-menu', HeaderNavMenu );
+customElements.define( 'quark-header-nav-menu-link', HeaderNavMenu );
