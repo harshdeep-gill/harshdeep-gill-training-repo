@@ -2,16 +2,16 @@
 /**
  * Namespace functions.
  *
- * @package quark-regions
+ * @package quark-policy-pages
  */
 
-namespace Quark\Regions;
+namespace Quark\PolicyPages;
 
 use WP_Post;
 
 use function Quark\Core\prepare_content_with_blocks;
 
-const POST_TYPE   = 'qrk_regions';
+const POST_TYPE   = 'qrk_agreement';
 const CACHE_KEY   = POST_TYPE;
 const CACHE_GROUP = POST_TYPE;
 
@@ -22,43 +22,46 @@ const CACHE_GROUP = POST_TYPE;
  */
 function bootstrap(): void {
 	// Post type.
-	add_action( 'init', __NAMESPACE__ . '\\register_region_post_type' );
+	add_action( 'init', __NAMESPACE__ . '\\register_agreement_post_type' );
 
 	// Layout.
 	add_action( 'template_redirect', __NAMESPACE__ . '\\layout' );
 
-	// Opt into stuff.
-	add_filter( 'qe_destinations_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
-
 	// Other hooks.
 	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
+
+	// Admin stuff.
+	if ( is_admin() ) {
+		// Custom fields.
+		require_once __DIR__ . '/../custom-fields/policy-pages.php';
+	}
 }
 
 /**
- * Register Regions post type.
+ * Register Policy Pages post type.
  *
  * @return void
  */
-function register_region_post_type(): void {
+function register_agreement_post_type(): void {
 	// Post type arguments.
 	$args = [
 		'labels'              => [
-			'name'               => 'Regions',
-			'singular_name'      => 'Region',
+			'name'               => 'Terms and Conditions / Policy Pages',
+			'singular_name'      => 'Terms and Conditions / Policy Page',
 			'add_new'            => 'Add New',
-			'add_new_item'       => 'Add New Region',
-			'edit_item'          => 'Edit Region',
-			'new_item'           => 'New Region',
-			'view_item'          => 'View Region',
-			'search_items'       => 'Search Regions',
-			'not_found'          => 'No Regions found',
-			'not_found_in_trash' => 'No Regions found in Trash',
-			'parent_item_colon'  => 'Parent Region:',
-			'menu_name'          => 'Regions',
+			'add_new_item'       => 'Add New Terms and Conditions / Policy Page',
+			'edit_item'          => 'Edit Terms and Conditions / Policy Page',
+			'new_item'           => 'New Terms and Conditions / Policy Page',
+			'view_item'          => 'View Terms and Conditions / Policy Page',
+			'search_items'       => 'Search Terms and Conditions / Policy Pages',
+			'not_found'          => 'No Terms and Conditions / Policy Pages found',
+			'not_found_in_trash' => 'No Terms and Conditions / Policy Pages found in Trash',
+			'parent_item_colon'  => 'Parent Terms and Conditions / Policy Page:',
+			'menu_name'          => 'Terms and Conditions / Policy Pages',
 		],
 		'public'              => true,
 		'show_in_rest'        => true,
-		'menu_icon'           => 'dashicons-admin-site',
+		'menu_icon'           => 'dashicons-media-document',
 		'hierarchical'        => false,
 		'supports'            => [
 			'title',
@@ -73,29 +76,14 @@ function register_region_post_type(): void {
 		'query_var'           => true,
 		'can_export'          => true,
 		'rewrite'             => [
-			'slug'       => 'regions',
+			'slug'       => 'agreements',
 			'with_front' => false,
 		],
-		'capability_type'     => 'post',
+		'capability_type'     => 'page',
 	];
 
 	// Register post type.
 	register_post_type( POST_TYPE, $args );
-}
-
-/**
- * Opt into stuff.
- *
- * @param string[] $post_types Post types.
- *
- * @return string[]
- */
-function opt_in( array $post_types = [] ): array {
-	// Append this post type for taxonomy.
-	$post_types[] = POST_TYPE;
-
-	// Return modified array.
-	return $post_types;
 }
 
 /**
@@ -154,13 +142,13 @@ function bust_post_cache( int $post_id = 0 ): void {
 	wp_cache_delete( CACHE_KEY . "_$post_id", CACHE_GROUP );
 
 	// Trigger action to clear cache for this post.
-	do_action( 'qe_region_cache_busted', $post_id );
+	do_action( 'qe_agreement_cache_busted', $post_id );
 }
 
 /**
- * Get a Region page.
+ * Get a Terms and Conditions / Policy Page.
  *
- * @param int $page_id Region Post ID.
+ * @param int $page_id Terms and Conditions / Policy Page ID.
  *
  * @return array{
  *     post: WP_Post|null,
