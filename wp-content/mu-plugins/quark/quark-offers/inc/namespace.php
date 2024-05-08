@@ -31,7 +31,6 @@ function bootstrap(): void {
 	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
 }
 
-
 /**
  * Register Offers post type.
  *
