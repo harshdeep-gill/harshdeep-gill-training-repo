@@ -86,7 +86,8 @@ function register_styles(): void {
 	$assets_version = get_assets_version();
 
 	// Enqueue styles.
-	wp_enqueue_style( 'tcs-global', get_template_directory_uri() . '/dist/global.css', [], $assets_version );
+	wp_register_style( 'tp-multi-select', get_template_directory_uri() . '/dist/vendor/tpmultiselectelement.css', [], $assets_version );
+	wp_enqueue_style( 'qrk-global', get_template_directory_uri() . '/dist/global.css', [], $assets_version );
 	wp_enqueue_style( 'nunito-sans', get_template_directory_uri() . '/src/assets/fonts/nunito-sans/nunito-sans.css', [], '1' );
 	wp_enqueue_style( 'source-serif-4', get_template_directory_uri() . '/src/assets/fonts/source-serif-4/source-serif-4.css', [], '1' );
 	wp_register_style( 'intl-tel-input-css', get_template_directory_uri() . '/dist/vendor/intltelinput.css', [], $assets_version );
@@ -134,6 +135,8 @@ function register_scripts(): void {
 	wp_register_script( 'glightbox', get_template_directory_uri() . '/dist/vendor/glightbox.js', [], $assets_version, true );
 	wp_register_script( 'tp-slider', get_template_directory_uri() . '/dist/vendor/tpsliderelement.js', [], $assets_version, true );
 	wp_register_script( 'tp-accordion', get_template_directory_uri() . '/dist/vendor/tpaccordionitemelement.js', [], $assets_version, true );
+	wp_register_script( 'tp-multi-select', get_template_directory_uri() . '/dist/vendor/tpmultiselectelement.js', [], $assets_version, true );
+	wp_register_script( 'trustpilot', 'https://widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js', [], $assets_version, true );
 	wp_register_script( 'wistia-embed', 'https://fast.wistia.com/assets/external/E-v1.js', [], $assets_version, true );
 
 	// Pass variables to script.
@@ -260,6 +263,23 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'class'  => true,
 					'data-*' => true,
 				],
+				'quark-drawer'                          => [
+					'id'                  => true,
+					'class'               => true,
+					'overlay-click-close' => true,
+					'open'                => true,
+					'data-*'              => true,
+				],
+				'quark-drawer-content'                  => [
+					'class' => true,
+				],
+				'quark-drawer-close'                    => [
+					'class' => true,
+				],
+				'quark-drawer-open'                     => [
+					'class'     => true,
+					'drawer_id' => true,
+				],
 				'tp-form'                               => [
 					'class'          => true,
 					'prevent-submit' => true,
@@ -309,6 +329,7 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'class'               => true,
 					'overlay-click-close' => true,
 					'open'                => true,
+					'data-*'              => true,
 				],
 				'tp-modal-content'                      => [
 					'class' => true,
@@ -328,6 +349,51 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 				],
 				'tp-accordion-content'                  => [
 					'class' => true,
+				],
+				'tp-multi-select'                       => [
+					'name'            => true,
+					'class'           => true,
+					'id'              => true,
+					'form'            => true,
+					'multiple'        => true,
+					'close-on-select' => true,
+				],
+				'tp-multi-select-field'                 => [
+					'class' => true,
+					'id'    => true,
+				],
+				'tp-multi-select-pills'                 => [
+					'class' => true,
+					'id'    => true,
+				],
+				'tp-multi-select-search'                => [
+					'class' => true,
+					'id'    => true,
+				],
+				'tp-multi-select-placeholder'           => [
+					'class' => true,
+					'id'    => true,
+				],
+				'tp-multi-select-status'                => [
+					'class'  => true,
+					'id'     => true,
+					'format' => true,
+				],
+				'tp-multi-select-options'               => [
+					'class' => true,
+					'id'    => true,
+				],
+				'tp-multi-select-option'                => [
+					'class' => true,
+					'id'    => true,
+					'value' => true,
+					'label' => true,
+				],
+				'tp-multi-select-select-all'            => [
+					'class'         => true,
+					'id'            => true,
+					'select-text'   => true,
+					'unselect-text' => true,
 				],
 				'iframe'                                => [
 					'class'           => true,
