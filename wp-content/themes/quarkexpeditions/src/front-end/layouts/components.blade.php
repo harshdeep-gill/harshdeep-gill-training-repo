@@ -1769,6 +1769,88 @@
 		</x-product-cards>
 	</x-component-demo>
 
+	<x-component-demo :keys="[ 'thumbnail-cards' ]">
+		<x-section title="Thumbnail Cards: Small Portrait">
+			<x-thumbnail-cards :is_carousel="false">
+				<x-thumbnail-cards.card size="small" url="#" orientation="portrait" image_id="29">
+					<x-thumbnail-cards.title title="Arctic Expeditions" align="top" />
+				</x-thumbnail-cards.card>
+				<x-thumbnail-cards.card size="small" url="#" orientation="portrait" image_id="30">
+					<x-thumbnail-cards.title title="Antarctic Expeditions" align="bottom" />
+				</x-thumbnail-cards.card>
+				<x-thumbnail-cards.card size="small" url="#" orientation="portrait" image_id="33">
+					<x-thumbnail-cards.title title="Patagonia Expeditions" align="top" />
+				</x-thumbnail-cards.card>
+			</x-thumbnail-cards>
+		</x-section>
+		<x-section title="Thumbnail Cards: Small Landscape">
+			<x-thumbnail-cards :is_carousel="false">
+				<x-thumbnail-cards.card size="small" url="#" orientation="landscape" image_id="29">
+					<x-thumbnail-cards.title title="Arctic Expeditions" align="top" />
+				</x-thumbnail-cards.card>
+				<x-thumbnail-cards.card size="small" url="#" orientation="landscape" image_id="30">
+					<x-thumbnail-cards.title title="Antarctic Expeditions" align="bottom" />
+				</x-thumbnail-cards.card>
+				<x-thumbnail-cards.card size="small" url="#" orientation="landscape" image_id="33">
+					<x-thumbnail-cards.title title="Patagonia Expeditions" align="top" />
+				</x-thumbnail-cards.card>
+				<x-thumbnail-cards.card size="small" url="#" orientation="landscape" image_id="34">
+					<x-thumbnail-cards.title title="Patagonia Expeditions" align="bottom" />
+				</x-thumbnail-cards.card>
+			</x-thumbnail-cards>
+		</x-section>
+		<x-section title="Thumbnail Cards: Medium Portrait">
+			<x-thumbnail-cards :is_carousel="false">
+				<x-thumbnail-cards.card size="medium" url="#" orientation="portrait" image_id="29">
+					<x-thumbnail-cards.title title="Arctic Expeditions" align="top" />
+				</x-thumbnail-cards.card>
+				<x-thumbnail-cards.card size="medium" url="#" orientation="portrait" image_id="30">
+					<x-thumbnail-cards.title title="Antarctic Expeditions" align="bottom" />
+				</x-thumbnail-cards.card>
+				<x-thumbnail-cards.card size="medium" url="#" orientation="portrait" image_id="33">
+					<x-thumbnail-cards.title title="Patagonia Expeditions" align="top" />
+				</x-thumbnail-cards.card>
+				<x-thumbnail-cards.card size="medium" url="#" orientation="portrait" image_id="34">
+					<x-thumbnail-cards.title title="Patagonia Expeditions" align="bottom" />
+				</x-thumbnail-cards.card>
+			</x-thumbnail-cards>
+		</x-section>
+		<x-section title="Thumbnail Cards: Medium Landscape">
+			<x-thumbnail-cards :is_carousel="true">
+				<x-thumbnail-cards.card size="medium" url="#" orientation="landscape" image_id="29">
+					<x-thumbnail-cards.title title="Arctic Expeditions" align="bottom" />
+				</x-thumbnail-cards.card>
+				<x-thumbnail-cards.card size="medium" url="#" orientation="landscape" image_id="30">
+					<x-thumbnail-cards.title title="Antarctic Expeditions" align="top" />
+				</x-thumbnail-cards.card>
+				<x-thumbnail-cards.card size="medium" url="#" orientation="landscape" image_id="33">
+					<x-thumbnail-cards.title title="Patagonia Expeditions" align="bottom" />
+				</x-thumbnail-cards.card>
+				<x-thumbnail-cards.card size="medium" url="#" orientation="landscape" image_id="34">
+					<x-thumbnail-cards.title title="Patagonia Expeditions" align="top" />
+				</x-thumbnail-cards.card>
+			</x-thumbnail-cards>
+		</x-section>
+		<x-section title="Thumbnail Cards: Large">
+			<x-thumbnail-cards :is_carousel="true">
+				<x-thumbnail-cards.card size="large" url="#" orientation="portrait" image_id="29">
+					<x-thumbnail-cards.title title="Arctic Expeditions" align="top" />
+				</x-thumbnail-cards.card>
+				<x-thumbnail-cards.card size="large" url="#" orientation="portrait" image_id="30">
+					<x-thumbnail-cards.title title="Antarctic Expeditions" align="bottom" />
+				</x-thumbnail-cards.card>
+				<x-thumbnail-cards.card size="large" url="#" orientation="portrait" image_id="33">
+					<x-thumbnail-cards.title title="Patagonia Expeditions" align="top" />
+				</x-thumbnail-cards.card>
+				<x-thumbnail-cards.card size="large" url="#" orientation="portrait" image_id="34">
+					<x-thumbnail-cards.title title="Patagonia Expeditions" align="bottom" />
+				</x-thumbnail-cards.card>
+				<x-thumbnail-cards.card size="large" url="#" orientation="portrait" image_id="35">
+					<x-thumbnail-cards.title title="Patagonia Expeditions" align="bottom" />
+				</x-thumbnail-cards.card>
+			</x-thumbnail-cards>
+		</x-section>
+	</x-component-demo>
 	<x-component-demo :keys="[ 'accordion' ]">
 		<x-section>
 			<x-accordion title="Quark Expeditions takes you places no one else can!">
