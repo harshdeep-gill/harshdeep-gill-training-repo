@@ -78,7 +78,6 @@ function register_port_post_type(): void {
 	register_post_type( POST_TYPE, $args );
 }
 
-
 /**
  * Busts cache for this post type.
  *
