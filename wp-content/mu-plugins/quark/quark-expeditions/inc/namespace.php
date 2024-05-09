@@ -13,7 +13,6 @@ use WP_Taxonomy;
 use WP_REST_Request;
 
 use function Quark\Core\prepare_content_with_blocks;
-use const Quark\Ships\ICON_TAXONOMY;
 
 const POST_TYPE                      = 'qrk_expedition';
 const DESTINATIONS_TAXONOMY          = 'qrk_destinations';
@@ -238,26 +237,38 @@ function register_departure_destination_taxonomy(): void {
 }
 
 /**
- * Hide Icon taxonomy metabox.
+ * Hide Departure Destination taxonomy metabox.
  *
- * @param WP_REST_Response $response The response object.
- * @param WP_Taxonomy      $taxonomy The original taxonomy object.
- * @param WP_REST_Request  $request  Request used to generate the response.
+ * @param WP_REST_Response|null $response The response object.
+ * @param WP_Taxonomy| null     $taxonomy The original taxonomy object.
+ * @param WP_REST_Request|null  $request  Request used to generate the response.
  *
- * @return WP_REST_Response
+ * @return WP_REST_Response|null
  */
-function hide_departure_destination_metabox( $response, $taxonomy, $request ): WP_REST_Response {
+function hide_departure_destination_metabox( WP_REST_Response $response = null, WP_Taxonomy $taxonomy = null, WP_REST_Request $request = null ): WP_REST_Response|null {
 	// Check if taxonomy is Icon.
-	if ( ICON_TAXONOMY !== $taxonomy->name ) {
+	if (
+		! $taxonomy instanceof WP_Taxonomy
+		|| ! $response instanceof WP_REST_Response
+		|| ! $request instanceof WP_REST_Request
+		|| DEPARTURE_DESTINATION_TAXONOMY !== $taxonomy->name
+	) {
 		return $response;
 	}
 
 	// Get context.
 	$context = ! empty( $request['context'] ) ? $request['context'] : 'view';
 
-	// Context is edit in the editor
-	if ( $context === 'edit' && $taxonomy->meta_box_cb === false ) {
-		$data_response                          = $response->get_data();
+	// Context is edit in the editor.
+	if ( 'edit' === $context && false === $taxonomy->meta_box_cb ) {
+		$data_response = $response->get_data();
+
+		// Check if data response is not an array.
+		if ( ! is_array( $data_response ) ) {
+			$data_response = [];
+		}
+
+		// Hide UI.
 		$data_response['visibility']['show_ui'] = false;
 		$response->set_data( $data_response );
 	}

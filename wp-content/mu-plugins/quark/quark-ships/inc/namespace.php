@@ -8,6 +8,9 @@
 namespace Quark\Ships;
 
 use WP_Post;
+use WP_REST_Response;
+use WP_Taxonomy;
+use WP_REST_Request;
 
 use function Quark\Core\prepare_content_with_blocks;
 
@@ -27,6 +30,7 @@ function bootstrap(): void {
 	add_action( 'init', __NAMESPACE__ . '\\register_ship_post_type' );
 	add_action( 'init', __NAMESPACE__ . '\\register_ship_categories_taxonomy' );
 	add_action( 'init', __NAMESPACE__ . '\\register_icon_taxonomy' );
+	add_filter( 'rest_prepare_taxonomy', __NAMESPACE__ . '\\hide_icon_metabox', 10, 3 );
 
 	// Layout.
 	add_action( 'template_redirect', __NAMESPACE__ . '\\layout' );
@@ -182,6 +186,47 @@ function register_icon_taxonomy(): void {
 
 	// Register taxonomy.
 	register_taxonomy( SHIP_CATEGORY_TAXONOMY, (array) apply_filters( 'qe_icons_taxonomy_post_types', [] ), $args );
+}
+
+/**
+ * Hide Icon taxonomy metabox.
+ *
+ * @param WP_REST_Response|null $response The response object.
+ * @param WP_Taxonomy| null     $taxonomy The original taxonomy object.
+ * @param WP_REST_Request|null  $request  Request used to generate the response.
+ *
+ * @return WP_REST_Response|null
+ */
+function hide_icon_metabox( WP_REST_Response $response = null, WP_Taxonomy $taxonomy = null, WP_REST_Request $request = null ): WP_REST_Response|null {
+	// Check if taxonomy is Icon.
+	if (
+		! $taxonomy instanceof WP_Taxonomy
+		|| ! $response instanceof WP_REST_Response
+		|| ! $request instanceof WP_REST_Request
+		|| ICON_TAXONOMY !== $taxonomy->name
+	) {
+		return $response;
+	}
+
+	// Get context.
+	$context = ! empty( $request['context'] ) ? $request['context'] : 'view';
+
+	// Context is edit in the editor.
+	if ( 'edit' === $context && false === $taxonomy->meta_box_cb ) {
+		$data_response = $response->get_data();
+
+		// Check if data response is not an array.
+		if ( ! is_array( $data_response ) ) {
+			$data_response = [];
+		}
+
+		// Hide UI.
+		$data_response['visibility']['show_ui'] = false;
+		$response->set_data( $data_response );
+	}
+
+	// Return response.
+	return $response;
 }
 
 /**
