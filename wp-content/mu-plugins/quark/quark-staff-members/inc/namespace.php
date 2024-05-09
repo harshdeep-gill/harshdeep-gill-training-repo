@@ -37,6 +37,7 @@ function bootstrap(): void {
 	add_filter( 'qe_departments_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
 	add_filter( 'qe_departure_staff_roles_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
 	add_filter( 'qe_seasons_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
+	add_filter( 'qe_spoken_languages_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
 
 	// Other hooks.
 	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
