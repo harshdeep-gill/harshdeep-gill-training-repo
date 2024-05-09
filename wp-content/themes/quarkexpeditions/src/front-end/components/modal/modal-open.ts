@@ -18,9 +18,6 @@ export class QuarkModalOpenElement extends HTMLElement {
 	 */
 	private modal: TPModalElement | null | undefined;
 	private modalId: string | null;
-	private modalResizeObserver: ResizeObserver | undefined;
-	private modalContentElement: HTMLElement | null | undefined;
-	private modalBodyElement: HTMLElement | null | undefined;
 
 	/**
 	 * Constructor.
@@ -50,22 +47,6 @@ export class QuarkModalOpenElement extends HTMLElement {
 		// Events.
 		this.addEventListener( 'click', this.openModal.bind( this ) );
 		this.modal.addEventListener( 'close', this.handleModalClose.bind( this ) );
-
-		// Initialize remaining properties.
-		this.modalContentElement = this.modal.querySelector<HTMLElement>( '.modal__content' );
-		this.modalBodyElement = this.modalContentElement?.querySelector( '.modal__body' );
-
-		// Check if modalContent found
-		if ( this.modalContentElement && this.modalBodyElement ) {
-			/**
-			 * We are observing the modal instead of the modalContentElement
-			 * because the max height of modalContentElement depends on the
-			 * height of the viewport and modal is supposed to take up the whole
-			 * viewport.
-			 */
-			this.modalResizeObserver = new ResizeObserver( this.observeModalHeight.bind( this ) );
-			this.modalResizeObserver.observe( this.modal );
-		}
 	}
 
 	/**
@@ -117,55 +98,5 @@ export class QuarkModalOpenElement extends HTMLElement {
 			modal.removeAttribute( 'open' );
 			document.querySelector( 'body' )?.classList?.remove( 'prevent-scroll' );
 		}, { once: true } );
-	}
-
-	/**
-	 * Observes and resizes the body according to the size of its sibling
-	 * elements and the containing modal__content.
-	 *
-	 * @param { ResizeObserverEntry[] } entries
-	 */
-	observeModalHeight( entries: ResizeObserverEntry[]|null[] ): void {
-		// Loop over entries.
-		entries.forEach( this.resizeModalBody.bind( this ) );
-	}
-
-	/**
-	 * Resizes the modal body dynamically.
-	 */
-	resizeModalBody(): void {
-		// Check if we have content and element.
-		if ( ! this.modalContentElement || ! this.modalBodyElement ) {
-			// We need both for this.
-			return;
-		}
-
-		// Create references.
-		const modalContentElement = this.modalContentElement as HTMLElement;
-		const modalBodyElement = this.modalBodyElement as HTMLElement;
-
-		// Get modal content max height.
-		let modalContentMaxHeight = parseInt( getComputedStyle( modalContentElement ).maxHeight );
-		modalContentMaxHeight = ! Number.isNaN( modalContentMaxHeight ) ? modalContentMaxHeight : 0;
-
-		// Calculate notBodyHeight
-		const modalContentRect = modalContentElement.getBoundingClientRect();
-		const modalBodyRect = modalBodyElement.getBoundingClientRect();
-		let notBodyHeight = modalContentElement.scrollHeight - modalBodyRect.height;
-
-		/**
-		 * When we increase the viewport height, the maxHeight and current Height
-		 * always have a difference of 1px when that resize happens. We want to
-		 * re-introduce that when the viewport height is decreased to avoid discrepancies.
-		 */
-		if ( modalContentMaxHeight === modalContentRect.height ) {
-			notBodyHeight++;
-		}
-
-		// New max height candidate for modal__body
-		const modalBodyMaxHeightCandidate = modalContentMaxHeight - notBodyHeight;
-
-		// Set the modal body element height.
-		modalBodyElement.style.maxHeight = `${ Math.min( modalBodyMaxHeightCandidate, modalBodyElement.scrollHeight ) }px`;
 	}
 }
