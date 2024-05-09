@@ -76,10 +76,18 @@ export class QuarkModalOpenElement extends HTMLElement {
 	 * Event: 'close'.
 	 *
 	 * Handles the close event of TPModalElement.
+	 *
+	 * @param { Event } evt
 	 */
-	handleModalClose() {
+	handleModalClose( evt: Event ) {
 		// Assign for easy use in the event handler.
 		const modal = this.modal;
+
+		// Check event target.
+		if ( modal !== evt.target ) {
+			// Modal is not the target, bail.
+			return;
+		}
 
 		// Check if modal is there.
 		if ( ! modal ) {

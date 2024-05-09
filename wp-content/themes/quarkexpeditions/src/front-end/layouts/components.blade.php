@@ -276,14 +276,26 @@
 					</x-form.field>
 					<x-form.field :validation="[ 'required' ]">
 						<x-form.select label="Country">
-							<option value="">Select...</option>
-							<option value="1">Option 1</option>
-							<option value="2">Option 2</option>
-							<option value="3">Option 3</option>
+							<x-form.option value="">Select...</x-form.option>
+							<x-form.option value="1" label="Option 1">Option 1</x-form.option>
+							<x-form.option value="2" label="Option 2">Option 2</x-form.option>
+							<x-form.option value="3" label="Option 3">Option 3</x-form.option>
 						</x-form.select>
 					</x-form.field>
 					<x-form.field>
 						<x-form.textarea label="What else would you like us to know?" placeholder="eg Lorem ipsum"></x-form.textarea>
+					</x-form.field>
+					<x-form.field>
+						<x-form.file label="Choose File" />
+					</x-form.field>
+					<x-form.field>
+						<x-form.checkbox label="Checkbox example" />
+					</x-form.field>
+					<x-form.field>
+						<x-form.radio name="radio-example" label="Radio example" />
+					</x-form.field>
+					<x-form.field>
+						<x-form.radio name="radio-example" label="Radio example" />
 					</x-form.field>
 					<x-form.buttons>
 						<x-form.submit>Request a Quote</x-form.submit>
@@ -298,20 +310,78 @@
 					</x-form.field>
 					<x-form.field :validation="[ 'required' ]">
 						<x-form.select label="Country" name="fields[country]">
-							<option value="">Select...</option>
-							<option value="1">Option 1</option>
-							<option value="2">Option 2</option>
-							<option value="3">Option 3</option>
+							<x-form.option value="">Select...</x-form.option>
+							<x-form.option value="1" label="Option 1">Option 1</x-form.option>
+							<x-form.option value="2" label="Option 2">Option 2</x-form.option>
+							<x-form.option value="3" label="Option 3">Option 3</x-form.option>
 						</x-form.select>
 					</x-form.field>
 					<x-form.field>
 						<x-form.textarea label="What else would you like us to know?" placeholder="eg Lorem ipsum" name="fields[comments]"></x-form.textarea>
+					</x-form.field>
+					<x-form.field>
+						<x-form.file label="Choose File" />
+					</x-form.field>
+					<x-form.field>
+						<x-form.checkbox label="Checkbox example" />
+					</x-form.field>
+					<x-form.field>
+						<x-form.radio name="radio-example" label="Radio example" />
+					</x-form.field>
+					<x-form.field>
+						<x-form.radio name="radio-example" label="Radio example" />
 					</x-form.field>
 					<x-form.buttons>
 						<x-form.submit>Request a Quote</x-form.submit>
 					</x-form.buttons>
 				</x-form>
 			</div>
+		</x-section>
+	</x-component-demo>
+
+	<x-component-demo :keys="[ 'field-group' ]">
+		<x-section>
+			<x-form>
+				<x-form.field-group title="Example field group. Radio" :validation="[ 'radio-group-required' ]">
+					<x-form.radio name="radio-example" label="Radio example" />
+					<x-form.radio name="radio-example" label="Radio example" />
+					<x-form.radio name="radio-example" label="Radio example" />
+					<x-form.radio name="radio-example" label="Radio example" />
+					<x-form.radio name="radio-example" label="Radio example" />
+					<x-form.radio name="radio-example" label="Radio example" />
+					<x-form.radio name="radio-example" label="Radio example" />
+					<x-form.radio name="radio-example" label="Radio example" />
+					<x-form.radio name="radio-example" label="Radio example" />
+					<x-form.radio name="radio-example" label="Radio example" />
+					<x-form.radio name="radio-example" label="Radio example" />
+					<x-form.radio name="radio-example" label="Radio example" />
+					<x-form.radio name="radio-example" label="Radio example with text that is longer than usual" />
+					<x-form.radio name="radio-example" label="Radio example" />
+					<x-form.radio name="radio-example" label="Radio example" />
+					<x-form.radio name="radio-example" label="Radio example" />
+				</x-form.field-group>
+				<x-form.field-group title="Example field group. Checkbox" :validation="[ 'checkbox-group-required' ]">
+					<x-form.checkbox name="checkbox-example" label="Radio example" />
+					<x-form.checkbox name="checkbox-example" label="Radio example" />
+					<x-form.checkbox name="checkbox-example" label="Radio example" />
+					<x-form.checkbox name="checkbox-example" label="Radio example" />
+					<x-form.checkbox name="checkbox-example" label="Radio example" />
+					<x-form.checkbox name="checkbox-example" label="Radio example" />
+					<x-form.checkbox name="checkbox-example" label="Radio example" />
+					<x-form.checkbox name="checkbox-example" label="Radio example" />
+					<x-form.checkbox name="checkbox-example" label="Radio example" />
+					<x-form.checkbox name="checkbox-example" label="Radio example" />
+					<x-form.checkbox name="checkbox-example" label="Radio example" />
+					<x-form.checkbox name="checkbox-example" label="Radio example" />
+					<x-form.checkbox name="checkbox-example" label="Radio example with text that is longer than usual" />
+					<x-form.checkbox name="checkbox-example" label="Radio example" />
+					<x-form.checkbox name="checkbox-example" label="Radio example" />
+					<x-form.checkbox name="checkbox-example" label="Radio example" />
+				</x-form.field-group>
+				<x-form.buttons>
+					<x-form.submit>Request a Quote</x-form.submit>
+				</x-form.buttons>
+			</x-form>
 		</x-section>
 	</x-component-demo>
 
