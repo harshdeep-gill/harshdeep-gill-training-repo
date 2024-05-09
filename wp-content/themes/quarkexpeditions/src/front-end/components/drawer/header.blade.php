@@ -12,5 +12,4 @@
 	<div class="drawer__header-content">
 		{!! $slot !!}
 	</div>
-	<x-drawer.drawer-close />
 </header>

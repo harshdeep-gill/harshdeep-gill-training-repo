@@ -116,6 +116,7 @@
 			width: 15px;
 		}
 
-		position: static;
+		position: absolute;
+		inset: 15px 15px auto auto;
 	}
 }

@@ -22,5 +22,6 @@
 >
 	<quark-drawer-content class="drawer__content">
 		<x-content :content="$slot" />
+		<x-drawer.drawer-close />
 	</quark-drawer-content>
 </quark-drawer>
