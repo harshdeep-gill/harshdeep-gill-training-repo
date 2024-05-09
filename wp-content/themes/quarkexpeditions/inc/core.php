@@ -259,6 +259,23 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'class'  => true,
 					'data-*' => true,
 				],
+				'quark-drawer'                          => [
+					'id'                  => true,
+					'class'               => true,
+					'overlay-click-close' => true,
+					'open'                => true,
+					'data-*'              => true,
+				],
+				'quark-drawer-content'                  => [
+					'class' => true,
+				],
+				'quark-drawer-close'                    => [
+					'class' => true,
+				],
+				'quark-drawer-open'                     => [
+					'class'     => true,
+					'drawer_id' => true,
+				],
 				'tp-form'                               => [
 					'class'          => true,
 					'prevent-submit' => true,
@@ -308,6 +325,7 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'class'               => true,
 					'overlay-click-close' => true,
 					'open'                => true,
+					'data-*'              => true,
 				],
 				'tp-modal-content'                      => [
 					'class' => true,
