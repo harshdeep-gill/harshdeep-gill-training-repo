@@ -1571,6 +1571,16 @@
 		</x-product-cards>
 	</x-component-demo>
 
+	<x-component-demo :keys="[ 'post-author-info' ]">
+		<x-post-author-info>
+			<x-post-author-info.image :image_id="18" />
+			<x-post-author-info.info>
+				<x-post-author-info.name title="Daven Hafey" />
+				<x-post-author-info.read-time duration="11" />
+			</x-post-author-info.info>
+		</x-post-author-info>
+	</x-component-demo>
+
 	<x-component-demo :keys="[ 'breadcrumbs' ]">
 		<x-breadcrumbs
 			:breadcrumbs="[
@@ -1593,91 +1603,90 @@
 			]"
 		/>
 
-	<x-breadcrumbs
-		:breadcrumbs="[
-			[
-				'title' => 'Home',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Destinations',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Antarctica',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Expeditions',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Current Expedition',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Preparation',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Packing List',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Arctic Gear',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Activities',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Iceberg Watching',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Wildlife Encounters',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Polar Plunge',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Travel Guide',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Visa Requirements',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Health and Safety',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Emergency Procedures',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Booking',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Reservation Form',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Payment Options',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Contact Us',
-				'url'   => '#',
-			],
-		]"
-	/>
-
+		<x-breadcrumbs
+			:breadcrumbs="[
+				[
+					'title' => 'Home',
+					'url'   => '#',
+				],
+				[
+					'title' => 'Destinations',
+					'url'   => '#',
+				],
+				[
+					'title' => 'Antarctica',
+					'url'   => '#',
+				],
+				[
+					'title' => 'Expeditions',
+					'url'   => '#',
+				],
+				[
+					'title' => 'Current Expedition',
+					'url'   => '#',
+				],
+				[
+					'title' => 'Preparation',
+					'url'   => '#',
+				],
+				[
+					'title' => 'Packing List',
+					'url'   => '#',
+				],
+				[
+					'title' => 'Arctic Gear',
+					'url'   => '#',
+				],
+				[
+					'title' => 'Activities',
+					'url'   => '#',
+				],
+				[
+					'title' => 'Iceberg Watching',
+					'url'   => '#',
+				],
+				[
+					'title' => 'Wildlife Encounters',
+					'url'   => '#',
+				],
+				[
+					'title' => 'Polar Plunge',
+					'url'   => '#',
+				],
+				[
+					'title' => 'Travel Guide',
+					'url'   => '#',
+				],
+				[
+					'title' => 'Visa Requirements',
+					'url'   => '#',
+				],
+				[
+					'title' => 'Health and Safety',
+					'url'   => '#',
+				],
+				[
+					'title' => 'Emergency Procedures',
+					'url'   => '#',
+				],
+				[
+					'title' => 'Booking',
+					'url'   => '#',
+				],
+				[
+					'title' => 'Reservation Form',
+					'url'   => '#',
+				],
+				[
+					'title' => 'Payment Options',
+					'url'   => '#',
+				],
+				[
+					'title' => 'Contact Us',
+					'url'   => '#',
+				],
+			]"
+		/>
 	</x-component-demo>
 
 	<x-component-demo :keys="[ 'lp-footer' ]">
