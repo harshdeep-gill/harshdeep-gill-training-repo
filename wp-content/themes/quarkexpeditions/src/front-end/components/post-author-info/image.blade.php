@@ -16,6 +16,7 @@
 		'transform' => [
 			'crop'    => 'fill',
 			'quality' => 100,
+			'gravity' => 'face',
 		],
 	];
 @endphp
