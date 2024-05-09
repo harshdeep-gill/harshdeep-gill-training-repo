@@ -8,14 +8,19 @@
 namespace Quark\Expeditions;
 
 use WP_Post;
+use WP_REST_Response;
+use WP_Taxonomy;
+use WP_REST_Request;
 
 use function Quark\Core\prepare_content_with_blocks;
+use const Quark\Ships\ICON_TAXONOMY;
 
-const POST_TYPE                    = 'qrk_expedition';
-const DESTINATIONS_TAXONOMY        = 'qrk_destinations';
-const EXPEDITION_CATEGORY_TAXONOMY = 'qrk_expedition_categories';
-const CACHE_KEY                    = POST_TYPE;
-const CACHE_GROUP                  = POST_TYPE;
+const POST_TYPE                      = 'qrk_expedition';
+const DESTINATIONS_TAXONOMY          = 'qrk_destinations';
+const EXPEDITION_CATEGORY_TAXONOMY   = 'qrk_expedition_categories';
+const DEPARTURE_DESTINATION_TAXONOMY = 'qrk_departure_destinations';
+const CACHE_KEY                      = POST_TYPE;
+const CACHE_GROUP                    = POST_TYPE;
 
 /**
  * Bootstrap plugin.
@@ -27,11 +32,14 @@ function bootstrap(): void {
 	add_action( 'init', __NAMESPACE__ . '\\register_expedition_post_type' );
 	add_action( 'init', __NAMESPACE__ . '\\register_destination_taxonomy' );
 	add_action( 'init', __NAMESPACE__ . '\\register_expedition_category_taxonomy' );
+	add_action( 'init', __NAMESPACE__ . '\\register_departure_destination_taxonomy' );
 
 	// Opt into stuff.
 	add_filter( 'qe_adventure_options_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
 	add_filter( 'qe_destinations_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
 	add_filter( 'qe_expedition_categories_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
+	add_filter( 'qe_departure_destinations_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
+	add_filter( 'rest_prepare_taxonomy', __NAMESPACE__ . '\\hide_departure_destination_metabox', 10, 3 );
 
 	// Layout.
 	add_action( 'template_redirect', __NAMESPACE__ . '\\layout' );
@@ -182,6 +190,80 @@ function register_expedition_category_taxonomy(): void {
 
 	// Register taxonomy.
 	register_taxonomy( EXPEDITION_CATEGORY_TAXONOMY, (array) apply_filters( 'qe_expedition_categories_taxonomy_post_types', [] ), $args );
+}
+
+/**
+ * Register Departure Destinations taxonomy.
+ *
+ * @return void
+ */
+function register_departure_destination_taxonomy(): void {
+	// Prepare labels.
+	$labels = [
+		'name'                       => 'Departure Destinations',
+		'singular_name'              => 'Departure Destination',
+		'search_items'               => 'Search Departure Destinations',
+		'popular_items'              => 'Popular Departure Destinations',
+		'all_items'                  => 'All Departure Destinations',
+		'parent_item'                => 'Parent Departure Destination',
+		'parent_item_colon'          => 'Parent Departure Destination:',
+		'edit_item'                  => 'Edit Departure Destination',
+		'update_item'                => 'Update Departure Destination',
+		'add_new_item'               => 'Add New Departure Destination',
+		'new_item_name'              => 'New Departure Destination',
+		'separate_items_with_commas' => 'Separate Departure Destinations with commas',
+		'add_or_remove_items'        => 'Add or remove Departure Destinations',
+		'choose_from_most_used'      => 'Choose from the most used Departure Destinations',
+		'menu_name'                  => 'Departure Destinations',
+	];
+
+	// Prepare args for registering taxonomy.
+	$args = [
+		'labels'            => $labels,
+		'public'            => false,
+		'show_in_nav_menus' => false,
+		'show_ui'           => true,
+		'show_tagcloud'     => false,
+		'show_admin_column' => false,
+		'hierarchical'      => true,
+		'rewrite'           => false,
+		'query_var'         => true,
+		'capabilities'      => [],
+		'show_in_rest'      => true,
+		'meta_box_cb'       => false,
+	];
+
+	// Register taxonomy.
+	register_taxonomy( DEPARTURE_DESTINATION_TAXONOMY, (array) apply_filters( 'qe_departure_destinations_taxonomy_post_types', [] ), $args );
+}
+
+/**
+ * Hide Icon taxonomy metabox.
+ *
+ * @param WP_REST_Response $response The response object.
+ * @param WP_Taxonomy      $taxonomy The original taxonomy object.
+ * @param WP_REST_Request  $request  Request used to generate the response.
+ *
+ * @return WP_REST_Response
+ */
+function hide_departure_destination_metabox( $response, $taxonomy, $request ): WP_REST_Response {
+	// Check if taxonomy is Icon.
+	if ( ICON_TAXONOMY !== $taxonomy->name ) {
+		return $response;
+	}
+
+	// Get context.
+	$context = ! empty( $request['context'] ) ? $request['context'] : 'view';
+
+	// Context is edit in the editor
+	if ( $context === 'edit' && $taxonomy->meta_box_cb === false ) {
+		$data_response                          = $response->get_data();
+		$data_response['visibility']['show_ui'] = false;
+		$response->set_data( $data_response );
+	}
+
+	// Return response.
+	return $response;
 }
 
 /**
