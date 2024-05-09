@@ -1,5 +1,5 @@
 @props( [
-	'sticky'            => false,
+	'sticky'         => false,
 	'show_on_mobile' => false,
 ] )
 
