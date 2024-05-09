@@ -49,6 +49,7 @@ $tp_mu_plugins = array(
 	'quark/quark-ship-decks/plugin.php',
 	'quark/quark-policy-pages/plugin.php',
 	'quark/quark-staff-members/plugin.php',
+	'quark/quark-ports/plugin.php',
 	'quark/quark-migration/plugin.php',
 );
 

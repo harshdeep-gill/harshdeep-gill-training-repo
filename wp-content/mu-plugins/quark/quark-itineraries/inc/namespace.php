@@ -50,7 +50,7 @@ function register_itinerary_post_type(): void {
 	$args = [
 		'labels'              => [
 			'name'               => 'Itineraries',
-			'singular_name'      => 'Exclusion Set',
+			'singular_name'      => 'Itinerary',
 			'add_new'            => 'Add New',
 			'add_new_item'       => 'Add New Itinerary',
 			'edit_item'          => 'Edit Itinerary',
