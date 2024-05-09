@@ -69,8 +69,12 @@ figcaption {
 ul {
 	padding-left: 1em;
 
+	li:not(:last-child) {
+		margin-bottom: var(--spacing-4);
+	}
+
 	::marker {
-		color: currentcolor;
+		color: var(--color-yellow);
 	}
 }
 

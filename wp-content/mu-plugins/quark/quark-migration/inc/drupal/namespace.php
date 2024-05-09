@@ -16,6 +16,8 @@ use WP_Term;
 
 use function Quark\Migration\WordPress\convert_to_blocks;
 
+use const Quark\Brochures\POST_TYPE as BROCHURE_POST_TYPE;
+
 /**
  * Get the Drupal database object.
  *
@@ -100,6 +102,49 @@ function download_file_by_mid( int $drupal_mid = 0 ): int|WP_Error {
 					media_field_data.mid=%d
 			',
 				absint( $drupal_mid )
+			)
+		),
+		ARRAY_A
+	);
+
+	// If not data found then bail out.
+	if ( empty( $file_data ) || ! is_array( $file_data ) ) {
+		return 0;
+	}
+
+	// Download the file and send attachment ID.
+	return download_file( $file_data );
+}
+
+/**
+ * Download file by Drupal fid (File ID).
+ *
+ * @param int $drupal_fid Drupal file ID.
+ *
+ * @return int|WP_Error WordPress's attachment ID on success otherwise error.
+ */
+function download_file_by_fid( int $drupal_fid = 0 ): int|WP_Error {
+	// Check the Drupal fid.
+	if ( empty( $drupal_fid ) ) {
+		return 0;
+	}
+
+	// Drupal database instance.
+	$drupal_db = get_database();
+
+	// Build and execute query.
+	$file_data = $drupal_db->get_row(
+		strval(
+			$drupal_db->prepare(
+				'
+				SELECT
+					*
+				FROM
+					file_managed
+				WHERE
+					fid=%d
+			',
+				absint( $drupal_fid )
 			)
 		),
 		ARRAY_A
@@ -208,6 +253,40 @@ function get_wp_attachment_id_by_mid( int $drupal_mid = 0 ): int {
 
 	// If attachment ID not found then return 0.
 	return 0;
+}
+
+/**
+ * Get WordPress Brochure ID by Drupal MID.
+ *
+ * @param int $drupal_mid Drupal MID.
+ *
+ * @return WP_Post|false WordPress's Brochure post on success otherwise false.
+ */
+function get_wp_brochure_id_by_mid( int $drupal_mid = 0 ): WP_Post|false {
+	// Prepare arguments.
+	$arguments = [
+		'post_type'     => BROCHURE_POST_TYPE,
+		'meta_key'      => 'drupal_mid',
+		'meta_value'    => $drupal_mid,
+		'post_status'   => 'any',
+		'post_per_page' => 1,
+	];
+
+	// Query post.
+	$posts = new WP_Query( $arguments );
+
+	// If no post found then bail out.
+	if ( empty( $posts->posts ) ) {
+		return false;
+	}
+
+	// If not instance of WP_Post then bail out.
+	if ( ! $posts->posts[0] instanceof WP_Post ) {
+		return false;
+	}
+
+	// Return post.
+	return $posts->posts[0];
 }
 
 /**
@@ -376,12 +455,12 @@ function download_file( array $file_data = [] ): int|WP_Error {
 	}
 
 	// Media Alt Text.
-	if ( ! empty( $file_data['thumbnail__alt'] ) ) {
+	if ( ! empty( $file_data['field_media_image_alt'] ) ) {
 		$post_data['meta_input']['_wp_attachment_image_alt'] = trim( strval( $file_data['field_media_image_alt'] ) );
 	}
 
 	// Media Title.
-	if ( ! empty( $file_data['thumbnail__title'] ) ) {
+	if ( ! empty( $file_data['field_media_image_title'] ) ) {
 		$post_data['post_title'] = trim( strval( $file_data['field_media_image_title'] ) );
 	} elseif ( ! empty( $file_data['name'] ) ) {
 		$post_data['post_title'] = trim( strval( $file_data['name'] ) );
@@ -395,6 +474,11 @@ function download_file( array $file_data = [] ): int|WP_Error {
 	// Media Description.
 	if ( ! empty( $file_data['field_media_file_description'] ) ) {
 		$post_data['post_content'] = trim( strval( $file_data['field_media_file_description'] ) );
+	}
+
+	// Photographer Credit.
+	if ( ! empty( $file_data['field_photographer_credit_value'] ) ) {
+		$post_data['meta_input']['photographer_credit'] = trim( strval( $file_data['field_photographer_credit_value'] ) );
 	}
 
 	// Create WordPress attachment.

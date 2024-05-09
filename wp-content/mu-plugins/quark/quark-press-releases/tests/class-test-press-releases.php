@@ -1,6 +1,6 @@
 <?php
 /**
- * Press Release test suite.
+ * Press Releases test suite.
  *
  * @package quark-press-releases
  */
