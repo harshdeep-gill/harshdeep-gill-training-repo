@@ -1769,6 +1769,79 @@
 		</x-product-cards>
 	</x-component-demo>
 
+	<x-component-demo :keys="[ 'accordion' ]">
+		<x-section>
+			<x-accordion title="Quark Expeditions takes you places no one else can!">
+				<x-accordion.item>
+					<x-accordion.item-handle title="Destinations" />
+					<x-accordion.item-content>
+						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.</p>
+					</x-accordion.item-content>
+				</x-accordion.item>
+				<x-accordion.item>
+					<x-accordion.item-handle title="Expeditions" />
+					<x-accordion.item-content>
+						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.it further to meet your schedule, interests, and budget with one of our expert Travel Consultants.</p>
+					</x-accordion.item-content>
+				</x-accordion.item>
+				<x-accordion.item>
+					<x-accordion.item-handle title="Ships" />
+					<x-accordion.item-content>
+						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.</p>
+					</x-accordion.item-content>
+				</x-accordion.item>
+				<x-accordion.item>
+					<x-accordion.item-handle title="Offers" />
+					<x-accordion.item-content>
+						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.</p>
+					</x-accordion.item-content>
+				</x-accordion.item>
+				<x-accordion.item>
+					<x-accordion.item-handle title="About Us" />
+					<x-accordion.item-content>
+						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.</p>
+					</x-accordion.item-content>
+				</x-accordion.item>
+			</x-accordion>
+		</x-section>
+	</x-component-demo>
+	<x-component-demo :keys="[ 'accordion' ]">
+		<x-section title="What should I know before booking a polar expedition?" heading_level="2" title_align="left">
+			<x-accordion title="Quark Expeditions takes you places no one else can!" :full_border="true">
+				<x-accordion.item>
+					<x-accordion.item-handle title="What are the Health and Safety requirements for expedition travel?" />
+					<x-accordion.item-content>
+						<ul>
+							<li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
+							<li>Temporibus, aperiam. Error provident pariatur explicabo, totam culpa quam dolores quisquam, doloremque perspiciatis consequatur recusandae ipsam a facere eos? Aspernatur.</li>
+						</ul>
+						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant. <a href=>See FAQs for details</a></p>
+					</x-accordion.item-content>
+				</x-accordion.item>
+				<x-accordion.item>
+					<x-accordion.item-handle title="What are the Terms & Conditions for booking?" />
+					<x-accordion.item-content>
+						<ul>
+							<li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
+							<li>Temporibus, aperiam. Error provident pariatur explicabo, totam culpa quam dolores quisquam, doloremque perspiciatis consequatur recusandae ipsam a facere eos? Aspernatur.</li>
+						</ul>
+						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.</p>
+					</x-accordion.item-content>
+				</x-accordion.item>
+				<x-accordion.item>
+					<x-accordion.item-handle title="What is Quark Expeditions' Protection Promise to make your expedition worry-free?" />
+					<x-accordion.item-content>
+						<ul>
+							<li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
+							<li>Temporibus, aperiam. Error provident pariatur explicabo, totam culpa quam dolores quisquam, doloremque perspiciatis consequatur recusandae ipsam a facere eos? Aspernatur.</li>
+						</ul>
+						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.</p>
+					</x-accordion.item-content>
+				</x-accordion.item>
+			</x-accordion>
+		</x-section>
+	</x-component-demo>
+
 	<x-component-demo :keys="[ 'lp-footer' ]">
 		<x-lp-footer>
 			<x-lp-footer.row>
