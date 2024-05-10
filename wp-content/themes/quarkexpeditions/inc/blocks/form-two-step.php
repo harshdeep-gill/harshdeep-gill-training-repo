@@ -49,10 +49,11 @@ function render( ?string $content = null, array $block = [] ): null|string {
 
 	// Initialize attributes.
 	$attributes = [
-		'thank_you_page' => $block['attrs']['thankYouPageUrl'] ?? '',
-		'countries'      => get_countries(),
-		'states'         => get_states(),
-		'hidden_fields'  => [
+		'background_color' => $block['attrs']['backgroundColor'] ?? 'black',
+		'thank_you_page'   => $block['attrs']['thankYouPageUrl'] ?? '',
+		'countries'        => get_countries(),
+		'states'           => get_states(),
+		'hidden_fields'    => [
 			'polar_region' => $block['attrs']['polarRegion'] ?? '',
 			'ship'         => $block['attrs']['ship'] ?? '',
 			'expedition'   => $block['attrs']['expedition'] ?? '',

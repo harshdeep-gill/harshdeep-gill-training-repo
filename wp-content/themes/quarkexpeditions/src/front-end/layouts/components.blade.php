@@ -173,6 +173,7 @@
 				<x-hero.right>
 					<x-hero.form>
 						<x-form-two-step
+							background_color="white"
 							:countries="[
 								'IN' => 'India',
 								'AU' => 'Australia',
