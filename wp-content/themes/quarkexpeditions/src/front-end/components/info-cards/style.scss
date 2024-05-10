@@ -120,7 +120,7 @@
 		margin-top: var(--spacing-6);
 		margin-left: calc(-1 * var(--spacing-1));
 
-		@media screen and (min-width: calc(grid-size(lg) + 1px)) {
+		@media screen and (min-width: calc(grid-size(lg))) {
 			display: none;
 
 			&[data-is-carousel] {
