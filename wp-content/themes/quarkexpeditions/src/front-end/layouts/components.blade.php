@@ -89,6 +89,58 @@
 				<x-button size="big" icon="hamburger" />
 			</x-header.drawer-cta> --}}
 		</x-header.cta-buttons>
+
+		<x-drawer.drawer-open drawer_id="header-drawer" class="color-context--dark">
+			<x-button type="button" size="big" color="black">
+				<x-svg name="hamburger" />
+			</x-button>
+		</x-drawer.drawer-open>
+
+		<x-drawer id="header-drawer" animation_direction="up" class="header-drawer">
+			<x-drawer.header>
+				<h3>Lorem ipsum dolor sit amet.</h3>
+				<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur voluptate dolorum alias officiis minima nemo asperiores maxime velit itaque sapiente?</p>
+			</x-drawer.header>
+
+			<x-drawer.body>
+				<x-accordion title="Quark Expeditions takes you places no one else can!">
+					<x-accordion.item>
+						<x-accordion.item-handle title="Destinations" />
+						<x-accordion.item-content>
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.</p>
+						</x-accordion.item-content>
+					</x-accordion.item>
+					<x-accordion.item>
+						<x-accordion.item-handle title="Expeditions" />
+						<x-accordion.item-content>
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.it further to meet your schedule, interests, and budget with one of our expert Travel Consultants.</p>
+						</x-accordion.item-content>
+					</x-accordion.item>
+					<x-accordion.item>
+						<x-accordion.item-handle title="Ships" />
+						<x-accordion.item-content>
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.</p>
+						</x-accordion.item-content>
+					</x-accordion.item>
+					<x-accordion.item>
+						<x-accordion.item-handle title="Offers" />
+						<x-accordion.item-content>
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.</p>
+						</x-accordion.item-content>
+					</x-accordion.item>
+					<x-accordion.item>
+						<x-accordion.item-handle title="About Us" />
+						<x-accordion.item-content>
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.</p>
+						</x-accordion.item-content>
+					</x-accordion.item>
+				</x-accordion>
+			</x-drawer.body>
+
+			<x-drawer.footer>
+				<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis, rem?</p>
+			</x-drawer.footer>
+		</x-drawer>
 	</x-header>
 
 	<x-component-demo :keys="[ 'header', 'hero-refactor' ]">
@@ -551,7 +603,7 @@
 	</x-component-demo>
 
 <x-component-demo :keys="[ 'drawer' ]">
-	<x-section title="Flexible Multipurpose drawer">
+	<x-section title="Flexible Multipurpose drawer1">
 		<style>
 			.multipurpose-drawer-sample .drawer__content {
 				max-width: 768px;
