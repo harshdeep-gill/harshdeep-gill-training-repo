@@ -52,6 +52,16 @@
 
 			@include transition(border-bottom-color);
 		}
+
+		/**
+		* Chevron Animation.
+		*/
+		&[open] {
+
+			#{$self}__handle-icon {
+				rotate: 90deg;
+			}
+		}
 	}
 
 	&__content-inner {
@@ -86,12 +96,5 @@
 		#{$self}__handle-btn {
 			padding: var(--spacing-3) 20px;
 		}
-	}
-
-	/**
-	* Chevron Animation.
-	*/
-	[open] &__handle-icon {
-		rotate: 90deg;
 	}
 }

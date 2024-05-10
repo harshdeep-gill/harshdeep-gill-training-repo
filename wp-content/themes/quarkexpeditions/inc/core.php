@@ -273,6 +273,7 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'overlay-click-close' => true,
 					'open'                => true,
 					'data-*'              => true,
+					'animation-direction' => true,
 				],
 				'quark-drawer-content'                  => [
 					'class' => true,
