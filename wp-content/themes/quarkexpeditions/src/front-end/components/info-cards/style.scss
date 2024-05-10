@@ -189,6 +189,25 @@
 			@include line-clamp(2);
 		}
 
+		&-cta {
+			display: flex;
+			gap: var(--spacing-1);
+			width: fit-content;
+			margin-top: var(--spacing-3);
+
+			&-icon {
+
+				svg {
+					rotate: 180deg;
+				}
+			}
+
+			&-text {
+
+				@include line-clamp(1);
+			}
+		}
+
 		&:hover {
 
 			#{$self}__image {
