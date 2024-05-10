@@ -18,7 +18,7 @@
 	@class( $classes )
 	:full_width="true"
 >
-	<x-info-cards.carousel :is_carousel="$is_carousel">
+	<x-info-cards.carousel :is_carousel="$is_carousel" :is_gallery="$is_gallery">
 		{!! $slot !!}
 	</x-info-cards.carousel>
 </x-section>

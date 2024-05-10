@@ -1,5 +1,6 @@
 @props( [
 	'is_carousel' => false,
+	'is_gallery'  => false,
 ] )
 
 @php
@@ -24,7 +25,14 @@
 		</tp-slider-track>
 
 		@if ( $slide_count > 1 )
-			<div class="info-cards__nav" data-is-carousel="{{ $is_carousel }}">
+			<div
+				class="info-cards__nav"
+				@if ( empty( $is_gallery ) && ! empty( $is_carousel ) )
+					data-is-carousel="{{ $is_carousel }}"
+				@elseif ( ! empty( $is_gallery ) )
+					data-is-gallery="{{ $is_gallery }}"
+				@endif
+			>
 				<tp-slider-arrow direction="previous">
 					<button class="info-cards__arrow-button info-cards__arrow-button--left">
 						<x-svg name="chevron-left" />
