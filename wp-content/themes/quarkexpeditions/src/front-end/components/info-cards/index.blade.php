@@ -1,6 +1,5 @@
 @props( [
-	'is_carousel' => false,
-	'is_gallery'  => false,
+	'layout' => 'grid',
 ] )
 
 @php
@@ -18,7 +17,7 @@
 	@class( $classes )
 	:full_width="true"
 >
-	<x-info-cards.carousel :is_carousel="$is_carousel" :is_gallery="$is_gallery">
+	<x-info-cards.carousel :layout="$layout">
 		{!! $slot !!}
 	</x-info-cards.carousel>
 </x-section>

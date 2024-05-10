@@ -1,6 +1,5 @@
 @props( [
-	'is_carousel' => false,
-	'is_gallery'  => false,
+	'layout' => 'grid'
 ] )
 
 @php
@@ -27,10 +26,8 @@
 		@if ( $slide_count > 1 )
 			<div
 				class="info-cards__nav"
-				@if ( empty( $is_gallery ) && ! empty( $is_carousel ) )
-					data-is-carousel="{{ $is_carousel }}"
-				@elseif ( ! empty( $is_gallery ) )
-					data-is-gallery="{{ $is_gallery }}"
+				@if ( ! empty( $layout ) && in_array( $layout, [ 'grid', 'collage', 'carousel' ], true ) )
+					data-layout="{{ $layout }}"
 				@endif
 			>
 				<tp-slider-arrow direction="previous">

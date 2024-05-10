@@ -59,7 +59,7 @@
 		grid-auto-columns: max-content;
 	}
 
-	&:not(:has(&__nav[data-is-carousel])) {
+	&:not(:has(&__nav[data-layout="carousel"])) {
 
 		@media screen and (min-width: grid-size(lg)) {
 
@@ -93,7 +93,7 @@
 		}
 	}
 
-	&:has(&__nav[data-is-gallery]) {
+	&:has(&__nav[data-layout="collage"]) {
 
 		@media screen and (min-width: grid-size(lg)) {
 
@@ -123,7 +123,7 @@
 		@media screen and (min-width: calc(grid-size(lg))) {
 			display: none;
 
-			&[data-is-carousel] {
+			&[data-layout="carousel"] {
 				display: flex;
 			}
 		}

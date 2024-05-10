@@ -1739,7 +1739,7 @@
 		</x-section>
 
 		<x-section title="Info Cards: Carousel">
-			<x-info-cards :is_carousel="true">
+			<x-info-cards layout="carousel">
 				<x-info-cards.card size="big">
 					<x-info-cards.image image_id="29" />
 					<x-info-cards.content position="bottom">
@@ -1786,8 +1786,8 @@
 			</x-info-cards>
 		</x-section>
 
-		<x-section title="Info Cards: Gallery">
-			<x-info-cards :is_gallery="true">
+		<x-section title="Info Cards: Collage">
+			<x-info-cards layout="collage">
 				<x-info-cards.card size="big">
 					<x-info-cards.image image_id="29" />
 					<x-info-cards.content position="bottom">
