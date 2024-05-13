@@ -1,0 +1,41 @@
+@import "../../scss";
+
+.sidebar-grid {
+
+	$self: &;
+
+	grid-template-columns: 1fr;
+	grid-row-gap: var(--spacing-5);
+	margin-top: var(--spacing-7);
+
+	@media screen and (min-width: grid-size(lg)) {
+		grid-template-columns: 1fr 256px;
+		grid-column-gap: var(--spacing-5);
+	}
+
+	&__sidebar {
+		display: none;
+
+		&--show-on-mobile {
+			display: block;
+		}
+
+		&--sticky {
+			position: static;
+
+			@media screen and (min-width: grid-size(lg)) {
+				position: sticky;
+				top: calc(var(--header-height) + var(--wp-admin-bar-height) + var(--spacing-5));
+				height: calc(100dvh - calc(var(--header-height) + var(--spacing-5) + var(--wp-admin-bar-height)));
+			}
+		}
+
+		@media screen and (min-width: grid-size(lg)) {
+			display: block;
+		}
+
+		> * + * {
+			margin-top: var(--spacing-5);
+		}
+	}
+}
