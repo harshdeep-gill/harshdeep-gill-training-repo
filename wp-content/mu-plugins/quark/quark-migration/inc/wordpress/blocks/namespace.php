@@ -37,6 +37,8 @@ function bootstrap(): void {
 	add_filter( 'qrk_convert_to_blocks_div', __NAMESPACE__ . '\\convert_node_div', 10, 2 );
 	add_filter( 'qrk_convert_to_blocks_a', __NAMESPACE__ . '\\convert_node_link', 10, 2 );
 	add_filter( 'qrk_convert_to_blocks_iframe', __NAMESPACE__ . '\\convert_node_iframe', 10, 2 );
+	add_filter( 'qrk_convert_to_blocks_table', __NAMESPACE__ . '\\convert_node_table', 10, 2 );
+	add_filter( 'qrk_convert_to_blocks_blockquote', __NAMESPACE__ . '\\convert_node_blockquote', 10, 2 );
 }
 
 /**
@@ -535,24 +537,18 @@ function convert_node_div( string $output = '', ?DOMElement $node = null ): stri
 				}
 
 				// Determine column width.
-				if ( str_contains( $class, 'col-md-3' ) ) {
+				if ( str_contains( $class, 'col-sm-3' ) || str_contains( $class, 'col-md-3' ) ) {
 					$attrs['width'] = '25%';
 					$html_attrs    .= ' style="flex-basis:33.33%"';
-				} elseif ( str_contains( $class, 'col-md-2' ) ) {
+				} elseif ( str_contains( $class, 'col-sm-2' ) || str_contains( $class, 'col-md-2' ) ) {
 					$attrs['width'] = '16.66%';
 					$html_attrs    .= ' style="flex-basis:16.66%"';
-				} elseif ( str_contains( $class, 'col-md-8' ) ) {
+				} elseif ( str_contains( $class, 'col-sm-8' ) || str_contains( $class, 'col-md-8' ) ) {
 					$attrs['width'] = '66.66%';
 					$html_attrs    .= ' style="flex-basis:66.66%"';
-				} elseif ( str_contains( $class, 'col-md-9' ) ) {
+				} elseif ( str_contains( $class, 'col-sm-9' ) || str_contains( $class, 'col-md-9' ) ) {
 					$attrs['width'] = '75%';
 					$html_attrs    .= ' style="flex-basis:75%"';
-				} elseif ( str_contains( $class, 'col-sm-2' ) ) {
-					$attrs['width'] = '16.66%';
-					$html_attrs    .= ' style="flex-basis:16.66%"';
-				} elseif ( str_contains( $class, 'col-sm-8' ) ) {
-					$attrs['width'] = '66.66%';
-					$html_attrs    .= ' style="flex-basis:66.66%"';
 				}
 
 				// Add column block.
@@ -601,6 +597,34 @@ function convert_node_div( string $output = '', ?DOMElement $node = null ): stri
 			),
 		]
 	);
+}
+
+/**
+ * Convert a Table node into a block.
+ *
+ * @param string          $output Block output.
+ * @param DOMElement|null $node   Node element.
+ *
+ * @return string
+ */
+function convert_node_table( string $output = '', ?DOMElement $node = null ): string {
+	// Check for node.
+	if ( ! $node instanceof DOMElement ) {
+		return $output;
+	}
+
+	// Check for table class.
+	if ( $node->ownerDocument instanceof DOMDocument ) {
+		return serialize_block(
+			[
+				'blockName' => 'core/table',
+				'innerHTML' => '<figure class="wp-block-table">' . $node->ownerDocument->saveHTML( $node ) . '</figure>',
+			]
+		);
+	} else {
+		// Return empty string.
+		return $output;
+	}
 }
 
 /**
@@ -663,11 +687,24 @@ function convert_node_iframe( string $output = '', ?DOMElement $node = null ): s
 
 	// Get SRC.
 	$src = $node->getAttribute( 'src' );
+	$url = wp_parse_url( $src );
 
-	// Bail out if src attribute is empty.
-	if ( empty( $src ) ) {
+	// Check $url is an array.
+	if ( ! is_array( $url ) ) {
 		return $output;
 	}
+
+	// Build src attribute.
+	$url = wp_parse_args(
+		$url,
+		[
+			'scheme' => 'https',
+			'host'   => '',
+			'path'   => '',
+			'query'  => '',
+		]
+	);
+	$src = $url['scheme'] . '://' . $url['host'] . $url['path'] . ( $url['query'] ? '?' . $url['query'] : '' );
 
 	// Ignore video series embeds, as there is no proper support in WordPress.
 	if ( str_contains( $src, 'embed/videoseries' ) ) {
@@ -716,8 +753,95 @@ function convert_node_iframe( string $output = '', ?DOMElement $node = null ): s
 				),
 			]
 		);
+	} else {
+		// Unknown src.
+		// Build and return block output.
+		return serialize_block(
+			[
+				'blockName' => 'core/embed',
+				'attrs'     => [
+					'url'        => $src,
+					'type'       => 'rich',
+					'responsive' => true,
+				],
+				'innerHTML' => sprintf(
+					"<figure class=\"wp-block-embed is-type-rich\"><div class=\"wp-block-embed__wrapper\">\n%s\n</div></figure>",
+					$src,
+				),
+			]
+		);
+	}
+}
+
+/**
+ * Convert a blockquote node into a block.
+ *
+ * @param string          $output Block output.
+ * @param DOMElement|null $node   Node element.
+ *
+ * @return string
+ */
+function convert_node_blockquote( string $output = '', ?DOMElement $node = null ): string {
+	// Check for correct node.
+	if ( ! $node instanceof DOMElement ) {
+		return $output;
 	}
 
-	// Fallback.
+	// get class attribute.
+	$class = $node->getAttribute( 'class' );
+
+	// Check for instagram embed classes.
+	if ( str_contains( $class, 'instagram-media' ) ) {
+		// Get instagram URL.
+		$regex = '/<a\s+(?:[^>]*?\s+)?href=([\'"])(.*?)\1/';
+
+		// Check for owner document.
+		if ( $node->ownerDocument instanceof DOMDocument ) {
+			$instagram_dom = $node->ownerDocument->saveHTML( $node );
+
+			// Get the matches.
+			preg_match_all( $regex, strval( $instagram_dom ), $matches );
+
+			// Check for matches.
+			if ( $matches[2] ) {
+				// Return instagram block.
+				return serialize_block(
+					[
+						'blockName' => 'core/embed',
+						'attrs'     => [
+							'url'        => $matches[2][0],
+							'type'       => 'rich',
+							'responsive' => true,
+						],
+						'innerHTML' => sprintf(
+							"<figure class=\"wp-block-embed is-type-rich\"><div class=\"wp-block-embed__wrapper\">\n%s\n</div></figure>",
+							$matches[2][0],
+						),
+					]
+				);
+			}
+		}
+	} else {
+		// Prepare inner HTML.
+		$inner_html = '';
+
+		// Get inner HTML.
+		foreach ( $node->childNodes as $child_node ) {
+			// Check for correct node.
+			if ( $child_node instanceof DOMElement ) {
+				$inner_html .= convert_node_to_block( $child_node );
+			}
+		}
+
+		// No instagram embed, return blockquote.
+		return serialize_block(
+			[
+				'blockName' => 'core/quote',
+				'innerHTML' => '<blockquote class="wp-block-quote">' . $inner_html . '</blockquote>',
+			]
+		);
+	}
+
+	// Check for node.
 	return $output;
 }
