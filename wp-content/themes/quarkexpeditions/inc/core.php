@@ -259,6 +259,10 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'class'  => true,
 					'data-*' => true,
 				],
+				'quark-table-of-contents'               => [
+					'class'  => true,
+					'data-*' => true,
+				],
 				'tp-form'                               => [
 					'class'          => true,
 					'prevent-submit' => true,

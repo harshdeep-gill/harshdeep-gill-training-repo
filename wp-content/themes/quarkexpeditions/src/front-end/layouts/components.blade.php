@@ -1571,6 +1571,46 @@
 		</x-product-cards>
 	</x-component-demo>
 
+	<x-component-demo :keys="[ 'table-of-contents' ]">
+		<x-table-of-contents
+			title="In this article"
+			:contents="[
+				[
+					'title'  => 'You can travel to Antarctica! Here\'s how.',
+					'anchor' => 'you-can-travel-antarctica',
+				],
+				[
+					'title'  => 'When can I travel to Antarctica?',
+					'anchor' => 'when-can-travel-antarctica',
+				],
+				[
+					'title'  => 'How long is an Antarctic expedition?',
+					'anchor' => 'how-long-antarctic-expedition',
+				],
+				[
+					'title'  => 'How is an expedition to Antarctica different from a cruise?',
+					'anchor' => 'cruise',
+				],
+				[
+					'title'  => 'What can I do while in Antarctica?',
+					'anchor' => 'what-can-do-antarctica',
+				],
+				[
+					'title'  => 'Are all trips the same? How do I choose the best itinerary for me?',
+					'anchor' => 'best-itinerary',
+				],
+				[
+					'title'  => 'Why Visit Antarctica?',
+					'anchor' => 'why-visit',
+				],
+				[
+					'title'  => 'Yes, you can visit Antarctica!',
+					'anchor' => 'can-visit-antarctica',
+				],
+			]"
+		/>
+	</x-component-demo>
+
 	<x-component-demo :keys="[ 'lp-footer' ]">
 		<x-lp-footer>
 			<x-lp-footer.row>
