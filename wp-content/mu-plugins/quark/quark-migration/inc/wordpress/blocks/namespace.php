@@ -842,6 +842,6 @@ function convert_node_blockquote( string $output = '', ?DOMElement $node = null 
 		);
 	}
 
-	// Check for node.
+	// Fallback.
 	return $output;
 }
