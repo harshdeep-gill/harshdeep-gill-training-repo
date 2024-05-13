@@ -121,7 +121,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 						[
 							'key'                       => 'field_65f455670463f',
 							'label'                     => 'Agreement Display Options',
-							'name'                      => 'agreement_display_options',
+							'name'                      => 'display_options',
 							'aria-label'                => '',
 							'type'                      => 'checkbox',
 							'instructions'              => 'Choose where these will display:
@@ -169,7 +169,7 @@ Expedition: TBD Itinerary: Within the itinerary tab as a link. Departure: At the
 						[
 							'key'               => 'field_65f4566604641',
 							'label'             => 'Include in Content Migrations to Ships',
-							'name'              => 'migrate_to_qq',
+							'name'              => 'migrate_to_ship_portal',
 							'aria-label'        => '',
 							'type'              => 'true_false',
 							'instructions'      => '',

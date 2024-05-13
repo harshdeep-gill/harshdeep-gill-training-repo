@@ -199,21 +199,21 @@ function register_expedition_category_taxonomy(): void {
 function register_departure_destination_taxonomy(): void {
 	// Prepare labels.
 	$labels = [
-		'name'                       => 'Departure Destinations',
-		'singular_name'              => 'Departure Destination',
-		'search_items'               => 'Search Departure Destinations',
-		'popular_items'              => 'Popular Departure Destinations',
-		'all_items'                  => 'All Departure Destinations',
-		'parent_item'                => 'Parent Departure Destination',
-		'parent_item_colon'          => 'Parent Departure Destination:',
-		'edit_item'                  => 'Edit Departure Destination',
-		'update_item'                => 'Update Departure Destination',
-		'add_new_item'               => 'Add New Departure Destination',
-		'new_item_name'              => 'New Departure Destination',
-		'separate_items_with_commas' => 'Separate Departure Destinations with commas',
-		'add_or_remove_items'        => 'Add or remove Departure Destinations',
-		'choose_from_most_used'      => 'Choose from the most used Departure Destinations',
-		'menu_name'                  => 'Departure Destinations',
+		'name'                       => 'Excursions',
+		'singular_name'              => 'Excursion',
+		'search_items'               => 'Search Excursion',
+		'popular_items'              => 'Popular Excursions',
+		'all_items'                  => 'All Excursions',
+		'parent_item'                => 'Parent Excursion',
+		'parent_item_colon'          => 'Parent Excursion:',
+		'edit_item'                  => 'Edit Excursion',
+		'update_item'                => 'Update Excursion',
+		'add_new_item'               => 'Add New Excursion',
+		'new_item_name'              => 'New Excursion',
+		'separate_items_with_commas' => 'Separate Excursions with commas',
+		'add_or_remove_items'        => 'Add or remove Excursions',
+		'choose_from_most_used'      => 'Choose from the most used Excursions',
+		'menu_name'                  => 'Excursions',
 	];
 
 	// Prepare args for registering taxonomy.

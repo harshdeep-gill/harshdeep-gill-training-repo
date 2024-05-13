@@ -99,7 +99,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 						'id'    => '',
 					],
 					'post_type'            => [
-						0 => 'cabin_category',
+						0 => 'qrk_cabin_category',
 					],
 					'post_status'          => '',
 					'taxonomy'             => '',
@@ -132,7 +132,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 					'min'               => 0,
 					'max'               => 0,
 					'collapsed'         => '',
-					'button_label'      => 'Add Row',
+					'button_label'      => 'Add Space',
 					'rows_per_page'     => 20,
 					'sub_fields'        => [
 						[

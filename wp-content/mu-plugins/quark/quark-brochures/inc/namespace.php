@@ -25,6 +25,9 @@ function bootstrap(): void {
 	// Other hooks.
 	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
 
+	// Opt into stuff.
+	add_filter( 'qe_seasons_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
+
 	// Custom fields.
 	if ( is_admin() ) {
 		require_once __DIR__ . '/../custom-fields/brochures.php';
@@ -76,6 +79,21 @@ function register_brochures_post_type(): void {
 
 	// Register post type.
 	register_post_type( POST_TYPE, $args );
+}
+
+/**
+ * Opt into stuff.
+ *
+ * @param string[] $post_types Post types.
+ *
+ * @return string[]
+ */
+function opt_in( array $post_types = [] ): array {
+	// Append staff member post type for taxonomy.
+	$post_types[] = POST_TYPE;
+
+	// Return modified array.
+	return $post_types;
 }
 
 /**

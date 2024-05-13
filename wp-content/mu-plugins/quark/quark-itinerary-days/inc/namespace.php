@@ -55,11 +55,12 @@ function register_itinerary_day_post_type(): void {
 			'menu_name'          => 'Itinerary Days',
 		],
 		'public'              => false,
-		'show_in_rest'        => true,
+		'show_in_rest'        => false,
 		'menu_icon'           => 'dashicons-list-view',
 		'hierarchical'        => false,
 		'supports'            => [
 			'title',
+			'editor',
 			'thumbnail',
 		],
 		'show_ui'             => true,

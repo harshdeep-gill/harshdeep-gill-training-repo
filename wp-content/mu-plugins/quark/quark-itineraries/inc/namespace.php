@@ -29,6 +29,7 @@ function bootstrap(): void {
 	// Opt into stuff.
 	add_filter( 'qe_departure_locations_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
 	add_filter( 'qe_tax_types_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
+	add_filter( 'qe_seasons_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
 
 	// Other hooks.
 	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
@@ -95,21 +96,21 @@ function register_itinerary_post_type(): void {
 function register_departure_location_taxonomy(): void {
 	// Prepare labels.
 	$labels = [
-		'name'                       => 'Departure Locations',
-		'singular_name'              => 'Departure Location',
-		'search_items'               => 'Search Departure Locations',
-		'popular_items'              => 'Popular Departure Locations',
-		'all_items'                  => 'All Departure Locations',
-		'parent_item'                => 'Parent Departure Location',
-		'parent_item_colon'          => 'Parent Departure Location:',
-		'edit_item'                  => 'Edit Departure Location',
-		'update_item'                => 'Update Departure Location',
-		'add_new_item'               => 'Add New Departure Location',
-		'new_item_name'              => 'New Departure Location',
-		'separate_items_with_commas' => 'Separate Departure Locations with commas',
-		'add_or_remove_items'        => 'Add or remove Departure Locations',
-		'choose_from_most_used'      => 'Choose from the most used Departure Locations',
-		'menu_name'                  => 'Departure Locations',
+		'name'                       => 'Departure & Arrival Locations',
+		'singular_name'              => 'Departure & Arrival Location',
+		'search_items'               => 'Search Departure & Arrival Locations',
+		'popular_items'              => 'Popular Departure & Arrival Locations',
+		'all_items'                  => 'All Departure & Arrival Locations',
+		'parent_item'                => 'Parent Departure & Arrival Location',
+		'parent_item_colon'          => 'Parent Departure & Arrival Location:',
+		'edit_item'                  => 'Edit Departure & Arrival Location',
+		'update_item'                => 'Update Departure & Arrival Location',
+		'add_new_item'               => 'Add New Departure & Arrival Location',
+		'new_item_name'              => 'New Departure & Arrival Location',
+		'separate_items_with_commas' => 'Separate Departure & Arrival Locations with commas',
+		'add_or_remove_items'        => 'Add or remove Departure & Arrival Locations',
+		'choose_from_most_used'      => 'Choose from the most used Departure & Arrival Locations',
+		'menu_name'                  => 'Departure & Arrival Locations',
 	];
 
 	// Prepare args for registering taxonomy.
@@ -118,6 +119,7 @@ function register_departure_location_taxonomy(): void {
 		'public'            => false,
 		'show_in_nav_menus' => false,
 		'show_ui'           => true,
+		'meta_box_cb'       => false,
 		'show_tagcloud'     => false,
 		'show_admin_column' => true,
 		'hierarchical'      => true,

@@ -41,7 +41,7 @@ function register_port_post_type(): void {
 	// Post type arguments.
 	$args = [
 		'labels'              => [
-			'name'               => 'ports',
+			'name'               => 'Ports',
 			'singular_name'      => 'Port',
 			'add_new'            => 'Add New',
 			'add_new_item'       => 'Add New Port',

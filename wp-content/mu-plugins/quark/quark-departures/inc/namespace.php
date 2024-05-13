@@ -35,6 +35,7 @@ function bootstrap(): void {
 	if ( is_admin() ) {
 		// Custom fields.
 		require_once __DIR__ . '/../custom-fields/departures.php';
+		require_once __DIR__ . '/../custom-fields/spoken-languages.php';
 	}
 }
 

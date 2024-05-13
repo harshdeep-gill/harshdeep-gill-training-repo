@@ -9,6 +9,8 @@ namespace Quark\CabinCategories;
 
 use WP_Post;
 
+use const Quark\Ships\POST_TYPE as SHIP_POST_TYPE;
+
 const POST_TYPE            = 'qrk_cabin_category';
 const CABIN_CLASS_TAXONOMY = 'qrk_cabin_class';
 const CACHE_KEY            = POST_TYPE;
@@ -34,6 +36,9 @@ function bootstrap(): void {
 	if ( is_admin() ) {
 		// Custom fields.
 		require_once __DIR__ . '/../custom-fields/cabin-categories.php';
+
+		// Taxonomy menu position.
+		add_action( 'admin_menu', __NAMESPACE__ . '\\set_cabin_classes_taxonomy_menu_position' );
 	}
 }
 
@@ -60,7 +65,7 @@ function register_cabin_category_post_type(): void {
 			'menu_name'          => 'Cabin Categories',
 		],
 		'public'              => false,
-		'show_in_rest'        => true,
+		'show_in_rest'        => false,
 		'menu_icon'           => 'dashicons-category',
 		'hierarchical'        => false,
 		'supports'            => [
@@ -146,6 +151,22 @@ function opt_in( array $post_types = [] ): array {
 }
 
 /**
+ * Set Cabin class taxonomy menu position.
+ *
+ * @return void
+ */
+function set_cabin_classes_taxonomy_menu_position(): void {
+	// Add taxonomy page under CPT.
+	add_submenu_page(
+		'edit.php?post_type=qrk_ship',
+		'Cabin Classes',
+		'Cabin Classes',
+		'manage_categories',
+		'edit-tags.php?taxonomy=' . CABIN_CLASS_TAXONOMY . '&post_type=' . SHIP_POST_TYPE,
+	);
+}
+
+/**
  * Busts cache for this post type.
  *
  * @param int $post_id Post ID.
@@ -208,7 +229,7 @@ function get( int $post_id = 0 ): array {
 	// Build data.
 	$data = [
 		'post'            => $post,
-		'post_thumbnail'  => get_post_thumbnail_id( $post ) ?: 0,
+		'post_thumbnail'  => get_post_thumbnail_id( $post ) ? : 0,
 		'post_meta'       => [],
 		'post_taxonomies' => [],
 	];

@@ -13,7 +13,7 @@ use function Quark\Core\prepare_content_with_blocks;
 
 const POST_TYPE                     = 'qrk_staff_member';
 const DEPARTMENT_TAXONOMY           = 'qrk_departments';
-const DEPARTURE_STAFF_ROLE_TAXONOMY = 'qrk_departure_staff_roles';
+const DEPARTURE_STAFF_ROLE_TAXONOMY = 'qrk_staff_roles';
 const SEASON_TAXONOMY               = 'qrk_seasons';
 const CACHE_KEY                     = POST_TYPE;
 const CACHE_GROUP                   = POST_TYPE;
@@ -27,7 +27,7 @@ function bootstrap(): void {
 	// Post type and taxonomy.
 	add_action( 'init', __NAMESPACE__ . '\\register_staff_member_post_type' );
 	add_action( 'init', __NAMESPACE__ . '\\register_departments_taxonomy' );
-	add_action( 'init', __NAMESPACE__ . '\\register_departure_staff_roles_taxonomy' );
+	add_action( 'init', __NAMESPACE__ . '\\register_staff_roles_taxonomy' );
 	add_action( 'init', __NAMESPACE__ . '\\register_seasons_taxonomy' );
 
 	// Layout.
@@ -35,7 +35,7 @@ function bootstrap(): void {
 
 	// Opt into stuff.
 	add_filter( 'qe_departments_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
-	add_filter( 'qe_departure_staff_roles_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
+	add_filter( 'qe_staff_roles_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
 	add_filter( 'qe_seasons_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
 	add_filter( 'qe_spoken_languages_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
 
@@ -149,24 +149,24 @@ function register_departments_taxonomy(): void {
  *
  * @return void
  */
-function register_departure_staff_roles_taxonomy(): void {
+function register_staff_roles_taxonomy(): void {
 	// Prepare labels.
 	$labels = [
-		'name'                       => 'Departure Staff Roles',
-		'singular_name'              => 'Departure Staff Role',
-		'search_items'               => 'Search Departure Staff Roles',
-		'popular_items'              => 'Popular Departure Staff Roles',
-		'all_items'                  => 'All Departure Staff Roles',
-		'parent_item'                => 'Parent Departure Staff Role',
-		'parent_item_colon'          => 'Parent Departure Staff Role:',
-		'edit_item'                  => 'Edit Departure Staff Role',
-		'update_item'                => 'Update Departure Staff Role',
-		'add_new_item'               => 'Add New Departure Staff Role',
-		'new_item_name'              => 'New Departure Staff Role',
-		'separate_items_with_commas' => 'Separate Departure Staff Roles with commas',
-		'add_or_remove_items'        => 'Add or remove Departure Staff Roles',
-		'choose_from_most_used'      => 'Choose from the most used Departure Staff Roles',
-		'menu_name'                  => 'Departure Staff Roles',
+		'name'                       => 'Staff Roles',
+		'singular_name'              => 'Staff Role',
+		'search_items'               => 'Search Staff Roles',
+		'popular_items'              => 'Popular Staff Roles',
+		'all_items'                  => 'All Staff Roles',
+		'parent_item'                => 'Parent Staff Role',
+		'parent_item_colon'          => 'Parent Staff Role:',
+		'edit_item'                  => 'Edit Staff Role',
+		'update_item'                => 'Update Staff Role',
+		'add_new_item'               => 'Add New Staff Role',
+		'new_item_name'              => 'New Staff Role',
+		'separate_items_with_commas' => 'Separate Staff Roles with commas',
+		'add_or_remove_items'        => 'Add or remove Staff Roles',
+		'choose_from_most_used'      => 'Choose from the most used Staff Roles',
+		'menu_name'                  => 'Staff Roles',
 	];
 
 	// Prepare args for registering taxonomy.
@@ -185,7 +185,7 @@ function register_departure_staff_roles_taxonomy(): void {
 	];
 
 	// Register taxonomy.
-	register_taxonomy( DEPARTURE_STAFF_ROLE_TAXONOMY, (array) apply_filters( 'qe_departure_staff_roles_taxonomy_post_types', [] ), $args );
+	register_taxonomy( DEPARTURE_STAFF_ROLE_TAXONOMY, (array) apply_filters( 'qe_staff_roles_taxonomy_post_types', [] ), $args );
 }
 
 /**

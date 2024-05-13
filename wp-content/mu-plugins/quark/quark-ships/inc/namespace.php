@@ -16,7 +16,6 @@ use function Quark\Core\prepare_content_with_blocks;
 
 const POST_TYPE              = 'qrk_ship';
 const SHIP_CATEGORY_TAXONOMY = 'qrk_ship_categories';
-const ICON_TAXONOMY          = 'qrk_icons';
 const CACHE_KEY              = POST_TYPE;
 const CACHE_GROUP            = POST_TYPE;
 
@@ -29,15 +28,12 @@ function bootstrap(): void {
 	// Post type and taxonomy.
 	add_action( 'init', __NAMESPACE__ . '\\register_ship_post_type' );
 	add_action( 'init', __NAMESPACE__ . '\\register_ship_categories_taxonomy' );
-	add_action( 'init', __NAMESPACE__ . '\\register_icon_taxonomy' );
-	add_filter( 'rest_prepare_taxonomy', __NAMESPACE__ . '\\hide_icon_metabox', 10, 3 );
 
 	// Layout.
 	add_action( 'template_redirect', __NAMESPACE__ . '\\layout' );
 
 	// Opt into stuff.
 	add_filter( 'qe_ship_category_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
-	add_filter( 'qe_icons_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
 
 	// Other hooks.
 	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
@@ -141,92 +137,6 @@ function register_ship_categories_taxonomy(): void {
 
 	// Register taxonomy.
 	register_taxonomy( SHIP_CATEGORY_TAXONOMY, (array) apply_filters( 'qe_ship_category_taxonomy_post_types', [] ), $args );
-}
-
-/**
- * Register Icon taxonomy.
- *
- * @return void
- */
-function register_icon_taxonomy(): void {
-	// Prepare labels.
-	$labels = [
-		'name'                       => 'Icons',
-		'singular_name'              => 'Icon',
-		'search_items'               => 'Search Icons',
-		'popular_items'              => 'Popular Icons',
-		'all_items'                  => 'All Icons',
-		'parent_item'                => 'Parent Icon',
-		'parent_item_colon'          => 'Parent Icon:',
-		'edit_item'                  => 'Edit Icon',
-		'update_item'                => 'Update Icon',
-		'add_new_item'               => 'Add New Icon',
-		'new_item_name'              => 'New Icon',
-		'separate_items_with_commas' => 'Separate Icons with commas',
-		'add_or_remove_items'        => 'Add or remove Icons',
-		'choose_from_most_used'      => 'Choose from the most used Icons',
-		'menu_name'                  => 'Icons',
-	];
-
-	// Prepare args for registering taxonomy.
-	$args = [
-		'labels'            => $labels,
-		'public'            => false,
-		'show_in_nav_menus' => false,
-		'show_ui'           => true,
-		'show_tagcloud'     => false,
-		'show_admin_column' => true,
-		'hierarchical'      => true,
-		'rewrite'           => false,
-		'query_var'         => true,
-		'capabilities'      => [],
-		'show_in_rest'      => true,
-		'meta_box_cb'       => false,
-	];
-
-	// Register taxonomy.
-	register_taxonomy( SHIP_CATEGORY_TAXONOMY, (array) apply_filters( 'qe_icons_taxonomy_post_types', [] ), $args );
-}
-
-/**
- * Hide Icon taxonomy metabox.
- *
- * @param WP_REST_Response|null $response The response object.
- * @param WP_Taxonomy| null     $taxonomy The original taxonomy object.
- * @param WP_REST_Request|null  $request  Request used to generate the response.
- *
- * @return WP_REST_Response|null
- */
-function hide_icon_metabox( WP_REST_Response $response = null, WP_Taxonomy $taxonomy = null, WP_REST_Request $request = null ): WP_REST_Response|null {
-	// Check if taxonomy is Icon.
-	if (
-		! $taxonomy instanceof WP_Taxonomy
-		|| ! $response instanceof WP_REST_Response
-		|| ! $request instanceof WP_REST_Request
-		|| ICON_TAXONOMY !== $taxonomy->name
-	) {
-		return $response;
-	}
-
-	// Get context.
-	$context = ! empty( $request['context'] ) ? $request['context'] : 'view';
-
-	// Context is edit in the editor.
-	if ( 'edit' === $context && false === $taxonomy->meta_box_cb ) {
-		$data_response = $response->get_data();
-
-		// Check if data response is not an array.
-		if ( ! is_array( $data_response ) ) {
-			$data_response = [];
-		}
-
-		// Hide UI.
-		$data_response['visibility']['show_ui'] = false;
-		$response->set_data( $data_response );
-	}
-
-	// Return response.
-	return $response;
 }
 
 /**
