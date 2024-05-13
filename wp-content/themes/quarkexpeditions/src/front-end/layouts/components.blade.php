@@ -1791,6 +1791,7 @@
 				<x-info-cards.card size="big">
 					<x-info-cards.image image_id="29" />
 					<x-info-cards.content position="top">
+						<x-info-cards.tag text="webinar"/>
 						<x-info-cards.overline>3 mins read</x-info-cards.overline>
 						<x-info-cards.title title="Chasing Shackleton: Chasing Polar Dreams" />
 						<x-info-cards.description>
@@ -1802,6 +1803,7 @@
 				<x-info-cards.card>
 					<x-info-cards.image image_id="30" />
 					<x-info-cards.content position="bottom">
+						<x-info-cards.tag text="webinar"/>
 						<x-info-cards.overline>8 mins read</x-info-cards.overline>
 						<x-info-cards.title title="Wildlife Guide: Emperor Penguin Facts" />
 						<x-info-cards.cta text="Read Post" url="#" />
