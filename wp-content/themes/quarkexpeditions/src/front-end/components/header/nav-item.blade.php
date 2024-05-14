@@ -2,11 +2,15 @@
 	'title'  => '',
 	'icon'   => '',
 	'url'    => '',
+	'class'  => '',
 	'target' => '',
 ] )
 
-<li class="header__nav-item">
-	<quark-header-nav-menu-link>
+<li @class( [ 'header__nav-item', $class ] )>
+	@if ( empty( $url ) )
+		<quark-header-nav-menu-dropdown>
+	@endif
+
 		<x-maybe-link
 			href="{{ $url }}"
 			fallback_tag="button"
@@ -21,9 +25,12 @@
 				<x-escape :content="$title" />
 			@endif
 		</x-maybe-link>
-	</quark-header-nav-menu-link>
+
+		@if ( empty( $url ) )
+			{!! $slot !!}
+		@endif
 
 	@if ( empty( $url ) )
-		{!! $slot !!}
+		</quark-header-nav-menu-dropdown>
 	@endif
 </li>

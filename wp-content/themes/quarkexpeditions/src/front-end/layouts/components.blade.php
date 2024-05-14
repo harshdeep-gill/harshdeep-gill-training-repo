@@ -68,38 +68,29 @@
 			</x-header.nav-item>
 		</x-header.primary-nav>
 
-		<x-header.primary-nav>
-			{{-- // If icon is passed then the title shouldn't be displayed. --}}
-			{{-- <x-header.nav-item title="Search" icon="search">
-				<x-header.nav-item-dropdown-content>
-					// Slot -> Search Component
-				</x-header.nav-item-dropdown-content>
-			</x-header.nav-item> --}}
-			<x-header.nav-item title="" icon="search" url="" />
+		<x-header.secondary-nav>
+			<x-header.nav-item class="header__search-wrapper" title="" icon="search" url="" />
 			<x-header.nav-item title="Dates & Prices" icon="" url="/dates-prices" />
 			<x-header.nav-item title="Travel Advisors" icon="" url="/travel-advisors" />
-		</x-header.primary-nav>
+		</x-header.secondary-nav>
 
 		<x-header.cta-buttons>
-			<x-button href="tel:+1-877-585-1235" size="big" color="white" appearance="outline">+1-877-585-1235</x-button>
-			<x-button size="big">Request a Quote</x-button>
-
-			{{-- // For Tablet and mobile. // Subject to change based on Drawer Component. --}}
-			{{-- <x-header.drawer-cta>
-				<x-button size="big" icon="hamburger" />
-			</x-header.drawer-cta> --}}
+			<x-button class="header__phone-btn" href="tel:+1-877-585-1235" size="big" color="white" appearance="outline">
+				<x-svg name="phone" />
+				+1-877-585-1235
+			</x-button>
+			<x-button class="header__request-quote-btn" size="big">Request a Quote</x-button>
 		</x-header.cta-buttons>
 
-		<x-drawer.drawer-open drawer_id="header-drawer" class="color-context--dark">
+		<x-drawer.drawer-open drawer_id="header-drawer" class="color-context--dark header__hamburger-menu-btn">
 			<x-button type="button" size="big" color="black">
 				<x-svg name="hamburger" />
 			</x-button>
 		</x-drawer.drawer-open>
 
-		<x-drawer id="header-drawer" animation_direction="up" class="header-drawer">
+		<x-drawer id="header-drawer" animation_direction="up" class="header__drawer">
 			<x-drawer.header>
-				<h3>Lorem ipsum dolor sit amet.</h3>
-				<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur voluptate dolorum alias officiis minima nemo asperiores maxime velit itaque sapiente?</p>
+				<x-header.site-logo url="https://www.quarkexpeditions.com"/>
 			</x-drawer.header>
 
 			<x-drawer.body>
@@ -107,13 +98,43 @@
 					<x-accordion.item>
 						<x-accordion.item-handle title="Destinations" />
 						<x-accordion.item-content>
-							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.</p>
+							<x-header.nav-item-featured image_id="32" size="small">
+								<x-header.nav-item-featured-title title="Explore Polar Regions" />
+								<x-header.nav-item-featured-subtitle subtitle="Incididunt ut labore et dolore magna aliqua." />
+								<x-button size="big">Explore Polar Regions</x-button>
+							</x-header.nav-item-featured>
+
+							<x-menu-list title="Antarctic Regions">
+								<x-menu-list.item title="Antarctic Peninsula" url="#" />
+								<x-menu-list.item title="Falkland Islands" url="#" />
+								<x-menu-list.item title="Patagonia" url="#" />
+								<x-menu-list.item title="South Georgia" url="#" />
+								<x-menu-list.item title="Snow Hill Island" url="#" />
+							</x-menu-list>
+
+							<x-menu-list title="Arctic Regions">
+								<x-menu-list.item title="Canadian High Arctic" url="#" />
+								<x-menu-list.item title="Greenland" url="#" />
+								<x-menu-list.item title="Svalbard" url="#" />
+							</x-menu-list>
 						</x-accordion.item-content>
 					</x-accordion.item>
 					<x-accordion.item>
 						<x-accordion.item-handle title="Expeditions" />
 						<x-accordion.item-content>
-							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.it further to meet your schedule, interests, and budget with one of our expert Travel Consultants.</p>
+							<x-header.nav-item-featured image_id="32" size="small">
+								<x-header.nav-item-featured-title title="Explore Polar Regions" />
+								<x-header.nav-item-featured-subtitle subtitle="Incididunt ut labore et dolore magna aliqua." />
+								<x-button size="big">Explore Polar Regions</x-button>
+							</x-header.nav-item-featured>
+
+							<x-menu-list title="Antarctic Regions">
+								<x-menu-list.item title="Antarctic Peninsula" url="#" />
+								<x-menu-list.item title="Falkland Islands" url="#" />
+								<x-menu-list.item title="Patagonia" url="#" />
+								<x-menu-list.item title="South Georgia" url="#" />
+								<x-menu-list.item title="Snow Hill Island" url="#" />
+							</x-menu-list>
 						</x-accordion.item-content>
 					</x-accordion.item>
 					<x-accordion.item>
@@ -136,10 +157,6 @@
 					</x-accordion.item>
 				</x-accordion>
 			</x-drawer.body>
-
-			<x-drawer.footer>
-				<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis, rem?</p>
-			</x-drawer.footer>
 		</x-drawer>
 	</x-header>
 

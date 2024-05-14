@@ -38,7 +38,7 @@ export default class HeaderNavMenu extends HTMLElement {
 	}
 
 	/**
-	 * Open search bar.
+	 * Open dropdown.
 	 */
 	open() {
 		// Toggle active attribute.
@@ -46,7 +46,7 @@ export default class HeaderNavMenu extends HTMLElement {
 	}
 
 	/**
-	 * Close Search.
+	 * Close dropdown.
 	 */
 	close() {
 		// Remove 'active' attribute.
@@ -95,4 +95,4 @@ export default class HeaderNavMenu extends HTMLElement {
 /**
  * Initialize.
  */
-customElements.define( 'quark-header-nav-menu-link', HeaderNavMenu );
+customElements.define( 'quark-header-nav-menu-dropdown', HeaderNavMenu );

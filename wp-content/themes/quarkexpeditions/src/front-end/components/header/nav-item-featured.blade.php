@@ -1,5 +1,6 @@
 @props( [
 	'image_id' => 0,
+	'size'     => '',
 ] )
 
 @php
@@ -8,17 +9,32 @@
 		return;
 	}
 
-	// Image arguments.
-	$image_args = [
-		'size' =>       [
-			'width'   => 400,
-			'height'  => 574,
-		],
-		'responsive' => [
-			'sizes'  => [ '(min-width: 1280px) 400px', '(min-width: 1024px) 50vw', '100vw' ],
-			'widths' => [ 320, 400, 480, 600, 800 ],
-		],
-	];
+	if ( 'small' === $size ) {
+		// Image arguments.
+		$image_args = [
+			'size' =>       [
+				'width'   => 432,
+				'height'  => 192,
+			],
+			'responsive' => [
+				'sizes'  => [ '(min-width: 1024px) 50vw', '100vw' ],
+				'widths' => [ 320, 400, 480, 600, 800 ],
+			],
+		];
+	} else {
+		// Image arguments.
+		$image_args = [
+			'size' =>       [
+				'width'   => 400,
+				'height'  => 574,
+			],
+			'responsive' => [
+				'sizes'  => [ '(min-width: 1280px) 400px', '(min-width: 1024px) 50vw', '100vw' ],
+				'widths' => [ 320, 400, 480, 600, 800 ],
+			],
+		];
+	}
+
 @endphp
 
 <div class="header__nav-item-featured">

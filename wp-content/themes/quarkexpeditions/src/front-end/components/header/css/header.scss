@@ -6,11 +6,16 @@
 	display: flex;
 	align-items: center;
 	height: var(--header-height);
-	padding: 0 80px;
+	padding: 0 var(--spacing-5);
 	position: sticky;
 	top: var(--wp-admin-bar-height);
 	z-index: 99;
-	gap: var(--spacing-5);
+	gap: var(--spacing-4);
+
+	@media screen and (min-width: grid-size(xxxl)) {
+		gap: var(--spacing-5);
+		padding: 0 80px;
+	}
 
 	> *:nth-child(3) {
 		margin-left: auto;
@@ -37,6 +42,46 @@
 
 	&__cta-buttons {
 		display: flex;
-		gap: var(--spacing-5);
+		gap: var(--spacing-4);
+		margin-left: auto;
+
+		@media screen and (min-width: grid-size(md)) {
+			margin-left: var(--spacing-4);
+		}
+
+		@media screen and (min-width: grid-size(xxxl)) {
+			gap: var(--spacing-5);
+			margin-left: auto;
+		}
+	}
+
+	&__request-quote-btn {
+		display: none;
+
+		@media screen and (min-width: grid-size(md)) {
+			display: inline-block;
+		}
+	}
+
+	&__phone-btn {
+		font-size: 0;
+		display: inline-flex;
+		align-items: center;
+		min-width: 56px;
+
+		@media screen and (min-width: grid-size(xxxl)) {
+			font-size: inherit;
+		}
+
+		svg {
+			height: 21px;
+			width: 21px;
+
+			@media screen and (min-width: grid-size(xxxl)) {
+				height: 16px;
+				width: 16px;
+				margin-right: var(--spacing-3);
+			}
+		}
 	}
 }

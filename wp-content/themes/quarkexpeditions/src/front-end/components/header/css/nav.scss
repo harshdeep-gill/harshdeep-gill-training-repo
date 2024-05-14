@@ -5,18 +5,27 @@
 
 	&__primary-nav {
 		margin: 0 calc(-1 * var(--grid-col-gutter));
-		opacity: 0;
-		visibility: hidden;
+		display: none;
 
-		&[active] {
-			opacity: 1;
-			visibility: visible;
+		@media screen and (min-width: grid-size(lg)) {
+			margin: 0;
+			display: block;
+		}
+	}
+
+	&__secondary-nav {
+		display: none;
+
+		@media screen and (min-width: grid-size(md)) {
+			display: block;
 		}
 
-		@media screen and (min-width: grid-size(xl)) {
-			opacity: 1;
-			visibility: visible;
-			margin: 0;
+		#{$self}__nav-item:not(.header__search-wrapper) {
+			display: none;
+
+			@media screen and (min-width: grid-size(xxxl)) {
+				display: block;
+			}
 		}
 	}
 
@@ -41,37 +50,29 @@
 	}
 
 	// Menu Level 1.
-	&__primary-nav-menu {
-		display: block;
+	&__nav-menu {
 		position: relative;
+		display: flex;
+		flex-direction: row;
+		gap: var(--spacing-4);
+		list-style: none;
+		padding-left: 0;
 
-		> ul {
-			display: flex;
-			flex-direction: column;
-			gap: var(--spacing-4);
-			list-style: none;
-			padding-left: 0;
+		> li {
 
-			@media screen and (min-width: grid-size(xl)) {
-				flex-direction: row;
+			&.current-menu-item > a,
+			&.current-menu-ancestor > a {
+				background-color: var(--color-gray-90);
+				border-radius: var(--border-radius);
 			}
 
-			> li {
+			&:hover {
 
-				&.current-menu-item > a,
-				&.current-menu-ancestor > a {
-					background-color: var(--color-gray-90);
-					border-radius: var(--border-radius);
-				}
+				> a {
 
-				&:hover {
-
-					> a {
-
-						@media (hover: hover) {
-							background-color: var(--color-gray-90);
-							border-radius: var(--border-radius);
-						}
+					@media (hover: hover) {
+						background-color: var(--color-gray-90);
+						border-radius: var(--border-radius);
 					}
 				}
 			}
@@ -106,7 +107,7 @@
 		opacity: 0;
 		visibility: hidden;
 
-		quark-header-nav-menu-link[active] + & {
+		quark-header-nav-menu-dropdown[active] & {
 			opacity: 1;
 			visibility: visible;
 		}
