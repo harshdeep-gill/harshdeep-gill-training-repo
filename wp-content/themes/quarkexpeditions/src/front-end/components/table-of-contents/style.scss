@@ -2,7 +2,7 @@
  * Table Of Contents.
  */
 
- @import "../../scss";
+@import "../../scss";
 
 .table-of-contents {
 	$self: &;
@@ -16,12 +16,25 @@
 		list-style-type: none;
 	}
 
-	&__content {
+	&__title {
+		margin-bottom: var(--spacing-5);
+	}
+
+	&__list-item {
+		position: relative;
+		margin-bottom: 0;
 		padding-left: var(--spacing-6);
 		padding-bottom: var(--spacing-5);
 
+		&:last-of-type {
+
+			&::before {
+				display: none;
+			}
+		}
+
 		// Joining border.
-		&:before {
+		&::before {
 			content: "";
 			position: absolute;
 			right: 100%;
@@ -31,7 +44,7 @@
 		}
 
 		// Circle Marker.
-		&:after {
+		&::after {
 			content: "";
 			position: absolute;
 			left: var(--marker-offset);
@@ -41,21 +54,6 @@
 			background-color: var(--color-gray-10);
 			border-radius: 50%;
 			z-index: 1;
-		}
-	}
-
-	&__title {
-		margin-bottom: var(--spacing-5);
-	}
-
-	&__list-item {
-		position: relative;
-
-		&:last-of-type {
-
-			> #{$self}__content::before {
-				display: none;
-			}
 		}
 
 		&-title {
@@ -70,10 +68,12 @@
 		}
 
 		&--active {
-			#{$self}__content::after {
+
+			&::after {
 				background-color: var(--color-yellow);
 
-				@include transition(background-color)
+				@include transition(background-color);
+
 			}
 
 			#{$self}__list-item-title {
