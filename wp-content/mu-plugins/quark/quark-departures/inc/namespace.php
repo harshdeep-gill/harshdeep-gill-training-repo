@@ -10,7 +10,7 @@ namespace Quark\Departures;
 use WP_Post;
 
 const POST_TYPE                = 'qrk_departure';
-const SPOKEN_LANGUAGE_TAXONOMY = 'qrk_spoken_languages';
+const SPOKEN_LANGUAGE_TAXONOMY = 'qrk_spoken_language';
 const CACHE_KEY                = POST_TYPE;
 const CACHE_GROUP              = POST_TYPE;
 
@@ -22,11 +22,11 @@ const CACHE_GROUP              = POST_TYPE;
 function bootstrap(): void {
 	// Post type and taxonomies.
 	add_action( 'init', __NAMESPACE__ . '\\register_departure_post_type' );
-	add_action( 'init', __NAMESPACE__ . '\\register_spoken_languages_taxonomy' );
+	add_action( 'init', __NAMESPACE__ . '\\register_spoken_language_taxonomy' );
 
 	// Opt into stuff.
 	add_filter( 'qe_adventure_options_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
-	add_filter( 'qe_spoken_languages_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
+	add_filter( 'qe_spoken_language_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
 
 	// Other hooks.
 	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
@@ -91,7 +91,7 @@ function register_departure_post_type(): void {
  *
  * @return void
  */
-function register_spoken_languages_taxonomy(): void {
+function register_spoken_language_taxonomy(): void {
 	// Prepare labels.
 	$labels = [
 		'name'                       => 'Spoken Languages',
@@ -127,7 +127,7 @@ function register_spoken_languages_taxonomy(): void {
 	];
 
 	// Register taxonomy.
-	register_taxonomy( SPOKEN_LANGUAGE_TAXONOMY, (array) apply_filters( 'qe_spoken_languages_taxonomy_post_types', [] ), $args );
+	register_taxonomy( SPOKEN_LANGUAGE_TAXONOMY, (array) apply_filters( 'qe_spoken_language_taxonomy_post_types', [] ), $args );
 }
 
 /**

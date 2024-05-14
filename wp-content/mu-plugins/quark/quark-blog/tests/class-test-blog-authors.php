@@ -26,17 +26,17 @@ class Test_Blog_Authors extends WP_UnitTestCase {
 	 */
 	public function test_bootstrap(): void {
 		// Test if post type hook is registered.
-		$this->assertEquals( 10, has_filter( 'init', 'Quark\Blog\Authors\register_blog_authors_post_type' ) );
+		$this->assertEquals( 10, has_filter( 'init', 'Quark\Blog\Authors\register_blog_author_post_type' ) );
 	}
 
 	/**
 	 * Make sure post type is registered.
 	 *
-	 * @covers \Quark\Blog\Authors\register_blog_authors_post_type()
+	 * @covers \Quark\Blog\Authors\register_blog_author_post_type()
 	 *
 	 * @return void
 	 */
-	public function test_register_blog_authors_post_type(): void {
+	public function test_register_blog_author_post_type(): void {
 		// Test if post type is actually registered.
 		$this->assertTrue( post_type_exists( POST_TYPE ) );
 	}

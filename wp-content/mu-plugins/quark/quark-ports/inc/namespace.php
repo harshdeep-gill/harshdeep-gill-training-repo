@@ -9,7 +9,7 @@ namespace Quark\Ports;
 
 use WP_Post;
 
-const POST_TYPE   = 'qrk_ports';
+const POST_TYPE   = 'qrk_port';
 const CACHE_KEY   = POST_TYPE;
 const CACHE_GROUP = POST_TYPE;
 

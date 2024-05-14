@@ -11,7 +11,7 @@ use WP_Post;
 
 use function Quark\Core\prepare_content_with_blocks;
 
-const POST_TYPE   = 'qrk_regions';
+const POST_TYPE   = 'qrk_region';
 const CACHE_KEY   = POST_TYPE;
 const CACHE_GROUP = POST_TYPE;
 
@@ -28,7 +28,7 @@ function bootstrap(): void {
 	add_action( 'template_redirect', __NAMESPACE__ . '\\layout' );
 
 	// Opt into stuff.
-	add_filter( 'qe_destinations_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
+	add_filter( 'qe_destination_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
 
 	// Other hooks.
 	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );

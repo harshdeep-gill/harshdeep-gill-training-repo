@@ -11,7 +11,7 @@ use WP_Post;
 
 use function Quark\Core\prepare_content_with_blocks;
 
-const POST_TYPE   = 'qrk_offers';
+const POST_TYPE   = 'qrk_offer';
 const CACHE_KEY   = POST_TYPE;
 const CACHE_GROUP = POST_TYPE;
 

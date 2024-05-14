@@ -15,9 +15,9 @@ use WP_REST_Request;
 use function Quark\Core\prepare_content_with_blocks;
 
 const POST_TYPE                      = 'qrk_expedition';
-const DESTINATIONS_TAXONOMY          = 'qrk_destinations';
-const EXPEDITION_CATEGORY_TAXONOMY   = 'qrk_expedition_categories';
-const DEPARTURE_DESTINATION_TAXONOMY = 'qrk_departure_destinations';
+const DESTINATIONS_TAXONOMY          = 'qrk_destination';
+const EXPEDITION_CATEGORY_TAXONOMY   = 'qrk_expedition_category';
+const DEPARTURE_DESTINATION_TAXONOMY = 'qrk_departure_destination';
 const CACHE_KEY                      = POST_TYPE;
 const CACHE_GROUP                    = POST_TYPE;
 
@@ -35,9 +35,9 @@ function bootstrap(): void {
 
 	// Opt into stuff.
 	add_filter( 'qe_adventure_options_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
-	add_filter( 'qe_destinations_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
-	add_filter( 'qe_expedition_categories_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
-	add_filter( 'qe_departure_destinations_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
+	add_filter( 'qe_destination_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
+	add_filter( 'qe_expedition_category_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
+	add_filter( 'qe_departure_destination_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
 	add_filter( 'rest_prepare_taxonomy', __NAMESPACE__ . '\\hide_departure_destination_metabox', 10, 3 );
 
 	// Layout.
@@ -145,7 +145,7 @@ function register_destination_taxonomy(): void {
 	];
 
 	// Register taxonomy.
-	register_taxonomy( DESTINATIONS_TAXONOMY, (array) apply_filters( 'qe_destinations_taxonomy_post_types', [] ), $args );
+	register_taxonomy( DESTINATIONS_TAXONOMY, (array) apply_filters( 'qe_destination_taxonomy_post_types', [] ), $args );
 }
 
 /**
@@ -189,7 +189,7 @@ function register_expedition_category_taxonomy(): void {
 	];
 
 	// Register taxonomy.
-	register_taxonomy( EXPEDITION_CATEGORY_TAXONOMY, (array) apply_filters( 'qe_expedition_categories_taxonomy_post_types', [] ), $args );
+	register_taxonomy( EXPEDITION_CATEGORY_TAXONOMY, (array) apply_filters( 'qe_expedition_category_taxonomy_post_types', [] ), $args );
 }
 
 /**
@@ -234,7 +234,7 @@ function register_departure_destination_taxonomy(): void {
 	];
 
 	// Register taxonomy.
-	register_taxonomy( DEPARTURE_DESTINATION_TAXONOMY, (array) apply_filters( 'qe_departure_destinations_taxonomy_post_types', [] ), $args );
+	register_taxonomy( DEPARTURE_DESTINATION_TAXONOMY, (array) apply_filters( 'qe_departure_destination_taxonomy_post_types', [] ), $args );
 }
 
 /**

@@ -171,7 +171,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 						'id'    => '',
 					],
 					'post_type'            => [
-						0 => 'qrk_regions',
+						0 => 'qrk_region',
 					],
 					'post_status'          => '',
 					'taxonomy'             => '',

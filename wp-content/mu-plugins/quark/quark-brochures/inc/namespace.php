@@ -9,7 +9,7 @@ namespace Quark\Brochures;
 
 use WP_Post;
 
-const POST_TYPE   = 'qrk_brochures';
+const POST_TYPE   = 'qrk_brochure';
 const CACHE_KEY   = POST_TYPE;
 const CACHE_GROUP = POST_TYPE;
 
@@ -20,13 +20,13 @@ const CACHE_GROUP = POST_TYPE;
  */
 function bootstrap(): void {
 	// Register post type.
-	add_action( 'init', __NAMESPACE__ . '\\register_brochures_post_type' );
+	add_action( 'init', __NAMESPACE__ . '\\register_brochure_post_type' );
 
 	// Other hooks.
 	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
 
 	// Opt into stuff.
-	add_filter( 'qe_seasons_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
+	add_filter( 'qe_season_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
 
 	// Custom fields.
 	if ( is_admin() ) {
@@ -39,7 +39,7 @@ function bootstrap(): void {
  *
  * @return void
  */
-function register_brochures_post_type(): void {
+function register_brochure_post_type(): void {
 	// Post type arguments.
 	$args = [
 		'labels'              => [

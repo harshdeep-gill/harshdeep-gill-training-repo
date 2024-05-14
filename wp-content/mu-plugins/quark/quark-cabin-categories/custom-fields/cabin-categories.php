@@ -297,7 +297,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 					'name'              => 'cabin_category_cabin_count',
 					'aria-label'        => '',
 					'type'              => 'number',
-					'instructions'      => 'The number of cabins that are found in this cabin category.<br/> Dev note: This field may be temporary until all cabins can be entered as cabin nodes. Then we could get the cabin count programmatically via query, etc.',
+					'instructions'      => 'The number of cabins that are found in this cabin category.',
 					'required'          => 0,
 					'conditional_logic' => 0,
 					'wrapper'           => [

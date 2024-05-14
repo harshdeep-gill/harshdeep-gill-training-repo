@@ -40,7 +40,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 					[
 						'param'    => 'taxonomy',
 						'operator' => '==',
-						'value'    => 'qrk_destinations',
+						'value'    => 'qrk_destination',
 					],
 				],
 			],

@@ -77,7 +77,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 					[
 						'param'    => 'post_type',
 						'operator' => '==',
-						'value'    => 'qrk_brochures',
+						'value'    => 'qrk_brochure',
 					],
 				],
 			],

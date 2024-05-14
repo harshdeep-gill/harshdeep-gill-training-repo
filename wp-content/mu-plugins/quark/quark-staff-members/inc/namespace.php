@@ -12,9 +12,9 @@ use WP_Post;
 use function Quark\Core\prepare_content_with_blocks;
 
 const POST_TYPE                     = 'qrk_staff_member';
-const DEPARTMENT_TAXONOMY           = 'qrk_departments';
-const DEPARTURE_STAFF_ROLE_TAXONOMY = 'qrk_staff_roles';
-const SEASON_TAXONOMY               = 'qrk_seasons';
+const DEPARTMENT_TAXONOMY           = 'qrk_department';
+const DEPARTURE_STAFF_ROLE_TAXONOMY = 'qrk_staff_role';
+const SEASON_TAXONOMY               = 'qrk_season';
 const CACHE_KEY                     = POST_TYPE;
 const CACHE_GROUP                   = POST_TYPE;
 
@@ -26,18 +26,18 @@ const CACHE_GROUP                   = POST_TYPE;
 function bootstrap(): void {
 	// Post type and taxonomy.
 	add_action( 'init', __NAMESPACE__ . '\\register_staff_member_post_type' );
-	add_action( 'init', __NAMESPACE__ . '\\register_departments_taxonomy' );
-	add_action( 'init', __NAMESPACE__ . '\\register_staff_roles_taxonomy' );
-	add_action( 'init', __NAMESPACE__ . '\\register_seasons_taxonomy' );
+	add_action( 'init', __NAMESPACE__ . '\\register_department_taxonomy' );
+	add_action( 'init', __NAMESPACE__ . '\\register_staff_role_taxonomy' );
+	add_action( 'init', __NAMESPACE__ . '\\register_season_taxonomy' );
 
 	// Layout.
 	add_action( 'template_redirect', __NAMESPACE__ . '\\layout' );
 
 	// Opt into stuff.
-	add_filter( 'qe_departments_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
-	add_filter( 'qe_staff_roles_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
-	add_filter( 'qe_seasons_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
-	add_filter( 'qe_spoken_languages_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
+	add_filter( 'qe_department_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
+	add_filter( 'qe_staff_role_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
+	add_filter( 'qe_season_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
+	add_filter( 'qe_spoken_language_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
 
 	// Other hooks.
 	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
@@ -102,11 +102,11 @@ function register_staff_member_post_type(): void {
 }
 
 /**
- * Register Departments taxonomy.
+ * Register Department taxonomy.
  *
  * @return void
  */
-function register_departments_taxonomy(): void {
+function register_department_taxonomy(): void {
 	// Prepare labels.
 	$labels = [
 		'name'                       => 'Departments',
@@ -142,15 +142,15 @@ function register_departments_taxonomy(): void {
 	];
 
 	// Register taxonomy.
-	register_taxonomy( DEPARTMENT_TAXONOMY, (array) apply_filters( 'qe_departments_taxonomy_post_types', [] ), $args );
+	register_taxonomy( DEPARTMENT_TAXONOMY, (array) apply_filters( 'qe_department_taxonomy_post_types', [] ), $args );
 }
 
 /**
- * Register Departure Staff Roles taxonomy.
+ * Register Departure Staff Role taxonomy.
  *
  * @return void
  */
-function register_staff_roles_taxonomy(): void {
+function register_staff_role_taxonomy(): void {
 	// Prepare labels.
 	$labels = [
 		'name'                       => 'Staff Roles',
@@ -186,7 +186,7 @@ function register_staff_roles_taxonomy(): void {
 	];
 
 	// Register taxonomy.
-	register_taxonomy( DEPARTURE_STAFF_ROLE_TAXONOMY, (array) apply_filters( 'qe_staff_roles_taxonomy_post_types', [] ), $args );
+	register_taxonomy( DEPARTURE_STAFF_ROLE_TAXONOMY, (array) apply_filters( 'qe_staff_role_taxonomy_post_types', [] ), $args );
 }
 
 /**
@@ -194,7 +194,7 @@ function register_staff_roles_taxonomy(): void {
  *
  * @return void
  */
-function register_seasons_taxonomy(): void {
+function register_season_taxonomy(): void {
 	// Prepare labels.
 	$labels = [
 		'name'                       => 'Seasons',
@@ -230,7 +230,7 @@ function register_seasons_taxonomy(): void {
 	];
 
 	// Register taxonomy.
-	register_taxonomy( SEASON_TAXONOMY, (array) apply_filters( 'qe_seasons_taxonomy_post_types', [] ), $args );
+	register_taxonomy( SEASON_TAXONOMY, (array) apply_filters( 'qe_season_taxonomy_post_types', [] ), $args );
 }
 
 /**

@@ -10,7 +10,7 @@ namespace Quark\Itineraries;
 use WP_Post;
 
 const POST_TYPE                   = 'qrk_itinerary';
-const DEPARTURE_LOCATION_TAXONOMY = 'qrk_departure_locations';
+const DEPARTURE_LOCATION_TAXONOMY = 'qrk_departure_location';
 const TAX_TYPE_TAXONOMY           = 'qrk_tax_type';
 const CACHE_KEY                   = POST_TYPE;
 const CACHE_GROUP                 = POST_TYPE;
@@ -27,9 +27,9 @@ function bootstrap(): void {
 	add_action( 'init', __NAMESPACE__ . '\\register_tax_type_taxonomy' );
 
 	// Opt into stuff.
-	add_filter( 'qe_departure_locations_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
+	add_filter( 'qe_departure_location_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
 	add_filter( 'qe_tax_types_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
-	add_filter( 'qe_seasons_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
+	add_filter( 'qe_season_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
 
 	// Other hooks.
 	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
@@ -131,7 +131,7 @@ function register_departure_location_taxonomy(): void {
 	];
 
 	// Register taxonomy.
-	register_taxonomy( DEPARTURE_LOCATION_TAXONOMY, (array) apply_filters( 'qe_departure_locations_taxonomy_post_types', [] ), $args );
+	register_taxonomy( DEPARTURE_LOCATION_TAXONOMY, (array) apply_filters( 'qe_departure_location_taxonomy_post_types', [] ), $args );
 }
 
 /**

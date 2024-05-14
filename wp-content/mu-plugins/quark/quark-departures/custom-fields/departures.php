@@ -204,7 +204,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 						'id'    => '',
 					],
 					'post_type'            => [
-						0 => 'itinerary',
+						0 => 'qrk_itinerary',
 					],
 					'post_status'          => '',
 					'taxonomy'             => '',
@@ -300,7 +300,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 								'class' => '',
 								'id'    => '',
 							],
-							'taxonomy'             => 'qrk_staff_roles',
+							'taxonomy'             => 'qrk_staff_role',
 							'add_term'             => 0,
 							'save_terms'           => 0,
 							'load_terms'           => 1,

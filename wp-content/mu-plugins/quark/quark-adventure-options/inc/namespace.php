@@ -28,7 +28,7 @@ function bootstrap(): void {
 
 	// Opt into stuff.
 	add_filter( 'qe_adventure_options_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
-	add_filter( 'qe_destinations_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
+	add_filter( 'qe_destination_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
 
 	// Layout.
 	add_action( 'template_redirect', __NAMESPACE__ . '\\layout' );
