@@ -37,7 +37,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 						0 => 'search',
 					],
 					'return_format'        => 'object',
-					'min'                  => 1,
+					'min'                  => 0,
 					'max'                  => '',
 					'elements'             => '',
 					'bidirectional'        => 1,

@@ -80,6 +80,7 @@ function register_agreement_post_type(): void {
 			'with_front' => false,
 		],
 		'capability_type'     => 'page',
+		'menu_position'       => 55,
 	];
 
 	// Register post type.

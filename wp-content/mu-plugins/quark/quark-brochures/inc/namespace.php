@@ -66,7 +66,7 @@ function register_brochures_post_type(): void {
 		'exclude_from_search' => true,
 		'publicly_queryable'  => false,
 		'show_ui'             => true,
-		'show_in_menu'        => true,
+		'show_in_menu'        => 'upload.php',
 		'menu_icon'           => 'dashicons-pdf',
 		'show_in_nav_menus'   => false,
 		'has_archive'         => false,
