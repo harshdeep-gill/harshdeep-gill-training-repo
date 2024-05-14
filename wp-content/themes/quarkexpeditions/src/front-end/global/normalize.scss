@@ -8,6 +8,8 @@ html,
 body {
 	height: 100%; // Setting height along with overflow-x: hidden as it affects sticky elements.
 	overflow-x: hidden;
+	scroll-behavior: smooth;
+	scroll-padding-top: calc(var(--header-height) + var(--spacing-5));
 }
 
 *,
@@ -19,5 +21,5 @@ body {
 html.dom-content-loaded,
 html.dom-content-loaded body {
 	scroll-behavior: smooth;
-	scroll-padding-top: calc(var(--header-bottom) + var(--tabs-header-offset));
+	scroll-padding-top: calc(var(--header-height) + var(--spacing-5));
 }
