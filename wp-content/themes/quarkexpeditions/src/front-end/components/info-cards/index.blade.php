@@ -1,5 +1,6 @@
 @props( [
-	'layout' => 'grid',
+	'layout'          => 'grid',
+	'mobile_carousel' => true,
 ] )
 
 @php
@@ -17,7 +18,7 @@
 	@class( $classes )
 	:full_width="true"
 >
-	<x-info-cards.carousel :layout="$layout">
+	<x-info-cards.carousel :layout="$layout" :mobile_carousel="$mobile_carousel">
 		{!! $slot !!}
 	</x-info-cards.carousel>
 </x-section>

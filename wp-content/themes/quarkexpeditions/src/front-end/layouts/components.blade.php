@@ -1787,7 +1787,7 @@
 		</x-section>
 
 		<x-section title="Info Cards: Collage">
-			<x-info-cards layout="collage">
+			<x-info-cards layout="collage" :mobile_carousel="false">
 				<x-info-cards.card size="big">
 					<x-info-cards.image image_id="29" />
 					<x-info-cards.content position="top">
