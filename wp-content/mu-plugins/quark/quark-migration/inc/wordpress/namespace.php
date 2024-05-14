@@ -9,6 +9,9 @@
 
 namespace Quark\Migration\WordPress;
 
+use DOMDocument;
+use DOMElement;
+
 /**
  * Sanitize attributes
  *
@@ -43,4 +46,84 @@ function qrk_sanitize_attribute( mixed $value = null ): mixed {
 
 	// Return sanitized value.
 	return $value;
+}
+
+/**
+ * Convert a string to blocks.
+ *
+ * @param string $input Input string.
+ *
+ * @return string
+ */
+function convert_to_blocks( string $input = '' ): string {
+	// Check if we have content.
+	if ( empty( $input ) ) {
+		return '';
+	}
+
+	// Prepare for conversion.
+	$input    = wpautop( $input );
+	$document = new DOMDocument();
+	$output   = [];
+
+	// Get child nodes.
+	libxml_use_internal_errors( true );
+	$document->loadHTML( '<?xml encoding="utf-8"?>' . $input );
+	$nodes = $document->getElementsByTagName( '*' );
+
+	// Traverse child nodes.
+	foreach ( $nodes as $node ) {
+		// Ignore if we didn't get a proper node.
+		if (
+			! $node instanceof DOMElement
+			|| in_array( $node->tagName, [ 'html', 'body' ], true )
+			|| ( ! $node->parentNode instanceof DOMElement )
+			|| 'body' !== $node->parentNode->tagName
+		) {
+			continue;
+		}
+
+		// Convert node to block.
+		$block = convert_node_to_block( $node );
+
+		// Add block to output.
+		if ( ! empty( $block ) ) {
+			$output[] = $block;
+		}
+	}
+
+	// Prepare output.
+	if ( ! empty( $output ) ) {
+		$output = implode( "\n\n", $output );
+	} else {
+		$output = '';
+	}
+
+	// All done!
+	return $output;
+}
+
+/**
+ * Convert a node into a block.
+ *
+ * @param DOMElement|null $node Node object.
+ *
+ * @return string
+ */
+function convert_node_to_block( ?DOMElement $node = null ): string {
+	// Bail out if we didn't get a proper node.
+	if ( ! $node instanceof DOMElement ) {
+		return '';
+	}
+
+	// Convert node to block.
+	$block = apply_filters( 'qrk_convert_to_blocks_' . $node->tagName, '', $node );
+
+	// Fallback to generic block.
+	if ( empty( $block ) ) {
+		$block = apply_filters( 'qr_convert_to_blocks_fallback', '', $node );
+	}
+
+	// Return block.
+	return strval( $block );
 }

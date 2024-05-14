@@ -126,6 +126,9 @@ $redis_server = array(
 /**
  * Application Settings.
  */
+// ACF.
+define( 'ACF_PRO_LICENSE', env( 'ACF_PRO_LICENSE' ) );
+
 // Solr config.
 define( 'PANTHEON_INDEX_HOST', env( 'PANTHEON_INDEX_HOST' ) );
 define( 'PANTHEON_INDEX_PORT', env( 'PANTHEON_INDEX_PORT' ) );

@@ -2,26 +2,35 @@
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-import { BlockConfiguration } from '@wordpress/blocks';
+import { BlockConfiguration, registerBlockType } from '@wordpress/blocks';
 import {
-	PanelBody,
-	RangeControl,
-} from '@wordpress/components';
-import {
-	InspectorControls,
-	RichText,
+	InnerBlocks,
 	useBlockProps,
+	useInnerBlocksProps,
 } from '@wordpress/block-editor';
-
-/**
- * Internal dependencies.
- */
-import RatingStars from '../../components/rating-stars';
 
 /**
  * External dependencies.
  */
 import classnames from 'classnames';
+
+/**
+ * Child blocks.
+ */
+import * as title from './title';
+import * as review from './review';
+import * as rating from './rating';
+import * as author from './author';
+import * as authorDetails from './author-details';
+
+/**
+ * Register child block.
+ */
+registerBlockType( title.name, title.settings );
+registerBlockType( rating.name, rating.settings );
+registerBlockType( review.name, review.settings );
+registerBlockType( author.name, author.settings );
+registerBlockType( authorDetails.name, authorDetails.settings );
 
 /**
  * Block name.
@@ -39,94 +48,41 @@ export const settings: BlockConfiguration = {
 	icon: 'screenoptions',
 	category: 'layout',
 	keywords: [ __( 'item', 'qrk' ) ],
-	attributes: {
-		title: {
-			type: 'string',
-		},
-		review: {
-			type: 'string',
-		},
-		author: {
-			type: 'string',
-		},
-		authorDetails: {
-			type: 'string',
-		},
-		rating: {
-			type: 'string',
-			default: '5',
-		},
-	},
+	attributes: {},
 	supports: {
 		alignWide: false,
 		className: false,
 		html: false,
 		customClassName: false,
 	},
-	edit( { className, attributes, setAttributes }: BlockEditAttributes ) : JSX.Element {
+	edit( { className }: BlockEditAttributes ) : JSX.Element {
 		// eslint-disable-next-line react-hooks/rules-of-hooks
-		const blocksProps = useBlockProps( {
+		const blockProps = useBlockProps( {
 			className: classnames( className, 'review-cards__card' ),
 		} );
 
+		// eslint-disable-next-line react-hooks/rules-of-hooks
+		const innerBlockProps = useInnerBlocksProps( { ...blockProps },
+			{
+				allowedBlocks: [ rating.name, title.name, review.name, author.name, authorDetails.name ],
+				template: [
+					[ rating.name ],
+					[ title.name ],
+					[ review.name ],
+					[ author.name ],
+					[ authorDetails.name ],
+				],
+				templateLock: 'insert',
+			},
+		);
+
 		// Return the block's markup.
 		return (
-			<>
-				<InspectorControls>
-					<PanelBody title={ __( 'Reviews Carousel Options', 'qrk' ) }>
-						<RangeControl
-							label={ __( 'Rating', 'qrk' ) }
-							value={ parseInt( attributes.rating ) }
-							help={ __( 'Choose the rating', 'qrk' ) }
-							onChange={ ( rating: any ) => setAttributes( { rating: rating.toString() } ) }
-							min={ 1 }
-							max={ 5 }
-						/>
-					</PanelBody>
-				</InspectorControls>
-				<div { ...blocksProps }>
-					<div className="review-cards__rating">
-						<RatingStars rating={ attributes.rating } />
-					</div>
-					<RichText
-						tagName="h5"
-						className="review-cards__card-title"
-						placeholder={ __( 'Write title…', 'qrk' ) }
-						value={ attributes.title }
-						onChange={ ( title: string ) => setAttributes( { title } ) }
-						allowedFormats={ [] }
-					/>
-					<div className="review-cards__card-content">
-						<RichText
-							tagName="div"
-							className="review-cards__content"
-							placeholder={ __( 'Write review…', 'qrk' ) }
-							value={ attributes.review }
-							onChange={ ( review: string ) => setAttributes( { review } ) }
-							allowedFormats={ [] }
-						/>
-					</div>
-					<RichText
-						tagName="strong"
-						className="review-cards__author"
-						placeholder={ __( 'Write name…', 'qrk' ) }
-						value={ attributes.author }
-						onChange={ ( author: string ) => setAttributes( { author } ) }
-						allowedFormats={ [] }
-					/>
-					<RichText
-						className="review-cards__author-details"
-						placeholder={ __( 'Write details… eg. Expedition Name', 'qrk' ) }
-						value={ attributes.authorDetails }
-						onChange={ ( authorDetails: string ) => setAttributes( { authorDetails } ) }
-						allowedFormats={ [] }
-					/>
-				</div>
-			</>
+			<div { ...innerBlockProps } />
 		);
 	},
 	save() {
-		// Don't save anything.
-		return null;
+		// Save InnerBlocks Content.
+		return <InnerBlocks.Content />;
 	},
 };

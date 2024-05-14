@@ -32,7 +32,7 @@
     "wordpress-install-dir": "wp"
   },
   "require": {
-    "php": "^8.1",
+    "php": "^8.2",
     "composer/installers": "^v1.12.0",
     "travelopia/advanced-custom-fields-pro": "*",
     "travelopia/wordpress-packages": "*",
@@ -48,15 +48,17 @@
     "wpackagist-plugin/stream": "*",
     "wpackagist-plugin/two-factor": "*",
     "wpackagist-plugin/wordpress-seo": "*",
-    "wpackagist-plugin/wp-redis": "*"
+    "wpackagist-plugin/wp-redis": "*",
+    "ext-dom": "*",
+    "ext-libxml": "*"
   },
   "require-dev": {
-    "roots/wordpress": "6.4.3",
+    "roots/wordpress": "6.5.2",
     "vlucas/phpdotenv": "^v5.4.1",
     "oscarotero/env": "^v2.1.0",
     "squizlabs/php_codesniffer": "*",
     "phpunit/phpunit": "^9.6.15",
-    "wp-coding-standards/wpcs": "^2.3.0",
+    "wp-coding-standards/wpcs": "^3.1.0",
     "wp-phpunit/wp-phpunit": "*",
     "yoast/phpunit-polyfills": "^1.1.0",
     "wpackagist-plugin/query-monitor": "*",

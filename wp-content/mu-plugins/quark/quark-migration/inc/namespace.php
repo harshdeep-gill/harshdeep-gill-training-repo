@@ -22,6 +22,8 @@ function bootstrap(): void {
 	// CLI commands.
 	if ( defined( 'WP_CLI' ) && true === WP_CLI ) {
 		WP_CLI::add_command( 'quark-migrate media', __NAMESPACE__ . '\\WP_CLI\\Media' );
+		WP_CLI::add_command( 'quark-migrate press-release', __NAMESPACE__ . '\\WP_CLI\\Press_Release' );
+		WP_CLI::add_command( 'quark-migrate blog', __NAMESPACE__ . '\\WP_CLI\\Blog' );
 		WP_CLI::add_command( 'quark-migrate taxonomy', __NAMESPACE__ . '\\WP_CLI\\Taxonomies' );
 	}
 }

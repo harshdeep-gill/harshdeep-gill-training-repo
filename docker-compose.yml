@@ -1,4 +1,3 @@
-version: '3'
 services:
   redis:
     image: 'redis:latest'
@@ -27,7 +26,7 @@ services:
     networks:
       - quark-network
   phpfpm:
-    image: 'travelopia/wordpress-php-fpm:8.1'
+    image: 'travelopia/wordpress-php-fpm:8.2'
     environment:
       XDEBUG_MODE: 'off'
     volumes:
