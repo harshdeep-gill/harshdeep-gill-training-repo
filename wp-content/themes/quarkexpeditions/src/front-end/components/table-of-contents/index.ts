@@ -11,6 +11,7 @@ export default class TableOfContents extends HTMLElement {
 	 * Properties.
 	 */
 	private allContentItems: NodeListOf<Element> | null;
+	private levelTwoHeadings: NodeListOf<Element> | null;
 
 	/**
 	 * Constructor.
@@ -21,12 +22,13 @@ export default class TableOfContents extends HTMLElement {
 
 		// Elements.
 		this.allContentItems = this.querySelectorAll( '.table-of-contents__list-item' );
+		this.levelTwoHeadings = document.querySelectorAll( '.sidebar-grid__content h2' );
 
 		// Highlight content item by hash on initial render.
 		this.highlightContentItemByHash();
 
-		// Event.
-		window.addEventListener( 'hashchange', () => this.highlightContentItemByHash() );
+		// Initialize IntersectionObserver to highlight item on scroll.
+		this.highlightItemOnScroll();
 	}
 
 	/**
@@ -46,21 +48,100 @@ export default class TableOfContents extends HTMLElement {
 		const contentItem = this.querySelector( `.table-of-contents__list-item[data-anchor="${ hash }"]` );
 
 		// Check if content item is not available, return.
-		if ( ! contentItem ) {
-			// Content item not found, bail early.
+		if ( contentItem ) {
+			// Set content item as active.
+			this.setItemAsActive( contentItem );
+		}
+	}
+
+	/**
+	 * Set the passed item as active.
+	 *
+	 * @param {HTMLElement | Element} itemEl Content Item to be set as active.
+	 */
+	setItemAsActive( itemEl: HTMLElement | Element ) {
+		// Check if item exists.
+		if ( ! itemEl ) {
+			// Bail early.
+			return;
+		}
+
+		// Check if the passed element has the expected class.
+		if ( ! itemEl.classList.contains( 'table-of-contents__list-item' ) ) {
+			// If not exists, bail early.
 			return;
 		}
 
 		// Loop through all content items.
 		if ( this.allContentItems ) {
 			this.allContentItems.forEach( ( item ) => {
-				// Remove existing active class.
+				// Remove any existing active class from other items.
 				item.classList.remove( 'table-of-contents__list-item--active' );
 			} );
 		}
 
-		// Add class to the active content item.
-		contentItem.classList.add( 'table-of-contents__list-item--active' );
+		// Add class to the current active content item.
+		itemEl.classList.add( 'table-of-contents__list-item--active' );
+	}
+
+	/**
+	 * Highlight content item on scroll.
+	 */
+	highlightItemOnScroll() {
+		// Get the header height.
+		const headerHeight = getComputedStyle( document.body )?.getPropertyValue( '--header-height' ) ?? 0;
+
+		// Calculate the top root margin.
+		const rootMarginTop = ( parseInt( headerHeight ) + 24 ) + 'px';
+
+		// Instantiate IntersectionObserver.
+		const observer = new IntersectionObserver(
+			this.intersectionObserverCallback.bind( this ),
+			{
+				rootMargin: `${ rootMarginTop } 0px -75% 0px`,
+				threshold: 1,
+			} );
+
+		// Loop thorugh all headings.
+		if ( this.levelTwoHeadings ) {
+			this.levelTwoHeadings?.forEach( ( heading ) => {
+				// Observe each heading.
+				observer.observe( heading );
+			} );
+		}
+	}
+
+	/**
+	 * Intersection Observer Callback.
+	 *
+	 * @param {IntersectionObserverEntry[]} entries Observed Entries.
+	 */
+	intersectionObserverCallback( entries: IntersectionObserverEntry[] ) {
+		// Loop thorugh entries.
+		entries.forEach( ( entry ) => {
+			// Get value for isIntersecting.
+			const isActive = entry.isIntersecting;
+
+			// Get the heading id from current entry.
+			const headingId = entry.target.id;
+
+			// Get the content item.
+			if ( headingId ) {
+				const contentItem = this.querySelector( `.table-of-contents__list-item[data-anchor="#${ headingId }"]` );
+
+				// If no content item exists.
+				if ( ! contentItem ) {
+					// Bail early.
+					return;
+				}
+
+				// Check if content item is not available, return.
+				if ( isActive ) {
+					// Set content item as active.
+					this.setItemAsActive( contentItem );
+				}
+			}
+		} );
 	}
 }
 
