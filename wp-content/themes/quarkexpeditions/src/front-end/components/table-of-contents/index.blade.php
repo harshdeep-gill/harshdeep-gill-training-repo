@@ -24,11 +24,9 @@
 				] )
 				data-anchor="#{{ $content_item['anchor'] }}"
 			>
-				<div class="table-of-contents__content">
-					<a class="table-of-contents__list-item-title" href="#{{ $content_item['anchor'] }}">
-						<x-escape :content="$content_item['title']"/>
-					</a>
-				</div>
+				<a class="table-of-contents__list-item-title" href="#{{ $content_item['anchor'] }}">
+					<x-escape :content="$content_item['title']"/>
+				</a>
 			</li>
 		@endforeach
 	</ul>
