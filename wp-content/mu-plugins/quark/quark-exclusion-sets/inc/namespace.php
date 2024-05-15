@@ -2,16 +2,14 @@
 /**
  * Namespace functions.
  *
- * @package quark-blog
+ * @package quark-exclusion-sets
  */
 
-namespace Quark\Blog;
+namespace Quark\ExclusionSets;
 
 use WP_Post;
 
-use function Quark\Core\prepare_content_with_blocks;
-
-const POST_TYPE   = 'post';
+const POST_TYPE   = 'qrk_exclusion_set';
 const CACHE_KEY   = POST_TYPE;
 const CACHE_GROUP = POST_TYPE;
 
@@ -21,83 +19,73 @@ const CACHE_GROUP = POST_TYPE;
  * @return void
  */
 function bootstrap(): void {
-	// Layout.
-	add_action( 'template_redirect', __NAMESPACE__ . '\\layout' );
+	// Post type and taxonomies.
+	add_action( 'init', __NAMESPACE__ . '\\register_exclusion_set_post_type' );
 
-	// Enable primary term.
-	add_filter( 'travelopia_primary_term_taxonomies', __NAMESPACE__ . '\\primary_term_taxonomies', 10, 2 );
+	// Opt into stuff.
+	add_filter( 'qe_inclusion_exclusion_category_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
 
 	// Other hooks.
 	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
-
-	// Admin stuff.
-	if ( is_admin() ) {
-		add_filter( 'post_type_labels_' . POST_TYPE, __NAMESPACE__ . '\\update_blog_posts_admin_menu_label' );
-
-		// Custom fields.
-		require_once __DIR__ . '/../custom-fields/blog.php';
-	}
 }
 
 /**
- * Layout for this post type.
+ * Register Exclusion Set post type.
  *
  * @return void
  */
-function layout(): void {
-	// Add single layout if viewing a single post.
-	if ( is_singular( POST_TYPE ) ) {
-		add_filter( 'quark_front_end_data', __NAMESPACE__ . '\\layout_single' );
-	}
+function register_exclusion_set_post_type(): void {
+	// Post type arguments.
+	$args = [
+		'labels'              => [
+			'name'               => 'Exclusion Sets',
+			'singular_name'      => 'Exclusion Set',
+			'add_new'            => 'Add New',
+			'add_new_item'       => 'Add New Exclusion Set',
+			'edit_item'          => 'Edit Exclusion Set',
+			'new_item'           => 'New Exclusion Set',
+			'view_item'          => 'View Exclusion Set',
+			'search_items'       => 'Search Exclusion Sets',
+			'not_found'          => 'No Exclusion Sets found',
+			'not_found_in_trash' => 'No Exclusion Sets found in Trash',
+			'parent_item_colon'  => 'Parent Exclusion Set:',
+			'menu_name'          => 'Exclusion Sets',
+		],
+		'public'              => false,
+		'show_in_rest'        => true,
+		'menu_icon'           => 'dashicons-networking',
+		'hierarchical'        => false,
+		'supports'            => [
+			'title',
+		],
+		'show_ui'             => true,
+		'show_in_menu'        => 'edit.php?post_type=qrk_itinerary',
+		'show_in_nav_menus'   => false,
+		'publicly_queryable'  => false,
+		'exclude_from_search' => true,
+		'has_archive'         => false,
+		'query_var'           => true,
+		'can_export'          => true,
+		'rewrite'             => false,
+	];
+
+	// Register post type.
+	register_post_type( POST_TYPE, $args );
 }
 
 /**
- * Layout: Single.
+ * Opt into stuff.
  *
- * @param mixed[] $data Front-end data.
+ * @param string[] $post_types Post types.
  *
- * @return mixed[]
+ * @return string[]
  */
-function layout_single( array $data = [] ): array {
-	// Get post.
-	$page = get();
+function opt_in( array $post_types = [] ): array {
+	// Append Exclusion Set post type for taxonomy.
+	$post_types[] = POST_TYPE;
 
-	// Bail if post does not exist or not an instance of WP_Post.
-	if ( empty( $page['post'] ) || ! $page['post'] instanceof WP_Post ) {
-		return $data;
-	}
-
-	// Layout.
-	$data['layout'] = 'single';
-
-	// Build data.
-	$data['data'] = array_merge( $data['data'] ?? [], $page );
-
-	// Post content.
-	$data['data']['post_content'] = $page['post']->post_content;
-
-	// Prepare blocks.
-	prepare_content_with_blocks( $data['data']['post_content'] );
-
-	// Return front-end data.
-	return $data;
-}
-
-/**
- * Update blog post admin menu name to "Blog Posts".
- *
- * @param object|null $labels Original labels.
- *
- * @return object
- */
-function update_blog_posts_admin_menu_label( object $labels = null ): object {
-	// Update menu name.
-	if ( isset( $labels->menu_name ) ) {
-		$labels->menu_name = 'Blog Posts';
-	}
-
-	// Return updated labels.
-	return (object) $labels;
+	// Return modified array.
+	return $post_types;
 }
 
 /**
@@ -112,20 +100,18 @@ function bust_post_cache( int $post_id = 0 ): void {
 	wp_cache_delete( CACHE_KEY . "_$post_id", CACHE_GROUP );
 
 	// Trigger action to clear cache for this post.
-	do_action( 'qe_blog_post_cache_busted', $post_id );
+	do_action( 'qe_exclusion_sets_post_cache_busted', $post_id );
 }
 
 /**
- * Get a Blog Post.
+ * Get an Exclusion Set.
  *
  * @param int $post_id Post ID.
  *
  * @return array{
  *     post: WP_Post|null,
- *     permalink: string,
- *     post_thumbnail: int,
  *     post_meta: mixed[],
- *     post_taxonomies: mixed[],
+ *     post_taxonomies: mixed[]
  * }
  */
 function get( int $post_id = 0 ): array {
@@ -142,8 +128,6 @@ function get( int $post_id = 0 ): array {
 	if ( is_array( $cached_value ) && ! empty( $cached_value['post'] ) && $cached_value['post'] instanceof WP_Post ) {
 		return [
 			'post'            => $cached_value['post'],
-			'permalink'       => $cached_value['permalink'] ?? '',
-			'post_thumbnail'  => $cached_value['post_thumbnail'] ?? 0,
 			'post_meta'       => $cached_value['post_meta'] ?? [],
 			'post_taxonomies' => $cached_value['post_taxonomies'] ?? [],
 		];
@@ -152,12 +136,10 @@ function get( int $post_id = 0 ): array {
 	// Get post.
 	$post = get_post( $post_id );
 
-	// Return empty array fields if post type does not match or not an instance of WP_Post.
+	// Check for post.
 	if ( ! $post instanceof WP_Post || POST_TYPE !== $post->post_type ) {
 		return [
 			'post'            => null,
-			'permalink'       => '',
-			'post_thumbnail'  => 0,
 			'post_meta'       => [],
 			'post_taxonomies' => [],
 		];
@@ -166,8 +148,6 @@ function get( int $post_id = 0 ): array {
 	// Build data.
 	$data = [
 		'post'            => $post,
-		'permalink'       => strval( get_permalink( $post ) ? : '' ),
-		'post_thumbnail'  => absint( get_post_thumbnail_id( $post ) ? : 0 ),
 		'post_meta'       => [],
 		'post_taxonomies' => [],
 	];
@@ -230,25 +210,4 @@ function get( int $post_id = 0 ): array {
 
 	// Return data.
 	return $data;
-}
-
-/**
- * Add category to primary term taxonomies.
- *
- * @param mixed[] $taxonomies Array of taxonomy objects.
- * @param string  $post_type  Post type.
- *
- * @return mixed[]|array{
- *     string,
- * }
- */
-function primary_term_taxonomies( array $taxonomies = [], string $post_type = '' ): array {
-	// Add category to primary term taxonomies.
-	if ( POST_TYPE === $post_type ) {
-		// Add category to primary term taxonomies.
-		$taxonomies[] = 'category';
-	}
-
-	// Return taxonomies.
-	return $taxonomies;
 }

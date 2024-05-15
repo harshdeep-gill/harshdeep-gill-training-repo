@@ -1,15 +1,15 @@
 <?php
 /**
- * Namespace functions for Blog Authors.
+ * Namespace functions.
  *
- * @package quark-blog
+ * @package quark-ports
  */
 
-namespace Quark\Blog\Authors;
+namespace Quark\Ports;
 
 use WP_Post;
 
-const POST_TYPE   = 'qrk_blog_author';
+const POST_TYPE   = 'qrk_port';
 const CACHE_KEY   = POST_TYPE;
 const CACHE_GROUP = POST_TYPE;
 
@@ -19,60 +19,59 @@ const CACHE_GROUP = POST_TYPE;
  * @return void
  */
 function bootstrap(): void {
-	// Register post type.
-	add_action( 'init', __NAMESPACE__ . '\\register_blog_author_post_type' );
+	// Post type.
+	add_action( 'init', __NAMESPACE__ . '\\register_port_post_type' );
 
 	// Other hooks.
 	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
 
-	// Custom fields.
+	// Admin stuff.
 	if ( is_admin() ) {
-		require_once __DIR__ . '/../../custom-fields/blog-authors.php';
+		// Custom fields.
+		require_once __DIR__ . '/../custom-fields/ports.php';
 	}
 }
 
 /**
- * Register Blog Authors post type.
+ * Register Port post type.
  *
  * @return void
  */
-function register_blog_author_post_type(): void {
+function register_port_post_type(): void {
 	// Post type arguments.
 	$args = [
 		'labels'              => [
-			'name'               => 'Blog Authors',
-			'singular_name'      => 'Blog Author',
+			'name'               => 'Ports',
+			'singular_name'      => 'Port',
 			'add_new'            => 'Add New',
-			'add_new_item'       => 'Add New Blog Author',
-			'edit_item'          => 'Edit Blog Author',
-			'new_item'           => 'New Blog Author',
-			'view_item'          => 'View Blog Author',
-			'search_items'       => 'Search Blog Authors',
-			'not_found'          => 'No Blog Authors found',
-			'not_found_in_trash' => 'No Blog Authors found in Trash',
-			'parent_item_colon'  => 'Parent Blog Author:',
-			'menu_name'          => 'Blog Authors',
+			'add_new_item'       => 'Add New Port',
+			'edit_item'          => 'Edit Port',
+			'new_item'           => 'New Port',
+			'view_item'          => 'View Port',
+			'search_items'       => 'Search Ports',
+			'not_found'          => 'No Ports found',
+			'not_found_in_trash' => 'No Ports found in Trash',
+			'parent_item_colon'  => 'Parent Port:',
+			'menu_name'          => 'Ports',
 		],
+		'public'              => false,
+		'show_in_rest'        => false,
+		'menu_icon'           => 'dashicons-location',
+		'hierarchical'        => false,
 		'supports'            => [
 			'title',
 			'editor',
 			'revisions',
-			'thumbnail',
 		],
-		'hierarchical'        => false,
-		'public'              => true,
-		'exclude_from_search' => true,
-		'publicly_queryable'  => false,
 		'show_ui'             => true,
-		'show_in_menu'        => 'edit.php',
-		'menu_icon'           => 'dashicons-admin-users',
+		'show_in_menu'        => 'edit.php?post_type=qrk_itinerary',
 		'show_in_nav_menus'   => false,
+		'publicly_queryable'  => false,
+		'exclude_from_search' => true,
 		'has_archive'         => false,
 		'query_var'           => true,
 		'can_export'          => true,
 		'rewrite'             => false,
-		'capability_type'     => 'post',
-		'show_in_rest'        => false,
 	];
 
 	// Register post type.
@@ -91,18 +90,17 @@ function bust_post_cache( int $post_id = 0 ): void {
 	wp_cache_delete( CACHE_KEY . "_$post_id", CACHE_GROUP );
 
 	// Trigger action to clear cache for this post.
-	do_action( 'qe_blog_author_post_cache_busted', $post_id );
+	do_action( 'qe_port_post_cache_busted', $post_id );
 }
 
 /**
- * Get a Blog Authors.
+ * Get a Port.
  *
  * @param int $post_id Post ID.
  *
  * @return array{
  *     post: WP_Post|null,
- *     post_thumbnail: int,
- *     post_meta: mixed[]
+ *     post_meta: mixed[],
  * }
  */
 function get( int $post_id = 0 ): array {
@@ -118,9 +116,8 @@ function get( int $post_id = 0 ): array {
 	// Check for cached value.
 	if ( is_array( $cached_value ) && ! empty( $cached_value['post'] ) && $cached_value['post'] instanceof WP_Post ) {
 		return [
-			'post'           => $cached_value['post'],
-			'post_thumbnail' => $cached_value['post_thumbnail'] ?? 0,
-			'post_meta'      => $cached_value['post_meta'] ?? [],
+			'post'      => $cached_value['post'],
+			'post_meta' => $cached_value['post_meta'] ?? [],
 		];
 	}
 
@@ -130,17 +127,15 @@ function get( int $post_id = 0 ): array {
 	// Check for post.
 	if ( ! $post instanceof WP_Post || POST_TYPE !== $post->post_type ) {
 		return [
-			'post'           => null,
-			'post_thumbnail' => 0,
-			'post_meta'      => [],
+			'post'      => null,
+			'post_meta' => [],
 		];
 	}
 
 	// Build data.
 	$data = [
-		'post'           => $post,
-		'post_thumbnail' => get_post_thumbnail_id( $post ) ?: 0,
-		'post_meta'      => [],
+		'post'      => $post,
+		'post_meta' => [],
 	];
 
 	// Get all post meta.
