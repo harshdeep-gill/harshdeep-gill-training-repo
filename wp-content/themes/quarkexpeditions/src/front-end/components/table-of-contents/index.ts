@@ -57,17 +57,17 @@ export default class TableOfContents extends HTMLElement {
 	/**
 	 * Set the passed item as active.
 	 *
-	 * @param {HTMLElement | Element} itemEl Content Item to be set as active.
+	 * @param {HTMLElement | Element} itemElement Content Item to be set as active.
 	 */
-	setItemAsActive( itemEl: HTMLElement | Element ) {
+	setItemAsActive( itemElement: HTMLElement | Element ) {
 		// Check if item exists.
-		if ( ! itemEl ) {
+		if ( ! itemElement ) {
 			// Bail early.
 			return;
 		}
 
 		// Check if the passed element has the expected class.
-		if ( ! itemEl.classList.contains( 'table-of-contents__list-item' ) ) {
+		if ( ! itemElement.classList.contains( 'table-of-contents__list-item' ) ) {
 			// If not exists, bail early.
 			return;
 		}
@@ -81,7 +81,7 @@ export default class TableOfContents extends HTMLElement {
 		}
 
 		// Add class to the current active content item.
-		itemEl.classList.add( 'table-of-contents__list-item--active' );
+		itemElement.classList.add( 'table-of-contents__list-item--active' );
 	}
 
 	/**

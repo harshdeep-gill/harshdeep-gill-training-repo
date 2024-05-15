@@ -1463,7 +1463,6 @@
 				<p>Antarctica. The 7th Continent. The land mass at the bottom of the globe, completely encased in ice. Its remote wilderness featured on nature documentaries and in our science and history books. And for those reasons, it might seem somewhat abstract and hard to reach. Perhaps even impossible. But it's not.
 				When I tell people what I do for a living—working on an expedition ship that takes passengers from all over the world to Antarctica—I often hear a similar response, “I had no idea people can actually go to Antarctica!” And I always reply with: “Yes, people go. And so can you!”</p>
 				<x-image
-					class="wp-block-image"
 					style="border-radius: 16px;"
 					:image_id="33"
 					:args="[
@@ -1483,7 +1482,6 @@
 					Alternatively, travelers preferring to skip the Drake Passage can fly out of Punta Arenas, Chile directly to an airstrip on an island adjacent to the Antarctic Peninsula. From there, they'll board the expedition ship and be standing face to face with glaciers and penguins just a few hours after departing Punta Arenas.
 				</p>
 				<x-image
-					class="wp-block-image"
 					style="border-radius: 16px;"
 					:image_id="33"
 					:args="[
@@ -1512,14 +1510,13 @@
 					The most common expeditions last approximately nine to ten days, including five full days of exploration in Antarctica. Rather than fly from South America, these voyages embrace the power and the beauty of the Drake Passage (and its rich and abundant bird life), sailing from Ushuaia. Time spent at sea varies depending on sea conditions and wind, but often take from one and a half to two days at sea, each way. The rest of the voyage is spent in the seemingly endless coastal environment of the Antarctic Peninsula.
 					For those with extended holidays and a thirst for a deeper exploration of this remote wilderness, there are expeditions that spend twenty or more days exploring in the Southern Ocean and its unique islands. These extended voyages include visits to the wildlife-rich Falkland Islands and the otherworldly wilderness of South Georgia, in addition to the days spent in the Antarctic Peninsula, making these expeditions the most thorough exploration of the wild environments at the bottom of the globe.
 				</p>
-				<h2 id=what-can-do-antarctica>What can I do while in Antarctica?</h2>
+				<h2 id="what-can-do-antarctica">What can I do while in Antarctica?</h2>
 				<p>
 					The best time to visit Antarctica is from late spring to early fall, which in the southern hemisphere is from October to March. The first voyages of the season reach Antarctica in late spring (end of October or early November) when the sea ice opens up just enough to allow ships into the pristine glacial landscapes. Voyages operate continually from late October, until the summer comes to an end, and the wonderfully powerful Antarctic autumn begins to arrive by the middle of March.
 					Learn more about the unique highlights of visiting Antarctica during its different seasons here.
 				</p>
 				<h4>Stand-up Paddleboarding in Antarctica</h4>
 				<x-image
-					class="wp-block-image"
 					style="border-radius: 16px;"
 					:image_id="32"
 					:args="[
