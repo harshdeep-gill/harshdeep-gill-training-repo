@@ -7,5 +7,5 @@
 @endphp
 
 <div @class( $classes )>
-	{{ $slot }}
+	<x-escape :content="$slot->toHtml()" />
 </div>
