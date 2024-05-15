@@ -20,25 +20,19 @@ use function Quark\Migration\Drupal\get_database;
 use function Quark\Migration\WordPress\qrk_sanitize_attribute;
 use function WP_CLI\Utils\make_progress_bar;
 
+use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
+use const Quark\CabinCategories\CABIN_CLASS_TAXONOMY;
+use const Quark\Departures\SPOKEN_LANGUAGE_TAXONOMY;
+use const Quark\Expeditions\EXPEDITION_CATEGORY_TAXONOMY;
+use const Quark\Expeditions\DESTINATION_TAXONOMY;
+use const Quark\InclusionSets\INCLUSION_EXCLUSION_CATEGORY;
+use const Quark\Itineraries\DEPARTURE_LOCATION_TAXONOMY;
+use const Quark\Ships\SHIP_CATEGORY_TAXONOMY;
+use const Quark\StaffMembers\DEPARTMENT_TAXONOMY;
+use const Quark\StaffMembers\DEPARTURE_STAFF_ROLE_TAXONOMY;
+
 const POST_TAG_TAXONOMY      = 'post_tag';
 const POST_CATEGORY_TAXONOMY = 'category';
-
-// TODO:: Use these slugs from specific CPT/taxonomy mu-plugins.
-const ACCOMMODATION_TYPES   = 'qrk_accommodation_types';
-const AUDIENCES             = 'qrk_audiences';
-const BRANDING              = 'qrk_branding';
-const CABIN_CLASSES         = 'qrk_cabin_classes';
-const CHARTER_COMPANIES     = 'qrk_charter_companies';
-const DEPARTMENTS           = 'qrk_departments';
-const DEPARTURE_STAFF_ROLES = 'qrk_departure_staff_roles';
-const EXPEDITION_CATEGORIES = 'qrk_expedition_categories';
-const INCLUSION_EXCLUSION   = 'qrk_inclusion_exclusion_category';
-const SHIP_CATEGORIES       = 'qrk_ship_categories';
-const ADVENTURE_OPTIONS     = 'qrk_adventure_option_category';
-const ICONS                 = 'qrk_icons';
-const DEPARTURE_LOCATIONS   = 'qrk_departure_locations';
-const DESTINATIONS          = 'qrk_destinations';
-const SPOKEN_LANGUAGES      = 'qrk_spoken_languages';
 
 /**
  * Class Media.
@@ -60,23 +54,18 @@ class Taxonomies {
 	 *     Value: Drupal Vocabulary slug.
 	 */
 	public array $taxonomies = [
-		POST_TAG_TAXONOMY      => 'tags',
-		POST_CATEGORY_TAXONOMY => 'blog_categories',
-		ACCOMMODATION_TYPES    => 'accommodation_types',
-		AUDIENCES              => 'audiences',
-		BRANDING               => 'branding',
-		CABIN_CLASSES          => 'cabin_classes',
-		CHARTER_COMPANIES      => 'charter_companies',
-		DEPARTMENTS            => 'departments',
-		DEPARTURE_STAFF_ROLES  => 'departure_staff_roles',
-		EXPEDITION_CATEGORIES  => 'expedition_categories',
-		INCLUSION_EXCLUSION    => 'inclusion_exclusion_categories',
-		SHIP_CATEGORIES        => 'ship_categories',
-		ADVENTURE_OPTIONS      => 'adventure_options',
-		ICONS                  => 'icons',
-		DEPARTURE_LOCATIONS    => 'departure_locations',
-		DESTINATIONS           => 'destinations',
-		SPOKEN_LANGUAGES       => 'languages',
+		POST_TAG_TAXONOMY             => 'tags',
+		POST_CATEGORY_TAXONOMY        => 'blog_categories',
+		CABIN_CLASS_TAXONOMY          => 'cabin_classes',
+		DEPARTMENT_TAXONOMY           => 'departments',
+		DEPARTURE_STAFF_ROLE_TAXONOMY => 'departure_staff_roles',
+		EXPEDITION_CATEGORY_TAXONOMY  => 'expedition_categories',
+		INCLUSION_EXCLUSION_CATEGORY  => 'inclusion_exclusion_categories',
+		SHIP_CATEGORY_TAXONOMY        => 'ship_categories',
+		ADVENTURE_OPTION_CATEGORY     => 'adventure_options',
+		DEPARTURE_LOCATION_TAXONOMY   => 'departure_locations',
+		DESTINATION_TAXONOMY          => 'destinations',
+		SPOKEN_LANGUAGE_TAXONOMY      => 'languages',
 	];
 
 	/**
@@ -199,7 +188,7 @@ class Taxonomies {
 	 * Insert Term by passing drupal data and WordPress Taxonomy slug.
 	 *
 	 * @param array<string, int|string> $drupal_term Drupal term data.
-	 * @param string                    $taxonomy Taxonomy slug.
+	 * @param string                    $taxonomy    Taxonomy slug.
 	 *
 	 * @return mixed
 	 */
@@ -276,7 +265,7 @@ class Taxonomies {
 	/**
 	 * Map parent and child relationship.
 	 *
-	 * @param array{}|array<int, array<string, int|string>> $data Drupal data.
+	 * @param array{}|array<int, array<string, int|string>> $data     Drupal data.
 	 * @param string                                        $taxonomy Taxonomy slug.
 	 *
 	 * @return void
@@ -331,7 +320,7 @@ class Taxonomies {
 	/**
 	 * Normalize drupal term data.
 	 *
-	 * @param array{}|array<string, int|string> $item Drupal term data.
+	 * @param array{}|array<string, int|string> $item     Drupal term data.
 	 * @param string                            $taxonomy Taxonomy slug.
 	 *
 	 * @return array{}|array{
@@ -367,16 +356,12 @@ class Taxonomies {
 			// Prepare arguments generic taxonomies.
 			case POST_TAG_TAXONOMY:
 			case POST_CATEGORY_TAXONOMY:
-			case ACCOMMODATION_TYPES:
-			case AUDIENCES:
-			case BRANDING:
-			case CABIN_CLASSES:
-			case CHARTER_COMPANIES:
-			case DEPARTMENTS:
-			case DEPARTURE_STAFF_ROLES:
-			case EXPEDITION_CATEGORIES:
-			case INCLUSION_EXCLUSION:
-			case SHIP_CATEGORIES:
+			case CABIN_CLASS_TAXONOMY:
+			case DEPARTMENT_TAXONOMY:
+			case DEPARTURE_STAFF_ROLE_TAXONOMY:
+			case EXPEDITION_CATEGORY_TAXONOMY:
+			case INCLUSION_EXCLUSION_CATEGORY:
+			case SHIP_CATEGORY_TAXONOMY:
 				// Prepare name.
 				if ( is_string( $item['name'] ) && ! empty( trim( $item['name'] ) ) ) {
 					$name = trim( $item['name'] );
@@ -402,7 +387,7 @@ class Taxonomies {
 				break;
 
 			// Prepare arguments for adventure Options taxonomy.
-			case ADVENTURE_OPTIONS:
+			case ADVENTURE_OPTION_CATEGORY:
 				// Prepare name.
 				if ( is_string( $item['name'] ) && ! empty( trim( $item['name'] ) ) ) {
 					$name = trim( $item['name'] );
@@ -447,44 +432,8 @@ class Taxonomies {
 				}
 				break;
 
-			// Prepare arguments for icons taxonomy.
-			case ICONS:
-				// Prepare name.
-				if ( is_string( $item['name'] ) && ! empty( trim( $item['name'] ) ) ) {
-					$name = trim( $item['name'] );
-				}
-
-				// Prepare slug.
-				if ( is_string( $item['field_symbol_id_value'] ) ) {
-					$slug = trim( $item['field_symbol_id_value'] );
-					$slug = sanitize_title( $slug );
-				}
-
-				// Prepare arguments.
-				$prepared_args = [
-					'name'        => $name,
-					'slug'        => $slug,
-					'taxonomy'    => $taxonomy,
-					'parent'      => ! empty( $item['parent_id'] ) ? $item['parent_id'] : 0,
-					'description' => ! empty( $item['description__value'] ) ? $item['description__value'] : '',
-					'meta'        => [
-						'drupal_term_id' => ! empty( $item['tid'] ) ? $item['tid'] : '',
-					],
-				];
-
-				// Prepare for ACF data for SVG.
-				if ( ! empty( $item['field_svg_file_target_id'] ) ) {
-					$svg_icon = download_file_by_fid( absint( $item['field_svg_file_target_id'] ) );
-
-					// Assign svg to meta.
-					if ( ! empty( $svg_icon ) ) {
-						$prepared_args['meta']['svg'] = $svg_icon;
-					}
-				}
-				break;
-
 			// Prepare arguments for departure locations taxonomy.
-			case DEPARTURE_LOCATIONS:
+			case DEPARTURE_LOCATION_TAXONOMY:
 				// Prepare name.
 				if ( is_string( $item['name'] ) && ! empty( trim( $item['name'] ) ) ) {
 					$name = trim( $item['name'] );
@@ -520,7 +469,7 @@ class Taxonomies {
 				break;
 
 			// Prepare arguments for destinations taxonomy.
-			case DESTINATIONS:
+			case DESTINATION_TAXONOMY:
 				// Prepare name.
 				if ( is_string( $item['name'] ) && ! empty( trim( $item['name'] ) ) ) {
 					$name = trim( $item['name'] );
@@ -556,7 +505,7 @@ class Taxonomies {
 				break;
 
 			// Prepare arguments for spoken languages taxonomy.
-			case SPOKEN_LANGUAGES:
+			case SPOKEN_LANGUAGE_TAXONOMY:
 				// Prepare name.
 				if ( is_string( $item['name'] ) && ! empty( trim( $item['name'] ) ) ) {
 					$name = trim( $item['name'] );
@@ -657,16 +606,12 @@ class Taxonomies {
 			// Simple taxonomies.
 			case POST_TAG_TAXONOMY:
 			case POST_CATEGORY_TAXONOMY:
-			case ACCOMMODATION_TYPES:
-			case AUDIENCES:
-			case BRANDING:
-			case CABIN_CLASSES:
-			case CHARTER_COMPANIES:
-			case DEPARTMENTS:
-			case DEPARTURE_STAFF_ROLES:
-			case EXPEDITION_CATEGORIES:
-			case INCLUSION_EXCLUSION:
-			case SHIP_CATEGORIES:
+			case CABIN_CLASS_TAXONOMY:
+			case DEPARTMENT_TAXONOMY:
+			case DEPARTURE_STAFF_ROLE_TAXONOMY:
+			case EXPEDITION_CATEGORY_TAXONOMY:
+			case INCLUSION_EXCLUSION_CATEGORY:
+			case SHIP_CATEGORY_TAXONOMY:
 				// Get drupal term slug.
 				$drupal_term_slug = $this->taxonomies[ $taxonomy ];
 
@@ -688,7 +633,7 @@ class Taxonomies {
 				break;
 
 			// Adventure options taxonomy drupal query.
-			case ADVENTURE_OPTIONS:
+			case ADVENTURE_OPTION_CATEGORY:
 				$query = "
 					SELECT
 						term.`tid`,
@@ -711,30 +656,8 @@ class Taxonomies {
 				";
 				break;
 
-			// Icons taxonomy drupal query.
-			case ICONS:
-				$query = "SELECT
-					term.`tid`,
-					parent.`parent_target_id` AS `parent_id`,
-					field_data.`name`,
-					field_data.`description__value`,
-					( SELECT alias AS drupal_url FROM path_alias WHERE path = CONCAT( '/taxonomy/term/', term.tid ) ORDER BY id DESC LIMIT 0, 1 ) AS drupal_url,
-					field_svg_file.field_svg_file_target_id AS `field_svg_file_target_id`,
-					field_symbol_id.field_symbol_id_value AS `field_symbol_id_value`
-				FROM
-					taxonomy_term_data AS term
-					LEFT JOIN taxonomy_term__parent AS parent ON term.`tid` = parent.`entity_id` AND term.langcode = parent.langcode
-					LEFT JOIN taxonomy_term_field_data AS field_data ON term.`tid` = field_data.`tid` AND term.langcode = field_data.langcode
-					LEFT JOIN `taxonomy_term__field_svg_file` AS `field_svg_file` ON term.tid = field_svg_file.entity_id AND term.langcode = field_svg_file.langcode
-					LEFT JOIN `taxonomy_term__field_symbol_id` AS `field_symbol_id` ON term.tid = field_symbol_id.entity_id AND term.langcode = field_symbol_id.langcode
-				WHERE
-					term.`vid` = 'icons'
-				ORDER BY
-					parent.`parent_target_id` ASC;";
-				break;
-
 			// Departure locations taxonomy drupal query.
-			case DEPARTURE_LOCATIONS:
+			case DEPARTURE_LOCATION_TAXONOMY:
 				$query = "SELECT
 					term.`tid`,
 					parent.`parent_target_id` AS `parent_id`,
@@ -754,7 +677,7 @@ class Taxonomies {
 				break;
 
 			// Destinations taxonomy drupal query.
-			case DESTINATIONS:
+			case DESTINATION_TAXONOMY:
 				$query = "SELECT
 					term.`tid`,
 					parent.`parent_target_id` AS `parent_id`,
@@ -774,7 +697,7 @@ class Taxonomies {
 				break;
 
 			// Language taxonomy drupal query.
-			case SPOKEN_LANGUAGES:
+			case SPOKEN_LANGUAGE_TAXONOMY:
 				$query = "SELECT
 					term.`tid`,
 					parent.`parent_target_id` AS `parent_id`,

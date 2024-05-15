@@ -15,7 +15,7 @@ use WP_REST_Request;
 use function Quark\Core\prepare_content_with_blocks;
 
 const POST_TYPE                      = 'qrk_expedition';
-const DESTINATIONS_TAXONOMY          = 'qrk_destination';
+const DESTINATION_TAXONOMY           = 'qrk_destination';
 const EXPEDITION_CATEGORY_TAXONOMY   = 'qrk_expedition_category';
 const DEPARTURE_DESTINATION_TAXONOMY = 'qrk_departure_destination';
 const CACHE_KEY                      = POST_TYPE;
@@ -144,7 +144,7 @@ function register_destination_taxonomy(): void {
 	];
 
 	// Register taxonomy.
-	register_taxonomy( DESTINATIONS_TAXONOMY, (array) apply_filters( 'qe_destination_taxonomy_post_types', [] ), $args );
+	register_taxonomy( DESTINATION_TAXONOMY, (array) apply_filters( 'qe_destination_taxonomy_post_types', [] ), $args );
 }
 
 /**
