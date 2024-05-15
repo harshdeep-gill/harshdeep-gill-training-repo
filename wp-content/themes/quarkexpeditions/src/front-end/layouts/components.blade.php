@@ -1429,18 +1429,145 @@
 		</x-section>
 	</x-component-demo>
 
-	<x-component-demo :keys="[ 'sidebar-grid' ]">
-		<h1>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi, velit.</h1>
+	<x-component-demo :keys="[ 'sidebar-grid', 'table-of-contents', 'breadcrumbs', 'post-author-info' ]">
+		<x-breadcrumbs
+			:breadcrumbs="[
+				[
+					'title' => 'Home',
+					'url'   => '#',
+				],
+				[
+					'title' => 'Blog',
+					'url'   => '#',
+				],
+				[
+					'title' => 'Antarctica',
+					'url'   => '#',
+				],
+				[
+					'title' => 'Can I Travel Antarctica?',
+					'url'   => '#',
+				],
+			]"
+		/>
 		<x-sidebar-grid>
 			<x-sidebar-grid.content>
-				<h2>Sidebar Grid: Content</h2>
-				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sit amet massa eget orci iaculis ultricies alas non ante. Vivamus tempor purus quam, ac iaculis diam. Sed congue justo ac nisl efficitur ultricies. Sed at lobortis eros. Pellentesque metus arcu, sodales non ullamcorper sed, ullamcorper a sapien tempor.</p>
-				<ul><li>In nec mi vitae quam posuere aliquet eget sed leo.</li><li>Sed vel nisi ultricies, sodales risus non, ornare augue.</li><li>Nulla facilisi. Maecenas sit amet porta nulla commodo.</li><li>Rhoncus purus duis in urna ac lorem sagittis porta.</li></ul>
-				<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad commodi animi veritatis autem iusto ea ut deserunt earum ipsum ipsam facilis at dolores recusandae odit cupiditate, reprehenderit cum unde inventore velit pariatur. Aut sit quibusdam accusantium, temporibus aliquam quidem corporis aliquid delectus doloribus quo placeat ad repellendus sint officia, voluptates repellat voluptatum, suscipit tenetur debitis? Obcaecati mollitia saepe distinctio at libero recusandae fugiat porro vitae maiores ex veritatis eaque tenetur fuga molestiae, laudantium tempore, sed quae provident tempora delectus ad. Facilis distinctio sint ea maxime quae! Exercitationem amet sit obcaecati officiis neque atque autem, nam deleniti, numquam eligendi at excepturi optio inventore fuga sequi. Odio eum ab at iusto eveniet aut eligendi quo velit necessitatibus corrupti ex, vel aliquam dignissimos quidem distinctio assumenda excepturi iure recusandae, suscipit laborum? Consequuntur cupiditate a, officia natus veritatis nihil excepturi! Tempora quae facilis dolorum molestiae esse ab praesentium? Excepturi, corrupti! Suscipit, ad iure tempore facere facilis exercitationem, assumenda fuga quae iusto eligendi ipsum ut iste alias labore id soluta! Ipsa, dolores nam quidem officia commodi velit aspernatur vitae sint impedit sapiente quam obcaecati? Magni recusandae iure natus dolores enim, totam quibusdam atque possimus repudiandae quam voluptates aspernatur, expedita fuga officia in quasi rerum reprehenderit vitae. Ut, harum. Blanditiis incidunt dolore neque deserunt error eius consectetur deleniti reprehenderit quia quibusdam. Ducimus hic nihil provident quo, nesciunt, velit dolor dicta aspernatur exercitationem necessitatibus maiores officiis illum voluptatem eos quidem architecto. Porro aspernatur ullam aperiam optio facere quia eligendi, obcaecati totam natus dicta error illum aut magni eius maxime ab animi voluptas. Magnam eaque iure eius doloribus atque. Consequuntur quis enim sit velit cumque. Tempore a quas ducimus voluptatibus. Ad possimus accusamus a voluptatibus nobis? Esse debitis earum sapiente, eos, rem quisquam minima modi natus rerum consequatur beatae! Aliquid qui officiis fuga fugit omnis distinctio cupiditate in molestiae, libero eius sapiente dolorem numquam similique consectetur ducimus, itaque quia doloribus? Numquam pariatur quisquam eius neque. Natus sequi dolore consequuntur totam. Provident facere ipsum, modi mollitia vitae nostrum sequi ipsa repellat alias recusandae vero esse enim, ullam natus ut, ipsam molestias deleniti dolor magnam saepe eveniet at nihil rerum minima. Itaque saepe quibusdam non dicta! Eius rem necessitatibus aut ab autem. Consequuntur eius ex autem enim, consequatur aliquam suscipit natus. Unde aspernatur velit ut a fugiat facere tempora dolorum eligendi explicabo amet aliquid sit, laudantium laborum cum nisi tempore accusantium? Ab fugiat nisi totam. Accusamus doloremque quidem temporibus reiciendis tempore corrupti culpa earum cumque porro itaque magnam distinctio facilis veritatis mollitia dignissimos quae numquam sequi eos, consequuntur vitae repudiandae dicta, inventore eligendi voluptatibus. Iste sequi error pariatur facilis quas sint, suscipit voluptas accusamus sed? Suscipit tempora minus rerum reprehenderit labore, facilis commodi nobis eum corrupti quos quis est molestiae quod nihil? Velit dicta officia doloremque repellat enim soluta qui facere eveniet nisi laborum, minima odit laboriosam veritatis voluptatem numquam quo? Reiciendis laudantium deserunt nostrum voluptatem, sed sapiente, veniam ducimus deleniti explicabo debitis, accusamus ipsum cumque quo veritatis possimus non eaque sint iusto dolorum animi numquam! Molestias porro enim minus? Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis quibusdam saepe a fugit vero deserunt facilis, esse accusantium labore molestias itaque nulla cum, nemo est fuga asperiores repudiandae cupiditate debitis explicabo? Architecto accusamus error eius repellendus distinctio a quod tempora numquam similique! Culpa dolorem facilis consectetur inventore expedita facere. Nulla ratione dolorum vero corrupti modi alias? Rem laboriosam tenetur odit possimus dolorum itaque aspernatur assumenda enim neque doloribus magni voluptates a ut vitae ipsum, porro maiores expedita provident mollitia facere excepturi. Dolores blanditiis a sint accusantium, voluptatem atque ratione officiis? Ullam quidem maxime quasi. Laboriosam ab ipsam earum itaque dicta illum! Doloremque, nulla iste quia laudantium non ullam pariatur eum asperiores ipsum vero libero maiores aliquid adipisci aperiam. Sunt porro cumque cupiditate nobis debitis fugiat, hic rem expedita veniam in dolores eum tempora ipsum itaque natus. Error fugit quibusdam tempore, commodi quasi, labore sunt doloremque dolorum quo mollitia a sit deserunt vero corporis harum dicta tenetur odio repellendus dignissimos aut nam architecto obcaecati. Minima, dignissimos. Fugit minima voluptate, quisquam, quo incidunt maxime quidem ipsam molestias earum aut, expedita possimus culpa! Quos atque cum ipsa amet rem. Excepturi vero nihil sapiente, nam ducimus consectetur iure assumenda ratione nulla eum, sint reprehenderit. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eius, fugit alias! Voluptatibus id adipisci asperiores nostrum non nesciunt. Ut velit deserunt voluptatibus suscipit sint vero nihil repellat saepe ducimus perferendis assumenda quia vitae facere distinctio quisquam illum vel tempora culpa commodi, magni inventore, dolorum, et aspernatur! Id, accusamus? Expedita voluptatibus amet libero accusantium quam minus, nam nulla totam voluptas distinctio ad. Esse dolorem cumque facilis tempore iste neque asperiores nostrum, eius ipsum ullam atque aliquid eum, laborum natus ab tenetur? Et sit, similique earum fugiat, reiciendis magni repellendus, nesciunt rem neque praesentium debitis ex beatae autem eum qui incidunt dignissimos.</p>
+				<h1>Can I Travel to Antarctica?</h1>
+				<x-post-author-info>
+					<x-post-author-info.image :image_id="18" />
+					<x-post-author-info.info>
+						<x-post-author-info.name title="Daven Hafey" />
+						<x-post-author-info.read-time duration="11" />
+					</x-post-author-info.info>
+				</x-post-author-info>
+				<p>Antarctica. The 7th Continent. The land mass at the bottom of the globe, completely encased in ice. Its remote wilderness featured on nature documentaries and in our science and history books. And for those reasons, it might seem somewhat abstract and hard to reach. Perhaps even impossible. But it's not.
+				When I tell people what I do for a living—working on an expedition ship that takes passengers from all over the world to Antarctica—I often hear a similar response, “I had no idea people can actually go to Antarctica!” And I always reply with: “Yes, people go. And so can you!”</p>
+				<x-image
+					style="border-radius: 16px;"
+					:image_id="33"
+					:args="[
+						'size' =>       [
+							'width'   => 1280,
+							'height'  => 720,
+						],
+					]"
+				/>
+				<p>Despite its seemingly impossible remoteness, Antarctica has never been so accessible to adventurous travelers. In fact, more than 45,000 people traveled to Antarctica in the 2016-2017 season from all over the world, including the United States, China, Australia, Germany, Canada, the United Kingdom, France, India, and many, many more.
+				As the timeless idiom indicates: knowing is half the battle. Throughout this piece, I hope to convey the knowledge that not only can you visit Antarctica from almost anywhere in the world, but just as importantly,how you can do it.</p>
+				<h2 id="you-can-travel-antarctica">You can travel to Antarctica! Here's how.</h2>
+				<p>
+					A common question I hear from people whose excitement is palpable after they've learned how accessible Antarctica can be, is: “How do I even get there?” That answer might not immediately seem straightforward. Maybe some of us have heard of researchers flying on military aircraft from New Zealand, or month long sailing adventures from South Africa or Australia. But the easiest way to get to Antarctica is simple. All you need to do is reach Buenos Aires, Argentina or Punta Arenas, Chile. Both are cosmopolitan cities with international airports and regular service to the rest of the world.
+					The majority of Antarctic voyages depart from Ushuaia, Argentina, a three-and-a-half-hour direct flight from Buenos Aires. Throughout the summer, the Port of Ushuaia embarks and disembarks expedition vessels bound for the southern wilderness as seamlessly as any harbor in the Virgin Islands, the Mediterranean, or Alaska.
+					Voyages departing from Ushuaia, Argentina access Antarctica by sea. They traverse the infamous Drake Passage, a 600-mile (1,000 kilometer) body of water that separates South America from the Antarctic Peninsula. Depending upon conditions, this crossing often takes a day and a half at sea and is a prime opportunity to view iconic wildlife such as the great wandering albatross.
+					Alternatively, travelers preferring to skip the Drake Passage can fly out of Punta Arenas, Chile directly to an airstrip on an island adjacent to the Antarctic Peninsula. From there, they'll board the expedition ship and be standing face to face with glaciers and penguins just a few hours after departing Punta Arenas.
+				</p>
+				<x-image
+					style="border-radius: 16px;"
+					:image_id="33"
+					:args="[
+						'size' =>       [
+							'width'   => 1280,
+							'height'  => 720,
+						],
+					]"
+				/>
+				<h2 id="when-can-travel-antarctica">When can I travel to Antarctica?</h2>
+				<p>
+					The best time to visit Antarctica is from late spring to early fall, which in the southern hemisphere is from October to March. The first voyages of the season reach Antarctica in late spring (end of October or early November) when the sea ice opens up just enough to allow ships into the pristine glacial landscapes. Voyages operate continually from late October, until the summer comes to an end, and the wonderfully powerful Antarctic autumn begins to arrive by the middle of March.
+					Learn more about the unique highlights of visiting Antarctica during its different seasons here.
+				</p>
+				<h2 id="how-long-antarctic-expedition">How long is an Antarctic expedition?</h2>
+				<p>
+					When browsing information about your Antarctic expedition, you'll find different types of “itineraries,” or sailing plans. These itineraries aren't concrete, per se, but guides that will shape the direction and the duration of each voyage. Among these, you will find expeditions that travel directly to Antarctica, and others that include the spectacular sub-Antarctic regions of the Falkland Islands (Islas Malvinas) and South Georgia.
+					There are a wide range of options for visiting Antarctica that can suit your schedule, from “express” expeditions with flights to the Antarctic Peninsula that get you to the continent and back in as quick as eight days, to epic explorations of sub-Antarctic islands and the continent itself, lasting three weeks or more.
+					The most common expeditions last approximately nine to ten days, including five full days of exploration in Antarctica. Rather than fly from South America, these voyages embrace the power and the beauty of the Drake Passage (and its rich and abundant bird life), sailing from Ushuaia. Time spent at sea varies depending on sea conditions and wind, but often take from one and a half to two days at sea, each way. The rest of the voyage is spent in the seemingly endless coastal environment of the Antarctic Peninsula.
+					For those with extended holidays and a thirst for a deeper exploration of this remote wilderness, there are expeditions that spend twenty or more days exploring in the Southern Ocean and its unique islands. These extended voyages include visits to the wildlife-rich Falkland Islands and the otherworldly wilderness of South Georgia, in addition to the days spent in the Antarctic Peninsula, making these expeditions the most thorough exploration of the wild environments at the bottom of the globe.
+				</p>
+				<h2 id="cruise">How is an expedition to Antarctica different from a cruise?</h2>
+				<p>
+					When browsing information about your Antarctic expedition, you'll find different types of “itineraries,” or sailing plans. These itineraries aren't concrete, per se, but guides that will shape the direction and the duration of each voyage. Among these, you will find expeditions that travel directly to Antarctica, and others that include the spectacular sub-Antarctic regions of the Falkland Islands (Islas Malvinas) and South Georgia.
+					There are a wide range of options for visiting Antarctica that can suit your schedule, from “express” expeditions with flights to the Antarctic Peninsula that get you to the continent and back in as quick as eight days, to epic explorations of sub-Antarctic islands and the continent itself, lasting three weeks or more.
+					The most common expeditions last approximately nine to ten days, including five full days of exploration in Antarctica. Rather than fly from South America, these voyages embrace the power and the beauty of the Drake Passage (and its rich and abundant bird life), sailing from Ushuaia. Time spent at sea varies depending on sea conditions and wind, but often take from one and a half to two days at sea, each way. The rest of the voyage is spent in the seemingly endless coastal environment of the Antarctic Peninsula.
+					For those with extended holidays and a thirst for a deeper exploration of this remote wilderness, there are expeditions that spend twenty or more days exploring in the Southern Ocean and its unique islands. These extended voyages include visits to the wildlife-rich Falkland Islands and the otherworldly wilderness of South Georgia, in addition to the days spent in the Antarctic Peninsula, making these expeditions the most thorough exploration of the wild environments at the bottom of the globe.
+				</p>
+				<h2 id="what-can-do-antarctica">What can I do while in Antarctica?</h2>
+				<p>
+					The best time to visit Antarctica is from late spring to early fall, which in the southern hemisphere is from October to March. The first voyages of the season reach Antarctica in late spring (end of October or early November) when the sea ice opens up just enough to allow ships into the pristine glacial landscapes. Voyages operate continually from late October, until the summer comes to an end, and the wonderfully powerful Antarctic autumn begins to arrive by the middle of March.
+					Learn more about the unique highlights of visiting Antarctica during its different seasons here.
+				</p>
+				<h4>Stand-up Paddleboarding in Antarctica</h4>
+				<x-image
+					style="border-radius: 16px;"
+					:image_id="32"
+					:args="[
+						'size' =>       [
+							'width'   => 1280,
+							'height'  => 720,
+						],
+					]"
+				/>
+				<p>
+					Although Antarctica has a reputation for being fiercely cold, in the summertime, the Antarctic Peninsula can be quite inviting! So inviting, that under the right conditions, visitors can navigate icy bays by stand-up paddleboard (SUP). Many people often associate SUP boarding with the tropics, but it can actually be the perfect fit for an intimate Antarctic moment. Paddling through a quiet, isolated cove can be one of the best ways to move the body while taking in the sounds of porpoising penguins and the crackling of bits and pieces of glaciers floating nearby. The waters of Antarctica are teaming with life, and intimate encounters with penguins, whales and seals gliding beneath or near your board are not uncommon.
+				</p>
 			</x-sidebar-grid.content>
 			<x-sidebar-grid.sidebar :sticky="true" :show_on_mobile="false">
-				<h4>Sidebar Grid: Sidebar</h4>
-				<p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Libero accusantium illo doloremque quam? Aliquam modi accusamus nobis saepe consequatur iste enim quo ex vel, sequi maiores pariatur est doloremque animi qui, eligendi similique possimus. Quidem soluta iste nemo tempora quas sit ipsam distinctio dolore, magnam sed culpa, amet expedita fugiat! Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste at accusamus unde, asperiores nobis autem praesentium in esse fugiat voluptatum sunt minus error. Delectus accusantium cupiditate maiores facilis deleniti ab, veritatis tempore nihil quas optio velit repellendus consectetur dolore voluptate dolorem impedit autem quos dolor dolorum dolores aspernatur atque doloribus!</p>
+				<x-table-of-contents
+					title="In this article"
+					:contents="[
+						[
+							'title'  => 'You can travel to Antarctica! Here\'s how.',
+							'anchor' => 'you-can-travel-antarctica',
+						],
+						[
+							'title'  => 'When can I travel to Antarctica?',
+							'anchor' => 'when-can-travel-antarctica',
+						],
+						[
+							'title'  => 'How long is an Antarctic expedition?',
+							'anchor' => 'how-long-antarctic-expedition',
+						],
+						[
+							'title'  => 'How is an expedition to Antarctica different from a cruise?',
+							'anchor' => 'cruise',
+						],
+						[
+							'title'  => 'What can I do while in Antarctica?',
+							'anchor' => 'what-can-do-antarctica',
+						],
+						[
+							'title'  => 'Are all trips the same? How do I choose the best itinerary for me?',
+							'anchor' => 'best-itinerary',
+						],
+						[
+							'title'  => 'Why Visit Antarctica?',
+							'anchor' => 'why-visit',
+						],
+						[
+							'title'  => 'Yes, you can visit Antarctica!',
+							'anchor' => 'can-visit-antarctica',
+						],
+					]"
+				/>
 			</x-sidebar-grid.sidebar>
 		</x-sidebar-grid>
 		<x-section background="true" background_color="black" title="Our Biggest Savings! 50% off these Antarctic 2024 Voyages">
@@ -1668,16 +1795,6 @@
 				</x-product-cards.buttons>
 			</x-product-cards.card>
 		</x-product-cards>
-	</x-component-demo>
-
-	<x-component-demo :keys="[ 'post-author-info' ]">
-		<x-post-author-info>
-			<x-post-author-info.image :image_id="18" />
-			<x-post-author-info.info>
-				<x-post-author-info.name title="Daven Hafey" />
-				<x-post-author-info.read-time duration="11" />
-			</x-post-author-info.info>
-		</x-post-author-info>
 	</x-component-demo>
 
 	<x-component-demo :keys="[ 'breadcrumbs' ]">
