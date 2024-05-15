@@ -97,7 +97,6 @@ function register_expedition_post_type(): void {
 			'with_front' => false,
 		],
 		'template'            => [],
-		'menu_position'       => 25,
 	];
 
 	// Register post type.

@@ -74,7 +74,6 @@ function register_offer_post_type(): void {
 			'with_front' => false,
 		],
 		'capability_type'     => 'post',
-		'menu_position'       => 54,
 	];
 
 	// Register post type.

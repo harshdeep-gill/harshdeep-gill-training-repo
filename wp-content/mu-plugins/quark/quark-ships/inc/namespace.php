@@ -89,7 +89,6 @@ function register_ship_post_type(): void {
 			'with_front' => false,
 		],
 		'capability_type'     => 'post',
-		'menu_position'       => 40,
 	];
 
 	// Register post type.

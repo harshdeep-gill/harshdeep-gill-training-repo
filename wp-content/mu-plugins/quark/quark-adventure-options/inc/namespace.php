@@ -89,7 +89,6 @@ function register_adventure_option_post_type(): void {
 			'with_front' => false,
 		],
 		'capability_type'     => 'post',
-		'menu_position'       => 50,
 	];
 
 	// Register post type.

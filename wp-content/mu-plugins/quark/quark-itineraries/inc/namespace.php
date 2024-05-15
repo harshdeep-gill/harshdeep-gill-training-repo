@@ -82,7 +82,6 @@ function register_itinerary_post_type(): void {
 		'query_var'           => true,
 		'can_export'          => true,
 		'rewrite'             => false,
-		'menu_position'       => 25,
 	];
 
 	// Register post type.

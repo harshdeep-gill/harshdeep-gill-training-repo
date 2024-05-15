@@ -79,7 +79,6 @@ function register_departure_post_type(): void {
 		'can_export'          => true,
 		'rewrite'             => false,
 		'capability_type'     => 'post',
-		'menu_position'       => 35,
 	];
 
 	// Register post type.
