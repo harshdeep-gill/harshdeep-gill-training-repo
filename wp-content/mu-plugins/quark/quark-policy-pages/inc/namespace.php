@@ -61,7 +61,7 @@ function register_agreement_post_type(): void {
 		],
 		'public'              => true,
 		'show_in_rest'        => true,
-		'menu_icon'           => 'dashicons-media-document',
+		'menu_icon'           => 'dashicons-printer',
 		'hierarchical'        => false,
 		'supports'            => [
 			'title',

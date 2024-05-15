@@ -73,7 +73,7 @@ function register_staff_member_post_type(): void {
 		],
 		'public'              => true,
 		'show_in_rest'        => true,
-		'menu_icon'           => 'dashicons-sos',
+		'menu_icon'           => 'dashicons-groups',
 		'hierarchical'        => false,
 		'supports'            => [
 			'title',

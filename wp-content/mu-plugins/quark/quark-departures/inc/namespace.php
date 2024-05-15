@@ -63,7 +63,7 @@ function register_departure_post_type(): void {
 		],
 		'public'              => false,
 		'show_in_rest'        => true,
-		'menu_icon'           => 'dashicons-airplane',
+		'menu_icon'           => 'dashicons-clipboard',
 		'hierarchical'        => false,
 		'supports'            => [
 			'title',

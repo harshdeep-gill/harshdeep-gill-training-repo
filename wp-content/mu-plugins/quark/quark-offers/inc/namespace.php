@@ -55,7 +55,7 @@ function register_offer_post_type(): void {
 		],
 		'public'              => true,
 		'show_in_rest'        => true,
-		'menu_icon'           => 'dashicons-analytics',
+		'menu_icon'           => 'dashicons-money-alt',
 		'hierarchical'        => false,
 		'supports'            => [
 			'title',

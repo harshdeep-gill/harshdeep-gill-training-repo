@@ -77,7 +77,7 @@ function register_expedition_post_type(): void {
 		],
 		'public'              => true,
 		'show_in_rest'        => true,
-		'menu_icon'           => 'dashicons-palmtree',
+		'menu_icon'           => 'dashicons-flag',
 		'hierarchical'        => false,
 		'supports'            => [
 			'title',
