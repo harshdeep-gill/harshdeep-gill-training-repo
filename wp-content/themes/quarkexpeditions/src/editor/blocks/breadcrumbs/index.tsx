@@ -4,6 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { BlockConfiguration } from '@wordpress/blocks';
 import { useBlockProps } from '@wordpress/block-editor';
+import { Icon } from '@wordpress/components';
 
 /**
  * Styles.
@@ -54,7 +55,7 @@ export const settings: BlockConfiguration = {
 		} );
 
 		// Get the chevron icon
-		const cheveronIcon = icons.chevronLeft;
+		const cheveronIcon = icons.chevronLeft ?? <Icon icon="no" />;
 
 		// Return the block's markup.
 		return (
