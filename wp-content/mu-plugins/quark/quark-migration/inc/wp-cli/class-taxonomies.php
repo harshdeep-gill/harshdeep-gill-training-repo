@@ -16,6 +16,7 @@ use function Quark\Migration\Drupal\download_file_by_fid;
 use function Quark\Migration\Drupal\prepare_for_migration;
 use function Quark\Migration\Drupal\get_term_by_id;
 use function Quark\Migration\Drupal\get_database;
+use function Quark\Migration\Drupal\download_file_by_mid;
 use function Quark\Migration\WordPress\qrk_sanitize_attribute;
 use function WP_CLI\Utils\make_progress_bar;
 
@@ -24,6 +25,7 @@ use const Quark\CabinCategories\CABIN_CLASS_TAXONOMY;
 use const Quark\Departures\SPOKEN_LANGUAGE_TAXONOMY;
 use const Quark\Expeditions\EXPEDITION_CATEGORY_TAXONOMY;
 use const Quark\Expeditions\DESTINATION_TAXONOMY;
+use const Quark\Expeditions\EXCURSION_TAXONOMY;
 use const Quark\InclusionSets\INCLUSION_EXCLUSION_CATEGORY;
 use const Quark\Itineraries\DEPARTURE_LOCATION_TAXONOMY;
 use const Quark\Ships\SHIP_CATEGORY_TAXONOMY;
@@ -65,6 +67,7 @@ class Taxonomies {
 		DEPARTURE_LOCATION_TAXONOMY   => 'departure_locations',
 		DESTINATION_TAXONOMY          => 'destinations',
 		SPOKEN_LANGUAGE_TAXONOMY      => 'languages',
+		EXCURSION_TAXONOMY            => 'departure_destinations',
 	];
 
 	/**
@@ -528,6 +531,72 @@ class Taxonomies {
 					}
 				}
 				break;
+
+			// Prepare arguments for Excursion taxonomy.
+			case EXCURSION_TAXONOMY:
+				// Prepare name.
+				if ( is_string( $item['name'] ) && ! empty( trim( $item['name'] ) ) ) {
+					$name = trim( $item['name'] );
+				}
+
+				// Prepare slug.
+				if ( is_string( $item['name'] ) ) {
+					$slug = trim( $item['name'] );
+					$slug = sanitize_title( $slug );
+				}
+
+				// Prepare arguments.
+				$prepared_args = [
+					'name'        => $name,
+					'slug'        => $slug,
+					'taxonomy'    => $taxonomy,
+					'parent'      => ! empty( $item['parent_id'] ) ? $item['parent_id'] : 0,
+					'description' => ! empty( $item['description__value'] ) ? $item['description__value'] : '',
+					'meta'        => [
+						'drupal_term_id' => ! empty( $item['tid'] ) ? $item['tid'] : '',
+					],
+				];
+
+				// Prepare for ACF data for latitude field.
+				if ( ! empty( $item['field_geocoordinates_lat'] ) && is_string( $item['field_geocoordinates_lat'] ) ) {
+					$latitude = trim( $item['field_geocoordinates_lat'] );
+
+					// Assign latitude to meta.
+					if ( ! empty( $latitude ) ) {
+						$prepared_args['meta']['latitude'] = $latitude;
+					}
+				}
+
+				// Prepare for ACF data for longitude field.
+				if ( ! empty( $item['field_geocoordinates_lng'] ) && is_string( $item['field_geocoordinates_lng'] ) ) {
+					$longitude = trim( $item['field_geocoordinates_lng'] );
+
+					// Assign longitude to meta.
+					if ( ! empty( $longitude ) ) {
+						$prepared_args['meta']['longitude'] = $longitude;
+					}
+				}
+
+				// Prepare for ACF data for Ship description field.
+				if ( ! empty( $item['ship_description'] ) && is_string( $item['ship_description'] ) ) {
+					$ship_description = trim( $item['ship_description'] );
+
+					// Assign ship_description to meta.
+					if ( ! empty( $ship_description ) ) {
+						$prepared_args['meta']['description'] = $ship_description;
+					}
+				}
+
+				// Prepare for ACF data for image.
+				if ( ! empty( $item['field_image_target_id'] ) ) {
+					$image = download_file_by_mid( absint( $item['field_image_target_id'] ) );
+
+					// Assign image to meta.
+					if ( ! empty( $image ) ) {
+						$prepared_args['meta']['image'] = $image;
+					}
+				}
+				break;
 		}
 
 		// Sanitize the name.
@@ -698,6 +767,31 @@ class Taxonomies {
 					LEFT JOIN `taxonomy_term__field_language_code` AS `field_language_code` ON term.tid = field_language_code.entity_id AND term.langcode = field_language_code.langcode
 				WHERE
 					term.`vid` = 'languages'
+				ORDER BY
+					parent.`parent_target_id` ASC;";
+				break;
+
+			// Excursion taxonomy drupal query.
+			case EXCURSION_TAXONOMY:
+				$query = "SELECT
+					term.`tid`,
+					parent.`parent_target_id` AS `parent_id`,
+					field_data.`name`,
+					field_data.`description__value` as `ship_description`,
+					( SELECT alias AS drupal_url FROM path_alias WHERE path = CONCAT( '/taxonomy/term/', term.tid ) ORDER BY id DESC LIMIT 0, 1 ) AS drupal_url,
+					field_departure_destination_body.field_departure_destination_body_value AS `description__value`,
+					field_geocoordinates.field_geocoordinates_lat AS `field_geocoordinates_lat`,
+					field_geocoordinates.field_geocoordinates_lng AS `field_geocoordinates_lng`,
+					field_images.field_images_target_id AS `field_image_target_id`
+				FROM
+					taxonomy_term_data AS term
+					LEFT JOIN taxonomy_term__parent AS parent ON term.`tid` = parent.`entity_id` AND term.langcode = parent.langcode
+					LEFT JOIN taxonomy_term_field_data AS field_data ON term.`tid` = field_data.`tid` AND term.langcode = field_data.langcode
+					LEFT JOIN `taxonomy_term__field_departure_destination_body` AS `field_departure_destination_body` ON term.tid = field_departure_destination_body.entity_id AND term.langcode = field_departure_destination_body.langcode
+					LEFT JOIN `taxonomy_term__field_geocoordinates` AS `field_geocoordinates` ON term.tid = field_geocoordinates.entity_id AND term.langcode = field_geocoordinates.langcode
+					LEFT JOIN `taxonomy_term__field_images` AS `field_images` ON term.tid = field_images.entity_id AND term.langcode = field_images.langcode
+				WHERE
+					term.`vid` = 'departure_destinations'
 				ORDER BY
 					parent.`parent_target_id` ASC;";
 				break;
