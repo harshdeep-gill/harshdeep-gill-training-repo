@@ -13,7 +13,6 @@ use WP_CLI\ExitException;
 use cli\progress\Bar;
 
 use function Quark\Migration\Drupal\download_file_by_fid;
-use function Quark\Migration\Drupal\download_file_by_mid;
 use function Quark\Migration\Drupal\prepare_for_migration;
 use function Quark\Migration\Drupal\get_term_by_id;
 use function Quark\Migration\Drupal\get_database;
@@ -420,16 +419,6 @@ class Taxonomies {
 						$prepared_args['meta']['icon'] = $icon;
 					}
 				}
-
-				// Prepare for ACF data for Gereric image.
-				if ( ! empty( $item['field_image_target_id'] ) ) {
-					$image = download_file_by_mid( absint( $item['field_image_target_id'] ) );
-
-					// Assign image to meta.
-					if ( ! empty( $image ) ) {
-						$prepared_args['meta']['generic_image'] = $image;
-					}
-				}
 				break;
 
 			// Prepare arguments for departure locations taxonomy.
@@ -641,14 +630,12 @@ class Taxonomies {
 						field_data.`name`,
 						field_data.`description__value`,
 						( SELECT alias AS drupal_url FROM path_alias WHERE path = CONCAT( '/taxonomy/term/', term.tid ) ORDER BY id DESC LIMIT 0, 1 ) AS drupal_url,
-						field_icon.field_icon_target_id AS `field_icon_target_id`,
-						field_image.field_image_target_id AS `field_image_target_id`
+						field_icon.field_icon_target_id AS `field_icon_target_id`
 					FROM
 						taxonomy_term_data AS term
 						LEFT JOIN taxonomy_term__parent AS parent ON term.`tid` = parent.`entity_id` AND term.langcode = parent.langcode
 						LEFT JOIN taxonomy_term_field_data AS field_data ON term.`tid` = field_data.`tid` AND term.langcode = field_data.langcode
 						LEFT JOIN `taxonomy_term__field_icon` AS `field_icon` ON term.tid = field_icon.entity_id AND term.langcode = field_icon.langcode
-						LEFT JOIN `taxonomy_term__field_image` AS `field_image` ON term.tid = field_image.entity_id AND term.langcode = field_image.langcode
 					WHERE
 						term.`vid` = 'adventure_options'
 					ORDER BY
