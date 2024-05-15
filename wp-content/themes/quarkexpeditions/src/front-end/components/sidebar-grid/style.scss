@@ -8,7 +8,7 @@
 	grid-row-gap: var(--spacing-5);
 	margin-top: var(--spacing-7);
 
-	@media screen and (min-width: grid-size(lg)) {
+	@media screen and (min-width: calc( grid-size(lg) + 1px )) {
 		grid-template-columns: 1fr 256px;
 		grid-column-gap: var(--spacing-5);
 	}
@@ -23,14 +23,14 @@
 		&--sticky {
 			position: static;
 
-			@media screen and (min-width: grid-size(lg)) {
+			@media screen and (min-width: calc( grid-size(lg) + 1px )) {
 				position: sticky;
 				top: calc(var(--header-height) + var(--wp-admin-bar-height) + var(--spacing-5));
 				height: calc(100dvh - calc(var(--header-height) + var(--spacing-5) + var(--wp-admin-bar-height)));
 			}
 		}
 
-		@media screen and (min-width: grid-size(lg)) {
+		@media screen and (min-width: calc(grid-size(lg) + 1px)) {
 			display: block;
 		}
 
