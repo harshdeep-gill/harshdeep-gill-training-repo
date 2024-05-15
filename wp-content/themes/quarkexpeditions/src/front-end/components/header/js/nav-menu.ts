@@ -21,36 +21,62 @@ export default class HeaderNavMenu extends HTMLElement {
 
 		// Elements.
 		this.menuButton = this.querySelector( 'button.header__nav-item-link' );
+
+		// Event for dropdown button.
+		this.menuButton?.addEventListener( 'click', this.toggle.bind( this ) );
+
+		// Event to close the dropdown on keydown.
+		this.ownerDocument.defaultView?.addEventListener( 'keydown', this.handleDropdownCloseOnKeyDown.bind( this ) );
+
+		// Event to close dropdown on document click.
+		this.ownerDocument.defaultView?.addEventListener( 'click', this.handleDropdownCloseOnDocumentClick.bind( this ) );
 	}
 
 	/**
-	 * Contected callback.
+	 * Toogle the dropdown.
 	 */
-	connectedCallback() {
-		// Event for Search Button.
-		this.menuButton?.addEventListener( 'click', this.open.bind( this ) );
-
-		// Event to close the search form on keydown.
-		this.ownerDocument.defaultView?.addEventListener( 'keydown', this.handleDropdownCloseOnKeyDown.bind( this ) );
-
-		// Event to close search form on document click.
-		this.ownerDocument.defaultView?.addEventListener( 'click', this.handleDropdownCloseOnDocumentClick.bind( this ) );
+	toggle() {
+		// Check if the tooltip is open.
+		if ( 'true' === this.getAttribute( 'open' ) ) {
+			// Close, if open.
+			this.close();
+		} else {
+			// Open, if closed.
+			this.open();
+		}
 	}
 
 	/**
 	 * Open dropdown.
 	 */
 	open() {
-		// Toggle active attribute.
-		this.toggleAttribute( 'active' );
+		// Close all dropdowns.
+		this.closeAllDropdowns();
+
+		// Toggle `open` attribute.
+		this.setAttribute( 'open', 'true' );
 	}
 
 	/**
 	 * Close dropdown.
 	 */
 	close() {
-		// Remove 'active' attribute.
-		this.removeAttribute( 'active' );
+		// Remove 'open' attribute.
+		this.removeAttribute( 'open' );
+	}
+
+	/**
+	 * Close the all dropdowns.
+	 */
+	closeAllDropdowns() {
+		// Get all dropdowns.
+		const dropdowns = document.querySelectorAll( 'quark-header-nav-menu-dropdown' );
+
+		// Close all opened dropdowns.
+		dropdowns.forEach( ( dropdown ) => {
+			// Remove 'open' attribute.
+			dropdown.removeAttribute( 'open' );
+		} );
 	}
 
 	/**
@@ -65,13 +91,13 @@ export default class HeaderNavMenu extends HTMLElement {
 			return;
 		}
 
-		// Close search form.
+		// Close dropdown.
 		event.preventDefault();
 		this.close();
 	}
 
 	/**
-	 * Handle Search Close,
+	 * Handle Dropdown Close,
 	 * if we click on anywhere else on the
 	 * HTML document.
 	 *
@@ -81,13 +107,13 @@ export default class HeaderNavMenu extends HTMLElement {
 		// Get target element.
 		const targetEl = event.target as HTMLElement;
 
-		// If user has clicked inside search filter or search button cta, return.
-		if ( targetEl.closest( '.header__nav-item' ) || targetEl.closest( '.header__nav-item-dropdown-content' ) ) {
+		// If user has clicked inside dropdown or dropdown button cta, return.
+		if ( targetEl.closest( '.header__nav-item-link' ) || targetEl.closest( '.header__nav-item-dropdown-content' ) ) {
 			// Early return.
 			return;
 		}
 
-		// Close the search.
+		// Close the dropdown.
 		this.close();
 	}
 }

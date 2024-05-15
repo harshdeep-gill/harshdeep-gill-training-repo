@@ -34,6 +34,8 @@
 		display: flex;
 		line-height: inherit;
 		padding: 10px var(--spacing-4);
+		min-height: 48px;
+		align-items: center;
 
 		&:hover {
 
@@ -43,7 +45,7 @@
 			}
 		}
 
-		[active] & {
+		quark-header-nav-menu-dropdown[open] & {
 			background-color: var(--color-gray-90);
 			border-radius: var(--border-radius);
 		}
@@ -107,7 +109,7 @@
 		opacity: 0;
 		visibility: hidden;
 
-		quark-header-nav-menu-dropdown[active] & {
+		quark-header-nav-menu-dropdown[open] & {
 			opacity: 1;
 			visibility: visible;
 		}

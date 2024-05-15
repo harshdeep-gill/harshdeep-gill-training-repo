@@ -88,7 +88,7 @@
 			</x-button>
 		</x-drawer.drawer-open>
 
-		<x-drawer id="header-drawer" animation_direction="up" class="header__drawer">
+		<x-drawer id="header-drawer" class="header__drawer">
 			<x-drawer.header>
 				<x-header.site-logo url="https://www.quarkexpeditions.com"/>
 			</x-drawer.header>
@@ -156,6 +156,14 @@
 						</x-accordion.item-content>
 					</x-accordion.item>
 				</x-accordion>
+				
+				<ul class="header__drawer-quick-links">
+					<li><a href="#">Dates & Rates</a></li>
+					<li><a href="#">Travel Advisors</a></li>
+					<li><a href="tel:+1-877-585-1235">Call Now to Book : +1 (866) 253-3145</a></li>
+				</ul>
+
+				<x-button class="header__drawer-request-quote-btn" size="big">Request a Quote</x-button>
 			</x-drawer.body>
 		</x-drawer>
 	</x-header>
