@@ -9,7 +9,7 @@ namespace Quark\Brochures;
 
 use WP_Post;
 
-const POST_TYPE   = 'qrk_brochures';
+const POST_TYPE   = 'qrk_brochure';
 const CACHE_KEY   = POST_TYPE;
 const CACHE_GROUP = POST_TYPE;
 
@@ -20,10 +20,13 @@ const CACHE_GROUP = POST_TYPE;
  */
 function bootstrap(): void {
 	// Register post type.
-	add_action( 'init', __NAMESPACE__ . '\\register_brochures_post_type' );
+	add_action( 'init', __NAMESPACE__ . '\\register_brochure_post_type' );
 
 	// Other hooks.
 	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
+
+	// Opt into stuff.
+	add_filter( 'qe_season_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
 
 	// Custom fields.
 	if ( is_admin() ) {
@@ -36,7 +39,7 @@ function bootstrap(): void {
  *
  * @return void
  */
-function register_brochures_post_type(): void {
+function register_brochure_post_type(): void {
 	// Post type arguments.
 	$args = [
 		'labels'              => [
@@ -76,6 +79,21 @@ function register_brochures_post_type(): void {
 
 	// Register post type.
 	register_post_type( POST_TYPE, $args );
+}
+
+/**
+ * Opt into stuff.
+ *
+ * @param string[] $post_types Post types.
+ *
+ * @return string[]
+ */
+function opt_in( array $post_types = [] ): array {
+	// Append staff member post type for taxonomy.
+	$post_types[] = POST_TYPE;
+
+	// Return modified array.
+	return $post_types;
 }
 
 /**
