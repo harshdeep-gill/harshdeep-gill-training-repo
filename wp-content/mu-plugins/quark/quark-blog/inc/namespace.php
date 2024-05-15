@@ -27,6 +27,9 @@ function bootstrap(): void {
 	// Enable primary term.
 	add_filter( 'travelopia_primary_term_taxonomies', __NAMESPACE__ . '\\primary_term_taxonomies', 10, 2 );
 
+	// Other hooks.
+	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
+
 	// Admin stuff.
 	if ( is_admin() ) {
 		add_filter( 'post_type_labels_' . POST_TYPE, __NAMESPACE__ . '\\update_blog_posts_admin_menu_label' );
@@ -95,6 +98,21 @@ function update_blog_posts_admin_menu_label( object $labels = null ): object {
 
 	// Return updated labels.
 	return (object) $labels;
+}
+
+/**
+ * Busts cache for this post type.
+ *
+ * @param int $post_id Post ID.
+ *
+ * @return void
+ */
+function bust_post_cache( int $post_id = 0 ): void {
+	// Clear cache for this post.
+	wp_cache_delete( CACHE_KEY . "_$post_id", CACHE_GROUP );
+
+	// Trigger action to clear cache for this post.
+	do_action( 'qe_blog_post_cache_busted', $post_id );
 }
 
 /**

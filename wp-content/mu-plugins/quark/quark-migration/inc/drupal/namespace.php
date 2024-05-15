@@ -428,6 +428,33 @@ function download_file( array $file_data = [] ): int|WP_Error {
 		$tmp  = '/tmp/' . wp_generate_password( 12, false ) . '.' . ( $info['extension'] ?? '' );
 		copy( $path, $tmp );
 	} else {
+		// decode special characters.
+		$special_chars = [
+			':'  => '%3A',
+			'?'  => '%3F',
+			'='  => '%3D',
+			'&'  => '%26',
+			'%'  => '%25',
+			'#'  => '%23',
+			'+'  => '%2B',
+			'@'  => '%40',
+			'$'  => '%24',
+			','  => '%2C',
+			';'  => '%3B',
+			'['  => '%5B',
+			']'  => '%5D',
+			'{'  => '%7B',
+			'}'  => '%7D',
+			'|'  => '%7C',
+			'\\' => '%5C',
+			'"'  => '%22',
+			"'"  => '%27',
+			'`'  => '%60',
+			' '  => '%20',
+		];
+		$file_name     = strtr( $file_name, $special_chars );
+
+		// Download the file.
 		$tmp = download_url( 'https://www.quarkexpeditions.com/sites/default/files/' . $file_name );
 
 		// If Failed to download media file then bail out.
