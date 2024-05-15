@@ -8,6 +8,7 @@
 namespace Quark\Migration\WP_CLI;
 
 use WP_CLI;
+use WP_Error;
 use WP_CLI\ExitException;
 use cli\progress\Bar;
 
@@ -256,7 +257,7 @@ class Taxonomies {
 		}
 
 		// Validate insert/update is successfully done.
-		if ( is_wp_error( $output ) || empty( $output ) || empty( $output['term_id'] ) ) {
+		if ( $output instanceof WP_Error || empty( $output ) || empty( $output['term_id'] ) ) {
 			WP_CLI::warning( sprintf( 'Unable to insert term "%s" in "%s" taxonomy!', $arguments['name'], $normalized_term['taxonomy'] ) );
 
 			// Bail out unable to insert / update term.

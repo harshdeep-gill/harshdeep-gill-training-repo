@@ -51,7 +51,6 @@ $tp_mu_plugins = array(
 	'quark/quark-regions/plugin.php',
 	'quark/quark-policy-pages/plugin.php',
 	'quark/quark-migration/plugin.php',
-	'quark/quark-poc/plugin.php',
 );
 
 foreach ( $tp_mu_plugins as $file ) {
