@@ -23,7 +23,15 @@
 
 		& + & {
 			margin-top: var(--spacing-4);
+
+			@media screen and (min-width: grid-size(xl)) {
+				margin-top: 20px;
+			}
 		}
+	}
+
+	&__title {
+		font-weight: var(--font-weight-bold);
 	}
 
 	&__item-link {

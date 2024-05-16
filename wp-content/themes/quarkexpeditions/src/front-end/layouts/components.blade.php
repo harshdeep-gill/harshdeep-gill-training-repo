@@ -7,9 +7,9 @@
 			<x-header.nav-item title="Destinations" icon="" url="">
 				<x-header.nav-item-dropdown-content>
 					<x-header.nav-item-dropdown-content-column>
-						<x-header.nav-item-featured image_id="32">
+						<x-header.nav-item-featured image_id="34">
 							<x-header.nav-item-featured-title title="Explore Polar Regions" />
-							<x-header.nav-item-featured-subtitle subtitle="Incididunt ut labore et dolore magna aliqua." />
+							<x-header.nav-item-featured-subtitle subtitle="Incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis." />
 							<x-button size="big">Explore Polar Regions</x-button>
 						</x-header.nav-item-featured>
 					</x-header.nav-item-dropdown-content-column>
@@ -23,6 +23,11 @@
 									<x-menu-list.item title="South Georgia" url="#" />
 									<x-menu-list.item title="Snow Hill Island" url="#" />
 								</x-menu-list>
+								<x-thumbnail-cards :is_carousel="false" :full_width="false">
+									<x-thumbnail-cards.card size="medium" url="#" orientation="landscape" image_id="29">
+										<x-thumbnail-cards.title title="Arctic Expeditions" align="bottom" />
+									</x-thumbnail-cards.card>
+								</x-thumbnail-cards>
 							</x-two-columns.column>
 							<x-two-columns.column>
 								<x-menu-list title="Arctic Regions">
@@ -30,6 +35,11 @@
 									<x-menu-list.item title="Greenland" url="#" />
 									<x-menu-list.item title="Svalbard" url="#" />
 								</x-menu-list>
+								<x-thumbnail-cards :is_carousel="false" :full_width="false">
+									<x-thumbnail-cards.card size="medium" url="#" orientation="landscape" image_id="34">
+										<x-thumbnail-cards.title title="Patagonia Expeditions" align="bottom" />
+									</x-thumbnail-cards.card>
+								</x-thumbnail-cards>
 							</x-two-columns.column>
 						</x-two-columns>
 					</x-header.nav-item-dropdown-content-column>
@@ -40,31 +50,143 @@
 				<x-header.nav-item-dropdown-content>
 					<x-header.nav-item-dropdown-content-column>
 						<x-header.nav-item-featured image_id="32">
-							<x-header.nav-item-featured-title title="Explore Polar Regions" />
-							<x-header.nav-item-featured-subtitle subtitle="Incididunt ut labore et dolore magna aliqua." />
-							<x-button size="big">Explore Polar Regions</x-button>
+							<x-header.nav-item-featured-title title="Explore Polar Expeditions" />
+							<x-header.nav-item-featured-subtitle subtitle="Incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis." />
+							<x-button size="big">Explore Polar Expeditions</x-button>
 						</x-header.nav-item-featured>
 					</x-header.nav-item-dropdown-content-column>
 					<x-header.nav-item-dropdown-content-column>
 						<x-two-columns :border="true">
 							<x-two-columns.column>
-								<x-menu-list title="Antarctic Regions">
+								<x-menu-list title="Antarctic Expeditions">
 									<x-menu-list.item title="Antarctic Peninsula" url="#" />
-									<x-menu-list.item title="Falkland Islands" url="#" />
+									<x-menu-list.item title="Falkland Islands & South Georgia" url="#" />
 									<x-menu-list.item title="Patagonia" url="#" />
-									<x-menu-list.item title="South Georgia" url="#" />
 									<x-menu-list.item title="Snow Hill Island" url="#" />
+								</x-menu-list>
+								<x-thumbnail-cards :is_carousel="false" :full_width="false">
+									<x-thumbnail-cards.card size="medium" url="#" orientation="landscape" image_id="32">
+										<x-thumbnail-cards.title title="View All Antarctic Departures" align="bottom" />
+									</x-thumbnail-cards.card>
+								</x-thumbnail-cards>
+							</x-two-columns.column>
+							<x-two-columns.column>
+								<x-menu-list title="arctic Regions">
+									<x-menu-list.item title="Canadian High Arctic" url="#" />
+									<x-menu-list.item title="Greenland" url="#" />
+									<x-menu-list.item title="Svalbard" url="#" />
+								</x-menu-list>
+								<x-thumbnail-cards :is_carousel="false" :full_width="false">
+									<x-thumbnail-cards.card size="medium" url="#" orientation="landscape" image_id="36">
+										<x-thumbnail-cards.title title="View All Antarctic Departures" align="bottom" />
+									</x-thumbnail-cards.card>
+								</x-thumbnail-cards>
+							</x-two-columns.column>
+						</x-two-columns>
+					</x-header.nav-item-dropdown-content-column>
+				</x-header.nav-item-dropdown-content>
+			</x-header.nav-item>
+			<x-header.nav-item title="Ships" icon="" url="">
+				<x-header.nav-item-dropdown-content>
+					<x-header.nav-item-dropdown-content-column>
+						<x-header.nav-item-featured image_id="32">
+							<x-header.nav-item-featured-title title="Advantage of Small Ships" />
+							<x-header.nav-item-featured-subtitle subtitle="Incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis." />
+							<x-button size="big">View All Ships</x-button>
+						</x-header.nav-item-featured>
+					</x-header.nav-item-dropdown-content-column>
+					<x-header.nav-item-dropdown-content-column>
+						<x-two-columns :border="true">
+							<x-two-columns.column>
+								<x-menu-list title="Ships">
+									<x-menu-list.item title="Ocean Adventurer" url="#" />
+									<x-menu-list.item title="Ocean Explorer" url="#" />
+									<x-menu-list.item title="Ultramarine" url="#" />
+									<x-menu-list.item title="World Explorer" url="#" />
 								</x-menu-list>
 							</x-two-columns.column>
 						</x-two-columns>
 					</x-header.nav-item-dropdown-content-column>
 				</x-header.nav-item-dropdown-content>
 			</x-header.nav-item>
-			<x-header.nav-item title="Ships" icon="" url="#">				
+			<x-header.nav-item title="Offers" icon="" url="">
+				<x-header.nav-item-dropdown-content>
+					<x-header.nav-item-dropdown-content-column>
+						<x-header.nav-item-featured image_id="31">
+							<x-header.nav-item-featured-title title="Explore Arctic: Save Up to 40%" />
+							<x-button size="big">View All Offers</x-button>
+						</x-header.nav-item-featured>
+					</x-header.nav-item-dropdown-content-column>
+					<x-header.nav-item-dropdown-content-column>
+						<x-two-columns :border="true">
+							<x-two-columns.column>
+								<x-thumbnail-cards :is_carousel="false" :full_width="false">
+									<x-thumbnail-cards.card size="small" url="#" orientation="portrait" image_id="29">
+										<x-thumbnail-cards.title title="Arctic Expeditions" align="bottom" />
+									</x-thumbnail-cards.card>
+									<x-thumbnail-cards.card size="small" url="#" orientation="portrait" image_id="30">
+										<x-thumbnail-cards.title title="Antarctic Expeditions" align="bottom" />
+									</x-thumbnail-cards.card>
+									<x-thumbnail-cards.card size="small" url="#" orientation="portrait" image_id="33">
+										<x-thumbnail-cards.title title="Patagonia Expeditions" align="bottom" />
+									</x-thumbnail-cards.card>
+								</x-thumbnail-cards>
+							</x-two-columns.column>
+						</x-two-columns>
+					</x-header.nav-item-dropdown-content-column>
+				</x-header.nav-item-dropdown-content>
 			</x-header.nav-item>
-			<x-header.nav-item title="Offers" icon="" url="#">
+			<x-header.nav-item title="More" icon="" url="" class="header__more-menu-item">
+				<x-header.nav-item-dropdown-content>
+					<x-header.nav-item-dropdown-content-column>
+						<x-header.nav-item-featured image_id="34">
+							<x-header.nav-item-featured-title title="Why Quark Expeditions" />
+							<x-header.nav-item-featured-subtitle subtitle="Incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis." />
+							<x-button size="big">Why Quark Expeditions</x-button>
+						</x-header.nav-item-featured>
+					</x-header.nav-item-dropdown-content-column>
+					<x-header.nav-item-dropdown-content-column>
+						<x-two-columns :border="true">
+							<x-two-columns.column>
+								<x-menu-list title="More">
+									<x-menu-list.item title="Why Quark Expeditions" url="#" />
+									<x-menu-list.item title="Our Expedition History" url="#" />
+									<x-menu-list.item title="Our Team" url="#" />
+									<x-menu-list.item title="Adventure Options" url="#" />
+									<x-menu-list.item title="Sustainability" url="#" />
+									<x-menu-list.item title="Blog" url="#" />
+									<x-menu-list.item title="Dates and Rates" url="#" />
+									<x-menu-list.item title="Travel Advisors" url="#" />
+								</x-menu-list>
+							</x-two-columns.column>
+						</x-two-columns>
+					</x-header.nav-item-dropdown-content-column>
+				</x-header.nav-item-dropdown-content>
 			</x-header.nav-item>
-			<x-header.nav-item title="About Us" icon="" url="#">
+			<x-header.nav-item title="About Us" icon="" url="">
+				<x-header.nav-item-dropdown-content>
+					<x-header.nav-item-dropdown-content-column>
+						<x-header.nav-item-featured image_id="34">
+							<x-header.nav-item-featured-title title="Why Quark Expeditions" />
+							<x-header.nav-item-featured-subtitle subtitle="Incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis." />
+							<x-button size="big">Why Quark Expeditions</x-button>
+						</x-header.nav-item-featured>
+					</x-header.nav-item-dropdown-content-column>
+					<x-header.nav-item-dropdown-content-column>
+						<x-two-columns :border="true">
+							<x-two-columns.column>
+								<x-menu-list title="About Quark Expeditions">
+									<x-menu-list.item title="Why Quark Expeditions" url="#" />
+									<x-menu-list.item title="Our Expedition History" url="#" />
+									<x-menu-list.item title="Our Team" url="#" />
+									<x-menu-list.item title="Adventure Options" url="#" />
+									<x-menu-list.item title="Sustainability" url="#" />
+									<x-menu-list.item title="Blog" url="#" />
+								</x-menu-list>
+							</x-two-columns.column>
+						</x-two-columns>
+					</x-header.nav-item-dropdown-content-column>
+				</x-header.nav-item-dropdown-content>
 			</x-header.nav-item>
 		</x-header.primary-nav>
 
