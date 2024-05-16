@@ -6,6 +6,7 @@ import { registerBlockType } from '@wordpress/blocks';
 /**
  * Import blocks.
  */
+import * as components from './components';
 import * as section from './section';
 import * as lpHeader from './lp-header';
 import * as twoColumns from './two-columns';
@@ -38,6 +39,7 @@ import * as formTwoStepCompact from './form-two-step-compact';
  * Add blocks.
  */
 const blocks = [
+	components,
 	section,
 	lpHeader,
 	twoColumns,
