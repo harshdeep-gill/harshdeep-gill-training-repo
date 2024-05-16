@@ -9,8 +9,6 @@ namespace Quark\StaffMembers;
 
 use WP_Post;
 
-use function Quark\Core\prepare_content_with_blocks;
-
 const POST_TYPE                     = 'qrk_staff_member';
 const DEPARTMENT_TAXONOMY           = 'qrk_department';
 const DEPARTURE_STAFF_ROLE_TAXONOMY = 'qrk_staff_role';
@@ -29,9 +27,6 @@ function bootstrap(): void {
 	add_action( 'init', __NAMESPACE__ . '\\register_department_taxonomy' );
 	add_action( 'init', __NAMESPACE__ . '\\register_staff_role_taxonomy' );
 	add_action( 'init', __NAMESPACE__ . '\\register_season_taxonomy' );
-
-	// Layout.
-	add_action( 'template_redirect', __NAMESPACE__ . '\\layout' );
 
 	// Opt into stuff.
 	add_filter( 'qe_department_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
@@ -245,50 +240,6 @@ function opt_in( array $post_types = [] ): array {
 
 	// Return modified array.
 	return $post_types;
-}
-
-/**
- * Layout for this post type.
- *
- * @return void
- */
-function layout(): void {
-	// Add single layout if viewing a single post.
-	if ( is_singular( POST_TYPE ) ) {
-		add_filter( 'quark_front_end_data', __NAMESPACE__ . '\\layout_single' );
-	}
-}
-
-/**
- * Layout: Single.
- *
- * @param mixed[] $data Front-end data.
- *
- * @return mixed[]
- */
-function layout_single( array $data = [] ): array {
-	// Get post.
-	$page = get();
-
-	// Bail if post does not exist or not an instance of WP_Post.
-	if ( empty( $page['post'] ) || ! $page['post'] instanceof WP_Post ) {
-		return $data;
-	}
-
-	// Layout.
-	$data['layout'] = 'single';
-
-	// Build data.
-	$data['data'] = array_merge( $data['data'] ?? [], $page );
-
-	// Post content.
-	$data['data']['post_content'] = $page['post']->post_content;
-
-	// Prepare blocks.
-	prepare_content_with_blocks( $data['data']['post_content'] );
-
-	// Return front-end data.
-	return $data;
 }
 
 /**
