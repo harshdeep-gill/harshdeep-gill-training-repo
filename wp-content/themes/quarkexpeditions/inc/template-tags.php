@@ -6,29 +6,6 @@
  */
 
 /**
- * Bootstrap the front-end.
- *
- * @return void
- */
-function quark_front_end(): void {
-	// Get front-end data.
-	$template_data = Quark\Core\get_front_end_data();
-
-	// Check if we found a valid layout.
-	if ( ! empty( $template_data['layout'] ) ) {
-		ob_start();
-		quark_layout(
-			$template_data['layout'],
-			! empty( $template_data['data'] ) ? $template_data['data'] : []
-		);
-		$content = ob_get_clean();
-		echo strval( apply_filters( 'quark_front_end', $content ) ); // phpcs:ignore
-	} elseif ( 'local' === wp_get_environment_type() ) {
-		wp_die( 'Could not find a layout for this page. Set one using `Quark\Core\get_front_end_data`.' );
-	}
-}
-
-/**
  * Get template data based on key.
  *
  * @param string     $key      Data key.
@@ -41,13 +18,13 @@ function quark_get_template_data( string $key = '', mixed $fallback = null ): mi
 	$template_data = Quark\Core\get_front_end_data();
 
 	// Check if the key we want exists.
-	if ( empty( $template_data['data'] ) || ! isset( $template_data['data'][ $key ] ) ) {
+	if ( empty( $template_data ) || ! isset( $template_data[ $key ] ) ) {
 		// It doesn't, return fallback instead.
 		return $fallback;
 	}
 
 	// Return data.
-	return $template_data['data'][ $key ];
+	return $template_data[ $key ];
 }
 
 /**

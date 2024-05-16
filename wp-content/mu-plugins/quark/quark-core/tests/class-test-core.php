@@ -24,22 +24,19 @@ class Test_Core extends WP_UnitTestCase {
 	public function test_get_front_end_data(): void {
 		// No data.
 		$original_data = [
-			'layout' => '',
-			'data'   => [
-				'header'             => [
-					'logo_url' => 'http://test.quarkexpeditions.com',
-					'nav_menu' => "<div></div>\n",
-				],
-				'social_links'       => [
-					'facebook'  => '',
-					'twitter'   => '',
-					'instagram' => '',
-					'pinterest' => '',
-					'youtube'   => '',
-				],
-				'leads_api_endpoint' => 'http://test.quarkexpeditions.com/wp-json/quark-leads/v1/leads/create',
-				'current_url'        => false,
+			'header'             => [
+				'logo_url' => 'http://test.quarkexpeditions.com',
+				'nav_menu' => "<div></div>\n",
 			],
+			'social_links'       => [
+				'facebook'  => '',
+				'twitter'   => '',
+				'instagram' => '',
+				'pinterest' => '',
+				'youtube'   => '',
+			],
+			'leads_api_endpoint' => 'http://test.quarkexpeditions.com/wp-json/quark-leads/v1/leads/create',
+			'current_url'        => false,
 		];
 
 		// Test front-end data.
@@ -50,10 +47,7 @@ class Test_Core extends WP_UnitTestCase {
 
 		// Test layout and data.
 		$test_data = [
-			'layout' => 'test-layout',
-			'data'   => [
-				'key' => 'value',
-			],
+			'key' => 'value',
 		];
 		add_filter( 'quark_front_end_data', fn () => $test_data );
 
@@ -95,7 +89,7 @@ class Test_Core extends WP_UnitTestCase {
 				'logo_url' => 'http://test.quarkexpeditions.com',
 				'nav_menu' => "<div></div>\n",
 			],
-			$data['data']['header']
+			$data['header']
 		);
 
 		// Assert expected social links and actual social links are equal.
@@ -107,7 +101,7 @@ class Test_Core extends WP_UnitTestCase {
 				'pinterest' => 'https://pinterest.com',
 				'youtube'   => 'https://youtube.com',
 			],
-			$data['data']['social_links'] ?? []
+			$data['social_links'] ?? []
 		);
 	}
 
