@@ -6,6 +6,6 @@
 	$classes = [ 'info-cards__card-description' ];
 @endphp
 
-<div @class( $classes )>
-	<x-escape :content="$slot->toHtml()" />
-</div>
+<p @class( $classes )>
+	<x-content :content="$slot" />
+</p>
