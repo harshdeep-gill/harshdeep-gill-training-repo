@@ -6,6 +6,6 @@
 	$classes = [ 'info-cards__card-description' ];
 @endphp
 
-<p @class( $classes )>
+<div @class( $classes )>
 	<x-content :content="$slot" />
-</p>
+</div>

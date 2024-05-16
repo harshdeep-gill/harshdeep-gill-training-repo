@@ -1698,7 +1698,9 @@
 						<x-info-cards.overline>3 mins read</x-info-cards.overline>
 						<x-info-cards.title title="Chasing Shackleton: Chasing Polar Dreams" />
 						<x-info-cards.description>
-							Antarctica. The 7th Continent. The land mass at the bottom of the globe, completely encased in ice. Its remote wilderness featured on nature documentaries and in our science and history books. And..
+							<p>
+								Antarctica. The 7th Continent. The land mass at the bottom of the globe, completely encased in ice. Its remote wilderness featured on nature documentaries and in our science and history books. And..
+							</p>
 						</x-info-cards.description>
 						<x-info-cards.cta text="Read Post" url="#" />
 					</x-info-cards.content>
@@ -1746,7 +1748,9 @@
 						<x-info-cards.overline>3 mins read</x-info-cards.overline>
 						<x-info-cards.title title="Chasing Shackleton: Chasing Polar Dreams" />
 						<x-info-cards.description>
-							Antarctica. The 7th Continent. The land mass at the bottom of the globe, completely encased in ice. Its remote wilderness featured on nature documentaries and in our science and history books. And..
+							<p>
+								Antarctica. The 7th Continent. The land mass at the bottom of the globe, completely encased in ice. Its remote wilderness featured on nature documentaries and in our science and history books. And..
+							</p>
 						</x-info-cards.description>
 						<x-info-cards.cta text="Read Post" url="#" />
 					</x-info-cards.content>
@@ -1795,7 +1799,9 @@
 						<x-info-cards.overline>3 mins read</x-info-cards.overline>
 						<x-info-cards.title title="Chasing Shackleton: Chasing Polar Dreams" />
 						<x-info-cards.description>
-							Antarctica. The 7th Continent. The land mass at the bottom of the globe, completely encased in ice. Its remote wilderness featured on nature documentaries and in our science and history books. And..
+							<p>
+								Antarctica. The 7th Continent. The land mass at the bottom of the globe, completely encased in ice. Its remote wilderness featured on nature documentaries and in our science and history books. And..
+							</p>
 						</x-info-cards.description>
 						<x-info-cards.cta text="Read Post" url="#" />
 					</x-info-cards.content>
