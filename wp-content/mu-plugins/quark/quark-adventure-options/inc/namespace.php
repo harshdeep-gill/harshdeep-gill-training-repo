@@ -9,8 +9,6 @@ namespace Quark\AdventureOptions;
 
 use WP_Post;
 
-use function Quark\Core\prepare_content_with_blocks;
-
 const POST_TYPE                 = 'qrk_adventure_option';
 const ADVENTURE_OPTION_CATEGORY = 'qrk_adventure_option_category';
 const CACHE_KEY                 = POST_TYPE;
@@ -29,9 +27,6 @@ function bootstrap(): void {
 	// Opt into stuff.
 	add_filter( 'qe_adventure_options_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
 	add_filter( 'qe_destination_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
-
-	// Layout.
-	add_action( 'template_redirect', __NAMESPACE__ . '\\layout' );
 
 	// Cache Purge.
 	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
@@ -152,50 +147,6 @@ function opt_in( array $post_types = [] ): array {
 
 	// Return modified array.
 	return $post_types;
-}
-
-/**
- * Layout for the post type.
- *
- * @return void
- */
-function layout(): void {
-	// Add single layout if viewing a single post.
-	if ( is_singular( POST_TYPE ) ) {
-		add_filter( 'quark_front_end_data', __NAMESPACE__ . '\\layout_single' );
-	}
-}
-
-/**
- * Layout: Single.
- *
- * @param mixed[] $data Front-end data.
- *
- * @return mixed[]
- */
-function layout_single( array $data = [] ): array {
-	// Get post.
-	$page = get();
-
-	// Bail if post does not exist or not an instance of WP_Post.
-	if ( empty( $page['post'] ) || ! $page['post'] instanceof WP_Post ) {
-		return $data;
-	}
-
-	// Layout.
-	$data['layout'] = 'single';
-
-	// Build data.
-	$data['data'] = array_merge( $data['data'] ?? [], $page );
-
-	// Post content.
-	$data['data']['post_content'] = $page['post']->post_content;
-
-	// Prepare blocks.
-	prepare_content_with_blocks( $data['data']['post_content'] );
-
-	// Return front-end data.
-	return $data;
 }
 
 /**

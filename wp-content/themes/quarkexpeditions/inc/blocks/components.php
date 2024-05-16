@@ -39,6 +39,11 @@ function register(): void {
  * @return null|string
  */
 function render( ?string $content = null, array $block = [] ): null|string {
+	// Check for block.
+	if ( BLOCK_NAME !== $block['blockName'] ) {
+		return $content;
+	}
+
 	// Return rendered component.
 	return quark_get_component( COMPONENT );
 }
