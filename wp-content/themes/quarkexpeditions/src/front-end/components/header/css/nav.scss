@@ -53,12 +53,15 @@
 
 	// Menu Level 1.
 	&__nav-menu {
-		position: relative;
 		display: flex;
 		flex-direction: row;
 		gap: var(--spacing-4);
 		list-style: none;
 		padding-left: 0;
+
+		@media screen and (min-width: grid-size(xxl)) {
+			position: relative;
+		}
 
 		> li {
 
@@ -121,11 +124,18 @@
 
 	&__nav-item-dropdown-content-wrap {
 		position: absolute;
-		top: calc(var(--header-height) - 16px);
-		width: calc(100vw - 464px); // 80 + 80 + 152 + 152 (Header spacing left and right + logo width).
+		top: calc(var(--header-height) + 8px);
+		width: 100vw;
 		left: 0;
 		opacity: 0;
 		visibility: hidden;
+		padding: 0 var(--spacing-5);
+
+		@media screen and (min-width: grid-size(xxl)) {
+			padding: 0;
+			top: calc(var(--header-height) - 16px);
+			width: calc(100vw - 464px); // 80 + 80 + 152 + 152 (Header spacing left and right + logo width).
+		}
 
 		quark-header-nav-menu-dropdown[open] & {
 			opacity: 1;
@@ -159,6 +169,12 @@
 
 		.thumbnail-cards__slider {
 			width: 100%;
+			margin: 0;
+		}
+
+		.thumbnail-cards__track {
+			margin-left: 0;
+			padding-left: 0;
 		}
 
 		.thumbnail-cards__card--orient-landscape .thumbnail-cards__image {
@@ -185,7 +201,11 @@
 	}
 
 	&__nav-item-dropdown-content-column {
-		min-width: 23.1485vw;
+		min-width: 32.1485vw;
+
+		@media screen and (min-width: grid-size(xxl)) {
+			min-width: 23.1485vw;
+		}
 	}
 
 	&__nav-item-featured-image {
