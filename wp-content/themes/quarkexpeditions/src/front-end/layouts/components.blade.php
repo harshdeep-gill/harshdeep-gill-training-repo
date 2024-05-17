@@ -751,7 +751,7 @@
 	</x-component-demo>
 
 <x-component-demo :keys="[ 'drawer' ]">
-	<x-section title="Flexible Multipurpose drawer1">
+	<x-section title="Flexible Multipurpose drawer">
 		<style>
 			.multipurpose-drawer-sample .drawer__content {
 				max-width: 768px;

@@ -264,8 +264,8 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'data-*' => true,
 				],
 				'quark-header-nav-menu-dropdown'        => [
-					'class'  => true,
-					'active' => true,
+					'class' => true,
+					'open'  => true,
 				],
 				'quark-drawer'                          => [
 					'id'                  => true,
