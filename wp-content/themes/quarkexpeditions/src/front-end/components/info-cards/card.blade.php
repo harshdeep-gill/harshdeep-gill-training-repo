@@ -1,3 +1,7 @@
+@props( [
+	'url' => '',
+] )
+
 @php
 	if ( empty( $slot ) ) {
 		return;
@@ -7,5 +11,10 @@
 @endphp
 
 <tp-slider-slide @class( $classes )>
-	{!! $slot !!}
+	<x-maybe-link
+		:href="$url"
+		fallback_tag="div"
+	>
+		{!! $slot !!}
+	</x-maybe-link>
 </tp-slider-slide>

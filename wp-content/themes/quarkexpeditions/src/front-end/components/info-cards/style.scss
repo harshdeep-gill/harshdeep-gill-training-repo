@@ -217,6 +217,11 @@
 			}
 
 			&-text {
+				text-decoration: underline var(--color-white);
+
+				#{$self}__card:hover & {
+					text-decoration-color: var(--color-yellow);
+				}
 
 				@include line-clamp(1);
 			}
