@@ -269,9 +269,8 @@ function calculate_post_reading_time( int $post_id = 0, WP_Post $post = null ): 
 		return;
 	}
 
-	// Get post content.
-	$content     = get_post_field( 'post_content', $post_id );
-	$words_count = str_word_count( wp_strip_all_tags( $content ) );
+	// Get words count.
+	$words_count = str_word_count( wp_strip_all_tags( $post->post_content ) );
 
 	// Calculate reading time.
 	$minutes = ceil( $words_count / WORDS_PER_MINUTE );
