@@ -16,7 +16,7 @@ use cli\progress\Bar;
 use function Quark\Core\update_svg_content;
 use function Quark\Migration\Drupal\download_file;
 use function Quark\Migration\Drupal\get_database;
-use function Quark\Migration\Drupal\get_wp_brochure_id_by_mid;
+use function Quark\Migration\Drupal\get_post_by_id;
 use function Quark\Migration\Drupal\prepare_for_migration;
 use function Quark\Migration\Drupal\download_file_by_mid;
 use function Quark\Migration\Drupal\download_file_by_fid;
@@ -341,7 +341,7 @@ class Media {
 			}
 
 			// Check post exist or not.
-			$wp_post = get_wp_brochure_id_by_mid( $normalized_post['meta_input']['drupal_mid'] );
+			$wp_post = get_post_by_id( $normalized_post['meta_input']['drupal_mid'], POST_TYPE, 'drupal_mid' );
 
 			// Insert/update post.
 			if ( ! empty( $wp_post ) ) {
