@@ -1,8 +1,12 @@
 @props( [
-	'duration' => '',
+	'duration' => 0,
 ] )
 
 @php
+	if ( empty( $duration ) || intval( $duration ) <= 0 ) {
+		return;
+	}
+
 	$duration = $duration . ' min read';
 @endphp
 

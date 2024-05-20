@@ -55,6 +55,7 @@ function register_blocks(): void {
 		'FormTwoStepCompact'    => 'form-two-step-compact.php',
 		'Breadcrumbs'           => 'breadcrumbs.php',
 		'SidebarGrid'           => 'sidebar-grid.php',
+		'AuthorInfo'            => 'author-info.php',
 	];
 
 	// Register blocks.
