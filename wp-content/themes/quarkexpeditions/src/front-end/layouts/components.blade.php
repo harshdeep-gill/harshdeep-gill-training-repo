@@ -1941,21 +1941,40 @@
 		</x-lp-footer>
 	</x-component-demo>
 
+	@php
+		$social_links = [
+			'facebook'  => 'https://www.facebook.com/',
+			'instagram' => 'https://www.instagram.com/',
+			'twitter'   => 'https://www.twitter.com/',
+			'youtube'   => 'https://www.youtube.com/',
+		];
+	@endphp
+
 	<x-footer>
 		<x-footer.top>
-			Footer Top
+			<x-footer.column url="tel:+1(866)241-1602">
+				<x-footer.icon name="call" />
+				<p>Need help planning? Call Us.</p>
+				<h5>+1 (866) 241-1602</h5>
+			</x-footer.column>
+			<x-footer.column url="https://www.quarkexpeditions.com/brochures">
+				<x-footer.icon name="article" />
+				<p>Get Quark Expeditions</p>
+				<h5>Arctic & Antarctic Brochures</h5>
+			</x-footer.column>
+			<x-footer.column url="https://www.quarkexpeditions.com/subscribe-to-our-newsletter">
+				<x-footer.icon name="mail" />
+				<p>Sign up for our</p>
+				<h5>Newsletters & Offers</h5>
+			</x-footer.column>
 		</x-footer.top>
 
 		<x-footer.middle>
 			<x-footer.column>
 				<x-footer.logo url="" />
 				<x-button size="big">Request a Quote</x-button>
-				<x-social-links>
-					<x-footer.social-link type="facebook" url="#" />
-					<x-footer.social-link type="instagram" url="#" />
-					<x-footer.social-link type="twitter" url="#" />
-					<x-footer.social-link type="youtube" url="#" />
-				</x-social-links>
+
+				<x-social-links :social_links="$social_links" />
 			</x-footer.column>
 		</x-footer.middle>
 
@@ -1966,10 +1985,10 @@
 
 			<x-footer.nav>
 				<ul>
-					<li>Cookie Policy</li>
-					<li>Do Not Sell My Data</li>
-					<li>Privacy Policy</li>
-					<li>Website Terms of Use</li>
+					<li><a>Cookie Policy</a></li>
+					<li><a>Do Not Sell My Data</a></li>
+					<li><a>Privacy Policy</a></li>
+					<li><a>Website Terms of Use</a></li>
 				</ul>
 			</x-footer.nav>
 		</x-footer.bottom>
