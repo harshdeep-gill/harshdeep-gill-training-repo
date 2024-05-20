@@ -52,15 +52,14 @@ export const settings: BlockConfiguration = {
 
 		// Return the block's markup.
 		return (
-			<div { ...blockProps }>
-				<RichText
-					tagName="p"
-					placeholder={ __( 'Write name…', 'qrk' ) }
-					value={ attributes.title }
-					onChange={ ( title: string ) => setAttributes( { title } ) }
-					allowedFormats={ [] }
-				/>
-			</div>
+			<RichText
+				{ ...blockProps }
+				tagName="p"
+				placeholder={ __( 'Write name…', 'qrk' ) }
+				value={ attributes.title }
+				onChange={ ( title: string ) => setAttributes( { title } ) }
+				allowedFormats={ [] }
+			/>
 		);
 	},
 	save() {

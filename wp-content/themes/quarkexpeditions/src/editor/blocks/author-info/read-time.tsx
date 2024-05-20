@@ -52,8 +52,9 @@ export const settings: BlockConfiguration = {
 
 		// Return the block's markup.
 		return (
-			<div { ...blockProps }>
+			<>
 				<RichText
+					{ ...blockProps }
 					tagName="span"
 					placeholder={ __( 'Duration in minutes (eg: \'5\')', 'qrk' ) }
 					value={ attributes.duration.toString() }
@@ -73,7 +74,7 @@ export const settings: BlockConfiguration = {
 					allowedFormats={ [] }
 				/>
 				<span>&nbsp;min read</span>
-			</div>
+			</>
 		);
 	},
 	save() {
