@@ -711,7 +711,7 @@ function transform_drupal_media_tags( string $content = '' ): string {
 
 		// Get Drupal media based on UUID.
 		$drupal_db = get_database();
-		$media     = $drupal_db->get_row(
+		$media     = (array) $drupal_db->get_row(
 			strval(
 				$drupal_db->prepare(
 					'

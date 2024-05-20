@@ -134,7 +134,7 @@ class Media {
 
 		// If values of chunk is provided then update SQL query.
 		if ( ! empty( $options['chunk'] ) ) {
-			$total_images = $drupal_db->get_row(
+			$total_images = (array) $drupal_db->get_row(
 				'
 				SELECT
 					COUNT(*) AS total_images
