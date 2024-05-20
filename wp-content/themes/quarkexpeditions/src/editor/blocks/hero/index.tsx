@@ -7,7 +7,6 @@ import {
 	PanelBody,
 	RangeControl,
 	SelectControl,
-	ToggleControl,
 } from '@wordpress/components';
 import {
 	InspectorControls,
@@ -73,9 +72,9 @@ export const settings: BlockConfiguration = {
 		image: {
 			type: 'object',
 		},
-		isImmersive: {
-			type: 'boolean',
-			default: false,
+		immersive: {
+			type: 'string',
+			default: 'no',
 		},
 		textAlign: {
 			type: 'string',
@@ -99,7 +98,9 @@ export const settings: BlockConfiguration = {
 			className: classnames(
 				className,
 				'hero',
-				attributes.isImmersive ? 'hero--immersive' : ''
+				[ 'top', 'bottom', 'all', 'no' ].find(
+					( value: string ) => value === attributes.immersive
+				) ? `hero--immersive-${ attributes.immersive }` : ''
 			),
 		} );
 
@@ -131,11 +132,17 @@ export const settings: BlockConfiguration = {
 							min={ 0 }
 							max={ 100 }
 						/>
-						<ToggleControl
-							label={ __( 'Immersive Mode', 'qrk' ) }
-							checked={ attributes.isImmersive }
-							help={ __( 'Is this hero immersive?', 'qrk' ) }
-							onChange={ ( isImmersive: boolean ) => setAttributes( { isImmersive } ) }
+						<SelectControl
+							label={ __( 'Immersive mode', 'qrk' ) }
+							help={ __( 'Select the immersive mode', 'qrk' ) }
+							value={ attributes.immersive }
+							options={ [
+								{ label: __( 'None', 'qrk' ), value: 'no' },
+								{ label: __( 'Top', 'qrk' ), value: 'top' },
+								{ label: __( 'Bottom', 'qrk' ), value: 'bottom' },
+								{ label: __( 'All', 'qrk' ), value: 'all' },
+							] }
+							onChange={ ( immersive: string ) => setAttributes( { immersive } ) }
 						/>
 						<SelectControl
 							label={ __( 'Text Alignment', 'qrk' ) }

@@ -31,7 +31,8 @@
 		--lp-header-cta-font-color-active: var(--color-black);
 	}
 
-	&:has(+ .hero--immersive-all, + .hero--immersive-top) {
+	&:has(+ .hero--immersive-all),
+	&:has(+ .hero--immersive-top) {
 		margin-bottom: calculate-rem(-122px);
 
 		&:not(#{$self}--compact) {

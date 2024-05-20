@@ -1,6 +1,6 @@
 @props( [
 	'image_id'        => 0,
-	'immersive'       => false,
+	'immersive'       => 'no',
 	'text_align'      => '',
 	'overlay_opacity' => 0,
 	'left'            => [],
