@@ -25,6 +25,7 @@ import './editor.scss';
  * Internal dependencies.
  */
 import Section from '../../components/section';
+import * as breadCrumbs from '../breadcrumbs';
 
 /**
  * External dependencies.
@@ -43,14 +44,12 @@ const {
 /**
  * Children blocks
  */
-import * as heroContentLeft from './hero-content-left';
-import * as heroContentRight from './hero-content-right';
+import * as heroContent from './hero-content';
 
 /**
  * Register child block.
  */
-registerBlockType( heroContentLeft.name, heroContentLeft.settings );
-registerBlockType( heroContentRight.name, heroContentRight.settings );
+registerBlockType( heroContent.name, heroContent.settings );
 
 /**
  * Block name.
@@ -106,10 +105,10 @@ export const settings: BlockConfiguration = {
 
 		// eslint-disable-next-line react-hooks/rules-of-hooks
 		const innerBlockProps = useInnerBlocksProps(
-			{ className: 'hero__content' },
+			{ className: 'hero__wrap' },
 			{
-				allowedBlocks: [ heroContentLeft.name, heroContentRight.name ],
-				template: [ [ heroContentLeft.name ], [ heroContentRight.name ] ],
+				allowedBlocks: [ heroContent.name, breadCrumbs.name ],
+				template: [ [ breadCrumbs.name ], [ heroContent.name ] ],
 			}
 		);
 
@@ -163,15 +162,13 @@ export const settings: BlockConfiguration = {
 							backgroundColor: `rgba(0,0,0,${ attributes.overlayOpacity / 100 })`,
 						} }
 					></div>
-					<div className="hero__wrap">
 						{ attributes.image &&
 							<Img
 								className="hero__image"
 								value={ attributes.image }
 							/>
 						}
-						<div { ...innerBlockProps } />
-					</div>
+					<div { ...innerBlockProps }/>
 				</Section>
 			</>
 		);
