@@ -1,0 +1,108 @@
+/**
+ * Social Icons.
+ */
+@import "../../scss";
+
+.social-icons {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	list-style: none;
+	padding: 0;
+
+	li {
+
+		+ li {
+			margin-left: 20px;
+		}
+	}
+
+	a,
+	span {
+		background: var(--color-white);
+		border-radius: 50%;
+		color: var(--color-bunker-dark);
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		height: 40px;
+		width: 40px;
+		position: relative;
+
+		@media screen and (min-width: grid-size(md)) {
+			height: 44px;
+			width: 44px;
+		}
+
+		@include transition();
+
+		&:hover {
+
+			svg path {
+
+				@include transition();
+			}
+		}
+	}
+
+	&__facebook {
+
+		&:hover {
+
+			svg path {
+				fill: #1877f2;
+			}
+		}
+	}
+
+	&__instagram {
+
+		&:hover {
+
+			svg path {
+				fill: #c13584;
+			}
+		}
+	}
+
+	&__twitter {
+
+		&:hover {
+
+			svg path {
+				fill: #1d9bf0;
+			}
+		}
+	}
+
+	&__youtube {
+
+		&:hover {
+
+			svg path {
+
+				fill: #f00;
+			}
+		}
+	}
+
+	&__pinterest {
+
+		&:hover {
+
+			svg path {
+				fill: #e60023;
+			}
+		}
+	}
+
+	&__email {
+
+		&:hover {
+
+			svg path {
+				fill: var(--color-gray-600);
+			}
+		}
+	}
+}

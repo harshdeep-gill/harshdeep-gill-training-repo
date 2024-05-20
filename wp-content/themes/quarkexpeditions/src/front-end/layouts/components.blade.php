@@ -1940,4 +1940,38 @@
 			</x-lp-footer.row>
 		</x-lp-footer>
 	</x-component-demo>
+
+	<x-footer>
+		<x-footer.top>
+			Footer Top
+		</x-footer.top>
+
+		<x-footer.middle>
+			<x-footer.column>
+				<x-footer.logo url="" />
+				<x-button size="big">Request a Quote</x-button>
+				<x-social-links>
+					<x-footer.social-link type="facebook" url="#" />
+					<x-footer.social-link type="instagram" url="#" />
+					<x-footer.social-link type="twitter" url="#" />
+					<x-footer.social-link type="youtube" url="#" />
+				</x-social-links>
+			</x-footer.column>
+		</x-footer.middle>
+
+		<x-footer.bottom>
+			<x-footer.copyright>
+				Quark Expeditions® 2024 is a member of the Travelopia group of companies. All rights reserved.
+			</x-footer.copyright>
+
+			<x-footer.nav>
+				<ul>
+					<li>Cookie Policy</li>
+					<li>Do Not Sell My Data</li>
+					<li>Privacy Policy</li>
+					<li>Website Terms of Use</li>
+				</ul>
+			</x-footer.nav>
+		</x-footer.bottom>
+	</x-footer>
 </x-layout>
