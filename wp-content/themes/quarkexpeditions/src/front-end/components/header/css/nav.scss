@@ -20,7 +20,7 @@
 			display: block;
 		}
 
-		#{$self}__nav-item:not(.header__search-wrapper) {
+		#{$self}__nav-item:not(.header__search-item) {
 			display: none;
 
 			@media screen and (min-width: grid-size(xxxl)) {
@@ -48,6 +48,19 @@
 		quark-header-nav-menu-dropdown[open] & {
 			background-color: var(--color-gray-90);
 			border-radius: var(--border-radius);
+		}
+	}
+
+	&__search-item {
+
+		#{$self}__nav-item-link {
+			min-height: 56px;
+			min-width: 56px;
+
+			@media screen and (min-width: grid-size(xxxl)) {
+				min-height: 48px;
+				min-width: 48px;
+			}
 		}
 	}
 

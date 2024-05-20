@@ -9,5 +9,5 @@
 @endphp
 
 <h2 class="header__nav-item-featured-title h4">
-	<x-content :content="$title" />
+	<x-escape :content="$title" />
 </h2>

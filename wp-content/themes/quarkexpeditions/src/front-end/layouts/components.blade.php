@@ -1,6 +1,6 @@
 <x-layout>
 	<x-header>
-		<x-header.site-logo url="https://www.quarkexpeditions.com"/>
+		<x-header.site-logo />
 
 		<x-header.primary-nav>
 			{{-- // If URL is passed, then dropdown content shouldn't be toggled. --}}
@@ -191,7 +191,7 @@
 		</x-header.primary-nav>
 
 		<x-header.secondary-nav>
-			<x-header.nav-item class="header__search-wrapper" title="" icon="search" url="" />
+			<x-header.nav-item class="header__search-item" title="" icon="search" url="" />
 			<x-header.nav-item title="Dates & Prices" icon="" url="/dates-prices" />
 			<x-header.nav-item title="Travel Advisors" icon="" url="/travel-advisors" />
 		</x-header.secondary-nav>
@@ -204,7 +204,7 @@
 			<x-button class="header__request-quote-btn" size="big">Request a Quote</x-button>
 		</x-header.cta-buttons>
 
-		<x-drawer.drawer-open drawer_id="header-drawer" class="color-context--dark header__hamburger-menu-btn">
+		<x-drawer.drawer-open drawer_id="header-drawer" class="color-context--dark header__hamburger-menu">
 			<x-button type="button" size="big" color="black">
 				<x-svg name="hamburger" />
 			</x-button>

@@ -9,5 +9,5 @@
 @endphp
 
 <div class="header__nav-item-featured-subtitle">
-	<x-content :content="$subtitle" />
+	<x-escape :content="$subtitle" />
 </div>

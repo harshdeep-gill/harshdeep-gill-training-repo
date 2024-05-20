@@ -105,10 +105,10 @@ export default class HeaderNavMenu extends HTMLElement {
 	 */
 	handleDropdownCloseOnDocumentClick( event: Event ) {
 		// Get target element.
-		const targetEl = event.target as HTMLElement;
+		const targetElement = event.target as HTMLElement;
 
 		// If user has clicked inside dropdown or dropdown button cta, return.
-		if ( targetEl.closest( '.header__nav-item-link' ) || targetEl.closest( '.header__nav-item-dropdown-content' ) ) {
+		if ( targetElement.closest( '.header__nav-item-link' ) || targetElement.closest( '.header__nav-item-dropdown-content' ) ) {
 			// Early return.
 			return;
 		}

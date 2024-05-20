@@ -1,6 +1,6 @@
 @props( [
 	'image_id' => 0,
-	'size'     => '',
+	'size'     => 'large',
 ] )
 
 @php
