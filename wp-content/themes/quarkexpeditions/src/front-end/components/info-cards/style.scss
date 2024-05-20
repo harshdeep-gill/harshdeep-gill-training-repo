@@ -228,6 +228,7 @@
 		}
 
 		&:hover {
+			cursor: pointer;
 
 			#{$self}__image {
 				transform: scale(1.03);
