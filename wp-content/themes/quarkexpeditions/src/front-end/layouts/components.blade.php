@@ -1,5 +1,5 @@
 <x-layout>
-	<x-component-demo :keys="[ 'sidebar-grid', 'header', 'hero-refactor' ]">
+	<x-component-demo :keys="[ 'sidebar-grid', 'header', 'hero-refactor', 'hero-updated' ]">
 		<x-lp-header
 			tc_image_id="18"
 			phone_number="+1-877-585-1235"
@@ -11,6 +11,18 @@
 	<x-component-demo :keys="[ 'hero', 'hero-refactor' ]">
 		<x-hero text_align="left" immersive="all" :overlay_opacity="10">
 			<x-hero.image image_id="26" />
+			<x-breadcrumbs
+				:breadcrumbs="[
+					[
+						'title' => 'Home',
+						'url'   => '#',
+					],
+					[
+						'title' => 'Blog',
+						'url'   => '#',
+					],
+				]"
+			/>
 			<x-hero.content>
 				<x-hero.left>
 					<x-hero.title-container>
@@ -198,7 +210,7 @@
 	</x-component-demo>
 
 	<x-component-demo :keys="[ 'hero', 'hero-updated' ]">
-		<x-hero>
+		<x-hero text_align="left">
 			<x-hero.image image_id="26" />
 			<x-breadcrumbs
 				:breadcrumbs="[
@@ -218,7 +230,7 @@
 						<x-hero.overline>FEATURED - 4 mins read</x-hero.overline>
 						<x-hero.title title="How to see Polar Bears in Svalbard" />
 					</x-hero.title-container>
-					<x-button href="#">Read Post</x-button>
+					<x-button size="big" href="#">Read Post</x-button>
 				</x-hero.left>
 			</x-hero.content>
 		</x-hero>

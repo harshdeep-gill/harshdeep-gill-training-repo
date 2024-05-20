@@ -7,9 +7,27 @@
 	padding-block: var(--spacing-8);
 	min-height: 540px;
 	margin-top: 0;
+	overflow: hidden;
 
 	@media screen and (min-width: grid-size(lg)) {
 		padding-block: var(--spacing-9);
+	}
+
+	@supports (selector(:has(*))) {
+
+		&:has(.breadcrumbs) {
+			padding-top: 0;
+		}
+	}
+
+	.breadcrumbs {
+		margin-bottom: var(--spacing-8);
+		position: relative;
+		z-index: 2;
+
+		@media screen and (min-width: grid-size(lg)) {
+			margin-bottom: var(--spacing-9);
+		}
 	}
 
 	&__overlay {
@@ -36,6 +54,11 @@
 				@media screen and (min-width: grid-size(lg)) {
 					padding-top: calc(var(--spacing-9) + $image_bleed_top);
 				}
+
+				&:has(.breadcrumbs) {
+					padding-top: $image_bleed_top;
+				}
+
 			}
 
 			&-bottom,
@@ -54,7 +77,6 @@
 					z-index: 2;
 				}
 			}
-
 		}
 
 		&-bottom::after,
@@ -155,6 +177,16 @@
 		@media screen and (min-width: grid-size(lg)) {
 			max-width: 640px;
 			align-items: flex-start;
+		}
+
+		.btn {
+			max-width: 350px;
+			width: 100%;
+
+			@media screen and (min-width: grid-size(lg)) {
+				width: auto;
+				padding-inline: var(--spacing-7);
+			}
 		}
 	}
 
