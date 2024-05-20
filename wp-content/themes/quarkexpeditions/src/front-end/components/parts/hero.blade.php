@@ -6,6 +6,7 @@
 	'left'            => [],
 	'right'           => [],
 	'dark_mode'       => false,
+	'breadcrumbs'     => '',
 ] )
 
 @php
@@ -16,6 +17,7 @@
 
 <x-hero :immersive="$immersive" :text_align="$text_align" :overlay_opacity="$overlay_opacity">
 	<x-hero.image :image_id="$image_id" />
+	{!! $breadcrumbs !!}
 	<x-hero.content>
 		<x-hero.left>
 			<x-hero.title-container>

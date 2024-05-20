@@ -162,13 +162,13 @@ export const settings: BlockConfiguration = {
 							backgroundColor: `rgba(0,0,0,${ attributes.overlayOpacity / 100 })`,
 						} }
 					></div>
-						{ attributes.image &&
-							<Img
-								className="hero__image"
-								value={ attributes.image }
-							/>
-						}
-					<div { ...innerBlockProps }/>
+					{ attributes.image &&
+						<Img
+							className="hero__image"
+							value={ attributes.image }
+						/>
+					}
+					<div { ...innerBlockProps } />
 				</Section>
 			</>
 		);
