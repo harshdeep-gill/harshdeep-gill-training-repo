@@ -70,3 +70,20 @@ function add_drupal_migration_meta_box(): void {
 		'low'
 	);
 }
+
+/**
+ * Write to log file.
+ *
+ * @param string $message Log message.
+ *
+ * @return void
+ */
+function log_warning( string $message = '' ): void {
+	// Get the log file path.
+	$filename  = trailingslashit( WP_CONTENT_DIR ) . 'uploads/tmp-migration.log';
+	$timestamp = gmdate( 'Y-m-d H:i:s' );
+	$log_entry = "[$timestamp] $message\n";
+
+	// Write the log entry to the file.
+	error_log( $log_entry, 3, $filename ); // PHPCS:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+}
