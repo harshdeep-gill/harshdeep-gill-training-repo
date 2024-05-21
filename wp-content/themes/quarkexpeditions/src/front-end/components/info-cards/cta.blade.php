@@ -12,7 +12,6 @@
 
 <div
 	@class($classes)
-	href="{!! esc_url( $url ) !!}"
 >
 	<span class="info-cards__card-cta-text">
 		<x-escape :content="$text"/>

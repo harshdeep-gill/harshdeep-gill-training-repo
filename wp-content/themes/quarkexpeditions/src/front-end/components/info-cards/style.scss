@@ -84,7 +84,7 @@
 			}
 
 			#{$self}__slider {
-				max-width: calc(100% - 2 * var(--grid-col-gutter));
+				width: auto;
 			}
 
 			#{$self}__card {
