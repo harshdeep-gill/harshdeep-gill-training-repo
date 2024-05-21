@@ -10,9 +10,7 @@
 	$classes = [ 'info-cards__card-cta' ];
 @endphp
 
-<div
-	@class($classes)
->
+<div @class( $classes )>
 	<span class="info-cards__card-cta-text">
 		<x-escape :content="$text"/>
 	</span>
