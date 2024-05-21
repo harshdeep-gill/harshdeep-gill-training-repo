@@ -725,7 +725,7 @@ function transform_drupal_media_tags( string $content = '' ): string {
 		);
 
 		// If no media found then bail out.
-		if ( empty( $media['mid'] ) ) {
+		if ( ! is_array( $media ) || empty( $media['mid'] ) ) {
 			continue;
 		}
 

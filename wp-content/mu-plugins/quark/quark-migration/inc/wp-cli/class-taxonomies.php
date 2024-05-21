@@ -422,6 +422,44 @@ class Taxonomies {
 						$prepared_args['meta']['icon'] = $icon;
 					}
 				}
+
+				// Prepare for ACF data for options.
+				$drupal_db  = get_database();
+				$option_ids = (array) $drupal_db->get_results(
+					strval(
+						$drupal_db->prepare(
+							'
+							SELECT
+								field_option_ids_value AS option_id_value
+							FROM
+								taxonomy_term__field_option_ids
+							WHERE
+								entity_id = %d',
+							$item['tid']
+						)
+					),
+					ARRAY_A
+				);
+
+				// Assign option_ids to meta.
+				if ( ! empty( $option_ids ) ) {
+					$option_ids_count = 0;
+
+					// Loop through option_ids.
+					foreach ( $option_ids as $option_id ) {
+						// Prepare meta key.
+						$meta_key = sprintf( 'softrip_%d_id', $option_ids_count );
+
+						// Assign option_id to meta.
+						$prepared_args['meta'][ $meta_key ] = $option_id['option_id_value'];
+
+						// Increment option_ids count.
+						++$option_ids_count;
+					}
+
+					// Assign option_ids count to meta.
+					$prepared_args['meta']['softrip'] = $option_ids_count;
+				}
 				break;
 
 			// Prepare arguments for departure locations taxonomy.

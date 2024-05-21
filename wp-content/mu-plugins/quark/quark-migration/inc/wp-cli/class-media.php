@@ -144,7 +144,17 @@ class Media {
 				',
 				ARRAY_A
 			);
-			$total_images = absint( $total_images['total_images'] ?? 0 );
+
+			// If there is no record then bail out.
+			if ( ! is_array( $total_images ) || empty( $total_images['total_images'] ) ) {
+				WP_CLI::error( 'No images found!' );
+
+				// Bail out if no images found.
+				return;
+			}
+
+			// Get total images.
+			$total_images = absint( $total_images['total_images'] );
 
 			// Check if we have media record or not.
 			if ( $total_images > 0 ) {
