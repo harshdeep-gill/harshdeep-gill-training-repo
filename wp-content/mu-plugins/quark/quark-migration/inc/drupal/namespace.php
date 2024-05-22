@@ -208,136 +208,6 @@ function download_file_by_url( string $url = '' ): int|WP_Error {
 }
 
 /**
- * Get WordPress attachment ID by Drupal MID.
- *
- * @param int $drupal_mid Drupal MID.
- *
- * @return int WordPress's attachment ID on success otherwise 0.
- */
-function get_wp_attachment_id_by_mid( int $drupal_mid = 0 ): int {
-	// Global $wpdb instance.
-	global $wpdb;
-
-	// Check whether MID is provided or not.
-	if ( empty( $drupal_mid ) ) {
-		return 0;
-	}
-
-	// Get attachment ID.
-	$attachment = $wpdb->get_row(
-		$wpdb->prepare(
-			"
-				SELECT
-					postmeta_mid.meta_value AS drupal_image_id,
-					$wpdb->posts.ID AS id
-				FROM
-					$wpdb->posts
-				INNER JOIN $wpdb->postmeta AS `postmeta_mid`
-					ON $wpdb->posts.ID = postmeta_mid.post_id
-				WHERE
-					$wpdb->posts.post_type = 'attachment'
-					AND $wpdb->posts.post_status = 'inherit'
-					AND ( postmeta_mid.meta_key = 'drupal_mid' AND postmeta_mid.meta_value = %d )
-				",
-			[
-				$drupal_mid,
-			]
-		),
-		ARRAY_A
-	);
-
-	// If attachment ID found then send it.
-	if ( ! empty( $attachment['id'] ) ) {
-		return absint( $attachment['id'] );
-	}
-
-	// If attachment ID not found then return 0.
-	return 0;
-}
-
-/**
- * Get WordPress Brochure ID by Drupal MID.
- *
- * @param int $drupal_mid Drupal MID.
- *
- * @return WP_Post|false WordPress's Brochure post on success otherwise false.
- */
-function get_wp_brochure_id_by_mid( int $drupal_mid = 0 ): WP_Post|false {
-	// Prepare arguments.
-	$arguments = [
-		'post_type'     => BROCHURE_POST_TYPE,
-		'meta_key'      => 'drupal_mid',
-		'meta_value'    => $drupal_mid,
-		'post_status'   => 'any',
-		'post_per_page' => 1,
-	];
-
-	// Query post.
-	$posts = new WP_Query( $arguments );
-
-	// If no post found then bail out.
-	if ( empty( $posts->posts ) ) {
-		return false;
-	}
-
-	// If not instance of WP_Post then bail out.
-	if ( ! $posts->posts[0] instanceof WP_Post ) {
-		return false;
-	}
-
-	// Return post.
-	return $posts->posts[0];
-}
-
-/**
- * Get WordPress attachment ID by Drupal FID.
- *
- * @param int $drupal_fid Drupal FID.
- *
- * @return int WordPress's attachment ID on success otherwise 0.
- */
-function get_wp_attachment_id_by_fid( int $drupal_fid = 0 ): int {
-	// Global $wpdb instance.
-	global $wpdb;
-
-	// Check whether FID is provided or not.
-	if ( empty( $drupal_fid ) ) {
-		return 0;
-	}
-
-	// Get attachment ID.
-	$attachment = $wpdb->get_row(
-		$wpdb->prepare(
-			"
-					SELECT
-						postmeta_fid.meta_value AS drupal_image_id,
-						$wpdb->posts.ID AS id
-					FROM
-						$wpdb->posts
-					INNER JOIN $wpdb->postmeta AS `postmeta_fid`
-						ON $wpdb->posts.ID = postmeta_fid.post_id
-					WHERE
-						$wpdb->posts.post_type = 'attachment'
-						AND $wpdb->posts.post_status = 'inherit'
-						AND ( postmeta_fid.meta_key = 'drupal_fid' AND postmeta_fid.meta_value = %d )
-					",
-			[
-				$drupal_fid,
-			]
-		),
-		ARRAY_A
-	);
-
-	// If attachment ID found then send it.
-	if ( ! empty( $attachment['id'] ) ) {
-		return absint( $attachment['id'] );
-	}
-
-	// If attachment ID not found then return 0.
-	return 0;
-}
-
-/**
  * Get WordPress attachment ID by Drupal media path.
  *
  * @param string $drupal_path Drupal media (relative) path.
@@ -395,12 +265,12 @@ function download_file( array $file_data = [] ): int|WP_Error {
 	$drupal_mid = absint( $file_data['mid'] ?? 0 );
 	$bundle     = $file_data['bundle'] ?? 'image';
 
-	// Get existing attachment ID if exists.
-	$wp_attachment_id = get_wp_attachment_id_by_fid( drupal_fid: $drupal_fid );
+	// Get attachment if exists.
+	$wp_attachment = get_post_by_id( drupal_id: $drupal_fid, post_type: 'attachment', meta_key: 'drupal_fid' );
 
-	// If Attachment ID already exists then bail out.
-	if ( ! empty( $wp_attachment_id ) ) {
-		return $wp_attachment_id;
+	// If Attachment already exists then bail out.
+	if ( ! empty( $wp_attachment ) ) {
+		return $wp_attachment->ID;
 	}
 
 	// if uri starts with private:// then bail out.
@@ -633,14 +503,15 @@ function get_term_by_id( int $drupal_id = 0, string $taxonomy = '' ): false|WP_T
  *
  * @param int    $drupal_id Drupal ID.
  * @param string $post_type WordPress post type.
+ * @param string $meta_key  Meta key to search for Drupal ID.
  *
  * @return WP_Post|false
  */
-function get_post_by_id( int $drupal_id = 0, string $post_type = 'post' ): WP_Post|false {
+function get_post_by_id( int $drupal_id = 0, string $post_type = 'post', string $meta_key = 'drupal_id' ): WP_Post|false {
 	// Prepare arguments.
 	$arguments = [
 		'post_type'     => $post_type,
-		'meta_key'      => 'drupal_id',
+		'meta_key'      => $meta_key,
 		'meta_value'    => $drupal_id,
 		'post_status'   => 'any',
 		'post_per_page' => 1,
