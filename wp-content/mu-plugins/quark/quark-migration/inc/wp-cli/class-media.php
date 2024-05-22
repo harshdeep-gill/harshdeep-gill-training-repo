@@ -13,6 +13,7 @@ use WP_Error;
 use WP_Post;
 use cli\progress\Bar;
 
+use function Quark\Migration\log_warning;
 use function Quark\Core\update_svg_content;
 use function Quark\Migration\Drupal\download_file;
 use function Quark\Migration\Drupal\get_database;
@@ -189,6 +190,13 @@ class Media {
 			// If there is any error then show warning.
 			if ( $wp_attachment_id instanceof WP_Error ) {
 				WP_CLI::warning(
+					sprintf(
+						'Error while migrating image: %s - %s',
+						$wp_attachment_id->get_error_message(),
+						$image['uri']
+					)
+				);
+				log_warning(
 					sprintf(
 						'Error while migrating image: %s - %s',
 						$wp_attachment_id->get_error_message(),
