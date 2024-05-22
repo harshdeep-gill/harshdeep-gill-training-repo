@@ -1905,6 +1905,160 @@
 		/>
 	</x-component-demo>
 
+	<x-component-demo :keys="[ 'info-cards' ]">
+		<x-section title="Info Cards: Regular">
+			<x-info-cards>
+				<x-info-cards.card size="big" url="#">
+					<x-info-cards.image image_id="29" />
+					<x-info-cards.content position="bottom">
+						<x-info-cards.overline>3 mins read</x-info-cards.overline>
+						<x-info-cards.title title="Chasing Shackleton: Chasing Polar Dreams" />
+						<x-info-cards.description>
+							<p>
+								Antarctica. The 7th Continent. The land mass at the bottom of the globe, completely encased in ice. Its remote wilderness featured on nature documentaries and in our science and history books. And..
+							</p>
+						</x-info-cards.description>
+						<x-info-cards.cta text="Read Post" />
+					</x-info-cards.content>
+				</x-info-cards.card>
+				<x-info-cards.card url="#">
+					<x-info-cards.image image_id="30" />
+					<x-info-cards.content position="bottom">
+						<x-info-cards.overline>8 mins read</x-info-cards.overline>
+						<x-info-cards.title title="Wildlife Guide: Emperor Penguin Facts" />
+						<x-info-cards.cta text="Read Post" />
+					</x-info-cards.content>
+				</x-info-cards.card>
+				<x-info-cards.card url="#">
+					<x-info-cards.image image_id="33" />
+					<x-info-cards.content position="bottom">
+						<x-info-cards.overline>6 mins read</x-info-cards.overline>
+						<x-info-cards.title title="Wildlife Guide: Cormorant Facts" />
+						<x-info-cards.cta text="Read Post" />
+					</x-info-cards.content>
+				</x-info-cards.card>
+				<x-info-cards.card url="#">
+					<x-info-cards.image image_id="34" />
+					<x-info-cards.content position="bottom">
+						<x-info-cards.overline>8 mins read</x-info-cards.overline>
+						<x-info-cards.title title="Wildlife Guide: Ptarmigan Facts" />
+						<x-info-cards.cta text="Read Post" />
+					</x-info-cards.content>
+				</x-info-cards.card>
+				<x-info-cards.card url="#">
+					<x-info-cards.image image_id="35" />
+					<x-info-cards.content position="bottom">
+						<x-info-cards.overline>6 mins read</x-info-cards.overline>
+						<x-info-cards.title title="Wildlife Guide: Sperm Whale Facts" />
+						<x-info-cards.cta text="Read Post" />
+					</x-info-cards.content>
+				</x-info-cards.card>
+			</x-info-cards>
+		</x-section>
+
+		<x-section title="Info Cards: Carousel">
+			<x-info-cards layout="carousel">
+				<x-info-cards.card size="big" url="#">
+					<x-info-cards.image image_id="29" />
+					<x-info-cards.content position="bottom">
+						<x-info-cards.overline>3 mins read</x-info-cards.overline>
+						<x-info-cards.title title="Chasing Shackleton: Chasing Polar Dreams" />
+						<x-info-cards.description>
+							<p>
+								Antarctica. The 7th Continent. The land mass at the bottom of the globe, completely encased in ice. Its remote wilderness featured on nature documentaries and in our science and history books. And..
+							</p>
+						</x-info-cards.description>
+						<x-info-cards.cta text="Read Post" />
+					</x-info-cards.content>
+				</x-info-cards.card>
+				<x-info-cards.card url="#">
+					<x-info-cards.image image_id="30" />
+					<x-info-cards.content position="bottom">
+						<x-info-cards.overline>8 mins read</x-info-cards.overline>
+						<x-info-cards.title title="Wildlife Guide: Emperor Penguin Facts" />
+						<x-info-cards.cta text="Read Post" />
+					</x-info-cards.content>
+				</x-info-cards.card>
+				<x-info-cards.card url="#">
+					<x-info-cards.image image_id="33" />
+					<x-info-cards.content position="bottom">
+						<x-info-cards.overline>6 mins read</x-info-cards.overline>
+						<x-info-cards.title title="Wildlife Guide: Cormorant Facts" />
+						<x-info-cards.cta text="Read Post" />
+					</x-info-cards.content>
+				</x-info-cards.card>
+				<x-info-cards.card url="#">
+					<x-info-cards.image image_id="34" />
+					<x-info-cards.content position="bottom">
+						<x-info-cards.overline>8 mins read</x-info-cards.overline>
+						<x-info-cards.title title="Wildlife Guide: Ptarmigan Facts" />
+						<x-info-cards.cta text="Read Post" />
+					</x-info-cards.content>
+				</x-info-cards.card>
+				<x-info-cards.card url="#">
+					<x-info-cards.image image_id="35" />
+					<x-info-cards.content position="bottom">
+						<x-info-cards.overline>6 mins read</x-info-cards.overline>
+						<x-info-cards.title title="Wildlife Guide: Sperm Whale Facts" />
+						<x-info-cards.cta text="Read Post" />
+					</x-info-cards.content>
+				</x-info-cards.card>
+			</x-info-cards>
+		</x-section>
+
+		<x-section title="Info Cards: Collage">
+			<x-info-cards layout="collage" :mobile_carousel="false">
+				<x-info-cards.card size="big" url="#">
+					<x-info-cards.image image_id="29" />
+					<x-info-cards.content position="top">
+						<x-info-cards.tag text="webinar"/>
+						<x-info-cards.overline>3 mins read</x-info-cards.overline>
+						<x-info-cards.title title="Chasing Shackleton: Chasing Polar Dreams" />
+						<x-info-cards.description>
+							<p>
+								Antarctica. The 7th Continent. The land mass at the bottom of the globe, completely encased in ice. Its remote wilderness featured on nature documentaries and in our science and history books. And..
+							</p>
+						</x-info-cards.description>
+						<x-info-cards.cta text="Read Post" />
+					</x-info-cards.content>
+				</x-info-cards.card>
+				<x-info-cards.card url="#">
+					<x-info-cards.image image_id="30" />
+					<x-info-cards.content position="bottom">
+						<x-info-cards.tag text="webinar"/>
+						<x-info-cards.overline>8 mins read</x-info-cards.overline>
+						<x-info-cards.title title="Wildlife Guide: Emperor Penguin Facts" />
+						<x-info-cards.cta text="Read Post" />
+					</x-info-cards.content>
+				</x-info-cards.card>
+				<x-info-cards.card url="#">
+					<x-info-cards.image image_id="33" />
+					<x-info-cards.content position="bottom">
+						<x-info-cards.overline>6 mins read</x-info-cards.overline>
+						<x-info-cards.title title="Wildlife Guide: Cormorant Facts" />
+						<x-info-cards.cta text="Read Post" />
+					</x-info-cards.content>
+				</x-info-cards.card>
+				<x-info-cards.card url="#">
+					<x-info-cards.image image_id="34" />
+					<x-info-cards.content position="bottom">
+						<x-info-cards.overline>8 mins read</x-info-cards.overline>
+						<x-info-cards.title title="Wildlife Guide: Ptarmigan Facts" />
+						<x-info-cards.cta text="Read Post" />
+					</x-info-cards.content>
+				</x-info-cards.card>
+				<x-info-cards.card url="#">
+					<x-info-cards.image image_id="35" />
+					<x-info-cards.content position="bottom">
+						<x-info-cards.overline>6 mins read</x-info-cards.overline>
+						<x-info-cards.title title="Wildlife Guide: Sperm Whale Facts" />
+						<x-info-cards.cta text="Read Post" />
+					</x-info-cards.content>
+				</x-info-cards.card>
+			</x-info-cards>
+		</x-section>
+	</x-component-demo>
+
 	<x-component-demo :keys="[ 'lp-footer' ]">
 		<x-lp-footer>
 			<x-lp-footer.row>

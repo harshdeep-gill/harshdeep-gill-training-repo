@@ -1,0 +1,284 @@
+/**
+ * Info Cards.
+ */
+
+@import "../../scss/";
+
+.info-cards {
+	$self: &;
+	overflow-x: hidden;
+
+	&__image-wrap {
+		margin-bottom: 0;
+		overflow: hidden;
+		width: 100%;
+		height: 100%;
+	}
+
+	&__image {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+
+		@include transition(transform);
+	}
+
+	&__slider {
+		overflow-x: visible;
+		margin-inline: var(--grid-col-gutter);
+		width: 100vw;
+
+		&:has(div.thumbnail-cards__nav) {
+			#{$self}__track {
+				margin-bottom: 0;
+			}
+		}
+
+		@media screen and (min-width: 1120px) {
+			margin-inline: 0;
+		}
+	}
+
+	&__track {
+		padding-left: var(--spacing-5);
+		margin-left: calc(-1 * var(--spacing-5));
+		scrollbar-width: none; /* Firefox */
+
+		&::-webkit-scrollbar {
+			display: none;
+		}
+
+		@media screen and (min-width: grid-size(sm)) {
+			overflow-x: visible;
+		}
+	}
+
+	&__slides {
+		gap: var(--spacing-5);
+		display: grid;
+		grid-auto-flow: column;
+		grid-auto-columns: max-content;
+	}
+
+	&:not(:has(&__nav[data-layout="carousel"])) {
+
+		@media screen and (min-width: grid-size(lg)) {
+
+			#{$self}__carousel {
+				overflow-x: hidden;
+			}
+
+			#{$self}__track {
+				max-width: 100%;
+				overflow-x: hidden;
+				padding-inline: 0;
+				margin-inline: 0;
+			}
+
+			#{$self}__slides {
+				grid-auto-flow: row;
+				grid-template-columns: repeat(auto-fit, minmax(267px, 1fr));
+				column-gap: var(--spacing-6);
+				row-gap: var(--spacing-4);
+				max-width: 100%;
+			}
+
+			#{$self}__slider {
+				width: auto;
+			}
+
+			#{$self}__card {
+				max-width: unset;
+			}
+
+		}
+	}
+
+	&:not(:has(&__nav[data-mobile-carousel])) {
+
+		@media screen and (max-width: calc(grid-size(lg) - 1px)) {
+
+			#{$self}__nav {
+				display: none;
+			}
+
+			#{$self}__slides {
+				grid-auto-flow: row;
+				grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+				gap: var(--spacing-5);
+			}
+
+			#{$self}__slider {
+				width: auto;
+			}
+
+			#{$self}__card {
+				max-width: unset;
+			}
+		}
+	}
+
+	&:has(&__nav[data-layout="collage"]) {
+
+		@media screen and (min-width: grid-size(lg)) {
+
+			#{$self}__slides {
+				grid-template-columns: repeat(4, minmax(210px, 1fr));
+			}
+
+			#{$self}__card {
+				max-height: unset;
+				max-width: unset;
+				align-self: stretch;
+
+				&:first-child {
+					grid-row: span 2;
+					grid-column: span 2;
+				}
+			}
+		}
+	}
+
+	&__nav {
+		display: flex;
+		column-gap: var(--spacing-5);
+		margin-top: var(--spacing-6);
+		margin-left: calc(-1 * var(--spacing-1));
+
+		@media screen and (min-width: grid-size(lg)) {
+			display: none;
+
+			&[data-layout="carousel"] {
+				display: flex;
+			}
+		}
+	}
+
+	&__arrow-button {
+		background-color: var(--color-black);
+		width: 27px;
+		height: 27px;
+		border-radius: 50%;
+		padding: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		cursor: pointer;
+
+		svg {
+			width: 7px;
+			height: 11px;
+		}
+
+		&--right {
+
+			svg {
+				transform: rotate(180deg);
+			}
+		}
+	}
+
+	&__card {
+		max-width: calc(100vw - 2 * var(--grid-col-gutter));
+		overflow: hidden;
+		position: relative;
+		border-radius: var(--border-radius-large);
+
+		@media screen and (min-width: grid-size(sm)) {
+			max-width: 352px;
+		}
+
+		&-title {
+
+			@include line-clamp(2);
+		}
+
+		&-description {
+
+			@include line-clamp(3);
+		}
+
+		&-overline {
+
+			@include line-clamp(2);
+		}
+
+		&-cta {
+			display: flex;
+			gap: var(--spacing-1);
+			width: fit-content;
+			margin-top: var(--spacing-3);
+
+			&-icon {
+
+				svg {
+					rotate: 180deg;
+				}
+			}
+
+			&-text {
+				text-decoration: underline var(--color-white);
+
+				#{$self}__card:hover & {
+					text-decoration-color: var(--color-yellow);
+				}
+
+				@include line-clamp(1);
+			}
+		}
+
+		&:hover {
+			cursor: pointer;
+
+			#{$self}__image {
+				transform: scale(1.03);
+			}
+		}
+	}
+
+	&__card-content {
+		position: absolute;
+		inset: 0;
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-3);
+		padding: var(--spacing-6);
+		z-index: 0;
+
+		> * {
+			margin-bottom: 0;
+		}
+
+		&::before {
+			content: "";
+			position: absolute;
+			inset: 0;
+			background: linear-gradient(0deg, rgba(0, 0, 0, 0) 20%, rgba(0, 0, 0, 0.7) 100%);
+			z-index: -1;
+		}
+
+		&--bottom {
+
+			justify-content: end;
+
+			&::before {
+				background: linear-gradient(180deg, rgba(0, 0, 0, 0) 20%, rgba(0, 0, 0, 0.7) 100%);
+			}
+		}
+	}
+
+	&__tag {
+		width: fit-content;
+		padding: var(--spacing-2) var(--spacing-3);
+		background-color: var(--color-yellow);
+		color: var(--color-black);
+		overflow: hidden;
+		max-width: 100%;
+
+		@include line-clamp(1);
+
+		#{$self}__card-content--bottom & {
+			margin-bottom: auto;
+		}
+	}
+}
