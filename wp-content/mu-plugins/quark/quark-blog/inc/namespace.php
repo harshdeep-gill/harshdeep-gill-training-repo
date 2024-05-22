@@ -34,6 +34,9 @@ function bootstrap(): void {
 		// Custom fields.
 		require_once __DIR__ . '/../custom-fields/blog.php';
 	}
+
+	// Other hooks.
+	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
 }
 
 /**
@@ -95,6 +98,18 @@ function update_blog_posts_admin_menu_label( object $labels = null ): object {
 
 	// Return updated labels.
 	return (object) $labels;
+}
+
+/**
+ * Bust cache when a post is saved.
+ *
+ * @param int $post_id Post ID.
+ *
+ * @return void
+ */
+function bust_post_cache( int $post_id = 0 ): void {
+	// Delete the post cache.
+	wp_cache_delete( CACHE_KEY . "_$post_id", CACHE_GROUP );
 }
 
 /**
