@@ -1941,56 +1941,120 @@
 		</x-lp-footer>
 	</x-component-demo>
 
-	@php
-		$social_links = [
-			'facebook'  => 'https://www.facebook.com/',
-			'instagram' => 'https://www.instagram.com/',
-			'twitter'   => 'https://www.twitter.com/',
-			'youtube'   => 'https://www.youtube.com/',
-		];
-	@endphp
+	<x-component-demo :keys="[ 'footer' ]">
+		@php
+			$social_links = [
+				'facebook'  => 'https://www.facebook.com/',
+				'instagram' => 'https://www.instagram.com/',
+				'twitter'   => 'https://www.twitter.com/',
+				'youtube'   => 'https://www.youtube.com/',
+			];
+		@endphp
 
-	<x-footer>
-		<x-footer.top>
-			<x-footer.column url="tel:+1(866)241-1602">
-				<x-footer.icon name="call" />
-				<p>Need help planning? Call Us.</p>
-				<h5>+1 (866) 241-1602</h5>
-			</x-footer.column>
-			<x-footer.column url="https://www.quarkexpeditions.com/brochures">
-				<x-footer.icon name="article" />
-				<p>Get Quark Expeditions</p>
-				<h5>Arctic & Antarctic Brochures</h5>
-			</x-footer.column>
-			<x-footer.column url="https://www.quarkexpeditions.com/subscribe-to-our-newsletter">
-				<x-footer.icon name="mail" />
-				<p>Sign up for our</p>
-				<h5>Newsletters & Offers</h5>
-			</x-footer.column>
-		</x-footer.top>
+		<x-footer>
+			<x-footer.top>
+				<x-footer.column url="tel:+1(866)241-1602">
+					<x-footer.icon name="call" />
+					<p>Need help planning? Call Us.</p>
+					<h5>+1 (866) 241-1602</h5>
+				</x-footer.column>
+				<x-footer.column url="https://www.quarkexpeditions.com/brochures">
+					<x-footer.icon name="article" />
+					<p>Get Quark Expeditions</p>
+					<h5>Arctic & Antarctic Brochures</h5>
+				</x-footer.column>
+				<x-footer.column url="https://www.quarkexpeditions.com/subscribe-to-our-newsletter">
+					<x-footer.icon name="mail" />
+					<p>Sign up for our</p>
+					<h5>Newsletters & Offers</h5>
+				</x-footer.column>
+			</x-footer.top>
 
-		<x-footer.middle>
-			<x-footer.column>
-				<x-footer.logo url="" />
-				<x-button size="big">Request a Quote</x-button>
+			<x-footer.middle>
+				<x-footer.column>
+					<x-footer.logo url="" />
+					<x-button size="big">Request a Quote</x-button>
 
-				<x-social-links :social_links="$social_links" />
-			</x-footer.column>
-		</x-footer.middle>
+					<x-footer.social-links :social_links="$social_links" />
+				</x-footer.column>
 
-		<x-footer.bottom>
-			<x-footer.copyright>
-				Quark Expeditions® 2024 is a member of the Travelopia group of companies. All rights reserved.
-			</x-footer.copyright>
+				<x-footer.column :mobile_accordion="true">
+					<x-footer.column-title title="About Us" />
+					<x-footer.nav>
+						<x-footer.nav-item title="Expedition History" url="#" />
+						<x-footer.nav-item title="Expedition Team" url="#" />
+						<x-footer.nav-item title="Advantage of Small Ships" url="#" />
+						<x-footer.nav-item title="Sustainability" url="#" />
+						<x-footer.nav-item title="Contact Us" url="#" />
+					</x-footer.nav>
+				</x-footer.column>
 
-			<x-footer.nav>
-				<ul>
-					<li><a>Cookie Policy</a></li>
-					<li><a>Do Not Sell My Data</a></li>
-					<li><a>Privacy Policy</a></li>
-					<li><a>Website Terms of Use</a></li>
-				</ul>
-			</x-footer.nav>
-		</x-footer.bottom>
-	</x-footer>
+				<x-footer.column :mobile_accordion="true">
+					<x-footer.column-title title="Reservation Resources" />
+					<x-footer.nav>
+						<x-footer.nav-item title="Dates & Rates" url="#" />
+						<x-footer.nav-item title="Make a Payment" url="#" />
+						<x-footer.nav-item title="Know Before You Go: FAQs" url="#" />
+						<x-footer.nav-item title="Travel Insurance Plans" url="#" />
+						<x-footer.nav-item title="Photographic Journal" url="#" />
+						<x-footer.nav-item title="Expedition Terms and Conditions" url="#" />
+						<x-footer.nav-item title="Quark Expeditions Protection Promise" url="#" />
+					</x-footer.nav>
+				</x-footer.column>
+
+				<x-footer.column>
+					<x-footer.column-title title="Discover Your Dream Trip" />
+					<x-button size="big" color="white">View All Expeditions</x-button>
+
+					<x-footer.column-title title="Change Currency" />
+					<x-form>
+						<x-form.field :validation="[ 'required' ]">
+							<x-form.select label="Country">
+								<x-form.option value="1" label="$ USD">$ USD</x-form.option>
+								<x-form.option value="2" label="Option 2">Option 2</x-form.option>
+								<x-form.option value="3" label="Option 3">Option 3</x-form.option>
+							</x-form.select>
+						</x-form.field>
+					</x-form>
+				</x-footer.column>
+
+				<x-footer.column :mobile_accordion="true">
+					<x-footer.column-title title="Learn About the Polar Regions" />
+					<x-footer.nav>
+						<x-footer.nav-item title="Blog" url="#" />
+						<x-footer.nav-item title="Polar Learning Channel" url="#" />
+						<x-footer.nav-item title="Brochures" url="#" />
+					</x-footer.nav>
+				</x-footer.column>
+
+				<x-footer.column :mobile_accordion="true">
+					<x-footer.column-title title="Quark Expeditions" />
+					<x-footer.nav>
+						<x-footer.nav-item title="Careers" url="#" />
+						<x-footer.nav-item title="Media Center" url="#" />
+						<x-footer.nav-item title="Press Releases" url="#" />
+					</x-footer.nav>
+				</x-footer.column>
+
+				<x-footer.column>
+					<x-footer.column-title title="Book Online Today" />
+					<p>25% down will reserve your expedition to the polar regions!</p>
+					<x-footer.payment-options />
+				</x-footer.column>
+			</x-footer.middle>
+
+			<x-footer.bottom>
+				<x-footer.copyright>
+					Quark Expeditions® 2024 is a member of the Travelopia group of companies. All rights reserved.
+				</x-footer.copyright>
+
+				<x-footer.nav>
+					<x-footer.nav-item title="Cookie Policy" url="#" />
+					<x-footer.nav-item title="Do Not Sell My Data" url="#" />
+					<x-footer.nav-item title="Privacy Policy" url="#" />
+					<x-footer.nav-item title="Website Terms of Use" url="#" />
+				</x-footer.nav>
+			</x-footer.bottom>
+		</x-footer>
+	</x-component-demo>
 </x-layout>

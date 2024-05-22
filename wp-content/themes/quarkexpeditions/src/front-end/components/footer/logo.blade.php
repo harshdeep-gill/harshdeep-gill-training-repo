@@ -1,16 +1,8 @@
-@props( [
-	'url'       => '',
-] )
-
 @php
-	$logo_name = 'logo';
+	$url       = quark_get_template_data( 'site_url', '' );
+	$site_name = quark_get_template_data( 'site_name', '' );
 @endphp
 
-<a href="{{ $url }}" class="footer__logo">
-	<x-svg name="{{ $logo_name }}" />
-</a>
-
-{{--Logo displayed on compact version of footer.--}}
-<a href="{{ $url }}" class="footer__logo footer__logo--compact">
-	<x-svg name="{{ $logo_name . '-compact' }}" />
+<a href="{{ $url }}" class="footer__logo" aria-label="{{ $site_name }}">
+	<x-svg name="logo" />
 </a>

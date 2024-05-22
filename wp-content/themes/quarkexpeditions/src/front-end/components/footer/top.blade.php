@@ -4,6 +4,6 @@
 	}
 @endphp
 
-<div class="footer__top">
+<div class="footer__top grid">
 	{!! $slot !!}
 </div>

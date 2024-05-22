@@ -4,6 +4,6 @@
 	}
 @endphp
 
-<div class="footer__nav">
+<ul class="footer__nav">
 	{!! $slot !!}
-</div>
+</ul>
