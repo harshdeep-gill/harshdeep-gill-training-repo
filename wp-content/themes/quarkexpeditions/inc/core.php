@@ -263,12 +263,17 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'class'  => true,
 					'data-*' => true,
 				],
+				'quark-header-nav-menu-dropdown'        => [
+					'class' => true,
+					'open'  => true,
+				],
 				'quark-drawer'                          => [
 					'id'                  => true,
 					'class'               => true,
 					'overlay-click-close' => true,
 					'open'                => true,
 					'data-*'              => true,
+					'animation-direction' => true,
 				],
 				'quark-drawer-content'                  => [
 					'class' => true,

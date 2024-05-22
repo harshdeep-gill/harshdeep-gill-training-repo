@@ -1,4 +1,295 @@
 <x-layout>
+	<x-header>
+		<x-header.site-logo />
+
+		<x-header.primary-nav>
+			{{-- // If URL is passed, then dropdown content shouldn't be toggled. --}}
+			<x-header.nav-item title="Destinations" icon="" url="">
+				<x-header.nav-item-dropdown-content>
+					<x-header.nav-item-dropdown-content-column>
+						<x-header.nav-item-featured image_id="34">
+							<x-header.nav-item-featured-title title="Explore Polar Regions" />
+							<x-header.nav-item-featured-subtitle subtitle="Incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis." />
+							<x-button size="big">Explore Polar Regions</x-button>
+						</x-header.nav-item-featured>
+					</x-header.nav-item-dropdown-content-column>
+					<x-header.nav-item-dropdown-content-column>
+						<x-two-columns :border="true">
+							<x-two-columns.column>
+								<x-menu-list title="Antarctic Regions">
+									<x-menu-list.item title="Antarctic Peninsula" url="#" />
+									<x-menu-list.item title="Falkland Islands" url="#" />
+									<x-menu-list.item title="Patagonia" url="#" />
+									<x-menu-list.item title="South Georgia" url="#" />
+									<x-menu-list.item title="Snow Hill Island" url="#" />
+								</x-menu-list>
+								<x-thumbnail-cards :is_carousel="false" :full_width="false">
+									<x-thumbnail-cards.card size="medium" url="#" orientation="landscape" image_id="29">
+										<x-thumbnail-cards.title title="Arctic Expeditions" align="bottom" />
+									</x-thumbnail-cards.card>
+								</x-thumbnail-cards>
+							</x-two-columns.column>
+							<x-two-columns.column>
+								<x-menu-list title="Arctic Regions">
+									<x-menu-list.item title="Canadian High Arctic" url="#" />
+									<x-menu-list.item title="Greenland" url="#" />
+									<x-menu-list.item title="Svalbard" url="#" />
+								</x-menu-list>
+								<x-thumbnail-cards :is_carousel="false" :full_width="false">
+									<x-thumbnail-cards.card size="medium" url="#" orientation="landscape" image_id="34">
+										<x-thumbnail-cards.title title="Patagonia Expeditions" align="bottom" />
+									</x-thumbnail-cards.card>
+								</x-thumbnail-cards>
+							</x-two-columns.column>
+						</x-two-columns>
+					</x-header.nav-item-dropdown-content-column>
+				</x-header.nav-item-dropdown-content>
+			</x-header.nav-item>
+
+			<x-header.nav-item title="Expeditions" icon="" url="">
+				<x-header.nav-item-dropdown-content>
+					<x-header.nav-item-dropdown-content-column>
+						<x-header.nav-item-featured image_id="32">
+							<x-header.nav-item-featured-title title="Explore Polar Expeditions" />
+							<x-header.nav-item-featured-subtitle subtitle="Incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis." />
+							<x-button size="big">Explore Polar Expeditions</x-button>
+						</x-header.nav-item-featured>
+					</x-header.nav-item-dropdown-content-column>
+					<x-header.nav-item-dropdown-content-column>
+						<x-two-columns :border="true">
+							<x-two-columns.column>
+								<x-menu-list title="Antarctic Expeditions">
+									<x-menu-list.item title="Antarctic Peninsula" url="#" />
+									<x-menu-list.item title="Falkland Islands & South Georgia" url="#" />
+									<x-menu-list.item title="Patagonia" url="#" />
+									<x-menu-list.item title="Snow Hill Island" url="#" />
+								</x-menu-list>
+								<x-thumbnail-cards :is_carousel="false" :full_width="false">
+									<x-thumbnail-cards.card size="medium" url="#" orientation="landscape" image_id="32">
+										<x-thumbnail-cards.title title="View All Antarctic Departures" align="bottom" />
+									</x-thumbnail-cards.card>
+								</x-thumbnail-cards>
+							</x-two-columns.column>
+							<x-two-columns.column>
+								<x-menu-list title="arctic Regions">
+									<x-menu-list.item title="Canadian High Arctic" url="#" />
+									<x-menu-list.item title="Greenland" url="#" />
+									<x-menu-list.item title="Svalbard" url="#" />
+								</x-menu-list>
+								<x-thumbnail-cards :is_carousel="false" :full_width="false">
+									<x-thumbnail-cards.card size="medium" url="#" orientation="landscape" image_id="36">
+										<x-thumbnail-cards.title title="View All Antarctic Departures" align="bottom" />
+									</x-thumbnail-cards.card>
+								</x-thumbnail-cards>
+							</x-two-columns.column>
+						</x-two-columns>
+					</x-header.nav-item-dropdown-content-column>
+				</x-header.nav-item-dropdown-content>
+			</x-header.nav-item>
+			<x-header.nav-item title="Ships" icon="" url="">
+				<x-header.nav-item-dropdown-content>
+					<x-header.nav-item-dropdown-content-column>
+						<x-header.nav-item-featured image_id="32">
+							<x-header.nav-item-featured-title title="Advantage of Small Ships" />
+							<x-header.nav-item-featured-subtitle subtitle="Incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis." />
+							<x-button size="big">View All Ships</x-button>
+						</x-header.nav-item-featured>
+					</x-header.nav-item-dropdown-content-column>
+					<x-header.nav-item-dropdown-content-column>
+						<x-two-columns :border="true">
+							<x-two-columns.column>
+								<x-menu-list title="Ships">
+									<x-menu-list.item title="Ocean Adventurer" url="#" />
+									<x-menu-list.item title="Ocean Explorer" url="#" />
+									<x-menu-list.item title="Ultramarine" url="#" />
+									<x-menu-list.item title="World Explorer" url="#" />
+								</x-menu-list>
+							</x-two-columns.column>
+						</x-two-columns>
+					</x-header.nav-item-dropdown-content-column>
+				</x-header.nav-item-dropdown-content>
+			</x-header.nav-item>
+			<x-header.nav-item title="Offers" icon="" url="">
+				<x-header.nav-item-dropdown-content>
+					<x-header.nav-item-dropdown-content-column>
+						<x-header.nav-item-featured image_id="31">
+							<x-header.nav-item-featured-title title="Explore Arctic: Save Up to 40%" />
+							<x-button size="big">View All Offers</x-button>
+						</x-header.nav-item-featured>
+					</x-header.nav-item-dropdown-content-column>
+					<x-header.nav-item-dropdown-content-column>
+						<x-two-columns :border="true">
+							<x-two-columns.column>
+								<x-thumbnail-cards :is_carousel="false" :full_width="false">
+									<x-thumbnail-cards.card size="small" url="#" orientation="portrait" image_id="29">
+										<x-thumbnail-cards.title title="Arctic Expeditions" align="bottom" />
+									</x-thumbnail-cards.card>
+									<x-thumbnail-cards.card size="small" url="#" orientation="portrait" image_id="30">
+										<x-thumbnail-cards.title title="Antarctic Expeditions" align="bottom" />
+									</x-thumbnail-cards.card>
+									<x-thumbnail-cards.card size="small" url="#" orientation="portrait" image_id="33">
+										<x-thumbnail-cards.title title="Patagonia Expeditions" align="bottom" />
+									</x-thumbnail-cards.card>
+								</x-thumbnail-cards>
+							</x-two-columns.column>
+						</x-two-columns>
+					</x-header.nav-item-dropdown-content-column>
+				</x-header.nav-item-dropdown-content>
+			</x-header.nav-item>
+			<x-header.nav-item title="More" icon="" url="" class="header__more-menu-item">
+				<x-header.nav-item-dropdown-content>
+					<x-header.nav-item-dropdown-content-column>
+						<x-header.nav-item-featured image_id="34">
+							<x-header.nav-item-featured-title title="Why Quark Expeditions" />
+							<x-header.nav-item-featured-subtitle subtitle="Incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis." />
+							<x-button size="big">Why Quark Expeditions</x-button>
+						</x-header.nav-item-featured>
+					</x-header.nav-item-dropdown-content-column>
+					<x-header.nav-item-dropdown-content-column>
+						<x-two-columns :border="true">
+							<x-two-columns.column>
+								<x-menu-list title="More">
+									<x-menu-list.item title="Why Quark Expeditions" url="#" />
+									<x-menu-list.item title="Our Expedition History" url="#" />
+									<x-menu-list.item title="Our Team" url="#" />
+									<x-menu-list.item title="Adventure Options" url="#" />
+									<x-menu-list.item title="Sustainability" url="#" />
+									<x-menu-list.item title="Blog" url="#" />
+									<x-menu-list.item title="Dates and Rates" url="#" />
+									<x-menu-list.item title="Travel Advisors" url="#" />
+								</x-menu-list>
+							</x-two-columns.column>
+						</x-two-columns>
+					</x-header.nav-item-dropdown-content-column>
+				</x-header.nav-item-dropdown-content>
+			</x-header.nav-item>
+			<x-header.nav-item title="About Us" icon="" url="">
+				<x-header.nav-item-dropdown-content>
+					<x-header.nav-item-dropdown-content-column>
+						<x-header.nav-item-featured image_id="34">
+							<x-header.nav-item-featured-title title="Why Quark Expeditions" />
+							<x-header.nav-item-featured-subtitle subtitle="Incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis." />
+							<x-button size="big">Why Quark Expeditions</x-button>
+						</x-header.nav-item-featured>
+					</x-header.nav-item-dropdown-content-column>
+					<x-header.nav-item-dropdown-content-column>
+						<x-two-columns :border="true">
+							<x-two-columns.column>
+								<x-menu-list title="About Quark Expeditions">
+									<x-menu-list.item title="Why Quark Expeditions" url="#" />
+									<x-menu-list.item title="Our Expedition History" url="#" />
+									<x-menu-list.item title="Our Team" url="#" />
+									<x-menu-list.item title="Adventure Options" url="#" />
+									<x-menu-list.item title="Sustainability" url="#" />
+									<x-menu-list.item title="Blog" url="#" />
+								</x-menu-list>
+							</x-two-columns.column>
+						</x-two-columns>
+					</x-header.nav-item-dropdown-content-column>
+				</x-header.nav-item-dropdown-content>
+			</x-header.nav-item>
+		</x-header.primary-nav>
+
+		<x-header.secondary-nav>
+			<x-header.nav-item class="header__search-item" title="" icon="search" url="" />
+			<x-header.nav-item title="Dates & Prices" icon="" url="/dates-prices" />
+			<x-header.nav-item title="Travel Advisors" icon="" url="/travel-advisors" />
+		</x-header.secondary-nav>
+
+		<x-header.cta-buttons>
+			<x-button class="header__phone-btn" href="tel:+1-877-585-1235" size="big" color="white" appearance="outline">
+				<x-svg name="phone" />
+				+1-877-585-1235
+			</x-button>
+			<x-button class="header__request-quote-btn" size="big">Request a Quote</x-button>
+		</x-header.cta-buttons>
+
+		<x-drawer.drawer-open drawer_id="header-drawer" class="color-context--dark header__hamburger-menu">
+			<x-button type="button" size="big" color="black">
+				<x-svg name="hamburger" />
+			</x-button>
+		</x-drawer.drawer-open>
+
+		<x-drawer id="header-drawer" class="header__drawer">
+			<x-drawer.header>
+				<x-header.site-logo url="https://www.quarkexpeditions.com"/>
+			</x-drawer.header>
+
+			<x-drawer.body>
+				<x-accordion title="Quark Expeditions takes you places no one else can!">
+					<x-accordion.item>
+						<x-accordion.item-handle title="Destinations" />
+						<x-accordion.item-content>
+							<x-header.nav-item-featured image_id="32" size="small">
+								<x-header.nav-item-featured-title title="Explore Polar Regions" />
+								<x-header.nav-item-featured-subtitle subtitle="Incididunt ut labore et dolore magna aliqua." />
+								<x-button size="big">Explore Polar Regions</x-button>
+							</x-header.nav-item-featured>
+
+							<x-menu-list title="Antarctic Regions">
+								<x-menu-list.item title="Antarctic Peninsula" url="#" />
+								<x-menu-list.item title="Falkland Islands" url="#" />
+								<x-menu-list.item title="Patagonia" url="#" />
+								<x-menu-list.item title="South Georgia" url="#" />
+								<x-menu-list.item title="Snow Hill Island" url="#" />
+							</x-menu-list>
+
+							<x-menu-list title="Arctic Regions">
+								<x-menu-list.item title="Canadian High Arctic" url="#" />
+								<x-menu-list.item title="Greenland" url="#" />
+								<x-menu-list.item title="Svalbard" url="#" />
+							</x-menu-list>
+						</x-accordion.item-content>
+					</x-accordion.item>
+					<x-accordion.item>
+						<x-accordion.item-handle title="Expeditions" />
+						<x-accordion.item-content>
+							<x-header.nav-item-featured image_id="32" size="small">
+								<x-header.nav-item-featured-title title="Explore Polar Regions" />
+								<x-header.nav-item-featured-subtitle subtitle="Incididunt ut labore et dolore magna aliqua." />
+								<x-button size="big">Explore Polar Regions</x-button>
+							</x-header.nav-item-featured>
+
+							<x-menu-list title="Antarctic Regions">
+								<x-menu-list.item title="Antarctic Peninsula" url="#" />
+								<x-menu-list.item title="Falkland Islands" url="#" />
+								<x-menu-list.item title="Patagonia" url="#" />
+								<x-menu-list.item title="South Georgia" url="#" />
+								<x-menu-list.item title="Snow Hill Island" url="#" />
+							</x-menu-list>
+						</x-accordion.item-content>
+					</x-accordion.item>
+					<x-accordion.item>
+						<x-accordion.item-handle title="Ships" />
+						<x-accordion.item-content>
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.</p>
+						</x-accordion.item-content>
+					</x-accordion.item>
+					<x-accordion.item>
+						<x-accordion.item-handle title="Offers" />
+						<x-accordion.item-content>
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.</p>
+						</x-accordion.item-content>
+					</x-accordion.item>
+					<x-accordion.item>
+						<x-accordion.item-handle title="About Us" />
+						<x-accordion.item-content>
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.</p>
+						</x-accordion.item-content>
+					</x-accordion.item>
+				</x-accordion>
+				
+				<ul class="header__drawer-quick-links">
+					<li><a href="#">Dates & Rates</a></li>
+					<li><a href="#">Travel Advisors</a></li>
+					<li><a href="tel:+1-877-585-1235">Call Now to Book : +1 (866) 253-3145</a></li>
+				</ul>
+
+				<x-button class="header__drawer-request-quote-btn" size="big">Request a Quote</x-button>
+			</x-drawer.body>
+		</x-drawer>
+	</x-header>
+
 	<x-component-demo :keys="[ 'header', 'hero-refactor' ]">
 		<x-lp-header
 			tc_image_id="18"
