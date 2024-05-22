@@ -32,6 +32,7 @@ const { gumponents } = window;
 const {
 	LinkButton,
 	ColorPaletteControl,
+	LinkControl,
 } = gumponents.components;
 
 /**
@@ -113,6 +114,18 @@ export const settings: BlockConfiguration = {
 			type: 'boolean',
 			default: false,
 		},
+		hasHeadingLink: {
+			type: 'boolean',
+			default: false,
+		},
+		headingLink: {
+			type: 'string',
+			default: '',
+		},
+		headingLinkUrl: {
+			type: 'object',
+			default: {},
+		},
 	},
 	supports: {
 		alignWide: false,
@@ -137,28 +150,28 @@ export const settings: BlockConfiguration = {
 							help={ __( 'Does this section have a title?', 'qrk' ) }
 						/>
 						{ attributes.hasTitle &&
-							<>
-								<SelectControl
-									label="Heading Level"
-									value={ attributes.headingLevel }
-									options={ [
-										{ label: 'H1', value: '1' },
-										{ label: 'H2', value: '2' },
-										{ label: 'H3', value: '3' },
-									] }
-									onChange={ ( headingLevel ) => setAttributes( { headingLevel } ) }
-								/>
-								<SelectControl
-									label={ __( 'Text Alignment', 'qrk' ) }
-									help={ __( 'Select the text alignment for the title.', 'qrk' ) }
-									value={ attributes.titleAlignment }
-									options={ [
-										{ label: 'Center', value: 'center' },
-										{ label: 'Left', value: 'left' },
-									] }
-									onChange={ ( titleAlignment ) => setAttributes( { titleAlignment } ) }
-								/>
-							</>
+							<SelectControl
+								label="Heading Level"
+								value={ attributes.headingLevel }
+								options={ [
+									{ label: 'H1', value: '1' },
+									{ label: 'H2', value: '2' },
+									{ label: 'H3', value: '3' },
+								] }
+								onChange={ ( headingLevel ) => setAttributes( { headingLevel } ) }
+							/>
+						}
+						{ ( attributes.hasTitle && ! attributes.hasHeadingLink ) &&
+							<SelectControl
+								label={ __( 'Text Alignment', 'qrk' ) }
+								help={ __( 'Select the text alignment for the title.', 'qrk' ) }
+								value={ attributes.titleAlignment }
+								options={ [
+									{ label: 'Center', value: 'center' },
+									{ label: 'Left', value: 'left' },
+								] }
+								onChange={ ( titleAlignment ) => setAttributes( { titleAlignment } ) }
+							/>
 						}
 						<ToggleControl
 							label={ __( 'Has Description', 'qrk' ) }
@@ -214,6 +227,23 @@ export const settings: BlockConfiguration = {
 							onChange={ () => setAttributes( { hasCta: ! attributes.hasCta } ) }
 							help={ __( 'Does this section have a CTA button?', 'qrk' ) }
 						/>
+						<ToggleControl
+							label={ __( 'Has heading link', 'qrk' ) }
+							checked={ attributes.hasHeadingLink }
+							onChange={ () => setAttributes( {
+								hasHeadingLink: ! attributes.hasHeadingLink,
+								titleAlignment: 'left',
+							} ) }
+							help={ __( 'Does this section have heading link?', 'qrk' ) }
+						/>
+						{ attributes.hasHeadingLink &&
+							<LinkControl
+								label={ __( 'Select URL', 'qrk' ) }
+								value={ attributes.headingLinkUrl }
+								help={ __( 'Enter an URL for this Info item', 'qrk' ) }
+								onChange={ ( headingLinkUrl: object ) => setAttributes( { headingLinkUrl } ) }
+							/>
+						}
 					</PanelBody>
 				</InspectorControls>
 				<Section
@@ -224,16 +254,28 @@ export const settings: BlockConfiguration = {
 					seamless={ attributes.hasBackground }
 					narrow={ attributes.isNarrow }
 				>
-					{ attributes.hasTitle && (
-						<RichText
-							tagName="h2"
-							className={ `section__title section__title--${ attributes.titleAlignment } h${ attributes.headingLevel }` }
-							placeholder={ __( 'Write title…', 'qrk' ) }
-							value={ attributes.title }
-							onChange={ ( title ) => setAttributes( { title } ) }
-							allowedFormats={ [] }
-						/>
-					) }
+					<div className="section__heading">
+						{ attributes.hasTitle && (
+							<RichText
+								tagName="h2"
+								className={ `section__title section__title--${ attributes.titleAlignment } h${ attributes.headingLevel }` }
+								placeholder={ __( 'Write title…', 'qrk' ) }
+								value={ attributes.title }
+								onChange={ ( title ) => setAttributes( { title } ) }
+								allowedFormats={ [] }
+							/>
+						) }
+						{ attributes.hasHeadingLink &&
+							<RichText
+								tagName="a"
+								className={ `section__heading-link` }
+								placeholder={ __( 'Write Heading Link text…', 'qrk' ) }
+								value={ attributes.headingLink }
+								onChange={ ( headingLink ) => setAttributes( { headingLink } ) }
+								allowedFormats={ [] }
+							/>
+						}
+					</div>
 					{ attributes.hasDescription && (
 						<RichText
 							tagName="p"
