@@ -24,6 +24,7 @@ function bootstrap(): void {
 		WP_CLI::add_command( 'quark-migrate media', __NAMESPACE__ . '\\WP_CLI\\Media' );
 		WP_CLI::add_command( 'quark-migrate press-release', __NAMESPACE__ . '\\WP_CLI\\Press_Release' );
 		WP_CLI::add_command( 'quark-migrate blog', __NAMESPACE__ . '\\WP_CLI\\Blog' );
+		WP_CLI::add_command( 'quark-migrate port', __NAMESPACE__ . '\\WP_CLI\\Port' );
 		WP_CLI::add_command( 'quark-migrate taxonomy', __NAMESPACE__ . '\\WP_CLI\\Taxonomies' );
 	}
 }
@@ -70,4 +71,21 @@ function add_drupal_migration_meta_box(): void {
 		'side',
 		'low'
 	);
+}
+
+/**
+ * Write to log file.
+ *
+ * @param string $message Log message.
+ *
+ * @return void
+ */
+function log_warning( string $message = '' ): void {
+	// Get the log file path.
+	$filename  = trailingslashit( WP_CONTENT_DIR ) . 'uploads/tmp-migration.log';
+	$timestamp = gmdate( 'Y-m-d H:i:s' );
+	$log_entry = "[$timestamp] $message\n";
+
+	// Write the log entry to the file.
+	error_log( $log_entry, 3, $filename ); // PHPCS:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
 }
