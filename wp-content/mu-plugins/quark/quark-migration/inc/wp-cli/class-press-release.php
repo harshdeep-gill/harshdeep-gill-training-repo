@@ -173,8 +173,7 @@ class Press_Release {
 
 		// post content.
 		if ( ! empty( $item['post_content'] ) ) {
-			// Remove wrapper div tags from content.
-			$post_content = preg_replace( '/<\/?div[^>]*>/i', '', strval( $item['post_content'] ) );
+			$post_content = strval( $item['post_content'] );
 		}
 
 		// post excerpt.
