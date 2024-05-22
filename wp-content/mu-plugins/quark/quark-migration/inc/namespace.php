@@ -26,6 +26,7 @@ function bootstrap(): void {
 		WP_CLI::add_command( 'quark-migrate blog', __NAMESPACE__ . '\\WP_CLI\\Blog' );
 		WP_CLI::add_command( 'quark-migrate port', __NAMESPACE__ . '\\WP_CLI\\Port' );
 		WP_CLI::add_command( 'quark-migrate taxonomy', __NAMESPACE__ . '\\WP_CLI\\Taxonomies' );
+		WP_CLI::add_command( 'quark-migrate policy-page', __NAMESPACE__ . '\\WP_CLI\\Policy_Pages' );
 	}
 }
 
