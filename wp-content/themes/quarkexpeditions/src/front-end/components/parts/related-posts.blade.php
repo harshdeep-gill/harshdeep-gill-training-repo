@@ -1,20 +1,20 @@
 @props( [
-	'related_posts' => [],
+	'cards' => [],
 ] )
 
 @php
-	if ( empty( $related_posts ) ) {
+	if ( empty( $cards ) ) {
 		return;
 	}
 @endphp
 
 <x-info-cards>
-	@foreach ( $related_posts as $related_post )
-		@if ( $related_post['post'] instanceof WP_Post )
-			<x-info-cards.card size="big" :url="$related_post['permalink'] ?: ''">
-				<x-info-cards.image :image_id="$related_post['post_thumbnail'] ?: 0" />
+	@foreach ( $cards as $card )
+		@if ( $card['post'] instanceof WP_Post )
+			<x-info-cards.card size="big" :url="$card['permalink'] ?? ''">
+				<x-info-cards.image :image_id="$card['featured_image'] ?? 0" />
 				<x-info-cards.content position="top">
-					<x-info-cards.title :title="$related_post['post']?->post_title ?? ''" />
+					<x-info-cards.title :title="$card['title'] ?? ''" />
 					<x-info-cards.cta text="Read Post" />
 				</x-info-cards.content>
 			</x-info-cards.card>

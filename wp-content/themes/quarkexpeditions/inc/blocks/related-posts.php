@@ -9,6 +9,10 @@ namespace Quark\Theme\Blocks\RelatedPosts;
 
 use WP_Query;
 
+use function Quark\Blog\get_cards_data;
+
+use const Quark\Blog\POST_TYPE as BLOG_POST_TYPE;
+
 const BLOCK_NAME = 'quark/related-posts';
 const COMPONENT  = 'parts.related-posts';
 
@@ -37,7 +41,7 @@ function register(): void {
 			'attributes'      => [
 				'selection'  => [
 					'type'    => 'string',
-					'default' => 'manual',
+					'default' => 'recent',
 				],
 				'ids'        => [
 					'type'    => 'array',
@@ -63,7 +67,7 @@ function register(): void {
 function render( array $attributes = [] ): string {
 	// Build query args.
 	$args = [
-		'post_type'              => \Quark\Blog\POST_TYPE,
+		'post_type'              => BLOG_POST_TYPE,
 		'post_status'            => 'publish',
 		'fields'                 => 'ids',
 		'posts_per_page'         => $attributes['totalPosts'],
@@ -91,26 +95,21 @@ function render( array $attributes = [] ): string {
 	$posts = new WP_Query( $args );
 
 	// Get posts in array format of IDs.
-	$posts = $posts->posts;
+	$post_ids = $posts->posts;
 
 	// Check if we have posts.
-	if ( empty( $posts ) ) {
+	if ( empty( $post_ids ) ) {
 		return '';
 	}
 
-	// Build related posts data.
-	$related_posts = [];
-
-	// Loop through posts and get the related posts.
-	foreach ( $posts as $post_id ) {
-		$related_posts[] = \Quark\Blog\get( absint( $post_id ) );
-	}
+	// Get blog post cards data.
+	$cards_data = get_cards_data( array_map( 'absint', $post_ids ) );
 
 	// Return built component.
 	return quark_get_component(
 		COMPONENT,
 		[
-			'related_posts' => $related_posts,
+			'cards' => $cards_data,
 		]
 	);
 }

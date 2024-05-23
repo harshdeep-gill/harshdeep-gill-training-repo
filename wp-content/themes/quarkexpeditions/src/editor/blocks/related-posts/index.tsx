@@ -58,7 +58,7 @@ export const settings: BlockConfiguration = {
 	attributes: {
 		selection: {
 			type: 'string',
-			default: 'manual',
+			default: 'recent',
 		},
 		ids: {
 			type: 'array',
