@@ -158,18 +158,6 @@ export const settings: BlockConfiguration = {
 								onChange={ ( headingLevel ) => setAttributes( { headingLevel } ) }
 							/>
 						}
-						{ ( attributes.hasTitle && ! attributes.hasHeadingLink ) &&
-							<SelectControl
-								label={ __( 'Text Alignment', 'qrk' ) }
-								help={ __( 'Select the text alignment for the title.', 'qrk' ) }
-								value={ attributes.titleAlignment }
-								options={ [
-									{ label: 'Center', value: 'center' },
-									{ label: 'Left', value: 'left' },
-								] }
-								onChange={ ( titleAlignment ) => setAttributes( { titleAlignment } ) }
-							/>
-						}
 						<ToggleControl
 							label={ __( 'Has Description', 'qrk' ) }
 							checked={ attributes.hasDescription }
@@ -227,10 +215,16 @@ export const settings: BlockConfiguration = {
 						<ToggleControl
 							label={ __( 'Has heading link', 'qrk' ) }
 							checked={ attributes.hasHeadingLink }
-							onChange={ () => setAttributes( {
-								hasHeadingLink: ! attributes.hasHeadingLink,
-								titleAlignment: 'left',
-							} ) }
+							onChange={ () => {
+								// Get the new state.
+								const newState = ! attributes.hasHeadingLink;
+
+								// set the new state.
+								setAttributes( {
+									hasHeadingLink: newState,
+									titleAlignment: newState ? 'left' : 'center',
+								} );
+							} }
 							help={ __( 'Does this section have heading link?', 'qrk' ) }
 						/>
 						{ attributes.hasHeadingLink &&
