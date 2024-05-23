@@ -39,6 +39,7 @@ const {
  * Styles.
  */
 import '../../../front-end/components/section/style.scss';
+import './editor.scss';
 
 /**
  * Block name.
@@ -119,10 +120,6 @@ export const settings: BlockConfiguration = {
 			default: false,
 		},
 		headingLink: {
-			type: 'string',
-			default: '',
-		},
-		headingLinkUrl: {
 			type: 'object',
 			default: {},
 		},
@@ -239,9 +236,9 @@ export const settings: BlockConfiguration = {
 						{ attributes.hasHeadingLink &&
 							<LinkControl
 								label={ __( 'Select URL', 'qrk' ) }
-								value={ attributes.headingLinkUrl }
+								value={ attributes.headingLink }
 								help={ __( 'Enter an URL for this Info item', 'qrk' ) }
-								onChange={ ( headingLinkUrl: object ) => setAttributes( { headingLinkUrl } ) }
+								onChange={ ( headingLink: object ) => setAttributes( { headingLink } ) }
 							/>
 						}
 					</PanelBody>
@@ -266,14 +263,9 @@ export const settings: BlockConfiguration = {
 							/>
 						) }
 						{ attributes.hasHeadingLink &&
-							<RichText
-								tagName="a"
-								className={ `section__heading-link` }
-								placeholder={ __( 'Write Heading Link text…', 'qrk' ) }
-								value={ attributes.headingLink }
-								onChange={ ( headingLink ) => setAttributes( { headingLink } ) }
-								allowedFormats={ [] }
-							/>
+							<span className={ `section__heading-link` }>
+								{ attributes.headingLink.text }
+							</span>
 						}
 					</div>
 					{ attributes.hasDescription && (
