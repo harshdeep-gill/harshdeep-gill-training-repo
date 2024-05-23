@@ -85,7 +85,7 @@ function register_ship_post_type(): void {
 		'query_var'           => true,
 		'can_export'          => true,
 		'rewrite'             => [
-			'slug'       => 'ships',
+			'slug'       => 'expedition-ships',
 			'with_front' => false,
 		],
 		'capability_type'     => 'post',
