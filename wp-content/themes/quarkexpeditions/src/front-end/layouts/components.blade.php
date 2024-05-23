@@ -1,5 +1,5 @@
 <x-layout>
-	<x-component-demo :keys="[ 'header', 'hero-refactor' ]">
+	<x-component-demo :keys="[ 'sidebar-grid', 'header', 'hero-refactor' ]">
 		<x-lp-header
 			tc_image_id="18"
 			phone_number="+1-877-585-1235"
@@ -1429,6 +1429,232 @@
 		</x-section>
 	</x-component-demo>
 
+	<x-component-demo :keys="[ 'sidebar-grid', 'table-of-contents', 'breadcrumbs', 'post-author-info' ]">
+		<x-breadcrumbs
+			:breadcrumbs="[
+				[
+					'title' => 'Home',
+					'url'   => '#',
+				],
+				[
+					'title' => 'Blog',
+					'url'   => '#',
+				],
+				[
+					'title' => 'Antarctica',
+					'url'   => '#',
+				],
+				[
+					'title' => 'Can I Travel Antarctica?',
+					'url'   => '#',
+				],
+			]"
+		/>
+		<x-sidebar-grid>
+			<x-sidebar-grid.content>
+				<h1>Can I Travel to Antarctica?</h1>
+				<x-post-author-info>
+					<x-post-author-info.image :image_id="18" />
+					<x-post-author-info.info>
+						<x-post-author-info.name title="Daven Hafey" />
+						<x-post-author-info.read-time duration="11" />
+					</x-post-author-info.info>
+				</x-post-author-info>
+				<p>Antarctica. The 7th Continent. The land mass at the bottom of the globe, completely encased in ice. Its remote wilderness featured on nature documentaries and in our science and history books. And for those reasons, it might seem somewhat abstract and hard to reach. Perhaps even impossible. But it's not.
+				When I tell people what I do for a living—working on an expedition ship that takes passengers from all over the world to Antarctica—I often hear a similar response, “I had no idea people can actually go to Antarctica!” And I always reply with: “Yes, people go. And so can you!”</p>
+				<x-image
+					style="border-radius: 16px;"
+					:image_id="33"
+					:args="[
+						'size' =>       [
+							'width'   => 1280,
+							'height'  => 720,
+						],
+					]"
+				/>
+				<p>Despite its seemingly impossible remoteness, Antarctica has never been so accessible to adventurous travelers. In fact, more than 45,000 people traveled to Antarctica in the 2016-2017 season from all over the world, including the United States, China, Australia, Germany, Canada, the United Kingdom, France, India, and many, many more.
+				As the timeless idiom indicates: knowing is half the battle. Throughout this piece, I hope to convey the knowledge that not only can you visit Antarctica from almost anywhere in the world, but just as importantly,how you can do it.</p>
+				<h2 id="you-can-travel-antarctica">You can travel to Antarctica! Here's how.</h2>
+				<p>
+					A common question I hear from people whose excitement is palpable after they've learned how accessible Antarctica can be, is: “How do I even get there?” That answer might not immediately seem straightforward. Maybe some of us have heard of researchers flying on military aircraft from New Zealand, or month long sailing adventures from South Africa or Australia. But the easiest way to get to Antarctica is simple. All you need to do is reach Buenos Aires, Argentina or Punta Arenas, Chile. Both are cosmopolitan cities with international airports and regular service to the rest of the world.
+					The majority of Antarctic voyages depart from Ushuaia, Argentina, a three-and-a-half-hour direct flight from Buenos Aires. Throughout the summer, the Port of Ushuaia embarks and disembarks expedition vessels bound for the southern wilderness as seamlessly as any harbor in the Virgin Islands, the Mediterranean, or Alaska.
+					Voyages departing from Ushuaia, Argentina access Antarctica by sea. They traverse the infamous Drake Passage, a 600-mile (1,000 kilometer) body of water that separates South America from the Antarctic Peninsula. Depending upon conditions, this crossing often takes a day and a half at sea and is a prime opportunity to view iconic wildlife such as the great wandering albatross.
+					Alternatively, travelers preferring to skip the Drake Passage can fly out of Punta Arenas, Chile directly to an airstrip on an island adjacent to the Antarctic Peninsula. From there, they'll board the expedition ship and be standing face to face with glaciers and penguins just a few hours after departing Punta Arenas.
+				</p>
+				<x-image
+					style="border-radius: 16px;"
+					:image_id="33"
+					:args="[
+						'size' =>       [
+							'width'   => 1280,
+							'height'  => 720,
+						],
+					]"
+				/>
+				<h2 id="when-can-travel-antarctica">When can I travel to Antarctica?</h2>
+				<p>
+					The best time to visit Antarctica is from late spring to early fall, which in the southern hemisphere is from October to March. The first voyages of the season reach Antarctica in late spring (end of October or early November) when the sea ice opens up just enough to allow ships into the pristine glacial landscapes. Voyages operate continually from late October, until the summer comes to an end, and the wonderfully powerful Antarctic autumn begins to arrive by the middle of March.
+					Learn more about the unique highlights of visiting Antarctica during its different seasons here.
+				</p>
+				<h2 id="how-long-antarctic-expedition">How long is an Antarctic expedition?</h2>
+				<p>
+					When browsing information about your Antarctic expedition, you'll find different types of “itineraries,” or sailing plans. These itineraries aren't concrete, per se, but guides that will shape the direction and the duration of each voyage. Among these, you will find expeditions that travel directly to Antarctica, and others that include the spectacular sub-Antarctic regions of the Falkland Islands (Islas Malvinas) and South Georgia.
+					There are a wide range of options for visiting Antarctica that can suit your schedule, from “express” expeditions with flights to the Antarctic Peninsula that get you to the continent and back in as quick as eight days, to epic explorations of sub-Antarctic islands and the continent itself, lasting three weeks or more.
+					The most common expeditions last approximately nine to ten days, including five full days of exploration in Antarctica. Rather than fly from South America, these voyages embrace the power and the beauty of the Drake Passage (and its rich and abundant bird life), sailing from Ushuaia. Time spent at sea varies depending on sea conditions and wind, but often take from one and a half to two days at sea, each way. The rest of the voyage is spent in the seemingly endless coastal environment of the Antarctic Peninsula.
+					For those with extended holidays and a thirst for a deeper exploration of this remote wilderness, there are expeditions that spend twenty or more days exploring in the Southern Ocean and its unique islands. These extended voyages include visits to the wildlife-rich Falkland Islands and the otherworldly wilderness of South Georgia, in addition to the days spent in the Antarctic Peninsula, making these expeditions the most thorough exploration of the wild environments at the bottom of the globe.
+				</p>
+				<h2 id="cruise">How is an expedition to Antarctica different from a cruise?</h2>
+				<p>
+					When browsing information about your Antarctic expedition, you'll find different types of “itineraries,” or sailing plans. These itineraries aren't concrete, per se, but guides that will shape the direction and the duration of each voyage. Among these, you will find expeditions that travel directly to Antarctica, and others that include the spectacular sub-Antarctic regions of the Falkland Islands (Islas Malvinas) and South Georgia.
+					There are a wide range of options for visiting Antarctica that can suit your schedule, from “express” expeditions with flights to the Antarctic Peninsula that get you to the continent and back in as quick as eight days, to epic explorations of sub-Antarctic islands and the continent itself, lasting three weeks or more.
+					The most common expeditions last approximately nine to ten days, including five full days of exploration in Antarctica. Rather than fly from South America, these voyages embrace the power and the beauty of the Drake Passage (and its rich and abundant bird life), sailing from Ushuaia. Time spent at sea varies depending on sea conditions and wind, but often take from one and a half to two days at sea, each way. The rest of the voyage is spent in the seemingly endless coastal environment of the Antarctic Peninsula.
+					For those with extended holidays and a thirst for a deeper exploration of this remote wilderness, there are expeditions that spend twenty or more days exploring in the Southern Ocean and its unique islands. These extended voyages include visits to the wildlife-rich Falkland Islands and the otherworldly wilderness of South Georgia, in addition to the days spent in the Antarctic Peninsula, making these expeditions the most thorough exploration of the wild environments at the bottom of the globe.
+				</p>
+				<h2 id="what-can-do-antarctica">What can I do while in Antarctica?</h2>
+				<p>
+					The best time to visit Antarctica is from late spring to early fall, which in the southern hemisphere is from October to March. The first voyages of the season reach Antarctica in late spring (end of October or early November) when the sea ice opens up just enough to allow ships into the pristine glacial landscapes. Voyages operate continually from late October, until the summer comes to an end, and the wonderfully powerful Antarctic autumn begins to arrive by the middle of March.
+					Learn more about the unique highlights of visiting Antarctica during its different seasons here.
+				</p>
+				<h4>Stand-up Paddleboarding in Antarctica</h4>
+				<x-image
+					style="border-radius: 16px;"
+					:image_id="32"
+					:args="[
+						'size' =>       [
+							'width'   => 1280,
+							'height'  => 720,
+						],
+					]"
+				/>
+				<p>
+					Although Antarctica has a reputation for being fiercely cold, in the summertime, the Antarctic Peninsula can be quite inviting! So inviting, that under the right conditions, visitors can navigate icy bays by stand-up paddleboard (SUP). Many people often associate SUP boarding with the tropics, but it can actually be the perfect fit for an intimate Antarctic moment. Paddling through a quiet, isolated cove can be one of the best ways to move the body while taking in the sounds of porpoising penguins and the crackling of bits and pieces of glaciers floating nearby. The waters of Antarctica are teaming with life, and intimate encounters with penguins, whales and seals gliding beneath or near your board are not uncommon.
+				</p>
+			</x-sidebar-grid.content>
+			<x-sidebar-grid.sidebar :sticky="true" :show_on_mobile="false">
+				<x-table-of-contents
+					title="In this article"
+					:contents="[
+						[
+							'title'  => 'You can travel to Antarctica! Here\'s how.',
+							'anchor' => 'you-can-travel-antarctica',
+						],
+						[
+							'title'  => 'When can I travel to Antarctica?',
+							'anchor' => 'when-can-travel-antarctica',
+						],
+						[
+							'title'  => 'How long is an Antarctic expedition?',
+							'anchor' => 'how-long-antarctic-expedition',
+						],
+						[
+							'title'  => 'How is an expedition to Antarctica different from a cruise?',
+							'anchor' => 'cruise',
+						],
+						[
+							'title'  => 'What can I do while in Antarctica?',
+							'anchor' => 'what-can-do-antarctica',
+						],
+						[
+							'title'  => 'Are all trips the same? How do I choose the best itinerary for me?',
+							'anchor' => 'best-itinerary',
+						],
+						[
+							'title'  => 'Why Visit Antarctica?',
+							'anchor' => 'why-visit',
+						],
+						[
+							'title'  => 'Yes, you can visit Antarctica!',
+							'anchor' => 'can-visit-antarctica',
+						],
+					]"
+				/>
+			</x-sidebar-grid.sidebar>
+		</x-sidebar-grid>
+		<x-section background="true" background_color="black" title="Our Biggest Savings! 50% off these Antarctic 2024 Voyages">
+			<x-product-cards>
+				<x-product-cards.card url="#">
+					<x-product-cards.image
+						image_id="29"
+					>
+						<x-product-cards.badge-cta text="Save 50%" />
+					</x-product-cards.image>
+					<x-product-cards.reviews
+						total_reviews="19 Reviews"
+						review_rating="5"
+					/>
+					<x-product-cards.itinerary departure_date="Departing May 20, 2024" duration="10 Days" />
+					<x-product-cards.title title="Introduction to Spitsbergen" />
+					<x-product-cards.subtitle title="Fjords, Glaciers, and Wildlife of Svalbard" />
+					<x-product-cards.description>
+						<p>This fascinating expedition provides a taste of everything Spitsbergen has to offer!</p>
+					</x-product-cards.description>
+					<x-product-cards.price
+						original_price="$7,395 USD"
+						discounted_price="$6,171 USD"
+					/>
+					<x-product-cards.buttons :columns="2">
+						<x-button size="big">Request a Quote</x-button>
+						<x-button size="big" appearance="outline">Learn More</x-button>
+					</x-product-cards.buttons>
+				</x-product-cards.card>
+
+				<x-product-cards.card url="#">
+					<x-product-cards.image
+						image_id="36"
+						:is_immersive="false"
+					>
+						<x-product-cards.badge-cta text="Save 50%" />
+						<x-product-cards.badge-time text="Just Added" />
+					</x-product-cards.image>
+					<x-product-cards.reviews
+						total_reviews="9999 Reviews"
+						review_rating="3"
+					/>
+					<x-product-cards.itinerary departure_date="Departing May 28, 2024" duration="12 Days" />
+					<x-product-cards.title title="Spitsbergen Explorer" />
+					<x-product-cards.subtitle title="Wildlife Capital of the Arctic" />
+					<x-product-cards.description>
+						<p>Witness the remarkable array of creatures who call this spectacular environment home.</p>
+					</x-product-cards.description>
+					<x-product-cards.price
+						original_price="$9,095 USD"
+						discounted_price="$7,361 USD"
+					/>
+					<x-product-cards.buttons :columns="2">
+						<x-button size="big" icon="phone">Book: +1 (866) 220-1915</x-button>
+					</x-product-cards.buttons>
+				</x-product-cards.card>
+
+				<x-product-cards.card url="#">
+					<x-product-cards.image
+						image_id="32"
+						:is_immersive="false"
+					>
+						<x-product-cards.badge-time text="Just Added" />
+					</x-product-cards.image>
+					<x-product-cards.reviews
+						total_reviews="100 Reviews"
+						review_rating="4"
+					/>
+					<x-product-cards.itinerary departure_date="Departing July 14, 2024" duration="11 Days" />
+					<x-product-cards.title title="Gems of West Greenland" />
+					<x-product-cards.subtitle title="Fjords, Icebergs, and Culture" />
+					<x-product-cards.description>
+						<p>Features the best sites of West Greenland & delivers an in-depth experience in just 12 days.</p>
+					</x-product-cards.description>
+					<x-product-cards.price
+						original_price="$9,395 USD"
+						discounted_price="$8,571 USD"
+					/>
+					<x-product-cards.buttons :columns="2">
+						<x-button size="big">Request a Quote</x-button>
+						<x-button size="big" appearance="outline">Learn More</x-button>
+					</x-product-cards.buttons>
+				</x-product-cards.card>
+			</x-product-cards>
+		</x-section>
+	</x-component-demo>
+
 	<x-component-demo :keys="[ 'product-cards' ]">
 		<x-product-cards align="center">
 			<x-product-cards.card url="#">
@@ -1569,16 +1795,6 @@
 				</x-product-cards.buttons>
 			</x-product-cards.card>
 		</x-product-cards>
-	</x-component-demo>
-
-	<x-component-demo :keys="[ 'post-author-info' ]">
-		<x-post-author-info>
-			<x-post-author-info.image :image_id="18" />
-			<x-post-author-info.info>
-				<x-post-author-info.name title="Daven Hafey" />
-				<x-post-author-info.read-time duration="11" />
-			</x-post-author-info.info>
-		</x-post-author-info>
 	</x-component-demo>
 
 	<x-component-demo :keys="[ 'breadcrumbs' ]">
