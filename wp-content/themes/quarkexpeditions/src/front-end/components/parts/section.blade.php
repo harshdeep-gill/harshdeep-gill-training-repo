@@ -29,10 +29,10 @@
 
 		@if ( ! empty( $has_heading_link ) && ! empty( $heading_link ) )
 			<x-section.heading-link
-				:url="$heading_link['url']"
+				:url="$heading_link['url'] ?? ''"
 				:new_window="$heading_link['new_window']"
 			>
-				{!! $heading_link['text'] !!}
+				<x-escape :content="$heading_link['text']" />
 			</x-section.heading-link>
 		@endif
 	</x-section.heading>
