@@ -117,7 +117,10 @@
 		</x-review-cards>
 	</x-component-demo>
 	<x-component-demo :keys="[ 'review-cards-no-carousel' ]">
-		<x-section title="South Georgia Expedition Reviews">
+		<x-section>
+			<x-section.heading>
+				<x-section.title title="South Georgia Expedition Reviews" />
+			</x-section.heading>
 			<x-review-cards is_carousel="false">
 				<x-review-cards.card>
 					<x-review-cards.rating rating="5" />
@@ -198,19 +201,28 @@
 	</x-component-demo>
 
 	<x-component-demo :keys="[ 'global', 'color-palette' ]">
-		<x-section title="Color Palette" heading_level="2">
+		<x-section>
+			<x-section.heading>
+				<x-section.title title="Color Palette" heading_level="2" />
+			</x-section.heading>
 			<x-global-styles-demo.color-palette />
 		</x-section>
 	</x-component-demo>
 
 	<x-component-demo :keys="[ 'global', 'typography' ]">
-		<x-section title="Typography" heading_level="2">
+		<x-section>
+			<x-section.heading>
+				<x-section.title title="Typography" heading_level="2" />
+			</x-section.heading>
 			<x-global-styles-demo.typography />
 		</x-section>
 	</x-component-demo>
 
 	<x-component-demo :keys="[ 'global', 'buttons' ]">
-		<x-section title="Buttons & Links" heading_level="2">
+		<x-section>
+			<x-section.heading>
+				<x-section.title title="Buttons & Links" heading_level="2" />
+			</x-section.heading>
 			<h3>Links</h3>
 
 			<div style="display: flex; flex-wrap: wrap; width: 100%;" class="typography-spacing">
@@ -266,7 +278,10 @@
 	</x-component-demo>
 
 	<x-component-demo :keys="[ 'form' ]">
-		<x-section title="Form UI Elements" heading_level="2" style="display: flex; flex-wrap: wrap; width: 100%;" class="typography-spacing">
+		<x-section style="display: flex; flex-wrap: wrap; width: 100%;" class="typography-spacing">
+			<x-section.heading>
+				<x-section.title title="Form UI Elements" heading_level="2" />
+			</x-section.heading>
 			<div style="display: flex; flex-wrap: wrap; width: 100%; gap: 20px; justify-content: space-between;">
 				<x-form salesforce_object="Webform_Landing_Page__c" style="min-width: 300px; padding: 24px; border: 1px solid var(--color-black); display:flex; flex-wrap: wrap; flex-direction: column; flex-grow: 1;">
 					<x-form.field :validation="[ 'required' ]">
@@ -325,7 +340,10 @@
 	</x-component-demo>
 
 	<x-component-demo :keys="[ 'modal' ]">
-		<x-section title="Flexible Multipurpose modal">
+		<x-section>
+			<x-section.heading>
+				<x-section.title title="Flexible Multipurpose modal" />
+			</x-section.heading>
 			<x-modal.modal-open modal_id="multipurpose-modal-demo">
 				<x-button type="button">
 					Open a sample modal
@@ -501,7 +519,10 @@
 	</x-component-demo>
 
 	<x-component-demo :keys="[ 'icon-info-columns' ]">
-		<x-section title="Why Quark Expeditions?" :background="true">
+		<x-section :background="true">
+			<x-section.heading>
+				<x-section.title title="Why Quark Expeditions?" />
+			</x-section.heading>
 			<x-icon-info-columns>
 				<x-icon-info-columns.column>
 					<x-icon-info-columns.icon icon="star" />
@@ -543,7 +564,10 @@
 	</x-component-demo>
 
 	<x-component-demo :keys="[ 'icon-columns' ]">
-		<x-section title="Icon Columns">
+		<x-section>
+			<x-section.heading>
+				<x-section.title title="Icon columns" />
+			</x-section.heading>
 			<x-icon-columns>
 				<x-icon-columns.column>
 					<x-icon-columns.icon icon="duotone/person-check" />
@@ -606,7 +630,10 @@
 	</x-component-demo>
 
 	<x-component-demo :keys="['simple-cards']">
-		<x-section title="Off Ship Adventure" :background="true" background_color="black" title_align="left">
+		<x-section :background="true" background_color="black">
+			<x-section.heading>
+				<x-section.title title="Off Ship Adventure" align="left" />
+			</x-section.heading>
 			<x-simple-cards>
 				<x-simple-cards.card image_id="36" title="Camping" url="#" />
 				<x-simple-cards.card image_id="34" title="Flightseeing" />
@@ -620,7 +647,10 @@
 	</x-component-demo>
 
 	<x-component-demo :keys="['media-content-card']">
-			<x-section title="Media Content Card 2-column">
+			<x-section>
+				<x-section.heading>
+					<x-section.title title="Media Content Card 2-column" />
+				</x-section.heading>
 				<x-media-content-card>
 					<x-media-content-card.image image_id="33"/>
 					<x-media-content-card.content>
@@ -653,7 +683,10 @@
 					</x-media-content-card.content>
 				</x-media-content-card>
 			</x-section>
-			<x-section title="Media Content Card 1-column">
+			<x-section>
+				<x-section.heading>
+					<x-section.title title="Media Content Card 1-column" />
+				</x-section.heading>
 				<x-section.description>Call us and one of our Polar Travel Advisors will secure the offer for you.</x-section.description>
 				<x-media-content-card :is_compact="true" >
 					<x-media-content-card.image image_id="33"/>
@@ -751,7 +784,10 @@
 	</x-component-demo>
 
 	<x-component-demo :keys="[ 'product-departures-card' ]">
-		<x-section background="true" background_color="black" heading_level="2" title="Upgrade Your Cabin for Freeon select Antarctic 2024 voyages">
+		<x-section background="true" background_color="black">
+				<x-section.heading>
+					<x-section.title title="Upgrade Your Cabin for Freeon select Antarctic 2024 voyages" heading_level="2" />
+				</x-section.heading>
 			<x-product-departures-card>
 				<x-product-departures-card.images :image_ids="[ 32, 34]">
 					<x-product-departures-card.badge-cta text="Free Cabin Upgrade" />
@@ -841,7 +877,10 @@
 	</x-component-demo>
 
 	<x-component-demo :keys="[ 'season-highlights' ]">
-		<x-section title="Best Time to See" title_align="left">
+		<x-section>
+				<x-section.heading>
+					<x-section.title title="Best Time to See" align="left" />
+				</x-section.heading>
 			<x-season-highlights>
 				<x-season-highlights.season title="October">
 					<x-season-highlights.item title="Penguin Breeding Cycle" :light="true">
@@ -872,7 +911,10 @@
 			</x-season-highlights>
 		</x-section>
 
-		<x-section title="Best Time to See" title_align="left">
+		<x-section>
+				<x-section.heading>
+					<x-section.title title="Best Time to See" align="left" />
+				</x-section.heading>
 			<x-season-highlights>
 				<x-season-highlights.season title="October">
 					<x-season-highlights.item title="Penguin Breeding Cycle" :light="true">
@@ -929,7 +971,10 @@
 			</x-season-highlights>
 		</x-section>
 
-		<x-section title="Best Time to See" title_align="left">
+		<x-section>
+				<x-section.heading>
+					<x-section.title title="Best Time to See" align="left" />
+				</x-section.heading>
 			<x-season-highlights>
 				<x-season-highlights.season title="October">
 					<x-season-highlights.item title="Penguin Breeding Cycle" :light="true">
@@ -1012,7 +1057,10 @@
 			</x-season-highlights>
 		</x-section>
 
-		<x-section title="Best Time to See" title_align="left">
+		<x-section>
+				<x-section.heading>
+					<x-section.title title="Best Time to See" align="left" />
+				</x-section.heading>
 			<x-season-highlights>
 				<x-season-highlights.season title="October">
 					<x-season-highlights.item title="Penguin Breeding Cycle" :light="true">
@@ -1345,7 +1393,10 @@
 			</x-lp-offer-masthead.content>
 		</x-lp-offer-masthead>
 
-		<x-section background="true" background_color="black" title="Our Biggest Savings! 50% off these Antarctic 2024 Voyages">
+		<x-section background="true" background_color="black">
+			<x-section.heading>
+				<x-section.title title="Our Biggest Savings! 50% off these Antarctic 2024 Voyages" />
+			</x-section.heading>
 			<x-product-cards>
 				<x-product-cards.card url="#">
 					<x-product-cards.image
@@ -1571,7 +1622,10 @@
 				/>
 			</x-sidebar-grid.sidebar>
 		</x-sidebar-grid>
-		<x-section background="true" background_color="black" title="Our Biggest Savings! 50% off these Antarctic 2024 Voyages">
+		<x-section background="true" background_color="black">
+			<x-section.heading>
+				<x-section.title title="Our Biggest Savings! 50% off these Antarctic 2024 Voyages" />
+			</x-section.heading>
 			<x-product-cards>
 				<x-product-cards.card url="#">
 					<x-product-cards.image
@@ -1796,6 +1850,94 @@
 				</x-product-cards.buttons>
 			</x-product-cards.card>
 		</x-product-cards>
+	</x-component-demo>
+
+	<x-component-demo :keys="[ 'section-updated' ]">
+		<x-section :background="true" :seamless="true">
+			<x-section.heading>
+				<x-section.title title="Check out these offers" align="left" />
+				<x-section.heading-link url="#">See All</x-section.heading-link>
+			</x-section.heading>
+			<x-product-cards>
+				<x-product-cards.card url="#">
+					<x-product-cards.image
+						image_id="29"
+					>
+						<x-product-cards.badge-cta text="Save 50%" />
+					</x-product-cards.image>
+					<x-product-cards.reviews
+						total_reviews="19 Reviews"
+						review_rating="5"
+					/>
+					<x-product-cards.itinerary departure_date="Departing May 20, 2024" duration="10 Days" />
+					<x-product-cards.title title="Introduction to Spitsbergen" />
+					<x-product-cards.subtitle title="Fjords, Glaciers, and Wildlife of Svalbard" />
+					<x-product-cards.description>
+						<p>This fascinating expedition provides a taste of everything Spitsbergen has to offer!</p>
+					</x-product-cards.description>
+					<x-product-cards.price
+						original_price="$7,395 USD"
+						discounted_price="$6,171 USD"
+					/>
+					<x-product-cards.buttons :columns="2">
+						<x-button size="big">Request a Quote</x-button>
+						<x-button size="big" appearance="outline">Learn More</x-button>
+					</x-product-cards.buttons>
+				</x-product-cards.card>
+				<x-product-cards.card url="#">
+					<x-product-cards.image
+						image_id="36"
+						:is_immersive="false"
+					>
+						<x-product-cards.badge-cta text="Save 50%" />
+						<x-product-cards.badge-time text="Just Added" />
+					</x-product-cards.image>
+					<x-product-cards.reviews
+						total_reviews="9999 Reviews"
+						review_rating="3"
+					/>
+					<x-product-cards.itinerary departure_date="Departing May 28, 2024" duration="12 Days" />
+					<x-product-cards.title title="Spitsbergen Explorer" />
+					<x-product-cards.subtitle title="Wildlife Capital of the Arctic" />
+					<x-product-cards.description>
+						<p>Witness the remarkable array of creatures who call this spectacular environment home.</p>
+					</x-product-cards.description>
+					<x-product-cards.price
+						original_price="$9,095 USD"
+						discounted_price="$7,361 USD"
+					/>
+					<x-product-cards.buttons :columns="2">
+						<x-button size="big" icon="phone">Book: +1 (866) 220-1915</x-button>
+					</x-product-cards.buttons>
+				</x-product-cards.card>
+				<x-product-cards.card url="#">
+					<x-product-cards.image
+						image_id="32"
+						:is_immersive="false"
+					>
+						<x-product-cards.badge-time text="Just Added" />
+					</x-product-cards.image>
+					<x-product-cards.reviews
+						total_reviews="100 Reviews"
+						review_rating="4"
+					/>
+					<x-product-cards.itinerary departure_date="Departing July 14, 2024" duration="11 Days" />
+					<x-product-cards.title title="Gems of West Greenland" />
+					<x-product-cards.subtitle title="Fjords, Icebergs, and Culture" />
+					<x-product-cards.description>
+						<p>Features the best sites of West Greenland & delivers an in-depth experience in just 12 days.</p>
+					</x-product-cards.description>
+					<x-product-cards.price
+						original_price="$9,395 USD"
+						discounted_price="$8,571 USD"
+					/>
+					<x-product-cards.buttons :columns="2">
+						<x-button size="big">Request a Quote</x-button>
+						<x-button size="big" appearance="outline">Learn More</x-button>
+					</x-product-cards.buttons>
+				</x-product-cards.card>
+			</x-product-cards>
+		</x-section>
 	</x-component-demo>
 
 	<x-component-demo :keys="[ 'breadcrumbs' ]">

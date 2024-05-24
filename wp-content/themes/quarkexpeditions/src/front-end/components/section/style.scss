@@ -13,7 +13,15 @@
 	}
 
 	&__title {
+		flex: 1;
+		margin-bottom: 0;
+	}
+
+	&__heading {
 		margin-bottom: var(--spacing-6);
+		display: flex;
+		gap: var(--spacing-5);
+		align-items: end;
 
 		+ #{$self}__description {
 			margin-top: calc(-1 * var(--spacing-5));
@@ -26,13 +34,18 @@
 				margin-top: calc(-1 * var(--spacing-7));
 			}
 		}
+
 	}
 
-	&__title--left {
+	@supports (selector(:has(*))) {
 
-		&,
-		+ #{$self}__description {
-			text-align: left;
+		&:has(&__title--left) {
+
+			#{$self}__title,
+			#{$self}__description {
+				text-align: left;
+			}
+
 		}
 	}
 
@@ -50,7 +63,7 @@
 		&-black {
 			background-color: var(--color-black);
 
-			#{$self}__title,
+			#{$self}__heading,
 			#{$self}__description {
 				color: var(--color-white);
 			}
