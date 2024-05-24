@@ -32,11 +32,11 @@ function bootstrap(): void {
 	// Other hooks.
 	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
 
+	// Custom fields.
+	require_once __DIR__ . '/../custom-fields/cabin-categories.php';
+
 	// Admin stuff.
 	if ( is_admin() ) {
-		// Custom fields.
-		require_once __DIR__ . '/../custom-fields/cabin-categories.php';
-
 		// Taxonomy menu position.
 		add_action( 'admin_menu', __NAMESPACE__ . '\\set_cabin_classes_taxonomy_menu_position' );
 	}

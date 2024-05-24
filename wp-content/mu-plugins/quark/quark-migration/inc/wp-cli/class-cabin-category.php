@@ -121,6 +121,11 @@ class Cabin_Category {
 		if ( $output instanceof WP_Error ) {
 			// Print error.
 			WP_CLI::warning( 'Unable to insert/update post!' );
+		} elseif (
+			array_key_exists( 'related_decks', $normalized_post )
+			&& $normalized_post['related_decks']
+		) {
+			update_field( 'related_decks', $normalized_post['related_decks'], $output );
 		}
 	}
 
@@ -143,7 +148,8 @@ class Cabin_Category {
 	 *     ping_status : string,
 	 *     meta_input : array{
 	 *         drupal_id : int,
-	 *     }
+	 *     },
+	 *     related_decks ?: array<int>,
 	 * }
 	 */
 	public function normalize_drupal_post( array $item = [] ): array {
@@ -288,7 +294,7 @@ class Cabin_Category {
 			}
 
 			// Set related_decks metadata.
-			$data['meta_input']['related_decks'] = $related_decks;
+			$data['related_decks'] = $related_decks;
 		}
 
 		// Set related_images metadata.

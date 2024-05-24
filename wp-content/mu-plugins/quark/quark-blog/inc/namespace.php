@@ -32,12 +32,12 @@ function bootstrap(): void {
 	// Other hooks.
 	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
 
+	// Custom fields.
+	require_once __DIR__ . '/../custom-fields/blog.php';
+
 	// Admin stuff.
 	if ( is_admin() ) {
 		add_filter( 'post_type_labels_' . POST_TYPE, __NAMESPACE__ . '\\update_blog_posts_admin_menu_label' );
-
-		// Custom fields.
-		require_once __DIR__ . '/../custom-fields/blog.php';
 	}
 }
 
