@@ -136,7 +136,7 @@ export const settings: BlockConfiguration = {
 							help={ __( 'Select the immersive mode', 'qrk' ) }
 							value={ attributes.immersive }
 							options={ [
-								{ label: __( 'None', 'qrk' ), value: 'no' },
+								{ label: __( 'None', 'qrk' ), value: 'none' },
 								{ label: __( 'Top', 'qrk' ), value: 'top' },
 								{ label: __( 'Bottom', 'qrk' ), value: 'bottom' },
 								{ label: __( 'All', 'qrk' ), value: 'all' },

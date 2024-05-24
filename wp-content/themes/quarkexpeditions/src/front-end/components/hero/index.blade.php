@@ -1,5 +1,5 @@
 @props( [
-	'immersive'       => 'no',
+	'immersive'       => 'none',
 	'text_align'      => '',
 	'overlay_opacity' => 0,
 ] )

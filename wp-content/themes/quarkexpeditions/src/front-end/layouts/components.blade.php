@@ -167,7 +167,7 @@
 	</x-component-demo>
 
 	<x-component-demo :keys="[ 'hero', 'hero-refactor' ]">
-		<x-hero text_align="center" immersive="no">
+		<x-hero text_align="center" immersive="none">
 			<x-hero.image image_id="26" />
 			<x-hero.content>
 				<x-hero.left>
