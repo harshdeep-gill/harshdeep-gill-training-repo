@@ -16,8 +16,6 @@ use WP_Term;
 
 use function Quark\Migration\WordPress\convert_to_blocks;
 
-use const Quark\Brochures\POST_TYPE as BROCHURE_POST_TYPE;
-
 /**
  * Get the Drupal database object.
  *
