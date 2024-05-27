@@ -25,8 +25,11 @@ function bootstrap(): void {
 	// Other hooks.
 	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
 
-	// Custom fields.
-	require_once __DIR__ . '/../../custom-fields/blog-authors.php';
+	// Admin stuff.
+	if ( is_admin() || defined( 'WP_CLI' ) && WP_CLI ) {
+		// Custom fields.
+		require_once __DIR__ . '/../../custom-fields/blog-authors.php';
+	}
 }
 
 /**
