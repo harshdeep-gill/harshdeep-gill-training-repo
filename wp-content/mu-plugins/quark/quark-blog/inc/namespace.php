@@ -9,6 +9,7 @@ namespace Quark\Blog;
 
 use WP_Post;
 
+use function Quark\Blog\Authors\get as get_post_authors;
 use function Quark\Core\prepare_content_with_blocks;
 
 const POST_TYPE   = 'post';
@@ -34,6 +35,9 @@ function bootstrap(): void {
 		// Custom fields.
 		require_once __DIR__ . '/../custom-fields/blog.php';
 	}
+
+	// Other hooks.
+	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
 }
 
 /**
@@ -95,6 +99,21 @@ function update_blog_posts_admin_menu_label( object $labels = null ): object {
 
 	// Return updated labels.
 	return (object) $labels;
+}
+
+/**
+ * Bust cache when a post is saved.
+ *
+ * @param int $post_id Post ID.
+ *
+ * @return void
+ */
+function bust_post_cache( int $post_id = 0 ): void {
+	// Delete the post cache.
+	wp_cache_delete( CACHE_KEY . "_$post_id", CACHE_GROUP );
+
+	// Trigger action to clear cache for this post.
+	do_action( 'qe_post_cache_busted', $post_id );
 }
 
 /**
@@ -233,4 +252,62 @@ function primary_term_taxonomies( array $taxonomies = [], string $post_type = ''
 
 	// Return taxonomies.
 	return $taxonomies;
+}
+
+/**
+ * Get data for blog post cards.
+ *
+ * @param int[] $post_ids Post IDs.
+ *
+ * @return array<mixed>{
+ *      post: array|WP_Post,
+ *      title: string,
+ *      permalink: string,
+ *      featured_image: integer,
+ *      read_time: integer,
+ *      authors: array,
+ *      taxonomies: array,
+ *  }[]
+ */
+function get_cards_data( array $post_ids = [] ): array {
+	// Check if post ids exist.
+	if ( empty( $post_ids ) ) {
+		return [];
+	}
+
+	// Initialize data.
+	$data = [];
+
+	// Loop through the post ids.
+	foreach ( $post_ids as $post_id ) {
+		$post = get( $post_id );
+
+		// Get blog author ids.
+		$blog_author_ids = (array) $post['post_meta']['blog_authors'] ?: [];
+
+		// Initialize authors data.
+		$authors_data = [];
+
+		// Loop through blog author ids.
+		foreach ( $blog_author_ids as $blog_author_id ) {
+			$authors_data[] = get_post_authors( absint( $blog_author_id ) );
+		}
+
+		// Build post data.
+		$post_data = [
+			'post'           => $post['post'] ?: [],
+			'title'          => $post['post']?->post_title ?? '',
+			'permalink'      => $post['permalink'] ?: '',
+			'featured_image' => $post['post_thumbnail'] ?: 0,
+			'authors'        => $authors_data,
+			'read_time'      => array_key_exists( 'read_time_minutes', $post['post_meta'] ) ? absint( $post['post_meta']['read_time_minutes'] ) : 0,
+			'taxonomies'     => $post['post_taxonomies'] ?: [],
+		];
+
+		// Add blog post data to array.
+		$data[] = $post_data;
+	}
+
+	// Return data.
+	return $data;
 }
