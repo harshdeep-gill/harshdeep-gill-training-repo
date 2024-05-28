@@ -4,7 +4,7 @@
 
 @php
 	if ( ! is_array( $social_links ) || empty( $social_links ) ) {
-		$social_links = tcs_get_template_data( 'social_links' );
+		$social_links = quark_get_template_data( 'social_links' );
 	}
 @endphp
 

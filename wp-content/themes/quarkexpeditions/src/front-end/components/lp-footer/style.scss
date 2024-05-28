@@ -76,7 +76,7 @@
 		margin-top: var(--spacing-4);
 
 		a {
-			color: var(--color-black);
+			color: var(--color-gray-90);
 		}
 	}
 
@@ -89,16 +89,6 @@
 		height: 40px;
 		width: 40px;
 		position: relative;
-
-		@include transition();
-
-		&:hover {
-
-			svg path {
-
-				@include transition();
-			}
-		}
 	}
 
 	&__icon {
