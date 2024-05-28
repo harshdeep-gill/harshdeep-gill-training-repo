@@ -4,10 +4,10 @@
 	'target' => '',
 ] )
 
-<li class="footer__nav-item">
+<li class="footer__navigation-item">
 	<x-maybe-link
 		href="{{ $url }}"
-		class="footer__nav-item-link"
+		class="footer__navigation-item-link"
 		target="{{ $target }}"
 	>
 		<x-escape :content="$title" />

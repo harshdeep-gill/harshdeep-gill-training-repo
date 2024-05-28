@@ -8,6 +8,6 @@
 	}
 @endphp
 
-<p class="footer__column-title" role="button">
+<p class="footer__column-title">
 	<x-escape :content="$title" />
 </p>

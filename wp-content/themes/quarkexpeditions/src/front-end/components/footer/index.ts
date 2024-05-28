@@ -25,8 +25,8 @@ class FooterAccordion extends HTMLElement {
 		super();
 
 		// Elements.
-		const titleHandle = this.querySelector( '.footer__column-title' );
-		this.content = this.querySelector( '.footer__nav' );
+		const titleHandle = this.querySelector( '.footer__navigation-title' );
+		this.content = this.querySelector( '.footer__navigation' );
 
 		// Events.
 		titleHandle?.addEventListener( 'click', this.buttonClicked.bind( this ) );
