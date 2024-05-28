@@ -9,7 +9,7 @@ namespace Quark\Blog\Authors;
 
 use WP_Post;
 
-const POST_TYPE   = 'qrk_blog_authors';
+const POST_TYPE   = 'qrk_blog_author';
 const CACHE_KEY   = POST_TYPE;
 const CACHE_GROUP = POST_TYPE;
 
@@ -20,7 +20,7 @@ const CACHE_GROUP = POST_TYPE;
  */
 function bootstrap(): void {
 	// Register post type.
-	add_action( 'init', __NAMESPACE__ . '\\register_blog_authors_post_type' );
+	add_action( 'init', __NAMESPACE__ . '\\register_blog_author_post_type' );
 
 	// Other hooks.
 	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
@@ -36,7 +36,7 @@ function bootstrap(): void {
  *
  * @return void
  */
-function register_blog_authors_post_type(): void {
+function register_blog_author_post_type(): void {
 	// Post type arguments.
 	$args = [
 		'labels'              => [

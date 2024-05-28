@@ -9,11 +9,13 @@ namespace Quark\Blog;
 
 use WP_Post;
 
+use function Quark\Blog\Authors\get as get_post_authors;
 use function Quark\Core\prepare_content_with_blocks;
 
-const POST_TYPE   = 'post';
-const CACHE_KEY   = POST_TYPE;
-const CACHE_GROUP = POST_TYPE;
+const POST_TYPE        = 'post';
+const CACHE_KEY        = POST_TYPE;
+const CACHE_GROUP      = POST_TYPE;
+const WORDS_PER_MINUTE = 230; // using the same value from Drupal - https://github.com/mtownsend5512/read-time/.
 
 /**
  * Bootstrap plugin.
@@ -23,9 +25,13 @@ const CACHE_GROUP = POST_TYPE;
 function bootstrap(): void {
 	// Layout.
 	add_action( 'template_redirect', __NAMESPACE__ . '\\layout' );
+	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\calculate_post_reading_time', 10, 3 );
 
 	// Enable primary term.
 	add_filter( 'travelopia_primary_term_taxonomies', __NAMESPACE__ . '\\primary_term_taxonomies', 10, 2 );
+
+	// Other hooks.
+	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
 
 	// Admin stuff.
 	if ( is_admin() ) {
@@ -34,6 +40,9 @@ function bootstrap(): void {
 		// Custom fields.
 		require_once __DIR__ . '/../custom-fields/blog.php';
 	}
+
+	// Other hooks.
+	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
 }
 
 /**
@@ -95,6 +104,21 @@ function update_blog_posts_admin_menu_label( object $labels = null ): object {
 
 	// Return updated labels.
 	return (object) $labels;
+}
+
+/**
+ * Bust cache when a post is saved.
+ *
+ * @param int $post_id Post ID.
+ *
+ * @return void
+ */
+function bust_post_cache( int $post_id = 0 ): void {
+	// Delete the post cache.
+	wp_cache_delete( CACHE_KEY . "_$post_id", CACHE_GROUP );
+
+	// Trigger action to clear cache for this post.
+	do_action( 'qe_post_cache_busted', $post_id );
 }
 
 /**
@@ -233,4 +257,86 @@ function primary_term_taxonomies( array $taxonomies = [], string $post_type = ''
 
 	// Return taxonomies.
 	return $taxonomies;
+}
+
+/**
+ * Get data for blog post cards.
+ *
+ * @param int[] $post_ids Post IDs.
+ *
+ * @return array<mixed>{
+ *      post: array|WP_Post,
+ *      title: string,
+ *      permalink: string,
+ *      featured_image: integer,
+ *      read_time: integer,
+ *      authors: array,
+ *      taxonomies: array,
+ *  }[]
+ */
+function get_cards_data( array $post_ids = [] ): array {
+	// Check if post ids exist.
+	if ( empty( $post_ids ) ) {
+		return [];
+	}
+
+	// Initialize data.
+	$data = [];
+
+	// Loop through the post ids.
+	foreach ( $post_ids as $post_id ) {
+		$post = get( $post_id );
+
+		// Get blog author ids.
+		$blog_author_ids = (array) $post['post_meta']['blog_authors'] ?: [];
+
+		// Initialize authors data.
+		$authors_data = [];
+
+		// Loop through blog author ids.
+		foreach ( $blog_author_ids as $blog_author_id ) {
+			$authors_data[] = get_post_authors( absint( $blog_author_id ) );
+		}
+
+		// Build post data.
+		$post_data = [
+			'post'           => $post['post'] ?: [],
+			'title'          => $post['post']?->post_title ?? '',
+			'permalink'      => $post['permalink'] ?: '',
+			'featured_image' => $post['post_thumbnail'] ?: 0,
+			'authors'        => $authors_data,
+			'read_time'      => array_key_exists( 'read_time_minutes', $post['post_meta'] ) ? absint( $post['post_meta']['read_time_minutes'] ) : 0,
+			'taxonomies'     => $post['post_taxonomies'] ?: [],
+		];
+
+		// Add blog post data to array.
+		$data[] = $post_data;
+	}
+
+	// Return data.
+	return $data;
+}
+
+/**
+ * Calculate reading time for a post.
+ *
+ * @param int          $post_id Post ID.
+ * @param WP_Post|null $post    Post object.
+ *
+ * @return void
+ */
+function calculate_post_reading_time( int $post_id = 0, WP_Post $post = null ): void {
+	// Bail if not a post or post type does not match.
+	if ( ! $post instanceof WP_Post || POST_TYPE !== $post->post_type ) {
+		return;
+	}
+
+	// Get words count.
+	$words_count = str_word_count( wp_strip_all_tags( $post->post_content ) );
+
+	// Calculate reading time.
+	$minutes = ceil( $words_count / WORDS_PER_MINUTE );
+
+	// Save data to post meta.
+	update_post_meta( $post_id, 'read_time_minutes', absint( $minutes ) );
 }

@@ -143,4 +143,5 @@
 	 */
 	--wp-admin-bar-height: 0px; // stylelint-disable-line
 	--lp-header-z-index: 10;
+	--scroll-padding-top: calc(var(--header-height) + var(--spacing-5));
 }
