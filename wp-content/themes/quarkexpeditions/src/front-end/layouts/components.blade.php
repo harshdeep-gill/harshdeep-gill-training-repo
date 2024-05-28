@@ -2265,7 +2265,7 @@
 
 			<x-footer.middle>
 				<x-footer.column>
-					<x-footer.logo url="" />
+					<x-footer.logo />
 					<x-button size="big">Request a Quote</x-button>
 					<x-footer.social-links :social_links="$social_links" />
 				</x-footer.column>
