@@ -1,6 +1,6 @@
 <?php
 /**
- * Migrate: Press Release.
+ * Migrate: Pre Post Trip options from Drupal to WordPress CPT.
  *
  * @package quark-migration
  */
@@ -12,24 +12,25 @@ use WP_CLI;
 use WP_Error;
 use WP_CLI\ExitException;
 
+use function Quark\Migration\Drupal\download_file_by_mid;
 use function Quark\Migration\Drupal\get_database;
+use function Quark\Migration\Drupal\prepare_content;
 use function Quark\Migration\Drupal\prepare_for_migration;
 use function Quark\Migration\Drupal\get_post_by_id;
-use function Quark\Migration\Drupal\prepare_content;
 use function Quark\Migration\WordPress\qrk_sanitize_attribute;
 use function WP_CLI\Utils\make_progress_bar;
 
-use const Quark\PressReleases\POST_TYPE;
+use const Quark\Expeditions\PrePostTripOptions\POST_TYPE;
 
 /**
- * Class Press_Release.
+ * Class Pre_Post_Trip_Options.
  */
-class Press_Release {
+class Pre_Post_Trip_Options {
 
 	/**
-	 * Migrate all Press Release.
+	 * Migrate all Pre Post Trip options.
 	 *
-	 * @subcommand posts
+	 * @subcommand all
 	 *
 	 * @return void
 	 * @throws ExitException Exit on failure of command.
@@ -38,12 +39,12 @@ class Press_Release {
 		// Prepare for migration.
 		prepare_for_migration();
 
-		// Fetch press releases data from drupal database.
+		// Fetch Pre Post Trip options data from drupal database.
 		$data = $this->get_drupal_data();
 
 		// Return if unable to fetch data.
 		if ( empty( $data ) ) {
-			WP_CLI::error( 'Unable to fetch data for "press-release" post-type!' );
+			WP_CLI::error( 'Unable to fetch data for Pre Post Trip options!' );
 
 			// Bail out if unable to fetch data.
 			return;
@@ -53,7 +54,7 @@ class Press_Release {
 		WP_CLI::log( 'Total Found: ' . count( $data ) );
 
 		// Initialize progress bar.
-		$progress = make_progress_bar( 'Migrating "press-release" post-type', count( $data ) );
+		$progress = make_progress_bar( 'Migrating "Pre Post Trip options" post-type', count( $data ) );
 
 		// Check if progress bar exists or not.
 		if ( ! $progress instanceof Bar ) {
@@ -107,7 +108,7 @@ class Press_Release {
 		// Check if post inserted/updated or not.
 		if ( $output instanceof WP_Error ) {
 			// Print error.
-			WP_CLI::warning( 'Unable to insert/update post!' );
+			WP_CLI::warning( 'Unable to insert/update Pre Post Trip options - ' . $normalized_post['meta_input']['drupal_id'] );
 		}
 	}
 
@@ -119,18 +120,17 @@ class Press_Release {
 	 * @return array{}|array{
 	 *     post_type: string,
 	 *     post_author: string,
-	 *     post_title : string,
-	 *     post_date : string,
-	 *     post_date_gmt : string,
-	 *     post_modified : string,
-	 *     post_modified_gmt : string,
+	 *     post_title: string,
+	 *     post_date: string,
+	 *     post_date_gmt: string,
+	 *     post_modified: string,
+	 *     post_modified_gmt: string,
 	 *     post_name: string,
-	 *     post_content : string,
-	 *     post_excerpt : string,
-	 *     post_status : string,
+	 *     post_content: string,
+	 *     post_status: string,
 	 *     comment_status: string,
 	 *     ping_status: string,
-	 *     meta_input : array{
+	 *     meta_input: array{
 	 *          drupal_id : int,
 	 *     }
 	 * }
@@ -148,7 +148,6 @@ class Press_Release {
 		$modified_at  = gmdate( 'Y-m-d H:i:s' );
 		$status       = 'draft';
 		$post_content = '';
-		$post_excerpt = '';
 		$post_name    = '';
 
 		// Title.
@@ -176,21 +175,6 @@ class Press_Release {
 			$post_content = strval( $item['post_content'] );
 		}
 
-		// post excerpt.
-		if ( ! empty( $item['post_excerpt'] ) && is_string( $item['post_excerpt'] ) ) {
-			$post_excerpt = wp_strip_all_tags( trim( $item['post_excerpt'] ) );
-		}
-
-		// Post name.
-		if ( ! empty( $item['drupal_url'] ) && is_string( $item['drupal_url'] ) ) {
-			/**
-			 * Break the url into parts and use the last part as post name.
-			 * i.e. - /press-releases/2013/12/quark-expeditions-celebrates-world-travel-award.
-			 */
-			$parts     = explode( '/', $item['drupal_url'] );
-			$post_name = end( $parts );
-		}
-
 		// Prepare post data.
 		$data = [
 			'post_type'         => POST_TYPE,
@@ -201,8 +185,7 @@ class Press_Release {
 			'post_modified'     => $modified_at,
 			'post_modified_gmt' => $modified_at,
 			'post_name'         => $post_name,
-			'post_content'      => prepare_content( strval( $post_content ) ),
-			'post_excerpt'      => $post_excerpt,
+			'post_content'      => prepare_content( $post_content ),
 			'post_status'       => $status,
 			'comment_status'    => 'closed',
 			'ping_status'       => 'closed',
@@ -211,46 +194,19 @@ class Press_Release {
 			],
 		];
 
-		// SEO meta data.
-		if ( ! empty( $item['field_metatags_value'] ) && is_string( $item['field_metatags_value'] ) ) {
-			$seo_meta_data = maybe_unserialize( $item['field_metatags_value'] );
+		// Set alternate title as metadata.
+		if ( ! empty( $item['alternate_title'] ) ) {
+			$data['meta_input']['alternate_title'] = strval( qrk_sanitize_attribute( $item['alternate_title'] ) );
+		}
 
-			// Check if data is array.
-			if ( is_array( $seo_meta_data ) ) {
-				$search_for   = [
-					'[node:title]',
-					'→',
-					'|',
-					'[site:name]',
-					'[current-page:page-number]',
-					'[current-page:pager]',
-				];
-				$replace_with = [
-					'%%title%%',
-					'%%sep%%',
-					'%%sep%%',
-					'%%sitename%%',
-					'%%page%%',
-					'',
-				];
+		// Set image id as featured image.
+		if ( ! empty( $item['hb_image_id'] ) ) {
+			$mid      = absint( $item['hb_image_id'] );
+			$image_id = download_file_by_mid( $mid );
 
-				// Process seo meta title for WP SEO plugin.
-				if ( ! empty( $seo_meta_data['title']['value'] ) ) {
-					$data['meta_input']['_yoast_wpseo_title'] = str_replace(
-						$search_for,
-						$replace_with,
-						trim( $seo_meta_data['title']['value'] )
-					);
-				}
-
-				// Process seo meta description for WP SEO plugin.
-				if ( ! empty( $seo_meta_data['description']['value'] ) ) {
-					$data['meta_input']['_yoast_wpseo_metadesc'] = str_replace(
-						$search_for,
-						$replace_with,
-						trim( $seo_meta_data['description']['value'] )
-					);
-				}
+			// Check if image exists.
+			if ( ! $image_id instanceof WP_Error ) {
+				$data['meta_input']['_thumbnail_id'] = $image_id;
 			}
 		}
 
@@ -276,19 +232,18 @@ class Press_Release {
 			field_data.title,
 			field_data.created,
 			field_data.changed,
-			field_data.publish_on,
-			field_data.unpublish_on,
 			body.body_value AS post_content,
-			body.body_summary AS post_excerpt,
-			field_metatags.field_metatags_value AS field_metatags_value,
-			( SELECT alias AS drupal_url FROM path_alias WHERE path = CONCAT( '/node/', node.nid ) ORDER BY id DESC LIMIT 0, 1 ) AS drupal_url
+			field_alternate_title.field_alternate_title_value AS alternate_title,
+			field_hb_image.field_hb_image_target_id AS hb_image_id
 		FROM
 			node
-			LEFT JOIN node_field_data AS field_data ON node.nid = field_data.nid AND node.langcode = field_data.langcode
-			LEFT JOIN `node__body` AS `body` ON node.nid = body.entity_id AND node.langcode = body.langcode
-			LEFT JOIN `node__field_metatags` AS `field_metatags` ON node.nid = field_metatags.entity_id AND node.langcode = field_metatags.langcode
+				LEFT JOIN node_field_data AS field_data ON node.nid = field_data.nid AND node.langcode = field_data.langcode
+				LEFT JOIN node__body AS body ON node.nid = body.entity_id AND node.langcode = body.langcode
+				LEFT JOIN node__field_alternate_title AS field_alternate_title ON node.nid = field_alternate_title.entity_id AND node.langcode = field_alternate_title.langcode
+				LEFT JOIN node__field_hero_banner AS field_hero_banner ON node.nid = field_hero_banner.entity_id AND node.langcode = field_hero_banner.langcode
+				LEFT JOIN paragraph__field_hb_image AS field_hb_image ON field_hb_image.entity_id = field_hero_banner.field_hero_banner_target_id AND node.langcode = field_hero_banner.langcode
 		WHERE
-			node.type = 'press_release'";
+			node.type = 'pre_post_trip_option'";
 
 		// Fetch data.
 		$result = $drupal_database->get_results( $query, ARRAY_A );

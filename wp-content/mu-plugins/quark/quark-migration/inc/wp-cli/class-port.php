@@ -1,6 +1,6 @@
 <?php
 /**
- * Migrate: Press Release.
+ * Migrate: Port Taxonomy from Drupal to WordPress CPT.
  *
  * @package quark-migration
  */
@@ -15,21 +15,20 @@ use WP_CLI\ExitException;
 use function Quark\Migration\Drupal\get_database;
 use function Quark\Migration\Drupal\prepare_for_migration;
 use function Quark\Migration\Drupal\get_post_by_id;
-use function Quark\Migration\Drupal\prepare_content;
 use function Quark\Migration\WordPress\qrk_sanitize_attribute;
 use function WP_CLI\Utils\make_progress_bar;
 
-use const Quark\PressReleases\POST_TYPE;
+use const Quark\Ports\POST_TYPE;
 
 /**
- * Class Press_Release.
+ * Class Port.
  */
-class Press_Release {
+class Port {
 
 	/**
-	 * Migrate all Press Release.
+	 * Migrate all Ports.
 	 *
-	 * @subcommand posts
+	 * @subcommand all
 	 *
 	 * @return void
 	 * @throws ExitException Exit on failure of command.
@@ -38,12 +37,12 @@ class Press_Release {
 		// Prepare for migration.
 		prepare_for_migration();
 
-		// Fetch press releases data from drupal database.
+		// Fetch ports data from drupal database.
 		$data = $this->get_drupal_data();
 
 		// Return if unable to fetch data.
 		if ( empty( $data ) ) {
-			WP_CLI::error( 'Unable to fetch data for "press-release" post-type!' );
+			WP_CLI::error( 'Unable to fetch data for port!' );
 
 			// Bail out if unable to fetch data.
 			return;
@@ -53,7 +52,7 @@ class Press_Release {
 		WP_CLI::log( 'Total Found: ' . count( $data ) );
 
 		// Initialize progress bar.
-		$progress = make_progress_bar( 'Migrating "press-release" post-type', count( $data ) );
+		$progress = make_progress_bar( 'Migrating "port" post-type', count( $data ) );
 
 		// Check if progress bar exists or not.
 		if ( ! $progress instanceof Bar ) {
@@ -94,7 +93,7 @@ class Press_Release {
 		}
 
 		// Check post exist or not.
-		$wp_post = get_post_by_id( $normalized_post['meta_input']['drupal_id'], POST_TYPE );
+		$wp_post = get_post_by_id( $normalized_post['meta_input']['drupal_tid'], POST_TYPE, 'drupal_tid' );
 
 		// Insert/update post.
 		if ( ! empty( $wp_post ) ) {
@@ -107,7 +106,7 @@ class Press_Release {
 		// Check if post inserted/updated or not.
 		if ( $output instanceof WP_Error ) {
 			// Print error.
-			WP_CLI::warning( 'Unable to insert/update post!' );
+			WP_CLI::warning( 'Unable to insert/update port - ' . $normalized_post['meta_input']['drupal_tid'] );
 		}
 	}
 
@@ -126,12 +125,11 @@ class Press_Release {
 	 *     post_modified_gmt : string,
 	 *     post_name: string,
 	 *     post_content : string,
-	 *     post_excerpt : string,
 	 *     post_status : string,
 	 *     comment_status: string,
 	 *     ping_status: string,
 	 *     meta_input : array{
-	 *          drupal_id : int,
+	 *          drupal_tid : int,
 	 *     }
 	 * }
 	 */
@@ -142,28 +140,23 @@ class Press_Release {
 		}
 
 		// Normalize data.
-		$nid          = ! empty( $item['nid'] ) ? absint( $item['nid'] ) : 0;
+		$nid          = ! empty( $item['tid'] ) ? absint( $item['tid'] ) : 0;
 		$title        = '';
 		$created_at   = gmdate( 'Y-m-d H:i:s' );
 		$modified_at  = gmdate( 'Y-m-d H:i:s' );
 		$status       = 'draft';
 		$post_content = '';
-		$post_excerpt = '';
 		$post_name    = '';
 
 		// Title.
-		if ( is_string( $item['title'] ) && ! empty( $item['title'] ) ) {
-			$title = trim( $item['title'] );
-		}
-
-		// Created date.
-		if ( ! empty( $item['created'] ) ) {
-			$created_at = gmdate( 'Y-m-d H:i:s', absint( $item['created'] ) );
+		if ( is_string( $item['name'] ) && ! empty( $item['name'] ) ) {
+			$title = trim( $item['name'] );
 		}
 
 		// Modified date.
 		if ( ! empty( $item['changed'] ) ) {
-			$modified_at = gmdate( 'Y-m-d H:i:s', absint( $item['changed'] ) );
+			$created_at  = gmdate( 'Y-m-d H:i:s', absint( $item['changed'] ) );
+			$modified_at = $created_at;
 		}
 
 		// Status.
@@ -172,23 +165,8 @@ class Press_Release {
 		}
 
 		// post content.
-		if ( ! empty( $item['post_content'] ) ) {
-			$post_content = strval( $item['post_content'] );
-		}
-
-		// post excerpt.
-		if ( ! empty( $item['post_excerpt'] ) && is_string( $item['post_excerpt'] ) ) {
-			$post_excerpt = wp_strip_all_tags( trim( $item['post_excerpt'] ) );
-		}
-
-		// Post name.
-		if ( ! empty( $item['drupal_url'] ) && is_string( $item['drupal_url'] ) ) {
-			/**
-			 * Break the url into parts and use the last part as post name.
-			 * i.e. - /press-releases/2013/12/quark-expeditions-celebrates-world-travel-award.
-			 */
-			$parts     = explode( '/', $item['drupal_url'] );
-			$post_name = end( $parts );
+		if ( ! empty( $item['description__value'] ) ) {
+			$post_content = strval( $item['description__value'] );
 		}
 
 		// Prepare post data.
@@ -201,57 +179,43 @@ class Press_Release {
 			'post_modified'     => $modified_at,
 			'post_modified_gmt' => $modified_at,
 			'post_name'         => $post_name,
-			'post_content'      => prepare_content( strval( $post_content ) ),
-			'post_excerpt'      => $post_excerpt,
+			'post_content'      => $post_content,
 			'post_status'       => $status,
 			'comment_status'    => 'closed',
 			'ping_status'       => 'closed',
 			'meta_input'        => [
-				'drupal_id' => $nid,
+				'drupal_tid' => $nid,
 			],
 		];
 
-		// SEO meta data.
-		if ( ! empty( $item['field_metatags_value'] ) && is_string( $item['field_metatags_value'] ) ) {
-			$seo_meta_data = maybe_unserialize( $item['field_metatags_value'] );
+		// Set latitude metadata.
+		if ( ! empty( $item['field_geocoordinates_lat'] ) ) {
+			$data['meta_input']['latitude'] = $item['field_geocoordinates_lat'];
+		}
 
-			// Check if data is array.
-			if ( is_array( $seo_meta_data ) ) {
-				$search_for   = [
-					'[node:title]',
-					'→',
-					'|',
-					'[site:name]',
-					'[current-page:page-number]',
-					'[current-page:pager]',
-				];
-				$replace_with = [
-					'%%title%%',
-					'%%sep%%',
-					'%%sep%%',
-					'%%sitename%%',
-					'%%page%%',
-					'',
-				];
+		// Set longitude metadata.
+		if ( ! empty( $item['field_geocoordinates_lng'] ) ) {
+			$data['meta_input']['longitude'] = $item['field_geocoordinates_lng'];
+		}
 
-				// Process seo meta title for WP SEO plugin.
-				if ( ! empty( $seo_meta_data['title']['value'] ) ) {
-					$data['meta_input']['_yoast_wpseo_title'] = str_replace(
-						$search_for,
-						$replace_with,
-						trim( $seo_meta_data['title']['value'] )
-					);
-				}
+		// Set Port Code metadata.
+		if ( ! empty( $item['field_port_code_value'] ) ) {
+			$data['meta_input']['port_code'] = $item['field_port_code_value'];
+		}
 
-				// Process seo meta description for WP SEO plugin.
-				if ( ! empty( $seo_meta_data['description']['value'] ) ) {
-					$data['meta_input']['_yoast_wpseo_metadesc'] = str_replace(
-						$search_for,
-						$replace_with,
-						trim( $seo_meta_data['description']['value'] )
-					);
-				}
-			}
+		// Set country metadata.
+		if ( ! empty( $item['field_port_address_country_code'] ) ) {
+			$data['meta_input']['country'] = $item['field_port_address_country_code'];
+		}
+
+		// Set locality metadata.
+		if ( ! empty( $item['field_port_address_locality'] ) ) {
+			$data['meta_input']['locality'] = $item['field_port_address_locality'];
+		}
+
+		// Set Administrative area metadata.
+		if ( ! empty( $item['field_port_address_administrative_area'] ) ) {
+			$data['meta_input']['administrative_area'] = $item['field_port_address_administrative_area'];
 		}
 
 		// Return normalized data.
@@ -271,24 +235,28 @@ class Press_Release {
 
 		// Query.
 		$query = "SELECT
-			node.nid,
-			field_data.status,
-			field_data.title,
-			field_data.created,
-			field_data.changed,
-			field_data.publish_on,
-			field_data.unpublish_on,
-			body.body_value AS post_content,
-			body.body_summary AS post_excerpt,
-			field_metatags.field_metatags_value AS field_metatags_value,
-			( SELECT alias AS drupal_url FROM path_alias WHERE path = CONCAT( '/node/', node.nid ) ORDER BY id DESC LIMIT 0, 1 ) AS drupal_url
+			term.`tid`,
+			field_data.`name`,
+			field_data.`description__value`,
+			field_data.`status`,
+			field_data.`changed`,
+			field_geocoordinates.field_geocoordinates_lat AS `field_geocoordinates_lat`,
+			field_geocoordinates.field_geocoordinates_lng AS `field_geocoordinates_lng`,
+			field_port_address.field_port_address_country_code AS `field_port_address_country_code`,
+			field_port_address.field_port_address_administrative_area AS `field_port_address_administrative_area`,
+			field_port_address.field_port_address_locality AS `field_port_address_locality`,
+			field_port_code.field_port_code_value AS `field_port_code_value`
 		FROM
-			node
-			LEFT JOIN node_field_data AS field_data ON node.nid = field_data.nid AND node.langcode = field_data.langcode
-			LEFT JOIN `node__body` AS `body` ON node.nid = body.entity_id AND node.langcode = body.langcode
-			LEFT JOIN `node__field_metatags` AS `field_metatags` ON node.nid = field_metatags.entity_id AND node.langcode = field_metatags.langcode
+			taxonomy_term_data AS term
+			LEFT JOIN taxonomy_term__parent AS parent ON term.`tid` = parent.`entity_id` AND term.langcode = parent.langcode
+			LEFT JOIN taxonomy_term_field_data AS field_data ON term.`tid` = field_data.`tid` AND term.langcode = field_data.langcode
+			LEFT JOIN `taxonomy_term__field_geocoordinates` AS `field_geocoordinates` ON term.tid = field_geocoordinates.entity_id AND term.langcode = field_geocoordinates.langcode
+			LEFT JOIN `taxonomy_term__field_port_address` AS `field_port_address` ON term.tid = field_port_address.entity_id AND term.langcode = field_port_address.langcode
+			LEFT JOIN `taxonomy_term__field_port_code` AS `field_port_code` ON term.tid = field_port_code.entity_id AND term.langcode = field_port_code.langcode
 		WHERE
-			node.type = 'press_release'";
+			term.`vid` = 'ports'
+		ORDER BY
+			parent.`parent_target_id` ASC;";
 
 		// Fetch data.
 		$result = $drupal_database->get_results( $query, ARRAY_A );

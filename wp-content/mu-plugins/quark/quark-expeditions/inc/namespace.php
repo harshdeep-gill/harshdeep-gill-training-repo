@@ -12,12 +12,12 @@ use WP_REST_Response;
 use WP_Taxonomy;
 use WP_REST_Request;
 
-const POST_TYPE                      = 'qrk_expedition';
-const DESTINATIONS_TAXONOMY          = 'qrk_destination';
-const EXPEDITION_CATEGORY_TAXONOMY   = 'qrk_expedition_category';
-const DEPARTURE_DESTINATION_TAXONOMY = 'qrk_departure_destination';
-const CACHE_KEY                      = POST_TYPE;
-const CACHE_GROUP                    = POST_TYPE;
+const POST_TYPE                    = 'qrk_expedition';
+const DESTINATION_TAXONOMY         = 'qrk_destination';
+const EXPEDITION_CATEGORY_TAXONOMY = 'qrk_expedition_category';
+const EXCURSION_TAXONOMY           = 'qrk_excursion';
+const CACHE_KEY                    = POST_TYPE;
+const CACHE_GROUP                  = POST_TYPE;
 
 /**
  * Bootstrap plugin.
@@ -29,14 +29,14 @@ function bootstrap(): void {
 	add_action( 'init', __NAMESPACE__ . '\\register_expedition_post_type' );
 	add_action( 'init', __NAMESPACE__ . '\\register_destination_taxonomy' );
 	add_action( 'init', __NAMESPACE__ . '\\register_expedition_category_taxonomy' );
-	add_action( 'init', __NAMESPACE__ . '\\register_departure_destination_taxonomy' );
+	add_action( 'init', __NAMESPACE__ . '\\register_excursion_taxonomy' );
 
 	// Opt into stuff.
 	add_filter( 'qe_adventure_options_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
 	add_filter( 'qe_destination_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
 	add_filter( 'qe_expedition_category_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
-	add_filter( 'qe_departure_destination_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
-	add_filter( 'rest_prepare_taxonomy', __NAMESPACE__ . '\\hide_departure_destination_metabox', 10, 3 );
+	add_filter( 'qe_excursion_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
+	add_filter( 'rest_prepare_taxonomy', __NAMESPACE__ . '\\hide_excursion_metabox', 10, 3 );
 
 	// Other hooks.
 	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
@@ -45,6 +45,7 @@ function bootstrap(): void {
 	if ( is_admin() ) {
 		// Custom fields.
 		require_once __DIR__ . '/../custom-fields/destinations.php';
+		require_once __DIR__ . '/../custom-fields/excursion.php';
 	}
 }
 
@@ -139,7 +140,7 @@ function register_destination_taxonomy(): void {
 	];
 
 	// Register taxonomy.
-	register_taxonomy( DESTINATIONS_TAXONOMY, (array) apply_filters( 'qe_destination_taxonomy_post_types', [] ), $args );
+	register_taxonomy( DESTINATION_TAXONOMY, (array) apply_filters( 'qe_destination_taxonomy_post_types', [] ), $args );
 }
 
 /**
@@ -191,7 +192,7 @@ function register_expedition_category_taxonomy(): void {
  *
  * @return void
  */
-function register_departure_destination_taxonomy(): void {
+function register_excursion_taxonomy(): void {
 	// Prepare labels.
 	$labels = [
 		'name'                       => 'Excursions',
@@ -228,7 +229,7 @@ function register_departure_destination_taxonomy(): void {
 	];
 
 	// Register taxonomy.
-	register_taxonomy( DEPARTURE_DESTINATION_TAXONOMY, (array) apply_filters( 'qe_departure_destination_taxonomy_post_types', [] ), $args );
+	register_taxonomy( EXCURSION_TAXONOMY, (array) apply_filters( 'qe_excursion_taxonomy_post_types', [] ), $args );
 }
 
 /**
@@ -240,13 +241,13 @@ function register_departure_destination_taxonomy(): void {
  *
  * @return WP_REST_Response|null
  */
-function hide_departure_destination_metabox( WP_REST_Response $response = null, WP_Taxonomy $taxonomy = null, WP_REST_Request $request = null ): WP_REST_Response|null {
+function hide_excursion_metabox( WP_REST_Response $response = null, WP_Taxonomy $taxonomy = null, WP_REST_Request $request = null ): WP_REST_Response|null {
 	// Check if taxonomy is Icon.
 	if (
 		! $taxonomy instanceof WP_Taxonomy
 		|| ! $response instanceof WP_REST_Response
 		|| ! $request instanceof WP_REST_Request
-		|| DEPARTURE_DESTINATION_TAXONOMY !== $taxonomy->name
+		|| EXCURSION_TAXONOMY !== $taxonomy->name
 	) {
 		return $response;
 	}
