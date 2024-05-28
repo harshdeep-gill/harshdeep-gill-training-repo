@@ -5,5 +5,5 @@
 @endphp
 
 <div class="footer__copyright">
-	{!! $slot !!}
+	<x-content :content="$slot" />
 </div>
