@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1cf2f4340f7760c31d66a94d63ea3cf2",
+    "content-hash": "41d277e5f9e56e3273fe7302c6440a10",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -62,16 +62,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.305.6",
+            "version": "3.306.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "3ce65364cc318ae36fc2c61c87a7aa5c83ee626f"
+                "reference": "07fa90825034bf64ab3fdddc1e1f1ca2fa33d6c2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/3ce65364cc318ae36fc2c61c87a7aa5c83ee626f",
-                "reference": "3ce65364cc318ae36fc2c61c87a7aa5c83ee626f",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/07fa90825034bf64ab3fdddc1e1f1ca2fa33d6c2",
+                "reference": "07fa90825034bf64ab3fdddc1e1f1ca2fa33d6c2",
                 "shasum": ""
             },
             "require": {
@@ -151,9 +151,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.305.6"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.306.5"
             },
-            "time": "2024-04-30T18:08:11+00:00"
+            "time": "2024-05-13T18:04:50+00:00"
         },
         {
             "name": "composer/installers",
@@ -900,20 +900,20 @@
         },
         {
             "name": "psr/http-factory",
-            "version": "1.0.2",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/http-factory.git",
-                "reference": "e616d01114759c4c489f93b099585439f795fe35"
+                "reference": "2b4765fddfe3b508ac62f829e852b1501d3f6e8a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/http-factory/zipball/e616d01114759c4c489f93b099585439f795fe35",
-                "reference": "e616d01114759c4c489f93b099585439f795fe35",
+                "url": "https://api.github.com/repos/php-fig/http-factory/zipball/2b4765fddfe3b508ac62f829e852b1501d3f6e8a",
+                "reference": "2b4765fddfe3b508ac62f829e852b1501d3f6e8a",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.0.0",
+                "php": ">=7.1",
                 "psr/http-message": "^1.0 || ^2.0"
             },
             "type": "library",
@@ -937,7 +937,7 @@
                     "homepage": "https://www.php-fig.org/"
                 }
             ],
-            "description": "Common interfaces for PSR-7 HTTP message factories",
+            "description": "PSR-17: Common interfaces for PSR-7 HTTP message factories",
             "keywords": [
                 "factory",
                 "http",
@@ -949,9 +949,9 @@
                 "response"
             ],
             "support": {
-                "source": "https://github.com/php-fig/http-factory/tree/1.0.2"
+                "source": "https://github.com/php-fig/http-factory"
             },
-            "time": "2023-04-10T20:10:41+00:00"
+            "time": "2024-04-15T12:06:14+00:00"
         },
         {
             "name": "psr/http-message",
@@ -1052,16 +1052,16 @@
         },
         {
             "name": "symfony/deprecation-contracts",
-            "version": "v3.4.0",
+            "version": "v3.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/deprecation-contracts.git",
-                "reference": "7c3aff79d10325257a001fcf92d991f24fc967cf"
+                "reference": "0e0d29ce1f20deffb4ab1b016a7257c4f1e789a1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/deprecation-contracts/zipball/7c3aff79d10325257a001fcf92d991f24fc967cf",
-                "reference": "7c3aff79d10325257a001fcf92d991f24fc967cf",
+                "url": "https://api.github.com/repos/symfony/deprecation-contracts/zipball/0e0d29ce1f20deffb4ab1b016a7257c4f1e789a1",
+                "reference": "0e0d29ce1f20deffb4ab1b016a7257c4f1e789a1",
                 "shasum": ""
             },
             "require": {
@@ -1070,7 +1070,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "3.4-dev"
+                    "dev-main": "3.5-dev"
                 },
                 "thanks": {
                     "name": "symfony/contracts",
@@ -1099,7 +1099,7 @@
             "description": "A generic function and convention to trigger deprecation notices",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/deprecation-contracts/tree/v3.4.0"
+                "source": "https://github.com/symfony/deprecation-contracts/tree/v3.5.0"
             },
             "funding": [
                 {
@@ -1115,7 +1115,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-05-23T14:45:45+00:00"
+            "time": "2024-04-18T09:32:20+00:00"
         },
         {
             "name": "symfony/polyfill-mbstring",
@@ -1220,16 +1220,16 @@
         },
         {
             "name": "travelopia/wordpress-packages",
-            "version": "1.21.0",
+            "version": "1.21.2",
             "source": {
                 "type": "git",
                 "url": "git@github.com:Travelopia/wordpress-packages.git",
-                "reference": "f57f5c235bf4c0fa187bf301b6055d72a47623c9"
+                "reference": "fd8bd1272e965bcdd1da22dcd169b17c81be3acf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Travelopia/wordpress-packages/zipball/f57f5c235bf4c0fa187bf301b6055d72a47623c9",
-                "reference": "f57f5c235bf4c0fa187bf301b6055d72a47623c9",
+                "url": "https://api.github.com/repos/Travelopia/wordpress-packages/zipball/fd8bd1272e965bcdd1da22dcd169b17c81be3acf",
+                "reference": "fd8bd1272e965bcdd1da22dcd169b17c81be3acf",
                 "shasum": ""
             },
             "require": {
@@ -1262,10 +1262,10 @@
             },
             "description": "Common WordPress packages for the Travelopia Network.",
             "support": {
-                "source": "https://github.com/Travelopia/wordpress-packages/tree/1.21.0",
+                "source": "https://github.com/Travelopia/wordpress-packages/tree/1.21.2",
                 "issues": "https://github.com/Travelopia/wordpress-packages/issues"
             },
-            "time": "2024-04-22T04:32:17+00:00"
+            "time": "2024-05-12T22:45:46+00:00"
         },
         {
             "name": "wpackagist-plugin/auto-cloudinary",
@@ -2242,16 +2242,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "1.10.67",
+            "version": "1.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "16ddbe776f10da6a95ebd25de7c1dbed397dc493"
+                "reference": "666cb1703742cea9cc80fee631f0940e1592fa6e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/16ddbe776f10da6a95ebd25de7c1dbed397dc493",
-                "reference": "16ddbe776f10da6a95ebd25de7c1dbed397dc493",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/666cb1703742cea9cc80fee631f0940e1592fa6e",
+                "reference": "666cb1703742cea9cc80fee631f0940e1592fa6e",
                 "shasum": ""
             },
             "require": {
@@ -2296,7 +2296,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-04-16T07:22:02+00:00"
+            "time": "2024-05-13T06:02:22+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -2722,7 +2722,7 @@
         },
         {
             "name": "roots/wordpress",
-            "version": "6.5.2",
+            "version": "6.5.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/roots/wordpress.git",
@@ -2753,7 +2753,7 @@
             ],
             "support": {
                 "issues": "https://github.com/roots/wordpress/issues",
-                "source": "https://github.com/roots/wordpress/tree/6.5.2"
+                "source": "https://github.com/roots/wordpress/tree/6.5.3"
             },
             "funding": [
                 {
@@ -2836,22 +2836,22 @@
         },
         {
             "name": "roots/wordpress-no-content",
-            "version": "6.5.2",
+            "version": "6.5.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/WordPress/WordPress.git",
-                "reference": "6.5.2"
+                "reference": "6.5.3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/release/wordpress-6.5.2-no-content.zip",
-                "shasum": "09a5fbf3d93546bc54e96ca27888b29bba906492"
+                "url": "https://downloads.wordpress.org/release/wordpress-6.5.3-no-content.zip",
+                "shasum": "adeffdc339d34eab4209e88b17966d8917e36e91"
             },
             "require": {
                 "php": ">= 7.0.0"
             },
             "provide": {
-                "wordpress/core-implementation": "6.5.2"
+                "wordpress/core-implementation": "6.5.3"
             },
             "suggest": {
                 "ext-curl": "Performs remote request operations.",
@@ -2902,7 +2902,7 @@
                     "type": "other"
                 }
             ],
-            "time": "2024-04-09T22:02:16+00:00"
+            "time": "2024-05-07T16:02:20+00:00"
         },
         {
             "name": "sebastian/cli-parser",
@@ -4556,16 +4556,16 @@
         },
         {
             "name": "wp-phpunit/wp-phpunit",
-            "version": "6.5.2",
+            "version": "6.5.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wp-phpunit/wp-phpunit.git",
-                "reference": "4368fd1dd37d0314cbaa9040be39d835616aeb17"
+                "reference": "ef2cb44c0d991ac0c3a7a3ed0d2d1cf3fe8d8f2f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wp-phpunit/wp-phpunit/zipball/4368fd1dd37d0314cbaa9040be39d835616aeb17",
-                "reference": "4368fd1dd37d0314cbaa9040be39d835616aeb17",
+                "url": "https://api.github.com/repos/wp-phpunit/wp-phpunit/zipball/ef2cb44c0d991ac0c3a7a3ed0d2d1cf3fe8d8f2f",
+                "reference": "ef2cb44c0d991ac0c3a7a3ed0d2d1cf3fe8d8f2f",
                 "shasum": ""
             },
             "type": "library",
@@ -4600,7 +4600,7 @@
                 "issues": "https://github.com/wp-phpunit/issues",
                 "source": "https://github.com/wp-phpunit/wp-phpunit"
             },
-            "time": "2024-04-03T00:33:03+00:00"
+            "time": "2024-05-07T16:46:52+00:00"
         },
         {
             "name": "wpackagist-plugin/query-monitor",
@@ -4715,5 +4715,5 @@
         "ext-libxml": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.6.0"
 }

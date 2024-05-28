@@ -196,19 +196,4 @@
 			}
 		}
 	}
-
-	&__form {
-		padding: var(--spacing-5);
-		background-color: rgba(color("black"), 0.5);
-		border-radius: var(--border-radius-large);
-
-		tp-form-error {
-			display: none;
-		}
-
-		.btn {
-			width: 100%;
-			text-transform: uppercase;
-		}
-	}
 }

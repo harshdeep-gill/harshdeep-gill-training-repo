@@ -105,8 +105,9 @@ class Test_Blog extends WP_UnitTestCase {
 					'post_thumbnail'  => 0,
 					'post_content'    => 'Post content',
 					'post_meta'       => [
-						'meta_1' => 'value_1',
-						'meta_2' => 'value_2',
+						'meta_1'            => 'value_1',
+						'meta_2'            => 'value_2',
+						'read_time_minutes' => 1,
 					],
 					'post_taxonomies' => [
 						'category' => [
@@ -216,8 +217,9 @@ class Test_Blog extends WP_UnitTestCase {
 				'permalink'       => 'http://test.quarkexpeditions.com/test-post',
 				'post_thumbnail'  => 0,
 				'post_meta'       => [
-					'meta_1' => 'value_1',
-					'meta_2' => 'value_2',
+					'meta_1'            => 'value_1',
+					'meta_2'            => 'value_2',
+					'read_time_minutes' => 1,
 				],
 				'post_taxonomies' => [
 					'category' => [
@@ -304,11 +306,15 @@ class Test_Blog extends WP_UnitTestCase {
 				'post_status'  => 'publish',
 				'post_type'    => \Quark\Blog\POST_TYPE,
 				'meta_input'   => [
-					'read_time_minutes' => 5,
-					'_thumbnail_id'     => 35,
+					'_thumbnail_id' => 35,
 				],
 			]
 		);
+
+		// Calculate reading time.
+		if ( $post_1 instanceof WP_Post ) {
+			\Quark\Blog\calculate_post_reading_time( $post_1->ID, $post_1 );
+		}
 
 		// Create post 2.
 		$post_2 = $this->factory()->post->create_and_get(
@@ -318,11 +324,15 @@ class Test_Blog extends WP_UnitTestCase {
 				'post_status'  => 'publish',
 				'post_type'    => \Quark\Blog\POST_TYPE,
 				'meta_input'   => [
-					'read_time_minutes' => 7,
-					'_thumbnail_id'     => 32,
+					'_thumbnail_id' => 32,
 				],
 			]
 		);
+
+		// Calculate reading time.
+		if ( $post_2 instanceof WP_Post ) {
+			\Quark\Blog\calculate_post_reading_time( $post_2->ID, $post_2 );
+		}
 
 		// Assert created posts are instance of WP_Post.
 		$this->assertTrue( $post_1 instanceof WP_Post );
@@ -385,7 +395,7 @@ class Test_Blog extends WP_UnitTestCase {
 					'authors'        => [
 						get( $author_1->ID ),
 					],
-					'read_time'      => 5,
+					'read_time'      => 1,
 					'taxonomies'     => [
 						'category' => [
 							[
@@ -430,7 +440,7 @@ class Test_Blog extends WP_UnitTestCase {
 					'authors'        => [
 						get( $author_1->ID ),
 					],
-					'read_time'      => 5,
+					'read_time'      => 1,
 					'taxonomies'     => [
 						'category' => [
 							[
@@ -464,7 +474,7 @@ class Test_Blog extends WP_UnitTestCase {
 					'authors'        => [
 						get( $author_1->ID ),
 					],
-					'read_time'      => 7,
+					'read_time'      => 1,
 					'taxonomies'     => [
 						'category' => [
 							[
