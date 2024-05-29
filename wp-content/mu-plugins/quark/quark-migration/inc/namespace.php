@@ -30,6 +30,7 @@ function bootstrap(): void {
 		WP_CLI::add_command( 'quark-migrate ship', __NAMESPACE__ . '\\WP_CLI\\Ship' );
 		WP_CLI::add_command( 'quark-migrate post-trip-options', __NAMESPACE__ . '\\WP_CLI\\Pre_Post_Trip_Options' );
 		WP_CLI::add_command( 'quark-migrate inclusion-exclusion-sets', __NAMESPACE__ . '\\WP_CLI\\Inclusion_Exclusion_Set' );
+		WP_CLI::add_command( 'quark-migrate itinerary-days', __NAMESPACE__ . '\\WP_CLI\\Itinerary_Day' );
 	}
 }
 
