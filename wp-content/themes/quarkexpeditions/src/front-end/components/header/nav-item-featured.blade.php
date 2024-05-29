@@ -37,7 +37,7 @@
 
 @endphp
 
-<div class="header__nav-item-featured">
+<div class="header__nav-item-featured color-context--dark">
 	<x-image
 		:image_id="$image_id"
 		:args="$image_args"

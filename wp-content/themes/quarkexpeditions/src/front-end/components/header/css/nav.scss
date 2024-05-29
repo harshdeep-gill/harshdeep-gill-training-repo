@@ -106,6 +106,7 @@
 		max-width: 400px;
 		position: relative;
 		height: 100%;
+		overflow: hidden;
 
 		&::before {
 			content: "";
@@ -116,6 +117,13 @@
 			height: 100%;
 			width: 100%;
 			z-index: 1;
+		}
+
+		&:hover {
+
+			#{$self}__nav-item-featured-image {
+				transform: scale(1.03);
+			}
 		}
 	}
 
@@ -228,6 +236,8 @@
 		position: absolute;
 		left: 0;
 		top: 0;
+
+		@include transition(transform);
 	}
 
 	&__nav-item-featured-content {
