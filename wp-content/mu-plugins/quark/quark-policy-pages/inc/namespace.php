@@ -70,7 +70,7 @@ function register_agreement_post_type(): void {
 		'show_ui'             => true,
 		'show_in_menu'        => true,
 		'show_in_nav_menus'   => false,
-		'publicly_queryable'  => false,
+		'publicly_queryable'  => true,
 		'exclude_from_search' => true,
 		'has_archive'         => false,
 		'query_var'           => true,
