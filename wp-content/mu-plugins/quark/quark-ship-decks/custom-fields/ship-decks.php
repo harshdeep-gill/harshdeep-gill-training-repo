@@ -110,8 +110,10 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 					'min'                  => '',
 					'max'                  => '',
 					'elements'             => '',
-					'bidirectional'        => 0,
-					'bidirectional_target' => [],
+					'bidirectional'        => 1,
+					'bidirectional_target' => [
+						0 => 'field_65f81a3502f55',
+					],
 				],
 				[
 					'key'               => 'field_66339a17ba0b0',

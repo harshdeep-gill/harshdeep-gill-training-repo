@@ -33,7 +33,7 @@ function bootstrap(): void {
 	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
 
 	// Admin stuff.
-	if ( is_admin() ) {
+	if ( is_admin() || ( defined( 'WP_CLI' ) && true === WP_CLI ) ) {
 		add_filter( 'post_type_labels_' . POST_TYPE, __NAMESPACE__ . '\\update_blog_posts_admin_menu_label' );
 
 		// Custom fields.
