@@ -74,6 +74,21 @@
 		justify-content: center;
 		align-items: center;
 		margin-top: var(--spacing-4);
+
+		a {
+			color: var(--color-gray-90);
+		}
+	}
+
+	&__social-link {
+		background: var(--color-yellow);
+		border-radius: 50%;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		height: 40px;
+		width: 40px;
+		position: relative;
 	}
 
 	&__icon {
