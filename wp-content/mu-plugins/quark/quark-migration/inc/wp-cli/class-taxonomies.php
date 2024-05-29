@@ -36,7 +36,7 @@ const POST_TAG_TAXONOMY      = 'post_tag';
 const POST_CATEGORY_TAXONOMY = 'category';
 
 /**
- * Class Media.
+ * Class Taxonomies.
  */
 class Taxonomies {
 
