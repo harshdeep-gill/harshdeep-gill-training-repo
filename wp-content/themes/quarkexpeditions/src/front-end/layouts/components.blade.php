@@ -2295,11 +2295,11 @@
 					<x-footer.column-title title="Change Currency" />
 					<x-form>
 						<x-form.field :validation="[ 'required' ]">
-							<x-form.select>
-								<x-form.option value="1" label="$ USD">$ USD</x-form.option>
-								<x-form.option value="2" label="Option 2">Option 2</x-form.option>
-								<x-form.option value="3" label="Option 3">Option 3</x-form.option>
-							</x-form.select>
+							<select>
+								<option value="1" label="$ USD">$ USD</option>
+								<option value="2" label="Option 2">Option 2</option>
+								<option value="3" label="Option 3">Option 3</option>
+							</select>
 						</x-form.field>
 					</x-form>
 				</x-footer.column>
@@ -2337,7 +2337,7 @@
 				</x-footer.navigation>
 
 				<x-footer.copyright>
-					Quark Expeditions® 2024 is a member of the Travelopia group of companies. All rights reserved.
+					<p>Quark Expeditions® 2024 is a member of the Travelopia group of companies. All rights reserved.</p>
 				</x-footer.copyright>
 			</x-footer.bottom>
 		</x-footer>
