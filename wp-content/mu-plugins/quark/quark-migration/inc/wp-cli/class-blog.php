@@ -18,6 +18,7 @@ use function Quark\Migration\Drupal\get_post_by_id;
 use function Quark\Migration\Drupal\prepare_for_migration;
 use function Quark\Migration\Drupal\prepare_content;
 use function Quark\Migration\Drupal\get_term_by_id;
+use function Quark\Migration\WordPress\qrk_sanitize_attribute;
 use function WP_CLI\Utils\make_progress_bar;
 
 use const Quark\Blog\POST_TYPE;
@@ -147,7 +148,7 @@ class Blog {
 			$data = [
 				'post_type'         => 'post',
 				'post_author'       => 1,
-				'post_title'        => $blog_post['post_title'],
+				'post_title'        => strval( qrk_sanitize_attribute( $blog_post['post_title'] ) ),
 				'post_date'         => gmdate( 'Y-m-d H:i:s', absint( $blog_post['post_date'] ) ),
 				'post_date_gmt'     => gmdate( 'Y-m-d H:i:s', absint( $blog_post['post_date'] ) ),
 				'post_modified'     => gmdate( 'Y-m-d H:i:s', absint( $blog_post['post_modified'] ) ),
