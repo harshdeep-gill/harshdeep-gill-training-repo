@@ -2266,7 +2266,7 @@
 			<x-footer.middle>
 				<x-footer.column>
 					<x-footer.logo />
-					<x-button size="big">Request a Quote</x-button>
+					<x-button href="#" size="big">Request a Quote</x-button>
 					<x-footer.social-links :social_links="$social_links" />
 				</x-footer.column>
 
@@ -2290,7 +2290,7 @@
 
 				<x-footer.column>
 					<x-footer.column-title title="Discover Your Dream Trip" />
-					<x-button size="big" color="black">View All Expeditions</x-button>
+					<x-button  href="#" size="big" color="black">View All Expeditions</x-button>
 
 					<x-footer.column-title title="Change Currency" />
 					<x-form>

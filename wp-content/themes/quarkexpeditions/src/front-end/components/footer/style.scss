@@ -202,6 +202,7 @@
 		}
 
 		+ .btn {
+			color: var(--color-black);
 
 			@media screen and (min-width: grid-size(lg)) {
 				max-width: 220px;
