@@ -304,6 +304,7 @@ function get_cards_data( array $post_ids = [] ): array {
 			'title'          => $post['post']?->post_title ?? '',
 			'permalink'      => $post['permalink'] ?: '',
 			'featured_image' => $post['post_thumbnail'] ?: 0,
+			'content'        => $post['post']->post_content ?? '',
 			'authors'        => $authors_data,
 			'read_time'      => array_key_exists( 'read_time_minutes', $post['post_meta'] ) ? absint( $post['post_meta']['read_time_minutes'] ) : 0,
 			'taxonomies'     => $post['post_taxonomies'] ?: [],

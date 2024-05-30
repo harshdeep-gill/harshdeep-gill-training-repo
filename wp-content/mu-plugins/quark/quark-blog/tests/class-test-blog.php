@@ -391,6 +391,7 @@ class Test_Blog extends WP_UnitTestCase {
 					'post'           => $post_1,
 					'title'          => 'Test Post 1',
 					'permalink'      => 'http://test.quarkexpeditions.com/test-post-1',
+					'content'        => 'Post content 1',
 					'featured_image' => 35,
 					'authors'        => [
 						get( $author_1->ID ),
@@ -436,6 +437,7 @@ class Test_Blog extends WP_UnitTestCase {
 					'post'           => $post_1,
 					'title'          => 'Test Post 1',
 					'permalink'      => 'http://test.quarkexpeditions.com/test-post-1',
+					'content'        => 'Post content 1',
 					'featured_image' => 35,
 					'authors'        => [
 						get( $author_1->ID ),
@@ -470,6 +472,7 @@ class Test_Blog extends WP_UnitTestCase {
 					'post'           => $post_2,
 					'title'          => 'Test Post 2',
 					'permalink'      => 'http://test.quarkexpeditions.com/test-post-2',
+					'content'        => 'Post content 2',
 					'featured_image' => 32,
 					'authors'        => [
 						get( $author_1->ID ),
