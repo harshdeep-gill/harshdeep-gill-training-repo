@@ -56,7 +56,7 @@
 						</x-form.field>
 					</x-form.row>
 					<x-form.row>
-						<x-country-selector :countries="$countries" :states="$states" class_prefix="form-two-step-compact" />
+						<x-country-selector :countries="$countries" :states="$states" />
 					</x-form.row>
 					<x-form.row>
 						<x-form.field :validation="[ 'required' ]">

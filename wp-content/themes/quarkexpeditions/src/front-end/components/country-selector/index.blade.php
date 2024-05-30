@@ -1,7 +1,6 @@
 @props( [
-	'countries'    => [],
-	'states'       => [],
-	'class_prefix' => '',
+	'countries' => [],
+	'states'    => [],
 ] )
 
 <quark-country-selector class="country-selector">
