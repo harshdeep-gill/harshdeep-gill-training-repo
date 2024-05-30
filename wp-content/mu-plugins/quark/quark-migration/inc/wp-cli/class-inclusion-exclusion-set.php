@@ -169,9 +169,12 @@ class Inclusion_Exclusion_Set {
 			$status = 'publish';
 		}
 
+		// Alternate title.
+		$alternate_title = $item['alternate_title'] ?? '';
+
 		// Prepare post data.
 		$data = [
-			'post_type'         => INCLUSION_SET_POST_TYPE,
+			'post_type'         => $this->get_post_type( $title, strval( $alternate_title ) ),
 			'post_author'       => '1',
 			'post_title'        => $title,
 			'post_date'         => $created_at,
@@ -184,9 +187,6 @@ class Inclusion_Exclusion_Set {
 			'ping_status'       => 'closed',
 			'meta_input'        => [],
 		];
-
-		// Alternate title.
-		$alternate_title = $item['alternate_title'] ?? '';
 
 		// Check if alternate title is string and not empty.
 		if ( is_string( $alternate_title ) && ! empty( $alternate_title ) ) {
@@ -225,25 +225,6 @@ class Inclusion_Exclusion_Set {
 
 		// Set drupal id metadata.
 		$data['meta_input']['drupal_id'] = $nid;
-
-		// Check if title contains 'Inclusion' or 'Exclusion'.
-		if (
-			false !== stripos( $title, 'Inclusion' )
-			|| false !== stripos( $title, 'include' )
-			|| false !== stripos( strval( $alternate_title ), 'Inclusion' )
-			|| false !== stripos( strval( $alternate_title ), 'include' )
-			|| false !== stripos( strval( $alternate_title ), 'Mandatory' )
-		) {
-			$data['post_type'] = INCLUSION_SET_POST_TYPE;
-		} elseif (
-			false !== stripos( $title, 'Exclusion' )
-			|| false !== stripos( $title, 'exclude' )
-			|| false !== stripos( strval( $alternate_title ), 'Exclusion' )
-			|| false !== stripos( strval( $alternate_title ), 'exclude' )
-			|| false !== stripos( strval( $alternate_title ), 'excl' )
-		) {
-			$data['post_type'] = EXCLUSION_SET_POST_TYPE;
-		}
 
 		// Return normalized data.
 		return $data;
@@ -327,5 +308,50 @@ class Inclusion_Exclusion_Set {
 
 		// Return data.
 		return $result;
+	}
+
+	/**
+	 * Get post type based on title and alternate title.
+	 *
+	 * @param string $title Post title.
+	 * @param string $alternate_title Alternate title.
+	 *
+	 * @return string Post type.
+	 */
+	private function get_post_type( string $title = '', string $alternate_title = '' ): string {
+		// initialize post type var.
+		$post_type = '';
+
+		// Check if title contains 'Inclusion' or 'Exclusion'.
+		if ( false !== stripos( $title, 'inclusion' ) || false !== stripos( $title, 'include' ) ) {
+			$post_type = INCLUSION_SET_POST_TYPE;
+		} elseif ( false !== stripos( $title, 'exclusion' ) || false !== stripos( $title, 'exclude' ) ) {
+			$post_type = EXCLUSION_SET_POST_TYPE;
+		}
+
+		// Check if alternate title contains 'Inclusion' or 'Exclusion'.
+		if ( empty( $post_type ) ) {
+			if (
+				false !== stripos( $alternate_title, 'inclusion' )
+				|| false !== stripos( $alternate_title, 'include' )
+				|| false !== stripos( $alternate_title, 'Mandatory' )
+			) {
+				$post_type = INCLUSION_SET_POST_TYPE;
+			} elseif (
+				false !== stripos( $alternate_title, 'exclusion' )
+				|| false !== stripos( $alternate_title, 'exclude' )
+				|| false !== stripos( $alternate_title, 'excl' )
+			) {
+				$post_type = EXCLUSION_SET_POST_TYPE;
+			}
+		}
+
+		// Set default post type.
+		if ( empty( $post_type ) ) {
+			$post_type = INCLUSION_SET_POST_TYPE;
+		}
+
+		// Return post type.
+		return $post_type;
 	}
 }
