@@ -265,14 +265,15 @@ function primary_term_taxonomies( array $taxonomies = [], string $post_type = ''
  * @param int[] $post_ids Post IDs.
  *
  * @return array<mixed>{
- *      post: array|WP_Post,
- *      title: string,
- *      permalink: string,
- *      featured_image: integer,
- *      read_time: integer,
- *      authors: array,
- *      taxonomies: array,
- *  }[]
+ *  post: array<mixed>,
+ *  title: string,
+ *  permalink: string,
+ *  featured_image: int,
+ *  content: string,
+ *  authors: mixed[],
+ *  read_time: int,
+ *  taxonomies: array<mixed>,
+ * }[]
  */
 function get_cards_data( array $post_ids = [] ): array {
 	// Check if post ids exist.
