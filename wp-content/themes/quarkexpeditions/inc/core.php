@@ -289,6 +289,9 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'class'  => true,
 					'active' => true,
 				],
+				'quark-country-selector'                => [
+					'class' => true,
+				],
 				'tp-form'                               => [
 					'class'          => true,
 					'prevent-submit' => true,
