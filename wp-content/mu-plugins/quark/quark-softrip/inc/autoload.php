@@ -23,7 +23,7 @@ function autoload( string $class_name = '' ): void {
 	// Find file name based on class name.
 	$class_path = array_map(
 		function ( $item ) {
-			return str_replace( '_', '-', strtolower( implode( '-', preg_split( '/(?<=[a-z]) (?=[A-Z]) | (?<=[A-Z]) (?=[A-Z][a-z])/x', $item ) ) ) ); // @phpstan-ignore-line
+			return str_replace( '_', '-', strtolower( implode( '-', (array) preg_split( '/(?<=[a-z]) (?=[A-Z]) | (?<=[A-Z]) (?=[A-Z][a-z])/x', $item ) ) ) );
 		},
 		explode( '\\', str_replace( __NAMESPACE__ . '\\', '', $class_name ) )
 	);
