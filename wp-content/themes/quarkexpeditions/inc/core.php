@@ -285,6 +285,10 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'class'     => true,
 					'drawer_id' => true,
 				],
+				'quark-footer-accordion'                => [
+					'class'  => true,
+					'active' => true,
+				],
 				'quark-country-selector'                => [
 					'class' => true,
 				],
