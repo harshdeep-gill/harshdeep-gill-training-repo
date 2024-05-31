@@ -1,20 +1,7 @@
 @import "../../scss/";
 
 .country-selector {
-	display: grid;
-	gap: var(--spacing-4);
-	margin-bottom: var(--spacing-4);
-	grid-template-columns: repeat(1, 1fr);
-	min-width: 0;
-
-	&:last-child,
-	.form-row & {
-		margin-bottom: 0;
-	}
-
-	@media screen and (min-width: grid-size(sm)) {
-		grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-	}
+	display: contents;
 
 	&__state {
 		display: none;
