@@ -139,19 +139,19 @@ class DB {
 
 		// Build the SQL query.
 		$sql = "CREATE TABLE $table_name (
-		    id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-		    title VARCHAR(255) NOT NULL,
-		    Departure BIGINT NOT NULL,
-		    departure_id VARCHAR(20) NOT NULL,
-		    package_id VARCHAR(20) NOT NULL,
-		    option_id VARCHAR(10) NOT NULL,
-		    spaces_available BIGINT NOT NULL,
-		    adventure_option_term BIGINT NOT NULL,
-		    price_per_person_usd BIGINT NOT NULL,
-		    price_per_person_cad BIGINT NOT NULL,
-		    price_per_person_aud BIGINT NOT NULL,
-		    price_per_person_gbp BIGINT NOT NULL,
-		    price_per_person_eur BIGINT NOT NULL
+			id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+			title VARCHAR(255) NOT NULL,
+			Departure BIGINT NOT NULL,
+			departure_id VARCHAR(20) NOT NULL,
+			package_id VARCHAR(20) NOT NULL,
+			option_id VARCHAR(10) NOT NULL,
+			spaces_available BIGINT NOT NULL,
+			adventure_option_term BIGINT NOT NULL,
+			price_per_person_usd BIGINT NOT NULL,
+			price_per_person_cad BIGINT NOT NULL,
+			price_per_person_aud BIGINT NOT NULL,
+			price_per_person_gbp BIGINT NOT NULL,
+			price_per_person_eur BIGINT NOT NULL
 		) $engine_collate";
 
 		// return the SQL.
@@ -174,12 +174,12 @@ class DB {
 		$sql = "CREATE TABLE $table_name (
 			id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
 			promotion_code VARCHAR(255) NOT NULL,
-		    start_date DATETIME NOT NULL,
-		    end_date DATETIME NOT NULL,
-		    description VARCHAR(255) NOT NULL,
-		    discount_type VARCHAR(255) NOT NULL,
-		    discount_value VARCHAR(255) NOT NULL,
-		    pif TINYINT(1) NOT NULL
+			start_date DATETIME NOT NULL,
+			end_date DATETIME NOT NULL,
+			description VARCHAR(255) NOT NULL,
+			discount_type VARCHAR(255) NOT NULL,
+			discount_value VARCHAR(255) NOT NULL,
+			pif TINYINT(1) NOT NULL
 		) $engine_collate";
 
 		// return the SQL.
@@ -201,9 +201,9 @@ class DB {
 		// Build the SQL query.
 		$sql = "CREATE TABLE $table_name (
 			id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    		cabin_category BIGINT NOT NULL,
-		    title VARCHAR(255) NOT NULL,
-    		occupancy_mask VARCHAR(12) NOT NULL
+			cabin_category BIGINT NOT NULL,
+			title VARCHAR(255) NOT NULL,
+			occupancy_mask VARCHAR(12) NOT NULL
 		) $engine_collate";
 
 		// return the SQL.
@@ -225,12 +225,12 @@ class DB {
 		// Build the SQL query.
 		$sql = "CREATE TABLE $table_name (
 			id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    		occupancy_id BIGINT NOT NULL,
-    		currency_code VARCHAR(3) NOT NULL,
-    		price_per_person DECIMAL(8, 2) NOT NULL,
-    		total_price_per_person DECIMAL(8, 2) NOT NULL,
-    		promotion_code VARCHAR(255) NOT NULL,
-    		promo_price_per_person DECIMAL(8, 2) NOT NULL
+			occupancy_id BIGINT NOT NULL,
+			currency_code VARCHAR(3) NOT NULL,
+			price_per_person DECIMAL(8, 2) NOT NULL,
+			total_price_per_person DECIMAL(8, 2) NOT NULL,
+			promotion_code VARCHAR(255) NOT NULL,
+			promo_price_per_person DECIMAL(8, 2) NOT NULL
 		) $engine_collate";
 
 		// return the SQL.
