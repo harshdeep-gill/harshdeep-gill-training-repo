@@ -34,7 +34,7 @@ class DB {
 		// Get SQL array.
 		$tables = [
 			'adventure_options' => $this->get_adventure_table_sql(),
-			'cabin_cat'         => $this->get_cabin_table_sql(),
+			'cabin_categories'  => $this->get_cabin_table_sql(),
 			'occupancies'       => $this->get_occupancies_table_sql(),
 			'occupancy_prices'  => $this->get_occupancy_prices_table_sql(),
 			'promos'            => $this->get_promos_table_sql(),
@@ -101,7 +101,7 @@ class DB {
 	 */
 	private function get_cabin_table_sql(): string {
 		// Get the table name.
-		$table_name = $this->prefix_table_name( 'cabin_cat' );
+		$table_name = $this->prefix_table_name( 'cabin_categories' );
 
 		// Get the engine collate.
 		$engine_collate = $this->engine_collate();
@@ -117,8 +117,8 @@ class DB {
 		    Ship_id VARCHAR(10) NOT NULL,
 		    cabin_category_id VARCHAR(10) NOT NULL,
 		    availability_status VARCHAR(1) NOT NULL,
-		    spaces_available INT NOT NULL,
-            UNIQUE KEY cabin_category_title_unique (title)
+			spaces_available INT NOT NULL,
+			UNIQUE KEY cabin_category_title_unique (title)
 		) $engine_collate";
 
 		// return the SQL.
