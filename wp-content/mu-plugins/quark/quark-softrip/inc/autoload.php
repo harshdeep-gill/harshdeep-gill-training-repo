@@ -37,7 +37,3 @@ function autoload( string $class_name = '' ): void {
 		require_once $path;
 	}
 }
-
-// phpcs:disable PSR1.Files.SideEffects
-spl_autoload_register( __NAMESPACE__ . '\\autoload' );
-// phpcs:enable
