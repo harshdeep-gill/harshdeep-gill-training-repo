@@ -24,7 +24,11 @@ class API {
 	 */
 	public function do_request( string $service = '', array $params = [], string $method = 'GET' ): array|WP_Error {
 		// Check Username and Password are set.
-		if ( empty( QUARK_SOFTRIP_USERNAME ) || empty( QUARK_SOFTRIP_PASSWORD ) ) {
+		if (
+			! defined( 'QUARK_SOFTRIP_BASE_URL' ) ||
+			! defined( 'QUARK_SOFTRIP_USERNAME' ) ||
+			! defined( 'QUARK_SOFTRIP_PASSWORD' )
+		) {
 			return new WP_Error( 'no_auth', __( 'Softrip credentials missing', 'tcs' ) );
 		}
 
