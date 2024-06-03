@@ -472,8 +472,8 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 				],
 				[
 					'key'                  => 'field_65f2eb8fde5b8',
-					'label'                => 'Mandatory Transfer Package Inclusions',
-					'name'                 => 'mtp_inclusion_id',
+					'label'                => 'Mandatory Transfer Package Inclusion',
+					'name'                 => 'mandatory_transfer_package_inclusion',
 					'aria-label'           => '',
 					'type'                 => 'post_object',
 					'instructions'         => '',
@@ -498,8 +498,8 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 				],
 				[
 					'key'                  => 'field_65f2ebbade5b9',
-					'label'                => 'Mandatory Transfer Package Exclusions',
-					'name'                 => 'mtp_exclusion_id',
+					'label'                => 'Mandatory Transfer Package Exclusion',
+					'name'                 => 'mandatory_transfer_package_exclusion',
 					'aria-label'           => '',
 					'type'                 => 'post_object',
 					'instructions'         => '',
@@ -524,7 +524,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 				],
 				[
 					'key'               => 'field_65f2ee5d96e8c',
-					'label'             => 'Supplement Prices',
+					'label'             => 'Supplement Price',
 					'name'              => 'supplement_price',
 					'aria-label'        => '',
 					'type'              => 'group',

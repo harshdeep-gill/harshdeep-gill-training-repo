@@ -318,7 +318,7 @@ class Itinerary {
 
 			// Check if post exist.
 			if ( $mtp_inclusion_id instanceof WP_Post ) {
-				$data['meta_input']['mtp_inclusion_id'] = $mtp_inclusion_id->ID;
+				$data['meta_input']['mandatory_transfer_package_inclusion'] = $mtp_inclusion_id->ID;
 			}
 		}
 
@@ -328,7 +328,7 @@ class Itinerary {
 
 			// Check if post exist.
 			if ( $mtp_exclusion_id instanceof WP_Post ) {
-				$data['meta_input']['mtp_exclusion_id'] = $mtp_exclusion_id->ID;
+				$data['meta_input']['mandatory_transfer_package_exclusion'] = $mtp_exclusion_id->ID;
 			}
 		}
 
