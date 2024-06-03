@@ -200,7 +200,7 @@ export const settings: BlockConfiguration = {
 							onChange={ ( isMobileCarousel: boolean ) => setAttributes( { isMobileCarousel } ) }
 						/>
 						<ToggleControl
-							label={ __( 'Has Tag?', 'qrk' ) }
+							label={ __( 'Has \'New Offer\' Tag?', 'qrk' ) }
 							checked={ attributes.hasOfferTag }
 							help={ __( 'Show the \'New Offer\' Tag', 'qrk' ) }
 							onChange={ ( hasOfferTag: boolean ) => setAttributes( { hasOfferTag } ) }

@@ -98,9 +98,9 @@ function render( array $attributes = [] ): string {
 		'order'                  => 'DESC',
 	];
 
-	// If the selection is manual, we need to check if we have IDs.
+	// If the selection is manual, check if we have IDs.
 	if ( 'manual' === $attributes['selection'] ) {
-		// Return empty if manual select, but no IDs were selected.
+		// Return empty if selection is manual, but no IDs were selected.
 		if ( empty( $attributes['ids'] ) ) {
 			return '';
 		}
@@ -110,7 +110,7 @@ function render( array $attributes = [] ): string {
 		$args['orderby']        = 'post__in';
 		$args['posts_per_page'] = count( $attributes['ids'] ); // phpcs:ignore
 	} elseif ( 'byTerms' === $attributes['selection'] ) {
-		// Return empty if select by terms, but no terms or taxonomy were selected.
+		// Return empty if selection by terms, but no terms or taxonomy were selected.
 		if ( empty( $attributes['termIds'] ) || empty( $attributes['taxonomies'] ) ) {
 			return '';
 		}
@@ -120,7 +120,7 @@ function render( array $attributes = [] ): string {
 			'relation' => 'AND',
 		];
 
-		// Add taxonomies to query and add them to the tax query.
+		// Add taxonomies to query and add to the tax query.
 		foreach ( $attributes['taxonomies'] as $taxonomy ) {
 			$tax_query[] = [
 				'taxonomy'         => $taxonomy,

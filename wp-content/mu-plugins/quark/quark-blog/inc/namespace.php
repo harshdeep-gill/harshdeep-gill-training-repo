@@ -265,14 +265,14 @@ function primary_term_taxonomies( array $taxonomies = [], string $post_type = ''
  * @param int[] $post_ids Post IDs.
  *
  * @return array<mixed>{
- *  post: array<mixed>,
- *  title: string,
- *  permalink: string,
- *  featured_image: int,
- *  content: string,
- *  authors: mixed[],
- *  read_time: int,
- *  taxonomies: array<mixed>,
+ *    post: array<mixed>,
+ *    title: string,
+ *    permalink: string,
+ *    featured_image: int,
+ *    content: string,
+ *    authors: mixed[],
+ *    read_time: int,
+ *    taxonomies: array<mixed>,
  * }[]
  */
 function get_cards_data( array $post_ids = [] ): array {
