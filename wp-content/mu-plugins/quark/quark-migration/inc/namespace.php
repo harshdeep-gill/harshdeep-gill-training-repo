@@ -31,7 +31,8 @@ function bootstrap(): void {
 		WP_CLI::add_command( 'quark-migrate post-trip-options', __NAMESPACE__ . '\\WP_CLI\\Pre_Post_Trip_Options' );
 		WP_CLI::add_command( 'quark-migrate cabin-category', __NAMESPACE__ . '\\WP_CLI\\Cabin_Category' );
 		WP_CLI::add_command( 'quark-migrate inclusion-exclusion-sets', __NAMESPACE__ . '\\WP_CLI\\Inclusion_Exclusion_Set' );
-		WP_CLI::add_command( 'quark-migrate itinerary-days', __NAMESPACE__ . '\\WP_CLI\\Itinerary_Day' );
+		WP_CLI::add_command( 'quark-migrate itinerary-day', __NAMESPACE__ . '\\WP_CLI\\Itinerary_Day' );
+		WP_CLI::add_command( 'quark-migrate itinerary', __NAMESPACE__ . '\\WP_CLI\\Itinerary' );
 	}
 }
 
@@ -65,7 +66,7 @@ function add_drupal_migration_meta_box(): void {
 		'drupal-migration',
 		'Drupal Migration',
 		function () use ( $drupal_id ) {
-			$drupal_url = 'https://www.quarkexpeditions.com/';
+			$drupal_url = 'https://dev.quarkexpeditions.com/';
 			?>
 			<p>Drupal Node ID: <code><?php echo absint( $drupal_id ); ?></code></p>
 			<a href="<?php echo esc_url( sprintf( '%s/node/%d', $drupal_url, $drupal_id ) ); ?>" class="button button-secondary" target="_blank">View On Drupal</a>
