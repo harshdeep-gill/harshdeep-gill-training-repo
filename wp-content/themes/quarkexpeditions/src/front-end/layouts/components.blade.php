@@ -2179,6 +2179,16 @@
 			</x-accordion>
 		</x-section>
 	</x-component-demo>
+
+	<x-component-demo :keys="[ 'tooltip' ]">
+		<x-tooltip icon="info" open_position="top">
+			<p>Hiking, kayaking, mountain biking, mountaineering, etc.</p>
+		</x-tooltip>
+		<x-tooltip icon="info" open_position="bottom">
+			<p>SVOP, RYA or higher</p>
+		</x-tooltip>
+	</x-component-demo>
+
 	<x-component-demo :keys="[ 'accordion' ]">
 		<x-section title="What should I know before booking a polar expedition?" heading_level="2" title_align="left">
 			<x-accordion title="Quark Expeditions takes you places no one else can!" :full_border="true">
