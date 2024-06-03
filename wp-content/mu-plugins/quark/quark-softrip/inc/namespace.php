@@ -8,8 +8,7 @@
 namespace Quark\Softrip;
 
 use WP_CLI;
-
-const BASE_URL = 'https://softrip-data-adapter.travelopia.dev/';
+use WP_Error;
 
 /**
  * Bootstrap plugin.
@@ -17,37 +16,55 @@ const BASE_URL = 'https://softrip-data-adapter.travelopia.dev/';
  * @return void
  */
 function bootstrap(): void {
-	// Hooks.
-	add_action( 'admin_menu', __NAMESPACE__ . '\\setup_settings' );
-
-	// Custom fields.
-	if ( is_admin() ) {
-		require_once __DIR__ . '/../custom-fields/options-softrip.php';
-	}
-
 	// CLI commands.
 	if ( defined( 'WP_CLI' ) && true === WP_CLI ) {
 		WP_CLI::add_command( 'quark-softrip db', __NAMESPACE__ . '\\WP_CLI\\DB' );
 	}
+
+	add_action('admin_menu', function(){
+		echo '<pre>';
+		var_dump( get_departures(['ANT-ECR-11D2025']) );
+		die;
+	});
 }
 
 /**
- * Site settings.
+ * Get departures for an array of Softrip IDs.
  *
- * @return void
+ * @param string[] $codes Softrip ID array, max 5.
+ *
+ * @return mixed[]
  */
-function setup_settings(): void {
-	// Check ACF is loaded.
-	if ( ! function_exists( 'acf_add_options_page' ) ) {
-		return;
+function get_departures( array $codes = [] ): array {
+	// Get API.
+	$softrip = new API();
+
+	// Strip out duplicates.
+	$codes = array_unique( $codes );
+
+	// Check if less than 5 IDs.
+	if ( empty( $codes ) || 5 <= count( $codes ) ) {
+		return [
+			'success' => false,
+			'message' => __( "No ID's or Too many ID's requested", 'tcs' ),
+		];
 	}
 
-	// Pages setup settings.
-	acf_add_options_sub_page(
-		[
-			'page_title'  => 'Softrip',
-			'menu_title'  => 'Softrip',
-			'parent_slug' => 'site-settings',
-		]
-	);
+	// Implode IDs into a string.
+	$code_string = implode( ',', $codes );
+	$result      = $softrip->do_request( 'departures', [ 'productCodes' => $code_string ] );
+
+	// Check if request was successful.
+	if ( $result instanceof WP_Error ) {
+		return [
+			'success' => false,
+			'message' => $result->get_error_message(),
+		];
+	}
+
+	// Return successful result.
+	return [
+		'success' => true,
+		'data'    => $result,
+	];
 }
