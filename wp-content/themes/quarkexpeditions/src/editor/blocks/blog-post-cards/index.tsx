@@ -61,6 +61,7 @@ export const settings: BlockConfiguration = {
 	keywords: [
 		__( 'blog', 'qrk' ),
 		__( 'post', 'qrk' ),
+		__( 'cards', 'qrk' ),
 	],
 	attributes: {
 		selection: {
