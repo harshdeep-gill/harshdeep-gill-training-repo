@@ -39,6 +39,10 @@ function register(): void {
 		BLOCK_NAME,
 		[
 			'attributes'      => [
+				'selection'        => [
+					'type'    => 'string',
+					'default' => 'manual',
+				],
 				'layout'           => [
 					'type'    => 'string',
 					'default' => 'collage',
@@ -47,9 +51,25 @@ function register(): void {
 					'type'    => 'array',
 					'default' => [],
 				],
+				'taxonomies'       => [
+					'type'    => 'array',
+					'default' => [],
+				],
+				'termIds'          => [
+					'type'    => 'array',
+					'default' => [],
+				],
+				'totalPosts'       => [
+					'type'    => 'number',
+					'default' => 5,
+				],
 				'isMobileCarousel' => [
 					'type'    => 'boolean',
 					'default' => true,
+				],
+				'hasOfferTag'      => [
+					'type'    => 'boolean',
+					'default' => false,
 				],
 			],
 			'render_callback' => __NAMESPACE__ . '\\render',
@@ -70,13 +90,50 @@ function render( array $attributes = [] ): string {
 		'post_type'              => BLOG_POST_TYPE,
 		'post_status'            => 'publish',
 		'fields'                 => 'ids',
-		'post__in'               => $attributes['ids'],
-		'posts_per_page'         => count( (array) $attributes['ids'] ), // phpcs:ignore
+		'posts_per_page'         => $attributes['totalPosts'],
 		'no_found_rows'          => true,
 		'update_post_meta_cache' => false,
 		'update_post_term_cache' => false,
-		'orderby'                => 'post__in',
+		'orderby'                => 'date',
+		'order'                  => 'DESC',
 	];
+
+	// If the selection is manual, we need to check if we have IDs.
+	if ( 'manual' === $attributes['selection'] ) {
+		// Return empty if manual select, but no IDs were selected.
+		if ( empty( $attributes['ids'] ) ) {
+			return '';
+		}
+
+		// Set WP_Query args for manual selection.
+		$args['post__in']       = $attributes['ids'];
+		$args['orderby']        = 'post__in';
+		$args['posts_per_page'] = count( $attributes['ids'] ); // phpcs:ignore
+	} elseif ( 'byTerms' === $attributes['selection'] ) {
+		// Return empty if select by terms, but no terms or taxonomy were selected.
+		if ( empty( $attributes['termIds'] ) || empty( $attributes['taxonomies'] ) ) {
+			return '';
+		}
+
+		// Build tax query.
+		$tax_query = [
+			'relation' => 'AND',
+		];
+
+		// Add taxonomies to query and add them to the tax query.
+		foreach ( $attributes['taxonomies'] as $taxonomy ) {
+			$tax_query[] = [
+				'taxonomy'         => $taxonomy,
+				'terms'            => $attributes['termIds'],
+				'field'            => 'term_id',
+				'include_children' => false,
+				'operator'         => 'IN',
+			];
+		}
+
+		// Add tax query to args.
+		$args['tax_query'] = $tax_query;
+	}
 
 	// Get posts.
 	$posts = new WP_Query( $args );
@@ -98,6 +155,7 @@ function render( array $attributes = [] ): string {
 		[
 			'layout'             => $attributes['layout'] ?? 'collage',
 			'is_mobile_carousel' => $attributes['isMobileCarousel'] ?: false,
+			'has_offer_tag'      => $attributes['hasOfferTag'] ?: false,
 			'cards'              => $cards_data,
 		]
 	);

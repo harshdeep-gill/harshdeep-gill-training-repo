@@ -1,6 +1,7 @@
 @props( [
 	'layout'             => '',
 	'is_mobile_carousel' => false,
+	'has_offer_tag'      => false,
 	'cards'              => [],
 ] )
 
@@ -17,6 +18,9 @@
 			<x-info-cards.card size="big" :url="$card['permalink'] ?? ''">
 				<x-info-cards.image :image_id="$card['featured_image'] ?? 0" />
 				<x-info-cards.content position="bottom">
+					@if ( ! empty( $has_offer_tag ) )
+						<x-info-cards.tag text="New Offer" background_color="magenta" />
+					@endif
 					<x-info-cards.overline>
 						@php
 							$read_time = sprintf( _n( '%d min read', '%d mins read', $card['read_time'], 'qrk' ), $card['read_time'] );

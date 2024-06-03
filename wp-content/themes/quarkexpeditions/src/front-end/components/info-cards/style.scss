@@ -272,8 +272,6 @@
 	&__tag {
 		width: fit-content;
 		padding: var(--spacing-2) var(--spacing-3);
-		background-color: var(--color-yellow);
-		color: var(--color-black);
 		overflow: hidden;
 		max-width: 100%;
 
@@ -281,6 +279,16 @@
 
 		#{$self}__card-content--bottom & {
 			margin-bottom: auto;
+		}
+
+		&--has-background-yellow {
+			background-color: var(--color-yellow);
+			color: var(--color-black);
+		}
+
+		&--has-background-magenta {
+			background-color: var(--color-magenta);
+			color: var(--color-white);
 		}
 	}
 }
