@@ -32,7 +32,7 @@
 					<x-info-cards.title :title="$card['title'] ?? ''" />
 					@if ( $loop->first )
 						<x-info-cards.description>
-							{!! $card['content'] !!}
+							{!! $card['excerpt'] ?? '' !!}
 						</x-info-cards.description>
 					@endif
 					<x-info-cards.cta text="Read Post" />

@@ -88,10 +88,6 @@ export const settings: BlockConfiguration = {
 			type: 'boolean',
 			default: true,
 		},
-		hasOfferTag: {
-			type: 'boolean',
-			default: false,
-		},
 		totalPosts: {
 			type: 'number',
 			default: 5,
@@ -199,12 +195,6 @@ export const settings: BlockConfiguration = {
 							checked={ attributes.isMobileCarousel }
 							help={ __( 'Show the blog posts in a carousel on mobile devices', 'qrk' ) }
 							onChange={ ( isMobileCarousel: boolean ) => setAttributes( { isMobileCarousel } ) }
-						/>
-						<ToggleControl
-							label={ __( 'Has \'New Offer\' Tag?', 'qrk' ) }
-							checked={ attributes.hasOfferTag }
-							help={ __( 'Show the \'New Offer\' Tag', 'qrk' ) }
-							onChange={ ( hasOfferTag: boolean ) => setAttributes( { hasOfferTag } ) }
 						/>
 					</PanelBody>
 				</InspectorControls>

@@ -67,10 +67,6 @@ function register(): void {
 					'type'    => 'boolean',
 					'default' => true,
 				],
-				'hasOfferTag'      => [
-					'type'    => 'boolean',
-					'default' => false,
-				],
 			],
 			'render_callback' => __NAMESPACE__ . '\\render',
 		]
@@ -155,7 +151,6 @@ function render( array $attributes = [] ): string {
 		[
 			'layout'             => $attributes['layout'] ?? 'collage',
 			'is_mobile_carousel' => $attributes['isMobileCarousel'] ?: false,
-			'has_offer_tag'      => $attributes['hasOfferTag'] ?: false,
 			'cards'              => $cards_data,
 		]
 	);
