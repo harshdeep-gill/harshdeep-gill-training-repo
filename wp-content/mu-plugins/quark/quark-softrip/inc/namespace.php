@@ -23,42 +23,27 @@ function bootstrap(): void {
 }
 
 /**
- * Get departures for an array of Softrip IDs.
+ * Request departures for an array of Softrip IDs.
  *
  * @param string[] $codes Softrip ID array, max 5.
  *
- * @return mixed[]
+ * @return mixed[]|WP_Error
  */
-function get_departures( array $codes = [] ): array {
-	// Get API.
-	$softrip = new API();
-
+function request_departures( array $codes = [] ): array|WP_Error {
 	// Strip out duplicates.
 	$codes = array_unique( $codes );
 
 	// Check if less than 5 IDs.
 	if ( empty( $codes ) || 5 <= count( $codes ) ) {
-		return [
-			'success' => false,
-			'message' => __( "No ID's or Too many ID's requested", 'tcs' ),
-		];
+		return new WP_Error( 'qrk_softrip_departures_limit', 'The maximum number of codes allowed is 5' );
 	}
+
+	// Get API.
+	$softrip = new Softrip_Data_Adapter();
 
 	// Implode IDs into a string.
 	$code_string = implode( ',', $codes );
-	$result      = $softrip->do_request( 'departures', [ 'productCodes' => $code_string ] );
 
-	// Check if request was successful.
-	if ( $result instanceof WP_Error ) {
-		return [
-			'success' => false,
-			'message' => $result->get_error_message(),
-		];
-	}
-
-	// Return successful result.
-	return [
-		'success' => true,
-		'data'    => $result,
-	];
+	// Do request and return the result.
+	return $softrip->do_request( 'departures', [ 'productCodes' => $code_string ] );
 }

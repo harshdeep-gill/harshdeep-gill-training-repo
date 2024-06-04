@@ -1,6 +1,6 @@
 <?php
 /**
- * API Class.
+ * Softrip_Data_Adapter Class.
  *
  * @package quark-softrip
  */
@@ -10,9 +10,9 @@ namespace Quark\Softrip;
 use WP_Error;
 
 /**
- * Class API.
+ * Class Softrip_Data_Adapter.
  */
-class API {
+class Softrip_Data_Adapter {
 	/**
 	 * Do a request.
 	 *
@@ -25,21 +25,21 @@ class API {
 	public function do_request( string $service = '', array $params = [], string $method = 'GET' ): array|WP_Error {
 		// Check Username and Password are set.
 		if (
-			! defined( 'QUARK_SOFTRIP_BASE_URL' ) ||
-			! defined( 'QUARK_SOFTRIP_USERNAME' ) ||
-			! defined( 'QUARK_SOFTRIP_PASSWORD' )
+			! defined( 'QUARK_SOFTRIP_ADAPTER_BASE_URL' ) ||
+			! defined( 'QUARK_SOFTRIP_ADAPTER_USERNAME' ) ||
+			! defined( 'QUARK_SOFTRIP_ADAPTER_PASSWORD' )
 		) {
-			return new WP_Error( 'no_auth', __( 'Softrip credentials missing', 'tcs' ) );
+			return new WP_Error( 'no_auth', __( 'Softrip credentials missing', 'qrk' ) );
 		}
 
 		// Create the URL.
-		$url = trailingslashit( QUARK_SOFTRIP_BASE_URL ) . $service;
+		$url = trailingslashit( QUARK_SOFTRIP_ADAPTER_BASE_URL ) . $service;
 
 		// Set the request args.
 		$args = [
 			'method'  => $method,
 			'headers' => [
-				'Authorization' => 'basic ' . base64_encode( QUARK_SOFTRIP_USERNAME . ':' . QUARK_SOFTRIP_PASSWORD ), // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
+				'Authorization' => 'basic ' . base64_encode( QUARK_SOFTRIP_ADAPTER_USERNAME . ':' . QUARK_SOFTRIP_ADAPTER_PASSWORD ), // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
 			],
 		];
 
