@@ -10,7 +10,7 @@
 						<x-header.nav-item-featured image_id="34">
 							<x-header.nav-item-featured-title title="Explore Polar Regions" />
 							<x-header.nav-item-featured-subtitle subtitle="Incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis." />
-							<x-button size="big">Explore Polar Regions</x-button>
+							<x-button href="#" size="big">Explore Polar Regions</x-button>
 						</x-header.nav-item-featured>
 					</x-header.nav-item-dropdown-content-column>
 					<x-header.nav-item-dropdown-content-column>

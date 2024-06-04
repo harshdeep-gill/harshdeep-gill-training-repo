@@ -10,6 +10,7 @@ export default class HeaderNavMenu extends HTMLElement {
 	/**
 	 * Properties.
 	 */
+	private bodyElement: HTMLElement | null;
 	private menuButton: HTMLButtonElement | null;
 
 	/**
@@ -20,6 +21,7 @@ export default class HeaderNavMenu extends HTMLElement {
 		super();
 
 		// Elements.
+		this.bodyElement = document.querySelector( 'body' );
 		this.menuButton = this.querySelector( 'button.header__nav-item-link' );
 
 		// Event for dropdown button.
@@ -55,6 +57,9 @@ export default class HeaderNavMenu extends HTMLElement {
 
 		// Toggle `open` attribute.
 		this.setAttribute( 'open', 'true' );
+
+		// Add class to the body element.
+		this.bodyElement?.classList.add( 'has-navigation-dropdown-open' );
 	}
 
 	/**
@@ -63,6 +68,11 @@ export default class HeaderNavMenu extends HTMLElement {
 	close() {
 		// Remove 'open' attribute.
 		this.removeAttribute( 'open' );
+
+		// Remove class from the body element.
+		if ( this.bodyElement?.classList.contains( 'has-navigation-dropdown-open' ) ) {
+			this.bodyElement?.classList.remove( 'has-navigation-dropdown-open' );
+		}
 	}
 
 	/**
