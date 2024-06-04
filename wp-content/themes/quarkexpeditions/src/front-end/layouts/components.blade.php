@@ -290,7 +290,7 @@
 		</x-drawer>
 	</x-header>
 
-	<x-component-demo :keys="[ 'header', 'hero-refactor' ]">
+	<x-component-demo :keys="[ 'lp-header', 'hero-refactor' ]">
 		<x-lp-header
 			tc_image_id="18"
 			phone_number="+1-877-585-1235"
@@ -677,7 +677,7 @@
 		</x-section>
 	</x-component-demo>
 
-	<x-component-demo :keys="[ 'header' ]">
+	<x-component-demo :keys="[ 'lp-header' ]">
 		<x-lp-header
 			tc_image_id="18"
 			phone_number="+1-877-585-1235"
@@ -2266,7 +2266,7 @@
 			<x-footer.middle>
 				<x-footer.column>
 					<x-footer.logo />
-					<x-button size="big">Request a Quote</x-button>
+					<x-button href="#" size="big">Request a Quote</x-button>
 					<x-footer.social-links :social_links="$social_links" />
 				</x-footer.column>
 
@@ -2290,7 +2290,7 @@
 
 				<x-footer.column>
 					<x-footer.column-title title="Discover Your Dream Trip" />
-					<x-button size="big" color="black">View All Expeditions</x-button>
+					<x-button  href="#" size="big" color="black">View All Expeditions</x-button>
 
 					<x-footer.column-title title="Change Currency" />
 					<x-form>
