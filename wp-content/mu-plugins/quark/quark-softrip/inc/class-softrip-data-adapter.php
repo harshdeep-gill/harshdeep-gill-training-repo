@@ -20,7 +20,7 @@ class Softrip_Data_Adapter {
 	 * @param mixed[] $params  The request params.
 	 * @param string  $method  The request method.
 	 *
-	 * @return mixed[]|WP_Error
+	 * @return array<string, mixed>|WP_Error
 	 */
 	public function do_request( string $service = '', array $params = [], string $method = 'GET' ): array|WP_Error {
 		// Check Username and Password are set.
@@ -54,6 +54,14 @@ class Softrip_Data_Adapter {
 		// Return WP_Error if failed.
 		if ( $request instanceof WP_Error ) {
 			return $request;
+		}
+
+		// Get response code.
+		$response_code = wp_remote_retrieve_response_code( $request );
+
+		// Check response code.
+		if ( 200 !== $response_code ) {
+			return new WP_Error( $response_code, wp_remote_retrieve_response_message( $request ) );
 		}
 
 		// Return result array.
