@@ -57,7 +57,9 @@ export const settings: BlockConfiguration = {
 		} );
 
 		// eslint-disable-next-line react-hooks/rules-of-hooks
-		const innerBlockProps = useInnerBlocksProps( {}, {
+		const innerBlockProps = useInnerBlocksProps( {
+			className: classnames( className, 'accordion__content-inner' ),
+		}, {
 			template: [
 				[ 'core/paragraph', { placeholder: __( 'Content…', 'qrk' ) } ],
 			],
@@ -96,9 +98,7 @@ export const settings: BlockConfiguration = {
 						</button>
 					</div>
 					<div className="accordion__content">
-						<div className="accordion__content-inner">
-							<p { ...innerBlockProps } />
-						</div>
+						<div { ...innerBlockProps } />
 					</div>
 				</div>
 			</>
