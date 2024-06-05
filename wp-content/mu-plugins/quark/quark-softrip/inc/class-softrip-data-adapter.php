@@ -29,7 +29,7 @@ class Softrip_Data_Adapter {
 			! defined( 'QUARK_SOFTRIP_ADAPTER_USERNAME' ) ||
 			! defined( 'QUARK_SOFTRIP_ADAPTER_PASSWORD' )
 		) {
-			return new WP_Error( 'no_auth', __( 'Softrip credentials missing', 'qrk' ) );
+			return new WP_Error( 'qrk_softrip_no_auth', __( 'Softrip credentials missing', 'qrk' ) );
 		}
 
 		// Create the URL.
@@ -56,12 +56,9 @@ class Softrip_Data_Adapter {
 			return $request;
 		}
 
-		// Get response code.
-		$response_code = wp_remote_retrieve_response_code( $request );
-
 		// Check response code.
-		if ( 200 !== $response_code ) {
-			return new WP_Error( $response_code, wp_remote_retrieve_response_message( $request ) );
+		if ( 200 !== wp_remote_retrieve_response_code( $request ) ) {
+			return new WP_Error( 'qrk_softrip_invalid_response', wp_remote_retrieve_response_message( $request ) );
 		}
 
 		// Return result array.
