@@ -11,7 +11,7 @@ import {
 	RadioControl,
 	ToggleControl,
 	SelectControl,
-	TextControl,
+	RangeControl,
 } from '@wordpress/components';
 import {
 	InspectorControls,
@@ -126,7 +126,15 @@ export const settings: BlockConfiguration = {
 								{ label: __( 'Grid', 'qrk' ), value: 'grid' },
 								{ label: __( 'Collage', 'qrk' ), value: 'collage' },
 							] }
-							onChange={ ( layout: string ) => setAttributes( { layout } ) }
+							onChange={ ( layout: string ) => {
+								// Set layout.
+								setAttributes( { layout } );
+
+								// Set totalPosts to 5 for collage layout.
+								if ( 'collage' === layout ) {
+									setAttributes( { totalPosts: 5 } );
+								}
+							} }
 						/>
 						<SelectControl
 							label={ __( 'Selection', 'qrk' ) }
@@ -167,7 +175,7 @@ export const settings: BlockConfiguration = {
 							attributes.taxonomies.length > 0 &&
 							<TaxonomyRelationshipControl
 								label={ __( 'Select Terms' ) }
-								help={ __( 'Select posts associated to these terms', 'qrk' ) }
+								help={ __( 'Select the associated terms', 'qrk' ) }
 								taxonomies={ attributes.taxonomies }
 								value={ attributes.termIds }
 								onSelect={ ( terms: any ) => setAttributes( { termIds: terms.map( ( term: any ) => term.term_id ) } ) }
@@ -175,19 +183,13 @@ export const settings: BlockConfiguration = {
 						}
 						{
 							( 'byTerms' === attributes.selection || 'recent' === attributes.selection ) &&
-								<TextControl
+								<RangeControl
 									label={ __( 'Total Posts', 'qrk' ) }
-									help={ __( 'Enter the total number of posts', 'qrk' ) }
+									help={ __( 'Select the total number of posts to be displayed', 'qrk' ) }
 									value={ attributes.totalPosts }
-									type="number"
-									onChange={ ( totalPosts ) => {
-										// Check if totalPosts is not empty.
-										if ( '' === totalPosts ) {
-											totalPosts = '0';
-										} else {
-											setAttributes( { totalPosts } );
-										}
-									} }
+									onChange={ ( totalPosts ) => setAttributes( { totalPosts } ) }
+									min={ 'collage' === attributes.layout ? 5 : 1 }
+									max={ 100 }
 								/>
 						}
 						<ToggleControl
