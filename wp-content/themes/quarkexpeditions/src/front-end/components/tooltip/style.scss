@@ -10,7 +10,6 @@
 	display: inline-flex;
 	cursor: pointer;
 	position: relative;
-	text-align: center;
 
 	&:hover {
 		#{$self}__description {
@@ -30,10 +29,10 @@
 		}
 
 		&::after {
-			bottom: 6px;
+			bottom: 5.5px;
 			border-color: var(--color-white) rgba(0, 0, 0, 0) rgba(0, 0, 0, 0) rgba(0, 0, 0, 0);
 			border-width: 11px;
-			z-index: 11;
+			z-index: 101;
 		}
 
 		&::before {
@@ -53,34 +52,23 @@
 	}
 
 	&__description {
+		box-shadow: var(--shadow-3);
 		visibility: hidden;
 		position: absolute;
 		z-index: 99;
-		width: max-content;
+		width: 250px;
 		max-width: 250px;
 		background-color: var(--color-white);
 		border: 1px solid var(--color-black);
 		border-radius: var(--border-small);
-		left: 0;
-		right: 0;
-		margin: 0 auto 4px auto;
-		font-size: 11px;
-		padding: 12px;
-
-		@media screen and (min-width: grid-size(xl)) {
-			font-size: 13px;
-			padding: 15px;
-		}
+		left: -114px;
+		margin: 0 auto 4px;
+		font-size: 14px;
+		line-height: 1.571;
+		padding: var(--spacing-3) var(--spacing-4);
 
 		&--top {
 			bottom: 100%;
-		}
-
-		&--bottom {
-			top: 100%;
-			right: 0;
-			left: 0;
-			bottom: initial;
 		}
 	}
 }
