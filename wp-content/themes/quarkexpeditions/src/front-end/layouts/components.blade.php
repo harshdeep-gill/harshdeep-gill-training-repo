@@ -2186,14 +2186,14 @@
 			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.</p>
 			<div>
 				<strong>What areas do you have work experience in?</strong>
-				<x-tooltip icon="info" open_position="top">
+				<x-tooltip icon="info">
 					<p>Hiking, kayaking, mountain biking, mountaineering, etc.</p>
 				</x-tooltip>
 			</div>
 
 			<div>
 				<strong>Do you have a university degree (or higher) in any of the following subjects?</strong>
-					<x-tooltip icon="info" open_position="top">
+					<x-tooltip icon="info">
 					<p>SVOP, RYA or higher</p>
 				</x-tooltip>
 			</div>
