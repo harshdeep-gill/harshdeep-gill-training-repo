@@ -1,6 +1,6 @@
 @props( [
-	'current_page'        => true,
-	'total_pages'         => true,
+	'current_page'        => '',
+	'total_pages'         => '',
 	'show_items_per_page' => true,
 ] )
 
@@ -28,9 +28,11 @@
 			</div>
 		@endif
 
-		<div class="pagination__total-pages">
-			{{ __( 'Page', 'qrk' ) }} {{ $current_page }} {{ __( 'of', 'qrk' ) }} {{ $total_pages }}
-		</div>
+		@if ( ! empty( $current_page ) || ! empty( $total_pages ) )
+			<div class="pagination__total-pages">
+				{{ __( 'Page', 'qrk' ) }} {{ $current_page }} {{ __( 'of', 'qrk' ) }} {{ $total_pages }}
+			</div>
+		@endif
 
 		<div class="pagination__container">
 			<a href="#" class="pagination__first-page">{{ __( 'First', 'qrk' ) }}</a>
