@@ -58,6 +58,16 @@
 		}
 	}
 
+	&__first-page,
+	&__last-page {
+		font-weight: var(--font-weight-bold);
+		text-decoration: none;
+
+		&:hover {
+			text-decoration: none;
+		}
+	}
+
 	a.page-numbers {
 
 		&:hover {

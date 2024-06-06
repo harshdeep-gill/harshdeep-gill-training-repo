@@ -37,7 +37,7 @@
 
 			{!! $slot !!}
 
-			<a href="#" classpagination__last-page>{{ __( 'Last', 'qrk' ) }}</a>
+			<a href="#" class="pagination__last-page">{{ __( 'Last', 'qrk' ) }}</a>
 		</div>
 	</div>
 </x-section>
