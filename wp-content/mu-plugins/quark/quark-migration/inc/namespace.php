@@ -33,6 +33,7 @@ function bootstrap(): void {
 		WP_CLI::add_command( 'quark-migrate inclusion-exclusion-sets', __NAMESPACE__ . '\\WP_CLI\\Inclusion_Exclusion_Set' );
 		WP_CLI::add_command( 'quark-migrate itinerary-day', __NAMESPACE__ . '\\WP_CLI\\Itinerary_Day' );
 		WP_CLI::add_command( 'quark-migrate itinerary', __NAMESPACE__ . '\\WP_CLI\\Itinerary' );
+		WP_CLI::add_command( 'quark-migrate staff-member', __NAMESPACE__ . '\\WP_CLI\\Staff_Member' );
 	}
 }
 
