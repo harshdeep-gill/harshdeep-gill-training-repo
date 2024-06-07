@@ -289,6 +289,9 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'class'  => true,
 					'active' => true,
 				],
+				'quark-tooltip'                         => [
+					'class' => true,
+				],
 				'quark-country-selector'                => [
 					'class' => true,
 				],
