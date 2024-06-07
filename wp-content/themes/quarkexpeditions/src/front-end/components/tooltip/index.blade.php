@@ -8,12 +8,12 @@
 	}
 @endphp
 
-<div class="tooltip">
+<quark-tooltip class="tooltip">
 	<span class="tooltip__icon">
 		<x-svg name="{{ $icon }}" />
 	</span>
 
-	<div class="tooltip__description tooltip__description--top">
+	<div class="tooltip__description">
 		{!! $slot !!}
 	</div>
-</div>
+</quark-tooltip>

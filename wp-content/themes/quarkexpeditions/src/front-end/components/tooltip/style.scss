@@ -9,36 +9,10 @@
 
 	display: inline-flex;
 	cursor: pointer;
-	position: relative;
 
 	&:hover {
 		#{$self}__description {
 			visibility: visible;
-		}
-
-		&::before,
-		&::after {
-			position: absolute;
-			left: 50%;
-			content: "";
-			display: block;
-			width: 0;
-			height: 0;
-			border-style: solid;
-			margin-left: -11px;
-		}
-
-		&::after {
-			bottom: 5.5px;
-			border-color: var(--color-white) rgba(0, 0, 0, 0) rgba(0, 0, 0, 0) rgba(0, 0, 0, 0);
-			border-width: 11px;
-			z-index: 101;
-		}
-
-		&::before {
-			bottom: 4px;
-			border-color: var(--color-black) rgba(0, 0, 0, 0) rgba(0, 0, 0, 0) rgba(0, 0, 0, 0);
-			border-width: 11px;
 		}
 	}
 
@@ -56,19 +30,14 @@
 		visibility: hidden;
 		position: absolute;
 		z-index: 99;
-		width: 250px;
+		width: max-content;
 		max-width: 250px;
 		background-color: var(--color-white);
 		border: 1px solid var(--color-black);
 		border-radius: var(--border-small);
-		left: -114px;
 		margin: 0 auto 4px;
 		font-size: 14px;
 		line-height: 1.571;
 		padding: var(--spacing-3) var(--spacing-4);
-
-		&--top {
-			bottom: 100%;
-		}
 	}
 }
