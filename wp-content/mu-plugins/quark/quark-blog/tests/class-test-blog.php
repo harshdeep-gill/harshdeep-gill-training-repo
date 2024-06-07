@@ -303,6 +303,7 @@ class Test_Blog extends WP_UnitTestCase {
 			[
 				'post_title'   => 'Test Post 1',
 				'post_content' => 'Post content 1',
+				'post_excerpt' => 'Post excerpt 1',
 				'post_status'  => 'publish',
 				'post_type'    => \Quark\Blog\POST_TYPE,
 				'meta_input'   => [
@@ -321,6 +322,7 @@ class Test_Blog extends WP_UnitTestCase {
 			[
 				'post_title'   => 'Test Post 2',
 				'post_content' => 'Post content 2',
+				'post_excerpt' => 'Post excerpt 2',
 				'post_status'  => 'publish',
 				'post_type'    => \Quark\Blog\POST_TYPE,
 				'meta_input'   => [
@@ -391,6 +393,7 @@ class Test_Blog extends WP_UnitTestCase {
 					'post'           => $post_1,
 					'title'          => 'Test Post 1',
 					'permalink'      => 'http://test.quarkexpeditions.com/test-post-1',
+					'excerpt'        => 'Post excerpt 1',
 					'featured_image' => 35,
 					'authors'        => [
 						get( $author_1->ID ),
@@ -436,6 +439,7 @@ class Test_Blog extends WP_UnitTestCase {
 					'post'           => $post_1,
 					'title'          => 'Test Post 1',
 					'permalink'      => 'http://test.quarkexpeditions.com/test-post-1',
+					'excerpt'        => 'Post excerpt 1',
 					'featured_image' => 35,
 					'authors'        => [
 						get( $author_1->ID ),
@@ -470,6 +474,7 @@ class Test_Blog extends WP_UnitTestCase {
 					'post'           => $post_2,
 					'title'          => 'Test Post 2',
 					'permalink'      => 'http://test.quarkexpeditions.com/test-post-2',
+					'excerpt'        => 'Post excerpt 2',
 					'featured_image' => 32,
 					'authors'        => [
 						get( $author_1->ID ),
