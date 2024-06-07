@@ -19,6 +19,11 @@
 		justify-content: flex-end;
 		min-width: 40%;
 		gap: var(--spacing-4);
+
+		&:only-child {
+			flex: 1;
+			justify-content: center;
+		}
 	}
 
 	&__items-per-page {
