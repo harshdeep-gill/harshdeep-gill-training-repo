@@ -91,6 +91,7 @@ export const settings: BlockConfiguration = {
 				allowedBlocks: [ card.name ],
 				template: [ [ card.name ], [ card.name ], [ card.name ] ],
 				renderAppender: InnerBlocks.ButtonBlockAppender,
+
 				// @ts-ignore
 				orientation: 'horizontal',
 			}

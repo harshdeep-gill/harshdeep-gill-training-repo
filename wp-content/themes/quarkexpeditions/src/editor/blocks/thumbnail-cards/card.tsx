@@ -5,7 +5,6 @@ import { __ } from '@wordpress/i18n';
 import { BlockConfiguration } from '@wordpress/blocks';
 import {
 	useBlockProps,
-	InnerBlocks,
 	InspectorControls,
 	RichText,
 } from '@wordpress/block-editor';
@@ -77,8 +76,8 @@ export const settings: BlockConfiguration = {
 			className: classnames(
 				className,
 				'thumbnail-cards__card',
-				attributes.size && [ 'small', 'medium', 'large', ].includes( attributes.size ) ? `thumbnail-cards__card--size-${attributes.size}` : '',
-				attributes.orientation && [ 'portrait', 'landscape', ].includes( attributes.orientation ) ? `thumbnail-cards__card--orient-${attributes.orientation}` : ''
+				attributes.size && [ 'small', 'medium', 'large' ].includes( attributes.size ) ? `thumbnail-cards__card--size-${ attributes.size }` : '',
+				attributes.orientation && [ 'portrait', 'landscape' ].includes( attributes.orientation ) ? `thumbnail-cards__card--orient-${ attributes.orientation }` : ''
 			),
 		} );
 
@@ -128,8 +127,8 @@ export const settings: BlockConfiguration = {
 						value={ attributes.image }
 						className={ classnames(
 							'thumbnail-cards__image',
-							attributes.size && [ 'small', 'medium', 'large', ].includes( attributes.size ) ? `thumbnail-cards__image--size-${attributes.size}` : '',
-							attributes.orientation && [ 'portrait', 'landscape', ].includes( attributes.orientation ) ? `thumbnail-cards__image--orient-${attributes.orientation}` : ''
+							attributes.size && [ 'small', 'medium', 'large' ].includes( attributes.size ) ? `thumbnail-cards__image--size-${ attributes.size }` : '',
+							attributes.orientation && [ 'portrait', 'landscape' ].includes( attributes.orientation ) ? `thumbnail-cards__image--orient-${ attributes.orientation }` : ''
 						) }
 					/>
 					<RichText
@@ -145,7 +144,7 @@ export const settings: BlockConfiguration = {
 		);
 	},
 	save() {
-		// Save inner block content.
-		return <InnerBlocks.Content />;
+		// Return null.
+		return null;
 	},
 };
