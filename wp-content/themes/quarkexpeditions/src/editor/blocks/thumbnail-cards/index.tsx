@@ -101,7 +101,7 @@ export const settings: BlockConfiguration = {
 		return (
 			<>
 				<InspectorControls>
-					<PanelBody title={ __( 'Thumbnail Card Options', 'qrk' ) }>
+					<PanelBody title={ __( 'Thumbnail Cards Options', 'qrk' ) }>
 						<ToggleControl
 							label={ __( 'Carousel', 'qrk' ) }
 							checked={ attributes.isCarousel }
