@@ -62,6 +62,6 @@ class Softrip_Data_Adapter {
 		}
 
 		// Return result array.
-		return (array) json_decode( wp_remote_retrieve_body( $request ), true );
+		return (array) json_decode( wp_remote_retrieve_body( $request ), true ); // @phpstan-ignore-line json contains structure
 	}
 }
