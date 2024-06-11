@@ -121,6 +121,9 @@ class Itinerary {
 			$this->create_departure( $departure );
 		}
 
+		// Update post meta, recording built.
+		add_post_meta( $this->id(), 'built_departures', true );
+
 		// Return a true value.
 		return true;
 	}
