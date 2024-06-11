@@ -53,6 +53,7 @@ function register_blocks(): void {
 		'FancyVideo'            => 'fancy-video.php',
 		'FormTwoStep'           => 'form-two-step.php',
 		'FormTwoStepCompact'    => 'form-two-step-compact.php',
+		'ThumbnailCards'        => 'thumbnail-cards.php',
 	];
 
 	// Register blocks.
