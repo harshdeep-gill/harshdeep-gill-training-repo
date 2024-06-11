@@ -7,6 +7,8 @@
 
 namespace Quark\Theme\Blocks\Breadcrumbs;
 
+use function Travelopia\Breadcrumbs\get_breadcrumbs;
+
 const BLOCK_NAME = 'quark/breadcrumbs';
 const COMPONENT  = 'breadcrumbs';
 
@@ -44,23 +46,16 @@ function render( ?string $content = null, array $block = [] ): null|string {
 		return $content;
 	}
 
+	// Get breadcrumbs.
+	$breadcrumbs = get_breadcrumbs();
+
+	// Check if breadcrumbs are empty.
+	if ( empty( $breadcrumbs ) || ! is_array( $breadcrumbs ) ) {
+		$breadcrumbs = [];
+	}
+
 	// Build component attributes.
-	$attributes = [
-		'breadcrumbs' => [
-			[
-				'url'   => '#',
-				'title' => 'Home',
-			],
-			[
-				'url'   => '#',
-				'title' => 'Parent Page',
-			],
-			[
-				'url'   => '#',
-				'title' => 'Child Page',
-			],
-		],
-	];
+	$attributes['breadcrumbs'] = $breadcrumbs;
 
 	// Return rendered component.
 	return quark_get_component( COMPONENT, $attributes );
