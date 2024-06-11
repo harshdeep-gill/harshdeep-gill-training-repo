@@ -138,7 +138,7 @@ class Itinerary {
 	/**
 	 * Create a departure.
 	 *
-	 * @param array<string, string> $data The departure data.
+	 * @param array<string, mixed> $data The departure data.
 	 *
 	 * @return bool|WP_Error
 	 */
@@ -152,7 +152,7 @@ class Itinerary {
 			'post_parent'  => $this->id(),
 			'meta_input'   => [
 				'related_expedition'   => $this->post_meta( 'related_expedition' ),
-				'related_ship'         => strval( code_to_id( $data['shipCode'] ) ),
+				'related_ship'         => code_to_id( strval( $data['shipCode'] ) ),
 				'softrip_departure_id' => $data['id'],
 				'softrip_package_id'   => $data['packageCode'],
 				'departure_start_date' => $data['startDate'],
