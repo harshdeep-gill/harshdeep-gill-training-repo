@@ -114,7 +114,14 @@ class Itinerary {
 		// Get the Softrip ID and request the departures from the middleware.
 		$softrip_id     = strval( $this->post_meta( 'softrip_package_id' ) );
 		$raw_departures = request_departures( [ $softrip_id ] );
-		$departures     = $raw_departures[ $softrip_id ] ?? [];
+
+		// Check if is valid.
+		if ( $raw_departures instanceof WP_Error ) {
+			return false;
+		}
+
+		// Use the departures for the softrip ID.
+		$departures = $raw_departures[ $softrip_id ];
 
 		// Go over each departure and create a new Departure post for each.
 		foreach ( $departures['departures'] as $departure ) {
