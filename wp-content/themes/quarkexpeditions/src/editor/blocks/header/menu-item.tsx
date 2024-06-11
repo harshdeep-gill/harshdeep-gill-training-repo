@@ -18,24 +18,9 @@ import { Icon, PanelBody, SelectControl, ToggleControl } from '@wordpress/compon
 import classnames from 'classnames';
 
 /**
- * Styles.
+ * Internal dependencies.
  */
-import '../../../front-end/components/header/css/header.scss';
-import '../../../front-end/components/header/css/nav.scss';
-import '../../../front-end/components/header/index';
-import './editor.scss';
-
-/**
- * Child blocks.
- */
-
-// import * as megaMenuItemContent from './mega-menu-item-content';
-
-/**
- * Register child block.
- */
-
-// registerBlockType( megaMenuItemContent.name, megaMenuItemContent.settings );
+import icons from '../icons';
 
 /**
  * External dependencies.
@@ -45,15 +30,12 @@ const { gumponents } = window;
 /**
  * External components.
  */
-const {
-	LinkControl,
-} = gumponents.components;
+const { LinkControl } = gumponents.components;
 
 /**
  * Child blocks.
  */
 import * as megaMenuItemContent from './menu-item-content';
-import icons from '../icons';
 
 /**
  * Register child blocks.

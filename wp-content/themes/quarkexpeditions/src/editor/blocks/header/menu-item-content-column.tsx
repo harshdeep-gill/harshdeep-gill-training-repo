@@ -15,12 +15,6 @@ import {
 import classnames from 'classnames';
 
 /**
- * Styles.
- */
-import '../../../front-end/components/header/css/header.scss';
-import '../../../front-end/components/header/css/nav.scss';
-
-/**
  * Block name.
  */
 export const name: string = 'quark/header-menu-item-content-column';

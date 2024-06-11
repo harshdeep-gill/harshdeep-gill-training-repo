@@ -15,13 +15,6 @@ import {
 import classnames from 'classnames';
 
 /**
- * Styles.
- */
-import '../../../front-end/components/header/css/header.scss';
-import '../../../front-end/components/header/css/nav.scss';
-import './editor.scss';
-
-/**
  * Child blocks.
  */
 import * as menuItem from './menu-item';
@@ -90,7 +83,7 @@ export const settings: BlockConfiguration = {
 		);
 	},
 	save() {
-		// Don't save any content.
+		// Save inner block content.
 		return <InnerBlocks.Content />;
 	},
 };

@@ -17,12 +17,6 @@ import { PanelBody } from '@wordpress/components';
 import classnames from 'classnames';
 
 /**
- * Styles.
- */
-import '../../../front-end/components/header/css/header.scss';
-import '../../../front-end/components/header/css/nav.scss';
-
-/**
  * External components.
  */
 const { gumponents } = window;

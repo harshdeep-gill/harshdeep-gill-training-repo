@@ -92,7 +92,7 @@ export const settings: BlockConfiguration = {
 		);
 	},
 	save() {
-		// Don't save any content.
+		// Save InnerBlock Content.
 		return <InnerBlocks.Content />;
 	},
 };

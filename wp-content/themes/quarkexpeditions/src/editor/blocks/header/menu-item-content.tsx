@@ -15,18 +15,16 @@ import {
 import classnames from 'classnames';
 
 /**
- * Styles.
+ * Internal dependencies.
  */
-import '../../../front-end/components/header/css/header.scss';
-import '../../../front-end/components/header/css/nav.scss';
+import * as twoColumns from '../two-columns';
+import * as menuList from '../menu-list';
 
 /**
  * Child blocks.
  */
 import * as menuItemContentColumn from './menu-item-content-column';
 import * as featuredSection from './menu-item-featured-section';
-import * as twoColumns from '../two-columns';
-import * as menuList from '../menu-list';
 
 /**
  * Register child block.
