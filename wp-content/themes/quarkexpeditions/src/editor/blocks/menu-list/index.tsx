@@ -60,10 +60,6 @@ export const settings: BlockConfiguration = {
 			type: 'string',
 			default: '',
 		},
-		url: {
-			type: 'string',
-			default: '',
-		},
 	},
 	supports: {
 		alignWide: false,

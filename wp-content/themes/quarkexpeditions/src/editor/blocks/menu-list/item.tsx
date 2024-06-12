@@ -37,11 +37,15 @@ export const settings: BlockConfiguration = {
 	parent: [ 'quark/menu-list' ],
 	icon: 'screenoptions',
 	category: 'layout',
-	keywords: [ __( 'menu', 'qrk' ), __( 'list', 'qrk' ) ],
+	keywords: [ __( 'menu', 'qrk' ), __( 'list', 'qrk' ), __( 'item', 'qrk' ) ],
 	attributes: {
 		title: {
 			type: 'string',
 			default: '',
+		},
+		url: {
+			type: 'object',
+			default: null,
 		},
 	},
 	supports: {

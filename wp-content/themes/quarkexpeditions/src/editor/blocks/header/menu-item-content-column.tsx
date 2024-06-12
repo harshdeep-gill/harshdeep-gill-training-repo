@@ -51,7 +51,6 @@ export const settings: BlockConfiguration = {
 		// eslint-disable-next-line react-hooks/rules-of-hooks
 		const innerBlocksProps = useInnerBlocksProps( { ...blockProps }, {
 			allowedBlocks: [ 'quark/two-columns', 'quark/header-menu-item-featured-section' ],
-			template: [ [ 'core/paragraph', { placeholder: __( 'Write content…', 'qrk' ) } ] ],
 		} );
 
 		// Return the block's markup.
