@@ -35,6 +35,7 @@ import * as formTwoStep from './form-two-step';
 import * as formTwoStepCompact from './form-two-step-compact';
 import * as header from './header';
 import * as menuList from './menu-list';
+import * as thumbnailCards from './thumbnail-cards';
 
 /**
  * Add blocks.
@@ -69,6 +70,7 @@ const blocks = [
 	formTwoStepCompact,
 	header,
 	menuList,
+	thumbnailCards,
 ];
 
 /**

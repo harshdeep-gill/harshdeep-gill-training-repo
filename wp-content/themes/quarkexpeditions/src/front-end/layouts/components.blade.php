@@ -2179,6 +2179,27 @@
 			</x-accordion>
 		</x-section>
 	</x-component-demo>
+
+	<x-component-demo :keys="[ 'tooltip' ]">
+		<x-section title="Tooltips">
+			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.</p>
+			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.</p>
+			<div>
+				<strong>What areas do you have work experience in?</strong>
+				<x-tooltip icon="info">
+					<p>Hiking, kayaking, mountain biking, mountaineering, etc.</p>
+				</x-tooltip>
+			</div>
+
+			<div>
+				<strong>Do you have a university degree (or higher) in any of the following subjects?</strong>
+					<x-tooltip icon="info">
+					<p>SVOP, RYA or higher</p>
+				</x-tooltip>
+			</div>
+		</x-section>
+	</x-component-demo>
+
 	<x-component-demo :keys="[ 'accordion' ]">
 		<x-section title="What should I know before booking a polar expedition?" heading_level="2" title_align="left">
 			<x-accordion title="Quark Expeditions takes you places no one else can!" :full_border="true">
