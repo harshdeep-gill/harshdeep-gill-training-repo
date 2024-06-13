@@ -14,6 +14,8 @@ use WP_Post;
 use function Quark\Itineraries\get;
 use function Quark\Ships\code_to_id;
 
+use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
+
 /**
  * Itinerary API.
  */
@@ -142,10 +144,23 @@ class Itinerary {
 	 *
 	 * @return bool|WP_Error
 	 */
-	public function create_departure( array $data = [] ): bool|WP_Error {
+	private function create_departure( array $data = [] ): bool|WP_Error {
+		// Set data defaults.
+		$default = [
+			'id'          => 0,
+			'shipCode'    => '',
+			'packageCode' => '',
+			'startDate'   => '',
+			'endDate'     => '',
+			'duration'    => 0,
+		];
+
+		// Apply default structures.
+		$data = wp_parse_args( $data, $default );
+
 		// Set the post structure.
 		$args = [
-			'post_type'    => 'qrk_departure',
+			'post_type'    => DEPARTURE_POST_TYPE,
 			'post_title'   => $data['id'],
 			'post_content' => '',
 			'post_status'  => 'publish',
