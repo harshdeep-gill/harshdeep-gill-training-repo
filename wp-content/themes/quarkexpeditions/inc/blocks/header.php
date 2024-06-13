@@ -76,7 +76,7 @@ function render( ?string $content = null, array $block = [] ): null|string {
 								if ( 'quark/header-menu-item-featured-section' === $content_item['blockName'] ) {
 									$mega_menu_item_attributes['contents'][] = [
 										'type'     => 'featured-section',
-										'image'    => $content_item['attrs']['image']['id'] ?? 0,
+										'image_id' => $content_item['attrs']['image']['id'] ?? 0,
 										'title'    => $content_item['attrs']['title'] ?? '',
 										'subtitle' => $content_item['attrs']['subtitle'] ?? '',
 										'cta_text' => $content_item['attrs']['ctaText'] ?? '',

@@ -18,7 +18,7 @@ import {
  * Styles.
  */
 import '../../../front-end/components/thumbnail-cards/style.scss';
-import './style.scss';
+import './editor.scss';
 
 /**
  * Internal dependencies.
@@ -90,7 +90,6 @@ export const settings: BlockConfiguration = {
 			{
 				allowedBlocks: [ card.name ],
 				template: [ [ card.name ], [ card.name ], [ card.name ] ],
-				renderAppender: InnerBlocks.ButtonBlockAppender,
 
 				// @ts-ignore
 				orientation: 'horizontal',

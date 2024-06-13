@@ -19,6 +19,8 @@ import classnames from 'classnames';
  */
 import * as twoColumns from '../two-columns';
 import * as menuList from '../menu-list';
+import * as thumbnailCards from '../thumbnail-cards';
+import * as thumbnailCard from '../thumbnail-cards/card';
 
 /**
  * Child blocks.
@@ -89,6 +91,13 @@ export const settings: BlockConfiguration = {
 									{},
 									[
 										[ menuList.name ],
+										[
+											thumbnailCards.name,
+											{ isCarousel: false, isFullWidth: false },
+											[
+												[ thumbnailCard.name, { orientation: 'landscape' } ],
+											],
+										],
 									],
 								],
 								[
@@ -96,6 +105,13 @@ export const settings: BlockConfiguration = {
 									{},
 									[
 										[ menuList.name ],
+										[
+											thumbnailCards.name,
+											{ isCarousel: false, isFullWidth: false },
+											[
+												[ thumbnailCard.name, { orientation: 'landscape' } ],
+											],
+										],
 									],
 								],
 							],
