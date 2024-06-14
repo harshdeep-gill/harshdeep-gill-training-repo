@@ -507,6 +507,8 @@ class Test_Blog extends WP_UnitTestCase {
 	 * Test get_blog_post_author_info.
 	 *
 	 * @covers \Quark\Blog\get_blog_post_author_info()
+	 *
+	 * @return void
 	 */
 	public function test_get_blog_post_author_info(): void {
 		// Create author.
