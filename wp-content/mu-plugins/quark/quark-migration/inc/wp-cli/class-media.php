@@ -144,7 +144,13 @@ class Media {
 				',
 				ARRAY_A
 			);
-			$total_images = absint( $total_images['total_images'] ?? 0 );
+
+			// Check if total images is not empty.
+			if ( is_array( $total_images ) && isset( $total_images['total_images'] ) ) {
+				$total_images = absint( $total_images['total_images'] );
+			} else {
+				$total_images = 0;
+			}
 
 			// Check if we have media record or not.
 			if ( $total_images > 0 ) {

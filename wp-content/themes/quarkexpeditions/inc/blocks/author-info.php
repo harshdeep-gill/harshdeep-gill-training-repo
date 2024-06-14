@@ -7,6 +7,8 @@
 
 namespace Quark\Theme\Blocks\AuthorInfo;
 
+use function Quark\Blog\get_blog_post_author_info;
+
 const BLOCK_NAME = 'quark/author-info';
 const COMPONENT  = 'parts.post-author-info';
 
@@ -69,6 +71,12 @@ function render( ?string $content = null, array $block = [] ): null|string {
 			}
 		}
 	}
+
+	// Merge attributes.
+	$attributes = wp_parse_args(
+		get_blog_post_author_info(),
+		$attributes
+	);
 
 	// Return rendered component.
 	return quark_get_component( COMPONENT, $attributes );

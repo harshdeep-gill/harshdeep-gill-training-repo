@@ -311,3 +311,74 @@ function get_cards_data( array $post_ids = [] ): array {
 	// Return data.
 	return $data;
 }
+
+/**
+ * Get blog post author info.
+ *
+ * @return array{
+ *     image_id: int,
+ *     title: string,
+ *     duration: int,
+ *     }
+ */
+function get_blog_post_author_info(): array {
+	// check if post is a blog post and single.
+	if ( ! is_singular( POST_TYPE ) ) {
+		return [
+			'image_id' => 0,
+			'title'    => '',
+			'duration' => 0,
+		];
+	}
+
+	// Get post ID.
+	$post_id = absint( get_the_ID() );
+
+	// Get post.
+	$post = get( $post_id );
+
+	// Bail if post does not exist or not an instance of WP_Post.
+	if ( empty( $post['post'] ) || ! $post['post'] instanceof WP_Post ) {
+		return [
+			'image_id' => 0,
+			'title'    => '',
+			'duration' => 0,
+		];
+	}
+
+	// Get blog author ids.
+	$blog_author_ids = (array) $post['post_meta']['blog_authors'] ?: [];
+
+	// Initialize authors data.
+	$authors_data = [];
+
+	// Loop through blog author ids.
+	foreach ( $blog_author_ids as $blog_author_id ) {
+		$authors_data = get_post_authors( absint( $blog_author_id ) );
+
+		// Break the loop if authors data is not empty.
+		if ( ! empty( $authors_data['post'] ) ) {
+			break;
+		}
+	}
+
+	// Initialize attributes.
+	$attributes = [
+		'image_id' => 0,
+		'title'    => '',
+		'duration' => 0,
+	];
+
+	// Check if authors data is empty.
+	if ( empty( $authors_data ) ) {
+		return $attributes;
+	}
+
+	// Set attributes.
+	$attributes['title']    = $authors_data['post']->post_title ?? '';
+	$attributes['image_id'] = $authors_data['post_thumbnail'];
+	$attributes['duration'] = array_key_exists( 'read_time_minutes', $post['post_meta'] ) ? absint( $post['post_meta']['read_time_minutes'] ) : 0;
+
+	// Return attributes.
+	return $attributes;
+}
