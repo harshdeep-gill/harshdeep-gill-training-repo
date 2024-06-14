@@ -1,0 +1,40 @@
+/**
+ * Specifications.
+ */
+
+@import "../../scss";
+
+.specifications {
+	background-color: var(--color-gray-5);
+	border-radius: var(--border-radius-large);
+	padding: var(--spacing-7) var(--spacing-5);
+
+	@media screen and (min-width: grid-size(md)) {
+		padding: var(--spacing-8) 80px;
+	}
+
+	&__items {
+		margin-top: var(--spacing-6);
+
+		@media screen and (min-width: grid-size(md)) {
+			margin-top: var(--spacing-7);
+		}
+
+		&:first-child {
+			margin-top: 0;
+		}
+	}
+
+	&__label {
+		color: var(--color-gray-50);
+		font-size: 14px;
+		font-weight: var(--font-weight-bold);
+		letter-spacing: 2px;
+		line-height: 1.57142;
+		text-transform: uppercase;
+	}
+
+	&__value {
+		margin-top: var(--spacing-3);
+	}
+}

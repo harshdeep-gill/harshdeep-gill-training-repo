@@ -1302,6 +1302,68 @@
 		</x-lp-footer>
 	</x-component-demo>
 
+	<x-component-demo :keys="[ 'specifications' ]">
+		<x-specifications>
+			<x-specifications.title title="Ship Specifications" />
+			<x-specifications.items>
+				<x-specifications.item
+					label="Staff and Crew"
+					value="140"
+				/>
+				<x-specifications.item
+					label="Ice Class"
+					value="1A+, PC6"
+				/>
+				<x-specifications.item
+					label="Cruising Speed"
+					value="16 knots, in open water"
+				/>
+				<x-specifications.item
+					label="Draft"
+					value="16.4ft (5.1m)"
+				/>
+				<x-specifications.item
+					label="Lifeboats"
+					value="4, fully enclosed"
+				/>
+				<x-specifications.item
+					label="Guests"
+					value="199"
+				/>
+				<x-specifications.item
+					label="Registration"
+					value="Marshall Islands"
+				/>
+				<x-specifications.item
+					label="Length"
+					value="420 ft (128m)"
+				/>
+			</x-specifications.items>
+		</x-specifications>
+
+		<x-specifications>
+			<x-specifications.title title="Destination Specifications" />
+			<x-specifications.items>
+				<x-specifications.item
+					label="Population"
+					value="56,171"
+				/>
+				<x-specifications.item
+					label="Size"
+					value="836,297 square miles (2,166,000 square km)"
+				/>
+				<x-specifications.item
+					label="Highest Elevation"
+					value="Gunnbjørn Fjeld at 12,119 feet (3,694 meters)"
+				/>
+				<x-specifications.item
+					label="Terrain"
+					value="Rugged, rocky mountainous coastline"
+				/>
+			</x-specifications.items>
+		</x-specifications>
+	</x-component-demo>
+
 	<x-component-demo :keys="[ 'lp-offer-masthead' ]">
 		<x-lp-offer-masthead>
 			<x-lp-offer-masthead.image image_id="35" />
