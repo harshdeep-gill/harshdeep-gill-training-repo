@@ -523,6 +523,9 @@ class Test_Blog extends WP_UnitTestCase {
 			]
 		);
 
+		// Assert created posts are instance of WP_Post.
+		$this->assertTrue( $author instanceof WP_Post );
+
 		// Create post.
 		$post_1 = $this->factory()->post->create_and_get(
 			[
@@ -539,10 +542,10 @@ class Test_Blog extends WP_UnitTestCase {
 		);
 
 		// Asset that author is created.
-		$this->assertTrue( $author instanceof WP_Post );
+		$this->assertTrue( $post_1 instanceof WP_Post );
 
 		// Set post single page.
-		WP_UnitTestCase::go_to( get_permalink( $post_1->ID ) );
+		WP_UnitTestCase::go_to( strval( get_permalink( $post_1->ID ) ) );
 
 		// Mock is_singular function.
 		$this->assertTrue( is_singular( POST_TYPE ) );
