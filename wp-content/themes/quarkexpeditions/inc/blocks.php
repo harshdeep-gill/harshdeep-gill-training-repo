@@ -54,6 +54,7 @@ function register_blocks(): void {
 		'FormTwoStep'           => 'form-two-step.php',
 		'FormTwoStepCompact'    => 'form-two-step-compact.php',
 		'Accordion'             => 'accordion.php',
+		'ThumbnailCards'        => 'thumbnail-cards.php',
 	];
 
 	// Register blocks.

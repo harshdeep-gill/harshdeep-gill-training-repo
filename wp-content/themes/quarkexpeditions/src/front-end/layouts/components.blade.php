@@ -10,7 +10,7 @@
 						<x-header.nav-item-featured image_id="34">
 							<x-header.nav-item-featured-title title="Explore Polar Regions" />
 							<x-header.nav-item-featured-subtitle subtitle="Incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis." />
-							<x-button size="big">Explore Polar Regions</x-button>
+							<x-button href="#" size="big">Explore Polar Regions</x-button>
 						</x-header.nav-item-featured>
 					</x-header.nav-item-dropdown-content-column>
 					<x-header.nav-item-dropdown-content-column>
@@ -290,7 +290,7 @@
 		</x-drawer>
 	</x-header>
 
-	<x-component-demo :keys="[ 'header', 'hero-refactor' ]">
+	<x-component-demo :keys="[ 'lp-header', 'hero-refactor' ]">
 		<x-lp-header
 			tc_image_id="18"
 			phone_number="+1-877-585-1235"
@@ -677,7 +677,7 @@
 		</x-section>
 	</x-component-demo>
 
-	<x-component-demo :keys="[ 'header' ]">
+	<x-component-demo :keys="[ 'lp-header' ]">
 		<x-lp-header
 			tc_image_id="18"
 			phone_number="+1-877-585-1235"
@@ -2179,6 +2179,27 @@
 			</x-accordion>
 		</x-section>
 	</x-component-demo>
+
+	<x-component-demo :keys="[ 'tooltip' ]">
+		<x-section title="Tooltips">
+			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.</p>
+			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.</p>
+			<div>
+				<strong>What areas do you have work experience in?</strong>
+				<x-tooltip icon="info">
+					<p>Hiking, kayaking, mountain biking, mountaineering, etc.</p>
+				</x-tooltip>
+			</div>
+
+			<div>
+				<strong>Do you have a university degree (or higher) in any of the following subjects?</strong>
+					<x-tooltip icon="info">
+					<p>SVOP, RYA or higher</p>
+				</x-tooltip>
+			</div>
+		</x-section>
+	</x-component-demo>
+
 	<x-component-demo :keys="[ 'accordion' ]">
 		<x-section title="What should I know before booking a polar expedition?" heading_level="2" title_align="left">
 			<x-accordion title="Quark Expeditions takes you places no one else can!" :full_border="true">
@@ -2266,7 +2287,7 @@
 			<x-footer.middle>
 				<x-footer.column>
 					<x-footer.logo />
-					<x-button size="big">Request a Quote</x-button>
+					<x-button href="#" size="big">Request a Quote</x-button>
 					<x-footer.social-links :social_links="$social_links" />
 				</x-footer.column>
 
@@ -2290,7 +2311,7 @@
 
 				<x-footer.column>
 					<x-footer.column-title title="Discover Your Dream Trip" />
-					<x-button size="big" color="black">View All Expeditions</x-button>
+					<x-button  href="#" size="big" color="black">View All Expeditions</x-button>
 
 					<x-footer.column-title title="Change Currency" />
 					<x-form>
