@@ -283,7 +283,7 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 				],
 				'quark-drawer-open'                     => [
 					'class'     => true,
-					'drawer_id' => true,
+					'drawer-id' => true,
 				],
 				'quark-footer-accordion'                => [
 					'class'  => true,

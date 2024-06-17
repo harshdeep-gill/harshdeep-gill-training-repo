@@ -21,15 +21,6 @@
 		margin-left: auto;
 	}
 
-	a {
-
-		@include transition();
-
-		color: var(--color-white);
-		transition-property: background-color, border-color, color;
-		text-decoration: none;
-	}
-
 	&__logo {
 		display: inline-flex;
 		overflow: hidden;
@@ -70,6 +61,10 @@
 
 		@media screen and (min-width: grid-size(xxxl)) {
 			font-size: inherit;
+		}
+
+		.btn__icon {
+			margin: 0;
 		}
 
 		svg {

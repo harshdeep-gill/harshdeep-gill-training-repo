@@ -65,6 +65,10 @@ export const settings: BlockConfiguration = {
 			type: 'boolean',
 			default: true,
 		},
+		hasOnlyChild: {
+			type: 'boolean',
+			default: false,
+		},
 	},
 	supports: {
 		alignWide: false,
@@ -81,13 +85,14 @@ export const settings: BlockConfiguration = {
 
 		// eslint-disable-next-line react-hooks/rules-of-hooks
 		const innerBlockProps = useInnerBlocksProps( {
-			className: classnames( 'two-columns grid grid--cols-2', {
+			className: classnames( 'two-columns', {
+				'grid grid--cols-2': ! attributes.hasOnlyChild,
 				'two-columns--has-border': attributes.hasBorder,
+				'two-columns--only-child': attributes.hasOnlyChild,
 			} ),
 		}, {
 			allowedBlocks: [ item.name ],
 			template: [ [ item.name ], [ item.name ] ],
-			templateLock: 'all',
 		} );
 
 		// Return the block's markup.
@@ -100,6 +105,12 @@ export const settings: BlockConfiguration = {
 							checked={ attributes.hasBorder }
 							help={ __( 'Should these columns have borders?', 'qrk' ) }
 							onChange={ ( hasBorder: boolean ) => setAttributes( { hasBorder } ) }
+						/>
+						<ToggleControl
+							label={ __( 'Has One Column?', 'qrk' ) }
+							checked={ attributes.hasOnlyChild }
+							help={ __( 'Does this column have only one column?', 'qrk' ) }
+							onChange={ ( hasOnlyChild: boolean ) => setAttributes( { hasOnlyChild, hasBorder: false } ) }
 						/>
 					</PanelBody>
 				</InspectorControls>

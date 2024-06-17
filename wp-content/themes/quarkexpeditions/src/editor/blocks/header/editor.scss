@@ -20,9 +20,21 @@
 			min-width: 360px;
 			min-height: 240px;
 
-			.thumbnail-cards__card--size-medium.thumbnail-cards__card--orient-landscape {
-				width: 300px;
-				height: 160px;
+			.thumbnail-cards {
+
+				&__card--size-medium.thumbnail-cards__card--orient-landscape {
+					width: 300px;
+					height: 160px;
+				}
+
+				&__card--size-small.thumbnail-cards__card--orient-portrait {
+					width: 140px;
+					height: 190px;
+				}
+
+				&__slides {
+					flex-wrap: nowrap;
+				}
 			}
 		}
 
