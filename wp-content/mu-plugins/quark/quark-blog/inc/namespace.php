@@ -315,24 +315,19 @@ function get_cards_data( array $post_ids = [] ): array {
 /**
  * Get blog post author info.
  *
+ * @param int $post_id Post ID.
+ *
  * @return array{
  *     image_id: int,
  *     title: string,
  *     duration: int,
  *     }
  */
-function get_blog_post_author_info(): array {
-	// check if post is a blog post and single.
-	if ( ! is_singular( POST_TYPE ) ) {
-		return [
-			'image_id' => 0,
-			'title'    => '',
-			'duration' => 0,
-		];
-	}
-
+function get_blog_post_author_info( int $post_id = 0 ): array {
 	// Get post ID.
-	$post_id = absint( get_the_ID() );
+	if ( 0 === $post_id ) {
+		$post_id = absint( get_the_ID() );
+	}
 
 	// Get post.
 	$post = get( $post_id );
