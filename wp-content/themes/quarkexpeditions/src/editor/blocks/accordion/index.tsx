@@ -55,6 +55,10 @@ export const settings: BlockConfiguration = {
 			type: 'boolean',
 			default: true,
 		},
+		faqSchema: {
+			type: 'boolean',
+			default: false,
+		},
 	},
 	supports: {
 		alignWide: false,
@@ -90,6 +94,12 @@ export const settings: BlockConfiguration = {
 							checked={ attributes.hasBorder }
 							help={ __( 'Should all accordion items have borders?', 'qrk' ) }
 							onChange={ ( hasBorder: boolean ) => setAttributes( { hasBorder } ) }
+						/>
+						<ToggleControl
+							label={ __( 'FAQ Schema', 'qrk' ) }
+							checked={ attributes.faqSchema }
+							onChange={ ( faqSchema ) => setAttributes( { faqSchema } ) }
+							help={ __( 'Should an SEO FAQ schema be added for this accordion?', 'qrk' ) }
 						/>
 					</PanelBody>
 				</InspectorControls>

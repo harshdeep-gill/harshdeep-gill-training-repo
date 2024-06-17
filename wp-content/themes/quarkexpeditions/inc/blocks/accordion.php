@@ -50,6 +50,10 @@ function render( ?string $content = null, array $block = [] ): null|string {
 		'items'      => [],
 	];
 
+	// Build FAQ Schema.
+	$add_faq_schema = $block['attrs']['faqSchema'] ?? false;
+	$faq_schema     = [];
+
 	// Items.
 	foreach ( $block['innerBlocks'] as $inner_block ) {
 		// Check if inner block is for accordion item and has title.
@@ -74,8 +78,81 @@ function render( ?string $content = null, array $block = [] ): null|string {
 
 		// Add current item to array of items.
 		$attributes['items'][] = $current_item;
+
+		// Add FAQ schema items.
+		if ( $add_faq_schema ) {
+			$faq_schema[] = [
+				'@type'          => 'Question',
+				'name'           => $current_item['title'],
+				'acceptedAnswer' => [
+					'@type' => 'Answer',
+					'text'  => wp_strip_all_tags( $current_item['content'] ),
+				],
+			];
+		}
 	}
+
+	// Add FAQ schema.
+	add_faq_schema( $faq_schema );
 
 	// Return rendered component.
 	return quark_get_component( COMPONENT, $attributes );
+}
+
+/**
+ * Add FAQ structured data schema.
+ *
+ * @param mixed[] $faq_schema FAQ schema to add.
+ *
+ * @return void
+ */
+function add_faq_schema( array $faq_schema = [] ): void {
+	// Check if we have data.
+	if ( empty( $faq_schema ) ) {
+		return;
+	}
+
+	// Hook into the schema hook and add FAQ schema.
+	add_filter(
+		'travelopia_seo_structured_data_schema',
+		static function ( array $schema = [] ) use ( $faq_schema ) {
+			// Check if FAQPage already exists, and append questions-answers to existing FAQPage schema.
+			$schema_already_added = false;
+
+			// Check and build the schema markup.
+			if ( ! empty( $schema ) || ! is_array( $schema ) ) {
+				foreach ( $schema as $key => $schema_item ) {
+					if (
+						! is_array( $schema_item )
+						|| empty( $schema_item['@type'] )
+						|| 'FAQPage' !== $schema_item['@type']
+						|| empty( $schema_item['mainEntity'] )
+						|| ! is_array( $schema[ $key ] )
+					) {
+						continue;
+					}
+
+					// Populate the data.
+					$main_entity                  = $schema_item['mainEntity'];
+					$question_answers             = array_merge( $main_entity, $faq_schema );
+					$schema[ $key ]['mainEntity'] = $question_answers;
+
+					// Update already exists.
+					$schema_already_added = true;
+				}
+			}
+
+			// Schema not already added, add it now.
+			if ( ! $schema_already_added ) {
+				$schema[] = [
+					'@context'   => 'https://schema.org',
+					'@type'      => 'FAQPage',
+					'mainEntity' => $faq_schema,
+				];
+			}
+
+			// Return updated schema.
+			return $schema;
+		}
+	);
 }
