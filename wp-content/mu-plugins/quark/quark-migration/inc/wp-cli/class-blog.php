@@ -176,7 +176,7 @@ class Blog {
 
 			// SEO meta data.
 			if ( ! empty( $blog_post['seo_metatags_data'] ) ) {
-				$seo_meta_data = json_decode( $blog_post['seo_metatags_data'] );
+				$seo_meta_data = json_decode( $blog_post['seo_metatags_data'], true );
 
 				// Check if we have SEO metadata.
 				if ( is_array( $seo_meta_data ) ) {
