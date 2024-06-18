@@ -18,6 +18,7 @@ use function Quark\Migration\Drupal\prepare_for_migration;
 use function Quark\Migration\Drupal\get_post_by_id;
 use function Quark\Migration\Drupal\get_term_by_id;
 use function Quark\Migration\Drupal\prepare_content;
+use function Quark\Migration\Drupal\prepare_seo_data;
 use function Quark\Migration\WordPress\qrk_sanitize_attribute;
 use function WP_CLI\Utils\make_progress_bar;
 
@@ -240,49 +241,11 @@ class Expedition {
 
 		// SEO meta data.
 		if ( ! empty( $item['metatags'] ) && is_string( $item['metatags'] ) ) {
-			$seo_meta_data = json_decode( $item['metatags'], true );
+			$seo_data = prepare_seo_data( json_decode( $item['metatags'], true ) );
 
-			// Check if data is array.
-			if ( is_array( $seo_meta_data ) ) {
-				$search_for   = [
-					'[node:title]',
-					'→',
-					'|',
-					'[site:name]',
-					'[current-page:page-number]',
-					'[current-page:pager]',
-				];
-				$replace_with = [
-					'%%title%%',
-					'%%sep%%',
-					'%%sep%%',
-					'%%sitename%%',
-					'%%page%%',
-					'',
-				];
-
-				// Process seo meta title for WP SEO plugin.
-				if ( ! empty( $seo_meta_data['title']['value'] ) ) {
-					$data['meta_input']['_yoast_wpseo_title'] = str_replace(
-						$search_for,
-						$replace_with,
-						trim( $seo_meta_data['title']['value'] )
-					);
-				}
-
-				// Process seo meta description for WP SEO plugin.
-				if ( ! empty( $seo_meta_data['description']['value'] ) ) {
-					$data['meta_input']['_yoast_wpseo_metadesc'] = str_replace(
-						$search_for,
-						$replace_with,
-						trim( $seo_meta_data['description']['value'] )
-					);
-				}
-
-				// Process SEO robots tags for WP SEO plugin.
-				if ( ! empty( $seo_meta_data['robots'] ) && is_string( $seo_meta_data['robots'] ) ) {
-					$data['meta_input']['_yoast_wpseo_meta-robots-adv'] = str_replace( ' ', '', $seo_meta_data['robots'] );
-				}
+			// Merge seo data if not empty.
+			if ( ! empty( $seo_data ) ) {
+				$data['meta_input'] = array_merge( $seo_data, $data['meta_input'] );
 			}
 		}
 
