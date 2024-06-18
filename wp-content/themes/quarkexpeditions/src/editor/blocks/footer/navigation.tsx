@@ -77,14 +77,16 @@ export const settings: BlockConfiguration = {
 		// Return the block's markup.
 		return (
 			<div { ...blockProps }>
-				<RichText
-					tagName="p"
-					className="footer__navigation-title"
-					placeholder={ __( 'Write Navigation Title…', 'qrk' ) }
-					value={ attributes.title }
-					onChange={ ( title: string ) => setAttributes( { title } ) }
-					allowedFormats={ [] }
-				/>
+				<p>
+					<RichText
+						tagName="span"
+						className="footer__navigation-title"
+						placeholder={ __( 'Write Navigation Title…', 'qrk' ) }
+						value={ attributes.title }
+						onChange={ ( title: string ) => setAttributes( { title } ) }
+						allowedFormats={ [] }
+					/>
+				</p>
 				<ul { ...innerBlockProps } />
 			</div>
 		);
