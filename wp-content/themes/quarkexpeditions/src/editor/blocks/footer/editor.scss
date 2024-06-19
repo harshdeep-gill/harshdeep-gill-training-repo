@@ -21,4 +21,13 @@
 			}
 		}
 	}
+
+	.maybe-link {
+		outline: none;
+		text-decoration: none;
+
+		&:hover {
+			text-decoration: solid 1px underline;
+		}
+	}
 }

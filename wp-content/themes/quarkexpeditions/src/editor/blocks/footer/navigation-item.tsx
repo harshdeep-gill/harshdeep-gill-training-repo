@@ -82,7 +82,7 @@ export const settings: BlockConfiguration = {
 					<span className="footer__navigation-item">
 						<RichText
 							tagName="a"
-							className="footer__navigation-item-link"
+							className="footer__navigation-item-link maybe-link"
 							placeholder={ __( 'Write Navigation Item Title…', 'qrk' ) }
 							value={ attributes.title }
 							onChange={ ( title: string ) => setAttributes( { title } ) }
