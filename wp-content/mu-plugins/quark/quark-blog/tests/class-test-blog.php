@@ -289,6 +289,110 @@ class Test_Blog extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Test breadcrumbs_ancestors.
+	 *
+	 * @covers \Quark\Blog\breadcrumbs_ancestors()
+	 *
+	 * @return void
+	 */
+	public function test_breadcrumbs_ancestors() {
+		// Create post.
+		$post_1 = $this->factory()->post->create_and_get(
+			[
+				'post_title'   => 'Test Post',
+				'post_content' => 'Post content',
+				'post_status'  => 'publish',
+				'post_type'    => \Quark\Blog\POST_TYPE,
+				'meta_input'   => [
+					'meta_1' => 'value_1',
+					'meta_2' => 'value_2',
+				],
+			]
+		);
+
+		// Assert created post is instance of WP_Post.
+		$this->assertTrue( $post_1 instanceof WP_Post );
+
+		// Create category terms.
+		$category_term = $this->factory()->term->create_and_get(
+			[
+				'taxonomy' => 'category',
+			]
+		);
+
+		// Assert term is created.
+		$this->assertTrue( $category_term instanceof WP_Term );
+
+		// Set Category as primary term.
+		\update_post_meta( $post_1->ID, '_yoast_wpseo_primary_category', $category_term->term_id );
+
+		// Set terms.
+		wp_set_object_terms( $post_1->ID, $category_term->term_id, 'category' );
+
+		// Set post single page.
+		WP_UnitTestCase::go_to( strval( get_permalink( $post_1->ID ) ) );
+
+		// Mock is_singular function.
+		$this->assertTrue( is_singular( \Quark\Blog\POST_TYPE ) );
+
+		// Test getting post breadcrumbs.
+		$breadcrumbs = \Quark\Blog\breadcrumbs_ancestors( [] );
+
+		// Assert expected breadcrumbs is equal to actual breadcrumbs.
+		$this->assertEquals(
+			[
+				[
+					'title' => $category_term->name,
+					'url'   => get_term_link( $category_term ),
+				],
+			],
+			$breadcrumbs
+		);
+
+		// Create Blog page.
+		$page_1 = $this->factory()->post->create_and_get(
+			[
+				'post_title'   => 'Blog',
+				'post_content' => 'Page content',
+				'post_status'  => 'publish',
+				'post_type'    => \Quark\Pages\POST_TYPE,
+			]
+		);
+
+		// Assert created page is instance of WP_Post.
+		$this->assertTrue( $page_1 instanceof WP_Post );
+
+		// Set page as page_for_posts.
+		\update_option( 'page_for_posts', $page_1->ID );
+
+		// Test getting post breadcrumbs.
+		$breadcrumbs = \Quark\Blog\breadcrumbs_ancestors( [] );
+
+		// Assert expected breadcrumbs is equal to actual breadcrumbs.
+		$this->assertEquals(
+			[
+				[
+					'title' => $page_1->post_title,
+					'url'   => get_permalink( $page_1->ID ),
+				],
+				[
+					'title' => $category_term->name,
+					'url'   => get_term_link( $category_term ),
+				],
+			],
+			$breadcrumbs
+		);
+
+		// Clean up.
+		update_option( 'page_for_posts', 0 );
+
+		// remove posts and terms.
+		wp_delete_post( $post_1->ID, true );
+		wp_delete_post( $page_1->ID, true );
+		wp_delete_term( $category_term->term_id, 'category' );
+	}
+
+	/**
 	 * Test get.
 	 *
 	 * @covers \Quark\Blog\get_cards_data()
@@ -417,7 +521,10 @@ class Test_Blog extends WP_UnitTestCase {
 
 		// Test 2: get post cards data by passing multiple post ids.
 		wp_cache_flush();
-		$post_data = \Quark\Blog\get_cards_data( [ $post_1->ID, $post_2->ID ] );
+		$post_data = \Quark\Blog\get_cards_data( [
+			$post_1->ID,
+			$post_2->ID
+		] );
 
 		// Assert expected cards data with actual.
 		$this->assertEquals(

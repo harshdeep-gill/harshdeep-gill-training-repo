@@ -38,7 +38,9 @@ function load_environment(): void {
 	update_option( 'admin_email', 'admin@test.quarkexpeditions.com' );
 
 	// Activate plugins.
-	$plugins_to_activate = [];
+	$plugins_to_activate = [
+		'wordpress-seo/wp-seo.php',
+	];
 
 	// Update active plugins.
 	update_option( 'active_plugins', $plugins_to_activate );
