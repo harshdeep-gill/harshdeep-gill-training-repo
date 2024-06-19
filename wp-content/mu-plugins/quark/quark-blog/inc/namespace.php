@@ -12,6 +12,7 @@ use WP_Term;
 
 use function Quark\Blog\Authors\get as get_post_authors;
 use function Quark\Core\prepare_content_with_blocks;
+use function yoast_get_primary_term_id;
 
 const POST_TYPE   = 'post';
 const CACHE_KEY   = POST_TYPE;
@@ -349,7 +350,7 @@ function breadcrumbs_ancestors( array $breadcrumbs = [] ): array {
 	}
 
 	// Get primary category.
-	$primary_category_id = \yoast_get_primary_term_id( 'category', $post_id );
+	$primary_category_id = yoast_get_primary_term_id( 'category', $post_id );
 
 	// Get term.
 	if ( ! is_int( $primary_category_id ) ) {
