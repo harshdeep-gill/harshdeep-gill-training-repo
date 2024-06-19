@@ -35,7 +35,7 @@ function register(): void {
 /**
  * Prepare attributes for this block.
  *
- * @return mixed[]
+ * @return array{}
  */
 function prepare_attributes(): array {
 	// Get author info.

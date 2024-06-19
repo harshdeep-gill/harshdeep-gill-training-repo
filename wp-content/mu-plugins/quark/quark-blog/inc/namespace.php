@@ -318,8 +318,13 @@ function get_cards_data( array $post_ids = [] ): array {
  * @param int $post_id Post ID.
  *
  * @return array{
- *     authors: array<mixed>,
- *     duration: int,
+ *      authors : array{
+ *          array{
+ *           title: string,
+ *           image_id: int,
+ *       }
+ *      }|array{},
+ *      duration : int,
  * }
  */
 function get_blog_post_author_info( int $post_id = 0 ): array {
