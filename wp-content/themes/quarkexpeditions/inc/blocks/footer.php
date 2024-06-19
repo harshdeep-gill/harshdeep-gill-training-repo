@@ -348,8 +348,9 @@ function process_navigation_block( array $block = [] ): array {
 			$navigation['content'][] = [
 				'type'       => 'navigation-item',
 				'attributes' => [
-					'title' => $maybe_navigation_item['attrs']['title'] ?? '',
-					'url'   => $maybe_navigation_item['attrs']['url']['url'] ?? '',
+					'title'  => $maybe_navigation_item['attrs']['title'] ?? '',
+					'url'    => $maybe_navigation_item['attrs']['url']['url'] ?? '',
+					'target' => ! empty( $maybe_navigation_item['attrs']['url']['newWindow'] ) ? '_blank' : '',
 				],
 			];
 		}
