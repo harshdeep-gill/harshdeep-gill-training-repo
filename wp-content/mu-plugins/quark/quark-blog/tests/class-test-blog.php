@@ -526,6 +526,21 @@ class Test_Blog extends WP_UnitTestCase {
 		// Assert created posts are instance of WP_Post.
 		$this->assertTrue( $author instanceof WP_Post );
 
+		// Create another author.
+		$author_1 = $this->factory()->post->create_and_get(
+			[
+				'post_type'   => AUTHOR_POST_TYPE,
+				'post_title'  => 'Test Author 1',
+				'post_status' => 'publish',
+				'meta_input'  => [
+					'_thumbnail_id' => 36,
+				],
+			]
+		);
+
+		// Assert created posts are instance of WP_Post.
+		$this->assertTrue( $author_1 instanceof WP_Post );
+
 		// Create post.
 		$post_1 = $this->factory()->post->create_and_get(
 			[
@@ -536,7 +551,7 @@ class Test_Blog extends WP_UnitTestCase {
 				'meta_input'   => [
 					'read_time_minutes' => 5,
 					'_thumbnail_id'     => 35,
-					'blog_authors'      => [ $author->ID ],
+					'blog_authors'      => [ $author->ID, $author_1->ID ],
 				],
 			]
 		);
@@ -556,9 +571,17 @@ class Test_Blog extends WP_UnitTestCase {
 		// Assert expected author info with actual.
 		$this->assertEquals(
 			[
-				'image_id' => 35,
-				'title'    => 'Test Author',
 				'duration' => 5,
+				'authors'  => [
+					0 => [
+						'image_id' => 35,
+						'title'    => 'Test Author',
+					],
+					1 => [
+						'image_id' => 36,
+						'title'    => 'Test Author 1',
+					],
+				],
 			],
 			$author_info
 		);

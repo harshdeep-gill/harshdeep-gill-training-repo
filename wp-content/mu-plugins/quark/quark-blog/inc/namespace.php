@@ -318,12 +318,17 @@ function get_cards_data( array $post_ids = [] ): array {
  * @param int $post_id Post ID.
  *
  * @return array{
- *     image_id: int,
- *     title: string,
+ *     authors: array<mixed>,
  *     duration: int,
- *     }
+ * }
  */
 function get_blog_post_author_info( int $post_id = 0 ): array {
+	// Initialize attributes.
+	$attributes = [
+		'authors'  => [],
+		'duration' => 0,
+	];
+
 	// Get post ID.
 	if ( 0 === $post_id ) {
 		$post_id = absint( get_the_ID() );
@@ -334,18 +339,11 @@ function get_blog_post_author_info( int $post_id = 0 ): array {
 
 	// Bail if post does not exist or not an instance of WP_Post.
 	if ( empty( $post['post'] ) || ! $post['post'] instanceof WP_Post ) {
-		return [
-			'image_id' => 0,
-			'title'    => '',
-			'duration' => 0,
-		];
+		return $attributes;
 	}
 
 	// Get blog author ids.
 	$blog_author_ids = (array) $post['post_meta']['blog_authors'] ?: [];
-
-	// Initialize authors data.
-	$authors_data = [];
 
 	// Loop through blog author ids.
 	foreach ( $blog_author_ids as $blog_author_id ) {
@@ -353,26 +351,15 @@ function get_blog_post_author_info( int $post_id = 0 ): array {
 
 		// Break the loop if authors data is not empty.
 		if ( ! empty( $authors_data['post'] ) ) {
-			break;
+			$attributes['authors'][] = [
+				'title'    => $authors_data['post']->post_title,
+				'image_id' => $authors_data['post_thumbnail'],
+			];
 		}
 	}
 
-	// Initialize attributes.
-	$attributes = [
-		'image_id' => 0,
-		'title'    => '',
-		'duration' => 0,
-	];
-
-	// Check if authors data is empty.
-	if ( empty( $authors_data ) ) {
-		return $attributes;
-	}
-
 	// Set attributes.
-	$attributes['title']    = $authors_data['post']->post_title ?? '';
-	$attributes['image_id'] = $authors_data['post_thumbnail'];
-	$attributes['duration'] = array_key_exists( 'read_time_minutes', $post['post_meta'] ) ? absint( $post['post_meta']['read_time_minutes'] ) : 0;
+	$attributes['duration'] = ! empty( $post['post_meta']['read_time_minutes'] ) ? absint( $post['post_meta']['read_time_minutes'] ) : 0;
 
 	// Return attributes.
 	return $attributes;

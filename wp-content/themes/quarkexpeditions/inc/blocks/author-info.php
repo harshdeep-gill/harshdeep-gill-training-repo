@@ -33,6 +33,39 @@ function register(): void {
 }
 
 /**
+ * Prepare attributes for this block.
+ *
+ * @return mixed[]
+ */
+function prepare_attributes(): array {
+	// Get author info.
+	$author_info = get_blog_post_author_info();
+
+	// init $attributes array.
+	$attributes = [];
+
+	// Check if $author_info['authors'] has child array.
+	if ( is_array( $author_info['authors'] ) ) {
+		// Iterate through authors.
+		foreach ( $author_info['authors'] as $author ) {
+			$attributes['image_id'] = $author['image_id'];
+			$attributes['title']    = $author['title'];
+
+			// Break the loop.
+			break;
+		}
+	}
+
+	// Check if $author_info['duration'] has value.
+	if ( ! empty( $author_info['duration'] ) ) {
+		$attributes['duration'] = $author_info['duration'];
+	}
+
+	// Return attributes.
+	return $attributes;
+}
+
+/**
  * Render this block.
  *
  * @param string|null $content Original content.
@@ -74,7 +107,7 @@ function render( ?string $content = null, array $block = [] ): null|string {
 
 	// Merge attributes.
 	$attributes = wp_parse_args(
-		get_blog_post_author_info(),
+		prepare_attributes(),
 		$attributes
 	);
 
