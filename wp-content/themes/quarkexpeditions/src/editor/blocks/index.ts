@@ -34,6 +34,7 @@ import * as fancyVideo from './fancy-video';
 import * as formTwoStep from './form-two-step';
 import * as formTwoStepCompact from './form-two-step-compact';
 import * as footer from './footer';
+import * as thumbnailCards from './thumbnail-cards';
 
 /**
  * Add blocks.
@@ -67,6 +68,7 @@ const blocks = [
 	formTwoStep,
 	formTwoStepCompact,
 	footer,
+	thumbnailCards,
 ];
 
 /**
