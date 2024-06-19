@@ -521,10 +521,12 @@ class Test_Blog extends WP_UnitTestCase {
 
 		// Test 2: get post cards data by passing multiple post ids.
 		wp_cache_flush();
-		$post_data = \Quark\Blog\get_cards_data( [
-			$post_1->ID,
-			$post_2->ID
-		] );
+		$post_data = \Quark\Blog\get_cards_data(
+			[
+				$post_1->ID,
+				$post_2->ID,
+			]
+		);
 
 		// Assert expected cards data with actual.
 		$this->assertEquals(
