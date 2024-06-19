@@ -9,7 +9,7 @@
 		@foreach ( $top as $top_inner_content )
 			@if ( ! empty( $top_inner_content['type'] ) && 'column' === $top_inner_content['type'] )
 				<x-footer.column :url="$top_inner_content['attributes']['url']">
-					@foreach ($top_inner_content['content'] as $column_inner_content)
+					@foreach ( $top_inner_content['content'] as $column_inner_content )
 						@switch ( $column_inner_content['type'] )
 							@case ( 'title' )
 								<x-footer.column-title :title="$column_inner_content['attributes']['title']" />
@@ -49,7 +49,7 @@
 		@foreach ( $middle as $middle_inner_content )
 			@if ( ! empty( $middle_inner_content['type'] ) && 'column' === $middle_inner_content['type'] )
 				<x-footer.column :url="$middle_inner_content['attributes']['url']">
-					@foreach ($middle_inner_content['content'] as $column_inner_content)
+					@foreach ( $middle_inner_content['content'] as $column_inner_content )
 						@switch ( $column_inner_content['type'] )
 							@case ( 'title' )
 								<x-footer.column-title :title="$column_inner_content['attributes']['title']" />

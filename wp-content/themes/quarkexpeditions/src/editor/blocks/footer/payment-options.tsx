@@ -71,6 +71,9 @@ export const settings: BlockConfiguration = {
 					[ paymentOption.name, { type: 'amex' } ],
 					[ paymentOption.name, { type: 'discover' } ],
 				],
+
+				// @ts-ignore
+				orientation: 'horizontal',
 			}
 		);
 

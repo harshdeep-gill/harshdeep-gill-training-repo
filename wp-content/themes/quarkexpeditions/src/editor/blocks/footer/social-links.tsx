@@ -71,6 +71,9 @@ export const settings: BlockConfiguration = {
 					[ socialLink.name, { type: 'twitter' } ],
 					[ socialLink.name, { type: 'youtube' } ],
 				],
+
+				// @ts-ignore
+				orientation: 'horizontal',
 			}
 		);
 

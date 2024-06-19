@@ -81,7 +81,7 @@ export const settings: BlockConfiguration = {
 			template: [ [ footerTop.name ], [ footerMiddle.name ], [ footerBottom.name ] ],
 
 			// @ts-ignore
-			orientation: 'horizontal',
+			orientation: 'vertical',
 		} );
 
 		// Return the block's markup.

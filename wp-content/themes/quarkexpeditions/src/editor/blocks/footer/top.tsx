@@ -65,6 +65,9 @@ export const settings: BlockConfiguration = {
 			{
 				allowedBlocks: [ footerColumn.name ],
 				template: [ [ footerColumn.name ], [ footerColumn.name ], [ footerColumn.name ] ],
+
+				// @ts-ignore
+				orientation: 'horizontal',
 			}
 		);
 
