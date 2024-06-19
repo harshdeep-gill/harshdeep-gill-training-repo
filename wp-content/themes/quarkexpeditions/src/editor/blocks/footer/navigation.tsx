@@ -40,7 +40,7 @@ export const settings: BlockConfiguration = {
 	apiVersion: 2,
 	title: __( 'Footer Navigation', 'qrk' ),
 	description: __( 'Display the footer navigation container.', 'qrk' ),
-	parent: [ 'quark/footer-top', 'quark/footer-middle', 'quark/footer-bottom' ],
+	parent: [ 'quark/footer-middle', 'quark/footer-bottom' ],
 	category: 'layout',
 	keywords: [
 		__( 'footer', 'qrk' ),
