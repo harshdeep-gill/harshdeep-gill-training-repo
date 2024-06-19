@@ -277,7 +277,7 @@ function process_column_block( array $block = [] ): array {
 							$payment_options['content'][] = [
 								'type'       => 'payment-option',
 								'attributes' => [
-									'type' => $maybe_payment_option['attrs']['type'],
+									'type' => $maybe_payment_option['attrs']['type'] ?? '',
 								],
 							];
 						}
