@@ -60,7 +60,7 @@ function render( ?string $content = null, array $block = [] ): null|string {
 				[
 					'quark/footer-top',
 					'quark/footer-middle',
-					'quark/footer-top',
+					'quark/footer-bottom',
 				],
 				true
 			) ) {
@@ -113,6 +113,48 @@ function render( ?string $content = null, array $block = [] ): null|string {
 						}
 					}
 					break;
+
+				// Footer bottom.
+				case 'quark/footer-bottom':
+					if ( ! empty( $footer_section['innerBlocks'] ) ) {
+						// Loop through the inner blocks.
+						foreach ( $footer_section['innerBlocks'] as $bottom_inner_block ) {
+							// Check if it is a navigation block.
+							if ( 'quark/footer-navigation' === $bottom_inner_block['blockName'] ) {
+								$processed_navigation = process_navigation_block( $bottom_inner_block );
+
+								// Check if column is empty.
+								if ( ! empty( $processed_navigation ) ) {
+									$attributes['bottom'][] = $processed_navigation;
+								}
+							}
+
+							// Check if it is a copyright block.
+							if ( 'quark/footer-copyright' === $bottom_inner_block['blockName'] ) {
+								$copyright = [
+									'type'    => 'copyright',
+									'content' => [],
+								];
+
+								// Check if inner blocks exist.
+								if ( ! empty( $bottom_inner_block['innerBlocks'] ) ) {
+									// Loop through inner blocks.
+									foreach ( $bottom_inner_block['innerBlocks'] as $maybe_copyright_text ) {
+										if ( 'core/paragraph' !== $maybe_copyright_text['blockName'] ) {
+											continue;
+										}
+
+										// Add the content.
+										$copyright['content'][] = render_block( $maybe_copyright_text );
+									}
+								}
+
+								// Append to the column.
+								$attributes['bottom'][] = $copyright;
+							}
+						}
+					}
+					break;
 			}
 		}
 	}
@@ -154,7 +196,8 @@ function process_column_block( array $block = [] ): array {
 					'quark/footer-social-links',
 					'quark/footer-icon',
 					'quark/footer-payment-options',
-					'quark/footer-copyright',
+					'quark/button',
+					'quark/footer-logo',
 					'core/paragraph',
 					'core/list',
 					'core/heading',
@@ -244,28 +287,17 @@ function process_column_block( array $block = [] ): array {
 					$column['content'][] = $payment_options;
 					break;
 
-				// Footer Copyright.
-				case 'quark/footer-copyright':
-					$copyright = [
-						'type'    => 'copyright',
-						'content' => '',
+				// Footer logo.
+				case 'quark/footer-logo':
+					$column['content'][] = [ 'type' => 'logo' ];
+					break;
+
+				// Quark button.
+				case 'quark/button':
+					$column['content'][] = [
+						'type'    => 'button',
+						'content' => render_block( $column_inner_block ),
 					];
-
-					// Check if inner blocks exist.
-					if ( ! empty( $column_inner_block['innerBlocks'] ) ) {
-						// Loop through inner blocks.
-						foreach ( $column_inner_block['innerBlocks'] as $maybe_copyright_text ) {
-							if ( 'core/paragraph' !== $maybe_copyright_text['blockName'] ) {
-								continue;
-							}
-
-							// Add the content.
-							$copyright['content'][] = render_block( $maybe_copyright_text );
-						}
-					}
-
-					// Append to the column.
-					$column['content'][] = $copyright;
 					break;
 
 				// Rest of the cases.
