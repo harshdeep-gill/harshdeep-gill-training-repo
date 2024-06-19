@@ -41,7 +41,7 @@ export const settings: BlockConfiguration = {
 		type: {
 			type: 'string',
 			default: '',
-			enum: [ 'call', 'brochure', 'email', '' ],
+			enum: [ 'call', 'brochure', 'mail', '' ],
 		},
 	},
 	supports: {
@@ -79,7 +79,7 @@ export const settings: BlockConfiguration = {
 						<SelectControl
 							label={ __( 'Icon', 'qrk' ) }
 							help={ __( 'Select icon.', 'qrk' ) }
-							value={ attributes.icon }
+							value={ attributes.type }
 							options={ [
 								{ label: __( 'Select Icon…', 'qrk' ), value: '' },
 								{ label: __( 'Call', 'qrk' ), value: 'call' },
