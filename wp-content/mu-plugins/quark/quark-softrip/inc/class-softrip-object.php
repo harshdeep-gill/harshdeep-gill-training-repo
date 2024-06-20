@@ -41,7 +41,7 @@ abstract class Softrip_Object {
 	public function id(): int {
 		// If valid post, return ID.
 		if ( $this->is_valid() ) {
-			return $this->data['post']->ID;
+			return $this->data['post']->ID; // @phpstan-ignore-line is_valid() ensures post is valid
 		}
 
 		// Return a 0 if not.
