@@ -7,29 +7,33 @@
 
 namespace Quark\Softrip;
 
-use Quark\Softrip\Departure;
 use WP_Error;
-use WP_Post;
+use WP_Query;
 
-use function Quark\Itineraries\get;
-use function Quark\Ships\code_to_id;
+use function Quark\Itineraries\bust_post_cache;
+use function Quark\Itineraries\get as get_itinerary;
+use function Quark\Ships\code_to_id as get_ship_post_id;
+use function Quark\CabinCategories\code_to_id as get_cabin_post_id;
 
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
 
 /**
  * Itinerary API.
  */
-class Itinerary {
+class Itinerary extends Softrip_Object {
 	/**
-	 * Holds the itinerary data.
+	 * Holds the departures.
 	 *
-	 * @var array{
-	 *     post: WP_Post|null,
-	 *     post_meta: mixed[],
-	 *     post_taxonomies: mixed[]
-	 * }
+	 * @var Departure[]
 	 */
-	private array $itinerary;
+	protected array $departures = [];
+
+	/**
+	 * Flag if departures have been loaded.
+	 *
+	 * @var bool
+	 */
+	private bool $departures_loaded = false;
 
 	/**
 	 * Constructor.
@@ -37,56 +41,64 @@ class Itinerary {
 	 * @param int $post_id The itinerary post ID.
 	 */
 	public function __construct( int $post_id = 0 ) {
+		// If provided with a post_id, load it.
+		if ( ! empty( $post_id ) ) {
+			$this->load( $post_id );
+		}
+	}
+
+	/**
+	 * Load the data.
+	 *
+	 * @param int $post_id The object post ID.
+	 *
+	 * @return void
+	 */
+	public function load( int $post_id = 0 ): void {
 		// Get the Itinerary.
-		$this->itinerary = get( $post_id );
+		$this->data = get_itinerary( $post_id );
 	}
 
 	/**
-	 * Get the itinerary post id.
+	 * Ensure that departures are loaded.
 	 *
-	 * @return int
+	 * @return void
 	 */
-	public function id(): int {
-		// If valid post, return ID.
-		if ( $this->itinerary['post'] instanceof WP_Post ) {
-			return $this->itinerary['post']->ID;
+	private function ensure_departures_loaded(): void {
+		// Check departures are loaded.
+		if ( false === $this->departures_loaded ) {
+			$this->load_departures();
 		}
-
-		// Return a 0 if not.
-		return 0;
 	}
 
 	/**
-	 * Check if the post is valid.
+	 * Load itinerary departures.
 	 *
-	 * @return bool
+	 * @return void
 	 */
-	public function is_valid(): bool {
-		// Check if $itinerary is correct.
-		return $this->itinerary['post'] instanceof WP_Post;
-	}
+	private function load_departures(): void {
+		// Get the departure posts.
+		$posts = new WP_Query(
+			[
+				'post_type'              => DEPARTURE_POST_TYPE,
+				'posts_per_page'         => 100,
+				'no_found_rows'          => true,
+				'update_post_term_cache' => false,
+				'parent_in'              => $this->id(),
+				'fields'                 => 'ids',
+				'post_status'            => 'draft,publish',
+			]
+		);
 
-	/**
-	 * Get post meta from the post object.
-	 *
-	 * @param string $name The metadata to call from the post object.
-	 *
-	 * @return mixed
-	 */
-	public function post_meta( string $name = '' ): mixed {
-		// Check if the post is valid.
-		if ( ! $this->is_valid() ) {
-			// Not valid post, so bail with expected empty meta.
-			return '';
+		// Departures.
+		foreach ( $posts->get_posts() as $post_id ) {
+			$departure = new Departure( $this );
+			$departure->load( absint( $post_id ) );
+			$this->departures[ $departure->post_meta( 'softrip_departure_id' ) ] = $departure;
 		}
 
-		// if not specified, return all.
-		if ( empty( $name ) ) {
-			return $this->itinerary['post_meta'];
-		}
-
-		// Return post meta.
-		return $this->itinerary['post_meta'][ $name ] ?? '';
+		// Set departures loaded.
+		$this->departures_loaded = true;
 	}
 
 	/**
@@ -95,97 +107,73 @@ class Itinerary {
 	 * @return Departure[]
 	 */
 	public function departures(): array {
-		// @todo Departure objects.
-		return [];
+		// Ensure departures loaded.
+		$this->ensure_departures_loaded();
+
+		// Check last update time.
+		$last_update = $this->post_meta( 'last_updated' );
+
+		// Update if older than 4 hours.
+		if ( empty( $last_update ) || time() > $last_update + ( HOUR_IN_SECONDS * 4 ) ) {
+			$this->update_departures();
+		}
+
+		// Return the list of departures.
+		return $this->departures;
 	}
 
 	/**
-	 * Build departures.
+	 * Get a departure by id.
 	 *
-	 * @return bool
+	 * @param string|null $id Departure ID.
+	 *
+	 * @return Departure
 	 */
-	public function build_departures(): bool {
-		// Check if departures have been built already.
-		$has_built = $this->post_meta( 'built_departures' );
+	public function get_departure( string|null $id = null ): Departure {
+		// Ensure departures loaded.
+		$this->ensure_departures_loaded();
 
-		// Return if already built.
-		if ( ! empty( $has_built ) ) {
-			return true;
+		// Create if not existing.
+		if ( ! isset( $this->departures[ $id ] ) ) {
+			$this->departures[ $id ] = new Departure( $this );
 		}
 
+		// Return the departure.
+		return $this->departures[ $id ];
+	}
+
+	/**
+	 * Update departures.
+	 *
+	 * @return void
+	 */
+	private function update_departures(): void {
 		// Get the Softrip ID and request the departures from the middleware.
 		$softrip_id     = strval( $this->post_meta( 'softrip_package_id' ) );
 		$raw_departures = request_departures( [ $softrip_id ] );
 
 		// Check if is valid.
 		if ( $raw_departures instanceof WP_Error ) {
-			return false;
+			return;
 		}
 
 		// Use the departures for the softrip ID.
 		$departures = $raw_departures[ $softrip_id ];
 
 		// Go over each departure and create a new Departure post for each.
-		foreach ( $departures['departures'] as $departure ) {
-			$this->create_departure( $departure );
+		foreach ( $departures['departures'] as $raw_departure ) {
+			$departure = $this->get_departure( strval( $raw_departure['id'] ) );
+			$departure->set( $raw_departure );
+			$departure->save();
 		}
 
-		// Update post meta, recording built.
-		add_post_meta( $this->id(), 'built_departures', true );
+		// Update last updated timestamp.
+		update_post_meta( $this->id(), 'last_updated', time() );
 
-		// Return a true value.
-		return true;
-	}
+		// Reload data.
+		bust_post_cache( $this->id() );
 
-	/**
-	 * Create a departure.
-	 *
-	 * @param array<string, mixed> $data The departure data.
-	 *
-	 * @return bool|WP_Error
-	 */
-	private function create_departure( array $data = [] ): bool|WP_Error {
-		// Set data defaults.
-		$default = [
-			'id'          => 0,
-			'shipCode'    => '',
-			'packageCode' => '',
-			'startDate'   => '',
-			'endDate'     => '',
-			'duration'    => 0,
-		];
-
-		// Apply default structures.
-		$data = wp_parse_args( $data, $default );
-
-		// Set the post structure.
-		$args = [
-			'post_type'    => DEPARTURE_POST_TYPE,
-			'post_title'   => $data['id'],
-			'post_content' => '',
-			'post_status'  => 'publish',
-			'post_parent'  => $this->id(),
-			'meta_input'   => [
-				'related_expedition'   => $this->post_meta( 'related_expedition' ),
-				'related_ship'         => code_to_id( strval( $data['shipCode'] ) ),
-				'softrip_departure_id' => $data['id'],
-				'softrip_package_id'   => $data['packageCode'],
-				'departure_start_date' => $data['startDate'],
-				'departure_end_date'   => $data['endDate'],
-				'duration'             => $data['duration'],
-				'itinerary'            => $this->id(),
-			],
-		];
-
-		// Create the departure post item.
-		$departure_id = wp_insert_post( $args );
-
-		// Return if error.
-		if ( $departure_id instanceof WP_Error ) {
-			return $departure_id;
-		}
-
-		// @Todo: Create a new Departure object and return it.
-		return true;
+		// Reload data.
+		$this->load( $this->id() );
 	}
 }
