@@ -34,6 +34,9 @@ function bootstrap(): void {
 		WP_CLI::add_command( 'quark-migrate itinerary-day', __NAMESPACE__ . '\\WP_CLI\\Itinerary_Day' );
 		WP_CLI::add_command( 'quark-migrate itinerary', __NAMESPACE__ . '\\WP_CLI\\Itinerary' );
 		WP_CLI::add_command( 'quark-migrate region', __NAMESPACE__ . '\\WP_CLI\\Region_Landing_Page' );
+		WP_CLI::add_command( 'quark-migrate staff-member', __NAMESPACE__ . '\\WP_CLI\\Staff_Member' );
+		WP_CLI::add_command( 'quark-migrate expedition', __NAMESPACE__ . '\\WP_CLI\\Expedition' );
+		WP_CLI::add_command( 'quark-migrate offers', __NAMESPACE__ . '\\WP_CLI\\Offer' );
 		WP_CLI::add_command( 'quark-migrate departure', __NAMESPACE__ . '\\WP_CLI\\Departure' );
 	}
 }

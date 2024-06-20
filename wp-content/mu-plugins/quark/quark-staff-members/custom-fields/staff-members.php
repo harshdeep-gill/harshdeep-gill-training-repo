@@ -209,23 +209,6 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 					'bidirectional_target' => [],
 				],
 				[
-					'key'               => 'field_65f44cb31752c',
-					'label'             => 'Video URL',
-					'name'              => 'video_url',
-					'aria-label'        => '',
-					'type'              => 'url',
-					'instructions'      => '',
-					'required'          => 0,
-					'conditional_logic' => 0,
-					'wrapper'           => [
-						'width' => '',
-						'class' => '',
-						'id'    => '',
-					],
-					'default_value'     => '',
-					'placeholder'       => '',
-				],
-				[
 					'key'               => 'field_65f44d6317530',
 					'label'             => 'Email Address',
 					'name'              => 'email_address',
