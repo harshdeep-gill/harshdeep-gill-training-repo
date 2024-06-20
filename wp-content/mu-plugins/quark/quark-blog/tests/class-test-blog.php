@@ -13,6 +13,7 @@ use WP_UnitTestCase;
 
 use function Quark\Blog\Authors\get;
 
+use const Quark\Blog\POST_TYPE;
 use const Quark\Blog\Authors\POST_TYPE as AUTHOR_POST_TYPE;
 
 /**
@@ -500,5 +501,89 @@ class Test_Blog extends WP_UnitTestCase {
 
 		// Assert that returned data is empty.
 		$this->assertEmpty( $post_data );
+	}
+
+	/**
+	 * Test get_blog_post_author_info.
+	 *
+	 * @covers \Quark\Blog\get_blog_post_author_info()
+	 *
+	 * @return void
+	 */
+	public function test_get_blog_post_author_info(): void {
+		// Create author.
+		$author = $this->factory()->post->create_and_get(
+			[
+				'post_type'   => AUTHOR_POST_TYPE,
+				'post_title'  => 'Test Author',
+				'post_status' => 'publish',
+				'meta_input'  => [
+					'_thumbnail_id' => 35,
+				],
+			]
+		);
+
+		// Assert created posts are instance of WP_Post.
+		$this->assertTrue( $author instanceof WP_Post );
+
+		// Create another author.
+		$author_1 = $this->factory()->post->create_and_get(
+			[
+				'post_type'   => AUTHOR_POST_TYPE,
+				'post_title'  => 'Test Author 1',
+				'post_status' => 'publish',
+				'meta_input'  => [
+					'_thumbnail_id' => 36,
+				],
+			]
+		);
+
+		// Assert created posts are instance of WP_Post.
+		$this->assertTrue( $author_1 instanceof WP_Post );
+
+		// Create post.
+		$post_1 = $this->factory()->post->create_and_get(
+			[
+				'post_title'   => 'Test Post 1',
+				'post_content' => 'Post content 1',
+				'post_status'  => 'publish',
+				'post_type'    => POST_TYPE,
+				'meta_input'   => [
+					'read_time_minutes' => 5,
+					'_thumbnail_id'     => 35,
+					'blog_authors'      => [ $author->ID, $author_1->ID ],
+				],
+			]
+		);
+
+		// Asset that author is created.
+		$this->assertTrue( $post_1 instanceof WP_Post );
+
+		// Set post single page.
+		WP_UnitTestCase::go_to( strval( get_permalink( $post_1->ID ) ) );
+
+		// Mock is_singular function.
+		$this->assertTrue( is_singular( POST_TYPE ) );
+
+		// Test getting author info.
+		$author_info = \Quark\Blog\get_blog_post_author_info();
+
+		// Assert expected author info with actual.
+		$this->assertEquals(
+			[
+				'duration' => 5,
+				'authors'  => [
+					0 => [
+						'image_id' => 35,
+						'title'    => 'Test Author',
+					],
+					1 => [
+						'image_id' => 36,
+						'title'    => 'Test Author 1',
+					],
+				],
+			],
+			$author_info
+		);
 	}
 }
