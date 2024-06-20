@@ -8,9 +8,11 @@
 namespace Quark\Blog;
 
 use WP_Post;
+use WP_Term;
 
 use function Quark\Blog\Authors\get as get_post_authors;
 use function Quark\Core\prepare_content_with_blocks;
+use function yoast_get_primary_term_id;
 
 const POST_TYPE   = 'post';
 const CACHE_KEY   = POST_TYPE;
@@ -27,6 +29,9 @@ function bootstrap(): void {
 
 	// Enable primary term.
 	add_filter( 'travelopia_primary_term_taxonomies', __NAMESPACE__ . '\\primary_term_taxonomies', 10, 2 );
+
+	// Breadcrumbs.
+	add_filter( 'travelopia_breadcrumbs_ancestors', __NAMESPACE__ . '\\breadcrumbs_ancestors' );
 
 	// Admin stuff.
 	if ( is_admin() ) {
@@ -368,4 +373,59 @@ function get_blog_post_author_info( int $post_id = 0 ): array {
 
 	// Return attributes.
 	return $attributes;
+}
+
+/**
+ * Breadcrumbs ancestors for this post type.
+ *
+ * @param mixed[] $breadcrumbs Breadcrumbs.
+ *
+ * @return mixed[]
+ */
+function breadcrumbs_ancestors( array $breadcrumbs = [] ): array {
+	// Check if current query is for this post type.
+	if ( ! ( is_singular( POST_TYPE ) || is_author() || is_category() ) ) {
+		return $breadcrumbs;
+	}
+
+	// Get archive page.
+	$blog_archive_page = absint( get_option( 'page_for_posts', 0 ) );
+
+	// Get it's title and URL for breadcrumbs if it's set.
+	if ( ! empty( $blog_archive_page ) ) {
+		$breadcrumbs[] = [
+			'title' => get_the_title( $blog_archive_page ),
+			'url'   => get_permalink( $blog_archive_page ),
+		];
+	}
+
+	// Get post ID.
+	$post_id = get_the_ID();
+
+	// Get primary category for post.
+	if ( ! $post_id ) {
+		return $breadcrumbs;
+	}
+
+	// Get primary category.
+	$primary_category_id = yoast_get_primary_term_id( 'category', $post_id );
+
+	// Get term.
+	if ( ! is_int( $primary_category_id ) ) {
+		return $breadcrumbs;
+	}
+
+	// Get primary category term.
+	$primary_category = get_term( $primary_category_id, 'category' );
+
+	// Add primary category to breadcrumbs.
+	if ( $primary_category instanceof WP_Term ) {
+		$breadcrumbs[] = [
+			'title' => $primary_category->name,
+			'url'   => get_term_link( $primary_category ),
+		];
+	}
+
+	// Return updated breadcrumbs.
+	return $breadcrumbs;
 }
