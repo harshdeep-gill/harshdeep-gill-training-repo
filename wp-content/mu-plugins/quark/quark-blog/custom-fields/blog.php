@@ -21,7 +21,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 					'aria-label'           => '',
 					'type'                 => 'relationship',
 					'instructions'         => '',
-					'required'             => 1,
+					'required'             => 0,
 					'conditional_logic'    => 0,
 					'wrapper'              => [
 						'width' => '',
@@ -37,8 +37,8 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 						0 => 'search',
 					],
 					'return_format'        => 'object',
-					'min'                  => 1,
-					'max'                  => '',
+					'min'                  => 0,
+					'max'                  => 1,
 					'elements'             => '',
 					'bidirectional'        => 1,
 					'bidirectional_target' => [

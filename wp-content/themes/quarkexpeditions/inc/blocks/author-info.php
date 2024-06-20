@@ -7,6 +7,8 @@
 
 namespace Quark\Theme\Blocks\AuthorInfo;
 
+use function Quark\Blog\get_blog_post_author_info;
+
 const BLOCK_NAME = 'quark/author-info';
 const COMPONENT  = 'parts.post-author-info';
 
@@ -28,6 +30,39 @@ function bootstrap(): void {
 function register(): void {
 	// Fire hooks.
 	add_filter( 'pre_render_block', __NAMESPACE__ . '\\render', 10, 2 );
+}
+
+/**
+ * Prepare attributes for this block.
+ *
+ * @return array{}
+ */
+function prepare_attributes(): array {
+	// Get author info.
+	$author_info = get_blog_post_author_info();
+
+	// init $attributes array.
+	$attributes = [];
+
+	// Check if $author_info['authors'] has child array.
+	if ( is_array( $author_info['authors'] ) ) {
+		// Iterate through authors.
+		foreach ( $author_info['authors'] as $author ) {
+			$attributes['image_id'] = $author['image_id'];
+			$attributes['title']    = $author['title'];
+
+			// Break the loop.
+			break;
+		}
+	}
+
+	// Check if $author_info['duration'] has value.
+	if ( ! empty( $author_info['duration'] ) ) {
+		$attributes['duration'] = $author_info['duration'];
+	}
+
+	// Return attributes.
+	return $attributes;
 }
 
 /**
@@ -69,6 +104,12 @@ function render( ?string $content = null, array $block = [] ): null|string {
 			}
 		}
 	}
+
+	// Merge attributes.
+	$attributes = wp_parse_args(
+		prepare_attributes(),
+		$attributes
+	);
 
 	// Return rendered component.
 	return quark_get_component( COMPONENT, $attributes );
