@@ -2,15 +2,8 @@
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-import {
-	BlockConfiguration,
-	registerBlockType,
-} from '@wordpress/blocks';
-import {
-	useBlockProps,
-	useInnerBlocksProps,
-	InnerBlocks,
-} from '@wordpress/block-editor';
+import { BlockConfiguration } from '@wordpress/blocks';
+import { useBlockProps } from '@wordpress/block-editor';
 
 /**
  * External dependencies.
@@ -18,14 +11,9 @@ import {
 import classnames from 'classnames';
 
 /**
- * Children blocks
+ * Internal dependencies.
  */
-import * as paymentOption from './payment-option';
-
-/**
- * Register children blocks.
- */
-registerBlockType( paymentOption.name, paymentOption.settings );
+import icons from '../icons';
 
 /**
  * Block name.
@@ -38,7 +26,7 @@ export const name: string = 'quark/footer-payment-options';
 export const settings: BlockConfiguration = {
 	apiVersion: 2,
 	title: __( 'Payment options', 'qrk' ),
-	description: __( 'Display the payment options container.', 'qrk' ),
+	description: __( 'Display the payment options.', 'qrk' ),
 	parent: [ 'quark/footer-column' ],
 	category: 'layout',
 	keywords: [
@@ -56,32 +44,28 @@ export const settings: BlockConfiguration = {
 	},
 	edit( { className }: BlockEditAttributes ): JSX.Element {
 		// eslint-disable-next-line react-hooks/rules-of-hooks
-		const blockProps = useBlockProps( {
-			className: classnames( className, 'footer__payment-options' ),
-		} );
-
-		// eslint-disable-next-line react-hooks/rules-of-hooks
-		const innerBlockProps = useInnerBlocksProps(
-			{ ...blockProps },
-			{
-				allowedBlocks: [ paymentOption.name ],
-				template: [
-					[ paymentOption.name, { type: 'visa' } ],
-					[ paymentOption.name, { type: 'mastercard' } ],
-					[ paymentOption.name, { type: 'amex' } ],
-					[ paymentOption.name, { type: 'discover' } ],
-				],
-
-				// @ts-ignore
-				orientation: 'horizontal',
-			}
-		);
+		const blockProps = useBlockProps( { className: classnames( className, 'footer__payment-options' ) } );
 
 		// Return the block's markup.
-		return ( <ul { ...innerBlockProps } /> );
+		return (
+			<ul { ...blockProps } >
+				<li className="footer__payment-option">
+					{ icons.payment.visa }
+				</li>
+				<li className="footer__payment-option">
+					{ icons.payment.mastercard }
+				</li>
+				<li className="footer__payment-option">
+					{ icons.payment.amex }
+				</li>
+				<li className="footer__payment-option">
+					{ icons.payment.discover }
+				</li>
+			</ul>
+		);
 	},
 	save() {
-		// Save inner block content.
-		return <InnerBlocks.Content />;
+		// No markup to save.
+		return null;
 	},
 };

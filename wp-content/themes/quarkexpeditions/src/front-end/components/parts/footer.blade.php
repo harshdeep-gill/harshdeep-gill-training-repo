@@ -24,11 +24,7 @@
 								@break
 
 							@case ( 'payment-options' )
-								<x-footer.payment-options>
-									@foreach ( $column_inner_content['content'] as $payment_option )
-										<x-footer.payment-option :type="$payment_option['attributes']['type']" />
-									@endforeach
-								</x-footer.payment-options>
+								<x-footer.payment-options />
 							@break
 
 							@case ( 'logo' )
@@ -64,11 +60,7 @@
 								@break
 
 							@case ( 'payment-options' )
-								<x-footer.payment-options>
-									@foreach ( $column_inner_content['content'] as $payment_option )
-										<x-footer.payment-option :type="$payment_option['attributes']['type']" />
-									@endforeach
-								</x-footer.payment-options>
+								<x-footer.payment-options />
 							@break
 
 							@case ( 'logo' )

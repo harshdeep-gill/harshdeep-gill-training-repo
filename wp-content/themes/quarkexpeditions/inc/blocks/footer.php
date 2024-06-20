@@ -260,31 +260,7 @@ function process_column_block( array $block = [] ): array {
 
 				// Footer payment options.
 				case 'quark/footer-payment-options':
-					$payment_options = [
-						'type'    => 'payment-options',
-						'content' => [],
-					];
-
-					// Check if inner blocks exist.
-					if ( ! empty( $column_inner_block['innerBlocks'] ) ) {
-						// Loop over inner blocks.
-						foreach ( $column_inner_block['innerBlocks'] as $maybe_payment_option ) {
-							if ( 'quark/footer-payment-option' !== $maybe_payment_option['blockName'] ) {
-								continue;
-							}
-
-							// Append to the parent.
-							$payment_options['content'][] = [
-								'type'       => 'payment-option',
-								'attributes' => [
-									'type' => $maybe_payment_option['attrs']['type'] ?? '',
-								],
-							];
-						}
-					}
-
-					// Append to the column.
-					$column['content'][] = $payment_options;
+					$column['content'][] = [ 'type' => 'payment-options' ];
 					break;
 
 				// Footer logo.
