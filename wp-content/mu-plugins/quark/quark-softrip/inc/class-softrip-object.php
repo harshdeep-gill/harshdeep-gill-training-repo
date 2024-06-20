@@ -32,7 +32,7 @@ abstract class Softrip_Object {
 	 * @return void
 	 */
 	abstract public function load( int $post_id = 0 ): void;
-
+	// phpcs:ignore Travelopia.Functions.CommentOnFirstLineOfFunctions.Missing
 	/**
 	 * Get the objects post id.
 	 *
