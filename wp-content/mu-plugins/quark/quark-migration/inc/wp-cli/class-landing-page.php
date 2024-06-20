@@ -17,6 +17,7 @@ use function Quark\Migration\Drupal\prepare_for_migration;
 use function Quark\Migration\Drupal\get_post_by_id;
 use function Quark\Migration\Drupal\prepare_content;
 use function Quark\Migration\Drupal\prepare_seo_data;
+use function Quark\Migration\Drupal\get_drupal_block_data;
 use function Quark\Migration\WordPress\qrk_sanitize_attribute;
 use function WP_CLI\Utils\make_progress_bar;
 
@@ -201,6 +202,21 @@ class Landing_Page {
 			$post_excerpt = strval( qrk_sanitize_attribute( $item['post_excerpt'] ) );
 		}
 
+		// Get Hero banner block content.
+		if ( ! empty( $item['hero_banner_id'] ) ) {
+			$block = $this->get_drupal_hero_banner_data( absint( $item['hero_banner_id'] ) );
+
+			// Convert block content.
+			if ( ! empty( $block ) ) {
+				$block_content = get_drupal_block_data( $block );
+			}
+
+			// Check if hero banner exists.
+			if ( ! empty( $block_content ) ) {
+				$post_content = $block_content . $post_content;
+			}
+		}
+
 		// Prepare post data.
 		$data = [
 			'post_type'         => POST_TYPE,
@@ -279,6 +295,43 @@ class Landing_Page {
 		// Check if data is not array.
 		if ( ! is_array( $result ) ) {
 			WP_CLI::error( 'Unable to fetch data!' );
+
+			// Bail out.
+			return [];
+		}
+
+		// Return data.
+		return $result;
+	}
+
+	/**
+	 * Get drupal paragraph data.
+	 *
+	 * @param int $pid Drupal paragraph id.
+	 *
+	 * @return array{}|array<int|string, string|int>
+	 */
+	public function get_drupal_hero_banner_data( int $pid = 0 ): array {
+		// Get database connection.
+		$drupal_database = get_database();
+
+		// Query.
+		$query = "SELECT
+			id,
+			type,
+			behavior_settings,
+			langcode
+		FROM
+			paragraphs_item_field_data
+		WHERE
+			id = %s AND langcode = 'en';";
+
+		// Fetch data.
+		$result = $drupal_database->get_row( $drupal_database->prepare( $query, $pid ), ARRAY_A );
+
+		// Check if data is not array.
+		if ( ! is_array( $result ) ) {
+			WP_CLI::line( 'Unable to fetch drupal_hero_banner_block data!' );
 
 			// Bail out.
 			return [];
