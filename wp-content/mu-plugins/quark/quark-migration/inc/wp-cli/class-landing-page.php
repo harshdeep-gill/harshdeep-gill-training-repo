@@ -11,13 +11,13 @@ use cli\progress\Bar;
 use WP_CLI;
 use WP_Error;
 use WP_CLI\ExitException;
+use Quark\Migration\Drupal\BlockConverter;
 
 use function Quark\Migration\Drupal\get_database;
 use function Quark\Migration\Drupal\prepare_for_migration;
 use function Quark\Migration\Drupal\get_post_by_id;
 use function Quark\Migration\Drupal\prepare_content;
 use function Quark\Migration\Drupal\prepare_seo_data;
-use function Quark\Migration\Drupal\get_drupal_block_data;
 use function Quark\Migration\WordPress\qrk_sanitize_attribute;
 use function WP_CLI\Utils\make_progress_bar;
 
@@ -208,7 +208,8 @@ class Landing_Page {
 
 			// Convert block content.
 			if ( ! empty( $block ) ) {
-				$block_content = get_drupal_block_data( $block );
+				$block_converter = new BlockConverter();
+				$block_content   = $block_converter->get_drupal_block_data( $block );
 			}
 
 			// Check if hero banner exists.
