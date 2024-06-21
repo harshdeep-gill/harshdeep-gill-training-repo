@@ -11,7 +11,7 @@ use cli\progress\Bar;
 use WP_CLI;
 use WP_Error;
 use WP_CLI\ExitException;
-use Quark\Migration\Drupal\BlockConverter;
+use Quark\Migration\Drupal\Block_Converter;
 
 use function Quark\Migration\Drupal\get_database;
 use function Quark\Migration\Drupal\prepare_for_migration;
@@ -208,7 +208,7 @@ class Landing_Page {
 
 			// Convert block content.
 			if ( ! empty( $block ) ) {
-				$block_converter = new BlockConverter();
+				$block_converter = new Block_Converter();
 				$block_content   = $block_converter->get_drupal_block_data( $block );
 			}
 

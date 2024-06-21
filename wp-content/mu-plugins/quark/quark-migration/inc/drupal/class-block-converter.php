@@ -12,9 +12,9 @@ use wpdb;
 use WP_Error;
 
 /**
- * Class BlockConverter.
+ * Class Block_Converter.
  */
-class BlockConverter {
+class Block_Converter {
 
 	/**
 	 * Drupal database connection object.
