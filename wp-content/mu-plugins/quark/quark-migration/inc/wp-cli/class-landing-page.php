@@ -21,7 +21,7 @@ use function Quark\Migration\Drupal\get_drupal_block_data;
 use function Quark\Migration\WordPress\qrk_sanitize_attribute;
 use function WP_CLI\Utils\make_progress_bar;
 
-use const Quark\LandingPages\POST_TYPE;
+use const Quark\Pages\POST_TYPE;
 
 /**
  * Class Landing_Page.
