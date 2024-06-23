@@ -27,12 +27,11 @@ export const settings: BlockConfiguration = {
 	apiVersion: 3,
 	title: __( 'Season Field', 'qrk' ),
 	description: __( 'Display the Season Field', 'qrk' ),
+	parent: [ 'quark/form-two-step-landing-form' ],
 	category: 'forms',
-	icon: 'add-page',
 	keywords: [
-		__( 'most', 'qrk' ),
-		__( 'important', 'qrk' ),
-		__( 'factors', 'qrk' ),
+		__( 'season', 'qrk' ),
+		__( 'field', 'qrk' ),
 	],
 	attributes: {
 		label: {

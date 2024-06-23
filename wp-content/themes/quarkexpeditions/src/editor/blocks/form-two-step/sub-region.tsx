@@ -27,10 +27,12 @@ export const settings: BlockConfiguration = {
 	apiVersion: 3,
 	title: __( 'Sub Region Field', 'qrk' ),
 	description: __( 'Display the Sub Region field', 'qrk' ),
+	parent: [ 'quark/form-two-step-landing-form' ],
 	category: 'forms',
 	keywords: [
 		__( 'sub', 'qrk' ),
 		__( 'region', 'qrk' ),
+		__( 'field', 'qrk' ),
 	],
 	attributes: {
 		label: {

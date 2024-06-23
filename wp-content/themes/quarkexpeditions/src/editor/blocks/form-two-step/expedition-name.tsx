@@ -27,11 +27,11 @@ export const settings: BlockConfiguration = {
 	apiVersion: 3,
 	title: __( 'Expedition Name Field', 'qrk' ),
 	description: __( 'Display the Expedition Name Field', 'qrk' ),
+	parent: [ 'quark/form-two-step-landing-form' ],
 	category: 'forms',
 	keywords: [
-		__( 'most', 'qrk' ),
-		__( 'important', 'qrk' ),
-		__( 'factors', 'qrk' ),
+		__( 'expedition', 'qrk' ),
+		__( 'field', 'qrk' ),
 	],
 	attributes: {
 		label: {

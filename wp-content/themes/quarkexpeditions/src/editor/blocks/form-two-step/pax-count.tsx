@@ -27,11 +27,12 @@ export const settings: BlockConfiguration = {
 	apiVersion: 3,
 	title: __( 'Pax Count Field', 'qrk' ),
 	description: __( 'Display the Pax Count Field', 'qrk' ),
+	parent: [ 'quark/form-two-step-landing-form' ],
 	category: 'forms',
 	keywords: [
-		__( 'most', 'qrk' ),
-		__( 'important', 'qrk' ),
-		__( 'factors', 'qrk' ),
+		__( 'pax', 'qrk' ),
+		__( 'count', 'qrk' ),
+		__( 'field', 'qrk' ),
 	],
 	attributes: {
 		label: {
