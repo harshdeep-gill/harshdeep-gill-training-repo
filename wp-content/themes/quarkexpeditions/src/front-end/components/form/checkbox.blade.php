@@ -1,6 +1,8 @@
 @props( [
-	'id'    => '',
-	'label' => '',
+	'id'              => '',
+	'label'           => '',
+	'unchecked_value' => '',
+	'value'           => 'true',
 ] )
 
 @php
@@ -8,9 +10,15 @@
 @endphp
 
 <div class="checkbox-container">
+	@if ( ! empty( $unchecked_value ) )
+		<input
+			type="hidden"
+			{{ $attributes->filter( fn ( $value, $key ) => 'label' !== $key )->merge( [ 'value' => esc_attr( $unchecked_value ) ] ) }}
+		>
+	@endif
 	<input
 		type="checkbox"
-		{{ $attributes->filter( fn ( $value, $key ) => $key !== 'label' )->merge( [ 'id' => $id ] ) }}
+		{{ $attributes->filter( fn ( $value, $key ) => $key !== 'label' )->merge( [ 'id' => $id, 'value' => $value ] ) }}
 	>
 
 	<x-form.label :id="$id">
