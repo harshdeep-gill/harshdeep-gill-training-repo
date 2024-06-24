@@ -42,15 +42,39 @@
 								name="fields[Sub_Region__c]"
 								form="{{ $form_id }}"
 							>
-								<option value="">{{ __( '- Select -', 'qrk' ) }}</option>
 								@if ( empty( $field['options'] ) )
-									<option value="Antarctic Peninsula">Antarctic Peninsula</option>
-									<option value="Falklands & South Georgia">Falklands & South Georgia</option>
-									<option value="Patagonia">Patagonia</option>
-									<option value="Snow Hill Island">Snow Hill Island</option>
+									<x-form.option
+										value="Antarctic Peninsula"
+										label="Antarctic Peninsula"
+									>
+										Antarctic Peninsula
+									</x-form.option>
+									<x-form.option
+										value="Falklands & South Georgia"
+										label="Falklands & South Georgia"
+									>
+										Falklands & South Georgia
+									</x-form.option>
+									<x-form.option
+										value="Patagonia"
+										label="Patagonia"
+									>
+										Patagonia
+									</x-form.option>
+									<x-form.option
+										value="Snow Hill Island"
+										label="Snow Hill Island"
+									>
+										Snow Hill Island
+									</x-form.option>
 								@else
 									@foreach ( $field['options'] as $option )
-										<option value="{{ $option['value'] ?? '' }}">{{ $option['text'] ?? '' }}</option>
+										<x-form.option
+											value="{{ $option['value'] ?? '' }}"
+											label="{{ $option['text'] ?? '' }}"
+										>
+											{{ $option['text'] ?? '' }}
+										</x-form.option>
 									@endforeach
 								@endif
 							</x-form.select>
@@ -65,16 +89,25 @@
 								name="fields[Most_Important_Factors__c]"
 								form="{{ $form_id }}"
 							>
-								<option value="">{{ __( '- Select -', 'qrk' ) }}</option>
 								@if ( empty( $field['options'] ) )
-									<option value="Adventure Activities">Adventure Activities</option>
-									<option value="Budget">Budget</option>
-									<option value="Region">Destination</option>
-									<option value="Schedule">Schedule</option>
-									<option value="Wildlife">Wildlife</option>
+									<x-form.option
+										value="Adventure Activities"
+										label="Adventure Activities"
+									>
+										Adventure Activities
+									</x-form.option>
+									<x-form.option value="Budget" label="Budget">Budget</x-form.option>
+									<x-form.option value="Region" label="Destination">Destination</x-form.option>
+									<x-form.option value="Schedule" label="Schedule">Schedule</x-form.option>
+									<x-form.option value="Wildlife" label="Wildlife">Wildlife</x-form.option>
 								@else
 									@foreach ( $field['options'] as $option )
-										<option value="{{ $option['value'] ?? '' }}">{{ $option['text'] ?? '' }}</option>
+										<x-form.option
+											value="{{ $option['value'] ?? '' }}"
+											label="{{ $option['text'] ?? '' }}"
+										>
+											{{ $option['text'] ?? '' }}
+										</x-form.option>
 									@endforeach
 								@endif
 							</x-form.select>
@@ -89,15 +122,19 @@
 								name="fields[Pax_Count__c]"
 								form="{{ $form_id }}"
 							>
-								<option value="">{{ __( '- Select -', 'qrk' ) }}</option>
 								@if ( empty( $field['options'] ) )
-									<option value="1">1</option>
-									<option value="2">2</option>
-									<option value="3">3</option>
-									<option value="4">4</option>
+									<x-form.option value="1" label="1">1</x-form.option>
+									<x-form.option value="2" label="2">2</x-form.option>
+									<x-form.option value="3" label="3">3</x-form.option>
+									<x-form.option value="4" label="4">4</x-form.option>
 								@else
 									@foreach ( $field['options'] as $option )
-										<option value="{{ $option['value'] ?? '' }}">{{ $option['text'] ?? '' }}</option>
+										<x-form.option
+											value="{{ $option['value'] ?? '' }}"
+											label="{{ $option['text'] ?? '' }}"
+										>
+											{{ $option['text'] ?? '' }}
+										</x-form.option>
 									@endforeach
 								@endif
 							</x-form.select>
@@ -112,13 +149,27 @@
 								name="fields[Season__c]"
 								form="{{ $form_id }}"
 							>
-								<option value="">{{ __( '- Select -', 'qrk' ) }}</option>
 								@if ( empty( $field['options'] ) )
-									<option value="2024-25">Antarctic 2024/25 (Nov '24 - Mar '25)</option>
-									<option value="2025-26">Antarctic 2025/26 (Nov '25 - Mar '26)</option>
+									<x-form.option
+										value="2024-25"
+										label="Antarctic 2024/25 (Nov '24 - Mar '25)"
+									>
+										Antarctic 2024/25 (Nov '24 - Mar '25)
+									</x-form.option>
+									<x-form.option
+										value="2025-26"
+										label="Antarctic 2025/26 (Nov '25 - Mar '26)"
+									>
+										Antarctic 2025/26 (Nov '25 - Mar '26)
+									</x-form.option>
 								@else
 									@foreach ( $field['options'] as $option )
-										<option value="{{ $option['value'] ?? '' }}">{{ $option['text'] ?? '' }}</option>
+										<x-form.option
+											value="{{ $option['value'] ?? '' }}"
+											label="{{ $option['text'] ?? '' }}"
+										>
+											{{ $option['text'] ?? '' }}
+										</x-form.option>
 									@endforeach
 								@endif
 							</x-form.select>
@@ -133,10 +184,14 @@
 								name="fields[Expedition__c]"
 								form="{{ $form_id }}"
 							>
-								<option value="">- Select -</option>
 								@if ( ! empty( $field['options'] ) )
 									@foreach ( $field['options'] as $option )
-										<option value="{{ $option['value'] ?? '' }}">{{ $option['text'] ?? '' }}</option>
+										<x-form.option
+											value="{{ $option['value'] ?? '' }}"
+											label="{{ $option['text'] ?? '' }}"
+										>
+											{{ $option['text'] ?? '' }}
+										</x-form.option>
 									@endforeach
 								@endif
 							</x-form.select>

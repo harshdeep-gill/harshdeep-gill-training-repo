@@ -22,7 +22,7 @@
 	{{ $attributes->filter( fn ( $value, $key ) => $key !== 'label' )->merge( [ 'id' => $id ] ) }}
 >
 	<tp-multi-select-field>
-		<tp-multi-select-placeholder>Select...</tp-multi-select-placeholder>
+		<tp-multi-select-placeholder>{{ __( '- Select -', 'qrk' ) }}</tp-multi-select-placeholder>
 		<tp-multi-select-status format="$value"></tp-multi-select-status>
 	</tp-multi-select-field>
 	<tp-multi-select-options>
