@@ -17,7 +17,7 @@ import {
 /**
  * Internal dependencies.
  */
-import * as tableOfContents from '../table-of-contents';
+import { name as tableOfContents } from '../table-of-contents';
 
 /**
  * External dependencies.
@@ -67,7 +67,7 @@ export const settings: BlockConfiguration = {
 
 		// eslint-disable-next-line react-hooks/rules-of-hooks
 		const innerBlocksProps = useInnerBlocksProps( { ...blocksProps }, {
-			allowedBlocks: [ tableOfContents.name ],
+			allowedBlocks: [ tableOfContents ],
 			template: [ [ 'core/paragraph', { placeholder: __( 'Sidebar…', 'qrk' ) } ] ],
 			templateLock: false,
 		} );
