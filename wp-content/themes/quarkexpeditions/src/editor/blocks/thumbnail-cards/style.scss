@@ -1,0 +1,11 @@
+.thumbnail-cards {
+
+	&__slides {
+		display: flex;
+		flex-wrap: wrap;
+	}
+
+	&__nav {
+		margin-inline: auto;
+	}
+}

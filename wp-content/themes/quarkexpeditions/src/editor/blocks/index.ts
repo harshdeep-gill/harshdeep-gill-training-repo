@@ -33,6 +33,8 @@ import * as mediaTextCta from './media-text-cta';
 import * as fancyVideo from './fancy-video';
 import * as formTwoStep from './form-two-step';
 import * as formTwoStepCompact from './form-two-step-compact';
+import * as accordion from './accordion';
+import * as thumbnailCards from './thumbnail-cards';
 
 /**
  * Add blocks.
@@ -65,6 +67,8 @@ const blocks = [
 	fancyVideo,
 	formTwoStep,
 	formTwoStepCompact,
+	accordion,
+	thumbnailCards,
 ];
 
 /**
