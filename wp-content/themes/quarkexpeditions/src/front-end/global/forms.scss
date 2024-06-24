@@ -97,6 +97,11 @@ tp-multi-select-field {
 	}
 }
 
+input[type="checkbox"],
+input[type="radio"] {
+	flex-shrink: 0;
+}
+
 tp-form-error {
 	display: none;
 }
