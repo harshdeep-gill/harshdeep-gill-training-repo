@@ -48,10 +48,6 @@ export const settings: BlockConfiguration = {
 			type: 'boolean',
 			default: false,
 		},
-		fieldMap: {
-			type: 'string',
-			default: 'Most_Important_Factors__c',
-		},
 	},
 	supports: {
 		alignWide: false,
@@ -72,9 +68,11 @@ export const settings: BlockConfiguration = {
 						<TextControl
 							label={ __( 'Salesforce Field Mapping', 'qrk' ) }
 							help={ __( 'Salesforce Field Name', 'qrk' ) }
-							value={ attributes.fieldMap }
-							onChange={ ( fieldMap: string ) => setAttributes( { fieldMap } ) }
+							value="Most_Important_Factors__c"
 							disabled
+							onChange={ () => {
+								// Placeholder function.
+							} }
 						/>
 						<TextControl
 							label={ __( 'Label', 'qrk' ) }

@@ -47,10 +47,6 @@ export const settings: BlockConfiguration = {
 			type: 'boolean',
 			default: false,
 		},
-		fieldMap: {
-			type: 'string',
-			default: 'Pax_Count__c',
-		},
 	},
 	supports: {
 		alignWide: false,
@@ -71,9 +67,11 @@ export const settings: BlockConfiguration = {
 						<TextControl
 							label={ __( 'Salesforce Field Mapping', 'qrk' ) }
 							help={ __( 'Salesforce Field Name', 'qrk' ) }
-							value={ attributes.fieldMap }
-							onChange={ ( fieldMap: string ) => setAttributes( { fieldMap } ) }
+							value="Pax_Count__c"
 							disabled
+							onChange={ () => {
+								// Placeholder function.
+							} }
 						/>
 						<TextControl
 							label={ __( 'Label', 'qrk' ) }
