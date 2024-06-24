@@ -1,6 +1,6 @@
 <?php
 /**
- * Migrate: Region Landing Pages from Drupal to WordPress CPT.
+ * Migrate: Adventure Options.
  *
  * @package quark-migration
  */
@@ -10,29 +10,28 @@ namespace Quark\Migration\WP_CLI;
 use cli\progress\Bar;
 use WP_CLI;
 use WP_Error;
-use WP_CLI\ExitException;
 use WP_Term;
-use WP_Post;
+use WP_CLI\ExitException;
 
 use function Quark\Migration\Drupal\get_database;
-use function Quark\Migration\Drupal\get_term_by_id;
-use function Quark\Migration\Drupal\prepare_content;
 use function Quark\Migration\Drupal\prepare_for_migration;
 use function Quark\Migration\Drupal\get_post_by_id;
-use function Quark\Migration\Drupal\prepare_seo_data;
+use function Quark\Migration\Drupal\get_term_by_id;
+use function Quark\Migration\Drupal\prepare_content;
 use function Quark\Migration\WordPress\qrk_sanitize_attribute;
 use function WP_CLI\Utils\make_progress_bar;
 
-use const Quark\Regions\POST_TYPE;
+use const Quark\AdventureOptions\POST_TYPE;
+use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
 use const Quark\Expeditions\DESTINATION_TAXONOMY;
 
 /**
- * Class Region_Landing_Page.
+ * Class Adventure_Option.
  */
-class Region_Landing_Page {
+class Adventure_Option {
 
 	/**
-	 * Migrate all Region Landing Page.
+	 * Migrate all Adventure_Option.
 	 *
 	 * @subcommand all
 	 *
@@ -43,12 +42,12 @@ class Region_Landing_Page {
 		// Prepare for migration.
 		prepare_for_migration();
 
-		// Fetch Region Landing Pages data from drupal database.
+		// Fetch Adventure Options data from drupal database.
 		$data = $this->get_drupal_data();
 
 		// Return if unable to fetch data.
 		if ( empty( $data ) ) {
-			WP_CLI::error( 'Unable to fetch data for Region Landing Page!' );
+			WP_CLI::error( 'Unable to fetch data for "Adventure Option" post-type!' );
 
 			// Bail out if unable to fetch data.
 			return;
@@ -58,7 +57,7 @@ class Region_Landing_Page {
 		WP_CLI::log( 'Total Found: ' . count( $data ) );
 
 		// Initialize progress bar.
-		$progress = make_progress_bar( 'Migrating "Region Landing Page" post-type', count( $data ) );
+		$progress = make_progress_bar( 'Migrating "Adventure Option" post-type', count( $data ) );
 
 		// Check if progress bar exists or not.
 		if ( ! $progress instanceof Bar ) {
@@ -77,13 +76,6 @@ class Region_Landing_Page {
 
 		// Finish progress bar.
 		$progress->finish();
-
-		// Halt for a sec.
-		sleep( 1 );
-
-		// Recount terms.
-		WP_CLI::log( 'Recounting terms...' );
-		WP_CLI::runcommand( 'term recount ' . DESTINATION_TAXONOMY );
 	}
 
 	/**
@@ -119,7 +111,7 @@ class Region_Landing_Page {
 		// Check if post inserted/updated or not.
 		if ( $output instanceof WP_Error ) {
 			// Print error.
-			WP_CLI::warning( 'Unable to insert/update Region Landing Page - ' . $normalized_post['meta_input']['drupal_id'] );
+			WP_CLI::warning( 'Unable to insert/update post!' );
 		}
 	}
 
@@ -129,22 +121,20 @@ class Region_Landing_Page {
 	 * @param array{}|array<string, int|string> $item Drupal post data.
 	 *
 	 * @return array{}|array{
-	 *     post_type: string,
-	 *     post_author: string,
-	 *     post_title: string,
-	 *     post_date: string,
-	 *     post_date_gmt: string,
-	 *     post_modified: string,
-	 *     post_modified_gmt: string,
-	 *     post_name: string,
-	 *     post_content: string,
-	 *     post_excerpt: string,
-	 *     post_status: string,
-	 *     comment_status: string,
-	 *     ping_status: string,
-	 *     post_parent: int,
-	 *     meta_input: array{
-	 *          drupal_id : int,
+	 *     post_type : string,
+	 *     post_author : string,
+	 *     post_title : string,
+	 *     post_date : string,
+	 *     post_date_gmt : string,
+	 *     post_modified : string,
+	 *     post_modified_gmt : string,
+	 *     post_content : string,
+	 *     post_excerpt : string,
+	 *     post_status : string,
+	 *     comment_status : string,
+	 *     ping_status : string,
+	 *     meta_input : array{
+	 *         drupal_id : int,
 	 *     }
 	 * }
 	 */
@@ -155,19 +145,18 @@ class Region_Landing_Page {
 		}
 
 		// Normalize data.
-		$nid            = ! empty( $item['nid'] ) ? absint( $item['nid'] ) : 0;
-		$title          = '';
-		$created_at     = gmdate( 'Y-m-d H:i:s' );
-		$modified_at    = gmdate( 'Y-m-d H:i:s' );
-		$status         = 'draft';
-		$post_content   = '';
-		$post_excerpt   = '';
-		$post_name      = '';
-		$parent_post_id = 0;
+		$nid          = ! empty( $item['nid'] ) ? absint( $item['nid'] ) : 0;
+		$title        = '';
+		$created_at   = gmdate( 'Y-m-d H:i:s' );
+		$modified_at  = gmdate( 'Y-m-d H:i:s' );
+		$status       = 'draft';
+		$post_content = '';
+		$post_excerpt = '';
+		$post_name    = '';
 
 		// Title.
 		if ( is_string( $item['title'] ) && ! empty( $item['title'] ) ) {
-			$title = trim( $item['title'] );
+			$title = strval( qrk_sanitize_attribute( trim( $item['title'] ) ) );
 		}
 
 		// Created date.
@@ -187,75 +176,65 @@ class Region_Landing_Page {
 
 		// post content.
 		if ( ! empty( $item['post_content'] ) ) {
-			$post_content = strval( $item['post_content'] );
-		}
-
-		// post excerpt.
-		if ( ! empty( $item['post_excerpt'] ) && is_string( $item['post_excerpt'] ) ) {
-			$post_excerpt = wp_strip_all_tags( trim( $item['post_excerpt'] ) );
+			$post_content = prepare_content( strval( $item['post_content'] ) );
 		}
 
 		// Post name.
-		if ( ! empty( $item['drupal_url'] ) && is_string( $item['drupal_url'] ) ) {
+		if ( ! empty( $item['post_name'] ) && is_string( $item['post_name'] ) ) {
 			/**
 			 * Break the url into parts and use the last part as post name.
-			 * i.e. - /sea-spirit.
+			 * i.e. - /adventure-options/sea-spirit.
 			 */
-			$parts     = explode( '/', $item['drupal_url'] );
+			$parts     = explode( '/', $item['post_name'] );
 			$post_name = end( $parts );
+		}
 
-			// check if $parts[1] is set.
-			if ( isset( $parts[2] ) ) {
-				$parent_post_name = $parts[1];
-
-				// Get post by slug.
-				$parent_post = get_page_by_path( $parent_post_name, OBJECT, POST_TYPE );
-
-				// Check if parent post exists.
-				if ( $parent_post instanceof WP_Post ) {
-					$parent_post_id = $parent_post->ID;
-				}
-			}
+		// Post excerpt.
+		if ( ! empty( $item['post_excerpt'] ) && is_string( $item['post_excerpt'] ) ) {
+			$post_excerpt = strval( qrk_sanitize_attribute( $item['post_excerpt'] ) );
 		}
 
 		// Prepare post data.
 		$data = [
 			'post_type'         => POST_TYPE,
 			'post_author'       => '1',
-			'post_title'        => strval( qrk_sanitize_attribute( $title ) ),
+			'post_title'        => $title,
 			'post_date'         => $created_at,
 			'post_date_gmt'     => $created_at,
 			'post_modified'     => $modified_at,
 			'post_modified_gmt' => $modified_at,
+			'post_content'      => $post_content,
 			'post_name'         => $post_name,
-			'post_content'      => prepare_content( $post_content ),
 			'post_excerpt'      => $post_excerpt,
 			'post_status'       => $status,
 			'comment_status'    => 'closed',
 			'ping_status'       => 'closed',
-			'post_parent'       => $parent_post_id,
-			'meta_input'        => [
-				'drupal_id' => $nid,
-			],
+			'meta_input'        => [],
 		];
 
-		// Set destination term.
-		if ( ! empty( $item['primary_destination_id'] ) ) {
-			$term = get_term_by_id( absint( $item['primary_destination_id'] ), DESTINATION_TAXONOMY );
+		// Set Adventure Options taxonomy from field_adventure_options_term.
+		if ( ! empty( $item['adventure_options_id'] ) ) {
+			$term = get_term_by_id( absint( $item['adventure_options_id'] ), ADVENTURE_OPTION_CATEGORY );
 
 			// Check if term exists.
 			if ( $term instanceof WP_Term ) {
-				$data['tax_input'][ DESTINATION_TAXONOMY ][] = $term->term_id;
+				$data['tax_input'][ ADVENTURE_OPTION_CATEGORY ] = $term->term_id;
 			}
 		}
 
-		// SEO meta data.
-		if ( ! empty( $item['metatags'] ) && is_string( $item['metatags'] ) ) {
-			$seo_data = prepare_seo_data( json_decode( $item['metatags'], true ) );
+		// Set Destination taxonomy from field_destination_ids.
+		if ( ! empty( $item['field_destination_ids'] ) && is_string( $item['field_destination_ids'] ) ) {
+			$destination_ids = array_map( 'absint', explode( ',', $item['field_destination_ids'] ) );
 
-			// Merge seo data if not empty.
-			if ( ! empty( $seo_data ) ) {
-				$data['meta_input'] = array_merge( $seo_data, $data['meta_input'] );
+			// Set destination ids.
+			foreach ( $destination_ids as $destination_id ) {
+				// Get term by id.
+				$term = get_term_by_id( $destination_id, DESTINATION_TAXONOMY );
+
+				// Check if term exists.
+				if ( $term instanceof WP_Term ) {
+					$data['tax_input'][ DESTINATION_TAXONOMY ][] = $term->term_id;
+				}
 			}
 		}
 
@@ -284,22 +263,21 @@ class Region_Landing_Page {
 			field_data.title,
 			field_data.created,
 			field_data.changed,
-			( SELECT count(1) FROM redirect WHERE redirect_source__path = CONCAT( 'node/', node.nid ) ) AS is_redirected,
-			( SELECT alias AS drupal_url FROM path_alias WHERE path = CONCAT( '/node/', node.nid ) ORDER BY id DESC LIMIT 0, 1 ) AS drupal_url,
+			( SELECT alias AS drupal_url FROM path_alias WHERE path = CONCAT( '/node/', node.nid ) ORDER BY id DESC LIMIT 0, 1 ) AS post_name,
 			body.body_value AS post_content,
 			body.body_summary AS post_excerpt,
-			field_hero_banner.field_hero_banner_target_id AS hero_banner_id,
-			field_metatags.field_metatags_value AS metatags,
-			field_primary_destination.field_primary_destination_target_id AS primary_destination_id
+			field_adventure_options_term.field_adventure_options_term_target_id AS adventure_options_id,
+			(SELECT GROUP_CONCAT( field_destinations_target_id ORDER BY delta SEPARATOR ', ' ) FROM node__field_destinations AS field_destinations WHERE node.nid = field_destinations.entity_id AND field_destinations.langcode = node.langcode) AS field_destination_ids,
+			field_hero_banner.field_hero_banner_target_id AS `field_hero_banner_target_id`,
+			(SELECT GROUP_CONCAT( field_images_target_id ORDER BY delta SEPARATOR ', ' ) FROM `node__field_images` AS `field_images` WHERE node.nid = field_images.entity_id AND field_images.langcode = node.langcode) AS images_target_ids
 		FROM
 			node
 				LEFT JOIN node_field_data AS field_data ON node.nid = field_data.nid AND node.langcode = field_data.langcode
-				LEFT JOIN node__body AS body ON node.nid = body.entity_id AND node.langcode = body.langcode
-				LEFT JOIN node__field_hero_banner AS field_hero_banner ON node.nid = field_hero_banner.entity_id AND node.langcode = field_hero_banner.langcode
-				LEFT JOIN node__field_metatags AS field_metatags ON node.nid = field_metatags.entity_id AND node.langcode = field_metatags.langcode
-				LEFT JOIN node__field_primary_destination AS field_primary_destination ON node.nid = field_primary_destination.entity_id AND node.langcode = field_primary_destination.langcode
+				LEFT JOIN `node__body` AS `body` ON node.nid = body.entity_id AND node.langcode = body.langcode
+				LEFT JOIN `node__field_adventure_options_term` AS `field_adventure_options_term` ON node.nid = field_adventure_options_term.entity_id AND node.langcode = field_adventure_options_term.langcode
+				LEFT JOIN `node__field_hero_banner` AS `field_hero_banner` ON node.nid = field_hero_banner.entity_id AND node.langcode = field_hero_banner.langcode
 		WHERE
-			node.type = 'region_landing_page';";
+			node.type = 'adventure_option'";
 
 		// Fetch data.
 		$result = $drupal_database->get_results( $query, ARRAY_A );
