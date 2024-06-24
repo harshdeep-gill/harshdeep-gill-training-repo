@@ -16,6 +16,7 @@ use function Quark\Migration\Drupal\get_database;
 use function Quark\Migration\Drupal\prepare_for_migration;
 use function Quark\Migration\Drupal\get_post_by_id;
 use function Quark\Migration\Drupal\prepare_content;
+use function Quark\Migration\Drupal\prepare_seo_data;
 use function Quark\Migration\WordPress\qrk_sanitize_attribute;
 use function WP_CLI\Utils\make_progress_bar;
 
@@ -173,8 +174,7 @@ class Press_Release {
 
 		// post content.
 		if ( ! empty( $item['post_content'] ) ) {
-			// Remove wrapper div tags from content.
-			$post_content = preg_replace( '/<\/?div[^>]*>/i', '', strval( $item['post_content'] ) );
+			$post_content = strval( $item['post_content'] );
 		}
 
 		// post excerpt.
@@ -207,53 +207,21 @@ class Press_Release {
 			'post_status'       => $status,
 			'comment_status'    => 'closed',
 			'ping_status'       => 'closed',
-			'meta_input'        => [
-				'drupal_id' => $nid,
-			],
+			'meta_input'        => [],
 		];
 
 		// SEO meta data.
 		if ( ! empty( $item['field_metatags_value'] ) && is_string( $item['field_metatags_value'] ) ) {
-			$seo_meta_data = maybe_unserialize( $item['field_metatags_value'] );
+			$seo_data = prepare_seo_data( json_decode( $item['field_metatags_value'], true ) );
 
-			// Check if data is array.
-			if ( is_array( $seo_meta_data ) ) {
-				$search_for   = [
-					'[node:title]',
-					'→',
-					'|',
-					'[site:name]',
-					'[current-page:page-number]',
-					'[current-page:pager]',
-				];
-				$replace_with = [
-					'%%title%%',
-					'%%sep%%',
-					'%%sep%%',
-					'%%sitename%%',
-					'%%page%%',
-					'',
-				];
-
-				// Process seo meta title for WP SEO plugin.
-				if ( ! empty( $seo_meta_data['title']['value'] ) ) {
-					$data['meta_input']['_yoast_wpseo_title'] = str_replace(
-						$search_for,
-						$replace_with,
-						trim( $seo_meta_data['title']['value'] )
-					);
-				}
-
-				// Process seo meta description for WP SEO plugin.
-				if ( ! empty( $seo_meta_data['description']['value'] ) ) {
-					$data['meta_input']['_yoast_wpseo_metadesc'] = str_replace(
-						$search_for,
-						$replace_with,
-						trim( $seo_meta_data['description']['value'] )
-					);
-				}
+			// Merge seo data if not empty.
+			if ( ! empty( $seo_data ) ) {
+				$data['meta_input'] = array_merge( $seo_data, $data['meta_input'] );
 			}
 		}
+
+		// Set drupal id metadata.
+		$data['meta_input']['drupal_id'] = $nid;
 
 		// Return normalized data.
 		return $data;

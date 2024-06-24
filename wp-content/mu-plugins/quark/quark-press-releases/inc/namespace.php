@@ -78,6 +78,7 @@ function register_press_release_post_type(): void {
 		],
 		'capability_type'     => 'post',
 		'show_in_rest'        => true,
+		'menu_position'       => 5,
 	];
 
 	// Register post type.

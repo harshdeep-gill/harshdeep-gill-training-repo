@@ -80,7 +80,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 					'name'              => 'website_url',
 					'aria-label'        => '',
 					'type'              => 'url',
-					'instructions'      => 'This must be an external URL such as http://example.com.',
+					'instructions'      => 'This must be an external URL such as https://example.com.',
 					'required'          => 0,
 					'conditional_logic' => 0,
 					'wrapper'           => [
@@ -97,7 +97,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 					'name'              => 'linkedin_url',
 					'aria-label'        => '',
 					'type'              => 'url',
-					'instructions'      => 'This must be an external URL such as http://example.com.',
+					'instructions'      => 'This must be an external URL such as https://example.com.',
 					'required'          => 0,
 					'conditional_logic' => 0,
 					'wrapper'           => [
@@ -165,7 +165,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 					[
 						'param'    => 'post_type',
 						'operator' => '==',
-						'value'    => 'qrk_blog_authors',
+						'value'    => 'qrk_blog_author',
 					],
 				],
 			],

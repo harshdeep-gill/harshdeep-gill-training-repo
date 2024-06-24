@@ -13,10 +13,11 @@ use WP_Error;
 use WP_Post;
 use cli\progress\Bar;
 
+use function Quark\Migration\log_warning;
 use function Quark\Core\update_svg_content;
 use function Quark\Migration\Drupal\download_file;
 use function Quark\Migration\Drupal\get_database;
-use function Quark\Migration\Drupal\get_wp_brochure_id_by_mid;
+use function Quark\Migration\Drupal\get_post_by_id;
 use function Quark\Migration\Drupal\prepare_for_migration;
 use function Quark\Migration\Drupal\download_file_by_mid;
 use function Quark\Migration\Drupal\download_file_by_fid;
@@ -134,7 +135,7 @@ class Media {
 
 		// If values of chunk is provided then update SQL query.
 		if ( ! empty( $options['chunk'] ) ) {
-			$total_images = $drupal_db->get_row(
+			$total_images = (array) $drupal_db->get_row(
 				'
 				SELECT
 					COUNT(*) AS total_images
@@ -144,7 +145,17 @@ class Media {
 				',
 				ARRAY_A
 			);
-			$total_images = absint( $total_images['total_images'] ?? 0 );
+
+			// If there is no record then bail out.
+			if ( ! is_array( $total_images ) || empty( $total_images['total_images'] ) ) {
+				WP_CLI::error( 'No images found!' );
+
+				// Bail out if no images found.
+				return;
+			}
+
+			// Get total images.
+			$total_images = absint( $total_images['total_images'] );
 
 			// Check if we have media record or not.
 			if ( $total_images > 0 ) {
@@ -189,6 +200,13 @@ class Media {
 			// If there is any error then show warning.
 			if ( $wp_attachment_id instanceof WP_Error ) {
 				WP_CLI::warning(
+					sprintf(
+						'Error while migrating image: %s - %s',
+						$wp_attachment_id->get_error_message(),
+						$image['uri']
+					)
+				);
+				log_warning(
 					sprintf(
 						'Error while migrating image: %s - %s',
 						$wp_attachment_id->get_error_message(),
@@ -341,7 +359,7 @@ class Media {
 			}
 
 			// Check post exist or not.
-			$wp_post = get_wp_brochure_id_by_mid( $normalized_post['meta_input']['drupal_mid'] );
+			$wp_post = get_post_by_id( $normalized_post['meta_input']['drupal_mid'], POST_TYPE, 'drupal_mid' );
 
 			// Insert/update post.
 			if ( ! empty( $wp_post ) ) {
