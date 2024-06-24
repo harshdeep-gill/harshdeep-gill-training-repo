@@ -1,6 +1,6 @@
 <?php
 /**
- * Migrate: Port Taxonomy from Drupal to WordPress CPT.
+ * Migrate: Marketing Promotion nodes as Offers.
  *
  * @package quark-migration
  */
@@ -15,18 +15,20 @@ use WP_CLI\ExitException;
 use function Quark\Migration\Drupal\get_database;
 use function Quark\Migration\Drupal\prepare_for_migration;
 use function Quark\Migration\Drupal\get_post_by_id;
+use function Quark\Migration\Drupal\prepare_content;
+use function Quark\Migration\Drupal\prepare_seo_data;
 use function Quark\Migration\WordPress\qrk_sanitize_attribute;
 use function WP_CLI\Utils\make_progress_bar;
 
-use const Quark\Ports\POST_TYPE;
+use const Quark\Offers\POST_TYPE;
 
 /**
- * Class Port.
+ * Class Offer.
  */
-class Port {
+class Offer {
 
 	/**
-	 * Migrate all Ports.
+	 * Migrate all Offer.
 	 *
 	 * @subcommand all
 	 *
@@ -37,12 +39,12 @@ class Port {
 		// Prepare for migration.
 		prepare_for_migration();
 
-		// Fetch ports data from drupal database.
+		// Fetch Offer data from drupal database.
 		$data = $this->get_drupal_data();
 
 		// Return if unable to fetch data.
 		if ( empty( $data ) ) {
-			WP_CLI::error( 'Unable to fetch data for port!' );
+			WP_CLI::error( 'Unable to fetch data for "Offer" post-type!' );
 
 			// Bail out if unable to fetch data.
 			return;
@@ -52,7 +54,7 @@ class Port {
 		WP_CLI::log( 'Total Found: ' . count( $data ) );
 
 		// Initialize progress bar.
-		$progress = make_progress_bar( 'Migrating "port" post-type', count( $data ) );
+		$progress = make_progress_bar( 'Migrating "Offer" post-type', count( $data ) );
 
 		// Check if progress bar exists or not.
 		if ( ! $progress instanceof Bar ) {
@@ -71,6 +73,9 @@ class Port {
 
 		// Finish progress bar.
 		$progress->finish();
+
+		// Halt for a sec.
+		sleep( 1 );
 	}
 
 	/**
@@ -93,7 +98,7 @@ class Port {
 		}
 
 		// Check post exist or not.
-		$wp_post = get_post_by_id( $normalized_post['meta_input']['drupal_tid'], POST_TYPE, 'drupal_tid' );
+		$wp_post = get_post_by_id( $normalized_post['meta_input']['drupal_id'], POST_TYPE );
 
 		// Insert/update post.
 		if ( ! empty( $wp_post ) ) {
@@ -106,7 +111,7 @@ class Port {
 		// Check if post inserted/updated or not.
 		if ( $output instanceof WP_Error ) {
 			// Print error.
-			WP_CLI::warning( 'Unable to insert/update port - ' . $normalized_post['meta_input']['drupal_tid'] );
+			WP_CLI::warning( 'Unable to insert/update post!' );
 		}
 	}
 
@@ -116,21 +121,20 @@ class Port {
 	 * @param array{}|array<string, int|string> $item Drupal post data.
 	 *
 	 * @return array{}|array{
-	 *     post_type: string,
-	 *     post_author: string,
+	 *     post_type : string,
+	 *     post_author : string,
 	 *     post_title : string,
 	 *     post_date : string,
 	 *     post_date_gmt : string,
 	 *     post_modified : string,
 	 *     post_modified_gmt : string,
-	 *     post_name: string,
 	 *     post_content : string,
 	 *     post_status : string,
-	 *     comment_status: string,
-	 *     ping_status: string,
+	 *     comment_status : string,
+	 *     ping_status : string,
 	 *     meta_input : array{
-	 *          drupal_tid : int,
-	 *     }
+	 *         drupal_id : int,
+	 *     },
 	 * }
 	 */
 	public function normalize_drupal_post( array $item = [] ): array {
@@ -140,23 +144,27 @@ class Port {
 		}
 
 		// Normalize data.
-		$nid          = ! empty( $item['tid'] ) ? absint( $item['tid'] ) : 0;
+		$nid          = ! empty( $item['nid'] ) ? absint( $item['nid'] ) : 0;
 		$title        = '';
 		$created_at   = gmdate( 'Y-m-d H:i:s' );
 		$modified_at  = gmdate( 'Y-m-d H:i:s' );
 		$status       = 'draft';
-		$post_content = '';
 		$post_name    = '';
+		$post_content = '';
 
 		// Title.
-		if ( is_string( $item['name'] ) && ! empty( $item['name'] ) ) {
-			$title = trim( $item['name'] );
+		if ( is_string( $item['title'] ) && ! empty( $item['title'] ) ) {
+			$title = strval( qrk_sanitize_attribute( $item['title'] ) );
+		}
+
+		// Created date.
+		if ( ! empty( $item['created'] ) ) {
+			$created_at = gmdate( 'Y-m-d H:i:s', absint( $item['created'] ) );
 		}
 
 		// Modified date.
 		if ( ! empty( $item['changed'] ) ) {
-			$created_at  = gmdate( 'Y-m-d H:i:s', absint( $item['changed'] ) );
-			$modified_at = $created_at;
+			$modified_at = gmdate( 'Y-m-d H:i:s', absint( $item['changed'] ) );
 		}
 
 		// Status.
@@ -165,58 +173,50 @@ class Port {
 		}
 
 		// post content.
-		if ( ! empty( $item['description__value'] ) ) {
-			$post_content = strval( $item['description__value'] );
+		if ( ! empty( $item['post_content'] ) ) {
+			$post_content = strval( $item['post_content'] );
+		}
+
+		// Post name.
+		if ( ! empty( $item['drupal_url'] ) && is_string( $item['drupal_url'] ) ) {
+			/**
+			 * Break the url into parts and use the last part as post name.
+			 * i.e. - /offers/sea-spirit.
+			 */
+			$parts     = explode( '/', $item['drupal_url'] );
+			$post_name = end( $parts );
 		}
 
 		// Prepare post data.
 		$data = [
 			'post_type'         => POST_TYPE,
 			'post_author'       => '1',
-			'post_title'        => strval( qrk_sanitize_attribute( $title ) ),
+			'post_title'        => $title,
+			'post_name'         => $post_name,
 			'post_date'         => $created_at,
 			'post_date_gmt'     => $created_at,
 			'post_modified'     => $modified_at,
 			'post_modified_gmt' => $modified_at,
-			'post_name'         => $post_name,
-			'post_content'      => $post_content,
+			'post_content'      => prepare_content( $post_content ),
+			'post_excerpt'      => trim( wp_strip_all_tags( strval( $item['post_excerpt'] ) ) ),
 			'post_status'       => $status,
 			'comment_status'    => 'closed',
 			'ping_status'       => 'closed',
-			'meta_input'        => [
-				'drupal_tid' => $nid,
-			],
+			'meta_input'        => [],
 		];
 
-		// Set latitude metadata.
-		if ( ! empty( $item['field_geocoordinates_lat'] ) ) {
-			$data['meta_input']['latitude'] = $item['field_geocoordinates_lat'];
+		// SEO meta data.
+		if ( ! empty( $item['metatags'] ) && is_string( $item['metatags'] ) ) {
+			$seo_data = prepare_seo_data( json_decode( $item['metatags'], true ) );
+
+			// Merge seo data if not empty.
+			if ( ! empty( $seo_data ) ) {
+				$data['meta_input'] = array_merge( $seo_data, $data['meta_input'] );
+			}
 		}
 
-		// Set longitude metadata.
-		if ( ! empty( $item['field_geocoordinates_lng'] ) ) {
-			$data['meta_input']['longitude'] = $item['field_geocoordinates_lng'];
-		}
-
-		// Set Port Code metadata.
-		if ( ! empty( $item['field_port_code_value'] ) ) {
-			$data['meta_input']['port_code'] = $item['field_port_code_value'];
-		}
-
-		// Set country metadata.
-		if ( ! empty( $item['field_port_address_country_code'] ) ) {
-			$data['meta_input']['country'] = $item['field_port_address_country_code'];
-		}
-
-		// Set locality metadata.
-		if ( ! empty( $item['field_port_address_locality'] ) ) {
-			$data['meta_input']['locality'] = $item['field_port_address_locality'];
-		}
-
-		// Set Administrative area metadata.
-		if ( ! empty( $item['field_port_address_administrative_area'] ) ) {
-			$data['meta_input']['administrative_area'] = $item['field_port_address_administrative_area'];
-		}
+		// Set drupal id metadata.
+		$data['meta_input']['drupal_id'] = $nid;
 
 		// Return normalized data.
 		return $data;
@@ -235,28 +235,26 @@ class Port {
 
 		// Query.
 		$query = "SELECT
-			term.`tid`,
-			field_data.`name`,
-			field_data.`description__value`,
-			field_data.`status`,
-			field_data.`changed`,
-			field_geocoordinates.field_geocoordinates_lat AS `field_geocoordinates_lat`,
-			field_geocoordinates.field_geocoordinates_lng AS `field_geocoordinates_lng`,
-			field_port_address.field_port_address_country_code AS `field_port_address_country_code`,
-			field_port_address.field_port_address_administrative_area AS `field_port_address_administrative_area`,
-			field_port_address.field_port_address_locality AS `field_port_address_locality`,
-			field_port_code.field_port_code_value AS `field_port_code_value`
+			node.nid,
+			field_data.status,
+			field_data.title,
+			field_data.created,
+			field_data.changed,
+			( SELECT alias AS drupal_url FROM path_alias WHERE path = CONCAT( '/node/', node.nid ) ORDER BY id DESC LIMIT 0, 1 ) AS drupal_url,
+			body.body_value AS post_content,
+			body.body_summary AS post_excerpt,
+			field_components.field_components_target_id AS field_components_target_id,
+			field_hero_banner.field_hero_banner_target_id AS field_hero_banner_target_id,
+			field_metatags.field_metatags_value AS metatags
 		FROM
-			taxonomy_term_data AS term
-			LEFT JOIN taxonomy_term__parent AS parent ON term.`tid` = parent.`entity_id` AND term.langcode = parent.langcode
-			LEFT JOIN taxonomy_term_field_data AS field_data ON term.`tid` = field_data.`tid` AND term.langcode = field_data.langcode
-			LEFT JOIN `taxonomy_term__field_geocoordinates` AS `field_geocoordinates` ON term.tid = field_geocoordinates.entity_id AND term.langcode = field_geocoordinates.langcode
-			LEFT JOIN `taxonomy_term__field_port_address` AS `field_port_address` ON term.tid = field_port_address.entity_id AND term.langcode = field_port_address.langcode
-			LEFT JOIN `taxonomy_term__field_port_code` AS `field_port_code` ON term.tid = field_port_code.entity_id AND term.langcode = field_port_code.langcode
+			node
+				LEFT JOIN node_field_data AS field_data ON node.nid = field_data.nid AND node.langcode = field_data.langcode
+				LEFT JOIN node__body AS body ON node.nid = body.entity_id AND node.langcode = body.langcode
+				LEFT JOIN node__field_components AS field_components ON node.nid = field_components.entity_id AND node.langcode = field_components.langcode
+				LEFT JOIN node__field_hero_banner AS field_hero_banner ON node.nid = field_hero_banner.entity_id AND node.langcode = field_hero_banner.langcode
+				LEFT JOIN node__field_metatags AS field_metatags ON node.nid = field_metatags.entity_id AND node.langcode = field_metatags.langcode
 		WHERE
-			term.`vid` = 'ports'
-		ORDER BY
-			parent.`parent_target_id` ASC;";
+			node.type = 'marketing_promotion_landing'";
 
 		// Fetch data.
 		$result = $drupal_database->get_results( $query, ARRAY_A );

@@ -1,6 +1,6 @@
 <?php
 /**
- * Migrate: Press Release.
+ * Migrate: Adventure Options.
  *
  * @package quark-migration
  */
@@ -10,27 +10,30 @@ namespace Quark\Migration\WP_CLI;
 use cli\progress\Bar;
 use WP_CLI;
 use WP_Error;
+use WP_Term;
 use WP_CLI\ExitException;
 
 use function Quark\Migration\Drupal\get_database;
 use function Quark\Migration\Drupal\prepare_for_migration;
 use function Quark\Migration\Drupal\get_post_by_id;
+use function Quark\Migration\Drupal\get_term_by_id;
 use function Quark\Migration\Drupal\prepare_content;
-use function Quark\Migration\Drupal\prepare_seo_data;
 use function Quark\Migration\WordPress\qrk_sanitize_attribute;
 use function WP_CLI\Utils\make_progress_bar;
 
-use const Quark\PressReleases\POST_TYPE;
+use const Quark\AdventureOptions\POST_TYPE;
+use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
+use const Quark\Expeditions\DESTINATION_TAXONOMY;
 
 /**
- * Class Press_Release.
+ * Class Adventure_Option.
  */
-class Press_Release {
+class Adventure_Option {
 
 	/**
-	 * Migrate all Press Release.
+	 * Migrate all Adventure_Option.
 	 *
-	 * @subcommand posts
+	 * @subcommand all
 	 *
 	 * @return void
 	 * @throws ExitException Exit on failure of command.
@@ -39,12 +42,12 @@ class Press_Release {
 		// Prepare for migration.
 		prepare_for_migration();
 
-		// Fetch press releases data from drupal database.
+		// Fetch Adventure Options data from drupal database.
 		$data = $this->get_drupal_data();
 
 		// Return if unable to fetch data.
 		if ( empty( $data ) ) {
-			WP_CLI::error( 'Unable to fetch data for "press-release" post-type!' );
+			WP_CLI::error( 'Unable to fetch data for "Adventure Option" post-type!' );
 
 			// Bail out if unable to fetch data.
 			return;
@@ -54,7 +57,7 @@ class Press_Release {
 		WP_CLI::log( 'Total Found: ' . count( $data ) );
 
 		// Initialize progress bar.
-		$progress = make_progress_bar( 'Migrating "press-release" post-type', count( $data ) );
+		$progress = make_progress_bar( 'Migrating "Adventure Option" post-type', count( $data ) );
 
 		// Check if progress bar exists or not.
 		if ( ! $progress instanceof Bar ) {
@@ -118,21 +121,20 @@ class Press_Release {
 	 * @param array{}|array<string, int|string> $item Drupal post data.
 	 *
 	 * @return array{}|array{
-	 *     post_type: string,
-	 *     post_author: string,
+	 *     post_type : string,
+	 *     post_author : string,
 	 *     post_title : string,
 	 *     post_date : string,
 	 *     post_date_gmt : string,
 	 *     post_modified : string,
 	 *     post_modified_gmt : string,
-	 *     post_name: string,
 	 *     post_content : string,
 	 *     post_excerpt : string,
 	 *     post_status : string,
-	 *     comment_status: string,
-	 *     ping_status: string,
+	 *     comment_status : string,
+	 *     ping_status : string,
 	 *     meta_input : array{
-	 *          drupal_id : int,
+	 *         drupal_id : int,
 	 *     }
 	 * }
 	 */
@@ -154,7 +156,7 @@ class Press_Release {
 
 		// Title.
 		if ( is_string( $item['title'] ) && ! empty( $item['title'] ) ) {
-			$title = trim( $item['title'] );
+			$title = strval( qrk_sanitize_attribute( trim( $item['title'] ) ) );
 		}
 
 		// Created date.
@@ -174,35 +176,35 @@ class Press_Release {
 
 		// post content.
 		if ( ! empty( $item['post_content'] ) ) {
-			$post_content = strval( $item['post_content'] );
-		}
-
-		// post excerpt.
-		if ( ! empty( $item['post_excerpt'] ) && is_string( $item['post_excerpt'] ) ) {
-			$post_excerpt = wp_strip_all_tags( trim( $item['post_excerpt'] ) );
+			$post_content = prepare_content( strval( $item['post_content'] ) );
 		}
 
 		// Post name.
-		if ( ! empty( $item['drupal_url'] ) && is_string( $item['drupal_url'] ) ) {
+		if ( ! empty( $item['post_name'] ) && is_string( $item['post_name'] ) ) {
 			/**
 			 * Break the url into parts and use the last part as post name.
-			 * i.e. - /press-releases/2013/12/quark-expeditions-celebrates-world-travel-award.
+			 * i.e. - /adventure-options/sea-spirit.
 			 */
-			$parts     = explode( '/', $item['drupal_url'] );
+			$parts     = explode( '/', $item['post_name'] );
 			$post_name = end( $parts );
+		}
+
+		// Post excerpt.
+		if ( ! empty( $item['post_excerpt'] ) && is_string( $item['post_excerpt'] ) ) {
+			$post_excerpt = strval( qrk_sanitize_attribute( $item['post_excerpt'] ) );
 		}
 
 		// Prepare post data.
 		$data = [
 			'post_type'         => POST_TYPE,
 			'post_author'       => '1',
-			'post_title'        => strval( qrk_sanitize_attribute( $title ) ),
+			'post_title'        => $title,
 			'post_date'         => $created_at,
 			'post_date_gmt'     => $created_at,
 			'post_modified'     => $modified_at,
 			'post_modified_gmt' => $modified_at,
+			'post_content'      => $post_content,
 			'post_name'         => $post_name,
-			'post_content'      => prepare_content( strval( $post_content ) ),
 			'post_excerpt'      => $post_excerpt,
 			'post_status'       => $status,
 			'comment_status'    => 'closed',
@@ -210,13 +212,29 @@ class Press_Release {
 			'meta_input'        => [],
 		];
 
-		// SEO meta data.
-		if ( ! empty( $item['field_metatags_value'] ) && is_string( $item['field_metatags_value'] ) ) {
-			$seo_data = prepare_seo_data( json_decode( $item['field_metatags_value'], true ) );
+		// Set Adventure Options taxonomy from field_adventure_options_term.
+		if ( ! empty( $item['adventure_options_id'] ) ) {
+			$term = get_term_by_id( absint( $item['adventure_options_id'] ), ADVENTURE_OPTION_CATEGORY );
 
-			// Merge seo data if not empty.
-			if ( ! empty( $seo_data ) ) {
-				$data['meta_input'] = array_merge( $seo_data, $data['meta_input'] );
+			// Check if term exists.
+			if ( $term instanceof WP_Term ) {
+				$data['tax_input'][ ADVENTURE_OPTION_CATEGORY ] = $term->term_id;
+			}
+		}
+
+		// Set Destination taxonomy from field_destination_ids.
+		if ( ! empty( $item['field_destination_ids'] ) && is_string( $item['field_destination_ids'] ) ) {
+			$destination_ids = array_map( 'absint', explode( ',', $item['field_destination_ids'] ) );
+
+			// Set destination ids.
+			foreach ( $destination_ids as $destination_id ) {
+				// Get term by id.
+				$term = get_term_by_id( $destination_id, DESTINATION_TAXONOMY );
+
+				// Check if term exists.
+				if ( $term instanceof WP_Term ) {
+					$data['tax_input'][ DESTINATION_TAXONOMY ][] = $term->term_id;
+				}
 			}
 		}
 
@@ -245,19 +263,21 @@ class Press_Release {
 			field_data.title,
 			field_data.created,
 			field_data.changed,
-			field_data.publish_on,
-			field_data.unpublish_on,
+			( SELECT alias AS drupal_url FROM path_alias WHERE path = CONCAT( '/node/', node.nid ) ORDER BY id DESC LIMIT 0, 1 ) AS post_name,
 			body.body_value AS post_content,
 			body.body_summary AS post_excerpt,
-			field_metatags.field_metatags_value AS field_metatags_value,
-			( SELECT alias AS drupal_url FROM path_alias WHERE path = CONCAT( '/node/', node.nid ) ORDER BY id DESC LIMIT 0, 1 ) AS drupal_url
+			field_adventure_options_term.field_adventure_options_term_target_id AS adventure_options_id,
+			(SELECT GROUP_CONCAT( field_destinations_target_id ORDER BY delta SEPARATOR ', ' ) FROM node__field_destinations AS field_destinations WHERE node.nid = field_destinations.entity_id AND field_destinations.langcode = node.langcode) AS field_destination_ids,
+			field_hero_banner.field_hero_banner_target_id AS `field_hero_banner_target_id`,
+			(SELECT GROUP_CONCAT( field_images_target_id ORDER BY delta SEPARATOR ', ' ) FROM `node__field_images` AS `field_images` WHERE node.nid = field_images.entity_id AND field_images.langcode = node.langcode) AS images_target_ids
 		FROM
 			node
-			LEFT JOIN node_field_data AS field_data ON node.nid = field_data.nid AND node.langcode = field_data.langcode
-			LEFT JOIN `node__body` AS `body` ON node.nid = body.entity_id AND node.langcode = body.langcode
-			LEFT JOIN `node__field_metatags` AS `field_metatags` ON node.nid = field_metatags.entity_id AND node.langcode = field_metatags.langcode
+				LEFT JOIN node_field_data AS field_data ON node.nid = field_data.nid AND node.langcode = field_data.langcode
+				LEFT JOIN `node__body` AS `body` ON node.nid = body.entity_id AND node.langcode = body.langcode
+				LEFT JOIN `node__field_adventure_options_term` AS `field_adventure_options_term` ON node.nid = field_adventure_options_term.entity_id AND node.langcode = field_adventure_options_term.langcode
+				LEFT JOIN `node__field_hero_banner` AS `field_hero_banner` ON node.nid = field_hero_banner.entity_id AND node.langcode = field_hero_banner.langcode
 		WHERE
-			node.type = 'press_release'";
+			node.type = 'adventure_option'";
 
 		// Fetch data.
 		$result = $drupal_database->get_results( $query, ARRAY_A );

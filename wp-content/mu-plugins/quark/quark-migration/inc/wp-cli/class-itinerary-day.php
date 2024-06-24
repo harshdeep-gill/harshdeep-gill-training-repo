@@ -1,6 +1,6 @@
 <?php
 /**
- * Migrate: Port Taxonomy from Drupal to WordPress CPT.
+ * Migrate: Itinerary Days nodes from Drupal to WordPress CPT.
  *
  * @package quark-migration
  */
@@ -11,6 +11,7 @@ use cli\progress\Bar;
 use WP_CLI;
 use WP_Error;
 use WP_CLI\ExitException;
+use WP_Post;
 
 use function Quark\Migration\Drupal\get_database;
 use function Quark\Migration\Drupal\prepare_for_migration;
@@ -18,15 +19,16 @@ use function Quark\Migration\Drupal\get_post_by_id;
 use function Quark\Migration\WordPress\qrk_sanitize_attribute;
 use function WP_CLI\Utils\make_progress_bar;
 
-use const Quark\Ports\POST_TYPE;
+use const Quark\ItineraryDays\POST_TYPE;
+use const Quark\Ports\POST_TYPE as PORT_POST_TYPE;
 
 /**
- * Class Port.
+ * Class Itinerary_Day.
  */
-class Port {
+class Itinerary_Day {
 
 	/**
-	 * Migrate all Ports.
+	 * Migrate all Itinerary Days.
 	 *
 	 * @subcommand all
 	 *
@@ -37,12 +39,12 @@ class Port {
 		// Prepare for migration.
 		prepare_for_migration();
 
-		// Fetch ports data from drupal database.
+		// Fetch Itinerary Days data from drupal database.
 		$data = $this->get_drupal_data();
 
 		// Return if unable to fetch data.
 		if ( empty( $data ) ) {
-			WP_CLI::error( 'Unable to fetch data for port!' );
+			WP_CLI::error( 'Unable to fetch data for Itinerary Days!' );
 
 			// Bail out if unable to fetch data.
 			return;
@@ -52,7 +54,7 @@ class Port {
 		WP_CLI::log( 'Total Found: ' . count( $data ) );
 
 		// Initialize progress bar.
-		$progress = make_progress_bar( 'Migrating "port" post-type', count( $data ) );
+		$progress = make_progress_bar( 'Migrating "Itinerary Day" post-type', count( $data ) );
 
 		// Check if progress bar exists or not.
 		if ( ! $progress instanceof Bar ) {
@@ -93,7 +95,7 @@ class Port {
 		}
 
 		// Check post exist or not.
-		$wp_post = get_post_by_id( $normalized_post['meta_input']['drupal_tid'], POST_TYPE, 'drupal_tid' );
+		$wp_post = get_post_by_id( $normalized_post['meta_input']['drupal_iid'], POST_TYPE, 'drupal_iid' );
 
 		// Insert/update post.
 		if ( ! empty( $wp_post ) ) {
@@ -106,7 +108,7 @@ class Port {
 		// Check if post inserted/updated or not.
 		if ( $output instanceof WP_Error ) {
 			// Print error.
-			WP_CLI::warning( 'Unable to insert/update port - ' . $normalized_post['meta_input']['drupal_tid'] );
+			WP_CLI::warning( 'Unable to insert/update Itinerary Day - ' . $normalized_post['meta_input']['drupal_iid'] );
 		}
 	}
 
@@ -118,18 +120,18 @@ class Port {
 	 * @return array{}|array{
 	 *     post_type: string,
 	 *     post_author: string,
-	 *     post_title : string,
-	 *     post_date : string,
-	 *     post_date_gmt : string,
-	 *     post_modified : string,
-	 *     post_modified_gmt : string,
+	 *     post_title: string,
+	 *     post_date: string,
+	 *     post_date_gmt: string,
+	 *     post_modified: string,
+	 *     post_modified_gmt: string,
 	 *     post_name: string,
-	 *     post_content : string,
-	 *     post_status : string,
+	 *     post_content: string,
+	 *     post_status: string,
 	 *     comment_status: string,
 	 *     ping_status: string,
-	 *     meta_input : array{
-	 *          drupal_tid : int,
+	 *     meta_input: array{
+	 *          drupal_iid : int,
 	 *     }
 	 * }
 	 */
@@ -140,7 +142,7 @@ class Port {
 		}
 
 		// Normalize data.
-		$nid          = ! empty( $item['tid'] ) ? absint( $item['tid'] ) : 0;
+		$iid          = ! empty( $item['iid'] ) ? absint( $item['iid'] ) : 0;
 		$title        = '';
 		$created_at   = gmdate( 'Y-m-d H:i:s' );
 		$modified_at  = gmdate( 'Y-m-d H:i:s' );
@@ -149,14 +151,18 @@ class Port {
 		$post_name    = '';
 
 		// Title.
-		if ( is_string( $item['name'] ) && ! empty( $item['name'] ) ) {
-			$title = trim( $item['name'] );
+		if ( is_string( $item['title'] ) && ! empty( $item['title'] ) ) {
+			$title = trim( $item['title'] );
+		}
+
+		// Created date.
+		if ( ! empty( $item['created'] ) ) {
+			$created_at = gmdate( 'Y-m-d H:i:s', absint( $item['created'] ) );
 		}
 
 		// Modified date.
 		if ( ! empty( $item['changed'] ) ) {
-			$created_at  = gmdate( 'Y-m-d H:i:s', absint( $item['changed'] ) );
-			$modified_at = $created_at;
+			$modified_at = gmdate( 'Y-m-d H:i:s', absint( $item['changed'] ) );
 		}
 
 		// Status.
@@ -165,8 +171,8 @@ class Port {
 		}
 
 		// post content.
-		if ( ! empty( $item['description__value'] ) ) {
-			$post_content = strval( $item['description__value'] );
+		if ( ! empty( $item['post_content'] ) ) {
+			$post_content = strval( $item['post_content'] );
 		}
 
 		// Prepare post data.
@@ -184,38 +190,38 @@ class Port {
 			'comment_status'    => 'closed',
 			'ping_status'       => 'closed',
 			'meta_input'        => [
-				'drupal_tid' => $nid,
+				'drupal_iid' => $iid,
 			],
 		];
 
-		// Set latitude metadata.
-		if ( ! empty( $item['field_geocoordinates_lat'] ) ) {
-			$data['meta_input']['latitude'] = $item['field_geocoordinates_lat'];
+		// Set Day title.
+		if ( ! empty( $item['day_title'] ) ) {
+			$data['meta_input']['day_title'] = strval( qrk_sanitize_attribute( $item['day_title'] ) );
 		}
 
-		// Set longitude metadata.
-		if ( ! empty( $item['field_geocoordinates_lng'] ) ) {
-			$data['meta_input']['longitude'] = $item['field_geocoordinates_lng'];
+		// Set Day number - From.
+		if ( ! empty( $item['day_number_from'] ) ) {
+			$data['meta_input']['day_number_from'] = absint( $item['day_number_from'] );
 		}
 
-		// Set Port Code metadata.
-		if ( ! empty( $item['field_port_code_value'] ) ) {
-			$data['meta_input']['port_code'] = $item['field_port_code_value'];
+		// Set Day number - To.
+		if ( ! empty( $item['day_number_to'] ) ) {
+			$data['meta_input']['day_number_to'] = absint( $item['day_number_to'] );
 		}
 
-		// Set country metadata.
-		if ( ! empty( $item['field_port_address_country_code'] ) ) {
-			$data['meta_input']['country'] = $item['field_port_address_country_code'];
+		// Set Location.
+		if ( ! empty( $item['location'] ) ) {
+			$data['meta_input']['location'] = strval( qrk_sanitize_attribute( $item['location'] ) );
 		}
 
-		// Set locality metadata.
-		if ( ! empty( $item['field_port_address_locality'] ) ) {
-			$data['meta_input']['locality'] = $item['field_port_address_locality'];
-		}
+		// Set Port.
+		if ( ! empty( $item['port_id'] ) ) {
+			$port = get_post_by_id( absint( $item['port_id'] ), PORT_POST_TYPE, 'drupal_tid' );
 
-		// Set Administrative area metadata.
-		if ( ! empty( $item['field_port_address_administrative_area'] ) ) {
-			$data['meta_input']['administrative_area'] = $item['field_port_address_administrative_area'];
+			// Check if port exists.
+			if ( $port instanceof WP_Post ) {
+				$data['meta_input']['port'] = $port->ID;
+			}
 		}
 
 		// Return normalized data.
@@ -235,28 +241,25 @@ class Port {
 
 		// Query.
 		$query = "SELECT
-			term.`tid`,
-			field_data.`name`,
-			field_data.`description__value`,
-			field_data.`status`,
-			field_data.`changed`,
-			field_geocoordinates.field_geocoordinates_lat AS `field_geocoordinates_lat`,
-			field_geocoordinates.field_geocoordinates_lng AS `field_geocoordinates_lng`,
-			field_port_address.field_port_address_country_code AS `field_port_address_country_code`,
-			field_port_address.field_port_address_administrative_area AS `field_port_address_administrative_area`,
-			field_port_address.field_port_address_locality AS `field_port_address_locality`,
-			field_port_code.field_port_code_value AS `field_port_code_value`
+			itinerary_day.id as iid,
+			itinerary_day.title,
+			itinerary_day.status,
+			itinerary_day.description__value as post_content,
+			itinerary_day.created,
+			itinerary_day.changed,
+			title.field_itin_day_title_value as day_title,
+			day_number.field_itin_day_day_number_range_from as day_number_from,
+			day_number.field_itin_day_day_number_range_to as day_number_to,
+			location.field_itin_day_location_value as location,
+			port.field_itin_day_port_target_id as port_id
 		FROM
-			taxonomy_term_data AS term
-			LEFT JOIN taxonomy_term__parent AS parent ON term.`tid` = parent.`entity_id` AND term.langcode = parent.langcode
-			LEFT JOIN taxonomy_term_field_data AS field_data ON term.`tid` = field_data.`tid` AND term.langcode = field_data.langcode
-			LEFT JOIN `taxonomy_term__field_geocoordinates` AS `field_geocoordinates` ON term.tid = field_geocoordinates.entity_id AND term.langcode = field_geocoordinates.langcode
-			LEFT JOIN `taxonomy_term__field_port_address` AS `field_port_address` ON term.tid = field_port_address.entity_id AND term.langcode = field_port_address.langcode
-			LEFT JOIN `taxonomy_term__field_port_code` AS `field_port_code` ON term.tid = field_port_code.entity_id AND term.langcode = field_port_code.langcode
+			itinerary_day_field_data as itinerary_day
+				LEFT JOIN itinerary_day__field_itin_day_title as title ON itinerary_day.id = title.entity_id AND title.langcode = itinerary_day.langcode
+				LEFT JOIN itinerary_day__field_itin_day_day_number_range as day_number ON itinerary_day.id = day_number.entity_id AND day_number.langcode = itinerary_day.langcode
+				LEFT JOIN itinerary_day__field_itin_day_location as location ON itinerary_day.id = location.entity_id AND location.langcode = itinerary_day.langcode
+				LEFT JOIN itinerary_day__field_itin_day_port as port ON itinerary_day.id = port.entity_id AND port.langcode = itinerary_day.langcode
 		WHERE
-			term.`vid` = 'ports'
-		ORDER BY
-			parent.`parent_target_id` ASC;";
+			itinerary_day.langcode = 'en'";
 
 		// Fetch data.
 		$result = $drupal_database->get_results( $query, ARRAY_A );

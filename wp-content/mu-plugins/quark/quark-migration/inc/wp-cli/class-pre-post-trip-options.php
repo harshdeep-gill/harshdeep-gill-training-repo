@@ -1,6 +1,6 @@
 <?php
 /**
- * Migrate: Port Taxonomy from Drupal to WordPress CPT.
+ * Migrate: Pre Post Trip options from Drupal to WordPress CPT.
  *
  * @package quark-migration
  */
@@ -12,21 +12,23 @@ use WP_CLI;
 use WP_Error;
 use WP_CLI\ExitException;
 
+use function Quark\Migration\Drupal\download_file_by_mid;
 use function Quark\Migration\Drupal\get_database;
+use function Quark\Migration\Drupal\prepare_content;
 use function Quark\Migration\Drupal\prepare_for_migration;
 use function Quark\Migration\Drupal\get_post_by_id;
 use function Quark\Migration\WordPress\qrk_sanitize_attribute;
 use function WP_CLI\Utils\make_progress_bar;
 
-use const Quark\Ports\POST_TYPE;
+use const Quark\Expeditions\PrePostTripOptions\POST_TYPE;
 
 /**
- * Class Port.
+ * Class Pre_Post_Trip_Options.
  */
-class Port {
+class Pre_Post_Trip_Options {
 
 	/**
-	 * Migrate all Ports.
+	 * Migrate all Pre Post Trip options.
 	 *
 	 * @subcommand all
 	 *
@@ -37,12 +39,12 @@ class Port {
 		// Prepare for migration.
 		prepare_for_migration();
 
-		// Fetch ports data from drupal database.
+		// Fetch Pre Post Trip options data from drupal database.
 		$data = $this->get_drupal_data();
 
 		// Return if unable to fetch data.
 		if ( empty( $data ) ) {
-			WP_CLI::error( 'Unable to fetch data for port!' );
+			WP_CLI::error( 'Unable to fetch data for Pre Post Trip options!' );
 
 			// Bail out if unable to fetch data.
 			return;
@@ -52,7 +54,7 @@ class Port {
 		WP_CLI::log( 'Total Found: ' . count( $data ) );
 
 		// Initialize progress bar.
-		$progress = make_progress_bar( 'Migrating "port" post-type', count( $data ) );
+		$progress = make_progress_bar( 'Migrating "Pre Post Trip options" post-type', count( $data ) );
 
 		// Check if progress bar exists or not.
 		if ( ! $progress instanceof Bar ) {
@@ -93,7 +95,7 @@ class Port {
 		}
 
 		// Check post exist or not.
-		$wp_post = get_post_by_id( $normalized_post['meta_input']['drupal_tid'], POST_TYPE, 'drupal_tid' );
+		$wp_post = get_post_by_id( $normalized_post['meta_input']['drupal_id'], POST_TYPE );
 
 		// Insert/update post.
 		if ( ! empty( $wp_post ) ) {
@@ -106,7 +108,7 @@ class Port {
 		// Check if post inserted/updated or not.
 		if ( $output instanceof WP_Error ) {
 			// Print error.
-			WP_CLI::warning( 'Unable to insert/update port - ' . $normalized_post['meta_input']['drupal_tid'] );
+			WP_CLI::warning( 'Unable to insert/update Pre Post Trip options - ' . $normalized_post['meta_input']['drupal_id'] );
 		}
 	}
 
@@ -118,18 +120,18 @@ class Port {
 	 * @return array{}|array{
 	 *     post_type: string,
 	 *     post_author: string,
-	 *     post_title : string,
-	 *     post_date : string,
-	 *     post_date_gmt : string,
-	 *     post_modified : string,
-	 *     post_modified_gmt : string,
+	 *     post_title: string,
+	 *     post_date: string,
+	 *     post_date_gmt: string,
+	 *     post_modified: string,
+	 *     post_modified_gmt: string,
 	 *     post_name: string,
-	 *     post_content : string,
-	 *     post_status : string,
+	 *     post_content: string,
+	 *     post_status: string,
 	 *     comment_status: string,
 	 *     ping_status: string,
-	 *     meta_input : array{
-	 *          drupal_tid : int,
+	 *     meta_input: array{
+	 *          drupal_id : int,
 	 *     }
 	 * }
 	 */
@@ -140,7 +142,7 @@ class Port {
 		}
 
 		// Normalize data.
-		$nid          = ! empty( $item['tid'] ) ? absint( $item['tid'] ) : 0;
+		$nid          = ! empty( $item['nid'] ) ? absint( $item['nid'] ) : 0;
 		$title        = '';
 		$created_at   = gmdate( 'Y-m-d H:i:s' );
 		$modified_at  = gmdate( 'Y-m-d H:i:s' );
@@ -149,14 +151,18 @@ class Port {
 		$post_name    = '';
 
 		// Title.
-		if ( is_string( $item['name'] ) && ! empty( $item['name'] ) ) {
-			$title = trim( $item['name'] );
+		if ( is_string( $item['title'] ) && ! empty( $item['title'] ) ) {
+			$title = trim( $item['title'] );
+		}
+
+		// Created date.
+		if ( ! empty( $item['created'] ) ) {
+			$created_at = gmdate( 'Y-m-d H:i:s', absint( $item['created'] ) );
 		}
 
 		// Modified date.
 		if ( ! empty( $item['changed'] ) ) {
-			$created_at  = gmdate( 'Y-m-d H:i:s', absint( $item['changed'] ) );
-			$modified_at = $created_at;
+			$modified_at = gmdate( 'Y-m-d H:i:s', absint( $item['changed'] ) );
 		}
 
 		// Status.
@@ -165,8 +171,8 @@ class Port {
 		}
 
 		// post content.
-		if ( ! empty( $item['description__value'] ) ) {
-			$post_content = strval( $item['description__value'] );
+		if ( ! empty( $item['post_content'] ) ) {
+			$post_content = strval( $item['post_content'] );
 		}
 
 		// Prepare post data.
@@ -179,43 +185,29 @@ class Port {
 			'post_modified'     => $modified_at,
 			'post_modified_gmt' => $modified_at,
 			'post_name'         => $post_name,
-			'post_content'      => $post_content,
+			'post_content'      => prepare_content( $post_content ),
 			'post_status'       => $status,
 			'comment_status'    => 'closed',
 			'ping_status'       => 'closed',
 			'meta_input'        => [
-				'drupal_tid' => $nid,
+				'drupal_id' => $nid,
 			],
 		];
 
-		// Set latitude metadata.
-		if ( ! empty( $item['field_geocoordinates_lat'] ) ) {
-			$data['meta_input']['latitude'] = $item['field_geocoordinates_lat'];
+		// Set alternate title as metadata.
+		if ( ! empty( $item['alternate_title'] ) ) {
+			$data['meta_input']['alternate_title'] = strval( qrk_sanitize_attribute( $item['alternate_title'] ) );
 		}
 
-		// Set longitude metadata.
-		if ( ! empty( $item['field_geocoordinates_lng'] ) ) {
-			$data['meta_input']['longitude'] = $item['field_geocoordinates_lng'];
-		}
+		// Set image id as featured image.
+		if ( ! empty( $item['hb_image_id'] ) ) {
+			$mid      = absint( $item['hb_image_id'] );
+			$image_id = download_file_by_mid( $mid );
 
-		// Set Port Code metadata.
-		if ( ! empty( $item['field_port_code_value'] ) ) {
-			$data['meta_input']['port_code'] = $item['field_port_code_value'];
-		}
-
-		// Set country metadata.
-		if ( ! empty( $item['field_port_address_country_code'] ) ) {
-			$data['meta_input']['country'] = $item['field_port_address_country_code'];
-		}
-
-		// Set locality metadata.
-		if ( ! empty( $item['field_port_address_locality'] ) ) {
-			$data['meta_input']['locality'] = $item['field_port_address_locality'];
-		}
-
-		// Set Administrative area metadata.
-		if ( ! empty( $item['field_port_address_administrative_area'] ) ) {
-			$data['meta_input']['administrative_area'] = $item['field_port_address_administrative_area'];
+			// Check if image exists.
+			if ( ! $image_id instanceof WP_Error ) {
+				$data['meta_input']['_thumbnail_id'] = $image_id;
+			}
 		}
 
 		// Return normalized data.
@@ -235,28 +227,23 @@ class Port {
 
 		// Query.
 		$query = "SELECT
-			term.`tid`,
-			field_data.`name`,
-			field_data.`description__value`,
-			field_data.`status`,
-			field_data.`changed`,
-			field_geocoordinates.field_geocoordinates_lat AS `field_geocoordinates_lat`,
-			field_geocoordinates.field_geocoordinates_lng AS `field_geocoordinates_lng`,
-			field_port_address.field_port_address_country_code AS `field_port_address_country_code`,
-			field_port_address.field_port_address_administrative_area AS `field_port_address_administrative_area`,
-			field_port_address.field_port_address_locality AS `field_port_address_locality`,
-			field_port_code.field_port_code_value AS `field_port_code_value`
+			node.nid,
+			field_data.status,
+			field_data.title,
+			field_data.created,
+			field_data.changed,
+			body.body_value AS post_content,
+			field_alternate_title.field_alternate_title_value AS alternate_title,
+			field_hb_image.field_hb_image_target_id AS hb_image_id
 		FROM
-			taxonomy_term_data AS term
-			LEFT JOIN taxonomy_term__parent AS parent ON term.`tid` = parent.`entity_id` AND term.langcode = parent.langcode
-			LEFT JOIN taxonomy_term_field_data AS field_data ON term.`tid` = field_data.`tid` AND term.langcode = field_data.langcode
-			LEFT JOIN `taxonomy_term__field_geocoordinates` AS `field_geocoordinates` ON term.tid = field_geocoordinates.entity_id AND term.langcode = field_geocoordinates.langcode
-			LEFT JOIN `taxonomy_term__field_port_address` AS `field_port_address` ON term.tid = field_port_address.entity_id AND term.langcode = field_port_address.langcode
-			LEFT JOIN `taxonomy_term__field_port_code` AS `field_port_code` ON term.tid = field_port_code.entity_id AND term.langcode = field_port_code.langcode
+			node
+				LEFT JOIN node_field_data AS field_data ON node.nid = field_data.nid AND node.langcode = field_data.langcode
+				LEFT JOIN node__body AS body ON node.nid = body.entity_id AND node.langcode = body.langcode
+				LEFT JOIN node__field_alternate_title AS field_alternate_title ON node.nid = field_alternate_title.entity_id AND node.langcode = field_alternate_title.langcode
+				LEFT JOIN node__field_hero_banner AS field_hero_banner ON node.nid = field_hero_banner.entity_id AND node.langcode = field_hero_banner.langcode
+				LEFT JOIN paragraph__field_hb_image AS field_hb_image ON field_hb_image.entity_id = field_hero_banner.field_hero_banner_target_id AND node.langcode = field_hero_banner.langcode
 		WHERE
-			term.`vid` = 'ports'
-		ORDER BY
-			parent.`parent_target_id` ASC;";
+			node.type = 'pre_post_trip_option'";
 
 		// Fetch data.
 		$result = $drupal_database->get_results( $query, ARRAY_A );
