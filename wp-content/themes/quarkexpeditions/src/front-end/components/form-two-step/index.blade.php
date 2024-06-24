@@ -34,6 +34,7 @@
 		@if ( ! empty( $fields ) )
 			@foreach ( $fields as $field )
 				@switch( $field['field_type'] )
+					{{-- Sub Region Field --}}
 					@case( 'sub-region' )
 						<x-form.field :validation="[ ! empty( $field['is_required'] ) ? 'required' : '' ]">
 							<x-form.select
@@ -41,7 +42,7 @@
 								name="fields[Sub_Region__c]"
 								form="{{ $form_id }}"
 							>
-								<option value="">- Select -</option>
+								<option value="">{{ __( '- Select -', 'qrk' ) }}</option>
 								@if ( empty( $field['options'] ) )
 									<option value="Antarctic Peninsula">Antarctic Peninsula</option>
 									<option value="Falklands & South Georgia">Falklands & South Georgia</option>
@@ -55,6 +56,8 @@
 							</x-form.select>
 						</x-form.field>
 						@break
+
+					{{-- Most Important Factors Field --}}
 					@case( 'most-important-factors' )
 						<x-form.field :validation="[ ! empty( $field['is_required'] ) ? 'required' : '' ]">
 							<x-form.select
@@ -62,7 +65,7 @@
 								name="fields[Most_Important_Factors__c]"
 								form="{{ $form_id }}"
 							>
-								<option value="">- Select -</option>
+								<option value="">{{ __( '- Select -', 'qrk' ) }}</option>
 								@if ( empty( $field['options'] ) )
 									<option value="Adventure Activities">Adventure Activities</option>
 									<option value="Budget">Budget</option>
@@ -77,6 +80,8 @@
 							</x-form.select>
 						</x-form.field>
 						@break
+
+					{{-- Pax Count Field. --}}
 					@case( 'pax-count' )
 						<x-form.field :validation="[ ! empty( $field['is_required'] ) ? 'required' : '' ]">
 							<x-form.select
@@ -84,7 +89,7 @@
 								name="fields[Pax_Count__c]"
 								form="{{ $form_id }}"
 							>
-								<option value="">- Select -</option>
+								<option value="">{{ __( '- Select -', 'qrk' ) }}</option>
 								@if ( empty( $field['options'] ) )
 									<option value="1">1</option>
 									<option value="2">2</option>
@@ -98,6 +103,8 @@
 							</x-form.select>
 						</x-form.field>
 						@break
+
+					{{-- Season field. --}}
 					@case( 'season' )
 						<x-form.field :validation="[ ! empty( $field['is_required'] ) ? 'required' : '' ]">
 							<x-form.select
@@ -105,7 +112,7 @@
 								name="fields[Season__c]"
 								form="{{ $form_id }}"
 							>
-								<option value="">- Select -</option>
+								<option value="">{{ __( '- Select -', 'qrk' ) }}</option>
 								@if ( empty( $field['options'] ) )
 									<option value="2024-25">Antarctic 2024/25 (Nov '24 - Mar '25)</option>
 									<option value="2025-26">Antarctic 2025/26 (Nov '25 - Mar '26)</option>
@@ -117,6 +124,8 @@
 							</x-form.select>
 						</x-form.field>
 						@break
+
+					{{-- Expedition Name Field. --}}
 					@case( 'expedition-name' )
 						<x-form.field :validation="[ ! empty( $field['is_required'] ) ? 'required' : '' ]">
 							<x-form.select
@@ -146,7 +155,7 @@
 				:states="$states"
 			>
 				<x-button type="button">
-					Request a Quote
+					{{ __( 'Request a Quote', 'qrk' ) }}
 					<x-button.sub-title title="It only takes 2 minutes!" />
 				</x-button>
 			</x-form-two-step.modal-cta>
