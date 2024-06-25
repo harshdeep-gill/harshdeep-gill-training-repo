@@ -291,7 +291,7 @@ function get( int $post_id = 0 ): array {
  *
  * @return int
  */
-function code_to_id( string $ship_code = '' ): int {
+function get_id_from_ship_code( string $ship_code = '' ): int {
 	// Check for cached version.
 	$cache_key = CACHE_KEY . '_all_ships';
 	$ships     = wp_cache_get( $cache_key, CACHE_GROUP );

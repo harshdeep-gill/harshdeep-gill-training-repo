@@ -12,8 +12,7 @@ use WP_Error;
 
 use function Quark\Departures\get as get_departure;
 use function Quark\Departures\bust_post_cache;
-
-use function Quark\Ships\code_to_id as get_ship_post_id;
+use function Quark\Ships\get_id_from_ship_code;
 
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
 
@@ -34,19 +33,6 @@ class Departure extends Softrip_Object {
 	 * @var mixed[]
 	 */
 	private array $pre_save = [];
-
-	/**
-	 * Constructor.
-	 *
-	 * @param Itinerary|null $itinerary The parent Itinerary.
-	 */
-	public function __construct( Itinerary $itinerary = null ) {
-		// If Itinerary supplied, initialise it.
-		if ( $itinerary instanceof Itinerary ) {
-			// Set the parent.
-			$this->set_itinerary( $itinerary );
-		}
-	}
 
 	/**
 	 * Set itinerary.
@@ -146,7 +132,7 @@ class Departure extends Softrip_Object {
 				'departure_start_date' => '',
 				'departure_end_date'   => null,
 				'duration'             => null,
-				'itinerary'            => $this->itinerary->id(),
+				'itinerary'            => $this->itinerary->get_id(),
 			],
 		];
 
@@ -161,7 +147,7 @@ class Departure extends Softrip_Object {
 		// Ensure post_type, post_content, and post_parent cannot be altered.
 		$data['post_type']    = DEPARTURE_POST_TYPE;
 		$data['post_content'] = '';
-		$data['post_parent']  = $this->itinerary->id();
+		$data['post_parent']  = $this->itinerary->get_id();
 
 		// Assign the pre-save data.
 		$this->pre_save = $data;
@@ -193,16 +179,16 @@ class Departure extends Softrip_Object {
 		// Return the formatted structure.
 		return [
 			'post_title'  => $data['id'],
-			'post_status' => $this->departure_status( $data['startDate'] ),
+			'post_status' => $this->get_departure_status( $data['startDate'] ),
 			'meta_input'  => [
 				'related_expedition'   => $this->itinerary->post_meta( 'related_expedition' ),
-				'related_ship'         => get_ship_post_id( strval( $data['shipCode'] ) ),
+				'related_ship'         => get_id_from_ship_code( strval( $data['shipCode'] ) ),
 				'softrip_departure_id' => $data['id'],
 				'softrip_package_id'   => $data['packageCode'],
 				'departure_start_date' => $data['startDate'],
 				'departure_end_date'   => $data['endDate'],
 				'duration'             => $data['duration'],
-				'itinerary'            => $this->itinerary->id(),
+				'itinerary'            => $this->itinerary->get_id(),
 			],
 		];
 	}
@@ -214,7 +200,7 @@ class Departure extends Softrip_Object {
 	 *
 	 * @return string
 	 */
-	protected function departure_status( string $date = '' ): string {
+	protected function get_departure_status( string $date = '' ): string {
 		// Convert time to timestamp.
 		$check_stamp   = strtotime( $date );
 		$current_stamp = time();

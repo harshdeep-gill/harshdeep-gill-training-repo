@@ -33,15 +33,16 @@ abstract class Softrip_Object {
 	 */
 	abstract public function load( int $post_id = 0 ): void;
 	// phpcs:ignore Travelopia.Functions.CommentOnFirstLineOfFunctions.Missing
+
 	/**
 	 * Get the objects post id.
 	 *
 	 * @return int
 	 */
-	public function id(): int {
+	public function get_id(): int {
 		// If valid post, return ID.
 		if ( $this->is_valid() ) {
-			return $this->data['post']->ID; // @phpstan-ignore-line is_valid() ensures post is valid
+			return $this->data['post'] ? $this->data['post']->ID : 0;
 		}
 
 		// Return a 0 if not.

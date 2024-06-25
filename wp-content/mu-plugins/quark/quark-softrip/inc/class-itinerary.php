@@ -12,8 +12,6 @@ use WP_Query;
 
 use function Quark\Itineraries\bust_post_cache;
 use function Quark\Itineraries\get as get_itinerary;
-use function Quark\Ships\code_to_id as get_ship_post_id;
-use function Quark\CabinCategories\code_to_id as get_cabin_post_id;
 
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
 
@@ -91,8 +89,9 @@ class Itinerary extends Softrip_Object {
 		);
 
 		// Departures.
-		foreach ( $posts->get_posts() as $post_id ) {
-			$departure = new Departure( $this );
+		foreach ( $posts->posts as $post_id ) {
+			$departure = new Departure();
+			$departure->set_itinerary( $this );
 			$departure->load( absint( $post_id ) );
 			$this->departures[ $departure->post_meta( 'softrip_departure_id' ) ] = $departure;
 		}
@@ -135,7 +134,9 @@ class Itinerary extends Softrip_Object {
 
 		// Create if not existing.
 		if ( ! isset( $this->departures[ $id ] ) ) {
-			$this->departures[ $id ] = new Departure( $this );
+			$departure = new Departure();
+			$departure->set_itinerary( $this );
+			$this->departures[ $id ] = $departure;
 		}
 
 		// Return the departure.

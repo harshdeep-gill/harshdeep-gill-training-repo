@@ -301,7 +301,7 @@ function get( int $post_id = 0 ): array {
  *
  * @return int
  */
-function code_to_id( string $cabin_id = '' ): int {
+function get_id_from_cabin_code( string $cabin_id = '' ): int {
 	// Check for cached version.
 	$cache_key = CACHE_KEY . '_all_cabins';
 	$cabins    = wp_cache_get( $cache_key, CACHE_GROUP );
