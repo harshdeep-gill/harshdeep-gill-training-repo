@@ -180,7 +180,7 @@ class Departure extends Softrip_Object {
 			'id'               => 0,
 			'shipCode'         => '',
 			'packageCode'      => '',
-			'startDate'        => '',
+			'startDate'        => current_time( 'mysql' ),
 			'endDate'          => '',
 			'duration'         => 0,
 			'cabins'           => [],
@@ -193,7 +193,7 @@ class Departure extends Softrip_Object {
 		// Return the formatted structure.
 		return [
 			'post_title'  => $data['id'],
-			'post_status' => 'publish',
+			'post_status' => $this->departure_status( $data['startDate'] ),
 			'meta_input'  => [
 				'related_expedition'   => $this->itinerary->post_meta( 'related_expedition' ),
 				'related_ship'         => get_ship_post_id( strval( $data['shipCode'] ) ),
@@ -205,5 +205,27 @@ class Departure extends Softrip_Object {
 				'itinerary'            => $this->itinerary->id(),
 			],
 		];
+	}
+
+	/**
+	 * Get the departure status based on start date.
+	 *
+	 * @param string $date The start date.
+	 *
+	 * @return string
+	 */
+	protected function departure_status( string $date = '' ): string {
+		// Convert time to timestamp.
+		$check_stamp   = strtotime( $date );
+		$current_stamp = time();
+		$status        = 'draft';
+
+		// Check if start date within the last day.
+		if ( $check_stamp <= ( $current_stamp + DAY_IN_SECONDS ) ) {
+			$status = 'publish';
+		}
+
+		// Return the status.
+		return $status;
 	}
 }
