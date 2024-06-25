@@ -93,7 +93,7 @@ class Itinerary extends Softrip_Object {
 			$departure = new Departure();
 			$departure->set_itinerary( $this );
 			$departure->load( absint( $post_id ) );
-			$this->departures[ $departure->post_meta( 'softrip_departure_id' ) ] = $departure;
+			$this->departures[ $departure->get_post_meta( 'softrip_departure_id' ) ] = $departure;
 		}
 
 		// Set departures loaded.
@@ -105,12 +105,12 @@ class Itinerary extends Softrip_Object {
 	 *
 	 * @return Departure[]
 	 */
-	public function departures(): array {
+	public function get_departures(): array {
 		// Ensure departures loaded.
 		$this->ensure_departures_loaded();
 
 		// Check last update time.
-		$last_update = $this->post_meta( 'last_updated' );
+		$last_update = $this->get_post_meta( 'last_updated' );
 
 		// Update if older than 4 hours.
 		if ( empty( $last_update ) || time() > $last_update + ( HOUR_IN_SECONDS * 4 ) ) {
@@ -150,7 +150,7 @@ class Itinerary extends Softrip_Object {
 	 */
 	private function update_departures(): void {
 		// Get the Softrip ID and request the departures from the middleware.
-		$softrip_id     = strval( $this->post_meta( 'softrip_package_id' ) );
+		$softrip_id     = strval( $this->get_post_meta( 'softrip_package_id' ) );
 		$raw_departures = request_departures( [ $softrip_id ] );
 
 		// Check if is valid.

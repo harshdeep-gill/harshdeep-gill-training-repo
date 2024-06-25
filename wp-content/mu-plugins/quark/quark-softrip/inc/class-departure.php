@@ -181,7 +181,7 @@ class Departure extends Softrip_Object {
 			'post_title'  => $data['id'],
 			'post_status' => $this->get_departure_status( $data['startDate'] ),
 			'meta_input'  => [
-				'related_expedition'   => $this->itinerary->post_meta( 'related_expedition' ),
+				'related_expedition'   => $this->itinerary->get_post_meta( 'related_expedition' ),
 				'related_ship'         => get_id_from_ship_code( strval( $data['shipCode'] ) ),
 				'softrip_departure_id' => $data['id'],
 				'softrip_package_id'   => $data['packageCode'],

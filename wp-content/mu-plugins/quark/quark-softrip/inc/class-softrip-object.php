@@ -71,7 +71,7 @@ abstract class Softrip_Object {
 	 *
 	 * @return mixed
 	 */
-	public function post_meta( string $name = '' ): mixed {
+	public function get_post_meta( string $name = '' ): mixed {
 		// Check if the post is valid.
 		if ( ! $this->is_valid() ) {
 			// Not valid post, so bail with expected empty meta.

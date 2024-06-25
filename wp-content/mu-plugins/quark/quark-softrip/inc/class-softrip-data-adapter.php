@@ -20,7 +20,7 @@ class Softrip_Data_Adapter {
 	 * @param mixed[] $params  The request params.
 	 * @param string  $method  The request method.
 	 *
-	 * @return array<string, array<string, array<string, array<string, mixed>>>>|WP_Error
+	 * @return mixed[]|WP_Error
 	 */
 	public function do_request( string $service = '', array $params = [], string $method = 'GET' ): array|WP_Error {
 		// Check Username and Password are set.
@@ -62,6 +62,6 @@ class Softrip_Data_Adapter {
 		}
 
 		// Return result array.
-		return (array) json_decode( wp_remote_retrieve_body( $request ), true ); // @phpstan-ignore-line json contains structure
+		return (array) json_decode( wp_remote_retrieve_body( $request ), true );
 	}
 }
