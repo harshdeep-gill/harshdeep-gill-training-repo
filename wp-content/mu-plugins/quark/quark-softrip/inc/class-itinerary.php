@@ -82,7 +82,7 @@ class Itinerary extends Softrip_Object {
 				'posts_per_page'         => 100,
 				'no_found_rows'          => true,
 				'update_post_term_cache' => false,
-				'parent_in'              => $this->id(),
+				'parent_in'              => $this->get_id(),
 				'fields'                 => 'ids',
 				'post_status'            => 'draft,publish',
 			]
@@ -169,12 +169,12 @@ class Itinerary extends Softrip_Object {
 		}
 
 		// Update last updated timestamp.
-		update_post_meta( $this->id(), 'last_updated', time() );
+		update_post_meta( $this->get_id(), 'last_updated', time() );
 
 		// Reload data.
-		bust_post_cache( $this->id() );
+		bust_post_cache( $this->get_id() );
 
 		// Reload data.
-		$this->load( $this->id() );
+		$this->load( $this->get_id() );
 	}
 }

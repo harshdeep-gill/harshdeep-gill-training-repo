@@ -77,7 +77,7 @@ class Departure extends Softrip_Object {
 			$save_data = $this->pre_save;
 
 			// Add the ID data.
-			$save_data['ID'] = $this->id();
+			$save_data['ID'] = $this->get_id();
 
 			// Update post.
 			$departure = wp_update_post( $save_data, true );
