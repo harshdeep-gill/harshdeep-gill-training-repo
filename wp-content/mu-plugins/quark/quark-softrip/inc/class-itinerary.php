@@ -159,19 +159,12 @@ class Itinerary extends Softrip_Object {
 		}
 
 		// Use the departures for the softrip ID.
-		$departures = $raw_departures[ $softrip_id ];
+		$departures = (array) $raw_departures[ $softrip_id ];
 
-		// Setup defaults.
-		$default = [
-			'departures' => [
-				[
-					'id' => '',
-				],
-			],
-		];
-
-		// Apply defaults.
-		$departures = wp_parse_args( (array) $departures, $default );
+		// Bail if departures are missing.
+		if ( ! is_array( $departures['departures'] ) ) {
+			return;
+		}
 
 		// Go over each departure and create a new Departure post for each.
 		foreach ( $departures['departures'] as $raw_departure ) {
