@@ -118,7 +118,7 @@
 					@case( 'pax-count' )
 						<x-form.field :validation="[ ! empty( $field['is_required'] ) ? 'required' : '' ]">
 							<x-form.select
-								label="{{ $field['label'] ?: 'The most important factor for you?' }}"
+								label="{{ $field['label'] ?: 'How many guests?' }}"
 								name="fields[Pax_Count__c]"
 								form="{{ $form_id }}"
 							>
