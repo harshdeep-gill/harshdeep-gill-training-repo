@@ -39,6 +39,8 @@ function bootstrap(): void {
 		WP_CLI::add_command( 'quark-migrate offers', __NAMESPACE__ . '\\WP_CLI\\Offer' );
 		WP_CLI::add_command( 'quark-migrate adventure-option', __NAMESPACE__ . '\\WP_CLI\\Adventure_Option' );
 		WP_CLI::add_command( 'quark-migrate departure', __NAMESPACE__ . '\\WP_CLI\\Departure' );
+		WP_CLI::add_command( 'quark-migrate policy-page', __NAMESPACE__ . '\\WP_CLI\\Policy_Pages' );
+		WP_CLI::add_command( 'quark-migrate landing-page', __NAMESPACE__ . '\\WP_CLI\\Landing_Page' );
 	}
 }
 
