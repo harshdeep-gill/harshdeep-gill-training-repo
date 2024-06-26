@@ -37,6 +37,7 @@ import * as relatedPosts from './related-posts';
 import * as breadcrumbs from './breadcrumbs';
 import * as sidebarGrid from './sidebar-grid';
 import * as authorInfo from './author-info';
+import * as tableOfContents from './table-of-contents';
 
 /**
  * Add blocks.
@@ -73,6 +74,7 @@ const blocks = [
 	breadcrumbs,
 	sidebarGrid,
 	authorInfo,
+	tableOfContents,
 ];
 
 /**

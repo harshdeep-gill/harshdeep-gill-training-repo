@@ -1,0 +1,15 @@
+@import "../../../front-end/scss/";
+
+.table-of-contents {
+
+	&__list-item-title {
+		height: 1.5rem;
+		background-color: var(--color-gray-10);
+		border-radius: var(--border-radius);
+
+		&:first-child {
+			max-width: 80%;
+			margin-bottom: var(--typography-spacing);
+		}
+	}
+}

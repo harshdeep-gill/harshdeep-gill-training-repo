@@ -57,6 +57,7 @@ function register_blocks(): void {
 		'Breadcrumbs'           => 'breadcrumbs.php',
 		'SidebarGrid'           => 'sidebar-grid.php',
 		'AuthorInfo'            => 'author-info.php',
+		'TableOfContents'       => 'table-of-contents.php',
 	];
 
 	// Register blocks.
