@@ -26,7 +26,7 @@ class Block_Converter {
 	/**
 	 * Constructor.
 	 */
-	public function __construct() {
+	public function __construct() { // phpcs:ignore Travelopia.Functions.FunctionReturnType.Missing
 		/**
 		 * Get database connection.
 		 */
