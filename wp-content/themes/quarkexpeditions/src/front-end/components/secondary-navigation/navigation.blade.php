@@ -26,7 +26,7 @@
 
 			<li class="secondary-navigation__navigation-item secondary-navigation__navigation-item--dropdown">
 				<x-button class="secondary-navigation__navigation-button">
-					<span>Jump to</span>
+					<span>{{ __( 'Jump to', 'qrk' ) }}</span>
 					<x-svg name="arrow-down" />
 				</x-button>
 				<ul class="secondary-navigation__navigation-dropdown"></ul>
