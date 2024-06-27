@@ -239,6 +239,9 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'class'  => true,
 					'data-*' => true,
 				],
+				'quark-secondary-navigation'            => [
+					'class' => true,
+				],
 				'quark-form-two-step'                   => [
 					'class' => true,
 				],

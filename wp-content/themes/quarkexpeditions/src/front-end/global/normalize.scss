@@ -19,5 +19,5 @@ body {
 html.dom-content-loaded,
 html.dom-content-loaded body {
 	scroll-behavior: smooth;
-	scroll-padding-top: calc(var(--header-bottom) + var(--tabs-header-offset));
+	scroll-padding-top: var(--header-bottom);
 }
