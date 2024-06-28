@@ -4,19 +4,25 @@
 const { customElements, HTMLElement } = window;
 
 /**
+ * Internal Dependency.
+ */
+import { debounce } from '../../global/utility';
+
+/**
  * Sub Navigation Class.
  */
 export default class SecondaryNavigation extends HTMLElement {
 	/**
 	 * Properties.
 	 */
-	private navContainer: HTMLElement | null;
-	private navItems: HTMLElement | null;
+	private navigationContainer: HTMLElement | null;
+	private navigationItems: HTMLElement | null;
 	private moreMenu: HTMLElement | null;
 	private moreDropdown: HTMLElement | null;
 	private dropdownButton: HTMLElement | null;
+	private navigationElement: HTMLElement | null;
 	private allContentItems: NodeListOf<Element> | null;
-	private levelTwoHeadings: NodeListOf<Element> | null;
+	private headingItems: NodeListOf<Element> | null;
 
 	/**
 	 * Constructor.
@@ -26,28 +32,18 @@ export default class SecondaryNavigation extends HTMLElement {
 		super();
 
 		// Elements.
-		this.navContainer = this.querySelector( '.secondary-navigation__navigation' );
-		this.navItems = this.querySelector( '.secondary-navigation__navigation-items' );
+		this.navigationContainer = this.querySelector( '.secondary-navigation__navigation' );
+		this.navigationItems = this.querySelector( '.secondary-navigation__navigation-items' );
 		this.moreMenu = this.querySelector( '.secondary-navigation__navigation-item--dropdown' );
 		this.moreDropdown = this.querySelector( '.secondary-navigation__navigation-dropdown' );
 		this.dropdownButton = this.querySelector( '.secondary-navigation__navigation-button' );
 		this.allContentItems = this.querySelectorAll( '.secondary-navigation__navigation-item' );
-		this.levelTwoHeadings = document.querySelectorAll( '.main h2' );
-	}
+		this.headingItems = document.querySelectorAll( 'h2[id]' );
+		this.navigationElement = document.querySelector( '.secondary-navigation' );
 
-	/**
-	 * Connected callback to initialize the responsive navigation.
-	 */
-	connectedCallback(): void {
-		// Initialize function.
-		this.init();
-	}
+		// Scroll event.
+		document.body.addEventListener( 'scroll', debounce( this.onScroll.bind( this ), 1 ), { passive: true } );
 
-	/**
-	 * Initialize the responsive navigation by adding event listeners
-	 * and performing the initial layout update.
-	 */
-	private init(): void {
 		// Run on resize events.
 		window.addEventListener( 'resize', this.updateNav.bind( this ) );
 		this.updateNav();
@@ -109,6 +105,28 @@ export default class SecondaryNavigation extends HTMLElement {
 	}
 
 	/**
+	 * Toggle the class on scroll event.
+	 */
+	onScroll() {
+		// Check for element.
+		if ( ! this.navigationElement ) {
+			// No, bail early.
+			return;
+		}
+
+		// Check if the page is scrolled down.
+		if ( this.navigationElement?.getBoundingClientRect()?.top < 12 ) {
+			// Add classes.
+			this.navigationElement.classList.add( 'secondary-navigation--has-sticky' );
+			document.body.classList.add( 'has-sticky-secondary-navigation' );
+		} else {
+			// Remove classes.
+			this.navigationElement.classList.remove( 'secondary-navigation--has-sticky' );
+			document.body.classList.remove( 'has-sticky-secondary-navigation' );
+		}
+	}
+
+	/**
 	 * Event: 'keydown'
 	 *
 	 * @param {KeyboardEvent} event Event.
@@ -161,13 +179,13 @@ export default class SecondaryNavigation extends HTMLElement {
 		}
 
 		// Return if any elements does not exist.
-		if ( ! this.navContainer || ! this.moreMenu || ! this.navItems || ! this.moreDropdown ) {
+		if ( ! this.navigationContainer || ! this.moreMenu || ! this.navigationItems || ! this.moreDropdown ) {
 			// No, bail early.
 			return;
 		}
 
 		// Set container width and more menu width.
-		const containerWidth = this.navContainer.clientWidth;
+		const containerWidth = this.navigationContainer.clientWidth;
 		const moreMenuWidth = this.moreMenu.offsetWidth;
 		let totalWidth = moreMenuWidth;
 
@@ -175,7 +193,7 @@ export default class SecondaryNavigation extends HTMLElement {
 		this.resetDropdown();
 
 		// Calculate widths and move items if necessary
-		const navItemElements = Array.from( this.navItems.getElementsByClassName( 'secondary-navigation__navigation-item' ) );
+		const navItemElements = Array.from( this.navigationItems.getElementsByClassName( 'secondary-navigation__navigation-item' ) );
 
 		// For loop.
 		for ( let i = 0; i < navItemElements.length - 1; i++ ) {
@@ -201,7 +219,7 @@ export default class SecondaryNavigation extends HTMLElement {
 	 */
 	private resetDropdown(): void {
 		// Check for elements.
-		if ( ! this.moreDropdown || ! this.navItems || ! this.moreMenu ) {
+		if ( ! this.moreDropdown || ! this.navigationItems || ! this.moreMenu ) {
 			// No, bail early.
 			return;
 		}
@@ -209,7 +227,7 @@ export default class SecondaryNavigation extends HTMLElement {
 		// Check for first child.
 		while ( this.moreDropdown.firstChild ) {
 			// Insert the item.
-			this.navItems.insertBefore( this.moreDropdown.firstChild, this.moreMenu );
+			this.navigationItems.insertBefore( this.moreDropdown.firstChild, this.moreMenu );
 		}
 	}
 
@@ -303,13 +321,13 @@ export default class SecondaryNavigation extends HTMLElement {
 		const observer = new IntersectionObserver(
 			this.intersectionObserverCallback.bind( this ),
 			{
-				rootMargin: `${ rootMarginTop } 0px -75% 0px`,
+				rootMargin: `${ rootMarginTop } 0px -70% 0px`,
 				threshold: 1,
 			} );
 
 		// Loop thorugh all headings.
-		if ( this.levelTwoHeadings ) {
-			this.levelTwoHeadings?.forEach( ( heading ) => {
+		if ( this.headingItems ) {
+			this.headingItems?.forEach( ( heading ) => {
 				// Observe each heading.
 				observer.observe( heading );
 			} );

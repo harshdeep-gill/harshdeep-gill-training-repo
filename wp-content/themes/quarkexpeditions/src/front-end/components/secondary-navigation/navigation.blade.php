@@ -15,6 +15,7 @@
 				<li
 					@class( [
 						'secondary-navigation__navigation-item',
+						'secondary-navigation__navigation-item--active' => $loop->first,
 					] )
 					data-anchor="#{{ $content_item['anchor'] }}"
 				>
