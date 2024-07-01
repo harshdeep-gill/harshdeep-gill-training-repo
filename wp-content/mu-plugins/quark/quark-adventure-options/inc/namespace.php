@@ -371,8 +371,8 @@ function get_cards_data( array $post_ids = [] ): array {
 		// Build post data.
 		$post_data = [
 			'title'          => $post['post']?->post_title ?? '',
-			'permalink'      => $post['permalink'] ?: '',
-			'featured_image' => $post['post_thumbnail'] ?: 0,
+			'permalink'      => $post['permalink'],
+			'featured_image' => $post['post_thumbnail'],
 			'excerpt'        => get_the_excerpt( $post['post']?->ID ),
 			'term'           => $term_name,
 		];
