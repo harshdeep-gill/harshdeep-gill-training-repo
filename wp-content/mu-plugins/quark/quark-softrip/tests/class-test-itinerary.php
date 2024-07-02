@@ -14,6 +14,11 @@ use WP_UnitTestCase;
  */
 class Test_Itinerary extends WP_UnitTestCase {
 
+	/**
+	 * Test creating an itinerary object.
+	 *
+	 * @return void
+	 */
 	public function test_create() {
 		// Create post.
 		$post_1 = $this->factory()->post->create_and_get(
@@ -28,8 +33,10 @@ class Test_Itinerary extends WP_UnitTestCase {
 			]
 		);
 
+		// Create a new itinierary.
 		$itinerary = new Itinerary( $post_1->ID );
 
+		// Assert meta exists.
 		$this->assertEquals( 1, $itinerary->get_post_meta( 'test_meta' ) );
 	}
 }
