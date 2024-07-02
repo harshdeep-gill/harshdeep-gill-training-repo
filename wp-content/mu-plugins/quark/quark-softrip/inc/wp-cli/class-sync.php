@@ -96,7 +96,7 @@ class Sync {
 
 		// Loop over the posts.
 		foreach ( $query->posts as $post ) {
-			$ids[] = $post;
+			$ids[] = absint( $post );
 		}
 
 		// Implode and run sync.

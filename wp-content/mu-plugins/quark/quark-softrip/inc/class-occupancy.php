@@ -28,7 +28,7 @@ class Occupancy extends Data_Object {
 	 *
 	 * @var Occupancy_Pricing[]
 	 */
-	protected array $occupancy_pricings = [];
+	protected array $children = [];
 
 	/**
 	 * Get the table name.

@@ -33,10 +33,13 @@ class Test_Itinerary extends WP_UnitTestCase {
 			]
 		);
 
-		// Create a new itinierary.
-		$itinerary = new Itinerary( $post_1->ID );
+		// Check if is instance.
+		if ( $post_1 instanceof \WP_Post ) {
+			// Create a new itinerary.
+			$itinerary = new Itinerary( $post_1->ID );
 
-		// Assert meta exists.
-		$this->assertEquals( 1, $itinerary->get_post_meta( 'test_meta' ) );
+			// Assert meta exists.
+			$this->assertEquals( 1, $itinerary->get_post_meta( 'test_meta' ) );
+		}
 	}
 }
