@@ -14,8 +14,6 @@ use WP_CLI\ExitException;
 
 use const Quark\Itineraries\POST_TYPE;
 
-//use function Quark\Softrip\get_itinerary;
-
 /**
  * Class Sync.
  */
@@ -36,7 +34,7 @@ class Sync {
 	public function sync( array $args = [], array $args_assoc = [] ): void {
 		// Explode.
 		if ( ! empty( $args_assoc['ids'] ) ) {
-			$args_assoc['ids'] = array_map( 'absint', array_filter( array_map( 'trim', explode( ',', $args_assoc['ids'] ) ) ) );
+			$args_assoc['ids'] = array_map( 'absint', array_filter( array_map( 'trim', explode( ',', strval( $args_assoc['ids'] ) ) ) ) );
 		}
 
 		// Get options.
@@ -92,12 +90,16 @@ class Sync {
 			'fields'         => 'ids',
 		];
 
+		// Run the query.
 		$query = new \WP_Query( $args );
 		$ids   = [];
+
+		// Loop over the posts.
 		foreach ( $query->posts as $post ) {
 			$ids[] = $post;
 		}
 
+		// Implode and run sync.
 		$list = implode( ',', $ids );
 		$this->sync( [], [ 'ids' => $list ] );
 	}

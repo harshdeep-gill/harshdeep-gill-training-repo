@@ -47,7 +47,7 @@ class Occupancy_Pricing extends Data_Object {
 	 */
 	protected function get_table_name(): string {
 		// Meant to be defined in extension.
-		return 'wp_occupancy_prices';
+		return 'qrk_occupancy_prices';
 	}
 
 	/**
@@ -57,7 +57,7 @@ class Occupancy_Pricing extends Data_Object {
 	 */
 	protected function get_child_table_name(): string {
 		// Meant to be defined in extension.
-		return 'wp_promos';
+		return 'qrk_promos';
 	}
 
 	/**
@@ -136,7 +136,6 @@ class Occupancy_Pricing extends Data_Object {
 		];
 
 		// @todo: handle promos.
-
 		// Return the formatted data.
 		return $formatted;
 	}

@@ -280,19 +280,21 @@ class Departure extends Softrip_Object {
 		global $wpdb;
 
 		// Set the table name.
-		$table_name = $wpdb->prefix . 'cabin_categories';
+		$table_name = 'qrk_cabin_categories';
 
+		// Load the cabins.
 		$cabins = $wpdb->get_results(
 			$wpdb->prepare(
-				"
+				'
 			SELECT
 				*
 			FROM
-				$table_name
+				%i
 			WHERE
 				departure = %d
-			",
+			',
 				[
+					$table_name,
 					$this->get_id(),
 				]
 			),
@@ -357,5 +359,4 @@ class Departure extends Softrip_Object {
 		// Return the cabin object.
 		return $this->cabins[ $code ];
 	}
-
 }

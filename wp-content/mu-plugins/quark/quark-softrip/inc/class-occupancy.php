@@ -36,11 +36,8 @@ class Occupancy extends Data_Object {
 	 * @return string
 	 */
 	protected function get_table_name(): string {
-		// Get global.
-		global $wpdb;
-
 		// Return prefixed table name.
-		return $wpdb->prefix . 'occupancies';
+		return 'qrk_occupancies';
 	}
 
 	/**
@@ -50,7 +47,7 @@ class Occupancy extends Data_Object {
 	 */
 	protected function get_child_table_name(): string {
 		// Meant to be defined in extension.
-		return 'wp_occupancy_prices';
+		return 'qrk_occupancy_prices';
 	}
 
 	/**

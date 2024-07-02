@@ -211,11 +211,8 @@ class Cabin extends Data_Object {
 	 * @return string
 	 */
 	protected function get_table_name(): string {
-		// Get global WPDB.
-		global $wpdb;
-
 		// Return prefixed.
-		return $wpdb->prefix . 'cabin_categories';
+		return 'qrk_cabin_categories';
 	}
 
 	/**
@@ -225,7 +222,7 @@ class Cabin extends Data_Object {
 	 */
 	protected function get_child_table_name(): string {
 		// Meant to be defined in extension.
-		return 'wp_occupancies';
+		return 'qrk_occupancies';
 	}
 
 	/**

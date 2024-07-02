@@ -158,17 +158,20 @@ abstract class Data_Object extends Softrip_Object {
 		$table_name = $this->get_child_table_name();
 		$relation   = $this->get_relation_field();
 
+		// Get entries for the child items.
 		$entries = $wpdb->get_results(
 			$wpdb->prepare(
-				"
+				'
 			SELECT
 				*
 			FROM
-				$table_name
+				%i
 			WHERE
-				$relation = %d
-			",
+				%i = %d
+			',
 				[
+					$table_name,
+					$relation,
 					$this->get_entry_data( 'id' ),
 				]
 			),
@@ -207,6 +210,7 @@ abstract class Data_Object extends Softrip_Object {
 	 * @return void
 	 */
 	abstract protected function add_child( array $child_data = [] ): void;
+	// phpcs:ignore Travelopia.Functions.CommentOnFirstLineOfFunctions.Missing
 
 	/**
 	 * Format incoming data.
@@ -216,4 +220,5 @@ abstract class Data_Object extends Softrip_Object {
 	 * @return mixed[]
 	 */
 	abstract protected function format_data( array $data = [] ): array;
+	// phpcs:ignore Travelopia.Functions.CommentOnFirstLineOfFunctions.Missing
 }
