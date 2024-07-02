@@ -707,6 +707,112 @@
 		</x-section>
 	</x-component-demo>
 
+	<x-component-demo :keys="[ 'expedition-details' ]">
+		<x-section>
+			<x-two-columns :border="false">
+				<x-two-columns.column>
+					<x-expedition-details>
+						<x-expedition-details.overline
+							region="Antarctic"
+							duration="11"
+							from_price="$ X,XXX USD"
+						/>
+						<x-expedition-details.title title="Crossing the Circle" />
+						<x-expedition-details.regions
+							:regions="[
+								'Drake Passage',
+								'South Shetland Islands',
+								'Antarctic Peninsula',
+								'Antarctic Circle'
+							]"
+						/>
+						<x-expedition-details.row>
+							<x-expedition-details.starting-from title="Buenos Aires/Ushuaia, Argentina"/>
+							<x-expedition-details.ships
+								:ships="[
+									'Ocean Explorer',
+									'Ultramarine',
+								]"
+							/>
+						</x-expedition-details.row>
+
+						<x-expedition-details.row>
+							<x-expedition-details.departures
+								total_departures="20"
+								from_date="November 2024"
+								to_date="March 2026"
+							/>
+						</x-expedition-details.row>
+
+						<x-expedition-details.cta>
+							<x-button size="big" color="black">View all Departures</x-button>
+						</x-expedition-details.cta>
+					</x-expedition-details>
+				</x-two-columns.column>
+
+				<x-two-columns.column>
+					<x-fancy-video
+						url="https://www.youtube.com/embed/0fRAL7xROZg"
+						image_id="35"
+						title="Interact with fellow travellers in Tundra to Table: Inuit Culinary Experience"
+					/>
+				</x-two-columns.column>
+			</x-two-columns>
+		</x-section>
+
+		<x-section full_width="true" seamless="true" background="true" background_color="black">
+			<x-two-columns :border="false">
+				<x-two-columns.column>
+					<x-expedition-details appearance="dark">
+						<x-expedition-details.overline
+							region="Antarctic"
+							duration="11"
+							from_price="$ X,XXX USD"
+						/>
+						<x-expedition-details.title title="Crossing the Circle" />
+						<x-expedition-details.regions
+							:regions="[
+								'Drake Passage',
+								'South Shetland Islands',
+								'Antarctic Peninsula',
+								'Antarctic Circle'
+							]"
+						/>
+						<x-expedition-details.row>
+							<x-expedition-details.starting-from title="Buenos Aires/Ushuaia, Argentina"/>
+							<x-expedition-details.ships
+								:ships="[
+									'Ocean Explorer',
+									'Ultramarine',
+								]"
+							/>
+						</x-expedition-details.row>
+
+						<x-expedition-details.row>
+							<x-expedition-details.departures
+								total_departures="20"
+								from_date="November 2024"
+								to_date="March 2026"
+							/>
+						</x-expedition-details.row>
+
+						<x-expedition-details.cta>
+							<x-button size="big" color="black">View all Departures</x-button>
+						</x-expedition-details.cta>
+					</x-expedition-details>
+				</x-two-columns.column>
+
+				<x-two-columns.column>
+					<x-fancy-video
+						url="https://www.youtube.com/embed/0fRAL7xROZg"
+						image_id="35"
+						title="Interact with fellow travellers in Tundra to Table: Inuit Culinary Experience"
+					/>
+				</x-two-columns.column>
+			</x-two-columns>
+		</x-section>
+	</x-component-demo>
+
 	<x-component-demo :keys="[ 'contact-cover-card' ]">
 		<x-section background="true" background_color="black">
 			<x-contact-cover-card>
