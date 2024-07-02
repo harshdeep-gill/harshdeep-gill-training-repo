@@ -45,7 +45,7 @@ class Departure extends Softrip_Object {
 	/**
 	 * Holds the departure cabins.
 	 *
-	 * @var cabin[]
+	 * @var Cabin[]
 	 */
 	protected array $cabins = [];
 
