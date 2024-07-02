@@ -82,7 +82,7 @@ class Itinerary extends Softrip_Object {
 				'posts_per_page'         => 100,
 				'no_found_rows'          => true,
 				'update_post_term_cache' => false,
-				'parent_in'              => $this->get_id(),
+				'post_parent'            => $this->get_id(),
 				'fields'                 => 'ids',
 				'post_status'            => 'draft,publish',
 			]
@@ -148,7 +148,7 @@ class Itinerary extends Softrip_Object {
 	 *
 	 * @return void
 	 */
-	private function update_departures(): void {
+	public function update_departures(): void {
 		// Get the Softrip ID and request the departures from the middleware.
 		$softrip_id     = strval( $this->get_post_meta( 'softrip_package_id' ) );
 		$raw_departures = request_departures( [ $softrip_id ] );
@@ -169,8 +169,7 @@ class Itinerary extends Softrip_Object {
 		// Go over each departure and create a new Departure post for each.
 		foreach ( $departures['departures'] as $raw_departure ) {
 			$departure = $this->get_departure( strval( $raw_departure['id'] ) );
-			$departure->set( $raw_departure );
-			$departure->save();
+			$departure->set( $raw_departure, true );
 		}
 
 		// Update last updated timestamp.
