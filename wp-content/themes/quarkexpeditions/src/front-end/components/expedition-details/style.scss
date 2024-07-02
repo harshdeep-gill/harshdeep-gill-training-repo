@@ -38,7 +38,7 @@
 
 			&:not(:last-child)::after {
 				content: "•";
-				margin: -2px var(--spacing-2) 0;
+				margin: -2px var(--spacing-1) 0;
 			}
 		}
 	}
