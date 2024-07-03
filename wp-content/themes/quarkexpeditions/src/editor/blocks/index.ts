@@ -1,9 +1,4 @@
 /**
- * WordPress dependencies.
- */
-import { registerBlockType } from '@wordpress/blocks';
-
-/**
  * Import blocks.
  */
 import * as section from './section';
@@ -70,4 +65,4 @@ const blocks = [
 /**
  * Register blocks.
  */
-blocks.forEach( ( { name, settings } ) => registerBlockType( name, settings ) );
+blocks.forEach( ( { init } ) => init() );
