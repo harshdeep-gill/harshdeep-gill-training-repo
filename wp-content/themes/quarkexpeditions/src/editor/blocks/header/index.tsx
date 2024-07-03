@@ -77,7 +77,6 @@ export const settings: BlockConfiguration = {
 				allowedBlocks: [ megaMenu.name, secondaryNav.name, ctaButtons.name ],
 				template: [ [ megaMenu.name ], [ secondaryNav.name ], [ ctaButtons.name ] ],
 				orientation: 'horizontal',
-				templateLock: 'all',
 			}
 		);
 

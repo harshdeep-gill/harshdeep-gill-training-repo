@@ -18,11 +18,12 @@ import classnames from 'classnames';
  * Child blocks.
  */
 import * as menuItem from './menu-item';
+import * as secondaryMenuItem from './secondary-menu-item';
 
 /**
  * Register child blocks.
  */
-registerBlockType( menuItem.name, menuItem.settings );
+registerBlockType( secondaryMenuItem.name, secondaryMenuItem.settings );
 
 /**
  * Block name.
@@ -62,11 +63,11 @@ export const settings: BlockConfiguration = {
 			className: classnames( 'header__nav-menu' ),
 		},
 		{
-			allowedBlocks: [ menuItem.name ],
+			allowedBlocks: [ menuItem.name, secondaryMenuItem.name ],
 			template: [
-				[ menuItem.name, { hasIcon: true, placeholder: __( 'Secondary Menu Item…', 'qrk' ) } ],
-				[ menuItem.name, { hasUrl: true, placeholder: __( 'Secondary Menu Item…', 'qrk' ) } ],
-				[ menuItem.name, { hasUrl: true, placeholder: __( 'Secondary Menu Item…', 'qrk' ) } ],
+				[ menuItem.name, { hasIcon: true } ],
+				[ secondaryMenuItem.name, { placeholder: __( 'Secondary Menu Item…', 'qrk' ) } ],
+				[ secondaryMenuItem.name, { placeholder: __( 'Secondary Menu Item…', 'qrk' ) } ],
 			],
 			renderAppender: InnerBlocks.DefaultBlockAppender,
 

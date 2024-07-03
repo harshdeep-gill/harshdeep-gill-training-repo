@@ -54,7 +54,7 @@ export const settings: BlockConfiguration = {
 	apiVersion: 2,
 	title: __( 'Header Menu Item', 'qrk' ),
 	description: __( 'Individual Menu Item for Header', 'qrk' ),
-	parent: [ 'quark/header-mega-menu' ],
+	parent: [ 'quark/header-mega-menu', 'quark/secondary-nav' ],
 	icon: 'screenoptions',
 	category: 'layout',
 	keywords: [
@@ -146,10 +146,26 @@ export const settings: BlockConfiguration = {
 
 			// Check if dropdown element exists.
 			if ( closestDropdownElement ) {
-				// If already open, close the dropdown, else open it.
+				// Get all dropdowns.
+				const allDropdowns = document.querySelectorAll( `.${ closestDropdownElement?.classList[ 0 ] }` );
+
+				// Close the closest dropdown element if already open.
 				if ( 'true' === closestDropdownElement.getAttribute( 'open' ) ) {
 					closestDropdownElement.removeAttribute( 'open' );
+
+					// Close all other dropdowns.
+					allDropdowns.forEach( ( dropdownEl ) => {
+						// Remove `open` attribute.
+						dropdownEl.removeAttribute( 'open' );
+					} );
 				} else {
+					// Close all other dropdowns.
+					allDropdowns.forEach( ( dropdownEl ) => {
+						// Remove `open` attribute.
+						dropdownEl.removeAttribute( 'open' );
+					} );
+
+					// Open the closest dropdown element.
 					closestDropdownElement.setAttribute( 'open', 'true' );
 				}
 			}

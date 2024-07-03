@@ -2,7 +2,7 @@
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-import { BlockConfiguration } from '@wordpress/blocks';
+import { BlockConfiguration, registerBlockType } from '@wordpress/blocks';
 import {
 	useBlockProps,
 	InnerBlocks,
@@ -13,6 +13,18 @@ import {
  * External dependencies.
  */
 import classnames from 'classnames';
+
+/**
+ * Child blocks.
+ */
+import * as raqButton from './raq-button';
+import * as contactButton from './contact-button';
+
+/**
+ * Register Child blocks.
+ */
+registerBlockType( raqButton.name, raqButton.settings );
+registerBlockType( contactButton.name, contactButton.settings );
 
 /**
  * Block name.
@@ -46,10 +58,10 @@ export const settings: BlockConfiguration = {
 		// eslint-disable-next-line react-hooks/rules-of-hooks
 		const innerBlockProps = useInnerBlocksProps( { ...blockProps },
 			{
-				allowedBlocks: [ 'quark/button' ],
+				allowedBlocks: [ raqButton.name, contactButton.name ],
 				template: [
-					[ 'quark/button', { isSizeBig: true, backgroundColor: 'black', appearance: 'outline' } ],
-					[ 'quark/button', { isSizeBig: true } ],
+					[ contactButton.name, { isSizeBig: true, backgroundColor: 'black', appearance: 'outline' } ],
+					[ raqButton.name, { isSizeBig: true } ],
 				],
 			},
 		);
