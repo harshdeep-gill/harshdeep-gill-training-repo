@@ -87,11 +87,8 @@ class DB {
 	 * @return string
 	 */
 	private function prefix_table_name( string $name = '' ): string {
-		// Get the $wpdb object.
-		global $wpdb;
-
 		// Return the prefixed name.
-		return $wpdb->prefix . $name;
+		return 'qrk_' . $name;
 	}
 
 	/**
@@ -112,11 +109,11 @@ class DB {
 			title VARCHAR(255) NOT NULL,
 			departure BIGINT NOT NULL,
 			cabin_category BIGINT NOT NULL,
-			package_id VARCHAR(20) NOT NULL,
-			departure_id VARCHAR(20) NOT NULL,
-			Ship_id VARCHAR(10) NOT NULL,
-			cabin_category_id VARCHAR(10) NOT NULL,
-			availability_status VARCHAR(1) NOT NULL,
+			package_id VARCHAR(45) NOT NULL,
+			departure_id VARCHAR(45) NOT NULL,
+			ship_id VARCHAR(10) NOT NULL,
+			cabin_category_id VARCHAR(45) NOT NULL,
+			availability_status VARCHAR(4) NOT NULL,
 			spaces_available INT NOT NULL,
 			UNIQUE KEY cabin_category_title_unique (title)
 		) $engine_collate";

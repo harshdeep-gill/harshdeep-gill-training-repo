@@ -20,7 +20,7 @@ class Softrip_Data_Adapter {
 	 * @param mixed[] $params  The request params.
 	 * @param string  $method  The request method.
 	 *
-	 * @return array<string, mixed>|WP_Error
+	 * @return mixed[]|WP_Error
 	 */
 	public function do_request( string $service = '', array $params = [], string $method = 'GET' ): array|WP_Error {
 		// Check Username and Password are set.
