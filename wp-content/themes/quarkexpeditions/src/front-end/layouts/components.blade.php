@@ -500,6 +500,36 @@
 		</x-review-cards>
 	</x-component-demo>
 
+	<x-component-demo :keys="['tabs']">
+		<x-section>
+			<x-tabs current_tab="ultramarine">
+				<x-tabs.header>
+					<x-tabs.nav
+						id="ultramarine"
+						title="Ultramarine"
+					/>
+					<x-tabs.nav
+						id="ocean-explorer"
+						title="Ocean Explorer"
+					/>
+				</x-tabs.header>
+
+				<x-tabs.content>
+					<x-tabs.tab id="ultramarine">
+						<h3>Ultramarine</h3>
+						<p>The 199-guest Ultramarine is equipped with two twin-engine helicopters, 20 quick-launching Zodiacs, spacious suites, wellness amenities, and numerous outdoor wildlife viewing spaces. This 420 ft long ship can cruise at 16 knots in open water and includes four fully enclosed lifeboats.</p>
+						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur consequuntur ea ratione sequi? Aperiam asperiores beatae debitis doloribus dolorum earum eveniet excepturi exercitationem ipsum nisi perspiciatis, praesentium provident qui vitae.</p>
+					</x-tabs.tab>
+					<x-tabs.tab id="ocean-explorer">
+						<h3>Ocean Explorer</h3>
+						<p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).</p>
+						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur consequuntur ea ratione sequi? Aperiam asperiores beatae debitis doloribus dolorum earum eveniet excepturi exercitationem ipsum nisi perspiciatis, praesentium provident qui vitae.</p>
+					</x-tabs.tab>
+				</x-tabs.content>
+			</x-tabs>
+		</x-section>
+	</x-component-demo>
+
 	<x-component-demo :keys="[ 'icon-info-columns' ]">
 		<x-section title="Why Quark Expeditions?" :background="true">
 			<x-icon-info-columns>
