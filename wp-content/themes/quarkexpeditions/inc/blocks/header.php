@@ -208,7 +208,7 @@ function extract_menu_list_items( array $blocks = [] ): array {
 	$items = [];
 
 	// Check if the first blocks is an array.
-	if ( empty( $blocks[0] && ! is_array( $blocks[0] ) ) ) {
+	if ( empty( $blocks[0] ) || ! is_array( $blocks[0] ) ) {
 		return [];
 	}
 
