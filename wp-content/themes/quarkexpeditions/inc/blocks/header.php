@@ -89,6 +89,12 @@ function render( ?string $content = null, array $block = [] ): null|string {
 											'type' => 'slot',
 											'slot' => implode( '', array_map( 'render_block', $content_column['innerBlocks'] ) ),
 										];
+
+										// Get the menu items data.
+										$mega_menu_item_attributes['contents'][] = [
+											'type'  => 'menu-items',
+											'items' => extract_menu_list_items( $content_column['innerBlocks'] ),
+										];
 									}
 								}
 							}
@@ -109,7 +115,7 @@ function render( ?string $content = null, array $block = [] ): null|string {
 						// Add title.
 						$secondary_menu_item_attributes['title'] = $secondary_menu_item['attrs']['title'] ?? '';
 						$secondary_menu_item_attributes['icon']  = ! empty( $secondary_menu_item['attrs']['hasIcon'] ) ? 'search' : '';
-						$secondary_menu_item_attributes['url']   = ! empty( $secondary_menu_item['attrs']['hasUrl'] ) ? $secondary_menu_item['attrs']['url']['url'] : '';
+						$secondary_menu_item_attributes['url']   = $secondary_menu_item['attrs']['url']['url'] ?? '';
 
 						// Check if the menu item has dropdown content.
 						if ( ! empty( $secondary_menu_item['innerBlocks'] ) ) {
@@ -146,7 +152,36 @@ function render( ?string $content = null, array $block = [] ): null|string {
 			// CTA Buttons block.
 			case 'quark/header-cta-buttons':
 				if ( ! empty( $nav_inner_block['innerBlocks'] ) ) {
-					$attributes['cta_buttons']['slot'] = implode( '', array_map( 'render_block', $nav_inner_block['innerBlocks'] ) );
+					foreach ( $nav_inner_block['innerBlocks'] as $cta_button_item ) {
+						$current_cta_button = [];
+
+						// Contact Button.
+						if ( 'quark/contact-button' === $cta_button_item['blockName'] ) {
+							$current_cta_button = [
+								'type'       => 'contact',
+								'class'      => 'header__phone-btn',
+								'text'       => $cta_button_item['attrs']['btnText'] ?? '',
+								'url'        => $cta_button_item['attrs']['url']['url'] ?? '',
+								'appearance' => $cta_button_item['appearance'] ?? 'outline',
+								'color'      => $cta_button_item['attrs']['backgroundColor'] ?? 'black',
+							];
+
+							// Add to cta buttons.
+							$attributes['cta_buttons'][] = $current_cta_button;
+						} elseif ( 'quark/raq-button' === $cta_button_item['blockName'] ) {
+							$current_cta_button = [
+								'type'       => 'raq',
+								'class'      => 'header__request-quote-btn',
+								'text'       => $cta_button_item['attrs']['btnText'] ?? '',
+								'url'        => $cta_button_item['attrs']['url']['url'] ?? '',
+								'appearance' => $cta_button_item['appearance'] ?? '',
+								'color'      => $cta_button_item['attrs']['backgroundColor'] ?? '',
+							];
+
+							// Add to cta buttons.
+							$attributes['cta_buttons'][] = $current_cta_button;
+						}
+					}
 				}
 				break;
 		}
@@ -154,4 +189,87 @@ function render( ?string $content = null, array $block = [] ): null|string {
 
 	// Return rendered component.
 	return quark_get_component( COMPONENT, $attributes );
+}
+
+/**
+ * Extract list items from blocks.
+ *
+ * @param mixed[] $blocks Blocks.
+ *
+ * @return mixed[]
+ */
+function extract_menu_list_items( array $blocks = [] ): array {
+	// Check if blocks exist.
+	if ( empty( $blocks ) ) {
+		return [];
+	}
+
+	// Initialize items.
+	$items = [];
+
+	// Check if the first blocks is an array.
+	if ( empty( $blocks[0] && ! is_array( $blocks[0] ) ) ) {
+		return [];
+	}
+
+	// Loop through the two columns block innerblocks.
+	if ( 'quark/two-columns' === $blocks[0]['blockName'] && ! empty( $blocks[0]['innerBlocks'] ) ) {
+		foreach ( $blocks[0]['innerBlocks'] as $column ) {
+			if ( 'quark/two-columns-column' === $column['blockName'] && ! empty( $column['innerBlocks'] ) ) {
+				// Initialize column items.
+				$column_items = [];
+
+				// Loop through columns.
+				foreach ( $column['innerBlocks'] as $inner_block ) {
+					// Loop through items in the column.
+					if ( 'quark/menu-list' === $inner_block['blockName'] && ! empty( $inner_block['innerBlocks'] ) ) {
+						// Initialize menu list items.
+						$menu_list_items = [];
+
+						// Get the title of the menu list.
+						$menu_list_items['title'] = $inner_block['attrs']['title'] ?? '';
+
+						// Loop through menu list items.
+						foreach ( $inner_block['innerBlocks'] as $menu_list_item ) {
+							if ( 'quark/menu-list-item' === $menu_list_item['blockName'] ) {
+								$list_item_attrs = [
+									'title' => $menu_list_item['attrs']['title'] ?? '',
+									'url'   => $menu_list_item['attrs']['url']['url'] ?? '',
+								];
+
+								// Add to the menu list items.
+								$menu_list_items['items'][] = $list_item_attrs;
+							}
+
+							// Add to column items.
+							$column_items['menu_list_items'] = $menu_list_items;
+						}
+					} elseif ( 'quark/thumbnail-cards' === $inner_block['blockName'] && ! empty( $inner_block['innerBlocks'] ) ) {
+						// Initialize menu list items.
+						$thumbnail_card_items = [];
+
+						// Loop through the items.
+						foreach ( $inner_block['innerBlocks'] as $thumbnail_card ) {
+							$thumbnail_card_item = [
+								'title' => $thumbnail_card['attrs']['title'] ?? '',
+								'url'   => $thumbnail_card['attrs']['url']['url'] ?? '',
+							];
+
+							// Add to thumbnail card items.
+							$thumbnail_card_items[] = $thumbnail_card_item;
+						}
+
+						// Add to column items.
+						$column_items['thumbnail_card_items'] = $thumbnail_card_items;
+					}
+				}
+
+				// Add column items to all items.
+				$items[] = $column_items;
+			}
+		}
+	}
+
+	// Return extracted items.
+	return $items;
 }

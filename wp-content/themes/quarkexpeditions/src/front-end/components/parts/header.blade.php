@@ -53,9 +53,33 @@
 			@endforeach
 		</x-header.secondary-nav>
 	@endif
-	@if ( ! empty( $cta_buttons['slot'] ) )
+	@if ( ! empty( $cta_buttons ) )
 		<x-header.cta-buttons>
-			{!! $cta_buttons['slot'] !!}
+			@foreach ( $cta_buttons as $cta_button )
+				@if ( 'contact' === $cta_button['type'] )
+					<x-button
+						class="{{ $cta_button['class'] ?? '' }}"
+						href="{{ $cta_button['url'] ?? '' }}"
+						size="big"
+						:color="$cta_button['color'] ?? ''"
+						:appearance="$cta_button['appearance'] ?? ''"
+					>
+						<x-svg name="phone" />
+						{!! $cta_button['text'] !!}
+					</x-button>
+
+				@elseif( 'raq' === $cta_button['type'] )
+					<x-button
+						class="{{ $cta_button['class'] ?? '' }}"
+						href="{{ $cta_button['url'] ?? '' }}"
+						size="big"
+						:color="$cta_button['color'] ?? ''"
+						:appearance="$cta_button['appearance'] ?? ''"
+					>
+						{!! $cta_button['text'] !!}
+					</x-button>
+				@endif
+			@endforeach
 		</x-header.cta-buttons>
 	@endif
 
@@ -70,7 +94,6 @@
 			<x-header.site-logo />
 		</x-drawer.header>
 
-		{{-- TODO: Update drawer body components. --}}
 		<x-drawer.body>
 			@if ( ! empty( $primary_nav['items'] ) )
 			<x-accordion>
@@ -79,19 +102,46 @@
 						<x-accordion.item-handle :title="$item['title'] ?? ''" />
 						@if ( ! empty( $item['contents'] ) )
 							<x-accordion.item-content>
+								{{-- Loop through all content items in menu dropdown --}}
 								@foreach ( $item['contents'] as $content_item )
+									{{-- Featured Section. --}}
 									@if ( 'featured-section' === $content_item['type'] )
-										<x-header.nav-item-featured :image_id="$content_item['image_id'] ?? 0">
+										<x-header.nav-item-featured
+											:image_id="$content_item['image_id'] ?? 0"
+											url="{{ $content_item['url'] ?? '' }}"
+											size="small"
+										>
 											<x-header.nav-item-featured-title :title="$content_item['title'] ?? ''" />
-											<x-header.nav-item-featured-subtitle :subtitle="$content_item['subtitle'] ?? ''" />
-											<x-button href="{{ $content_item['url'] ?? '' }}" size="big">
-												{!! $content_item['cta_text'] ?? '' !!}
-											</x-button>
 										</x-header.nav-item-featured>
-									@elseif ( 'slot' === $content_item['type'] )
-										<x-header.nav-item-dropdown-content-column>
-											{!! $content_item['slot'] ?? '' !!}
-										</x-header.nav-item-dropdown-content-column>
+									@elseif ( 'menu-items' === $content_item['type'] )
+										{{-- Loop thorugh menu list items for each column --}}
+										@foreach ( $content_item['items'] as $column_items )
+											{{-- Menu List Items. --}}
+											@if ( ! empty( $column_items['menu_list_items'] ) )
+												<x-menu-list :title="$column_items['menu_list_items']['title'] ?? ''">
+													@foreach ( $column_items['menu_list_items']['items'] as $menu_list_item)
+														{{-- Loop through inner menu list items --}}
+														<x-menu-list.item
+															:title="$menu_list_item['title'] ?? ''"
+															:url="$menu_list_item['url'] ?? ''"
+														/>
+													@endforeach
+												</x-menu-list>
+											@endif
+
+											{{-- Thumbnail Card Link Items --}}
+											@if ( ! empty( $column_items['thumbnail_card_items'] ) )
+												<x-menu-list>
+													@foreach ( $column_items['thumbnail_card_items'] as $thumbnail_item )
+														<x-menu-list.item
+															:title="$thumbnail_item['title'] ?? ''"
+															:url="$thumbnail_item['url'] ?? ''"
+															class="header__drawer-thumbnail-card-link"
+														/>
+													@endforeach
+												</x-menu-list>
+											@endif
+										@endforeach
 									@endif
 								@endforeach
 							</x-accordion.item-content>
@@ -100,40 +150,47 @@
 					@endforeach
 				</x-accordion>
 			@endif
-			<x-accordion title="Quark Expeditions takes you places no one else can!">
-				<x-accordion.item>
-					<x-accordion.item-handle title="Destinations" />
-					<x-accordion.item-content>
-						<x-header.nav-item-featured image_id="32" size="small">
-							<x-header.nav-item-featured-title title="Explore Polar Regions" />
-							<x-header.nav-item-featured-subtitle subtitle="Incididunt ut labore et dolore magna aliqua." />
-							<x-button size="big">Explore Polar Regions</x-button>
-						</x-header.nav-item-featured>
 
-						<x-menu-list title="Antarctic Regions">
-							<x-menu-list.item title="Antarctic Peninsula" url="#" />
-							<x-menu-list.item title="Falkland Islands" url="#" />
-							<x-menu-list.item title="Patagonia" url="#" />
-							<x-menu-list.item title="South Georgia" url="#" />
-							<x-menu-list.item title="Snow Hill Island" url="#" />
-						</x-menu-list>
+			{{-- Secondary Nav Quick Links. --}}
+			@if ( ! empty( $secondary_nav['items'] ) )
+				<ul class="header__drawer-quick-links">
+					@foreach ( $secondary_nav['items'] as $nav_item )
+						@if ( ! empty( $nav_item['url'] ) )
+							<li>
+								<a href="{{ $nav_item['url'] ?? '' }}">{!! $nav_item['title'] ?? '' !!}</a>
+							</li>
+						@endif
+					@endforeach
 
-						<x-menu-list title="Arctic Regions">
-							<x-menu-list.item title="Canadian High Arctic" url="#" />
-							<x-menu-list.item title="Greenland" url="#" />
-							<x-menu-list.item title="Svalbard" url="#" />
-						</x-menu-list>
-					</x-accordion.item-content>
-				</x-accordion.item>
-			</x-accordion>
+					{{-- CTA Buttons. --}}
+					@if ( ! empty( $cta_buttons ) )
+						@foreach ( $cta_buttons as $button )
+							@if ( 'contact' === $button['type'] )
+								<li>
+									<a href="{{ $button['url'] ?? '' }}">
+										{{ __( "Call Now to Book : ", 'qrk' ) }}
+										{!! $button['text'] ?? '' !!}
+									</a>
+								</li>
+							@endif
+						@endforeach
+					@endif
+				</ul>
+			@endif
 
-			<ul class="header__drawer-quick-links">
-				<li><a href="#">Dates & Rates</a></li>
-				<li><a href="#">Travel Advisors</a></li>
-				<li><a href="tel:+1-877-585-1235">Call Now to Book : +1 (866) 253-3145</a></li>
-			</ul>
-
-			<x-button class="header__drawer-request-quote-btn" size="big">Request a Quote</x-button>
+			@if ( ! empty( $cta_buttons ) )
+				@foreach ( $cta_buttons as $button )
+					@if ( 'raq' === $button['type'] )
+						<x-button
+							:href="$button['url'] ?? ''"
+							class="header__drawer-request-quote-btn"
+							size="big"
+						>
+							{!! $button['text'] ?? '' !!}
+						</x-button>
+					@endif
+				@endforeach
+			@endif
 		</x-drawer.body>
 	</x-drawer>
 </x-header>

@@ -46,12 +46,13 @@ export const name: string = 'quark/secondary-menu-item';
  */
 export const settings: BlockConfiguration = {
 	apiVersion: 2,
-	title: __( 'Header Menu Item', 'qrk' ),
-	description: __( 'Individual Menu Item for Header', 'qrk' ),
+	title: __( 'Secondary Nav Menu Item', 'qrk' ),
+	description: __( 'Individual Secondary Nav Menu Item for Header', 'qrk' ),
 	parent: [ 'quark/secondary-nav' ],
 	icon: 'screenoptions',
 	category: 'layout',
 	keywords: [
+		__( 'secondary', 'qrk' ),
 		__( 'menu', 'qrk' ),
 		__( 'item', 'qrk' ),
 	],

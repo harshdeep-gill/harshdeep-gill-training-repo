@@ -95,6 +95,15 @@
 				text-decoration: underline;
 			}
 		}
+
+		a[href^="tel:"] {
+			text-decoration: underline;
+			text-decoration-color: var(--color-black);
+
+			&:hover {
+				text-decoration-color: var(--color-yellow);
+			}
+		}
 	}
 
 	&__drawer-request-quote-btn {
