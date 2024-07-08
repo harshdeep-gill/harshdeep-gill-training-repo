@@ -15,9 +15,13 @@ use function Quark\Blog\primary_term_taxonomies;
 use function Quark\Blog\get;
 use function Quark\Blog\layout_single;
 use function Quark\Blog\Authors\get as author_get;
+use function Quark\Blog\get_blog_post_author_info;
+use function Quark\Blog\get_cards_data;
+use function Quark\Blog\breadcrumbs_ancestors;
 
 use const Quark\Blog\POST_TYPE;
 use const Quark\Blog\Authors\POST_TYPE as AUTHOR_POST_TYPE;
+use const Quark\Pages\POST_TYPE as PAGE_POST_TYPE;
 
 /**
  * Class Test_Blog.
@@ -301,14 +305,14 @@ class Test_Blog extends WP_UnitTestCase {
 	 *
 	 * @return void
 	 */
-	public function test_breadcrumbs_ancestors() {
+	public function test_breadcrumbs_ancestors(): void {
 		// Create post.
 		$post_1 = $this->factory()->post->create_and_get(
 			[
 				'post_title'   => 'Test Post',
 				'post_content' => 'Post content',
 				'post_status'  => 'publish',
-				'post_type'    => \Quark\Blog\POST_TYPE,
+				'post_type'    => POST_TYPE,
 				'meta_input'   => [
 					'meta_1' => 'value_1',
 					'meta_2' => 'value_2',
@@ -339,10 +343,10 @@ class Test_Blog extends WP_UnitTestCase {
 		WP_UnitTestCase::go_to( strval( get_permalink( $post_1->ID ) ) );
 
 		// Mock is_singular function.
-		$this->assertTrue( is_singular( \Quark\Blog\POST_TYPE ) );
+		$this->assertTrue( is_singular( POST_TYPE ) );
 
 		// Test getting post breadcrumbs.
-		$breadcrumbs = \Quark\Blog\breadcrumbs_ancestors( [] );
+		$breadcrumbs = breadcrumbs_ancestors( [] );
 
 		// Assert expected breadcrumbs is equal to actual breadcrumbs.
 		$this->assertEquals(
@@ -361,7 +365,7 @@ class Test_Blog extends WP_UnitTestCase {
 				'post_title'   => 'Blog',
 				'post_content' => 'Page content',
 				'post_status'  => 'publish',
-				'post_type'    => \Quark\Pages\POST_TYPE,
+				'post_type'    => PAGE_POST_TYPE,
 			]
 		);
 
@@ -372,7 +376,7 @@ class Test_Blog extends WP_UnitTestCase {
 		\update_option( 'page_for_posts', $page_1->ID );
 
 		// Test getting post breadcrumbs.
-		$breadcrumbs = \Quark\Blog\breadcrumbs_ancestors( [] );
+		$breadcrumbs = breadcrumbs_ancestors( [] );
 
 		// Assert expected breadcrumbs is equal to actual breadcrumbs.
 		$this->assertEquals(
@@ -480,7 +484,7 @@ class Test_Blog extends WP_UnitTestCase {
 
 		// Test 1: get post card data by passing single post id.
 		wp_cache_flush();
-		$post_data = \Quark\Blog\get_cards_data( [ $post_1->ID ] );
+		$post_data = get_cards_data( [ $post_1->ID ] );
 
 		// Assert expected cards data with actual.
 		$this->assertEquals(
@@ -525,7 +529,7 @@ class Test_Blog extends WP_UnitTestCase {
 
 		// Test 2: get post cards data by passing multiple post ids.
 		wp_cache_flush();
-		$post_data = \Quark\Blog\get_cards_data(
+		$post_data = get_cards_data(
 			[
 				$post_1->ID,
 				$post_2->ID,
@@ -609,7 +613,7 @@ class Test_Blog extends WP_UnitTestCase {
 
 		// Test 3: pass empty array.
 		wp_cache_flush();
-		$post_data = \Quark\Blog\get_cards_data( [] );
+		$post_data = get_cards_data( [] );
 
 		// Assert that returned data is empty.
 		$this->assertEmpty( $post_data );
@@ -678,7 +682,7 @@ class Test_Blog extends WP_UnitTestCase {
 		$this->assertTrue( is_singular( POST_TYPE ) );
 
 		// Test getting author info.
-		$author_info = \Quark\Blog\get_blog_post_author_info();
+		$author_info = get_blog_post_author_info();
 
 		// Assert expected author info with actual.
 		$this->assertEquals(
