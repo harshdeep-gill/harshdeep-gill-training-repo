@@ -1,0 +1,36 @@
+{
+	"schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Hero",
+	"name": "quark/hero",
+	"description": "Display a hero block.",
+	"category": "layout",
+	"keywords": [
+		"hero"
+	],
+	"textdomain": "qrk",
+	"attributes": {
+		"image": {
+			"type": "object"
+		},
+		"isImmersive": {
+			"type": "boolean",
+			"default": false
+		},
+		"textAlign": {
+			"type": "string",
+			"default": ""
+		},
+		"overlayOpacity": {
+			"type": "number",
+			"default": 0
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}
