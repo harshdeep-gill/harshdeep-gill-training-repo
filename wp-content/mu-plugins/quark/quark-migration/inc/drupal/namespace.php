@@ -13,10 +13,9 @@ use WP_Post;
 use WP_Query;
 use WP_Term_Query;
 use WP_Term;
+use WP_CLI;
 
 use function Quark\Migration\WordPress\convert_to_blocks;
-
-use const Quark\Brochures\POST_TYPE as BROCHURE_POST_TYPE;
 
 /**
  * Get the Drupal database object.
@@ -72,6 +71,42 @@ function prepare_for_migration(): void {
 }
 
 /**
+ * Download file by Drupal fid (file ID).
+ *
+ * @param int $drupal_fid Drupal file ID.
+ *
+ * @return int|WP_Error WordPress's attachment ID on success otherwise error.
+ */
+function download_file_by_fid( int $drupal_fid = 0 ): int|WP_Error {
+	// Check the Drupal fid.
+	if ( empty( $drupal_fid ) ) {
+		return 0;
+	}
+
+	// Drupal database instance.
+	$drupal_db = get_database();
+
+	// Build and execute query.
+	$file_data = $drupal_db->get_row(
+		strval(
+			$drupal_db->prepare(
+				'SELECT * FROM file_managed WHERE file_managed.fid=%d',
+				absint( $drupal_fid )
+			)
+		),
+		ARRAY_A
+	);
+
+	// If not data found then bail out.
+	if ( empty( $file_data ) || ! is_array( $file_data ) ) {
+		return 0;
+	}
+
+	// Download the file and send attachment ID.
+	return download_file( $file_data );
+}
+
+/**
  * Download file by Drupal mid (Media ID).
  *
  * @param int $drupal_mid Drupal media ID.
@@ -102,49 +137,6 @@ function download_file_by_mid( int $drupal_mid = 0 ): int|WP_Error {
 					media_field_data.mid=%d
 			',
 				absint( $drupal_mid )
-			)
-		),
-		ARRAY_A
-	);
-
-	// If not data found then bail out.
-	if ( empty( $file_data ) || ! is_array( $file_data ) ) {
-		return 0;
-	}
-
-	// Download the file and send attachment ID.
-	return download_file( $file_data );
-}
-
-/**
- * Download file by Drupal fid (File ID).
- *
- * @param int $drupal_fid Drupal file ID.
- *
- * @return int|WP_Error WordPress's attachment ID on success otherwise error.
- */
-function download_file_by_fid( int $drupal_fid = 0 ): int|WP_Error {
-	// Check the Drupal fid.
-	if ( empty( $drupal_fid ) ) {
-		return 0;
-	}
-
-	// Drupal database instance.
-	$drupal_db = get_database();
-
-	// Build and execute query.
-	$file_data = $drupal_db->get_row(
-		strval(
-			$drupal_db->prepare(
-				'
-				SELECT
-					*
-				FROM
-					file_managed
-				WHERE
-					fid=%d
-			',
-				absint( $drupal_fid )
 			)
 		),
 		ARRAY_A
@@ -208,136 +200,6 @@ function download_file_by_url( string $url = '' ): int|WP_Error {
 }
 
 /**
- * Get WordPress attachment ID by Drupal MID.
- *
- * @param int $drupal_mid Drupal MID.
- *
- * @return int WordPress's attachment ID on success otherwise 0.
- */
-function get_wp_attachment_id_by_mid( int $drupal_mid = 0 ): int {
-	// Global $wpdb instance.
-	global $wpdb;
-
-	// Check whether MID is provided or not.
-	if ( empty( $drupal_mid ) ) {
-		return 0;
-	}
-
-	// Get attachment ID.
-	$attachment = $wpdb->get_row(
-		$wpdb->prepare(
-			"
-				SELECT
-					postmeta_mid.meta_value AS drupal_image_id,
-					$wpdb->posts.ID AS id
-				FROM
-					$wpdb->posts
-				INNER JOIN $wpdb->postmeta AS `postmeta_mid`
-					ON $wpdb->posts.ID = postmeta_mid.post_id
-				WHERE
-					$wpdb->posts.post_type = 'attachment'
-					AND $wpdb->posts.post_status = 'inherit'
-					AND ( postmeta_mid.meta_key = 'drupal_mid' AND postmeta_mid.meta_value = %d )
-				",
-			[
-				$drupal_mid,
-			]
-		),
-		ARRAY_A
-	);
-
-	// If attachment ID found then send it.
-	if ( ! empty( $attachment['id'] ) ) {
-		return absint( $attachment['id'] );
-	}
-
-	// If attachment ID not found then return 0.
-	return 0;
-}
-
-/**
- * Get WordPress Brochure ID by Drupal MID.
- *
- * @param int $drupal_mid Drupal MID.
- *
- * @return WP_Post|false WordPress's Brochure post on success otherwise false.
- */
-function get_wp_brochure_id_by_mid( int $drupal_mid = 0 ): WP_Post|false {
-	// Prepare arguments.
-	$arguments = [
-		'post_type'     => BROCHURE_POST_TYPE,
-		'meta_key'      => 'drupal_mid',
-		'meta_value'    => $drupal_mid,
-		'post_status'   => 'any',
-		'post_per_page' => 1,
-	];
-
-	// Query post.
-	$posts = new WP_Query( $arguments );
-
-	// If no post found then bail out.
-	if ( empty( $posts->posts ) ) {
-		return false;
-	}
-
-	// If not instance of WP_Post then bail out.
-	if ( ! $posts->posts[0] instanceof WP_Post ) {
-		return false;
-	}
-
-	// Return post.
-	return $posts->posts[0];
-}
-
-/**
- * Get WordPress attachment ID by Drupal FID.
- *
- * @param int $drupal_fid Drupal FID.
- *
- * @return int WordPress's attachment ID on success otherwise 0.
- */
-function get_wp_attachment_id_by_fid( int $drupal_fid = 0 ): int {
-	// Global $wpdb instance.
-	global $wpdb;
-
-	// Check whether FID is provided or not.
-	if ( empty( $drupal_fid ) ) {
-		return 0;
-	}
-
-	// Get attachment ID.
-	$attachment = $wpdb->get_row(
-		$wpdb->prepare(
-			"
-					SELECT
-						postmeta_fid.meta_value AS drupal_image_id,
-						$wpdb->posts.ID AS id
-					FROM
-						$wpdb->posts
-					INNER JOIN $wpdb->postmeta AS `postmeta_fid`
-						ON $wpdb->posts.ID = postmeta_fid.post_id
-					WHERE
-						$wpdb->posts.post_type = 'attachment'
-						AND $wpdb->posts.post_status = 'inherit'
-						AND ( postmeta_fid.meta_key = 'drupal_fid' AND postmeta_fid.meta_value = %d )
-					",
-			[
-				$drupal_fid,
-			]
-		),
-		ARRAY_A
-	);
-
-	// If attachment ID found then send it.
-	if ( ! empty( $attachment['id'] ) ) {
-		return absint( $attachment['id'] );
-	}
-
-	// If attachment ID not found then return 0.
-	return 0;
-}
-
-/**
  * Get WordPress attachment ID by Drupal media path.
  *
  * @param string $drupal_path Drupal media (relative) path.
@@ -395,12 +257,12 @@ function download_file( array $file_data = [] ): int|WP_Error {
 	$drupal_mid = absint( $file_data['mid'] ?? 0 );
 	$bundle     = $file_data['bundle'] ?? 'image';
 
-	// Get existing attachment ID if exists.
-	$wp_attachment_id = get_wp_attachment_id_by_fid( drupal_fid: $drupal_fid );
+	// Get attachment if exists.
+	$wp_attachment = get_post_by_id( drupal_id: $drupal_fid, post_type: 'attachment', meta_key: 'drupal_fid' );
 
-	// If Attachment ID already exists then bail out.
-	if ( ! empty( $wp_attachment_id ) ) {
-		return $wp_attachment_id;
+	// If Attachment already exists then bail out.
+	if ( ! empty( $wp_attachment ) ) {
+		return $wp_attachment->ID;
 	}
 
 	// if uri starts with private:// then bail out.
@@ -428,6 +290,33 @@ function download_file( array $file_data = [] ): int|WP_Error {
 		$tmp  = '/tmp/' . wp_generate_password( 12, false ) . '.' . ( $info['extension'] ?? '' );
 		copy( $path, $tmp );
 	} else {
+		// decode special characters.
+		$special_chars = [
+			':'  => '%3A',
+			'?'  => '%3F',
+			'='  => '%3D',
+			'&'  => '%26',
+			'%'  => '%25',
+			'#'  => '%23',
+			'+'  => '%2B',
+			'@'  => '%40',
+			'$'  => '%24',
+			','  => '%2C',
+			';'  => '%3B',
+			'['  => '%5B',
+			']'  => '%5D',
+			'{'  => '%7B',
+			'}'  => '%7D',
+			'|'  => '%7C',
+			'\\' => '%5C',
+			'"'  => '%22',
+			"'"  => '%27',
+			'`'  => '%60',
+			' '  => '%20',
+		];
+		$file_name     = strtr( $file_name, $special_chars );
+
+		// Download the file.
 		$tmp = download_url( 'https://www.quarkexpeditions.com/sites/default/files/' . $file_name );
 
 		// If Failed to download media file then bail out.
@@ -606,14 +495,15 @@ function get_term_by_id( int $drupal_id = 0, string $taxonomy = '' ): false|WP_T
  *
  * @param int    $drupal_id Drupal ID.
  * @param string $post_type WordPress post type.
+ * @param string $meta_key  Meta key to search for Drupal ID.
  *
  * @return WP_Post|false
  */
-function get_post_by_id( int $drupal_id = 0, string $post_type = 'post' ): WP_Post|false {
+function get_post_by_id( int $drupal_id = 0, string $post_type = 'post', string $meta_key = 'drupal_id' ): WP_Post|false {
 	// Prepare arguments.
 	$arguments = [
 		'post_type'     => $post_type,
-		'meta_key'      => 'drupal_id',
+		'meta_key'      => $meta_key,
 		'meta_value'    => $drupal_id,
 		'post_status'   => 'any',
 		'post_per_page' => 1,
@@ -654,7 +544,9 @@ function prepare_content( string $content = '' ): string {
 
 /**
  * Transform a drupal media tag into IMG tags.
- *  i.e. - <drupal-media data-entity-type="media" alt="alternate text" data-entity-uuid="b3a11cbc-53a9-419d-b9b5-2497ac0ba2ba" data-align="center" data-caption="caption text">.
+ *  i.e. - <drupal-media data-entity-type="media" alt="alternate text"
+ *  data-entity-uuid="b3a11cbc-53a9-419d-b9b5-2497ac0ba2ba" data-align="center"
+ *  data-caption="caption text">.
  *
  * @param string $content Input string.
  *
@@ -684,7 +576,7 @@ function transform_drupal_media_tags( string $content = '' ): string {
 
 		// Get Drupal media based on UUID.
 		$drupal_db = get_database();
-		$media     = $drupal_db->get_row(
+		$media     = (array) $drupal_db->get_row(
 			strval(
 				$drupal_db->prepare(
 					'
@@ -826,4 +718,74 @@ function transform_image_tags( string $content = '' ): string {
 
 	// Return output.
 	return $content;
+}
+
+/**
+ * Prepare SEO data for migration.
+ *
+ * @param mixed $seo_meta_data SEO meta data from drupal.
+ *
+ * @return array{}|array<string, string>
+ */
+function prepare_seo_data( mixed $seo_meta_data = [] ): array {
+	// SEO data.
+	$seo_data = [];
+
+	// Check if data is array.
+	if ( is_array( $seo_meta_data ) ) {
+		$search_for   = [
+			'[node:title]',
+			'→',
+			'|',
+			'[site:name]',
+			'[current-page:page-number]',
+			'[current-page:pager]',
+		];
+		$replace_with = [
+			'%%title%%',
+			'%%sep%%',
+			'%%sep%%',
+			'%%sitename%%',
+			'%%page%%',
+			'',
+		];
+
+		// Process seo meta title for WP SEO plugin.
+		if ( ! empty( $seo_meta_data['title'] ) ) {
+			$seo_data['_yoast_wpseo_title'] = str_replace(
+				$search_for,
+				$replace_with,
+				trim( $seo_meta_data['title'] )
+			);
+		}
+
+		// Process seo meta description for WP SEO plugin.
+		if ( ! empty( $seo_meta_data['description'] ) ) {
+			$seo_data['_yoast_wpseo_metadesc'] = str_replace(
+				$search_for,
+				$replace_with,
+				trim( $seo_meta_data['description'] )
+			);
+		}
+
+		// Process SEO robots tags for WP SEO plugin.
+		if ( ! empty( $seo_meta_data['robots'] ) && is_string( $seo_meta_data['robots'] ) ) {
+			// Convert to array.
+			$robots = array_map( 'trim', explode( ',', $seo_meta_data['robots'] ) );
+
+			// Process each robots tag, remove if it's not starts with "no".
+			$robots = array_filter(
+				$robots,
+				function ( $tag ) {
+					return str_starts_with( $tag, 'no' );
+				}
+			);
+
+			// Set robots tags.
+			$seo_data['_yoast_wpseo_meta-robots-adv'] = implode( ',', $robots );
+		}
+	}
+
+	// Return SEO data.
+	return $seo_data;
 }

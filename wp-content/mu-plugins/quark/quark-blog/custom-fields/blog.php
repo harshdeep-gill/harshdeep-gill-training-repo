@@ -29,7 +29,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 						'id'    => '',
 					],
 					'post_type'            => [
-						0 => 'qrk_blog_authors',
+						0 => 'qrk_blog_author',
 					],
 					'post_status'          => '',
 					'taxonomy'             => '',

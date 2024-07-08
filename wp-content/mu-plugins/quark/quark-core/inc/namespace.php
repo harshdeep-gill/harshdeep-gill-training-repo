@@ -10,6 +10,7 @@ namespace Quark\Core;
 use JB\Cloudinary\Core as Cloudinary_Core;
 use JB\Cloudinary\Frontend as Cloudinary_Frontend;
 use WP_Post;
+use WP_User;
 
 use function Travelopia\Core\cached_nav_menu;
 
@@ -36,6 +37,7 @@ function bootstrap(): void {
 
 	// Filter for Attachments.
 	add_filter( 'add_attachment', __NAMESPACE__ . '\\update_svg_content', 10, 4 );
+	add_filter( 'upload_mimes', __NAMESPACE__ . '\\allow_mime_types' );
 
 	// Custom fields.
 	if ( is_admin() ) {
@@ -347,4 +349,19 @@ function update_svg_content( int $post_id = 0 ): void {
 
 	// Update SVG content.
 	update_post_meta( $post_id, 'svg_content', wp_kses_post( $content ) );
+}
+
+/**
+ * Allow mime type.
+ *
+ * @param array{}|array<string, string> $mime_types Mime types.
+ *
+ * @return array{} Mime types.
+ */
+function allow_mime_types( array $mime_types = [] ): array {
+	// Adding svg extension.
+	$mime_types['svg'] = 'image/svg+xml';
+
+	// Return mime types.
+	return $mime_types;
 }

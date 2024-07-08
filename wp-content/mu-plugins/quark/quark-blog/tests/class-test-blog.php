@@ -11,10 +11,17 @@ use WP_Post;
 use WP_Term;
 use WP_UnitTestCase;
 
-use function Quark\Blog\Authors\get;
+use function Quark\Blog\primary_term_taxonomies;
+use function Quark\Blog\get;
+use function Quark\Blog\layout_single;
+use function Quark\Blog\Authors\get as author_get;
+use function Quark\Blog\get_blog_post_author_info;
+use function Quark\Blog\get_cards_data;
+use function Quark\Blog\breadcrumbs_ancestors;
 
 use const Quark\Blog\POST_TYPE;
 use const Quark\Blog\Authors\POST_TYPE as AUTHOR_POST_TYPE;
+use const Quark\Pages\POST_TYPE as PAGE_POST_TYPE;
 
 /**
  * Class Test_Blog.
@@ -45,7 +52,7 @@ class Test_Blog extends WP_UnitTestCase {
 		// No post.
 		$this->assertEquals(
 			[],
-			\Quark\Blog\layout_single()
+			layout_single()
 		);
 
 		// Create post.
@@ -54,7 +61,7 @@ class Test_Blog extends WP_UnitTestCase {
 				'post_title'   => 'Test Post',
 				'post_content' => 'Post content',
 				'post_status'  => 'publish',
-				'post_type'    => \Quark\Blog\POST_TYPE,
+				'post_type'    => POST_TYPE,
 				'meta_input'   => [
 					'meta_1' => 'value_1',
 					'meta_2' => 'value_2',
@@ -94,7 +101,7 @@ class Test_Blog extends WP_UnitTestCase {
 		$post = $post_1; // phpcs:ignore
 
 		// Test with post.
-		$layout = \Quark\Blog\layout_single();
+		$layout = layout_single();
 
 		// Assert expected layout is equal to actual layout.
 		$this->assertEquals(
@@ -106,8 +113,9 @@ class Test_Blog extends WP_UnitTestCase {
 					'post_thumbnail'  => 0,
 					'post_content'    => 'Post content',
 					'post_meta'       => [
-						'meta_1' => 'value_1',
-						'meta_2' => 'value_2',
+						'meta_1'            => 'value_1',
+						'meta_2'            => 'value_2',
+						'read_time_minutes' => 1,
 					],
 					'post_taxonomies' => [
 						'category' => [
@@ -172,7 +180,7 @@ class Test_Blog extends WP_UnitTestCase {
 				'post_title'   => 'Test Post',
 				'post_content' => 'Post content',
 				'post_status'  => 'publish',
-				'post_type'    => \Quark\Blog\POST_TYPE,
+				'post_type'    => POST_TYPE,
 				'meta_input'   => [
 					'meta_1' => 'value_1',
 					'meta_2' => 'value_2',
@@ -208,7 +216,7 @@ class Test_Blog extends WP_UnitTestCase {
 		wp_set_object_terms( $post_1->ID, $post_tag_term->term_id, 'post_tag' );
 
 		// Test getting post.
-		$the_post = \Quark\Blog\get( $post_1->ID );
+		$the_post = get( $post_1->ID );
 
 		// Assert expected layout is equal to actual layout.
 		$this->assertEquals(
@@ -217,8 +225,9 @@ class Test_Blog extends WP_UnitTestCase {
 				'permalink'       => 'http://test.quarkexpeditions.com/test-post',
 				'post_thumbnail'  => 0,
 				'post_meta'       => [
-					'meta_1' => 'value_1',
-					'meta_2' => 'value_2',
+					'meta_1'            => 'value_1',
+					'meta_2'            => 'value_2',
+					'read_time_minutes' => 1,
 				],
 				'post_taxonomies' => [
 					'category' => [
@@ -279,13 +288,13 @@ class Test_Blog extends WP_UnitTestCase {
 		// Test without Post type slug.
 		$this->assertEquals(
 			$taxonomies,
-			\Quark\Blog\primary_term_taxonomies( $taxonomies, 'custom_post_type' )
+			primary_term_taxonomies( $taxonomies, 'custom_post_type' )
 		);
 
 		// Test with Post type slug.
 		$this->assertContains(
 			'category',
-			\Quark\Blog\primary_term_taxonomies( $taxonomies, \Quark\Blog\POST_TYPE )
+			primary_term_taxonomies( $taxonomies, POST_TYPE )
 		);
 	}
 
@@ -296,14 +305,14 @@ class Test_Blog extends WP_UnitTestCase {
 	 *
 	 * @return void
 	 */
-	public function test_breadcrumbs_ancestors() {
+	public function test_breadcrumbs_ancestors(): void {
 		// Create post.
 		$post_1 = $this->factory()->post->create_and_get(
 			[
 				'post_title'   => 'Test Post',
 				'post_content' => 'Post content',
 				'post_status'  => 'publish',
-				'post_type'    => \Quark\Blog\POST_TYPE,
+				'post_type'    => POST_TYPE,
 				'meta_input'   => [
 					'meta_1' => 'value_1',
 					'meta_2' => 'value_2',
@@ -334,10 +343,10 @@ class Test_Blog extends WP_UnitTestCase {
 		WP_UnitTestCase::go_to( strval( get_permalink( $post_1->ID ) ) );
 
 		// Mock is_singular function.
-		$this->assertTrue( is_singular( \Quark\Blog\POST_TYPE ) );
+		$this->assertTrue( is_singular( POST_TYPE ) );
 
 		// Test getting post breadcrumbs.
-		$breadcrumbs = \Quark\Blog\breadcrumbs_ancestors( [] );
+		$breadcrumbs = breadcrumbs_ancestors( [] );
 
 		// Assert expected breadcrumbs is equal to actual breadcrumbs.
 		$this->assertEquals(
@@ -356,7 +365,7 @@ class Test_Blog extends WP_UnitTestCase {
 				'post_title'   => 'Blog',
 				'post_content' => 'Page content',
 				'post_status'  => 'publish',
-				'post_type'    => \Quark\Pages\POST_TYPE,
+				'post_type'    => PAGE_POST_TYPE,
 			]
 		);
 
@@ -367,7 +376,7 @@ class Test_Blog extends WP_UnitTestCase {
 		\update_option( 'page_for_posts', $page_1->ID );
 
 		// Test getting post breadcrumbs.
-		$breadcrumbs = \Quark\Blog\breadcrumbs_ancestors( [] );
+		$breadcrumbs = breadcrumbs_ancestors( [] );
 
 		// Assert expected breadcrumbs is equal to actual breadcrumbs.
 		$this->assertEquals(
@@ -407,10 +416,9 @@ class Test_Blog extends WP_UnitTestCase {
 				'post_title'   => 'Test Post 1',
 				'post_content' => 'Post content 1',
 				'post_status'  => 'publish',
-				'post_type'    => \Quark\Blog\POST_TYPE,
+				'post_type'    => POST_TYPE,
 				'meta_input'   => [
-					'read_time_minutes' => 5,
-					'_thumbnail_id'     => 35,
+					'_thumbnail_id' => 35,
 				],
 			]
 		);
@@ -421,10 +429,9 @@ class Test_Blog extends WP_UnitTestCase {
 				'post_title'   => 'Test Post 2',
 				'post_content' => 'Post content 2',
 				'post_status'  => 'publish',
-				'post_type'    => \Quark\Blog\POST_TYPE,
+				'post_type'    => POST_TYPE,
 				'meta_input'   => [
-					'read_time_minutes' => 7,
-					'_thumbnail_id'     => 32,
+					'_thumbnail_id' => 32,
 				],
 			]
 		);
@@ -477,7 +484,7 @@ class Test_Blog extends WP_UnitTestCase {
 
 		// Test 1: get post card data by passing single post id.
 		wp_cache_flush();
-		$post_data = \Quark\Blog\get_cards_data( [ $post_1->ID ] );
+		$post_data = get_cards_data( [ $post_1->ID ] );
 
 		// Assert expected cards data with actual.
 		$this->assertEquals(
@@ -488,9 +495,9 @@ class Test_Blog extends WP_UnitTestCase {
 					'permalink'      => 'http://test.quarkexpeditions.com/test-post-1',
 					'featured_image' => 35,
 					'authors'        => [
-						get( $author_1->ID ),
+						author_get( $author_1->ID ),
 					],
-					'read_time'      => 5,
+					'read_time'      => 1,
 					'taxonomies'     => [
 						'category' => [
 							[
@@ -522,7 +529,7 @@ class Test_Blog extends WP_UnitTestCase {
 
 		// Test 2: get post cards data by passing multiple post ids.
 		wp_cache_flush();
-		$post_data = \Quark\Blog\get_cards_data(
+		$post_data = get_cards_data(
 			[
 				$post_1->ID,
 				$post_2->ID,
@@ -538,9 +545,9 @@ class Test_Blog extends WP_UnitTestCase {
 					'permalink'      => 'http://test.quarkexpeditions.com/test-post-1',
 					'featured_image' => 35,
 					'authors'        => [
-						get( $author_1->ID ),
+						author_get( $author_1->ID ),
 					],
-					'read_time'      => 5,
+					'read_time'      => 1,
 					'taxonomies'     => [
 						'category' => [
 							[
@@ -572,9 +579,9 @@ class Test_Blog extends WP_UnitTestCase {
 					'permalink'      => 'http://test.quarkexpeditions.com/test-post-2',
 					'featured_image' => 32,
 					'authors'        => [
-						get( $author_1->ID ),
+						author_get( $author_1->ID ),
 					],
-					'read_time'      => 7,
+					'read_time'      => 1,
 					'taxonomies'     => [
 						'category' => [
 							[
@@ -606,7 +613,7 @@ class Test_Blog extends WP_UnitTestCase {
 
 		// Test 3: pass empty array.
 		wp_cache_flush();
-		$post_data = \Quark\Blog\get_cards_data( [] );
+		$post_data = get_cards_data( [] );
 
 		// Assert that returned data is empty.
 		$this->assertEmpty( $post_data );
@@ -658,7 +665,7 @@ class Test_Blog extends WP_UnitTestCase {
 				'post_status'  => 'publish',
 				'post_type'    => POST_TYPE,
 				'meta_input'   => [
-					'read_time_minutes' => 5,
+					'read_time_minutes' => 1,
 					'_thumbnail_id'     => 35,
 					'blog_authors'      => [ $author->ID, $author_1->ID ],
 				],
@@ -675,12 +682,12 @@ class Test_Blog extends WP_UnitTestCase {
 		$this->assertTrue( is_singular( POST_TYPE ) );
 
 		// Test getting author info.
-		$author_info = \Quark\Blog\get_blog_post_author_info();
+		$author_info = get_blog_post_author_info();
 
 		// Assert expected author info with actual.
 		$this->assertEquals(
 			[
-				'duration' => 5,
+				'duration' => 1,
 				'authors'  => [
 					0 => [
 						'image_id' => 35,

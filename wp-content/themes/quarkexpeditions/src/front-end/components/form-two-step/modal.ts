@@ -15,8 +15,6 @@ export default class FormTwoStepModal extends HTMLElement {
 	/**
 	 * Properties.
 	 */
-	private readonly countrySelector: HTMLElement | null;
-	private readonly stateSelectors: NodeListOf<HTMLElement> | null;
 	private readonly toastMessage: ToastMessage | null;
 	private readonly tpForm: TPFormElement | null;
 	private readonly quarkForm: HTMLElement | null;
@@ -33,48 +31,14 @@ export default class FormTwoStepModal extends HTMLElement {
 		// Elements.
 		this.quarkForm = this.querySelector( 'quark-form' );
 		this.tpForm = this.querySelector( 'tp-form' );
-		this.countrySelector = this.querySelector( '.form-two-step__country' );
-		this.stateSelectors = this.querySelectorAll( '.form-two-step__state' );
 		this.toastMessage = this.querySelector( 'quark-toast-message' );
 		this.thankYou = this.querySelector( '.form-two-step__thank-you' );
 		this.content = this.querySelector( '.form-two-step__content' );
 
 		// Events.
-		if ( this.stateSelectors ) {
-			this.countrySelector?.querySelector( 'select' )?.addEventListener( 'change', this.changeCountry.bind( this ) );
-		}
 		this.tpForm?.addEventListener( 'validation-error', this.showToastMessage.bind( this ) );
 		this.tpForm?.addEventListener( 'validation-success', this.hideToastMessage.bind( this ) );
 		this.quarkForm?.addEventListener( 'api-success', this.showThankYouMessage.bind( this ) );
-
-		// Trigger change in country.
-		this.changeCountry();
-	}
-
-	/**
-	 * Event: Country changed.
-	 */
-	changeCountry(): void {
-		// Check if we have states.
-		if ( ! this.stateSelectors ) {
-			// No states found, bail early.
-			return;
-		}
-
-		// Get country.
-		const country: string = this.countrySelector?.querySelector( 'select' )?.value ?? '';
-
-		// Show / hide states based on country.
-		this.stateSelectors.forEach( ( state: HTMLElement ): void => {
-			// Check if state's country matches current country.
-			if ( state.getAttribute( 'data-country' ) === country ) {
-				state.setAttribute( 'data-visible', 'true' );
-				state.querySelector( 'select' )?.setAttribute( 'name', state.getAttribute( 'data-name' ) ?? '' );
-			} else {
-				state.removeAttribute( 'data-visible' );
-				state.querySelector( 'select' )?.removeAttribute( 'name' );
-			}
-		} );
 	}
 
 	/**

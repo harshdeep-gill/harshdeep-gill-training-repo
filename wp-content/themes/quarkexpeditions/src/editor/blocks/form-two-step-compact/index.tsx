@@ -17,9 +17,25 @@ import {
 } from '@wordpress/block-editor';
 
 /**
+ * External dependencies.
+ */
+const { gumponents } = window;
+
+/**
+ * External components.
+ */
+const {	ColorPaletteControl } = gumponents.components;
+
+/**
  * Styles.
  */
 import '../../../front-end/components/form-two-step-compact/style.scss';
+
+// Background colors.
+export const colors: { [key: string]: string }[] = [
+	{ name: __( 'Black', 'qrk' ), color: '#232933', slug: 'black' },
+	{ name: __( 'White', 'qrk' ), color: '#FFF', slug: 'white' },
+];
 
 /**
  * External dependencies.
@@ -61,6 +77,11 @@ export const settings: BlockConfiguration = {
 			type: 'string',
 			default: '',
 		},
+		backgroundColor: {
+			type: 'string',
+			default: 'black',
+			enum: [ 'black', 'white' ],
+		},
 	},
 	supports: {
 		alignWide: false,
@@ -72,7 +93,11 @@ export const settings: BlockConfiguration = {
 	edit( { className, attributes, setAttributes }: BlockEditAttributes ): JSX.Element {
 		// eslint-disable-next-line react-hooks/rules-of-hooks
 		const blockProps = useBlockProps( {
-			className: classnames( className, 'form-two-step-compact' ),
+			className: classnames(
+				className,
+				'form-two-step-compact',
+				'white' === attributes.backgroundColor ? 'form-two-step-compact--background-white' : '',
+			),
 		} );
 
 		// Return the block's markup.
@@ -91,6 +116,21 @@ export const settings: BlockConfiguration = {
 								value={ attributes.thankYouPageUrl }
 							/>
 						</BaseControl>
+						<ColorPaletteControl
+							label={ __( 'Background Color', 'qrk' ) }
+							help={ __( 'Select the background color.', 'qrk' ) }
+							value={ colors.find( ( color ) => color.slug === attributes.backgroundColor )?.color }
+							colors={ colors.filter( ( color ) => [ 'black', 'white' ].includes( color.slug ) ) }
+							onChange={ ( backgroundColor: {
+								color: string;
+								slug: string;
+							} ): void => {
+								// Set the background color attribute.
+								if ( backgroundColor.slug && [ 'black', 'white' ].includes( backgroundColor.slug ) ) {
+									setAttributes( { backgroundColor: backgroundColor.slug } );
+								}
+							} }
+						/>
 					</PanelBody>
 					<PanelBody title={ __( 'Two Step Compact Form Hidden Fields', 'qrk' ) }>
 						<SelectControl
