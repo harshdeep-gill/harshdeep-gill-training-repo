@@ -1,0 +1,26 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Two Columns",
+	"name": "quark/two-columns",
+	"description" : "Add a two column block.",
+	"category": "layout",
+	"textdomain": "qrk",
+	"keywords": [
+		"two",
+		"columns"
+	],
+	"attributes": {
+		"hasBorder": {
+			"type": "boolean",
+			"default": true
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}
