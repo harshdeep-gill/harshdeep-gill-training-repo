@@ -1,0 +1,31 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "quark/simple-cards-card",
+  "description": "Individual card item for simple cards.",
+  "icon": "screenoptions",
+  "title": "Simple Cards Item",
+  "keywords": [ "card" ],
+  "category": "layout",
+  "textdomain": "quark",
+  "parent": [ "quark/simple-cards" ],
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "image": {
+      "type": "object",
+      "default": {}
+    },
+    "url": {
+      "type": "object",
+      "default": null
+    }
+  },
+  "supports": {
+    "alignWide": false,
+    "className": false,
+    "html": false,
+    "customClassName": false
+  }
+}
