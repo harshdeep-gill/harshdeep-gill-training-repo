@@ -1,0 +1,61 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "quark/button",
+  "description": "Prompt visitors to take action with a button-style link.",
+  "title": "Button",
+  "icon": "button",
+  "category": "layout",
+  "keywords": [
+    "button"
+  ],
+  "textdomain": "quark",
+  "attributes": {
+    "url": {
+      "type": "object",
+      "default": {}
+    },
+    "backgroundColor": {
+      "type": "string",
+      "default": "yellow",
+      "enum": [
+        "yellow",
+        "black"
+      ]
+    },
+    "btnText": {
+      "type": "string",
+      "default": ""
+    },
+    "icon": {
+      "type": "string",
+      "default": ""
+    },
+    "iconPosition": {
+      "type": "string",
+      "default": "left",
+      "enum": [
+        "left",
+        "right"
+      ]
+    },
+    "isSizeBig": {
+      "type": "boolean",
+      "default": false
+    },
+    "appearance": {
+      "type": "string",
+      "default": "solid"
+    },
+    "hasIcon": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "supports": {
+    "alignWide": false,
+    "className": false,
+    "html": false,
+    "customClassName": false
+  }
+}
