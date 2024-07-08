@@ -9,8 +9,7 @@ namespace Quark\Theme\Blocks\SimpleCards;
 
 use WP_Block;
 
-const BLOCK_NAME = 'quark/simple-cards';
-const COMPONENT  = 'simple-cards';
+const COMPONENT = 'simple-cards';
 
 /**
  * Bootstrap this block.
