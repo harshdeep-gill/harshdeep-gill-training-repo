@@ -1,0 +1,25 @@
+{
+	"schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Icon Columns",
+	"name": "quark/icon-columns",
+	"description": "Display a grid of icons with title.",
+	"category": "layout",
+	"keywords": [
+		"icon",
+		"columns"
+	],
+	"textdomain": "qrk",
+	"attributes": {
+		"variant": {
+			"type": "string"
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

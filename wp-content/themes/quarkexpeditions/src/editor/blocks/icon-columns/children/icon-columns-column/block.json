@@ -1,0 +1,30 @@
+{
+	"schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Icon Columns - Column",
+	"name": "quark/icon-columns-column",
+	"description": "Individual column in the icon columns.",
+	"parent": [
+		"quark/icon-columns"
+	],
+	"icon": "screenoptions",
+	"category": "layout",
+	"keywords": [
+		"item"
+	],
+	"textdomain": "qrk",
+	"attributes": {
+		"icon": {
+			"type": "string"
+		},
+		"title": {
+			"type": "string"
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}
