@@ -224,6 +224,7 @@ class Departure extends Softrip_Object {
 				'duration'             => $data['duration'],
 				'itinerary'            => $this->itinerary->get_id(),
 				'ship_id'              => $data['shipCode'],
+				'region'               => $data['marketCode'],
 			],
 		];
 
@@ -250,7 +251,7 @@ class Departure extends Softrip_Object {
 		$status        = 'draft';
 
 		// Check if start date within the last day.
-		if ( $check_stamp <= ( $current_stamp + DAY_IN_SECONDS ) ) {
+		if ( $check_stamp >= ( $current_stamp + DAY_IN_SECONDS ) ) {
 			$status = 'publish';
 		}
 

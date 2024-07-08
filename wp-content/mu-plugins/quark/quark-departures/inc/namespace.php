@@ -9,6 +9,10 @@ namespace Quark\Departures;
 
 use WP_Post;
 
+use function Quark\Itineraries\get as get_itinerary;
+
+use const Quark\StaffMembers\SEASON_TAXONOMY;
+
 const POST_TYPE                = 'qrk_departure';
 const SPOKEN_LANGUAGE_TAXONOMY = 'qrk_spoken_language';
 const CACHE_KEY                = POST_TYPE;
@@ -266,4 +270,132 @@ function get( int $post_id = 0 ): array {
 
 	// Return data.
 	return $data;
+}
+
+/**
+ * Get Expedition for departure.
+ *
+ * @param int $post_id Departure Post ID.
+ *
+ * @return int
+ */
+function get_departure_expedition( int $post_id = 0 ): int {
+	// Get departure.
+	$departure = get( $post_id );
+
+	// Check post_meta is not empty.
+	if ( ! $departure['post_meta'] ) {
+		return 0;
+	}
+
+	// Get expedition from meta.
+	$expedition = $departure['post_meta']['related_expedition'] ?? '';
+
+	// Check expedition is empty.
+	if ( ! $expedition ) {
+		return 0;
+	}
+
+	// Return expedition.
+	return absint( $expedition );
+}
+
+/**
+ * Get departure start date.
+ *
+ * @param int $post_id Departure Post ID.
+ *
+ * @return string
+ */
+function get_departure_start_date( int $post_id = 0 ): string {
+	// Get departure.
+	$departure = get( $post_id );
+
+	// Check post_meta is not empty.
+	if ( ! $departure['post_meta'] ) {
+		return '';
+	}
+
+	// Get start date from meta.
+	$start_date_meta = $departure['post_meta']['departure_start_date'] ?? '';
+
+	// Check start date meta is empty.
+	if ( ! $start_date_meta ) {
+		return '';
+	}
+
+	// Return start date.
+	return gmdate( 'Y-m-d', absint( strtotime( strval( $start_date_meta ) ) ) );
+}
+
+/**
+ * Get departure Season.
+ *
+ * @param int $post_id Departure Post ID.
+ *
+ * @return string
+ */
+function get_departure_season( int $post_id = 0 ): string {
+	// Get departure.
+	$departure = get( $post_id );
+
+	// Check post_meta is not empty.
+	if ( ! $departure['post_meta'] ) {
+		return '';
+	}
+
+	// Get itinerary from meta.
+	$itinerary = $departure['post_meta']['itinerary'] ?? '';
+
+	// Check start date meta is empty.
+	if ( ! $itinerary ) {
+		return '';
+	}
+
+	// Get itinerary.
+	$itinerary = get_itinerary( absint( $itinerary ) );
+
+	// Check for Itinerary.
+	if ( empty( $itinerary['post_taxonomies'][ SEASON_TAXONOMY ] ) || ! is_array( $itinerary['post_taxonomies'][ SEASON_TAXONOMY ] ) ) {
+		return '';
+	}
+
+	// Check for Season.
+	if ( ! isset( $itinerary['post_taxonomies'][ SEASON_TAXONOMY ][0] ) ) {
+		return '';
+	}
+
+	// Return Season.
+	return $itinerary['post_taxonomies'][ SEASON_TAXONOMY ][0]['name'] ?? '';
+}
+
+/**
+ * Get departure region and Season.
+ *
+ * @param int $post_id Departure Post ID.
+ *
+ * @return string
+ */
+function get_departure_region_and_season( int $post_id = 0 ): string {
+	// Get departure.
+	$departure = get( $post_id );
+
+	// Check post_meta is not empty.
+	if ( ! $departure['post_meta'] ) {
+		return '';
+	}
+
+	// Get region from meta.
+	$region = $departure['post_meta']['region'] ?? '';
+
+	// Get season.
+	$season = get_departure_season( $post_id );
+
+	// Check region and season are empty.
+	if ( ! $region && ! $season ) {
+		return '';
+	}
+
+	// Return region and season.
+	return $region . '-' . $season;
 }
