@@ -7,7 +7,7 @@
 		return;
 	}
 
-	$classes = [ 'hero__form', 'color-context--dark' ];
+	$classes = [ 'hero__form' ];
 
 	if ( ! empty( $class ) ) {
 		$classes[] = $class;

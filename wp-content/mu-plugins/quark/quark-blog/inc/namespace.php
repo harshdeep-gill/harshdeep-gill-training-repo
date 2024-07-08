@@ -14,9 +14,10 @@ use function Quark\Blog\Authors\get as get_post_authors;
 use function Quark\Core\prepare_content_with_blocks;
 use function yoast_get_primary_term_id;
 
-const POST_TYPE   = 'post';
-const CACHE_KEY   = POST_TYPE;
-const CACHE_GROUP = POST_TYPE;
+const POST_TYPE        = 'post';
+const CACHE_KEY        = POST_TYPE;
+const CACHE_GROUP      = POST_TYPE;
+const WORDS_PER_MINUTE = 230; // using the same value from Drupal - https://github.com/mtownsend5512/read-time/.
 
 /**
  * Bootstrap plugin.
@@ -26,15 +27,19 @@ const CACHE_GROUP = POST_TYPE;
 function bootstrap(): void {
 	// Layout.
 	add_action( 'template_redirect', __NAMESPACE__ . '\\layout' );
+	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\calculate_post_reading_time', 10, 3 );
 
 	// Enable primary term.
 	add_filter( 'travelopia_primary_term_taxonomies', __NAMESPACE__ . '\\primary_term_taxonomies', 10, 2 );
+
+	// Other hooks.
+	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
 
 	// Breadcrumbs.
 	add_filter( 'travelopia_breadcrumbs_ancestors', __NAMESPACE__ . '\\breadcrumbs_ancestors' );
 
 	// Admin stuff.
-	if ( is_admin() ) {
+	if ( is_admin() || ( defined( 'WP_CLI' ) && true === WP_CLI ) ) {
 		add_filter( 'post_type_labels_' . POST_TYPE, __NAMESPACE__ . '\\update_blog_posts_admin_menu_label' );
 
 		// Custom fields.
@@ -257,6 +262,30 @@ function primary_term_taxonomies( array $taxonomies = [], string $post_type = ''
 
 	// Return taxonomies.
 	return $taxonomies;
+}
+
+/**
+ * Calculate reading time for a post.
+ *
+ * @param int          $post_id Post ID.
+ * @param WP_Post|null $post    Post object.
+ *
+ * @return void
+ */
+function calculate_post_reading_time( int $post_id = 0, WP_Post $post = null ): void {
+	// Bail if not a post or post type does not match.
+	if ( ! $post instanceof WP_Post || POST_TYPE !== $post->post_type ) {
+		return;
+	}
+
+	// Get words count.
+	$words_count = str_word_count( wp_strip_all_tags( $post->post_content ) );
+
+	// Calculate reading time.
+	$minutes = ceil( $words_count / WORDS_PER_MINUTE );
+
+	// Save data to post meta.
+	update_post_meta( $post_id, 'read_time_minutes', absint( $minutes ) );
 }
 
 /**

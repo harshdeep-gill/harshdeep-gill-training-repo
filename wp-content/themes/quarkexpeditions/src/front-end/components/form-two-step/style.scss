@@ -1,20 +1,15 @@
 @import "../../scss";
 
 .form-two-step {
+	padding: var(--spacing-5);
+	background-color: rgba(color("black"), 0.5);
+	border-radius: var(--border-radius-large);
 
 	&__content {
 		height: 100%;
 
 		.form-field--buttons {
 			margin: 0;
-		}
-	}
-
-	&__state {
-		display: none;
-
-		&[data-visible] {
-			display: block;
 		}
 	}
 
@@ -89,5 +84,26 @@
 
 	.modal__modal-open {
 		display: contents;
+	}
+
+	&--background-white {
+		background-color: var(--color-white);
+		color: var(--color-black);
+	}
+
+	tp-form-error {
+		display: none;
+	}
+
+	.btn {
+		width: 100%;
+		text-transform: uppercase;
+	}
+
+	tp-multi-select {
+
+		&-status {
+			display: -webkit-box !important;
+		}
 	}
 }
