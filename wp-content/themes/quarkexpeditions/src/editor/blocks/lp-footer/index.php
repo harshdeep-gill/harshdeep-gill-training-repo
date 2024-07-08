@@ -7,8 +7,7 @@
 
 namespace Quark\Theme\Blocks\LPFooter;
 
-const BLOCK_NAME = 'quark/lp-footer';
-const COMPONENT  = 'parts.lp-footer';
+const COMPONENT = 'parts.lp-footer';
 
 /**
  * Bootstrap this block.
@@ -16,41 +15,37 @@ const COMPONENT  = 'parts.lp-footer';
  * @return void
  */
 function bootstrap(): void {
-	// Register this block only on the front-end.
-	add_action( 'template_redirect', __NAMESPACE__ . '\\register' );
-}
-
-/**
- * Register block on the front-end.
- *
- * @return void
- */
-function register(): void {
-	// Fire hooks.
-	add_filter( 'pre_render_block', __NAMESPACE__ . '\\render', 10, 2 );
+	// Register the block.
+	register_block_type_from_metadata(
+		__DIR__,
+		[
+			'render_callback' => __NAMESPACE__ . '\\render',
+		]
+	);
 }
 
 /**
  * Render this block.
  *
- * @param string|null $content Original content.
- * @param mixed[]     $block   Parsed block.
+ * @param mixed[]   $attributes Block attributes.
+ * @param string    $content    Block content.
+ * @param \WP_Block $block      Block data.
  *
- * @return null|string
+ * @return string
  */
-function render( ?string $content = null, array $block = [] ): null|string {
+function render( array $attributes = [], string $content = '', \WP_Block $block = null ): string {
 	// Check for block.
-	if ( BLOCK_NAME !== $block['blockName'] || empty( $block['innerBlocks'] ) || ! is_array( $block['innerBlocks'] ) ) {
+	if ( ! $block instanceof \WP_Block ) {
 		return $content;
 	}
 
 	// Build component attributes.
-	$attributes = [
+	$component_attributes = [
 		'rows' => [],
 	];
 
 	// Prepare block data.
-	foreach ( $block['innerBlocks'] as $maybe_row_block ) {
+	foreach ( $block->parsed_block['innerBlocks'] as $maybe_row_block ) {
 		// Check for row block.
 		if (
 			empty( $maybe_row_block['innerBlocks'] )
@@ -63,9 +58,9 @@ function render( ?string $content = null, array $block = [] ): null|string {
 		// Columns for this row.
 		$columns = [];
 
-		// Build Column inner content.
+		// Prepare row data.
 		foreach ( $maybe_row_block['innerBlocks'] as $maybe_column_block ) {
-			// Check for inner block.
+			// Check for column block.
 			if (
 				empty( $maybe_column_block['innerBlocks'] )
 				|| ! is_array( $maybe_column_block['innerBlocks'] )
@@ -77,10 +72,13 @@ function render( ?string $content = null, array $block = [] ): null|string {
 			// Initialize columns content.
 			$column_contents = [];
 
-			// Build column content.
+			// Prepare column data.
 			foreach ( $maybe_column_block['innerBlocks'] as $column_inner_block ) {
 				// Check for footer social links block.
 				if ( 'quark/lp-footer-social-links' === $column_inner_block['blockName'] ) {
+					// Initialize links.
+					$links = [];
+
 					// Fetch social link attributes.
 					foreach ( $column_inner_block['innerBlocks'] as $social_link ) {
 						// Add component to slot.
@@ -94,7 +92,7 @@ function render( ?string $content = null, array $block = [] ): null|string {
 					$column_contents[] = [
 						'type'       => 'social-links',
 						'attributes' => [
-							'links' => $links ?? [],
+							'links' => $links,
 						],
 					];
 				} elseif ( 'quark/lp-footer-icon' === $column_inner_block['blockName'] ) {
@@ -129,10 +127,10 @@ function render( ?string $content = null, array $block = [] ): null|string {
 			];
 		}
 
-		// Prepare Rows data.
-		$attributes['rows'][] = $columns;
+		// Add row to component.
+		$component_attributes['rows'][] = $columns;
 	}
 
-	// Return rendered component.
-	return quark_get_component( COMPONENT, $attributes );
+	// Render the block markup.
+	return quark_get_component( COMPONENT, $component_attributes );
 }
