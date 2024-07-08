@@ -1,0 +1,22 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "quark/section-child",
+	"description": "Section child block",
+	"title": "Section Child",
+	"category": "layout",
+	"textdomain": "qrk",
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	},
+	"attributes": {
+		"anchor": {
+			"type": "string",
+			"default": ""
+		}
+	}
+}
