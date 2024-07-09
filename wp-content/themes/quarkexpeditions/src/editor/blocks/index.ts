@@ -36,6 +36,11 @@ import * as formTwoStepCompact from './form-two-step-compact';
 import * as footer from './footer';
 import * as accordion from './accordion';
 import * as thumbnailCards from './thumbnail-cards';
+import * as relatedPosts from './related-posts';
+import * as breadcrumbs from './breadcrumbs';
+import * as sidebarGrid from './sidebar-grid';
+import * as authorInfo from './author-info';
+import * as tableOfContents from './table-of-contents';
 
 /**
  * Add blocks.
@@ -71,6 +76,11 @@ const blocks = [
 	footer,
 	accordion,
 	thumbnailCards,
+	relatedPosts,
+	breadcrumbs,
+	sidebarGrid,
+	authorInfo,
+	tableOfContents,
 ];
 
 /**

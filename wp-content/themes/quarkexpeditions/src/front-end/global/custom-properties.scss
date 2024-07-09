@@ -128,7 +128,6 @@
 	 * Misc
 	 */
 	--scale-size: 1.03;
-	--header-height: 96px;
 
 	/**
 	 * Transitions
@@ -141,6 +140,8 @@
 	/**
 	 * Misc.
 	 */
+	--header-height: 96px;
 	--wp-admin-bar-height: 0px; // stylelint-disable-line
 	--lp-header-z-index: 10;
+	--scroll-padding-top: calc(var(--header-height) + var(--spacing-5));
 }
