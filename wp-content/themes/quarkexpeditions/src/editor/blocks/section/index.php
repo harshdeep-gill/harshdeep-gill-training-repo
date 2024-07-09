@@ -7,7 +7,7 @@
 
 namespace Quark\Theme\Blocks\Section;
 
-const COMPONENT = 'section';
+const COMPONENT = 'parts.section';
 
 /**
  * Bootstrap this block.
