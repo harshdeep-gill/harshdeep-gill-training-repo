@@ -250,7 +250,7 @@ class Departure extends Softrip_Object {
 		$status        = 'draft';
 
 		// Check if start date within the last day.
-		if ( $check_stamp <= ( $current_stamp + DAY_IN_SECONDS ) ) {
+		if ( $check_stamp >= ( $current_stamp + DAY_IN_SECONDS ) ) {
 			$status = 'publish';
 		}
 
