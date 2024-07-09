@@ -69,6 +69,14 @@
 		"isNarrow": {
 			"type": "boolean",
 			"default": false
+		},
+		"hasHeadingLink": {
+			"type": "boolean",
+			"default": false
+		},
+		"headingLink": {
+			"type": "object",
+			"default": {}
 		}
 	}
 }

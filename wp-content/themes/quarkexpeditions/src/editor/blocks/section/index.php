@@ -44,7 +44,23 @@ function render( array $attributes = [], string $content = '' ): string {
 		'padding'          => $attributes['hasPadding'],
 		'narrow'           => $attributes['isNarrow'],
 		'slot'             => $content,
+		'heading_link'     => [],
+		'has_heading_link' => $attributes['hasHeadingLink'],
 	];
+
+	// Set heading link if it exists.
+	if (
+		is_array( $attributes['headingLink'] )
+		&& ! empty( $attributes['headingLink']['text'] )
+		&& ! empty( $attributes['headingLink']['url'] )
+		&& ! empty( $attributes['headingLink']['newWindow'] )
+	) {
+		$component_attributes['heading_link'] = [
+			'text'       => $attributes['headingLink']['text'],
+			'url'        => $attributes['headingLink']['url'],
+			'new_window' => $attributes['headingLink']['newWindow'],
+		];
+	}
 
 	// Set title if it exists.
 	if ( ( $attributes['hasTitle'] ?? true ) && ! empty( $attributes['title'] ) ) {
@@ -62,11 +78,11 @@ function render( array $attributes = [], string $content = '' ): string {
 	}
 
 	// Set CTA if it exists.
-	if ( ( $attributes['hasCta'] ?? false ) && ! empty( $attributes['ctaButton'] ) ) {
+	if ( ( $attributes['hasCta'] ?? false ) && is_array( $attributes['ctaButton'] ) ) {
 		$component_attributes['cta_button'] = [
-			'url'        => $attributes['ctaButton']['url'] ?? '',
-			'text'       => $attributes['ctaButton']['text'] ?? '',
-			'new_window' => $attributes['ctaButton']['newWindow'] ?? '',
+			'url'        => $attributes['ctaButton']['url'],
+			'text'       => $attributes['ctaButton']['text'],
+			'new_window' => $attributes['ctaButton']['newWindow'],
 			'class'      => '',
 		];
 

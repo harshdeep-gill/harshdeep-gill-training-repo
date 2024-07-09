@@ -20,6 +20,11 @@ import {
 import Section from '../../components/section';
 
 /**
+ * Styles.
+ */
+import './editor.scss';
+
+/**
  * External dependencies.
  */
 import classnames from 'classnames';
@@ -31,6 +36,7 @@ const { gumponents } = window;
 const {
 	LinkButton,
 	ColorPaletteControl,
+	LinkControl,
 } = gumponents.components;
 
 // Background colors.
@@ -69,28 +75,16 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 						help={ __( 'Does this section have a title?', 'qrk' ) }
 					/>
 					{ attributes.hasTitle &&
-						<>
-							<SelectControl
-								label="Heading Level"
-								value={ attributes.headingLevel }
-								options={ [
-									{ label: 'H1', value: '1' },
-									{ label: 'H2', value: '2' },
-									{ label: 'H3', value: '3' },
-								] }
-								onChange={ ( headingLevel ) => setAttributes( { headingLevel } ) }
-							/>
-							<SelectControl
-								label={ __( 'Text Alignment', 'qrk' ) }
-								help={ __( 'Select the text alignment for the title.', 'qrk' ) }
-								value={ attributes.titleAlignment }
-								options={ [
-									{ label: 'Center', value: 'center' },
-									{ label: 'Left', value: 'left' },
-								] }
-								onChange={ ( titleAlignment ) => setAttributes( { titleAlignment } ) }
-							/>
-						</>
+						<SelectControl
+							label="Heading Level"
+							value={ attributes.headingLevel }
+							options={ [
+								{ label: 'H1', value: '1' },
+								{ label: 'H2', value: '2' },
+								{ label: 'H3', value: '3' },
+							] }
+							onChange={ ( headingLevel ) => setAttributes( { headingLevel } ) }
+						/>
 					}
 					<ToggleControl
 						label={ __( 'Has Description', 'qrk' ) }
@@ -146,6 +140,29 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 						onChange={ () => setAttributes( { hasCta: ! attributes.hasCta } ) }
 						help={ __( 'Does this section have a CTA button?', 'qrk' ) }
 					/>
+					<ToggleControl
+						label={ __( 'Has heading link', 'qrk' ) }
+						checked={ attributes.hasHeadingLink }
+						onChange={ () => {
+							// Get the new state.
+							const newState = ! attributes.hasHeadingLink;
+
+							// set the new state.
+							setAttributes( {
+								hasHeadingLink: newState,
+								titleAlignment: newState ? 'left' : 'center',
+							} );
+						} }
+						help={ __( 'Does this section have heading link?', 'qrk' ) }
+					/>
+					{ attributes.hasHeadingLink &&
+						<LinkControl
+							label={ __( 'Select URL', 'qrk' ) }
+							value={ attributes.headingLink }
+							help={ __( 'Enter an URL for this Info item', 'qrk' ) }
+							onChange={ ( headingLink: object ) => setAttributes( { headingLink } ) }
+						/>
+					}
 				</PanelBody>
 			</InspectorControls>
 			<Section
@@ -156,16 +173,23 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 				seamless={ attributes.hasBackground }
 				narrow={ attributes.isNarrow }
 			>
-				{ attributes.hasTitle && (
-					<RichText
-						tagName="h2"
-						className={ `section__title section__title--${ attributes.titleAlignment } h${ attributes.headingLevel }` }
-						placeholder={ __( 'Write title…', 'qrk' ) }
-						value={ attributes.title }
-						onChange={ ( title ) => setAttributes( { title } ) }
-						allowedFormats={ [] }
-					/>
-				) }
+				<div className="section__heading">
+					{ attributes.hasTitle && (
+						<RichText
+							tagName="h2"
+							className={ `section__title section__title--${ attributes.titleAlignment } h${ attributes.headingLevel }` }
+							placeholder={ __( 'Write title…', 'qrk' ) }
+							value={ attributes.title }
+							onChange={ ( title ) => setAttributes( { title } ) }
+							allowedFormats={ [] }
+						/>
+					) }
+					{ attributes.hasHeadingLink &&
+						<span className={ `section__heading-link` }>
+							{ attributes.headingLink.text }
+						</span>
+					}
+				</div>
 				{ attributes.hasDescription && (
 					<RichText
 						tagName="p"
