@@ -21,7 +21,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 					'aria-label'           => '',
 					'type'                 => 'relationship',
 					'instructions'         => '',
-					'required'             => 1,
+					'required'             => 0,
 					'conditional_logic'    => 0,
 					'wrapper'              => [
 						'width' => '',
@@ -29,7 +29,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 						'id'    => '',
 					],
 					'post_type'            => [
-						0 => 'qrk_blog_authors',
+						0 => 'qrk_blog_author',
 					],
 					'post_status'          => '',
 					'taxonomy'             => '',
@@ -37,7 +37,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 						0 => 'search',
 					],
 					'return_format'        => 'object',
-					'min'                  => 1,
+					'min'                  => 0,
 					'max'                  => '',
 					'elements'             => '',
 					'bidirectional'        => 1,

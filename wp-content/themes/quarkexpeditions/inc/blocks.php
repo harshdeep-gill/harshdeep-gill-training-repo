@@ -55,6 +55,8 @@ function register_blocks(): void {
 		'FormTwoStepCompact'    => 'form-two-step-compact.php',
 		'Header'                => 'header.php',
 		'MenuList'              => 'menu-list.php',
+		'Footer'                => 'footer.php',
+		'Accordion'             => 'accordion.php',
 		'ThumbnailCards'        => 'thumbnail-cards.php',
 	];
 

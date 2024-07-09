@@ -278,7 +278,7 @@
 						</x-accordion.item-content>
 					</x-accordion.item>
 				</x-accordion>
-				
+
 				<ul class="header__drawer-quick-links">
 					<li><a href="#">Dates & Rates</a></li>
 					<li><a href="#">Travel Advisors</a></li>
@@ -2340,12 +2340,7 @@
 				<x-footer.column>
 					<x-footer.column-title title="Book Online Today" />
 					<p>25% down will reserve your expedition to the polar regions!</p>
-					<x-footer.payment-options>
-						<x-footer.payment-option type="visa" />
-						<x-footer.payment-option type="mastercard" />
-						<x-footer.payment-option type="amex" />
-						<x-footer.payment-option type="discover" />
-					</x-footer.payment-options>
+					<x-footer.payment-options />
 				</x-footer.column>
 			</x-footer.middle>
 
