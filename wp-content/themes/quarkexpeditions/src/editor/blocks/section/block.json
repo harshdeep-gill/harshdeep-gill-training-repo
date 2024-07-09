@@ -23,7 +23,8 @@
 			"default": true
 		},
 		"title": {
-			"type": "string"
+			"type": "string",
+			"default": ""
 		},
 		"titleAlignment": {
 			"type": "string",
@@ -38,7 +39,8 @@
 			"default": false
 		},
 		"description": {
-			"type": "string"
+			"type": "string",
+			"default": ""
 		},
 		"hasBorder": {
 			"type": "boolean",

@@ -34,7 +34,6 @@ function bootstrap(): void {
 function render( array $attributes = [] ): string {
 	// Build component attributes.
 	$component_attributes = [
-		'id'           => $attributes['anchor'] ?? '',
 		'logo_url'     => 'https://www.quarkexpeditions.com',
 		'tc_image_id'  => 0,
 		'phone_number' => $attributes['ctaNumber'],
@@ -43,7 +42,7 @@ function render( array $attributes = [] ): string {
 	];
 
 	// TC Image.
-	if ( ! empty( $attributes['tcImage']['id'] ) ) {
+	if ( is_array( $attributes['tcImage'] ) && ! empty( $attributes['tcImage']['id'] ) ) {
 		$component_attributes['tc_image_id'] = absint( $attributes['tcImage']['id'] );
 	}
 

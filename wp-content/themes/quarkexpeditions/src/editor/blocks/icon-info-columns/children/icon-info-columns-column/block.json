@@ -11,10 +11,12 @@
 	"textdomain": "qrk",
 	"attributes": {
 		"icon": {
-			"type": "string"
+			"type": "string",
+			"default": ""
 		},
 		"title": {
-			"type": "string"
+			"type": "string",
+			"default": ""
 		},
 		"info": {
 			"type": "string",

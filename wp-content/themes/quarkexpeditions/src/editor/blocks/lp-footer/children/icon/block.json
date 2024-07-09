@@ -15,7 +15,8 @@
 	"textdomain": "qrk",
 	"attributes": {
 		"icon": {
-			"type": "string"
+			"type": "string",
+			"default": ""
 		}
 	},
 	"supports": {

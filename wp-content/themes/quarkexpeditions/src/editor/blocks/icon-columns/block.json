@@ -12,7 +12,8 @@
 	"textdomain": "qrk",
 	"attributes": {
 		"variant": {
-			"type": "string"
+			"type": "string",
+			"default": ""
 		}
 	},
 	"supports": {

@@ -1,20 +1,29 @@
 {
 	"schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
-	"title": "Footer Social Links",
+	"title": "Footer Social Link",
 	"name": "quark/lp-footer-social-link",
 	"description": "Footer Social Links block.",
 	"parent": [
-		"quark/lp-footer-column"
+		"quark/lp-footer-social-link"
 	],
-	"icon": "share-alt2",
+	"icon": "share-alt",
 	"category": "layout",
 	"keywords": [
 		"social",
-		"links"
+		"link"
 	],
 	"textdomain": "qrk",
-	"attributes": {},
+	"attributes": {
+		"type": {
+			"type": "string",
+			"default": "facebook"
+		},
+		"url": {
+			"type": "string",
+			"default": ""
+		}
+	},
 	"supports": {
 		"alignWide": false,
 		"className": false,

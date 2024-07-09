@@ -33,17 +33,9 @@ export const settings: BlockConfiguration = {
 import '../../../front-end/components/section/style.scss';
 
 /**
- * Children.
- */
-import * as child from './children/section-child';
-
-/**
  * Initialization.
  */
 export const init = (): void => {
 	// Register block.
 	registerBlockType( name, settings );
-
-	// Register children.
-	registerBlockType( child.name, child.settings );
 };

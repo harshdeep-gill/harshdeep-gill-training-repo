@@ -15,10 +15,12 @@
 			"type": "object"
 		},
 		"ctaText": {
-			"type": "string"
+			"type": "string",
+			"default": ""
 		},
 		"ctaNumber": {
-			"type": "string"
+			"type": "string",
+			"default": ""
 		},
 		"darkMode": {
 			"type": "boolean",

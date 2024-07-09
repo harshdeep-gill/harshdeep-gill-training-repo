@@ -7,6 +7,8 @@
 
 namespace Quark\Theme\Blocks\LPFooter;
 
+use WP_Block;
+
 const COMPONENT = 'parts.lp-footer';
 
 /**
@@ -27,15 +29,15 @@ function bootstrap(): void {
 /**
  * Render this block.
  *
- * @param mixed[]   $attributes Block attributes.
- * @param string    $content    Block content.
- * @param \WP_Block $block      Block data.
+ * @param mixed[]  $attributes Block attributes.
+ * @param string   $content    Block content.
+ * @param WP_Block $block      Block data.
  *
  * @return string
  */
-function render( array $attributes = [], string $content = '', \WP_Block $block = null ): string {
+function render( array $attributes = [], string $content = '', WP_Block $block = null ): string {
 	// Check for block.
-	if ( ! $block instanceof \WP_Block ) {
+	if ( ! $block instanceof WP_Block ) {
 		return $content;
 	}
 
@@ -116,7 +118,7 @@ function render( array $attributes = [], string $content = '', \WP_Block $block 
 			$column_url = '';
 
 			// Check if url is present.
-			if ( isset( $maybe_column_block['attrs'] ) && isset( $maybe_column_block['attrs']['url'] ) ) {
+			if ( isset( $maybe_column_block['attrs'] ) && ! empty( $maybe_column_block['attrs']['url'] ) ) {
 				$column_url = $maybe_column_block['attrs']['url'];
 			}
 
