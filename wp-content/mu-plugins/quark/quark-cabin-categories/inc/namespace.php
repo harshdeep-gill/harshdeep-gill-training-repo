@@ -312,14 +312,21 @@ function get_id_from_cabin_code( string $cabin_id = '' ): int {
 		// Post Meta.
 		global $wpdb;
 		$cabins = $wpdb->get_results(
-			"
+			$wpdb->prepare(
+				"
 			SELECT
 				m.*
 			FROM
-				$wpdb->postmeta AS m
+				$wpdb->postmeta as m
+			RIGHT JOIN
+				$wpdb->posts as p ON m.post_id = p.ID
 			WHERE
 				m.meta_key = 'cabin_category_id'
+			AND
+				p.post_type = %s
 			",
+				POST_TYPE
+			),
 			ARRAY_A
 		);
 
