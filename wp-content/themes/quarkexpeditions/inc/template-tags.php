@@ -344,3 +344,27 @@ function quark_theme_image( string $path = '', array $attrs = [] ): void {
 		)
 	);
 }
+
+/**
+ * Wrapper function for dynamic video URLs.
+ *
+ * @param mixed[] $args Video args.
+ *
+ * @return string
+ */
+function quark_dynamic_video_url( array $args = [] ): string {
+	// Check if Travelopia dynamic video are enabled.
+	if ( function_exists( 'Travelopia\Media\get_dynamic_video_url' ) ) {
+		return \Travelopia\Media\get_dynamic_video_url( absint( $args['id'] ), (array) $args['transform'] );
+	} else {
+		$url = wp_get_attachment_image_url( ! empty( $args['id'] ) ? absint( $args['id'] ) : 0 );
+
+		// Check if we found a valid URL.
+		if ( false === $url ) {
+			$url = '';
+		}
+
+		// Return URL.
+		return $url;
+	}
+}

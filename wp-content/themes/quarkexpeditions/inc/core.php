@@ -445,6 +445,10 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'data-*'   => true,
 					'style'    => true,
 				],
+				'source'                                => [
+					'src'  => true,
+					'type' => true,
+				],
 			]
 		);
 	}
