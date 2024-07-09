@@ -43,14 +43,6 @@
 			}
 		}
 
-		&__state {
-			display: none;
-
-			&[data-visible] {
-				display: block;
-			}
-		}
-
 		&__thank-you {
 			display: none;
 			gap: var(--spacing-6);

@@ -263,6 +263,9 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'class'  => true,
 					'data-*' => true,
 				],
+				'quark-table-of-contents'               => [
+					'class' => true,
+				],
 				'quark-header-nav-menu-dropdown'        => [
 					'class' => true,
 					'open'  => true,
@@ -284,6 +287,16 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 				'quark-drawer-open'                     => [
 					'class'     => true,
 					'drawer_id' => true,
+				],
+				'quark-footer-accordion'                => [
+					'class'  => true,
+					'active' => true,
+				],
+				'quark-tooltip'                         => [
+					'class' => true,
+				],
+				'quark-country-selector'                => [
+					'class' => true,
 				],
 				'tp-form'                               => [
 					'class'          => true,
