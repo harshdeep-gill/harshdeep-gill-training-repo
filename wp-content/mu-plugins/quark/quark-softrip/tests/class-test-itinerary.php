@@ -8,6 +8,8 @@
 namespace Quark\Softrip;
 
 use WP_UnitTestCase;
+use WP_Post;
+use Quark\Itineraries\POST_TYPE;
 
 /**
  * Class Test_Itinerary.
@@ -19,14 +21,14 @@ class Test_Itinerary extends WP_UnitTestCase {
 	 *
 	 * @return void
 	 */
-	public function test_create() {
+	public function test_create(): void {
 		// Create post.
 		$post_1 = $this->factory()->post->create_and_get(
 			[
 				'post_title'   => 'Test Post',
 				'post_content' => 'Post content',
 				'post_status'  => 'publish',
-				'post_type'    => \Quark\Itineraries\POST_TYPE,
+				'post_type'    => POST_TYPE,
 				'meta_input'   => [
 					'test_meta' => true,
 				],
@@ -34,7 +36,7 @@ class Test_Itinerary extends WP_UnitTestCase {
 		);
 
 		// Check if is instance.
-		if ( $post_1 instanceof \WP_Post ) {
+		if ( $post_1 instanceof WP_Post ) {
 			// Create a new itinerary.
 			$itinerary = new Itinerary( $post_1->ID );
 
