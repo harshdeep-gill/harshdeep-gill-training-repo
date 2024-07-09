@@ -7,6 +7,8 @@
 
 namespace Quark\PressReleases;
 
+use WP_Post;
+
 const POST_TYPE = 'qrk_press_release';
 
 /**
@@ -17,6 +19,9 @@ const POST_TYPE = 'qrk_press_release';
 function bootstrap(): void {
 	// Register post type.
 	add_action( 'init', __NAMESPACE__ . '\\register_press_release_post_type' );
+
+	// Breadcrumbs.
+	add_filter( 'travelopia_breadcrumbs_ancestors', __NAMESPACE__ . '\\breadcrumbs_ancestors' );
 }
 
 /**
@@ -64,4 +69,61 @@ function register_press_release_post_type(): void {
 
 	// Register post type.
 	register_post_type( POST_TYPE, $args );
+}
+
+/**
+ * Get a Press Release.
+ *
+ * @param int $post_id Post ID.
+ *
+ * @return array{
+ *     post: WP_Post|null,
+ *     permalink: string,
+ * }
+ */
+function get( int $post_id = 0 ): array {
+	// Get post.
+	$post = get_post( $post_id );
+
+	// Return empty array fields if post type does not match or not an instance of WP_Post.
+	if ( ! $post instanceof WP_Post || POST_TYPE !== $post->post_type ) {
+		return [
+			'post'      => null,
+			'permalink' => '',
+		];
+	}
+
+	// Return post data.
+	return [
+		'post'      => $post,
+		'permalink' => strval( get_permalink( $post ) ? : '' ),
+	];
+}
+
+/**
+ * Breadcrumbs ancestors for this post type.
+ *
+ * @param mixed[] $breadcrumbs Breadcrumbs.
+ *
+ * @return mixed[]
+ */
+function breadcrumbs_ancestors( array $breadcrumbs = [] ): array {
+	// Check if current query is for this post type.
+	if ( ! is_singular( POST_TYPE ) && ! is_author() && ! is_category() ) {
+		return $breadcrumbs;
+	}
+
+	// Get archive page.
+	$press_release_archive_page = absint( get_option( 'options_press_releases_page', 0 ) );
+
+	// Get it's title and URL for breadcrumbs if it's set.
+	if ( ! empty( $press_release_archive_page ) ) {
+		$breadcrumbs[] = [
+			'title' => get_the_title( $press_release_archive_page ),
+			'url'   => get_permalink( $press_release_archive_page ),
+		];
+	}
+
+	// Return updated breadcrumbs.
+	return $breadcrumbs;
 }

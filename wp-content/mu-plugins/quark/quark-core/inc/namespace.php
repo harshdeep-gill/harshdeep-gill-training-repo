@@ -43,6 +43,7 @@ function bootstrap(): void {
 	if ( is_admin() ) {
 		require_once __DIR__ . '/../custom-fields/options-social.php';
 		require_once __DIR__ . '/../custom-fields/attachments.php';
+		require_once __DIR__ . '/../custom-fields/pages-setup.php';
 	}
 }
 
@@ -88,6 +89,15 @@ function setup_settings(): void {
 			'menu_title'  => 'Social',
 			'parent_slug' => 'site-settings',
 			'capability'  => 'manage_options',
+		]
+	);
+
+	// Pages Setup.
+	acf_add_options_sub_page(
+		[
+			'page_title'  => 'Pages Setup',
+			'menu_title'  => 'Pages Setup',
+			'parent_slug' => 'site-settings',
 		]
 	);
 }

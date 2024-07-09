@@ -54,10 +54,11 @@ function register_region_post_type(): void {
 		'public'              => true,
 		'show_in_rest'        => true,
 		'menu_icon'           => 'dashicons-admin-site',
-		'hierarchical'        => false,
+		'hierarchical'        => true,
 		'supports'            => [
 			'title',
 			'editor',
+			'page-attributes',
 		],
 		'show_ui'             => true,
 		'show_in_menu'        => true,

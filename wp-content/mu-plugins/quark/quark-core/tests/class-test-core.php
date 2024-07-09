@@ -9,6 +9,8 @@ namespace Quark\Core;
 
 use WP_UnitTestCase;
 
+use function Quark\Core\get_front_end_data;
+
 /**
  * Class Test_Core.
  */
@@ -81,7 +83,7 @@ class Test_Core extends WP_UnitTestCase {
 		update_option( 'options_youtube_url', 'https://youtube.com' );
 
 		// Get data.
-		$data = \Quark\Core\get_front_end_data( true );
+		$data = get_front_end_data( true );
 
 		// Test data.
 		$this->assertEquals(

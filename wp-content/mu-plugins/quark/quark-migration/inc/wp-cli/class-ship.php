@@ -75,6 +75,13 @@ class Ship {
 
 		// Finish progress bar.
 		$progress->finish();
+
+		// Halt for a sec.
+		sleep( 1 );
+
+		// Recount terms.
+		WP_CLI::log( 'Recounting terms...' );
+		WP_CLI::runcommand( 'term recount ' . SHIP_CATEGORY_TAXONOMY );
 	}
 
 	/**

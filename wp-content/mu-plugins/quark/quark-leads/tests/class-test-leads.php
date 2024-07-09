@@ -252,7 +252,7 @@ class Test_Leads extends WP_UnitTestCase {
 	 *
 	 * @return void
 	 */
-	public function test_forms_countries_list() {
+	public function test_forms_countries_list(): void {
 		// Test the count of countries.
 		$this->assertEquals( 250, count( get_countries() ) );
 	}
@@ -264,7 +264,7 @@ class Test_Leads extends WP_UnitTestCase {
 	 *
 	 * @return void
 	 */
-	public function test_forms_states_list() {
+	public function test_forms_states_list(): void {
 		// Top level array keys.
 		$keys_to_test = [ 'AU', 'US', 'CA' ];
 

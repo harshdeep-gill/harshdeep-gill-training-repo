@@ -216,7 +216,7 @@ function register_season_taxonomy(): void {
 		'show_ui'           => true,
 		'show_tagcloud'     => false,
 		'show_admin_column' => true,
-		'hierarchical'      => true,
+		'hierarchical'      => false,
 		'rewrite'           => false,
 		'query_var'         => true,
 		'capabilities'      => [],

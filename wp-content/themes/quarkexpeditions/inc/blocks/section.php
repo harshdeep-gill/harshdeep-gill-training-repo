@@ -54,6 +54,12 @@ function render( ?string $content = null, array $block = [] ): null|string {
 		'background_color' => $block['attrs']['backgroundColor'] ?? '',
 		'padding'          => $block['attrs']['hasPadding'] ?? false,
 		'narrow'           => $block['attrs']['isNarrow'] ?? false,
+		'heading_link'     => [
+			'text'       => $block['attrs']['headingLink']['text'] ?? '',
+			'url'        => $block['attrs']['headingLink']['url'] ?? '',
+			'new_window' => $block['attrs']['headingLink']['newWindow'] ?? false,
+		],
+		'has_heading_link' => $block['attrs']['hasHeadingLink'] ?? false,
 		'slot'             => '',
 	];
 

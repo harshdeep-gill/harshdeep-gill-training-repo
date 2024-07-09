@@ -10,6 +10,11 @@ namespace Quark\Pages\Tests;
 use WP_Post;
 use WP_UnitTestCase;
 
+use function Quark\Pages\get;
+use function Quark\Pages\layout_single;
+
+use const Quark\Pages\POST_TYPE;
+
 /**
  * Class Test_Pages.
  */
@@ -29,7 +34,7 @@ class Test_Pages extends WP_UnitTestCase {
 				'post_title'   => 'Test Post',
 				'post_content' => 'Post content',
 				'post_status'  => 'publish',
-				'post_type'    => \Quark\Pages\POST_TYPE,
+				'post_type'    => POST_TYPE,
 			]
 		);
 
@@ -47,7 +52,7 @@ class Test_Pages extends WP_UnitTestCase {
 		$this->assertTrue( $post_2 instanceof WP_Post );
 
 		// Test getting post.
-		$the_post = \Quark\Pages\get( $post_1->ID );
+		$the_post = get( $post_1->ID );
 
 		// Assert post's expected permalink is correct is equal to actual permalink.
 		$this->assertEquals(

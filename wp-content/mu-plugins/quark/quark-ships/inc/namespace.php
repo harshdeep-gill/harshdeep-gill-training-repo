@@ -29,6 +29,7 @@ function bootstrap(): void {
 
 	// Other hooks.
 	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
+	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_ship_code_lookup_cache' );
 
 	// Admin stuff.
 	if ( is_admin() ) {
@@ -230,4 +231,60 @@ function get( int $post_id = 0 ): array {
 
 	// Return data.
 	return $data;
+}
+
+/**
+ * Convert ship code to ship post ID.
+ *
+ * @param string $ship_code The ship code.
+ *
+ * @return int
+ */
+function get_id_from_ship_code( string $ship_code = '' ): int {
+	// Check for cached version.
+	$cache_key = CACHE_KEY . '_all_ships';
+	$ships     = wp_cache_get( $cache_key, CACHE_GROUP );
+
+	// If cache not set, lets build it with a DB query.
+	if ( empty( $ships ) ) {
+		// Post Meta.
+		global $wpdb;
+		$ships = $wpdb->get_results(
+			"
+			SELECT
+				m.*
+			FROM
+				$wpdb->postmeta AS m
+			WHERE
+				m.meta_key = 'ship_id'
+			",
+			ARRAY_A
+		);
+
+		// Set cache and return data.
+		wp_cache_set( $cache_key, $ships, CACHE_GROUP );
+	}
+
+	// Find the ship code.
+	foreach ( $ships as $ship ) {
+		if ( $ship_code === $ship['meta_value'] ) {
+			return $ship['post_id'];
+		}
+	}
+
+	// Not found, return 0.
+	return 0;
+}
+
+/**
+ * Bust Ship code lookup cache.
+ *
+ * @return void
+ */
+function bust_ship_code_lookup_cache(): void {
+	// Delete the code cache.
+	wp_cache_delete( CACHE_KEY . '_all_ships', CACHE_GROUP );
+
+	// Trigger action to clear cache.
+	do_action( 'qe_ship_code_lookup_cache_busted' );
 }

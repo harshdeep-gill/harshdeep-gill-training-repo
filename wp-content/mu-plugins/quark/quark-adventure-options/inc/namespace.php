@@ -120,7 +120,7 @@ function register_adventure_option_category_taxonomy(): void {
 		'labels'            => $labels,
 		'public'            => false,
 		'show_in_nav_menus' => false,
-		'show_ui'           => true,
+		'show_ui'           => false,
 		'show_tagcloud'     => false,
 		'show_admin_column' => true,
 		'hierarchical'      => true,
@@ -276,6 +276,61 @@ function get( int $post_id = 0 ): array {
 
 	// Set cache and return data.
 	wp_cache_set( $cache_key, $data, CACHE_GROUP );
+
+	// Return data.
+	return $data;
+}
+
+/**
+ * Get data for adventure options cards.
+ *
+ * @param int[] $post_ids Post IDs.
+ *
+ * @return array<mixed>{
+ *    title: string,
+ *    permalink: string,
+ *    featured_image: int,
+ *    excerpt: string,
+ * }[]
+ */
+function get_cards_data( array $post_ids = [] ): array {
+	// Check if post ids exist.
+	if ( empty( $post_ids ) ) {
+		return [];
+	}
+
+	// Initialize data.
+	$data = [];
+
+	// Loop through the post ids.
+	foreach ( $post_ids as $post_id ) {
+		$post = get( $post_id );
+
+		// Initialize $term_name.
+		$term_name = '';
+
+		// Check if terms are available.
+		if (
+			! empty( $post['post_taxonomies'][ ADVENTURE_OPTION_CATEGORY ] ) &&
+			is_array( $post['post_taxonomies'][ ADVENTURE_OPTION_CATEGORY ] )
+		) {
+			// Get the term names and extract the first one.
+			$term_names = wp_list_pluck( $post['post_taxonomies'][ ADVENTURE_OPTION_CATEGORY ], 'name' );
+			$term_name  = array_shift( $term_names );
+		}
+
+		// Build post data.
+		$post_data = [
+			'title'          => $post['post']?->post_title ?? '',
+			'permalink'      => $post['permalink'],
+			'featured_image' => $post['post_thumbnail'],
+			'excerpt'        => get_the_excerpt( $post['post']?->ID ),
+			'term'           => $term_name,
+		];
+
+		// Add data to array.
+		$data[] = $post_data;
+	}
 
 	// Return data.
 	return $data;
