@@ -1,0 +1,19 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "quark/product-cards-buttons",
+  "description": "Individual Card Buttons for product cards.",
+  "icon": "screenoptions",
+  "title": "Card Buttons",
+  "keywords": [ "buttons" ],
+  "category": "layout",
+  "textdomain": "quark",
+  "parent": [ "quark/product-cards-card" ],
+  "attributes": {},
+  "supports": {
+    "alignWide": false,
+    "className": false,
+    "html": false,
+    "customClassName": false
+  }
+}

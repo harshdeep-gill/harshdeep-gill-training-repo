@@ -1,0 +1,28 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "quark/product-cards-itinerary",
+  "description": "Individual Card Itinerary for product cards.",
+  "icon": "screenoptions",
+  "title": "Card Itinerary",
+  "keywords": [ "itinerary" ],
+  "category": "layout",
+  "textdomain": "quark",
+  "parent": [ "quark/product-cards-card" ],
+  "attributes": {
+    "departureDate": {
+      "type": "string",
+      "default": ""
+    },
+    "durationText": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "supports": {
+    "alignWide": false,
+    "className": false,
+    "html": false,
+    "customClassName": false
+  }
+}

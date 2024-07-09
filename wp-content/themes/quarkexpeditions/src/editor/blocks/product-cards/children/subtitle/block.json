@@ -1,0 +1,24 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "quark/product-cards-subtitle",
+  "description": "Individual Card Subtitle for product cards.",
+  "icon": "screenoptions",
+  "title": "Card Subtitle",
+  "keywords": [ "subtitle" ],
+  "category": "layout",
+  "textdomain": "quark",
+  "parent": [ "quark/product-cards-card" ],
+  "attributes": {
+    "subtitle": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "supports": {
+    "alignWide": false,
+    "className": false,
+    "html": false,
+    "customClassName": false
+  }
+}
