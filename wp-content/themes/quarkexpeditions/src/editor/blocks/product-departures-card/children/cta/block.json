@@ -1,0 +1,19 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "quark/product-departures-card-cta",
+  "description": "Card CTA Button for Product Departure Card",
+  "icon": "screenoptions",
+  "title": "Card CTA",
+  "keywords": [ "cta", "button" ],
+  "category": "layout",
+  "textdomain": "quark",
+  "parent": [ "quark/product-departures-card" ],
+  "attributes": {},
+  "supports": {
+    "alignWide": false,
+    "className": false,
+    "html": false,
+    "customClassName": false
+  }
+}
