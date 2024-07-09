@@ -13,7 +13,7 @@
 	"textdomain": "qrk",
 	"attributes": {},
 	"parent": [
-		"quark/hero"
+		"quark/hero-content"
 	],
 	"supports": {
 		"alignWide": false,

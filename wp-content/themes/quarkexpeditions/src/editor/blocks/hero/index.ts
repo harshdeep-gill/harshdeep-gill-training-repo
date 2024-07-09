@@ -35,6 +35,7 @@ import '../../../front-end/components/hero/style.scss';
 /**
  * Children.
  */
+import * as heroContent from './children/hero-content';
 import * as heroContentLeft from './children/hero-content-left';
 import * as heroContentRight from './children/hero-content-right';
 import * as heroDescription from './children/hero-description';
@@ -50,6 +51,7 @@ export const init = (): void => {
 	registerBlockType( name, settings );
 
 	// Register children.
+	registerBlockType( heroContent.name, heroContent.settings );
 	registerBlockType( heroContentLeft.name, heroContentLeft.settings );
 	registerBlockType( heroContentRight.name, heroContentRight.settings );
 	registerBlockType( heroDescription.name, heroDescription.settings );

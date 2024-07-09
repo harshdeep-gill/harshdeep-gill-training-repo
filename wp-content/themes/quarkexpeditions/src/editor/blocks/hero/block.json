@@ -13,9 +13,9 @@
 		"image": {
 			"type": "object"
 		},
-		"isImmersive": {
-			"type": "boolean",
-			"default": false
+		"immersive": {
+			"type": "string",
+			"default": "no"
 		},
 		"textAlign": {
 			"type": "string",
