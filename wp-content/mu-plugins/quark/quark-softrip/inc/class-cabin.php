@@ -130,7 +130,7 @@ class Cabin extends Data_Object {
 	/**
 	 * Format incoming data.
 	 *
-	 * @param mixed[] $data The data to format.
+	 * @param array<string, mixed> $data The data to format.
 	 *
 	 * @return mixed[]
 	 */
