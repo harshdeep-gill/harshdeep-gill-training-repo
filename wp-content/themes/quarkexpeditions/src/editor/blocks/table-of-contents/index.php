@@ -7,13 +7,13 @@
 
 namespace Quark\Theme\Blocks\TableOfContents;
 
+use WP_Block;
 use DOMDocument;
 use DOMNode;
 use DOMNodeList;
 use DOMXPath;
 
-const BLOCK_NAME = 'quark/table-of-contents';
-const COMPONENT  = 'table-of-contents';
+const COMPONENT = 'table-of-contents';
 
 /**
  * Bootstrap this block.
@@ -21,37 +21,33 @@ const COMPONENT  = 'table-of-contents';
  * @return void
  */
 function bootstrap(): void {
-	// Register this block only on the front-end.
-	add_action( 'template_redirect', __NAMESPACE__ . '\\register' );
-}
-
-/**
- * Register block on the front-end.
- *
- * @return void
- */
-function register(): void {
-	// Fire hooks.
-	add_filter( 'pre_render_block', __NAMESPACE__ . '\\render', 10, 2 );
+	// Register the block.
+	register_block_type_from_metadata(
+		__DIR__,
+		[
+			'render_callback' => __NAMESPACE__ . '\\render',
+		]
+	);
 }
 
 /**
  * Render this block.
  *
- * @param string|null $content Original content.
- * @param mixed[]     $block   Parsed block.
+ * @param mixed[]  $attributes The block attributes.
+ * @param string   $content    The block content.
+ * @param WP_Block $block      The block instance.
  *
- * @return null|string
+ * @return string The block markup.
  */
-function render( ?string $content = null, array $block = [] ): null|string {
+function render( array $attributes = [], string $content = '', WP_Block $block = null ): string {
 	// Check for block.
-	if ( BLOCK_NAME !== $block['blockName'] ) {
+	if ( ! $block instanceof WP_Block ) {
 		return $content;
 	}
 
-	// Initialize items.
-	$attributes = [
-		'title'    => $block['attrs']['title'] ?? '',
+	// Initialize Attributes.
+	$component_attributes = [
+		'title'    => $attributes['title'],
 		'contents' => [],
 	];
 
@@ -75,7 +71,7 @@ function render( ?string $content = null, array $block = [] ): null|string {
 			foreach ( $headings as $heading ) {
 				// Check instance type.
 				if ( $heading instanceof DOMNode ) {
-					$attributes['contents'][] = [
+					$component_attributes['contents'][] = [
 						// phpcs:disable WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 						'title'  => $heading->textContent,
 						'anchor' => sanitize_title( $heading->textContent ),
@@ -87,5 +83,5 @@ function render( ?string $content = null, array $block = [] ): null|string {
 	}
 
 	// Return rendered component.
-	return quark_get_component( COMPONENT, $attributes );
+	return quark_get_component( COMPONENT, $component_attributes );
 }
