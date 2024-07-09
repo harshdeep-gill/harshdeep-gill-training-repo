@@ -1,0 +1,110 @@
+@import "../../../scss";
+
+.header {
+	background: var(--color-black);
+	color: var(--color-white);
+	display: flex;
+	align-items: center;
+	height: var(--header-height);
+	padding: 0 var(--spacing-5);
+	position: sticky;
+	top: var(--wp-admin-bar-height);
+	z-index: 99;
+	gap: var(--spacing-4);
+
+	@media screen and (min-width: grid-size(xxxl)) {
+		gap: var(--spacing-5);
+		padding: 0 80px;
+	}
+
+	> *:nth-child(3) {
+		margin-left: auto;
+	}
+
+	a {
+
+		@include transition();
+
+		color: var(--color-white);
+		transition-property: background-color, border-color, color;
+		text-decoration: none;
+	}
+
+	&__logo {
+		display: inline-flex;
+		overflow: hidden;
+
+		svg {
+			width: 157px;
+			height: auto;
+		}
+	}
+
+	&__cta-buttons {
+		display: flex;
+		gap: var(--spacing-4);
+		margin-left: auto;
+
+		@media screen and (min-width: grid-size(md)) {
+			margin-left: 0;
+		}
+
+		@media screen and (min-width: grid-size(xxxl)) {
+			gap: var(--spacing-5);
+		}
+	}
+
+	&__request-quote-btn {
+		display: none;
+
+		@media screen and (min-width: grid-size(md)) {
+			display: inline-block;
+		}
+	}
+
+	&__phone-btn {
+		font-size: 0;
+		display: inline-flex;
+		align-items: center;
+		min-width: 56px;
+
+		@media screen and (min-width: grid-size(xxxl)) {
+			font-size: inherit;
+		}
+
+		svg {
+			height: 21px;
+			width: 21px;
+
+			@media screen and (min-width: grid-size(xxxl)) {
+				height: 16px;
+				width: 16px;
+				margin-right: var(--spacing-3);
+			}
+		}
+	}
+
+	&__drawer-quick-links {
+		list-style: none;
+		margin-top: var(--spacing-6);
+		padding-left: 0;
+
+		li + li {
+			margin-top: var(--spacing-3);
+		}
+
+		a {
+			text-decoration: none;
+
+			&:hover {
+				text-decoration: underline;
+			}
+		}
+	}
+
+	&__drawer-request-quote-btn {
+		display: block;
+		margin-top: var(--spacing-7);
+		width: 100%;
+	}
+}

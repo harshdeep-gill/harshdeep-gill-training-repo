@@ -1,0 +1,26 @@
+.post-author-info {
+	display: flex;
+	gap: var(--spacing-4);
+	margin: var(--spacing-5) 0 40px 0;
+
+	&__info {
+
+		> * {
+			margin-bottom: 0;
+		}
+	}
+
+	&__duration {
+		font-size: var(--font-size-small);
+	}
+
+	&__name {
+		font-weight: var(--font-weight-bold);
+	}
+
+	&__image {
+		height: 56px;
+		width: 56px;
+		border-radius: var(--border-radius);
+	}
+}

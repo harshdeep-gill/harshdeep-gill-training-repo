@@ -59,7 +59,7 @@
     "webpack-watched-glob-entries-plugin": "^3.0.0"
   },
   "dependencies": {
-    "@travelopia/web-components": "^0.5.26",
+    "@travelopia/web-components": "^0.6.2",
     "glightbox": "^3.3.0",
     "normalize.css": "^8.0.1"
   }

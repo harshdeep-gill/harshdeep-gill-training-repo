@@ -1,0 +1,31 @@
+.post-author-info {
+	--author-image-height: 56px;
+
+	.gumponents-select-image {
+		overflow: visible;
+
+		.components-placeholder {
+			align-items: center;
+			justify-content: center;
+		}
+
+		&__inline-menu {
+			top: -20px;
+		}
+	}
+
+	&__image.gumponents-select-image {
+		height: auto;
+	}
+
+	img.gumponents-select-image__img {
+		height: var(--author-image-height) !important;
+		border-radius: var(--border-radius);
+	}
+
+	.gumponents-select-image:not(.gumponents-select-image--selected) {
+		width: var(--author-image-height);
+		height: var(--author-image-height);
+		max-height: none !important;
+	}
+}

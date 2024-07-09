@@ -8,8 +8,11 @@
 namespace Quark\Blog;
 
 use WP_Post;
+use WP_Term;
 
+use function Quark\Blog\Authors\get as get_post_authors;
 use function Quark\Core\prepare_content_with_blocks;
+use function yoast_get_primary_term_id;
 
 const POST_TYPE        = 'post';
 const CACHE_KEY        = POST_TYPE;
@@ -32,6 +35,9 @@ function bootstrap(): void {
 	// Other hooks.
 	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
 
+	// Breadcrumbs.
+	add_filter( 'travelopia_breadcrumbs_ancestors', __NAMESPACE__ . '\\breadcrumbs_ancestors' );
+
 	// Admin stuff.
 	if ( is_admin() || ( defined( 'WP_CLI' ) && true === WP_CLI ) ) {
 		add_filter( 'post_type_labels_' . POST_TYPE, __NAMESPACE__ . '\\update_blog_posts_admin_menu_label' );
@@ -39,6 +45,9 @@ function bootstrap(): void {
 		// Custom fields.
 		require_once __DIR__ . '/../custom-fields/blog.php';
 	}
+
+	// Other hooks.
+	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
 }
 
 /**
@@ -103,18 +112,18 @@ function update_blog_posts_admin_menu_label( object $labels = null ): object {
 }
 
 /**
- * Busts cache for this post type.
+ * Bust cache when a post is saved.
  *
  * @param int $post_id Post ID.
  *
  * @return void
  */
 function bust_post_cache( int $post_id = 0 ): void {
-	// Clear cache for this post.
+	// Delete the post cache.
 	wp_cache_delete( CACHE_KEY . "_$post_id", CACHE_GROUP );
 
 	// Trigger action to clear cache for this post.
-	do_action( 'qe_blog_post_cache_busted', $post_id );
+	do_action( 'qe_post_cache_busted', $post_id );
 }
 
 /**
@@ -277,4 +286,177 @@ function calculate_post_reading_time( int $post_id = 0, WP_Post $post = null ): 
 
 	// Save data to post meta.
 	update_post_meta( $post_id, 'read_time_minutes', absint( $minutes ) );
+}
+
+/**
+ * Get data for blog post cards.
+ *
+ * @param int[] $post_ids Post IDs.
+ *
+ * @return array<mixed>{
+ *    post: array<mixed>,
+ *    title: string,
+ *    permalink: string,
+ *    featured_image: int,
+ *    excerpt: string,
+ *    authors: mixed[],
+ *    read_time: int,
+ *    taxonomies: array<mixed>,
+ * }[]
+ */
+function get_cards_data( array $post_ids = [] ): array {
+	// Check if post ids exist.
+	if ( empty( $post_ids ) ) {
+		return [];
+	}
+
+	// Initialize data.
+	$data = [];
+
+	// Loop through the post ids.
+	foreach ( $post_ids as $post_id ) {
+		$post = get( $post_id );
+
+		// Get blog author ids.
+		$blog_author_ids = (array) $post['post_meta']['blog_authors'] ?: [];
+
+		// Initialize authors data.
+		$authors_data = [];
+
+		// Loop through blog author ids.
+		foreach ( $blog_author_ids as $blog_author_id ) {
+			$authors_data[] = get_post_authors( absint( $blog_author_id ) );
+		}
+
+		// Build post data.
+		$post_data = [
+			'post'           => $post['post'] ?: [],
+			'title'          => $post['post']?->post_title ?? '',
+			'permalink'      => $post['permalink'] ?: '',
+			'featured_image' => $post['post_thumbnail'] ?: 0,
+			'excerpt'        => get_the_excerpt( $post['post']?->ID ),
+			'authors'        => $authors_data,
+			'read_time'      => array_key_exists( 'read_time_minutes', $post['post_meta'] ) ? absint( $post['post_meta']['read_time_minutes'] ) : 0,
+			'taxonomies'     => $post['post_taxonomies'] ?: [],
+		];
+
+		// Add blog post data to array.
+		$data[] = $post_data;
+	}
+
+	// Return data.
+	return $data;
+}
+
+/**
+ * Get blog post author info.
+ *
+ * @param int $post_id Post ID.
+ *
+ * @return array{
+ *      authors : array{
+ *          array{
+ *           title: string,
+ *           image_id: int,
+ *       }
+ *      }|array{},
+ *      duration : int,
+ * }
+ */
+function get_blog_post_author_info( int $post_id = 0 ): array {
+	// Initialize attributes.
+	$attributes = [
+		'authors'  => [],
+		'duration' => 0,
+	];
+
+	// Get post ID.
+	if ( 0 === $post_id ) {
+		$post_id = absint( get_the_ID() );
+	}
+
+	// Get post.
+	$post = get( $post_id );
+
+	// Bail if post does not exist or not an instance of WP_Post.
+	if ( empty( $post['post'] ) || ! $post['post'] instanceof WP_Post ) {
+		return $attributes;
+	}
+
+	// Get blog author ids.
+	$blog_author_ids = (array) $post['post_meta']['blog_authors'] ?: [];
+
+	// Loop through blog author ids.
+	foreach ( $blog_author_ids as $blog_author_id ) {
+		$authors_data = get_post_authors( absint( $blog_author_id ) );
+
+		// Break the loop if authors data is not empty.
+		if ( ! empty( $authors_data['post'] ) ) {
+			$attributes['authors'][] = [
+				'title'    => $authors_data['post']->post_title,
+				'image_id' => $authors_data['post_thumbnail'],
+			];
+		}
+	}
+
+	// Set attributes.
+	$attributes['duration'] = ! empty( $post['post_meta']['read_time_minutes'] ) ? absint( $post['post_meta']['read_time_minutes'] ) : 0;
+
+	// Return attributes.
+	return $attributes;
+}
+
+/**
+ * Breadcrumbs ancestors for this post type.
+ *
+ * @param mixed[] $breadcrumbs Breadcrumbs.
+ *
+ * @return mixed[]
+ */
+function breadcrumbs_ancestors( array $breadcrumbs = [] ): array {
+	// Check if current query is for this post type.
+	if ( ! ( is_singular( POST_TYPE ) || is_author() || is_category() ) ) {
+		return $breadcrumbs;
+	}
+
+	// Get archive page.
+	$blog_archive_page = absint( get_option( 'page_for_posts', 0 ) );
+
+	// Get it's title and URL for breadcrumbs if it's set.
+	if ( ! empty( $blog_archive_page ) ) {
+		$breadcrumbs[] = [
+			'title' => get_the_title( $blog_archive_page ),
+			'url'   => get_permalink( $blog_archive_page ),
+		];
+	}
+
+	// Get post ID.
+	$post_id = get_the_ID();
+
+	// Get primary category for post.
+	if ( ! $post_id ) {
+		return $breadcrumbs;
+	}
+
+	// Get primary category.
+	$primary_category_id = yoast_get_primary_term_id( 'category', $post_id );
+
+	// Get term.
+	if ( ! is_int( $primary_category_id ) ) {
+		return $breadcrumbs;
+	}
+
+	// Get primary category term.
+	$primary_category = get_term( $primary_category_id, 'category' );
+
+	// Add primary category to breadcrumbs.
+	if ( $primary_category instanceof WP_Term ) {
+		$breadcrumbs[] = [
+			'title' => $primary_category->name,
+			'url'   => get_term_link( $primary_category ),
+		];
+	}
+
+	// Return updated breadcrumbs.
+	return $breadcrumbs;
 }
