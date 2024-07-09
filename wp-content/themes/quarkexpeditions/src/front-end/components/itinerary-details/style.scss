@@ -1,0 +1,101 @@
+/**
+ * Itinerary Details.
+ */
+
+@import "~@travelopia/web-components/dist/tabs/style.css";
+@import "../../scss";
+
+.itinerary-details {
+	$self: &;
+
+	min-width: 0;
+	display: block;
+
+	tp-tabs-nav {
+		display: block;
+
+		@media screen and (min-width: grid-size(lg)) {
+			max-width: 256px;
+		}
+	}
+
+	&__tabs {
+		display: flex;
+		gap: var(--spacing-6);
+	}
+
+	&__tabs-content {
+		position: relative;
+		flex: 1;
+		min-width: 0;
+
+		@include transition(height, 0.4s);
+	}
+
+	&__tab {
+		position: absolute;
+		left: 0;
+		top: 0;
+		width: 100%;
+		height: auto;
+		visibility: hidden;
+		opacity: 0;
+		min-width: 0;
+		display: block;
+		min-height: 142px;
+
+		@include transition(opacity, 0.4s);
+
+		transition-property: opacity, visibility;
+
+		&[open="yes"] {
+			visibility: visible;
+			opacity: 1;
+		}
+
+		> *:not(:first-child) {
+			margin-top: var(--spacing-8);
+		}
+	}
+
+	&__tabs-nav {
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-4);
+	}
+
+	&__tabs-nav-link {
+		background-color: var(--color-gray-5);
+		border: 1px solid var(--color-gray-20);
+		border-radius: var(--border-radius-large);
+		box-shadow: var(--shadow-1);
+		display: block;
+		padding: var(--spacing-5);
+		text-decoration: none;
+
+		&:hover {
+			background-color: var(--color-white);
+			text-decoration: none;
+
+			#{$self}__tabs-nav-item-title {
+				text-decoration: underline;
+				text-decoration-color: var(--color-yellow);
+			}
+		}
+
+		#{$self}__tabs-nav-item[active="yes"] & {
+			background-color: var(--color-black);
+			color: var(--color-white);
+		}
+	}
+
+	&__tabs-nav-item-title {
+		font-weight: var(--font-weight-bold);
+		text-transform: capitalize;
+	}
+
+	&__summary {
+		display: flex;
+		gap: var(--spacing-6);
+	}
+}

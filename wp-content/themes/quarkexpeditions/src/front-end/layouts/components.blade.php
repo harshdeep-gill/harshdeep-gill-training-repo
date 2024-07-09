@@ -605,6 +605,70 @@
 		</x-section>
 	</x-component-demo>
 
+	<x-component-demo :keys="['itinerary-details']">
+		<x-section>
+			<x-itinerary-details>
+				<x-itinerary-details.tabs-nav>
+					<x-itinerary-details.tabs-nav-item id="tab-1">
+						<x-itinerary-details.tabs-nav-item-title title="11 days" />
+						<x-itinerary-details.tabs-nav-item-subtitle subtitle="From Ushuaia, Argentinian Ultramarine" />
+					</x-itinerary-details.tabs-nav-item>
+					<x-itinerary-details.tabs-nav-item id="tab-2">
+						<x-itinerary-details.tabs-nav-item-title title="12 days" />
+						<x-itinerary-details.tabs-nav-item-subtitle subtitle="From Buenos Aires, Argentinian Ultramarine" />
+					</x-itinerary-details.tabs-nav-item>
+					<x-itinerary-details.tabs-nav-item id="tab-3">
+						<x-itinerary-details.tabs-nav-item-title title="12 days" />
+						<x-itinerary-details.tabs-nav-item-subtitle subtitle="From Buenos Aires, Argentinian Ultramarine" />
+					</x-itinerary-details.tabs-nav-item>
+				</x-itinerary-details.tabs-nav>
+		
+				<x-itinerary-details.tabs>
+					<x-itinerary-details.tab id="tab-1" open="yes">
+						<x-itinerary-details.summary>
+							<x-itinerary-details.summary-content>
+								<dl>
+									<dt>Duration</dt>
+									<dd>11 Days</dd>
+
+									<dt>Departing from</dt>
+									<dd>Ushuaia, Argentina</dd>
+
+									<dt>Ship</dt>
+									<dd>
+										Ultramarine
+										<br>
+										<a>Learn more about the ship</a>
+									</dd>
+
+									<dt>Starting from</dt>
+									<dd>$ X,XXX USD per person</dd>
+								</dl>
+								
+								<x-button size="big" color="black" href="#">Download Brochure</x-button>
+							</x-itinerary-details.summary-content>
+							<x-itinerary-details.map-lightbox name="map-lightbox" image_id="26" />
+						</x-itinerary-details.summary>
+						<x-itinerary-details.details>
+							Accordion will add here later.
+							<h5>Day 1: Arrive in Punta Arenas, Chile</h5>
+							<p>Lorem ipsum dolor sit amet consectetur. Imperdiet sed quam quis morbi ipsum sed odio. Ut dui mi in sed amet quis porttitor nibh. Ac phasellus sit facilisis vestibulum. Quis luctus ornare tortor justo commodo elementum.</p>
+
+						</x-itinerary-details.details>
+					</x-itinerary-details.tab>
+
+					<x-itinerary-details.tab id="tab-2">
+						Tab 2
+					</x-itinerary-details.tab>
+
+					<x-itinerary-details.tab id="tab-3">
+						Tab 3
+					</x-itinerary-details.tab>
+				</x-itinerary-details.tabs>
+			</x-itinerary-details>
+		</x-section>
+	</x-component-demo>
+
 	<x-component-demo :keys="['simple-cards']">
 		<x-section title="Off Ship Adventure" :background="true" background_color="black" title_align="left">
 			<x-simple-cards>
