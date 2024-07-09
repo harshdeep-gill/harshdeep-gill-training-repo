@@ -109,14 +109,6 @@ class Itinerary extends Softrip_Object {
 		// Ensure departures loaded.
 		$this->ensure_departures_loaded();
 
-		// Check last update time.
-		$last_update = $this->get_post_meta( 'last_updated' );
-
-		// Update if older than 4 hours.
-		if ( empty( $last_update ) || time() > $last_update + ( HOUR_IN_SECONDS * 4 ) ) {
-			$this->update_departures();
-		}
-
 		// Return the list of departures.
 		return $this->departures;
 	}
