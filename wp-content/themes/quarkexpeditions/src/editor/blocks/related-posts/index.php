@@ -13,45 +13,18 @@ use function Quark\Blog\get_cards_data;
 
 use const Quark\Blog\POST_TYPE as BLOG_POST_TYPE;
 
-const BLOCK_NAME = 'quark/related-posts';
-const COMPONENT  = 'parts.related-posts';
+const COMPONENT = 'parts.related-posts';
 
 /**
- * Block initialization.
+ * Bootstrap this block.
  *
  * @return void
  */
 function bootstrap(): void {
-	// Avoid registering in admin to fix a conflict with Blade views.
-	if ( ! is_admin() ) {
-		add_action( 'wp_loaded', __NAMESPACE__ . '\\register' );
-	}
-}
-
-/**
- * Register block on the front-end.
- *
- * @return void
- */
-function register(): void {
-	// Register block.
-	register_block_type(
-		BLOCK_NAME,
+	// Register the block.
+	register_block_type_from_metadata(
+		__DIR__,
 		[
-			'attributes'      => [
-				'selection'  => [
-					'type'    => 'string',
-					'default' => 'recent',
-				],
-				'ids'        => [
-					'type'    => 'array',
-					'default' => [],
-				],
-				'totalPosts' => [
-					'type'    => 'number',
-					'default' => 3,
-				],
-			],
 			'render_callback' => __NAMESPACE__ . '\\render',
 		]
 	);
@@ -60,9 +33,9 @@ function register(): void {
 /**
  * Render this block.
  *
- * @param mixed[] $attributes Block attributes.
+ * @param mixed[] $attributes The block attributes.
  *
- * @return string
+ * @return string The block markup.
  */
 function render( array $attributes = [] ): string {
 	// Build query args.
@@ -91,7 +64,7 @@ function render( array $attributes = [] ): string {
 		$args['posts_per_page'] = count( $attributes['ids'] ); // phpcs:ignore
 	}
 
-	// Get posts.
+	// Query posts.
 	$posts = new WP_Query( $args );
 
 	// Get posts in array format of IDs.
