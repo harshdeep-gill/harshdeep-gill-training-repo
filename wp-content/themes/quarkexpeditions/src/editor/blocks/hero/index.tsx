@@ -7,7 +7,6 @@ import {
 	PanelBody,
 	RangeControl,
 	SelectControl,
-	ToggleControl,
 } from '@wordpress/components';
 import {
 	InspectorControls,
@@ -26,6 +25,7 @@ import './editor.scss';
  * Internal dependencies.
  */
 import Section from '../../components/section';
+import * as breadCrumbs from '../breadcrumbs';
 
 /**
  * External dependencies.
@@ -44,14 +44,12 @@ const {
 /**
  * Children blocks
  */
-import * as heroContentLeft from './hero-content-left';
-import * as heroContentRight from './hero-content-right';
+import * as heroContent from './hero-content';
 
 /**
  * Register child block.
  */
-registerBlockType( heroContentLeft.name, heroContentLeft.settings );
-registerBlockType( heroContentRight.name, heroContentRight.settings );
+registerBlockType( heroContent.name, heroContent.settings );
 
 /**
  * Block name.
@@ -73,9 +71,9 @@ export const settings: BlockConfiguration = {
 		image: {
 			type: 'object',
 		},
-		isImmersive: {
-			type: 'boolean',
-			default: false,
+		immersive: {
+			type: 'string',
+			default: 'no',
 		},
 		textAlign: {
 			type: 'string',
@@ -99,16 +97,18 @@ export const settings: BlockConfiguration = {
 			className: classnames(
 				className,
 				'hero',
-				attributes.isImmersive ? 'hero--immersive' : ''
+				[ 'top', 'bottom', 'all', 'no' ].find(
+					( value: string ) => value === attributes.immersive
+				) ? `hero--immersive-${ attributes.immersive }` : ''
 			),
 		} );
 
 		// eslint-disable-next-line react-hooks/rules-of-hooks
 		const innerBlockProps = useInnerBlocksProps(
-			{ className: 'hero__content' },
+			{ className: 'hero__wrap' },
 			{
-				allowedBlocks: [ heroContentLeft.name, heroContentRight.name ],
-				template: [ [ heroContentLeft.name ], [ heroContentRight.name ] ],
+				allowedBlocks: [ heroContent.name, breadCrumbs.name ],
+				template: [ [ breadCrumbs.name ], [ heroContent.name ] ],
 			}
 		);
 
@@ -131,11 +131,17 @@ export const settings: BlockConfiguration = {
 							min={ 0 }
 							max={ 100 }
 						/>
-						<ToggleControl
-							label={ __( 'Immersive Mode', 'qrk' ) }
-							checked={ attributes.isImmersive }
-							help={ __( 'Is this hero immersive?', 'qrk' ) }
-							onChange={ ( isImmersive: boolean ) => setAttributes( { isImmersive } ) }
+						<SelectControl
+							label={ __( 'Immersive mode', 'qrk' ) }
+							help={ __( 'Select the immersive mode', 'qrk' ) }
+							value={ attributes.immersive }
+							options={ [
+								{ label: __( 'None', 'qrk' ), value: 'none' },
+								{ label: __( 'Top', 'qrk' ), value: 'top' },
+								{ label: __( 'Bottom', 'qrk' ), value: 'bottom' },
+								{ label: __( 'All', 'qrk' ), value: 'all' },
+							] }
+							onChange={ ( immersive: string ) => setAttributes( { immersive } ) }
 						/>
 						<SelectControl
 							label={ __( 'Text Alignment', 'qrk' ) }
@@ -156,15 +162,13 @@ export const settings: BlockConfiguration = {
 							backgroundColor: `rgba(0,0,0,${ attributes.overlayOpacity / 100 })`,
 						} }
 					></div>
-					<div className="hero__wrap">
-						{ attributes.image &&
-							<Img
-								className="hero__image"
-								value={ attributes.image }
-							/>
-						}
-						<div { ...innerBlockProps } />
-					</div>
+					{ attributes.image &&
+						<Img
+							className="hero__image"
+							value={ attributes.image }
+						/>
+					}
+					<div { ...innerBlockProps } />
 				</Section>
 			</>
 		);

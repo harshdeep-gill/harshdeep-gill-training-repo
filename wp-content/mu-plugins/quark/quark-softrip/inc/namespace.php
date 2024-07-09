@@ -25,9 +25,9 @@ function bootstrap(): void {
 /**
  * Request departures for an array of Softrip IDs.
  *
- * @param string[] $codes Softrip ID array, max 5.
+ * @param array<int, mixed> $codes Softrip ID array, max 5.
  *
- * @return array<string, mixed>|WP_Error
+ * @return mixed[]|WP_Error
  */
 function request_departures( array $codes = [] ): array|WP_Error {
 	// Strip out duplicates.

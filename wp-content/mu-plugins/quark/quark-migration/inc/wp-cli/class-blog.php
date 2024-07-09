@@ -327,7 +327,7 @@ class Blog {
 	 *
 	 * @return void
 	 */
-	public function blog_authors() {
+	public function blog_authors(): void {
 		// Welcome message.
 		WP_CLI::log( WP_CLI::colorize( '%YMigrating blog authors from Drupal...%n' ) );
 
