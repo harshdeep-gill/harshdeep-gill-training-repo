@@ -607,7 +607,7 @@
 
 	<x-component-demo :keys="['itinerary-details']">
 		<x-section>
-			<x-itinerary-details>
+			<x-itinerary-details current_tab="tab-1">
 				<x-itinerary-details.tabs-nav>
 					<x-itinerary-details.tabs-nav-item id="tab-1">
 						<x-itinerary-details.tabs-nav-item-title title="11 days" />
@@ -624,7 +624,7 @@
 				</x-itinerary-details.tabs-nav>
 		
 				<x-itinerary-details.tabs>
-					<x-itinerary-details.tab id="tab-1" open="yes">
+					<x-itinerary-details.tab id="tab-1">
 						<x-itinerary-details.summary>
 							<x-itinerary-details.summary-content>
 								<dl>
@@ -638,7 +638,7 @@
 									<dd>
 										Ultramarine
 										<br>
-										<a>Learn more about the ship</a>
+										<a href="#">Learn more about the ship</a>
 									</dd>
 
 									<dt>Starting from</dt>
@@ -650,7 +650,7 @@
 							<x-itinerary-details.map-lightbox name="map-lightbox" image_id="26" />
 						</x-itinerary-details.summary>
 						<x-itinerary-details.details>
-							Accordion will add here later.
+							Accordion will add here later.<br><br>
 							<h5>Day 1: Arrive in Punta Arenas, Chile</h5>
 							<p>Lorem ipsum dolor sit amet consectetur. Imperdiet sed quam quis morbi ipsum sed odio. Ut dui mi in sed amet quis porttitor nibh. Ac phasellus sit facilisis vestibulum. Quis luctus ornare tortor justo commodo elementum.</p>
 
