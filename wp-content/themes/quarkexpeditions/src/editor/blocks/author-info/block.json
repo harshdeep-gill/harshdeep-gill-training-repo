@@ -1,0 +1,25 @@
+{
+	"schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Author Info",
+	"name": "quark/author-info",
+	"description": "Display a Author Info block.",
+	"category": "layout",
+	"keywords": [
+		"author",
+		"info"
+	],
+	"textdomain": "qrk",
+	"attributes": {
+		"authorImage": {
+			"type": "object"
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

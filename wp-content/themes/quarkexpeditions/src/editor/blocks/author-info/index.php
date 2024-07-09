@@ -7,10 +7,12 @@
 
 namespace Quark\Theme\Blocks\AuthorInfo;
 
+use WP_Block;
+use WP_Block_List;
+
 use function Quark\Blog\get_blog_post_author_info;
 
-const BLOCK_NAME = 'quark/author-info';
-const COMPONENT  = 'parts.post-author-info';
+const COMPONENT = 'parts.post-author-info';
 
 /**
  * Bootstrap this block.
@@ -18,18 +20,13 @@ const COMPONENT  = 'parts.post-author-info';
  * @return void
  */
 function bootstrap(): void {
-	// Register this block only on the front-end.
-	add_action( 'template_redirect', __NAMESPACE__ . '\\register' );
-}
-
-/**
- * Register block on the front-end.
- *
- * @return void
- */
-function register(): void {
-	// Fire hooks.
-	add_filter( 'pre_render_block', __NAMESPACE__ . '\\render', 10, 2 );
+	// Register the block.
+	register_block_type_from_metadata(
+		__DIR__,
+		[
+			'render_callback' => __NAMESPACE__ . '\\render',
+		]
+	);
 }
 
 /**
@@ -41,7 +38,7 @@ function prepare_attributes(): array {
 	// Get author info.
 	$author_info = get_blog_post_author_info();
 
-	// init $attributes array.
+	// Initialize component attributes.
 	$attributes = [];
 
 	// Check if $author_info['authors'] has child array.
@@ -61,56 +58,62 @@ function prepare_attributes(): array {
 		$attributes['duration'] = $author_info['duration'];
 	}
 
-	// Return attributes.
+	// Return component attributes.
 	return $attributes;
 }
 
 /**
  * Render this block.
  *
- * @param string|null $content Original content.
- * @param mixed[]     $block   Parsed block.
+ * @param mixed[]  $attributes The block attributes.
+ * @param string   $content    The block content.
+ * @param WP_Block $block      The block instance.
  *
- * @return null|string
+ * @return string The block markup.
  */
-function render( ?string $content = null, array $block = [] ): null|string {
+function render( array $attributes = [], string $content = '', WP_Block $block = null ): string {
 	// Check for block.
-	if ( BLOCK_NAME !== $block['blockName'] ) {
+	if ( ! $block instanceof WP_Block ) {
 		return $content;
 	}
 
 	// Build component attributes.
-	$attributes = [
-		'image_id' => empty( $block['attrs']['authorImage']['id'] ) ? 0 : $block['attrs']['authorImage']['id'],
+	$component_attributes = [
+		'image_id' => is_array( $attributes['authorImage'] ) && isset( $attributes['authorImage']['id'] ) ? $attributes['authorImage']['id'] : 0,
 		'title'    => '',
 		'duration' => 0,
 	];
 
 	// Check if inner blocks are empty.
-	if ( ! empty( $block['innerBlocks'] ) ) {
+	if ( $block->inner_blocks instanceof WP_Block_List ) {
 		// Iterate through inner blocks.
-		foreach ( $block['innerBlocks'] as $inner_block ) {
-			switch ( $inner_block['blockName'] ) {
+		foreach ( $block->inner_blocks as $inner_block ) {
+			// Check for block.
+			if ( ! $inner_block instanceof WP_Block ) {
+				continue;
+			}
 
+			// Process inner block.
+			switch ( $inner_block->name ) {
 				// Author name block.
 				case 'quark/author-info-name':
-					$attributes['title'] = $inner_block['attrs']['title'] ?? '';
+					$component_attributes['title'] = $inner_block->attributes['title'];
 					break;
 
 				// Read time block.
 				case 'quark/author-info-read-time':
-					$attributes['duration'] = $inner_block['attrs']['duration'] ?? 0;
+					$component_attributes['duration'] = $inner_block->attributes['duration'];
 					break;
 			}
 		}
 	}
 
 	// Merge attributes.
-	$attributes = wp_parse_args(
+	$component_attributes = wp_parse_args(
 		prepare_attributes(),
-		$attributes
+		$component_attributes
 	);
 
 	// Return rendered component.
-	return quark_get_component( COMPONENT, $attributes );
+	return quark_get_component( COMPONENT, $component_attributes );
 }
