@@ -9,7 +9,8 @@ namespace Quark\Softrip;
 
 use WP_UnitTestCase;
 use WP_Post;
-use Quark\Itineraries\POST_TYPE;
+
+use const Quark\Itineraries\POST_TYPE;
 
 /**
  * Class Test_Itinerary.

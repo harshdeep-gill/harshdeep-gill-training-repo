@@ -317,9 +317,9 @@ function get_id_from_cabin_code( string $cabin_id = '' ): int {
 			SELECT
 				m.*
 			FROM
-				$wpdb->postmeta as m
+				$wpdb->postmeta AS m
 			RIGHT JOIN
-				$wpdb->posts as p ON m.post_id = p.ID
+				$wpdb->posts AS p ON m.post_id = p.ID
 			WHERE
 				m.meta_key = 'cabin_category_id'
 			AND
