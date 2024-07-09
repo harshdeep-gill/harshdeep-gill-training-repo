@@ -2,18 +2,21 @@
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-import { BlockConfiguration } from '@wordpress/blocks';
+import { BlockConfiguration, registerBlockType } from '@wordpress/blocks';
 import {
 	PanelBody,
 	Placeholder,
 	BaseControl,
 	TextControl,
 	SelectControl,
+	ToggleControl,
 } from '@wordpress/components';
 import {
 	InspectorControls,
 	useBlockProps,
 	URLInput,
+	useInnerBlocksProps,
+	InnerBlocks,
 } from '@wordpress/block-editor';
 
 /**
@@ -37,6 +40,14 @@ export const colors: { [key: string]: string }[] = [
 	{ name: __( 'White', 'qrk' ), color: '#FFF', slug: 'white' },
 ];
 
+// Child blocks.
+import * as stepOneLandingForm from './landing-form';
+import * as stepTwoModalForm from './modal-form';
+
+// Register child blocks.
+registerBlockType( stepOneLandingForm.name, stepOneLandingForm.settings );
+registerBlockType( stepTwoModalForm.name, stepTwoModalForm.settings );
+
 /**
  * External dependencies.
  */
@@ -51,7 +62,7 @@ export const name: string = 'quark/form-two-step';
  * Block configuration settings.
  */
 export const settings: BlockConfiguration = {
-	apiVersion: 2,
+	apiVersion: 3,
 	title: __( 'Two Step Form', 'qrk' ),
 	description: __( 'Display a two step form.', 'qrk' ),
 	category: 'forms',
@@ -81,6 +92,10 @@ export const settings: BlockConfiguration = {
 			default: 'black',
 			enum: [ 'black', 'white' ],
 		},
+		showModalForm: {
+			type: 'boolean',
+			default: false,
+		},
 	},
 	supports: {
 		alignWide: false,
@@ -98,6 +113,16 @@ export const settings: BlockConfiguration = {
 				'white' === attributes.backgroundColor ? 'form-two-step--background-white' : '',
 			),
 		} );
+
+		// eslint-disable-next-line react-hooks/rules-of-hooks
+		const innerBlockProps = useInnerBlocksProps( {},
+			{
+				allowedBlocks: [ stepOneLandingForm.name, stepTwoModalForm.name ],
+				template: [
+					[ stepOneLandingForm.name ],
+				],
+			}
+		);
 
 		// Return the block's markup.
 		return (
@@ -129,6 +154,12 @@ export const settings: BlockConfiguration = {
 									setAttributes( { backgroundColor: backgroundColor.slug } );
 								}
 							} }
+						/>
+						<ToggleControl
+							label={ __( 'Show Modal Form?', 'qrk' ) }
+							checked={ attributes.showModalForm }
+							help={ __( 'Is this field required to be filled?', 'qrk' ) }
+							onChange={ ( showModalForm: boolean ) => setAttributes( { showModalForm } ) }
 						/>
 					</PanelBody>
 					<PanelBody title={ __( 'Two Step Form Hidden Fields', 'qrk' ) }>
@@ -169,6 +200,7 @@ export const settings: BlockConfiguration = {
 						icon="layout"
 					>
 						<p>{ __( 'This form will render on the front-end.', 'qrk' ) }</p>
+						<div { ...innerBlockProps } />
 					</Placeholder>
 				</div>
 			</>
@@ -176,6 +208,6 @@ export const settings: BlockConfiguration = {
 	},
 	save() {
 		// Don't save anything.
-		return null;
+		return <InnerBlocks.Content />;
 	},
 };

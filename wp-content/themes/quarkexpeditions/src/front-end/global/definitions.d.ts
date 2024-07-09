@@ -35,6 +35,12 @@ interface Window {
 		api( matcher: String ) : WistiaVideo | null;
 	},
 	_wq: WistiaVideoMatcher[] | null,
+	tpFormValidators: {
+		[key: string]: any;
+	},
+	tpFormErrors: {
+		[key: string]: any;
+	},
 }
 
 /**

@@ -53,6 +53,14 @@ function register_blocks(): void {
 		'FancyVideo'            => 'fancy-video.php',
 		'FormTwoStep'           => 'form-two-step.php',
 		'FormTwoStepCompact'    => 'form-two-step-compact.php',
+		'Footer'                => 'footer.php',
+		'Accordion'             => 'accordion.php',
+		'ThumbnailCards'        => 'thumbnail-cards.php',
+		'RelatedPosts'          => 'related-posts.php',
+		'Breadcrumbs'           => 'breadcrumbs.php',
+		'SidebarGrid'           => 'sidebar-grid.php',
+		'AuthorInfo'            => 'author-info.php',
+		'TableOfContents'       => 'table-of-contents.php',
 	];
 
 	// Register blocks.
