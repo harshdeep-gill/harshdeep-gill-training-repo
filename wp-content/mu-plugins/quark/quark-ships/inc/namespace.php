@@ -37,6 +37,7 @@ function bootstrap(): void {
 
 	// Other hooks.
 	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
+	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_ship_code_lookup_cache' );
 
 	// Admin stuff.
 	if ( is_admin() ) {
@@ -325,4 +326,17 @@ function get_id_from_ship_code( string $ship_code = '' ): int {
 
 	// Not found, return 0.
 	return 0;
+}
+
+/**
+ * Bust Ship code lookup cache.
+ *
+ * @return void
+ */
+function bust_ship_code_lookup_cache(): void {
+	// Delete the code cache.
+	wp_cache_delete( CACHE_KEY . '_all_ships', CACHE_GROUP );
+
+	// Trigger action to clear cache.
+	do_action( 'qe_ship_code_lookup_cache_busted' );
 }
