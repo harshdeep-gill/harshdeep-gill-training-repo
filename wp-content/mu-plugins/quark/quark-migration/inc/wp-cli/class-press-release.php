@@ -30,7 +30,7 @@ class Press_Release {
 	/**
 	 * Migrate all Press Release.
 	 *
-	 * @subcommand posts
+	 * @subcommand all
 	 *
 	 * @return void
 	 * @throws ExitException Exit on failure of command.
