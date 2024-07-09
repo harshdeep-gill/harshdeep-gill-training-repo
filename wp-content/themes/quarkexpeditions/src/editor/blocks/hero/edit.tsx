@@ -22,7 +22,7 @@ import './editor.scss';
  * Internal dependencies.
  */
 import Section from '../../components/section';
-import breadCrumbs from '../../blocks/breadcrumbs';
+import * as breadCrumbs from '../breadcrumbs';
 
 /**
  * External dependencies.

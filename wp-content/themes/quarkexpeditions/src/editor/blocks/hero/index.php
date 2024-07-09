@@ -43,7 +43,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 
 	// Initialize the component attributes.
 	$component_attributes = [
-		'image_id'        => $attributes['imageId'],
+		'image_id'        => 0,
 		'immersive'       => $attributes['immersive'],
 		'text_align'      => $attributes['textAlign'],
 		'overlay_opacity' => $attributes['overlayOpacity'],
