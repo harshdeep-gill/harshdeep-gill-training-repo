@@ -79,10 +79,15 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 
 	// Build component attributes.
 	$component_attributes = [
-		'image_id' => is_array( $attributes['authorImage'] ) && isset( $attributes['authorImage']['id'] ) ? $attributes['authorImage']['id'] : 0,
+		'image_id' => 0,
 		'title'    => '',
 		'duration' => 0,
 	];
+
+	// Add Image ID.
+	if ( ! empty( $attributes['authorImage'] ) && is_array( $attributes['authorImage'] ) && isset( $attributes['authorImage']['id'] ) ) {
+		$component_attributes['image_id'] = $attributes['authorImage']['id'];
+	}
 
 	// Check if inner blocks are empty.
 	if ( $block->inner_blocks instanceof WP_Block_List ) {

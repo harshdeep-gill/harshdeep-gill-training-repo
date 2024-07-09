@@ -7,8 +7,9 @@
 
 namespace Quark\Theme\Blocks\Accordion;
 
-const BLOCK_NAME = 'quark/accordion';
-const COMPONENT  = 'parts.accordion';
+use WP_Block;
+
+const COMPONENT = 'parts.accordion';
 
 /**
  * Bootstrap this block.
@@ -16,51 +17,49 @@ const COMPONENT  = 'parts.accordion';
  * @return void
  */
 function bootstrap(): void {
-	// Register this block only on the front-end.
-	add_action( 'template_redirect', __NAMESPACE__ . '\\register' );
-}
-
-/**
- * Register block on the front-end.
- *
- * @return void
- */
-function register(): void {
-	// Fire hooks.
-	add_filter( 'pre_render_block', __NAMESPACE__ . '\\render', 10, 2 );
+	// Register the block.
+	register_block_type_from_metadata(
+		__DIR__,
+		[
+			'render_callback' => __NAMESPACE__ . '\\render',
+		]
+	);
 }
 
 /**
  * Render this block.
  *
- * @param string|null $content Original content.
- * @param mixed[]     $block   Parsed block.
+ * @param mixed[]  $attributes The block attributes.
+ * @param string   $content    The block content.
+ * @param WP_Block $block      The block instance.
  *
- * @return null|string
+ * @return string The block markup.
  */
-function render( ?string $content = null, array $block = [] ): null|string {
+function render( array $attributes = [], string $content = '', WP_Block $block = null ): string {
 	// Check for block.
-	if ( BLOCK_NAME !== $block['blockName'] || empty( $block['innerBlocks'] ) || ! is_array( $block['innerBlocks'] ) ) {
+	if ( ! $block instanceof WP_Block ) {
 		return $content;
 	}
 
 	// Build component attributes.
-	$attributes = [
-		'has_border' => $block['attrs']['hasBorder'] ?? true,
+	$component_attributes = [
+		'has_border' => $attributes['hasBorder'],
 		'items'      => [],
 	];
 
 	// Build FAQ Schema.
-	$add_faq_schema = $block['attrs']['faqSchema'] ?? false;
+	$add_faq_schema = $attributes['faqSchema'];
 	$faq_schema     = [];
 
 	// Items.
-	foreach ( $block['innerBlocks'] as $inner_block ) {
+	foreach ( $block->inner_blocks as $inner_block ) {
+		// Check for block.
+		if ( ! $inner_block instanceof WP_Block ) {
+			continue;
+		}
+
 		// Check if inner block is for accordion item and has title.
-		if (
-			'quark/accordion-item' !== $inner_block['blockName'] ||
-			empty( $inner_block['attrs']['title'] )
-		) {
+		if ( 'quark/accordion-item' !== $inner_block->name ) {
 			continue;
 		}
 
@@ -68,16 +67,16 @@ function render( ?string $content = null, array $block = [] ): null|string {
 		$current_item = [];
 
 		// Add title.
-		$current_item['title'] = $inner_block['attrs']['title'] ?? '';
+		$current_item['title'] = $inner_block->attributes['title'] ?? '';
 
 		// Add content.
-		$current_item['content'] = implode( '', array_map( 'render_block', $inner_block['innerBlocks'] ) );
+		$current_item['content'] = implode( '', array_map( 'render_block', $inner_block->parsed_block['innerBlocks'] ) );
 
 		// Add isOpen attribute.
-		$current_item['open'] = $inner_block['attrs']['isOpen'] ?? false;
+		$current_item['open'] = $inner_block->attributes['isOpen'] ?? false;
 
 		// Add current item to array of items.
-		$attributes['items'][] = $current_item;
+		$component_attributes['items'][] = $current_item;
 
 		// Add FAQ schema items.
 		if ( $add_faq_schema ) {
@@ -96,7 +95,7 @@ function render( ?string $content = null, array $block = [] ): null|string {
 	add_faq_schema( $faq_schema );
 
 	// Return rendered component.
-	return quark_get_component( COMPONENT, $attributes );
+	return quark_get_component( COMPONENT, $component_attributes );
 }
 
 /**
