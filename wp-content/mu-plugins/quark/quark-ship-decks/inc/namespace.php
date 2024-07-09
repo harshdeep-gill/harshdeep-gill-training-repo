@@ -26,7 +26,7 @@ function bootstrap(): void {
 	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
 
 	// Admin stuff.
-	if ( is_admin() ) {
+	if ( is_admin() || ( defined( 'WP_CLI' ) && true === WP_CLI ) ) {
 		// Custom fields.
 		require_once __DIR__ . '/../custom-fields/ship-decks.php';
 	}

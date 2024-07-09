@@ -96,6 +96,7 @@
 
 		svg {
 			height: 56px;
+			display: block;
 			width: auto;
 
 			@media screen and (min-width: grid-size(sm)) {

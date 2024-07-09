@@ -8,9 +8,11 @@
 namespace Quark\Blog;
 
 use WP_Post;
+use WP_Term;
 
 use function Quark\Blog\Authors\get as get_post_authors;
 use function Quark\Core\prepare_content_with_blocks;
+use function yoast_get_primary_term_id;
 
 const POST_TYPE        = 'post';
 const CACHE_KEY        = POST_TYPE;
@@ -33,8 +35,11 @@ function bootstrap(): void {
 	// Other hooks.
 	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
 
+	// Breadcrumbs.
+	add_filter( 'travelopia_breadcrumbs_ancestors', __NAMESPACE__ . '\\breadcrumbs_ancestors' );
+
 	// Admin stuff.
-	if ( is_admin() ) {
+	if ( is_admin() || ( defined( 'WP_CLI' ) && true === WP_CLI ) ) {
 		add_filter( 'post_type_labels_' . POST_TYPE, __NAMESPACE__ . '\\update_blog_posts_admin_menu_label' );
 
 		// Custom fields.
@@ -260,6 +265,30 @@ function primary_term_taxonomies( array $taxonomies = [], string $post_type = ''
 }
 
 /**
+ * Calculate reading time for a post.
+ *
+ * @param int          $post_id Post ID.
+ * @param WP_Post|null $post    Post object.
+ *
+ * @return void
+ */
+function calculate_post_reading_time( int $post_id = 0, WP_Post $post = null ): void {
+	// Bail if not a post or post type does not match.
+	if ( ! $post instanceof WP_Post || POST_TYPE !== $post->post_type ) {
+		return;
+	}
+
+	// Get words count.
+	$words_count = str_word_count( wp_strip_all_tags( $post->post_content ) );
+
+	// Calculate reading time.
+	$minutes = ceil( $words_count / WORDS_PER_MINUTE );
+
+	// Save data to post meta.
+	update_post_meta( $post_id, 'read_time_minutes', absint( $minutes ) );
+}
+
+/**
  * Get data for blog post cards.
  *
  * @param int[] $post_ids Post IDs.
@@ -320,25 +349,114 @@ function get_cards_data( array $post_ids = [] ): array {
 }
 
 /**
- * Calculate reading time for a post.
+ * Get blog post author info.
  *
- * @param int          $post_id Post ID.
- * @param WP_Post|null $post    Post object.
+ * @param int $post_id Post ID.
  *
- * @return void
+ * @return array{
+ *      authors : array{
+ *          array{
+ *           title: string,
+ *           image_id: int,
+ *       }
+ *      }|array{},
+ *      duration : int,
+ * }
  */
-function calculate_post_reading_time( int $post_id = 0, WP_Post $post = null ): void {
-	// Bail if not a post or post type does not match.
-	if ( ! $post instanceof WP_Post || POST_TYPE !== $post->post_type ) {
-		return;
+function get_blog_post_author_info( int $post_id = 0 ): array {
+	// Initialize attributes.
+	$attributes = [
+		'authors'  => [],
+		'duration' => 0,
+	];
+
+	// Get post ID.
+	if ( 0 === $post_id ) {
+		$post_id = absint( get_the_ID() );
 	}
 
-	// Get words count.
-	$words_count = str_word_count( wp_strip_all_tags( $post->post_content ) );
+	// Get post.
+	$post = get( $post_id );
 
-	// Calculate reading time.
-	$minutes = ceil( $words_count / WORDS_PER_MINUTE );
+	// Bail if post does not exist or not an instance of WP_Post.
+	if ( empty( $post['post'] ) || ! $post['post'] instanceof WP_Post ) {
+		return $attributes;
+	}
 
-	// Save data to post meta.
-	update_post_meta( $post_id, 'read_time_minutes', absint( $minutes ) );
+	// Get blog author ids.
+	$blog_author_ids = (array) $post['post_meta']['blog_authors'] ?: [];
+
+	// Loop through blog author ids.
+	foreach ( $blog_author_ids as $blog_author_id ) {
+		$authors_data = get_post_authors( absint( $blog_author_id ) );
+
+		// Break the loop if authors data is not empty.
+		if ( ! empty( $authors_data['post'] ) ) {
+			$attributes['authors'][] = [
+				'title'    => $authors_data['post']->post_title,
+				'image_id' => $authors_data['post_thumbnail'],
+			];
+		}
+	}
+
+	// Set attributes.
+	$attributes['duration'] = ! empty( $post['post_meta']['read_time_minutes'] ) ? absint( $post['post_meta']['read_time_minutes'] ) : 0;
+
+	// Return attributes.
+	return $attributes;
+}
+
+/**
+ * Breadcrumbs ancestors for this post type.
+ *
+ * @param mixed[] $breadcrumbs Breadcrumbs.
+ *
+ * @return mixed[]
+ */
+function breadcrumbs_ancestors( array $breadcrumbs = [] ): array {
+	// Check if current query is for this post type.
+	if ( ! ( is_singular( POST_TYPE ) || is_author() || is_category() ) ) {
+		return $breadcrumbs;
+	}
+
+	// Get archive page.
+	$blog_archive_page = absint( get_option( 'page_for_posts', 0 ) );
+
+	// Get it's title and URL for breadcrumbs if it's set.
+	if ( ! empty( $blog_archive_page ) ) {
+		$breadcrumbs[] = [
+			'title' => get_the_title( $blog_archive_page ),
+			'url'   => get_permalink( $blog_archive_page ),
+		];
+	}
+
+	// Get post ID.
+	$post_id = get_the_ID();
+
+	// Get primary category for post.
+	if ( ! $post_id ) {
+		return $breadcrumbs;
+	}
+
+	// Get primary category.
+	$primary_category_id = yoast_get_primary_term_id( 'category', $post_id );
+
+	// Get term.
+	if ( ! is_int( $primary_category_id ) ) {
+		return $breadcrumbs;
+	}
+
+	// Get primary category term.
+	$primary_category = get_term( $primary_category_id, 'category' );
+
+	// Add primary category to breadcrumbs.
+	if ( $primary_category instanceof WP_Term ) {
+		$breadcrumbs[] = [
+			'title' => $primary_category->name,
+			'url'   => get_term_link( $primary_category ),
+		];
+	}
+
+	// Return updated breadcrumbs.
+	return $breadcrumbs;
 }

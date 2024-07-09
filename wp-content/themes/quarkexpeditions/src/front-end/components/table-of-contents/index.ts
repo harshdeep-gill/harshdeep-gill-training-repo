@@ -24,11 +24,42 @@ export default class TableOfContents extends HTMLElement {
 		this.allContentItems = this.querySelectorAll( '.table-of-contents__list-item' );
 		this.levelTwoHeadings = document.querySelectorAll( '.sidebar-grid__content h2' );
 
+		// Set heading ids.
+		this.setHeadingIDs();
+
 		// Highlight content item by hash on initial render.
 		this.highlightContentItemByHash();
 
 		// Initialize IntersectionObserver to highlight item on scroll.
 		this.highlightItemOnScroll();
+	}
+
+	/**
+	 * Set the heading IDs
+	 */
+	setHeadingIDs(): void {
+		// Check if headings and items are present.
+		if ( ! this.levelTwoHeadings || ! this.allContentItems ) {
+			// No, bail.
+			return;
+		}
+
+		// Get the headings and items as arrays.
+		const levelTwoHeadings = [ ...this.levelTwoHeadings ] as HTMLElement[];
+		const listContentItems = [ ...this.allContentItems ] as HTMLElement[];
+
+		// Loop through and set the IDs.
+		for ( let idx = 0; idx < listContentItems.length; idx++ ) {
+			const theID = listContentItems[ idx ].dataset.anchor?.substring( 1 ) ?? '';
+
+			// Check if the heading exists.
+			if ( idx >= levelTwoHeadings.length ) {
+				break;
+			}
+
+			// Set the ID.
+			levelTwoHeadings[ idx ].id = theID;
+		}
 	}
 
 	/**

@@ -61,7 +61,6 @@ function register_itinerary_day_post_type(): void {
 		'supports'            => [
 			'title',
 			'editor',
-			'thumbnail',
 		],
 		'show_ui'             => true,
 		'show_in_menu'        => 'edit.php?post_type=qrk_itinerary',
