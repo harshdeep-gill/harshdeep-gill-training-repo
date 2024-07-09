@@ -146,20 +146,25 @@ class Itinerary extends Softrip_Object {
 	/**
 	 * Update departures.
 	 *
+	 * @param mixed[] $departures Departures data from Softrip to update with.
+	 *
 	 * @return void
 	 */
-	public function update_departures(): void {
-		// Get the Softrip ID and request the departures from the middleware.
-		$softrip_id     = strval( $this->get_post_meta( 'softrip_package_id' ) );
-		$raw_departures = request_departures( [ $softrip_id ] );
+	public function update_departures( array $departures = [] ): void {
+		// If no data is supplied, attempt to get it.
+		if ( empty( $departures ) ) {
+			// Get the Softrip ID and request the departures from the middleware.
+			$softrip_id     = strval( $this->get_post_meta( 'softrip_package_id' ) );
+			$raw_departures = request_departures( [ $softrip_id ] );
 
-		// Check if is valid.
-		if ( $raw_departures instanceof WP_Error ) {
-			return;
+			// Check if is valid.
+			if ( $raw_departures instanceof WP_Error ) {
+				return;
+			}
+
+			// Use the departures for the softrip ID.
+			$departures = (array) $raw_departures[ $softrip_id ];
 		}
-
-		// Use the departures for the softrip ID.
-		$departures = (array) $raw_departures[ $softrip_id ];
 
 		// Bail if departures are missing.
 		if ( ! is_array( $departures['departures'] ) ) {
