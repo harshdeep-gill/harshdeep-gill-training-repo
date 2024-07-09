@@ -61,6 +61,8 @@ function register_blocks(): void {
 		'SidebarGrid'           => 'sidebar-grid.php',
 		'AuthorInfo'            => 'author-info.php',
 		'TableOfContents'       => 'table-of-contents.php',
+		'BlogPostCards'         => 'blog-post-cards.php',
+		'AdventureOptions'      => 'adventure-options.php',
 	];
 
 	// Register blocks.

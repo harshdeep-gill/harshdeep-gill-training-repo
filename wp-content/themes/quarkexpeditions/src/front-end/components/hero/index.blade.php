@@ -1,5 +1,5 @@
 @props( [
-	'immersive'       => false,
+	'immersive'       => 'none',
 	'text_align'      => '',
 	'overlay_opacity' => 0,
 ] )
@@ -11,8 +11,8 @@
 
 	$classes = [ 'hero' ];
 
-	if ( ! empty( $immersive) && true === boolval( $immersive ) ) {
-		$classes[] = 'hero--immersive';
+	if ( ! empty( $immersive) && in_array( $immersive, [ 'all', 'bottom', 'top' ], true ) ) {
+		$classes[] = sprintf( 'hero--immersive-%s', $immersive );
 	}
 
 	if ( ! empty( $text_align ) && in_array( $text_align, [ 'center', 'left' ], true ) ) {

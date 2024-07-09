@@ -294,14 +294,15 @@ function calculate_post_reading_time( int $post_id = 0, WP_Post $post = null ): 
  * @param int[] $post_ids Post IDs.
  *
  * @return array<mixed>{
- *      post: array|WP_Post,
- *      title: string,
- *      permalink: string,
- *      featured_image: integer,
- *      read_time: integer,
- *      authors: array,
- *      taxonomies: array,
- *  }[]
+ *    post: array<mixed>,
+ *    title: string,
+ *    permalink: string,
+ *    featured_image: int,
+ *    excerpt: string,
+ *    authors: mixed[],
+ *    read_time: int,
+ *    taxonomies: array<mixed>,
+ * }[]
  */
 function get_cards_data( array $post_ids = [] ): array {
 	// Check if post ids exist.
@@ -333,6 +334,7 @@ function get_cards_data( array $post_ids = [] ): array {
 			'title'          => $post['post']?->post_title ?? '',
 			'permalink'      => $post['permalink'] ?: '',
 			'featured_image' => $post['post_thumbnail'] ?: 0,
+			'excerpt'        => get_the_excerpt( $post['post']?->ID ),
 			'authors'        => $authors_data,
 			'read_time'      => array_key_exists( 'read_time_minutes', $post['post_meta'] ) ? absint( $post['post_meta']['read_time_minutes'] ) : 0,
 			'taxonomies'     => $post['post_taxonomies'] ?: [],

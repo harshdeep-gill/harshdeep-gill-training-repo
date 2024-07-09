@@ -300,8 +300,20 @@
 	</x-component-demo>
 
 	<x-component-demo :keys="[ 'hero', 'hero-refactor' ]">
-		<x-hero text_align="left" :immersive="true" :overlay_opacity="10">
+		<x-hero text_align="left" immersive="all" :overlay_opacity="10">
 			<x-hero.image image_id="26" />
+			<x-breadcrumbs
+				:breadcrumbs="[
+					[
+						'title' => 'Home',
+						'url'   => '#',
+					],
+					[
+						'title' => 'Blog',
+						'url'   => '#',
+					],
+				]"
+			/>
 			<x-hero.content>
 				<x-hero.left>
 					<x-hero.title-container>
@@ -408,7 +420,10 @@
 		</x-review-cards>
 	</x-component-demo>
 	<x-component-demo :keys="[ 'review-cards-no-carousel' ]">
-		<x-section title="South Georgia Expedition Reviews">
+		<x-section>
+			<x-section.heading>
+				<x-section.title title="South Georgia Expedition Reviews" />
+			</x-section.heading>
 			<x-review-cards is_carousel="false">
 				<x-review-cards.card>
 					<x-review-cards.rating rating="5" />
@@ -446,7 +461,7 @@
 	</x-component-demo>
 
 	<x-component-demo :keys="[ 'hero', 'hero-refactor' ]">
-		<x-hero text_align="center" :immersive="false">
+		<x-hero text_align="center" immersive="none">
 			<x-hero.image image_id="26" />
 			<x-hero.content>
 				<x-hero.left>
@@ -488,20 +503,56 @@
 		</x-hero>
 	</x-component-demo>
 
+	<x-component-demo :keys="[ 'hero', 'hero-updated' ]">
+		<x-hero text_align="left">
+			<x-hero.image image_id="26" />
+			<x-breadcrumbs
+				:breadcrumbs="[
+					[
+						'title' => 'Home',
+						'url'   => '#',
+					],
+					[
+						'title' => 'Blog',
+						'url'   => '#',
+					],
+				]"
+			/>
+			<x-hero.content>
+				<x-hero.left>
+					<x-hero.title-container>
+						<x-hero.overline>FEATURED - 4 mins read</x-hero.overline>
+						<x-hero.title title="How to see Polar Bears in Svalbard" />
+					</x-hero.title-container>
+					<x-button size="big" href="#">Read Post</x-button>
+				</x-hero.left>
+			</x-hero.content>
+		</x-hero>
+	</x-component-demo>
+
 	<x-component-demo :keys="[ 'global', 'color-palette' ]">
-		<x-section title="Color Palette" heading_level="2">
+		<x-section>
+			<x-section.heading>
+				<x-section.title title="Color Palette" heading_level="2" />
+			</x-section.heading>
 			<x-global-styles-demo.color-palette />
 		</x-section>
 	</x-component-demo>
 
 	<x-component-demo :keys="[ 'global', 'typography' ]">
-		<x-section title="Typography" heading_level="2">
+		<x-section>
+			<x-section.heading>
+				<x-section.title title="Typography" heading_level="2" />
+			</x-section.heading>
 			<x-global-styles-demo.typography />
 		</x-section>
 	</x-component-demo>
 
 	<x-component-demo :keys="[ 'global', 'buttons' ]">
-		<x-section title="Buttons & Links" heading_level="2">
+		<x-section>
+			<x-section.heading>
+				<x-section.title title="Buttons & Links" heading_level="2" />
+			</x-section.heading>
 			<h3>Links</h3>
 
 			<div style="display: flex; flex-wrap: wrap; width: 100%;" class="typography-spacing">
@@ -557,7 +608,10 @@
 	</x-component-demo>
 
 	<x-component-demo :keys="[ 'form' ]">
-		<x-section title="Form UI Elements" heading_level="2" style="display: flex; flex-wrap: wrap; width: 100%;" class="typography-spacing">
+		<x-section style="display: flex; flex-wrap: wrap; width: 100%;" class="typography-spacing">
+			<x-section.heading>
+				<x-section.title title="Form UI Elements" heading_level="2" />
+			</x-section.heading>
 			<div style="display: flex; flex-wrap: wrap; width: 100%; gap: 20px; justify-content: space-between;">
 				<x-form salesforce_object="Webform_Landing_Page__c" style="min-width: 300px; padding: 24px; border: 1px solid var(--color-black); display:flex; flex-wrap: wrap; flex-direction: column; flex-grow: 1;">
 					<x-form.field :validation="[ 'required' ]">
@@ -686,7 +740,10 @@
 	</x-component-demo>
 
 	<x-component-demo :keys="[ 'modal' ]">
-		<x-section title="Flexible Multipurpose modal">
+		<x-section>
+			<x-section.heading>
+				<x-section.title title="Flexible Multipurpose modal" />
+			</x-section.heading>
 			<x-modal.modal-open modal_id="multipurpose-modal-demo">
 				<x-button type="button">
 					Open a sample modal
@@ -750,133 +807,133 @@
 		</x-section>
 	</x-component-demo>
 
-<x-component-demo :keys="[ 'drawer' ]">
-	<x-section title="Flexible Multipurpose drawer">
-		<style>
-			.multipurpose-drawer-sample .drawer__content {
-				max-width: 768px;
-				padding: var(--spacing-5);
-				gap: var(--spacing-4);
-			}
+	<x-component-demo :keys="[ 'drawer' ]">
+		<x-section title="Flexible Multipurpose drawer">
+			<style>
+				.multipurpose-drawer-sample .drawer__content {
+					max-width: 768px;
+					padding: var(--spacing-5);
+					gap: var(--spacing-4);
+				}
 
-			.multipurpose-drawer-sample .drawer__footer {
-				border-top: solid 1px var(--color-gray-20);
-				padding-inline: var(--spacing-5);
-				margin-inline: calc(-1 * var(--spacing-5));
-			}
-		</style>
-		<x-drawer.drawer-open drawer_id="multipurpose-drawer-sample">
-			<x-button type="button" size="big">
-				Open a sample drawer
-			</x-button>
-		</x-drawer.drawer-open>
-		<x-drawer id="multipurpose-drawer-sample" animation_direction="up" class="multipurpose-drawer-sample">
-			<x-drawer.header>
-				<h3>Lorem ipsum dolor sit amet.</h3>
-				<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur voluptate dolorum alias officiis minima nemo asperiores maxime velit itaque sapiente?</p>
-			</x-drawer.header>
+				.multipurpose-drawer-sample .drawer__footer {
+					border-top: solid 1px var(--color-gray-20);
+					padding-inline: var(--spacing-5);
+					margin-inline: calc(-1 * var(--spacing-5));
+				}
+			</style>
+			<x-drawer.drawer-open drawer_id="multipurpose-drawer-sample">
+				<x-button type="button" size="big">
+					Open a sample drawer
+				</x-button>
+			</x-drawer.drawer-open>
+			<x-drawer id="multipurpose-drawer-sample" animation_direction="up" class="multipurpose-drawer-sample">
+				<x-drawer.header>
+					<h3>Lorem ipsum dolor sit amet.</h3>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur voluptate dolorum alias officiis minima nemo asperiores maxime velit itaque sapiente?</p>
+				</x-drawer.header>
 
-			<x-drawer.body>
-				<p>
-					Lorem ipsum dolor, sit amet consectetur adipisicing elit. Esse
-					excepturi blanditiis cum eum perspiciatis dignissimos dolorum minus
-					est, necessitatibus enim, quisquam quibusdam porro architecto nostrum
-					dolorem vero sed vel facere exercitationem soluta assumenda omnis,
-					voluptate non natus! Tenetur a deleniti recusandae. Molestiae nobis
-					quis odit optio dolorum facilis distinctio deleniti perferendis odio
-					commodi veniam voluptate provident pariatur voluptatum debitis
-					exercitationem asperiores reiciendis aperiam excepturi magni quae
-					cumque necessitatibus, cupiditate ipsum. Natus doloribus ullam
-					porro ad corporis minus expedita repellat temporibus earum.
-					Earum vero ea nostrum tenetur blanditiis commodi sed a id modi
-					minus iusto pariatur architecto odit non molestias rerum enim
-					tempora aspernatur porro nam unde, quas laboriosam facere. Aut,
-					porro labore molestias aperiam modi velit fugit vel sunt earum
-					harum tempora autem dolor aspernatur optio. Suscipit, eum ipsum
-					rem nisi qui ullam distinctio molestias modi ratione aut molestiae
-					laborum beatae iusto debitis magni quaerat eos ea deserunt commodi
-					quas fugiat provident. Quod, quidem deleniti. Totam, necessitatibus
-					mollitia veritatis assumenda dolorem reprehenderit esse fuga?
-					Eius explicabo in, animi quas, deleniti laboriosam voluptas hic dolore
-					ea incidunt totam saepe. Lorem ipsum dolor, sit amet consectetur
-					adipisicing elit.
-				</p>
-				<p>
-					Lorem ipsum dolor, sit amet consectetur adipisicing elit. Esse
-					excepturi blanditiis cum eum perspiciatis dignissimos dolorum minus
-					est, necessitatibus enim, quisquam quibusdam porro architecto nostrum
-					dolorem vero sed vel facere exercitationem soluta assumenda omnis,
-					voluptate non natus! Tenetur a deleniti recusandae. Molestiae nobis
-					quis odit optio dolorum facilis distinctio deleniti perferendis odio
-					commodi veniam voluptate provident pariatur voluptatum debitis
-					exercitationem asperiores reiciendis aperiam excepturi magni quae
-					cumque necessitatibus, cupiditate ipsum. Natus doloribus ullam
-					porro ad corporis minus expedita repellat temporibus earum.
-					Earum vero ea nostrum tenetur blanditiis commodi sed a id modi
-					minus iusto pariatur architecto odit non molestias rerum enim
-					tempora aspernatur porro nam unde, quas laboriosam facere. Aut,
-					porro labore molestias aperiam modi velit fugit vel sunt earum
-					harum tempora autem dolor aspernatur optio. Suscipit, eum ipsum
-					rem nisi qui ullam distinctio molestias modi ratione aut molestiae
-					laborum beatae iusto debitis magni quaerat eos ea deserunt commodi
-					quas fugiat provident. Quod, quidem deleniti. Totam, necessitatibus
-					mollitia veritatis assumenda dolorem reprehenderit esse fuga?
-					Eius explicabo in, animi quas, deleniti laboriosam voluptas hic dolore
-					ea incidunt totam saepe. Lorem ipsum dolor, sit amet consectetur
-					adipisicing elit.
-				</p>
-			</x-drawer.body>
+				<x-drawer.body>
+					<p>
+						Lorem ipsum dolor, sit amet consectetur adipisicing elit. Esse
+						excepturi blanditiis cum eum perspiciatis dignissimos dolorum minus
+						est, necessitatibus enim, quisquam quibusdam porro architecto nostrum
+						dolorem vero sed vel facere exercitationem soluta assumenda omnis,
+						voluptate non natus! Tenetur a deleniti recusandae. Molestiae nobis
+						quis odit optio dolorum facilis distinctio deleniti perferendis odio
+						commodi veniam voluptate provident pariatur voluptatum debitis
+						exercitationem asperiores reiciendis aperiam excepturi magni quae
+						cumque necessitatibus, cupiditate ipsum. Natus doloribus ullam
+						porro ad corporis minus expedita repellat temporibus earum.
+						Earum vero ea nostrum tenetur blanditiis commodi sed a id modi
+						minus iusto pariatur architecto odit non molestias rerum enim
+						tempora aspernatur porro nam unde, quas laboriosam facere. Aut,
+						porro labore molestias aperiam modi velit fugit vel sunt earum
+						harum tempora autem dolor aspernatur optio. Suscipit, eum ipsum
+						rem nisi qui ullam distinctio molestias modi ratione aut molestiae
+						laborum beatae iusto debitis magni quaerat eos ea deserunt commodi
+						quas fugiat provident. Quod, quidem deleniti. Totam, necessitatibus
+						mollitia veritatis assumenda dolorem reprehenderit esse fuga?
+						Eius explicabo in, animi quas, deleniti laboriosam voluptas hic dolore
+						ea incidunt totam saepe. Lorem ipsum dolor, sit amet consectetur
+						adipisicing elit.
+					</p>
+					<p>
+						Lorem ipsum dolor, sit amet consectetur adipisicing elit. Esse
+						excepturi blanditiis cum eum perspiciatis dignissimos dolorum minus
+						est, necessitatibus enim, quisquam quibusdam porro architecto nostrum
+						dolorem vero sed vel facere exercitationem soluta assumenda omnis,
+						voluptate non natus! Tenetur a deleniti recusandae. Molestiae nobis
+						quis odit optio dolorum facilis distinctio deleniti perferendis odio
+						commodi veniam voluptate provident pariatur voluptatum debitis
+						exercitationem asperiores reiciendis aperiam excepturi magni quae
+						cumque necessitatibus, cupiditate ipsum. Natus doloribus ullam
+						porro ad corporis minus expedita repellat temporibus earum.
+						Earum vero ea nostrum tenetur blanditiis commodi sed a id modi
+						minus iusto pariatur architecto odit non molestias rerum enim
+						tempora aspernatur porro nam unde, quas laboriosam facere. Aut,
+						porro labore molestias aperiam modi velit fugit vel sunt earum
+						harum tempora autem dolor aspernatur optio. Suscipit, eum ipsum
+						rem nisi qui ullam distinctio molestias modi ratione aut molestiae
+						laborum beatae iusto debitis magni quaerat eos ea deserunt commodi
+						quas fugiat provident. Quod, quidem deleniti. Totam, necessitatibus
+						mollitia veritatis assumenda dolorem reprehenderit esse fuga?
+						Eius explicabo in, animi quas, deleniti laboriosam voluptas hic dolore
+						ea incidunt totam saepe. Lorem ipsum dolor, sit amet consectetur
+						adipisicing elit.
+					</p>
+				</x-drawer.body>
 
-			<x-drawer.footer>
-				<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis, rem?</p>
-			</x-drawer.footer>
-		</x-drawer>
-		<br><br>
+				<x-drawer.footer>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis, rem?</p>
+				</x-drawer.footer>
+			</x-drawer>
+			<br><br>
 
-		<x-drawer.drawer-open drawer_id="multipurpose-drawer-sample-2">
-			<x-button type="button" size="big">
-				Open another drawer
-			</x-button>
-		</x-drawer.drawer-open>
-		<x-drawer id="multipurpose-drawer-sample-2" animation_direction="up" class="multipurpose-drawer-sample">
-			<x-drawer.header>
-				<h3>Lorem ipsum dolor sit amet.</h3>
-				<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur voluptate dolorum alias officiis minima nemo asperiores maxime velit itaque sapiente?</p>
-			</x-drawer.header>
+			<x-drawer.drawer-open drawer_id="multipurpose-drawer-sample-2">
+				<x-button type="button" size="big">
+					Open another drawer
+				</x-button>
+			</x-drawer.drawer-open>
+			<x-drawer id="multipurpose-drawer-sample-2" animation_direction="up" class="multipurpose-drawer-sample">
+				<x-drawer.header>
+					<h3>Lorem ipsum dolor sit amet.</h3>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur voluptate dolorum alias officiis minima nemo asperiores maxime velit itaque sapiente?</p>
+				</x-drawer.header>
 
-			<x-drawer.body>
-				<p>
-					Lorem ipsum dolor, sit amet consectetur adipisicing elit. Esse
-					excepturi blanditiis cum eum perspiciatis dignissimos dolorum minus
-					est, necessitatibus enim, quisquam quibusdam porro architecto nostrum
-					dolorem vero sed vel facere exercitationem soluta assumenda omnis,
-					voluptate non natus! Tenetur a deleniti recusandae. Molestiae nobis
-					quis odit optio dolorum facilis distinctio deleniti perferendis odio
-					commodi veniam voluptate provident pariatur voluptatum debitis
-					exercitationem asperiores reiciendis aperiam excepturi magni quae
-					cumque necessitatibus, cupiditate ipsum. Natus doloribus ullam
-					porro ad corporis minus expedita repellat temporibus earum.
-					Earum vero ea nostrum tenetur blanditiis commodi sed a id modi
-					minus iusto pariatur architecto odit non molestias rerum enim
-					tempora aspernatur porro nam unde, quas laboriosam facere. Aut,
-					porro labore molestias aperiam modi velit fugit vel sunt earum
-					harum tempora autem dolor aspernatur optio. Suscipit, eum ipsum
-					rem nisi qui ullam distinctio molestias modi ratione aut molestiae
-					laborum beatae iusto debitis magni quaerat eos ea deserunt commodi
-					quas fugiat provident. Quod, quidem deleniti. Totam, necessitatibus
-					mollitia veritatis assumenda dolorem reprehenderit esse fuga?
-					Eius explicabo in, animi quas, deleniti laboriosam voluptas hic dolore
-					ea incidunt totam saepe. Lorem ipsum dolor, sit amet consectetur
-					adipisicing elit.
-				</p>
-			</x-drawer.body>
+				<x-drawer.body>
+					<p>
+						Lorem ipsum dolor, sit amet consectetur adipisicing elit. Esse
+						excepturi blanditiis cum eum perspiciatis dignissimos dolorum minus
+						est, necessitatibus enim, quisquam quibusdam porro architecto nostrum
+						dolorem vero sed vel facere exercitationem soluta assumenda omnis,
+						voluptate non natus! Tenetur a deleniti recusandae. Molestiae nobis
+						quis odit optio dolorum facilis distinctio deleniti perferendis odio
+						commodi veniam voluptate provident pariatur voluptatum debitis
+						exercitationem asperiores reiciendis aperiam excepturi magni quae
+						cumque necessitatibus, cupiditate ipsum. Natus doloribus ullam
+						porro ad corporis minus expedita repellat temporibus earum.
+						Earum vero ea nostrum tenetur blanditiis commodi sed a id modi
+						minus iusto pariatur architecto odit non molestias rerum enim
+						tempora aspernatur porro nam unde, quas laboriosam facere. Aut,
+						porro labore molestias aperiam modi velit fugit vel sunt earum
+						harum tempora autem dolor aspernatur optio. Suscipit, eum ipsum
+						rem nisi qui ullam distinctio molestias modi ratione aut molestiae
+						laborum beatae iusto debitis magni quaerat eos ea deserunt commodi
+						quas fugiat provident. Quod, quidem deleniti. Totam, necessitatibus
+						mollitia veritatis assumenda dolorem reprehenderit esse fuga?
+						Eius explicabo in, animi quas, deleniti laboriosam voluptas hic dolore
+						ea incidunt totam saepe. Lorem ipsum dolor, sit amet consectetur
+						adipisicing elit.
+					</p>
+				</x-drawer.body>
 
-			<x-drawer.footer>
-				<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis, rem?</p>
-			</x-drawer.footer>
-		</x-drawer>
-	</x-section>
-</x-component-demo>
+				<x-drawer.footer>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis, rem?</p>
+				</x-drawer.footer>
+			</x-drawer>
+		</x-section>
+	</x-component-demo>
 
 	<x-component-demo :keys="[ 'reviews-carousel', 'two-columns' ]">
 		<x-section>
@@ -990,7 +1047,10 @@
 	</x-component-demo>
 
 	<x-component-demo :keys="[ 'icon-info-columns' ]">
-		<x-section title="Why Quark Expeditions?" :background="true">
+		<x-section :background="true">
+			<x-section.heading>
+				<x-section.title title="Why Quark Expeditions?" />
+			</x-section.heading>
 			<x-icon-info-columns>
 				<x-icon-info-columns.column>
 					<x-icon-info-columns.icon icon="star" />
@@ -1032,7 +1092,10 @@
 	</x-component-demo>
 
 	<x-component-demo :keys="[ 'icon-columns' ]">
-		<x-section title="Icon Columns">
+		<x-section>
+			<x-section.heading>
+				<x-section.title title="Icon columns" />
+			</x-section.heading>
 			<x-icon-columns>
 				<x-icon-columns.column>
 					<x-icon-columns.icon icon="duotone/person-check" />
@@ -1095,7 +1158,10 @@
 	</x-component-demo>
 
 	<x-component-demo :keys="['simple-cards']">
-		<x-section title="Off Ship Adventure" :background="true" background_color="black" title_align="left">
+		<x-section :background="true" background_color="black">
+			<x-section.heading>
+				<x-section.title title="Off Ship Adventure" align="left" />
+			</x-section.heading>
 			<x-simple-cards>
 				<x-simple-cards.card image_id="36" title="Camping" url="#" />
 				<x-simple-cards.card image_id="34" title="Flightseeing" />
@@ -1109,7 +1175,10 @@
 	</x-component-demo>
 
 	<x-component-demo :keys="['media-content-card']">
-			<x-section title="Media Content Card 2-column">
+			<x-section>
+				<x-section.heading>
+					<x-section.title title="Media Content Card 2-column" />
+				</x-section.heading>
 				<x-media-content-card>
 					<x-media-content-card.image image_id="33"/>
 					<x-media-content-card.content>
@@ -1142,7 +1211,10 @@
 					</x-media-content-card.content>
 				</x-media-content-card>
 			</x-section>
-			<x-section title="Media Content Card 1-column">
+			<x-section>
+				<x-section.heading>
+					<x-section.title title="Media Content Card 1-column" />
+				</x-section.heading>
 				<x-section.description>Call us and one of our Polar Travel Advisors will secure the offer for you.</x-section.description>
 				<x-media-content-card :is_compact="true" >
 					<x-media-content-card.image image_id="33"/>
@@ -1240,7 +1312,10 @@
 	</x-component-demo>
 
 	<x-component-demo :keys="[ 'product-departures-card' ]">
-		<x-section background="true" background_color="black" heading_level="2" title="Upgrade Your Cabin for Freeon select Antarctic 2024 voyages">
+		<x-section background="true" background_color="black">
+				<x-section.heading>
+					<x-section.title title="Upgrade Your Cabin for Freeon select Antarctic 2024 voyages" heading_level="2" />
+				</x-section.heading>
 			<x-product-departures-card>
 				<x-product-departures-card.images :image_ids="[ 32, 34]">
 					<x-product-departures-card.badge-cta text="Free Cabin Upgrade" />
@@ -1330,7 +1405,10 @@
 	</x-component-demo>
 
 	<x-component-demo :keys="[ 'season-highlights' ]">
-		<x-section title="Best Time to See" title_align="left">
+		<x-section>
+				<x-section.heading>
+					<x-section.title title="Best Time to See" align="left" />
+				</x-section.heading>
 			<x-season-highlights>
 				<x-season-highlights.season title="October">
 					<x-season-highlights.item title="Penguin Breeding Cycle" :light="true">
@@ -1361,7 +1439,10 @@
 			</x-season-highlights>
 		</x-section>
 
-		<x-section title="Best Time to See" title_align="left">
+		<x-section>
+				<x-section.heading>
+					<x-section.title title="Best Time to See" align="left" />
+				</x-section.heading>
 			<x-season-highlights>
 				<x-season-highlights.season title="October">
 					<x-season-highlights.item title="Penguin Breeding Cycle" :light="true">
@@ -1418,7 +1499,10 @@
 			</x-season-highlights>
 		</x-section>
 
-		<x-section title="Best Time to See" title_align="left">
+		<x-section>
+				<x-section.heading>
+					<x-section.title title="Best Time to See" align="left" />
+				</x-section.heading>
 			<x-season-highlights>
 				<x-season-highlights.season title="October">
 					<x-season-highlights.item title="Penguin Breeding Cycle" :light="true">
@@ -1501,7 +1585,10 @@
 			</x-season-highlights>
 		</x-section>
 
-		<x-section title="Best Time to See" title_align="left">
+		<x-section>
+				<x-section.heading>
+					<x-section.title title="Best Time to See" align="left" />
+				</x-section.heading>
 			<x-season-highlights>
 				<x-season-highlights.season title="October">
 					<x-season-highlights.item title="Penguin Breeding Cycle" :light="true">
@@ -1834,7 +1921,10 @@
 			</x-lp-offer-masthead.content>
 		</x-lp-offer-masthead>
 
-		<x-section background="true" background_color="black" title="Our Biggest Savings! 50% off these Antarctic 2024 Voyages">
+		<x-section background="true" background_color="black">
+			<x-section.heading>
+				<x-section.title title="Our Biggest Savings! 50% off these Antarctic 2024 Voyages" />
+			</x-section.heading>
 			<x-product-cards>
 				<x-product-cards.card url="#">
 					<x-product-cards.image
@@ -2060,7 +2150,10 @@
 				/>
 			</x-sidebar-grid.sidebar>
 		</x-sidebar-grid>
-		<x-section background="true" background_color="black" title="Our Biggest Savings! 50% off these Antarctic 2024 Voyages">
+		<x-section background="true" background_color="black">
+			<x-section.heading>
+				<x-section.title title="Our Biggest Savings! 50% off these Antarctic 2024 Voyages" />
+			</x-section.heading>
 			<x-product-cards>
 				<x-product-cards.card url="#">
 					<x-product-cards.image
@@ -2285,6 +2378,251 @@
 				</x-product-cards.buttons>
 			</x-product-cards.card>
 		</x-product-cards>
+	</x-component-demo>
+
+	<x-component-demo :keys="[ 'section-updated' ]">
+		<x-section :background="true" :seamless="true">
+			<x-section.heading>
+				<x-section.title title="Check out these offers" align="left" />
+				<x-section.heading-link url="#">See All</x-section.heading-link>
+			</x-section.heading>
+			<x-product-cards>
+				<x-product-cards.card url="#">
+					<x-product-cards.image
+						image_id="29"
+					>
+						<x-product-cards.badge-cta text="Save 50%" />
+					</x-product-cards.image>
+					<x-product-cards.reviews
+						total_reviews="19 Reviews"
+						review_rating="5"
+					/>
+					<x-product-cards.itinerary departure_date="Departing May 20, 2024" duration="10 Days" />
+					<x-product-cards.title title="Introduction to Spitsbergen" />
+					<x-product-cards.subtitle title="Fjords, Glaciers, and Wildlife of Svalbard" />
+					<x-product-cards.description>
+						<p>This fascinating expedition provides a taste of everything Spitsbergen has to offer!</p>
+					</x-product-cards.description>
+					<x-product-cards.price
+						original_price="$7,395 USD"
+						discounted_price="$6,171 USD"
+					/>
+					<x-product-cards.buttons :columns="2">
+						<x-button size="big">Request a Quote</x-button>
+						<x-button size="big" appearance="outline">Learn More</x-button>
+					</x-product-cards.buttons>
+				</x-product-cards.card>
+				<x-product-cards.card url="#">
+					<x-product-cards.image
+						image_id="36"
+						:is_immersive="false"
+					>
+						<x-product-cards.badge-cta text="Save 50%" />
+						<x-product-cards.badge-time text="Just Added" />
+					</x-product-cards.image>
+					<x-product-cards.reviews
+						total_reviews="9999 Reviews"
+						review_rating="3"
+					/>
+					<x-product-cards.itinerary departure_date="Departing May 28, 2024" duration="12 Days" />
+					<x-product-cards.title title="Spitsbergen Explorer" />
+					<x-product-cards.subtitle title="Wildlife Capital of the Arctic" />
+					<x-product-cards.description>
+						<p>Witness the remarkable array of creatures who call this spectacular environment home.</p>
+					</x-product-cards.description>
+					<x-product-cards.price
+						original_price="$9,095 USD"
+						discounted_price="$7,361 USD"
+					/>
+					<x-product-cards.buttons :columns="2">
+						<x-button size="big" icon="phone">Book: +1 (866) 220-1915</x-button>
+					</x-product-cards.buttons>
+				</x-product-cards.card>
+				<x-product-cards.card url="#">
+					<x-product-cards.image
+						image_id="32"
+						:is_immersive="false"
+					>
+						<x-product-cards.badge-time text="Just Added" />
+					</x-product-cards.image>
+					<x-product-cards.reviews
+						total_reviews="100 Reviews"
+						review_rating="4"
+					/>
+					<x-product-cards.itinerary departure_date="Departing July 14, 2024" duration="11 Days" />
+					<x-product-cards.title title="Gems of West Greenland" />
+					<x-product-cards.subtitle title="Fjords, Icebergs, and Culture" />
+					<x-product-cards.description>
+						<p>Features the best sites of West Greenland & delivers an in-depth experience in just 12 days.</p>
+					</x-product-cards.description>
+					<x-product-cards.price
+						original_price="$9,395 USD"
+						discounted_price="$8,571 USD"
+					/>
+					<x-product-cards.buttons :columns="2">
+						<x-button size="big">Request a Quote</x-button>
+						<x-button size="big" appearance="outline">Learn More</x-button>
+					</x-product-cards.buttons>
+				</x-product-cards.card>
+			</x-product-cards>
+		</x-section>
+	</x-component-demo>
+
+	<x-component-demo :keys="[ 'thumbnail-cards' ]">
+		<x-section title="Thumbnail Cards: Small Portrait">
+			<x-thumbnail-cards :is_carousel="false">
+				<x-thumbnail-cards.card size="small" url="#" orientation="portrait" image_id="29">
+					<x-thumbnail-cards.title title="Arctic Expeditions" align="top" />
+				</x-thumbnail-cards.card>
+				<x-thumbnail-cards.card size="small" url="#" orientation="portrait" image_id="30">
+					<x-thumbnail-cards.title title="Antarctic Expeditions" align="bottom" />
+				</x-thumbnail-cards.card>
+				<x-thumbnail-cards.card size="small" url="#" orientation="portrait" image_id="33">
+					<x-thumbnail-cards.title title="Patagonia Expeditions" align="top" />
+				</x-thumbnail-cards.card>
+			</x-thumbnail-cards>
+		</x-section>
+		<x-section title="Thumbnail Cards: Small Landscape">
+			<x-thumbnail-cards :is_carousel="false">
+				<x-thumbnail-cards.card size="small" url="#" orientation="landscape" image_id="29">
+					<x-thumbnail-cards.title title="Arctic Expeditions" align="top" />
+				</x-thumbnail-cards.card>
+				<x-thumbnail-cards.card size="small" url="#" orientation="landscape" image_id="30">
+					<x-thumbnail-cards.title title="Antarctic Expeditions" align="bottom" />
+				</x-thumbnail-cards.card>
+				<x-thumbnail-cards.card size="small" url="#" orientation="landscape" image_id="33">
+					<x-thumbnail-cards.title title="Patagonia Expeditions" align="top" />
+				</x-thumbnail-cards.card>
+				<x-thumbnail-cards.card size="small" url="#" orientation="landscape" image_id="34">
+					<x-thumbnail-cards.title title="Patagonia Expeditions" align="bottom" />
+				</x-thumbnail-cards.card>
+			</x-thumbnail-cards>
+		</x-section>
+		<x-section title="Thumbnail Cards: Medium Portrait">
+			<x-thumbnail-cards :is_carousel="false">
+				<x-thumbnail-cards.card size="medium" url="#" orientation="portrait" image_id="29">
+					<x-thumbnail-cards.title title="Arctic Expeditions" align="top" />
+				</x-thumbnail-cards.card>
+				<x-thumbnail-cards.card size="medium" url="#" orientation="portrait" image_id="30">
+					<x-thumbnail-cards.title title="Antarctic Expeditions" align="bottom" />
+				</x-thumbnail-cards.card>
+				<x-thumbnail-cards.card size="medium" url="#" orientation="portrait" image_id="33">
+					<x-thumbnail-cards.title title="Patagonia Expeditions" align="top" />
+				</x-thumbnail-cards.card>
+				<x-thumbnail-cards.card size="medium" url="#" orientation="portrait" image_id="34">
+					<x-thumbnail-cards.title title="Patagonia Expeditions" align="bottom" />
+				</x-thumbnail-cards.card>
+			</x-thumbnail-cards>
+		</x-section>
+		<x-section title="Thumbnail Cards: Medium Landscape">
+			<x-thumbnail-cards :is_carousel="true">
+				<x-thumbnail-cards.card size="medium" url="#" orientation="landscape" image_id="29">
+					<x-thumbnail-cards.title title="Arctic Expeditions" align="bottom" />
+				</x-thumbnail-cards.card>
+				<x-thumbnail-cards.card size="medium" url="#" orientation="landscape" image_id="30">
+					<x-thumbnail-cards.title title="Antarctic Expeditions" align="top" />
+				</x-thumbnail-cards.card>
+				<x-thumbnail-cards.card size="medium" url="#" orientation="landscape" image_id="33">
+					<x-thumbnail-cards.title title="Patagonia Expeditions" align="bottom" />
+				</x-thumbnail-cards.card>
+				<x-thumbnail-cards.card size="medium" url="#" orientation="landscape" image_id="34">
+					<x-thumbnail-cards.title title="Patagonia Expeditions" align="top" />
+				</x-thumbnail-cards.card>
+			</x-thumbnail-cards>
+		</x-section>
+		<x-section title="Thumbnail Cards: Large">
+			<x-thumbnail-cards :is_carousel="true">
+				<x-thumbnail-cards.card size="large" url="#" orientation="portrait" image_id="29">
+					<x-thumbnail-cards.title title="Arctic Expeditions" align="top" />
+				</x-thumbnail-cards.card>
+				<x-thumbnail-cards.card size="large" url="#" orientation="portrait" image_id="30">
+					<x-thumbnail-cards.title title="Antarctic Expeditions" align="bottom" />
+				</x-thumbnail-cards.card>
+				<x-thumbnail-cards.card size="large" url="#" orientation="portrait" image_id="33">
+					<x-thumbnail-cards.title title="Patagonia Expeditions" align="top" />
+				</x-thumbnail-cards.card>
+				<x-thumbnail-cards.card size="large" url="#" orientation="portrait" image_id="34">
+					<x-thumbnail-cards.title title="Patagonia Expeditions" align="bottom" />
+				</x-thumbnail-cards.card>
+				<x-thumbnail-cards.card size="large" url="#" orientation="portrait" image_id="35">
+					<x-thumbnail-cards.title title="Patagonia Expeditions" align="bottom" />
+				</x-thumbnail-cards.card>
+			</x-thumbnail-cards>
+		</x-section>
+	</x-component-demo>
+
+	<x-component-demo :keys="[ 'accordion' ]">
+		<x-section>
+			<x-accordion title="Quark Expeditions takes you places no one else can!">
+				<x-accordion.item>
+					<x-accordion.item-handle title="Destinations" />
+					<x-accordion.item-content>
+						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.</p>
+					</x-accordion.item-content>
+				</x-accordion.item>
+				<x-accordion.item>
+					<x-accordion.item-handle title="Expeditions" />
+					<x-accordion.item-content>
+						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.it further to meet your schedule, interests, and budget with one of our expert Travel Consultants.</p>
+					</x-accordion.item-content>
+				</x-accordion.item>
+				<x-accordion.item>
+					<x-accordion.item-handle title="Ships" />
+					<x-accordion.item-content>
+						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.</p>
+					</x-accordion.item-content>
+				</x-accordion.item>
+				<x-accordion.item>
+					<x-accordion.item-handle title="Offers" />
+					<x-accordion.item-content>
+						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.</p>
+					</x-accordion.item-content>
+				</x-accordion.item>
+				<x-accordion.item>
+					<x-accordion.item-handle title="About Us" />
+					<x-accordion.item-content>
+						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.</p>
+					</x-accordion.item-content>
+				</x-accordion.item>
+			</x-accordion>
+		</x-section>
+	</x-component-demo>
+
+	<x-component-demo :keys="[ 'accordion' ]">
+		<x-section title="What should I know before booking a polar expedition?" heading_level="2" title_align="left">
+			<x-accordion title="Quark Expeditions takes you places no one else can!" :full_border="true">
+				<x-accordion.item>
+					<x-accordion.item-handle title="What are the Health and Safety requirements for expedition travel?" />
+					<x-accordion.item-content>
+						<ul>
+							<li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
+							<li>Temporibus, aperiam. Error provident pariatur explicabo, totam culpa quam dolores quisquam, doloremque perspiciatis consequatur recusandae ipsam a facere eos? Aspernatur.</li>
+						</ul>
+						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant. <a href=>See FAQs for details</a></p>
+					</x-accordion.item-content>
+				</x-accordion.item>
+				<x-accordion.item>
+					<x-accordion.item-handle title="What are the Terms & Conditions for booking?" />
+					<x-accordion.item-content>
+						<ul>
+							<li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
+							<li>Temporibus, aperiam. Error provident pariatur explicabo, totam culpa quam dolores quisquam, doloremque perspiciatis consequatur recusandae ipsam a facere eos? Aspernatur.</li>
+						</ul>
+						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.</p>
+					</x-accordion.item-content>
+				</x-accordion.item>
+				<x-accordion.item>
+					<x-accordion.item-handle title="What is Quark Expeditions' Protection Promise to make your expedition worry-free?" />
+					<x-accordion.item-content>
+						<ul>
+							<li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
+							<li>Temporibus, aperiam. Error provident pariatur explicabo, totam culpa quam dolores quisquam, doloremque perspiciatis consequatur recusandae ipsam a facere eos? Aspernatur.</li>
+						</ul>
+						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.</p>
+					</x-accordion.item-content>
+				</x-accordion.item>
+			</x-accordion>
+		</x-section>
 	</x-component-demo>
 
 	<x-component-demo :keys="[ 'breadcrumbs' ]">
@@ -2549,7 +2887,6 @@
 		</x-section>
 	</x-component-demo>
 
-
 	<x-component-demo :keys="[ 'thumbnail-cards' ]">
 		<x-section title="Thumbnail Cards: Small Portrait">
 			<x-thumbnail-cards :is_carousel="false">
@@ -2632,6 +2969,7 @@
 			</x-thumbnail-cards>
 		</x-section>
 	</x-component-demo>
+
 	<x-component-demo :keys="[ 'accordion' ]">
 		<x-section>
 			<x-accordion title="Quark Expeditions takes you places no one else can!">

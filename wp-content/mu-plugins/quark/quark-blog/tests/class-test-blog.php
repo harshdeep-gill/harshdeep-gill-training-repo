@@ -415,6 +415,7 @@ class Test_Blog extends WP_UnitTestCase {
 			[
 				'post_title'   => 'Test Post 1',
 				'post_content' => 'Post content 1',
+				'post_excerpt' => 'Post excerpt 1',
 				'post_status'  => 'publish',
 				'post_type'    => POST_TYPE,
 				'meta_input'   => [
@@ -423,11 +424,17 @@ class Test_Blog extends WP_UnitTestCase {
 			]
 		);
 
+		// Calculate reading time.
+		if ( $post_1 instanceof WP_Post ) {
+			\Quark\Blog\calculate_post_reading_time( $post_1->ID, $post_1 );
+		}
+
 		// Create post 2.
 		$post_2 = $this->factory()->post->create_and_get(
 			[
 				'post_title'   => 'Test Post 2',
 				'post_content' => 'Post content 2',
+				'post_excerpt' => 'Post excerpt 2',
 				'post_status'  => 'publish',
 				'post_type'    => POST_TYPE,
 				'meta_input'   => [
@@ -435,6 +442,11 @@ class Test_Blog extends WP_UnitTestCase {
 				],
 			]
 		);
+
+		// Calculate reading time.
+		if ( $post_2 instanceof WP_Post ) {
+			\Quark\Blog\calculate_post_reading_time( $post_2->ID, $post_2 );
+		}
 
 		// Assert created posts are instance of WP_Post.
 		$this->assertTrue( $post_1 instanceof WP_Post );
@@ -493,6 +505,7 @@ class Test_Blog extends WP_UnitTestCase {
 					'post'           => $post_1,
 					'title'          => 'Test Post 1',
 					'permalink'      => 'http://test.quarkexpeditions.com/test-post-1',
+					'excerpt'        => 'Post excerpt 1',
 					'featured_image' => 35,
 					'authors'        => [
 						author_get( $author_1->ID ),
@@ -543,6 +556,7 @@ class Test_Blog extends WP_UnitTestCase {
 					'post'           => $post_1,
 					'title'          => 'Test Post 1',
 					'permalink'      => 'http://test.quarkexpeditions.com/test-post-1',
+					'excerpt'        => 'Post excerpt 1',
 					'featured_image' => 35,
 					'authors'        => [
 						author_get( $author_1->ID ),
@@ -577,6 +591,7 @@ class Test_Blog extends WP_UnitTestCase {
 					'post'           => $post_2,
 					'title'          => 'Test Post 2',
 					'permalink'      => 'http://test.quarkexpeditions.com/test-post-2',
+					'excerpt'        => 'Post excerpt 2',
 					'featured_image' => 32,
 					'authors'        => [
 						author_get( $author_1->ID ),

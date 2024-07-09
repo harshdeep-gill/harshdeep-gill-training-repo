@@ -41,6 +41,8 @@ import * as breadcrumbs from './breadcrumbs';
 import * as sidebarGrid from './sidebar-grid';
 import * as authorInfo from './author-info';
 import * as tableOfContents from './table-of-contents';
+import * as blogPostCards from './blog-post-cards';
+import * as adventureOptions from './adventure-options';
 
 /**
  * Add blocks.
@@ -81,6 +83,8 @@ const blocks = [
 	sidebarGrid,
 	authorInfo,
 	tableOfContents,
+	blogPostCards,
+	adventureOptions,
 ];
 
 /**
