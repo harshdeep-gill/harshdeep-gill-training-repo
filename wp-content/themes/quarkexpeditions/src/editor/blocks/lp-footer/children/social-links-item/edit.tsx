@@ -64,7 +64,7 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 			</InspectorControls>
 			<span { ...blocksProps }>
 				<span className="screen-reader-text">{ attributes.type }</span>
-				{ icons[ `${ attributes.type }Circle` ] }
+				{ icons[ `${ attributes.type }` ] }
 			</span>
 		</>
 	);
