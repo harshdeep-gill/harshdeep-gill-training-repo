@@ -26,10 +26,12 @@
 			"type": "object"
 		},
 		"caption": {
-			"type": "string"
+			"type": "string",
+			"default": ""
 		},
 		"videoUrl": {
-			"type": "string"
+			"type": "string",
+			"default": ""
 		}
 	},
 	"supports": {

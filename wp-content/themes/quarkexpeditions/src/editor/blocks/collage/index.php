@@ -7,6 +7,8 @@
 
 namespace Quark\Theme\Blocks\Collage;
 
+use WP_Block;
+
 const COMPONENT = 'parts.collage';
 
 /**
@@ -27,15 +29,15 @@ function bootstrap(): void {
 /**
  * Render this block.
  *
- * @param mixed[]   $attributes The block attributes.
- * @param string    $content    The block content.
- * @param \WP_Block $block      The block instance.
+ * @param mixed[]  $attributes The block attributes.
+ * @param string   $content    The block content.
+ * @param WP_Block $block      The block instance.
  *
  * @return string The block markup.
  */
-function render( array $attributes = [], string $content = '', \WP_Block $block = null ): string {
+function render( array $attributes = [], string $content = '', WP_Block $block = null ): string {
 	// Check for block.
-	if ( ! $block instanceof \WP_Block ) {
+	if ( ! $block instanceof WP_Block ) {
 		return $content;
 	}
 
@@ -51,17 +53,17 @@ function render( array $attributes = [], string $content = '', \WP_Block $block 
 	// Build component attributes.
 	foreach ( $block->inner_blocks as $inner_block ) {
 		// Check if we have an image.
-		if ( ! $inner_block instanceof \WP_Block || empty( $inner_block->attributes['image']['id'] ) ) {
+		if ( ! $inner_block instanceof WP_Block || empty( $inner_block->attributes['image']['id'] ) ) {
 			continue;
 		}
 
 		// Build collage items with attributes.
 		$component_attributes['items'][] = [
-			'media_type' => $inner_block->attributes['mediaType'] ?? 'image',
-			'size'       => $inner_block->attributes['size'] ?? 'small',
+			'media_type' => $inner_block->attributes['mediaType'],
+			'size'       => $inner_block->attributes['size'],
 			'image_id'   => $inner_block->attributes['image']['id'],
-			'title'      => $inner_block->attributes['caption'] ?? '',
-			'video_url'  => $inner_block->attributes['videoUrl'] ?? '',
+			'title'      => $inner_block->attributes['caption'],
+			'video_url'  => $inner_block->attributes['videoUrl'],
 		];
 	}
 

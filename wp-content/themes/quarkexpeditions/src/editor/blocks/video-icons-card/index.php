@@ -7,6 +7,8 @@
 
 namespace Quark\Theme\Blocks\VideoIconsCard;
 
+use WP_Block;
+
 const COMPONENT = 'video-icons-card';
 
 /**
@@ -27,15 +29,15 @@ function bootstrap(): void {
 /**
  * Render this block.
  *
- * @param mixed[]   $attributes The block attributes.
- * @param string    $content    The block content.
- * @param \WP_Block $block      The block instance.
+ * @param mixed[]  $attributes The block attributes.
+ * @param string   $content    The block content.
+ * @param WP_Block $block      The block instance.
  *
  * @return string The block markup.
  */
-function render( array $attributes = [], string $content = '', \WP_Block $block = null ): string {
+function render( array $attributes = [], string $content = '', WP_Block $block = null ): string {
 	// Check for block.
-	if ( ! $block instanceof \WP_Block ) {
+	if ( ! $block instanceof WP_Block ) {
 		return $content;
 	}
 
@@ -45,7 +47,7 @@ function render( array $attributes = [], string $content = '', \WP_Block $block 
 	// Build the slot.
 	foreach ( $block->inner_blocks as $maybe_icon_columns_block ) {
 		// Check for block.
-		if ( ! $maybe_icon_columns_block instanceof \WP_Block ) {
+		if ( ! $maybe_icon_columns_block instanceof WP_Block ) {
 			continue;
 		}
 
@@ -78,10 +80,10 @@ function render( array $attributes = [], string $content = '', \WP_Block $block 
 	// Build component attributes.
 	$component_attributes = [
 		'slot'     => $slot,
-		'variant'  => $attributes['variant'] ?? '',
+		'variant'  => $attributes['variant'],
 		'image_id' => $image_id,
-		'title'    => $attributes['title'] ?? '',
-		'url'      => $attributes['url'] ?? '',
+		'title'    => $attributes['title'],
+		'url'      => $attributes['url'],
 	];
 
 	// Return the component.

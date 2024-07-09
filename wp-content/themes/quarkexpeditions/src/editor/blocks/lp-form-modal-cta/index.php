@@ -37,18 +37,18 @@ function bootstrap(): void {
 function render( array $attributes = [] ): string {
 	// Initialize the component attributes.
 	$component_attributes = [
-		'text'          => $attributes['text'] ?? '',
+		'text'          => $attributes['text'],
 		'form_id'       => 'inquiry-form',
 		'class'         => $attributes['className'] ?? '',
-		'color'         => $attributes['backgroundColor'] ?? '',
+		'color'         => $attributes['backgroundColor'],
 		'countries'     => get_countries(),
 		'states'        => get_states(),
 		'hidden_fields' => [
-			'polar_region' => $attributes['polarRegion'] ?? '',
-			'season'       => $attributes['season'] ?? '',
-			'ship'         => $attributes['ship'] ?? '',
-			'sub_region'   => $attributes['subRegion'] ?? '',
-			'expedition'   => $attributes['expedition'] ?? '',
+			'polar_region' => $attributes['polarRegion'],
+			'season'       => $attributes['season'],
+			'ship'         => $attributes['ship'],
+			'sub_region'   => $attributes['subRegion'],
+			'expedition'   => $attributes['expedition'],
 		],
 	];
 

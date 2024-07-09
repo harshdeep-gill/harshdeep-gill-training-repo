@@ -34,9 +34,9 @@ function bootstrap(): void {
 function render( array $attributes = [] ): string {
 	// Build component attributes.
 	$component_attributes = [
-		'background_color' => $attributes['color'] ?? '',
-		'icon'             => $attributes['icon'] ?? '',
-		'text'             => $attributes['text'] ?? '',
+		'background_color' => $attributes['color'],
+		'icon'             => $attributes['icon'],
+		'text'             => $attributes['text'],
 		'class'            => $attributes['className'] ?? '',
 	];
 

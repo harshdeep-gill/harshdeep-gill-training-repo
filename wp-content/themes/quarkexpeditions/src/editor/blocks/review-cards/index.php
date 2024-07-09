@@ -7,6 +7,9 @@
 
 namespace Quark\Theme\Blocks\ReviewCards;
 
+use WP_Block;
+use WP_Block_List;
+
 const COMPONENT = 'parts.review-cards';
 
 /**
@@ -27,15 +30,15 @@ function bootstrap(): void {
 /**
  * Render this block.
  *
- * @param mixed[]   $attributes The block attributes.
- * @param string    $content    The block content.
- * @param \WP_Block $block      The block instance.
+ * @param mixed[]  $attributes The block attributes.
+ * @param string   $content    The block content.
+ * @param WP_Block $block      The block instance.
  *
  * @return string The block markup.
  */
-function render( array $attributes = [], string $content = '', \WP_Block $block = null ): string {
+function render( array $attributes = [], string $content = '', WP_Block $block = null ): string {
 	// Check for block.
-	if ( ! $block instanceof \WP_Block ) {
+	if ( ! $block instanceof WP_Block ) {
 		return $content;
 	}
 
@@ -43,12 +46,12 @@ function render( array $attributes = [], string $content = '', \WP_Block $block 
 	$component_attributes = [];
 
 	// Add is carousel attributes.
-	$component_attributes['is_carousel'] = $attributes['isCarousel'] ? 'true' : 'false';
+	$component_attributes['is_carousel'] = $attributes['isCarousel'];
 
 	// Build data.
 	foreach ( $block->inner_blocks as $inner_block ) {
 		// Check for inner block.
-		if ( ! $inner_block instanceof \WP_Block ) {
+		if ( ! $inner_block instanceof WP_Block ) {
 			continue;
 		}
 
@@ -61,10 +64,10 @@ function render( array $attributes = [], string $content = '', \WP_Block $block 
 			];
 
 			// Build data.
-			if ( $inner_block->inner_blocks instanceof \WP_Block_List ) {
+			if ( $inner_block->inner_blocks instanceof WP_Block_List ) {
 				foreach ( $inner_block->inner_blocks as $inner_block_child ) {
 					// Check for inner block.
-					if ( ! $inner_block_child instanceof \WP_Block ) {
+					if ( ! $inner_block_child instanceof WP_Block ) {
 						continue;
 					}
 
@@ -92,7 +95,7 @@ function render( array $attributes = [], string $content = '', \WP_Block $block 
 						$title['type'] = 'title';
 
 						// Add title.
-						$title['title'] = ! empty( $inner_block_child->attributes['title'] ) ? $inner_block_child->attributes['title'] : '';
+						$title['title'] = $inner_block_child->attributes['title'];
 
 						// Add title to children.
 						$card_attributes['children'][] = $title;
@@ -107,7 +110,7 @@ function render( array $attributes = [], string $content = '', \WP_Block $block 
 						$rating['type'] = 'rating';
 
 						// Add rating.
-						$rating['rating'] = ! empty( $inner_block_child->attributes['rating'] ) ? $inner_block_child->attributes['rating'] : '5';
+						$rating['rating'] = $inner_block_child->attributes['rating'];
 
 						// Add rating to children.
 						$card_attributes['children'][] = $rating;
@@ -122,7 +125,7 @@ function render( array $attributes = [], string $content = '', \WP_Block $block 
 						$author['type'] = 'author';
 
 						// Add author.
-						$author['author'] = ! empty( $inner_block_child->attributes['author'] ) ? $inner_block_child->attributes['author'] : '';
+						$author['author'] = $inner_block_child->attributes['author'];
 
 						// Add author to children.
 						$card_attributes['children'][] = $author;
@@ -137,7 +140,7 @@ function render( array $attributes = [], string $content = '', \WP_Block $block 
 						$author_details['type'] = 'author-details';
 
 						// Add author details.
-						$author_details['author_details'] = ! empty( $inner_block_child->attributes['authorDetails'] ) ? $inner_block_child->attributes['authorDetails'] : '';
+						$author_details['author_details'] = $inner_block_child->attributes['authorDetails'];
 
 						// Add author details to children.
 						$card_attributes['children'][] = $author_details;
