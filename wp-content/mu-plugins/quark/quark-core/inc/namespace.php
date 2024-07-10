@@ -365,3 +365,38 @@ function allow_mime_types( array $mime_types = [] ): array {
 	// Return mime types.
 	return $mime_types;
 }
+
+/**
+ * Get a visitor's geo country.
+ *
+ * @note This uses Pantheon's AGCDN header which sets
+ *       a two-letter ISO string for the visitor's country.
+ *
+ * @return string
+ */
+function get_visitor_geo_country(): string {
+	// init geolocation.
+	static $geolocation = null;
+
+	// Return if already set.
+	if ( null !== $geolocation ) {
+		return $geolocation;
+	}
+
+	// Get headers.
+	$headers = getallheaders();
+
+	// Get geolocation.
+	if ( ! empty( $headers['x-geocountry'] ) ) {
+		$geolocation = strtoupper( sanitize_text_field( $headers['x-geocountry'] ) );
+	} elseif ( ! empty( $headers['X-Geo-Country'] ) ) {
+		$geolocation = strtoupper( sanitize_text_field( $headers['X-Geo-Country'] ) );
+	} elseif ( ! empty( $headers['X-Geo-Country-Code'] ) ) {
+		$geolocation = strtoupper( sanitize_text_field( $headers['X-Geo-Country-Code'] ) );
+	} else {
+		$geolocation = '';
+	}
+
+	// Return geolocation.
+	return $geolocation;
+}

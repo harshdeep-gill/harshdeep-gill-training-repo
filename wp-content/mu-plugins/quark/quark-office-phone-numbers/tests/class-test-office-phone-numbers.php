@@ -10,6 +10,9 @@ namespace Quark\PhoneNumbers\Tests;
 use WP_UnitTestCase;
 
 use function Quark\OfficePhoneNumbers\office_phone_number_front_end_data;
+use function Quark\OfficePhoneNumbers\get_corporate_office_phone_number;
+use function Quark\OfficePhoneNumbers\get_office_phone_number;
+use function Quark\OfficePhoneNumbers\get_local_office_data;
 
 /**
  * Class Test_Office_Phone_Numbers.
@@ -27,13 +30,13 @@ class Test_Office_Phone_Numbers extends WP_UnitTestCase {
 		// Test if post type hook is registered.
 		$this->assertEquals( 10, has_action( 'acf/options_page/save', 'Quark\OfficePhoneNumbers\purge_local_office_data_cache' ) );
 		$this->assertEquals( 10, has_action( 'admin_menu', 'Quark\OfficePhoneNumbers\setup_phone_number_settings' ) );
+		$this->assertEquals( 10, has_action( 'rest_api_init', 'Quark\OfficePhoneNumbers\register_rest_endpoints' ) );
 	}
 
 	/**
 	 * Test getting front-end data.
 	 *
 	 * @covers \Quark\OfficePhoneNumbers\get_local_office_data()
-	 * @covers \Quark\OfficePhoneNumbers\office_phone_number_front_end_data()
 	 *
 	 * @return void
 	 */
@@ -66,19 +69,120 @@ class Test_Office_Phone_Numbers extends WP_UnitTestCase {
 					'CA',
 					'WI',
 				],
+				'corporate_office'    => false,
 			],
 			[
 				'name'                => 'Office 2',
 				'phone'               => '18001234566',
 				'phone_number_prefix' => '+12',
 				'coverage'            => [],
+				'corporate_office'    => false,
 			],
 		];
 
 		// Get data.
-		$data = office_phone_number_front_end_data();
+		$data = get_local_office_data();
 
 		// Test data.
-		$this->assertEquals( $expected_data, $data['data']['office_phone_numbers'] );
+		$this->assertEquals( $expected_data, $data );
+
+		// clean up.
+		delete_option( 'options_country' );
+		delete_option( 'options_country_0_name' );
+		delete_option( 'options_country_0_phone_number_prefix' );
+		delete_option( 'options_country_0_phone_number' );
+		delete_option( 'options_country_0_coverage' );
+		delete_option( 'options_country_1_name' );
+		delete_option( 'options_country_1_phone_number_prefix' );
+		delete_option( 'options_country_1_phone_number' );
+	}
+
+	/**
+	 * Test getting front-end data with no data.
+	 *
+	 * @covers \Quark\OfficePhoneNumbers\office_phone_number_front_end_data()
+	 *
+	 * @return void
+	 */
+	public function test_office_phone_number_front_end_data(): void {
+		// Get data.
+		$data = office_phone_number_front_end_data();
+
+		// Prepare expected data.
+		$expected_data = [
+			'api_endpoint' => 'http://test.quarkexpeditions.com/wp-json/qrk-phone-numbers/v1/phone-number/get',
+		];
+
+		// Test data.
+		$this->assertEquals( $expected_data, $data['data']['dynamic_phone_number'] );
+	}
+
+	/**
+	 * Test getting front-end data.
+	 *
+	 * @covers \Quark\OfficePhoneNumbers\get_corporate_office_phone_number()
+	 *
+	 * @return void
+	 */
+	public function test_get_corporate_office_phone_number(): void {
+		// Prepare data.
+		update_option( 'options_country', '2' );
+		update_option( 'options_country_0_name', 'Office 1' );
+		update_option( 'options_country_0_phone_number', '+11800123456' );
+		update_option( 'options_country_0_phone_number_prefix', 'Call Us To Book' );
+		update_option(
+			'options_country_0_coverage',
+			[
+				'US',
+				'CA',
+			]
+		);
+		update_option( 'options_country_1_name', 'Office 2' );
+		update_option( 'options_country_1_phone_number_prefix', 'Call Us' );
+		update_option( 'options_country_1_phone_number', '+12 18001234566' );
+		update_option( 'options_country_1_corporate_office', '1' );
+		update_option(
+			'options_country_1_coverage',
+			[
+				'WI',
+				'IN',
+			]
+		);
+
+		// Prepare expected data.
+		$expected_data = [
+			'phone_number' => '+12 18001234566',
+			'prefix'       => 'Call Us',
+		];
+
+		// Get data.
+		$data = get_corporate_office_phone_number();
+
+		// Test data.
+		$this->assertEquals( $expected_data, $data );
+
+		// Get Office phone number by Country code.
+		$data = get_office_phone_number( 'ca' );
+
+		// Prepare expected data.
+		$expected_data = [
+			'phone'  => '+11800123456',
+			'prefix' => 'Call Us To Book',
+		];
+
+		// Test data.
+		$this->assertEquals( $expected_data, $data );
+
+		// clean up.
+		delete_option( 'options_country' );
+		delete_option( 'options_country_0_name' );
+		delete_option( 'options_country_0_phone_number_prefix' );
+		delete_option( 'options_country_0_phone_number' );
+		delete_option( 'options_country_0_coverage' );
+		delete_option( 'options_country_1_name' );
+		delete_option( 'options_country_1_phone_number_prefix' );
+		delete_option( 'options_country_1_phone_number' );
+		delete_option( 'options_country_1_corporate_office' );
+		delete_option( 'options_country_1_coverage' );
 	}
 }
