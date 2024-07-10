@@ -502,7 +502,7 @@
 
 	<x-component-demo :keys="['tabs']">
 		<x-section>
-			<x-tabs current_tab="ultramarine">
+			<x-tabs current_tab="ultramarine" update_url="yes">
 				<x-tabs.header>
 					<x-tabs.nav
 						id="ultramarine"

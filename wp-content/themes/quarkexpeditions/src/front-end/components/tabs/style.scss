@@ -43,24 +43,10 @@
 	}
 
 	&__tab {
-		position: absolute;
-		left: 0;
-		top: 0;
-		width: 100%;
-		height: auto;
-		visibility: hidden;
-		opacity: 0;
-		min-width: 0;
-		display: block;
-		min-height: 142px;
-
-		@include transition(opacity, 0.4s);
-
-		transition-property: opacity, visibility;
+		display: none;
 
 		&[open="yes"] {
-			visibility: visible;
-			opacity: 1;
+			display: block;
 		}
 	}
 }
