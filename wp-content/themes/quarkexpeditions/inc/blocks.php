@@ -58,6 +58,13 @@ function register_blocks(): void {
 		'Footer'                => 'footer.php',
 		'Accordion'             => 'accordion.php',
 		'ThumbnailCards'        => 'thumbnail-cards.php',
+		'RelatedPosts'          => 'related-posts.php',
+		'Breadcrumbs'           => 'breadcrumbs.php',
+		'SidebarGrid'           => 'sidebar-grid.php',
+		'AuthorInfo'            => 'author-info.php',
+		'TableOfContents'       => 'table-of-contents.php',
+		'BlogPostCards'         => 'blog-post-cards.php',
+		'AdventureOptions'      => 'adventure-options.php',
 	];
 
 	// Register blocks.

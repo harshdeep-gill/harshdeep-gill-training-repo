@@ -13,6 +13,7 @@ use WP_Post;
 use WP_Query;
 use WP_Term_Query;
 use WP_Term;
+use WP_CLI;
 
 use function Quark\Migration\WordPress\convert_to_blocks;
 
@@ -543,7 +544,9 @@ function prepare_content( string $content = '' ): string {
 
 /**
  * Transform a drupal media tag into IMG tags.
- *  i.e. - <drupal-media data-entity-type="media" alt="alternate text" data-entity-uuid="b3a11cbc-53a9-419d-b9b5-2497ac0ba2ba" data-align="center" data-caption="caption text">.
+ *  i.e. - <drupal-media data-entity-type="media" alt="alternate text"
+ *  data-entity-uuid="b3a11cbc-53a9-419d-b9b5-2497ac0ba2ba" data-align="center"
+ *  data-caption="caption text">.
  *
  * @param string $content Input string.
  *
