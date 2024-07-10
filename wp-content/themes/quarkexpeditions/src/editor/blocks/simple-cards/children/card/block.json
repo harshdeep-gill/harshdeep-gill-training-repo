@@ -11,7 +11,8 @@
   "parent": [ "quark/simple-cards" ],
   "attributes": {
     "title": {
-      "type": "string"
+      "type": "string",
+      "default": ""
     },
     "image": {
       "type": "object",
