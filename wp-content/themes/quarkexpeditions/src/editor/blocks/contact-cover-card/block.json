@@ -1,0 +1,23 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "quark/contact-cover-card",
+  "description": "Add a Contact Cover Card",
+  "title": "Contact Cover Card",
+  "keywords": [ "contact", "card" ],
+  "category": "layout",
+  "textdomain": "quark",
+  "attributes": {
+    "image": {
+      "type": "object",
+      "default": {}
+    }
+  },
+  "supports": {
+    "alignWide": false,
+    "anchor": true,
+    "className": false,
+    "html": false,
+    "customClassName": false
+  }
+}

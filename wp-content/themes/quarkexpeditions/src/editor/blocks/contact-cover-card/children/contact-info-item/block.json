@@ -1,0 +1,32 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "quark/contact-cover-card-contact-info-item",
+  "description": "Individual content info item for contact cover card.",
+  "icon": "",
+  "title": "Contact Info Item",
+  "keywords": [ "item", "contact" ],
+  "category": "layout",
+  "textdomain": "quark",
+  "parent": [ "quark/contact-cover-card" ],
+  "attributes": {
+    "label": {
+      "type": "string",
+      "default": ""
+    },
+    "value": {
+      "type": "string",
+      "default": ""
+    },
+    "url": {
+      "type": "object",
+      "default": {}
+    }
+  },
+  "supports": {
+    "alignWide": false,
+    "className": false,
+    "html": false,
+    "customClassName": false
+  }
+}
