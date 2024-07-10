@@ -1,7 +1,8 @@
 @props( [
-	'class'    => '',
-	'interval' => 5,
-	'arrows'   => false,
+	'class'      => '',
+	'interval'   => 5,
+	'arrows'     => false,
+	'auto_slide' => false,
 ] )
 
 @php
@@ -26,7 +27,9 @@
 		@class( $classes )
 		swipe="yes"
 		behaviour="slide"
-		auto-slide-interval="{!! esc_attr( $interval_in_milliseconds ) !!}"
+		@if ( ! empty( $auto_slide ) )
+			auto-slide-interval="{!! esc_attr( $interval_in_milliseconds ) !!}"
+		@endif
 		infinite="yes"
 	>
 		<tp-slider-track class="hero-card-slider__track">

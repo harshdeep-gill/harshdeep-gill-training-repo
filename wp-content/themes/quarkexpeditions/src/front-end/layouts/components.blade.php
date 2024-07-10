@@ -1574,41 +1574,83 @@
 
 	<x-component-demo :keys="[ 'hero-card-slider' ]">
 		<x-section title="Hero Card Slider">
-			<x-hero-card-slider :arrows="true">
-				<x-hero-card-slider.card>
-					<x-hero-card-slider.image image_id="29" />
-					<x-hero-card-slider.content>
-						<x-hero-card-slider.tag text="On-ship Experience" />
-						<x-hero-card-slider.title title="Life Onboard a Quark Expeditions Vessel: Incredible On-Ship Experiences" />
-						<x-hero-card-slider.description>
-							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias aliquid quia, iste sunt autem dolor omnis quo beatae animi quos.</p>
-						</x-hero-card-slider.description>
-						<x-hero-card-slider.card-cta text="Explore Experiences" url="#" />
-					</x-hero-card-slider.content>
-				</x-hero-card-slider.card>
-				<x-hero-card-slider.card>
-					<x-hero-card-slider.video video_id="167" video_type="video/mp4" />
-					<x-hero-card-slider.content>
-						<x-hero-card-slider.tag text="On-ship Experience" />
-						<x-hero-card-slider.title title="Life Onboard a Quark Expeditions Vessel: Incredible On-Ship Experiences" />
-						<x-hero-card-slider.description>
-							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias aliquid quia, iste sunt autem dolor omnis quo beatae animi quos.</p>
-						</x-hero-card-slider.description>
-						<x-button appearance="outline" size="big">Book Now</x-button>
-					</x-hero-card-slider.content>
-				</x-hero-card-slider.card>
-				<x-hero-card-slider.card>
-					<x-hero-card-slider.image image_id="34" />
-					<x-hero-card-slider.content>
-						<x-hero-card-slider.overline text="Limited time. Limited Cabins." />
-						<x-hero-card-slider.title title="Epic 50% Savings" />
-						<x-hero-card-slider.description>
-							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias aliquid quia, iste sunt autem dolor omnis quo beatae animi quos.</p>
-						</x-hero-card-slider.description>
-						<x-hero-card-slider.card-cta text="Explore Experiences" url="#" />
-					</x-hero-card-slider.content>
-				</x-hero-card-slider.card>
-			</x-hero-card-slider>
+			<div style="margin-bottom: 64px;">
+				<h3 style="text-align: center; margin-bottom: 32px">Slider with arrows</h3>
+				<x-hero-card-slider :arrows="true">
+					<x-hero-card-slider.card>
+						<x-hero-card-slider.image image_id="29" />
+						<x-hero-card-slider.content>
+							<x-hero-card-slider.tag text="On-ship Experience" />
+							<x-hero-card-slider.title title="Life Onboard a Quark Expeditions Vessel: Incredible On-Ship Experiences" />
+							<x-hero-card-slider.description>
+								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias aliquid quia, iste sunt autem dolor omnis quo beatae animi quos.</p>
+							</x-hero-card-slider.description>
+							<x-hero-card-slider.card-cta text="Explore Experiences" url="#" />
+						</x-hero-card-slider.content>
+					</x-hero-card-slider.card>
+					<x-hero-card-slider.card>
+						<x-hero-card-slider.video video_id="167" video_type="video/mp4" />
+						<x-hero-card-slider.content>
+							<x-hero-card-slider.tag text="On-ship Experience" />
+							<x-hero-card-slider.title title="Life Onboard a Quark Expeditions Vessel: Incredible On-Ship Experiences" />
+							<x-hero-card-slider.description>
+								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias aliquid quia, iste sunt autem dolor omnis quo beatae animi quos.</p>
+							</x-hero-card-slider.description>
+							<x-button appearance="outline" size="big">Book Now</x-button>
+						</x-hero-card-slider.content>
+					</x-hero-card-slider.card>
+					<x-hero-card-slider.card>
+						<x-hero-card-slider.image image_id="34" />
+						<x-hero-card-slider.content>
+							<x-hero-card-slider.overline text="Limited time. Limited Cabins." />
+							<x-hero-card-slider.title title="Epic 50% Savings" />
+							<x-hero-card-slider.description>
+								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias aliquid quia, iste sunt autem dolor omnis quo beatae animi quos.</p>
+							</x-hero-card-slider.description>
+							<x-hero-card-slider.card-cta text="Explore Experiences" url="#" />
+						</x-hero-card-slider.content>
+					</x-hero-card-slider.card>
+				</x-hero-card-slider>
+			</div>
+
+			<div>
+				<h3 style="text-align: center; margin-bottom: 32px">Slider with auto slide and no arrows</h3>
+				<x-hero-card-slider :auto_slide="true" :interval="6" {{-- Interval in seconds. Optional. --}}>
+					<x-hero-card-slider.card>
+						<x-hero-card-slider.image image_id="29" />
+						<x-hero-card-slider.content>
+							<x-hero-card-slider.tag text="On-ship Experience" />
+							<x-hero-card-slider.title title="Life Onboard a Quark Expeditions Vessel: Incredible On-Ship Experiences" />
+							<x-hero-card-slider.description>
+								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias aliquid quia, iste sunt autem dolor omnis quo beatae animi quos.</p>
+							</x-hero-card-slider.description>
+							<x-hero-card-slider.card-cta text="Explore Experiences" url="#" />
+						</x-hero-card-slider.content>
+					</x-hero-card-slider.card>
+					<x-hero-card-slider.card>
+						<x-hero-card-slider.video video_id="167" video_type="video/mp4" />
+						<x-hero-card-slider.content>
+							<x-hero-card-slider.tag text="On-ship Experience" />
+							<x-hero-card-slider.title title="Life Onboard a Quark Expeditions Vessel: Incredible On-Ship Experiences" />
+							<x-hero-card-slider.description>
+								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias aliquid quia, iste sunt autem dolor omnis quo beatae animi quos.</p>
+							</x-hero-card-slider.description>
+							<x-button appearance="outline" size="big">Book Now</x-button>
+						</x-hero-card-slider.content>
+					</x-hero-card-slider.card>
+					<x-hero-card-slider.card>
+						<x-hero-card-slider.image image_id="34" />
+						<x-hero-card-slider.content>
+							<x-hero-card-slider.overline text="Limited time. Limited Cabins." />
+							<x-hero-card-slider.title title="Epic 50% Savings" />
+							<x-hero-card-slider.description>
+								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias aliquid quia, iste sunt autem dolor omnis quo beatae animi quos.</p>
+							</x-hero-card-slider.description>
+							<x-hero-card-slider.card-cta text="Explore Experiences" url="#" />
+						</x-hero-card-slider.content>
+					</x-hero-card-slider.card>
+				</x-hero-card-slider>
+			</div>
 		</x-section>
 	</x-component-demo>
 
