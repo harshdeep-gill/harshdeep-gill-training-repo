@@ -50,22 +50,17 @@ export default class HeroCardSlider extends HTMLElement {
 
 	/**
 	 * Handle the mouse over event.
+	 *
+	 * @param { Event } evt
 	 */
-	handleMouseOver(): void {
+	handleMouseOver( evt: Event ): void {
 		// Disable the slider.
 		this.slider?.setAttribute( 'disabled', 'yes' );
 
-		// Find the active card.
-		const activeCard = this.querySelector( '.hero-card-slider__card[active="yes"]' );
-
-		// Check if active card found.
-		if ( ! activeCard ) {
-			// Not found. Bail.
-			return;
-		}
-
 		// Get the possible video child.
-		const maybeVideo = activeCard.querySelector( 'video' );
+
+		// @ts-ignore
+		const maybeVideo = evt?.currentTarget?.querySelector( 'video' );
 
 		// Play the video.
 		this.playVideo( maybeVideo );
@@ -73,19 +68,12 @@ export default class HeroCardSlider extends HTMLElement {
 
 	/**
 	 * Handles the mouse out event.
+	 *
+	 * @param { Event } evt
 	 */
-	handleMouseOut(): void {
-		// Find the active card.
-		const activeCard = this.querySelector( '.hero-card-slider__card[active="yes"]' );
-
-		// Check if active card found.
-		if ( ! activeCard ) {
-			// Not found. Bail.
-			return;
-		}
-
-		// Get the possible video child.
-		const maybeVideo = activeCard.querySelector( 'video' );
+	handleMouseOut( evt: Event ): void {
+		// @ts-ignore
+		const maybeVideo = evt?.currentTarget?.querySelector( 'video' );
 
 		// Pause the video.
 		this.pauseVideo( maybeVideo );

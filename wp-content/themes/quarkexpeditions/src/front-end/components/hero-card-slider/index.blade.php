@@ -1,8 +1,8 @@
 @props( [
-	'class'      => '',
-	'interval'   => 5,
-	'arrows'     => false,
-	'auto_slide' => false,
+	'class'           => '',
+	'interval'        => 5,
+	'arrows'          => false,
+	'auto_slide'      => false,
 ] )
 
 @php
@@ -27,10 +27,16 @@
 		@class( $classes )
 		swipe="yes"
 		behaviour="slide"
+
 		@if ( ! empty( $auto_slide ) )
 			auto-slide-interval="{!! esc_attr( $interval_in_milliseconds ) !!}"
 		@endif
+
 		infinite="yes"
+
+		@if ( ! empty( $mobile_carousel ) )
+			data-mobile-carousel
+		@endif
 	>
 		<tp-slider-track class="hero-card-slider__track">
 			<tp-slider-slides class="hero-card-slider__slides">
@@ -39,17 +45,18 @@
 		</tp-slider-track>
 
 		@if ( ! empty( $arrows ) && $slide_count > 1)
-			<tp-slider-arrow direction="previous">
-				<button class="hero-card-slider__arrow-button hero-card-slider__arrow-button--left">
-					<x-svg name="chevron-left" />
-				</button>
-			</tp-slider-arrow>
-
-			<tp-slider-arrow direction="next">
-				<button class="hero-card-slider__arrow-button hero-card-slider__arrow-button--right">
-					<x-svg name="chevron-left" />
-				</button>
-			</tp-slider-arrow>
+			<div class="hero-card-slider__arrows">
+				<tp-slider-arrow direction="previous">
+					<button class="hero-card-slider__arrow-button hero-card-slider__arrow-button--left">
+						<x-svg name="chevron-left" />
+					</button>
+				</tp-slider-arrow>
+				<tp-slider-arrow direction="next">
+					<button class="hero-card-slider__arrow-button hero-card-slider__arrow-button--right">
+						<x-svg name="chevron-left" />
+					</button>
+				</tp-slider-arrow>
+			</div>
 		@endif
 
 		@if ( $slide_count > 1 )

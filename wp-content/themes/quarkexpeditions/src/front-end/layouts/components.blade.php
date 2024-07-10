@@ -1613,7 +1613,7 @@
 				</x-hero-card-slider>
 			</div>
 
-			<div>
+			<div style="margin-bottom: 64px;">
 				<h3 style="text-align: center; margin-bottom: 32px">Slider with auto slide and no arrows</h3>
 				<x-hero-card-slider :auto_slide="true" :interval="6" {{-- Interval in seconds. Optional. --}}>
 					<x-hero-card-slider.card>
@@ -1651,7 +1651,58 @@
 					</x-hero-card-slider.card>
 				</x-hero-card-slider>
 			</div>
+
+			<div>
+				<h3 style="text-align: center; margin-bottom: 32px">Slider without card content</h3>
+				<x-hero-card-slider :arrows="true">
+					<x-hero-card-slider.card>
+						<x-hero-card-slider.image image_id="29" />
+					</x-hero-card-slider.card>
+					<x-hero-card-slider.card>
+						<x-hero-card-slider.video video_id="167" video_type="video/mp4" />
+					</x-hero-card-slider.card>
+					<x-hero-card-slider.card>
+						<x-hero-card-slider.image image_id="34" />
+					</x-hero-card-slider.card>
+				</x-hero-card-slider>
+			</div>
 		</x-section>
+			<x-section>
+				<x-two-columns :border="true">
+					<x-two-columns.column>
+						<h3>About Quark Expeditions</h3>
+						<p>When you venture into the untouched wilds of the Arctic and Antarctic, you need a great team around you. And we have the greatest. You'll join elite guides trained at Quark Academy — which surpasses every standard imaginable for safety and preparedness in the Polar Regions—and interact directly with world-class polar experts. Our philosophy? The team that explores together, discovers more together.</p>
+						<ul>
+							<li>In nec mi vitae quam posuere aliquet eget sed leo.</li>
+							<li>Sed vel nisi ultricies, sodales risus non, ornare augue.</li>
+							<li>Nulla facilisi. Maecenas sit amet porta nulla commodo.</li>
+						</ul>
+						<x-logo-grid size="large">
+							<x-logo-grid.logo image_id="25" size="large"/>
+							<x-logo-grid.logo image_id="24" size="large"/>
+							<x-logo-grid.logo image_id="21" size="large"/>
+							<x-logo-grid.logo image_id="20" size="large"/>
+							<x-logo-grid.logo image_id="17" size="large"/>
+						</x-logo-grid>
+					</x-two-columns.column>
+					<x-two-columns.column>
+						<div>
+							<h3 style="text-align: center; margin-bottom: 32px">Slider without card content</h3>
+							<x-hero-card-slider :arrows="true">
+								<x-hero-card-slider.card>
+									<x-hero-card-slider.image image_id="29" />
+								</x-hero-card-slider.card>
+								<x-hero-card-slider.card>
+									<x-hero-card-slider.video video_id="167" video_type="video/mp4" />
+								</x-hero-card-slider.card>
+								<x-hero-card-slider.card>
+									<x-hero-card-slider.image image_id="34" />
+								</x-hero-card-slider.card>
+							</x-hero-card-slider>
+						</div>
+					</x-two-columns.column>
+				</x-two-columns>
+			</x-section>
 	</x-component-demo>
 
 

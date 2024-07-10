@@ -15,6 +15,7 @@
 @endphp
 
 
+<div class="hero-card-slider__overlay"></div>
 <div @class( $classes )>
 	{!! $slot !!}
 </div>

@@ -16,6 +16,5 @@
 
 
 <tp-slider-slide @class( $classes )>
-	<div class="hero-card-slider__overlay"></div>
 	{!! $slot !!}
 </tp-slider-slide>

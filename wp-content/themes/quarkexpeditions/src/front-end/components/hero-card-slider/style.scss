@@ -1,18 +1,29 @@
 @import "../../scss";
 
 .hero-card-slider {
-	--hero-card-max-width: 312px;
-	--hero-card-aspect-ratio: 0.693;
+	$self: &;
 
-	max-width: var(--hero-card-max-width);
-	aspect-ratio: var(--hero-card-aspect-ratio);
-	border-radius: var(--border-radius-large);
+	--hero-card-max-width: 312px;
+	--hero-card-slider-max-width: 100%;
+	--hero-card-aspect-ratio: 78 / 113;
+
+	max-width: var(--hero-card-slider-max-width);
 	overflow: hidden;
 	position: relative;
+	border-radius: var(--border-radius-large);
 
-	@media screen and (min-width: grid-size(xl)) {
+	&__slides {
+		gap: var(--spacing-6);
+
+		@media screen and (min-width: grid-size(md)) {
+			gap: unset;
+		}
+	}
+
+	@media screen and (min-width: grid-size(md)) {
 		--hero-card-max-width: 544px;
-		--hero-card-aspect-ratio: 0.918;
+		--hero-card-slider-max-width: 544px;
+		--hero-card-aspect-ratio: 34 / 37;
 
 		&:hover tp-slider-arrow {
 			display: block;
@@ -24,6 +35,16 @@
 		display: block;
 		aspect-ratio: var(--hero-card-aspect-ratio);
 		position: relative;
+		border-radius: var(--border-radius-large);
+		overflow: hidden;
+
+		&:not(#{&}:has(#{$self}__content)) {
+			--hero-card-aspect-ratio: 3 / 2;
+
+			@media screen and (min-width: grid-size(md)) {
+				--hero-card-aspect-ratio: 34 / 37;
+			}
+		}
 
 		figure {
 			margin: 0;
@@ -33,23 +54,23 @@
 		video {
 			display: block;
 			position: absolute;
-			inset: 0;
-			z-index: 0;
-			aspect-ratio: var(--hero-card-aspect-ratio);
+			z-index: 1;
+			width: 100%;
+			height: 100%;
 			object-fit: cover;
 		}
 	}
 
 	&__content {
 		position: absolute;
-		z-index: 2;
+		z-index: 3;
 		padding: var(--spacing-5);
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
 		inset: 0;
 
-		@media screen and (min-width: grid-size(xl)) {
+		@media screen and (min-width: grid-size(md)) {
 			gap: var(--spacing-5);
 			inset: auto 0 0 0;
 		}
@@ -68,7 +89,7 @@
 		margin-bottom: 0;
 		margin-top: auto;
 
-		@media screen and (min-width: grid-size(xl)) {
+		@media screen and (min-width: grid-size(md)) {
 			margin-top: 0;
 		}
 	}
@@ -78,9 +99,9 @@
 		display: block;
 		margin: 0;
 		inset: 0;
-		z-index: 1;
+		z-index: 2;
 		max-width: 100%;
-		background-color: rgba(0, 0, 0, 0.12);
+		background-color: rgba(0, 0, 0, 0.15);
 	}
 
 	&__title,
@@ -107,23 +128,36 @@
 	.btn {
 		display: none;
 
-		@media screen and (min-width: grid-size(xl)) {
+		@media screen and (min-width: grid-size(md)) {
 			display: -webkit-box;
 		}
 	}
 
-	tp-slider-arrow {
-		position: absolute;
-		z-index: 99;
-		translate: 0 -50%;
-		display: none;
+	&__arrows {
+		display: flex;
+		gap: var(--spacing-4);
+		margin-top: var(--spacing-4);
 
-		&[direction="previous"] {
-			inset: 50% auto auto var(--spacing-2);
+		@media screen and (min-width: grid-size(md)) {
+			margin-top: 0;
 		}
+	}
 
-		&[direction="next"] {
-			inset: 50% var(--spacing-2) auto auto;
+	tp-slider-arrow {
+
+		@media screen and (min-width: grid-size(md)) {
+			display: none;
+			position: absolute;
+			z-index: 99;
+			translate: 0 -50%;
+
+			&[direction="previous"] {
+				inset: 50% auto auto var(--spacing-2);
+			}
+
+			&[direction="next"] {
+				inset: 50% var(--spacing-2) auto auto;
+			}
 		}
 	}
 
@@ -153,7 +187,12 @@
 	tp-slider-nav {
 		position: absolute;
 		inset: auto var(--spacing-4) var(--spacing-4) auto;
-		z-index: 2;
+		z-index: 3;
+		display: none;
+
+		@media screen and (min-width: grid-size(md)) {
+			display: flex;
+		}
 	}
 
 	tp-slider-nav-item button {
