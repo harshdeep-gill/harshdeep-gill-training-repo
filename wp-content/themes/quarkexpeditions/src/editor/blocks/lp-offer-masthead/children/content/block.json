@@ -1,0 +1,19 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "quark/lp-offer-masthead-content",
+    "description": "Inner Content of Offer Masthead.",
+    "title": "LP Offer Masthead Content",
+    "keywords": [ "content" ],
+    "category": "layout",
+    "textdomain": "quark",
+    "parent": [ "quark/lp-offer-masthead" ],
+    "attributes": {},
+    "supports": {
+        "alignWide": false,
+        "anchor": true,
+        "className": false,
+        "html": false,
+        "customClassName": false
+    }
+}

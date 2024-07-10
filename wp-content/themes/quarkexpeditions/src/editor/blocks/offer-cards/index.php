@@ -44,7 +44,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 	}
 
 	// Initialize attributes.
-	$attributes = [
+	$component_attributes = [
 		'cards' => [],
 	];
 
@@ -136,10 +136,10 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 			}
 
 			// Add card attributes.
-			$attributes['cards'][] = $current_card;
+			$component_attributes['cards'][] = $current_card;
 		}
 	}
 
 	// Return rendered component.
-	return quark_get_component( COMPONENT, $attributes );
+	return quark_get_component( COMPONENT, $component_attributes );
 }
