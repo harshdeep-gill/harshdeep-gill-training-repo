@@ -1,0 +1,19 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "quark/offer-cards",
+  "description": "Add offer cards to the page.",
+  "icon": "",
+  "title": "Offer Cards",
+  "keywords": [ "product cards", "expeditions" ],
+  "category": "layout",
+  "textdomain": "quark",
+  "attributes": {},
+  "supports": {
+    "alignWide": false,
+    "anchor": true,
+    "className": false,
+    "html": false,
+    "customClassName": false
+  }
+}

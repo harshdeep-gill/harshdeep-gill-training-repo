@@ -7,6 +7,9 @@
 
 namespace Quark\Theme\Blocks\OfferCards;
 
+use WP_Block;
+use WP_Block_List;
+
 const BLOCK_NAME = 'quark/offer-cards';
 const COMPONENT  = 'parts.offer-cards';
 
@@ -16,31 +19,27 @@ const COMPONENT  = 'parts.offer-cards';
  * @return void
  */
 function bootstrap(): void {
-	// Register this block only on the front-end.
-	add_action( 'template_redirect', __NAMESPACE__ . '\\register' );
-}
-
-/**
- * Register block on the front-end.
- *
- * @return void
- */
-function register(): void {
-	// Fire hooks.
-	add_filter( 'pre_render_block', __NAMESPACE__ . '\\render', 10, 2 );
+	// Register the block.
+	register_block_type_from_metadata(
+		__DIR__,
+		[
+			'render_callback' => __NAMESPACE__ . '\\render',
+		]
+	);
 }
 
 /**
  * Render this block.
  *
- * @param string|null $content Original content.
- * @param mixed[]     $block   Parsed block.
+ * @param mixed[]       $attributes Block attributes.
+ * @param string        $content Block default content.
+ * @param WP_Block|null $block Block instance.
  *
- * @return null|string
+ * @return string
  */
-function render( ?string $content = null, array $block = [] ): null|string {
-	// Check for block.
-	if ( BLOCK_NAME !== $block['blockName'] || empty( $block['innerBlocks'] ) || ! is_array( $block['innerBlocks'] ) ) {
+function render( array $attributes = [], string $content = '', WP_Block $block = null ): string {
+	// Check if block is an instance of WP_Block.
+	if ( ! $block instanceof WP_Block ) {
 		return $content;
 	}
 
@@ -50,22 +49,32 @@ function render( ?string $content = null, array $block = [] ): null|string {
 	];
 
 	// Build slot.
-	foreach ( $block['innerBlocks'] as $inner_block ) {
+	foreach ( $block->inner_blocks as $inner_block ) {
+		// Check if block is an instance of WP_Block.
+		if ( ! $inner_block instanceof WP_Block ) {
+			continue;
+		}
+
 		// Offer Card.
-		if ( 'quark/offer-cards-card' === $inner_block['blockName'] ) {
+		if ( 'quark/offer-cards-card' === $inner_block->name ) {
 			// Initialize current card attributes.
 			$current_card = [
 				'children' => [],
 			];
 
 			// Add Heading Text.
-			$current_card['heading'] = $inner_block['attrs']['heading'] ?? '';
+			$current_card['heading'] = $inner_block->attributes['heading'] ?? '';
 
 			// Loop through inner blocks of the card.
-			if ( ! empty( $inner_block['innerBlocks'] ) ) {
-				foreach ( $inner_block['innerBlocks'] as $inner_inner_block ) {
+			if ( $inner_block->inner_blocks instanceof WP_Block_List ) {
+				foreach ( $inner_block->inner_blocks as $inner_inner_block ) {
+					// Check if block is an instance of WP_Block.
+					if ( ! $inner_inner_block instanceof WP_Block ) {
+						continue;
+					}
+
 					// Title.
-					if ( 'quark/offer-card-title' === $inner_inner_block['blockName'] ) {
+					if ( 'quark/offer-card-title' === $inner_inner_block->name ) {
 						// Initialize title.
 						$title = [];
 
@@ -73,14 +82,14 @@ function render( ?string $content = null, array $block = [] ): null|string {
 						$title['type'] = 'title';
 
 						// Add title.
-						$title['title'] = ! empty( $inner_inner_block['attrs']['title'] ) ? $inner_inner_block['attrs']['title'] : '';
+						$title['title'] = $inner_inner_block->attributes['title'];
 
 						// Add title to children.
 						$current_card['children'][] = $title;
 					}
 
 					// Promotion.
-					if ( 'quark/offer-card-promotion' === $inner_inner_block['blockName'] ) {
+					if ( 'quark/offer-card-promotion' === $inner_inner_block->name ) {
 						// Initialize promotion.
 						$promotion = [];
 
@@ -88,14 +97,14 @@ function render( ?string $content = null, array $block = [] ): null|string {
 						$promotion['type'] = 'promotion';
 
 						// Add promotion.
-						$promotion['promotion'] = ! empty( $inner_inner_block['attrs']['promotionText'] ) ? $inner_inner_block['attrs']['promotionText'] : '';
+						$promotion['promotion'] = $inner_inner_block->attributes['promotionText'];
 
 						// Add title to children.
 						$current_card['children'][] = $promotion;
 					}
 
 					// Help.
-					if ( 'quark/offer-card-help' === $inner_inner_block['blockName'] ) {
+					if ( 'quark/offer-card-help' === $inner_inner_block->name ) {
 						// Initialize help.
 						$help = [];
 
@@ -103,14 +112,14 @@ function render( ?string $content = null, array $block = [] ): null|string {
 						$help['type'] = 'help';
 
 						// Add help.
-						$help['slot'] = render_block( $inner_inner_block );
+						$help['slot'] = render_block( $inner_inner_block->parsed_block );
 
 						// Add title to children.
 						$current_card['children'][] = $help;
 					}
 
 					// CTA.
-					if ( 'quark/offer-cards-cta' === $inner_inner_block['blockName'] ) {
+					if ( 'quark/offer-cards-cta' === $inner_inner_block->name ) {
 						// Initialize cta.
 						$cta = [];
 
@@ -118,7 +127,7 @@ function render( ?string $content = null, array $block = [] ): null|string {
 						$cta['type'] = 'cta';
 
 						// Get the slot.
-						$cta['slot'] = render_block( $inner_inner_block );
+						$cta['slot'] = render_block( $inner_inner_block->parsed_block );
 
 						// Add cta to children.
 						$current_card['children'][] = $cta;

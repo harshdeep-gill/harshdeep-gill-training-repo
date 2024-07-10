@@ -1,0 +1,24 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "quark/offer-card-promotion",
+    "description": "Individual card promotion details for Offer Cards.",
+    "icon": "screenoptions",
+    "title": "Card Promotion",
+    "keywords": [ "promotion" ],
+    "category": "layout",
+    "textdomain": "quark",
+    "parent": [ "quark/offer-cards-card" ],
+    "attributes": {
+        "promotionText": {
+            "type": "string",
+            "default": ""
+        }
+    },
+    "supports": {
+        "alignWide": false,
+        "className": false,
+        "html": false,
+        "customClassName": false
+    }
+}

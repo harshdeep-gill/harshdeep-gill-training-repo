@@ -1,0 +1,24 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "quark/offer-card-help",
+  "description": "Individual card help text for Offer Cards.",
+  "icon": "screenoptions",
+  "title": "Card Help",
+  "keywords": [ "help" ],
+  "category": "layout",
+  "textdomain": "quark",
+  "parent": [ "quark/offer-cards-card" ],
+  "attributes": {
+    "helpText": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "supports": {
+    "alignWide": false,
+    "className": false,
+    "html": false,
+    "customClassName": false
+  }
+}
