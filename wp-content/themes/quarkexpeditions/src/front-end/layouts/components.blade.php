@@ -712,12 +712,11 @@
 			<x-media-detail-cards.card>
 				<x-media-detail-cards.image image_id="32" />
 				<x-media-detail-cards.content>
-					<x-media-detail-cards.title title="Explorer Triple" heading_level="4" />
-					<x-media-detail-cards.description>
-						<p>Located on Deck 3, and approximately 285 sq. ft. (26.5 m2). This suite is perfect for guests traveling solo who want to share their experience with other like-minded travelers of the same gender, or for groups of three traveling together. Featuring three separate single beds, and amenities for each of the three guests.</p>
-						<p><strong>Features:</strong> three single beds (two of which can be combined into a double bed), sitting area, picture window, desk, refrigerator, TV, private bathroom with shower and heated floors.</p>
-						<p><strong>Standard Amenities:</strong> hair dryer, bathrobe, slippers, shampoo, conditioner, shower gel, complimentary water bottle.</p>
-					</x-media-detail-cards.description>
+					<h4>Explorer Triple</h4>
+					<p>Located on Deck 3, and approximately 285 sq. ft. (26.5 m2). This suite is perfect for guests traveling solo who want to share their experience with other like-minded travelers of the same gender, or for groups of three traveling together. Featuring three separate single beds, and amenities for each of the three guests.</p>
+					<p><strong>Features:</strong> three single beds (two of which can be combined into a double bed), sitting area, picture window, desk, refrigerator, TV, private bathroom with shower and heated floors.</p>
+					<p><strong>Standard Amenities:</strong> hair dryer, bathrobe, slippers, shampoo, conditioner, shower gel, complimentary water bottle.</p>
+
 					<x-media-detail-cards.details>
 						<x-media-detail-cards.detail-item
 							label="Size(sqf.)"
@@ -745,13 +744,12 @@
 
 			<x-media-detail-cards.card>
 				<x-media-detail-cards.content>
-					<x-media-detail-cards.title title="Explorer Triple" heading_level="4" />
-					<x-media-detail-cards.description>
-						<p>Located on Deck 3, and approximately 285 sq. ft. (26.5 m2). This suite is perfect for guests traveling solo who want to share their experience with other like-minded travelers of the same gender, or for groups of three traveling together. Featuring three separate single beds, and amenities for each of the three guests.</p>
-						<p><strong>Features:</strong> three single beds (two of which can be combined into a double bed), sitting area, picture window, desk, refrigerator, TV, private bathroom with shower and heated floors.</p>
-						<p><strong>Standard Amenities:</strong> hair dryer, bathrobe, slippers, shampoo, conditioner, shower gel, complimentary water bottle.</p>
-						<p><a href="#"><strong>Read more</strong></a></p>
-					</x-media-detail-cards.description>
+					<h4>Explorer Triple</h4>
+					<p>Located on Deck 3, and approximately 285 sq. ft. (26.5 m2). This suite is perfect for guests traveling solo who want to share their experience with other like-minded travelers of the same gender, or for groups of three traveling together. Featuring three separate single beds, and amenities for each of the three guests.</p>
+					<p><strong>Features:</strong> three single beds (two of which can be combined into a double bed), sitting area, picture window, desk, refrigerator, TV, private bathroom with shower and heated floors.</p>
+					<p><strong>Standard Amenities:</strong> hair dryer, bathrobe, slippers, shampoo, conditioner, shower gel, complimentary water bottle.</p>
+					<p><a href="#"><strong>Read more</strong></a></p>
+
 					<x-media-detail-cards.details>
 						<x-media-detail-cards.detail-item
 							label="Size(sqf.)"
