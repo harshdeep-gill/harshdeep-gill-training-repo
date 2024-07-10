@@ -7,7 +7,7 @@
   "title": "Offer Cards",
   "keywords": [ "product cards", "expeditions" ],
   "category": "layout",
-  "textdomain": "quark",
+  "textdomain": "qrk",
   "attributes": {},
   "supports": {
     "alignWide": false,

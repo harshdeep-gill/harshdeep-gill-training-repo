@@ -7,7 +7,7 @@
   "title": "Media Content Card Column",
   "keywords": [ "column" ],
   "category": "layout",
-  "textdomain": "quark",
+  "textdomain": "qrk",
   "parent": [ "quark/media-content-card" ],
   "attributes": {
     "hasHeading": {

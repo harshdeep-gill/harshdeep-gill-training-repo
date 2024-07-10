@@ -6,7 +6,7 @@
   "title": "Simple Cards",
   "category": "layout",
   "keywords": [ "simple cards" ],
-  "textdomain": "quark",
+  "textdomain": "qrk",
   "attributes": {},
   "supports": {
     "alignWide": false,

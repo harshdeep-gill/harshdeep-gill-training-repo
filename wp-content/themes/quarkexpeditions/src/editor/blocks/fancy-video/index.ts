@@ -16,7 +16,6 @@ import edit from './edit';
  * Styles.
  */
 import '../../../front-end/components/fancy-video/style.scss';
-import './editor.scss';
 
 /**
  * Block name.

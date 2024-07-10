@@ -11,6 +11,11 @@ import { __ } from '@wordpress/i18n';
 import Section from '../../components/section';
 
 /**
+ * Styles.
+ */
+import './editor.scss';
+
+/**
  * External components.
  */
 import classnames from 'classnames';

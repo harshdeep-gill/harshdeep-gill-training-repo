@@ -7,7 +7,7 @@
   "title": "Card Reviews",
   "keywords": [ "reviews" ],
   "category": "layout",
-  "textdomain": "quark",
+  "textdomain": "qrk",
   "parent": [ "quark/product-cards-card" ],
   "attributes": {
     "rating": {

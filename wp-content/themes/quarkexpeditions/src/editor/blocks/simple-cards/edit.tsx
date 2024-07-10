@@ -14,6 +14,11 @@ import classnames from 'classnames';
 import * as card from './children/card';
 
 /**
+ * Styles.
+ */
+import './editor.scss';
+
+/**
  * Edit component.
  *
  * @param {Object} props           Component properties.

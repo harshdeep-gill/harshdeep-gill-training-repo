@@ -6,6 +6,11 @@ import { PanelBody } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 
 /**
+ * Styles.
+ */
+import './editor.scss';
+
+/**
  * Internal dependencies.
  */
 import Section from '../../components/section';

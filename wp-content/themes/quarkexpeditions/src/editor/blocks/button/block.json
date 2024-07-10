@@ -9,7 +9,7 @@
   "keywords": [
     "button"
   ],
-  "textdomain": "quark",
+  "textdomain": "qrk",
   "attributes": {
     "url": {
       "type": "object",

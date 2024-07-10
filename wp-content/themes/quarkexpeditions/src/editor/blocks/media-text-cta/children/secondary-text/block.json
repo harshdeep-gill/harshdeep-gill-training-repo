@@ -7,7 +7,7 @@
     "title": "Media Text CTA Secondary Text",
     "keywords": [ "secondary", "text" ],
     "category": "layout",
-    "textdomain": "quark",
+    "textdomain": "qrk",
     "parent": [ "quark/media-text-cta" ],
     "attributes": {
         "secondaryText": {

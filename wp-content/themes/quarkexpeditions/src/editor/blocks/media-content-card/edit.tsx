@@ -12,6 +12,11 @@ import classnames from 'classnames';
 const { gumponents } = window;
 
 /**
+ * Styles.
+ */
+import './editor.scss';
+
+/**
  * Child blocks.
  */
 import * as column from './children/column';

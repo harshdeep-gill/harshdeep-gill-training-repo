@@ -22,7 +22,6 @@ export const { name }: { name: string } = metadata;
  * Styles.
  */
 import '../../../front-end/components/button/style.scss';
-import './editor.scss';
 
 /**
  * Block configuration settings.

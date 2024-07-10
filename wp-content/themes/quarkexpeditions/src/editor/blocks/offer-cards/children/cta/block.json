@@ -7,7 +7,7 @@
     "title": "Card CTA",
     "keywords": [ "cta", "button" ],
     "category": "layout",
-    "textdomain": "quark",
+    "textdomain": "qrk",
     "parent": [ "quark/offer-cards-card" ],
     "attributes": {},
     "supports": {

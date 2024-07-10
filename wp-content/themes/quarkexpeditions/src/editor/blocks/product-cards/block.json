@@ -6,7 +6,7 @@
   "title": "Product Cards",
   "keywords": [ "product", "cards", "expeditions" ],
   "category": "layout",
-  "textdomain": "quark",
+  "textdomain": "qrk",
   "parent": [ "" ],
   "attributes": {
     "align": {

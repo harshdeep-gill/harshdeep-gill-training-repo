@@ -7,7 +7,7 @@
   "title": "Card Departure Dates",
   "keywords": [ "departures", "dates" ],
   "category": "layout",
-  "textdomain": "quark",
+  "textdomain": "qrk",
   "parent": [ "quark/product-departures-card-departures" ],
   "attributes": {
     "offer": {

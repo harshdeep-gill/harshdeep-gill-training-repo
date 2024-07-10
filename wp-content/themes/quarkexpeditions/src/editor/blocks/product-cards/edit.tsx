@@ -21,6 +21,11 @@ import card from './children/card/block.json';
 import classnames from 'classnames';
 
 /**
+ * Styles.
+ */
+import './editor.scss';
+
+/**
  * Edit component.
  *
  * @param {Object} props               Component properties.

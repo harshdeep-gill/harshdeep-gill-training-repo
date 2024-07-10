@@ -7,7 +7,7 @@
     "title": "Contact Info",
     "keywords": [ "info", "contact" ],
     "category": "layout",
-    "textdomain": "quark",
+    "textdomain": "qrk",
     "parent": [ "quark/contact-cover-card" ],
     "attributes": {},
     "supports": {

@@ -6,7 +6,7 @@
   "title": "Media Content Card",
   "keywords": [ "media content card" ],
   "category": "layout",
-  "textdomain": "quark",
+  "textdomain": "qrk",
   "parent": [ "quark/product-cards" ],
   "attributes": {
     "isCompact": {

@@ -6,7 +6,7 @@
   "title": "Product Departures Card",
   "keywords": [ "product", "card", "departures" ],
   "category": "layout",
-  "textdomain": "quark",
+  "textdomain": "qrk",
   "attributes": {
     "image1": {
       "type": "object",

@@ -6,7 +6,7 @@
   "title": "Fancy Video",
   "keywords": [ "fancy", "video" ],
   "category": "layout",
-  "textdomain": "quark",
+  "textdomain": "qrk",
   "attributes": {
     "image": {
       "type": "object",

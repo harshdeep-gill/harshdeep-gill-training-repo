@@ -7,7 +7,7 @@
     "title": "Media Text CTA",
     "keywords": [ "media", "text", "cta" ],
     "category": "layout",
-    "textdomain": "quark",
+    "textdomain": "qrk",
     "attributes": {
         "mediaType": {
             "type": "string",

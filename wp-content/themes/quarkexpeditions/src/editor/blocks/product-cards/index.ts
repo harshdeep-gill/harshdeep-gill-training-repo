@@ -17,7 +17,6 @@ import save from './save';
  * Styles.
  */
 import '../../../front-end/components/product-cards/style.scss';
-import './editor.scss';
 
 /**
  * Child blocks.

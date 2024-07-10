@@ -11,6 +11,11 @@ import {
 import { PanelBody, ToggleControl } from '@wordpress/components';
 
 /**
+ * Styles.
+ */
+import './editor.scss';
+
+/**
  * Child blocks.
  */
 import * as title from './children/title';

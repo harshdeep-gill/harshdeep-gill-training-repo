@@ -6,6 +6,11 @@ import { __ } from '@wordpress/i18n';
 import { PanelBody, RadioControl, TextControl, ToggleControl } from '@wordpress/components';
 
 /**
+ * Styles.
+ */
+import './editor.scss';
+
+/**
  * External dependencies
  */
 import classnames from 'classnames';

@@ -6,7 +6,7 @@
     "title": "LP Offer Masthead Offer Image",
     "keywords": [ "offer", "image" ],
     "category": "layout",
-    "textdomain": "quark",
+    "textdomain": "qrk",
     "parent": [ "quark/lp-offer-masthead" ],
     "attributes": {
         "offerImage": {

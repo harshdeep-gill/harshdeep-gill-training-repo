@@ -4,6 +4,11 @@
 import { InnerBlocks, useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 
 /**
+ * Styles.
+ */
+import './editor.scss';
+
+/**
  * External dependencies.
  */
 import classnames from 'classnames';

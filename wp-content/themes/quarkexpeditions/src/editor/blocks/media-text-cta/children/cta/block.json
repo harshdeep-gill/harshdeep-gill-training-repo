@@ -7,7 +7,7 @@
     "title": "Media Text CTA Button",
     "keywords": [ "button" ],
     "category": "layout",
-    "textdomain": "quark",
+    "textdomain": "qrk",
     "parent": [ "quark/media-text-cta" ],
     "attributes": {},
     "supports": {

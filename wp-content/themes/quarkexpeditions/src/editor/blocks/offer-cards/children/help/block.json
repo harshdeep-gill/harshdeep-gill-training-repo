@@ -7,7 +7,7 @@
   "title": "Card Help",
   "keywords": [ "help" ],
   "category": "layout",
-  "textdomain": "quark",
+  "textdomain": "qrk",
   "parent": [ "quark/offer-cards-card" ],
   "attributes": {
     "helpText": {

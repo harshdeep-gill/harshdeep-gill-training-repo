@@ -7,7 +7,7 @@
   "title": "Card Buttons",
   "keywords": [ "buttons" ],
   "category": "layout",
-  "textdomain": "quark",
+  "textdomain": "qrk",
   "parent": [ "quark/product-cards-card" ],
   "attributes": {},
   "supports": {

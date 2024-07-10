@@ -7,7 +7,7 @@
   "title": "Simple Cards Item",
   "keywords": [ "card" ],
   "category": "layout",
-  "textdomain": "quark",
+  "textdomain": "qrk",
   "parent": [ "quark/simple-cards" ],
   "attributes": {
     "title": {

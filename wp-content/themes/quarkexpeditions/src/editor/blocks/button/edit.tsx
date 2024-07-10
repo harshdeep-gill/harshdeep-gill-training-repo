@@ -38,6 +38,11 @@ const {
 	ColorPaletteControl,
 } = gumponents.components;
 
+/**
+ * Styles.
+ */
+import './editor.scss';
+
 // Background colors.
 export const colors: { [key: string]: string }[] = [
 	{ name: __( 'Yellow', 'qrk' ), color: '#fdb52b', slug: 'yellow' },

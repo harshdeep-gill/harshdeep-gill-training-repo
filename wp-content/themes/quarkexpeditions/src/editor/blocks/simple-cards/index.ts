@@ -17,7 +17,6 @@ import save from './save';
  * Styles.
  */
 import '../../../front-end/components/simple-cards/style.scss';
-import './editor.scss';
 
 /**
  * Children.

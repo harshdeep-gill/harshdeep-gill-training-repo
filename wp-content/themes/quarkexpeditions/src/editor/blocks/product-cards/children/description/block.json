@@ -7,7 +7,7 @@
   "title": "Card Description",
   "keywords": [ "description" ],
   "category": "layout",
-  "textdomain": "quark",
+  "textdomain": "qrk",
   "parent": [ "quark/product-cards-card" ],
   "attributes": {
     "description": {

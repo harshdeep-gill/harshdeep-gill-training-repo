@@ -6,7 +6,7 @@
   "title": "Landing Page Offer Masthead",
   "keywords": [ "masthead", "offers" ],
   "category": "layout",
-  "textdomain": "quark",
+  "textdomain": "qrk",
   "attributes": {
     "bgImage": {
       "type": "object"

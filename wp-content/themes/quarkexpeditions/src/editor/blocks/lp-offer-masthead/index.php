@@ -9,8 +9,7 @@ namespace Quark\Theme\Blocks\LPOfferMasthead;
 
 use WP_Block;
 
-const BLOCK_NAME = 'quark/lp-offer-masthead';
-const COMPONENT  = 'parts.lp-offer-masthead';
+const COMPONENT = 'parts.lp-offer-masthead';
 
 /**
  * Bootstrap this block.

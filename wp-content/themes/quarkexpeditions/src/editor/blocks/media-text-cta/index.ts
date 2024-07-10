@@ -18,7 +18,6 @@ import save from './save';
  */
 import '../../../front-end/components/media-text-cta/style.scss';
 import '../../../front-end/components/fancy-video/style.scss';
-import './editor.scss';
 
 /**
  * Child blocks.

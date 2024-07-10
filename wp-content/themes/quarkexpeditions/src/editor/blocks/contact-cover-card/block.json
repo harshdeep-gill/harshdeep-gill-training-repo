@@ -6,7 +6,7 @@
   "title": "Contact Cover Card",
   "keywords": [ "contact", "card" ],
   "category": "layout",
-  "textdomain": "quark",
+  "textdomain": "qrk",
   "attributes": {
     "image": {
       "type": "object",
