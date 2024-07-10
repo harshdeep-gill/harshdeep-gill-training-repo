@@ -47,7 +47,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 	// Build slot.
 	foreach ( $block->inner_blocks as $inner_block ) {
 		// Check if we have an image.
-		if ( ! $inner_block instanceof \WP_Block || empty( $inner_block->attributes['image']['id'] ) ) {
+		if ( ! $inner_block instanceof WP_Block || empty( $inner_block->attributes['image']['id'] ) ) {
 			continue;
 		}
 

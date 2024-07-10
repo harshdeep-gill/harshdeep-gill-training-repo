@@ -69,7 +69,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 
 			// Add Image attributes.
 			$card_attributes['image']['id']           = $inner_block->attributes['image']['id'];
-			$card_attributes['image']['is_immersive'] = ! empty( $inner_block->attributes['isImmersiveImage'] ) ? $inner_block->attributes['isImmersiveImage'] : false;
+			$card_attributes['image']['is_immersive'] = $inner_block->attributes['isImmersiveImage'];
 
 			// Add CTA Badge Text.
 			if ( ! empty( $inner_block->attributes['hasCtaBadge'] ) && ! empty( $inner_block->attributes['ctaBadgeText'] ) ) {
@@ -108,10 +108,10 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 						$reviews['type'] = 'reviews';
 
 						// Add rating.
-						$reviews['rating'] = ! empty( $inner_inner_block->attributes['rating'] ) ? $inner_inner_block->attributes['rating'] : '5';
+						$reviews['rating'] = $inner_inner_block->attributes['rating'];
 
 						// Add reviews text.
-						$reviews['total_reviews_text'] = ! empty( $inner_inner_block->attributes['reviewsText'] ) ? $inner_inner_block->attributes['reviewsText'] : '';
+						$reviews['total_reviews_text'] = $inner_inner_block->attributes['reviewsText'];
 
 						// Add reviews to children.
 						$card_attributes['children'][] = $reviews;
@@ -126,10 +126,10 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 						$itinerary['type'] = 'itinerary';
 
 						// Add departure date text.
-						$itinerary['departure_date_text'] = ! empty( $inner_inner_block->attributes['departureDate'] ) ? $inner_inner_block->attributes['departureDate'] : '';
+						$itinerary['departure_date_text'] = $inner_inner_block->attributes['departureDate'];
 
 						// Add duration text.
-						$itinerary['duration_text'] = ! empty( $inner_inner_block->attributes['durationText'] ) ? $inner_inner_block->attributes['durationText'] : '';
+						$itinerary['duration_text'] = $inner_inner_block->attributes['durationText'];
 
 						// Add itinerary to children.
 						$card_attributes['children'][] = $itinerary;
@@ -144,7 +144,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 						$title['type'] = 'title';
 
 						// Add title.
-						$title['title'] = ! empty( $inner_inner_block->attributes['title'] ) ? $inner_inner_block->attributes['title'] : '';
+						$title['title'] = $inner_inner_block->attributes['title'];
 
 						// Add title to children.
 						$card_attributes['children'][] = $title;
@@ -159,7 +159,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 						$subtitle['type'] = 'subtitle';
 
 						// Add subtitle.
-						$subtitle['subtitle'] = ! empty( $inner_inner_block->attributes['subtitle'] ) ? $inner_inner_block->attributes['subtitle'] : '';
+						$subtitle['subtitle'] = $inner_inner_block->attributes['subtitle'];
 
 						// Add title to children.
 						$card_attributes['children'][] = $subtitle;
@@ -174,7 +174,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 						$description['type'] = 'description';
 
 						// Add description.
-						$description['description'] = ! empty( $inner_inner_block->attributes['description'] ) ? $inner_inner_block->attributes['description'] : '';
+						$description['description'] = $inner_inner_block->attributes['description'];
 
 						// Add description to children.
 						$card_attributes['children'][] = $description;
@@ -189,10 +189,10 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 						$price['type'] = 'price';
 
 						// Add price now.
-						$price['discounted'] = ! empty( $inner_inner_block->attributes['price'] ) ? $inner_inner_block->attributes['price'] : '';
+						$price['discounted'] = $inner_inner_block->attributes['price'];
 
 						// Add price was.
-						$price['original'] = ! empty( $inner_inner_block->attributes['originalPrice'] ) ? $inner_inner_block->attributes['originalPrice'] : '';
+						$price['original'] = $inner_inner_block->attributes['originalPrice'];
 
 						// Add price to children.
 						$card_attributes['children'][] = $price;
