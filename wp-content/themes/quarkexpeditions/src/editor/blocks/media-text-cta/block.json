@@ -1,0 +1,46 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "quark/media-text-cta",
+    "description": "Add a 2-column layout of media, text and a cta",
+    "icon": "",
+    "title": "Media Text CTA",
+    "keywords": [ "media", "text", "cta" ],
+    "category": "layout",
+    "textdomain": "quark",
+    "attributes": {
+        "mediaType": {
+            "type": "string",
+            "default": "image",
+            "enum": [ "image", "video" ]
+        },
+        "mediaAlignment": {
+            "type": "string",
+            "default": "left",
+            "enum": [ "left", "right" ]
+        },
+        "image": {
+            "type": "object",
+            "default": {}
+        },
+        "videoUrl": {
+            "type": "string",
+            "default": ""
+        },
+        "hasCtaBadge": {
+            "type": "boolean",
+            "default": false
+        },
+        "ctaBadgeText": {
+            "type": "string",
+            "default": ""
+        }
+    },
+    "supports": {
+        "alignWide": false,
+        "anchor": true,
+        "className": false,
+        "html": false,
+        "customClassName": false
+    }
+}

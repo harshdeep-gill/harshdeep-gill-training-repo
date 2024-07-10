@@ -1,20 +1,17 @@
 /**
  * WordPress dependencies.
  */
-import {
-	useBlockProps,
-	useInnerBlocksProps,
-} from '@wordpress/block-editor';
-
-/**
- * External dependencies.
- */
-import classnames from 'classnames';
+import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies.
  */
 import * as lpFormModalCta from '../../../lp-form-modal-cta';
+
+/**
+ * External dependencies.
+ */
+import classnames from 'classnames';
 
 /**
  * Edit component.
@@ -25,7 +22,7 @@ import * as lpFormModalCta from '../../../lp-form-modal-cta';
 export default function Edit( { className }: BlockEditAttributes ): JSX.Element {
 	// eslint-disable-next-line react-hooks/rules-of-hooks
 	const blockProps = useBlockProps( {
-		className: classnames( className, 'product-cards__buttons' ),
+		className: classnames( className, 'media-text-cta__cta' ),
 	} );
 
 	// eslint-disable-next-line react-hooks/rules-of-hooks
@@ -33,8 +30,7 @@ export default function Edit( { className }: BlockEditAttributes ): JSX.Element 
 		{
 			allowedBlocks: [ lpFormModalCta.name, 'quark/button' ],
 			template: [
-				[ lpFormModalCta.name ],
-				[ 'quark/button', { isSizeBig: true } ],
+				[ lpFormModalCta.name, { backgroundColor: 'black' } ],
 			],
 		},
 	);
