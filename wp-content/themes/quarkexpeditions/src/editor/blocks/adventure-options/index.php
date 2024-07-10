@@ -15,37 +15,18 @@ use function Quark\AdventureOptions\get_cards_data;
 use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
 use const Quark\AdventureOptions\POST_TYPE as ADVENTURE_OPTIONS_POST_TYPE;
 
-const BLOCK_NAME = 'quark/adventure-options';
-const COMPONENT  = 'parts.adventure-options';
+const COMPONENT = 'parts.adventure-options';
 
 /**
- * Block initialization.
+ * Bootstrap this block.
  *
  * @return void
  */
 function bootstrap(): void {
-	// Avoid registering in admin to fix a conflict with Blade views.
-	if ( ! is_admin() ) {
-		add_action( 'wp_loaded', __NAMESPACE__ . '\\register' );
-	}
-}
-
-/**
- * Register block on the front-end.
- *
- * @return void
- */
-function register(): void {
-	// Register block.
-	register_block_type(
-		BLOCK_NAME,
+	// Register the block.
+	register_block_type_from_metadata(
+		__DIR__,
 		[
-			'attributes'      => [
-				'termIDs' => [
-					'type'    => 'array',
-					'default' => [],
-				],
-			],
 			'render_callback' => __NAMESPACE__ . '\\render',
 		]
 	);
@@ -54,9 +35,9 @@ function register(): void {
 /**
  * Render this block.
  *
- * @param mixed[] $attributes Block attributes.
+ * @param mixed[] $attributes The block attributes.
  *
- * @return string
+ * @return string The block markup.
  */
 function render( array $attributes = [] ): string {
 	// Current post ID.
