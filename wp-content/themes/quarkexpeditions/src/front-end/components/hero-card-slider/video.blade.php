@@ -13,8 +13,8 @@
 	// Video arguments.
 	$video_args = [
 		'transform' => [
-			'width'   => 544,
-			'height'  => 592,
+			'width'   => 700,
+			'height'  => 700,
 			'crop'    => 'fit',
 			'quality' => 100,
 		],
