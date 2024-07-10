@@ -1,0 +1,41 @@
+{
+	"schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Footer Social Link",
+	"name": "quark/footer-social-link",
+	"description": "Display a social link.",
+	"parent": [
+		"quark/footer-social-links"
+	],
+	"category": "layout",
+	"keywords": [
+		"footer",
+		"social",
+		"link"
+	],
+	"textdomain": "qrk",
+	"attributes": {
+		"type": {
+			"type": "string",
+			"default": "",
+			"enum": [
+				"facebook",
+				"instagram",
+				"youtube",
+				"twitter",
+				""
+			]
+		},
+		"url": {
+			"type": "object",
+			"default": {}
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}
