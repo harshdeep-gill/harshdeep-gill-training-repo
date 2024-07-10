@@ -43,14 +43,14 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 
 	// Build component attributes.
 	$component_attributes = [
-		'color'        => $block->attributes['backgroundColor'] ?? '',
+		'color'        => $block->attributes['backgroundColor'],
 		'href'         => $block->attributes['url']['url'] ?? '',
 		'target'       => ! empty( $block->attributes['url']['newWindow'] ) ? '_blank' : '',
-		'appearance'   => $block->attributes['appearance'] ?? '',
+		'appearance'   => $block->attributes['appearance'],
 		'size'         => ! empty( $block->attributes['isSizeBig'] ) ? 'big' : '',
 		'icon'         => ! empty( $block->attributes['hasIcon'] ) && ! empty( $block->attributes['icon'] ) ? $block->attributes['icon'] : '',
-		'iconPosition' => $block->attributes['iconPosition'] ?? '',
-		'slot'         => $block->attributes['btnText'] ?? '',
+		'iconPosition' => $block->attributes['iconPosition'],
+		'slot'         => $block->attributes['btnText'],
 	];
 
 	// Return rendered component.

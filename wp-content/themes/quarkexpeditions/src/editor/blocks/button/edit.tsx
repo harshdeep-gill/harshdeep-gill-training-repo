@@ -52,7 +52,7 @@ export const colors: { [key: string]: string }[] = [
  * @param {Object} props.attributes    Block attributes.
  * @param {Object} props.setAttributes Set block attributes.
  */
-export default function edit( { className, attributes, setAttributes }: BlockEditAttributes ): JSX.Element {
+export default function Edit( { className, attributes, setAttributes }: BlockEditAttributes ): JSX.Element {
 	// eslint-disable-next-line react-hooks/rules-of-hooks
 	const blockProps = useBlockProps( {
 		className: classnames(
