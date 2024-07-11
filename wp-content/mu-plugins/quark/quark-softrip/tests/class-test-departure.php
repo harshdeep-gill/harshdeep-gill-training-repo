@@ -7,7 +7,6 @@
 
 namespace Quark\Softrip;
 
-use Quark\softrip\WP_CLI\DB;
 use WP_UnitTestCase;
 use WP_Post;
 use WP_Error;
