@@ -11,11 +11,11 @@
 
 	$image_args = [
 		'size' => [
-			'width'   => 660,
-			'height'  => 440,
+			'width'   => 544,
+			'height'  => 426,
 		],
 		'responsive' => [
-			'sizes'  => [ '(min-width: 1280px) 450px', '(min-width: 1024px) 25vw', '(min-width: 576px) 50vw', '100vw' ],
+			'sizes'  => [ '(min-width: 1280px) 544px', '(min-width: 1024px) 25vw', '(min-width: 576px) 50vw', '100vw' ],
 			'widths' => [ 440, 560, 660, 840 ],
 		],
 		'transform' => [

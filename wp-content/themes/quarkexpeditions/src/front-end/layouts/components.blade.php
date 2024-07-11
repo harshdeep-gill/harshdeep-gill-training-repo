@@ -622,47 +622,134 @@
 						<x-itinerary-details.tabs-nav-item-subtitle subtitle="From Buenos Aires, Argentinian Ultramarine" />
 					</x-itinerary-details.tabs-nav-item>
 				</x-itinerary-details.tabs-nav>
-		
+
 				<x-itinerary-details.tabs>
 					<x-itinerary-details.tab id="tab-1">
-						<x-itinerary-details.summary>
-							<x-itinerary-details.summary-content>
-								<dl>
-									<dt>Duration</dt>
-									<dd>11 Days</dd>
+						<x-itinerary-details.header title="From Buenos Aires, 12 days, on Ultramarine" />
 
-									<dt>Departing from</dt>
-									<dd>Ushuaia, Argentina</dd>
+						<x-itinerary-details.body>
+							<x-itinerary-details.summary>
+								<x-itinerary-details.summary-content>
+									<dl>
+										<dt>Duration</dt>
+										<dd>11 Days</dd>
 
-									<dt>Ship</dt>
-									<dd>
-										Ultramarine
-										<br>
-										<a href="#">Learn more about the ship</a>
-									</dd>
+										<dt>Departing from</dt>
+										<dd>Ushuaia, Argentina</dd>
 
-									<dt>Starting from</dt>
-									<dd>$ X,XXX USD per person</dd>
-								</dl>
-								
-								<x-button size="big" color="black" href="#">Download Brochure</x-button>
-							</x-itinerary-details.summary-content>
-							<x-itinerary-details.map-lightbox name="map-lightbox" image_id="26" />
-						</x-itinerary-details.summary>
-						<x-itinerary-details.details>
-							Accordion will add here later.<br><br>
-							<h5>Day 1: Arrive in Punta Arenas, Chile</h5>
-							<p>Lorem ipsum dolor sit amet consectetur. Imperdiet sed quam quis morbi ipsum sed odio. Ut dui mi in sed amet quis porttitor nibh. Ac phasellus sit facilisis vestibulum. Quis luctus ornare tortor justo commodo elementum.</p>
+										<dt>Ship</dt>
+										<dd>
+											Ultramarine
+											<br>
+											<a href="#">Learn more about the ship</a>
+										</dd>
 
-						</x-itinerary-details.details>
+										<dt>Starting from</dt>
+										<dd>$ X,XXX USD per person</dd>
+									</dl>
+									<x-itinerary-details.download-button url="#" />
+								</x-itinerary-details.summary-content>
+								<x-itinerary-details.map-lightbox name="map-lightbox" image_id="26" />
+							</x-itinerary-details.summary>
+							<x-itinerary-details.details>
+								Accordion will add here later.<br><br>
+								<h5>Day 1: Arrive in Punta Arenas, Chile</h5>
+								<p>Lorem ipsum dolor sit amet consectetur. Imperdiet sed quam quis morbi ipsum sed odio. Ut dui mi in sed amet quis porttitor nibh. Ac phasellus sit facilisis vestibulum. Quis luctus ornare tortor justo commodo elementum.</p>
+							</x-itinerary-details.details>
+						</x-itinerary-details.body>
+
+						<x-itinerary-details.footer>
+							<x-itinerary-details.cta>
+								<x-button size="big" href="#">Request a Quote</x-button>
+								<x-itinerary-details.download-button url="#" />
+							</x-itinerary-details.cta>
+						</x-itinerary-details.footer>
 					</x-itinerary-details.tab>
 
 					<x-itinerary-details.tab id="tab-2">
-						Tab 2
+						<x-itinerary-details.header title="From Buenos Aires, 12 days, on Ultramarine" />
+
+						<x-itinerary-details.body>
+							<x-itinerary-details.summary>
+								<x-itinerary-details.summary-content>
+									<dl>
+										<dt>Duration</dt>
+										<dd>12 Days</dd>
+
+										<dt>Departing from</dt>
+										<dd>Ushuaia, Argentina</dd>
+
+										<dt>Ship</dt>
+										<dd>
+											Ultramarine
+											<br>
+											<a href="#">Learn more about the ship</a>
+										</dd>
+
+										<dt>Starting from</dt>
+										<dd>$ X,XXX USD per person</dd>
+									</dl>
+									<x-itinerary-details.download-button url="#" />
+								</x-itinerary-details.summary-content>
+								<x-itinerary-details.map-lightbox name="map-lightbox" image_id="26" />
+							</x-itinerary-details.summary>
+							<x-itinerary-details.details>
+								Accordion will add here later.<br><br>
+								<h5>Day 1: Arrive in Punta Arenas, Chile</h5>
+								<p>Lorem ipsum dolor sit amet consectetur. Imperdiet sed quam quis morbi ipsum sed odio. Ut dui mi in sed amet quis porttitor nibh. Ac phasellus sit facilisis vestibulum. Quis luctus ornare tortor justo commodo elementum.</p>
+
+							</x-itinerary-details.details>
+						</x-itinerary-details.body>
+
+						<x-itinerary-details.footer>
+							<x-itinerary-details.cta>
+								<x-button size="big" href="#">Request a Quote</x-button>
+								<x-itinerary-details.download-button url="#" />
+							</x-itinerary-details.cta>
+						</x-itinerary-details.footer>
 					</x-itinerary-details.tab>
 
 					<x-itinerary-details.tab id="tab-3">
-						Tab 3
+						<x-itinerary-details.header title="From Buenos Aires, 12 days, on Ultramarine" />
+
+						<x-itinerary-details.body>
+							<x-itinerary-details.summary>
+								<x-itinerary-details.summary-content>
+									<dl>
+										<dt>Duration</dt>
+										<dd>12 Days</dd>
+
+										<dt>Departing from</dt>
+										<dd>Ushuaia, Argentina</dd>
+
+										<dt>Ship</dt>
+										<dd>
+											Ultramarine
+											<br>
+											<a href="#">Learn more about the ship</a>
+										</dd>
+
+										<dt>Starting from</dt>
+										<dd>$ X,XXX USD per person</dd>
+									</dl>
+									<x-itinerary-details.download-button url="#" />
+								</x-itinerary-details.summary-content>
+								<x-itinerary-details.map-lightbox name="map-lightbox" image_id="26" />
+							</x-itinerary-details.summary>
+							<x-itinerary-details.details>
+								Accordion will add here later.<br><br>
+								<h5>Day 1: Arrive in Punta Arenas, Chile</h5>
+								<p>Lorem ipsum dolor sit amet consectetur. Imperdiet sed quam quis morbi ipsum sed odio. Ut dui mi in sed amet quis porttitor nibh. Ac phasellus sit facilisis vestibulum. Quis luctus ornare tortor justo commodo elementum.</p>
+
+							</x-itinerary-details.details>
+						</x-itinerary-details.body>
+
+						<x-itinerary-details.footer>
+							<x-itinerary-details.cta>
+								<x-button size="big" href="#">Request a Quote</x-button>
+								<x-itinerary-details.download-button url="#" />
+							</x-itinerary-details.cta>
+						</x-itinerary-details.footer>
 					</x-itinerary-details.tab>
 				</x-itinerary-details.tabs>
 			</x-itinerary-details>
