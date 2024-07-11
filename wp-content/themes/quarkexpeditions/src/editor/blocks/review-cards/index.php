@@ -46,7 +46,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 	$component_attributes = [];
 
 	// Add is carousel attributes.
-	$component_attributes['is_carousel'] = $attributes['isCarousel'];
+	$component_attributes['is_carousel'] = ! empty( $attributes['isCarousel'] ) ? 'true' : 'false';
 
 	// Build data.
 	foreach ( $block->inner_blocks as $inner_block ) {
