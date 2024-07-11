@@ -31,6 +31,7 @@ function bootstrap(): void {
 
 	// Other hooks.
 	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
+	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_cabin_code_lookup_cache' );
 
 	// Admin stuff.
 	if ( is_admin() || ( defined( 'WP_CLI' ) && true === WP_CLI ) ) {
@@ -335,4 +336,17 @@ function get_id_from_cabin_code( string $cabin_id = '' ): int {
 
 	// Not found, return 0.
 	return 0;
+}
+
+/**
+ * Bust Cabin code lookup cache.
+ *
+ * @return void
+ */
+function bust_cabin_code_lookup_cache(): void {
+	// Delete the code cache.
+	wp_cache_delete( CACHE_KEY . '_all_cabins', CACHE_GROUP );
+
+	// Trigger action to clear cache.
+	do_action( 'qe_cabin_code_lookup_cache_busted' );
 }
