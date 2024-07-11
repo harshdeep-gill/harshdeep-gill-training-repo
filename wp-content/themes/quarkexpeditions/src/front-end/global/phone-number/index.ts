@@ -24,7 +24,7 @@ window.addEventListener(
 		fetch(
 			`${ dynamicPhoneNumber.api_endpoint }`,
 			{
-				method: 'get',
+				method: 'POST',
 				cache: 'no-cache',
 				headers: {
 					'Content-Type': 'application/json',

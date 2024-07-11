@@ -69,14 +69,14 @@ class Test_Office_Phone_Numbers extends WP_UnitTestCase {
 					'CA',
 					'WI',
 				],
-				'corporate_office'    => false,
+				'is_corporate_office' => false,
 			],
 			[
 				'name'                => 'Office 2',
 				'phone'               => '18001234566',
 				'phone_number_prefix' => '+12',
 				'coverage'            => [],
-				'corporate_office'    => false,
+				'is_corporate_office' => false,
 			],
 		];
 
@@ -140,7 +140,7 @@ class Test_Office_Phone_Numbers extends WP_UnitTestCase {
 		update_option( 'options_country_1_name', 'Office 2' );
 		update_option( 'options_country_1_phone_number_prefix', 'Call Us' );
 		update_option( 'options_country_1_phone_number', '+12 18001234566' );
-		update_option( 'options_country_1_corporate_office', '1' );
+		update_option( 'options_country_1_is_corporate_office', '1' );
 		update_option(
 			'options_country_1_coverage',
 			[
@@ -182,7 +182,7 @@ class Test_Office_Phone_Numbers extends WP_UnitTestCase {
 		delete_option( 'options_country_1_name' );
 		delete_option( 'options_country_1_phone_number_prefix' );
 		delete_option( 'options_country_1_phone_number' );
-		delete_option( 'options_country_1_corporate_office' );
+		delete_option( 'options_country_1_is_corporate_office' );
 		delete_option( 'options_country_1_coverage' );
 	}
 }

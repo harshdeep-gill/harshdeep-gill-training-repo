@@ -41,7 +41,7 @@ class Phone_Number extends WP_REST_Controller {
 			REST_API_NAMESPACE,
 			$this->namespace . '/get',
 			[
-				'methods'             => WP_REST_Server::READABLE,
+				'methods'             => WP_REST_Server::CREATABLE,
 				'callback'            => [ $this, 'get' ],
 				'permission_callback' => '__return_true',
 			]

@@ -61,8 +61,8 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 						],
 						[
 							'key'               => 'field_6661bce662d3f',
-							'label'             => 'Corporate Office',
-							'name'              => 'corporate_office',
+							'label'             => 'Is Corporate Office',
+							'name'              => 'is_corporate_office',
 							'aria-label'        => '',
 							'type'              => 'true_false',
 							'instructions'      => 'Check if this is the corporate office.',

@@ -144,7 +144,7 @@ function get_local_office_data(): array {
 			'name'                => $country,
 			'phone_number_prefix' => get_option( 'options_country_' . $index . '_phone_number_prefix', '' ),
 			'phone'               => get_option( 'options_country_' . $index . '_phone_number', '' ),
-			'corporate_office'    => (bool) get_option( 'options_country_' . $index . '_corporate_office', '' ),
+			'is_corporate_office' => (bool) get_option( 'options_country_' . $index . '_is_corporate_office', false ),
 			'coverage'            => get_option( 'options_country_' . $index . '_coverage', [] ),
 		];
 	}
@@ -183,7 +183,7 @@ function get_corporate_office_phone_number(): array {
 	// Loop through local offices.
 	foreach ( $office_data as $office ) {
 		// Check if corporate office.
-		if ( ! empty( $office['corporate_office'] ) ) {
+		if ( ! empty( $office['is_corporate_office'] ) ) {
 			$data = [
 				'phone_number' => strval( $office['phone'] ),
 				'prefix'       => strval( $office['phone_number_prefix'] ),
@@ -211,7 +211,7 @@ function get_corporate_office_phone_number(): array {
  * @param string $country_code Country code.
  *
  * @return array{}|array{
- *    phone_number: string,
+ *    phone: string,
  *    prefix: string,
  * }
  */
