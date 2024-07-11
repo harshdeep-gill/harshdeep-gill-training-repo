@@ -58,32 +58,14 @@
 						</x-form.field>
 					</x-form.row>
 					<x-form.row>
-						<x-form.field :validation="[ 'required' ]" class="inquiry-form__country">
-							<x-form.select label="Country" name="fields[Country_Code__c]">
-								<option value="">- Select -</option>
-								@foreach ( $countries as $country_code => $country_name )
-									<option value={{ $country_code }}>{{ $country_name }}</option>
-								@endforeach
-							</x-form.select>
-						</x-form.field>
-
-						@foreach ( $states as $country_code => $country_states )
-							<x-form.field :validation="[ 'required' ]" data-country="{{ $country_code }}" class="inquiry-form__state" data-name="fields[State_Code__c]">
-								<x-form.select label="State/Province">
-									<option value="">- Select -</option>
-									@foreach ( $country_states as $state_code => $state_name )
-										<option value={{ $state_code }}>{{ $state_name }}</option>
-									@endforeach
-								</x-form.select>
-							</x-form.field>
-						@endforeach
+						<x-country-selector :countries="$countries" :states="$states" />
 					</x-form.row>
 					<x-form.row>
 						<x-form.field :validation="[ 'required' ]">
 							<x-form.select label="I would like to" name="fields[Journey_Stage__c]">
-							<option value="Dreaming">Learn more about Polar Travel</option>
-							<option value="Planning">Plan a trip</option>
-							<option value="Booking">Book a trip</option>
+								<x-form.option value="Dreaming" label="Learn more about Polar Travel">Learn more about Polar Travel</x-form.option>
+								<x-form.option value="Planning" label="Plan a trip">Plan a trip</x-form.option>
+								<x-form.option value="Booking" label="Book a trip">Book a trip</x-form.option>
 							</x-form.select>
 						</x-form.field>
 					</x-form.row>

@@ -46,6 +46,7 @@ function render( ?string $content = null, array $block = [] ): null|string {
 
 	// Build component attributes.
 	$attributes = [
+		'class'        => $block['attrs']['className'] ?? '',
 		'color'        => $block['attrs']['backgroundColor'] ?? '',
 		'href'         => $block['attrs']['url']['url'] ?? '',
 		'target'       => ! empty( $block['attrs']['url']['newWindow'] ) ? '_blank' : '',
