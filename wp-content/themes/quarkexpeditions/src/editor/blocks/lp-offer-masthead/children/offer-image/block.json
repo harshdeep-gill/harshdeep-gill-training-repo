@@ -1,0 +1,24 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "quark/lp-offer-masthead-offer-image",
+    "description": "Offer Image within Offer Masthead.",
+    "title": "LP Offer Masthead Offer Image",
+    "keywords": [ "offer", "image" ],
+    "category": "layout",
+    "textdomain": "qrk",
+    "parent": [ "quark/lp-offer-masthead" ],
+    "attributes": {
+        "offerImage": {
+            "type": "object",
+            "default": null
+        }
+    },
+    "supports": {
+        "alignWide": false,
+        "anchor": true,
+        "className": false,
+        "html": false,
+        "customClassName": false
+    }
+}
