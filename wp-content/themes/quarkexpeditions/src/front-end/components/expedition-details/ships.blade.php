@@ -7,8 +7,6 @@
 		return;
 	}
 
-	$totalItems = count( $ships );
-	$currentIndex = 0;
 	$ships = implode( ', ', $ships ?? '' )
 @endphp
 

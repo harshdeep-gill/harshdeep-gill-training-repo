@@ -727,7 +727,12 @@
 							]"
 						/>
 						<x-expedition-details.row>
-							<x-expedition-details.starting-from title="Buenos Aires/Ushuaia, Argentina"/>
+							<x-expedition-details.starting-from
+								:starting_from="[
+									'Buenos Aires/Ushuaia',
+									'Argentina',
+								]"
+							/>
 							<x-expedition-details.ships
 								:ships="[
 									'Ocean Explorer',
@@ -779,7 +784,12 @@
 							]"
 						/>
 						<x-expedition-details.row>
-							<x-expedition-details.starting-from title="Buenos Aires/Ushuaia, Argentina"/>
+							<x-expedition-details.starting-from
+								:starting_from="[
+									'Buenos Aires/Ushuaia',
+									'Argentina',
+								]"
+							/>
 							<x-expedition-details.ships
 								:ships="[
 									'Ocean Explorer',

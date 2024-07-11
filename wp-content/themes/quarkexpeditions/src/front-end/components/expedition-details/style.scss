@@ -64,16 +64,16 @@
 		}
 	}
 
-	&__starting-from-label,
 	&__ships-label,
+	&__starting-from-label,
 	&__departures-label {
 		font-size: var(--font-size-small);
 		line-height: var(--line-height-small);
 		margin-bottom: 0;
 	}
 
-	&__starting-from-title,
 	&__ships-content,
+	&__starting-from-content,
 	&__departures-content {
 		font-weight: var(--font-weight-bold);
 		margin-top: var(--spacing-1);
