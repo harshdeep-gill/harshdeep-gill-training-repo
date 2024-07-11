@@ -49,7 +49,7 @@ const {
 /**
  * Block name.
  */
-export const name: string = 'quark/button';
+export const name: string = 'quark/contact-button';
 
 // Background colors.
 export const colors: { [key: string]: string }[] = [
@@ -62,12 +62,16 @@ export const colors: { [key: string]: string }[] = [
  * Block configuration settings.
  */
 export const settings: BlockConfiguration = {
-	apiVersion: 2,
-	title: __( 'Button', 'qrk' ),
-	description: __( 'Prompt visitors to take action with a button-style link.', 'qrk' ),
+	apiVersion: 3,
+	title: __( 'Contact Button', 'qrk' ),
+	description: __( 'Display Contact Button.', 'qrk' ),
+	parent: [ 'quark/cta-buttons' ],
 	icon: 'button',
 	category: 'layout',
-	keywords: [ __( 'button', 'qrk' ) ],
+	keywords: [
+		__( 'contact', 'qrk' ),
+		__( 'button', 'qrk' ),
+	],
 	attributes: {
 		url: {
 			type: 'object',
@@ -228,7 +232,7 @@ export const settings: BlockConfiguration = {
 					<RichText
 						tagName="span"
 						className="btn__content"
-						placeholder={ __( 'Button Text…', 'qrk' ) }
+						placeholder={ __( '+1-877-585-1235', 'qrk' ) }
 						value={ attributes.btnText }
 						onChange={ ( btnText ) => setAttributes( { btnText } ) }
 						allowedFormats={ [] }

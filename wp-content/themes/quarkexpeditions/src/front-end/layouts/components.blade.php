@@ -212,7 +212,7 @@
 
 		<x-drawer id="header-drawer" class="header__drawer">
 			<x-drawer.header>
-				<x-header.site-logo url="https://www.quarkexpeditions.com"/>
+				<x-header.site-logo />
 			</x-drawer.header>
 
 			<x-drawer.body>
