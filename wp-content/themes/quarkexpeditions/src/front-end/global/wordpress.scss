@@ -389,3 +389,11 @@
 		@extend %full-width;
 	}
 }
+
+// Increase the iframe container height in full site editor.
+@if ( $is-editor == true ) {
+
+	body.block-editor-iframe__body {
+		min-height: 800px;
+	}
+}
