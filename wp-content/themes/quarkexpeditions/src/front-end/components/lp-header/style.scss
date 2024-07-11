@@ -31,7 +31,8 @@
 		--lp-header-cta-font-color-active: var(--color-black);
 	}
 
-	&:has(+ .hero--immersive) {
+	&:has(+ .hero--immersive-all),
+	&:has(+ .hero--immersive-top) {
 		margin-bottom: calculate-rem(-122px);
 
 		&:not(#{$self}--compact) {
@@ -95,6 +96,7 @@
 
 		svg {
 			height: 56px;
+			display: block;
 			width: auto;
 
 			@media screen and (min-width: grid-size(sm)) {

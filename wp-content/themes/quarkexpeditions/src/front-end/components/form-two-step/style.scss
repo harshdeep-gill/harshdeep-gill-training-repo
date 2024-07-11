@@ -13,14 +13,6 @@
 		}
 	}
 
-	&__state {
-		display: none;
-
-		&[data-visible] {
-			display: block;
-		}
-	}
-
 	&__thank-you {
 		display: none;
 		gap: var(--spacing-6);
@@ -106,5 +98,12 @@
 	.btn {
 		width: 100%;
 		text-transform: uppercase;
+	}
+
+	tp-multi-select {
+
+		&-status {
+			display: -webkit-box !important;
+		}
 	}
 }

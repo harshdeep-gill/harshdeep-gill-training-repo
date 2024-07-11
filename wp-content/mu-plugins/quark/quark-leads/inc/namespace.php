@@ -11,6 +11,7 @@ use WP_Error;
 
 use function Travelopia\Salesforce\send_request;
 use function Travelopia\Security\validate_recaptcha;
+use function Travelopia\Security\get_recaptcha_settings;
 
 const REST_API_NAMESPACE = 'quark-leads/v1';
 
@@ -56,7 +57,7 @@ function front_end_data( array $data = [] ): array {
 
 		// If validate_recaptcha is true, and function exists 'get_recaptcha_settings', get recaptcha_settings.
 		if ( 1 === $validate_recaptcha && function_exists( 'Travelopia\Security\get_recaptcha_settings' ) ) {
-			$recaptcha_settings = \Travelopia\Security\get_recaptcha_settings();
+			$recaptcha_settings = get_recaptcha_settings();
 
 			// If 'site_key' is not empty set the recaptcha_site_key.
 			if ( ! empty( $recaptcha_settings['site_key'] ) ) {

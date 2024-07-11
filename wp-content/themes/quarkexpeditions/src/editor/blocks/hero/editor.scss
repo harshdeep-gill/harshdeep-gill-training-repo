@@ -10,4 +10,9 @@
 			background-color: var(--color-white);
 		}
 	}
+
+	&__image {
+		margin: 0;
+		max-width: 100%;
+	}
 }
