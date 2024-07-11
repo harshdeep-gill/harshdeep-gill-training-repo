@@ -22,7 +22,7 @@ use const Quark\StaffMembers\SEASON_TAXONOMY;
 /**
  * Class Test_Departure.
  */
-class Test_Departure extends WP_UnitTestCase {
+class Test_Departures extends WP_UnitTestCase {
 
 	/**
 	 * Test bootstrap.
@@ -90,15 +90,15 @@ class Test_Departure extends WP_UnitTestCase {
 				],
 				'post_taxonomies' => [
 					SPOKEN_LANGUAGE_TAXONOMY => [
-							[
-								'term_id'     => strval( $spoken_language_term->term_id ),
-								'name'        => $spoken_language_term->name,
-								'slug'        => $spoken_language_term->slug,
-								'taxonomy'    => $spoken_language_term->taxonomy,
-								'description' => $spoken_language_term->description,
-								'parent'      => $spoken_language_term->parent,
-								'term_group'  => $spoken_language_term->term_group,
-							],
+						[
+							'term_id'     => strval( $spoken_language_term->term_id ),
+							'name'        => $spoken_language_term->name,
+							'slug'        => $spoken_language_term->slug,
+							'taxonomy'    => $spoken_language_term->taxonomy,
+							'description' => $spoken_language_term->description,
+							'parent'      => $spoken_language_term->parent,
+							'term_group'  => $spoken_language_term->term_group,
+						],
 					],
 				],
 			],

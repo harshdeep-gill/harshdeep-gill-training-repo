@@ -11,6 +11,7 @@ use cli\progress\Bar;
 use Quark\Softrip\Itinerary;
 use WP_CLI;
 use WP_CLI\ExitException;
+use WP_Query;
 
 use const Quark\Itineraries\POST_TYPE;
 
@@ -91,7 +92,7 @@ class Sync {
 		];
 
 		// Run the query.
-		$query = new \WP_Query( $args );
+		$query = new WP_Query( $args );
 		$ids   = [];
 
 		// Loop over the posts.
