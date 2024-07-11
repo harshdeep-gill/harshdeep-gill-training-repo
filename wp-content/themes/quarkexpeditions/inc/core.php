@@ -259,6 +259,9 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'class'  => true,
 					'data-*' => true,
 				],
+				'quark-tabs'                            => [
+					'class' => true,
+				],
 				'quark-itinerary-tabs'                  => [
 					'class' => true,
 				],
