@@ -47,6 +47,7 @@ import './editor.scss';
 export const colors: { [key: string]: string }[] = [
 	{ name: __( 'Yellow', 'qrk' ), color: '#fdb52b', slug: 'yellow' },
 	{ name: __( 'Black', 'qrk' ), color: '#232933', slug: 'black' },
+	{ name: __( 'White', 'qrk' ), color: '#fff', slug: 'white' },
 ];
 
 /**
@@ -147,13 +148,13 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 						label={ __( 'Button Color', 'qrk' ) }
 						help={ __( 'Select the button color.', 'qrk' ) }
 						value={ colors.find( ( color ) => color.slug === attributes.backgroundColor )?.color }
-						colors={ colors.filter( ( color ) => [ 'black', 'yellow' ].includes( color.slug ) ) }
+						colors={ colors.filter( ( color ) => [ 'black', 'yellow', 'white' ].includes( color.slug ) ) }
 						onChange={ ( backgroundColor: {
 							color: string;
 							slug: string;
 						} ): void => {
 							// Set the background color attribute.
-							if ( backgroundColor.slug && [ 'black', 'yellow' ].includes( backgroundColor.slug ) ) {
+							if ( backgroundColor.slug && [ 'black', 'yellow', 'white' ].includes( backgroundColor.slug ) ) {
 								setAttributes( { backgroundColor: backgroundColor.slug } );
 							}
 						} }

@@ -43,6 +43,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 
 	// Build component attributes.
 	$component_attributes = [
+		'class'        => $block->attributes['className'],
 		'color'        => $block->attributes['backgroundColor'],
 		'href'         => $block->attributes['url']['url'] ?? '',
 		'target'       => ! empty( $block->attributes['url']['newWindow'] ) ? '_blank' : '',
