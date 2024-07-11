@@ -21,15 +21,6 @@
 		margin-left: auto;
 	}
 
-	a {
-
-		@include transition();
-
-		color: var(--color-white);
-		transition-property: background-color, border-color, color;
-		text-decoration: none;
-	}
-
 	&__logo {
 		display: inline-flex;
 		overflow: hidden;
@@ -72,6 +63,10 @@
 			font-size: inherit;
 		}
 
+		.btn__icon {
+			margin: 0;
+		}
+
 		svg {
 			height: 21px;
 			width: 21px;
@@ -98,6 +93,15 @@
 
 			&:hover {
 				text-decoration: underline;
+			}
+		}
+
+		a[href^="tel:"] {
+			text-decoration: underline;
+			text-decoration-color: var(--color-black);
+
+			&:hover {
+				text-decoration-color: var(--color-yellow);
 			}
 		}
 	}

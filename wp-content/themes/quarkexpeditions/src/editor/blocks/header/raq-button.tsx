@@ -49,7 +49,7 @@ const {
 /**
  * Block name.
  */
-export const name: string = 'quark/button';
+export const name: string = 'quark/raq-button';
 
 // Background colors.
 export const colors: { [key: string]: string }[] = [
@@ -62,12 +62,18 @@ export const colors: { [key: string]: string }[] = [
  * Block configuration settings.
  */
 export const settings: BlockConfiguration = {
-	apiVersion: 2,
-	title: __( 'Button', 'qrk' ),
-	description: __( 'Prompt visitors to take action with a button-style link.', 'qrk' ),
+	apiVersion: 3,
+	title: __( 'Request a Quote Button', 'qrk' ),
+	description: __( 'Display Request a Quote Button.', 'qrk' ),
+	parent: [ 'quark/cta-buttons' ],
 	icon: 'button',
 	category: 'layout',
-	keywords: [ __( 'button', 'qrk' ) ],
+	keywords: [
+		__( 'raq', 'qrk' ),
+		__( 'request', 'qrk' ),
+		__( 'quote', 'qrk' ),
+		__( 'button', 'qrk' ),
+	],
 	attributes: {
 		url: {
 			type: 'object',

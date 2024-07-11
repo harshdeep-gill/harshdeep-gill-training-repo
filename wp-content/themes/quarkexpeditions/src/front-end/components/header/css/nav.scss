@@ -30,18 +30,23 @@
 	}
 
 	&__nav-item-link {
-		color: inherit;
 		display: flex;
 		line-height: inherit;
 		padding: 10px var(--spacing-4);
 		min-height: 48px;
 		align-items: center;
+		color: var(--color-white);
+		transition-property: background-color, border-color, color;
+		text-decoration: none;
+
+		@include transition();
 
 		&:hover {
 
 			@media (hover: hover) {
 				background-color: var(--color-gray-90);
 				border-radius: var(--border-radius);
+				text-decoration: none;
 			}
 		}
 
