@@ -140,6 +140,15 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 						onChange={ () => setAttributes( { hasCta: ! attributes.hasCta } ) }
 						help={ __( 'Does this section have a CTA button?', 'qrk' ) }
 					/>
+					<SelectControl
+						label={ __( 'Title Alignment', 'qrk' ) }
+						value={ attributes.titleAlignment }
+						options={ [
+							{ label: __( 'Left', 'qrk' ), value: 'left' },
+							{ label: __( 'Center', 'qrk' ), value: 'center' },
+						] }
+						onChange={ ( titleAlignment ) => setAttributes( { titleAlignment } ) }
+					/>
 					<ToggleControl
 						label={ __( 'Has heading link', 'qrk' ) }
 						checked={ attributes.hasHeadingLink }
@@ -148,10 +157,7 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 							const newState = ! attributes.hasHeadingLink;
 
 							// set the new state.
-							setAttributes( {
-								hasHeadingLink: newState,
-								titleAlignment: newState ? 'left' : 'center',
-							} );
+							setAttributes( { hasHeadingLink: newState } );
 						} }
 						help={ __( 'Does this section have heading link?', 'qrk' ) }
 					/>

@@ -1,0 +1,29 @@
+{
+	"schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Author Name",
+	"name": "quark/author-info-name",
+	"description": "Author name.",
+	"category": "widgets",
+	"keywords": [
+		"author",
+		"name"
+	],
+	"attributes": {
+		"title": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"textdomain": "qrk",
+	"parent": [
+		"quark/author-info"
+	],
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

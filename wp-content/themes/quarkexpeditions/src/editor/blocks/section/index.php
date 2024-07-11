@@ -7,7 +7,7 @@
 
 namespace Quark\Theme\Blocks\Section;
 
-const COMPONENT = 'section';
+const COMPONENT = 'parts.section';
 
 /**
  * Bootstrap this block.
@@ -53,7 +53,6 @@ function render( array $attributes = [], string $content = '' ): string {
 		is_array( $attributes['headingLink'] )
 		&& ! empty( $attributes['headingLink']['text'] )
 		&& ! empty( $attributes['headingLink']['url'] )
-		&& ! empty( $attributes['headingLink']['newWindow'] )
 	) {
 		$component_attributes['heading_link'] = [
 			'text'       => $attributes['headingLink']['text'],

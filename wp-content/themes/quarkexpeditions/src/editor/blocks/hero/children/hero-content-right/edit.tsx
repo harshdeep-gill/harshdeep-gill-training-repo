@@ -11,7 +11,6 @@ import {
  * Internal dependencies.
  */
 import * as formTwoStep from '../../../form-two-step';
-import * as formTwoStepCompact from '../../../form-two-step-compact';
 
 /**
  * External dependencies.
@@ -34,7 +33,7 @@ export default function Edit( { className }: BlockEditAttributes ): JSX.Element 
 	const innerBlockProps = useInnerBlocksProps(
 		{ ...blockProps },
 		{
-			allowedBlocks: [ formTwoStep.name, formTwoStepCompact.name ],
+			allowedBlocks: [ formTwoStep.name ],
 			template: [ [ formTwoStep.name ] ],
 		}
 	);

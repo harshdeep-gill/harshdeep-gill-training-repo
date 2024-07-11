@@ -1,0 +1,50 @@
+{
+	"schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Two Step Form",
+	"name": "quark/form-two-step",
+	"description": "Display a two step form.",
+	"category": "forms",
+	"textdomain": "qrk",
+	"keywords": [
+		"two",
+		"step",
+		"form"
+	],
+	"attributes": {
+		"thankYouPageUrl": {
+			"type": "string"
+		},
+		"polarRegion": {
+			"type": "string",
+			"default": ""
+		},
+		"ship": {
+			"type": "string",
+			"default": ""
+		},
+		"expedition": {
+			"type": "string",
+			"default": ""
+		},
+		"backgroundColor": {
+			"type": "string",
+			"default": "black",
+			"enum": [
+				"black",
+				"white"
+			]
+		},
+		"showModalForm": {
+			"type": "boolean",
+			"default": false
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}
