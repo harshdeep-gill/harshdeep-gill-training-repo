@@ -44,8 +44,10 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 
 	// eslint-disable-next-line react-hooks/rules-of-hooks
 	const innerBlockProps = useInnerBlocksProps( {
-		className: classnames( 'two-columns grid grid--cols-2', {
+		className: classnames( 'two-columns', {
+			'grid grid--cols-2': ! attributes.hasOnlyChild,
 			'two-columns--has-border': attributes.hasBorder,
+			'two-columns--only-child': attributes.hasOnlyChild,
 		} ),
 	}, {
 		allowedBlocks: [ column.name ],
@@ -63,6 +65,12 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 						checked={ attributes.hasBorder }
 						help={ __( 'Should these columns have borders?', 'qrk' ) }
 						onChange={ ( hasBorder: boolean ) => setAttributes( { hasBorder } ) }
+					/>
+					<ToggleControl
+						label={ __( 'Has One Column?', 'qrk' ) }
+						checked={ attributes.hasOnlyChild }
+						help={ __( 'Does this column have only one column?', 'qrk' ) }
+						onChange={ ( hasOnlyChild: boolean ) => setAttributes( { hasOnlyChild, hasBorder: false } ) }
 					/>
 				</PanelBody>
 			</InspectorControls>
