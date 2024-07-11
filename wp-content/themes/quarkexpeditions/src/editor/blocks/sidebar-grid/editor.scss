@@ -1,0 +1,6 @@
+.sidebar-grid {
+
+	&__sidebar--sticky {
+		top: calc(var(--wp-admin-bar-height) + var(--spacing-5));
+	}
+}
