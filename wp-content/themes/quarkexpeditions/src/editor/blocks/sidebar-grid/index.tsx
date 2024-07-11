@@ -43,7 +43,7 @@ export const name: string = 'quark/sidebar-grid';
  * Block configuration settings.
  */
 export const settings: BlockConfiguration = {
-	apiVersion: 2,
+	apiVersion: 3,
 	title: __( 'Sidebar Grid', 'qrk' ),
 	description: __( 'Add a sidebar grid block.', 'qrk' ),
 	category: 'layout',

@@ -13,7 +13,6 @@ use WP_UnitTestCase;
 
 use function Quark\Blog\primary_term_taxonomies;
 use function Quark\Blog\get;
-use function Quark\Blog\layout_single;
 use function Quark\Blog\Authors\get as author_get;
 use function Quark\Blog\get_blog_post_author_info;
 use function Quark\Blog\get_cards_data;

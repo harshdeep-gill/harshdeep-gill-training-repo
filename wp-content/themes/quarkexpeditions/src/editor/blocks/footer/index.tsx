@@ -46,7 +46,7 @@ export const name: string = 'quark/footer';
  * Block configuration settings.
  */
 export const settings: BlockConfiguration = {
-	apiVersion: 2,
+	apiVersion: 3,
 	title: __( 'Footer', 'qrk' ),
 	description: __( 'Display a footer.', 'qrk' ),
 	category: 'layout',

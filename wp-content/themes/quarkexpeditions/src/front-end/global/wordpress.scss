@@ -365,3 +365,27 @@
 .has-white-color {
 	color: var(--color-white);
 }
+
+// To enable support for position: sticky elements added in template part
+@if ( $is-editor != true ) {
+
+	.wp-site-blocks .wp-block-template-part {
+		display: contents;
+	}
+}
+
+.wp-site-blocks {
+	padding-left: var(--grid-col-gutter);
+	padding-right: var(--grid-col-gutter);
+
+	> * {
+
+		@extend %wrap;
+	}
+
+	.full-width,
+	.alignfull {
+
+		@extend %full-width;
+	}
+}
