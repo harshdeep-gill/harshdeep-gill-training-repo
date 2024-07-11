@@ -84,7 +84,6 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 					switch ( $child_block->name ) {
 						// Hero form.
 						case 'quark/form-two-step':
-						case 'quark/form-two-step-compact':
 							$form = [
 								'type' => 'form',
 							];
