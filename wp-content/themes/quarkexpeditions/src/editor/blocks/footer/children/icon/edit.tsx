@@ -6,6 +6,7 @@ import {
 	useBlockProps,
 	InspectorControls,
 } from '@wordpress/block-editor';
+import { Icon, PanelBody, SelectControl } from '@wordpress/components';
 
 /**
  * External dependencies.
@@ -16,7 +17,6 @@ import classnames from 'classnames';
  * Internal dependencies.
  */
 import icons from '../../../icons';
-import { Icon, PanelBody, SelectControl } from '@wordpress/components';
 
 /**
  * Edit Component.

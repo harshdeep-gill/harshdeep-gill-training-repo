@@ -8,13 +8,13 @@ import {
 	useBlockProps,
 	useInnerBlocksProps,
 } from '@wordpress/block-editor';
+import { PanelBody, ToggleControl } from '@wordpress/components';
 
 /**
  * External dependencies.
  */
 import classnames from 'classnames';
 import icons from '../../../icons';
-import { PanelBody, ToggleControl } from '@wordpress/components';
 
 /**
  * Edit Component.

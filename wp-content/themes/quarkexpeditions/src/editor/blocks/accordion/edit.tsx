@@ -7,6 +7,7 @@ import {
 	useInnerBlocksProps,
 	InspectorControls,
 } from '@wordpress/block-editor';
+import { PanelBody, ToggleControl } from '@wordpress/components';
 
 /**
  * External dependencies.
@@ -17,7 +18,6 @@ import classnames from 'classnames';
  * Child block.
  */
 import * as item from './children/item';
-import { PanelBody, ToggleControl } from '@wordpress/components';
 
 /**
  * Edit Component.
