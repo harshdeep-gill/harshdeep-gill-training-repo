@@ -7,13 +7,12 @@
 
 namespace Quark\Search\Departures;
 
-use SolrPower_Sync;
 use WP_Post;
 use Solarium\QueryType\Update\Query\Document\Document;
 
 use function Quark\Departures\get_departure_season;
 use function Quark\Departures\get_departure_region_and_season;
-use function Quark\Departures\get_departure_expedition;
+use function Quark\Departures\get as get_departure;
 
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
 
@@ -24,39 +23,8 @@ use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
  */
 function bootstrap(): void {
 	// Filers.
-	add_filter( 'solr_post_types', __NAMESPACE__ . '\\solr_post_types' );
 	add_filter( 'solr_index_custom_fields', __NAMESPACE__ . '\\solr_index_custom_fields' );
 	add_filter( 'solr_build_document', __NAMESPACE__ . '\\filter_solr_build_document', 10, 2 );
-}
-
-/**
- * Post types to index.
- *
- * @return string[] Post types.
- */
-function solr_post_types(): array {
-	// Return post types.
-	return [
-		DEPARTURE_POST_TYPE => DEPARTURE_POST_TYPE,
-	];
-}
-
-/**
- * Update a post manually in search index.
- *
- * @param int $post_id Post ID.
- *
- * @return void
- */
-function update_post_in_index( int $post_id = 0 ): void {
-	// Bail if SolrPower_Sync class doesn't exist.
-	if ( ! class_exists( 'SolrPower_Sync' ) ) {
-		return;
-	}
-
-	// Update post in index.
-	$sync = SolrPower_Sync::get_instance();
-	$sync->handle_modified( $post_id );
 }
 
 /**
@@ -69,7 +37,7 @@ function update_post_in_index( int $post_id = 0 ): void {
  */
 function filter_solr_build_document( Document $document = null, WP_Post $post = null ): Document|null {
 	// Bail if method doesn't exist or post is not a WP_Post.
-	if ( ! $document instanceof Document || ! $post instanceof WP_Post ) {
+	if ( ! $document instanceof Document || ! $post instanceof WP_Post || DEPARTURE_POST_TYPE !== $post->post_type ) {
 		return $document;
 	}
 
@@ -81,11 +49,14 @@ function filter_solr_build_document( Document $document = null, WP_Post $post = 
 		return $document;
 	}
 
+	// Get departure data.
+	$departure_data = get_departure( $post->ID );
+
 	// Set post title for sorting.
 	$document->setField( 'post_title_s', get_the_title( $post->ID ) );
 
 	// Set Region.
-	$document->setField( 'region_s', get_post_meta( $post->ID, 'region', true ) );
+	$document->setField( 'region_s', $departure_data['post_meta']['region'] ?? '' );
 
 	// set Season.
 	$document->setField( 'season_s', get_departure_season( $post->ID ) );
@@ -94,13 +65,13 @@ function filter_solr_build_document( Document $document = null, WP_Post $post = 
 	$document->setField( 'region_season_s', get_departure_region_and_season( $post->ID ) );
 
 	// Set Expeditions.
-	$document->setField( 'expedition_i', get_departure_expedition( $post->ID ) );
+	$document->setField( 'expedition_i', absint( $departure_data['post_meta']['related_expedition'] ?? 0 ) );
 
 	// Set Ship.
-	$document->setField( 'ship_i', absint( get_post_meta( $post->ID, 'related_ship', true ) ) );
+	$document->setField( 'ship_i', absint( $departure_data['post_meta']['related_ship'] ?? 0 ) );
 
 	// Set duration.
-	$document->setField( 'duration_i', absint( get_post_meta( $post->ID, 'duration', true ) ) );
+	$document->setField( 'duration_i', absint( $departure_data['post_meta']['duration'] ?? 0 ) );
 
 	// Return document.
 	return $document;
@@ -141,14 +112,14 @@ function solr_index_custom_fields( array $custom_fields = [] ): array {
 function get_filters_from_url(): array {
 	// Get filters from URL.
 	return [
-		'seasons'           => strval( filter_input( INPUT_GET, 'seasons' ) ),
-		'expeditions'       => strval( filter_input( INPUT_GET, 'expeditions' ) ),
-		'adventure_options' => strval( filter_input( INPUT_GET, 'adventure_options' ) ),
-		'months'            => strval( filter_input( INPUT_GET, 'months' ) ),
-		'durations'         => strval( filter_input( INPUT_GET, 'durations' ) ),
-		'ships'             => strval( filter_input( INPUT_GET, 'ships' ) ),
-		'page'              => strval( filter_input( INPUT_GET, 'page' ) ),
-		'sort'              => strval( filter_input( INPUT_GET, 'sort' ) ),
+		'seasons'           => isset( $_GET['seasons'] ) ? strval( $_GET['seasons'] ) : '', // phpcs:ignore
+		'expeditions'       => isset( $_GET['expeditions'] ) ? strval( $_GET['expeditions'] ) : '', // phpcs:ignore
+		'adventure_options' => isset( $_GET['adventure_options'] ) ? strval( $_GET['adventure_options'] ) : '', // phpcs:ignore
+		'months'            => isset( $_GET['months'] ) ? strval( $_GET['months'] ) : '', // phpcs:ignore
+		'durations'         => isset( $_GET['durations'] ) ? strval( $_GET['durations'] ) : '', // phpcs:ignore
+		'ships'             => isset( $_GET['ships'] ) ? strval( $_GET['ships'] ) : '', // phpcs:ignore
+		'page'              => isset( $_GET['page'] ) ? strval( $_GET['page'] ) : '1', // phpcs:ignore
+		'sort'              => isset( $_GET['sort'] ) ? strval( $_GET['sort'] ) : 'start_date', // phpcs:ignore
 	];
 }
 
@@ -174,13 +145,13 @@ function parse_filters( array $filters = [] ): array {
 	$filters = wp_parse_args(
 		$filters,
 		[
-			'seasons'           => [],
-			'expeditions'       => [],
-			'adventure_options' => [],
-			'months'            => [],
-			'durations'         => [],
-			'ships'             => [],
-			'sort'              => [],
+			'seasons'           => '',
+			'expeditions'       => '',
+			'adventure_options' => '',
+			'months'            => '',
+			'durations'         => '',
+			'ships'             => '',
+			'sort'              => '',
 			'page'              => 1,
 			'posts_per_load'    => 10,
 		]

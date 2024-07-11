@@ -12,7 +12,6 @@ use Solarium\QueryType\Select\Query\Query;
 
 use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
-use const Quark\StaffMembers\SEASON_TAXONOMY;
 
 /**
  * Class Search
@@ -24,7 +23,10 @@ class Search {
 	 *
 	 * @var string[] Field mapping.
 	 */
-	private array $field_mapping = [];
+	private array $field_mapping = [
+		'durations'            => 'duration_i',
+		'departure_start_date' => 'departure_start_date_i',
+	];
 
 	/**
 	 * Post per page.
@@ -270,7 +272,7 @@ class Search {
 			$this->args['meta_query'][] = [
 				'key'     => 'departure_start_date',
 				'value'   => [ gmdate( 'Y-m-01', $departure ), gmdate( 'Y-m-t', $departure ) ],
-				'type'    => 'NUMERIC',
+				'type'    => 'DATE',
 				'compare' => 'BETWEEN',
 			];
 		}
@@ -298,7 +300,7 @@ class Search {
 		foreach ( array_unique( $seasons ) as $season ) {
 			// Set Season meta query.
 			$this->args['meta_query'][] = [
-				'key'     => 'region_season_s',
+				'key'     => 'region_season',
 				'value'   => $season,
 				'compare' => '=',
 			];

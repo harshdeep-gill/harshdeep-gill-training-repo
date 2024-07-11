@@ -273,62 +273,6 @@ function get( int $post_id = 0 ): array {
 }
 
 /**
- * Get Expedition for departure.
- *
- * @param int $post_id Departure Post ID.
- *
- * @return int
- */
-function get_departure_expedition( int $post_id = 0 ): int {
-	// Get departure.
-	$departure = get( $post_id );
-
-	// Check post_meta is not empty.
-	if ( ! $departure['post_meta'] ) {
-		return 0;
-	}
-
-	// Get expedition from meta.
-	$expedition = $departure['post_meta']['related_expedition'] ?? '';
-
-	// Check expedition is empty.
-	if ( ! $expedition ) {
-		return 0;
-	}
-
-	// Return expedition.
-	return absint( $expedition );
-}
-
-/**
- * Get departure start date.
- *
- * @param int $post_id Departure Post ID.
- *
- * @return string
- */
-function get_departure_start_date( int $post_id = 0 ): string {
-	// Get departure.
-	$departure = get( $post_id );
-
-	// Check post_meta is not empty.
-	if ( ! $departure['post_meta'] ) {
-		return '';
-	}
-
-	// Get start date from meta.
-	$start_date_meta = $departure['post_meta']['departure_start_date'] ?? '';
-
-	// Check start date meta is empty.
-	if ( ! $start_date_meta ) {
-		return '';
-	}
-
-	// Return start date.
-	return gmdate( 'Y-m-d', absint( strtotime( strval( $start_date_meta ) ) ) );
-}
-
-/**
  * Get departure Season.
  *
  * @param int $post_id Departure Post ID.
