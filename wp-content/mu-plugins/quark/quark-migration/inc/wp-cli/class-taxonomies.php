@@ -11,6 +11,7 @@ use WP_CLI;
 use WP_Error;
 use WP_CLI\ExitException;
 use cli\progress\Bar;
+use WP_Term;
 
 use function Quark\Migration\Drupal\download_file_by_fid;
 use function Quark\Migration\Drupal\prepare_for_migration;
@@ -214,7 +215,7 @@ class Taxonomies {
 			$term = get_term_by( 'slug', $normalized_term['slug'], $taxonomy );
 
 			// Update slug if already exist.
-			if ( $term instanceof \WP_Term ) {
+			if ( $term instanceof WP_Term ) {
 				$normalized_term['slug'] = wp_unique_term_slug( $normalized_term['slug'], (object) $normalized_term );
 			}
 		}

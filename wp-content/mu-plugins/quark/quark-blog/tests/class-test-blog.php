@@ -11,6 +11,11 @@ use WP_Post;
 use WP_Term;
 use WP_UnitTestCase;
 
+use function Quark\Blog\layout_single;
+use function Quark\Blog\get;
+
+use const Quark\Blog\POST_TYPE as BLOG_POST_TYPE;
+
 /**
  * Class Test_Blog.
  */
@@ -49,7 +54,7 @@ class Test_Blog extends WP_UnitTestCase {
 				'post_title'   => 'Test Post',
 				'post_content' => 'Post content',
 				'post_status'  => 'publish',
-				'post_type'    => \Quark\Blog\POST_TYPE,
+				'post_type'    => BLOG_POST_TYPE,
 				'meta_input'   => [
 					'meta_1' => 'value_1',
 					'meta_2' => 'value_2',
@@ -89,7 +94,7 @@ class Test_Blog extends WP_UnitTestCase {
 		$post = $post_1; // phpcs:ignore
 
 		// Test with post.
-		$layout = \Quark\Blog\layout_single();
+		$layout = layout_single();
 
 		// Assert expected layout is equal to actual layout.
 		$this->assertEquals(
@@ -168,7 +173,7 @@ class Test_Blog extends WP_UnitTestCase {
 				'post_title'   => 'Test Post',
 				'post_content' => 'Post content',
 				'post_status'  => 'publish',
-				'post_type'    => \Quark\Blog\POST_TYPE,
+				'post_type'    => BLOG_POST_TYPE,
 				'meta_input'   => [
 					'meta_1' => 'value_1',
 					'meta_2' => 'value_2',
@@ -204,7 +209,7 @@ class Test_Blog extends WP_UnitTestCase {
 		wp_set_object_terms( $post_1->ID, $post_tag_term->term_id, 'post_tag' );
 
 		// Test getting post.
-		$the_post = \Quark\Blog\get( $post_1->ID );
+		$the_post = get( $post_1->ID );
 
 		// Assert expected layout is equal to actual layout.
 		$this->assertEquals(
@@ -282,7 +287,7 @@ class Test_Blog extends WP_UnitTestCase {
 		// Test with Post type slug.
 		$this->assertContains(
 			'category',
-			\Quark\Blog\primary_term_taxonomies( $taxonomies, \Quark\Blog\POST_TYPE )
+			\Quark\Blog\primary_term_taxonomies( $taxonomies, BLOG_POST_TYPE )
 		);
 	}
 }
