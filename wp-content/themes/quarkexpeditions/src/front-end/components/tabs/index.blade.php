@@ -7,6 +7,9 @@
 	if ( empty( $slot ) ) {
 		return;
 	}
+
+	quark_enqueue_style( 'tp-tabs' );
+	quark_enqueue_script( 'tp-tabs' );
 @endphp
 
 <quark-tabs class="tabs">

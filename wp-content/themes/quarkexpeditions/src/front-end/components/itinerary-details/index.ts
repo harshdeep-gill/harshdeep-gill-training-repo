@@ -4,12 +4,6 @@
 const { customElements, HTMLElement } = window;
 
 /**
- * External dependency.
- */
-import '@travelopia/web-components/dist/tabs';
-import { TPTabsElement } from '@travelopia/web-components';
-
-/**
  * Itinerary Tabs Class.
  */
 export default class ItineraryTabs extends HTMLElement {
@@ -20,7 +14,7 @@ export default class ItineraryTabs extends HTMLElement {
 	 */
 	private tabsNavItems: NodeListOf<HTMLElement>;
 	private tabsTabItems: NodeListOf<HTMLElement>;
-	private tabs: TPTabsElement | null;
+	private tabs: HTMLElement | null;
 	private closeButtons: NodeListOf<HTMLElement>;
 
 	/**

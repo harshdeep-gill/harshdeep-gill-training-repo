@@ -122,6 +122,7 @@ module.exports = ( env ) => {
 		...buildConfig,
 		entry: {
 			TPSliderElement: `${ themePath }/src/vendor/tp-slider.js`,
+			TPTabsElement: `${ themePath }/src/vendor/tp-tabs.js`,
 			GLightbox: `${ themePath }/src/vendor/glightbox.js`,
 		},
 		output: {
