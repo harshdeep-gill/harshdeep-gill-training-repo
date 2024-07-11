@@ -1,0 +1,52 @@
+@import "~@travelopia/web-components/dist/tabs/style.css";
+@import "../../scss";
+
+.tabs {
+	$self: &;
+
+	min-width: 0;
+	display: block;
+
+	&__nav {
+		display: flex;
+		overflow: auto;
+		position: relative;
+		white-space: nowrap;
+		-ms-overflow-style: none; /* for Internet Explorer, Edge */
+		scrollbar-width: none; /* for Firefox */
+		gap: var(--spacing-4);
+		margin: 0 calc(-1 * var(--grid-col-gutter));
+		padding: 0 var(--grid-col-gutter);
+	}
+
+	&__nav-link {
+		border-radius: var(--border-radius);
+		display: block;
+		position: relative;
+		padding: var(--spacing-2) var(--spacing-4);
+
+		#{$self}__nav-item[active] & {
+			background-color: var(--color-gray-20);
+			text-decoration: none;
+		}
+	}
+
+	&__content {
+		position: relative;
+		margin-top: var(--spacing-6);
+
+		@include transition(height, 0.4s);
+
+		@media screen and (min-width: grid-size(lg)) {
+			margin-top: var(--spacing-8);
+		}
+	}
+
+	&__tab {
+		display: none;
+
+		&[open="yes"] {
+			display: block;
+		}
+	}
+}
