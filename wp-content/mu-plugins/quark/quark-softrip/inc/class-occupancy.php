@@ -143,7 +143,13 @@ class Occupancy extends Data_Object {
 	 *
 	 * @param mixed[] $data The data to format.
 	 *
-	 * @return mixed[]
+	 * @return array{
+	 *      id: mixed,
+	 *      cabin_category: string,
+	 *      title: string,
+	 *      occupancy_mask: string,
+	 *      prices?: mixed[]
+	 * }
 	 */
 	protected function format_data( array $data = [] ): array {
 		// Setup defaults.
@@ -164,9 +170,9 @@ class Occupancy extends Data_Object {
 		// Setup formatted data.
 		$formatted = [
 			'id'             => $this->entry_data['id'] ?? null,
-			'cabin_category' => $this->parent->get_entry_data( 'id' ),
-			'title'          => $data['id'],
-			'occupancy_mask' => $data['mask'],
+			'cabin_category' => strval( $this->parent->get_entry_data( 'id' ) ),
+			'title'          => strval( $data['id'] ),
+			'occupancy_mask' => strval( $data['mask'] ),
 			'prices'         => [],
 		];
 

@@ -52,7 +52,8 @@ class Sync {
 		WP_CLI::log( WP_CLI::colorize( 'Syncing Itineraries...' ) );
 
 		// Initialize progress bar.
-		$progress = new Bar( 'Softrip sync', count( $options['ids'] ), 100 );
+		$total    = count( $options['ids'] );
+		$progress = new Bar( 'Softrip sync', $total, 100 );
 
 		// Check if progress bar exists or not.
 		if ( ! $progress instanceof Bar ) {
@@ -78,6 +79,9 @@ class Sync {
 		// Chunk to sync into packages.
 		$parts = array_chunk( array_keys( $to_sync ), 5 );
 
+		// Set up a counter for how many we're successful.
+		$counter = 0;
+
 		// Process each part.
 		foreach ( $parts as $softrip_ids ) {
 			// Get the raw departure data for the IDs.
@@ -85,6 +89,8 @@ class Sync {
 
 			// Handle if an error is found.
 			if ( $raw_departures instanceof WP_Error ) {
+				// If this fails, it fails for the 5 items.
+				$progress->tick( 5 );
 				continue;
 			}
 
@@ -92,6 +98,7 @@ class Sync {
 			foreach ( $raw_departures as $softrip_id => $departures ) {
 				// Validate is array and not empty.
 				if ( ! is_array( $departures ) || empty( $departures ) ) {
+					$progress->tick();
 					continue;
 				}
 
@@ -100,14 +107,25 @@ class Sync {
 				$itinerary = new Itinerary( $post_id );
 				$itinerary->update_departures( (array) $departures );
 				$progress->tick();
+
+				// Update counter.
+				++$counter;
 			}
 		}
 
 		// End bar.
 		$progress->finish();
 
+		// Check if failed any.
+		$if_failed = '.';
+
+		// Compare counter with total.
+		if ( $counter < $total ) {
+			$if_failed = ' with ' . ( $total - $counter ) . ' failed items.';
+		}
+
 		// End notice.
-		WP_CLI::success( 'Completed.' );
+		WP_CLI::success( 'Completed ' . $counter . ' items' . $if_failed );
 	}
 
 	/**
