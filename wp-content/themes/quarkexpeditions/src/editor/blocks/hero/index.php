@@ -21,7 +21,8 @@ function bootstrap(): void {
 	register_block_type_from_metadata(
 		__DIR__,
 		[
-			'render_callback' => __NAMESPACE__ . '\\render',
+			'render_callback'   => __NAMESPACE__ . '\\render',
+			'skip_inner_blocks' => true, // As we are building the slot manually, To avoid multiple render calls, no need to render inner blocks.
 		]
 	);
 }
