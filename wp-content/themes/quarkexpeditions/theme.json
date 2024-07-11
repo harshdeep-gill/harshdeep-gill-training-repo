@@ -11,16 +11,11 @@
 			"title": "Landing Page"
 		},
 		{
-			"name": "single-qrk_agreement",
-			"title": "Terms & Conditions"
+			"name": "content-sidebar-table-of-contents",
+			"title": "Content with Table of Contents Sidebar"
 		}
 	],
 	"templateParts": [
-		{
-			"area": "uncategorized",
-			"name": "table-of-contents-sidebar",
-			"title": "Sidebar Content with Table of Contents"
-		},
 		{
 			"area": "uncategorized",
 			"name": "header",
@@ -61,11 +56,11 @@
 		]
 		},
 		"layout": {
-		"contentSize": "1120px"
+			"contentSize": "1120px"
 		},
 		"spacing": {
-		"customSpacingSize": false,
-		"units": []
+			"customSpacingSize": false,
+			"units": []
 		},
 		"typography": {
 		"letterSpacing": false,
