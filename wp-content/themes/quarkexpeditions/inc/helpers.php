@@ -225,3 +225,15 @@ function quark_generate_dom_id( string $input = '', int $length = 10 ): string {
 	 */
 	return 'm' . substr( md5( $input ), 0, $length - 1 );
 }
+
+/**
+ * Generates a unique DOM id.
+ *
+ * @return string The DOM id.
+ */
+function quark_generate_unique_dom_id(): string {
+	/**
+	 * The character prefix has been added to prevent the id starting with a digit.
+	 */
+	return wp_unique_id( 'quark_uid_' );
+}
