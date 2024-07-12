@@ -10,10 +10,10 @@ namespace Quark\Pages\Tests;
 use WP_Post;
 use WP_UnitTestCase;
 
-use function Quark\Pages\layout_single;
 use function Quark\Pages\get;
+use function Quark\Pages\layout_single;
 
-use const Quark\Pages\POST_TYPE as PAGE_POST_TYPE;
+use const Quark\Pages\POST_TYPE;
 
 /**
  * Class Test_Pages.
@@ -31,7 +31,7 @@ class Test_Pages extends WP_UnitTestCase {
 		// No post.
 		$this->assertEquals(
 			[],
-			\Quark\Pages\layout_single()
+			layout_single()
 		);
 
 		// Create post.
@@ -40,7 +40,7 @@ class Test_Pages extends WP_UnitTestCase {
 				'post_title'   => 'Test Post',
 				'post_content' => 'Post content',
 				'post_status'  => 'publish',
-				'post_type'    => PAGE_POST_TYPE,
+				'post_type'    => POST_TYPE,
 			]
 		);
 
@@ -142,7 +142,7 @@ class Test_Pages extends WP_UnitTestCase {
 				'post_title'   => 'Test Post',
 				'post_content' => 'Post content',
 				'post_status'  => 'publish',
-				'post_type'    => PAGE_POST_TYPE,
+				'post_type'    => POST_TYPE,
 			]
 		);
 

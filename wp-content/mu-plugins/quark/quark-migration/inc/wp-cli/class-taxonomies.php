@@ -9,9 +9,9 @@ namespace Quark\Migration\WP_CLI;
 
 use WP_CLI;
 use WP_Error;
+use WP_Term;
 use WP_CLI\ExitException;
 use cli\progress\Bar;
-use WP_Term;
 
 use function Quark\Migration\Drupal\download_file_by_fid;
 use function Quark\Migration\Drupal\prepare_for_migration;

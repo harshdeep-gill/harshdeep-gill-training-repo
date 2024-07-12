@@ -10,10 +10,10 @@ namespace Quark\PressReleases\Tests;
 use WP_Post;
 use WP_UnitTestCase;
 
-use function Quark\PressReleases\layout_single;
 use function Quark\PressReleases\get;
+use function Quark\PressReleases\layout_single;
 
-use const Quark\PressReleases\POST_TYPE as PRESS_RELEASE_POST_TYPE;
+use const Quark\PressReleases\POST_TYPE;
 
 /**
  * Class Test_Press_Releases.
@@ -40,7 +40,7 @@ class Test_Press_Releases extends WP_UnitTestCase {
 				'post_title'   => 'Test Post',
 				'post_content' => 'Post content',
 				'post_status'  => 'publish',
-				'post_type'    => PRESS_RELEASE_POST_TYPE,
+				'post_type'    => POST_TYPE,
 			]
 		);
 
@@ -91,7 +91,7 @@ class Test_Press_Releases extends WP_UnitTestCase {
 				'post_title'   => 'Test Post',
 				'post_content' => 'Post content',
 				'post_status'  => 'publish',
-				'post_type'    => PRESS_RELEASE_POST_TYPE,
+				'post_type'    => POST_TYPE,
 			]
 		);
 

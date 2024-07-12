@@ -1,0 +1,11 @@
+.section__heading-link {
+	text-decoration: underline;
+	color: currentcolor;
+	text-decoration-color: currentcolor;
+	text-underline-offset: 0.3em;
+
+	&:hover {
+		text-decoration: underline;
+		text-decoration-color: var(--color-yellow);
+	}
+}

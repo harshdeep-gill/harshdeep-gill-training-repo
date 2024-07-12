@@ -62,8 +62,7 @@ function convert_to_blocks( string $input = '' ): string {
 	}
 
 	// Prepare for conversion.
-	// phpcs:ignore Travelopia.PHP.PreferTheContentOverWPAutoP.UseTheContent
-	$input    = wpautop( $input );
+	$input    = wpautop( $input ); // phpcs:ignore Travelopia.PHP.PreferTheContentOverWPAutoP.UseTheContent
 	$document = new DOMDocument();
 	$output   = [];
 

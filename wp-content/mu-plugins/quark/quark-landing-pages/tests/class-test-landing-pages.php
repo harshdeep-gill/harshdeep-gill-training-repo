@@ -13,7 +13,7 @@ use WP_UnitTestCase;
 use function Quark\LandingPages\get;
 use function Quark\LandingPages\layout_single;
 
-use const Quark\LandingPages\POST_TYPE as LANDING_PAGE_POST_TYPE;
+use const Quark\LandingPages\POST_TYPE;
 
 /**
  * Class Test_Landing_Pages.
@@ -40,7 +40,7 @@ class Test_Landing_Pages extends WP_UnitTestCase {
 				'post_title'   => 'Test Post',
 				'post_content' => 'Post content',
 				'post_status'  => 'publish',
-				'post_type'    => LANDING_PAGE_POST_TYPE,
+				'post_type'    => POST_TYPE,
 			]
 		);
 
@@ -91,7 +91,7 @@ class Test_Landing_Pages extends WP_UnitTestCase {
 				'post_title'   => 'Test Post',
 				'post_content' => 'Post content',
 				'post_status'  => 'publish',
-				'post_type'    => LANDING_PAGE_POST_TYPE,
+				'post_type'    => POST_TYPE,
 			]
 		);
 
