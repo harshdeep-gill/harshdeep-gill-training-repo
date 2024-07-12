@@ -22,7 +22,7 @@ function bootstrap(): void {
 		__DIR__,
 		[
 			'render_callback'   => __NAMESPACE__ . '\\render',
-			'skip_inner_blocks' => true, // As we are building the slot manually, To avoid multiple render calls, no need to render inner blocks.
+			'skip_inner_blocks' => true, // Skip inner block rendering to avoid render callbacks to those blocks.
 		]
 	);
 }
