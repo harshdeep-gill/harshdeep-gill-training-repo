@@ -1619,7 +1619,7 @@
 						</x-hero-card-slider.content>
 					</x-hero-card-slider.card>
 					<x-hero-card-slider.card>
-						<x-hero-card-slider.video video_id="167" video_type="video/mp4" />
+						<x-hero-card-slider.video video_id="167" />
 						<x-hero-card-slider.content>
 							<x-hero-card-slider.tag text="On-ship Experience" />
 							<x-hero-card-slider.title title="Life Onboard a Quark Expeditions Vessel: Incredible On-Ship Experiences" />
@@ -1658,7 +1658,7 @@
 						</x-hero-card-slider.content>
 					</x-hero-card-slider.card>
 					<x-hero-card-slider.card>
-						<x-hero-card-slider.video video_id="167" video_type="video/mp4" />
+						<x-hero-card-slider.video video_id="167" />
 						<x-hero-card-slider.content>
 							<x-hero-card-slider.tag text="On-ship Experience" />
 							<x-hero-card-slider.title title="Life Onboard a Quark Expeditions Vessel: Incredible On-Ship Experiences" />
@@ -1689,7 +1689,7 @@
 						<x-hero-card-slider.image image_id="29" />
 					</x-hero-card-slider.card>
 					<x-hero-card-slider.card>
-						<x-hero-card-slider.video video_id="167" video_type="video/mp4" />
+						<x-hero-card-slider.video video_id="167" />
 					</x-hero-card-slider.card>
 					<x-hero-card-slider.card>
 						<x-hero-card-slider.image image_id="34" />
@@ -1723,7 +1723,7 @@
 									<x-hero-card-slider.image image_id="29" />
 								</x-hero-card-slider.card>
 								<x-hero-card-slider.card>
-									<x-hero-card-slider.video video_id="167" video_type="video/mp4" />
+									<x-hero-card-slider.video video_id="167" />
 								</x-hero-card-slider.card>
 								<x-hero-card-slider.card>
 									<x-hero-card-slider.image image_id="34" />

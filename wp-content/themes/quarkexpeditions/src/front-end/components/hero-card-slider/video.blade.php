@@ -1,7 +1,6 @@
 @props( [
 	'class'      => '',
 	'video_id'   => 0,
-	'video_type' => ''
 ] )
 
 @php
@@ -32,7 +31,6 @@
 	<x-video
 		:video_id="$video_id"
 		:args="$video_args"
-		:video_type="$video_type"
 		:loop="true"
 		:controls="false"
 	/>

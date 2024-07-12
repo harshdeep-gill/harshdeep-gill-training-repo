@@ -10,15 +10,11 @@
 	$loop     = $attributes['loop'] ?? false;
 	$controls = $attributes['controls'] ?? true;
 
-	$video_type = 'video/mp4';
-
-	if ( ! empty( $attributes['video_type'] ) ) {
-		$video_type = $attributes['video_type'];
-	}
+	$video_type = get_post_mime_type( $attributes['video_id'] );
 
 	$video_size = [
-		'height' => 300,
-		'width'  => 300,
+		'height' => 400,
+		'width'  => 225,
 	];
 
 	if ( empty( $attributes['args']['transform'] ) ) {
