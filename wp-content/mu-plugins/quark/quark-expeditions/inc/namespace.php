@@ -12,8 +12,6 @@ use WP_REST_Response;
 use WP_Taxonomy;
 use WP_REST_Request;
 
-use function Quark\Core\prepare_content_with_blocks;
-
 const POST_TYPE                    = 'qrk_expedition';
 const DESTINATION_TAXONOMY         = 'qrk_destination';
 const EXPEDITION_CATEGORY_TAXONOMY = 'qrk_expedition_category';
@@ -39,9 +37,6 @@ function bootstrap(): void {
 	add_filter( 'qe_expedition_category_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
 	add_filter( 'qe_excursion_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
 	add_filter( 'rest_prepare_taxonomy', __NAMESPACE__ . '\\hide_excursion_metabox', 10, 3 );
-
-	// Layout.
-	add_action( 'template_redirect', __NAMESPACE__ . '\\layout' );
 
 	// Other hooks.
 	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
@@ -291,50 +286,6 @@ function opt_in( array $post_types = [] ): array {
 
 	// Return modified array.
 	return $post_types;
-}
-
-/**
- * Layout for this post type.
- *
- * @return void
- */
-function layout(): void {
-	// Only add filter when viewing a single post.
-	if ( is_singular( POST_TYPE ) ) {
-		add_filter( 'quark_front_end_data', __NAMESPACE__ . '\\layout_single' );
-	}
-}
-
-/**
- * Layout: Single.
- *
- * @param mixed[] $data Front-end data.
- *
- * @return mixed[]
- */
-function layout_single( array $data = [] ): array {
-	// Get post.
-	$post = get();
-
-	// Bail if post does not exist or not an instance of WP_Post.
-	if ( empty( $post['post'] ) || ! $post['post'] instanceof WP_Post ) {
-		return [];
-	}
-
-	// Layout.
-	$data['layout'] = 'single';
-
-	// Build data.
-	$data['data'] = array_merge( $data['data'] ?? [], $post );
-
-	// Post content.
-	$data['data']['post_content'] = $post['post']->post_content;
-
-	// Prepare blocks.
-	prepare_content_with_blocks( $data['data']['post_content'] );
-
-	// Return front-end data.
-	return $data;
 }
 
 /**

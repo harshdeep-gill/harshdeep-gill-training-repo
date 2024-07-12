@@ -2,10 +2,9 @@
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-import { BlockConfiguration, registerBlockType } from '@wordpress/blocks';
+import { BlockConfiguration } from '@wordpress/blocks';
 import {
 	useBlockProps,
-	useInnerBlocksProps,
 	InnerBlocks,
 } from '@wordpress/block-editor';
 
@@ -19,24 +18,6 @@ import './editor.scss';
  * External dependencies.
  */
 import classnames from 'classnames';
-const { gumponents } = window;
-
-/**
- * External components.
- */
-const { SelectImage } = gumponents.components;
-
-/**
- * Children blocks
- */
-import * as authorName from './name';
-import * as readTime from './read-time';
-
-/**
- * Register child block.
- */
-registerBlockType( authorName.name, authorName.settings );
-registerBlockType( readTime.name, readTime.settings );
 
 /**
  * Block name.
@@ -47,7 +28,7 @@ export const name: string = 'quark/author-info';
  * Block configuration settings.
  */
 export const settings: BlockConfiguration = {
-	apiVersion: 2,
+	apiVersion: 3,
 	title: __( 'Author Info', 'qrk' ),
 	description: __( 'Display a Author Info block.', 'qrk' ),
 	category: 'layout',
@@ -67,7 +48,7 @@ export const settings: BlockConfiguration = {
 		html: false,
 		customClassName: false,
 	},
-	edit( { className, attributes, setAttributes }: BlockEditAttributes ): JSX.Element {
+	edit( { className }: BlockEditAttributes ): JSX.Element {
 		// eslint-disable-next-line react-hooks/rules-of-hooks
 		const blockProps = useBlockProps( {
 			className: classnames(
@@ -76,29 +57,14 @@ export const settings: BlockConfiguration = {
 			),
 		} );
 
-		// eslint-disable-next-line react-hooks/rules-of-hooks
-		const innerBlockProps = useInnerBlocksProps(
-			{ className: 'post-author-info__info' },
-			{
-				allowedBlocks: [ authorName.name, readTime.name ],
-				template: [ [ authorName.name ], [ readTime.name ] ],
-				templateLock: 'all',
-			}
-		);
-
 		// Return the block's markup.
 		return (
 			<div { ...blockProps }>
-				<SelectImage
-					image={ attributes.authorImage }
-					size="thumbnail"
-					className="post-author-info__image"
-					onChange={ ( authorImage: Object ): void => {
-						// Set image.
-						setAttributes( { authorImage } );
-					} }
-				/>
-				<div { ...innerBlockProps } />
+				<div className="post-author-info__image"></div>
+				<div className="post-author-info__info">
+					<p className="post-author-info__name">{ __( 'Author Name', 'qrk' ) }</p>
+					<p className="post-author-info__duration">{ __( 'X min read', 'qrk' ) }</p>
+				</div>
 			</div>
 		);
 	},

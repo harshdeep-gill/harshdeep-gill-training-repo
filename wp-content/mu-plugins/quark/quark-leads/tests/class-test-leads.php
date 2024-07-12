@@ -55,11 +55,9 @@ class Test_Leads extends WP_UnitTestCase {
 		// Test 1: Check if function return api endpoint or not.
 		$this->assertEquals(
 			[
-				'data' => [
-					'leads_api_endpoint' => get_rest_url( null, '/' . REST_API_NAMESPACE . '/leads/create' ),
-				],
+				'leads_api_endpoint' => get_rest_url( null, '/' . REST_API_NAMESPACE . '/leads/create' ),
 			],
-			front_end_data( [ 'data' => [] ] )
+			front_end_data( [] )
 		);
 	}
 
