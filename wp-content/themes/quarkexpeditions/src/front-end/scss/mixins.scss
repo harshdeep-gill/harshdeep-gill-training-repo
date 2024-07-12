@@ -125,6 +125,32 @@
 	animation: slidedown $ease $duration;
 }
 
+@mixin slide-in( $duration: var(--transition-time), $ease: var(--transition-easing), $offset: 150% ) {
+
+	@keyframes slidein {
+
+		0% {
+			transform: translateX($offset);
+		}
+	}
+
+	transition: slidein $duration $ease;
+	animation: slidein $ease $duration;
+}
+
+@mixin slide-out( $duration: var(--transition-time), $ease: var(--transition-easing), $offset: 150% ) {
+
+	@keyframes slideout {
+
+		100% {
+			transform: translateX($offset);
+		}
+	}
+
+	transition: slideout $duration $ease;
+	animation: slideout $ease $duration;
+}
+
 
 @mixin css-triangle( $width: 11px, $height: 7px, $color: #000, $direction: "down" ) {
 	width: 0;

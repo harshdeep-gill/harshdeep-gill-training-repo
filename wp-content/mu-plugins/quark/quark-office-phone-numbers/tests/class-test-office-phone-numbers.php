@@ -9,6 +9,8 @@ namespace Quark\PhoneNumbers\Tests;
 
 use WP_UnitTestCase;
 
+use function Quark\OfficePhoneNumbers\office_phone_number_front_end_data;
+
 /**
  * Class Test_Office_Phone_Numbers.
  */
@@ -74,7 +76,7 @@ class Test_Office_Phone_Numbers extends WP_UnitTestCase {
 		];
 
 		// Get data.
-		$data = \Quark\OfficePhoneNumbers\office_phone_number_front_end_data();
+		$data = office_phone_number_front_end_data();
 
 		// Test data.
 		$this->assertEquals( $expected_data, $data['data']['office_phone_numbers'] );

@@ -39,7 +39,7 @@ export const settings: BlockConfiguration = {
 		__( 'right', 'qrk' ),
 	],
 	attributes: {},
-	parent: [ 'quark/hero' ],
+	parent: [ 'quark/hero-content' ],
 	supports: {
 		alignWide: false,
 		anchor: true,

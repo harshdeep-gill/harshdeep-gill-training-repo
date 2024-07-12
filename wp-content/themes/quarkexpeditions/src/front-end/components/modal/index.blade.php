@@ -9,7 +9,6 @@
 	}
 
 	$classes = [ 'modal', $class ];
-
 @endphp
 
 <tp-modal

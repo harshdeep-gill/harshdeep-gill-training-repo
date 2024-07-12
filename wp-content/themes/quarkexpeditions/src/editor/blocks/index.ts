@@ -33,6 +33,18 @@ import * as mediaTextCta from './media-text-cta';
 import * as fancyVideo from './fancy-video';
 import * as formTwoStep from './form-two-step';
 import * as formTwoStepCompact from './form-two-step-compact';
+import * as header from './header';
+import * as menuList from './menu-list';
+import * as footer from './footer';
+import * as accordion from './accordion';
+import * as thumbnailCards from './thumbnail-cards';
+import * as relatedPosts from './related-posts';
+import * as breadcrumbs from './breadcrumbs';
+import * as sidebarGrid from './sidebar-grid';
+import * as authorInfo from './author-info';
+import * as tableOfContents from './table-of-contents';
+import * as blogPostCards from './blog-post-cards';
+import * as adventureOptions from './adventure-options';
 
 /**
  * Add blocks.
@@ -65,6 +77,18 @@ const blocks = [
 	fancyVideo,
 	formTwoStep,
 	formTwoStepCompact,
+	header,
+	menuList,
+	footer,
+	accordion,
+	thumbnailCards,
+	relatedPosts,
+	breadcrumbs,
+	sidebarGrid,
+	authorInfo,
+	tableOfContents,
+	blogPostCards,
+	adventureOptions,
 ];
 
 /**

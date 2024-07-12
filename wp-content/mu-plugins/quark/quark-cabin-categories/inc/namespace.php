@@ -31,6 +31,7 @@ function bootstrap(): void {
 
 	// Other hooks.
 	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
+	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_cabin_code_lookup_cache' );
 
 	// Admin stuff.
 	if ( is_admin() || ( defined( 'WP_CLI' ) && true === WP_CLI ) ) {
@@ -292,4 +293,60 @@ function get( int $post_id = 0 ): array {
 
 	// Return data.
 	return $data;
+}
+
+/**
+ * Convert cabin category id to cabin_category post ID.
+ *
+ * @param string $cabin_id The ship code.
+ *
+ * @return int
+ */
+function get_id_from_cabin_code( string $cabin_id = '' ): int {
+	// Check for cached version.
+	$cache_key = CACHE_KEY . '_all_cabins';
+	$cabins    = wp_cache_get( $cache_key, CACHE_GROUP );
+
+	// If cache not set, lets build it with a DB query.
+	if ( empty( $cabins ) ) {
+		// Post Meta.
+		global $wpdb;
+		$cabins = $wpdb->get_results(
+			"
+			SELECT
+				m.*
+			FROM
+				$wpdb->postmeta AS m
+			WHERE
+				m.meta_key = 'cabin_category_id'
+			",
+			ARRAY_A
+		);
+
+		// Set cache and return data.
+		wp_cache_set( $cache_key, $cabins, CACHE_GROUP );
+	}
+
+	// Find the cabin code.
+	foreach ( $cabins as $cabin ) {
+		if ( $cabin_id === $cabin['meta_value'] ) {
+			return $cabin['post_id'];
+		}
+	}
+
+	// Not found, return 0.
+	return 0;
+}
+
+/**
+ * Bust Cabin code lookup cache.
+ *
+ * @return void
+ */
+function bust_cabin_code_lookup_cache(): void {
+	// Delete the code cache.
+	wp_cache_delete( CACHE_KEY . '_all_cabins', CACHE_GROUP );
+
+	// Trigger action to clear cache.
+	do_action( 'qe_cabin_code_lookup_cache_busted' );
 }
