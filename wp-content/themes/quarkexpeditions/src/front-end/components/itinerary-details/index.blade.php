@@ -12,8 +12,8 @@
 	quark_enqueue_script( 'tp-tabs' );
 @endphp
 
-<quark-tabs class="tabs">
-	<tp-tabs current-tab="{{ $current_tab }}" update-url="{{ $update_url }}">
+<quark-itinerary-tabs class="itinerary-details">
+	<tp-tabs class="itinerary-details__tabs" current-tab="{{ $current_tab }}" update-url="{{ $update_url }}">
 		{!! $slot !!}
 	</tp-tabs>
-</quark-tabs>
+</quark-itinerary-tabs>

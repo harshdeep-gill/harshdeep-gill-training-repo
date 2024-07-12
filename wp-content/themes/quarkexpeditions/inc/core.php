@@ -93,6 +93,7 @@ function register_styles(): void {
 	wp_register_style( 'intl-tel-input-css', get_template_directory_uri() . '/dist/vendor/intltelinput.css', [], $assets_version );
 	wp_register_style( 'glightbox', get_template_directory_uri() . '/dist/vendor/glightbox.css', [], $assets_version );
 	wp_register_style( 'tp-slider', get_template_directory_uri() . '/dist/vendor/tpsliderelement.css', [], $assets_version );
+	wp_register_style( 'tp-tabs', get_template_directory_uri() . '/dist/vendor/tptabselement.css', [], $assets_version );
 	wp_register_style( 'tp-accordion', get_template_directory_uri() . '/dist/vendor/tpaccordionitemelement.css', [], $assets_version );
 
 	// Defer certain styles.
@@ -104,6 +105,7 @@ function register_styles(): void {
 			$handles[] = 'intl-tel-input-css';
 			$handles[] = 'glightbox';
 			$handles[] = 'tp-slider';
+			$handles[] = 'tp-tabs';
 			$handles[] = 'tp-accordion';
 
 			// Return handles.
@@ -134,6 +136,7 @@ function register_scripts(): void {
 	wp_register_script( 'pristine-js', get_template_directory_uri() . '/dist/vendor/pristine.js', [], $assets_version, true );
 	wp_register_script( 'glightbox', get_template_directory_uri() . '/dist/vendor/glightbox.js', [], $assets_version, true );
 	wp_register_script( 'tp-slider', get_template_directory_uri() . '/dist/vendor/tpsliderelement.js', [], $assets_version, true );
+	wp_register_script( 'tp-tabs', get_template_directory_uri() . '/dist/vendor/tptabselement.js', [], $assets_version, true );
 	wp_register_script( 'tp-accordion', get_template_directory_uri() . '/dist/vendor/tpaccordionitemelement.js', [], $assets_version, true );
 	wp_register_script( 'tp-multi-select', get_template_directory_uri() . '/dist/vendor/tpmultiselectelement.js', [], $assets_version, true );
 	wp_register_script( 'trustpilot', 'https://widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js', [], $assets_version, true );
@@ -266,7 +269,13 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'class'  => true,
 					'data-*' => true,
 				],
+				'quark-hero-card-slider'                => [
+					'class' => true,
+				],
 				'quark-tabs'                            => [
+					'class' => true,
+				],
+				'quark-itinerary-tabs'                  => [
 					'class' => true,
 				],
 				'quark-table-of-contents'               => [
@@ -327,6 +336,21 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'flexible-height' => true,
 					'swipe'           => true,
 					'infinite'        => true,
+				],
+				'tp-tabs'                               => [
+					'class'       => true,
+					'current-tab' => true,
+					'update-url'  => true,
+				],
+				'tp-tabs-nav'                           => [],
+				'tp-tabs-tab'                           => [
+					'id'    => true,
+					'class' => true,
+					'open'  => true,
+				],
+				'tp-tabs-nav-item'                      => [
+					'class'  => true,
+					'active' => true,
 				],
 				'tp-slider-track'                       => [
 					'class' => true,
@@ -535,6 +559,10 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'class'    => true,
 					'data-*'   => true,
 					'style'    => true,
+				],
+				'source'                                => [
+					'src'  => true,
+					'type' => true,
 				],
 			]
 		);
