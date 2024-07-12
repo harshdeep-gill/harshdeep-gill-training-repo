@@ -250,14 +250,21 @@ function get_id_from_ship_code( string $ship_code = '' ): int {
 		// Post Meta.
 		global $wpdb;
 		$ships = $wpdb->get_results(
-			"
+			$wpdb->prepare(
+				"
 			SELECT
 				m.*
 			FROM
 				$wpdb->postmeta AS m
+			RIGHT JOIN
+				$wpdb->posts AS p ON m.post_id = p.ID
 			WHERE
 				m.meta_key = 'ship_id'
+			AND
+				p.post_type = %s
 			",
+				POST_TYPE
+			),
 			ARRAY_A
 		);
 

@@ -82,7 +82,7 @@ class Itinerary extends Softrip_Object {
 				'posts_per_page'         => 100,
 				'no_found_rows'          => true,
 				'update_post_term_cache' => false,
-				'parent_in'              => $this->get_id(),
+				'post_parent'            => $this->get_id(),
 				'fields'                 => 'ids',
 				'post_status'            => 'draft,publish',
 			]
@@ -108,14 +108,6 @@ class Itinerary extends Softrip_Object {
 	public function get_departures(): array {
 		// Ensure departures loaded.
 		$this->ensure_departures_loaded();
-
-		// Check last update time.
-		$last_update = $this->get_post_meta( 'last_updated' );
-
-		// Update if older than 4 hours.
-		if ( empty( $last_update ) || time() > $last_update + ( HOUR_IN_SECONDS * 4 ) ) {
-			$this->update_departures();
-		}
 
 		// Return the list of departures.
 		return $this->departures;
@@ -146,20 +138,25 @@ class Itinerary extends Softrip_Object {
 	/**
 	 * Update departures.
 	 *
+	 * @param mixed[] $departures Departures data from Softrip to update with.
+	 *
 	 * @return void
 	 */
-	private function update_departures(): void {
-		// Get the Softrip ID and request the departures from the middleware.
-		$softrip_id     = strval( $this->get_post_meta( 'softrip_package_id' ) );
-		$raw_departures = request_departures( [ $softrip_id ] );
+	public function update_departures( array $departures = [] ): void {
+		// If no data is supplied, attempt to get it.
+		if ( empty( $departures ) ) {
+			// Get the Softrip ID and request the departures from the middleware.
+			$softrip_id     = strval( $this->get_post_meta( 'softrip_package_id' ) );
+			$raw_departures = request_departures( [ $softrip_id ] );
 
-		// Check if is valid.
-		if ( $raw_departures instanceof WP_Error ) {
-			return;
+			// Check if is valid.
+			if ( $raw_departures instanceof WP_Error ) {
+				return;
+			}
+
+			// Use the departures for the softrip ID.
+			$departures = (array) $raw_departures[ $softrip_id ];
 		}
-
-		// Use the departures for the softrip ID.
-		$departures = (array) $raw_departures[ $softrip_id ];
 
 		// Bail if departures are missing.
 		if ( ! is_array( $departures['departures'] ) ) {
@@ -169,8 +166,7 @@ class Itinerary extends Softrip_Object {
 		// Go over each departure and create a new Departure post for each.
 		foreach ( $departures['departures'] as $raw_departure ) {
 			$departure = $this->get_departure( strval( $raw_departure['id'] ) );
-			$departure->set( $raw_departure );
-			$departure->save();
+			$departure->set( $raw_departure, true );
 		}
 
 		// Update last updated timestamp.

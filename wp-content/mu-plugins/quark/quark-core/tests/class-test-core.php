@@ -39,7 +39,11 @@ class Test_Core extends WP_UnitTestCase {
 			],
 			'leads_api_endpoint' => 'http://test.quarkexpeditions.com/wp-json/quark-leads/v1/leads/create',
 			'current_url'        => false,
-			'data'               => [],
+			'data'               => [
+				'dynamic_phone_number' => [
+					'api_endpoint' => 'http://test.quarkexpeditions.com/wp-json/qrk-phone-numbers/v1/phone-number/get',
+				],
+			],
 		];
 
 		// Test front-end data.
