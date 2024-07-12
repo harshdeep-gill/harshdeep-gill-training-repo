@@ -38,7 +38,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 					],
 					'return_format'        => 'object',
 					'min'                  => 0,
-					'max'                  => '',
+					'max'                  => 1,
 					'elements'             => '',
 					'bidirectional'        => 1,
 					'bidirectional_target' => [

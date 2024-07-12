@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "41d277e5f9e56e3273fe7302c6440a10",
+    "content-hash": "e982339d1fe4e34c5b57d4a312dddcc4",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -62,16 +62,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.316.2",
+            "version": "3.315.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "4d8caae512c3be4d59ee6d583b3f82872dde5071"
+                "reference": "a7f6026f00771025c32548dac321541face0dedc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/4d8caae512c3be4d59ee6d583b3f82872dde5071",
-                "reference": "4d8caae512c3be4d59ee6d583b3f82872dde5071",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/a7f6026f00771025c32548dac321541face0dedc",
+                "reference": "a7f6026f00771025c32548dac321541face0dedc",
                 "shasum": ""
             },
             "require": {
@@ -151,9 +151,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.316.2"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.315.0"
             },
-            "time": "2024-07-10T19:16:28+00:00"
+            "time": "2024-06-26T18:08:22+00:00"
         },
         {
             "name": "composer/installers",
@@ -1198,37 +1198,37 @@
         },
         {
             "name": "travelopia/advanced-custom-fields-pro",
-            "version": "6.3.3",
+            "version": "6.3.2.1",
             "source": {
                 "type": "git",
                 "url": "git@github.com:Travelopia/advanced-custom-fields-pro.git",
-                "reference": "0ef4b8a2a0b42c42836337b9223c3b426eefd65c"
+                "reference": "c1dccfbdbf8d5caccc8fb0a23161791df58246ef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Travelopia/advanced-custom-fields-pro/zipball/0ef4b8a2a0b42c42836337b9223c3b426eefd65c",
-                "reference": "0ef4b8a2a0b42c42836337b9223c3b426eefd65c",
+                "url": "https://api.github.com/repos/Travelopia/advanced-custom-fields-pro/zipball/c1dccfbdbf8d5caccc8fb0a23161791df58246ef",
+                "reference": "c1dccfbdbf8d5caccc8fb0a23161791df58246ef",
                 "shasum": ""
             },
             "type": "wordpress-plugin",
             "support": {
-                "source": "https://github.com/Travelopia/advanced-custom-fields-pro/tree/6.3.3",
+                "source": "https://github.com/Travelopia/advanced-custom-fields-pro/tree/6.3.2.1",
                 "issues": "https://github.com/Travelopia/advanced-custom-fields-pro/issues"
             },
-            "time": "2024-06-28T10:35:49+00:00"
+            "time": "2024-06-25T03:48:25+00:00"
         },
         {
             "name": "travelopia/wordpress-packages",
-            "version": "1.23.7",
+            "version": "1.23.6",
             "source": {
                 "type": "git",
                 "url": "git@github.com:Travelopia/wordpress-packages.git",
-                "reference": "e5ff1c240b1f485148a47ee44ba0731d16df2234"
+                "reference": "3d81ff7b195377234766d254479c2f17f29049cf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Travelopia/wordpress-packages/zipball/e5ff1c240b1f485148a47ee44ba0731d16df2234",
-                "reference": "e5ff1c240b1f485148a47ee44ba0731d16df2234",
+                "url": "https://api.github.com/repos/Travelopia/wordpress-packages/zipball/3d81ff7b195377234766d254479c2f17f29049cf",
+                "reference": "3d81ff7b195377234766d254479c2f17f29049cf",
                 "shasum": ""
             },
             "require": {
@@ -1261,10 +1261,10 @@
             },
             "description": "Common WordPress packages for the Travelopia Network.",
             "support": {
-                "source": "https://github.com/Travelopia/wordpress-packages/tree/1.23.7",
+                "source": "https://github.com/Travelopia/wordpress-packages/tree/1.23.6",
                 "issues": "https://github.com/Travelopia/wordpress-packages/issues"
             },
-            "time": "2024-07-08T05:31:15+00:00"
+            "time": "2024-06-27T09:51:01+00:00"
         },
         {
             "name": "wpackagist-plugin/auto-cloudinary",
@@ -1412,15 +1412,15 @@
         },
         {
             "name": "wpackagist-plugin/wordpress-seo",
-            "version": "23.0",
+            "version": "22.9",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/wordpress-seo/",
-                "reference": "tags/23.0"
+                "reference": "tags/22.9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/wordpress-seo.23.0.zip"
+                "url": "https://downloads.wordpress.org/plugin/wordpress-seo.22.9.zip"
             },
             "require": {
                 "composer/installers": "^1.0 || ^2.0"
@@ -2242,16 +2242,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "1.11.7",
+            "version": "1.11.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "52d2bbfdcae7f895915629e4694e9497d0f8e28d"
+                "reference": "490f0ae1c92b082f154681d7849aee776a7c1443"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/52d2bbfdcae7f895915629e4694e9497d0f8e28d",
-                "reference": "52d2bbfdcae7f895915629e4694e9497d0f8e28d",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/490f0ae1c92b082f154681d7849aee776a7c1443",
+                "reference": "490f0ae1c92b082f154681d7849aee776a7c1443",
                 "shasum": ""
             },
             "require": {
@@ -2296,7 +2296,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-07-06T11:17:41+00:00"
+            "time": "2024-06-17T15:10:54+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -2722,7 +2722,7 @@
         },
         {
             "name": "roots/wordpress",
-            "version": "6.5.3",
+            "version": "6.5.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/roots/wordpress.git",
@@ -2753,7 +2753,7 @@
             ],
             "support": {
                 "issues": "https://github.com/roots/wordpress/issues",
-                "source": "https://github.com/roots/wordpress/tree/6.5.3"
+                "source": "https://github.com/roots/wordpress/tree/6.5.5"
             },
             "funding": [
                 {
@@ -2836,22 +2836,22 @@
         },
         {
             "name": "roots/wordpress-no-content",
-            "version": "6.5.3",
+            "version": "6.5.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/WordPress/WordPress.git",
-                "reference": "6.5.3"
+                "reference": "6.5.5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/release/wordpress-6.5.3-no-content.zip",
-                "shasum": "adeffdc339d34eab4209e88b17966d8917e36e91"
+                "url": "https://downloads.wordpress.org/release/wordpress-6.5.5-no-content.zip",
+                "shasum": "064943063cafd63743ae303ec07225f173279527"
             },
             "require": {
                 "php": ">= 7.0.0"
             },
             "provide": {
-                "wordpress/core-implementation": "6.5.3"
+                "wordpress/core-implementation": "6.5.5"
             },
             "suggest": {
                 "ext-curl": "Performs remote request operations.",
@@ -2902,7 +2902,7 @@
                     "type": "other"
                 }
             ],
-            "time": "2024-05-07T16:02:20+00:00"
+            "time": "2024-06-24T19:14:42+00:00"
         },
         {
             "name": "sebastian/cli-parser",
@@ -4556,7 +4556,7 @@
         },
         {
             "name": "wp-phpunit/wp-phpunit",
-            "version": "6.5.5",
+            "version": "6.5.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wp-phpunit/wp-phpunit.git",

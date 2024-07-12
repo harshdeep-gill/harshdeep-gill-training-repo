@@ -1,0 +1,13 @@
+@import "../../scss/";
+
+.country-selector {
+	display: contents;
+
+	&__state {
+		display: none;
+
+		&[data-visible] {
+			display: block;
+		}
+	}
+}

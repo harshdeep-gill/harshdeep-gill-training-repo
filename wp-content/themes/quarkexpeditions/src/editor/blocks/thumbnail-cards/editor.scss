@@ -1,0 +1,15 @@
+.thumbnail-cards {
+
+	&__slides {
+		display: flex;
+		flex-wrap: wrap;
+	}
+
+	&__nav {
+		margin-inline: auto;
+	}
+
+	&__card {
+		background-color: var(--color-gray-30);
+	}
+}
