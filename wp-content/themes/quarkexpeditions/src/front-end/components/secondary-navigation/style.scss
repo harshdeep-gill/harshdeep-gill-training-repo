@@ -11,9 +11,9 @@
 	top: 0;
 	background-color: var(--color-white);
 	padding: var(--spacing-4) 0;
-	z-index: 22;
+	z-index: 101;
 
-	&--has-sticky {
+	&--is-sticky {
 		box-shadow: var(--shadow-1);
 	}
 

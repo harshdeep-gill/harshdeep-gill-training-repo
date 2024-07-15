@@ -22,7 +22,8 @@ export default class SecondaryNavigation extends HTMLElement {
 	private dropdownButton: HTMLElement | null;
 	private navigationElement: HTMLElement | null;
 	private allContentItems: NodeListOf<Element> | null;
-	private headingItems: NodeListOf<Element> | null;
+	private anchorItems: NodeListOf<HTMLElement>;
+	private sections: Array<HTMLElement | null>;
 
 	/**
 	 * Constructor.
@@ -38,7 +39,8 @@ export default class SecondaryNavigation extends HTMLElement {
 		this.moreDropdown = this.querySelector( '.secondary-navigation__navigation-dropdown' );
 		this.dropdownButton = this.querySelector( '.secondary-navigation__navigation-button' );
 		this.allContentItems = this.querySelectorAll( '.secondary-navigation__navigation-item' );
-		this.headingItems = document.querySelectorAll( 'h2[id]' );
+		this.anchorItems = this.querySelectorAll( '.secondary-navigation__navigation-item-link[href*="#"]' );
+		this.sections = this.getMenuSections();
 		this.navigationElement = document.querySelector( '.secondary-navigation' );
 
 		// Scroll event.
@@ -51,9 +53,6 @@ export default class SecondaryNavigation extends HTMLElement {
 		// Highlight content item by hash on initial render.
 		this.highlightContentItemByHash();
 
-		// Initialize IntersectionObserver to highlight item on scroll.
-		this.highlightItemOnScroll();
-
 		// Event for dropdown button.
 		this.dropdownButton?.addEventListener( 'click', this.toggle.bind( this ) );
 
@@ -62,6 +61,19 @@ export default class SecondaryNavigation extends HTMLElement {
 
 		// Event to close dropdown on document click.
 		this.ownerDocument.defaultView?.addEventListener( 'click', this.handleDropdownCloseOnDocumentClick.bind( this ) );
+
+		/**
+		 * Event on 'scroll'.
+		 *
+		 * Reason for adding 'passive: true'
+		 * When you attach an event listener to a scroll event,
+		 * the browser has to wait for the JavaScript code to execute before it can continue scrolling.
+		 * By marking the event listener as 'passive',
+		 * you're telling the browser that the event handler will not prevent the default behavior of the event (like scrolling),
+		 * allowing the browser to optimize the scroll performance.
+		 * Without this you will get warning.
+		 */
+		document.body.addEventListener( 'scroll', debounce( this.navHighlighter.bind( this ), 10 ), { passive: true } );
 	}
 
 	/**
@@ -117,13 +129,16 @@ export default class SecondaryNavigation extends HTMLElement {
 		// Check if the page is scrolled down.
 		if ( this.navigationElement?.getBoundingClientRect()?.top < 12 ) {
 			// Add classes.
-			this.navigationElement.classList.add( 'secondary-navigation--has-sticky' );
+			this.navigationElement.classList.add( 'secondary-navigation--is-sticky' );
 			document.body.classList.add( 'has-sticky-secondary-navigation' );
 		} else {
 			// Remove classes.
-			this.navigationElement.classList.remove( 'secondary-navigation--has-sticky' );
+			this.navigationElement.classList.remove( 'secondary-navigation--is-sticky' );
 			document.body.classList.remove( 'has-sticky-secondary-navigation' );
 		}
+
+		// Highlight the active navigation item.
+		this.navHighlighter();
 	}
 
 	/**
@@ -162,6 +177,74 @@ export default class SecondaryNavigation extends HTMLElement {
 
 		// Close the dropdown.
 		this.close();
+	}
+
+	/**
+	 * Get Menu Sections.
+	 * Returns all sections with an ID that contains menu items href.
+	 *
+	 * @return {Array<HTMLElement | null>} Array of sections.
+	 */
+	getMenuSections(): Array<HTMLElement | null> {
+		// Return the array of sections.
+		return Array.from( this.anchorItems ).map( ( anchorItem: HTMLElement ) => {
+			// Get the ID.
+			let id = anchorItem.getAttribute( 'href' ) || '';
+			id = id.replace( '#', '' );
+
+			// If id not present return.
+			if ( ! id ) {
+				// Return.
+				return null;
+			}
+
+			// Return the element.
+			return document.querySelector( `#${ id }` );
+		} );
+	}
+
+	/**
+	 * Handle Navigation Highlights.
+	 */
+	navHighlighter() {
+		// Set the current section.
+		let currentSection = this.sections[ 0 ];
+
+		// For each section.
+		this.sections.forEach( ( section ) => {
+			// Check if the section exists.
+			if ( ! section ) {
+				// Early return.
+				return;
+			}
+
+			// Set the section top and height.
+			const sectionTop = section.getBoundingClientRect().top + window.scrollY;
+			const sectionHeight = section.clientHeight;
+
+			// Set the current section.
+			if ( window.scrollY >= ( sectionTop - sectionHeight ) / 3 ) {
+				currentSection = section;
+			}
+		} );
+
+		// For each all content items.
+		this.allContentItems?.forEach( ( item ) => {
+			// Check if the section exists.
+			if ( ! currentSection ) {
+				// Early return.
+				return;
+			}
+
+			// Remove the active class.
+			item.classList.remove( 'secondary-navigation__navigation-item--active' );
+			const anchor = item.getAttribute( 'data-anchor' );
+
+			// Set the active class to the current section.
+			if ( anchor === `#${ currentSection.id }` ) {
+				item.classList.add( 'secondary-navigation__navigation-item--active' );
+			}
+		} );
 	}
 
 	/**
@@ -305,66 +388,6 @@ export default class SecondaryNavigation extends HTMLElement {
 
 		// Add class to the current active content item.
 		itemElement.classList.add( 'secondary-navigation__navigation-item--active' );
-	}
-
-	/**
-	 * Highlight content item on scroll.
-	 */
-	highlightItemOnScroll() {
-		// Get the header height.
-		const headerHeight = getComputedStyle( document.body )?.getPropertyValue( '--header-height' ) ?? 0;
-
-		// Calculate the top root margin.
-		const rootMarginTop = ( parseInt( headerHeight ) + 24 ) + 'px';
-
-		// Instantiate IntersectionObserver.
-		const observer = new IntersectionObserver(
-			this.intersectionObserverCallback.bind( this ),
-			{
-				rootMargin: `${ rootMarginTop } 0px -70% 0px`,
-				threshold: 1,
-			} );
-
-		// Loop thorugh all headings.
-		if ( this.headingItems ) {
-			this.headingItems?.forEach( ( heading ) => {
-				// Observe each heading.
-				observer.observe( heading );
-			} );
-		}
-	}
-
-	/**
-	 * Intersection Observer Callback.
-	 *
-	 * @param {IntersectionObserverEntry[]} entries Observed Entries.
-	 */
-	intersectionObserverCallback( entries: IntersectionObserverEntry[] ) {
-		// Loop thorugh entries.
-		entries.forEach( ( entry ) => {
-			// Get value for isIntersecting.
-			const isActive = entry.isIntersecting;
-
-			// Get the heading id from current entry.
-			const headingId = entry.target.id;
-
-			// Get the content item.
-			if ( headingId ) {
-				const contentItem = this.querySelector( `.secondary-navigation__navigation-item[data-anchor="#${ headingId }"]` );
-
-				// If no content item exists.
-				if ( ! contentItem ) {
-					// Bail early.
-					return;
-				}
-
-				// Check if content item is not available, return.
-				if ( isActive ) {
-					// Set content item as active.
-					this.setItemAsActive( contentItem );
-				}
-			}
-		} );
 	}
 }
 

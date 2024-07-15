@@ -530,38 +530,16 @@
 		</x-hero>
 	</x-component-demo>
 
-	@php
-		$navigation_items = [
-			[
-				'title'  => 'Overview',
-				'anchor' => 'overview',
-			],
-			[
-				'title'  => 'Destination Highlights',
-				'anchor' => 'destination-highlights',
-			],
-			[
-				'title'  => 'Top Things to See',
-				'anchor' => 'top-things-to-see',
-			],
-			[
-				'title'  => 'When to Go',
-				'anchor' => 'when-to-go',
-			],
-			[
-				'title'  => 'Testimonials',
-				'anchor' => 'testimonials',
-			],
-			[
-				'title'  => 'Expeditions',
-				'anchor' => 'expeditions',
-			],
-		];
-	@endphp
-
 	<x-component-demo :keys="[ 'secondary-navigation' ]">
 		<x-secondary-navigation>
-			<x-secondary-navigation.navigation :contents="$navigation_items ?? []" />
+			<x-secondary-navigation.navigation :jump_to_navigation="true">
+				<x-secondary-navigation.nav-item href="overview" :active="true">Overview</x-secondary-navigation.nav-item>
+				<x-secondary-navigation.nav-item href="destination-highlights">Destination Highlights</x-secondary-navigation.nav-item>
+				<x-secondary-navigation.nav-item href="top-things-to-see">Top Things to See</x-secondary-navigation.nav-item>
+				<x-secondary-navigation.nav-item href="when-to-go">When to Go</x-secondary-navigation.nav-item>
+				<x-secondary-navigation.nav-item href="testimonials">Testimonials</x-secondary-navigation.nav-item>
+				<x-secondary-navigation.nav-item href="expeditions">Expeditions</x-secondary-navigation.nav-item>
+			</x-secondary-navigation.navigation>
 
 			<x-secondary-navigation.cta-buttons>
 				<x-button size="big" color="black" href="#">Download Brochure</x-button>
@@ -580,7 +558,7 @@
 	</x-component-demo>
 
 	<x-component-demo :keys="[ 'global', 'typography' ]">
-		<x-section>
+		<x-section id="overview">
 			<x-section.heading>
 				<x-section.title title="Typography" heading_level="2" />
 			</x-section.heading>
@@ -648,7 +626,7 @@
 	</x-component-demo>
 
 	<x-component-demo :keys="[ 'form' ]">
-		<x-section style="display: flex; flex-wrap: wrap; width: 100%;" class="typography-spacing">
+		<x-section id="destination-highlights" style="display: flex; flex-wrap: wrap; width: 100%;" class="typography-spacing">
 			<x-section.heading>
 				<x-section.title title="Form UI Elements" heading_level="2" />
 			</x-section.heading>
@@ -1922,7 +1900,7 @@
 			</x-season-highlights>
 		</x-section>
 
-		<x-section>
+		<x-section id="top-things-to-see">
 				<x-section.heading>
 					<x-section.title title="Best Time to See" align="left" />
 				</x-section.heading>
@@ -2126,7 +2104,7 @@
 			</x-media-text-cta.image>
 
 			<x-media-text-cta.content>
-				<h2 id="overview">South Georgia and Antarctic Peninsula: Penguin Safari</h2>
+				<h2>South Georgia and Antarctic Peninsula: Penguin Safari</h2>
 				<p>This is the fastest way to visit both the Antarctic Peninsula and remote, wildlife rich South Georgia, where the beaches are teaming with King penguins and elephant seals. From here you sail south where Antarctica awaits with its soaring peaks and staggering expanse.</p>
 				<x-media-text-cta.secondary-text text="16/18 days | Starting from $12,946 USD" />
 				<x-media-text-cta.cta>
@@ -2156,7 +2134,7 @@
 			</x-media-text-cta.image>
 
 			<x-media-text-cta.content>
-				<h2 id="destination-highlights">Epic Antarctica: Crossing the Circle via Falklands & South Georgia</h2>
+				<h2>Epic Antarctica: Crossing the Circle via Falklands & South Georgia</h2>
 				<p>Our Epic Antarctica voyage is called so for a reason—it includes all of the major Antarctic highlights you can imagine. </p>
 				<x-media-text-cta.secondary-text text="23 days | Starting From $26,979 USD" />
 				<x-media-text-cta.cta>
@@ -2258,7 +2236,7 @@
 			</x-lp-offer-masthead.content>
 		</x-lp-offer-masthead>
 
-		<x-section background="true" background_color="black">
+		<x-section id="when-to-go" background="true" background_color="black">
 			<x-section.heading>
 				<x-section.title title="Our Biggest Savings! 50% off these Antarctic 2024 Voyages" />
 			</x-section.heading>
