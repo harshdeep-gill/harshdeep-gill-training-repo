@@ -114,7 +114,7 @@ class Test_Office_Phone_Numbers extends WP_UnitTestCase {
 		];
 
 		// Test data.
-		$this->assertEquals( $expected_data, $data['data']['dynamic_phone_number'] );
+		$this->assertEquals( $expected_data, $data['dynamic_phone_number'] );
 	}
 
 	/**
