@@ -11,7 +11,6 @@ use WP_Post;
 use WP_Term;
 
 use function Quark\Blog\Authors\get as get_post_authors;
-use function Quark\Core\prepare_content_with_blocks;
 use function yoast_get_primary_term_id;
 
 const POST_TYPE        = 'post';
@@ -25,14 +24,11 @@ const WORDS_PER_MINUTE = 230; // using the same value from Drupal - https://gith
  * @return void
  */
 function bootstrap(): void {
-	// Layout.
-	add_action( 'template_redirect', __NAMESPACE__ . '\\layout' );
-	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\calculate_post_reading_time', 10, 3 );
-
 	// Enable primary term.
 	add_filter( 'travelopia_primary_term_taxonomies', __NAMESPACE__ . '\\primary_term_taxonomies', 10, 2 );
 
 	// Other hooks.
+	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\calculate_post_reading_time', 10, 3 );
 	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
 
 	// Breadcrumbs.
@@ -48,50 +44,6 @@ function bootstrap(): void {
 
 	// Other hooks.
 	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
-}
-
-/**
- * Layout for this post type.
- *
- * @return void
- */
-function layout(): void {
-	// Add single layout if viewing a single post.
-	if ( is_singular( POST_TYPE ) ) {
-		add_filter( 'quark_front_end_data', __NAMESPACE__ . '\\layout_single' );
-	}
-}
-
-/**
- * Layout: Single.
- *
- * @param mixed[] $data Front-end data.
- *
- * @return mixed[]
- */
-function layout_single( array $data = [] ): array {
-	// Get post.
-	$page = get();
-
-	// Bail if post does not exist or not an instance of WP_Post.
-	if ( empty( $page['post'] ) || ! $page['post'] instanceof WP_Post ) {
-		return $data;
-	}
-
-	// Layout.
-	$data['layout'] = 'single';
-
-	// Build data.
-	$data['data'] = array_merge( $data['data'] ?? [], $page );
-
-	// Post content.
-	$data['data']['post_content'] = $page['post']->post_content;
-
-	// Prepare blocks.
-	prepare_content_with_blocks( $data['data']['post_content'] );
-
-	// Return front-end data.
-	return $data;
 }
 
 /**

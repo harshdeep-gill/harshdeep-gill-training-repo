@@ -147,6 +147,9 @@ function register_scripts(): void {
 			'recaptchaSiteKey' => quark_get_template_data( 'recaptcha_site_key', '' ),
 		]
 	);
+
+	// Pass dynamic phone number to script.
+	wp_localize_script( 'global', 'dynamicPhoneNumber', (array) quark_get_template_data( 'dynamic_phone_number', [] ) );
 }
 
 /**
@@ -276,7 +279,7 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 				],
 				'quark-drawer-open'              => [
 					'class'     => true,
-					'drawer_id' => true,
+					'drawer-id' => true,
 				],
 				'quark-footer-accordion'         => [
 					'class'  => true,

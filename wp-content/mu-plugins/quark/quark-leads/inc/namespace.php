@@ -45,24 +45,19 @@ function bootstrap(): void {
  * @return mixed[]
  */
 function front_end_data( array $data = [] ): array {
-	// If data object is not available then create one.
-	$data['data'] = ! empty( $data['data'] ) ? $data['data'] : [];
+	// Add endpoint.
+	$data['leads_api_endpoint'] = get_rest_url( null, '/' . REST_API_NAMESPACE . '/leads/create' );
 
-	// Check if data object is array.
-	if ( is_array( $data['data'] ) ) {
-		$data['data']['leads_api_endpoint'] = get_rest_url( null, '/' . REST_API_NAMESPACE . '/leads/create' );
+	// Get $validate_recaptcha.
+	$validate_recaptcha = absint( get_option( 'options_validate_recaptcha', 1 ) );
 
-		// Get $validate_recaptcha.
-		$validate_recaptcha = absint( get_option( 'options_validate_recaptcha', 1 ) );
+	// If validate_recaptcha is true, and function exists 'get_recaptcha_settings', get recaptcha_settings.
+	if ( 1 === $validate_recaptcha && function_exists( 'Travelopia\Security\get_recaptcha_settings' ) ) {
+		$recaptcha_settings = get_recaptcha_settings();
 
-		// If validate_recaptcha is true, and function exists 'get_recaptcha_settings', get recaptcha_settings.
-		if ( 1 === $validate_recaptcha && function_exists( 'Travelopia\Security\get_recaptcha_settings' ) ) {
-			$recaptcha_settings = get_recaptcha_settings();
-
-			// If 'site_key' is not empty set the recaptcha_site_key.
-			if ( ! empty( $recaptcha_settings['site_key'] ) ) {
-				$data['data']['recaptcha_site_key'] = $recaptcha_settings['site_key'];
-			}
+		// If 'site_key' is not empty set the recaptcha_site_key.
+		if ( ! empty( $recaptcha_settings['site_key'] ) ) {
+			$data['recaptcha_site_key'] = $recaptcha_settings['site_key'];
 		}
 	}
 

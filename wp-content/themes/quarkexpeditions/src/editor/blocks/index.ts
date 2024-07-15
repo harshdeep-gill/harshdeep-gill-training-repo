@@ -1,6 +1,7 @@
 /**
  * Import blocks.
  */
+import * as components from './components';
 import * as section from './section';
 import * as lpHeader from './lp-header';
 import * as twoColumns from './two-columns';
@@ -27,6 +28,8 @@ import * as lpOfferMasthead from './lp-offer-masthead';
 import * as mediaTextCta from './media-text-cta';
 import * as fancyVideo from './fancy-video';
 import * as formTwoStep from './form-two-step';
+import * as header from './header';
+import * as menuList from './menu-list';
 import * as footer from './footer';
 import * as accordion from './accordion';
 import * as thumbnailCards from './thumbnail-cards';
@@ -42,6 +45,7 @@ import * as adventureOptions from './adventure-options';
  * Add blocks.
  */
 const blocks = [
+	components,
 	section,
 	lpHeader,
 	twoColumns,
@@ -68,6 +72,8 @@ const blocks = [
 	mediaTextCta,
 	fancyVideo,
 	formTwoStep,
+	header,
+	menuList,
 	footer,
 	accordion,
 	thumbnailCards,
