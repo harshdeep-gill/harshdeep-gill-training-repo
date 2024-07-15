@@ -44,6 +44,7 @@ function bootstrap(): void {
 	// Admin stuff.
 	if ( is_admin() ) {
 		// Custom fields.
+		require_once __DIR__ . '/../custom-fields/expeditions.php';
 		require_once __DIR__ . '/../custom-fields/destinations.php';
 		require_once __DIR__ . '/../custom-fields/excursion.php';
 	}

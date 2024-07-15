@@ -9,9 +9,11 @@ namespace Quark\Migration\WP_CLI;
 
 use cli\progress\Bar;
 use WP_CLI;
+use WP_Post;
 use WP_Term;
 use WP_Error;
 use WP_CLI\ExitException;
+use Quark\Migration\Drupal\Block_Converter;
 
 use function Quark\Migration\Drupal\get_database;
 use function Quark\Migration\Drupal\prepare_for_migration;
@@ -25,6 +27,9 @@ use function WP_CLI\Utils\make_progress_bar;
 use const Quark\Expeditions\POST_TYPE;
 use const Quark\Expeditions\EXPEDITION_CATEGORY_TAXONOMY;
 use const Quark\Expeditions\DESTINATION_TAXONOMY;
+use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
+use const Quark\AdventureOptions\POST_TYPE as ADVENTURE_OPTION_POST_TYPE;
+use const Quark\Expeditions\PrePostTripOptions\POST_TYPE as PRE_POST_TRIP_POST_TYPE;
 
 /**
  * Class Expedition.
@@ -116,6 +121,9 @@ class Expedition {
 		if ( $output instanceof WP_Error ) {
 			// Print error.
 			WP_CLI::warning( 'Unable to insert/update post!' );
+		} elseif ( $normalized_post['meta_input']['related_itineraries'] ) {
+			// set related itineraries.
+			update_field( 'related_itineraries', $normalized_post['meta_input']['related_itineraries'], $output );
 		}
 	}
 
@@ -138,6 +146,7 @@ class Expedition {
 	 *     ping_status : string,
 	 *     meta_input : array{
 	 *         drupal_id : int,
+	 *         related_itineraries : array<int>|array{},
 	 *     },
 	 * }
 	 */
@@ -249,6 +258,89 @@ class Expedition {
 			}
 		}
 
+		// Set adv_options_included.
+		if ( ! empty( $item['adv_options_included'] ) && is_string( $item['adv_options_included'] ) ) {
+			$adv_options_included_ids = explode( ',', $item['adv_options_included'] );
+
+			// Init adv_options_included.
+			$adv_options_included = [];
+
+			// Loop through adv_options_included_ids.
+			foreach ( $adv_options_included_ids as $adv_option_included_id ) {
+				$adv_option_included_id = absint( $adv_option_included_id );
+
+				// Get post by drupal id.
+				$adv_option_included = get_post_by_id( $adv_option_included_id, ADVENTURE_OPTION_POST_TYPE );
+
+				// Check if post exist.
+				if ( $adv_option_included instanceof WP_Post ) {
+					$adv_options_included[] = $adv_option_included->ID;
+				}
+			}
+
+			// Set related included_activities.
+			$data['meta_input']['included_activities'] = $adv_options_included;
+		}
+
+		// Set related_adventure_options.
+		if ( ! empty( $item['adv_options_extra'] ) && is_string( $item['adv_options_extra'] ) ) {
+			$adv_options_extra_ids = explode( ',', $item['adv_options_extra'] );
+
+			// Init adv_options_extra.
+			$adv_options_extra = [];
+
+			// Loop through adv_options_included_ids.
+			foreach ( $adv_options_extra_ids as $adv_options_extra_id ) {
+				$adv_options_extra_id = absint( $adv_options_extra_id );
+
+				// Get post by drupal id.
+				$adv_option_extra = get_post_by_id( $adv_options_extra_id, ADVENTURE_OPTION_POST_TYPE );
+
+				// Check if post exist.
+				if ( $adv_option_extra instanceof WP_Post ) {
+					$adv_options_extra[] = $adv_option_extra->ID;
+				}
+			}
+
+			// Set related adventure_options.
+			$data['meta_input']['related_adventure_options'] = $adv_options_extra;
+		}
+
+		// Set pre_post_options.
+		if ( ! empty( $item['pre_post_options_paragraph_id'] ) ) {
+			$pre_post_options_ids = $this->get_pre_post_trip_options( absint( $item['pre_post_options_paragraph_id'] ) );
+
+			// Check if we have pre_post_options_ids.
+			if ( ! empty( $pre_post_options_ids ) ) {
+				// Set related pre_post_options.
+				$data['meta_input']['related_pre_post_trips'] = $pre_post_options_ids;
+			}
+		}
+
+		// Init itineraries.
+		$itineraries = [];
+
+		// Set itineraries.
+		if ( ! empty( $item['itineraries'] ) && is_string( $item['itineraries'] ) ) {
+			$itineraries_ids = explode( ',', $item['itineraries'] );
+
+			// Loop through itineraries ids.
+			foreach ( $itineraries_ids as $itinerary_id ) {
+				$itinerary_id = absint( $itinerary_id );
+
+				// Get post by drupal id.
+				$itinerary = get_post_by_id( $itinerary_id, ITINERARY_POST_TYPE );
+
+				// Check if post exist.
+				if ( $itinerary instanceof WP_Post ) {
+					$itineraries[] = absint( $itinerary->ID );
+				}
+			}
+		}
+
+		// Set related itineraries.
+		$data['meta_input']['related_itineraries'] = $itineraries;
+
 		// Set drupal id metadata.
 		$data['meta_input']['drupal_id'] = $nid;
 
@@ -281,12 +373,17 @@ class Expedition {
 			field_expedition_category.field_expedition_category_target_id AS expedition_category_id,
 			field_metatags.field_metatags_value AS metatags,
 			field_primary_destination.field_primary_destination_target_id AS primary_destination_id,
-			(SELECT GROUP_CONCAT( field_destinations_target_id ORDER BY delta SEPARATOR ', ' ) FROM node__field_destinations AS field_destinations WHERE node.nid = field_destinations.entity_id AND field_destinations.langcode = node.langcode) AS destination_ids
+			field_pre_post_options.field_pre_post_options_target_id AS pre_post_options_paragraph_id,
+			(SELECT GROUP_CONCAT( field_destinations_target_id ORDER BY delta SEPARATOR ', ' ) FROM node__field_destinations AS field_destinations WHERE node.nid = field_destinations.entity_id AND field_destinations.langcode = node.langcode) AS destination_ids,
+			(SELECT GROUP_CONCAT( field_itineraries_target_id ORDER BY delta SEPARATOR ', ' ) FROM node__field_itineraries AS field_itineraries WHERE node.nid = field_itineraries.entity_id AND field_itineraries.langcode = node.langcode) AS itineraries,
+			(SELECT GROUP_CONCAT( field_adv_options_included_target_id ORDER BY delta SEPARATOR ', ' ) FROM node__field_adv_options_included AS field_adv_options_included WHERE node.nid = field_adv_options_included.entity_id AND field_adv_options_included.langcode = node.langcode) AS adv_options_included,
+			(SELECT GROUP_CONCAT( field_adv_options_extra_target_id ORDER BY delta SEPARATOR ', ' ) FROM node__field_adv_options_extra AS field_adv_options_extra WHERE node.nid = field_adv_options_extra.entity_id AND field_adv_options_extra.langcode = node.langcode) AS adv_options_extra
 		FROM
 			node
 				LEFT JOIN node_field_data AS field_data ON node.nid = field_data.nid AND node.langcode = field_data.langcode
 				LEFT JOIN node__body AS body ON node.nid = body.entity_id AND node.langcode = body.langcode
 				LEFT JOIN node__field_expedition_category AS field_expedition_category ON node.nid = field_expedition_category.entity_id AND node.langcode = field_expedition_category.langcode
+				LEFT JOIN node__field_pre_post_options AS field_pre_post_options ON node.nid = field_pre_post_options.entity_id AND node.langcode = field_pre_post_options.langcode
 				LEFT JOIN node__field_metatags AS field_metatags ON node.nid = field_metatags.entity_id AND node.langcode = field_metatags.langcode
 				LEFT JOIN node__field_primary_destination AS field_primary_destination ON node.nid = field_primary_destination.entity_id AND node.langcode = field_primary_destination.langcode
 		WHERE
@@ -305,5 +402,68 @@ class Expedition {
 
 		// Return data.
 		return $result;
+	}
+
+	/**
+	 * Get pre_post_trip_options posts ID from paragraph.
+	 *
+	 * @param int $pre_post_options_paragraph_id Pre Post Trip Options Paragraph ID.
+	 *
+	 * @return array{}|array<int> Pre Post Trip Options.
+	 */
+	private function get_pre_post_trip_options( int $pre_post_options_paragraph_id = 0 ): array {
+		// if no paragraph id return empty array.
+		if ( empty( $pre_post_options_paragraph_id ) ) {
+			return [];
+		}
+
+		// Query.
+		$query = "SELECT
+			paragraph.id,
+			paragraph.type,
+			field_component_background.field_component_background_value as background,
+			field_options_lead_in.field_options_lead_in_value as description,
+			( SELECT GROUP_CONCAT( field_options_items_target_id ORDER BY delta SEPARATOR ', ' ) FROM paragraph__field_options_items AS field_options_items WHERE paragraph.id = field_options_items.entity_id AND field_options_items.langcode = paragraph.langcode ) AS options_items
+		FROM
+			paragraphs_item_field_data AS paragraph
+				LEFT JOIN paragraph__field_component_background AS field_component_background ON paragraph.id = field_component_background.entity_id AND paragraph.langcode = field_component_background.langcode
+				LEFT JOIN paragraph__field_options_lead_in AS field_options_lead_in ON paragraph.id = field_options_lead_in.entity_id AND paragraph.langcode = field_options_lead_in.langcode
+		WHERE
+			paragraph.type = 'pre_post_trip_option' AND paragraph.id = %s AND paragraph.langcode = 'en';";
+
+		// Get database connection.
+		$drupal_database = get_database();
+
+		// Fetch data.
+		$result = $drupal_database->get_row( $drupal_database->prepare( $query, $pre_post_options_paragraph_id ), ARRAY_A );
+
+		// Check if data is not array.
+		if ( ! is_array( $result ) ) {
+			WP_CLI::line( 'Unable to fetch pre_post_trip_option paragraph data!' );
+
+			// Bail out.
+			return [];
+		}
+
+		// init posts.
+		$posts = [];
+
+		// Check if options_items are available.
+		if ( ! empty( $result['options_items'] ) ) {
+			$options_items = explode( ',', $result['options_items'] );
+
+			// Loop through each block.
+			foreach ( $options_items as $options_item ) {
+				$post = get_post_by_id( absint( $options_item ), PRE_POST_TRIP_POST_TYPE );
+
+				// Check if post found.
+				if ( $post instanceof WP_Post ) {
+					$posts[] = $post->ID;
+				}
+			}
+		}
+
+		// Return posts.
+		return $posts;
 	}
 }
