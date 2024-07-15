@@ -63,7 +63,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 			[
 				'slot'        => quark_get_component( COMPONENT . '.title', [ 'title' => $inner_block->attributes['title'] ?? '' ] ),
 				'image_id'    => $inner_block->attributes['image']['id'],
-				'url'         => $inner_block->attributes['url']['url'],
+				'url'         => $inner_block->attributes['url']['url'] ?? '',
 				'size'        => $inner_block->attributes['size'],
 				'orientation' => $inner_block->attributes['orientation'],
 			]
