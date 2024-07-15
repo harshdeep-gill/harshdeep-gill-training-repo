@@ -19,7 +19,7 @@ use function Quark\Theme\Core\get_assets_version;
 function setup(): void {
 	// Hooks.
 	add_action( 'current_screen', __NAMESPACE__ . '\\block_editor_styles' );
-	add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\\enqueue_block_editor_assets' );
+	add_action( 'enqueue_block_assets', __NAMESPACE__ . '\\enqueue_block_editor_assets' );
 	add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\\remove_styles_from_tinymce' );
 	add_filter( 'block_categories_all', __NAMESPACE__ . '\\custom_block_categories', 10, 2 );
 }
@@ -32,9 +32,17 @@ function setup(): void {
  * @return void
  */
 function block_editor_styles( ?WP_Screen $screen = null ): void {
+	// Check for screen.
+	if ( ! $screen instanceof WP_Screen ) {
+		return;
+	}
+
 	// Ignore if not block editor.
 	if ( empty( $screen->is_block_editor ) || empty( $screen->post_type ) ) {
-		return;
+		// Double-check for site editor.
+		if ( 'site-editor' !== $screen->base ) {
+			return;
+		}
 	}
 
 	// Add theme support.
@@ -50,6 +58,11 @@ function block_editor_styles( ?WP_Screen $screen = null ): void {
  * @return void
  */
 function enqueue_block_editor_assets(): void {
+	// Check for admin.
+	if ( ! is_admin() ) {
+		return;
+	}
+
 	// CSS.
 	wp_enqueue_style( 'quark-editor-custom', get_stylesheet_directory_uri() . '/dist/editor-custom.css', [], '1' );
 	wp_enqueue_style( 'nunito-sans', get_template_directory_uri() . '/src/assets/fonts/nunito-sans/nunito-sans.css', [], '1' );

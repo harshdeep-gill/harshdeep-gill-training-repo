@@ -1,6 +1,7 @@
 @props( [
 	'image_id' => 0,
 	'size'     => 'large',
+	'url'      => '',
 ] )
 
 @php
@@ -37,14 +38,16 @@
 
 @endphp
 
-<div class="header__nav-item-featured color-context--dark">
-	<x-image
-		:image_id="$image_id"
-		:args="$image_args"
-		class="header__nav-item-featured-image"
-	/>
+<x-maybe-link href="{{ $url }}">
+	<div class="header__nav-item-featured color-context--dark">
+		<x-image
+			:image_id="$image_id"
+			:args="$image_args"
+			class="header__nav-item-featured-image"
+		/>
 
-	<div class="header__nav-item-featured-content">
-		{!! $slot !!}
+		<div class="header__nav-item-featured-content">
+			{!! $slot !!}
+		</div>
 	</div>
-</div>
+</x-maybe-link>

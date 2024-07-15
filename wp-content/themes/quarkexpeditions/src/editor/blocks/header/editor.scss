@@ -1,0 +1,62 @@
+.header {
+	$self: &;
+	padding: 0;
+	z-index: 5;
+	justify-content: center;
+
+	&__nav-item {
+		position: static !important; // required to override styles in full site editor
+
+		&-featured-title,
+		&-featured-subtitle {
+			z-index: 10;
+		}
+
+		&-dropdown-content {
+			min-width: 360px;
+			min-height: 240px;
+
+			.thumbnail-cards {
+
+				&__card--size-medium.thumbnail-cards__card--orient-landscape {
+					width: 300px;
+					height: 160px;
+				}
+
+				&__card--size-small.thumbnail-cards__card--orient-portrait {
+					width: 140px;
+					height: 190px;
+				}
+
+				&__slides {
+					flex-wrap: nowrap;
+				}
+			}
+		}
+
+		&-dropdown-content-wrap {
+			margin-top: var(--spacing-4);
+			left: -80px;
+
+			&::before {
+				display: none;
+			}
+
+			&[open] {
+				opacity: 1;
+				visibility: visible;
+			}
+		}
+	}
+
+	&__cta-buttons {
+
+		button {
+
+			> span.block-editor-rich-text__editable {
+				white-space: nowrap !important;
+			}
+		}
+	}
+
+}
