@@ -530,6 +530,24 @@
 		</x-hero>
 	</x-component-demo>
 
+	<x-component-demo :keys="[ 'secondary-navigation' ]">
+		<x-secondary-navigation>
+			<x-secondary-navigation.navigation :jump_to_navigation="true">
+				<x-secondary-navigation.nav-item href="overview" :active="true">Overview</x-secondary-navigation.nav-item>
+				<x-secondary-navigation.nav-item href="destination-highlights">Destination Highlights</x-secondary-navigation.nav-item>
+				<x-secondary-navigation.nav-item href="top-things-to-see">Top Things to See</x-secondary-navigation.nav-item>
+				<x-secondary-navigation.nav-item href="when-to-go">When to Go</x-secondary-navigation.nav-item>
+				<x-secondary-navigation.nav-item href="testimonials">Testimonials</x-secondary-navigation.nav-item>
+				<x-secondary-navigation.nav-item href="expeditions">Expeditions</x-secondary-navigation.nav-item>
+			</x-secondary-navigation.navigation>
+
+			<x-secondary-navigation.cta-buttons>
+				<x-button size="big" color="black" href="#">Download Brochure</x-button>
+				<x-button size="big" href="#">Upcoming Departures</x-button>
+			</x-secondary-navigation.cta-buttons>
+		</x-secondary-navigation>
+	</x-component-demo>
+
 	<x-component-demo :keys="[ 'global', 'color-palette' ]">
 		<x-section>
 			<x-section.heading>
@@ -540,7 +558,7 @@
 	</x-component-demo>
 
 	<x-component-demo :keys="[ 'global', 'typography' ]">
-		<x-section>
+		<x-section id="overview">
 			<x-section.heading>
 				<x-section.title title="Typography" heading_level="2" />
 			</x-section.heading>
@@ -608,7 +626,7 @@
 	</x-component-demo>
 
 	<x-component-demo :keys="[ 'form' ]">
-		<x-section style="display: flex; flex-wrap: wrap; width: 100%;" class="typography-spacing">
+		<x-section id="destination-highlights" style="display: flex; flex-wrap: wrap; width: 100%;" class="typography-spacing">
 			<x-section.heading>
 				<x-section.title title="Form UI Elements" heading_level="2" />
 			</x-section.heading>
@@ -1882,7 +1900,7 @@
 			</x-season-highlights>
 		</x-section>
 
-		<x-section>
+		<x-section id="top-things-to-see">
 				<x-section.heading>
 					<x-section.title title="Best Time to See" align="left" />
 				</x-section.heading>
@@ -2218,7 +2236,7 @@
 			</x-lp-offer-masthead.content>
 		</x-lp-offer-masthead>
 
-		<x-section background="true" background_color="black">
+		<x-section id="when-to-go" background="true" background_color="black">
 			<x-section.heading>
 				<x-section.title title="Our Biggest Savings! 50% off these Antarctic 2024 Voyages" />
 			</x-section.heading>
