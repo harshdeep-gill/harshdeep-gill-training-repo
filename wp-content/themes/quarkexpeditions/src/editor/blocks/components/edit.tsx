@@ -2,12 +2,12 @@
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-import { useBlockProps } from '@wordpress/block-editor';
-
-/**
- * Styles.
- */
-import './editor.scss';
+import {
+	Placeholder,
+} from '@wordpress/components';
+import {
+	useBlockProps,
+} from '@wordpress/block-editor';
 
 /**
  * External dependencies.
@@ -23,20 +23,18 @@ import classnames from 'classnames';
 export default function Edit( { className }: BlockEditAttributes ): JSX.Element {
 	// eslint-disable-next-line react-hooks/rules-of-hooks
 	const blockProps = useBlockProps( {
-		className: classnames(
-			className,
-			'post-author-info'
-		),
+		className: classnames( className ),
 	} );
 
 	// Return the block's markup.
 	return (
 		<div { ...blockProps }>
-			<div className="post-author-info__image"></div>
-			<div className="post-author-info__info">
-				<p className="post-author-info__name">{ __( 'Author Name', 'qrk' ) }</p>
-				<p className="post-author-info__duration">{ __( 'X min read', 'qrk' ) }</p>
-			</div>
+			<Placeholder
+				label={ __( 'Components', 'qrk' ) }
+				icon="layout"
+			>
+				<p>{ __( 'All the components available on this website.', 'qrk' ) }</p>
+			</Placeholder>
 		</div>
 	);
 }

@@ -1,7 +1,10 @@
 /**
  * WordPress dependencies.
  */
-import { BlockConfiguration } from '@wordpress/blocks';
+import {
+	BlockConfiguration,
+	registerBlockType,
+} from '@wordpress/blocks';
 
 /**
  * Internal dependencies.
@@ -20,4 +23,12 @@ export const { name }: { name: string } = metadata;
 export const settings: BlockConfiguration = {
 	...metadata,
 	edit,
+};
+
+/**
+ * Initializations.
+ */
+export const init = (): void => {
+	// Register block.
+	registerBlockType( name, settings );
 };

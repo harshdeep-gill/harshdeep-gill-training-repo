@@ -13,6 +13,11 @@ import {
 import classnames from 'classnames';
 
 /**
+ * Styles.
+ */
+import './editor.scss';
+
+/**
  * Child block.
  */
 import * as sidebar from './children/sidebar';
