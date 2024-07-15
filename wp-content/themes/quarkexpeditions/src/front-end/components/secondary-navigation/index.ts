@@ -43,8 +43,18 @@ export default class SecondaryNavigation extends HTMLElement {
 		this.sections = this.getMenuSections();
 		this.navigationElement = document.querySelector( '.secondary-navigation' );
 
-		// Scroll event.
-		document.body.addEventListener( 'scroll', debounce( this.onScroll.bind( this ), 1 ), { passive: true } );
+		/**
+		 * Event on 'scroll'.
+		 *
+		 * Reason for adding 'passive: true'
+		 * When you attach an event listener to a scroll event,
+		 * the browser has to wait for the JavaScript code to execute before it can continue scrolling.
+		 * By marking the event listener as 'passive',
+		 * you're telling the browser that the event handler will not prevent the default behavior of the event (like scrolling),
+		 * allowing the browser to optimize the scroll performance.
+		 * Without this you will get warning.
+		 */
+		document.body.addEventListener( 'scroll', debounce( this.onScroll.bind( this ), 10 ), { passive: true } );
 
 		// Run on resize events.
 		window.addEventListener( 'resize', this.updateNav.bind( this ) );
@@ -61,19 +71,6 @@ export default class SecondaryNavigation extends HTMLElement {
 
 		// Event to close dropdown on document click.
 		this.ownerDocument.defaultView?.addEventListener( 'click', this.handleDropdownCloseOnDocumentClick.bind( this ) );
-
-		/**
-		 * Event on 'scroll'.
-		 *
-		 * Reason for adding 'passive: true'
-		 * When you attach an event listener to a scroll event,
-		 * the browser has to wait for the JavaScript code to execute before it can continue scrolling.
-		 * By marking the event listener as 'passive',
-		 * you're telling the browser that the event handler will not prevent the default behavior of the event (like scrolling),
-		 * allowing the browser to optimize the scroll performance.
-		 * Without this you will get warning.
-		 */
-		document.body.addEventListener( 'scroll', debounce( this.navHighlighter.bind( this ), 10 ), { passive: true } );
 	}
 
 	/**
@@ -138,7 +135,7 @@ export default class SecondaryNavigation extends HTMLElement {
 		}
 
 		// Highlight the active navigation item.
-		this.navHighlighter();
+		this.navigationHighlighter();
 	}
 
 	/**
@@ -206,7 +203,7 @@ export default class SecondaryNavigation extends HTMLElement {
 	/**
 	 * Handle Navigation Highlights.
 	 */
-	navHighlighter() {
+	navigationHighlighter() {
 		// Set the current section.
 		let currentSection = this.sections[ 0 ];
 
@@ -223,7 +220,7 @@ export default class SecondaryNavigation extends HTMLElement {
 			const sectionHeight = section.clientHeight;
 
 			// Set the current section.
-			if ( window.scrollY >= ( sectionTop - sectionHeight ) / 3 ) {
+			if ( window.scrollY >= sectionTop - sectionHeight ) {
 				currentSection = section;
 			}
 		} );
