@@ -7,7 +7,7 @@
 		margin: 0 calc(-1 * var(--grid-col-gutter));
 		display: none;
 
-		@media screen and (min-width: grid-size(lg)) {
+		@media screen and (min-width: grid-size(xl)) {
 			margin: 0;
 			display: block;
 		}
