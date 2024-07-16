@@ -64,6 +64,20 @@ abstract class Softrip_Object {
 	}
 
 	/**
+	 * Get the object data.
+	 *
+	 * @return array{
+	 *     post: WP_Post|null,
+	 *     post_meta: mixed[],
+	 *     post_taxonomies: mixed[]
+	 * }
+	 */
+	public function get_data(): array {
+		// Return the data array.
+		return $this->data;
+	}
+
+	/**
 	 * Get post meta from the post object.
 	 *
 	 * @param string $name The metadata to call from the post object.

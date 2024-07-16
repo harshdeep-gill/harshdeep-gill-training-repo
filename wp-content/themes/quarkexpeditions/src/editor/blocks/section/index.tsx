@@ -148,7 +148,7 @@ export const settings: BlockConfiguration = {
 						/>
 						{ attributes.hasTitle &&
 							<SelectControl
-								label="Heading Level"
+								label={ __( 'Heading Level', 'qrk' ) }
 								value={ attributes.headingLevel }
 								options={ [
 									{ label: 'H1', value: '1' },
@@ -158,6 +158,15 @@ export const settings: BlockConfiguration = {
 								onChange={ ( headingLevel ) => setAttributes( { headingLevel } ) }
 							/>
 						}
+						<SelectControl
+							label={ __( 'Title Alignment', 'qrk' ) }
+							value={ attributes.titleAlignment }
+							options={ [
+								{ label: 'Left', value: 'left' },
+								{ label: 'Center', value: 'center' },
+							] }
+							onChange={ ( titleAlignment ) => setAttributes( { titleAlignment } ) }
+						/>
 						<ToggleControl
 							label={ __( 'Has Description', 'qrk' ) }
 							checked={ attributes.hasDescription }

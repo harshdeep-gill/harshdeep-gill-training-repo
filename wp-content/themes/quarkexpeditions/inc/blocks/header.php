@@ -7,6 +7,8 @@
 
 namespace Quark\Theme\Blocks\Header;
 
+use function Quark\OfficePhoneNumbers\get_corporate_office_phone_number;
+
 const BLOCK_NAME = 'quark/header';
 const COMPONENT  = 'parts.header';
 
@@ -42,6 +44,19 @@ function render( ?string $content = null, array $block = [] ): null|string {
 	// Check for block.
 	if ( BLOCK_NAME !== $block['blockName'] || empty( $block['innerBlocks'] ) ) {
 		return $content;
+	}
+
+	// Get the corporate office phone number.
+	$office_data = get_corporate_office_phone_number();
+
+	// Initialize phone number and prefix.
+	$phone_number = '';
+	$prefix       = '';
+
+	// Check if office data is not empty.
+	if ( ! empty( $office_data ) ) {
+		$phone_number = $office_data['phone_number'];
+		$prefix       = $office_data['prefix'];
 	}
 
 	// Initialize attributes.
@@ -157,23 +172,35 @@ function render( ?string $content = null, array $block = [] ): null|string {
 
 						// Contact Button.
 						if ( 'quark/contact-button' === $cta_button_item['blockName'] ) {
+							// Get the phone number.
+							$btn_text        = ! empty( $phone_number ) ? $phone_number : $cta_button_item['attrs']['btnText'];
+							$btn_url         = ! empty( $phone_number ) ? 'tel:' . $phone_number : $cta_button_item['attrs']['url']['url'];
+							$drawer_btn_text = ! empty( $prefix ) ? $prefix . ' : ' : __( 'Call Now to Book : ', 'qrk' );
+
+							// Add to cta buttons.
 							$current_cta_button = [
-								'type'       => 'contact',
-								'class'      => 'header__phone-btn',
-								'text'       => $cta_button_item['attrs']['btnText'] ?? '',
-								'url'        => $cta_button_item['attrs']['url']['url'] ?? '',
-								'appearance' => $cta_button_item['appearance'] ?? 'outline',
-								'color'      => $cta_button_item['attrs']['backgroundColor'] ?? 'black',
+								'type'        => 'contact',
+								'class'       => 'header__phone-btn dynamic-phone-number__btn dynamic-phone-number__link',
+								'text'        => ! empty( $btn_text ) ? $btn_text : '',
+								'url'         => ! empty( $btn_url ) ? $btn_url : '',
+								'drawer_text' => $drawer_btn_text,
+								'appearance'  => $cta_button_item['appearance'] ?? 'outline',
+								'color'       => $cta_button_item['attrs']['backgroundColor'] ?? 'black',
 							];
 
 							// Add to cta buttons.
 							$attributes['cta_buttons'][] = $current_cta_button;
 						} elseif ( 'quark/raq-button' === $cta_button_item['blockName'] ) {
+							// Get the phone number.
+							$btn_text = ! empty( $prefix ) ? $prefix : $cta_button_item['attrs']['btnText'];
+							$btn_url  = ! empty( $phone_number ) ? 'tel:' . $phone_number : $cta_button_item['attrs']['url']['url'];
+
+							// Add to cta buttons.
 							$current_cta_button = [
 								'type'       => 'raq',
-								'class'      => 'header__request-quote-btn',
-								'text'       => $cta_button_item['attrs']['btnText'] ?? '',
-								'url'        => $cta_button_item['attrs']['url']['url'] ?? '',
+								'class'      => 'header__request-quote-btn dynamic-phone-prefix__text dynamic-phone-number__link',
+								'text'       => ! empty( $btn_text ) ? $btn_text : '',
+								'url'        => ! empty( $btn_url ) ? $btn_url : '',
 								'appearance' => $cta_button_item['appearance'] ?? '',
 								'color'      => $cta_button_item['attrs']['backgroundColor'] ?? '',
 							];
