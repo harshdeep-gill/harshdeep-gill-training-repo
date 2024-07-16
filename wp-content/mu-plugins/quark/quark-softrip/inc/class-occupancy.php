@@ -267,7 +267,7 @@ class Occupancy extends Data_Object {
 		// Iterate over the occupancy prices.
 		foreach ( $this->get_occupancy_prices() as $price ) {
 			// Check the price is the correct currency.
-			if ( $currency === $price->get_entry_data( 'currency_code' ) ) {
+			if ( strtolower( $currency ) === strtolower( strval( $price->get_entry_data( 'currency_code' ) ) ) ) {
 				// Get the price per person.
 				return strval( $price->get_entry_data( 'price_per_person' ) );
 			}
