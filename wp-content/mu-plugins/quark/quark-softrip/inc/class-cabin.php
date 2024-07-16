@@ -336,7 +336,7 @@ class Cabin extends Data_Object {
 	 */
 	public function get_lowest_price( string $currency = 'USD' ): float {
 		// Set up the lowest variable.
-		$lowest = '';
+		$lowest = 0;
 
 		// Iterate over the occupancies.
 		foreach ( $this->get_occupancies() as $occupancy ) {

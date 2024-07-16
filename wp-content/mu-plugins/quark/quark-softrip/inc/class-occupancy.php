@@ -274,6 +274,6 @@ class Occupancy extends Data_Object {
 		}
 
 		// Return nothing as it's not found.
-		return 0.00;
+		return 0;
 	}
 }

@@ -369,7 +369,7 @@ class Departure extends Softrip_Object {
 	 */
 	public function get_lowest_price( string $currency = 'USD' ): float {
 		// Set up the lowest variable.
-		$lowest = '';
+		$lowest = 0;
 
 		// Iterate over the cabins.
 		foreach ( $this->get_cabins() as $cabin ) {
