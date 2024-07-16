@@ -139,7 +139,7 @@
 			display: none;
 		}
 
-		~ #{$self}__nav-item {
+		#{$self}__nav-item:has(+ &) {
 			display: none;
 
 			@media screen and (min-width: grid-size(xxxl)) {

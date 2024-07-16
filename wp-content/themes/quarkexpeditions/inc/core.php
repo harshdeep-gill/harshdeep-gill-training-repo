@@ -150,6 +150,9 @@ function register_scripts(): void {
 			'recaptchaSiteKey' => quark_get_template_data( 'recaptcha_site_key', '' ),
 		]
 	);
+
+	// Pass dynamic phone number to script.
+	wp_localize_script( 'global', 'dynamicPhoneNumber', (array) quark_get_template_data( 'dynamic_phone_number', [] ) );
 }
 
 /**

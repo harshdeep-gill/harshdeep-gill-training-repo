@@ -19,6 +19,7 @@ function bootstrap(): void {
 	// CLI commands.
 	if ( defined( 'WP_CLI' ) && true === WP_CLI ) {
 		WP_CLI::add_command( 'quark-softrip db', __NAMESPACE__ . '\\WP_CLI\\DB' );
+		WP_CLI::add_command( 'quark-softrip sync', __NAMESPACE__ . '\\WP_CLI\\Sync' );
 	}
 }
 
@@ -34,7 +35,7 @@ function request_departures( array $codes = [] ): array|WP_Error {
 	$codes = array_unique( $codes );
 
 	// Check if less than 5 IDs.
-	if ( empty( $codes ) || 5 <= count( $codes ) ) {
+	if ( empty( $codes ) || 5 < count( $codes ) ) {
 		return new WP_Error( 'qrk_softrip_departures_limit', 'The maximum number of codes allowed is 5' );
 	}
 

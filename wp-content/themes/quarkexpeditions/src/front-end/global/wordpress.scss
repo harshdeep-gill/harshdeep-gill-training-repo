@@ -365,3 +365,21 @@
 .has-white-color {
 	color: var(--color-white);
 }
+
+// WordPress annoyingly adds .wp-block-template-part as a wrapper for all
+// template parts. Display its contents to avoid styling issues
+// like sticky positioning, etc.
+@if ( $is-editor != true ) {
+
+	.wp-site-blocks .wp-block-template-part {
+		display: contents;
+	}
+}
+
+// Increase the iframe container height in full site editor.
+@if ( $is-editor == true ) {
+
+	body.block-editor-iframe__body {
+		min-height: 800px;
+	}
+}

@@ -141,29 +141,50 @@ export const settings: BlockConfiguration = {
 				return;
 			}
 
+			// Close all dropdowns.
+			const closeAllDropdowns = ( allDropdowns: any ) => {
+				// Check if dropdowns exist.
+				if ( allDropdowns ) {
+					allDropdowns.forEach( ( dropdownEl: HTMLElement ) => {
+						// Remove `open` attribute.
+						dropdownEl.removeAttribute( 'open' );
+					} );
+				}
+			};
+
+			// Get the iframe container in the full site editor.
+			const iframeContainer = document.querySelector( 'iframe.edit-site-visual-editor__editor-canvas' ) as HTMLIFrameElement | null;
+
+			// Initialize.
+			let iframeContainerDocument = null;
+
+			// Get the iframe container document.
+			if ( iframeContainer ) {
+				iframeContainerDocument = iframeContainer?.contentDocument || iframeContainer?.contentWindow?.document;
+			}
+
 			// Get the closest sibling dropdown element.
 			const closestDropdownElement = menuItem.nextElementSibling;
 
 			// Check if dropdown element exists.
 			if ( closestDropdownElement ) {
+				let allDropdowns = null;
+
+				// Dropdown Class that needs to be targeted.
+				const dropdownClass = closestDropdownElement?.classList[ 0 ];
+
 				// Get all dropdowns.
-				const allDropdowns = document.querySelectorAll( `.${ closestDropdownElement?.classList[ 0 ] }` );
+				if ( iframeContainerDocument ) {
+					allDropdowns = iframeContainerDocument.querySelectorAll( `.${ dropdownClass }` );
+				} else {
+					allDropdowns = document.querySelectorAll( `.${ dropdownClass }` );
+				}
 
 				// Close the closest dropdown element if already open.
 				if ( 'true' === closestDropdownElement.getAttribute( 'open' ) ) {
-					closestDropdownElement.removeAttribute( 'open' );
-
-					// Close all other dropdowns.
-					allDropdowns.forEach( ( dropdownEl ) => {
-						// Remove `open` attribute.
-						dropdownEl.removeAttribute( 'open' );
-					} );
+					closeAllDropdowns( allDropdowns );
 				} else {
-					// Close all other dropdowns.
-					allDropdowns.forEach( ( dropdownEl ) => {
-						// Remove `open` attribute.
-						dropdownEl.removeAttribute( 'open' );
-					} );
+					closeAllDropdowns( allDropdowns );
 
 					// Open the closest dropdown element.
 					closestDropdownElement.setAttribute( 'open', 'true' );
