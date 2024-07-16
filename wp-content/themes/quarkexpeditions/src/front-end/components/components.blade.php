@@ -1829,6 +1829,26 @@
 		</x-media-text-cta>
 	</x-component-demo>
 
+	<x-component-demo :keys="[ 'media-cta-banner' ]">
+		<x-media-cta-banner>
+			<x-media-cta-banner.image image_id="58" />
+			<x-media-cta-banner.content>
+				<h3>Ready For Your Expedition?</h3>
+				<p>Speak to a Polar Travel Advisor. Your Polar Travel Advisor will recommend the best expedition itinerary to suit your requirements.</p>
+				<x-button size="big">Start Your Adventure</x-button>
+			</x-media-cta-banner.content>
+		</x-media-cta-banner>
+
+		<x-media-cta-banner appearance="dark">
+			<x-media-cta-banner.image image_id="35" />
+			<x-media-cta-banner.content>
+				<h3>The Shackleton Club</h3>
+				<p>We always reward loyalty! If you’re a returning guest, enjoy an additional 5% savings on all future Quark Expeditions voyages.</p>
+				<x-button size="big" color="black">Join the Shackleton Club</x-button>
+			</x-media-cta-banner.content>
+		</x-media-cta-banner>
+	</x-component-demo>
+
 	<x-component-demo :keys="[ 'lp-footer', 'logo-grid' ]">
 		<x-lp-footer>
 			<x-lp-footer.row>
