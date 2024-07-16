@@ -9,12 +9,12 @@
 
 	$image_args = [
 		'size' => [
-			'width'   => 540,
-			'height'  => 360,
+			'width'  => 1120,
+			'height' => 312,
 		],
 		'responsive' => [
-			'sizes'  => [ '(min-width: 1280px) 540px', '(min-width: 1024px) 50vw', '100vw' ],
-			'widths' => [ 380, 480, 600, 800 ],
+			'sizes'  => [ '(min-width: 1280px) 1120px', '100vw' ],
+			'widths' => [ 400, 600, 900, 1120 ],
 		],
 	];
 @endphp
