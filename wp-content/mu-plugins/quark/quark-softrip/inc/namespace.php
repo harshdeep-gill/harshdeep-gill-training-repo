@@ -21,6 +21,9 @@ function bootstrap(): void {
 		WP_CLI::add_command( 'quark-softrip db', __NAMESPACE__ . '\\WP_CLI\\DB' );
 		WP_CLI::add_command( 'quark-softrip sync', __NAMESPACE__ . '\\WP_CLI\\Sync' );
 	}
+
+	// Init Cron.
+	new Softrip_Cron();
 }
 
 /**
