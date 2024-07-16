@@ -19,6 +19,17 @@
 	margin-right: 0;
 }
 
+.is-root-container > .wp-block-template-part {
+	max-width: none;
+
+	@extend %full-width;
+}
+
+.is-root-container > .wp-block {
+	margin-left: auto;
+	margin-right: auto;
+}
+
 .block-library-block__reusable-block-container:has(> .full-width),
 .full-width {
 	max-width: none !important;

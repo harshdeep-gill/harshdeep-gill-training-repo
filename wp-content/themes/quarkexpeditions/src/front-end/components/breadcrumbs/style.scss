@@ -19,6 +19,7 @@
 
 		&:last-child &-title {
 			color: var(--color-black);
+			font-weight: var(--font-weight-bold);
 
 			&:hover {
 				text-decoration: none;
