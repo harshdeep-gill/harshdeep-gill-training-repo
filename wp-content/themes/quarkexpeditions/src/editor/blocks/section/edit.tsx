@@ -76,7 +76,7 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 					/>
 					{ attributes.hasTitle &&
 						<SelectControl
-							label="Heading Level"
+							label={ __( 'Heading Level', 'qrk' ) }
 							value={ attributes.headingLevel }
 							options={ [
 								{ label: 'H1', value: '1' },
@@ -86,6 +86,15 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 							onChange={ ( headingLevel ) => setAttributes( { headingLevel } ) }
 						/>
 					}
+					<SelectControl
+						label={ __( 'Title Alignment', 'qrk' ) }
+						value={ attributes.titleAlignment }
+						options={ [
+							{ label: 'Left', value: 'left' },
+							{ label: 'Center', value: 'center' },
+						] }
+						onChange={ ( titleAlignment ) => setAttributes( { titleAlignment } ) }
+					/>
 					<ToggleControl
 						label={ __( 'Has Description', 'qrk' ) }
 						checked={ attributes.hasDescription }
@@ -139,15 +148,6 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 						checked={ attributes.hasCta }
 						onChange={ () => setAttributes( { hasCta: ! attributes.hasCta } ) }
 						help={ __( 'Does this section have a CTA button?', 'qrk' ) }
-					/>
-					<SelectControl
-						label={ __( 'Title Alignment', 'qrk' ) }
-						value={ attributes.titleAlignment }
-						options={ [
-							{ label: __( 'Left', 'qrk' ), value: 'left' },
-							{ label: __( 'Center', 'qrk' ), value: 'center' },
-						] }
-						onChange={ ( titleAlignment ) => setAttributes( { titleAlignment } ) }
 					/>
 					<ToggleControl
 						label={ __( 'Has heading link', 'qrk' ) }

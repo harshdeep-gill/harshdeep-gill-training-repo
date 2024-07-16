@@ -33,19 +33,9 @@ export const settings: BlockConfiguration = {
 };
 
 /**
- * Child blocks.
- */
-import * as authorName from './children/name';
-import * as readTime from './children/read-time';
-
-/**
  * Initialization.
  */
 export const init = (): void => {
 	// Register block.
 	registerBlockType( name, settings );
-
-	// Register child blocks.
-	registerBlockType( authorName.name, authorName.settings );
-	registerBlockType( readTime.name, readTime.settings );
 };

@@ -1,0 +1,25 @@
+{
+	"schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Header Menu Item Content",
+	"name": "quark/header-menu-item-content",
+	"description": "Dropdown Content for Individual Menu Item",
+	"parent": [
+		"quark/header-menu-item"
+	],
+	"icon": "screenoptions",
+	"category": "layout",
+	"textdomain": "qrk",
+	"keywords": [
+		"menu",
+		"item",
+		"content"
+	],
+	"attributes": {},
+	"supports": {
+		"alignWide": false,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

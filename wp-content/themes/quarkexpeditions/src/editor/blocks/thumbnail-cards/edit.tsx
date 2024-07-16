@@ -16,7 +16,7 @@ import {
 /**
  * Styles.
  */
-import './style.scss';
+import './editor.scss';
 
 /**
  * Internal dependencies.
