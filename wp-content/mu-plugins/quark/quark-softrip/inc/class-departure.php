@@ -359,4 +359,31 @@ class Departure extends Softrip_Object {
 		// Return the cabin object.
 		return $this->cabins[ $code ];
 	}
+
+	/**
+	 * Get the lowest price per person for the departure.
+	 *
+	 * @param string $currency The currency code to get.
+	 *
+	 * @return float
+	 */
+	public function get_lowest_price( string $currency = 'USD' ): float {
+		// Set up the lowest variable.
+		$lowest = 0;
+
+		// Iterate over the cabins.
+		foreach ( $this->get_cabins() as $cabin ) {
+			// Get the price per person.
+			$test_price = $cabin->get_lowest_price( $currency );
+
+			// Check if lowest is set and is lower than the previous price.
+			if ( empty( $lowest ) || $lowest > $test_price ) {
+				// Use the price as it's lower.
+				$lowest = $test_price;
+			}
+		}
+
+		// Return the lowest found.
+		return $lowest;
+	}
 }
