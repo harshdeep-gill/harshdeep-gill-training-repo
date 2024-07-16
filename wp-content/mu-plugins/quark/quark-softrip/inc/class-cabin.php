@@ -326,4 +326,31 @@ class Cabin extends Data_Object {
 		// Return the occupancy object.
 		return $this->children[ $code ];
 	}
+
+	/**
+	 * Get the lowest price per person for the cabin.
+	 *
+	 * @param string $currency The currency code to get.
+	 *
+	 * @return string
+	 */
+	public function get_lowest_price( string $currency = 'USD' ): string {
+		// Set up the lowest variable.
+		$lowest = '';
+
+		// Iterate over the occupancies.
+		foreach ( $this->get_occupancies() as $occupancy ) {
+			// Get the price per person.
+			$test_price = $occupancy->get_price_per_person( $currency );
+
+			// Check if lowest is set and is lower than the previous price.
+			if ( empty( $lowest ) || $lowest > $test_price ) {
+				// Use the price as it's lower.
+				$lowest = $test_price;
+			}
+		}
+
+		// Return the lowest found.
+		return $lowest;
+	}
 }
