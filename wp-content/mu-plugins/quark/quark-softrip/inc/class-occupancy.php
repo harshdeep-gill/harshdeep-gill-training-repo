@@ -261,19 +261,19 @@ class Occupancy extends Data_Object {
 	 *
 	 * @param string $currency The currency code to get.
 	 *
-	 * @return string
+	 * @return float
 	 */
-	public function get_price_per_person( string $currency = 'USD' ): string {
+	public function get_price_per_person( string $currency = 'USD' ): float {
 		// Iterate over the occupancy prices.
 		foreach ( $this->get_occupancy_prices() as $price ) {
 			// Check the price is the correct currency.
 			if ( strtolower( $currency ) === strtolower( strval( $price->get_entry_data( 'currency_code' ) ) ) ) {
 				// Get the price per person.
-				return strval( $price->get_entry_data( 'price_per_person' ) );
+				return floatval( strval( $price->get_entry_data( 'price_per_person' ) ) );
 			}
 		}
 
 		// Return nothing as it's not found.
-		return '0.00';
+		return 0.00;
 	}
 }

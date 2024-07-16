@@ -365,9 +365,9 @@ class Departure extends Softrip_Object {
 	 *
 	 * @param string $currency The currency code to get.
 	 *
-	 * @return string
+	 * @return float
 	 */
-	public function get_lowest_price( string $currency = 'USD' ): string {
+	public function get_lowest_price( string $currency = 'USD' ): float {
 		// Set up the lowest variable.
 		$lowest = '';
 
