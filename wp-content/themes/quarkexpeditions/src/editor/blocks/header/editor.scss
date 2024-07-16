@@ -4,12 +4,8 @@
 	z-index: 5;
 	justify-content: center;
 
-	&__secondary-nav {
-		padding-left: var(--spacing-5);
-	}
-
 	&__nav-item {
-		position: static;
+		position: static !important; // required to override styles in full site editor
 
 		&-featured-title,
 		&-featured-subtitle {
@@ -40,7 +36,7 @@
 
 		&-dropdown-content-wrap {
 			margin-top: var(--spacing-4);
-			left: -150px;
+			left: -80px;
 
 			&::before {
 				display: none;
@@ -52,4 +48,15 @@
 			}
 		}
 	}
+
+	&__cta-buttons {
+
+		button {
+
+			> span.block-editor-rich-text__editable {
+				white-space: nowrap !important;
+			}
+		}
+	}
+
 }

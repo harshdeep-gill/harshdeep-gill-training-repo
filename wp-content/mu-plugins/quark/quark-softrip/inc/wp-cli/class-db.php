@@ -5,7 +5,7 @@
  * @package quark-softrip
  */
 
-namespace Quark\softrip\WP_CLI;
+namespace Quark\Softrip\WP_CLI;
 
 use cli\progress\Bar;
 use WP_CLI;

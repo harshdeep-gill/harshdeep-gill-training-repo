@@ -210,7 +210,6 @@ abstract class Data_Object extends Softrip_Object {
 	 * @return void
 	 */
 	abstract protected function add_child( array $child_data = [] ): void;
-	// phpcs:ignore Travelopia.Functions.CommentOnFirstLineOfFunctions.Missing
 
 	/**
 	 * Format incoming data.
@@ -220,5 +219,4 @@ abstract class Data_Object extends Softrip_Object {
 	 * @return mixed[]
 	 */
 	abstract protected function format_data( array $data = [] ): array;
-	// phpcs:ignore Travelopia.Functions.CommentOnFirstLineOfFunctions.Missing
 }

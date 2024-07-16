@@ -25,7 +25,7 @@ export const name: string = 'quark/table-of-contents';
  * Block configuration settings.
  */
 export const settings: BlockConfiguration = {
-	apiVersion: 2,
+	apiVersion: 3,
 	title: __( 'Table of Contents', 'qrk' ),
 	description: __( 'Add a Table of contents block.', 'qrk' ),
 	category: 'layout',

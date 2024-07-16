@@ -9,8 +9,6 @@ namespace Quark\Offers;
 
 use WP_Post;
 
-use function Quark\Core\prepare_content_with_blocks;
-
 const POST_TYPE   = 'qrk_offer';
 const CACHE_KEY   = POST_TYPE;
 const CACHE_GROUP = POST_TYPE;
@@ -23,9 +21,6 @@ const CACHE_GROUP = POST_TYPE;
 function bootstrap(): void {
 	// Post type.
 	add_action( 'init', __NAMESPACE__ . '\\register_offer_post_type' );
-
-	// Layout.
-	add_action( 'template_redirect', __NAMESPACE__ . '\\layout' );
 
 	// Other hooks.
 	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
@@ -78,50 +73,6 @@ function register_offer_post_type(): void {
 
 	// Register post type.
 	register_post_type( POST_TYPE, $args );
-}
-
-/**
- * Layout for this post type.
- *
- * @return void
- */
-function layout(): void {
-	// Add single layout if viewing a single post.
-	if ( is_singular( POST_TYPE ) ) {
-		add_filter( 'quark_front_end_data', __NAMESPACE__ . '\\layout_single' );
-	}
-}
-
-/**
- * Layout: Single.
- *
- * @param mixed[] $data Front-end data.
- *
- * @return mixed[]
- */
-function layout_single( array $data = [] ): array {
-	// Get post.
-	$page = get();
-
-	// Bail if post does not exist or not an instance of WP_Post.
-	if ( empty( $page['post'] ) || ! $page['post'] instanceof WP_Post ) {
-		return $data;
-	}
-
-	// Layout.
-	$data['layout'] = 'single';
-
-	// Build data.
-	$data['data'] = array_merge( $data['data'] ?? [], $page );
-
-	// Post content.
-	$data['data']['post_content'] = $page['post']->post_content;
-
-	// Prepare blocks.
-	prepare_content_with_blocks( $data['data']['post_content'] );
-
-	// Return front-end data.
-	return $data;
 }
 
 /**

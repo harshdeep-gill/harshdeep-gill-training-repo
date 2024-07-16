@@ -111,7 +111,14 @@ class Occupancy_Pricing extends Data_Object {
 	 *
 	 * @param mixed[] $data The data to format.
 	 *
-	 * @return mixed[]
+	 * @return array{
+	 *      id: mixed,
+	 *      occupancy_id: string,
+	 *      price_per_person: double,
+	 *      total_price_per_person: double,
+	 *      promotion_code: string,
+	 *      promo_price_per_person: string,
+	 * }
 	 */
 	protected function format_data( array $data = [] ): array {
 		// Setup defaults.
@@ -127,15 +134,14 @@ class Occupancy_Pricing extends Data_Object {
 		// Setup formatted data.
 		$formatted = [
 			'id'                     => $this->entry_data['id'] ?? null,
-			'occupancy_id'           => $this->occupancy->get_entry_data( 'id' ),
-			'currency_code'          => $data['currencyCode'],
-			'price_per_person'       => $data['pricePerPerson'],
-			'total_price_per_person' => $data['pricePerPerson'],
+			'occupancy_id'           => strval( $this->occupancy->get_entry_data( 'id' ) ),
+			'currency_code'          => strval( $data['currencyCode'] ),
+			'price_per_person'       => doubleval( $data['pricePerPerson'] ),
+			'total_price_per_person' => doubleval( $data['pricePerPerson'] ),
 			'promotion_code'         => '',
 			'promo_price_per_person' => '',
 		];
 
-		// @todo: handle promos.
 		// Return the formatted data.
 		return $formatted;
 	}

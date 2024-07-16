@@ -130,9 +130,21 @@ class Cabin extends Data_Object {
 	/**
 	 * Format incoming data.
 	 *
-	 * @param mixed[] $data The data to format.
+	 * @param array<string, mixed> $data The data to format.
 	 *
-	 * @return mixed[]
+	 * @return array{
+	 *      id: mixed,
+	 *      title: string,
+	 *      departure: int,
+	 *      cabin_category: int,
+	 *      package_id: string,
+	 *      departure_id: string,
+	 *      ship_id: string,
+	 *      cabin_category_id: string,
+	 *      availability_status: string,
+	 *      spaces_available: string,
+	 *      occupancies?: array{},
+	 * }
 	 */
 	protected function format_data( array $data = [] ): array {
 		// Setup defaults.
@@ -151,16 +163,16 @@ class Cabin extends Data_Object {
 		// Setup formatted data.
 		$formatted = [
 			'id'                  => $this->entry_data['id'] ?? null,
-			'title'               => $data['id'],
+			'title'               => strval( $data['id'] ),
 			'departure'           => $this->departure->get_id(),
 			'cabin_category'      => $this->get_id(),
-			'package_id'          => $this->departure->get_post_meta( 'softrip_package_id' ),
-			'departure_id'        => $this->departure->get_post_meta( 'softrip_departure_id' ),
-			'ship_id'             => $this->departure->get_post_meta( 'ship_id' ),
-			'cabin_category_id'   => $data['code'],
+			'package_id'          => strval( $this->departure->get_post_meta( 'softrip_package_id' ) ),
+			'departure_id'        => strval( $this->departure->get_post_meta( 'softrip_departure_id' ) ),
+			'ship_id'             => strval( $this->departure->get_post_meta( 'ship_id' ) ),
+			'cabin_category_id'   => strval( $data['code'] ),
 			'availability_status' => 'C',
 			'spaces_available'    => '0',
-			'occupancies'         => $data['occupancies'],
+			'occupancies'         => is_array( $data['occupancies'] ) ? $data['occupancies'] : [],
 		];
 
 		// Check Availability status.
