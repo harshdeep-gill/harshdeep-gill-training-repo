@@ -412,9 +412,12 @@ function get_cards_data( array $post_ids = [] ): array {
 		// Get post taxonomies.
 		$post_taxonomies = $post_data['post_taxonomies'];
 
-		// Get season.
+		// Initialize season.
 		$season = '';
-		if( is_array( $post_taxonomies[ SEASON_TAXONOMY ] ) && isset( $post_taxonomies[ SEASON_TAXONOMY ][0] ) ) {
+
+		// Check if we have season taxonomy.
+		if ( is_array( $post_taxonomies[ SEASON_TAXONOMY ] ) && isset( $post_taxonomies[ SEASON_TAXONOMY ][0] ) ) {
+			// Get season name.
 			$season = $post_taxonomies[ SEASON_TAXONOMY ][0]['name'];
 		}
 
