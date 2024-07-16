@@ -5,8 +5,15 @@
 		height: 55px;
 		overflow: visible;
 
+		&__image-container {
+			position: relative;
+		}
+
 		&__inline-menu {
-			top: -10px;
+			display: flex;
+			position: absolute;
+			top: -20px;
+			left: -10px;
 		}
 	}
 }

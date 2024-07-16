@@ -30,7 +30,7 @@ export const name: string = 'quark/breadcrumbs';
  * Block configuration settings.
  */
 export const settings: BlockConfiguration = {
-	apiVersion: 2,
+	apiVersion: 3,
 	title: __( 'Breadcrumbs', 'qrk' ),
 	description: __( 'Display a Breadcrumbs block.', 'qrk' ),
 	category: 'layout',

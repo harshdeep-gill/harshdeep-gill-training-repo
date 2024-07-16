@@ -113,8 +113,8 @@
 						size="big"
 						:color="$cta_button['color'] ?? ''"
 						:appearance="$cta_button['appearance'] ?? ''"
+						icon="phone"
 					>
-						<x-svg name="phone" />
 						{!! $cta_button['text'] !!}
 					</x-button>
 
@@ -217,8 +217,8 @@
 						@foreach ( $cta_buttons as $button )
 							@if ( 'contact' === $button['type'] )
 								<li>
-									<a href="{{ $button['url'] ?? '' }}">
-										{{ __( "Call Now to Book : ", 'qrk' ) }}
+									<a href="{{ $button['url'] ?? '' }}" class="dynamic-phone-number__link dynamic-phone-number-and-prefix">
+										{!! $button['drawer_text'] ?? '' !!}
 										{!! $button['text'] ?? '' !!}
 									</a>
 								</li>
@@ -233,7 +233,7 @@
 					@if ( 'raq' === $button['type'] )
 						<x-button
 							:href="$button['url'] ?? ''"
-							class="header__drawer-request-quote-btn"
+							class="header__drawer-request-quote-btn dynamic-phone-number__link dynamic-phone-number__text"
 							size="big"
 						>
 							{!! $button['text'] ?? '' !!}
