@@ -1831,7 +1831,7 @@
 
 	<x-component-demo :keys="[ 'media-cta-banner' ]">
 		<x-media-cta-banner>
-			<x-media-cta-banner.image image_id="58" />
+			<x-media-cta-banner.image image_id="186" />
 			<x-media-cta-banner.content>
 				<h3>Ready For Your Expedition?</h3>
 				<p>Speak to a Polar Travel Advisor. Your Polar Travel Advisor will recommend the best expedition itinerary to suit your requirements.</p>
