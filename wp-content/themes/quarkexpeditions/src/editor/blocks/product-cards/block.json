@@ -1,0 +1,24 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "quark/product-cards",
+  "description": "Add product cards to the page.",
+  "title": "Product Cards",
+  "keywords": [ "product", "cards", "expeditions" ],
+  "category": "layout",
+  "textdomain": "qrk",
+  "parent": [ "" ],
+  "attributes": {
+    "align": {
+      "type": "string",
+      "default": "left"
+    }
+  },
+  "supports": {
+    "alignWide": false,
+    "anchor": true,
+    "className": false,
+    "html": false,
+    "customClassName": false
+  }
+}

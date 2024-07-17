@@ -1,0 +1,40 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Reviews Carousel Item",
+	"name": "quark/reviews-carousel-item",
+	"description": "Individual reviews carousel item",
+	"parent": [
+		"quark/reviews-carousel"
+	],
+	"icon": "screenoptions",
+	"category": "layout",
+	"textdomain": "qrk",
+	"keywords": [
+		"item"
+	],
+	"attributes": {
+		"title": {
+			"type": "string",
+			"default": "Review Title"
+		},
+		"review": {
+			"type": "string",
+			"default": "Review content"
+		},
+		"author": {
+			"type": "string",
+			"default": "Author"
+		},
+		"rating": {
+			"type": "string",
+			"default": "5"
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}
