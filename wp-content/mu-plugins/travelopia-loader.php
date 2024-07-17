@@ -53,6 +53,7 @@ $tp_mu_plugins = array(
 	'quark/quark-migration/plugin.php',
 	'quark/quark-softrip/plugin.php',
 	'quark/quark-office-phone-numbers/plugin.php',
+	'quark/quark-search/plugin.php',
 );
 
 foreach ( $tp_mu_plugins as $file ) {
