@@ -318,6 +318,7 @@
 				<x-hero.left>
 					<x-hero.title-container>
 						<x-hero.overline>Antarctic 2024</x-hero.overline>
+						<x-hero.savings text="Save upto 24%" />
 						<x-hero.title title="Antarctic Voyages" />
 						<x-hero.sub-title title="Choose the Leader in Polar Adventure" />
 						<x-hero.description>

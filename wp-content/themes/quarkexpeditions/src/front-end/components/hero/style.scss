@@ -125,6 +125,14 @@
 				text-align: unset;
 			}
 		}
+
+		#{$self}__savings-tag {
+			margin-inline: auto;
+
+			@media screen and (min-width: grid-size(lg)) {
+				margin-inline: 0;
+			}
+		}
 	}
 
 	&__wrap {
@@ -247,5 +255,12 @@
 				width: auto;
 			}
 		}
+	}
+
+	&__savings-tag {
+		padding: var(--spacing-1) var(--spacing-4);
+		background-color: var(--color-success-100);
+		color: var(--color-white);
+		width: fit-content;
 	}
 }
