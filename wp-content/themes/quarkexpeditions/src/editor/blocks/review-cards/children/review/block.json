@@ -1,0 +1,23 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Review Cards Review",
+	"name": "quark/review-cards-review",
+	"description": "Individual review card item review content.",
+	"parent": [
+		"quark/review-cards-card"
+	],
+	"icon": "screenoptions",
+	"category": "layout",
+	"keywords": [
+		"review"
+	],
+	"textdomain": "qrk",
+	"attributes": {},
+	"supports": {
+		"alignWide": false,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}
