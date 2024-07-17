@@ -40,6 +40,7 @@ import * as authorInfo from './author-info';
 import * as tableOfContents from './table-of-contents';
 import * as blogPostCards from './blog-post-cards';
 import * as adventureOptions from './adventure-options';
+import * as itineraries from './itineraries';
 
 /**
  * Add blocks.
@@ -84,6 +85,7 @@ const blocks = [
 	tableOfContents,
 	blogPostCards,
 	adventureOptions,
+	itineraries,
 ];
 
 /**
