@@ -1,0 +1,32 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Season Highlight Item",
+	"name": "quark/season-highlights-highlight",
+	"description": "Highlight Item within a Season Item",
+	"parent": [
+		"quark/season-highlights-season-item"
+	],
+	"icon": "layout",
+	"category": "layout",
+	"keywords": [
+		"highlight"
+	],
+	"textdomain": "qrk",
+	"attributes": {
+		"icon": {
+			"type": "string",
+			"default": ""
+		},
+		"title": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

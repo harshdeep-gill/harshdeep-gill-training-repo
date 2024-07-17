@@ -133,6 +133,7 @@ define( 'ACF_PRO_LICENSE', env( 'ACF_PRO_LICENSE' ) );
 define( 'PANTHEON_INDEX_HOST', env( 'PANTHEON_INDEX_HOST' ) );
 define( 'PANTHEON_INDEX_PORT', env( 'PANTHEON_INDEX_PORT' ) );
 define( 'SOLR_PATH', env( 'SOLR_PATH' ) );
+define( 'SOLRPOWER_DISABLE_AUTOCOMMIT', false );
 
 // S3 Uploads.
 define( 'S3_UPLOADS_BUCKET', env( 'S3_UPLOADS_BUCKET' ) );

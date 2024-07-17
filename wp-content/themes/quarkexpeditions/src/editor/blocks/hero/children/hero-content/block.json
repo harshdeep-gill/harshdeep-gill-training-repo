@@ -1,0 +1,24 @@
+{
+	"schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Hero Content",
+	"name": "quark/hero-content",
+	"description": "Container of hero content.",
+	"category": "layout",
+	"keywords": [
+		"hero",
+		"content"
+	],
+	"textdomain": "qrk",
+	"attributes": {},
+	"parent": [
+		"quark/hero"
+	],
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

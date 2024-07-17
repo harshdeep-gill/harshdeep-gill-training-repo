@@ -1,0 +1,34 @@
+{
+	"schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Icon Badge",
+	"name": "quark/icon-badge",
+	"description": "Display an icon with some text in a badge.",
+	"category": "layout",
+	"keywords": [
+		"icon",
+		"badge"
+	],
+	"textdomain": "qrk",
+	"attributes": {
+		"icon": {
+			"type": "string",
+			"default": ""
+		},
+		"color": {
+			"type": "string",
+			"default": ""
+		},
+		"text": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": true
+	}
+}

@@ -1,0 +1,32 @@
+{
+	"schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Accordion Item",
+	"name": "quark/accordion-item",
+	"description": "Accordion Item.",
+	"parent": [
+		"quark/accordion"
+	],
+	"icon": "screenoptions",
+	"category": "layout",
+	"keywords": [
+		"item"
+	],
+	"textdomain": "qrk",
+	"attributes": {
+		"title": {
+			"type": "string",
+			"default": ""
+		},
+		"isOpen": {
+			"type": "boolean",
+			"default": false
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}
