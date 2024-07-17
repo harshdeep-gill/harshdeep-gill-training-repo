@@ -115,6 +115,24 @@ class Itinerary extends Softrip_Object {
 	}
 
 	/**
+	 * Get itinerary published departures.
+	 *
+	 * @return Departure[]
+	 */
+	public function get_published_departures(): array {
+		// Ensure departures loaded.
+		$this->ensure_departures_loaded();
+
+		// Return the list of departures.
+		return array_filter(
+			$this->departures,
+			function ( Departure $departure ) {
+				return 'publish' === $departure->get_status();
+			}
+		);
+	}
+
+	/**
 	 * Get a departure by id.
 	 *
 	 * @param string|null $id Departure ID.

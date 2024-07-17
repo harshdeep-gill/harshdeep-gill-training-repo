@@ -817,7 +817,7 @@ function get_total_departures( int $post_id = 0 ): int {
 		$itinerary_obj = new Itinerary( $itinerary['post']->ID );
 
 		// Get total departures for Itinerary.
-		$total_departures = count( $itinerary_obj->get_departures() );
+		$total_departures = $total_departures + count( $itinerary_obj->get_published_departures() );
 	}
 
 	// Return total departures.
@@ -955,6 +955,13 @@ function get_ending_to_date( int $post_id = 0 ): string {
  *     title: string,
  *     duration: int,
  *     region: string,
+ *     from_price: string,
+ *     starting_from: array{},
+ *     ships: array{},
+ *     total_departures: int,
+ *     tags ?: array{},
+ *     from_date ?: string,
+ *     to_date ?: string,
  * }
  */
 function get_expedition_details_card_data( int $post_id = 0 ): array {
@@ -971,8 +978,18 @@ function get_expedition_details_card_data( int $post_id = 0 ): array {
 		return $data;
 	}
 
-	// Get post title.
-	$data['title'] = $post['post']->post_title;
+	// Break title with colon.
+	$title_parts = explode( ':', $post['post']->post_title );
+
+	// Check if title parts are available.
+	if ( ! empty( $title_parts[0] ) ) {
+		$title = trim( $title_parts[0] );
+	} else {
+		$title = $post['post']->post_title;
+	}
+
+	// Set title.
+	$data['title'] = $title;
 
 	// Init $tags.
 	$tags = [];
@@ -984,14 +1001,11 @@ function get_expedition_details_card_data( int $post_id = 0 ): array {
 
 	// Check for tags.
 	if ( ! empty( $tags ) ) {
-		// Get tag name comma seperated.
-		$tag_names = array_map(
+		// Get tag names.
+		$data['tags'] = array_map(
 			fn( $tag ) => $tag['name'],
 			$tags
 		);
-
-		// Set tag names.
-		$data['tags'] = $tag_names;
 	}
 
 	// Get Regions.

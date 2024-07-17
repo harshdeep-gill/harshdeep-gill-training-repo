@@ -372,6 +372,11 @@ class Departure extends Softrip_Object {
 		// Set up the lowest variable.
 		$lowest = 0;
 
+		// Check Current departure status is published.
+		if ( 'publish' !== $this->get_status() ) {
+			return $lowest;
+		}
+
 		// Iterate over the cabins.
 		foreach ( $this->get_cabins() as $cabin ) {
 			// Get the price per person.
@@ -398,6 +403,11 @@ class Departure extends Softrip_Object {
 	 * }
 	 */
 	public function get_ship(): array {
+		// Check Current departure status is published.
+		if ( 'publish' !== $this->get_status() ) {
+			return [];
+		}
+
 		// Get the ship code.
 		$ship_code = $this->get_post_meta( 'ship_id' );
 
@@ -425,6 +435,11 @@ class Departure extends Softrip_Object {
 	 * @return string The starting date.
 	 */
 	public function get_starting_date(): string {
+		// Check Current departure status is published.
+		if ( 'publish' !== $this->get_status() ) {
+			return '';
+		}
+
 		// Get the departure start date.
 		$departure_start_date = $this->get_post_meta( 'departure_start_date' );
 
@@ -443,6 +458,11 @@ class Departure extends Softrip_Object {
 	 * @return string The ending date.
 	 */
 	public function get_ending_date(): string {
+		// Check Current departure status is published.
+		if ( 'publish' !== $this->get_status() ) {
+			return '';
+		}
+
 		// Get the departure end date.
 		$departure_end_date = $this->get_post_meta( 'departure_end_date' );
 
