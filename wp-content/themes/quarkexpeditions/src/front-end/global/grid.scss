@@ -31,14 +31,6 @@ body.admin-bar {
 	@extend %main;
 }
 
-.wp-site-blocks {
-
-	.main {
-		padding-left: 0;
-		padding-right: 0;
-	}
-}
-
 .wrap {
 	width: 100%;
 	max-width: calc(var(--wrap-width) + (var(--grid-col-gutter) * 2));
