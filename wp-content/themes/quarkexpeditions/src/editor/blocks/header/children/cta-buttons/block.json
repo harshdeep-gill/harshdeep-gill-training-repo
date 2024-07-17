@@ -1,0 +1,24 @@
+{
+	"schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Header CTA Buttons",
+	"name": "quark/header-cta-buttons",
+	"description": "Individual CTA Buttons for Header",
+	"parent": [
+		"quark/header"
+	],
+	"icon": "button",
+	"category": "layout",
+	"textdomain": "qrk",
+	"keywords": [
+		"cta",
+		"buttons"
+	],
+	"attributes": {},
+	"supports": {
+		"alignWide": false,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

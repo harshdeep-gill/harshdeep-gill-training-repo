@@ -6,9 +6,9 @@
 	display: flex;
 	align-items: center;
 	height: var(--header-height);
-	padding: 0 var(--spacing-5);
+	padding: 0 var(--grid-col-gutter);
 	position: sticky;
-	top: var(--wp-admin-bar-height);
+	top: 0;
 	z-index: 99;
 	gap: var(--spacing-4);
 
@@ -57,6 +57,7 @@
 		font-size: 0;
 		display: inline-flex;
 		align-items: center;
+		min-height: 56px;
 		min-width: 56px;
 
 		@media screen and (min-width: grid-size(xxxl)) {

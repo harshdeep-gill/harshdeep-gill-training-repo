@@ -1,0 +1,25 @@
+{
+	"schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Hero Content Right",
+	"name": "quark/hero-content-left",
+	"description": "Right half of hero content.",
+	"category": "layout",
+	"keywords": [
+		"hero",
+		"content",
+		"right"
+	],
+	"textdomain": "qrk",
+	"attributes": {},
+	"parent": [
+		"quark/hero-content"
+	],
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

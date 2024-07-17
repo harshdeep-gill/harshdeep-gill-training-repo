@@ -1,0 +1,39 @@
+{
+	"schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Most Important Factors Field",
+	"name": "quark/form-field-most-important-factors",
+	"description": "Display the Most Important Factors Field",
+	"parent": [
+		"quark/form-two-step-landing-form"
+	],
+	"category": "forms",
+	"keywords": [
+		"most",
+		"important",
+		"factors",
+		"field"
+	],
+	"textdomain": "qrk",
+	"attributes": {
+		"label": {
+			"type": "string",
+			"default": ""
+		},
+		"options": {
+			"type": "string",
+			"default": ""
+		},
+		"isRequired": {
+			"type": "boolean",
+			"default": false
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

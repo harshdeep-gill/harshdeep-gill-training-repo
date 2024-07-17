@@ -1,0 +1,67 @@
+{
+	"schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Request a Quote Button",
+	"name": "quark/raq-button",
+	"description": "Display Request a Quote Button.",
+	"parent": [
+		"quark/cta-buttons"
+	],
+	"icon": "button",
+	"category": "layout",
+	"keywords": [
+		"raq",
+		"request",
+		"quote",
+		"button"
+	],
+	"textdomain": "qrk",
+	"attributes": {
+		"url": {
+			"type": "object",
+			"default": {}
+		},
+		"backgroundColor": {
+			"type": "string",
+			"default": "yellow",
+			"enum": [
+				"yellow",
+				"black"
+			]
+		},
+		"btnText": {
+			"type": "string",
+			"default": ""
+		},
+		"icon": {
+			"type": "string",
+			"default": ""
+		},
+		"iconPosition": {
+			"type": "string",
+			"default": "left",
+			"enum": [
+				"left",
+				"right"
+			]
+		},
+		"isSizeBig": {
+			"type": "boolean",
+			"default": false
+		},
+		"appearance": {
+			"type": "string",
+			"default": "solid"
+		},
+		"hasIcon": {
+			"type": "boolean",
+			"default": false
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"className": false,
+		"html": false,
+		"customClassName": true
+	}
+}
