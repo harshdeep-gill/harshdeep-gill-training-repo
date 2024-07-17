@@ -54,7 +54,7 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 	let allOptionsSelected = false;
 
 	// Check if all required options are selected.
-	if ( 'recent' === attributes.selection ) {
+	if ( 'recent' === attributes.selection && 0 !== attributes.departmentIds.length ) {
 		allOptionsSelected = true;
 	} else if ( 'manual' === attributes.selection && 0 !== attributes.ids.length ) {
 		allOptionsSelected = true;
