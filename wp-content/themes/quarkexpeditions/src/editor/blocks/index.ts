@@ -46,6 +46,7 @@ import * as authorInfo from './author-info';
 import * as tableOfContents from './table-of-contents';
 import * as blogPostCards from './blog-post-cards';
 import * as adventureOptions from './adventure-options';
+import * as expeditionDetails from './expedition-details';
 
 /**
  * Add blocks.
@@ -91,6 +92,7 @@ const blocks = [
 	tableOfContents,
 	blogPostCards,
 	adventureOptions,
+	expeditionDetails,
 ];
 
 /**

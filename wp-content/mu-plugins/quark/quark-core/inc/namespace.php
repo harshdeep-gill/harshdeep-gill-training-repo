@@ -336,3 +336,49 @@ function get_visitor_geo_country(): string {
 	// Return geolocation.
 	return $geolocation;
 }
+
+/**
+ * Format price.
+ *
+ * @param int    $price Price.
+ * @param string $currency Currency.
+ *
+ * @return string Formatted price.
+ */
+function quark_format_price( int $price = 0, string $currency = 'USD' ): string {
+	// Check if price is empty.
+	if ( empty( $price ) ) {
+		return '';
+	}
+
+	// Set default separators.
+	$string_format = '%1$s%2$s %3$s';
+
+	// Set Currency symbol.
+	$currency_symbols = [
+		'AUD' => '$',
+		'CAD' => '$',
+		'USD' => '$',
+		'EUR' => '€',
+		'GBP' => '£',
+	];
+
+	// Validate currency.
+	$currency = array_key_exists( strtoupper( $currency ), $currency_symbols ) ? strtoupper( $currency ) : 'USD';
+
+	// Current symbol.
+	$currency_symbol     = $currency_symbols[ strtoupper( $currency ) ];
+	$decimal_separator   = '.';
+	$thousands_separator = ',';
+
+	// Decimal separator.
+	$decimals = fmod( $price, absint( $price ) ) ? 2 : 0;
+
+	// Return formatted price.
+	return sprintf(
+		$string_format,
+		$currency_symbol,
+		number_format( $price, $decimals, $decimal_separator, $thousands_separator ),
+		$currency
+	);
+}

@@ -66,6 +66,7 @@ function register_blocks(): void {
 		'TableOfContents'       => 'table-of-contents.php',
 		'BlogPostCards'         => 'blog-post-cards.php',
 		'AdventureOptions'      => 'adventure-options.php',
+		'ExpeditionDetails'     => 'expedition-details.php',
 	];
 
 	// Register blocks.

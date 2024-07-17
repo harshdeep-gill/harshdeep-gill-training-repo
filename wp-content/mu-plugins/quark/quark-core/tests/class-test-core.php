@@ -126,4 +126,31 @@ class Test_Core extends WP_UnitTestCase {
 			get_registered_nav_menus()
 		);
 	}
+
+	/**
+	 * Test quark_format_price.
+	 *
+	 * @covers \Quark\Core\quark_format_price()
+	 *
+	 * @return void
+	 */
+	public function test_quark_format_price(): void {
+		// Test price formatting.
+		$this->assertEquals(
+			'$1,000 USD',
+			quark_format_price( 1000 )
+		);
+
+		// Test price formatting with custom currency.
+		$this->assertEquals(
+			'€10,000 EUR',
+			quark_format_price( 10000, 'eur' )
+		);
+
+		// Test price formatting with custom currency.
+		$this->assertEquals(
+			'£100,000 GBP',
+			quark_format_price( 100000, 'GBP' )
+		);
+	}
 }

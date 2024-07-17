@@ -9,6 +9,7 @@ namespace Quark\Softrip;
 
 use WP_Error;
 use WP_Query;
+use WP_Post;
 
 use function Quark\Itineraries\bust_post_cache;
 use function Quark\Itineraries\get as get_itinerary;
@@ -204,5 +205,92 @@ class Itinerary extends Softrip_Object {
 
 		// Return the lowest found.
 		return $lowest;
+	}
+
+	/**
+	 * Get the related ships.
+	 *
+	 * @return mixed[]
+	 */
+	public function get_related_ships(): array {
+		// Init Ships var.
+		$ships = [];
+
+		// Iterate over the departures.
+		foreach ( $this->get_departures() as $departure ) {
+			// Get the ship.
+			$ship = $departure->get_ship();
+
+			// Check if ship is valid.
+			if ( empty( $ship['post'] ) || ! $ship['post'] instanceof WP_Post ) {
+				continue;
+			}
+
+			// Add the ship to the list.
+			$ships[ $ship['post']->ID ] = $ship;
+		}
+
+		// Return the ships.
+		return $ships;
+	}
+
+	/**
+	 * Get the starting date for the Itinerary.
+	 *
+	 * @return string
+	 */
+	public function get_starting_date(): string {
+		// Set up the lowest variable.
+		$start_date = '';
+
+		// Iterate over the departures.
+		foreach ( $this->get_departures() as $departure ) {
+			// Get the price per person.
+			$test_date = $departure->get_starting_date();
+
+			// Check if start date is set.
+			if ( empty( $test_date ) ) {
+				continue;
+			}
+
+			// Check if start date is set and is newer than the previous date.
+			if ( empty( $start_date ) || strtotime( $start_date ) < strtotime( $test_date ) ) {
+				// Use the date as it's newer.
+				$start_date = $test_date;
+			}
+		}
+
+		// Return the newest found.
+		return $start_date;
+	}
+
+	/**
+	 * Get the ending date for the Itinerary.
+	 *
+	 * @return string
+	 */
+	public function get_ending_date(): string {
+		// Set up the lowest variable.
+		$end_date = '';
+
+		// Iterate over the departures.
+		foreach ( $this->get_departures() as $departure ) {
+			// Get the price per person.
+			$test_date = $departure->get_ending_date();
+
+			// Check if start date is set.
+			if ( empty( $test_date ) ) {
+				continue;
+			}
+
+			// Check if start date is set and is newer than the previous date.
+			if ( empty( $end_date ) || strtotime( $end_date ) < strtotime( $test_date ) ) {
+				// Use the date as it's newer.
+				$end_date = $test_date;
+			}
+		}
+
+		// Return the newest found.
+		return $end_date;
 	}
 }
