@@ -41,7 +41,7 @@ export const name: string = 'quark/lp-header';
  * Block configuration settings.
  */
 export const settings: BlockConfiguration = {
-	apiVersion: 2,
+	apiVersion: 3,
 	title: __( 'LP Header', 'qrk' ),
 	description: __( 'LP Header block.', 'qrk' ),
 	category: 'layout',

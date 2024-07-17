@@ -122,7 +122,10 @@ module.exports = ( env ) => {
 		...buildConfig,
 		entry: {
 			TPSliderElement: `${ themePath }/src/vendor/tp-slider.js`,
+			TPTabsElement: `${ themePath }/src/vendor/tp-tabs.js`,
 			GLightbox: `${ themePath }/src/vendor/glightbox.js`,
+			TPAccordionItemElement: `${ themePath }/src/vendor/tp-accordion.js`,
+			TPMultiSelectElement: `${ themePath }/src/vendor/tp-multi-select.js`,
 		},
 		output: {
 			...buildConfig.output,

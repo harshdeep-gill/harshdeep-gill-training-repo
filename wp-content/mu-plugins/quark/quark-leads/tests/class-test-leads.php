@@ -55,11 +55,9 @@ class Test_Leads extends WP_UnitTestCase {
 		// Test 1: Check if function return api endpoint or not.
 		$this->assertEquals(
 			[
-				'data' => [
-					'leads_api_endpoint' => get_rest_url( null, '/' . REST_API_NAMESPACE . '/leads/create' ),
-				],
+				'leads_api_endpoint' => get_rest_url( null, '/' . REST_API_NAMESPACE . '/leads/create' ),
 			],
-			front_end_data( [ 'data' => [] ] )
+			front_end_data( [] )
 		);
 	}
 
@@ -254,7 +252,7 @@ class Test_Leads extends WP_UnitTestCase {
 	 *
 	 * @return void
 	 */
-	public function test_forms_countries_list() {
+	public function test_forms_countries_list(): void {
 		// Test the count of countries.
 		$this->assertEquals( 250, count( get_countries() ) );
 	}
@@ -266,7 +264,7 @@ class Test_Leads extends WP_UnitTestCase {
 	 *
 	 * @return void
 	 */
-	public function test_forms_states_list() {
+	public function test_forms_states_list(): void {
 		// Top level array keys.
 		$keys_to_test = [ 'AU', 'US', 'CA' ];
 

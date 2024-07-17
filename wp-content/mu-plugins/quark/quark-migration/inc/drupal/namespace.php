@@ -509,6 +509,11 @@ function get_post_by_id( int $drupal_id = 0, string $post_type = 'post', string 
 		'post_per_page' => 1,
 	];
 
+	// If post type is passed as "any" remove it from the arguments.
+	if ( 'any' === $post_type ) {
+		unset( $arguments['post_type'] );
+	}
+
 	// Query post.
 	$posts = new WP_Query( $arguments );
 

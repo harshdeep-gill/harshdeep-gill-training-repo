@@ -26,6 +26,7 @@ function setup(): void {
 function register_blocks(): void {
 	// List of blocks to register.
 	$blocks = [
+		'Components'            => 'components.php',
 		'Section'               => 'section.php',
 		'LPHeader'              => 'lp-header.php',
 		'TwoColumns'            => 'two-columns.php',
@@ -53,6 +54,18 @@ function register_blocks(): void {
 		'FancyVideo'            => 'fancy-video.php',
 		'FormTwoStep'           => 'form-two-step.php',
 		'FormTwoStepCompact'    => 'form-two-step-compact.php',
+		'Header'                => 'header.php',
+		'MenuList'              => 'menu-list.php',
+		'Footer'                => 'footer.php',
+		'Accordion'             => 'accordion.php',
+		'ThumbnailCards'        => 'thumbnail-cards.php',
+		'RelatedPosts'          => 'related-posts.php',
+		'Breadcrumbs'           => 'breadcrumbs.php',
+		'SidebarGrid'           => 'sidebar-grid.php',
+		'AuthorInfo'            => 'author-info.php',
+		'TableOfContents'       => 'table-of-contents.php',
+		'BlogPostCards'         => 'blog-post-cards.php',
+		'AdventureOptions'      => 'adventure-options.php',
 	];
 
 	// Register blocks.
