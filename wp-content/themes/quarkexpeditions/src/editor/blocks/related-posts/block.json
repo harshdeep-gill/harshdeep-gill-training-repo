@@ -1,0 +1,34 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Related Posts",
+	"name": "quark/related-posts",
+	"description": "Related Posts block.",
+	"category": "layout",
+	"keywords": [
+		"related",
+		"posts"
+	],
+	"textdomain": "qrk",
+	"attributes": {
+		"selection": {
+			"type": "string",
+			"default": "recent"
+		},
+		"ids": {
+			"type": "array",
+			"default": []
+		},
+		"totalPosts": {
+			"type": "number",
+			"default": 3
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

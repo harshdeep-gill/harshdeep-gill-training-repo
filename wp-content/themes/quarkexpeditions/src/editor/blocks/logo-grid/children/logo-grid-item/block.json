@@ -1,0 +1,27 @@
+{
+	"schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Logo Grid Item",
+	"name": "quark/logo-grid-item",
+	"description": "Individual logo grid item.",
+	"parent": [
+		"quark/logo-grid"
+	],
+	"icon": "screenoptions",
+	"category": "layout",
+	"keywords": [
+		"item"
+	],
+	"textdomain": "qrk",
+	"attributes": {
+		"image": {
+			"type": "object"
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

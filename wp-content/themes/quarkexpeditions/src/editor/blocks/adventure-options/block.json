@@ -1,0 +1,27 @@
+{
+	"schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Adventure Options",
+	"name": "quark/adventure-options",
+	"description": "Adventure Options block.",
+	"category": "layout",
+	"keywords": [
+		"adventure",
+		"options",
+		"posts"
+	],
+	"textdomain": "qrk",
+	"attributes": {
+		"termIDs": {
+			"type": "array",
+			"default": []
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

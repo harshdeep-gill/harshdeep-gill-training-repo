@@ -1,0 +1,32 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Sidebar",
+	"name": "quark/sidebar-grid-sidebar",
+	"description": "Sidebar within Sidebar Grid Block.",
+	"parent": [
+		"quark/sidebar-grid"
+	],
+	"icon": "screenoptions",
+	"category": "layout",
+	"keywords": [
+		"sidebar"
+	],
+	"textdomain": "qrk",
+	"attributes": {
+		"stickySidebar": {
+			"type": "boolean",
+			"default": true
+		},
+		"showOnMobile": {
+			"type": "boolean",
+			"default": false
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}
