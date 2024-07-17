@@ -3,27 +3,33 @@
 .hero {
 	$self: &;
 
+	--hero-padding-block: var(--spacing-8);
+
 	position: relative;
-	padding-block: var(--spacing-8);
-	min-height: 540px;
+	padding-block: var(--hero-padding-block);
 	margin-top: 0;
 	overflow: hidden;
+	z-index: 0;
 
 	@media screen and (min-width: grid-size(lg)) {
-		padding-block: var(--spacing-9);
+		--hero-padding-block: var(--spacing-9);
 	}
 
 	@supports (selector(:has(*))) {
 
 		&:has(.breadcrumbs) {
 			padding-top: 0;
+
+			#{$self}__content {
+				min-height: calc(540px - var(--hero-padding-block));
+			}
 		}
 	}
 
 	.breadcrumbs {
 		margin-bottom: var(--spacing-8);
 		position: relative;
-		z-index: 2;
+		z-index: 3;
 
 		@media screen and (min-width: grid-size(lg)) {
 			margin-bottom: var(--spacing-9);
@@ -36,7 +42,7 @@
 		display: block;
 		margin: 0;
 		inset: 0;
-		z-index: 1;
+		z-index: 2;
 		max-width: 100%;
 		background-color: rgba(0, 0, 0, var(--hero-overlay-background-opacity));
 	}
@@ -74,7 +80,7 @@
 				+ * {
 					margin-top: 0;
 					position: relative;
-					z-index: 2;
+					// z-index: 3;
 				}
 			}
 		}
@@ -84,7 +90,7 @@
 			content: "";
 			display: block;
 			position: absolute;
-			z-index: 1;
+			z-index: 2;
 			left: 0;
 			right: 0;
 			bottom: -1px;
@@ -136,7 +142,7 @@
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
-		z-index: 0;
+		z-index: 1;
 	}
 
 	&__title {
@@ -152,8 +158,9 @@
 		flex-direction: column;
 		align-items: center;
 		gap: var(--spacing-6);
+		min-height: 540px;
 		position: relative;
-		z-index: 2;
+		z-index: 3;
 
 		@media screen and (min-width: grid-size(lg)) {
 			flex-direction: row;
