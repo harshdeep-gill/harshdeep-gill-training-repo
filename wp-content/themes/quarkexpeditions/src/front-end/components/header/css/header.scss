@@ -6,9 +6,9 @@
 	display: flex;
 	align-items: center;
 	height: var(--header-height);
-	padding: 0 var(--spacing-5);
+	padding: 0 var(--grid-col-gutter);
 	position: sticky;
-	top: var(--wp-admin-bar-height);
+	top: 0;
 	z-index: 99;
 	gap: var(--spacing-4);
 
@@ -19,15 +19,6 @@
 
 	> *:nth-child(3) {
 		margin-left: auto;
-	}
-
-	a {
-
-		@include transition();
-
-		color: var(--color-white);
-		transition-property: background-color, border-color, color;
-		text-decoration: none;
 	}
 
 	&__logo {
@@ -66,10 +57,15 @@
 		font-size: 0;
 		display: inline-flex;
 		align-items: center;
+		min-height: 56px;
 		min-width: 56px;
 
 		@media screen and (min-width: grid-size(xxxl)) {
 			font-size: inherit;
+		}
+
+		.btn__icon {
+			margin: 0;
 		}
 
 		svg {
@@ -98,6 +94,15 @@
 
 			&:hover {
 				text-decoration: underline;
+			}
+		}
+
+		a[href^="tel:"] {
+			text-decoration: underline;
+			text-decoration-color: var(--color-black);
+
+			&:hover {
+				text-decoration-color: var(--color-yellow);
 			}
 		}
 	}
