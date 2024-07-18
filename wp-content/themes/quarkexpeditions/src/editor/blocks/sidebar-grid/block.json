@@ -1,0 +1,21 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Sidebar Grid",
+	"name": "quark/sidebar-grid",
+	"description": "Add a sidebar grid block.",
+	"category": "layout",
+	"textdomain": "qrk",
+	"keywords": [
+		"sidebar",
+		"grid"
+	],
+	"attributes": {},
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

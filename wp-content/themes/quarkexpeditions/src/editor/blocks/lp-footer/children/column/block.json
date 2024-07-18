@@ -1,0 +1,28 @@
+{
+	"schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Footer Column",
+	"name": "quark/lp-footer-column",
+	"description": "Footer column block.",
+	"parent": [
+		"quark/lp-footer-row"
+	],
+	"icon": "columns",
+	"category": "layout",
+	"keywords": [
+		"column"
+	],
+	"textdomain": "qrk",
+	"attributes": {
+		"url": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

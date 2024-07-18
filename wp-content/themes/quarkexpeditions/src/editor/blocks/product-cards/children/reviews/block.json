@@ -1,0 +1,28 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "quark/product-cards-reviews",
+  "description": "Individual Card Reviews for product cards.",
+  "icon": "screenoptions",
+  "title": "Card Reviews",
+  "keywords": [ "reviews" ],
+  "category": "layout",
+  "textdomain": "qrk",
+  "parent": [ "quark/product-cards-card" ],
+  "attributes": {
+    "rating": {
+      "type": "string",
+      "default": "5"
+    },
+    "reviewsText": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "supports": {
+    "alignWide": false,
+    "className": false,
+    "html": false,
+    "customClassName": false
+  }
+}

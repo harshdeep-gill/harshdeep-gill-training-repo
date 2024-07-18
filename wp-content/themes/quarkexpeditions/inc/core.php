@@ -262,7 +262,7 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'class'  => true,
 					'data-*' => true,
 				],
-				'quark-form-two-step-compact'           => [
+				'quark-table-of-contents'               => [
 					'class' => true,
 				],
 				'quark-form-two-step-compact-modal'     => [
@@ -279,9 +279,6 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'class' => true,
 				],
 				'quark-itinerary-tabs'                  => [
-					'class' => true,
-				],
-				'quark-table-of-contents'               => [
 					'class' => true,
 				],
 				'quark-header-nav-menu-dropdown'        => [

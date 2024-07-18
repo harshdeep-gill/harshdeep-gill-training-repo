@@ -1,0 +1,30 @@
+{
+	"schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Logo Grid",
+	"name": "quark/logo-grid",
+	"description": "Display grid of logos.",
+	"category": "layout",
+	"keywords": [
+		"logo",
+		"grid"
+	],
+	"textdomain": "qrk",
+	"attributes": {
+		"alignment": {
+			"type": "string",
+			"default": "left"
+		},
+		"size": {
+			"type": "string",
+			"default": "small"
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

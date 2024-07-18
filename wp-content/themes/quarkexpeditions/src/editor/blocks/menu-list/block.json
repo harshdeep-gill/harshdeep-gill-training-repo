@@ -1,0 +1,26 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Menu List",
+	"name": "quark/menu-list",
+	"description": "Add a list of menu items vertically",
+	"category": "layout",
+	"keywords": [
+		"menu",
+		"list"
+	],
+	"textdomain": "qrk",
+	"attributes": {
+		"title": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

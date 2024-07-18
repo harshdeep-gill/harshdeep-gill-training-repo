@@ -5,6 +5,7 @@
 	&__hamburger-menu {
 
 		.btn {
+			border-color: var(--color-white);
 			display: flex;
 			align-items: center;
 			justify-content: center;
@@ -12,7 +13,7 @@
 			min-width: 56px;
 		}
 
-		@media screen and (min-width: grid-size(lg)) {
+		@media screen and (min-width: grid-size(xl)) {
 			display: none;
 		}
 	}
@@ -41,7 +42,7 @@
 				max-width: 480px;
 			}
 
-			@media screen and (min-width: grid-size(lg)) {
+			@media screen and (min-width: grid-size(xl)) {
 				max-width: 640px;
 			}
 		}
