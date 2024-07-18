@@ -28,6 +28,8 @@ use const Quark\InclusionSets\POST_TYPE as INCLUSION_SET_POST_TYPE;
 use const Quark\ExclusionSets\POST_TYPE as EXCLUSION_SET_POST_TYPE;
 use const Quark\ItineraryDays\POST_TYPE as ITINERARY_DAY_POST_TYPE;
 use const Quark\PolicyPages\POST_TYPE as POLICY_PAGE_POST_TYPE;
+use const Quark\Expeditions\POST_TYPE as EXPEDITION_POST_TYPE;
+use const Quark\StaffMembers\SEASON_TAXONOMY;
 use const Quark\Itineraries\DEPARTURE_LOCATION_TAXONOMY;
 
 /**
@@ -441,7 +443,21 @@ class Itinerary {
 			}
 		}
 
-		// TODO: Related Expedition to map with parent expedition.
+		// Related Expedition to map with parent expedition.
+		if ( ! empty( $item['related_expedition_id'] ) ) {
+			$related_expedition = get_post_by_id( absint( $item['related_expedition_id'] ), EXPEDITION_POST_TYPE );
+
+			// Check if post exist.
+			if ( $related_expedition instanceof WP_Post ) {
+				$data['meta_input']['related_expedition'] = $related_expedition->ID;
+			}
+		}
+
+		// Set season_value as term.
+		if ( ! empty( $item['season_value'] ) ) {
+			$data['tax_input'][ SEASON_TAXONOMY ] = [ $item['season_value'] ];
+		}
+
 		// Return normalized data.
 		return $data;
 	}

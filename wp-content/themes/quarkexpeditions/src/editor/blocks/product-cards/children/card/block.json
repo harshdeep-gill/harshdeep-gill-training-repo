@@ -1,0 +1,60 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "quark/product-cards-card",
+  "description": "Individual Card Item for product cards.",
+  "icon": "screenoptions",
+  "title": "Product Cards Card",
+  "keywords": [ "card" ],
+  "category": "layout",
+  "textdomain": "qrk",
+  "parent": [ "quark/product-cards" ],
+  "attributes": {
+    "image": {
+      "type": "object",
+      "default": {}
+    },
+    "isImmersiveImage": {
+      "type": "boolean",
+      "default": false
+    },
+    "hasCtaBadge": {
+      "type": "boolean",
+      "default": false
+    },
+    "ctaBadgeText": {
+      "type": "string",
+      "default": ""
+    },
+    "hasTimeBadge": {
+      "type": "boolean",
+      "default": false
+    },
+    "timeBadgeText": {
+      "type": "string",
+      "default": ""
+    },
+    "hasInfoRibbon": {
+      "type": "boolean",
+      "default": false
+    },
+    "infoRibbonText": {
+      "type": "string",
+      "default": ""
+    },
+    "isSoldOut": {
+      "type": "boolean",
+      "default": false
+    },
+    "soldOutText": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "supports": {
+    "alignWide": false,
+    "className": false,
+    "html": false,
+    "customClassName": false
+  }
+}

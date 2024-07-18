@@ -1,0 +1,28 @@
+{
+	"schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "LP Footer icon",
+	"name": "quark/lp-footer-icon",
+	"description": "Individual icon in the LP footer columns.",
+	"parent": [
+		"quark/lp-footer-column"
+	],
+	"icon": "info",
+	"category": "layout",
+	"keywords": [
+		"icon"
+	],
+	"textdomain": "qrk",
+	"attributes": {
+		"icon": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

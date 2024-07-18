@@ -5,7 +5,5 @@
 @endphp
 
 <footer class="footer full-width color-context--dark">
-	<div class="footer__wrap">
-		{!! $slot !!}
-	</div>
+	{!! $slot !!}
 </footer>

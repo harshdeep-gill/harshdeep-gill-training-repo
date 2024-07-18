@@ -203,6 +203,7 @@ class Departure extends Softrip_Object {
 			'packageCode'      => '',
 			'startDate'        => current_time( 'mysql' ),
 			'endDate'          => '',
+			'marketCode'       => '',
 			'duration'         => 0,
 			'cabins'           => [],
 			'adventureOptions' => [],
@@ -225,6 +226,7 @@ class Departure extends Softrip_Object {
 				'duration'             => $data['duration'],
 				'itinerary'            => $this->itinerary->get_id(),
 				'ship_id'              => $data['shipCode'],
+				'region'               => $data['marketCode'],
 			],
 		];
 

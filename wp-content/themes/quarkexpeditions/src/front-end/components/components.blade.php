@@ -360,6 +360,49 @@
 		</x-hero>
 	</x-component-demo>
 
+	<x-component-demo :keys="[ 'highlights' ]">
+		<x-two-columns :border="false">
+			<x-two-columns.column>
+				<h2>Expedition Overview</h2>
+				<p>Set foot on the Seventh Continent for a polar achievement few get to experience. But an even rarer milestone is getting to cross the iconic Antarctic Circle, which is one of the highlights of this unique small ship expedition!</p>
+				<p>Over 14 days as you navigate south, you’ll have the chance to witness dramatic ice formations, humpback whales swimming alongside the ship, leopard seals diving beneath your Zodiac, penguins sliding off icebergs into crystal waters, and even giant petrels soaring above the crackling sea.</p>
+				<p>We highly recommend the expedition itineraries aboard our pioneering purpose-built vessel, the Ultramarine, which includes a flightseeing tour and a range of adventure options more extensive than any other ship in its class.</p>
+			</x-two-columns.column>
+			<x-two-columns.column>
+				<x-highlights>
+					<x-highlights.title title="Highlights" />
+					<x-highlights.item>
+						<x-highlights.icon icon="compass2" />
+						<x-highlights.item-title title="Cross the Drake Passage, and venture beyond the remote at 66°33'S" />
+					</x-highlights.item>
+					<x-highlights.item>
+						<x-highlights.icon icon="zodiac-cruising" />
+						<x-highlights.item-title title="Head out on Zodiac cruises, go hiking, and take a Polar Plunge" />
+					</x-highlights.item>
+					<x-highlights.item>
+						<x-highlights.icon icon="whale-tail" />
+						<x-highlights.item-title title="Witness abundant wildlife, including penguins, seals, and whales" />
+					</x-highlights.item>
+					<x-highlights.item>
+						<x-highlights.icon icon="house" />
+						<x-highlights.item-title title="Visit Antarctic research stations and iconic landmarks" />
+					</x-highlights.item>
+					<x-highlights.item>
+						<x-highlights.icon icon="iceberg" />
+						<x-highlights.item-title title="Enjoy presentations on wildlife, history, glaciology, and geology by our onboard polar experts" />
+					</x-highlights.item>
+					<x-highlights.item>
+						<x-highlights.icon icon="flightseeing" />
+						<x-highlights.item-title title="Flightseeing (Only on Ultramarine)" />
+					</x-highlights.item>
+					<x-highlights.info>
+						<p>Plus, add on adventure options, such as a paddling excursion</p>
+					</x-highlights.info>
+				</x-highlights>
+			</x-two-columns.column>
+		</x-two-columns>
+	</x-component-demo>
+
 	<x-component-demo :keys="[ 'review-cards', 'hero-refactor' ]">
 		<x-review-cards>
 			<x-review-cards.card>
@@ -474,30 +517,6 @@
 					<x-hero.form-modal-cta>Get a Digital Brochure</x-hero.form-modal-cta>
 				</x-hero.left>
 				<x-hero.right>
-					<x-hero.form>
-						<x-form-two-step-compact
-							:countries="[
-								'IN' => 'India',
-								'AU' => 'Australia',
-								'US' => 'United States',
-								'CA' => 'Canada',
-							]"
-							:states="[
-								'AU' => [
-									'ACT' => 'Australian Capital Territory',
-									'JBT' => 'Jervis Bay Territory',
-								],
-								'US' => [
-									'AA' => 'Armed Forces Americas',
-									'AE' => 'Armed Forces Europe',
-								],
-								'CA' => [
-									'AB' => 'Alberta',
-									'BC' => 'British Columbia',
-								],
-							]"
-						/>
-					</x-hero.form>
 				</x-hero.right>
 			</x-hero.content>
 		</x-hero>
@@ -1137,6 +1156,43 @@
 				</x-icon-info-columns.column>
 			</x-icon-info-columns>
 		</x-section>
+	</x-component-demo>
+
+	<x-component-demo :keys="[ 'listing-cards' ]">
+		<x-listing-cards>
+			<x-listing-cards.card>
+				<x-listing-cards.title title="Quark Expeditions Invites Guests to “Raise a Glass and Stay Connected” with Free Wi-Fi and Bar Service" />
+				<x-listing-cards.subtitle subtitle="Experience the Polar Regions your own way" />
+				<x-listing-cards.description>
+					<p>Quark Expeditions, the global leader in polar adventures, is pleased to announce that all guests will enjoy complimentary Wi-Fi and alcohol on all voyages as of the Antarctic 2024/25 sailing season.</p>
+				</x-listing-cards.description>
+				<x-listing-cards.cta>
+					<x-button size="big" color="black">Read More</x-button>
+				</x-listing-cards.cta>
+			</x-listing-cards.card>
+
+			<x-listing-cards.card>
+				<x-listing-cards.title title="Ask Parker the Polar Bear! Quark Expeditions’ New AI-Driven Partner Portal Makes Every Travel Advisor a Polar Expert" />
+				<x-listing-cards.subtitle subtitle="Experience the Polar Regions your own way" />
+				<x-listing-cards.description>
+					<p>Greenland is waiting to be explored. Browse all of our expedition options to the world's largest island.</p>
+				</x-listing-cards.description>
+				<x-listing-cards.cta>
+					<x-button size="big" color="black">Read More</x-button>
+				</x-listing-cards.cta>
+			</x-listing-cards.card>
+
+			<x-listing-cards.card>
+				<x-listing-cards.title title="Quark Expeditions Invites Guests to “Raise a Glass and Stay Connected” with Free Wi-Fi and Bar Service" />
+				<x-listing-cards.subtitle subtitle="Experience the Polar Regions your own way" />
+				<x-listing-cards.description>
+					<p>Quark Expeditions, the global leader in polar adventures, is pleased to announce that all guests will enjoy complimentary Wi-Fi and alcohol on all voyages as of the Antarctic 2024/25 sailing season.</p>
+				</x-listing-cards.description>
+				<x-listing-cards.cta>
+					<x-button size="big" color="black">Read More</x-button>
+				</x-listing-cards.cta>
+			</x-listing-cards.card>
+		</x-listing-cards>
 	</x-component-demo>
 
 	<x-component-demo :keys="[ 'icon-columns' ]">

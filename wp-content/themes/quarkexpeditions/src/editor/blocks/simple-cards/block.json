@@ -1,0 +1,18 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "quark/simple-cards",
+  "description": "Add simple cards to the page.",
+  "title": "Simple Cards",
+  "category": "layout",
+  "keywords": [ "simple cards" ],
+  "textdomain": "qrk",
+  "attributes": {},
+  "supports": {
+    "alignWide": false,
+    "anchor": true,
+    "className": false,
+    "html": false,
+    "customClassName": false
+  }
+}
