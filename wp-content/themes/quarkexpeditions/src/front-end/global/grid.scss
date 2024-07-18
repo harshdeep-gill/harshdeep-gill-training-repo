@@ -22,20 +22,13 @@ body.admin-bar {
 	@extend %full-width;
 }
 
-.main {
-	padding-left: var(--grid-col-gutter);
-	padding-right: var(--grid-col-gutter);
+// .wp-site-blocks is added via WordPress, and we have no control over
+// this class.
+// TODO: Use the `main` tag and class once we have a hook for it in core.
+.main,
+.wp-site-blocks {
 
-	> * {
-
-		@extend %wrap;
-	}
-
-	.full-width,
-	.alignfull {
-
-		@extend %full-width;
-	}
+	@extend %main;
 }
 
 .wrap {

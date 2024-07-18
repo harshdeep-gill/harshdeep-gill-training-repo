@@ -1,0 +1,58 @@
+/**
+ * Listing Cards.
+ */
+@import "../../scss";
+
+.listing-cards {
+
+	&__card {
+		background: var(--color-gray-5);
+		padding: var(--spacing-5);
+
+		@media screen and (min-width: grid-size(md)) {
+			padding: var(--spacing-8) 80px;
+		}
+
+		& + & {
+			margin-top: var(--spacing-6);
+
+			@media screen and (min-width: grid-size(md)) {
+				margin-top: var(--spacing-7);
+			}
+		}
+	}
+
+	&__description {
+		margin-top: var(--spacing-5);
+
+		@media screen and (min-width: grid-size(md)) {
+			margin-top: var(--spacing-6);
+		}
+	}
+
+	&__subtitle {
+		margin-top: var(--spacing-5);
+
+		@media screen and (min-width: grid-size(md)) {
+			margin-top: var(--spacing-4);
+		}
+	}
+
+	&__cta {
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-5);
+		margin-top: var(--spacing-6);
+
+		@media screen and (min-width: grid-size(md)) {
+			display: block;
+		}
+
+		.btn {
+
+			@media screen and (min-width: grid-size(md)) {
+				min-width: 200px;
+			}
+		}
+	}
+}

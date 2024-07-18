@@ -1,0 +1,38 @@
+{
+	"schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Hero Overline",
+	"name": "quark/hero-overline",
+	"description": "Overline text.",
+	"category": "widgets",
+	"keywords": [
+		"hero",
+		"overline",
+		"text"
+	],
+	"textdomain": "qrk",
+	"attributes": {
+		"overline": {
+			"type": "string",
+			"default": ""
+		},
+		"textColor": {
+			"type": "string",
+			"default": "blue",
+			"enum": [
+				"blue",
+				"black"
+			]
+		}
+	},
+	"parent": [
+		"quark/hero-content-left"
+	],
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

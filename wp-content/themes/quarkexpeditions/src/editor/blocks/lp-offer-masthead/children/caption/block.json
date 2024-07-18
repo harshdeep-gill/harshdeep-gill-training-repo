@@ -1,0 +1,19 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "quark/lp-offer-masthead-caption",
+    "description": "Image Caption for Offer Masthead.",
+    "title": "LP Offer Masthead Caption",
+    "keywords": [ "caption", "image" ],
+    "category": "layout",
+    "textdomain": "qrk",
+    "parent": [ "quark/lp-offer-masthead" ],
+    "attributes": {},
+    "supports": {
+        "alignWide": false,
+        "anchor": true,
+        "className": false,
+        "html": false,
+        "customClassName": false
+    }
+}

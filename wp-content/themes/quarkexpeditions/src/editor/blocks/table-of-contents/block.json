@@ -1,0 +1,30 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Table of Contents",
+	"name": "quark/table-of-contents",
+	"description": "Add a Table of contents block.",
+	"category": "layout",
+	"parent": [
+		"quark/sidebar-grid-sidebar"
+	],
+	"textdomain": "qrk",
+	"keywords": [
+		"table",
+		"of",
+		"contents"
+	],
+	"attributes": {
+		"title": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

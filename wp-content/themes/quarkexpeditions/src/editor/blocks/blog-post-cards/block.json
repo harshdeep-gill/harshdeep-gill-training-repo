@@ -1,0 +1,51 @@
+{
+	"schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Blog Post Cards",
+	"name": "quark/blog-post-cards",
+	"description": "Blog Post Cards Block.",
+	"category": "layout",
+	"keywords": [
+		"blog",
+		"post",
+		"cards"
+	],
+	"textdomain": "qrk",
+	"attributes": {
+		"selection": {
+			"type": "string",
+			"default": "manual"
+		},
+		"layout": {
+			"type": "string",
+			"default": "collage"
+		},
+		"ids": {
+			"type": "array",
+			"default": []
+		},
+		"taxonomies": {
+			"type": "array",
+			"default": []
+		},
+		"termIds": {
+			"type": "array",
+			"default": []
+		},
+		"isMobileCarousel": {
+			"type": "boolean",
+			"default": true
+		},
+		"totalPosts": {
+			"type": "number",
+			"default": 5
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

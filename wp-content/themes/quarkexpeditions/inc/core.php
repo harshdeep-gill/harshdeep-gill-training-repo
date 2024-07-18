@@ -86,12 +86,15 @@ function register_styles(): void {
 	$assets_version = get_assets_version();
 
 	// Enqueue styles.
-	wp_enqueue_style( 'tcs-global', get_template_directory_uri() . '/dist/global.css', [], $assets_version );
+	wp_register_style( 'tp-multi-select', get_template_directory_uri() . '/dist/vendor/tpmultiselectelement.css', [], $assets_version );
+	wp_enqueue_style( 'qrk-global', get_template_directory_uri() . '/dist/global.css', [], $assets_version );
 	wp_enqueue_style( 'nunito-sans', get_template_directory_uri() . '/src/assets/fonts/nunito-sans/nunito-sans.css', [], '1' );
 	wp_enqueue_style( 'source-serif-4', get_template_directory_uri() . '/src/assets/fonts/source-serif-4/source-serif-4.css', [], '1' );
 	wp_register_style( 'intl-tel-input-css', get_template_directory_uri() . '/dist/vendor/intltelinput.css', [], $assets_version );
 	wp_register_style( 'glightbox', get_template_directory_uri() . '/dist/vendor/glightbox.css', [], $assets_version );
 	wp_register_style( 'tp-slider', get_template_directory_uri() . '/dist/vendor/tpsliderelement.css', [], $assets_version );
+	wp_register_style( 'tp-tabs', get_template_directory_uri() . '/dist/vendor/tptabselement.css', [], $assets_version );
+	wp_register_style( 'tp-accordion', get_template_directory_uri() . '/dist/vendor/tpaccordionitemelement.css', [], $assets_version );
 
 	// Defer certain styles.
 	add_filter(
@@ -102,6 +105,8 @@ function register_styles(): void {
 			$handles[] = 'intl-tel-input-css';
 			$handles[] = 'glightbox';
 			$handles[] = 'tp-slider';
+			$handles[] = 'tp-tabs';
+			$handles[] = 'tp-accordion';
 
 			// Return handles.
 			return $handles;
@@ -128,10 +133,12 @@ function register_scripts(): void {
 
 	// Enqueue scripts.
 	wp_enqueue_script( 'global', get_template_directory_uri() . '/dist/global.js', [], $assets_version, true );
-	wp_register_script( 'intl-tel-input-js', get_template_directory_uri() . '/dist/vendor/intltelinput.js', [], $assets_version, true );
 	wp_register_script( 'pristine-js', get_template_directory_uri() . '/dist/vendor/pristine.js', [], $assets_version, true );
 	wp_register_script( 'glightbox', get_template_directory_uri() . '/dist/vendor/glightbox.js', [], $assets_version, true );
 	wp_register_script( 'tp-slider', get_template_directory_uri() . '/dist/vendor/tpsliderelement.js', [], $assets_version, true );
+	wp_register_script( 'tp-tabs', get_template_directory_uri() . '/dist/vendor/tptabselement.js', [], $assets_version, true );
+	wp_register_script( 'tp-accordion', get_template_directory_uri() . '/dist/vendor/tpaccordionitemelement.js', [], $assets_version, true );
+	wp_register_script( 'tp-multi-select', get_template_directory_uri() . '/dist/vendor/tpmultiselectelement.js', [], $assets_version, true );
 	wp_register_script( 'trustpilot', 'https://widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js', [], $assets_version, true );
 	wp_register_script( 'wistia-embed', 'https://fast.wistia.com/assets/external/E-v1.js', [], $assets_version, true );
 
@@ -143,6 +150,9 @@ function register_scripts(): void {
 			'recaptchaSiteKey' => quark_get_template_data( 'recaptcha_site_key', '' ),
 		]
 	);
+
+	// Pass dynamic phone number to script.
+	wp_localize_script( 'global', 'dynamicPhoneNumber', (array) quark_get_template_data( 'dynamic_phone_number', [] ) );
 }
 
 /**
@@ -239,6 +249,9 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'class'  => true,
 					'data-*' => true,
 				],
+				'quark-secondary-navigation'            => [
+					'class' => true,
+				],
 				'quark-form-two-step'                   => [
 					'class' => true,
 				],
@@ -249,7 +262,7 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'class'  => true,
 					'data-*' => true,
 				],
-				'quark-form-two-step-compact'           => [
+				'quark-table-of-contents'               => [
 					'class' => true,
 				],
 				'quark-form-two-step-compact-modal'     => [
@@ -258,6 +271,47 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 				'quark-form-two-step-compact-modal-cta' => [
 					'class'  => true,
 					'data-*' => true,
+				],
+				'quark-hero-card-slider'                => [
+					'class' => true,
+				],
+				'quark-tabs'                            => [
+					'class' => true,
+				],
+				'quark-itinerary-tabs'                  => [
+					'class' => true,
+				],
+				'quark-header-nav-menu-dropdown'        => [
+					'class' => true,
+					'open'  => true,
+				],
+				'quark-drawer'                          => [
+					'id'                  => true,
+					'class'               => true,
+					'overlay-click-close' => true,
+					'open'                => true,
+					'data-*'              => true,
+					'animation-direction' => true,
+				],
+				'quark-drawer-content'                  => [
+					'class' => true,
+				],
+				'quark-drawer-close'                    => [
+					'class' => true,
+				],
+				'quark-drawer-open'                     => [
+					'class'     => true,
+					'drawer-id' => true,
+				],
+				'quark-footer-accordion'                => [
+					'class'  => true,
+					'active' => true,
+				],
+				'quark-tooltip'                         => [
+					'class' => true,
+				],
+				'quark-country-selector'                => [
+					'class' => true,
 				],
 				'tp-form'                               => [
 					'class'          => true,
@@ -282,6 +336,21 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'flexible-height' => true,
 					'swipe'           => true,
 					'infinite'        => true,
+				],
+				'tp-tabs'                               => [
+					'class'       => true,
+					'current-tab' => true,
+					'update-url'  => true,
+				],
+				'tp-tabs-nav'                           => [],
+				'tp-tabs-tab'                           => [
+					'id'    => true,
+					'class' => true,
+					'open'  => true,
+				],
+				'tp-tabs-nav-item'                      => [
+					'class'  => true,
+					'active' => true,
 				],
 				'tp-slider-track'                       => [
 					'class' => true,
@@ -308,6 +377,7 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'class'               => true,
 					'overlay-click-close' => true,
 					'open'                => true,
+					'data-*'              => true,
 				],
 				'tp-modal-content'                      => [
 					'class' => true,
@@ -327,6 +397,51 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 				],
 				'tp-accordion-content'                  => [
 					'class' => true,
+				],
+				'tp-multi-select'                       => [
+					'name'            => true,
+					'class'           => true,
+					'id'              => true,
+					'form'            => true,
+					'multiple'        => true,
+					'close-on-select' => true,
+				],
+				'tp-multi-select-field'                 => [
+					'class' => true,
+					'id'    => true,
+				],
+				'tp-multi-select-pills'                 => [
+					'class' => true,
+					'id'    => true,
+				],
+				'tp-multi-select-search'                => [
+					'class' => true,
+					'id'    => true,
+				],
+				'tp-multi-select-placeholder'           => [
+					'class' => true,
+					'id'    => true,
+				],
+				'tp-multi-select-status'                => [
+					'class'  => true,
+					'id'     => true,
+					'format' => true,
+				],
+				'tp-multi-select-options'               => [
+					'class' => true,
+					'id'    => true,
+				],
+				'tp-multi-select-option'                => [
+					'class' => true,
+					'id'    => true,
+					'value' => true,
+					'label' => true,
+				],
+				'tp-multi-select-select-all'            => [
+					'class'         => true,
+					'id'            => true,
+					'select-text'   => true,
+					'unselect-text' => true,
 				],
 				'iframe'                                => [
 					'class'           => true,
@@ -444,6 +559,10 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'class'    => true,
 					'data-*'   => true,
 					'style'    => true,
+				],
+				'source'                                => [
+					'src'  => true,
+					'type' => true,
 				],
 			]
 		);

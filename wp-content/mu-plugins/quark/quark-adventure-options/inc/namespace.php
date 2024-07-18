@@ -9,8 +9,6 @@ namespace Quark\AdventureOptions;
 
 use WP_Post;
 
-use function Quark\Core\prepare_content_with_blocks;
-
 const POST_TYPE                 = 'qrk_adventure_option';
 const ADVENTURE_OPTION_CATEGORY = 'qrk_adventure_option_category';
 const CACHE_KEY                 = POST_TYPE;
@@ -29,9 +27,6 @@ function bootstrap(): void {
 	// Opt into stuff.
 	add_filter( 'qe_adventure_options_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
 	add_filter( 'qe_destination_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
-
-	// Layout.
-	add_action( 'template_redirect', __NAMESPACE__ . '\\layout' );
 
 	// Cache Purge.
 	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
@@ -125,7 +120,7 @@ function register_adventure_option_category_taxonomy(): void {
 		'labels'            => $labels,
 		'public'            => false,
 		'show_in_nav_menus' => false,
-		'show_ui'           => true,
+		'show_ui'           => false,
 		'show_tagcloud'     => false,
 		'show_admin_column' => true,
 		'hierarchical'      => true,
@@ -152,50 +147,6 @@ function opt_in( array $post_types = [] ): array {
 
 	// Return modified array.
 	return $post_types;
-}
-
-/**
- * Layout for the post type.
- *
- * @return void
- */
-function layout(): void {
-	// Add single layout if viewing a single post.
-	if ( is_singular( POST_TYPE ) ) {
-		add_filter( 'quark_front_end_data', __NAMESPACE__ . '\\layout_single' );
-	}
-}
-
-/**
- * Layout: Single.
- *
- * @param mixed[] $data Front-end data.
- *
- * @return mixed[]
- */
-function layout_single( array $data = [] ): array {
-	// Get post.
-	$page = get();
-
-	// Bail if post does not exist or not an instance of WP_Post.
-	if ( empty( $page['post'] ) || ! $page['post'] instanceof WP_Post ) {
-		return $data;
-	}
-
-	// Layout.
-	$data['layout'] = 'single';
-
-	// Build data.
-	$data['data'] = array_merge( $data['data'] ?? [], $page );
-
-	// Post content.
-	$data['data']['post_content'] = $page['post']->post_content;
-
-	// Prepare blocks.
-	prepare_content_with_blocks( $data['data']['post_content'] );
-
-	// Return front-end data.
-	return $data;
 }
 
 /**
@@ -325,6 +276,61 @@ function get( int $post_id = 0 ): array {
 
 	// Set cache and return data.
 	wp_cache_set( $cache_key, $data, CACHE_GROUP );
+
+	// Return data.
+	return $data;
+}
+
+/**
+ * Get data for adventure options cards.
+ *
+ * @param int[] $post_ids Post IDs.
+ *
+ * @return array<mixed>{
+ *    title: string,
+ *    permalink: string,
+ *    featured_image: int,
+ *    excerpt: string,
+ * }[]
+ */
+function get_cards_data( array $post_ids = [] ): array {
+	// Check if post ids exist.
+	if ( empty( $post_ids ) ) {
+		return [];
+	}
+
+	// Initialize data.
+	$data = [];
+
+	// Loop through the post ids.
+	foreach ( $post_ids as $post_id ) {
+		$post = get( $post_id );
+
+		// Initialize $term_name.
+		$term_name = '';
+
+		// Check if terms are available.
+		if (
+			! empty( $post['post_taxonomies'][ ADVENTURE_OPTION_CATEGORY ] ) &&
+			is_array( $post['post_taxonomies'][ ADVENTURE_OPTION_CATEGORY ] )
+		) {
+			// Get the term names and extract the first one.
+			$term_names = wp_list_pluck( $post['post_taxonomies'][ ADVENTURE_OPTION_CATEGORY ], 'name' );
+			$term_name  = array_shift( $term_names );
+		}
+
+		// Build post data.
+		$post_data = [
+			'title'          => $post['post']?->post_title ?? '',
+			'permalink'      => $post['permalink'],
+			'featured_image' => $post['post_thumbnail'],
+			'excerpt'        => get_the_excerpt( $post['post']?->ID ),
+			'term'           => $term_name,
+		];
+
+		// Add data to array.
+		$data[] = $post_data;
+	}
 
 	// Return data.
 	return $data;

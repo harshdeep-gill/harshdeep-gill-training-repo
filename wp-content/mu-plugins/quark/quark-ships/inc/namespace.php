@@ -8,11 +8,6 @@
 namespace Quark\Ships;
 
 use WP_Post;
-use WP_REST_Response;
-use WP_Taxonomy;
-use WP_REST_Request;
-
-use function Quark\Core\prepare_content_with_blocks;
 
 const POST_TYPE              = 'qrk_ship';
 const SHIP_CATEGORY_TAXONOMY = 'qrk_ship_categories';
@@ -29,14 +24,12 @@ function bootstrap(): void {
 	add_action( 'init', __NAMESPACE__ . '\\register_ship_post_type' );
 	add_action( 'init', __NAMESPACE__ . '\\register_ship_categories_taxonomy' );
 
-	// Layout.
-	add_action( 'template_redirect', __NAMESPACE__ . '\\layout' );
-
 	// Opt into stuff.
 	add_filter( 'qe_ship_category_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
 
 	// Other hooks.
 	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
+	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_ship_code_lookup_cache' );
 
 	// Admin stuff.
 	if ( is_admin() ) {
@@ -155,50 +148,6 @@ function opt_in( array $post_types = [] ): array {
 }
 
 /**
- * Layout for this post type.
- *
- * @return void
- */
-function layout(): void {
-	// Add single layout if viewing a single post.
-	if ( is_singular( POST_TYPE ) ) {
-		add_filter( 'quark_front_end_data', __NAMESPACE__ . '\\layout_single' );
-	}
-}
-
-/**
- * Layout: Single.
- *
- * @param mixed[] $data Front-end data.
- *
- * @return mixed[]
- */
-function layout_single( array $data = [] ): array {
-	// Get post.
-	$page = get();
-
-	// Bail if post does not exist or not an instance of WP_Post.
-	if ( empty( $page['post'] ) || ! $page['post'] instanceof WP_Post ) {
-		return $data;
-	}
-
-	// Layout.
-	$data['layout'] = 'single';
-
-	// Build data.
-	$data['data'] = array_merge( $data['data'] ?? [], $page );
-
-	// Post content.
-	$data['data']['post_content'] = $page['post']->post_content;
-
-	// Prepare blocks.
-	prepare_content_with_blocks( $data['data']['post_content'] );
-
-	// Return front-end data.
-	return $data;
-}
-
-/**
  * Busts cache for this post type.
  *
  * @param int $post_id Post ID.
@@ -282,4 +231,67 @@ function get( int $post_id = 0 ): array {
 
 	// Return data.
 	return $data;
+}
+
+/**
+ * Convert ship code to ship post ID.
+ *
+ * @param string $ship_code The ship code.
+ *
+ * @return int
+ */
+function get_id_from_ship_code( string $ship_code = '' ): int {
+	// Check for cached version.
+	$cache_key = CACHE_KEY . '_all_ships';
+	$ships     = wp_cache_get( $cache_key, CACHE_GROUP );
+
+	// If cache not set, lets build it with a DB query.
+	if ( empty( $ships ) ) {
+		// Post Meta.
+		global $wpdb;
+		$ships = $wpdb->get_results(
+			$wpdb->prepare(
+				"
+			SELECT
+				m.*
+			FROM
+				$wpdb->postmeta AS m
+			RIGHT JOIN
+				$wpdb->posts AS p ON m.post_id = p.ID
+			WHERE
+				m.meta_key = 'ship_id'
+			AND
+				p.post_type = %s
+			",
+				POST_TYPE
+			),
+			ARRAY_A
+		);
+
+		// Set cache and return data.
+		wp_cache_set( $cache_key, $ships, CACHE_GROUP );
+	}
+
+	// Find the ship code.
+	foreach ( $ships as $ship ) {
+		if ( $ship_code === $ship['meta_value'] ) {
+			return $ship['post_id'];
+		}
+	}
+
+	// Not found, return 0.
+	return 0;
+}
+
+/**
+ * Bust Ship code lookup cache.
+ *
+ * @return void
+ */
+function bust_ship_code_lookup_cache(): void {
+	// Delete the code cache.
+	wp_cache_delete( CACHE_KEY . '_all_ships', CACHE_GROUP );
+
+	// Trigger action to clear cache.
+	do_action( 'qe_ship_code_lookup_cache_busted' );
 }

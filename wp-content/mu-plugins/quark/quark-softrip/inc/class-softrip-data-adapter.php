@@ -20,7 +20,7 @@ class Softrip_Data_Adapter {
 	 * @param mixed[] $params  The request params.
 	 * @param string  $method  The request method.
 	 *
-	 * @return array<string, mixed>|WP_Error
+	 * @return mixed[]|WP_Error
 	 */
 	public function do_request( string $service = '', array $params = [], string $method = 'GET' ): array|WP_Error {
 		// Check Username and Password are set.
@@ -38,6 +38,7 @@ class Softrip_Data_Adapter {
 		// Set the request args.
 		$args = [
 			'method'  => $method,
+			'timeout' => 20,
 			'headers' => [
 				'Authorization' => 'basic ' . base64_encode( QUARK_SOFTRIP_ADAPTER_USERNAME . ':' . QUARK_SOFTRIP_ADAPTER_PASSWORD ), // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
 			],

@@ -1,0 +1,24 @@
+{
+	"schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Two Step Landing Form",
+	"name": "quark/form-two-step-landing-form",
+	"description": "Display the first step - Landing Form",
+	"category": "forms",
+	"parent": [
+		"quark/form-two-step"
+	],
+	"keywords": [
+		"landing",
+		"form"
+	],
+	"textdomain": "qrk",
+	"attributes": {},
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

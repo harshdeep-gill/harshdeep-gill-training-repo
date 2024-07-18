@@ -1,0 +1,21 @@
+{
+	"schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Footer",
+	"name": "quark/footer",
+	"description": "Display a footer.",
+	"category": "layout",
+	"keywords": [
+		"footer",
+		"global"
+	],
+	"textdomain": "qrk",
+	"attributes": {},
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

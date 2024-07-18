@@ -169,7 +169,7 @@
 				</x-hero.left>
 				<x-hero.right>
 					<x-hero.form>
-						<x-form-two-step-compact
+						<x-form-two-step
 							:countries="[
 								'IN' => 'India',
 								'AU' => 'Australia',

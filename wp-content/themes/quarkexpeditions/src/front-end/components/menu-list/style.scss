@@ -1,0 +1,44 @@
+/**
+ * Menu List.
+ */
+@import "../../scss";
+
+.menu-list {
+
+	&__list {
+		list-style: none;
+		margin-top: var(--spacing-4);
+		padding-left: 0;
+
+		@media screen and (min-width: grid-size(xl)) {
+			margin-top: var(--spacing-5);
+		}
+
+		&:first-child {
+			margin-top: 0;
+		}
+	}
+
+	&__item {
+
+		& + & {
+			margin-top: var(--spacing-4);
+
+			@media screen and (min-width: grid-size(xl)) {
+				margin-top: 20px;
+			}
+		}
+	}
+
+	&__title {
+		font-weight: var(--font-weight-bold);
+	}
+
+	&__item-link {
+		text-decoration: none;
+
+		&:hover {
+			border-color: var(--color-yellow);
+		}
+	}
+}
