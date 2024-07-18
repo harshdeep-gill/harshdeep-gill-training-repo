@@ -1139,6 +1139,26 @@
 		</x-section>
 	</x-component-demo>
 
+	<x-component-demo :keys="[ 'icon-info-grid' ]">
+		<x-icon-info-grid>
+			<x-icon-info-grid.item>
+				<x-icon-info-grid.icon icon="star" />
+				<h3>Specialist Expedition Leaders</h3>
+				<p>Lorem ipsum</p>
+			</x-icon-info-grid.item>
+			<x-icon-info-grid.item>
+				<x-icon-info-grid.icon icon="star" />
+				<h3>Specialist Expedition Leaders</h3>
+				<p>Lorem ipsum</p>
+			</x-icon-info-grid.item>
+			<x-icon-info-grid.item>
+				<x-icon-info-grid.icon icon="star" />
+				<h3>Specialist Expedition Leaders</h3>
+				<p>Lorem ipsum</p>
+			</x-icon-info-grid.item>
+		</x-icon-info-grid>
+	</x-component-demo>
+
 	<x-component-demo :keys="[ 'icon-columns' ]">
 		<x-section>
 			<x-section.heading>
