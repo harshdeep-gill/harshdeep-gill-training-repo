@@ -45,6 +45,7 @@ a {
 p,
 ul,
 ol,
+dl,
 figure,
 blockquote {
 	margin-top: 0;
@@ -70,7 +71,7 @@ ul {
 	padding-left: 1em;
 
 	::marker {
-		color: currentcolor;
+		color: var(--color-yellow);
 	}
 }
 
@@ -80,6 +81,22 @@ ol {
 
 strong {
 	font-weight: var(--font-weight-bold);
+}
+
+dt {
+	color: var(--color-gray-70);
+	font-size: var(--font-size-small);
+	line-height: var(--line-height-small);
+}
+
+dd {
+	font-weight: var(--font-weight-bold);
+	margin-left: 0;
+	margin-bottom: var(--spacing-6);
+
+	&:last-child {
+		margin-bottom: 0;
+	}
 }
 
 // Legacy IFRAME support (fallback).

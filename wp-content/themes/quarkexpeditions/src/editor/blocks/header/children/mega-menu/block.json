@@ -1,0 +1,23 @@
+{
+	"schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Header Mega Menu",
+	"name": "quark/header-mega-menu",
+	"description": "Add one or more mega menu items.",
+	"parent": [
+		"quark/header"
+	],
+	"category": "layout",
+	"keywords": [
+		"header"
+	],
+	"textdomain": "qrk",
+	"attributes": {},
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

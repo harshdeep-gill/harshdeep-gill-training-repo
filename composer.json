@@ -53,7 +53,7 @@
     "ext-libxml": "*"
   },
   "require-dev": {
-    "roots/wordpress": "6.5.3",
+    "roots/wordpress": "6.5.5",
     "vlucas/phpdotenv": "^v5.4.1",
     "oscarotero/env": "^v2.1.0",
     "squizlabs/php_codesniffer": "*",

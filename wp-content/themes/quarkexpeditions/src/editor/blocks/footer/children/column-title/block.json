@@ -1,0 +1,30 @@
+{
+	"schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Footer Column Title",
+	"name": "quark/footer-column-title",
+	"description": "Display the title of a footer column.",
+	"parent": [
+		"quark/footer-column"
+	],
+	"category": "layout",
+	"textdomain": "qrk",
+	"keywords": [
+		"footer",
+		"column",
+		"title"
+	],
+	"attributes": {
+		"title": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

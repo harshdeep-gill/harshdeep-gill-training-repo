@@ -9,8 +9,6 @@ namespace Quark\Pages;
 
 use WP_Post;
 
-use function Quark\Core\prepare_content_with_blocks;
-
 const POST_TYPE = 'page';
 
 /**
@@ -51,34 +49,8 @@ function layout_single( array $data = [] ): array {
 		return $data;
 	}
 
-	// Layout.
-	$data['layout'] = 'single';
-
-	// Add layout based on page template.
-	if ( is_front_page() ) {
-		// Add home page layout.
-		$data['layout'] = 'home';
-	} else {
-		// Get template based on post.
-		$template = get_page_template_slug( $page['post'] );
-
-		// Add layout if template exists.
-		if ( ! empty( $template ) ) {
-			$data['layout'] = str_replace( '.php', '', basename( $template ) );
-		}
-	}
-
-	// Build data.
-	$data['data'] = array_merge( $data['data'] ?? [], $page );
-
-	// Post content.
-	$data['data']['post_content'] = $page['post']->post_content;
-
-	// Prepare blocks.
-	prepare_content_with_blocks( $data['data']['post_content'] );
-
 	// Return front-end data.
-	return $data;
+	return array_merge( $data, $page );
 }
 
 /**

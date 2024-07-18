@@ -43,6 +43,7 @@ function bootstrap(): void {
 	if ( is_admin() ) {
 		require_once __DIR__ . '/../custom-fields/options-social.php';
 		require_once __DIR__ . '/../custom-fields/attachments.php';
+		require_once __DIR__ . '/../custom-fields/pages-setup.php';
 	}
 }
 
@@ -66,14 +67,6 @@ function layout(): void {
  * @return mixed[]
  */
 function layout_404( array $data = [] ): array {
-	// Add layout.
-	$data['layout'] = '404';
-
-	// Check for data.
-	if ( ! isset( $data['data'] ) ) {
-		$data['data'] = [];
-	}
-
 	// Return updated data.
 	return $data;
 }
@@ -96,6 +89,15 @@ function setup_settings(): void {
 			'menu_title'  => 'Social',
 			'parent_slug' => 'site-settings',
 			'capability'  => 'manage_options',
+		]
+	);
+
+	// Pages Setup.
+	acf_add_options_sub_page(
+		[
+			'page_title'  => 'Pages Setup',
+			'menu_title'  => 'Pages Setup',
+			'parent_slug' => 'site-settings',
 		]
 	);
 }
@@ -148,11 +150,6 @@ function init_auto_cloudinary(): void {
  * @return mixed[]
  */
 function core_front_end_data( array $data = [] ): array {
-	// Check for correct data.
-	if ( ! is_array( $data['data'] ) ) {
-		$data['data'] = [];
-	}
-
 	// Build core data.
 	$header_options = [
 		'logo_url' => home_url(),
@@ -175,18 +172,15 @@ function core_front_end_data( array $data = [] ): array {
 		'youtube'   => get_option( 'options_youtube_url', '' ),
 	];
 
-	// Add data.
-	$data['data'] = array_merge(
-		$data['data'],
+	// Return updated data.
+	return array_merge(
+		$data,
 		[
 			'current_url'  => get_permalink(),
 			'header'       => $header_options,
 			'social_links' => $social_options,
 		]
 	);
-
-	// Return updated data.
-	return $data;
 }
 
 /**
@@ -228,41 +222,13 @@ function reusable_blocks_menu_item(): void {
 }
 
 /**
- * Hook into `quark_get_front_end_data` and only then render content
- * within blocks. This is to avoid recursion and infinite loops.
- *
- * Example: Front end -> get_front_end_data() -> `quark_front_end_data` -> get_front_end_data().
- *
- * @param string $content Original content.
- *
- * @return void
- */
-function prepare_content_with_blocks( string &$content = '' ): void {
-	// Wait for the `quark_get_front_end_data` hook to render blocks.
-	add_action(
-		'quark_get_front_end_data',
-		function () use ( &$content ) {
-			/**
-			 * Apply `the_content` to render blocks on the content passed by reference.
-			 *
-			 * @see https://www.php.net/manual/en/language.references.pass.php
-			 */
-			$content = strval( apply_filters( 'the_content', $content ) );
-		}
-	);
-}
-
-/**
  * Get front-end data.
  *
  * All front-end data goes through this function.
  *
  * @param bool $force Force uncached version.
  *
- * @return array{
- *     layout: string,
- *     data: mixed[]
- * }
+ * @return mixed[]
  */
 function get_front_end_data( bool $force = false ): array {
 	// Set cached version.
@@ -273,28 +239,8 @@ function get_front_end_data( bool $force = false ): array {
 		return $template_data;
 	}
 
-	// Check for recursion.
-	if ( doing_filter( 'quark_front_end_data' ) ) {
-		_doing_it_wrong( __FUNCTION__, 'Recursive `get_front_end_data` detected. Try using `prepare_content_with_blocks`.', '1.0.0' );
-	}
-
 	// Get front-end data.
-	$template_data = (array) apply_filters(
-		'quark_front_end_data',
-		[
-			'layout' => '',
-			'data'   => [],
-		]
-	);
-
-	// Fire a hook once we have data.
-	do_action( 'quark_get_front_end_data', $template_data );
-
-	// Set front-end data.
-	$template_data = [
-		'layout' => ! empty( $template_data['layout'] ) ? strval( $template_data['layout'] ) : '',
-		'data'   => ! empty( $template_data['data'] ) ? (array) $template_data['data'] : [],
-	];
+	$template_data = (array) apply_filters( 'quark_front_end_data', [] );
 
 	// Return updated front-end data.
 	return $template_data;
@@ -354,4 +300,39 @@ function allow_mime_types( array $mime_types = [] ): array {
 
 	// Return mime types.
 	return $mime_types;
+}
+
+/**
+ * Get a visitor's geo country.
+ *
+ * @note This uses Pantheon's AGCDN header which sets
+ *       a two-letter ISO string for the visitor's country.
+ *
+ * @return string
+ */
+function get_visitor_geo_country(): string {
+	// init geolocation.
+	static $geolocation = null;
+
+	// Return if already set.
+	if ( null !== $geolocation ) {
+		return $geolocation;
+	}
+
+	// Get headers.
+	$headers = getallheaders();
+
+	// Get geolocation.
+	if ( ! empty( $headers['x-geocountry'] ) ) {
+		$geolocation = strtoupper( sanitize_text_field( $headers['x-geocountry'] ) );
+	} elseif ( ! empty( $headers['X-Geo-Country'] ) ) {
+		$geolocation = strtoupper( sanitize_text_field( $headers['X-Geo-Country'] ) );
+	} elseif ( ! empty( $headers['X-Geo-Country-Code'] ) ) {
+		$geolocation = strtoupper( sanitize_text_field( $headers['X-Geo-Country-Code'] ) );
+	} else {
+		$geolocation = '';
+	}
+
+	// Return geolocation.
+	return $geolocation;
 }

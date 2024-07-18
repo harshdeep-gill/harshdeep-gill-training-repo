@@ -1,0 +1,24 @@
+{
+	"schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Footer Middle",
+	"name": "quark/footer-middle",
+	"description": "Display the Middle section of a footer.",
+	"parent": [
+		"quark/footer"
+	],
+	"category": "layout",
+	"textdomain": "qrk",
+	"keywords": [
+		"footer",
+		"middle"
+	],
+	"attributes": {},
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

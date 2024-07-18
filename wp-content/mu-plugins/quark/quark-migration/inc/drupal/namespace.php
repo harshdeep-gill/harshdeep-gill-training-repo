@@ -13,6 +13,7 @@ use WP_Post;
 use WP_Query;
 use WP_Term_Query;
 use WP_Term;
+use WP_CLI;
 
 use function Quark\Migration\WordPress\convert_to_blocks;
 
@@ -508,6 +509,11 @@ function get_post_by_id( int $drupal_id = 0, string $post_type = 'post', string 
 		'post_per_page' => 1,
 	];
 
+	// If post type is passed as "any" remove it from the arguments.
+	if ( 'any' === $post_type ) {
+		unset( $arguments['post_type'] );
+	}
+
 	// Query post.
 	$posts = new WP_Query( $arguments );
 
@@ -543,7 +549,9 @@ function prepare_content( string $content = '' ): string {
 
 /**
  * Transform a drupal media tag into IMG tags.
- *  i.e. - <drupal-media data-entity-type="media" alt="alternate text" data-entity-uuid="b3a11cbc-53a9-419d-b9b5-2497ac0ba2ba" data-align="center" data-caption="caption text">.
+ *  i.e. - <drupal-media data-entity-type="media" alt="alternate text"
+ *  data-entity-uuid="b3a11cbc-53a9-419d-b9b5-2497ac0ba2ba" data-align="center"
+ *  data-caption="caption text">.
  *
  * @param string $content Input string.
  *
@@ -715,4 +723,74 @@ function transform_image_tags( string $content = '' ): string {
 
 	// Return output.
 	return $content;
+}
+
+/**
+ * Prepare SEO data for migration.
+ *
+ * @param mixed $seo_meta_data SEO meta data from drupal.
+ *
+ * @return array{}|array<string, string>
+ */
+function prepare_seo_data( mixed $seo_meta_data = [] ): array {
+	// SEO data.
+	$seo_data = [];
+
+	// Check if data is array.
+	if ( is_array( $seo_meta_data ) ) {
+		$search_for   = [
+			'[node:title]',
+			'→',
+			'|',
+			'[site:name]',
+			'[current-page:page-number]',
+			'[current-page:pager]',
+		];
+		$replace_with = [
+			'%%title%%',
+			'%%sep%%',
+			'%%sep%%',
+			'%%sitename%%',
+			'%%page%%',
+			'',
+		];
+
+		// Process seo meta title for WP SEO plugin.
+		if ( ! empty( $seo_meta_data['title'] ) ) {
+			$seo_data['_yoast_wpseo_title'] = str_replace(
+				$search_for,
+				$replace_with,
+				trim( $seo_meta_data['title'] )
+			);
+		}
+
+		// Process seo meta description for WP SEO plugin.
+		if ( ! empty( $seo_meta_data['description'] ) ) {
+			$seo_data['_yoast_wpseo_metadesc'] = str_replace(
+				$search_for,
+				$replace_with,
+				trim( $seo_meta_data['description'] )
+			);
+		}
+
+		// Process SEO robots tags for WP SEO plugin.
+		if ( ! empty( $seo_meta_data['robots'] ) && is_string( $seo_meta_data['robots'] ) ) {
+			// Convert to array.
+			$robots = array_map( 'trim', explode( ',', $seo_meta_data['robots'] ) );
+
+			// Process each robots tag, remove if it's not starts with "no".
+			$robots = array_filter(
+				$robots,
+				function ( $tag ) {
+					return str_starts_with( $tag, 'no' );
+				}
+			);
+
+			// Set robots tags.
+			$seo_data['_yoast_wpseo_meta-robots-adv'] = implode( ',', $robots );
+		}
+	}
+
+	// Return SEO data.
+	return $seo_data;
 }

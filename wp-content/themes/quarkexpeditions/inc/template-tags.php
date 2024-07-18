@@ -5,28 +5,11 @@
  * @package quark
  */
 
-/**
- * Bootstrap the front-end.
- *
- * @return void
- */
-function quark_front_end(): void {
-	// Get front-end data.
-	$template_data = Quark\Core\get_front_end_data();
-
-	// Check if we found a valid layout.
-	if ( ! empty( $template_data['layout'] ) ) {
-		ob_start();
-		quark_layout(
-			$template_data['layout'],
-			! empty( $template_data['data'] ) ? $template_data['data'] : []
-		);
-		$content = ob_get_clean();
-		echo strval( apply_filters( 'quark_front_end', $content ) ); // phpcs:ignore
-	} elseif ( 'local' === wp_get_environment_type() ) {
-		wp_die( 'Could not find a layout for this page. Set one using `Quark\Core\get_front_end_data`.' );
-	}
-}
+// Imports.
+use function Travelopia\Media\get_dynamic_video_url;
+use function Quark\Theme\Core\get_assets_version;
+use function Travelopia\Media\get_dynamic_image;
+use function Travelopia\Media\get_dynamic_image_url;
 
 /**
  * Get template data based on key.
@@ -41,13 +24,13 @@ function quark_get_template_data( string $key = '', mixed $fallback = null ): mi
 	$template_data = Quark\Core\get_front_end_data();
 
 	// Check if the key we want exists.
-	if ( empty( $template_data['data'] ) || ! isset( $template_data['data'][ $key ] ) ) {
+	if ( empty( $template_data ) || ! isset( $template_data[ $key ] ) ) {
 		// It doesn't, return fallback instead.
 		return $fallback;
 	}
 
 	// Return data.
-	return $template_data['data'][ $key ];
+	return $template_data[ $key ];
 }
 
 /**
@@ -145,7 +128,7 @@ function quark_component_enqueue_assets( string $name = '' ): void {
 	$has_script = false;
 
 	// Get assets version.
-	$assets_version = \Quark\Theme\Core\get_assets_version();
+	$assets_version = get_assets_version();
 
 	// Check if component has CSS.
 	if ( file_exists( $path . 'style.css' ) ) {
@@ -191,7 +174,7 @@ function quark_component_enqueue_assets( string $name = '' ): void {
 function quark_dynamic_image( array $args = [], bool $echo_image = true ): ?string {
 	// Check if Travelopia dynamic images are enabled.
 	if ( function_exists( 'Travelopia\Media\get_dynamic_image' ) ) {
-		$image = \Travelopia\Media\get_dynamic_image( $args );
+		$image = get_dynamic_image( $args );
 	} else {
 		$image = wp_get_attachment_image( ! empty( $args['id'] ) ? absint( $args['id'] ) : 0, 'full' );
 	}
@@ -218,7 +201,7 @@ function quark_dynamic_image( array $args = [], bool $echo_image = true ): ?stri
 function quark_dynamic_image_url( array $args = [] ): string {
 	// Check if Travelopia dynamic images are enabled.
 	if ( function_exists( 'Travelopia\Media\get_dynamic_image_url' ) ) {
-		return \Travelopia\Media\get_dynamic_image_url( absint( $args['id'] ), (array) $args['transform'] );
+		return get_dynamic_image_url( absint( $args['id'] ), (array) $args['transform'] );
 	} else {
 		$url = wp_get_attachment_image_url( ! empty( $args['id'] ) ? absint( $args['id'] ) : 0, 'full' );
 
@@ -343,4 +326,28 @@ function quark_theme_image( string $path = '', array $attrs = [] ): void {
 			)
 		)
 	);
+}
+
+/**
+ * Wrapper function for dynamic video URLs.
+ *
+ * @param mixed[] $args Video args.
+ *
+ * @return string
+ */
+function quark_dynamic_video_url( array $args = [] ): string {
+	// Check if Travelopia dynamic video are enabled.
+	if ( function_exists( 'Travelopia\Media\get_dynamic_video_url' ) ) {
+		return get_dynamic_video_url( absint( $args['id'] ), (array) $args['transform'] );
+	} else {
+		$url = wp_get_attachment_image_url( ! empty( $args['id'] ) ? absint( $args['id'] ) : 0 );
+
+		// Check if we found a valid URL.
+		if ( false === $url ) {
+			$url = '';
+		}
+
+		// Return URL.
+		return $url;
+	}
 }

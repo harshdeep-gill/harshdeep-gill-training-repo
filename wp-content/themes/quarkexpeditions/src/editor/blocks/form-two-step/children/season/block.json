@@ -1,0 +1,37 @@
+{
+	"schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Season Field",
+	"name": "quark/form-field-season",
+	"description": "Display the Season Field",
+	"parent": [
+		"quark/form-two-step-landing-form"
+	],
+	"category": "forms",
+	"keywords": [
+		"season",
+		"field"
+	],
+	"textdomain": "qrk",
+	"attributes": {
+		"label": {
+			"type": "string",
+			"default": ""
+		},
+		"options": {
+			"type": "string",
+			"default": ""
+		},
+		"isRequired": {
+			"type": "boolean",
+			"default": false
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

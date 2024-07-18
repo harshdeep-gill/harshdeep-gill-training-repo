@@ -537,16 +537,19 @@ function convert_node_div( string $output = '', ?DOMElement $node = null ): stri
 				}
 
 				// Determine column width.
-				if ( str_contains( $class, 'col-sm-3' ) || str_contains( $class, 'col-md-3' ) ) {
-					$attrs['width'] = '25%';
-					$html_attrs    .= ' style="flex-basis:33.33%"';
-				} elseif ( str_contains( $class, 'col-sm-2' ) || str_contains( $class, 'col-md-2' ) ) {
+				if ( in_array( $class, [ 'col-md-2', 'col-lg-2', 'col-xl-2' ], true ) ) {
 					$attrs['width'] = '16.66%';
 					$html_attrs    .= ' style="flex-basis:16.66%"';
-				} elseif ( str_contains( $class, 'col-sm-8' ) || str_contains( $class, 'col-md-8' ) ) {
+				} elseif ( in_array( $class, [ 'col-md-4', 'col-lg-4', 'col-xl-4' ], true ) ) {
+					$attrs['width'] = '25%';
+					$html_attrs    .= ' style="flex-basis:25%"';
+				} elseif ( in_array( $class, [ 'col-md-6', 'col-lg-6', 'col-xl-6' ], true ) ) {
+					$attrs['width'] = '50%';
+					$html_attrs    .= ' style="flex-basis:50%"';
+				} elseif ( in_array( $class, [ 'col-md-8', 'col-lg-8', 'col-xl-8' ], true ) ) {
 					$attrs['width'] = '66.66%';
 					$html_attrs    .= ' style="flex-basis:66.66%"';
-				} elseif ( str_contains( $class, 'col-sm-9' ) || str_contains( $class, 'col-md-9' ) ) {
+				} elseif ( in_array( $class, [ 'col-md-9', 'col-lg-9', 'col-xl-9' ], true ) ) {
 					$attrs['width'] = '75%';
 					$html_attrs    .= ' style="flex-basis:75%"';
 				}
@@ -563,6 +566,9 @@ function convert_node_div( string $output = '', ?DOMElement $node = null ): stri
 						),
 					]
 				);
+			} else {
+				// No columns found, convert child node to block.
+				return convert_node_to_block( $child_node );
 			}
 		}
 	}
