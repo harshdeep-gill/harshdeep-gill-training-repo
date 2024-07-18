@@ -85,7 +85,7 @@ class Test_Staff_Members extends WP_UnitTestCase {
 		update_post_meta( $post->ID, 'job_title', 'Test Role' );
 
 		// Add featured image.
-		$attachment_id = $this->factory()->attachment->create_upload_object( __DIR__ . '/assets/test-image.png', 0 );
+		$attachment_id = $this->factory()->attachment->create_upload_object( DIR_TESTDATA . '/images/test-image.png', 0 );
 
 		// Assert the attachment is created.
 		$this->assertIsInt( $attachment_id );
@@ -133,6 +133,7 @@ class Test_Staff_Members extends WP_UnitTestCase {
 
 		// Clean up.
 		wp_delete_post( $post->ID, true );
+		wp_delete_attachment( $attachment_id, true );
 		wp_delete_term( $department->term_id, 'qrk_department' );
 		wp_delete_term( $season->term_id, 'qrk_season' );
 	}
@@ -156,7 +157,7 @@ class Test_Staff_Members extends WP_UnitTestCase {
 		$this->assertTrue( $staff_member_3 instanceof WP_Post );
 
 		// Create a test media attachment.
-		$attachment_id = $this->factory()->attachment->create_upload_object( __DIR__ . '/assets/test-image.png', 0 );
+		$attachment_id = $this->factory()->attachment->create_upload_object( DIR_TESTDATA . '/images/test-image.png', 0 );
 
 		// Assert the attachment is created.
 		$this->assertIsInt( $attachment_id );
@@ -226,6 +227,7 @@ class Test_Staff_Members extends WP_UnitTestCase {
 		wp_delete_post( $staff_member_1->ID, true );
 		wp_delete_post( $staff_member_2->ID, true );
 		wp_delete_post( $staff_member_3->ID, true );
+		wp_delete_attachment( $attachment_id, true );
 		wp_delete_term( $season_1->term_id, 'qrk_season' );
 		wp_delete_term( $season_2->term_id, 'qrk_season' );
 	}
