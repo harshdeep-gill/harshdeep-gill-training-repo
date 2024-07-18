@@ -122,7 +122,7 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 						/>
 					) : (
 						<Placeholder icon="layout" label={ __( 'Staff Members', 'qrk' ) }>
-							<p>{ __( 'Select the Staff Members.', 'qrk' ) }</p>
+							<p>{ __( 'Select a few Staff Members.', 'qrk' ) }</p>
 						</Placeholder>
 					)
 				}

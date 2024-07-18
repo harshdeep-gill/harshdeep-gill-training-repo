@@ -62,7 +62,7 @@ function render( array $attributes = [] ): string {
 		// Set WP_Query args for manual selection.
 		$args['post__in']       = $attributes['ids'];
 		$args['orderby']        = 'post__in';
-		$args['posts_per_page'] = count( $attributes['ids'] ); // phpcs:ignore
+		$args['posts_per_page'] = count( $attributes['ids'] );
 	} elseif ( 'recent' === $attributes['selection'] ) {
 		// Set WP_Query args for department selection.
 		$args['tax_query'] = [
