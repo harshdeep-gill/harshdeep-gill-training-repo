@@ -1,9 +1,13 @@
+@props( [
+	'info' => '',
+] )
+
 @php
-	if ( empty( $slot ) ) {
+	if ( empty( $info ) ) {
 		return;
 	}
 @endphp
 
 <div class="highlights__info body-small">
-	<x-content :content="$slot" />
+	<x-content :content="$info" />
 </div>
