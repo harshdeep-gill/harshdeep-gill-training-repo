@@ -1,0 +1,38 @@
+{
+	"schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Hero subtitle",
+	"name": "quark/hero-subtitle",
+	"description": "Hero subtitle text.",
+	"category": "widgets",
+	"keywords": [
+		"hero",
+		"subtitle",
+		"text"
+	],
+	"textdomain": "qrk",
+	"attributes": {
+		"subtitle": {
+			"type": "string",
+			"default": ""
+		},
+		"textColor": {
+			"type": "string",
+			"default": "black",
+			"enum": [
+				"white",
+				"black"
+			]
+		}
+	},
+	"parent": [
+		"quark/hero-content-left"
+	],
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

@@ -1,0 +1,31 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "quark/fancy-video",
+  "description": "Display a fancy video block.",
+  "title": "Fancy Video",
+  "keywords": [ "fancy", "video" ],
+  "category": "layout",
+  "textdomain": "qrk",
+  "attributes": {
+    "image": {
+      "type": "object",
+      "default": {}
+    },
+    "title": {
+      "type": "string",
+      "default": ""
+    },
+    "videoUrl": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "supports": {
+    "alignWide": false,
+    "anchor": true,
+    "className": false,
+    "html": false,
+    "customClassName": false
+  }
+}

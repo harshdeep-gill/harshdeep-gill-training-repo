@@ -1,0 +1,22 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Icon Info Columns",
+	"name": "quark/icon-info-columns",
+	"description": "Display a column of icons and info.",
+	"category": "layout",
+	"textdomain": "qrk",
+	"keywords": [
+		"icon",
+		"info",
+		"columns"
+	],
+	"attributes": {},
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

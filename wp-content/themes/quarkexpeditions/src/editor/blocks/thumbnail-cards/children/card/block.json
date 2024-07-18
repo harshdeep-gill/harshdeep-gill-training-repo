@@ -1,0 +1,54 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Thumbnail Card",
+	"name": "quark/thumbnail-cards-card",
+	"description": "Thumbnail Card.",
+	"category": "widgets",
+	"keywords": [
+		"thumbnail",
+		"card"
+	],
+	"textdomain": "qrk",
+	"attributes": {
+		"image": {
+			"type": "object",
+			"default": {}
+		},
+		"url": {
+			"type": "object",
+			"default": {}
+		},
+		"title": {
+			"type": "string",
+			"default": ""
+		},
+		"size": {
+			"type": "string",
+			"enum": [
+				"small",
+				"medium",
+				"large"
+			],
+			"default": "medium"
+		},
+		"orientation": {
+			"type": "string",
+			"enum": [
+				"portrait",
+				"landscape"
+			],
+			"default": "portrait"
+		}
+	},
+	"parent": [
+		"quark/thumbnail-cards"
+	],
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

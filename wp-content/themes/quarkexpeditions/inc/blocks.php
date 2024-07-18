@@ -24,57 +24,43 @@ function setup(): void {
  * @return void
  */
 function register_blocks(): void {
-	// List of blocks to register.
-	$blocks = [
-		'Components'            => 'components.php',
-		'Section'               => 'section.php',
-		'LPHeader'              => 'lp-header.php',
-		'TwoColumns'            => 'two-columns.php',
-		'IconInfoColumns'       => 'icon-info-columns.php',
-		'ReviewsCarousel'       => 'reviews-carousel.php',
-		'Hero'                  => 'hero.php',
-		'LogoGrid'              => 'logo-grid.php',
-		'LPFooter'              => 'lp-footer.php',
-		'IconColumns'           => 'icon-columns.php',
-		'Collage'               => 'collage.php',
-		'ReviewCards'           => 'review-cards.php',
-		'VideoIconsCard'        => 'video-icons-card.php',
-		'SeasonHighlights'      => 'season-highlights.php',
-		'SimpleCards'           => 'simple-cards.php',
-		'ProductCards'          => 'product-cards.php',
-		'IconBadge'             => 'icon-badge.php',
-		'LPFormModalCta'        => 'lp-form-modal-cta.php',
-		'MediaContentCard'      => 'media-content-card.php',
-		'Button'                => 'button.php',
-		'ProductDeparturesCard' => 'product-departures-card.php',
-		'ContactCoverCard'      => 'contact-cover-card.php',
-		'OfferCards'            => 'offer-cards.php',
-		'LPOfferMasthead'       => 'lp-offer-masthead.php',
-		'MediaTextCTA'          => 'media-text-cta.php',
-		'FancyVideo'            => 'fancy-video.php',
-		'FormTwoStep'           => 'form-two-step.php',
-		'FormTwoStepCompact'    => 'form-two-step-compact.php',
-		'Header'                => 'header.php',
-		'MenuList'              => 'menu-list.php',
-		'Footer'                => 'footer.php',
-		'Accordion'             => 'accordion.php',
-		'ThumbnailCards'        => 'thumbnail-cards.php',
-		'RelatedPosts'          => 'related-posts.php',
-		'Breadcrumbs'           => 'breadcrumbs.php',
-		'SidebarGrid'           => 'sidebar-grid.php',
-		'AuthorInfo'            => 'author-info.php',
-		'TableOfContents'       => 'table-of-contents.php',
-		'BlogPostCards'         => 'blog-post-cards.php',
-		'AdventureOptions'      => 'adventure-options.php',
-	];
+	// Avoid registering blocks in the admin to avoid a conflict with Blade.
+	if ( is_admin() ) {
+		return;
+	}
+
+	// Path to blocks file.
+	$blocks_path = __DIR__ . '/../dist/blocks.php';
+
+	// Get blocks from file, if it exists.
+	if ( ! file_exists( $blocks_path ) ) {
+		// Block file does not exist, bail.
+		return;
+	}
+
+	// Load blocks.
+	$blocks = require $blocks_path;
+
+	// Check if we have blocks.
+	if ( empty( $blocks ) || ! is_array( $blocks ) ) {
+		return;
+	}
 
 	// Register blocks.
-	foreach ( $blocks as $namespace => $file_name ) {
+	foreach ( $blocks as $path => $namespace ) {
 		// Include and bootstrap blocks.
-		require_once __DIR__ . '/blocks/' . $file_name;
+		$block_path = __DIR__ . '/../' . $path;
+
+		// Check if block file exists.
+		if ( ! file_exists( $block_path ) ) {
+			continue;
+		}
+
+		// Require block.
+		require_once $block_path;
 
 		// Get callable function name.
-		$callable = __NAMESPACE__ . '\\' . $namespace . '\\bootstrap';
+		$callable = $namespace . '\\bootstrap';
 
 		// If the function is callable, then call the function.
 		if ( is_callable( $callable ) ) {

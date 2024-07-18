@@ -1,0 +1,35 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "quark/product-departures-card",
+  "description": "Display a product along with its departure data.",
+  "title": "Product Departures Card",
+  "keywords": [ "product", "card", "departures" ],
+  "category": "layout",
+  "textdomain": "qrk",
+  "attributes": {
+    "image1": {
+      "type": "object",
+      "default": null
+    },
+    "image2": {
+      "type": "object",
+      "default": null
+    },
+    "hasCtaBadge": {
+      "type": "boolean",
+      "default": false
+    },
+    "ctaBadgeText": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "supports": {
+    "alignWide": false,
+    "anchor": true,
+    "className": false,
+    "html": false,
+    "customClassName": false
+  }
+}
