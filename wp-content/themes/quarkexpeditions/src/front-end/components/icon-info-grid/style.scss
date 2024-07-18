@@ -11,7 +11,7 @@
 		height: 100%;
 		align-items: stretch;
 
-		@media screen and (min-width: grid-size(lg)) {
+		@media screen and (min-width: grid-size(xl)) {
 			display: grid;
 			row-gap: var(--spacing-7);
 			height: auto !important;
@@ -42,7 +42,7 @@
 			flex: 0 0 calc(45% - var(--spacing-4));
 		}
 
-		@media screen and (min-width: grid-size(lg)) {
+		@media screen and (min-width: grid-size(xl)) {
 			background-color: transparent;
 			min-width: auto;
 			box-shadow: none;
@@ -83,7 +83,7 @@
 		gap: var(--spacing-6);
 		margin-top: var(--spacing-6);
 
-		@media screen and (min-width: grid-size(lg)) {
+		@media screen and (min-width: grid-size(xl)) {
 			display: none;
 		}
 	}
