@@ -1,0 +1,37 @@
+/**
+ * Buttons
+ */
+@import "../../scss";
+
+.buttons {
+	display: flex;
+	gap: var(--spacing-4);
+
+	&--horizontal-center {
+		justify-content: center;
+	}
+
+	&--horizontal-left {
+		justify-content: flex-start;
+	}
+
+	&--horizontal-right {
+		justify-content: flex-end;
+	}
+
+	&--horizontal-space-between {
+		justify-content: space-between;
+	}
+
+	&--vertical-top {
+		align-items: flex-start;
+	}
+
+	&--vertical-middle {
+		align-items: center;
+	}
+
+	&--vertical-bottom {
+		align-items: flex-end;
+	}
+}

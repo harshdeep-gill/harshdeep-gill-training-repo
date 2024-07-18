@@ -1,0 +1,25 @@
+{
+	"schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Footer Site logo",
+	"name": "quark/footer-logo",
+	"description": "Display a Site logo in the footer.",
+	"parent": [
+		"quark/footer-column"
+	],
+	"category": "layout",
+	"textdomain": "qrk",
+	"keywords": [
+		"footer",
+		"site",
+		"logo"
+	],
+	"attributes": {},
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

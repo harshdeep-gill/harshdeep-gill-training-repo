@@ -1,9 +1,4 @@
 /**
- * WordPress dependencies.
- */
-import { registerBlockType } from '@wordpress/blocks';
-
-/**
  * Import blocks.
  */
 import * as components from './components';
@@ -33,7 +28,6 @@ import * as lpOfferMasthead from './lp-offer-masthead';
 import * as mediaTextCta from './media-text-cta';
 import * as fancyVideo from './fancy-video';
 import * as formTwoStep from './form-two-step';
-import * as formTwoStepCompact from './form-two-step-compact';
 import * as header from './header';
 import * as menuList from './menu-list';
 import * as footer from './footer';
@@ -46,6 +40,7 @@ import * as authorInfo from './author-info';
 import * as tableOfContents from './table-of-contents';
 import * as blogPostCards from './blog-post-cards';
 import * as adventureOptions from './adventure-options';
+import * as buttons from './buttons';
 
 /**
  * Add blocks.
@@ -78,7 +73,6 @@ const blocks = [
 	mediaTextCta,
 	fancyVideo,
 	formTwoStep,
-	formTwoStepCompact,
 	header,
 	menuList,
 	footer,
@@ -91,9 +85,10 @@ const blocks = [
 	tableOfContents,
 	blogPostCards,
 	adventureOptions,
+	buttons,
 ];
 
 /**
  * Register blocks.
  */
-blocks.forEach( ( { name, settings } ) => registerBlockType( name, settings ) );
+blocks.forEach( ( { init } ) => init() );
