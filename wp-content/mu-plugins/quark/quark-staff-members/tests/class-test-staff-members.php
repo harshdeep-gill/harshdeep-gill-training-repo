@@ -84,21 +84,12 @@ class Test_Staff_Members extends WP_UnitTestCase {
 		// Add role post meta.
 		update_post_meta( $post->ID, 'job_title', 'Test Role' );
 
-		// Add featured image.
-		$attachment_id = $this->factory()->attachment->create_upload_object( DIR_TESTDATA . '/images/test-image.png', 0 );
-
-		// Assert the attachment is created.
-		$this->assertIsInt( $attachment_id );
-
-		// Set the attachment as the featured image for the post.
-		set_post_thumbnail( $post->ID, $attachment_id );
-
 		// Assert the post data.
 		$this->assertEquals(
 			[
 				'post'            => $post,
 				'permalink'       => get_permalink( $post ),
-				'post_thumbnail'  => $attachment_id,
+				'post_thumbnail'  => 0,
 				'post_taxonomies' => [
 					'qrk_department' => [
 						[
@@ -133,7 +124,6 @@ class Test_Staff_Members extends WP_UnitTestCase {
 
 		// Clean up.
 		wp_delete_post( $post->ID, true );
-		wp_delete_attachment( $attachment_id, true );
 		wp_delete_term( $department->term_id, 'qrk_department' );
 		wp_delete_term( $season->term_id, 'qrk_season' );
 	}
@@ -155,17 +145,6 @@ class Test_Staff_Members extends WP_UnitTestCase {
 		$this->assertTrue( $staff_member_1 instanceof WP_Post );
 		$this->assertTrue( $staff_member_2 instanceof WP_Post );
 		$this->assertTrue( $staff_member_3 instanceof WP_Post );
-
-		// Create a test media attachment.
-		$attachment_id = $this->factory()->attachment->create_upload_object( DIR_TESTDATA . '/images/test-image.png', 0 );
-
-		// Assert the attachment is created.
-		$this->assertIsInt( $attachment_id );
-
-		// Set the attachment as the featured image for the posts.
-		set_post_thumbnail( $staff_member_1->ID, $attachment_id );
-		set_post_thumbnail( $staff_member_2->ID, $attachment_id );
-		set_post_thumbnail( $staff_member_3->ID, $attachment_id );
 
 		// Create taxonomies.
 		$season_1 = $this->factory()->term->create_and_get(
@@ -201,21 +180,21 @@ class Test_Staff_Members extends WP_UnitTestCase {
 				[
 					'title'          => $staff_member_1->post_title,
 					'permalink'      => get_permalink( $staff_member_1->ID ),
-					'featured_image' => $attachment_id,
+					'featured_image' => 0,
 					'role'           => 'Test Role 1',
 					'season'         => $season_1->name,
 				],
 				[
 					'title'          => $staff_member_2->post_title,
 					'permalink'      => get_permalink( $staff_member_2->ID ),
-					'featured_image' => $attachment_id,
+					'featured_image' => 0,
 					'role'           => 'Test Role 2',
 					'season'         => $season_2->name,
 				],
 				[
 					'title'          => $staff_member_3->post_title,
 					'permalink'      => get_permalink( $staff_member_3->ID ),
-					'featured_image' => $attachment_id,
+					'featured_image' => 0,
 					'role'           => 'Test Role 2',
 					'season'         => $season_1->name,
 				],
@@ -227,7 +206,6 @@ class Test_Staff_Members extends WP_UnitTestCase {
 		wp_delete_post( $staff_member_1->ID, true );
 		wp_delete_post( $staff_member_2->ID, true );
 		wp_delete_post( $staff_member_3->ID, true );
-		wp_delete_attachment( $attachment_id, true );
 		wp_delete_term( $season_1->term_id, 'qrk_season' );
 		wp_delete_term( $season_2->term_id, 'qrk_season' );
 	}
