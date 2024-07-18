@@ -5,6 +5,7 @@
 	&__hamburger-menu {
 
 		.btn {
+			border-color: var(--color-white);
 			display: flex;
 			align-items: center;
 			justify-content: center;
@@ -12,7 +13,7 @@
 			min-width: 56px;
 		}
 
-		@media screen and (min-width: grid-size(lg)) {
+		@media screen and (min-width: grid-size(xl)) {
 			display: none;
 		}
 	}
@@ -34,15 +35,23 @@
 		}
 
 		.drawer__content {
-			max-width: 640px;
 			padding: var(--spacing-5);
 			width: 100%;
+
+			@media screen and (min-width: grid-size(sm)) {
+				max-width: 480px;
+			}
+
+			@media screen and (min-width: grid-size(xl)) {
+				max-width: 640px;
+			}
 		}
 
 		.header__nav-item-featured {
 			border-radius: var(--border-radius-large);
 			max-width: none;
 			overflow: hidden;
+			aspect-ratio: 430 / 190;
 		}
 
 		.header__nav-item-featured-content {
@@ -62,25 +71,26 @@
 			margin-bottom: var(--spacing-4);
 		}
 
-		.menu-list__item-link {
+		&-thumbnail-card-link {
 			display: inline-flex;
 			align-items: center;
 			position: relative;
+			border-bottom: 1px solid var(--color-black);
+
+			&::after {
+				/* stylelint-disable-next-line function-url-quotes */
+				background-image: url("data:image/svg+xml,%3Csvg width='8' height='12' viewBox='0 0 8 12' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0.973475 9.88484L4.7153 5.98334L0.973474 2.08184L2.12543 0.883344L7.0274 5.98334L2.12544 11.0833L0.973475 9.88484Z' fill='%23232933'/%3E%3C/svg%3E%0A");
+				background-size: cover;
+				content: "";
+				width: 8px;
+				height: 12px;
+				position: absolute;
+				right: -15px;
+			}
 
 			&:hover {
-				border-color: var(--color-black);
+				border-color: var(--color-yellow);
 				text-decoration-color: transparent;
-
-				&::after {
-					/* stylelint-disable-next-line function-url-quotes */
-					background-image: url("data:image/svg+xml,%3Csvg width='8' height='12' viewBox='0 0 8 12' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0.973475 9.88484L4.7153 5.98334L0.973474 2.08184L2.12543 0.883344L7.0274 5.98334L2.12544 11.0833L0.973475 9.88484Z' fill='%23232933'/%3E%3C/svg%3E%0A");
-					background-size: cover;
-					content: "";
-					width: 8px;
-					height: 12px;
-					position: absolute;
-					right: -15px;
-				}
 			}
 		}
 	}

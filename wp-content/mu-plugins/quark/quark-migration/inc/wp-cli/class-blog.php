@@ -18,6 +18,8 @@ use function Quark\Migration\Drupal\get_post_by_id;
 use function Quark\Migration\Drupal\prepare_for_migration;
 use function Quark\Migration\Drupal\prepare_content;
 use function Quark\Migration\Drupal\get_term_by_id;
+use function Quark\Migration\Drupal\prepare_seo_data;
+use function Quark\Migration\WordPress\qrk_sanitize_attribute;
 use function WP_CLI\Utils\make_progress_bar;
 
 use const Quark\Blog\POST_TYPE;
@@ -147,7 +149,7 @@ class Blog {
 			$data = [
 				'post_type'         => 'post',
 				'post_author'       => 1,
-				'post_title'        => $blog_post['post_title'],
+				'post_title'        => strval( qrk_sanitize_attribute( $blog_post['post_title'] ) ),
 				'post_date'         => gmdate( 'Y-m-d H:i:s', absint( $blog_post['post_date'] ) ),
 				'post_date_gmt'     => gmdate( 'Y-m-d H:i:s', absint( $blog_post['post_date'] ) ),
 				'post_modified'     => gmdate( 'Y-m-d H:i:s', absint( $blog_post['post_modified'] ) ),
@@ -174,56 +176,13 @@ class Blog {
 			}
 
 			// SEO meta data.
-			if ( ! empty( $blog_post['seo_metatags_data'] ) ) {
-				$seo_meta_data = maybe_unserialize( $blog_post['seo_metatags_data'] );
+			if ( ! empty( $blog_post['seo_metatags_data'] ) && is_string( $blog_post['seo_metatags_data'] ) ) {
+				$seo_data = prepare_seo_data( json_decode( $blog_post['seo_metatags_data'], true ) );
 
-				// Check if we have SEO metadata.
-				if ( is_array( $seo_meta_data ) ) {
-					$search_for   = [
-						'[node:title]',
-						'→',
-						'|',
-						'[site:name]',
-						'[current-page:page-number]',
-						'[current-page:pager]',
-					];
-					$replace_with = [
-						'%%title%%',
-						'%%sep%%',
-						'%%sep%%',
-						'%%sitename%%',
-						'%%page%%',
-						'',
-					];
-
-					// Process seo meta title for WP SEO plugin.
-					if ( ! empty( $seo_meta_data['title']['value'] ) ) {
-						$data['meta_input']['_yoast_wpseo_title'] = str_replace(
-							$search_for,
-							$replace_with,
-							trim( $seo_meta_data['title']['value'] )
-						);
-					}
-
-					// Process seo meta description for WP SEO plugin.
-					if ( ! empty( $seo_meta_data['description']['value'] ) ) {
-						$data['meta_input']['_yoast_wpseo_metadesc'] = str_replace(
-							$search_for,
-							$replace_with,
-							trim( $seo_meta_data['description']['value'] )
-						);
-					}
+				// Merge seo data if not empty.
+				if ( ! empty( $seo_data ) ) {
+					$data['meta_input'] = array_merge( $seo_data, $data['meta_input'] );
 				}
-			}
-
-			// Set Read time metadata.
-			if ( ! empty( $blog_post['read_time_minutes'] ) ) {
-				$data['meta_input']['read_time_minutes'] = absint( $blog_post['read_time_minutes'] );
-			}
-
-			// Set read time seconds.
-			if ( ! empty( $blog_post['read_time_seconds'] ) ) {
-				$data['meta_input']['read_time_seconds'] = absint( $blog_post['read_time_seconds'] );
 			}
 
 			// Check post exist or not.
@@ -368,7 +327,7 @@ class Blog {
 	 *
 	 * @return void
 	 */
-	public function blog_authors() {
+	public function blog_authors(): void {
 		// Welcome message.
 		WP_CLI::log( WP_CLI::colorize( '%YMigrating blog authors from Drupal...%n' ) );
 
