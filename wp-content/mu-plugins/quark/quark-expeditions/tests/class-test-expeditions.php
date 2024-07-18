@@ -12,11 +12,11 @@ use WP_Term;
 use WP_UnitTestCase;
 
 use function Quark\Expeditions\get;
-use function Quark\Expeditions\get_regions;
+use function Quark\Expeditions\get_region_terms;
 use function Quark\Expeditions\get_itineraries;
 use function Quark\Expeditions\get_minimum_duration;
 use function Quark\Expeditions\get_starting_from_locations;
-use function Quark\Expeditions\get_expedition_details_card_data;
+use function Quark\Expeditions\get_details_data;
 
 use const Quark\Itineraries\DEPARTURE_LOCATION_TAXONOMY;
 use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
@@ -129,13 +129,13 @@ class Test_Expeditions extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Test get_regions..
+	 * Test get_region_terms.
 	 *
-	 * @covers \Quark\Expeditions\get_regions()
+	 * @covers \Quark\Expeditions\get_region_terms()
 	 *
 	 * @return void
 	 */
-	public function test_get_regions(): void {
+	public function test_get_region_terms(): void {
 		// Create post.
 		$post_1 = $this->factory()->post->create_and_get(
 			[
@@ -185,7 +185,7 @@ class Test_Expeditions extends WP_UnitTestCase {
 		);
 
 		// Test getting regions.
-		$regions = get_regions( $post_1->ID );
+		$regions = get_region_terms( $post_1->ID );
 
 		// Assert regions is correct.
 		$this->assertEquals(
@@ -210,11 +210,11 @@ class Test_Expeditions extends WP_UnitTestCase {
 	 * @covers \Quark\Expeditions\get_itineraries()
 	 * @covers \Quark\Expeditions\get_minimum_duration()
 	 * @covers \Quark\Expeditions\get_starting_from_locations()
-	 * @covers \Quark\Expeditions\get_expedition_details_card_data()
+	 * @covers \Quark\Expeditions\get_details_data()
 	 *
 	 * @return void
 	 */
-	public function test_get_expedition_details_card_data(): void {
+	public function test_get_details_data(): void {
 		// Create term DEPARTURE_LOCATION_TAXONOMY.
 		$departure_location_term_1 = $this->factory()->term->create_and_get(
 			[
@@ -352,8 +352,8 @@ class Test_Expeditions extends WP_UnitTestCase {
 			$start_location
 		);
 
-		// Get get_expedition_details_card_data().
-		$expedition_details_card_data = get_expedition_details_card_data( $post_1->ID );
+		// Get get_details_data().
+		$expedition_details_card_data = get_details_data( $post_1->ID );
 
 		// Assert expedition_details_card_data is correct.
 		$expected_data = [
@@ -365,7 +365,6 @@ class Test_Expeditions extends WP_UnitTestCase {
 				$departure_location_term_1->name,
 				$departure_location_term_2->name,
 			],
-			'ships'            => [],
 			'total_departures' => 0,
 		];
 

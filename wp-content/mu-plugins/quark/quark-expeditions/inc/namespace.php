@@ -15,7 +15,7 @@ use WP_REST_Request;
 use Quark\Softrip\Itinerary;
 
 use function Quark\Itineraries\get as get_itinerary;
-use function Quark\Core\quark_format_price;
+use function Quark\Core\format_price;
 
 use const Quark\Itineraries\DEPARTURE_LOCATION_TAXONOMY;
 
@@ -478,7 +478,7 @@ function get( int $post_id = 0 ): array {
  *
  * @return array{}| mixed[]
  */
-function get_regions( int $post_id = 0 ): array {
+function get_region_terms( int $post_id = 0 ): array {
 	// Get post.
 	$post   = get( $post_id );
 	$region = [];
@@ -494,9 +494,9 @@ function get_regions( int $post_id = 0 ): array {
 		&& is_array( $post['post_taxonomies'][ DESTINATION_TAXONOMY ] )
 	) {
 		// Loop through taxonomy and get all with no parent term name.
-		foreach ( $post['post_taxonomies'][ DESTINATION_TAXONOMY ] as $taxonomy ) {
-			if ( empty( $taxonomy['parent'] ) ) {
-				$region[] = $taxonomy;
+		foreach ( $post['post_taxonomies'][ DESTINATION_TAXONOMY ] as $term ) {
+			if ( empty( $term['parent'] ) ) {
+				$region[] = $term;
 			}
 		}
 	}
@@ -642,10 +642,10 @@ function get_starting_from_price( int $post_id = 0 ): int {
 		}
 
 		// Get price.
-		$itinerary_obj = new Itinerary( $itinerary['post']->ID );
+		$itinerary_object = new Itinerary( $itinerary['post']->ID );
 
 		// Get lowest price for Itinerary.
-		$price = $itinerary_obj->get_lowest_price();
+		$price = $itinerary_object->get_lowest_price();
 
 		// Check minimum price.
 		if ( empty( $starting_from_price ) || $price < $starting_from_price ) {
@@ -717,7 +717,13 @@ function get_starting_from_locations( int $post_id = 0 ): array {
  *
  * @param int $post_id Post ID.
  *
- * @return array{}|string[]
+ * @return array{} | array{
+ *     array{
+ *         post: WP_Post,
+ *         post_meta: mixed[],
+ *         post_taxonomies: mixed[],
+ *     },
+ * }
  */
 function get_ships( int $post_id = 0 ): array {
 	// Get post.
@@ -751,8 +757,8 @@ function get_ships( int $post_id = 0 ): array {
 		}
 
 		// Init Itinerary object.
-		$itinerary_obj = new Itinerary( $itinerary['post']->ID );
-		$related_ships = $itinerary_obj->get_related_ships();
+		$itinerary_object = new Itinerary( $itinerary['post']->ID );
+		$related_ships    = $itinerary_object->get_related_ships();
 
 		// Check for Itinerary Ships.
 		foreach ( $related_ships as $ship_id => $related_ship ) {
@@ -766,7 +772,7 @@ function get_ships( int $post_id = 0 ): array {
 			}
 
 			// Add ship to array.
-			$ships[ $ship_id ] = $related_ship['post']->post_title;
+			$ships[ $ship_id ] = $related_ship;
 		}
 	}
 
@@ -814,10 +820,10 @@ function get_total_departures( int $post_id = 0 ): int {
 		}
 
 		// Init Itinerary object.
-		$itinerary_obj = new Itinerary( $itinerary['post']->ID );
+		$itinerary_object = new Itinerary( $itinerary['post']->ID );
 
 		// Get total departures for Itinerary.
-		$total_departures = $total_departures + count( $itinerary_obj->get_published_departures() );
+		$total_departures = $total_departures + count( $itinerary_object->get_published_departures() );
 	}
 
 	// Return total departures.
@@ -864,8 +870,8 @@ function get_starting_from_date( int $post_id = 0 ): string {
 		}
 
 		// Init Itinerary object.
-		$itinerary_obj = new Itinerary( $itinerary['post']->ID );
-		$test_date     = $itinerary_obj->get_starting_date();
+		$itinerary_object = new Itinerary( $itinerary['post']->ID );
+		$test_date        = $itinerary_object->get_starting_date();
 
 		// Check for date.
 		if ( empty( $test_date ) ) {
@@ -925,8 +931,8 @@ function get_ending_to_date( int $post_id = 0 ): string {
 		}
 
 		// Init Itinerary object.
-		$itinerary_obj = new Itinerary( $itinerary['post']->ID );
-		$test_date     = $itinerary_obj->get_ending_date();
+		$itinerary_object = new Itinerary( $itinerary['post']->ID );
+		$test_date        = $itinerary_object->get_ending_date();
 
 		// Check for date.
 		if ( empty( $test_date ) ) {
@@ -957,14 +963,14 @@ function get_ending_to_date( int $post_id = 0 ): string {
  *     region: string,
  *     from_price: string,
  *     starting_from: array{},
- *     ships: array{},
  *     total_departures: int,
+ *     ships ?: array{string},
  *     tags ?: array{},
  *     from_date ?: string,
  *     to_date ?: string,
  * }
  */
-function get_expedition_details_card_data( int $post_id = 0 ): array {
+function get_details_data( int $post_id = 0 ): array {
 	// Get post.
 	$post = get( $post_id );
 	$data = [];
@@ -1009,7 +1015,7 @@ function get_expedition_details_card_data( int $post_id = 0 ): array {
 	}
 
 	// Get Regions.
-	$regions     = get_regions( $post_id );
+	$regions     = get_region_terms( $post_id );
 	$data_region = [];
 
 	// Check for regions.
@@ -1032,13 +1038,21 @@ function get_expedition_details_card_data( int $post_id = 0 ): array {
 	$data['duration'] = get_minimum_duration( $post_id );
 
 	// Set starting from price.
-	$data['from_price'] = quark_format_price( get_starting_from_price( $post_id ) );
+	$data['from_price'] = format_price( get_starting_from_price( $post_id ) );
 
 	// Set starting from locations list.
 	$data['starting_from'] = get_starting_from_locations( $post_id );
 
 	// Set ships.
-	$data['ships'] = get_ships( $post_id );
+	$ships_data = get_ships( $post_id );
+
+	// Check for ships.
+	if ( ! empty( $ships_data ) ) {
+		$data['ships'] = array_map(
+			fn( $ship ) => strval( $ship['post']->post_title ),
+			$ships_data
+		);
+	}
 
 	// Get total number of Departures.
 	$data['total_departures'] = get_total_departures( $post_id );

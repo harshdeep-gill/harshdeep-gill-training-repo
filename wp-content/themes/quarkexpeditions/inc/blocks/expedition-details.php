@@ -7,10 +7,7 @@
 
 namespace Quark\Theme\Blocks\ExpeditionDetails;
 
-use WP_Error;
-use WP_Query;
-
-use function Quark\Expeditions\get_expedition_details_card_data;
+use function Quark\Expeditions\get_details_data;
 
 const BLOCK_NAME = 'quark/expedition-details';
 const COMPONENT  = 'expedition-details';
@@ -58,7 +55,7 @@ function render(): string {
 	}
 
 	// Get expedition details card data.
-	$expedition_details_card_data = get_expedition_details_card_data( $current_post_id );
+	$expedition_details_card_data = get_details_data( $current_post_id );
 
 	// Parse data.
 	$expedition_details_card_data = wp_parse_args(
@@ -152,11 +149,10 @@ function render(): string {
 			'slot' => quark_get_component(
 				'button',
 				[
-					'slot'   => 'View All Departures',
-					'href'   => '#bookings',
-					'target' => '_self',
-					'size'   => 'big',
-					'color'  => 'black',
+					'slot'  => 'View All Departures',
+					'href'  => '#bookings',
+					'size'  => 'big',
+					'color' => 'black',
 				]
 			),
 		]

@@ -10,7 +10,6 @@ namespace Quark\Core;
 use JB\Cloudinary\Core as Cloudinary_Core;
 use JB\Cloudinary\Frontend as Cloudinary_Frontend;
 use WP_Post;
-use WP_User;
 
 use function Travelopia\Core\cached_nav_menu;
 
@@ -345,7 +344,7 @@ function get_visitor_geo_country(): string {
  *
  * @return string Formatted price.
  */
-function quark_format_price( int $price = 0, string $currency = 'USD' ): string {
+function format_price( int $price = 0, string $currency = 'USD' ): string {
 	// Check if price is empty.
 	if ( empty( $price ) ) {
 		return '';
