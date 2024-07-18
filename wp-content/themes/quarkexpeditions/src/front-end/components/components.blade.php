@@ -360,6 +360,49 @@
 		</x-hero>
 	</x-component-demo>
 
+	<x-component-demo :keys="[ 'highlights' ]">
+		<x-two-columns :border="false">
+			<x-two-columns.column>
+				<h2>Expedition Overview</h2>
+				<p>Set foot on the Seventh Continent for a polar achievement few get to experience. But an even rarer milestone is getting to cross the iconic Antarctic Circle, which is one of the highlights of this unique small ship expedition!</p>
+				<p>Over 14 days as you navigate south, you’ll have the chance to witness dramatic ice formations, humpback whales swimming alongside the ship, leopard seals diving beneath your Zodiac, penguins sliding off icebergs into crystal waters, and even giant petrels soaring above the crackling sea.</p>
+				<p>We highly recommend the expedition itineraries aboard our pioneering purpose-built vessel, the Ultramarine, which includes a flightseeing tour and a range of adventure options more extensive than any other ship in its class.</p>
+			</x-two-columns.column>
+			<x-two-columns.column>
+				<x-highlights>
+					<x-highlights.title title="Highlights" />
+					<x-highlights.item>
+						<x-highlights.icon icon="compass2" />
+						<x-highlights.item-title title="Cross the Drake Passage, and venture beyond the remote at 66°33'S" />
+					</x-highlights.item>
+					<x-highlights.item>
+						<x-highlights.icon icon="zodiac-cruising" />
+						<x-highlights.item-title title="Head out on Zodiac cruises, go hiking, and take a Polar Plunge" />
+					</x-highlights.item>
+					<x-highlights.item>
+						<x-highlights.icon icon="whale-tail" />
+						<x-highlights.item-title title="Witness abundant wildlife, including penguins, seals, and whales" />
+					</x-highlights.item>
+					<x-highlights.item>
+						<x-highlights.icon icon="house" />
+						<x-highlights.item-title title="Visit Antarctic research stations and iconic landmarks" />
+					</x-highlights.item>
+					<x-highlights.item>
+						<x-highlights.icon icon="iceberg" />
+						<x-highlights.item-title title="Enjoy presentations on wildlife, history, glaciology, and geology by our onboard polar experts" />
+					</x-highlights.item>
+					<x-highlights.item>
+						<x-highlights.icon icon="flightseeing" />
+						<x-highlights.item-title title="Flightseeing (Only on Ultramarine)" />
+					</x-highlights.item>
+					<x-highlights.info>
+						<p>Plus, add on adventure options, such as a paddling excursion</p>
+					</x-highlights.info>
+				</x-highlights>
+			</x-two-columns.column>
+		</x-two-columns>
+	</x-component-demo>
+
 	<x-component-demo :keys="[ 'review-cards', 'hero-refactor' ]">
 		<x-review-cards>
 			<x-review-cards.card>
@@ -506,6 +549,24 @@
 		</x-hero>
 	</x-component-demo>
 
+	<x-component-demo :keys="[ 'secondary-navigation' ]">
+		<x-secondary-navigation>
+			<x-secondary-navigation.navigation :jump_to_navigation="true">
+				<x-secondary-navigation.nav-item href="overview" :active="true">Overview</x-secondary-navigation.nav-item>
+				<x-secondary-navigation.nav-item href="destination-highlights">Destination Highlights</x-secondary-navigation.nav-item>
+				<x-secondary-navigation.nav-item href="top-things-to-see">Top Things to See</x-secondary-navigation.nav-item>
+				<x-secondary-navigation.nav-item href="when-to-go">When to Go</x-secondary-navigation.nav-item>
+				<x-secondary-navigation.nav-item href="testimonials">Testimonials</x-secondary-navigation.nav-item>
+				<x-secondary-navigation.nav-item href="expeditions">Expeditions</x-secondary-navigation.nav-item>
+			</x-secondary-navigation.navigation>
+
+			<x-secondary-navigation.cta-buttons>
+				<x-button size="big" color="black" href="#">Download Brochure</x-button>
+				<x-button size="big" href="#">Upcoming Departures</x-button>
+			</x-secondary-navigation.cta-buttons>
+		</x-secondary-navigation>
+	</x-component-demo>
+
 	<x-component-demo :keys="[ 'global', 'color-palette' ]">
 		<x-section>
 			<x-section.heading>
@@ -516,7 +577,7 @@
 	</x-component-demo>
 
 	<x-component-demo :keys="[ 'global', 'typography' ]">
-		<x-section>
+		<x-section id="overview">
 			<x-section.heading>
 				<x-section.title title="Typography" heading_level="2" />
 			</x-section.heading>
@@ -584,7 +645,7 @@
 	</x-component-demo>
 
 	<x-component-demo :keys="[ 'form' ]">
-		<x-section style="display: flex; flex-wrap: wrap; width: 100%;" class="typography-spacing">
+		<x-section id="destination-highlights" style="display: flex; flex-wrap: wrap; width: 100%;" class="typography-spacing">
 			<x-section.heading>
 				<x-section.title title="Form UI Elements" heading_level="2" />
 			</x-section.heading>
@@ -1022,6 +1083,36 @@
 		</x-review-cards>
 	</x-component-demo>
 
+	<x-component-demo :keys="['tabs']">
+		<x-section>
+			<x-tabs current_tab="ultramarine" update_url="yes">
+				<x-tabs.header>
+					<x-tabs.nav
+						id="ultramarine"
+						title="Ultramarine"
+					/>
+					<x-tabs.nav
+						id="ocean-explorer"
+						title="Ocean Explorer"
+					/>
+				</x-tabs.header>
+
+				<x-tabs.content>
+					<x-tabs.tab id="ultramarine">
+						<h3>Ultramarine</h3>
+						<p>The 199-guest Ultramarine is equipped with two twin-engine helicopters, 20 quick-launching Zodiacs, spacious suites, wellness amenities, and numerous outdoor wildlife viewing spaces. This 420 ft long ship can cruise at 16 knots in open water and includes four fully enclosed lifeboats.</p>
+						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur consequuntur ea ratione sequi? Aperiam asperiores beatae debitis doloribus dolorum earum eveniet excepturi exercitationem ipsum nisi perspiciatis, praesentium provident qui vitae.</p>
+					</x-tabs.tab>
+					<x-tabs.tab id="ocean-explorer">
+						<h3>Ocean Explorer</h3>
+						<p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).</p>
+						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur consequuntur ea ratione sequi? Aperiam asperiores beatae debitis doloribus dolorum earum eveniet excepturi exercitationem ipsum nisi perspiciatis, praesentium provident qui vitae.</p>
+					</x-tabs.tab>
+				</x-tabs.content>
+			</x-tabs>
+		</x-section>
+	</x-component-demo>
+
 	<x-component-demo :keys="[ 'icon-info-columns' ]">
 		<x-section :background="true">
 			<x-section.heading>
@@ -1133,6 +1224,157 @@
 		</x-section>
 	</x-component-demo>
 
+	<x-component-demo :keys="['itinerary-details']">
+		<x-section>
+			<x-itinerary-details current_tab="tab-1">
+				<x-itinerary-details.tabs-nav>
+					<x-itinerary-details.tabs-nav-item id="tab-1">
+						<x-itinerary-details.tabs-nav-item-title title="11 days" />
+						<x-itinerary-details.tabs-nav-item-subtitle subtitle="From Ushuaia, Argentinian Ultramarine" />
+					</x-itinerary-details.tabs-nav-item>
+					<x-itinerary-details.tabs-nav-item id="tab-2">
+						<x-itinerary-details.tabs-nav-item-title title="12 days" />
+						<x-itinerary-details.tabs-nav-item-subtitle subtitle="From Buenos Aires, Argentinian Ultramarine" />
+					</x-itinerary-details.tabs-nav-item>
+					<x-itinerary-details.tabs-nav-item id="tab-3">
+						<x-itinerary-details.tabs-nav-item-title title="12 days" />
+						<x-itinerary-details.tabs-nav-item-subtitle subtitle="From Buenos Aires, Argentinian Ultramarine" />
+					</x-itinerary-details.tabs-nav-item>
+				</x-itinerary-details.tabs-nav>
+
+				<x-itinerary-details.tabs>
+					<x-itinerary-details.tab id="tab-1">
+						<x-itinerary-details.header title="From Buenos Aires, 12 days, on Ultramarine" />
+
+						<x-itinerary-details.body>
+							<x-itinerary-details.summary>
+								<x-itinerary-details.summary-content>
+									<dl>
+										<dt>Duration</dt>
+										<dd>11 Days</dd>
+
+										<dt>Departing from</dt>
+										<dd>Ushuaia, Argentina</dd>
+
+										<dt>Ship</dt>
+										<dd>
+											Ultramarine
+											<br>
+											<a href="#">Learn more about the ship</a>
+										</dd>
+
+										<dt>Starting from</dt>
+										<dd>$ X,XXX USD per person</dd>
+									</dl>
+									<x-itinerary-details.download-button url="#" />
+								</x-itinerary-details.summary-content>
+								<x-itinerary-details.map-lightbox name="map-lightbox" image_id="26" />
+							</x-itinerary-details.summary>
+							<x-itinerary-details.details>
+								Accordion will add here later.<br><br>
+								<h5>Day 1: Arrive in Punta Arenas, Chile</h5>
+								<p>Lorem ipsum dolor sit amet consectetur. Imperdiet sed quam quis morbi ipsum sed odio. Ut dui mi in sed amet quis porttitor nibh. Ac phasellus sit facilisis vestibulum. Quis luctus ornare tortor justo commodo elementum.</p>
+							</x-itinerary-details.details>
+						</x-itinerary-details.body>
+
+						<x-itinerary-details.footer>
+							<x-itinerary-details.cta>
+								<x-button size="big" href="#">Request a Quote</x-button>
+								<x-itinerary-details.download-button url="#" />
+							</x-itinerary-details.cta>
+						</x-itinerary-details.footer>
+					</x-itinerary-details.tab>
+
+					<x-itinerary-details.tab id="tab-2">
+						<x-itinerary-details.header title="From Buenos Aires, 12 days, on Ultramarine" />
+
+						<x-itinerary-details.body>
+							<x-itinerary-details.summary>
+								<x-itinerary-details.summary-content>
+									<dl>
+										<dt>Duration</dt>
+										<dd>12 Days</dd>
+
+										<dt>Departing from</dt>
+										<dd>Ushuaia, Argentina</dd>
+
+										<dt>Ship</dt>
+										<dd>
+											Ultramarine
+											<br>
+											<a href="#">Learn more about the ship</a>
+										</dd>
+
+										<dt>Starting from</dt>
+										<dd>$ X,XXX USD per person</dd>
+									</dl>
+									<x-itinerary-details.download-button url="#" />
+								</x-itinerary-details.summary-content>
+								<x-itinerary-details.map-lightbox name="map-lightbox" image_id="26" />
+							</x-itinerary-details.summary>
+							<x-itinerary-details.details>
+								Accordion will add here later.<br><br>
+								<h5>Day 1: Arrive in Punta Arenas, Chile</h5>
+								<p>Lorem ipsum dolor sit amet consectetur. Imperdiet sed quam quis morbi ipsum sed odio. Ut dui mi in sed amet quis porttitor nibh. Ac phasellus sit facilisis vestibulum. Quis luctus ornare tortor justo commodo elementum.</p>
+
+							</x-itinerary-details.details>
+						</x-itinerary-details.body>
+
+						<x-itinerary-details.footer>
+							<x-itinerary-details.cta>
+								<x-button size="big" href="#">Request a Quote</x-button>
+								<x-itinerary-details.download-button url="#" />
+							</x-itinerary-details.cta>
+						</x-itinerary-details.footer>
+					</x-itinerary-details.tab>
+
+					<x-itinerary-details.tab id="tab-3">
+						<x-itinerary-details.header title="From Buenos Aires, 12 days, on Ultramarine" />
+
+						<x-itinerary-details.body>
+							<x-itinerary-details.summary>
+								<x-itinerary-details.summary-content>
+									<dl>
+										<dt>Duration</dt>
+										<dd>12 Days</dd>
+
+										<dt>Departing from</dt>
+										<dd>Ushuaia, Argentina</dd>
+
+										<dt>Ship</dt>
+										<dd>
+											Ultramarine
+											<br>
+											<a href="#">Learn more about the ship</a>
+										</dd>
+
+										<dt>Starting from</dt>
+										<dd>$ X,XXX USD per person</dd>
+									</dl>
+									<x-itinerary-details.download-button url="#" />
+								</x-itinerary-details.summary-content>
+								<x-itinerary-details.map-lightbox name="map-lightbox" image_id="26" />
+							</x-itinerary-details.summary>
+							<x-itinerary-details.details>
+								Accordion will add here later.<br><br>
+								<h5>Day 1: Arrive in Punta Arenas, Chile</h5>
+								<p>Lorem ipsum dolor sit amet consectetur. Imperdiet sed quam quis morbi ipsum sed odio. Ut dui mi in sed amet quis porttitor nibh. Ac phasellus sit facilisis vestibulum. Quis luctus ornare tortor justo commodo elementum.</p>
+
+							</x-itinerary-details.details>
+						</x-itinerary-details.body>
+
+						<x-itinerary-details.footer>
+							<x-itinerary-details.cta>
+								<x-button size="big" href="#">Request a Quote</x-button>
+								<x-itinerary-details.download-button url="#" />
+							</x-itinerary-details.cta>
+						</x-itinerary-details.footer>
+					</x-itinerary-details.tab>
+				</x-itinerary-details.tabs>
+			</x-itinerary-details>
+		</x-section>
+	</x-component-demo>
+
 	<x-component-demo :keys="['simple-cards']">
 		<x-section :background="true" background_color="black">
 			<x-section.heading>
@@ -1241,6 +1483,122 @@
 					<x-logo-grid.logo image_id="13" size="large"/>
 				</x-logo-grid>
 			</div>
+		</x-section>
+	</x-component-demo>
+
+	<x-component-demo :keys="[ 'expedition-details' ]">
+		<x-section>
+			<x-two-columns :border="false">
+				<x-two-columns.column>
+					<x-expedition-details>
+						<x-expedition-details.overline
+							region="Antarctic"
+							duration="11"
+							from_price="$ X,XXX USD"
+						/>
+						<x-expedition-details.title title="Crossing the Circle" />
+						<x-expedition-details.regions
+							:regions="[
+								'Drake Passage',
+								'South Shetland Islands',
+								'Antarctic Peninsula',
+								'Antarctic Circle'
+							]"
+						/>
+						<x-expedition-details.row>
+							<x-expedition-details.starting-from
+								:starting_from="[
+									'Buenos Aires/Ushuaia',
+									'Argentina',
+								]"
+							/>
+							<x-expedition-details.ships
+								:ships="[
+									'Ocean Explorer',
+									'Ultramarine',
+								]"
+							/>
+						</x-expedition-details.row>
+
+						<x-expedition-details.row>
+							<x-expedition-details.departures
+								total_departures="20"
+								from_date="November 2024"
+								to_date="March 2026"
+							/>
+						</x-expedition-details.row>
+
+						<x-expedition-details.cta>
+							<x-button size="big" color="black">View all Departures</x-button>
+						</x-expedition-details.cta>
+					</x-expedition-details>
+				</x-two-columns.column>
+
+				<x-two-columns.column>
+					<x-fancy-video
+						url="https://www.youtube.com/embed/0fRAL7xROZg"
+						image_id="35"
+						title="Interact with fellow travellers in Tundra to Table: Inuit Culinary Experience"
+					/>
+				</x-two-columns.column>
+			</x-two-columns>
+		</x-section>
+
+		<x-section full_width="true" seamless="true" background="true" background_color="black">
+			<x-two-columns :border="false">
+				<x-two-columns.column>
+					<x-expedition-details appearance="dark">
+						<x-expedition-details.overline
+							region="Antarctic"
+							duration="11"
+							from_price="$ X,XXX USD"
+						/>
+						<x-expedition-details.title title="Crossing the Circle" />
+						<x-expedition-details.regions
+							:regions="[
+								'Drake Passage',
+								'South Shetland Islands',
+								'Antarctic Peninsula',
+								'Antarctic Circle'
+							]"
+						/>
+						<x-expedition-details.row>
+							<x-expedition-details.starting-from
+								:starting_from="[
+									'Buenos Aires/Ushuaia',
+									'Argentina',
+								]"
+							/>
+							<x-expedition-details.ships
+								:ships="[
+									'Ocean Explorer',
+									'Ultramarine',
+								]"
+							/>
+						</x-expedition-details.row>
+
+						<x-expedition-details.row>
+							<x-expedition-details.departures
+								total_departures="20"
+								from_date="November 2024"
+								to_date="March 2026"
+							/>
+						</x-expedition-details.row>
+
+						<x-expedition-details.cta>
+							<x-button size="big" color="black">View all Departures</x-button>
+						</x-expedition-details.cta>
+					</x-expedition-details>
+				</x-two-columns.column>
+
+				<x-two-columns.column>
+					<x-fancy-video
+						url="https://www.youtube.com/embed/0fRAL7xROZg"
+						image_id="35"
+						title="Interact with fellow travellers in Tundra to Table: Inuit Culinary Experience"
+					/>
+				</x-two-columns.column>
+			</x-two-columns>
 		</x-section>
 	</x-component-demo>
 
@@ -1561,7 +1919,7 @@
 			</x-season-highlights>
 		</x-section>
 
-		<x-section>
+		<x-section id="top-things-to-see">
 				<x-section.heading>
 					<x-section.title title="Best Time to See" align="left" />
 				</x-section.heading>
@@ -1897,7 +2255,7 @@
 			</x-lp-offer-masthead.content>
 		</x-lp-offer-masthead>
 
-		<x-section background="true" background_color="black">
+		<x-section id="when-to-go" background="true" background_color="black">
 			<x-section.heading>
 				<x-section.title title="Our Biggest Savings! 50% off these Antarctic 2024 Voyages" />
 			</x-section.heading>
@@ -3039,6 +3397,140 @@
 			</x-accordion>
 		</x-section>
 	</x-component-demo>
+
+	<x-component-demo :keys="[ 'hero-card-slider' ]">
+		<x-section title="Hero Card Slider">
+			<div style="margin-bottom: 64px;">
+				<h3 style="text-align: center; margin-bottom: 32px">Slider with arrows</h3>
+				<x-hero-card-slider :arrows="true">
+					<x-hero-card-slider.card>
+						<x-hero-card-slider.image image_id="29" />
+						<x-hero-card-slider.content>
+							<x-hero-card-slider.tag text="On-ship Experience" />
+							<x-hero-card-slider.title title="Life Onboard a Quark Expeditions Vessel: Incredible On-Ship Experiences" />
+							<x-hero-card-slider.description>
+								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias aliquid quia, iste sunt autem dolor omnis quo beatae animi quos.</p>
+							</x-hero-card-slider.description>
+							<x-hero-card-slider.card-cta text="Explore Experiences" url="#" />
+						</x-hero-card-slider.content>
+					</x-hero-card-slider.card>
+					<x-hero-card-slider.card>
+						<x-hero-card-slider.video video_id="167" />
+						<x-hero-card-slider.content>
+							<x-hero-card-slider.tag text="On-ship Experience" />
+							<x-hero-card-slider.title title="Life Onboard a Quark Expeditions Vessel: Incredible On-Ship Experiences" />
+							<x-hero-card-slider.description>
+								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias aliquid quia, iste sunt autem dolor omnis quo beatae animi quos.</p>
+							</x-hero-card-slider.description>
+							<x-button appearance="outline" size="big">Book Now</x-button>
+						</x-hero-card-slider.content>
+					</x-hero-card-slider.card>
+					<x-hero-card-slider.card>
+						<x-hero-card-slider.image image_id="34" />
+						<x-hero-card-slider.content>
+							<x-hero-card-slider.overline text="Limited time. Limited Cabins." />
+							<x-hero-card-slider.title title="Epic 50% Savings" />
+							<x-hero-card-slider.description>
+								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias aliquid quia, iste sunt autem dolor omnis quo beatae animi quos.</p>
+							</x-hero-card-slider.description>
+							<x-hero-card-slider.card-cta text="Explore Experiences" url="#" />
+						</x-hero-card-slider.content>
+					</x-hero-card-slider.card>
+				</x-hero-card-slider>
+			</div>
+
+			<div style="margin-bottom: 64px;">
+				<h3 style="text-align: center; margin-bottom: 32px">Slider with auto slide and no arrows</h3>
+				<x-hero-card-slider :auto_slide="true" :interval="6" {{-- Interval in seconds. Optional. --}}>
+					<x-hero-card-slider.card>
+						<x-hero-card-slider.image image_id="29" />
+						<x-hero-card-slider.content>
+							<x-hero-card-slider.tag text="On-ship Experience" />
+							<x-hero-card-slider.title title="Life Onboard a Quark Expeditions Vessel: Incredible On-Ship Experiences" />
+							<x-hero-card-slider.description>
+								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias aliquid quia, iste sunt autem dolor omnis quo beatae animi quos.</p>
+							</x-hero-card-slider.description>
+							<x-hero-card-slider.card-cta text="Explore Experiences" url="#" />
+						</x-hero-card-slider.content>
+					</x-hero-card-slider.card>
+					<x-hero-card-slider.card>
+						<x-hero-card-slider.video video_id="167" />
+						<x-hero-card-slider.content>
+							<x-hero-card-slider.tag text="On-ship Experience" />
+							<x-hero-card-slider.title title="Life Onboard a Quark Expeditions Vessel: Incredible On-Ship Experiences" />
+							<x-hero-card-slider.description>
+								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias aliquid quia, iste sunt autem dolor omnis quo beatae animi quos.</p>
+							</x-hero-card-slider.description>
+							<x-button appearance="outline" size="big">Book Now</x-button>
+						</x-hero-card-slider.content>
+					</x-hero-card-slider.card>
+					<x-hero-card-slider.card>
+						<x-hero-card-slider.image image_id="34" />
+						<x-hero-card-slider.content>
+							<x-hero-card-slider.overline text="Limited time. Limited Cabins." />
+							<x-hero-card-slider.title title="Epic 50% Savings" />
+							<x-hero-card-slider.description>
+								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias aliquid quia, iste sunt autem dolor omnis quo beatae animi quos.</p>
+							</x-hero-card-slider.description>
+							<x-hero-card-slider.card-cta text="Explore Experiences" url="#" />
+						</x-hero-card-slider.content>
+					</x-hero-card-slider.card>
+				</x-hero-card-slider>
+			</div>
+
+			<div>
+				<h3 style="text-align: center; margin-bottom: 32px">Slider without card content</h3>
+				<x-hero-card-slider :arrows="true">
+					<x-hero-card-slider.card>
+						<x-hero-card-slider.image image_id="29" />
+					</x-hero-card-slider.card>
+					<x-hero-card-slider.card>
+						<x-hero-card-slider.video video_id="167" />
+					</x-hero-card-slider.card>
+					<x-hero-card-slider.card>
+						<x-hero-card-slider.image image_id="34" />
+					</x-hero-card-slider.card>
+				</x-hero-card-slider>
+			</div>
+		</x-section>
+			<x-section>
+				<x-two-columns :border="true">
+					<x-two-columns.column>
+						<h3>About Quark Expeditions</h3>
+						<p>When you venture into the untouched wilds of the Arctic and Antarctic, you need a great team around you. And we have the greatest. You'll join elite guides trained at Quark Academy — which surpasses every standard imaginable for safety and preparedness in the Polar Regions—and interact directly with world-class polar experts. Our philosophy? The team that explores together, discovers more together.</p>
+						<ul>
+							<li>In nec mi vitae quam posuere aliquet eget sed leo.</li>
+							<li>Sed vel nisi ultricies, sodales risus non, ornare augue.</li>
+							<li>Nulla facilisi. Maecenas sit amet porta nulla commodo.</li>
+						</ul>
+						<x-logo-grid size="large">
+							<x-logo-grid.logo image_id="25" size="large"/>
+							<x-logo-grid.logo image_id="24" size="large"/>
+							<x-logo-grid.logo image_id="21" size="large"/>
+							<x-logo-grid.logo image_id="20" size="large"/>
+							<x-logo-grid.logo image_id="17" size="large"/>
+						</x-logo-grid>
+					</x-two-columns.column>
+					<x-two-columns.column>
+						<div>
+							<h3 style="text-align: center; margin-bottom: 32px">Slider without card content</h3>
+							<x-hero-card-slider :arrows="true">
+								<x-hero-card-slider.card>
+									<x-hero-card-slider.image image_id="29" />
+								</x-hero-card-slider.card>
+								<x-hero-card-slider.card>
+									<x-hero-card-slider.video video_id="167" />
+								</x-hero-card-slider.card>
+								<x-hero-card-slider.card>
+									<x-hero-card-slider.image image_id="34" />
+								</x-hero-card-slider.card>
+							</x-hero-card-slider>
+						</div>
+					</x-two-columns.column>
+				</x-two-columns>
+			</x-section>
+	</x-component-demo>
+
 
 	<x-component-demo :keys="[ 'lp-footer' ]">
 		<x-lp-footer>

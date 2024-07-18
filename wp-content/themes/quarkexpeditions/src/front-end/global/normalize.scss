@@ -8,8 +8,6 @@ html,
 body {
 	height: 100%; // Setting height along with overflow-x: hidden as it affects sticky elements.
 	overflow-x: hidden;
-	scroll-behavior: smooth;
-	scroll-padding-top: var(--scroll-padding-top);
 }
 
 *,
