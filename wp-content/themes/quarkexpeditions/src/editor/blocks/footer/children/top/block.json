@@ -1,0 +1,24 @@
+{
+	"schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Footer Top",
+	"name": "quark/footer-top",
+	"description": "Display the top section of a footer.",
+	"parent": [
+		"quark/footer"
+	],
+	"category": "layout",
+	"textdomain": "qrk",
+	"keywords": [
+		"footer",
+		"top"
+	],
+	"attributes": {},
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}
