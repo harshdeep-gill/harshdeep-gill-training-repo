@@ -7,8 +7,10 @@
 	if ( empty( $slot ) ) {
 		return;
 	}
+
 	$classes = [
 		'buttons',
+		'typography-spacing',
 		sprintf( 'buttons--horizontal-%s', $horizontal_align ) => ! empty( $horizontal_align ),
 		sprintf( 'buttons--vertical-%s', $vertical_align )     => ! empty( $vertical_align ),
 	];
