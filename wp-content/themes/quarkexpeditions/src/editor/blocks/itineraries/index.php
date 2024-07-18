@@ -7,6 +7,7 @@
 
 namespace Quark\Theme\Blocks\Itineraries;
 
+use Quark\Softrip\Itinerary;
 use WP_Block;
 use WP_Post;
 use WP_Term;
@@ -14,6 +15,7 @@ use WP_Term;
 use function Quark\Brochures\get as get_brochure;
 use function Quark\Expeditions\get as get_expedition;
 use function Quark\Itineraries\get as get_itinerary;
+use function Quark\Itineraries\get_season as get_itinerary_season;
 use function Quark\ItineraryDays\get as get_itinerary_day;
 
 use const Quark\Itineraries\DEPARTURE_LOCATION_TAXONOMY;
@@ -88,8 +90,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 		$departing_from     = '';
 		$itinerary_days     = [];
 		$brochure           = '';
-		$price              = '';
-		$ship               = [];
+		$ships              = [];
 
 		// Prepare the tab title.
 		if ( ! empty( $itinerary['post_meta']['duration_in_days'] ) ) {
@@ -127,7 +128,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 
 				// Append the itinerary day with the title and content.
 				$itinerary_days[] = [
-					'title'   => prepare_itinerary_day_title( $itinerary_day['post']->ID ),
+					'title'   => format_itinerary_day_title( $itinerary_day['post']->ID ),
 					'content' => $itinerary_day['post']->post_content,
 				];
 			}
@@ -143,8 +144,53 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 			}
 		}
 
+		// Get the itinerary object.
+		$itinerary_object = new Itinerary( $itinerary['post']->ID );
+
+		// Get the itinerary lowest price.
+		$price = $itinerary_object->get_lowest_price();
+
+		// Get the itinerary ships.
+		$_ships = $itinerary_object->get_related_ships();
+
+		// Loop through the ships.
+		foreach ( $_ships as $ship ) {
+			// Check if the ship post is empty.
+			if ( ! is_array( $ship ) || empty( $ship['post'] ) || ! $ship['post'] instanceof WP_Post ) {
+				continue;
+			}
+
+			// Append the ship to the ships list.
+			$ships[] = [
+				'name' => $ship['post']->post_title,
+				'link' => get_permalink( $ship['post']->ID ),
+			];
+		}
+
+		// Get itinerary ships.
+		$season = get_itinerary_season( $itinerary['post']->ID );
+
+		// Check if the season is empty.
+		if ( empty( $season ) ) {
+			continue;
+		}
+
+		// Active tab for seasons tabs.
+		if ( ! isset( $component_attributes['active_tab'] ) ) {
+			$component_attributes['active_tab'] = $season['slug'];
+		}
+
+		// Seasons tab data.
+		$component_attributes['itinerary_groups'][ $season['slug'] ]['tab_id']    = $season['slug'];
+		$component_attributes['itinerary_groups'][ $season['slug'] ]['tab_title'] = $season['name'];
+
+		// Active tab for itineraries tabs.
+		if ( ! isset( $component_attributes['itinerary_groups'][ $season['slug'] ]['active_tab'] ) ) {
+			$component_attributes['itinerary_groups'][ $season['slug'] ]['active_tab'] = $tab_id;
+		}
+
 		// Append the itinerary to the component attributes.
-		$component_attributes['itineraries'][] = [
+		$component_attributes['itinerary_groups'][ $season['slug'] ]['itineraries'][] = [
 			'tab_id'             => $tab_id,
 			'tab_title'          => $tab_title,
 			'tab_subtitle'       => $tab_subtitle,
@@ -155,7 +201,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 			'map'                => $itinerary['post_meta']['map'] ?? 0,
 			'price'              => $price,
 			'brochure'           => $brochure,
-			'ship'               => $ship,
+			'ships'              => $ships,
 		];
 	}
 
@@ -170,7 +216,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
  *
  * @return string The itinerary day title.
  */
-function prepare_itinerary_day_title( int $itinerary_day = 0 ): string {
+function format_itinerary_day_title( int $itinerary_day = 0 ): string {
 	// Get the itinerary day.
 	$itinerary_day = get_itinerary_day( $itinerary_day );
 

@@ -9,6 +9,8 @@ namespace Quark\Itineraries;
 
 use WP_Post;
 
+use const Quark\StaffMembers\SEASON_TAXONOMY;
+
 const POST_TYPE                   = 'qrk_itinerary';
 const DEPARTURE_LOCATION_TAXONOMY = 'qrk_departure_location';
 const TAX_TYPE_TAXONOMY           = 'qrk_tax_type';
@@ -314,4 +316,45 @@ function get( int $post_id = 0 ): array {
 
 	// Return data.
 	return $data;
+}
+
+/**
+ * Get Season.
+ *
+ * @param int $post_id Post ID.
+ *
+ * @return array{}|array{
+ *     term_id: int,
+ *     name: string,
+ *     slug: string,
+ *     term_group: int,
+ *     term_taxonomy_id: int,
+ *     taxonomy: string,
+ *     description: string,
+ *     parent: int,
+ *     count: int,
+ *     filter: string
+ * } Season data.
+ */
+function get_season( int $post_id = 0 ): array {
+	// Get post ID.
+	$post = get( $post_id );
+
+	// If post not found then return empty array.
+	if ( ! $post['post'] instanceof WP_Post ) {
+		return [];
+	}
+
+	// If there is no season, return empty array.
+	if (
+		empty( $post['post_taxonomies'][ SEASON_TAXONOMY ] ) ||
+		! is_array( $post['post_taxonomies'][ SEASON_TAXONOMY ] ) ||
+		empty( $post['post_taxonomies'][ SEASON_TAXONOMY ][0] ) ||
+		empty( $post['post_taxonomies'][ SEASON_TAXONOMY ][0]['term_id'] )
+	) {
+		return [];
+	}
+
+	// Return season data.
+	return $post['post_taxonomies'][ SEASON_TAXONOMY ][0];
 }
