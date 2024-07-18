@@ -1159,23 +1159,46 @@
 	</x-component-demo>
 
 	<x-component-demo :keys="[ 'icon-info-grid' ]">
-		<x-icon-info-grid>
+		<x-section>
+			<x-section.heading>
+				<x-section.title title="What’s Included" align="left" />
+			</x-section.heading>
+			<x-section.description>Discover what your Crossing the Circle Expedition includes</x-section.description>
+
+			<x-icon-info-grid>
 			<x-icon-info-grid.item>
 				<x-icon-info-grid.icon icon="star" />
 				<h3>Specialist Expedition Leaders</h3>
-				<p>Lorem ipsum</p>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis.</p>
+			</x-icon-info-grid.item>
+			<x-icon-info-grid.item>
+				<x-icon-info-grid.icon icon="whale-tail" />
+				<h3>Immersive Off-ship Activities</h3>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis.</p>
+			</x-icon-info-grid.item>
+			<x-icon-info-grid.item>
+				<x-icon-info-grid.icon icon="ship" />
+				<h3>On-Ship Experiences & Facilities</h3>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis.</p>
 			</x-icon-info-grid.item>
 			<x-icon-info-grid.item>
 				<x-icon-info-grid.icon icon="star" />
-				<h3>Specialist Expedition Leaders</h3>
-				<p>Lorem ipsum</p>
+				<h3>Food & Beverages</h3>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis.</p>
 			</x-icon-info-grid.item>
 			<x-icon-info-grid.item>
 				<x-icon-info-grid.icon icon="star" />
-				<h3>Specialist Expedition Leaders</h3>
-				<p>Lorem ipsum</p>
+				<h3>Quark Expedition Perks</h3>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis.</p>
+			</x-icon-info-grid.item>
+			<x-icon-info-grid.item>
+				<x-icon-info-grid.icon icon="itinerary" />
+				<h3>Transfers</h3>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis.</p>
 			</x-icon-info-grid.item>
 		</x-icon-info-grid>
+		<p class="body-small"><i>International airfare & visa expenses, travel insurance, mandatory expedition gear, on-ship expenses, adventure options and trip extensions are not included.</i></p>
+		</x-section>
 	</x-component-demo>
 
 	<x-component-demo :keys="[ 'icon-columns' ]">
