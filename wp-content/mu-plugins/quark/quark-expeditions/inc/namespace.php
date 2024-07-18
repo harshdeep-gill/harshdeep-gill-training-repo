@@ -15,6 +15,7 @@ use WP_REST_Request;
 use Quark\Softrip\Itinerary;
 
 use function Quark\Itineraries\get as get_itinerary;
+use function Quark\Departures\get as get_departure;
 use function Quark\Core\format_price;
 
 use const Quark\Itineraries\DEPARTURE_LOCATION_TAXONOMY;
@@ -50,6 +51,11 @@ function bootstrap(): void {
 
 	// Other hooks.
 	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
+
+	// Bust cache for details data.
+	add_action( 'qe_expedition_post_cache_busted', __NAMESPACE__ . '\\bust_details_cache' );
+	add_action( 'qe_itinerary_post_cache_busted', __NAMESPACE__ . '\\bust_details_cache_on_itinerary_update', 1 );
+	add_action( 'qe_departure_post_cache_busted', __NAMESPACE__ . '\\bust_details_cache_on_departure_update', 1 );
 
 	// Admin stuff.
 	if ( is_admin() ) {
@@ -476,7 +482,17 @@ function get( int $post_id = 0 ): array {
  *
  * @param int $post_id Post ID.
  *
- * @return array{}| mixed[]
+ * @return array{}| array{
+ *     array{
+ *         term_id: int,
+ *         name: string,
+ *         slug: string,
+ *         taxonomy: string,
+ *         description: string,
+ *         parent: int,
+ *         term_group: int,
+ *     }
+ * }
  */
 function get_region_terms( int $post_id = 0 ): array {
 	// Get post.
@@ -971,6 +987,15 @@ function get_ending_to_date( int $post_id = 0 ): string {
  * }
  */
 function get_details_data( int $post_id = 0 ): array {
+	// Check for cached version.
+	$cache_key    = CACHE_KEY . "_details_$post_id";
+	$cached_value = wp_cache_get( $cache_key, CACHE_GROUP );
+
+	// Check for cached value.
+	if ( is_array( $cached_value ) && ! empty( $cached_value ) ) {
+		return $cached_value;
+	}
+
 	// Get post.
 	$post = get( $post_id );
 	$data = [];
@@ -1073,6 +1098,90 @@ function get_details_data( int $post_id = 0 ): array {
 		$data['to_date'] = gmdate( 'F Y', absint( strtotime( $ending_to_date ) ) );
 	}
 
+	// Set cache and return data.
+	wp_cache_set( $cache_key, $data, CACHE_GROUP );
+
 	// Return data.
 	return $data;
+}
+
+/**
+ * Bust cache for Details Card.
+ *
+ * @param int $post_id Post ID.
+ *
+ * @return void
+ */
+function bust_details_cache( int $post_id = 0 ): void {
+	// Clear cache for this post.
+	wp_cache_delete( CACHE_KEY . "_details_$post_id", CACHE_GROUP );
+}
+
+/**
+ * Bust cache for Details Card from Itinerary.
+ *
+ * @param int $itinerary_id Itinerary Post ID.
+ *
+ * @return void
+ */
+function bust_details_cache_on_itinerary_update( int $itinerary_id = 0 ): void {
+	// Get post ID.
+	if ( 0 === $itinerary_id ) {
+		$itinerary_id = absint( get_the_ID() );
+	}
+
+	// Get post.
+	$itinerary = get_itinerary( $itinerary_id );
+
+	// Check for Itinerary.
+	if ( empty( $itinerary['post'] ) || ! $itinerary['post'] instanceof WP_Post ) {
+		return;
+	}
+
+	// Get related Expedition ID.
+	$expedition_ids = $itinerary['post_meta']['related_expedition'] ?? 0;
+
+	// Check for Expedition IDs.
+	if ( empty( $expedition_ids ) || ! is_array( $expedition_ids ) ) {
+		return;
+	}
+
+	// Bust cache for each Expedition.
+	foreach ( $expedition_ids as $expedition_id ) {
+		// Bust cache for Expedition.
+		bust_details_cache( absint( $expedition_id ) );
+	}
+}
+
+/**
+ * Bust cache for Details Card from Departure.
+ *
+ * @param int $departure_id Departure Post ID.
+ *
+ * @return void
+ */
+function bust_details_cache_on_departure_update( int $departure_id = 0 ): void {
+	// Get post ID.
+	if ( 0 === $departure_id ) {
+		$departure_id = absint( get_the_ID() );
+	}
+
+	// Get post.
+	$departure = get_departure( $departure_id );
+
+	// Check for Departure.
+	if ( empty( $departure['post'] ) || ! $departure['post'] instanceof WP_Post ) {
+		return;
+	}
+
+	// Get related Expedition ID.
+	$expedition_id = $departure['post_meta']['related_expedition'] ?? 0;
+
+	// Validate for Expedition ID.
+	if ( empty( $expedition_id ) || ! absint( $expedition_id ) ) {
+		return;
+	}
+
+	// Bust cache for Expedition.
+	bust_details_cache( absint( $expedition_id ) );
 }

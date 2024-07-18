@@ -215,7 +215,7 @@ class Itinerary extends Softrip_Object {
 			$test_price = $departure->get_lowest_price( $currency );
 
 			// Check if lowest is set and is lower than the previous price.
-			if ( empty( $lowest ) || $lowest > $test_price ) {
+			if ( ! empty( $test_price ) && ( empty( $lowest ) || $lowest > $test_price ) ) {
 				// Use the price as it's lower.
 				$lowest = $test_price;
 			}
