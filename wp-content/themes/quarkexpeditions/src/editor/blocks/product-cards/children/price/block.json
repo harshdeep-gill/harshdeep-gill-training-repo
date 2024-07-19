@@ -3,7 +3,6 @@
   "apiVersion": 3,
   "name": "quark/product-cards-price",
   "description": "Individual Card Price for product cards.",
-  "icon": "screenoptions",
   "title": "Card Price",
   "keywords": [ "price" ],
   "category": "layout",

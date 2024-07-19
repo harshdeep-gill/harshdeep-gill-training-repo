@@ -3,7 +3,6 @@
   "apiVersion": 3,
   "name": "quark/media-content-card-column",
   "description": "Individual column for media content card.",
-  "icon": "screenoptions",
   "title": "Media Content Card Column",
   "keywords": [ "column" ],
   "category": "layout",

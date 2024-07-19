@@ -3,7 +3,6 @@
     "apiVersion": 3,
     "name": "quark/content-cover-card-description",
     "description": "Card description for Contact Cover Card.",
-    "icon": "",
     "title": "Card Description",
     "keywords": [ "help" ],
     "category": "layout",

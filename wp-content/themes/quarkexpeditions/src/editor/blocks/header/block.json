@@ -5,7 +5,6 @@
 	"name": "quark/header",
 	"description": "Header block.",
 	"category": "layout",
-	"icon": "menu",
 	"textdomain": "qrk",
 	"keywords": [
 		"header"

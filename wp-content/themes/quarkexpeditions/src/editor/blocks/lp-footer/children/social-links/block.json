@@ -7,7 +7,6 @@
 	"parent": [
 		"quark/lp-footer-column"
 	],
-	"icon": "share-alt2",
 	"category": "layout",
 	"keywords": [
 		"social",
