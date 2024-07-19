@@ -1591,8 +1591,8 @@
 							from_price="$ X,XXX USD"
 						/>
 						<x-expedition-details.title title="Crossing the Circle" />
-						<x-expedition-details.regions
-							:regions="[
+						<x-expedition-details.tags
+							:tags="[
 								'Drake Passage',
 								'South Shetland Islands',
 								'Antarctic Peninsula',
