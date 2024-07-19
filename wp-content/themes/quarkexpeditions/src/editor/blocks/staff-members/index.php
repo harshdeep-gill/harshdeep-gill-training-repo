@@ -95,8 +95,12 @@ function render( array $attributes = [] ): string {
 	return quark_get_component(
 		COMPONENT,
 		[
-			'cards'  => $cards_data,
-			'layout' => $layout,
+			'cards'      => $cards_data,
+			'layout'     => $layout,
+			'showSeason' => $attributes['showSeason'],
+			'showTitle'  => $attributes['showTitle'],
+			'showRole'   => $attributes['showRole'],
+			'showCta'    => $attributes['showCta'],
 		]
 	);
 }
