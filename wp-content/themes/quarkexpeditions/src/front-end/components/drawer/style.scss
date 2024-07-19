@@ -116,9 +116,7 @@
 			width: 15px;
 		}
 
-		& {
-			position: absolute;
-			inset: 15px 15px auto auto;
-		}
+		position: absolute;
+		inset: 15px 15px auto auto;
 	}
 }

@@ -28,7 +28,7 @@ import '../../../front-end/components/button/style.scss';
  */
 export const settings: BlockConfiguration = {
 	...metadata,
-	icon: "button",
+	icon: 'button',
 	edit,
 	save,
 };

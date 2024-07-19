@@ -20,7 +20,7 @@ export const { name }: { name: string } = metadata;
  */
 export const settings: BlockConfiguration = {
 	...metadata,
-	icon: "share-alt2",
+	icon: 'share-alt2',
 	edit,
 	save,
 };

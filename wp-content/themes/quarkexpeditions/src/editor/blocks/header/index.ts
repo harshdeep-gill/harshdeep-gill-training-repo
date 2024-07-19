@@ -29,7 +29,7 @@ export const { name }: { name: string } = metadata;
  */
 export const settings: BlockConfiguration = {
 	...metadata,
-	icon: "menu",
+	icon: 'menu',
 	edit,
 	save,
 };

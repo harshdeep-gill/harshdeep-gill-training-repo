@@ -20,7 +20,7 @@ export const { name }: { name: string } = metadata;
  */
 export const settings: BlockConfiguration = {
 	...metadata,
-	icon: "button",
+	icon: 'button',
 	edit,
 	save,
 };
