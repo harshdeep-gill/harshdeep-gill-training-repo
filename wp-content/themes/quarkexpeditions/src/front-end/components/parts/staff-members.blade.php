@@ -23,7 +23,7 @@
 				<x-info-cards.description>
 					<x-escape :content="$card['role'] ?? ''" />
 				</x-info-cards.description>
-				<x-info-cards.cta text="Read more" />
+				<x-info-cards.cta :text="__( 'Read more', 'qrk' )" />
 			</x-info-cards.content>
 		</x-info-cards.card>
 	@endforeach
