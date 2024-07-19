@@ -1,0 +1,42 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Staff Members",
+	"name": "quark/staff-members",
+	"description": "Staff Members block.",
+	"category": "layout",
+	"keywords": [
+		"staff",
+		"members"
+	],
+	"textdomain": "qrk",
+	"attributes": {
+		"selection": {
+			"type": "string",
+			"default": "recent"
+		},
+		"ids": {
+			"type": "array",
+			"default": []
+		},
+		"totalPosts": {
+			"type": "number",
+			"default": 3
+		},
+		"departmentIds": {
+			"type": "array",
+			"default": []
+		},
+		"isCarousel": {
+			"type": "boolean",
+			"default": false
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

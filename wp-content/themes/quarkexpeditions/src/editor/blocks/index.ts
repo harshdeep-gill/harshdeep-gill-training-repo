@@ -41,6 +41,7 @@ import * as tableOfContents from './table-of-contents';
 import * as blogPostCards from './blog-post-cards';
 import * as adventureOptions from './adventure-options';
 import * as buttons from './buttons';
+import * as staffMembers from './staff-members';
 
 /**
  * Add blocks.
@@ -86,6 +87,7 @@ const blocks = [
 	blogPostCards,
 	adventureOptions,
 	buttons,
+	staffMembers,
 ];
 
 /**
