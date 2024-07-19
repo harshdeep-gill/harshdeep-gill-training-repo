@@ -32,7 +32,7 @@ import classnames from 'classnames';
  * @param {Function} props.setAttributes Set block attributes.
  */
 export default function edit( { className, attributes, setAttributes }: BlockEditAttributes ) : JSX.Element {
-	// eslint-disable-next-line react-hooks/rules-of-hooks
+	// Prepare block props.
 	const blocksProps = useBlockProps( {
 		className: classnames( className, 'highlights__item' ),
 	} );

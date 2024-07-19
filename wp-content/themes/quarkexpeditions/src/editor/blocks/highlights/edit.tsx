@@ -32,12 +32,12 @@ import * as item from './children/highlight-item';
  * @param {Function} props.setAttributes Set block attributes.
  */
 export default function Edit( { className, attributes, setAttributes }: BlockEditAttributes ): JSX.Element {
-	// eslint-disable-next-line react-hooks/rules-of-hooks
+	// Prepare block props.
 	const blockProps = useBlockProps( {
 		className: classnames( className, 'highlights' ),
 	} );
 
-	// eslint-disable-next-line react-hooks/rules-of-hooks
+	// Prepare inner block props.
 	const innerBlockProps = useInnerBlocksProps( { ...blockProps }, {
 		allowedBlocks: [ item.name ],
 		template: [ [ item.name ], [ item.name ], [ item.name ], [ item.name ], [ item.name ], [ item.name ] ],
