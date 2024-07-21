@@ -2541,7 +2541,7 @@
 			/>
 		</x-sidebar-grid.sidebar>
 	</x-sidebar-grid>
-	<x-section background="true" background_color="black">
+	<x-section id="testimonials" background="true" background_color="black">
 		<x-section.heading>
 			<x-section.title title="Our Biggest Savings! 50% off these Antarctic 2024 Voyages" />
 		</x-section.heading>
@@ -2772,7 +2772,7 @@
 </x-component-demo>
 
 <x-component-demo :keys="[ 'section-updated' ]">
-	<x-section :background="true" :seamless="true">
+	<x-section id="expeditions" :background="true" :seamless="true">
 		<x-section.heading>
 			<x-section.title title="Check out these offers" align="left" />
 			<x-section.heading-link url="#">See All</x-section.heading-link>
