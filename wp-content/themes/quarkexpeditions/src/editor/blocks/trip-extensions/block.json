@@ -1,0 +1,30 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "title": "Trip Extensions",
+  "name": "quark/trip-extensions",
+  "description": "Display trip extensions.",
+  "category": "layout",
+  "textdomain": "qrk",
+  "keywords": [
+    "trip",
+    "extensions"
+  ],
+  "attributes": {
+    "showTitle": {
+      "type": "boolean",
+      "default": true
+    },
+    "showDescription": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "supports": {
+    "alignWide": false,
+    "anchor": true,
+    "className": false,
+    "html": false,
+    "customClassName": false
+  }
+}
