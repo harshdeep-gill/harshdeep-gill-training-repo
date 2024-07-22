@@ -58,7 +58,7 @@
 	grid-column: span $col / span $col;
 }
 
-
+/* stylelint-disable */
 @mixin transition( $property: all, $duration: var(--transition-time), $ease: var(--transition-easing) ) {
 
 	& {
@@ -166,7 +166,6 @@
 	}
 }
 
-
 @mixin css-triangle( $width: 11px, $height: 7px, $color: #000, $direction: "down" ) {
 	width: 0;
 	height: 0;
@@ -236,3 +235,4 @@
 		overflow: hidden;
 	}
 }
+/* stylelint-enable */

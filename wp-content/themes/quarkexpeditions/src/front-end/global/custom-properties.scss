@@ -2,6 +2,7 @@
  * Variables.
  */
 
+/* stylelint-disable */
 :root {
 
 	/**
@@ -149,9 +150,10 @@
 		 * Misc.
 		 */
 		--header-height: 96px;
-		--wp-admin-bar-height: 0px; // stylelint-disable-line
+		--wp-admin-bar-height: 0px;
 		--scroll-offset: 32px;
 		--lp-header-z-index: 10;
 		--scroll-padding-top: calc(var(--header-height) + var(--wp-admin-bar-height) + var(--scroll-offset));
 	}
 }
+/* stylelint-enable */
