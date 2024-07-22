@@ -2,7 +2,6 @@
  * Variables.
  */
 
-/* stylelint-disable */
 :root {
 
 	/**
@@ -68,92 +67,82 @@
 	/**
 	 * Colors and Borders.
 	 */
-	& {
-		--border-small: 4px;
-		--border-radius: 8px;
-		--border-radius-large: 16px;
+	--border-small: 4px;
+	--border-radius: 8px;
+	--border-radius-large: 16px;
 
-		@each $name, $color in $colors {
-			--color-#{ $name }: #{ $color };
-		}
+	@each $name, $color in $colors {
+		--color-#{ $name }: #{ $color };
 	}
 
 	/**
 	 * Elevation.
 	 */
-	& {
-		--shadow-1: 0 1px 24px 0 rgba(0, 0, 0, 0.06);
-		--shadow-2:
-			0 4px 6px -2px rgba(0, 0, 0, 0.05),
-			0 10px 15px -3px rgba(0, 0, 0, 0.1);
-		--shadow-3: 0 4px 6px 0 rgba(0, 0, 0, 0.16);
-		--shadow-4: 0 2px 20px 0 rgba(0, 0, 0, 0.16);
-		--shadow-5: 0 4px 40px 0 rgba(0, 0, 0, 0.16);
-	}
+	--shadow-1: 0 1px 24px 0 rgba(0, 0, 0, 0.06);
+	--shadow-2:
+		0 4px 6px -2px rgba(0, 0, 0, 0.05),
+		0 10px 15px -3px rgba(0, 0, 0, 0.1);
+	--shadow-3: 0 4px 6px 0 rgba(0, 0, 0, 0.16);
+	--shadow-4: 0 2px 20px 0 rgba(0, 0, 0, 0.16);
+	--shadow-5: 0 4px 40px 0 rgba(0, 0, 0, 0.16);
 
 	/**
 	 * Grid.
 	 */
-	& {
-		--spacing-1: 4px;
-		--spacing-2: 8px;
-		--spacing-3: 12px;
-		--spacing-4: 16px;
-		--spacing-5: 24px;
-		--spacing-6: 32px;
-		--spacing-7: 48px;
-		--spacing-8: 64px;
-		--spacing-9: 96px;
+	--spacing-1: 4px;
+	--spacing-2: 8px;
+	--spacing-3: 12px;
+	--spacing-4: 16px;
+	--spacing-5: 24px;
+	--spacing-6: 32px;
+	--spacing-7: 48px;
+	--spacing-8: 64px;
+	--spacing-9: 96px;
 
-		--wrap-width: 1120px;
-		--narrow-wrap-width: 865px;
-		--grid-section-gutter: var(--spacing-8);
-		--grid-row-gutter: var(--spacing-5);
-		--grid-col-gutter: var(--spacing-5);
+	--wrap-width: 1120px;
+	--narrow-wrap-width: 865px;
+	--grid-section-gutter: var(--spacing-8);
+	--grid-row-gutter: var(--spacing-5);
+	--grid-col-gutter: var(--spacing-5);
 
-		@media screen and (min-width: grid-size(lg)) {
-			--grid-row-gutter: var(--spacing-6);
-			--grid-col-gutter: var(--spacing-6);
-			--grid-section-gutter: var(--spacing-9);
-		}
+	@media screen and (min-width: grid-size(lg)) {
+		--grid-row-gutter: var(--spacing-6);
+		--grid-col-gutter: var(--spacing-6);
+		--grid-section-gutter: var(--spacing-9);
 	}
 
-	& {
+	/**
+	 * Forms.
+	 */
+	--buttons-border-radius: var(--border-radius);
+	--forms-border-radius: var(--border-radius);
+	--forms-border-color: var(--color-gray-20);
+	--forms-field-spacing: var(--spacing-4);
 
-		/**
-		 * Forms.
-		 */
-		--buttons-border-radius: var(--border-radius);
-		--forms-border-radius: var(--border-radius);
-		--forms-border-color: var(--color-gray-20);
-		--forms-field-spacing: var(--spacing-4);
+	/**
+	 * Images
+	 */
+	--border-radius-images: var(--border-radius);
 
-		/**
-		 * Images
-		 */
-		--border-radius-images: var(--border-radius);
+	/**
+	 * Misc
+	 */
+	--scale-size: 1.03;
 
-		/**
-		 * Misc
-		 */
-		--scale-size: 1.03;
+	/**
+	 * Transitions
+	 */
+	--ease-in-out-quart: cubic-bezier(0.87, 0, 0.13, 1);
+	--ease-in-out-quad: cubic-bezier(0.42, 0, 0.58, 1);
+	--transition-time: 0.3s;
+	--transition-easing: var(--ease-in-out-quad);
 
-		/**
-		 * Transitions
-		 */
-		--ease-in-out-quart: cubic-bezier(0.87, 0, 0.13, 1);
-		--ease-in-out-quad: cubic-bezier(0.42, 0, 0.58, 1);
-		--transition-time: 0.3s;
-		--transition-easing: var(--ease-in-out-quad);
-
-		/**
-		 * Misc.
-		 */
-		--header-height: 96px;
-		--wp-admin-bar-height: 0px;
-		--scroll-offset: 32px;
-		--lp-header-z-index: 10;
-		--scroll-padding-top: calc(var(--header-height) + var(--wp-admin-bar-height) + var(--scroll-offset));
-	}
+	/**
+	 * Misc.
+	 */
+	--header-height: 96px;
+	--wp-admin-bar-height: 0px; // stylelint-disable-line
+	--scroll-offset: 32px;
+	--lp-header-z-index: 10;
+	--scroll-padding-top: calc(var(--header-height) + var(--wp-admin-bar-height) + var(--scroll-offset));
 }
-/* stylelint-enable */

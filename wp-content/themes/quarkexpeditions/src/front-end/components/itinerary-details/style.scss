@@ -7,9 +7,6 @@
 .itinerary-details {
 	$self: &;
 
-	min-width: 0;
-	display: block;
-
 	.section:has(&) { // stylelint-disable-line
 
 		@media screen and (max-width: calc(grid-size(md) - 1px)) {
@@ -25,6 +22,9 @@
 			}
 		}
 	}
+
+	min-width: 0;
+	display: block;
 
 	tp-tabs-nav {
 		display: block;

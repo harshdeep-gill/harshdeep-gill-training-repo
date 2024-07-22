@@ -58,14 +58,11 @@
 	grid-column: span $col / span $col;
 }
 
-/* stylelint-disable */
-@mixin transition( $property: all, $duration: var(--transition-time), $ease: var(--transition-easing) ) {
 
-	& {
-		transition-timing-function: $ease;
-		transition-property: $property;
-		transition-duration: $duration;
-	}
+@mixin transition( $property: all, $duration: var(--transition-time), $ease: var(--transition-easing) ) {
+	transition-property: $property;
+	transition-duration: $duration;
+	transition-timing-function: $ease;
 }
 
 @mixin fade-in( $duration: var(--transition-time), $ease: var(--transition-easing) ) {
@@ -81,10 +78,8 @@
 		}
 	}
 
-	& {
-		transition: fadein $duration $ease;
-		animation: fadein $ease $duration;
-	}
+	transition: fadein $duration $ease;
+	animation: fadein $ease $duration;
 }
 
 @mixin fade-out( $duration: var(--transition-time), $ease: var(--transition-easing) ) {
@@ -100,10 +95,8 @@
 		}
 	}
 
-	& {
-		transition: fadeout $duration $ease;
-		animation: fadeout $ease $duration;
-	}
+	transition: fadeout $duration $ease;
+	animation: fadeout $ease $duration;
 }
 
 @mixin slide-up( $duration: var(--transition-time), $ease: var(--transition-easing), $offset: 150% ) {
@@ -115,10 +108,8 @@
 		}
 	}
 
-	& {
-		transition: slideup $duration $ease;
-		animation: slideup $ease $duration;
-	}
+	transition: slideup $duration $ease;
+	animation: slideup $ease $duration;
 }
 
 @mixin slide-down( $duration: var(--transition-time), $ease: var(--transition-easing), $top: 150% ) {
@@ -130,10 +121,8 @@
 		}
 	}
 
-	& {
-		transition: slidedown $duration $ease;
-		animation: slidedown $ease $duration;
-	}
+	transition: slidedown $duration $ease;
+	animation: slidedown $ease $duration;
 }
 
 @mixin slide-in( $duration: var(--transition-time), $ease: var(--transition-easing), $offset: 150% ) {
@@ -145,10 +134,8 @@
 		}
 	}
 
-	& {
-		transition: slidein $duration $ease;
-		animation: slidein $ease $duration;
-	}
+	transition: slidein $duration $ease;
+	animation: slidein $ease $duration;
 }
 
 @mixin slide-out( $duration: var(--transition-time), $ease: var(--transition-easing), $offset: 150% ) {
@@ -160,11 +147,10 @@
 		}
 	}
 
-	& {
-		transition: slideout $duration $ease;
-		animation: slideout $ease $duration;
-	}
+	transition: slideout $duration $ease;
+	animation: slideout $ease $duration;
 }
+
 
 @mixin css-triangle( $width: 11px, $height: 7px, $color: #000, $direction: "down" ) {
 	width: 0;
@@ -227,12 +213,8 @@
 }
 
 @mixin line-clamp( $lines: 2 ) {
-
-	& {
-		display: -webkit-box;
-		-webkit-line-clamp: $lines;
-		-webkit-box-orient: vertical;
-		overflow: hidden;
-	}
+	display: -webkit-box;
+	-webkit-line-clamp: $lines;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
 }
-/* stylelint-enable */
