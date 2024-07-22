@@ -255,4 +255,25 @@ class Occupancy extends Data_Object {
 		// Return the occupancy object.
 		return $this->children[ $code ];
 	}
+
+	/**
+	 * Get the price per person for the occupancy in specified currency.
+	 *
+	 * @param string $currency The currency code to get.
+	 *
+	 * @return float
+	 */
+	public function get_price_per_person( string $currency = 'USD' ): float {
+		// Iterate over the occupancy prices.
+		foreach ( $this->get_occupancy_prices() as $price ) {
+			// Check the price is the correct currency.
+			if ( strtolower( $currency ) === strtolower( strval( $price->get_entry_data( 'currency_code' ) ) ) ) {
+				// Get the price per person.
+				return floatval( strval( $price->get_entry_data( 'price_per_person' ) ) );
+			}
+		}
+
+		// Return nothing as it's not found.
+		return 0;
+	}
 }

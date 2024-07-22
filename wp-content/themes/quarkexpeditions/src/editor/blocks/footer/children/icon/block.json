@@ -1,0 +1,35 @@
+{
+	"schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Footer Icon",
+	"name": "quark/footer-icon",
+	"description": "Display the footer icon block.",
+	"parent": [
+		"quark/footer-column"
+	],
+	"category": "layout",
+	"textdomain": "qrk",
+	"keywords": [
+		"footer",
+		"icon"
+	],
+	"attributes": {
+		"type": {
+			"type": "string",
+			"default": "",
+			"enum": [
+				"call",
+				"brochure",
+				"mail",
+				""
+			]
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

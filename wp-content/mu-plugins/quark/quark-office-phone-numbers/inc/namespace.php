@@ -65,22 +65,18 @@ function setup_phone_number_settings(): void {
  */
 function office_phone_number_front_end_data( array $data = [] ): array {
 	// Check for correct data.
-	if ( ! (
-		is_array( $data )
-		&& array_key_exists( 'data', $data )
-		&& is_array( $data['data'] )
-	) ) {
-		$data['data'] = [];
+	if ( ! is_array( $data ) ) {
+		$data = [];
 	}
 
 	// Add dynamic phone number data.
-	$data['data']['dynamic_phone_number'] = [
+	$data['dynamic_phone_number'] = [
 		'api_endpoint' => '',
 	];
 
 	// Update phone number if any rules match.
-	$data['data']['dynamic_phone_number'] = array_merge(
-		$data['data']['dynamic_phone_number'],
+	$data['dynamic_phone_number'] = array_merge(
+		$data['dynamic_phone_number'],
 		[
 			'api_endpoint' => home_url( 'wp-json/' . REST_API_NAMESPACE . '/phone-number/get' ),
 		]

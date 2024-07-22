@@ -265,6 +265,7 @@ function bust_post_cache( int $post_id = 0 ): void {
  * @return array{
  *     post: WP_Post|null,
  *     permalink: string,
+ *     post_thumbnail: int,
  *     post_meta: mixed[],
  *     post_taxonomies: mixed[],
  * }
@@ -284,6 +285,7 @@ function get( int $post_id = 0 ): array {
 		return [
 			'post'            => $cached_value['post'],
 			'permalink'       => $cached_value['permalink'] ?? '',
+			'post_thumbnail'  => $cached_value['post_thumbnail'] ?? 0,
 			'post_meta'       => $cached_value['post_meta'] ?? [],
 			'post_taxonomies' => $cached_value['post_taxonomies'] ?? [],
 		];
@@ -297,6 +299,7 @@ function get( int $post_id = 0 ): array {
 		return [
 			'post'            => null,
 			'permalink'       => '',
+			'post_thumbnail'  => 0,
 			'post_meta'       => [],
 			'post_taxonomies' => [],
 		];
@@ -306,6 +309,7 @@ function get( int $post_id = 0 ): array {
 	$data = [
 		'post'            => $post,
 		'permalink'       => strval( get_permalink( $post ) ? : '' ),
+		'post_thumbnail'  => get_post_thumbnail_id( $post ) ?: 0,
 		'post_meta'       => [],
 		'post_taxonomies' => [],
 	];
@@ -365,6 +369,70 @@ function get( int $post_id = 0 ): array {
 
 	// Set cache and return data.
 	wp_cache_set( $cache_key, $data, CACHE_GROUP );
+
+	// Return data.
+	return $data;
+}
+
+/**
+ * Get data for adventure options cards.
+ *
+ * @param int[] $post_ids Post IDs.
+ *
+ * @return array<mixed>{
+ *    title: string,
+ *    permalink: string,
+ *    featured_image: int,
+ *    role: string,
+ *    season: string,
+ * }[]
+ */
+function get_cards_data( array $post_ids = [] ): array {
+	// Check if post ids exist.
+	if ( empty( $post_ids ) ) {
+		return [];
+	}
+
+	// Initialize data.
+	$data = [];
+
+	// Loop through the post ids.
+	foreach ( $post_ids as $post_id ) {
+		// Get post data.
+		$post_data = get( $post_id );
+
+		// Check if we have post data.
+		if ( empty( $post_data['post'] ) ) {
+			continue;
+		}
+
+		// Get post meta.
+		$post_meta = $post_data['post_meta'];
+
+		// Get post taxonomies.
+		$post_taxonomies = $post_data['post_taxonomies'];
+
+		// Initialize season.
+		$season = '';
+
+		// Check if we have season taxonomy.
+		if ( is_array( $post_taxonomies[ SEASON_TAXONOMY ] ) && isset( $post_taxonomies[ SEASON_TAXONOMY ][0] ) ) {
+			// Get season name.
+			$season = $post_taxonomies[ SEASON_TAXONOMY ][0]['name'];
+		}
+
+		// Get featured image id.
+		$featured_image = $post_data['post_thumbnail'];
+
+		// Build data.
+		$data[] = [
+			'title'          => $post_data['post']->post_title,
+			'permalink'      => $post_data['permalink'],
+			'featured_image' => $featured_image,
+			'role'           => $post_meta['job_title'] ?? '',
+			'season'         => $season,
+		];
+	}
 
 	// Return data.
 	return $data;

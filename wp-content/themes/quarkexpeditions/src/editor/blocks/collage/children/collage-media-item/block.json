@@ -1,0 +1,43 @@
+{
+	"schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Collage Media Item",
+	"name": "quark/collage-media-item",
+	"description": "Individual collage media item.",
+	"parent": [
+		"quark/collage"
+	],
+	"icon": "screenoptions",
+	"category": "layout",
+	"keywords": [
+		"item"
+	],
+	"textdomain": "qrk",
+	"attributes": {
+		"mediaType": {
+			"type": "string",
+			"default": "image"
+		},
+		"size": {
+			"type": "string",
+			"default": "small"
+		},
+		"image": {
+			"type": "object"
+		},
+		"caption": {
+			"type": "string",
+			"default": ""
+		},
+		"videoUrl": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}
