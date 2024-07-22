@@ -64,38 +64,36 @@
 		--h5-line-height: 28px;
 	}
 
+	/**
+	 * Colors and Borders.
+	 */
 	& {
-		/**
-		 * Colors and Borders.
-		 */
 		--border-small: 4px;
 		--border-radius: 8px;
 		--border-radius-large: 16px;
 
 		@each $name, $color in $colors {
-			& {
-				--color-#{ $name }: #{ $color };
-			}
+			--color-#{ $name }: #{ $color };
 		}
 	}
 
-
+	/**
+	 * Elevation.
+	 */
 	& {
-		/**
-		 * Elevation.
-		 */
 		--shadow-1: 0 1px 24px 0 rgba(0, 0, 0, 0.06);
-		--shadow-2: 0 4px 6px -2px rgba(0, 0, 0, 0.05),
-		0 10px 15px -3px rgba(0, 0, 0, 0.1);
+		--shadow-2:
+			0 4px 6px -2px rgba(0, 0, 0, 0.05),
+			0 10px 15px -3px rgba(0, 0, 0, 0.1);
 		--shadow-3: 0 4px 6px 0 rgba(0, 0, 0, 0.16);
 		--shadow-4: 0 2px 20px 0 rgba(0, 0, 0, 0.16);
 		--shadow-5: 0 4px 40px 0 rgba(0, 0, 0, 0.16);
 	}
 
+	/**
+	 * Grid.
+	 */
 	& {
-		/**
-		 * Grid.
-		 */
 		--spacing-1: 4px;
 		--spacing-2: 8px;
 		--spacing-3: 12px;
@@ -120,6 +118,7 @@
 	}
 
 	& {
+
 		/**
 		 * Forms.
 		 */

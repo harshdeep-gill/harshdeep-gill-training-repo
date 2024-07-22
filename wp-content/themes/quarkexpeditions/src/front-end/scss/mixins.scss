@@ -60,6 +60,7 @@
 
 
 @mixin transition( $property: all, $duration: var(--transition-time), $ease: var(--transition-easing) ) {
+
 	& {
 		transition-timing-function: $ease;
 		transition-property: $property;
@@ -227,6 +228,7 @@
 }
 
 @mixin line-clamp( $lines: 2 ) {
+
 	& {
 		display: -webkit-box;
 		-webkit-line-clamp: $lines;
