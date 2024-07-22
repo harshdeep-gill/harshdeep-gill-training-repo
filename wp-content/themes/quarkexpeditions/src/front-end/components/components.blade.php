@@ -3649,6 +3649,17 @@
 	</x-pagination>
 </x-component-demo>
 
+<x-component-demo :keys="[ 'product-options-cards' ]">
+	<x-section>
+		<x-section.heading>
+			<x-section.title title="Cabins Options" align="left" />
+		</x-section.heading>
+
+		<x-product-options-cards>
+		</x-product-options-cards>
+	</x-section>
+</x-component-demo>
+
 <x-component-demo :keys="[ 'footer' ]">
 	@php
 		$social_links = [
