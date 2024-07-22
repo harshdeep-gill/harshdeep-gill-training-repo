@@ -138,7 +138,7 @@
 }
 
 .wp-block-image {
-	margin: var(--typography-spacing) auto;
+	margin: var(--spacing-5) auto;
 
 	&:first-child {
 		margin-top: 0;
@@ -146,7 +146,7 @@
 
 	img {
 		width: 100%;
-		border-radius: var(--border-radius-images);
+		border-radius: var(--border-radius-large);
 		height: auto;
 	}
 
@@ -364,4 +364,22 @@
 
 .has-white-color {
 	color: var(--color-white);
+}
+
+// WordPress annoyingly adds .wp-block-template-part as a wrapper for all
+// template parts. Display its contents to avoid styling issues
+// like sticky positioning, etc.
+@if ( $is-editor != true ) {
+
+	.wp-site-blocks .wp-block-template-part {
+		display: contents;
+	}
+}
+
+// Increase the iframe container height in full site editor.
+@if ( $is-editor == true ) {
+
+	body.block-editor-iframe__body {
+		min-height: 800px;
+	}
 }

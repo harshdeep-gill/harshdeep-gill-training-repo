@@ -3,13 +3,48 @@
 .hero {
 	$self: &;
 
+	--hero-padding-block: var(--spacing-8);
+
 	position: relative;
-	padding-block: var(--spacing-8);
-	min-height: 540px;
+	padding-block: var(--hero-padding-block);
 	margin-top: 0;
+	overflow: hidden;
+	z-index: 0;
 
 	@media screen and (min-width: grid-size(lg)) {
-		padding-block: var(--spacing-9);
+		--hero-padding-block: var(--spacing-9);
+	}
+
+	@supports (selector(:has(*))) {
+
+		&:has(.breadcrumbs) {
+			padding-top: 0;
+
+			#{$self}__content {
+				min-height: calc(540px - var(--hero-padding-block));
+			}
+		}
+	}
+
+	.breadcrumbs {
+		margin-bottom: var(--spacing-8);
+		position: relative;
+		z-index: 3;
+
+		@media screen and (min-width: grid-size(lg)) {
+			margin-bottom: var(--spacing-9);
+		}
+	}
+
+	&__overlay {
+		--hero-overlay-background-opacity: 0;
+		position: absolute;
+		display: block;
+		margin: 0;
+		inset: 0;
+		z-index: 2;
+		max-width: 100%;
+		background-color: rgba(0, 0, 0, var(--hero-overlay-background-opacity));
 	}
 
 	&--immersive {
@@ -17,27 +52,44 @@
 		$image_bleed_bottom: 192px;
 
 		@supports (selector(:has(*))) {
-			padding-top: calc(var(--spacing-8) + $image_bleed_top);
-			padding-bottom: calc(var(--spacing-8) + ($image_bleed_bottom / 2));
-			margin-bottom: calc(-1 * $image-bleed-bottom / 2);
 
-			@media screen and (min-width: grid-size(lg)) {
-				padding-top: calc(var(--spacing-9) + $image_bleed_top);
-				padding-bottom: calc(var(--spacing-9) + $image_bleed_bottom);
-				margin-bottom: -$image_bleed_bottom;
+			&-top,
+			&-all {
+				padding-top: calc(var(--spacing-8) + $image_bleed_top);
+
+				@media screen and (min-width: grid-size(lg)) {
+					padding-top: calc(var(--spacing-9) + $image_bleed_top);
+				}
+
+				&:has(.breadcrumbs) {
+					padding-top: $image_bleed_top;
+				}
+
 			}
 
-			+ * {
-				margin-top: 0;
-				position: relative;
+			&-bottom,
+			&-all {
+				padding-bottom: calc(var(--spacing-8) + ($image_bleed_bottom / 2));
+				margin-bottom: calc(-1 * $image-bleed-bottom / 2);
+
+				@media screen and (min-width: grid-size(lg)) {
+					padding-bottom: calc(var(--spacing-9) + $image_bleed_bottom);
+					margin-bottom: calc(-1 * $image_bleed_bottom);
+				}
+
+				+ * {
+					margin-top: 0;
+					position: relative;
+				}
 			}
 		}
 
-		&::after {
+		&-bottom::after,
+		&-all::after {
 			content: "";
 			display: block;
 			position: absolute;
-			z-index: 0;
+			z-index: 2;
 			left: 0;
 			right: 0;
 			bottom: -1px;
@@ -72,6 +124,14 @@
 				text-align: unset;
 			}
 		}
+
+		#{$self}__savings-tag {
+			margin-inline: auto;
+
+			@media screen and (min-width: grid-size(lg)) {
+				margin-inline: 0;
+			}
+		}
 	}
 
 	&__wrap {
@@ -89,7 +149,7 @@
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
-		z-index: 0;
+		z-index: 1;
 	}
 
 	&__title {
@@ -105,8 +165,9 @@
 		flex-direction: column;
 		align-items: center;
 		gap: var(--spacing-6);
+		min-height: 540px;
 		position: relative;
-		z-index: 1;
+		z-index: 3;
 
 		@media screen and (min-width: grid-size(lg)) {
 			flex-direction: row;
@@ -130,6 +191,16 @@
 		@media screen and (min-width: grid-size(lg)) {
 			max-width: 640px;
 			align-items: flex-start;
+		}
+
+		.btn {
+			max-width: 350px;
+			width: 100%;
+
+			@media screen and (min-width: grid-size(lg)) {
+				width: auto;
+				padding-inline: var(--spacing-7);
+			}
 		}
 	}
 
@@ -185,18 +256,10 @@
 		}
 	}
 
-	&__form {
-		padding: var(--spacing-5);
-		background-color: rgba(color("black"), 0.5);
-		border-radius: var(--border-radius-large);
-
-		tp-form-error {
-			display: none;
-		}
-
-		.btn {
-			width: 100%;
-			text-transform: uppercase;
-		}
+	&__savings-tag {
+		padding: var(--spacing-1) var(--spacing-4);
+		background-color: var(--color-success-100);
+		color: var(--color-white);
+		width: fit-content;
 	}
 }

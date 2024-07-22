@@ -9,8 +9,6 @@ namespace Quark\PressReleases;
 
 use WP_Post;
 
-use function Quark\Core\prepare_content_with_blocks;
-
 const POST_TYPE = 'qrk_press_release';
 
 /**
@@ -22,20 +20,8 @@ function bootstrap(): void {
 	// Register post type.
 	add_action( 'init', __NAMESPACE__ . '\\register_press_release_post_type' );
 
-	// Layout.
-	add_action( 'template_redirect', __NAMESPACE__ . '\\layout' );
-}
-
-/**
- * Layout for this post type.
- *
- * @return void
- */
-function layout(): void {
-	// Add single layout if viewing a single post.
-	if ( is_singular( POST_TYPE ) ) {
-		add_filter( 'quark_front_end_data', __NAMESPACE__ . '\\layout_single' );
-	}
+	// Breadcrumbs.
+	add_filter( 'travelopia_breadcrumbs_ancestors', __NAMESPACE__ . '\\breadcrumbs_ancestors' );
 }
 
 /**
@@ -78,42 +64,11 @@ function register_press_release_post_type(): void {
 		],
 		'capability_type'     => 'post',
 		'show_in_rest'        => true,
+		'menu_position'       => 5,
 	];
 
 	// Register post type.
 	register_post_type( POST_TYPE, $args );
-}
-
-/**
- * Layout: Single.
- *
- * @param mixed[] $data Front-end data.
- *
- * @return mixed[]
- */
-function layout_single( array $data = [] ): array {
-	// Get post.
-	$page = get();
-
-	// Bail if post does not exist or not an instance of WP_Post.
-	if ( empty( $page['post'] ) || ! $page['post'] instanceof WP_Post ) {
-		return $data;
-	}
-
-	// Layout.
-	$data['layout'] = 'single';
-
-	// Build data.
-	$data['data'] = array_merge( $data['data'] ?? [], $page );
-
-	// Post content.
-	$data['data']['post_content'] = $page['post']->post_content;
-
-	// Prepare blocks.
-	prepare_content_with_blocks( $data['data']['post_content'] );
-
-	// Return front-end data.
-	return $data;
 }
 
 /**
@@ -143,4 +98,32 @@ function get( int $post_id = 0 ): array {
 		'post'      => $post,
 		'permalink' => strval( get_permalink( $post ) ? : '' ),
 	];
+}
+
+/**
+ * Breadcrumbs ancestors for this post type.
+ *
+ * @param mixed[] $breadcrumbs Breadcrumbs.
+ *
+ * @return mixed[]
+ */
+function breadcrumbs_ancestors( array $breadcrumbs = [] ): array {
+	// Check if current query is for this post type.
+	if ( ! is_singular( POST_TYPE ) && ! is_author() && ! is_category() ) {
+		return $breadcrumbs;
+	}
+
+	// Get archive page.
+	$press_release_archive_page = absint( get_option( 'options_press_releases_page', 0 ) );
+
+	// Get it's title and URL for breadcrumbs if it's set.
+	if ( ! empty( $press_release_archive_page ) ) {
+		$breadcrumbs[] = [
+			'title' => get_the_title( $press_release_archive_page ),
+			'url'   => get_permalink( $press_release_archive_page ),
+		];
+	}
+
+	// Return updated breadcrumbs.
+	return $breadcrumbs;
 }

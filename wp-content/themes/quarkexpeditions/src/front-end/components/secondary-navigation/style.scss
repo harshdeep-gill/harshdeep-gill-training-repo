@@ -1,0 +1,205 @@
+/**
+ * Secondary Navigation.
+ */
+@import "../../scss";
+
+.secondary-navigation {
+	$self: &;
+
+	min-width: 0;
+	position: sticky;
+	top: 0;
+	background-color: var(--color-white);
+	padding: var(--spacing-4) 0;
+	z-index: 101;
+
+	&--is-sticky {
+		box-shadow: var(--shadow-1);
+	}
+
+	&__wrap {
+		display: flex;
+		overflow: auto;
+		position: relative;
+		white-space: nowrap;
+		-ms-overflow-style: none; /* for Internet Explorer, Edge */
+		scrollbar-width: none; /* for Firefox */
+		gap: 30px;
+
+		&::-webkit-scrollbar {
+			display: none; /* for Chrome, Safari, and Opera */
+		}
+
+		@media screen and (min-width: grid-size(lg)) {
+			overflow: initial;
+		}
+	}
+
+	quark-secondary-navigation {
+		display: block;
+		min-width: 0;
+		flex: 1;
+	}
+
+	&__navigation-item--dropdown {
+		position: relative;
+
+		@media screen and (max-width: calc(grid-size(lg) - 1px)) {
+			display: none !important;
+		}
+	}
+
+	&__navigation-more-items-hide {
+		display: none;
+	}
+
+	&__navigation-more-items-show {
+		display: block;
+	}
+
+	&__navigation-items {
+		display: flex;
+		align-items: center;
+		list-style: none;
+		padding-left: 0;
+	}
+
+	&__navigation-item {
+		font-weight: var(--font-weight-bold);
+		padding: 0 var(--spacing-2);
+
+		&:first-child {
+			padding-left: 0;
+		}
+
+		&:last-child {
+			padding-right: 0;
+		}
+
+		&:nth-last-child(2) {
+			padding-right: var(--grid-col-gutter);
+
+			@media screen and (min-width: grid-size(lg)) {
+				padding-right: var(--spacing-2);
+			}
+		}
+
+		&--active {
+
+			a {
+				background-color: var(--color-gray-20);
+				border-radius: var(--border-radius);
+				text-decoration: none;
+			}
+		}
+	}
+
+	&__navigation-item-link {
+		display: block;
+		line-height: 1.5;
+		padding: var(--spacing-3) var(--spacing-4);
+	}
+
+	&__navigation-dropdown {
+		background: var(--color-gray-10);
+		box-shadow: 0 1.41438px 5.65752px rgba(0, 0, 0, 0.25);
+		border-radius: var(--border-radius);
+		position: absolute;
+		display: none;
+		list-style: none;
+		min-width: 240px;
+		padding: var(--spacing-1);
+		top: 60px;
+
+		#{$self}__navigation-item--dropdown-active & {
+			display: block;
+		}
+
+		#{$self}__navigation-item {
+			padding: 0;
+		}
+
+		a {
+			border-radius: var(--border-small);
+			font-weight: initial;
+			line-height: 1.25;
+			text-decoration: none;
+			padding-left: var(--spacing-6);
+			padding-right: var(--spacing-6);
+
+			&:hover {
+				background-color: var(--color-gray-20);
+			}
+		}
+
+		#{$self}__navigation-item--active a {
+			/* stylelint-disable-next-line function-url-quotes */
+			background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='9' fill='none'%3E%3Cpath fill='%23232933' d='m4.599 6.816 6.619-6.75.782.797-7.401 7.548L.506 4.238l.782-.798 3.31 3.376Z'/%3E%3C/svg%3E");
+			background-color: transparent;
+			background-repeat: no-repeat;
+			background-position: center left 10px;
+
+			&:hover {
+				background-color: var(--color-gray-20);
+			}
+		}
+	}
+
+	&__cta-buttons {
+		background-color: var(--color-white);
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-4);
+		min-width: 0;
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		padding: var(--spacing-5);
+
+		@media screen and (min-width: grid-size(lg)) {
+			flex-direction: row;
+			gap: var(--spacing-5);
+			position: initial;
+			padding: 0;
+			width: auto;
+		}
+
+		.btn--color-black {
+			order: 1;
+
+			@media screen and (min-width: grid-size(lg)) {
+				order: initial;
+			}
+		}
+	}
+
+	&__navigation-button {
+		background-color: transparent;
+		border: 0;
+		font-size: inherit;
+		line-height: 1.5;
+		padding: var(--spacing-3) var(--spacing-4);
+		text-decoration: underline !important;
+		text-decoration-color: currentcolor;
+		text-underline-offset: 0.3em;
+
+		&:hover {
+			text-decoration: underline;
+			text-decoration-color: var(--color-yellow) !important;
+		}
+	}
+}
+
+body.has-sticky-secondary-navigation {
+
+	.header,
+	.lp-header {
+		opacity: 0;
+		visibility: hidden;
+	}
+}
+
+body:has(.secondary-navigation__cta-buttons) .footer {
+	padding-bottom: calc(176px + var(--spacing-7)); // Sticky `secondary-navigation__cta-buttons` height + default padding.
+}

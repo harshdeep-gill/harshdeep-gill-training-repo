@@ -1,11 +1,7 @@
 /**
- * WordPress dependencies.
- */
-import { registerBlockType } from '@wordpress/blocks';
-
-/**
  * Import blocks.
  */
+import * as components from './components';
 import * as section from './section';
 import * as lpHeader from './lp-header';
 import * as twoColumns from './two-columns';
@@ -32,12 +28,26 @@ import * as lpOfferMasthead from './lp-offer-masthead';
 import * as mediaTextCta from './media-text-cta';
 import * as fancyVideo from './fancy-video';
 import * as formTwoStep from './form-two-step';
-import * as formTwoStepCompact from './form-two-step-compact';
+import * as header from './header';
+import * as menuList from './menu-list';
+import * as footer from './footer';
+import * as accordion from './accordion';
+import * as thumbnailCards from './thumbnail-cards';
+import * as relatedPosts from './related-posts';
+import * as breadcrumbs from './breadcrumbs';
+import * as sidebarGrid from './sidebar-grid';
+import * as authorInfo from './author-info';
+import * as tableOfContents from './table-of-contents';
+import * as blogPostCards from './blog-post-cards';
+import * as adventureOptions from './adventure-options';
+import * as buttons from './buttons';
+import * as staffMembers from './staff-members';
 
 /**
  * Add blocks.
  */
 const blocks = [
+	components,
 	section,
 	lpHeader,
 	twoColumns,
@@ -64,10 +74,23 @@ const blocks = [
 	mediaTextCta,
 	fancyVideo,
 	formTwoStep,
-	formTwoStepCompact,
+	header,
+	menuList,
+	footer,
+	accordion,
+	thumbnailCards,
+	relatedPosts,
+	breadcrumbs,
+	sidebarGrid,
+	authorInfo,
+	tableOfContents,
+	blogPostCards,
+	adventureOptions,
+	buttons,
+	staffMembers,
 ];
 
 /**
  * Register blocks.
  */
-blocks.forEach( ( { name, settings } ) => registerBlockType( name, settings ) );
+blocks.forEach( ( { init } ) => init() );

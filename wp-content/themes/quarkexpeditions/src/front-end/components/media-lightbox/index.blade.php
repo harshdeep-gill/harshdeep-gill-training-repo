@@ -24,6 +24,9 @@
 				<figure class="media-lightbox__image-wrap">
 					{!! $slot !!}
 				</figure>
+				<span class="media-lightbox__fullscreen">
+					<x-svg name="fullscreen" />
+				</span>
 			@else
 				{!! $slot !!}
 			@endif
