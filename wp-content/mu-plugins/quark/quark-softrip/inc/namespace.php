@@ -26,7 +26,7 @@ function bootstrap(): void {
 	}
 
 	// Add in filter to add in our sync schedule.
-	add_filter( 'cron_schedules', __NAMESPACE__ . '\\cron_add_schedule' );
+	add_filter( 'cron_schedules', __NAMESPACE__ . '\\cron_add_schedule' ); // phpcs:ignore WordPress.WP.CronInterval -- Verified > 4 Hour.
 
 	// Schedule our sync task.
 	add_filter( 'admin_init', __NAMESPACE__ . '\\cron_schedule_sync' );
@@ -69,9 +69,12 @@ function request_departures( array $codes = [] ): array|WP_Error {
  * @return array<string, array<int|string, int|string>>
  */
 function cron_add_schedule( array $schedules = [] ): array {
+	// Explicitly define the interval in seconds.
+	$interval = 4 * HOUR_IN_SECONDS; // 4 hours.
+
 	// Create our schedule.
 	$schedules[ SCHEDULE_RECCURANCE ] = [
-		'interval' => 4 * HOUR_IN_SECONDS,
+		'interval' => $interval,
 		'display'  => 'Once every 4 hours',
 	];
 
