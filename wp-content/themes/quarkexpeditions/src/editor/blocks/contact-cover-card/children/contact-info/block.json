@@ -3,7 +3,6 @@
     "apiVersion": 3,
     "name": "quark/contact-cover-card-contact-info",
     "description": "Individual content info for contact cover card.",
-    "icon": "screenoptions",
     "title": "Contact Info",
     "keywords": [ "info", "contact" ],
     "category": "layout",

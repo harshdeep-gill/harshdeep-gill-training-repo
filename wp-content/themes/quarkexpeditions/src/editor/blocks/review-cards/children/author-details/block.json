@@ -7,7 +7,6 @@
 	"parent": [
 		"quark/review-cards-card"
 	],
-	"icon": "screenoptions",
 	"category": "layout",
 	"textdomain": "qrk",
 	"keywords": [

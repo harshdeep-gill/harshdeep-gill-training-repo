@@ -3,7 +3,6 @@
   "apiVersion": 3,
   "name": "quark/product-cards-itinerary",
   "description": "Individual Card Itinerary for product cards.",
-  "icon": "screenoptions",
   "title": "Card Itinerary",
   "keywords": [ "itinerary" ],
   "category": "layout",

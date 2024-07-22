@@ -3,7 +3,6 @@
     "apiVersion": 3,
     "name": "quark/offer-card-promotion",
     "description": "Individual card promotion details for Offer Cards.",
-    "icon": "screenoptions",
     "title": "Card Promotion",
     "keywords": [ "promotion" ],
     "category": "layout",
