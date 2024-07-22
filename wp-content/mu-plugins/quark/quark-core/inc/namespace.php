@@ -344,8 +344,8 @@ function get_visitor_geo_country(): string {
  */
 function doing_automated_test(): bool {
 	// Get automated test User Agent.
-	if ( defined( 'TCS_AUTOMATED_TEST_USER_AGENT' ) && ! empty( TCS_AUTOMATED_TEST_USER_AGENT ) ) {
-		$test_user_agent = TCS_AUTOMATED_TEST_USER_AGENT;
+	if ( defined( 'QUARK_AUTOMATED_TEST_USER_AGENT' ) && ! empty( QUARK_AUTOMATED_TEST_USER_AGENT ) ) {
+		$test_user_agent = QUARK_AUTOMATED_TEST_USER_AGENT;
 	} else {
 		$test_user_agent = '';
 	}

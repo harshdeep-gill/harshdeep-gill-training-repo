@@ -140,7 +140,7 @@ class Test_Core extends WP_UnitTestCase {
 
 		// Define config.
 		$_SERVER['HTTP_USER_AGENT'] = 'TEST_USER_AGENT';
-		define( 'TCS_AUTOMATED_TEST_USER_AGENT', 'TEST_USER_AGENT' );
+		define( 'QUARK_AUTOMATED_TEST_USER_AGENT', 'TEST_USER_AGENT' );
 
 		// Test user agent.
 		$this->assertTrue( doing_automated_test() );
