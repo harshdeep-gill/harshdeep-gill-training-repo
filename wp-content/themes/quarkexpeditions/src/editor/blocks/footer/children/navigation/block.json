@@ -1,0 +1,30 @@
+{
+	"schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Footer Navigation",
+	"name": "quark/footer-navigation",
+	"description": "Display the footer navigation container.",
+	"parent": [
+		"quark/footer-middle",
+		"quark/footer-bottom"
+	],
+	"category": "layout",
+	"keywords": [
+		"footer",
+		"navigation"
+	],
+	"textdomain": "qrk",
+	"attributes": {
+		"title": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

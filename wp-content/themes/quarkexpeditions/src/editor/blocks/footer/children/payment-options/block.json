@@ -1,0 +1,25 @@
+{
+	"schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Payment options",
+	"name": "quark/footer-payment-options",
+	"description": "Display the payment options.",
+	"parent": [
+		"quark/footer-column"
+	],
+	"category": "layout",
+	"keywords": [
+		"footer",
+		"payment",
+		"options"
+	],
+	"textdomain": "qrk",
+	"attributes": {},
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}
