@@ -7,7 +7,6 @@
 	"parent": [
 		"quark/season-highlights"
 	],
-	"icon": "layout",
 	"category": "layout",
 	"textdomain": "qrk",
 	"keywords": [

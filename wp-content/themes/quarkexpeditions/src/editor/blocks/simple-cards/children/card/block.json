@@ -3,7 +3,6 @@
   "apiVersion": 3,
   "name": "quark/simple-cards-card",
   "description": "Individual card item for simple cards.",
-  "icon": "screenoptions",
   "title": "Simple Cards Item",
   "keywords": [ "card" ],
   "category": "layout",

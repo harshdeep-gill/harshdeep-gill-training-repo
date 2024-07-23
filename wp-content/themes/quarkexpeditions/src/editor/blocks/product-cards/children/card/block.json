@@ -3,7 +3,6 @@
   "apiVersion": 3,
   "name": "quark/product-cards-card",
   "description": "Individual Card Item for product cards.",
-  "icon": "screenoptions",
   "title": "Product Cards Card",
   "keywords": [ "card" ],
   "category": "layout",

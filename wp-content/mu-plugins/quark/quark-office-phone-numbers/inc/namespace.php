@@ -27,6 +27,7 @@ function bootstrap(): void {
 
 	// REST API hooks.
 	add_action( 'rest_api_init', __NAMESPACE__ . '\\register_rest_endpoints' );
+	add_filter( 'travelopia_security_public_rest_api_routes', __NAMESPACE__ . '\\security_public_rest_api_routes' );
 
 	// Custom fields.
 	if ( is_admin() ) {
@@ -104,6 +105,21 @@ function register_rest_endpoints(): void {
 	foreach ( $endpoints as $endpoint ) {
 		$endpoint->register_routes();
 	}
+}
+
+/**
+ * Register public REST API routes.
+ *
+ * @param string[] $routes Public routes.
+ *
+ * @return string[]
+ */
+function security_public_rest_api_routes( array $routes = [] ): array {
+	// Whitelist local phone number API routes.
+	$routes[] = sprintf( '/%s/phone-number/get', REST_API_NAMESPACE );
+
+	// Return routes.
+	return $routes;
 }
 
 /**
