@@ -13,7 +13,7 @@ if ( empty( $activities ) ) {
 <x-info-cards layout="carousel">
 	@foreach( $activities as $activity )
 		<x-info-cards.card>
-			<x-info-cards.image image_id="{{ $activity['featured_image'] ?? 0 }}" />
+			<x-info-cards.image image_id="{{ $activity['thumbnail'] ?? 0 }}" />
 			<x-info-cards.content position="bottom">
 				@if( $show_title )
 					<x-info-cards.title title="{{ $activity['title'] ?? '' }}" />
