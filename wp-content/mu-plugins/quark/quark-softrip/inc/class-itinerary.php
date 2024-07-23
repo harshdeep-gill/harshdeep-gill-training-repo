@@ -93,7 +93,7 @@ class Itinerary extends Softrip_Object {
 			$departure = new Departure();
 			$departure->set_itinerary( $this );
 			$departure->load( absint( $post_id ) );
-			$this->departures[ $departure->get_post_meta( 'softrip_departure_id' ) ] = $departure;
+			$this->departures[ $departure->get_post_meta( 'departure_unique_id' ) ] = $departure;
 		}
 
 		// Set departures loaded.

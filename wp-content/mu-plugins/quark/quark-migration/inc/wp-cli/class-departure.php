@@ -24,6 +24,7 @@ use function WP_CLI\Utils\make_progress_bar;
 use const Quark\Departures\POST_TYPE;
 use const Quark\Departures\SPOKEN_LANGUAGE_TAXONOMY;
 use const Quark\StaffMembers\POST_TYPE as STAFF_MEMBER_POST_TYPE;
+use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
 use const Quark\StaffMembers\DEPARTMENT_TAXONOMY;
 
 /**
@@ -183,7 +184,7 @@ class Departure {
 		$data = [
 			'post_type'         => POST_TYPE,
 			'post_author'       => '1',
-			'post_title'        => $title,
+			'post_title'        => str_replace( ' ', '', $title ),
 			'post_date'         => $created_at,
 			'post_date_gmt'     => $created_at,
 			'post_modified'     => $modified_at,
@@ -191,17 +192,29 @@ class Departure {
 			'post_status'       => $status,
 			'comment_status'    => 'closed',
 			'ping_status'       => 'closed',
-			'meta_input'        => [],
+			'meta_input'        => [
+				'departure_unique_id' => str_replace( ' ', '', $title ),
+			],
 		];
 
 		// Set departure id.
 		if ( ! empty( $item['departure_id'] ) ) {
-			$data['meta_input']['departure_id'] = strval( $item['departure_id'] );
+			$data['meta_input']['softrip_departure_id'] = strval( $item['departure_id'] );
 		}
 
 		// Set package id.
 		if ( ! empty( $item['package_id'] ) ) {
-			$data['meta_input']['package_id'] = strval( $item['package_id'] );
+			$data['meta_input']['softrip_package_id'] = strval( $item['package_id'] );
+		}
+
+		// Set itinerary_id as parent.
+		if ( ! empty( $item['itinerary_id'] ) ) {
+			$itinerary_id = get_post_by_id( absint( $item['itinerary_id'] ), ITINERARY_POST_TYPE );
+
+			// Check if itinerary is instance of WP_Post.
+			if ( $itinerary_id instanceof WP_Post ) {
+				$data['post_parent'] = $itinerary_id->ID;
+			}
 		}
 
 		// Set departure start date.
@@ -318,6 +331,7 @@ class Departure {
 			field_departure_end_date.field_departure_end_date_value AS departure_end_date,
 			field_duration.field_duration_value AS duration,
 			field_departure_staff_members.field_departure_staff_members_target_id AS departure_staff_members_id,
+			field_itinerary.field_itinerary_target_id AS itinerary_id,
 			(SELECT GROUP_CONCAT( field_departure_languages_target_id ORDER BY delta SEPARATOR ', ' ) FROM node__field_departure_languages AS spoken_languages WHERE node.nid = spoken_languages.entity_id AND spoken_languages.langcode = node.langcode) AS spoken_language_ids
 		FROM
 			node
@@ -328,6 +342,7 @@ class Departure {
 				LEFT JOIN node__field_duration AS field_duration ON node.nid = field_duration.entity_id AND node.langcode = field_duration.langcode
 				LEFT JOIN node__field_softrip_package_id AS field_softrip_package_id ON node.nid = field_softrip_package_id.entity_id AND node.langcode = field_softrip_package_id.langcode
 				LEFT JOIN node__field_departure_staff_members AS field_departure_staff_members ON node.nid = field_departure_staff_members.entity_id AND node.langcode = field_departure_staff_members.langcode
+				LEFT JOIN node__field_itinerary AS field_itinerary ON node.nid = field_itinerary.entity_id AND node.langcode = field_itinerary.langcode
 		WHERE
 			node.type = 'departure'";
 
