@@ -5,7 +5,6 @@
 	"name": "quark/column",
 	"description": "Individual column.",
 	"parent": [ "quark/two-columns" ],
-	"icon": "screenoptions",
 	"category": "layout",
 	"textdomain": "qrk",
 	"keywords": [

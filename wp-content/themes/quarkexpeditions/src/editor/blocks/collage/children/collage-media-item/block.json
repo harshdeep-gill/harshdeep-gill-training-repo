@@ -7,7 +7,6 @@
 	"parent": [
 		"quark/collage"
 	],
-	"icon": "screenoptions",
 	"category": "layout",
 	"keywords": [
 		"item"

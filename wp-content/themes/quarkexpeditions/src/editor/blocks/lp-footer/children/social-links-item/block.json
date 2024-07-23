@@ -7,7 +7,6 @@
 	"parent": [
 		"quark/lp-footer-social-link"
 	],
-	"icon": "share-alt",
 	"category": "layout",
 	"keywords": [
 		"social",
