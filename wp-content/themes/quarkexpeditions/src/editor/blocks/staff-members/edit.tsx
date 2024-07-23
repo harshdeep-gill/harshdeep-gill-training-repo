@@ -111,6 +111,30 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 						help={ __( 'Show carousel navigation arrows in desktop', 'qrk' ) }
 						onChange={ ( isCarousel: boolean ) => setAttributes( { isCarousel } ) }
 					/>
+					<ToggleControl
+						label={ __( 'Show Season', 'qrk' ) }
+						checked={ attributes.showSeason }
+						help={ __( 'Show season in the staff member card', 'qrk' ) }
+						onChange={ ( showSeason: boolean ) => setAttributes( { showSeason } ) }
+					/>
+					<ToggleControl
+						label={ __( 'Show Job Title', 'qrk' ) }
+						checked={ attributes.showTitle }
+						help={ __( 'Show job title in the staff member card', 'qrk' ) }
+						onChange={ ( showTitle: boolean ) => setAttributes( { showTitle } ) }
+					/>
+					<ToggleControl
+						label={ __( 'Show Role', 'qrk' ) }
+						checked={ attributes.showRole }
+						help={ __( 'Show role in the staff member card', 'qrk' ) }
+						onChange={ ( showRole: boolean ) => setAttributes( { showRole } ) }
+					/>
+					<ToggleControl
+						label={ __( 'Show CTA button', 'qrk' ) }
+						checked={ attributes.showCta }
+						help={ __( 'Show CTA button in the staff member card', 'qrk' ) }
+						onChange={ ( showCta: boolean ) => setAttributes( { showCta } ) }
+					/>
 				</PanelBody>
 			</InspectorControls>
 			<Section className={ classnames( className ) }>

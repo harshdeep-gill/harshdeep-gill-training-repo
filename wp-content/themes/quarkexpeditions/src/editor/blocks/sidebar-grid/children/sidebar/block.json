@@ -7,7 +7,6 @@
 	"parent": [
 		"quark/sidebar-grid"
 	],
-	"icon": "screenoptions",
 	"category": "layout",
 	"keywords": [
 		"sidebar"

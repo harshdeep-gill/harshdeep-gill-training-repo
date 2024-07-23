@@ -8,7 +8,6 @@
 		"quark/header-mega-menu",
 		"quark/secondary-nav"
 	],
-	"icon": "screenoptions",
 	"category": "layout",
 	"textdomain": "qrk",
 	"keywords": [

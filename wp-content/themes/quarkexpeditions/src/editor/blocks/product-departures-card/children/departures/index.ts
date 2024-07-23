@@ -20,6 +20,7 @@ export const { name }: { name: string } = metadata;
  */
 export const settings: BlockConfiguration = {
 	...metadata,
+	icon: 'screenoptions',
 	edit,
 	save,
 };
