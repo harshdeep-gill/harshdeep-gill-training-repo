@@ -68,9 +68,9 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 
 		// Prepare adventure option data.
 		$adventure_options[] = [
-			'title'          => $adventure_option['post']->post_title,
-			'description'    => $adventure_option['post']->post_excerpt,
-			'featured_image' => $adventure_option['post_thumbnail'],
+			'title'       => $adventure_option['post']->post_title,
+			'description' => apply_filters( 'the_content', $adventure_option['post']->post_excerpt ),
+			'thumbnail'   => $adventure_option['post_thumbnail'],
 		];
 	}
 

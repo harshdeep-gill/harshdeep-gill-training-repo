@@ -13,7 +13,7 @@
 <x-info-cards layout="carousel">
 	@foreach( $adventure_options as $adventure_option )
 		<x-info-cards.card>
-			<x-info-cards.image image_id="{{ $adventure_option['featured_image'] ?? 0 }}" />
+			<x-info-cards.image image_id="{{ $adventure_option['thumbnail'] ?? 0 }}" />
 			<x-info-cards.content position="bottom">
 				@if( $show_title )
 					<x-info-cards.title title="{{ $adventure_option['title'] ?? '' }}" />

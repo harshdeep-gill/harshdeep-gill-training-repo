@@ -7,8 +7,10 @@ import {
 } from '@wordpress/block-editor';
 import {
 	PanelBody,
+	Placeholder,
 	ToggleControl,
 } from '@wordpress/components';
+import { __ } from '@wordpress/i18n';
 
 // @ts-ignore No module declaration.
 import ServerSideRender from '@wordpress/server-side-render';
@@ -72,6 +74,16 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 			<ServerSideRender
 				block={ name }
 				attributes={ attributes }
+				EmptyResponsePlaceholder={ () => (
+					<Placeholder
+						icon="palmtree"
+						label={ __( 'Related Adventure Options', 'qrk' ) }
+						instructions={ __(
+							'Please select one or more adventure options.',
+							'qrk',
+						) }
+					/>
+				) }
 			/>
 		</Section>
 	);
