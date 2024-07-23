@@ -1,8 +1,9 @@
 @props( [
-	'name'  => '',
-	'path'  => '',
-	'title' => '',
-	'media' => true,
+	'name'            => '',
+	'path'            => '',
+	'title'           => '',
+	'media'           => true,
+	'fullscreen_icon' => 'hidden',
 ] )
 
 @php
@@ -12,6 +13,12 @@
 
 	quark_enqueue_style( 'tp-lightbox' );
 	quark_enqueue_script( 'tp-lightbox' );
+
+	$classes = [ 'media-lightbox' ];
+
+	if ( 'visible' === $fullscreen_icon ) {
+		$classes[] = 'media-lightbox--fullscreen-icon-visible';
+	}
 @endphp
 
 <quark-media-lightbox class="media-lightbox__link">

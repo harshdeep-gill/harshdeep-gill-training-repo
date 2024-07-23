@@ -3,7 +3,6 @@
   "apiVersion": 3,
   "name": "quark/product-cards-reviews",
   "description": "Individual Card Reviews for product cards.",
-  "icon": "screenoptions",
   "title": "Card Reviews",
   "keywords": [ "reviews" ],
   "category": "layout",

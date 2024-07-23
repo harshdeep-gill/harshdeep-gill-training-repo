@@ -7,7 +7,6 @@
 	"parent": [
 		"quark/reviews-carousel"
 	],
-	"icon": "screenoptions",
 	"category": "layout",
 	"textdomain": "qrk",
 	"keywords": [
