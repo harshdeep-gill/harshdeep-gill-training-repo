@@ -30,6 +30,22 @@
 		"isCarousel": {
 			"type": "boolean",
 			"default": false
+		},
+		"showSeason": {
+			"type": "boolean",
+			"default": true
+		},
+		"showTitle": {
+			"type": "boolean",
+			"default": true
+		},
+		"showRole": {
+			"type": "boolean",
+			"default": true
+		},
+		"showCta": {
+			"type": "boolean",
+			"default": true
 		}
 	},
 	"supports": {

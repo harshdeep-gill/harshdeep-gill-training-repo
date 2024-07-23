@@ -16,6 +16,7 @@ export default class SecondaryNavigation extends HTMLElement {
 	 * Properties.
 	 */
 	private navigationContainer: HTMLElement | null;
+	private navigationWrapper: HTMLElement | null;
 	private navigationItems: HTMLElement | null;
 	private moreMenu: HTMLElement | null;
 	private moreDropdown: HTMLElement | null;
@@ -33,7 +34,8 @@ export default class SecondaryNavigation extends HTMLElement {
 		super();
 
 		// Elements.
-		this.navigationContainer = this.querySelector( '.secondary-navigation__navigation' );
+		this.navigationContainer = document.querySelector( '.secondary-navigation__navigation' );
+		this.navigationWrapper = document.querySelector( '.secondary-navigation__wrap' );
 		this.navigationItems = this.querySelector( '.secondary-navigation__navigation-items' );
 		this.moreMenu = this.querySelector( '.secondary-navigation__navigation-item--dropdown' );
 		this.moreDropdown = this.querySelector( '.secondary-navigation__navigation-dropdown' );
@@ -78,7 +80,7 @@ export default class SecondaryNavigation extends HTMLElement {
 	 */
 	isMobile() {
 		// Return true if screen is mobile.
-		return 768 >= window.innerWidth;
+		return 1024 > window.innerWidth;
 	}
 
 	/**
@@ -239,7 +241,11 @@ export default class SecondaryNavigation extends HTMLElement {
 
 			// Set the active class to the current section.
 			if ( anchor === `#${ currentSection.id }` ) {
+				// Add the active class.
 				item.classList.add( 'secondary-navigation__navigation-item--active' );
+
+				// Scroll the active item to the center of the screen.
+				this.scrollLeftOnMobile( item );
 			}
 		} );
 	}
@@ -385,6 +391,42 @@ export default class SecondaryNavigation extends HTMLElement {
 
 		// Add class to the current active content item.
 		itemElement.classList.add( 'secondary-navigation__navigation-item--active' );
+	}
+
+	/**
+	 * Scroll left on mobile.
+	 *
+	 * @param {HTMLElement | Element} item The item to scroll into view.
+	 * @return {null|void} Null.
+	 */
+	scrollLeftOnMobile( item: HTMLElement | Element ): null | void {
+		// Check for mobile only.
+		if ( ! this.isMobile() ) {
+			// No, bail early.
+			return null;
+		}
+
+		// Get the element position.
+		const itemHorizontalPosition = item.getBoundingClientRect().x;
+		let navWrapperScrollPosition = 0;
+
+		// Check if element exists.
+		if ( this.navigationWrapper ) {
+			navWrapperScrollPosition = this.navigationWrapper.scrollLeft;
+		}
+
+		/**
+		 * Offset is added to increase the horizontal scroll position,
+		 * so that tab link after the clicked one, peeps in.
+		 */
+		const offset = item.getBoundingClientRect().width;
+		const middle = navWrapperScrollPosition + itemHorizontalPosition - offset;
+
+		// Scroll to middle position.
+		this.navigationWrapper?.scrollTo( {
+			left: middle,
+			behavior: 'smooth',
+		} );
 	}
 }
 
