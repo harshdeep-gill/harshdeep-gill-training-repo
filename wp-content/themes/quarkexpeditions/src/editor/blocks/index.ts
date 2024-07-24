@@ -45,6 +45,7 @@ import * as staffMembers from './staff-members';
 import * as includedActivities from './included-activities';
 import * as tripExtensions from './trip-extensions';
 import * as relatedAdventureOptions from './related-adventure-options';
+import * as highlights from './highlights';
 
 /**
  * Add blocks.
@@ -94,6 +95,7 @@ const blocks = [
 	includedActivities,
 	tripExtensions,
 	relatedAdventureOptions,
+	highlights,
 ];
 
 /**
