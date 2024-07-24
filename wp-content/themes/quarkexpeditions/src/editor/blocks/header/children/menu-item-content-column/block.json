@@ -7,7 +7,6 @@
 	"parent": [
 		"quark/header-menu-item-content"
 	],
-	"icon": "screenoptions",
 	"category": "layout",
 	"textdomain": "qrk",
 	"keywords": [

@@ -7,7 +7,6 @@
 	"parent": [
 		"quark/cta-buttons"
 	],
-	"icon": "button",
 	"category": "layout",
 	"keywords": [
 		"contact",

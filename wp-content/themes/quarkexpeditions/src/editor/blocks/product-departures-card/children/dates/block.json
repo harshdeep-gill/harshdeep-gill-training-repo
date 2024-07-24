@@ -3,7 +3,6 @@
   "apiVersion": 3,
   "name": "quark/product-departures-card-dates",
   "description": "Departures dates for Product Departures Card",
-  "icon": "screenoptions",
   "title": "Card Departure Dates",
   "keywords": [ "departures", "dates" ],
   "category": "layout",

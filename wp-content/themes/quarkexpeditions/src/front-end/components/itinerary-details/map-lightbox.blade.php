@@ -38,6 +38,7 @@
 	name="{{ $name ?? '' }}"
 	path="{{ $full_url }}"
 	title="{{ $caption }}"
+	fullscreen_icon="visible"
 >
 	<x-image
 		:image_id="$image_id"

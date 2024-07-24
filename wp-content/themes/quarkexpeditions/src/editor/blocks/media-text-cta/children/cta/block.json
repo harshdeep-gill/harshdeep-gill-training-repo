@@ -3,7 +3,6 @@
     "apiVersion": 3,
     "name": "quark/media-text-cta-cta",
     "description": "CTA Button for Media Text CTA.",
-    "icon": "screenoptions",
     "title": "Media Text CTA Button",
     "keywords": [ "button" ],
     "category": "layout",

@@ -3,7 +3,6 @@
     "apiVersion": 3,
     "name": "quark/offer-cards-cta",
     "description": "Individual Card CTA for offer cards.",
-    "icon": "screenoptions",
     "title": "Card CTA",
     "keywords": [ "cta", "button" ],
     "category": "layout",

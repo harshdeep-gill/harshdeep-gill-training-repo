@@ -70,6 +70,10 @@ class Softrip_Sync {
 
 		// Handle if an error is found.
 		if ( ! is_array( $raw_departures ) ) {
+			// Fire action and pass failed ID's for logging.
+			do_action( 'softrip_sync_failed', $raw_departures );
+
+			// Return empty array.
 			return [];
 		}
 
