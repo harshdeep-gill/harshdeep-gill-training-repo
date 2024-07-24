@@ -32,7 +32,7 @@ function bootstrap(): void {
 	add_filter( 'admin_init', __NAMESPACE__ . '\\cron_schedule_sync' );
 
 	// Register our sync hook.
-	add_action( SCHEDULE_HOOK, __NAMESPACE__ . '\\cron_do_sync' );
+	add_action( SCHEDULE_HOOK, __NAMESPACE__ . '\\do_sync' );
 }
 
 /**
@@ -115,7 +115,7 @@ function cron_schedule_sync(): void {
  *
  * @return void
  */
-function cron_do_sync(): void {
+function do_sync(): void {
 	// Get the sync object.
 	$sync = new Softrip_Sync();
 
