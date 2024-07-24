@@ -13,7 +13,7 @@
 <x-info-cards layout="carousel">
 	@foreach( $pre_post_trips as $pre_post_trip )
 		<x-info-cards.card>
-			<x-info-cards.image image_id="{{ $pre_post_trip['featured_image'] ?? 0 }}" />
+			<x-info-cards.image image_id="{{ $pre_post_trip['thumbnail'] ?? 0 }}" />
 			<x-info-cards.content position="bottom">
 				@if( $show_title )
 					<x-info-cards.title title="{{ $pre_post_trip['title'] ?? '' }}" />
