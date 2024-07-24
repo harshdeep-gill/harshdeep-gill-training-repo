@@ -9,6 +9,7 @@ namespace Quark\Softrip\WP_CLI;
 
 use cli\progress\Bar;
 use Quark\Softrip\Itinerary;
+use Quark\Softrip\Softrip_Sync;
 use WP_CLI;
 use WP_CLI\ExitException;
 use WP_Query;
@@ -22,6 +23,22 @@ use const Quark\Itineraries\POST_TYPE;
  * Class Sync.
  */
 class Sync {
+
+	/**
+	 * Holds the Sync object.
+	 *
+	 * @var Softrip_Sync
+	 */
+	protected Softrip_Sync $sync;
+
+	/**
+	 * Constructor.
+	 */
+	public function __construct() {
+		// Init the sync object.
+		$this->sync = new Softrip_Sync();
+	}
+
 	/**
 	 * Softrip sync itineraries.
 	 *
@@ -29,14 +46,24 @@ class Sync {
 	 * @param mixed[] $args_assoc WP CLI associative arguments.
 	 *
 	 * @subcommand items
+	 *
+	 * ## OPTIONS
+	 * [<ids>]
+	 * : The ID's to sync.
+	 *
 	 * @synopsis [--ids=<1,2>]
 	 *
 	 * @return void
 	 * @throws ExitException Exception on error.
 	 */
-	public function sync( array $args = [], array $args_assoc = [] ): void {
-		// Explode.
-		if ( ! empty( $args_assoc['ids'] ) ) {
+	public function do_sync( array $args = [], array $args_assoc = [] ): void {
+		// Check for ID's.
+		if ( empty( $args_assoc['ids'] ) ) {
+			WP_CLI::error( "ID's are required: --ids=<1,1>" );
+		}
+
+		// Check if is a string and explode.
+		if ( is_string( $args_assoc['ids'] ) ) {
 			$args_assoc['ids'] = array_map( 'absint', array_filter( array_map( 'trim', explode( ',', strval( $args_assoc['ids'] ) ) ) ) );
 		}
 
@@ -63,32 +90,22 @@ class Sync {
 			return;
 		}
 
-		// Start sync items.
-		$to_sync = [];
-
-		// Create packages.
-		foreach ( $options['ids'] as $id ) {
-			$softrip_package_id = get_post_meta( $id, 'softrip_package_id', true );
-
-			// Capture if a package id is found.
-			if ( ! empty( $softrip_package_id ) ) {
-				$to_sync[ $softrip_package_id ] = $id;
-			}
-		}
-
-		// Chunk to sync into packages.
-		$parts = array_chunk( array_keys( $to_sync ), 5 );
+		// split batches.
+		$parts = $this->sync->prepare_batch_ids( $options['ids'] );
 
 		// Set up a counter for how many we're successful.
 		$counter = 0;
 
+		// Get the list of prepared codes.
+		$to_sync = $this->sync->get_prepared_codes();
+
 		// Process each part.
 		foreach ( $parts as $softrip_ids ) {
 			// Get the raw departure data for the IDs.
-			$raw_departures = request_departures( $softrip_ids );
+			$raw_departures = $this->sync->batch_request( $softrip_ids );
 
 			// Handle if an error is found.
-			if ( $raw_departures instanceof WP_Error ) {
+			if ( empty( $raw_departures ) ) {
 				// If this fails, it fails for the 5 items.
 				$progress->tick( 5 );
 				continue;
@@ -102,14 +119,15 @@ class Sync {
 					continue;
 				}
 
-				// Get itinerary and update data.
-				$post_id   = $to_sync[ $softrip_id ];
-				$itinerary = new Itinerary( $post_id );
-				$itinerary->update_departures( (array) $departures );
+				// Sync the code.
+				$success = $this->sync->sync_softrip_code( $softrip_id, $departures );
 				$progress->tick();
 
-				// Update counter.
-				++$counter;
+				// Check if successful.
+				if ( $success ) {
+					// Update counter.
+					++$counter;
+				}
 			}
 		}
 
@@ -137,35 +155,10 @@ class Sync {
 	 * @throws ExitException Exception on error.
 	 */
 	public function all(): void {
-		// Args to get items.
-		$args = [
-			'post_type'      => POST_TYPE,
-			'posts_per_page' => 100,
-			'fields'         => 'ids',
-			'offset'         => 0,
-		];
-
-		// Run the query.
-		$query = new WP_Query( $args );
-
-		// Set the count.
-		$found_posts = $query->found_posts;
-		$processed   = 0;
-		$ids         = [];
-
-		// Get the post ids.
-		while ( $processed < $found_posts ) {
-			// Loop over the posts.
-			foreach ( $query->posts as $post ) {
-				$ids[] = absint( $post );
-				++$processed;
-			}
-			$args['offset'] = $processed;
-			$query          = new WP_Query( $args );
-		}
+		// Get Itinerary ID's.
+		$ids = $this->sync->get_itinerary_ids();
 
 		// Implode and run sync.
-		$list = implode( ',', $ids );
-		$this->sync( [], [ 'ids' => $list ] );
+		$this->do_sync( [], [ 'ids' => $ids ] );
 	}
 }
