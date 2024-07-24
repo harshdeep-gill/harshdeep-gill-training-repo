@@ -75,6 +75,7 @@
 			</tp-lightbox-next>
 
 			<tp-lightbox-count class="media-lightbox__count" format="$current of $total"></tp-lightbox-count>
+			<div class="media-lightbox__bullets"></div>
 		</dialog>
 	</tp-lightbox>
 </x-once>
