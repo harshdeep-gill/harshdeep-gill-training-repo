@@ -9,6 +9,7 @@ namespace Quark\Leads;
 
 use WP_Error;
 
+use function Quark\Core\doing_automated_test;
 use function Travelopia\Salesforce\send_request;
 use function Travelopia\Security\validate_recaptcha;
 use function Travelopia\Security\get_recaptcha_settings;
@@ -52,7 +53,11 @@ function front_end_data( array $data = [] ): array {
 	$validate_recaptcha = absint( get_option( 'options_validate_recaptcha', 1 ) );
 
 	// If validate_recaptcha is true, and function exists 'get_recaptcha_settings', get recaptcha_settings.
-	if ( 1 === $validate_recaptcha && function_exists( 'Travelopia\Security\get_recaptcha_settings' ) ) {
+	if (
+		1 === $validate_recaptcha
+		&& function_exists( 'Travelopia\Security\get_recaptcha_settings' )
+		&& ! doing_automated_test()
+	) {
 		$recaptcha_settings = get_recaptcha_settings();
 
 		// If 'site_key' is not empty set the recaptcha_site_key.
@@ -141,7 +146,11 @@ function create_lead( array $lead_data = [] ): array|WP_Error {
 	);
 
 	// Validate data.
-	if ( empty( $lead_data['recaptcha'] ) || empty( $lead_data['salesforce_object'] ) || empty( $lead_data['fields'] ) ) {
+	if (
+		$lead_data['recaptcha'] instanceof WP_Error
+		|| empty( $lead_data['salesforce_object'] )
+		|| empty( $lead_data['fields'] )
+	) {
 		do_action( 'quark_leads_invalid_data' );
 
 		// Return an error.
@@ -210,32 +219,43 @@ function build_salesforce_request_data( array $fields = [] ): array {
  *
  * @param string $recaptcha_token reCaptcha Token.
  *
- * @return bool|WP_Error
+ * @return true|float|WP_Error
  */
-function validate_recaptcha_token( string $recaptcha_token = '' ): bool|WP_Error {
+function validate_recaptcha_token( string $recaptcha_token = '' ): true|float|WP_Error {
 	// Validate reCAPTCHA.
 	$validate_recaptcha = absint( get_option( 'options_validate_recaptcha', 1 ) );
 
 	// If 'validate_recaptcha' is not true or 'validate_recaptcha' function does not exist then bail out.
-	if ( 1 !== $validate_recaptcha || ! function_exists( 'validate_recaptcha' ) ) {
+	if ( 1 !== $validate_recaptcha || ! function_exists( 'Travelopia\Security\validate_recaptcha' ) ) {
 		return true;
 	}
 
-	// Validate recaptcha.
-	$recaptcha_validation = validate_recaptcha( $recaptcha_token, 'leads' );
+	// Ignore if we are currently in an automated test.
+	if ( doing_automated_test() ) {
+		return true;
+	}
 
-	// Handle errors.
-	if ( $recaptcha_validation instanceof WP_Error ) {
-		// Get the value of 'allow_recaptcha_to_fail' from options table.
-		$allow_recaptcha_to_fail = absint( get_option( 'options_allow_recaptcha_to_fail', 0 ) );
+	// Get the value of 'allow_recaptcha_to_fail' from options table.
+	$allow_recaptcha_to_fail = absint( get_option( 'options_allow_recaptcha_to_fail', 0 ) );
 
-		// If 'allow_recaptcha_to_fail' is zero, return error.
-		if ( 0 === $allow_recaptcha_to_fail ) {
-			// Return error.
+	// Validate reCAPTCHA if 'allow_recaptcha_to_fail' is zero.
+	// Where: 0 = No, 1 = Yes.
+	if ( 0 === $allow_recaptcha_to_fail ) {
+		// Validate recaptcha.
+		$recaptcha_validation = validate_recaptcha( $recaptcha_token, 'leads' );
+
+		// Handle errors.
+		if ( $recaptcha_validation instanceof WP_Error ) {
+			// If 'allow_recaptcha_to_fail' is zero, return error.
 			return new WP_Error( 'quark_leads_recaptcha_failed', 'reCAPTCHA validation failed' );
+		}
+
+		// Check if the score is set in the validation response.
+		if ( isset( $recaptcha_validation['score'] ) ) {
+			return floatval( $recaptcha_validation['score'] );
 		}
 	}
 
-	// reCaptcha validation successful, return true.
+	// Return true when allowing reCaptcha to fail or reCaptcha score is not available.
 	return true;
 }

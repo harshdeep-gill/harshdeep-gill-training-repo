@@ -46,6 +46,7 @@ import * as includedActivities from './included-activities';
 import * as tripExtensions from './trip-extensions';
 import * as relatedAdventureOptions from './related-adventure-options';
 import * as heroCardSlider from './hero-card-slider';
+import * as highlights from './highlights';
 
 /**
  * Add blocks.
@@ -96,6 +97,7 @@ const blocks = [
 	tripExtensions,
 	relatedAdventureOptions,
 	heroCardSlider,
+	highlights,
 ];
 
 /**
