@@ -41,7 +41,7 @@ class Softrip_Sync {
 		// Get itinerary and update data.
 		$post_id   = $this->prepared_codes[ $softrip_code ];
 		$itinerary = new Itinerary( $post_id );
-		$itinerary->update_departures( (array) $data );
+		$itinerary->update_departures( $data );
 
 		// Return true to indicate done.
 		return true;
