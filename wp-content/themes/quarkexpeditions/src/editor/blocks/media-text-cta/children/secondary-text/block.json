@@ -3,7 +3,6 @@
     "apiVersion": 3,
     "name": "quark/media-text-cta-secondary-text",
     "description": "Secondary text for Media Text CTA Content",
-    "icon": "screenoptions",
     "title": "Media Text CTA Secondary Text",
     "keywords": [ "secondary", "text" ],
     "category": "layout",

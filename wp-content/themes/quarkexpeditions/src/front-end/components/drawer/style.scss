@@ -110,13 +110,12 @@
 
 	&__drawer-close {
 		display: block;
+		position: absolute;
+		inset: 15px 15px auto auto;
 
 		svg {
 			height: 15px;
 			width: 15px;
 		}
-
-		position: absolute;
-		inset: 15px 15px auto auto;
 	}
 }

@@ -3,7 +3,6 @@
   "apiVersion": 3,
   "name": "quark/contact-cover-card-title",
   "description": "Individual Card Title for contact-cover-card.",
-  "icon": "screenoptions",
   "title": "Card Title",
   "keywords": [ "title" ],
   "category": "layout",

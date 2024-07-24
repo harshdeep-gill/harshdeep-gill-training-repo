@@ -80,7 +80,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 	$slot .= quark_get_component(
 		COMPONENT . '.info',
 		[
-			'info' => $attributes['info'],
+			'slot' => $attributes['info'],
 		]
 	);
 
