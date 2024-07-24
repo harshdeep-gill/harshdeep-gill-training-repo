@@ -43,6 +43,7 @@ import * as adventureOptions from './adventure-options';
 import * as buttons from './buttons';
 import * as staffMembers from './staff-members';
 import * as tripExtensions from './trip-extensions';
+import * as relatedAdventureOptions from './related-adventure-options';
 
 /**
  * Add blocks.
@@ -90,6 +91,7 @@ const blocks = [
 	buttons,
 	staffMembers,
 	tripExtensions,
+	relatedAdventureOptions,
 ];
 
 /**
