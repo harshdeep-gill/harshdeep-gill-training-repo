@@ -3,7 +3,6 @@
   "apiVersion": 3,
   "name": "quark/offer-card-help",
   "description": "Individual card help text for Offer Cards.",
-  "icon": "screenoptions",
   "title": "Card Help",
   "keywords": [ "help" ],
   "category": "layout",

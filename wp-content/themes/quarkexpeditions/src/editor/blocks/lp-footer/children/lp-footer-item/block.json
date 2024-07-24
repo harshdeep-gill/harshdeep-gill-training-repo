@@ -7,7 +7,6 @@
 	"parent": [
 		"quark/lp-footer"
 	],
-	"icon": "layout",
 	"category": "layout",
 	"keywords": [
 		"row"

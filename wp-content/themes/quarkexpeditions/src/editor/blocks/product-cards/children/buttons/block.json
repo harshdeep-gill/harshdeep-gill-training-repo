@@ -3,7 +3,6 @@
   "apiVersion": 3,
   "name": "quark/product-cards-buttons",
   "description": "Individual Card Buttons for product cards.",
-  "icon": "screenoptions",
   "title": "Card Buttons",
   "keywords": [ "buttons" ],
   "category": "layout",

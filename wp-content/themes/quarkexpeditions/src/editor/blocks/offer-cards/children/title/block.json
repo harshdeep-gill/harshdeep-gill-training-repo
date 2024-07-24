@@ -3,7 +3,6 @@
   "apiVersion": 3,
   "name": "quark/offer-card-title",
   "description": "Individual Card Title for offer cards.",
-  "icon": "screenoptions",
   "title": "Card Title",
   "keywords": [ "title" ],
   "category": "layout",

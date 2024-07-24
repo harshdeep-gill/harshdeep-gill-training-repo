@@ -13,6 +13,7 @@ use function Quark\OfficePhoneNumbers\office_phone_number_front_end_data;
 use function Quark\OfficePhoneNumbers\get_corporate_office_phone_number;
 use function Quark\OfficePhoneNumbers\get_office_phone_number;
 use function Quark\OfficePhoneNumbers\get_local_office_data;
+use function Quark\OfficePhoneNumbers\security_public_rest_api_routes;
 
 /**
  * Class Test_Office_Phone_Numbers.
@@ -31,6 +32,7 @@ class Test_Office_Phone_Numbers extends WP_UnitTestCase {
 		$this->assertEquals( 10, has_action( 'acf/options_page/save', 'Quark\OfficePhoneNumbers\purge_local_office_data_cache' ) );
 		$this->assertEquals( 10, has_action( 'admin_menu', 'Quark\OfficePhoneNumbers\setup_phone_number_settings' ) );
 		$this->assertEquals( 10, has_action( 'rest_api_init', 'Quark\OfficePhoneNumbers\register_rest_endpoints' ) );
+		$this->assertEquals( 10, has_filter( 'travelopia_security_public_rest_api_routes', 'Quark\OfficePhoneNumbers\security_public_rest_api_routes' ) );
 	}
 
 	/**
@@ -184,5 +186,28 @@ class Test_Office_Phone_Numbers extends WP_UnitTestCase {
 		delete_option( 'options_country_1_phone_number' );
 		delete_option( 'options_country_1_is_corporate_office' );
 		delete_option( 'options_country_1_coverage' );
+	}
+
+	/**
+	 * Test API Whitelist routes.
+	 *
+	 * @covers \Quark\OfficePhoneNumbers\security_public_rest_api_routes()
+	 *
+	 * @return void
+	 */
+	public function test_security_public_rest_api_routes(): void {
+		// Prepare data.
+		$routes = [];
+
+		// Get data.
+		$data = security_public_rest_api_routes( $routes );
+
+		// Prepare expected data.
+		$expected_data = [
+			'/qrk-phone-numbers/v1/phone-number/get',
+		];
+
+		// Test data.
+		$this->assertEquals( $expected_data, $data );
 	}
 }

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "title": "Included Activities",
+  "name": "quark/included-activities",
+  "description": "Display included activities.",
+  "category": "layout",
+  "textdomain": "qrk",
+  "keywords": [
+    "included",
+    "activities"
+  ],
+  "attributes": {
+    "showTitle": {
+      "type": "boolean",
+      "default": true
+    },
+    "showDescription": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "supports": {
+    "alignWide": false,
+    "anchor": true,
+    "className": false,
+    "html": false,
+    "customClassName": false
+  }
+}

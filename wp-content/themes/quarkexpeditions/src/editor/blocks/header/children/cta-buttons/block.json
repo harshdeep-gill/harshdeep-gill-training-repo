@@ -7,7 +7,6 @@
 	"parent": [
 		"quark/header"
 	],
-	"icon": "button",
 	"category": "layout",
 	"textdomain": "qrk",
 	"keywords": [
