@@ -42,6 +42,9 @@ import * as blogPostCards from './blog-post-cards';
 import * as adventureOptions from './adventure-options';
 import * as buttons from './buttons';
 import * as staffMembers from './staff-members';
+import * as includedActivities from './included-activities';
+import * as tripExtensions from './trip-extensions';
+import * as relatedAdventureOptions from './related-adventure-options';
 
 /**
  * Add blocks.
@@ -88,6 +91,9 @@ const blocks = [
 	adventureOptions,
 	buttons,
 	staffMembers,
+	includedActivities,
+	tripExtensions,
+	relatedAdventureOptions,
 ];
 
 /**
