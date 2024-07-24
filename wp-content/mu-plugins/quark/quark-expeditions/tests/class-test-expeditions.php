@@ -346,8 +346,12 @@ class Test_Expeditions extends WP_UnitTestCase {
 		// Assert start_location is correct.
 		$this->assertEquals(
 			[
-				$departure_location_term_1->name,
-				$departure_location_term_2->name,
+				[
+					'title' => $departure_location_term_1->name,
+				],
+				[
+					'title' => $departure_location_term_2->name,
+				],
 			],
 			$start_location
 		);
@@ -362,8 +366,12 @@ class Test_Expeditions extends WP_UnitTestCase {
 			'duration'         => 11,
 			'from_price'       => '',
 			'starting_from'    => [
-				$departure_location_term_1->name,
-				$departure_location_term_2->name,
+				[
+					'title' => $departure_location_term_1->name,
+				],
+				[
+					'title' => $departure_location_term_2->name,
+				],
 			],
 			'total_departures' => 0,
 		];

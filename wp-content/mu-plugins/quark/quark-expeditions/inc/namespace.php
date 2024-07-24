@@ -679,7 +679,11 @@ function get_starting_from_price( int $post_id = 0 ): int {
  *
  * @param int $post_id Post ID.
  *
- * @return array{}|string[]
+ * @return array{} | array{
+ *     array{
+ *        title: string,
+ *     },
+ * }
  */
 function get_starting_from_locations( int $post_id = 0 ): array {
 	// Get post.
@@ -719,7 +723,9 @@ function get_starting_from_locations( int $post_id = 0 ): array {
 
 		// Check location.
 		if ( $location_term instanceof WP_Term ) {
-			$starting_from_locations[] = $location_term->name;
+			$starting_from_locations[] = [
+				'title' => $location_term->name,
+			];
 		}
 	}
 
@@ -978,10 +984,16 @@ function get_ending_to_date( int $post_id = 0 ): string {
  *     duration: int,
  *     region: string,
  *     from_price: string,
- *     starting_from: array{},
+ *     starting_from ?: array{}|array{
+ *         array{ title : string },
+ *     },
  *     total_departures: int,
- *     ships ?: array{string},
- *     tags ?: array{},
+ *     ships ?: array{}|array{
+ *         array{ title : string },
+ *     },
+ *     tags ?: array{}|array{
+ *         array{ title : string },
+ *     },
  *     from_date ?: string,
  *     to_date ?: string,
  * }
@@ -1032,11 +1044,17 @@ function get_details_data( int $post_id = 0 ): array {
 
 	// Check for tags.
 	if ( ! empty( $tags ) ) {
-		// Get tag names.
-		$data['tags'] = array_map(
-			fn( $tag ) => $tag['name'],
-			$tags
-		);
+		// Loop through $tags and fetch tag name to title key.
+		foreach ( $tags as $tag ) {
+			if ( ! is_array( $tag ) || empty( $tag['name'] ) ) {
+				continue;
+			}
+
+			// Add tag name to array.
+			$data['tags'][] = [
+				'title' => $tag['name'],
+			];
+		}
 	}
 
 	// Get Regions.
@@ -1073,10 +1091,16 @@ function get_details_data( int $post_id = 0 ): array {
 
 	// Check for ships.
 	if ( ! empty( $ships_data ) ) {
-		$data['ships'] = array_map(
-			fn( $ship ) => strval( $ship['post']->post_title ),
-			$ships_data
-		);
+		foreach ( $ships_data as $ship ) {
+			if ( ! $ship['post'] instanceof WP_Post ) {
+				continue;
+			}
+
+			// Add ship name/title to array.
+			$data['ships'][] = [
+				'title' => $ship['post']->post_title,
+			];
+		}
 	}
 
 	// Get total number of Departures.
