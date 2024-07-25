@@ -12,7 +12,16 @@
 		return;
 	}
 
-	$classes = [ 'product-options-cards__badge', 'overline' ];
+	$classes = [
+		'product-options-cards__badge',
+		'overline'
+	];
+
+	$classes[] = 'product-options-cards__badge--' . match ( $type ) {
+		'standard' => 'standard',
+		'premium'  => 'premium',
+		'sold out' => 'sold-out',
+	};
 
 	if ( ! empty( $class ) ) {
 		$classes[] = $class;

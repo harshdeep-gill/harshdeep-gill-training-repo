@@ -20,7 +20,9 @@
 	<p>From</p>
 	<div class="product-options-cards__price-info">
 		<div class="product-options-cards__price-discounted">
-			<x-escape :content="$original_price" />
+			<h5>
+				<x-escape :content="$original_price" />
+			</h5> per person
 		</div>
 		<div class="product-options-cards__price-original">
 			<x-escape :content="$discounted_price" />
