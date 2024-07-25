@@ -72,6 +72,24 @@ class Test_Cabins extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Get test object.
+	 *
+	 * @return mixed[]
+	 */
+	public function get_test_data(): array {
+		// Define a json string.
+		$json = '{
+            "id": "ARC-ISLN-15D2024:2024-08-25:OAD-TPL",
+            "code": "OAD-TPL",
+            "name": "Triple",
+            "departureId": "ARC-ISLN-15D2024:2024-08-25"
+        }';
+
+		// Return the parsed array.
+		return json_decode( $json, true );
+	}
+
+	/**
 	 * Test load departure.
 	 *
 	 * @covers \Quark\Softrip\Cabin::set_departure()
@@ -114,23 +132,5 @@ class Test_Cabins extends WP_UnitTestCase {
 
 		// Test ID exist.
 		$this->assertNotEmpty( $cabin->get_entry_data( 'id' ) );
-	}
-
-	/**
-	 * Get test object.
-	 *
-	 * @return mixed[]
-	 */
-	public function get_test_data(): array {
-		// Define a json string.
-		$json = '{
-            "id": "ARC-ISLN-15D2024:2024-08-25:OAD-TPL",
-            "code": "OAD-TPL",
-            "name": "Triple",
-            "departureId": "ARC-ISLN-15D2024:2024-08-25"
-        }';
-
-		// Return the parsed array.
-		return json_decode( $json, true );
 	}
 }

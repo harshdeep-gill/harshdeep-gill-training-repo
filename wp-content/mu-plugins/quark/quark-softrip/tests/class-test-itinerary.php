@@ -20,38 +20,78 @@ use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
 class Test_Itinerary extends WP_UnitTestCase {
 
 	/**
-	 * Get a post to test with.
+	 * Itinerary post.
 	 *
-	 * @return WP_Post|WP_Error
+	 * @var WP_Post|null
 	 */
-	public function get_post(): WP_Post|WP_Error {
-		// Create and return a post.
-		return $this->factory()->post->create_and_get(
+	protected static ?WP_Post $itinerary_post = null;
+
+	/**
+	 * Setup for tests.
+	 *
+	 * @return void
+	 */
+	public static function set_up_before_class(): void {
+		// Run parent and include setup.
+		parent::set_up_before_class();
+		include_once 'setup.php';
+
+		// Mock the response for the POST request.
+		add_filter( 'pre_http_request', 'Quark\Softrip\mock_http_request', 10, 3 );
+
+		// Create a test itinerary post.
+		$post = self::factory()->post->create_and_get(
 			[
-				'post_title'   => 'Test Post',
-				'post_content' => 'Post content',
+				'post_title'   => 'Test Itinerary',
+				'post_content' => 'Itinerary content',
 				'post_status'  => 'publish',
 				'post_type'    => ITINERARY_POST_TYPE,
 				'meta_input'   => [
-					'test_meta' => true,
+					'test_meta' => 1,
 				],
 			]
 		);
+
+		// Set itinerary post.
+		self::$itinerary_post = $post instanceof WP_Post ? $post : null;
+	}
+
+	/**
+	 * Tear down after class.
+	 *
+	 * @return void
+	 */
+	public static function tear_down_after_class(): void {
+		// Run parent.
+		parent::tear_down_after_class();
+
+		// Remove the filter.
+		remove_filter( 'pre_http_request', 'Quark\Softrip\mock_http_request' );
+
+		// validate if is a post.
+		if ( ! self::$itinerary_post instanceof WP_Post ) {
+			return;
+		}
+
+		// Delete the test itinerary post.
+		wp_delete_post( self::$itinerary_post->ID, true );
 	}
 
 	/**
 	 * Test get_data.
 	 *
+	 * @covers \Quark\Softrip\Itinerary::__construct()
+	 * @covers \Quark\Softrip\Itinerary::load()
 	 * @covers \Quark\Softrip\Softrip_Object::get_data()
 	 *
 	 * @return void
 	 */
 	public function test_get_data(): void {
-		// Get a post.
-		$post = $this->get_post();
+		// Get post.
+		$post = self::$itinerary_post;
 
 		// Test if is a post.
-		if ( $post instanceof WP_Error ) {
+		if ( ! $post instanceof WP_Post ) {
 			return;
 		}
 
@@ -76,11 +116,11 @@ class Test_Itinerary extends WP_UnitTestCase {
 	 * @return void
 	 */
 	public function test_get_post_meta(): void {
-		// Get a post.
-		$post = $this->get_post();
+		// Get post.
+		$post = self::$itinerary_post;
 
 		// Test if is a post.
-		if ( $post instanceof WP_Error ) {
+		if ( ! $post instanceof WP_Post ) {
 			return;
 		}
 
@@ -107,11 +147,11 @@ class Test_Itinerary extends WP_UnitTestCase {
 	 * @return void
 	 */
 	public function test_get_departures(): void {
-		// Get post and itinerary.
-		$post = $this->get_post();
+		// Get post.
+		$post = self::$itinerary_post;
 
 		// Test if is a post.
-		if ( $post instanceof WP_Error ) {
+		if ( ! $post instanceof WP_Post ) {
 			return;
 		}
 
@@ -135,11 +175,11 @@ class Test_Itinerary extends WP_UnitTestCase {
 	 * @return void
 	 */
 	public function test_get_id(): void {
-		// Get post and itinerary.
-		$post = $this->get_post();
+		// Get post.
+		$post = self::$itinerary_post;
 
 		// Test if is a post.
-		if ( $post instanceof WP_Error ) {
+		if ( ! $post instanceof WP_Post ) {
 			return;
 		}
 
@@ -158,11 +198,11 @@ class Test_Itinerary extends WP_UnitTestCase {
 	 * @return void
 	 */
 	public function test_update_departures(): void {
-		// Get post and itinerary.
-		$post = $this->get_post();
+		// Get post.
+		$post = self::$itinerary_post;
 
 		// Test if is a post.
-		if ( $post instanceof WP_Error ) {
+		if ( ! $post instanceof WP_Post ) {
 			return;
 		}
 
