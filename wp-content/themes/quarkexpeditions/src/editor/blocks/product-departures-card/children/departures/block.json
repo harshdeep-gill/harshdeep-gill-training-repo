@@ -3,7 +3,6 @@
   "apiVersion": 3,
   "name": "quark/product-departures-card-departures",
   "description": "Departures section for Product Departures Card",
-  "icon": "screenoptions",
   "title": "Card Departures",
   "keywords": [ "departures" ],
   "category": "layout",
