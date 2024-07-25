@@ -116,40 +116,23 @@ class Softrip_Sync {
 	 *
 	 * @return int[]
 	 */
-	public function get_itinerary_ids(): array {
-		// Args to get items.
+	public function get_all_itinerary_ids(): array {
+		// Args to get all items at once.
 		$args = [
 			'post_type'              => ITINERARY_POST_TYPE,
-			'posts_per_page'         => 100,
-			'fields'                 => 'ids',
-			'offset'                 => 0,
-			'post_status'            => 'publish', // Lets not get Departures for drafts Itinerary.
-			'no_found_rows'          => true,
-			'update_post_meta_cache' => false,
-			'update_post_term_cache' => false,
-			'ignore_sticky_posts'    => true,
+			'posts_per_page'         => -1, // -1 means retrieve all posts.
+			'fields'                 => 'ids', // Retrieve only IDs.
+			'post_status'            => 'publish', // Only published itineraries.
+			'no_found_rows'          => true, // Improve query performance.
+			'update_post_meta_cache' => false, // Disable post meta cache for performance.
+			'update_post_term_cache' => false, // Disable post term cache for performance.
+			'ignore_sticky_posts'    => true, // Ignore sticky posts.
 		];
 
-		// Run the query.
+		// Run a single query to get all itinerary IDs.
 		$query = new WP_Query( $args );
 
-		// Set the count.
-		$found_posts = $query->found_posts;
-		$processed   = 0;
-		$ids         = [];
-
-		// Get the post ids.
-		while ( $processed < $found_posts ) {
-			// Loop over the posts.
-			foreach ( $query->posts as $post ) {
-				$ids[] = absint( $post );
-				++$processed;
-			}
-			$args['offset'] = $processed;
-			$query          = new WP_Query( $args );
-		}
-
-		// Return the ID array.
-		return $ids;
+		// Return the array of IDs.
+		return array_map( 'absint', $query->posts );
 	}
 }

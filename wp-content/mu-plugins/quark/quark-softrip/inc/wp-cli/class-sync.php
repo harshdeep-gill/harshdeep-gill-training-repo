@@ -151,7 +151,7 @@ class Sync {
 	 */
 	public function all(): void {
 		// Get Itinerary ID's.
-		$ids = $this->sync->get_itinerary_ids();
+		$ids = $this->sync->get_all_itinerary_ids();
 
 		// Implode and run sync.
 		$this->do_sync( [], [ 'ids' => $ids ] );
