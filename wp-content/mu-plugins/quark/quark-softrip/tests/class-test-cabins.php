@@ -23,9 +23,9 @@ class Test_Cabins extends WP_UnitTestCase {
 	 *
 	 * @return void
 	 */
-	public function set_up(): void {
+	public static function set_up_before_class(): void {
 		// Run parent and include setup.
-		parent::set_up();
+		parent::set_up_before_class();
 		include_once 'setup.php';
 		setup_softrip_db();
 	}
