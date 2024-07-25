@@ -85,9 +85,7 @@
 												<x-media-description-cards>
 													@foreach ( $deck['public_spaces'] as $public_spaces )
 														<x-media-description-cards.card>
-															@if ( ! empty( $public_spaces['image_id'] ) )
-																<x-media-description-cards.image :image_id="$public_spaces['image_id']" :alt="$public_spaces['title'] ?? ''" />
-															@endif
+															<x-media-description-cards.image :image_id="$public_spaces['image']" :alt="$public_spaces['title'] ?? ''" />
 															<x-media-description-cards.content>
 																<x-media-description-cards.title :title="$public_spaces['title'] ?? ''" heading_level="5" />
 																<x-media-description-cards.description>

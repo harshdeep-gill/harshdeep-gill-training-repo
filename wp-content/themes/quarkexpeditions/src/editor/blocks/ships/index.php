@@ -157,27 +157,30 @@ function prepare_public_spaces( array $deck_meta = [] ): array {
 
 	// Search for public spaces meta keys and store its values.
 	foreach( $deck_meta as $key => $value ) {
-		$public_space = [];
-		if ( 0 === strpos( $key, 'public_spaces_' ) ) {
+		// Check if this is a public space meta key.
+		if ( false !== strpos( $key, 'public_spaces_' ) ) {
+			// Split the key into parts
+			$key_parts = explode('_', $key);
+			$key_name  = end( $key_parts );
+			$key_index = $key_parts[2];
+
 			// If key contains 'title' string, then it's a title.
-			if ( false !== strpos( $key, 'title' ) ) {
-				$public_space['title'] = $value;
+			if ( 'title' === $key_name ) {
+				$public_space_value = $value;
 			}
 
 			// If key contains 'description' string, then it's a description.
-			if ( false !== strpos( $key, 'description' ) ) {
-				$public_space['description'] = apply_filters( 'the_content', $value );
+			if ( 'description' === $key_name ) {
+				$public_space_value = apply_filters( 'the_content', $value );
 			}
 
 			// If key contains 'image' string, then it's an image.
-			if ( false !== strpos( $key, 'image' ) ) {
-				$public_space['image_id'] = $value;
+			if ( 'image' === $key_name ) {
+				$public_space_value = absint( $value );
 			}
 
-			// Add it to the public spaces.
-			if ( ! empty( $public_space ) ) {
-				$public_spaces[] = $public_space;
-			}
+			// If we have all the data, then add it to the public spaces at the index specifeid by last second part of the key.
+			$public_spaces[ $key_index ][ $key_name ] = $public_space_value;
 		}
 	}
 
