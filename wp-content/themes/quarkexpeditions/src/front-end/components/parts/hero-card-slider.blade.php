@@ -11,7 +11,7 @@ if ( empty( $items ) ) {
 }
 @endphp
 
-<x-hero-card-slider :arrows="$show_controls" :interval="$interval" auto_slide="{{ 'auto' === $transition_type }}">
+<x-hero-card-slider :arrows="$show_controls" :interval="$interval" :auto_slide="'auto' === $transition_type">
 	@foreach ( $items as $item )
 		<x-hero-card-slider.card>
 			<x-hero-card-slider.image image_id="{{ $item['image_id'] }}" />

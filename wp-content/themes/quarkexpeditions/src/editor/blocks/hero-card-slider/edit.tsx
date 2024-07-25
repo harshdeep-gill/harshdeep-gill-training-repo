@@ -13,11 +13,6 @@ import {
 } from '@wordpress/block-editor';
 
 /**
- * Internal dependencies.
- */
-import Section from '../../components/section';
-
-/**
  * External dependencies.
  */
 import classnames from 'classnames';
@@ -40,7 +35,7 @@ const {
  * @param {Function} props.setAttributes Set block attributes.
  */
 export default function edit( { className, attributes, setAttributes }: BlockEditAttributes ): JSX.Element {
-	// eslint-disable-next-line react-hooks/rules-of-hooks
+	// Get the block's props.
 	const blockProps = useBlockProps( {
 		className: classnames(
 			className,
@@ -51,7 +46,7 @@ export default function edit( { className, attributes, setAttributes }: BlockEdi
 	return (
 		<>
 			<InspectorControls>
-				<PanelBody title={ __( 'Hero Options', 'qrk' ) }>
+				<PanelBody title={ __( 'Hero Card Slider Options', 'qrk' ) }>
 					<SelectControl
 						label={ __( 'Transition Type', 'qrk' ) }
 						help={ __( 'Select the transition type', 'qrk' ) }
@@ -64,7 +59,7 @@ export default function edit( { className, attributes, setAttributes }: BlockEdi
 					/>
 					{ 'auto' === attributes.transitionType && (
 						<RangeControl
-							label={ __( 'Interval', 'qrk' ) }
+							label={ __( 'Interval (In Seconds)', 'qrk' ) }
 							value={ attributes.interval }
 							onChange={ ( interval ) => setAttributes( { interval } ) }
 							min={ 2 }
@@ -73,7 +68,7 @@ export default function edit( { className, attributes, setAttributes }: BlockEdi
 					) }
 					<GalleryControl
 						label={ __( 'Slide Items', 'qrk' ) }
-						help={ __( 'Select the slide items', 'qrk' ) }
+						help={ __( 'Select one or more images.', 'qrk' ) }
 						size="medium"
 						onSelect={ ( value: [] ) => {
 							// The block editor doesn't update arrays correctly?
@@ -86,7 +81,7 @@ export default function edit( { className, attributes, setAttributes }: BlockEdi
 					/>
 				</PanelBody>
 			</InspectorControls>
-			<Section { ...blockProps }>
+			<div { ...blockProps }>
 				{ attributes.items.length === 0 && (
 					<Placeholder
 						icon="format-image"
@@ -105,7 +100,7 @@ export default function edit( { className, attributes, setAttributes }: BlockEdi
 						</div>
 					</div>
 				) }
-			</Section>
+			</div>
 		</>
 	);
 }
