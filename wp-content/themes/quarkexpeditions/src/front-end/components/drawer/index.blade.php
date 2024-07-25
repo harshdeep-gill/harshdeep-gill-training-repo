@@ -1,6 +1,7 @@
 @props( [
 	'id'                  => '',
 	'class'               => '',
+	'content_class'       => '',
 	'animation_direction' => 'left',
 ] )
 
@@ -20,7 +21,7 @@
 	overlay-click-close="yes"
 	animation-direction="{{ $animation_direction }}"
 >
-	<quark-drawer-content class="drawer__content">
+	<quark-drawer-content class="drawer__content {{ $content_class }}">
 		<x-content :content="$slot" />
 		<x-drawer.drawer-close />
 	</quark-drawer-content>
