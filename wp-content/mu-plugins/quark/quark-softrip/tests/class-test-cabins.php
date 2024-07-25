@@ -31,6 +31,37 @@ class Test_Cabins extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Tear down after class.
+	 *
+	 * @return void
+	 */
+	public static function tear_down_after_class(): void {
+		// Run parent.
+		parent::tear_down_after_class();
+		tear_down_softrip_db();
+	}
+
+	/**
+	 * Setup for tests.
+	 *
+	 * @return void
+	 */
+	public function set_up(): void {
+		// Mock the response for the POST request.
+		add_filter( 'pre_http_request', 'Quark\Softrip\mock_http_request', 10, 3 );
+	}
+
+	/**
+	 * Tear down after tests.
+	 *
+	 * @return void
+	 */
+	public function tear_down(): void {
+		// Remove the filter.
+		remove_filter( 'pre_http_request', 'Quark\Softrip\mock_http_request' );
+	}
+
+	/**
 	 * Get a post to test with.
 	 *
 	 * @return WP_Post|WP_Error

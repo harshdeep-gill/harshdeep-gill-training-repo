@@ -41,6 +41,28 @@ function setup_softrip_db(): void {
 }
 
 /**
+ * Setup Softrip DB.
+ *
+ * @return void
+ */
+function tear_down_softrip_db(): void {
+	// Get global WPDB object.
+	global $wpdb;
+
+	// Init DB object.
+	$db = new Softrip_DB();
+
+	// Get SQL array.
+	$tables = $db->get_db_tables();
+
+	// Truncate tables.
+	foreach ( $tables as $name => $sql ) {
+		$table_name = $db->prefix_table_name( $name );
+		$wpdb->query( "TRUNCATE TABLE $table_name" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+	}
+}
+
+/**
  * Mock the HTTP request.
  *
  * @param mixed[]|false $response    The response.
@@ -58,7 +80,7 @@ function setup_softrip_db(): void {
  */
 function mock_http_request( array|false $response = [], array $parsed_args = [], string $url = null ): false|array {
 	// Check if the URL is the one we want to mock.
-	if ( 'www.localhost.com/departures' === $url ) {
+	if ( 'http://localhost.com/departures' === $url ) {
 		$data          = [];
 		$product_codes = [];
 
@@ -87,56 +109,58 @@ function mock_http_request( array|false $response = [], array $parsed_args = [],
 								'name'        => 'Studio Single',
 								'departureId' => 'ABC-123:2026-02-28',
 								'occupancies' => [
-									'id'                      => 'ABC-123:2026-02-28:OEX-SGL:A',
-									'name'                    => 'ABC-123:2026-02-28:OEX-SGL:A',
-									'mask'                    => 'A',
-									'availabilityStatus'      => 'C',
-									'availabilityDescription' => 'Unavailable',
-									'spacesAvailable'         => 0,
-									'seq'                     => '100',
-									'price'                   => [
-										'USD' => [
-											'pricePerPerson' => 34895,
-											'currencyCode'   => 'USD',
-											'promos'         => [
-												'25PROMO' => [
-													'promoPricePerPerson' => 26171,
+									[
+										'id'                      => 'ABC-123:2026-02-28:OEX-SGL:A',
+										'name'                    => 'ABC-123:2026-02-28:OEX-SGL:A',
+										'mask'                    => 'A',
+										'availabilityStatus'      => 'C',
+										'availabilityDescription' => 'Unavailable',
+										'spacesAvailable'         => 0,
+										'seq'                     => '100',
+										'price'                   => [
+											'USD' => [
+												'pricePerPerson' => 34895,
+												'currencyCode'   => 'USD',
+												'promos'         => [
+													'25PROMO' => [
+														'promoPricePerPerson' => 26171,
+													],
 												],
 											],
-										],
-										'AUD' => [
-											'pricePerPerson' => 54795,
-											'currencyCode'   => 'AUD',
-											'promos'         => [
-												'25PROMO' => [
-													'promoPricePerPerson' => 41096,
+											'AUD' => [
+												'pricePerPerson' => 54795,
+												'currencyCode'   => 'AUD',
+												'promos'         => [
+													'25PROMO' => [
+														'promoPricePerPerson' => 41096,
+													],
 												],
 											],
-										],
-										'CAD' => [
-											'pricePerPerson' => 47495,
-											'currencyCode'   => 'CAD',
-											'promos'         => [
-												'25PROMO' => [
-													'promoPricePerPerson' => 35621,
+											'CAD' => [
+												'pricePerPerson' => 47495,
+												'currencyCode'   => 'CAD',
+												'promos'         => [
+													'25PROMO' => [
+														'promoPricePerPerson' => 35621,
+													],
 												],
 											],
-										],
-										'EUR' => [
-											'pricePerPerson' => 32495,
-											'currencyCode'   => 'EUR',
-											'promos'         => [
-												'25PROMO' => [
-													'promoPricePerPerson' => 24371,
+											'EUR' => [
+												'pricePerPerson' => 32495,
+												'currencyCode'   => 'EUR',
+												'promos'         => [
+													'25PROMO' => [
+														'promoPricePerPerson' => 24371,
+													],
 												],
 											],
-										],
-										'GBP' => [
-											'pricePerPerson' => 27995,
-											'currencyCode'   => 'GBP',
-											'promos'         => [
-												'25PROMO' => [
-													'promoPricePerPerson' => 20996,
+											'GBP' => [
+												'pricePerPerson' => 27995,
+												'currencyCode'   => 'GBP',
+												'promos'         => [
+													'25PROMO' => [
+														'promoPricePerPerson' => 20996,
+													],
 												],
 											],
 										],
