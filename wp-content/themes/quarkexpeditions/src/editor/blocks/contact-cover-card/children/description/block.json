@@ -1,0 +1,23 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "quark/content-cover-card-description",
+    "description": "Card description for Contact Cover Card.",
+    "title": "Card Description",
+    "keywords": [ "help" ],
+    "category": "layout",
+    "textdomain": "qrk",
+    "parent": [ "quark/contact-cover-card" ],
+    "attributes": {
+        "helpText": {
+            "type": "string",
+            "default": ""
+        }
+    },
+    "supports": {
+        "alignWide": false,
+        "className": false,
+        "html": false,
+        "customClassName": false
+    }
+}

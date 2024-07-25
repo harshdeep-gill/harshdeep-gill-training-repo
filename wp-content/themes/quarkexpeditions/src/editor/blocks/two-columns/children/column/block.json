@@ -1,0 +1,20 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Column",
+	"name": "quark/column",
+	"description": "Individual column.",
+	"parent": [ "quark/two-columns" ],
+	"category": "layout",
+	"textdomain": "qrk",
+	"keywords": [
+		"column"
+	],
+	"attributes": {},
+	"supports": {
+		"alignWide": false,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

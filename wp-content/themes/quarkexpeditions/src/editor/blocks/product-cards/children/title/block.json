@@ -1,0 +1,23 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "quark/product-cards-title",
+  "description": "Individual Card Title for product cards.",
+  "title": "Card Title",
+  "keywords": [ "title" ],
+  "category": "layout",
+  "textdomain": "qrk",
+  "parent": [ "quark/product-cards-card" ],
+  "attributes": {
+    "title": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "supports": {
+    "alignWide": false,
+    "className": false,
+    "html": false,
+    "customClassName": false
+  }
+}

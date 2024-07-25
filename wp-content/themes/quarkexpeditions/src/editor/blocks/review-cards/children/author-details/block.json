@@ -1,0 +1,28 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Review Cards Author Details",
+	"name": "quark/review-cards-author-details",
+	"description": "Individual review card item author details.",
+	"parent": [
+		"quark/review-cards-card"
+	],
+	"category": "layout",
+	"textdomain": "qrk",
+	"keywords": [
+		"author",
+		"details"
+	],
+	"attributes": {
+		"authorDetails": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

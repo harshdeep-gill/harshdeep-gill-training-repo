@@ -26,23 +26,21 @@ class Test_Core extends WP_UnitTestCase {
 	public function test_get_front_end_data(): void {
 		// No data.
 		$original_data = [
-			'header'             => [
+			'header'               => [
 				'logo_url' => 'http://test.quarkexpeditions.com',
 				'nav_menu' => "<div></div>\n",
 			],
-			'social_links'       => [
+			'social_links'         => [
 				'facebook'  => '',
 				'twitter'   => '',
 				'instagram' => '',
 				'pinterest' => '',
 				'youtube'   => '',
 			],
-			'leads_api_endpoint' => 'http://test.quarkexpeditions.com/wp-json/quark-leads/v1/leads/create',
-			'current_url'        => false,
-			'data'               => [
-				'dynamic_phone_number' => [
-					'api_endpoint' => 'http://test.quarkexpeditions.com/wp-json/qrk-phone-numbers/v1/phone-number/get',
-				],
+			'leads_api_endpoint'   => 'http://test.quarkexpeditions.com/wp-json/quark-leads/v1/leads/create',
+			'current_url'          => false,
+			'dynamic_phone_number' => [
+				'api_endpoint' => 'http://test.quarkexpeditions.com/wp-json/qrk-phone-numbers/v1/phone-number/get',
 			],
 		];
 
@@ -127,5 +125,27 @@ class Test_Core extends WP_UnitTestCase {
 			],
 			get_registered_nav_menus()
 		);
+	}
+
+	/**
+	 * Test doing automated tests.
+	 *
+	 * @covers \Quark\Core\doing_automated_test()
+	 *
+	 * @return void
+	 */
+	public function test_doing_automated_test(): void {
+		// Test default state.
+		$this->assertFalse( doing_automated_test() );
+
+		// Define config.
+		$_SERVER['HTTP_USER_AGENT'] = 'TEST_USER_AGENT';
+		define( 'QUARK_AUTOMATED_TEST_USER_AGENT', 'TEST_USER_AGENT' );
+
+		// Test user agent.
+		$this->assertTrue( doing_automated_test() );
+
+		// Clean up.
+		$_SERVER['HTTP_USER_AGENT'] = '';
 	}
 }

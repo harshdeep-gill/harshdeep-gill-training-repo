@@ -1,0 +1,45 @@
+{
+	"schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Header Menu Item Featured Section",
+	"name": "quark/header-menu-item-featured-section",
+	"description": "Featured Section within Content Column",
+	"parent": [
+		"quark/header-menu-item-content-column"
+	],
+	"category": "layout",
+	"textdomain": "qrk",
+	"keywords": [
+		"content",
+		"featured",
+		"section"
+	],
+	"attributes": {
+		"image": {
+			"type": "object",
+			"default": {}
+		},
+		"title": {
+			"type": "string",
+			"default": ""
+		},
+		"subtitle": {
+			"type": "string",
+			"default": ""
+		},
+		"ctaText": {
+			"type": "string",
+			"default": ""
+		},
+		"url": {
+			"type": "object",
+			"default": null
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

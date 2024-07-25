@@ -1,0 +1,22 @@
+{
+	"schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Footer Row",
+	"name": "quark/lp-footer-row",
+	"description": "Footer row block.",
+	"parent": [
+		"quark/lp-footer"
+	],
+	"category": "layout",
+	"keywords": [
+		"row"
+	],
+	"textdomain": "qrk",
+	"attributes": {},
+	"supports": {
+		"alignWide": false,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

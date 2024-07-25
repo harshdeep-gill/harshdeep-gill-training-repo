@@ -1,0 +1,31 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Icon Info Columns - Column",
+	"description": "Individual column in the icon info columns.",
+	"parent": [ "quark/icon-info-columns" ],
+	"name": "quark/icon-info-columns-column",
+	"category": "layout",
+	"keywords": [ "item" ],
+	"textdomain": "qrk",
+	"attributes": {
+		"icon": {
+			"type": "string",
+			"default": ""
+		},
+		"title": {
+			"type": "string",
+			"default": ""
+		},
+		"info": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

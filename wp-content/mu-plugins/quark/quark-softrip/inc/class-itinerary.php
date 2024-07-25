@@ -93,7 +93,7 @@ class Itinerary extends Softrip_Object {
 			$departure = new Departure();
 			$departure->set_itinerary( $this );
 			$departure->load( absint( $post_id ) );
-			$this->departures[ $departure->get_post_meta( 'softrip_departure_id' ) ] = $departure;
+			$this->departures[ $departure->get_post_meta( 'departure_unique_id' ) ] = $departure;
 		}
 
 		// Set departures loaded.
@@ -177,5 +177,32 @@ class Itinerary extends Softrip_Object {
 
 		// Reload data.
 		$this->load( $this->get_id() );
+	}
+
+	/**
+	 * Get the lowest price per person for the itinerary.
+	 *
+	 * @param string $currency The currency code to get.
+	 *
+	 * @return float
+	 */
+	public function get_lowest_price( string $currency = 'USD' ): float {
+		// Set up the lowest variable.
+		$lowest = 0;
+
+		// Iterate over the departures.
+		foreach ( $this->get_departures() as $departure ) {
+			// Get the price per person.
+			$test_price = $departure->get_lowest_price( $currency );
+
+			// Check if lowest is set and is lower than the previous price.
+			if ( empty( $lowest ) || $lowest > $test_price ) {
+				// Use the price as it's lower.
+				$lowest = $test_price;
+			}
+		}
+
+		// Return the lowest found.
+		return $lowest;
 	}
 }

@@ -1,0 +1,55 @@
+{
+	"schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Landing Page - Form modal CTA",
+	"name": "quark/lp-form-modal-cta",
+	"description": "A CTA to open up a Landing Page Form Modal.",
+	"category": "forms",
+	"textdomain": "qrk",
+	"keywords": [
+		"landing",
+		"cta",
+		"form",
+		"modal"
+	],
+	"attributes": {
+		"text": {
+			"type": "string",
+			"default": ""
+		},
+		"backgroundColor": {
+			"type": "string",
+			"default": "yellow",
+			"enum": [
+				"yellow",
+				"black"
+			]
+		},
+		"polarRegion": {
+			"type": "string",
+			"default": ""
+		},
+		"season": {
+			"type": "string",
+			"default": ""
+		},
+		"ship": {
+			"type": "string",
+			"default": ""
+		},
+		"subRegion": {
+			"type": "string",
+			"default": ""
+		},
+		"expedition": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"className": false,
+		"html": false,
+		"customClassName": true
+	}
+}

@@ -27,6 +27,7 @@ function bootstrap(): void {
 
 	// REST API hooks.
 	add_action( 'rest_api_init', __NAMESPACE__ . '\\register_rest_endpoints' );
+	add_filter( 'travelopia_security_public_rest_api_routes', __NAMESPACE__ . '\\security_public_rest_api_routes' );
 
 	// Custom fields.
 	if ( is_admin() ) {
@@ -65,22 +66,18 @@ function setup_phone_number_settings(): void {
  */
 function office_phone_number_front_end_data( array $data = [] ): array {
 	// Check for correct data.
-	if ( ! (
-		is_array( $data )
-		&& array_key_exists( 'data', $data )
-		&& is_array( $data['data'] )
-	) ) {
-		$data['data'] = [];
+	if ( ! is_array( $data ) ) {
+		$data = [];
 	}
 
 	// Add dynamic phone number data.
-	$data['data']['dynamic_phone_number'] = [
+	$data['dynamic_phone_number'] = [
 		'api_endpoint' => '',
 	];
 
 	// Update phone number if any rules match.
-	$data['data']['dynamic_phone_number'] = array_merge(
-		$data['data']['dynamic_phone_number'],
+	$data['dynamic_phone_number'] = array_merge(
+		$data['dynamic_phone_number'],
 		[
 			'api_endpoint' => home_url( 'wp-json/' . REST_API_NAMESPACE . '/phone-number/get' ),
 		]
@@ -108,6 +105,21 @@ function register_rest_endpoints(): void {
 	foreach ( $endpoints as $endpoint ) {
 		$endpoint->register_routes();
 	}
+}
+
+/**
+ * Register public REST API routes.
+ *
+ * @param string[] $routes Public routes.
+ *
+ * @return string[]
+ */
+function security_public_rest_api_routes( array $routes = [] ): array {
+	// Whitelist local phone number API routes.
+	$routes[] = sprintf( '/%s/phone-number/get', REST_API_NAMESPACE );
+
+	// Return routes.
+	return $routes;
 }
 
 /**

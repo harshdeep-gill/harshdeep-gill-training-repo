@@ -1,0 +1,37 @@
+{
+	"schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Secondary Nav Menu Item",
+	"name": "quark/secondary-menu-item",
+	"description": "Individual Secondary Nav Menu Item for Header",
+	"parent": [
+		"quark/secondary-nav"
+	],
+	"category": "layout",
+	"textdomain": "qrk",
+	"keywords": [
+		"secondary",
+		"menu",
+		"item"
+	],
+	"attributes": {
+		"title": {
+			"type": "string",
+			"default": ""
+		},
+		"url": {
+			"type": "object",
+			"default": null
+		},
+		"placeholder": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

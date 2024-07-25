@@ -1,0 +1,31 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "quark/product-departures-card-dates",
+  "description": "Departures dates for Product Departures Card",
+  "title": "Card Departure Dates",
+  "keywords": [ "departures", "dates" ],
+  "category": "layout",
+  "textdomain": "qrk",
+  "parent": [ "quark/product-departures-card-departures" ],
+  "attributes": {
+    "offer": {
+      "type": "string",
+      "default": ""
+    },
+    "offerText": {
+      "type": "string",
+      "default": ""
+    },
+    "isSoldOut": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "supports": {
+    "alignWide": false,
+    "className": false,
+    "html": false,
+    "customClassName": false
+  }
+}

@@ -1,0 +1,97 @@
+/**
+ * Expedition Details.
+ */
+
+@import "../../scss";
+
+.expedition-details {
+
+	&.color-context--dark {
+		background-color: var(--color-black);
+	}
+
+	&__overline {
+		font-weight: var(--font-weight-bold);
+		display: flex;
+		flex-flow: row wrap;
+
+		span {
+			display: inline-flex;
+
+			&:not(:last-child)::after {
+				content: "•";
+				margin: -2px var(--spacing-2) 0;
+			}
+		}
+	}
+
+	&__title {
+		margin-top: var(--spacing-2);
+	}
+
+	&__regions {
+		list-style: none;
+		margin-top: var(--spacing-4);
+		padding-left: 0;
+
+		li {
+
+			&:not(:last-child)::after {
+				content: "•";
+				margin: -2px var(--spacing-1) 0;
+			}
+		}
+	}
+
+	&__region {
+		display: inline;
+	}
+
+	&__row {
+		display: grid;
+		margin-top: var(--spacing-4);
+		gap: var(--spacing-4);
+
+		@media screen and (min-width: grid-size(md)) {
+			margin-top: var(--spacing-7);
+			gap: var(--spacing-6);
+
+			@include grid-columns(2);
+		}
+
+		> *:only-child {
+			grid-column: auto / span 2;
+		}
+	}
+
+	&__ships-label,
+	&__starting-from-label,
+	&__departures-label {
+		font-size: var(--font-size-small);
+		line-height: var(--line-height-small);
+		margin-bottom: 0;
+	}
+
+	&__ships-content,
+	&__starting-from-content,
+	&__departures-content {
+		font-weight: var(--font-weight-bold);
+		margin-top: var(--spacing-1);
+	}
+
+	&__cta {
+		margin-top: var(--spacing-6);
+
+		@media screen and (min-width: grid-size(md)) {
+			margin-top: var(--spacing-7);
+		}
+
+		.btn {
+			width: 100%;
+
+			@media screen and (min-width: grid-size(md)) {
+				width: auto;
+			}
+		}
+	}
+}

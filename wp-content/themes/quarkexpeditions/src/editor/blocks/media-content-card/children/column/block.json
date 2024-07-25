@@ -1,0 +1,27 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "quark/media-content-card-column",
+  "description": "Individual column for media content card.",
+  "title": "Media Content Card Column",
+  "keywords": [ "column" ],
+  "category": "layout",
+  "textdomain": "qrk",
+  "parent": [ "quark/media-content-card" ],
+  "attributes": {
+    "hasHeading": {
+      "type": "boolean",
+      "default": true
+    },
+    "heading": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "supports": {
+    "alignWide": false,
+    "className": false,
+    "html": false,
+    "customClassName": false
+  }
+}

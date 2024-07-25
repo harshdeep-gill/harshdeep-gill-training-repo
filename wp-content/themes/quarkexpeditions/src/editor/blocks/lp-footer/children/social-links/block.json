@@ -1,0 +1,23 @@
+{
+	"schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Footer Social Links",
+	"name": "quark/lp-footer-social-links",
+	"description": "Footer Social Links block.",
+	"parent": [
+		"quark/lp-footer-column"
+	],
+	"category": "layout",
+	"keywords": [
+		"social",
+		"links"
+	],
+	"textdomain": "qrk",
+	"attributes": {},
+	"supports": {
+		"alignWide": false,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

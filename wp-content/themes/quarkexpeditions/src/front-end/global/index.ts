@@ -9,6 +9,11 @@ import './phone-number';
 import './index.scss';
 
 /**
+ * Internal dependencies.
+ */
+import './dom-content-loaded';
+
+/**
  * TypeScript Stuff.
  */
 declare global {

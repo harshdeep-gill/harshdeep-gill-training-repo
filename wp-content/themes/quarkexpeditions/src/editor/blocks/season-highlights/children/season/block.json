@@ -1,0 +1,27 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Season",
+	"name": "quark/season-highlights-season",
+	"description": "Season section for Season Highlights Block",
+	"parent": [
+		"quark/season-highlights"
+	],
+	"category": "layout",
+	"textdomain": "qrk",
+	"keywords": [
+		"season"
+	],
+	"attributes": {
+		"title": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

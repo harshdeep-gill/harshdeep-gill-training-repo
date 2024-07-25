@@ -1,0 +1,49 @@
+{
+	"schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Header Menu Item",
+	"name": "quark/header-menu-item",
+	"description": "Individual Menu Item for Header",
+	"parent": [
+		"quark/header-mega-menu",
+		"quark/secondary-nav"
+	],
+	"category": "layout",
+	"textdomain": "qrk",
+	"keywords": [
+		"menu",
+		"item"
+	],
+	"attributes": {
+		"title": {
+			"type": "string",
+			"default": ""
+		},
+		"hasUrl": {
+			"type": "boolean",
+			"default": false
+		},
+		"url": {
+			"type": "object",
+			"default": null
+		},
+		"hasIcon": {
+			"type": "boolean",
+			"default": false
+		},
+		"icon": {
+			"type": "string",
+			"default": "search"
+		},
+		"placeholder": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

@@ -1,0 +1,25 @@
+{
+	"schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Header Menu Item Content Column",
+	"name": "quark/header-menu-item-content-column",
+	"description": "Individual Content Column within Dropdown Content",
+	"parent": [
+		"quark/header-menu-item-content"
+	],
+	"category": "layout",
+	"textdomain": "qrk",
+	"keywords": [
+		"menu",
+		"item",
+		"content",
+		"column"
+	],
+	"attributes": {},
+	"supports": {
+		"alignWide": false,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

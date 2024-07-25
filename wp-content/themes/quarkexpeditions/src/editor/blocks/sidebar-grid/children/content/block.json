@@ -1,0 +1,22 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Content",
+	"name": "quark/sidebar-grid-content",
+	"description": "Content within Sidebar Grid Block.",
+	"parent": [
+		"quark/sidebar-grid"
+	],
+	"category": "layout",
+	"keywords": [
+		"content"
+	],
+	"textdomain": "qrk",
+	"attributes": {},
+	"supports": {
+		"alignWide": false,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

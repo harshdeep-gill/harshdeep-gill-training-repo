@@ -198,10 +198,12 @@ class Departure extends Softrip_Object {
 		// Set data defaults.
 		$default = [
 			'id'               => 0,
+			'code'             => 0,
 			'shipCode'         => '',
 			'packageCode'      => '',
 			'startDate'        => current_time( 'mysql' ),
 			'endDate'          => '',
+			'marketCode'       => '',
 			'duration'         => 0,
 			'cabins'           => [],
 			'adventureOptions' => [],
@@ -217,13 +219,15 @@ class Departure extends Softrip_Object {
 			'meta_input'  => [
 				'related_expedition'   => $this->itinerary->get_post_meta( 'related_expedition' ),
 				'related_ship'         => get_id_from_ship_code( strval( $data['shipCode'] ) ),
-				'softrip_departure_id' => $data['id'],
+				'softrip_departure_id' => $data['code'],
+				'departure_unique_id'  => $data['id'],
 				'softrip_package_id'   => $data['packageCode'],
 				'departure_start_date' => $data['startDate'],
 				'departure_end_date'   => $data['endDate'],
 				'duration'             => $data['duration'],
 				'itinerary'            => $this->itinerary->get_id(),
 				'ship_id'              => $data['shipCode'],
+				'region'               => $data['marketCode'],
 			],
 		];
 
@@ -358,5 +362,32 @@ class Departure extends Softrip_Object {
 
 		// Return the cabin object.
 		return $this->cabins[ $code ];
+	}
+
+	/**
+	 * Get the lowest price per person for the departure.
+	 *
+	 * @param string $currency The currency code to get.
+	 *
+	 * @return float
+	 */
+	public function get_lowest_price( string $currency = 'USD' ): float {
+		// Set up the lowest variable.
+		$lowest = 0;
+
+		// Iterate over the cabins.
+		foreach ( $this->get_cabins() as $cabin ) {
+			// Get the price per person.
+			$test_price = $cabin->get_lowest_price( $currency );
+
+			// Check if lowest is set and is lower than the previous price.
+			if ( empty( $lowest ) || $lowest > $test_price ) {
+				// Use the price as it's lower.
+				$lowest = $test_price;
+			}
+		}
+
+		// Return the lowest found.
+		return $lowest;
 	}
 }

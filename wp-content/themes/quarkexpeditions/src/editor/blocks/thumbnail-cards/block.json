@@ -1,0 +1,30 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Thumbnail Cards",
+	"name": "quark/thumbnail-cards",
+	"description": "Display a thumbnail cards block.",
+	"category": "widgets",
+	"keywords": [
+		"thumbnail",
+		"cards"
+	],
+	"textdomain": "qrk",
+	"attributes": {
+		"isCarousel": {
+			"type": "boolean",
+			"default": true
+		},
+		"isFullWidth": {
+			"type": "boolean",
+			"default": true
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

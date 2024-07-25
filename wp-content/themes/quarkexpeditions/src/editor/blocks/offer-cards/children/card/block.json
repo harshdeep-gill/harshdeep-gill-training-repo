@@ -1,0 +1,23 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "quark/offer-cards-card",
+    "description": "Individual Card Item for offer cards.",
+    "title": "Offer Cards Card",
+    "keywords": [ "card" ],
+    "category": "layout",
+    "textdomain": "qrk",
+    "parent": [ "quark/offer-cards" ],
+    "attributes": {
+        "heading": {
+            "type": "string",
+            "default": ""
+        }
+    },
+    "supports": {
+        "alignWide": false,
+        "className": false,
+        "html": false,
+        "customClassName": false
+    }
+}
