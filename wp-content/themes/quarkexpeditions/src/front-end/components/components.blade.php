@@ -1168,32 +1168,32 @@
 			<x-icon-info-grid>
 				<x-icon-info-grid.item>
 					<x-icon-info-grid.icon icon="star" />
-					<h3>Specialist Expedition Leaders</h3>
+					<h4>Specialist Expedition Leaders</h4>
 					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis.</p>
 				</x-icon-info-grid.item>
 				<x-icon-info-grid.item>
 					<x-icon-info-grid.icon icon="whale-tail" />
-					<h3>Immersive Off-ship Activities</h3>
+					<h4>Immersive Off-ship Activities</h4>
 					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis.</p>
 				</x-icon-info-grid.item>
 				<x-icon-info-grid.item>
 					<x-icon-info-grid.icon icon="ship" />
-					<h3>On-Ship Experiences & Facilities</h3>
+					<h4>On-Ship Experiences & Facilities</h4>
 					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis.</p>
 				</x-icon-info-grid.item>
 				<x-icon-info-grid.item>
 					<x-icon-info-grid.icon icon="star" />
-					<h3>Food & Beverages</h3>
+					<h4>Food & Beverages</h4>
 					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis.</p>
 				</x-icon-info-grid.item>
 				<x-icon-info-grid.item>
 					<x-icon-info-grid.icon icon="star" />
-					<h3>Quark Expedition Perks</h3>
+					<h4>Quark Expedition Perks</h4>
 					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis.</p>
 				</x-icon-info-grid.item>
 				<x-icon-info-grid.item>
 					<x-icon-info-grid.icon icon="itinerary" />
-					<h3>Transfers</h3>
+					<h4>Transfers</h4>
 					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis.</p>
 				</x-icon-info-grid.item>
 			</x-icon-info-grid>
