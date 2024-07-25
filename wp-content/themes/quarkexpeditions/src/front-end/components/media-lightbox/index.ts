@@ -168,11 +168,50 @@ export default class MediaLightbox extends HTMLElement {
 			// If this bullet is the current one, mark it accordingly.
 			if ( i + 1 === parseInt( current ) ) {
 				singleBullet.setAttribute( 'current', 'yes' );
+
+				// Set timeout.
+				setTimeout( () => {
+					// Scroll to the item.
+					this.scrollLeftPagination( singleBullet );
+				}, 500 );
 			}
 
 			// Append the bullet to the container.
 			this.bulletElement.appendChild( singleBullet );
 		}
+	}
+
+	/**
+	 * Scroll left on mobile.
+	 *
+	 * @param {HTMLElement | Element} item The item to scroll into view.
+	 * @return { null | void } Null.
+	 */
+	scrollLeftPagination( item: HTMLElement | Element ): null | void {
+		// Ensure the item is rendered before calculating its position.
+		requestAnimationFrame( () => {
+			// Get the element position.
+			const itemHorizontalPosition = item.getBoundingClientRect().x;
+			let navWrapperScrollPosition = 0;
+
+			// Check if element exists.
+			if ( this.bulletElement ) {
+				navWrapperScrollPosition = this.bulletElement.scrollLeft;
+			}
+
+			/**
+			 * Offset is added to increase the horizontal scroll position,
+			 * so that tab link after the clicked one, peeps in.
+			 */
+			const offset = item.getBoundingClientRect().width;
+			const middle = navWrapperScrollPosition + itemHorizontalPosition - offset;
+
+			// Scroll to middle position.
+			this.bulletElement?.scrollTo( {
+				left: middle,
+				behavior: 'smooth',
+			} );
+		} );
 	}
 }
 
