@@ -20,10 +20,10 @@
 	<p>From</p>
 	<div class="product-options-cards__price-info">
 		<div class="product-options-cards__price-discounted">
-			<x-escape :content="$label" />
+			<x-escape :content="$original_price" />
 		</div>
 		<div class="product-options-cards__price-original">
-			<x-escape :content="$value" />
+			<x-escape :content="$discounted_price" />
 		</div>
 	</div>
 </div>
