@@ -20,46 +20,69 @@
 		&:has(#{$self}__badge--sold-out) {
 			filter: grayscale(1);
 		}
-	}
 
-	&__gallery {
-		position: relative;
+		#{$self}__gallery {
+			position: relative;
 
-		&:hover &-arrow-button {
-			display: flex;
-		}
-
-		&-slides {
-			gap: var(--spacing-4);
-		}
-
-		&-slide {
-			max-height: 192px;
-
-			img {
-				height: 100%;
-			}
-		}
-
-		&-arrow-button {
-			display: none;
-			justify-content: center;
-			align-items: center;
-			width: 27px;
-			height: 27px;
-			background-color: var(--color-black);
-			border-radius: 50%;
-			position: absolute;
-			top: 50%;
-			translate: 0 -50%;
-
-			&--right {
-				rotate: 180deg;
-				right: var(--spacing-5);
+			&:hover &-arrow-button {
+				display: flex;
 			}
 
-			&--left {
-				left: var(--spacing-5);
+			&-slides {
+				gap: var(--spacing-4);
+			}
+
+			&-slide {
+				max-height: 192px;
+				overflow: hidden;
+
+				img {
+					height: 100%;
+				}
+			}
+
+			&-arrow-button {
+				display: none;
+				justify-content: center;
+				align-items: center;
+				width: 27px;
+				height: 27px;
+				background-color: var(--color-black);
+				border-radius: 50%;
+				position: absolute;
+				top: 50%;
+				translate: 0 -50%;
+
+				&--right {
+					rotate: 180deg;
+					right: var(--spacing-5);
+				}
+
+				&--left {
+					left: var(--spacing-5);
+				}
+			}
+
+			tp-slider-nav {
+				position: absolute;
+				inset: auto var(--spacing-5) var(--spacing-5) auto;
+
+				&-item {
+					display: block;
+
+					&[current] button {
+						background-color: var(--color-white);
+					}
+
+					button {
+						display: block;
+						font-size: 0;
+						width: 8px;
+						height: 8px;
+						border-radius: 50%;
+						background-color: var(--color-gray-10);
+					}
+				}
 			}
 		}
 	}
@@ -81,28 +104,6 @@
 
 		&--sold-out {
 			background-color: var(--color-gray-50);
-		}
-	}
-
-	tp-slider-nav {
-		position: absolute;
-		inset: auto var(--spacing-5) var(--spacing-5) auto;
-
-		&-item {
-			display: block;
-
-			&[current] button {
-				background-color: var(--color-white);
-			}
-
-			button {
-				display: block;
-				font-size: 0;
-				width: 8px;
-				height: 8px;
-				border-radius: 50%;
-				background-color: var(--color-gray-10);
-			}
 		}
 	}
 
@@ -202,7 +203,31 @@
 		}
 	}
 
-	&__more-details {
+	&__card-details {
 		padding-top: var(--spacing-8);
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-6);
+	}
+
+	&__card-details-title {
+		display: flex;
+		justify-content: space-between;
+		gap: var(--spacing-6);
+
+		h4 {
+			margin-bottom: 0;
+		}
+
+		button {
+			appearance: none;
+		}
+	}
+
+	&__features {
+
+		> p:first-of-type {
+			display: inline;
+		}
 	}
 }

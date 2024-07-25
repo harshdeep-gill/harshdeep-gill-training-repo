@@ -1,6 +1,5 @@
 @props( [
-	'class'        => '',
-	'no_of_guests' => 1,
+	'class' => '',
 ] )
 
 @php

@@ -1,6 +1,7 @@
 @props( [
 	'class'     => '',
 	'image_ids' => [],
+	'full_size' => false,
 ] )
 
 @php
@@ -24,6 +25,18 @@
 			'quality' => 100
 		]
 	];
+
+	if ( ! empty( $full_size ) ) {
+		$image_args['size'] = [
+			'width'  => 1056,
+			'height' => 480,
+		];
+
+		$image_args['responsive'] = [
+			'sizes'  => [ '(min-width: 1024px) 1056px', '(min-width: 768px) 768px', '600px' ],
+			'widths' => [ 600, 768, 1056 ],
+		];
+	}
 
 	$slide_count = count( $image_ids );
 @endphp
@@ -63,7 +76,7 @@
 			</div>
 		@endif
 
-		@if ( $slide_count > 1 )
+		@if ( $slide_count > 1 && empty( $full_size ) )
 			<tp-slider-nav>
 				@for ($i = 0; $i < $slide_count; $i++)
 					<tp-slider-nav-item><button>{{ $i }}</button></tp-slider-nav-item>

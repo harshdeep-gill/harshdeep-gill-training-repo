@@ -1,9 +1,6 @@
 @props( [
-	'class' => '',
-	'title' => '',
-] )
-
-@aware( [
+	'class'        => '',
+	'title'        => '',
 	'no_of_guests' => 1,
 ] )
 

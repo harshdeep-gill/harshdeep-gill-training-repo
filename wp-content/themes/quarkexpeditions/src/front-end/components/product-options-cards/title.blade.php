@@ -15,6 +15,6 @@
 	}
 @endphp
 
-<div @class( $classes )>
+<h5 @class( $classes )>
 	<x-escape :content="$title" />
-</div>
+</h5>
