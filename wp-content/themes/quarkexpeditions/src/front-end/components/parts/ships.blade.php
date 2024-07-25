@@ -8,7 +8,7 @@
 	}
 @endphp
 
-<x-tabs update_url='yes'>
+<x-tabs update_url='yes' current_tab="{{ $ships[0]['id'] }}">
 	<x-tabs.header>
 		@foreach ( $ships as $ship )
 			@if ( ! empty( $ship['id'] ) )
@@ -42,7 +42,7 @@
 							<h3>{{ __( 'Deck Plans & Cabins', 'qrk' ) }}</h3>
 						</x-drawer.header>
 						<x-drawer.body>
-							<x-tabs>
+							<x-tabs current_tab="{{ $ship['decks'][0]['id'] }}">
 								<x-tabs.header>
 									@foreach ( $ship['decks'] as $deck )
 										<x-tabs.nav id="{{ $deck['id'] }}" title="{{ $deck['title'] ?? '' }}" />
