@@ -3,9 +3,11 @@
  */
 import { __ } from '@wordpress/i18n';
 import {
-	PanelBody, Placeholder,
+	PanelBody,
+	Placeholder,
 	RangeControl,
 	SelectControl,
+	ToggleControl,
 } from '@wordpress/components';
 import {
 	InspectorControls,
@@ -66,6 +68,12 @@ export default function edit( { className, attributes, setAttributes }: BlockEdi
 							max={ 10 }
 						/>
 					) }
+					<ToggleControl
+						label={ __( 'Show Controls', 'qrk' ) }
+						help={ __( 'Display the slider controls?', 'qrk' ) }
+						checked={ attributes.showControls }
+						onChange={ ( showControls ) => setAttributes( { showControls } ) }
+					/>
 					<GalleryControl
 						label={ __( 'Slide Items', 'qrk' ) }
 						help={ __( 'Select one or more images.', 'qrk' ) }
