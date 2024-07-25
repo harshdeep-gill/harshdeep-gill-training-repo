@@ -8,16 +8,11 @@
 namespace Quark\Softrip\WP_CLI;
 
 use cli\progress\Bar;
-use Quark\Softrip\Itinerary;
 use Quark\Softrip\Softrip_Sync;
 use WP_CLI;
 use WP_CLI\ExitException;
-use WP_Query;
-use WP_Error;
 
-use function Quark\Softrip\request_departures;
-
-use const Quark\Itineraries\POST_TYPE;
+const BATCH_SIZE = 5;
 
 /**
  * Class Sync.
@@ -91,7 +86,7 @@ class Sync {
 		}
 
 		// split batches.
-		$parts = $this->sync->prepare_batch_ids( $options['ids'] );
+		$parts = $this->sync->prepare_batch_ids( $options['ids'], BATCH_SIZE );
 
 		// Set up a counter for how many we're successful.
 		$counter = 0;
@@ -156,7 +151,7 @@ class Sync {
 	 */
 	public function all(): void {
 		// Get Itinerary ID's.
-		$ids = $this->sync->get_itinerary_ids();
+		$ids = $this->sync->get_all_itinerary_ids();
 
 		// Implode and run sync.
 		$this->do_sync( [], [ 'ids' => $ids ] );

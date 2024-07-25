@@ -36,7 +36,7 @@ class DB {
 		$softrip_db = new Softrip_DB();
 
 		// Get SQL array.
-		$tables = $softrip_db->get_db_tables();
+		$tables = $softrip_db->get_db_tables_sql();
 
 		// Initialize progress bar.
 		$progress = new Bar( 'Setting up tables', count( $tables ), 100 );
