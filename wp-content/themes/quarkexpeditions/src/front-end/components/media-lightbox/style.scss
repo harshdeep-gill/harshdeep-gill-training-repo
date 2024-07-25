@@ -135,7 +135,13 @@
 	}
 
 	&__count {
-		display: none;
+		color: var(--color-white);
+		font-size: var(--font-size-small);
+		line-height: var(--line-height-small);
+		display: block;
+		position: absolute;
+		bottom: 0;
+		right: 0;
 	}
 
 	&__prev {

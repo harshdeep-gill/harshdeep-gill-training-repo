@@ -74,8 +74,7 @@
 				<button><x-svg name="chevron-left" /></button>
 			</tp-lightbox-next>
 
-			<tp-lightbox-count class="media-lightbox__count" format="$current of $total"></tp-lightbox-count>
-			<div class="media-lightbox__bullets"></div>
+			<tp-lightbox-count class="media-lightbox__count" format="$current/$total"></tp-lightbox-count>
 		</dialog>
 	</tp-lightbox>
 </x-once>
