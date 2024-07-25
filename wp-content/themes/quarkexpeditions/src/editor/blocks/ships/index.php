@@ -214,6 +214,7 @@ function get_cabin_options( array $cabin_options_ids = [] ): array {
 		$cabin_option_post       = $cabin_option['post'];
 		$cabin_option_meta       = $cabin_option['post_meta'];
 		$cabin_option_taxonomies = $cabin_option['post_taxonomies'];
+		$cabin_option_thumbnail  = $cabin_option['post_thumbnail'];
 
 		// Prepare location data.
 		$related_decks_ids = array_map( 'intval', $cabin_option_meta['related_decks'] );
@@ -243,7 +244,7 @@ function get_cabin_options( array $cabin_options_ids = [] ): array {
 		$cabin_options[] = [
 			'id'          => $cabin_option_post->post_name,
 			'title'       => $cabin_option_meta['cabin_name'],
-			'image_id'    => $cabin_option_meta['cabin_images'][0],
+			'image_id'    => $cabin_option_thumbnail,
 			'description' => apply_filters( 'the_content', $cabin_option_post->post_content ),
 			'details'     => [
 				[
