@@ -27,6 +27,13 @@ class Test_Itinerary extends WP_UnitTestCase {
 	protected static ?WP_Post $itinerary_post = null;
 
 	/**
+	 * Departure posts.
+	 *
+	 * @var mixed[]
+	 */
+	protected static array $departure_ids = [];
+
+	/**
 	 * Setup for tests.
 	 *
 	 * @return void
@@ -54,6 +61,21 @@ class Test_Itinerary extends WP_UnitTestCase {
 
 		// Set itinerary post.
 		self::$itinerary_post = $post instanceof WP_Post ? $post : null;
+
+		// Create some test departures.
+		self::$departure_ids = self::factory()->post->create_many(
+			15,
+			[
+				'post_type'   => DEPARTURE_POST_TYPE,
+				'post_status' => 'publish',
+				'post_parent' => $post instanceof WP_Post ? $post->ID : null,
+			]
+		);
+
+		// Loop through the departures and set meta.
+		foreach ( self::$departure_ids as $departure_id ) {
+			update_post_meta( absint( $departure_id ), 'departure_unique_id', rand_str( 10 ) );
+		}
 	}
 
 	/**
@@ -75,6 +97,17 @@ class Test_Itinerary extends WP_UnitTestCase {
 
 		// Delete the test itinerary post.
 		wp_delete_post( self::$itinerary_post->ID, true );
+
+		// Delete the test departures.
+		foreach ( self::$departure_ids as $departure_id ) {
+			wp_delete_post( absint( $departure_id ), true );
+		}
+
+		// Reset the itinerary post.
+		self::$itinerary_post = null;
+
+		// Reset the departure ids.
+		self::$departure_ids = [];
 	}
 
 	/**
@@ -238,8 +271,43 @@ class Test_Itinerary extends WP_UnitTestCase {
 		$this->assertTrue( $departure_post instanceof WP_Post );
 
 		// Test post is correct.
-		if ( $departure_post instanceof WP_Post ) {
-			$this->assertEquals( DEPARTURE_POST_TYPE, $departure_post->post_type );
+		$this->assertEquals( DEPARTURE_POST_TYPE, $departure_post->post_type );
+	}
+
+	/**
+	 * Test load_departures.
+	 *
+	 * @covers \Quark\Softrip\Itinerary::load_departures()
+	 *
+	 * @return void
+	 */
+	public function test_load_departures(): void {
+		// Get post.
+		$post = self::$itinerary_post;
+
+		// Test if is a post.
+		if ( ! $post instanceof WP_Post ) {
+			return;
 		}
+
+		// Create a new itinerary.
+		$itinerary = new Itinerary( $post->ID );
+
+		// Get departures.
+		$departures = $itinerary->get_departures();
+
+		// assert departures.
+		$this->assertIsArray( $departures );
+		$this->assertCount( 15, $departures );
+
+		// Pick random departure from array.
+		$random_departure_id = self::$departure_ids[ array_rand( self::$departure_ids ) ];
+
+		// Get departure unique id.
+		$departure_unique_id = get_post_meta( absint( $random_departure_id ), 'departure_unique_id', true );
+		$random_departure    = $itinerary->get_departure( strval( $departure_unique_id ) );
+
+		// Test if departure is correct.
+		$this->assertEquals( $random_departure->get_id(), $random_departure_id );
 	}
 }

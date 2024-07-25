@@ -110,4 +110,21 @@ class Test_Softrip extends WP_UnitTestCase {
 		$this->assertArrayHasKey( 'occupancy_prices', $tables );
 		$this->assertArrayHasKey( 'promos', $tables );
 	}
+
+	/**
+	 * Test for cron_add_schedule.
+	 *
+	 * @covers \Quark\Softrip\cron_add_schedule
+	 *
+	 * @return void
+	 */
+	public function test_cron_add_schedule(): void {
+		// Get the schedules.
+		$schedules = cron_add_schedule( [] );
+
+		// Check the result.
+		$this->assertNotEmpty( $schedules );
+		$this->assertArrayHasKey( SCHEDULE_RECCURANCE, $schedules );
+		$this->assertArrayHasKey( 'qrk_softrip_4_hourly', $schedules );
+	}
 }
