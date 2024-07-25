@@ -20,7 +20,7 @@
 				@endif
 				@if( $show_description )
 					<x-info-cards.description>
-						{{ $adventure_option['description'] ?? '' }}
+						<x-content :content="$adventure_option['description'] ?? ''" />
 					</x-info-cards.description>
 				@endif
 			</x-info-cards.content>
