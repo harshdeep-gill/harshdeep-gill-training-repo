@@ -85,12 +85,18 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 			<Section className={ classnames( className ) }>
 				{
 					allOptionsSelected ? (
-						<Placeholder icon="layout" label={ __( 'Ships', 'qrk' ) }>
-							<p>{ __( 'Ships will be displayed here.', 'qrk' ) }</p>
-						</Placeholder>
+						<>
+							<Placeholder icon="layout" label={ __( 'Ships', 'qrk' ) }>
+								<p>{ __( 'Following ships will be displayed', 'qrk' ) }</p>
+							</Placeholder>
+							<ServerSideRender
+								block={ name }
+								attributes={ attributes }
+							/>
+						</>
 					) : (
 						<Placeholder icon="layout" label={ __( 'Ships', 'qrk' ) }>
-							<p>{ __( 'Ships will be displayed here.', 'qrk' ) }</p>
+							<p>{ __( 'Select a way to display the ships.', 'qrk' ) }</p>
 						</Placeholder>
 					)
 				}

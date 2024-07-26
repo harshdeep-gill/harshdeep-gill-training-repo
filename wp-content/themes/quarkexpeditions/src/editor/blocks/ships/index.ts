@@ -7,6 +7,15 @@ import {
 } from '@wordpress/blocks';
 
 /**
+ * Styles.
+ */
+import '../../../front-end/components/tabs/style.scss';
+import '../../../front-end/components/section/style.scss';
+import '../../../front-end/components/drawer/style.scss';
+import '../../../front-end/components/media-detail-cards/style.scss';
+import '../../../front-end/components/media-description-cards/style.scss';
+
+/**
  * Internal dependencies.
  */
 import metadata from './block.json';
