@@ -238,21 +238,21 @@ function get_cabin_options( array $cabin_options_ids = [] ): array {
 	
 	// Loop through the cabin options IDs.
 	foreach( $cabin_options_ids as $cabin_option_id ) {
-		$cabin_option = get_cabin_categories( $cabin_option_id );
+		$cabin_option_data = get_cabin_categories( $cabin_option_id );
 
 		// Skip if no post.
-		if ( empty( $cabin_option ) ) {
+		if ( empty( $cabin_option_data ) ) {
 			continue;
 		}
 
 		// Get the post and post meta.
-		$cabin_option_post       = $cabin_option['post'];
-		$cabin_option_meta       = $cabin_option['post_meta'];
-		$cabin_option_taxonomies = $cabin_option['post_taxonomies'];
-		$cabin_option_thumbnail  = $cabin_option['post_thumbnail'];
+		$cabin_option_post       = $cabin_option_data['post'];
+		$cabin_option_meta       = $cabin_option_data['post_meta'];
+		$cabin_option_taxonomies = $cabin_option_data['post_taxonomies'];
+		$cabin_option_thumbnail  = $cabin_option_data['post_thumbnail'];
 
 		// Prepare cabin option data.
-		$cabin_options[] = [
+		$cabin_option = [
 			'id'          => $cabin_option_post->post_name ?? '',
 			'title'       => $cabin_option_meta['cabin_name'] ?? '',
 			'image_id'    => $cabin_option_thumbnail ?? 0,
@@ -261,7 +261,7 @@ function get_cabin_options( array $cabin_options_ids = [] ): array {
 
 		// Add size range if available.
 		if ( ! empty( $cabin_option_meta['cabin_category_size_range_from'] ) || ! empty( $cabin_option_meta['cabin_category_size_range_to'] ) ) {
-			$cabin_options['details'][] = [
+			$cabin_option['details'][] = [
 				'label' => __( 'Size', 'qrk' ),
 				'value' => $cabin_option_meta['cabin_category_size_range_from'] === $cabin_option_meta['cabin_category_size_range_to']
 					? $cabin_option_meta['cabin_category_size_range_from']
@@ -271,7 +271,7 @@ function get_cabin_options( array $cabin_options_ids = [] ): array {
 
 		// Add occupancy range if available.
 		if ( ! empty( $cabin_option_meta['cabin_occupancy_pax_range_from'] ) || ! empty( $cabin_option_meta['cabin_occupancy_pax_range_to'] ) ) {
-			$cabin_options['details'][] = [
+			$cabin_option['details'][] = [
 				'label' => __( 'Occupancy', 'qrk' ),
 				'value' => $cabin_option_meta['cabin_occupancy_pax_range_from'] === $cabin_option_meta['cabin_occupancy_pax_range_to']
 					? $cabin_option_meta['cabin_occupancy_pax_range_from']
@@ -281,7 +281,7 @@ function get_cabin_options( array $cabin_options_ids = [] ): array {
 
 		// Add bed configuration if available.
 		if ( ! empty( $cabin_option_meta['cabin_bed_configuration'] ) ) {
-			$cabin_options['details'][] = [
+			$cabin_option['details'][] = [
 				'label' => __( 'Bed Config.', 'qrk' ),
 				'value' => apply_filters( 'the_content', $cabin_option_meta['cabin_bed_configuration'] ),
 			];
@@ -289,7 +289,7 @@ function get_cabin_options( array $cabin_options_ids = [] ): array {
 
 		// Add Class if available.
 		if ( ! empty( $cabin_option_taxonomies['qrk_cabin_class'][0]['name'] ) ) {
-			$cabin_options['details'][] = [
+			$cabin_option['details'][] = [
 				'label' => __( 'Class', 'qrk' ),
 				'value' => $cabin_option_taxonomies['qrk_cabin_class'][0]['name'],
 			];
@@ -321,11 +321,14 @@ function get_cabin_options( array $cabin_options_ids = [] ): array {
 			$cabin_locations = implode( ', ', $locations );
 
 			// Add location to details.
-			$cabin_options['details'][] = [
+			$cabin_option['details'][] = [
 				'label' => __( 'Location', 'qrk' ),
 				'value' => $cabin_locations,
 			];
 		}
+
+		// Append the cabin option to the cabin options.
+		$cabin_options[] = $cabin_option;
 	}
 
 	// Return cabin options data.
