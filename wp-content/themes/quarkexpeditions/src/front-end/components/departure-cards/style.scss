@@ -1,0 +1,14 @@
+/**
+ * Departure Cards.
+ */
+@import "../../scss";
+
+.departure-cards {
+
+	&__card {
+		border-radius: var(--border-radius-large);
+		box-shadow: var(--shadow-1);
+		padding: var(--spacing-5);
+	}
+
+}
