@@ -3772,8 +3772,8 @@
 					</x-product-options-cards.discounts>
 					<x-product-options-cards.cta-buttons>
 						<p>Not ready to book? <a>Request a Quote</a></p>
-						<x-button>Request a Callback</x-button>
-						<x-button>Book Expedition Now</x-button>
+						<x-button size="big" color="black">Request a Callback</x-button>
+						<x-button size="big">Book Expedition Now</x-button>
 					</x-product-options-cards.cta-buttons>
 				</x-product-options-cards.card-details>
 				<x-product-options-cards.card-details id="some-random-id-2">
@@ -3788,7 +3788,7 @@
 					<x-product-options-cards.rooms title="Select Rooms">
 						<x-product-options-cards.room>
 							<x-product-options-cards.room-title-container>
-								<x-product-options-cards.room-title title="Single Room" no_of_guests="1" />
+								<x-product-options-cards.room-title title="Single Room" no_of_guests="3" />
 								<x-product-options-cards.room-subtitle subtitle="Price of the cabin for one guest" />
 							</x-product-options-cards.room-title-container>
 							<x-product-options-cards.room-prices
@@ -3802,8 +3802,8 @@
 					</x-product-options-cards.discounts>
 					<x-product-options-cards.cta-buttons>
 						<p>Not ready to book? <a>Request a Quote</a></p>
-						<x-button>Request a Callback</x-button>
-						<x-button>Book Expedition Now</x-button>
+						<x-button size="big" color="black">Request a Callback</x-button>
+						<x-button size="big">Book Expedition Now</x-button>
 					</x-product-options-cards.cta-buttons>
 				</x-product-options-cards.card-details>
 				<x-product-options-cards.card-details id="some-random-id-3">
@@ -3832,8 +3832,8 @@
 					</x-product-options-cards.discounts>
 					<x-product-options-cards.cta-buttons>
 						<p>Not ready to book? <a>Request a Quote</a></p>
-						<x-button>Request a Callback</x-button>
-						<x-button>Book Expedition Now</x-button>
+						<x-button size="big" color="black">Request a Callback</x-button>
+						<x-button size="big">Book Expedition Now</x-button>
 					</x-product-options-cards.cta-buttons>
 				</x-product-options-cards.card-details>
 			</x-product-options-cards.more-details>

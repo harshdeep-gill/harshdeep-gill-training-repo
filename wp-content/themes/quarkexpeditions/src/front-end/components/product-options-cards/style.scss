@@ -150,6 +150,8 @@
 
 		&-original {
 			justify-self: end;
+			color: var(--color-gray-60);
+			text-decoration-line: line-through;
 		}
 	}
 
@@ -285,6 +287,80 @@
 
 		> p:first-of-type {
 			display: inline;
+		}
+	}
+
+	&__rooms {
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-6);
+	}
+
+	&__room {
+		display: flex;
+		justify-content: space-between;
+		gap: var(--spacing-6);
+		flex-wrap: wrap;
+	}
+
+	&__room-prices {
+		display: contents;
+
+		@media screen and (min-width: grid-size(md)) {
+			display: flex;
+			gap: var(--spacing-5);
+
+			&-selector {
+				min-width: 150px;
+			}
+		}
+
+		&-info {
+			min-width: 120px;
+		}
+
+		&-discounted {
+			color: var(--color-success-100);
+			font-weight: var(--font-weight-bold);
+		}
+
+		&-original {
+			color: var(--color-gray-60);
+			text-decoration-line: line-through;
+		}
+	}
+
+	&__room-title {
+		font-weight: var(--font-weight-bold);
+	}
+
+	&__discounts-container {
+		display: flex;
+		gap: var(--spacing-5);
+		flex-wrap: wrap;
+	}
+
+	&__discount {
+		padding: var(--spacing-2) var(--spacing-3);
+		background-color: var(--color-success-10);
+		color: var(--color-success-100);
+		border-radius: var(--border-radius);
+		min-width: fit-content;
+	}
+
+	&__discounts {
+		border-bottom: 1px solid var(--color-gray-20);
+		padding-bottom: var(--spacing-5);
+	}
+
+	&__cta-buttons {
+		display: flex;
+		gap: var(--spacing-4);
+		flex-wrap: wrap-reverse;
+		justify-content: flex-end;
+
+		> p {
+			margin-bottom: 0;
 		}
 	}
 }
