@@ -363,4 +363,16 @@
 			margin-bottom: 0;
 		}
 	}
+
+	&__tooltip {
+		display: flex;
+		gap: var(--spacing-1);
+
+		.tooltip__icon {
+
+			path {
+				fill: var(--color-gray-40);
+			}
+		}
+	}
 }
