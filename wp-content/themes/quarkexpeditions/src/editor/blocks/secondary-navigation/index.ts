@@ -1,14 +1,14 @@
 /**
  * WordPress dependencies.
  */
-import { BlockConfiguration, registerBlockType } from "@wordpress/blocks";
+import { BlockConfiguration, registerBlockType } from '@wordpress/blocks';
 
 /**
  * Internal dependencies.
  */
-import metadata from "./block.json";
-import edit from "./edit";
-import save from "./save";
+import metadata from './block.json';
+import edit from './edit';
+import save from './save';
 
 /**
  * Styles.
@@ -24,25 +24,25 @@ export const { name }: { name: string } = metadata;
  * Block configuration settings.
  */
 export const settings: BlockConfiguration = {
-    ...metadata,
-    edit,
-    save,
-}
+	...metadata,
+	edit,
+	save,
+};
 
 /**
  * Children.
  */
-import * as secondaryNavigationItem from "./children/secondary-navigation-item";
-import * as secondaryNavigationMenu from "./children/secondary-navigation-menu";
+import * as secondaryNavigationItem from './children/secondary-navigation-item';
+import * as secondaryNavigationMenu from './children/secondary-navigation-menu';
 
 /**
  * Initialization.
  */
 export const init = (): void => {
-    // Register block.
-    registerBlockType( name, settings );
+	// Register block.
+	registerBlockType( name, settings );
 
-    // Register children.
-    registerBlockType( secondaryNavigationItem.name, secondaryNavigationItem.settings );
-    registerBlockType( secondaryNavigationMenu.name, secondaryNavigationMenu.settings );
-}
+	// Register children.
+	registerBlockType( secondaryNavigationItem.name, secondaryNavigationItem.settings );
+	registerBlockType( secondaryNavigationMenu.name, secondaryNavigationMenu.settings );
+};
