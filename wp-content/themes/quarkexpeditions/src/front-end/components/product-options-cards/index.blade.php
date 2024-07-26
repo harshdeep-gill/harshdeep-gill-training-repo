@@ -14,6 +14,6 @@
 	}
 @endphp
 
-<div @class( $classes )>
+<quark-product-options-cards @class( $classes )>
 	{!! $slot !!}
-</div>
+</quark-product-options-cards>

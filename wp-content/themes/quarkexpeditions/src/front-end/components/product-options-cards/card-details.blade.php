@@ -18,6 +18,7 @@
 <div
 	@class( $classes )
 	id="{!! esc_attr( $id ) !!}"
+	data-hidden="yes"
 >
 	{!! $slot !!}
 </div>
