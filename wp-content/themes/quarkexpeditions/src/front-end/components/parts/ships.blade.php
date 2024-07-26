@@ -56,8 +56,7 @@
 											@endif
 											<x-content :content="$deck['description'] ?? ''" />
 											@if ( ! empty( $deck['cabin_options'] ) )
-												<h3>{{ __( 'Cabin Options', 'qrk' ) }}</h3>
-												<x-media-detail-cards>
+												<x-media-detail-cards :condensed="true" title="{{ __( 'Cabin Options', 'qrk' ) }}">
 													@foreach ( $deck['cabin_options'] as $cabin_option )
 														<x-media-detail-cards.card>
 															@if ( ! empty( $cabin_option['image_id'] ) )
@@ -81,7 +80,7 @@
 												</x-media-detail-cards>
 											@endif
 											@if ( ! empty( $deck['public_spaces'] ) )
-												<h3>{{ __( 'Public Spaces & Amenities', 'qrk' ) }}</h3>
+												<h4>{{ __( 'Public Spaces & Amenities', 'qrk' ) }}</h4>
 												<x-media-description-cards :desktop_carousel="true">
 													@foreach ( $deck['public_spaces'] as $public_spaces )
 														<x-media-description-cards.card>
