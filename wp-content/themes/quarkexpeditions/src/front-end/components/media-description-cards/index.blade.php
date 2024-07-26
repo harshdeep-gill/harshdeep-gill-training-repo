@@ -1,6 +1,17 @@
+@props( [
+	'desktop_carousel' => false,
+] )
 @php
 	if ( empty( $slot ) ) {
 		return;
+	}
+
+	$classes= [
+		'media-description-cards',
+	];
+
+	if ( true === $desktop_carousel ) {
+		$classes[] = 'media-description-cards--desktop-carousel';
 	}
 
 	// TP Slider.
@@ -9,7 +20,7 @@
 @endphp
 
 <x-section>
-	<div class="media-description-cards">
+	<div @class( $classes )>
 		<x-media-description-cards.carousel>
 			{!! $slot !!}
 		</x-media-description-cards.carousel>

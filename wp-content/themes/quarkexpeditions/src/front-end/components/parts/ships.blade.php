@@ -82,7 +82,7 @@
 											@endif
 											@if ( ! empty( $deck['public_spaces'] ) )
 												<h3>{{ __( 'Public Spaces & Amenities', 'qrk' ) }}</h3>
-												<x-media-description-cards>
+												<x-media-description-cards :desktop_carousel="true">
 													@foreach ( $deck['public_spaces'] as $public_spaces )
 														<x-media-description-cards.card>
 															<x-media-description-cards.image :image_id="$public_spaces['image']" :alt="$public_spaces['title'] ?? ''" />
