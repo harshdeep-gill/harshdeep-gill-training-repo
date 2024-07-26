@@ -24,7 +24,7 @@
 		#{$self}__gallery {
 			position: relative;
 
-			&:hover &-arrow-button {
+			&:hover #{$self}__gallery-arrow-button {
 				display: flex;
 			}
 
@@ -43,18 +43,8 @@
 
 			&-arrow-button {
 				display: none;
-				justify-content: center;
-				align-items: center;
-				width: 27px;
-				height: 27px;
-				background-color: var(--color-black);
-				border-radius: 50%;
-				position: absolute;
-				top: 50%;
-				translate: 0 -50%;
 
 				&--right {
-					rotate: 180deg;
 					right: var(--spacing-5);
 				}
 
@@ -189,7 +179,8 @@
 		gap: var(--spacing-5);
 	}
 
-	&__arrow-button {
+	&__arrow-button,
+	&__gallery-arrow-button {
 		display: inline-flex;
 		justify-content: center;
 		align-items: center;
@@ -203,11 +194,67 @@
 		}
 	}
 
+	&__gallery-arrow-button {
+		position: absolute;
+		top: 50%;
+		translate: 0 -50%;
+	}
+
 	&__card-details {
 		padding-top: var(--spacing-8);
 		display: flex;
 		flex-direction: column;
 		gap: var(--spacing-6);
+
+		#{$self}__gallery {
+
+			&-slides {
+				gap: var(--spacing-4);
+			}
+
+			&-slider {
+				position: relative;
+			}
+
+			--card-details-gallery-slide-max-width: 100%;
+
+			@media screen and (min-width: grid-size(sm)) {
+				--card-details-gallery-slide-max-width: 511px;
+			}
+
+			@media screen and (min-width: grid-size(md)) {
+				--card-details-gallery-slide-max-width: 660px;
+			}
+
+			@media screen and (min-width: grid-size(lg)) {
+				--card-details-gallery-slide-max-width: 928px;
+			}
+
+			&-slide {
+				overflow: hidden;
+				max-width: var(--card-details-gallery-slide-max-width);
+
+				@media screen and (min-width: grid-size(sm)) {
+					border-radius: var(--border-radius-large);
+				}
+			}
+
+			&-track {
+				margin-inline: calc((100% - var(--card-details-gallery-slide-max-width)) / 2);
+				overflow: visible;
+			}
+
+			&-arrow-button {
+
+				&--right {
+					right: calc((100% - var(--card-details-gallery-slide-max-width)) / 2);
+				}
+
+				&--left {
+					left: calc((100% - var(--card-details-gallery-slide-max-width)) / 2);
+				}
+			}
+		}
 	}
 
 	&__card-details-title {

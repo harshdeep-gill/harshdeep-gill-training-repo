@@ -15,6 +15,10 @@
 		$classes[] = $class;
 	}
 
+	if ( ! empty( $full_size ) ) {
+		$classes[] = 'full-width';
+	}
+
 	$image_args = [
 		'size' => [
 			'width'  => 400,
@@ -28,13 +32,13 @@
 
 	if ( ! empty( $full_size ) ) {
 		$image_args['size'] = [
-			'width'  => 1056,
+			'width'  => 928,
 			'height' => 480,
 		];
 
 		$image_args['responsive'] = [
-			'sizes'  => [ '(min-width: 1024px) 1056px', '(min-width: 768px) 768px', '600px' ],
-			'widths' => [ 600, 768, 1056 ],
+			'sizes'  => [ '(min-width: 1024px) 928px', '(min-width: 768px) 660px', '520px' ],
+			'widths' => [ 520, 660, 1056 ],
 		];
 	}
 

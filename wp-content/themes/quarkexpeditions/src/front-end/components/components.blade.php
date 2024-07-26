@@ -3751,10 +3751,10 @@
 					<x-product-options-cards.description>
 						<p>These suites are perfect for people traveling together or solo guests looking to share with like-minded individuals. This suite maximizes interior living space while still offering guests the opportunity to stay connected to the outdoors.</p>
 					</x-product-options-cards.description>
-					<x-product-options-cards.gallery :image_ids="[ 32, 34, 36]" :full_size="true" />
 					<x-product-options-cards.features title="Features and Standard Amenities: ">
 						<p>one double or two single beds, sitting area with sofa bed, picture window, desk, refrigerator, TV, private bathroom with shower and heated floors, hair dryer, bathrobe, slippers, shampoo, conditioner, shower gel, complimentary water bottle.</p>
 					</x-product-options-cards.features>
+					<x-product-options-cards.gallery :image_ids="[ 32, 34, 36]" :full_size="true" />
 					<x-product-options-cards.rooms title="Select Rooms">
 						<x-product-options-cards.room>
 							<x-product-options-cards.room-title-container>
@@ -3781,10 +3781,10 @@
 					<x-product-options-cards.description>
 						<p>These suites are perfect for people traveling together or solo guests looking to share with like-minded individuals. This suite maximizes interior living space while still offering guests the opportunity to stay connected to the outdoors.</p>
 					</x-product-options-cards.description>
-					<x-product-options-cards.gallery :image_ids="[ 32, 34, 36]" :full_size="true" />
 					<x-product-options-cards.features title="Features and Standard Amenities: ">
 						<p>one double or two single beds, sitting area with sofa bed, picture window, desk, refrigerator, TV, private bathroom with shower and heated floors, hair dryer, bathrobe, slippers, shampoo, conditioner, shower gel, complimentary water bottle.</p>
 					</x-product-options-cards.features>
+					<x-product-options-cards.gallery :image_ids="[ 32, 34, 36]" :full_size="true" />
 					<x-product-options-cards.rooms title="Select Rooms">
 						<x-product-options-cards.room>
 							<x-product-options-cards.room-title-container>
@@ -3811,10 +3811,10 @@
 					<x-product-options-cards.description>
 						<p>These suites are perfect for people traveling together or solo guests looking to share with like-minded individuals. This suite maximizes interior living space while still offering guests the opportunity to stay connected to the outdoors.</p>
 					</x-product-options-cards.description>
-					<x-product-options-cards.gallery :image_ids="[ 32, 34, 36]" :full_size="true" />
 					<x-product-options-cards.features title="Features and Standard Amenities: ">
 						<p>one double or two single beds, sitting area with sofa bed, picture window, desk, refrigerator, TV, private bathroom with shower and heated floors, hair dryer, bathrobe, slippers, shampoo, conditioner, shower gel, complimentary water bottle.</p>
 					</x-product-options-cards.features>
+					<x-product-options-cards.gallery :image_ids="[ 32, 34, 36]" :full_size="true" />
 					<x-product-options-cards.rooms title="Select Rooms">
 						<x-product-options-cards.room>
 							<x-product-options-cards.room-title-container>
