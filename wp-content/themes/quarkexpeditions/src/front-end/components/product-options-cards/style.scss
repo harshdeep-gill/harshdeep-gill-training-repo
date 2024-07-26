@@ -244,14 +244,24 @@
 				overflow: visible;
 			}
 
+			--arrow-lateral-inset: calc((100% - var(--card-details-gallery-slide-max-width)) / 2 + var(--spacing-3));
+
+			@media screen and (min-width: grid-size(sm)) {
+				--arrow-lateral-inset: calc((100% - var(--card-details-gallery-slide-max-width)) / 2 - var(--spacing-5));
+			}
+
+			@media screen and (min-width: grid-size(md)) {
+				--arrow-lateral-inset: calc((100% - var(--card-details-gallery-slide-max-width)) / 2 - var(--spacing-7));
+			}
+
 			&-arrow-button {
 
 				&--right {
-					right: calc((100% - var(--card-details-gallery-slide-max-width)) / 2);
+					right: var(--arrow-lateral-inset);
 				}
 
 				&--left {
-					left: calc((100% - var(--card-details-gallery-slide-max-width)) / 2);
+					left: var(--arrow-lateral-inset);
 				}
 			}
 		}
