@@ -33,6 +33,10 @@ function bootstrap(): void {
 
 	// Register our sync hook.
 	add_action( SCHEDULE_HOOK, __NAMESPACE__ . '\\do_sync' );
+	add_action( SCHEDULE_HOOK, __NAMESPACE__ . '\\cron_do_sync' );
+
+	// Register Stream log connector.
+	add_filter( 'wp_stream_connectors', __NAMESPACE__ . 'register_stream_connector' );
 }
 
 /**
@@ -148,4 +152,22 @@ function do_sync(): void {
 			$sync->sync_softrip_code( $softrip_id, $departures );
 		}
 	}
+}
+
+/**
+ * Register custom stream connectors for Softrip sync.
+ *
+ * @param array<string, mixed> $connectors Connectors.
+ *
+ * @return array<string, mixed>
+ */
+function setup_stream_connectors( array $connectors = [] ): array {
+	// Load Stream connector file.
+	require_once __DIR__ . '/class-stream-connector.php';
+
+	// Add our connector.
+	$connectors['quark_softrip_sync'] = new Stream_Connector();
+
+	// Return the connectors.
+	return $connectors;
 }
