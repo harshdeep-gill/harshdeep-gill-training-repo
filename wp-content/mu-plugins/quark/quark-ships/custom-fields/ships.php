@@ -20,7 +20,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 					'name'              => 'ship_id',
 					'aria-label'        => '',
 					'type'              => 'text',
-					'instructions'      => 'Enter this ship\'s Neptune API ID',
+					'instructions'      => 'Enter this ship\'s Softrip API ID',
 					'required'          => 1,
 					'conditional_logic' => 0,
 					'wrapper'           => [
