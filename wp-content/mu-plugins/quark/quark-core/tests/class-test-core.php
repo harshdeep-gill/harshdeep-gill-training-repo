@@ -126,4 +126,26 @@ class Test_Core extends WP_UnitTestCase {
 			get_registered_nav_menus()
 		);
 	}
+
+	/**
+	 * Test doing automated tests.
+	 *
+	 * @covers \Quark\Core\doing_automated_test()
+	 *
+	 * @return void
+	 */
+	public function test_doing_automated_test(): void {
+		// Test default state.
+		$this->assertFalse( doing_automated_test() );
+
+		// Define config.
+		$_SERVER['HTTP_USER_AGENT'] = 'TEST_USER_AGENT';
+		define( 'QUARK_AUTOMATED_TEST_USER_AGENT', 'TEST_USER_AGENT' );
+
+		// Test user agent.
+		$this->assertTrue( doing_automated_test() );
+
+		// Clean up.
+		$_SERVER['HTTP_USER_AGENT'] = '';
+	}
 }

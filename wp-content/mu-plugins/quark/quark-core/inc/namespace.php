@@ -336,3 +336,25 @@ function get_visitor_geo_country(): string {
 	// Return geolocation.
 	return $geolocation;
 }
+
+/**
+ * Check if we are currently in an automated test.
+ *
+ * @return bool
+ */
+function doing_automated_test(): bool {
+	// Get automated test User Agent.
+	if ( defined( 'QUARK_AUTOMATED_TEST_USER_AGENT' ) && ! empty( QUARK_AUTOMATED_TEST_USER_AGENT ) ) {
+		$test_user_agent = QUARK_AUTOMATED_TEST_USER_AGENT;
+	} else {
+		$test_user_agent = '';
+	}
+
+	// Check if we have this option, and if it's the same as the current User Agent.
+	if ( ! empty( $test_user_agent ) && ! empty( $_SERVER['HTTP_USER_AGENT'] ) && $test_user_agent === $_SERVER['HTTP_USER_AGENT'] ) {
+		return true;
+	}
+
+	// Nope, user agent does not match, not an automated test.
+	return false;
+}
