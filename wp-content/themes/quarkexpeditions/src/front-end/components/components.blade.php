@@ -2076,28 +2076,22 @@
 						duration="11"
 						from_price="$ X,XXX USD"
 					/>
-					<x-expedition-details.title title="Crossing the Circle" />
-					<x-expedition-details.tags
-						:tags="[
-							'Drake Passage',
-							'South Shetland Islands',
-							'Antarctic Peninsula',
-							'Antarctic Circle'
-						]"
-					/>
+					<x-expedition-details.title title="Crossing the Circle"/>
+					<x-expedition-details.tags>
+						<x-expedition-details.tag title="Drake Passage"/>
+						<x-expedition-details.tag title="South Shetland Islands"/>
+						<x-expedition-details.tag title="Antarctic Peninsula"/>
+						<x-expedition-details.tag title="Antarctic Circle"/>
+					</x-expedition-details.tags>
 					<x-expedition-details.row>
-						<x-expedition-details.starting-from
-							:starting_from="[
-								'Buenos Aires/Ushuaia',
-								'Argentina',
-							]"
-						/>
-						<x-expedition-details.ships
-							:ships="[
-								'Ocean Explorer',
-								'Ultramarine',
-							]"
-						/>
+						<x-expedition-details.starting-from>
+							<x-expedition-details.starting-from-item title="Buenos Aires/Ushuaia" />
+							<x-expedition-details.starting-from-item title="Argentina" />
+						</x-expedition-details.starting-from>
+						<x-expedition-details.ships>
+							<x-expedition-details.ship title="Ocean Explorer"/>
+							<x-expedition-details.ship title="Ultramarine"/>
+						</x-expedition-details.ships>
 					</x-expedition-details.row>
 
 					<x-expedition-details.row>
@@ -2124,38 +2118,32 @@
 		</x-two-columns>
 	</x-section>
 
-		<x-section full_width="true" seamless="true" background="true" background_color="black">
-			<x-two-columns :border="false">
-				<x-two-columns.column>
-					<x-expedition-details appearance="dark">
-						<x-expedition-details.overline
-							region="Antarctic"
-							duration="11"
-							from_price="$ X,XXX USD"
-						/>
-						<x-expedition-details.title title="Crossing the Circle" />
-						<x-expedition-details.tags
-							:tags="[
-								'Drake Passage',
-								'South Shetland Islands',
-								'Antarctic Peninsula',
-								'Antarctic Circle'
-							]"
-						/>
-						<x-expedition-details.row>
-							<x-expedition-details.starting-from
-								:starting_from="[
-									'Buenos Aires/Ushuaia',
-									'Argentina',
-								]"
-							/>
-							<x-expedition-details.ships
-								:ships="[
-									'Ocean Explorer',
-									'Ultramarine',
-								]"
-							/>
-						</x-expedition-details.row>
+	<x-section full_width="true" seamless="true" background="true" background_color="black">
+		<x-two-columns :border="false">
+			<x-two-columns.column>
+				<x-expedition-details appearance="dark">
+					<x-expedition-details.overline
+						region="Antarctic"
+						duration="11"
+						from_price="$ X,XXX USD"
+					/>
+					<x-expedition-details.title title="Crossing the Circle"/>
+					<x-expedition-details.tags>
+						<x-expedition-details.tag title="Drake Passage"/>
+						<x-expedition-details.tag title="South Shetland Islands"/>
+						<x-expedition-details.tag title="Antarctic Peninsula"/>
+						<x-expedition-details.tag title="Antarctic Circle"/>
+					</x-expedition-details.tags>
+					<x-expedition-details.row>
+						<x-expedition-details.starting-from>
+							<x-expedition-details.starting-from-item title="Buenos Aires/Ushuaia" url="" />
+							<x-expedition-details.starting-from-item title="Argentina" url="" />
+						</x-expedition-details.starting-from>
+						<x-expedition-details.ships>
+							<x-expedition-details.ship title="Ocean Explorer"/>
+							<x-expedition-details.ship title="Ultramarine"/>
+						</x-expedition-details.ships>
+					</x-expedition-details.row>
 
 					<x-expedition-details.row>
 						<x-expedition-details.departures
