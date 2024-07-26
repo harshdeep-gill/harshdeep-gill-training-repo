@@ -8,13 +8,22 @@
 namespace Quark\Expeditions;
 
 use WP_Post;
+use WP_Term;
 use WP_REST_Response;
 use WP_Taxonomy;
 use WP_REST_Request;
+use Quark\Softrip\Itinerary;
+
+use function Quark\Itineraries\get as get_itinerary;
+use function Quark\Departures\get as get_departure;
+use function Quark\Core\format_price;
+
+use const Quark\Itineraries\DEPARTURE_LOCATION_TAXONOMY;
 
 const POST_TYPE                    = 'qrk_expedition';
 const DESTINATION_TAXONOMY         = 'qrk_destination';
 const EXPEDITION_CATEGORY_TAXONOMY = 'qrk_expedition_category';
+const EXPEDITION_TAG_TAXONOMY      = 'qrk_expedition_tag';
 const EXCURSION_TAXONOMY           = 'qrk_excursion';
 const CACHE_KEY                    = POST_TYPE;
 const CACHE_GROUP                  = POST_TYPE;
@@ -29,17 +38,24 @@ function bootstrap(): void {
 	add_action( 'init', __NAMESPACE__ . '\\register_expedition_post_type' );
 	add_action( 'init', __NAMESPACE__ . '\\register_destination_taxonomy' );
 	add_action( 'init', __NAMESPACE__ . '\\register_expedition_category_taxonomy' );
+	add_action( 'init', __NAMESPACE__ . '\\register_expedition_tag_taxonomy' );
 	add_action( 'init', __NAMESPACE__ . '\\register_excursion_taxonomy' );
 
 	// Opt into stuff.
 	add_filter( 'qe_adventure_options_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
 	add_filter( 'qe_destination_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
 	add_filter( 'qe_expedition_category_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
+	add_filter( 'qe_expedition_tag_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
 	add_filter( 'qe_excursion_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
 	add_filter( 'rest_prepare_taxonomy', __NAMESPACE__ . '\\hide_excursion_metabox', 10, 3 );
 
 	// Other hooks.
 	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
+
+	// Bust cache for details data.
+	add_action( 'qe_expedition_post_cache_busted', __NAMESPACE__ . '\\bust_details_cache' );
+	add_action( 'qe_itinerary_post_cache_busted', __NAMESPACE__ . '\\bust_details_cache_on_itinerary_update', 1 );
+	add_action( 'qe_departure_post_cache_busted', __NAMESPACE__ . '\\bust_details_cache_on_departure_update', 1 );
 
 	// Admin stuff.
 	if ( is_admin() ) {
@@ -189,6 +205,50 @@ function register_expedition_category_taxonomy(): void {
 }
 
 /**
+ * Register Expedition tag taxonomy.
+ *
+ * @return void
+ */
+function register_expedition_tag_taxonomy(): void {
+	// Prepare labels.
+	$labels = [
+		'name'                       => 'Expedition Tags',
+		'singular_name'              => 'Expedition Tag',
+		'search_items'               => 'Search Expedition Tags',
+		'popular_items'              => 'Popular Expedition Tags',
+		'all_items'                  => 'All Expedition Tags',
+		'parent_item'                => 'Parent Expedition Tag',
+		'parent_item_colon'          => 'Parent Expedition Tag:',
+		'edit_item'                  => 'Edit Expedition Tag',
+		'update_item'                => 'Update Expedition Tag',
+		'add_new_item'               => 'Add New Expedition Tag',
+		'new_item_name'              => 'New Expedition Tag',
+		'separate_items_with_commas' => 'Separate Expedition Tags with commas',
+		'add_or_remove_items'        => 'Add or remove Expedition Tags',
+		'choose_from_most_used'      => 'Choose from the most used Expedition Tags',
+		'menu_name'                  => 'Expedition Tags',
+	];
+
+	// Prepare args for registering taxonomy.
+	$args = [
+		'labels'            => $labels,
+		'public'            => false,
+		'show_in_nav_menus' => true,
+		'show_ui'           => true,
+		'show_tagcloud'     => false,
+		'show_admin_column' => true,
+		'hierarchical'      => false,
+		'rewrite'           => false,
+		'query_var'         => true,
+		'capabilities'      => [],
+		'show_in_rest'      => true,
+	];
+
+	// Register taxonomy.
+	register_taxonomy( EXPEDITION_TAG_TAXONOMY, (array) apply_filters( 'qe_expedition_tag_taxonomy_post_types', [] ), $args );
+}
+
+/**
  * Register Departure Destinations taxonomy.
  *
  * @return void
@@ -305,14 +365,15 @@ function bust_post_cache( int $post_id = 0 ): void {
 }
 
 /**
- * Get a Departure.
+ * Get an Expedition.
  *
  * @param int $post_id Post ID.
  *
  * @return array{
  *     post: WP_Post|null,
  *     post_meta: mixed[],
- *     post_taxonomies: mixed[]
+ *     post_taxonomies: mixed[],
+ *     permalink: string,
  * }
  */
 function get( int $post_id = 0 ): array {
@@ -331,6 +392,7 @@ function get( int $post_id = 0 ): array {
 			'post'            => $cached_value['post'],
 			'post_meta'       => $cached_value['post_meta'] ?? [],
 			'post_taxonomies' => $cached_value['post_taxonomies'] ?? [],
+			'permalink'       => $cached_value['permalink'],
 		];
 	}
 
@@ -343,6 +405,7 @@ function get( int $post_id = 0 ): array {
 			'post'            => null,
 			'post_meta'       => [],
 			'post_taxonomies' => [],
+			'permalink'       => '',
 		];
 	}
 
@@ -351,6 +414,7 @@ function get( int $post_id = 0 ): array {
 		'post'            => $post,
 		'post_meta'       => [],
 		'post_taxonomies' => [],
+		'permalink'       => strval( get_permalink( $post ) ? : '' ),
 	];
 
 	// Get all post meta.
@@ -411,4 +475,737 @@ function get( int $post_id = 0 ): array {
 
 	// Return data.
 	return $data;
+}
+
+/**
+ * Get Region for the expedition.
+ *
+ * @param int $post_id Post ID.
+ *
+ * @return array{}| array{
+ *     array{
+ *         term_id: int,
+ *         name: string,
+ *         slug: string,
+ *         taxonomy: string,
+ *         description: string,
+ *         parent: int,
+ *         term_group: int,
+ *     }
+ * }
+ */
+function get_region_terms( int $post_id = 0 ): array {
+	// Get post.
+	$post   = get( $post_id );
+	$region = [];
+
+	// Check for post.
+	if ( empty( $post['post'] ) || ! $post['post'] instanceof WP_Post ) {
+		return $region;
+	}
+
+	// Get parent of qrk_destination taxonomy.
+	if (
+		array_key_exists( DESTINATION_TAXONOMY, $post['post_taxonomies'] )
+		&& is_array( $post['post_taxonomies'][ DESTINATION_TAXONOMY ] )
+	) {
+		// Loop through taxonomy and get all with no parent term name.
+		foreach ( $post['post_taxonomies'][ DESTINATION_TAXONOMY ] as $term ) {
+			if ( empty( $term['parent'] ) ) {
+				$region[] = $term;
+			}
+		}
+	}
+
+	// Return regions.
+	return $region;
+}
+
+/**
+ * Get Itineraries for the expedition.
+ *
+ * @param int $post_id Post ID.
+ *
+ * @return array{}| array{
+ *     array{
+ *      post: WP_Post|null,
+ *      post_meta: mixed[],
+ *      post_taxonomies: mixed[]
+ *  }
+ * }
+ */
+function get_itineraries( int $post_id = 0 ): array {
+	// Get post.
+	$post        = get( $post_id );
+	$itineraries = [];
+
+	// Check for post_meta.
+	if ( empty( $post['post_meta'] ) || ! is_array( $post['post_meta']['related_itineraries'] ) ) {
+		return $itineraries;
+	}
+
+	// Get Itineraries from related_itineraries post meta.
+	$itinerary_ids = $post['post_meta']['related_itineraries'];
+
+	// Check for Itinerary IDs.
+	foreach ( $itinerary_ids as $itinerary_id ) {
+		// Get Itinerary.
+		$itinerary = get_itinerary( absint( $itinerary_id ) );
+
+		// Check for Itinerary.
+		if ( empty( $itinerary['post'] ) || ! $itinerary['post'] instanceof WP_Post ) {
+			return $itineraries;
+		}
+
+		// Check Itinerary is published.
+		if ( 'publish' !== $itinerary['post']->post_status ) {
+			continue;
+		}
+
+		// Add Itinerary to array.
+		$itineraries[] = $itinerary;
+	}
+
+	// Return Itineraries.
+	return $itineraries;
+}
+
+/**
+ * Get Minimum Duration days for Expedition.
+ * From set Itineraries.
+ *
+ * @param int $post_id Post ID.
+ *
+ * @return int
+ */
+function get_minimum_duration( int $post_id = 0 ): int {
+	// Get post.
+	$post = get( $post_id );
+
+	// Minimum duration.
+	$minimum_duration = 0;
+
+	// Check for post.
+	if ( empty( $post['post'] ) || ! $post['post'] instanceof WP_Post ) {
+		return $minimum_duration;
+	}
+
+	// Get itineraries.
+	$itineraries = get_itineraries( $post_id );
+
+	// Check for itineraries.
+	if ( empty( $itineraries ) ) {
+		return $minimum_duration;
+	}
+
+	// Loop through itineraries and get minimum duration.
+	foreach ( $itineraries as $itinerary ) {
+		// Check for Itinerary.
+		if ( ! is_array( $itinerary ) || empty( $itinerary['post_meta'] ) ) {
+			continue;
+		}
+
+		// Get duration.
+		$duration = absint( $itinerary['post_meta']['duration_in_days'] );
+
+		// Check minimum duration.
+		if ( empty( $minimum_duration ) || $duration < $minimum_duration ) {
+			$minimum_duration = $duration;
+		}
+	}
+
+	// Return minimum duration.
+	return $minimum_duration;
+}
+
+/**
+ * Get Starting From Price for Expedition.
+ * From set Itineraries.
+ *
+ * @param int $post_id Post ID.
+ *
+ * @return int Price.
+ */
+function get_starting_from_price( int $post_id = 0 ): int {
+	// Get post.
+	$post = get( $post_id );
+
+	// Starting from price.
+	$starting_from_price = 0;
+
+	// Check for post.
+	if ( empty( $post['post'] ) || ! $post['post'] instanceof WP_Post ) {
+		return $starting_from_price;
+	}
+
+	// Get itineraries.
+	$itineraries = get_itineraries( $post_id );
+
+	// Check for itineraries.
+	if ( empty( $itineraries ) ) {
+		return $starting_from_price;
+	}
+
+	// Loop through itineraries and get minimum price.
+	foreach ( $itineraries as $itinerary ) {
+		// Check for Itinerary.
+		if (
+			! is_array( $itinerary )
+			|| empty( $itinerary['post'] )
+			|| ! $itinerary['post'] instanceof WP_Post
+		) {
+			continue;
+		}
+
+		// Get price.
+		$itinerary_object = new Itinerary( $itinerary['post']->ID );
+
+		// Get lowest price for Itinerary.
+		$price = $itinerary_object->get_lowest_price();
+
+		// Check minimum price.
+		if ( empty( $starting_from_price ) || $price < $starting_from_price ) {
+			$starting_from_price = $price;
+		}
+	}
+
+	// Return starting from price.
+	return absint( $starting_from_price );
+}
+
+/**
+ * Get Starting From Locations for Expedition.
+ * From set Itineraries.
+ *
+ * @param int $post_id Post ID.
+ *
+ * @return array{} | array{
+ *     array{
+ *        title: string,
+ *     },
+ * }
+ */
+function get_starting_from_locations( int $post_id = 0 ): array {
+	// Get post.
+	$post = get( $post_id );
+
+	// Starting from locations.
+	$starting_from_locations = [];
+
+	// Check for post.
+	if ( empty( $post['post'] ) || ! $post['post'] instanceof WP_Post ) {
+		return $starting_from_locations;
+	}
+
+	// Get itineraries.
+	$itineraries = get_itineraries( $post_id );
+
+	// Check for itineraries.
+	if ( empty( $itineraries ) ) {
+		return $starting_from_locations;
+	}
+
+	// Loop through itineraries and get minimum price.
+	foreach ( $itineraries as $itinerary ) {
+		// Check for Itinerary.
+		if (
+			! is_array( $itinerary )
+			|| empty( $itinerary['post'] )
+			|| ! $itinerary['post'] instanceof WP_Post
+			|| empty( $itinerary['post_meta']['start_location'] )
+		) {
+			continue;
+		}
+
+		// Get location.
+		$location      = absint( $itinerary['post_meta']['start_location'] );
+		$location_term = get_term_by( 'id', $location, DEPARTURE_LOCATION_TAXONOMY );
+
+		// Check location.
+		if ( $location_term instanceof WP_Term ) {
+			$starting_from_locations[] = [
+				'title' => $location_term->name,
+			];
+		}
+	}
+
+	// Return starting from locations.
+	return $starting_from_locations;
+}
+
+/**
+ * Get Ships for Expedition.
+ * From set Itineraries.
+ *
+ * @param int $post_id Post ID.
+ *
+ * @return array{} | array{
+ *     array{
+ *         post: WP_Post,
+ *         post_meta: mixed[],
+ *         post_taxonomies: mixed[],
+ *     },
+ * }
+ */
+function get_ships( int $post_id = 0 ): array {
+	// Get post.
+	$post = get( $post_id );
+
+	// Ships.
+	$ships = [];
+
+	// Check for post.
+	if ( empty( $post['post'] ) || ! $post['post'] instanceof WP_Post ) {
+		return $ships;
+	}
+
+	// Get itineraries.
+	$itineraries = get_itineraries( $post_id );
+
+	// Check for itineraries.
+	if ( empty( $itineraries ) ) {
+		return $ships;
+	}
+
+	// Loop through itineraries and get minimum price.
+	foreach ( $itineraries as $itinerary ) {
+		// Check for Itinerary.
+		if (
+			! is_array( $itinerary )
+			|| empty( $itinerary['post'] )
+			|| ! $itinerary['post'] instanceof WP_Post
+		) {
+			continue;
+		}
+
+		// Init Itinerary object.
+		$itinerary_object = new Itinerary( $itinerary['post']->ID );
+		$related_ships    = $itinerary_object->get_related_ships();
+
+		// Check for Itinerary Ships.
+		foreach ( $related_ships as $ship_id => $related_ship ) {
+			// Check for post.
+			if (
+				! is_array( $related_ship )
+				|| empty( $related_ship['post'] )
+				|| ! $related_ship['post'] instanceof WP_Post
+			) {
+				continue;
+			}
+
+			// Add ship to array.
+			$ships[ $ship_id ] = $related_ship;
+		}
+	}
+
+	// Return ships.
+	return $ships;
+}
+
+/**
+ * Get Total Departures for Expedition.
+ * From set Itineraries.
+ *
+ * @param int $post_id Post ID.
+ *
+ * @return int
+ */
+function get_total_departures( int $post_id = 0 ): int {
+	// Get post.
+	$post = get( $post_id );
+
+	// Total departures.
+	$total_departures = 0;
+
+	// Check for post.
+	if ( empty( $post['post'] ) || ! $post['post'] instanceof WP_Post ) {
+		return $total_departures;
+	}
+
+	// Get itineraries.
+	$itineraries = get_itineraries( $post_id );
+
+	// Check for itineraries.
+	if ( empty( $itineraries ) ) {
+		return $total_departures;
+	}
+
+	// Loop through itineraries and get minimum price.
+	foreach ( $itineraries as $itinerary ) {
+		// Check for Itinerary.
+		if (
+			! is_array( $itinerary )
+			|| empty( $itinerary['post'] )
+			|| ! $itinerary['post'] instanceof WP_Post
+		) {
+			continue;
+		}
+
+		// Init Itinerary object.
+		$itinerary_object = new Itinerary( $itinerary['post']->ID );
+
+		// Get total departures for Itinerary.
+		$total_departures = $total_departures + count( $itinerary_object->get_published_departures() );
+	}
+
+	// Return total departures.
+	return $total_departures;
+}
+
+/**
+ * Get Starting From Date for Expedition.
+ * From set Itineraries.
+ *
+ * @param int $post_id Post ID.
+ *
+ * @return string
+ */
+function get_starting_from_date( int $post_id = 0 ): string {
+	// Get post.
+	$post = get( $post_id );
+
+	// Starting from date.
+	$starting_from_date = '';
+
+	// Check for post.
+	if ( empty( $post['post'] ) || ! $post['post'] instanceof WP_Post ) {
+		return $starting_from_date;
+	}
+
+	// Get itineraries.
+	$itineraries = get_itineraries( $post_id );
+
+	// Check for itineraries.
+	if ( empty( $itineraries ) ) {
+		return $starting_from_date;
+	}
+
+	// Loop through itineraries and get minimum price.
+	foreach ( $itineraries as $itinerary ) {
+		// Check for Itinerary.
+		if (
+			! is_array( $itinerary )
+			|| empty( $itinerary['post'] )
+			|| ! $itinerary['post'] instanceof WP_Post
+		) {
+			continue;
+		}
+
+		// Init Itinerary object.
+		$itinerary_object = new Itinerary( $itinerary['post']->ID );
+		$test_date        = $itinerary_object->get_starting_date();
+
+		// Check for date.
+		if ( empty( $test_date ) ) {
+			continue;
+		}
+
+		// Check if starting from date is empty or test date is earlier.
+		if (
+			empty( $starting_from_date )
+			|| strtotime( $test_date ) < strtotime( $starting_from_date )
+		) {
+			$starting_from_date = $test_date;
+		}
+	}
+
+	// Return starting from date.
+	return $starting_from_date;
+}
+
+/**
+ * Get Ending To Date for Expedition.
+ * From set Itineraries.
+ *
+ * @param int $post_id Post ID.
+ *
+ * @return string
+ */
+function get_ending_to_date( int $post_id = 0 ): string {
+	// Get post.
+	$post = get( $post_id );
+
+	// ending to date.
+	$ending_to_date = '';
+
+	// Check for post.
+	if ( empty( $post['post'] ) || ! $post['post'] instanceof WP_Post ) {
+		return $ending_to_date;
+	}
+
+	// Get itineraries.
+	$itineraries = get_itineraries( $post_id );
+
+	// Check for itineraries.
+	if ( empty( $itineraries ) ) {
+		return $ending_to_date;
+	}
+
+	// Loop through itineraries and get minimum price.
+	foreach ( $itineraries as $itinerary ) {
+		// Check for Itinerary.
+		if (
+			! is_array( $itinerary )
+			|| empty( $itinerary['post'] )
+			|| ! $itinerary['post'] instanceof WP_Post
+		) {
+			continue;
+		}
+
+		// Init Itinerary object.
+		$itinerary_object = new Itinerary( $itinerary['post']->ID );
+		$test_date        = $itinerary_object->get_ending_date();
+
+		// Check for date.
+		if ( empty( $test_date ) ) {
+			continue;
+		}
+
+		// Check if ending to date is empty or test date is later.
+		if (
+			empty( $ending_to_date )
+			|| strtotime( $test_date ) > strtotime( $ending_to_date )
+		) {
+			$ending_to_date = $test_date;
+		}
+	}
+
+	// Return ending to date.
+	return $ending_to_date;
+}
+
+/**
+ * Get Expedition details card data.
+ *
+ * @param int $post_id Expedition Post ID.
+ *
+ * @return array{}|array{
+ *     title: string,
+ *     duration: int,
+ *     region: string,
+ *     from_price: string,
+ *     starting_from ?: array{}|array{
+ *         array{ title : string },
+ *     },
+ *     total_departures: int,
+ *     ships ?: array{}|array{
+ *         array{ title : string },
+ *     },
+ *     tags ?: array{}|array{
+ *         array{ title : string },
+ *     },
+ *     from_date ?: string,
+ *     to_date ?: string,
+ * }
+ */
+function get_details_data( int $post_id = 0 ): array {
+	// Check for cached version.
+	$cache_key    = CACHE_KEY . "_details_$post_id";
+	$cached_value = wp_cache_get( $cache_key, CACHE_GROUP );
+
+	// Check for cached value.
+	if ( is_array( $cached_value ) && ! empty( $cached_value ) ) {
+		return $cached_value;
+	}
+
+	// Get post.
+	$post = get( $post_id );
+	$data = [];
+
+	// Check for post.
+	if (
+		empty( $post['post'] )
+		|| ! $post['post'] instanceof WP_Post
+		|| POST_TYPE !== $post['post']->post_type
+	) {
+		return $data;
+	}
+
+	// Break title with colon.
+	$title_parts = explode( ':', $post['post']->post_title );
+
+	// Check if title parts are available.
+	if ( ! empty( $title_parts[0] ) ) {
+		$title = trim( $title_parts[0] );
+	} else {
+		$title = $post['post']->post_title;
+	}
+
+	// Set title.
+	$data['title'] = $title;
+
+	// Init $tags.
+	$tags = [];
+
+	// Get Expeditions tags.
+	if ( array_key_exists( EXPEDITION_TAG_TAXONOMY, $post['post_taxonomies'] ) ) {
+		$tags = $post['post_taxonomies'][ EXPEDITION_TAG_TAXONOMY ];
+	}
+
+	// Check for tags.
+	if ( ! empty( $tags ) ) {
+		// Loop through $tags and fetch tag name to title key.
+		foreach ( $tags as $tag ) {
+			if ( ! is_array( $tag ) || empty( $tag['name'] ) ) {
+				continue;
+			}
+
+			// Add tag name to array.
+			$data['tags'][] = [
+				'title' => $tag['name'],
+			];
+		}
+	}
+
+	// Get Regions.
+	$regions     = get_region_terms( $post_id );
+	$data_region = [];
+
+	// Check for regions.
+	if ( ! empty( $regions ) ) {
+		// Get region name comma seperated.
+		foreach ( $regions as $region ) {
+			if ( ! is_array( $region ) || empty( $region['name'] ) ) {
+				continue;
+			}
+
+			// Add region name to array.
+			$data_region[] = $region['name'];
+		}
+	}
+
+	// Set region name.
+	$data['region'] = implode( ', ', $data_region );
+
+	// Set minimum duration.
+	$data['duration'] = get_minimum_duration( $post_id );
+
+	// Set starting from price.
+	$data['from_price'] = format_price( get_starting_from_price( $post_id ) );
+
+	// Set starting from locations list.
+	$data['starting_from'] = get_starting_from_locations( $post_id );
+
+	// Set ships.
+	$ships_data = get_ships( $post_id );
+
+	// Check for ships.
+	if ( ! empty( $ships_data ) ) {
+		foreach ( $ships_data as $ship ) {
+			if ( ! $ship['post'] instanceof WP_Post ) {
+				continue;
+			}
+
+			// Add ship name/title to array.
+			$data['ships'][] = [
+				'title' => $ship['post']->post_title,
+			];
+		}
+	}
+
+	// Get total number of Departures.
+	$data['total_departures'] = get_total_departures( $post_id );
+
+	// Get Starting From date.
+	$starting_from_date = get_starting_from_date( $post_id );
+
+	// Check for starting from date.
+	if ( ! empty( $starting_from_date ) ) {
+		$data['from_date'] = gmdate( 'F Y', absint( strtotime( $starting_from_date ) ) );
+	}
+
+	// Get Ending to date.
+	$ending_to_date = get_ending_to_date( $post_id );
+
+	// Check for ending to date.
+	if ( ! empty( $ending_to_date ) ) {
+		$data['to_date'] = gmdate( 'F Y', absint( strtotime( $ending_to_date ) ) );
+	}
+
+	// Set cache and return data.
+	wp_cache_set( $cache_key, $data, CACHE_GROUP );
+
+	// Return data.
+	return $data;
+}
+
+/**
+ * Bust cache for Details Card.
+ *
+ * @param int $post_id Post ID.
+ *
+ * @return void
+ */
+function bust_details_cache( int $post_id = 0 ): void {
+	// Clear cache for this post.
+	wp_cache_delete( CACHE_KEY . "_details_$post_id", CACHE_GROUP );
+}
+
+/**
+ * Bust cache for Details Card from Itinerary.
+ *
+ * @param int $itinerary_id Itinerary Post ID.
+ *
+ * @return void
+ */
+function bust_details_cache_on_itinerary_update( int $itinerary_id = 0 ): void {
+	// Get post ID.
+	if ( 0 === $itinerary_id ) {
+		$itinerary_id = absint( get_the_ID() );
+	}
+
+	// Get post.
+	$itinerary = get_itinerary( $itinerary_id );
+
+	// Check for Itinerary.
+	if ( empty( $itinerary['post'] ) || ! $itinerary['post'] instanceof WP_Post ) {
+		return;
+	}
+
+	// Get related Expedition ID.
+	$expedition_ids = $itinerary['post_meta']['related_expedition'] ?? 0;
+
+	// Check for Expedition IDs.
+	if ( empty( $expedition_ids ) || ! is_array( $expedition_ids ) ) {
+		return;
+	}
+
+	// Bust cache for each Expedition.
+	foreach ( $expedition_ids as $expedition_id ) {
+		// Bust cache for Expedition.
+		bust_details_cache( absint( $expedition_id ) );
+	}
+}
+
+/**
+ * Bust cache for Details Card from Departure.
+ *
+ * @param int $departure_id Departure Post ID.
+ *
+ * @return void
+ */
+function bust_details_cache_on_departure_update( int $departure_id = 0 ): void {
+	// Get post ID.
+	if ( 0 === $departure_id ) {
+		$departure_id = absint( get_the_ID() );
+	}
+
+	// Get post.
+	$departure = get_departure( $departure_id );
+
+	// Check for Departure.
+	if ( empty( $departure['post'] ) || ! $departure['post'] instanceof WP_Post ) {
+		return;
+	}
+
+	// Get related Expedition ID.
+	$expedition_id = $departure['post_meta']['related_expedition'] ?? 0;
+
+	// Validate for Expedition ID.
+	if ( empty( $expedition_id ) || ! absint( $expedition_id ) ) {
+		return;
+	}
+
+	// Bust cache for Expedition.
+	bust_details_cache( absint( $expedition_id ) );
 }

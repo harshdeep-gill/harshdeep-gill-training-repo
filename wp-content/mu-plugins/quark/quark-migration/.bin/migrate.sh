@@ -32,7 +32,7 @@ wp quark-migrate post-trip-options all --user=1
 wp quark-migrate inclusion-exclusion-sets all --user=1
 
 # Adventure Options Migration
-wp quark-migrate adventure-options all --user=1
+wp quark-migrate adventure-option all --user=1
 
 # Ship migration
 wp quark-migrate ship all --user=1

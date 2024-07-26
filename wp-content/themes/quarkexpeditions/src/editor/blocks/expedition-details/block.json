@@ -1,0 +1,21 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "quark/expedition-details",
+  "title": "Expedition Details",
+  "description": "Expedition Details block.",
+  "category": "layout",
+  "keywords": [
+    "Expedition",
+    "Details"
+  ],
+  "textdomain": "qrk",
+  "supports": {
+    "alignWide": false,
+    "anchor": false,
+    "className": false,
+    "html": false,
+    "customClassName": false
+  },
+  "attributes": {}
+}
