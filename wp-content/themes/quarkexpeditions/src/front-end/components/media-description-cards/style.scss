@@ -12,28 +12,32 @@
 		align-items: stretch;
 	}
 
-	&:not( &--desktop-carousel ) {
+	&:not(&--desktop-carousel) {
 		#{$self}__slides-container {
+
 			@media screen and (min-width: grid-size(lg)) {
 				display: grid;
 				row-gap: var(--spacing-7);
 				height: auto !important;
-	
+
 				@include grid-columns(3);
 			}
+
 		}
 
 		#{$self}__nav {
+
 			@media screen and (min-width: grid-size(lg)) {
 				display: none;
 			}
 		}
 
 		#{$self}__slide {
+
 			@media screen and (min-width: grid-size(sm)) {
 				flex: 0 0 calc(75% - var(--spacing-4));
 			}
-	
+
 			@media screen and (min-width: grid-size(md)) {
 				flex: 0 0 calc(45% - var(--spacing-4));
 			}

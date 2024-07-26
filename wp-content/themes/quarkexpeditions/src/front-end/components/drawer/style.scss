@@ -127,7 +127,8 @@
 	}
 
 	&__footer {
-		--half-size {
+
+		&--half-size {
 			border-top: solid 1px var(--color-gray-20);
 			padding-inline: var(--spacing-5);
 			margin-inline: calc(-1 * var(--spacing-5));
