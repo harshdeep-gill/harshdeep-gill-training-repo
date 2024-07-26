@@ -47,6 +47,10 @@
 		}
 	}
 
+	&__section--desktop-carousel {
+		margin-top: var(--spacing-5);
+	}
+
 	&__track {
 		margin-left: calc(-1 * var(--grid-col-gutter));
 		margin-right: calc(-1 * var(--grid-col-gutter));
