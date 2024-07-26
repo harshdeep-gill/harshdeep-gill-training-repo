@@ -199,6 +199,7 @@ class Departure extends Softrip_Object {
 		// Set data defaults.
 		$default = [
 			'id'               => 0,
+			'code'             => 0,
 			'shipCode'         => '',
 			'packageCode'      => '',
 			'startDate'        => current_time( 'mysql' ),
@@ -219,7 +220,8 @@ class Departure extends Softrip_Object {
 			'meta_input'  => [
 				'related_expedition'   => $this->itinerary->get_post_meta( 'related_expedition' ),
 				'related_ship'         => get_id_from_ship_code( strval( $data['shipCode'] ) ),
-				'softrip_departure_id' => $data['id'],
+				'softrip_departure_id' => $data['code'],
+				'departure_unique_id'  => $data['id'],
 				'softrip_package_id'   => $data['packageCode'],
 				'departure_start_date' => $data['startDate'],
 				'departure_end_date'   => $data['endDate'],

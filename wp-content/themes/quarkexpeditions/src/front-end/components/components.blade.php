@@ -972,6 +972,549 @@
 	</x-section>
 </x-component-demo>
 
+	<x-component-demo :keys="[ 'reviews-carousel', 'two-columns' ]">
+		<x-section>
+			<x-two-columns :border="true">
+				<x-two-columns.column>
+					<h3>About Quark Expeditions</h3>
+					<p>When you venture into the untouched wilds of the Arctic and Antarctic, you need a great team around you. And we have the greatest. You'll join elite guides trained at Quark Academy — which surpasses every standard imaginable for safety and preparedness in the Polar Regions—and interact directly with world-class polar experts. Our philosophy? The team that explores together, discovers more together.</p>
+					<ul>
+						<li>In nec mi vitae quam posuere aliquet eget sed leo.</li>
+						<li>Sed vel nisi ultricies, sodales risus non, ornare augue.</li>
+						<li>Nulla facilisi. Maecenas sit amet porta nulla commodo.</li>
+					</ul>
+					<x-logo-grid size="large">
+						<x-logo-grid.logo image_id="25" size="large"/>
+						<x-logo-grid.logo image_id="24" size="large"/>
+						<x-logo-grid.logo image_id="21" size="large"/>
+						<x-logo-grid.logo image_id="20" size="large"/>
+						<x-logo-grid.logo image_id="17" size="large"/>
+					</x-logo-grid>
+				</x-two-columns.column>
+				<x-two-columns.column>
+					<h3>What Our Guests Have To Say</h3>
+					<x-reviews-carousel>
+						<x-reviews-carousel.carousel>
+							<x-reviews-carousel.slide
+								title="9 Day Spitsbergen Polar Bear Safari."
+								author="Carolyn T"
+								rating="4"
+							>
+								<p>Most exciting and wonderful, and educational experience of my life, thank
+									you to all the experts for sharing so much information on the animals and
+									arctic region, cruise staff and fellow passengers for making this trip one I
+									will remember forever. Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever.</p>
+							</x-reviews-carousel.slide>
+							<x-reviews-carousel.slide
+								title="An incredible trip to Antarctica"
+								author="Martine S."
+								rating="5"
+							>
+								<p>The whole experience was great. The World Explorer is a beautiful and very comfortable ship, the food was amazing. And of course the landings and cruising the area was a once in a lifetime experience. Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever.</p>
+							</x-reviews-carousel.slide>
+							<x-reviews-carousel.slide
+								title="9 Day Spitsbergen Polar Bear Safari"
+								author="Carolyn T"
+								rating="4"
+							>
+								<p>Most exciting and wonderful, and educational experience of my life, thank
+									you to all the experts for sharing so much information on the animals and
+									arctic region, cruise staff and fellow passengers for making this trip one I
+									will remember forever. Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever.</p>
+							</x-reviews-carousel.slide>
+							<x-reviews-carousel.slide
+								title="An incredible trip to Antarctica"
+								author="Martine S."
+								rating="3.5"
+							>
+								<p>The whole experience was great. The World Explorer is a beautiful and very comfortable ship, the food was amazing. And of course the landings and cruising the area was a once in a lifetime experience.</p>
+							</x-reviews-carousel.slide>
+						</x-reviews-carousel.carousel>
+					</x-reviews-carousel>
+				</x-two-columns.column>
+			</x-two-columns>
+		</x-section>
+	</x-component-demo>
+
+	<x-component-demo :keys="[ 'review-cards' ]">
+		<x-review-cards>
+			<x-review-cards.card
+				title="Falkland, South Georgia and the Antarctic Circle"
+				author="Denise P."
+				rating="4"
+			>
+				<p>Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever. Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever.</p>
+			</x-review-cards.card>
+			<x-review-cards.card
+				title="An incredible trip to Antarctica"
+				author="Martine S."
+				rating="5"
+			>
+				<p>The whole experience was great. The World Explorer is a beautiful and very comfortable ship, the food was amazing. And of course the landings and cruising the area was a once in a lifetime experience. Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever.</p>
+			</x-review-cards.card>
+			<x-review-cards.card
+				title="Wonderful Antarctic Trip"
+				author="Roger C."
+				rating="4"
+			>
+				<p>Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region.</p>
+			</x-review-cards.card>
+			<x-review-cards.card
+				title="Falkland, South Georgia and Antarctica: Explorers and Kings"
+				author="Martine S."
+				rating="4"
+			>
+				<p>The whole experience was great. The World Explorer is a beautiful and very comfortable ship, the food was amazing. And of course the landings and cruising the area was a once in a lifetime experience.</p>
+			</x-review-cards.card>
+			<x-review-cards.card
+				title="9 Day Spitsbergen Polar Bear Safari"
+				author="Carolyn T"
+				rating="4"
+			>
+				<p>Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever. Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever.</p>
+			</x-review-cards.card>
+			<x-review-cards.card
+				title="An incredible trip to Antarctica"
+				author="Martine S."
+				rating="5"
+			>
+				<p>The whole experience was great. The World Explorer is a beautiful and very comfortable ship, the food was amazing. And of course the landings and cruising the area was a once in a lifetime experience. Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever.</p>
+			</x-review-cards.card>
+		</x-review-cards>
+	</x-component-demo>
+
+	<x-component-demo :keys="['tabs']">
+		<x-section>
+			<x-tabs current_tab="ultramarine" update_url="yes">
+				<x-tabs.header>
+					<x-tabs.nav
+						id="ultramarine"
+						title="Ultramarine"
+					/>
+					<x-tabs.nav
+						id="ocean-explorer"
+						title="Ocean Explorer"
+					/>
+				</x-tabs.header>
+
+				<x-tabs.content>
+					<x-tabs.tab id="ultramarine">
+						<h3>Ultramarine</h3>
+						<p>The 199-guest Ultramarine is equipped with two twin-engine helicopters, 20 quick-launching Zodiacs, spacious suites, wellness amenities, and numerous outdoor wildlife viewing spaces. This 420 ft long ship can cruise at 16 knots in open water and includes four fully enclosed lifeboats.</p>
+						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur consequuntur ea ratione sequi? Aperiam asperiores beatae debitis doloribus dolorum earum eveniet excepturi exercitationem ipsum nisi perspiciatis, praesentium provident qui vitae.</p>
+					</x-tabs.tab>
+					<x-tabs.tab id="ocean-explorer">
+						<h3>Ocean Explorer</h3>
+						<p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).</p>
+						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur consequuntur ea ratione sequi? Aperiam asperiores beatae debitis doloribus dolorum earum eveniet excepturi exercitationem ipsum nisi perspiciatis, praesentium provident qui vitae.</p>
+					</x-tabs.tab>
+				</x-tabs.content>
+			</x-tabs>
+		</x-section>
+	</x-component-demo>
+
+	<x-component-demo :keys="[ 'icon-info-columns' ]">
+		<x-section :background="true">
+			<x-section.heading>
+				<x-section.title title="Why Quark Expeditions?" />
+			</x-section.heading>
+			<x-icon-info-columns>
+				<x-icon-info-columns.column>
+					<x-icon-info-columns.icon icon="star" />
+					<x-icon-info-columns.title title="The Best Expedition Team" />
+					<x-icon-info-columns.info>
+						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat</p>
+					</x-icon-info-columns.info>
+				</x-icon-info-columns.column>
+				<x-icon-info-columns.column>
+					<x-icon-info-columns.icon icon="compass" />
+					<x-icon-info-columns.title title="We Take You Deeper" />
+					<x-icon-info-columns.info>
+						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+					</x-icon-info-columns.info>
+				</x-icon-info-columns.column>
+				<x-icon-info-columns.column>
+					<x-icon-info-columns.icon icon="itinerary" />
+					<x-icon-info-columns.title title="Most Innovative Itineraries" />
+					<x-icon-info-columns.info>
+						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+					</x-icon-info-columns.info>
+				</x-icon-info-columns.column>
+				<x-icon-info-columns.column>
+					<x-icon-info-columns.icon icon="mountains" />
+					<x-icon-info-columns.title title="Most Adventure Options Most Adventure" />
+					<x-icon-info-columns.info>
+						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+					</x-icon-info-columns.info>
+				</x-icon-info-columns.column>
+				<x-icon-info-columns.column>
+					<x-icon-info-columns.icon icon="ship" />
+					<x-icon-info-columns.title title="Small Ships" />
+					<x-icon-info-columns.info>
+						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+					</x-icon-info-columns.info>
+				</x-icon-info-columns.column>
+			</x-icon-info-columns>
+		</x-section>
+	</x-component-demo>
+
+	<x-component-demo :keys="[ 'icon-info-grid' ]">
+		<x-section>
+			<x-section.heading>
+				<x-section.title title="What’s Included" align="left" />
+			</x-section.heading>
+			<x-section.description>Discover what your Crossing the Circle Expedition includes</x-section.description>
+
+			<x-icon-info-grid>
+				<x-icon-info-grid.item>
+					<x-icon-info-grid.icon icon="star" />
+					<h3>Specialist Expedition Leaders</h3>
+					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis.</p>
+				</x-icon-info-grid.item>
+				<x-icon-info-grid.item>
+					<x-icon-info-grid.icon icon="whale-tail" />
+					<h3>Immersive Off-ship Activities</h3>
+					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis.</p>
+				</x-icon-info-grid.item>
+				<x-icon-info-grid.item>
+					<x-icon-info-grid.icon icon="ship" />
+					<h3>On-Ship Experiences & Facilities</h3>
+					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis.</p>
+				</x-icon-info-grid.item>
+				<x-icon-info-grid.item>
+					<x-icon-info-grid.icon icon="star" />
+					<h3>Food & Beverages</h3>
+					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis.</p>
+				</x-icon-info-grid.item>
+				<x-icon-info-grid.item>
+					<x-icon-info-grid.icon icon="star" />
+					<h3>Quark Expedition Perks</h3>
+					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis.</p>
+				</x-icon-info-grid.item>
+				<x-icon-info-grid.item>
+					<x-icon-info-grid.icon icon="itinerary" />
+					<h3>Transfers</h3>
+					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis.</p>
+				</x-icon-info-grid.item>
+			</x-icon-info-grid>
+			<p class="body-small"><i>International airfare & visa expenses, travel insurance, mandatory expedition gear, on-ship expenses, adventure options and trip extensions are not included.</i></p>
+		</x-section>
+	</x-component-demo>
+
+	<x-component-demo :keys="[ 'icon-columns' ]">
+		<x-section>
+			<x-section.heading>
+				<x-section.title title="Icon columns" />
+			</x-section.heading>
+			<x-icon-columns>
+				<x-icon-columns.column>
+					<x-icon-columns.icon icon="duotone/person-check" />
+					<x-icon-columns.title title="Polar Specialists" />
+				</x-icon-columns.column>
+				<x-icon-columns.column>
+					<x-icon-columns.icon icon="duotone/person-compass" />
+					<x-icon-columns.title title="The Best Expedition Team" />
+				</x-icon-columns.column>
+				<x-icon-columns.column>
+					<x-icon-columns.icon icon="duotone/small-ship" />
+					<x-icon-columns.title title="Small Ship Experience" />
+				</x-icon-columns.column>
+				<x-icon-columns.column>
+					<x-icon-columns.icon icon="duotone/hiker" />
+					<x-icon-columns.title title="The Most Adventure Options" />
+				</x-icon-columns.column>
+				<x-icon-columns.column>
+					<x-icon-columns.icon icon="duotone/stars" />
+					<x-icon-columns.title title="4.7 Customer Rating" />
+				</x-icon-columns.column>
+			</x-icon-columns>
+		</x-section>
+	</x-component-demo>
+
+	<x-component-demo :keys="[ 'video-icons-card' ]">
+		<x-section>
+			<x-video-icons-card
+				url="https://quarkexpeditions.wistia.com/medias/p0k52ec113"
+				image_id="26"
+				title="The Quark Experience"
+				variant="dark"
+			>
+				<x-video-icons-card.icons>
+					<x-icon-columns variant="dark">
+						<x-icon-columns.column>
+							<x-icon-columns.icon icon="duotone/person-check" />
+							<x-icon-columns.title title="Polar Specialists" />
+						</x-icon-columns.column>
+						<x-icon-columns.column>
+							<x-icon-columns.icon icon="duotone/person-compass" />
+							<x-icon-columns.title title="The Best Expedition Team" />
+						</x-icon-columns.column>
+						<x-icon-columns.column>
+							<x-icon-columns.icon icon="duotone/small-ship" />
+							<x-icon-columns.title title="Small Ship Experience" />
+						</x-icon-columns.column>
+						<x-icon-columns.column>
+							<x-icon-columns.icon icon="duotone/hiker" />
+							<x-icon-columns.title title="The Most Adventure Options" />
+						</x-icon-columns.column>
+						<x-icon-columns.column>
+							<x-icon-columns.icon icon="duotone/stars" />
+							<x-icon-columns.title title="4.7 Customer Rating" />
+						</x-icon-columns.column>
+					</x-icon-columns>
+				</x-video-icons-card.icons>
+			</x-video-icons-card>
+		</x-section>
+	</x-component-demo>
+
+	<x-component-demo :keys="['itinerary-details']">
+		<x-section>
+			<x-itinerary-details current_tab="tab-1">
+				<x-itinerary-details.tabs-nav>
+					<x-itinerary-details.tabs-nav-item id="tab-1">
+						<x-itinerary-details.tabs-nav-item-title title="11 days" />
+						<x-itinerary-details.tabs-nav-item-subtitle subtitle="From Ushuaia, Argentinian Ultramarine" />
+					</x-itinerary-details.tabs-nav-item>
+					<x-itinerary-details.tabs-nav-item id="tab-2">
+						<x-itinerary-details.tabs-nav-item-title title="12 days" />
+						<x-itinerary-details.tabs-nav-item-subtitle subtitle="From Buenos Aires, Argentinian Ultramarine" />
+					</x-itinerary-details.tabs-nav-item>
+					<x-itinerary-details.tabs-nav-item id="tab-3">
+						<x-itinerary-details.tabs-nav-item-title title="12 days" />
+						<x-itinerary-details.tabs-nav-item-subtitle subtitle="From Buenos Aires, Argentinian Ultramarine" />
+					</x-itinerary-details.tabs-nav-item>
+				</x-itinerary-details.tabs-nav>
+
+				<x-itinerary-details.tabs>
+					<x-itinerary-details.tab id="tab-1">
+						<x-itinerary-details.header title="From Buenos Aires, 12 days, on Ultramarine" />
+
+						<x-itinerary-details.body>
+							<x-itinerary-details.summary>
+								<x-itinerary-details.summary-content>
+									<dl>
+										<dt>Duration</dt>
+										<dd>11 Days</dd>
+
+										<dt>Departing from</dt>
+										<dd>Ushuaia, Argentina</dd>
+
+										<dt>Ship</dt>
+										<dd>
+											Ultramarine
+											<br>
+											<a href="#">Learn more about the ship</a>
+										</dd>
+
+										<dt>Starting from</dt>
+										<dd>$ X,XXX USD per person</dd>
+									</dl>
+									<x-itinerary-details.download-button url="#" />
+								</x-itinerary-details.summary-content>
+								<x-itinerary-details.map-lightbox name="map-lightbox" image_id="26" />
+							</x-itinerary-details.summary>
+							<x-itinerary-details.details>
+								Accordion will add here later.<br><br>
+								<h5>Day 1: Arrive in Punta Arenas, Chile</h5>
+								<p>Lorem ipsum dolor sit amet consectetur. Imperdiet sed quam quis morbi ipsum sed odio. Ut dui mi in sed amet quis porttitor nibh. Ac phasellus sit facilisis vestibulum. Quis luctus ornare tortor justo commodo elementum.</p>
+							</x-itinerary-details.details>
+						</x-itinerary-details.body>
+
+						<x-itinerary-details.footer>
+							<x-itinerary-details.cta>
+								<x-button size="big" href="#">Request a Quote</x-button>
+								<x-itinerary-details.download-button url="#" />
+							</x-itinerary-details.cta>
+						</x-itinerary-details.footer>
+					</x-itinerary-details.tab>
+
+					<x-itinerary-details.tab id="tab-2">
+						<x-itinerary-details.header title="From Buenos Aires, 12 days, on Ultramarine" />
+
+						<x-itinerary-details.body>
+							<x-itinerary-details.summary>
+								<x-itinerary-details.summary-content>
+									<dl>
+										<dt>Duration</dt>
+										<dd>12 Days</dd>
+
+										<dt>Departing from</dt>
+										<dd>Ushuaia, Argentina</dd>
+
+										<dt>Ship</dt>
+										<dd>
+											Ultramarine
+											<br>
+											<a href="#">Learn more about the ship</a>
+										</dd>
+
+										<dt>Starting from</dt>
+										<dd>$ X,XXX USD per person</dd>
+									</dl>
+									<x-itinerary-details.download-button url="#" />
+								</x-itinerary-details.summary-content>
+								<x-itinerary-details.map-lightbox name="map-lightbox" image_id="26" />
+							</x-itinerary-details.summary>
+							<x-itinerary-details.details>
+								Accordion will add here later.<br><br>
+								<h5>Day 1: Arrive in Punta Arenas, Chile</h5>
+								<p>Lorem ipsum dolor sit amet consectetur. Imperdiet sed quam quis morbi ipsum sed odio. Ut dui mi in sed amet quis porttitor nibh. Ac phasellus sit facilisis vestibulum. Quis luctus ornare tortor justo commodo elementum.</p>
+
+							</x-itinerary-details.details>
+						</x-itinerary-details.body>
+
+						<x-itinerary-details.footer>
+							<x-itinerary-details.cta>
+								<x-button size="big" href="#">Request a Quote</x-button>
+								<x-itinerary-details.download-button url="#" />
+							</x-itinerary-details.cta>
+						</x-itinerary-details.footer>
+					</x-itinerary-details.tab>
+
+					<x-itinerary-details.tab id="tab-3">
+						<x-itinerary-details.header title="From Buenos Aires, 12 days, on Ultramarine" />
+
+						<x-itinerary-details.body>
+							<x-itinerary-details.summary>
+								<x-itinerary-details.summary-content>
+									<dl>
+										<dt>Duration</dt>
+										<dd>12 Days</dd>
+
+										<dt>Departing from</dt>
+										<dd>Ushuaia, Argentina</dd>
+
+										<dt>Ship</dt>
+										<dd>
+											Ultramarine
+											<br>
+											<a href="#">Learn more about the ship</a>
+										</dd>
+
+										<dt>Starting from</dt>
+										<dd>$ X,XXX USD per person</dd>
+									</dl>
+									<x-itinerary-details.download-button url="#" />
+								</x-itinerary-details.summary-content>
+								<x-itinerary-details.map-lightbox name="map-lightbox" image_id="26" />
+							</x-itinerary-details.summary>
+							<x-itinerary-details.details>
+								Accordion will add here later.<br><br>
+								<h5>Day 1: Arrive in Punta Arenas, Chile</h5>
+								<p>Lorem ipsum dolor sit amet consectetur. Imperdiet sed quam quis morbi ipsum sed odio. Ut dui mi in sed amet quis porttitor nibh. Ac phasellus sit facilisis vestibulum. Quis luctus ornare tortor justo commodo elementum.</p>
+
+							</x-itinerary-details.details>
+						</x-itinerary-details.body>
+
+						<x-itinerary-details.footer>
+							<x-itinerary-details.cta>
+								<x-button size="big" href="#">Request a Quote</x-button>
+								<x-itinerary-details.download-button url="#" />
+							</x-itinerary-details.cta>
+						</x-itinerary-details.footer>
+					</x-itinerary-details.tab>
+				</x-itinerary-details.tabs>
+			</x-itinerary-details>
+		</x-section>
+	</x-component-demo>
+
+	<x-component-demo :keys="['simple-cards']">
+		<x-section :background="true" background_color="black">
+			<x-section.heading>
+				<x-section.title title="Off Ship Adventure" align="left" />
+			</x-section.heading>
+			<x-simple-cards>
+				<x-simple-cards.card image_id="36" title="Camping" url="#" />
+				<x-simple-cards.card image_id="34" title="Flightseeing" />
+				<x-simple-cards.card image_id="31" title="Heli-hiking" url="#" />
+				<x-simple-cards.card image_id="32" title="Sea Kayaking" url="#" />
+				<x-simple-cards.card image_id="33" title="Zodiac Cruising" url="#" />
+				<x-simple-cards.card image_id="35" title="Wildlife Photography" url="#" />
+			</x-simple-cards>
+			<x-section.cta class="color-context--dark" text="Learn More" url="#" color="black" />
+		</x-section>
+	</x-component-demo>
+
+	<x-component-demo :keys="['media-content-card']">
+			<x-section>
+				<x-section.heading>
+					<x-section.title title="Media Content Card 2-column" />
+				</x-section.heading>
+				<x-media-content-card>
+					<x-media-content-card.image image_id="33"/>
+					<x-media-content-card.content>
+						<x-media-content-card.content-column>
+							<h4>Start Your Adventure</h4>
+							<p>Call us and one of our Polar Travel Advisors will secure the offer for you.</p>
+						</x-media-content-card.content-column>
+						<x-media-content-card.content-column>
+							<x-media-content-card.content-info
+								label="North America (Toll Free)"
+								value="+1 (866) 257-3345"
+								url="tel:+1 (866) 257-3345"
+							/>
+							<x-media-content-card.content-info
+								label="U.K. (Toll Free)"
+								value="0808 134 9986"
+								url="tel:0808 134 9986"
+							/>
+							<x-media-content-card.content-info
+								label="Australia (Toll Free)"
+								value="+61 1800 959 390"
+								url="tel:+61 1800 959 390"
+							/>
+							<x-media-content-card.content-info
+								label="France (Toll Free)"
+								value="08 05 08 66 46"
+								url="tel:08 05 08 66 46"
+							/>
+						</x-media-content-card.content-column>
+					</x-media-content-card.content>
+				</x-media-content-card>
+			</x-section>
+			<x-section>
+				<x-section.heading>
+					<x-section.title title="Media Content Card 1-column" />
+				</x-section.heading>
+				<x-section.description>Call us and one of our Polar Travel Advisors will secure the offer for you.</x-section.description>
+				<x-media-content-card :is_compact="true" >
+					<x-media-content-card.image image_id="33"/>
+					<x-media-content-card.content>
+						<x-media-content-card.content-column>
+							<h4>Start Your Adventure</h4>
+							<p>Call us and one of our Polar Travel Advisors will secure the offer for you.</p>
+						</x-media-content-card.content-column>
+						<x-media-content-card.content-column>
+							<x-media-content-card.content-info label="North America (Toll Free)" value="+1 (866) 257-3345" />
+							<x-media-content-card.content-info label="U.K. (Toll Free)" value="0808 134 9986" />
+							<x-media-content-card.content-info label="Australia (Toll Free)" value="+61 1800 959 390" />
+							<x-media-content-card.content-info label="France (Toll Free)" value="08 05 08 66 46" />
+						</x-media-content-card.content-column>
+					</x-media-content-card.content>
+				</x-media-content-card>
+			</x-section>
+	</x-component-demo>
+
+	<x-component-demo :keys="[ 'collage' ]">
+		<x-collage name="lp-collage">
+			<x-collage.video
+				size="medium"
+				image_id="33"
+				video_url="https://www.youtube.com/embed/KhVseF5ZD5g"
+				title="Video Caption"
+			/>
+			<x-collage.image size="small" image_id="26" title="Image 2" />
+			<x-collage.image size="small" image_id="32" title="Image 3" />
+			<x-collage.image size="small" image_id="36" title="Image 4" />
+			<x-collage.image size="large" image_id="31" title="Image 5" />
+			<x-collage.image size="medium" image_id="35" title="Image 6" />
+			<x-collage.image size="medium" image_id="30" title="Image 7" />
+			<x-collage.image size="x-large" image_id="34" title="Image 8" />
+			<x-collage.image size="small" image_id="32" />
+			<x-collage.image size="medium" image_id="33" />
+			<x-collage.image size="small" image_id="31" title="Image 11" />
+		</x-collage>
+	</x-component-demo>
 <x-component-demo :keys="[ 'reviews-carousel', 'two-columns' ]">
 	<x-section>
 		<x-two-columns :border="true">
