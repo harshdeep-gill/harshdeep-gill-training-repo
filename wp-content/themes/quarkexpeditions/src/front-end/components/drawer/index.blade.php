@@ -11,6 +11,11 @@
 	}
 
 	$classes = [ 'drawer', $class ];
+	$content_classes = [ 'drawer__content' ];
+
+	if ( ! empty( $content_class ) ) {
+		$content_classes[] = $content_class;
+	}
 @endphp
 
 <quark-drawer
@@ -21,7 +26,7 @@
 	overlay-click-close="yes"
 	animation-direction="{{ $animation_direction }}"
 >
-	<quark-drawer-content class="drawer__content {{ $content_class }}">
+	<quark-drawer-content @class( $content_classes )>
 		<x-content :content="$slot" />
 		<x-drawer.drawer-close />
 	</quark-drawer-content>

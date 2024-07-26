@@ -37,7 +37,7 @@
 							{{ __( 'View Deck Plans & Cabins', 'qrk' ) }}
 						</x-button>
 					</x-drawer.drawer-open>
-					<x-drawer :id="$ship['decks_id']" content_class="drawer__content--half-size" animation_direction="right">
+					<x-drawer :id="$ship['decks_id']" content_class="drawer__content--compact" animation_direction="right">
 						<x-drawer.header>
 							<h3>{{ __( 'Deck Plans & Cabins', 'qrk' ) }}</h3>
 						</x-drawer.header>

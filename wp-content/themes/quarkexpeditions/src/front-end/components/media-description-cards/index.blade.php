@@ -7,12 +7,8 @@
 		return;
 	}
 
-	$classes         = [
-		'media-description-cards',
-	];
-	$section_classes = [
-		'media-description-cards__section',
-	];
+	$classes         = [ 'media-description-cards' ];
+	$section_classes = [ 'media-description-cards__section' ];
 
 	if ( true === $desktop_carousel ) {
 		$classes[]         = 'media-description-cards--desktop-carousel';

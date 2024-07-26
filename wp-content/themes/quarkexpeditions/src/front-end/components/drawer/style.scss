@@ -65,9 +65,8 @@
 		background-color: var(--color-white);
 		border-radius: var(--border-radius-large) 0 0 var(--border-radius-large);
 		height: 100%;
-		width: 100%;
 
-		&--half-size {
+		&--compact {
 			max-width: 600px;
 			padding: var(--spacing-5);
 			gap: var(--spacing-4);
@@ -128,7 +127,7 @@
 
 	&__footer {
 
-		&--half-size {
+		&--compact {
 			border-top: solid 1px var(--color-gray-20);
 			padding-inline: var(--spacing-5);
 			margin-inline: calc(-1 * var(--spacing-5));
