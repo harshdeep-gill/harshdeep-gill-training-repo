@@ -9,7 +9,7 @@
 	}
 @endphp
 
-<li class="expedition-details__ships__item">
+<li class="expedition-details__ships-item">
 	<x-maybe-link
 		href="{{ $url }}"
 		class="expedition-details__ships-item-link"
