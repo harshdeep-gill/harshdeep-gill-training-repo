@@ -107,12 +107,18 @@ export default class Form extends HTMLElement {
 
 			// Add reCAPTCHA token if field exists.
 			if ( this.recaptchaTokenField ) {
-				const recaptchaToken = await getRecaptchaToken();
+				// Get reCAPTCHA token.
+				let recaptchaToken: string = '';
+
+				// Wait for token.
+				try {
+					recaptchaToken = await getRecaptchaToken() as string;
+				} catch ( error ) {
+					console.log( error ); // eslint-disable-line
+				}
 
 				// Update reCAPTCHA value.
-				if ( 'string' === typeof recaptchaToken ) {
-					this.recaptchaTokenField.value = recaptchaToken;
-				}
+				this.recaptchaTokenField.value = recaptchaToken;
 			}
 
 			// Save visitor info.

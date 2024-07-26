@@ -42,6 +42,10 @@ import * as blogPostCards from './blog-post-cards';
 import * as adventureOptions from './adventure-options';
 import * as buttons from './buttons';
 import * as staffMembers from './staff-members';
+import * as includedActivities from './included-activities';
+import * as tripExtensions from './trip-extensions';
+import * as relatedAdventureOptions from './related-adventure-options';
+import * as highlights from './highlights';
 import * as expeditionDetails from './expedition-details';
 
 /**
@@ -89,6 +93,10 @@ const blocks = [
 	adventureOptions,
 	buttons,
 	staffMembers,
+	includedActivities,
+	tripExtensions,
+	relatedAdventureOptions,
+	highlights,
 	expeditionDetails,
 ];
 

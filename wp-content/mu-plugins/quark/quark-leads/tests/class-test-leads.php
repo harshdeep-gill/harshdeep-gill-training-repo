@@ -86,7 +86,14 @@ class Test_Leads extends WP_UnitTestCase {
 	 * @return void
 	 */
 	public function test_validate_recaptcha_token(): void {
-		// Assert data.
+		// Validate recaptcha token.
+		$this->assertInstanceOf( WP_Error::class, validate_recaptcha_token() );
+		$this->assertInstanceOf( WP_Error::class, validate_recaptcha_token( 'dummy_token' ) );
+
+		// Allow recaptcha to fail for testing.
+		update_option( 'options_allow_recaptcha_to_fail', true );
+
+		// It will bypass the recaptcha validation.
 		$this->assertTrue( validate_recaptcha_token() );
 	}
 
