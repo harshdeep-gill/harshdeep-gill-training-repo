@@ -7,9 +7,12 @@
 
 namespace Quark\Theme\Blocks\Ships;
 
+use Quark\Softrip\Itinerary;
+
 use function Quark\CabinCategories\get as get_cabin_categories;
 use function Quark\ShipDecks\get as get_ship_deck;
 use function Quark\Ships\get as get_ships;
+use function Quark\Expeditions\get as get_expedition;
 
 const COMPONENT = 'parts.ships';
 
@@ -36,6 +39,8 @@ function bootstrap(): void {
  * @return string The block markup.
  */
 function render( array $attributes = [] ): string {
+	// Initialize ships IDs.
+	$ships_ids = [];
 
 	// If the selection is manual, we need to check if we have IDs.
 	if ( 'manual' === $attributes['selectionType'] ) {
@@ -46,6 +51,33 @@ function render( array $attributes = [] ): string {
 
 		// Get the selected IDs.
 		$ships_ids = $attributes['ships'];
+	} elseif ( 'auto' === $attributes['selectionType'] ) {
+		// Get the expedition.
+		$expedition      = get_expedition();
+		$expedition_meta = $expedition['post_meta'];
+
+		// Get related itineraries for the expedition.
+		if ( ! empty( $expedition_meta['related_itineraries'] ) ) {
+			$related_itineraries = array_map( 'intval', $expedition_meta['related_itineraries'] );
+		}
+
+		// Get related ships for the itineraries.
+		if ( ! empty( $related_itineraries ) ) {
+			$related_ship_ids = [];
+			foreach( $related_itineraries as $itinerary_id ) {
+				$itinierary = new Itinerary( $itinerary_id );
+
+				// Get related ships for the itinerary.
+				$related_ships = $itinierary->get_related_ships();
+
+				foreach( $related_ships as $related_ship ) {
+					$related_ship_ids[] = $related_ship['post']->ID;
+				}
+			}
+
+			// Remove duplicates.
+			$ships_ids = array_unique( $related_ship_ids );
+		}
 	}
 
 	// Check if we have posts.
@@ -219,63 +251,81 @@ function get_cabin_options( array $cabin_options_ids = [] ): array {
 		$cabin_option_taxonomies = $cabin_option['post_taxonomies'];
 		$cabin_option_thumbnail  = $cabin_option['post_thumbnail'];
 
-		// Prepare location data.
-		$related_decks_ids = array_map( 'intval', $cabin_option_meta['related_decks'] );
-		
-		// Loop through the related decks IDs.
-		$locations = [];
-		foreach( $related_decks_ids as $related_deck_id ) {
-			// Get the deck.
-			$related_deck = get_ship_deck( $related_deck_id );
-
-			// Skip if no post.
-			if ( empty( $related_deck ) ) {
-				continue;
-			}
-
-			// Get the post and post meta.
-			$related_deck_meta = $related_deck['post_meta'];
-
-			// Prepare location data.
-			$locations[] = $related_deck_meta['deck_name'];
-		}
-
-		// Prepare comma separated location.
-		$cabin_locations = implode( ', ', $locations );
-
 		// Prepare cabin option data.
 		$cabin_options[] = [
-			'id'          => $cabin_option_post->post_name,
-			'title'       => $cabin_option_meta['cabin_name'],
-			'image_id'    => $cabin_option_thumbnail,
-			'description' => apply_filters( 'the_content', $cabin_option_post->post_content ),
-			'details'     => [
-				[
-					'label' => 'Size',
-					'value' => $cabin_option_meta['cabin_category_size_range_from'] === $cabin_option_meta['cabin_category_size_range_to']
-						? $cabin_option_meta['cabin_category_size_range_from']
-						: $cabin_option_meta['cabin_category_size_range_from'] . ' - ' . $cabin_option_meta['cabin_category_size_range_to'],
-				],
-				[
-					'label' => 'Occupancy',
-					'value' => $cabin_option_meta['cabin_occupancy_pax_range_from'] === $cabin_option_meta['cabin_occupancy_pax_range_to']
-						? $cabin_option_meta['cabin_occupancy_pax_range_from']
-						: $cabin_option_meta['cabin_occupancy_pax_range_from'] . ' - ' . $cabin_option_meta['cabin_occupancy_pax_range_to'],
-				],
-				[
-					'label' => 'Bed Config.',
-					'value' => apply_filters( 'the_content', $cabin_option_meta['cabin_bed_configuration'] ),
-				],
-				[
-					'label' => 'Class',
-					'value' => $cabin_option_taxonomies['qrk_cabin_class'][0]['name'] ?? '',
-				],
-				[
-					'label' => 'Location',
-					'value' => $cabin_locations,
-				]
-			],
+			'id'          => $cabin_option_post->post_name ?? '',
+			'title'       => $cabin_option_meta['cabin_name'] ?? '',
+			'image_id'    => $cabin_option_thumbnail ?? 0,
+			'description' => apply_filters( 'the_content', $cabin_option_post->post_content ) ?? '',
 		];
+
+		// Add size range if available.
+		if ( ! empty( $cabin_option_meta['cabin_category_size_range_from'] ) || ! empty( $cabin_option_meta['cabin_category_size_range_to'] ) ) {
+			$cabin_options['details'][] = [
+				'label' => __( 'Size', 'qrk' ),
+				'value' => $cabin_option_meta['cabin_category_size_range_from'] === $cabin_option_meta['cabin_category_size_range_to']
+					? $cabin_option_meta['cabin_category_size_range_from']
+					: $cabin_option_meta['cabin_category_size_range_from'] . ' - ' . $cabin_option_meta['cabin_category_size_range_to'],
+			];
+		}
+
+		// Add occupancy range if available.
+		if ( ! empty( $cabin_option_meta['cabin_occupancy_pax_range_from'] ) || ! empty( $cabin_option_meta['cabin_occupancy_pax_range_to'] ) ) {
+			$cabin_options['details'][] = [
+				'label' => __( 'Occupancy', 'qrk' ),
+				'value' => $cabin_option_meta['cabin_occupancy_pax_range_from'] === $cabin_option_meta['cabin_occupancy_pax_range_to']
+					? $cabin_option_meta['cabin_occupancy_pax_range_from']
+					: $cabin_option_meta['cabin_occupancy_pax_range_from'] . ' - ' . $cabin_option_meta['cabin_occupancy_pax_range_to'],
+			];
+		}
+
+		// Add bed configuration if available.
+		if ( ! empty( $cabin_option_meta['cabin_bed_configuration'] ) ) {
+			$cabin_options['details'][] = [
+				'label' => __( 'Bed Config.', 'qrk' ),
+				'value' => apply_filters( 'the_content', $cabin_option_meta['cabin_bed_configuration'] ),
+			];
+		}
+
+		// Add Class if available.
+		if ( ! empty( $cabin_option_taxonomies['qrk_cabin_class'][0]['name'] ) ) {
+			$cabin_options['details'][] = [
+				'label' => __( 'Class', 'qrk' ),
+				'value' => $cabin_option_taxonomies['qrk_cabin_class'][0]['name'],
+			];
+		}
+
+		if ( ! empty ( $cabin_option_meta['related_decks'] ) ) {
+			// Prepare location data.
+			$related_decks_ids = array_map( 'intval', $cabin_option_meta['related_decks'] );
+		
+			// Loop through the related decks IDs.
+			$locations = [];
+			foreach( $related_decks_ids as $related_deck_id ) {
+				// Get the deck.
+				$related_deck = get_ship_deck( $related_deck_id );
+
+				// Skip if no post.
+				if ( empty( $related_deck ) ) {
+					continue;
+				}
+
+				// Get the post and post meta.
+				$related_deck_meta = $related_deck['post_meta'];
+
+				// Prepare location data.
+				$locations[] = $related_deck_meta['deck_name'];
+			}
+
+			// Prepare comma separated location.
+			$cabin_locations = implode( ', ', $locations );
+
+			// Add location to details.
+			$cabin_options['details'][] = [
+				'label' => __( 'Location', 'qrk' ),
+				'value' => $cabin_locations,
+			];
+		}
 	}
 
 	// Return cabin options data.
