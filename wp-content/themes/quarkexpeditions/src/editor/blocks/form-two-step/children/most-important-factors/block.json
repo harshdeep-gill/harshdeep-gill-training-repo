@@ -1,5 +1,5 @@
 {
-	"schema": "https://schemas.wp.org/trunk/block.json",
+	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
 	"title": "Most Important Factors Field",
 	"name": "quark/form-field-most-important-factors",

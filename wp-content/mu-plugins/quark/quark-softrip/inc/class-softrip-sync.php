@@ -90,9 +90,6 @@ class Softrip_Sync {
 	 * @return array<int, array<int, int|string>>
 	 */
 	public function prepare_batch_ids( array $ids = [], int $batch_size = 5 ): array {
-		// Start sync items.
-		$batches = [];
-
 		// Ensure batch size is at least 1.
 		$batch_size = max( 1, $batch_size );
 
@@ -103,12 +100,11 @@ class Softrip_Sync {
 			// Capture if a package id is found.
 			if ( ! empty( $softrip_package_id ) ) {
 				$this->prepared_codes[ $softrip_package_id ] = $id;
-				$batches[]                                   = $id;
 			}
 		}
 
 		// Chunk to sync into packages.
-		return array_chunk( array_keys( $batches ), $batch_size );
+		return array_chunk( array_keys( $this->prepared_codes ), $batch_size );
 	}
 
 	/**
