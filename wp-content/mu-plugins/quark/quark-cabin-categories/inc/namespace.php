@@ -398,8 +398,8 @@ function get_cabin_categories_data( int $cabin_id = 0 ): array {
 	];
 
 	// Add Class if available.
-	if ( is_array( $cabin_category_taxonomies['qrk_cabin_class'] ) && isset( $cabin_category_taxonomies['qrk_cabin_class'][0]['name'] ) ) {
-		$cabin_category_data['details']['class'] = $cabin_category_taxonomies['qrk_cabin_class'][0]['name'];
+	if ( ! empty( $cabin_category_taxonomies ) && is_array( $cabin_category_taxonomies[ CABIN_CLASS_TAXONOMY ] ) && isset( $cabin_category_taxonomies[ CABIN_CLASS_TAXONOMY ][0]['name'] ) ) {
+		$cabin_category_data['details']['class'] = $cabin_category_taxonomies[ CABIN_CLASS_TAXONOMY ][0]['name'];
 	}
 
 	// Add location if available.
@@ -416,6 +416,11 @@ function get_cabin_categories_data( int $cabin_id = 0 ): array {
 
 			// Get the post and post meta.
 			$related_deck_meta = $related_deck['post_meta'];
+
+			// Check for post meta.
+			if ( empty( $related_deck_meta['deck_name'] ) ) {
+				continue;
+			}
 
 			// Prepare location data.
 			$locations[] = $related_deck_meta['deck_name'];
