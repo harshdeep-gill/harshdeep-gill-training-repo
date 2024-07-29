@@ -9,6 +9,8 @@ namespace Quark\ShipDecks;
 
 use WP_Post;
 
+use function Quark\CabinCategories\get_cabin_categories_data;
+
 const POST_TYPE   = 'qrk_ship_deck';
 const CACHE_KEY   = POST_TYPE;
 const CACHE_GROUP = POST_TYPE;
@@ -159,4 +161,136 @@ function get( int $post_id = 0 ): array {
 
 	// Return data.
 	return $data;
+}
+
+/**
+ * Get Ship Deck data.
+ *
+ * @param int $deck_id Ship Deck ID.
+ *
+ * @return array<string, mixed> The Ship Deck data.
+ */
+function get_deck_data( int $deck_id = 0 ): array {
+	// Get ship ID.
+	if ( 0 === $deck_id ) {
+		$deck_id = absint( get_the_ID() );
+	}
+
+	// Get the deck.
+	$deck = get( $deck_id );
+
+	// Get the post and post meta.
+	$deck_post = $deck['post'];
+	$deck_meta = $deck['post_meta'];
+
+	// Check for post.
+	if ( ! $deck_post instanceof WP_Post ) {
+		return [];
+	}
+
+	// Prepare public spaces data.
+	$public_spaces = prepare_public_spaces( $deck_meta );
+
+	// Prepare Cabin Options data.
+	$cabin_options = [];
+
+	// Check if we have cabin categories.
+	if ( ! empty( $deck_meta['cabin_categories'] ) && is_array( $deck_meta['cabin_categories'] ) ) {
+		$cabin_options_ids = array_map( 'absint', $deck_meta['cabin_categories'] );
+		$cabin_options     = get_cabin_options( $cabin_options_ids );
+	}
+
+	// Prepare deck data.
+	$decks_data = [
+		'id'            => $deck_post->post_name,
+		'title'         => $deck_meta['deck_name'] ?? '',
+		'image_id'      => absint( $deck_meta['deck_plan_image'] ),
+		'description'   => apply_filters( 'the_content', $deck_post->post_content ),
+		'cabin_options' => $cabin_options,
+		'public_spaces' => $public_spaces,
+	];
+
+	// Return deck data.
+	return $decks_data;
+}
+
+/**
+ * Prepare public spaces data.
+ *
+ * @param mixed[] $deck_meta The deck meta.
+ *
+ * @return mixed[] The public spaces data.
+ */
+function prepare_public_spaces( array $deck_meta = [] ): array {
+	// Check if we have public spaces.
+	if ( empty( $deck_meta ) ) {
+		return [];
+	}
+
+	// Prepare public spaces data.
+	$public_spaces = [];
+
+	// Search for public spaces meta keys and store its values.
+	foreach ( $deck_meta as $key => $value ) {
+		// Check if this is a public space meta key.
+		if ( false !== strpos( $key, 'public_spaces_' ) ) {
+			// Split the key into parts.
+			$key_parts          = explode( '_', $key );
+			$key_name           = end( $key_parts );
+			$key_index          = $key_parts[2];
+			$public_space_value = null;
+
+			// If key contains 'title' string, then it's a title.
+			if ( 'title' === $key_name ) {
+				$public_space_value = $value;
+			}
+
+			// If key contains 'description' string, then it's a description.
+			if ( 'description' === $key_name ) {
+				$public_space_value = apply_filters( 'the_content', $value );
+			}
+
+			// If key contains 'image' string, then it's an image.
+			if ( 'image' === $key_name ) {
+				$public_space_value = absint( $value );
+			}
+
+			// If we have all the data, then add it to the public spaces at the index specifeid by last second part of the key.
+			$public_spaces[ $key_index ][ $key_name ] = $public_space_value;
+		}
+	}
+
+	// Return public spaces data.
+	return $public_spaces;
+}
+
+/**
+ * Get Cabin Options data.
+ *
+ * @param int[] $cabin_options_ids The cabin options IDs.
+ *
+ * @return mixed[] The Cabin Options data.
+ */
+function get_cabin_options( array $cabin_options_ids = [] ): array {
+	// Check if we have cabin options.
+	if ( empty( $cabin_options_ids ) ) {
+		return [];
+	}
+
+	// Get the cabin options.
+	$cabin_options = [];
+
+	// Loop through the cabin options IDs.
+	foreach ( $cabin_options_ids as $cabin_option_id ) {
+		// Get the cabin option.
+		$cabin_options_data = get_cabin_categories_data( $cabin_option_id );
+
+		// Check if we have cabin option data.
+		if ( ! empty( $cabin_options_data ) ) {
+			$cabin_options[] = $cabin_options_data;
+		}
+	}
+
+	// Return cabin options data.
+	return $cabin_options;
 }

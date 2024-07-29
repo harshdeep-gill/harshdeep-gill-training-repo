@@ -9,6 +9,8 @@ namespace Quark\CabinCategories;
 
 use WP_Post;
 
+use function Quark\ShipDecks\get as get_ship_deck;
+
 use const Quark\Ships\POST_TYPE as SHIP_POST_TYPE;
 
 const POST_TYPE            = 'qrk_cabin_category';
@@ -356,4 +358,76 @@ function bust_cabin_code_lookup_cache(): void {
 
 	// Trigger action to clear cache.
 	do_action( 'qe_cabin_code_lookup_cache_busted' );
+}
+
+/**
+ * Get cabin categories data.
+ *
+ * @param int $cabin_id Cabin ID.
+ *
+ * @return array<string, mixed>
+ */
+function get_cabin_categories_data( int $cabin_id = 0 ): array {
+	// Get the cabin category.
+	$cabin_category = get( $cabin_id );
+
+	// Get the post, post meta, post taxonomies and post thumbnail.
+	$cabin_category_post       = $cabin_category['post'];
+	$cabin_category_meta       = $cabin_category['post_meta'];
+	$cabin_category_taxonomies = $cabin_category['post_taxonomies'];
+	$cabin_category_thumbnail  = $cabin_category['post_thumbnail'];
+
+	// Check for post.
+	if ( ! $cabin_category_post instanceof WP_Post ) {
+		return [];
+	}
+
+	// Prepare cabin option data.
+	$cabin_category_data = [
+		'id'          => $cabin_category_post->post_name,
+		'title'       => $cabin_category_meta['cabin_name'] ?? '',
+		'image_id'    => $cabin_category_thumbnail,
+		'description' => apply_filters( 'the_content', $cabin_category_post->post_content ) ?? '',
+		'details'     => [
+			'size_from'         => $cabin_category_meta['cabin_category_size_range_from'] ?? '',
+			'size_to'           => $cabin_category_meta['cabin_category_size_range_to'] ?? '',
+			'occupancy_from'    => $cabin_category_meta['cabin_occupancy_pax_range_from'] ?? '',
+			'occupancy_to'      => $cabin_category_meta['cabin_occupancy_pax_range_to'] ?? '',
+			'bed_configuration' => apply_filters( 'the_content', $cabin_category_meta['cabin_bed_configuration'] ) ?? '',
+		],
+	];
+
+	// Add Class if available.
+	if ( is_array( $cabin_category_taxonomies['qrk_cabin_class'] ) && isset( $cabin_category_taxonomies['qrk_cabin_class'][0]['name'] ) ) {
+		$cabin_category_data['details']['class'] = $cabin_category_taxonomies['qrk_cabin_class'][0]['name'];
+	}
+
+	// Add location if available.
+	if ( ! empty( $cabin_category_meta['related_decks'] ) ) {
+		// Prepare location data.
+		$related_decks_ids = array_map( 'absint', $cabin_category_meta['related_decks'] );
+
+		// Loop through the related decks IDs.
+		$locations = [];
+
+		// Loop through the related decks IDs.
+		foreach ( $related_decks_ids as $related_deck_id ) {
+			$related_deck = get_ship_deck( $related_deck_id );
+
+			// Get the post and post meta.
+			$related_deck_meta = $related_deck['post_meta'];
+
+			// Prepare location data.
+			$locations[] = $related_deck_meta['deck_name'];
+		}
+
+		// Prepare comma separated location.
+		$cabin_locations = implode( ', ', $locations );
+
+		// Add location to details.
+		$cabin_category_data['details']['location'] = $cabin_locations;
+	}
+
+	// Return cabin category data.
+	return $cabin_category_data;
 }
