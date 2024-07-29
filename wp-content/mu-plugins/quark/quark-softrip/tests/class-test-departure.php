@@ -95,8 +95,15 @@ class Test_Departure extends WP_UnitTestCase {
 
 		// Check if is valid.
 		if ( $departure_post instanceof WP_Post ) {
+			$message = serialize(
+				[
+					'test_data'     => $test_data,
+					'departure_two' => $departure_two->get_data(),
+				],
+			);
+
 			// Tests.
-			$this->assertEquals( 'publish', $departure_post->post_status );
+			$this->assertEquals( 'publish', $departure_post->post_status, $message );
 		}
 	}
 }
