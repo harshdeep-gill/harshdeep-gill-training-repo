@@ -1,7 +1,7 @@
 @props( [
 	'id'                  => '',
 	'class'               => '',
-	'content_class'       => '',
+	'compact'             => false,
 	'animation_direction' => 'left',
 ] )
 
@@ -13,8 +13,8 @@
 	$classes = [ 'drawer', $class ];
 	$content_classes = [ 'drawer__content' ];
 
-	if ( ! empty( $content_class ) ) {
-		$content_classes[] = $content_class;
+	if ( $compact ) {
+		$content_classes[] = 'drawer__content--compact';
 	}
 @endphp
 
