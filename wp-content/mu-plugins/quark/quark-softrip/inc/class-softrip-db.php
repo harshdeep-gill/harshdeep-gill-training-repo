@@ -23,7 +23,7 @@ class Softrip_DB {
 	 *      promos: string,
 	 * }
 	 */
-	public function get_db_tables(): array {
+	public function get_db_tables_sql(): array {
 		// Return the list of tables used.
 		return [
 			'adventure_options' => $this->get_adventure_table_sql(),

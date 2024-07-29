@@ -10,7 +10,6 @@ namespace Quark\Core;
 use JB\Cloudinary\Core as Cloudinary_Core;
 use JB\Cloudinary\Frontend as Cloudinary_Frontend;
 use WP_Post;
-use WP_User;
 
 use function Travelopia\Core\cached_nav_menu;
 
@@ -357,4 +356,50 @@ function doing_automated_test(): bool {
 
 	// Nope, user agent does not match, not an automated test.
 	return false;
+}
+
+/**
+ * Format price.
+ *
+ * @param int    $price Price.
+ * @param string $currency Currency.
+ *
+ * @return string Formatted price.
+ */
+function format_price( int $price = 0, string $currency = 'USD' ): string {
+	// Check if price is empty.
+	if ( empty( $price ) ) {
+		return '';
+	}
+
+	// Set default separators.
+	$string_format = '%1$s%2$s %3$s';
+
+	// Set Currency symbol.
+	$currency_symbols = [
+		'AUD' => '$',
+		'CAD' => '$',
+		'USD' => '$',
+		'EUR' => '€',
+		'GBP' => '£',
+	];
+
+	// Validate currency.
+	$currency = array_key_exists( strtoupper( $currency ), $currency_symbols ) ? strtoupper( $currency ) : 'USD';
+
+	// Current symbol.
+	$currency_symbol     = $currency_symbols[ strtoupper( $currency ) ];
+	$decimal_separator   = '.';
+	$thousands_separator = ',';
+
+	// Decimal separator.
+	$decimals = fmod( $price, absint( $price ) ) ? 2 : 0;
+
+	// Return formatted price.
+	return sprintf(
+		$string_format,
+		$currency_symbol,
+		number_format( $price, $decimals, $decimal_separator, $thousands_separator ),
+		$currency
+	);
 }

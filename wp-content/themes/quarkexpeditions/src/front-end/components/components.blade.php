@@ -1085,7 +1085,7 @@
 
 	<x-component-demo :keys="['tabs']">
 		<x-section>
-			<x-tabs current_tab="ultramarine" update_url="yes">
+			<x-tabs current_tab="ultramarine" update_url="no">
 				<x-tabs.header>
 					<x-tabs.nav
 						id="ultramarine"
@@ -1102,6 +1102,153 @@
 						<h3>Ultramarine</h3>
 						<p>The 199-guest Ultramarine is equipped with two twin-engine helicopters, 20 quick-launching Zodiacs, spacious suites, wellness amenities, and numerous outdoor wildlife viewing spaces. This 420 ft long ship can cruise at 16 knots in open water and includes four fully enclosed lifeboats.</p>
 						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur consequuntur ea ratione sequi? Aperiam asperiores beatae debitis doloribus dolorum earum eveniet excepturi exercitationem ipsum nisi perspiciatis, praesentium provident qui vitae.</p>
+
+						<x-itinerary-details current_tab="tab-1" update_url="no">
+							<x-itinerary-details.tabs-nav>
+								<x-itinerary-details.tabs-nav-item id="tab-1">
+									<x-itinerary-details.tabs-nav-item-title title="11 days" />
+									<x-itinerary-details.tabs-nav-item-subtitle subtitle="From Ushuaia, Argentinian Ultramarine" />
+								</x-itinerary-details.tabs-nav-item>
+								<x-itinerary-details.tabs-nav-item id="tab-2">
+									<x-itinerary-details.tabs-nav-item-title title="12 days" />
+									<x-itinerary-details.tabs-nav-item-subtitle subtitle="From Buenos Aires, Argentinian Ultramarine" />
+								</x-itinerary-details.tabs-nav-item>
+								<x-itinerary-details.tabs-nav-item id="tab-3">
+									<x-itinerary-details.tabs-nav-item-title title="12 days" />
+									<x-itinerary-details.tabs-nav-item-subtitle subtitle="From Buenos Aires, Argentinian Ultramarine" />
+								</x-itinerary-details.tabs-nav-item>
+							</x-itinerary-details.tabs-nav>
+
+							<x-itinerary-details.tabs>
+								<x-itinerary-details.tab id="tab-1">
+									<x-itinerary-details.header title="From Buenos Aires, 12 days, on Ultramarine" />
+
+									<x-itinerary-details.body>
+										<x-itinerary-details.summary>
+											<x-itinerary-details.summary-content>
+												<dl>
+													<dt>Duration</dt>
+													<dd>11 Days</dd>
+
+													<dt>Departing from</dt>
+													<dd>Ushuaia, Argentina</dd>
+
+													<dt>Ship</dt>
+													<dd>
+														Ultramarine
+														<br>
+														<a href="#">Learn more about the ship</a>
+													</dd>
+
+													<dt>Starting from</dt>
+													<dd>$ X,XXX USD per person</dd>
+												</dl>
+												<x-itinerary-details.download-button url="#" />
+											</x-itinerary-details.summary-content>
+											<x-itinerary-details.map-lightbox name="map-lightbox" image_id="26" />
+										</x-itinerary-details.summary>
+										<x-itinerary-details.details>
+											Accordion will add here later.<br><br>
+											<h5>Day 1: Arrive in Punta Arenas, Chile</h5>
+											<p>Lorem ipsum dolor sit amet consectetur. Imperdiet sed quam quis morbi ipsum sed odio. Ut dui mi in sed amet quis porttitor nibh. Ac phasellus sit facilisis vestibulum. Quis luctus ornare tortor justo commodo elementum.</p>
+										</x-itinerary-details.details>
+									</x-itinerary-details.body>
+
+									<x-itinerary-details.footer>
+										<x-itinerary-details.cta>
+											<x-button size="big" href="#">Request a Quote</x-button>
+											<x-itinerary-details.download-button url="#" />
+										</x-itinerary-details.cta>
+									</x-itinerary-details.footer>
+								</x-itinerary-details.tab>
+
+								<x-itinerary-details.tab id="tab-2">
+									<x-itinerary-details.header title="From Buenos Aires, 12 days, on Ultramarine" />
+
+									<x-itinerary-details.body>
+										<x-itinerary-details.summary>
+											<x-itinerary-details.summary-content>
+												<dl>
+													<dt>Duration</dt>
+													<dd>12 Days</dd>
+
+													<dt>Departing from</dt>
+													<dd>Ushuaia, Argentina</dd>
+
+													<dt>Ship</dt>
+													<dd>
+														Ultramarine
+														<br>
+														<a href="#">Learn more about the ship</a>
+													</dd>
+
+													<dt>Starting from</dt>
+													<dd>$ X,XXX USD per person</dd>
+												</dl>
+												<x-itinerary-details.download-button url="#" />
+											</x-itinerary-details.summary-content>
+											<x-itinerary-details.map-lightbox name="map-lightbox" image_id="26" />
+										</x-itinerary-details.summary>
+										<x-itinerary-details.details>
+											Accordion will add here later.<br><br>
+											<h5>Day 1: Arrive in Punta Arenas, Chile</h5>
+											<p>Lorem ipsum dolor sit amet consectetur. Imperdiet sed quam quis morbi ipsum sed odio. Ut dui mi in sed amet quis porttitor nibh. Ac phasellus sit facilisis vestibulum. Quis luctus ornare tortor justo commodo elementum.</p>
+
+										</x-itinerary-details.details>
+									</x-itinerary-details.body>
+
+									<x-itinerary-details.footer>
+										<x-itinerary-details.cta>
+											<x-button size="big" href="#">Request a Quote</x-button>
+											<x-itinerary-details.download-button url="#" />
+										</x-itinerary-details.cta>
+									</x-itinerary-details.footer>
+								</x-itinerary-details.tab>
+
+								<x-itinerary-details.tab id="tab-3">
+									<x-itinerary-details.header title="From Buenos Aires, 12 days, on Ultramarine" />
+
+									<x-itinerary-details.body>
+										<x-itinerary-details.summary>
+											<x-itinerary-details.summary-content>
+												<dl>
+													<dt>Duration</dt>
+													<dd>12 Days</dd>
+
+													<dt>Departing from</dt>
+													<dd>Ushuaia, Argentina</dd>
+
+													<dt>Ship</dt>
+													<dd>
+														Ultramarine
+														<br>
+														<a href="#">Learn more about the ship</a>
+													</dd>
+
+													<dt>Starting from</dt>
+													<dd>$ X,XXX USD per person</dd>
+												</dl>
+												<x-itinerary-details.download-button url="#" />
+											</x-itinerary-details.summary-content>
+											<x-itinerary-details.map-lightbox name="map-lightbox" image_id="26" />
+										</x-itinerary-details.summary>
+										<x-itinerary-details.details>
+											Accordion will add here later.<br><br>
+											<h5>Day 1: Arrive in Punta Arenas, Chile</h5>
+											<p>Lorem ipsum dolor sit amet consectetur. Imperdiet sed quam quis morbi ipsum sed odio. Ut dui mi in sed amet quis porttitor nibh. Ac phasellus sit facilisis vestibulum. Quis luctus ornare tortor justo commodo elementum.</p>
+
+										</x-itinerary-details.details>
+									</x-itinerary-details.body>
+
+									<x-itinerary-details.footer>
+										<x-itinerary-details.cta>
+											<x-button size="big" href="#">Request a Quote</x-button>
+											<x-itinerary-details.download-button url="#" />
+										</x-itinerary-details.cta>
+									</x-itinerary-details.footer>
+								</x-itinerary-details.tab>
+							</x-itinerary-details.tabs>
+						</x-itinerary-details>
 					</x-tabs.tab>
 					<x-tabs.tab id="ocean-explorer">
 						<h3>Ocean Explorer</h3>
@@ -1269,152 +1416,7 @@
 
 	<x-component-demo :keys="['itinerary-details']">
 		<x-section>
-			<x-itinerary-details current_tab="tab-1">
-				<x-itinerary-details.tabs-nav>
-					<x-itinerary-details.tabs-nav-item id="tab-1">
-						<x-itinerary-details.tabs-nav-item-title title="11 days" />
-						<x-itinerary-details.tabs-nav-item-subtitle subtitle="From Ushuaia, Argentinian Ultramarine" />
-					</x-itinerary-details.tabs-nav-item>
-					<x-itinerary-details.tabs-nav-item id="tab-2">
-						<x-itinerary-details.tabs-nav-item-title title="12 days" />
-						<x-itinerary-details.tabs-nav-item-subtitle subtitle="From Buenos Aires, Argentinian Ultramarine" />
-					</x-itinerary-details.tabs-nav-item>
-					<x-itinerary-details.tabs-nav-item id="tab-3">
-						<x-itinerary-details.tabs-nav-item-title title="12 days" />
-						<x-itinerary-details.tabs-nav-item-subtitle subtitle="From Buenos Aires, Argentinian Ultramarine" />
-					</x-itinerary-details.tabs-nav-item>
-				</x-itinerary-details.tabs-nav>
-
-				<x-itinerary-details.tabs>
-					<x-itinerary-details.tab id="tab-1">
-						<x-itinerary-details.header title="From Buenos Aires, 12 days, on Ultramarine" />
-
-						<x-itinerary-details.body>
-							<x-itinerary-details.summary>
-								<x-itinerary-details.summary-content>
-									<dl>
-										<dt>Duration</dt>
-										<dd>11 Days</dd>
-
-										<dt>Departing from</dt>
-										<dd>Ushuaia, Argentina</dd>
-
-										<dt>Ship</dt>
-										<dd>
-											Ultramarine
-											<br>
-											<a href="#">Learn more about the ship</a>
-										</dd>
-
-										<dt>Starting from</dt>
-										<dd>$ X,XXX USD per person</dd>
-									</dl>
-									<x-itinerary-details.download-button url="#" />
-								</x-itinerary-details.summary-content>
-								<x-itinerary-details.map-lightbox name="map-lightbox" image_id="26" />
-							</x-itinerary-details.summary>
-							<x-itinerary-details.details>
-								Accordion will add here later.<br><br>
-								<h5>Day 1: Arrive in Punta Arenas, Chile</h5>
-								<p>Lorem ipsum dolor sit amet consectetur. Imperdiet sed quam quis morbi ipsum sed odio. Ut dui mi in sed amet quis porttitor nibh. Ac phasellus sit facilisis vestibulum. Quis luctus ornare tortor justo commodo elementum.</p>
-							</x-itinerary-details.details>
-						</x-itinerary-details.body>
-
-						<x-itinerary-details.footer>
-							<x-itinerary-details.cta>
-								<x-button size="big" href="#">Request a Quote</x-button>
-								<x-itinerary-details.download-button url="#" />
-							</x-itinerary-details.cta>
-						</x-itinerary-details.footer>
-					</x-itinerary-details.tab>
-
-					<x-itinerary-details.tab id="tab-2">
-						<x-itinerary-details.header title="From Buenos Aires, 12 days, on Ultramarine" />
-
-						<x-itinerary-details.body>
-							<x-itinerary-details.summary>
-								<x-itinerary-details.summary-content>
-									<dl>
-										<dt>Duration</dt>
-										<dd>12 Days</dd>
-
-										<dt>Departing from</dt>
-										<dd>Ushuaia, Argentina</dd>
-
-										<dt>Ship</dt>
-										<dd>
-											Ultramarine
-											<br>
-											<a href="#">Learn more about the ship</a>
-										</dd>
-
-										<dt>Starting from</dt>
-										<dd>$ X,XXX USD per person</dd>
-									</dl>
-									<x-itinerary-details.download-button url="#" />
-								</x-itinerary-details.summary-content>
-								<x-itinerary-details.map-lightbox name="map-lightbox" image_id="26" />
-							</x-itinerary-details.summary>
-							<x-itinerary-details.details>
-								Accordion will add here later.<br><br>
-								<h5>Day 1: Arrive in Punta Arenas, Chile</h5>
-								<p>Lorem ipsum dolor sit amet consectetur. Imperdiet sed quam quis morbi ipsum sed odio. Ut dui mi in sed amet quis porttitor nibh. Ac phasellus sit facilisis vestibulum. Quis luctus ornare tortor justo commodo elementum.</p>
-
-							</x-itinerary-details.details>
-						</x-itinerary-details.body>
-
-						<x-itinerary-details.footer>
-							<x-itinerary-details.cta>
-								<x-button size="big" href="#">Request a Quote</x-button>
-								<x-itinerary-details.download-button url="#" />
-							</x-itinerary-details.cta>
-						</x-itinerary-details.footer>
-					</x-itinerary-details.tab>
-
-					<x-itinerary-details.tab id="tab-3">
-						<x-itinerary-details.header title="From Buenos Aires, 12 days, on Ultramarine" />
-
-						<x-itinerary-details.body>
-							<x-itinerary-details.summary>
-								<x-itinerary-details.summary-content>
-									<dl>
-										<dt>Duration</dt>
-										<dd>12 Days</dd>
-
-										<dt>Departing from</dt>
-										<dd>Ushuaia, Argentina</dd>
-
-										<dt>Ship</dt>
-										<dd>
-											Ultramarine
-											<br>
-											<a href="#">Learn more about the ship</a>
-										</dd>
-
-										<dt>Starting from</dt>
-										<dd>$ X,XXX USD per person</dd>
-									</dl>
-									<x-itinerary-details.download-button url="#" />
-								</x-itinerary-details.summary-content>
-								<x-itinerary-details.map-lightbox name="map-lightbox" image_id="26" />
-							</x-itinerary-details.summary>
-							<x-itinerary-details.details>
-								Accordion will add here later.<br><br>
-								<h5>Day 1: Arrive in Punta Arenas, Chile</h5>
-								<p>Lorem ipsum dolor sit amet consectetur. Imperdiet sed quam quis morbi ipsum sed odio. Ut dui mi in sed amet quis porttitor nibh. Ac phasellus sit facilisis vestibulum. Quis luctus ornare tortor justo commodo elementum.</p>
-
-							</x-itinerary-details.details>
-						</x-itinerary-details.body>
-
-						<x-itinerary-details.footer>
-							<x-itinerary-details.cta>
-								<x-button size="big" href="#">Request a Quote</x-button>
-								<x-itinerary-details.download-button url="#" />
-							</x-itinerary-details.cta>
-						</x-itinerary-details.footer>
-					</x-itinerary-details.tab>
-				</x-itinerary-details.tabs>
-			</x-itinerary-details>
+			test
 		</x-section>
 	</x-component-demo>
 
@@ -1624,36 +1626,6 @@
 			<p>The whole experience was great. The World Explorer is a beautiful and very comfortable ship, the food was amazing. And of course the landings and cruising the area was a once in a lifetime experience. Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever.</p>
 		</x-review-cards.card>
 	</x-review-cards>
-</x-component-demo>
-
-<x-component-demo :keys="['tabs']">
-	<x-section>
-		<x-tabs current_tab="ultramarine" update_url="yes">
-			<x-tabs.header>
-				<x-tabs.nav
-					id="ultramarine"
-					title="Ultramarine"
-				/>
-				<x-tabs.nav
-					id="ocean-explorer"
-					title="Ocean Explorer"
-				/>
-			</x-tabs.header>
-
-			<x-tabs.content>
-				<x-tabs.tab id="ultramarine">
-					<h3>Ultramarine</h3>
-					<p>The 199-guest Ultramarine is equipped with two twin-engine helicopters, 20 quick-launching Zodiacs, spacious suites, wellness amenities, and numerous outdoor wildlife viewing spaces. This 420 ft long ship can cruise at 16 knots in open water and includes four fully enclosed lifeboats.</p>
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur consequuntur ea ratione sequi? Aperiam asperiores beatae debitis doloribus dolorum earum eveniet excepturi exercitationem ipsum nisi perspiciatis, praesentium provident qui vitae.</p>
-				</x-tabs.tab>
-				<x-tabs.tab id="ocean-explorer">
-					<h3>Ocean Explorer</h3>
-					<p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).</p>
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur consequuntur ea ratione sequi? Aperiam asperiores beatae debitis doloribus dolorum earum eveniet excepturi exercitationem ipsum nisi perspiciatis, praesentium provident qui vitae.</p>
-				</x-tabs.tab>
-			</x-tabs.content>
-		</x-tabs>
-	</x-section>
 </x-component-demo>
 
 <x-component-demo :keys="[ 'icon-info-columns' ]">
@@ -2076,28 +2048,22 @@
 						duration="11"
 						from_price="$ X,XXX USD"
 					/>
-					<x-expedition-details.title title="Crossing the Circle" />
-					<x-expedition-details.regions
-						:regions="[
-							'Drake Passage',
-							'South Shetland Islands',
-							'Antarctic Peninsula',
-							'Antarctic Circle'
-						]"
-					/>
+					<x-expedition-details.title title="Crossing the Circle"/>
+					<x-expedition-details.tags>
+						<x-expedition-details.tag title="Drake Passage"/>
+						<x-expedition-details.tag title="South Shetland Islands"/>
+						<x-expedition-details.tag title="Antarctic Peninsula"/>
+						<x-expedition-details.tag title="Antarctic Circle"/>
+					</x-expedition-details.tags>
 					<x-expedition-details.row>
-						<x-expedition-details.starting-from
-							:starting_from="[
-								'Buenos Aires/Ushuaia',
-								'Argentina',
-							]"
-						/>
-						<x-expedition-details.ships
-							:ships="[
-								'Ocean Explorer',
-								'Ultramarine',
-							]"
-						/>
+						<x-expedition-details.starting-from>
+							<x-expedition-details.starting-from-item title="Buenos Aires/Ushuaia" />
+							<x-expedition-details.starting-from-item title="Argentina" />
+						</x-expedition-details.starting-from>
+						<x-expedition-details.ships>
+							<x-expedition-details.ship title="Ocean Explorer"/>
+							<x-expedition-details.ship title="Ultramarine"/>
+						</x-expedition-details.ships>
 					</x-expedition-details.row>
 
 					<x-expedition-details.row>
@@ -2133,28 +2099,22 @@
 						duration="11"
 						from_price="$ X,XXX USD"
 					/>
-					<x-expedition-details.title title="Crossing the Circle" />
-					<x-expedition-details.regions
-						:regions="[
-							'Drake Passage',
-							'South Shetland Islands',
-							'Antarctic Peninsula',
-							'Antarctic Circle'
-						]"
-					/>
+					<x-expedition-details.title title="Crossing the Circle"/>
+					<x-expedition-details.tags>
+						<x-expedition-details.tag title="Drake Passage"/>
+						<x-expedition-details.tag title="South Shetland Islands"/>
+						<x-expedition-details.tag title="Antarctic Peninsula"/>
+						<x-expedition-details.tag title="Antarctic Circle"/>
+					</x-expedition-details.tags>
 					<x-expedition-details.row>
-						<x-expedition-details.starting-from
-							:starting_from="[
-								'Buenos Aires/Ushuaia',
-								'Argentina',
-							]"
-						/>
-						<x-expedition-details.ships
-							:ships="[
-								'Ocean Explorer',
-								'Ultramarine',
-							]"
-						/>
+						<x-expedition-details.starting-from>
+							<x-expedition-details.starting-from-item title="Buenos Aires/Ushuaia" url="" />
+							<x-expedition-details.starting-from-item title="Argentina" url="" />
+						</x-expedition-details.starting-from>
+						<x-expedition-details.ships>
+							<x-expedition-details.ship title="Ocean Explorer"/>
+							<x-expedition-details.ship title="Ultramarine"/>
+						</x-expedition-details.ships>
 					</x-expedition-details.row>
 
 					<x-expedition-details.row>
@@ -4190,6 +4150,198 @@
 			<a class="next page-numbers" href="/travel-blog/page/2">Next</a>
 		</x-pagination.links>
 	</x-pagination>
+</x-component-demo>
+
+<x-component-demo :keys="[ 'product-options-cards' ]">
+	<x-section>
+		<h4 style="margin-bottom: var(--spacing-6);">Cabins Options</h4>
+		<x-product-options-cards>
+			<x-product-options-cards.cards>
+				<x-product-options-cards.card details_id="some-random-id">
+					<x-product-options-cards.gallery :image_ids="[ 32, 34, 36]">
+						<x-product-options-cards.badge type="standard" />
+					</x-product-options-cards.gallery>
+					<x-product-options-cards.content>
+						<x-product-options-cards.title title="Explorer Suite" />
+						<x-product-options-cards.specifications>
+							<x-product-options-cards.specification
+								label="Occupancy"
+								value="1-2 guests"
+							/>
+							<x-product-options-cards.specification
+								label="Number of Beds"
+								value="1 double or 2 single beds"
+							/>
+							<x-product-options-cards.specification
+								label="Location"
+								value="Deck 3"
+							/>
+							<x-product-options-cards.specification
+								label="Cabin Size"
+								value="226 sq. ft."
+							/>
+						</x-product-options-cards.specifications>
+						<x-product-options-cards.price
+							original_price="$9,395 USD"
+							discounted_price="$7,271 USD"
+						/>
+					</x-product-options-cards.content>
+				</x-product-options-cards.card>
+				<x-product-options-cards.card details_id="some-random-id-2">
+					<x-product-options-cards.gallery :image_ids="[ 32, 34, 36]">
+						<x-product-options-cards.badge type="premium" />
+					</x-product-options-cards.gallery>
+					<x-product-options-cards.content>
+						<x-product-options-cards.title title="Explorer Suite" />
+						<x-product-options-cards.specifications>
+							<x-product-options-cards.specification
+								label="Occupancy"
+								value="1-2 guests"
+							/>
+							<x-product-options-cards.specification
+								label="Number of Beds"
+								value="1 double or 2 single beds"
+							/>
+							<x-product-options-cards.specification
+								label="Location"
+								value="Deck 3"
+							/>
+							<x-product-options-cards.specification
+								label="Cabin Size"
+								value="226 sq. ft."
+							/>
+						</x-product-options-cards.specifications>
+						<x-product-options-cards.price
+							original_price="$9,395 USD"
+							discounted_price="$7,271 USD"
+						/>
+					</x-product-options-cards.content>
+				</x-product-options-cards.card>
+				<x-product-options-cards.card details_id="some-random-id-3">
+					<x-product-options-cards.gallery :image_ids="[ 32, 34, 36]">
+						<x-product-options-cards.badge type="sold out" />
+					</x-product-options-cards.gallery>
+					<x-product-options-cards.content>
+						<x-product-options-cards.title title="Explorer Suite" />
+						<x-product-options-cards.specifications>
+							<x-product-options-cards.specification
+								label="Occupancy"
+								value="1-2 guests"
+							/>
+							<x-product-options-cards.specification
+								label="Number of Beds"
+								value="1 double or 2 single beds"
+							/>
+							<x-product-options-cards.specification
+								label="Location"
+								value="Deck 3"
+							/>
+							<x-product-options-cards.specification
+								label="Cabin Size"
+								value="226 sq. ft."
+							/>
+						</x-product-options-cards.specifications>
+						<x-product-options-cards.price
+							original_price="$9,395 USD"
+							discounted_price="$7,271 USD"
+						/>
+					</x-product-options-cards.content>
+				</x-product-options-cards.card>
+			</x-product-options-cards.cards>
+			<x-product-options-cards.more-details>
+				<x-product-options-cards.card-details id="some-random-id">
+					<x-product-options-cards.card-details-title title="Explorer Suite" />
+					<x-product-options-cards.description>
+						<p>These suites are perfect for people traveling together or solo guests looking to share with like-minded individuals. This suite maximizes interior living space while still offering guests the opportunity to stay connected to the outdoors.</p>
+					</x-product-options-cards.description>
+					<x-product-options-cards.features title="Features and Standard Amenities: ">
+						<p>one double or two single beds, sitting area with sofa bed, picture window, desk, refrigerator, TV, private bathroom with shower and heated floors, hair dryer, bathrobe, slippers, shampoo, conditioner, shower gel, complimentary water bottle.</p>
+					</x-product-options-cards.features>
+					<x-product-options-cards.gallery :image_ids="[ 32, 34, 36]" :full_size="true" />
+					<x-product-options-cards.rooms title="Select Rooms">
+						<x-product-options-cards.room>
+							<x-product-options-cards.room-title-container>
+								<x-product-options-cards.room-title title="Single Room" no_of_guests="1" />
+								<x-product-options-cards.room-subtitle subtitle="Price of the cabin for one guest" />
+							</x-product-options-cards.room-title-container>
+							<x-product-options-cards.room-prices
+								original_price="$9,395 USD"
+								discounted_price="$7,271 USD"
+							/>
+						</x-product-options-cards.room>
+					</x-product-options-cards.rooms>
+					<x-product-options-cards.discounts>
+						<x-product-options-cards.discount name="Save 50% - Offer Code 50PROMO" />
+					</x-product-options-cards.discounts>
+					<x-product-options-cards.cta-buttons>
+						<p>Not ready to book? <a>Request a Quote</a></p>
+						<x-button size="big" color="black">Request a Callback</x-button>
+						<x-button size="big">Book Expedition Now</x-button>
+					</x-product-options-cards.cta-buttons>
+				</x-product-options-cards.card-details>
+				<x-product-options-cards.card-details id="some-random-id-2">
+					<x-product-options-cards.card-details-title title="Explorer Suite" />
+					<x-product-options-cards.description>
+						<p>These suites are perfect for people traveling together or solo guests looking to share with like-minded individuals. This suite maximizes interior living space while still offering guests the opportunity to stay connected to the outdoors.</p>
+					</x-product-options-cards.description>
+					<x-product-options-cards.features title="Features and Standard Amenities: ">
+						<p>one double or two single beds, sitting area with sofa bed, picture window, desk, refrigerator, TV, private bathroom with shower and heated floors, hair dryer, bathrobe, slippers, shampoo, conditioner, shower gel, complimentary water bottle.</p>
+					</x-product-options-cards.features>
+					<x-product-options-cards.gallery :image_ids="[ 32, 34, 36]" :full_size="true" />
+					<x-product-options-cards.rooms title="Select Rooms">
+						<x-product-options-cards.room>
+							<x-product-options-cards.room-title-container>
+								<x-product-options-cards.room-title title="Single Room" no_of_guests="3" />
+								<x-product-options-cards.room-subtitle subtitle="Price of the cabin for one guest" />
+							</x-product-options-cards.room-title-container>
+							<x-product-options-cards.room-prices
+								original_price="$9,395 USD"
+								discounted_price="$7,271 USD"
+							/>
+						</x-product-options-cards.room>
+					</x-product-options-cards.rooms>
+					<x-product-options-cards.discounts>
+						<x-product-options-cards.discount name="Save 50% - Offer Code 50PROMO" />
+					</x-product-options-cards.discounts>
+					<x-product-options-cards.cta-buttons>
+						<p>Not ready to book? <a>Request a Quote</a></p>
+						<x-button size="big" color="black">Request a Callback</x-button>
+						<x-button size="big">Book Expedition Now</x-button>
+					</x-product-options-cards.cta-buttons>
+				</x-product-options-cards.card-details>
+				<x-product-options-cards.card-details id="some-random-id-3">
+					<x-product-options-cards.card-details-title title="Explorer Suite" />
+					<x-product-options-cards.description>
+						<p>These suites are perfect for people traveling together or solo guests looking to share with like-minded individuals. This suite maximizes interior living space while still offering guests the opportunity to stay connected to the outdoors.</p>
+					</x-product-options-cards.description>
+					<x-product-options-cards.features title="Features and Standard Amenities: ">
+						<p>one double or two single beds, sitting area with sofa bed, picture window, desk, refrigerator, TV, private bathroom with shower and heated floors, hair dryer, bathrobe, slippers, shampoo, conditioner, shower gel, complimentary water bottle.</p>
+					</x-product-options-cards.features>
+					<x-product-options-cards.gallery :image_ids="[ 32, 34, 36]" :full_size="true" />
+					<x-product-options-cards.rooms title="Select Rooms">
+						<x-product-options-cards.room>
+							<x-product-options-cards.room-title-container>
+								<x-product-options-cards.room-title title="Single Room" no_of_guests="1" />
+								<x-product-options-cards.room-subtitle subtitle="Price of the cabin for one guest" />
+							</x-product-options-cards.room-title-container>
+							<x-product-options-cards.room-prices
+								original_price="$9,395 USD"
+								discounted_price="$7,271 USD"
+							/>
+						</x-product-options-cards.room>
+					</x-product-options-cards.rooms>
+					<x-product-options-cards.discounts>
+						<x-product-options-cards.discount name="Save 50% - Offer Code 50PROMO" />
+					</x-product-options-cards.discounts>
+					<x-product-options-cards.cta-buttons>
+						<p>Not ready to book? <a>Request a Quote</a></p>
+						<x-button size="big" color="black">Request a Callback</x-button>
+						<x-button size="big">Book Expedition Now</x-button>
+					</x-product-options-cards.cta-buttons>
+				</x-product-options-cards.card-details>
+			</x-product-options-cards.more-details>
+		</x-product-options-cards>
+	</x-section>
 </x-component-demo>
 
 <x-component-demo :keys="[ 'footer' ]">

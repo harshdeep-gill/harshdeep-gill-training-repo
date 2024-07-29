@@ -20,7 +20,7 @@
 				@endif
 				@if( $show_description )
 					<x-info-cards.description>
-						{{ $pre_post_trip['description'] ?? '' }}
+						{!! $pre_post_trip['description'] !!}
 					</x-info-cards.description>
 				@endif
 			</x-info-cards.content>
