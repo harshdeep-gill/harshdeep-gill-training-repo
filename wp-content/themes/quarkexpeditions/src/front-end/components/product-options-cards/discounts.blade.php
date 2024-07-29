@@ -15,7 +15,7 @@
 @endphp
 
 <div @class( $classes )>
-	<h5>Discounts Applied</h5>
+	<h5>{{ __( 'Discounts Applied', 'qrk' ) }}</h5>
 	<div class="product-options-cards__discounts-container">
 		{!! $slot !!}
 	</div>

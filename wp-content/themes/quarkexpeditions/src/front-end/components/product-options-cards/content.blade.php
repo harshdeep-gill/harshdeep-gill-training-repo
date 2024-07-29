@@ -17,9 +17,9 @@
 <div @class( $classes )>
 	{!! $slot !!}
 	<div class="product-options-cards__tooltip">
-		<span>Inc. Transfer Package</span>
+		<span>{{ __( 'Inc. Transfer Package', 'qrk' ) }}</span>
 		<x-tooltip icon="info">
-			Inc. Transfer Package
+			{{ __( 'Inc. Transfer Package', 'qrk' ) }}
 		</x-tooltip>
 	</div>
 </div>

@@ -19,5 +19,5 @@
 	<h4>
 		<x-escape :content="$title" />
 	</h4>
-	<button type="button">Hide details</button>
+	<button type="button">{{ __( 'Hide details', 'qrk' ) }}</button>
 </div>

@@ -17,12 +17,12 @@
 @endphp
 
 <div @class( $classes )>
-	<p>From</p>
+	<p>{{ __( 'From', 'qrk' ) }}</p>
 	<div class="product-options-cards__price-info">
 		<div class="product-options-cards__price-discounted">
 			<h5>
 				<x-escape :content="$original_price" />
-			</h5> per person
+			</h5>{{ __( 'per person', 'qrk' ) }}
 		</div>
 		<div class="product-options-cards__price-original">
 			<x-escape :content="$discounted_price" />
