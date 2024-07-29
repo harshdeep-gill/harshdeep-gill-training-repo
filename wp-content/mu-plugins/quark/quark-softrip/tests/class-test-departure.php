@@ -95,7 +95,7 @@ class Test_Departure extends WP_UnitTestCase {
 
 		// Check if is valid.
 		if ( $departure_post instanceof WP_Post ) {
-			$message = serialize(
+			$message = wp_json_encode(
 				[
 					'test_data'     => $test_data,
 					'departure_two' => $departure_two->get_data(),
@@ -103,7 +103,7 @@ class Test_Departure extends WP_UnitTestCase {
 			);
 
 			// Tests.
-			$this->assertEquals( 'publish', $departure_post->post_status, $message );
+			$this->assertEquals( 'publish', $departure_post->post_status, strval( $message ) );
 		}
 	}
 }
