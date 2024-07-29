@@ -61,11 +61,18 @@ function render( array $attributes = [] ): string {
 			return '';
 		}
 
-		// Get related ship IDs.
-		$expedition_id = $expedition_post->ID;
+		// Get the ships IDs.
+		$ships = get_ships( $expedition_post->ID );
+
+		// Check for ships.
+		if ( empty( $ships ) ) {
+			return '';
+		}
 
 		// Get the ships IDs.
-		$ships_ids = get_ships( $expedition_id );
+		foreach ( $ships as $ship ) {
+			$ships_ids[] = $ship['post']->ID;
+		}
 	}
 
 	// Check if we have posts.
