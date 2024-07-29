@@ -28,7 +28,7 @@ function setup_softrip_db(): void {
 	$db = new Softrip_DB();
 
 	// Get SQL array.
-	$tables = $db->get_db_tables();
+	$tables = $db->get_db_tables_sql();
 
 	// Start table creation.
 	foreach ( $tables as $name => $sql ) {
@@ -53,7 +53,7 @@ function tear_down_softrip_db(): void {
 	$db = new Softrip_DB();
 
 	// Get SQL array.
-	$tables = $db->get_db_tables();
+	$tables = $db->get_db_tables_sql();
 
 	// Truncate tables.
 	foreach ( $tables as $name => $sql ) {

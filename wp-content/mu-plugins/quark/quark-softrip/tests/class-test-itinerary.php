@@ -73,6 +73,7 @@ class Test_Itinerary extends WP_UnitTestCase {
 		// Loop through the departures and set meta.
 		foreach ( self::$departure_ids as $departure_id ) {
 			update_post_meta( absint( $departure_id ), 'departure_unique_id', rand_str( 10 ) );
+			wp_cache_delete( DEPARTURE_POST_TYPE . '_' . absint( $departure_id ), DEPARTURE_POST_TYPE );
 		}
 	}
 

@@ -107,16 +107,16 @@ class Test_Softrip extends WP_UnitTestCase {
 	/**
 	 * Test for get_departures.
 	 *
-	 * @covers \Quark\Softrip\get_db_tables
+	 * @covers \Quark\Softrip\get_db_tables_sql
 	 *
 	 * @return void
 	 */
-	public function test_get_db_tables(): void {
+	public function test_get_db_tables_sql(): void {
 		// Create an instance.
 		$instance = new Softrip_DB();
 
 		// Get the tables.
-		$tables = $instance->get_db_tables();
+		$tables = $instance->get_db_tables_sql();
 
 		// Check the result.
 		$this->assertTrue( 5 === count( $tables ) );
