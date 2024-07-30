@@ -36,7 +36,7 @@ function bootstrap(): void {
 	add_action( SCHEDULE_HOOK, __NAMESPACE__ . '\\cron_do_sync' );
 
 	// Register Stream log connector.
-	add_filter( 'wp_stream_connectors', __NAMESPACE__ . 'register_stream_connector' );
+	add_filter( 'wp_stream_connectors', __NAMESPACE__ . '\\setup_stream_connectors' );
 }
 
 /**
