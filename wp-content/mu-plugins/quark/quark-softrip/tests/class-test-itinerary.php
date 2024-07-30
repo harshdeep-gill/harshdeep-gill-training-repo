@@ -87,11 +87,6 @@ class Test_Itinerary extends WP_UnitTestCase {
 		parent::tear_down_after_class();
 		tear_down_softrip_db();
 
-		// validate if is a post.
-		if ( ! self::$itinerary_post instanceof WP_Post ) {
-			return;
-		}
-
 		// Delete the test itinerary post.
 		wp_delete_post( self::$itinerary_post->ID, true );
 
@@ -318,7 +313,7 @@ class Test_Itinerary extends WP_UnitTestCase {
 		$this->assertNotEquals( $departures, $new_departures );
 
 		// Assert array key not exist.
-		$this->assertArrayNotHasKey( 'ABC-123:2026-01-09', $departures );
-		$this->assertArrayHasKey( 'ABC-123:2026-01-09', $new_departures );
+		$this->assertArrayNotHasKey( 'ABC-123:2026-02-28', $departures );
+		$this->assertArrayHasKey( 'ABC-123:2026-02-28', $new_departures );
 	}
 }

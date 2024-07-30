@@ -272,7 +272,7 @@ class Itinerary extends Softrip_Object {
 			}
 
 			// Check if start date is set and is newer than the previous date.
-			if ( empty( $start_date ) || strtotime( $start_date ) < strtotime( $test_date ) ) {
+			if ( empty( $start_date ) || strtotime( $start_date ) > strtotime( $test_date ) ) {
 				// Use the date as it's newer.
 				$start_date = $test_date;
 			}
