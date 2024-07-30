@@ -125,6 +125,19 @@
 		}
 	}
 
+	&__drawer-open {
+
+		&--right {
+			display: flex;
+			justify-content: flex-end;
+		}
+
+		&--center {
+			display: flex;
+			justify-content: center;
+		}
+	}
+
 	&__footer {
 
 		&--compact {

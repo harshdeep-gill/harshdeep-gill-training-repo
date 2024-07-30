@@ -33,7 +33,7 @@
 						</x-section.content>
 					</x-section>
 					@if ( ! empty( $ship['decks'] ) )
-						<x-drawer.drawer-open :drawer_id="$ship['decks_id']">
+						<x-drawer.drawer-open :drawer_id="$ship['decks_id']" align="center">
 							<x-button type="button" size="big" color="black">
 								{{ __( 'View Deck Plans & Cabins', 'qrk' ) }}
 							</x-button>
