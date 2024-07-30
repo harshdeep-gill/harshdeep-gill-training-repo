@@ -7,10 +7,6 @@
 
 namespace Quark\Theme\Blocks\IconInfoGridItem;
 
-use WP_Block;
-
-const COMPONENT = 'icon-info-grid.item';
-
 /**
  * Bootstrap this block.
  *
@@ -18,7 +14,5 @@ const COMPONENT = 'icon-info-grid.item';
  */
 function bootstrap(): void {
 	// Register the block.
-	register_block_type_from_metadata(
-		__DIR__
-	);
+	register_block_type_from_metadata( __DIR__ );
 }
