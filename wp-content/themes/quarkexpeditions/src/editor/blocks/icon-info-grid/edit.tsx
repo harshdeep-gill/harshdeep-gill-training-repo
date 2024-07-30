@@ -18,6 +18,11 @@ import './../../../front-end/components/icon-info-grid/style.scss';
 import './editor.scss';
 
 /**
+ * Internal dependencies.
+ */
+import Section from '../../components/section';
+
+/**
  * Edit Component.
  *
  * @param {Object} props           Component properties.
@@ -37,8 +42,8 @@ export default function Edit( { className }: BlockEditAttributes ): JSX.Element 
 
 	// Return the block's markup.
 	return (
-		<div { ...blockProps } >
+		<Section { ...blockProps } >
 			<div { ...innerBlockProps } />
-		</div>
+		</Section>
 	);
 }
