@@ -1694,35 +1694,41 @@
 <x-component-demo :keys="[ 'listing-cards' ]">
 	<x-listing-cards>
 		<x-listing-cards.card>
+			<x-listing-cards.overline text="Expedition Guides and Education Team" />
 			<x-listing-cards.title title="Quark Expeditions Invites Guests to “Raise a Glass and Stay Connected” with Free Wi-Fi and Bar Service" />
 			<x-listing-cards.subtitle subtitle="Experience the Polar Regions your own way" />
 			<x-listing-cards.description>
 				<p>Quark Expeditions, the global leader in polar adventures, is pleased to announce that all guests will enjoy complimentary Wi-Fi and alcohol on all voyages as of the Antarctic 2024/25 sailing season.</p>
 			</x-listing-cards.description>
 			<x-listing-cards.cta>
-				<x-button size="big" color="black">Read More</x-button>
+				<x-button size="big" color="black">View All Expeditions</x-button>
+				<x-button size="big">View All Expeditions</x-button>
 			</x-listing-cards.cta>
 		</x-listing-cards.card>
 
 		<x-listing-cards.card>
+			<x-listing-cards.overline text="Expedition Guides and Education Team" />
 			<x-listing-cards.title title="Ask Parker the Polar Bear! Quark Expeditions’ New AI-Driven Partner Portal Makes Every Travel Advisor a Polar Expert" />
 			<x-listing-cards.subtitle subtitle="Experience the Polar Regions your own way" />
 			<x-listing-cards.description>
 				<p>Greenland is waiting to be explored. Browse all of our expedition options to the world's largest island.</p>
 			</x-listing-cards.description>
 			<x-listing-cards.cta>
-				<x-button size="big" color="black">Read More</x-button>
+				<x-button size="big" color="black">View All Expeditions</x-button>
+				<x-button size="big">View All Expeditions</x-button>
 			</x-listing-cards.cta>
 		</x-listing-cards.card>
 
 		<x-listing-cards.card>
+			<x-listing-cards.overline text="Expedition Guides and Education Team" />
 			<x-listing-cards.title title="Quark Expeditions Invites Guests to “Raise a Glass and Stay Connected” with Free Wi-Fi and Bar Service" />
 			<x-listing-cards.subtitle subtitle="Experience the Polar Regions your own way" />
 			<x-listing-cards.description>
 				<p>Quark Expeditions, the global leader in polar adventures, is pleased to announce that all guests will enjoy complimentary Wi-Fi and alcohol on all voyages as of the Antarctic 2024/25 sailing season.</p>
 			</x-listing-cards.description>
 			<x-listing-cards.cta>
-				<x-button size="big" color="black">Read More</x-button>
+				<x-button size="big" color="black">View All Expeditions</x-button>
+				<x-button size="big">View All Expeditions</x-button>
 			</x-listing-cards.cta>
 		</x-listing-cards.card>
 	</x-listing-cards>

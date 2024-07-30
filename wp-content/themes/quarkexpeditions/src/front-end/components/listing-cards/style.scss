@@ -22,6 +22,12 @@
 		}
 	}
 
+	&__overline {
+		color: var(--color-gray-80);
+		font-weight: var(--font-weight-bold);
+		margin-bottom: var(--spacing-2);
+	}
+
 	&__description {
 		margin-top: var(--spacing-5);
 
@@ -45,7 +51,7 @@
 		margin-top: var(--spacing-6);
 
 		@media screen and (min-width: grid-size(md)) {
-			display: block;
+			flex-direction: row;
 		}
 
 		.btn {
