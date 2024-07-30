@@ -9,6 +9,7 @@ import {
 } from '@wordpress/components';
 import {
 	InspectorControls,
+	useBlockProps,
 } from '@wordpress/block-editor';
 
 // @ts-ignore No Module Declaration.
@@ -24,6 +25,11 @@ const { gumponents } = window;
  * External components.
  */
 const { PostRelationshipControl } = gumponents.components;
+
+/**
+ * Styles.
+ */
+import './editor.scss';
 
 /**
  * Internal dependencies.
@@ -47,6 +53,11 @@ export const { name }: { name: string } = metadata;
 export default function Edit( { className, attributes, setAttributes }: BlockEditAttributes ): JSX.Element {
 	// Initialize.
 	let allOptionsSelected = false;
+
+	// eslint-disable-next-line react-hooks/rules-of-hooks
+	const blockProps = useBlockProps( {
+		className: classnames( className, 'quark-ships' ),
+	} );
 
 	// Check if all required options are selected.
 	if ( 'auto' === attributes.selectionType ) {
@@ -82,18 +93,13 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 					}
 				</PanelBody>
 			</InspectorControls>
-			<Section className={ classnames( className ) }>
+			<Section { ...blockProps }>
 				{
 					allOptionsSelected ? (
-						<>
-							<Placeholder icon="layout" label={ __( 'Ships', 'qrk' ) }>
-								<p>{ __( 'Following ships will be displayed', 'qrk' ) }</p>
-							</Placeholder>
-							<ServerSideRender
-								block={ name }
-								attributes={ attributes }
-							/>
-						</>
+						<ServerSideRender
+							block={ name }
+							attributes={ attributes }
+						/>
 					) : (
 						<Placeholder icon="layout" label={ __( 'Ships', 'qrk' ) }>
 							<p>{ __( 'Select a way to display the ships.', 'qrk' ) }</p>

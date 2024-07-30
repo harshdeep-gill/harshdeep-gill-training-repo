@@ -16,6 +16,11 @@ import '../../../front-end/components/media-detail-cards/style.scss';
 import '../../../front-end/components/media-description-cards/style.scss';
 
 /**
+ * Vendor dependencies.
+ */
+import '../../../../dist/vendor/tptabselement.js';
+
+/**
  * Internal dependencies.
  */
 import metadata from './block.json';
