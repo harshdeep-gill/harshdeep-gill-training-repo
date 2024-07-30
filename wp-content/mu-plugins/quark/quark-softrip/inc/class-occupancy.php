@@ -265,13 +265,22 @@ class Occupancy extends Data_Object {
 	 * @return float
 	 */
 	public function get_price_per_person( string $currency = 'USD', bool $discounted = false ): float {
-		// Set the meta key.
-		$meta_key = $discounted ? 'promo_price_per_person' : 'price_per_person';
-
 		// Iterate over the occupancy prices.
 		foreach ( $this->get_occupancy_prices() as $price ) {
 			// Check the price is the correct currency.
 			if ( strtolower( $currency ) === strtolower( strval( $price->get_entry_data( 'currency_code' ) ) ) ) {
+				// Set the meta key.
+				$meta_key = 'price_per_person';
+
+				// Check if we have a discount.
+				$has_code = $discounted ? $price->get_entry_data( 'promotion_code' ) : '';
+
+				// Change the key if we have a discount.
+				if ( ! empty( $has_code ) ) {
+					// Use the discount key.
+					$meta_key = 'promo_price_per_person';
+				}
+
 				// Get the price per person.
 				return floatval( strval( $price->get_entry_data( $meta_key ) ) );
 			}
