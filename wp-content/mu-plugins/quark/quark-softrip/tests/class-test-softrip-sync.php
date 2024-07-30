@@ -23,16 +23,9 @@ class Test_Softrip_Sync extends WP_UnitTestCase {
 	/**
 	 * Itinerary posts.
 	 *
-	 * @var WP_Post[]|[]
+	 * @var array<int|WP_Error>
 	 */
 	protected static array $itinerary_ids = [];
-
-	/**
-	 * Departure posts.
-	 *
-	 * @var WP_Post[]
-	 */
-	protected static array $departure_ids = [];
 
 	/**
 	 * Setup for tests.
@@ -55,7 +48,7 @@ class Test_Softrip_Sync extends WP_UnitTestCase {
 			]
 		);
 
-		//Write above code in loop.
+		// Write above code in loop.
 		$softrip_package_ids = [
 			'ABC-123',
 			'DEF-456',
@@ -96,6 +89,7 @@ class Test_Softrip_Sync extends WP_UnitTestCase {
 			]
 		);
 
+		// List the Cabin softrip codes.
 		$softrip_cabin_ids = [
 			'OEX-SGL',
 			'OEX-DBL',
@@ -124,7 +118,9 @@ class Test_Softrip_Sync extends WP_UnitTestCase {
 
 		// Delete the test itinerary posts.
 		foreach ( self::$itinerary_ids as $itinerary_id ) {
-			wp_delete_post( $itinerary_id, true );
+			if ( ! $itinerary_id instanceof WP_Error ) {
+				wp_delete_post( $itinerary_id, true );
+			}
 		}
 
 		// Reset the itinerary posts.
@@ -221,6 +217,11 @@ class Test_Softrip_Sync extends WP_UnitTestCase {
 		// Loop through the departures and get the cabins.
 		foreach ( $departures as $departure ) {
 			$departure_object = new Departure();
+
+			// Assert the departure object.
+			$this->assertTrue( $departure instanceof WP_Post );
+
+			// Load the departure.
 			$departure_object->load( $departure->ID );
 			$cabins = array_merge( $cabins, $departure_object->get_cabins() );
 		}
@@ -236,6 +237,7 @@ class Test_Softrip_Sync extends WP_UnitTestCase {
 			'ULT-DBL',
 		];
 
+		// Assert the cabin keys.
 		$this->assertEqualSets( $expected_data, $cabin_keys );
 
 		// Load Occupancies.
@@ -272,10 +274,14 @@ class Test_Softrip_Sync extends WP_UnitTestCase {
 		$this->assertEquals( '32200.00', $occupancy_prices['EUR']->get_entry_data( 'price_per_person' ) );
 		$this->assertEquals( '27600.00', $occupancy_prices['GBP']->get_entry_data( 'price_per_person' ) );
 
-		// $this->assertEquals( '23460.00', $occupancy_prices['GBP']->get_entry_data( 'promo_price_per_person' ) );
-		// $this->assertEquals( '15PROMO', $occupancy_prices['GBP']->get_entry_data( 'promotion_code' ) );
+		/**
+		 * Assert the promo related data.
+		 *
+		 * $this->assertEquals( '23460.00', $occupancy_prices['GBP']->get_entry_data( 'promo_price_per_person' ) );
+		 * $this->assertEquals( '15PROMO', $occupancy_prices['GBP']->get_entry_data( 'promotion_code' ) );
+		 */
 
-		// Assert self::$itinerary_ids[3] is int.
+		// Assert 3rd of itinerary_ids is int.
 		$this->assertIsInt( self::$itinerary_ids[3] );
 
 		// Get the lowest price for the itinerary.

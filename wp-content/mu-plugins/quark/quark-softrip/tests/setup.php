@@ -78,7 +78,7 @@ function tear_down_softrip_db(): void {
  *     headers: array{},
  * }
  */
-function mock_http_request( array | false $response = [], array $parsed_args = [], string $url = null ): false | array {
+function mock_http_request( array|false $response = [], array $parsed_args = [], string $url = null ): false|array {
 	// Check if the URL is the one we want to mock.
 	if ( 'http://localhost.com/departures' === $url ) {
 		$data          = [];
@@ -517,7 +517,7 @@ function mock_http_request( array | false $response = [], array $parsed_args = [
 		}
 
 		// Check if data is empty.
-		if ( empty( $data ) ) {
+		if ( [] === $data ) {
 			return [
 				'body'     => wp_json_encode( $data ),
 				'response' => [

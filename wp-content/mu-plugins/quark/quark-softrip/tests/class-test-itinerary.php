@@ -88,7 +88,9 @@ class Test_Itinerary extends WP_UnitTestCase {
 		tear_down_softrip_db();
 
 		// Delete the test itinerary post.
-		wp_delete_post( self::$itinerary_post->ID, true );
+		if ( self::$itinerary_post instanceof WP_Post ) {
+			wp_delete_post( self::$itinerary_post->ID, true );
+		}
 
 		// Delete the test departures.
 		foreach ( self::$departure_ids as $departure_id ) {
