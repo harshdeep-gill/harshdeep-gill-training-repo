@@ -310,6 +310,10 @@ label {
 	&--buttons {
 		margin-top: var(--spacing-6);
 	}
+
+	&:has(>.form__inline-dropdown) {
+		white-space: nowrap;
+	}
 }
 
 .form-field-group {
@@ -468,7 +472,7 @@ tp-multi-select {
 		border-radius: var(--border-radius);
 		background-color: var(--color-gray-10);
 		padding-block: var(--spacing-3);
-		padding-inline: var(--spacing-a1);
+		padding-inline: var(--spacing-1);
 		overflow: hidden;
 		min-width: max-content;
 
