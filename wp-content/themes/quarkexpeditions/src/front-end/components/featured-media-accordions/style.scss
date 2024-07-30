@@ -7,6 +7,16 @@
 		overflow: hidden;
 		border-radius: var(--border-radius-large);
 		margin-bottom: 0;
+		display: none;
+
+		.accordion__content-inner & {
+			display: block;
+			margin-top: var(--spacing-5);
+
+			@media screen and (min-width: grid-size(md)) {
+				display: none;
+			}
+		}
 
 		&[data-hidden] {
 			display: none;
@@ -14,6 +24,7 @@
 
 		@media screen and (min-width: grid-size(md)) {
 			max-width: 600px;
+			display: block;
 		}
 
 		img {
@@ -23,6 +34,14 @@
 			@media screen and ( min-width: grid-size(md) ) {
 				aspect-ratio: 8 / 9;
 			}
+		}
+	}
+
+	.two-columns__column:first-child {
+		display: none;
+
+		@media screen and (min-width: grid-size(md)) {
+			display: block;
 		}
 	}
 }
