@@ -1161,7 +1161,7 @@
 	<x-component-demo :keys="[ 'icon-info-grid' ]">
 		<x-section>
 			<x-section.heading>
-				<x-section.title title="What’s Included" align="left" />
+				<x-section.title heading_level="2" title="What’s Included" align="left" />
 			</x-section.heading>
 			<x-section.description>Discover what your Crossing the Circle Expedition includes</x-section.description>
 
