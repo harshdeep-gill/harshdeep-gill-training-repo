@@ -33,7 +33,9 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 					],
 					'post_status'          => '',
 					'taxonomy'             => '',
-					'filters'              => '',
+					'filters'              => [
+						0 => 'search',
+					],
 					'return_format'        => 'id',
 					'min'                  => '',
 					'max'                  => '',
@@ -62,7 +64,9 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 					],
 					'post_status'          => '',
 					'taxonomy'             => '',
-					'filters'              => '',
+					'filters'              => [
+						0 => 'search',
+					],
 					'return_format'        => 'id',
 					'min'                  => '',
 					'max'                  => '',
@@ -89,7 +93,9 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 					],
 					'post_status'          => '',
 					'taxonomy'             => '',
-					'filters'              => '',
+					'filters'              => [
+						0 => 'search',
+					],
 					'return_format'        => 'object',
 					'min'                  => '',
 					'max'                  => '',
@@ -116,7 +122,9 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 					],
 					'post_status'          => '',
 					'taxonomy'             => '',
-					'filters'              => '',
+					'filters'              => [
+						0 => 'search',
+					],
 					'return_format'        => 'object',
 					'min'                  => '',
 					'max'                  => '',
