@@ -95,6 +95,15 @@ export class FeaturedMediaAccordions extends HTMLElement {
 
 			// Show the linked image.
 			this.showLinkedImage( accordionItemId );
+
+			// Close other accordions
+			this.accordionItems.forEach( ( accordionItem ) => {
+				// Check if it is the same.
+				if ( accordionItem.id !== accordionItemId ) {
+					// Close the accordion item.
+					accordionItem.removeAttribute( 'open' );
+				}
+			} );
 		} );
 	}
 }
