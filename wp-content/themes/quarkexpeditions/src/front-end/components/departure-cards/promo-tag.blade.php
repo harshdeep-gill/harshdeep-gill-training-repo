@@ -8,6 +8,6 @@
 	}
 @endphp
 
-<p class="departure-cards__promo-tag">
+<p class="departure-cards__promo-tag overline">
 	<x-escape :content="$text" />
 </p>

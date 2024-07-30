@@ -4,6 +4,6 @@
 	}
 @endphp
 
-<div class="departure-cards__body-column">
+<div class="departure-cards__specification-label">
 	{!! $slot !!}
 </div>

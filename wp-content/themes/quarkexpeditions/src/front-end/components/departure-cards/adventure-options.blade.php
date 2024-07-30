@@ -7,12 +7,19 @@
 		return;
 	}
 
-	$options = implode( ', ', $options ?? '' )
+	$options_string = implode( ', ', $options ?? '' )
 @endphp
 
 <div class="departure-cards__options">
-	<p class="departure-cards__options-label">{{ __( 'Adventure Options', 'qrk' ) }}</p>
-	<div class="departure-cards__options-content">
-		{{ $options }}
-	</div>
+	{{ $options_string }}
+
+	<x-tooltip icon="info">
+		<ul class="departure-cards__options-list">
+			@foreach ( $options as $option )
+				<li class="departure-cards__option">
+					<x-escape :content="$option" />
+				</li>
+			@endforeach
+		</ul>
+	</x-tooltip>
 </div>

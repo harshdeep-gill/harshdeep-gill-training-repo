@@ -3964,27 +3964,52 @@
 			<x-departure-cards.card-banner text="Quark Protection Promise" />
 			<x-departure-cards.header>
 				<x-departure-cards.title title="Crossing the Cirlc: Southern Expedition" />
-				<x-departure-cards.departing-on date="March 1, 2024" />
 				<x-departure-cards.promo-tag text="Save up to 24%" />
 			</x-departure-cards.header>
 			<x-departure-cards.body>
 				<x-departure-cards.body-column>
 					<x-departure-cards.specifications>
-						<dl>
-							<dt>Itinerary</dt>
-							<dd>12 days <br> (March 1-14, 2024)</dd>
+						<x-departure-cards.specification-item>
+							<x-departure-cards.specification-label>
+								Itinerary
+							</x-departure-cards.specification-label>
+							<x-departure-cards.specification-value>
+								12 days <br> (March 1-14, 2024)
+							</x-departure-cards.specification-value>
+						</x-departure-cards.specification-item>
 
-							<dt>Starting from</dt>
-							<dd>Buenos Aires, Argentina</dd>
+						<x-departure-cards.specification-item>
+							<x-departure-cards.specification-label>
+								Starting from
+							</x-departure-cards.specification-label>
+							<x-departure-cards.specification-value>
+								Buenos Aires, Argentina
+							</x-departure-cards.specification-value>
+						</x-departure-cards.specification-item>
 
-							<dt>Ship</dt>
-							<dd>Ultramarine</dd>
+						<x-departure-cards.specification-item>
+							<x-departure-cards.specification-label>
+								Ship
+							</x-departure-cards.specification-label>
+							<x-departure-cards.specification-value>
+								Ultramarine
+							</x-departure-cards.specification-value>
+						</x-departure-cards.specification-item>
 
-							<dt>Languages</dt>
-							<dd>English, French</dd>
+						<x-departure-cards.specification-item>
+							<x-departure-cards.specification-label>
+								Languages
+							</x-departure-cards.specification-label>
+							<x-departure-cards.specification-value>
+								English, French
+							</x-departure-cards.specification-value>
+						</x-departure-cards.specification-item>
 
-							<dt>Adventure Options</dt>
-							<dd>
+						<x-departure-cards.specification-item>
+							<x-departure-cards.specification-label>
+								Adventure Options
+							</x-departure-cards.specification-label>
+							<x-departure-cards.specification-value>
 								<x-departure-cards.adventure-options
 									:options="[
 										'Sea Kayaking',
@@ -3992,8 +4017,8 @@
 										'Option 3',
 									]"
 								/>
-							</dd>
-						</dl>
+							</x-departure-cards.specification-value>
+						</x-departure-cards.specification-item>
 					</x-departure-cards.specifications>
 
 					<x-departure-cards.offers 
@@ -4012,9 +4037,105 @@
 					<x-departure-cards.price
 						original_price="$9,395 USD"
 						discounted_price="$7,271 USD"
-						transfer_package_text=""
 					/>
-					<x-button>View Cabin Pricing and Options</x-button>
+
+					<x-departure-cards.transfer_package drawer_id="departure-cards-id-1">
+						test 1
+					</x-departure-cards.transfer_package>
+
+					<x-button size="big">View Cabin Pricing & Options</x-button>
+				</x-departure-cards.body-column>
+			</x-departure-cards.body>
+
+			<x-departure-cards.more-details>
+				{{-- <x-product-options-cards> // Component Ticket -> https://tuispecialist.atlassian.net/browse/QE-304 --}}
+			</x-departure-cards.more-details>
+		</x-departure-cards.card>
+
+		<x-departure-cards.card>
+			<x-departure-cards.card-banner text="Quark Protection Promise" />
+			<x-departure-cards.header>
+				<x-departure-cards.departing-on date="March 1, 2024" />
+				<x-departure-cards.promo-tag text="Save up to 24%" />
+			</x-departure-cards.header>
+			<x-departure-cards.body>
+				<x-departure-cards.body-column>
+					<x-departure-cards.specifications>
+						<x-departure-cards.specification-item>
+							<x-departure-cards.specification-label>
+								Itinerary
+							</x-departure-cards.specification-label>
+							<x-departure-cards.specification-value>
+								12 days <br> (March 1-14, 2024)
+							</x-departure-cards.specification-value>
+						</x-departure-cards.specification-item>
+
+						<x-departure-cards.specification-item>
+							<x-departure-cards.specification-label>
+								Starting from
+							</x-departure-cards.specification-label>
+							<x-departure-cards.specification-value>
+								Buenos Aires, Argentina
+							</x-departure-cards.specification-value>
+						</x-departure-cards.specification-item>
+
+						<x-departure-cards.specification-item>
+							<x-departure-cards.specification-label>
+								Ship
+							</x-departure-cards.specification-label>
+							<x-departure-cards.specification-value>
+								Ultramarine
+							</x-departure-cards.specification-value>
+						</x-departure-cards.specification-item>
+
+						<x-departure-cards.specification-item>
+							<x-departure-cards.specification-label>
+								Languages
+							</x-departure-cards.specification-label>
+							<x-departure-cards.specification-value>
+								English, French
+							</x-departure-cards.specification-value>
+						</x-departure-cards.specification-item>
+
+						<x-departure-cards.specification-item>
+							<x-departure-cards.specification-label>
+								Adventure Options
+							</x-departure-cards.specification-label>
+							<x-departure-cards.specification-value>
+								<x-departure-cards.adventure-options
+									:options="[
+										'Sea Kayaking',
+										'Standup Paddleboarding',
+										'Option 3',
+									]"
+								/>
+							</x-departure-cards.specification-value>
+						</x-departure-cards.specification-item>
+					</x-departure-cards.specifications>
+
+					<x-departure-cards.offers 
+						title="Available Offers"
+						:items="[
+							'Save 30% on Premium Cabins',
+							'$1000 Flight Credit',
+							'Save 25% on Standard Cabins',
+							'Offer 4',
+							'Offer 5'
+						]"
+					/>
+				</x-departure-cards.body-column>
+
+				<x-departure-cards.body-column>
+					<x-departure-cards.price
+						original_price="$9,395 USD"
+						discounted_price="$7,271 USD"
+					/>
+
+					<x-departure-cards.transfer_package drawer_id="departure-cards-id-2">
+						test 2
+					</x-departure-cards.transfer_package>
+
+					<x-button size="big">View Cabin Pricing & Options</x-button>
 				</x-departure-cards.body-column>
 			</x-departure-cards.body>
 

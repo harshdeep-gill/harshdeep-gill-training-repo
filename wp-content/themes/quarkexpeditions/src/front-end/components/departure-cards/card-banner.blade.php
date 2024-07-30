@@ -8,7 +8,7 @@
 	}
 @endphp
 
-<div class="departure-cards__text">
+<div class="departure-cards__card-banner overline">
 	<x-svg name="shield" />
 	<span><x-escape :content="$text" /></span>
 </div>
