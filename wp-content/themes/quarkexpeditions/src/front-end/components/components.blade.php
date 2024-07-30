@@ -665,6 +665,24 @@
 						<x-form.option value="3" label="Option 3">Option 3</x-form.option>
 					</x-form.select>
 				</x-form.field>
+				<div style="display: flex; ">
+					<x-form.field :validation="[ 'required' ]">
+						<x-form.inline-dropdown label="Currency">
+							<x-form.option value="USD" label="$ USD" selected="yes">$ USD</x-form.option>
+							<x-form.option value="CAD" label="$ CAD">$ CAD</x-form.option>
+							<x-form.option value="AUD" label="$ AUD">$ AUD</x-form.option>
+							<x-form.option value="GBP" label="£ GBP">£ GBP</x-form.option>
+						</x-form.inline-dropdown>
+					</x-form.field>
+					<x-form.field>
+						<x-form.inline-dropdown label="Sort">
+							<x-form.option value="date-now" label="Date (upcoming to later)" selected="yes">Date (upcoming to later)</x-form.option>
+							<x-form.option value="date-later" label="Date (later to upcoming)">Date (later to upcoming)</x-form.option>
+							<x-form.option value="price-low" label="Price (low to high)">Price (low to high)</x-form.option>
+							<x-form.option value="price-high" label="Price (high to low)">Price (high to low)</x-form.option>
+						</x-form.inline-dropdown>
+					</x-form.field>
+				</div>
 				<x-form.field>
 					<x-form.textarea label="What else would you like us to know?" placeholder="eg Lorem ipsum"></x-form.textarea>
 				</x-form.field>
