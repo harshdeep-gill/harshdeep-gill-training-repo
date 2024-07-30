@@ -4368,6 +4368,57 @@
 	</x-section>
 </x-component-demo>
 
+<x-component-demo :keys="[ 'featured-media-accordions' ]">
+	<x-section>
+		<x-featured-media-accordions>
+			<x-two-columns>
+				<x-two-columns.column>
+					{{-- <x-featured-media-accordions.featured-image image_id="123" id="item-1" />
+					<x-featured-media-accordions.featured-image image_id="123" id="item-2" />
+					<x-featured-media-accordions.featured-image image_id="123" id="item-3" />
+					<x-featured-media-accordions.featured-image image_id="123" id="item-4" />
+					<x-featured-media-accordions.featured-image image_id="123" id="item-5" /> --}}
+					<h1>hello</h1>
+				</x-two-columns.column>
+				<x-two-columns.column>
+					<x-accordion>
+						<x-accordion.item id="item-1">
+							<x-accordion.item-handle title="Spots for Socialising" />
+							<x-accordion.item-content>
+								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.</p>
+							</x-accordion.item-content>
+						</x-accordion.item>
+						<x-accordion.item id="item-2">
+							<x-accordion.item-handle title="Spots for Socialising" />
+							<x-accordion.item-content>
+								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.</p>
+							</x-accordion.item-content>
+						</x-accordion.item>
+						<x-accordion.item id="item-3">
+							<x-accordion.item-handle title="Spots for Socialising" />
+							<x-accordion.item-content>
+								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.</p>
+							</x-accordion.item-content>
+						</x-accordion.item>
+						<x-accordion.item id="item-4">
+							<x-accordion.item-handle title="Spots for Socialising" />
+							<x-accordion.item-content>
+								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.</p>
+							</x-accordion.item-content>
+						</x-accordion.item>
+						<x-accordion.item id="item-5">
+							<x-accordion.item-handle title="Spots for Socialising" />
+							<x-accordion.item-content>
+								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.</p>
+							</x-accordion.item-content>
+						</x-accordion.item>
+					</x-accordion>
+				</x-two-columns.column>
+			</x-two-columns>
+		</x-featured-media-accordions>
+	</x-section>
+</x-component-demo>
+
 <x-component-demo :keys="[ 'footer' ]">
 	@php
 		$social_links = [
