@@ -390,4 +390,73 @@ class Departure extends Softrip_Object {
 		// Return the lowest found.
 		return $lowest;
 	}
+
+	/**
+	 * Get Cabin details.
+	 *
+	 * @param string $cabin_id Optional cabin ID.
+	 *
+	 * @return array<int|string, array{
+	 *     name: mixed,
+	 *     description: string,
+	 *     gallery: mixed,
+	 *     type: string,
+	 *     specifications: array{
+	 *          availabilityStatus: mixed,
+	 *          availabilityDescription: string,
+	 *          spacesAvailable: mixed,
+	 *          occupancy: string,
+	 *          location: string,
+	 *          size: string,
+	 *          bed_configuration: mixed
+	 *      },
+	 *     from_price: array<string, array<string, float>>,
+	 *     occupancies: array<int<0, max>, array<string, mixed>>
+	 * }>
+	 */
+	public function get_cabin_details( string $cabin_id = '' ): array {
+		// Get all cabins.
+		$cabins = $this->get_cabins();
+
+		// Set up the return array.
+		$return = [];
+
+		// Iterate over the cabins.
+		foreach ( $cabins as $cabin ) {
+			// Check if cabin has a valid cabin post.
+			if ( ! $cabin->get_data()['post'] instanceof WP_Post ) {
+				continue;
+			}
+
+			// Set up the cabin structure.
+			$struct = [
+				'name'           => $cabin->get_post_meta( 'cabin_name' ),
+				'description'    => $cabin->get_data()['post']->post_content,
+				'gallery'        => $cabin->get_post_meta( 'cabin_images' ),
+				'type'           => $cabin->get_cabin_class(),
+				'specifications' => [
+					'availabilityStatus'      => $cabin->get_entry_data( 'availability_status' ),
+					'availabilityDescription' => $cabin->get_availability_description(),
+					'spacesAvailable'         => $cabin->get_entry_data( 'spaces_available' ),
+					'occupancy'               => $cabin->get_pax_range(),
+					'location'                => $cabin->get_location(),
+					'size'                    => $cabin->get_size(),
+					'bed_configuration'       => $cabin->get_post_meta( 'cabin_bed_configuration' ),
+				],
+				'from_price'     => $cabin->get_lowest_prices(),
+				'occupancies'    => [],
+			];
+
+			// Iterate over the occupancies.
+			foreach ( $cabin->get_occupancies() as $occupancy ) {
+				$struct['occupancies'][] = $occupancy->get_detail();
+			}
+
+			// Add to the return array.
+			$return[ $cabin->get_entry_data( 'cabin_category_id' ) ] = $struct;
+		}
+
+		// Return the cabin details array.
+		return $return;
+	}
 }

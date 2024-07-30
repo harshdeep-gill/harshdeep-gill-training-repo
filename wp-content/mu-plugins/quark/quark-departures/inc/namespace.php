@@ -7,6 +7,7 @@
 
 namespace Quark\Departures;
 
+use Quark\Softrip\Departure;
 use WP_Post;
 
 use function Quark\Itineraries\get as get_itinerary;
@@ -342,4 +343,36 @@ function get_departure_region_and_season( int $post_id = 0 ): string {
 
 	// Return region and season.
 	return $region . '-' . $season;
+}
+
+/**
+ * Get departure cabin details.
+ *
+ * @param int $departure_id The departure ID.
+ *
+ * @return array<int|string, array{
+ *     name: mixed,
+ *     description: string,
+ *     gallery: mixed,
+ *     type: string,
+ *     specifications: array{
+ *          availabilityStatus: mixed,
+ *          availabilityDescription: string,
+ *          spacesAvailable: mixed,
+ *          occupancy: string,
+ *          location: string,
+ *          size: string,
+ *          bed_configuration: mixed
+ *      },
+ *     from_price: array<string, array<string, float>>,
+ *     occupancies: array<int<0, max>, array<string, mixed>>
+ * }>
+ */
+function get_departure_cabin_details( int $departure_id = 0 ): array {
+	// Get the departure object.
+	$departure = new Departure();
+	$departure->load( $departure_id );
+
+	// Return the cabin details.
+	return $departure->get_cabin_details();
 }
