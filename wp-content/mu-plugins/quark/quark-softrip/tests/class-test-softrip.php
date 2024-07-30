@@ -43,6 +43,9 @@ class Test_Softrip extends WP_UnitTestCase {
 	 * @return void
 	 */
 	public function set_up(): void {
+		// Run parent.
+		parent::set_up();
+
 		// Mock the response for the POST request.
 		add_filter( 'pre_http_request', 'Quark\Softrip\mock_http_request', 10, 3 );
 	}
@@ -53,6 +56,9 @@ class Test_Softrip extends WP_UnitTestCase {
 	 * @return void
 	 */
 	public function tear_down(): void {
+		// Run parent.
+		parent::tear_down();
+
 		// Remove the filter.
 		remove_filter( 'pre_http_request', 'Quark\Softrip\mock_http_request' );
 	}
@@ -136,11 +142,37 @@ class Test_Softrip extends WP_UnitTestCase {
 	 */
 	public function test_cron_add_schedule(): void {
 		// Get the schedules.
-		$schedules = cron_add_schedule( [] );
+		$schedules = apply_filters( 'cron_schedules', [] );
 
 		// Check the result.
+		$this->assertIsArray( $schedules );
 		$this->assertNotEmpty( $schedules );
 		$this->assertArrayHasKey( SCHEDULE_RECCURANCE, $schedules );
 		$this->assertArrayHasKey( 'qrk_softrip_4_hourly', $schedules );
+	}
+
+	/**
+	 * Test for cron_schedule_sync.
+	 *
+	 * @covers \Quark\Softrip\cron_schedule_sync
+	 *
+	 * @return void
+	 */
+	public function test_cron_schedule_sync(): void {
+		// Clear any existing scheduled event for testing.
+		wp_clear_scheduled_hook( SCHEDULE_HOOK );
+		$timestamp = wp_next_scheduled( SCHEDULE_HOOK );
+		$this->assertFalse( $timestamp );
+
+		// Call the function to schedule the event.
+		cron_schedule_sync();
+
+		// Check if the event is scheduled.
+		$timestamp = wp_next_scheduled( SCHEDULE_HOOK );
+		$this->assertNotFalse( $timestamp );
+
+		// Verify the schedule interval.
+		$schedule = wp_get_schedule( SCHEDULE_HOOK );
+		$this->assertEquals( SCHEDULE_RECCURANCE, $schedule );
 	}
 }

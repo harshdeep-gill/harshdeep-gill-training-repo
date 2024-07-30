@@ -29,7 +29,7 @@ function bootstrap(): void {
 	add_filter( 'cron_schedules', __NAMESPACE__ . '\\cron_add_schedule' ); // phpcs:ignore WordPress.WP.CronInterval -- Verified > 4 Hour.
 
 	// Schedule our sync task.
-	add_filter( 'admin_init', __NAMESPACE__ . '\\cron_schedule_sync' );
+	add_filter( 'init', __NAMESPACE__ . '\\cron_schedule_sync' );
 
 	// Register our sync hook.
 	add_action( SCHEDULE_HOOK, __NAMESPACE__ . '\\do_sync' );

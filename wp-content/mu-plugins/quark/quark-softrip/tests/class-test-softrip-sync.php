@@ -10,10 +10,12 @@ namespace Quark\Softrip;
 use WP_UnitTestCase;
 use WP_Post;
 use WP_Error;
+use WP_Query;
 
 use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
 use const Quark\CabinCategories\POST_TYPE as CABIN_CATEGORY_POST_TYPE;
+use const Quark\Ships\POST_TYPE as SHIP_POST_TYPE;
 
 /**
  * Class Test_Softrip_Sync.
@@ -104,6 +106,32 @@ class Test_Softrip_Sync extends WP_UnitTestCase {
 			update_post_meta( absint( $cabin_id ), 'cabin_category_id', $softrip_cabin_ids[ $index ] );
 			wp_cache_delete( CABIN_CATEGORY_POST_TYPE . '_' . absint( $cabin_id ), CABIN_CATEGORY_POST_TYPE );
 		}
+
+		// Create ship posts.
+		$ship_ids = self::factory()->post->create_many(
+			5,
+			[
+				'post_title'   => 'Test Ship',
+				'post_content' => 'Ship content',
+				'post_status'  => 'publish',
+				'post_type'    => SHIP_POST_TYPE,
+			]
+		);
+
+		// List the Ship softrip codes.
+		$softrip_ship_ids = [
+			'OEX',
+			'GHI',
+			'JKL',
+			'ULT',
+			'MNO',
+		];
+
+		// Loop through the ships and set meta.
+		foreach ( $ship_ids as $index => $ship_id ) {
+			update_post_meta( absint( $ship_id ), 'ship_id', $softrip_ship_ids[ $index ] );
+			wp_cache_delete( SHIP_POST_TYPE . '_' . absint( $ship_id ), SHIP_POST_TYPE );
+		}
 	}
 
 	/**
@@ -125,6 +153,42 @@ class Test_Softrip_Sync extends WP_UnitTestCase {
 
 		// Reset the itinerary posts.
 		self::$itinerary_ids = [];
+
+		// Delete the test cabin posts.
+		$cabin_query = new WP_Query(
+			[
+				'post_type'              => CABIN_CATEGORY_POST_TYPE,
+				'posts_per_page'         => -1,
+				'no_found_rows'          => true,
+				'update_post_meta_cache' => false,
+				'update_post_term_cache' => false,
+				'fields'                 => 'ids',
+				'ignore_sticky_posts'    => true,
+			]
+		);
+
+		// Loop through the cabin posts.
+		foreach ( $cabin_query->posts as $cabin_id ) {
+			wp_delete_post( is_int( $cabin_id ) ? $cabin_id : $cabin_id->ID, true );
+		}
+
+		// Delete the test ship posts.
+		$ship_query = new WP_Query(
+			[
+				'post_type'              => SHIP_POST_TYPE,
+				'posts_per_page'         => -1,
+				'no_found_rows'          => true,
+				'update_post_meta_cache' => false,
+				'update_post_term_cache' => false,
+				'fields'                 => 'ids',
+				'ignore_sticky_posts'    => true,
+			]
+		);
+
+		// Loop through the ship posts.
+		foreach ( $ship_query->posts as $ship_id ) {
+			wp_delete_post( is_int( $ship_id ) ? $ship_id : $ship_id->ID, true );
+		}
 	}
 
 	/**
@@ -133,6 +197,9 @@ class Test_Softrip_Sync extends WP_UnitTestCase {
 	 * @return void
 	 */
 	public function set_up(): void {
+		// Run parent.
+		parent::set_up();
+
 		// Mock the response for the POST request.
 		add_filter( 'pre_http_request', 'Quark\Softrip\mock_http_request', 10, 3 );
 	}
@@ -143,6 +210,9 @@ class Test_Softrip_Sync extends WP_UnitTestCase {
 	 * @return void
 	 */
 	public function tear_down(): void {
+		// Run parent.
+		parent::tear_down();
+
 		// Remove the filter.
 		remove_filter( 'pre_http_request', 'Quark\Softrip\mock_http_request' );
 	}
@@ -182,6 +252,11 @@ class Test_Softrip_Sync extends WP_UnitTestCase {
 	 * Test for do_sync.
 	 *
 	 * @covers \Quark\Softrip\do_sync
+	 * @covers \Quark\Softrip\batch_request
+	 * @covers \Quark\Softrip\Softrip_Sync::sync_softrip_code
+	 * @covers \Quark\Softrip\Softrip_Sync::get_lowest_price
+	 * @covers \Quark\Softrip\Softrip_Sync::get_starting_date
+	 * @covers \Quark\Softrip\Softrip_Sync::get_ending_date
 	 *
 	 * @return void
 	 */
@@ -297,5 +372,21 @@ class Test_Softrip_Sync extends WP_UnitTestCase {
 
 		// Assert the ending date.
 		$this->assertEquals( '2026-02-01', $itinerary->get_ending_date() );
+
+		// Get the related Ship.
+		$related_ships = $itinerary->get_related_ships();
+
+		// Assert the related ships.
+		$this->assertCount( 1, $related_ships );
+
+		// Get the ship.
+		$ship = array_shift( $related_ships );
+
+		// Assert the ship post.
+		$this->assertIsArray( $ship );
+		$this->assertIsArray( $ship['post_meta'] );
+
+		// Assert the ship code.
+		$this->assertEquals( 'ULT', $ship['post_meta']['ship_id'] );
 	}
 }

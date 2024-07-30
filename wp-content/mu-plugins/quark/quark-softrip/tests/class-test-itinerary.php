@@ -110,6 +110,9 @@ class Test_Itinerary extends WP_UnitTestCase {
 	 * @return void
 	 */
 	public function set_up(): void {
+		// Run parent.
+		parent::set_up();
+
 		// Mock the response for the POST request.
 		add_filter( 'pre_http_request', 'Quark\Softrip\mock_http_request', 10, 3 );
 	}
@@ -120,6 +123,9 @@ class Test_Itinerary extends WP_UnitTestCase {
 	 * @return void
 	 */
 	public function tear_down(): void {
+		// Run parent.
+		parent::tear_down();
+
 		// Remove the filter.
 		remove_filter( 'pre_http_request', 'Quark\Softrip\mock_http_request' );
 	}
@@ -196,6 +202,8 @@ class Test_Itinerary extends WP_UnitTestCase {
 	 * Test get_departures.
 	 *
 	 * @covers \Quark\Softrip\Itinerary::get_departures()
+	 * @covers \Quark\Softrip\Itinerary::load_departures()
+	 * @covers \Quark\Softrip\Itinerary::ensure_departures_loaded()
 	 *
 	 * @return void
 	 */
@@ -212,12 +220,17 @@ class Test_Itinerary extends WP_UnitTestCase {
 		$itinerary = new Itinerary( $post->ID );
 
 		// Setup departure.
-		$departure  = $itinerary->get_departure( 'test_departure' );
 		$departures = $itinerary->get_departures();
 
 		// Test if in array.
-		$this->assertTrue( $departures['test_departure'] instanceof Departure );
-		$this->assertEquals( $departure, $departures['test_departure'] );
+		$this->assertIsArray( $departures );
+		$this->assertCount( 15, $departures );
+
+		// Test if is a departure.
+		$departure = $itinerary->get_departure( 'test_departure' );
+
+		// Test get_id return false.
+		$this->assertEmpty( $departure->get_id() );
 	}
 
 	/**
@@ -317,5 +330,73 @@ class Test_Itinerary extends WP_UnitTestCase {
 		// Assert array key not exist.
 		$this->assertArrayNotHasKey( 'ABC-123:2026-02-28', $departures );
 		$this->assertArrayHasKey( 'ABC-123:2026-02-28', $new_departures );
+
+		// Clean up - Delete the new departure.
+		wp_delete_post( $new_departures['ABC-123:2026-02-28']->get_id(), true );
+
+		// Reset DB - remove entries for other test cases.
+		tear_down_softrip_db();
+	}
+
+	/**
+	 * Test get_published_departures.
+	 *
+	 * @covers \Quark\Softrip\Itinerary::get_published_departures()
+	 *
+	 * @return void
+	 */
+	public function test_get_published_departures(): void {
+		// Get post.
+		$post = self::$itinerary_post;
+
+		// Test if is a post.
+		if ( ! $post instanceof WP_Post ) {
+			return;
+		}
+
+		// Create a new itinerary.
+		$itinerary = new Itinerary( $post->ID );
+
+		// Get departures.
+		$departures = $itinerary->get_departures();
+
+		// Assert Count.
+		$this->assertEquals( 15, count( $departures ) );
+
+		// Get published departures.
+		$published_departures = $itinerary->get_published_departures();
+
+		// Assert Count.
+		$this->assertEquals( 15, count( $published_departures ) );
+
+		// Create a new itinerary.
+		$itinerary = new Itinerary( $post->ID );
+
+		// Create a draft departure.
+		$draft_departure_id = self::factory()->post->create(
+			[
+				'post_type'   => DEPARTURE_POST_TYPE,
+				'post_status' => 'draft',
+				'post_parent' => $post->ID,
+				'meta_input'  => [
+					'departure_unique_id' => rand_str( 10 ),
+				],
+			]
+		);
+
+		// Update departures.
+		$itinerary->update_departures();
+
+		// Get all departures.
+		$all_departures = $itinerary->get_departures();
+
+		// Assert Count.
+		$this->assertEquals( 17, count( $all_departures ) );
+
+		// Get published departures.
+		$published_departures = $itinerary->get_published_departures();
+
+		// Assert Count.
+		$this->assertEquals( 16, count( $published_departures ) );
 	}
 }

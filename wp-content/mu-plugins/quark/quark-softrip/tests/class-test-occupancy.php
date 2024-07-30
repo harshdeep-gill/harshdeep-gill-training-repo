@@ -47,6 +47,9 @@ class Test_Occupancy extends WP_UnitTestCase {
 	 * @return void
 	 */
 	public function set_up(): void {
+		// Run parent.
+		parent::set_up();
+
 		// Mock the response for the POST request.
 		add_filter( 'pre_http_request', 'Quark\Softrip\mock_http_request', 10, 3 );
 	}
@@ -57,6 +60,9 @@ class Test_Occupancy extends WP_UnitTestCase {
 	 * @return void
 	 */
 	public function tear_down(): void {
+		// Run parent.
+		parent::tear_down();
+
 		// Remove the filter.
 		remove_filter( 'pre_http_request', 'Quark\Softrip\mock_http_request' );
 	}
