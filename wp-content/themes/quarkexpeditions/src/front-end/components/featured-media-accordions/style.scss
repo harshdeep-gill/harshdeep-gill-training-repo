@@ -1,0 +1,28 @@
+@import "../../scss/";
+
+.featured-media-accordions {
+	display: block;
+
+	&__image {
+		overflow: hidden;
+		border-radius: var(--border-radius-large);
+		margin-bottom: 0;
+
+		&[data-hidden] {
+			display: none;
+		}
+
+		@media screen and (min-width: grid-size(md)) {
+			max-width: 600px;
+		}
+
+		img {
+			aspect-ratio: 26 / 15;
+			width: 100%;
+
+			@media screen and ( min-width: grid-size(md) ) {
+				aspect-ratio: 8 / 9;
+			}
+		}
+	}
+}

@@ -4373,11 +4373,11 @@
 		<x-featured-media-accordions>
 			<x-two-columns>
 				<x-two-columns.column>
-					<x-featured-media-accordions.featured-image image_id="123" id="item-1" />
-					<x-featured-media-accordions.featured-image image_id="123" id="item-2" />
-					<x-featured-media-accordions.featured-image image_id="123" id="item-3" />
-					<x-featured-media-accordions.featured-image image_id="123" id="item-4" />
-					<x-featured-media-accordions.featured-image image_id="123" id="item-5" />
+					<x-featured-media-accordions.featured-image image_id="122" id="item-1" />
+					<x-featured-media-accordions.featured-image image_id="117" id="item-2" />
+					<x-featured-media-accordions.featured-image image_id="109" id="item-3" />
+					<x-featured-media-accordions.featured-image image_id="104" id="item-4" />
+					<x-featured-media-accordions.featured-image image_id="87" id="item-5" />
 				</x-two-columns.column>
 				<x-two-columns.column>
 					<x-accordion>

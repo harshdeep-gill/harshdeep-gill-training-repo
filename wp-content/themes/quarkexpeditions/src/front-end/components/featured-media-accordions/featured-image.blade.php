@@ -16,9 +16,13 @@
 			'height'  => 676,
 		],
 		'responsive' => [
-			'sizes'  => [ '(min-width: 576px) 600px', '312px' ],
-			'widths' => [ 312, 600 ],
+			'sizes'  => [ '(min-width: 576px) 700px', '100vw' ],
+			'widths' => [ 350, 500, 600, 700 ],
 		],
+		'transform'  =>[
+			'crop'    => 'fill',
+			'gravity' => 'face',
+		]
 	];
 
 	// CSS classes for images.
