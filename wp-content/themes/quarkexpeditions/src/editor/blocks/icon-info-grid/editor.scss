@@ -1,0 +1,12 @@
+/**
+ * Icon Info Grid.
+ */
+
+.icon-info-grid.wp-block-quark-icon-info-grid.block-editor-block-list__layout {
+	display: grid;
+	row-gap: var(--spacing-7);
+	height: auto !important;
+	grid-template-columns: repeat(3, 1fr);
+	column-gap: var(--spacing-6);
+	align-items: stretch;
+}
