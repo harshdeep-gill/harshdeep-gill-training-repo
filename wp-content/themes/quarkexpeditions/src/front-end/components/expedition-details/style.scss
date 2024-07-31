@@ -29,7 +29,7 @@
 		margin-top: var(--spacing-2);
 	}
 
-	&__regions {
+	&__tags {
 		list-style: none;
 		margin-top: var(--spacing-4);
 		padding-left: 0;
@@ -43,8 +43,16 @@
 		}
 	}
 
-	&__region {
+	&__tag {
 		display: inline;
+
+		a {
+			text-decoration: none;
+
+			&:hover {
+				text-decoration: underline;
+			}
+		}
 	}
 
 	&__row {
@@ -77,6 +85,26 @@
 	&__departures-content {
 		font-weight: var(--font-weight-bold);
 		margin-top: var(--spacing-1);
+		padding-left: 0;
+	}
+
+	&__ships-item,
+	&__starting-from-item {
+		list-style: none;
+		display: inline;
+
+		&:not(:last-child)::after {
+			content: ",";
+			margin: -2px 2px 0 -4px;
+		}
+
+		a {
+			text-decoration: none;
+
+			&:hover {
+				text-decoration: underline;
+			}
+		}
 	}
 
 	&__cta {

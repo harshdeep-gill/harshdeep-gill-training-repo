@@ -120,7 +120,7 @@ function do_sync(): void {
 	$sync = new Softrip_Sync();
 
 	// Get the ID's to sync.
-	$ids = $sync->get_itinerary_ids();
+	$ids = $sync->get_all_itinerary_ids();
 
 	// Create batches.
 	$batches = $sync->prepare_batch_ids( $ids );

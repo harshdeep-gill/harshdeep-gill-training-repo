@@ -148,4 +148,31 @@ class Test_Core extends WP_UnitTestCase {
 		// Clean up.
 		$_SERVER['HTTP_USER_AGENT'] = '';
 	}
+
+	/**
+	 * Test format_price.
+	 *
+	 * @covers \Quark\Core\format_price()
+	 *
+	 * @return void
+	 */
+	public function test_format_price(): void {
+		// Test price formatting.
+		$this->assertEquals(
+			'$1,000 USD',
+			format_price( 1000 )
+		);
+
+		// Test price formatting with custom currency.
+		$this->assertEquals(
+			'€10,000 EUR',
+			format_price( 10000, 'eur' )
+		);
+
+		// Test price formatting with custom currency.
+		$this->assertEquals(
+			'£100,000 GBP',
+			format_price( 100000, 'GBP' )
+		);
+	}
 }

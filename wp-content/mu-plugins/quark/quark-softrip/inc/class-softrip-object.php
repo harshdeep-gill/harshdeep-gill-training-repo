@@ -99,4 +99,19 @@ abstract class Softrip_Object {
 		// Return post meta.
 		return $this->data['post_meta'][ $name ] ?? '';
 	}
+
+	/**
+	 * Get the post status.
+	 *
+	 * @return string
+	 */
+	public function get_status(): string {
+		// Check if the post is valid.
+		if ( $this->is_valid() ) {
+			return $this->data['post'] ? $this->data['post']->post_status : 'draft';
+		}
+
+		// Return default status as default.
+		return 'draft';
+	}
 }
