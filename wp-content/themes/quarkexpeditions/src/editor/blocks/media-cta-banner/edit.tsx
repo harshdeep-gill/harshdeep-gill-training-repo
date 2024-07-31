@@ -25,7 +25,7 @@ const { ImageControl, Img } = gumponents.components;
  * @param {Object} props.setAttributes Set block attributes.
  */
 export default function Edit( { className, attributes, setAttributes }: BlockEditAttributes ): JSX.Element {
-	// eslint-disable-next-line react-hooks/rules-of-hooks
+	// Set the block props.
 	const blockProps = useBlockProps( {
 		className: classnames(
 			className,
@@ -34,16 +34,16 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 		),
 	} );
 
-	// eslint-disable-next-line react-hooks/rules-of-hooks
+	// Set the inner blocks props.
 	const innerBlockProps = useInnerBlocksProps( {
 		className: classnames( 'media-cta-banner__content' ),
 	},
 	{
-		allowedBlocks: [ 'core/paragraph', 'core/heading', 'quark/button' ],
+		allowedBlocks: [ 'core/paragraph', 'core/heading', 'quark/buttons' ],
 		template: [
 			[ 'core/heading' ],
 			[ 'core/paragraph', { placeholder: __( 'Write description…', 'qrk' ) } ],
-			[ 'quark/button' ],
+			[ 'quark/buttons' ],
 		],
 	} );
 
@@ -55,7 +55,7 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 					<ImageControl
 						label={ __( 'Background Image', 'qrk' ) }
 						value={ attributes.backgroundImage ? attributes.backgroundImage.id : null }
-						size="full"
+						size="large"
 						help={ __( 'Choose an image for this collage item.', 'qrk' ) }
 						onChange={ ( backgroundImage: object ) => setAttributes( { backgroundImage } ) }
 					/>
