@@ -365,7 +365,21 @@ function bust_cabin_code_lookup_cache(): void {
  *
  * @param int $cabin_id Cabin ID.
  *
- * @return array<string, mixed>
+ * @return array{
+ *    id: string,
+ *    title: string,
+ *    image_id: int,
+ *    description: mixed,
+ *    details: array{
+ *        size_from: string,
+ *        size_to: string,
+ *        occupancy_from: string,
+ *        occupancy_to: string,
+ *        bed_configuration: mixed,
+ *        class: string,
+ *        location: string,
+ *    }
+ * }|array{}
  */
 function get_cabin_categories_data( int $cabin_id = 0 ): array {
 	// Get the cabin category.
@@ -385,15 +399,17 @@ function get_cabin_categories_data( int $cabin_id = 0 ): array {
 	// Prepare cabin option data.
 	$cabin_category_data = [
 		'id'          => $cabin_category_post->post_name,
-		'title'       => $cabin_category_meta['cabin_name'] ?? '',
+		'title'       => strval( $cabin_category_meta['cabin_name'] ),
 		'image_id'    => $cabin_category_thumbnail,
 		'description' => apply_filters( 'the_content', $cabin_category_post->post_content ) ?? '',
 		'details'     => [
-			'size_from'         => $cabin_category_meta['cabin_category_size_range_from'] ?? '',
-			'size_to'           => $cabin_category_meta['cabin_category_size_range_to'] ?? '',
-			'occupancy_from'    => $cabin_category_meta['cabin_occupancy_pax_range_from'] ?? '',
-			'occupancy_to'      => $cabin_category_meta['cabin_occupancy_pax_range_to'] ?? '',
-			'bed_configuration' => apply_filters( 'the_content', $cabin_category_meta['cabin_bed_configuration'] ) ?? '',
+			'size_from'         => isset( $cabin_category_meta['cabin_category_size_range_from'] ) ? strval( $cabin_category_meta['cabin_category_size_range_from'] ) : '',
+			'size_to'           => isset( $cabin_category_meta['cabin_category_size_range_to'] ) ? strval( $cabin_category_meta['cabin_category_size_range_to'] ) : '',
+			'occupancy_from'    => isset( $cabin_category_meta['cabin_occupancy_pax_range_from'] ) ? strval( $cabin_category_meta['cabin_occupancy_pax_range_from'] ) : '',
+			'occupancy_to'      => isset( $cabin_category_meta['cabin_occupancy_pax_range_to'] ) ? strval( $cabin_category_meta['cabin_occupancy_pax_range_to'] ) : '',
+			'bed_configuration' => isset( $cabin_category_meta['cabin_bed_configuration'] ) ? apply_filters( 'the_content', $cabin_category_meta['cabin_bed_configuration'] ) : '',
+			'class'             => '',
+			'location'          => '',
 		],
 	];
 
@@ -403,7 +419,7 @@ function get_cabin_categories_data( int $cabin_id = 0 ): array {
 	}
 
 	// Add location if available.
-	if ( ! empty( $cabin_category_meta['related_decks'] ) ) {
+	if ( ! empty( $cabin_category_meta['related_decks'] ) && is_array( $cabin_category_meta['related_decks'] ) ) {
 		// Prepare location data.
 		$related_decks_ids = array_map( 'absint', $cabin_category_meta['related_decks'] );
 

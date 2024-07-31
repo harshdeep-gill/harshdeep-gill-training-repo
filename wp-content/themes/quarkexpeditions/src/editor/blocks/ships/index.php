@@ -9,8 +9,7 @@ namespace Quark\Theme\Blocks\Ships;
 
 use WP_Post;
 
-use function Quark\Expeditions\get as get_expedition;
-use function Quark\Expeditions\get_ships;
+use function Quark\Expeditions\get_expedition_ship_ids;
 use function Quark\ShipDecks\get_deck_data;
 use function Quark\Ships\get_ship_data;
 
@@ -52,27 +51,8 @@ function render( array $attributes = [] ): string {
 		// Get the selected IDs.
 		$ships_ids = $attributes['ships'];
 	} elseif ( 'auto' === $attributes['selectionType'] ) {
-		// Get the expedition.
-		$expedition      = get_expedition();
-		$expedition_post = $expedition['post'];
-
-		// Check for post.
-		if ( ! $expedition_post instanceof WP_Post ) {
-			return '';
-		}
-
-		// Get the ships IDs.
-		$ships = get_ships( $expedition_post->ID );
-
-		// Check for ships.
-		if ( empty( $ships ) ) {
-			return '';
-		}
-
-		// Get the ships IDs.
-		foreach ( $ships as $ship ) {
-			$ships_ids[] = $ship['post']->ID;
-		}
+		// Get the expedition ship IDs. This will only work for the expedition post type.
+		$ships_ids = get_expedition_ship_ids();
 	}
 
 	// Check if we have posts.
@@ -97,26 +77,21 @@ function render( array $attributes = [] ): string {
 				// Get the deck data.
 				$deck_data = get_deck_data( $deck_id );
 
-				// Check for deck data.
-				if ( empty( $deck_data ) ) {
-					continue;
-				}
-
 				// Add labels to cabin options details.
-				if ( ! empty( $deck_data['cabin_options'] ) && is_array( $deck_data['cabin_options'] ) ) {
+				if ( ! empty( $deck_data['cabin_options'] ) ) {
 					// Initialize cabin options data.
 					$cabin_options_data = [];
 
 					// Loop through the cabin options.
 					foreach ( $deck_data['cabin_options'] as $cabin_option ) {
+						// Check for details.
+						if ( ! is_array( $cabin_option ) || empty( $cabin_option['details'] ) || ! is_array( $cabin_option['details'] ) ) {
+							continue;
+						}
+
 						// Initialize cabin option data.
 						$cabin_option_data            = $cabin_option;
 						$cabin_option_data['details'] = [];
-
-						// Check for details.
-						if ( empty( $cabin_option['details'] ) ) {
-							continue;
-						}
 
 						// Add Size.
 						if ( ! empty( $cabin_option['details']['size_from'] ) && ! empty( $cabin_option['details']['size_to'] ) ) {
