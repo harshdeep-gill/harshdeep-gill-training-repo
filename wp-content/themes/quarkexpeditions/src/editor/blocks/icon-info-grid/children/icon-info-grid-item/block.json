@@ -1,0 +1,34 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "quark/icon-info-grid-item",
+    "description": "Display an icon info grid item",
+    "title": "Icon Info Grid Item",
+    "keywords": [
+      "icon",
+      "info",
+      "grid",
+      "item"
+    ],
+    "category": "layout",
+    "textdomain": "quark",
+    "parent": [
+      "quark/icon-info-grid"
+    ],
+    "attributes": {
+      "icon": {
+        "type": "string",
+        "default": "star",
+        "enum": [
+          "star"
+        ]
+      }
+    },
+    "supports": {
+      "alignWide": false,
+      "anchor": true,
+      "className": false,
+      "html": false,
+      "customClassName": false
+    }
+}
