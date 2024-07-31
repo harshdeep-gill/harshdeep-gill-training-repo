@@ -80,7 +80,7 @@ class Test_Softrip_Sync extends WP_UnitTestCase {
 			wp_cache_delete( ITINERARY_POST_TYPE . '_' . absint( $itinerary_id ), ITINERARY_POST_TYPE );
 		}
 
-		// Create cabin posts.
+		// Create Cabin Category posts.
 		$cabin_ids = self::factory()->post->create_many(
 			5,
 			[
@@ -287,7 +287,8 @@ class Test_Softrip_Sync extends WP_UnitTestCase {
 		$this->assertEqualSets( $expected_data, $departure_titles );
 
 		// Cabin data.
-		$cabins = [];
+		$cabins      = [];
+		$cabin_codes = [];
 
 		// Loop through the departures and get the cabins.
 		foreach ( $departures as $departure ) {
@@ -298,14 +299,17 @@ class Test_Softrip_Sync extends WP_UnitTestCase {
 
 			// Load the departure.
 			$departure_object->load( $departure->ID );
-			$cabins = array_merge( $cabins, $departure_object->get_cabins() );
+			$departure_cabins = $departure_object->get_cabins();
+			$cabin_codes      = array_merge( $cabin_codes, array_keys( $departure_cabins ) );
+
+			// merge the cabins without keys.
+			$cabins = array_merge( $cabins, array_values( $departure_cabins ) );
 		}
 
 		// Check the count.
-		$this->assertCount( 3, $cabins );
+		$this->assertCount( 3, array_unique( $cabin_codes ) );
 
 		// Get cabins keys.
-		$cabin_keys    = array_keys( $cabins );
 		$expected_data = [
 			'OEX-SGL',
 			'ULT-SGL',
@@ -313,7 +317,7 @@ class Test_Softrip_Sync extends WP_UnitTestCase {
 		];
 
 		// Assert the cabin keys.
-		$this->assertEqualSets( $expected_data, $cabin_keys );
+		$this->assertEqualSets( $expected_data, array_unique( $cabin_codes ) );
 
 		// Load Occupancies.
 		$occupancies = [];
@@ -324,7 +328,7 @@ class Test_Softrip_Sync extends WP_UnitTestCase {
 		}
 
 		// Check the count.
-		$this->assertCount( 4, $occupancies );
+		$this->assertCount( 5, $occupancies );
 
 		// Get occupancy keys.
 		$occupancy_keys = array_keys( $occupancies );
@@ -333,10 +337,11 @@ class Test_Softrip_Sync extends WP_UnitTestCase {
 			'JKL-012:2025-01-09:ULT-SGL:A',
 			'JKL-012:2025-01-09:ULT-DBL:A',
 			'JKL-012:2025-01-09:ULT-DBL:AA',
+			'JKL-012:2026-01-16:ULT-SGL:A',
 		];
 
 		// Check the occupancy keys.
-		$this->assertEqualSets( $expected_data, $occupancy_keys );
+		$this->assertEqualSets( $expected_data, array_unique( $occupancy_keys ) );
 
 		// get the prices for the occupancy - JKL-012:2025-01-09:ULT-DBL:AA.
 		$occupancy_prices = $occupancies['JKL-012:2025-01-09:ULT-DBL:AA']->get_occupancy_prices();
