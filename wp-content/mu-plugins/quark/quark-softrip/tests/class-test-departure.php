@@ -40,6 +40,24 @@ class Test_Departure extends WP_UnitTestCase {
 		// Run parent.
 		parent::tear_down_after_class();
 		tear_down_softrip_db();
+
+		// Delete all itineraries.
+		$itineraries_query = new WP_Query(
+			[
+				'post_type'              => ITINERARY_POST_TYPE,
+				'posts_per_page'         => -1,
+				'no_found_rows'          => true,
+				'update_post_meta_cache' => false,
+				'update_post_term_cache' => false,
+				'fields'                 => 'ids',
+				'ignore_sticky_posts'    => true,
+			]
+		);
+
+		// Loop through the itineraries_query.
+		foreach ( $itineraries_query->posts as $itinerary_post ) {
+			wp_delete_post( is_int( $itinerary_post ) ? $itinerary_post : $itinerary_post->ID, true );
+		}
 	}
 
 	/**
