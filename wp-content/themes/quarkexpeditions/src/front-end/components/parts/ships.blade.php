@@ -26,10 +26,10 @@
 							<x-section.title :title="$ship['title'] ?? ''" align="left" />
 						</x-section.heading>
 						<x-section.description>
-							{!! $ship['description'] !!}
+							{!! $ship['description'] ?? '' !!}
 						</x-section.description>
 						<x-section.content>
-							{{ $ship['content'] }}
+							{{ $ship['content'] ?? '' }}
 						</x-section.content>
 					</x-section>
 					@if ( ! empty( $ship['decks'] ) )
@@ -61,12 +61,12 @@
 														@foreach ( $deck['cabin_options'] as $cabin_option )
 															<x-media-detail-cards.card>
 																@if ( ! empty( $cabin_option['image_id'] ) )
-																	<x-media-detail-cards.image :image_id="$cabin_option['image_id']" :alt="$cabin_option['title']" />
+																	<x-media-detail-cards.image :image_id="$cabin_option['image_id']" :alt="$cabin_option['title'] ?? ''" />
 																@endif
 																<x-media-detail-cards.title :title="$cabin_option['title']" heading_level="5" />
 																@if ( ! empty( $cabin_option['description'] ) )
 																	<x-media-detail-cards.content>
-																		{!! $cabin_option['description'] !!}
+																		{!! $cabin_option['description'] ?? '' !!}
 																	</x-media-detail-cards.content>
 																@endif
 																@if ( ! empty( $cabin_option['details'] ) )
