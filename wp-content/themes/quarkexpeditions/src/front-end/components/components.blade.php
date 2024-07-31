@@ -4368,6 +4368,19 @@
 	</x-section>
 </x-component-demo>
 
+<x-component-demo :keys="[ 'media-carousel' ]">
+	<x-section>
+		<x-section.heading>
+			<x-section.title title="Media Carousel" />
+		</x-section.heading>
+		<x-media-carousel>
+			<x-media-carousel.item image_id="29" />
+			<x-media-carousel.item image_id="32" />
+			<x-media-carousel.item image_id="152" />
+		</x-media-carousel>
+	</x-section>
+</x-component-demo>
+
 <x-component-demo :keys="[ 'footer' ]">
 	@php
 		$social_links = [
