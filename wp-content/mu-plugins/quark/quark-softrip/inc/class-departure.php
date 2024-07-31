@@ -485,18 +485,19 @@ class Departure extends Softrip_Object {
 	 * @param string $cabin_id Optional cabin ID.
 	 *
 	 * @return array<int|string, array{
-	 *     name: mixed,
+	 *     name: string,
 	 *     description: string,
 	 *     gallery: mixed,
+	 *     cabin_code: string,
 	 *     type: string,
 	 *     specifications: array{
-	 *          availabilityStatus: mixed,
-	 *          availabilityDescription: string,
-	 *          spacesAvailable: mixed,
+	 *          availability_status: string,
+	 *          availability_description: string,
+	 *          spaces_available: string,
 	 *          occupancy: string,
 	 *          location: string,
 	 *          size: string,
-	 *          bed_configuration: mixed
+	 *          bed_configuration: string
 	 *      },
 	 *     from_price: array<string, array<string, float>>,
 	 *     occupancies: array<int<0, max>, array<string, mixed>>
@@ -518,18 +519,19 @@ class Departure extends Softrip_Object {
 
 			// Set up the cabin structure.
 			$struct = [
-				'name'           => $cabin->get_post_meta( 'cabin_name' ),
+				'name'           => strval( $cabin->get_post_meta( 'cabin_name' ) ),
+				'cabin_code'     => strval( $cabin->get_entry_data( 'cabin_category_id' ) ),
 				'description'    => $cabin->get_data()['post']->post_content,
 				'gallery'        => $cabin->get_post_meta( 'cabin_images' ),
 				'type'           => $cabin->get_cabin_class(),
 				'specifications' => [
-					'availabilityStatus'      => $cabin->get_entry_data( 'availability_status' ),
-					'availabilityDescription' => $cabin->get_availability_description(),
-					'spacesAvailable'         => $cabin->get_entry_data( 'spaces_available' ),
-					'occupancy'               => $cabin->get_pax_range(),
-					'location'                => $cabin->get_location(),
-					'size'                    => $cabin->get_size(),
-					'bed_configuration'       => $cabin->get_post_meta( 'cabin_bed_configuration' ),
+					'availability_status'      => strval( $cabin->get_entry_data( 'availability_status' ) ),
+					'availability_description' => $cabin->get_availability_description(),
+					'spaces_available'         => strval( $cabin->get_entry_data( 'spaces_available' ) ),
+					'occupancy'                => $cabin->get_pax_range(),
+					'location'                 => $cabin->get_location(),
+					'size'                     => $cabin->get_size(),
+					'bed_configuration'        => strval( $cabin->get_post_meta( 'cabin_bed_configuration' ) ),
 				],
 				'from_price'     => $cabin->get_lowest_prices(),
 				'occupancies'    => [],

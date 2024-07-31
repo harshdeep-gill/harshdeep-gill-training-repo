@@ -380,18 +380,19 @@ function get_departure_region_and_season( int $post_id = 0 ): string {
  * @param int $departure_id The departure ID.
  *
  * @return array<int|string, array{
- *     name: mixed,
+ *     name: string,
+ *     cabin_code: string,
  *     description: string,
  *     gallery: mixed,
  *     type: string,
  *     specifications: array{
- *          availabilityStatus: mixed,
- *          availabilityDescription: string,
- *          spacesAvailable: mixed,
+ *          availability_status: string,
+ *          availability_description: string,
+ *          spaces_available: string,
  *          occupancy: string,
  *          location: string,
  *          size: string,
- *          bed_configuration: mixed
+ *          bed_configuration: string
  *      },
  *     from_price: array<string, array<string, float>>,
  *     occupancies: array<int<0, max>, array<string, mixed>>

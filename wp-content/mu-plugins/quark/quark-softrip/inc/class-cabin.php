@@ -470,6 +470,35 @@ class Cabin extends Data_Object {
 	}
 
 	/**
+	 * Get the size using from_size and to_size.
+	 *
+	 * @param string $from_size The from size.
+	 * @param string $to_size   The to size.
+	 *
+	 * @return string
+	 */
+	public function validate_the_sizes( string $from_size = '', string $to_size = '' ): string {
+		// Validate the sizes.
+		$from_size = empty( $from_size ) ? 0 : $from_size;
+		$to_size   = empty( $to_size ) ? 0 : $to_size;
+
+		// Check if both sizes are available and are numeric.
+		if ( $from_size && $to_size ) {
+			// Return the range.
+			return $from_size . '-' . $to_size;
+		} elseif ( $from_size ) {
+			// Return the from size.
+			return $from_size;
+		} elseif ( $to_size ) {
+			// Return the to size.
+			return $to_size;
+		}
+
+		// Return empty if no sizes are available.
+		return '';
+	}
+
+	/**
 	 * Get cabin pax range.
 	 *
 	 * @return string
@@ -479,14 +508,8 @@ class Cabin extends Data_Object {
 		$from = $this->get_post_meta( 'cabin_occupancy_pax_range_from' );
 		$to   = $this->get_post_meta( 'cabin_occupancy_pax_range_to' );
 
-		// Check if the same.
-		if ( '1' === $from && $from === $to ) {
-			// Return for single quest.
-			return '1 guest';
-		}
-
-		// Return ranged.
-		return $from . '-' . $to . ' guests';
+		// validate the sizes.
+		return $this->validate_the_sizes( strval( $from ), strval( $to ) );
 	}
 
 	/**
@@ -496,9 +519,10 @@ class Cabin extends Data_Object {
 	 */
 	public function get_size(): string {
 		// Get value.
-		$size = $this->get_post_meta( 'cabin_category_size_range_from' );
+		$from_size = $this->get_post_meta( 'cabin_category_size_range_from' );
+		$to_size   = $this->get_post_meta( 'cabin_category_size_range_to' );
 
-		// Return size.
-		return $size . ' sq. ft.';
+		// validate the sizes.
+		return $this->validate_the_sizes( strval( $from_size ), strval( $to_size ) );
 	}
 }

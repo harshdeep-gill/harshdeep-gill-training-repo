@@ -396,6 +396,7 @@ class Occupancy extends Data_Object {
 			'description'  => $this->get_description(),
 			'no_of_guests' => $this->get_pax(),
 			'prices'       => [],
+			'promotions'   => [],
 		];
 
 		// Iterate over the occupancy prices.
@@ -410,6 +411,7 @@ class Occupancy extends Data_Object {
 			];
 		}
 
+		// TODO:: Get promotions applied for the occupancy.
 		// Return details.
 		return $detail;
 	}
