@@ -301,7 +301,13 @@ function bust_ship_code_lookup_cache(): void {
  *
  * @param int $ship_id Ship ID.
  *
- * @return array<string, mixed>
+ * @return array{}|array{
+ *    name: string,
+ *    title: string,
+ *    permalink: string,
+ *    description: mixed,
+ *    related_decks: int[]|array{},
+ * }
  */
 function get_ship_data( int $ship_id = 0 ): array {
 	// Get the ship data.

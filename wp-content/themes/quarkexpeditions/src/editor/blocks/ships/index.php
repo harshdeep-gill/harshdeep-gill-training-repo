@@ -66,7 +66,14 @@ function render( array $attributes = [] ): string {
 	// Query the posts.
 	foreach ( $ships_ids as $ship_id ) {
 		// Get the ship data.
-		$ship           = get_ship_data( $ship_id );
+		$ship = get_ship_data( $ship_id );
+
+		// Check for ship data.
+		if ( empty( $ship ) || ! is_array( $ship ) ) {
+			continue;
+		}
+
+		// Initialize decks data.
 		$ship_decks_ids = $ship['related_decks'];
 		$decks_data     = [];
 
