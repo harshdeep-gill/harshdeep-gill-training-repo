@@ -69,7 +69,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 		// Prepare pre-post trip data.
 		$pre_post_trips[] = [
 			'title'       => $pre_post_trip['post']->post_title,
-			'description' => apply_filters( 'the_content', $pre_post_trip['post']->post_excerpt ),
+			'description' => apply_filters( 'the_content', $pre_post_trip['post']->post_content ),
 			'thumbnail'   => $pre_post_trip['post_thumbnail'],
 		];
 	}
