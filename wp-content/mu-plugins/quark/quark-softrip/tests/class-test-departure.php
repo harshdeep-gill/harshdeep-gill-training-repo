@@ -320,4 +320,97 @@ class Test_Departure extends WP_UnitTestCase {
 		// Get the departure status.
 		$this->assertEquals( 'publish', $departure->get_status() );
 	}
+
+	/**
+	 * Test cabins related functions.
+	 *
+	 * @covers \Quark\Softrip\Departure::ensure_cabins_loaded()
+	 * @covers \Quark\Softrip\Departure::get_cabins()
+	 * @covers \Quark\Softrip\Departure::load_cabins()
+	 * @covers \Quark\Softrip\Departure::get_cabin()
+	 *
+	 * @return void
+	 */
+	public function test_cabins(): void {
+		// Get Itinerary post.
+		$post = $this->get_post();
+
+		// Test if is a post.
+		if ( $post instanceof WP_Error ) {
+			return;
+		}
+
+		// Create a raw departure data.
+		$raw_departure = [
+			'id'          => 'JKL-012:2025-01-09',
+			'code'        => 'ULT20250109',
+			'packageCode' => 'JKL-012',
+			'endDate'     => gmdate( 'Y-m-d', strtotime( 'next year + 16 days' ) ),
+			'startDate'   => gmdate( 'Y-m-d', strtotime( 'next year' ) ),
+			'duration'    => 16,
+			'shipCode'    => 'ULT',
+			'marketCode'  => 'ANT',
+		];
+
+		// Create a new Itinerary.
+		$itinerary = new Itinerary( $post->ID );
+		$departure = $itinerary->get_departure( strval( $raw_departure['id'] ) );
+
+		// Set the departure.
+		$departure->set( $raw_departure, true );
+
+		// Get the cabins.
+		$cabins = $departure->get_cabins();
+
+		// Assert no cabins.
+		$this->assertEmpty( $cabins );
+
+		// Set Cabin data to raw_departure data.
+		$raw_departure['cabins'] = [
+			[
+				'id'          => 'CABIN1',
+				'code'        => 'CABIN1',
+				'name'        => 'Cabin 1',
+				'departureId' => 'JKL-012:2025-01-09',
+				'occupancies' => [],
+			],
+			[
+				'id'          => 'CABIN2',
+				'code'        => 'CABIN2',
+				'name'        => 'Cabin 2',
+				'departureId' => 'JKL-012:2025-01-09',
+				'occupancies' => [],
+			],
+		];
+
+		// Set the departure.
+		$departure->set( $raw_departure, true );
+
+		// Get the cabins.
+		$cabins = $departure->get_cabins();
+
+		// Assert cabins.
+		$this->assertNotEmpty( $cabins );
+		$this->assertCount( 2, $cabins );
+
+		// Get a cabin.
+		$departure_cabin = $departure->get_cabin( 'CABIN1' );
+
+		// Assert cabin.
+		$this->assertInstanceOf( Cabin::class, $departure_cabin );
+		$this->assertEquals( 'CABIN1', $departure_cabin->get_entry_data( 'title' ) );
+
+		// Get a cabin.
+		$departure_cabin = $departure->get_cabin( 'CABIN2' );
+
+		// Assert cabin.
+		$this->assertInstanceOf( Cabin::class, $departure_cabin );
+		$this->assertEquals( 'CABIN2', $departure_cabin->get_entry_data( 'title' ) );
+
+		// Get a cabin with invalid ID.
+		$departure_cabin = $departure->get_cabin( 'CABIN3' );
+
+		// Assert cabin.
+		$this->assertEmpty( $departure_cabin->get_entry_data( 'title' ) );
+	}
 }
