@@ -9,7 +9,8 @@
 		margin-bottom: 0;
 		display: none;
 
-		.accordion__content-inner & {
+		.accordion__content &,
+		.accordion__content &[data-hidden] {
 			display: block;
 			margin-top: var(--spacing-5);
 

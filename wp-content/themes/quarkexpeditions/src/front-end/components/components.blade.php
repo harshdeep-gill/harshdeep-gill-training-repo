@@ -4385,30 +4385,35 @@
 							<x-accordion.item-handle title="Spots for Socialising" />
 							<x-accordion.item-content>
 								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.</p>
+								<x-featured-media-accordions.featured-image image_id="122" />
 							</x-accordion.item-content>
 						</x-accordion.item>
 						<x-accordion.item id="item-2">
 							<x-accordion.item-handle title="Spots for Socialising" />
 							<x-accordion.item-content>
 								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.</p>
+								<x-featured-media-accordions.featured-image image_id="117" />
 							</x-accordion.item-content>
 						</x-accordion.item>
 						<x-accordion.item id="item-3">
 							<x-accordion.item-handle title="Spots for Socialising" />
 							<x-accordion.item-content>
 								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.</p>
+								<x-featured-media-accordions.featured-image image_id="109" />
 							</x-accordion.item-content>
 						</x-accordion.item>
 						<x-accordion.item id="item-4">
 							<x-accordion.item-handle title="Spots for Socialising" />
 							<x-accordion.item-content>
 								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.</p>
+								<x-featured-media-accordions.featured-image image_id="104" />
 							</x-accordion.item-content>
 						</x-accordion.item>
 						<x-accordion.item id="item-5">
 							<x-accordion.item-handle title="Spots for Socialising" />
 							<x-accordion.item-content>
 								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.</p>
+								<x-featured-media-accordions.featured-image image_id="87" />
 							</x-accordion.item-content>
 						</x-accordion.item>
 					</x-accordion>

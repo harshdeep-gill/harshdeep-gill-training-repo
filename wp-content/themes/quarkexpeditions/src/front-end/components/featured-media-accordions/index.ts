@@ -88,14 +88,6 @@ export class FeaturedMediaAccordions extends HTMLElement {
 			this.showLinkedImage( accordionItemId );
 		}
 
-		// Clone image.
-		const imageClone = linkedImage.cloneNode( true ) as HTMLElement;
-		imageClone.removeAttribute( 'data-hidden' );
-		imageClone.removeAttribute( 'data-accordion-id' );
-
-		// Append the image to the content.
-		item.querySelector( '.accordion__content-inner' )?.appendChild( imageClone );
-
 		// Add event listener.
 		item.addEventListener( 'click', () => {
 			// Hide all images.
