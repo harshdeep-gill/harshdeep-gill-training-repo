@@ -5,5 +5,7 @@
 @endphp
 
 <article class="departure-cards__card">
-	{!! $slot !!}
+	<quark-departure-card>
+		{!! $slot !!}
+	</quark-departure-card>
 </article>

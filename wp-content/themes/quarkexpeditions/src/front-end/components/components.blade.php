@@ -4037,8 +4037,13 @@
 								<x-departure-cards.adventure-options
 									:options="[
 										'Sea Kayaking',
-										'Standup Paddleboarding',
-										'Option 3',
+										'Stand-up Paddleboarding',
+										'Zodiac Cruising',
+										'Heli-hiking',
+										'Polar Plunge',
+										'Polar Camping',
+										'Flightseeing',
+										'Hot Air Ballooning',
 									]"
 								/>
 							</x-departure-cards.specification-value>
@@ -4047,6 +4052,7 @@
 
 					<x-departure-cards.offers 
 						title="Available Offers"
+						modal_title="Crossing the Cirlc: Southern Expedition"
 						:items="[
 							'Save 30% on Premium Cabins',
 							'$1000 Flight Credit',
@@ -4063,8 +4069,18 @@
 						discounted_price="$7,271 USD"
 					/>
 
-					<x-departure-cards.transfer_package drawer_id="departure-cards-id-1">
-						test 1
+					<x-departure-cards.transfer_package
+						drawer_id="departure-cards-id-1"
+						drawer_title="Mandatory Transfer Package"
+					>
+						<p><strong>Package Includes:</strong></p>
+						<ul>
+							<li>One night’s pre-expedition hotel night in Aberdeen</li>
+							<li>Group transfer from Aberdeen hotel to ship on embarkation day</li>
+							<li>Departure transfer in Longyearbyen on disembarkation day</li>
+							<li>Charter flight from Longyearbyen to Helsinki on disembarkation day</li>
+						</ul>
+						<p><strong>Package Price: $695 USD</strong></p>
 					</x-departure-cards.transfer_package>
 
 					<x-button size="big">View Cabin Pricing & Options</x-button>
@@ -4140,11 +4156,11 @@
 					<x-departure-cards.offers 
 						title="Available Offers"
 						:items="[
-							'Save 30% on Premium Cabins',
-							'$1000 Flight Credit',
-							'Save 25% on Standard Cabins',
-							'Offer 4',
-							'Offer 5'
+							'Test - Save 30% on Premium Cabins',
+							'Test - $1000 Flight Credit',
+							'Test - Save 25% on Standard Cabins',
+							'Test - Offer 4',
+							'Test - Offer 5'
 						]"
 					/>
 				</x-departure-cards.body-column>
@@ -4155,8 +4171,117 @@
 						discounted_price="$7,271 USD"
 					/>
 
-					<x-departure-cards.transfer_package drawer_id="departure-cards-id-2">
-						test 2
+					<x-departure-cards.transfer_package
+						drawer_id="departure-cards-id-2"
+						drawer_title="Mandatory Transfer Package"
+					>
+						<p><strong>Package Includes:</strong></p>
+						<ul>
+							<li>One night’s pre-expedition hotel night in Aberdeen</li>
+							<li>Group transfer from Aberdeen hotel to ship on embarkation day</li>
+							<li>Departure transfer in Longyearbyen on disembarkation day</li>
+							<li>Charter flight from Longyearbyen to Helsinki on disembarkation day</li>
+						</ul>
+						<p><strong>Package Price: $695 USD</strong></p>
+					</x-departure-cards.transfer_package>
+
+					<x-button size="big">View Cabin Pricing & Options</x-button>
+				</x-departure-cards.body-column>
+			</x-departure-cards.body>
+
+			<x-departure-cards.more-details>
+				{{-- <x-product-options-cards> // Component Ticket -> https://tuispecialist.atlassian.net/browse/QE-304 --}}
+			</x-departure-cards.more-details>
+		</x-departure-cards.card>
+
+		<x-departure-cards.card>
+			<x-departure-cards.card-banner text="Quark Protection Promise" />
+			<x-departure-cards.header>
+				<x-departure-cards.departing-on date="March 1, 2024" />
+				<x-departure-cards.promo-tag text="Save up to 24%" />
+			</x-departure-cards.header>
+			<x-departure-cards.body>
+				<x-departure-cards.body-column>
+					<x-departure-cards.specifications>
+						<x-departure-cards.specification-item>
+							<x-departure-cards.specification-label>
+								Itinerary
+							</x-departure-cards.specification-label>
+							<x-departure-cards.specification-value>
+								12 days <br> (March 1-14, 2024)
+							</x-departure-cards.specification-value>
+						</x-departure-cards.specification-item>
+
+						<x-departure-cards.specification-item>
+							<x-departure-cards.specification-label>
+								Starting from
+							</x-departure-cards.specification-label>
+							<x-departure-cards.specification-value>
+								Buenos Aires, Argentina
+							</x-departure-cards.specification-value>
+						</x-departure-cards.specification-item>
+
+						<x-departure-cards.specification-item>
+							<x-departure-cards.specification-label>
+								Ship
+							</x-departure-cards.specification-label>
+							<x-departure-cards.specification-value>
+								Ultramarine
+							</x-departure-cards.specification-value>
+						</x-departure-cards.specification-item>
+
+						<x-departure-cards.specification-item>
+							<x-departure-cards.specification-label>
+								Languages
+							</x-departure-cards.specification-label>
+							<x-departure-cards.specification-value>
+								English, French
+							</x-departure-cards.specification-value>
+						</x-departure-cards.specification-item>
+
+						<x-departure-cards.specification-item>
+							<x-departure-cards.specification-label>
+								Adventure Options
+							</x-departure-cards.specification-label>
+							<x-departure-cards.specification-value>
+								<x-departure-cards.adventure-options
+									:options="[
+										'Sea Kayaking',
+										'Standup Paddleboarding',
+										'Option 3',
+									]"
+								/>
+							</x-departure-cards.specification-value>
+						</x-departure-cards.specification-item>
+					</x-departure-cards.specifications>
+
+					<x-departure-cards.offers 
+						title="Available Offers"
+						:items="[
+							'Test - Offer 4',
+							'Test - Offer 5'
+						]"
+					/>
+				</x-departure-cards.body-column>
+
+				<x-departure-cards.body-column>
+					<x-departure-cards.price
+						original_price="$9,395 USD"
+						discounted_price="$7,271 USD"
+					/>
+
+					<x-departure-cards.transfer_package
+						drawer_id="departure-cards-id-3"
+						drawer_title="Mandatory Transfer Package"
+					>
+						<p><strong>Package Includes:</strong></p>
+						<ul>
+							<li>One night’s pre-expedition hotel night in Aberdeen</li>
+							<li>Group transfer from Aberdeen hotel to ship on embarkation day</li>
+							<li>Departure transfer in Longyearbyen on disembarkation day</li>
+							<li>Charter flight from Longyearbyen to Helsinki on disembarkation day</li>
+						</ul>
+						<p><strong>Package Price: $695 USD</strong></p>
 					</x-departure-cards.transfer_package>
 
 					<x-button size="big">View Cabin Pricing & Options</x-button>

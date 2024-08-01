@@ -25,9 +25,11 @@
 	}
 
 	&__icon {
-		color: var(--color-blue);
-		display: inline-flex;
+		color: var(--color-gray-40);
+		display: inline-block;
 		position: relative;
+		height: 22px;
+		width: 22px;
 
 		&::before,
 		&::after {
@@ -57,7 +59,7 @@
 
 		svg {
 			height: auto;
-			width: 18px;
+			width: 22px;
 		}
 	}
 

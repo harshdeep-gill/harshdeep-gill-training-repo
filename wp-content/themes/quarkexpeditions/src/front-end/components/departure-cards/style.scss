@@ -60,9 +60,12 @@
 		position: relative;
 		min-height: 30px;
 		padding: 0 var(--spacing-2) 0 var(--spacing-3);
+		margin-left: calc(-1 * var(--grid-col-gutter));
 
 		@media screen and (min-width: grid-size(lg)) {
 			padding: 0 var(--spacing-3) 0 var(--spacing-2);
+			margin-right: calc(-1 * var(--grid-col-gutter));
+			margin-left: 0;
 		}
 
 		&::before,
@@ -142,11 +145,13 @@
 	}
 
 	&__specifications {
-		display: grid;
-		grid-template-columns: repeat(1, 1fr);
+		display: flex;
+		flex-direction: column;
 		gap: var(--grid-col-gutter);
 
 		@media screen and (min-width: grid-size(lg)) {
+			display: grid;
+			grid-template-columns: repeat(1, 1fr);
 			grid-template-columns: 1fr 1fr 1fr;
 		}
 
@@ -175,6 +180,45 @@
 		font-weight: var(--font-weight-bold);
 	}
 
+	&__options-list {
+		display: flex;
+		padding: 0;
+		list-style: none;
+		min-width: 0;
+		margin: 0;
+		white-space: nowrap;
+		overflow: hidden;
+	}
+
+	&__option {
+
+		&--hidden {
+			display: none;
+		}
+
+		& + &::before {
+			content: ",";
+		}
+	}
+
+	&__options-count-wrap {
+		display: flex;
+		align-items: center;
+		gap: var(--spacing-4);
+
+		&::before {
+			display: none;
+		}
+
+		&--hidden {
+			display: none;
+		}
+	}
+
+	quark-departure-card {
+		display: block;
+	}
+
 	&__offers {
 		font-size: var(--font-size-small);
 		line-height: var(--line-height-small);
@@ -187,9 +231,13 @@
 
 	&__offers-list {
 		display: flex;
-		gap: var(--spacing-2);
 		list-style: none;
 		padding: 0;
+		min-width: 0;
+		margin: 0;
+		white-space: nowrap;
+		overflow: hidden;
+		gap: var(--spacing-2);
 	}
 
 	&__offer {
@@ -198,7 +246,30 @@
 		color: var(--color-success-100);
 		font-weight: var(--font-weight-bold);
 		padding: var(--spacing-2);
+
+		&--hidden {
+			display: none;
+		}
+	}
+
+	&__offer-count-button {
+		background-color: var(--color-success-10);
+		border: 0;
+		border-radius: var(--border-radius);
+		color: var(--color-success-100);
+		font-weight: var(--font-weight-bold);
+		padding: var(--spacing-2);
 		white-space: nowrap;
+		display: flex;
+		align-items: center;
+
+		&:hover {
+			background-color: var(--color-success-10);
+		}
+
+		&--hidden {
+			display: none;
+		}
 	}
 
 	&__price-now {
@@ -226,5 +297,36 @@
 
 	&__transfer-package-label {
 		margin: 0;
+	}
+
+	&__transfer-package-content {
+
+		.drawer__content {
+			max-width: 640px;
+			padding: var(--spacing-5);
+		}
+
+		.drawer__body {
+			margin-top: var(--spacing-5);
+		}
+
+		.drawer__drawer-close {
+			inset: var(--spacing-6) var(--spacing-5) auto auto;
+		}
+
+		ul {
+			list-style: none;
+			padding-left: 0;
+		}
+
+		li {
+			background-color: var(--color-gray-5);
+			border-radius: var(--border-radius);
+			padding: var(--spacing-2) var(--spacing-3);
+
+			+ li {
+				margin-top: var(--spacing-2);
+			}
+		}
 	}
 }

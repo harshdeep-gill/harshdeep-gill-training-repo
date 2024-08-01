@@ -1,5 +1,6 @@
 @props( [
-	'drawer_id' => '',
+	'drawer_id'    => '',
+	'drawer_title' => '',
 ] )
 
 @php
@@ -18,10 +19,11 @@
 	</div>
 
 	<x-drawer id="{{ $drawer_id }}" animation_direction="right" class="departure-cards__transfer-package-content">
-		<x-drawer.header>
-			<h3>Lorem ipsum dolor sit amet.</h3>
-			<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur voluptate dolorum alias officiis minima nemo asperiores maxime velit itaque sapiente?</p>
-		</x-drawer.header>
+		@if ( ! empty( $drawer_title ) )
+			<x-drawer.header>
+				<h3><x-escape :content="$drawer_title" /></h3>
+			</x-drawer.header>
+		@endif
 
 		<x-drawer.body>
 			{!! $slot !!}
