@@ -11,5 +11,7 @@
 @endphp
 
 <quark-featured-media-accordions @class( $classes )>
-	{!! $slot !!}
+	<x-two-columns>
+		{!! $slot !!}
+	</x-two-columns>
 </quark-featured-media-accordions>
