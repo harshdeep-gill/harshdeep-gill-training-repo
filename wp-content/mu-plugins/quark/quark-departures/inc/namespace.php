@@ -15,7 +15,7 @@ use const Quark\StaffMembers\SEASON_TAXONOMY;
 
 const POST_TYPE                = 'qrk_departure';
 const SPOKEN_LANGUAGE_TAXONOMY = 'qrk_spoken_language';
-const PROMOTION_TAG            = 'qrk_promotion_tag';
+const PROMOTION_TAG            = 'qrk_promotion_tags';
 const CACHE_KEY                = POST_TYPE;
 const CACHE_GROUP              = POST_TYPE;
 
