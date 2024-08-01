@@ -129,7 +129,13 @@ function do_sync(): void {
 	$total = count( $ids );
 
 	// Log the sync initiated.
-	do_action( 'softrip_sync_initiated', [ 'count' => $total, 'via' => 'cron' ] );
+	do_action(
+		'softrip_sync_initiated',
+		[
+			'count' => $total,
+			'via'   => 'cron',
+		]
+	);
 
 	// Create batches.
 	$batches = $sync->prepare_batch_ids( $ids );
@@ -168,7 +174,14 @@ function do_sync(): void {
 	}
 
 	// Log the sync completed.
-	do_action( 'softrip_sync_completed', [ 'success' => $counter, 'failed' => $total - $counter, 'via' => 'cron' ] );
+	do_action(
+		'softrip_sync_completed',
+		[
+			'success' => $counter,
+			'failed'  => $total - $counter,
+			'via'     => 'cron',
+		]
+	);
 }
 
 /**

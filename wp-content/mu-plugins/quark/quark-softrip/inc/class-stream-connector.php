@@ -70,15 +70,18 @@ class Stream_Connector extends Connector {
 	 * Callback for `softrip_sync_initiated` action.
 	 *
 	 * @param mixed[] $data Data passed to the action.
-	 * 
+	 *
 	 * @return void
 	 */
 	public function callback_softrip_sync_initiated( array $data = [] ): void {
+		// Validate data.
 		if ( empty( $data ) || empty( $data['via'] ) || ! isset( $data['count'] ) ) {
 			return;
 		}
 
+		// Prepare message.
 		$message = sprintf(
+			// translators: %1$s: Via, %2$s: Count, %3$d: Total.
 			__( 'Softrip sync initiated via %1$s | Total %2$s : %3$d', 'qrk' ),
 			strval( $data['via'] ),
 			_n( 'itinerary', 'itineraries', absint( $data['count'] ), 'qrk' ),
@@ -99,15 +102,18 @@ class Stream_Connector extends Connector {
 	 * Callback for `softrip_sync_completed` action.
 	 *
 	 * @param mixed[] $data Data passed to the action.
-	 * 
+	 *
 	 * @return void
 	 */
 	public function callback_softrip_sync_completed( array $data = [] ): void {
+		// Validate data.
 		if ( empty( $data ) || empty( $data['via'] ) || ! isset( $data['success'] ) || ! isset( $data['failed'] ) ) {
 			return;
 		}
 
+		// Prepare message.
 		$message = sprintf(
+			// translators: %1$s: Via, %2$d: Successful, %3$d: Failed.
 			__( 'Softrip sync completed via %1$s | Successful: %2$d | Failed: %3$d', 'qrk' ),
 			strval( $data['via'] ),
 			absint( $data['success'] ),
