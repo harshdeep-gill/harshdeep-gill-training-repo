@@ -11,7 +11,7 @@ use WP_UnitTestCase;
 use WP_Post;
 use WP_Error;
 
-use function Quark\Tests\tear_down_softrip_db;
+use function Quark\Tests\truncate_softrip_db_tables;
 
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
 
@@ -27,7 +27,7 @@ class Test_Occupancy extends WP_UnitTestCase {
 	public static function tear_down_after_class(): void {
 		// Run parent.
 		parent::tear_down_after_class();
-		tear_down_softrip_db();
+		truncate_softrip_db_tables();
 	}
 
 	/**

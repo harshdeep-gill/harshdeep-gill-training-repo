@@ -12,7 +12,7 @@ use WP_Post;
 use WP_Error;
 use WP_Query;
 
-use function Quark\Tests\tear_down_softrip_db;
+use function Quark\Tests\truncate_softrip_db_tables;
 
 use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
@@ -144,7 +144,7 @@ class Test_Softrip_Sync extends WP_UnitTestCase {
 	public static function tear_down_after_class(): void {
 		// Run parent.
 		parent::tear_down_after_class();
-		tear_down_softrip_db();
+		truncate_softrip_db_tables();
 
 		// Delete the test itinerary posts.
 		foreach ( self::$itinerary_ids as $itinerary_id ) {

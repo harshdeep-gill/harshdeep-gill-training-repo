@@ -55,7 +55,7 @@ function load_environment(): void {
 		}
 	);
 
-	setup_softrip_db();
+	setup_softrip_db_tables();
 }
 
 /**
@@ -63,7 +63,7 @@ function load_environment(): void {
  *
  * @return void
  */
-function setup_softrip_db(): void {
+function setup_softrip_db_tables(): void {
 	// Set run status.
 	static $run;
 
@@ -579,7 +579,7 @@ function mock_softrip_http_request( array|false $response = [], array $parsed_ar
  *
  * @return void
  */
-function tear_down_softrip_db(): void {
+function truncate_softrip_db_tables(): void {
 	// Get global WPDB object.
 	global $wpdb;
 
