@@ -505,7 +505,7 @@ function mock_softrip_http_request( array|false $response = [], array $parsed_ar
 		return [
 			'body'     => wp_json_encode( $data ),
 			'response' => [
-				'code'    => 201,
+				'code'    => 200,
 				'message' => 'No data',
 			],
 			'headers'  => [],
