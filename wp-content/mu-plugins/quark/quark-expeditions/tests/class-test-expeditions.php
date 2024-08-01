@@ -17,12 +17,16 @@ use function Quark\Expeditions\get_itineraries;
 use function Quark\Expeditions\get_minimum_duration;
 use function Quark\Expeditions\get_starting_from_locations;
 use function Quark\Expeditions\get_details_data;
+use function Quark\Expeditions\get_expedition_ship_ids;
 
 use const Quark\Itineraries\DEPARTURE_LOCATION_TAXONOMY;
 use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
 use const Quark\Expeditions\DESTINATION_TAXONOMY;
 use const Quark\Expeditions\POST_TYPE;
 use const Quark\Expeditions\EXPEDITION_CATEGORY_TAXONOMY;
+use const Quark\Ships\POST_TYPE as SHIP_POST_TYPE;
+use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
+use const Quark\ItineraryDays\POST_TYPE as ITINERARY_DAY_POST_TYPE;
 
 /**
  * Class Test_Expeditions.
@@ -378,5 +382,99 @@ class Test_Expeditions extends WP_UnitTestCase {
 
 		// Assert expedition_details_card_data is correct.
 		$this->assertEquals( $expected_data, $expedition_details_card_data );
+	}
+
+	/**
+	 * Test getting expedition ship IDs.
+	 *
+	 * @covers \Quark\Expeditions\get_expedition_ship_ids()
+	 *
+	 * @return void
+	 */
+	public function test_get_expedition_ship_ids(): void {
+		// Create Ship Post.
+		$ship_post = $this->factory()->post->create_and_get(
+			[
+				'post_title'   => 'Test Ship',
+				'post_content' => 'Ship content',
+				'post_status'  => 'publish',
+				'post_type'    => SHIP_POST_TYPE,
+				'meta_input'   => [
+					'ship_id' => 'ABC123',
+				],
+			]
+		);
+
+		// Assert created posts are instance of WP_Post.
+		$this->assertTrue( $ship_post instanceof WP_Post );
+
+		// Create Itinerary post.
+		$itinerary_post = $this->factory()->post->create_and_get(
+			[
+				'post_title'   => 'Test Itinerary',
+				'post_content' => 'Itinerary content',
+				'post_status'  => 'publish',
+				'post_type'    => ITINERARY_POST_TYPE,
+			]
+		);
+
+		// Assert created posts are instance of WP_Post.
+		$this->assertTrue( $itinerary_post instanceof WP_Post );
+
+		// Create Itinerary day post.
+		$itinerary_day_post = $this->factory()->post->create_and_get(
+			[
+				'post_title'   => 'Test Itinerary Day',
+				'post_content' => 'Itinerary Day content',
+				'post_status'  => 'publish',
+				'post_type'    => ITINERARY_DAY_POST_TYPE,
+				'post_parent'  => $itinerary_post->ID,
+			]
+		);
+
+		// Assert created posts are instance of WP_Post.
+		$this->assertTrue( $itinerary_day_post instanceof WP_Post );
+
+		// Create a departure post.
+		$departure_post = $this->factory()->post->create_and_get(
+			[
+				'post_title'   => 'Test Departure',
+				'post_content' => 'Departure content',
+				'post_status'  => 'publish',
+				'post_type'    => DEPARTURE_POST_TYPE,
+				'meta_input'   => [
+					'related_ship' => $ship_post,
+					'ship_id'      => 'ABC123',
+				],
+				'post_parent'  => $itinerary_post->ID,
+			]
+		);
+
+		// Assert created posts are instance of WP_Post.
+		$this->assertTrue( $departure_post instanceof WP_Post );
+
+		// Create Expedition post.
+		$expedition_post = $this->factory()->post->create_and_get(
+			[
+				'post_title'   => 'Test Expedition',
+				'post_content' => 'Expedition content',
+				'post_status'  => 'publish',
+				'post_type'    => POST_TYPE,
+				'meta_input'   => [
+					'related_itineraries' => [
+						$itinerary_post->ID,
+					],
+				],
+			]
+		);
+
+		// Assert created posts are instance of WP_Post.
+		$this->assertTrue( $expedition_post instanceof WP_Post );
+
+		// Assert the function returns the correct ship ID.
+		$this->assertEquals(
+			[ $ship_post->ID ],
+			get_expedition_ship_ids( $expedition_post->ID )
+		);
 	}
 }

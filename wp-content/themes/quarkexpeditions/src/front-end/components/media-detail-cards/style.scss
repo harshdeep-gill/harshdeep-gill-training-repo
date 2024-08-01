@@ -6,11 +6,37 @@
 .media-detail-cards {
 	$self: &;
 
+	&.media-detail-cards--condensed {
+		margin-top: var(--spacing-7);
+		margin-bottom: var(--spacing-7);
+
+		#{$self}__card {
+			grid-gap: var(--spacing-4);
+		}
+
+		#{$self}__details {
+			margin-top: var(--spacing-4);
+		}
+
+		.section__heading {
+			margin-bottom: var(--spacing-4);
+		}
+
+		#{$self}__title {
+			margin-bottom: 0;
+		}
+	}
+
 	&__card {
 
 		@media screen and (min-width: grid-size(lg)) {
 
 			@include grid-columns(2);
+		}
+
+		@media screen and (min-width: grid-size(md)) {
+
+			@include grid-columns(1);
 		}
 
 		& + & {
@@ -30,6 +56,10 @@
 
 		@media screen and (min-width: grid-size(lg)) {
 			aspect-ratio: initial;
+		}
+
+		@media screen and (min-width: grid-size(md)) {
+			aspect-ratio: 4 / 3;
 		}
 	}
 
