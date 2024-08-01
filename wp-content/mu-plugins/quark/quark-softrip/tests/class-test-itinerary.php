@@ -43,7 +43,6 @@ class Test_Itinerary extends WP_UnitTestCase {
 	public static function set_up_before_class(): void {
 		// Run parent and include setup.
 		parent::set_up_before_class();
-		include_once 'setup.php';
 
 		// Create a test itinerary post.
 		$post = self::factory()->post->create_and_get(

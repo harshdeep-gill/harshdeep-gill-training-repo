@@ -39,7 +39,6 @@ class Test_Softrip_Sync extends WP_UnitTestCase {
 	public static function set_up_before_class(): void {
 		// Run parent and include setup.
 		parent::set_up_before_class();
-		include_once 'setup.php';
 
 		// Create a test itinerary post.
 		self::$itinerary_ids = self::factory()->post->create_many(
