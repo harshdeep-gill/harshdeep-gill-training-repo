@@ -38,7 +38,7 @@ class Stream_Connector extends Connector {
 	 */
 	public function get_label(): string {
 		// Return label.
-		return __( 'Softrip Sync', 'qrk' );
+		return __( 'Softrip', 'qrk' );
 	}
 
 	/**
@@ -66,21 +66,61 @@ class Stream_Connector extends Connector {
 		];
 	}
 
-	public function callback_softrip_sync_initiated( $record_id, $context ) {
-		// Set action.
-		$action = __( 'softrip_sync_initiated', 'qrk' );
+	/**
+	 * Callback for `softrip_sync_initiated` action.
+	 *
+	 * @param mixed[] $data Data passed to the action.
+	 * 
+	 * @return void
+	 */
+	public function callback_softrip_sync_initiated( array $data = [] ): void {
+		if ( empty( $data ) || empty( $data['via'] ) || ! isset( $data['count'] ) ) {
+			return;
+		}
 
+		$message = sprintf(
+			__( 'Softrip sync initiated via %1$s | Total %2$s : %3$d', 'qrk' ),
+			strval( $data['via'] ),
+			_n( 'itinerary', 'itineraries', absint( $data['count'] ), 'qrk' ),
+			absint( $data['count'] )
+		);
+
+		// Log action.
 		$this->log(
-		// Message to store in log
-			sprintf( __( 'Softrip sync %s', 'qrk' ), $context['message'] ),
-			// Context for the log entry
-			$context,
-			// ID related to the action
-			$record_id,
-			// Context label
+			$message,
+			[],
+			absint( wp_unique_id() ),
 			'softrip_sync',
-			// Action label
-			$context['action']
+			'initiated'
+		);
+	}
+
+	/**
+	 * Callback for `softrip_sync_completed` action.
+	 *
+	 * @param mixed[] $data Data passed to the action.
+	 * 
+	 * @return void
+	 */
+	public function callback_softrip_sync_completed( array $data = [] ): void {
+		if ( empty( $data ) || empty( $data['via'] ) || ! isset( $data['success'] ) || ! isset( $data['failed'] ) ) {
+			return;
+		}
+
+		$message = sprintf(
+			__( 'Softrip sync completed via %1$s | Successful: %2$d | Failed: %3$d', 'qrk' ),
+			strval( $data['via'] ),
+			absint( $data['success'] ),
+			absint( $data['failed'] )
+		);
+
+		// Log action.
+		$this->log(
+			$message,
+			[],
+			absint( wp_unique_id() ),
+			'softrip_sync',
+			'completed'
 		);
 	}
 }
