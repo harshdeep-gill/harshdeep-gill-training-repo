@@ -11,7 +11,7 @@ use WP_UnitTestCase;
 use WP_Post;
 use WP_Error;
 
-use function Quark\Tests\truncate_softrip_db_tables;
+use function Quark\Tests\Softrip\truncate_softrip_db_tables;
 
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
 
@@ -40,7 +40,7 @@ class Test_Occupancy extends WP_UnitTestCase {
 		parent::set_up();
 
 		// Mock the response for the POST request.
-		add_filter( 'pre_http_request', 'Quark\Tests\mock_softrip_http_request', 10, 3 );
+		add_filter( 'pre_http_request', 'Quark\Tests\Softrip\mock_softrip_http_request', 10, 3 );
 	}
 
 	/**
@@ -53,7 +53,7 @@ class Test_Occupancy extends WP_UnitTestCase {
 		parent::tear_down();
 
 		// Remove the filter.
-		remove_filter( 'pre_http_request', 'Quark\Tests\mock_softrip_http_request' );
+		remove_filter( 'pre_http_request', 'Quark\Tests\Softrip\mock_softrip_http_request' );
 	}
 
 	/**

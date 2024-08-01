@@ -12,7 +12,7 @@ use WP_Post;
 use WP_Error;
 use WP_Query;
 
-use function Quark\Tests\truncate_softrip_db_tables;
+use function Quark\Tests\Softrip\truncate_softrip_db_tables;
 
 use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
@@ -203,7 +203,7 @@ class Test_Softrip_Sync extends WP_UnitTestCase {
 		parent::set_up();
 
 		// Mock the response for the POST request.
-		add_filter( 'pre_http_request', 'Quark\Tests\mock_softrip_http_request', 10, 3 );
+		add_filter( 'pre_http_request', 'Quark\Tests\Softrip\mock_softrip_http_request', 10, 3 );
 	}
 
 	/**
@@ -216,7 +216,7 @@ class Test_Softrip_Sync extends WP_UnitTestCase {
 		parent::tear_down();
 
 		// Remove the filter.
-		remove_filter( 'pre_http_request', 'Quark\Tests\mock_softrip_http_request' );
+		remove_filter( 'pre_http_request', 'Quark\Tests\Softrip\mock_softrip_http_request' );
 	}
 
 	/**
