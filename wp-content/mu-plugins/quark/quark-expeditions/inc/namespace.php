@@ -1209,3 +1209,38 @@ function bust_details_cache_on_departure_update( int $departure_id = 0 ): void {
 	// Bust cache for Expedition.
 	bust_details_cache( absint( $expedition_id ) );
 }
+
+/**
+ * Get Expedition Details Card.
+ *
+ * @param int $expedition_id Expedition Post ID.
+ *
+ * @return array<int, int>
+ */
+function get_expedition_ship_ids( int $expedition_id = 0 ): array {
+	// Get the expedition.
+	$expedition      = get( $expedition_id );
+	$expedition_post = $expedition['post'];
+	$ships_ids       = [];
+
+	// Check for post.
+	if ( ! $expedition_post instanceof WP_Post ) {
+		return $ships_ids;
+	}
+
+	// Get the ships IDs.
+	$ships = get_ships( $expedition_post->ID );
+
+	// Check for ships.
+	if ( empty( $ships ) ) {
+		return $ships_ids;
+	}
+
+	// Get the ships IDs.
+	foreach ( $ships as $ship ) {
+		$ships_ids[] = absint( $ship['post']->ID );
+	}
+
+	// Return the ships IDs.
+	return $ships_ids;
+}

@@ -50,6 +50,7 @@ import * as highlights from './highlights';
 import * as iconInfoGrid from './icon-info-grid';
 import * as expeditionDetails from './expedition-details';
 import * as mediaCtaBanner from './media-cta-banner';
+import * as ships from './ships';
 
 /**
  * Add blocks.
@@ -104,6 +105,7 @@ const blocks = [
 	iconInfoGrid,
 	expeditionDetails,
 	mediaCtaBanner,
+	ships,
 ];
 
 /**
