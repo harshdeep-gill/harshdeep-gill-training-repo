@@ -13,6 +13,6 @@ namespace Quark\Theme\Blocks\SecondaryNavigation\Menu;
  * @return void
  */
 function bootstrap(): void {
-    // Register the block.
-    register_block_type_from_metadata( __DIR__ );
+	// Register the block.
+	register_block_type_from_metadata( __DIR__ );
 }

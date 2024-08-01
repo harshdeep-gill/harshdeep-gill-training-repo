@@ -9,34 +9,41 @@ import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 import classNames from 'classnames';
 
 /**
+ * Styles.
+ */
+import './editor.scss';
+
+/**
  * Child blocks.
  */
-import * as secondaryNavigationMenu from './children/secondary-navigation-menu';
+import * as secondaryNavigationMenu from './children/menu';
+import * as secondaryNavigationButtons from './children/buttons';
 
 /**
  * Edit Component.
  * @param {Object} props           Component properties.
  * @param {string} props.className Class name.
- * @return
  */
 export default function Edit( { className }: BlockEditAttributes ) {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
+	// Get block props.
 	const blockProps = useBlockProps( {
-		className: classNames( className, 'secondary-navigation__wrap' ),
+		className: classNames( className, 'secondary-navigation' ),
 	} );
 
-	// eslint-disable-next-line react-hooks/rules-of-hooks
+	// Get inner blocks props.
 	const innerBlockProps = useInnerBlocksProps(
-		{ ...blockProps },
+		{ className: 'secondary-navigation__wrap wrap' },
 		{
-			allowedBlocks: [ secondaryNavigationMenu.name ],
-			template: [ [ secondaryNavigationMenu.name ] ],
+			allowedBlocks: [ secondaryNavigationMenu.name, secondaryNavigationButtons.name ],
+			template: [ [ secondaryNavigationMenu.name ], [ secondaryNavigationButtons.name ] ],
 			orientation: 'horizontal',
 		}
 	);
 
 	// Return markup.
 	return (
-		<div { ...innerBlockProps } />
+		<section { ...blockProps }>
+			<div { ...innerBlockProps } />
+		</section>
 	);
 }

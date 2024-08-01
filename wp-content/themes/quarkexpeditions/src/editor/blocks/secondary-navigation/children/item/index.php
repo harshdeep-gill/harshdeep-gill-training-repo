@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Block: Secondary Navigation - Item.
  *
@@ -13,8 +12,7 @@ namespace Quark\Theme\Blocks\SecondaryNavigation\Item;
  *
  * @return void
  */
-function bootstrap(): void
-{
-    // Register the block.
-    register_block_type_from_metadata(__DIR__);
+function bootstrap(): void {
+	// Register the block.
+	register_block_type_from_metadata( __DIR__ );
 }

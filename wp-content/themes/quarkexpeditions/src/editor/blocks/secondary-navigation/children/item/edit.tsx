@@ -19,14 +19,15 @@ const { LinkControl } = gumponents.components;
 /**
  * Edit Component.
  *
- * @param {Object} props                 Component properties.
- * @param {string} props.className       Class name.
- * @param {Array}  props.attributes      Block attributes.
+ * @param {Object}   props               Component properties.
+ * @param {string}   props.className     Class name.
+ * @param {Array}    props.attributes    Block attributes.
  * @param {Function} props.setAttributes Set block attributes.
  */
 export default function Edit( { className, attributes, setAttributes }: BlockEditAttributes ) {
+	// Get block props.
 	const blockProps = useBlockProps( {
-		className: classNames( className, 'secondary-navigation__navigation-item' ),
+		className: classNames( className, 'secondary-navigation__navigation-items' ),
 	} );
 
 	// Return markup.

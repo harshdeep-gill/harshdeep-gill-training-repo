@@ -32,8 +32,9 @@ export const settings: BlockConfiguration = {
 /**
  * Children.
  */
-import * as secondaryNavigationItem from './children/secondary-navigation-item';
-import * as secondaryNavigationMenu from './children/secondary-navigation-menu';
+import * as secondaryNavigationItem from './children/item';
+import * as secondaryNavigationMenu from './children/menu';
+import * as secondaryNavigationButtons from './children/buttons';
 
 /**
  * Initialization.
@@ -45,4 +46,5 @@ export const init = (): void => {
 	// Register children.
 	registerBlockType( secondaryNavigationItem.name, secondaryNavigationItem.settings );
 	registerBlockType( secondaryNavigationMenu.name, secondaryNavigationMenu.settings );
+	registerBlockType( secondaryNavigationButtons.name, secondaryNavigationButtons.settings );
 };

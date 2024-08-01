@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies.
  */
-import { InnerBlocks, useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
+import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 
 /**
  * External dependencies.
@@ -11,7 +11,7 @@ import classnames from 'classnames';
 /**
  * Child blocks.
  */
-import * as secondaryNavigationItem from '../secondary-navigation-item';
+import * as secondaryNavigationItem from '../item';
 
 /**
  * Edit Component.
@@ -20,11 +20,12 @@ import * as secondaryNavigationItem from '../secondary-navigation-item';
  * @param {string} props.className Class name.
  */
 export default function Edit( { className }: BlockEditAttributes ) {
+	// Get block props.
 	const blockProps = useBlockProps( {
 		className: classnames( className, 'secondary-navigation__navigation' ),
 	} );
 
-	// TODO: Add comment.
+	// Get inner blocks props.
 	const innerBlockProps = useInnerBlocksProps(
 		{
 			className: classnames( 'secondary-navigation__navigation-items' ),
@@ -36,11 +37,10 @@ export default function Edit( { className }: BlockEditAttributes ) {
 				[ secondaryNavigationItem.name, { placeholder: 'Secondary Navigation Item…' } ],
 				[ secondaryNavigationItem.name, { placeholder: 'Secondary Navigation Item…' } ],
 			],
-			renderAppender: InnerBlocks.DefaultBlockAppender,
 		}
 	);
 
-	// TODO: Add comment.
+	// Return markup.
 	return (
 		<nav { ...blockProps } >
 			<ul { ...innerBlockProps } />
