@@ -10,14 +10,49 @@
 		column-gap: var(--spacing-6);
 		height: 100%;
 		align-items: stretch;
+	}
 
-		@media screen and (min-width: grid-size(lg)) {
-			display: grid;
-			row-gap: var(--spacing-7);
-			height: auto !important;
+	&:not(&--desktop-carousel) {
+		#{$self}__slides-container {
 
-			@include grid-columns(3);
+			@media screen and (min-width: grid-size(lg)) {
+				display: grid;
+				row-gap: var(--spacing-7);
+				height: auto !important;
+
+				@include grid-columns(3);
+			}
+
 		}
+
+		#{$self}__nav {
+
+			@media screen and (min-width: grid-size(lg)) {
+				display: none;
+			}
+		}
+
+		#{$self}__slide {
+
+			@media screen and (min-width: grid-size(sm)) {
+				flex: 0 0 calc(75% - var(--spacing-4));
+			}
+
+			@media screen and (min-width: grid-size(md)) {
+				flex: 0 0 calc(45% - var(--spacing-4));
+			}
+
+			@media screen and (min-width: grid-size(lg)) {
+				background-color: transparent;
+				min-width: auto;
+				box-shadow: none;
+				padding: 0;
+			}
+		}
+	}
+
+	&__section--desktop-carousel {
+		margin-top: var(--spacing-5);
 	}
 
 	&__track {
@@ -33,21 +68,6 @@
 		box-shadow: var(--shadow-1);
 		flex: 0 0 100%;
 		padding: var(--spacing-5);
-
-		@media screen and (min-width: grid-size(sm)) {
-			flex: 0 0 calc(75% - var(--spacing-4));
-		}
-
-		@media screen and (min-width: grid-size(md)) {
-			flex: 0 0 calc(45% - var(--spacing-4));
-		}
-
-		@media screen and (min-width: grid-size(lg)) {
-			background-color: transparent;
-			min-width: auto;
-			box-shadow: none;
-			padding: 0;
-		}
 	}
 
 	&__card {
@@ -81,9 +101,6 @@
 		gap: var(--spacing-6);
 		margin-top: var(--spacing-6);
 
-		@media screen and (min-width: grid-size(lg)) {
-			display: none;
-		}
 	}
 
 	&__arrow-button {

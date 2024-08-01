@@ -1,6 +1,7 @@
 @props( [
 	'drawer_id' => '',
-	'class'    => '',
+	'class'     => '',
+	'align'     => 'left',
 ] )
 
 @php
@@ -8,10 +9,18 @@
 	if ( empty( $slot ) || empty( $drawer_id ) ) {
 		return;
 	}
+
+	$classes = [ $class, 'drawer__drawer-open' ];
+
+	if ( 'right' === $align ) {
+		$classes[] = 'drawer__drawer-open--right';
+	} elseif ( 'center' === $align ) {
+		$classes[] = 'drawer__drawer-open--center';
+	}
 @endphp
 
 <quark-drawer-open
-	@class( [ $class, 'drawer__drawer-open' ] )
+	@class( $classes )
 	drawer-id="{{ $drawer_id }}"
 >
 	{!! $slot !!}
