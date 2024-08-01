@@ -1,11 +1,10 @@
 {
-	"schema": "https://schemas.wp.org/trunk/block.json",
+	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
 	"title": "Header",
 	"name": "quark/header",
 	"description": "Header block.",
 	"category": "layout",
-	"icon": "menu",
 	"textdomain": "qrk",
 	"keywords": [
 		"header"

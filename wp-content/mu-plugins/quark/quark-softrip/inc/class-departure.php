@@ -14,6 +14,7 @@ use function Quark\CabinCategories\get_id_from_cabin_code;
 use function Quark\Departures\get as get_departure;
 use function Quark\Departures\bust_post_cache;
 use function Quark\Ships\get_id_from_ship_code;
+use function Quark\Ships\get as get_ship;
 
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
 
@@ -198,6 +199,7 @@ class Departure extends Softrip_Object {
 		// Set data defaults.
 		$default = [
 			'id'               => 0,
+			'code'             => 0,
 			'shipCode'         => '',
 			'packageCode'      => '',
 			'startDate'        => current_time( 'mysql' ),
@@ -218,7 +220,8 @@ class Departure extends Softrip_Object {
 			'meta_input'  => [
 				'related_expedition'   => $this->itinerary->get_post_meta( 'related_expedition' ),
 				'related_ship'         => get_id_from_ship_code( strval( $data['shipCode'] ) ),
-				'softrip_departure_id' => $data['id'],
+				'softrip_departure_id' => $data['code'],
+				'departure_unique_id'  => $data['id'],
 				'softrip_package_id'   => $data['packageCode'],
 				'departure_start_date' => $data['startDate'],
 				'departure_end_date'   => $data['endDate'],
@@ -373,6 +376,11 @@ class Departure extends Softrip_Object {
 		// Set up the lowest variable.
 		$lowest = 0;
 
+		// Check Current departure status is published.
+		if ( 'publish' !== $this->get_status() ) {
+			return $lowest;
+		}
+
 		// Iterate over the cabins.
 		foreach ( $this->get_cabins() as $cabin ) {
 			// Get the price per person.
@@ -387,5 +395,87 @@ class Departure extends Softrip_Object {
 
 		// Return the lowest found.
 		return $lowest;
+	}
+
+	/**
+	 * Get the ship.
+	 *
+	 * @return array{} | array{
+	 *     post: WP_Post|null,
+	 *     permalink: string,
+	 *     post_meta: mixed[],
+	 * }
+	 */
+	public function get_ship(): array {
+		// Check Current departure status is published.
+		if ( 'publish' !== $this->get_status() ) {
+			return [];
+		}
+
+		// Get the ship code.
+		$ship_code = $this->get_post_meta( 'ship_id' );
+
+		// Validate ship code.
+		if ( empty( $ship_code ) || ! is_string( $ship_code ) ) {
+			return [];
+		}
+
+		// Get the ship object.
+		$ship_id = get_id_from_ship_code( $ship_code );
+		$ship    = get_ship( $ship_id );
+
+		// Validate ship.
+		if ( ! $ship['post'] instanceof WP_Post ) {
+			return [];
+		}
+
+		// Return the ship object.
+		return $ship;
+	}
+
+	/**
+	 * Get the starting date.
+	 *
+	 * @return string The starting date.
+	 */
+	public function get_starting_date(): string {
+		// Check Current departure status is published.
+		if ( 'publish' !== $this->get_status() ) {
+			return '';
+		}
+
+		// Get the departure start date.
+		$departure_start_date = $this->get_post_meta( 'departure_start_date' );
+
+		// Validate the start date.
+		if ( empty( $departure_start_date ) || ! is_string( $departure_start_date ) ) {
+			return '';
+		}
+
+		// Return the start date.
+		return $departure_start_date;
+	}
+
+	/**
+	 * Get the ending date.
+	 *
+	 * @return string The ending date.
+	 */
+	public function get_ending_date(): string {
+		// Check Current departure status is published.
+		if ( 'publish' !== $this->get_status() ) {
+			return '';
+		}
+
+		// Get the departure end date.
+		$departure_end_date = $this->get_post_meta( 'departure_end_date' );
+
+		// Validate the end date.
+		if ( empty( $departure_end_date ) || ! is_string( $departure_end_date ) ) {
+			return '';
+		}
+
+		// Return the end date.
+		return $departure_end_date;
 	}
 }

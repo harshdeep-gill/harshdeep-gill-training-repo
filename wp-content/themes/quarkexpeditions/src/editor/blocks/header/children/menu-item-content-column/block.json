@@ -1,5 +1,5 @@
 {
-	"schema": "https://schemas.wp.org/trunk/block.json",
+	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
 	"title": "Header Menu Item Content Column",
 	"name": "quark/header-menu-item-content-column",
@@ -7,7 +7,6 @@
 	"parent": [
 		"quark/header-menu-item-content"
 	],
-	"icon": "screenoptions",
 	"category": "layout",
 	"textdomain": "qrk",
 	"keywords": [

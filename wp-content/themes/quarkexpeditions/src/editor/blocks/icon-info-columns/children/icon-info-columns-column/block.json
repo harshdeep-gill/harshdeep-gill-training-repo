@@ -5,7 +5,6 @@
 	"description": "Individual column in the icon info columns.",
 	"parent": [ "quark/icon-info-columns" ],
 	"name": "quark/icon-info-columns-column",
-	"icon": "screenoptions",
 	"category": "layout",
 	"keywords": [ "item" ],
 	"textdomain": "qrk",

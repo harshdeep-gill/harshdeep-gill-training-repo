@@ -66,6 +66,12 @@
 		border-radius: var(--border-radius-large) 0 0 var(--border-radius-large);
 		height: 100%;
 
+		&--compact {
+			max-width: 600px;
+			padding: var(--spacing-5);
+			gap: var(--spacing-4);
+		}
+
 		#{$self}[animation-direction="up"] & {
 			height: unset;
 			border-radius: var(--border-radius-large) var(--border-radius-large) 0 0;
@@ -110,13 +116,34 @@
 
 	&__drawer-close {
 		display: block;
+		position: absolute;
+		inset: 15px 15px auto auto;
 
 		svg {
 			height: 15px;
 			width: 15px;
 		}
+	}
 
-		position: absolute;
-		inset: 15px 15px auto auto;
+	&__drawer-open {
+
+		&--right {
+			display: flex;
+			justify-content: flex-end;
+		}
+
+		&--center {
+			display: flex;
+			justify-content: center;
+		}
+	}
+
+	&__footer {
+
+		&--compact {
+			border-top: solid 1px var(--color-gray-20);
+			padding-inline: var(--spacing-5);
+			margin-inline: calc(-1 * var(--spacing-5));
+		}
 	}
 }

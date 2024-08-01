@@ -1,5 +1,5 @@
 {
-	"schema": "https://schemas.wp.org/trunk/block.json",
+	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
 	"title": "Accordion Item",
 	"name": "quark/accordion-item",
@@ -7,7 +7,6 @@
 	"parent": [
 		"quark/accordion"
 	],
-	"icon": "screenoptions",
 	"category": "layout",
 	"keywords": [
 		"item"

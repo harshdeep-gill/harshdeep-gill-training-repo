@@ -3,7 +3,6 @@
     "apiVersion": 3,
     "name": "quark/offer-cards-card",
     "description": "Individual Card Item for offer cards.",
-    "icon": "screenoptions",
     "title": "Offer Cards Card",
     "keywords": [ "card" ],
     "category": "layout",

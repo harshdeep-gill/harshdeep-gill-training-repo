@@ -1,10 +1,9 @@
 {
-	"schema": "https://schemas.wp.org/trunk/block.json",
+	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
 	"title": "Landing Page - Form modal CTA",
 	"name": "quark/lp-form-modal-cta",
 	"description": "A CTA to open up a Landing Page Form Modal.",
-	"icon": "button",
 	"category": "forms",
 	"textdomain": "qrk",
 	"keywords": [

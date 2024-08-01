@@ -3,7 +3,6 @@
   "apiVersion": 3,
   "name": "quark/product-cards-subtitle",
   "description": "Individual Card Subtitle for product cards.",
-  "icon": "screenoptions",
   "title": "Card Subtitle",
   "keywords": [ "subtitle" ],
   "category": "layout",
