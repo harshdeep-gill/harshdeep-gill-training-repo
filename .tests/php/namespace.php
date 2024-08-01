@@ -107,7 +107,7 @@ function setup_softrip_db(): void {
  *     headers: array{},
  * }
  */
-function mock_http_request( array|false $response = [], array $parsed_args = [], string $url = null ): false|array {
+function mock_softrip_http_request( array|false $response = [], array $parsed_args = [], string $url = null ): false|array {
 	// Check if the URL is the one we want to mock.
 	if ( 'https://softrip-adapter.dev/departures' !== $url ) {
 		return $response;

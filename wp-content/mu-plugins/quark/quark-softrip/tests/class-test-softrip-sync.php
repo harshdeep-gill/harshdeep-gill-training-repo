@@ -203,7 +203,7 @@ class Test_Softrip_Sync extends WP_UnitTestCase {
 		parent::set_up();
 
 		// Mock the response for the POST request.
-		add_filter( 'pre_http_request', 'Quark\Tests\mock_http_request', 10, 3 );
+		add_filter( 'pre_http_request', 'Quark\Tests\mock_softrip_http_request', 10, 3 );
 	}
 
 	/**
@@ -216,7 +216,7 @@ class Test_Softrip_Sync extends WP_UnitTestCase {
 		parent::tear_down();
 
 		// Remove the filter.
-		remove_filter( 'pre_http_request', 'Quark\Tests\mock_http_request' );
+		remove_filter( 'pre_http_request', 'Quark\Tests\mock_softrip_http_request' );
 	}
 
 	/**
