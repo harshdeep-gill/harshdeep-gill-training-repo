@@ -162,9 +162,9 @@ class Itinerary extends Softrip_Object {
 	 * @return void
 	 */
 	public function update_departures( array $departures = [] ): void {
-		// If no data is supplied, attempt to get it.
+		// If no data is supplied, attempt to get it from the middleware.
 		if ( empty( $departures ) ) {
-			// Get the Softrip ID and request the departures from the middleware.
+			// Get the Softrip ID and request the middleware.
 			$softrip_id     = strval( $this->get_post_meta( 'softrip_package_id' ) );
 			$raw_departures = request_departures( [ $softrip_id ] );
 
