@@ -64,6 +64,7 @@ function mock_softrip_http_request( array|false $response = [], array $parsed_ar
 		return $response;
 	}
 
+	// Setup variables.
 	$data          = [];
 	$product_codes = [];
 
@@ -520,9 +521,6 @@ function mock_softrip_http_request( array|false $response = [], array $parsed_ar
 		],
 		'headers'  => [],
 	];
-
-	// Return the response.
-	return $response;
 }
 
 /**
