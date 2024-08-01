@@ -58,6 +58,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Softrip API credentials.
-define( 'QUARK_SOFTRIP_ADAPTER_BASE_URL', 'http://localhost.com' );
+define( 'QUARK_SOFTRIP_ADAPTER_BASE_URL', 'https://softrip-adapter.dev' );
 define( 'QUARK_SOFTRIP_ADAPTER_USERNAME', 'test' );
 define( 'QUARK_SOFTRIP_ADAPTER_PASSWORD', 'test' );
