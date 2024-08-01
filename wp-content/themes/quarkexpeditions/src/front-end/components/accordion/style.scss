@@ -30,6 +30,8 @@
 		margin-left: auto;
 		rotate: -90deg;
 
+		@include transition();
+
 		svg {
 			height: 12px;
 			width: 8px;
@@ -39,7 +41,6 @@
 			}
 		}
 
-		@include transition();
 	}
 
 	&__item {
