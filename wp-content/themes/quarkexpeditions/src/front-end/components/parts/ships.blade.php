@@ -8,11 +8,11 @@
 	}
 @endphp
 
-<x-tabs update_url='yes' current_tab="{{ $ships[0]['id'] }}">
+<x-tabs update_url='yes' current_tab="{{ $ships[0]['id'] ?? '' }}">
 	<x-tabs.header>
 		@foreach ( $ships as $ship )
 			@if ( ! empty( $ship['id'] ) )
-				<x-tabs.nav id="{{ $ship['id'] }}" title="{{ $ship['title'] ?? '' }}" />
+				<x-tabs.nav id="{{ $ship['id'] ?? '' }}" title="{{ $ship['title'] ?? '' }}" />
 			@endif
 		@endforeach
 	</x-tabs.header>
@@ -20,7 +20,7 @@
 	<x-tabs.content>
 		@foreach ( $ships as $ship )
 			@if ( ! empty( $ship['id'] ) )
-				<x-tabs.tab id="{{ $ship['id'] }}">
+				<x-tabs.tab id="{{ $ship['id'] ?? '' }}">
 					<x-section>
 						<x-section.heading>
 							<x-section.title :title="$ship['title'] ?? ''" align="left" />
@@ -33,25 +33,25 @@
 						</x-section.content>
 					</x-section>
 					@if ( ! empty( $ship['decks'] ) )
-						<x-drawer.drawer-open :drawer_id="$ship['decks_id']" align="center">
+						<x-drawer.drawer-open :drawer_id="$ship['decks_id'] ?? ''" align="center">
 							<x-button type="button" size="big" color="black">
 								{{ __( 'View Deck Plans & Cabins', 'qrk' ) }}
 							</x-button>
 						</x-drawer.drawer-open>
-						<x-drawer :id="$ship['decks_id']" compact="true" animation_direction="right">
+						<x-drawer :id="$ship['decks_id'] ?? ''" compact="true" animation_direction="right">
 							<x-drawer.header>
 								<h3>{{ __( 'Deck Plans & Cabins', 'qrk' ) }}</h3>
 							</x-drawer.header>
 							<x-drawer.body>
-								<x-tabs current_tab="{{ $ship['decks'][0]['id'] }}">
+								<x-tabs current_tab="{{ $ship['decks'][0]['id'] ?? '' }}">
 									<x-tabs.header>
 										@foreach ( $ship['decks'] as $deck )
-											<x-tabs.nav id="{{ $deck['id'] }}" title="{{ $deck['title'] ?? '' }}" />
+											<x-tabs.nav id="{{ $deck['id'] ?? '' }}" title="{{ $deck['title'] ?? '' }}" />
 										@endforeach
 									</x-tabs.header>
 									<x-tabs.content>
 										@foreach ( $ship['decks'] as $deck )
-											<x-tabs.tab id="{{ $deck['id'] }}">
+											<x-tabs.tab id="{{ $deck['id'] ?? '' }}">
 												@if ( ! empty( $deck['image_id'] ) )
 													<x-image :image_id="$deck['image_id']" :alt="$deck['title'] ?? ''" />
 												@endif
@@ -63,7 +63,7 @@
 																@if ( ! empty( $cabin_option['image_id'] ) )
 																	<x-media-detail-cards.image :image_id="$cabin_option['image_id']" :alt="$cabin_option['title'] ?? ''" />
 																@endif
-																<x-media-detail-cards.title :title="$cabin_option['title']" heading_level="5" />
+																<x-media-detail-cards.title :title="$cabin_option['title'] ?? ''" heading_level="5" />
 																@if ( ! empty( $cabin_option['description'] ) )
 																	<x-media-detail-cards.content>
 																		{!! $cabin_option['description'] ?? '' !!}
@@ -85,7 +85,7 @@
 													<x-media-description-cards :desktop_carousel="true">
 														@foreach ( $deck['public_spaces'] as $public_spaces )
 															<x-media-description-cards.card>
-																<x-media-description-cards.image :image_id="$public_spaces['image']" :alt="$public_spaces['title'] ?? ''" />
+																<x-media-description-cards.image :image_id="$public_spaces['image'] ?? 0" :alt="$public_spaces['title'] ?? ''" />
 																<x-media-description-cards.content>
 																	<x-media-description-cards.title :title="$public_spaces['title'] ?? ''" heading_level="5" />
 																	<x-media-description-cards.description>

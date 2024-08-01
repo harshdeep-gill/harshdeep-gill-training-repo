@@ -305,7 +305,7 @@ function bust_ship_code_lookup_cache(): void {
  *    name: string,
  *    title: string,
  *    permalink: string,
- *    description: mixed,
+ *    description: string,
  *    related_decks: int[]|array{},
  * }
  */
@@ -335,7 +335,7 @@ function get_ship_data( int $ship_id = 0 ): array {
 		'name'          => $ship_post->post_name,
 		'title'         => $ship_post->post_title,
 		'permalink'     => $ship['permalink'],
-		'description'   => apply_filters( 'the_content', $ship_post->post_content ),
+		'description'   => strval( apply_filters( 'the_content', $ship_post->post_content ) ),
 		'related_decks' => $decks_ids,
 	];
 }

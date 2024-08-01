@@ -172,9 +172,27 @@ function get( int $post_id = 0 ): array {
  *     id: string,
  *     title: string,
  *     image_id: int,
- *     description: mixed,
- *     cabin_options: mixed[],
- *     public_spaces: mixed[],
+ *     description: string,
+ *     cabin_options:array{
+ *         id: string,
+ *         title: string,
+ *         image_id: int,
+ *         description: mixed,
+ *         details: array{
+ *             size_from: string,
+ *             size_to: string,
+ *             occupancy_from: string,
+ *             occupancy_to: string,
+ *             bed_configuration: string,
+ *             class: string,
+ *             location: string,
+ *          }
+ *     }[],
+ *     public_spaces:  array<int, array{
+ *         title?: string,
+ *         description?: string,
+ *         image?: int,
+ *     }>,
  * }
  */
 function get_deck_data( int $deck_id = 0 ): array {
@@ -222,7 +240,7 @@ function get_deck_data( int $deck_id = 0 ): array {
 		'id'            => $deck_post->post_name,
 		'title'         => strval( $deck_meta['deck_name'] ),
 		'image_id'      => absint( $deck_meta['deck_plan_image'] ),
-		'description'   => apply_filters( 'the_content', $deck_post->post_content ),
+		'description'   => strval( apply_filters( 'the_content', $deck_post->post_content ) ),
 		'cabin_options' => $cabin_options,
 		'public_spaces' => $public_spaces,
 	];
@@ -238,7 +256,7 @@ function get_deck_data( int $deck_id = 0 ): array {
  *
  * @return array<int, array{
  *    title?: string,
- *    description?: mixed,
+ *    description?: string,
  *    image?: int,
  * }>
  */
@@ -272,7 +290,7 @@ function prepare_public_spaces( array $deck_meta = [] ): array {
 
 			// Description.
 			case 'description':
-				$public_spaces[ $key_index ]['description'] = apply_filters( 'the_content', $value );
+				$public_spaces[ $key_index ]['description'] = strval( apply_filters( 'the_content', $value ) );
 				break;
 
 			// Image.
@@ -301,7 +319,7 @@ function prepare_public_spaces( array $deck_meta = [] ): array {
  *        size_to: string,
  *        occupancy_from: string,
  *        occupancy_to: string,
- *        bed_configuration: mixed,
+ *        bed_configuration: string,
  *        class: string,
  *        location: string,
  *    }

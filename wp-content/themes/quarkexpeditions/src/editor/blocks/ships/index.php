@@ -91,11 +91,6 @@ function render( array $attributes = [] ): string {
 
 					// Loop through the cabin options.
 					foreach ( $deck_data['cabin_options'] as $cabin_option ) {
-						// Check for details.
-						if ( ! is_array( $cabin_option ) || empty( $cabin_option['details'] ) || ! is_array( $cabin_option['details'] ) ) {
-							continue;
-						}
-
 						// Initialize cabin option data.
 						$cabin_option_data            = $cabin_option;
 						$cabin_option_data['details'] = [];
