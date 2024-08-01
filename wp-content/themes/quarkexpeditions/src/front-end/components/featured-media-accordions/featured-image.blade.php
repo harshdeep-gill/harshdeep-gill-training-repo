@@ -21,7 +21,7 @@
 		],
 		'transform'  =>[
 			'crop'    => 'fill',
-			'gravity' => 'face',
+			'gravity' => 'auto',
 		]
 	];
 

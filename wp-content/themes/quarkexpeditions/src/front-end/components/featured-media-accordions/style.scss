@@ -29,11 +29,11 @@
 		}
 
 		img {
-			aspect-ratio: 26 / 15;
+			aspect-ratio: 5 / 3;
 			width: 100%;
 
 			@media screen and ( min-width: grid-size(md) ) {
-				aspect-ratio: 8 / 9;
+				aspect-ratio: 1;
 			}
 		}
 	}
