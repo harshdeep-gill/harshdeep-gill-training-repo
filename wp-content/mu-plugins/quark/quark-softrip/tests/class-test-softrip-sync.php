@@ -12,6 +12,8 @@ use WP_Post;
 use WP_Error;
 use WP_Query;
 
+use function Quark\Tests\tear_down_softrip_db;
+
 use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
 use const Quark\CabinCategories\POST_TYPE as CABIN_CATEGORY_POST_TYPE;
@@ -201,7 +203,7 @@ class Test_Softrip_Sync extends WP_UnitTestCase {
 		parent::set_up();
 
 		// Mock the response for the POST request.
-		add_filter( 'pre_http_request', 'Quark\Softrip\mock_http_request', 10, 3 );
+		add_filter( 'pre_http_request', 'Quark\Tests\mock_http_request', 10, 3 );
 	}
 
 	/**
@@ -214,7 +216,7 @@ class Test_Softrip_Sync extends WP_UnitTestCase {
 		parent::tear_down();
 
 		// Remove the filter.
-		remove_filter( 'pre_http_request', 'Quark\Softrip\mock_http_request' );
+		remove_filter( 'pre_http_request', 'Quark\Tests\mock_http_request' );
 	}
 
 	/**

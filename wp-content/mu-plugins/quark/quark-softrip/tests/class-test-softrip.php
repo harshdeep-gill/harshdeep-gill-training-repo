@@ -10,22 +10,12 @@ namespace Quark\Softrip;
 use WP_UnitTestCase;
 use WP_Error;
 
+use function Quark\Tests\tear_down_softrip_db;
+
 /**
  * Class Test_Softrip.
  */
 class Test_Softrip extends WP_UnitTestCase {
-	/**
-	 * Setup for tests.
-	 *
-	 * @return void
-	 */
-	public static function set_up_before_class(): void {
-		// Run parent and include setup.
-		parent::set_up_before_class();
-		include_once 'setup.php';
-		setup_softrip_db();
-	}
-
 	/**
 	 * Tear down after class.
 	 *
@@ -47,7 +37,7 @@ class Test_Softrip extends WP_UnitTestCase {
 		parent::set_up();
 
 		// Mock the response for the POST request.
-		add_filter( 'pre_http_request', 'Quark\Softrip\mock_http_request', 10, 3 );
+		add_filter( 'pre_http_request', 'Quark\Tests\mock_http_request', 10, 3 );
 	}
 
 	/**
@@ -60,7 +50,7 @@ class Test_Softrip extends WP_UnitTestCase {
 		parent::tear_down();
 
 		// Remove the filter.
-		remove_filter( 'pre_http_request', 'Quark\Softrip\mock_http_request' );
+		remove_filter( 'pre_http_request', 'Quark\Tests\mock_http_request' );
 	}
 
 	/**
