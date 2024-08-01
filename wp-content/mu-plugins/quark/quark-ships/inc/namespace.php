@@ -295,3 +295,47 @@ function bust_ship_code_lookup_cache(): void {
 	// Trigger action to clear cache.
 	do_action( 'qe_ship_code_lookup_cache_busted' );
 }
+
+/**
+ * Get ship data.
+ *
+ * @param int $ship_id Ship ID.
+ *
+ * @return array{}|array{
+ *    name: string,
+ *    title: string,
+ *    permalink: string,
+ *    description: string,
+ *    related_decks: int[]|array{},
+ * }
+ */
+function get_ship_data( int $ship_id = 0 ): array {
+	// Get the ship data.
+	$ship = get( $ship_id );
+
+	// Get the post and post meta.
+	$ship_post = $ship['post'];
+	$ship_meta = $ship['post_meta'];
+
+	// Check for post.
+	if ( ! $ship_post instanceof WP_Post ) {
+		return [];
+	}
+
+	// Prepare deck data.
+	$decks_ids = [];
+
+	// Get Decks associated with the ship.
+	if ( ! empty( $ship_meta['related_decks'] ) && is_array( $ship_meta['related_decks'] ) ) {
+		$decks_ids = array_map( 'absint', $ship_meta['related_decks'] );
+	}
+
+	// Return ship data.
+	return [
+		'name'          => $ship_post->post_name,
+		'title'         => $ship_post->post_title,
+		'permalink'     => $ship['permalink'],
+		'description'   => strval( apply_filters( 'the_content', $ship_post->post_content ) ),
+		'related_decks' => $decks_ids,
+	];
+}

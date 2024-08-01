@@ -20,7 +20,7 @@ if ( empty( $activities ) ) {
 				@endif
 				@if( $show_description )
 					<x-info-cards.description>
-						{{ $activity['description'] ?? '' }}
+						{!! $activity['description'] !!}
 					</x-info-cards.description>
 				@endif
 			</x-info-cards.content>

@@ -15,6 +15,7 @@ use const Quark\StaffMembers\SEASON_TAXONOMY;
 
 const POST_TYPE                = 'qrk_departure';
 const SPOKEN_LANGUAGE_TAXONOMY = 'qrk_spoken_language';
+const PROMOTION_TAG            = 'qrk_promotion_tags';
 const CACHE_KEY                = POST_TYPE;
 const CACHE_GROUP              = POST_TYPE;
 
@@ -27,19 +28,25 @@ function bootstrap(): void {
 	// Post type and taxonomies.
 	add_action( 'init', __NAMESPACE__ . '\\register_departure_post_type' );
 	add_action( 'init', __NAMESPACE__ . '\\register_spoken_language_taxonomy' );
+	add_action( 'init', __NAMESPACE__ . '\\register_promotion_tag_taxonomy' );
 
 	// Opt into stuff.
 	add_filter( 'qe_adventure_options_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
 	add_filter( 'qe_spoken_language_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
+	add_filter( 'qe_promotion_tag_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
 
 	// Other hooks.
 	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
+
+	// Bust cache on term update.
+	add_action( 'set_object_terms', __NAMESPACE__ . '\\bust_post_cache_on_term_assign', 10, 6 );
 
 	// Admin stuff.
 	if ( is_admin() ) {
 		// Custom fields.
 		require_once __DIR__ . '/../custom-fields/departures.php';
 		require_once __DIR__ . '/../custom-fields/spoken-languages.php';
+		require_once __DIR__ . '/../custom-fields/promotion-tags.php';
 	}
 }
 
@@ -131,6 +138,51 @@ function register_spoken_language_taxonomy(): void {
 
 	// Register taxonomy.
 	register_taxonomy( SPOKEN_LANGUAGE_TAXONOMY, (array) apply_filters( 'qe_spoken_language_taxonomy_post_types', [] ), $args );
+}
+
+/**
+ * Register Promotion Tag taxonomy.
+ *
+ * @return void
+ */
+function register_promotion_tag_taxonomy(): void {
+	// Prepare labels.
+	$labels = [
+		'name'                       => 'Promotion Tags',
+		'singular_name'              => 'Promotion Tag',
+		'search_items'               => 'Search Promotion Tags',
+		'popular_items'              => 'Popular Promotion Tags',
+		'all_items'                  => 'All Promotion Tags',
+		'parent_item'                => 'Parent Promotion Tag',
+		'parent_item_colon'          => 'Parent Promotion Tag:',
+		'edit_item'                  => 'Edit Promotion Tag',
+		'update_item'                => 'Update Promotion Tag',
+		'add_new_item'               => 'Add New Promotion Tag',
+		'new_item_name'              => 'New Promotion Tag',
+		'separate_items_with_commas' => 'Separate Promotion Tags with commas',
+		'add_or_remove_items'        => 'Add or remove Promotion Tags',
+		'choose_from_most_used'      => 'Choose from the most used Promotion Tags',
+		'menu_name'                  => 'Promotion Tags',
+	];
+
+	// Prepare args for registering taxonomy.
+	$args = [
+		'labels'            => $labels,
+		'public'            => false,
+		'show_in_nav_menus' => false,
+		'show_ui'           => true,
+		'meta_box_cb'       => false,
+		'show_tagcloud'     => false,
+		'show_admin_column' => true,
+		'hierarchical'      => false,
+		'rewrite'           => false,
+		'query_var'         => true,
+		'capabilities'      => [],
+		'show_in_rest'      => true,
+	];
+
+	// Register taxonomy.
+	register_taxonomy( PROMOTION_TAG, (array) apply_filters( 'qe_promotion_tag_taxonomy_post_types', [] ), $args );
 }
 
 /**
@@ -270,6 +322,32 @@ function get( int $post_id = 0 ): array {
 
 	// Return data.
 	return $data;
+}
+
+/**
+ * Bust cache on term assign.
+ *
+ * @param int                    $object_id Object ID.
+ * @param array{string|int}|null $terms     An array of object term IDs or slugs.
+ * @param array{string|int}|null $tt_ids    An array of term taxonomy IDs.
+ * @param string                 $taxonomy  Taxonomy slug.
+ *
+ * @return void
+ */
+function bust_post_cache_on_term_assign( int $object_id = 0, array $terms = null, array $tt_ids = null, string $taxonomy = '' ): void {
+	// Check for spoken language taxonomy.
+	if ( in_array( $taxonomy, [ SPOKEN_LANGUAGE_TAXONOMY, PROMOTION_TAG ], true ) ) {
+		// Get post.
+		$post = get( $object_id );
+
+		// Check for post.
+		if ( ! $post['post'] instanceof WP_Post || POST_TYPE !== $post['post']->post_type ) {
+			return;
+		}
+
+		// Bust cache.
+		bust_post_cache( $post['post']->ID );
+	}
 }
 
 /**

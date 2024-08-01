@@ -1,0 +1,34 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Ships",
+	"name": "quark/ships",
+	"description": "Display a carousel of review cards.",
+	"category": "layout",
+	"textdomain": "qrk",
+	"keywords": [
+		"ships",
+		"ship"
+	],
+	"attributes": {
+		"selectionType": {
+			"type": "string",
+			"default": "auto",
+			"enum": [
+				"manual",
+				"auto"
+			]
+		},
+		"ships": {
+			"type": "array",
+			"default": []
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}
