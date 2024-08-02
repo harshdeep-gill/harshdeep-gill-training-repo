@@ -30,6 +30,7 @@
     "@travelopia/eslint-plugin-wordpress-coding-standards": "file:./wp-content/mu-plugins/travelopia/travelopia-coding-standards/wordpress/eslint",
     "@types/wordpress__block-editor": "^11.5.13",
     "@types/wordpress__blocks": "^12.5.13",
+    "@types/wordpress__editor": "^13.6.8",
     "@wordpress/blocks": "^12.31.0",
     "@wordpress/components": "^27.2.0",
     "@wordpress/dependency-extraction-webpack-plugin": "^5.5.0",
@@ -59,7 +60,7 @@
     "webpack-watched-glob-entries-plugin": "^3.0.0"
   },
   "dependencies": {
-    "@travelopia/web-components": "^0.6.2",
+    "@travelopia/web-components": "^0.6.8",
     "glightbox": "^3.3.0",
     "normalize.css": "^8.0.1"
   }

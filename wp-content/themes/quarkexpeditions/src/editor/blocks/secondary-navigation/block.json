@@ -1,0 +1,21 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "title": "Secondary Navigation",
+    "name": "quark/secondary-navigation",
+    "description": "Secondary Navigation block.",
+    "category": "layout",
+    "textdomain": "qrk",
+    "keywords": [
+        "navigation",
+        "secondary"
+    ],
+    "attributes": {},
+    "supports": {
+        "alignWide": false,
+        "anchor": true,
+        "className": false,
+        "html": false,
+        "customClassName": false
+    }
+}

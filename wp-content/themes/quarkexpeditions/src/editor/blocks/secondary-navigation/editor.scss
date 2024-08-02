@@ -1,0 +1,7 @@
+.secondary-navigation {
+	z-index: 30 !important;
+
+	&__wrap {
+		justify-content: space-between;
+	}
+}

@@ -1,0 +1,35 @@
+@import "../../scss/";
+
+.media-carousel {
+
+	&__track {
+		aspect-ratio: 96 / 43;
+		border-radius: var(--border-radius-large);
+		overflow: hidden;
+		width: 100%;
+	}
+
+	&__arrows {
+		display: flex;
+		margin-top: var(--spacing-4);
+		gap: var(--spacing-5);
+
+		@media screen and (min-width: grid-size(lg)) {
+			margin-top: var(--spacing-6);
+		}
+	}
+
+	&__arrow-button {
+		display: inline-flex;
+		justify-content: center;
+		align-items: center;
+		width: 27px;
+		height: 27px;
+		background-color: var(--color-black);
+		border-radius: 50%;
+
+		&--right {
+			transform: rotate(180deg);
+		}
+	}
+}

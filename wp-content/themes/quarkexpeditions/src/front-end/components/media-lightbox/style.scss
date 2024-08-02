@@ -168,7 +168,18 @@
 		background-color: var(--color-black);
 		z-index: 2;
 
-		button {
+		@include transition(background-color);
+
+		@media screen and (min-width: grid-size(lg)) {
+			width: 46px;
+			height: 46px;
+		}
+
+		&::before {
+			content: "";
+			background-image: url(../../../src/assets/svg/arrow-left.svg);
+			width: 10px;
+			height: 17px;
 			display: flex;
 			align-items: center;
 			justify-content: center;

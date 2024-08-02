@@ -10,7 +10,10 @@
 	$image_args = [
 		'size' => [
 			'width'  => 1120,
-			'height' => 312,
+			'height' => 400,
+		],
+		'transform' => [
+			'crop' => 'lfill',
 		],
 		'responsive' => [
 			'sizes'  => [ '(min-width: 1280px) 1120px', '100vw' ],

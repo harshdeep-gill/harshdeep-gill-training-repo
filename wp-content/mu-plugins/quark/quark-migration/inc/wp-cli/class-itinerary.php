@@ -30,6 +30,7 @@ use const Quark\ItineraryDays\POST_TYPE as ITINERARY_DAY_POST_TYPE;
 use const Quark\PolicyPages\POST_TYPE as POLICY_PAGE_POST_TYPE;
 use const Quark\Expeditions\POST_TYPE as EXPEDITION_POST_TYPE;
 use const Quark\StaffMembers\SEASON_TAXONOMY;
+use const Quark\Itineraries\DEPARTURE_LOCATION_TAXONOMY;
 
 /**
  * Class Itinerary.
@@ -231,7 +232,7 @@ class Itinerary {
 
 		// Set Start Location.
 		if ( ! empty( $item['start_location'] ) ) {
-			$start_location = get_term_by_id( absint( $item['start_location'] ) );
+			$start_location = get_term_by_id( absint( $item['start_location'] ), DEPARTURE_LOCATION_TAXONOMY );
 
 			// Check if term exist.
 			if ( $start_location instanceof WP_Term ) {
@@ -241,7 +242,7 @@ class Itinerary {
 
 		// Set End Location.
 		if ( ! empty( $item['end_location'] ) ) {
-			$end_location = get_term_by_id( absint( $item['end_location'] ) );
+			$end_location = get_term_by_id( absint( $item['end_location'] ), DEPARTURE_LOCATION_TAXONOMY );
 
 			// Check if term exist.
 			if ( $end_location instanceof WP_Term ) {

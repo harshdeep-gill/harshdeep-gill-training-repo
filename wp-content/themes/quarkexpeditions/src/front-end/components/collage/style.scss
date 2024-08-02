@@ -95,6 +95,8 @@
 				background-color: var(--color-black);
 				border-radius: var(--border-radius);
 
+				@include transition(background-color);
+
 				:hover {
 					background-color: var(--color-gray-80);
 				}
@@ -104,7 +106,6 @@
 					height: 56px;
 				}
 
-				@include transition(background-color);
 			}
 
 			svg {

@@ -1,0 +1,97 @@
+<?php
+/**
+ * Block: Secondary Navigation.
+ *
+ * @package quark
+ */
+
+namespace Quark\Theme\Blocks\SecondaryNavigation;
+
+use WP_Block;
+use WP_Block_List;
+
+const COMPONENT = 'secondary-navigation';
+
+/**
+ * Bootstrap this block.
+ *
+ * @return void
+ */
+function bootstrap(): void {
+	// Register the block.
+	register_block_type_from_metadata(
+		__DIR__,
+		[
+			'render_callback'   => __NAMESPACE__ . '\\render',
+			'skip_inner_blocks' => true,
+		]
+	);
+}
+
+/**
+ * Render this block.
+ *
+ * @param mixed[]  $attributes The block attributes.
+ * @param string   $content    The block content.
+ * @param WP_Block $block      The block instance.
+ *
+ * @return string The block markup.
+ */
+function render( array $attributes = [], string $content = '', WP_Block $block = null ): string {
+	// Check for block.
+	if ( ! $block instanceof WP_Block ) {
+		return $content;
+	}
+
+	// Set component attributes.
+	$component_attributes = [
+		'slot' => '',
+	];
+
+	// Check for inner blocks.
+	if ( $block->inner_blocks instanceof WP_Block_List ) {
+		// Loop through inner blocks.
+		foreach ( $block->inner_blocks as $inner_block ) {
+			if ( ! $inner_block instanceof WP_Block ) {
+				continue;
+			}
+
+			// Check for inner block is secondary navigation menu.
+			if ( 'quark/secondary-navigation-menu' === $inner_block->name ) {
+				// Set secondary navigation menu component attributes.
+				$secondary_navigation_menu_component_attributes = [
+					'slot' => '',
+				];
+
+				// Loop through inner blocks of secondary navigation menu.
+				foreach ( $inner_block->inner_blocks as $menu_item ) {
+					if ( ! $menu_item instanceof WP_Block ) {
+						continue;
+					}
+
+					// Check for inner block is secondary navigation item.
+					if ( 'quark/secondary-navigation-item' === $menu_item->name ) {
+						$secondary_navigation_menu_component_attributes['slot'] .= quark_get_component(
+							COMPONENT . '.nav-item',
+							[
+								'href' => $menu_item->attributes['url']['url'] ?? '',
+								'slot' => $menu_item->attributes['title'],
+							]
+						);
+					}
+				}
+
+				// Set secondary navigation menu component attributes.
+				$component_attributes['slot'] .= quark_get_component( COMPONENT . '.navigation', $secondary_navigation_menu_component_attributes );
+			}
+
+			// Check for inner block is secondary navigation cta buttons.
+			if ( 'quark/secondary-navigation-cta-buttons' === $inner_block->name ) {
+				$component_attributes['slot'] .= $inner_block->render();
+			}
+		}
+	}
+
+	// Return component.
+	return quark_get_component( COMPONENT, $component_attributes );
+}

@@ -39,31 +39,6 @@
 	--h5-line-height: 24px;
 	--h5-spacing: var(--typography-spacing);
 
-	@media screen and (min-width: grid-size(md)) {
-		--h1-font-size: 48px;
-		--h1-line-height: 60px;
-		--h2-font-size: 32px;
-		--h2-line-height: 40px;
-		--h3-font-size: 28px;
-		--h3-line-height: 36px;
-		--h4-font-size: 22px;
-		--h4-line-height: 30px;
-		--h5-line-height: 26px;
-	}
-
-	@media screen and (min-width: grid-size(lg)) {
-		--h1-font-size: 56px;
-		--h1-line-height: 72px;
-		--h2-font-size: 40px;
-		--h2-line-height: 48px;
-		--h3-font-size: 32px;
-		--h3-line-height: 40px;
-		--h4-font-size: 24px;
-		--h4-line-height: 32px;
-		--h5-font-size: 20px;
-		--h5-line-height: 28px;
-	}
-
 	/**
 	 * Colors and Borders.
 	 */
@@ -105,12 +80,6 @@
 	--grid-row-gutter: var(--spacing-5);
 	--grid-col-gutter: var(--spacing-5);
 
-	@media screen and (min-width: grid-size(lg)) {
-		--grid-row-gutter: var(--spacing-6);
-		--grid-col-gutter: var(--spacing-6);
-		--grid-section-gutter: var(--spacing-9);
-	}
-
 	/**
 	 * Forms.
 	 */
@@ -145,4 +114,38 @@
 	--scroll-offset: 32px;
 	--lp-header-z-index: 10;
 	--scroll-padding-top: calc(var(--header-height) + var(--wp-admin-bar-height) + var(--scroll-offset));
+
+	/**
+	 * media queries for responsive design.
+	 */
+	@media screen and (min-width: grid-size(md)) {
+		--h1-font-size: 48px;
+		--h1-line-height: 60px;
+		--h2-font-size: 32px;
+		--h2-line-height: 40px;
+		--h3-font-size: 28px;
+		--h3-line-height: 36px;
+		--h4-font-size: 22px;
+		--h4-line-height: 30px;
+		--h5-line-height: 26px;
+	}
+
+	@media screen and (min-width: grid-size(lg)) {
+		--h1-font-size: 56px;
+		--h1-line-height: 72px;
+		--h2-font-size: 40px;
+		--h2-line-height: 48px;
+		--h3-font-size: 32px;
+		--h3-line-height: 40px;
+		--h4-font-size: 24px;
+		--h4-line-height: 32px;
+		--h5-font-size: 20px;
+		--h5-line-height: 28px;
+	}
+
+	@media screen and (min-width: grid-size(lg)) {
+		--grid-row-gutter: var(--spacing-6);
+		--grid-col-gutter: var(--spacing-6);
+		--grid-section-gutter: var(--spacing-9);
+	}
 }
