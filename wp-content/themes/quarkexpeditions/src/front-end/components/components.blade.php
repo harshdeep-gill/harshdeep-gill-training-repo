@@ -9,11 +9,11 @@
 			<tp-lightbox-content class="media-lightbox__content"></tp-lightbox-content>
 
 			<tp-lightbox-previous class="media-lightbox__prev">
-				<button><x-svg name="chevron-left" /></button>
+				<button class="media-lightbox__prev-button"><x-svg name="chevron-left" /></button>
 			</tp-lightbox-previous>
 
 			<tp-lightbox-next class="media-lightbox__next">
-				<button><x-svg name="chevron-left" /></button>
+				<button class="media-lightbox__next-button"><x-svg name="chevron-left" /></button>
 			</tp-lightbox-next>
 
 			<tp-lightbox-count class="media-lightbox__count" format="$current/$total"></tp-lightbox-count>

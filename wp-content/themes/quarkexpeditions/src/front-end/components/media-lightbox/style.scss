@@ -144,12 +144,24 @@
 		right: 0;
 	}
 
-	&__prev {
+	&__prev,
+	&__next {
+
+		&[disabled="yes"] {
+			opacity: 0.3;
+
+			button {
+				cursor: not-allowed;
+			}
+		}
+	}
+
+	&__prev-button {
 		left: var(--spacing-5);
 		transform: translateY(-50%);
 	}
 
-	&__next {
+	&__next-button {
 		right: var(--spacing-5);
 		transform: translateY(-50%);
 
@@ -158,8 +170,8 @@
 		}
 	}
 
-	&__prev,
-	&__next {
+	&__prev-button,
+	&__next-button {
 		position: absolute;
 		top: calc(50% - 23px);
 		width: 40px;
@@ -174,38 +186,11 @@
 			width: 46px;
 			height: 46px;
 		}
-
-		&::before {
-			content: "";
-			background-image: url(../../../src/assets/svg/arrow-left.svg);
-			width: 10px;
-			height: 17px;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			width: 100%;
-			height: 100%;
-
-			svg {
-				height: 15px;
-				width: auto;
-
-				path {
-					fill: var(--color-white);
-				}
-			}
-		}
-
-		&[disabled="yes"] {
-			opacity: 0.3;
-		}
 	}
 
 	&__bullets {
 		display: inline-flex;
 		align-items: flex-end;
-		// justify-content: flex-end;
-		// gap: var(--spacing-2);
 		padding: 0;
 		position: absolute;
 		bottom: 0;
@@ -232,11 +217,11 @@
 		opacity: 0.4;
 		margin-left: var(--spacing-2);
 
+		@include transition(opacity);
+
 		&:first-child {
 			margin-left: 0;
 		}
-
-		@include transition(opacity);
 	}
 
 	&__bullet[current="yes"] {
