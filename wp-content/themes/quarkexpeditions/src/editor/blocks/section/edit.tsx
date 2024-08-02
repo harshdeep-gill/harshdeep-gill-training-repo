@@ -60,7 +60,11 @@ import '../../../front-end/components/section/style.scss';
  */
 export default function Edit( { className, attributes, setAttributes }: BlockEditAttributes ) {
 	// Block props.
-	const blockProps = useBlockProps( { className: 'section' } );
+	const blockProps = useBlockProps( {
+		className: classnames( className, 'section', 'section__container' ),
+	} );
+
+	// Inner blocks props.
 	const innerBlocksProps = useInnerBlocksProps( { className: 'section__content' } );
 
 	// Return block.
