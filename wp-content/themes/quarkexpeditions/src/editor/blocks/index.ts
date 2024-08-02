@@ -47,7 +47,11 @@ import * as tripExtensions from './trip-extensions';
 import * as relatedAdventureOptions from './related-adventure-options';
 import * as heroCardSlider from './hero-card-slider';
 import * as highlights from './highlights';
+import * as secondaryNavigation from './secondary-navigation';
+import * as iconInfoGrid from './icon-info-grid';
 import * as expeditionDetails from './expedition-details';
+import * as mediaCtaBanner from './media-cta-banner';
+import * as ships from './ships';
 
 /**
  * Add blocks.
@@ -99,7 +103,11 @@ const blocks = [
 	relatedAdventureOptions,
 	heroCardSlider,
 	highlights,
+	secondaryNavigation,
+	iconInfoGrid,
 	expeditionDetails,
+	mediaCtaBanner,
+	ships,
 ];
 
 /**

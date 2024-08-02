@@ -316,6 +316,9 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 				'quark-country-selector'                => [
 					'class' => true,
 				],
+				'quark-featured-media-accordions'       => [
+					'class' => true,
+				],
 				'tp-form'                               => [
 					'class'          => true,
 					'prevent-submit' => true,

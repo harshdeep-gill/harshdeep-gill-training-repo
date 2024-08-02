@@ -98,11 +98,11 @@
 		position: relative;
 		z-index: 2;
 
+		@include transition(background-color);
+
 		:hover {
 			background-color: var(--color-gray-80);
 		}
-
-		@include transition(background-color);
 	}
 
 	&__play-btn {

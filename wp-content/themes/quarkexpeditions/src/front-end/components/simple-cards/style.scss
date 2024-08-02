@@ -5,6 +5,7 @@
 
 .simple-cards {
 	$self: &;
+	gap: var(--spacing-5);
 
 	@include grid();
 	@include grid-columns(1);
@@ -18,8 +19,6 @@
 
 		@include grid-columns(3);
 	}
-
-	gap: var(--spacing-5);
 
 	&__card {
 		border-radius: var(--border-radius-large);

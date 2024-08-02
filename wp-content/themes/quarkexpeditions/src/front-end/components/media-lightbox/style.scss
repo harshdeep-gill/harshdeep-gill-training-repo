@@ -210,12 +210,12 @@
 		align-items: center;
 		justify-content: center;
 
+		@include transition(background-color);
+
 		@media screen and (min-width: grid-size(lg)) {
 			width: 46px;
 			height: 46px;
 		}
-
-		@include transition(background-color);
 
 		&::before {
 			content: "";

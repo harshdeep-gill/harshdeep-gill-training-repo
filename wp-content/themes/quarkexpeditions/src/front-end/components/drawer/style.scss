@@ -19,6 +19,8 @@
 
 	&--open {
 
+		@include fade-in;
+
 		#{$self}__content {
 
 			@include slide-in;
@@ -35,10 +37,11 @@
 			}
 		}
 
-		@include fade-in;
 	}
 
 	&--close {
+
+		@include fade-out;
 
 		#{$self}__content {
 
@@ -56,7 +59,6 @@
 			}
 		}
 
-		@include fade-out;
 	}
 
 	&__content {
@@ -65,6 +67,12 @@
 		background-color: var(--color-white);
 		border-radius: var(--border-radius-large) 0 0 var(--border-radius-large);
 		height: 100%;
+
+		&--compact {
+			max-width: 600px;
+			padding: var(--spacing-5);
+			gap: var(--spacing-4);
+		}
 
 		#{$self}[animation-direction="up"] & {
 			height: unset;
@@ -116,6 +124,28 @@
 		svg {
 			height: 15px;
 			width: 15px;
+		}
+	}
+
+	&__drawer-open {
+
+		&--right {
+			display: flex;
+			justify-content: flex-end;
+		}
+
+		&--center {
+			display: flex;
+			justify-content: center;
+		}
+	}
+
+	&__footer {
+
+		&--compact {
+			border-top: solid 1px var(--color-gray-20);
+			padding-inline: var(--spacing-5);
+			margin-inline: calc(-1 * var(--spacing-5));
 		}
 	}
 }

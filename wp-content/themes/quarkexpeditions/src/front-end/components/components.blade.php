@@ -4681,6 +4681,55 @@
 	</x-section>
 </x-component-demo>
 
+<x-component-demo :keys="[ 'featured-media-accordions' ]">
+	<x-section>
+		<x-featured-media-accordions>
+			<x-featured-media-accordions.media>
+				<x-featured-media-accordions.featured-image image_id="122" id="item-1" />
+				<x-featured-media-accordions.featured-image image_id="117" id="item-2" />
+				<x-featured-media-accordions.featured-image image_id="109" id="item-3" />
+				<x-featured-media-accordions.featured-image image_id="104" id="item-4" />
+				<x-featured-media-accordions.featured-image image_id="87" id="item-5" />
+			</x-featured-media-accordions.media>
+			<x-featured-media-accordions.accordions>
+				<x-featured-media-accordions.accordion id="item-1" title="Spots for Socialising">
+					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.</p>
+					<x-featured-media-accordions.featured-image image_id="122" />
+				</x-featured-media-accordions.accordion>
+				<x-featured-media-accordions.accordion title="Spots for Socialising" id="item-2">
+					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.</p>
+					<x-featured-media-accordions.featured-image image_id="117" />
+				</x-featured-media-accordions.accordion>
+				<x-featured-media-accordions.accordion title="Spots for Socialising" id="item-3">
+					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.</p>
+					<x-featured-media-accordions.featured-image image_id="109" />
+				</x-featured-media-accordions.accordion>
+				<x-featured-media-accordions.accordion title="Spots for Socialising" id="item-4">
+					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.</p>
+					<x-featured-media-accordions.featured-image image_id="104" />
+				</x-featured-media-accordions.accordion>
+				<x-featured-media-accordions.accordion title="Spots for Socialising" id="item-5">
+					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.</p>
+					<x-featured-media-accordions.featured-image image_id="87" />
+				</x-featured-media-accordions.accordion>
+			</x-featured-media-accordions.accordions>
+		</x-featured-media-accordions>
+	</x-section>
+</x-component-demo>
+
+<x-component-demo :keys="[ 'media-carousel' ]">
+	<x-section>
+		<x-section.heading>
+			<x-section.title title="Media Carousel" />
+		</x-section.heading>
+		<x-media-carousel>
+			<x-media-carousel.item image_id="29" />
+			<x-media-carousel.item image_id="32" />
+			<x-media-carousel.item image_id="152" />
+		</x-media-carousel>
+	</x-section>
+</x-component-demo>
+
 <x-component-demo :keys="[ 'footer' ]">
 	@php
 		$social_links = [
