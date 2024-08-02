@@ -1,0 +1,27 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "title": "Secondary Navigation Item",
+    "name": "quark/secondary-navigation-item",
+    "description": "Display a secondary navigation item.",
+    "parent": [
+        "quark/secondary-navigation-menu"
+    ],
+    "category": "layout",
+    "textdomain": "qrk",
+    "keywords": [
+        "secondary",
+        "navigation",
+        "item"
+    ],
+    "attributes": {
+        "title": {
+            "type": "string",
+            "default": ""
+        },
+        "url": {
+            "type": "object",
+            "default": null
+        }
+    }
+}
