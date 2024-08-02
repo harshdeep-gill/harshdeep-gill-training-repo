@@ -1,11 +1,10 @@
 @props( [
 	'total_departures' => '',
-	'from_date'        => '',
-	'to_date'          => '',
+	'date_range'       => '',
 ] )
 
 @php
-	if ( empty( $total_departures ) && empty( $from_date ) && empty( $to_date ) ) {
+	if ( empty( $total_departures ) && empty( $date_range ) ) {
 		return;
 	}
 @endphp
@@ -14,13 +13,10 @@
 	<p class="expedition-details__departures-label">{{ __( 'Departures', 'qrk' ) }}</p>
 	<div class="expedition-details__departures-content">
 		@if ( ! empty( $total_departures ) )
-			<span><x-escape :content="$total_departures" /> {{ __( 'Departures between', 'qrk' ) }}</span>
+			<span><x-escape :content="$total_departures"/> {{ _n( 'Departure', 'Departures', $total_departures, 'qrk' ) }}</span>
 		@endif
-		@if ( ! empty( $from_date ) )
-			<span><x-escape :content="$from_date" />  {{ __( 'to', 'qrk' ) }}</span>
-		@endif
-		@if ( ! empty( $to_date ) )
-			<span><x-escape :content="$to_date" /></span>
+		@if ( ! empty( $date_range ) )
+			<span><x-escape :content="$date_range" /></span>
 		@endif
 	</div>
 </div>

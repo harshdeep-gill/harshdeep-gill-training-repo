@@ -378,6 +378,7 @@ class Test_Expeditions extends WP_UnitTestCase {
 				],
 			],
 			'total_departures' => 0,
+			'date_range'       => '',
 		];
 
 		// Assert expedition_details_card_data is correct.

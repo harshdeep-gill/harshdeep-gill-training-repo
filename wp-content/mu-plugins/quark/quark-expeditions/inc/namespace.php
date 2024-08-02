@@ -975,6 +975,43 @@ function get_ending_to_date( int $post_id = 0 ): string {
 }
 
 /**
+ * Format Departure date range for the expedition.
+ *
+ * @param int $post_id Post ID.
+ *
+ * @return string
+ */
+function get_formatted_date_range( int $post_id = 0 ): string {
+	// Get starting from and ending to dates.
+	$starting_from_date = get_starting_from_date( $post_id );
+	$ending_to_date     = get_ending_to_date( $post_id );
+
+	// Check if both dates are empty and return an empty string.
+	if ( empty( $starting_from_date ) && empty( $ending_to_date ) ) {
+		return '';
+	}
+
+	// Check if only the ending to date is empty.
+	if ( empty( $ending_to_date ) ) {
+		$ending_to_date = $starting_from_date; // Starting From will not be empty here.
+	}
+
+	// Get the month and year for both start and end dates.
+	$start_month = gmdate( 'F', absint( strtotime( $starting_from_date ) ) );
+	$start_year  = gmdate( 'Y', absint( strtotime( $starting_from_date ) ) );
+	$end_month   = gmdate( 'F', absint( strtotime( $ending_to_date ) ) );
+	$end_year    = gmdate( 'Y', absint( strtotime( $ending_to_date ) ) );
+
+	// Same month and year.
+	if ( $start_month === $end_month && $start_year === $end_year ) {
+		return sprintf( 'in %s %s', $start_month, $start_year );
+	}
+
+	// Same year, different months OR Different year.
+	return sprintf( 'between %s %s to %s %s', $start_month, $start_year, $end_month, $end_year );
+}
+
+/**
  * Get Expedition details card data.
  *
  * @param int $post_id Expedition Post ID.
@@ -994,8 +1031,7 @@ function get_ending_to_date( int $post_id = 0 ): string {
  *     tags ?: array{}|array{
  *         array{ title : string },
  *     },
- *     from_date ?: string,
- *     to_date ?: string,
+ *     date_range: string,
  * }
  */
 function get_details_data( int $post_id = 0 ): array {
@@ -1106,21 +1142,8 @@ function get_details_data( int $post_id = 0 ): array {
 	// Get total number of Departures.
 	$data['total_departures'] = get_total_departures( $post_id );
 
-	// Get Starting From date.
-	$starting_from_date = get_starting_from_date( $post_id );
-
-	// Check for starting from date.
-	if ( ! empty( $starting_from_date ) ) {
-		$data['from_date'] = gmdate( 'F Y', absint( strtotime( $starting_from_date ) ) );
-	}
-
-	// Get Ending to date.
-	$ending_to_date = get_ending_to_date( $post_id );
-
-	// Check for ending to date.
-	if ( ! empty( $ending_to_date ) ) {
-		$data['to_date'] = gmdate( 'F Y', absint( strtotime( $ending_to_date ) ) );
-	}
+	// get date range.
+	$data['date_range'] = get_formatted_date_range( $post_id );
 
 	// Set cache and return data.
 	wp_cache_set( $cache_key, $data, CACHE_GROUP );
