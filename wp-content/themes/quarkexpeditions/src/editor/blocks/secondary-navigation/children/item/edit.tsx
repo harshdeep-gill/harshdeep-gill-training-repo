@@ -34,7 +34,7 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 	return (
 		<>
 			<InspectorControls>
-				<PanelBody title={ __( 'Options', 'qrk' ) }>
+				<PanelBody title={ __( 'Secondary Navigation Item Options', 'qrk' ) }>
 					<LinkControl
 						label={ __( 'Enter URL', 'qrk' ) }
 						value={ attributes.url }
@@ -45,7 +45,7 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 			</InspectorControls>
 			<li { ...blockProps }>
 				<RichText
-					tagName="a"
+					tagName="span"
 					className="secondary-navigation__navigation-item-link"
 					placeholder={ __( 'Navigation Item…', 'qrk' ) }
 					value={ attributes.title }
