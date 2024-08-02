@@ -91,9 +91,6 @@ class Sync {
 		// Set up a counter for how many we're successful.
 		$counter = 0;
 
-		// Get the list of prepared codes.
-		$to_sync = $this->sync->get_prepared_codes();
-
 		// Process each part.
 		foreach ( $parts as $softrip_ids ) {
 			// Get the raw departure data for the IDs.
