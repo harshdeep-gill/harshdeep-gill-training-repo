@@ -5,8 +5,9 @@
  * @package quark-softrip
  */
 
-namespace Quark\Softrip;
+namespace Quark\Softrip\Tests;
 
+use Quark\Softrip\Softrip_Sync;
 use Quark\Tests\Softrip\Softrip_TestCase;
 use WP_Query;
 

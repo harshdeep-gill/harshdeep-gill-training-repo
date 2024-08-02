@@ -5,13 +5,23 @@
  * @package quark-softrip
  */
 
-namespace Quark\Softrip;
+namespace Quark\Softrip\Tests;
 
+use Quark\Softrip\Departure;
+use Quark\Softrip\Itinerary;
 use Quark\Tests\Softrip\Softrip_TestCase;
 use WP_Error;
 use WP_Post;
 
+use function Quark\Softrip\cron_add_schedule;
+use function Quark\Softrip\cron_is_scheduled;
+use function Quark\Softrip\cron_schedule_sync;
+use function Quark\Softrip\do_sync;
+use function Quark\Softrip\request_departures;
+
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
+use const Quark\Softrip\SCHEDULE_HOOK;
+use const Quark\Softrip\SCHEDULE_RECURRENCE;
 
 /**
  * Class Test_Softrip.
