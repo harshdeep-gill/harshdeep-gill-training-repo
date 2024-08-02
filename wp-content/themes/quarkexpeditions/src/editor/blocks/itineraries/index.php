@@ -176,15 +176,15 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 		}
 
 		// Active tab for seasons tabs.
-		if ( ! isset( $component_attributes['active_tab'] ) ) {
+		if ( ! isset( $component_attributes['active_tab'] ) || absint( $season['slug'] ) > absint( $component_attributes['active_tab'] ) ) {
 			$component_attributes['active_tab'] = $season['slug'];
 		}
 
 		// Seasons tab data.
 		$component_attributes['itinerary_groups'][ $season['slug'] ]['tab_id']    = $season['slug'];
-		$component_attributes['itinerary_groups'][ $season['slug'] ]['tab_title'] = $season['name'];
+		$component_attributes['itinerary_groups'][ $season['slug'] ]['tab_title'] = sprintf( '%d.%d Season', $season['name'], absint( substr( $season['name'], -2 ) ) + 1 );
 
-		// Active tab for itineraries tabs.
+		// Active tab for itinerary tabs.
 		if ( ! isset( $component_attributes['itinerary_groups'][ $season['slug'] ]['active_tab'] ) ) {
 			$component_attributes['itinerary_groups'][ $season['slug'] ]['active_tab'] = $tab_id;
 		}
@@ -203,6 +203,12 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 			'brochure'           => $brochure,
 			'ships'              => $ships,
 		];
+	}
+
+	// Sort the itinerary groups.
+	if ( isset( $component_attributes['itinerary_groups'] ) ) {
+		ksort( $component_attributes['itinerary_groups'] );
+		$component_attributes['itinerary_groups'] = array_reverse( $component_attributes['itinerary_groups'] );
 	}
 
 	// Build the component attributes.

@@ -1,4 +1,10 @@
 /**
+ * WordPress dependencies.
+ */
+import { Placeholder } from '@wordpress/components';
+import { __ } from '@wordpress/i18n';
+
+/**
  * Internal dependencies.
  */
 import metadata from './block.json';
@@ -19,6 +25,16 @@ export default function Edit(): JSX.Element {
 	return (
 		<ServerSideRender
 			block={ name }
+			EmptyResponsePlaceholder={ () => (
+				<Placeholder
+					icon="palmtree"
+					label={ __( 'Itineraries', 'qrk' ) }
+					instructions={ __(
+						'Please select one or Itinerary.',
+						'qrk',
+					) }
+				/>
+			) }
 		/>
 	);
 }
