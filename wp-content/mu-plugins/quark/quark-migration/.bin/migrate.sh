@@ -4,13 +4,13 @@
 
 # Media Migration
 wp quark-migrate media all
-wp quark-migrate media pdf_files
+wp quark-migrate media pdf_files --user=1
 
 # Taxonomy Migration
-wp quark-migrate taxonomy all
+wp quark-migrate taxonomy all --user=1
 
 # Port terms migration
-wp quark-migrate port all
+wp quark-migrate port all --user=1
 
 # Blog Post Migration
 wp quark-migrate blog authors --user=1
