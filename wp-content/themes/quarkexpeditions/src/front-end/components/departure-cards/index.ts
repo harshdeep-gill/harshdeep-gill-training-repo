@@ -4,9 +4,14 @@
 const { customElements, HTMLElement } = window;
 
 /**
+ * Internal Dependency.
+ */
+import { debounce } from '../../global/utility';
+
+/**
  * Departure Card.
  */
-export default class departureCard extends HTMLElement {
+export default class DepartureCard extends HTMLElement {
 	/**
 	 * Properties.
 	 */
@@ -38,9 +43,9 @@ export default class departureCard extends HTMLElement {
 
 		// Events.
 		this.updateOfferHiddenItems();
-		window.addEventListener( 'resize', this.updateOfferHiddenItems.bind( this ) );
+		window.addEventListener( 'resize', debounce( this.updateOfferHiddenItems.bind( this ), 10 ), { passive: true } );
 		this.updateAdventuresHiddenItems();
-		window.addEventListener( 'resize', this.updateAdventuresHiddenItems.bind( this ) );
+		window.addEventListener( 'resize', debounce( this.updateAdventuresHiddenItems.bind( this ), 10 ), { passive: true } );
 	}
 
 	/**
@@ -54,8 +59,8 @@ export default class departureCard extends HTMLElement {
 		}
 
 		// Set the variables.
-		let hiddenCount = 0;
-		let totalWidth = 0;
+		let hiddenCount: number = 0;
+		let totalWidth: number = 0;
 
 		// For each item.
 		this.offers.forEach( ( offer, index ) => {
@@ -151,4 +156,4 @@ export default class departureCard extends HTMLElement {
 /**
  * Initialize.
  */
-customElements.define( 'quark-departure-card', departureCard );
+customElements.define( 'quark-departure-card', DepartureCard );
