@@ -66,6 +66,8 @@
 }
 
 @mixin fade-in( $duration: var(--transition-time), $ease: var(--transition-easing) ) {
+	transition: fadein $duration $ease;
+	animation: fadein $ease $duration;
 
 	@keyframes fadein {
 
@@ -77,12 +79,11 @@
 			opacity: 1;
 		}
 	}
-
-	transition: fadein $duration $ease;
-	animation: fadein $ease $duration;
 }
 
 @mixin fade-out( $duration: var(--transition-time), $ease: var(--transition-easing) ) {
+	transition: fadeout $duration $ease;
+	animation: fadeout $ease $duration;
 
 	@keyframes fadeout {
 
@@ -94,12 +95,11 @@
 			opacity: 0;
 		}
 	}
-
-	transition: fadeout $duration $ease;
-	animation: fadeout $ease $duration;
 }
 
 @mixin slide-up( $duration: var(--transition-time), $ease: var(--transition-easing), $offset: 150% ) {
+	transition: slideup $duration $ease;
+	animation: slideup $ease $duration;
 
 	@keyframes slideup {
 
@@ -107,12 +107,11 @@
 			transform: translateY($offset);
 		}
 	}
-
-	transition: slideup $duration $ease;
-	animation: slideup $ease $duration;
 }
 
 @mixin slide-down( $duration: var(--transition-time), $ease: var(--transition-easing), $top: 150% ) {
+	transition: slidedown $duration $ease;
+	animation: slidedown $ease $duration;
 
 	@keyframes slidedown {
 
@@ -120,12 +119,11 @@
 			transform: translateY($top);
 		}
 	}
-
-	transition: slidedown $duration $ease;
-	animation: slidedown $ease $duration;
 }
 
 @mixin slide-in( $duration: var(--transition-time), $ease: var(--transition-easing), $offset: 150% ) {
+	transition: slidein $duration $ease;
+	animation: slidein $ease $duration;
 
 	@keyframes slidein {
 
@@ -133,12 +131,11 @@
 			transform: translateX($offset);
 		}
 	}
-
-	transition: slidein $duration $ease;
-	animation: slidein $ease $duration;
 }
 
 @mixin slide-out( $duration: var(--transition-time), $ease: var(--transition-easing), $offset: 150% ) {
+	transition: slideout $duration $ease;
+	animation: slideout $ease $duration;
 
 	@keyframes slideout {
 
@@ -146,9 +143,6 @@
 			transform: translateX($offset);
 		}
 	}
-
-	transition: slideout $duration $ease;
-	animation: slideout $ease $duration;
 }
 
 
