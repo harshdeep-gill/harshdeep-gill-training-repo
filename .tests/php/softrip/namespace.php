@@ -60,7 +60,25 @@ function setup_softrip_db_tables(): void {
  */
 function mock_softrip_http_request( array|false $response = [], array $parsed_args = [], string $url = null ): false|array {
 	// Check if the URL is the one we want to mock.
-	if ( 'https://softrip-adapter.dev/departures' !== $url ) {
+	if ( str_contains( $url, 'https://softrip-adapter.dev/' ) ) {
+		if ( 'https://softrip-adapter.dev/' === $url ) {
+			return [
+				'response' => [
+					'code'    => 400,
+					'message' => 'Missing productCodes in query parameter',
+				],
+				'headers'  => [],
+			];
+		} else if ( 'https://softrip-adapter.dev/departures' !== $url ) {
+			return [
+				'response' => [
+					'code'    => 404,
+					'message' => 'Not Found',
+				],
+				'headers'  => [],
+			];
+		}
+	} else {
 		return $response;
 	}
 
@@ -71,6 +89,33 @@ function mock_softrip_http_request( array|false $response = [], array $parsed_ar
 	// Check if the body is set.
 	if ( isset( $parsed_args['body'] ) && is_array( $parsed_args['body'] ) ) {
 		$product_codes = explode( ',', $parsed_args['body']['productCodes'] );
+	} else {
+		// Return 400 if no productCodes.
+		return [
+			'response' => [
+				'code'    => 400,
+				'message' => 'Missing productCodes in query parameter',
+			],
+			'headers'  => [],
+		];
+	}
+
+	// Check if there are too many product codes.
+	if ( 5 < count( $product_codes ) ) {
+		return [
+			'response' => [
+				'code'    => 400,
+				'message' => 'Too many productCodes in query parameter',
+			],
+			'headers'  => [],
+		];
+	}
+
+	// Init data.
+	foreach ( $product_codes as $product_code ) {
+		$data[ $product_code ] = [
+			'departures' => [],
+		];
 	}
 
 	// Add data for ABC-123.
@@ -500,24 +545,12 @@ function mock_softrip_http_request( array|false $response = [], array $parsed_ar
 		];
 	}
 
-	// Check if data is empty.
-	if ( [] === $data ) {
-		return [
-			'body'     => wp_json_encode( $data ),
-			'response' => [
-				'code'    => 200,
-				'message' => 'No data',
-			],
-			'headers'  => [],
-		];
-	}
-
 	// Return the response.
 	return [
 		'body'     => wp_json_encode( $data ),
 		'response' => [
 			'code'    => 200,
-			'message' => 'Created',
+			'message' => 'OK',
 		],
 		'headers'  => [],
 	];
