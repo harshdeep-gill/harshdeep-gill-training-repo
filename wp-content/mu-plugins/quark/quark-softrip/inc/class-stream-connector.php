@@ -27,8 +27,8 @@ class Stream_Connector extends Connector {
 	 * @var string[]
 	 */
 	public $actions = [
-		'softrip_sync_initiated',
-		'softrip_sync_completed',
+		'quark_softrip_sync_initiated',
+		'quark_softrip_sync_completed',
 	];
 
 	/**
@@ -67,13 +67,13 @@ class Stream_Connector extends Connector {
 	}
 
 	/**
-	 * Callback for `softrip_sync_initiated` action.
+	 * Callback for `quark_softrip_sync_initiated` action.
 	 *
 	 * @param mixed[] $data Data passed to the action.
 	 *
 	 * @return void
 	 */
-	public function callback_softrip_sync_initiated( array $data = [] ): void {
+	public function callback_quark_softrip_sync_initiated( array $data = [] ): void {
 		// Validate data.
 		if ( empty( $data ) || empty( $data['via'] ) || ! isset( $data['count'] ) ) {
 			return;
@@ -99,13 +99,13 @@ class Stream_Connector extends Connector {
 	}
 
 	/**
-	 * Callback for `softrip_sync_completed` action.
+	 * Callback for `quark_softrip_sync_completed` action.
 	 *
 	 * @param mixed[] $data Data passed to the action.
 	 *
 	 * @return void
 	 */
-	public function callback_softrip_sync_completed( array $data = [] ): void {
+	public function callback_quark_softrip_sync_completed( array $data = [] ): void {
 		// Validate data.
 		if ( empty( $data ) || empty( $data['via'] ) || ! isset( $data['success'] ) || ! isset( $data['failed'] ) ) {
 			return;

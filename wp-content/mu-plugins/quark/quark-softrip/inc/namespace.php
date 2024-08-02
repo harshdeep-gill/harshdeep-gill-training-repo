@@ -130,7 +130,7 @@ function do_sync(): void {
 
 	// Log the sync initiated.
 	do_action(
-		'softrip_sync_initiated',
+		'quark_softrip_sync_initiated',
 		[
 			'count' => $total,
 			'via'   => 'cron',
@@ -175,7 +175,7 @@ function do_sync(): void {
 
 	// Log the sync completed.
 	do_action(
-		'softrip_sync_completed',
+		'quark_softrip_sync_completed',
 		[
 			'success' => $counter,
 			'failed'  => $total - $counter,
