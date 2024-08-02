@@ -18,7 +18,7 @@ use const Quark\Ships\POST_TYPE as SHIP_POST_TYPE;
  *
  * Base class for any test suit that needs Softrip related data.
  */
-class Softrip_TestCase extends WP_UnitTestCase {
+abstract class Softrip_TestCase extends WP_UnitTestCase {
     /**
 	 * Itinerary posts.
 	 *
