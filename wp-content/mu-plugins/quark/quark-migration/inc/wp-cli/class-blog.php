@@ -294,7 +294,7 @@ class Blog {
 
 			// Set blog authors.
 			if ( ! empty( $blog_post['blog_author_id'] ) ) {
-				$author = get_post_by_id( $blog_post['blog_author_id'], AUTHOR_POST_TYPE );
+				$author = get_post_by_id( $blog_post['blog_author_id'], AUTHOR_POST_TYPE, 'drupal_author_id' );
 
 				// Check if we have a valid author.
 				if ( ! empty( $author ) ) {
@@ -403,7 +403,9 @@ class Blog {
 			}
 
 			// Check post exist or not.
-			$wp_post = get_post_by_id( $normalized_post['meta_input']['drupal_id'], AUTHOR_POST_TYPE );
+			$wp_post = get_post_by_id( $normalized_post['meta_input']['drupal_author_id'], AUTHOR_POST_TYPE, 'drupal_author_id' );
+
+			echo $normalized_post['meta_input']['drupal_author_id'] . PHP_EOL;
 
 			// Insert/update post.
 			if ( ! empty( $wp_post ) ) {
@@ -425,6 +427,10 @@ class Blog {
 			// Update progress.
 			$progress->tick();
 		}
+
+		// All done!
+		$progress->finish();
+		WP_CLI::success( "Migrated $count out of $total_blog_authors." );
 	}
 
 	/**
@@ -455,7 +461,7 @@ class Blog {
 		}
 
 		// Normalize data.
-		$id          = ! empty( $blog_author['mid'] ) ? absint( $blog_author['id'] ) : 0;
+		$id          = ! empty( $blog_author['id'] ) ? absint( $blog_author['id'] ) : 0;
 		$title       = '';
 		$created_at  = gmdate( 'Y-m-d H:i:s' );
 		$modified_at = gmdate( 'Y-m-d H:i:s' );
@@ -467,17 +473,17 @@ class Blog {
 		}
 
 		// Created date.
-		if ( ! empty( $blog_author['created'] ) ) {
-			$created_at = gmdate( 'Y-m-d H:i:s', absint( $blog_author['created'] ) );
+		if ( ! empty( $blog_author['post_date'] ) ) {
+			$created_at = gmdate( 'Y-m-d H:i:s', absint( $blog_author['post_date'] ) );
 		}
 
 		// Modified date.
-		if ( ! empty( $blog_author['changed'] ) ) {
-			$modified_at = gmdate( 'Y-m-d H:i:s', absint( $blog_author['changed'] ) );
+		if ( ! empty( $blog_author['post_modified'] ) ) {
+			$modified_at = gmdate( 'Y-m-d H:i:s', absint( $blog_author['post_modified'] ) );
 		}
 
 		// Status.
-		if ( ! empty( $blog_author['status'] ) && 1 === absint( $blog_author['status'] ) ) {
+		if ( ! empty( $blog_author['post_status'] ) && 1 === absint( $blog_author['post_status'] ) ) {
 			$status = 'publish';
 		}
 
@@ -495,7 +501,7 @@ class Blog {
 			'comment_status'    => 'closed',
 			'ping_status'       => 'closed',
 			'meta_input'        => [
-				'drupal_id' => $id,
+				'drupal_author_id' => $id,
 			],
 		];
 
