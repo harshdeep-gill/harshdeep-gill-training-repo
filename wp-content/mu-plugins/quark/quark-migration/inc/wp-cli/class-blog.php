@@ -405,8 +405,6 @@ class Blog {
 			// Check post exist or not.
 			$wp_post = get_post_by_id( $normalized_post['meta_input']['drupal_author_id'], AUTHOR_POST_TYPE, 'drupal_author_id' );
 
-			echo $normalized_post['meta_input']['drupal_author_id'] . PHP_EOL;
-
 			// Insert/update post.
 			if ( ! empty( $wp_post ) ) {
 				$normalized_post['ID'] = $wp_post->ID;
@@ -450,7 +448,7 @@ class Blog {
 	 *     comment_status: string,
 	 *     ping_status: string,
 	 *     meta_input : array{
-	 *          drupal_id : int,
+	 *          drupal_author_id : int,
 	 *     }
 	 * }
 	 */

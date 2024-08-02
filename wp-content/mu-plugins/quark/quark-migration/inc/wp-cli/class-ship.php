@@ -7,21 +7,24 @@
 
 namespace Quark\Migration\WP_CLI;
 
-use cli\progress\Bar;
+use WP_Post;
 use WP_CLI;
 use WP_Error;
-use WP_CLI\ExitException;
 use WP_Term;
+use cli\progress\Bar;
+use WP_CLI\ExitException;
 
 use function Quark\Migration\Drupal\get_database;
 use function Quark\Migration\Drupal\get_term_by_id;
 use function Quark\Migration\Drupal\prepare_content;
 use function Quark\Migration\Drupal\prepare_for_migration;
 use function Quark\Migration\Drupal\get_post_by_id;
+use function Quark\Migration\Drupal\download_file_by_mid;
 use function Quark\Migration\WordPress\qrk_sanitize_attribute;
 use function WP_CLI\Utils\make_progress_bar;
 
 use const Quark\Ships\POST_TYPE;
+use const Quark\ShipDecks\POST_TYPE as SHIP_DECK_POST_TYPE;
 use const Quark\Ships\SHIP_CATEGORY_TAXONOMY;
 
 /**
@@ -316,6 +319,35 @@ class Ship {
 			$data['meta_input']['zodiacs'] = strval( $item['zodiacs'] );
 		}
 
+		// Set deck_plan.
+		if ( ! empty( $item['deck_plan'] ) ) {
+			$deck_plan_image_id = download_file_by_mid( absint( $item['deck_plan'] ) );
+
+			// Check if attachment exists.
+			if ( ! $deck_plan_image_id instanceof WP_Error ) {
+				$data['meta_input']['deck_plan_image'] = $deck_plan_image_id;
+			}
+		}
+
+		// Set Ship Decks.
+		if ( ! empty( $item['related_decks'] ) ) {
+			$deck_ids      = array_map( 'absint', explode( ',', strval( $item['related_decks'] ) ) );
+			$related_decks = [];
+
+			// Loop through each deck.
+			foreach ( $deck_ids as $deck_id ) {
+				$deck_post = get_post_by_id( $deck_id, SHIP_DECK_POST_TYPE );
+
+				// Is Valid post.
+				if ( $deck_post instanceof WP_Post ) {
+					$related_decks[] = $deck_post->ID;
+				}
+			}
+
+			// Set related ship decks.
+			$data['meta_input']['related_decks'] = $related_decks;
+		}
+
 		// Return normalized data.
 		return $data;
 	}
@@ -361,7 +393,9 @@ class Ship {
 			field_staff_and_crew.field_staff_and_crew_value AS staff_and_crew,
 			field_voltage.field_voltage_value AS voltage,
 			field_year_built.field_year_built_value AS year_built,
-			field_zodiacs.field_zodiacs_value AS zodiacs
+			field_zodiacs.field_zodiacs_value AS zodiacs,
+			field_deck_plan.field_deck_plan_target_id AS deck_plan,
+			(SELECT GROUP_CONCAT( field_ship_decks_target_id ORDER BY delta SEPARATOR ', ' ) FROM node__field_ship_decks AS field_ship_decks WHERE node.nid = field_ship_decks.entity_id AND field_ship_decks.langcode = node.langcode) AS related_decks
 		FROM
 			node
 				LEFT JOIN node_field_data AS field_data ON node.nid = field_data.nid AND node.langcode = field_data.langcode
@@ -387,6 +421,7 @@ class Ship {
 				LEFT JOIN paragraph__field_voltage AS field_voltage ON field_ship_specifications.field_ship_specifications_target_id = field_voltage.entity_id
 				LEFT JOIN paragraph__field_year_built AS field_year_built ON field_ship_specifications.field_ship_specifications_target_id = field_year_built.entity_id
 				LEFT JOIN paragraph__field_zodiacs AS field_zodiacs ON field_ship_specifications.field_ship_specifications_target_id = field_zodiacs.entity_id
+				LEFT JOIN node__field_deck_plan AS field_deck_plan ON node.nid = field_deck_plan.entity_id AND node.langcode = field_deck_plan.langcode
 		WHERE
 			node.type = 'ship';";
 
