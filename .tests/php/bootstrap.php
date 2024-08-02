@@ -41,3 +41,6 @@ bootstrap();
 
 // Bootstrap PHPUnit tests.
 require_once getenv( 'WP_PHPUNIT__DIR' ) . '/includes/bootstrap.php';
+
+// Require the base test case class.
+require_once __DIR__ . '/softrip/class-softrip-testcase.php';
