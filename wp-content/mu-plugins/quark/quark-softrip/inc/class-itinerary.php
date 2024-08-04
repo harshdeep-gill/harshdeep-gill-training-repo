@@ -94,7 +94,16 @@ class Itinerary extends Softrip_Object {
 			$departure = new Departure();
 			$departure->set_itinerary( $this );
 			$departure->load( absint( $post_id ) );
-			$this->departures[ $departure->get_post_meta( 'departure_unique_id' ) ] = $departure;
+			$departure_unique_id = $departure->get_post_meta( 'departure_unique_id' );
+
+			// Skip if departure unique id doesn't exist.
+			if ( empty( $departure_unique_id ) ) {
+				unset( $departure );
+				continue;
+			}
+
+			// Add departure to the list.
+			$this->departures[ $departure_unique_id ] = $departure;
 		}
 
 		// Set departures loaded.
@@ -135,11 +144,15 @@ class Itinerary extends Softrip_Object {
 	/**
 	 * Get a departure by id.
 	 *
-	 * @param string|null $id Departure ID.
+	 * @param string $id Departure ID.
 	 *
-	 * @return Departure
+	 * @return Departure|null
 	 */
-	public function get_departure( string|null $id = null ): Departure {
+	public function get_departure( string $id = '' ): Departure|null {
+		if ( empty( $id ) ) {
+			return null;
+		}
+
 		// Ensure departures loaded.
 		$this->ensure_departures_loaded();
 
@@ -178,13 +191,24 @@ class Itinerary extends Softrip_Object {
 		}
 
 		// Bail if departures are missing.
-		if ( ! is_array( $departures['departures'] ) ) {
+		if ( empty( $departures['departures'] ) || ! is_array( $departures['departures'] ) ) {
 			return;
 		}
 
 		// Go over each departure and create a new Departure post for each.
 		foreach ( $departures['departures'] as $raw_departure ) {
+			if ( ! is_array( $raw_departure ) || empty( $raw_departure['id'] ) ) {
+				continue;
+			}
+
+			// Get the departure instance.
 			$departure = $this->get_departure( strval( $raw_departure['id'] ) );
+
+			// Skip if departure object is null.
+			if ( empty( $departure ) ) {
+				continue;
+			}
+
 			$departure->set( $raw_departure, true );
 		}
 
