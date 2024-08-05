@@ -1,0 +1,22 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Media Description Cards",
+	"name": "quark/media-description-cards",
+	"description": "Display the media description cards block.",
+	"category": "widgets",
+	"keywords": [
+		"media",
+		"description",
+		"cards"
+	],
+	"textdomain": "qrk",
+	"attributes": {},
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

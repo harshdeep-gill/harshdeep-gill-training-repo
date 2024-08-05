@@ -4417,6 +4417,35 @@
 	</x-section>
 </x-component-demo>
 
+<x-component-demo :keys="[ 'link-detail-cards' ]">
+	<x-section>
+		<x-section.heading>
+			<x-section.title title="Link Detail Cards" />
+		</x-section.heading>
+
+		<x-link-detail-cards>
+			<x-link-detail-cards.card url="#">
+				<x-link-detail-cards.title title="15 Day Free Cancellation" />
+				<x-link-detail-cards.description>
+					<p>Free cancellation if you change you mind within 15 days.</p>
+				</x-link-detail-cards.description>
+			</x-link-detail-cards.card>
+			<x-link-detail-cards.card url="#">
+				<x-link-detail-cards.title title="No Surcharges" />
+				<x-link-detail-cards.description>
+					<p>Zero future surcharges mean the price you book today is the price you pay.</p>
+				</x-link-detail-cards.description>
+			</x-link-detail-cards.card>
+			<x-link-detail-cards.card url="#">
+				<x-link-detail-cards.title title="Refund Guarantee" />
+				<x-link-detail-cards.description>
+					<p>Quark Expeditions will refund your trip if Quark Expeditions cancels your voyage.</p>
+				</x-link-detail-cards.description>
+			</x-link-detail-cards.card>
+		</x-link-detail-cards>
+	</x-section>
+</x-component-demo>
+
 <x-component-demo :keys="[ 'footer' ]">
 	@php
 		$social_links = [
