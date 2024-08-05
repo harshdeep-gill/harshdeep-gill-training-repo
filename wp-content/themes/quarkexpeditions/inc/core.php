@@ -148,6 +148,10 @@ function register_scripts(): void {
 		'quark',
 		[
 			'recaptchaSiteKey' => quark_get_template_data( 'recaptcha_site_key', '' ),
+			'fetchPartial'     => [
+				'url'    => home_url( '/wp-json/quark-core/v1/partial/get' ), // TODO: Update endpoint url.
+				'method' => 'POST',
+			],
 		]
 	);
 
@@ -312,6 +316,14 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 				],
 				'quark-country-selector'                => [
 					'class' => true,
+				],
+				'quark-load-more'                       => [
+					'class'   => true,
+					'loading' => true,
+				],
+				'quark-book-departures-expeditions'     => [
+					'class'   => true,
+					'loading' => true,
 				],
 				'tp-form'                               => [
 					'class'          => true,
