@@ -9,6 +9,7 @@
 	'variant'       => '',
 	'icon'          => '',
 	'icon_position' => 'left',
+	'loading'       => false,
 ] )
 
 @php
@@ -30,7 +31,7 @@
 		$classes[] = $class;
 	}
 
-	if ( ! empty( $icon ) ) {
+	if ( ! empty( $icon ) || ! empty( $loading ) ) {
 		$classes[] = 'btn--has-icon';
 	}
 
@@ -73,6 +74,12 @@
 				<x-svg :name="$icon" />
 			</span>
 		@endif
+
+		@if ( ! empty( $loading ) )
+			<span class="btn__icon btn__icon-right btn__icon-spinner">
+				<x-svg name="spinner" />
+			</span>
+		@endif
 	</a>
 @else
 	<button
@@ -105,6 +112,12 @@
 		@if ( 'right' === $icon_position && ! empty( $icon ) )
 			<span class="btn__icon btn__icon-right">
 				<x-svg :name="$icon" />
+			</span>
+		@endif
+
+		@if ( ! empty( $loading ) )
+			<span class="btn__icon btn__icon-right btn__icon-spinner">
+				<x-svg name="spinner" />
 			</span>
 		@endif
 	</button>
