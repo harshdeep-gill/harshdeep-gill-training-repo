@@ -4404,6 +4404,112 @@
 	</x-section>
 </x-component-demo>
 
+<x-component-demo :keys="[ 'table' ]">
+	<x-section>
+		<x-section.heading>
+			<x-section.title title="Comparison of All Cabins" align="left" />
+		</x-section.heading>
+
+		<figure class="wp-block-table">
+			<table>
+				<thead>
+					<tr>
+					<th>Cabin Category</th>
+					<th>Deck Location(s)</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+					<td>Explorer Triple</td>
+					<td>Deck 3</td>
+					</tr>
+					<tr>
+					<td>Explorer Suite</td>
+					<td>Deck 3</td>
+					</tr>
+					<tr>
+					<td>Balcony Suite</td>
+					<td>Deck 4<br>Deck 6</td>
+					</tr>
+					<tr>
+					<td>Solo Panorama</td>
+					<td>Deck 6</td>
+					</tr>
+					<tr>
+					<td>Deluxe Balcony Suite</td>
+					<td>Deck 4<br>Deck 6</td>
+					</tr>
+					<tr>
+					<td>Terrace Suite</td>
+					<td>Deck 6</td>
+					</tr>
+					<tr>
+					<td>Penthouse Suite</td>
+					<td>Deck 7</td>
+					</tr>
+					<tr>
+					<td>Owner's Suite</td>
+					<td>Deck 6</td>
+					</tr>
+					<tr>
+					<td>Ultra Suite</td>
+					<td>Deck 6</td>
+					</tr>
+				</tbody>
+			</table>
+		</figure>
+
+		<figure class="wp-block-table is-style-stripes">
+			<table>
+				<thead>
+					<tr>
+					<th>Cabin Category</th>
+					<th>Deck Location(s)</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+					<td>Explorer Triple</td>
+					<td>Deck 3</td>
+					</tr>
+					<tr>
+					<td>Explorer Suite</td>
+					<td>Deck 3</td>
+					</tr>
+					<tr>
+					<td>Balcony Suite</td>
+					<td>Deck 4<br>Deck 6</td>
+					</tr>
+					<tr>
+					<td>Solo Panorama</td>
+					<td>Deck 6</td>
+					</tr>
+					<tr>
+					<td>Deluxe Balcony Suite</td>
+					<td>Deck 4<br>Deck 6</td>
+					</tr>
+					<tr>
+					<td>Terrace Suite</td>
+					<td>Deck 6</td>
+					</tr>
+					<tr>
+					<td>Penthouse Suite</td>
+					<td>Deck 7</td>
+					</tr>
+					<tr>
+					<td>Owner's Suite</td>
+					<td>Deck 6</td>
+					</tr>
+					<tr>
+					<td>Ultra Suite</td>
+					<td>Deck 6</td>
+					</tr>
+				</tbody>
+			</table>
+		</figure>
+	</x-section>
+</x-component-demo>
+
 <x-component-demo :keys="[ 'media-carousel' ]">
 	<x-section>
 		<x-section.heading>
