@@ -42,7 +42,7 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 				<div className="media-description-cards__media-wrap">
 					<SelectImage
 						image={ attributes.image }
-						placeholder="Choose an image"
+						placeholder={ __( 'Choose an image', 'qrk' ) }
 						size="medium"
 						onChange={ ( image: Object ): void => {
 							// Set image.

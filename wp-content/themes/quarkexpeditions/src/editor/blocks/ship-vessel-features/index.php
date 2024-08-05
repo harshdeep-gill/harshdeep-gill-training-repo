@@ -67,8 +67,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 
 	// Build attributes.
 	$component_attributes = [
-		'cards'       => $cards,
-		'is_carousel' => $attributes['isCarousel'],
+		'cards' => $cards,
 	];
 
 	// Return rendered component.

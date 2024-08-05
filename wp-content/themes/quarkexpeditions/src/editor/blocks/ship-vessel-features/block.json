@@ -11,12 +11,7 @@
 		"features"
 	],
 	"textdomain": "qrk",
-	"attributes": {
-		"isCarousel": {
-			"type": "boolean",
-			"default": false
-		}
-	},
+	"attributes": {},
 	"supports": {
 		"alignWide": false,
 		"anchor": true,
