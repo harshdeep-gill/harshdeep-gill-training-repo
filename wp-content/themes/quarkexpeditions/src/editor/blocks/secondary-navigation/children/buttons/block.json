@@ -1,0 +1,25 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "quark/secondary-navigation-cta-buttons",
+    "description": "Display a grid of buttons",
+    "title": "Secondary Navigation Buttons",
+    "keywords": [
+      "button",
+      "secondary",
+      "navigation"
+    ],
+    "category": "layout",
+    "textdomain": "quark",
+    "parent": [
+      "quark/secondary-navigation"
+    ],
+    "attributes": {},
+    "supports": {
+      "alignWide": false,
+      "anchor": true,
+      "className": false,
+      "html": false,
+      "customClassName": false
+    }
+}

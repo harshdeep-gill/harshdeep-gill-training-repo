@@ -121,6 +121,7 @@ function register_adventure_option_category_taxonomy(): void {
 		'public'            => false,
 		'show_in_nav_menus' => false,
 		'show_ui'           => true,
+		'meta_box_cb'       => false,
 		'show_tagcloud'     => false,
 		'show_admin_column' => true,
 		'hierarchical'      => true,
