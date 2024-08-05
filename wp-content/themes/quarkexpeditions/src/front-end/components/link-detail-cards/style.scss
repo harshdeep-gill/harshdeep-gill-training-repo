@@ -21,13 +21,13 @@
 			background-color: var(--color-white);
 		}
 
-		h4,
+		.h4,
 		p {
 			margin-bottom: 0;
 		}
 	}
 
-	&__title-container {
+	&__title {
 		display: flex;
 		gap: var(--spacing-4);
 		justify-content: space-between;

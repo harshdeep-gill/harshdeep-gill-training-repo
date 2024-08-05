@@ -1,19 +1,9 @@
-@props( [
-	'class' => '',
-] )
-
 @php
 	if ( empty( $slot ) ) {
 		return;
 	}
-
-	$classes = [ 'link-detail-cards__description' ];
-
-	if ( ! empty( $class ) ) {
-		$classes[] = $class;
-	}
 @endphp
 
-<div @class( $classes )>
+<div class="link-detail-cards__description">
 	<x-content :content="$slot" />
 </div>
