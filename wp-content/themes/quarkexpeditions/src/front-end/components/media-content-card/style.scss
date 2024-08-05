@@ -71,13 +71,13 @@
 		font-size: var(--font-size-small);
 		line-height: var(--line-height-small);
 
+		@include transition(background-color, 200ms);
+
 		&:hover {
 			text-decoration: none;
 			background-color: var(--color-black);
 			color: var(--color-white);
 		}
-
-		@include transition(background-color, 200ms);
 
 		@media screen and (min-width: grid-size(md)) {
 			display: block;

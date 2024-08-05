@@ -21,22 +21,22 @@
 
 	&--open {
 
+		@include fade-in;
+
 		#{$self}__content {
 
 			@include slide-up;
 		}
-
-		@include fade-in;
 	}
 
 	&--close {
+
+		@include fade-out;
 
 		#{$self}__content {
 
 			@include slide-down;
 		}
-
-		@include fade-out;
 	}
 
 	&__content {

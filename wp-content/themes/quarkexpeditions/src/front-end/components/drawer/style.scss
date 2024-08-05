@@ -19,6 +19,8 @@
 
 	&--open {
 
+		@include fade-in;
+
 		#{$self}__content {
 
 			@include slide-in;
@@ -35,10 +37,11 @@
 			}
 		}
 
-		@include fade-in;
 	}
 
 	&--close {
+
+		@include fade-out;
 
 		#{$self}__content {
 
@@ -56,7 +59,6 @@
 			}
 		}
 
-		@include fade-out;
 	}
 
 	&__content {
