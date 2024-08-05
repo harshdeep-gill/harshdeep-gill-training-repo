@@ -90,12 +90,36 @@ export class ProductOptionsCards extends HTMLElement {
 		const hideDetailsButton = relatedDetails.querySelector( '.product-options-cards__card-details-title' );
 
 		// Set event listeners.
-		hideDetailsButton?.addEventListener( 'click', () => this.hideCardDetailsElement( detailsId ) );
-		card.addEventListener( 'click', () => {
-			// Hide all details.
-			this.hideAllCardDetailsElements();
-			this.showCardDetailsElement( detailsId );
+		hideDetailsButton?.addEventListener( 'click', () => {
+			// Hide the card details.
+			this.hideCardDetailsElement( detailsId );
+			card.removeAttribute( 'data-open' );
 		} );
+
+		// Event listener for card.
+		card.addEventListener( 'click', () => {
+			// Check if card is open.
+			const isOpen = card.hasAttribute( 'data-open' );
+
+			// Check if already open.
+			if ( isOpen ) {
+				this.hideCardDetailsElement( detailsId );
+				card.removeAttribute( 'data-open' );
+			} else {
+				// Hide all details.
+				this.hideAllCardDetailsElements();
+				this.showCardDetailsElement( detailsId );
+				card.setAttribute( 'data-open', 'yes' );
+			}
+		} );
+
+		// Get the gallery.
+		const cardGallery = card.querySelector( '.product-options-cards__gallery' );
+
+		// Check if gallery is available.
+		if ( cardGallery ) {
+			cardGallery.addEventListener( 'click', ( evt: Event ) => evt.stopPropagation() );
+		}
 	}
 }
 
