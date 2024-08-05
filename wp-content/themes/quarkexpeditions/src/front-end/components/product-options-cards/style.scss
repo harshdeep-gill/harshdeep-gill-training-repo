@@ -143,6 +143,7 @@
 		&-discounted,
 		> p {
 			color: var(--color-success-100);
+			font-weight: var(--font-weight-bold);
 		}
 
 		p {
@@ -313,23 +314,20 @@
 	}
 
 	&__room {
-		display: flex;
-		justify-content: space-between;
 		gap: var(--spacing-6);
-		flex-wrap: wrap;
+
+		label {
+			display: flex;
+			flex-grow: 1;
+			gap: var(--spacing-6);
+			justify-content: space-between;
+			flex-wrap: wrap;
+		}
 	}
 
 	&__room-prices {
-		display: contents;
-
-		@media screen and (min-width: grid-size(md)) {
-			display: flex;
-			gap: var(--spacing-5);
-
-			&-selector {
-				min-width: 150px;
-			}
-		}
+		display: flex;
+		gap: var(--spacing-5);
 
 		&-info {
 			min-width: 120px;
