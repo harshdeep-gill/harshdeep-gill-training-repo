@@ -127,6 +127,7 @@ class Test_Itinerary extends Softrip_TestCase {
 		// Create an instance of Itinerary.
 		$itinerary = new Itinerary( $post->ID );
 		$data      = $itinerary->get_data();
+		$this->assertNotEmpty( $data );
 		$this->assertEquals( $post, $data['post'] );
 		$this->assertEquals( 1, $data['post_meta']['test_meta'] );
 
@@ -582,6 +583,7 @@ class Test_Itinerary extends Softrip_TestCase {
 		$this->assertInstanceOf( 'Quark\Softrip\Departure', $departure );
 		$departure_data = $departure->get_data();
 		$this->assertIsArray( $departure_data );
+		$this->assertNotEmpty( $departure_data );
 		$this->assertArrayHasKey( 'post', $departure_data );
 		$this->assertTrue( $departure_data['post'] instanceof WP_Post );
 		$this->assertEquals( $departure2->ID, $departure_data['post']->ID );
@@ -591,6 +593,7 @@ class Test_Itinerary extends Softrip_TestCase {
 		$this->assertInstanceOf( 'Quark\Softrip\Departure', $departure );
 		$departure_data = $departure->get_data();
 		$this->assertIsArray( $departure_data );
+		$this->assertNotEmpty( $departure_data );
 		$this->assertArrayHasKey( 'post', $departure_data );
 		$this->assertTrue( $departure_data['post'] instanceof WP_Post );
 		$this->assertEquals( $departure3->ID, $departure_data['post']->ID );
@@ -697,6 +700,7 @@ class Test_Itinerary extends Softrip_TestCase {
 		$this->assertInstanceOf( 'Quark\Softrip\Departure', $departure2_obj );
 		$departure2_data = $departure2_obj->get_data();
 		$this->assertIsArray( $departure2_data );
+		$this->assertNotEmpty( $departure2_data );
 		$this->assertArrayHasKey( 'post_meta', $departure2_data );
 		$this->assertIsArray( $departure2_data['post_meta'] );
 		$this->assertArrayHasKey( 'departure_unique_id', $departure2_data['post_meta'] );

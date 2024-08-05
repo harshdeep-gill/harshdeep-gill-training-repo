@@ -55,6 +55,7 @@ class Test_Cabin extends WP_UnitTestCase {
 		$cabin = new Cabin();
 		$cabin->load( $cabin_category_post->ID );
 		$data = $cabin->get_data();
+		$this->assertNotEmpty( $data );
 		$this->assertArrayHasKey( 'post', $data );
 		$this->assertArrayHasKey( 'post_meta', $data );
 		$this->assertArrayHasKey( 'post_taxonomies', $data );
@@ -122,7 +123,7 @@ class Test_Cabin extends WP_UnitTestCase {
 		// Test 1: Default arguments.
 		$cabin = new Cabin();
 		$cabin->set();
-		$data = $cabin->get_data();
+		$data = $cabin->get_entry_data();
 		$this->assertEmpty( $data );
 
 		// Test 2: Providing empty array.
