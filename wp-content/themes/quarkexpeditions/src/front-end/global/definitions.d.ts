@@ -25,6 +25,7 @@ interface Glightbox<GLightbox> {
 interface Window {
 	quark?: {
 		recaptchaSiteKey?: string;
+		fetchPartial?: FetchPartial;
 	},
 	grecaptcha: {
 		ready: Function;
@@ -41,6 +42,7 @@ interface Window {
 	tpFormErrors: {
 		[key: string]: any;
 	},
+	fetchPartial: Function;
 }
 
 /**
@@ -56,3 +58,39 @@ interface WistiaVideo {
  * Video matcher interface.
  */
 interface WistiaVideoMatcher { id: String, onReady: Function }
+
+/**
+ * FetchPartial interface.
+ */
+interface FetchPartial {
+	url: string,
+	method: string,
+}
+
+/**
+ * Interface CustomException.
+ */
+interface CustomException {
+	code: string;
+	message: string;
+	data?: any;
+}
+
+/**
+ * Interface Partial Data.
+ */
+interface PartialData {
+	markup: string;
+	noResultsMarkup: string,
+	data: SearchResponseData;
+}
+
+/**
+ * Interface SearchResponseData
+ */
+interface SearchResponseData {
+	resultCount?: number,
+	hasNextPage?: boolean,
+	nextPage?: number,
+	page?: number,
+}

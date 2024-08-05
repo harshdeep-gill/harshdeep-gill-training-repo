@@ -114,6 +114,13 @@
 		border-color: var(--color-black);
 		background-color: var(--color-black);
 		color: var(--color-white);
+
+		> span.btn__icon-spinner {
+
+			svg > path {
+				fill: var(--color-white);
+			}
+		}
 	}
 
 	&--outline:not(:hover),
@@ -182,6 +189,13 @@
 		&--outline:hover {
 			background-color: var(--color-white);
 			color: var(--color-black);
+
+			> span.btn__icon-spinner {
+
+				svg > path {
+					fill: var(--color-black);
+				}
+			}
 		}
 
 		&--color-black:hover,
@@ -189,6 +203,13 @@
 			background-color: transparent;
 			border-color: var(--color-white);
 			color: var(--color-white);
+
+			> span.btn__icon-spinner {
+
+				svg > path {
+					fill: var(--color-white);
+				}
+			}
 		}
 
 		&--outline:active,
