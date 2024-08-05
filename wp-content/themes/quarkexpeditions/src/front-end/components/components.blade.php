@@ -4034,33 +4034,49 @@
 								Adventure Options
 							</x-departure-cards.specification-label>
 							<x-departure-cards.specification-value>
-								<x-departure-cards.adventure-options
-									:options="[
-										'Sea Kayaking',
-										'Stand-up Paddleboarding',
-										'Zodiac Cruising',
-										'Heli-hiking',
-										'Polar Plunge',
-										'Polar Camping',
-										'Flightseeing',
-										'Hot Air Ballooning',
-									]"
-								/>
+								<x-departure-cards.adventure-options>
+									<x-departure-cards.adventure-option title="Sea Kayaking" />
+									<x-departure-cards.adventure-option title="Stand-up Paddleboarding" />
+									<x-departure-cards.adventure-option title="Zodiac Cruising" />
+									<x-departure-cards.adventure-option title="Heli-hiking" />
+									<x-departure-cards.adventure-option title="Polar Plunge" />
+									<x-departure-cards.adventure-option title="Polar Camping" />
+									<x-departure-cards.adventure-option title="Flightseeing" />
+									<x-departure-cards.adventure-option title="Hot Air Ballooning" />
+
+									<x-departure-cards.adventure-options-tooltip>
+										<ul>
+											<li>Sea Kayaking</li>
+											<li>Stand-up Paddleboarding</li>
+											<li>Zodiac Cruising</li>
+											<li>Heli-hiking</li>
+											<li>Polar Plunge</li>
+											<li>Polar Camping</li>
+											<li>Flightseeing</li>
+											<li>Hot Air Ballooning</li>
+										</ul>
+									</x-departure-cards.adventure-options-tooltip>
+								</x-departure-cards.adventure-options>
 							</x-departure-cards.specification-value>
 						</x-departure-cards.specification-item>
 					</x-departure-cards.specifications>
 
-					<x-departure-cards.offers 
-						title="Available Offers"
-						modal_title="Crossing the Cirlc: Southern Expedition"
-						:items="[
-							'Save 30% on Premium Cabins',
-							'$1000 Flight Credit',
-							'Save 25% on Standard Cabins',
-							'Offer 4',
-							'Offer 5'
-						]"
-					/>
+					<x-departure-cards.offers title="Available Offers">
+						<x-departure-cards.offer title="Save 30% on Premium Cabins" />
+						<x-departure-cards.offer title="$1000 Flight Credit" />
+						<x-departure-cards.offer title="Save 25% on Standard Cabins" />
+						<x-departure-cards.offer title="Offer 4" />
+						<x-departure-cards.offer title="Offer 5" />
+						<x-departure-cards.offers-modal title="Crossing the Cirlc: Southern Expedition">
+							<ul>
+								<li>Save 30% on Premium Cabins</li>
+								<li>$1000 Flight Credit</li>
+								<li>Save 25% on Standard Cabins</li>
+								<li>Offer 4</li>
+								<li>Offer 5</li>
+							</ul>
+						</x-departure-cards.offers-modal>
+					</x-departure-cards.offers>
 				</x-departure-cards.body-column>
 
 				<x-departure-cards.body-column>
@@ -4142,27 +4158,40 @@
 								Adventure Options
 							</x-departure-cards.specification-label>
 							<x-departure-cards.specification-value>
-								<x-departure-cards.adventure-options
-									:options="[
-										'Sea Kayaking',
-										'Standup Paddleboarding',
-										'Option 3',
-									]"
-								/>
+								<x-departure-cards.adventure-options>
+									<x-departure-cards.adventure-option title="Sea Kayaking" />
+									<x-departure-cards.adventure-option title="Stand-up Paddleboarding" />
+									<x-departure-cards.adventure-option title="Zodiac Cruising" />
+
+									<x-departure-cards.adventure-options-tooltip>
+										<ul>
+											<li>Sea Kayaking</li>
+											<li>Stand-up Paddleboarding</li>
+											<li>Zodiac Cruising</li>
+											<li>Heli-hiking</li>
+										</ul>
+									</x-departure-cards.adventure-options-tooltip>
+								</x-departure-cards.adventure-options>
 							</x-departure-cards.specification-value>
 						</x-departure-cards.specification-item>
 					</x-departure-cards.specifications>
 
-					<x-departure-cards.offers 
-						title="Available Offers"
-						:items="[
-							'Test - Save 30% on Premium Cabins',
-							'Test - $1000 Flight Credit',
-							'Test - Save 25% on Standard Cabins',
-							'Test - Offer 4',
-							'Test - Offer 5'
-						]"
-					/>
+					<x-departure-cards.offers title="Available Offers">
+						<x-departure-cards.offer title="Save 30% on Premium Cabins" />
+						<x-departure-cards.offer title="$1000 Flight Credit" />
+						<x-departure-cards.offer title="Save 25% on Standard Cabins" />
+						<x-departure-cards.offer title="Offer 4" />
+						<x-departure-cards.offer title="Offer 5" />
+						<x-departure-cards.offers-modal title="Crossing the Cirlc: Southern Expedition">
+							<ul>
+								<li>Save 30% on Premium Cabins</li>
+								<li>$1000 Flight Credit</li>
+								<li>Save 25% on Standard Cabins</li>
+								<li>Offer 4</li>
+								<li>Offer 5</li>
+							</ul>
+						</x-departure-cards.offers-modal>
+					</x-departure-cards.offers>
 				</x-departure-cards.body-column>
 
 				<x-departure-cards.body-column>
@@ -4244,24 +4273,34 @@
 								Adventure Options
 							</x-departure-cards.specification-label>
 							<x-departure-cards.specification-value>
-								<x-departure-cards.adventure-options
-									:options="[
-										'Sea Kayaking',
-										'Standup Paddleboarding',
-										'Option 3',
-									]"
-								/>
+								<x-departure-cards.adventure-options>
+									<x-departure-cards.adventure-option title="Sea Kayaking" />
+									<x-departure-cards.adventure-option title="Stand-up Paddleboarding" />
+									<x-departure-cards.adventure-option title="Zodiac Cruising" />
+
+									<x-departure-cards.adventure-options-tooltip>
+										<ul>
+											<li>Sea Kayaking</li>
+											<li>Stand-up Paddleboarding</li>
+											<li>Zodiac Cruising</li>
+											<li>Heli-hiking</li>
+										</ul>
+									</x-departure-cards.adventure-options-tooltip>
+								</x-departure-cards.adventure-options>
 							</x-departure-cards.specification-value>
 						</x-departure-cards.specification-item>
 					</x-departure-cards.specifications>
 
-					<x-departure-cards.offers 
-						title="Available Offers"
-						:items="[
-							'Test - Offer 4',
-							'Test - Offer 5'
-						]"
-					/>
+					<x-departure-cards.offers title="Available Offers">
+						<x-departure-cards.offer title="Offer 4" />
+						<x-departure-cards.offer title="Offer 5" />
+						<x-departure-cards.offers-modal title="Crossing the Cirlc: Southern Expedition">
+							<ul>
+								<li>Offer 4</li>
+								<li>Offer 5</li>
+							</ul>
+						</x-departure-cards.offers-modal>
+					</x-departure-cards.offers>
 				</x-departure-cards.body-column>
 
 				<x-departure-cards.body-column>
