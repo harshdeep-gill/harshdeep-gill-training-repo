@@ -369,6 +369,7 @@ class Test_Expeditions extends WP_UnitTestCase {
 			'region'           => $term_1->name,
 			'duration'         => 11,
 			'from_price'       => '',
+			// TODO:: Add test cases for from_price - Once Softrip Testcase done.
 			'starting_from'    => [
 				[
 					'title' => $departure_location_term_1->name,
@@ -378,7 +379,9 @@ class Test_Expeditions extends WP_UnitTestCase {
 				],
 			],
 			'total_departures' => 0,
+			// TODO:: Add test cases for total_departures - Once Softrip Testcase done.
 			'date_range'       => '',
+			// TODO:: Add test cases for date_range - Once Softrip Testcase done.
 		];
 
 		// Assert expedition_details_card_data is correct.
