@@ -3982,6 +3982,358 @@
 	</x-section>
 </x-component-demo>
 
+<x-component-demo :keys="[ 'departure-cards' ]">
+	<x-departure-cards>
+		<x-departure-cards.card>
+			<x-departure-cards.card-banner text="Quark Protection Promise" />
+			<x-departure-cards.header>
+				<x-departure-cards.title title="Crossing the Cirlc: Southern Expedition" />
+				<x-departure-cards.promo-tag text="Save up to 24%" />
+			</x-departure-cards.header>
+			<x-departure-cards.body>
+				<x-departure-cards.body-column>
+					<x-departure-cards.specifications>
+						<x-departure-cards.specification-item>
+							<x-departure-cards.specification-label>
+								Itinerary
+							</x-departure-cards.specification-label>
+							<x-departure-cards.specification-value>
+								12 days <br> (March 1-14, 2024)
+							</x-departure-cards.specification-value>
+						</x-departure-cards.specification-item>
+
+						<x-departure-cards.specification-item>
+							<x-departure-cards.specification-label>
+								Starting from
+							</x-departure-cards.specification-label>
+							<x-departure-cards.specification-value>
+								Buenos Aires, Argentina
+							</x-departure-cards.specification-value>
+						</x-departure-cards.specification-item>
+
+						<x-departure-cards.specification-item>
+							<x-departure-cards.specification-label>
+								Ship
+							</x-departure-cards.specification-label>
+							<x-departure-cards.specification-value>
+								Ultramarine
+							</x-departure-cards.specification-value>
+						</x-departure-cards.specification-item>
+
+						<x-departure-cards.specification-item>
+							<x-departure-cards.specification-label>
+								Languages
+							</x-departure-cards.specification-label>
+							<x-departure-cards.specification-value>
+								English, French
+							</x-departure-cards.specification-value>
+						</x-departure-cards.specification-item>
+
+						<x-departure-cards.specification-item>
+							<x-departure-cards.specification-label>
+								Adventure Options
+							</x-departure-cards.specification-label>
+							<x-departure-cards.specification-value>
+								<x-departure-cards.adventure-options>
+									<x-departure-cards.adventure-option title="Sea Kayaking" />
+									<x-departure-cards.adventure-option title="Stand-up Paddleboarding" />
+									<x-departure-cards.adventure-option title="Zodiac Cruising" />
+									<x-departure-cards.adventure-option title="Heli-hiking" />
+									<x-departure-cards.adventure-option title="Polar Plunge" />
+									<x-departure-cards.adventure-option title="Polar Camping" />
+									<x-departure-cards.adventure-option title="Flightseeing" />
+									<x-departure-cards.adventure-option title="Hot Air Ballooning" />
+
+									<x-departure-cards.adventure-options-tooltip>
+										<ul>
+											<li>Sea Kayaking</li>
+											<li>Stand-up Paddleboarding</li>
+											<li>Zodiac Cruising</li>
+											<li>Heli-hiking</li>
+											<li>Polar Plunge</li>
+											<li>Polar Camping</li>
+											<li>Flightseeing</li>
+											<li>Hot Air Ballooning</li>
+										</ul>
+									</x-departure-cards.adventure-options-tooltip>
+								</x-departure-cards.adventure-options>
+							</x-departure-cards.specification-value>
+						</x-departure-cards.specification-item>
+					</x-departure-cards.specifications>
+
+					<x-departure-cards.offers title="Available Offers">
+						<x-departure-cards.offer title="Save 30% on Premium Cabins" />
+						<x-departure-cards.offer title="$1000 Flight Credit" />
+						<x-departure-cards.offer title="Save 25% on Standard Cabins" />
+						<x-departure-cards.offer title="Offer 4" />
+						<x-departure-cards.offer title="Offer 5" />
+						<x-departure-cards.offers-modal title="Crossing the Cirlc: Southern Expedition">
+							<ul>
+								<li>Save 30% on Premium Cabins</li>
+								<li>$1000 Flight Credit</li>
+								<li>Save 25% on Standard Cabins</li>
+								<li>Offer 4</li>
+								<li>Offer 5</li>
+							</ul>
+						</x-departure-cards.offers-modal>
+					</x-departure-cards.offers>
+				</x-departure-cards.body-column>
+
+				<x-departure-cards.body-column>
+					<x-departure-cards.price
+						original_price="$9,395 USD"
+						discounted_price="$7,271 USD"
+					/>
+
+					<x-departure-cards.transfer_package
+						drawer_id="departure-cards-id-1"
+						drawer_title="Mandatory Transfer Package"
+					>
+						<p><strong>Package Includes:</strong></p>
+						<ul>
+							<li>One night’s pre-expedition hotel night in Aberdeen</li>
+							<li>Group transfer from Aberdeen hotel to ship on embarkation day</li>
+							<li>Departure transfer in Longyearbyen on disembarkation day</li>
+							<li>Charter flight from Longyearbyen to Helsinki on disembarkation day</li>
+						</ul>
+						<p><strong>Package Price: $695 USD</strong></p>
+					</x-departure-cards.transfer_package>
+
+					<x-button size="big">View Cabin Pricing & Options</x-button>
+				</x-departure-cards.body-column>
+			</x-departure-cards.body>
+
+			<x-departure-cards.more-details>
+				{{-- <x-product-options-cards> // Component Ticket -> https://tuispecialist.atlassian.net/browse/QE-304 --}}
+			</x-departure-cards.more-details>
+		</x-departure-cards.card>
+
+		<x-departure-cards.card>
+			<x-departure-cards.card-banner text="Quark Protection Promise" />
+			<x-departure-cards.header>
+				<x-departure-cards.departing-on date="March 1, 2024" />
+				<x-departure-cards.promo-tag text="Save up to 24%" />
+			</x-departure-cards.header>
+			<x-departure-cards.body>
+				<x-departure-cards.body-column>
+					<x-departure-cards.specifications>
+						<x-departure-cards.specification-item>
+							<x-departure-cards.specification-label>
+								Itinerary
+							</x-departure-cards.specification-label>
+							<x-departure-cards.specification-value>
+								12 days <br> (March 1-14, 2024)
+							</x-departure-cards.specification-value>
+						</x-departure-cards.specification-item>
+
+						<x-departure-cards.specification-item>
+							<x-departure-cards.specification-label>
+								Starting from
+							</x-departure-cards.specification-label>
+							<x-departure-cards.specification-value>
+								Buenos Aires, Argentina
+							</x-departure-cards.specification-value>
+						</x-departure-cards.specification-item>
+
+						<x-departure-cards.specification-item>
+							<x-departure-cards.specification-label>
+								Ship
+							</x-departure-cards.specification-label>
+							<x-departure-cards.specification-value>
+								Ultramarine
+							</x-departure-cards.specification-value>
+						</x-departure-cards.specification-item>
+
+						<x-departure-cards.specification-item>
+							<x-departure-cards.specification-label>
+								Languages
+							</x-departure-cards.specification-label>
+							<x-departure-cards.specification-value>
+								English, French
+							</x-departure-cards.specification-value>
+						</x-departure-cards.specification-item>
+
+						<x-departure-cards.specification-item>
+							<x-departure-cards.specification-label>
+								Adventure Options
+							</x-departure-cards.specification-label>
+							<x-departure-cards.specification-value>
+								<x-departure-cards.adventure-options>
+									<x-departure-cards.adventure-option title="Sea Kayaking" />
+									<x-departure-cards.adventure-option title="Stand-up Paddleboarding" />
+									<x-departure-cards.adventure-option title="Zodiac Cruising" />
+
+									<x-departure-cards.adventure-options-tooltip>
+										<ul>
+											<li>Sea Kayaking</li>
+											<li>Stand-up Paddleboarding</li>
+											<li>Zodiac Cruising</li>
+											<li>Heli-hiking</li>
+										</ul>
+									</x-departure-cards.adventure-options-tooltip>
+								</x-departure-cards.adventure-options>
+							</x-departure-cards.specification-value>
+						</x-departure-cards.specification-item>
+					</x-departure-cards.specifications>
+
+					<x-departure-cards.offers title="Available Offers">
+						<x-departure-cards.offer title="Save 30% on Premium Cabins" />
+						<x-departure-cards.offer title="$1000 Flight Credit" />
+						<x-departure-cards.offer title="Save 25% on Standard Cabins" />
+						<x-departure-cards.offer title="Offer 4" />
+						<x-departure-cards.offer title="Offer 5" />
+						<x-departure-cards.offers-modal title="Crossing the Cirlc: Southern Expedition">
+							<ul>
+								<li>Save 30% on Premium Cabins</li>
+								<li>$1000 Flight Credit</li>
+								<li>Save 25% on Standard Cabins</li>
+								<li>Offer 4</li>
+								<li>Offer 5</li>
+							</ul>
+						</x-departure-cards.offers-modal>
+					</x-departure-cards.offers>
+				</x-departure-cards.body-column>
+
+				<x-departure-cards.body-column>
+					<x-departure-cards.price
+						original_price="$9,395 USD"
+						discounted_price="$7,271 USD"
+					/>
+
+					<x-departure-cards.transfer_package
+						drawer_id="departure-cards-id-2"
+						drawer_title="Mandatory Transfer Package"
+					>
+						<p><strong>Package Includes:</strong></p>
+						<ul>
+							<li>One night’s pre-expedition hotel night in Aberdeen</li>
+							<li>Group transfer from Aberdeen hotel to ship on embarkation day</li>
+							<li>Departure transfer in Longyearbyen on disembarkation day</li>
+							<li>Charter flight from Longyearbyen to Helsinki on disembarkation day</li>
+						</ul>
+						<p><strong>Package Price: $695 USD</strong></p>
+					</x-departure-cards.transfer_package>
+
+					<x-button size="big">View Cabin Pricing & Options</x-button>
+				</x-departure-cards.body-column>
+			</x-departure-cards.body>
+
+			<x-departure-cards.more-details>
+				{{-- <x-product-options-cards> // Component Ticket -> https://tuispecialist.atlassian.net/browse/QE-304 --}}
+			</x-departure-cards.more-details>
+		</x-departure-cards.card>
+
+		<x-departure-cards.card>
+			<x-departure-cards.card-banner text="Quark Protection Promise" />
+			<x-departure-cards.header>
+				<x-departure-cards.departing-on date="March 1, 2024" />
+				<x-departure-cards.promo-tag text="Save up to 24%" />
+			</x-departure-cards.header>
+			<x-departure-cards.body>
+				<x-departure-cards.body-column>
+					<x-departure-cards.specifications>
+						<x-departure-cards.specification-item>
+							<x-departure-cards.specification-label>
+								Itinerary
+							</x-departure-cards.specification-label>
+							<x-departure-cards.specification-value>
+								12 days <br> (March 1-14, 2024)
+							</x-departure-cards.specification-value>
+						</x-departure-cards.specification-item>
+
+						<x-departure-cards.specification-item>
+							<x-departure-cards.specification-label>
+								Starting from
+							</x-departure-cards.specification-label>
+							<x-departure-cards.specification-value>
+								Buenos Aires, Argentina
+							</x-departure-cards.specification-value>
+						</x-departure-cards.specification-item>
+
+						<x-departure-cards.specification-item>
+							<x-departure-cards.specification-label>
+								Ship
+							</x-departure-cards.specification-label>
+							<x-departure-cards.specification-value>
+								Ultramarine
+							</x-departure-cards.specification-value>
+						</x-departure-cards.specification-item>
+
+						<x-departure-cards.specification-item>
+							<x-departure-cards.specification-label>
+								Languages
+							</x-departure-cards.specification-label>
+							<x-departure-cards.specification-value>
+								English, French
+							</x-departure-cards.specification-value>
+						</x-departure-cards.specification-item>
+
+						<x-departure-cards.specification-item>
+							<x-departure-cards.specification-label>
+								Adventure Options
+							</x-departure-cards.specification-label>
+							<x-departure-cards.specification-value>
+								<x-departure-cards.adventure-options>
+									<x-departure-cards.adventure-option title="Sea Kayaking" />
+									<x-departure-cards.adventure-option title="Stand-up Paddleboarding" />
+									<x-departure-cards.adventure-option title="Zodiac Cruising" />
+
+									<x-departure-cards.adventure-options-tooltip>
+										<ul>
+											<li>Sea Kayaking</li>
+											<li>Stand-up Paddleboarding</li>
+											<li>Zodiac Cruising</li>
+											<li>Heli-hiking</li>
+										</ul>
+									</x-departure-cards.adventure-options-tooltip>
+								</x-departure-cards.adventure-options>
+							</x-departure-cards.specification-value>
+						</x-departure-cards.specification-item>
+					</x-departure-cards.specifications>
+
+					<x-departure-cards.offers title="Available Offers">
+						<x-departure-cards.offer title="Offer 4" />
+						<x-departure-cards.offer title="Offer 5" />
+						<x-departure-cards.offers-modal title="Crossing the Cirlc: Southern Expedition">
+							<ul>
+								<li>Offer 4</li>
+								<li>Offer 5</li>
+							</ul>
+						</x-departure-cards.offers-modal>
+					</x-departure-cards.offers>
+				</x-departure-cards.body-column>
+
+				<x-departure-cards.body-column>
+					<x-departure-cards.price
+						original_price="$9,395 USD"
+						discounted_price="$7,271 USD"
+					/>
+
+					<x-departure-cards.transfer_package
+						drawer_id="departure-cards-id-3"
+						drawer_title="Mandatory Transfer Package"
+					>
+						<p><strong>Package Includes:</strong></p>
+						<ul>
+							<li>One night’s pre-expedition hotel night in Aberdeen</li>
+							<li>Group transfer from Aberdeen hotel to ship on embarkation day</li>
+							<li>Departure transfer in Longyearbyen on disembarkation day</li>
+							<li>Charter flight from Longyearbyen to Helsinki on disembarkation day</li>
+						</ul>
+						<p><strong>Package Price: $695 USD</strong></p>
+					</x-departure-cards.transfer_package>
+
+					<x-button size="big">View Cabin Pricing & Options</x-button>
+				</x-departure-cards.body-column>
+			</x-departure-cards.body>
+
+			<x-departure-cards.more-details>
+				{{-- <x-product-options-cards> // Component Ticket -> https://tuispecialist.atlassian.net/browse/QE-304 --}}
+			</x-departure-cards.more-details>
+		</x-departure-cards.card>
+	</x-departure-cards>
+</x-component-demo>
+
 <x-component-demo :keys="[ 'hero-card-slider' ]">
 	<x-section title="Hero Card Slider">
 		<div style="margin-bottom: 64px;">

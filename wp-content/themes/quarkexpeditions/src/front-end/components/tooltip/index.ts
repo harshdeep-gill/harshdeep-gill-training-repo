@@ -44,7 +44,7 @@ export class Tooltip extends HTMLElement {
 		const tooltipContentWidth = tooltipContent.width;
 
 		// Top position of tooltip text.
-		const tooltipTextTop = tooltipRect.bottom - tooltipContentHeight - 26;
+		const tooltipTextTop = tooltipRect.bottom - tooltipContentHeight - 24; // 22px + 2px is the height of the info icon and the arrow border, to place arrow near the tooltip content.
 
 		// Left position of tooltip text.
 		let tooltipTextLeft = tooltipRect.left + ( tooltipRect.width / 2 ) - ( tooltipContentWidth / 2 );
