@@ -4378,6 +4378,42 @@
 	</x-section>
 </x-component-demo>
 
+<x-component-demo :keys="[ 'featured-media-accordions' ]">
+	<x-section>
+		<x-featured-media-accordions>
+			<x-featured-media-accordions.media>
+				<x-featured-media-accordions.featured-image image_id="122" id="item-1" />
+				<x-featured-media-accordions.featured-image image_id="117" id="item-2" />
+				<x-featured-media-accordions.featured-image image_id="109" id="item-3" />
+				<x-featured-media-accordions.featured-image image_id="104" id="item-4" />
+				<x-featured-media-accordions.featured-image image_id="87" id="item-5" />
+			</x-featured-media-accordions.media>
+			<x-featured-media-accordions.accordions>
+				<x-featured-media-accordions.accordion id="item-1" title="Spots for Socialising">
+					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.</p>
+					<x-featured-media-accordions.featured-image image_id="122" />
+				</x-featured-media-accordions.accordion>
+				<x-featured-media-accordions.accordion title="Spots for Socialising" id="item-2">
+					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.</p>
+					<x-featured-media-accordions.featured-image image_id="117" />
+				</x-featured-media-accordions.accordion>
+				<x-featured-media-accordions.accordion title="Spots for Socialising" id="item-3">
+					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.</p>
+					<x-featured-media-accordions.featured-image image_id="109" />
+				</x-featured-media-accordions.accordion>
+				<x-featured-media-accordions.accordion title="Spots for Socialising" id="item-4">
+					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.</p>
+					<x-featured-media-accordions.featured-image image_id="104" />
+				</x-featured-media-accordions.accordion>
+				<x-featured-media-accordions.accordion title="Spots for Socialising" id="item-5">
+					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.</p>
+					<x-featured-media-accordions.featured-image image_id="87" />
+				</x-featured-media-accordions.accordion>
+			</x-featured-media-accordions.accordions>
+		</x-featured-media-accordions>
+	</x-section>
+</x-component-demo>
+
 <x-component-demo :keys="[ 'media-carousel' ]">
 	<x-section>
 		<x-section.heading>
@@ -4403,7 +4439,36 @@
 		<x-section.heading>
 			<x-section.title title="Departure Dates & Cabins" align="left" />
 		</x-section.heading>
-		<x-parts.book-departures-expeditions results_count="8" :payload="$payload" />
+		<x-parts.book-departures-expeditions results_count="10" :payload="$payload" />
+	</x-section>
+</x-component-demo>
+
+<x-component-demo :keys="[ 'link-detail-cards' ]">
+	<x-section>
+		<x-section.heading>
+			<x-section.title title="Link Detail Cards" />
+		</x-section.heading>
+
+		<x-link-detail-cards>
+			<x-link-detail-cards.card url="#">
+				<x-link-detail-cards.title title="15 Day Free Cancellation" />
+				<x-link-detail-cards.description>
+					<p>Free cancellation if you change you mind within 15 days.</p>
+				</x-link-detail-cards.description>
+			</x-link-detail-cards.card>
+			<x-link-detail-cards.card url="#">
+				<x-link-detail-cards.title title="No Surcharges" />
+				<x-link-detail-cards.description>
+					<p>Zero future surcharges mean the price you book today is the price you pay.</p>
+				</x-link-detail-cards.description>
+			</x-link-detail-cards.card>
+			<x-link-detail-cards.card url="#">
+				<x-link-detail-cards.title title="Refund Guarantee" />
+				<x-link-detail-cards.description>
+					<p>Quark Expeditions will refund your trip if Quark Expeditions cancels your voyage.</p>
+				</x-link-detail-cards.description>
+			</x-link-detail-cards.card>
+		</x-link-detail-cards>
 	</x-section>
 </x-component-demo>
 

@@ -325,6 +325,9 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'class'   => true,
 					'loading' => true,
 				],
+				'quark-featured-media-accordions'       => [
+					'class' => true,
+				],
 				'tp-form'                               => [
 					'class'          => true,
 					'prevent-submit' => true,

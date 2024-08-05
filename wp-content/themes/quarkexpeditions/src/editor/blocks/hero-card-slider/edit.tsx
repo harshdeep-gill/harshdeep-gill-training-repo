@@ -19,6 +19,12 @@ import {
  */
 import classnames from 'classnames';
 const { gumponents } = window;
+import icons from '../icons';
+
+/**
+ * Styles.
+ */
+import './editor.scss';
 
 /**
  * External components.
@@ -100,6 +106,18 @@ export default function edit( { className, attributes, setAttributes }: BlockEdi
 				{ attributes.items.length > 0 && (
 					<div className="hero-card-slider">
 						<div className="hero-card-slider__card">
+							{
+								attributes.showControls && (
+									<div className="hero-card-slider__arrows">
+										<button className="hero-card-slider__arrow-button hero-card-slider__arrow-button--left">
+											{ icons.chevronLeft }
+										</button>
+										<button className="hero-card-slider__arrow-button hero-card-slider__arrow-button--right">
+											{ icons.chevronRight }
+										</button>
+									</div>
+								)
+							}
 							<figure className="hero-card-slider__image">
 								<Img
 									value={ attributes.items[ 0 ] }

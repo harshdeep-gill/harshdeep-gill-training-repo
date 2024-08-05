@@ -10,6 +10,10 @@
 		"title",
 		"text"
 	],
+	"usesContext": [
+		"postId",
+		"postType"
+	],
 	"textdomain": "qrk",
 	"attributes": {
 		"title": {
@@ -23,6 +27,10 @@
 				"white",
 				"black"
 			]
+		},
+		"syncPostTitle": {
+			"type": "boolean",
+			"default": false
 		}
 	},
 	"parent": [
