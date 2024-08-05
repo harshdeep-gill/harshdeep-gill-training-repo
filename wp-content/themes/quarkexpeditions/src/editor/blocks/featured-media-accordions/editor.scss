@@ -1,0 +1,17 @@
+.featured-media-accordions {
+
+	&__image {
+		background-color: var(--color-gray-30);
+
+		&:empty {
+			height: 100%;
+		}
+	}
+
+	.accordion {
+
+		&__handle-icon > svg {
+			transform: rotate(180deg);
+		}
+	}
+}
