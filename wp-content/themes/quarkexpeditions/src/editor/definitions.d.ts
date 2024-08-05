@@ -7,6 +7,7 @@ interface BlockEditAttributes {
 	setAttributes: Function;
 	isSelected: boolean;
 	clientId: string;
+	context: Record<string, any>;
 }
 
 /**

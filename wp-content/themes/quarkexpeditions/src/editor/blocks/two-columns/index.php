@@ -59,7 +59,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 
 	// Build component attributes.
 	$component_attributes = [
-		'border' => $attributes['border'] ?? true,
+		'border' => $attributes['hasBorder'] ?? true,
 		'slot'   => quark_get_component(
 			COMPONENT . '.column',
 			[
