@@ -176,7 +176,7 @@ class Test_Departure extends WP_UnitTestCase {
 		// Validate spoken language terms.
 		foreach ( $taxonomy_data[ SPOKEN_LANGUAGE_TAXONOMY ] as $term ) {
 			$this->assertIsArray( $term );
-			$this->assertContains( intval( $term['term_id'] ), $spoken_language_term_ids );
+			$this->assertContains( absint( $term['term_id'] ), $spoken_language_term_ids );
 		}
 
 		// Cleanup.
@@ -345,6 +345,8 @@ class Test_Departure extends WP_UnitTestCase {
 				'update_post_term_cache' => false,
 				'fields'                 => 'ids',
 				'post_status'            => 'draft,publish',
+				'update_post_meta_cache' => false,
+				'ignore_sticky_posts'    => true,
 			]
 		);
 		$this->assertEmpty( $departure_posts->posts );
@@ -410,6 +412,8 @@ class Test_Departure extends WP_UnitTestCase {
 				'update_post_term_cache' => false,
 				'fields'                 => 'ids',
 				'post_status'            => 'draft,publish',
+				'update_post_meta_cache' => false,
+				'ignore_sticky_posts'    => true,
 				'meta_query'             => [
 					[
 						'key'   => 'departure_unique_id',
@@ -448,6 +452,8 @@ class Test_Departure extends WP_UnitTestCase {
 				'update_post_term_cache' => false,
 				'fields'                 => 'ids',
 				'post_status'            => 'draft,publish',
+				'update_post_meta_cache' => false,
+				'ignore_sticky_posts'    => true,
 			]
 		);
 		$this->assertNotEmpty( $departure_posts->posts );
@@ -557,6 +563,8 @@ class Test_Departure extends WP_UnitTestCase {
 		// Cleanup.
 		wp_delete_post( $itinerary_post->ID, true );
 		wp_delete_post( $itinerary_post_id, true );
+
+		// Delete all departure posts.
 		foreach ( $departure_posts->posts as $post_id ) {
 			if ( ! is_int( $post_id ) ) {
 				continue;
@@ -665,6 +673,8 @@ class Test_Departure extends WP_UnitTestCase {
 				'update_post_term_cache' => false,
 				'fields'                 => 'ids',
 				'post_status'            => 'draft,publish',
+				'update_post_meta_cache' => false,
+				'ignore_sticky_posts'    => true,
 			]
 		);
 
@@ -757,12 +767,13 @@ class Test_Departure extends WP_UnitTestCase {
 		];
 		$departure->set( $raw_departure_data, true );
 
-		// Get a cabin by code.
+		// Get first cabin by code.
 		$cabin1 = $departure->get_cabin( 'CABIN1' );
 		$this->assertInstanceOf( Cabin::class, $cabin1 );
 		$this->assertNotEmpty( $cabin1->get_entry_data() );
 		$this->assertEquals( 'CABIN1', $cabin1->get_entry_data( 'title' ) );
 
+		// Get second cabin by code.
 		$cabin2 = $departure->get_cabin( 'CABIN2' );
 		$this->assertInstanceOf( Cabin::class, $cabin2 );
 		$this->assertNotEmpty( $cabin2->get_entry_data() );
@@ -780,6 +791,8 @@ class Test_Departure extends WP_UnitTestCase {
 				'update_post_term_cache' => false,
 				'fields'                 => 'ids',
 				'post_status'            => 'draft,publish',
+				'update_post_meta_cache' => false,
+				'ignore_sticky_posts'    => true,
 			]
 		);
 
@@ -945,6 +958,8 @@ class Test_Departure extends WP_UnitTestCase {
 
 		// Cleanup.
 		wp_delete_post( $post->ID, true );
+
+		// Delete all departure posts.
 		foreach ( $itinerary->get_departures() as $departure ) {
 			wp_delete_post( $departure->get_id(), true );
 		}
@@ -1109,6 +1124,8 @@ class Test_Departure extends WP_UnitTestCase {
 		wp_delete_post( $post->ID, true );
 		wp_delete_post( $ship1->ID, true );
 		wp_delete_post( $ship2->ID, true );
+
+		// Delete all departure posts.
 		foreach ( $itinerary->get_departures() as $departure ) {
 			wp_delete_post( $departure->get_id(), true );
 		}

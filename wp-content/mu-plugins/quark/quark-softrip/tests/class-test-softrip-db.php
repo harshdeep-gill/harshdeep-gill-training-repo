@@ -10,6 +10,9 @@ namespace Quark\Softrip\Tests;
 use Quark\Softrip\Softrip_DB;
 use WP_UnitTestCase;
 
+/**
+ * Class Test_Softrip_DB
+ */
 class Test_Softrip_DB extends WP_UnitTestCase {
 
 	/**
@@ -24,9 +27,11 @@ class Test_Softrip_DB extends WP_UnitTestCase {
 	 *
 	 * @return void
 	 */
-	public function set_up() {
+	public function set_up(): void {
+		// Call the parent set up.
 		parent::set_up();
 
+		// Create an instance of the class.
 		$this->instance = new Softrip_DB();
 	}
 
@@ -61,7 +66,11 @@ class Test_Softrip_DB extends WP_UnitTestCase {
 		// Get charset collate.
 		global $wpdb;
 		$charset_collate = $wpdb->get_charset_collate();
-		$engine_collate  = 'ENGINE=InnoDB';
+
+		// Set the engine and collate.
+		$engine_collate = 'ENGINE=InnoDB';
+
+		// If the charset_collate is not empty, add it to the engine_collate.
 		if ( ! empty( $charset_collate ) ) {
 			$engine_collate .= " $charset_collate";
 		}
@@ -148,8 +157,10 @@ class Test_Softrip_DB extends WP_UnitTestCase {
 	 * @return void
 	 */
 	public function test_prefix_table_name(): void {
+		// Get table prefix name.
 		$table_name = $this->instance->prefix_table_name( 'test_table' );
 
+		// Assert.
 		$this->assertIsString( $table_name );
 		$this->assertEquals( 'qrk_test_table', $table_name );
 	}

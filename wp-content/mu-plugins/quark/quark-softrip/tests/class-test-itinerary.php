@@ -43,7 +43,6 @@ class Test_Itinerary extends Softrip_TestCase {
 				],
 			]
 		);
-
 		$this->assertTrue( $post instanceof WP_Post );
 
 		// Create an instance of Itinerary with empty post ID.
@@ -81,7 +80,6 @@ class Test_Itinerary extends Softrip_TestCase {
 				],
 			]
 		);
-
 		$this->assertTrue( $post instanceof WP_Post );
 
 		// Create an instance of Itinerary with empty post ID.
@@ -119,7 +117,6 @@ class Test_Itinerary extends Softrip_TestCase {
 				],
 			]
 		);
-
 		$this->assertTrue( $post instanceof WP_Post );
 
 		// Create an instance of Itinerary with empty post ID.
@@ -158,7 +155,6 @@ class Test_Itinerary extends Softrip_TestCase {
 				],
 			]
 		);
-
 		$this->assertTrue( $post instanceof WP_Post );
 
 		// Create an instance of Itinerary with empty post ID.
@@ -172,6 +168,7 @@ class Test_Itinerary extends Softrip_TestCase {
 		$single    = $itinerary->get_post_meta( 'test_meta' );
 		$invalid   = $itinerary->get_post_meta( 'nothing' );
 
+		// Check if correct data is returned.
 		$this->assertEquals(
 			[
 				'test_meta'          => 1,
@@ -207,7 +204,6 @@ class Test_Itinerary extends Softrip_TestCase {
 				],
 			]
 		);
-
 		$this->assertTrue( $post instanceof WP_Post );
 
 		// Create an instance of Itinerary with empty post ID.
@@ -245,7 +241,6 @@ class Test_Itinerary extends Softrip_TestCase {
 				],
 			]
 		);
-
 		$this->assertTrue( $post instanceof WP_Post );
 
 		// Create an instance of Itinerary with empty post ID.
@@ -270,6 +265,7 @@ class Test_Itinerary extends Softrip_TestCase {
 		);
 		$this->assertTrue( $departure1 instanceof WP_Post );
 
+		// Create a departure post.
 		$departure2 = $this->factory()->post->create_and_get(
 			[
 				'post_title'   => 'Test Departure 2',
@@ -368,7 +364,6 @@ class Test_Itinerary extends Softrip_TestCase {
 				],
 			]
 		);
-
 		$this->assertTrue( $post instanceof WP_Post );
 
 		// Create an instance of Itinerary with empty post ID.
@@ -393,6 +388,7 @@ class Test_Itinerary extends Softrip_TestCase {
 		);
 		$this->assertTrue( $departure1 instanceof WP_Post );
 
+		// Create second departure.
 		$departure2 = $this->factory()->post->create_and_get(
 			[
 				'post_title'   => 'Test Departure 2',
@@ -416,7 +412,7 @@ class Test_Itinerary extends Softrip_TestCase {
 		);
 		$this->assertTrue( $departure3 instanceof WP_Post );
 
-		// Trashed Departure
+		// Trashed Departure.
 		$departure4 = $this->factory()->post->create_and_get(
 			[
 				'post_title'   => 'Test Departure 4',
@@ -492,7 +488,6 @@ class Test_Itinerary extends Softrip_TestCase {
 				],
 			]
 		);
-
 		$this->assertTrue( $post instanceof WP_Post );
 
 		// Create an instance of Itinerary with no departure id.
@@ -524,6 +519,7 @@ class Test_Itinerary extends Softrip_TestCase {
 		);
 		$this->assertTrue( $departure1 instanceof WP_Post );
 
+		// Create second departure.
 		$departure2_code = 'UNQ-123:2024-05-26';
 		$departure2      = $this->factory()->post->create_and_get(
 			[
@@ -661,6 +657,7 @@ class Test_Itinerary extends Softrip_TestCase {
 		);
 		$this->assertTrue( $departure1 instanceof WP_Post );
 
+		// Create second departure.
 		$departure2_code = 'UNQ-123:2024-05-26';
 		$departure2      = $this->factory()->post->create_and_get(
 			[
@@ -823,6 +820,8 @@ class Test_Itinerary extends Softrip_TestCase {
 
 		// Cleanup.
 		wp_delete_post( $post->ID, true );
+
+		// Delete new departure posts.
 		foreach ( $new_departure_posts->posts as $new_departure_post ) {
 			// Check if post is valid.
 			if ( ! $new_departure_post instanceof WP_Post ) {
@@ -973,6 +972,8 @@ class Test_Itinerary extends Softrip_TestCase {
 
 		// Cleanup.
 		wp_delete_post( $post->ID, true );
+
+		// Delete departures.
 		foreach ( $itinerary->get_departures() as $departure ) {
 			wp_delete_post( $departure->get_id(), true );
 		}
@@ -1014,6 +1015,7 @@ class Test_Itinerary extends Softrip_TestCase {
 		);
 		$this->assertTrue( $ship1 instanceof WP_Post );
 
+		// Create second ship.
 		$ship2 = $this->factory()->post->create_and_get(
 			[
 				'post_title'   => 'Ship 2',
@@ -1125,6 +1127,12 @@ class Test_Itinerary extends Softrip_TestCase {
 		$this->assertCount( 1, $related_ships );
 		$this->assertArrayHasKey( $ship1->ID, $related_ships );
 		$this->assertArrayNotHasKey( $ship2->ID, $related_ships );
+
+		// Cleanup.
+		wp_delete_post( $post->ID, true );
+		wp_delete_post( $ship1->ID, true );
+		wp_delete_post( $ship2->ID, true );
+		unset( $itinerary );
 	}
 
 	/**
@@ -1184,6 +1192,10 @@ class Test_Itinerary extends Softrip_TestCase {
 		$starting_date = $itinerary->get_starting_date();
 		$this->assertNotEmpty( $starting_date );
 		$this->assertEquals( '2026-02-28', $starting_date );
+
+		// Cleanup.
+		wp_delete_post( $post->ID, true );
+		unset( $itinerary );
 	}
 
 	/**
@@ -1243,5 +1255,9 @@ class Test_Itinerary extends Softrip_TestCase {
 		$ending_date = $itinerary->get_ending_date();
 		$this->assertNotEmpty( $ending_date );
 		$this->assertEquals( '2026-03-11', $ending_date );
+
+		// Cleanup.
+		wp_delete_post( $post->ID, true );
+		unset( $itinerary );
 	}
 }

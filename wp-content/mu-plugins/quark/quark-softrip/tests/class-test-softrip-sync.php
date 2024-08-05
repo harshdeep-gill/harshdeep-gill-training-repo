@@ -30,9 +30,11 @@ class Test_Softrip_Sync extends Softrip_TestCase {
 	 *
 	 * @return void
 	 */
-	public function set_up() {
+	public function set_up(): void {
+		// Call the parent set up.
 		parent::set_up();
 
+		// Create an instance of the class.
 		$this->instance = new Softrip_Sync();
 	}
 
@@ -96,19 +98,27 @@ class Test_Softrip_Sync extends Softrip_TestCase {
 		$this->assertEmpty( $result );
 
 		// Setup test data.
-		$itineraries   = new WP_Query(
+		$itineraries = new WP_Query(
 			[
-				'post_type'      => ITINERARY_POST_TYPE,
-				'posts_per_page' => 10,
-				'fields'         => 'ids',
+				'post_type'              => ITINERARY_POST_TYPE,
+				'posts_per_page'         => 10,
+				'fields'                 => 'ids',
+				'no_found_rows'          => true,
+				'update_post_term_cache' => false,
+				'update_post_meta_cache' => false,
+				'ignore_sticky_posts'    => true,
 			]
 		);
+
+		// Get the itinerary ids.
 		$itinerary_ids = $itineraries->posts;
 		$this->assertIsArray( $itinerary_ids );
 		$itinerary_ids = array_map( 'absint', $itinerary_ids );
 
 		// Get the Softrip package ids.
 		$softrip_package_ids = [];
+
+		// Get the softrip package ids.
 		foreach ( $itinerary_ids as $id ) {
 			$softrip_package_id    = strval( get_post_meta( $id, 'softrip_package_id', true ) );
 			$softrip_package_ids[] = $softrip_package_id;

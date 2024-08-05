@@ -62,6 +62,7 @@ function mock_softrip_http_request( array|false $response = [], array $parsed_ar
 	// Check if the URL is the one we want to mock.
 	if ( str_contains( $url, 'https://softrip-adapter.dev/' ) ) {
 		if ( 'https://softrip-adapter.dev/' === $url ) {
+			// Return 400 if no productCodes.
 			return [
 				'response' => [
 					'code'    => 400,
@@ -70,6 +71,7 @@ function mock_softrip_http_request( array|false $response = [], array $parsed_ar
 				'headers'  => [],
 			];
 		} elseif ( 'https://softrip-adapter.dev/departures' !== $url ) {
+			// Return 404 if the URL is not the one we want to mock.
 			return [
 				'response' => [
 					'code'    => 404,
@@ -79,6 +81,7 @@ function mock_softrip_http_request( array|false $response = [], array $parsed_ar
 			];
 		}
 	} else {
+		// Return response if the URL is not the one we want to mock.
 		return $response;
 	}
 

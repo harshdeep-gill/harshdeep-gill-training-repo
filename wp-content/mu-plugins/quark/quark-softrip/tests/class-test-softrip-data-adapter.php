@@ -28,9 +28,11 @@ class Test_Softrip_Data_Adapter extends WP_UnitTestCase {
 	 *
 	 * @return void
 	 */
-	public function set_up() {
+	public function set_up(): void {
+		// Call the parent set up.
 		parent::set_up();
 
+		// Create an instance of the class.
 		$this->instance = new Softrip_Data_Adapter();
 	}
 

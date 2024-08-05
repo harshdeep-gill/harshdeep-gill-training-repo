@@ -119,7 +119,6 @@ class Test_Cabin extends WP_UnitTestCase {
 	 * @return void
 	 */
 	public function test_set(): void {
-
 		// Test 1: Default arguments.
 		$cabin = new Cabin();
 		$cabin->set();

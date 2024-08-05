@@ -44,7 +44,10 @@ class Softrip_DB {
 		global $wpdb;
 		$charset_collate = $wpdb->get_charset_collate();
 
+		// Set the engine and collate.
 		$engine_collate = 'ENGINE=InnoDB';
+
+		// If the charset_collate is not empty, add it to the engine_collate.
 		if ( ! empty( $charset_collate ) ) {
 			$engine_collate .= " $charset_collate";
 		}

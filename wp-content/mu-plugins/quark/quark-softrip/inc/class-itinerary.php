@@ -149,6 +149,7 @@ class Itinerary extends Softrip_Object {
 	 * @return Departure|null
 	 */
 	public function get_departure( string $id = '' ): Departure|null {
+		// Bail if no ID.
 		if ( empty( $id ) ) {
 			return null;
 		}
@@ -209,6 +210,7 @@ class Itinerary extends Softrip_Object {
 				continue;
 			}
 
+			// Update the departure.
 			$departure->set( $raw_departure, true );
 		}
 

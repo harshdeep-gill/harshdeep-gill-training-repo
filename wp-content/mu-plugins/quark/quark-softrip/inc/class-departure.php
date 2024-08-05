@@ -195,6 +195,7 @@ class Departure extends Softrip_Object {
 		if ( ! empty( $data['cabins'] ) ) {
 			foreach ( $data['cabins'] as $cabin_data ) {
 				$cabin = $this->get_cabin( $cabin_data['code'] );
+
 				// Skip if no cabin.
 				if ( empty( $cabin ) ) {
 					continue;
