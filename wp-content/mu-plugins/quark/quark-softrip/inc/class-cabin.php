@@ -7,8 +7,6 @@
 
 namespace Quark\Softrip;
 
-use WP_Post;
-
 use function Quark\CabinCategories\get as get_cabin_category;
 use function Quark\ShipDecks\get as get_deck;
 
@@ -71,6 +69,16 @@ class Cabin extends Data_Object {
 		if ( $departure instanceof Departure ) {
 			$this->departure = $departure;
 		}
+	}
+
+	/**
+	 * Get the cabin departure.
+	 *
+	 * @return Departure
+	 */
+	public function get_departure(): Departure {
+		// Return the departure object.
+		return $this->departure;
 	}
 
 	/**
@@ -333,29 +341,36 @@ class Cabin extends Data_Object {
 	/**
 	 * Get the lowest price per person for the cabin.
 	 *
-	 * @param string $currency   The currency code to get.
-	 * @param bool   $discounted Flag to get discounted price.
+	 * @param string $currency The currency code to get.
 	 *
-	 * @return float
+	 * @return array{
+	 *   discounted_price: float,
+	 *   original_price: float,
+	 * }
 	 */
-	public function get_lowest_price( string $currency = 'USD', bool $discounted = false ): float {
+	public function get_lowest_price( string $currency = 'USD' ): array {
 		// Set up the lowest variable.
-		$lowest = 0;
+		$lowest         = 0;
+		$original_price = 0;
 
 		// Iterate over the occupancies.
 		foreach ( $this->get_occupancies() as $occupancy ) {
 			// Get the price per person.
-			$test_price = $occupancy->get_price_per_person( $currency, $discounted );
+			$test_price = $occupancy->get_price_per_person( $currency, true );
 
 			// Check if lowest is set and is lower than the previous price.
 			if ( empty( $lowest ) || $lowest > $test_price ) {
 				// Use the price as it's lower.
-				$lowest = $test_price;
+				$lowest         = $test_price;
+				$original_price = $occupancy->get_price_per_person( $currency );
 			}
 		}
 
 		// Return the lowest found.
-		return $lowest;
+		return [
+			'discounted_price' => $lowest,
+			'original_price'   => $original_price,
+		];
 	}
 
 	/**
@@ -381,10 +396,7 @@ class Cabin extends Data_Object {
 
 		// Iterate over currencies.
 		foreach ( $currencies as $currency ) {
-			$lowest[ $currency ] = [
-				'discounted_price' => $this->get_lowest_price( $currency, true ),
-				'original_price'   => $this->get_lowest_price( $currency ),
-			];
+			$lowest[ $currency ] = $this->get_lowest_price( $currency );
 		}
 
 		// Return the lowest found.

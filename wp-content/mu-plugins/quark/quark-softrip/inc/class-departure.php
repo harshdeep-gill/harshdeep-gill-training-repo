@@ -7,6 +7,7 @@
 
 namespace Quark\Softrip;
 
+use DateTime;
 use WP_Post;
 use WP_Error;
 
@@ -135,7 +136,7 @@ class Departure extends Softrip_Object {
 	 */
 	public function set( array $data = [], bool $save = false ): void {
 		// No point in assigning an empty array.
-		if ( empty( $data ) || empty( $this->itinerary ) ) {
+		if ( empty( $data ) || empty( $this->itinerary->get_id() ) ) {
 			return;
 		}
 
@@ -370,15 +371,22 @@ class Departure extends Softrip_Object {
 	 *
 	 * @param string $currency The currency code to get.
 	 *
-	 * @return float
+	 * @return array{
+	 *    discounted_price: float,
+	 *    original_price: float,
+	 *  }
 	 */
-	public function get_lowest_price( string $currency = 'USD' ): float {
+	public function get_lowest_price( string $currency = 'USD' ): array {
 		// Set up the lowest variable.
 		$lowest = 0;
+		$prices = [
+			'discounted_price' => 0,
+			'original_price'   => 0,
+		];
 
 		// Check Current departure status is published.
 		if ( 'publish' !== $this->get_status() ) {
-			return $lowest;
+			return $prices;
 		}
 
 		// Iterate over the cabins.
@@ -387,14 +395,15 @@ class Departure extends Softrip_Object {
 			$test_price = $cabin->get_lowest_price( $currency );
 
 			// Check if lowest is set and is lower than the previous price.
-			if ( empty( $lowest ) || $lowest > $test_price ) {
+			if ( empty( $lowest ) || $lowest > $test_price['discounted_price'] ) {
 				// Use the price as it's lower.
-				$lowest = $test_price;
+				$lowest = $test_price['discounted_price'];
+				$prices = $test_price;
 			}
 		}
 
 		// Return the lowest found.
-		return $lowest;
+		return $prices;
 	}
 
 	/**
@@ -477,6 +486,46 @@ class Departure extends Softrip_Object {
 
 		// Return the end date.
 		return $departure_end_date;
+	}
+
+	/**
+	 * Get the date range.
+	 *
+	 * @return string The date range.
+	 */
+	public function get_date_range(): string {
+		// Get the start and end dates.
+		$start_date = $this->get_starting_date();
+		$end_date   = $this->get_ending_date();
+
+		// Parse the dates.
+		$start_timestamp = strtotime( $start_date );
+		$end_timestamp   = strtotime( $end_date );
+
+		// Validate that both timestamps are valid and that start date is before end date.
+		if ( false === $start_timestamp || false === $end_timestamp || $start_timestamp > $end_timestamp ) {
+			return '';
+		}
+
+		// Extract year, month, and day parts.
+		$start_year  = gmdate( 'Y', $start_timestamp );
+		$end_year    = gmdate( 'Y', $end_timestamp );
+		$start_month = gmdate( 'F', $start_timestamp );
+		$end_month   = gmdate( 'F', $end_timestamp );
+		$start_day   = gmdate( 'j', $start_timestamp );
+		$end_day     = gmdate( 'j', $end_timestamp );
+
+		// Different year.
+		if ( $start_year !== $end_year ) {
+			// Prepare date string for Different Year.
+			return "$start_month $start_day, $start_year - $end_month $end_day, $end_year";
+		} elseif ( $start_month !== $end_month ) {
+			// Prepare date string for Different Month same year.
+			return "$start_month $start_day - $end_month $end_day, $start_year";
+		}
+
+		// Prepare date string for Same Month same year.
+		return "$start_month $start_day-$end_day, $start_year";
 	}
 
 	/**

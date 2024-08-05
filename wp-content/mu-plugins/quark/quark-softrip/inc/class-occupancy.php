@@ -7,9 +7,8 @@
 
 namespace Quark\Softrip;
 
-use WP_Post;
-
-use function Quark\CabinCategories\get as get_cabin_category;
+use function Quark\Itineraries\get_mandatory_transfer_price;
+use function Quark\Itineraries\get_supplemental_price;
 
 /**
  * Occupancy class.
@@ -265,6 +264,26 @@ class Occupancy extends Data_Object {
 	 * @return float
 	 */
 	public function get_price_per_person( string $currency = 'USD', bool $discounted = false ): float {
+		// Get the departure.
+		$departure = $this->parent->get_departure();
+		$itinerary = $departure->get_post_meta( 'itinerary' ) ? absint( $departure->get_post_meta( 'itinerary' ) ) : 0;
+
+		// Get mandatory transfer price.
+		$mandatory_transfer_price = get_mandatory_transfer_price( $itinerary, $currency );
+
+		// Validate it's a number.
+		if ( ! is_numeric( $mandatory_transfer_price ) ) {
+			$mandatory_transfer_price = 0;
+		}
+
+		// Get Supplemental Price.
+		$supplemental_price = get_supplemental_price( $itinerary, $currency );
+
+		// Validate it's a number.
+		if ( ! is_numeric( $supplemental_price ) ) {
+			$supplemental_price = 0;
+		}
+
 		// Iterate over the occupancy prices.
 		foreach ( $this->get_occupancy_prices() as $price ) {
 			// Check the price is the correct currency.
@@ -282,7 +301,7 @@ class Occupancy extends Data_Object {
 				}
 
 				// Get the price per person.
-				return floatval( strval( $price->get_entry_data( $meta_key ) ) );
+				return floatval( strval( $price->get_entry_data( $meta_key ) ) ) + $supplemental_price + $mandatory_transfer_price;
 			}
 		}
 

@@ -8,6 +8,10 @@
 namespace Quark\Itineraries;
 
 use WP_Post;
+use WP_Term;
+
+use function Quark\InclusionSets\get as inclusion_sets_get;
+use function Quark\PolicyPages\get as get_policy_page_post;
 
 use const Quark\StaffMembers\SEASON_TAXONOMY as SEASON_TAXONOMY;
 
@@ -345,4 +349,192 @@ function get( int $post_id = 0 ): array {
 
 	// Return data.
 	return $data;
+}
+
+/**
+ * Get Starting from Location for Itinerary.
+ *
+ * @param int $post_id Post ID.
+ *
+ * @return string The starting from location.
+ */
+function get_starting_from_location( int $post_id = 0 ): string {
+	// Get post.
+	$itinerary              = get( $post_id );
+	$starting_from_location = '';
+
+	// Check for valid itinerary.
+	if ( ! $itinerary['post'] instanceof WP_Post ) {
+		return $starting_from_location;
+	}
+
+	// Get starting from location.
+	$starting_from_location_id = $itinerary['post_meta']['start_location'] ? absint( $itinerary['post_meta']['start_location'] ) : '';
+	$location_term             = get_term_by( 'id', $starting_from_location_id, DEPARTURE_LOCATION_TAXONOMY );
+
+	// Check valid term.
+	if ( $location_term instanceof WP_Term ) {
+		$starting_from_location = $location_term->name;
+	}
+
+	// Return starting from location.
+	return $starting_from_location;
+}
+
+/**
+ * Get Mandatory Transfer Price for Itinerary.
+ *
+ * @param int    $post_id Post ID.
+ * @param string $currency Currency code.
+ *
+ * @return float Mandatory transfer price.
+ */
+function get_mandatory_transfer_price( int $post_id = 0, string $currency = 'USD' ): float {
+	// get Itinerary.
+	$itinerary = get( $post_id );
+
+	// Validate.
+	if ( ! $itinerary['post'] instanceof WP_Post ) {
+		return 0;
+	}
+
+	// Get meta key.
+	$meta_key = sprintf( 'mandatory_transfer_price_%s', strtolower( $currency ) );
+
+	// Get mandatory transfer price.
+	return floatval( strval( $itinerary['post_meta'][ $meta_key ] ) );
+}
+
+/**
+ * Get Supplemental Price for Itinerary.
+ *
+ * @param int    $post_id Post ID.
+ * @param string $currency Currency code.
+ *
+ * @return float Supplemental price.
+ */
+function get_supplemental_price( int $post_id = 0, string $currency = 'USD' ): float {
+	// get Itinerary.
+	$itinerary = get( $post_id );
+
+	// Validate.
+	if ( ! $itinerary['post'] instanceof WP_Post ) {
+		return 0;
+	}
+
+	// Get meta key.
+	$meta_key = sprintf( 'supplemental_price_%s', strtolower( $currency ) );
+
+	// Get supplemental price.
+	return floatval( strval( $itinerary['post_meta'][ $meta_key ] ) );
+}
+
+/**
+ * Get Included transfer package for Itinerary.
+ *
+ * @param int    $post_id  Post ID.
+ * @param string $currency Currency code.
+ *
+ * @return array{
+ *     title: string,
+ *     sets: string[],
+ *     price: float,
+ * } Included transfer package.
+ */
+function get_included_transfer_package_details( int $post_id = 0, string $currency = 'USD' ): array {
+	// get Itinerary.
+	$itinerary = get( $post_id );
+	$details   = [
+		'title' => '',
+		'sets'  => [],
+		'price' => 0,
+	];
+
+	// Validate.
+	if ( ! $itinerary['post'] instanceof WP_Post ) {
+		return $details;
+	}
+
+	// Get included transfer package.
+	$details['price'] = get_mandatory_transfer_price( $post_id, $currency );
+
+	// Get included transfer package.
+	$transfer_package_id = $itinerary['post_meta']['mandatory_transfer_package_inclusion'] ?? 0;
+
+	// Check for transfer package.
+	if ( empty( $transfer_package_id ) ) {
+		return $details;
+	}
+
+	// Get Inclusion Set.
+	$inclusion_set = inclusion_sets_get( absint( $transfer_package_id ) );
+
+	// Get Display Title.
+	$details['title'] = $inclusion_set['post_meta']['display_title'] ? strval( $inclusion_set['post_meta']['display_title'] ) : __( 'Includes', 'qrk' );
+
+	// Check for Inclusion Set.
+	if ( empty( $inclusion_set['post_meta']['set'] ) ) {
+		// Return details.
+		return $details;
+	}
+
+	// Loop through set items.
+	for ( $i = 0; $i < $inclusion_set['post_meta']['set']; $i++ ) {
+		$details['sets'][] = $inclusion_set['post_meta'][ 'set_' . $i . '_item' ] ?? '';
+	}
+
+	// Return details.
+	return $details;
+}
+
+/**
+ * Get departure policy banner details.
+ *
+ * @param int $itinerary_id Itinerary Post ID.
+ *
+ * @return array{
+ *   title: string,
+ *   icon_id: int,
+ *   description: string,
+ *   permalink: string,
+ * } Policy Banner Details.
+ */
+function get_policy_banner_details( int $itinerary_id = 0 ): array {
+	// Get itinerary.
+	$itinerary = get( $itinerary_id );
+	$details   = [
+		'title'       => '',
+		'icon_id'     => 0,
+		'description' => '',
+		'permalink'   => '',
+	];
+
+	// Check post_meta is not empty.
+	if ( ! $itinerary['post_meta'] ) {
+		return $details;
+	}
+
+	// Get policy banner details from meta.
+	$policy_banner_details = $itinerary['post_meta']['tnc_cancellation_policy'] ?? 0;
+
+	// Check meta is empty.
+	if ( ! $policy_banner_details ) {
+		return $details;
+	}
+
+	// Get policy post.
+	$policy_post = get_policy_page_post( absint( $policy_banner_details ) );
+
+	// Check policy post meta is not empty.
+	if ( empty( $policy_post['post_meta'] ) ) {
+		return $details;
+	}
+
+	// Return policy banner details.
+	return [
+		'title'       => $policy_post['post_meta']['alternate_title'] ? strval( $policy_post['post_meta']['alternate_title'] ) : '',
+		'icon_id'     => $policy_post['post_meta']['marketing_option_icon'] ? absint( $policy_post['post_meta']['marketing_option_icon'] ) : 0,
+		'description' => $policy_post['post_meta']['marketing_option_summary'] ? strval( $policy_post['post_meta']['marketing_option_summary'] ) : '',
+		'permalink'   => strval( $policy_post['permalink'] ),
+	];
 }
