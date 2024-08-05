@@ -209,6 +209,13 @@
 		translate: 0 -50%;
 	}
 
+	&__more-details {
+		overflow-y: hidden;
+		height: 0;
+
+		@include transition("height");
+	}
+
 	&__card-details {
 		padding-top: var(--spacing-8);
 		display: flex;
