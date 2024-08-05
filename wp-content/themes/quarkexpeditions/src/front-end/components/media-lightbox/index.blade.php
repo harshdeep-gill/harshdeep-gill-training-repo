@@ -4,10 +4,11 @@
 	'title'           => '',
 	'media'           => true,
 	'fullscreen_icon' => 'hidden',
+	'image_id'        => 0,
 ] )
 
 @php
-	if ( empty( $name ) || empty( $slot ) || empty( $path ) ) {
+	if ( empty( $name ) || empty( $slot ) ) {
 		return;
 	}
 
@@ -39,7 +40,7 @@
 			@endif
 		</button>
 		<template>
-			@if ( str_contains( $path, 'youtube.com' ) )
+			@if ( ! empty( $path ) && str_contains( $path, 'youtube.com' ) )
 				<iframe
 					data-path="{{ $path }}"
 					src="{{ $path }}"
@@ -49,8 +50,23 @@
 					referrerpolicy="strict-origin-when-cross-origin"
 					allowfullscreen
 				></iframe>
-			@else
-				<img src="{{ $path }}"/>
+			@elseif ( ! empty( $image_id ) )
+				<x-image
+					:image_id="$image_id"
+					:args="[
+						'size' => [
+							'width'  => 1152,
+							'height' => 630,
+						],
+						'responsive' => [
+							'sizes'  => [ '(min-width: 992px) 1152px', '100vw' ],
+							'widths' => [ 360, 450, 576, 768, 992, 1120 ],
+						],
+						'transform' => [
+							'crop'    => 'fill',
+						]
+					]"
+				/>
 			@endif
 			<p class="media-lightbox__caption">{{ $title }}</p>
 		</template>
