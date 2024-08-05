@@ -1,6 +1,5 @@
 @props ( [
-	'cards'       => [],
-	'is_carousel' => false,
+	'cards' => [],
 ] )
 
 @php
@@ -9,7 +8,7 @@
 	}
 @endphp
 
-<x-media-description-cards :desktop_carousel="$is_carousel">
+<x-media-description-cards>
 		@foreach ( $cards as $card )
 			<x-media-description-cards.card>
 				<x-media-description-cards.image :image_id="$card['image_id'] ?? 0" :alt="$card['title'] ?? ''" />

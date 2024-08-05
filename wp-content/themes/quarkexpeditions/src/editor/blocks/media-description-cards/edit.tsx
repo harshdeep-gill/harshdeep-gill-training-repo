@@ -3,11 +3,6 @@
  */
 import { __ } from '@wordpress/i18n';
 import {
-	PanelBody,
-	ToggleControl,
-} from '@wordpress/components';
-import {
-	InspectorControls,
 	useBlockProps,
 	useInnerBlocksProps,
 	InnerBlocks,
@@ -37,12 +32,10 @@ import * as card from './children/card';
 /**
  * Edit Component.
  *
- * @param {Object}   props               Component properties.
- * @param {string}   props.className     Class name.
- * @param {Array}    props.attributes    Block attributes.
- * @param {Function} props.setAttributes Set block attributes.
+ * @param {Object} props           Component properties.
+ * @param {string} props.className Class name.
  */
-export default function Edit( { className, attributes, setAttributes }: BlockEditAttributes ): JSX.Element {
+export default function Edit( { className }: BlockEditAttributes ): JSX.Element {
 	// Set block props.
 	const blockProps = useBlockProps( {
 		className: classnames(
@@ -66,30 +59,18 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 
 	// Return the block's markup.
 	return (
-		<>
-			<InspectorControls>
-				<PanelBody title={ __( 'Media Description Cards Settings', 'qrk' ) }>
-					<ToggleControl
-						label={ __( 'Is Carousel on desktop', 'qrk' ) }
-						checked={ attributes.isCarousel }
-						help={ __( 'Is this a carousel on desktop?', 'qrk' ) }
-						onChange={ ( isCarousel: boolean ) => setAttributes( { isCarousel } ) }
-					/>
-				</PanelBody>
-			</InspectorControls>
-			<Section { ...blockProps } >
-				<div className="media-description-cards">
-					<div { ...innerBlockProps } />
+		<Section { ...blockProps } >
+			<div className="media-description-cards">
+				<div { ...innerBlockProps } />
+			</div>
+			<div className="media-description-cards__nav">
+				<div className="media-description-cards__arrow-button media-description-cards__arrow-button--left">
+					{ icons.chevronLeft }
 				</div>
-				<div className="media-description-cards__nav" data-is-carousel={ attributes.isCarousel ? '1' : '' }>
-					<div className="media-description-cards__arrow-button media-description-cards__arrow-button--left">
-						{ icons.chevronLeft }
-					</div>
-					<div className="media-description-cards__arrow-button media-description-cards__arrow-button--right">
-						{ icons.chevronLeft }
-					</div>
+				<div className="media-description-cards__arrow-button media-description-cards__arrow-button--right">
+					{ icons.chevronLeft }
 				</div>
-			</Section>
-		</>
+			</div>
+		</Section>
 	);
 }
