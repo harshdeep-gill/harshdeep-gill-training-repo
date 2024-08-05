@@ -1,0 +1,42 @@
+@import "../../scss";
+
+.load-more {
+	$self: &;
+	display: block;
+
+	&[next_page="0"] {
+
+		#{$self}__button-container {
+			display: none;
+		}
+	}
+
+	&[loading="false"] {
+
+		#{$self}__button {
+
+			> span.btn__icon-spinner {
+				display: none;
+			}
+		}
+	}
+
+	&[loading="true"] {
+
+		#{$self}__button {
+
+			> span.btn__icon-spinner {
+				display: inline-flex;
+			}
+		}
+	}
+
+	&__button-container {
+		display: block;
+		text-align: center;
+
+		> button {
+			width: 100%;
+		}
+	}
+}
