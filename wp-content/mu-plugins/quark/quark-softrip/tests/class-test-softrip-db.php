@@ -42,32 +42,32 @@ class Test_Softrip_DB extends WP_UnitTestCase {
 		$tables = $this->instance->get_db_tables_sql();
 
 		// Test case 1: Check if the returned value is an array.
-		$this->assertIsArray($tables);
+		$this->assertIsArray( $tables );
 
 		// Test case 2: Check if the returned array has the expected keys.
-		$this->assertArrayHasKey('adventure_options', $tables);
-		$this->assertArrayHasKey('cabin_categories', $tables);
-		$this->assertArrayHasKey('occupancies', $tables);
-		$this->assertArrayHasKey('occupancy_prices', $tables);
-		$this->assertArrayHasKey('promos', $tables);
+		$this->assertArrayHasKey( 'adventure_options', $tables );
+		$this->assertArrayHasKey( 'cabin_categories', $tables );
+		$this->assertArrayHasKey( 'occupancies', $tables );
+		$this->assertArrayHasKey( 'occupancy_prices', $tables );
+		$this->assertArrayHasKey( 'promos', $tables );
 
 		// Test case 3: Check if the returned array has the expected datatype of value.
-		$this->assertIsString($tables['adventure_options']);
-		$this->assertIsString($tables['cabin_categories']);
-		$this->assertIsString($tables['occupancies']);
-		$this->assertIsString($tables['occupancy_prices']);
-		$this->assertIsString($tables['promos']);
+		$this->assertIsString( $tables['adventure_options'] );
+		$this->assertIsString( $tables['cabin_categories'] );
+		$this->assertIsString( $tables['occupancies'] );
+		$this->assertIsString( $tables['occupancy_prices'] );
+		$this->assertIsString( $tables['promos'] );
 
 		// Get charset collate.
 		global $wpdb;
 		$charset_collate = $wpdb->get_charset_collate();
-		$engine_collate = 'ENGINE=InnoDB';
-		if (!empty($charset_collate)) {
+		$engine_collate  = 'ENGINE=InnoDB';
+		if ( ! empty( $charset_collate ) ) {
 			$engine_collate .= " $charset_collate";
 		}
-		
+
 		// Test case 4: Check if the returned array has the expected SQL for creating adventure_options table.
-		$table_name = $this->instance->prefix_table_name('adventure_options');
+		$table_name   = $this->instance->prefix_table_name( 'adventure_options' );
 		$expected_sql = "CREATE TABLE $table_name (
 			id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
 			title VARCHAR(255) NOT NULL,
@@ -86,7 +86,7 @@ class Test_Softrip_DB extends WP_UnitTestCase {
 		$this->assertSame( $expected_sql, $tables['adventure_options'] );
 
 		// Test case 5: Check if the returned array has the expected SQL for creating cabin_categories table.
-		$table_name = $this->instance->prefix_table_name('cabin_categories');
+		$table_name   = $this->instance->prefix_table_name( 'cabin_categories' );
 		$expected_sql = "CREATE TABLE $table_name (
 			id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
 			title VARCHAR(255) NOT NULL,
@@ -103,7 +103,7 @@ class Test_Softrip_DB extends WP_UnitTestCase {
 		$this->assertSame( $expected_sql, $tables['cabin_categories'] );
 
 		// Test case 6: Check if the returned array has the expected SQL for creating occupancies table.
-		$table_name = $this->instance->prefix_table_name('occupancies');
+		$table_name   = $this->instance->prefix_table_name( 'occupancies' );
 		$expected_sql = "CREATE TABLE $table_name (
 			id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
 			cabin_category BIGINT NOT NULL,
@@ -113,7 +113,7 @@ class Test_Softrip_DB extends WP_UnitTestCase {
 		$this->assertSame( $expected_sql, $tables['occupancies'] );
 
 		// Test case 7: Check if the returned array has the expected SQL for creating occupancy_prices table.
-		$table_name = $this->instance->prefix_table_name('occupancy_prices');
+		$table_name   = $this->instance->prefix_table_name( 'occupancy_prices' );
 		$expected_sql = "CREATE TABLE $table_name (
 			id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
 			occupancy_id BIGINT NOT NULL,
@@ -126,7 +126,7 @@ class Test_Softrip_DB extends WP_UnitTestCase {
 		$this->assertSame( $expected_sql, $tables['occupancy_prices'] );
 
 		// Test case 8: Check if the returned array has the expected SQL for creating promos table.
-		$table_name = $this->instance->prefix_table_name('promos');
+		$table_name   = $this->instance->prefix_table_name( 'promos' );
 		$expected_sql = "CREATE TABLE $table_name (
 			id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
 			promotion_code VARCHAR(255) NOT NULL,
@@ -148,9 +148,9 @@ class Test_Softrip_DB extends WP_UnitTestCase {
 	 * @return void
 	 */
 	public function test_prefix_table_name(): void {
-		$table_name = $this->instance->prefix_table_name('test_table');
+		$table_name = $this->instance->prefix_table_name( 'test_table' );
 
-		$this->assertIsString($table_name);
-		$this->assertEquals('qrk_test_table', $table_name);
+		$this->assertIsString( $table_name );
+		$this->assertEquals( 'qrk_test_table', $table_name );
 	}
 }

@@ -69,7 +69,7 @@ function mock_softrip_http_request( array|false $response = [], array $parsed_ar
 				],
 				'headers'  => [],
 			];
-		} else if ( 'https://softrip-adapter.dev/departures' !== $url ) {
+		} elseif ( 'https://softrip-adapter.dev/departures' !== $url ) {
 			return [
 				'response' => [
 					'code'    => 404,
