@@ -292,27 +292,27 @@ class Itinerary {
 
 		// Set Mandatory Transfer Price - USD.
 		if ( ! empty( $item['mandatory_transfer_price_usd'] ) ) {
-			$data['meta_input']['mandatory_transfer_price_usd'] = number_format( floatval( $item['mandatory_transfer_price_usd'] ), 2 );
+			$data['meta_input']['mandatory_transfer_price_usd'] = number_format( floatval( $item['mandatory_transfer_price_usd'] ), 2, '.', '' );
 		}
 
 		// Set Mandatory Transfer Price - AUD.
 		if ( ! empty( $item['mandatory_transfer_price_aud'] ) ) {
-			$data['meta_input']['mandatory_transfer_price_aud'] = number_format( floatval( $item['mandatory_transfer_price_aud'] ), 2 );
+			$data['meta_input']['mandatory_transfer_price_aud'] = number_format( floatval( $item['mandatory_transfer_price_aud'] ), 2, '.', '' );
 		}
 
 		// Set Mandatory Transfer Price - CAD.
 		if ( ! empty( $item['mandatory_transfer_price_cad'] ) ) {
-			$data['meta_input']['mandatory_transfer_price_cad'] = number_format( floatval( $item['mandatory_transfer_price_cad'] ), 2 );
+			$data['meta_input']['mandatory_transfer_price_cad'] = number_format( floatval( $item['mandatory_transfer_price_cad'] ), 2, '.', '' );
 		}
 
 		// Set Mandatory Transfer Price - EUR.
 		if ( ! empty( $item['mandatory_transfer_price_eur'] ) ) {
-			$data['meta_input']['mandatory_transfer_price_eur'] = number_format( floatval( $item['mandatory_transfer_price_eur'] ), 2 );
+			$data['meta_input']['mandatory_transfer_price_eur'] = number_format( floatval( $item['mandatory_transfer_price_eur'] ), 2, '.', '' );
 		}
 
 		// Set Mandatory Transfer Price - GBP.
 		if ( ! empty( $item['mandatory_transfer_price_gbp'] ) ) {
-			$data['meta_input']['mandatory_transfer_price_gbp'] = number_format( floatval( $item['mandatory_transfer_price_gbp'] ), 2 );
+			$data['meta_input']['mandatory_transfer_price_gbp'] = number_format( floatval( $item['mandatory_transfer_price_gbp'] ), 2, '.', '' );
 		}
 
 		// Set Mandatory Transfer Package Inclusions.
@@ -337,27 +337,27 @@ class Itinerary {
 
 		// Set Supplement Price - USD.
 		if ( ! empty( $item['supplement_price_usd'] ) ) {
-			$data['meta_input']['supplement_price_usd'] = number_format( floatval( $item['supplement_price_usd'] ), 2 );
+			$data['meta_input']['supplement_price_usd'] = number_format( floatval( $item['supplement_price_usd'] ), 2, '.', '' );
 		}
 
 		// Set Supplement Price - AUD.
 		if ( ! empty( $item['supplement_price_aud'] ) ) {
-			$data['meta_input']['supplement_price_aud'] = number_format( floatval( $item['supplement_price_aud'] ), 2 );
+			$data['meta_input']['supplement_price_aud'] = number_format( floatval( $item['supplement_price_aud'] ), 2, '.', '' );
 		}
 
 		// Set Supplement Price - CAD.
 		if ( ! empty( $item['supplement_price_cad'] ) ) {
-			$data['meta_input']['supplement_price_cad'] = number_format( floatval( $item['supplement_price_cad'] ), 2 );
+			$data['meta_input']['supplement_price_cad'] = number_format( floatval( $item['supplement_price_cad'] ), 2, '.', '' );
 		}
 
 		// Set Supplement Price - EUR.
 		if ( ! empty( $item['supplement_price_eur'] ) ) {
-			$data['meta_input']['supplement_price_eur'] = number_format( floatval( $item['supplement_price_eur'] ), 2 );
+			$data['meta_input']['supplement_price_eur'] = number_format( floatval( $item['supplement_price_eur'] ), 2, '.', '' );
 		}
 
 		// Set Supplement Price - GBP.
 		if ( ! empty( $item['supplement_price_gbp'] ) ) {
-			$data['meta_input']['supplement_price_gbp'] = number_format( floatval( $item['supplement_price_gbp'] ), 2 );
+			$data['meta_input']['supplement_price_gbp'] = number_format( floatval( $item['supplement_price_gbp'] ), 2, '.', '' );
 		}
 
 		// Set Itineraries.

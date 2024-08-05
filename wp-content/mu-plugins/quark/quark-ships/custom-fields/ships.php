@@ -35,6 +35,31 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 					'append'            => '',
 				],
 				[
+					'key'               => 'field_65f43b7b893e6',
+					'label'             => 'Deck Plan Image',
+					'name'              => 'deck_plan_image',
+					'aria-label'        => '',
+					'type'              => 'image',
+					'instructions'      => '',
+					'required'          => 1,
+					'conditional_logic' => 0,
+					'wrapper'           => [
+						'width' => '',
+						'class' => '',
+						'id'    => '',
+					],
+					'return_format'     => 'array',
+					'library'           => 'all',
+					'min_width'         => '',
+					'min_height'        => '',
+					'min_size'          => '',
+					'max_width'         => '',
+					'max_height'        => '',
+					'max_size'          => '',
+					'mime_types'        => '',
+					'preview_size'      => 'medium_large',
+				],
+				[
 					'key'                  => 'field_65f4465h38q2e',
 					'label'                => 'Related Decks',
 					'name'                 => 'related_decks',
@@ -73,7 +98,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 					'required'          => 0,
 					'conditional_logic' => 0,
 					'wrapper'           => [
-						'width' => '',
+						'width' => '33',
 						'class' => '',
 						'id'    => '',
 					],
@@ -93,7 +118,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 					'required'          => 0,
 					'conditional_logic' => 0,
 					'wrapper'           => [
-						'width' => '',
+						'width' => '33',
 						'class' => '',
 						'id'    => '',
 					],
@@ -113,7 +138,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 					'required'          => 0,
 					'conditional_logic' => 0,
 					'wrapper'           => [
-						'width' => '',
+						'width' => '33',
 						'class' => '',
 						'id'    => '',
 					],
@@ -133,7 +158,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 					'required'          => 0,
 					'conditional_logic' => 0,
 					'wrapper'           => [
-						'width' => '',
+						'width' => '33',
 						'class' => '',
 						'id'    => '',
 					],
@@ -155,7 +180,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 					'required'          => 0,
 					'conditional_logic' => 0,
 					'wrapper'           => [
-						'width' => '',
+						'width' => '33',
 						'class' => '',
 						'id'    => '',
 					],
@@ -175,7 +200,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 					'required'          => 0,
 					'conditional_logic' => 0,
 					'wrapper'           => [
-						'width' => '',
+						'width' => '33',
 						'class' => '',
 						'id'    => '',
 					],
@@ -195,7 +220,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 					'required'          => 0,
 					'conditional_logic' => 0,
 					'wrapper'           => [
-						'width' => '',
+						'width' => '33',
 						'class' => '',
 						'id'    => '',
 					],
@@ -215,7 +240,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 					'required'          => 0,
 					'conditional_logic' => 0,
 					'wrapper'           => [
-						'width' => '',
+						'width' => '33',
 						'class' => '',
 						'id'    => '',
 					],
@@ -235,7 +260,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 					'required'          => 0,
 					'conditional_logic' => 0,
 					'wrapper'           => [
-						'width' => '',
+						'width' => '33',
 						'class' => '',
 						'id'    => '',
 					],
@@ -255,7 +280,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 					'required'          => 0,
 					'conditional_logic' => 0,
 					'wrapper'           => [
-						'width' => '',
+						'width' => '33',
 						'class' => '',
 						'id'    => '',
 					],
@@ -275,7 +300,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 					'required'          => 0,
 					'conditional_logic' => 0,
 					'wrapper'           => [
-						'width' => '',
+						'width' => '33',
 						'class' => '',
 						'id'    => '',
 					],
@@ -295,7 +320,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 					'required'          => 0,
 					'conditional_logic' => 0,
 					'wrapper'           => [
-						'width' => '',
+						'width' => '33',
 						'class' => '',
 						'id'    => '',
 					],
@@ -315,7 +340,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 					'required'          => 0,
 					'conditional_logic' => 0,
 					'wrapper'           => [
-						'width' => '',
+						'width' => '33',
 						'class' => '',
 						'id'    => '',
 					],
@@ -335,7 +360,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 					'required'          => 0,
 					'conditional_logic' => 0,
 					'wrapper'           => [
-						'width' => '',
+						'width' => '33',
 						'class' => '',
 						'id'    => '',
 					],
@@ -355,7 +380,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 					'required'          => 0,
 					'conditional_logic' => 0,
 					'wrapper'           => [
-						'width' => '',
+						'width' => '33',
 						'class' => '',
 						'id'    => '',
 					],
@@ -375,7 +400,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 					'required'          => 0,
 					'conditional_logic' => 0,
 					'wrapper'           => [
-						'width' => '',
+						'width' => '33',
 						'class' => '',
 						'id'    => '',
 					],
@@ -395,7 +420,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 					'required'          => 0,
 					'conditional_logic' => 0,
 					'wrapper'           => [
-						'width' => '',
+						'width' => '33',
 						'class' => '',
 						'id'    => '',
 					],
