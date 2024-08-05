@@ -7,8 +7,6 @@
 
 namespace Quark\Theme\Core;
 
-use QM;
-
 /**
  * Setup.
  *
