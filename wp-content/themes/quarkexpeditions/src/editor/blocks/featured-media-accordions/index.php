@@ -99,7 +99,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 			}
 
 			// Check for inner blocks.
-			if ( ! empty( $child_block->parsed_block['innerBlocks'] ) ) {
+			if ( ! empty( $child_block->parsed_block['innerBlocks'] ) && ! empty( $child_block->parsed_block['attrs'] ) ) {
 				$accordion_item_attributes['content'] = implode( '', array_map( 'render_block', $child_block->parsed_block['innerBlocks'] ) );
 			}
 

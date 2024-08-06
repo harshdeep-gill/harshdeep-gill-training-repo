@@ -43,7 +43,7 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 
 	// eslint-disable-next-line react-hooks/rules-of-hooks
 	const innerBlockProps = useInnerBlocksProps(
-		{ className: 'accordion__content' },
+		{ className: 'accordion__content-inner' },
 		{
 			allowedBlocks: [ 'core/paragraph' ],
 			template: [
@@ -92,7 +92,9 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 						</span>
 					</button>
 				</div>
-				<div { ...innerBlockProps } />
+				<div className="accordion__content">
+					<div { ...innerBlockProps } />
+				</div>
 			</div>
 		</>
 	);

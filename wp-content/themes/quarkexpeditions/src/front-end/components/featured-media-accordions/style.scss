@@ -38,6 +38,19 @@
 		}
 	}
 
+	.accordion__content {
+
+		&-inner {
+
+			> p {
+				display: -webkit-box;
+				-webkit-line-clamp: 3;
+				-webkit-box-orient: vertical;
+				overflow: hidden;
+			}
+		}
+	}
+
 	.two-columns__column:first-child {
 		display: none;
 
