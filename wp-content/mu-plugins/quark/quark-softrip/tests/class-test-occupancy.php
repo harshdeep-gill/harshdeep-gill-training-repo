@@ -81,7 +81,7 @@ class Test_Occupancy extends WP_UnitTestCase {
 				'post_status' => 'publish',
 				'meta_input'  => [
 					'test_meta'           => true,
-					'departure_unique_id' => 'UNQ-123:2024-08-25',
+					'softrip_id' => 'UNQ-123:2024-08-25',
 				],
 			]
 		);
@@ -156,7 +156,7 @@ class Test_Occupancy extends WP_UnitTestCase {
 				'post_status' => 'publish',
 				'meta_input'  => [
 					'test_meta'           => true,
-					'departure_unique_id' => 'UNQ-123:2024-08-25',
+					'softrip_id' => 'UNQ-123:2024-08-25',
 				],
 			]
 		);
@@ -286,7 +286,7 @@ class Test_Occupancy extends WP_UnitTestCase {
 				'post_status' => 'publish',
 				'meta_input'  => [
 					'test_meta'           => true,
-					'departure_unique_id' => 'UNQ-123:2024-08-25',
+					'softrip_id' => 'UNQ-123:2024-08-25',
 				],
 			]
 		);
@@ -390,7 +390,7 @@ class Test_Occupancy extends WP_UnitTestCase {
 				'post_status' => 'publish',
 				'meta_input'  => [
 					'test_meta'           => true,
-					'departure_unique_id' => 'UNQ-123:2024-08-25',
+					'softrip_id' => 'UNQ-123:2024-08-25',
 				],
 			]
 		);

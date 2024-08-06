@@ -254,7 +254,7 @@ class Test_Itinerary extends Softrip_TestCase {
 		$departures = $itinerary->get_departures();
 		$this->assertEmpty( $departures );
 
-		// Create some test departures without any departure_unique_id.
+		// Create some test departures without any softrip_id.
 		$departure1 = $this->factory()->post->create_and_get(
 			[
 				'post_title'   => 'Test Departure 1',
@@ -307,11 +307,11 @@ class Test_Itinerary extends Softrip_TestCase {
 		$departures = $itinerary->get_departures();
 		$this->assertEmpty( $departures );
 
-		// Set departure_unique_id meta.
-		update_post_meta( $departure1->ID, 'departure_unique_id', 'UNQ-123:2024-05-19' );
-		update_post_meta( $departure2->ID, 'departure_unique_id', 'UNQ-123:2024-05-26' );
-		update_post_meta( $departure3->ID, 'departure_unique_id', 'UNQ-123:2024-06-02' );
-		update_post_meta( $departure4->ID, 'departure_unique_id', 'UNQ-123:2024-06-09' );
+		// Set softrip_id meta.
+		update_post_meta( $departure1->ID, 'softrip_id', 'UNQ-123:2024-05-19' );
+		update_post_meta( $departure2->ID, 'softrip_id', 'UNQ-123:2024-05-26' );
+		update_post_meta( $departure3->ID, 'softrip_id', 'UNQ-123:2024-06-02' );
+		update_post_meta( $departure4->ID, 'softrip_id', 'UNQ-123:2024-06-09' );
 
 		// Bust cache.
 		wp_cache_delete( DEPARTURE_CACHE_KEY . "_$departure1->ID", DEPARTURE_CACHE_GROUP );
@@ -377,7 +377,7 @@ class Test_Itinerary extends Softrip_TestCase {
 		$departures = $itinerary->get_published_departures();
 		$this->assertEmpty( $departures );
 
-		// Create some test departures without any departure_unique_id.
+		// Create some test departures without any softrip_id.
 		$departure1 = $this->factory()->post->create_and_get(
 			[
 				'post_title'   => 'Test Departure 1',
@@ -425,16 +425,16 @@ class Test_Itinerary extends Softrip_TestCase {
 		);
 		$this->assertTrue( $departure4 instanceof WP_Post );
 
-		// Create an instance of Itinerary - departures not provided with departure_unique_id.
+		// Create an instance of Itinerary - departures not provided with softrip_id.
 		$itinerary  = new Itinerary( $post->ID );
 		$departures = $itinerary->get_published_departures();
 		$this->assertEmpty( $departures );
 
-		// Set departure_unique_id meta.
-		update_post_meta( $departure1->ID, 'departure_unique_id', 'UNQ-123:2024-05-19' );
-		update_post_meta( $departure2->ID, 'departure_unique_id', 'UNQ-123:2024-05-26' );
-		update_post_meta( $departure3->ID, 'departure_unique_id', 'UNQ-123:2024-06-02' );
-		update_post_meta( $departure4->ID, 'departure_unique_id', 'UNQ-123:2024-06-09' );
+		// Set softrip_id meta.
+		update_post_meta( $departure1->ID, 'softrip_id', 'UNQ-123:2024-05-19' );
+		update_post_meta( $departure2->ID, 'softrip_id', 'UNQ-123:2024-05-26' );
+		update_post_meta( $departure3->ID, 'softrip_id', 'UNQ-123:2024-06-02' );
+		update_post_meta( $departure4->ID, 'softrip_id', 'UNQ-123:2024-06-09' );
 
 		// Bust cache.
 		wp_cache_delete( DEPARTURE_CACHE_KEY . "_$departure1->ID", DEPARTURE_CACHE_GROUP );
@@ -508,7 +508,7 @@ class Test_Itinerary extends Softrip_TestCase {
 		$this->assertNotNull( $departure );
 		$this->assertInstanceOf( 'Quark\Softrip\Departure', $departure );
 
-		// Create some test departures without any departure_unique_id.
+		// Create some test departures without any softrip_id.
 		$departure1 = $this->factory()->post->create_and_get(
 			[
 				'post_title'   => 'Test Departure 1',
@@ -530,7 +530,7 @@ class Test_Itinerary extends Softrip_TestCase {
 				'post_status'  => 'publish',
 				'post_parent'  => $post->ID,
 				'meta_input'   => [
-					'departure_unique_id' => $departure2_code,
+					'softrip_id' => $departure2_code,
 				],
 			]
 		);
@@ -546,7 +546,7 @@ class Test_Itinerary extends Softrip_TestCase {
 				'post_status'  => 'draft',
 				'post_parent'  => $post->ID,
 				'meta_input'   => [
-					'departure_unique_id' => $departure3_code,
+					'softrip_id' => $departure3_code,
 				],
 			]
 		);
@@ -562,7 +562,7 @@ class Test_Itinerary extends Softrip_TestCase {
 				'post_status'  => 'trash',
 				'post_parent'  => $post->ID,
 				'meta_input'   => [
-					'departure_unique_id' => $departure4_code,
+					'softrip_id' => $departure4_code,
 				],
 			]
 		);
@@ -648,7 +648,7 @@ class Test_Itinerary extends Softrip_TestCase {
 		$departures = $itinerary->get_departures();
 		$this->assertEmpty( $departures );
 
-		// Create some test departures without any departure_unique_id.
+		// Create some test departures without any softrip_id.
 		$departure1 = $this->factory()->post->create_and_get(
 			[
 				'post_title'   => 'Test Departure 1',
@@ -670,7 +670,7 @@ class Test_Itinerary extends Softrip_TestCase {
 				'post_status'  => 'publish',
 				'post_parent'  => $post->ID,
 				'meta_input'   => [
-					'departure_unique_id' => $departure2_code,
+					'softrip_id' => $departure2_code,
 				],
 			]
 		);
@@ -686,7 +686,7 @@ class Test_Itinerary extends Softrip_TestCase {
 				'post_status'  => 'draft',
 				'post_parent'  => $post->ID,
 				'meta_input'   => [
-					'departure_unique_id' => $departure3_code,
+					'softrip_id' => $departure3_code,
 				],
 			]
 		);
@@ -703,8 +703,8 @@ class Test_Itinerary extends Softrip_TestCase {
 		$this->assertNotEmpty( $departure2_data );
 		$this->assertArrayHasKey( 'post_meta', $departure2_data );
 		$this->assertIsArray( $departure2_data['post_meta'] );
-		$this->assertArrayHasKey( 'departure_unique_id', $departure2_data['post_meta'] );
-		$this->assertEquals( $departure2_code, $departure2_data['post_meta']['departure_unique_id'] );
+		$this->assertArrayHasKey( 'softrip_id', $departure2_data['post_meta'] );
+		$this->assertEquals( $departure2_code, $departure2_data['post_meta']['softrip_id'] );
 		$this->assertArrayNotHasKey( 'departure_start_date', $departure2_data['post_meta'] );
 		$this->assertArrayNotHasKey( 'departure_end_date', $departure2_data['post_meta'] );
 		$this->assertArrayNotHasKey( 'duration', $departure2_data['post_meta'] );

@@ -94,16 +94,16 @@ class Itinerary extends Softrip_Object {
 			$departure = new Departure();
 			$departure->set_itinerary( $this );
 			$departure->load( absint( $post_id ) );
-			$departure_unique_id = $departure->get_post_meta( 'departure_unique_id' );
+			$softrip_id = $departure->get_post_meta( 'softrip_id' );
 
 			// Skip if departure unique id doesn't exist.
-			if ( empty( $departure_unique_id ) ) {
+			if ( empty( $softrip_id ) ) {
 				unset( $departure );
 				continue;
 			}
 
 			// Add departure to the list.
-			$this->departures[ $departure_unique_id ] = $departure;
+			$this->departures[ $softrip_id ] = $departure;
 		}
 
 		// Set departures loaded.

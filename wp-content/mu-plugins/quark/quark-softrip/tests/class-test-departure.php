@@ -41,7 +41,7 @@ class Test_Departure extends WP_UnitTestCase {
 				'meta_input'   => [
 					'test_meta'            => 1,
 					'softrip_package_id'   => 'UNQ-123',
-					'departure_unique_id'  => 'UNQ-123:2026-01-01',
+					'softrip_id'  => 'UNQ-123:2026-01-01',
 					'softrip_code' => 'UPL20260101',
 				],
 			]
@@ -80,7 +80,7 @@ class Test_Departure extends WP_UnitTestCase {
 				'meta_input'   => [
 					'test_meta'            => 1,
 					'softrip_package_id'   => 'UNQ-123',
-					'departure_unique_id'  => 'UNQ-123:2026-01-01',
+					'softrip_id'  => 'UNQ-123:2026-01-01',
 					'softrip_code' => 'UPL20260101',
 				],
 			]
@@ -118,7 +118,7 @@ class Test_Departure extends WP_UnitTestCase {
 				'meta_input'   => [
 					'test_meta'            => 1,
 					'softrip_package_id'   => 'UNQ-123',
-					'departure_unique_id'  => 'UNQ-123:2026-01-01',
+					'softrip_id'  => 'UNQ-123:2026-01-01',
 					'softrip_code' => 'UPL20260101',
 				],
 			]
@@ -162,8 +162,8 @@ class Test_Departure extends WP_UnitTestCase {
 		$this->assertEquals( 1, $meta_data['test_meta'] );
 		$this->assertArrayHasKey( 'softrip_package_id', $meta_data );
 		$this->assertEquals( 'UNQ-123', $meta_data['softrip_package_id'] );
-		$this->assertArrayHasKey( 'departure_unique_id', $meta_data );
-		$this->assertEquals( 'UNQ-123:2026-01-01', $meta_data['departure_unique_id'] );
+		$this->assertArrayHasKey( 'softrip_id', $meta_data );
+		$this->assertEquals( 'UNQ-123:2026-01-01', $meta_data['softrip_id'] );
 		$this->assertArrayHasKey( 'softrip_code', $meta_data );
 		$this->assertEquals( 'UPL20260101', $meta_data['softrip_code'] );
 
@@ -201,7 +201,7 @@ class Test_Departure extends WP_UnitTestCase {
 				'meta_input'   => [
 					'test_meta'            => 1,
 					'softrip_package_id'   => 'UNQ-123',
-					'departure_unique_id'  => 'UNQ-123:2026-01-01',
+					'softrip_id'  => 'UNQ-123:2026-01-01',
 					'softrip_code' => 'UPL20260101',
 				],
 			]
@@ -222,8 +222,8 @@ class Test_Departure extends WP_UnitTestCase {
 		$this->assertEquals( 1, $meta['test_meta'] );
 		$this->assertArrayHasKey( 'softrip_package_id', $meta );
 		$this->assertEquals( 'UNQ-123', $meta['softrip_package_id'] );
-		$this->assertArrayHasKey( 'departure_unique_id', $meta );
-		$this->assertEquals( 'UNQ-123:2026-01-01', $meta['departure_unique_id'] );
+		$this->assertArrayHasKey( 'softrip_id', $meta );
+		$this->assertEquals( 'UNQ-123:2026-01-01', $meta['softrip_id'] );
 		$this->assertArrayHasKey( 'softrip_code', $meta );
 		$this->assertEquals( 'UPL20260101', $meta['softrip_code'] );
 		$this->assertArrayNotHasKey( 'non_existent_meta', $meta );
@@ -231,7 +231,7 @@ class Test_Departure extends WP_UnitTestCase {
 		// Get meta by key.
 		$this->assertEquals( 1, $departure->get_post_meta( 'test_meta' ) );
 		$this->assertEquals( 'UNQ-123', $departure->get_post_meta( 'softrip_package_id' ) );
-		$this->assertEquals( 'UNQ-123:2026-01-01', $departure->get_post_meta( 'departure_unique_id' ) );
+		$this->assertEquals( 'UNQ-123:2026-01-01', $departure->get_post_meta( 'softrip_id' ) );
 		$this->assertEquals( 'UPL20260101', $departure->get_post_meta( 'softrip_code' ) );
 		$this->assertEmpty( $departure->get_post_meta( 'non_existent_meta' ) );
 
@@ -258,7 +258,7 @@ class Test_Departure extends WP_UnitTestCase {
 				'meta_input'   => [
 					'test_meta'            => 1,
 					'softrip_package_id'   => 'UNQ-123',
-					'departure_unique_id'  => 'UNQ-123:2026-01-01',
+					'softrip_id'  => 'UNQ-123:2026-01-01',
 					'softrip_code' => 'UPL20260101',
 				],
 			]
@@ -416,7 +416,7 @@ class Test_Departure extends WP_UnitTestCase {
 				'ignore_sticky_posts'    => true,
 				'meta_query'             => [
 					[
-						'key'   => 'departure_unique_id',
+						'key'   => 'softrip_id',
 						'value' => 'UNQ-123:2026-01-01',
 					],
 				],
@@ -519,7 +519,7 @@ class Test_Departure extends WP_UnitTestCase {
 
 		// Assert meta.
 		$this->assertEquals( $raw_departure['code'], $departure->get_post_meta( 'softrip_code' ) );
-		$this->assertEquals( $raw_departure['id'], $departure->get_post_meta( 'departure_unique_id' ) );
+		$this->assertEquals( $raw_departure['id'], $departure->get_post_meta( 'softrip_id' ) );
 		$this->assertEquals( $raw_departure['packageCode'], $departure->get_post_meta( 'softrip_package_id' ) );
 		$this->assertEquals( $raw_departure['startDate'], $departure->get_post_meta( 'departure_start_date' ) );
 		$this->assertEquals( $raw_departure['endDate'], $departure->get_post_meta( 'departure_end_date' ) );

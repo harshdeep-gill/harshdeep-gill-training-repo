@@ -162,7 +162,7 @@ class Test_Cabin extends WP_UnitTestCase {
 				'post_type'    => DEPARTURE_POST_TYPE,
 				'meta_input'   => [
 					'test_meta'           => true,
-					'departure_unique_id' => 'UNQ-123:2025-05-19',
+					'softrip_id' => 'UNQ-123:2025-05-19',
 				],
 			]
 		);

@@ -93,7 +93,7 @@ function update_departures( array $raw_departures = [], string $softrip_package_
         }
 
         // Get departure code.
-        $departure_code = get_post_meta( $departure_post_id, 'departure_unique_id', true ); // @todo Rename to softrip_id.
+        $departure_code = get_post_meta( $departure_post_id, 'softrip_id', true ); // @todo Rename to softrip_id.
 
         // If empty, skip.
         if ( empty( $departure_code ) ) {
@@ -222,7 +222,7 @@ function format_raw_departure_data( array $raw_departure_data = [], int $itinera
             'related_expedition' => $expedition_post_id,
             'related_ship'       => get_id_from_ship_code( $raw_departure_data['shipCode'] ),
             'softrip_package_id' => $raw_departure_data['packageCode'],
-            'departure_unique_id' => $raw_departure_data['id'],
+            'softrip_id' => $raw_departure_data['id'],
             'softrip_code' => $raw_departure_data['code'],
             'departure_start_date' => $raw_departure_data['startDate'],
             'departure_end_date' => $raw_departure_data['endDate'],

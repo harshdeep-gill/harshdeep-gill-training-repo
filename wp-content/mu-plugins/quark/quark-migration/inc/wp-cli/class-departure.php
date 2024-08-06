@@ -193,7 +193,7 @@ class Departure {
 			'comment_status'    => 'closed',
 			'ping_status'       => 'closed',
 			'meta_input'        => [
-				'departure_unique_id' => str_replace( ' ', '', $title ),
+				'softrip_id' => str_replace( ' ', '', $title ),
 			],
 		];
 

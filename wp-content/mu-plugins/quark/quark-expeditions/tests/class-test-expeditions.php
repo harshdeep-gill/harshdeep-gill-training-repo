@@ -445,7 +445,7 @@ class Test_Expeditions extends WP_UnitTestCase {
 				'meta_input'   => [
 					'related_ship'        => $ship_post,
 					'ship_id'             => 'ABC123',
-					'departure_unique_id' => 'ABC-123',
+					'softrip_id' => 'ABC-123',
 				],
 				'post_parent'  => $itinerary_post->ID,
 			]

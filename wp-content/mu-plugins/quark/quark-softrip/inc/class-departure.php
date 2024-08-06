@@ -240,7 +240,7 @@ class Departure extends Softrip_Object {
 				'related_expedition'   => $this->itinerary->get_post_meta( 'related_expedition' ),
 				'related_ship'         => get_id_from_ship_code( strval( $data['shipCode'] ) ),
 				'softrip_code' => $data['code'],
-				'departure_unique_id'  => $data['id'],
+				'softrip_id'  => $data['id'],
 				'softrip_package_id'   => $data['packageCode'],
 				'departure_start_date' => $data['startDate'],
 				'departure_end_date'   => $data['endDate'],
