@@ -136,7 +136,6 @@ module.exports = ( env ) => {
 		externals: {
 			wp: 'wp',
 			gumponents: 'gumponents',
-			GLightbox: 'GLightbox',
 		},
 		performance: {
 			hints: false,
@@ -172,7 +171,7 @@ module.exports = ( env ) => {
 		entry: {
 			TPSliderElement: `${ themePath }/src/vendor/tp-slider.js`,
 			TPTabsElement: `${ themePath }/src/vendor/tp-tabs.js`,
-			GLightbox: `${ themePath }/src/vendor/glightbox.js`,
+			TPLightboxElement: `${ themePath }/src/vendor/tp-lightbox.js`,
 			TPAccordionItemElement: `${ themePath }/src/vendor/tp-accordion.js`,
 			TPMultiSelectElement: `${ themePath }/src/vendor/tp-multi-select.js`,
 		},

@@ -91,8 +91,8 @@ function register_styles(): void {
 	wp_enqueue_style( 'nunito-sans', get_template_directory_uri() . '/src/assets/fonts/nunito-sans/nunito-sans.css', [], '1' );
 	wp_enqueue_style( 'source-serif-4', get_template_directory_uri() . '/src/assets/fonts/source-serif-4/source-serif-4.css', [], '1' );
 	wp_register_style( 'intl-tel-input-css', get_template_directory_uri() . '/dist/vendor/intltelinput.css', [], $assets_version );
-	wp_register_style( 'glightbox', get_template_directory_uri() . '/dist/vendor/glightbox.css', [], $assets_version );
 	wp_register_style( 'tp-slider', get_template_directory_uri() . '/dist/vendor/tpsliderelement.css', [], $assets_version );
+	wp_register_style( 'tp-lightbox', get_template_directory_uri() . '/dist/vendor/tplightboxelement.css', [], $assets_version );
 	wp_register_style( 'tp-tabs', get_template_directory_uri() . '/dist/vendor/tptabselement.css', [], $assets_version );
 	wp_register_style( 'tp-accordion', get_template_directory_uri() . '/dist/vendor/tpaccordionitemelement.css', [], $assets_version );
 
@@ -103,10 +103,10 @@ function register_styles(): void {
 			$handles[] = 'nunito-sans';
 			$handles[] = 'source-serif-4';
 			$handles[] = 'intl-tel-input-css';
-			$handles[] = 'glightbox';
 			$handles[] = 'tp-slider';
 			$handles[] = 'tp-tabs';
 			$handles[] = 'tp-accordion';
+			$handles[] = 'tp-lightbox';
 
 			// Return handles.
 			return $handles;
@@ -134,13 +134,13 @@ function register_scripts(): void {
 	// Enqueue scripts.
 	wp_enqueue_script( 'global', get_template_directory_uri() . '/dist/global.js', [], $assets_version, true );
 	wp_register_script( 'pristine-js', get_template_directory_uri() . '/dist/vendor/pristine.js', [], $assets_version, true );
-	wp_register_script( 'glightbox', get_template_directory_uri() . '/dist/vendor/glightbox.js', [], $assets_version, true );
 	wp_register_script( 'tp-slider', get_template_directory_uri() . '/dist/vendor/tpsliderelement.js', [], $assets_version, true );
 	wp_register_script( 'tp-tabs', get_template_directory_uri() . '/dist/vendor/tptabselement.js', [], $assets_version, true );
 	wp_register_script( 'tp-accordion', get_template_directory_uri() . '/dist/vendor/tpaccordionitemelement.js', [], $assets_version, true );
 	wp_register_script( 'tp-multi-select', get_template_directory_uri() . '/dist/vendor/tpmultiselectelement.js', [], $assets_version, true );
 	wp_register_script( 'trustpilot', 'https://widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js', [], $assets_version, true );
 	wp_register_script( 'wistia-embed', 'https://fast.wistia.com/assets/external/E-v1.js', [], $assets_version, true );
+	wp_register_script( 'tp-lightbox', get_template_directory_uri() . '/dist/vendor/tplightboxelement.js', [], $assets_version, true );
 
 	// Pass variables to script.
 	wp_localize_script(
@@ -232,6 +232,9 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 				'quark-fancy-video'                     => [
 					'class' => true,
 					'url'   => true,
+				],
+				'quark-departure-card'                  => [
+					'class' => true,
 				],
 				'quark-toast-message'                   => [
 					'class'   => true,
@@ -413,6 +416,29 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 				'tp-accordion-content'                  => [
 					'class' => true,
 				],
+				'tp-lightbox-trigger'                   => [
+					'lightbox' => true,
+					'group'    => true,
+				],
+				'tp-lightbox'                           => [
+					'id'    => true,
+					'class' => true,
+				],
+				'tp-lightbox-close'                     => [
+					'class' => true,
+				],
+				'tp-lightbox-content'                   => [
+					'class' => true,
+				],
+				'tp-lightbox-previous'                  => [
+					'class' => true,
+				],
+				'tp-lightbox-next'                      => [
+					'class' => true,
+				],
+				'tp-lightbox-count'                     => [
+					'class' => true,
+				],
 				'tp-multi-select'                       => [
 					'name'            => true,
 					'class'           => true,
@@ -466,6 +492,8 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'allow'           => true,
 					'allowfullscreen' => true,
 					'title'           => true,
+					'frameborder'     => true,
+					'data-*'          => true,
 				],
 				'svg'                                   => [
 					'id'              => true,
@@ -578,6 +606,12 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 				'source'                                => [
 					'src'  => true,
 					'type' => true,
+				],
+				'dialog'                                => [
+					'class' => true,
+				],
+				'template'                              => [
+					'class' => true,
 				],
 			]
 		);

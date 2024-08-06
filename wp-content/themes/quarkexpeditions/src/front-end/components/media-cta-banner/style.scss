@@ -17,6 +17,21 @@
 
 	&--light {
 		background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, #f6eddc 100%), #f5f7fb;
+
+		#{$self}__image {
+			display: none;
+
+			@media screen and (min-width: grid-size(sm)) {
+				display: block;
+			}
+		}
+
+		#{$self}__content {
+
+			@media screen and (min-width: grid-size(sm)) {
+				width: 75%;
+			}
+		}
 	}
 
 	&--dark {

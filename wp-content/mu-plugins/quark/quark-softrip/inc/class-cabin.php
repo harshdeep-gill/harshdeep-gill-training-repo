@@ -45,6 +45,18 @@ class Cabin extends Data_Object {
 	private bool $occupancies_loaded = false;
 
 	/**
+	 * Constructor.
+	 *
+	 * @param int $post_id The itinerary post ID.
+	 */
+	public function __construct( int $post_id = 0 ) {
+		// If provided with a post_id, load it.
+		if ( ! empty( $post_id ) ) {
+			$this->load( $post_id );
+		}
+	}
+
+	/**
 	 * Load cabin data.
 	 *
 	 * @param int $post_id The cabin_category post object.

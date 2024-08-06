@@ -14,6 +14,6 @@
 	}
 @endphp
 
-<div @class( $classes )>
+<x-form.radio @class( $classes )>
 	{!! $slot !!}
-</div>
+</x-form.radio>

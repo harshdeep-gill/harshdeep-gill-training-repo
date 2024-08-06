@@ -22,6 +22,11 @@
 				opacity: 1;
 			}
 		}
+
+		button {
+			display: block;
+			height: 100%;
+		}
 	}
 
 	&__fullscreen {
@@ -55,160 +60,125 @@
 		height: 100%;
 	}
 
-	figcaption {
-		position: absolute;
-		bottom: 0;
-		width: 100%;
-		color: var(--color-white);
-		border-radius: 0 0 4px 4px;
-		background: rgba(0, 0, 0, 0.55);
-		text-align: left;
-		padding: 7px 12px;
-		font-style: normal;
-		display: none;
-
-		@media screen and (min-width: grid-size(sm)) {
-			display: block;
-		}
-
-		@media screen and (min-width: grid-size(md)) {
-			padding-top: 8px;
-			padding-bottom: 8px;
-		}
-	}
-
 	&__caption {
-		display: block;
-		max-width: calc(100% - 70px);
-	}
-}
-
-.glightbox-open {
-	height: 100% !important; // Override library style.
-}
-
-.glightbox-container {
-
-	.gslideInLeft,
-	.gslideOutLeft,
-	.gslideInRight,
-	.gslideOutRight {
-		animation-duration: 0.6s;
+		color: var(--color-white);
+		font-style: italic;
+		font-size: var(--font-size-small);
+		line-height: var(--line-height-small);
+		padding-top: var(--spacing-5);
+		width: fit-content;
+		min-height: 46px;
 	}
 
-	.gslide-image {
-		flex-direction: column;
-		align-items: flex-start;
+	dialog {
+
+		&::backdrop {
+			background-color: rgba(0, 0, 0, 0.9);
+		}
+
+		/* stylelint-disable-next-line selector-pseudo-class-no-unknown */
+		&:modal {
+			background-color: transparent;
+			width: 90%;
+			max-width: var(--wrap-width);
+		}
+	}
+
+	&__content {
+		overflow: hidden;
+		width: 100%;
+		height: 100%;
+
+		> * {
+
+			@include fade-in(0.8s);
+		}
+
+		img,
+		iframe {
+			border-radius: var(--border-radius-large);
+			width: 100%;
+			display: block;
+			border: none;
+		}
+
+		iframe {
+			aspect-ratio: 16 / 9;
+			height: 100%;
+			max-height: 80vh;
+		}
 
 		img {
+			aspect-ratio: 16 / 9;
+			object-fit: cover;
+		}
+	}
+
+	&__close {
+		display: block;
+		position: fixed;
+		inset: var(--spacing-5) var(--spacing-5) auto auto;
+		width: 16px;
+		height: 16px;
+
+		button {
+			display: block;
+			color: var(--color-white);
+			height: 100%;
 			width: 100%;
 
-			@media screen and (min-width: grid-size(md)) {
-				max-height: 70vh !important;
-				max-width: 75vw;
-				border-radius: var(--border-radius-large);
-			}
-
-			@media screen and (min-width: grid-size(xl)) {
-				max-height: 80vh !important;
-				max-width: 85vw;
-				border-radius: var(--border-radius-large);
+			svg {
+				width: 100%;
+				height: 100%;
 			}
 		}
 	}
 
-	.glightbox-slide-index {
-		position: absolute;
-		top: 12px;
-		left: var(--grid-col-gutter);
+	&__count {
 		color: var(--color-white);
-
-		@media screen and (min-width: grid-size(md)) {
-			left: 15px;
-		}
+		font-size: var(--font-size-small);
+		line-height: var(--line-height-small);
+		display: block;
+		position: absolute;
+		bottom: 0;
+		right: 0;
 	}
 
-	.gslide-description {
-		position: static !important; // Override library style.
-		padding: 0 !important; // Override library style.
-		flex: initial;
-		background: rgba(0, 0, 0, 0);
+	&__prev,
+	&__next {
 
-		.gdesc-inner {
-			padding: 0 var(--grid-col-gutter);
+		&[disabled="yes"] {
+			opacity: 0.3;
 
-			@media screen and (min-width: grid-size(md)) {
-				flex-direction: row;
-				padding: 14px 0 0 0;
-			}
-		}
-
-		.gslide-title {
-			font-family: var(--font-family);
-			margin-top: 10px;
-			margin-bottom: 0;
-			line-height: 1.5;
-			color: var(--color-white);
-			text-align: center;
-
-			@media screen and (min-width: grid-size(md)) {
-				margin-top: 0;
+			button {
+				cursor: not-allowed;
 			}
 		}
 	}
 
-	.gprev {
-		position: absolute;
-		left: 15px;
-		top: 0;
-		bottom: 0;
-		margin: auto;
+	&__prev-button {
+		left: var(--spacing-5);
+		transform: translateY(-50%);
 	}
 
-	.gnext {
-		position: absolute;
-		right: 15px;
-		top: 0;
-		bottom: 0;
-		margin: auto;
+	&__next-button {
+		right: var(--spacing-5);
+		transform: translateY(-50%);
 
-		&::before {
+		svg {
 			transform: rotate(180deg);
 		}
 	}
 
-	.gclose {
+	&__prev-button,
+	&__next-button {
 		position: absolute;
-		top: 15px;
-		right: 15px;
-		background-color: transparent;
-		width: 15px;
-		height: 15px;
-		opacity: 1;
-
-		svg {
-			fill: var(--color-white);
-			width: 18px;
-			height: 18px;
-
-			@media screen and (min-width: grid-size(md)) {
-				width: 20px;
-				height: 20px;
-			}
-		}
-	}
-
-	.gprev,
-	.gnext {
-		background: var(--color-white);
-		border: 1px solid var(--color-gray-20);
+		top: calc(50% - 23px);
+		width: 40px;
+		height: 40px;
 		border-radius: 50%;
-		width: 36px;
-		height: 36px;
-		padding: 0;
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
+		background-color: var(--color-black);
+		z-index: 2;
 
 		@include transition(background-color);
 
@@ -216,34 +186,71 @@
 			width: 46px;
 			height: 46px;
 		}
+	}
 
-		&::before {
-			content: "";
-			background-image: url(../../../src/assets/svg/arrow-left.svg);
-			width: 10px;
-			height: 17px;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			position: absolute;
-			scale: 0.8;
-			transform-origin: center;
+	&__bullets {
+		display: inline-flex;
+		align-items: flex-end;
+		padding: 0;
+		position: absolute;
+		bottom: 0;
+		right: 0;
+		min-height: 46px;
+		padding-bottom: 10px;
+		overflow: auto;
+		white-space: nowrap;
+		-ms-overflow-style: none; /* for Internet Explorer, Edge */
+		scrollbar-width: none; /* for Firefox */
+		max-width: 100px;
+	}
 
-			@media screen and (min-width: grid-size(lg)) {
-				scale: 1;
-			}
-		}
+	&__bullet {
+		background-color: var(--color-white);
+		cursor: pointer;
+		font-size: 0;
+		line-height: 1;
+		padding: 0;
+		height: 8px;
+		width: 8px;
+		min-width: 8px;
+		border-radius: 50%;
+		opacity: 0.4;
+		margin-left: var(--spacing-2);
 
-		svg {
-			display: none;
-		}
+		@include transition(opacity);
 
-		&:hover {
-			background-color: var(--color-gray-10);
+		&:first-child {
+			margin-left: 0;
 		}
 	}
 
-	.goverlay {
-		background: rgba(0, 0, 0, 0.9);
+	&__bullet[current="yes"] {
+		opacity: 1;
+	}
+}
+
+tp-lightbox.media-lightbox[loading] {
+
+	@keyframes lightbox-loading {
+
+		from {
+			rotate: 0deg;
+		}
+
+		to {
+			rotate: 360deg;
+		}
+	}
+
+	tp-lightbox-content::after {
+		content: "";
+		display: block;
+		inset: 50% auto auto 50%;
+		border: 2px solid var(--color-white);
+		border-right-color: rgba(0, 0, 0, 0);
+		border-radius: 50%;
+		width: 25px;
+		height: 25px;
+		animation: lightbox-loading 0.8s infinite var(--transition-easing);
 	}
 }
