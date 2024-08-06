@@ -119,7 +119,7 @@ function get_filters_from_url(): array {
 		'durations'         => isset( $_GET['durations'] ) ? strval( $_GET['durations'] ) : '', // phpcs:ignore
 		'ships'             => isset( $_GET['ships'] ) ? strval( $_GET['ships'] ) : '', // phpcs:ignore
 		'page'              => isset( $_GET['page'] ) ? strval( $_GET['page'] ) : '1', // phpcs:ignore
-		'sort'              => isset( $_GET['sort'] ) ? strval( $_GET['sort'] ) : 'start_date', // phpcs:ignore
+		'sort'              => isset( $_GET['sort'] ) ? strval( $_GET['sort'] ) : 'date-now', // phpcs:ignore
 	];
 }
 
@@ -135,7 +135,7 @@ function get_filters_from_url(): array {
  *     months: string[],
  *     durations: string[],
  *     ships: int[],
- *     sort: array{}|array<string, string>,
+ *     sort: string,
  *     page: int,
  *     posts_per_load: int,
  * }
@@ -151,7 +151,7 @@ function parse_filters( array $filters = [] ): array {
 			'months'            => '',
 			'durations'         => '',
 			'ships'             => '',
-			'sort'              => '',
+			'sort'              => 'date-now',
 			'page'              => 1,
 			'posts_per_load'    => 10,
 		]
@@ -198,7 +198,7 @@ function parse_filters( array $filters = [] ): array {
 		'durations'         => (array) $filters['durations'],
 		'ships'             => (array) $filters['ships'],
 		'page'              => absint( $filters['page'] ),
-		'sort'              => (array) $filters['sort'],
+		'sort'              => $filters['sort'],
 		'posts_per_load'    => absint( $filters['posts_per_load'] ),
 	];
 }
@@ -241,11 +241,7 @@ function search( array $filters = [] ): array {
 	$search->set_ships( $ships );
 	$search->set_page( absint( $filters['page'] ) );
 	$search->set_posts_per_page( absint( $filters['posts_per_load'] ?: 5 ) );
-
-	// Set sort.
-	foreach ( $sort as $order_by => $order ) {
-		$search->set_sort( $order_by, $order );
-	}
+	$search->set_sort( $sort );
 
 	// Returned filtered trips.
 	return [

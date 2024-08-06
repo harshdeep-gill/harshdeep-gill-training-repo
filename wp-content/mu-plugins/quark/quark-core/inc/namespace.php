@@ -13,6 +13,8 @@ use WP_Post;
 
 use function Travelopia\Core\cached_nav_menu;
 
+const REST_API_NAMESPACE = 'quark-core/v1';
+
 /**
  * Bootstrap plugin.
  *
@@ -33,6 +35,10 @@ function bootstrap(): void {
 	// Allow Auto Cloudinary in REST API calls.
 	add_action( 'rest_api_init', __NAMESPACE__ . '\\init_auto_cloudinary' );
 	add_filter( 'cloudinary_allow_rest_api_call', '__return_true' );
+
+	// Rest API.
+	add_action( 'rest_api_init', __NAMESPACE__ . '\\register_endpoints' );
+	add_filter( 'travelopia_security_public_rest_api_routes', __NAMESPACE__ . '\\security_public_rest_api_routes' );
 
 	// Filter for Attachments.
 	add_filter( 'add_attachment', __NAMESPACE__ . '\\update_svg_content', 10, 4 );
@@ -190,6 +196,41 @@ function core_front_end_data( array $data = [] ): array {
 function default_email_from_address(): string {
 	// Update default "from" email address.
 	return 'noreply@quarkexpeditions.com';
+}
+
+/**
+ * Register REST API endpoints.
+ *
+ * @return void
+ */
+function register_endpoints(): void {
+	// Include rest API file.
+	require_once __DIR__ . '/../rest-api/class-partial.php';
+
+	// List the REST APIs needed.
+	$endpoints = [
+		new RestApi\Partial(),
+	];
+
+	// Register the rest routes.
+	foreach ( $endpoints as $endpoint ) {
+		$endpoint->register_routes();
+	}
+}
+
+/**
+ * Register public REST API routes.
+ *
+ * @param string[] $routes Public routes.
+ *
+ * @return string[]
+ */
+function security_public_rest_api_routes( array $routes = [] ): array {
+	// Add routes.
+	$routes[] = sprintf( '/%s/partial/get', REST_API_NAMESPACE );
+
+	// Return routes.
+	return $routes;
 }
 
 /**

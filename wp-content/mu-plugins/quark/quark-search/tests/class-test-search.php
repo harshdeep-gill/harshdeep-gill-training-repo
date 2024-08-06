@@ -99,9 +99,7 @@ class Test_Search extends WP_UnitTestCase {
 				],
 				'page'              => 1,
 				'posts_per_load'    => 10,
-				'sort'              => [
-					'start_date',
-				],
+				'sort'              => 'date-now',
 			],
 			$filters
 		);
@@ -264,15 +262,15 @@ class Test_Search extends WP_UnitTestCase {
 		// Make private method accessible.
 		$class         = new ReflectionClass( $solr_search );
 		$set_solr_sort = $class->getMethod( 'set_sort' );
-		$set_solr_sort->invokeArgs( $solr_search, [ 'durations', 'desc' ] );
-		$set_solr_sort->invokeArgs( $solr_search, [ 'departure_start_date', 'asc' ] );
+		$set_solr_sort->invokeArgs( $solr_search, [ 'date-now' ] );
+		$set_solr_sort->invokeArgs( $solr_search, [ 'duration-long' ] );
 		$sorts = $class->getProperty( 'sorts' );
 
 		// Make private property accessible and test.
 		$this->assertEquals(
 			[
 				'duration_i'             => 'desc',
-				'departure_start_date_i' => 'asc',
+				'departure_start_date_s' => 'asc',
 			],
 			$sorts->getValue( $solr_search ),
 		);

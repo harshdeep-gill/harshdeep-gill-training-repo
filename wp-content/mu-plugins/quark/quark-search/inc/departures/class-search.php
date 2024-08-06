@@ -21,11 +21,33 @@ class Search {
 	/**
 	 * Field mapping.
 	 *
-	 * @var string[] Field mapping.
+	 * @var array<string, array<string, string>> Field mapping.
 	 */
 	private array $field_mapping = [
-		'durations'            => 'duration_i',
-		'departure_start_date' => 'departure_start_date_i',
+		'date-now'       => [
+			'key'   => 'departure_start_date_s',
+			'order' => 'asc',
+		],
+		'date-later'     => [
+			'key'   => 'departure_start_date_s',
+			'order' => 'desc',
+		],
+		'price-low'      => [
+			'key'   => 'departure_low_price_f',
+			'order' => 'asc',
+		],
+		'price-high'     => [
+			'key'   => 'departure_low_price_f',
+			'order' => 'desc',
+		],
+		'duration-short' => [
+			'key'   => 'duration_i',
+			'order' => 'asc',
+		],
+		'duration-long'  => [
+			'key'   => 'duration_i',
+			'order' => 'desc',
+		],
 	];
 
 	/**
@@ -333,18 +355,17 @@ class Search {
 	 * Set Sort.
 	 *
 	 * @param string $sort Sort.
-	 * @param string $order Order.
 	 *
 	 * @return void
 	 */
-	public function set_sort( string $sort = '', string $order = 'ASC' ): void {
+	public function set_sort( string $sort = '' ): void {
 		// Return early if sort is not set or field mapping is not set.
 		if ( empty( $sort ) || empty( $this->field_mapping[ $sort ] ) ) {
 			return;
 		}
 
 		// Set sort.
-		$this->sorts[ $this->field_mapping[ $sort ] ] = $order;
+		$this->sorts[ $this->field_mapping[ $sort ]['key'] ] = $this->field_mapping[ $sort ]['order'];
 	}
 
 	/**
