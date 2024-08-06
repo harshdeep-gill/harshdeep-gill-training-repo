@@ -16,6 +16,7 @@ import save from './save';
 /**
  * Styles.
  */
+import '../../../front-end/components/accordion/style.scss';
 import '../../../front-end/components/featured-media-accordions/style.scss';
 
 /**

@@ -4,14 +4,8 @@
 		background-color: var(--color-gray-30);
 
 		&:empty {
-			height: 100%;
-		}
-	}
-
-	.accordion {
-
-		&__handle-icon > svg {
-			transform: rotate(180deg);
+			aspect-ratio: 1;
+			width: 100%;
 		}
 	}
 }

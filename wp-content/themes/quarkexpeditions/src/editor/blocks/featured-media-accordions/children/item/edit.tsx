@@ -24,7 +24,7 @@ const { gumponents } = window;
 /**
  * External components.
  */
-const { SelectImage } = gumponents.components;
+const { ImageControl } = gumponents.components;
 
 /**
  * Edit Component.
@@ -37,7 +37,8 @@ const { SelectImage } = gumponents.components;
 export default function Edit( { className, attributes, setAttributes }: BlockEditAttributes ) : JSX.Element {
 	// eslint-disable-next-line react-hooks/rules-of-hooks
 	const blockProps = useBlockProps( {
-		className: classnames( className, 'accordion__item' ),
+		className: classnames( className, 'accordion__item', 'open' ),
+		open: true,
 	} );
 
 	// eslint-disable-next-line react-hooks/rules-of-hooks
@@ -66,15 +67,12 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 		<>
 			<InspectorControls>
 				<PanelBody title={ __( 'Accordion Options', 'qrk' ) }>
-					<SelectImage
-						image={ attributes.image }
-						placeholder={ __( 'Choose an image', 'qrk' ) }
+					<ImageControl
+						label={ __( 'Accordion Item Image', 'qrk' ) }
+						value={ attributes.image ? attributes.image.id : null }
 						size="medium"
-						onChange={ ( image: Object ): void => {
-							// Set image.
-							setAttributes( { image: null } );
-							setAttributes( { image } );
-						} }
+						help={ __( 'Choose an image for this accordian item.', 'qrk' ) }
+						onChange={ ( image: object ) => setAttributes( { image } ) }
 					/>
 				</PanelBody>
 			</InspectorControls>
