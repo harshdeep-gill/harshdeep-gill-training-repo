@@ -90,7 +90,7 @@ function solr_index_custom_fields( array $custom_fields = [] ): array {
 		$custom_fields,
 		[
 			'start_date',
-			'departure_end_date',
+			'end_date',
 		]
 	);
 }

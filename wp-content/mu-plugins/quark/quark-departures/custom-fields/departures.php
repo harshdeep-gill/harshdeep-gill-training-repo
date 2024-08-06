@@ -150,7 +150,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 				[
 					'key'               => 'field_65f16c6c2a17d',
 					'label'             => 'Departure End Date',
-					'name'              => 'departure_end_date',
+					'name'              => 'end_date',
 					'aria-label'        => '',
 					'type'              => 'date_picker',
 					'instructions'      => 'The date when trip or departure ends',

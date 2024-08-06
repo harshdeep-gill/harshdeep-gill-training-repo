@@ -224,7 +224,7 @@ class Departure {
 
 		// Set departure end date.
 		if ( ! empty( $item['departure_end_date'] ) ) {
-			$data['meta_input']['departure_end_date'] = strval( $item['departure_end_date'] );
+			$data['meta_input']['end_date'] = strval( $item['departure_end_date'] );
 		}
 
 		// Set duration.

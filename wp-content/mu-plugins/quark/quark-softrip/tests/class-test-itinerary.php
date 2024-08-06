@@ -706,14 +706,14 @@ class Test_Itinerary extends Softrip_TestCase {
 		$this->assertArrayHasKey( 'softrip_id', $departure2_data['post_meta'] );
 		$this->assertEquals( $departure2_code, $departure2_data['post_meta']['softrip_id'] );
 		$this->assertArrayNotHasKey( 'start_date', $departure2_data['post_meta'] );
-		$this->assertArrayNotHasKey( 'departure_end_date', $departure2_data['post_meta'] );
+		$this->assertArrayNotHasKey( 'end_date', $departure2_data['post_meta'] );
 		$this->assertArrayNotHasKey( 'duration', $departure2_data['post_meta'] );
 
 		// Departure 3.
 		$departure3_obj = $itinerary->get_departure( $departure3_code );
 		$this->assertInstanceOf( 'Quark\Softrip\Departure', $departure3_obj );
 		$this->assertEmpty( $departure3_obj->get_post_meta( 'start_date' ) );
-		$this->assertEmpty( $departure3_obj->get_post_meta( 'departure_end_date' ) );
+		$this->assertEmpty( $departure3_obj->get_post_meta( 'end_date' ) );
 		$this->assertEmpty( $departure3_obj->get_post_meta( 'duration' ) );
 
 		// Raw departure data.
@@ -736,7 +736,7 @@ class Test_Itinerary extends Softrip_TestCase {
 		$this->assertIsArray( $updated_departure2_data );
 		$this->assertArrayHasKey( 'post_meta', $updated_departure2_data );
 		$this->assertSame( $departure2_obj->get_post_meta( 'start_date' ), $raw_departure_data['departures'][0]['startDate'] );
-		$this->assertSame( $departure2_obj->get_post_meta( 'departure_end_date' ), $raw_departure_data['departures'][0]['endDate'] );
+		$this->assertSame( $departure2_obj->get_post_meta( 'end_date' ), $raw_departure_data['departures'][0]['endDate'] );
 		$this->assertSame( $departure2_obj->get_post_meta( 'duration' ), strval( $raw_departure_data['departures'][0]['duration'] ) );
 
 		// Cleanup.

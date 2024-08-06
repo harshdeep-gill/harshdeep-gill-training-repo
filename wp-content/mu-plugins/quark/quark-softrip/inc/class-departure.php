@@ -164,7 +164,7 @@ class Departure extends Softrip_Object {
 				'softrip_code' => '',
 				'softrip_package_code'   => '',
 				'start_date' => '',
-				'departure_end_date'   => null,
+				'end_date'   => null,
 				'duration'             => null,
 				'itinerary'            => $this->itinerary->get_id(),
 			],
@@ -243,7 +243,7 @@ class Departure extends Softrip_Object {
 				'softrip_id'  => $data['id'],
 				'softrip_package_code'   => $data['packageCode'],
 				'start_date' => $data['startDate'],
-				'departure_end_date'   => $data['endDate'],
+				'end_date'   => $data['endDate'],
 				'duration'             => $data['duration'],
 				'itinerary'            => $this->itinerary->get_id(),
 				'ship_id'              => $data['shipCode'],
@@ -492,14 +492,14 @@ class Departure extends Softrip_Object {
 		}
 
 		// Get the departure end date.
-		$departure_end_date = $this->get_post_meta( 'departure_end_date' );
+		$end_date = $this->get_post_meta( 'end_date' );
 
 		// Validate the end date.
-		if ( empty( $departure_end_date ) || ! is_string( $departure_end_date ) ) {
+		if ( empty( $end_date ) || ! is_string( $end_date ) ) {
 			return '';
 		}
 
 		// Return the end date.
-		return $departure_end_date;
+		return $end_date;
 	}
 }
