@@ -56,7 +56,7 @@ class Softrip_Sync {
 	 */
 	public function batch_request( array $codes = [] ): array {
 		// Get the raw departure data for codes.
-		$raw_departures = request_departures( $codes );
+		$raw_departures = synchronize_itinerary_departures( $codes );
 
 		// Handle if an error is found.
 		if ( ! is_array( $raw_departures ) ) {
@@ -98,7 +98,7 @@ class Softrip_Sync {
 	}
 
 	/**
-	 * Get ID's of itineraries to sync.
+	 * Get ID's of itinerary posts to sync.
 	 *
 	 * @return int[]
 	 */
@@ -108,7 +108,7 @@ class Softrip_Sync {
 			'post_type'              => ITINERARY_POST_TYPE,
 			'posts_per_page'         => -1, // -1 means retrieve all posts.
 			'fields'                 => 'ids', // Retrieve only IDs.
-			'post_status'            => 'publish', // Only published itineraries.
+			'post_status'            => 'draft,publish', // Only published itineraries.
 			'no_found_rows'          => true, // Improve query performance.
 			'update_post_meta_cache' => false, // Disable post meta cache for performance.
 			'update_post_term_cache' => false, // Disable post term cache for performance.

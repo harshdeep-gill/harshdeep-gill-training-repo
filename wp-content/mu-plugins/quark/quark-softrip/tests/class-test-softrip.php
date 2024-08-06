@@ -17,38 +17,39 @@ use function Quark\Softrip\cron_add_schedule;
 use function Quark\Softrip\cron_is_scheduled;
 use function Quark\Softrip\cron_schedule_sync;
 use function Quark\Softrip\do_sync;
-use function Quark\Softrip\request_departures;
+use function Quark\Softrip\synchronize_itinerary_departures;
 
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
+use const Quark\Softrip\ITINERARY_SYNC_BATCH_SIZE;
 use const Quark\Softrip\SCHEDULE_HOOK;
 use const Quark\Softrip\SCHEDULE_RECURRENCE;
 
 /**
  * Class Test_Softrip.
  */
-class Test_Softrip extends Softrip_TestCase {
+class Test_Softrip1 extends Softrip_TestCase {
 	/**
-	 * Test case for requesting departure from middleware.
+	 * Test case for syncing itinerary departures with Softrip.
 	 *
-	 * @covers \Quark\Softrip\request_departures()
+	 * @covers \Quark\Softrip\synchronize_itinerary_departures()
 	 *
 	 * @return void
 	 */
-	public function test_request_departures(): void {
+	public function test_synchronize_itinerary_departures(): void {
 		// Setup mock response.
 		add_filter( 'pre_http_request', 'Quark\Tests\Softrip\mock_softrip_http_request', 10, 3 );
 
-		// Test case 1: No argument passed.
-		$result = request_departures();
+		// Test case 1: No argument passed - empty softrip codes.
+		$result = synchronize_itinerary_departures();
 		$this->assertTrue( $result instanceof WP_Error );
-		$this->assertSame( 'qrk_softrip_departures_limit', $result->get_error_code() );
-		$this->assertSame( 'The maximum number of codes allowed is 5', $result->get_error_message() );
+		$this->assertSame( 'qrk_softrip_no_codes', $result->get_error_code() );
+		$this->assertSame( 'No Softrip codes provided', $result->get_error_message() );
 
 		// Test case 2: Empty array passed.
-		$result = request_departures( [] );
+		$result = synchronize_itinerary_departures( [] );
 		$this->assertTrue( $result instanceof WP_Error );
-		$this->assertSame( 'qrk_softrip_departures_limit', $result->get_error_code() );
-		$this->assertSame( 'The maximum number of codes allowed is 5', $result->get_error_message() );
+		$this->assertSame( 'qrk_softrip_no_codes', $result->get_error_code() );
+		$this->assertSame( 'No Softrip codes provided', $result->get_error_message() );
 
 		// Test case 3: Test code array with more than 5 elements.
 		$test_codes = [
@@ -59,14 +60,14 @@ class Test_Softrip extends Softrip_TestCase {
 			'MNO-345',
 			'PQR-678',
 		];
-		$result     = request_departures( $test_codes );
+		$result     = synchronize_itinerary_departures( $test_codes );
 		$this->assertTrue( $result instanceof WP_Error );
 		$this->assertSame( 'qrk_softrip_departures_limit', $result->get_error_code() );
-		$this->assertSame( 'The maximum number of codes allowed is 5', $result->get_error_message() );
+		$this->assertSame( sprintf( 'The maximum number of codes allowed is %d', ITINERARY_SYNC_BATCH_SIZE ), $result->get_error_message() );
 
 		// Test case 4: Test code array with one element.
 		$test_codes = [ 'ABC-123' ];
-		$result     = request_departures( $test_codes );
+		$result     = synchronize_itinerary_departures( $test_codes );
 		$this->assertIsArray( $result );
 		$this->assertArrayHasKey( 'ABC-123', $result );
 
@@ -78,7 +79,7 @@ class Test_Softrip extends Softrip_TestCase {
 			'JKL-012',
 			'MNO-345',
 		];
-		$result     = request_departures( $test_codes );
+		$result     = synchronize_itinerary_departures( $test_codes );
 		$this->assertIsArray( $result );
 		$this->assertArrayHasKey( 'ABC-123', $result );
 		$this->assertIsArray( $result['ABC-123'] );

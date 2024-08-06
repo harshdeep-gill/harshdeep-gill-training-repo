@@ -10,8 +10,9 @@ namespace Quark\Softrip;
 use WP_CLI;
 use WP_Error;
 
-const SCHEDULE_RECURRENCE = 'qrk_softrip_4_hourly';
-const SCHEDULE_HOOK       = 'qrk_softrip_sync';
+const SCHEDULE_RECURRENCE       = 'qrk_softrip_4_hourly';
+const SCHEDULE_HOOK             = 'qrk_softrip_sync';
+const ITINERARY_SYNC_BATCH_SIZE = 5;
 
 /**
  * Bootstrap plugin.
@@ -36,32 +37,6 @@ function bootstrap(): void {
 
 	// Register Stream log connector.
 	add_filter( 'wp_stream_connectors', __NAMESPACE__ . '\\setup_stream_connectors' );
-}
-
-/**
- * Request departures for an array of Softrip IDs.
- *
- * @param array<int, mixed> $codes Softrip ID array, max 5.
- *
- * @return mixed[]|WP_Error
- */
-function request_departures( array $codes = [] ): array|WP_Error {
-	// Strip out duplicates.
-	$codes = array_unique( $codes );
-
-	// Check if less than 5 IDs.
-	if ( empty( $codes ) || 5 < count( $codes ) ) {
-		return new WP_Error( 'qrk_softrip_departures_limit', 'The maximum number of codes allowed is 5' );
-	}
-
-	// Get API.
-	$softrip = new Softrip_Data_Adapter();
-
-	// Implode IDs into a string.
-	$code_string = implode( ',', $codes );
-
-	// Do request and return the result.
-	return $softrip->do_request( 'departures', [ 'productCodes' => $code_string ] );
 }
 
 /**
@@ -200,4 +175,33 @@ function setup_stream_connectors( array $connectors = [] ): array {
 
 	// Return the connectors.
 	return $connectors;
+}
+
+/**
+ * Get the latest departure data from Softrip.
+ *
+ * @param string[] $codes Softrip codes.
+ *
+ * @return mixed[]|WP_Error
+ */
+function synchronize_itinerary_departures( array $codes = [] ): array|WP_Error {
+	// Get unique codes.
+	$codes = array_unique( $codes );
+
+	if ( empty( $codes ) ) {
+		return new WP_Error( 'qrk_softrip_no_codes', 'No Softrip codes provided' );
+	}
+
+	if ( ITINERARY_SYNC_BATCH_SIZE < count( $codes ) ) {
+		return new WP_Error( 'qrk_softrip_departures_limit', sprintf( 'The maximum number of codes allowed is %d', ITINERARY_SYNC_BATCH_SIZE ) );
+	}
+
+	// Get API adapter.
+	$softrip = new Softrip_Data_Adapter();
+
+	// Implode IDs into a string.
+	$code_string = implode( ',', $codes );
+
+	// Do request and return the result.
+	return $softrip->do_request( 'departures', [ 'productCodes' => $code_string ] );
 }

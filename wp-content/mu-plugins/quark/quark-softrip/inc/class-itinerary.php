@@ -180,7 +180,7 @@ class Itinerary extends Softrip_Object {
 		if ( empty( $departures ) ) {
 			// Get the Softrip ID and request the middleware.
 			$softrip_id     = strval( $this->get_post_meta( 'softrip_package_id' ) );
-			$raw_departures = request_departures( [ $softrip_id ] );
+			$raw_departures = synchronize_itinerary_departures( [ $softrip_id ] );
 
 			// Check if is valid.
 			if ( $raw_departures instanceof WP_Error ) {
