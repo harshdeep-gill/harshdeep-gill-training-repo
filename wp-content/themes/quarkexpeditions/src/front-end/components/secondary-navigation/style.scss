@@ -201,5 +201,8 @@ body.has-sticky-secondary-navigation {
 }
 
 body:has(.secondary-navigation__cta-buttons) .footer {
-	padding-bottom: calc(176px + var(--spacing-7)); // Sticky `secondary-navigation__cta-buttons` height + default padding.
+
+	@media screen and (max-width: calc(grid-size(lg) - 1px)) {
+		padding-bottom: calc(176px + var(--spacing-7)); // Sticky `secondary-navigation__cta-buttons` height + default padding.
+	}
 }
