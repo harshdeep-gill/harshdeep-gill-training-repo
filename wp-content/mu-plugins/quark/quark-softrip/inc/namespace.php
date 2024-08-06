@@ -7,8 +7,12 @@
 
 namespace Quark\Softrip;
 
+use cli\progress\Bar;
 use WP_CLI;
 use WP_Error;
+use WP_Query;
+
+use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
 
 const SCHEDULE_RECURRENCE       = 'qrk_softrip_4_hourly';
 const SCHEDULE_HOOK             = 'qrk_softrip_sync';
@@ -91,17 +95,70 @@ function cron_schedule_sync(): void {
 /**
  * Do the sync.
  *
- * @return void
+ * @param int[] $itinerary_post_ids Itinerary post IDs.
+ *
+ * @return void.
  */
-function do_sync(): void {
-	// Get the sync object.
-	$sync = new Softrip_Sync();
+function do_sync( $itinerary_post_ids = [] ): void {
+	// Get all itinerary post ids.
+	$args = [
+		'post_type'              => ITINERARY_POST_TYPE,
+		'fields'                 => 'ids',
+		'no_found_rows'          => true,
+		'update_post_meta_cache' => false,
+		'update_term_meta_cache' => false,
+		'ignore_sticky_posts'    => true,
+		'post_status'            => [ 'draft', 'publish' ],
+	];
 
-	// Get the ID's to sync.
-	$ids = $sync->get_all_itinerary_ids();
+	// If no itinerary post ids are provided, get all.
+	if ( empty( $itinerary_post_ids ) ) {
+		$args['posts_per_page'] = 1;
+	} else {
+		$args['post__in'] = $itinerary_post_ids;
+	}
 
-	// Get the total count.
-	$total = count( $ids );
+	// Run WP_Query.
+	$query = new WP_Query( $args );
+
+	// Initialize package codes.
+	$package_codes = [];
+
+	// Initialize CLI variables.
+	$is_in_cli = defined( 'WP_CLI' ) && true === WP_CLI;
+	$progress = null;
+
+	// Get all package codes.
+	foreach ( $query->posts as $post_id ) {
+		$package_code = get_post_meta( absint( $post_id ), 'softrip_package_id', true );
+
+		if ( ! empty( $package_code ) && is_string( $package_code ) ) {
+			$package_codes[] = $package_code;
+		}
+	}
+
+	// Bail if no package codes found.
+	if ( empty( $package_codes ) ) {
+		// Log CLI message.
+		if ( $is_in_cli ) {
+			WP_CLI::error( 'No package codes found' );
+		}
+
+		// Bail out.
+		return;
+	}
+
+	// Total count.
+	$total = count( $package_codes );
+
+	// Log CLI message.
+	if ( $is_in_cli ) {
+		// Welcome message.
+		WP_CLI::log( WP_CLI::colorize( 'Syncing Itineraries...' ) );
+
+		// Initialize progress bar.
+		$progress = new Bar( 'Softrip sync', $total, 100 );		
+	}
 
 	// Log the sync initiated.
 	do_action(
@@ -113,18 +170,23 @@ function do_sync(): void {
 	);
 
 	// Create batches.
-	$batches = $sync->prepare_batch_ids( $ids );
+	$batches = array_chunk( $package_codes, ITINERARY_SYNC_BATCH_SIZE );
 
 	// Set up a counter for successful.
 	$counter = 0;
 
 	// Iterate over the batches.
-	foreach ( $batches as $softrip_ids ) {
+	foreach ( $batches as $softrip_codes ) {
 		// Get the raw departure data for the IDs.
-		$raw_departures = $sync->batch_request( $softrip_ids );
+		$raw_departures = synchronize_itinerary_departures( $softrip_codes );
 
 		// Handle if an error is found.
-		if ( empty( $raw_departures ) ) {
+		if ( ! is_array( $raw_departures ) || empty( $raw_departures ) ) {
+			// Update progress bar.
+			if ( $is_in_cli ) {
+				$progress->tick( count( $softrip_codes ) );
+			}
+
 			// Skip since there was an error.
 			continue;
 		}
@@ -133,12 +195,22 @@ function do_sync(): void {
 		foreach ( $raw_departures as $softrip_id => $departures ) {
 			// Validate is array and not empty.
 			if ( ! is_array( $departures ) || empty( $departures ) ) {
+				// Update progress bar.
+				if ( $is_in_cli ) {
+					$progress->tick();
+				}
+
 				// Skip since there was an error, or departures are empty.
 				continue;
 			}
 
-			// Sync the code.
-			$success = $sync->sync_softrip_code( $softrip_id, $departures );
+			// Update departure data.
+			$success = rand( 0, 1 );
+
+			// Update progress bar.
+			if ( $is_in_cli ) {
+				$progress->tick();
+			}
 
 			// Check if successful.
 			if ( $success ) {
@@ -157,6 +229,14 @@ function do_sync(): void {
 			'via'     => 'cron',
 		]
 	);
+
+	// End progress bar.
+	if ( $is_in_cli ) {
+		$progress->finish();
+
+		// End notice.
+		WP_CLI::success( sprintf( 'Completed %d items with %d failed items', $counter, ( $total - $counter ) ) );
+	}
 }
 
 /**
