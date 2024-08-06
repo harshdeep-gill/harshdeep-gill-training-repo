@@ -24,6 +24,10 @@
 		"overlayOpacity": {
 			"type": "number",
 			"default": 0
+		},
+		"syncPostThumbnail": {
+			"type": "boolean",
+			"default": false
 		}
 	},
 	"supports": {

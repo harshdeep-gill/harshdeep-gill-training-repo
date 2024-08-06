@@ -33,7 +33,7 @@
 			@include transition(transform);
 		}
 
-		:hover img {
+		:hover figure img {
 			transform: scale(1.03);
 		}
 

@@ -61,7 +61,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 					'aria-label'           => '',
 					'type'                 => 'post_object',
 					'instructions'         => 'Select the expedition linked to this itinerary.',
-					'required'             => 1,
+					'required'             => 0,
 					'conditional_logic'    => 0,
 					'wrapper'              => [
 						'width' => '50',
@@ -159,7 +159,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 					'aria-label'           => '',
 					'type'                 => 'post_object',
 					'instructions'         => 'The port where the journey for this itinerary begins.',
-					'required'             => 1,
+					'required'             => 0,
 					'conditional_logic'    => 0,
 					'wrapper'              => [
 						'width' => '50',
@@ -185,7 +185,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 					'aria-label'           => '',
 					'type'                 => 'post_object',
 					'instructions'         => 'The port where the journey for this itinerary ends.',
-					'required'             => 1,
+					'required'             => 0,
 					'conditional_logic'    => 0,
 					'wrapper'              => [
 						'width' => '50',

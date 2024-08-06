@@ -124,3 +124,46 @@ export const getYouTubeVideoId = ( videoURL: string ): string | false => {
 	// Return false.
 	return false;
 };
+
+/**
+ * Get formatted image details from a media object.
+ *
+ * @param {Object} media         Media object.
+ * @param {string} thumbnailSize Thumbnail size.
+ *
+ * @return {Object} Formatted image details.
+ */
+export function getImageDetails( media: Record<string, any>, thumbnailSize: string ): Record<string, any> {
+	// If media is not set, return empty object.
+	if ( ! media ) {
+		// Return empty object.
+		return {};
+	}
+
+	// Initialize src, width, and height.
+	let src, width, height;
+
+	// If media has sizes, get the thumbnail size.
+	if ( media.sizes ) {
+		// If thumbnail size is not found, set thumbnail size to full.
+		if ( ! media.sizes[ thumbnailSize ] ) {
+			// Set thumbnail size to full.
+			thumbnailSize = 'full';
+		}
+		width = media.sizes[ thumbnailSize ].width;
+		height = media.sizes[ thumbnailSize ].height;
+		src = media.sizes[ thumbnailSize ].url;
+	}
+
+	// Return formatted image details.
+	return {
+		id: media.id,
+		src,
+		width,
+		height,
+		alt: media.alt,
+		caption: media.caption,
+		title: media.title,
+		size: thumbnailSize,
+	};
+}

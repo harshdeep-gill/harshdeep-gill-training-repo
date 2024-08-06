@@ -7,10 +7,6 @@
 
 namespace Quark\Softrip;
 
-use WP_Post;
-
-use function Quark\CabinCategories\get as get_cabin_category;
-
 /**
  * Occupancy class.
  */

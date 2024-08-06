@@ -4,6 +4,11 @@
 const { HTMLElement, customElements } = window;
 
 /**
+ * Internal dependencies.
+ */
+import { slideElementDown, slideElementUp } from '../../global/utility';
+
+/**
  * class ProductOptionsCards.
  */
 export class ProductOptionsCards extends HTMLElement {
@@ -12,6 +17,7 @@ export class ProductOptionsCards extends HTMLElement {
 	 */
 	private readonly cards : NodeListOf<HTMLElement>;
 	private readonly cardDetailsMap: Map<string, HTMLElement>;
+	private readonly moreDetailsElement: HTMLElement | null;
 
 	/**
 	 * Constructor.
@@ -23,6 +29,7 @@ export class ProductOptionsCards extends HTMLElement {
 		// Get the cards
 		this.cards = this.querySelectorAll( '.product-options-cards__card' );
 		this.cardDetailsMap = new Map<string, HTMLElement>();
+		this.moreDetailsElement = this.querySelector( '.product-options-cards__more-details' );
 
 		// Setup cards.
 		this.cards.forEach( this.setupCard.bind( this ) );
@@ -36,6 +43,12 @@ export class ProductOptionsCards extends HTMLElement {
 		this.cardDetailsMap.forEach( ( detailsElement ) => {
 			// Set the hidden attribute.
 			detailsElement.setAttribute( 'data-hidden', 'yes' );
+		} );
+
+		// Remove attribute.
+		this.cards.forEach( ( card ) => {
+			// Remove attribute.
+			card.removeAttribute( 'data-open' );
 		} );
 	}
 
@@ -90,12 +103,64 @@ export class ProductOptionsCards extends HTMLElement {
 		const hideDetailsButton = relatedDetails.querySelector( '.product-options-cards__card-details-title' );
 
 		// Set event listeners.
-		hideDetailsButton?.addEventListener( 'click', () => this.hideCardDetailsElement( detailsId ) );
-		card.addEventListener( 'click', () => {
-			// Hide all details.
-			this.hideAllCardDetailsElements();
-			this.showCardDetailsElement( detailsId );
+		hideDetailsButton?.addEventListener( 'click', () => {
+			// Check if we have moreDetailsElement.
+			if ( ! this.moreDetailsElement ) {
+				// We didn't, bail.
+				return;
+			}
+
+			// Hide the card details.
+			slideElementUp( this.moreDetailsElement, 300, () => {
+				// Hide.
+				this.hideCardDetailsElement( detailsId );
+				card.removeAttribute( 'data-open' );
+			} );
 		} );
+
+		// Event listener for card.
+		card.addEventListener( 'click', () => {
+			// Check if card is open.
+			const isOpen = card.hasAttribute( 'data-open' );
+
+			// Check if already open.
+			if ( isOpen ) {
+				// Check if we have moreDetailsElement.
+				if ( ! this.moreDetailsElement ) {
+					// We didn't, bail.
+					return;
+				}
+
+				// Hide the element.
+				slideElementUp( this.moreDetailsElement, 300, () => {
+					// Hide.
+					this.hideCardDetailsElement( detailsId );
+					card.removeAttribute( 'data-open' );
+				} );
+			} else {
+				// Check if we have moreDetailsElement.
+				if ( ! this.moreDetailsElement ) {
+					// We didn't, bail.
+					return;
+				}
+
+				// Hide all details.
+				this.hideAllCardDetailsElements();
+
+				// Show the details.
+				this.showCardDetailsElement( detailsId );
+				card.setAttribute( 'data-open', 'yes' );
+				slideElementDown( this.moreDetailsElement );
+			}
+		} );
+
+		// Get the gallery.
+		const cardGallery = card.querySelector( '.product-options-cards__gallery' );
+
+		// Check if gallery is available.
+		if ( cardGallery ) {
+			cardGallery.addEventListener( 'click', ( evt: Event ) => evt.stopPropagation() );
+		}
 	}
 }
 

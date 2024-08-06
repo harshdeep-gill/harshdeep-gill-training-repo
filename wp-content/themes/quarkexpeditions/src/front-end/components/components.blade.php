@@ -1,293 +1,26 @@
-<x-header>
-	<x-header.site-logo />
+{{-- Required to prevent weird rendering issues. --}}
+<x-once id="media-lightbox">
+	<tp-lightbox id="media-lightbox" class="media-lightbox">
+		<dialog class="media-lightbox__dialog">
+			<tp-lightbox-close class="media-lightbox__close">
+				<button><x-svg name="cross" /></button>
+			</tp-lightbox-close>
 
-	<x-header.primary-nav>
-		{{-- // If URL is passed, then dropdown content shouldn't be toggled. --}}
-		<x-header.nav-item title="Destinations" icon="" url="">
-			<x-header.nav-item-dropdown-content>
-				<x-header.nav-item-dropdown-content-column>
-					<x-header.nav-item-featured image_id="34">
-						<x-header.nav-item-featured-title title="Explore Polar Regions" />
-						<x-header.nav-item-featured-subtitle subtitle="Incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis." />
-						<x-button href="#" size="big">Explore Polar Regions</x-button>
-					</x-header.nav-item-featured>
-				</x-header.nav-item-dropdown-content-column>
-				<x-header.nav-item-dropdown-content-column>
-					<x-two-columns :border="true">
-						<x-two-columns.column>
-							<x-menu-list title="Antarctic Regions">
-								<x-menu-list.item title="Antarctic Peninsula" url="#" />
-								<x-menu-list.item title="Falkland Islands" url="#" />
-								<x-menu-list.item title="Patagonia" url="#" />
-								<x-menu-list.item title="South Georgia" url="#" />
-								<x-menu-list.item title="Snow Hill Island" url="#" />
-							</x-menu-list>
-							<x-thumbnail-cards :is_carousel="false" :full_width="false">
-								<x-thumbnail-cards.card size="medium" url="#" orientation="landscape" image_id="29">
-									<x-thumbnail-cards.title title="Arctic Expeditions" align="bottom" />
-								</x-thumbnail-cards.card>
-							</x-thumbnail-cards>
-						</x-two-columns.column>
-						<x-two-columns.column>
-							<x-menu-list title="Arctic Regions">
-								<x-menu-list.item title="Canadian High Arctic" url="#" />
-								<x-menu-list.item title="Greenland" url="#" />
-								<x-menu-list.item title="Svalbard" url="#" />
-							</x-menu-list>
-							<x-thumbnail-cards :is_carousel="false" :full_width="false">
-								<x-thumbnail-cards.card size="medium" url="#" orientation="landscape" image_id="34">
-									<x-thumbnail-cards.title title="Patagonia Expeditions" align="bottom" />
-								</x-thumbnail-cards.card>
-							</x-thumbnail-cards>
-						</x-two-columns.column>
-					</x-two-columns>
-				</x-header.nav-item-dropdown-content-column>
-			</x-header.nav-item-dropdown-content>
-		</x-header.nav-item>
+			<tp-lightbox-content class="media-lightbox__content"></tp-lightbox-content>
 
-		<x-header.nav-item title="Expeditions" icon="" url="">
-			<x-header.nav-item-dropdown-content>
-				<x-header.nav-item-dropdown-content-column>
-					<x-header.nav-item-featured image_id="32">
-						<x-header.nav-item-featured-title title="Explore Polar Expeditions" />
-						<x-header.nav-item-featured-subtitle subtitle="Incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis." />
-						<x-button size="big">Explore Polar Expeditions</x-button>
-					</x-header.nav-item-featured>
-				</x-header.nav-item-dropdown-content-column>
-				<x-header.nav-item-dropdown-content-column>
-					<x-two-columns :border="true">
-						<x-two-columns.column>
-							<x-menu-list title="Antarctic Expeditions">
-								<x-menu-list.item title="Antarctic Peninsula" url="#" />
-								<x-menu-list.item title="Falkland Islands & South Georgia" url="#" />
-								<x-menu-list.item title="Patagonia" url="#" />
-								<x-menu-list.item title="Snow Hill Island" url="#" />
-							</x-menu-list>
-							<x-thumbnail-cards :is_carousel="false" :full_width="false">
-								<x-thumbnail-cards.card size="medium" url="#" orientation="landscape" image_id="32">
-									<x-thumbnail-cards.title title="View All Antarctic Departures" align="bottom" />
-								</x-thumbnail-cards.card>
-							</x-thumbnail-cards>
-						</x-two-columns.column>
-						<x-two-columns.column>
-							<x-menu-list title="arctic Regions">
-								<x-menu-list.item title="Canadian High Arctic" url="#" />
-								<x-menu-list.item title="Greenland" url="#" />
-								<x-menu-list.item title="Svalbard" url="#" />
-							</x-menu-list>
-							<x-thumbnail-cards :is_carousel="false" :full_width="false">
-								<x-thumbnail-cards.card size="medium" url="#" orientation="landscape" image_id="36">
-									<x-thumbnail-cards.title title="View All Antarctic Departures" align="bottom" />
-								</x-thumbnail-cards.card>
-							</x-thumbnail-cards>
-						</x-two-columns.column>
-					</x-two-columns>
-				</x-header.nav-item-dropdown-content-column>
-			</x-header.nav-item-dropdown-content>
-		</x-header.nav-item>
-		<x-header.nav-item title="Ships" icon="" url="">
-			<x-header.nav-item-dropdown-content>
-				<x-header.nav-item-dropdown-content-column>
-					<x-header.nav-item-featured image_id="32">
-						<x-header.nav-item-featured-title title="Advantage of Small Ships" />
-						<x-header.nav-item-featured-subtitle subtitle="Incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis." />
-						<x-button size="big">View All Ships</x-button>
-					</x-header.nav-item-featured>
-				</x-header.nav-item-dropdown-content-column>
-				<x-header.nav-item-dropdown-content-column>
-					<x-two-columns :border="true">
-						<x-two-columns.column>
-							<x-menu-list title="Ships">
-								<x-menu-list.item title="Ocean Adventurer" url="#" />
-								<x-menu-list.item title="Ocean Explorer" url="#" />
-								<x-menu-list.item title="Ultramarine" url="#" />
-								<x-menu-list.item title="World Explorer" url="#" />
-							</x-menu-list>
-						</x-two-columns.column>
-					</x-two-columns>
-				</x-header.nav-item-dropdown-content-column>
-			</x-header.nav-item-dropdown-content>
-		</x-header.nav-item>
-		<x-header.nav-item title="Offers" icon="" url="">
-			<x-header.nav-item-dropdown-content>
-				<x-header.nav-item-dropdown-content-column>
-					<x-header.nav-item-featured image_id="31">
-						<x-header.nav-item-featured-title title="Explore Arctic: Save Up to 40%" />
-						<x-button size="big">View All Offers</x-button>
-					</x-header.nav-item-featured>
-				</x-header.nav-item-dropdown-content-column>
-				<x-header.nav-item-dropdown-content-column>
-					<x-two-columns :border="true">
-						<x-two-columns.column>
-							<x-thumbnail-cards :is_carousel="false" :full_width="false">
-								<x-thumbnail-cards.card size="small" url="#" orientation="portrait" image_id="29">
-									<x-thumbnail-cards.title title="Arctic Expeditions" align="bottom" />
-								</x-thumbnail-cards.card>
-								<x-thumbnail-cards.card size="small" url="#" orientation="portrait" image_id="30">
-									<x-thumbnail-cards.title title="Antarctic Expeditions" align="bottom" />
-								</x-thumbnail-cards.card>
-								<x-thumbnail-cards.card size="small" url="#" orientation="portrait" image_id="33">
-									<x-thumbnail-cards.title title="Patagonia Expeditions" align="bottom" />
-								</x-thumbnail-cards.card>
-							</x-thumbnail-cards>
-						</x-two-columns.column>
-					</x-two-columns>
-				</x-header.nav-item-dropdown-content-column>
-			</x-header.nav-item-dropdown-content>
-		</x-header.nav-item>
-		<x-header.nav-item title="More" icon="" url="" class="header__more-menu-item">
-			<x-header.nav-item-dropdown-content>
-				<x-header.nav-item-dropdown-content-column>
-					<x-header.nav-item-featured image_id="34">
-						<x-header.nav-item-featured-title title="Why Quark Expeditions" />
-						<x-header.nav-item-featured-subtitle subtitle="Incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis." />
-						<x-button size="big">Why Quark Expeditions</x-button>
-					</x-header.nav-item-featured>
-				</x-header.nav-item-dropdown-content-column>
-				<x-header.nav-item-dropdown-content-column>
-					<x-two-columns :border="true">
-						<x-two-columns.column>
-							<x-menu-list title="More">
-								<x-menu-list.item title="Why Quark Expeditions" url="#" />
-								<x-menu-list.item title="Our Expedition History" url="#" />
-								<x-menu-list.item title="Our Team" url="#" />
-								<x-menu-list.item title="Adventure Options" url="#" />
-								<x-menu-list.item title="Sustainability" url="#" />
-								<x-menu-list.item title="Blog" url="#" />
-								<x-menu-list.item title="Dates and Rates" url="#" />
-								<x-menu-list.item title="Travel Advisors" url="#" />
-							</x-menu-list>
-						</x-two-columns.column>
-					</x-two-columns>
-				</x-header.nav-item-dropdown-content-column>
-			</x-header.nav-item-dropdown-content>
-		</x-header.nav-item>
-		<x-header.nav-item title="About Us" icon="" url="">
-			<x-header.nav-item-dropdown-content>
-				<x-header.nav-item-dropdown-content-column>
-					<x-header.nav-item-featured image_id="34">
-						<x-header.nav-item-featured-title title="Why Quark Expeditions" />
-						<x-header.nav-item-featured-subtitle subtitle="Incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis." />
-						<x-button size="big">Why Quark Expeditions</x-button>
-					</x-header.nav-item-featured>
-				</x-header.nav-item-dropdown-content-column>
-				<x-header.nav-item-dropdown-content-column>
-					<x-two-columns :border="true">
-						<x-two-columns.column>
-							<x-menu-list title="About Quark Expeditions">
-								<x-menu-list.item title="Why Quark Expeditions" url="#" />
-								<x-menu-list.item title="Our Expedition History" url="#" />
-								<x-menu-list.item title="Our Team" url="#" />
-								<x-menu-list.item title="Adventure Options" url="#" />
-								<x-menu-list.item title="Sustainability" url="#" />
-								<x-menu-list.item title="Blog" url="#" />
-							</x-menu-list>
-						</x-two-columns.column>
-					</x-two-columns>
-				</x-header.nav-item-dropdown-content-column>
-			</x-header.nav-item-dropdown-content>
-		</x-header.nav-item>
-	</x-header.primary-nav>
+			<tp-lightbox-previous class="media-lightbox__prev">
+				<button class="media-lightbox__prev-button"><x-svg name="chevron-left" /></button>
+			</tp-lightbox-previous>
 
-	<x-header.secondary-nav>
-		<x-header.nav-item class="header__search-item" title="" icon="search" url="" />
-		<x-header.nav-item title="Dates & Prices" icon="" url="/dates-prices" />
-		<x-header.nav-item title="Travel Advisors" icon="" url="/travel-advisors" />
-	</x-header.secondary-nav>
+			<tp-lightbox-next class="media-lightbox__next">
+				<button class="media-lightbox__next-button"><x-svg name="chevron-left" /></button>
+			</tp-lightbox-next>
 
-	<x-header.cta-buttons>
-		<x-button class="header__phone-btn" href="tel:+1-877-585-1235" size="big" color="white" appearance="outline">
-			<x-svg name="phone" />
-			+1-877-585-1235
-		</x-button>
-		<x-button class="header__request-quote-btn" size="big">Request a Quote</x-button>
-	</x-header.cta-buttons>
-
-	<x-drawer.drawer-open drawer_id="header-drawer" class="color-context--dark header__hamburger-menu">
-		<x-button type="button" size="big" color="black">
-			<x-svg name="hamburger" />
-		</x-button>
-	</x-drawer.drawer-open>
-
-	<x-drawer id="header-drawer" class="header__drawer">
-		<x-drawer.header>
-			<x-header.site-logo />
-		</x-drawer.header>
-
-		<x-drawer.body>
-			<x-accordion title="Quark Expeditions takes you places no one else can!">
-				<x-accordion.item>
-					<x-accordion.item-handle title="Destinations" />
-					<x-accordion.item-content>
-						<x-header.nav-item-featured image_id="32" size="small">
-							<x-header.nav-item-featured-title title="Explore Polar Regions" />
-							<x-header.nav-item-featured-subtitle subtitle="Incididunt ut labore et dolore magna aliqua." />
-							<x-button size="big">Explore Polar Regions</x-button>
-						</x-header.nav-item-featured>
-
-						<x-menu-list title="Antarctic Regions">
-							<x-menu-list.item title="Antarctic Peninsula" url="#" />
-							<x-menu-list.item title="Falkland Islands" url="#" />
-							<x-menu-list.item title="Patagonia" url="#" />
-							<x-menu-list.item title="South Georgia" url="#" />
-							<x-menu-list.item title="Snow Hill Island" url="#" />
-						</x-menu-list>
-
-						<x-menu-list title="Arctic Regions">
-							<x-menu-list.item title="Canadian High Arctic" url="#" />
-							<x-menu-list.item title="Greenland" url="#" />
-							<x-menu-list.item title="Svalbard" url="#" />
-						</x-menu-list>
-					</x-accordion.item-content>
-				</x-accordion.item>
-				<x-accordion.item>
-					<x-accordion.item-handle title="Expeditions" />
-					<x-accordion.item-content>
-						<x-header.nav-item-featured image_id="32" size="small">
-							<x-header.nav-item-featured-title title="Explore Polar Regions" />
-							<x-header.nav-item-featured-subtitle subtitle="Incididunt ut labore et dolore magna aliqua." />
-							<x-button size="big">Explore Polar Regions</x-button>
-						</x-header.nav-item-featured>
-
-						<x-menu-list title="Antarctic Regions">
-							<x-menu-list.item title="Antarctic Peninsula" url="#" />
-							<x-menu-list.item title="Falkland Islands" url="#" />
-							<x-menu-list.item title="Patagonia" url="#" />
-							<x-menu-list.item title="South Georgia" url="#" />
-							<x-menu-list.item title="Snow Hill Island" url="#" />
-						</x-menu-list>
-					</x-accordion.item-content>
-				</x-accordion.item>
-				<x-accordion.item>
-					<x-accordion.item-handle title="Ships" />
-					<x-accordion.item-content>
-						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.</p>
-					</x-accordion.item-content>
-				</x-accordion.item>
-				<x-accordion.item>
-					<x-accordion.item-handle title="Offers" />
-					<x-accordion.item-content>
-						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.</p>
-					</x-accordion.item-content>
-				</x-accordion.item>
-				<x-accordion.item>
-					<x-accordion.item-handle title="About Us" />
-					<x-accordion.item-content>
-						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.</p>
-					</x-accordion.item-content>
-				</x-accordion.item>
-			</x-accordion>
-
-			<ul class="header__drawer-quick-links">
-				<li><a href="#">Dates & Rates</a></li>
-				<li><a href="#">Travel Advisors</a></li>
-				<li><a href="tel:+1-877-585-1235">Call Now to Book : +1 (866) 253-3145</a></li>
-			</ul>
-
-			<x-button class="header__drawer-request-quote-btn" size="big">Request a Quote</x-button>
-		</x-drawer.body>
-	</x-drawer>
-</x-header>
+			<tp-lightbox-count class="media-lightbox__count" format="$current/$total"></tp-lightbox-count>
+		</dialog>
+	</tp-lightbox>
+</x-once>
+{{--  --}}
 
 <x-component-demo :keys="[ 'sidebar-grid', 'lp-header', 'hero-refactor' ]">
 	<x-lp-header
@@ -2680,6 +2413,7 @@
 		</x-offer-cards.card>
 	</x-offer-cards>
 </x-component-demo>
+
 <x-component-demo :keys="[ 'media-text-cta' ]">
 	<x-media-text-cta>
 		<x-media-text-cta.image image_id="32">
@@ -2722,6 +2456,36 @@
 			<x-media-text-cta.secondary-text text="23 days | Starting From $26,979 USD" />
 			<x-media-text-cta.cta>
 				<x-button size="big" color="black">Request a Quote</x-button>
+			</x-media-text-cta.cta>
+		</x-media-text-cta.content>
+	</x-media-text-cta>
+
+	<x-media-text-cta>
+		<x-media-text-cta.image image_id="32" aspect_ratio="square" />
+		<x-media-text-cta.content>
+			<x-media-text-cta.content-title title="Expedition Team" heading_level="2" />
+			<x-media-text-cta.overline>Expedition Guides and Education Team</x-media-text-cta.overline>
+			<x-media-text-cta.description>
+				<p>Quark Expeditions Guides and Education Team are Polar-passionate and seasoned veterans with rich backgrounds in marine biology, penguinology, history, geology, wildlife, glaciology and more. Many are skilled in guiding activities such Zodiac cruising, kayaking, hiking, photography and mountaineering.</p>
+			</x-media-text-cta.description>
+			<x-media-text-cta.cta>
+				<x-button size="big" color="black">Apply Now</x-button>
+			</x-media-text-cta.cta>
+		</x-media-text-cta.content>
+	</x-media-text-cta>
+
+	<x-media-text-cta media_align="right">
+		<x-media-text-cta.image image_id="32" aspect_ratio="square"/>
+		<x-media-text-cta.content>
+			<x-media-text-cta.content-title title="Corporate Team" heading_level="3" />
+			<x-media-text-cta.overline>Operations, Finance, IT, Marketing, Sales and Product Innovation</x-media-text-cta.overline>
+			<x-media-text-cta.description>
+				<p>Members of our corporate team—even though they spend their working days thousands of miles from the Arctic or Antarctic—become deeply connected to the Polar Regions.</p>
+				<p>Members of our corporate team—even though they spend their working days thousands of miles from the Arctic or Antarctic—become deeply connected to the Polar Regions.</p>
+				<p>Ready to explore a new career path? Talk to us.</p>
+			</x-media-text-cta.description>
+			<x-media-text-cta.cta>
+				<x-button size="big" color="black">View Open Opportunities</x-button>
 			</x-media-text-cta.cta>
 		</x-media-text-cta.content>
 	</x-media-text-cta>
@@ -3982,6 +3746,358 @@
 	</x-section>
 </x-component-demo>
 
+<x-component-demo :keys="[ 'departure-cards' ]">
+	<x-departure-cards>
+		<x-departure-cards.card>
+			<x-departure-cards.card-banner text="Quark Protection Promise" />
+			<x-departure-cards.header>
+				<x-departure-cards.title title="Crossing the Cirlc: Southern Expedition" />
+				<x-departure-cards.promo-tag text="Save up to 24%" />
+			</x-departure-cards.header>
+			<x-departure-cards.body>
+				<x-departure-cards.body-column>
+					<x-departure-cards.specifications>
+						<x-departure-cards.specification-item>
+							<x-departure-cards.specification-label>
+								Itinerary
+							</x-departure-cards.specification-label>
+							<x-departure-cards.specification-value>
+								12 days <br> (March 1-14, 2024)
+							</x-departure-cards.specification-value>
+						</x-departure-cards.specification-item>
+
+						<x-departure-cards.specification-item>
+							<x-departure-cards.specification-label>
+								Starting from
+							</x-departure-cards.specification-label>
+							<x-departure-cards.specification-value>
+								Buenos Aires, Argentina
+							</x-departure-cards.specification-value>
+						</x-departure-cards.specification-item>
+
+						<x-departure-cards.specification-item>
+							<x-departure-cards.specification-label>
+								Ship
+							</x-departure-cards.specification-label>
+							<x-departure-cards.specification-value>
+								Ultramarine
+							</x-departure-cards.specification-value>
+						</x-departure-cards.specification-item>
+
+						<x-departure-cards.specification-item>
+							<x-departure-cards.specification-label>
+								Languages
+							</x-departure-cards.specification-label>
+							<x-departure-cards.specification-value>
+								English, French
+							</x-departure-cards.specification-value>
+						</x-departure-cards.specification-item>
+
+						<x-departure-cards.specification-item>
+							<x-departure-cards.specification-label>
+								Adventure Options
+							</x-departure-cards.specification-label>
+							<x-departure-cards.specification-value>
+								<x-departure-cards.adventure-options>
+									<x-departure-cards.adventure-option title="Sea Kayaking" />
+									<x-departure-cards.adventure-option title="Stand-up Paddleboarding" />
+									<x-departure-cards.adventure-option title="Zodiac Cruising" />
+									<x-departure-cards.adventure-option title="Heli-hiking" />
+									<x-departure-cards.adventure-option title="Polar Plunge" />
+									<x-departure-cards.adventure-option title="Polar Camping" />
+									<x-departure-cards.adventure-option title="Flightseeing" />
+									<x-departure-cards.adventure-option title="Hot Air Ballooning" />
+
+									<x-departure-cards.adventure-options-tooltip>
+										<ul>
+											<li>Sea Kayaking</li>
+											<li>Stand-up Paddleboarding</li>
+											<li>Zodiac Cruising</li>
+											<li>Heli-hiking</li>
+											<li>Polar Plunge</li>
+											<li>Polar Camping</li>
+											<li>Flightseeing</li>
+											<li>Hot Air Ballooning</li>
+										</ul>
+									</x-departure-cards.adventure-options-tooltip>
+								</x-departure-cards.adventure-options>
+							</x-departure-cards.specification-value>
+						</x-departure-cards.specification-item>
+					</x-departure-cards.specifications>
+
+					<x-departure-cards.offers title="Available Offers">
+						<x-departure-cards.offer title="Save 30% on Premium Cabins" />
+						<x-departure-cards.offer title="$1000 Flight Credit" />
+						<x-departure-cards.offer title="Save 25% on Standard Cabins" />
+						<x-departure-cards.offer title="Offer 4" />
+						<x-departure-cards.offer title="Offer 5" />
+						<x-departure-cards.offers-modal title="Crossing the Cirlc: Southern Expedition">
+							<ul>
+								<li>Save 30% on Premium Cabins</li>
+								<li>$1000 Flight Credit</li>
+								<li>Save 25% on Standard Cabins</li>
+								<li>Offer 4</li>
+								<li>Offer 5</li>
+							</ul>
+						</x-departure-cards.offers-modal>
+					</x-departure-cards.offers>
+				</x-departure-cards.body-column>
+
+				<x-departure-cards.body-column>
+					<x-departure-cards.price
+						original_price="$9,395 USD"
+						discounted_price="$7,271 USD"
+					/>
+
+					<x-departure-cards.transfer_package
+						drawer_id="departure-cards-id-1"
+						drawer_title="Mandatory Transfer Package"
+					>
+						<p><strong>Package Includes:</strong></p>
+						<ul>
+							<li>One night’s pre-expedition hotel night in Aberdeen</li>
+							<li>Group transfer from Aberdeen hotel to ship on embarkation day</li>
+							<li>Departure transfer in Longyearbyen on disembarkation day</li>
+							<li>Charter flight from Longyearbyen to Helsinki on disembarkation day</li>
+						</ul>
+						<p><strong>Package Price: $695 USD</strong></p>
+					</x-departure-cards.transfer_package>
+
+					<x-button size="big">View Cabin Pricing & Options</x-button>
+				</x-departure-cards.body-column>
+			</x-departure-cards.body>
+
+			<x-departure-cards.more-details>
+				{{-- <x-product-options-cards> // Component Ticket -> https://tuispecialist.atlassian.net/browse/QE-304 --}}
+			</x-departure-cards.more-details>
+		</x-departure-cards.card>
+
+		<x-departure-cards.card>
+			<x-departure-cards.card-banner text="Quark Protection Promise" />
+			<x-departure-cards.header>
+				<x-departure-cards.departing-on date="March 1, 2024" />
+				<x-departure-cards.promo-tag text="Save up to 24%" />
+			</x-departure-cards.header>
+			<x-departure-cards.body>
+				<x-departure-cards.body-column>
+					<x-departure-cards.specifications>
+						<x-departure-cards.specification-item>
+							<x-departure-cards.specification-label>
+								Itinerary
+							</x-departure-cards.specification-label>
+							<x-departure-cards.specification-value>
+								12 days <br> (March 1-14, 2024)
+							</x-departure-cards.specification-value>
+						</x-departure-cards.specification-item>
+
+						<x-departure-cards.specification-item>
+							<x-departure-cards.specification-label>
+								Starting from
+							</x-departure-cards.specification-label>
+							<x-departure-cards.specification-value>
+								Buenos Aires, Argentina
+							</x-departure-cards.specification-value>
+						</x-departure-cards.specification-item>
+
+						<x-departure-cards.specification-item>
+							<x-departure-cards.specification-label>
+								Ship
+							</x-departure-cards.specification-label>
+							<x-departure-cards.specification-value>
+								Ultramarine
+							</x-departure-cards.specification-value>
+						</x-departure-cards.specification-item>
+
+						<x-departure-cards.specification-item>
+							<x-departure-cards.specification-label>
+								Languages
+							</x-departure-cards.specification-label>
+							<x-departure-cards.specification-value>
+								English, French
+							</x-departure-cards.specification-value>
+						</x-departure-cards.specification-item>
+
+						<x-departure-cards.specification-item>
+							<x-departure-cards.specification-label>
+								Adventure Options
+							</x-departure-cards.specification-label>
+							<x-departure-cards.specification-value>
+								<x-departure-cards.adventure-options>
+									<x-departure-cards.adventure-option title="Sea Kayaking" />
+									<x-departure-cards.adventure-option title="Stand-up Paddleboarding" />
+									<x-departure-cards.adventure-option title="Zodiac Cruising" />
+
+									<x-departure-cards.adventure-options-tooltip>
+										<ul>
+											<li>Sea Kayaking</li>
+											<li>Stand-up Paddleboarding</li>
+											<li>Zodiac Cruising</li>
+											<li>Heli-hiking</li>
+										</ul>
+									</x-departure-cards.adventure-options-tooltip>
+								</x-departure-cards.adventure-options>
+							</x-departure-cards.specification-value>
+						</x-departure-cards.specification-item>
+					</x-departure-cards.specifications>
+
+					<x-departure-cards.offers title="Available Offers">
+						<x-departure-cards.offer title="Save 30% on Premium Cabins" />
+						<x-departure-cards.offer title="$1000 Flight Credit" />
+						<x-departure-cards.offer title="Save 25% on Standard Cabins" />
+						<x-departure-cards.offer title="Offer 4" />
+						<x-departure-cards.offer title="Offer 5" />
+						<x-departure-cards.offers-modal title="Crossing the Cirlc: Southern Expedition">
+							<ul>
+								<li>Save 30% on Premium Cabins</li>
+								<li>$1000 Flight Credit</li>
+								<li>Save 25% on Standard Cabins</li>
+								<li>Offer 4</li>
+								<li>Offer 5</li>
+							</ul>
+						</x-departure-cards.offers-modal>
+					</x-departure-cards.offers>
+				</x-departure-cards.body-column>
+
+				<x-departure-cards.body-column>
+					<x-departure-cards.price
+						original_price="$9,395 USD"
+						discounted_price="$7,271 USD"
+					/>
+
+					<x-departure-cards.transfer_package
+						drawer_id="departure-cards-id-2"
+						drawer_title="Mandatory Transfer Package"
+					>
+						<p><strong>Package Includes:</strong></p>
+						<ul>
+							<li>One night’s pre-expedition hotel night in Aberdeen</li>
+							<li>Group transfer from Aberdeen hotel to ship on embarkation day</li>
+							<li>Departure transfer in Longyearbyen on disembarkation day</li>
+							<li>Charter flight from Longyearbyen to Helsinki on disembarkation day</li>
+						</ul>
+						<p><strong>Package Price: $695 USD</strong></p>
+					</x-departure-cards.transfer_package>
+
+					<x-button size="big">View Cabin Pricing & Options</x-button>
+				</x-departure-cards.body-column>
+			</x-departure-cards.body>
+
+			<x-departure-cards.more-details>
+				{{-- <x-product-options-cards> // Component Ticket -> https://tuispecialist.atlassian.net/browse/QE-304 --}}
+			</x-departure-cards.more-details>
+		</x-departure-cards.card>
+
+		<x-departure-cards.card>
+			<x-departure-cards.card-banner text="Quark Protection Promise" />
+			<x-departure-cards.header>
+				<x-departure-cards.departing-on date="March 1, 2024" />
+				<x-departure-cards.promo-tag text="Save up to 24%" />
+			</x-departure-cards.header>
+			<x-departure-cards.body>
+				<x-departure-cards.body-column>
+					<x-departure-cards.specifications>
+						<x-departure-cards.specification-item>
+							<x-departure-cards.specification-label>
+								Itinerary
+							</x-departure-cards.specification-label>
+							<x-departure-cards.specification-value>
+								12 days <br> (March 1-14, 2024)
+							</x-departure-cards.specification-value>
+						</x-departure-cards.specification-item>
+
+						<x-departure-cards.specification-item>
+							<x-departure-cards.specification-label>
+								Starting from
+							</x-departure-cards.specification-label>
+							<x-departure-cards.specification-value>
+								Buenos Aires, Argentina
+							</x-departure-cards.specification-value>
+						</x-departure-cards.specification-item>
+
+						<x-departure-cards.specification-item>
+							<x-departure-cards.specification-label>
+								Ship
+							</x-departure-cards.specification-label>
+							<x-departure-cards.specification-value>
+								Ultramarine
+							</x-departure-cards.specification-value>
+						</x-departure-cards.specification-item>
+
+						<x-departure-cards.specification-item>
+							<x-departure-cards.specification-label>
+								Languages
+							</x-departure-cards.specification-label>
+							<x-departure-cards.specification-value>
+								English, French
+							</x-departure-cards.specification-value>
+						</x-departure-cards.specification-item>
+
+						<x-departure-cards.specification-item>
+							<x-departure-cards.specification-label>
+								Adventure Options
+							</x-departure-cards.specification-label>
+							<x-departure-cards.specification-value>
+								<x-departure-cards.adventure-options>
+									<x-departure-cards.adventure-option title="Sea Kayaking" />
+									<x-departure-cards.adventure-option title="Stand-up Paddleboarding" />
+									<x-departure-cards.adventure-option title="Zodiac Cruising" />
+
+									<x-departure-cards.adventure-options-tooltip>
+										<ul>
+											<li>Sea Kayaking</li>
+											<li>Stand-up Paddleboarding</li>
+											<li>Zodiac Cruising</li>
+											<li>Heli-hiking</li>
+										</ul>
+									</x-departure-cards.adventure-options-tooltip>
+								</x-departure-cards.adventure-options>
+							</x-departure-cards.specification-value>
+						</x-departure-cards.specification-item>
+					</x-departure-cards.specifications>
+
+					<x-departure-cards.offers title="Available Offers">
+						<x-departure-cards.offer title="Offer 4" />
+						<x-departure-cards.offer title="Offer 5" />
+						<x-departure-cards.offers-modal title="Crossing the Cirlc: Southern Expedition">
+							<ul>
+								<li>Offer 4</li>
+								<li>Offer 5</li>
+							</ul>
+						</x-departure-cards.offers-modal>
+					</x-departure-cards.offers>
+				</x-departure-cards.body-column>
+
+				<x-departure-cards.body-column>
+					<x-departure-cards.price
+						original_price="$9,395 USD"
+						discounted_price="$7,271 USD"
+					/>
+
+					<x-departure-cards.transfer_package
+						drawer_id="departure-cards-id-3"
+						drawer_title="Mandatory Transfer Package"
+					>
+						<p><strong>Package Includes:</strong></p>
+						<ul>
+							<li>One night’s pre-expedition hotel night in Aberdeen</li>
+							<li>Group transfer from Aberdeen hotel to ship on embarkation day</li>
+							<li>Departure transfer in Longyearbyen on disembarkation day</li>
+							<li>Charter flight from Longyearbyen to Helsinki on disembarkation day</li>
+						</ul>
+						<p><strong>Package Price: $695 USD</strong></p>
+					</x-departure-cards.transfer_package>
+
+					<x-button size="big">View Cabin Pricing & Options</x-button>
+				</x-departure-cards.body-column>
+			</x-departure-cards.body>
+
+			<x-departure-cards.more-details>
+				{{-- <x-product-options-cards> // Component Ticket -> https://tuispecialist.atlassian.net/browse/QE-304 --}}
+			</x-departure-cards.more-details>
+		</x-departure-cards.card>
+	</x-departure-cards>
+</x-component-demo>
+
 <x-component-demo :keys="[ 'hero-card-slider' ]">
 	<x-section title="Hero Card Slider">
 		<div style="margin-bottom: 64px;">
@@ -4414,6 +4530,35 @@
 			<x-media-carousel.item image_id="32" />
 			<x-media-carousel.item image_id="152" />
 		</x-media-carousel>
+	</x-section>
+</x-component-demo>
+
+<x-component-demo :keys="[ 'link-detail-cards' ]">
+	<x-section>
+		<x-section.heading>
+			<x-section.title title="Link Detail Cards" />
+		</x-section.heading>
+
+		<x-link-detail-cards>
+			<x-link-detail-cards.card url="#">
+				<x-link-detail-cards.title title="15 Day Free Cancellation" />
+				<x-link-detail-cards.description>
+					<p>Free cancellation if you change you mind within 15 days.</p>
+				</x-link-detail-cards.description>
+			</x-link-detail-cards.card>
+			<x-link-detail-cards.card url="#">
+				<x-link-detail-cards.title title="No Surcharges" />
+				<x-link-detail-cards.description>
+					<p>Zero future surcharges mean the price you book today is the price you pay.</p>
+				</x-link-detail-cards.description>
+			</x-link-detail-cards.card>
+			<x-link-detail-cards.card url="#">
+				<x-link-detail-cards.title title="Refund Guarantee" />
+				<x-link-detail-cards.description>
+					<p>Quark Expeditions will refund your trip if Quark Expeditions cancels your voyage.</p>
+				</x-link-detail-cards.description>
+			</x-link-detail-cards.card>
+		</x-link-detail-cards>
 	</x-section>
 </x-component-demo>
 

@@ -1,0 +1,38 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Media Description Card",
+	"name": "quark/media-description-card",
+	"description": "Media Description Card.",
+	"category": "widgets",
+	"keywords": [
+		"media",
+		"description",
+		"card"
+	],
+	"textdomain": "qrk",
+	"attributes": {
+		"title": {
+			"type": "string",
+			"default": ""
+		},
+		"image": {
+			"type": "object",
+			"default": {}
+		},
+		"description": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"parent": [
+		"quark/media-description-cards"
+	],
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

@@ -94,7 +94,16 @@ class Itinerary extends Softrip_Object {
 			$departure = new Departure();
 			$departure->set_itinerary( $this );
 			$departure->load( absint( $post_id ) );
-			$this->departures[ $departure->get_post_meta( 'departure_unique_id' ) ] = $departure;
+			$departure_unique_id = $departure->get_post_meta( 'departure_unique_id' );
+
+			// Skip if departure unique id doesn't exist.
+			if ( empty( $departure_unique_id ) ) {
+				unset( $departure );
+				continue;
+			}
+
+			// Add departure to the list.
+			$this->departures[ $departure_unique_id ] = $departure;
 		}
 
 		// Set departures loaded.
@@ -135,11 +144,16 @@ class Itinerary extends Softrip_Object {
 	/**
 	 * Get a departure by id.
 	 *
-	 * @param string|null $id Departure ID.
+	 * @param string $id Departure ID.
 	 *
-	 * @return Departure
+	 * @return Departure|null
 	 */
-	public function get_departure( string|null $id = null ): Departure {
+	public function get_departure( string $id = '' ): Departure|null {
+		// Bail if no ID.
+		if ( empty( $id ) ) {
+			return null;
+		}
+
 		// Ensure departures loaded.
 		$this->ensure_departures_loaded();
 
@@ -162,9 +176,9 @@ class Itinerary extends Softrip_Object {
 	 * @return void
 	 */
 	public function update_departures( array $departures = [] ): void {
-		// If no data is supplied, attempt to get it.
+		// If no data is supplied, attempt to get it from the middleware.
 		if ( empty( $departures ) ) {
-			// Get the Softrip ID and request the departures from the middleware.
+			// Get the Softrip ID and request the middleware.
 			$softrip_id     = strval( $this->get_post_meta( 'softrip_package_id' ) );
 			$raw_departures = request_departures( [ $softrip_id ] );
 
@@ -178,13 +192,25 @@ class Itinerary extends Softrip_Object {
 		}
 
 		// Bail if departures are missing.
-		if ( ! is_array( $departures['departures'] ) ) {
+		if ( empty( $departures['departures'] ) || ! is_array( $departures['departures'] ) ) {
 			return;
 		}
 
 		// Go over each departure and create a new Departure post for each.
 		foreach ( $departures['departures'] as $raw_departure ) {
+			if ( ! is_array( $raw_departure ) || empty( $raw_departure['id'] ) ) {
+				continue;
+			}
+
+			// Get the departure instance.
 			$departure = $this->get_departure( strval( $raw_departure['id'] ) );
+
+			// Skip if departure object is null.
+			if ( empty( $departure ) ) {
+				continue;
+			}
+
+			// Update the departure.
 			$departure->set( $raw_departure, true );
 		}
 
@@ -272,7 +298,7 @@ class Itinerary extends Softrip_Object {
 			}
 
 			// Check if start date is set and is newer than the previous date.
-			if ( empty( $start_date ) || strtotime( $start_date ) < strtotime( $test_date ) ) {
+			if ( empty( $start_date ) || strtotime( $start_date ) > strtotime( $test_date ) ) {
 				// Use the date as it's newer.
 				$start_date = $test_date;
 			}
