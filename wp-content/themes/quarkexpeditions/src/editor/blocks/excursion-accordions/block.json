@@ -1,0 +1,26 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Excursion Accordion",
+	"name": "quark/excursion-accordion",
+	"description": "Add Accordion Block with one or more items",
+	"category": "layout",
+	"keywords": [
+		"excursion",
+		"accordion"
+	],
+	"textdomain": "qrk",
+	"attributes": {
+		"terms": {
+			"type": "array",
+			"default": []
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}
