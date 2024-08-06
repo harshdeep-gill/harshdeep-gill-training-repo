@@ -12,6 +12,8 @@ use WP_CLI;
 use WP_Error;
 use WP_Query;
 
+use function Quark\Softrip\Departure\update_departures;
+
 use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
 
 const SCHEDULE_RECURRENCE       = 'qrk_softrip_4_hourly';
@@ -192,9 +194,9 @@ function do_sync( $itinerary_post_ids = [] ): void {
 		}
 
 		// Process each departure.
-		foreach ( $raw_departures as $softrip_id => $departures ) {
+		foreach ( $raw_departures as $softrip_package_code => $departures ) {
 			// Validate is array and not empty.
-			if ( ! is_array( $departures ) || empty( $departures ) ) {
+			if ( ! is_string( $softrip_package_code ) || ! is_array( $departures ) || empty( $departures ) || empty( $departures['departures'] ) ) {
 				// Update progress bar.
 				if ( $is_in_cli ) {
 					$progress->tick();
@@ -205,7 +207,7 @@ function do_sync( $itinerary_post_ids = [] ): void {
 			}
 
 			// Update departure data.
-			$success = rand( 0, 1 );
+			$success = update_departures( $departures['departures'], $softrip_package_code );
 
 			// Update progress bar.
 			if ( $is_in_cli ) {
