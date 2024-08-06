@@ -52,11 +52,11 @@
 
 	&__secondary-text {
 		color: var(--color-gray-60);
-		margin-top: var(--spacing-6);
+		margin-top: var(--spacing-4);
 	}
 
 	&__cta {
-		margin-top: var(--spacing-4);
+		margin-top: var(--spacing-6);
 
 		.btn {
 			min-width: 200px;
@@ -77,5 +77,15 @@
 
 	.fancy-video {
 		height: 100%;
+	}
+
+	&__overline {
+		color: var(--color-gray-80);
+		font-weight: var(--font-weight-bold);
+		margin-top: var(--spacing-4);
+	}
+
+	&__description {
+		margin-top: var(--spacing-4);
 	}
 }

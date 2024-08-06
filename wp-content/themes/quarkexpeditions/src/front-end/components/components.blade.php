@@ -2413,6 +2413,7 @@
 		</x-offer-cards.card>
 	</x-offer-cards>
 </x-component-demo>
+
 <x-component-demo :keys="[ 'media-text-cta' ]">
 	<x-media-text-cta>
 		<x-media-text-cta.image image_id="32">
@@ -2455,6 +2456,36 @@
 			<x-media-text-cta.secondary-text text="23 days | Starting From $26,979 USD" />
 			<x-media-text-cta.cta>
 				<x-button size="big" color="black">Request a Quote</x-button>
+			</x-media-text-cta.cta>
+		</x-media-text-cta.content>
+	</x-media-text-cta>
+
+	<x-media-text-cta>
+		<x-media-text-cta.image image_id="32" aspect_ratio="square" />
+		<x-media-text-cta.content>
+			<x-media-text-cta.content-title title="Expedition Team" heading_level="2" />
+			<x-media-text-cta.overline>Expedition Guides and Education Team</x-media-text-cta.overline>
+			<x-media-text-cta.description>
+				<p>Quark Expeditions Guides and Education Team are Polar-passionate and seasoned veterans with rich backgrounds in marine biology, penguinology, history, geology, wildlife, glaciology and more. Many are skilled in guiding activities such Zodiac cruising, kayaking, hiking, photography and mountaineering.</p>
+			</x-media-text-cta.description>
+			<x-media-text-cta.cta>
+				<x-button size="big" color="black">Apply Now</x-button>
+			</x-media-text-cta.cta>
+		</x-media-text-cta.content>
+	</x-media-text-cta>
+
+	<x-media-text-cta media_align="right">
+		<x-media-text-cta.image image_id="32" aspect_ratio="square"/>
+		<x-media-text-cta.content>
+			<x-media-text-cta.content-title title="Corporate Team" heading_level="3" />
+			<x-media-text-cta.overline>Operations, Finance, IT, Marketing, Sales and Product Innovation</x-media-text-cta.overline>
+			<x-media-text-cta.description>
+				<p>Members of our corporate team—even though they spend their working days thousands of miles from the Arctic or Antarctic—become deeply connected to the Polar Regions.</p>
+				<p>Members of our corporate team—even though they spend their working days thousands of miles from the Arctic or Antarctic—become deeply connected to the Polar Regions.</p>
+				<p>Ready to explore a new career path? Talk to us.</p>
+			</x-media-text-cta.description>
+			<x-media-text-cta.cta>
+				<x-button size="big" color="black">View Open Opportunities</x-button>
 			</x-media-text-cta.cta>
 		</x-media-text-cta.content>
 	</x-media-text-cta>
