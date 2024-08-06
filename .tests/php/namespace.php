@@ -7,6 +7,8 @@
 
 namespace Quark\Tests;
 
+use function Quark\Tests\Softrip\setup_softrip_db_tables;
+
 /**
  * Bootstrap the tests.
  *
@@ -52,4 +54,7 @@ function load_environment(): void {
 			return 'quark';
 		}
 	);
+
+	// Setup Softrip database tables.
+	setup_softrip_db_tables();
 }

@@ -58,7 +58,7 @@
     "oscarotero/env": "^v2.1.0",
     "squizlabs/php_codesniffer": "*",
     "phpunit/phpunit": "^9.6.15",
-    "wp-coding-standards/wpcs": "^3.1.0",
+    "travelopia/wordpress-coding-standards": "*",
     "wp-phpunit/wp-phpunit": "*",
     "yoast/phpunit-polyfills": "^1.1.0",
     "wpackagist-plugin/query-monitor": "*",
@@ -67,9 +67,6 @@
     "wp-cli/wp-cli": "^v2.9.0"
   },
   "scripts": {
-    "set-coding-standards": "phpcs --config-set installed_paths vendor/wp-coding-standards/wpcs,vendor/phpcsstandards/phpcsutils,vendor/phpcsstandards/phpcsextra,wp-content/mu-plugins/travelopia/travelopia-coding-standards/wordpress/phpcs",
-    "post-install-cmd": "[ $COMPOSER_DEV_MODE -eq 0 ] || composer run set-coding-standards",
-    "post-update-cmd": "[ $COMPOSER_DEV_MODE -eq 0 ] || composer run set-coding-standards",
     "lint": "phpcs",
     "static-analysis": "phpstan analyse -c phpstan.neon --memory-limit=512M",
     "test": "phpunit",

@@ -1,7 +1,12 @@
 /**
  * Global variables.
  */
-const { customElements, HTMLElement, GLightbox } = window;
+const { customElements, HTMLElement } = window;
+
+/**
+ * External dependencies.
+ */
+import { TPLightboxElement, TPLightboxTriggerElement } from '@travelopia/web-components';
 
 /**
  * MediaLightbox Class.
@@ -10,8 +15,13 @@ export default class MediaLightbox extends HTMLElement {
 	/**
 	 * Properties.
 	 */
-	public lightbox: typeof GLightbox | undefined;
-	private readonly slideIndexElement: HTMLDivElement | null;
+	private readonly lightbox: TPLightboxElement | null | undefined;
+	private readonly triggerElement: TPLightboxTriggerElement | null;
+	private readonly triggerButton: HTMLButtonElement | null | undefined;
+	private readonly dialogElement: HTMLDialogElement | undefined;
+	private readonly bulletElement: HTMLElement | undefined;
+	private readonly nextButtonElement: HTMLElement | undefined;
+	private readonly prevButtonElement: HTMLElement | undefined;
 
 	/**
 	 * Constructor.
@@ -20,79 +30,149 @@ export default class MediaLightbox extends HTMLElement {
 		// Initialize parent.
 		super();
 
-		// Create slide index element.
-		this.slideIndexElement = document.createElement( 'div' );
-		this.slideIndexElement.classList.add( 'glightbox-slide-index' );
+		// Get trigger element.
+		this.triggerElement = this.querySelector( 'tp-lightbox-trigger' );
 
-		// Initialize lightbox.
-		this.initialize();
-	}
-
-	/**
-	 * Initialize lightbox.
-	 */
-	initialize(): void {
-		// Check if GLightbox exists.
-		if ( ! GLightbox ) {
-			// Bail early.
+		// Do we have triggerElement?
+		if ( ! this.triggerElement ) {
+			// No, we don't.
 			return;
 		}
 
-		// Initialize the lightbox.
-		this.lightbox = new GLightbox( {
-			touchNavigation: true,
-			loop: false,
-			openEffect: 'fade',
-			closeEffect: 'fade',
-			autoplayVideos: true,
-			videosWidth: '1280px',
-			onClose: () => this.clearSlideIndexText(),
-			afterSlideChange: ( _prev: any, next: { index: any } ) => {
-				// Check if next and slide index element is available.
-				if ( next && this.slideIndexElement ) {
-					// Add the slide count in the text.
-					this.slideIndexElement.innerText = `${ next.index + 1 } of ${ this.lightbox?.elements.length }`;
-				}
-			},
-		} );
+		// Get trigger button.
+		this.triggerButton = this.triggerElement.querySelector( 'button' );
 
-		// Add captions and slide indexes.
-		this.addSlideIndex();
+		// Events.
+		this.triggerButton?.addEventListener( 'click', this.handleTriggerClick.bind( this ) );
+
+		// Get lightbox id
+		const lightboxID = this.triggerElement.getAttribute( 'lightbox' ) ?? '';
+
+		// Check for lightboxID
+		if ( ! lightboxID ) {
+			// Not found, bail.
+			return;
+		}
+
+		// Initialize elements.
+		this.lightbox = document.querySelector( `#${ lightboxID }` ) as TPLightboxElement;
+
+		// Check if we have a lightbox.
+		if ( ! this.lightbox ) {
+			// We don't, bail.
+			return;
+		}
+
+		// Initialize elements.
+		this.bulletElement = this.lightbox.querySelector( '.media-lightbox__bullets' ) as HTMLElement;
+		this.nextButtonElement = this.lightbox.querySelector( 'tp-lightbox-next' ) as HTMLElement;
+		this.prevButtonElement = this.lightbox.querySelector( 'tp-lightbox-previous' ) as HTMLElement;
+		this.dialogElement = this.lightbox.querySelector( 'dialog' ) as HTMLDialogElement;
+
+		// Check if the lightbox has template-set event listener.
+		const hasTemplateChangeEventListener = this.lightbox.getAttribute( 'data-event-added' );
+
+		// Events
+		if ( ! hasTemplateChangeEventListener ) {
+			this.lightbox.addEventListener( 'template-set', this.addBulletsToLightbox.bind( this ) );
+			this.lightbox.setAttribute( 'data-event-added', 'yes' );
+		}
+
+		// Setup close event handler.
+		this.dialogElement?.addEventListener( 'close', this.handleLightboxClose.bind( this ) );
 	}
 
 	/**
-	 * Add slide index.
+	 * Handles the click on the lightbox trigger.
 	 */
-	addSlideIndex() {
-		// Prepare slider counter on 'open' event.
-		this.lightbox?.on( 'open', () => {
-			// If slideIndexElement is not present return.
-			if ( ! this.slideIndexElement ) {
-				// Return.
-				return;
+	handleTriggerClick(): void {
+		// Get the iframe.
+		const videoIframe = this.querySelector( 'template' )?.content.querySelector( 'iframe' );
+
+		// Check if we have iframe.
+		if ( ! videoIframe ) {
+			// We don't.
+			return;
+		}
+
+		// Set autoplay.
+		videoIframe.src = `${ videoIframe.dataset.path }?autoplay=1`;
+	}
+
+	/**
+	 * Handles the lightbox close event.
+	 */
+	handleLightboxClose(): void {
+		// Get the iframe.
+		const videoIframe = this.dialogElement?.querySelector( 'iframe' );
+
+		// Check if we have iframe.
+		if ( ! videoIframe ) {
+			// We don't.
+			return;
+		}
+
+		// Unset autoplay.
+		videoIframe.src = `${ videoIframe.dataset.path }`;
+	}
+
+	/**
+	 * Adds dots slider to the lightbox.
+	 */
+	addBulletsToLightbox() {
+		// Check if lightbox is available.
+		if ( ! this.lightbox ) {
+			// If lightbox does not exist, bail out.
+			return;
+		}
+
+		// Get the current and total slide number.
+		const current: string = this.lightbox.currentIndex.toString() ?? '';
+		const total: string = this.lightbox.getAttribute( 'total' ) ?? '';
+
+		// Check if the total number of slides is less than or equal to 1.
+		if ( 1 >= parseInt( total ) ) {
+			// Set the attribute hidden to next and previous buttons.
+			this.nextButtonElement?.setAttribute( 'hidden', 'true' );
+			this.prevButtonElement?.setAttribute( 'hidden', 'true' );
+
+			// If the total number of slides is less than or equal to 1, bail out.
+			return;
+		}
+
+		// Check if the bullet container exists.
+		if ( ! this.bulletElement ) {
+			// If bullet container does not exist, bail out.
+			return;
+		}
+
+		// Clear the bullet container.
+		this.bulletElement.innerHTML = '';
+
+		// Loop to create the specified number of bullets.
+		for ( let i = 0; i < parseInt( total ); i++ ) {
+			// Create a new button element for each bullet.
+			const singleBullet: HTMLElement = document.createElement( 'button' );
+
+			// Add an event listener to the bullet.
+			singleBullet.addEventListener( 'click', () => {
+				// Set the current slide to the bullet index.
+				if ( this.lightbox ) {
+					this.lightbox.currentIndex = i + 1;
+				}
+			} );
+
+			// Add the appropriate class to the bullet.
+			singleBullet.classList.add( 'media-lightbox__bullet' );
+
+			// If this bullet is the current one, mark it accordingly.
+			if ( i + 1 === parseInt( current ) ) {
+				singleBullet.setAttribute( 'current', 'yes' );
 			}
 
-			// Add slide index element inside slide container.
-			this.lightbox?.slidesContainer.after( this.slideIndexElement );
-
-			// Events: Immediately hide the counter when the close button is click or the overlay is clicked.
-			this.lightbox?.modal?.querySelector( '.gclose.gbtn' )?.addEventListener( 'click', this.clearSlideIndexText.bind( this ) );
-			this.lightbox?.slidesContainer?.addEventListener( 'click', this.clearSlideIndexText.bind( this ) );
-		} );
-	}
-
-	/**
-	 * Clear slide index text.
-	 */
-	clearSlideIndexText() {
-		// If slide index element is not available return.
-		if ( ! this.slideIndexElement ) {
-			// Early return.
-			return;
+			// Append the bullet to the container.
+			this.bulletElement.appendChild( singleBullet );
 		}
-
-		// Set the slide index element text to empty.
-		this.slideIndexElement.innerText = '';
 	}
 }
 

@@ -56,3 +56,8 @@ define( 'DISALLOW_FILE_MODS', true );
 if ( ! defined( 'ABSPATH' ) ) {
 	define( 'ABSPATH', dirname( __DIR__ ) . '/../wp/' );
 }
+
+// Softrip API credentials.
+define( 'QUARK_SOFTRIP_ADAPTER_BASE_URL', 'https://softrip-adapter.dev' );
+define( 'QUARK_SOFTRIP_ADAPTER_USERNAME', 'test' );
+define( 'QUARK_SOFTRIP_ADAPTER_PASSWORD', 'test' );

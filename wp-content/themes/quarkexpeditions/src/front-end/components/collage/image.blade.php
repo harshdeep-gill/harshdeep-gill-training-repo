@@ -5,7 +5,7 @@
 ] )
 
 @aware( [
-    'name'     => '',
+	'name' => '',
 ] )
 
 @php
@@ -37,24 +37,13 @@
 			'crop' => 'fill',
 		]
 	];
-
-	// Get the full URL of the image.
-	$full_url = quark_dynamic_image_url(
-		[
-			'id'        => $image_id,
-			'transform' => [
-				'quality' => 90,
-			],
-		]
-	);
 @endphp
-
 
 @if ( ! empty( $name ) )
 	<tp-slider-slide @class($classes)>
 		<x-media-lightbox
 			name="{{ $name ?? '' }}"
-			path="{{ $full_url }}"
+			:image_id="$image_id"
 			title="{{ $title }}"
 		>
 			<x-image
