@@ -86,8 +86,8 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 					'sub_fields'        => [
 						[
 							'key'               => 'field_65f16c2b2a17b',
-							'label'             => 'Departure ID',
-							'name'              => 'departure_id',
+							'label'             => 'Code',
+							'name'              => 'code',
 							'aria-label'        => '',
 							'type'              => 'text',
 							'instructions'      => '',
@@ -107,8 +107,8 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 						],
 						[
 							'key'               => 'field_65f16c852a17e',
-							'label'             => 'Package ID',
-							'name'              => 'package_id',
+							'label'             => 'Package Code',
+							'name'              => 'package_code',
 							'aria-label'        => '',
 							'type'              => 'text',
 							'instructions'      => '',
@@ -131,7 +131,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 				[
 					'key'               => 'field_65f16c4c2a17c',
 					'label'             => 'Departure Start Date',
-					'name'              => 'departure_start_date',
+					'name'              => 'start_date',
 					'aria-label'        => '',
 					'type'              => 'date_picker',
 					'instructions'      => 'The date when trip or departure ends',

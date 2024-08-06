@@ -521,7 +521,7 @@ class Test_Departure extends WP_UnitTestCase {
 		$this->assertEquals( $raw_departure['code'], $departure->get_post_meta( 'softrip_code' ) );
 		$this->assertEquals( $raw_departure['id'], $departure->get_post_meta( 'softrip_id' ) );
 		$this->assertEquals( $raw_departure['packageCode'], $departure->get_post_meta( 'softrip_package_code' ) );
-		$this->assertEquals( $raw_departure['startDate'], $departure->get_post_meta( 'departure_start_date' ) );
+		$this->assertEquals( $raw_departure['startDate'], $departure->get_post_meta( 'start_date' ) );
 		$this->assertEquals( $raw_departure['endDate'], $departure->get_post_meta( 'departure_end_date' ) );
 		$this->assertEquals( $raw_departure['duration'], $departure->get_post_meta( 'duration' ) );
 		$this->assertEquals( $itinerary_post_id, $departure->get_post_meta( 'itinerary' ) );

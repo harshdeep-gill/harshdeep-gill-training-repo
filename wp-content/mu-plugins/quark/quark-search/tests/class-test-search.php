@@ -240,13 +240,13 @@ class Test_Search extends WP_UnitTestCase {
 				'posts_per_page'         => 10,
 				'meta_query'             => [
 					[
-						'key'     => 'departure_start_date',
+						'key'     => 'start_date',
 						'value'   => [ '2024-10-01', '2024-10-31' ],
 						'type'    => 'DATE',
 						'compare' => 'BETWEEN',
 					],
 					[
-						'key'     => 'departure_start_date',
+						'key'     => 'start_date',
 						'value'   => [ '2025-04-01', '2025-04-30' ],
 						'type'    => 'DATE',
 						'compare' => 'BETWEEN',
@@ -265,14 +265,14 @@ class Test_Search extends WP_UnitTestCase {
 		$class         = new ReflectionClass( $solr_search );
 		$set_solr_sort = $class->getMethod( 'set_sort' );
 		$set_solr_sort->invokeArgs( $solr_search, [ 'durations', 'desc' ] );
-		$set_solr_sort->invokeArgs( $solr_search, [ 'departure_start_date', 'asc' ] );
+		$set_solr_sort->invokeArgs( $solr_search, [ 'start_date', 'asc' ] );
 		$sorts = $class->getProperty( 'sorts' );
 
 		// Make private property accessible and test.
 		$this->assertEquals(
 			[
 				'duration_i'             => 'desc',
-				'departure_start_date_i' => 'asc',
+				'start_date_i' => 'asc',
 			],
 			$sorts->getValue( $solr_search ),
 		);

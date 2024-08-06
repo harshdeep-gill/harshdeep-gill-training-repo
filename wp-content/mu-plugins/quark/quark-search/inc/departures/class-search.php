@@ -25,7 +25,7 @@ class Search {
 	 */
 	private array $field_mapping = [
 		'durations'            => 'duration_i',
-		'departure_start_date' => 'departure_start_date_i',
+		'start_date' => 'start_date_i',
 	];
 
 	/**
@@ -270,7 +270,7 @@ class Search {
 
 			// Set departure meta query (date Format: Ymd).
 			$this->args['meta_query'][] = [
-				'key'     => 'departure_start_date',
+				'key'     => 'start_date',
 				'value'   => [ gmdate( 'Y-m-01', $departure ), gmdate( 'Y-m-t', $departure ) ],
 				'type'    => 'DATE',
 				'compare' => 'BETWEEN',

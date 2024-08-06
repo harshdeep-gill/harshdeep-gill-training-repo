@@ -163,7 +163,7 @@ class Departure extends Softrip_Object {
 				'related_ship'         => '',
 				'softrip_code' => '',
 				'softrip_package_code'   => '',
-				'departure_start_date' => '',
+				'start_date' => '',
 				'departure_end_date'   => null,
 				'duration'             => null,
 				'itinerary'            => $this->itinerary->get_id(),
@@ -242,7 +242,7 @@ class Departure extends Softrip_Object {
 				'softrip_code' => $data['code'],
 				'softrip_id'  => $data['id'],
 				'softrip_package_code'   => $data['packageCode'],
-				'departure_start_date' => $data['startDate'],
+				'start_date' => $data['startDate'],
 				'departure_end_date'   => $data['endDate'],
 				'duration'             => $data['duration'],
 				'itinerary'            => $this->itinerary->get_id(),
@@ -469,15 +469,15 @@ class Departure extends Softrip_Object {
 		}
 
 		// Get the departure start date.
-		$departure_start_date = $this->get_post_meta( 'departure_start_date' );
+		$start_date = $this->get_post_meta( 'start_date' );
 
 		// Validate the start date.
-		if ( empty( $departure_start_date ) || ! is_string( $departure_start_date ) ) {
+		if ( empty( $start_date ) || ! is_string( $start_date ) ) {
 			return '';
 		}
 
 		// Return the start date.
-		return $departure_start_date;
+		return $start_date;
 	}
 
 	/**
