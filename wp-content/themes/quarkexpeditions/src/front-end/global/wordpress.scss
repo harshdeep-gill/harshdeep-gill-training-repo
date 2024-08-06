@@ -244,28 +244,19 @@
 	}
 }
 
-.wp-block-table.is-style-data {
-
-	table {
-
-		th {
-			background-color: var(--color-teal);
-			color: var(--color-white);
-		}
-	}
-}
-
-.wp-block-table {
+.travelopia-table {
 	margin-top: var(--typography-spacing);
 	margin-bottom: var(--typography-spacing);
 	overflow-x: auto;
 
 	table {
-
 		min-width: 100%;
 		border-collapse: collapse;
 		width: 100%;
-		table-layout: fixed;
+
+		@media screen and (min-width: grid-size(md)) {
+			table-layout: fixed;
+		}
 
 		td {
 			border: 1px solid var(--color-gray-20);
@@ -284,20 +275,14 @@
 		thead {
 			background-color: var(--color-gray-10);
 			border-bottom: 1px solid var(--color-gray-20);
+			font-size: var(--font-size-small);
+			font-weight: var(--font-weight-bold);
+			line-height: var(--line-height-small);
+			text-transform: uppercase;
 		}
 
 		tfoot {
 			border-top: 1px solid var(--color-gray-20);
-		}
-	}
-
-	&.is-style-stripes {
-
-		tbody {
-
-			tr:nth-child(odd) {
-				background-color: var(--color-gray-10);
-			}
 		}
 	}
 

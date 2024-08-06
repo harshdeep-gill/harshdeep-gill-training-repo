@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ea645e02f27c924094327006f47d94bf",
+    "content-hash": "4ebb3f79b8c5b4ba19606bfbc8a2b3e9",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -1216,6 +1216,53 @@
                 "issues": "https://github.com/Travelopia/advanced-custom-fields-pro/issues"
             },
             "time": "2024-07-22T05:22:15+00:00"
+        },
+        {
+            "name": "travelopia/wordpress-blocks",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Travelopia/wordpress-blocks.git",
+                "reference": "b67195cbf519a8c043b82bc40887119d16f7faf6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Travelopia/wordpress-blocks/zipball/b67195cbf519a8c043b82bc40887119d16f7faf6",
+                "reference": "b67195cbf519a8c043b82bc40887119d16f7faf6",
+                "shasum": ""
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^1.10",
+                "roots/wordpress": "*",
+                "squizlabs/php_codesniffer": "^3.8",
+                "wp-coding-standards/wpcs": "^3.0"
+            },
+            "type": "wordpress-plugin",
+            "extra": {
+                "wordpress-install-dir": "vendor/wordpress"
+            },
+            "scripts": {
+                "set-coding-standards": [
+                    "phpcs --config-set installed_paths vendor/wp-coding-standards/wpcs,vendor/phpcsstandards/phpcsutils,vendor/phpcsstandards/phpcsextra"
+                ],
+                "post-install-cmd": [
+                    "[ $COMPOSER_DEV_MODE -eq 0 ] || composer run set-coding-standards"
+                ],
+                "post-update-cmd": [
+                    "[ $COMPOSER_DEV_MODE -eq 0 ] || composer run set-coding-standards"
+                ],
+                "lint": [
+                    "phpcs"
+                ],
+                "static-analysis": [
+                    "phpstan analyse -c phpstan.neon --memory-limit=512M"
+                ]
+            },
+            "support": {
+                "source": "https://github.com/Travelopia/wordpress-blocks/tree/1.1.0",
+                "issues": "https://github.com/Travelopia/wordpress-blocks/issues"
+            },
+            "time": "2024-08-04T23:37:20+00:00"
         },
         {
             "name": "travelopia/wordpress-packages",
