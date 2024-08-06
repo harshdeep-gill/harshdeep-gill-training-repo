@@ -7,7 +7,12 @@
 
 namespace Quark\Itineraries;
 
+use Quark\Softrip\Itinerary;
 use WP_Post;
+
+use WP_Term;
+use function Quark\Brochures\get as get_brochure;
+use function Quark\ItineraryDays\get as get_itinerary_day;
 
 use const Quark\StaffMembers\SEASON_TAXONOMY;
 
@@ -361,8 +366,6 @@ function get( int $post_id = 0 ): array {
  *     taxonomy: string,
  *     description: string,
  *     parent: int,
- *     count: int,
- *     filter: string
  * } Season data.
  */
 function get_season( int $post_id = 0 ): array {
@@ -386,4 +389,216 @@ function get_season( int $post_id = 0 ): array {
 
 	// Return season data.
 	return $post['post_taxonomies'][ SEASON_TAXONOMY ][0];
+}
+
+/**
+ * Prepare details for itinerary tabs.
+ *
+ * @param array<int> $itineraries Array of itinerary post IDs.
+ *
+ * @return array<string|int, mixed>
+ */
+function get_details_tabs_data( array $itineraries = [] ): array {
+	// Build the component attributes.
+	$details = [];
+
+	// Loop through the itineraries.
+	foreach ( $itineraries as $index => $itinerary ) {
+		// Get the itinerary.
+		$itinerary = get( $itinerary );
+
+		// Check if the itinerary is empty.
+		if ( ! $itinerary['post'] instanceof WP_Post ) {
+			continue;
+		}
+
+		// Initialize variables for the component attributes.
+		$tab_id             = sprintf( 'tab-%d', absint( $index ) + 1 );
+		$tab_title          = '';
+		$tab_subtitle       = '';
+		$duration           = '';
+		$tab_content_header = '';
+		$departing_from     = '';
+		$itinerary_days     = [];
+		$brochure           = '';
+		$ships              = [];
+
+		// Prepare the tab title.
+		if ( ! empty( $itinerary['post_meta']['duration_in_days'] ) ) {
+			$tab_title = sprintf( '%d %s', absint( $itinerary['post_meta']['duration_in_days'] ), _n( 'Day', 'Days', absint( $itinerary['post_meta']['duration_in_days'] ), 'quark' ) );
+			$duration  = sprintf( '%d %s', absint( $itinerary['post_meta']['duration_in_days'] ), _n( 'day', 'days', absint( $itinerary['post_meta']['duration_in_days'] ), 'quark' ) );
+		}
+
+		// Prepare the tab subtitle.
+		if ( ! empty( $itinerary['post_meta']['start_location'] ) ) {
+			$start_location = get_term_by( 'id', absint( $itinerary['post_meta']['start_location'] ), DEPARTURE_LOCATION_TAXONOMY );
+
+			// Check if the start location is not empty.
+			if ( $start_location instanceof WP_Term ) {
+				// Set the departing from.
+				$departing_from = $start_location->name;
+				$tab_subtitle   = sprintf( 'From %s', $start_location->name );
+			}
+		}
+
+		// Prepare the tab content header.
+		if ( ! empty( $tab_subtitle ) && ! empty( $duration ) ) {
+			$tab_content_header = sprintf( '%s, %s, on Ultramarine', $tab_subtitle, $duration );
+		}
+
+		// Prepare the itinerary days accordion content.
+		if ( ! empty( $itinerary['post_meta']['itinerary_days'] ) && is_array( $itinerary['post_meta']['itinerary_days'] ) ) {
+			foreach ( $itinerary['post_meta']['itinerary_days'] as $itinerary_day ) {
+				// Get the itinerary day.
+				$itinerary_day = get_itinerary_day( $itinerary_day );
+
+				// Check if the itinerary day is empty.
+				if ( ! $itinerary_day['post'] instanceof WP_Post ) {
+					continue;
+				}
+
+				// Append the itinerary day with the title and content.
+				$itinerary_days[] = [
+					'title'   => format_itinerary_day_title( $itinerary_day['post']->ID ),
+					'content' => $itinerary_day['post']->post_content,
+				];
+			}
+		}
+
+		// Check if the itinerary has a brochure.
+		if ( ! empty( $itinerary['post_meta']['brochure'] ) ) {
+			$_brochure = get_brochure( absint( $itinerary['post_meta']['brochure'] ) );
+
+			// Check if the brochure pdf is not empty.
+			if ( ! empty( $_brochure['post_meta']['brochure_pdf'] ) ) {
+				$brochure = wp_get_attachment_url( absint( $_brochure['post_meta']['brochure_pdf'] ) );
+			}
+		}
+
+		// Get the itinerary object.
+		$itinerary_object = new Itinerary( $itinerary['post']->ID );
+
+		// Translators: %s is the lowest price.
+		$price = sprintf( __( '$%s USD per person', 'qrk' ), $itinerary_object->get_lowest_price() );
+
+		// Get the itinerary ships.
+		$_ships = $itinerary_object->get_related_ships();
+
+		// Loop through the ships.
+		foreach ( $_ships as $ship ) {
+			// Check if the ship post is empty.
+			if ( is_array( $ship ) && ! empty( $ship['post'] ) && ! $ship['post'] instanceof WP_Post ) {
+				// Append the ship to the ships list.
+				$ships[] = [
+					'name' => $ship['post']->post_title,
+					'link' => get_permalink( $ship['post']->ID ),
+				];
+			}
+		}
+
+		// Get itinerary ships.
+		$season = get_season( $itinerary['post']->ID );
+
+		// Check if the season is empty.
+		if ( empty( $season ) ) {
+			continue;
+		}
+
+		// Active tab for seasons tabs.
+		if ( ! isset( $details['active_tab'] ) || absint( $season['slug'] ) > absint( $details['active_tab'] ) ) {
+			$details['active_tab'] = $season['slug'];
+		}
+
+		// Seasons tab data.
+		$details['itinerary_groups'][ $season['slug'] ]['tab_id']    = $season['slug'];
+		$details['itinerary_groups'][ $season['slug'] ]['tab_title'] = sprintf( '%d.%d Season', $season['name'], absint( substr( $season['name'], -2 ) ) + 1 );
+
+		// Active tab for itinerary tabs.
+		if ( ! isset( $details['itinerary_groups'][ $season['slug'] ]['active_tab'] ) ) {
+			$details['itinerary_groups'][ $season['slug'] ]['active_tab'] = $tab_id;
+		}
+
+		// Append the itinerary to the component attributes.
+		$details['itinerary_groups'][ $season['slug'] ]['itineraries'][] = [
+			'tab_id'             => $tab_id,
+			'tab_title'          => $tab_title,
+			'tab_subtitle'       => $tab_subtitle,
+			'tab_content_header' => $tab_content_header,
+			'duration'           => $duration,
+			'departing_from'     => $departing_from,
+			'itinerary_days'     => $itinerary_days,
+			'map'                => $itinerary['post_meta']['map'] ?? 0,
+			'price'              => $price,
+			'brochure'           => $brochure,
+			'ships'              => $ships,
+		];
+	}
+
+	// Sort the itinerary groups.
+	if ( isset( $details['itinerary_groups'] ) ) {
+		ksort( $details['itinerary_groups'] );
+		$details['itinerary_groups'] = array_reverse( $details['itinerary_groups'] );
+	}
+
+	// Return the component attributes.
+	return $details;
+}
+
+/**
+ * Prepare the itinerary day title for display.
+ *
+ * @param int $itinerary_day The itinerary day ID.
+ *
+ * @return string The itinerary day title.
+ */
+function format_itinerary_day_title( int $itinerary_day = 0 ): string {
+	// Get the itinerary day.
+	$itinerary_day = get_itinerary_day( $itinerary_day );
+
+	// Check if the itinerary day is empty.
+	if ( ! $itinerary_day['post'] instanceof WP_Post ) {
+		return '';
+	}
+
+	// Check if the itinerary day has a title.
+	if ( empty( $itinerary_day['post_meta']['day_title'] ) ) {
+		return '';
+	}
+
+	// Check if the itinerary day is empty.
+	if ( empty( $itinerary_day['post_meta']['day_number_from'] ) || empty( $itinerary_day['post_meta']['day_number_to'] ) ) {
+		return strval( $itinerary_day['post_meta']['day_title'] );
+	}
+
+	// Example: Day 1: Day Title.
+	if ( absint( $itinerary_day['post_meta']['day_number_from'] ) === absint( $itinerary_day['post_meta']['day_number_to'] ) ) {
+		return sprintf(
+			'Day %s: %s',
+			$itinerary_day['post_meta']['day_number_from'],
+			strval( $itinerary_day['post_meta']['day_title'] )
+		);
+	}
+
+	// Return: Day 1 & 2: Day Title.
+	if ( absint( $itinerary_day['post_meta']['day_number_from'] ) + 1 === absint( $itinerary_day['post_meta']['day_number_to'] ) ) {
+		return sprintf(
+			'Day %s & %s: %s',
+			$itinerary_day['post_meta']['day_number_from'],
+			$itinerary_day['post_meta']['day_number_to'],
+			strval( $itinerary_day['post_meta']['day_title'] )
+		);
+	}
+
+	// Return: Day 3 to 5: Day Title.
+	if ( absint( $itinerary_day['post_meta']['day_number_from'] ) + 1 < absint( $itinerary_day['post_meta']['day_number_to'] ) ) {
+		return sprintf(
+			'Day %s to %s: %s',
+			$itinerary_day['post_meta']['day_number_from'],
+			$itinerary_day['post_meta']['day_number_to'],
+			strval( $itinerary_day['post_meta']['day_title'] )
+		);
+	}
+
+	// Return: the day title.
+	return strval( $itinerary_day['post_meta']['day_title'] );
 }

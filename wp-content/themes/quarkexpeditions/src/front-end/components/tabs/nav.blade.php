@@ -1,6 +1,7 @@
 @props( [
-	'id'    => '',
-	'title' => '',
+	'id'     => '',
+	'title'  => '',
+	'active' => false,
 ] )
 
 @php
@@ -9,7 +10,7 @@
 	}
 @endphp
 
-<tp-tabs-nav-item class="tabs__nav-item">
+<tp-tabs-nav-item class="tabs__nav-item" {!! $active ? "active='yes'" : '' !!}">
 	<a class="tabs__nav-link body-text-ui-small" href="#{{ $id }}">
 		<x-escape :content="$title" />
 	</a>

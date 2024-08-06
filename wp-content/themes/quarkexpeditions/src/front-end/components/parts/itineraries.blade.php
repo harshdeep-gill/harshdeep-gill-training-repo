@@ -12,54 +12,71 @@ if ( empty( $itinerary_groups ) ) {
 <x-tabs current_tab="{{ $active_tab }}" update_url="no">
 	<x-tabs.header>
 		@foreach( $itinerary_groups as $itinerary_group )
+			@if( empty( $itinerary_group['tab_id'] ) )
+				@continue;
+			@endif
+
 			<x-tabs.nav
+				active="{{ $active_tab === $itinerary_group['tab_id'] }}"
 				id="{{ $itinerary_group['tab_id'] }}"
-				title="{{ $itinerary_group['tab_title'] }}"
+				title="{{ $itinerary_group['tab_title'] ?? '' }}"
 			/>
 		@endforeach
 	</x-tabs.header>
 
 	<x-tabs.content>
 		@foreach( $itinerary_groups as $itinerary_group )
-			<x-tabs.tab id="{{ $itinerary_group['tab_id'] }}">
-				<x-itinerary-details current_tab="{{ $itinerary_group['active_tab'] }}">
+			@if( empty( $itinerary_group['tab_id'] ) )
+				@continue;
+			@endif
+
+			<x-tabs.tab id="{{ $itinerary_group['tab_id'] }}" open="{{ $active_tab === $itinerary_group['tab_id'] }}">
+				<x-itinerary-details current_tab="{{ $itinerary_group['active_tab'] ?? '' }}">
 					<x-itinerary-details.tabs-nav>
 						@foreach( $itinerary_group['itineraries'] as $itinerary )
-							<x-itinerary-details.tabs-nav-item id="{{ $itinerary['tab_id'] }}">
-								<x-itinerary-details.tabs-nav-item-title title="{{ $itinerary['tab_title'] }}" />
-								<x-itinerary-details.tabs-nav-item-subtitle subtitle="{{ $itinerary['tab_subtitle'] }}" />
+							@if( empty( $itinerary['tab_id'] ) )
+								@continue;
+							@endif
+
+							<x-itinerary-details.tabs-nav-item id="{{ $itinerary['tab_id'] }}" active="{{ $itinerary_group['active_tab'] === $itinerary['tab_id'] }}">
+								<x-itinerary-details.tabs-nav-item-title title="{{ $itinerary['tab_title'] ?? 'h' }}" />
+								<x-itinerary-details.tabs-nav-item-subtitle subtitle="{{ $itinerary['tab_subtitle'] ?? '' }}" />
 							</x-itinerary-details.tabs-nav-item>
 						@endforeach
 					</x-itinerary-details.tabs-nav>
 
 					<x-itinerary-details.tabs>
 						@foreach( $itinerary_group['itineraries'] as $itinerary )
-							<x-itinerary-details.tab id="{{ $itinerary['tab_id'] }}">
+							@if( empty( $itinerary['tab_id'] ) )
+								@continue;
+							@endif
+
+							<x-itinerary-details.tab id="{{ $itinerary['tab_id'] }}" open="{{ $itinerary_group['active_tab'] === $itinerary['tab_id'] }}">
 								<x-itinerary-details.header title="{{ $itinerary['tab_content_header'] ?? '' }}" />
 
 								<x-itinerary-details.body>
 									<x-itinerary-details.summary>
 										<x-itinerary-details.summary-content>
 											<dl>
-												<dt>Duration</dt>
+												<dt>{{ __( 'Duration', 'qrk' ) }}</dt>
 												<dd>{{ $itinerary['duration'] ?? '' }}</dd>
 
-												<dt>Departing from</dt>
+												<dt>{{ __( 'Departing from', 'qrk' ) }}</dt>
 												<dd>{{ $itinerary['departing_from'] ?? '' }}</dd>
 
 												@if( ! empty( $itinerary['ships'] ) )
-													<dt>Ship</dt>
+													<dt>{{ __( 'Ship', 'qrk' ) }}</dt>
 													@foreach( $itinerary['ships'] as $ship )
 														<dd>
 															{{ $ship['name'] }}
 															<br>
-															<a href="{{ $ship['link'] }}">Learn more about the ship</a>
+															<a href="{{ $ship['link'] }}">{{ __( 'Learn more about the ship', 'qrk' ) }}</a>
 														</dd>
 													@endforeach
 												@endif
 
-												<dt>Starting from</dt>
-												<dd>${{ $itinerary['price'] }} USD per person</dd>
+												<dt>{{ __( 'Starting from', 'qrk' ) }}</dt>
+												<dd>{{ $itinerary['price'] ?? '' }} </dd>
 											</dl>
 											@if( ! empty( $itinerary['brochure'] ) )
 												<x-itinerary-details.download-button url="{{ $itinerary['brochure'] }}" />
@@ -85,7 +102,7 @@ if ( empty( $itinerary_groups ) ) {
 
 								<x-itinerary-details.footer>
 									<x-itinerary-details.cta>
-										<x-button size="big" href="#">Request a Quote</x-button>
+										<x-button size="big" href="#">{{ __( 'Request a Quote', 'qrk' ) }}</x-button>
 										<x-itinerary-details.download-button url="#" />
 									</x-itinerary-details.cta>
 								</x-itinerary-details.footer>
