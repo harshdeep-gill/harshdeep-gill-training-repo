@@ -41,7 +41,7 @@ function update_departures( array $raw_departures = [], string $softrip_package_
         'ignore_sticky_posts' => true,
         'meta_query' => [
             [
-                'key' => 'softrip_package_id', // @todo Rename to softrip_package_code.
+                'key' => 'softrip_package_code', // @todo Rename to softrip_package_code.
                 'value' => $softrip_package_code,
             ],
         ],
@@ -70,7 +70,7 @@ function update_departures( array $raw_departures = [], string $softrip_package_
         'post_status' => [ 'draft', 'publish' ],
         'meta_query' => [
             [
-                'key' => 'softrip_package_id', // @todo Rename to softrip_package_code.
+                'key' => 'softrip_package_code', // @todo Rename to softrip_package_code.
                 'value' => $softrip_package_code,
             ],
         ],
@@ -221,7 +221,7 @@ function format_raw_departure_data( array $raw_departure_data = [], int $itinera
         'meta_input' => [
             'related_expedition' => $expedition_post_id,
             'related_ship'       => get_id_from_ship_code( $raw_departure_data['shipCode'] ),
-            'softrip_package_id' => $raw_departure_data['packageCode'],
+            'softrip_package_code' => $raw_departure_data['packageCode'],
             'softrip_id' => $raw_departure_data['id'],
             'softrip_code' => $raw_departure_data['code'],
             'departure_start_date' => $raw_departure_data['startDate'],

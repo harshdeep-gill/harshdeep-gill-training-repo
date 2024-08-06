@@ -179,7 +179,7 @@ class Itinerary extends Softrip_Object {
 		// If no data is supplied, attempt to get it from the middleware.
 		if ( empty( $departures ) ) {
 			// Get the Softrip ID and request the middleware.
-			$softrip_id     = strval( $this->get_post_meta( 'softrip_package_id' ) );
+			$softrip_id     = strval( $this->get_post_meta( 'softrip_package_code' ) );
 			$raw_departures = synchronize_itinerary_departures( [ $softrip_id ] );
 
 			// Check if is valid.

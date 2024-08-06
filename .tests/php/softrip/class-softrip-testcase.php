@@ -44,7 +44,7 @@ abstract class Softrip_TestCase extends WP_UnitTestCase {
 		);
 
 		// Write above code in loop.
-		$softrip_package_ids = [
+		$softrip_package_codes = [
 			'ABC-123',
 			'DEF-456',
 			'GHI-789',
@@ -67,9 +67,9 @@ abstract class Softrip_TestCase extends WP_UnitTestCase {
 			'FGH-890',
 		];
 
-		// Loop through the itineraries and set softrip package id meta.
+		// Loop through the itineraries and set softrip package code meta.
 		foreach ( self::$itinerary_ids as $index => $itinerary_id ) {
-			update_post_meta( absint( $itinerary_id ), 'softrip_package_id', $softrip_package_ids[ $index ] );
+			update_post_meta( absint( $itinerary_id ), 'softrip_package_code', $softrip_package_codes[ $index ] );
 			wp_cache_delete( ITINERARY_POST_TYPE . '_' . absint( $itinerary_id ), ITINERARY_POST_TYPE );
 		}
 

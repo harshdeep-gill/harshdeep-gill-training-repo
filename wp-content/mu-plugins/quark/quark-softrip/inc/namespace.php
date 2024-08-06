@@ -132,7 +132,7 @@ function do_sync( $itinerary_post_ids = [] ): void {
 
 	// Get all package codes.
 	foreach ( $query->posts as $post_id ) {
-		$package_code = get_post_meta( absint( $post_id ), 'softrip_package_id', true );
+		$package_code = get_post_meta( absint( $post_id ), 'softrip_package_code', true );
 
 		if ( ! empty( $package_code ) && is_string( $package_code ) ) {
 			$package_codes[] = $package_code;

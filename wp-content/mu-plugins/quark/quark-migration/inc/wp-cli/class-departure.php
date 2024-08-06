@@ -204,7 +204,7 @@ class Departure {
 
 		// Set package id.
 		if ( ! empty( $item['package_id'] ) ) {
-			$data['meta_input']['softrip_package_id'] = strval( $item['package_id'] );
+			$data['meta_input']['softrip_package_code'] = strval( $item['package_id'] );
 		}
 
 		// Set itinerary_id as parent.

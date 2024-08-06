@@ -39,7 +39,7 @@ class Test_Itinerary extends Softrip_TestCase {
 				'post_type'    => ITINERARY_POST_TYPE,
 				'meta_input'   => [
 					'test_meta'          => 1,
-					'softrip_package_id' => 'UNQ-123',
+					'softrip_package_code' => 'UNQ-123',
 				],
 			]
 		);
@@ -76,7 +76,7 @@ class Test_Itinerary extends Softrip_TestCase {
 				'post_type'    => ITINERARY_POST_TYPE,
 				'meta_input'   => [
 					'test_meta'          => 1,
-					'softrip_package_id' => 'UNQ-123',
+					'softrip_package_code' => 'UNQ-123',
 				],
 			]
 		);
@@ -113,7 +113,7 @@ class Test_Itinerary extends Softrip_TestCase {
 				'post_type'    => ITINERARY_POST_TYPE,
 				'meta_input'   => [
 					'test_meta'          => 1,
-					'softrip_package_id' => 'UNQ-123',
+					'softrip_package_code' => 'UNQ-123',
 				],
 			]
 		);
@@ -152,7 +152,7 @@ class Test_Itinerary extends Softrip_TestCase {
 				'post_type'    => ITINERARY_POST_TYPE,
 				'meta_input'   => [
 					'test_meta'          => 1,
-					'softrip_package_id' => 'UNQ-123',
+					'softrip_package_code' => 'UNQ-123',
 				],
 			]
 		);
@@ -173,7 +173,7 @@ class Test_Itinerary extends Softrip_TestCase {
 		$this->assertEquals(
 			[
 				'test_meta'          => 1,
-				'softrip_package_id' => 'UNQ-123',
+				'softrip_package_code' => 'UNQ-123',
 			],
 			$all_data
 		);
@@ -201,7 +201,7 @@ class Test_Itinerary extends Softrip_TestCase {
 				'post_type'    => ITINERARY_POST_TYPE,
 				'meta_input'   => [
 					'test_meta'          => 1,
-					'softrip_package_id' => 'UNQ-123',
+					'softrip_package_code' => 'UNQ-123',
 				],
 			]
 		);
@@ -238,7 +238,7 @@ class Test_Itinerary extends Softrip_TestCase {
 				'post_type'    => ITINERARY_POST_TYPE,
 				'meta_input'   => [
 					'test_meta'          => 1,
-					'softrip_package_id' => 'UNQ-123',
+					'softrip_package_code' => 'UNQ-123',
 				],
 			]
 		);
@@ -361,7 +361,7 @@ class Test_Itinerary extends Softrip_TestCase {
 				'post_type'    => ITINERARY_POST_TYPE,
 				'meta_input'   => [
 					'test_meta'          => 1,
-					'softrip_package_id' => 'UNQ-123',
+					'softrip_package_code' => 'UNQ-123',
 				],
 			]
 		);
@@ -485,7 +485,7 @@ class Test_Itinerary extends Softrip_TestCase {
 				'post_type'    => ITINERARY_POST_TYPE,
 				'meta_input'   => [
 					'test_meta'          => 1,
-					'softrip_package_id' => 'UNQ-123',
+					'softrip_package_code' => 'UNQ-123',
 				],
 			]
 		);
@@ -630,7 +630,7 @@ class Test_Itinerary extends Softrip_TestCase {
 				'post_type'    => ITINERARY_POST_TYPE,
 				'meta_input'   => [
 					'test_meta'          => 1,
-					'softrip_package_id' => 'UNQ-123',
+					'softrip_package_code' => 'UNQ-123',
 				],
 			]
 		);
@@ -756,7 +756,7 @@ class Test_Itinerary extends Softrip_TestCase {
 				'post_type'    => ITINERARY_POST_TYPE,
 				'meta_input'   => [
 					'test_meta'          => 1,
-					'softrip_package_id' => 'ABC-123',
+					'softrip_package_code' => 'ABC-123',
 				],
 			]
 		);
@@ -854,7 +854,7 @@ class Test_Itinerary extends Softrip_TestCase {
 				'post_type'    => ITINERARY_POST_TYPE,
 				'meta_input'   => [
 					'test_meta'          => 1,
-					'softrip_package_id' => 'UNQ-123',
+					'softrip_package_code' => 'UNQ-123',
 				],
 			]
 		);
@@ -1000,7 +1000,7 @@ class Test_Itinerary extends Softrip_TestCase {
 				'post_type'    => ITINERARY_POST_TYPE,
 				'meta_input'   => [
 					'test_meta'          => 1,
-					'softrip_package_id' => 'UNQ-123',
+					'softrip_package_code' => 'UNQ-123',
 				],
 			]
 		);
@@ -1155,7 +1155,7 @@ class Test_Itinerary extends Softrip_TestCase {
 				'post_type'    => ITINERARY_POST_TYPE,
 				'meta_input'   => [
 					'test_meta'          => 1,
-					'softrip_package_id' => 'UNQ-123',
+					'softrip_package_code' => 'UNQ-123',
 				],
 			]
 		);
@@ -1218,7 +1218,7 @@ class Test_Itinerary extends Softrip_TestCase {
 				'post_type'    => ITINERARY_POST_TYPE,
 				'meta_input'   => [
 					'test_meta'          => 1,
-					'softrip_package_id' => 'UNQ-123',
+					'softrip_package_code' => 'UNQ-123',
 				],
 			]
 		);
