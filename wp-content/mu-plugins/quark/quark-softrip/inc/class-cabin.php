@@ -179,7 +179,7 @@ class Cabin extends Data_Object {
 			'departure'           => $this->departure->get_id(),
 			'cabin_category'      => $this->get_id(),
 			'package_id'          => strval( $this->departure->get_post_meta( 'softrip_package_id' ) ),
-			'departure_id'        => strval( $this->departure->get_post_meta( 'softrip_departure_id' ) ),
+			'departure_id'        => strval( $this->departure->get_post_meta( 'softrip_code' ) ),
 			'ship_id'             => strval( $this->departure->get_post_meta( 'ship_id' ) ),
 			'cabin_category_id'   => strval( $data['code'] ),
 			'availability_status' => 'C',

@@ -42,7 +42,7 @@ class Test_Departure extends WP_UnitTestCase {
 					'test_meta'            => 1,
 					'softrip_package_id'   => 'UNQ-123',
 					'departure_unique_id'  => 'UNQ-123:2026-01-01',
-					'softrip_departure_id' => 'UPL20260101',
+					'softrip_code' => 'UPL20260101',
 				],
 			]
 		);
@@ -81,7 +81,7 @@ class Test_Departure extends WP_UnitTestCase {
 					'test_meta'            => 1,
 					'softrip_package_id'   => 'UNQ-123',
 					'departure_unique_id'  => 'UNQ-123:2026-01-01',
-					'softrip_departure_id' => 'UPL20260101',
+					'softrip_code' => 'UPL20260101',
 				],
 			]
 		);
@@ -119,7 +119,7 @@ class Test_Departure extends WP_UnitTestCase {
 					'test_meta'            => 1,
 					'softrip_package_id'   => 'UNQ-123',
 					'departure_unique_id'  => 'UNQ-123:2026-01-01',
-					'softrip_departure_id' => 'UPL20260101',
+					'softrip_code' => 'UPL20260101',
 				],
 			]
 		);
@@ -164,8 +164,8 @@ class Test_Departure extends WP_UnitTestCase {
 		$this->assertEquals( 'UNQ-123', $meta_data['softrip_package_id'] );
 		$this->assertArrayHasKey( 'departure_unique_id', $meta_data );
 		$this->assertEquals( 'UNQ-123:2026-01-01', $meta_data['departure_unique_id'] );
-		$this->assertArrayHasKey( 'softrip_departure_id', $meta_data );
-		$this->assertEquals( 'UPL20260101', $meta_data['softrip_departure_id'] );
+		$this->assertArrayHasKey( 'softrip_code', $meta_data );
+		$this->assertEquals( 'UPL20260101', $meta_data['softrip_code'] );
 
 		// Validate taxonomies.
 		$this->assertNotEmpty( $data['post_taxonomies'] );
@@ -202,7 +202,7 @@ class Test_Departure extends WP_UnitTestCase {
 					'test_meta'            => 1,
 					'softrip_package_id'   => 'UNQ-123',
 					'departure_unique_id'  => 'UNQ-123:2026-01-01',
-					'softrip_departure_id' => 'UPL20260101',
+					'softrip_code' => 'UPL20260101',
 				],
 			]
 		);
@@ -224,15 +224,15 @@ class Test_Departure extends WP_UnitTestCase {
 		$this->assertEquals( 'UNQ-123', $meta['softrip_package_id'] );
 		$this->assertArrayHasKey( 'departure_unique_id', $meta );
 		$this->assertEquals( 'UNQ-123:2026-01-01', $meta['departure_unique_id'] );
-		$this->assertArrayHasKey( 'softrip_departure_id', $meta );
-		$this->assertEquals( 'UPL20260101', $meta['softrip_departure_id'] );
+		$this->assertArrayHasKey( 'softrip_code', $meta );
+		$this->assertEquals( 'UPL20260101', $meta['softrip_code'] );
 		$this->assertArrayNotHasKey( 'non_existent_meta', $meta );
 
 		// Get meta by key.
 		$this->assertEquals( 1, $departure->get_post_meta( 'test_meta' ) );
 		$this->assertEquals( 'UNQ-123', $departure->get_post_meta( 'softrip_package_id' ) );
 		$this->assertEquals( 'UNQ-123:2026-01-01', $departure->get_post_meta( 'departure_unique_id' ) );
-		$this->assertEquals( 'UPL20260101', $departure->get_post_meta( 'softrip_departure_id' ) );
+		$this->assertEquals( 'UPL20260101', $departure->get_post_meta( 'softrip_code' ) );
 		$this->assertEmpty( $departure->get_post_meta( 'non_existent_meta' ) );
 
 		// Cleanup.
@@ -259,7 +259,7 @@ class Test_Departure extends WP_UnitTestCase {
 					'test_meta'            => 1,
 					'softrip_package_id'   => 'UNQ-123',
 					'departure_unique_id'  => 'UNQ-123:2026-01-01',
-					'softrip_departure_id' => 'UPL20260101',
+					'softrip_code' => 'UPL20260101',
 				],
 			]
 		);
@@ -518,7 +518,7 @@ class Test_Departure extends WP_UnitTestCase {
 		$this->assertEquals( 'publish', $departure->get_status() );
 
 		// Assert meta.
-		$this->assertEquals( $raw_departure['code'], $departure->get_post_meta( 'softrip_departure_id' ) );
+		$this->assertEquals( $raw_departure['code'], $departure->get_post_meta( 'softrip_code' ) );
 		$this->assertEquals( $raw_departure['id'], $departure->get_post_meta( 'departure_unique_id' ) );
 		$this->assertEquals( $raw_departure['packageCode'], $departure->get_post_meta( 'softrip_package_id' ) );
 		$this->assertEquals( $raw_departure['startDate'], $departure->get_post_meta( 'departure_start_date' ) );

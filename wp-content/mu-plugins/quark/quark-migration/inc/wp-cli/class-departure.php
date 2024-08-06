@@ -199,7 +199,7 @@ class Departure {
 
 		// Set departure id.
 		if ( ! empty( $item['departure_id'] ) ) {
-			$data['meta_input']['softrip_departure_id'] = strval( $item['departure_id'] );
+			$data['meta_input']['softrip_code'] = strval( $item['departure_id'] );
 		}
 
 		// Set package id.
