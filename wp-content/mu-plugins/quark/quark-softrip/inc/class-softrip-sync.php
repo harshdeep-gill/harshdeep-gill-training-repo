@@ -48,16 +48,6 @@ class Softrip_Sync {
 	}
 
 	/**
-	 * Get a list of prepared codes.
-	 *
-	 * @return array<string, int>
-	 */
-	public function get_prepared_codes(): array {
-		// Return the list of prepared codes.
-		return $this->prepared_codes;
-	}
-
-	/**
 	 * Call a batch of 5 Softrip Codes.
 	 *
 	 * @param array<int, int|string> $codes Softrip codes array.

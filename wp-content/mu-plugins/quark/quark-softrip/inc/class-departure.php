@@ -51,6 +51,18 @@ class Departure extends Softrip_Object {
 	protected array $cabins = [];
 
 	/**
+	 * Constructor.
+	 *
+	 * @param int $post_id The itinerary post ID.
+	 */
+	public function __construct( int $post_id = 0 ) {
+		// If provided with a post_id, load it.
+		if ( ! empty( $post_id ) ) {
+			$this->load( $post_id );
+		}
+	}
+
+	/**
 	 * Set itinerary.
 	 *
 	 * @param Itinerary|null $itinerary The itinerary object to set.
@@ -140,7 +152,7 @@ class Departure extends Softrip_Object {
 		}
 
 		// Format the departure data.
-		$data = $this->format_departure_data( $data );
+		$data = $this->format_data( $data );
 
 		// Define the defaults.
 		$default = [
@@ -183,6 +195,13 @@ class Departure extends Softrip_Object {
 		if ( ! empty( $data['cabins'] ) ) {
 			foreach ( $data['cabins'] as $cabin_data ) {
 				$cabin = $this->get_cabin( $cabin_data['code'] );
+
+				// Skip if no cabin.
+				if ( empty( $cabin ) ) {
+					continue;
+				}
+
+				// Save the cabin data.
 				$cabin->set( (array) $cabin_data, $save );
 			}
 		}
@@ -195,7 +214,7 @@ class Departure extends Softrip_Object {
 	 *
 	 * @return array<string, string|array<string, mixed>>
 	 */
-	private function format_departure_data( array $data = [] ): array {
+	protected function format_data( array $data = [] ): array {
 		// Set data defaults.
 		$default = [
 			'id'               => 0,
@@ -337,9 +356,14 @@ class Departure extends Softrip_Object {
 	 *
 	 * @param string $code The cabin code to get.
 	 *
-	 * @return Cabin
+	 * @return Cabin|null
 	 */
-	public function get_cabin( string $code = '' ): Cabin {
+	public function get_cabin( string $code = '' ): Cabin|null {
+		// If no code, return null.
+		if ( empty( $code ) ) {
+			return null;
+		}
+
 		// Ensure departures loaded.
 		$this->ensure_cabins_loaded();
 
