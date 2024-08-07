@@ -11,7 +11,7 @@
 	],
 	"textdomain": "qrk",
 	"attributes": {
-		"terms": {
+		"destinationTermIds": {
 			"type": "array",
 			"default": []
 		}

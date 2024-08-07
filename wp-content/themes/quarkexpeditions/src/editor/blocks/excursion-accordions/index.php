@@ -8,11 +8,10 @@
 namespace Quark\Theme\Blocks\ExcursionAccordions;
 
 use WP_Block;
-use WP_Term;
-
-use const Quark\Expeditions\DESTINATION_TAXONOMY;
 
 use function Quark\Core\order_terms_by_hierarchy;
+
+use const Quark\Expeditions\DESTINATION_TAXONOMY;
 
 const COMPONENT = 'parts.excursion-accordions';
 
@@ -47,12 +46,12 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 	}
 
 	// Check for terms.
-	if ( ! isset( $attributes['terms'] ) || ! is_array( $attributes['terms'] ) ) {
+	if ( ! isset( $attributes['destinationTermIds'] ) || ! is_array( $attributes['destinationTermIds'] ) ) {
 		return $content;
 	}
 
 	// Convert terms to integers.
-	$terms = array_map( 'absint', $attributes['terms'] );
+	$terms = array_map( 'absint', $attributes['destinationTermIds'] );
 
 	// Organise terms.
 	$organised_terms = order_terms_by_hierarchy( $terms, DESTINATION_TAXONOMY );
@@ -71,19 +70,19 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 		// Add accordion title.
 		$accordion_item['accordion_title'] = $parent_term->name;
 
-		// Loop through child terms.
-		foreach ( $term['child_terms'] as $child_term ) {
-			// Initialize child item.
-			$child_item = [];
+		// Check for accordian content.
+		if ( ! empty( $term['child_terms'] ) ) {
+			// Loop through child terms.
+			foreach ( $term['child_terms'] as $child_term ) {
+				// Initialize child item.
+				$child_item = [
+					'title'       => $child_term->name,
+					'description' => apply_filters( 'the_content', $child_term->description ),
+				];
 
-			// Add child title.
-			$child_item['title'] = $child_term->name;
-
-			// Add child description.
-			$child_item['description'] = apply_filters( 'the_content', $child_term->description );
-
-			// Append child item to accordion item.
-			$accordion_item['accordion_items'][] = $child_item;
+				// Append child item to accordion item.
+				$accordion_item['accordion_items'][] = $child_item;
+			}
 		}
 
 		// Append accordion item to items.

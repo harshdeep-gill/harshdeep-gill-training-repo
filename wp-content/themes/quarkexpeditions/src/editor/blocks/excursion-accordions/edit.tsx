@@ -49,24 +49,24 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 				<PanelBody title={ __( 'Excursion Accordion Options', 'qrk' ) }>
 					<TaxonomyRelationshipControl
 						label={ __( 'Select Destinations.', 'qrk' ) }
-						help={ __( 'Select Destinations category', 'qrk' ) }
+						help={ __( 'Select one ore more Destination terms. They will be categorized automatically.', 'qrk' ) }
 						taxonomies="qrk_destination"
-						value={ attributes.terms }
-						onSelect={ ( termIDs: Array<{ term_id: number }> ) => setAttributes( { terms: termIDs.map( ( term ) => term.term_id ) } ) }
-						buttonLabel={ __( 'Select Destionation', 'qrk' ) }
+						value={ attributes.destinationTermIds }
+						onSelect={ ( termIDs: Array<{ term_id: number }> ) => setAttributes( { destinationTermIds: termIDs.map( ( term ) => term.term_id ) } ) }
+						buttonLabel={ __( 'Select Destinations', 'qrk' ) }
 					/>
 				</PanelBody>
 			</InspectorControls>
 			<Section className={ classnames( className ) }>
 				{
-					attributes.terms.length > 0 ? (
+					attributes.destinationTermIds.length > 0 ? (
 						<ServerSideRender
 							block={ name }
 							attributes={ attributes }
 						/>
 					) : (
-						<Placeholder icon="layout" label={ __( 'Exursion Accordions', 'qrk' ) }>
-							<p>{ __( 'Select the destinations for the accordions.', 'qrk' ) }</p>
+						<Placeholder icon="layout" label={ __( 'Excursion Accordion', 'qrk' ) }>
+							<p>{ __( 'Select one or more destination terms.', 'qrk' ) }</p>
 						</Placeholder>
 					)
 				}
