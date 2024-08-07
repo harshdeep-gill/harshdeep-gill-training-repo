@@ -2415,80 +2415,82 @@
 </x-component-demo>
 
 <x-component-demo :keys="[ 'media-text-cta' ]">
-	<x-media-text-cta>
-		<x-media-text-cta.image image_id="32">
-			<x-media-text-cta.badge text="Featured Expedition" />
-		</x-media-text-cta.image>
+	<x-section>
+		<x-media-text-cta>
+			<x-media-text-cta.image image_id="32">
+				<x-media-text-cta.badge text="Featured Expedition" />
+			</x-media-text-cta.image>
 
-		<x-media-text-cta.content>
-			<h2>South Georgia and Antarctic Peninsula: Penguin Safari</h2>
-			<p>This is the fastest way to visit both the Antarctic Peninsula and remote, wildlife rich South Georgia, where the beaches are teaming with King penguins and elephant seals. From here you sail south where Antarctica awaits with its soaring peaks and staggering expanse.</p>
-			<x-media-text-cta.secondary-text text="16/18 days | Starting from $12,946 USD" />
-			<x-media-text-cta.cta>
-				<x-button size="big" color="black">Request a Quote</x-button>
-			</x-media-text-cta.cta>
-		</x-media-text-cta.content>
-	</x-media-text-cta>
+			<x-media-text-cta.content>
+				<h2>South Georgia and Antarctic Peninsula: Penguin Safari</h2>
+				<p>This is the fastest way to visit both the Antarctic Peninsula and remote, wildlife rich South Georgia, where the beaches are teaming with King penguins and elephant seals. From here you sail south where Antarctica awaits with its soaring peaks and staggering expanse.</p>
+				<x-media-text-cta.secondary-text text="16/18 days | Starting from $12,946 USD" />
+				<x-media-text-cta.cta>
+					<x-button size="big" color="black">Request a Quote</x-button>
+				</x-media-text-cta.cta>
+			</x-media-text-cta.content>
+		</x-media-text-cta>
 
-	<x-media-text-cta media_align="right">
-		<x-media-text-cta.video>
-			<x-fancy-video url="https://www.youtube.com/embed/0fRAL7xROZg" image_id="32" />
-		</x-media-text-cta.video>
+		<x-media-text-cta media_align="right">
+			<x-media-text-cta.video>
+				<x-fancy-video url="https://www.youtube.com/embed/0fRAL7xROZg" image_id="32" />
+			</x-media-text-cta.video>
 
-		<x-media-text-cta.content>
-			<h2>Falklands, South Georgia, and Antarctica: Explorers & Kings</h2>
-			<p>The quickest way to get to the rarely visited Falkland Islands and South Georgia before stepping foot on the 7th Continent. Both islands are known as meccas for wildlife with epic displays of animals congregating by the thousands. Then, explore the stunning Antarctic Peninsula and enter a world of ice, snow and natural wonders.</p>
-			<x-media-text-cta.secondary-text text="20 days | Starting From $14,621 USD" />
-			<x-media-text-cta.cta>
-				<x-button size="big" color="black">Request a Quote</x-button>
-			</x-media-text-cta.cta>
-		</x-media-text-cta.content>
-	</x-media-text-cta>
+			<x-media-text-cta.content>
+				<h2>Falklands, South Georgia, and Antarctica: Explorers & Kings</h2>
+				<p>The quickest way to get to the rarely visited Falkland Islands and South Georgia before stepping foot on the 7th Continent. Both islands are known as meccas for wildlife with epic displays of animals congregating by the thousands. Then, explore the stunning Antarctic Peninsula and enter a world of ice, snow and natural wonders.</p>
+				<x-media-text-cta.secondary-text text="20 days | Starting From $14,621 USD" />
+				<x-media-text-cta.cta>
+					<x-button size="big" color="black">Request a Quote</x-button>
+				</x-media-text-cta.cta>
+			</x-media-text-cta.content>
+		</x-media-text-cta>
 
-	<x-media-text-cta>
-		<x-media-text-cta.image image_id="32">
-			<x-media-text-cta.badge text="Featured Expedition" />
-		</x-media-text-cta.image>
+		<x-media-text-cta>
+			<x-media-text-cta.image image_id="32">
+				<x-media-text-cta.badge text="Featured Expedition" />
+			</x-media-text-cta.image>
 
-		<x-media-text-cta.content>
-			<h2>Epic Antarctica: Crossing the Circle via Falklands & South Georgia</h2>
-			<p>Our Epic Antarctica voyage is called so for a reason—it includes all of the major Antarctic highlights you can imagine. </p>
-			<x-media-text-cta.secondary-text text="23 days | Starting From $26,979 USD" />
-			<x-media-text-cta.cta>
-				<x-button size="big" color="black">Request a Quote</x-button>
-			</x-media-text-cta.cta>
-		</x-media-text-cta.content>
-	</x-media-text-cta>
+			<x-media-text-cta.content>
+				<h2>Epic Antarctica: Crossing the Circle via Falklands & South Georgia</h2>
+				<p>Our Epic Antarctica voyage is called so for a reason—it includes all of the major Antarctic highlights you can imagine. </p>
+				<x-media-text-cta.secondary-text text="23 days | Starting From $26,979 USD" />
+				<x-media-text-cta.cta>
+					<x-button size="big" color="black">Request a Quote</x-button>
+				</x-media-text-cta.cta>
+			</x-media-text-cta.content>
+		</x-media-text-cta>
 
-	<x-media-text-cta>
-		<x-media-text-cta.image image_id="32" aspect_ratio="square" />
-		<x-media-text-cta.content>
-			<x-media-text-cta.content-title title="Expedition Team" heading_level="2" />
-			<x-media-text-cta.overline>Expedition Guides and Education Team</x-media-text-cta.overline>
-			<x-media-text-cta.description>
-				<p>Quark Expeditions Guides and Education Team are Polar-passionate and seasoned veterans with rich backgrounds in marine biology, penguinology, history, geology, wildlife, glaciology and more. Many are skilled in guiding activities such Zodiac cruising, kayaking, hiking, photography and mountaineering.</p>
-			</x-media-text-cta.description>
-			<x-media-text-cta.cta>
-				<x-button size="big" color="black">Apply Now</x-button>
-			</x-media-text-cta.cta>
-		</x-media-text-cta.content>
-	</x-media-text-cta>
+		<x-media-text-cta>
+			<x-media-text-cta.image image_id="32" aspect_ratio="square" />
+			<x-media-text-cta.content>
+				<x-media-text-cta.content-title title="Expedition Team" heading_level="2" />
+				<x-media-text-cta.overline>Expedition Guides and Education Team</x-media-text-cta.overline>
+				<x-media-text-cta.description>
+					<p>Quark Expeditions Guides and Education Team are Polar-passionate and seasoned veterans with rich backgrounds in marine biology, penguinology, history, geology, wildlife, glaciology and more. Many are skilled in guiding activities such Zodiac cruising, kayaking, hiking, photography and mountaineering.</p>
+				</x-media-text-cta.description>
+				<x-media-text-cta.cta>
+					<x-button size="big" color="black">Apply Now</x-button>
+				</x-media-text-cta.cta>
+			</x-media-text-cta.content>
+		</x-media-text-cta>
 
-	<x-media-text-cta media_align="right">
-		<x-media-text-cta.image image_id="32" aspect_ratio="square"/>
-		<x-media-text-cta.content>
-			<x-media-text-cta.content-title title="Corporate Team" heading_level="3" />
-			<x-media-text-cta.overline>Operations, Finance, IT, Marketing, Sales and Product Innovation</x-media-text-cta.overline>
-			<x-media-text-cta.description>
-				<p>Members of our corporate team—even though they spend their working days thousands of miles from the Arctic or Antarctic—become deeply connected to the Polar Regions.</p>
-				<p>Members of our corporate team—even though they spend their working days thousands of miles from the Arctic or Antarctic—become deeply connected to the Polar Regions.</p>
-				<p>Ready to explore a new career path? Talk to us.</p>
-			</x-media-text-cta.description>
-			<x-media-text-cta.cta>
-				<x-button size="big" color="black">View Open Opportunities</x-button>
-			</x-media-text-cta.cta>
-		</x-media-text-cta.content>
-	</x-media-text-cta>
+		<x-media-text-cta media_align="right">
+			<x-media-text-cta.image image_id="32" aspect_ratio="square"/>
+			<x-media-text-cta.content>
+				<x-media-text-cta.content-title title="Corporate Team" heading_level="3" />
+				<x-media-text-cta.overline>Operations, Finance, IT, Marketing, Sales and Product Innovation</x-media-text-cta.overline>
+				<x-media-text-cta.description>
+					<p>Members of our corporate team—even though they spend their working days thousands of miles from the Arctic or Antarctic—become deeply connected to the Polar Regions.</p>
+					<p>Members of our corporate team—even though they spend their working days thousands of miles from the Arctic or Antarctic—become deeply connected to the Polar Regions.</p>
+					<p>Ready to explore a new career path? Talk to us.</p>
+				</x-media-text-cta.description>
+				<x-media-text-cta.cta>
+					<x-button size="big" color="black">View Open Opportunities</x-button>
+				</x-media-text-cta.cta>
+			</x-media-text-cta.content>
+		</x-media-text-cta>
+	</x-section>
 </x-component-demo>
 
 <x-component-demo :keys="[ 'media-cta-banner' ]">
