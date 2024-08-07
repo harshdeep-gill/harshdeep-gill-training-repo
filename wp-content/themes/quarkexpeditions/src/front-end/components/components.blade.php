@@ -4526,103 +4526,133 @@
 			<x-section.title title="Comparison of All Cabins" align="left" />
 		</x-section.heading>
 
-		<figure class="wp-block-table">
+		<div class="travelopia-table">
 			<table>
-				<thead>
-					<tr>
-					<th>Cabin Category</th>
-					<th>Deck Location(s)</th>
+				<thead class="travelopia-table__row-container">
+					<tr class="travelopia-table__row ">
+						<td class="travelopia-table__column" colspan="" rowspan="">adfafd</td>
+						<td class="travelopia-table__column" colspan="" rowspan="">adafddaf</td>
 					</tr>
 				</thead>
-				<tbody>
-					<tr>
-					<td>Explorer Triple</td>
-					<td>Deck 3</td>
-					</tr>
-					<tr>
-					<td>Explorer Suite</td>
-					<td>Deck 3</td>
-					</tr>
-					<tr>
-					<td>Balcony Suite</td>
-					<td>Deck 4<br>Deck 6</td>
-					</tr>
-					<tr>
-					<td>Solo Panorama</td>
-					<td>Deck 6</td>
-					</tr>
-					<tr>
-					<td>Deluxe Balcony Suite</td>
-					<td>Deck 4<br>Deck 6</td>
-					</tr>
-					<tr>
-					<td>Terrace Suite</td>
-					<td>Deck 6</td>
-					</tr>
-					<tr>
-					<td>Penthouse Suite</td>
-					<td>Deck 7</td>
-					</tr>
-					<tr>
-					<td>Owner's Suite</td>
-					<td>Deck 6</td>
-					</tr>
-					<tr>
-					<td>Ultra Suite</td>
-					<td>Deck 6</td>
-					</tr>
-				</tbody>
-			</table>
-		</figure>
 
-		<figure class="wp-block-table is-style-stripes">
-			<table>
-				<thead>
-					<tr>
-					<th>Cabin Category</th>
-					<th>Deck Location(s)</th>
+				<tbody class="travelopia-table__row-container">
+					<tr class="travelopia-table__row ">
+						<td class="travelopia-table__column" colspan="" rowspan="">dfafdaf</td>
+						<td class="travelopia-table__column" colspan="" rowspan="">afdadf</td>
+					</tr>
+
+					<tr class="travelopia-table__row ">
+						<td class="travelopia-table__column" colspan="" rowspan="">adfafd</td>
+						<td class="travelopia-table__column" colspan="" rowspan="">adfafda</td>
+					</tr>
+				</tbody>
+
+				<tfoot class="travelopia-table__row-container">
+					<tr class="travelopia-table__row ">
+						<td class="travelopia-table__column" colspan="" rowspan="">dfaf</td>
+						<td class="travelopia-table__column" colspan="" rowspan="">afdaf</td>
+					</tr>
+				</tfoot>
+			</table>
+		</div>
+
+		<div class="travelopia-table">
+			<table class="" style="">
+				<thead class="travelopia-table__row-container travelopia-table__row-container--sticky">
+					<tr class="travelopia-table__row" style="">
+						<td class="travelopia-table__column" style="" colspan="" rowspan="">
+							afhjahfdka
+						</td>
+
+						<td class="travelopia-table__column" style="" colspan="" rowspan="">
+							adfh ajkfhdjakd fhjkahkdf
+						</td>
+
+						<td class="travelopia-table__column" style="" colspan="" rowspan="">
+							akdjflk jakjf akjdfalkjfld
+						</td>
+
+						<td class="travelopia-table__column" style="" colspan="" rowspan="">
+							dfjalk jffjadlkjf jakfjlajf
+						</td>
 					</tr>
 				</thead>
-				<tbody>
-					<tr>
-					<td>Explorer Triple</td>
-					<td>Deck 3</td>
+
+				<tbody class="travelopia-table__row-container">
+					<tr class="travelopia-table__row" style="">
+						<td class="travelopia-table__column" style="" colspan="" rowspan="">
+							adfadf
+						</td>
+
+						<td class="travelopia-table__column" style="" colspan="" rowspan="">
+							fdfadfadf
+						</td>
+
+						<td class="travelopia-table__column" style="" colspan="" rowspan="">
+							afdafgoriotjlk
+						</td>
+
+						<td class="travelopia-table__column" style="" colspan="" rowspan="">
+							fgsfga gsfg
+						</td>
 					</tr>
-					<tr>
-					<td>Explorer Suite</td>
-					<td>Deck 3</td>
+
+					<tr class="travelopia-table__row" style="">
+						<td class="travelopia-table__column" style="" colspan="" rowspan="">
+							afdafafd
+						</td>
+
+						<td class="travelopia-table__column" style="" colspan="" rowspan="">
+							adfafddafa
+						</td>
+
+						<td class="travelopia-table__column" style="" colspan="" rowspan="">
+							dlkfaj fhjanfk hfian fd
+						</td>
+
+						<td class="travelopia-table__column" style="" colspan="" rowspan="">
+							sfgsfg gfg fgs
+						</td>
 					</tr>
-					<tr>
-					<td>Balcony Suite</td>
-					<td>Deck 4<br>Deck 6</td>
+
+					<tr class="travelopia-table__row" style="">
+						<td class="travelopia-table__column" style="" colspan="" rowspan="">
+							fadfa
+						</td>
+
+						<td class="travelopia-table__column" style="" colspan="" rowspan="">
+							in thatkjeakj fd
+						</td>
+
+						<td class="travelopia-table__column" style="" colspan="" rowspan="">
+							dfjiajfi mIN jgkad fkfn
+						</td>
+
+						<td class="travelopia-table__column" style="" colspan="" rowspan="">
+							fgsfg fgfgs gfgs gfg
+						</td>
 					</tr>
-					<tr>
-					<td>Solo Panorama</td>
-					<td>Deck 6</td>
-					</tr>
-					<tr>
-					<td>Deluxe Balcony Suite</td>
-					<td>Deck 4<br>Deck 6</td>
-					</tr>
-					<tr>
-					<td>Terrace Suite</td>
-					<td>Deck 6</td>
-					</tr>
-					<tr>
-					<td>Penthouse Suite</td>
-					<td>Deck 7</td>
-					</tr>
-					<tr>
-					<td>Owner's Suite</td>
-					<td>Deck 6</td>
-					</tr>
-					<tr>
-					<td>Ultra Suite</td>
-					<td>Deck 6</td>
+
+					<tr class="travelopia-table__row" style="">
+						<td class="travelopia-table__column" style="" colspan="" rowspan="">
+							fadfadfafdf
+						</td>
+
+						<td class="travelopia-table__column" style="" colspan="" rowspan="">
+							jdkfa oadhfujek jdf
+						</td>
+
+						<td class="travelopia-table__column" style="" colspan="" rowspan="">
+							,dfjak lmkadjkj fjadlf
+						</td>
+
+						<td class="travelopia-table__column" style="" colspan="" rowspan="">
+							fgji uioud anflkj hfdfjnkj
+						</td>
 					</tr>
 				</tbody>
 			</table>
-		</figure>
+		</div>
 	</x-section>
 </x-component-demo>
 
