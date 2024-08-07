@@ -10,8 +10,8 @@ namespace Quark\Search\Departures;
 use WP_Post;
 use Solarium\QueryType\Update\Query\Document\Document;
 
-use function Quark\Departures\get_departure_season;
-use function Quark\Departures\get_departure_region_and_season;
+use function Quark\Departures\get_season;
+use function Quark\Departures\get_region_and_season;
 use function Quark\Departures\get as get_departure;
 
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
@@ -59,10 +59,10 @@ function filter_solr_build_document( Document $document = null, WP_Post $post = 
 	$document->setField( 'region_s', $departure_data['post_meta']['region'] ?? '' );
 
 	// set Season.
-	$document->setField( 'season_s', get_departure_season( $post->ID ) );
+	$document->setField( 'season_s', get_season( $post->ID ) );
 
 	// Set Region & season.
-	$document->setField( 'region_season_s', get_departure_region_and_season( $post->ID ) );
+	$document->setField( 'region_season_s', get_region_and_season( $post->ID ) );
 
 	// Set Expeditions.
 	$document->setField( 'expedition_i', absint( $departure_data['post_meta']['related_expedition'] ?? 0 ) );

@@ -7,6 +7,7 @@
 
 namespace Quark\Softrip;
 
+use DateTime;
 use WP_Post;
 use WP_Error;
 
@@ -147,7 +148,7 @@ class Departure extends Softrip_Object {
 	 */
 	public function set( array $data = [], bool $save = false ): void {
 		// No point in assigning an empty array.
-		if ( empty( $data ) || empty( $this->itinerary ) ) {
+		if ( empty( $data ) || empty( $this->itinerary->get_id() ) ) {
 			return;
 		}
 
@@ -394,15 +395,22 @@ class Departure extends Softrip_Object {
 	 *
 	 * @param string $currency The currency code to get.
 	 *
-	 * @return float
+	 * @return array{
+	 *    discounted_price: float,
+	 *    original_price: float,
+	 *  }
 	 */
-	public function get_lowest_price( string $currency = 'USD' ): float {
+	public function get_lowest_price( string $currency = 'USD' ): array {
 		// Set up the lowest variable.
 		$lowest = 0;
+		$prices = [
+			'discounted_price' => 0,
+			'original_price'   => 0,
+		];
 
 		// Check Current departure status is published.
 		if ( 'publish' !== $this->get_status() ) {
-			return $lowest;
+			return $prices;
 		}
 
 		// Iterate over the cabins.
@@ -411,14 +419,15 @@ class Departure extends Softrip_Object {
 			$test_price = $cabin->get_lowest_price( $currency );
 
 			// Check if lowest is set and is lower than the previous price.
-			if ( empty( $lowest ) || $lowest > $test_price ) {
+			if ( empty( $lowest ) || $lowest > $test_price['discounted_price'] ) {
 				// Use the price as it's lower.
-				$lowest = $test_price;
+				$lowest = $test_price['discounted_price'];
+				$prices = $test_price;
 			}
 		}
 
 		// Return the lowest found.
-		return $lowest;
+		return $prices;
 	}
 
 	/**
@@ -501,5 +510,116 @@ class Departure extends Softrip_Object {
 
 		// Return the end date.
 		return $departure_end_date;
+	}
+
+	/**
+	 * Get the date range.
+	 *
+	 * @return string The date range.
+	 */
+	public function get_date_range(): string {
+		// Get the start and end dates.
+		$start_date = $this->get_starting_date();
+		$end_date   = $this->get_ending_date();
+
+		// Parse the dates.
+		$start_timestamp = strtotime( $start_date );
+		$end_timestamp   = strtotime( $end_date );
+
+		// Validate that both timestamps are valid and that start date is before end date.
+		if ( false === $start_timestamp || false === $end_timestamp || $start_timestamp > $end_timestamp ) {
+			return '';
+		}
+
+		// Extract year, month, and day parts.
+		$start_year  = gmdate( 'Y', $start_timestamp );
+		$end_year    = gmdate( 'Y', $end_timestamp );
+		$start_month = gmdate( 'F', $start_timestamp );
+		$end_month   = gmdate( 'F', $end_timestamp );
+		$start_day   = gmdate( 'j', $start_timestamp );
+		$end_day     = gmdate( 'j', $end_timestamp );
+
+		// Different year.
+		if ( $start_year !== $end_year ) {
+			// Prepare date string for Different Year.
+			return "$start_month $start_day, $start_year - $end_month $end_day, $end_year";
+		} elseif ( $start_month !== $end_month ) {
+			// Prepare date string for Different Month same year.
+			return "$start_month $start_day - $end_month $end_day, $start_year";
+		}
+
+		// Prepare date string for Same Month same year.
+		return "$start_month $start_day-$end_day, $start_year";
+	}
+
+	/**
+	 * Get Cabin details.
+	 *
+	 * @param string $cabin_id Optional cabin ID.
+	 *
+	 * @return array<int|string, array{
+	 *     name: string,
+	 *     description: string,
+	 *     gallery: mixed,
+	 *     cabin_code: string,
+	 *     type: string,
+	 *     specifications: array{
+	 *          availability_status: string,
+	 *          availability_description: string,
+	 *          spaces_available: string,
+	 *          occupancy: string,
+	 *          location: string,
+	 *          size: string,
+	 *          bed_configuration: string
+	 *      },
+	 *     from_price: array<string, array<string, float>>,
+	 *     occupancies: array<int<0, max>, array<string, mixed>>
+	 * }>
+	 */
+	public function get_cabin_details( string $cabin_id = '' ): array {
+		// Get all cabins.
+		$cabins = $this->get_cabins();
+
+		// Set up the return array.
+		$return = [];
+
+		// Iterate over the cabins.
+		foreach ( $cabins as $cabin ) {
+			// Check if cabin has a valid cabin post.
+			if ( ! $cabin->get_data()['post'] instanceof WP_Post ) {
+				continue;
+			}
+
+			// Set up the cabin structure.
+			$struct = [
+				'name'           => strval( $cabin->get_post_meta( 'cabin_name' ) ),
+				'cabin_code'     => strval( $cabin->get_entry_data( 'cabin_category_id' ) ),
+				'description'    => $cabin->get_data()['post']->post_content,
+				'gallery'        => $cabin->get_post_meta( 'cabin_images' ),
+				'type'           => $cabin->get_cabin_class(),
+				'specifications' => [
+					'availability_status'      => strval( $cabin->get_entry_data( 'availability_status' ) ),
+					'availability_description' => $cabin->get_availability_description(),
+					'spaces_available'         => strval( $cabin->get_entry_data( 'spaces_available' ) ),
+					'occupancy'                => $cabin->get_pax_range(),
+					'location'                 => $cabin->get_location(),
+					'size'                     => $cabin->get_size(),
+					'bed_configuration'        => strval( $cabin->get_post_meta( 'cabin_bed_configuration' ) ),
+				],
+				'from_price'     => $cabin->get_lowest_prices(),
+				'occupancies'    => [],
+			];
+
+			// Iterate over the occupancies.
+			foreach ( $cabin->get_occupancies() as $occupancy ) {
+				$struct['occupancies'][] = $occupancy->get_detail();
+			}
+
+			// Add to the return array.
+			$return[ $cabin->get_entry_data( 'cabin_category_id' ) ] = $struct;
+		}
+
+		// Return the cabin details array.
+		return $return;
 	}
 }

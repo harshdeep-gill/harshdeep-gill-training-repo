@@ -12,7 +12,7 @@ use WP_Term;
 use WP_UnitTestCase;
 
 use function Quark\Departures\get;
-use function Quark\Departures\get_departure_region_and_season;
+use function Quark\Departures\get_region_and_season;
 
 use const Quark\Departures\POST_TYPE;
 use const Quark\Departures\SPOKEN_LANGUAGE_TAXONOMY;
@@ -110,14 +110,14 @@ class Test_Departures extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Test get_departure_region_and_season().
+	 * Test get_region_and_season.
 	 *
-	 * @covers \Quark\Departures\get_departure_region_and_season()
-	 * @covers \Quark\Departures\get_departure_season()
+	 * @covers \Quark\Departures\get_region_and_season()
+	 * @covers \Quark\Departures\get_season()
 	 *
 	 * @return void
 	 */
-	public function test_get_departure_region_and_season(): void {
+	public function test_get_region_and_season(): void {
 		// Create itinerary post.
 		$post_itinerary = $this->factory()->post->create_and_get(
 			[
@@ -161,7 +161,7 @@ class Test_Departures extends WP_UnitTestCase {
 		$this->assertTrue( $post_1 instanceof WP_Post );
 
 		// Get departure region and season.
-		$region_and_season = get_departure_region_and_season( $post_1->ID );
+		$region_and_season = get_region_and_season( $post_1->ID );
 
 		// Test if region is correct.
 		$this->assertEquals( 'value_1-season_1', $region_and_season );

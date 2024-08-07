@@ -7,11 +7,18 @@
 
 namespace Quark\Departures;
 
+use Quark\Softrip\Departure;
 use WP_Post;
+use WP_Term_Query;
 
 use function Quark\Itineraries\get as get_itinerary;
+use function Quark\Itineraries\get_starting_from_location;
+use function Quark\Itineraries\get_included_transfer_package_details;
+use function Quark\Itineraries\get_policy_banner_details;
+use function Quark\Expeditions\get as get_expedition;
 
 use const Quark\StaffMembers\SEASON_TAXONOMY;
+use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
 
 const POST_TYPE                = 'qrk_departure';
 const SPOKEN_LANGUAGE_TAXONOMY = 'qrk_spoken_language';
@@ -357,7 +364,7 @@ function bust_post_cache_on_term_assign( int $object_id = 0, array $terms = null
  *
  * @return string
  */
-function get_departure_season( int $post_id = 0 ): string {
+function get_season( int $post_id = 0 ): string {
 	// Get departure.
 	$departure = get( $post_id );
 
@@ -392,13 +399,56 @@ function get_departure_season( int $post_id = 0 ): string {
 }
 
 /**
+ * Get paid adventure options.
+ *
+ * @param int $post_id Departure Post ID.
+ *
+ * @return array<int, string>
+ */
+function get_paid_adventure_options( int $post_id = 0 ): array {
+	// Get departure.
+	$departure = get( $post_id );
+
+	// Check post_meta is not empty.
+	if ( ! $departure['post_meta'] ) {
+		return [];
+	}
+
+	// Get Adventure Options from meta.
+	$adventure_options = $departure['post_meta']['adventure_options'] ?? '';
+
+	// Check meta is empty.
+	if ( ! $adventure_options ) {
+		return [];
+	}
+
+	// Get Adventure Options terms.
+	$adventure_options_terms = new WP_Term_Query(
+		[
+			'taxonomy'   => ADVENTURE_OPTION_CATEGORY,
+			'include'    => $adventure_options,
+			'hide_empty' => false,
+			'fields'     => 'id=>name',
+		]
+	);
+
+	// Check Adventure Options terms are empty.
+	if ( ! $adventure_options_terms->terms ) {
+		return [];
+	}
+
+	// Return Adventure Options.
+	return $adventure_options_terms->terms;
+}
+
+/**
  * Get departure region and Season.
  *
  * @param int $post_id Departure Post ID.
  *
  * @return string
  */
-function get_departure_region_and_season( int $post_id = 0 ): string {
+function get_region_and_season( int $post_id = 0 ): string {
 	// Get departure.
 	$departure = get( $post_id );
 
@@ -411,7 +461,7 @@ function get_departure_region_and_season( int $post_id = 0 ): string {
 	$region = $departure['post_meta']['region'] ?? '';
 
 	// Get season.
-	$season = get_departure_season( $post_id );
+	$season = get_season( $post_id );
 
 	// Check region and season are empty.
 	if ( ! $region && ! $season ) {
@@ -420,4 +470,157 @@ function get_departure_region_and_season( int $post_id = 0 ): string {
 
 	// Return region and season.
 	return $region . '-' . $season;
+}
+
+/**
+ * Get departure languages.
+ *
+ * @param int $post_id Departure Post ID.
+ *
+ * @return array<int, string> Languages.
+ */
+function get_languages( int $post_id = 0 ): array {
+	// Get departure.
+	$departure = get( $post_id );
+	$languages = [];
+
+	// Get languages from post_taxonomy.
+	$language_terms = $departure['post_taxonomies'][ SPOKEN_LANGUAGE_TAXONOMY ] ?? [];
+
+	// Check languages are empty.
+	if ( ! $language_terms || ! is_array( $language_terms ) ) {
+		return $languages;
+	}
+
+	// Loop through languages - get name field.
+	foreach ( $language_terms as $language ) {
+		$languages[] = $language['name'] ? strval( $language['name'] ) : '';
+	}
+
+	// Return languages.
+	return $languages;
+}
+
+/**
+ * Get departure promotion tags.
+ *
+ * @param int $post_id Departure Post ID.
+ *
+ * @return array<string> Promotion Tags.
+ */
+function get_promotion_tags( int $post_id = 0 ): array {
+	// Get departure.
+	$departure      = get( $post_id );
+	$promotion_tags = [];
+
+	// Get promotion tags from post_taxonomy.
+	$promotion_tag_terms = $departure['post_taxonomies'][ PROMOTION_TAG ] ?? [];
+
+	// Check promotion tags are empty.
+	if ( ! $promotion_tag_terms || ! is_array( $promotion_tag_terms ) ) {
+		return $promotion_tags;
+	}
+
+	// Loop through promotion tags - get name field.
+	foreach ( $promotion_tag_terms as $promotion_tag ) {
+		$promotion_tags[] = $promotion_tag['name'] ? strval( $promotion_tag['name'] ) : '';
+	}
+
+	// Return promotion tags.
+	return $promotion_tags;
+}
+
+/**
+ * Get departure details.
+ *
+ * @param int $departure_id The departure ID.
+ *
+ * @return array{}|array{
+ *     expedition_name: string,
+ *     expedition_link: string,
+ *     package_id: string,
+ *     duration_days: int,
+ *     duration_dates: string,
+ *     starting_from_location: string,
+ *     languages: string[],
+ *     paid_adventure_options: string[],
+ *     lowest_price: array<string, float>,
+ *     transfer_package_details: array{
+ *       title: string,
+ *       sets: string[],
+ *       price: float,
+ *     },
+ *     promotion_tags: string[],
+ *     ship_name: string,
+ *     banner_details: array{
+ *        title: string,
+ *        description: string,
+ *        icon_id: int,
+ *        permalink: string,
+ *     },
+ *     cabins ?: array<int|string, array{
+ *        name: string,
+ *        description: string,
+ *        gallery: mixed,
+ *        cabin_code: string,
+ *        type: string,
+ *        specifications: array{
+ *           availability_status: string,
+ *           availability_description: string,
+ *           spaces_available: string,
+ *           occupancy: string,
+ *           location: string,
+ *           size: string,
+ *           bed_configuration: string
+ *       },
+ *      from_price: array<string, array<string, float>>,
+ *      occupancies: array<int<0, max>, array<string, mixed>>
+ *     }>,
+ * }
+ */
+function get_card_data( int $departure_id = 0 ): array {
+	// Get the departure object.
+	$departure = new Departure();
+	$departure->load( $departure_id );
+
+	// Get the related expedition.
+	$expedition_post = get_expedition( absint( $departure->get_post_meta( 'related_expedition' ) ) );
+
+	// Get the itinerary ID.
+	$itinerary_id = $departure->get_post_meta( 'itinerary' ) ? absint( $departure->get_post_meta( 'itinerary' ) ) : 0;
+
+	// Check if the expedition post is valid.
+	if ( ! $expedition_post['post'] instanceof WP_Post || ! $itinerary_id ) {
+		return [];
+	}
+
+	// Get Expedition name.
+	$expedition_name = $expedition_post['post']->post_title;
+
+	// Prepare the departure details.
+	$ship_data = $departure->get_ship();
+	$ship_name = '';
+
+	// Validate ship_data.
+	if ( ! empty( $ship_data['post'] ) && $ship_data['post'] instanceof WP_Post ) {
+		$ship_name = $ship_data['post']->post_title;
+	}
+
+	// Prepare the departure card details.
+	return [
+		'expedition_name'          => $expedition_name,
+		'expedition_link'          => $expedition_post['permalink'],
+		'package_id'               => strval( $departure->get_post_meta( 'softrip_package_id' ) ),
+		'duration_days'            => absint( $departure->get_post_meta( 'duration' ) ),
+		'duration_dates'           => $departure->get_date_range(),
+		'starting_from_location'   => get_starting_from_location( $itinerary_id ),
+		'languages'                => get_languages( $departure_id ),
+		'paid_adventure_options'   => get_paid_adventure_options( $departure_id ),
+		'lowest_price'             => $departure->get_lowest_price(),
+		'transfer_package_details' => get_included_transfer_package_details( $itinerary_id ),
+		'promotion_tags'           => get_promotion_tags( $departure_id ),
+		'ship_name'                => $ship_name,
+		'banner_details'           => get_policy_banner_details( $itinerary_id ),
+		'cabins'                   => $departure->get_cabin_details(),
+	];
 }

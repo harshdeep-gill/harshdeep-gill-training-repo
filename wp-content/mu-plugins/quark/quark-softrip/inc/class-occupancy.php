@@ -7,6 +7,9 @@
 
 namespace Quark\Softrip;
 
+use function Quark\Itineraries\get_mandatory_transfer_price;
+use function Quark\Itineraries\get_supplemental_price;
+
 /**
  * Occupancy class.
  */
@@ -255,21 +258,198 @@ class Occupancy extends Data_Object {
 	/**
 	 * Get the price per person for the occupancy in specified currency.
 	 *
-	 * @param string $currency The currency code to get.
+	 * @param string $currency   The currency code to get.
+	 * @param bool   $discounted Flag to get discounted price.
 	 *
 	 * @return float
 	 */
-	public function get_price_per_person( string $currency = 'USD' ): float {
+	public function get_price_per_person( string $currency = 'USD', bool $discounted = false ): float {
+		// Get the departure.
+		$departure = $this->parent->get_departure();
+		$itinerary = $departure->get_post_meta( 'itinerary' ) ? absint( $departure->get_post_meta( 'itinerary' ) ) : 0;
+
+		// Get mandatory transfer price.
+		$mandatory_transfer_price = get_mandatory_transfer_price( $itinerary, $currency );
+
+		// Validate it's a number.
+		if ( ! is_numeric( $mandatory_transfer_price ) ) {
+			$mandatory_transfer_price = 0;
+		}
+
+		// Get Supplemental Price.
+		$supplemental_price = get_supplemental_price( $itinerary, $currency );
+
+		// Validate it's a number.
+		if ( ! is_numeric( $supplemental_price ) ) {
+			$supplemental_price = 0;
+		}
+
 		// Iterate over the occupancy prices.
 		foreach ( $this->get_occupancy_prices() as $price ) {
 			// Check the price is the correct currency.
 			if ( strtolower( $currency ) === strtolower( strval( $price->get_entry_data( 'currency_code' ) ) ) ) {
+				// Set the meta key.
+				$meta_key = 'price_per_person';
+
+				// Check if we have a discount.
+				$has_code = $discounted ? $price->get_entry_data( 'promotion_code' ) : '';
+
+				// Change the key if we have a discount.
+				if ( ! empty( $has_code ) ) {
+					// Use the discount key.
+					$meta_key = 'promo_price_per_person';
+				}
+
 				// Get the price per person.
-				return floatval( strval( $price->get_entry_data( 'price_per_person' ) ) );
+				return floatval( strval( $price->get_entry_data( $meta_key ) ) ) + $supplemental_price + $mandatory_transfer_price;
 			}
 		}
 
 		// Return nothing as it's not found.
 		return 0;
+	}
+
+	/**
+	 * Get the occupancy mask type.
+	 *
+	 * @return array<string, string>
+	 */
+	public function get_mask(): array {
+		// set the return.
+		$return = [
+			'description' => '',
+			'pax'         => '0',
+		];
+
+		// Return an array of masks.
+		$types = [
+			'A'     => [
+				'description' => 'Single Room',
+				'pax'         => '1',
+			],
+			'AA'    => [
+				'description' => 'Double Room',
+				'pax'         => '2',
+			],
+			'SAA'   => [
+				'description' => 'Double Room Shared',
+				'pax'         => '1',
+			],
+			'SMAA'  => [
+				'description' => 'Double Room Shared (Male)',
+				'pax'         => '1',
+			],
+			'SFAA'  => [
+				'description' => 'Double Room Shared (Female)',
+				'pax'         => '1',
+			],
+			'AAA'   => [
+				'description' => 'Triple Room',
+				'pax'         => '3',
+			],
+			'SAAA'  => [
+				'description' => 'Triple Room Shared',
+				'pax'         => '1',
+			],
+			'SMAAA' => [
+				'description' => 'Triple Room Shared (Male)',
+				'pax'         => '1',
+			],
+			'SFAAA' => [
+				'description' => 'Triple Room Shared (Female)',
+				'pax'         => '1',
+			],
+			'AAAA'  => [
+				'description' => 'Quad Room',
+				'pax'         => '4',
+			],
+		];
+
+		// Get the mask.
+		$mask = $this->get_entry_data( 'occupancy_mask' );
+
+		// Check mask exists.
+		if ( isset( $types[ $mask ] ) ) {
+			$return = wp_parse_args( $types[ $mask ], $return );
+		}
+
+		// Return the details.
+		return $return;
+	}
+
+	/**
+	 * Get occupancy description.
+	 *
+	 * @return string
+	 */
+	public function get_description(): string {
+		// Get mask data.
+		$mask = $this->get_mask();
+
+		// return the description.
+		return $mask['description'];
+	}
+
+	/**
+	 * Get occupancy description.
+	 *
+	 * @return string
+	 */
+	public function get_pax(): string {
+		// Get mask data.
+		$mask = $this->get_mask();
+
+		// return the description.
+		return $mask['pax'];
+	}
+
+	/**
+	 * Get occupancy detail.
+	 *
+	 * @return array<string, mixed>
+	 */
+	public function get_detail(): array {
+		// Set base details.
+		$detail = [
+			'name'         => $this->get_entry_data( 'occupancy_mask' ),
+			'description'  => $this->get_description(),
+			'no_of_guests' => $this->get_pax(),
+			'prices'       => [],
+			'promotions'   => [],
+		];
+
+		// Iterate over the occupancy prices.
+		foreach ( $this->get_occupancy_prices() as $price ) {
+			// Get currency.
+			$currency = strval( $price->get_entry_data( 'currency_code' ) );
+
+			// Set the item.
+			$detail['prices'][ $currency ] = [
+				'original_price'   => $this->get_price_per_person( $currency ),
+				'discounted_price' => $this->get_price_per_person( $currency, true ),
+			];
+		}
+
+		// TODO:: Get promotions applied for the occupancy.
+		// Return details.
+		return $detail;
+	}
+
+	/**
+	 * Get currencies.
+	 *
+	 * @return array<int<0,max>, string>
+	 */
+	public function get_currencies(): array {
+		// Set return.
+		$currencies = [];
+
+		// Iterate over the occupancy prices.
+		foreach ( $this->get_occupancy_prices() as $price ) {
+			$currencies[] = strval( $price->get_entry_data( 'currency_code' ) );
+		}
+
+		// Return currency array.
+		return $currencies;
 	}
 }
