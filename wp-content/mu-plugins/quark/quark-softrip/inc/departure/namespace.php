@@ -13,6 +13,7 @@ use WP_Query;
 use function Quark\Ships\get_id_from_ship_code;
 
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
+use const Quark\Departures\SPOKEN_LANGUAGE_TAXONOMY;
 use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
 
 /**
@@ -41,7 +42,7 @@ function update_departures( array $raw_departures = [], string $softrip_package_
         'ignore_sticky_posts' => true,
         'meta_query' => [
             [
-                'key' => 'softrip_package_code', // @todo Rename to softrip_package_code.
+                'key' => 'softrip_package_code',
                 'value' => $softrip_package_code,
             ],
         ],
@@ -70,7 +71,7 @@ function update_departures( array $raw_departures = [], string $softrip_package_
         'post_status' => [ 'draft', 'publish' ],
         'meta_query' => [
             [
-                'key' => 'softrip_package_code', // @todo Rename to softrip_package_code.
+                'key' => 'softrip_package_code',
                 'value' => $softrip_package_code,
             ],
         ],
@@ -93,7 +94,7 @@ function update_departures( array $raw_departures = [], string $softrip_package_
         }
 
         // Get departure code.
-        $departure_code = get_post_meta( $departure_post_id, 'softrip_id', true ); // @todo Rename to softrip_id.
+        $departure_code = get_post_meta( $departure_post_id, 'softrip_id', true );
 
         // If empty, skip.
         if ( empty( $departure_code ) ) {
@@ -156,6 +157,12 @@ function update_departures( array $raw_departures = [], string $softrip_package_
         } elseif ( ! empty( $updated_post_id ) ) {
             // Add to updated departure codes.
             $updated_departure_codes[] = $raw_departure['id'];
+
+            // Set spoken language for newly created departure.
+            if ( ! $is_existing ) {
+                // Set english as spoken language.
+                wp_set_object_terms( $updated_post_id, [ 'english' ], SPOKEN_LANGUAGE_TAXONOMY );
+            }
         }
 
         // Further continue by updating the cabins.
@@ -166,7 +173,6 @@ function update_departures( array $raw_departures = [], string $softrip_package_
 
         // Check if departure code is not in updated departure codes.
         if ( ! in_array( $departure_code, $updated_departure_codes, true ) ) {
-            error_log( 'Deleting departure post ID: ' . $departure_post_id );
             // Delete the post.
             wp_delete_post( $departure_post_id, true );
         }
@@ -188,9 +194,8 @@ function format_raw_departure_data( array $raw_departure_data = [], int $itinera
     // Return empty if no itinerary post ID.
     if (
         empty( $raw_departure_data ) ||
-        empty( $itinerary_post_id ) 
-        // ||
-        // empty( $expedition_post_id ) // @todo Uncomment this line after knowing how to get expedition post ID.
+        empty( $itinerary_post_id ) ||
+        empty( $expedition_post_id )
     ) {
         return [];
     }
@@ -220,6 +225,7 @@ function format_raw_departure_data( array $raw_departure_data = [], int $itinera
         'post_parent' => $itinerary_post_id,
         'meta_input' => [
             'related_expedition' => $expedition_post_id,
+            'itinerary'  => $itinerary_post_id,
             'related_ship'       => get_id_from_ship_code( $raw_departure_data['shipCode'] ),
             'softrip_package_code' => $raw_departure_data['packageCode'],
             'softrip_id' => $raw_departure_data['id'],
