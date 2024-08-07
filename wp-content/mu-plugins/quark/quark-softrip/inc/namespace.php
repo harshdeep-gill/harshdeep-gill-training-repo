@@ -19,6 +19,7 @@ use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
 const SCHEDULE_RECURRENCE       = 'qrk_softrip_4_hourly';
 const SCHEDULE_HOOK             = 'qrk_softrip_sync';
 const ITINERARY_SYNC_BATCH_SIZE = 5;
+const TABLE_PREFIX_NAME         = 'qrk_';
 
 /**
  * Bootstrap plugin.
@@ -101,27 +102,25 @@ function cron_schedule_sync(): void {
  *
  * @return void.
  */
-function do_sync( $itinerary_post_ids = [] ): void {
-	// Get all itinerary post ids.
-	$args = [
-		'post_type'              => ITINERARY_POST_TYPE,
-		'fields'                 => 'ids',
-		'no_found_rows'          => true,
-		'update_post_meta_cache' => false,
-		'update_term_meta_cache' => false,
-		'ignore_sticky_posts'    => true,
-		'post_status'            => [ 'draft', 'publish' ],
-	];
-
-	// If no itinerary post ids are provided, get all.
+function do_sync( array $itinerary_post_ids = [] ): void {
+	// If no itinerary post IDs are provided, get all itinerary post IDs.
 	if ( empty( $itinerary_post_ids ) ) {
-		$args['posts_per_page'] = 1;
-	} else {
-		$args['post__in'] = $itinerary_post_ids;
-	}
+		// Prepare args.
+		$args = [
+			'post_type'              => ITINERARY_POST_TYPE,
+			'fields'                 => 'ids',
+			'no_found_rows'          => true,
+			'update_post_meta_cache' => false,
+			'update_term_meta_cache' => false,
+			'ignore_sticky_posts'    => true,
+			'post_status'            => ['draft', 'publish'],
+			'posts_per_page'         => -1,
+		];
 
-	// Run WP_Query.
-	$query = new WP_Query( $args );
+		// Run WP_Query.
+		$query = new WP_Query($args);
+		$itinerary_post_ids = array_map('absint', $query->posts);
+	}	
 
 	// Initialize package codes.
 	$package_codes = [];
@@ -131,7 +130,7 @@ function do_sync( $itinerary_post_ids = [] ): void {
 	$progress = null;
 
 	// Get all package codes.
-	foreach ( $query->posts as $post_id ) {
+	foreach ( $itinerary_post_ids as $post_id ) {
 		$package_code = get_post_meta( absint( $post_id ), 'softrip_package_code', true );
 
 		if ( ! empty( $package_code ) && is_string( $package_code ) ) {
@@ -167,7 +166,7 @@ function do_sync( $itinerary_post_ids = [] ): void {
 		'quark_softrip_sync_initiated',
 		[
 			'count' => $total,
-			'via'   => 'cron',
+			'via'   => $is_in_cli ? 'CLI' : 'cron',
 		]
 	);
 
@@ -228,7 +227,7 @@ function do_sync( $itinerary_post_ids = [] ): void {
 		[
 			'success' => $counter,
 			'failed'  => $total - $counter,
-			'via'     => 'cron',
+			'via'     => $is_in_cli ? 'CLI' : 'cron',
 		]
 	);
 
@@ -309,4 +308,38 @@ function is_expired( string $date = '' ): bool {
 
 	// Check if expired.
 	return $current_time > $date_time;
+}
+
+/**
+ * Get the Table Name with prefix.
+ *
+ * @param string $name The table name to prefix.
+ *
+ * @return string
+ */
+function prefix_table_name( string $name = '' ): string {
+	// Return the prefixed name.
+	return TABLE_PREFIX_NAME . $name;
+}
+
+/**
+ * Get the engine and collate.
+ *
+ * @return string
+ */
+function get_engine_collate(): string {
+	// Get the $wpdb object.
+	global $wpdb;
+	$charset_collate = $wpdb->get_charset_collate();
+
+	// Set the engine and collate.
+	$engine_collate = 'ENGINE=InnoDB';
+
+	// If the charset_collate is not empty, add it to the engine_collate.
+	if ( ! empty( $charset_collate ) ) {
+		$engine_collate .= " $charset_collate";
+	}
+
+	// Return the engine and collate string.
+	return $engine_collate;
 }
