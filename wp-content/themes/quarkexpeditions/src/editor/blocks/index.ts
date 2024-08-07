@@ -48,10 +48,15 @@ import * as tripExtensions from './trip-extensions';
 import * as relatedAdventureOptions from './related-adventure-options';
 import * as heroCardSlider from './hero-card-slider';
 import * as highlights from './highlights';
+import * as secondaryNavigation from './secondary-navigation';
 import * as iconInfoGrid from './icon-info-grid';
 import * as expeditionDetails from './expedition-details';
 import * as mediaCtaBanner from './media-cta-banner';
 import * as ships from './ships';
+import * as mediaDescriptionCards from './media-description-cards';
+import * as FeaturedMediaAccordions from './featured-media-accordions';
+import * as shipFeaturesAmenities from './ship-features-amenities';
+import * as shipVesselFeatures from './ship-vessel-features';
 
 /**
  * Add blocks.
@@ -104,10 +109,15 @@ const blocks = [
 	relatedAdventureOptions,
 	heroCardSlider,
 	highlights,
+	secondaryNavigation,
 	iconInfoGrid,
 	expeditionDetails,
 	mediaCtaBanner,
 	ships,
+	mediaDescriptionCards,
+	FeaturedMediaAccordions,
+	shipFeaturesAmenities,
+	shipVesselFeatures,
 ];
 
 /**

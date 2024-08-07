@@ -1,0 +1,35 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Featured Media Accordions Item",
+	"name": "quark/featured-media-accordions-item",
+	"description": "A single item in a featured media accordions block.",
+	"category": "widgets",
+	"keywords": [
+		"media",
+		"featured",
+		"accordions",
+		"item"
+	],
+	"textdomain": "qrk",
+	"attributes": {
+		"title": {
+			"type": "string",
+			"default": ""
+		},
+		"image": {
+			"type": "object",
+			"default": {}
+		}
+	},
+	"parent": [
+		"quark/featured-media-accordions"
+	],
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

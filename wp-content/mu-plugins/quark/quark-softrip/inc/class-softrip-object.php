@@ -1,6 +1,6 @@
 <?php
 /**
- * Softtrip Object Class.
+ * Softrip Object Class.
  *
  * @package quark-softrip
  */
@@ -20,9 +20,9 @@ abstract class Softrip_Object {
 	 *     post: WP_Post|null,
 	 *     post_meta: mixed[],
 	 *     post_taxonomies: mixed[]
-	 * }
+	 * } | array{}
 	 */
-	protected array $data;
+	protected array $data = [];
 
 	/**
 	 * Load the data.
@@ -40,8 +40,8 @@ abstract class Softrip_Object {
 	 */
 	public function get_id(): int {
 		// If valid post, return ID.
-		if ( $this->is_valid() ) {
-			return $this->data['post'] ? $this->data['post']->ID : 0;
+		if ( $this->is_valid() && ! empty( $this->data['post'] ) ) {
+			return $this->data['post']->ID;
 		}
 
 		// Return a 0 if not.
@@ -70,7 +70,7 @@ abstract class Softrip_Object {
 	 *     post: WP_Post|null,
 	 *     post_meta: mixed[],
 	 *     post_taxonomies: mixed[]
-	 * }
+	 * } | array{}
 	 */
 	public function get_data(): array {
 		// Return the data array.
@@ -86,7 +86,7 @@ abstract class Softrip_Object {
 	 */
 	public function get_post_meta( string $name = '' ): mixed {
 		// Check if the post is valid.
-		if ( ! $this->is_valid() ) {
+		if ( ! $this->is_valid() || empty( $this->data['post_meta'] ) ) {
 			// Not valid post, so bail with expected empty meta.
 			return '';
 		}
@@ -107,8 +107,8 @@ abstract class Softrip_Object {
 	 */
 	public function get_status(): string {
 		// Check if the post is valid.
-		if ( $this->is_valid() ) {
-			return $this->data['post'] ? $this->data['post']->post_status : 'draft';
+		if ( $this->is_valid() && ! empty( $this->data['post'] ) ) {
+			return $this->data['post']->post_status;
 		}
 
 		// Return default status as default.

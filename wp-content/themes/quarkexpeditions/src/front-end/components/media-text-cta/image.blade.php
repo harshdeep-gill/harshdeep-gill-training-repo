@@ -1,5 +1,6 @@
 @props( [
-	'image_id' => 0,
+	'image_id'     => 0,
+	'aspect_ratio' => 'landscape',
 ] )
 
 @php
@@ -7,13 +8,19 @@
 		return;
 	}
 
+	if ( 'square' === $aspect_ratio ) {
+		$image_height = 546;
+	} else {
+		$image_height = 360;
+	}
+
 	$image_args = [
 		'size' => [
-			'width'   => 540,
-			'height'  => 360,
+			'width'   => 546,
+			'height'  => $image_height,
 		],
 		'responsive' => [
-			'sizes'  => [ '(min-width: 1280px) 540px', '(min-width: 1024px) 50vw', '100vw' ],
+			'sizes'  => [ '(min-width: 1280px) 546px', '(min-width: 1024px) 50vw', '100vw' ],
 			'widths' => [ 380, 480, 600, 800 ],
 		],
 	];

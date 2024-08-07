@@ -22,7 +22,7 @@ Make sure you have PHP 8.2, Docker, NodeJS 18 and Composer 2 or greater installe
 13. Create a user for yourself if you don't already have one: `composer wp user create bob bob@example.com --role=travelopia_super_user --user_pass=password` . If you already have a user, set yourself as a super admin: `composer wp user set-role bob travelopia_super_user`
 14. To access WP Admin, visit https://local.quarkexpeditions.com/wp-admin/
 15. To access MailHog, visit http://0.0.0.0:8025
-16. To access Solr, visit http://127.0.0.1:8983/solr/admin/
+16. To access Solr, visit http://localhost:8983/sites/self/environments/lando/index/admin/
 
 ### Starting and stopping the Docker environment
 

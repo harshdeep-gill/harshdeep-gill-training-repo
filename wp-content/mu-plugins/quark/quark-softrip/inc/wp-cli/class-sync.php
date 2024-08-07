@@ -85,14 +85,20 @@ class Sync {
 			return;
 		}
 
+		// Log the sync initiated.
+		do_action(
+			'quark_softrip_sync_initiated',
+			[
+				'count' => $total,
+				'via'   => 'CLI',
+			]
+		);
+
 		// split batches.
 		$parts = $this->sync->prepare_batch_ids( $options['ids'], BATCH_SIZE );
 
 		// Set up a counter for how many we're successful.
 		$counter = 0;
-
-		// Get the list of prepared codes.
-		$to_sync = $this->sync->get_prepared_codes();
 
 		// Process each part.
 		foreach ( $parts as $softrip_ids ) {
@@ -136,6 +142,16 @@ class Sync {
 		if ( $counter < $total ) {
 			$if_failed = ' with ' . ( $total - $counter ) . ' failed items.';
 		}
+
+		// Log the sync completed.
+		do_action(
+			'quark_softrip_sync_completed',
+			[
+				'success' => $counter,
+				'failed'  => $total - $counter,
+				'via'     => 'CLI',
+			]
+		);
 
 		// End notice.
 		WP_CLI::success( 'Completed ' . $counter . ' items' . $if_failed );

@@ -18,7 +18,7 @@ import '../../../front-end/components/media-description-cards/style.scss';
 /**
  * Vendor dependencies.
  */
-import '../../../../dist/vendor/tptabselement.js';
+import '../../../vendor/tp-tabs';
 
 /**
  * Internal dependencies.

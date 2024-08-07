@@ -1,0 +1,22 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Ship Vessel Features",
+	"name": "quark/ship-vessel-features",
+	"description": "Display the features of a ship.",
+	"category": "widgets",
+	"keywords": [
+		"ship",
+		"vessel",
+		"features"
+	],
+	"textdomain": "qrk",
+	"attributes": {},
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

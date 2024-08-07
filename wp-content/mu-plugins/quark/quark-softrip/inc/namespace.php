@@ -10,7 +10,7 @@ namespace Quark\Softrip;
 use WP_CLI;
 use WP_Error;
 
-const SCHEDULE_RECCURANCE = 'qrk_softrip_4_hourly';
+const SCHEDULE_RECURRENCE = 'qrk_softrip_4_hourly';
 const SCHEDULE_HOOK       = 'qrk_softrip_sync';
 
 /**
@@ -29,10 +29,13 @@ function bootstrap(): void {
 	add_filter( 'cron_schedules', __NAMESPACE__ . '\\cron_add_schedule' ); // phpcs:ignore WordPress.WP.CronInterval -- Verified > 4 Hour.
 
 	// Schedule our sync task.
-	add_filter( 'admin_init', __NAMESPACE__ . '\\cron_schedule_sync' );
+	add_filter( 'init', __NAMESPACE__ . '\\cron_schedule_sync' );
 
 	// Register our sync hook.
 	add_action( SCHEDULE_HOOK, __NAMESPACE__ . '\\do_sync' );
+
+	// Register Stream log connector.
+	add_filter( 'wp_stream_connectors', __NAMESPACE__ . '\\setup_stream_connectors' );
 }
 
 /**
@@ -73,7 +76,7 @@ function cron_add_schedule( array $schedules = [] ): array {
 	$interval = 4 * HOUR_IN_SECONDS; // 4 hours.
 
 	// Create our schedule.
-	$schedules[ SCHEDULE_RECCURANCE ] = [
+	$schedules[ SCHEDULE_RECURRENCE ] = [
 		'interval' => $interval,
 		'display'  => 'Once every 4 hours',
 	];
@@ -107,7 +110,7 @@ function cron_schedule_sync(): void {
 	$next_time = time() + ( HOUR_IN_SECONDS * 4 );
 
 	// Schedule the event. in 4 hours time.
-	wp_schedule_event( $next_time, SCHEDULE_RECCURANCE, SCHEDULE_HOOK );
+	wp_schedule_event( $next_time, SCHEDULE_RECURRENCE, SCHEDULE_HOOK );
 }
 
 /**
@@ -122,8 +125,23 @@ function do_sync(): void {
 	// Get the ID's to sync.
 	$ids = $sync->get_all_itinerary_ids();
 
+	// Get the total count.
+	$total = count( $ids );
+
+	// Log the sync initiated.
+	do_action(
+		'quark_softrip_sync_initiated',
+		[
+			'count' => $total,
+			'via'   => 'cron',
+		]
+	);
+
 	// Create batches.
 	$batches = $sync->prepare_batch_ids( $ids );
+
+	// Set up a counter for successful.
+	$counter = 0;
 
 	// Iterate over the batches.
 	foreach ( $batches as $softrip_ids ) {
@@ -145,7 +163,41 @@ function do_sync(): void {
 			}
 
 			// Sync the code.
-			$sync->sync_softrip_code( $softrip_id, $departures );
+			$success = $sync->sync_softrip_code( $softrip_id, $departures );
+
+			// Check if successful.
+			if ( $success ) {
+				// Update counter.
+				++$counter;
+			}
 		}
 	}
+
+	// Log the sync completed.
+	do_action(
+		'quark_softrip_sync_completed',
+		[
+			'success' => $counter,
+			'failed'  => $total - $counter,
+			'via'     => 'cron',
+		]
+	);
+}
+
+/**
+ * Register custom stream connectors for Softrip sync.
+ *
+ * @param array<string, mixed> $connectors Connectors.
+ *
+ * @return array<string, mixed>
+ */
+function setup_stream_connectors( array $connectors = [] ): array {
+	// Load Stream connector file.
+	require_once __DIR__ . '/class-stream-connector.php';
+
+	// Add our connector.
+	$connectors['quark_softrip_sync'] = new Stream_Connector();
+
+	// Return the connectors.
+	return $connectors;
 }

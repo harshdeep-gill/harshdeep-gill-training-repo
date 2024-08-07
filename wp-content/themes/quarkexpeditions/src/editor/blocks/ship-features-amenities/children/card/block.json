@@ -1,0 +1,39 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Ship Features Amenities Card",
+	"name": "quark/ship-features-amenities-card",
+	"description": "Display a card with a title, image, and description.",
+	"category": "widgets",
+	"keywords": [
+		"ship",
+		"amenities",
+		"features",
+		"card"
+	],
+	"textdomain": "qrk",
+	"attributes": {
+		"title": {
+			"type": "string",
+			"default": ""
+		},
+		"image": {
+			"type": "object",
+			"default": {}
+		},
+		"description": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"parent": [
+		"quark/ship-features-amenities"
+	],
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}
