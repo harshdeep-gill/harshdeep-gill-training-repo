@@ -21,7 +21,32 @@ class Search {
 	/**
 	 * Field mapping.
 	 *
-	 * @var array<string, array<string, string>> Field mapping.
+	 * @var array{
+	 *     'date-now': array{
+	 *         key: string,
+	 *         order: string
+	 *     },
+	 *     'date-later': array{
+	 *         key: string,
+	 *         order: string
+	 *     },
+	 *     'price-low': array{
+	 *         key: string,
+	 *         order: string
+	 *     },
+	 *     'price-high': array{
+	 *         key: string,
+	 *         order: string
+	 *     },
+	 *     'duration-short': array{
+	 *         key: string,
+	 *         order: string
+	 *     },
+	 *     'duration-long': array{
+	 *         key: string,
+	 *         order: string
+	 *     },
+	 * } Field mapping.
 	 */
 	private array $field_mapping = [
 		'date-now'       => [
