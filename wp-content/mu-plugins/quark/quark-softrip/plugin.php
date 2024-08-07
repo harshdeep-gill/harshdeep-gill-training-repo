@@ -15,6 +15,7 @@ require_once __DIR__ . '/inc/autoload.php';
 require_once __DIR__ . '/inc/namespace.php';
 require_once __DIR__ . '/inc/departure/namespace.php';
 require_once __DIR__ . '/inc/adventure-options/namespace.php';
+require_once __DIR__ . '/inc/promotions/namespace.php';
 
 // Kick it off.
 add_action( 'plugins_loaded', __NAMESPACE__ . '\\bootstrap' );
