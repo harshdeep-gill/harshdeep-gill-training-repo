@@ -54,6 +54,8 @@ import * as mediaCtaBanner from './media-cta-banner';
 import * as ships from './ships';
 import * as mediaDescriptionCards from './media-description-cards';
 import * as FeaturedMediaAccordions from './featured-media-accordions';
+import * as shipFeaturesAmenities from './ship-features-amenities';
+import * as shipVesselFeatures from './ship-vessel-features';
 
 /**
  * Add blocks.
@@ -112,6 +114,8 @@ const blocks = [
 	ships,
 	mediaDescriptionCards,
 	FeaturedMediaAccordions,
+	shipFeaturesAmenities,
+	shipVesselFeatures,
 ];
 
 /**
