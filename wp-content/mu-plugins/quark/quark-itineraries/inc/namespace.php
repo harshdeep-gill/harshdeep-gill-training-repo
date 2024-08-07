@@ -364,14 +364,13 @@ function get_starting_from_location( int $post_id = 0 ): string {
 	$itinerary              = get( $post_id );
 	$starting_from_location = '';
 
-	// Check for valid itinerary.
-	if ( ! $itinerary['post'] instanceof WP_Post ) {
+	// Check for $itinerary has meta_data.
+	if ( ! is_array( $itinerary['post_meta'] ) || empty( $itinerary['post_meta']['start_location'] ) ) {
 		return $starting_from_location;
 	}
 
 	// Get starting from location.
-	$starting_from_location_id = $itinerary['post_meta']['start_location'] ? absint( $itinerary['post_meta']['start_location'] ) : '';
-	$location_term             = get_term_by( 'id', $starting_from_location_id, DEPARTURE_LOCATION_TAXONOMY );
+	$location_term = get_term_by( 'id', absint( $itinerary['post_meta']['start_location'] ), DEPARTURE_LOCATION_TAXONOMY );
 
 	// Check valid term.
 	if ( $location_term instanceof WP_Term ) {
@@ -483,8 +482,13 @@ function get_included_transfer_package_details( int $post_id = 0, string $curren
 	// Get Inclusion Set.
 	$inclusion_set = inclusion_sets_get( absint( $transfer_package_id ) );
 
+	// Verify post_meta is not empty.
+	if ( ! is_array( $inclusion_set['post_meta'] ) ) {
+		return $details;
+	}
+
 	// Get Display Title.
-	$details['title'] = $inclusion_set['post_meta']['display_title'] ? strval( $inclusion_set['post_meta']['display_title'] ) : __( 'Includes', 'qrk' );
+	$details['title'] = ! empty( $inclusion_set['post_meta']['display_title'] ) ? strval( $inclusion_set['post_meta']['display_title'] ) : __( 'Includes', 'qrk' );
 
 	// Check for Inclusion Set.
 	if ( empty( $inclusion_set['post_meta']['set'] ) ) {
@@ -494,7 +498,7 @@ function get_included_transfer_package_details( int $post_id = 0, string $curren
 
 	// Loop through set items.
 	for ( $i = 0; $i < $inclusion_set['post_meta']['set']; $i++ ) {
-		$details['sets'][] = $inclusion_set['post_meta'][ 'set_' . $i . '_item' ] ?? '';
+		$details['sets'][] = $inclusion_set['post_meta'][ 'set_' . $i . '_item' ] ? strval( $inclusion_set['post_meta'][ 'set_' . $i . '_item' ] ) : '';
 	}
 
 	// Return details.
@@ -524,7 +528,7 @@ function get_policy_banner_details( int $itinerary_id = 0 ): array {
 	];
 
 	// Check post_meta is not empty.
-	if ( ! $itinerary['post_meta'] ) {
+	if ( ! is_array( $itinerary['post_meta'] ) ) {
 		return $details;
 	}
 
@@ -540,15 +544,15 @@ function get_policy_banner_details( int $itinerary_id = 0 ): array {
 	$policy_post = get_policy_page_post( absint( $policy_banner_details ) );
 
 	// Check policy post meta is not empty.
-	if ( empty( $policy_post['post_meta'] ) ) {
+	if ( ! is_array( $policy_post['post_meta'] ) ) {
 		return $details;
 	}
 
 	// Return policy banner details.
 	return [
-		'title'       => $policy_post['post_meta']['alternate_title'] ? strval( $policy_post['post_meta']['alternate_title'] ) : '',
-		'icon_id'     => $policy_post['post_meta']['marketing_option_icon'] ? absint( $policy_post['post_meta']['marketing_option_icon'] ) : 0,
-		'description' => $policy_post['post_meta']['marketing_option_summary'] ? strval( $policy_post['post_meta']['marketing_option_summary'] ) : '',
+		'title'       => ! empty( $policy_post['post_meta']['alternate_title'] ) ? strval( $policy_post['post_meta']['alternate_title'] ) : '',
+		'icon_id'     => ! empty( $policy_post['post_meta']['marketing_option_icon'] ) ? absint( $policy_post['post_meta']['marketing_option_icon'] ) : 0,
+		'description' => ! empty( $policy_post['post_meta']['marketing_option_summary'] ) ? strval( $policy_post['post_meta']['marketing_option_summary'] ) : '',
 		'permalink'   => strval( $policy_post['permalink'] ),
 	];
 }
