@@ -233,7 +233,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 					'taxonomy'             => 'qrk_adventure_option_category',
 					'add_term'             => 0,
 					'save_terms'           => 0,
-					'load_terms'           => 1,
+					'load_terms'           => 0,
 					'return_format'        => 'object',
 					'field_type'           => 'multi_select',
 					'allow_null'           => 1,
