@@ -526,7 +526,7 @@ class Test_Departure extends WP_UnitTestCase {
 		$this->assertEquals( $raw_departure['duration'], $departure->get_post_meta( 'duration' ) );
 		$this->assertEquals( $itinerary_post_id, $departure->get_post_meta( 'itinerary' ) );
 		$this->assertEquals( $raw_departure['shipCode'], $departure->get_post_meta( 'ship_code' ) );
-		$this->assertEquals( $raw_departure['marketCode'], $departure->get_post_meta( 'region' ) );
+		$this->assertEquals( $raw_departure['marketCode'], $departure->get_post_meta( 'softrip_market_code' ) );
 
 		// Validate with past dated departure.
 		$raw_departure['id']        = 'JKL-012:2023-01-09';

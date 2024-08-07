@@ -56,7 +56,7 @@ function filter_solr_build_document( Document $document = null, WP_Post $post = 
 	$document->setField( 'post_title_s', get_the_title( $post->ID ) );
 
 	// Set Region.
-	$document->setField( 'region_s', $departure_data['post_meta']['region'] ?? '' );
+	$document->setField( 'region_s', $departure_data['post_meta']['softrip_market_code'] ?? '' );
 
 	// set Season.
 	$document->setField( 'season_s', get_departure_season( $post->ID ) );

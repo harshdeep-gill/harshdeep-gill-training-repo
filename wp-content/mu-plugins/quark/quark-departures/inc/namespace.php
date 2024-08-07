@@ -408,7 +408,7 @@ function get_departure_region_and_season( int $post_id = 0 ): string {
 	}
 
 	// Get region from meta.
-	$region = $departure['post_meta']['region'] ?? '';
+	$region = $departure['post_meta']['softrip_market_code'] ?? '';
 
 	// Get season.
 	$season = get_departure_season( $post_id );
