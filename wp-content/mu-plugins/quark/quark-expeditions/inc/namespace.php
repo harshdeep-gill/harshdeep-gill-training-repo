@@ -601,7 +601,7 @@ function get_minimum_duration( int $post_id = 0 ): int {
 	// Loop through itineraries and get minimum duration.
 	foreach ( $itineraries as $itinerary ) {
 		// Check for Itinerary.
-		if ( ! is_array( $itinerary ) || empty( $itinerary['post_meta'] ) ) {
+		if ( ! is_array( $itinerary ) || empty( $itinerary['post_meta'] ) || empty( $itinerary['post_meta']['duration_in_days'] ) ) {
 			continue;
 		}
 
@@ -664,7 +664,7 @@ function get_starting_from_price( int $post_id = 0 ): int {
 		$price = $itinerary_object->get_lowest_price();
 
 		// Check minimum price.
-		if ( empty( $starting_from_price ) || $price < $starting_from_price ) {
+		if ( ! empty( $price ) && ( empty( $starting_from_price ) || $price < $starting_from_price ) ) {
 			$starting_from_price = $price;
 		}
 	}
@@ -723,7 +723,8 @@ function get_starting_from_locations( int $post_id = 0 ): array {
 
 		// Check location.
 		if ( $location_term instanceof WP_Term ) {
-			$starting_from_locations[] = [
+			// Add unique location to array.
+			$starting_from_locations[ $location_term->term_id ] = [
 				'title' => $location_term->name,
 			];
 		}
@@ -1265,5 +1266,5 @@ function get_expedition_ship_ids( int $expedition_id = 0 ): array {
 	}
 
 	// Return the ships IDs.
-	return $ships_ids;
+	return array_unique( $ships_ids );
 }
