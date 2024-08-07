@@ -233,7 +233,7 @@ function format_raw_departure_data( array $raw_departure_data = [], int $itinera
             'start_date' => $raw_departure_data['startDate'],
             'end_date' => $raw_departure_data['endDate'],
             'duration' => $raw_departure_data['duration'],
-            'ship_id'            => $raw_departure_data['shipCode'],
+            'ship_code'            => $raw_departure_data['shipCode'],
             'region'             => $raw_departure_data['marketCode'],
         ],
     ];

@@ -88,7 +88,7 @@ class Softrip_DB {
 			cabin_category BIGINT NOT NULL,
 			package_id VARCHAR(45) NOT NULL,
 			departure_id VARCHAR(45) NOT NULL,
-			ship_id VARCHAR(10) NOT NULL,
+			ship_code VARCHAR(10) NOT NULL,
 			cabin_category_id VARCHAR(45) NOT NULL,
 			availability_status VARCHAR(4) NOT NULL,
 			spaces_available INT NOT NULL,

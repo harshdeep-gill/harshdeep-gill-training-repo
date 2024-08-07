@@ -339,7 +339,7 @@ class Test_Softrip1 extends Softrip_TestCase {
 		$this->assertIsArray( $ship['post_meta'] );
 
 		// Assert the ship code.
-		$this->assertEquals( 'ULT', $ship['post_meta']['ship_id'] );
+		$this->assertEquals( 'ULT', $ship['post_meta']['ship_code'] );
 
 		// Cleanup.
 		remove_filter( 'pre_http_request', 'Quark\Tests\Softrip\mock_softrip_http_request' );

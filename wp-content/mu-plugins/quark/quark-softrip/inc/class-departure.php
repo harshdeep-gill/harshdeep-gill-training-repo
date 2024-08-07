@@ -246,7 +246,7 @@ class Departure extends Softrip_Object {
 				'end_date'   => $data['endDate'],
 				'duration'             => $data['duration'],
 				'itinerary'            => $this->itinerary->get_id(),
-				'ship_id'              => $data['shipCode'],
+				'ship_code'              => $data['shipCode'],
 				'region'               => $data['marketCode'],
 			],
 		];
@@ -437,7 +437,7 @@ class Departure extends Softrip_Object {
 		}
 
 		// Get the ship code.
-		$ship_code = $this->get_post_meta( 'ship_id' );
+		$ship_code = $this->get_post_meta( 'ship_code' );
 
 		// Validate ship code.
 		if ( empty( $ship_code ) || ! is_string( $ship_code ) ) {

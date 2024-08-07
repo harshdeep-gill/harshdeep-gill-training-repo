@@ -119,7 +119,7 @@ abstract class Softrip_TestCase extends WP_UnitTestCase {
 
 		// Loop through the ships and set meta.
 		foreach ( $ship_ids as $index => $ship_id ) {
-			update_post_meta( absint( $ship_id ), 'ship_id', $softrip_ship_ids[ $index ] );
+			update_post_meta( absint( $ship_id ), 'ship_code', $softrip_ship_ids[ $index ] );
 			wp_cache_delete( SHIP_POST_TYPE . '_' . absint( $ship_id ), SHIP_POST_TYPE );
 		}
 	}

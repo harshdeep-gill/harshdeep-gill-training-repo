@@ -264,7 +264,7 @@ function get_id_from_ship_code( string $ship_code = '' ): int {
 			RIGHT JOIN
 				$wpdb->posts AS p ON m.post_id = p.ID
 			WHERE
-				m.meta_key = 'ship_id'
+				m.meta_key = 'ship_code'
 			AND
 				p.post_type = %s
 			",

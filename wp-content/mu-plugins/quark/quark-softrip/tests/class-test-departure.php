@@ -525,7 +525,7 @@ class Test_Departure extends WP_UnitTestCase {
 		$this->assertEquals( $raw_departure['endDate'], $departure->get_post_meta( 'end_date' ) );
 		$this->assertEquals( $raw_departure['duration'], $departure->get_post_meta( 'duration' ) );
 		$this->assertEquals( $itinerary_post_id, $departure->get_post_meta( 'itinerary' ) );
-		$this->assertEquals( $raw_departure['shipCode'], $departure->get_post_meta( 'ship_id' ) );
+		$this->assertEquals( $raw_departure['shipCode'], $departure->get_post_meta( 'ship_code' ) );
 		$this->assertEquals( $raw_departure['marketCode'], $departure->get_post_meta( 'region' ) );
 
 		// Validate with past dated departure.
@@ -996,7 +996,7 @@ class Test_Departure extends WP_UnitTestCase {
 				'post_content' => 'Ship 1 content',
 				'post_type'    => SHIP_POST_TYPE,
 				'meta_input'   => [
-					'ship_id' => 'LOQ',
+					'ship_code' => 'LOQ',
 				],
 			]
 		);
@@ -1009,7 +1009,7 @@ class Test_Departure extends WP_UnitTestCase {
 				'post_content' => 'Ship 2 content',
 				'post_type'    => SHIP_POST_TYPE,
 				'meta_input'   => [
-					'ship_id' => 'LOQ2',
+					'ship_code' => 'LOQ2',
 				],
 			]
 		);

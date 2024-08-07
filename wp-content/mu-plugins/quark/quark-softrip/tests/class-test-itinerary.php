@@ -1013,7 +1013,7 @@ class Test_Itinerary extends Softrip_TestCase {
 				'post_content' => 'Ship 1 content',
 				'post_type'    => SHIP_POST_TYPE,
 				'meta_input'   => [
-					'ship_id' => 'LOQ',
+					'ship_code' => 'LOQ',
 				],
 			]
 		);
@@ -1026,7 +1026,7 @@ class Test_Itinerary extends Softrip_TestCase {
 				'post_content' => 'Ship 2 content',
 				'post_type'    => SHIP_POST_TYPE,
 				'meta_input'   => [
-					'ship_id' => 'LOQ2',
+					'ship_code' => 'LOQ2',
 				],
 			]
 		);
