@@ -10,7 +10,9 @@ namespace Quark\Theme\Blocks\ExcursionAccordions;
 use WP_Block;
 use WP_Term;
 
-use function Quark\Expeditions\organise_desination_terms;
+use const Quark\Expeditions\DESTINATION_TAXONOMY;
+
+use function Quark\Core\order_terms_by_hierarchy;
 
 const COMPONENT = 'parts.excursion-accordions';
 
@@ -53,7 +55,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 	$terms = array_map( 'absint', $attributes['terms'] );
 
 	// Organise terms.
-	$organised_terms = organise_desination_terms( $terms );
+	$organised_terms = order_terms_by_hierarchy( $terms, DESTINATION_TAXONOMY );
 
 	// Initialize items.
 	$items = [];
@@ -66,26 +68,11 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 		// Get parent term.
 		$parent_term = $term['parent_term'];
 
-		// Check for parent term.
-		if ( ! $parent_term instanceof WP_Term ) {
-			continue;
-		}
-
 		// Add accordion title.
 		$accordion_item['accordion_title'] = $parent_term->name;
 
-		// Check for child terms.
-		if ( ! isset( $term['child_terms'] ) || ! is_array( $term['child_terms'] ) ) {
-			continue;
-		}
-
 		// Loop through child terms.
 		foreach ( $term['child_terms'] as $child_term ) {
-			// Check for child term.
-			if ( ! $child_term instanceof WP_Term ) {
-				continue;
-			}
-
 			// Initialize child item.
 			$child_item = [];
 

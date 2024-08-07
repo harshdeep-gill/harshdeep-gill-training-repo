@@ -18,7 +18,6 @@ use function Quark\Expeditions\get_minimum_duration;
 use function Quark\Expeditions\get_starting_from_locations;
 use function Quark\Expeditions\get_details_data;
 use function Quark\Expeditions\get_expedition_ship_ids;
-use function Quark\Expeditions\organise_desination_terms;
 
 use const Quark\Itineraries\DEPARTURE_LOCATION_TAXONOMY;
 use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
@@ -477,103 +476,6 @@ class Test_Expeditions extends WP_UnitTestCase {
 		$this->assertEquals(
 			[ $ship_post->ID ],
 			get_expedition_ship_ids( $expedition_post->ID )
-		);
-	}
-
-	/**
-	 * Test organise_desination_terms.
-	 *
-	 * @covers \Quark\Expeditions\organise_desination_terms()
-	 *
-	 * @return void
-	 */
-	public function test_organise_desination_terms(): void {
-		// Create parent term 1.
-		$parent_term_1 = $this->factory()->term->create_and_get(
-			[
-				'taxonomy' => DESTINATION_TAXONOMY,
-			]
-		);
-		$this->assertTrue( $parent_term_1 instanceof WP_Term );
-
-		// Create parent term 2.
-		$parent_term_2 = $this->factory()->term->create_and_get(
-			[
-				'taxonomy' => DESTINATION_TAXONOMY,
-			]
-		);
-		$this->assertTrue( $parent_term_2 instanceof WP_Term );
-
-		// Create child term 1.
-		$child_term_1 = $this->factory()->term->create_and_get(
-			[
-				'taxonomy' => DESTINATION_TAXONOMY,
-				'parent'   => $parent_term_1->term_id,
-			]
-		);
-		$this->assertTrue( $child_term_1 instanceof WP_Term );
-
-		// Create child term 2.
-		$child_term_2 = $this->factory()->term->create_and_get(
-			[
-				'taxonomy' => DESTINATION_TAXONOMY,
-				'parent'   => $parent_term_1->term_id,
-			]
-		);
-		$this->assertTrue( $child_term_2 instanceof WP_Term );
-
-		// Create child term 3.
-		$child_term_3 = $this->factory()->term->create_and_get(
-			[
-				'taxonomy' => DESTINATION_TAXONOMY,
-				'parent'   => $parent_term_2->term_id,
-			]
-		);
-		$this->assertTrue( $child_term_3 instanceof WP_Term );
-
-		// Assign the child terms to the parent terms.
-		wp_set_object_terms(
-			$parent_term_1->term_id,
-			[
-				$child_term_1->term_id,
-				$child_term_2->term_id,
-			],
-			DESTINATION_TAXONOMY
-		);
-		wp_set_object_terms(
-			$parent_term_2->term_id,
-			[
-				$child_term_3->term_id,
-			],
-			DESTINATION_TAXONOMY
-		);
-
-		// Assert the function returns the correct organised terms.
-		$this->assertEquals(
-			[
-				$parent_term_1->term_id => [
-					'parent_term' => $parent_term_1,
-					'child_terms' => [
-						$child_term_1,
-						$child_term_2,
-					],
-				],
-				$parent_term_2->term_id => [
-					'parent_term' => $parent_term_2,
-					'child_terms' => [
-						$child_term_3,
-					],
-				],
-			],
-			organise_desination_terms(
-				[
-					$parent_term_1->term_id,
-					$parent_term_2->term_id,
-					$child_term_1->term_id,
-					$child_term_2->term_id,
-					$child_term_3->term_id,
-				]
-			)
 		);
 	}
 }
