@@ -402,12 +402,12 @@ function doing_automated_test(): bool {
 /**
  * Format price.
  *
- * @param int    $price Price.
+ * @param float  $price    Price.
  * @param string $currency Currency.
  *
  * @return string Formatted price.
  */
-function format_price( int $price = 0, string $currency = 'USD' ): string {
+function format_price( float $price = 0, string $currency = 'USD' ): string {
 	// Check if price is empty.
 	if ( empty( $price ) ) {
 		return '';

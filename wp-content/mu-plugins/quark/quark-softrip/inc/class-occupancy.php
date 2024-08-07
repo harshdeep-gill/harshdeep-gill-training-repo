@@ -264,6 +264,11 @@ class Occupancy extends Data_Object {
 	 * @return float
 	 */
 	public function get_price_per_person( string $currency = 'USD', bool $discounted = false ): float {
+		// Verify we have a parent.
+		if ( empty( $this->parent ) ) {
+			return 0;
+		}
+
 		// Get the departure.
 		$departure = $this->parent->get_departure();
 		$itinerary = $departure->get_post_meta( 'itinerary' ) ? absint( $departure->get_post_meta( 'itinerary' ) ) : 0;

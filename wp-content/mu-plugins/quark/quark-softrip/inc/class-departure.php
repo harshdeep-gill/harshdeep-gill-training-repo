@@ -148,7 +148,7 @@ class Departure extends Softrip_Object {
 	 */
 	public function set( array $data = [], bool $save = false ): void {
 		// No point in assigning an empty array.
-		if ( empty( $data ) || empty( $this->itinerary->get_id() ) ) {
+		if ( empty( $data ) || empty( $this->itinerary ) ) {
 			return;
 		}
 
@@ -585,8 +585,11 @@ class Departure extends Softrip_Object {
 
 		// Iterate over the cabins.
 		foreach ( $cabins as $cabin ) {
+			// Get the cabin data.
+			$cabin_data = $cabin->get_data();
+
 			// Check if cabin has a valid cabin post.
-			if ( ! $cabin->get_data()['post'] instanceof WP_Post ) {
+			if ( empty( $cabin_data['post'] ) || ! $cabin_data['post'] instanceof WP_Post ) {
 				continue;
 			}
 
@@ -594,7 +597,7 @@ class Departure extends Softrip_Object {
 			$struct = [
 				'name'           => strval( $cabin->get_post_meta( 'cabin_name' ) ),
 				'cabin_code'     => strval( $cabin->get_entry_data( 'cabin_category_id' ) ),
-				'description'    => $cabin->get_data()['post']->post_content,
+				'description'    => $cabin_data['post']->post_content,
 				'gallery'        => $cabin->get_post_meta( 'cabin_images' ),
 				'type'           => $cabin->get_cabin_class(),
 				'specifications' => [

@@ -11,6 +11,7 @@ use Quark\Softrip\Departure;
 use WP_Post;
 use WP_Term_Query;
 
+use function Quark\Core\format_price;
 use function Quark\Itineraries\get as get_itinerary;
 use function Quark\Itineraries\get_starting_from_location;
 use function Quark\Itineraries\get_included_transfer_package_details;
@@ -533,18 +534,20 @@ function get_promotion_tags( int $post_id = 0 ): array {
 /**
  * Get departure details.
  *
- * @param int $departure_id The departure ID.
+ * @param int    $departure_id The departure ID.
+ * @param string $currency     The currency.
  *
  * @return array{}|array{
+ *     departure_id: int,
  *     expedition_name: string,
  *     expedition_link: string,
  *     package_id: string,
  *     duration_days: int,
  *     duration_dates: string,
  *     starting_from_location: string,
- *     languages: string[],
+ *     languages: string,
  *     paid_adventure_options: string[],
- *     lowest_price: array<string, float>,
+ *     lowest_price: array<string, string>,
  *     transfer_package_details: array{
  *       title: string,
  *       sets: string[],
@@ -578,7 +581,18 @@ function get_promotion_tags( int $post_id = 0 ): array {
  *     }>,
  * }
  */
-function get_card_data( int $departure_id = 0 ): array {
+function get_card_data( int $departure_id = 0, string $currency = 'USD' ): array {
+	// Set cache key.
+	$cache_key = 'departure_card_data_' . $departure_id . '_' . $currency;
+
+	// Get cached value.
+	$cached_value = wp_cache_get( $cache_key, CACHE_GROUP );
+
+	// Check for cached value.
+	if ( is_array( $cached_value ) && ! empty( $cached_value ) ) {
+		return $cached_value;
+	}
+
 	// Get the departure object.
 	$departure = new Departure();
 	$departure->load( $departure_id );
@@ -606,21 +620,106 @@ function get_card_data( int $departure_id = 0 ): array {
 		$ship_name = $ship_data['post']->post_title;
 	}
 
+	// Get the lowest price.
+	$prices = $departure->get_lowest_price( $currency );
+
+	// Format the prices.
+	$prices['discounted_price'] = format_price( $prices['discounted_price'], $currency );
+	$prices['original_price']   = format_price( $prices['original_price'], $currency );
+
 	// Prepare the departure card details.
-	return [
+	$data = [
+		'departure_id'             => $departure_id,
 		'expedition_name'          => $expedition_name,
 		'expedition_link'          => $expedition_post['permalink'],
 		'package_id'               => strval( $departure->get_post_meta( 'softrip_package_id' ) ),
 		'duration_days'            => absint( $departure->get_post_meta( 'duration' ) ),
 		'duration_dates'           => $departure->get_date_range(),
 		'starting_from_location'   => get_starting_from_location( $itinerary_id ),
-		'languages'                => get_languages( $departure_id ),
+		'languages'                => implode( ',', get_languages( $departure_id ) ),
 		'paid_adventure_options'   => get_paid_adventure_options( $departure_id ),
-		'lowest_price'             => $departure->get_lowest_price(),
-		'transfer_package_details' => get_included_transfer_package_details( $itinerary_id ),
+		'lowest_price'             => $prices,
+		'transfer_package_details' => get_included_transfer_package_details( $itinerary_id, $currency ),
 		'promotion_tags'           => get_promotion_tags( $departure_id ),
 		'ship_name'                => $ship_name,
 		'banner_details'           => get_policy_banner_details( $itinerary_id ),
 		'cabins'                   => $departure->get_cabin_details(),
 	];
+
+	// Set cache and return data.
+	wp_cache_set( $cache_key, $data, CACHE_GROUP );
+
+	// Return departure card data.
+	return $data;
+}
+
+/**
+ * Get departure cards data.
+ *
+ * @param int[]  $departure_ids The departure IDs.
+ * @param string $currency      The currency.
+ *
+ * @return array{}|array{
+ *     array{
+ *      departure_id: int,
+ *      expedition_name: string,
+ *      expedition_link: string,
+ *      package_id: string,
+ *      duration_days: int,
+ *      duration_dates: string,
+ *      starting_from_location: string,
+ *      languages: string,
+ *      paid_adventure_options: string[],
+ *      lowest_price: array<string, string>,
+ *      transfer_package_details: array{
+ *        title: string,
+ *        sets: string[],
+ *        price: float,
+ *      },
+ *      promotion_tags: string[],
+ *      ship_name: string,
+ *      banner_details: array{
+ *         title: string,
+ *         description: string,
+ *         icon_id: int,
+ *         permalink: string,
+ *      },
+ *      cabins ?: array<int|string, array{
+ *         name: string,
+ *         description: string,
+ *         gallery: mixed,
+ *         cabin_code: string,
+ *         type: string,
+ *         specifications: array{
+ *            availability_status: string,
+ *            availability_description: string,
+ *            spaces_available: string,
+ *            occupancy: string,
+ *            location: string,
+ *            size: string,
+ *            bed_configuration: string
+ *        },
+ *       from_price: array<string, array<string, float>>,
+ *       occupancies: array<int<0, max>, array<string, mixed>>
+ *      }>,
+ *    }
+ * }
+ */
+function get_cards_data( array $departure_ids = [], string $currency = 'USD' ): array {
+	// Prepare the departure cards data.
+	$departure_cards = [];
+
+	// Validate departure_ids.
+	if ( empty( $departure_ids ) || ! is_array( $departure_ids ) ) {
+		return $departure_cards;
+	}
+
+	// Loop through departure_ids.
+	foreach ( $departure_ids as $departure_id ) {
+		// Get departure card data.
+		$departure_cards[ $departure_id ] = get_card_data( $departure_id, $currency );
+	}
+
+	// Return departure cards data.
+	return $departure_cards;
 }

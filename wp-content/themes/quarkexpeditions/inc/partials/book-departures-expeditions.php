@@ -8,6 +8,7 @@
 namespace Quark\Theme\Partials\BookDeparturesExpeditions;
 
 use function Quark\Search\Departures\search;
+use function Quark\Departures\get_cards_data;
 
 const PARTIAL_NAME = 'book-departures-expeditions';
 
@@ -36,12 +37,25 @@ function render( array $output = [], string $name = '', array $data = [] ): arra
 		return $output;
 	}
 
+	// Init selected filters.
+	$selected_filter = [
+		'currency' => 'USD',
+	];
+
+	// Verify and get selected filters.
+	if ( ! empty( $data['selectedFilters'] ) && is_array( $data['selectedFilters'] ) ) {
+		$selected_filter = $data['selectedFilters'];
+	}
+
 	// Search for Departure post.
-	$search_results = search( (array) $data['selectedFilters'] );
+	$search_results = search( $selected_filter );
+
+	// Get currency.
+	$currency = $selected_filter['currency'] ? strval( $selected_filter['currency'] ) : 'USD';
 
 	// Build component attributes.
 	$attributes = [
-		'cards' => '',
+		'cards' => get_cards_data( array_map( 'absint', $search_results['ids'] ), $currency ),
 	];
 
 	// Return rendered partial.

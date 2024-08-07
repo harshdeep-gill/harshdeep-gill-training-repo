@@ -10,6 +10,7 @@ namespace Quark\Itineraries;
 use WP_Post;
 use WP_Term;
 
+use function Quark\Core\format_price;
 use function Quark\InclusionSets\get as inclusion_sets_get;
 use function Quark\PolicyPages\get as get_policy_page_post;
 
@@ -401,6 +402,11 @@ function get_mandatory_transfer_price( int $post_id = 0, string $currency = 'USD
 	// Get meta key.
 	$meta_key = sprintf( 'mandatory_transfer_price_%s', strtolower( $currency ) );
 
+	// Check for meta key exists.
+	if ( empty( $itinerary['post_meta'][ $meta_key ] ) || ! is_numeric( $itinerary['post_meta'][ $meta_key ] ) ) {
+		return 0;
+	}
+
 	// Get mandatory transfer price.
 	return floatval( strval( $itinerary['post_meta'][ $meta_key ] ) );
 }
@@ -425,6 +431,11 @@ function get_supplemental_price( int $post_id = 0, string $currency = 'USD' ): f
 	// Get meta key.
 	$meta_key = sprintf( 'supplemental_price_%s', strtolower( $currency ) );
 
+	// Check for meta key exists.
+	if ( empty( $itinerary['post_meta'][ $meta_key ] ) || ! is_numeric( $itinerary['post_meta'][ $meta_key ] ) ) {
+		return 0;
+	}
+
 	// Get supplemental price.
 	return floatval( strval( $itinerary['post_meta'][ $meta_key ] ) );
 }
@@ -439,15 +450,17 @@ function get_supplemental_price( int $post_id = 0, string $currency = 'USD' ): f
  *     title: string,
  *     sets: string[],
  *     price: float,
+ *     formatted_price: string,
  * } Included transfer package.
  */
 function get_included_transfer_package_details( int $post_id = 0, string $currency = 'USD' ): array {
 	// get Itinerary.
 	$itinerary = get( $post_id );
 	$details   = [
-		'title' => '',
-		'sets'  => [],
-		'price' => 0,
+		'title'           => '',
+		'sets'            => [],
+		'price'           => 0,
+		'formatted_price' => '0',
 	];
 
 	// Validate.
@@ -456,7 +469,8 @@ function get_included_transfer_package_details( int $post_id = 0, string $curren
 	}
 
 	// Get included transfer package.
-	$details['price'] = get_mandatory_transfer_price( $post_id, $currency );
+	$details['price']           = get_mandatory_transfer_price( $post_id, $currency );
+	$details['formatted_price'] = format_price( $details['price'], $currency );
 
 	// Get included transfer package.
 	$transfer_package_id = $itinerary['post_meta']['mandatory_transfer_package_inclusion'] ?? 0;

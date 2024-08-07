@@ -15,9 +15,10 @@
 	<x-book-departures-expeditions.results
 		:count="$results_count"
 		partial="book-departures-expeditions"
-		selector=".book-departures-expeditions__results"
+		selector=".departure-cards"
 		:payload="$payload ?? []"
 	>
 		{{-- TODO: Render Departure Cards. --}}
+		<div class="departure-cards"></div>
 	</x-book-departures-expeditions.results>
   </x-book-departures-expeditions>

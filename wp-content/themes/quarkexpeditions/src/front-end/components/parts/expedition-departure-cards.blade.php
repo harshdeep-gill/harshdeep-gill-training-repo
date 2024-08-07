@@ -8,7 +8,9 @@
 			<x-departure-cards.card-banner text="{{ $card['banner_details']['title'] }}"/>
 			<x-departure-cards.header>
 				<x-departure-cards.title title="{{ $card['expedition_name'] }}"/>
-				<x-departure-cards.promo-tag text="{{ $card['promotion_banner'] }}"/>
+				@if( ! empty( $card['promotion_banner'] ) )
+					<x-departure-cards.promo-tag text="{{ $card['promotion_banner'] }}"/>
+				@endif
 			</x-departure-cards.header>
 			<x-departure-cards.body>
 				<x-departure-cards.body-column>
@@ -20,7 +22,7 @@
 								</x-departure-cards.specification-label>
 								<x-departure-cards.specification-value>
 									@if ( ! empty( $card['duration_days'] ) )
- 										{{ $card['duration_days'] }} <br>
+ 										{{ $card['duration_days'] }} <x-escape :content="__( 'Days', 'qrk' )"/><br>
  									@endif
 
 									@if ( ! empty( $card['duration_dates'] ) )
@@ -118,10 +120,10 @@
 							<p><strong>{{ $card['transfer_package_details']['title'] }}</strong></p>
 							<ul>
 								@foreach( $card['transfer_package_details']['sets'] as $set )
-									<li>{{ $set }}</li>
+									<li>{!! $set !!}</li>
 								@endforeach
 							</ul>
-							<p><strong>Package Price: {{ $card['transfer_package_details']['price'] }}</strong></p>
+							<p><strong>Package Price: {{ $card['transfer_package_details']['formatted_price'] }}</strong></p>
 						</x-departure-cards.transfer_package>
 					@endif
 					<x-button size="big"><x-escape :content="__( 'View Cabin Pricing & Options', 'qrk' )"/></x-button>
