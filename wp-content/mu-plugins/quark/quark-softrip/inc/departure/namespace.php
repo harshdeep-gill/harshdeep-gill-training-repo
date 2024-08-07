@@ -11,6 +11,7 @@ use WP_Error;
 use WP_Query;
 
 use function Quark\Ships\get_id_from_ship_code;
+use function Quark\Softrip\AdventureOptions\update_adventure_options;
 use function Quark\Softrip\is_expired;
 
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
@@ -109,6 +110,7 @@ function update_departures( array $raw_departures = [], string $softrip_package_
     // Initialize updated departure unique codes.
     $updated_departure_codes = [];
 
+    // Loop through raw departures and update/create the departure posts, cabins, prices and promotions.
     foreach ( $raw_departures as $raw_departure ) {
         // Validate if not array or empty array or no id.
         if ( ! is_array( $raw_departure ) || empty( $raw_departure ) || empty( $raw_departure['id'] ) ) {
@@ -144,9 +146,10 @@ function update_departures( array $raw_departures = [], string $softrip_package_
             $updated_post_id = wp_insert_post( $formatted_data );
         }
 
-        if ( $updated_post_id instanceof WP_Error ) {
+        // Skip if error or empty post ID.
+        if ( $updated_post_id instanceof WP_Error || empty( $updated_post_id ) ) {
             continue;
-        } elseif ( ! empty( $updated_post_id ) ) {
+        } else {
             // Add to updated departure codes.
             $updated_departure_codes[] = $raw_departure['id'];
 
@@ -155,6 +158,11 @@ function update_departures( array $raw_departures = [], string $softrip_package_
                 // Set english as spoken language.
                 wp_set_object_terms( $updated_post_id, [ 'english' ], SPOKEN_LANGUAGE_TAXONOMY );
             }
+        }
+
+        // Update adventure options.
+        if ( ! empty( $raw_departure['adventureOptions'] ) ) {
+            update_adventure_options( $raw_departure['adventureOptions'], $updated_post_id );
         }
 
         // Further continue by updating the cabins.
