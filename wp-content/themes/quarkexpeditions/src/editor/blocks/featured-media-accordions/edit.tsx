@@ -7,10 +7,7 @@ import {
 	useInnerBlocksProps,
 	InnerBlocks,
 } from '@wordpress/block-editor';
-import {
-	useSelect,
-	useDispatch,
-} from '@wordpress/data';
+import { useSelect } from '@wordpress/data';
 import { store as blockEditorStore } from '@wordpress/editor';
 
 /**
@@ -47,9 +44,6 @@ import * as item from './children/item';
  * @param {string} props.clientId  Client ID.
  */
 export default function Edit( { className, clientId }: BlockEditAttributes ): JSX.Element {
-	// Get the remove block function.
-	const { removeBlock } = useDispatch( blockEditorStore );
-
 	// Get child blocks attributes.
 	const accordionMediaImage = useSelect(
 
@@ -70,24 +64,6 @@ export default function Edit( { className, clientId }: BlockEditAttributes ): JS
 		[],
 	);
 
-	// Check if the appender should be shown and remove the last child block if there are more than 5 child blocks.
-	const showBlockAppender = useSelect(
-		( select: any ) => {
-			// Get the child blocks.
-			const childBlocks = select( blockEditorStore ).getBlocks( clientId );
-
-			// Check if the number of child blocks is greater than 5.
-			if ( 5 < childBlocks.length ) {
-				// Remove the last child block.
-				removeBlock( childBlocks[ childBlocks.length - 1 ].clientId );
-			}
-
-			// Return whether the appender should be shown.
-			return 5 > childBlocks.length;
-		},
-		[],
-	);
-
 	// Set block props.
 	const blockProps = useBlockProps( {
 		className: classnames(
@@ -102,7 +78,7 @@ export default function Edit( { className, clientId }: BlockEditAttributes ): JS
 		{
 			allowedBlocks: [ item.name ],
 			template: [ [ item.name ], [ item.name ], [ item.name ] ],
-			renderAppender: showBlockAppender ? InnerBlocks.ButtonBlockAppender : undefined,
+			renderAppender: InnerBlocks.ButtonBlockAppender,
 
 			// @ts-ignore
 			orientation: 'vertical',

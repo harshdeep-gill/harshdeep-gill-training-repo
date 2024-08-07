@@ -8,4 +8,21 @@
 			width: 100%;
 		}
 	}
+
+	.accordion {
+
+		&__item {
+			// Hide items after the 5th item on editor.
+			&:nth-child(n + 6) {
+				display: none;
+			}
+		}
+
+		&:has(.accordion__item:nth-child(n + 5)) {
+			// Hide the appender after the 5th item on editor.
+			.block-list-appender {
+				display: none;
+			}
+		}
+	}
 }
