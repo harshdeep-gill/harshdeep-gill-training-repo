@@ -444,6 +444,7 @@ class Test_Expeditions extends Softrip_TestCase {
 
 		// Update expected data with ship posts.
 		foreach ( $ship_posts as $ship_post ) {
+			$this->assertTrue( $ship_post instanceof WP_Post );
 			$expected_data['ships'][] = [
 				'title' => $ship_post->post_title,
 			];
