@@ -8,6 +8,7 @@
 namespace Quark\Softrip;
 
 use function Quark\Softrip\AdventureOptions\get_adventure_table_sql;
+use function Quark\Softrip\Promotions\get_table_sql as get_promotions_table_sql;
 
 /**
  * Class Softrip_DB.
@@ -22,7 +23,7 @@ class Softrip_DB {
 	 *      cabin_categories: string,
 	 *      occupancies: string,
 	 *      occupancy_prices: string,
-	 *      promos: string,
+	 *      promotions: string,
 	 * }
 	 */
 	public function get_db_tables_sql(): array {
@@ -32,7 +33,7 @@ class Softrip_DB {
 			'cabin_categories'  => $this->get_cabin_table_sql(),
 			'occupancies'       => $this->get_occupancies_table_sql(),
 			'occupancy_prices'  => $this->get_occupancy_prices_table_sql(),
-			'promos'            => $this->get_promos_table_sql(),
+			'promotions'        => get_promotions_table_sql(),
 		];
 	}
 
@@ -95,34 +96,6 @@ class Softrip_DB {
 			availability_status VARCHAR(4) NOT NULL,
 			spaces_available INT NOT NULL,
 			UNIQUE KEY cabin_category_title_unique (title)
-		) $engine_collate";
-
-		// return the SQL.
-		return $sql;
-	}
-
-	/**
-	 * Get the promos table create SQL.
-	 *
-	 * @return string
-	 */
-	private function get_promos_table_sql(): string {
-		// Get the table name.
-		$table_name = $this->prefix_table_name( 'promos' );
-
-		// Get the engine collate.
-		$engine_collate = $this->engine_collate();
-
-		// Build the SQL query.
-		$sql = "CREATE TABLE $table_name (
-			id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-			promotion_code VARCHAR(255) NOT NULL,
-			start_date DATETIME NOT NULL,
-			end_date DATETIME NOT NULL,
-			description VARCHAR(255) NOT NULL,
-			discount_type VARCHAR(255) NOT NULL,
-			discount_value VARCHAR(255) NOT NULL,
-			pif TINYINT(1) NOT NULL
 		) $engine_collate";
 
 		// return the SQL.
