@@ -53,6 +53,7 @@ import * as expeditionDetails from './expedition-details';
 import * as mediaCtaBanner from './media-cta-banner';
 import * as ships from './ships';
 import * as mediaDescriptionCards from './media-description-cards';
+import * as FeaturedMediaAccordions from './featured-media-accordions';
 
 /**
  * Add blocks.
@@ -110,6 +111,7 @@ const blocks = [
 	mediaCtaBanner,
 	ships,
 	mediaDescriptionCards,
+	FeaturedMediaAccordions,
 ];
 
 /**

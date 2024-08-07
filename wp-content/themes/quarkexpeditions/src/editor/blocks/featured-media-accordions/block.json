@@ -1,0 +1,22 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Featured Media Accordions",
+	"name": "quark/featured-media-accordions",
+	"description": "Display the featured media accordions block.",
+	"category": "widgets",
+	"keywords": [
+		"media",
+		"featured",
+		"accordions"
+	],
+	"textdomain": "qrk",
+	"attributes": {},
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}
