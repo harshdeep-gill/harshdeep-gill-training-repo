@@ -24,7 +24,7 @@ class Search {
 	 * @var string[] Field mapping.
 	 */
 	private array $field_mapping = [
-		'durations'            => 'duration_i',
+		'durations'  => 'duration_i',
 		'start_date' => 'start_date_i',
 	];
 

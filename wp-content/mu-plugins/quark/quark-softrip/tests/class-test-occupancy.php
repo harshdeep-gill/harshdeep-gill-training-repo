@@ -80,7 +80,7 @@ class Test_Occupancy extends WP_UnitTestCase {
 				'post_title'  => 'Test Departure',
 				'post_status' => 'publish',
 				'meta_input'  => [
-					'test_meta'           => true,
+					'test_meta'  => true,
 					'softrip_id' => 'UNQ-123:2024-08-25',
 				],
 			]
@@ -155,7 +155,7 @@ class Test_Occupancy extends WP_UnitTestCase {
 				'post_title'  => 'Test Departure',
 				'post_status' => 'publish',
 				'meta_input'  => [
-					'test_meta'           => true,
+					'test_meta'  => true,
 					'softrip_id' => 'UNQ-123:2024-08-25',
 				],
 			]
@@ -285,7 +285,7 @@ class Test_Occupancy extends WP_UnitTestCase {
 				'post_title'  => 'Test Departure',
 				'post_status' => 'publish',
 				'meta_input'  => [
-					'test_meta'           => true,
+					'test_meta'  => true,
 					'softrip_id' => 'UNQ-123:2024-08-25',
 				],
 			]
@@ -389,7 +389,7 @@ class Test_Occupancy extends WP_UnitTestCase {
 				'post_title'  => 'Test Departure',
 				'post_status' => 'publish',
 				'meta_input'  => [
-					'test_meta'           => true,
+					'test_meta'  => true,
 					'softrip_id' => 'UNQ-123:2024-08-25',
 				],
 			]

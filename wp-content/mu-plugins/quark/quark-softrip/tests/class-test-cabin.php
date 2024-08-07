@@ -161,7 +161,7 @@ class Test_Cabin extends WP_UnitTestCase {
 				'post_status'  => 'publish',
 				'post_type'    => DEPARTURE_POST_TYPE,
 				'meta_input'   => [
-					'test_meta'           => true,
+					'test_meta'  => true,
 					'softrip_id' => 'UNQ-123:2025-05-19',
 				],
 			]

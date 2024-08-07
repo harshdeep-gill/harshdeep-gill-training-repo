@@ -40,9 +40,9 @@ class Test_Departure extends WP_UnitTestCase {
 				'post_type'    => DEPARTURE_POST_TYPE,
 				'meta_input'   => [
 					'test_meta'            => 1,
-					'softrip_package_code'   => 'UNQ-123',
-					'softrip_id'  => 'UNQ-123:2026-01-01',
-					'softrip_code' => 'UPL20260101',
+					'softrip_package_code' => 'UNQ-123',
+					'softrip_id'           => 'UNQ-123:2026-01-01',
+					'softrip_code'         => 'UPL20260101',
 				],
 			]
 		);
@@ -79,9 +79,9 @@ class Test_Departure extends WP_UnitTestCase {
 				'post_type'    => DEPARTURE_POST_TYPE,
 				'meta_input'   => [
 					'test_meta'            => 1,
-					'softrip_package_code'   => 'UNQ-123',
-					'softrip_id'  => 'UNQ-123:2026-01-01',
-					'softrip_code' => 'UPL20260101',
+					'softrip_package_code' => 'UNQ-123',
+					'softrip_id'           => 'UNQ-123:2026-01-01',
+					'softrip_code'         => 'UPL20260101',
 				],
 			]
 		);
@@ -117,9 +117,9 @@ class Test_Departure extends WP_UnitTestCase {
 				'post_type'    => DEPARTURE_POST_TYPE,
 				'meta_input'   => [
 					'test_meta'            => 1,
-					'softrip_package_code'   => 'UNQ-123',
-					'softrip_id'  => 'UNQ-123:2026-01-01',
-					'softrip_code' => 'UPL20260101',
+					'softrip_package_code' => 'UNQ-123',
+					'softrip_id'           => 'UNQ-123:2026-01-01',
+					'softrip_code'         => 'UPL20260101',
 				],
 			]
 		);
@@ -200,9 +200,9 @@ class Test_Departure extends WP_UnitTestCase {
 				'post_type'    => DEPARTURE_POST_TYPE,
 				'meta_input'   => [
 					'test_meta'            => 1,
-					'softrip_package_code'   => 'UNQ-123',
-					'softrip_id'  => 'UNQ-123:2026-01-01',
-					'softrip_code' => 'UPL20260101',
+					'softrip_package_code' => 'UNQ-123',
+					'softrip_id'           => 'UNQ-123:2026-01-01',
+					'softrip_code'         => 'UPL20260101',
 				],
 			]
 		);
@@ -257,9 +257,9 @@ class Test_Departure extends WP_UnitTestCase {
 				'post_status'  => 'publish',
 				'meta_input'   => [
 					'test_meta'            => 1,
-					'softrip_package_code'   => 'UNQ-123',
-					'softrip_id'  => 'UNQ-123:2026-01-01',
-					'softrip_code' => 'UPL20260101',
+					'softrip_package_code' => 'UNQ-123',
+					'softrip_id'           => 'UNQ-123:2026-01-01',
+					'softrip_code'         => 'UPL20260101',
 				],
 			]
 		);
@@ -358,7 +358,7 @@ class Test_Departure extends WP_UnitTestCase {
 				'post_content' => 'Test Itinerary Content',
 				'post_type'    => ITINERARY_POST_TYPE,
 				'meta_input'   => [
-					'test_meta'          => 1,
+					'test_meta'            => 1,
 					'softrip_package_code' => 'UNQ-123',
 				],
 			]
@@ -481,7 +481,7 @@ class Test_Departure extends WP_UnitTestCase {
 				'post_content' => 'Test Itinerary Content',
 				'post_type'    => ITINERARY_POST_TYPE,
 				'meta_input'   => [
-					'test_meta'          => 1,
+					'test_meta'            => 1,
 					'softrip_package_code' => 'JKL-012',
 				],
 			]
@@ -594,7 +594,7 @@ class Test_Departure extends WP_UnitTestCase {
 				'post_content' => 'Test Itinerary Content',
 				'post_type'    => ITINERARY_POST_TYPE,
 				'meta_input'   => [
-					'test_meta'          => 1,
+					'test_meta'            => 1,
 					'softrip_package_code' => 'UNQ-123',
 				],
 			]
@@ -713,7 +713,7 @@ class Test_Departure extends WP_UnitTestCase {
 				'post_content' => 'Test Itinerary Content',
 				'post_type'    => ITINERARY_POST_TYPE,
 				'meta_input'   => [
-					'test_meta'          => 1,
+					'test_meta'            => 1,
 					'softrip_package_code' => 'UNQ-123',
 				],
 			]
@@ -832,7 +832,7 @@ class Test_Departure extends WP_UnitTestCase {
 				'post_content' => 'Itinerary content',
 				'post_type'    => ITINERARY_POST_TYPE,
 				'meta_input'   => [
-					'test_meta'          => 1,
+					'test_meta'            => 1,
 					'softrip_package_code' => 'UNQ-123',
 				],
 			]
@@ -982,7 +982,7 @@ class Test_Departure extends WP_UnitTestCase {
 				'post_content' => 'Itinerary content',
 				'post_type'    => ITINERARY_POST_TYPE,
 				'meta_input'   => [
-					'test_meta'          => 1,
+					'test_meta'            => 1,
 					'softrip_package_code' => 'UNQ-123',
 				],
 			]
@@ -1148,7 +1148,7 @@ class Test_Departure extends WP_UnitTestCase {
 				'post_content' => 'Itinerary content',
 				'post_type'    => ITINERARY_POST_TYPE,
 				'meta_input'   => [
-					'test_meta'          => 1,
+					'test_meta'            => 1,
 					'softrip_package_code' => 'UNQ-123',
 				],
 			]
@@ -1205,7 +1205,7 @@ class Test_Departure extends WP_UnitTestCase {
 				'post_content' => 'Itinerary content',
 				'post_type'    => ITINERARY_POST_TYPE,
 				'meta_input'   => [
-					'test_meta'          => 1,
+					'test_meta'            => 1,
 					'softrip_package_code' => 'UNQ-123',
 				],
 			]

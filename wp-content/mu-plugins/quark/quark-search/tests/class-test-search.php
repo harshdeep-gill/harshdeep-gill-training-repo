@@ -271,7 +271,7 @@ class Test_Search extends WP_UnitTestCase {
 		// Make private property accessible and test.
 		$this->assertEquals(
 			[
-				'duration_i'             => 'desc',
+				'duration_i'   => 'desc',
 				'start_date_i' => 'asc',
 			],
 			$sorts->getValue( $solr_search ),

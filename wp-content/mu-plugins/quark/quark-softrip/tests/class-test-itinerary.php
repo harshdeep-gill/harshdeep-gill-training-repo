@@ -38,7 +38,7 @@ class Test_Itinerary extends Softrip_TestCase {
 				'post_content' => 'Itinerary content',
 				'post_type'    => ITINERARY_POST_TYPE,
 				'meta_input'   => [
-					'test_meta'          => 1,
+					'test_meta'            => 1,
 					'softrip_package_code' => 'UNQ-123',
 				],
 			]
@@ -75,7 +75,7 @@ class Test_Itinerary extends Softrip_TestCase {
 				'post_content' => 'Itinerary content',
 				'post_type'    => ITINERARY_POST_TYPE,
 				'meta_input'   => [
-					'test_meta'          => 1,
+					'test_meta'            => 1,
 					'softrip_package_code' => 'UNQ-123',
 				],
 			]
@@ -112,7 +112,7 @@ class Test_Itinerary extends Softrip_TestCase {
 				'post_content' => 'Itinerary content',
 				'post_type'    => ITINERARY_POST_TYPE,
 				'meta_input'   => [
-					'test_meta'          => 1,
+					'test_meta'            => 1,
 					'softrip_package_code' => 'UNQ-123',
 				],
 			]
@@ -151,7 +151,7 @@ class Test_Itinerary extends Softrip_TestCase {
 				'post_content' => 'Itinerary content',
 				'post_type'    => ITINERARY_POST_TYPE,
 				'meta_input'   => [
-					'test_meta'          => 1,
+					'test_meta'            => 1,
 					'softrip_package_code' => 'UNQ-123',
 				],
 			]
@@ -172,7 +172,7 @@ class Test_Itinerary extends Softrip_TestCase {
 		// Check if correct data is returned.
 		$this->assertEquals(
 			[
-				'test_meta'          => 1,
+				'test_meta'            => 1,
 				'softrip_package_code' => 'UNQ-123',
 			],
 			$all_data
@@ -200,7 +200,7 @@ class Test_Itinerary extends Softrip_TestCase {
 				'post_content' => 'Itinerary content',
 				'post_type'    => ITINERARY_POST_TYPE,
 				'meta_input'   => [
-					'test_meta'          => 1,
+					'test_meta'            => 1,
 					'softrip_package_code' => 'UNQ-123',
 				],
 			]
@@ -237,7 +237,7 @@ class Test_Itinerary extends Softrip_TestCase {
 				'post_content' => 'Itinerary content',
 				'post_type'    => ITINERARY_POST_TYPE,
 				'meta_input'   => [
-					'test_meta'          => 1,
+					'test_meta'            => 1,
 					'softrip_package_code' => 'UNQ-123',
 				],
 			]
@@ -360,7 +360,7 @@ class Test_Itinerary extends Softrip_TestCase {
 				'post_content' => 'Itinerary content',
 				'post_type'    => ITINERARY_POST_TYPE,
 				'meta_input'   => [
-					'test_meta'          => 1,
+					'test_meta'            => 1,
 					'softrip_package_code' => 'UNQ-123',
 				],
 			]
@@ -484,7 +484,7 @@ class Test_Itinerary extends Softrip_TestCase {
 				'post_content' => 'Itinerary content',
 				'post_type'    => ITINERARY_POST_TYPE,
 				'meta_input'   => [
-					'test_meta'          => 1,
+					'test_meta'            => 1,
 					'softrip_package_code' => 'UNQ-123',
 				],
 			]
@@ -629,7 +629,7 @@ class Test_Itinerary extends Softrip_TestCase {
 				'post_content' => 'Itinerary content',
 				'post_type'    => ITINERARY_POST_TYPE,
 				'meta_input'   => [
-					'test_meta'          => 1,
+					'test_meta'            => 1,
 					'softrip_package_code' => 'UNQ-123',
 				],
 			]
@@ -755,7 +755,7 @@ class Test_Itinerary extends Softrip_TestCase {
 				'post_content' => 'Itinerary content',
 				'post_type'    => ITINERARY_POST_TYPE,
 				'meta_input'   => [
-					'test_meta'          => 1,
+					'test_meta'            => 1,
 					'softrip_package_code' => 'ABC-123',
 				],
 			]
@@ -853,7 +853,7 @@ class Test_Itinerary extends Softrip_TestCase {
 				'post_content' => 'Itinerary content',
 				'post_type'    => ITINERARY_POST_TYPE,
 				'meta_input'   => [
-					'test_meta'          => 1,
+					'test_meta'            => 1,
 					'softrip_package_code' => 'UNQ-123',
 				],
 			]
@@ -999,7 +999,7 @@ class Test_Itinerary extends Softrip_TestCase {
 				'post_content' => 'Itinerary content',
 				'post_type'    => ITINERARY_POST_TYPE,
 				'meta_input'   => [
-					'test_meta'          => 1,
+					'test_meta'            => 1,
 					'softrip_package_code' => 'UNQ-123',
 				],
 			]
@@ -1154,7 +1154,7 @@ class Test_Itinerary extends Softrip_TestCase {
 				'post_content' => 'Itinerary content',
 				'post_type'    => ITINERARY_POST_TYPE,
 				'meta_input'   => [
-					'test_meta'          => 1,
+					'test_meta'            => 1,
 					'softrip_package_code' => 'UNQ-123',
 				],
 			]
@@ -1217,7 +1217,7 @@ class Test_Itinerary extends Softrip_TestCase {
 				'post_content' => 'Itinerary content',
 				'post_type'    => ITINERARY_POST_TYPE,
 				'meta_input'   => [
-					'test_meta'          => 1,
+					'test_meta'            => 1,
 					'softrip_package_code' => 'UNQ-123',
 				],
 			]

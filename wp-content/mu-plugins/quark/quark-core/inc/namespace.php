@@ -13,7 +13,7 @@ use WP_Post;
 
 use function Travelopia\Core\cached_nav_menu;
 
-const CURRENCIES          = [ 'USD', 'CAD', 'AUD', 'GBP', 'EUR' ];
+const CURRENCIES = [ 'USD', 'CAD', 'AUD', 'GBP', 'EUR' ];
 
 /**
  * Bootstrap plugin.

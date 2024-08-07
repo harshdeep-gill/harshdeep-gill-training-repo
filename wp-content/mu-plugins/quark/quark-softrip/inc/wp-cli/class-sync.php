@@ -72,9 +72,9 @@ class Sync {
 	public function all(): void {
 		// Get Itinerary ID's.
 		$args = [
-			'post_type'      => ITINERARY_POST_TYPE,
-			'posts_per_page' => -1,
-			'fields'         => 'ids',
+			'post_type'              => ITINERARY_POST_TYPE,
+			'posts_per_page'         => -1,
+			'fields'                 => 'ids',
 			'update_post_meta_cache' => false,
 			'update_term_meta_cache' => false,
 			'ignore_sticky_posts'    => true,

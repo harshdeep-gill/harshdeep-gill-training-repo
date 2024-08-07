@@ -113,21 +113,21 @@ function do_sync( array $itinerary_post_ids = [] ): void {
 			'update_post_meta_cache' => false,
 			'update_term_meta_cache' => false,
 			'ignore_sticky_posts'    => true,
-			'post_status'            => ['draft', 'publish'],
+			'post_status'            => [ 'draft', 'publish' ],
 			'posts_per_page'         => -1,
 		];
 
 		// Run WP_Query.
-		$query = new WP_Query($args);
-		$itinerary_post_ids = array_map('absint', $query->posts);
-	}	
+		$query              = new WP_Query( $args );
+		$itinerary_post_ids = array_map( 'absint', $query->posts );
+	}
 
 	// Initialize package codes.
 	$package_codes = [];
 
 	// Initialize CLI variables.
 	$is_in_cli = defined( 'WP_CLI' ) && true === WP_CLI;
-	$progress = null;
+	$progress  = null;
 
 	// Get all package codes.
 	foreach ( $itinerary_post_ids as $post_id ) {
@@ -158,7 +158,7 @@ function do_sync( array $itinerary_post_ids = [] ): void {
 		WP_CLI::log( WP_CLI::colorize( 'Syncing Itineraries...' ) );
 
 		// Initialize progress bar.
-		$progress = new Bar( 'Softrip sync', $total, 100 );		
+		$progress = new Bar( 'Softrip sync', $total, 100 );
 	}
 
 	// Log the sync initiated.
