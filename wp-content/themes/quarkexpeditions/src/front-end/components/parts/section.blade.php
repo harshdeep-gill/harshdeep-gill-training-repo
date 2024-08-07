@@ -23,6 +23,7 @@
 	:background="$background"
 	:background_color="$background_color"
 	:padding="$padding"
+	:id="$id"
 >
 	<x-section.heading>
 		<x-section.title :title="$title" :heading_level="$heading_level" :align="$title_align" />
