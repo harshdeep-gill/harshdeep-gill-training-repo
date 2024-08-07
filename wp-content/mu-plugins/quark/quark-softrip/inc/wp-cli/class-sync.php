@@ -11,9 +11,9 @@ use WP_CLI;
 use WP_CLI\ExitException;
 use WP_Query;
 
-use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
-
 use function Quark\Softrip\do_sync;
+
+use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
 
 const BATCH_SIZE = 5;
 

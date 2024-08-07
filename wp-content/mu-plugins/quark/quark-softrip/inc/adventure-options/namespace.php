@@ -9,11 +9,11 @@ namespace Quark\Softrip\AdventureOptions;
 
 use WP_Error;
 
-use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
-use const Quark\Core\CURRENCIES;
-
 use function Quark\Softrip\get_engine_collate;
 use function Quark\Softrip\prefix_table_name;
+
+use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
+use const Quark\Core\CURRENCIES;
 
 /**
  * Get adventure option table name.
@@ -90,7 +90,7 @@ function update_adventure_options( array $raw_adventure_options = [], int $depar
 		// Format raw adventure option.
 		$formatted_adventure_option = format_adventure_option_data( $raw_adventure_option, $departure_post_id );
 
-		// If empty, skip.
+		// Skip if empty.
 		if ( empty( $formatted_adventure_option ) ) {
 			continue;
 		}
@@ -106,37 +106,28 @@ function update_adventure_options( array $raw_adventure_options = [], int $depar
 		// Get the first existing adventure option.
 		$existing_adventure_option = ! empty( $existing_adventure_options ) ? $existing_adventure_options[0] : [];
 
-		// Initialize id.
-		$updated_id = 0;
-
 		// If existing, update the adventure option, else insert.
 		if ( ! empty( $existing_adventure_option['id'] ) ) {
-			// $formatted_adventure_option['id'] = $existing_adventure_option['id'];
 			$wpdb->update(
 				$table_name,
 				$formatted_adventure_option,
 				[ 'id' => $existing_adventure_option['id'] ]
 			);
-
-			$updated_id = $existing_adventure_option['id'];
 		} else {
-			$saved = $wpdb->insert(
+			$wpdb->insert(
 				$table_name,
 				$formatted_adventure_option
 			);
-
-			if ( $saved ) {
-				$updated_id = $wpdb->insert_id;
-			}
 		}
 	}
 
-	// Remove duplicates
+	// Remove duplicates.
 	$adventure_option_term_ids = array_unique( $adventure_option_term_ids );
 
 	// Update the post meta.
 	update_post_meta( $departure_post_id, 'adventure_options', $adventure_option_term_ids );
 
+	// Return successful.
 	return true;
 }
 
@@ -235,6 +226,7 @@ function format_adventure_option_data( array $raw_adventure_option = [], int $de
 		}
 	}
 
+	// Return the formatted data.
 	return $formatted_data;
 }
 

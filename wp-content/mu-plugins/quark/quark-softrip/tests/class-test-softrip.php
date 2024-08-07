@@ -27,7 +27,7 @@ use const Quark\Softrip\SCHEDULE_RECURRENCE;
 /**
  * Class Test_Softrip.
  */
-class Test_Softrip1 extends Softrip_TestCase {
+class Test_Softrip extends Softrip_TestCase {
 	/**
 	 * Test case for syncing itinerary departures with Softrip.
 	 *

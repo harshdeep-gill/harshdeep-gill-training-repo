@@ -133,6 +133,7 @@ function do_sync( array $itinerary_post_ids = [] ): void {
 	foreach ( $itinerary_post_ids as $post_id ) {
 		$package_code = get_post_meta( absint( $post_id ), 'softrip_package_code', true );
 
+		// Validate package code.
 		if ( ! empty( $package_code ) && is_string( $package_code ) ) {
 			$package_codes[] = $package_code;
 		}
@@ -269,10 +270,12 @@ function synchronize_itinerary_departures( array $codes = [] ): array|WP_Error {
 	// Get unique codes.
 	$codes = array_unique( $codes );
 
+	// Throw error if empty.
 	if ( empty( $codes ) ) {
 		return new WP_Error( 'qrk_softrip_no_codes', 'No Softrip codes provided' );
 	}
 
+	// Check if the count is more than the batch size.
 	if ( ITINERARY_SYNC_BATCH_SIZE < count( $codes ) ) {
 		return new WP_Error( 'qrk_softrip_departures_limit', sprintf( 'The maximum number of codes allowed is %d', ITINERARY_SYNC_BATCH_SIZE ) );
 	}

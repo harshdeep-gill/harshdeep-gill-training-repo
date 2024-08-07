@@ -63,6 +63,7 @@ function update_departures( array $raw_departures = [], string $softrip_package_
 	// Get the itinerary post ID.
 	$itinerary_post_id = absint( $itinerary_post_ids[0] );
 
+	// Get the expedition post ID.
 	$expedition_post_id = absint( get_post_meta( $itinerary_post_id, 'related_expedition', true ) );
 
 	// Get current departures with the package code.
@@ -102,7 +103,7 @@ function update_departures( array $raw_departures = [], string $softrip_package_
 		// Get departure code.
 		$departure_code = get_post_meta( $departure_post_id, 'softrip_id', true );
 
-		// If empty, skip.
+		// Skip if empty.
 		if ( empty( $departure_code ) ) {
 			continue;
 		}
@@ -174,7 +175,6 @@ function update_departures( array $raw_departures = [], string $softrip_package_
 
 	// Delete all departure posts not in updated departure codes and has expired.
 	foreach ( $existing_departure_codes as $departure_code => $departure_post_id ) {
-
 		// Skip if departure code is in updated departure codes.
 		if ( in_array( $departure_code, $updated_departure_codes, true ) ) {
 			continue;
@@ -194,6 +194,7 @@ function update_departures( array $raw_departures = [], string $softrip_package_
 		// @todo Cleanup qrk_cabins table as well.
 	}
 
+	// Return successful.
 	return true;
 }
 
@@ -216,6 +217,7 @@ function format_raw_departure_data( array $raw_departure_data = [], int $itinera
 		return [];
 	}
 
+	// Default values.
 	$default = [
 		'id'          => '',
 		'code'        => '',
@@ -250,5 +252,6 @@ function format_raw_departure_data( array $raw_departure_data = [], int $itinera
 		],
 	];
 
+	// Return formatted data.
 	return $formatted_data;
 }
