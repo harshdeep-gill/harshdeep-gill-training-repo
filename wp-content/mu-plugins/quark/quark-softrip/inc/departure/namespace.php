@@ -11,6 +11,7 @@ use WP_Error;
 use WP_Query;
 
 use function Quark\Ships\get_id_from_ship_code;
+use function Quark\Softrip\is_expired;
 
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
 use const Quark\Departures\SPOKEN_LANGUAGE_TAXONOMY;
@@ -105,17 +106,6 @@ function update_departures( array $raw_departures = [], string $softrip_package_
         $existing_departure_codes[ $departure_code ] = $departure_post_id;
     }
 
-    // Delete all departure posts if no departures.
-    if ( empty( $raw_departures ) ) {
-        // Delete all departure posts.
-        foreach ( $departure_post_ids as $departure_post_id ) {
-            wp_delete_post( $departure_post_id, true );
-        }
-
-        // @todo Cleanup qrk_cabins table as well.
-        return true;
-    }
-
     // Initialize updated departure unique codes.
     $updated_departure_codes = [];
 
@@ -136,18 +126,20 @@ function update_departures( array $raw_departures = [], string $softrip_package_
             continue;
         }
 
-        // Add id if existing.
-        if ( $is_existing ) {
-            $formatted_data['ID'] = $existing_departure_codes[ $raw_departure['id'] ];
-        }
-
         // Initialized is saved flag.
         $updated_post_id = false;
 
         // If existing, update the post.
         if ( $is_existing ) {
+            // Add post ID to formatted data.
+            $formatted_data['ID'] = $existing_departure_codes[ $raw_departure['id'] ];
+
+            // Update the post.
             $updated_post_id = wp_update_post( $formatted_data, true );
         } else {
+            // Set post status to publish.
+            $formatted_data['post_status'] = 'publish';
+
             // Insert the post.
             $updated_post_id = wp_insert_post( $formatted_data );
         }
@@ -168,14 +160,26 @@ function update_departures( array $raw_departures = [], string $softrip_package_
         // Further continue by updating the cabins.
     }
 
-    // Delete all departure posts not in updated departure codes.
+    // Delete all departure posts not in updated departure codes and has expired.
     foreach ( $existing_departure_codes as $departure_code => $departure_post_id ) {
 
-        // Check if departure code is not in updated departure codes.
-        if ( ! in_array( $departure_code, $updated_departure_codes, true ) ) {
-            // Delete the post.
-            wp_delete_post( $departure_post_id, true );
+        // Skip if departure code is in updated departure codes.
+        if ( in_array( $departure_code, $updated_departure_codes, true ) ) {
+            continue;
         }
+
+        // Get start date meta.
+        $start_date = get_post_meta( $departure_post_id, 'start_date', true );
+
+        // If start date is in the past, skip.
+        if ( ! is_string( $start_date ) || empty( $start_date ) || ! is_expired( $start_date ) ) {
+            continue;
+        }
+
+        // Delete the post.
+        wp_delete_post( $departure_post_id, true );
+
+        // @todo Cleanup qrk_cabins table as well.
     }
 
     return true;
@@ -214,13 +218,9 @@ function format_raw_departure_data( array $raw_departure_data = [], int $itinera
     // Apply default values.
     $raw_departure_data = wp_parse_args( $raw_departure_data, $default );
 
-    // Set status.
-    $status = 'draft'; // @todo Confirm the status.
-
     // Prepare formatted data.
     $formatted_data = [
         'post_title' => $raw_departure_data['id'],
-        'post_status' => $status,
         'post_type' => DEPARTURE_POST_TYPE,
         'post_parent' => $itinerary_post_id,
         'meta_input' => [

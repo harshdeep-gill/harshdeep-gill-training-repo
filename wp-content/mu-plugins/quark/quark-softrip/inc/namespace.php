@@ -287,3 +287,26 @@ function synchronize_itinerary_departures( array $codes = [] ): array|WP_Error {
 	// Do request and return the result.
 	return $softrip->do_request( 'departures', [ 'productCodes' => $code_string ] );
 }
+
+/**
+ * Check if expired.
+ *
+ * @param string $date Date to check.
+ *
+ * @return bool
+ */
+function is_expired( string $date = '' ): bool {
+	// Bail if empty.
+	if ( empty( $date ) ) {
+		return false;
+	}
+
+	// Get the current time.
+	$current_time = time();
+
+	// Get the date time.
+	$date_time = absint( strtotime( $date ) );
+
+	// Check if expired.
+	return $current_time > $date_time;
+}
