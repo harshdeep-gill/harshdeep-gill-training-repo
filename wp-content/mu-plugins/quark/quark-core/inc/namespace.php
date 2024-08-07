@@ -13,6 +13,8 @@ use WP_Post;
 
 use function Travelopia\Core\cached_nav_menu;
 
+const CURRENCIES          = [ 'USD', 'CAD', 'AUD', 'GBP', 'EUR' ];
+
 /**
  * Bootstrap plugin.
  *
@@ -402,4 +404,14 @@ function format_price( int $price = 0, string $currency = 'USD' ): string {
 		number_format( $price, $decimals, $decimal_separator, $thousands_separator ),
 		$currency
 	);
+}
+
+/**
+ * Get currencies.
+ *
+ * @return string[]
+ */
+function get_currencies(): array {
+	// Return the currencies.
+	return CURRENCIES;
 }
