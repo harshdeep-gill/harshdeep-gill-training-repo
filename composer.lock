@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4ebb3f79b8c5b4ba19606bfbc8a2b3e9",
+    "content-hash": "115924a3112f966283242e0d9eb9d4b8",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -1219,16 +1219,16 @@
         },
         {
             "name": "travelopia/wordpress-blocks",
-            "version": "1.1.0",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Travelopia/wordpress-blocks.git",
-                "reference": "b67195cbf519a8c043b82bc40887119d16f7faf6"
+                "reference": "43b9dc1717f2c37f9e682b2eb2d42cddca75bdb7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Travelopia/wordpress-blocks/zipball/b67195cbf519a8c043b82bc40887119d16f7faf6",
-                "reference": "b67195cbf519a8c043b82bc40887119d16f7faf6",
+                "url": "https://api.github.com/repos/Travelopia/wordpress-blocks/zipball/43b9dc1717f2c37f9e682b2eb2d42cddca75bdb7",
+                "reference": "43b9dc1717f2c37f9e682b2eb2d42cddca75bdb7",
                 "shasum": ""
             },
             "require-dev": {
@@ -1259,10 +1259,10 @@
                 ]
             },
             "support": {
-                "source": "https://github.com/Travelopia/wordpress-blocks/tree/1.1.0",
+                "source": "https://github.com/Travelopia/wordpress-blocks/tree/1.1.1",
                 "issues": "https://github.com/Travelopia/wordpress-blocks/issues"
             },
-            "time": "2024-08-04T23:37:20+00:00"
+            "time": "2024-08-07T22:32:08+00:00"
         },
         {
             "name": "travelopia/wordpress-packages",
