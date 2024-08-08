@@ -13,6 +13,12 @@ use WP_Error;
 use WP_Query;
 
 use function Quark\Softrip\Departure\update_departures;
+use function Quark\Softrip\AdventureOptions\get_table_sql as get_adventure_options_table_sql;
+use function Quark\Softrip\Cabins\get_table_sql as get_cabins_table_sql;
+use function Quark\Softrip\Promotions\get_table_sql as get_promotions_table_sql;
+use function Quark\Softrip\AdventureOptions\get_table_name as get_adventure_options_table_name;
+use function Quark\Softrip\Cabins\get_table_name as get_cabins_table_name;
+use function Quark\Softrip\Promotions\get_table_name as get_promotions_table_name;
 
 use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
 
@@ -44,6 +50,79 @@ function bootstrap(): void {
 
 	// Register Stream log connector.
 	add_filter( 'wp_stream_connectors', __NAMESPACE__ . '\\setup_stream_connectors' );
+}
+
+/**
+ * Get custom DB table creation mapping array.
+ *
+ * @return array<string, string>
+ */
+function get_custom_db_table_mapping(): array {
+	// Table names.
+	$table_names = [
+		get_adventure_options_table_name(),
+		get_promotions_table_name(),
+		get_cabins_table_name(),
+	];
+
+	// Table SQL statements.
+	$table_sql_statements = [
+		get_adventure_options_table_sql(),
+		get_promotions_table_sql(),
+		get_cabins_table_sql(),
+	];
+
+	// Return list of tables used.
+	return array_combine( $table_names, $table_sql_statements );
+}
+
+/**
+ * Create DB table.
+ *
+ * @return void
+ */
+function create_custom_db_tables(): void {
+	// Get mapping.
+	$tables = get_custom_db_table_mapping();
+
+	// Is in CLI.
+	$is_in_cli = defined( 'WP_CLI' ) && true === WP_CLI;
+
+	// Require upgrade.php.
+	require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+
+	// Initialize progress bar.
+	$progress = null;
+
+	// Check if in CLI.
+	if ( ! empty( $is_in_cli ) ) {
+		// Initialize progress bar.
+		$progress = new Bar( 'Setting up tables', count( $tables ), 100 );
+
+		// Check if progress bar exists or not.
+		if ( ! $progress instanceof Bar ) {
+			WP_CLI::error( 'Progress bar not found!' );
+
+			// Bail out if progress bar not exists.
+			return;
+		}
+	}
+
+	// Start table creation.
+	foreach ( $tables as $table_name => $sql ) {
+		// Create table.
+		maybe_create_table( $table_name, $sql );
+
+		// Update progress bar.
+		if ( ! empty( $progress ) ) {
+			$progress->tick();
+		}
+	}
+
+	// End progress bar.
+	if ( ! empty( $is_in_cli ) ) {
+		$progress->finish();
+	}
 }
 
 /**

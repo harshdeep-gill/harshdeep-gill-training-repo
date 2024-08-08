@@ -7,7 +7,7 @@
 
 namespace Quark\Softrip;
 
-use function Quark\Softrip\AdventureOptions\get_adventure_table_sql;
+use function Quark\Softrip\AdventureOptions\get_table_sql as get_adventure_table_sql;
 use function Quark\Softrip\Cabins\get_table_sql as get_cabins_table_sql;
 use function Quark\Softrip\Promotions\get_table_sql as get_promotions_table_sql;
 
