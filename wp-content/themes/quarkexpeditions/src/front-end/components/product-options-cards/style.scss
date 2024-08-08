@@ -211,7 +211,7 @@
 	}
 
 	&__more-details {
-		overflow-y: hidden;
+		overflow: hidden;
 		height: 0;
 
 		@include transition("height");
@@ -348,6 +348,10 @@
 		font-weight: var(--font-weight-bold);
 	}
 
+	&__room-subtitle {
+		font-weight: var(--font-weight-default);
+	}
+
 	&__discounts-container {
 		display: flex;
 		gap: var(--spacing-5);
@@ -360,6 +364,7 @@
 		color: var(--color-success-100);
 		border-radius: var(--border-radius);
 		min-width: fit-content;
+		font-weight: var(--font-weight-bold);
 	}
 
 	&__discounts {
