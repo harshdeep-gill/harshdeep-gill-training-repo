@@ -172,7 +172,7 @@ function update_departures( array $raw_departures = [], string $softrip_package_
 			update_adventure_options( $raw_departure['adventureOptions'], $updated_post_id );
 		}
 
-		// Update promotions.
+		// Update promotions. This is done before cabins to get the promotion IDs.
 		if ( ! empty( $raw_departure['promotions'] ) ) {
 			update_promotions( $raw_departure['promotions'] );
 		}
