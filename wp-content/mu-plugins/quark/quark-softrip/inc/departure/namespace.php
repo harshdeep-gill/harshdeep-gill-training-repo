@@ -12,6 +12,7 @@ use WP_Query;
 
 use function Quark\Ships\get_id_from_ship_code;
 use function Quark\Softrip\AdventureOptions\update_adventure_options;
+use function Quark\Softrip\Cabins\update_cabins;
 use function Quark\Softrip\is_expired;
 use function Quark\Softrip\Promotions\update_promotions;
 
@@ -176,7 +177,10 @@ function update_departures( array $raw_departures = [], string $softrip_package_
 			update_promotions( $raw_departure['promotions'] );
 		}
 
-		// Further continue by updating the cabins.
+		// Update Cabins.
+		if ( ! empty( $raw_departure['cabins'] ) ) {
+			update_cabins( $raw_departure['cabins'], $updated_post_id );
+		}
 	}
 
 	// Delete all departure posts not in updated departure codes and has expired.
