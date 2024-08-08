@@ -7,10 +7,11 @@
 
 namespace Quark\Itineraries;
 
-use Quark\Softrip\Itinerary;
 use WP_Post;
-
 use WP_Term;
+use Quark\Softrip\Itinerary;
+
+use function Quark\Core\format_price;
 use function Quark\Brochures\get as get_brochure;
 use function Quark\ItineraryDays\get as get_itinerary_day;
 
@@ -441,11 +442,6 @@ function get_details_tabs_data( array $itineraries = [] ): array {
 			}
 		}
 
-		// Prepare the tab content header.
-		if ( ! empty( $tab_subtitle ) && ! empty( $duration ) ) {
-			$tab_content_header = sprintf( '%s, %s, on Ultramarine', $tab_subtitle, $duration );
-		}
-
 		// Prepare the itinerary days accordion content.
 		if ( ! empty( $itinerary['post_meta']['itinerary_days'] ) && is_array( $itinerary['post_meta']['itinerary_days'] ) ) {
 			foreach ( $itinerary['post_meta']['itinerary_days'] as $itinerary_day ) {
@@ -478,8 +474,11 @@ function get_details_tabs_data( array $itineraries = [] ): array {
 		// Get the itinerary object.
 		$itinerary_object = new Itinerary( $itinerary['post']->ID );
 
+		// TODO: Add currency change support.
+		$price = format_price( $itinerary_object->get_lowest_price() );
+
 		// Translators: %s is the lowest price.
-		$price = sprintf( __( '$%s USD per person', 'qrk' ), $itinerary_object->get_lowest_price() );
+		$price = ! empty( $price ) ? sprintf( __( '%s per person', 'qrk' ), $price ) : '';
 
 		// Get the itinerary ships.
 		$_ships = $itinerary_object->get_related_ships();
@@ -487,12 +486,34 @@ function get_details_tabs_data( array $itineraries = [] ): array {
 		// Loop through the ships.
 		foreach ( $_ships as $ship ) {
 			// Check if the ship post is empty.
-			if ( is_array( $ship ) && ! empty( $ship['post'] ) && ! $ship['post'] instanceof WP_Post ) {
+			if ( is_array( $ship ) && ! empty( $ship['post'] ) && $ship['post'] instanceof WP_Post ) {
 				// Append the ship to the ships list.
 				$ships[] = [
 					'name' => $ship['post']->post_title,
 					'link' => get_permalink( $ship['post']->ID ),
 				];
+			}
+		}
+
+		// Append the tab subtitle.
+		if ( ! empty( $tab_subtitle ) ) {
+			$tab_content_header .= $tab_subtitle;
+		}
+
+		// Append the duration.
+		if ( ! empty( $duration ) ) {
+			$tab_content_header .= ! empty( $tab_content_header ) ? ', ' : '';
+			$tab_content_header .= $duration;
+		}
+
+		// Append the ship names.
+		if ( is_array( $ships ) ) {
+			$on = array_column( $ships, 'name' );
+
+			// Check if the ship names are not empty.
+			if ( ! empty( $on ) ) {
+				$tab_content_header .= ! empty( $tab_content_header ) ? ', on ' : '';
+				$tab_content_header .= implode( ', ', $on );
 			}
 		}
 
