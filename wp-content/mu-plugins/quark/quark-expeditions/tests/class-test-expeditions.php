@@ -429,6 +429,8 @@ class Test_Expeditions extends Softrip_TestCase {
 			[
 				'post_type'      => SHIP_POST_TYPE,
 				'posts_per_page' => -1,
+				'order'          => 'ASC',
+				'order_by'       => 'title',
 				'meta_query'     => [
 					[
 						'key'     => 'ship_id',
@@ -451,7 +453,7 @@ class Test_Expeditions extends Softrip_TestCase {
 		}
 
 		// Assert expedition_details_card_data is correct.
-		$this->assertEqualSets( $expected_data, $expedition_details_card_data );
+		$this->assertEqualSetsWithIndex( $expected_data, $expedition_details_card_data );
 
 		// Cleanup.
 		remove_filter( 'pre_http_request', 'Quark\Tests\Softrip\mock_softrip_http_request' );
