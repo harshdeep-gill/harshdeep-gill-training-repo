@@ -9,7 +9,9 @@ namespace Quark\Core;
 
 use JB\Cloudinary\Core as Cloudinary_Core;
 use JB\Cloudinary\Frontend as Cloudinary_Frontend;
+
 use WP_Post;
+use WP_Term;
 
 use function Travelopia\Core\cached_nav_menu;
 
@@ -402,4 +404,48 @@ function format_price( int $price = 0, string $currency = 'USD' ): string {
 		number_format( $price, $decimals, $decimal_separator, $thousands_separator ),
 		$currency
 	);
+}
+
+/**
+ * Organise terms by hierarchy.
+ *
+ * @param array<int> $terms Terms.
+ * @param string     $taxonomy Taxonomy.
+ *
+ * @return array{}|array{
+ *     array{
+ *         parent_term: WP_Term,
+ *         child_terms: array<WP_Term>
+ *    }
+ * }
+ */
+function order_terms_by_hierarchy( array $terms = [], string $taxonomy = '' ): array {
+	// Organise terms.
+	$organised_terms = [];
+
+	// Check for terms.
+	if ( empty( $terms ) || empty( $taxonomy ) ) {
+		return $organised_terms;
+	}
+
+	// Loop through terms and organise them.
+	foreach ( $terms as $term ) {
+		// Get the term.
+		$term = get_term( $term, $taxonomy );
+
+		// Check for term.
+		if ( ! $term instanceof WP_Term ) {
+			continue;
+		}
+
+		// Organise terms by parent.
+		if ( empty( $term->parent ) ) {
+			$organised_terms[ $term->term_id ]['parent_term'] = $term;
+		} else {
+			$organised_terms[ $term->parent ]['child_terms'][] = $term;
+		}
+	}
+
+	// Return organised terms.
+	return $organised_terms;
 }
