@@ -13,6 +13,7 @@ use const Quark\CabinCategories\POST_TYPE as CABIN_CATEGORY_POST_TYPE;
 use const Quark\Core\CURRENCIES;
 
 use function Quark\Softrip\get_engine_collate;
+use function Quark\Softrip\OccupancyPromotions\update_occupancy_promotions;
 use function Quark\Softrip\prefix_table_name;
 
 const CACHE_KEY_PREFIX = 'quark_softrip_cabin';
@@ -97,6 +98,11 @@ function update_occupancies( array $raw_cabins_data = [], int $departure_post_id
 
         // Iterate through the cabin occupancies.
         foreach ( $raw_cabin_data['occupancies'] as $raw_cabin_occupancy_data ) {
+            // Continue if not array or empty.
+            if ( ! is_array( $raw_cabin_occupancy_data ) || empty( $raw_cabin_occupancy_data ) ) {
+                continue;
+            }
+
             // Format the data.
             $formatted_data = format_data( $raw_cabin_occupancy_data, $cabin_category_post_id, $departure_post_id );
 
@@ -111,6 +117,9 @@ function update_occupancies( array $raw_cabins_data = [], int $departure_post_id
             // Get the first item.
             $existing_cabin_data = ! empty( $existing_cabins_data ) ? $existing_cabins_data[0] : [];
 
+            // Initialize id.
+            $updated_id = 0;
+
             // If the cabin exists, update it.
             if ( ! empty( $existing_cabin_data['id'] ) ) {
                 // Update the cabin.
@@ -119,12 +128,24 @@ function update_occupancies( array $raw_cabins_data = [], int $departure_post_id
                     $formatted_data,
                     [ 'id' => $existing_cabin_data['id'] ]
                 );
+
+                // Set the updated ID.
+                $updated_id = $existing_cabin_data['id'];
             } else {
                 // Insert the cabin.
                 $wpdb->insert(
                     $table_name,
                     $formatted_data
                 );
+
+                // Set the updated ID.
+                $updated_id = $wpdb->insert_id;
+            }
+
+            // Set occupancy promotions data.
+            if ( ! empty( $updated_id ) && ! empty( $raw_cabin_occupancy_data['prices'] ) && is_array( $raw_cabin_occupancy_data['prices'] ) ) {
+                // Update the occupancy promotions.
+                update_occupancy_promotions( array_values( $raw_cabin_occupancy_data['prices'] ), $updated_id );
             }
         }
     }
@@ -170,7 +191,7 @@ function format_data( array $raw_occupancy_data = [], int $cabin_category_post_i
         'availabilityStatus' => '',
         'availabilityDescription' => '',
         'spacesAvailable' => 0,
-        'price' => [],
+        'prices' => [],
     ];
 
     // Apply defaults.
