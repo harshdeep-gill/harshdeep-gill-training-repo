@@ -8,8 +8,7 @@
 	'ships'            => [],
 	'tags'             => [],
 	'total_departures' => 0,
-	'from_date'        => '',
-	'to_date'          => '',
+	'date_range'       => '',
 ] )
 
 <x-expedition-details :appearance="$appearance">
@@ -33,8 +32,8 @@
 				<x-expedition-details.starting-from>
 					@foreach ( $starting_from as $starting_from_item )
 						<x-expedition-details.starting-from-item
-							:title="$tag['title'] ?? ''"
-							:url="$tag['url'] ?? ''"
+							:title="$starting_from_item['title'] ?? ''"
+							:url="$starting_from_item['url'] ?? ''"
 						/>
 					@endforeach
 				</x-expedition-details.starting-from>
@@ -53,12 +52,11 @@
 		</x-expedition-details.row>
 	@endif
 
-	@if ( ! empty( $total_departures ) || ! empty( $from_date ) || ! empty( $to_date ) )
+	@if ( ! empty( $total_departures ) || ! empty( $date_range ) )
 		<x-expedition-details.row>
 			<x-expedition-details.departures
 				:total_departures="$total_departures"
-				:from_date="$from_date"
-				:to_date="$to_date"
+				:date_range="$date_range"
 			/>
 		</x-expedition-details.row>
 	@endif

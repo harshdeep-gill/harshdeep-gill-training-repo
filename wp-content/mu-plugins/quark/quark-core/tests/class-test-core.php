@@ -8,6 +8,7 @@
 namespace Quark\Core;
 
 use WP_UnitTestCase;
+use WP_Term;
 
 use function Quark\Core\get_front_end_data;
 
@@ -174,5 +175,122 @@ class Test_Core extends WP_UnitTestCase {
 			'£100,000 GBP',
 			format_price( 100000, 'GBP' )
 		);
+	}
+
+	/**
+	 * Test order_terms_by_hierarchy.
+	 *
+	 * @covers \Quark\Core\order_terms_by_hierarchy()
+	 *
+	 * @return void
+	 */
+	public function test_order_terms_by_hierarchy(): void {
+		// Create a taxonomy.
+		register_taxonomy(
+			'test_taxonomy',
+			'post',
+			[
+				'labels' => [
+					'name' => 'Test Taxonomy',
+				],
+			]
+		);
+
+		// Create parent term 1.
+		$parent_term_1 = $this->factory()->term->create_and_get(
+			[
+				'taxonomy' => 'test_taxonomy',
+			]
+		);
+		$this->assertTrue( $parent_term_1 instanceof WP_Term );
+
+		// Create parent term 2.
+		$parent_term_2 = $this->factory()->term->create_and_get(
+			[
+				'taxonomy' => 'test_taxonomy',
+			]
+		);
+		$this->assertTrue( $parent_term_2 instanceof WP_Term );
+
+		// Create child term 1.
+		$child_term_1 = $this->factory()->term->create_and_get(
+			[
+				'taxonomy' => 'test_taxonomy',
+				'parent'   => $parent_term_1->term_id,
+			]
+		);
+		$this->assertTrue( $child_term_1 instanceof WP_Term );
+
+		// Create child term 2.
+		$child_term_2 = $this->factory()->term->create_and_get(
+			[
+				'taxonomy' => 'test_taxonomy',
+				'parent'   => $parent_term_1->term_id,
+			]
+		);
+		$this->assertTrue( $child_term_2 instanceof WP_Term );
+
+		// Create child term 3.
+		$child_term_3 = $this->factory()->term->create_and_get(
+			[
+				'taxonomy' => 'test_taxonomy',
+				'parent'   => $parent_term_2->term_id,
+			]
+		);
+		$this->assertTrue( $child_term_3 instanceof WP_Term );
+
+		// Assign the child terms to the parent terms.
+		wp_set_object_terms(
+			$parent_term_1->term_id,
+			[
+				$child_term_1->term_id,
+				$child_term_2->term_id,
+			],
+			'test_taxonomy'
+		);
+		wp_set_object_terms(
+			$parent_term_2->term_id,
+			[
+				$child_term_3->term_id,
+			],
+			'test_taxonomy'
+		);
+
+		// Assert the function returns the correct organised terms.
+		$this->assertEquals(
+			[
+				$parent_term_1->term_id => [
+					'parent_term' => $parent_term_1,
+					'child_terms' => [
+						$child_term_1,
+						$child_term_2,
+					],
+				],
+				$parent_term_2->term_id => [
+					'parent_term' => $parent_term_2,
+					'child_terms' => [
+						$child_term_3,
+					],
+				],
+			],
+			order_terms_by_hierarchy(
+				[
+					$parent_term_1->term_id,
+					$parent_term_2->term_id,
+					$child_term_1->term_id,
+					$child_term_2->term_id,
+					$child_term_3->term_id,
+				],
+				'test_taxonomy'
+			)
+		);
+
+		// Clean up.
+		wp_delete_term( $parent_term_1->term_id, 'test_taxonomy' );
+		wp_delete_term( $parent_term_2->term_id, 'test_taxonomy' );
+		wp_delete_term( $child_term_1->term_id, 'test_taxonomy' );
+		wp_delete_term( $child_term_2->term_id, 'test_taxonomy' );
+		wp_delete_term( $child_term_3->term_id, 'test_taxonomy' );
+		unregister_taxonomy( 'test_taxonomy' );
 	}
 }
