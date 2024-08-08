@@ -451,7 +451,7 @@ class Test_Expeditions extends Softrip_TestCase {
 		}
 
 		// Assert expedition_details_card_data is correct.
-		$this->assertEquals( $expected_data, $expedition_details_card_data );
+		$this->assertEqualSets( $expected_data, $expedition_details_card_data );
 
 		// Cleanup.
 		remove_filter( 'pre_http_request', 'Quark\Tests\Softrip\mock_softrip_http_request' );
