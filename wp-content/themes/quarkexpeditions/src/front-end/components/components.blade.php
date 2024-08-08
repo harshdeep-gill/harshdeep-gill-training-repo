@@ -4530,6 +4530,162 @@
 	</x-section>
 </x-component-demo>
 
+<x-component-demo :keys="[ 'table' ]">
+	<x-section>
+		<x-section.heading>
+			<x-section.title title="Comparison of All Cabins" align="left" />
+		</x-section.heading>
+
+		<div class="travelopia-table">
+			<table>
+				<thead class="travelopia-table__row-container">
+					<tr class="travelopia-table__row ">
+						<td class="travelopia-table__column">Cabin Category</td>
+						<td class="travelopia-table__column">Deck Location(s)</td>
+					</tr>
+				</thead>
+
+				<tbody class="travelopia-table__row-container">
+					<tr class="travelopia-table__row ">
+						<td class="travelopia-table__column"><strong>Explorer Triple</strong></td>
+						<td class="travelopia-table__column">Deck 3</td>
+					</tr>
+
+					<tr class="travelopia-table__row ">
+						<td class="travelopia-table__column"><strong>Explorer Suite</strong></td>
+						<td class="travelopia-table__column">Deck 4 <br>Deck 6</td>
+					</tr>
+				</tbody>
+
+				<tfoot class="travelopia-table__row-container">
+					<tr class="travelopia-table__row ">
+						<td class="travelopia-table__column"><strong>Balcony Suite</strong></td>
+						<td class="travelopia-table__column">Deck 6</td>
+					</tr>
+				</tfoot>
+			</table>
+		</div>
+
+		<div class="travelopia-table">
+			<table class="" >
+				<thead class="travelopia-table__row-container travelopia-table__row-container--sticky">
+					<tr class="travelopia-table__row" >
+						<td class="travelopia-table__column">
+							Cabin Category
+						</td>
+
+						<td class="travelopia-table__column">
+							Deck Location(s)
+						</td>
+
+						<td class="travelopia-table__column">
+							Size
+						</td>
+
+						<td class="travelopia-table__column">
+							# of Guests
+						</td>
+
+						<td class="travelopia-table__column">
+							Berth Configuration
+						</td>
+					</tr>
+				</thead>
+
+				<tbody class="travelopia-table__row-container">
+					<tr class="travelopia-table__row" >
+						<td class="travelopia-table__column">
+							<strong>Triple</strong>
+						</td>
+
+						<td class="travelopia-table__column">
+							Main Deck
+						</td>
+
+						<td class="travelopia-table__column">
+							145-164 sq. ft.
+						</td>
+
+						<td class="travelopia-table__column">
+							1-3
+						</td>
+
+						<td class="travelopia-table__column">
+							2 lower twin beds, 1 upper twin bed
+						</td>
+					</tr>
+
+					<tr class="travelopia-table__row" >
+						<td class="travelopia-table__column">
+							<strong>Lower Deck Twin</strong>
+						</td>
+
+						<td class="travelopia-table__column">
+							Lower Deck
+						</td>
+
+						<td class="travelopia-table__column">
+							117-132 sq. ft.	
+						</td>
+
+						<td class="travelopia-table__column">
+							1-2
+						</td>
+
+						<td class="travelopia-table__column">
+							2 twin beds
+						</td>
+					</tr>
+
+					<tr class="travelopia-table__row" >
+						<td class="travelopia-table__column">
+							<strong>Main Deck Twin Porthole</strong>
+						</td>
+
+						<td class="travelopia-table__column">
+							Main Deck
+						</td>
+
+						<td class="travelopia-table__column">
+							113-132 sq. ft.
+						</td>
+
+						<td class="travelopia-table__column">
+							1-2
+						</td>
+
+						<td class="travelopia-table__column">
+							2 twin beds
+						</td>
+					</tr>
+
+					<tr class="travelopia-table__row" >
+						<td class="travelopia-table__column">
+							<strong>Main Deck Twin Window</strong>
+						</td>
+
+						<td class="travelopia-table__column">
+							Main Deck
+						</td>
+
+						<td class="travelopia-table__column">
+							115-160 sq. ft.
+						</td>
+
+						<td class="travelopia-table__column">
+							1-2
+						</td>
+
+						<td class="travelopia-table__column">
+							2 twin beds
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</x-section>
+</x-component-demo>
+
 <x-component-demo :keys="[ 'media-carousel' ]">
 	<x-section>
 		<x-section.heading>

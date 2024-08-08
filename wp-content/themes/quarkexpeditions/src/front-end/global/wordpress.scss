@@ -244,57 +244,48 @@
 	}
 }
 
-.wp-block-table.is-style-data {
+// Table.
+table {
+	min-width: 100%;
+	border-collapse: collapse;
+	width: 100%;
 
-	table {
+	@media screen and (min-width: grid-size(md)) {
+		table-layout: fixed;
+	}
 
-		th {
-			background-color: var(--color-teal);
-			color: var(--color-white);
-		}
+	td {
+		border: 1px solid var(--color-gray-20);
+		padding: 1em;
+	}
+
+	th {
+		font-size: var(--font-size-small);
+		line-height: var(--line-height-small);
+		border: 1px solid var(--color-gray-20);
+		padding: 1em;
+		text-align: left;
+		text-transform: uppercase;
+	}
+
+	thead {
+		background-color: var(--color-gray-10);
+		border-bottom: 1px solid var(--color-gray-20);
+		font-size: var(--font-size-small);
+		font-weight: var(--font-weight-bold);
+		line-height: var(--line-height-small);
+		text-transform: uppercase;
+	}
+
+	tfoot {
+		border-top: 1px solid var(--color-gray-20);
 	}
 }
 
-.wp-block-table {
+.travelopia-table {
 	margin-top: var(--typography-spacing);
 	margin-bottom: var(--typography-spacing);
 	overflow-x: auto;
-
-	table {
-
-		min-width: 100%;
-		border-collapse: collapse;
-		width: 100%;
-		table-layout: fixed;
-
-		td {
-			border: 1px solid var(--color-gray-200);
-			padding: 1em 0.5em;
-		}
-
-		th {
-			padding: 1em;
-			border: 1px solid var(--color-gray-200);
-		}
-
-		thead {
-			border-bottom: 1px solid var(--color-gray-200);
-		}
-
-		tfoot {
-			border-top: 1px solid var(--color-gray-200);
-		}
-	}
-
-	&.is-style-stripes {
-
-		tbody {
-
-			tr:nth-child(odd) {
-				background-color: var(--color-smoke-white);
-			}
-		}
-	}
 
 	@media screen and (min-width: grid-size(xl)) {
 		overflow-x: visible;

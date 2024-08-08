@@ -62,6 +62,7 @@ const blacklistBlocks = [
 	'core/avatar',
 	'core/post-navigation-link',
 	'core/comments',
+	'core/table',
 	'core/comment-template',
 	'core/comment-reply-link',
 	'core/post-comments-form',
