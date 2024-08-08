@@ -302,3 +302,63 @@ function get_cabin_data_by_softrip_id( string $softrip_id = '', bool $direct = f
     // Return the cabin data.
     return $cabin_data;
 }
+
+/**
+ * Get cabin data by departure post ID.
+ *
+ * @param int $departure_post_id The departure post ID.
+ * @param bool $direct Direct query.
+ * 
+ * @return mixed[][]
+ */
+function get_cabin_data_by_departure_post_id( int $departure_post_id = 0, bool $direct = false ): array {
+    // Bail if empty.
+    if ( empty( $departure_post_id ) ) {
+        return [];
+    }
+
+    // Cache key.
+    $cache_key = CACHE_KEY_PREFIX . '_data_departure_' . $departure_post_id;
+
+    // If not direct, check the cache.
+    if ( ! $direct ) {
+        // Check for cached version.
+        $cached_data = wp_cache_get( $cache_key, CACHE_GROUP );
+
+        // If cached data, return it.
+        if ( is_array( $cached_data ) && ! empty( $cached_data ) ) {
+            return $cached_data;
+        }
+    }
+
+    // Get the global wpdb.
+    global $wpdb;
+
+    // Get the table name.
+    $table_name = get_table_name();
+
+    // Get the cabin data.
+    $cabin_data = $wpdb->get_results(
+        $wpdb->prepare(
+            '
+            SELECT
+                *
+            FROM
+                %i
+            WHERE
+                departure_post_id = %d
+            ',
+            [
+                $table_name,
+                $departure_post_id,
+            ]
+        ),
+        ARRAY_A
+    );
+
+    // Cache the data.
+    wp_cache_set( $cache_key, $cabin_data, CACHE_GROUP );
+
+    // Return the cabin data.
+    return $cabin_data;
+}
