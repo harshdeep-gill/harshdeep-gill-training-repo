@@ -20,6 +20,11 @@
       "type":"vcs",
       "url":"https://github.com/junaidbhura/gumponents",
       "only": ["junaidbhura/gumponents"]
+    },
+    {
+      "type":"vcs",
+      "url":"git@github.com:Travelopia/wordpress-blocks.git",
+      "only": ["travelopia/wordpress-blocks"]
     }
   ],
   "extra": {
@@ -50,7 +55,8 @@
     "wpackagist-plugin/wordpress-seo": "*",
     "wpackagist-plugin/wp-redis": "*",
     "ext-dom": "*",
-    "ext-libxml": "*"
+    "ext-libxml": "*",
+    "travelopia/wordpress-blocks": "^1.1.1"
   },
   "require-dev": {
     "roots/wordpress": "6.6",

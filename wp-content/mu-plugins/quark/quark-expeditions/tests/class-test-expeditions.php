@@ -9,7 +9,8 @@ namespace Quark\Expeditions\Tests;
 
 use WP_Post;
 use WP_Term;
-use WP_UnitTestCase;
+
+use Quark\Tests\Softrip\Softrip_TestCase;
 
 use function Quark\Expeditions\get;
 use function Quark\Expeditions\get_region_terms;
@@ -18,6 +19,7 @@ use function Quark\Expeditions\get_minimum_duration;
 use function Quark\Expeditions\get_starting_from_locations;
 use function Quark\Expeditions\get_details_data;
 use function Quark\Expeditions\get_expedition_ship_ids;
+use function Quark\Softrip\do_sync;
 
 use const Quark\Itineraries\DEPARTURE_LOCATION_TAXONOMY;
 use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
@@ -31,7 +33,7 @@ use const Quark\ItineraryDays\POST_TYPE as ITINERARY_DAY_POST_TYPE;
 /**
  * Class Test_Expeditions.
  */
-class Test_Expeditions extends WP_UnitTestCase {
+class Test_Expeditions extends Softrip_TestCase {
 	/**
 	 * Test getting an expedition.
 	 *
@@ -237,36 +239,35 @@ class Test_Expeditions extends WP_UnitTestCase {
 		$this->assertTrue( $departure_location_term_1 instanceof WP_Term );
 		$this->assertTrue( $departure_location_term_2 instanceof WP_Term );
 
-		// Create Itinerary post.
-		$itinerary_post_1 = $this->factory()->post->create_and_get(
-			[
-				'post_title'   => 'Test Post',
-				'post_content' => 'Post content',
-				'post_status'  => 'publish',
-				'post_type'    => ITINERARY_POST_TYPE,
-				'meta_input'   => [
-					'duration_in_days' => '12',
-					'start_location'   => $departure_location_term_1->term_id,
+		// Create Itinerary posts.
+		$itinerary_query_args = [
+			'post_type'              => ITINERARY_POST_TYPE,
+			'no_found_rows'          => true,
+			'ignore_sticky_posts'    => true,
+			'update_post_term_cache' => false,
+			'fields'                 => 'ids',
+			'update_post_meta_cache' => false,
+			'meta_query'             => [
+				[
+					'key'     => 'softrip_package_id',
+					'value'   => [
+						'ABC-123',
+						'PQR-345',
+						'JKL-012',
+					],
+					'compare' => 'IN',
 				],
-			]
-		);
+			],
+		];
 
-		// Create Itinerary post.
-		$itinerary_post_2 = $this->factory()->post->create_and_get(
-			[
-				'post_title'   => 'Test Post 2',
-				'post_content' => 'Post content 2',
-				'post_status'  => 'publish',
-				'post_type'    => ITINERARY_POST_TYPE,
-				'meta_input'   => [
-					'duration_in_days' => '11',
-					'start_location'   => $departure_location_term_2->term_id,
-				],
-			]
-		);
+		// Get Itinerary posts.
+		$itinerary_posts = get_posts( $itinerary_query_args );
+
+		// Assert fetched posts are not empty.
+		$this->assertEquals( 3, count( $itinerary_posts ) );
 
 		// Create another Itinerary post with draft status.
-		$itinerary_post_3 = $this->factory()->post->create_and_get(
+		$itinerary_post_4 = $this->factory()->post->create_and_get(
 			[
 				'post_title'   => 'Test Post 3',
 				'post_content' => 'Post content 3',
@@ -276,13 +277,16 @@ class Test_Expeditions extends WP_UnitTestCase {
 					'duration_in_days' => '5',
 					'start_location'   => $departure_location_term_1->term_id,
 				],
-			]
+			],
 		);
 
-		// Assert created posts are instance of WP_Post.
-		$this->assertTrue( $itinerary_post_1 instanceof WP_Post );
-		$this->assertTrue( $itinerary_post_2 instanceof WP_Post );
-		$this->assertTrue( $itinerary_post_3 instanceof WP_Post );
+		// Assert fetched posts are not empty.
+		$this->assertIsInt( $itinerary_posts[0] );
+		$this->assertIsInt( $itinerary_posts[1] );
+		$this->assertIsInt( $itinerary_posts[2] );
+
+		// Assert $itinerary_post_4 is instance of WP_Post.
+		$this->assertTrue( $itinerary_post_4 instanceof WP_Post );
 
 		// Create post.
 		$post_1 = $this->factory()->post->create_and_get(
@@ -295,9 +299,10 @@ class Test_Expeditions extends WP_UnitTestCase {
 					'meta_1'              => 'value_1',
 					'meta_2'              => 'value_2',
 					'related_itineraries' => [
-						$itinerary_post_1->ID,
-						$itinerary_post_2->ID,
-						$itinerary_post_3->ID,
+						$itinerary_posts[0],
+						$itinerary_posts[1],
+						$itinerary_posts[2],
+						$itinerary_post_4->ID,
 					],
 				],
 			]
@@ -305,6 +310,27 @@ class Test_Expeditions extends WP_UnitTestCase {
 
 		// Assert created posts are instance of WP_Post.
 		$this->assertTrue( $post_1 instanceof WP_Post );
+
+		// Add duration_in_days meta to Itinerary posts.
+		update_post_meta( $itinerary_posts[0], 'duration_in_days', 12 );
+		update_post_meta( $itinerary_posts[1], 'duration_in_days', 11 );
+		update_post_meta( $itinerary_posts[2], 'duration_in_days', 16 );
+
+		// Add start_location meta to Itinerary posts.
+		update_post_meta( $itinerary_posts[0], 'start_location', $departure_location_term_1->term_id );
+		update_post_meta( $itinerary_posts[1], 'start_location', $departure_location_term_2->term_id );
+		update_post_meta( $itinerary_posts[2], 'start_location', $departure_location_term_1->term_id );
+
+		// Set related_expedition meta to Itinerary posts.
+		update_post_meta( $itinerary_posts[0], 'related_expedition', $post_1->ID );
+		update_post_meta( $itinerary_posts[1], 'related_expedition', $post_1->ID );
+		update_post_meta( $itinerary_posts[2], 'related_expedition', $post_1->ID );
+		update_post_meta( $itinerary_post_4->ID, 'related_expedition', $post_1->ID );
+
+		// Clear cache for itinerary posts.
+		wp_cache_delete( ITINERARY_POST_TYPE . "_$itinerary_posts[0]", ITINERARY_POST_TYPE );
+		wp_cache_delete( ITINERARY_POST_TYPE . "_$itinerary_posts[1]", ITINERARY_POST_TYPE );
+		wp_cache_delete( ITINERARY_POST_TYPE . "_$itinerary_posts[2]", ITINERARY_POST_TYPE );
 
 		// Create term.
 		$term_1 = $this->factory()->term->create_and_get(
@@ -323,7 +349,7 @@ class Test_Expeditions extends WP_UnitTestCase {
 		$itineraries = get_itineraries( $post_1->ID );
 
 		// Assert itineraries is correct.
-		$this->assertEquals( 2, count( $itineraries ) );
+		$this->assertEquals( 3, count( $itineraries ) );
 
 		// Assert itineraries is correct.
 		$itinerary_post_ids = [];
@@ -336,7 +362,7 @@ class Test_Expeditions extends WP_UnitTestCase {
 		}
 
 		// Assert draft itineraries not included.
-		$this->assertNotContains( $itinerary_post_3->ID, $itinerary_post_ids );
+		$this->assertNotContains( $itinerary_post_4->ID, $itinerary_post_ids );
 
 		// Get get_minimum_duration.
 		$minimum_duration = get_minimum_duration( $post_1->ID );
@@ -350,10 +376,10 @@ class Test_Expeditions extends WP_UnitTestCase {
 		// Assert start_location is correct.
 		$this->assertEquals(
 			[
-				[
+				$departure_location_term_1->term_id => [
 					'title' => $departure_location_term_1->name,
 				],
-				[
+				$departure_location_term_2->term_id => [
 					'title' => $departure_location_term_2->name,
 				],
 			],
@@ -370,18 +396,65 @@ class Test_Expeditions extends WP_UnitTestCase {
 			'duration'         => 11,
 			'from_price'       => '',
 			'starting_from'    => [
-				[
+				$departure_location_term_1->term_id => [
 					'title' => $departure_location_term_1->name,
 				],
-				[
+				$departure_location_term_2->term_id => [
 					'title' => $departure_location_term_2->name,
 				],
 			],
 			'total_departures' => 0,
+			'date_range'       => '',
 		];
 
 		// Assert expedition_details_card_data is correct.
 		$this->assertEquals( $expected_data, $expedition_details_card_data );
+
+		// Setup mock response.
+		add_filter( 'pre_http_request', 'Quark\Tests\Softrip\mock_softrip_http_request', 10, 3 );
+
+		// Sync softrip with exising posts.
+		do_sync();
+
+		// Get get_details_data.
+		$expedition_details_card_data = get_details_data( $post_1->ID );
+
+		// Update expected data with softrip sync data.
+		$expected_data['from_price']       = '$34,600 USD';
+		$expected_data['total_departures'] = 3;
+		$expected_data['date_range']       = 'between January 2025 to March 2026';
+
+		// Get ship posts with meta 'ship_id' is 'OEX' and 'ULT'.
+		$ship_posts = get_posts(
+			[
+				'post_type'      => SHIP_POST_TYPE,
+				'posts_per_page' => -1,
+				'meta_query'     => [
+					[
+						'key'     => 'ship_id',
+						'value'   => [
+							'OEX',
+							'ULT',
+						],
+						'compare' => 'IN',
+					],
+				],
+			]
+		);
+
+		// Update expected data with ship posts.
+		foreach ( $ship_posts as $ship_post ) {
+			$this->assertTrue( $ship_post instanceof WP_Post );
+			$expected_data['ships'][] = [
+				'title' => $ship_post->post_title,
+			];
+		}
+
+		// Assert expedition_details_card_data is correct.
+		$this->assertEqualSets( $expected_data, $expedition_details_card_data );
+
+		// Cleanup.
+		remove_filter( 'pre_http_request', 'Quark\Tests\Softrip\mock_softrip_http_request' );
 	}
 
 	/**

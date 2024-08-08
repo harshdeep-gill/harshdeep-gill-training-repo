@@ -101,10 +101,8 @@ abstract class Softrip_TestCase extends WP_UnitTestCase {
 		$ship_ids = self::factory()->post->create_many(
 			5,
 			[
-				'post_title'   => 'Test Ship',
-				'post_content' => 'Ship content',
-				'post_status'  => 'publish',
-				'post_type'    => SHIP_POST_TYPE,
+				'post_status' => 'publish',
+				'post_type'   => SHIP_POST_TYPE,
 			]
 		);
 
