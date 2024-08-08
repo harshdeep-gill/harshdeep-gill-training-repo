@@ -12,7 +12,7 @@ use WP_Query;
 
 use function Quark\Ships\get_id_from_ship_code;
 use function Quark\Softrip\AdventureOptions\update_adventure_options;
-use function Quark\Softrip\Cabins\update_cabins;
+use function Quark\Softrip\Occupancies\update_occupancies;
 use function Quark\Softrip\is_expired;
 use function Quark\Softrip\Promotions\update_promotions;
 
@@ -179,7 +179,7 @@ function update_departures( array $raw_departures = [], string $softrip_package_
 
 		// Update Cabins.
 		if ( ! empty( $raw_departure['cabins'] ) ) {
-			update_cabins( $raw_departure['cabins'], $updated_post_id );
+			update_occupancies( $raw_departure['cabins'], $updated_post_id );
 		}
 	}
 

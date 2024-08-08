@@ -1,11 +1,11 @@
 <?php
 /**
- * Namespace file for cabins data.
+ * Namespace file for occupancies data.
  *
  * @package quark-softrip
  */
 
-namespace Quark\Softrip\Cabins;
+namespace Quark\Softrip\Occupancies;
 
 use WP_Query;
 
@@ -25,7 +25,7 @@ const CACHE_GROUP      = 'quark_softrip_cabins';
  */
 function get_table_name(): string {
     // Return table name.
-    return prefix_table_name( 'cabins' );
+    return prefix_table_name( 'occupancies' );
 }
 
 /**
@@ -69,7 +69,7 @@ function get_table_sql(): string {
  *
  * @return boolean
  */
-function update_cabins( array $raw_cabins_data = [], int $departure_post_id = 0 ): bool {
+function update_occupancies( array $raw_cabins_data = [], int $departure_post_id = 0 ): bool {
     // Bail if empty.
     if ( empty( $raw_cabins_data ) || ! is_array( $raw_cabins_data ) || empty( $departure_post_id ) ) {
         return false;
@@ -106,7 +106,7 @@ function update_cabins( array $raw_cabins_data = [], int $departure_post_id = 0 
             }
 
             // Get existing cabin data by the Softrip ID.
-            $existing_cabins_data = get_cabin_data_by_softrip_id( $formatted_data['softrip_id'] );
+            $existing_cabins_data = get_occupancy_data_by_softrip_id( $formatted_data['softrip_id'] );
 
             // Get the first item.
             $existing_cabin_data = ! empty( $existing_cabins_data ) ? $existing_cabins_data[0] : [];
@@ -251,7 +251,7 @@ function get_cabin_category_post_id( string $cabin_code = '' ): int {
  *
  * @return mixed[][]
  */
-function get_cabin_data_by_softrip_id( string $softrip_id = '', bool $direct = false ): array {
+function get_occupancy_data_by_softrip_id( string $softrip_id = '', bool $direct = false ): array {
     // Bail if empty.
     if ( empty( $softrip_id ) ) {
         return [];
