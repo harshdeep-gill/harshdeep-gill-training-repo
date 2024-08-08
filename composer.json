@@ -56,7 +56,7 @@
     "wpackagist-plugin/wp-redis": "*",
     "ext-dom": "*",
     "ext-libxml": "*",
-    "travelopia/wordpress-blocks": "^1.1"
+    "travelopia/wordpress-blocks": "^1.1.1"
   },
   "require-dev": {
     "roots/wordpress": "6.6",

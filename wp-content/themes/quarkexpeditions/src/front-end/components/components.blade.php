@@ -4530,124 +4530,144 @@
 			<table>
 				<thead class="travelopia-table__row-container">
 					<tr class="travelopia-table__row ">
-						<td class="travelopia-table__column" colspan="" rowspan="">adfafd</td>
-						<td class="travelopia-table__column" colspan="" rowspan="">adafddaf</td>
+						<td class="travelopia-table__column">Cabin Category</td>
+						<td class="travelopia-table__column">Deck Location(s)</td>
 					</tr>
 				</thead>
 
 				<tbody class="travelopia-table__row-container">
 					<tr class="travelopia-table__row ">
-						<td class="travelopia-table__column" colspan="" rowspan="">dfafdaf</td>
-						<td class="travelopia-table__column" colspan="" rowspan="">afdadf</td>
+						<td class="travelopia-table__column"><strong>Explorer Triple</strong></td>
+						<td class="travelopia-table__column">Deck 3</td>
 					</tr>
 
 					<tr class="travelopia-table__row ">
-						<td class="travelopia-table__column" colspan="" rowspan="">adfafd</td>
-						<td class="travelopia-table__column" colspan="" rowspan="">adfafda</td>
+						<td class="travelopia-table__column"><strong>Explorer Suite</strong></td>
+						<td class="travelopia-table__column">Deck 4 <br>Deck 6</td>
 					</tr>
 				</tbody>
 
 				<tfoot class="travelopia-table__row-container">
 					<tr class="travelopia-table__row ">
-						<td class="travelopia-table__column" colspan="" rowspan="">dfaf</td>
-						<td class="travelopia-table__column" colspan="" rowspan="">afdaf</td>
+						<td class="travelopia-table__column"><strong>Balcony Suite</strong></td>
+						<td class="travelopia-table__column">Deck 6</td>
 					</tr>
 				</tfoot>
 			</table>
 		</div>
 
 		<div class="travelopia-table">
-			<table class="" style="">
+			<table class="" >
 				<thead class="travelopia-table__row-container travelopia-table__row-container--sticky">
-					<tr class="travelopia-table__row" style="">
-						<td class="travelopia-table__column" style="" colspan="" rowspan="">
-							afhjahfdka
+					<tr class="travelopia-table__row" >
+						<td class="travelopia-table__column">
+							Cabin Category
 						</td>
 
-						<td class="travelopia-table__column" style="" colspan="" rowspan="">
-							adfh ajkfhdjakd fhjkahkdf
+						<td class="travelopia-table__column">
+							Deck Location(s)
 						</td>
 
-						<td class="travelopia-table__column" style="" colspan="" rowspan="">
-							akdjflk jakjf akjdfalkjfld
+						<td class="travelopia-table__column">
+							Size
 						</td>
 
-						<td class="travelopia-table__column" style="" colspan="" rowspan="">
-							dfjalk jffjadlkjf jakfjlajf
+						<td class="travelopia-table__column">
+							# of Guests
+						</td>
+
+						<td class="travelopia-table__column">
+							Berth Configuration
 						</td>
 					</tr>
 				</thead>
 
 				<tbody class="travelopia-table__row-container">
-					<tr class="travelopia-table__row" style="">
-						<td class="travelopia-table__column" style="" colspan="" rowspan="">
-							adfadf
+					<tr class="travelopia-table__row" >
+						<td class="travelopia-table__column">
+							<strong>Triple</strong>
 						</td>
 
-						<td class="travelopia-table__column" style="" colspan="" rowspan="">
-							fdfadfadf
+						<td class="travelopia-table__column">
+							Main Deck
 						</td>
 
-						<td class="travelopia-table__column" style="" colspan="" rowspan="">
-							afdafgoriotjlk
+						<td class="travelopia-table__column">
+							145-164 sq. ft.
 						</td>
 
-						<td class="travelopia-table__column" style="" colspan="" rowspan="">
-							fgsfga gsfg
-						</td>
-					</tr>
-
-					<tr class="travelopia-table__row" style="">
-						<td class="travelopia-table__column" style="" colspan="" rowspan="">
-							afdafafd
+						<td class="travelopia-table__column">
+							1-3
 						</td>
 
-						<td class="travelopia-table__column" style="" colspan="" rowspan="">
-							adfafddafa
-						</td>
-
-						<td class="travelopia-table__column" style="" colspan="" rowspan="">
-							dlkfaj fhjanfk hfian fd
-						</td>
-
-						<td class="travelopia-table__column" style="" colspan="" rowspan="">
-							sfgsfg gfg fgs
+						<td class="travelopia-table__column">
+							2 lower twin beds, 1 upper twin bed
 						</td>
 					</tr>
 
-					<tr class="travelopia-table__row" style="">
-						<td class="travelopia-table__column" style="" colspan="" rowspan="">
-							fadfa
+					<tr class="travelopia-table__row" >
+						<td class="travelopia-table__column">
+							<strong>Lower Deck Twin</strong>
 						</td>
 
-						<td class="travelopia-table__column" style="" colspan="" rowspan="">
-							in thatkjeakj fd
+						<td class="travelopia-table__column">
+							Lower Deck
 						</td>
 
-						<td class="travelopia-table__column" style="" colspan="" rowspan="">
-							dfjiajfi mIN jgkad fkfn
+						<td class="travelopia-table__column">
+							117-132 sq. ft.	
 						</td>
 
-						<td class="travelopia-table__column" style="" colspan="" rowspan="">
-							fgsfg fgfgs gfgs gfg
+						<td class="travelopia-table__column">
+							1-2
+						</td>
+
+						<td class="travelopia-table__column">
+							2 twin beds
 						</td>
 					</tr>
 
-					<tr class="travelopia-table__row" style="">
-						<td class="travelopia-table__column" style="" colspan="" rowspan="">
-							fadfadfafdf
+					<tr class="travelopia-table__row" >
+						<td class="travelopia-table__column">
+							<strong>Main Deck Twin Porthole</strong>
 						</td>
 
-						<td class="travelopia-table__column" style="" colspan="" rowspan="">
-							jdkfa oadhfujek jdf
+						<td class="travelopia-table__column">
+							Main Deck
 						</td>
 
-						<td class="travelopia-table__column" style="" colspan="" rowspan="">
-							,dfjak lmkadjkj fjadlf
+						<td class="travelopia-table__column">
+							113-132 sq. ft.
 						</td>
 
-						<td class="travelopia-table__column" style="" colspan="" rowspan="">
-							fgji uioud anflkj hfdfjnkj
+						<td class="travelopia-table__column">
+							1-2
+						</td>
+
+						<td class="travelopia-table__column">
+							2 twin beds
+						</td>
+					</tr>
+
+					<tr class="travelopia-table__row" >
+						<td class="travelopia-table__column">
+							<strong>Main Deck Twin Window</strong>
+						</td>
+
+						<td class="travelopia-table__column">
+							Main Deck
+						</td>
+
+						<td class="travelopia-table__column">
+							115-160 sq. ft.
+						</td>
+
+						<td class="travelopia-table__column">
+							1-2
+						</td>
+
+						<td class="travelopia-table__column">
+							2 twin beds
 						</td>
 					</tr>
 				</tbody>
