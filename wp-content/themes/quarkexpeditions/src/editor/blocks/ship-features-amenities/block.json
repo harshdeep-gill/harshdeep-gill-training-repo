@@ -1,0 +1,22 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Ship Features & Amenities",
+	"name": "quark/ship-features-amenities",
+	"description": "Display the Features & Amenities  a ship.",
+	"category": "widgets",
+	"keywords": [
+		"ship",
+		"amenities",
+		"features"
+	],
+	"textdomain": "qrk",
+	"attributes": {},
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}
