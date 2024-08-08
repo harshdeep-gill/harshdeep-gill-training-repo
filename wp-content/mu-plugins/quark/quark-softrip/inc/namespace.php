@@ -16,8 +16,10 @@ use function Quark\Softrip\Departure\update_departures;
 use function Quark\Softrip\AdventureOptions\get_table_sql as get_adventure_options_table_sql;
 use function Quark\Softrip\Occupancies\get_table_sql as get_occupancies_table_sql;
 use function Quark\Softrip\Promotions\get_table_sql as get_promotions_table_sql;
+use function Quark\Softrip\OccupancyPromotions\get_table_sql as get_occupancy_promotions_table_sql;
 use function Quark\Softrip\AdventureOptions\get_table_name as get_adventure_options_table_name;
 use function Quark\Softrip\Occupancies\get_table_name as get_occupancies_table_name;
+use function Quark\Softrip\OccupancyPromotions\get_table_name as get_occupancy_promotions_table_name;
 use function Quark\Softrip\Promotions\get_table_name as get_promotions_table_name;
 
 use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
@@ -63,6 +65,7 @@ function get_custom_db_table_mapping(): array {
 		get_adventure_options_table_name(),
 		get_promotions_table_name(),
 		get_occupancies_table_name(),
+		get_occupancy_promotions_table_name(),
 	];
 
 	// Table SQL statements.
@@ -70,6 +73,7 @@ function get_custom_db_table_mapping(): array {
 		get_adventure_options_table_sql(),
 		get_promotions_table_sql(),
 		get_occupancies_table_sql(),
+		get_occupancy_promotions_table_sql(),
 	];
 
 	// Return list of tables used.
