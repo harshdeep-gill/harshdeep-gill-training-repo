@@ -12,7 +12,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 	acf_add_local_field_group(
 		[
 			'key'                   => 'group_65f43877f2766',
-			'title'                 => 'Ship Specifications',
+			'title'                 => 'Ship Details',
 			'fields'                => [
 				[
 					'key'               => 'field_65f43912eb4d3',
@@ -86,6 +86,31 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 					'max'                  => '',
 					'elements'             => '',
 					'bidirectional'        => 0,
+					'bidirectional_target' => [],
+				],
+				[
+					'key'                  => 'field_66b516e592eae',
+					'label'                => 'Related Adventure Options',
+					'name'                 => 'related_adventure_options',
+					'aria-label'           => '',
+					'type'                 => 'taxonomy',
+					'instructions'         => 'Select the adventure options that are available on this ship.',
+					'required'             => 0,
+					'conditional_logic'    => 0,
+					'wrapper'              => [
+						'width' => '',
+						'class' => '',
+						'id'    => '',
+					],
+					'taxonomy'             => 'qrk_adventure_option_category',
+					'add_term'             => 0,
+					'save_terms'           => 0,
+					'load_terms'           => 0,
+					'return_format'        => 'id',
+					'field_type'           => 'multi_select',
+					'allow_null'           => 0,
+					'bidirectional'        => 0,
+					'multiple'             => 0,
 					'bidirectional_target' => [],
 				],
 				[
