@@ -8,6 +8,7 @@
 namespace Quark\Softrip;
 
 use function Quark\Softrip\AdventureOptions\get_adventure_table_sql;
+use function Quark\Softrip\Cabins\get_table_sql as get_cabins_table_sql;
 use function Quark\Softrip\Promotions\get_table_sql as get_promotions_table_sql;
 
 /**
@@ -21,7 +22,6 @@ class Softrip_DB {
 	 * @return array{
 	 *      adventure_options: string,
 	 *      cabin_categories: string,
-	 *      occupancies: string,
 	 *      occupancy_prices: string,
 	 *      promotions: string,
 	 * }
@@ -31,9 +31,9 @@ class Softrip_DB {
 		return [
 			'adventure_options' => get_adventure_table_sql(),
 			'cabin_categories'  => $this->get_cabin_table_sql(),
-			'occupancies'       => $this->get_occupancies_table_sql(),
 			'occupancy_prices'  => $this->get_occupancy_prices_table_sql(),
 			'promotions'        => get_promotions_table_sql(),
+			'cabins'            => get_cabins_table_sql()
 		];
 	}
 
@@ -96,30 +96,6 @@ class Softrip_DB {
 			availability_status VARCHAR(4) NOT NULL,
 			spaces_available INT NOT NULL,
 			UNIQUE KEY cabin_category_title_unique (title)
-		) $engine_collate";
-
-		// return the SQL.
-		return $sql;
-	}
-
-	/**
-	 * Get the occupancies table create SQL.
-	 *
-	 * @return string
-	 */
-	private function get_occupancies_table_sql(): string {
-		// Get the table name.
-		$table_name = $this->prefix_table_name( 'occupancies' );
-
-		// Get the engine collate.
-		$engine_collate = $this->engine_collate();
-
-		// Build the SQL query.
-		$sql = "CREATE TABLE $table_name (
-			id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-			cabin_category BIGINT NOT NULL,
-			title VARCHAR(255) NOT NULL,
-			occupancy_mask VARCHAR(12) NOT NULL
 		) $engine_collate";
 
 		// return the SQL.
