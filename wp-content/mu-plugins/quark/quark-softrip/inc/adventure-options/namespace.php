@@ -23,7 +23,7 @@ const CACHE_GROUP = 'qrk_softrip_adventure_options';
  *
  * @return string
  */
-function get_adventure_option_table_name(): string {
+function get_table_name(): string {
 	// Return the table name.
 	return prefix_table_name( 'adventure_options' );
 }
@@ -33,9 +33,9 @@ function get_adventure_option_table_name(): string {
  *
  * @return string
  */
-function get_adventure_table_sql(): string {
+function get_table_sql(): string {
 	// Get the table name.
-	$table_name = get_adventure_option_table_name();
+	$table_name = get_table_name();
 
 	// Get the engine collate.
 	$engine_collate = get_engine_collate();
@@ -78,7 +78,7 @@ function update_adventure_options( array $raw_adventure_options = [], int $depar
 	global $wpdb;
 
 	// Get the table name.
-	$table_name = get_adventure_option_table_name();
+	$table_name = get_table_name();
 
 	// Initialize adventure option term ids.
 	$adventure_option_term_ids = [];
@@ -306,7 +306,7 @@ function get_adventure_option_by_departure_post_id( int $departure_post_id = 0, 
 	global $wpdb;
 
 	// Get the table name.
-	$table_name = get_adventure_option_table_name();
+	$table_name = get_table_name();
 
 	// Load the adventure options.
 	$adventure_options = $wpdb->get_results(
@@ -366,7 +366,7 @@ function get_adventure_option_by_softrip_option_id( string $softrip_option_id = 
 	global $wpdb;
 
 	// Get the table name.
-	$table_name = get_adventure_option_table_name();
+	$table_name = get_table_name();
 
 	// Load the adventure options.
 	$adventure_options = $wpdb->get_results(
