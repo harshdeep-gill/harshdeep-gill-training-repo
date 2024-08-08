@@ -104,6 +104,13 @@ class Search {
 	public int $result_count = 0;
 
 	/**
+	 * Remaining count.
+	 *
+	 * @var int Remaining count.
+	 */
+	public int $remaining_count = 0;
+
+	/**
 	 * Current page number.
 	 *
 	 * @var int Current page number.
@@ -493,6 +500,12 @@ class Search {
 
 		// Set the result.
 		$this->results = $filtered_posts;
+
+		// Count number of posts for previous load.
+		$previous_load_count = ( $this->current_page - 1 ) * $this->posts_per_page;
+
+		// Set the remaining count, including previous pagination.
+		$this->remaining_count = $this->result_count - $previous_load_count - count( $filtered_posts );
 
 		// Return posts.
 		return $filtered_posts;

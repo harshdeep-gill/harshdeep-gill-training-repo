@@ -39,12 +39,16 @@ function render( array $output = [], string $name = '', array $data = [] ): arra
 
 	// Init selected filters.
 	$selected_filter = [
-		'currency' => 'USD',
+		'posts_per_load' => 4,
+		'currency'       => 'USD',
 	];
 
 	// Verify and get selected filters.
 	if ( ! empty( $data['selectedFilters'] ) && is_array( $data['selectedFilters'] ) ) {
-		$selected_filter = $data['selectedFilters'];
+		$selected_filter = wp_parse_args(
+			$data['selectedFilters'],
+			$selected_filter
+		);
 	}
 
 	// Search for Departure post.
@@ -64,11 +68,13 @@ function render( array $output = [], string $name = '', array $data = [] ): arra
 			'parts.expedition-departure-cards',
 			$attributes
 		),
-		'noResultsMarkup' => 'No results found.', // TODO: Add no results markup.
+		'noResultsMarkup' => 'No results found.',
+		// TODO: Add no results markup.
 		'data'            => [
-			'resultCount' => $search_results['result_count'],
-			'page'        => $search_results['current_page'],
-			'nextPage'    => $search_results['next_page'],
+			'resultCount'    => $search_results['result_count'],
+			'page'           => $search_results['current_page'],
+			'nextPage'       => $search_results['next_page'],
+			'remainingCount' => $search_results['remaining_count'],
 		],
 	];
 }

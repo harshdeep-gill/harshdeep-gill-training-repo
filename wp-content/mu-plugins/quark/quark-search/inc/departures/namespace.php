@@ -249,5 +249,6 @@ function search( array $filters = [] ): array {
 		'current_page' => $search->current_page,
 		'next_page'    => $search->next_page,
 		'result_count' => $search->result_count,
+		'remaining_count' => $search->remaining_count,
 	];
 }
