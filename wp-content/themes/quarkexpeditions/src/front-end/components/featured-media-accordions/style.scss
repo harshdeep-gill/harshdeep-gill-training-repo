@@ -14,7 +14,7 @@
 			display: block;
 			margin-top: var(--spacing-5);
 
-			@media screen and (min-width: grid-size(md)) {
+			@media screen and (min-width: grid-size(lg)) {
 				display: none;
 			}
 		}
@@ -23,7 +23,7 @@
 			display: none;
 		}
 
-		@media screen and (min-width: grid-size(md)) {
+		@media screen and (min-width: grid-size(lg)) {
 			max-width: 600px;
 			display: block;
 		}
@@ -32,7 +32,7 @@
 			aspect-ratio: 5 / 3;
 			width: 100%;
 
-			@media screen and ( min-width: grid-size(md) ) {
+			@media screen and ( min-width: grid-size(lg) ) {
 				aspect-ratio: 1;
 			}
 		}
@@ -52,8 +52,19 @@
 	.two-columns__column:first-child {
 		display: none;
 
-		@media screen and (min-width: grid-size(md)) {
+		@media screen and (min-width: grid-size(lg)) {
 			display: block;
 		}
+	}
+
+	.two-columns {
+
+		@media screen and (max-width: grid-size(lg)) {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	.accordion__handle-btn-text {
+		font-size: 18px;
 	}
 }
