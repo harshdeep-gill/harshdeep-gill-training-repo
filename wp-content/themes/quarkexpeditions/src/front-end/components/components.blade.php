@@ -3749,7 +3749,7 @@
 <x-component-demo :keys="[ 'departure-cards' ]">
 	<x-departure-cards>
 		<x-departure-cards.card>
-			<x-departure-cards.card-banner text="Quark Protection Promise" />
+			<x-departure-cards.card-banner text="Quark Protection Promise" url="#" />
 			<x-departure-cards.header>
 				<x-departure-cards.title title="Crossing the Cirlc: Southern Expedition" />
 				<x-departure-cards.promo-tag text="Save up to 24%" />
@@ -3832,12 +3832,13 @@
 						<x-departure-cards.offer title="Offer 4" />
 						<x-departure-cards.offer title="Offer 5" />
 						<x-departure-cards.offers-modal title="Crossing the Cirlc: Southern Expedition">
+							<p>Available Offers</p>
 							<ul>
 								<li>Save 30% on Premium Cabins</li>
 								<li>$1000 Flight Credit</li>
-								<li>Save 25% on Standard Cabins</li>
 								<li>Offer 4</li>
 								<li>Offer 5</li>
+								<li>Save 25% on Standard Cabins</li>
 							</ul>
 						</x-departure-cards.offers-modal>
 					</x-departure-cards.offers>
@@ -3863,17 +3864,203 @@
 						<p><strong>Package Price: $695 USD</strong></p>
 					</x-departure-cards.transfer_package>
 
-					<x-button size="big">View Cabin Pricing & Options</x-button>
+					<x-departure-cards.cta text="View Cabin Pricing & Options" />
 				</x-departure-cards.body-column>
 			</x-departure-cards.body>
 
 			<x-departure-cards.more-details>
-				{{-- <x-product-options-cards> // Component Ticket -> https://tuispecialist.atlassian.net/browse/QE-304 --}}
+				<h4>Cabins Options</h4>
+				<x-product-options-cards>
+					<x-product-options-cards.cards>
+						<x-product-options-cards.card>
+							<x-product-options-cards.gallery :image_ids="[ 32, 34, 36]">
+								<x-product-options-cards.badge type="standard" />
+							</x-product-options-cards.gallery>
+							<x-product-options-cards.content>
+								<x-product-options-cards.title title="Explorer Suite" />
+								<x-product-options-cards.specifications>
+									<x-product-options-cards.specification
+										label="Occupancy"
+										value="1-2 guests"
+									/>
+									<x-product-options-cards.specification
+										label="Number of Beds"
+										value="1 double or 2 single beds"
+									/>
+									<x-product-options-cards.specification
+										label="Location"
+										value="Deck 3"
+									/>
+									<x-product-options-cards.specification
+										label="Cabin Size"
+										value="226 sq. ft."
+									/>
+								</x-product-options-cards.specifications>
+								<x-product-options-cards.price
+									original_price="$9,395 USD"
+									discounted_price="$7,271 USD"
+								/>
+							</x-product-options-cards.content>
+						</x-product-options-cards.card>
+						<x-product-options-cards.card details_id="some-random-id-2">
+							<x-product-options-cards.gallery :image_ids="[ 32, 34, 36]">
+								<x-product-options-cards.badge type="premium" />
+							</x-product-options-cards.gallery>
+							<x-product-options-cards.content>
+								<x-product-options-cards.title title="Explorer Suite" />
+								<x-product-options-cards.specifications>
+									<x-product-options-cards.specification
+										label="Occupancy"
+										value="1-2 guests"
+									/>
+									<x-product-options-cards.specification
+										label="Number of Beds"
+										value="1 double or 2 single beds"
+									/>
+									<x-product-options-cards.specification
+										label="Location"
+										value="Deck 3"
+									/>
+									<x-product-options-cards.specification
+										label="Cabin Size"
+										value="226 sq. ft."
+									/>
+								</x-product-options-cards.specifications>
+								<x-product-options-cards.price
+									original_price="$9,395 USD"
+									discounted_price="$7,271 USD"
+								/>
+							</x-product-options-cards.content>
+						</x-product-options-cards.card>
+						<x-product-options-cards.card details_id="some-random-id-3">
+							<x-product-options-cards.gallery :image_ids="[ 32, 34, 36]">
+								<x-product-options-cards.badge type="sold out" />
+							</x-product-options-cards.gallery>
+							<x-product-options-cards.content>
+								<x-product-options-cards.title title="Explorer Suite" />
+								<x-product-options-cards.specifications>
+									<x-product-options-cards.specification
+										label="Occupancy"
+										value="1-2 guests"
+									/>
+									<x-product-options-cards.specification
+										label="Number of Beds"
+										value="1 double or 2 single beds"
+									/>
+									<x-product-options-cards.specification
+										label="Location"
+										value="Deck 3"
+									/>
+									<x-product-options-cards.specification
+										label="Cabin Size"
+										value="226 sq. ft."
+									/>
+								</x-product-options-cards.specifications>
+								<x-product-options-cards.price
+									original_price="$9,395 USD"
+									discounted_price="$7,271 USD"
+								/>
+							</x-product-options-cards.content>
+						</x-product-options-cards.card>
+					</x-product-options-cards.cards>
+					<x-product-options-cards.more-details>
+						<x-product-options-cards.card-details id="some-random-id">
+							<x-product-options-cards.card-details-title title="Explorer Suite" />
+							<x-product-options-cards.description>
+								<p>These suites are perfect for people traveling together or solo guests looking to share with like-minded individuals. This suite maximizes interior living space while still offering guests the opportunity to stay connected to the outdoors.</p>
+							</x-product-options-cards.description>
+							<x-product-options-cards.features title="Features and Standard Amenities: ">
+								<p>one double or two single beds, sitting area with sofa bed, picture window, desk, refrigerator, TV, private bathroom with shower and heated floors, hair dryer, bathrobe, slippers, shampoo, conditioner, shower gel, complimentary water bottle.</p>
+							</x-product-options-cards.features>
+							<x-product-options-cards.gallery :image_ids="[ 32, 34, 36]" :full_size="true" />
+							<x-product-options-cards.rooms title="Select Rooms">
+								<x-product-options-cards.room>
+									<x-product-options-cards.room-title-container>
+										<x-product-options-cards.room-title title="Single Room" no_of_guests="1" />
+										<x-product-options-cards.room-subtitle subtitle="Price of the cabin for one guest" />
+									</x-product-options-cards.room-title-container>
+									<x-product-options-cards.room-prices
+										original_price="$9,395 USD"
+										discounted_price="$7,271 USD"
+									/>
+								</x-product-options-cards.room>
+							</x-product-options-cards.rooms>
+							<x-product-options-cards.discounts>
+								<x-product-options-cards.discount name="Save 50% - Offer Code 50PROMO" />
+							</x-product-options-cards.discounts>
+							<x-product-options-cards.cta-buttons>
+								<p>Not ready to book? <a>Request a Quote</a></p>
+								<x-button size="big" color="black">Request a Callback</x-button>
+								<x-button size="big">Book Expedition Now</x-button>
+							</x-product-options-cards.cta-buttons>
+						</x-product-options-cards.card-details>
+						<x-product-options-cards.card-details id="some-random-id-2">
+							<x-product-options-cards.card-details-title title="Explorer Suite" />
+							<x-product-options-cards.description>
+								<p>These suites are perfect for people traveling together or solo guests looking to share with like-minded individuals. This suite maximizes interior living space while still offering guests the opportunity to stay connected to the outdoors.</p>
+							</x-product-options-cards.description>
+							<x-product-options-cards.features title="Features and Standard Amenities: ">
+								<p>one double or two single beds, sitting area with sofa bed, picture window, desk, refrigerator, TV, private bathroom with shower and heated floors, hair dryer, bathrobe, slippers, shampoo, conditioner, shower gel, complimentary water bottle.</p>
+							</x-product-options-cards.features>
+							<x-product-options-cards.gallery :image_ids="[ 32, 34, 36]" :full_size="true" />
+							<x-product-options-cards.rooms title="Select Rooms">
+								<x-product-options-cards.room>
+									<x-product-options-cards.room-title-container>
+										<x-product-options-cards.room-title title="Single Room" no_of_guests="3" />
+										<x-product-options-cards.room-subtitle subtitle="Price of the cabin for one guest" />
+									</x-product-options-cards.room-title-container>
+									<x-product-options-cards.room-prices
+										original_price="$9,395 USD"
+										discounted_price="$7,271 USD"
+									/>
+								</x-product-options-cards.room>
+							</x-product-options-cards.rooms>
+							<x-product-options-cards.discounts>
+								<x-product-options-cards.discount name="Save 50% - Offer Code 50PROMO" />
+							</x-product-options-cards.discounts>
+							<x-product-options-cards.cta-buttons>
+								<p>Not ready to book? <a>Request a Quote</a></p>
+								<x-button size="big" color="black">Request a Callback</x-button>
+								<x-button size="big">Book Expedition Now</x-button>
+							</x-product-options-cards.cta-buttons>
+						</x-product-options-cards.card-details>
+						<x-product-options-cards.card-details id="some-random-id-3">
+							<x-product-options-cards.card-details-title title="Explorer Suite" />
+							<x-product-options-cards.description>
+								<p>These suites are perfect for people traveling together or solo guests looking to share with like-minded individuals. This suite maximizes interior living space while still offering guests the opportunity to stay connected to the outdoors.</p>
+							</x-product-options-cards.description>
+							<x-product-options-cards.features title="Features and Standard Amenities: ">
+								<p>one double or two single beds, sitting area with sofa bed, picture window, desk, refrigerator, TV, private bathroom with shower and heated floors, hair dryer, bathrobe, slippers, shampoo, conditioner, shower gel, complimentary water bottle.</p>
+							</x-product-options-cards.features>
+							<x-product-options-cards.gallery :image_ids="[ 32, 34, 36]" :full_size="true" />
+							<x-product-options-cards.rooms title="Select Rooms">
+								<x-product-options-cards.room>
+									<x-product-options-cards.room-title-container>
+										<x-product-options-cards.room-title title="Single Room" no_of_guests="1" />
+										<x-product-options-cards.room-subtitle subtitle="Price of the cabin for one guest" />
+									</x-product-options-cards.room-title-container>
+									<x-product-options-cards.room-prices
+										original_price="$9,395 USD"
+										discounted_price="$7,271 USD"
+									/>
+								</x-product-options-cards.room>
+							</x-product-options-cards.rooms>
+							<x-product-options-cards.discounts>
+								<x-product-options-cards.discount name="Save 50% - Offer Code 50PROMO" />
+							</x-product-options-cards.discounts>
+							<x-product-options-cards.cta-buttons>
+								<p>Not ready to book? <a>Request a Quote</a></p>
+								<x-button size="big" color="black">Request a Callback</x-button>
+								<x-button size="big">Book Expedition Now</x-button>
+							</x-product-options-cards.cta-buttons>
+						</x-product-options-cards.card-details>
+					</x-product-options-cards.more-details>
+				</x-product-options-cards>
 			</x-departure-cards.more-details>
 		</x-departure-cards.card>
 
 		<x-departure-cards.card>
-			<x-departure-cards.card-banner text="Quark Protection Promise" />
+			<x-departure-cards.card-banner text="Quark Protection Promise" url="#" />
 			<x-departure-cards.header>
 				<x-departure-cards.departing-on date="March 1, 2024" />
 				<x-departure-cards.promo-tag text="Save up to 24%" />
@@ -3988,7 +4175,7 @@
 		</x-departure-cards.card>
 
 		<x-departure-cards.card>
-			<x-departure-cards.card-banner text="Quark Protection Promise" />
+			<x-departure-cards.card-banner text="Quark Protection Promise" url="#" />
 			<x-departure-cards.header>
 				<x-departure-cards.departing-on date="March 1, 2024" />
 				<x-departure-cards.promo-tag text="Save up to 24%" />
