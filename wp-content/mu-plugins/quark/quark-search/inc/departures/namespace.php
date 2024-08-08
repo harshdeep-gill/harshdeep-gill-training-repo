@@ -212,7 +212,8 @@ function parse_filters( array $filters = [] ): array {
  *     ids: int[],
  *     current_page: int,
  *     next_page: int,
- *     result_count: int
+ *     result_count: int,
+ *     remaining_count: int,
  * }
  */
 function search( array $filters = [] ): array {
@@ -245,10 +246,10 @@ function search( array $filters = [] ): array {
 
 	// Returned filtered trips.
 	return [
-		'ids'          => $search->search(),
-		'current_page' => $search->current_page,
-		'next_page'    => $search->next_page,
-		'result_count' => $search->result_count,
+		'ids'             => $search->search(),
+		'current_page'    => $search->current_page,
+		'next_page'       => $search->next_page,
+		'result_count'    => $search->result_count,
 		'remaining_count' => $search->remaining_count,
 	];
 }

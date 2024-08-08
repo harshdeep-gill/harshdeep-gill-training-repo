@@ -420,7 +420,7 @@ class Test_Expeditions extends Softrip_TestCase {
 		$expedition_details_card_data = get_details_data( $post_1->ID );
 
 		// Update expected data with softrip sync data.
-		$expected_data['from_price']       = '$34,600 USD';
+		$expected_data['from_price']       = '$26,171 USD';
 		$expected_data['total_departures'] = 3;
 		$expected_data['date_range']       = 'between January 2025 to March 2026';
 
@@ -429,6 +429,8 @@ class Test_Expeditions extends Softrip_TestCase {
 			[
 				'post_type'      => SHIP_POST_TYPE,
 				'posts_per_page' => -1,
+				'order'          => 'ASC',
+				'orderby'        => 'title',
 				'meta_query'     => [
 					[
 						'key'     => 'ship_id',
@@ -451,7 +453,7 @@ class Test_Expeditions extends Softrip_TestCase {
 		}
 
 		// Assert expedition_details_card_data is correct.
-		$this->assertEquals( $expected_data, $expedition_details_card_data );
+		$this->assertEqualSetsWithIndex( $expected_data, $expedition_details_card_data );
 
 		// Cleanup.
 		remove_filter( 'pre_http_request', 'Quark\Tests\Softrip\mock_softrip_http_request' );

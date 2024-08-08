@@ -636,7 +636,7 @@ function get_card_data( int $departure_id = 0, string $currency = 'USD' ): array
 		'duration_days'            => absint( $departure->get_post_meta( 'duration' ) ),
 		'duration_dates'           => $departure->get_date_range(),
 		'starting_from_location'   => get_starting_from_location( $itinerary_id ),
-		'languages'                => implode( ',', get_languages( $departure_id ) ),
+		'languages'                => implode( ', ', get_languages( $departure_id ) ),
 		'paid_adventure_options'   => get_paid_adventure_options( $departure_id ),
 		'lowest_price'             => $prices,
 		'transfer_package_details' => get_included_transfer_package_details( $itinerary_id, $currency ),
