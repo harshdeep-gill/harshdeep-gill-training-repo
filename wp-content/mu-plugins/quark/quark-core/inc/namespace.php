@@ -448,6 +448,22 @@ function format_price( float $price = 0, string $currency = 'USD' ): string {
 }
 
 /**
+ * Get available currencies.
+ *
+ * @return string[]
+ */
+function get_available_currencies(): array {
+	// Return available currencies.
+	return [
+		'USD',
+		'CAD',
+		'AUD',
+		'EUR',
+		'GBP',
+	];
+}
+
+/**
  * Organise terms by hierarchy.
  *
  * @param array<int> $terms Terms.

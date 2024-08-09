@@ -5,9 +5,9 @@
 <x-departure-cards>
 	@foreach( $cards as $card )
 		<x-departure-cards.card>
-			<x-departure-cards.card-banner text="{{ $card['banner_details']['title'] }}"/>
+			<x-departure-cards.card-banner text="{{ $card['banner_details']['title'] ?? '' }}"/>
 			<x-departure-cards.header>
-				<x-departure-cards.title title="{{ $card['expedition_name'] }}"/>
+				<x-departure-cards.title title="{{ $card['expedition_name'] ?? '' }}"/>
 				@if( ! empty( $card['promotion_banner'] ) )
 					<x-departure-cards.promo-tag text="{{ $card['promotion_banner'] }}"/>
 				@endif
@@ -95,7 +95,7 @@
 								<x-departure-cards.offer title="{{ $offer }}"/>
 							@endforeach
 
-							<x-departure-cards.offers-modal title="{{ $card['expedition_name'] }}">
+							<x-departure-cards.offers-modal title="{{ $card['expedition_name'] ?? '' }}">
 								<ul>
 									@foreach( $card['available_offers'] as $offer )
 										<li>{{ $offer }}</li>
@@ -108,22 +108,22 @@
 
 				<x-departure-cards.body-column>
 					<x-departure-cards.price
-						original_price="{{ $card['lowest_price']['original_price'] }}"
-						discounted_price="{{ $card['lowest_price']['discounted_price'] }}"
+						original_price="{{ $card['lowest_price']['original_price'] ?? '' }}"
+						discounted_price="{{ $card['lowest_price']['discounted_price'] ?? '' }}"
 					/>
 
 					@if( ! empty( $card['transfer_package_details'] && ! empty( $card['transfer_package_details']['sets'] ) ) )
 						<x-departure-cards.transfer_package
-							drawer_id="{{ $card['departure_id'] }}"
+							drawer_id="{{ $card['departure_id'] ?? '' }}"
 							drawer_title="Mandatory Transfer Package"
 						>
-							<p><strong>{{ $card['transfer_package_details']['title'] }}</strong></p>
+							<p><strong>{{ $card['transfer_package_details']['title'] ?? '' }}</strong></p>
 							<ul>
 								@foreach( $card['transfer_package_details']['sets'] as $set )
 									<li>{!! $set !!}</li>
 								@endforeach
 							</ul>
-							<p><strong>Package Price: {{ $card['transfer_package_details']['formatted_price'] }}</strong></p>
+							<p><strong>Package Price: {{ $card['transfer_package_details']['formatted_price'] ?? '' }}</strong></p>
 						</x-departure-cards.transfer_package>
 					@endif
 					<x-button size="big"><x-escape :content="__( 'View Cabin Pricing & Options', 'qrk' )"/></x-button>

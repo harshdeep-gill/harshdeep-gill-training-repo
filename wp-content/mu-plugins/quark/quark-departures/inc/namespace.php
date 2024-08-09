@@ -8,15 +8,18 @@
 namespace Quark\Departures;
 
 use Quark\Softrip\Departure;
+use Quark\Softrip\Itinerary;
 use WP_Post;
 use WP_Term_Query;
 
 use function Quark\Core\format_price;
+use function Quark\Core\get_available_currencies;
 use function Quark\Itineraries\get as get_itinerary;
 use function Quark\Itineraries\get_starting_from_location;
 use function Quark\Itineraries\get_included_transfer_package_details;
 use function Quark\Itineraries\get_policy_banner_details;
 use function Quark\Expeditions\get as get_expedition;
+use function Quark\Expeditions\get_itineraries;
 
 use const Quark\StaffMembers\SEASON_TAXONOMY;
 use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
@@ -45,6 +48,11 @@ function bootstrap(): void {
 
 	// Other hooks.
 	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
+
+	// Bust cache for departure card data.
+	add_action( 'qe_departure_post_cache_busted', __NAMESPACE__ . '\\bust_card_data_cache' );
+	add_action( 'qe_expedition_post_cache_busted', __NAMESPACE__ . '\\bust_card_data_cache_on_expedition_update' );
+	add_action( 'qe_itinerary_post_cache_busted', __NAMESPACE__ . '\\bust_card_data_cache_on_itinerary_update' );
 
 	// Bust cache on term update.
 	add_action( 'set_object_terms', __NAMESPACE__ . '\\bust_post_cache_on_term_assign', 10, 6 );
@@ -507,7 +515,7 @@ function get_languages( int $post_id = 0 ): array {
  *
  * @param int $post_id Departure Post ID.
  *
- * @return array<string> Promotion Tags.
+ * @return string[] Promotion Tags.
  */
 function get_promotion_tags( int $post_id = 0 ): array {
 	// Get departure.
@@ -532,7 +540,7 @@ function get_promotion_tags( int $post_id = 0 ): array {
 }
 
 /**
- * Get departure details.
+ * Get departure cards details.
  *
  * @param int    $departure_id The departure ID.
  * @param string $currency     The currency.
@@ -722,4 +730,84 @@ function get_cards_data( array $departure_ids = [], string $currency = 'USD' ): 
 
 	// Return departure cards data.
 	return $departure_cards;
+}
+
+/**
+ * Bust Departure card data cache.
+ *
+ * @param int $post_id Departure Post ID.
+ *
+ * @return void
+ */
+function bust_card_data_cache( int $post_id = 0 ): void {
+	// Get currency list.
+	$currencies = get_available_currencies();
+
+	// Loop through currencies.
+	foreach ( $currencies as $currency ) {
+		wp_cache_delete( 'departure_card_data_' . $post_id . '_' . $currency );
+	}
+}
+
+/**
+ * Bust Departure card data cache on Itinerary update.
+ *
+ * @param int $itinerary_id Itinerary Post ID.
+ *
+ * @return void
+ */
+function bust_card_data_cache_on_itinerary_update( int $itinerary_id = 0 ): void {
+	// Create Itinerary object.
+	$itinerary = new Itinerary( $itinerary_id );
+
+	// Get Departures for the Itinerary.
+	$departures = $itinerary->get_departures();
+
+	// Check Departures are empty.
+	if ( empty( $departures ) ) {
+		return;
+	}
+
+	// Loop through Departures.
+	foreach ( $departures as $departure ) {
+		// Check for Departure.
+		if ( ! $departure instanceof Departure ) {
+			continue;
+		}
+
+		// Bust departure card cache by departure.
+		bust_card_data_cache( $departure->get_id() );
+	}
+}
+
+/**
+ * Bust Departure card data cache on Expedition update.
+ *
+ * @param int $expedition_id Expedition Post ID.
+ *
+ * @return void
+ */
+function bust_card_data_cache_on_expedition_update( int $expedition_id = 0 ): void {
+	// Get Itineraries for the Expedition.
+	$itineraries = get_itineraries( $expedition_id );
+
+	// Check Itineraries are empty.
+	if ( empty( $itineraries ) ) {
+		return;
+	}
+
+	// Loop through Itineraries.
+	foreach ( $itineraries as $itinerary ) {
+		// Check for Itinerary.
+		if (
+			! is_array( $itinerary )
+			|| empty( $itinerary['post'] )
+			|| ! $itinerary['post'] instanceof WP_Post
+		) {
+			continue;
+		}
+
+		// Bust departure card cache by itinerary.
+		bust_card_data_cache_on_itinerary_update( $itinerary['post']->ID );
+	}
 }

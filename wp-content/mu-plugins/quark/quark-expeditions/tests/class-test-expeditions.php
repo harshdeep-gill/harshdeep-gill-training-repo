@@ -12,6 +12,7 @@ use WP_Term;
 
 use Quark\Tests\Softrip\Softrip_TestCase;
 
+use function Quark\Expeditions\bust_post_cache;
 use function Quark\Expeditions\get;
 use function Quark\Expeditions\get_region_terms;
 use function Quark\Expeditions\get_itineraries;
@@ -85,6 +86,9 @@ class Test_Expeditions extends Softrip_TestCase {
 
 		// Set terms.
 		wp_set_object_terms( $post_1->ID, $category_term->term_id, EXPEDITION_CATEGORY_TAXONOMY );
+
+		// Bust post cache.
+		bust_post_cache( $post_1->ID );
 
 		// Test getting post.
 		$the_post = get( $post_1->ID );
@@ -189,6 +193,9 @@ class Test_Expeditions extends Softrip_TestCase {
 			],
 			DESTINATION_TAXONOMY
 		);
+
+		// Bust post cache.
+		bust_post_cache( $post_1->ID );
 
 		// Test getting regions.
 		$regions = get_region_terms( $post_1->ID );
@@ -385,6 +392,9 @@ class Test_Expeditions extends Softrip_TestCase {
 			],
 			$start_location
 		);
+
+		// bust post cache.
+		bust_post_cache( $post_1->ID );
 
 		// Get get_details_data().
 		$expedition_details_card_data = get_details_data( $post_1->ID );
