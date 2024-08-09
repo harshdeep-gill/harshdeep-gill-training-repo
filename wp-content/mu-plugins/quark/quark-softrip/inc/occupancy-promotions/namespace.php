@@ -162,6 +162,10 @@ function update_occupancy_promotions( array $raw_occupancy_promotions = [], int 
 				$promo_data
 			);
 		}
+
+		// Bust caches.
+		wp_cache_delete( CACHE_KEY_PREFIX . '_' . $occupancy_id . '_' . $existing_promotion['id'], CACHE_GROUP );
+		wp_cache_delete( CACHE_KEY_PREFIX . '_occupancy_' . $occupancy_id, CACHE_GROUP );
 	}
 
 	// Return success.

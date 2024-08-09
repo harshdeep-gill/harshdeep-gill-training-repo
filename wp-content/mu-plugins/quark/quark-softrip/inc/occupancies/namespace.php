@@ -149,6 +149,10 @@ function update_occupancies( array $raw_cabins_data = [], int $departure_post_id
 			if ( ! empty( $updated_id ) && ! empty( $raw_cabin_occupancy_data['prices'] ) && is_array( $raw_cabin_occupancy_data['prices'] ) ) {
 				// Update the occupancy promotions.
 				update_occupancy_promotions( array_values( $raw_cabin_occupancy_data['prices'] ), $updated_id );
+
+				// Bust caches.
+				wp_cache_delete( CACHE_KEY_PREFIX . '_data_' . $formatted_data['softrip_id'], CACHE_GROUP );
+				wp_cache_delete( CACHE_KEY_PREFIX . '_data_departure_' . $departure_post_id, CACHE_GROUP );
 			}
 		}
 	}
