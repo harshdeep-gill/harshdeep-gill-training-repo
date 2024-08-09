@@ -97,6 +97,9 @@ function get_related_ships( int $post_id = 0 ): array {
 		$ships[] = $ship_post_id;
 	}
 
+	// Remove duplicates.
+	$ships = array_unique( $ships );
+
 	// Return the ships.
 	return $ships;
 }
