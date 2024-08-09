@@ -446,7 +446,7 @@ class Test_Itineraries extends Softrip_TestCase {
 		];
 
 		// Assert details.
-		$this->assertEquals( $details, $expected_details );
+		$this->assertEquals( $expected_details, $details );
 	}
 
 	/**
