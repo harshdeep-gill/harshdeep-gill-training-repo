@@ -12,7 +12,7 @@ use WP_CLI;
 use WP_Error;
 use WP_Query;
 
-use function Quark\Softrip\Departure\update_departures;
+use function Quark\Softrip\Departures\update_departures;
 use function Quark\Softrip\AdventureOptions\get_table_sql as get_adventure_options_table_sql;
 use function Quark\Softrip\Occupancies\get_table_sql as get_occupancies_table_sql;
 use function Quark\Softrip\Promotions\get_table_sql as get_promotions_table_sql;

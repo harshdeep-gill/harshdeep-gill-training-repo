@@ -17,7 +17,7 @@ use function Quark\Itineraries\get as get_itinerary;
 use function Quark\Departures\get as get_departure;
 use function Quark\Core\format_price;
 use function Quark\Ships\get as get_ship;
-use function Quark\Softrip\Departure\get_departures_by_itinerary;
+use function Quark\Softrip\Departures\get_departures_by_itinerary;
 use function Quark\Softrip\Itineraries\get_ending_date;
 use function Quark\Softrip\Itineraries\get_lowest_price;
 use function Quark\Softrip\Itineraries\get_related_ships;

@@ -5,10 +5,9 @@
  * @package quark-softrip
  */
 
-namespace Quark\Softrip\Departure;
+namespace Quark\Softrip\Departures;
 
 use WP_Error;
-use WP_Post;
 use WP_Query;
 
 use function Quark\Ships\get_id_from_ship_code;
@@ -17,7 +16,6 @@ use function Quark\Softrip\Occupancies\update_occupancies;
 use function Quark\Softrip\is_expired;
 use function Quark\Softrip\Occupancies\get_lowest_price as get_occupancies_lowest_price;
 use function Quark\Softrip\Promotions\update_promotions;
-use function Quark\Ships\get as get_ship;
 
 use const Quark\Core\CURRENCIES;
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
