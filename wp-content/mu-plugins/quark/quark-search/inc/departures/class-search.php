@@ -233,7 +233,7 @@ class Search {
 
 		// Set Expedition meta query.
 		$this->args['meta_query'][] = [
-			'key'     => 'expedition',
+			'key'     => 'related_expedition',
 			'value'   => array_unique( $expeditions ),
 			'compare' => 'IN',
 		];
@@ -259,7 +259,7 @@ class Search {
 
 		// Set Ship meta query.
 		$this->args['meta_query'][] = [
-			'key'     => 'ship',
+			'key'     => 'related_ship',
 			'value'   => array_unique( $ships ),
 			'compare' => 'IN',
 		];

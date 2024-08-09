@@ -49,29 +49,14 @@ function filter_solr_build_document( Document $document = null, WP_Post $post = 
 		return $document;
 	}
 
-	// Get departure data.
-	$departure_data = get_departure( $post->ID );
-
 	// Set post title for sorting.
 	$document->setField( 'post_title_s', get_the_title( $post->ID ) );
-
-	// Set Region.
-	$document->setField( 'region_s', $departure_data['post_meta']['region'] ?? '' );
 
 	// set Season.
 	$document->setField( 'season_s', get_season( $post->ID ) );
 
 	// Set Region & season.
 	$document->setField( 'region_season_s', get_region_and_season( $post->ID ) );
-
-	// Set Expeditions.
-	$document->setField( 'expedition_i', absint( $departure_data['post_meta']['related_expedition'] ?? 0 ) );
-
-	// Set Ship.
-	$document->setField( 'ship_i', absint( $departure_data['post_meta']['related_ship'] ?? 0 ) );
-
-	// Set duration.
-	$document->setField( 'duration_i', absint( $departure_data['post_meta']['duration'] ?? 0 ) );
 
 	// Return document.
 	return $document;
@@ -91,6 +76,10 @@ function solr_index_custom_fields( array $custom_fields = [] ): array {
 		[
 			'departure_start_date',
 			'departure_end_date',
+			'related_expedition',
+			'related_ship',
+			'duration',
+			'region',
 		]
 	);
 }

@@ -18,7 +18,6 @@
 		selector=".departure-cards"
 		:payload="$payload ?? []"
 	>
-		{{-- TODO: Render Departure Cards. --}}
-		<div class="departure-cards"></div>
+		<x-parts.expedition-departure-cards :cards="$cards" />
 	</x-book-departures-expeditions.results>
   </x-book-departures-expeditions>

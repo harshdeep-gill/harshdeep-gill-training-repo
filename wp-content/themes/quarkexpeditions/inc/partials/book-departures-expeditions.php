@@ -7,6 +7,9 @@
 
 namespace Quark\Theme\Partials\BookDeparturesExpeditions;
 
+use WP_Post;
+
+use function Quark\Expeditions\get as get_expedition;
 use function Quark\Search\Departures\search;
 use function Quark\Departures\get_cards_data;
 
@@ -41,6 +44,7 @@ function render( array $output = [], string $name = '', array $data = [] ): arra
 	$selected_filter = [
 		'posts_per_load' => 4,
 		'currency'       => 'USD',
+		'expeditions'    => [],
 	];
 
 	// Verify and get selected filters.
@@ -75,6 +79,7 @@ function render( array $output = [], string $name = '', array $data = [] ): arra
 			'page'           => $search_results['current_page'],
 			'nextPage'       => $search_results['next_page'],
 			'remainingCount' => $search_results['remaining_count'],
+			'expeditions'    => $selected_filter['expeditions'],
 		],
 	];
 }
