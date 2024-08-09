@@ -92,7 +92,7 @@ function update_occupancies( array $raw_cabins_data = [], int $departure_post_id
 		}
 
 		// Get cabin category post id by cabin code.
-		$cabin_category_post_id = get_cabin_category_post_id( $raw_cabin_data['code'] );
+		$cabin_category_post_id = get_cabin_category_post_by_cabin_code( $raw_cabin_data['code'] );
 
 		// Bail if no cabin category post ID.
 		if ( empty( $cabin_category_post_id ) ) {
@@ -246,7 +246,7 @@ function format_data( array $raw_occupancy_data = [], int $cabin_category_post_i
  *
  * @return int
  */
-function get_cabin_category_post_id( string $cabin_code = '' ): int {
+function get_cabin_category_post_by_cabin_code( string $cabin_code = '' ): int {
 	// Bail if empty.
 	if ( empty( $cabin_code ) ) {
 		return 0;
