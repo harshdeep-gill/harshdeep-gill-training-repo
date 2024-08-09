@@ -9,13 +9,13 @@ namespace Quark\Softrip\Occupancies;
 
 use WP_Query;
 
-use const Quark\CabinCategories\POST_TYPE as CABIN_CATEGORY_POST_TYPE;
-use const Quark\Core\CURRENCIES;
-
 use function Quark\Softrip\get_engine_collate;
 use function Quark\Softrip\OccupancyPromotions\get_lowest_price as get_occupancy_promotion_lowest_price;
 use function Quark\Softrip\OccupancyPromotions\update_occupancy_promotions;
 use function Quark\Softrip\prefix_table_name;
+
+use const Quark\CabinCategories\POST_TYPE as CABIN_CATEGORY_POST_TYPE;
+use const Quark\Core\CURRENCIES;
 
 const CACHE_KEY_PREFIX = 'quark_softrip_cabin';
 const CACHE_GROUP      = 'quark_softrip_cabins';
@@ -31,7 +31,7 @@ function get_table_name(): string {
 }
 
 /**
- * Get table SQL.
+ * Get create table SQL.
  *
  * @return string
  */
@@ -42,6 +42,7 @@ function get_table_sql(): string {
 	// Get engine and collate.
 	$engine_collate = get_engine_collate();
 
+	// Prepare SQL statement.
 	$sql = "CREATE TABLE $table_name (
         id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
         softrip_id VARCHAR(255) NOT NULL UNIQUE,
@@ -83,6 +84,7 @@ function update_occupancies( array $raw_cabins_data = [], int $departure_post_id
 	// Get the table name.
 	$table_name = get_table_name();
 
+	// Loop through the raw cabin data.
 	foreach ( $raw_cabins_data as $raw_cabin_data ) {
 		// Validate the raw cabin data.
 		if ( ! is_array( $raw_cabin_data ) || empty( $raw_cabin_data ) || empty( $raw_cabin_data['code'] ) || empty( $raw_cabin_data['occupancies'] ) || ! is_array( $raw_cabin_data['occupancies'] ) ) {
@@ -151,6 +153,7 @@ function update_occupancies( array $raw_cabins_data = [], int $departure_post_id
 		}
 	}
 
+	// Return success.
 	return true;
 }
 
@@ -159,7 +162,7 @@ function update_occupancies( array $raw_cabins_data = [], int $departure_post_id
  *
  * @param mixed[] $raw_occupancy_data Raw occupancy data from Softrip.
  * @param int     $cabin_category_post_id The cabin category post ID.
- * @param int     $cabin_category_post_id The cabin category post ID.
+ * @param int     $departure_post_id The departure post ID.
  *
  * @return array{}|array{
  *    softrip_id: string,
@@ -271,6 +274,7 @@ function get_cabin_category_post_id( string $cabin_code = '' ): int {
  * Get cabin data by Softrip ID.
  *
  * @param string $softrip_id The Softrip ID.
+ * @param bool   $direct     Bypass cache.
  *
  * @return mixed[][]
  */
@@ -398,6 +402,9 @@ function get_occupancies_by_departure( int $departure_post_id = 0, bool $direct 
  * }
  */
 function get_lowest_price( int $post_id = 0, string $currency = 'USD' ): array {
+	// Upper case currency.
+	$currency = strtoupper( $currency );
+
 	// Setup default return values.
 	$lowest_price = [
 		'original'   => 0,
@@ -405,7 +412,7 @@ function get_lowest_price( int $post_id = 0, string $currency = 'USD' ): array {
 	];
 
 	// Return default values if no post ID.
-	if ( empty( $post_id ) || ! in_array( $currency, CURRENCIES ) ) {
+	if ( empty( $post_id ) || ! in_array( $currency, CURRENCIES, true ) ) {
 		return $lowest_price;
 	}
 

@@ -24,7 +24,7 @@ function get_table_name(): string {
 }
 
 /**
- * Get table SQL.
+ * Get create table SQL.
  *
  * @return string
  */
@@ -70,6 +70,7 @@ function update_promotions( array $raw_promotions_data = [] ): bool {
 	// Get the table name.
 	$table_name = get_table_name();
 
+	// Loop through each raw promotion data.
 	foreach ( $raw_promotions_data as $raw_promotion_data ) {
 		// Validate the raw promotion data.
 		if ( ! is_array( $raw_promotion_data ) ) {
@@ -107,6 +108,7 @@ function update_promotions( array $raw_promotions_data = [] ): bool {
 		}
 	}
 
+	// Return success.
 	return true;
 }
 

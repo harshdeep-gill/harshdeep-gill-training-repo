@@ -7,13 +7,13 @@
 
 namespace Quark\Softrip\Itineraries;
 
-use const Quark\Core\CURRENCIES;
-
 use function Quark\Softrip\Departure\get_departures_by_itinerary;
 use function Quark\Softrip\Departure\get_lowest_price as get_departure_lowest_price;
 use function Quark\Softrip\Departure\get_related_ship;
 use function Quark\Softrip\Departure\get_starting_date as get_departure_starting_date;
 use function Quark\Softrip\Departure\get_ending_date as get_departure_ending_date;
+
+use const Quark\Core\CURRENCIES;
 
 /**
  * Get lowest price for itinerary.
@@ -60,6 +60,7 @@ function get_lowest_price( int $post_id = 0, string $currency = 'USD' ): array {
 		}
 	}
 
+	// Return the lowest price.
 	return $lowest_price;
 }
 

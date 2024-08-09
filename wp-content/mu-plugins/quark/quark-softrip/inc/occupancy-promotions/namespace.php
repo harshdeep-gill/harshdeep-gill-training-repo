@@ -7,11 +7,11 @@
 
 namespace Quark\Softrip\OccupancyPromotions;
 
-use const Quark\Core\CURRENCIES;
-
 use function Quark\Softrip\get_engine_collate;
 use function Quark\Softrip\prefix_table_name;
 use function Quark\Softrip\Promotions\get_promotions_by_code;
+
+use const Quark\Core\CURRENCIES;
 
 const CACHE_KEY_PREFIX = 'qrk_softrip_occupancy_promotion';
 const CACHE_GROUP      = 'qrk_softrip_occupancy_promotions';
@@ -62,7 +62,7 @@ function get_table_sql(): string {
  *
  * @return boolean
  */
-function update_occupancy_promotions( array $raw_occupancy_promotions = [], int $occupancy_id = 0 ) {
+function update_occupancy_promotions( array $raw_occupancy_promotions = [], int $occupancy_id = 0 ): bool {
 	// Bail out if empty.
 	if ( empty( $raw_occupancy_promotions ) || empty( $occupancy_id ) ) {
 		return false;
@@ -77,6 +77,7 @@ function update_occupancy_promotions( array $raw_occupancy_promotions = [], int 
 	// Initialize the formatted data.
 	$promos_data = [];
 
+	// Loop through the raw occupancy promotions.
 	foreach ( $raw_occupancy_promotions as $raw_occupancy_promotion ) {
 		// Skip if not array.
 		if ( ! is_array( $raw_occupancy_promotion ) ) {
@@ -105,10 +106,12 @@ function update_occupancy_promotions( array $raw_occupancy_promotions = [], int 
 				continue;
 			}
 
+			// Add to promos data.
 			$promos_data[ $promotion_code ][ 'price_per_person_' . strtolower( $raw_occupancy_promotion['currencyCode'] ) ] = doubleval( $value['promoPricePerPerson'] );
 		}
 	}
 
+	// Setup defaults.
 	$defaults = [
 		'occupancy_id'         => $occupancy_id,
 		'promotion_id'         => 0,
@@ -161,6 +164,7 @@ function update_occupancy_promotions( array $raw_occupancy_promotions = [], int 
 		}
 	}
 
+	// Return success.
 	return true;
 }
 
@@ -281,6 +285,10 @@ function get_occupancy_promotions_by_occupancy( int $occupancy_id = 0, bool $dir
 		ARRAY_A
 	);
 
+	// Set cache.
+	wp_cache_set( $cache_key, $occupancy_promotions, CACHE_GROUP );
+
+	// Return the results.
 	return $occupancy_promotions;
 }
 
@@ -296,6 +304,7 @@ function get_lowest_price( int $occupancy_id = 0, string $currency = 'USD' ): fl
 	// Uppercase the currency.
 	$currency = strtoupper( $currency );
 
+	// Setup default return value.
 	$lowest_price = 0;
 
 	// Bail out if empty or invalid currency.
@@ -313,6 +322,7 @@ function get_lowest_price( int $occupancy_id = 0, string $currency = 'USD' ): fl
 			continue;
 		}
 
+		// Get the price per person key.
 		$price_per_person_key = 'price_per_person_' . strtolower( $currency );
 
 		// Validate the price per person.

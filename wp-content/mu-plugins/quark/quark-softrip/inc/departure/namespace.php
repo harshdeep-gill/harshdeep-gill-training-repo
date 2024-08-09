@@ -327,8 +327,7 @@ function get_departures_by_itinerary( int $itinerary_post_id = 0 ): array {
 	];
 
 	// Get departure posts.
-	$posts = new WP_Query( $args );
-
+	$posts         = new WP_Query( $args );
 	$departure_ids = array_map( 'absint', $posts->posts );
 
 	// Return departure post IDs.
@@ -362,11 +361,13 @@ function get_related_ship( int $departure_post_id = 0 ): int {
 		// Get ship post ID from ship code.
 		$ship_post_id = get_id_from_ship_code( $ship_code );
 
+		// Return empty if no ship post ID.
 		if ( empty( $ship_post_id ) ) {
 			return 0;
 		}
 	}
 
+	// Return the ship post ID.
 	return $ship_post_id;
 }
 
