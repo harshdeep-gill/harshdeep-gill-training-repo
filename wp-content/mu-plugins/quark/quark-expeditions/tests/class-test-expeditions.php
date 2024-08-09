@@ -249,7 +249,7 @@ class Test_Expeditions extends Softrip_TestCase {
 			'update_post_meta_cache' => false,
 			'meta_query'             => [
 				[
-					'key'     => 'softrip_package_id',
+					'key'     => 'softrip_package_code',
 					'value'   => [
 						'ABC-123',
 						'PQR-345',
@@ -424,14 +424,14 @@ class Test_Expeditions extends Softrip_TestCase {
 		$expected_data['total_departures'] = 3;
 		$expected_data['date_range']       = 'between January 2025 to March 2026';
 
-		// Get ship posts with meta 'ship_id' is 'OEX' and 'ULT'.
+		// Get ship posts with meta 'ship_code' is 'OEX' and 'ULT'.
 		$ship_posts = get_posts(
 			[
 				'post_type'      => SHIP_POST_TYPE,
 				'posts_per_page' => -1,
 				'meta_query'     => [
 					[
-						'key'     => 'ship_id',
+						'key'     => 'ship_code',
 						'value'   => [
 							'OEX',
 							'ULT',
