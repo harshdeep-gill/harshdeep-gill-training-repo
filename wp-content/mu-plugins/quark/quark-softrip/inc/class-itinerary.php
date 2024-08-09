@@ -238,7 +238,7 @@ class Itinerary extends Softrip_Object {
 		// Iterate over the departures.
 		foreach ( $this->get_departures() as $departure ) {
 			// Get the price per person.
-			$test_price = $departure->get_lowest_price( $currency );
+			$test_price = $departure->get_lowest_price( $currency )['discounted_price'];
 
 			// Check if lowest is set and is lower than the previous price.
 			if ( ! empty( $test_price ) && ( empty( $lowest ) || $lowest > $test_price ) ) {

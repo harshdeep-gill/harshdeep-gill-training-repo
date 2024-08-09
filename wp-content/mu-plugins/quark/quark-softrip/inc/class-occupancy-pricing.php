@@ -117,7 +117,7 @@ class Occupancy_Pricing extends Data_Object {
 	 *      price_per_person: double,
 	 *      total_price_per_person: double,
 	 *      promotion_code: string,
-	 *      promo_price_per_person: string,
+	 *      promo_price_per_person: float,
 	 * }
 	 */
 	protected function format_data( array $data = [] ): array {
@@ -139,8 +139,19 @@ class Occupancy_Pricing extends Data_Object {
 			'price_per_person'       => doubleval( $data['pricePerPerson'] ),
 			'total_price_per_person' => doubleval( $data['pricePerPerson'] ),
 			'promotion_code'         => '',
-			'promo_price_per_person' => '',
+			'promo_price_per_person' => 0.00,
 		];
+
+		// Handle Promo's.
+		foreach ( $data['promos'] as $code => $promo ) {
+			// Set the promo.
+			$price                               = $promo['promoPricePerPerson'] ?? 0.00;
+			$formatted['promotion_code']         = $code;
+			$formatted['promo_price_per_person'] = doubleval( $price );
+
+			// There is only 1, but in an array, so break.
+			break;
+		}
 
 		// Return the formatted data.
 		return $formatted;

@@ -20,7 +20,8 @@ export class BookDeparturesExpeditions extends HTMLElement {
 	private sortDropdown: TPMultiSelectElement | null;
 	private resultsContainer: HTMLElement | null;
 	private nextPage: number;
-	private filters: object | null;
+	private currency: string;
+	private sort: string;
 
 	/**
 	 * Constructor
@@ -32,10 +33,8 @@ export class BookDeparturesExpeditions extends HTMLElement {
 		// Settings.
 		this.url = window.quark?.fetchPartial?.url ?? '';
 		this.nextPage = 0;
-		this.filters = {
-			currency: 'USD',
-			sort: 'date-now',
-		};
+		this.currency = 'USD';
+		this.sort = 'date-now';
 
 		// Elements.
 		this.currencyDropdown = this.querySelector( '.book-departures-expeditions__filters-currency > tp-multi-select' );
@@ -71,10 +70,7 @@ export class BookDeparturesExpeditions extends HTMLElement {
 		// Update currency value.
 		if ( this.currencyDropdown === currentTarget ) {
 			// Update currency filter value.
-			this.filters = {
-				...this.filters,
-				currency: currentTarget.value[ 0 ],
-			};
+			this.currency = currentTarget.value[ 0 ];
 
 			// Trigger Fetch Results.
 			this.fetchResults();
@@ -83,10 +79,7 @@ export class BookDeparturesExpeditions extends HTMLElement {
 		// Update sort value.
 		if ( this.sortDropdown === currentTarget ) {
 			// Update sort filter value.
-			this.filters = {
-				...this.filters,
-				sort: currentTarget.value[ 0 ],
-			};
+			this.sort = currentTarget.value[ 0 ];
 
 			// Trigger Fetch Results.
 			this.fetchResults();
@@ -121,8 +114,9 @@ export class BookDeparturesExpeditions extends HTMLElement {
 			{
 				selectedFilters: {
 					...payload,
-					filters: this.filters,
+					sort: this.sort,
 					page: this.nextPage,
+					currency: this.currency,
 				},
 				base_url: this.url,
 			},
