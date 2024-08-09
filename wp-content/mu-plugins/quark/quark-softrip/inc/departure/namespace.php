@@ -47,7 +47,7 @@ function update_departures( array $raw_departures = [], string $softrip_package_
 			'update_post_meta_cache' => false,
 			'update_term_meta_cache' => false,
 			'post_status'            => [ 'draft', 'publish' ],
-			'posts_per_page'         => 1,
+			'posts_per_page'         => -1,
 			'ignore_sticky_posts'    => true,
 			'meta_query'             => [
 				[
