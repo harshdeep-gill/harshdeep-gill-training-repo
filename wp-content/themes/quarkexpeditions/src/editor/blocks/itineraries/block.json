@@ -1,0 +1,20 @@
+{
+  "schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "title": "Itineraries",
+  "name": "quark/itineraries",
+  "description": "Display a list of itineraries.",
+  "category": "layout",
+  "keywords": [
+    "itineraries"
+  ],
+  "textdomain": "qrk",
+  "attributes": {},
+  "supports": {
+    "alignWide": false,
+    "anchor": false,
+    "className": false,
+    "html": false,
+    "customClassName": false
+  }
+}
