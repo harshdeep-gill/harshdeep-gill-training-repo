@@ -49,14 +49,10 @@ function get_lowest_price( int $post_id = 0, string $currency = 'USD' ): array {
 		// Get the lowest price for the departure.
 		$departure_price = get_departure_lowest_price( $departure_post_id, $currency );
 
-		// If the lowest price is less than the current lowest price, update it.
-		if ( empty( $lowest_price['original'] ) || $departure_price['original'] < $lowest_price['original'] ) {
-			$lowest_price['original'] = $departure_price['original'];
-		}
-
-		// If the discounted price is less than the current discounted price, update it.
+		// If the discounted price is less than the current discounted price, update the discounted and original price.
 		if ( empty( $lowest_price['discounted'] ) || $departure_price['discounted'] < $lowest_price['discounted'] ) {
 			$lowest_price['discounted'] = $departure_price['discounted'];
+			$lowest_price['original']   = $departure_price['original'];
 		}
 	}
 

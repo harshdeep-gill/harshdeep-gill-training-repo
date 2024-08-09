@@ -429,20 +429,16 @@ function get_lowest_price( int $post_id = 0, string $currency = 'USD' ): array {
 			continue;
 		}
 
-		// Get the price per person.
-		$price_per_person = doubleval( $occupancy[ $price_per_person_key ] );
-
-		// If the price is less than the current lowest price, update it.
-		if ( empty( $lowest_price['original'] ) || $price_per_person < $lowest_price['original'] ) {
-			$lowest_price['original'] = $price_per_person;
-		}
-
 		// Get lowest price for occupancy promotions.
 		$promotion_lowest_price = get_occupancy_promotion_lowest_price( $occupancy['id'], $currency );
 
-		// If the promotion price is less than the current lowest price, update it.
+		/**
+		 * If the promotion price is less than the current lowest price, update the discounted as well as the original price.
+		 * For example, if the lowest promotion price is $100 and the corresponding original price is $200, the discounted price will be $100 and the original price will be $200.
+		 */
 		if ( empty( $lowest_price['discounted'] ) || $promotion_lowest_price < $lowest_price['discounted'] ) {
 			$lowest_price['discounted'] = $promotion_lowest_price;
+			$lowest_price['original']   = doubleval( $occupancy[ $price_per_person_key ] );
 		}
 	}
 
