@@ -565,3 +565,21 @@ function truncate_softrip_db_tables(): void {
 		$wpdb->query( "TRUNCATE TABLE $table_name" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 	}
 }
+
+/**
+ * Drop Softrip DB tables.
+ *
+ * @return void
+ */
+function drop_softrip_db_tables(): void {
+	// Get global WPDB object.
+	global $wpdb;
+
+	// Get custom DB table mapping.
+	$tables = get_custom_db_table_mapping();
+
+	// Drop tables.
+	foreach ( $tables as $table_name => $sql ) {
+		$wpdb->query( "DROP TABLE IF EXISTS $table_name" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+	}
+}
