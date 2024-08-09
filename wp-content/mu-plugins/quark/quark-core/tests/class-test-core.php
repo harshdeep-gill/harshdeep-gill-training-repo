@@ -164,6 +164,12 @@ class Test_Core extends WP_UnitTestCase {
 			format_price( 1000 )
 		);
 
+		// Test price formatting.
+		$this->assertEquals(
+			'$1,000.10 USD',
+			format_price( 1000.10 )
+		);
+
 		// Test price formatting with custom currency.
 		$this->assertEquals(
 			'€10,000 EUR',

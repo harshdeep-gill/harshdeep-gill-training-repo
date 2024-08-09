@@ -1,5 +1,6 @@
 @props( [
-	'id' => '',
+	'id'   => '',
+	'open' => false,
 ] )
 
 @php
@@ -8,6 +9,6 @@
 	}
 @endphp
 
-<tp-tabs-tab class="itinerary-details__tab" id="{{ $id }}">
+<tp-tabs-tab class="itinerary-details__tab" id="{{ $id }}" {!! $open ? "open='yes'" : '' !!}>
 	{!! $slot !!}
 </tp-tabs-tab>
