@@ -9,11 +9,13 @@ namespace Quark\Itineraries;
 
 use WP_Post;
 use WP_Term;
-use Quark\Softrip\Itinerary;
 
 use function Quark\Core\format_price;
 use function Quark\Brochures\get as get_brochure;
 use function Quark\ItineraryDays\get as get_itinerary_day;
+use function Quark\Ships\get as get_ship;
+use function Quark\Softrip\Itineraries\get_lowest_price;
+use function Quark\Softrip\Itineraries\get_related_ships;
 
 use const Quark\StaffMembers\SEASON_TAXONOMY;
 
@@ -471,26 +473,26 @@ function get_details_tabs_data( array $itineraries = [] ): array {
 			}
 		}
 
-		// Get the itinerary object.
-		$itinerary_object = new Itinerary( $itinerary['post']->ID );
-
 		// TODO: Add currency change support.
-		$price = format_price( $itinerary_object->get_lowest_price() );
+		$price = format_price( get_lowest_price( $itinerary['post']->ID )['original'] );
 
 		// Translators: %s is the lowest price.
 		$price = ! empty( $price ) ? sprintf( __( '%s per person', 'qrk' ), $price ) : '';
 
 		// Get the itinerary ships.
-		$_ships = $itinerary_object->get_related_ships();
+		$ship_post_ids = get_related_ships( $itinerary['post']->ID );
 
 		// Loop through the ships.
-		foreach ( $_ships as $ship ) {
+		foreach ( $ship_post_ids as $ship_post_id ) {
+			// Get ship.
+			$ship = get_ship( $ship_post_id );
+
 			// Check if the ship post is empty.
 			if ( is_array( $ship ) && ! empty( $ship['post'] ) && $ship['post'] instanceof WP_Post ) {
 				// Append the ship to the ships list.
 				$ships[] = [
 					'name' => $ship['post']->post_title,
-					'link' => get_permalink( $ship['post']->ID ),
+					'link' => $ship['permalink'],
 				];
 			}
 		}

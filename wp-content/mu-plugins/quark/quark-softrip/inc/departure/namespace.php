@@ -326,11 +326,6 @@ function get_departures_by_itinerary( int $itinerary_post_id = 0 ): array {
 		'fields'                 => 'ids',
 	];
 
-	// If admin, include draft posts.
-	if ( is_admin() ) {
-		$args['post_status'] = [ 'draft', 'publish' ];
-	}
-
 	// Get departure posts.
 	$posts = new WP_Query( $args );
 
@@ -345,16 +340,12 @@ function get_departures_by_itinerary( int $itinerary_post_id = 0 ): array {
  *
  * @param int $departure_post_id Departure post ID.
  *
- * @return array{}|array{
- *   post: WP_Post,
- *   permalink: string,
- *   post_meta: mixed[],
- * }
+ * @return int
  */
-function get_related_ship( int $departure_post_id = 0 ): array {
+function get_related_ship( int $departure_post_id = 0 ): int {
 	// Return empty if no departure post ID.
 	if ( empty( $departure_post_id ) ) {
-		return [];
+		return 0;
 	}
 
 	// Get ship post ID.
@@ -365,24 +356,72 @@ function get_related_ship( int $departure_post_id = 0 ): array {
 	if ( empty( $ship_post_id ) || ! is_int( $ship_post_id ) ) {
 		// Check if ship code is available.
 		if ( empty( $ship_code ) || ! is_string( $ship_code ) ) {
-			return [];
+			return 0;
 		}
 
 		// Get ship post ID from ship code.
 		$ship_post_id = get_id_from_ship_code( $ship_code );
 
 		if ( empty( $ship_post_id ) ) {
-			return [];
+			return 0;
 		}
 	}
 
-	// Get ship post.
-	$ship = get_ship( $ship_post_id );
+	return $ship_post_id;
+}
 
-	// Validate ship.
-	if ( ! $ship['post'] instanceof WP_Post )  {
-		return [];
+/**
+ * Get starting date.
+ *
+ * @param int $departure_post_id Departure Post ID.
+ *
+ * @return string
+ */
+function get_starting_date( int $departure_post_id = 0 ): string {
+	// Setup default.
+	$default_start_date = '';
+
+	// Bail out if empty.
+	if ( empty( $departure_post_id ) ) {
+		return $default_start_date;
 	}
 
-	return $ship;
+	// Get start date from meta.
+	$start_date = get_post_meta( $departure_post_id, 'start_date', true );
+	
+	// Validate.
+	if ( empty( $start_date ) || ! is_string( $start_date ) ) {
+		return $default_start_date;
+	}
+
+	// Return start date.
+	return $start_date;
+}
+
+/**
+ * Get ending date.
+ *
+ * @param int $departure_post_id Departure Post ID.
+ *
+ * @return string
+ */
+function get_ending_date( int $departure_post_id = 0 ): string {
+	// Setup default.
+	$default_end_date = '';
+
+	// Bail out if empty.
+	if ( empty( $departure_post_id ) ) {
+		return $default_end_date;
+	}
+
+	// Get end date from meta.
+	$end_date = get_post_meta( $departure_post_id, 'end_date', true );
+	
+	// Validate.
+	if ( empty( $end_date ) || ! is_string( $end_date ) ) {
+		return $default_end_date;
+	}
+
+	// Return start date.
+	return $end_date;
 }

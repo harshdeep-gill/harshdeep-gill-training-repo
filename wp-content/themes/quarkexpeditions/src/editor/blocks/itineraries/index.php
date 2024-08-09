@@ -7,7 +7,6 @@
 
 namespace Quark\Theme\Blocks\Itineraries;
 
-use Quark\Softrip\Itinerary;
 use WP_Block;
 use WP_Post;
 use WP_Term;
