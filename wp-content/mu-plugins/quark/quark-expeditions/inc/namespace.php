@@ -890,7 +890,7 @@ function get_starting_from_date( int $post_id = 0 ): string {
 		}
 
 		// Get starting date.
-		$test_date        = get_starting_date( $itinerary['post']->ID );
+		$test_date = get_starting_date( $itinerary['post']->ID );
 
 		// Check for date.
 		if ( empty( $test_date ) ) {
@@ -950,7 +950,7 @@ function get_ending_to_date( int $post_id = 0 ): string {
 		}
 
 		// Get ending date.
-		$test_date        = get_ending_date( $itinerary['post']->ID );
+		$test_date = get_ending_date( $itinerary['post']->ID );
 
 		// Check for date.
 		if ( empty( $test_date ) ) {

@@ -15,8 +15,8 @@ use function Quark\Softrip\prefix_table_name;
 use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
 use const Quark\Core\CURRENCIES;
 
-const CACHE_KEY_PREFIX   = 'qrk_softrip_adventure_options';
-const CACHE_GROUP = 'qrk_softrip_adventure_options';
+const CACHE_KEY_PREFIX = 'qrk_softrip_adventure_options';
+const CACHE_GROUP      = 'qrk_softrip_adventure_options';
 
 /**
  * Get adventure option table name.
@@ -290,7 +290,7 @@ function get_adventure_option_by_departure_post_id( int $departure_post_id = 0, 
 
 	// Cache key.
 	$cache_key = CACHE_KEY_PREFIX . "_$departure_post_id";
-	
+
 	// If not direct, check for cached version.
 	if ( empty( $direct ) ) {
 		// Check for cached version.
@@ -337,7 +337,7 @@ function get_adventure_option_by_departure_post_id( int $departure_post_id = 0, 
 /**
  * Get adventure options by softrip option id.
  *
- * @param string $softrip_option_id The Softrip option ID.
+ * @param string  $softrip_option_id The Softrip option ID.
  * @param boolean $direct           Whether to bypass the cache.
  *
  * @return mixed[][]
@@ -350,7 +350,7 @@ function get_adventure_option_by_softrip_option_id( string $softrip_option_id = 
 
 	// Cache key.
 	$cache_key = CACHE_KEY_PREFIX . "_$softrip_option_id";
-	
+
 	// If not direct, check for cached version.
 	if ( empty( $direct ) ) {
 		// Check for cached version.

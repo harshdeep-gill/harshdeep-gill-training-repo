@@ -19,8 +19,8 @@ const CACHE_GROUP      = 'quark_softrip_promotions';
  * @return string
  */
 function get_table_name(): string {
-    // Return table name.
-    return prefix_table_name( 'promotions' );
+	// Return table name.
+	return prefix_table_name( 'promotions' );
 }
 
 /**
@@ -29,14 +29,14 @@ function get_table_name(): string {
  * @return string
  */
 function get_table_sql(): string {
-    // Get table name.
-    $table_name = get_table_name();
+	// Get table name.
+	$table_name = get_table_name();
 
-    // Get engine and collate.
-    $engine_collate = get_engine_collate();
+	// Get engine and collate.
+	$engine_collate = get_engine_collate();
 
-    // Build the SQL query.
-    $sql = "CREATE TABLE $table_name (
+	// Build the SQL query.
+	$sql = "CREATE TABLE $table_name (
 			id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
 			code VARCHAR(255) NOT NULL UNIQUE,
 			start_date DATETIME NOT NULL,
@@ -47,8 +47,8 @@ function get_table_sql(): string {
 			is_pif TINYINT(1) NOT NULL
 		) $engine_collate";
 
-    // Return the SQL.
-    return $sql;
+	// Return the SQL.
+	return $sql;
 }
 
 /**
@@ -59,55 +59,55 @@ function get_table_sql(): string {
  * @return boolean
  */
 function update_promotions( array $raw_promotions_data = [] ): bool {
-    // Bail out if no data.
-    if ( empty( $raw_promotions_data ) || ! is_array( $raw_promotions_data ) ) {
-        return false;
-    }
+	// Bail out if no data.
+	if ( empty( $raw_promotions_data ) || ! is_array( $raw_promotions_data ) ) {
+		return false;
+	}
 
-    // Get the global $wpdb object.
-    global $wpdb;
+	// Get the global $wpdb object.
+	global $wpdb;
 
-    // Get the table name.
-    $table_name = get_table_name();
+	// Get the table name.
+	$table_name = get_table_name();
 
-    foreach ( $raw_promotions_data as $raw_promotion_data ) {
-        // Validate the raw promotion data.
-        if ( ! is_array( $raw_promotion_data ) ) {
-            continue;
-        }
+	foreach ( $raw_promotions_data as $raw_promotion_data ) {
+		// Validate the raw promotion data.
+		if ( ! is_array( $raw_promotion_data ) ) {
+			continue;
+		}
 
-        // Format the promotion data.
-        $formatted_data = format_data( $raw_promotion_data );
+		// Format the promotion data.
+		$formatted_data = format_data( $raw_promotion_data );
 
-        // Skip if empty.
-        if ( empty( $formatted_data ) ) {
-            continue;
-        }
+		// Skip if empty.
+		if ( empty( $formatted_data ) ) {
+			continue;
+		}
 
-        // Get existing promotion data by the code.
-        $existing_promotions_data = get_promotions_by_code( $formatted_data['code'] );
+		// Get existing promotion data by the code.
+		$existing_promotions_data = get_promotions_by_code( $formatted_data['code'] );
 
-        // Get the first item.
-        $existing_promotion_data = ! empty( $existing_promotions_data ) ? $existing_promotions_data[0] : [];
+		// Get the first item.
+		$existing_promotion_data = ! empty( $existing_promotions_data ) ? $existing_promotions_data[0] : [];
 
-        // If the promotion exists, update it.
-        if ( ! empty( $existing_promotion_data['id'] ) ) {
-            // Update the promotion.
-            $wpdb->update(
-                $table_name,
-                $formatted_data,
-                [ 'id' => $existing_promotion_data['id'] ]
-            );
-        } else {
-            // Insert the promotion.
-            $wpdb->insert(
-                $table_name,
-                $formatted_data
-            );
-        }
-    }
+		// If the promotion exists, update it.
+		if ( ! empty( $existing_promotion_data['id'] ) ) {
+			// Update the promotion.
+			$wpdb->update(
+				$table_name,
+				$formatted_data,
+				[ 'id' => $existing_promotion_data['id'] ]
+			);
+		} else {
+			// Insert the promotion.
+			$wpdb->insert(
+				$table_name,
+				$formatted_data
+			);
+		}
+	}
 
-    return true;
+	return true;
 }
 
 /**
@@ -126,38 +126,38 @@ function update_promotions( array $raw_promotions_data = [] ): bool {
  * }
  */
 function format_data( array $raw_promotion_data = [] ): array {
-    // Bail out if no data.
-    if ( ! is_array( $raw_promotion_data ) || empty( $raw_promotion_data ) ) {
-        return [];
-    }
+	// Bail out if no data.
+	if ( ! is_array( $raw_promotion_data ) || empty( $raw_promotion_data ) ) {
+		return [];
+	}
 
-    // Setup the defaults.
-    $default = [
-        'endDate' => '',
-        'startDate' => '',
-        'description' => '',
-        'discountType' => '',
-        'discountValue' => '',
-        'promotionCode' => '',
-        'isPIF' => 0,
-    ];
+	// Setup the defaults.
+	$default = [
+		'endDate'       => '',
+		'startDate'     => '',
+		'description'   => '',
+		'discountType'  => '',
+		'discountValue' => '',
+		'promotionCode' => '',
+		'isPIF'         => 0,
+	];
 
-    // Apply the defaults.
-    $raw_promotion_data = wp_parse_args( $raw_promotion_data, $default );
+	// Apply the defaults.
+	$raw_promotion_data = wp_parse_args( $raw_promotion_data, $default );
 
-    // Initialize the formatted data.
-    $formatted_data = [
-        'end_date' => $raw_promotion_data['endDate'],
-        'start_date' => $raw_promotion_data['startDate'],
-        'description' => $raw_promotion_data['description'],
-        'discount_type' => $raw_promotion_data['discountType'],
-        'discount_value' => $raw_promotion_data['discountValue'],
-        'code' => $raw_promotion_data['promotionCode'],
-        'is_pif' => $raw_promotion_data['isPIF'],
-    ];
+	// Initialize the formatted data.
+	$formatted_data = [
+		'end_date'       => $raw_promotion_data['endDate'],
+		'start_date'     => $raw_promotion_data['startDate'],
+		'description'    => $raw_promotion_data['description'],
+		'discount_type'  => $raw_promotion_data['discountType'],
+		'discount_value' => $raw_promotion_data['discountValue'],
+		'code'           => $raw_promotion_data['promotionCode'],
+		'is_pif'         => $raw_promotion_data['isPIF'],
+	];
 
-    // Return the formatted data.
-    return $formatted_data;
+	// Return the formatted data.
+	return $formatted_data;
 }
 
 /**
@@ -169,52 +169,52 @@ function format_data( array $raw_promotion_data = [] ): array {
  * @return mixed[][]
  */
 function get_promotions_by_code( string $code = '', bool $direct = false ): array {
-    // Bail out if no code.
-    if ( empty( $code ) ) {
-        return [];
-    }
+	// Bail out if no code.
+	if ( empty( $code ) ) {
+		return [];
+	}
 
-    // Get the cache key.
-    $cache_key = CACHE_KEY_PREFIX . "_$code";
+	// Get the cache key.
+	$cache_key = CACHE_KEY_PREFIX . "_$code";
 
-    // If not direct, check the cache.
-    if ( empty( $direct ) ) {
-        // Get from cache.
-        $cached_value = wp_cache_get( $cache_key );
+	// If not direct, check the cache.
+	if ( empty( $direct ) ) {
+		// Get from cache.
+		$cached_value = wp_cache_get( $cache_key );
 
-        // Check if we have the data.
-        if ( ! empty( $cached_value ) && is_array( $cached_value ) ) {
-            return $cached_value;
-        }
-    }
+		// Check if we have the data.
+		if ( ! empty( $cached_value ) && is_array( $cached_value ) ) {
+			return $cached_value;
+		}
+	}
 
-    // Get the global $wpdb object.
-    global $wpdb;
+	// Get the global $wpdb object.
+	global $wpdb;
 
-    // Get the table name.
-    $table_name = get_table_name();
+	// Get the table name.
+	$table_name = get_table_name();
 
-    // Load the promotion data.
-    $promotion_data = $wpdb->get_results(
-        $wpdb->prepare(
-            'SELECT
+	// Load the promotion data.
+	$promotion_data = $wpdb->get_results(
+		$wpdb->prepare(
+			'SELECT
                 *
             FROM
                 %i
             WHERE
                 code = %s
             ',
-            [
-                $table_name,
-                $code,
-            ]
-        ),
-        ARRAY_A
-    );
+			[
+				$table_name,
+				$code,
+			]
+		),
+		ARRAY_A
+	);
 
-    // Cache the value.
-   wp_cache_set( $cache_key, $promotion_data, CACHE_GROUP );
+	// Cache the value.
+	wp_cache_set( $cache_key, $promotion_data, CACHE_GROUP );
 
-    // Return the promotion data.
-    return $promotion_data;
+	// Return the promotion data.
+	return $promotion_data;
 }

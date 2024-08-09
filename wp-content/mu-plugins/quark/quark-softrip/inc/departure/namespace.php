@@ -388,7 +388,7 @@ function get_starting_date( int $departure_post_id = 0 ): string {
 
 	// Get start date from meta.
 	$start_date = get_post_meta( $departure_post_id, 'start_date', true );
-	
+
 	// Validate.
 	if ( empty( $start_date ) || ! is_string( $start_date ) ) {
 		return $default_start_date;
@@ -416,7 +416,7 @@ function get_ending_date( int $departure_post_id = 0 ): string {
 
 	// Get end date from meta.
 	$end_date = get_post_meta( $departure_post_id, 'end_date', true );
-	
+
 	// Validate.
 	if ( empty( $end_date ) || ! is_string( $end_date ) ) {
 		return $default_end_date;
