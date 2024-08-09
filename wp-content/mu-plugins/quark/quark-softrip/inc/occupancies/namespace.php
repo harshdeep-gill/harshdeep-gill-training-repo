@@ -13,6 +13,7 @@ use const Quark\CabinCategories\POST_TYPE as CABIN_CATEGORY_POST_TYPE;
 use const Quark\Core\CURRENCIES;
 
 use function Quark\Softrip\get_engine_collate;
+use function Quark\Softrip\OccupancyPromotions\get_lowest_price as get_occupancy_promotion_lowest_price;
 use function Quark\Softrip\OccupancyPromotions\update_occupancy_promotions;
 use function Quark\Softrip\prefix_table_name;
 
@@ -332,7 +333,7 @@ function get_occupancy_data_by_softrip_id( string $softrip_id = '', bool $direct
  * 
  * @return mixed[][]
  */
-function get_cabin_data_by_departure_post_id( int $departure_post_id = 0, bool $direct = false ): array {
+function get_occupancies_by_departure( int $departure_post_id = 0, bool $direct = false ): array {
     // Bail if empty.
     if ( empty( $departure_post_id ) ) {
         return [];
@@ -382,4 +383,61 @@ function get_cabin_data_by_departure_post_id( int $departure_post_id = 0, bool $
 
     // Return the cabin data.
     return $cabin_data;
+}
+
+/**
+ * Get lowest price for a departure.
+ *
+ * @param int $post_id Departure post ID.
+ * @param string $currency Currency code.
+ *
+ * @return array{
+ *  original: float,
+ *  discounted: float,
+ * }
+ */
+function get_lowest_price( int $post_id = 0, string $currency = 'USD' ): array {
+    // Setup default return values.
+    $lowest_price = [
+        'original'   => 0,
+        'discounted' => 0,
+    ];
+
+    // Return default values if no post ID.
+    if ( empty( $post_id ) || ! in_array( $currency, CURRENCIES ) ) {
+        return $lowest_price;
+    }
+
+    // Get all occupancies by current departure.
+    $occupancies = get_occupancies_by_departure( $post_id );
+
+    // Loop through each occupancy.
+    foreach ( $occupancies as $occupancy ) {
+        // Construct the price per person key.
+        $price_per_person_key = 'price_per_person_' . strtolower( $currency );
+
+        // Validate the price per person.
+        if ( ! is_array( $occupancy ) || empty( $occupancy[ $price_per_person_key ] ) || empty( $occupancy['id'] ) ) {
+            continue;
+        }
+
+        // Get the price per person.
+        $price_per_person = doubleval( $occupancy[ $price_per_person_key ] );
+
+        // If the price is less than the current lowest price, update it.
+        if ( empty( $lowest_price['original'] ) || $price_per_person < $lowest_price['original'] ) {
+            $lowest_price['original'] = $price_per_person;
+        }
+
+        // Get lowest price for occupancy promotions.
+        $promotion_lowest_price = get_occupancy_promotion_lowest_price( $occupancy['id'], $currency );
+
+        // If the promotion price is less than the current lowest price, update it.
+        if ( empty( $lowest_price['discounted'] ) || $promotion_lowest_price < $lowest_price['discounted'] ) {
+            $lowest_price['discounted'] = $promotion_lowest_price;
+        }
+    }
+
+    // Return the lowest price.
+    return $lowest_price;
 }

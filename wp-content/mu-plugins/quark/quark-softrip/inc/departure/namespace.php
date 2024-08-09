@@ -8,14 +8,18 @@
 namespace Quark\Softrip\Departure;
 
 use WP_Error;
+use WP_Post;
 use WP_Query;
 
 use function Quark\Ships\get_id_from_ship_code;
 use function Quark\Softrip\AdventureOptions\update_adventure_options;
 use function Quark\Softrip\Occupancies\update_occupancies;
 use function Quark\Softrip\is_expired;
+use function Quark\Softrip\Occupancies\get_lowest_price as get_occupancies_lowest_price;
 use function Quark\Softrip\Promotions\update_promotions;
+use function Quark\Ships\get as get_ship;
 
+use const Quark\Core\CURRENCIES;
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
 use const Quark\Departures\SPOKEN_LANGUAGE_TAXONOMY;
 use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
@@ -264,4 +268,121 @@ function format_raw_departure_data( array $raw_departure_data = [], int $itinera
 
 	// Return formatted data.
 	return $formatted_data;
+}
+
+/**
+ * Get lowest price for a departure.
+ *
+ * @param int    $post_id  Departure post ID.
+ * @param string $currency The currency code to get.
+ *
+ * @return array{
+ *   original: float,
+ *   discounted: float,
+ * }
+ */
+function get_lowest_price( int $post_id = 0, string $currency = 'USD' ): array {
+	// Uppercase currency.
+	$currency = strtoupper( $currency );
+
+	// Setup default return values.
+	$lowest_price = [
+		'original'   => 0,
+		'discounted' => 0,
+	];
+
+	// Return default values if no post ID.
+	if ( empty( $post_id ) || ! in_array( $currency, CURRENCIES, true ) ) {
+		return $lowest_price;
+	}
+
+	// Get occupancy lowest price for the departure.
+	$departure_price = get_occupancies_lowest_price( $post_id );
+
+	// Return lowest price.
+	return $departure_price;
+}
+
+/**
+ * Get departure post ids by itinerary post id.
+ *
+ * @param int $itinerary_post_id Itinerary post ID.
+ *
+ * @return int[]
+ */
+function get_departures_by_itinerary( int $itinerary_post_id = 0 ): array {
+	// Return empty if no itinerary post ID.
+	if ( empty( $itinerary_post_id ) ) {
+		return [];
+	}
+
+	// Prepare args.
+	$args = [
+		'post_type'              => DEPARTURE_POST_TYPE,
+		'posts_per_page'         => 100, // @todo Change to -1 if departures are more than 100.
+		'no_found_rows'          => true,
+		'update_post_term_cache' => false,
+		'post_parent'            => $itinerary_post_id,
+		'fields'                 => 'ids',
+	];
+
+	// If admin, include draft posts.
+	if ( is_admin() ) {
+		$args['post_status'] = [ 'draft', 'publish' ];
+	}
+
+	// Get departure posts.
+	$posts = new WP_Query( $args );
+
+	$departure_ids = array_map( 'absint', $posts->posts );
+
+	// Return departure post IDs.
+	return $departure_ids;
+}
+
+/**
+ * Get ship posts by departure post id.
+ *
+ * @param int $departure_post_id Departure post ID.
+ *
+ * @return array{}|array{
+ *   post: WP_Post,
+ *   permalink: string,
+ *   post_meta: mixed[],
+ * }
+ */
+function get_related_ship( int $departure_post_id = 0 ): array {
+	// Return empty if no departure post ID.
+	if ( empty( $departure_post_id ) ) {
+		return [];
+	}
+
+	// Get ship post ID.
+	$ship_post_id = get_post_meta( $departure_post_id, 'related_ship', true );
+	$ship_code    = get_post_meta( $departure_post_id, 'ship_code', true );
+
+	// Return empty if no ship post ID.
+	if ( empty( $ship_post_id ) || ! is_int( $ship_post_id ) ) {
+		// Check if ship code is available.
+		if ( empty( $ship_code ) || ! is_string( $ship_code ) ) {
+			return [];
+		}
+
+		// Get ship post ID from ship code.
+		$ship_post_id = get_id_from_ship_code( $ship_code );
+
+		if ( empty( $ship_post_id ) ) {
+			return [];
+		}
+	}
+
+	// Get ship post.
+	$ship = get_ship( $ship_post_id );
+
+	// Validate ship.
+	if ( ! $ship['post'] instanceof WP_Post )  {
+		return [];
+	}
+
+	return $ship;
 }

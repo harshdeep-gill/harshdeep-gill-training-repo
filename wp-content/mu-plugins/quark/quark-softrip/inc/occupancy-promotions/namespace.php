@@ -228,3 +228,109 @@ function get_occupancy_promotions_by_occupancy_id_and_promotion_id( int $occupan
     // Return the results.
     return $occupancy_promotions;
 }
+
+/**
+ * Get occupancy promotions by occupancy ID.
+ *
+ * @param int $occupancy_id  The occupancy ID.
+ * @param bool $direct       Whether to bypass the cache.
+ *
+ * @return mixed[][]
+ */
+function get_occupancy_promotions_by_occupancy( int $occupancy_id = 0, bool $direct = false ): array {
+    // Bail out if empty.
+    if ( empty( $occupancy_id ) ) {
+        return [];
+    }
+
+    // Cache key.
+    $cache_key = CACHE_KEY_PREFIX . '_occupancy_' . $occupancy_id;
+
+    // If not direct, get from cache.
+    if ( empty( $direct ) ) {
+        // Check cache.
+        $cached_value = wp_cache_get( $cache_key, CACHE_GROUP );
+
+        // Return cached value if exists.
+        if ( ! empty( $cached_value ) && is_array( $cached_value ) ) {
+            return $cached_value;
+        }
+    }
+
+    // Get global DB object.
+    global $wpdb;
+
+    // Get the table name.
+    $table_name = get_table_name();
+
+    // Prepare the SQL statement.
+    $occupancy_promotions = $wpdb->get_results(
+        $wpdb->prepare(
+            '
+            SELECT
+                *
+            FROM
+                %i
+            WHERE
+                occupancy_id = %d
+            ',
+            [
+                $table_name,
+                $occupancy_id,
+            ]
+        ),
+        ARRAY_A
+    );
+
+    return $occupancy_promotions;
+}
+
+/**
+ * Get lowest price by occupancy.
+ *
+ * @param int $occupancy_id The occupancy ID.
+ * @param string $currency The currency code.
+ *
+ * @return float
+ */
+function get_lowest_price( int $occupancy_id = 0, string $currency = 'USD' ): float {
+    // Uppercase the currency.
+    $currency = strtoupper( $currency );
+
+    $lowest_price = 0;
+
+    // Bail out if empty or invalid currency.
+    if ( empty( $occupancy_id ) || ! in_array( $currency, CURRENCIES, true ) ) {
+        return $lowest_price;
+    }
+
+    // Get the occupancy promotions by occupancy ID.
+    $occupancy_promotions = get_occupancy_promotions_by_occupancy( $occupancy_id );
+
+    // Loop through the occupancy promotions.
+    foreach ( $occupancy_promotions as $occupancy_promotion ) {
+        // Skip if empty.
+        if ( empty( $occupancy_promotion ) || ! is_array( $occupancy_promotion ) ) {
+            continue;
+        }
+
+        $price_per_person_key = 'price_per_person_' . strtolower( $currency );
+
+        // Validate the price per person.
+        if ( empty( $occupancy_promotion[ $price_per_person_key ] ) ) {
+            continue;
+        }
+
+        // Get the price per person.
+        $price_per_person = $occupancy_promotion[ $price_per_person_key ];
+
+        // Check if lowest is set and is lower than the previous price.
+        if ( empty( $lowest_price ) || $lowest_price > $price_per_person ) {
+            // Use the price as it's lower.
+            $lowest_price = $price_per_person;
+        }
+    }
+
+    // Return the lowest price.
+    return $lowest_price;
+}
