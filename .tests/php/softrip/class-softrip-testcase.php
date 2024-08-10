@@ -103,9 +103,8 @@ abstract class Softrip_TestCase extends WP_UnitTestCase {
 			'OEX-SGL',
 			'OEX-DBL',
 			'ULT-SGL',
-			'ULT-SGL',
 			'ULT-DBL',
-			'ULT-DBL',
+			'OEX-FWD'
 		];
 
 		// Loop through the cabins and set meta.
