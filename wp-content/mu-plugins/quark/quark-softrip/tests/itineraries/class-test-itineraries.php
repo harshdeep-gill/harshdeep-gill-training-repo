@@ -184,5 +184,66 @@ class Test_Itineraries extends Softrip_TestCase {
 			'discounted' => 0,
 		];
 		$this->assertEquals( $expected, get_lowest_price( $itinerary_id, 'INVALID' ) );
+
+		// Get itinerary with package code HIJ-456.
+		$itinerary_posts = get_posts(
+			[
+				'post_type'              => ITINERARY_POST_TYPE,
+				'no_found_rows'          => true,
+				'update_post_term_cache' => false,
+				'update_post_meta_cache' => false,
+				'suppress_filters'       => false,
+				'ignore_sticky_posts'    => true,
+				'fields'                 => 'ids',
+				'meta_query'             => [
+					[
+						'key'     => 'softrip_package_code',
+						'value'   => 'HIJ-456',
+						'compare' => '=',
+					],
+				],
+			]
+		);
+		$this->assertNotEmpty( $itinerary_posts );
+		$this->assertEquals( 1, count( $itinerary_posts ) );
+
+		// Itinerary id.
+		$itinerary_id = $itinerary_posts[0];
+		$this->assertIsInt( $itinerary_id );
+
+		// Get lowest price for itinerary with package code HIJ-456 with USD currency.
+		$expected = [
+			'original'   => 12795,
+			'discounted' => 10236,
+		];
+		$this->assertEquals( $expected, get_lowest_price( $itinerary_id ) );
+
+		// Get lowest price for itinerary with package code HIJ-456 with AUD currency.
+		$expected = [
+			'original'   => 20100,
+			'discounted' => 16080,
+		];
+		$this->assertEquals( $expected, get_lowest_price( $itinerary_id, 'AUD' ) );
+
+		// Get lowest price for itinerary with package code HIJ-456 with EUR currency.
+		$expected = [
+			'original'   => 11900,
+			'discounted' => 9520,
+		];
+		$this->assertEquals( $expected, get_lowest_price( $itinerary_id, 'EUR' ) );
+
+		// Get lowest price for itinerary with package code HIJ-456 with GBP currency.
+		$expected = [
+			'original'   => 10300,
+			'discounted' => 8240,
+		];
+		$this->assertEquals( $expected, get_lowest_price( $itinerary_id, 'GBP' ) );
+
+		// Get lowest price for itinerary with package code HIJ-456 with invalid currency.
+		$expected = [
+			'original'   => 0,
+			'discounted' => 0,
+		];
+		$this->assertEquals( $expected, get_lowest_price( $itinerary_id, 'INVALID' ) );
 	}
 }
