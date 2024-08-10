@@ -295,7 +295,7 @@ function get_lowest_price( int $post_id = 0, string $currency = 'USD' ): array {
 	}
 
 	// Get occupancy lowest price for the departure.
-	$departure_price = get_occupancies_lowest_price( $post_id );
+	$departure_price = get_occupancies_lowest_price( $post_id, $currency );
 
 	// Return lowest price.
 	return $departure_price;
