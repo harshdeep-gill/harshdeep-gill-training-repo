@@ -392,6 +392,11 @@ function is_expired( string $date = '' ): bool {
 	// Get the date time.
 	$date_time = absint( strtotime( $date ) );
 
+	// If invalid date, return false.
+	if ( empty( $date_time ) ) {
+		return false;
+	}
+
 	// Check if expired.
 	return $current_time > $date_time;
 }
@@ -404,6 +409,11 @@ function is_expired( string $date = '' ): bool {
  * @return string
  */
 function prefix_table_name( string $name = '' ): string {
+	// If empty, return an empty string.
+	if ( empty( $name ) ) {
+		return '';
+	}
+
 	// Return the prefixed name.
 	return TABLE_PREFIX_NAME . $name;
 }
