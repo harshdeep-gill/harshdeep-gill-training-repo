@@ -294,21 +294,21 @@ function format_raw_departure_data( array $raw_departure_data = [], int $itinera
 
 	// Prepare formatted data.
 	$formatted_data = [
-		'post_title'  => $raw_departure_data['id'],
+		'post_title'  => strval( $raw_departure_data['id'] ),
 		'post_type'   => DEPARTURE_POST_TYPE,
 		'post_parent' => $itinerary_post_id,
 		'meta_input'  => [
 			'related_expedition'   => $expedition_post_id,
 			'itinerary'            => $itinerary_post_id,
 			'related_ship'         => get_id_from_ship_code( $raw_departure_data['shipCode'] ),
-			'softrip_package_code' => $raw_departure_data['packageCode'],
-			'softrip_id'           => $raw_departure_data['id'],
-			'softrip_code'         => $raw_departure_data['code'],
-			'start_date'           => $raw_departure_data['startDate'],
-			'end_date'             => $raw_departure_data['endDate'],
-			'duration'             => $raw_departure_data['duration'],
-			'ship_code'            => $raw_departure_data['shipCode'],
-			'softrip_market_code'  => $raw_departure_data['marketCode'],
+			'softrip_package_code' => strval( $raw_departure_data['packageCode'] ),
+			'softrip_id'           => strval( $raw_departure_data['id'] ),
+			'softrip_code'         => strval( $raw_departure_data['code'] ),
+			'start_date'           => strval( $raw_departure_data['startDate'] ),
+			'end_date'             => strval( $raw_departure_data['endDate'] ),
+			'duration'             => absint( $raw_departure_data['duration'] ),
+			'ship_code'            => strval( $raw_departure_data['shipCode'] ),
+			'softrip_market_code'  => strval( $raw_departure_data['marketCode'] ),
 		],
 	];
 
@@ -398,7 +398,7 @@ function get_related_ship( int $departure_post_id = 0 ): int {
 	$ship_code    = get_post_meta( $departure_post_id, 'ship_code', true );
 
 	// Return empty if no ship post ID.
-	if ( empty( $ship_post_id ) || ! is_int( $ship_post_id ) ) {
+	if ( empty( $ship_post_id ) || is_array( $ship_post_id ) ) {
 		// Check if ship code is available.
 		if ( empty( $ship_code ) || ! is_string( $ship_code ) ) {
 			return 0;
@@ -414,7 +414,7 @@ function get_related_ship( int $departure_post_id = 0 ): int {
 	}
 
 	// Return the ship post ID.
-	return $ship_post_id;
+	return absint( $ship_post_id );
 }
 
 /**
