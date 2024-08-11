@@ -175,8 +175,8 @@ function update_occupancy_promotions( array $raw_occupancy_promotions = [], int 
 		}
 
 		// Bust caches.
-		wp_cache_delete( CACHE_KEY_PREFIX . '_' . $occupancy_id . '_' . $existing_promotion['id'], CACHE_GROUP );
-		wp_cache_delete( CACHE_KEY_PREFIX . '_occupancy_' . $occupancy_id, CACHE_GROUP );
+		wp_cache_delete( CACHE_KEY_PREFIX . '_occupancy_id_' . $occupancy_id . '_promotion_id_' . $existing_promotion['id'], CACHE_GROUP );
+		wp_cache_delete( CACHE_KEY_PREFIX . '_occupancy_id_' . $occupancy_id, CACHE_GROUP );
 	}
 
 	// Return success.
@@ -199,7 +199,7 @@ function get_occupancy_promotions_by_occupancy_id_and_promotion_id( int $occupan
 	}
 
 	// Cache key.
-	$cache_key = CACHE_KEY_PREFIX . '_' . $occupancy_id . '_' . $promotion_id;
+	$cache_key = CACHE_KEY_PREFIX . '_occupancy_id_' . $occupancy_id . '_promotion_id_' . $promotion_id;
 
 	// If not direct, get from cache.
 	if ( empty( $direct ) ) {
@@ -262,7 +262,7 @@ function get_occupancy_promotions_by_occupancy( int $occupancy_id = 0, bool $dir
 	}
 
 	// Cache key.
-	$cache_key = CACHE_KEY_PREFIX . '_occupancy_' . $occupancy_id;
+	$cache_key = CACHE_KEY_PREFIX . '_occupancy_id_' . $occupancy_id;
 
 	// If not direct, get from cache.
 	if ( empty( $direct ) ) {
@@ -357,4 +357,69 @@ function get_lowest_price( int $occupancy_id = 0, string $currency = 'USD' ): in
 
 	// Return the lowest price.
 	return $lowest_price;
+}
+
+/**
+ * Delete occupancy promotions by occupancy ID.
+ *
+ * @param int $occupancy_id The occupancy ID.
+ *
+ * @return boolean
+ */
+function delete_occupancy_promotions_by_occupancy_id( int $occupancy_id = 0 ): bool {
+	// Bail out if empty.
+	if ( empty( $occupancy_id ) ) {
+		return false;
+	}
+
+	// Get occupancy promotions by occupancy ID.
+	$occupancy_promotions = get_occupancy_promotions_by_occupancy( $occupancy_id, true );
+
+	// Bail out if empty.
+	if ( empty( $occupancy_promotions ) || ! is_array( $occupancy_promotions ) ) {
+		return false;
+	}
+
+	// Initialize promotion IDs.
+	$promotion_ids = [];
+
+	// Loop through the occupancy promotions.
+	foreach ( $occupancy_promotions as $occupancy_promotion ) {
+		// Skip if empty.
+		if ( empty( $occupancy_promotion ) || ! is_array( $occupancy_promotion ) || empty( $occupancy_promotion['promotion_id'] ) ) {
+			continue;
+		}
+
+		// Add promotion ID to promotion IDs.
+		$promotion_ids[] = absint( $occupancy_promotion['promotion_id'] );
+	}
+
+	// Get global DB object.
+	global $wpdb;
+
+	// Get the table name.
+	$table_name = get_table_name();
+
+	// Delete the occupancy promotions by occupancy ID.
+	$deleted = $wpdb->delete(
+		$table_name,
+		[ 'occupancy_id' => $occupancy_id ]
+	);
+
+	// Return false if no deleted.
+	if ( empty( $deleted ) ) {
+		return false;
+	}
+
+	// Bust cache.
+	wp_cache_delete( CACHE_KEY_PREFIX . '_occupancy_id_' . $occupancy_id, CACHE_GROUP );
+
+	// Bust cache for each promotion ID.
+	foreach ( $promotion_ids as $promotion_id ) {
+		wp_cache_delete( CACHE_KEY_PREFIX . '_occupancy_id_' . $occupancy_id . '_promotion_id_' . $promotion_id, CACHE_GROUP );
+	}
+
+	// @todo Delete promotions that are not used anymore. In other words, promotions that are not used by any occupancy.
+	// Return success.
+	return true;
 }

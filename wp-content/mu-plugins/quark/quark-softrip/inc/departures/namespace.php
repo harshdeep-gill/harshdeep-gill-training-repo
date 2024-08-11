@@ -14,10 +14,13 @@ use function Quark\Ships\get_id_from_ship_code;
 use function Quark\Softrip\AdventureOptions\update_adventure_options;
 use function Quark\Softrip\Occupancies\update_occupancies;
 use function Quark\Softrip\is_expired;
+use function Quark\Softrip\Occupancies\clear_occupancies_by_departure;
 use function Quark\Softrip\Occupancies\get_lowest_price as get_occupancies_lowest_price;
 use function Quark\Softrip\Promotions\update_promotions;
 
 use const Quark\Core\CURRENCIES;
+use const Quark\Departures\CACHE_GROUP as DEPARTURE_CACHE_GROUP;
+use const Quark\Departures\CACHE_KEY as DEPARTURE_CACHE_KEY;
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
 use const Quark\Departures\SPOKEN_LANGUAGE_TAXONOMY;
 use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
@@ -200,10 +203,25 @@ function update_departures( array $raw_departures = [], string $softrip_package_
 			continue;
 		}
 
+		/**
+		 * Deletion should happen as current departure has expired.
+		 * 1. Delete all the occupancies which in-turn deletes all the occupancy promotions.
+		 * 2. On successful deletion of occupancies, delete the departure post.
+		 */
+
+		// Delete the occupancies.
+		$is_cleared = clear_occupancies_by_departure( $departure_post_id );
+
+		// Skip if not cleared.
+		if ( ! $is_cleared ) {
+			continue;
+		}
+
 		// Delete the post.
 		wp_delete_post( $departure_post_id, true );
 
-		// @todo Cleanup qrk_cabins table as well.
+		// Bust the departure module cache.
+		wp_cache_delete( DEPARTURE_CACHE_KEY . "_$departure_post_id", DEPARTURE_CACHE_GROUP );
 	}
 
 	// Return successful.
