@@ -217,7 +217,24 @@ function update_departures( array $raw_departures = [], string $softrip_package_
  * @param int     $itinerary_post_id  Itinerary post ID.
  * @param int     $expedition_post_id Expedition post ID.
  *
- * @return mixed[]
+ * @return array{
+ *   post_title: string,
+ *   post_type: string,
+ *   post_parent: int,
+ *   meta_input: array{
+ *     related_expedition: int,
+ *     itinerary: int,
+ *     related_ship: int,
+ *     softrip_package_code: string,
+ *     softrip_id: string,
+ *     softrip_code: string,
+ *     start_date: string,
+ *     end_date: string,
+ *     duration: int,
+ *     ship_code: string,
+ *     softrip_market_code: string,
+ *    }
+ * } | array{}
  */
 function format_raw_departure_data( array $raw_departure_data = [], int $itinerary_post_id = 0, int $expedition_post_id = 0 ): array {
 	// Return empty if no itinerary post ID.
@@ -236,13 +253,26 @@ function format_raw_departure_data( array $raw_departure_data = [], int $itinera
 		'packageCode' => '',
 		'startDate'   => '',
 		'endDate'     => '',
-		'duration'    => '',
+		'duration'    => 0,
 		'shipCode'    => '',
 		'marketCode'  => '',
 	];
 
 	// Apply default values.
 	$raw_departure_data = wp_parse_args( $raw_departure_data, $default );
+
+	// Validate for empty values.
+	if (
+		empty( $raw_departure_data['id'] ) ||
+		empty( $raw_departure_data['code'] ) ||
+		empty( $raw_departure_data['packageCode'] ) ||
+		empty( $raw_departure_data['startDate'] ) ||
+		empty( $raw_departure_data['endDate'] ) ||
+		empty( $raw_departure_data['shipCode'] ) ||
+		empty( $raw_departure_data['marketCode'] )
+	) {
+		return [];
+	}
 
 	// Prepare formatted data.
 	$formatted_data = [
@@ -275,8 +305,8 @@ function format_raw_departure_data( array $raw_departure_data = [], int $itinera
  * @param string $currency The currency code to get.
  *
  * @return array{
- *   original: float,
- *   discounted: float,
+ *   original: int,
+ *   discounted: int,
  * }
  */
 function get_lowest_price( int $post_id = 0, string $currency = 'USD' ): array {

@@ -177,11 +177,11 @@ function update_occupancies( array $raw_cabins_data = [], int $departure_post_id
  *    spaces_available: int,
  *    availability_description: string,
  *    availability_status: string,
- *    price_per_person_usd: float,
- *    price_per_person_cad: float,
- *    price_per_person_aud: float,
- *    price_per_person_gbp: float,
- *    price_per_person_eur: float,
+ *    price_per_person_usd: int,
+ *    price_per_person_cad: int,
+ *    price_per_person_aud: int,
+ *    price_per_person_gbp: int,
+ *    price_per_person_eur: int,
  * }
  */
 function format_data( array $raw_occupancy_data = [], int $cabin_category_post_id = 0, int $departure_post_id = 0 ): array {
@@ -204,6 +204,18 @@ function format_data( array $raw_occupancy_data = [], int $cabin_category_post_i
 	// Apply defaults.
 	$raw_occupancy_data = wp_parse_args( $raw_occupancy_data, $default );
 
+	// Validate for empty values.
+	if (
+		empty( $raw_occupancy_data['id'] ) ||
+		empty( $raw_occupancy_data['name'] ) ||
+		empty( $raw_occupancy_data['mask'] ) ||
+		empty( $raw_occupancy_data['availabilityStatus'] ) ||
+		empty( $raw_occupancy_data['availabilityDescription'] ) ||
+		empty( $raw_occupancy_data['prices'] )
+	) {
+		return [];
+	}
+
 	// Initialize the formatted data.
 	$formatted_data = [
 		'softrip_id'               => strval( $raw_occupancy_data['id'] ),
@@ -221,18 +233,15 @@ function format_data( array $raw_occupancy_data = [], int $cabin_category_post_i
 		'price_per_person_eur'     => 0,
 	];
 
-	// Check if the price exists.
-	if ( ! empty( $raw_occupancy_data['prices'] ) ) {
-		// Loop through the currencies.
-		foreach ( CURRENCIES as $currency ) {
-			// Check if the currency is set and price per person exists.
-			if ( empty( $raw_occupancy_data['prices'][ $currency ] ) || ! is_array( $raw_occupancy_data['prices'][ $currency ] ) || empty( $raw_occupancy_data['prices'][ $currency ]['pricePerPerson'] ) ) {
-				continue;
-			}
-
-			// Set the price per person.
-			$formatted_data[ 'price_per_person_' . strtolower( $currency ) ] = doubleval( $raw_occupancy_data['prices'][ $currency ]['pricePerPerson'] );
+	// Loop through the currencies.
+	foreach ( CURRENCIES as $currency ) {
+		// Check if the currency is set and price per person exists.
+		if ( empty( $raw_occupancy_data['prices'][ $currency ] ) || ! is_array( $raw_occupancy_data['prices'][ $currency ] ) || empty( $raw_occupancy_data['prices'][ $currency ]['pricePerPerson'] ) ) {
+			continue;
 		}
+
+		// Set the price per person.
+		$formatted_data[ 'price_per_person_' . strtolower( $currency ) ] = absint( $raw_occupancy_data['prices'][ $currency ]['pricePerPerson'] );
 	}
 
 	// Return the formatted data.
@@ -401,8 +410,8 @@ function get_occupancies_by_departure( int $departure_post_id = 0, bool $direct 
  * @param string $currency Currency code.
  *
  * @return array{
- *  original: float,
- *  discounted: float,
+ *  original: int,
+ *  discounted: int,
  * }
  */
 function get_lowest_price( int $post_id = 0, string $currency = 'USD' ): array {
@@ -442,7 +451,7 @@ function get_lowest_price( int $post_id = 0, string $currency = 'USD' ): array {
 		 */
 		if ( empty( $lowest_price['discounted'] ) || $promotion_lowest_price < $lowest_price['discounted'] ) {
 			$lowest_price['discounted'] = $promotion_lowest_price;
-			$lowest_price['original']   = doubleval( $occupancy[ $price_per_person_key ] );
+			$lowest_price['original']   = absint( $occupancy[ $price_per_person_key ] );
 		}
 	}
 

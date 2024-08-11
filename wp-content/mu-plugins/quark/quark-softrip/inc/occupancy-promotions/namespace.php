@@ -147,10 +147,13 @@ function update_occupancy_promotions( array $raw_occupancy_promotions = [], int 
 		// Get the first item.
 		$existing_occupancy_promotion = ! empty( $existing_occupancy_promotions ) ? $existing_occupancy_promotions[0] : [];
 
+		// Initialize updated ID.
+		$updated_id = 0;
+
 		// If the occupancy promotion exists, update it.
 		if ( ! empty( $existing_occupancy_promotion ) && is_array( $existing_occupancy_promotion ) && ! empty( $existing_occupancy_promotion['id'] ) ) {
 			// Update the occupancy promotion.
-			$wpdb->update(
+			$updated_id = $wpdb->update(
 				$table_name,
 				$promo_data,
 				[ 'id' => $existing_occupancy_promotion['id'] ]
@@ -161,6 +164,14 @@ function update_occupancy_promotions( array $raw_occupancy_promotions = [], int 
 				$table_name,
 				$promo_data
 			);
+
+			// Get the inserted ID.
+			$updated_id = $wpdb->insert_id;
+		}
+
+		// Skip if no updated ID.
+		if ( empty( $updated_id ) ) {
+			continue;
 		}
 
 		// Bust caches.
@@ -302,9 +313,9 @@ function get_occupancy_promotions_by_occupancy( int $occupancy_id = 0, bool $dir
  * @param int    $occupancy_id The occupancy ID.
  * @param string $currency The currency code.
  *
- * @return float
+ * @return int
  */
-function get_lowest_price( int $occupancy_id = 0, string $currency = 'USD' ): float {
+function get_lowest_price( int $occupancy_id = 0, string $currency = 'USD' ): int {
 	// Uppercase the currency.
 	$currency = strtoupper( $currency );
 
@@ -335,7 +346,7 @@ function get_lowest_price( int $occupancy_id = 0, string $currency = 'USD' ): fl
 		}
 
 		// Get the price per person.
-		$price_per_person = $occupancy_promotion[ $price_per_person_key ];
+		$price_per_person = absint( $occupancy_promotion[ $price_per_person_key ] );
 
 		// Check if lowest is set and is lower than the previous price.
 		if ( empty( $lowest_price ) || $lowest_price > $price_per_person ) {
