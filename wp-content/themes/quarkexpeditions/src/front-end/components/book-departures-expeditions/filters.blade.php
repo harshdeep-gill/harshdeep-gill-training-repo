@@ -10,7 +10,8 @@
 			<x-form.option value="USD" label="$ USD" selected="yes">{{ __( '$ USD', 'qrk' ) }}</x-form.option>
 			<x-form.option value="CAD" label="$ CAD">{{ __( '$ CAD', 'qrk' ) }}</x-form.option>
 			<x-form.option value="AUD" label="$ AUD">{{ __( '$ AUD', 'qrk' ) }}</x-form.option>
-			<x-form.option value="GBP" label="£ GBP">{{ __( '$ GBP', 'qrk' ) }}</x-form.option>
+			<x-form.option value="GBP" label="£ GBP">{{ __( '£ GBP', 'qrk' ) }}</x-form.option>
+			<x-form.option value="EUR" label="€ EUR">{{ __( '€ EUR', 'qrk' ) }}</x-form.option>
 		</x-form.inline-dropdown>
 	</x-form.field>
 	<x-form.field class="book-departures-expeditions__filters-sort">

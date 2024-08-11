@@ -37,6 +37,10 @@
 
 		> button {
 			width: 100%;
+
+			@media screen and (min-width: grid-size(sm)) {
+				width: auto;
+			}
 		}
 	}
 }

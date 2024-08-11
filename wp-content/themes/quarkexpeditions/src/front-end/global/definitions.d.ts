@@ -27,6 +27,17 @@ interface Window {
 		[key: string]: any;
 	},
 	fetchPartial: Function;
+	zustand: {
+		persist: Function;
+		create: Function;
+		stores: {
+			[key: string]: {
+				getState: Function;
+				setState: Function;
+				subscribe: Function;
+			};
+		};
+	};
 }
 
 /**
@@ -77,4 +88,5 @@ interface SearchResponseData {
 	hasNextPage?: boolean,
 	nextPage?: number,
 	page?: number,
+	remainingCount?: number,
 }

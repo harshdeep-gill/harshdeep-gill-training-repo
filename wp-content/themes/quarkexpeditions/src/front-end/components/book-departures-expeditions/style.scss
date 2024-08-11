@@ -62,4 +62,49 @@
 			}
 		}
 	}
+
+	&__load-more {
+		display: block;
+
+		&[active="false"] {
+
+			#{$self}__load-more-button-container {
+				display: none;
+			}
+		}
+
+		&[loading="false"] {
+
+			#{$self}__load-more-button {
+
+				> span.btn__icon-spinner {
+					display: none;
+				}
+			}
+		}
+
+		&[loading="true"] {
+
+			#{$self}__load-more-button {
+
+				> span.btn__icon-spinner {
+					display: inline-flex;
+				}
+			}
+		}
+
+		&-button-container {
+			display: block;
+			text-align: center;
+			margin-block-start: var(--spacing-6);
+
+			> button {
+				width: 100%;
+
+				@media screen and (min-width: grid-size(sm)) {
+					width: auto;
+				}
+			}
+		}
+	}
 }

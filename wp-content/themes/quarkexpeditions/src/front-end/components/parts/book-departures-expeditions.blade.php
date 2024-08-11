@@ -1,7 +1,7 @@
 @props( [
 	'results_count' => 0,
-	'payload'       => [],
 	'cards'         => [],
+	'expedition_id' => 0,
 ] )
 
 <x-book-departures-expeditions>
@@ -15,10 +15,10 @@
 	<x-book-departures-expeditions.results
 		:count="$results_count"
 		partial="book-departures-expeditions"
-		selector=".departure-cards"
+		selector=".book-departures-expeditions__results"
+		:expedition_id="$expedition_id ?? 0"
 		:payload="$payload ?? []"
 	>
-		{{-- TODO: Render Departure Cards. --}}
-		<div class="departure-cards"></div>
+		<x-parts.expedition-departure-cards :cards="$cards ?? []" />
 	</x-book-departures-expeditions.results>
-  </x-book-departures-expeditions>
+</x-book-departures-expeditions>

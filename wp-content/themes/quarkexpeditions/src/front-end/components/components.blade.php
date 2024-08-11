@@ -4711,7 +4711,7 @@
 		<x-section.heading>
 			<x-section.title title="Departure Dates & Cabins" align="left" />
 		</x-section.heading>
-		<x-parts.book-departures-expeditions results_count="10" :payload="$payload" />
+		<x-parts.book-departures-expeditions results_count="{{ $payload['resultCount'] ?? 0 }}" :payload="$payload" />
 	</x-section>
 </x-component-demo>
 
