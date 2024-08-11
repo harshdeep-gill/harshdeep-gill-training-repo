@@ -91,10 +91,13 @@ function update_promotions( array $raw_promotions_data = [] ): bool {
 		// Get the first item.
 		$existing_promotion_data = ! empty( $existing_promotions_data ) ? $existing_promotions_data[0] : [];
 
+		// Initialize updated id.
+		$updated_id = 0;
+
 		// If the promotion exists, update it.
 		if ( ! empty( $existing_promotion_data['id'] ) ) {
 			// Update the promotion.
-			$wpdb->update(
+			$updated_id = $wpdb->update(
 				$table_name,
 				$formatted_data,
 				[ 'id' => $existing_promotion_data['id'] ]
@@ -105,7 +108,18 @@ function update_promotions( array $raw_promotions_data = [] ): bool {
 				$table_name,
 				$formatted_data
 			);
+
+			// Get the inserted ID.
+			$updated_id = $wpdb->insert_id;
 		}
+
+		// Skip if no updated ID.
+		if ( empty( $updated_id ) ) {
+			continue;
+		}
+
+		// Bust the cache.
+		wp_cache_delete( CACHE_KEY_PREFIX . '_' . $formatted_data['code'], CACHE_GROUP );
 	}
 
 	// Return success.
@@ -147,15 +161,27 @@ function format_data( array $raw_promotion_data = [] ): array {
 	// Apply the defaults.
 	$raw_promotion_data = wp_parse_args( $raw_promotion_data, $default );
 
+	// Validate the data.
+	if (
+		empty( $raw_promotion_data['endDate'] ) ||
+		empty( $raw_promotion_data['startDate'] ) ||
+		empty( $raw_promotion_data['description'] ) ||
+		empty( $raw_promotion_data['discountType'] ) ||
+		empty( $raw_promotion_data['discountValue'] ) ||
+		empty( $raw_promotion_data['promotionCode'] )
+	) {
+		return [];
+	}
+
 	// Initialize the formatted data.
 	$formatted_data = [
-		'end_date'       => $raw_promotion_data['endDate'],
-		'start_date'     => $raw_promotion_data['startDate'],
-		'description'    => $raw_promotion_data['description'],
-		'discount_type'  => $raw_promotion_data['discountType'],
-		'discount_value' => $raw_promotion_data['discountValue'],
-		'code'           => $raw_promotion_data['promotionCode'],
-		'is_pif'         => $raw_promotion_data['isPIF'],
+		'end_date'       => strval( $raw_promotion_data['endDate'] ),
+		'start_date'     => strval( $raw_promotion_data['startDate'] ),
+		'description'    => strval( $raw_promotion_data['description'] ),
+		'discount_type'  => strval( $raw_promotion_data['discountType'] ),
+		'discount_value' => strval( $raw_promotion_data['discountValue'] ),
+		'code'           => strval( $raw_promotion_data['promotionCode'] ),
+		'is_pif'         => absint( $raw_promotion_data['isPIF'] ),
 	];
 
 	// Return the formatted data.

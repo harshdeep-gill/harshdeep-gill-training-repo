@@ -10,6 +10,7 @@ namespace Quark\Softrip\Occupancies;
 use WP_Query;
 
 use function Quark\Softrip\get_engine_collate;
+use function Quark\Softrip\OccupancyPromotions\delete_occupancy_promotions_by_occupancy_id;
 use function Quark\Softrip\OccupancyPromotions\get_lowest_price as get_occupancy_promotion_lowest_price;
 use function Quark\Softrip\OccupancyPromotions\update_occupancy_promotions;
 use function Quark\Softrip\prefix_table_name;
@@ -17,8 +18,8 @@ use function Quark\Softrip\prefix_table_name;
 use const Quark\CabinCategories\POST_TYPE as CABIN_CATEGORY_POST_TYPE;
 use const Quark\Core\CURRENCIES;
 
-const CACHE_KEY_PREFIX = 'quark_softrip_cabin';
-const CACHE_GROUP      = 'quark_softrip_cabins';
+const CACHE_KEY_PREFIX = 'quark_softrip_occupancy';
+const CACHE_GROUP      = 'quark_softrip_occupancies';
 
 /**
  * Get table name.
@@ -151,8 +152,8 @@ function update_occupancies( array $raw_cabins_data = [], int $departure_post_id
 				update_occupancy_promotions( array_values( $raw_cabin_occupancy_data['prices'] ), $updated_id );
 
 				// Bust caches.
-				wp_cache_delete( CACHE_KEY_PREFIX . '_data_' . $formatted_data['softrip_id'], CACHE_GROUP );
-				wp_cache_delete( CACHE_KEY_PREFIX . '_data_departure_' . $departure_post_id, CACHE_GROUP );
+				wp_cache_delete( CACHE_KEY_PREFIX . '_softrip_id_' . $formatted_data['softrip_id'], CACHE_GROUP );
+				wp_cache_delete( CACHE_KEY_PREFIX . '_departure_post_id_' . $departure_post_id, CACHE_GROUP );
 			}
 		}
 	}
@@ -177,11 +178,11 @@ function update_occupancies( array $raw_cabins_data = [], int $departure_post_id
  *    spaces_available: int,
  *    availability_description: string,
  *    availability_status: string,
- *    price_per_person_usd: float,
- *    price_per_person_cad: float,
- *    price_per_person_aud: float,
- *    price_per_person_gbp: float,
- *    price_per_person_eur: float,
+ *    price_per_person_usd: int,
+ *    price_per_person_cad: int,
+ *    price_per_person_aud: int,
+ *    price_per_person_gbp: int,
+ *    price_per_person_eur: int,
  * }
  */
 function format_data( array $raw_occupancy_data = [], int $cabin_category_post_id = 0, int $departure_post_id = 0 ): array {
@@ -204,6 +205,18 @@ function format_data( array $raw_occupancy_data = [], int $cabin_category_post_i
 	// Apply defaults.
 	$raw_occupancy_data = wp_parse_args( $raw_occupancy_data, $default );
 
+	// Validate for empty values.
+	if (
+		empty( $raw_occupancy_data['id'] ) ||
+		empty( $raw_occupancy_data['name'] ) ||
+		empty( $raw_occupancy_data['mask'] ) ||
+		empty( $raw_occupancy_data['availabilityStatus'] ) ||
+		empty( $raw_occupancy_data['availabilityDescription'] ) ||
+		empty( $raw_occupancy_data['prices'] )
+	) {
+		return [];
+	}
+
 	// Initialize the formatted data.
 	$formatted_data = [
 		'softrip_id'               => strval( $raw_occupancy_data['id'] ),
@@ -221,18 +234,15 @@ function format_data( array $raw_occupancy_data = [], int $cabin_category_post_i
 		'price_per_person_eur'     => 0,
 	];
 
-	// Check if the price exists.
-	if ( ! empty( $raw_occupancy_data['prices'] ) ) {
-		// Loop through the currencies.
-		foreach ( CURRENCIES as $currency ) {
-			// Check if the currency is set and price per person exists.
-			if ( empty( $raw_occupancy_data['prices'][ $currency ] ) || ! is_array( $raw_occupancy_data['prices'][ $currency ] ) || empty( $raw_occupancy_data['prices'][ $currency ]['pricePerPerson'] ) ) {
-				continue;
-			}
-
-			// Set the price per person.
-			$formatted_data[ 'price_per_person_' . strtolower( $currency ) ] = doubleval( $raw_occupancy_data['prices'][ $currency ]['pricePerPerson'] );
+	// Loop through the currencies.
+	foreach ( CURRENCIES as $currency ) {
+		// Check if the currency is set and price per person exists.
+		if ( empty( $raw_occupancy_data['prices'][ $currency ] ) || ! is_array( $raw_occupancy_data['prices'][ $currency ] ) || empty( $raw_occupancy_data['prices'][ $currency ]['pricePerPerson'] ) ) {
+			continue;
 		}
+
+		// Set the price per person.
+		$formatted_data[ 'price_per_person_' . strtolower( $currency ) ] = absint( $raw_occupancy_data['prices'][ $currency ]['pricePerPerson'] );
 	}
 
 	// Return the formatted data.
@@ -289,7 +299,7 @@ function get_occupancy_data_by_softrip_id( string $softrip_id = '', bool $direct
 	}
 
 	// Cache key.
-	$cache_key = CACHE_KEY_PREFIX . '_data_' . $softrip_id;
+	$cache_key = CACHE_KEY_PREFIX . '_softrip_id_' . $softrip_id;
 
 	// If not direct, check the cache.
 	if ( ! $direct ) {
@@ -349,7 +359,7 @@ function get_occupancies_by_departure( int $departure_post_id = 0, bool $direct 
 	}
 
 	// Cache key.
-	$cache_key = CACHE_KEY_PREFIX . '_data_departure_' . $departure_post_id;
+	$cache_key = CACHE_KEY_PREFIX . '_departure_post_id_' . $departure_post_id;
 
 	// If not direct, check the cache.
 	if ( ! $direct ) {
@@ -395,14 +405,74 @@ function get_occupancies_by_departure( int $departure_post_id = 0, bool $direct 
 }
 
 /**
+ * Get occupancy data by ID.
+ *
+ * @param int  $occupancy_id The occupancy ID.
+ * @param bool $direct Direct query.
+ *
+ * @return mixed[]
+ */
+function get_occupancy_data_by_id( int $occupancy_id = 0, bool $direct = false ): array {
+	// Bail if empty.
+	if ( empty( $occupancy_id ) ) {
+		return [];
+	}
+
+	// Cache key.
+	$cache_key = CACHE_KEY_PREFIX . '_occupancy_id_' . $occupancy_id;
+
+	// If not direct, check the cache.
+	if ( ! $direct ) {
+		// Check for cached version.
+		$cached_data = wp_cache_get( $cache_key, CACHE_GROUP );
+
+		// If cached data, return it.
+		if ( is_array( $cached_data ) && ! empty( $cached_data ) ) {
+			return $cached_data;
+		}
+	}
+
+	// Get the global wpdb.
+	global $wpdb;
+
+	// Get the table name.
+	$table_name = get_table_name();
+
+	// Get the cabin data.
+	$cabin_data = $wpdb->get_results(
+		$wpdb->prepare(
+			'
+			SELECT
+				*
+			FROM
+				%i
+			WHERE
+				id = %d
+			',
+			[
+				$table_name,
+				$occupancy_id,
+			]
+		),
+		ARRAY_A
+	);
+
+	// Cache the data.
+	wp_cache_set( $cache_key, $cabin_data, CACHE_GROUP );
+
+	// Return the cabin data.
+	return $cabin_data;
+}
+
+/**
  * Get lowest price for a departure.
  *
  * @param int    $post_id Departure post ID.
  * @param string $currency Currency code.
  *
  * @return array{
- *  original: float,
- *  discounted: float,
+ *  original: int,
+ *  discounted: int,
  * }
  */
 function get_lowest_price( int $post_id = 0, string $currency = 'USD' ): array {
@@ -442,10 +512,123 @@ function get_lowest_price( int $post_id = 0, string $currency = 'USD' ): array {
 		 */
 		if ( empty( $lowest_price['discounted'] ) || $promotion_lowest_price < $lowest_price['discounted'] ) {
 			$lowest_price['discounted'] = $promotion_lowest_price;
-			$lowest_price['original']   = doubleval( $occupancy[ $price_per_person_key ] );
+			$lowest_price['original']   = absint( $occupancy[ $price_per_person_key ] );
 		}
 	}
 
 	// Return the lowest price.
 	return $lowest_price;
+}
+
+/**
+ * Clear occupancy data based on departure post id.
+ *
+ * @param int $departure_post_id The departure post ID.
+ *
+ * @return boolean
+ */
+function clear_occupancies_by_departure( int $departure_post_id = 0 ): bool {
+	// Bail if empty.
+	if ( empty( $departure_post_id ) ) {
+		return false;
+	}
+
+	// Get all occupancies by departure.
+	$occupancies = get_occupancies_by_departure( $departure_post_id );
+
+	// Flag for if all occupancies are deleted.
+	$all_deleted = true;
+
+	// Loop through each occupancy.
+	foreach ( $occupancies as $occupancy ) {
+		// Bail if not array or empty.
+		if ( ! is_array( $occupancy ) || empty( $occupancy ) || empty( $occupancy['id'] ) || empty( $occupancy['softrip_id'] ) ) {
+			continue;
+		}
+
+		// Get the occupancy ID.
+		$occupancy_id = absint( $occupancy['id'] );
+
+		// Delete the occupancy promotions.
+		$is_deleted = delete_occupancy_promotions_by_occupancy_id( $occupancy['id'] );
+
+		// Skip if not deleted.
+		if ( ! $is_deleted ) {
+			// Set flag to false.
+			$all_deleted = false;
+
+			// Continue to next occupancy.
+			continue;
+		}
+
+		// Delete the occupancy.
+		delete_occupancy_by_id( $occupancy_id );
+	}
+
+	// Return failure if not all deleted.
+	if ( ! $all_deleted ) {
+		return false;
+	}
+
+	// Bust caches.
+	wp_cache_delete( CACHE_KEY_PREFIX . '_departure_post_id_' . $departure_post_id, CACHE_GROUP );
+
+	// Return success.
+	return true;
+}
+
+/**
+ * Delete occupancy by occupancy id.
+ *
+ * @param int $occupancy_id The occupancy ID.
+ *
+ * @return boolean
+ */
+function delete_occupancy_by_id( int $occupancy_id = 0 ): bool {
+	// Bail if empty.
+	if ( empty( $occupancy_id ) ) {
+		return false;
+	}
+
+	// Get softrip id.
+	$occupancy_data = get_occupancy_data_by_id( $occupancy_id );
+
+	// Bail if empty.
+	if ( empty( $occupancy_data ) || ! is_array( $occupancy_data ) ) {
+		return false;
+	}
+
+	// First item.
+	$occupancy = $occupancy_data[0];
+
+	// Bail if empty.
+	if ( empty( $occupancy ) || ! is_array( $occupancy ) || empty( $occupancy['softrip_id'] ) ) {
+		return false;
+	}
+
+	// Get the Softrip ID.
+	$softrip_id = $occupancy['softrip_id'];
+
+	// Get the global $wpdb object.
+	global $wpdb;
+
+	// Get the table name.
+	$table_name = get_table_name();
+
+	// Delete the occupancy.
+	$deleted = $wpdb->delete(
+		$table_name,
+		[ 'id' => $occupancy_id ]
+	);
+
+	// Return failure if not deleted.
+	if ( empty( $deleted ) ) {
+		return false;
+	}
+
+	// Bust caches.
+	wp_cache_delete( CACHE_KEY_PREFIX . '_softrip_id_' . $softrip_id, CACHE_GROUP );
+
+	// Return success.
+	return true;
 }

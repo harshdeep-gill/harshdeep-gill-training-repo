@@ -22,8 +22,8 @@ use const Quark\Core\CURRENCIES;
  * @param string $currency Currency code.
  *
  * @return array{
- *  original: float,
- *  discounted: float,
+ *  original: int,
+ *  discounted: int,
  * }
  */
 function get_lowest_price( int $post_id = 0, string $currency = 'USD' ): array {

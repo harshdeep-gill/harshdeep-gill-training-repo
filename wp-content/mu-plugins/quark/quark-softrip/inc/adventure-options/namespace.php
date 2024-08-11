@@ -109,9 +109,12 @@ function update_adventure_options( array $raw_adventure_options = [], int $depar
 		// Get the first existing adventure option.
 		$existing_adventure_option = ! empty( $existing_adventure_options ) ? $existing_adventure_options[0] : [];
 
+		// Initialize updated ID.
+		$updated_id = 0;
+
 		// If existing, update the adventure option, else insert.
 		if ( ! empty( $existing_adventure_option['id'] ) ) {
-			$wpdb->update(
+			$updated_id = $wpdb->update(
 				$table_name,
 				$formatted_adventure_option,
 				[ 'id' => $existing_adventure_option['id'] ]
@@ -121,7 +124,19 @@ function update_adventure_options( array $raw_adventure_options = [], int $depar
 				$table_name,
 				$formatted_adventure_option
 			);
+
+			// Get the inserted ID.
+			$updated_id = $wpdb->insert_id;
 		}
+
+		// Skip if no updated ID.
+		if ( empty( $updated_id ) ) {
+			continue;
+		}
+
+		// Bust caches.
+		wp_cache_delete( CACHE_KEY_PREFIX . '_' . $formatted_adventure_option['softrip_option_id'], CACHE_GROUP );
+		wp_cache_delete( CACHE_KEY_PREFIX . '_' . $departure_post_id, CACHE_GROUP );
 	}
 
 	// Remove duplicates.
@@ -147,11 +162,11 @@ function update_adventure_options( array $raw_adventure_options = [], int $depar
  *   spaces_available: int,
  *   service_ids: string,
  *   adventure_option_term_id: int,
- *   price_per_person_usd: float,
- *   price_per_person_cad: float,
- *   price_per_person_aud: float,
- *   price_per_person_gbp: float,
- *   price_per_person_eur: float
+ *   price_per_person_usd: int,
+ *   price_per_person_cad: int,
+ *   price_per_person_aud: int,
+ *   price_per_person_gbp: int,
+ *   price_per_person_eur: int
  * } | array{}
  */
 function format_adventure_option_data( array $raw_adventure_option = [], int $departure_post_id = 0 ): array {
@@ -170,6 +185,11 @@ function format_adventure_option_data( array $raw_adventure_option = [], int $de
 
 	// Apply default values.
 	$raw_adventure_option = wp_parse_args( $raw_adventure_option, $default );
+
+	// Validate empty values.
+	if ( empty( $raw_adventure_option['id'] ) || empty( $raw_adventure_option['price'] ) ) {
+		return [];
+	}
 
 	// Initialize formatted data.
 	$formatted_data = [
@@ -215,18 +235,15 @@ function format_adventure_option_data( array $raw_adventure_option = [], int $de
 		$formatted_data['service_ids'] = implode( ',', $service_ids );
 	}
 
-	// Check if price is set and is an array.
-	if ( ! empty( $raw_adventure_option['price'] ) ) {
-		// Loop through the currencies.
-		foreach ( CURRENCIES as $currency ) {
-			// Check if the currency is set and price per person exists.
-			if ( empty( $raw_adventure_option['price'][ $currency ] ) || ! is_array( $raw_adventure_option['price'][ $currency ] ) || empty( $raw_adventure_option['price'][ $currency ]['pricePerPerson'] ) ) {
-				continue;
-			}
-
-			// Add the price per person to the formatted data.
-			$formatted_data[ 'price_per_person_' . strtolower( $currency ) ] = doubleval( $raw_adventure_option['price'][ $currency ]['pricePerPerson'] );
+	// Loop through the currencies.
+	foreach ( CURRENCIES as $currency ) {
+		// Check if the currency is set and price per person exists.
+		if ( empty( $raw_adventure_option['price'][ $currency ] ) || ! is_array( $raw_adventure_option['price'][ $currency ] ) || empty( $raw_adventure_option['price'][ $currency ]['pricePerPerson'] ) ) {
+			continue;
 		}
+
+		// Add the price per person to the formatted data.
+		$formatted_data[ 'price_per_person_' . strtolower( $currency ) ] = absint( $raw_adventure_option['price'][ $currency ]['pricePerPerson'] );
 	}
 
 	// Return the formatted data.
