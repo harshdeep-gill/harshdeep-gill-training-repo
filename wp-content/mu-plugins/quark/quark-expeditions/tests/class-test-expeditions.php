@@ -516,7 +516,7 @@ class Test_Expeditions extends Softrip_TestCase {
 				'post_status'  => 'publish',
 				'post_type'    => DEPARTURE_POST_TYPE,
 				'meta_input'   => [
-					'related_ship' => $ship_post,
+					'related_ship' => $ship_post->ID,
 					'ship_code'    => 'ABC123',
 					'softrip_id'   => 'ABC-123',
 				],
