@@ -257,7 +257,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 						'id'    => '',
 					],
 					'taxonomy'             => 'qrk_promotion_tags',
-					'add_term'             => 1,
+					'add_term'             => 0,
 					'save_terms'           => 1,
 					'load_terms'           => 1,
 					'return_format'        => 'id',
