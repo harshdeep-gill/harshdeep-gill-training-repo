@@ -78,7 +78,6 @@ function render( array $output = [], string $name = '', array $data = [] ): arra
 			'page'           => $search_results['current_page'],
 			'nextPage'       => $search_results['next_page'],
 			'remainingCount' => $search_results['remaining_count'],
-			'expeditions'    => $selected_filter['expeditions'],
 		],
 	];
 }

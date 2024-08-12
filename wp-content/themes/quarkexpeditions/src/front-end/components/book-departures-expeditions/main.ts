@@ -39,7 +39,12 @@ export class BookDeparturesExpeditions extends HTMLElement {
 		// Elements.
 		this.resultsContainer = this.querySelector( '.book-departures-expeditions__results' );
 		this.resultCountValue = this.querySelector( '.book-departures-expeditions__result-count-value' );
+	}
 
+	/**
+	 * Connected Callback.
+	 */
+	connectedCallback() {
 		// Set settings data.
 		this.setSettingsData();
 
@@ -95,9 +100,9 @@ export class BookDeparturesExpeditions extends HTMLElement {
 		}
 
 		// Set all settings data.
-		this.partial = this.getAttribute( 'partial' ) ?? 'book-departures-expeditions';
-		this.selector = this.getAttribute( 'selector' ) ?? '';
-		this.expeditionId = Number( this.getAttribute( 'expedition-id' ) ) ?? 0;
+		this.partial = this.resultsContainer.getAttribute( 'partial' ) ?? 'book-departures-expeditions';
+		this.selector = this.resultsContainer.getAttribute( 'selector' ) ?? '';
+		this.expeditionId = Number( this.resultsContainer.getAttribute( 'expedition-id' ) ) ?? 0;
 	}
 }
 

@@ -74,13 +74,7 @@ function render( array $attributes = [], string $content = '' ): string {
 		[
 			'cards'         => $cards_data,
 			'results_count' => $search_results['result_count'],
-			'payload'       => [
-				'resultCount'    => $search_results['result_count'],
-				'page'           => $search_results['current_page'],
-				'nextPage'       => $search_results['next_page'],
-				'remainingCount' => $search_results['remaining_count'],
-				'expeditions'    => [ $expedition_id ],
-			],
+			'expedition_id' => $expedition_id,
 		]
 	);
 }

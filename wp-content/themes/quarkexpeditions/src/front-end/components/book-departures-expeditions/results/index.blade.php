@@ -16,7 +16,7 @@
 	<quark-book-departures-expeditions-results
 		class="book-departures-expeditions__results"
 		partial='book-departures-expeditions'
-		selector='.book-departures-expeditions__results'
+		selector='.departure-cards'
 		expedition-id={{ $expedition_id }}
 	>
 		{!! $slot !!}
