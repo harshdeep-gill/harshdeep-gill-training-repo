@@ -4,6 +4,7 @@
 @import "../../scss";
 
 .departure-cards {
+	$self: &;
 
 	&__card {
 		border-radius: var(--border-radius-large);
@@ -26,6 +27,12 @@
 		margin: calc(-1 * var(--grid-col-gutter)) calc(-1 * var(--grid-col-gutter)) 0;
 		padding: var(--spacing-2) var(--grid-col-gutter);
 		min-height: 40px;
+	}
+
+	&__card-banner-link {
+		display: flex;
+		align-items: center;
+		gap: var(--spacing-3);
 	}
 
 	&__header {
@@ -217,6 +224,11 @@
 
 	quark-departure-card {
 		display: block;
+
+		&[open="true"] #{$self}__cta {
+			border-color: var(--color-black);
+			background-color: transparent;
+		}
 	}
 
 	&__offers {
@@ -328,6 +340,47 @@
 			+ li {
 				margin-top: var(--spacing-2);
 			}
+		}
+	}
+
+	&__more-details {
+		margin-top: var(--spacing-8);
+		display: none;
+
+		&--active {
+			display: block;
+		}
+	}
+
+	&__offer-modal {
+
+		.modal__header {
+			padding: 0;
+			text-align: left;
+		}
+
+		p {
+			color: var(--color-gray-70);
+		}
+
+		ul {
+			display: flex;
+			flex-flow: row wrap;
+			list-style: none;
+			padding: 0;
+			min-width: 0;
+			margin: 0;
+			gap: var(--spacing-2);
+		}
+
+		li {
+			background-color: var(--color-success-10);
+			border-radius: var(--border-radius);
+			color: var(--color-success-100);
+			font-size: var(--font-size-small);
+			font-weight: var(--font-weight-bold);
+			line-height: var(--line-height-small);
+			padding: var(--spacing-2);
 		}
 	}
 }

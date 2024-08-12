@@ -47,6 +47,10 @@
 		@media screen and (max-width: calc(grid-size(lg) - 1px)) {
 			display: none !important;
 		}
+
+		&-hide {
+			display: none;
+		}
 	}
 
 	&__navigation-more-items-hide {
@@ -146,30 +150,37 @@
 	}
 
 	&__cta-buttons {
-		background-color: var(--color-white);
-		display: flex;
-		flex-direction: column;
-		gap: var(--spacing-4);
-		min-width: 0;
-		position: fixed;
-		bottom: 0;
-		left: 0;
-		width: 100%;
-		padding: var(--spacing-5);
 
-		@media screen and (min-width: grid-size(lg)) {
-			flex-direction: row;
-			gap: var(--spacing-5);
-			position: initial;
-			padding: 0;
-			width: auto;
-		}
-
-		.btn--color-black {
-			order: 1;
+		.buttons {
+			background-color: var(--color-white);
+			display: flex;
+			flex-direction: column;
+			gap: var(--spacing-4);
+			min-width: 0;
+			position: fixed;
+			bottom: 0;
+			left: 0;
+			width: 100%;
+			padding: var(--spacing-5);
 
 			@media screen and (min-width: grid-size(lg)) {
-				order: initial;
+				flex-direction: row;
+				gap: var(--spacing-5);
+				position: initial;
+				padding: 0;
+				width: auto;
+			}
+
+			.btn--color-black {
+				order: 1;
+
+				@media screen and (min-width: grid-size(lg)) {
+					order: initial;
+				}
+			}
+
+			button {
+				width: 100%;
 			}
 		}
 	}

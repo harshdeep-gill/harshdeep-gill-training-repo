@@ -404,7 +404,7 @@ function doing_automated_test(): bool {
 /**
  * Format price.
  *
- * @param float  $price    Price.
+ * @param float  $price Price.
  * @param string $currency Currency.
  *
  * @return string Formatted price.
