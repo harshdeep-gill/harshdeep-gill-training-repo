@@ -10,7 +10,7 @@ namespace Quark\Softrip\AdventureOptions;
 use WP_Error;
 
 use function Quark\Softrip\get_engine_collate;
-use function Quark\Softrip\prefix_table_name;
+use function Quark\Softrip\add_prefix_to_table_name;
 
 use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
 use const Quark\Core\CURRENCIES;
@@ -25,7 +25,7 @@ const CACHE_GROUP      = 'qrk_softrip_adventure_options';
  */
 function get_table_name(): string {
 	// Return the table name.
-	return prefix_table_name( 'adventure_options' );
+	return add_prefix_to_table_name( 'adventure_options' );
 }
 
 /**
@@ -295,11 +295,11 @@ function get_adventure_option_taxonomy_term_by_service_id( string $service_id = 
  * Get adventure options by departure post ID.
  *
  * @param integer $departure_post_id The departure post ID.
- * @param boolean $direct            Whether to bypass the cache.
+ * @param boolean $force            Whether to bypass the cache.
  *
  * @return mixed[][]
  */
-function get_adventure_option_by_departure_post_id( int $departure_post_id = 0, bool $direct = false ): array {
+function get_adventure_option_by_departure_post_id( int $departure_post_id = 0, bool $force = false ): array {
 	// Validate departure post ID.
 	if ( empty( $departure_post_id ) ) {
 		return [];
@@ -309,7 +309,7 @@ function get_adventure_option_by_departure_post_id( int $departure_post_id = 0, 
 	$cache_key = CACHE_KEY_PREFIX . "_$departure_post_id";
 
 	// If not direct, check for cached version.
-	if ( empty( $direct ) ) {
+	if ( empty( $force ) ) {
 		// Check for cached version.
 		$cached_value = wp_cache_get( $cache_key, CACHE_GROUP );
 
@@ -355,11 +355,11 @@ function get_adventure_option_by_departure_post_id( int $departure_post_id = 0, 
  * Get adventure options by softrip option id.
  *
  * @param string  $softrip_option_id The Softrip option ID.
- * @param boolean $direct           Whether to bypass the cache.
+ * @param boolean $force           Whether to bypass the cache.
  *
  * @return mixed[][]
  */
-function get_adventure_option_by_softrip_option_id( string $softrip_option_id = '', bool $direct = false ): array {
+function get_adventure_option_by_softrip_option_id( string $softrip_option_id = '', bool $force = false ): array {
 	// Validate Softrip option ID.
 	if ( empty( $softrip_option_id ) ) {
 		return [];
@@ -369,7 +369,7 @@ function get_adventure_option_by_softrip_option_id( string $softrip_option_id = 
 	$cache_key = CACHE_KEY_PREFIX . "_$softrip_option_id";
 
 	// If not direct, check for cached version.
-	if ( empty( $direct ) ) {
+	if ( empty( $force ) ) {
 		// Check for cached version.
 		$cached_value = wp_cache_get( $cache_key, CACHE_GROUP );
 

@@ -18,10 +18,10 @@ use function Quark\Departures\get as get_departure;
 use function Quark\Core\format_price;
 use function Quark\Ships\get as get_ship;
 use function Quark\Softrip\Departures\get_departures_by_itinerary;
-use function Quark\Softrip\Itineraries\get_ending_date;
+use function Quark\Softrip\Itineraries\get_end_date;
 use function Quark\Softrip\Itineraries\get_lowest_price;
 use function Quark\Softrip\Itineraries\get_related_ships;
-use function Quark\Softrip\Itineraries\get_starting_date;
+use function Quark\Softrip\Itineraries\get_start_date;
 
 use const Quark\Itineraries\DEPARTURE_LOCATION_TAXONOMY;
 
@@ -890,7 +890,7 @@ function get_starting_from_date( int $post_id = 0 ): string {
 		}
 
 		// Get starting date.
-		$test_date = get_starting_date( $itinerary['post']->ID );
+		$test_date = get_start_date( $itinerary['post']->ID );
 
 		// Check for date.
 		if ( empty( $test_date ) ) {
@@ -950,7 +950,7 @@ function get_ending_to_date( int $post_id = 0 ): string {
 		}
 
 		// Get ending date.
-		$test_date = get_ending_date( $itinerary['post']->ID );
+		$test_date = get_end_date( $itinerary['post']->ID );
 
 		// Check for date.
 		if ( empty( $test_date ) ) {

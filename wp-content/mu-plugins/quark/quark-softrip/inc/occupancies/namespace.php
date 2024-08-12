@@ -13,7 +13,7 @@ use function Quark\Softrip\get_engine_collate;
 use function Quark\Softrip\OccupancyPromotions\delete_occupancy_promotions_by_occupancy_id;
 use function Quark\Softrip\OccupancyPromotions\get_lowest_price as get_occupancy_promotion_lowest_price;
 use function Quark\Softrip\OccupancyPromotions\update_occupancy_promotions;
-use function Quark\Softrip\prefix_table_name;
+use function Quark\Softrip\add_prefix_to_table_name;
 
 use const Quark\CabinCategories\POST_TYPE as CABIN_CATEGORY_POST_TYPE;
 use const Quark\Core\CURRENCIES;
@@ -28,7 +28,7 @@ const CACHE_GROUP      = 'quark_softrip_occupancies';
  */
 function get_table_name(): string {
 	// Return table name.
-	return prefix_table_name( 'occupancies' );
+	return add_prefix_to_table_name( 'occupancies' );
 }
 
 /**
@@ -265,10 +265,14 @@ function get_cabin_category_post_by_cabin_code( string $cabin_code = '' ): int {
 	// Run the query.
 	$query = new WP_Query(
 		[
-			'post_type'      => CABIN_CATEGORY_POST_TYPE,
-			'fields'         => 'ids',
-			'posts_per_page' => 1,
-			'meta_query'     => [
+			'post_type'              => CABIN_CATEGORY_POST_TYPE,
+			'fields'                 => 'ids',
+			'posts_per_page'         => 1,
+			'no_found_rows'          => true,
+			'update_post_term_cache' => false,
+			'update_post_meta_cache' => false,
+			'ignore_sticky_posts'    => true,
+			'meta_query'             => [
 				[
 					'key'   => 'cabin_category_id',
 					'value' => $cabin_code,
@@ -288,11 +292,11 @@ function get_cabin_category_post_by_cabin_code( string $cabin_code = '' ): int {
  * Get cabin data by Softrip ID.
  *
  * @param string $softrip_id The Softrip ID.
- * @param bool   $direct     Bypass cache.
+ * @param bool   $force     Bypass cache.
  *
  * @return mixed[][]
  */
-function get_occupancy_data_by_softrip_id( string $softrip_id = '', bool $direct = false ): array {
+function get_occupancy_data_by_softrip_id( string $softrip_id = '', bool $force = false ): array {
 	// Bail if empty.
 	if ( empty( $softrip_id ) ) {
 		return [];
@@ -302,7 +306,7 @@ function get_occupancy_data_by_softrip_id( string $softrip_id = '', bool $direct
 	$cache_key = CACHE_KEY_PREFIX . '_softrip_id_' . $softrip_id;
 
 	// If not direct, check the cache.
-	if ( ! $direct ) {
+	if ( ! $force ) {
 		// Check for cached version.
 		$cached_data = wp_cache_get( $cache_key, CACHE_GROUP );
 
@@ -348,11 +352,11 @@ function get_occupancy_data_by_softrip_id( string $softrip_id = '', bool $direct
  * Get cabin data by departure post ID.
  *
  * @param int  $departure_post_id The departure post ID.
- * @param bool $direct Direct query.
+ * @param bool $force Direct query.
  *
  * @return mixed[][]
  */
-function get_occupancies_by_departure( int $departure_post_id = 0, bool $direct = false ): array {
+function get_occupancies_by_departure( int $departure_post_id = 0, bool $force = false ): array {
 	// Bail if empty.
 	if ( empty( $departure_post_id ) ) {
 		return [];
@@ -362,7 +366,7 @@ function get_occupancies_by_departure( int $departure_post_id = 0, bool $direct 
 	$cache_key = CACHE_KEY_PREFIX . '_departure_post_id_' . $departure_post_id;
 
 	// If not direct, check the cache.
-	if ( ! $direct ) {
+	if ( ! $force ) {
 		// Check for cached version.
 		$cached_data = wp_cache_get( $cache_key, CACHE_GROUP );
 
@@ -408,11 +412,11 @@ function get_occupancies_by_departure( int $departure_post_id = 0, bool $direct 
  * Get occupancy data by ID.
  *
  * @param int  $occupancy_id The occupancy ID.
- * @param bool $direct Direct query.
+ * @param bool $force Direct query.
  *
  * @return mixed[]
  */
-function get_occupancy_data_by_id( int $occupancy_id = 0, bool $direct = false ): array {
+function get_occupancy_data_by_id( int $occupancy_id = 0, bool $force = false ): array {
 	// Bail if empty.
 	if ( empty( $occupancy_id ) ) {
 		return [];
@@ -422,7 +426,7 @@ function get_occupancy_data_by_id( int $occupancy_id = 0, bool $direct = false )
 	$cache_key = CACHE_KEY_PREFIX . '_occupancy_id_' . $occupancy_id;
 
 	// If not direct, check the cache.
-	if ( ! $direct ) {
+	if ( ! $force ) {
 		// Check for cached version.
 		$cached_data = wp_cache_get( $cache_key, CACHE_GROUP );
 

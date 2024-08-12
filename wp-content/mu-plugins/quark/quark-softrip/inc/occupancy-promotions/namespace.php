@@ -8,7 +8,7 @@
 namespace Quark\Softrip\OccupancyPromotions;
 
 use function Quark\Softrip\get_engine_collate;
-use function Quark\Softrip\prefix_table_name;
+use function Quark\Softrip\add_prefix_to_table_name;
 use function Quark\Softrip\Promotions\get_promotions_by_code;
 
 use const Quark\Core\CURRENCIES;
@@ -23,7 +23,7 @@ const CACHE_GROUP      = 'qrk_softrip_occupancy_promotions';
  */
 function get_table_name(): string {
 	// Return the table name.
-	return prefix_table_name( 'occupancy_promotions' );
+	return add_prefix_to_table_name( 'occupancy_promotions' );
 }
 
 /**
@@ -188,11 +188,11 @@ function update_occupancy_promotions( array $raw_occupancy_promotions = [], int 
  *
  * @param int  $occupancy_id  The occupancy ID.
  * @param int  $promotion_id  The promotion ID.
- * @param bool $direct       Whether to bypass the cache.
+ * @param bool $force       Whether to bypass the cache.
  *
  * @return mixed[]
  */
-function get_occupancy_promotions_by_occupancy_id_and_promotion_id( int $occupancy_id = 0, int $promotion_id = 0, bool $direct = false ): array {
+function get_occupancy_promotions_by_occupancy_id_and_promotion_id( int $occupancy_id = 0, int $promotion_id = 0, bool $force = false ): array {
 	// Bail out if empty.
 	if ( empty( $occupancy_id ) || empty( $promotion_id ) ) {
 		return [];
@@ -202,7 +202,7 @@ function get_occupancy_promotions_by_occupancy_id_and_promotion_id( int $occupan
 	$cache_key = CACHE_KEY_PREFIX . '_occupancy_id_' . $occupancy_id . '_promotion_id_' . $promotion_id;
 
 	// If not direct, get from cache.
-	if ( empty( $direct ) ) {
+	if ( empty( $force ) ) {
 		// Check cache.
 		$cached_value = wp_cache_get( $cache_key, CACHE_GROUP );
 
@@ -251,11 +251,11 @@ function get_occupancy_promotions_by_occupancy_id_and_promotion_id( int $occupan
  * Get occupancy promotions by occupancy ID.
  *
  * @param int  $occupancy_id  The occupancy ID.
- * @param bool $direct       Whether to bypass the cache.
+ * @param bool $force       Whether to bypass the cache.
  *
  * @return mixed[][]
  */
-function get_occupancy_promotions_by_occupancy( int $occupancy_id = 0, bool $direct = false ): array {
+function get_occupancy_promotions_by_occupancy( int $occupancy_id = 0, bool $force = false ): array {
 	// Bail out if empty.
 	if ( empty( $occupancy_id ) ) {
 		return [];
@@ -265,7 +265,7 @@ function get_occupancy_promotions_by_occupancy( int $occupancy_id = 0, bool $dir
 	$cache_key = CACHE_KEY_PREFIX . '_occupancy_id_' . $occupancy_id;
 
 	// If not direct, get from cache.
-	if ( empty( $direct ) ) {
+	if ( empty( $force ) ) {
 		// Check cache.
 		$cached_value = wp_cache_get( $cache_key, CACHE_GROUP );
 

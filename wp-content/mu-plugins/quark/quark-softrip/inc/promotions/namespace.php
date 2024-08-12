@@ -8,7 +8,7 @@
 namespace Quark\Softrip\Promotions;
 
 use function Quark\Softrip\get_engine_collate;
-use function Quark\Softrip\prefix_table_name;
+use function Quark\Softrip\add_prefix_to_table_name;
 
 const CACHE_KEY_PREFIX = 'quark_softrip_promotion';
 const CACHE_GROUP      = 'quark_softrip_promotions';
@@ -20,7 +20,7 @@ const CACHE_GROUP      = 'quark_softrip_promotions';
  */
 function get_table_name(): string {
 	// Return table name.
-	return prefix_table_name( 'promotions' );
+	return add_prefix_to_table_name( 'promotions' );
 }
 
 /**
@@ -192,11 +192,11 @@ function format_data( array $raw_promotion_data = [] ): array {
  * Get promotion by code.
  *
  * @param string $code   The promotion code.
- * @param bool   $direct Whether to bypass the cache.
+ * @param bool   $force Whether to bypass the cache.
  *
  * @return mixed[][]
  */
-function get_promotions_by_code( string $code = '', bool $direct = false ): array {
+function get_promotions_by_code( string $code = '', bool $force = false ): array {
 	// Bail out if no code.
 	if ( empty( $code ) ) {
 		return [];
@@ -206,7 +206,7 @@ function get_promotions_by_code( string $code = '', bool $direct = false ): arra
 	$cache_key = CACHE_KEY_PREFIX . "_$code";
 
 	// If not direct, check the cache.
-	if ( empty( $direct ) ) {
+	if ( empty( $force ) ) {
 		// Get from cache.
 		$cached_value = wp_cache_get( $cache_key );
 

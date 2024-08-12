@@ -374,13 +374,13 @@ function synchronize_itinerary_departures( array $codes = [] ): array|WP_Error {
 }
 
 /**
- * Check if expired.
+ * Check if date is in the past.
  *
  * @param string $date Date to check.
  *
  * @return bool
  */
-function is_expired( string $date = '' ): bool {
+function is_date_in_the_past( string $date = '' ): bool {
 	// Bail if empty.
 	if ( empty( $date ) ) {
 		return false;
@@ -408,7 +408,7 @@ function is_expired( string $date = '' ): bool {
  *
  * @return string
  */
-function prefix_table_name( string $name = '' ): string {
+function add_prefix_to_table_name( string $name = '' ): string {
 	// If empty, return an empty string.
 	if ( empty( $name ) ) {
 		return '';

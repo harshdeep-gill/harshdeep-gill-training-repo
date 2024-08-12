@@ -13,7 +13,7 @@ use WP_Query;
 use function Quark\Ships\get_id_from_ship_code;
 use function Quark\Softrip\AdventureOptions\update_adventure_options;
 use function Quark\Softrip\Occupancies\update_occupancies;
-use function Quark\Softrip\is_expired;
+use function Quark\Softrip\is_date_in_the_past;
 use function Quark\Softrip\Occupancies\clear_occupancies_by_departure;
 use function Quark\Softrip\Occupancies\get_lowest_price as get_occupancies_lowest_price;
 use function Quark\Softrip\Promotions\update_promotions;
@@ -199,7 +199,7 @@ function update_departures( array $raw_departures = [], string $softrip_package_
 		$start_date = get_post_meta( $departure_post_id, 'start_date', true );
 
 		// If start date is in the past, skip.
-		if ( ! is_string( $start_date ) || empty( $start_date ) || ! is_expired( $start_date ) ) {
+		if ( ! is_string( $start_date ) || empty( $start_date ) || ! is_date_in_the_past( $start_date ) ) {
 			continue;
 		}
 
@@ -424,7 +424,7 @@ function get_related_ship( int $departure_post_id = 0 ): int {
  *
  * @return string
  */
-function get_starting_date( int $departure_post_id = 0 ): string {
+function get_start_date( int $departure_post_id = 0 ): string {
 	// Setup default.
 	$default_start_date = '';
 
@@ -452,7 +452,7 @@ function get_starting_date( int $departure_post_id = 0 ): string {
  *
  * @return string
  */
-function get_ending_date( int $departure_post_id = 0 ): string {
+function get_end_date( int $departure_post_id = 0 ): string {
 	// Setup default.
 	$default_end_date = '';
 

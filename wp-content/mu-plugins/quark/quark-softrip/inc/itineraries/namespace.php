@@ -10,8 +10,8 @@ namespace Quark\Softrip\Itineraries;
 use function Quark\Softrip\Departures\get_departures_by_itinerary;
 use function Quark\Softrip\Departures\get_lowest_price as get_departure_lowest_price;
 use function Quark\Softrip\Departures\get_related_ship;
-use function Quark\Softrip\Departures\get_starting_date as get_departure_starting_date;
-use function Quark\Softrip\Departures\get_ending_date as get_departure_ending_date;
+use function Quark\Softrip\Departures\get_start_date as get_departure_start_date;
+use function Quark\Softrip\Departures\get_end_date as get_departure_end_date;
 
 use const Quark\Core\CURRENCIES;
 
@@ -107,7 +107,7 @@ function get_related_ships( int $post_id = 0 ): array {
  *
  * @return string
  */
-function get_starting_date( int $post_id = 0 ): string {
+function get_start_date( int $post_id = 0 ): string {
 	// Set up default.
 	$start_date = '';
 
@@ -122,7 +122,7 @@ function get_starting_date( int $post_id = 0 ): string {
 	// Loop through each departure post.
 	foreach ( $departure_post_ids as $departure_post_id ) {
 		// Get starting date.
-		$departure_start_date = get_departure_starting_date( $departure_post_id );
+		$departure_start_date = get_departure_start_date( $departure_post_id );
 
 		// Validate.
 		if ( empty( $departure_start_date ) ) {
@@ -147,7 +147,7 @@ function get_starting_date( int $post_id = 0 ): string {
  *
  * @return string
  */
-function get_ending_date( int $post_id = 0 ): string {
+function get_end_date( int $post_id = 0 ): string {
 	// Set up default.
 	$end_date = '';
 
@@ -162,7 +162,7 @@ function get_ending_date( int $post_id = 0 ): string {
 	// Loop through each departure post.
 	foreach ( $departure_post_ids as $departure_post_id ) {
 		// Get ending date.
-		$departure_end_date = get_departure_ending_date( $departure_post_id );
+		$departure_end_date = get_departure_end_date( $departure_post_id );
 
 		// Validate.
 		if ( empty( $departure_end_date ) ) {
