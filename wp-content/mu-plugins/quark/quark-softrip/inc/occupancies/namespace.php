@@ -219,14 +219,14 @@ function format_data( array $raw_occupancy_data = [], int $cabin_category_post_i
 
 	// Initialize the formatted data.
 	$formatted_data = [
-		'softrip_id'               => strval( $raw_occupancy_data['id'] ),
-		'softrip_name'             => strval( $raw_occupancy_data['name'] ),
-		'mask'                     => strval( $raw_occupancy_data['mask'] ),
+		'softrip_id'               => sanitize_text_field(  strval( $raw_occupancy_data['id'] ) ),
+		'softrip_name'             => sanitize_text_field( strval( $raw_occupancy_data['name'] ) ),
+		'mask'                     => sanitize_text_field( strval( $raw_occupancy_data['mask'] ) ),
 		'departure_post_id'        => absint( $departure_post_id ),
 		'cabin_category_post_id'   => absint( $cabin_category_post_id ),
 		'spaces_available'         => absint( $raw_occupancy_data['spacesAvailable'] ),
-		'availability_description' => strval( $raw_occupancy_data['availabilityDescription'] ),
-		'availability_status'      => strval( $raw_occupancy_data['availabilityStatus'] ),
+		'availability_description' => sanitize_text_field( strval( $raw_occupancy_data['availabilityDescription'] ) ),
+		'availability_status'      => sanitize_text_field( strval( $raw_occupancy_data['availabilityStatus'] ) ),
 		'price_per_person_usd'     => 0,
 		'price_per_person_cad'     => 0,
 		'price_per_person_aud'     => 0,
