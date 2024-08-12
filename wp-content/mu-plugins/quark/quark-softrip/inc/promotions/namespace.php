@@ -192,11 +192,11 @@ function format_data( array $raw_promotion_data = [] ): array {
  * Get promotion by code.
  *
  * @param string $code   The promotion code.
- * @param bool   $direct Whether to bypass the cache.
+ * @param bool   $force Whether to bypass the cache.
  *
  * @return mixed[][]
  */
-function get_promotions_by_code( string $code = '', bool $direct = false ): array {
+function get_promotions_by_code( string $code = '', bool $force = false ): array {
 	// Bail out if no code.
 	if ( empty( $code ) ) {
 		return [];
@@ -206,7 +206,7 @@ function get_promotions_by_code( string $code = '', bool $direct = false ): arra
 	$cache_key = CACHE_KEY_PREFIX . "_$code";
 
 	// If not direct, check the cache.
-	if ( empty( $direct ) ) {
+	if ( empty( $force ) ) {
 		// Get from cache.
 		$cached_value = wp_cache_get( $cache_key );
 

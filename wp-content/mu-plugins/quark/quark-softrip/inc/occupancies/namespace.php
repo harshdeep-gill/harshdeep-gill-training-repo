@@ -288,11 +288,11 @@ function get_cabin_category_post_by_cabin_code( string $cabin_code = '' ): int {
  * Get cabin data by Softrip ID.
  *
  * @param string $softrip_id The Softrip ID.
- * @param bool   $direct     Bypass cache.
+ * @param bool   $force     Bypass cache.
  *
  * @return mixed[][]
  */
-function get_occupancy_data_by_softrip_id( string $softrip_id = '', bool $direct = false ): array {
+function get_occupancy_data_by_softrip_id( string $softrip_id = '', bool $force = false ): array {
 	// Bail if empty.
 	if ( empty( $softrip_id ) ) {
 		return [];
@@ -302,7 +302,7 @@ function get_occupancy_data_by_softrip_id( string $softrip_id = '', bool $direct
 	$cache_key = CACHE_KEY_PREFIX . '_softrip_id_' . $softrip_id;
 
 	// If not direct, check the cache.
-	if ( ! $direct ) {
+	if ( ! $force ) {
 		// Check for cached version.
 		$cached_data = wp_cache_get( $cache_key, CACHE_GROUP );
 
@@ -348,11 +348,11 @@ function get_occupancy_data_by_softrip_id( string $softrip_id = '', bool $direct
  * Get cabin data by departure post ID.
  *
  * @param int  $departure_post_id The departure post ID.
- * @param bool $direct Direct query.
+ * @param bool $force Direct query.
  *
  * @return mixed[][]
  */
-function get_occupancies_by_departure( int $departure_post_id = 0, bool $direct = false ): array {
+function get_occupancies_by_departure( int $departure_post_id = 0, bool $force = false ): array {
 	// Bail if empty.
 	if ( empty( $departure_post_id ) ) {
 		return [];
@@ -362,7 +362,7 @@ function get_occupancies_by_departure( int $departure_post_id = 0, bool $direct 
 	$cache_key = CACHE_KEY_PREFIX . '_departure_post_id_' . $departure_post_id;
 
 	// If not direct, check the cache.
-	if ( ! $direct ) {
+	if ( ! $force ) {
 		// Check for cached version.
 		$cached_data = wp_cache_get( $cache_key, CACHE_GROUP );
 
@@ -408,11 +408,11 @@ function get_occupancies_by_departure( int $departure_post_id = 0, bool $direct 
  * Get occupancy data by ID.
  *
  * @param int  $occupancy_id The occupancy ID.
- * @param bool $direct Direct query.
+ * @param bool $force Direct query.
  *
  * @return mixed[]
  */
-function get_occupancy_data_by_id( int $occupancy_id = 0, bool $direct = false ): array {
+function get_occupancy_data_by_id( int $occupancy_id = 0, bool $force = false ): array {
 	// Bail if empty.
 	if ( empty( $occupancy_id ) ) {
 		return [];
@@ -422,7 +422,7 @@ function get_occupancy_data_by_id( int $occupancy_id = 0, bool $direct = false )
 	$cache_key = CACHE_KEY_PREFIX . '_occupancy_id_' . $occupancy_id;
 
 	// If not direct, check the cache.
-	if ( ! $direct ) {
+	if ( ! $force ) {
 		// Check for cached version.
 		$cached_data = wp_cache_get( $cache_key, CACHE_GROUP );
 
