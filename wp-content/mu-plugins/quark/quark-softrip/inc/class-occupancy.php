@@ -7,6 +7,7 @@
 
 namespace Quark\Softrip;
 
+use function Quark\Core\format_price;
 use function Quark\Itineraries\get_mandatory_transfer_price;
 use function Quark\Itineraries\get_supplemental_price;
 
@@ -411,29 +412,22 @@ class Occupancy extends Data_Object {
 	/**
 	 * Get occupancy detail.
 	 *
+	 * @param string $currency The currency code.
+	 *
 	 * @return array<string, mixed>
 	 */
-	public function get_detail(): array {
+	public function get_detail( string $currency = 'USD' ): array {
 		// Set base details.
 		$detail = [
 			'name'         => $this->get_entry_data( 'occupancy_mask' ),
 			'description'  => $this->get_description(),
 			'no_of_guests' => $this->get_pax(),
-			'prices'       => [],
+			'price'        => [
+				'original_price'   => format_price( $this->get_price_per_person( $currency ), $currency ),
+				'discounted_price' => format_price( $this->get_price_per_person( $currency, true ), $currency ),
+			],
 			'promotions'   => [],
 		];
-
-		// Iterate over the occupancy prices.
-		foreach ( $this->get_occupancy_prices() as $price ) {
-			// Get currency.
-			$currency = strval( $price->get_entry_data( 'currency_code' ) );
-
-			// Set the item.
-			$detail['prices'][ $currency ] = [
-				'original_price'   => $this->get_price_per_person( $currency ),
-				'discounted_price' => $this->get_price_per_person( $currency, true ),
-			];
-		}
 
 		// TODO:: Get promotions applied for the occupancy.
 		// Return details.

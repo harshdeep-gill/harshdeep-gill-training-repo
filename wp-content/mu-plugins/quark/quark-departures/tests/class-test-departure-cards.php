@@ -11,6 +11,7 @@ use Quark\Tests\Softrip\Softrip_TestCase;
 use WP_Post;
 use WP_Term;
 
+use function Quark\Core\format_price;
 use function Quark\Departures\get_card_data;
 use function Quark\Departures\get_cards_data;
 use function Quark\Softrip\do_sync;
@@ -548,27 +549,9 @@ class Test_Departure_Cards extends Softrip_TestCase {
 				'name'         => 'A',
 				'description'  => 'Single Room',
 				'no_of_guests' => '1',
-				'prices'       => [
-					'USD' => [
-						'original_price'   => 45105,
-						'discounted_price' => 38369,
-					],
-					'AUD' => [
-						'original_price'   => 70605,
-						'discounted_price' => 60014,
-					],
-					'CAD' => [
-						'original_price'   => 61455,
-						'discounted_price' => 52274,
-					],
-					'EUR' => [
-						'original_price'   => 41905,
-						'discounted_price' => 35619,
-					],
-					'GBP' => [
-						'original_price'   => 36095,
-						'discounted_price' => 30709,
-					],
+				'price'        => [
+					'original_price'   => format_price( 45105 ),
+					'discounted_price' => format_price( 38369 ),
 				],
 				'promotions'   => [],
 			],
@@ -583,27 +566,9 @@ class Test_Departure_Cards extends Softrip_TestCase {
 				'name'         => 'A',
 				'description'  => 'Single Room',
 				'no_of_guests' => '1',
-				'prices'       => [
-					'USD' => [
-						'original_price'   => 75100,
-						'discounted_price' => 63865,
-					],
-					'AUD' => [
-						'original_price'   => 117500,
-						'discounted_price' => 99875,
-					],
-					'CAD' => [
-						'original_price'   => 102250,
-						'discounted_price' => 86950,
-					],
-					'EUR' => [
-						'original_price'   => 69900,
-						'discounted_price' => 59415,
-					],
-					'GBP' => [
-						'original_price'   => 60090,
-						'discounted_price' => 51105,
-					],
+				'price'        => [
+					'original_price'   => format_price( 75100 ),
+					'discounted_price' => format_price( 63865 ),
 				],
 				'promotions'   => [],
 			],
@@ -611,27 +576,9 @@ class Test_Departure_Cards extends Softrip_TestCase {
 				'name'         => 'AA',
 				'description'  => 'Double Room',
 				'no_of_guests' => '2',
-				'prices'       => [
-					'USD' => [
-						'original_price'   => 34800,
-						'discounted_price' => 29610,
-					],
-					'AUD' => [
-						'original_price'   => 54200,
-						'discounted_price' => 46070,
-					],
-					'CAD' => [
-						'original_price'   => 47250,
-						'discounted_price' => 40200,
-					],
-					'EUR' => [
-						'original_price'   => 32200,
-						'discounted_price' => 27370,
-					],
-					'GBP' => [
-						'original_price'   => 27790,
-						'discounted_price' => 23650,
-					],
+				'price'        => [
+					'original_price'   => format_price( 34800 ),
+					'discounted_price' => format_price( 29610 ),
 				],
 				'promotions'   => [],
 			],
@@ -667,27 +614,9 @@ class Test_Departure_Cards extends Softrip_TestCase {
 				'name'         => 'A',
 				'description'  => 'Single Room',
 				'no_of_guests' => '1',
-				'prices'       => [
-					'USD' => [
-						'original_price'   => 35095,
-						'discounted_price' => 26371,
-					],
-					'AUD' => [
-						'original_price'   => 54795,
-						'discounted_price' => 41096,
-					],
-					'CAD' => [
-						'original_price'   => 47745,
-						'discounted_price' => 35871,
-					],
-					'EUR' => [
-						'original_price'   => 32495,
-						'discounted_price' => 24371,
-					],
-					'GBP' => [
-						'original_price'   => 28185,
-						'discounted_price' => 21186,
-					],
+				'price'        => [
+					'original_price'   => format_price( 35095 ),
+					'discounted_price' => format_price( 26371 ),
 				],
 				'promotions'   => [],
 			],

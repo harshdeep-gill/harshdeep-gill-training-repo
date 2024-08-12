@@ -584,7 +584,10 @@ function get_promotion_tags( int $post_id = 0 ): array {
  *           size: string,
  *           bed_configuration: string
  *       },
- *      from_price: array<string, array<string, float>>,
+ *       from_price: array{
+ *          discounted_price: string,
+ *          original_price: string,
+ *      },
  *      occupancies: array<int<0, max>, array<string, mixed>>
  *     }>,
  * }
@@ -651,7 +654,7 @@ function get_card_data( int $departure_id = 0, string $currency = 'USD' ): array
 		'promotion_tags'           => get_promotion_tags( $departure_id ),
 		'ship_name'                => $ship_name,
 		'banner_details'           => get_policy_banner_details( $itinerary_id ),
-		'cabins'                   => $departure->get_cabin_details(),
+		'cabins'                   => $departure->get_cabin_details( $currency ),
 	];
 
 	// Set cache and return data.
@@ -707,7 +710,10 @@ function get_card_data( int $departure_id = 0, string $currency = 'USD' ): array
  *            size: string,
  *            bed_configuration: string
  *        },
- *       from_price: array<string, array<string, float>>,
+ *       from_price: array{
+ *           discounted_price: string,
+ *           original_price: string,
+ *       },
  *       occupancies: array<int<0, max>, array<string, mixed>>
  *      }>,
  *    }

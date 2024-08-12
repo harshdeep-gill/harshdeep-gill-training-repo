@@ -16,6 +16,7 @@ use function Quark\Departures\get as get_departure;
 use function Quark\Departures\bust_post_cache;
 use function Quark\Ships\get_id_from_ship_code;
 use function Quark\Ships\get as get_ship;
+use function Quark\Core\format_price;
 
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
 
@@ -555,7 +556,7 @@ class Departure extends Softrip_Object {
 	/**
 	 * Get Cabin details.
 	 *
-	 * @param string $cabin_id Optional cabin ID.
+	 * @param string $currency The currency code.
 	 *
 	 * @return array<int|string, array{
 	 *     name: string,
@@ -572,11 +573,14 @@ class Departure extends Softrip_Object {
 	 *          size: string,
 	 *          bed_configuration: string
 	 *      },
-	 *     from_price: array<string, array<string, float>>,
+	 *     from_price: array{
+	 *         discounted_price: string,
+	 *         original_price: string,
+	 *     },
 	 *     occupancies: array<int<0, max>, array<string, mixed>>
 	 * }>
 	 */
-	public function get_cabin_details( string $cabin_id = '' ): array {
+	public function get_cabin_details( string $currency = 'USD' ): array {
 		// Get all cabins.
 		$cabins = $this->get_cabins();
 
@@ -592,6 +596,13 @@ class Departure extends Softrip_Object {
 			if ( empty( $cabin_data['post'] ) || ! $cabin_data['post'] instanceof WP_Post ) {
 				continue;
 			}
+
+			// Get the lowest price.
+			$from_price = $cabin->get_lowest_price( $currency );
+
+			// Format the price.
+			$from_price['discounted_price'] = format_price( $from_price['discounted_price'], $currency );
+			$from_price['original_price']   = format_price( $from_price['original_price'], $currency );
 
 			// Set up the cabin structure.
 			$struct = [
@@ -609,13 +620,13 @@ class Departure extends Softrip_Object {
 					'size'                     => $cabin->get_size(),
 					'bed_configuration'        => strval( $cabin->get_post_meta( 'cabin_bed_configuration' ) ),
 				],
-				'from_price'     => $cabin->get_lowest_prices(),
+				'from_price'     => $from_price,
 				'occupancies'    => [],
 			];
 
 			// Iterate over the occupancies.
 			foreach ( $cabin->get_occupancies() as $occupancy ) {
-				$struct['occupancies'][] = $occupancy->get_detail();
+				$struct['occupancies'][] = $occupancy->get_detail( $currency );
 			}
 
 			// Add to the return array.
