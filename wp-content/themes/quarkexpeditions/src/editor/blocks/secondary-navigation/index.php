@@ -60,7 +60,8 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 			if ( 'quark/secondary-navigation-menu' === $inner_block->name ) {
 				// Set secondary navigation menu component attributes.
 				$secondary_navigation_menu_component_attributes = [
-					'slot' => '',
+					'slot'               => '',
+					'jump_to_navigation' => true,
 				];
 
 				// Loop through inner blocks of secondary navigation menu.
@@ -87,7 +88,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 
 			// Check for inner block is secondary navigation cta buttons.
 			if ( 'quark/secondary-navigation-cta-buttons' === $inner_block->name ) {
-				$component_attributes['slot'] .= $inner_block->render();
+				$component_attributes['slot'] .= quark_get_component( COMPONENT . '.cta-buttons', [ 'slot' => $inner_block->render() ] );
 			}
 		}
 	}

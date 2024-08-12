@@ -8,6 +8,11 @@
 		gap: var(--spacing-4);
 	}
 
+	&__track {
+		margin: 0 calc(-1 * var(--grid-col-gutter));
+		padding: 0 var(--grid-col-gutter);
+	}
+
 	&__card {
 		width: 100%;
 		max-width: 312px;
@@ -17,7 +22,11 @@
 		box-shadow: var(--shadow-3);
 
 		&:has(#{$self}__badge--sold-out) {
-			filter: grayscale(1);
+
+			#{$self}__gallery,
+			#{$self}__content > *:not(#{$self}__tooltip) {
+				filter: grayscale(1);
+			}
 		}
 
 		&:hover {
@@ -114,6 +123,7 @@
 			font-size: var(--h5-font-size);
 			font-weight: var(--font-weight-bold);
 			line-height: var(--h5-line-height);
+			margin-bottom: 0;
 		}
 	}
 
@@ -385,6 +395,7 @@
 
 	&__tooltip {
 		display: flex;
+		align-items: center;
 		gap: var(--spacing-1);
 
 		.tooltip__icon {

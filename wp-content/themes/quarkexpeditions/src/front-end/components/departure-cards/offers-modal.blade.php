@@ -17,7 +17,7 @@
 		</x-button>
 	</x-modal.modal-open>
 
-	<x-modal id="offers-modal-{{ $dom_id }}">
+	<x-modal id="offers-modal-{{ $dom_id }}" class="departure-cards__offer-modal">
 		@if ( ! empty( $title ) )
 			<x-modal.header>
 				<h4 class="departure-cards__modal-title"><x-escape :content="$title" /></h4>
