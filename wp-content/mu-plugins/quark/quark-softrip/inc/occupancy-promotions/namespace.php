@@ -190,7 +190,18 @@ function update_occupancy_promotions( array $raw_occupancy_promotions = [], int 
  * @param int  $promotion_id  The promotion ID.
  * @param bool $force       Whether to bypass the cache.
  *
- * @return mixed[]
+ * @return array{}|array{
+ *   array{
+ *    id: int,
+ *    occupancy_id: int,
+ *    promotion_id: int,
+ *    price_per_person_usd: int,
+ *    price_per_person_cad: int,
+ *    price_per_person_aud: int,
+ *    price_per_person_gbp: int,
+ *    price_per_person_eur: int
+ *   }
+ * }
  */
 function get_occupancy_promotions_by_occupancy_id_and_promotion_id( int $occupancy_id = 0, int $promotion_id = 0, bool $force = false ): array {
 	// Bail out if empty.
@@ -240,6 +251,14 @@ function get_occupancy_promotions_by_occupancy_id_and_promotion_id( int $occupan
 		ARRAY_A
 	);
 
+	// Bail out if not array.
+	if ( ! is_array( $occupancy_promotions ) ) {
+		return [];
+	}
+
+	// Format the rows data.
+	$occupancy_promotions = format_rows_data_from_db( $occupancy_promotions );
+
 	// Set cache.
 	wp_cache_set( $cache_key, $occupancy_promotions, CACHE_GROUP );
 
@@ -253,7 +272,18 @@ function get_occupancy_promotions_by_occupancy_id_and_promotion_id( int $occupan
  * @param int  $occupancy_id  The occupancy ID.
  * @param bool $force       Whether to bypass the cache.
  *
- * @return mixed[][]
+ * @return array{}|array{
+ *   array{
+ *    id: int,
+ *    occupancy_id: int,
+ *    promotion_id: int,
+ *    price_per_person_usd: int,
+ *    price_per_person_cad: int,
+ *    price_per_person_aud: int,
+ *    price_per_person_gbp: int,
+ *    price_per_person_eur: int
+ *   }
+ * }
  */
 function get_occupancy_promotions_by_occupancy( int $occupancy_id = 0, bool $force = false ): array {
 	// Bail out if empty.
@@ -300,6 +330,14 @@ function get_occupancy_promotions_by_occupancy( int $occupancy_id = 0, bool $for
 		ARRAY_A
 	);
 
+	// Bail out if not array.
+	if ( ! is_array( $occupancy_promotions ) ) {
+		return [];
+	}
+
+	// Format the rows data.
+	$occupancy_promotions = format_rows_data_from_db( $occupancy_promotions );
+
 	// Set cache.
 	wp_cache_set( $cache_key, $occupancy_promotions, CACHE_GROUP );
 
@@ -332,8 +370,8 @@ function get_lowest_price( int $occupancy_id = 0, string $currency = 'USD' ): in
 
 	// Loop through the occupancy promotions.
 	foreach ( $occupancy_promotions as $occupancy_promotion ) {
-		// Skip if empty.
-		if ( empty( $occupancy_promotion ) || ! is_array( $occupancy_promotion ) ) {
+		// Skip if not array.
+		if ( ! is_array( $occupancy_promotion ) ) {
 			continue;
 		}
 
@@ -385,8 +423,8 @@ function delete_occupancy_promotions_by_occupancy_id( int $occupancy_id = 0 ): b
 
 	// Loop through the occupancy promotions.
 	foreach ( $occupancy_promotions as $occupancy_promotion ) {
-		// Skip if empty.
-		if ( empty( $occupancy_promotion ) || ! is_array( $occupancy_promotion ) || empty( $occupancy_promotion['promotion_id'] ) ) {
+		// Skip if not array.
+		if ( ! is_array( $occupancy_promotion ) || empty( $occupancy_promotion['promotion_id'] ) ) {
 			continue;
 		}
 
@@ -422,4 +460,112 @@ function delete_occupancy_promotions_by_occupancy_id( int $occupancy_id = 0 ): b
 	// @todo Delete promotions that are not used anymore. In other words, promotions that are not used by any occupancy.
 	// Return success.
 	return true;
+}
+
+/**
+ * Format occupancy promotion row data from database.
+ *
+ * @param string[] $row_data The occupancy promotion row data.
+ *
+ * @return array{}|array{
+ *   id: int,
+ *   occupancy_id: int,
+ *   promotion_id: int,
+ *   price_per_person_usd: int,
+ *   price_per_person_cad: int,
+ *   price_per_person_aud: int,
+ *   price_per_person_gbp: int,
+ *   price_per_person_eur: int
+ * }
+ */
+function format_row_data_from_db( array $row_data = [] ): array {
+	// Bail out if empty.
+	if ( empty( $row_data ) || ! is_array( $row_data ) ) {
+		return [];
+	}
+
+	// Required fields.
+	$required_fields = [
+		'id',
+		'occupancy_id',
+		'promotion_id',
+		'price_per_person_usd',
+		'price_per_person_cad',
+		'price_per_person_aud',
+		'price_per_person_gbp',
+		'price_per_person_eur',
+	];
+
+	// Check if required fields are present.
+	foreach ( $required_fields as $required_field ) {
+		// Skip if empty.
+		if ( empty( $row_data[ $required_field ] ) ) {
+			return [];
+		}
+	}
+
+	// Initialize the formatted row data.
+	$formatted_row_data = [
+		'id'                   => absint( $row_data['id'] ),
+		'occupancy_id'         => absint( $row_data['occupancy_id'] ),
+		'promotion_id'         => absint( $row_data['promotion_id'] ),
+		'price_per_person_usd' => absint( $row_data['price_per_person_usd'] ),
+		'price_per_person_cad' => absint( $row_data['price_per_person_cad'] ),
+		'price_per_person_aud' => absint( $row_data['price_per_person_aud'] ),
+		'price_per_person_gbp' => absint( $row_data['price_per_person_gbp'] ),
+		'price_per_person_eur' => absint( $row_data['price_per_person_eur'] ),
+	];
+
+	// Return the formatted row data.
+	return $formatted_row_data;
+}
+
+/**
+ * Format rows data from database.
+ *
+ * @param array<int, string[]> $rows_data The occupancy promotion rows data.
+ *
+ * @return array{}|array{
+ *   array{
+ *    id: int,
+ *    occupancy_id: int,
+ *    promotion_id: int,
+ *    price_per_person_usd: int,
+ *    price_per_person_cad: int,
+ *    price_per_person_aud: int,
+ *    price_per_person_gbp: int,
+ *    price_per_person_eur: int
+ *   }
+ * }
+ */
+function format_rows_data_from_db( array $rows_data = [] ): array {
+	// Bail out if empty.
+	if ( empty( $rows_data ) || ! is_array( $rows_data ) ) {
+		return [];
+	}
+
+	// Initialize the formatted rows data.
+	$formatted_rows_data = [];
+
+	// Loop through the rows data.
+	foreach ( $rows_data as $row_data ) {
+		// Skip if empty.
+		if ( empty( $row_data ) || ! is_array( $row_data ) ) {
+			continue;
+		}
+
+		// Format the row data.
+		$formatted_row_data = format_row_data_from_db( $row_data );
+
+		// Skip if empty.
+		if ( empty( $formatted_row_data ) || ! is_array( $formatted_row_data ) ) {
+			continue;
+		}
+
+		// Add the formatted row data to the formatted rows data.
+		$formatted_rows_data[] = $formatted_row_data;
+	}
+
+	// Return the formatted rows data.
+	return $formatted_rows_data;
 }
