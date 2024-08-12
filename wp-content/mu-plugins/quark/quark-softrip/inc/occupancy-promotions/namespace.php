@@ -8,7 +8,7 @@
 namespace Quark\Softrip\OccupancyPromotions;
 
 use function Quark\Softrip\get_engine_collate;
-use function Quark\Softrip\prefix_table_name;
+use function Quark\Softrip\add_prefix_to_table_name;
 use function Quark\Softrip\Promotions\get_promotions_by_code;
 
 use const Quark\Core\CURRENCIES;
@@ -23,7 +23,7 @@ const CACHE_GROUP      = 'qrk_softrip_occupancy_promotions';
  */
 function get_table_name(): string {
 	// Return the table name.
-	return prefix_table_name( 'occupancy_promotions' );
+	return add_prefix_to_table_name( 'occupancy_promotions' );
 }
 
 /**

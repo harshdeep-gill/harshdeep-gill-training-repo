@@ -13,7 +13,7 @@ use function Quark\Softrip\get_engine_collate;
 use function Quark\Softrip\OccupancyPromotions\delete_occupancy_promotions_by_occupancy_id;
 use function Quark\Softrip\OccupancyPromotions\get_lowest_price as get_occupancy_promotion_lowest_price;
 use function Quark\Softrip\OccupancyPromotions\update_occupancy_promotions;
-use function Quark\Softrip\prefix_table_name;
+use function Quark\Softrip\add_prefix_to_table_name;
 
 use const Quark\CabinCategories\POST_TYPE as CABIN_CATEGORY_POST_TYPE;
 use const Quark\Core\CURRENCIES;
@@ -28,7 +28,7 @@ const CACHE_GROUP      = 'quark_softrip_occupancies';
  */
 function get_table_name(): string {
 	// Return table name.
-	return prefix_table_name( 'occupancies' );
+	return add_prefix_to_table_name( 'occupancies' );
 }
 
 /**

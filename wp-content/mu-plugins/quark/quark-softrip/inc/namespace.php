@@ -403,7 +403,7 @@ function is_date_in_the_past( string $date = '' ): bool {
  *
  * @return string
  */
-function prefix_table_name( string $name = '' ): string {
+function add_prefix_to_table_name( string $name = '' ): string {
 	// Return the prefixed name.
 	return TABLE_PREFIX_NAME . $name;
 }

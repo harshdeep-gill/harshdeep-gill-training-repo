@@ -8,7 +8,7 @@
 namespace Quark\Softrip\Promotions;
 
 use function Quark\Softrip\get_engine_collate;
-use function Quark\Softrip\prefix_table_name;
+use function Quark\Softrip\add_prefix_to_table_name;
 
 const CACHE_KEY_PREFIX = 'quark_softrip_promotion';
 const CACHE_GROUP      = 'quark_softrip_promotions';
@@ -20,7 +20,7 @@ const CACHE_GROUP      = 'quark_softrip_promotions';
  */
 function get_table_name(): string {
 	// Return table name.
-	return prefix_table_name( 'promotions' );
+	return add_prefix_to_table_name( 'promotions' );
 }
 
 /**

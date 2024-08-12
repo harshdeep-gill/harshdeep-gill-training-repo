@@ -10,7 +10,7 @@ namespace Quark\Softrip\AdventureOptions;
 use WP_Error;
 
 use function Quark\Softrip\get_engine_collate;
-use function Quark\Softrip\prefix_table_name;
+use function Quark\Softrip\add_prefix_to_table_name;
 
 use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
 use const Quark\Core\CURRENCIES;
@@ -25,7 +25,7 @@ const CACHE_GROUP      = 'qrk_softrip_adventure_options';
  */
 function get_table_name(): string {
 	// Return the table name.
-	return prefix_table_name( 'adventure_options' );
+	return add_prefix_to_table_name( 'adventure_options' );
 }
 
 /**
