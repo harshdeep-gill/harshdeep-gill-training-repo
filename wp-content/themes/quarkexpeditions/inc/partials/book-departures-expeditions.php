@@ -69,7 +69,6 @@ function render( array $output = [], string $name = '', array $data = [] ): arra
 			$attributes
 		),
 		'noResultsMarkup' => 'No results found.',
-		// TODO: Add no results markup.
 		'data'            => [
 			'resultCount'    => $search_results['result_count'],
 			'page'           => $search_results['current_page'],

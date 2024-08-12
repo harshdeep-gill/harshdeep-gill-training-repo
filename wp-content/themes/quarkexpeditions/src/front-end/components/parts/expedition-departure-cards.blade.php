@@ -22,11 +22,14 @@
 								</x-departure-cards.specification-label>
 								<x-departure-cards.specification-value>
 									@if ( ! empty( $card['duration_days'] ) )
- 										{{ $card['duration_days'] }} <x-escape :content="__( 'Days', 'qrk' )"/><br>
+										@php
+											$duration = sprintf( __( '%d Days', 'qrk' ), $card['duration_days'] );
+										@endphp
+										<x-escape :content="$duration ?? ''"/><br>
  									@endif
 
 									@if ( ! empty( $card['duration_dates'] ) )
- 										{{ $card['duration_dates'] }}
+ 										{{ $card['duration_dates'] ?? '' }}
 									@endif
 								</x-departure-cards.specification-value>
 							</x-departure-cards.specification-item>
@@ -38,7 +41,7 @@
 									<x-escape :content="__( 'Starting from', 'qrk' )"/>
 								</x-departure-cards.specification-label>
 								<x-departure-cards.specification-value>
-									{{ $card['starting_from_location'] }}
+									{{ $card['starting_from_location'] ?? '' }}
 								</x-departure-cards.specification-value>
 							</x-departure-cards.specification-item>
 						@endif
@@ -49,7 +52,7 @@
 									<x-escape :content="__( 'Ship', 'qrk' )"/>
 								</x-departure-cards.specification-label>
 								<x-departure-cards.specification-value>
-									{{ $card['ship_name'] }}
+									{{ $card['ship_name'] ?? '' }}
 								</x-departure-cards.specification-value>
 							</x-departure-cards.specification-item>
 						@endif
@@ -60,7 +63,7 @@
 									<x-escape :content="__( 'Languages', 'qrk' )"/>
 								</x-departure-cards.specification-label>
 								<x-departure-cards.specification-value>
-									{{ $card['languages'] }}
+									{{ $card['languages'] ?? '' }}
 								</x-departure-cards.specification-value>
 							</x-departure-cards.specification-item>
 						@endif
@@ -131,7 +134,6 @@
 			</x-departure-cards.body>
 
 			<x-departure-cards.more-details>
-				{{-- <x-product-options-cards> // Component Ticket -> https://tuispecialist.atlassian.net/browse/QE-304 --}}
 			</x-departure-cards.more-details>
 		</x-departure-cards.card>
 	@endforeach

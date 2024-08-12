@@ -78,7 +78,7 @@ const stateInitialized = ( response: PartialData ) => {
 export const updateCurrency = ( currency: string ) => {
 	// Get State.
 	const { selectedFilters } = getState();
-	const updatedFilters = selectedFilters;
+	const updatedFilters = { ...selectedFilters };
 
 	// If currency exists, update the value.
 	if ( currency ) {
@@ -90,7 +90,6 @@ export const updateCurrency = ( currency: string ) => {
 		loading: true,
 		selectedFilters: updatedFilters,
 		page: 1,
-		resetMarkup: true,
 		updateMarkup: true,
 	} );
 
@@ -106,7 +105,7 @@ export const updateCurrency = ( currency: string ) => {
 export const updateSort = ( sort: string ) => {
 	// Get State.
 	const { selectedFilters } = getState();
-	const updatedFilters = selectedFilters;
+	const updatedFilters = { ...selectedFilters };
 
 	// If sort exists, update the value.
 	if ( sort ) {
@@ -118,7 +117,7 @@ export const updateSort = ( sort: string ) => {
 		loading: true,
 		selectedFilters: updatedFilters,
 		page: 1,
-		resetMarkup: true,
+		updateMarkup: true,
 	} );
 
 	// Fetch Results.
@@ -161,7 +160,7 @@ const filterUpdated = ( response: PartialData ) => {
  */
 export const fetchResults = ( callback: Function ) => {
 	// Get data from state.
-	const { selectedFilters, page, partial, selector } = getState();
+	const { selectedFilters, page, partial, selector, expeditionId } = getState();
 
 	// Set loading: true.
 	setState( {
@@ -173,6 +172,7 @@ export const fetchResults = ( callback: Function ) => {
 		selectedFilters: {
 			...selectedFilters,
 			page,
+			expeditions: [ expeditionId ],
 		},
 	}, callback, selector ).catch( () => {
 		// Set state.
@@ -212,7 +212,6 @@ export const loadMoreResults = () => {
 	// Set state to load more posts with new page no.
 	setState( {
 		page: nextPage,
-		initialized: true,
 		loadMoreResults: true,
 	} );
 

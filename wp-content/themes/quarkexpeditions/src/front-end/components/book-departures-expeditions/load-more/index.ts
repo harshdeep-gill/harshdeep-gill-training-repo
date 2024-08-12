@@ -19,8 +19,6 @@ const { subscribe } = zustand.stores.bookDeparturesExpeditions;
 export class LoadMore extends HTMLElement {
 	/**
 	 * Properties.
-	 *
-	 * @private
 	 */
 	private loadMoreButton: HTMLElement | null;
 	private loadMoreButtonText: HTMLElement | null;
@@ -38,14 +36,9 @@ export class LoadMore extends HTMLElement {
 		// Elements.
 		this.loadMoreButton = this.querySelector( '.book-departures-expeditions__load-more-button' );
 		this.loadMoreButtonText = this.querySelector( '.book-departures-expeditions__load-more-button > .btn__content-text' );
-	}
 
-	/**
-	 * Connected callback.
-	 */
-	connectedCallback() {
 		// Events.
-		this.loadMoreButton?.addEventListener( 'click', () => loadMoreResults() );
+		this.loadMoreButton?.addEventListener( 'click', loadMoreResults.bind( this ) );
 	}
 
 	/**
@@ -75,7 +68,8 @@ export class LoadMore extends HTMLElement {
 
 		// Update load more button text with remaining count.
 		if ( this.loadMoreButtonText && typeof remainingCount === 'number' ) {
-			this.loadMoreButtonText.innerText = `View more departures (${ remainingCount })`;
+			const loadMoreText = this.getAttribute( 'load-more-text' ) ?? '';
+			this.loadMoreButtonText.innerText = `${ loadMoreText } (${ remainingCount })`;
 		}
 	}
 }

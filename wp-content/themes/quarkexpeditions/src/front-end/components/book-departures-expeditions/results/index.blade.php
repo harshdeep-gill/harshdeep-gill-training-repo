@@ -1,7 +1,5 @@
 @props( [
 	'count'         => 0,
-	'partial'       => '',
-	'selector'      => '',
 	'expedition_id' => 0,
 ] )
 
@@ -11,15 +9,15 @@
 	}
 
 	// Build load more button text.
-	$load_more_text = __( sprintf( 'View More Departures (%d)', $count ), 'qrk' );
+	$load_more_text = __( 'View More Departures', 'qrk' );
 @endphp
 
 <x-book-departures-expeditions.load-more :load_more_text="$load_more_text">
 	<quark-book-departures-expeditions-results
 		class="book-departures-expeditions__results"
-		data-partial="{{ $partial }}"
-		data-selector="{{ $selector }}"
-		data-expedition-id={{ $expedition_id }}
+		partial='book-departures-expeditions'
+		selector='.book-departures-expeditions__results'
+		expedition-id={{ $expedition_id }}
 	>
 		{!! $slot !!}
 	</quark-book-departures-expeditions-results>

@@ -4,14 +4,9 @@
 const { customElements, HTMLElement, zustand } = window;
 
 /**
- * External dependencies.
- */
-import { TPMultiSelectElement } from '@travelopia/web-components';
-
-/**
  * Internal dependencies.
  */
-import { initialize, updateCurrency, updateSort } from './actions';
+import { initialize } from './actions';
 
 /**
  * Get Store.
@@ -24,13 +19,9 @@ const { subscribe } = zustand.stores.bookDeparturesExpeditions;
 export class BookDeparturesExpeditions extends HTMLElement {
 	/**
 	 * Properties.
-	 *
-	 * @private
 	 */
-	private currencyDropdown: TPMultiSelectElement | null;
-	private sortDropdown: TPMultiSelectElement | null;
 	private resultsContainer: HTMLElement | null;
-	private resultsCountElement: HTMLElement | null;
+	private resultCountValue: HTMLElement | null;
 	private partial: string | undefined;
 	private selector: string | undefined;
 	private expeditionId: number | undefined;
@@ -46,25 +37,14 @@ export class BookDeparturesExpeditions extends HTMLElement {
 		subscribe( this.update.bind( this ) );
 
 		// Elements.
-		this.currencyDropdown = this.querySelector( '.book-departures-expeditions__filters-currency > tp-multi-select' );
-		this.sortDropdown = this.querySelector( '.book-departures-expeditions__filters-sort > tp-multi-select' );
 		this.resultsContainer = this.querySelector( '.book-departures-expeditions__results' );
-		this.resultsCountElement = this.querySelector( '.book-departures-expeditions__result-count' );
+		this.resultCountValue = this.querySelector( '.book-departures-expeditions__result-count-value' );
 
 		// Set settings data.
 		this.setSettingsData();
 
 		// Initialize.
 		this.initialize();
-	}
-
-	/**
-	 * Connected Callback.
-	 */
-	connectedCallback() {
-		// Events.
-		this.currencyDropdown?.addEventListener( 'change', this.updateCurrencyState.bind( this ) );
-		this.sortDropdown?.addEventListener( 'change', this.updateSortState.bind( this ) );
 	}
 
 	/**
@@ -98,9 +78,9 @@ export class BookDeparturesExpeditions extends HTMLElement {
 		}
 
 		// Set results count.
-		if ( this.resultsCountElement && typeof resultCount === 'number' ) {
+		if ( this.resultCountValue && typeof resultCount === 'number' ) {
 			// Update the result count.
-			this.resultsCountElement.innerText = `Showing ${ resultCount } departures`;
+			this.resultCountValue.innerText = resultCount?.toString();
 		}
 	}
 
@@ -114,79 +94,10 @@ export class BookDeparturesExpeditions extends HTMLElement {
 			return;
 		}
 
-		// Get the settings data from dataset.
-		const settingsData = this.resultsContainer?.dataset;
-
-		// Early return.
-		if ( ! settingsData ) {
-			// Bail, if no data.
-			return;
-		}
-
 		// Set all settings data.
-		this.partial = settingsData?.partial;
-		this.selector = settingsData?.selector;
-		this.expeditionId = Number( settingsData?.expeditionId );
-	}
-
-	/**
-	 * Update Currency Value.
-	 *
-	 * @param {string[]} currency Currency.
-	 */
-	updateCurrency( currency: string[] ) {
-		// Check if currency and currencyDropdown are present.
-		if ( currency && this.currencyDropdown ) {
-			// Set the value of the currency selector.
-			this.currencyDropdown.value = currency;
-		}
-	}
-
-	/**
-	 * Update Sort Value.
-	 *
-	 * @param {string[]} sort Sort Type.
-	 */
-	updateSort( sort: string[] ) {
-		// Check if sort and sortDropdown are present.
-		if ( sort && this.sortDropdown ) {
-			// Set the value of the sort selector.
-			this.sortDropdown.value = sort;
-		}
-	}
-
-	/**
-	 * Update currency state.
-	 */
-	updateCurrencyState() {
-		// If currencyDropdown not available, return.
-		if ( ! this.currencyDropdown ) {
-			// Early return.
-			return;
-		}
-
-		// Get currency if set, else set to default 'USD' value.
-		const currency: string = this.currencyDropdown?.value[ 0 ] ?? 'USD';
-
-		// Update currency.
-		updateCurrency( currency );
-	}
-
-	/**
-	 * Update sort state.
-	 */
-	updateSortState() {
-		// If sortDropdown not available, return.
-		if ( ! this.sortDropdown ) {
-			// Early return.
-			return;
-		}
-
-		// Get sort if set, else set to default 'date-now' value.
-		const sort: string = this.sortDropdown?.value[ 0 ] ?? 'date-now';
-
-		// Update sort.
-		updateSort( sort );
+		this.partial = this.getAttribute( 'partial' ) ?? 'book-departures-expeditions';
+		this.selector = this.getAttribute( 'selector' ) ?? '';
+		this.expeditionId = Number( this.getAttribute( 'expedition-id' ) ) ?? 0;
 	}
 }
 
