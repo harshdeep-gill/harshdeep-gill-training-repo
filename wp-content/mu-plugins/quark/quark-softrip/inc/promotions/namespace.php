@@ -175,12 +175,12 @@ function format_data( array $raw_promotion_data = [] ): array {
 
 	// Initialize the formatted data.
 	$formatted_data = [
-		'end_date'       => strval( $raw_promotion_data['endDate'] ),
-		'start_date'     => strval( $raw_promotion_data['startDate'] ),
-		'description'    => strval( $raw_promotion_data['description'] ),
-		'discount_type'  => strval( $raw_promotion_data['discountType'] ),
-		'discount_value' => strval( $raw_promotion_data['discountValue'] ),
-		'code'           => strval( $raw_promotion_data['promotionCode'] ),
+		'end_date'       => sanitize_text_field( strval( $raw_promotion_data['endDate'] ) ),
+		'start_date'     => sanitize_text_field( strval( $raw_promotion_data['startDate'] ) ),
+		'description'    => sanitize_text_field( strval( $raw_promotion_data['description'] ) ),
+		'discount_type'  => sanitize_text_field( strval( $raw_promotion_data['discountType'] ) ),
+		'discount_value' => sanitize_text_field( strval( $raw_promotion_data['discountValue'] ) ),
+		'code'           => sanitize_text_field( strval( $raw_promotion_data['promotionCode'] ) ),
 		'is_pif'         => absint( $raw_promotion_data['isPIF'] ),
 	];
 
@@ -223,7 +223,7 @@ function get_promotions_by_code( string $code = '', bool $force = false ): array
 	$table_name = get_table_name();
 
 	// Load the promotion data.
-	$promotion_data = $wpdb->get_results(
+	$promotions_data = $wpdb->get_results(
 		$wpdb->prepare(
 			'SELECT
                 *
@@ -240,9 +240,120 @@ function get_promotions_by_code( string $code = '', bool $force = false ): array
 		ARRAY_A
 	);
 
+	// Bail out if not an array.
+	if ( ! is_array( $promotions_data ) ) {
+		return [];
+	}
+
+	// Format the data.
+	$formatted_promotions_data = format_rows_data_from_db( $promotions_data );
+
 	// Cache the value.
-	wp_cache_set( $cache_key, $promotion_data, CACHE_GROUP );
+	wp_cache_set( $cache_key, $formatted_promotions_data, CACHE_GROUP );
 
 	// Return the promotion data.
-	return $promotion_data;
+	return $formatted_promotions_data;
+}
+
+/**
+ * Format promotion row from database.
+ *
+ * @param string[] $row_data Row data from database.
+ *
+ * @return array{}|array{
+ *   id: int,
+ *   code: string,
+ *   start_date: string,
+ *   end_date: string,
+ *   description: string,
+ *   discount_type: string,
+ *   discount_value: string,
+ *   is_pif: int,
+ * }
+ */
+function format_row_data_from_db( array $row_data = [] ): array {
+	// Bail out if no data.
+	if ( empty( $row_data ) || ! is_array( $row_data ) ) {
+		return [];
+	}
+
+	// Required fields.
+	$required_fields = [
+		'id',
+		'code',
+		'start_date',
+		'end_date',
+		'description',
+		'discount_type',
+		'discount_value',
+		'is_pif',
+	];
+
+	// Check if required fields are present.
+	foreach ( $required_fields as $required_field ) {
+		if ( ! array_key_exists( $required_field, $row_data ) ) {
+			return [];
+		}
+	}
+
+	// Format the data.
+	$formatted_data = [
+		'id'            => absint( $row_data['id'] ),
+		'code'          => sanitize_text_field( strval( $row_data['code'] ) ),
+		'start_date'    => sanitize_text_field( strval( $row_data['start_date'] ) ),
+		'end_date'      => sanitize_text_field( strval( $row_data['end_date'] ) ),
+		'description'   => sanitize_text_field( strval( $row_data['description'] ) ),
+		'discount_type' => sanitize_text_field( strval( $row_data['discount_type'] ) ),
+		'discount_value' => sanitize_text_field( strval( $row_data['discount_value'] ) ),
+		'is_pif'        => absint( $row_data['is_pif'] ),
+	];
+
+	// Return the formatted data.
+	return $formatted_data;
+
+}
+
+/**
+ * Format rows data from database.
+ *
+ * @param array<int, string[]> $rows_data Rows data from database.
+ *
+ * @return array{}|array{
+ *   array{
+ *     id: int,
+ *     code: string,
+ *     start_date: string,
+ *     end_date: string,
+ *     description: string,
+ *     discount_type: string,
+ *     discount_value: string,
+ *     is_pif: int,
+ *   }
+ * }
+ */
+function format_rows_data_from_db( array $rows_data = [] ): array {
+	// Bail out if no data.
+	if ( empty( $rows_data ) || ! is_array( $rows_data ) ) {
+		return [];
+	}
+
+	// Initialize the formatted data.
+	$formatted_data = [];
+
+	// Loop through each row data.
+	foreach ( $rows_data as $row_data ) {
+		// Format the row data.
+		$formatted_row_data = format_row_data_from_db( $row_data );
+
+		// Skip if empty.
+		if ( empty( $formatted_row_data ) ) {
+			continue;
+		}
+
+		// Add to the formatted data.
+		$formatted_data[] = $formatted_row_data;
+	}
+
+	// Return the formatted data.
+	return $formatted_data;
 }
