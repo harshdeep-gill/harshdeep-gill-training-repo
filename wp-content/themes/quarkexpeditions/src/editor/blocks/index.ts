@@ -58,6 +58,7 @@ import * as FeaturedMediaAccordions from './featured-media-accordions';
 import * as shipFeaturesAmenities from './ship-features-amenities';
 import * as shipVesselFeatures from './ship-vessel-features';
 import * as excursionAccordions from './excursion-accordions';
+import * as shipRelatedAdventureOptions from './ship-related-adventure-options';
 
 /**
  * Add blocks.
@@ -120,6 +121,7 @@ const blocks = [
 	shipFeaturesAmenities,
 	shipVesselFeatures,
 	excursionAccordions,
+	shipRelatedAdventureOptions,
 ];
 
 /**
