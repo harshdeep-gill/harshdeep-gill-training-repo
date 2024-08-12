@@ -202,12 +202,12 @@ class Test_Search extends WP_UnitTestCase {
 				'meta_key'               => 'duration',
 				'meta_query'             => [
 					[
-						'key'     => 'expedition',
+						'key'     => 'related_expedition',
 						'value'   => array_unique( [ 20, 15, 20, 25 ] ),
 						'compare' => 'IN',
 					],
 					[
-						'key'     => 'ship',
+						'key'     => 'related_ship',
 						'value'   => array_unique( [ 2, 1, 2, 5 ] ),
 						'compare' => 'IN',
 					],
