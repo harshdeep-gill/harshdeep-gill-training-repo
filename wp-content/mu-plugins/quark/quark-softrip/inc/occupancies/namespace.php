@@ -265,10 +265,14 @@ function get_cabin_category_post_by_cabin_code( string $cabin_code = '' ): int {
 	// Run the query.
 	$query = new WP_Query(
 		[
-			'post_type'      => CABIN_CATEGORY_POST_TYPE,
-			'fields'         => 'ids',
-			'posts_per_page' => 1,
-			'meta_query'     => [
+			'post_type'              => CABIN_CATEGORY_POST_TYPE,
+			'fields'                 => 'ids',
+			'posts_per_page'         => 1,
+			'no_found_rows'          => true,
+			'update_post_term_cache' => false,
+			'update_post_meta_cache' => false,
+			'ignore_sticky_posts'    => true,
+			'meta_query'             => [
 				[
 					'key'   => 'cabin_category_id',
 					'value' => $cabin_code,
