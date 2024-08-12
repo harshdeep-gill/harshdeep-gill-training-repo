@@ -34,18 +34,12 @@ function bootstrap(): void {
 /**
  * Render this block.
  *
- * @param mixed[]       $attributes The block attributes.
- * @param string        $content    The block content.
- * @param WP_Block|null $block      The block instance.
+ * @param mixed[] $attributes The block attributes.
+ * @param string  $content    The block content.
  *
  * @return string The block markup.
  */
-function render( array $attributes = [], string $content = '', WP_Block $block = null ): string {
-	// Check for block.
-	if ( ! $block instanceof WP_Block ) {
-		return $content;
-	}
-
+function render( array $attributes = [], string $content = '' ): string {
 	// Get the expedition.
 	$expedition = get_expedition();
 
@@ -57,6 +51,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 	// Get the expedition ID.
 	$expedition_id = $expedition['post']->ID;
 
+	// TODO: Get the selected currency from the user.
 	// Set the currency.
 	$currency = 'USD';
 

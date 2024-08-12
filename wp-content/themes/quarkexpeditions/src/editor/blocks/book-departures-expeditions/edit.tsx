@@ -31,7 +31,7 @@ export default function Edit( { className }: BlockEditAttributes ): JSX.Element 
 		<>
 			<Section { ...blockProps }>
 				<Placeholder icon="layout" label={ __( 'Book Departure (Expeditions) Block', 'qrk' ) }>
-					<p>{ __( 'The book departure cards will render on the front-end.', 'qrk' ) }</p>
+					<p>{ __( 'This block will render on the front-end.', 'qrk' ) }</p>
 				</Placeholder>
 			</Section>
 		</>
