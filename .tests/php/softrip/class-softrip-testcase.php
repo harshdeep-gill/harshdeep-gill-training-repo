@@ -137,4 +137,20 @@ abstract class Softrip_TestCase extends WP_UnitTestCase {
 			wp_cache_delete( SHIP_POST_TYPE . '_' . absint( $ship_id ), SHIP_POST_TYPE );
 		}
 	}
+
+	/**
+	 * Tear down after each test.
+	 *
+	 * @return void
+	 */
+	public function tear_down(): void {
+		// Run parent and include tear down.
+		parent::tear_down();
+
+		// Truncate the Softrip custom tables.
+		truncate_softrip_db_tables();
+
+		// Flush the cache.
+		wp_cache_flush();
+	}
 }
