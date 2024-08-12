@@ -219,14 +219,14 @@ function format_data( array $raw_occupancy_data = [], int $cabin_category_post_i
 
 	// Initialize the formatted data.
 	$formatted_data = [
-		'softrip_id'               => strval( $raw_occupancy_data['id'] ),
-		'softrip_name'             => strval( $raw_occupancy_data['name'] ),
-		'mask'                     => strval( $raw_occupancy_data['mask'] ),
+		'softrip_id'               => sanitize_text_field( strval( $raw_occupancy_data['id'] ) ),
+		'softrip_name'             => sanitize_text_field( strval( $raw_occupancy_data['name'] ) ),
+		'mask'                     => sanitize_text_field( strval( $raw_occupancy_data['mask'] ) ),
 		'departure_post_id'        => absint( $departure_post_id ),
 		'cabin_category_post_id'   => absint( $cabin_category_post_id ),
 		'spaces_available'         => absint( $raw_occupancy_data['spacesAvailable'] ),
-		'availability_description' => strval( $raw_occupancy_data['availabilityDescription'] ),
-		'availability_status'      => strval( $raw_occupancy_data['availabilityStatus'] ),
+		'availability_description' => sanitize_text_field( strval( $raw_occupancy_data['availabilityDescription'] ) ),
+		'availability_status'      => sanitize_text_field( strval( $raw_occupancy_data['availabilityStatus'] ) ),
 		'price_per_person_usd'     => 0,
 		'price_per_person_cad'     => 0,
 		'price_per_person_aud'     => 0,
@@ -294,7 +294,24 @@ function get_cabin_category_post_by_cabin_code( string $cabin_code = '' ): int {
  * @param string $softrip_id The Softrip ID.
  * @param bool   $force     Bypass cache.
  *
- * @return mixed[][]
+ * @return array{}|array{
+ *   array{
+ *     id: int,
+ *     softrip_id: string,
+ *     softrip_name: string,
+ *     mask: string,
+ *     departure_post_id: int,
+ *     cabin_category_post_id: int,
+ *     spaces_available: int,
+ *     availability_description: string,
+ *     availability_status: string,
+ *     price_per_person_usd: int,
+ *     price_per_person_cad: int,
+ *     price_per_person_aud: int,
+ *     price_per_person_gbp: int,
+ *     price_per_person_eur: int,
+ *   }
+ * }
  */
 function get_occupancy_data_by_softrip_id( string $softrip_id = '', bool $force = false ): array {
 	// Bail if empty.
@@ -323,7 +340,7 @@ function get_occupancy_data_by_softrip_id( string $softrip_id = '', bool $force 
 	$table_name = get_table_name();
 
 	// Get the cabin data.
-	$cabin_data = $wpdb->get_results(
+	$occupancies_data = $wpdb->get_results(
 		$wpdb->prepare(
 			'
             SELECT
@@ -341,11 +358,19 @@ function get_occupancy_data_by_softrip_id( string $softrip_id = '', bool $force 
 		ARRAY_A
 	);
 
+	// Bail if not array.
+	if ( ! is_array( $occupancies_data ) ) {
+		return [];
+	}
+
+	// Format the rows data.
+	$formatted_rows = format_rows_data_from_db( $occupancies_data );
+
 	// Cache the data.
-	wp_cache_set( $cache_key, $cabin_data, CACHE_GROUP );
+	wp_cache_set( $cache_key, $formatted_rows, CACHE_GROUP );
 
 	// Return the cabin data.
-	return $cabin_data;
+	return $formatted_rows;
 }
 
 /**
@@ -354,7 +379,24 @@ function get_occupancy_data_by_softrip_id( string $softrip_id = '', bool $force 
  * @param int  $departure_post_id The departure post ID.
  * @param bool $force Direct query.
  *
- * @return mixed[][]
+ * @return array{}|array{
+ *   array{
+ *     id: int,
+ *     softrip_id: string,
+ *     softrip_name: string,
+ *     mask: string,
+ *     departure_post_id: int,
+ *     cabin_category_post_id: int,
+ *     spaces_available: int,
+ *     availability_description: string,
+ *     availability_status: string,
+ *     price_per_person_usd: int,
+ *     price_per_person_cad: int,
+ *     price_per_person_aud: int,
+ *     price_per_person_gbp: int,
+ *     price_per_person_eur: int,
+ *   }
+ * }
  */
 function get_occupancies_by_departure( int $departure_post_id = 0, bool $force = false ): array {
 	// Bail if empty.
@@ -382,8 +424,8 @@ function get_occupancies_by_departure( int $departure_post_id = 0, bool $force =
 	// Get the table name.
 	$table_name = get_table_name();
 
-	// Get the cabin data.
-	$cabin_data = $wpdb->get_results(
+	// Get the occupancies data.
+	$occupancies_data = $wpdb->get_results(
 		$wpdb->prepare(
 			'
             SELECT
@@ -401,11 +443,19 @@ function get_occupancies_by_departure( int $departure_post_id = 0, bool $force =
 		ARRAY_A
 	);
 
+	// Bail if empty.
+	if ( ! is_array( $occupancies_data ) ) {
+		return [];
+	}
+
+	// Format the rows data.
+	$formatted_rows = format_rows_data_from_db( $occupancies_data );
+
 	// Cache the data.
-	wp_cache_set( $cache_key, $cabin_data, CACHE_GROUP );
+	wp_cache_set( $cache_key, $formatted_rows, CACHE_GROUP );
 
 	// Return the cabin data.
-	return $cabin_data;
+	return $formatted_rows;
 }
 
 /**
@@ -414,7 +464,24 @@ function get_occupancies_by_departure( int $departure_post_id = 0, bool $force =
  * @param int  $occupancy_id The occupancy ID.
  * @param bool $force Direct query.
  *
- * @return mixed[]
+ * @return array{}|array{
+ *   array{
+ *     id: int,
+ *     softrip_id: string,
+ *     softrip_name: string,
+ *     mask: string,
+ *     departure_post_id: int,
+ *     cabin_category_post_id: int,
+ *     spaces_available: int,
+ *     availability_description: string,
+ *     availability_status: string,
+ *     price_per_person_usd: int,
+ *     price_per_person_cad: int,
+ *     price_per_person_aud: int,
+ *     price_per_person_gbp: int,
+ *     price_per_person_eur: int,
+ *   }
+ * }
  */
 function get_occupancy_data_by_id( int $occupancy_id = 0, bool $force = false ): array {
 	// Bail if empty.
@@ -443,7 +510,7 @@ function get_occupancy_data_by_id( int $occupancy_id = 0, bool $force = false ):
 	$table_name = get_table_name();
 
 	// Get the cabin data.
-	$cabin_data = $wpdb->get_results(
+	$occupancies_data = $wpdb->get_results(
 		$wpdb->prepare(
 			'
 			SELECT
@@ -461,11 +528,19 @@ function get_occupancy_data_by_id( int $occupancy_id = 0, bool $force = false ):
 		ARRAY_A
 	);
 
-	// Cache the data.
-	wp_cache_set( $cache_key, $cabin_data, CACHE_GROUP );
+	// Bail if not array.
+	if ( ! is_array( $occupancies_data ) ) {
+		return [];
+	}
 
-	// Return the cabin data.
-	return $cabin_data;
+	// Format the rows data.
+	$formatted_rows = format_rows_data_from_db( $occupancies_data );
+
+	// Cache the data.
+	wp_cache_set( $cache_key, $formatted_rows, CACHE_GROUP );
+
+	// Return the occupancies data.
+	return $formatted_rows;
 }
 
 /**
@@ -546,7 +621,7 @@ function clear_occupancies_by_departure( int $departure_post_id = 0 ): bool {
 	// Loop through each occupancy.
 	foreach ( $occupancies as $occupancy ) {
 		// Bail if not array or empty.
-		if ( ! is_array( $occupancy ) || empty( $occupancy ) || empty( $occupancy['id'] ) || empty( $occupancy['softrip_id'] ) ) {
+		if ( ! is_array( $occupancy ) || empty( $occupancy['id'] ) || empty( $occupancy['softrip_id'] ) ) {
 			continue;
 		}
 
@@ -606,7 +681,7 @@ function delete_occupancy_by_id( int $occupancy_id = 0 ): bool {
 	$occupancy = $occupancy_data[0];
 
 	// Bail if empty.
-	if ( empty( $occupancy ) || ! is_array( $occupancy ) || empty( $occupancy['softrip_id'] ) ) {
+	if ( ! is_array( $occupancy ) || empty( $occupancy['softrip_id'] ) ) {
 		return false;
 	}
 
@@ -635,4 +710,130 @@ function delete_occupancy_by_id( int $occupancy_id = 0 ): bool {
 
 	// Return success.
 	return true;
+}
+
+/**
+ * Format occupancy row data from database.
+ *
+ * @param string[] $occupancy_data Occupancy data from database.
+ *
+ * @return array{}|array{
+ *   id: int,
+ *   softrip_id: string,
+ *   softrip_name: string,
+ *   mask: string,
+ *   departure_post_id: int,
+ *   cabin_category_post_id: int,
+ *   spaces_available: int,
+ *   availability_description: string,
+ *   availability_status: string,
+ *   price_per_person_usd: int,
+ *   price_per_person_cad: int,
+ *   price_per_person_aud: int,
+ *   price_per_person_gbp: int,
+ *   price_per_person_eur: int,
+ * }
+ */
+function format_row_data_from_db( array $occupancy_data = [] ): array {
+	// Bail if empty.
+	if ( empty( $occupancy_data ) || ! is_array( $occupancy_data ) ) {
+		return [];
+	}
+
+	// Required columns.
+	$required_columns = [
+		'id',
+		'softrip_id',
+		'softrip_name',
+		'mask',
+		'departure_post_id',
+		'cabin_category_post_id',
+		'spaces_available',
+		'availability_description',
+		'availability_status',
+		'price_per_person_usd',
+		'price_per_person_cad',
+		'price_per_person_aud',
+		'price_per_person_gbp',
+		'price_per_person_eur',
+	];
+
+	// Check if required columns are present.
+	foreach ( $required_columns as $column ) {
+		if ( ! array_key_exists( $column, $occupancy_data ) ) {
+			return [];
+		}
+	}
+
+	// Initialize the formatted data.
+	$formatted_data = [
+		'id'                       => absint( $occupancy_data['id'] ),
+		'softrip_id'               => sanitize_text_field( $occupancy_data['softrip_id'] ),
+		'softrip_name'             => sanitize_text_field( $occupancy_data['softrip_name'] ),
+		'mask'                     => sanitize_text_field( $occupancy_data['mask'] ),
+		'departure_post_id'        => absint( $occupancy_data['departure_post_id'] ),
+		'cabin_category_post_id'   => absint( $occupancy_data['cabin_category_post_id'] ),
+		'spaces_available'         => absint( $occupancy_data['spaces_available'] ),
+		'availability_description' => sanitize_text_field( $occupancy_data['availability_description'] ),
+		'availability_status'      => sanitize_text_field( $occupancy_data['availability_status'] ),
+		'price_per_person_usd'     => absint( $occupancy_data['price_per_person_usd'] ),
+		'price_per_person_cad'     => absint( $occupancy_data['price_per_person_cad'] ),
+		'price_per_person_aud'     => absint( $occupancy_data['price_per_person_aud'] ),
+		'price_per_person_gbp'     => absint( $occupancy_data['price_per_person_gbp'] ),
+		'price_per_person_eur'     => absint( $occupancy_data['price_per_person_eur'] ),
+	];
+
+	// Return the formatted data.
+	return $formatted_data;
+}
+
+/**
+ * Format rows data from database.
+ *
+ * @param array<int, string[]> $rows_data The rows data.
+ *
+ * @return array{}|array{
+ *   array{
+ *     id: int,
+ *     softrip_id: string,
+ *     softrip_name: string,
+ *     mask: string,
+ *     departure_post_id: int,
+ *     cabin_category_post_id: int,
+ *     spaces_available: int,
+ *     availability_description: string,
+ *     availability_status: string,
+ *     price_per_person_usd: int,
+ *     price_per_person_cad: int,
+ *     price_per_person_aud: int,
+ *     price_per_person_gbp: int,
+ *     price_per_person_eur: int,
+ *   }
+ * }
+ */
+function format_rows_data_from_db( array $rows_data = [] ): array {
+	// Bail if empty.
+	if ( empty( $rows_data ) || ! is_array( $rows_data ) ) {
+		return [];
+	}
+
+	// Initialize the formatted rows.
+	$formatted_rows = [];
+
+	// Loop through each row.
+	foreach ( $rows_data as $row_data ) {
+		// Format the row data.
+		$formatted_row = format_row_data_from_db( $row_data );
+
+		// Bail if empty.
+		if ( empty( $formatted_row ) ) {
+			continue;
+		}
+
+		// Add the formatted row to the rows.
+		$formatted_rows[] = $formatted_row;
+	}
+
+	// Return the formatted rows.
+	return $formatted_rows;
 }

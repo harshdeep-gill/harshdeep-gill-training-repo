@@ -297,7 +297,22 @@ function get_adventure_option_taxonomy_term_by_service_id( string $service_id = 
  * @param integer $departure_post_id The departure post ID.
  * @param boolean $force            Whether to bypass the cache.
  *
- * @return mixed[][]
+ * @return array{}|array{
+ *   array{
+ *     id: int,
+ *     softrip_option_id: string,
+ *     departure_post_id: int,
+ *     softrip_package_code: string,
+ *     service_ids: string,
+ *     spaces_available: int,
+ *     adventure_option_term_id: int,
+ *     price_per_person_usd: int,
+ *     price_per_person_cad: int,
+ *     price_per_person_aud: int,
+ *     price_per_person_gbp: int,
+ *     price_per_person_eur: int
+ *   }
+ * }
  */
 function get_adventure_option_by_departure_post_id( int $departure_post_id = 0, bool $force = false ): array {
 	// Validate departure post ID.
@@ -344,11 +359,19 @@ function get_adventure_option_by_departure_post_id( int $departure_post_id = 0, 
 		ARRAY_A
 	);
 
+	// Return if not array.
+	if ( ! is_array( $adventure_options ) ) {
+		return [];
+	}
+
+	// Format the rows data.
+	$formatted_rows = format_rows_data_from_db( $adventure_options );
+
 	// Cache the value.
-	wp_cache_set( $cache_key, $adventure_options, CACHE_GROUP );
+	wp_cache_set( $cache_key, $formatted_rows, CACHE_GROUP );
 
 	// Return the adventure options.
-	return $adventure_options;
+	return $formatted_rows;
 }
 
 /**
@@ -357,7 +380,22 @@ function get_adventure_option_by_departure_post_id( int $departure_post_id = 0, 
  * @param string  $softrip_option_id The Softrip option ID.
  * @param boolean $force           Whether to bypass the cache.
  *
- * @return mixed[][]
+ * @return array{}|array{
+ *   array{
+ *     id: int,
+ *     softrip_option_id: string,
+ *     departure_post_id: int,
+ *     softrip_package_code: string,
+ *     service_ids: string,
+ *     spaces_available: int,
+ *     adventure_option_term_id: int,
+ *     price_per_person_usd: int,
+ *     price_per_person_cad: int,
+ *     price_per_person_aud: int,
+ *     price_per_person_gbp: int,
+ *     price_per_person_eur: int
+ *   }
+ * }
  */
 function get_adventure_option_by_softrip_option_id( string $softrip_option_id = '', bool $force = false ): array {
 	// Validate Softrip option ID.
@@ -404,9 +442,134 @@ function get_adventure_option_by_softrip_option_id( string $softrip_option_id = 
 		ARRAY_A
 	);
 
+	// Return if not array.
+	if ( ! is_array( $adventure_options ) ) {
+		return [];
+	}
+
+	// Format the rows data.
+	$formatted_rows = format_rows_data_from_db( $adventure_options );
+
 	// Cache the value.
-	wp_cache_set( $cache_key, $adventure_options, CACHE_GROUP );
+	wp_cache_set( $cache_key, $formatted_rows, CACHE_GROUP );
 
 	// Return the adventure options.
-	return $adventure_options;
+	return $formatted_rows;
+}
+
+/**
+ * Format the adventure option row data coming from the database.
+ *
+ * @param mixed[] $row_data The adventure option row data.
+ *
+ * @return array{}|array{
+ *   id: int,
+ *   softrip_option_id: string,
+ *   departure_post_id: int,
+ *   softrip_package_code: string,
+ *   service_ids: string,
+ *   spaces_available: int,
+ *   adventure_option_term_id: int,
+ *   price_per_person_usd: int,
+ *   price_per_person_cad: int,
+ *   price_per_person_aud: int,
+ *   price_per_person_gbp: int,
+ *   price_per_person_eur: int
+ * }
+ */
+function format_row_data_from_db( array $row_data = [] ): array {
+	// Bail out if empty row data.
+	if ( empty( $row_data ) || ! is_array( $row_data ) ) {
+		return [];
+	}
+
+	// Validate required columns.
+	$required_fields = [
+		'id',
+		'softrip_option_id',
+		'departure_post_id',
+		'softrip_package_code',
+		'service_ids',
+		'spaces_available',
+		'adventure_option_term_id',
+		'price_per_person_usd',
+		'price_per_person_cad',
+		'price_per_person_aud',
+		'price_per_person_gbp',
+		'price_per_person_eur',
+	];
+
+	// Check for required fields.
+	foreach ( $required_fields as $required_field ) {
+		if ( ! array_key_exists( $required_field, $row_data ) ) {
+			return [];
+		}
+	}
+
+	// Initialize formatted data.
+	$formatted_data = [
+		'id'                       => absint( $row_data['id'] ),
+		'softrip_option_id'        => strval( $row_data['softrip_option_id'] ),
+		'departure_post_id'        => absint( $row_data['departure_post_id'] ),
+		'softrip_package_code'     => strval( $row_data['softrip_package_code'] ),
+		'service_ids'              => strval( $row_data['service_ids'] ),
+		'spaces_available'         => absint( $row_data['spaces_available'] ),
+		'adventure_option_term_id' => absint( $row_data['adventure_option_term_id'] ),
+		'price_per_person_usd'     => absint( $row_data['price_per_person_usd'] ),
+		'price_per_person_cad'     => absint( $row_data['price_per_person_cad'] ),
+		'price_per_person_aud'     => absint( $row_data['price_per_person_aud'] ),
+		'price_per_person_gbp'     => absint( $row_data['price_per_person_gbp'] ),
+		'price_per_person_eur'     => absint( $row_data['price_per_person_eur'] ),
+	];
+
+	// Return the formatted data.
+	return $formatted_data;
+}
+
+/**
+ * Format rows data from the database.
+ *
+ * @param array<int, string[]> $rows_data The rows data.
+ *
+ * @return array{}|array{
+ *   array{
+ *     id: int,
+ *     softrip_option_id: string,
+ *     departure_post_id: int,
+ *     softrip_package_code: string,
+ *     service_ids: string,
+ *     spaces_available: int,
+ *     adventure_option_term_id: int,
+ *     price_per_person_usd: int,
+ *     price_per_person_cad: int,
+ *     price_per_person_aud: int,
+ *     price_per_person_gbp: int,
+ *     price_per_person_eur: int
+ *   }
+ * }
+ */
+function format_rows_data_from_db( array $rows_data = [] ): array {
+	// Bail out if empty rows data.
+	if ( empty( $rows_data ) || ! is_array( $rows_data ) ) {
+		return [];
+	}
+
+	// Initialize formatted data.
+	$formatted_data = [];
+
+	// Format the data.
+	foreach ( $rows_data as $row_data ) {
+		$formatted_row_data = format_row_data_from_db( $row_data );
+
+		// Skip if empty.
+		if ( empty( $formatted_row_data ) ) {
+			continue;
+		}
+
+		// Add formatted row data to formatted data.
+		$formatted_data[] = $formatted_row_data;
+	}
+
+	// Return the formatted data.
+	return $formatted_data;
 }
