@@ -428,6 +428,8 @@ class Test_Expeditions extends Softrip_TestCase {
 		$ship_posts = get_posts(
 			[
 				'post_type'      => SHIP_POST_TYPE,
+				'order'          => 'ASC',
+				'orderby'        => 'title',
 				'posts_per_page' => -1,
 				'meta_query'     => [
 					[
@@ -451,7 +453,7 @@ class Test_Expeditions extends Softrip_TestCase {
 		}
 
 		// Assert expedition_details_card_data is correct.
-		$this->assertEqualSets( $expected_data, $expedition_details_card_data );
+		$this->assertEqualsCanonicalizing( $expected_data, $expedition_details_card_data );
 
 		// Cleanup.
 		remove_filter( 'pre_http_request', 'Quark\Tests\Softrip\mock_softrip_http_request' );

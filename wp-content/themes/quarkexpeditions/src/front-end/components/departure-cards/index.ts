@@ -23,6 +23,8 @@ export default class DepartureCard extends HTMLElement {
 	private adventuresItems: NodeListOf<Element> | null;
 	private adventurescountWrap: HTMLElement | null;
 	private adventurescountSpan: HTMLElement | null;
+	private moreDetails: HTMLElement | null;
+	private dropdownButton: HTMLButtonElement | null;
 
 	/**
 	 * Constructor.
@@ -40,12 +42,47 @@ export default class DepartureCard extends HTMLElement {
 		this.adventuresItems = this.querySelectorAll( '.departure-cards__option' );
 		this.adventurescountWrap = this.querySelector( '.departure-cards__options-count-wrap' );
 		this.adventurescountSpan = this.querySelector( '.departure-cards__options-count' );
+		this.dropdownButton = this.querySelector( '.departure-cards__cta' );
+		this.moreDetails = this.querySelector( '.departure-cards__more-details' );
 
 		// Events.
 		this.updateOfferHiddenItems();
 		window.addEventListener( 'resize', debounce( this.updateOfferHiddenItems.bind( this ), 10 ), { passive: true } );
 		this.updateAdventuresHiddenItems();
 		window.addEventListener( 'resize', debounce( this.updateAdventuresHiddenItems.bind( this ), 10 ), { passive: true } );
+		this.dropdownButton?.addEventListener( 'click', this.toggle.bind( this ) );
+	}
+
+	/**
+	 * Toogle the dropdown.
+	 */
+	toggle() {
+		// Check if the dropdown is open.
+		if ( 'true' === this.getAttribute( 'open' ) ) {
+			// Close, if open.
+			this.close();
+		} else {
+			// Open, if closed.
+			this.open();
+		}
+	}
+
+	/**
+	 * Open dropdown.
+	 */
+	open() {
+		// Toggle `open` attribute.
+		this.setAttribute( 'open', 'true' );
+		this.moreDetails?.classList.add( 'departure-cards__more-details--active' );
+	}
+
+	/**
+	 * Close dropdown.
+	 */
+	close() {
+		// Remove 'open' attribute.
+		this.removeAttribute( 'open' );
+		this.moreDetails?.classList.remove( 'departure-cards__more-details--active' );
 	}
 
 	/**
