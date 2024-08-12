@@ -40,6 +40,7 @@ import * as authorInfo from './author-info';
 import * as tableOfContents from './table-of-contents';
 import * as blogPostCards from './blog-post-cards';
 import * as adventureOptions from './adventure-options';
+import * as itineraries from './itineraries';
 import * as buttons from './buttons';
 import * as staffMembers from './staff-members';
 import * as includedActivities from './included-activities';
@@ -101,6 +102,7 @@ const blocks = [
 	tableOfContents,
 	blogPostCards,
 	adventureOptions,
+	itineraries,
 	buttons,
 	staffMembers,
 	includedActivities,
