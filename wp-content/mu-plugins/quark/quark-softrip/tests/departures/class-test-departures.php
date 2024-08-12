@@ -52,7 +52,7 @@ class Test_Departures extends Softrip_TestCase {
 			'packageCode' => 'DEF',
 			'startDate'   => '2021-01-01',
 			'endDate'     => '2021-01-02',
-			'duration'    => '2',
+			'duration'    => 2,
 			'shipCode'    => 'GHI',
 			'marketCode'  => 'JKL',
 		];
@@ -338,6 +338,9 @@ class Test_Departures extends Softrip_TestCase {
 
 		// Flush cache after sync.
 		wp_cache_flush();
+
+		// Remove filter.
+		remove_filter( 'pre_http_request', 'Quark\Tests\Softrip\mock_softrip_http_request' );
 
 		// Get departure post with softrip id = ABC-123:2026-02-28.
 		$departure_posts = new WP_Query(
