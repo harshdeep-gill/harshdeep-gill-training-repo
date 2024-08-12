@@ -13,10 +13,10 @@ use WP_Query;
 use function Quark\Ships\get_id_from_ship_code;
 use function Quark\Softrip\Departures\format_raw_departure_data;
 use function Quark\Softrip\Departures\get_departures_by_itinerary;
-use function Quark\Softrip\Departures\get_ending_date;
+use function Quark\Softrip\Departures\get_end_date;
 use function Quark\Softrip\Departures\get_lowest_price;
 use function Quark\Softrip\Departures\get_related_ship;
-use function Quark\Softrip\Departures\get_starting_date;
+use function Quark\Softrip\Departures\get_start_date;
 use function Quark\Softrip\do_sync;
 
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
@@ -160,118 +160,118 @@ class Test_Departures extends Softrip_TestCase {
 	}
 
 	/**
-	 * Test get starting date.
+	 * Test get start date.
 	 *
-	 * @covers \Quark\Softrip\Departures\get_starting_date
+	 * @covers \Quark\Softrip\Departures\get_start_date
 	 *
 	 * @return void
 	 */
-	public function test_get_starting_date(): void {
+	public function test_get_start_date(): void {
 		// Test with no argument.
 		$expected = '';
-		$actual   = get_starting_date();
+		$actual   = get_start_date();
 		$this->assertSame( $expected, $actual );
 
 		// Test with default values.
 		$expected = '';
-		$actual   = get_starting_date( 0 );
+		$actual   = get_start_date( 0 );
 		$this->assertSame( $expected, $actual );
 
 		// Test with a non-existent departure post id.
 		$expected = '';
-		$actual   = get_starting_date( 123 );
+		$actual   = get_start_date( 123 );
 		$this->assertSame( $expected, $actual );
 
 		// Create a departure post.
 		$departure_post_id = $this->factory()->post->create( [ 'post_type' => DEPARTURE_POST_TYPE ] );
 		$this->assertIsInt( $departure_post_id );
 
-		// Test with a departure post id without a starting date.
+		// Test with a departure post id without a start date.
 		$expected = '';
-		$actual   = get_starting_date( $departure_post_id );
+		$actual   = get_start_date( $departure_post_id );
 		$this->assertSame( $expected, $actual );
 
-		// Set empty string starting date for the departure post.
+		// Set empty string start date for the departure post.
 		update_post_meta( $departure_post_id, 'start_date', '' );
 
-		// Test with a departure post id with an empty string starting date.
+		// Test with a departure post id with an empty string start date.
 		$expected = '';
-		$actual   = get_starting_date( $departure_post_id );
+		$actual   = get_start_date( $departure_post_id );
 		$this->assertSame( $expected, $actual );
 
-		// Set a non string starting date for the departure post.
+		// Set a non string start date for the departure post.
 		update_post_meta( $departure_post_id, 'start_date', [ 123 ] );
 
-		// Test with a departure post id with a non string starting date.
+		// Test with a departure post id with a non string start date.
 		$expected = '';
-		$actual   = get_starting_date( $departure_post_id );
+		$actual   = get_start_date( $departure_post_id );
 		$this->assertSame( $expected, $actual );
 
-		// Set a valid starting date for the departure post.
-		$starting_date = '2021-01-01';
-		update_post_meta( $departure_post_id, 'start_date', $starting_date );
+		// Set a valid start date for the departure post.
+		$start_date = '2021-01-01';
+		update_post_meta( $departure_post_id, 'start_date', $start_date );
 
-		// Test with a departure post id with a valid starting date.
-		$expected = $starting_date;
-		$actual   = get_starting_date( $departure_post_id );
+		// Test with a departure post id with a valid start date.
+		$expected = $start_date;
+		$actual   = get_start_date( $departure_post_id );
 		$this->assertSame( $expected, $actual );
 	}
 
 	/**
-	 * Test get ending date.
+	 * Test get end date.
 	 *
-	 * @covers \Quark\Softrip\Departures\get_ending_date
+	 * @covers \Quark\Softrip\Departures\get_end_date
 	 *
 	 * @return void
 	 */
-	public function test_get_ending_date(): void {
+	public function test_get_end_date(): void {
 		// Test with no argument.
 		$expected = '';
-		$actual   = get_ending_date();
+		$actual   = get_end_date();
 		$this->assertSame( $expected, $actual );
 
 		// Test with default values.
 		$expected = '';
-		$actual   = get_ending_date( 0 );
+		$actual   = get_end_date( 0 );
 		$this->assertSame( $expected, $actual );
 
 		// Test with a non-existent departure post id.
 		$expected = '';
-		$actual   = get_ending_date( 123 );
+		$actual   = get_end_date( 123 );
 		$this->assertSame( $expected, $actual );
 
 		// Create a departure post.
 		$departure_post_id = $this->factory()->post->create( [ 'post_type' => DEPARTURE_POST_TYPE ] );
 		$this->assertIsInt( $departure_post_id );
 
-		// Test with a departure post id without an ending date.
+		// Test with a departure post id without an end date.
 		$expected = '';
-		$actual   = get_ending_date( $departure_post_id );
+		$actual   = get_end_date( $departure_post_id );
 		$this->assertSame( $expected, $actual );
 
-		// Set empty string ending date for the departure post.
+		// Set empty string end date for the departure post.
 		update_post_meta( $departure_post_id, 'end_date', '' );
 
-		// Test with a departure post id with an empty string ending date.
+		// Test with a departure post id with an empty string end date.
 		$expected = '';
-		$actual   = get_ending_date( $departure_post_id );
+		$actual   = get_end_date( $departure_post_id );
 		$this->assertSame( $expected, $actual );
 
-		// Set a non string ending date for the departure post.
+		// Set a non string end date for the departure post.
 		update_post_meta( $departure_post_id, 'end_date', [ 123 ] );
 
-		// Test with a departure post id with a non string ending date.
+		// Test with a departure post id with a non string end date.
 		$expected = '';
-		$actual   = get_ending_date( $departure_post_id );
+		$actual   = get_end_date( $departure_post_id );
 		$this->assertSame( $expected, $actual );
 
-		// Set a valid ending date for the departure post.
-		$ending_date = '2021-01-02';
-		update_post_meta( $departure_post_id, 'end_date', $ending_date );
+		// Set a valid end date for the departure post.
+		$end_date = '2021-01-02';
+		update_post_meta( $departure_post_id, 'end_date', $end_date );
 
-		// Test with a departure post id with a valid ending date.
-		$expected = $ending_date;
-		$actual   = get_ending_date( $departure_post_id );
+		// Test with a departure post id with a valid end date.
+		$expected = $end_date;
+		$actual   = get_end_date( $departure_post_id );
 		$this->assertSame( $expected, $actual );
 	}
 

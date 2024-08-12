@@ -22,10 +22,10 @@ use function Quark\Softrip\OccupancyPromotions\get_table_sql as get_occupancy_pr
 use function Quark\Softrip\AdventureOptions\get_table_name as get_adventure_options_table_name;
 use function Quark\Softrip\create_custom_db_tables;
 use function Quark\Softrip\get_engine_collate;
-use function Quark\Softrip\is_expired;
+use function Quark\Softrip\is_date_in_the_past;
 use function Quark\Softrip\Occupancies\get_table_name as get_occupancies_table_name;
 use function Quark\Softrip\OccupancyPromotions\get_table_name as get_occupancy_promotions_table_name;
-use function Quark\Softrip\prefix_table_name;
+use function Quark\Softrip\add_prefix_to_table_name;
 use function Quark\Softrip\Promotions\get_table_name as get_promotions_table_name;
 use function Quark\Tests\Softrip\drop_softrip_db_tables;
 
@@ -284,48 +284,48 @@ class Test_Softrip extends Softrip_TestCase {
 	/**
 	 * Test is expired.
 	 *
-	 * @covers \Quark\Softrip\is_expired()
+	 * @covers \Quark\Softrip\is_date_in_the_past()
 	 *
 	 * @return void
 	 */
-	public function test_is_expired(): void {
+	public function test_is_date_in_the_past(): void {
 		// Test with empty arg.
-		$result = is_expired();
+		$result = is_date_in_the_past();
 		$this->assertFalse( $result );
 
 		// Test with invalid arg.
-		$result = is_expired( 'abc' );
+		$result = is_date_in_the_past( 'abc' );
 		$this->assertFalse( $result );
 
 		// Past date.
 		$past_date = gmdate( 'Y-m-d', strtotime( '-1 day' ) );
 
 		// Test with past date.
-		$result = is_expired( $past_date );
+		$result = is_date_in_the_past( $past_date );
 		$this->assertTrue( $result );
 
 		// Future date.
 		$future_date = gmdate( 'Y-m-d', strtotime( '+1 day' ) );
 
 		// Test with future date.
-		$result = is_expired( $future_date );
+		$result = is_date_in_the_past( $future_date );
 		$this->assertFalse( $result );
 	}
 
 	/**
 	 * Test prefix table name.
 	 *
-	 * @covers \Quark\Softrip\prefix_table_name()
+	 * @covers \Quark\Softrip\add_prefix_to_table_name()
 	 *
 	 * @return void
 	 */
 	public function test_prefix_table_name(): void {
 		// Test with empty arg.
-		$result = prefix_table_name();
+		$result = add_prefix_to_table_name();
 		$this->assertEmpty( $result );
 
 		// Test with invalid arg.
-		$result = prefix_table_name( 'abc' );
+		$result = add_prefix_to_table_name( 'abc' );
 		$this->assertSame( TABLE_PREFIX_NAME . 'abc', $result );
 	}
 

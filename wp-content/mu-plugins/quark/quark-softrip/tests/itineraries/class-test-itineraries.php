@@ -10,14 +10,14 @@ namespace Quark\Softrip\Tests\Itineraries;
 use Quark\Tests\Softrip\Softrip_TestCase;
 
 use function Quark\Softrip\Departures\get_departures_by_itinerary;
-use function Quark\Softrip\Departures\get_ending_date as get_departure_ending_date;
+use function Quark\Softrip\Departures\get_end_date as get_departure_end_date;
 use function Quark\Softrip\Departures\get_related_ship as get_departure_related_ship;
-use function Quark\Softrip\Departures\get_starting_date as get_departure_starting_date;
+use function Quark\Softrip\Departures\get_start_date as get_departure_start_date;
 use function Quark\Softrip\do_sync;
-use function Quark\Softrip\Itineraries\get_ending_date;
+use function Quark\Softrip\Itineraries\get_end_date;
 use function Quark\Softrip\Itineraries\get_lowest_price;
 use function Quark\Softrip\Itineraries\get_related_ships;
-use function Quark\Softrip\Itineraries\get_starting_date;
+use function Quark\Softrip\Itineraries\get_start_date;
 
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
 use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
@@ -362,20 +362,20 @@ class Test_Itineraries extends Softrip_TestCase {
 	}
 
 	/**
-	 * Test get ending date.
+	 * Test get end date.
 	 *
-	 * @covers \Quark\Softrip\Itineraries\get_ending_date
+	 * @covers \Quark\Softrip\Itineraries\get_end_date
 	 *
 	 * @return void
 	 */
-	public function test_get_ending_date(): void {
+	public function test_get_end_date(): void {
 		// Create an itinerary post.
 		$itinerary_id = $this->factory()->post->create( [ 'post_type' => ITINERARY_POST_TYPE ] );
 		$this->assertIsInt( $itinerary_id );
 
 		// Itinerary with no departure.
 		$expected = '';
-		$this->assertEquals( $expected, get_ending_date( $itinerary_id ) );
+		$this->assertEquals( $expected, get_end_date( $itinerary_id ) );
 
 		// Setup mock response.
 		add_filter( 'pre_http_request', 'Quark\Tests\Softrip\mock_softrip_http_request', 10, 3 );
@@ -418,21 +418,21 @@ class Test_Itineraries extends Softrip_TestCase {
 		// Get all departures.
 		$departure_post_ids = get_departures_by_itinerary( $itinerary_id );
 
-		// Ending dates to compare.
-		$ending_dates = [];
+		// end dates to compare.
+		$end_dates = [];
 
-		// Get ending date for each departure.
+		// Get end date for each departure.
 		foreach ( $departure_post_ids as $departure_post_id ) {
-			$ending_date = get_departure_ending_date( $departure_post_id );
-			$this->assertNotEmpty( $ending_date );
-			$this->assertIsString( $ending_date );
+			$end_date = get_departure_end_date( $departure_post_id );
+			$this->assertNotEmpty( $end_date );
+			$this->assertIsString( $end_date );
 
-			// Add ending date to expected.
-			$ending_dates[] = $ending_date;
+			// Add end date to expected.
+			$end_dates[] = $end_date;
 		}
 
-		// Get ending date for itinerary with package code ABC-123.
-		$this->assertEquals( max( $ending_dates ), get_ending_date( $itinerary_id ) );
+		// Get end date for itinerary with package code ABC-123.
+		$this->assertEquals( max( $end_dates ), get_end_date( $itinerary_id ) );
 
 		// Let's test with a new itinerary post.
 		$itinerary_id = $this->factory()->post->create( [ 'post_type' => ITINERARY_POST_TYPE ] );
@@ -451,7 +451,7 @@ class Test_Itineraries extends Softrip_TestCase {
 		$this->assertIsInt( $departure_post_id );
 		$departure_post_ids[] = $departure_post_id;
 
-		// Set starting date.
+		// Set start date.
 		update_post_meta( $departure_post_id, 'end_date', '2021-01-01' );
 
 		// Departure 2.
@@ -464,28 +464,28 @@ class Test_Itineraries extends Softrip_TestCase {
 		$this->assertIsInt( $departure_post_id );
 		$departure_post_ids[] = $departure_post_id;
 
-		// Set starting date.
+		// Set start date.
 		update_post_meta( $departure_post_id, 'end_date', '2021-01-02' );
 
-		// Get starting date for itinerary.
-		$this->assertEquals( '2021-01-02', get_ending_date( $itinerary_id ) );
+		// Get start date for itinerary.
+		$this->assertEquals( '2021-01-02', get_end_date( $itinerary_id ) );
 	}
 
 	/**
-	 * Test starting date.
+	 * Test start date.
 	 *
-	 * @covers \Quark\Softrip\Itineraries\get_starting_date
+	 * @covers \Quark\Softrip\Itineraries\get_start_date
 	 *
 	 * @return void
 	 */
-	public function test_get_starting_date(): void {
+	public function test_get_start_date(): void {
 		// Create an itinerary post.
 		$itinerary_id = $this->factory()->post->create( [ 'post_type' => ITINERARY_POST_TYPE ] );
 		$this->assertIsInt( $itinerary_id );
 
 		// Itinerary with no departure.
 		$expected = '';
-		$this->assertEquals( $expected, get_starting_date( $itinerary_id ) );
+		$this->assertEquals( $expected, get_start_date( $itinerary_id ) );
 
 		// Setup mock response.
 		add_filter( 'pre_http_request', 'Quark\Tests\Softrip\mock_softrip_http_request', 10, 3 );
@@ -528,21 +528,21 @@ class Test_Itineraries extends Softrip_TestCase {
 		// Get all departures.
 		$departure_post_ids = get_departures_by_itinerary( $itinerary_id );
 
-		// Starting dates to compare.
-		$starting_dates = [];
+		// start dates to compare.
+		$start_dates = [];
 
-		// Get starting date for each departure.
+		// Get start date for each departure.
 		foreach ( $departure_post_ids as $departure_post_id ) {
-			$starting_date = get_departure_starting_date( $departure_post_id );
-			$this->assertNotEmpty( $starting_date );
-			$this->assertIsString( $starting_date );
+			$start_date = get_departure_start_date( $departure_post_id );
+			$this->assertNotEmpty( $start_date );
+			$this->assertIsString( $start_date );
 
-			// Add starting date to expected.
-			$starting_dates[] = $starting_date;
+			// Add start date to expected.
+			$start_dates[] = $start_date;
 		}
 
-		// Get starting date for itinerary with package code ABC-123.
-		$this->assertEquals( min( $starting_dates ), get_starting_date( $itinerary_id ) );
+		// Get start date for itinerary with package code ABC-123.
+		$this->assertEquals( min( $start_dates ), get_start_date( $itinerary_id ) );
 
 		// Let's test with a new itinerary post.
 		$itinerary_id = $this->factory()->post->create( [ 'post_type' => ITINERARY_POST_TYPE ] );
@@ -561,7 +561,7 @@ class Test_Itineraries extends Softrip_TestCase {
 		$this->assertIsInt( $departure_post_id );
 		$departure_post_ids[] = $departure_post_id;
 
-		// Set starting date.
+		// Set start date.
 		update_post_meta( $departure_post_id, 'start_date', '2021-01-01' );
 
 		// Departure 2.
@@ -574,10 +574,10 @@ class Test_Itineraries extends Softrip_TestCase {
 		$this->assertIsInt( $departure_post_id );
 		$departure_post_ids[] = $departure_post_id;
 
-		// Set starting date.
+		// Set start date.
 		update_post_meta( $departure_post_id, 'start_date', '2021-01-02' );
 
-		// Get starting date for itinerary.
-		$this->assertEquals( '2021-01-01', get_starting_date( $itinerary_id ) );
+		// Get start date for itinerary.
+		$this->assertEquals( '2021-01-01', get_start_date( $itinerary_id ) );
 	}
 }
