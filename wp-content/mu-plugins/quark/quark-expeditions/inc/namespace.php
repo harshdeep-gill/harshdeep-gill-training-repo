@@ -115,7 +115,331 @@ function register_expedition_post_type(): void {
 			'slug'       => 'expeditions',
 			'with_front' => false,
 		],
-		'template'            => [],
+		'template'            => [
+			[
+				'quark/section',
+				[
+					'hasTitle'        => false,
+					'hasBackground'   => true,
+					'backgroundColor' => 'black',
+					'hasPadding'      => true,
+				],
+				[
+					[
+						'quark/two-columns',
+						[
+							'hasBorder' => true,
+						],
+						[
+							[
+								'quark/column',
+								[],
+								[
+									[
+										'quark/expedition-details',
+										[],
+									],
+								],
+							],
+							[
+								'quark/column',
+								[],
+								[
+									[
+										'quark/hero-card-slider',
+										[],
+									],
+								],
+							],
+						],
+					],
+				],
+			],
+			[
+				'quark/secondary-navigation',
+				[],
+				[
+					[
+						'quark/secondary-navigation-menu',
+						[],
+						[
+							[
+								'quark/secondary-navigation-item',
+								[
+									'title' => 'Overview',
+									'url'   => '#overview',
+								],
+							],
+							[
+								'quark/secondary-navigation-item',
+								[
+									'title' => 'Itineraries',
+									'url'   => '#itineraries',
+								],
+							],
+							[
+								'quark/secondary-navigation-item',
+								[
+									'title' => "What's Onboard",
+									'url'   => '#whats-onboard',
+								],
+							],
+							[
+								'quark/secondary-navigation-item',
+								[
+									'title' => 'Ships',
+									'url'   => '#ships',
+								],
+							],
+							[
+								'quark/secondary-navigation-item',
+								[
+									'title' => 'Adventure Options',
+									'url'   => '#included-activities',
+								],
+							],
+							[
+								'quark/secondary-navigation-item',
+								[
+									'title' => 'Book Now',
+									'url'   => '#bookings',
+								],
+							],
+							[
+								'quark/secondary-navigation-item',
+								[
+									'title' => 'Know Before You Go',
+									'url'   => '#know-before-you-go',
+								],
+							],
+						],
+					],
+				],
+			],
+			[
+				'quark/section',
+				[
+					'hasTitle' => false,
+				],
+				[
+					[
+						'quark/two-columns',
+						[ 'hasBorder' => false ],
+						[
+							[
+								'quark/column',
+								[],
+								[
+									[
+										'core/heading',
+										[
+											'level'   => 2,
+											'content' => 'Expedition Overview',
+										],
+									],
+									[
+										'core/paragraph',
+										[],
+									],
+								],
+							],
+							[
+								'quark/column',
+								[],
+								[
+									[
+										'quark/highlights',
+										[
+											'title' => 'Highlights',
+											'info'  => 'Plus, add on adventure options, such as...',
+										],
+									],
+								],
+							],
+						],
+					],
+				],
+			],
+			[
+				'quark/section',
+				[
+					'title'          => 'Find Your Ideal Itinerary',
+					'titleAlignment' => 'left',
+					'headingLevel'   => '2',
+					'hasDescription' => true,
+				],
+				[
+					[
+						'quark/itineraries',
+						[],
+					],
+				],
+			],
+			[
+				'quark/section',
+				[
+					'title'          => 'Your Life Onboard',
+					'titleAlignment' => 'left',
+					'headingLevel'   => '2',
+					'hasDescription' => true,
+				],
+				[
+					[
+						'quark/fancy-video',
+						[],
+					],
+				],
+			],
+			[
+				'quark/section',
+				[
+					'hasTitle' => false,
+				],
+				[
+					[
+						'quark/featured-media-accordions',
+						[],
+					],
+				],
+			],
+			[
+				'quark/section',
+				[
+					'hasTitle' => false,
+				],
+				[
+					[
+						'quark/ships',
+						[],
+					],
+				],
+			],
+			[
+				'quark/section',
+				[
+					'title'          => "What's Included",
+					'titleAlignment' => 'left',
+					'headingLevel'   => '2',
+					'hasDescription' => true,
+				],
+				[
+					[
+						'quark/icon-info-grid',
+						[],
+					],
+				],
+			],
+			[
+				'quark/section',
+				[
+					'title'          => 'Included Activities',
+					'titleAlignment' => 'left',
+					'headingLevel'   => '2',
+				],
+				[
+					[
+						'quark/included-activities',
+						[],
+					],
+				],
+			],
+			[
+				'quark/section',
+				[
+					'title'          => 'Upgrade Your Expedition',
+					'titleAlignment' => 'left',
+					'headingLevel'   => '2',
+					'hasDescription' => true,
+					'description'    => 'Find out what add-on options are available for your expedition.',
+				],
+				[
+					[
+						'quark/section',
+						[
+							'title'          => 'Adventure Options',
+							'titleAlignment' => 'left',
+							'headingLevel'   => '3',
+							'hasDescription' => true,
+							'description'    => 'These can be booked in advance at an extra cost. Activities vary by itinerary, destination and are weather permitting.',
+						],
+						[
+							[
+								'quark/included-activities',
+								[
+									'showDescription' => false,
+								],
+							],
+						],
+					],
+					[
+						'quark/section',
+						[
+							'title'          => 'Trip Extensions',
+							'titleAlignment' => 'left',
+							'headingLevel'   => '3',
+							'hasDescription' => true,
+						],
+						[
+							[
+								'quark/trip-extensions',
+								[],
+							],
+						],
+					],
+					[
+						'quark/section',
+						[
+							'title'          => 'Possible Excursions',
+							'titleAlignment' => 'left',
+							'headingLevel'   => '3',
+							'hasDescription' => true,
+						],
+						[
+							[
+								'quark/excursion-accordion',
+								[],
+							],
+						],
+					],
+				],
+			],
+			[
+				'quark/book-departures-expeditions',
+				[],
+			],
+			[
+				'quark/section',
+				[
+					'title'          => 'Know Before You Go',
+					'titleAlignment' => 'left',
+					'headingLevel'   => '2',
+				],
+				[
+					[
+						'quark/accordion',
+						[],
+					],
+				],
+			],
+			[
+				'quark/section',
+				[
+					'title'          => 'Your Expedition Team',
+					'titleAlignment' => 'left',
+					'headingLevel'   => '2',
+				],
+				[
+					[
+						'quark/staff-members',
+						[
+							'selection'  => 'manual',
+							'ids'        => [],
+							'isCarousel' => true,
+						],
+					],
+				],
+			],
+		],
 	];
 
 	// Register post type.
