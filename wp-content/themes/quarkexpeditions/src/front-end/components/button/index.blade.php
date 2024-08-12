@@ -101,7 +101,7 @@
 			<span class="btn__content">
 		@endif
 
-			{!! $slot !!}
+		<span class="btn__content-text">{!! $slot !!}</span>
 
 		{{-- Close - Added text wrapper if icon not empty --}}
 		@if ( ! empty( $icon ) )
