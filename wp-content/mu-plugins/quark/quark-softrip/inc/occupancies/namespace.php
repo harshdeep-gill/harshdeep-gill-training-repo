@@ -219,7 +219,7 @@ function format_data( array $raw_occupancy_data = [], int $cabin_category_post_i
 
 	// Initialize the formatted data.
 	$formatted_data = [
-		'softrip_id'               => sanitize_text_field(  strval( $raw_occupancy_data['id'] ) ),
+		'softrip_id'               => sanitize_text_field( strval( $raw_occupancy_data['id'] ) ),
 		'softrip_name'             => sanitize_text_field( strval( $raw_occupancy_data['name'] ) ),
 		'mask'                     => sanitize_text_field( strval( $raw_occupancy_data['mask'] ) ),
 		'departure_post_id'        => absint( $departure_post_id ),

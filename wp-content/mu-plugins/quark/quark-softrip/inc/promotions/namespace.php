@@ -298,19 +298,18 @@ function format_row_data_from_db( array $row_data = [] ): array {
 
 	// Format the data.
 	$formatted_data = [
-		'id'            => absint( $row_data['id'] ),
-		'code'          => sanitize_text_field( strval( $row_data['code'] ) ),
-		'start_date'    => sanitize_text_field( strval( $row_data['start_date'] ) ),
-		'end_date'      => sanitize_text_field( strval( $row_data['end_date'] ) ),
-		'description'   => sanitize_text_field( strval( $row_data['description'] ) ),
-		'discount_type' => sanitize_text_field( strval( $row_data['discount_type'] ) ),
+		'id'             => absint( $row_data['id'] ),
+		'code'           => sanitize_text_field( strval( $row_data['code'] ) ),
+		'start_date'     => sanitize_text_field( strval( $row_data['start_date'] ) ),
+		'end_date'       => sanitize_text_field( strval( $row_data['end_date'] ) ),
+		'description'    => sanitize_text_field( strval( $row_data['description'] ) ),
+		'discount_type'  => sanitize_text_field( strval( $row_data['discount_type'] ) ),
 		'discount_value' => sanitize_text_field( strval( $row_data['discount_value'] ) ),
-		'is_pif'        => absint( $row_data['is_pif'] ),
+		'is_pif'         => absint( $row_data['is_pif'] ),
 	];
 
 	// Return the formatted data.
 	return $formatted_data;
-
 }
 
 /**
