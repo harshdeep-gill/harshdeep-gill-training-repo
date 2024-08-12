@@ -8,9 +8,11 @@
 	}
 
 	// Build departure count text to be displayed.
-	$departure_count_text = sprintf( _n( 'Showing %d departure', 'Showing %d departures', $count, 'qrk' ), $count );
+	$departure_count_text = _n( 'departure', 'departures', $count, 'qrk' );
 @endphp
 
 <div class="book-departures-expeditions__result-count">
-	<x-escape :content="$departure_count_text" />
+	{{ __( 'Showing', 'qrk' ); }}
+	<span class="book-departures-expeditions__result-count-value">{{ $count ?? 0 }}</span>
+	{{ $departure_count_text ?? 'departures' }}
 </div>

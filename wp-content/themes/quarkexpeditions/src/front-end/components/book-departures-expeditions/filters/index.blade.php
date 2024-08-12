@@ -4,7 +4,7 @@
 	}
 @endphp
 
-<div class="book-departures-expeditions__filters">
+<quark-book-departures-expeditions-filters class="book-departures-expeditions__filters">
 	<x-form.field class="book-departures-expeditions__filters-currency">
 		<x-form.inline-dropdown label="Currency">
 			<x-form.option value="USD" label="$ USD" selected="yes">{{ __( '$ USD', 'qrk' ) }}</x-form.option>
@@ -30,4 +30,4 @@
 			</x-form.option>
 		</x-form.inline-dropdown>
 	</x-form.field>
-</div>
+</quark-book-departures-expeditions-filters>

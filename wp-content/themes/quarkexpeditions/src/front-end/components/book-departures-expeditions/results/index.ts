@@ -19,8 +19,6 @@ import { markupUpdated } from '../actions';
 export default class BookDeparturesExpeditionsResults extends HTMLElement {
 	/**
 	 * Properties.
-	 *
-	 * @private
 	 */
 	private resultsContainer: HTMLElement | null;
 	private selector: string;
@@ -33,7 +31,7 @@ export default class BookDeparturesExpeditionsResults extends HTMLElement {
 		super();
 
 		// Element.
-		this.selector = this.dataset?.selector ?? '';
+		this.selector = this.getAttribute( 'selector' ) ?? '.book-departures-expeditions__results';
 		this.resultsContainer = this.querySelector( this.selector );
 
 		// Subscribe.
@@ -46,16 +44,6 @@ export default class BookDeparturesExpeditionsResults extends HTMLElement {
 	 * @param {Object} state State.
 	 */
 	update( state: BookDeparturesExpeditionsState ): void {
-		// Update results.
-		this.updateResults( state );
-	}
-
-	/**
-	 * Update results.
-	 *
-	 * @param {Object} state State.
-	 */
-	updateResults( state: BookDeparturesExpeditionsState ) {
 		// Get state.
 		const {
 			updateMarkup,
@@ -64,7 +52,7 @@ export default class BookDeparturesExpeditionsResults extends HTMLElement {
 			loadMoreResults,
 		} = state;
 
-		// If product cards element not available, return.
+		// If results container element not available, return.
 		if ( ! this.resultsContainer ) {
 			// Return.
 			return;

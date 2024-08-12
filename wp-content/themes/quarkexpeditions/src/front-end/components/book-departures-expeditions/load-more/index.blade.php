@@ -12,6 +12,7 @@
 <quark-book-departures-expeditions-load-more
 	class="book-departures-expeditions__load-more typography-spacing"
 	loading="false"
+	load-more-text="{{ $load_more_text }}"
 >
 	{!! $slot !!}
 

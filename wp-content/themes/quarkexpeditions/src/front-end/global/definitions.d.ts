@@ -76,17 +76,6 @@ interface CustomException {
  */
 interface PartialData {
 	markup: string;
-	noResultsMarkup: string,
-	data: SearchResponseData;
-}
-
-/**
- * Interface SearchResponseData
- */
-interface SearchResponseData {
-	resultCount?: number,
-	hasNextPage?: boolean,
-	nextPage?: number,
-	page?: number,
-	remainingCount?: number,
+	noResultsMarkup?: string,
+	data: any;
 }
