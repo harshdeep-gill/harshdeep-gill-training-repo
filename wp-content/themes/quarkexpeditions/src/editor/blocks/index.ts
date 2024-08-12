@@ -57,6 +57,7 @@ import * as FeaturedMediaAccordions from './featured-media-accordions';
 import * as shipFeaturesAmenities from './ship-features-amenities';
 import * as shipVesselFeatures from './ship-vessel-features';
 import * as excursionAccordions from './excursion-accordions';
+import * as bookDeparturesExpeditions from './book-departures-expeditions';
 
 /**
  * Add blocks.
@@ -118,6 +119,7 @@ const blocks = [
 	shipFeaturesAmenities,
 	shipVesselFeatures,
 	excursionAccordions,
+	bookDeparturesExpeditions,
 ];
 
 /**
