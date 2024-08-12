@@ -952,11 +952,11 @@ class Test_Itinerary extends Softrip_TestCase {
 
 		// Expected lowest price - inferred from above departure data.
 		$expected_lowest_price = [
-			'USD' => 34895,
-			'AUD' => 54795,
-			'CAD' => 47495,
-			'EUR' => 32495,
-			'GBP' => 27995,
+			'USD' => 26171,
+			'AUD' => 41096,
+			'CAD' => 35621,
+			'EUR' => 24371,
+			'GBP' => 20996,
 		];
 
 		// Update departures.

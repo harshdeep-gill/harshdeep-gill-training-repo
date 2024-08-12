@@ -7,9 +7,10 @@
 
 namespace Quark\Softrip;
 
-use WP_Post;
-
 use function Quark\CabinCategories\get as get_cabin_category;
+use function Quark\ShipDecks\get as get_deck;
+
+use const Quark\CabinCategories\CABIN_CLASS_TAXONOMY as CABIN_CLASS;
 
 /**
  * Cabin class.
@@ -80,6 +81,16 @@ class Cabin extends Data_Object {
 		if ( $departure instanceof Departure ) {
 			$this->departure = $departure;
 		}
+	}
+
+	/**
+	 * Get the cabin departure.
+	 *
+	 * @return Departure
+	 */
+	public function get_departure(): Departure {
+		// Return the departure object.
+		return $this->departure;
 	}
 
 	/**
@@ -344,25 +355,198 @@ class Cabin extends Data_Object {
 	 *
 	 * @param string $currency The currency code to get.
 	 *
-	 * @return float
+	 * @return array{
+	 *   discounted_price: float,
+	 *   original_price: float,
+	 * }
 	 */
-	public function get_lowest_price( string $currency = 'USD' ): float {
+	public function get_lowest_price( string $currency = 'USD' ): array {
 		// Set up the lowest variable.
-		$lowest = 0;
+		$lowest         = 0;
+		$original_price = 0;
 
 		// Iterate over the occupancies.
 		foreach ( $this->get_occupancies() as $occupancy ) {
 			// Get the price per person.
-			$test_price = $occupancy->get_price_per_person( $currency );
+			$test_price = $occupancy->get_price_per_person( $currency, true );
 
 			// Check if lowest is set and is lower than the previous price.
 			if ( empty( $lowest ) || $lowest > $test_price ) {
 				// Use the price as it's lower.
-				$lowest = $test_price;
+				$lowest         = $test_price;
+				$original_price = $occupancy->get_price_per_person( $currency );
 			}
 		}
 
 		// Return the lowest found.
+		return [
+			'discounted_price' => $lowest,
+			'original_price'   => $original_price,
+		];
+	}
+
+	/**
+	 * Get the lowest prices per person for the cabin.
+	 *
+	 * @return array<string, array<string, float>>
+	 */
+	public function get_lowest_prices(): array {
+		// Set up the lowest variable.
+		$lowest = [];
+
+		// Set default array.
+		$currencies = [];
+
+		// Iterate over the occupancies.
+		foreach ( $this->get_occupancies() as $occupancy ) {
+			// currencies.
+			$currencies = array_merge( $occupancy->get_currencies(), $currencies );
+		}
+
+		// Get unique items only.
+		$currencies = array_unique( $currencies );
+
+		// Iterate over currencies.
+		foreach ( $currencies as $currency ) {
+			$lowest[ $currency ] = $this->get_lowest_price( $currency );
+		}
+
+		// Return the lowest found.
 		return $lowest;
+	}
+
+	/**
+	 * Get cabin availability description.
+	 *
+	 * @return string
+	 */
+	public function get_availability_description(): string {
+		// Set the types.
+		$types = [
+			'O' => 'Open',
+			'S' => 'Sold out',
+			'N' => 'No display',
+			'C' => 'Unavailable',
+		];
+
+		// Get status and space.
+		$status = $this->get_entry_data( 'availability_status' );
+		$spaces = $this->get_entry_data( 'spaces_available' );
+
+		// If is O and no spaces, return 'Please call'.
+		if ( empty( $spaces ) && 'O' === $status ) {
+			return 'Please call';
+		}
+
+		// Return type from list.
+		return $types[ $status ] ?? '';
+	}
+
+	/**
+	 * Get the cabin class.
+	 *
+	 * @return string
+	 */
+	public function get_cabin_class(): string {
+		// Set default string.
+		$class = '';
+
+		// Get taxonomy.
+		$taxonomy_data = $this->get_data()['post_taxonomies'][ CABIN_CLASS ] ?? [];
+
+		// Check if the class taxonomy is set.
+		if ( is_array( $taxonomy_data ) && ! empty( $taxonomy_data ) ) {
+			// Get the name of the first item.
+			$item  = array_shift( $taxonomy_data );
+			$class = $item['name'];
+		}
+
+		// Return the class.
+		return $class;
+	}
+
+	/**
+	 * Get the cabin location.
+	 *
+	 * @return string
+	 */
+	public function get_location(): string {
+		// Set default.
+		$location = '';
+
+		// Get decks.
+		$decks = $this->get_post_meta( 'related_decks' );
+
+		// Check we have decks and is array.
+		if ( ! empty( $decks ) && is_array( $decks ) ) {
+			// Get the first deck.
+			$deck_id = array_shift( $decks );
+			$deck    = get_deck( $deck_id );
+
+			// Get the deck name.
+			if ( isset( $deck['post_meta']['deck_name'] ) ) {
+				$location = strval( $deck['post_meta']['deck_name'] );
+			}
+		}
+
+		// Return the location.
+		return $location;
+	}
+
+	/**
+	 * Get the size using from_size and to_size.
+	 *
+	 * @param string $from_size The from size.
+	 * @param string $to_size   The to size.
+	 *
+	 * @return string
+	 */
+	public function validate_the_sizes( string $from_size = '', string $to_size = '' ): string {
+		// Validate the sizes.
+		$from_size = empty( $from_size ) ? 0 : $from_size;
+		$to_size   = empty( $to_size ) ? 0 : $to_size;
+
+		// Check if both sizes are available and are numeric.
+		if ( $from_size && $to_size ) {
+			// Return the range.
+			return $from_size . '-' . $to_size;
+		} elseif ( $from_size ) {
+			// Return the from size.
+			return $from_size;
+		} elseif ( $to_size ) {
+			// Return the to size.
+			return $to_size;
+		}
+
+		// Return empty if no sizes are available.
+		return '';
+	}
+
+	/**
+	 * Get cabin pax range.
+	 *
+	 * @return string
+	 */
+	public function get_pax_range(): string {
+		// Get range values.
+		$from = $this->get_post_meta( 'cabin_occupancy_pax_range_from' );
+		$to   = $this->get_post_meta( 'cabin_occupancy_pax_range_to' );
+
+		// validate the sizes.
+		return $this->validate_the_sizes( strval( $from ), strval( $to ) );
+	}
+
+	/**
+	 * Get cabin size.
+	 *
+	 * @return string
+	 */
+	public function get_size(): string {
+		// Get value.
+		$from_size = $this->get_post_meta( 'cabin_category_size_range_from' );
+		$to_size   = $this->get_post_meta( 'cabin_category_size_range_to' );
+
+		// validate the sizes.
+		return $this->validate_the_sizes( strval( $from_size ), strval( $to_size ) );
 	}
 }

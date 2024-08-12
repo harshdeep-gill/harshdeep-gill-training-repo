@@ -847,12 +847,24 @@ class Test_Departure extends WP_UnitTestCase {
 
 		// Without any currency.
 		$actual = $departure->get_lowest_price();
-		$this->assertEquals( 0, $actual );
+		$this->assertEquals(
+			[
+				'discounted_price' => 0,
+				'original_price'   => 0,
+			],
+			$actual
+		);
 
 		// Set itinerary.
 		$departure->set_itinerary( $itinerary );
 		$actual = $departure->get_lowest_price();
-		$this->assertEquals( 0, $actual );
+		$this->assertEquals(
+			[
+				'discounted_price' => 0,
+				'original_price'   => 0,
+			],
+			$actual
+		);
 
 		// Departure data.
 		$departure_data = [
@@ -934,11 +946,26 @@ class Test_Departure extends WP_UnitTestCase {
 
 		// Expected lowest price - inferred from above departure data.
 		$expected_lowest_price = [
-			'USD' => 34895,
-			'AUD' => 54795,
-			'CAD' => 47495,
-			'EUR' => 32495,
-			'GBP' => 27995,
+			'USD' => [
+				'original_price'   => 34895,
+				'discounted_price' => 26171,
+			],
+			'AUD' => [
+				'original_price'   => 54795,
+				'discounted_price' => 41096,
+			],
+			'CAD' => [
+				'original_price'   => 47495,
+				'discounted_price' => 35621,
+			],
+			'EUR' => [
+				'original_price'   => 32495,
+				'discounted_price' => 24371,
+			],
+			'GBP' => [
+				'original_price'   => 27995,
+				'discounted_price' => 20996,
+			],
 		];
 
 		// Set departure.
@@ -946,14 +973,15 @@ class Test_Departure extends WP_UnitTestCase {
 
 		// Get lowest price without currency - default USD.
 		$lowest_price = $departure->get_lowest_price();
-		$this->assertIsFloat( $lowest_price );
+		$this->assertIsFloat( $lowest_price['original_price'] );
+		$this->assertIsFloat( $lowest_price['discounted_price'] );
 		$this->assertEquals( $expected_lowest_price['USD'], $lowest_price );
 
 		// Verify with each currency.
 		foreach ( $expected_lowest_price as $currency => $price ) {
 			$lowest_price = $itinerary->get_lowest_price( $currency );
 			$this->assertIsFloat( $lowest_price );
-			$this->assertEquals( $price, $lowest_price );
+			$this->assertEquals( $price['discounted_price'], $lowest_price );
 		}
 
 		// Cleanup.

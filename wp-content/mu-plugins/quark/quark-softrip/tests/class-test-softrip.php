@@ -315,8 +315,8 @@ class Test_Softrip extends Softrip_TestCase {
 		$itinerary->load( absint( self::$itinerary_ids[3] ) );
 
 		// Assert the lowest price.
-		$this->assertEquals( '27600.00', $itinerary->get_lowest_price( 'GBP' ) );
-		$this->assertEquals( '34600.00', $itinerary->get_lowest_price() );
+		$this->assertEquals( '23460.00', $itinerary->get_lowest_price( 'GBP' ) );
+		$this->assertEquals( '29410.00', $itinerary->get_lowest_price() );
 
 		// Assert the starting date.
 		$this->assertEquals( '2025-01-09', $itinerary->get_starting_date() );

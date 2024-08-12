@@ -21,11 +21,58 @@ class Search {
 	/**
 	 * Field mapping.
 	 *
-	 * @var string[] Field mapping.
+	 * @var array{
+	 *     'date-now': array{
+	 *         key: string,
+	 *         order: string
+	 *     },
+	 *     'date-later': array{
+	 *         key: string,
+	 *         order: string
+	 *     },
+	 *     'price-low': array{
+	 *         key: string,
+	 *         order: string
+	 *     },
+	 *     'price-high': array{
+	 *         key: string,
+	 *         order: string
+	 *     },
+	 *     'duration-short': array{
+	 *         key: string,
+	 *         order: string
+	 *     },
+	 *     'duration-long': array{
+	 *         key: string,
+	 *         order: string
+	 *     },
+	 * } Field mapping.
 	 */
 	private array $field_mapping = [
-		'durations'            => 'duration_i',
-		'departure_start_date' => 'departure_start_date_i',
+		'date-now'       => [
+			'key'   => 'departure_start_date_s',
+			'order' => 'asc',
+		],
+		'date-later'     => [
+			'key'   => 'departure_start_date_s',
+			'order' => 'desc',
+		],
+		'price-low'      => [
+			'key'   => 'departure_low_price_f',
+			'order' => 'asc',
+		],
+		'price-high'     => [
+			'key'   => 'departure_low_price_f',
+			'order' => 'desc',
+		],
+		'duration-short' => [
+			'key'   => 'duration_i',
+			'order' => 'asc',
+		],
+		'duration-long'  => [
+			'key'   => 'duration_i',
+			'order' => 'desc',
+		],
 	];
 
 	/**
@@ -55,6 +102,13 @@ class Search {
 	 * @var int Results count.
 	 */
 	public int $result_count = 0;
+
+	/**
+	 * Remaining count.
+	 *
+	 * @var int Remaining count.
+	 */
+	public int $remaining_count = 0;
 
 	/**
 	 * Current page number.
@@ -179,7 +233,7 @@ class Search {
 
 		// Set Expedition meta query.
 		$this->args['meta_query'][] = [
-			'key'     => 'expedition',
+			'key'     => 'related_expedition',
 			'value'   => array_unique( $expeditions ),
 			'compare' => 'IN',
 		];
@@ -205,7 +259,7 @@ class Search {
 
 		// Set Ship meta query.
 		$this->args['meta_query'][] = [
-			'key'     => 'ship',
+			'key'     => 'related_ship',
 			'value'   => array_unique( $ships ),
 			'compare' => 'IN',
 		];
@@ -333,18 +387,17 @@ class Search {
 	 * Set Sort.
 	 *
 	 * @param string $sort Sort.
-	 * @param string $order Order.
 	 *
 	 * @return void
 	 */
-	public function set_sort( string $sort = '', string $order = 'ASC' ): void {
+	public function set_sort( string $sort = '' ): void {
 		// Return early if sort is not set or field mapping is not set.
 		if ( empty( $sort ) || empty( $this->field_mapping[ $sort ] ) ) {
 			return;
 		}
 
 		// Set sort.
-		$this->sorts[ $this->field_mapping[ $sort ] ] = $order;
+		$this->sorts[ $this->field_mapping[ $sort ]['key'] ] = $this->field_mapping[ $sort ]['order'];
 	}
 
 	/**
@@ -447,6 +500,12 @@ class Search {
 
 		// Set the result.
 		$this->results = $filtered_posts;
+
+		// Count number of posts for previous load.
+		$previous_load_count = ( $this->current_page - 1 ) * $this->posts_per_page;
+
+		// Set the remaining count, including previous pagination.
+		$this->remaining_count = $this->result_count - $previous_load_count - count( $filtered_posts );
 
 		// Return posts.
 		return $filtered_posts;
