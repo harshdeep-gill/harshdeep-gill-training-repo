@@ -40,16 +40,38 @@
 			@endif
 		</button>
 		<template>
-			@if ( ! empty( $path ) && str_contains( $path, 'youtube.com' ) )
-				<iframe
-					data-path="{{ $path }}"
-					src="{{ $path }}"
-					title="{{ $title }}"
-					frameborder="0"
-					allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-					referrerpolicy="strict-origin-when-cross-origin"
-					allowfullscreen
-				></iframe>
+			@if ( ! empty( $path ) )
+				@if ( str_contains( $path, 'youtube.com' ) )
+					<iframe
+						data-path="{{ $path }}"
+						src="{{ $path }}"
+						title="{{ $title }}"
+						frameborder="0"
+						allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+						referrerpolicy="strict-origin-when-cross-origin"
+						allowfullscreen
+					></iframe>
+				@elseif ( str_contains( $path, 'wistia.com' ) )
+					@php
+						$video_id = quark_get_wistia_id( $path );
+
+						if ( empty( $video_id ) ) {
+							return;
+						}
+
+						$video_embed_classes = [
+							'wistia_embed',
+							'seo=true',
+							'videoFoam=true',
+							'wistia_async_' . $video_id,
+						];
+					@endphp
+
+					<quark-wistia-embed video-id="{{ $video_id }}">
+						<div @class( $video_embed_classes )></div>
+					</quark-wistia-embed>
+				@endif
+
 			@elseif ( ! empty( $image_id ) )
 				<x-image
 					:image_id="$image_id"

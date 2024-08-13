@@ -1266,7 +1266,13 @@
 				video_url="https://www.youtube.com/embed/KhVseF5ZD5g"
 				title="Video Caption"
 			/>
-			<x-collage.image size="small" image_id="26" title="Image 2" />
+			<x-collage.video
+				size="small"
+				image_id="33"
+				video_url="https://quarkexpeditions.wistia.com/medias/p0k52ec113"
+				title="Video Caption"
+			/>
+			{{-- <x-collage.image size="small" image_id="26" title="Image 2" /> --}}
 			<x-collage.image size="small" image_id="32" title="Image 3" />
 			<x-collage.image size="small" image_id="36" title="Image 4" />
 			<x-collage.image size="large" image_id="31" title="Image 5" />
@@ -5186,7 +5192,7 @@
 						</td>
 
 						<td class="travelopia-table__column">
-							117-132 sq. ft.	
+							117-132 sq. ft.
 						</td>
 
 						<td class="travelopia-table__column">
