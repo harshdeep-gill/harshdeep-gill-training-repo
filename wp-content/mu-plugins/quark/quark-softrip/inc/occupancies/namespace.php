@@ -9,6 +9,8 @@ namespace Quark\Softrip\Occupancies;
 
 use WP_Query;
 
+use function Quark\Itineraries\get_mandatory_transfer_price;
+use function Quark\Itineraries\get_supplemental_price;
 use function Quark\Softrip\get_engine_collate;
 use function Quark\Softrip\OccupancyPromotions\delete_occupancy_promotions_by_occupancy_id;
 use function Quark\Softrip\OccupancyPromotions\get_lowest_price as get_occupancy_promotion_lowest_price;
@@ -601,6 +603,9 @@ function get_lowest_price( int $post_id = 0, string $currency = 'USD' ): array {
 		}
 	}
 
+	// Add mandatory transfer price and supplemental price.
+	$lowest_price = add_supplemental_and_mandatory_price( $lowest_price, $post_id, $currency );
+
 	// Return the lowest price.
 	return $lowest_price;
 }
@@ -944,6 +949,9 @@ function get_lowest_price_by_cabin_category_and_departure( int $cabin_category_p
 		}
 	}
 
+	// Add mandatory transfer price and supplemental price.
+	$lowest_price = add_supplemental_and_mandatory_price( $lowest_price, $departure_post_id, $currency );
+
 	// Return the lowest price.
 	return $lowest_price;
 }
@@ -1105,4 +1113,52 @@ function get_description_and_pax_count_by_mask( string $mask = '' ): array {
 
 	// Return the description and pax count.
 	return $mask_mapping[ $mask ] ?? $description_and_pax_count;
+}
+
+/**
+ * Add supplemental and mandatory price to the lowest price.
+ *
+ * @param array{discounted: int, original: int} $lowest_price The lowest price.
+ * @param int $departure_post_id The departure post ID.
+ * @param string $currency The currency code.
+ *
+ * @return array{
+ *   discounted: int,
+ *   original: int,
+ * }
+ */
+function add_supplemental_and_mandatory_price( array $lowest_price = [ 'discounted' => 0, 'original' => 0 ], int $departure_post_id = 0, string $currency = 'USD' ): array {
+	// Setup default return values.
+	$lowest_price_with_supplemental = [
+		'discounted' => 0,
+		'original'   => 0,
+	];
+
+	// Bail if empty.
+	if ( ! is_array( $lowest_price ) || empty( $departure_post_id ) || ! in_array( $currency, CURRENCIES, true ) ) {
+		return $lowest_price_with_supplemental;
+	}
+
+	// Upper case currency.
+	$currency = strtoupper( $currency );
+
+	// Get itinerary post ID.
+	$itinerary_post_id = absint( get_post_meta( $departure_post_id, 'itinerary', true ) );
+
+	// Initialize supplemental and mandatory price.
+	$supplemental_price = 0;
+	$mandatory_price    = 0;
+
+	// Get supplemental price.
+	if ( ! empty( $itinerary_post_id ) ) {
+		$supplemental_price = get_supplemental_price( $itinerary_post_id, $currency );
+		$mandatory_price    = get_mandatory_transfer_price( $itinerary_post_id, $currency );
+	}
+
+	// Add supplemental and mandatory price to the lowest price.
+	$lowest_price_with_supplemental['discounted'] = $lowest_price['discounted'] + $supplemental_price + $mandatory_price;
+	$lowest_price_with_supplemental['original']   = $lowest_price['original'] + $supplemental_price + $mandatory_price;
+
+	// Return the lowest price.
+	return $lowest_price_with_supplemental;
 }
