@@ -9,7 +9,10 @@ namespace Quark\CabinCategories;
 
 use WP_Post;
 
+use function Quark\Core\format_price;
 use function Quark\ShipDecks\get as get_ship_deck;
+use function Quark\Softrip\Occupancies\get_cabin_category_post_ids_by_departure;
+use function Quark\Softrip\Occupancies\get_lowest_price_by_cabin_category_and_departure;
 
 use const Quark\Ships\POST_TYPE as SHIP_POST_TYPE;
 
@@ -451,4 +454,299 @@ function get_cabin_categories_data( int $cabin_id = 0 ): array {
 
 	// Return cabin category data.
 	return $cabin_category_data;
+}
+
+/**
+ * Get cabin categories data by departure.
+ *
+ * @param int    $departure_post_id Departure Post ID.
+ * @param string $currency Currency.
+ *
+ * @return array<int|string, array{
+ *     name: string,
+ *     description: string,
+ *     gallery: mixed,
+ *     cabin_code: string,
+ *     type: string,
+ *     specifications: array{
+ *          availability_status: string,
+ *          availability_description: string,
+ *          spaces_available: string,
+ *          occupancy: string,
+ *          location: string,
+ *          size: string,
+ *          bed_configuration: string
+ *      },
+ *     from_price: array{
+ *         discounted_price: string,
+ *         original_price: string,
+ *     },
+ *     occupancies: array<int<0, max>, array<string, mixed>>
+ * }>
+ */
+function get_cabin_details_by_departure( int $departure_post_id = 0, string $currency = 'USD' ): array {
+	// Bail out if no departure post ID.
+	if ( empty( $departure_post_id ) ) {
+		return [];
+	}
+
+	// Get the cabin categories post IDs.
+	$cabin_category_post_ids = get_cabin_category_post_ids_by_departure( $departure_post_id );
+
+	// Bail out if no cabin categories post IDs.
+	if ( empty( $cabin_category_post_ids ) ) {
+		return [];
+	}
+
+	// Initialize cabin categories data to be returned.
+	$cabin_categories_data = [];
+
+	// Loop through the cabin categories post IDs.
+	foreach ( $cabin_category_post_ids as $cabin_category_post_id ) {
+		// Get cabin category data.
+		$cabin_data = get( $cabin_category_post_id );
+
+		// Check if cabin category data is empty.
+		if ( empty( $cabin_data['post'] ) || ! $cabin_data['post'] instanceof WP_Post ) {
+			continue;
+		}
+
+		// Get cabin code from meta.
+		$cabin_code = strval( $cabin_data['post_meta']['cabin_category_id'] ?? '' );
+
+		// Continue if empty.
+		if ( empty( $cabin_code ) ) {
+			continue;
+		}
+
+		// Get lowest price for this cabin.
+		$lowest_price = get_lowest_price_by_cabin_category_and_departure( $cabin_category_post_id, $departure_post_id, $currency );
+
+		// Format price.
+		$formatted_price['discounted_price'] = format_price( $lowest_price['discounted'], $currency );
+		$formatted_price['original_price']   = format_price( $lowest_price['original'], $currency );
+
+		// Setup cabin structure data.
+		$struct = [
+			'name' => strval( $cabin_data['post_meta']['cabin_name'] ?? '' ),
+			'cabin_code' => $cabin_code,
+			'description' => $cabin_data['post']->post_content,
+			'gallery' => $cabin_data['post_meta']['cabin_images'] ?? [],
+			'type'    => get_cabin_category_class( $cabin_category_post_id ),
+			'specifications' => [
+				'availability_status' => '', // @todo Add the availability status from quark-softrip.
+				'availability_description' => '', // @todo Add the availability description from quark-softrip.
+				'spaces_available' => '', // @todo Add the spaces available from quark-softrip.
+				'occupancy' => get_pax_range( $cabin_category_post_id ),
+				'location' => get_cabin_category_location( $cabin_category_post_id ),
+				'size' => get_size_range( $cabin_category_post_id ),
+				'bed_configuration' => strval( $cabin_data['post_meta']['cabin_bed_configuration'] ?? '' ),
+			],
+			'from_price' => $formatted_price,
+			'occupancies' => [], // @todo Add the occupancy data.
+		];
+
+		// Add cabin category data to cabin categories data.
+		$cabin_categories_data[ $cabin_code ] = $struct;
+	}
+
+	return [];
+}
+
+/**
+ * Get cabin category class.
+ *
+ * @param int $cabin_category_id Cabin category ID.
+ *
+ * @return string
+ */
+function get_cabin_category_class( int $cabin_category_id = 0 ): string {
+	// Setup default return value.
+	$class = '';
+
+	// Bail out if no cabin category ID.
+	if ( empty( $cabin_category_id ) ) {
+		return $class;
+	}
+
+	// Get cabin category data.
+	$cabin_category = get( $cabin_category_id );
+
+	$taxonomy_data = $cabin_category['post_taxonomies'][ CABIN_CLASS_TAXONOMY ] ?? [];
+
+	// Bail out if no taxonomy data.
+	if ( empty( $taxonomy_data ) || ! is_array( $taxonomy_data ) ) {
+		return $class;
+	}
+
+	// Get the first taxonomy data.
+	$taxonomy_data = $taxonomy_data[0] ?? [];
+
+	// Bail if not array or key does not exist.
+	if ( ! is_array( $taxonomy_data ) || empty( $taxonomy_data['name'] ) ) {
+		return $class;
+	}
+
+	// Get the class name.
+	$class = $taxonomy_data['name'];
+
+	// Return class name.
+	return $class;
+}
+
+/**
+ * Get cabin category location.
+ *
+ * @param int $cabin_category_id Cabin category post ID.
+ *
+ * @return string
+ */
+function get_cabin_category_location( int $cabin_category_id = 0 ): string {
+	// Setup default return value.
+	$location = '';
+
+	// Bail out if no cabin category ID.
+	if ( empty( $cabin_category_id ) ) {
+		return $location;
+	}
+
+	// Get cabin category data.
+	$cabin_category = get( $cabin_category_id );
+
+	// Get the post meta.
+	$cabin_category_meta = $cabin_category['post_meta'];
+
+	// Bail out if no post meta.
+	if ( empty( $cabin_category_meta ) || ! is_array( $cabin_category_meta ) ) {
+		return $location;
+	}
+
+	// Get the related decks.
+	$related_decks = $cabin_category_meta['related_decks'] ?? [];
+
+	// Bail out if no related decks.
+	if ( empty( $related_decks ) || ! is_array( $related_decks ) ) {
+		return $location;
+	}
+
+	// Prepare location data.
+	$locations = [];
+
+	// Loop through the related decks.
+	foreach ( $related_decks as $related_deck_id ) {
+		// Get the ship deck data.
+		$related_deck = get_ship_deck( $related_deck_id );
+
+		// Get the post meta.
+		$related_deck_meta = $related_deck['post_meta'];
+
+		// Bail out if no post meta.
+		if ( empty( $related_deck_meta ) || ! is_array( $related_deck_meta ) ) {
+			continue;
+		}
+
+		// Get the deck name.
+		$deck_name = $related_deck_meta['deck_name'] ?? '';
+
+		// Bail out if no deck name.
+		if ( empty( $deck_name ) ) {
+			continue;
+		}
+
+		// Add deck name to locations.
+		$locations[] = strval( $deck_name );
+	}
+
+	// Prepare comma separated location.
+	$location = implode( ', ', $locations );
+
+	// Return location.
+	return $location;
+}
+
+/**
+ * Get formatted size range.
+ *
+ * @param string $from_size From size.
+ * @param string $to_size   To size.
+ *
+ * @return string
+ */
+function get_formatted_size_range( string $from_size = '', string $to_size = '' ): string {
+	// Setup default return value.
+	$size_range = '';
+
+	// Bail out if no from size.
+	if ( empty( $from_size ) && empty( $to_size ) ) {
+		return $size_range;
+	}
+
+	// Prepare size range.
+	$size_range = $from_size;
+
+	// Add to size if available.
+	if ( ! empty( $to_size ) ) {
+		$size_range .= ' - ' . $to_size;
+	}
+
+	// Return size range.
+	return $size_range;
+}
+
+/**
+ * Get cabin pax range from meta.
+ *
+ * @param int $cabin_category_post_id Cabin category post ID.
+ *
+ * @return string
+ */
+function get_pax_range( int $cabin_category_post_id = 0 ): string {
+	// Bail out if no cabin category post ID.
+	if ( empty( $cabin_category_post_id ) ) {
+		return '';
+	}
+
+	// Get cabin category data.
+	$cabin_category = get( $cabin_category_post_id );
+
+	// Bail if no cabin category data.
+	if ( empty( $cabin_category['post_meta'] ) ) {
+		return '';
+	}
+
+	// Get the pax range.
+	$from = strval( $cabin_category['post_meta']['cabin_occupancy_pax_range_from'] ?? '' );
+	$to   = strval( $cabin_category['post_meta']['cabin_occupancy_pax_range_to'] ?? '' );
+
+	// Return the formatted range.
+	return get_formatted_size_range( $from, $to );
+}
+
+/**
+ * Get cabin size range from meta.
+ *
+ * @param int $cabin_category_post_id Cabin category post ID.
+ *
+ * @return string
+ */
+function get_size_range( int $cabin_category_post_id = 0 ): string {
+	// Bail out if no cabin category post ID.
+	if ( empty( $cabin_category_post_id ) ) {
+		return '';
+	}
+
+	// Get cabin category data.
+	$cabin_category = get( $cabin_category_post_id );
+
+	// Bail if no cabin category data.
+	if ( empty( $cabin_category['post_meta'] ) ) {
+		return '';
+	}
+
+	// Get the size range.
+	$from = strval( $cabin_category['post_meta']['cabin_category_size_range_from'] ?? '' );
+	$to   = strval( $cabin_category['post_meta']['cabin_category_size_range_to'] ?? '' );
+
+	// Return the formatted range.
+	return get_formatted_size_range( $from, $to );
 }

@@ -151,12 +151,18 @@ function update_occupancies( array $raw_cabins_data = [], int $departure_post_id
 				// Update the occupancy promotions.
 				update_occupancy_promotions( array_values( $raw_cabin_occupancy_data['prices'] ), $updated_id );
 
-				// Bust caches.
+				// Bust caches at occupancy level.
 				wp_cache_delete( CACHE_KEY_PREFIX . '_softrip_id_' . $formatted_data['softrip_id'], CACHE_GROUP );
-				wp_cache_delete( CACHE_KEY_PREFIX . '_departure_post_id_' . $departure_post_id, CACHE_GROUP );
+				wp_cache_delete( CACHE_KEY_PREFIX . '_occupancy_id_' . $updated_id, CACHE_GROUP );
 			}
 		}
+
+		// Bust caches at cabin category level.
+		wp_cache_delete( CACHE_KEY_PREFIX . '_cabin_category_post_id_' . $cabin_category_post_id . '_departure_post_id_' . $departure_post_id , CACHE_GROUP );
 	}
+
+	// Bust caches at departure level.
+	wp_cache_delete( CACHE_KEY_PREFIX . '_departure_post_id_' . $departure_post_id, CACHE_GROUP );
 
 	// Return success.
 	return true;
@@ -621,7 +627,7 @@ function clear_occupancies_by_departure( int $departure_post_id = 0 ): bool {
 	// Loop through each occupancy.
 	foreach ( $occupancies as $occupancy ) {
 		// Bail if not array or empty.
-		if ( ! is_array( $occupancy ) || empty( $occupancy['id'] ) || empty( $occupancy['softrip_id'] ) ) {
+		if ( ! is_array( $occupancy ) || empty( $occupancy['id'] ) || empty( $occupancy['softrip_id'] ) || empty( $occupancy['cabin_category_post_id'] ) ) {
 			continue;
 		}
 
@@ -642,6 +648,9 @@ function clear_occupancies_by_departure( int $departure_post_id = 0 ): bool {
 
 		// Delete the occupancy.
 		delete_occupancy_by_id( $occupancy_id );
+
+		// Bust cache.
+		wp_cache_delete( CACHE_KEY_PREFIX . '_cabin_category_post_id_' . $occupancy['cabin_category_post_id'] . '_departure_post_id_' . $departure_post_id, CACHE_GROUP );
 	}
 
 	// Return failure if not all deleted.
@@ -707,6 +716,7 @@ function delete_occupancy_by_id( int $occupancy_id = 0 ): bool {
 
 	// Bust caches.
 	wp_cache_delete( CACHE_KEY_PREFIX . '_softrip_id_' . $softrip_id, CACHE_GROUP );
+	wp_cache_delete( CACHE_KEY_PREFIX . '_occupancy_id_' . $occupancy_id, CACHE_GROUP );
 
 	// Return success.
 	return true;
@@ -835,5 +845,194 @@ function format_rows_data_from_db( array $rows_data = [] ): array {
 	}
 
 	// Return the formatted rows.
+	return $formatted_rows;
+}
+
+/**
+ * Get cabin category post ids by departure post id from occupancy table.
+ *
+ * @param int $departure_post_id The departure post ID.
+ *
+ * @return int[]
+ */
+function get_cabin_category_post_ids_by_departure( int $departure_post_id = 0 ): array {
+	// Bail if empty.
+	if ( empty( $departure_post_id ) ) {
+		return [];
+	}
+
+	// Get the global $wpdb object.
+	global $wpdb;
+
+	// Get the table name.
+	$table_name = get_table_name();
+
+	// Get the cabin category post IDs.
+	$cabin_category_post_ids = $wpdb->get_col(
+		$wpdb->prepare(
+			'
+			SELECT
+				cabin_category_post_id
+			FROM
+				%i
+			WHERE
+				departure_post_id = %d
+			GROUP BY
+				cabin_category_post_id
+			',
+			[
+				$table_name,
+				$departure_post_id,
+			]
+		)
+	);
+
+	// Return the cabin category post IDs.
+	return array_map( 'absint', $cabin_category_post_ids );
+}
+
+/**
+ * Get lowest price by cabin category post id.
+ *
+ * @param int    $cabin_category_post_id The cabin category post ID.
+ * @param int    $departure_post_id      The departure post ID.
+ * @param string $currency               Currency code.
+ *
+ * @return array{
+ *   original: int,
+ *   discounted: int,
+ * }
+ */
+function get_lowest_price_by_cabin_category_and_departure( int $cabin_category_post_id = 0, int $departure_post_id = 0, string $currency = 'USD' ): array {
+	// Upper case currency.
+	$currency = strtoupper( $currency );
+
+	// Setup default return values.
+	$lowest_price = [
+		'original'   => 0,
+		'discounted' => 0,
+	];
+
+	// Return default values if no post ID.
+	if ( empty( $cabin_category_post_id ) || ! in_array( $currency, CURRENCIES, true ) ) {
+		return $lowest_price;
+	}
+
+	// Get all occupancies by cabin category.
+	$occupancies = get_occupancies_by_cabin_category_and_departure( $cabin_category_post_id, $departure_post_id );
+
+	// Loop through each occupancy.
+	foreach ( $occupancies as $occupancy ) {
+		// Construct the price per person key.
+		$price_per_person_key = 'price_per_person_' . strtolower( $currency );
+
+		// Validate the price per person.
+		if ( ! is_array( $occupancy ) || empty( $occupancy[ $price_per_person_key ] ) || empty( $occupancy['id'] ) ) {
+			continue;
+		}
+
+		// Get lowest price for occupancy promotions.
+		$promotion_lowest_price = get_occupancy_promotion_lowest_price( $occupancy['id'], $currency );
+
+		/**
+		 * If the promotion price is less than the current lowest price, update the discounted as well as the original price.
+		 * For example, if the lowest promotion price is $100 and the corresponding original price is $200, the discounted price will be $100 and the original price will be $200.
+		 */
+		if ( empty( $lowest_price['discounted'] ) || ( ! empty( $promotion_lowest_price ) && $promotion_lowest_price < $lowest_price['discounted'] ) ) {
+			$lowest_price['discounted'] = $promotion_lowest_price;
+			$lowest_price['original']   = absint( $occupancy[ $price_per_person_key ] );
+		}
+	}
+
+	// Return the lowest price.
+	return $lowest_price;
+}
+
+/**
+ * Get occupancies by cabin category post ID and departure post ID.
+ *
+ * @param int  $cabin_category_post_id The cabin category post ID.
+ * @param int  $departure_post_id      The departure post ID.
+ * @param bool $force                  Bypass cache.
+ *
+ * @return array{}|array{
+ *  array{
+ *    id: int,
+ *    softrip_id: string,
+ *    softrip_name: string,
+ *    mask: string,
+ *    departure_post_id: int,
+ *    cabin_category_post_id: int,
+ *    spaces_available: int,
+ *    availability_description: string,
+ *    availability_status: string,
+ *    price_per_person_usd: int,
+ *    price_per_person_cad: int,
+ *    price_per_person_aud: int,
+ *    price_per_person_gbp: int,
+ *    price_per_person_eur: int,
+ *  }
+ * }
+ */
+function get_occupancies_by_cabin_category_and_departure( int $cabin_category_post_id = 0, int $departure_post_id = 0, bool $force = false ): array {
+	// Bail if empty.
+	if ( empty( $cabin_category_post_id ) || empty( $departure_post_id ) ) {
+		return [];
+	}
+
+	// Cache key.
+	$cache_key = CACHE_KEY_PREFIX . '_cabin_category_post_id_' . $cabin_category_post_id . '_departure_post_id_' . $departure_post_id;
+
+	// Check the cache.
+	if ( ! $force ) {
+		// Check for cached version.
+		$cached_data = wp_cache_get( $cache_key, CACHE_GROUP );
+
+		// If cached data, return it.
+		if ( is_array( $cached_data ) ) {
+			return $cached_data;
+		}
+	}
+
+	// Get the global $wpdb object.
+	global $wpdb;
+
+	// Get the table name.
+	$table_name = get_table_name();
+
+	// Get occupancies data.
+	$occupancies_data = $wpdb->get_results(
+		$wpdb->prepare(
+			'
+			SELECT
+				*
+			FROM
+				%i
+			WHERE
+				cabin_category_post_id = %d
+			AND
+				departure_post_id = %d
+			',
+			[
+				$table_name,
+				$cabin_category_post_id,
+				$departure_post_id,
+			]
+		),
+		ARRAY_A
+	);
+
+	// Bail if not array.
+	if ( ! is_array( $occupancies_data ) ) {
+		return [];
+	}
+
+	// Format the rows data.
+	$formatted_rows = format_rows_data_from_db( $occupancies_data );
+
+	// Cache the data.
+	wp_cache_set( $cache_key, $formatted_rows, CACHE_GROUP );
+
+	// Return the cabin data.
 	return $formatted_rows;
 }

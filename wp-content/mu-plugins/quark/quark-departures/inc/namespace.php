@@ -7,11 +7,10 @@
 
 namespace Quark\Departures;
 
-use Quark\Softrip\Departure;
-use Quark\Softrip\Itinerary;
 use WP_Post;
 use WP_Term_Query;
 
+use function Quark\CabinCategories\get_cabin_details_by_departure;
 use function Quark\Core\format_price;
 use function Quark\Core\get_available_currencies;
 use function Quark\Itineraries\get as get_itinerary;
@@ -20,6 +19,12 @@ use function Quark\Itineraries\get_included_transfer_package_details;
 use function Quark\Itineraries\get_policy_banner_details;
 use function Quark\Expeditions\get as get_expedition;
 use function Quark\Expeditions\get_itineraries;
+use function Quark\Ships\get as get_ship;
+use function Quark\Softrip\Departures\get_departures_by_itinerary;
+use function Quark\Softrip\Departures\get_end_date;
+use function Quark\Softrip\Departures\get_lowest_price;
+use function Quark\Softrip\Departures\get_related_ship;
+use function Quark\Softrip\Departures\get_start_date;
 
 use const Quark\StaffMembers\SEASON_TAXONOMY;
 use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
@@ -604,15 +609,13 @@ function get_card_data( int $departure_id = 0, string $currency = 'USD' ): array
 		return $cached_value;
 	}
 
-	// Get the departure object.
-	$departure = new Departure();
-	$departure->load( $departure_id );
+	$departure = get( $departure_id );
 
 	// Get the related expedition.
-	$expedition_post = get_expedition( absint( $departure->get_post_meta( 'related_expedition' ) ) );
+	$expedition_post = get_expedition( absint( $departure['post_meta']['related_expedition'] ?? 0 ) );
 
 	// Get the itinerary ID.
-	$itinerary_id = $departure->get_post_meta( 'itinerary' ) ? absint( $departure->get_post_meta( 'itinerary' ) ) : 0;
+	$itinerary_id = absint( $departure['post_meta']['itinerary'] ?? 0 );
 
 	// Check if the expedition post is valid.
 	if ( ! $expedition_post['post'] instanceof WP_Post || ! $itinerary_id ) {
@@ -623,7 +626,8 @@ function get_card_data( int $departure_id = 0, string $currency = 'USD' ): array
 	$expedition_name = $expedition_post['post']->post_title;
 
 	// Prepare the departure details.
-	$ship_data = $departure->get_ship();
+	$ship_id   = get_related_ship( $departure_id );
+	$ship_data = get_ship( $ship_id );
 	$ship_name = '';
 
 	// Validate ship_data.
@@ -632,20 +636,20 @@ function get_card_data( int $departure_id = 0, string $currency = 'USD' ): array
 	}
 
 	// Get the lowest price.
-	$prices = $departure->get_lowest_price( $currency );
+	$lowest_price = get_lowest_price( $departure_id, $currency );
 
 	// Format the prices.
-	$prices['discounted_price'] = format_price( $prices['discounted_price'], $currency );
-	$prices['original_price']   = format_price( $prices['original_price'], $currency );
+	$prices['discounted_price'] = format_price( $lowest_price['discounted'], $currency );
+	$prices['original_price']   = format_price( $lowest_price['original'], $currency );
 
 	// Prepare the departure card details.
 	$data = [
 		'departure_id'             => $departure_id,
 		'expedition_name'          => $expedition_name,
 		'expedition_link'          => $expedition_post['permalink'],
-		'package_id'               => strval( $departure->get_post_meta( 'softrip_package_id' ) ),
-		'duration_days'            => absint( $departure->get_post_meta( 'duration' ) ),
-		'duration_dates'           => $departure->get_date_range(),
+		'package_id'               => strval( $departure['post_meta']['softrip_package_code'] ?? '' ),
+		'duration_days'            => absint( $departure['post_meta']['duration'] ?? 0 ),
+		'duration_dates'           => get_start_end_departure_date( $departure_id ),
 		'starting_from_location'   => get_starting_from_location( $itinerary_id ),
 		'languages'                => implode( ', ', get_languages( $departure_id ) ),
 		'paid_adventure_options'   => get_paid_adventure_options( $departure_id ),
@@ -654,7 +658,7 @@ function get_card_data( int $departure_id = 0, string $currency = 'USD' ): array
 		'promotion_tags'           => get_promotion_tags( $departure_id ),
 		'ship_name'                => $ship_name,
 		'banner_details'           => get_policy_banner_details( $itinerary_id ),
-		'cabins'                   => $departure->get_cabin_details( $currency ),
+		'cabins'                   => get_cabin_details_by_departure( $departure_id, $currency ),
 	];
 
 	// Set cache and return data.
@@ -662,6 +666,59 @@ function get_card_data( int $departure_id = 0, string $currency = 'USD' ): array
 
 	// Return departure card data.
 	return $data;
+}
+
+/**
+ * Get departure date range string by combining start and end date.
+ *
+ * @param int $post_id Departure Post ID.
+ *
+ * @return string
+ */
+function get_start_end_departure_date( int $post_id = 0 ): string {
+	// Bail if no post ID.
+	if ( empty( $post_id ) ) {
+		return '';
+	}
+
+	// Get start and end date.
+	$start_date = get_start_date( $post_id );
+	$end_date   = get_end_date( $post_id );
+
+	// Parse the dates.
+	$start_timestamp = strtotime( $start_date );
+	$end_timestamp   = strtotime( $end_date );
+
+	// Validate.
+	if ( empty( $start_timestamp ) || empty( $end_timestamp ) ) {
+		return '';
+	}
+
+	// Extract the date parts from start date.
+	$start_year  = gmdate( 'Y', $start_timestamp );
+	$start_month = gmdate( 'F', $start_timestamp );
+	$start_day   = gmdate( 'j', $start_timestamp );
+
+	// Extract the date parts from end date.
+	$end_year  = gmdate( 'Y', $end_timestamp );
+	$end_month = gmdate( 'F', $end_timestamp );
+	$end_day   = gmdate( 'j', $end_timestamp );
+
+	// Initialize the date range.
+	$date_range = '';
+
+	// Prepare the date range.
+	if ( $start_year !== $end_year ) {
+		// Different years.
+		$date_range = sprintf( '%s %s, %s - %s %s, %s', $start_month, $start_day, $start_year, $end_month, $end_day, $end_year );
+	} elseif ( $start_month !== $end_month ) {
+		$date_range = sprintf( '%s %s - %s %s, %s', $start_month, $start_day, $end_month, $end_day, $start_year );
+	} else {
+		$date_range = sprintf( '%s %s - %s, %s', $start_month, $start_day, $end_day, $start_year );
+	}
+
+	// Return the date range string.
+	return $date_range;
 }
 
 /**
@@ -763,11 +820,8 @@ function bust_card_data_cache( int $post_id = 0 ): void {
  * @return void
  */
 function bust_card_data_cache_on_itinerary_update( int $itinerary_id = 0 ): void {
-	// Create Itinerary object.
-	$itinerary = new Itinerary( $itinerary_id );
-
-	// Get Departures for the Itinerary.
-	$departures = $itinerary->get_departures();
+	// Get departures for the itinerary.
+	$departures = get_departures_by_itinerary( $itinerary_id );
 
 	// Check Departures are empty.
 	if ( empty( $departures ) ) {
@@ -776,13 +830,8 @@ function bust_card_data_cache_on_itinerary_update( int $itinerary_id = 0 ): void
 
 	// Loop through Departures.
 	foreach ( $departures as $departure ) {
-		// Check for Departure.
-		if ( ! $departure instanceof Departure ) {
-			continue;
-		}
-
 		// Bust departure card cache by departure.
-		bust_card_data_cache( $departure->get_id() );
+		bust_card_data_cache( $departure );
 	}
 }
 
