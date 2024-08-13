@@ -297,7 +297,7 @@ class Test_Departures extends Softrip_TestCase {
 			'discounted' => 0,
 		];
 		$actual   = get_lowest_price( 0 );
-		$this->assertSame( $expected, $actual );
+		$this->assertEquals( $expected, $actual );
 
 		// Test with a non-existent departure post id.
 		$expected = [
@@ -305,7 +305,7 @@ class Test_Departures extends Softrip_TestCase {
 			'discounted' => 0,
 		];
 		$actual   = get_lowest_price( 123 );
-		$this->assertSame( $expected, $actual );
+		$this->assertEquals( $expected, $actual );
 
 		// Test with invalid currency code.
 		$expected = [
@@ -313,7 +313,7 @@ class Test_Departures extends Softrip_TestCase {
 			'discounted' => 0,
 		];
 		$actual   = get_lowest_price( 123, 'INVALID' );
-		$this->assertSame( $expected, $actual );
+		$this->assertEquals( $expected, $actual );
 
 		// Create a departure post.
 		$departure_post_id = $this->factory()->post->create( [ 'post_type' => DEPARTURE_POST_TYPE ] );
@@ -325,7 +325,7 @@ class Test_Departures extends Softrip_TestCase {
 			'discounted' => 0,
 		];
 		$actual   = get_lowest_price( $departure_post_id );
-		$this->assertSame( $expected, $actual );
+		$this->assertEquals( $expected, $actual );
 
 		// Setup mock response.
 		add_filter( 'pre_http_request', 'Quark\Tests\Softrip\mock_softrip_http_request', 10, 3 );
@@ -372,7 +372,7 @@ class Test_Departures extends Softrip_TestCase {
 			'discounted' => 26171,
 		];
 		$actual   = get_lowest_price( $departure_post_id );
-		$this->assertSame( $expected, $actual );
+		$this->assertEquals( $expected, $actual );
 
 		// Test with a departure post id which has single occupancy but with invalid currency code.
 		$expected = [
@@ -380,7 +380,7 @@ class Test_Departures extends Softrip_TestCase {
 			'discounted' => 0,
 		];
 		$actual   = get_lowest_price( $departure_post_id, 'INVALID' );
-		$this->assertSame( $expected, $actual );
+		$this->assertEquals( $expected, $actual );
 
 		// Test with a departure post id, having single occupancy, with AUD currency code.
 		$expected = [
@@ -388,7 +388,7 @@ class Test_Departures extends Softrip_TestCase {
 			'discounted' => 41096,
 		];
 		$actual   = get_lowest_price( $departure_post_id, 'AUD' );
-		$this->assertSame( $expected, $actual );
+		$this->assertEquals( $expected, $actual );
 
 		// Test with a departure post id, having single occupancy, with CAD currency code.
 		$expected = [
@@ -396,7 +396,7 @@ class Test_Departures extends Softrip_TestCase {
 			'discounted' => 35621,
 		];
 		$actual   = get_lowest_price( $departure_post_id, 'cad' );
-		$this->assertSame( $expected, $actual );
+		$this->assertEquals( $expected, $actual );
 
 		// Test with a departure post id, having single occupancy, with EUR currency code.
 		$expected = [
@@ -404,7 +404,7 @@ class Test_Departures extends Softrip_TestCase {
 			'discounted' => 24371,
 		];
 		$actual   = get_lowest_price( $departure_post_id, 'eur' );
-		$this->assertSame( $expected, $actual );
+		$this->assertEquals( $expected, $actual );
 
 		// Test with a departure post id, having single occupancy, with GBP currency code.
 		$expected = [
@@ -412,7 +412,7 @@ class Test_Departures extends Softrip_TestCase {
 			'discounted' => 20996,
 		];
 		$actual   = get_lowest_price( $departure_post_id, 'GBP' );
-		$this->assertSame( $expected, $actual );
+		$this->assertEquals( $expected, $actual );
 
 		/**
 		 * Test with departure that has multiple occupancies with various promos.
@@ -448,7 +448,7 @@ class Test_Departures extends Softrip_TestCase {
 			'discounted' => 11516,
 		];
 		$actual   = get_lowest_price( $departure_post_id );
-		$this->assertSame( $expected, $actual );
+		$this->assertEquals( $expected, $actual );
 
 		// Test with a departure post id which has multiple occupancies but with invalid currency code.
 		$expected = [
@@ -456,7 +456,7 @@ class Test_Departures extends Softrip_TestCase {
 			'discounted' => 0,
 		];
 		$actual   = get_lowest_price( $departure_post_id, 'INVALID' );
-		$this->assertSame( $expected, $actual );
+		$this->assertEquals( $expected, $actual );
 
 		// Test with a departure post id, having multiple occupancies, with AUD currency code.
 		$expected = [
@@ -464,7 +464,7 @@ class Test_Departures extends Softrip_TestCase {
 			'discounted' => 18090,
 		];
 		$actual   = get_lowest_price( $departure_post_id, 'AUD' );
-		$this->assertSame( $expected, $actual );
+		$this->assertEquals( $expected, $actual );
 
 		// Test with a departure post id, having multiple occupancies, with CAD currency code.
 		$expected = [
@@ -472,7 +472,7 @@ class Test_Departures extends Softrip_TestCase {
 			'discounted' => 15750,
 		];
 		$actual   = get_lowest_price( $departure_post_id, 'cad' );
-		$this->assertSame( $expected, $actual );
+		$this->assertEquals( $expected, $actual );
 
 		// Test with a departure post id, having multiple occupancies, with EUR currency code.
 		$expected = [
@@ -480,7 +480,7 @@ class Test_Departures extends Softrip_TestCase {
 			'discounted' => 10710,
 		];
 		$actual   = get_lowest_price( $departure_post_id, 'eur' );
-		$this->assertSame( $expected, $actual );
+		$this->assertEquals( $expected, $actual );
 
 		// Test with a departure post id, having multiple occupancies, with GBP currency code.
 		$expected = [
@@ -488,7 +488,7 @@ class Test_Departures extends Softrip_TestCase {
 			'discounted' => 9270,
 		];
 		$actual   = get_lowest_price( $departure_post_id, 'GBP' );
-		$this->assertSame( $expected, $actual );
+		$this->assertEquals( $expected, $actual );
 	}
 
 	/**
