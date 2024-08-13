@@ -519,7 +519,7 @@ function get_cabin_details_by_departure( int $departure_post_id = 0, string $cur
 		// Get cabin code from meta.
 		$cabin_code = strval( $cabin_data['post_meta']['cabin_category_id'] ?? '' );
 
-		// Continue if empty.
+		// Skip if no cabin code.
 		if ( empty( $cabin_code ) ) {
 			continue;
 		}
@@ -595,6 +595,7 @@ function get_cabin_category_class( int $cabin_category_id = 0 ): string {
 	// Get cabin category data.
 	$cabin_category = get( $cabin_category_id );
 
+	// Get the post taxonomies.
 	$taxonomy_data = $cabin_category['post_taxonomies'][ CABIN_CLASS_TAXONOMY ] ?? [];
 
 	// Bail out if no taxonomy data.

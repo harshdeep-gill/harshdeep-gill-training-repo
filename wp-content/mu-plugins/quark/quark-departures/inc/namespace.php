@@ -609,6 +609,7 @@ function get_card_data( int $departure_id = 0, string $currency = 'USD' ): array
 		return $cached_value;
 	}
 
+	// Get departure.
 	$departure = get( $departure_id );
 
 	// Get the related expedition.
