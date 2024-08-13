@@ -171,6 +171,8 @@ function bust_post_cache( int $post_id = 0 ): void {
  *     post: WP_Post|null,
  *     permalink: string,
  *     post_meta: mixed[],
+ *     block_attrs: mixed[],
+ *     post_taxonomies: mixed[],
  * }
  */
 function get( int $post_id = 0 ): array {
@@ -186,9 +188,11 @@ function get( int $post_id = 0 ): array {
 	// Check for cached value.
 	if ( is_array( $cached_value ) && ! empty( $cached_value['post'] ) && $cached_value['post'] instanceof WP_Post ) {
 		return [
-			'post'      => $cached_value['post'],
-			'permalink' => $cached_value['permalink'] ?? '',
-			'post_meta' => $cached_value['post_meta'] ?? [],
+			'post'            => $cached_value['post'],
+			'permalink'       => $cached_value['permalink'] ?? '',
+			'post_meta'       => $cached_value['post_meta'] ?? [],
+			'block_attrs'     => $cached_value['block_attrs'] ?? [],
+			'post_taxonomies' => $cached_value['post_taxonomies'] ?? [],
 		];
 	}
 
@@ -198,17 +202,24 @@ function get( int $post_id = 0 ): array {
 	// Return empty array fields if post type does not match or not an instance of WP_Post.
 	if ( ! $post instanceof WP_Post || POST_TYPE !== $post->post_type ) {
 		return [
-			'post'      => null,
-			'permalink' => '',
-			'post_meta' => [],
+			'post'            => null,
+			'permalink'       => '',
+			'post_meta'       => [],
+			'block_attrs'     => [],
+			'post_taxonomies' => [],
 		];
 	}
 
+	// Get Ship block attrs.
+	$block_attrs = parse_block_attributes( $post );
+
 	// Build data.
 	$data = [
-		'post'      => $post,
-		'permalink' => strval( get_permalink( $post ) ? : '' ),
-		'post_meta' => [],
+		'post'            => $post,
+		'permalink'       => strval( get_permalink( $post ) ? : '' ),
+		'post_meta'       => [],
+		'block_attrs'     => $block_attrs,
+		'post_taxonomies' => [],
 	];
 
 	// Get all post meta.
@@ -224,6 +235,44 @@ function get( int $post_id = 0 ): array {
 			fn( $key ) => ! str_starts_with( $key, '_' ),
 			ARRAY_FILTER_USE_KEY
 		);
+	}
+
+	// Taxonomy terms.
+	global $wpdb;
+	$taxonomy_terms = $wpdb->get_results(
+		$wpdb->prepare(
+			"
+			SELECT
+				t.*,
+				tt.taxonomy,
+				tt.description,
+				tt.parent
+			FROM
+				$wpdb->term_relationships AS tr
+			LEFT JOIN
+				$wpdb->term_taxonomy AS tt ON tt.term_taxonomy_id = tr.term_taxonomy_id
+			LEFT JOIN
+				$wpdb->terms AS t ON t.term_id = tt.term_taxonomy_id
+			WHERE
+				tr.object_id = %d
+			ORDER BY
+				t.name ASC
+			",
+			[
+				$post->ID,
+			]
+		),
+		ARRAY_A
+	);
+
+	// Check for taxonomy terms.
+	if ( ! empty( $taxonomy_terms ) ) {
+		foreach ( $taxonomy_terms as $taxonomy_term ) {
+			if ( ! array_key_exists( $taxonomy_term['taxonomy'], $data['post_taxonomies'] ) ) {
+				$data['post_taxonomies'][ $taxonomy_term['taxonomy'] ] = [];
+			}
+			$data['post_taxonomies'][ $taxonomy_term['taxonomy'] ][] = $taxonomy_term;
+		}
 	}
 
 	// Set cache and return data.
@@ -337,5 +386,92 @@ function get_ship_data( int $ship_id = 0 ): array {
 		'permalink'     => $ship['permalink'],
 		'description'   => strval( apply_filters( 'the_content', $ship_post->post_content ) ),
 		'related_decks' => $decks_ids,
+	];
+}
+
+/**
+ * Parse the collage block attributes.
+ *
+ * @param WP_Post|null $post The post object.
+ *
+ * @return array{}|array{
+ *     ship_collage: mixed[],
+ *     ship_vessel_features_title: string[],
+ *     ship_amenities_title: string[],
+ * }
+ */
+function parse_block_attributes( WP_Post $post = null ): array {
+	// Check if the post valid WP_Post.
+	if ( empty( $post ) || ! $post instanceof WP_Post ) {
+		return [];
+	}
+
+	// Parse blocks.
+	$blocks = parse_blocks( $post->post_content );
+
+	// Initialize collage attributes.
+	$collage_attrs        = [];
+	$ship_vessel_features = [];
+	$ship_amenities       = [];
+
+	// Loop through blocks to find the quark/collage block.
+	foreach ( $blocks as $block ) {
+		// Check if the block is quark/collage.
+		if ( 'quark/collage' === $block['blockName'] ) {
+			// Loop through inner blocks (quark/collage-media-item).
+			if ( isset( $block['innerBlocks'] ) && is_array( $block['innerBlocks'] ) ) {
+				// Loop through inner blocks to find the quark/collage-media-item block.
+				foreach ( $block['innerBlocks'] as $inner_block ) {
+					// Check if the block is quark/collage-media-item.
+					if ( 'quark/collage-media-item' === $inner_block['blockName'] ) {
+						// Retrieve attributes.
+						$collage_attrs[] = $inner_block['attrs'];
+					}
+				}
+			}
+		}
+
+		// Check if the block is quark/ship-vessel-features.
+		if ( 'quark/ship-vessel-features' === $block['blockName'] ) {
+			// Loop through inner blocks (quark/ship-vessel-features-card).
+			if ( isset( $block['innerBlocks'] ) && is_array( $block['innerBlocks'] ) ) {
+				// Loop through inner blocks to find the quark/ship-vessel-features-card block.
+				foreach ( $block['innerBlocks'] as $inner_block ) {
+					// Check if the block is quark/ship-vessel-features-card.
+					if ( 'quark/ship-vessel-features-card' === $inner_block['blockName'] ) {
+						// Check attributes are available.
+						if ( isset( $inner_block['attrs'] ) && is_array( $inner_block['attrs'] ) && ! empty( $inner_block['attrs']['title'] ) ) {
+							// Retrieve attributes.
+							$ship_vessel_features[] = $inner_block['attrs']['title'];
+						}
+					}
+				}
+			}
+		}
+
+		// Check if the block is quark/ship-features-amenities.
+		if ( 'quark/ship-features-amenities' === $block['blockName'] ) {
+			// Loop through inner blocks (quark/ship-features-amenities-card).
+			if ( isset( $block['innerBlocks'] ) && is_array( $block['innerBlocks'] ) ) {
+				// Loop through inner blocks to find the quark/ship-features-amenities-card block.
+				foreach ( $block['innerBlocks'] as $inner_block ) {
+					// Check if the block is quark/ship-features-amenities-card.
+					if ( 'quark/ship-features-amenities-card' === $inner_block['blockName'] ) {
+						// Check attributes are available.
+						if ( isset( $inner_block['attrs'] ) && is_array( $inner_block['attrs'] ) && ! empty( $inner_block['attrs']['title'] ) ) {
+							// Retrieve attributes.
+							$ship_amenities[] = $inner_block['attrs']['title'];
+						}
+					}
+				}
+			}
+		}
+	}
+
+	// Return block attributes.
+	return [
+		'ship_collage'               => $collage_attrs,
+		'ship_vessel_features_title' => $ship_vessel_features,
+		'ship_amenities_title'       => $ship_amenities,
 	];
 }
