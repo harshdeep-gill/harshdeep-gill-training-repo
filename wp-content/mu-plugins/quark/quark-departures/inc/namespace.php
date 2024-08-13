@@ -715,7 +715,7 @@ function get_start_end_departure_date( int $post_id = 0 ): string {
 	} elseif ( $start_month !== $end_month ) {
 		$date_range = sprintf( '%s %s - %s %s, %s', $start_month, $start_day, $end_month, $end_day, $start_year );
 	} else {
-		$date_range = sprintf( '%s %s - %s, %s', $start_month, $start_day, $end_day, $start_year );
+		$date_range = sprintf( '%s %s-%s, %s', $start_month, $start_day, $end_day, $start_year );
 	}
 
 	// Return the date range string.
