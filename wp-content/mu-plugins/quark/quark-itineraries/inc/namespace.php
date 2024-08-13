@@ -663,9 +663,9 @@ function get_starting_from_location( int $post_id = 0 ): string {
  * @param int    $post_id Post ID.
  * @param string $currency Currency code.
  *
- * @return float Mandatory transfer price.
+ * @return int Mandatory transfer price.
  */
-function get_mandatory_transfer_price( int $post_id = 0, string $currency = 'USD' ): float {
+function get_mandatory_transfer_price( int $post_id = 0, string $currency = 'USD' ): int {
 	// get Itinerary.
 	$itinerary = get( $post_id );
 
@@ -683,7 +683,7 @@ function get_mandatory_transfer_price( int $post_id = 0, string $currency = 'USD
 	}
 
 	// Get mandatory transfer price.
-	return floatval( strval( $itinerary['post_meta'][ $meta_key ] ) );
+	return absint( $itinerary['post_meta'][ $meta_key ] );
 }
 
 /**
@@ -692,9 +692,9 @@ function get_mandatory_transfer_price( int $post_id = 0, string $currency = 'USD
  * @param int    $post_id Post ID.
  * @param string $currency Currency code.
  *
- * @return float Supplemental price.
+ * @return int Supplemental price.
  */
-function get_supplemental_price( int $post_id = 0, string $currency = 'USD' ): float {
+function get_supplemental_price( int $post_id = 0, string $currency = 'USD' ): int {
 	// get Itinerary.
 	$itinerary = get( $post_id );
 
@@ -712,7 +712,7 @@ function get_supplemental_price( int $post_id = 0, string $currency = 'USD' ): f
 	}
 
 	// Get supplemental price.
-	return floatval( strval( $itinerary['post_meta'][ $meta_key ] ) );
+	return absint( $itinerary['post_meta'][ $meta_key ] );
 }
 
 /**
