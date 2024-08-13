@@ -13,6 +13,7 @@ use function Quark\Softrip\do_sync;
 use function Quark\Softrip\get_engine_collate;
 use function Quark\Softrip\Occupancies\format_data;
 use function Quark\Softrip\Occupancies\get_cabin_category_post_by_cabin_code;
+use function Quark\Softrip\Occupancies\get_occupancies_by_departure;
 use function Quark\Softrip\Occupancies\get_occupancy_data_by_softrip_id;
 use function Quark\Softrip\Occupancies\get_table_name;
 use function Quark\Softrip\Occupancies\get_table_sql;
@@ -676,7 +677,42 @@ class Test_Occupancies extends Softrip_TestCase {
         $this->assertSame('A', $occupancy_data['mask']);
         $this->assertNotEmpty($occupancy_data['departure_post_id']);
         $this->assertNotEmpty($occupancy_data['cabin_category_post_id']);
+        $this->assertEmpty($occupancy_data['spaces_available']);
+    }
 
-        // @todo test spaces_available
+    /**
+     * Test get occupancies by departure.
+     *
+     * @covers \Quark\Softrip\Occupancies\get_occupancies_by_departure
+     *
+     * @return void
+     */
+    public function test_get_occupancies_by_departure(): void {
+        // Cache key.
+        $cache_key = CACHE_KEY_PREFIX . '_departure_post_id_0';
+
+        // Cache should be empty.
+        $actual_from_cache = wp_cache_get( $cache_key, CACHE_GROUP );
+        $this->assertFalse( $actual_from_cache );
+
+        // Test with no arguments.
+        $expected = [];
+        $actual   = get_occupancies_by_departure();
+        $this->assertSame( $expected, $actual );
+
+        // Test with empty departure post ID.
+        $expected = [];
+        $actual   = get_occupancies_by_departure( 0 );
+        $this->assertSame( $expected, $actual );
+
+        // Test with invalid departure post ID.
+        $departure_post_id = 999;
+
+        // Cache should be absent.
+        
+
+        $expected = [];
+        $actual   = get_occupancies_by_departure( $departure_post_id );
+        $this->assertSame( $expected, $actual );
     }
 }
