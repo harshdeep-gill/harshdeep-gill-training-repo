@@ -533,22 +533,22 @@ function get_cabin_details_by_departure( int $departure_post_id = 0, string $cur
 
 		// Setup cabin structure data.
 		$struct = [
-			'name' => strval( $cabin_data['post_meta']['cabin_name'] ?? '' ),
-			'cabin_code' => $cabin_code,
-			'description' => $cabin_data['post']->post_content,
-			'gallery' => $cabin_data['post_meta']['cabin_images'] ?? [],
-			'type'    => get_cabin_category_class( $cabin_category_post_id ),
+			'name'           => strval( $cabin_data['post_meta']['cabin_name'] ?? '' ),
+			'cabin_code'     => $cabin_code,
+			'description'    => $cabin_data['post']->post_content,
+			'gallery'        => $cabin_data['post_meta']['cabin_images'] ?? [],
+			'type'           => get_cabin_category_class( $cabin_category_post_id ),
 			'specifications' => [
-				'availability_status' => '', // @todo Add the availability status from quark-softrip.
+				'availability_status'      => '', // @todo Add the availability status from quark-softrip.
 				'availability_description' => '', // @todo Add the availability description from quark-softrip.
-				'spaces_available' => '', // @todo Add the spaces available from quark-softrip.
-				'occupancy' => get_pax_range( $cabin_category_post_id ),
-				'location' => get_cabin_category_location( $cabin_category_post_id ),
-				'size' => get_size_range( $cabin_category_post_id ),
-				'bed_configuration' => strval( $cabin_data['post_meta']['cabin_bed_configuration'] ?? '' ),
+				'spaces_available'         => '', // @todo Add the spaces available from quark-softrip.
+				'occupancy'                => get_pax_range( $cabin_category_post_id ),
+				'location'                 => get_cabin_category_location( $cabin_category_post_id ),
+				'size'                     => get_size_range( $cabin_category_post_id ),
+				'bed_configuration'        => strval( $cabin_data['post_meta']['cabin_bed_configuration'] ?? '' ),
 			],
-			'from_price' => $formatted_price,
-			'occupancies' => [],
+			'from_price'     => $formatted_price,
+			'occupancies'    => [],
 		];
 
 		// Get all occupancies for this cabin and departure.
@@ -777,7 +777,7 @@ function get_size_range( int $cabin_category_post_id = 0 ): string {
 /**
  * Get occupancy detail.
  *
- * @param int $occupancy_id The occupancy ID.
+ * @param int    $occupancy_id The occupancy ID.
  * @param string $currency The currency code.
  *
  * @return array{}|array{
@@ -830,14 +830,14 @@ function get_occupancy_detail( int $occupancy_id = 0, string $currency = 'USD' )
 
 	// Prepare data.
 	$detail = [
-		'name' => $occupancy['mask'],
-		'description' => $description_and_pax_count['description'],
+		'name'         => $occupancy['mask'],
+		'description'  => $description_and_pax_count['description'],
 		'no_of_guests' => strval( $description_and_pax_count['pax_count'] ),
-		'price' => [
-			'original_price' => format_price( $original_price, $currency ),
+		'price'        => [
+			'original_price'   => format_price( $original_price, $currency ),
 			'discounted_price' => format_price( $discounted_price, $currency ),
 		],
-		'promotions' => [],
+		'promotions'   => [],
 	];
 
 	// Return the occupancy detail.

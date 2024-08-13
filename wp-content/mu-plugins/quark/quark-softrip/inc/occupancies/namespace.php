@@ -158,7 +158,7 @@ function update_occupancies( array $raw_cabins_data = [], int $departure_post_id
 		}
 
 		// Bust caches at cabin category level.
-		wp_cache_delete( CACHE_KEY_PREFIX . '_cabin_category_post_id_' . $cabin_category_post_id . '_departure_post_id_' . $departure_post_id , CACHE_GROUP );
+		wp_cache_delete( CACHE_KEY_PREFIX . '_cabin_category_post_id_' . $cabin_category_post_id . '_departure_post_id_' . $departure_post_id, CACHE_GROUP );
 	}
 
 	// Bust caches at departure level.
@@ -1063,43 +1063,43 @@ function get_description_and_pax_count_by_mask( string $mask = '' ): array {
 	$mask_mapping = [
 		'A'     => [
 			'description' => 'Single Room',
-			'pax_count'         => 1,
+			'pax_count'   => 1,
 		],
 		'AA'    => [
 			'description' => 'Double Room',
-			'pax_count'         => 2,
+			'pax_count'   => 2,
 		],
 		'SAA'   => [
 			'description' => 'Double Room Shared',
-			'pax_count'         => 1,
+			'pax_count'   => 1,
 		],
 		'SMAA'  => [
 			'description' => 'Double Room Shared (Male)',
-			'pax_count'         => 1,
+			'pax_count'   => 1,
 		],
 		'SFAA'  => [
 			'description' => 'Double Room Shared (Female)',
-			'pax_count'         => 1,
+			'pax_count'   => 1,
 		],
 		'AAA'   => [
 			'description' => 'Triple Room',
-			'pax_count'         => 3,
+			'pax_count'   => 3,
 		],
 		'SAAA'  => [
 			'description' => 'Triple Room Shared',
-			'pax_count'         => 1,
+			'pax_count'   => 1,
 		],
 		'SMAAA' => [
 			'description' => 'Triple Room Shared (Male)',
-			'pax_count'         => 1,
+			'pax_count'   => 1,
 		],
 		'SFAAA' => [
 			'description' => 'Triple Room Shared (Female)',
-			'pax_count'         => 1,
+			'pax_count'   => 1,
 		],
 		'AAAA'  => [
 			'description' => 'Quad Room',
-			'pax_count'         => 4,
+			'pax_count'   => 4,
 		],
 	];
 
