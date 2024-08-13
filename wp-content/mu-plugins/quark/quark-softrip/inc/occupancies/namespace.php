@@ -1119,15 +1119,15 @@ function get_description_and_pax_count_by_mask( string $mask = '' ): array {
  * Add supplemental and mandatory price to the lowest price.
  *
  * @param array{discounted: int, original: int} $lowest_price The lowest price.
- * @param int $departure_post_id The departure post ID.
- * @param string $currency The currency code.
+ * @param int                                   $departure_post_id The departure post ID.
+ * @param string                                $currency The currency code.
  *
  * @return array{
  *   discounted: int,
  *   original: int,
  * }
  */
-function add_supplemental_and_mandatory_price( array $lowest_price = [ 'discounted' => 0, 'original' => 0 ], int $departure_post_id = 0, string $currency = 'USD' ): array {
+function add_supplemental_and_mandatory_price( array $lowest_price = [ 'discounted' => 0, 'original' => 0 ], int $departure_post_id = 0, string $currency = 'USD' ): array { // phpcs:ignore WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound
 	// Setup default return values.
 	$lowest_price_with_supplemental = [
 		'discounted' => 0,
