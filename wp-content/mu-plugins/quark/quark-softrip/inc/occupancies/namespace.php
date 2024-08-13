@@ -47,21 +47,21 @@ function get_table_sql(): string {
 
 	// Prepare SQL statement.
 	$sql = "CREATE TABLE $table_name (
-        id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-        softrip_id VARCHAR(255) NOT NULL UNIQUE,
-        softrip_name VARCHAR(255) NOT NULL,
-        mask VARCHAR(12) NOT NULL,
-        departure_post_id BIGINT NOT NULL,
-        cabin_category_post_id BIGINT NOT NULL,
-        spaces_available INT NOT NULL,
-        availability_description VARCHAR(255) NOT NULL,
-        availability_status VARCHAR(4) NOT NULL,
-        price_per_person_usd BIGINT NOT NULL,
-        price_per_person_cad BIGINT NOT NULL,
-        price_per_person_aud BIGINT NOT NULL,
-        price_per_person_gbp BIGINT NOT NULL,
-        price_per_person_eur BIGINT NOT NULL
-    ) $engine_collate";
+		id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+		softrip_id VARCHAR(255) NOT NULL UNIQUE,
+		softrip_name VARCHAR(255) NOT NULL,
+		mask VARCHAR(12) NOT NULL,
+		departure_post_id BIGINT NOT NULL,
+		cabin_category_post_id BIGINT NOT NULL,
+		spaces_available INT NOT NULL,
+		availability_description VARCHAR(255) NOT NULL,
+		availability_status VARCHAR(4) NOT NULL,
+		price_per_person_usd BIGINT NOT NULL,
+		price_per_person_cad BIGINT NOT NULL,
+		price_per_person_aud BIGINT NOT NULL,
+		price_per_person_gbp BIGINT NOT NULL,
+		price_per_person_eur BIGINT NOT NULL
+	) $engine_collate";
 
 	// Return the SQL.
 	return $sql;
@@ -351,13 +351,13 @@ function get_occupancy_data_by_softrip_id( string $softrip_id = '', bool $force 
 	$occupancies_data = $wpdb->get_results(
 		$wpdb->prepare(
 			'
-            SELECT
-                *
-            FROM
-                %i
-            WHERE
-                softrip_id = %s
-            ',
+			SELECT
+				*
+			FROM
+				%i
+			WHERE
+				softrip_id = %s
+			',
 			[
 				$table_name,
 				$softrip_id,
@@ -436,13 +436,13 @@ function get_occupancies_by_departure( int $departure_post_id = 0, bool $force =
 	$occupancies_data = $wpdb->get_results(
 		$wpdb->prepare(
 			'
-            SELECT
-                *
-            FROM
-                %i
-            WHERE
-                departure_post_id = %d
-            ',
+			SELECT
+				*
+			FROM
+				%i
+			WHERE
+				departure_post_id = %d
+			',
 			[
 				$table_name,
 				$departure_post_id,
