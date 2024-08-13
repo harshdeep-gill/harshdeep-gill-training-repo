@@ -1,0 +1,22 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Book Departures: Expeditions",
+	"name": "quark/book-departures-expeditions",
+	"description": "Book departures using Expeditions.",
+	"category": "layout",
+	"keywords": [
+		"booking",
+		"departures",
+		"cards"
+	],
+	"textdomain": "qrk",
+	"attributes": {},
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

@@ -8,6 +8,8 @@
 		return;
 	}
 
+	$type = strtolower( $type );
+
 	if ( ! in_array( $type, [ 'standard', 'premium', 'sold out' ] ) ) {
 		return;
 	}

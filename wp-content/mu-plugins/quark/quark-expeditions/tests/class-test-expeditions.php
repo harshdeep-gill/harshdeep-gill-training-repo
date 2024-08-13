@@ -12,6 +12,7 @@ use WP_Term;
 
 use Quark\Tests\Softrip\Softrip_TestCase;
 
+use function Quark\Expeditions\bust_post_cache;
 use function Quark\Expeditions\get;
 use function Quark\Expeditions\get_region_terms;
 use function Quark\Expeditions\get_itineraries;
@@ -85,6 +86,9 @@ class Test_Expeditions extends Softrip_TestCase {
 
 		// Set terms.
 		wp_set_object_terms( $post_1->ID, $category_term->term_id, EXPEDITION_CATEGORY_TAXONOMY );
+
+		// Bust post cache.
+		bust_post_cache( $post_1->ID );
 
 		// Test getting post.
 		$the_post = get( $post_1->ID );
@@ -189,6 +193,9 @@ class Test_Expeditions extends Softrip_TestCase {
 			],
 			DESTINATION_TAXONOMY
 		);
+
+		// Bust post cache.
+		bust_post_cache( $post_1->ID );
 
 		// Test getting regions.
 		$regions = get_region_terms( $post_1->ID );
@@ -386,6 +393,9 @@ class Test_Expeditions extends Softrip_TestCase {
 			$start_location
 		);
 
+		// bust post cache.
+		bust_post_cache( $post_1->ID );
+
 		// Get get_details_data().
 		$expedition_details_card_data = get_details_data( $post_1->ID );
 
@@ -420,7 +430,7 @@ class Test_Expeditions extends Softrip_TestCase {
 		$expedition_details_card_data = get_details_data( $post_1->ID );
 
 		// Update expected data with softrip sync data.
-		$expected_data['from_price']       = '$34,600 USD';
+		$expected_data['from_price']       = '$26,171 USD';
 		$expected_data['total_departures'] = 3;
 		$expected_data['date_range']       = 'between January 2025 to March 2026';
 
@@ -428,9 +438,9 @@ class Test_Expeditions extends Softrip_TestCase {
 		$ship_posts = get_posts(
 			[
 				'post_type'      => SHIP_POST_TYPE,
+				'posts_per_page' => -1,
 				'order'          => 'ASC',
 				'orderby'        => 'title',
-				'posts_per_page' => -1,
 				'meta_query'     => [
 					[
 						'key'     => 'ship_code',

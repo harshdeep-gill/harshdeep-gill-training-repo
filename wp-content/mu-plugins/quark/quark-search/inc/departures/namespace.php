@@ -10,8 +10,8 @@ namespace Quark\Search\Departures;
 use WP_Post;
 use Solarium\QueryType\Update\Query\Document\Document;
 
-use function Quark\Departures\get_departure_season;
-use function Quark\Departures\get_departure_region_and_season;
+use function Quark\Departures\get_season;
+use function Quark\Departures\get_region_and_season;
 use function Quark\Departures\get as get_departure;
 
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
@@ -49,29 +49,14 @@ function filter_solr_build_document( Document $document = null, WP_Post $post = 
 		return $document;
 	}
 
-	// Get departure data.
-	$departure_data = get_departure( $post->ID );
-
 	// Set post title for sorting.
 	$document->setField( 'post_title_s', get_the_title( $post->ID ) );
 
-	// Set Region.
-	$document->setField( 'region_s', $departure_data['post_meta']['softrip_market_code'] ?? '' );
-
 	// set Season.
-	$document->setField( 'season_s', get_departure_season( $post->ID ) );
+	$document->setField( 'season_s', get_season( $post->ID ) );
 
 	// Set Region & season.
-	$document->setField( 'region_season_s', get_departure_region_and_season( $post->ID ) );
-
-	// Set Expeditions.
-	$document->setField( 'expedition_i', absint( $departure_data['post_meta']['related_expedition'] ?? 0 ) );
-
-	// Set Ship.
-	$document->setField( 'ship_i', absint( $departure_data['post_meta']['related_ship'] ?? 0 ) );
-
-	// Set duration.
-	$document->setField( 'duration_i', absint( $departure_data['post_meta']['duration'] ?? 0 ) );
+	$document->setField( 'region_season_s', get_region_and_season( $post->ID ) );
 
 	// Return document.
 	return $document;
@@ -91,6 +76,10 @@ function solr_index_custom_fields( array $custom_fields = [] ): array {
 		[
 			'start_date',
 			'end_date',
+			'related_expedition',
+			'related_ship',
+			'duration',
+			'region',
 		]
 	);
 }
@@ -119,7 +108,7 @@ function get_filters_from_url(): array {
 		'durations'         => isset( $_GET['durations'] ) ? strval( $_GET['durations'] ) : '', // phpcs:ignore
 		'ships'             => isset( $_GET['ships'] ) ? strval( $_GET['ships'] ) : '', // phpcs:ignore
 		'page'              => isset( $_GET['page'] ) ? strval( $_GET['page'] ) : '1', // phpcs:ignore
-		'sort'              => isset( $_GET['sort'] ) ? strval( $_GET['sort'] ) : 'start_date', // phpcs:ignore
+		'sort'              => isset( $_GET['sort'] ) ? strval( $_GET['sort'] ) : 'date-now', // phpcs:ignore
 	];
 }
 
@@ -135,7 +124,7 @@ function get_filters_from_url(): array {
  *     months: string[],
  *     durations: string[],
  *     ships: int[],
- *     sort: array{}|array<string, string>,
+ *     sort: string,
  *     page: int,
  *     posts_per_load: int,
  * }
@@ -151,7 +140,7 @@ function parse_filters( array $filters = [] ): array {
 			'months'            => '',
 			'durations'         => '',
 			'ships'             => '',
-			'sort'              => '',
+			'sort'              => 'date-now',
 			'page'              => 1,
 			'posts_per_load'    => 10,
 		]
@@ -198,7 +187,7 @@ function parse_filters( array $filters = [] ): array {
 		'durations'         => (array) $filters['durations'],
 		'ships'             => (array) $filters['ships'],
 		'page'              => absint( $filters['page'] ),
-		'sort'              => (array) $filters['sort'],
+		'sort'              => $filters['sort'],
 		'posts_per_load'    => absint( $filters['posts_per_load'] ),
 	];
 }
@@ -212,7 +201,8 @@ function parse_filters( array $filters = [] ): array {
  *     ids: int[],
  *     current_page: int,
  *     next_page: int,
- *     result_count: int
+ *     result_count: int,
+ *     remaining_count: int,
  * }
  */
 function search( array $filters = [] ): array {
@@ -241,17 +231,14 @@ function search( array $filters = [] ): array {
 	$search->set_ships( $ships );
 	$search->set_page( absint( $filters['page'] ) );
 	$search->set_posts_per_page( absint( $filters['posts_per_load'] ?: 5 ) );
-
-	// Set sort.
-	foreach ( $sort as $order_by => $order ) {
-		$search->set_sort( $order_by, $order );
-	}
+	$search->set_sort( $sort );
 
 	// Returned filtered trips.
 	return [
-		'ids'          => $search->search(),
-		'current_page' => $search->current_page,
-		'next_page'    => $search->next_page,
-		'result_count' => $search->result_count,
+		'ids'             => $search->search(),
+		'current_page'    => $search->current_page,
+		'next_page'       => $search->next_page,
+		'result_count'    => $search->result_count,
+		'remaining_count' => $search->remaining_count,
 	];
 }
