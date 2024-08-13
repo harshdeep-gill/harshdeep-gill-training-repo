@@ -739,7 +739,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 				'posts_per_page' => -1,
 				'meta_query'     => [
 					[
-						'key'   => 'ship_id',
+						'key'   => 'ship_code',
 						'value' => 'ULT',
 					],
 				],
@@ -799,7 +799,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 			'expedition_link'          => get_permalink( self::$post_expedition->ID ),
 			'duration_days'            => 11,
 			'package_id'               => 'ABC-123',
-			'languages'                => '',
+			'languages'                => 'english',
 			'duration_dates'           => 'February 28 - March 11, 2026',
 			'starting_from_location'   => self::$departure_location_terms[0]->name,
 			'promotion_tags'           => [
@@ -836,7 +836,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 				'posts_per_page' => -1,
 				'meta_query'     => [
 					[
-						'key'   => 'ship_id',
+						'key'   => 'ship_code',
 						'value' => 'OEX',
 					],
 				],
@@ -896,7 +896,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 			'expedition_link'          => get_permalink( self::$post_expedition->ID ),
 			'duration_days'            => 16,
 			'package_id'               => 'JKL-012',
-			'languages'                => '',
+			'languages'                => 'english',
 			'duration_dates'           => 'January 16 - February 1, 2026',
 			'starting_from_location'   => self::$departure_location_terms[0]->name,
 			'promotion_tags'           => [],
@@ -930,7 +930,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 				'posts_per_page' => -1,
 				'meta_query'     => [
 					[
-						'key'   => 'ship_id',
+						'key'   => 'ship_code',
 						'value' => 'ULT',
 					],
 				],
