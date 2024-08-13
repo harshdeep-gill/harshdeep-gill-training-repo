@@ -14,6 +14,16 @@ import './index.scss';
 import './dom-content-loaded';
 
 /**
+ * Fetch Partial.
+ */
+import './fetch-partial';
+
+/**
+ * Zustand.
+ */
+import './zustand';
+
+/**
  * TypeScript Stuff.
  */
 declare global {

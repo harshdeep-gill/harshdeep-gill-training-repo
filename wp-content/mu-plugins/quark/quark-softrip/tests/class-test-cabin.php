@@ -257,7 +257,13 @@ class Test_Cabin extends WP_UnitTestCase {
 
 		// Test 1: No prices set.
 		$price = $cabin->get_lowest_price();
-		$this->assertEquals( 0, $price );
+		$this->assertEquals(
+			[
+				'discounted_price' => 0,
+				'original_price'   => 0,
+			],
+			$price
+		);
 
 		// Test 2: Set prices.
 		$raw_cabin_data = [
@@ -280,10 +286,10 @@ class Test_Cabin extends WP_UnitTestCase {
 							'pricePerPerson' => 6595,
 							'promos'         => [
 								'10PIF'   => [
-									'promoPricePerPerson' => 5936,
+									'promoPricePerPerson' => 5956,
 								],
 								'20PROMO' => [
-									'promoPricePerPerson' => 5276,
+									'promoPricePerPerson' => 5476,
 								],
 							],
 						],
@@ -351,10 +357,10 @@ class Test_Cabin extends WP_UnitTestCase {
 							'pricePerPerson' => 4595,
 							'promos'         => [
 								'10PIF'   => [
-									'promoPricePerPerson' => 5936,
+									'promoPricePerPerson' => 3936,
 								],
 								'20PROMO' => [
-									'promoPricePerPerson' => 5276,
+									'promoPricePerPerson' => 3276,
 								],
 							],
 						],
@@ -384,13 +390,13 @@ class Test_Cabin extends WP_UnitTestCase {
 						],
 						'EUR' => [
 							'currencyCode'   => 'EUR',
-							'pricePerPerson' => 2938,
+							'pricePerPerson' => 5938,
 							'promos'         => [
 								'10PIF'   => [
-									'promoPricePerPerson' => 5580,
+									'promoPricePerPerson' => 5570,
 								],
 								'20PROMO' => [
-									'promoPricePerPerson' => 4960,
+									'promoPricePerPerson' => 4950,
 								],
 							],
 						],
@@ -413,11 +419,26 @@ class Test_Cabin extends WP_UnitTestCase {
 
 		// Expected lowest price - inferred from above departure data.
 		$expected_lowest_price = [
-			'USD' => 4595,
-			'AUD' => 10400,
-			'CAD' => 9000,
-			'EUR' => 2938,
-			'GBP' => 5300,
+			'USD' => [
+				'original_price'   => 4595.0,
+				'discounted_price' => 3936.0,
+			],
+			'AUD' => [
+				'original_price'   => 10400.0,
+				'discounted_price' => 9360.0,
+			],
+			'CAD' => [
+				'original_price'   => 9000.0,
+				'discounted_price' => 8100.0,
+			],
+			'EUR' => [
+				'original_price'   => 5938.0,
+				'discounted_price' => 5570.0,
+			],
+			'GBP' => [
+				'original_price'   => 5300.0,
+				'discounted_price' => 4770.0,
+			],
 		];
 
 		// Create cabin object, set departure, and set cabin data.
