@@ -165,6 +165,7 @@ function update_occupancies( array $raw_cabins_data = [], int $departure_post_id
 
 	// Bust caches at departure level.
 	wp_cache_delete( CACHE_KEY_PREFIX . '_departure_post_id_' . $departure_post_id, CACHE_GROUP );
+	wp_cache_delete( CACHE_KEY_PREFIX . '_cabin_category_departure_post_id_' . $departure_post_id, CACHE_GROUP );
 
 	// Return success.
 	return true;
@@ -665,6 +666,7 @@ function clear_occupancies_by_departure( int $departure_post_id = 0 ): bool {
 
 	// Bust caches.
 	wp_cache_delete( CACHE_KEY_PREFIX . '_departure_post_id_' . $departure_post_id, CACHE_GROUP );
+	wp_cache_delete( CACHE_KEY_PREFIX . '_cabin_category_departure_post_id_' . $departure_post_id, CACHE_GROUP );
 
 	// Return success.
 	return true;
@@ -856,14 +858,29 @@ function format_rows_data_from_db( array $rows_data = [] ): array {
 /**
  * Get cabin category post ids by departure post id from occupancy table.
  *
- * @param int $departure_post_id The departure post ID.
+ * @param int  $departure_post_id The departure post ID.
+ * @param bool $force             Whether to bypass cache.
  *
  * @return int[]
  */
-function get_cabin_category_post_ids_by_departure( int $departure_post_id = 0 ): array {
+function get_cabin_category_post_ids_by_departure( int $departure_post_id = 0, bool $force = false ): array {
 	// Bail if empty.
 	if ( empty( $departure_post_id ) ) {
 		return [];
+	}
+
+	// Cache key.
+	$cache_key = CACHE_KEY_PREFIX . '_cabin_category_departure_post_id_' . $departure_post_id;
+
+	// Check the cache.
+	if ( ! $force ) {
+		// Get the cached data.
+		$cached_data = wp_cache_get( $cache_key, CACHE_GROUP );
+
+		// If cached data, return it.
+		if ( is_array( $cached_data ) ) {
+			return $cached_data;
+		}
 	}
 
 	// Get the global $wpdb object.
@@ -892,8 +909,14 @@ function get_cabin_category_post_ids_by_departure( int $departure_post_id = 0 ):
 		)
 	);
 
+	// Convert to integers.
+	$ids = array_map( 'absint', $cabin_category_post_ids );
+
+	// Cache the data.
+	wp_cache_set( $cache_key, $ids, CACHE_GROUP );
+
 	// Return the cabin category post IDs.
-	return array_map( 'absint', $cabin_category_post_ids );
+	return $ids;
 }
 
 /**
