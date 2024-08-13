@@ -545,12 +545,17 @@ function get_itineraries( int $post_id = 0 ): array {
 	$itineraries = [];
 
 	// Check for post_meta.
-	if ( empty( $post['post_meta'] ) || ! is_array( $post['post_meta']['related_itineraries'] ) ) {
+	if ( empty( $post['post_meta'] ) || empty( $post['post_meta']['related_itineraries'] ) ) {
 		return $itineraries;
 	}
 
 	// Get Itineraries from related_itineraries post meta.
 	$itinerary_ids = $post['post_meta']['related_itineraries'];
+
+	// Check for itinerary_ids array.
+	if ( ! is_array( $itinerary_ids ) ) {
+		return $itineraries;
+	}
 
 	// Check for Itinerary IDs.
 	foreach ( $itinerary_ids as $itinerary_id ) {
