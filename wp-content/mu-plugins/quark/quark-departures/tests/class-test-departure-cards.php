@@ -313,7 +313,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 			'update_post_meta_cache' => false,
 			'meta_query'             => [
 				[
-					'key'     => 'softrip_package_id',
+					'key'     => 'softrip_package_code',
 					'value'   => [
 						'JKL-012',
 					],
@@ -433,7 +433,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 			'update_post_meta_cache' => false,
 			'meta_query'             => [
 				[
-					'key'     => 'softrip_departure_id',
+					'key'     => 'softrip_code',
 					'value'   => 'ULT20250109',
 					'compare' => '=',
 				],
