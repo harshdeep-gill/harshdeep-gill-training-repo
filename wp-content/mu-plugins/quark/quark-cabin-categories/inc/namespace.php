@@ -12,8 +12,13 @@ use WP_Post;
 use function Quark\Core\format_price;
 use function Quark\ShipDecks\get as get_ship_deck;
 use function Quark\Softrip\Occupancies\get_cabin_category_post_ids_by_departure;
+use function Quark\Softrip\Occupancies\get_description_and_pax_count_by_mask;
 use function Quark\Softrip\Occupancies\get_lowest_price_by_cabin_category_and_departure;
+use function Quark\Softrip\Occupancies\get_occupancies_by_cabin_category_and_departure;
+use function Quark\Softrip\Occupancies\get_occupancy_data_by_id;
+use function Quark\Softrip\OccupancyPromotions\get_lowest_price as get_occupancy_promotion_lowest_price;
 
+use const Quark\Core\CURRENCIES;
 use const Quark\Ships\POST_TYPE as SHIP_POST_TYPE;
 
 const POST_TYPE            = 'qrk_cabin_category';
@@ -543,14 +548,32 @@ function get_cabin_details_by_departure( int $departure_post_id = 0, string $cur
 				'bed_configuration' => strval( $cabin_data['post_meta']['cabin_bed_configuration'] ?? '' ),
 			],
 			'from_price' => $formatted_price,
-			'occupancies' => [], // @todo Add the occupancy data.
+			'occupancies' => [],
 		];
+
+		// Get all occupancies for this cabin and departure.
+		$occupancies = get_occupancies_by_cabin_category_and_departure( $cabin_category_post_id, $departure_post_id );
+
+		// Loop through the occupancies.
+		foreach ( $occupancies as $occupancy ) {
+			// Bail if empty.
+			if ( empty( $occupancy['id'] ) ) {
+				continue;
+			}
+
+			// Get occupancy detail.
+			$occupancy_detail = get_occupancy_detail( $occupancy['id'], $currency );
+
+			// Add occupancy detail to occupancies.
+			$struct['occupancies'][] = $occupancy_detail;
+		}
 
 		// Add cabin category data to cabin categories data.
 		$cabin_categories_data[ $cabin_code ] = $struct;
 	}
 
-	return [];
+	// Return cabin details array.
+	return $cabin_categories_data;
 }
 
 /**
@@ -749,4 +772,74 @@ function get_size_range( int $cabin_category_post_id = 0 ): string {
 
 	// Return the formatted range.
 	return get_formatted_size_range( $from, $to );
+}
+
+/**
+ * Get occupancy detail.
+ *
+ * @param int $occupancy_id The occupancy ID.
+ * @param string $currency The currency code.
+ *
+ * @return array{}|array{
+ *   name: string,
+ *   description: string,
+ *   no_of_guests: string,
+ *   price: array{
+ *     original_price: string,
+ *     discounted_price: string,
+ *   },
+ *   promotions: mixed[]
+ * }
+ */
+function get_occupancy_detail( int $occupancy_id = 0, string $currency = 'USD' ): array {
+	// Uppercase currency.
+	$currency = strtoupper( $currency );
+
+	// Bail if empty.
+	if ( empty( $occupancy_id ) || ! in_array( $currency, CURRENCIES, true ) ) {
+		return [];
+	}
+
+	// Get the occupancy data.
+	$occupancy_data = get_occupancy_data_by_id( $occupancy_id );
+
+	// Bail if empty.
+	if ( empty( $occupancy_data ) ) {
+		return [];
+	}
+
+	// First item.
+	$occupancy = $occupancy_data[0];
+
+	// Bail if empty.
+	if ( ! is_array( $occupancy ) || empty( $occupancy['id'] ) ) {
+		return [];
+	}
+
+	// Mask.
+	$mask = $occupancy['mask'];
+
+	// Get the description and pax count by mask.
+	$description_and_pax_count = get_description_and_pax_count_by_mask( $mask );
+
+	// Get price.
+	$original_price = absint( $occupancy[ 'price_per_person_' . strtolower( $currency ) ] );
+
+	// Get discounted price.
+	$discounted_price = get_occupancy_promotion_lowest_price( $occupancy['id'], $currency );
+
+	// Prepare data.
+	$detail = [
+		'name' => $occupancy['mask'],
+		'description' => $description_and_pax_count['description'],
+		'no_of_guests' => strval( $description_and_pax_count['pax_count'] ),
+		'price' => [
+			'original_price' => format_price( $original_price, $currency ),
+			'discounted_price' => format_price( $discounted_price, $currency ),
+		],
+		'promotions' => [],
+	];
+
+	// Return the occupancy detail.
+	return $detail;
 }
