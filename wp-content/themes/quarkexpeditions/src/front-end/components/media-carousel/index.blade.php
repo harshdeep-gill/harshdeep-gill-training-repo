@@ -26,6 +26,12 @@
 		<tp-slider-slides class="media-carousel__slides">
 			{!! $slot !!}
 		</tp-slider-slides>
+
+		<tp-slider-nav>
+			@for ($i = 0; $i < $slide_count; $i++)
+				<tp-slider-nav-item><button>{{ $i }}</button></tp-slider-nav-item>
+			@endfor
+		</tp-slider-nav>
 	</tp-slider-track>
 
 	@if ( $slide_count > 1 )
