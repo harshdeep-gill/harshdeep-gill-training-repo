@@ -1036,3 +1036,73 @@ function get_occupancies_by_cabin_category_and_departure( int $cabin_category_po
 	// Return the cabin data.
 	return $formatted_rows;
 }
+
+/**
+ * Get description and pax count by mask.
+ *
+ * @param string $mask The mask.
+ *
+ * @return array{
+ *  description: string,
+ *  pax_count: int,
+ * }
+ */
+function get_description_and_pax_count_by_mask( string $mask = '' ): array {
+	// Setup default return values.
+	$description_and_pax_count = [
+		'description' => '',
+		'pax_count'   => 0,
+	];
+
+	// Bail if empty.
+	if ( empty( $mask ) ) {
+		return $description_and_pax_count;
+	}
+
+	// The mask mapping.
+	$mask_mapping = [
+		'A'     => [
+			'description' => 'Single Room',
+			'pax_count'         => 1,
+		],
+		'AA'    => [
+			'description' => 'Double Room',
+			'pax_count'         => 2,
+		],
+		'SAA'   => [
+			'description' => 'Double Room Shared',
+			'pax_count'         => 1,
+		],
+		'SMAA'  => [
+			'description' => 'Double Room Shared (Male)',
+			'pax_count'         => 1,
+		],
+		'SFAA'  => [
+			'description' => 'Double Room Shared (Female)',
+			'pax_count'         => 1,
+		],
+		'AAA'   => [
+			'description' => 'Triple Room',
+			'pax_count'         => 3,
+		],
+		'SAAA'  => [
+			'description' => 'Triple Room Shared',
+			'pax_count'         => 1,
+		],
+		'SMAAA' => [
+			'description' => 'Triple Room Shared (Male)',
+			'pax_count'         => 1,
+		],
+		'SFAAA' => [
+			'description' => 'Triple Room Shared (Female)',
+			'pax_count'         => 1,
+		],
+		'AAAA'  => [
+			'description' => 'Quad Room',
+			'pax_count'         => 4,
+		],
+	];
+
+	// Return the description and pax count.
+	return $mask_mapping[ $mask ] ?? $description_and_pax_count;
+}
