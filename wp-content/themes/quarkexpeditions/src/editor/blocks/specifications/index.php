@@ -58,7 +58,7 @@ function render(): string {
 	return quark_get_component(
 		COMPONENT,
 		[
-			'title'          => __( 'Specifications', 'qrk' ),
+			'title'          => __( 'Ship Specifications', 'qrk' ),
 			'specifications' => $specifications,
 		]
 	);
