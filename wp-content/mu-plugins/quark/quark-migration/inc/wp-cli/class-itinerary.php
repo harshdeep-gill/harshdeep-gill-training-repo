@@ -425,7 +425,7 @@ class Itinerary {
 
 		// Set TnC - Cancellation Policy.
 		if ( ! empty( $item['tnc_cancellation_policy_id'] ) ) {
-			$tnc_cancellation_policy = get_post_by_id( absint( $item['tnc_cancellation_policy_id'] ), POLICY_PAGE_POST_TYPE, 'drupal_tid' );
+			$tnc_cancellation_policy = get_post_by_id( absint( $item['tnc_cancellation_policy_id'] ), POLICY_PAGE_POST_TYPE );
 
 			// Check if post exist.
 			if ( $tnc_cancellation_policy instanceof WP_Post ) {
@@ -435,7 +435,7 @@ class Itinerary {
 
 		// Set TnC - Terms and Conditions.
 		if ( ! empty( $item['tnc_terms_and_conditions_id'] ) ) {
-			$tnc_terms_and_conditions = get_post_by_id( absint( $item['tnc_terms_and_conditions_id'] ), POLICY_PAGE_POST_TYPE, 'drupal_tid' );
+			$tnc_terms_and_conditions = get_post_by_id( absint( $item['tnc_terms_and_conditions_id'] ), POLICY_PAGE_POST_TYPE );
 
 			// Check if post exist.
 			if ( $tnc_terms_and_conditions instanceof WP_Post ) {
