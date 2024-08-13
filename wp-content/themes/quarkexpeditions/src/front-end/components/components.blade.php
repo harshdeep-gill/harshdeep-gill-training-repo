@@ -1272,7 +1272,6 @@
 				video_url="https://quarkexpeditions.wistia.com/medias/p0k52ec113"
 				title="Video Caption"
 			/>
-			{{-- <x-collage.image size="small" image_id="26" title="Image 2" /> --}}
 			<x-collage.image size="small" image_id="32" title="Image 3" />
 			<x-collage.image size="small" image_id="36" title="Image 4" />
 			<x-collage.image size="large" image_id="31" title="Image 5" />
