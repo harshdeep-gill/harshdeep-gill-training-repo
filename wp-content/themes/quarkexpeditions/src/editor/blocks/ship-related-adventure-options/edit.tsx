@@ -35,7 +35,7 @@ export default function Edit( { className }: BlockEditAttributes ) {
 		className: classNames( className, '' ),
 	} );
 
-	// TODO: Add comment.
+	//
 	return (
 		<Section { ...blockProps }>
 			<ServerSideRender

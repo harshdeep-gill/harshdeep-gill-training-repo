@@ -25,8 +25,7 @@ function bootstrap(): void {
 	register_block_type_from_metadata(
 		__DIR__,
 		[
-			'render_callback'   => __NAMESPACE__ . '\\render',
-			'skip_inner_blocks' => true,
+			'render_callback' => __NAMESPACE__ . '\\render',
 		]
 	);
 }
@@ -61,6 +60,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 
 	// Loop through the related adventure options.
 	foreach ( $ship['post_taxonomies'][ ADVENTURE_OPTION_CATEGORY ] as $ship_related_adventure_option ) {
+		// Continue if the term ID is empty.
 		if ( empty( $ship_related_adventure_option['term_id'] ) ) {
 			continue;
 		}
@@ -71,7 +71,6 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 			[
 				'image_id' => get_term_meta( $ship_related_adventure_option['term_id'], 'image', true ),
 				'title'    => $ship_related_adventure_option['name'],
-				'target'   => '_blank',
 			]
 		);
 	}
