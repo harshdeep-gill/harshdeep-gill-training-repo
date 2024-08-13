@@ -11,14 +11,24 @@ use Quark\Tests\Softrip\Softrip_TestCase;
 
 use function Quark\Softrip\do_sync;
 use function Quark\Softrip\get_engine_collate;
+use function Quark\Softrip\Occupancies\add_supplemental_and_mandatory_price;
 use function Quark\Softrip\Occupancies\format_data;
 use function Quark\Softrip\Occupancies\get_cabin_category_post_by_cabin_code;
+use function Quark\Softrip\Occupancies\get_cabin_category_post_ids_by_departure;
+use function Quark\Softrip\Occupancies\get_description_and_pax_count_by_mask;
+use function Quark\Softrip\Occupancies\get_lowest_price;
+use function Quark\Softrip\Occupancies\get_occupancies_by_cabin_category_and_departure;
 use function Quark\Softrip\Occupancies\get_occupancies_by_departure;
+use function Quark\Softrip\Occupancies\get_occupancy_data_by_id;
 use function Quark\Softrip\Occupancies\get_occupancy_data_by_softrip_id;
 use function Quark\Softrip\Occupancies\get_table_name;
 use function Quark\Softrip\Occupancies\get_table_sql;
 
 use const Quark\CabinCategories\POST_TYPE as CABIN_CATEGORIES_POST_TYPE;
+use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
+use const Quark\Itineraries\CACHE_GROUP as ITINERARIES_CACHE_GROUP;
+use const Quark\Itineraries\CACHE_KEY as ITINERARIES_CACHE_KEY;
+use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
 use const Quark\Softrip\Occupancies\CACHE_GROUP;
 use const Quark\Softrip\Occupancies\CACHE_KEY_PREFIX;
 use const Quark\Softrip\TABLE_PREFIX_NAME;
@@ -58,19 +68,19 @@ class Test_Occupancies extends Softrip_TestCase {
 		// Assert that SQL is correct.
 		$expected_sql = "CREATE TABLE $table_name (
 			id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-            softrip_id VARCHAR(255) NOT NULL UNIQUE,
-            softrip_name VARCHAR(255) NOT NULL,
-            mask VARCHAR(12) NOT NULL,
-            departure_post_id BIGINT NOT NULL,
-            cabin_category_post_id BIGINT NOT NULL,
-            spaces_available INT NOT NULL,
-            availability_description VARCHAR(255) NOT NULL,
-            availability_status VARCHAR(4) NOT NULL,
-            price_per_person_usd BIGINT NOT NULL,
-            price_per_person_cad BIGINT NOT NULL,
-            price_per_person_aud BIGINT NOT NULL,
-            price_per_person_gbp BIGINT NOT NULL,
-            price_per_person_eur BIGINT NOT NULL
+			softrip_id VARCHAR(255) NOT NULL UNIQUE,
+			softrip_name VARCHAR(255) NOT NULL,
+			mask VARCHAR(12) NOT NULL,
+			departure_post_id BIGINT NOT NULL,
+			cabin_category_post_id BIGINT NOT NULL,
+			spaces_available INT NOT NULL,
+			availability_description VARCHAR(255) NOT NULL,
+			availability_status VARCHAR(4) NOT NULL,
+			price_per_person_usd BIGINT NOT NULL,
+			price_per_person_cad BIGINT NOT NULL,
+			price_per_person_aud BIGINT NOT NULL,
+			price_per_person_gbp BIGINT NOT NULL,
+			price_per_person_eur BIGINT NOT NULL
 		) $engine_collate";
 		$actual       = get_table_sql();
 
@@ -710,8 +720,1763 @@ class Test_Occupancies extends Softrip_TestCase {
 		$departure_post_id = 999;
 
 		// Cache should be absent.
+		$actual_from_cache = wp_cache_get( CACHE_KEY_PREFIX . '_departure_post_id_' . $departure_post_id, CACHE_GROUP );
+		$this->assertFalse( $actual_from_cache );
+
+		// Test with invalid departure post ID.
 		$expected = [];
 		$actual   = get_occupancies_by_departure( $departure_post_id );
 		$this->assertSame( $expected, $actual );
+
+		// Cache should be present now.
+		$actual_from_cache = wp_cache_get( CACHE_KEY_PREFIX . '_departure_post_id_' . $departure_post_id, CACHE_GROUP );
+		$this->assertIsArray( $actual_from_cache );
+		$this->assertEmpty( $actual_from_cache );
+
+		// Insert occupancy and then test getter.
+		$raw_occupancy_data1     = [
+			'id'                      => 'PQO-123:2026-02-10:OEX-SGL:A',
+			'name'                    => 'Test Occupancy',
+			'mask'                    => 'A',
+			'spacesAvailable'         => 10,
+			'availabilityDescription' => 'Available',
+			'availabilityStatus'      => 'O',
+			'prices'                  => [
+				'USD' => [
+					'currencyCode'   => 'USD',
+					'pricePerPerson' => 100,
+				],
+				'CAD' => [
+					'currencyCode'   => 'CAD',
+					'pricePerPerson' => 150,
+				],
+				'AUD' => [
+					'currencyCode'   => 'AUD',
+					'pricePerPerson' => 200,
+				],
+				'GBP' => [
+					'currencyCode'   => 'GBP',
+					'pricePerPerson' => 250,
+				],
+				'EUR' => [
+					'currencyCode'   => 'EUR',
+					'pricePerPerson' => 300,
+				],
+			],
+		];
+		$departure_post_id1      = 123;
+		$cabin_category_post_id1 = 456;
+		$formatted_data1         = format_data( $raw_occupancy_data1, $cabin_category_post_id1, $departure_post_id1 );
+		$this->assertIsArray( $formatted_data1 );
+		$this->assertNotEmpty( $formatted_data1 );
+
+		// There should be no occupancy with this departure post ID.
+		$actual = get_occupancies_by_departure( $departure_post_id1 );
+		$this->assertIsArray( $actual );
+		$this->assertEmpty( $actual );
+
+		// Construct cache key.
+		$cache_key1 = CACHE_KEY_PREFIX . '_departure_post_id_' . $departure_post_id1;
+
+		// Delete the cache.
+		wp_cache_delete( $cache_key1, CACHE_GROUP );
+
+		// Get table name.
+		$table_name = get_table_name();
+
+		// Get global wpdb object.
+		global $wpdb;
+
+		// Insert occupancy data.
+		$wpdb->insert( $table_name, $formatted_data1 );
+
+		// Inserted occupancy ID.
+		$occupancy_id1 = $wpdb->insert_id;
+
+		// Cache should be empty.
+		$actual_from_cache1 = wp_cache_get( $cache_key1, CACHE_GROUP );
+		$this->assertFalse( $actual_from_cache1 );
+
+		// Now, there should be one occupancy with this departure post ID.
+		$actual1 = get_occupancies_by_departure( $departure_post_id1 );
+		$this->assertIsArray( $actual1 );
+		$this->assertNotEmpty( $actual1 );
+		$this->assertCount( 1, $actual1 );
+
+		// Cache should not be empty.
+		$actual_from_cache1 = wp_cache_get( $cache_key1, CACHE_GROUP );
+		$this->assertIsArray( $actual_from_cache1 );
+		$this->assertNotEmpty( $actual_from_cache1 );
+
+		// Get first occupancy.
+		$actual1 = $actual1[0];
+		$this->assertIsArray( $actual1 );
+		$this->assertNotEmpty( $actual1 );
+
+		// Assert each column.
+		$this->assertArrayHasKey( 'id', $actual1 );
+		$this->assertEquals( $occupancy_id1, $actual1['id'] );
+		$this->assertArrayHasKey( 'softrip_id', $actual1 );
+		$this->assertEquals( $formatted_data1['softrip_id'], $actual1['softrip_id'] );
+		$this->assertArrayHasKey( 'softrip_name', $actual1 );
+		$this->assertEquals( $formatted_data1['softrip_name'], $actual1['softrip_name'] );
+		$this->assertArrayHasKey( 'mask', $actual1 );
+		$this->assertEquals( $formatted_data1['mask'], $actual1['mask'] );
+		$this->assertArrayHasKey( 'departure_post_id', $actual1 );
+		$this->assertEquals( $formatted_data1['departure_post_id'], $actual1['departure_post_id'] );
+		$this->assertArrayHasKey( 'cabin_category_post_id', $actual1 );
+		$this->assertEquals( $formatted_data1['cabin_category_post_id'], $actual1['cabin_category_post_id'] );
+		$this->assertArrayHasKey( 'spaces_available', $actual1 );
+		$this->assertEquals( $formatted_data1['spaces_available'], $actual1['spaces_available'] );
+		$this->assertArrayHasKey( 'availability_description', $actual1 );
+		$this->assertEquals( $formatted_data1['availability_description'], $actual1['availability_description'] );
+		$this->assertArrayHasKey( 'availability_status', $actual1 );
+		$this->assertEquals( $formatted_data1['availability_status'], $actual1['availability_status'] );
+		$this->assertArrayHasKey( 'price_per_person_usd', $actual1 );
+		$this->assertEquals( $formatted_data1['price_per_person_usd'], $actual1['price_per_person_usd'] );
+		$this->assertArrayHasKey( 'price_per_person_cad', $actual1 );
+		$this->assertEquals( $formatted_data1['price_per_person_cad'], $actual1['price_per_person_cad'] );
+		$this->assertArrayHasKey( 'price_per_person_aud', $actual1 );
+		$this->assertEquals( $formatted_data1['price_per_person_aud'], $actual1['price_per_person_aud'] );
+		$this->assertArrayHasKey( 'price_per_person_gbp', $actual1 );
+		$this->assertEquals( $formatted_data1['price_per_person_gbp'], $actual1['price_per_person_gbp'] );
+		$this->assertArrayHasKey( 'price_per_person_eur', $actual1 );
+		$this->assertEquals( $formatted_data1['price_per_person_eur'], $actual1['price_per_person_eur'] );
+
+		// Test with real mock data.
+		// Setup mock response.
+		add_filter( 'pre_http_request', 'Quark\Tests\Softrip\mock_softrip_http_request', 10, 3 );
+
+		// Sync softrip with existing posts.
+		do_sync();
+
+		// Remove filter.
+		remove_filter( 'pre_http_request', 'Quark\Tests\Softrip\mock_softrip_http_request', 10 );
+
+		// Get departure post ID.
+		$departure_post_ids = get_posts(
+			[
+				'post_type'              => DEPARTURE_POST_TYPE,
+				'posts_per_page'         => 1,
+				'fields'                 => 'ids',
+				'no_found_rows'          => true,
+				'update_post_meta_cache' => false,
+				'update_post_term_cache' => false,
+				'ignore_sticky_posts'    => true,
+				'meta_query'             => [
+					[
+						'key'     => 'softrip_package_code',
+						'value'   => 'ABC-123',
+						'compare' => '=',
+					],
+				],
+			]
+		);
+		$this->assertIsArray( $departure_post_ids );
+		$this->assertNotEmpty( $departure_post_ids );
+		$departure_post_id = $departure_post_ids[0];
+		$this->assertIsInt( $departure_post_id );
+
+		// Cache should be empty for this departure post ID.
+		$actual = wp_cache_get( CACHE_KEY_PREFIX . '_departure_post_id_' . $departure_post_id, CACHE_GROUP );
+		$this->assertFalse( $actual );
+
+		// Get occupancies by departure post ID.
+		$occupancies = get_occupancies_by_departure( $departure_post_id );
+		$this->assertIsArray( $occupancies );
+		$this->assertNotEmpty( $occupancies );
+		$this->assertCount( 1, $occupancies );
+
+		// Cache should not be empty anymore.
+		$actual_from_cache = wp_cache_get( CACHE_KEY_PREFIX . '_departure_post_id_' . $departure_post_id, CACHE_GROUP );
+		$this->assertIsArray( $actual_from_cache );
+		$this->assertNotEmpty( $actual_from_cache );
+
+		// Get first occupancy.
+		$occupancy_data = $occupancies[0];
+		$this->assertIsArray( $occupancy_data );
+		$this->assertNotEmpty( $occupancy_data );
+
+		// Assert each column.
+		$this->assertArrayHasKey( 'id', $occupancy_data );
+		$this->assertArrayHasKey( 'softrip_id', $occupancy_data );
+		$this->assertArrayHasKey( 'softrip_name', $occupancy_data );
+		$this->assertArrayHasKey( 'mask', $occupancy_data );
+		$this->assertArrayHasKey( 'departure_post_id', $occupancy_data );
+		$this->assertArrayHasKey( 'cabin_category_post_id', $occupancy_data );
+		$this->assertArrayHasKey( 'spaces_available', $occupancy_data );
+		$this->assertArrayHasKey( 'availability_description', $occupancy_data );
+		$this->assertArrayHasKey( 'availability_status', $occupancy_data );
+		$this->assertArrayHasKey( 'price_per_person_usd', $occupancy_data );
+		$this->assertArrayHasKey( 'price_per_person_cad', $occupancy_data );
+		$this->assertArrayHasKey( 'price_per_person_aud', $occupancy_data );
+		$this->assertArrayHasKey( 'price_per_person_gbp', $occupancy_data );
+		$this->assertArrayHasKey( 'price_per_person_eur', $occupancy_data );
+		$this->assertSame( 'ABC-123:2026-02-28:OEX-SGL:A', $occupancy_data['softrip_id'] );
+		$this->assertSame( 'ABC-123:2026-02-28:OEX-SGL:A', $occupancy_data['softrip_name'] );
+		$this->assertSame( 'A', $occupancy_data['mask'] );
+		$this->assertNotEmpty( $occupancy_data['departure_post_id'] );
+		$this->assertNotEmpty( $occupancy_data['cabin_category_post_id'] );
+		$this->assertEmpty( $occupancy_data['spaces_available'] );
+	}
+
+	/**
+	 * Test get occupancy data by id.
+	 *
+	 * @covers \Quark\Softrip\Occupancies\get_occupancy_data_by_id
+	 *
+	 * @return void
+	 */
+	public function test_get_occupancy_data_by_id(): void {
+		// Test with no arguments.
+		$expected = [];
+		$actual   = get_occupancy_data_by_id();
+		$this->assertSame( $expected, $actual );
+
+		// Test with empty ID.
+		$expected = [];
+		$actual   = get_occupancy_data_by_id( 0 );
+		$this->assertSame( $expected, $actual );
+
+		// Test with invalid ID.
+		$expected = [];
+		$actual   = get_occupancy_data_by_id( 999 );
+		$this->assertSame( $expected, $actual );
+
+		/**
+		 * Insert occupancy and then test getter.
+		 */
+		$raw_occupancy_data1     = [
+			'id'                      => 'PQO-123',
+			'name'                    => 'Test Occupancy',
+			'mask'                    => '123456789012',
+			'spacesAvailable'         => 10,
+			'availabilityDescription' => 'Available',
+			'availabilityStatus'      => 'AV',
+			'prices'                  => [
+				'USD' => [
+					'currencyCode'   => 'USD',
+					'pricePerPerson' => 100,
+				],
+				'CAD' => [
+					'currencyCode'   => 'CAD',
+					'pricePerPerson' => 150,
+				],
+				'AUD' => [
+					'currencyCode'   => 'AUD',
+					'pricePerPerson' => 200,
+				],
+				'GBP' => [
+					'currencyCode'   => 'GBP',
+					'pricePerPerson' => 250,
+				],
+				'EUR' => [
+					'currencyCode'   => 'EUR',
+					'pricePerPerson' => 300,
+				],
+			],
+		];
+		$departure_post_id1      = 123;
+		$cabin_category_post_id1 = 456;
+		$formatted_data1         = format_data( $raw_occupancy_data1, $cabin_category_post_id1, $departure_post_id1 );
+		$this->assertIsArray( $formatted_data1 );
+		$this->assertNotEmpty( $formatted_data1 );
+
+		// New occupancy id.
+		$occupancy_id1 = 1;
+
+		// There should be no occupancy with this ID.
+		$actual = get_occupancy_data_by_id( $occupancy_id1 );
+		$this->assertIsArray( $actual );
+		$this->assertEmpty( $actual );
+
+		// Construct cache key.
+		$cache_key1 = CACHE_KEY_PREFIX . '_occupancy_id_' . $occupancy_id1;
+
+		// Delete the cache.
+		wp_cache_delete( $cache_key1, CACHE_GROUP );
+
+		// Get table name.
+		$table_name = get_table_name();
+
+		// Get global wpdb object.
+		global $wpdb;
+
+		// Insert occupancy data.
+		$wpdb->insert( $table_name, $formatted_data1 );
+
+		// Cache should be empty.
+		$actual_from_cache1 = wp_cache_get( $cache_key1, CACHE_GROUP );
+		$this->assertFalse( $actual_from_cache1 );
+
+		// Now, there should be one occupancy with this ID.
+		$actual1 = get_occupancy_data_by_id( $occupancy_id1 );
+		$this->assertIsArray( $actual1 );
+		$this->assertNotEmpty( $actual1 );
+		$this->assertCount( 1, $actual1 );
+
+		// Cache should not be empty.
+		$actual_from_cache1 = wp_cache_get( $cache_key1, CACHE_GROUP );
+		$this->assertIsArray( $actual_from_cache1 );
+		$this->assertNotEmpty( $actual_from_cache1 );
+
+		// Get first occupancy.
+		$actual1 = $actual1[0];
+		$this->assertIsArray( $actual1 );
+		$this->assertNotEmpty( $actual1 );
+
+		// Assert each column.
+		$this->assertArrayHasKey( 'id', $actual1 );
+		$this->assertEquals( $occupancy_id1, $actual1['id'] );
+		$this->assertArrayHasKey( 'softrip_id', $actual1 );
+		$this->assertEquals( $formatted_data1['softrip_id'], $actual1['softrip_id'] );
+		$this->assertArrayHasKey( 'softrip_name', $actual1 );
+		$this->assertEquals( $formatted_data1['softrip_name'], $actual1['softrip_name'] );
+		$this->assertArrayHasKey( 'mask', $actual1 );
+		$this->assertEquals( $formatted_data1['mask'], $actual1['mask'] );
+		$this->assertArrayHasKey( 'departure_post_id', $actual1 );
+		$this->assertEquals( $formatted_data1['departure_post_id'], $actual1['departure_post_id'] );
+		$this->assertArrayHasKey( 'cabin_category_post_id', $actual1 );
+		$this->assertEquals( $formatted_data1['cabin_category_post_id'], $actual1['cabin_category_post_id'] );
+		$this->assertArrayHasKey( 'spaces_available', $actual1 );
+		$this->assertEquals( $formatted_data1['spaces_available'], $actual1['spaces_available'] );
+		$this->assertArrayHasKey( 'availability_description', $actual1 );
+		$this->assertEquals( $formatted_data1['availability_description'], $actual1['availability_description'] );
+		$this->assertArrayHasKey( 'availability_status', $actual1 );
+		$this->assertEquals( $formatted_data1['availability_status'], $actual1['availability_status'] );
+		$this->assertArrayHasKey( 'price_per_person_usd', $actual1 );
+		$this->assertEquals( $formatted_data1['price_per_person_usd'], $actual1['price_per_person_usd'] );
+		$this->assertArrayHasKey( 'price_per_person_cad', $actual1 );
+		$this->assertEquals( $formatted_data1['price_per_person_cad'], $actual1['price_per_person_cad'] );
+		$this->assertArrayHasKey( 'price_per_person_aud', $actual1 );
+		$this->assertEquals( $formatted_data1['price_per_person_aud'], $actual1['price_per_person_aud'] );
+		$this->assertArrayHasKey( 'price_per_person_gbp', $actual1 );
+		$this->assertEquals( $formatted_data1['price_per_person_gbp'], $actual1['price_per_person_gbp'] );
+		$this->assertArrayHasKey( 'price_per_person_eur', $actual1 );
+		$this->assertEquals( $formatted_data1['price_per_person_eur'], $actual1['price_per_person_eur'] );
+
+		// Test with real mock data.
+		// Setup mock response.
+		add_filter( 'pre_http_request', 'Quark\Tests\Softrip\mock_softrip_http_request', 10, 3 );
+
+		// Sync softrip with existing posts.
+		do_sync();
+
+		// Remove filter.
+		remove_filter( 'pre_http_request', 'Quark\Tests\Softrip\mock_softrip_http_request', 10 );
+
+		// Get occupancy ID.
+		$occupancy_ids = $wpdb->get_col(
+			$wpdb->prepare(
+				'SELECT id FROM %i WHERE softrip_id = %s',
+				[
+					$table_name,
+					'ABC-123:2026-02-28:OEX-SGL:A',
+				]
+			)
+		);
+		$this->assertIsArray( $occupancy_ids );
+		$this->assertNotEmpty( $occupancy_ids );
+		$this->assertCount( 1, $occupancy_ids );
+		$occupancy_id = absint( $occupancy_ids[0] );
+
+		// Cache should be empty for this occupancy ID.
+		$actual = wp_cache_get( CACHE_KEY_PREFIX . '_occupancy_id_' . $occupancy_id, CACHE_GROUP );
+		$this->assertFalse( $actual );
+
+		// Get occupancy data by ID.
+		$occupancy_data = get_occupancy_data_by_id( $occupancy_id );
+		$this->assertIsArray( $occupancy_data );
+		$this->assertNotEmpty( $occupancy_data );
+		$this->assertCount( 1, $occupancy_data );
+
+		// Cache should not be empty anymore.
+		$actual_from_cache = wp_cache_get( CACHE_KEY_PREFIX . '_occupancy_id_' . $occupancy_id, CACHE_GROUP );
+		$this->assertIsArray( $actual_from_cache );
+		$this->assertNotEmpty( $actual_from_cache );
+
+		// Get first occupancy.
+		$occupancy_data = $occupancy_data[0];
+		$this->assertIsArray( $occupancy_data );
+		$this->assertNotEmpty( $occupancy_data );
+
+		// Assert each column.
+		$this->assertArrayHasKey( 'id', $occupancy_data );
+		$this->assertArrayHasKey( 'softrip_id', $occupancy_data );
+		$this->assertArrayHasKey( 'softrip_name', $occupancy_data );
+		$this->assertArrayHasKey( 'mask', $occupancy_data );
+		$this->assertArrayHasKey( 'departure_post_id', $occupancy_data );
+		$this->assertArrayHasKey( 'cabin_category_post_id', $occupancy_data );
+		$this->assertArrayHasKey( 'spaces_available', $occupancy_data );
+		$this->assertArrayHasKey( 'availability_description', $occupancy_data );
+		$this->assertArrayHasKey( 'availability_status', $occupancy_data );
+		$this->assertArrayHasKey( 'price_per_person_usd', $occupancy_data );
+		$this->assertArrayHasKey( 'price_per_person_cad', $occupancy_data );
+		$this->assertArrayHasKey( 'price_per_person_aud', $occupancy_data );
+		$this->assertArrayHasKey( 'price_per_person_gbp', $occupancy_data );
+		$this->assertArrayHasKey( 'price_per_person_eur', $occupancy_data );
+		$this->assertSame( 'ABC-123:2026-02-28:OEX-SGL:A', $occupancy_data['softrip_id'] );
+		$this->assertSame( 'ABC-123:2026-02-28:OEX-SGL:A', $occupancy_data['softrip_name'] );
+		$this->assertSame( 'A', $occupancy_data['mask'] );
+		$this->assertNotEmpty( $occupancy_data['departure_post_id'] );
+		$this->assertNotEmpty( $occupancy_data['cabin_category_post_id'] );
+		$this->assertEmpty( $occupancy_data['spaces_available'] );
+	}
+
+	/**
+	 * Test get cabin category post IDs by departure.
+	 *
+	 * @covers \Quark\Softrip\Occupancies\get_cabin_category_post_ids_by_departure
+	 *
+	 * @return void
+	 */
+	public function test_get_cabin_category_post_ids_by_departure(): void {
+		// Test with no arguments.
+		$expected = [];
+		$actual   = get_cabin_category_post_ids_by_departure();
+		$this->assertSame( $expected, $actual );
+
+		// Test with empty departure post ID.
+		$expected = [];
+		$actual   = get_cabin_category_post_ids_by_departure( 0 );
+		$this->assertSame( $expected, $actual );
+
+		// Test with invalid departure post ID and invalid cabin category post ID.
+		$departure_post_id = 9999;
+
+		// Cache should be absent.
+		$actual_from_cache = wp_cache_get( CACHE_KEY_PREFIX . '_cabin_category_departure_post_id_' . $departure_post_id, CACHE_GROUP );
+		$this->assertFalse( $actual_from_cache );
+
+		// Test with invalid departure post ID.
+		$expected = [];
+		$actual   = get_cabin_category_post_ids_by_departure( $departure_post_id );
+		$this->assertSame( $expected, $actual );
+
+		// Cache should be present now.
+		$actual_from_cache = wp_cache_get( CACHE_KEY_PREFIX . '_cabin_category_departure_post_id_' . $departure_post_id, CACHE_GROUP );
+		$this->assertIsArray( $actual_from_cache );
+		$this->assertEmpty( $actual_from_cache );
+
+		// Insert occupancy and then test getter.
+		$raw_occupancy_data1     = [
+			'id'                      => 'PQO-123:2026-02-20:OEX-SGL:A',
+			'name'                    => 'Test Occupancy',
+			'mask'                    => 'A',
+			'spacesAvailable'         => 10,
+			'availabilityDescription' => 'Available',
+			'availabilityStatus'      => 'O',
+			'prices'                  => [
+				'USD' => [
+					'currencyCode'   => 'USD',
+					'pricePerPerson' => 100,
+				],
+				'CAD' => [
+					'currencyCode'   => 'CAD',
+					'pricePerPerson' => 150,
+				],
+				'AUD' => [
+					'currencyCode'   => 'AUD',
+					'pricePerPerson' => 200,
+				],
+				'GBP' => [
+					'currencyCode'   => 'GBP',
+					'pricePerPerson' => 250,
+				],
+				'EUR' => [
+					'currencyCode'   => 'EUR',
+					'pricePerPerson' => 300,
+				],
+			],
+		];
+		$departure_post_id1      = 1231;
+		$cabin_category_post_id1 = 4561;
+		$formatted_data1         = format_data( $raw_occupancy_data1, $cabin_category_post_id1, $departure_post_id1 );
+		$this->assertIsArray( $formatted_data1 );
+		$this->assertNotEmpty( $formatted_data1 );
+
+		// There should be no cabin category post ID with this departure post ID.
+		$actual = get_cabin_category_post_ids_by_departure( $departure_post_id1 );
+		$this->assertIsArray( $actual );
+		$this->assertEmpty( $actual );
+
+		// Construct cache key.
+		$cache_key1 = CACHE_KEY_PREFIX . '_cabin_category_departure_post_id_' . $departure_post_id1;
+
+		// Delete the cache.
+		wp_cache_delete( $cache_key1, CACHE_GROUP );
+
+		// Get table name.
+		$table_name = get_table_name();
+
+		// Get global wpdb object.
+		global $wpdb;
+
+		// Insert occupancy data.
+		$wpdb->insert( $table_name, $formatted_data1 );
+
+		// Inserted occupancy ID.
+		$occupancy_id1 = $wpdb->insert_id;
+
+		// Cache should be empty.
+		$actual_from_cache1 = wp_cache_get( $cache_key1, CACHE_GROUP );
+		$this->assertFalse( $actual_from_cache1 );
+
+		// Now, there should be one cabin category post ID with this departure post ID.
+		$actual1 = get_cabin_category_post_ids_by_departure( $departure_post_id1 );
+		$this->assertIsArray( $actual1 );
+		$this->assertNotEmpty( $actual1 );
+		$this->assertCount( 1, $actual1 );
+
+		// Cache should not be empty.
+		$actual_from_cache1 = wp_cache_get( $cache_key1, CACHE_GROUP );
+		$this->assertIsArray( $actual_from_cache1 );
+		$this->assertNotEmpty( $actual_from_cache1 );
+
+		// Get first cabin category post ID.
+		$actual1 = $actual1[0];
+		$this->assertIsInt( $actual1 );
+		$this->assertEquals( $cabin_category_post_id1, $actual1 );
+
+		// Let's insert one more occupancy with same departure post ID but different cabin category post ID.
+		$raw_occupancy_data2     = [
+			'id'                      => 'PQO-456:2026-02-19:OEX-SGL:A',
+			'name'                    => 'Test Occupancy',
+			'mask'                    => 'A',
+			'spacesAvailable'         => 10,
+			'availabilityDescription' => 'Available',
+			'availabilityStatus'      => 'O',
+			'prices'                  => [
+				'USD' => [
+					'currencyCode'   => 'USD',
+					'pricePerPerson' => 100,
+				],
+				'CAD' => [
+					'currencyCode'   => 'CAD',
+					'pricePerPerson' => 150,
+				],
+				'AUD' => [
+					'currencyCode'   => 'AUD',
+					'pricePerPerson' => 200,
+				],
+				'GBP' => [
+					'currencyCode'   => 'GBP',
+					'pricePerPerson' => 250,
+				],
+				'EUR' => [
+					'currencyCode'   => 'EUR',
+					'pricePerPerson' => 300,
+				],
+			],
+		];
+		$cabin_category_post_id2 = 7891;
+		$formatted_data2         = format_data( $raw_occupancy_data2, $cabin_category_post_id2, $departure_post_id1 );
+		$this->assertIsArray( $formatted_data2 );
+		$this->assertNotEmpty( $formatted_data2 );
+
+		// There should be already one cabin category post ID with this departure post ID.
+		$actual = get_cabin_category_post_ids_by_departure( $departure_post_id1 );
+		$this->assertIsArray( $actual );
+		$this->assertNotEmpty( $actual );
+		$this->assertCount( 1, $actual );
+
+		// Construct cache key.
+		$cache_key2 = CACHE_KEY_PREFIX . '_cabin_category_departure_post_id_' . $departure_post_id1;
+
+		// Delete the cache.
+		wp_cache_delete( $cache_key2, CACHE_GROUP );
+
+		// Insert occupancy data.
+		$wpdb->insert( $table_name, $formatted_data2 );
+
+		// Inserted occupancy ID.
+		$occupancy_id2 = $wpdb->insert_id;
+
+		// Cache should be empty.
+		$actual_from_cache2 = wp_cache_get( $cache_key2, CACHE_GROUP );
+		$this->assertFalse( $actual_from_cache2 );
+
+		// Now, there should be two cabin category post IDs with this departure post ID.
+		$actual2 = get_cabin_category_post_ids_by_departure( $departure_post_id1 );
+		$this->assertIsArray( $actual2 );
+		$this->assertNotEmpty( $actual2 );
+		$this->assertCount( 2, $actual2 );
+		$this->assertContains( $cabin_category_post_id1, $actual2 );
+		$this->assertContains( $cabin_category_post_id2, $actual2 );
+
+		// Cache should not be empty.
+		$actual_from_cache2 = wp_cache_get( $cache_key2, CACHE_GROUP );
+		$this->assertIsArray( $actual_from_cache2 );
+		$this->assertNotEmpty( $actual_from_cache2 );
+
+		// Let's insert one more occupancy with same cabin category post ID but different departure post ID.
+		$raw_occupancy_data3 = [
+			'id'                      => 'PQO-123:2026-02-15:OEX-SGL:A',
+			'name'                    => 'Test Occupancy',
+			'mask'                    => 'A',
+			'spacesAvailable'         => 10,
+			'availabilityDescription' => 'Available',
+			'availabilityStatus'      => 'O',
+			'prices'                  => [
+				'USD' => [
+					'currencyCode'   => 'USD',
+					'pricePerPerson' => 100,
+				],
+				'CAD' => [
+					'currencyCode'   => 'CAD',
+					'pricePerPerson' => 150,
+				],
+				'AUD' => [
+					'currencyCode'   => 'AUD',
+					'pricePerPerson' => 200,
+				],
+				'GBP' => [
+					'currencyCode'   => 'GBP',
+					'pricePerPerson' => 250,
+				],
+				'EUR' => [
+					'currencyCode'   => 'EUR',
+					'pricePerPerson' => 300,
+				],
+			],
+		];
+		$departure_post_id2  = 4561;
+		$formatted_data3     = format_data( $raw_occupancy_data3, $cabin_category_post_id1, $departure_post_id2 );
+		$this->assertIsArray( $formatted_data3 );
+		$this->assertNotEmpty( $formatted_data3 );
+
+		// There should be no cabin category post ID with this departure post ID.
+		$actual = get_cabin_category_post_ids_by_departure( $departure_post_id2 );
+		$this->assertIsArray( $actual );
+		$this->assertEmpty( $actual );
+
+		// Construct cache key.
+		$cache_key3 = CACHE_KEY_PREFIX . '_cabin_category_departure_post_id_' . $departure_post_id2;
+
+		// Delete the cache.
+		wp_cache_delete( $cache_key3, CACHE_GROUP );
+
+		// Insert occupancy data.
+		$wpdb->insert( $table_name, $formatted_data3 );
+
+		// Inserted occupancy ID.
+		$occupancy_id3 = $wpdb->insert_id;
+
+		// Cache should be empty.
+		$actual_from_cache3 = wp_cache_get( $cache_key3, CACHE_GROUP );
+		$this->assertFalse( $actual_from_cache3 );
+
+		// Now, there should be one cabin category post ID with this departure post ID.
+		$actual3 = get_cabin_category_post_ids_by_departure( $departure_post_id2 );
+		$this->assertIsArray( $actual3 );
+		$this->assertNotEmpty( $actual3 );
+		$this->assertCount( 1, $actual3 );
+		$this->assertContains( $cabin_category_post_id1, $actual3 );
+		$this->assertNotContains( $cabin_category_post_id2, $actual3 );
+
+		// Cache should not be empty.
+		$actual_from_cache3 = wp_cache_get( $cache_key3, CACHE_GROUP );
+		$this->assertIsArray( $actual_from_cache3 );
+		$this->assertNotEmpty( $actual_from_cache3 );
+
+		// Test with real mock data.
+		// Setup mock response.
+		add_filter( 'pre_http_request', 'Quark\Tests\Softrip\mock_softrip_http_request', 10, 3 );
+
+		// Sync softrip with existing posts.
+		do_sync();
+
+		// Remove filter.
+		remove_filter( 'pre_http_request', 'Quark\Tests\Softrip\mock_softrip_http_request', 10 );
+
+		// Get departure post ID.
+		$departure_post_ids = get_posts(
+			[
+				'post_type'              => DEPARTURE_POST_TYPE,
+				'posts_per_page'         => 1,
+				'fields'                 => 'ids',
+				'no_found_rows'          => true,
+				'update_post_meta_cache' => false,
+				'update_post_term_cache' => false,
+				'ignore_sticky_posts'    => true,
+				'meta_query'             => [
+					[
+						'key'     => 'softrip_package_code',
+						'value'   => 'ABC-123',
+						'compare' => '=',
+					],
+				],
+			]
+		);
+		$this->assertIsArray( $departure_post_ids );
+		$this->assertNotEmpty( $departure_post_ids );
+		$departure_post_id = $departure_post_ids[0];
+		$this->assertIsInt( $departure_post_id );
+
+		// Cache should be empty for this departure post ID.
+		$actual = wp_cache_get( CACHE_KEY_PREFIX . '_cabin_category_departure_post_id_' . $departure_post_id, CACHE_GROUP );
+		$this->assertFalse( $actual );
+
+		// Get cabin category post IDs by departure post ID.
+		$cabin_category_post_ids = get_cabin_category_post_ids_by_departure( $departure_post_id );
+		$this->assertIsArray( $cabin_category_post_ids );
+		$this->assertNotEmpty( $cabin_category_post_ids );
+		$this->assertCount( 1, $cabin_category_post_ids );
+
+		// Cache should not be empty anymore.
+		$actual_from_cache = wp_cache_get( CACHE_KEY_PREFIX . '_cabin_category_departure_post_id_' . $departure_post_id, CACHE_GROUP );
+		$this->assertIsArray( $actual_from_cache );
+	}
+
+	/**
+	 * Test get occupancies by cabin category post id and departure post id.
+	 *
+	 * @covers \Quark\Softrip\Occupancies\get_occupancies_by_cabin_category_and_departure
+	 *
+	 * @return void
+	 */
+	public function test_get_occupancies_by_cabin_category_and_departure(): void {
+		// Test with no arguments.
+		$expected = [];
+		$actual   = get_occupancies_by_cabin_category_and_departure();
+		$this->assertSame( $expected, $actual );
+
+		// Test with empty cabin category post ID and empty departure post ID.
+		$expected = [];
+		$actual   = get_occupancies_by_cabin_category_and_departure( 0, 0 );
+		$this->assertSame( $expected, $actual );
+
+		// Test with invalid cabin category post ID and invalid departure post ID.
+		$cabin_category_post_id = 9999;
+		$departure_post_id      = 9999;
+
+		// Construct cache key.
+		$cache_key = CACHE_KEY_PREFIX . '_cabin_category_post_id_' . $cabin_category_post_id . '_departure_post_id_' . $departure_post_id;
+
+		// Cache should be absent.
+		$actual_from_cache = wp_cache_get( $cache_key, CACHE_GROUP );
+		$this->assertFalse( $actual_from_cache );
+
+		// Test with invalid cabin category post ID and invalid departure post ID.
+		$expected = [];
+		$actual   = get_occupancies_by_cabin_category_and_departure( $cabin_category_post_id, $departure_post_id );
+		$this->assertSame( $expected, $actual );
+
+		// Cache should be present now.
+		$actual_from_cache = wp_cache_get( $cache_key, CACHE_GROUP );
+		$this->assertIsArray( $actual_from_cache );
+		$this->assertEmpty( $actual_from_cache );
+
+		// Insert occupancy and then test getter.
+		$raw_occupancy_data1     = [
+			'id'                      => 'PQO-123:2026-02-20:OEX-SGL:A',
+			'name'                    => 'Test Occupancy',
+			'mask'                    => 'A',
+			'spacesAvailable'         => 10,
+			'availabilityDescription' => 'Available',
+			'availabilityStatus'      => 'O',
+			'prices'                  => [
+				'USD' => [
+					'currencyCode'   => 'USD',
+					'pricePerPerson' => 100,
+				],
+				'CAD' => [
+					'currencyCode'   => 'CAD',
+					'pricePerPerson' => 150,
+				],
+				'AUD' => [
+					'currencyCode'   => 'AUD',
+					'pricePerPerson' => 200,
+				],
+				'GBP' => [
+					'currencyCode'   => 'GBP',
+					'pricePerPerson' => 250,
+				],
+				'EUR' => [
+					'currencyCode'   => 'EUR',
+					'pricePerPerson' => 300,
+				],
+			],
+		];
+		$departure_post_id1      = 1231;
+		$cabin_category_post_id1 = 4561;
+		$formatted_data1         = format_data( $raw_occupancy_data1, $cabin_category_post_id1, $departure_post_id1 );
+		$this->assertIsArray( $formatted_data1 );
+		$this->assertNotEmpty( $formatted_data1 );
+
+		// There should be no occupancy with this cabin category post ID and departure post ID.
+		$actual = get_occupancies_by_cabin_category_and_departure( $cabin_category_post_id1, $departure_post_id1 );
+		$this->assertIsArray( $actual );
+		$this->assertEmpty( $actual );
+
+		// Construct cache key.
+		$cache_key1 = CACHE_KEY_PREFIX . '_cabin_category_post_id_' . $cabin_category_post_id1 . '_departure_post_id_' . $departure_post_id1;
+
+		// Delete the cache.
+		wp_cache_delete( $cache_key1, CACHE_GROUP );
+
+		// Get table name.
+		$table_name = get_table_name();
+
+		// Get global wpdb object.
+		global $wpdb;
+
+		// Insert occupancy data.
+		$wpdb->insert( $table_name, $formatted_data1 );
+
+		// Inserted occupancy ID.
+		$occupancy_id1 = $wpdb->insert_id;
+
+		// Cache should be empty.
+		$actual_from_cache1 = wp_cache_get( $cache_key1, CACHE_GROUP );
+		$this->assertFalse( $actual_from_cache1 );
+
+		// Now, there should be one occupancy with this cabin category post ID and departure post ID.
+		$actual1 = get_occupancies_by_cabin_category_and_departure( $cabin_category_post_id1, $departure_post_id1 );
+		$this->assertIsArray( $actual1 );
+		$this->assertNotEmpty( $actual1 );
+		$this->assertCount( 1, $actual1 );
+
+		// Cache should not be empty.
+		$actual_from_cache1 = wp_cache_get( $cache_key1, CACHE_GROUP );
+		$this->assertIsArray( $actual_from_cache1 );
+		$this->assertNotEmpty( $actual_from_cache1 );
+
+		// Get first occupancy.
+		$actual1 = $actual1[0];
+		$this->assertIsArray( $actual1 );
+		$this->assertNotEmpty( $actual1 );
+
+		// Assert each column.
+		$this->assertArrayHasKey( 'id', $actual1 );
+		$this->assertArrayHasKey( 'softrip_id', $actual1 );
+		$this->assertArrayHasKey( 'softrip_name', $actual1 );
+		$this->assertArrayHasKey( 'mask', $actual1 );
+		$this->assertArrayHasKey( 'departure_post_id', $actual1 );
+		$this->assertArrayHasKey( 'cabin_category_post_id', $actual1 );
+		$this->assertArrayHasKey( 'spaces_available', $actual1 );
+		$this->assertArrayHasKey( 'availability_description', $actual1 );
+		$this->assertArrayHasKey( 'availability_status', $actual1 );
+		$this->assertArrayHasKey( 'price_per_person_usd', $actual1 );
+		$this->assertArrayHasKey( 'price_per_person_cad', $actual1 );
+		$this->assertArrayHasKey( 'price_per_person_aud', $actual1 );
+		$this->assertArrayHasKey( 'price_per_person_gbp', $actual1 );
+		$this->assertArrayHasKey( 'price_per_person_eur', $actual1 );
+		$this->assertSame( 1, $actual1['id'] );
+		$this->assertSame( 'PQO-123:2026-02-20:OEX-SGL:A', $actual1['softrip_id'] );
+		$this->assertSame( 'Test Occupancy', $actual1['softrip_name'] );
+		$this->assertSame( 'A', $actual1['mask'] );
+		$this->assertEquals( $departure_post_id1, $actual1['departure_post_id'] );
+		$this->assertEquals( $cabin_category_post_id1, $actual1['cabin_category_post_id'] );
+		$this->assertEquals( 10, $actual1['spaces_available'] );
+		$this->assertSame( 'Available', $actual1['availability_description'] );
+		$this->assertSame( 'O', $actual1['availability_status'] );
+		$this->assertEquals( 100, $actual1['price_per_person_usd'] );
+		$this->assertEquals( 150, $actual1['price_per_person_cad'] );
+		$this->assertEquals( 200, $actual1['price_per_person_aud'] );
+		$this->assertEquals( 250, $actual1['price_per_person_gbp'] );
+		$this->assertEquals( 300, $actual1['price_per_person_eur'] );
+
+		// Let's insert one more occupancy with same cabin category post ID and departure post ID.
+		$raw_occupancy_data2 = [
+			'id'                      => 'PQO-456:2026-02-20:OEX-SGL:A',
+			'name'                    => 'Test Occupancy',
+			'mask'                    => 'A',
+			'spacesAvailable'         => 10,
+			'availabilityDescription' => 'Available',
+			'availabilityStatus'      => 'O',
+			'prices'                  => [
+				'USD' => [
+					'currencyCode'   => 'USD',
+					'pricePerPerson' => 100,
+				],
+				'CAD' => [
+					'currencyCode'   => 'CAD',
+					'pricePerPerson' => 150,
+				],
+				'AUD' => [
+					'currencyCode'   => 'AUD',
+					'pricePerPerson' => 200,
+				],
+				'GBP' => [
+					'currencyCode'   => 'GBP',
+					'pricePerPerson' => 250,
+				],
+				'EUR' => [
+					'currencyCode'   => 'EUR',
+					'pricePerPerson' => 300,
+				],
+			],
+		];
+		$formatted_data2     = format_data( $raw_occupancy_data2, $cabin_category_post_id1, $departure_post_id1 );
+		$this->assertIsArray( $formatted_data2 );
+		$this->assertNotEmpty( $formatted_data2 );
+
+		// There should be already one occupancy with this cabin category post ID and departure post ID.
+		$actual = get_occupancies_by_cabin_category_and_departure( $cabin_category_post_id1, $departure_post_id1 );
+		$this->assertIsArray( $actual );
+		$this->assertNotEmpty( $actual );
+		$this->assertCount( 1, $actual );
+
+		// Construct cache key.
+		$cache_key2 = CACHE_KEY_PREFIX . '_cabin_category_post_id_' . $cabin_category_post_id1 . '_departure_post_id_' . $departure_post_id1;
+
+		// Delete the cache.
+		wp_cache_delete( $cache_key2, CACHE_GROUP );
+
+		// Insert occupancy data.
+		$wpdb->insert( $table_name, $formatted_data2 );
+
+		// Inserted occupancy ID.
+		$occupancy_id2 = $wpdb->insert_id;
+
+		// Cache should be empty.
+		$actual_from_cache2 = wp_cache_get( $cache_key2, CACHE_GROUP );
+		$this->assertFalse( $actual_from_cache2 );
+
+		// Now, there should be two occupancies with this cabin category post ID and departure post ID.
+		$actual2 = get_occupancies_by_cabin_category_and_departure( $cabin_category_post_id1, $departure_post_id1 );
+		$this->assertIsArray( $actual2 );
+		$this->assertNotEmpty( $actual2 );
+
+		// Cache should not be empty.
+		$actual_from_cache2 = wp_cache_get( $cache_key2, CACHE_GROUP );
+		$this->assertIsArray( $actual_from_cache2 );
+		$this->assertNotEmpty( $actual_from_cache2 );
+
+		// Let's insert one more occupancy with same cabin category post ID but different departure post ID.
+		$raw_occupancy_data3 = [
+			'id'                      => 'PQO-123:2026-02-15:OEX-SGL:A',
+			'name'                    => 'Test Occupancy',
+			'mask'                    => 'A',
+			'spacesAvailable'         => 10,
+			'availabilityDescription' => 'Available',
+			'availabilityStatus'      => 'O',
+			'prices'                  => [
+				'USD' => [
+					'currencyCode'   => 'USD',
+					'pricePerPerson' => 100,
+				],
+				'CAD' => [
+					'currencyCode'   => 'CAD',
+					'pricePerPerson' => 150,
+				],
+				'AUD' => [
+					'currencyCode'   => 'AUD',
+					'pricePerPerson' => 200,
+				],
+				'GBP' => [
+					'currencyCode'   => 'GBP',
+					'pricePerPerson' => 250,
+				],
+				'EUR' => [
+					'currencyCode'   => 'EUR',
+					'pricePerPerson' => 300,
+				],
+			],
+		];
+		$departure_post_id2  = 4561;
+		$formatted_data3     = format_data( $raw_occupancy_data3, $cabin_category_post_id1, $departure_post_id2 );
+		$this->assertIsArray( $formatted_data3 );
+		$this->assertNotEmpty( $formatted_data3 );
+
+		// There should be no occupancy with this cabin category post ID and departure post ID.
+		$actual = get_occupancies_by_cabin_category_and_departure( $cabin_category_post_id1, $departure_post_id2 );
+		$this->assertIsArray( $actual );
+		$this->assertEmpty( $actual );
+
+		// Construct cache key.
+		$cache_key3 = CACHE_KEY_PREFIX . '_cabin_category_post_id_' . $cabin_category_post_id1 . '_departure_post_id_' . $departure_post_id2;
+
+		// Delete the cache.
+		wp_cache_delete( $cache_key3, CACHE_GROUP );
+
+		// Insert occupancy data.
+		$wpdb->insert( $table_name, $formatted_data3 );
+
+		// Inserted occupancy ID.
+		$occupancy_id3 = $wpdb->insert_id;
+
+		// Cache should be empty.
+		$actual_from_cache3 = wp_cache_get( $cache_key3, CACHE_GROUP );
+
+		// Now, there should be one occupancy with this cabin category post ID and departure post ID.
+		$actual3 = get_occupancies_by_cabin_category_and_departure( $cabin_category_post_id1, $departure_post_id2 );
+		$this->assertIsArray( $actual3 );
+		$this->assertNotEmpty( $actual3 );
+		$this->assertCount( 1, $actual3 );
+
+		// Cache should not be empty.
+		$actual_from_cache3 = wp_cache_get( $cache_key3, CACHE_GROUP );
+		$this->assertIsArray( $actual_from_cache3 );
+		$this->assertNotEmpty( $actual_from_cache3 );
+
+		// Test with real mock data.
+		// Setup mock response.
+		add_filter( 'pre_http_request', 'Quark\Tests\Softrip\mock_softrip_http_request', 10, 3 );
+
+		// Sync softrip with existing posts.
+		do_sync();
+
+		// Remove filter.
+		remove_filter( 'pre_http_request', 'Quark\Tests\Softrip\mock_softrip_http_request', 10 );
+
+		// Get cabin category post ID.
+		$cabin_category_post_ids = get_posts(
+			[
+				'post_type'              => CABIN_CATEGORIES_POST_TYPE,
+				'posts_per_page'         => 1,
+				'fields'                 => 'ids',
+				'no_found_rows'          => true,
+				'update_post_meta_cache' => false,
+				'update_post_term_cache' => false,
+				'ignore_sticky_posts'    => true,
+				'meta_query'             => [
+					[
+						'key'     => 'cabin_category_id',
+						'value'   => 'OEX-SGL',
+						'compare' => '=',
+					],
+				],
+			]
+		);
+		$this->assertIsArray( $cabin_category_post_ids );
+		$this->assertNotEmpty( $cabin_category_post_ids );
+		$cabin_category_post_id = $cabin_category_post_ids[0];
+		$this->assertIsInt( $cabin_category_post_id );
+
+		// Get departure post ID.
+		$departure_post_ids = get_posts(
+			[
+				'post_type'              => DEPARTURE_POST_TYPE,
+				'posts_per_page'         => 1,
+				'fields'                 => 'ids',
+				'no_found_rows'          => true,
+				'update_post_meta_cache' => false,
+				'update_post_term_cache' => false,
+				'ignore_sticky_posts'    => true,
+				'meta_query'             => [
+					[
+						'key'     => 'softrip_package_code',
+						'value'   => 'ABC-123',
+						'compare' => '=',
+					],
+				],
+			]
+		);
+		$this->assertIsArray( $departure_post_ids );
+		$this->assertNotEmpty( $departure_post_ids );
+		$departure_post_id = $departure_post_ids[0];
+		$this->assertIsInt( $departure_post_id );
+
+		// Cache should be empty for this cabin category post ID and departure post ID.
+		$actual = wp_cache_get( CACHE_KEY_PREFIX . '_cabin_category_post_id_' . $cabin_category_post_id . '_departure_post_id_' . $departure_post_id, CACHE_GROUP );
+		$this->assertFalse( $actual );
+
+		// Get occupancies by cabin category post ID and departure post ID.
+		$occupancies = get_occupancies_by_cabin_category_and_departure( $cabin_category_post_id, $departure_post_id );
+		$this->assertIsArray( $occupancies );
+		$this->assertNotEmpty( $occupancies );
+		$this->assertCount( 1, $occupancies );
+
+		// Cache should not be empty anymore.
+		$actual_from_cache = wp_cache_get( CACHE_KEY_PREFIX . '_cabin_category_post_id_' . $cabin_category_post_id . '_departure_post_id_' . $departure_post_id, CACHE_GROUP );
+		$this->assertIsArray( $actual_from_cache );
+		$this->assertNotEmpty( $actual_from_cache );
+
+		// Get first occupancy.
+		$occupancy = $occupancies[0];
+		$this->assertIsArray( $occupancy );
+		$this->assertNotEmpty( $occupancy );
+
+		// Assert each column.
+		$this->assertArrayHasKey( 'id', $occupancy );
+		$this->assertArrayHasKey( 'softrip_id', $occupancy );
+		$this->assertArrayHasKey( 'softrip_name', $occupancy );
+		$this->assertArrayHasKey( 'mask', $occupancy );
+		$this->assertArrayHasKey( 'departure_post_id', $occupancy );
+		$this->assertArrayHasKey( 'cabin_category_post_id', $occupancy );
+		$this->assertArrayHasKey( 'spaces_available', $occupancy );
+		$this->assertArrayHasKey( 'availability_description', $occupancy );
+		$this->assertArrayHasKey( 'availability_status', $occupancy );
+		$this->assertArrayHasKey( 'price_per_person_usd', $occupancy );
+		$this->assertArrayHasKey( 'price_per_person_cad', $occupancy );
+		$this->assertArrayHasKey( 'price_per_person_aud', $occupancy );
+		$this->assertArrayHasKey( 'price_per_person_gbp', $occupancy );
+		$this->assertArrayHasKey( 'price_per_person_eur', $occupancy );
+		$this->assertSame( 'ABC-123:2026-02-28:OEX-SGL:A', $occupancy['softrip_id'] );
+		$this->assertSame( 'ABC-123:2026-02-28:OEX-SGL:A', $occupancy['softrip_name'] );
+		$this->assertSame( 'A', $occupancy['mask'] );
+		$this->assertNotEmpty( $occupancy['departure_post_id'] );
+		$this->assertNotEmpty( $occupancy['cabin_category_post_id'] );
+		$this->assertEmpty( $occupancy['spaces_available'] );
+	}
+
+	/**
+	 * Test get description and pax count by mask.
+	 *
+	 * @covers \Quark\Softrip\Occupancies\get_description_and_pax_count_by_mask
+	 *
+	 * @return void
+	 */
+	public function test_get_description_and_pax_count_by_mask(): void {
+		// Default.
+		$default_expected = [
+			'description' => '',
+			'pax_count'   => 0,
+		];
+
+		// Test with no arguments.
+		$expected = $default_expected;
+		$actual   = get_description_and_pax_count_by_mask();
+		$this->assertSame( $expected, $actual );
+
+		// Test with empty mask.
+		$expected = $default_expected;
+		$actual   = get_description_and_pax_count_by_mask( '' );
+		$this->assertSame( $expected, $actual );
+
+		// Test with invalid mask.
+		$mask     = 'XYZ';
+		$expected = $default_expected;
+		$actual   = get_description_and_pax_count_by_mask( $mask );
+		$this->assertSame( $expected, $actual );
+
+		// Test with all valid masks.
+		$expected = [
+			'description' => 'Single Room',
+			'pax_count'   => 1,
+		];
+		$actual   = get_description_and_pax_count_by_mask( 'A' );
+		$this->assertSame( $expected, $actual );
+
+		// For AA.
+		$expected = [
+			'description' => 'Double Room',
+			'pax_count'   => 2,
+		];
+		$actual   = get_description_and_pax_count_by_mask( 'AA' );
+		$this->assertSame( $expected, $actual );
+
+		// For SAA.
+		$expected = [
+			'description' => 'Double Room Shared',
+			'pax_count'   => 1,
+		];
+		$actual   = get_description_and_pax_count_by_mask( 'SAA' );
+		$this->assertSame( $expected, $actual );
+
+		// For SMAA.
+		$expected = [
+			'description' => 'Double Room Shared (Male)',
+			'pax_count'   => 1,
+		];
+		$actual   = get_description_and_pax_count_by_mask( 'SMAA' );
+		$this->assertSame( $expected, $actual );
+
+		// For SFAA.
+		$expected = [
+			'description' => 'Double Room Shared (Female)',
+			'pax_count'   => 1,
+		];
+		$actual   = get_description_and_pax_count_by_mask( 'SFAA' );
+		$this->assertSame( $expected, $actual );
+
+		// For AAA.
+		$expected = [
+			'description' => 'Triple Room',
+			'pax_count'   => 3,
+		];
+		$actual   = get_description_and_pax_count_by_mask( 'AAA' );
+		$this->assertSame( $expected, $actual );
+
+		// For SAAA.
+		$expected = [
+			'description' => 'Triple Room Shared',
+			'pax_count'   => 1,
+		];
+		$actual   = get_description_and_pax_count_by_mask( 'SAAA' );
+		$this->assertSame( $expected, $actual );
+
+		// For SMAAA.
+		$expected = [
+			'description' => 'Triple Room Shared (Male)',
+			'pax_count'   => 1,
+		];
+		$actual   = get_description_and_pax_count_by_mask( 'SMAAA' );
+		$this->assertSame( $expected, $actual );
+
+		// For SFAAA.
+		$expected = [
+			'description' => 'Triple Room Shared (Female)',
+			'pax_count'   => 1,
+		];
+		$actual   = get_description_and_pax_count_by_mask( 'SFAAA' );
+		$this->assertSame( $expected, $actual );
+
+		// For AAAA.
+		$expected = [
+			'description' => 'Quad Room',
+			'pax_count'   => 4,
+		];
+		$actual   = get_description_and_pax_count_by_mask( 'AAAA' );
+		$this->assertSame( $expected, $actual );
+	}
+
+	/**
+	 * Test get lowest price.
+	 *
+	 * @covers \Quark\Softrip\Occupancies\get_lowest_price
+	 *
+	 * @return void
+	 */
+	public function test_get_lowest_price(): void {
+		// Default expected.
+		$default_expected = [
+			'original'   => 0,
+			'discounted' => 0,
+		];
+
+		// Test with no arguments.
+		$expected = $default_expected;
+		$actual   = get_lowest_price();
+		$this->assertSame( $expected, $actual );
+
+		// Test with empty departure post id.
+		$expected = $default_expected;
+		$actual   = get_lowest_price( 0 );
+		$this->assertSame( $expected, $actual );
+
+		// Test with invalid currency.
+		$departure_post_id = 1231;
+		$expected          = $default_expected;
+		$actual            = get_lowest_price( $departure_post_id, 'XYZ' );
+		$this->assertSame( $expected, $actual );
+
+		// Create an occupancy without promotion.
+		$raw_occupancy_data     = [
+			'id'                      => 'PQO-123:2026-02-20:OEX-SGL:A',
+			'name'                    => 'Test Occupancy',
+			'mask'                    => 'A',
+			'spacesAvailable'         => 10,
+			'availabilityDescription' => 'Available',
+			'availabilityStatus'      => 'O',
+			'prices'                  => [
+				'USD' => [
+					'currencyCode'   => 'USD',
+					'pricePerPerson' => 100,
+				],
+				'CAD' => [
+					'currencyCode'   => 'CAD',
+					'pricePerPerson' => 150,
+				],
+				'AUD' => [
+					'currencyCode'   => 'AUD',
+					'pricePerPerson' => 200,
+				],
+				'GBP' => [
+					'currencyCode'   => 'GBP',
+					'pricePerPerson' => 250,
+				],
+				'EUR' => [
+					'currencyCode'   => 'EUR',
+					'pricePerPerson' => 300,
+				],
+			],
+		];
+		$departure_post_id      = 1231;
+		$cabin_category_post_id = 4561;
+		$formatted_data         = format_data( $raw_occupancy_data, $cabin_category_post_id, $departure_post_id );
+		$this->assertIsArray( $formatted_data );
+		$this->assertNotEmpty( $formatted_data );
+
+		// Get table name.
+		$table_name = get_table_name();
+
+		// Get global wpdb object.
+		global $wpdb;
+
+		// Insert occupancy data.
+		$wpdb->insert( $table_name, $formatted_data );
+
+		// Inserted occupancy ID.
+		$occupancy_id = $wpdb->insert_id;
+
+		// Test with valid currency without any promotion.
+		$expected = [
+			'original'   => 100,
+			'discounted' => 0,
+		];
+		$actual   = get_lowest_price( $departure_post_id, 'USD' );
+		$this->assertEquals( $expected, $actual );
+
+		// Test with AUD currency without any promotion.
+		$expected = [
+			'original'   => 200,
+			'discounted' => 0,
+		];
+		$actual   = get_lowest_price( $departure_post_id, 'AUD' );
+		$this->assertEquals( $expected, $actual );
+
+		// Test with GBP currency without any promotion.
+		$expected = [
+			'original'   => 250,
+			'discounted' => 0,
+		];
+		$actual   = get_lowest_price( $departure_post_id, 'GBP' );
+		$this->assertEquals( $expected, $actual );
+
+		// Test with EUR currency without any promotion.
+		$expected = [
+			'original'   => 300,
+			'discounted' => 0,
+		];
+		$actual   = get_lowest_price( $departure_post_id, 'EUR' );
+		$this->assertEquals( $expected, $actual );
+
+		// Add another occupancy without promotion.
+		$raw_occupancy_data2 = [
+			'id'                      => 'PQO-123:2026-02-20:OEX-SGL:AA',
+			'name'                    => 'Test Occupancy 2',
+			'mask'                    => 'AA',
+			'spacesAvailable'         => 10,
+			'availabilityDescription' => 'Available',
+			'availabilityStatus'      => 'O',
+			'prices'                  => [
+				'USD' => [
+					'currencyCode'   => 'USD',
+					'pricePerPerson' => 50,
+				],
+				'CAD' => [
+					'currencyCode'   => 'CAD',
+					'pricePerPerson' => 75,
+				],
+				'AUD' => [
+					'currencyCode'   => 'AUD',
+					'pricePerPerson' => 100,
+				],
+				'GBP' => [
+					'currencyCode'   => 'GBP',
+					'pricePerPerson' => 125,
+				],
+				'EUR' => [
+					'currencyCode'   => 'EUR',
+					'pricePerPerson' => 150,
+				],
+			],
+		];
+		$formatted_data2     = format_data( $raw_occupancy_data2, $cabin_category_post_id, $departure_post_id );
+		$this->assertIsArray( $formatted_data2 );
+		$this->assertNotEmpty( $formatted_data2 );
+
+		// Insert occupancy data.
+		$wpdb->insert( $table_name, $formatted_data2 );
+
+		// Bust the cache.
+		wp_cache_delete( CACHE_KEY_PREFIX . '_departure_post_id_' . $departure_post_id, CACHE_GROUP );
+
+		// Test with USD currency without any promotion.
+		$expected = [
+			'original'   => 50,
+			'discounted' => 0,
+		];
+		$actual   = get_lowest_price( $departure_post_id, 'USD' );
+		$this->assertEquals( $expected, $actual );
+
+		// Test with CAD currency without any promotion.
+		$expected = [
+			'original'   => 75,
+			'discounted' => 0,
+		];
+		$actual   = get_lowest_price( $departure_post_id, 'CAD' );
+		$this->assertEquals( $expected, $actual );
+
+		// Test with AUD currency without any promotion.
+		$expected = [
+			'original'   => 100,
+			'discounted' => 0,
+		];
+		$actual   = get_lowest_price( $departure_post_id, 'AUD' );
+		$this->assertEquals( $expected, $actual );
+
+		// Test with GBP currency without any promotion.
+		$expected = [
+			'original'   => 125,
+			'discounted' => 0,
+		];
+		$actual   = get_lowest_price( $departure_post_id, 'GBP' );
+		$this->assertEquals( $expected, $actual );
+
+		// Test with EUR currency without any promotion.
+		$expected = [
+			'original'   => 150,
+			'discounted' => 0,
+		];
+		$actual   = get_lowest_price( $departure_post_id, 'EUR' );
+		$this->assertEquals( $expected, $actual );
+
+		// Invalid currency.
+		$expected = $default_expected;
+		$actual   = get_lowest_price( $departure_post_id, 'XYZ' );
+		$this->assertSame( $expected, $actual );
+
+		// Lowercase valid currency.
+		$expected = [
+			'original'   => 50,
+			'discounted' => 0,
+		];
+		$actual   = get_lowest_price( $departure_post_id, 'usd' );
+		$this->assertEquals( $expected, $actual );
+
+		// Create an itinerary post.
+		$itinerary_post_id = wp_insert_post(
+			[
+				'post_title'  => 'Test Itinerary',
+				'post_type'   => ITINERARY_POST_TYPE,
+				'post_status' => 'publish',
+				'meta_input'  => [
+					'softrip_package_code' => 'PQO-123',
+				],
+			]
+		);
+		$this->assertIsInt( $itinerary_post_id );
+
+		// Update post meta.
+		update_post_meta( $departure_post_id, 'itinerary', $itinerary_post_id );
+
+		// Add the supplemental price for USD.
+		$supplemental_price_usd = 10;
+		update_post_meta( $itinerary_post_id, 'supplemental_price_usd', $supplemental_price_usd );
+
+		// Add the supplemental price for AUD.
+		$supplemental_price_aud = 20;
+		update_post_meta( $itinerary_post_id, 'supplemental_price_aud', $supplemental_price_aud );
+
+		// Flush the itinerary cache.
+		wp_cache_delete( ITINERARIES_CACHE_KEY . "_$itinerary_post_id", ITINERARIES_CACHE_GROUP );
+
+		// Test the lowest price.
+		$expected = [
+			'original'   => 60, // Including the supplemental price.
+			'discounted' => 10, // The supplemental price only.
+		];
+		$actual   = get_lowest_price( $departure_post_id, 'USD' );
+		$this->assertEquals( $expected, $actual );
+
+		// Test the lowest price for AUD.
+		$expected = [
+			'original'   => 120, // Including the supplemental price.
+			'discounted' => 20, // The supplemental price only.
+		];
+		$actual   = get_lowest_price( $departure_post_id, 'AUD' );
+		$this->assertEquals( $expected, $actual );
+
+		// Test the lowest price for GBP, remains same.
+		$expected = [
+			'original'   => 125,
+			'discounted' => 0,
+		];
+		$actual   = get_lowest_price( $departure_post_id, 'GBP' );
+		$this->assertEquals( $expected, $actual );
+
+		// Add mandatory transfer price for USD.
+		$mandatory_transfer_price_usd = 5;
+		update_post_meta( $itinerary_post_id, 'mandatory_transfer_price_usd', $mandatory_transfer_price_usd );
+
+		// Add mandatory transfer price for AUD.
+		$mandatory_transfer_price_aud = 10;
+		update_post_meta( $itinerary_post_id, 'mandatory_transfer_price_aud', $mandatory_transfer_price_aud );
+
+		// Flush the itinerary cache.
+		wp_cache_delete( ITINERARIES_CACHE_KEY . "_$itinerary_post_id", ITINERARIES_CACHE_GROUP );
+
+		// Test the lowest price.
+		$expected = [
+			'original'   => 65, // Including the supplemental price and mandatory transfer price.
+			'discounted' => 15, // The supplemental price only.
+		];
+		$actual   = get_lowest_price( $departure_post_id, 'USD' );
+
+		// Test the lowest price for AUD.
+		$expected = [
+			'original'   => 130, // Including the supplemental price and mandatory transfer price.
+			'discounted' => 30, // The supplemental price only.
+		];
+		$actual   = get_lowest_price( $departure_post_id, 'AUD' );
+
+		// Let's test with real mock data.
+		// Setup mock response.
+		add_filter( 'pre_http_request', 'Quark\Tests\Softrip\mock_softrip_http_request', 10, 3 );
+
+		// Sync softrip with existing posts.
+		do_sync();
+
+		// Remove filter.
+		remove_filter( 'pre_http_request', 'Quark\Tests\Softrip\mock_softrip_http_request', 10 );
+
+		// Get departure post ID.
+		$departure_post_ids = get_posts(
+			[
+				'post_type'              => DEPARTURE_POST_TYPE,
+				'posts_per_page'         => 1,
+				'fields'                 => 'ids',
+				'no_found_rows'          => true,
+				'update_post_meta_cache' => false,
+				'update_post_term_cache' => false,
+				'ignore_sticky_posts'    => true,
+				'meta_query'             => [
+					[
+						'key'     => 'softrip_package_code',
+						'value'   => 'ABC-123',
+						'compare' => '=',
+					],
+				],
+			]
+		);
+		$this->assertIsArray( $departure_post_ids );
+
+		// Get the departure post ID.
+		$departure_post_id = $departure_post_ids[0];
+		$this->assertIsInt( $departure_post_id );
+
+		// Get the lowest price.
+		$expected     = [
+			'original'   => 34895,
+			'discounted' => 26171,
+		];
+		$lowest_price = get_lowest_price( $departure_post_id, 'USD' );
+		$this->assertIsArray( $lowest_price );
+		$this->assertNotEmpty( $lowest_price );
+		$this->assertArrayHasKey( 'original', $lowest_price );
+		$this->assertArrayHasKey( 'discounted', $lowest_price );
+		$this->assertEquals( $expected, $lowest_price );
+
+		// Get the lowest price for CAD.
+		$expected     = [
+			'original'   => 47495,
+			'discounted' => 35621,
+		];
+		$lowest_price = get_lowest_price( $departure_post_id, 'cad' );
+		$this->assertIsArray( $lowest_price );
+		$this->assertNotEmpty( $lowest_price );
+		$this->assertArrayHasKey( 'original', $lowest_price );
+		$this->assertArrayHasKey( 'discounted', $lowest_price );
+		$this->assertEquals( $expected, $lowest_price );
+
+		// Invalid currency.
+		$expected = $default_expected;
+		$actual   = get_lowest_price( $departure_post_id, 'XYZ' );
+		$this->assertSame( $expected, $actual );
+
+		// Get itinerary.
+		$itinerary_post_id = absint( get_post_meta( $departure_post_id, 'itinerary', true ) );
+
+		// Add supplemental price for USD for the departure.
+		$supplemental_price_usd = 100;
+		update_post_meta( $itinerary_post_id, 'supplemental_price_usd', $supplemental_price_usd );
+
+		// Add mandatory transfer price for USD for the departure.
+		$mandatory_transfer_price_usd = 50;
+		update_post_meta( $itinerary_post_id, 'mandatory_transfer_price_usd', $mandatory_transfer_price_usd );
+
+		// Flush the itinerary cache.
+		wp_cache_delete( ITINERARIES_CACHE_KEY . "_$itinerary_post_id", ITINERARIES_CACHE_GROUP );
+
+		// Get the lowest price.
+		$expected     = [
+			'original'   => 34895 + $supplemental_price_usd + $mandatory_transfer_price_usd,
+			'discounted' => 26171 + $supplemental_price_usd + $mandatory_transfer_price_usd,
+		];
+		$lowest_price = get_lowest_price( $departure_post_id, 'USD' );
+		$this->assertEquals( $expected, $lowest_price );
+
+		// Get the lowest price for CAD.
+		$expected     = [
+			'original'   => 47495,
+			'discounted' => 35621,
+		];
+		$lowest_price = get_lowest_price( $departure_post_id, 'cad' );
+		$this->assertEquals( $expected, $lowest_price );
+
+		// Get departure with multiple occupancies and multiple cabins - HIJ-456:2025-09-04.
+		$departure_post_ids = get_posts(
+			[
+				'post_type'              => DEPARTURE_POST_TYPE,
+				'posts_per_page'         => 1,
+				'fields'                 => 'ids',
+				'no_found_rows'          => true,
+				'update_post_meta_cache' => false,
+				'update_post_term_cache' => false,
+				'ignore_sticky_posts'    => true,
+				'meta_query'             => [
+					[
+						'key'     => 'softrip_id',
+						'value'   => 'HIJ-456:2025-09-04',
+						'compare' => '=',
+					],
+				],
+			]
+		);
+		$this->assertIsArray( $departure_post_ids );
+
+		// Get the departure post ID.
+		$departure_post_id = $departure_post_ids[0];
+		$this->assertIsInt( $departure_post_id );
+
+		// Get the lowest price without any currency.
+		$expected     = [
+			'original'   => 12795,
+			'discounted' => 10236,
+		];
+		$lowest_price = get_lowest_price( $departure_post_id );
+		$this->assertIsArray( $lowest_price );
+		$this->assertNotEmpty( $lowest_price );
+		$this->assertEquals( $expected, $lowest_price );
+
+		// Get the lowest price for USD.
+		$expected     = [
+			'original'   => 12795,
+			'discounted' => 10236,
+		];
+		$lowest_price = get_lowest_price( $departure_post_id, 'USD' );
+		$this->assertIsArray( $lowest_price );
+		$this->assertNotEmpty( $lowest_price );
+		$this->assertEquals( $expected, $lowest_price );
+
+		// Get the lowest price for CAD.
+		$expected     = [
+			'original'   => 17500,
+			'discounted' => 14000,
+		];
+		$lowest_price = get_lowest_price( $departure_post_id, 'CAD' );
+		$this->assertIsArray( $lowest_price );
+		$this->assertNotEmpty( $lowest_price );
+		$this->assertEquals( $expected, $lowest_price );
+
+		// Get the lowest price for AUD.
+		$expected     = [
+			'original'   => 20100,
+			'discounted' => 16080,
+		];
+		$lowest_price = get_lowest_price( $departure_post_id, 'AUD' );
+		$this->assertIsArray( $lowest_price );
+		$this->assertNotEmpty( $lowest_price );
+		$this->assertEquals( $expected, $lowest_price );
+
+		// Invalid currency.
+		$expected = $default_expected;
+		$actual   = get_lowest_price( $departure_post_id, 'XYZ' );
+		$this->assertSame( $expected, $actual );
+
+		// Lowercase valid currency.
+		$expected     = [
+			'original'   => 11900,
+			'discounted' => 9520,
+		];
+		$lowest_price = get_lowest_price( $departure_post_id, 'eur' );
+		$this->assertEquals( $expected, $lowest_price );
+	}
+
+	/**
+	 * Test add supplemental price and mandatory transfer price.
+	 *
+	 * @covers \Quark\Softrip\Occupancies\add_supplemental_and_mandatory_price
+	 *
+	 * @return void
+	 */
+	public function test_add_supplemental_and_mandatory_price(): void {
+		// Default expected.
+		$default_expected = [
+			'original'   => 0,
+			'discounted' => 0,
+		];
+
+		// Test with no arguments.
+		$expected = $default_expected;
+		$actual   = add_supplemental_and_mandatory_price();
+		$this->assertEquals( $expected, $actual );
+
+		// Test with default departure post id.
+		$expected = $default_expected;
+		$actual   = add_supplemental_and_mandatory_price( $default_expected );
+		$this->assertEquals( $expected, $actual );
+
+		// Test with invalid currency.
+		$departure_post_id = 1231;
+		$expected          = $default_expected;
+		$actual            = add_supplemental_and_mandatory_price( $default_expected, $departure_post_id, 'XYZ' );
+		$this->assertEquals( $expected, $actual );
+
+		// Without supplement price and mandatory transfer price added to itinerary.
+		$departure_post_id = 1231;
+		$lowest_price      = [
+			'original'   => 100,
+			'discounted' => 0,
+		];
+		$expected          = $lowest_price;
+		$actual            = add_supplemental_and_mandatory_price( $lowest_price, $departure_post_id, 'USD' );
+		$this->assertEquals( $expected, $actual );
+
+		// Create an itinerary post.
+		$itinerary_post_id = wp_insert_post(
+			[
+				'post_title'  => 'Test Itinerary',
+				'post_type'   => ITINERARY_POST_TYPE,
+				'post_status' => 'publish',
+				'meta_input'  => [
+					'softrip_package_code' => 'PQO-123',
+				],
+			]
+		);
+		$this->assertIsInt( $itinerary_post_id );
+
+		// Update post meta.
+		update_post_meta( $departure_post_id, 'itinerary', $itinerary_post_id );
+
+		// Add the supplemental price for USD.
+		$supplemental_price_usd = 10;
+		update_post_meta( $itinerary_post_id, 'supplemental_price_usd', $supplemental_price_usd );
+
+		// Flush the itinerary cache.
+		wp_cache_delete( ITINERARIES_CACHE_KEY . "_$itinerary_post_id", ITINERARIES_CACHE_GROUP );
+
+		// With supplement price added to itinerary.
+		$expected = [
+			'original'   => 110,
+			'discounted' => 10,
+		];
+		$actual   = add_supplemental_and_mandatory_price( $lowest_price, $departure_post_id, 'USD' );
+		$this->assertEquals( $expected, $actual );
+
+		// Add mandatory transfer price for USD.
+		$mandatory_transfer_price_usd = 5;
+
+		// Add mandatory transfer price for USD.
+		update_post_meta( $itinerary_post_id, 'mandatory_transfer_price_usd', $mandatory_transfer_price_usd );
+
+		// Flush the itinerary cache.
+		wp_cache_delete( ITINERARIES_CACHE_KEY . "_$itinerary_post_id", ITINERARIES_CACHE_GROUP );
+
+		// With mandatory transfer price added to itinerary.
+		$expected = [
+			'original'   => 115,
+			'discounted' => 15,
+		];
+		$actual   = add_supplemental_and_mandatory_price( $lowest_price, $departure_post_id, 'USD' );
+		$this->assertEquals( $expected, $actual );
+
+		// Delete supplemental price for USD.
+		delete_post_meta( $itinerary_post_id, 'supplemental_price_usd' );
+
+		// Flush the itinerary cache.
+		wp_cache_delete( ITINERARIES_CACHE_KEY . "_$itinerary_post_id", ITINERARIES_CACHE_GROUP );
+
+		// With mandatory transfer price only.
+		$expected = [
+			'original'   => 105,
+			'discounted' => 5,
+		];
+		$actual   = add_supplemental_and_mandatory_price( $lowest_price, $departure_post_id, 'USD' );
+		$this->assertEquals( $expected, $actual );
 	}
 }
