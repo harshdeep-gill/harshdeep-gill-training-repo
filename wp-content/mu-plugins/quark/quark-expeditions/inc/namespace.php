@@ -158,102 +158,37 @@ function register_expedition_post_type(): void {
 			[
 				'quark/secondary-navigation',
 				[],
+			],
+			[
+				'quark/two-columns',
+				[ 'hasBorder' => false ],
 				[
 					[
-						'quark/secondary-navigation-menu',
+						'quark/column',
 						[],
 						[
 							[
-								'quark/secondary-navigation-item',
+								'core/heading',
 								[
-									'title' => 'Overview',
-									'url'   => '#overview',
+									'level'   => 2,
+									'content' => 'Expedition Overview',
 								],
 							],
 							[
-								'quark/secondary-navigation-item',
-								[
-									'title' => 'Itineraries',
-									'url'   => '#itineraries',
-								],
-							],
-							[
-								'quark/secondary-navigation-item',
-								[
-									'title' => "What's Onboard",
-									'url'   => '#whats-onboard',
-								],
-							],
-							[
-								'quark/secondary-navigation-item',
-								[
-									'title' => 'Ships',
-									'url'   => '#ships',
-								],
-							],
-							[
-								'quark/secondary-navigation-item',
-								[
-									'title' => 'Adventure Options',
-									'url'   => '#included-activities',
-								],
-							],
-							[
-								'quark/secondary-navigation-item',
-								[
-									'title' => 'Book Now',
-									'url'   => '#bookings',
-								],
-							],
-							[
-								'quark/secondary-navigation-item',
-								[
-									'title' => 'Know Before You Go',
-									'url'   => '#know-before-you-go',
-								],
+								'core/paragraph',
+								[],
 							],
 						],
 					],
-				],
-			],
-			[
-				'quark/section',
-				[
-					'hasTitle' => false,
-				],
-				[
 					[
-						'quark/two-columns',
-						[ 'hasBorder' => false ],
+						'quark/column',
+						[],
 						[
 							[
-								'quark/column',
-								[],
+								'quark/highlights',
 								[
-									[
-										'core/heading',
-										[
-											'level'   => 2,
-											'content' => 'Expedition Overview',
-										],
-									],
-									[
-										'core/paragraph',
-										[],
-									],
-								],
-							],
-							[
-								'quark/column',
-								[],
-								[
-									[
-										'quark/highlights',
-										[
-											'title' => 'Highlights',
-											'info'  => 'Plus, add on adventure options, such as...',
-										],
-									],
+									'title' => 'Highlights',
+									'info'  => 'Plus, add on adventure options, such as...',
 								],
 							],
 						],
@@ -291,28 +226,12 @@ function register_expedition_post_type(): void {
 				],
 			],
 			[
-				'quark/section',
-				[
-					'hasTitle' => false,
-				],
-				[
-					[
-						'quark/featured-media-accordions',
-						[],
-					],
-				],
+				'quark/featured-media-accordions',
+				[],
 			],
 			[
-				'quark/section',
-				[
-					'hasTitle' => false,
-				],
-				[
-					[
-						'quark/ships',
-						[],
-					],
-				],
+				'quark/ships',
+				[],
 			],
 			[
 				'quark/section',
@@ -433,7 +352,6 @@ function register_expedition_post_type(): void {
 						'quark/staff-members',
 						[
 							'selection'  => 'manual',
-							'ids'        => [],
 							'isCarousel' => true,
 						],
 					],
