@@ -54,7 +54,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 						'id'    => '',
 					],
 					'return_format'     => 'array',
-					'library'           => 'uploadedTo',
+					'library'           => 'all',
 					'min_width'         => '',
 					'min_height'        => '',
 					'min_size'          => '',
