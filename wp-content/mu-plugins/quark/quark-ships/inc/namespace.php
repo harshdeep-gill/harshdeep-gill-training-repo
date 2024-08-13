@@ -26,6 +26,7 @@ function bootstrap(): void {
 
 	// Opt into stuff.
 	add_filter( 'qe_ship_category_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
+	add_filter( 'qe_adventure_options_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
 
 	// Other hooks.
 	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
@@ -68,6 +69,7 @@ function register_ship_post_type(): void {
 			'title',
 			'editor',
 			'revisions',
+			'excerpt',
 		],
 		'show_ui'             => true,
 		'show_in_menu'        => true,
@@ -171,6 +173,7 @@ function bust_post_cache( int $post_id = 0 ): void {
  *     post: WP_Post|null,
  *     permalink: string,
  *     post_meta: mixed[],
+ *     post_taxonomies: mixed[],
  * }
  */
 function get( int $post_id = 0 ): array {
@@ -186,9 +189,10 @@ function get( int $post_id = 0 ): array {
 	// Check for cached value.
 	if ( is_array( $cached_value ) && ! empty( $cached_value['post'] ) && $cached_value['post'] instanceof WP_Post ) {
 		return [
-			'post'      => $cached_value['post'],
-			'permalink' => $cached_value['permalink'] ?? '',
-			'post_meta' => $cached_value['post_meta'] ?? [],
+			'post'            => $cached_value['post'],
+			'permalink'       => $cached_value['permalink'] ?? '',
+			'post_meta'       => $cached_value['post_meta'] ?? [],
+			'post_taxonomies' => $cached_value['post_taxonomies'] ?? [],
 		];
 	}
 
@@ -198,17 +202,19 @@ function get( int $post_id = 0 ): array {
 	// Return empty array fields if post type does not match or not an instance of WP_Post.
 	if ( ! $post instanceof WP_Post || POST_TYPE !== $post->post_type ) {
 		return [
-			'post'      => null,
-			'permalink' => '',
-			'post_meta' => [],
+			'post'            => null,
+			'permalink'       => '',
+			'post_meta'       => [],
+			'post_taxonomies' => [],
 		];
 	}
 
 	// Build data.
 	$data = [
-		'post'      => $post,
-		'permalink' => strval( get_permalink( $post ) ? : '' ),
-		'post_meta' => [],
+		'post'            => $post,
+		'permalink'       => strval( get_permalink( $post ) ? : '' ),
+		'post_meta'       => [],
+		'post_taxonomies' => [],
 	];
 
 	// Get all post meta.
@@ -224,6 +230,44 @@ function get( int $post_id = 0 ): array {
 			fn( $key ) => ! str_starts_with( $key, '_' ),
 			ARRAY_FILTER_USE_KEY
 		);
+	}
+
+	// Taxonomy terms.
+	global $wpdb;
+	$taxonomy_terms = $wpdb->get_results(
+		$wpdb->prepare(
+			"
+			SELECT
+				t.*,
+				tt.taxonomy,
+				tt.description,
+				tt.parent
+			FROM
+				$wpdb->term_relationships AS tr
+			LEFT JOIN
+				$wpdb->term_taxonomy AS tt ON tt.term_taxonomy_id = tr.term_taxonomy_id
+			LEFT JOIN
+				$wpdb->terms AS t ON t.term_id = tt.term_taxonomy_id
+			WHERE
+				tr.object_id = %d
+			ORDER BY
+				t.name ASC
+			",
+			[
+				$post->ID,
+			]
+		),
+		ARRAY_A
+	);
+
+	// Check for taxonomy terms.
+	if ( ! empty( $taxonomy_terms ) ) {
+		foreach ( $taxonomy_terms as $taxonomy_term ) {
+			if ( ! array_key_exists( $taxonomy_term['taxonomy'], $data['post_taxonomies'] ) ) {
+				$data['post_taxonomies'][ $taxonomy_term['taxonomy'] ] = [];
+			}
+			$data['post_taxonomies'][ $taxonomy_term['taxonomy'] ][] = $taxonomy_term;
+		}
 	}
 
 	// Set cache and return data.
