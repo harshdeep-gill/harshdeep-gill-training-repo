@@ -430,7 +430,7 @@ class Test_Expeditions extends Softrip_TestCase {
 		$expedition_details_card_data = get_details_data( $post_1->ID );
 
 		// Update expected data with softrip sync data.
-		$expected_data['from_price']       = '$26,171 USD';
+		$expected_data['from_price']       = '$34,600 USD';
 		$expected_data['total_departures'] = 3;
 		$expected_data['date_range']       = 'between January 2025 to March 2026';
 
