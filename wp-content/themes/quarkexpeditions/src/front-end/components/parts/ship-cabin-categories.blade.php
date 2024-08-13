@@ -20,9 +20,9 @@ if ( empty( $items ) || ! is_array( $items ) ) {
 		@foreach ( $items as $item )
 			<tr class="travelopia-table__row">
 				<td class="travelopia-table__column">
-					<strong>{{ $item['cabin_name'] }}</strong>
+					<strong>{{ $item['cabin_name'] ?? '' }}</strong>
 				</td>
-				<td class="travelopia-table__column">{!! implode( '<br>', $item['ship_deck'] ) !!}</td>
+				<td class="travelopia-table__column">{!! implode( '<br>', $item['ship_deck'] ?? [] ) !!}</td>
 			</tr>
 		@endforeach
 		</tbody>
