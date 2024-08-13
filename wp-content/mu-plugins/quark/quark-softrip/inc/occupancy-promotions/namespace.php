@@ -40,15 +40,15 @@ function get_table_sql(): string {
 
 	// SQL statement.
 	$sql = "CREATE TABLE $table_name (
-        id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-        occupancy_id BIGINT NOT NULL,
-        promotion_id BIGINT NOT NULL,
-        price_per_person_usd BIGINT NOT NULL,
-        price_per_person_cad BIGINT NOT NULL,
-        price_per_person_aud BIGINT NOT NULL,
-        price_per_person_gbp BIGINT NOT NULL,
-        price_per_person_eur BIGINT NOT NULL
-    ) $engine_collate;";
+		id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+		occupancy_id BIGINT NOT NULL,
+		promotion_id BIGINT NOT NULL,
+		price_per_person_usd BIGINT NOT NULL,
+		price_per_person_cad BIGINT NOT NULL,
+		price_per_person_aud BIGINT NOT NULL,
+		price_per_person_gbp BIGINT NOT NULL,
+		price_per_person_eur BIGINT NOT NULL
+	) $engine_collate;";
 
 	// Return the SQL statement.
 	return $sql;
@@ -233,15 +233,15 @@ function get_occupancy_promotions_by_occupancy_id_and_promotion_id( int $occupan
 	$occupancy_promotions = $wpdb->get_results(
 		$wpdb->prepare(
 			'
-            SELECT
-                *
-            FROM
-                %i
-            WHERE
-                occupancy_id = %d
-            AND
-                promotion_id = %d
-            ',
+			SELECT
+				*
+			FROM
+				%i
+			WHERE
+				occupancy_id = %d
+			AND
+				promotion_id = %d
+			',
 			[
 				$table_name,
 				$occupancy_id,
@@ -315,13 +315,13 @@ function get_occupancy_promotions_by_occupancy( int $occupancy_id = 0, bool $for
 	$occupancy_promotions = $wpdb->get_results(
 		$wpdb->prepare(
 			'
-            SELECT
-                *
-            FROM
-                %i
-            WHERE
-                occupancy_id = %d
-            ',
+			SELECT
+				*
+			FROM
+				%i
+			WHERE
+				occupancy_id = %d
+			',
 			[
 				$table_name,
 				$occupancy_id,

@@ -42,19 +42,19 @@ function get_table_sql(): string {
 
 	// Build the SQL query.
 	$sql = "CREATE TABLE $table_name (
-        id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-        softrip_option_id VARCHAR(255) NOT NULL UNIQUE,
-        departure_post_id BIGINT NOT NULL,
-        softrip_package_code VARCHAR(20) NOT NULL,
-        service_ids VARCHAR(255) NOT NULL,
-        spaces_available BIGINT NOT NULL,
-        adventure_option_term_id BIGINT NOT NULL,
-        price_per_person_usd BIGINT NOT NULL,
-        price_per_person_cad BIGINT NOT NULL,
-        price_per_person_aud BIGINT NOT NULL,
-        price_per_person_gbp BIGINT NOT NULL,
-        price_per_person_eur BIGINT NOT NULL
-    ) $engine_collate";
+		id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+		softrip_option_id VARCHAR(255) NOT NULL UNIQUE,
+		departure_post_id BIGINT NOT NULL,
+		softrip_package_code VARCHAR(20) NOT NULL,
+		service_ids VARCHAR(255) NOT NULL,
+		spaces_available BIGINT NOT NULL,
+		adventure_option_term_id BIGINT NOT NULL,
+		price_per_person_usd BIGINT NOT NULL,
+		price_per_person_cad BIGINT NOT NULL,
+		price_per_person_aud BIGINT NOT NULL,
+		price_per_person_gbp BIGINT NOT NULL,
+		price_per_person_eur BIGINT NOT NULL
+	) $engine_collate";
 
 	// return the SQL.
 	return $sql;
