@@ -16,8 +16,8 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 			'fields'                => [
 				[
 					'key'               => 'field_65f43912eb4d3',
-					'label'             => 'Ship ID',
-					'name'              => 'ship_id',
+					'label'             => 'Ship Code',
+					'name'              => 'ship_code',
 					'aria-label'        => '',
 					'type'              => 'text',
 					'instructions'      => 'Enter this ship\'s Softrip API ID',

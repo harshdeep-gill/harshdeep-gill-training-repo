@@ -99,9 +99,7 @@ class Test_Search extends WP_UnitTestCase {
 				],
 				'page'              => 1,
 				'posts_per_load'    => 10,
-				'sort'              => [
-					'start_date',
-				],
+				'sort'              => 'date-now',
 			],
 			$filters
 		);
@@ -204,12 +202,12 @@ class Test_Search extends WP_UnitTestCase {
 				'meta_key'               => 'duration',
 				'meta_query'             => [
 					[
-						'key'     => 'expedition',
+						'key'     => 'related_expedition',
 						'value'   => array_unique( [ 20, 15, 20, 25 ] ),
 						'compare' => 'IN',
 					],
 					[
-						'key'     => 'ship',
+						'key'     => 'related_ship',
 						'value'   => array_unique( [ 2, 1, 2, 5 ] ),
 						'compare' => 'IN',
 					],
@@ -240,13 +238,13 @@ class Test_Search extends WP_UnitTestCase {
 				'posts_per_page'         => 10,
 				'meta_query'             => [
 					[
-						'key'     => 'departure_start_date',
+						'key'     => 'start_date',
 						'value'   => [ '2024-10-01', '2024-10-31' ],
 						'type'    => 'DATE',
 						'compare' => 'BETWEEN',
 					],
 					[
-						'key'     => 'departure_start_date',
+						'key'     => 'start_date',
 						'value'   => [ '2025-04-01', '2025-04-30' ],
 						'type'    => 'DATE',
 						'compare' => 'BETWEEN',
@@ -264,15 +262,15 @@ class Test_Search extends WP_UnitTestCase {
 		// Make private method accessible.
 		$class         = new ReflectionClass( $solr_search );
 		$set_solr_sort = $class->getMethod( 'set_sort' );
-		$set_solr_sort->invokeArgs( $solr_search, [ 'durations', 'desc' ] );
-		$set_solr_sort->invokeArgs( $solr_search, [ 'departure_start_date', 'asc' ] );
+		$set_solr_sort->invokeArgs( $solr_search, [ 'date-now' ] );
+		$set_solr_sort->invokeArgs( $solr_search, [ 'duration-long' ] );
 		$sorts = $class->getProperty( 'sorts' );
 
 		// Make private property accessible and test.
 		$this->assertEquals(
 			[
-				'duration_i'             => 'desc',
-				'departure_start_date_i' => 'asc',
+				'duration_i'   => 'desc',
+				'start_date_s' => 'asc',
 			],
 			$sorts->getValue( $solr_search ),
 		);

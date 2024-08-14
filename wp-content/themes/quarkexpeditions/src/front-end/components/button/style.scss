@@ -7,12 +7,18 @@ Buttons
 .btn {
 
 	text-align: center;
+	white-space: nowrap;
 
-	@include transition(background-color);
+	@include transition(#{"background-color, width"});
 
 	&__sub-title {
 		text-transform: none;
 		font-size: 12px;
 		font-weight: var(--font-weight-default);
+	}
+
+	&__icon-spinner {
+
+		@include spin;
 	}
 }

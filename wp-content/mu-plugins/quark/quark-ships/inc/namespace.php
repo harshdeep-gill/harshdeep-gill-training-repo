@@ -9,6 +9,9 @@ namespace Quark\Ships;
 
 use WP_Post;
 
+use function Quark\ShipDecks\get as get_deck_data;
+use function Quark\CabinCategories\get as get_cabin_category_data;
+
 const POST_TYPE              = 'qrk_ship';
 const SHIP_CATEGORY_TAXONOMY = 'qrk_ship_categories';
 const CACHE_KEY              = POST_TYPE;
@@ -285,6 +288,11 @@ function get( int $post_id = 0 ): array {
  * @return int
  */
 function get_id_from_ship_code( string $ship_code = '' ): int {
+	// Bail out if empty ship code.
+	if ( empty( $ship_code ) ) {
+		return 0;
+	}
+
 	// Check for cached version.
 	$cache_key = CACHE_KEY . '_all_ships';
 	$ships     = wp_cache_get( $cache_key, CACHE_GROUP );
@@ -303,7 +311,7 @@ function get_id_from_ship_code( string $ship_code = '' ): int {
 			RIGHT JOIN
 				$wpdb->posts AS p ON m.post_id = p.ID
 			WHERE
-				m.meta_key = 'ship_id'
+				m.meta_key = 'ship_code'
 			AND
 				p.post_type = %s
 			",
@@ -382,4 +390,105 @@ function get_ship_data( int $ship_id = 0 ): array {
 		'description'   => strval( apply_filters( 'the_content', $ship_post->post_content ) ),
 		'related_decks' => $decks_ids,
 	];
+}
+
+/**
+ * Get cabins and decks for a ship.
+ *
+ * @param int $ship_id Ship ID.
+ *
+ * @return array{}|array{
+ *     array{
+ *         cabin_name: string,
+ *         ship_deck: string[],
+ *     }
+ * }
+ */
+function get_cabins_and_decks( int $ship_id = 0 ): array {
+	// Init results.
+	$results = [];
+
+	// Get the ship data.
+	$ship = get( $ship_id );
+
+	// Validate ship post.
+	if ( empty( $ship['post'] ) || ! $ship['post'] instanceof WP_Post ) {
+		return $results;
+	}
+
+	// Prepare deck data.
+	$decks_ids = [];
+
+	// Get Decks associated with the ship.
+	if ( ! empty( $ship['post_meta']['related_decks'] ) && is_array( $ship['post_meta']['related_decks'] ) ) {
+		$decks_ids = array_map( 'absint', $ship['post_meta']['related_decks'] );
+	}
+
+	// Prepare data.
+	$cabin_category_decks = [];
+
+	// Loop through decks.
+	foreach ( $decks_ids as $deck_id ) {
+		$deck_data = get_deck_data( $deck_id );
+
+		// Validate ship deck post.
+		if ( empty( $deck_data['post'] ) || ! $deck_data['post'] instanceof WP_Post ) {
+			continue;
+		}
+
+		// Get Deck post meta.
+		$deck_meta = $deck_data['post_meta'];
+		$deck_name = $deck_meta['deck_name'] ?? '';
+
+		// Prepare Cabin Options data.
+		$cabin_options_ids = [];
+
+		// Check if we have cabin categories.
+		if ( ! empty( $deck_meta['cabin_categories'] ) && is_array( $deck_meta['cabin_categories'] ) ) {
+			$cabin_options_ids = array_map( 'absint', $deck_meta['cabin_categories'] );
+		}
+
+		// Loop through cabin options.
+		foreach ( $cabin_options_ids as $cabin_option_id ) {
+			// Get the cabin category.
+			$cabin_category = get_cabin_category_data( $cabin_option_id );
+
+			// Validate Cabin Category post.
+			if ( empty( $cabin_category['post'] ) || ! $cabin_category['post'] instanceof WP_Post ) {
+				continue;
+			}
+
+			// Get the post meta.
+			$cabin_meta = $cabin_category['post_meta'];
+
+			// Check for Cabin Name meta.
+			if ( empty( $cabin_meta['cabin_name'] ) ) {
+				continue;
+			}
+
+			// Get the cabin name.
+			$cabin_name = $cabin_meta['cabin_name'];
+
+			// Initialize array for the cabin category if not set.
+			if ( ! isset( $cabin_category_decks[ $cabin_name ] ) ) {
+				$cabin_category_decks[ $cabin_name ] = [];
+			}
+
+			// Add deck name to the cabin category.
+			if ( ! in_array( $deck_name, $cabin_category_decks[ $cabin_name ], true ) ) {
+				$cabin_category_decks[ $cabin_name ][] = $deck_name;
+			}
+		}
+	}
+
+	// Prepare the results.
+	foreach ( $cabin_category_decks as $cabin_name => $decks ) {
+		$results[] = [
+			'cabin_name' => $cabin_name,
+			'ship_deck'  => $decks,
+		];
+	}
+
+	// Return data.
+	return $results;
 }

@@ -36,11 +36,11 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 				],
 				[
 					'key'               => 'field_65f2da9e046de',
-					'label'             => 'Softrip Package ID',
-					'name'              => 'softrip_package_id',
+					'label'             => 'Softrip Package Code',
+					'name'              => 'softrip_package_code',
 					'aria-label'        => '',
 					'type'              => 'text',
-					'instructions'      => 'Softrip package ID for this itinerary.',
+					'instructions'      => 'Softrip package code for this itinerary.',
 					'required'          => 1,
 					'conditional_logic' => 0,
 					'wrapper'           => [

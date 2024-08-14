@@ -12,11 +12,16 @@ use WP_Term;
 use WP_REST_Response;
 use WP_Taxonomy;
 use WP_REST_Request;
-use Quark\Softrip\Itinerary;
 
 use function Quark\Itineraries\get as get_itinerary;
 use function Quark\Departures\get as get_departure;
 use function Quark\Core\format_price;
+use function Quark\Ships\get as get_ship;
+use function Quark\Softrip\Departures\get_departures_by_itinerary;
+use function Quark\Softrip\Itineraries\get_end_date;
+use function Quark\Softrip\Itineraries\get_lowest_price;
+use function Quark\Softrip\Itineraries\get_related_ships;
+use function Quark\Softrip\Itineraries\get_start_date;
 
 use const Quark\Itineraries\DEPARTURE_LOCATION_TAXONOMY;
 
@@ -540,12 +545,17 @@ function get_itineraries( int $post_id = 0 ): array {
 	$itineraries = [];
 
 	// Check for post_meta.
-	if ( empty( $post['post_meta'] ) || ! is_array( $post['post_meta']['related_itineraries'] ) ) {
+	if ( empty( $post['post_meta'] ) || empty( $post['post_meta']['related_itineraries'] ) ) {
 		return $itineraries;
 	}
 
 	// Get Itineraries from related_itineraries post meta.
 	$itinerary_ids = $post['post_meta']['related_itineraries'];
+
+	// Check for itinerary_ids array.
+	if ( ! is_array( $itinerary_ids ) ) {
+		return $itineraries;
+	}
 
 	// Check for Itinerary IDs.
 	foreach ( $itinerary_ids as $itinerary_id ) {
@@ -657,11 +667,8 @@ function get_starting_from_price( int $post_id = 0 ): int {
 			continue;
 		}
 
-		// Get price.
-		$itinerary_object = new Itinerary( $itinerary['post']->ID );
-
 		// Get lowest price for Itinerary.
-		$price = $itinerary_object->get_lowest_price();
+		$price = get_lowest_price( $itinerary['post']->ID )['original'];
 
 		// Check minimum price.
 		if ( ! empty( $price ) && ( empty( $starting_from_price ) || $price < $starting_from_price ) ) {
@@ -744,7 +751,7 @@ function get_starting_from_locations( int $post_id = 0 ): array {
  *     array{
  *         post: WP_Post,
  *         post_meta: mixed[],
- *         post_taxonomies: mixed[],
+ *         permalink: string,
  *     },
  * }
  */
@@ -779,23 +786,21 @@ function get_ships( int $post_id = 0 ): array {
 			continue;
 		}
 
-		// Init Itinerary object.
-		$itinerary_object = new Itinerary( $itinerary['post']->ID );
-		$related_ships    = $itinerary_object->get_related_ships();
+		// Get related ships.
+		$related_ship_post_ids = get_related_ships( $itinerary['post']->ID );
 
-		// Check for Itinerary Ships.
-		foreach ( $related_ships as $ship_id => $related_ship ) {
-			// Check for post.
-			if (
-				! is_array( $related_ship )
-				|| empty( $related_ship['post'] )
-				|| ! $related_ship['post'] instanceof WP_Post
-			) {
+		// Loop through related ships.
+		foreach ( $related_ship_post_ids as $ship_post_id ) {
+			// Get Ship.
+			$ship = get_ship( $ship_post_id );
+
+			// Check for Ship.
+			if ( empty( $ship['post'] ) || ! $ship['post'] instanceof WP_Post ) {
 				continue;
 			}
 
-			// Add ship to array.
-			$ships[ $ship_id ] = $related_ship;
+			// Add Ship to array.
+			$ships[ $ship_post_id ] = $ship;
 		}
 	}
 
@@ -842,11 +847,8 @@ function get_total_departures( int $post_id = 0 ): int {
 			continue;
 		}
 
-		// Init Itinerary object.
-		$itinerary_object = new Itinerary( $itinerary['post']->ID );
-
 		// Get total departures for Itinerary.
-		$total_departures = $total_departures + count( $itinerary_object->get_published_departures() );
+		$total_departures = $total_departures + count( get_departures_by_itinerary( $itinerary['post']->ID ) );
 	}
 
 	// Return total departures.
@@ -892,9 +894,8 @@ function get_starting_from_date( int $post_id = 0 ): string {
 			continue;
 		}
 
-		// Init Itinerary object.
-		$itinerary_object = new Itinerary( $itinerary['post']->ID );
-		$test_date        = $itinerary_object->get_starting_date();
+		// Get starting date.
+		$test_date = get_start_date( $itinerary['post']->ID );
 
 		// Check for date.
 		if ( empty( $test_date ) ) {
@@ -953,9 +954,8 @@ function get_ending_to_date( int $post_id = 0 ): string {
 			continue;
 		}
 
-		// Init Itinerary object.
-		$itinerary_object = new Itinerary( $itinerary['post']->ID );
-		$test_date        = $itinerary_object->get_ending_date();
+		// Get ending date.
+		$test_date = get_end_date( $itinerary['post']->ID );
 
 		// Check for date.
 		if ( empty( $test_date ) ) {

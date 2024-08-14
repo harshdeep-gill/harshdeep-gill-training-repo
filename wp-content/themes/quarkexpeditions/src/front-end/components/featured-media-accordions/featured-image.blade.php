@@ -13,17 +13,27 @@
 	$image_args = [
 		'size' =>       [
 			'width'   => 600,
-			'height'  => 676,
+			'height'  => 600,
 		],
 		'responsive' => [
-			'sizes'  => [ '(min-width: 576px) 700px', '100vw' ],
-			'widths' => [ 350, 500, 600, 700 ],
+			'sizes'  => [ '(min-width: 1024px) 600px', '100vw' ],
+			'widths' => [ 350, 500, 600, 700, 800, 900, 1000 ],
 		],
 		'transform'  =>[
 			'crop'    => 'fill',
 			'gravity' => 'auto',
 		]
 	];
+
+	// The image is inside the content
+	if ( empty( $id ) ) {
+		$image_args['size'] = [
+			'width'  => 864,
+			'height' => 486,
+		];
+
+		$image_args['responsive']['sizes'] = [ '100vw' ];
+	}
 
 	// CSS classes for images.
 	$classes = [ 'featured-media-accordions__image' ];

@@ -355,6 +355,11 @@
 					<x-button size="big" appearance="outline">Outline button</x-button>
 					<x-button size="big" color="black">Solid black button</x-button>
 				</div>
+				<div class="typography-spacing" style="display: flex; gap: 16px; flex-flow: row wrap;">
+					<x-button size="big" :loading="true">Loading Button</x-button>
+					<x-button size="big" color="black" :loading="true">Loading Button</x-button>
+					<x-button size="big" appearance="outline" :loading="true">Loading button</x-button>
+				</div>
 			</div>
 			<div style="width: 50%; padding: 24px; background-color: var(--color-black);" class="color-context--dark">
 				<div class="typography-spacing" style="display: flex; gap: 16px; flex-flow: row wrap;">
@@ -366,6 +371,11 @@
 					<x-button size="big">Solid button</x-button>
 					<x-button size="big" appearance="outline">Outline button</x-button>
 					<x-button size="big" color="black">Solid black button</x-button>
+				</div>
+				<div class="typography-spacing" style="display: flex; gap: 16px; flex-flow: row wrap;">
+					<x-button size="big" :loading="true">Loading Button</x-button>
+					<x-button size="big" color="black" :loading="true">Loading Button</x-button>
+					<x-button size="big" appearance="outline" :loading="true">Loading button</x-button>
 				</div>
 			</div>
 		</div>
@@ -5247,6 +5257,22 @@
 			<x-media-carousel.item image_id="32" />
 			<x-media-carousel.item image_id="152" />
 		</x-media-carousel>
+	</x-section>
+</x-component-demo>
+
+@php
+	$payload = [
+		'resultCount' => 20,
+		'page'        => 1,
+		'nextPage'    => 0,
+	];
+@endphp
+<x-component-demo :keys="[ 'book-departures-expeditions' ]">
+	<x-section>
+		<x-section.heading>
+			<x-section.title title="Departure Dates & Cabins" align="left" />
+		</x-section.heading>
+		<x-parts.book-departures-expeditions results_count="{{ $payload['resultCount'] ?? 0 }}" :payload="$payload" />
 	</x-section>
 </x-component-demo>
 

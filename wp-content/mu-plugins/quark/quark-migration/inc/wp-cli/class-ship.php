@@ -236,7 +236,7 @@ class Ship {
 
 		// Set Ship ID.
 		if ( ! empty( $item['ship_id'] ) ) {
-			$data['meta_input']['ship_id'] = strval( $item['ship_id'] );
+			$data['meta_input']['ship_code'] = strval( $item['ship_id'] );
 		}
 
 		// Set ship specifications - Breadth.

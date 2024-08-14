@@ -11,13 +11,19 @@ use WP_Post;
 use WP_Term;
 use WP_UnitTestCase;
 
+use function Quark\Departures\bust_post_cache;
 use function Quark\Departures\get;
-use function Quark\Departures\get_departure_region_and_season;
+use function Quark\Departures\get_region_and_season;
+use function Quark\Departures\get_paid_adventure_options;
+use function Quark\Departures\get_languages;
+use function Quark\Departures\get_promotion_tags;
 
 use const Quark\Departures\POST_TYPE;
+use const Quark\Departures\PROMOTION_TAG;
 use const Quark\Departures\SPOKEN_LANGUAGE_TAXONOMY;
 use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
 use const Quark\StaffMembers\SEASON_TAXONOMY;
+use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
 
 /**
  * Class Test_Departure.
@@ -110,14 +116,14 @@ class Test_Departures extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Test get_departure_region_and_season().
+	 * Test get_region_and_season.
 	 *
-	 * @covers \Quark\Departures\get_departure_region_and_season()
-	 * @covers \Quark\Departures\get_departure_season()
+	 * @covers \Quark\Departures\get_region_and_season()
+	 * @covers \Quark\Departures\get_season()
 	 *
 	 * @return void
 	 */
-	public function test_get_departure_region_and_season(): void {
+	public function test_get_region_and_season(): void {
 		// Create itinerary post.
 		$post_itinerary = $this->factory()->post->create_and_get(
 			[
@@ -151,8 +157,8 @@ class Test_Departures extends WP_UnitTestCase {
 				'post_title'  => 'Test Post',
 				'post_status' => 'publish',
 				'meta_input'  => [
-					'region'    => 'value_1',
-					'itinerary' => $post_itinerary->ID,
+					'softrip_market_code' => 'value_1',
+					'itinerary'           => $post_itinerary->ID,
 				],
 			]
 		);
@@ -161,7 +167,7 @@ class Test_Departures extends WP_UnitTestCase {
 		$this->assertTrue( $post_1 instanceof WP_Post );
 
 		// Get departure region and season.
-		$region_and_season = get_departure_region_and_season( $post_1->ID );
+		$region_and_season = get_region_and_season( $post_1->ID );
 
 		// Test if region is correct.
 		$this->assertEquals( 'value_1-season_1', $region_and_season );
@@ -170,5 +176,242 @@ class Test_Departures extends WP_UnitTestCase {
 		wp_delete_post( $post_1->ID, true );
 		wp_delete_post( $post_itinerary->ID, true );
 		wp_delete_term( $season_term->term_id, SEASON_TAXONOMY );
+	}
+
+	/**
+	 * Test get_paid_adventure_options.
+	 *
+	 * @covers \Quark\Departures\get_paid_adventure_options()
+	 *
+	 * @return void
+	 */
+	public function test_get_paid_adventure_options(): void {
+		// Create post.
+		$post_1 = $this->factory()->post->create_and_get(
+			[
+				'post_type'   => POST_TYPE,
+				'post_title'  => 'Test Post',
+				'post_status' => 'publish',
+			]
+		);
+
+		// Assert created post is instance of WP_Post.
+		$this->assertTrue( $post_1 instanceof WP_Post );
+
+		// Get post.
+		$paid_adventure_options = get_paid_adventure_options( $post_1->ID );
+
+		// Assert expected get data is equal to actual data.
+		$this->assertEmpty( $paid_adventure_options );
+
+		// Create term of Adventure Options.
+		$adventure_option_term_1 = $this->factory()->term->create_and_get(
+			[
+				'taxonomy' => ADVENTURE_OPTION_CATEGORY,
+				'name'     => 'adventure_option_1',
+			]
+		);
+
+		// Create term of Adventure Options.
+		$adventure_option_term_2 = $this->factory()->term->create_and_get(
+			[
+				'taxonomy' => ADVENTURE_OPTION_CATEGORY,
+				'name'     => 'adventure_option_2',
+			]
+		);
+
+		// Create term of Adventure Options.
+		$adventure_option_term_3 = $this->factory()->term->create_and_get(
+			[
+				'taxonomy' => ADVENTURE_OPTION_CATEGORY,
+				'name'     => 'adventure_option_3',
+			]
+		);
+
+		// Assert term is created.
+		$this->assertTrue( $adventure_option_term_1 instanceof WP_Term );
+		$this->assertTrue( $adventure_option_term_2 instanceof WP_Term );
+		$this->assertTrue( $adventure_option_term_3 instanceof WP_Term );
+
+		// Set post meta.
+		add_post_meta(
+			$post_1->ID,
+			'adventure_options',
+			[
+				$adventure_option_term_1->term_id,
+				$adventure_option_term_3->term_id,
+			]
+		);
+
+		// Bust post cache after setting post meta.
+		bust_post_cache( $post_1->ID );
+
+		// Get paid adventure options.
+		$paid_adventure_options = get_paid_adventure_options( $post_1->ID );
+
+		// Assert expected get data is equal to actual data.
+		$this->assertEquals(
+			[
+				$adventure_option_term_1->term_id => $adventure_option_term_1->name,
+				$adventure_option_term_3->term_id => $adventure_option_term_3->name,
+			],
+			$paid_adventure_options
+		);
+	}
+
+	/**
+	 * Test get_languages.
+	 *
+	 * @covers \Quark\Departures\get_languages()
+	 *
+	 * @return void
+	 */
+	public function test_get_languages(): void {
+		// Create post.
+		$post_1 = $this->factory()->post->create_and_get(
+			[
+				'post_type'   => POST_TYPE,
+				'post_title'  => 'Test Post',
+				'post_status' => 'publish',
+			]
+		);
+
+		// Assert created post is instance of WP_Post.
+		$this->assertTrue( $post_1 instanceof WP_Post );
+
+		// Get languages.
+		$languages = get_languages( $post_1->ID );
+
+		// Assert expected get data is equal to actual data.
+		$this->assertEmpty( $languages );
+
+		// Create term of Spoken Language.
+		$spoken_language_term_1 = $this->factory()->term->create_and_get(
+			[
+				'taxonomy' => SPOKEN_LANGUAGE_TAXONOMY,
+				'name'     => 'spoken_language_1',
+			]
+		);
+
+		// Create term of Spoken Language.
+		$spoken_language_term_2 = $this->factory()->term->create_and_get(
+			[
+				'taxonomy' => SPOKEN_LANGUAGE_TAXONOMY,
+				'name'     => 'spoken_language_2',
+			]
+		);
+
+		// Create term of Spoken Language.
+		$spoken_language_term_3 = $this->factory()->term->create_and_get(
+			[
+				'taxonomy' => SPOKEN_LANGUAGE_TAXONOMY,
+				'name'     => 'spoken_language_3',
+			]
+		);
+
+		// Assert term is created.
+		$this->assertTrue( $spoken_language_term_1 instanceof WP_Term );
+		$this->assertTrue( $spoken_language_term_2 instanceof WP_Term );
+		$this->assertTrue( $spoken_language_term_3 instanceof WP_Term );
+
+		// Set terms.
+		wp_set_object_terms(
+			$post_1->ID,
+			[
+				$spoken_language_term_3->term_id,
+				$spoken_language_term_1->term_id,
+			],
+			SPOKEN_LANGUAGE_TAXONOMY
+		);
+
+		// Get languages.
+		$languages = get_languages( $post_1->ID );
+
+		// Assert expected get data is equal to actual data.
+		$this->assertEquals(
+			[
+				$spoken_language_term_1->name,
+				$spoken_language_term_3->name,
+			],
+			$languages
+		);
+	}
+
+	/**
+	 * Test get_promotion_tags.
+	 *
+	 * @covers \Quark\Departures\get_promotion_tags()
+	 *
+	 * @return void
+	 */
+	public function test_get_promotion_tags(): void {
+		// Create post.
+		$post_1 = $this->factory()->post->create_and_get(
+			[
+				'post_type'   => POST_TYPE,
+				'post_title'  => 'Test Post',
+				'post_status' => 'publish',
+			]
+		);
+
+		// Assert created post is instance of WP_Post.
+		$this->assertTrue( $post_1 instanceof WP_Post );
+
+		// Get promotion tags.
+		$promotion_tags = get_promotion_tags( $post_1->ID );
+
+		// Assert expected get data is equal to actual data.
+		$this->assertEmpty( $promotion_tags );
+
+		// Create term of Promotion Tags.
+		$promotion_tag_term_1 = $this->factory()->term->create_and_get(
+			[
+				'taxonomy' => PROMOTION_TAG,
+				'name'     => 'promotion_tag_1',
+			]
+		);
+
+		// Create term of Promotion Tags.
+		$promotion_tag_term_2 = $this->factory()->term->create_and_get(
+			[
+				'taxonomy' => PROMOTION_TAG,
+				'name'     => 'promotion_tag_2',
+			]
+		);
+
+		// Create term of Promotion Tags.
+		$promotion_tag_term_3 = $this->factory()->term->create_and_get(
+			[
+				'taxonomy' => PROMOTION_TAG,
+				'name'     => 'promotion_tag_3',
+			]
+		);
+
+		// Assert term is created.
+		$this->assertTrue( $promotion_tag_term_1 instanceof WP_Term );
+		$this->assertTrue( $promotion_tag_term_2 instanceof WP_Term );
+		$this->assertTrue( $promotion_tag_term_3 instanceof WP_Term );
+
+		// Set terms.
+		wp_set_object_terms(
+			$post_1->ID,
+			[
+				$promotion_tag_term_3->term_id,
+				$promotion_tag_term_1->term_id,
+			],
+			PROMOTION_TAG
+		);
+
+		// Get promotion tags.
+		$promotion_tags = get_promotion_tags( $post_1->ID );
+
+		// Assert expected get data is equal to actual data.
+		$this->assertEquals(
+			[
+				$promotion_tag_term_1->name,
+				$promotion_tag_term_3->name,
+			],
+			$promotion_tags
+		);
 	}
 }
