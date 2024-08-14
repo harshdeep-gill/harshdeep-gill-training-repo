@@ -285,6 +285,11 @@ function get( int $post_id = 0 ): array {
  * @return int
  */
 function get_id_from_ship_code( string $ship_code = '' ): int {
+	// Bail out if empty ship code.
+	if ( empty( $ship_code ) ) {
+		return 0;
+	}
+
 	// Check for cached version.
 	$cache_key = CACHE_KEY . '_all_ships';
 	$ships     = wp_cache_get( $cache_key, CACHE_GROUP );
@@ -303,7 +308,7 @@ function get_id_from_ship_code( string $ship_code = '' ): int {
 			RIGHT JOIN
 				$wpdb->posts AS p ON m.post_id = p.ID
 			WHERE
-				m.meta_key = 'ship_id'
+				m.meta_key = 'ship_code'
 			AND
 				p.post_type = %s
 			",

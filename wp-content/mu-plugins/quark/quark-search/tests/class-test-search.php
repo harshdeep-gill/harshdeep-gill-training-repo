@@ -238,13 +238,13 @@ class Test_Search extends WP_UnitTestCase {
 				'posts_per_page'         => 10,
 				'meta_query'             => [
 					[
-						'key'     => 'departure_start_date',
+						'key'     => 'start_date',
 						'value'   => [ '2024-10-01', '2024-10-31' ],
 						'type'    => 'DATE',
 						'compare' => 'BETWEEN',
 					],
 					[
-						'key'     => 'departure_start_date',
+						'key'     => 'start_date',
 						'value'   => [ '2025-04-01', '2025-04-30' ],
 						'type'    => 'DATE',
 						'compare' => 'BETWEEN',
@@ -269,8 +269,8 @@ class Test_Search extends WP_UnitTestCase {
 		// Make private property accessible and test.
 		$this->assertEquals(
 			[
-				'duration_i'             => 'desc',
-				'departure_start_date_s' => 'asc',
+				'duration_i'   => 'desc',
+				'start_date_s' => 'asc',
 			],
 			$sorts->getValue( $solr_search ),
 		);

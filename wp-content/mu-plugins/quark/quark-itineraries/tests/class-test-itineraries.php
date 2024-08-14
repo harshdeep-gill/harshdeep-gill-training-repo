@@ -462,7 +462,7 @@ class Test_Itineraries extends Softrip_TestCase {
 				'update_post_meta_cache' => false,
 				'meta_query'             => [
 					[
-						'key'     => 'softrip_package_id',
+						'key'     => 'softrip_package_code',
 						'value'   => 'ABC-123',
 						'compare' => '=',
 					],
@@ -486,7 +486,7 @@ class Test_Itineraries extends Softrip_TestCase {
 				'update_post_meta_cache' => false,
 				'meta_query'             => [
 					[
-						'key'     => 'softrip_package_id',
+						'key'     => 'softrip_package_code',
 						'value'   => 'PQR-345',
 						'compare' => '=',
 					],
@@ -510,7 +510,7 @@ class Test_Itineraries extends Softrip_TestCase {
 				'update_post_meta_cache' => false,
 				'meta_query'             => [
 					[
-						'key'     => 'softrip_package_id',
+						'key'     => 'softrip_package_code',
 						'value'   => 'JKL-012',
 						'compare' => '=',
 					],
@@ -654,14 +654,14 @@ class Test_Itineraries extends Softrip_TestCase {
 		// Flush cache after sync.
 		wp_cache_flush();
 
-		// Get ship posts with meta 'ship_id' is 'ULT'.
+		// Get ship posts with meta 'ship_code' is 'ULT'.
 		$ship_posts = get_posts(
 			[
 				'post_type'      => SHIPS_POST_TYPE,
 				'posts_per_page' => -1,
 				'meta_query'     => [
 					[
-						'key'     => 'ship_id',
+						'key'     => 'ship_code',
 						'value'   => 'ULT',
 						'compare' => '=',
 					],
@@ -681,14 +681,14 @@ class Test_Itineraries extends Softrip_TestCase {
 			];
 		}
 
-		// Get ship posts with meta 'ship_id' is 'OEX'.
+		// Get ship posts with meta 'ship_code' is 'OEX'.
 		$ship_posts = get_posts(
 			[
 				'post_type'      => SHIPS_POST_TYPE,
 				'posts_per_page' => -1,
 				'meta_query'     => [
 					[
-						'key'     => 'ship_id',
+						'key'     => 'ship_code',
 						'value'   => 'OEX',
 						'compare' => '=',
 					],
@@ -775,7 +775,7 @@ class Test_Itineraries extends Softrip_TestCase {
 								],
 							],
 							'map'                => 0,
-							'price'              => '$26,171 USD per person',
+							'price'              => '$34,895 USD per person',
 							'brochure'           => '',
 							'ships'              => $expected_ship_oex,
 						],
@@ -801,7 +801,7 @@ class Test_Itineraries extends Softrip_TestCase {
 								],
 							],
 							'map'                => 0,
-							'price'              => '$29,410 USD per person',
+							'price'              => '$34,600 USD per person',
 							'brochure'           => '',
 							'ships'              => $expected_ship_ult,
 						],
@@ -811,7 +811,7 @@ class Test_Itineraries extends Softrip_TestCase {
 		];
 
 		// Assert details.
-		$this->assertEquals( $details, $expected_details );
+		$this->assertEquals( $expected_details, $details );
 	}
 
 	/**

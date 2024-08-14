@@ -7,11 +7,27 @@
 
 namespace Quark\Softrip;
 
+use cli\progress\Bar;
 use WP_CLI;
 use WP_Error;
+use WP_Query;
 
-const SCHEDULE_RECURRENCE = 'qrk_softrip_4_hourly';
-const SCHEDULE_HOOK       = 'qrk_softrip_sync';
+use function Quark\Softrip\Departures\update_departures;
+use function Quark\Softrip\AdventureOptions\get_table_sql as get_adventure_options_table_sql;
+use function Quark\Softrip\Occupancies\get_table_sql as get_occupancies_table_sql;
+use function Quark\Softrip\Promotions\get_table_sql as get_promotions_table_sql;
+use function Quark\Softrip\OccupancyPromotions\get_table_sql as get_occupancy_promotions_table_sql;
+use function Quark\Softrip\AdventureOptions\get_table_name as get_adventure_options_table_name;
+use function Quark\Softrip\Occupancies\get_table_name as get_occupancies_table_name;
+use function Quark\Softrip\OccupancyPromotions\get_table_name as get_occupancy_promotions_table_name;
+use function Quark\Softrip\Promotions\get_table_name as get_promotions_table_name;
+
+use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
+
+const SCHEDULE_RECURRENCE       = 'qrk_softrip_4_hourly';
+const SCHEDULE_HOOK             = 'qrk_softrip_sync';
+const ITINERARY_SYNC_BATCH_SIZE = 5;
+const TABLE_PREFIX_NAME         = 'qrk_';
 
 /**
  * Bootstrap plugin.
@@ -39,29 +55,78 @@ function bootstrap(): void {
 }
 
 /**
- * Request departures for an array of Softrip IDs.
+ * Get custom DB table creation mapping array.
  *
- * @param array<int, mixed> $codes Softrip ID array, max 5.
- *
- * @return mixed[]|WP_Error
+ * @return array<string, string>
  */
-function request_departures( array $codes = [] ): array|WP_Error {
-	// Strip out duplicates.
-	$codes = array_unique( $codes );
+function get_custom_db_table_mapping(): array {
+	// Table names.
+	$table_names = [
+		get_adventure_options_table_name(),
+		get_promotions_table_name(),
+		get_occupancies_table_name(),
+		get_occupancy_promotions_table_name(),
+	];
 
-	// Check if less than 5 IDs.
-	if ( empty( $codes ) || 5 < count( $codes ) ) {
-		return new WP_Error( 'qrk_softrip_departures_limit', 'The maximum number of codes allowed is 5' );
+	// Table SQL statements.
+	$table_sql_statements = [
+		get_adventure_options_table_sql(),
+		get_promotions_table_sql(),
+		get_occupancies_table_sql(),
+		get_occupancy_promotions_table_sql(),
+	];
+
+	// Return list of tables used.
+	return array_combine( $table_names, $table_sql_statements );
+}
+
+/**
+ * Create DB table.
+ *
+ * @return void
+ */
+function create_custom_db_tables(): void {
+	// Get mapping.
+	$tables = get_custom_db_table_mapping();
+
+	// Is in CLI.
+	$is_in_cli = defined( 'WP_CLI' ) && true === WP_CLI;
+
+	// Require upgrade.php.
+	require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+
+	// Initialize progress bar.
+	$progress = null;
+
+	// Check if in CLI.
+	if ( ! empty( $is_in_cli ) ) {
+		// Initialize progress bar.
+		$progress = new Bar( 'Setting up tables', count( $tables ), 100 );
+
+		// Check if progress bar exists or not.
+		if ( ! $progress instanceof Bar ) {
+			WP_CLI::error( 'Progress bar not found!' );
+
+			// Bail out if progress bar not exists.
+			return;
+		}
 	}
 
-	// Get API.
-	$softrip = new Softrip_Data_Adapter();
+	// Start table creation.
+	foreach ( $tables as $table_name => $sql ) {
+		// Create table.
+		maybe_create_table( $table_name, $sql );
 
-	// Implode IDs into a string.
-	$code_string = implode( ',', $codes );
+		// Update progress bar.
+		if ( ! empty( $progress ) ) {
+			$progress->tick();
+		}
+	}
 
-	// Do request and return the result.
-	return $softrip->do_request( 'departures', [ 'productCodes' => $code_string ] );
+	// End progress bar.
+	if ( ! empty( $is_in_cli ) ) {
+		$progress->finish();
+	}
 }
 
 /**
@@ -116,54 +181,121 @@ function cron_schedule_sync(): void {
 /**
  * Do the sync.
  *
- * @return void
+ * @param int[] $itinerary_post_ids Itinerary post IDs.
+ *
+ * @return void.
  */
-function do_sync(): void {
-	// Get the sync object.
-	$sync = new Softrip_Sync();
+function do_sync( array $itinerary_post_ids = [] ): void {
+	// If no itinerary post IDs are provided, get all itinerary post IDs.
+	if ( empty( $itinerary_post_ids ) ) {
+		// Prepare args.
+		$args = [
+			'post_type'              => ITINERARY_POST_TYPE,
+			'fields'                 => 'ids',
+			'no_found_rows'          => true,
+			'update_post_meta_cache' => false,
+			'update_term_meta_cache' => false,
+			'ignore_sticky_posts'    => true,
+			'post_status'            => [ 'draft', 'publish' ],
+			'posts_per_page'         => -1,
+		];
 
-	// Get the ID's to sync.
-	$ids = $sync->get_all_itinerary_ids();
+		// Run WP_Query.
+		$query              = new WP_Query( $args );
+		$itinerary_post_ids = array_map( 'absint', $query->posts );
+	}
 
-	// Get the total count.
-	$total = count( $ids );
+	// Initialize package codes.
+	$package_codes = [];
+
+	// Initialize CLI variables.
+	$is_in_cli = defined( 'WP_CLI' ) && true === WP_CLI;
+	$progress  = null;
+
+	// Get all package codes.
+	foreach ( $itinerary_post_ids as $post_id ) {
+		$package_code = get_post_meta( absint( $post_id ), 'softrip_package_code', true );
+
+		// Validate package code.
+		if ( ! empty( $package_code ) && is_string( $package_code ) ) {
+			$package_codes[] = $package_code;
+		}
+	}
+
+	// Bail if no package codes found.
+	if ( empty( $package_codes ) ) {
+		// Log CLI message.
+		if ( $is_in_cli ) {
+			WP_CLI::error( 'No package codes found' );
+		}
+
+		// Bail out.
+		return;
+	}
+
+	// Total count.
+	$total = count( $package_codes );
+
+	// Log CLI message.
+	if ( $is_in_cli ) {
+		// Welcome message.
+		WP_CLI::log( WP_CLI::colorize( 'Syncing Itineraries...' ) );
+
+		// Initialize progress bar.
+		$progress = new Bar( 'Softrip sync', $total, 100 );
+	}
 
 	// Log the sync initiated.
 	do_action(
 		'quark_softrip_sync_initiated',
 		[
 			'count' => $total,
-			'via'   => 'cron',
+			'via'   => $is_in_cli ? 'CLI' : 'cron',
 		]
 	);
 
 	// Create batches.
-	$batches = $sync->prepare_batch_ids( $ids );
+	$batches = array_chunk( $package_codes, ITINERARY_SYNC_BATCH_SIZE );
 
 	// Set up a counter for successful.
 	$counter = 0;
 
 	// Iterate over the batches.
-	foreach ( $batches as $softrip_ids ) {
+	foreach ( $batches as $softrip_codes ) {
 		// Get the raw departure data for the IDs.
-		$raw_departures = $sync->batch_request( $softrip_ids );
+		$raw_departures = synchronize_itinerary_departures( $softrip_codes );
 
 		// Handle if an error is found.
-		if ( empty( $raw_departures ) ) {
+		if ( ! is_array( $raw_departures ) || empty( $raw_departures ) ) {
+			// Update progress bar.
+			if ( $is_in_cli ) {
+				$progress->tick( count( $softrip_codes ) );
+			}
+
 			// Skip since there was an error.
 			continue;
 		}
 
 		// Process each departure.
-		foreach ( $raw_departures as $softrip_id => $departures ) {
+		foreach ( $raw_departures as $softrip_package_code => $departures ) {
 			// Validate is array and not empty.
-			if ( ! is_array( $departures ) || empty( $departures ) ) {
+			if ( ! is_string( $softrip_package_code ) || ! is_array( $departures ) || empty( $departures ) || empty( $departures['departures'] ) ) {
+				// Update progress bar.
+				if ( $is_in_cli ) {
+					$progress->tick();
+				}
+
 				// Skip since there was an error, or departures are empty.
 				continue;
 			}
 
-			// Sync the code.
-			$success = $sync->sync_softrip_code( $softrip_id, $departures );
+			// Update departure data.
+			$success = update_departures( $departures['departures'], $softrip_package_code );
+
+			// Update progress bar.
+			if ( $is_in_cli ) {
+				$progress->tick();
+			}
 
 			// Check if successful.
 			if ( $success ) {
@@ -179,9 +311,17 @@ function do_sync(): void {
 		[
 			'success' => $counter,
 			'failed'  => $total - $counter,
-			'via'     => 'cron',
+			'via'     => $is_in_cli ? 'CLI' : 'cron',
 		]
 	);
+
+	// End progress bar.
+	if ( $is_in_cli ) {
+		$progress->finish();
+
+		// End notice.
+		WP_CLI::success( sprintf( 'Completed %d items with %d failed items', $counter, ( $total - $counter ) ) );
+	}
 }
 
 /**
@@ -200,4 +340,92 @@ function setup_stream_connectors( array $connectors = [] ): array {
 
 	// Return the connectors.
 	return $connectors;
+}
+
+/**
+ * Get the latest departure data from Softrip.
+ *
+ * @param string[] $codes Softrip codes.
+ *
+ * @return mixed[]|WP_Error
+ */
+function synchronize_itinerary_departures( array $codes = [] ): array|WP_Error {
+	// Get unique codes.
+	$codes = array_unique( $codes );
+
+	// Throw error if empty.
+	if ( empty( $codes ) ) {
+		return new WP_Error( 'qrk_softrip_no_codes', 'No Softrip codes provided' );
+	}
+
+	// Check if the count is more than the batch size.
+	if ( ITINERARY_SYNC_BATCH_SIZE < count( $codes ) ) {
+		return new WP_Error( 'qrk_softrip_departures_limit', sprintf( 'The maximum number of codes allowed is %d', ITINERARY_SYNC_BATCH_SIZE ) );
+	}
+
+	// Get API adapter.
+	$softrip = new Softrip_Data_Adapter();
+
+	// Implode IDs into a string.
+	$code_string = implode( ',', $codes );
+
+	// Do request and return the result.
+	return $softrip->do_request( 'departures', [ 'productCodes' => $code_string ] );
+}
+
+/**
+ * Check if date is in the past.
+ *
+ * @param string $date Date to check.
+ *
+ * @return bool
+ */
+function is_date_in_the_past( string $date = '' ): bool {
+	// Bail if empty.
+	if ( empty( $date ) ) {
+		return false;
+	}
+
+	// Get the current time.
+	$current_time = time();
+
+	// Get the date time.
+	$date_time = absint( strtotime( $date ) );
+
+	// Check if expired.
+	return $current_time > $date_time;
+}
+
+/**
+ * Get the Table Name with prefix.
+ *
+ * @param string $name The table name to prefix.
+ *
+ * @return string
+ */
+function add_prefix_to_table_name( string $name = '' ): string {
+	// Return the prefixed name.
+	return TABLE_PREFIX_NAME . $name;
+}
+
+/**
+ * Get the engine and collate.
+ *
+ * @return string
+ */
+function get_engine_collate(): string {
+	// Get the $wpdb object.
+	global $wpdb;
+	$charset_collate = $wpdb->get_charset_collate();
+
+	// Set the engine and collate.
+	$engine_collate = 'ENGINE=InnoDB';
+
+	// If the charset_collate is not empty, add it to the engine_collate.
+	if ( ! empty( $charset_collate ) ) {
+		$engine_collate .= " $charset_collate";
+	}
+
+	// Return the engine and collate string.
+	return $engine_collate;
 }
