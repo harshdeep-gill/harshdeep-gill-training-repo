@@ -5,6 +5,7 @@ import { __ } from '@wordpress/i18n';
 import {
 	useBlockProps,
 } from '@wordpress/block-editor';
+import { Placeholder } from '@wordpress/components';
 
 // @ts-ignore No Module Declaration.
 import ServerSideRender from '@wordpress/server-side-render';
@@ -48,6 +49,16 @@ export default function Edit( { className }: BlockEditAttributes ): JSX.Element 
 			{
 				<ServerSideRender
 					block={ name }
+					EmptyResponsePlaceholder={ () => (
+						<Placeholder
+							icon="palmtree"
+							label={ __( 'Ship Decks', 'qrk' ) }
+							instructions={ __(
+								'Select Ship decks to render the data in the frontend.',
+								'qrk',
+							) }
+						/>
+					) }
 				/>
 			}
 		</Section>
