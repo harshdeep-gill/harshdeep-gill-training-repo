@@ -10,6 +10,11 @@ import {
 import ServerSideRender from '@wordpress/server-side-render';
 
 /**
+ * Styles.
+ */
+import './editor.scss';
+
+/**
  * External dependencies.
  */
 import classnames from 'classnames';
