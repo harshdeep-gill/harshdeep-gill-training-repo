@@ -1,12 +1,20 @@
 @import "../../scss/";
 
 .media-carousel {
+	position: relative;
 
 	&__track {
-		aspect-ratio: 96 / 43;
 		border-radius: var(--border-radius-large);
 		overflow: hidden;
 		width: 100%;
+	}
+
+	&__item img {
+		aspect-ratio: 20 / 11;
+
+		@media screen and (min-width: grid-size(md)) {
+			aspect-ratio: 2;
+		}
 	}
 
 	&__arrows {
@@ -31,5 +39,31 @@
 		&--right {
 			transform: rotate(180deg);
 		}
+	}
+
+	tp-slider-nav {
+		position: absolute;
+		bottom: var(--spacing-3);
+		left: 50%;
+		transform: translate(-50%);
+		z-index: 5;
+		display: none;
+
+		@media screen and (min-width: grid-size(md)) {
+			display: flex;
+		}
+	}
+
+	tp-slider-nav-item button {
+		display: block;
+		font-size: 0;
+		width: 8px;
+		height: 8px;
+		border-radius: 50%;
+		background-color: var(--color-gray-40);
+	}
+
+	tp-slider-nav-item[current="yes"] button {
+		background-color: var(--color-white);
 	}
 }

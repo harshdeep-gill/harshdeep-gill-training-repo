@@ -1,0 +1,358 @@
+<?php
+/**
+ * Namespace file for promotions data.
+ *
+ * @package quark-softrip
+ */
+
+namespace Quark\Softrip\Promotions;
+
+use function Quark\Softrip\get_engine_collate;
+use function Quark\Softrip\add_prefix_to_table_name;
+
+const CACHE_KEY_PREFIX = 'quark_softrip_promotion';
+const CACHE_GROUP      = 'quark_softrip_promotions';
+
+/**
+ * Get table name.
+ *
+ * @return string
+ */
+function get_table_name(): string {
+	// Return table name.
+	return add_prefix_to_table_name( 'promotions' );
+}
+
+/**
+ * Get create table SQL.
+ *
+ * @return string
+ */
+function get_table_sql(): string {
+	// Get table name.
+	$table_name = get_table_name();
+
+	// Get engine and collate.
+	$engine_collate = get_engine_collate();
+
+	// Build the SQL query.
+	$sql = "CREATE TABLE $table_name (
+			id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+			code VARCHAR(255) NOT NULL UNIQUE,
+			start_date DATETIME NOT NULL,
+			end_date DATETIME NOT NULL,
+			description VARCHAR(255) NOT NULL,
+			discount_type VARCHAR(255) NOT NULL,
+			discount_value VARCHAR(255) NOT NULL,
+			is_pif TINYINT(1) NOT NULL
+		) $engine_collate";
+
+	// Return the SQL.
+	return $sql;
+}
+
+/**
+ * Update promotions data.
+ *
+ * @param mixed[] $raw_promotions_data Raw promotions data from Softrip.
+ *
+ * @return boolean
+ */
+function update_promotions( array $raw_promotions_data = [] ): bool {
+	// Bail out if no data.
+	if ( empty( $raw_promotions_data ) || ! is_array( $raw_promotions_data ) ) {
+		return false;
+	}
+
+	// Get the global $wpdb object.
+	global $wpdb;
+
+	// Get the table name.
+	$table_name = get_table_name();
+
+	// Loop through each raw promotion data.
+	foreach ( $raw_promotions_data as $raw_promotion_data ) {
+		// Validate the raw promotion data.
+		if ( ! is_array( $raw_promotion_data ) ) {
+			continue;
+		}
+
+		// Format the promotion data.
+		$formatted_data = format_data( $raw_promotion_data );
+
+		// Skip if empty.
+		if ( empty( $formatted_data ) ) {
+			continue;
+		}
+
+		// Get existing promotion data by the code.
+		$existing_promotions_data = get_promotions_by_code( $formatted_data['code'] );
+
+		// Get the first item.
+		$existing_promotion_data = ! empty( $existing_promotions_data ) ? $existing_promotions_data[0] : [];
+
+		// Initialize updated id.
+		$updated_id = 0;
+
+		// If the promotion exists, update it.
+		if ( ! empty( $existing_promotion_data['id'] ) ) {
+			// Update the promotion.
+			$updated_id = $wpdb->update(
+				$table_name,
+				$formatted_data,
+				[ 'id' => $existing_promotion_data['id'] ]
+			);
+		} else {
+			// Insert the promotion.
+			$wpdb->insert(
+				$table_name,
+				$formatted_data
+			);
+
+			// Get the inserted ID.
+			$updated_id = $wpdb->insert_id;
+		}
+
+		// Skip if no updated ID.
+		if ( empty( $updated_id ) ) {
+			continue;
+		}
+
+		// Bust the cache.
+		wp_cache_delete( CACHE_KEY_PREFIX . '_' . $formatted_data['code'], CACHE_GROUP );
+	}
+
+	// Return success.
+	return true;
+}
+
+/**
+ * Format the raw promotion data.
+ *
+ * @param mixed[] $raw_promotion_data Raw promotion data from Softrip.
+ *
+ * @return array{}|array{
+ *   end_date: string,
+ *   start_date: string,
+ *   description: string,
+ *   discount_type: string,
+ *   discount_value: string,
+ *   code: string,
+ *   is_pif: int,
+ * }
+ */
+function format_data( array $raw_promotion_data = [] ): array {
+	// Bail out if no data.
+	if ( ! is_array( $raw_promotion_data ) || empty( $raw_promotion_data ) ) {
+		return [];
+	}
+
+	// Setup the defaults.
+	$default = [
+		'endDate'       => '',
+		'startDate'     => '',
+		'description'   => '',
+		'discountType'  => '',
+		'discountValue' => '',
+		'promotionCode' => '',
+		'isPIF'         => 0,
+	];
+
+	// Apply the defaults.
+	$raw_promotion_data = wp_parse_args( $raw_promotion_data, $default );
+
+	// Validate the data.
+	if (
+		empty( $raw_promotion_data['endDate'] ) ||
+		empty( $raw_promotion_data['startDate'] ) ||
+		empty( $raw_promotion_data['description'] ) ||
+		empty( $raw_promotion_data['discountType'] ) ||
+		empty( $raw_promotion_data['discountValue'] ) ||
+		empty( $raw_promotion_data['promotionCode'] )
+	) {
+		return [];
+	}
+
+	// Initialize the formatted data.
+	$formatted_data = [
+		'end_date'       => sanitize_text_field( strval( $raw_promotion_data['endDate'] ) ),
+		'start_date'     => sanitize_text_field( strval( $raw_promotion_data['startDate'] ) ),
+		'description'    => sanitize_text_field( strval( $raw_promotion_data['description'] ) ),
+		'discount_type'  => sanitize_text_field( strval( $raw_promotion_data['discountType'] ) ),
+		'discount_value' => sanitize_text_field( strval( $raw_promotion_data['discountValue'] ) ),
+		'code'           => sanitize_text_field( strval( $raw_promotion_data['promotionCode'] ) ),
+		'is_pif'         => absint( $raw_promotion_data['isPIF'] ),
+	];
+
+	// Return the formatted data.
+	return $formatted_data;
+}
+
+/**
+ * Get promotion by code.
+ *
+ * @param string $code   The promotion code.
+ * @param bool   $force Whether to bypass the cache.
+ *
+ * @return mixed[][]
+ */
+function get_promotions_by_code( string $code = '', bool $force = false ): array {
+	// Bail out if no code.
+	if ( empty( $code ) ) {
+		return [];
+	}
+
+	// Get the cache key.
+	$cache_key = CACHE_KEY_PREFIX . "_$code";
+
+	// If not direct, check the cache.
+	if ( empty( $force ) ) {
+		// Get from cache.
+		$cached_value = wp_cache_get( $cache_key );
+
+		// Check if we have the data.
+		if ( ! empty( $cached_value ) && is_array( $cached_value ) ) {
+			return $cached_value;
+		}
+	}
+
+	// Get the global $wpdb object.
+	global $wpdb;
+
+	// Get the table name.
+	$table_name = get_table_name();
+
+	// Load the promotion data.
+	$promotions_data = $wpdb->get_results(
+		$wpdb->prepare(
+			'SELECT
+                *
+            FROM
+                %i
+            WHERE
+                code = %s
+            ',
+			[
+				$table_name,
+				$code,
+			]
+		),
+		ARRAY_A
+	);
+
+	// Bail out if not an array.
+	if ( ! is_array( $promotions_data ) ) {
+		return [];
+	}
+
+	// Format the data.
+	$formatted_promotions_data = format_rows_data_from_db( $promotions_data );
+
+	// Cache the value.
+	wp_cache_set( $cache_key, $formatted_promotions_data, CACHE_GROUP );
+
+	// Return the promotion data.
+	return $formatted_promotions_data;
+}
+
+/**
+ * Format promotion row from database.
+ *
+ * @param string[] $row_data Row data from database.
+ *
+ * @return array{}|array{
+ *   id: int,
+ *   code: string,
+ *   start_date: string,
+ *   end_date: string,
+ *   description: string,
+ *   discount_type: string,
+ *   discount_value: string,
+ *   is_pif: int,
+ * }
+ */
+function format_row_data_from_db( array $row_data = [] ): array {
+	// Bail out if no data.
+	if ( empty( $row_data ) || ! is_array( $row_data ) ) {
+		return [];
+	}
+
+	// Required fields.
+	$required_fields = [
+		'id',
+		'code',
+		'start_date',
+		'end_date',
+		'description',
+		'discount_type',
+		'discount_value',
+		'is_pif',
+	];
+
+	// Check if required fields are present.
+	foreach ( $required_fields as $required_field ) {
+		if ( ! array_key_exists( $required_field, $row_data ) ) {
+			return [];
+		}
+	}
+
+	// Format the data.
+	$formatted_data = [
+		'id'             => absint( $row_data['id'] ),
+		'code'           => sanitize_text_field( strval( $row_data['code'] ) ),
+		'start_date'     => sanitize_text_field( strval( $row_data['start_date'] ) ),
+		'end_date'       => sanitize_text_field( strval( $row_data['end_date'] ) ),
+		'description'    => sanitize_text_field( strval( $row_data['description'] ) ),
+		'discount_type'  => sanitize_text_field( strval( $row_data['discount_type'] ) ),
+		'discount_value' => sanitize_text_field( strval( $row_data['discount_value'] ) ),
+		'is_pif'         => absint( $row_data['is_pif'] ),
+	];
+
+	// Return the formatted data.
+	return $formatted_data;
+}
+
+/**
+ * Format rows data from database.
+ *
+ * @param array<int, string[]> $rows_data Rows data from database.
+ *
+ * @return array{}|array{
+ *   array{
+ *     id: int,
+ *     code: string,
+ *     start_date: string,
+ *     end_date: string,
+ *     description: string,
+ *     discount_type: string,
+ *     discount_value: string,
+ *     is_pif: int,
+ *   }
+ * }
+ */
+function format_rows_data_from_db( array $rows_data = [] ): array {
+	// Bail out if no data.
+	if ( empty( $rows_data ) || ! is_array( $rows_data ) ) {
+		return [];
+	}
+
+	// Initialize the formatted data.
+	$formatted_data = [];
+
+	// Loop through each row data.
+	foreach ( $rows_data as $row_data ) {
+		// Format the row data.
+		$formatted_row_data = format_row_data_from_db( $row_data );
+
+		// Skip if empty.
+		if ( empty( $formatted_row_data ) ) {
+			continue;
+		}
+
+		// Add to the formatted data.
+		$formatted_data[] = $formatted_row_data;
+	}
+
+	// Return the formatted data.
+	return $formatted_data;
+}

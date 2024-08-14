@@ -193,18 +193,18 @@ class Departure {
 			'comment_status'    => 'closed',
 			'ping_status'       => 'closed',
 			'meta_input'        => [
-				'departure_unique_id' => str_replace( ' ', '', $title ),
+				'softrip_id' => str_replace( ' ', '', $title ),
 			],
 		];
 
 		// Set departure id.
 		if ( ! empty( $item['departure_id'] ) ) {
-			$data['meta_input']['softrip_departure_id'] = strval( $item['departure_id'] );
+			$data['meta_input']['softrip_code'] = strval( $item['departure_id'] );
 		}
 
 		// Set package id.
 		if ( ! empty( $item['package_id'] ) ) {
-			$data['meta_input']['softrip_package_id'] = strval( $item['package_id'] );
+			$data['meta_input']['softrip_package_code'] = strval( $item['package_id'] );
 		}
 
 		// Set itinerary_id as parent.
@@ -219,12 +219,12 @@ class Departure {
 
 		// Set departure start date.
 		if ( ! empty( $item['departure_start_date'] ) ) {
-			$data['meta_input']['departure_start_date'] = strval( $item['departure_start_date'] );
+			$data['meta_input']['start_date'] = strval( $item['departure_start_date'] );
 		}
 
 		// Set departure end date.
 		if ( ! empty( $item['departure_end_date'] ) ) {
-			$data['meta_input']['departure_end_date'] = strval( $item['departure_end_date'] );
+			$data['meta_input']['end_date'] = strval( $item['departure_end_date'] );
 		}
 
 		// Set duration.

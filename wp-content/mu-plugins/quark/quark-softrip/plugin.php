@@ -13,6 +13,12 @@ namespace Quark\Softrip;
 
 require_once __DIR__ . '/inc/autoload.php';
 require_once __DIR__ . '/inc/namespace.php';
+require_once __DIR__ . '/inc/itineraries/namespace.php';
+require_once __DIR__ . '/inc/departures/namespace.php';
+require_once __DIR__ . '/inc/adventure-options/namespace.php';
+require_once __DIR__ . '/inc/promotions/namespace.php';
+require_once __DIR__ . '/inc/occupancies/namespace.php';
+require_once __DIR__ . '/inc/occupancy-promotions/namespace.php';
 
 // Kick it off.
 add_action( 'plugins_loaded', __NAMESPACE__ . '\\bootstrap' );

@@ -9,13 +9,15 @@ namespace Quark\Itineraries;
 
 use WP_Post;
 use WP_Term;
-use Quark\Softrip\Itinerary;
 
 use function Quark\Core\format_price;
 use function Quark\InclusionSets\get as inclusion_sets_get;
 use function Quark\PolicyPages\get as get_policy_page_post;
 use function Quark\Brochures\get as get_brochure;
 use function Quark\ItineraryDays\get as get_itinerary_day;
+use function Quark\Ships\get as get_ship;
+use function Quark\Softrip\Itineraries\get_lowest_price;
+use function Quark\Softrip\Itineraries\get_related_ships;
 
 use const Quark\StaffMembers\SEASON_TAXONOMY;
 
@@ -473,26 +475,26 @@ function get_details_tabs_data( array $itineraries = [] ): array {
 			}
 		}
 
-		// Get the itinerary object.
-		$itinerary_object = new Itinerary( $itinerary['post']->ID );
-
 		// TODO: Add currency change support.
-		$price = format_price( $itinerary_object->get_lowest_price() );
+		$price = format_price( get_lowest_price( $itinerary['post']->ID )['original'] );
 
 		// Translators: %s is the lowest price.
 		$price = ! empty( $price ) ? sprintf( __( '%s per person', 'qrk' ), $price ) : '';
 
 		// Get the itinerary ships.
-		$_ships = $itinerary_object->get_related_ships();
+		$ship_post_ids = get_related_ships( $itinerary['post']->ID );
 
 		// Loop through the ships.
-		foreach ( $_ships as $ship ) {
+		foreach ( $ship_post_ids as $ship_post_id ) {
+			// Get ship.
+			$ship = get_ship( $ship_post_id );
+
 			// Check if the ship post is empty.
 			if ( is_array( $ship ) && ! empty( $ship['post'] ) && $ship['post'] instanceof WP_Post ) {
 				// Append the ship to the ships list.
 				$ships[] = [
 					'name' => $ship['post']->post_title,
-					'link' => get_permalink( $ship['post']->ID ),
+					'link' => $ship['permalink'],
 				];
 			}
 		}
@@ -661,9 +663,9 @@ function get_starting_from_location( int $post_id = 0 ): string {
  * @param int    $post_id Post ID.
  * @param string $currency Currency code.
  *
- * @return float Mandatory transfer price.
+ * @return int Mandatory transfer price.
  */
-function get_mandatory_transfer_price( int $post_id = 0, string $currency = 'USD' ): float {
+function get_mandatory_transfer_price( int $post_id = 0, string $currency = 'USD' ): int {
 	// get Itinerary.
 	$itinerary = get( $post_id );
 
@@ -681,7 +683,7 @@ function get_mandatory_transfer_price( int $post_id = 0, string $currency = 'USD
 	}
 
 	// Get mandatory transfer price.
-	return floatval( strval( $itinerary['post_meta'][ $meta_key ] ) );
+	return absint( $itinerary['post_meta'][ $meta_key ] );
 }
 
 /**
@@ -690,9 +692,9 @@ function get_mandatory_transfer_price( int $post_id = 0, string $currency = 'USD
  * @param int    $post_id Post ID.
  * @param string $currency Currency code.
  *
- * @return float Supplemental price.
+ * @return int Supplemental price.
  */
-function get_supplemental_price( int $post_id = 0, string $currency = 'USD' ): float {
+function get_supplemental_price( int $post_id = 0, string $currency = 'USD' ): int {
 	// get Itinerary.
 	$itinerary = get( $post_id );
 
@@ -710,7 +712,7 @@ function get_supplemental_price( int $post_id = 0, string $currency = 'USD' ): f
 	}
 
 	// Get supplemental price.
-	return floatval( strval( $itinerary['post_meta'][ $meta_key ] ) );
+	return absint( $itinerary['post_meta'][ $meta_key ] );
 }
 
 /**

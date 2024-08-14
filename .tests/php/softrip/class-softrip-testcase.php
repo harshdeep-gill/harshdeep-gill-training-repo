@@ -11,6 +11,7 @@ use WP_UnitTestCase;
 
 use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
 use const Quark\CabinCategories\POST_TYPE as CABIN_CATEGORY_POST_TYPE;
+use const Quark\Expeditions\POST_TYPE as EXPEDITION_POST_TYPE;
 use const Quark\Ships\POST_TYPE as SHIP_POST_TYPE;
 
 /**
@@ -27,6 +28,13 @@ abstract class Softrip_TestCase extends WP_UnitTestCase {
 	protected static array $itinerary_ids = [];
 
 	/**
+	 * Expedition posts.
+	 *
+	 * @var array<int|WP_Error>
+	 */
+	protected static array $expedition_ids = [];
+
+	/**
 	 * Setup for tests.
 	 *
 	 * @return void
@@ -34,6 +42,14 @@ abstract class Softrip_TestCase extends WP_UnitTestCase {
 	public static function set_up_before_class(): void {
 		// Run parent and include setup.
 		parent::set_up_before_class();
+
+		// Create test expedition posts.
+		self::$expedition_ids = self::factory()->post->create_many(
+			5,
+			[
+				'post_type' => EXPEDITION_POST_TYPE,
+			]
+		);
 
 		// Create a test itinerary post.
 		self::$itinerary_ids = self::factory()->post->create_many(
@@ -44,7 +60,7 @@ abstract class Softrip_TestCase extends WP_UnitTestCase {
 		);
 
 		// Write above code in loop.
-		$softrip_package_ids = [
+		$softrip_package_codes = [
 			'ABC-123',
 			'DEF-456',
 			'GHI-789',
@@ -67,9 +83,10 @@ abstract class Softrip_TestCase extends WP_UnitTestCase {
 			'FGH-890',
 		];
 
-		// Loop through the itineraries and set softrip package id meta.
+		// Loop through the itineraries and set softrip package code meta.
 		foreach ( self::$itinerary_ids as $index => $itinerary_id ) {
-			update_post_meta( absint( $itinerary_id ), 'softrip_package_id', $softrip_package_ids[ $index ] );
+			update_post_meta( absint( $itinerary_id ), 'softrip_package_code', $softrip_package_codes[ $index ] );
+			update_post_meta( absint( $itinerary_id ), 'related_expedition', self::$expedition_ids[ $index % 5 ] );
 			wp_cache_delete( ITINERARY_POST_TYPE . '_' . absint( $itinerary_id ), ITINERARY_POST_TYPE );
 		}
 
@@ -117,7 +134,7 @@ abstract class Softrip_TestCase extends WP_UnitTestCase {
 
 		// Loop through the ships and set meta.
 		foreach ( $ship_ids as $index => $ship_id ) {
-			update_post_meta( absint( $ship_id ), 'ship_id', $softrip_ship_ids[ $index ] );
+			update_post_meta( absint( $ship_id ), 'ship_code', $softrip_ship_ids[ $index ] );
 			wp_cache_delete( SHIP_POST_TYPE . '_' . absint( $ship_id ), SHIP_POST_TYPE );
 		}
 	}
