@@ -50,11 +50,11 @@ class Search {
 	 */
 	private array $field_mapping = [
 		'date-now'       => [
-			'key'   => 'departure_start_date_s',
+			'key'   => 'start_date_s',
 			'order' => 'asc',
 		],
 		'date-later'     => [
-			'key'   => 'departure_start_date_s',
+			'key'   => 'start_date_s',
 			'order' => 'desc',
 		],
 		'price-low'      => [
@@ -324,7 +324,7 @@ class Search {
 
 			// Set departure meta query (date Format: Ymd).
 			$this->args['meta_query'][] = [
-				'key'     => 'departure_start_date',
+				'key'     => 'start_date',
 				'value'   => [ gmdate( 'Y-m-01', $departure ), gmdate( 'Y-m-t', $departure ) ],
 				'type'    => 'DATE',
 				'compare' => 'BETWEEN',

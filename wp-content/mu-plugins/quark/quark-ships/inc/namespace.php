@@ -29,6 +29,7 @@ function bootstrap(): void {
 
 	// Opt into stuff.
 	add_filter( 'qe_ship_category_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
+	add_filter( 'qe_adventure_options_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
 
 	// Other hooks.
 	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
@@ -71,6 +72,7 @@ function register_ship_post_type(): void {
 			'title',
 			'editor',
 			'revisions',
+			'excerpt',
 		],
 		'show_ui'             => true,
 		'show_in_menu'        => true,
@@ -174,6 +176,7 @@ function bust_post_cache( int $post_id = 0 ): void {
  *     post: WP_Post|null,
  *     permalink: string,
  *     post_meta: mixed[],
+ *     post_taxonomies: mixed[],
  * }
  */
 function get( int $post_id = 0 ): array {
@@ -189,9 +192,10 @@ function get( int $post_id = 0 ): array {
 	// Check for cached value.
 	if ( is_array( $cached_value ) && ! empty( $cached_value['post'] ) && $cached_value['post'] instanceof WP_Post ) {
 		return [
-			'post'      => $cached_value['post'],
-			'permalink' => $cached_value['permalink'] ?? '',
-			'post_meta' => $cached_value['post_meta'] ?? [],
+			'post'            => $cached_value['post'],
+			'permalink'       => $cached_value['permalink'] ?? '',
+			'post_meta'       => $cached_value['post_meta'] ?? [],
+			'post_taxonomies' => $cached_value['post_taxonomies'] ?? [],
 		];
 	}
 
@@ -201,17 +205,19 @@ function get( int $post_id = 0 ): array {
 	// Return empty array fields if post type does not match or not an instance of WP_Post.
 	if ( ! $post instanceof WP_Post || POST_TYPE !== $post->post_type ) {
 		return [
-			'post'      => null,
-			'permalink' => '',
-			'post_meta' => [],
+			'post'            => null,
+			'permalink'       => '',
+			'post_meta'       => [],
+			'post_taxonomies' => [],
 		];
 	}
 
 	// Build data.
 	$data = [
-		'post'      => $post,
-		'permalink' => strval( get_permalink( $post ) ? : '' ),
-		'post_meta' => [],
+		'post'            => $post,
+		'permalink'       => strval( get_permalink( $post ) ? : '' ),
+		'post_meta'       => [],
+		'post_taxonomies' => [],
 	];
 
 	// Get all post meta.
@@ -229,6 +235,44 @@ function get( int $post_id = 0 ): array {
 		);
 	}
 
+	// Taxonomy terms.
+	global $wpdb;
+	$taxonomy_terms = $wpdb->get_results(
+		$wpdb->prepare(
+			"
+			SELECT
+				t.*,
+				tt.taxonomy,
+				tt.description,
+				tt.parent
+			FROM
+				$wpdb->term_relationships AS tr
+			LEFT JOIN
+				$wpdb->term_taxonomy AS tt ON tt.term_taxonomy_id = tr.term_taxonomy_id
+			LEFT JOIN
+				$wpdb->terms AS t ON t.term_id = tt.term_taxonomy_id
+			WHERE
+				tr.object_id = %d
+			ORDER BY
+				t.name ASC
+			",
+			[
+				$post->ID,
+			]
+		),
+		ARRAY_A
+	);
+
+	// Check for taxonomy terms.
+	if ( ! empty( $taxonomy_terms ) ) {
+		foreach ( $taxonomy_terms as $taxonomy_term ) {
+			if ( ! array_key_exists( $taxonomy_term['taxonomy'], $data['post_taxonomies'] ) ) {
+				$data['post_taxonomies'][ $taxonomy_term['taxonomy'] ] = [];
+			}
+			$data['post_taxonomies'][ $taxonomy_term['taxonomy'] ][] = $taxonomy_term;
+		}
+	}
+
 	// Set cache and return data.
 	wp_cache_set( $cache_key, $data, CACHE_GROUP );
 
@@ -244,6 +288,11 @@ function get( int $post_id = 0 ): array {
  * @return int
  */
 function get_id_from_ship_code( string $ship_code = '' ): int {
+	// Bail out if empty ship code.
+	if ( empty( $ship_code ) ) {
+		return 0;
+	}
+
 	// Check for cached version.
 	$cache_key = CACHE_KEY . '_all_ships';
 	$ships     = wp_cache_get( $cache_key, CACHE_GROUP );
@@ -262,7 +311,7 @@ function get_id_from_ship_code( string $ship_code = '' ): int {
 			RIGHT JOIN
 				$wpdb->posts AS p ON m.post_id = p.ID
 			WHERE
-				m.meta_key = 'ship_id'
+				m.meta_key = 'ship_code'
 			AND
 				p.post_type = %s
 			",
@@ -310,6 +359,25 @@ function bust_ship_code_lookup_cache(): void {
  *    permalink: string,
  *    description: string,
  *    related_decks: int[]|array{},
+ *    specifications: array{
+ *        cruising_speed?: string,
+ *        guests?: string,
+ *        ice_class?: string,
+ *        length?: string,
+ *        life_boats?: string,
+ *        registration?: string,
+ *        staff_and_crew?: string,
+ *        draft?: string,
+ *        guest_ratio?: string,
+ *        stabilizers?: string,
+ *        propulsion?: string,
+ *        zodiacs?: string,
+ *        voltage?: string,
+ *        breadth?: string,
+ *        gross_tonnage?: string,
+ *        year_built?: string,
+ *        year_refurbished?: string,
+ *    }
  * }
  */
 function get_ship_data( int $ship_id = 0 ): array {
@@ -325,26 +393,113 @@ function get_ship_data( int $ship_id = 0 ): array {
 		return [];
 	}
 
-	// Prepare deck data.
-	$decks_ids = [];
+	// Prepare ship meta fields.
+	$decks_ids           = [];
+	$ship_specifications = [];
 
 	// Get Decks associated with the ship.
 	if ( ! empty( $ship_meta['related_decks'] ) && is_array( $ship_meta['related_decks'] ) ) {
 		$decks_ids = array_map( 'absint', $ship_meta['related_decks'] );
 	}
 
+	// Set ship specifications.
+	if ( ! empty( $ship_meta['cruising_speed'] ) ) {
+		$ship_specifications['cruising_speed'] = strval( $ship_meta['cruising_speed'] );
+	}
+
+	// Check for guest count.
+	if ( ! empty( $ship_meta['guests'] ) ) {
+		$ship_specifications['guests'] = strval( $ship_meta['guests'] );
+	}
+
+	// Check for ice class.
+	if ( ! empty( $ship_meta['ice_class'] ) ) {
+		$ship_specifications['ice_class'] = strval( $ship_meta['ice_class'] );
+	}
+
+	// Check for length.
+	if ( ! empty( $ship_meta['length'] ) ) {
+		$ship_specifications['length'] = strval( $ship_meta['length'] );
+	}
+
+	// Check for lifeboats.
+	if ( ! empty( $ship_meta['lifeboats'] ) ) {
+		$ship_specifications['life_boats'] = strval( $ship_meta['lifeboats'] );
+	}
+
+	// Check for other specifications.
+	if ( ! empty( $ship_meta['registration'] ) ) {
+		$ship_specifications['registration'] = strval( $ship_meta['registration'] );
+	}
+
+	// Check for Staff and Crew.
+	if ( ! empty( $ship_meta['staff_and_crew'] ) ) {
+		$ship_specifications['staff_and_crew'] = strval( $ship_meta['staff_and_crew'] );
+	}
+
+	// Check for draft.
+	if ( ! empty( $ship_meta['draft'] ) ) {
+		$ship_specifications['draft'] = strval( $ship_meta['draft'] );
+	}
+
+	// Check for guest ratio.
+	if ( ! empty( $ship_meta['guest_ratio'] ) ) {
+		$ship_specifications['guest_ratio'] = strval( $ship_meta['guest_ratio'] );
+	}
+
+	// Check for stabilizers.
+	if ( ! empty( $ship_meta['stabilizers'] ) ) {
+		$ship_specifications['stabilizers'] = strval( $ship_meta['stabilizers'] );
+	}
+
+	// Check for propulsion.
+	if ( ! empty( $ship_meta['propulsion'] ) ) {
+		$ship_specifications['propulsion'] = strval( $ship_meta['propulsion'] );
+	}
+
+	// Check for zodiacs.
+	if ( ! empty( $ship_meta['zodiacs'] ) ) {
+		$ship_specifications['zodiacs'] = strval( $ship_meta['zodiacs'] );
+	}
+
+	// Check for voltage.
+	if ( ! empty( $ship_meta['voltage'] ) ) {
+		$ship_specifications['voltage'] = strval( $ship_meta['voltage'] );
+	}
+
+	// Check for breadth.
+	if ( ! empty( $ship_meta['breadth'] ) ) {
+		$ship_specifications['breadth'] = strval( $ship_meta['breadth'] );
+	}
+
+	// Check for gross tonnage.
+	if ( ! empty( $ship_meta['gross_tonnage'] ) ) {
+		$ship_specifications['gross_tonnage'] = strval( $ship_meta['gross_tonnage'] );
+	}
+
+	// Check for year built.
+	if ( ! empty( $ship_meta['year_built'] ) ) {
+		$ship_specifications['year_built'] = strval( $ship_meta['year_built'] );
+	}
+
+	// Check for year refurbished.
+	if ( ! empty( $ship_meta['year_refurbished'] ) ) {
+		$ship_specifications['year_refurbished'] = strval( $ship_meta['year_refurbished'] );
+	}
+
 	// Return ship data.
 	return [
-		'name'          => $ship_post->post_name,
-		'title'         => $ship_post->post_title,
-		'permalink'     => $ship['permalink'],
-		'description'   => strval( apply_filters( 'the_content', $ship_post->post_content ) ),
-		'related_decks' => $decks_ids,
+		'name'           => $ship_post->post_name,
+		'title'          => $ship_post->post_title,
+		'permalink'      => $ship['permalink'],
+		'description'    => $ship_post->post_excerpt,
+		'related_decks'  => $decks_ids,
+		'specifications' => $ship_specifications,
 	];
 }
 
 /**
- * Generate ship deck comparison data.
+ * Get cabins and decks for a ship.
  *
  * @param int $ship_id Ship ID.
  *
@@ -355,7 +510,7 @@ function get_ship_data( int $ship_id = 0 ): array {
  *     }
  * }
  */
-function generate_ship_deck_comparison_data( int $ship_id = 0 ): array {
+function get_cabins_and_decks( int $ship_id = 0 ): array {
 	// Init results.
 	$results = [];
 

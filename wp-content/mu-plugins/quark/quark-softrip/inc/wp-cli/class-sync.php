@@ -7,10 +7,13 @@
 
 namespace Quark\Softrip\WP_CLI;
 
-use cli\progress\Bar;
-use Quark\Softrip\Softrip_Sync;
 use WP_CLI;
 use WP_CLI\ExitException;
+use WP_Query;
+
+use function Quark\Softrip\do_sync;
+
+use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
 
 const BATCH_SIZE = 5;
 
@@ -18,22 +21,6 @@ const BATCH_SIZE = 5;
  * Class Sync.
  */
 class Sync {
-
-	/**
-	 * Holds the Sync object.
-	 *
-	 * @var Softrip_Sync
-	 */
-	protected Softrip_Sync $sync;
-
-	/**
-	 * Constructor.
-	 */
-	public function __construct() {
-		// Init the sync object.
-		$this->sync = new Softrip_Sync();
-	}
-
 	/**
 	 * Softrip sync itineraries.
 	 *
@@ -70,91 +57,8 @@ class Sync {
 			]
 		);
 
-		// Welcome message.
-		WP_CLI::log( WP_CLI::colorize( 'Syncing Itineraries...' ) );
-
-		// Initialize progress bar.
-		$total    = count( $options['ids'] );
-		$progress = new Bar( 'Softrip sync', $total, 100 );
-
-		// Check if progress bar exists or not.
-		if ( ! $progress instanceof Bar ) {
-			WP_CLI::error( 'Progress bar not found!' );
-
-			// Bail out if progress bar not exists.
-			return;
-		}
-
-		// Log the sync initiated.
-		do_action(
-			'quark_softrip_sync_initiated',
-			[
-				'count' => $total,
-				'via'   => 'CLI',
-			]
-		);
-
-		// split batches.
-		$parts = $this->sync->prepare_batch_ids( $options['ids'], BATCH_SIZE );
-
-		// Set up a counter for how many we're successful.
-		$counter = 0;
-
-		// Process each part.
-		foreach ( $parts as $softrip_ids ) {
-			// Get the raw departure data for the IDs.
-			$raw_departures = $this->sync->batch_request( $softrip_ids );
-
-			// Handle if an error is found.
-			if ( empty( $raw_departures ) ) {
-				// If this fails, it fails for the 5 items.
-				$progress->tick( 5 );
-				continue;
-			}
-
-			// Process each departure.
-			foreach ( $raw_departures as $softrip_id => $departures ) {
-				// Validate is array and not empty.
-				if ( ! is_array( $departures ) || empty( $departures ) ) {
-					$progress->tick();
-					continue;
-				}
-
-				// Sync the code.
-				$success = $this->sync->sync_softrip_code( $softrip_id, $departures );
-				$progress->tick();
-
-				// Check if successful.
-				if ( $success ) {
-					// Update counter.
-					++$counter;
-				}
-			}
-		}
-
-		// End bar.
-		$progress->finish();
-
-		// Check if failed any.
-		$if_failed = '.';
-
-		// Compare counter with total.
-		if ( $counter < $total ) {
-			$if_failed = ' with ' . ( $total - $counter ) . ' failed items.';
-		}
-
-		// Log the sync completed.
-		do_action(
-			'quark_softrip_sync_completed',
-			[
-				'success' => $counter,
-				'failed'  => $total - $counter,
-				'via'     => 'CLI',
-			]
-		);
-
-		// End notice.
-		WP_CLI::success( 'Completed ' . $counter . ' items' . $if_failed );
+		// Run sync.
+		do_sync( $options['ids'] );
 	}
 
 	/**
@@ -167,7 +71,24 @@ class Sync {
 	 */
 	public function all(): void {
 		// Get Itinerary ID's.
-		$ids = $this->sync->get_all_itinerary_ids();
+		$args = [
+			'post_type'              => ITINERARY_POST_TYPE,
+			'posts_per_page'         => -1,
+			'fields'                 => 'ids',
+			'update_post_meta_cache' => false,
+			'update_term_meta_cache' => false,
+			'ignore_sticky_posts'    => true,
+			'post_status'            => [ 'draft', 'publish' ],
+		];
+
+		// Run WP_Query.
+		$query = new WP_Query( $args );
+
+		// Get all itinerary post ids.
+		$ids = $query->posts;
+
+		// Validate IDs.
+		$ids = array_map( 'absint', $ids );
 
 		// Implode and run sync.
 		$this->do_sync( [], [ 'ids' => $ids ] );

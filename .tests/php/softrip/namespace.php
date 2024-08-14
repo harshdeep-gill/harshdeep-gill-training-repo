@@ -7,7 +7,8 @@
 
 namespace Quark\Tests\Softrip;
 
-use Quark\Softrip\Softrip_DB;
+use function Quark\Softrip\create_custom_db_tables;
+use function Quark\Softrip\get_custom_db_table_mapping;
 
 /**
  * Setup Softrip DB.
@@ -23,20 +24,8 @@ function setup_softrip_db_tables(): void {
 		return;
 	}
 
-	// Include DB functions.
-	require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-
-	// Init DB object.
-	$db = new Softrip_DB();
-
-	// Get SQL array.
-	$tables = $db->get_db_tables_sql();
-
-	// Start table creation.
-	foreach ( $tables as $name => $sql ) {
-		$table_name = $db->prefix_table_name( $name );
-		maybe_create_table( $table_name, $sql );
-	}
+	// Create DB tables.
+	create_custom_db_tables();
 
 	// Flag as run.
 	$run = true;
@@ -198,20 +187,18 @@ function mock_softrip_http_request( array|false $response = [], array $parsed_ar
 									],
 								],
 							],
-							'promotions'  => [
-								'available' => [
-									[
-										'endDate'       => '2050-12-31T00:00:00',
-										'startDate'     => '2023-09-28T00:00:00',
-										'description'   => 'Save 25%',
-										'currencyCode'  => null,
-										'discountType'  => 'percentage_off',
-										'discountValue' => '0.25',
-										'promotionCode' => '25PROMO',
-										'isPIF'         => false,
-									],
-								],
-							],
+						],
+					],
+					'promotions'  => [
+						[
+							'endDate'       => '2050-12-31T00:00:00',
+							'startDate'     => '2023-09-28T00:00:00',
+							'description'   => 'Save 25%',
+							'currencyCode'  => null,
+							'discountType'  => 'percentage_off',
+							'discountValue' => '0.25',
+							'promotionCode' => '25PROMO',
+							'isPIF'         => false,
 						],
 					],
 				],
@@ -300,20 +287,6 @@ function mock_softrip_http_request( array|false $response = [], array $parsed_ar
 												],
 											],
 										],
-									],
-								],
-							],
-							'promotions'  => [
-								'available' => [
-									[
-										'endDate'       => '2050-12-31T00:00:00',
-										'startDate'     => '2023-09-28T00:00:00',
-										'description'   => 'Save 15%',
-										'currencyCode'  => null,
-										'discountType'  => 'percentage_off',
-										'discountValue' => '0.15',
-										'promotionCode' => '15PROMO',
-										'isPIF'         => false,
 									],
 								],
 							],
@@ -437,20 +410,18 @@ function mock_softrip_http_request( array|false $response = [], array $parsed_ar
 									],
 								],
 							],
-							'promotions'  => [
-								'available' => [
-									[
-										'endDate'       => '2050-12-31T00:00:00',
-										'startDate'     => '2023-09-28T00:00:00',
-										'description'   => 'Save 15%',
-										'currencyCode'  => null,
-										'discountType'  => 'percentage_off',
-										'discountValue' => '0.15',
-										'promotionCode' => '15PROMO',
-										'isPIF'         => false,
-									],
-								],
-							],
+						],
+					],
+					'promotions'  => [
+						[
+							'endDate'       => '2050-12-31T00:00:00',
+							'startDate'     => '2023-09-28T00:00:00',
+							'description'   => 'Save 15%',
+							'currencyCode'  => null,
+							'discountType'  => 'percentage_off',
+							'discountValue' => '0.15',
+							'promotionCode' => '15PROMO',
+							'isPIF'         => false,
 						],
 					],
 				],
@@ -527,20 +498,18 @@ function mock_softrip_http_request( array|false $response = [], array $parsed_ar
 									],
 								],
 							],
-							'promotions'  => [
-								'available' => [
-									[
-										'endDate'       => '2050-12-31T00:00:00',
-										'startDate'     => '2023-09-28T00:00:00',
-										'description'   => 'Save 15%',
-										'currencyCode'  => null,
-										'discountType'  => 'percentage_off',
-										'discountValue' => '0.15',
-										'promotionCode' => '15PROMO',
-										'isPIF'         => false,
-									],
-								],
-							],
+						],
+					],
+					'promotions'  => [
+						[
+							'endDate'       => '2050-12-31T00:00:00',
+							'startDate'     => '2023-09-28T00:00:00',
+							'description'   => 'Save 15%',
+							'currencyCode'  => null,
+							'discountType'  => 'percentage_off',
+							'discountValue' => '0.15',
+							'promotionCode' => '15PROMO',
+							'isPIF'         => false,
 						],
 					],
 				],
@@ -568,15 +537,29 @@ function truncate_softrip_db_tables(): void {
 	// Get global WPDB object.
 	global $wpdb;
 
-	// Init DB object.
-	$db = new Softrip_DB();
-
-	// Get SQL array.
-	$tables = $db->get_db_tables_sql();
+	// Get custom DB table mapping.
+	$tables = get_custom_db_table_mapping();
 
 	// Truncate tables.
-	foreach ( $tables as $name => $sql ) {
-		$table_name = $db->prefix_table_name( $name );
+	foreach ( $tables as $table_name => $sql ) {
 		$wpdb->query( "TRUNCATE TABLE $table_name" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+	}
+}
+
+/**
+ * Drop Softrip DB tables.
+ *
+ * @return void
+ */
+function drop_softrip_db_tables(): void {
+	// Get global WPDB object.
+	global $wpdb;
+
+	// Get custom DB table mapping.
+	$tables = get_custom_db_table_mapping();
+
+	// Drop tables.
+	foreach ( $tables as $table_name => $sql ) {
+		$wpdb->query( "DROP TABLE IF EXISTS $table_name" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 	}
 }

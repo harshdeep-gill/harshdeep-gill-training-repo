@@ -7,6 +7,7 @@
 
 namespace Quark\Tests;
 
+use function Quark\Tests\Softrip\drop_softrip_db_tables;
 use function Quark\Tests\Softrip\setup_softrip_db_tables;
 
 /**
@@ -17,6 +18,9 @@ use function Quark\Tests\Softrip\setup_softrip_db_tables;
 function bootstrap(): void {
 	// Load environment.
 	tests_add_filter( 'muplugins_loaded', __NAMESPACE__ . '\\load_environment' );
+
+	// Destroy environment.
+	tests_add_filter( 'shutdown', __NAMESPACE__ . '\\destroy_environment' );
 }
 
 /**
@@ -57,4 +61,14 @@ function load_environment(): void {
 
 	// Setup Softrip database tables.
 	setup_softrip_db_tables();
+}
+
+/**
+ * Destroy test environment.
+ *
+ * @return void
+ */
+function destroy_environment(): void {
+	// Drop Softrip database tables.
+	drop_softrip_db_tables();
 }

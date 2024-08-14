@@ -10,8 +10,8 @@ namespace Quark\Theme\Blocks\ShipCabinCategories;
 use WP_Block;
 use WP_Post;
 
-use function Quark\Ships\generate_ship_deck_comparison_data;
 use function Quark\Ships\get as get_ship;
+use function Quark\Ships\get_cabins_and_decks;
 
 const COMPONENT = 'parts.ship-cabin-categories';
 
@@ -55,7 +55,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 
 	// Get the cabin categories data.
 	$component_attributes = [
-		'items' => generate_ship_deck_comparison_data( $ship['post']->ID ),
+		'items' => get_cabins_and_decks( $ship['post']->ID ),
 	];
 
 	// Return the component.

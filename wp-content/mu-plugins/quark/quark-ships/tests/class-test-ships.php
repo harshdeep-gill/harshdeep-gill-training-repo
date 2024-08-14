@@ -11,7 +11,7 @@ use WP_UnitTestCase;
 use WP_Post;
 
 use function Quark\Ships\get_ship_data;
-use function Quark\Ships\generate_ship_deck_comparison_data;
+use function Quark\Ships\get_cabins_and_decks;
 
 use const Quark\Ships\POST_TYPE as SHIP_POST_TYPE;
 use const Quark\ShipDecks\POST_TYPE as SHIP_DECK_POST_TYPE;
@@ -36,6 +36,7 @@ class Test_Ships extends WP_UnitTestCase {
 				'post_title'   => 'Test Ship Title',
 				'post_status'  => 'publish',
 				'post_content' => 'Test ship content',
+				'post_excerpt' => 'Test ship excerpt',
 			]
 		);
 
@@ -66,28 +67,44 @@ class Test_Ships extends WP_UnitTestCase {
 
 		// Set Meta data.
 		update_post_meta( $ship_post->ID, 'related_decks', [ $deck_post_1->ID, $deck_post_2->ID ] );
+		update_post_meta( $ship_post->ID, 'cruising_speed', '10' );
+		update_post_meta( $ship_post->ID, 'guests', '100' );
+		update_post_meta( $ship_post->ID, 'ice_class', '1A' );
+		update_post_meta( $ship_post->ID, 'length', '100' );
+		update_post_meta( $ship_post->ID, 'lifeboats', '10' );
+		update_post_meta( $ship_post->ID, 'staff_and_crew', '50' );
+		update_post_meta( $ship_post->ID, 'year_refurbished', '2020' );
 
 		// Assert ship data.
 		$this->assertEquals(
 			[
-				'name'          => $ship_post->post_name,
-				'title'         => $ship_post->post_title,
-				'permalink'     => get_permalink( $ship_post->ID ),
-				'description'   => apply_filters( 'the_content', $ship_post->post_content ),
-				'related_decks' => [ $deck_post_1->ID, $deck_post_2->ID ],
+				'name'           => $ship_post->post_name,
+				'title'          => $ship_post->post_title,
+				'permalink'      => get_permalink( $ship_post->ID ),
+				'description'    => $ship_post->post_excerpt,
+				'related_decks'  => [ $deck_post_1->ID, $deck_post_2->ID ],
+				'specifications' => [
+					'cruising_speed'   => '10',
+					'guests'           => '100',
+					'ice_class'        => '1A',
+					'length'           => '100',
+					'life_boats'       => '10',
+					'staff_and_crew'   => '50',
+					'year_refurbished' => '2020',
+				],
 			],
 			get_ship_data( $ship_post->ID )
 		);
 	}
 
 	/**
-	 * Test generate_ship_deck_comparison_data.
+	 * Test get_cabins_and_decks.
 	 *
-	 * @covers \Quark\Ships\generate_ship_deck_comparison_data()
+	 * @covers \Quark\Ships\get_cabins_and_decks()
 	 *
 	 * @return void
 	 */
-	public function test_generate_ship_deck_comparison_data(): void {
+	public function test_get_cabins_and_decks(): void {
 		// Create Cabin Category posts.
 		$cabin_category_posts = [];
 
@@ -163,8 +180,8 @@ class Test_Ships extends WP_UnitTestCase {
 		// Check if post is created.
 		$this->assertTrue( $ship_post instanceof WP_Post );
 
-		// Get generate_ship_deck_comparison_data.
-		$comparison_data = generate_ship_deck_comparison_data( $ship_post->ID );
+		// Get get_cabins_and_decks.
+		$comparison_data = get_cabins_and_decks( $ship_post->ID );
 
 		// Assert comparison data.
 		$this->assertEqualsCanonicalizing(

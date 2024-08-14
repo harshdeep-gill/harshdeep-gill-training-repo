@@ -424,6 +424,16 @@ class Taxonomies {
 					}
 				}
 
+				// Prepare for ACF data for image.
+				if ( ! empty( $item['field_image_target_id'] ) ) {
+					$image = download_file_by_mid( absint( $item['field_image_target_id'] ) );
+
+					// Assign image to meta.
+					if ( ! empty( $image ) ) {
+						$prepared_args['meta']['image'] = $image;
+					}
+				}
+
 				// Prepare for ACF data for options.
 				$drupal_db  = get_database();
 				$option_ids = (array) $drupal_db->get_results(
@@ -738,12 +748,14 @@ class Taxonomies {
 						field_data.`name`,
 						field_data.`description__value`,
 						( SELECT alias AS drupal_url FROM path_alias WHERE path = CONCAT( '/taxonomy/term/', term.tid ) ORDER BY id DESC LIMIT 0, 1 ) AS drupal_url,
-						field_icon.field_icon_target_id AS `field_icon_target_id`
+						field_icon.field_icon_target_id AS `field_icon_target_id`,
+						field_image.field_image_target_id AS `field_image_target_id`
 					FROM
 						taxonomy_term_data AS term
 						LEFT JOIN taxonomy_term__parent AS parent ON term.`tid` = parent.`entity_id` AND term.langcode = parent.langcode
 						LEFT JOIN taxonomy_term_field_data AS field_data ON term.`tid` = field_data.`tid` AND term.langcode = field_data.langcode
 						LEFT JOIN `taxonomy_term__field_icon` AS `field_icon` ON term.tid = field_icon.entity_id AND term.langcode = field_icon.langcode
+						LEFT JOIN `taxonomy_term__field_image` AS `field_image` ON term.tid = field_image.entity_id AND term.langcode = field_image.langcode
 					WHERE
 						term.`vid` = 'adventure_options'
 					ORDER BY

@@ -65,6 +65,7 @@ import * as shipVesselFeatures from './ship-vessel-features';
 import * as excursionAccordions from './excursion-accordions';
 import * as bookDeparturesExpeditions from './book-departures-expeditions';
 import * as shipCabinCategories from './ship-cabin-categories';
+import * as specifications from './specifications';
 
 /**
  * Add blocks.
@@ -128,6 +129,7 @@ const blocks = [
 	shipVesselFeatures,
 	excursionAccordions,
 	bookDeparturesExpeditions,
+	specifications,
 ];
 
 // Register blocks for ships.
