@@ -73,6 +73,11 @@ function update_departures( array $raw_departures = [], string $softrip_package_
 	// Get the expedition post ID.
 	$expedition_post_id = absint( get_post_meta( $itinerary_post_id, 'related_expedition', true ) );
 
+	// Bail out if empty expedition post ID.
+	if ( empty( $expedition_post_id ) ) {
+		return false;
+	}
+
 	// Get current departures with the package code.
 	$departure_posts = new WP_Query(
 		[
@@ -108,7 +113,7 @@ function update_departures( array $raw_departures = [], string $softrip_package_
 		}
 
 		// Get departure code.
-		$departure_code = get_post_meta( $departure_post_id, 'softrip_id', true );
+		$departure_code = strval( get_post_meta( $departure_post_id, 'softrip_id', true ) );
 
 		// Skip if empty.
 		if ( empty( $departure_code ) ) {
@@ -119,7 +124,49 @@ function update_departures( array $raw_departures = [], string $softrip_package_
 		$existing_departure_codes[ $departure_code ] = $departure_post_id;
 	}
 
-	// Initialize updated departure unique codes.
+	// If empty raw departures, we loop through all departure posts and unpublish such departures whose start date is in past.
+	if ( empty( $raw_departures ) ) {
+		// Loop through existing departure codes.
+		foreach ( $existing_departure_codes as $departure_code => $departure_post_id ) {
+			// Skip if draft already.
+			if ( 'draft' === get_post_status( $departure_post_id ) ) {
+				continue;
+			}
+
+			// Get start date.
+			$start_date = get_start_date( $departure_post_id );
+
+			// If start date is in the past, unpublish the post.
+			if ( ! empty( $start_date ) && is_date_in_the_past( $start_date ) ) {
+				// Unpublish the post.
+				wp_update_post(
+					[
+						'ID'          => $departure_post_id,
+						'post_status' => 'draft',
+					]
+				);
+
+				// Bust the departure module cache.
+				wp_cache_delete( DEPARTURE_CACHE_KEY . "_$departure_post_id", DEPARTURE_CACHE_GROUP );
+			}
+		}
+
+		// Return successful.
+		return true;
+	}
+
+	/**
+	 * Update the departures.
+	 * 1. Loop through raw departures.
+	 * 2. Update the departure posts.
+	 * 3. Update the adventure options.
+	 * 4. Update the promotions.
+	 * 5. Update the cabin occupancies.
+	 * 6. Update the occupancy prices.
+	 * 7. For non updated departures, check if start date is in past, then unpublish.
+	 */
+
+	// Initialize departure codes which are updated.
 	$updated_departure_codes = [];
 
 	// Loop through raw departures and update/create the departure posts, cabins, prices and promotions.
@@ -188,37 +235,28 @@ function update_departures( array $raw_departures = [], string $softrip_package_
 		}
 	}
 
-	// Delete all departure posts not in updated departure codes and has expired.
+	// Unpublish departure posts that are non-updated and has expired.
 	foreach ( $existing_departure_codes as $departure_code => $departure_post_id ) {
-		// Skip if departure code is in updated departure codes.
-		if ( in_array( $departure_code, $updated_departure_codes, true ) ) {
+		// Skip if departure code is in updated departure codes or already draft.
+		if ( in_array( $departure_code, $updated_departure_codes, true ) || 'draft' === get_post_status( $departure_post_id ) ) {
 			continue;
 		}
 
 		// Get start date meta.
-		$start_date = get_post_meta( $departure_post_id, 'start_date', true );
+		$start_date = get_start_date( $departure_post_id );
 
-		// If start date is in the past, skip.
-		if ( ! is_string( $start_date ) || empty( $start_date ) || ! is_date_in_the_past( $start_date ) ) {
+		// If empty start date or not in the past, skip.
+		if ( empty( $start_date ) || ! is_date_in_the_past( $start_date ) ) {
 			continue;
 		}
 
-		/**
-		 * Deletion should happen as current departure has expired.
-		 * 1. Delete all the occupancies which in-turn deletes all the occupancy promotions.
-		 * 2. On successful deletion of occupancies, delete the departure post.
-		 */
-
-		// Delete the occupancies.
-		$is_cleared = clear_occupancies_by_departure( $departure_post_id );
-
-		// Skip if not cleared.
-		if ( ! $is_cleared ) {
-			continue;
-		}
-
-		// Delete the post.
-		wp_delete_post( $departure_post_id, true );
+		// Draft the post.
+		wp_update_post(
+			[
+				'ID'          => $departure_post_id,
+				'post_status' => 'draft',
+			]
+		);
 
 		// Bust the departure module cache.
 		wp_cache_delete( DEPARTURE_CACHE_KEY . "_$departure_post_id", DEPARTURE_CACHE_GROUP );
@@ -300,7 +338,7 @@ function format_raw_departure_data( array $raw_departure_data = [], int $itinera
 		'meta_input'  => [
 			'related_expedition'   => $expedition_post_id,
 			'itinerary'            => $itinerary_post_id,
-			'related_ship'         => get_id_from_ship_code( $raw_departure_data['shipCode'] ),
+			'related_ship'         => get_id_from_ship_code( strval( $raw_departure_data['shipCode'] ) ),
 			'softrip_package_code' => sanitize_text_field( strval( $raw_departure_data['packageCode'] ) ),
 			'softrip_id'           => sanitize_text_field( strval( $raw_departure_data['id'] ) ),
 			'softrip_code'         => sanitize_text_field( strval( $raw_departure_data['code'] ) ),
