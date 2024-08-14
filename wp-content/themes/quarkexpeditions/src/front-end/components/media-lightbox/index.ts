@@ -9,9 +9,9 @@ const { customElements, HTMLElement } = window;
 import { TPLightboxElement, TPLightboxTriggerElement } from '@travelopia/web-components';
 
 /**
- * MediaLightbox Class.
+ * QuarkMediaLightbox Class.
  */
-export default class MediaLightbox extends HTMLElement {
+export default class QuarkMediaLightbox extends HTMLElement {
 	/**
 	 * Properties.
 	 */
@@ -179,4 +179,4 @@ export default class MediaLightbox extends HTMLElement {
 /**
  * Initialize.
  */
-customElements.define( 'quark-media-lightbox', MediaLightbox );
+customElements.define( 'quark-media-lightbox', QuarkMediaLightbox );
