@@ -7,6 +7,8 @@
 
 namespace Quark\Tests\Softrip;
 
+use DateInterval;
+use DateTime;
 use WP_UnitTestCase;
 
 use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
@@ -152,5 +154,30 @@ abstract class Softrip_TestCase extends WP_UnitTestCase {
 
 		// Flush the cache.
 		wp_cache_flush();
+	}
+
+	/**
+	 * Get Date interval from a date string.
+	 *
+	 * @param string $datetime Date string.
+	 * @return DateInterval
+	 */
+	protected function get_date_interval( string $datetime ): DateInterval {
+		$interval_date = date_interval_create_from_date_string( $datetime );
+
+		$this->assertTrue( $interval_date instanceof DateInterval );
+		return $interval_date;
+	}
+
+	/**
+	 * Get current date.
+	 *
+	 * @return DateTime
+	 */
+	protected function get_current_date(): DateTime {
+		$current_date = date_create();
+		$this->assertTrue( $current_date instanceof DateTime );
+
+		return $current_date;
 	}
 }
