@@ -1,7 +1,7 @@
 /**
  * Global variables.
  */
-const { HTMLElement } = window;
+const { HTMLElement, customElements } = window;
 
 /**
  * QuarkWistiaEmbed class
@@ -23,12 +23,15 @@ export default class QuarkWistiaEmbed extends HTMLElement {
 		// Get the overlay.
 		this.videoPlayer = null;
 		this.videoIntersectionObserver = null;
+
+		// Initialize the component.
+		this.initialize();
 	}
 
 	/**
 	 * Connected Callback
 	 */
-	connectedCallback() {
+	initialize() {
 		// Add initialization to queue
 		window._wq = window._wq || [];
 		const videoId = this.getAttribute( 'video-id' );
@@ -90,3 +93,6 @@ export default class QuarkWistiaEmbed extends HTMLElement {
 		} );
 	}
 }
+
+// Define the element.
+customElements.define( 'quark-wistia-embed', QuarkWistiaEmbed );

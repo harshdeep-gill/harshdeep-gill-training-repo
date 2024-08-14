@@ -52,24 +52,7 @@
 						allowfullscreen
 					></iframe>
 				@elseif ( str_contains( $path, 'wistia.com' ) )
-					@php
-						$video_id = quark_get_wistia_id( $path );
-
-						if ( empty( $video_id ) ) {
-							return;
-						}
-
-						$video_embed_classes = [
-							'wistia_embed',
-							'seo=true',
-							'videoFoam=true',
-							'wistia_async_' . $video_id,
-						];
-					@endphp
-
-					<quark-wistia-embed video-id="{{ $video_id }}">
-						<div @class( $video_embed_classes )></div>
-					</quark-wistia-embed>
+					<x-wistia-embed :url="$path" />
 				@endif
 
 			@elseif ( ! empty( $image_id ) )
