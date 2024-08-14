@@ -8,7 +8,7 @@
 	}
 @endphp
 
-<x-tabs current_tab="">
+<x-tabs current_tab="{{ $decks[0]['id'] ?? '' }}">
 	<x-tabs.header>
 		@foreach ( $decks as $deck )
 			<x-tabs.nav id="{{ $deck['id'] ?? '' }}" title="{{ $deck['title'] ?? '' }}" />
