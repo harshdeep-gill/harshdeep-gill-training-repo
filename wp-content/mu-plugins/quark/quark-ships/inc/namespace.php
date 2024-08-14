@@ -359,6 +359,25 @@ function bust_ship_code_lookup_cache(): void {
  *    permalink: string,
  *    description: string,
  *    related_decks: int[]|array{},
+ *    specifications: array{
+ *        cruising_speed?: string,
+ *        guests?: string,
+ *        ice_class?: string,
+ *        length?: string,
+ *        life_boats?: string,
+ *        registration?: string,
+ *        staff_and_crew?: string,
+ *        draft?: string,
+ *        guest_ratio?: string,
+ *        stabilizers?: string,
+ *        propulsion?: string,
+ *        zodiacs?: string,
+ *        voltage?: string,
+ *        breadth?: string,
+ *        gross_tonnage?: string,
+ *        year_built?: string,
+ *        year_refurbished?: string,
+ *    }
  * }
  */
 function get_ship_data( int $ship_id = 0 ): array {
@@ -374,21 +393,108 @@ function get_ship_data( int $ship_id = 0 ): array {
 		return [];
 	}
 
-	// Prepare deck data.
-	$decks_ids = [];
+	// Prepare ship meta fields.
+	$decks_ids           = [];
+	$ship_specifications = [];
 
 	// Get Decks associated with the ship.
 	if ( ! empty( $ship_meta['related_decks'] ) && is_array( $ship_meta['related_decks'] ) ) {
 		$decks_ids = array_map( 'absint', $ship_meta['related_decks'] );
 	}
 
+	// Set ship specifications.
+	if ( ! empty( $ship_meta['cruising_speed'] ) ) {
+		$ship_specifications['cruising_speed'] = strval( $ship_meta['cruising_speed'] );
+	}
+
+	// Check for guest count.
+	if ( ! empty( $ship_meta['guests'] ) ) {
+		$ship_specifications['guests'] = strval( $ship_meta['guests'] );
+	}
+
+	// Check for ice class.
+	if ( ! empty( $ship_meta['ice_class'] ) ) {
+		$ship_specifications['ice_class'] = strval( $ship_meta['ice_class'] );
+	}
+
+	// Check for length.
+	if ( ! empty( $ship_meta['length'] ) ) {
+		$ship_specifications['length'] = strval( $ship_meta['length'] );
+	}
+
+	// Check for lifeboats.
+	if ( ! empty( $ship_meta['lifeboats'] ) ) {
+		$ship_specifications['life_boats'] = strval( $ship_meta['lifeboats'] );
+	}
+
+	// Check for other specifications.
+	if ( ! empty( $ship_meta['registration'] ) ) {
+		$ship_specifications['registration'] = strval( $ship_meta['registration'] );
+	}
+
+	// Check for Staff and Crew.
+	if ( ! empty( $ship_meta['staff_and_crew'] ) ) {
+		$ship_specifications['staff_and_crew'] = strval( $ship_meta['staff_and_crew'] );
+	}
+
+	// Check for draft.
+	if ( ! empty( $ship_meta['draft'] ) ) {
+		$ship_specifications['draft'] = strval( $ship_meta['draft'] );
+	}
+
+	// Check for guest ratio.
+	if ( ! empty( $ship_meta['guest_ratio'] ) ) {
+		$ship_specifications['guest_ratio'] = strval( $ship_meta['guest_ratio'] );
+	}
+
+	// Check for stabilizers.
+	if ( ! empty( $ship_meta['stabilizers'] ) ) {
+		$ship_specifications['stabilizers'] = strval( $ship_meta['stabilizers'] );
+	}
+
+	// Check for propulsion.
+	if ( ! empty( $ship_meta['propulsion'] ) ) {
+		$ship_specifications['propulsion'] = strval( $ship_meta['propulsion'] );
+	}
+
+	// Check for zodiacs.
+	if ( ! empty( $ship_meta['zodiacs'] ) ) {
+		$ship_specifications['zodiacs'] = strval( $ship_meta['zodiacs'] );
+	}
+
+	// Check for voltage.
+	if ( ! empty( $ship_meta['voltage'] ) ) {
+		$ship_specifications['voltage'] = strval( $ship_meta['voltage'] );
+	}
+
+	// Check for breadth.
+	if ( ! empty( $ship_meta['breadth'] ) ) {
+		$ship_specifications['breadth'] = strval( $ship_meta['breadth'] );
+	}
+
+	// Check for gross tonnage.
+	if ( ! empty( $ship_meta['gross_tonnage'] ) ) {
+		$ship_specifications['gross_tonnage'] = strval( $ship_meta['gross_tonnage'] );
+	}
+
+	// Check for year built.
+	if ( ! empty( $ship_meta['year_built'] ) ) {
+		$ship_specifications['year_built'] = strval( $ship_meta['year_built'] );
+	}
+
+	// Check for year refurbished.
+	if ( ! empty( $ship_meta['year_refurbished'] ) ) {
+		$ship_specifications['year_refurbished'] = strval( $ship_meta['year_refurbished'] );
+	}
+
 	// Return ship data.
 	return [
-		'name'          => $ship_post->post_name,
-		'title'         => $ship_post->post_title,
-		'permalink'     => $ship['permalink'],
-		'description'   => strval( apply_filters( 'the_content', $ship_post->post_content ) ),
-		'related_decks' => $decks_ids,
+		'name'           => $ship_post->post_name,
+		'title'          => $ship_post->post_title,
+		'permalink'      => $ship['permalink'],
+		'description'    => $ship_post->post_excerpt,
+		'related_decks'  => $decks_ids,
+		'specifications' => $ship_specifications,
 	];
 }
 

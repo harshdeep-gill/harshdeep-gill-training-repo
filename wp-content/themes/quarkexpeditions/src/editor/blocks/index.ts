@@ -59,6 +59,7 @@ import * as shipFeaturesAmenities from './ship-features-amenities';
 import * as shipVesselFeatures from './ship-vessel-features';
 import * as excursionAccordions from './excursion-accordions';
 import * as bookDeparturesExpeditions from './book-departures-expeditions';
+import * as specifications from './specifications';
 
 /**
  * Add blocks.
@@ -122,6 +123,7 @@ const blocks = [
 	shipVesselFeatures,
 	excursionAccordions,
 	bookDeparturesExpeditions,
+	specifications,
 ];
 
 /**
