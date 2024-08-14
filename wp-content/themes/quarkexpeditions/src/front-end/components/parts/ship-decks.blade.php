@@ -28,7 +28,7 @@
 					<x-media-detail-cards title="{{ __( 'Cabin Details', 'qrk' ) }}">
 						@foreach ( $deck['cabin_options'] as $cabin_option )
 							<x-media-detail-cards.card>
-								<x-two-columns>
+								<x-two-columns :stack_on_tablet="true">
 									<x-two-columns.column>
 										@if ( ! empty( $cabin_option['image_id'] ) )
 											<x-media-detail-cards.image :image_id="$cabin_option['image_id']" :alt="$cabin_option['title'] ?? ''" />
@@ -58,7 +58,7 @@
 					<x-media-detail-cards title="{{ __( 'Public Spaces', 'qrk' ) }}">
 						@foreach ( $deck['public_spaces'] as $public_spaces )
 							<x-media-detail-cards.card>
-								<x-two-columns>
+								<x-two-columns :stack_on_tablet="true">
 									<x-two-columns.column>
 										@if ( ! empty( $public_spaces['image'] ) )
 											<x-media-description-cards.image :image_id="$public_spaces['image']" :alt="$public_spaces['title'] ?? ''" />
