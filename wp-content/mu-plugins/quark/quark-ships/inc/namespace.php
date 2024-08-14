@@ -171,7 +171,7 @@ function bust_post_cache( int $post_id = 0 ): void {
  *     post: WP_Post|null,
  *     permalink: string,
  *     post_meta: mixed[],
- *     block_attrs: mixed[],
+ *     data: mixed[],
  *     post_taxonomies: mixed[],
  * }
  */
@@ -191,7 +191,7 @@ function get( int $post_id = 0 ): array {
 			'post'            => $cached_value['post'],
 			'permalink'       => $cached_value['permalink'] ?? '',
 			'post_meta'       => $cached_value['post_meta'] ?? [],
-			'block_attrs'     => $cached_value['block_attrs'] ?? [],
+			'data'            => $cached_value['data'] ?? [],
 			'post_taxonomies' => $cached_value['post_taxonomies'] ?? [],
 		];
 	}
@@ -205,20 +205,20 @@ function get( int $post_id = 0 ): array {
 			'post'            => null,
 			'permalink'       => '',
 			'post_meta'       => [],
-			'block_attrs'     => [],
+			'data'            => [],
 			'post_taxonomies' => [],
 		];
 	}
 
 	// Get Ship block attrs.
-	$block_attrs = parse_block_attributes( $post );
+	$data = parse_block_attributes( $post );
 
 	// Build data.
 	$data = [
 		'post'            => $post,
 		'permalink'       => strval( get_permalink( $post ) ? : '' ),
 		'post_meta'       => [],
-		'block_attrs'     => $block_attrs,
+		'data'            => $data,
 		'post_taxonomies' => [],
 	];
 
@@ -395,9 +395,9 @@ function get_ship_data( int $ship_id = 0 ): array {
  * @param WP_Post|null $post The post object.
  *
  * @return array{}|array{
- *     ship_collage: mixed[],
- *     ship_vessel_features_title: string[],
- *     ship_amenities_title: string[],
+ *     collage: mixed[],
+ *     vessel_features: string[],
+ *     ship_amenities: string[],
  * }
  */
 function parse_block_attributes( WP_Post $post = null ): array {
@@ -470,8 +470,8 @@ function parse_block_attributes( WP_Post $post = null ): array {
 
 	// Return block attributes.
 	return [
-		'ship_collage'               => $collage_attrs,
-		'ship_vessel_features_title' => $ship_vessel_features,
-		'ship_amenities_title'       => $ship_amenities,
+		'collage'         => $collage_attrs,
+		'vessel_features' => $ship_vessel_features,
+		'ship_amenities'  => $ship_amenities,
 	];
 }

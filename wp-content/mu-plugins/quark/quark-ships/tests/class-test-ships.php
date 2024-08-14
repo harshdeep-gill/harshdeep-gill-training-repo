@@ -147,10 +147,10 @@ class Test_Ships extends WP_UnitTestCase {
 						],
 					],
 				],
-				'block_attrs'     => [
-					'ship_collage'               => [],
-					'ship_vessel_features_title' => [],
-					'ship_amenities_title'       => [],
+				'data'            => [
+					'collage'         => [],
+					'vessel_features' => [],
+					'ship_amenities'  => [],
 				],
 			],
 			$the_post
@@ -218,8 +218,8 @@ class Test_Ships extends WP_UnitTestCase {
 					'meta_2' => 'value_2',
 				],
 				'post_taxonomies' => [],
-				'block_attrs'     => [
-					'ship_collage'               => [
+				'data'            => [
+					'collage'         => [
 						[
 							'image' => [
 								'id'      => 1324,
@@ -250,12 +250,12 @@ class Test_Ships extends WP_UnitTestCase {
 							'videoUrl'  => 'https://abc.com/video.mp4',
 						],
 					],
-					'ship_vessel_features_title' => [
+					'vessel_features' => [
 						'Twin Engine Helicopters',
 						'Four Embarkation Points',
 						'MAGS',
 					],
-					'ship_amenities_title'       => [
+					'ship_amenities'  => [
 						'Ready Rooms',
 						'Polar Boutique',
 						'Ambassador Theater',
