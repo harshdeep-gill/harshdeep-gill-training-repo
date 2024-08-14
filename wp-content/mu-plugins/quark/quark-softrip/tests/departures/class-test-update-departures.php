@@ -10,8 +10,8 @@ namespace Quark\Softrip\Tests\Departures;
 use Quark\Tests\Softrip\Softrip_TestCase;
 
 use function Quark\Softrip\Departures\update_departures;
+use function Quark\Softrip\do_sync;
 
-use const Quark\CabinCategories\POST_TYPE as CABIN_CATEGORIES_POST_TYPE;
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
 use const Quark\Departures\SPOKEN_LANGUAGE_TAXONOMY;
 use const Quark\Expeditions\POST_TYPE as EXPEDITION_POST_TYPE;
@@ -63,6 +63,7 @@ class Test_Update_Departures extends Softrip_TestCase {
 			],
 		];
 		$pqo_raw_departures          = $original_pqo_raw_departures;
+		$yesterday = date_format( date_sub( $this->get_current_date(), $this->get_date_interval( '1 days' ) ), 'Y-m-d' );
 
 		// Create english term.
 		$english_term = wp_insert_term( 'English', SPOKEN_LANGUAGE_TAXONOMY );
@@ -371,7 +372,10 @@ class Test_Update_Departures extends Softrip_TestCase {
 		$actual = update_departures( [], $pqo_softrip_package_code );
 		$this->assertTrue( $actual );
 
-		// No departure posts should be there.
+		// Flush the cache.
+		wp_cache_flush();
+
+		// Since, all departures are valid and haven't expired, they should still be there.
 		$departure_posts_empty = get_posts(
 			[
 				'post_type'              => DEPARTURE_POST_TYPE,
@@ -391,11 +395,379 @@ class Test_Update_Departures extends Softrip_TestCase {
 				],
 			]
 		);
-		$this->assertCount( 0, $departure_posts_empty );
+		$this->assertCount( 2, $departure_posts_empty );
+
+		// Make departure 1 expired.
+		update_post_meta( $departure_post1, 'start_date', $yesterday );
+
+		// Empty raw departure array provided for update.
+		$actual = update_departures( [], $pqo_softrip_package_code );
+		$this->assertTrue( $actual );
+
+		// Flush the cache.
+		wp_cache_flush();
+
+		// Since, one departure is expired, only one should be there.
+		$departure_posts_expired = get_posts(
+			[
+				'post_type'              => DEPARTURE_POST_TYPE,
+				'posts_per_page'         => -1,
+				'no_found_rows'          => true,
+				'update_post_meta_cache' => false,
+				'update_post_term_cache' => false,
+				'ignore_sticky_posts'    => true,
+				'suppress_filters'       => false,
+				'fields'                 => 'ids',
+				'order'                  => 'ASC',
+				'meta_query'             => [
+					[
+						'key'   => 'softrip_package_code',
+						'value' => $pqo_softrip_package_code,
+					],
+				],
+			]
+		);
+		$this->assertCount( 1, $departure_posts_expired );
+
+		// Departure 2 should be there.
+		$this->assertContains( $departure_post2, $departure_posts_expired );
+
+		// Departure 1 should not be there.
+		$this->assertNotContains( $departure_post1, $departure_posts_expired );
+
+		// Status of departure 1 should be draft.
+		$this->assertEquals( 'draft', get_post_status( $departure_post1 ) );
+
+		// Reset the start date of departure 1.
+		update_post_meta( $departure_post1, 'start_date', $pqo_raw_departures[0]['startDate'] );
+
+		// Update the departure.
+		$actual = update_departures( [ $pqo_raw_departures[0] ], $pqo_softrip_package_code );
+		$this->assertTrue( $actual );
+
+		// Flush the cache.
+		wp_cache_flush();
+
+		// Get departures.
+		$departure_posts_updated = get_posts(
+			[
+				'post_type'              => DEPARTURE_POST_TYPE,
+				'posts_per_page'         => -1,
+				'no_found_rows'          => true,
+				'update_post_meta_cache' => false,
+				'update_post_term_cache' => false,
+				'ignore_sticky_posts'    => true,
+				'suppress_filters'       => false,
+				'fields'                 => 'ids',
+				'order'                  => 'ASC',
+				'meta_query'             => [
+					[
+						'key'   => 'softrip_package_code',
+						'value' => $pqo_softrip_package_code,
+					],
+				],
+			]
+		);
+		$this->assertCount( 1, $departure_posts_updated );
+
+		// Drafted departure 1 should not be there.
+		$this->assertNotContains( $departure_post1, $departure_posts_updated );
+
+		// Get draft departures by the softrip package code.
+		$drafted_departure_posts = get_posts(
+			[
+				'post_type'              => DEPARTURE_POST_TYPE,
+				'posts_per_page'         => -1,
+				'no_found_rows'          => true,
+				'update_post_meta_cache' => false,
+				'update_post_term_cache' => false,
+				'ignore_sticky_posts'    => true,
+				'suppress_filters'       => false,
+				'fields'                 => 'ids',
+				'order'                  => 'ASC',
+				'post_status'            => 'draft',
+				'meta_query'             => [
+					[
+						'key'   => 'softrip_package_code',
+						'value' => $pqo_softrip_package_code,
+					],
+				],
+			]
+		);
+		$this->assertCount( 1, $drafted_departure_posts );
+
+		// Drafted departure 1 should be there - meaning draft posts are not published again if start date has been updated.
+		$this->assertContains( $departure_post1, $drafted_departure_posts );
+
+		// Get original start date of departure 1 to affirm that date was updated for the draft post as well.
+		$original_start_date = $pqo_raw_departures[0]['startDate'];
+		$this->assertEquals( $original_start_date, get_post_meta( $departure_post1, 'start_date', true ) );
+
+		// Publish the draft departure to test further.
+		wp_update_post(
+			[
+				'ID'          => $departure_post1,
+				'post_status' => 'publish',
+			]
+		);
+
+		// Remove the first departure raw data.
+		array_shift( $pqo_raw_departures );
+
+		// Provide the updated raw departures.
+		$actual = update_departures( $pqo_raw_departures, $pqo_softrip_package_code );
+		$this->assertTrue( $actual );
+
+		// Flush the cache.
+		wp_cache_flush();
+
+		// Still both departures should be there as both are valid and haven't expired.
+		$departure_posts_updated = get_posts(
+			[
+				'post_type'              => DEPARTURE_POST_TYPE,
+				'posts_per_page'         => -1,
+				'no_found_rows'          => true,
+				'update_post_meta_cache' => false,
+				'update_post_term_cache' => false,
+				'ignore_sticky_posts'    => true,
+				'suppress_filters'       => false,
+				'fields'                 => 'ids',
+				'order'                  => 'ASC',
+				'meta_query'             => [
+					[
+						'key'   => 'softrip_package_code',
+						'value' => $pqo_softrip_package_code,
+					],
+				],
+			]
+		);
+		$this->assertCount( 2, $departure_posts_updated );
+
+		// Get the first departure post.
+		$departure_post1_updated = $departure_posts_updated[0];
+		$this->assertIsInt( $departure_post1_updated );
+
+		// Get the second departure post.
+		$departure_post2_updated = $departure_posts_updated[1];
+
+		// These should be same as the previous departure posts.
+		$this->assertEquals( $departure_post1, $departure_post1_updated );
+		$this->assertEquals( $departure_post2, $departure_post2_updated );
+
+		// Reset pqo_raw_departures.
+		$pqo_raw_departures = $original_pqo_raw_departures;
+
+		// Now, while updating, don't provide the first raw departure data.
+		$actual = update_departures( [ $pqo_raw_departures[1] ], $pqo_softrip_package_code );
+		$this->assertTrue( $actual );
+
+		// Flush the cache.
+		wp_cache_flush();
+
+		// Both departures should still be present.
+		$departure_posts_updated = get_posts(
+			[
+				'post_type'              => DEPARTURE_POST_TYPE,
+				'posts_per_page'         => -1,
+				'no_found_rows'          => true,
+				'update_post_meta_cache' => false,
+				'update_post_term_cache' => false,
+				'ignore_sticky_posts'    => true,
+				'suppress_filters'       => false,
+				'fields'                 => 'ids',
+				'order'                  => 'ASC',
+				'meta_query'             => [
+					[
+						'key'   => 'softrip_package_code',
+						'value' => $pqo_softrip_package_code,
+					],
+				],
+			]
+		);
+		$this->assertCount( 2, $departure_posts_updated );
+
+		// Get the first departure post.
+		$departure_post1_updated = $departure_posts_updated[0];
+		$this->assertIsInt( $departure_post1_updated );
+
+		// Get the second departure post.
+		$departure_post2_updated = $departure_posts_updated[1];
+		$this->assertIsInt( $departure_post2_updated );
+
+		// These should be same as the previous departure posts.
+		$this->assertEquals( $departure_post1, $departure_post1_updated );
+		$this->assertEquals( $departure_post2, $departure_post2_updated );
+
+		// Now, make the first departure post expired. And while updating, don't provide the first raw departure data again.
+		update_post_meta( $departure_post1, 'start_date', $yesterday );
+
+		// Update the departures.
+		$actual = update_departures( [ $pqo_raw_departures[1] ], $pqo_softrip_package_code );
+		$this->assertTrue( $actual );
+
+		// Flush the cache.
+		wp_cache_flush();
+
+		// Only the second departure should be there.
+		$departure_posts_updated = get_posts(
+			[
+				'post_type'              => DEPARTURE_POST_TYPE,
+				'posts_per_page'         => -1,
+				'no_found_rows'          => true,
+				'update_post_meta_cache' => false,
+				'update_post_term_cache' => false,
+				'ignore_sticky_posts'    => true,
+				'suppress_filters'       => false,
+				'fields'                 => 'ids',
+				'order'                  => 'ASC',
+				'meta_query'             => [
+					[
+						'key'   => 'softrip_package_code',
+						'value' => $pqo_softrip_package_code,
+					],
+				],
+			]
+		);
+		$this->assertCount( 1, $departure_posts_updated );
+
+		// First departure should not be there.
+		$this->assertNotContains( $departure_post1, $departure_posts_updated );
+
+		// Get the second departure post.
+		$departure_post2_updated = $departure_posts_updated[0];
+		$this->assertIsInt( $departure_post2_updated );
+
+		// Only the second departure should be there.
+		$this->assertEquals( $departure_post2, $departure_post2_updated );
+
+		// First departure should be again drafted.
+		$this->assertEquals( 'draft', get_post_status( $departure_post1 ) );
 
 		// Clean up.
 		wp_delete_post( $itinerary_id, true );
 		wp_delete_post( $expedition_id, true );
 		wp_delete_post( $ship_id_omx, true );
+
+		// Test with real mock data.
+
+		// Setup mock response.
+		add_filter( 'pre_http_request', 'Quark\Tests\Softrip\mock_softrip_http_request', 10, 3 );
+
+		// Sync softrip with existing posts.
+		do_sync();
+
+		// Remove filter.
+		remove_filter( 'pre_http_request', 'Quark\Tests\Softrip\mock_softrip_http_request', 10 );
+
+		// Initialize softrip codes.
+		$softrip_package_code1 = 'ABC-123';
+		$softrip_package_code2 = 'PQR-345';
+		$softrip_package_code3 = 'JKL-012';
+		$softrip_package_code4 = 'HIJ-456';
+
+		/**
+		 * Test for softrip package code 1 - ABC-123.
+		 */
+
+		// Get departure posts.
+		$departure_posts = get_posts(
+			[
+				'post_type'              => DEPARTURE_POST_TYPE,
+				'posts_per_page'         => -1,
+				'no_found_rows'          => true,
+				'update_post_meta_cache' => false,
+				'update_post_term_cache' => false,
+				'ignore_sticky_posts'    => true,
+				'suppress_filters'       => false,
+				'fields'                 => 'ids',
+				'order'                  => 'ASC',
+				'meta_query'             => [
+					[
+						'key'   => 'softrip_package_code',
+						'value' => $softrip_package_code1,
+					],
+				],
+			]
+		);
+		$this->assertCount( 1, $departure_posts );
+
+		/**
+		 * Test for softrip package code 2 - PQR-345.
+		 */
+
+		// Get departure posts.
+		$departure_posts = get_posts(
+			[
+				'post_type'              => DEPARTURE_POST_TYPE,
+				'posts_per_page'         => -1,
+				'no_found_rows'          => true,
+				'update_post_meta_cache' => false,
+				'update_post_term_cache' => false,
+				'ignore_sticky_posts'    => true,
+				'suppress_filters'       => false,
+				'fields'                 => 'ids',
+				'order'                  => 'ASC',
+				'meta_query'             => [
+					[
+						'key'   => 'softrip_package_code',
+						'value' => $softrip_package_code2,
+					],
+				],
+			]
+		);
+		$this->assertCount( 0, $departure_posts );
+
+		/**
+		 * Test for softrip package code 3 - JKL-012.
+		 */
+		
+		// Get departure posts.
+		$departure_posts = get_posts(
+			[
+				'post_type'              => DEPARTURE_POST_TYPE,
+				'posts_per_page'         => -1,
+				'no_found_rows'          => true,
+				'update_post_meta_cache' => false,
+				'update_post_term_cache' => false,
+				'ignore_sticky_posts'    => true,
+				'suppress_filters'       => false,
+				'fields'                 => 'ids',
+				'order'                  => 'ASC',
+				'meta_query'             => [
+					[
+						'key'   => 'softrip_package_code',
+						'value' => $softrip_package_code3,
+					],
+				],
+			]
+		);
+		$this->assertCount( 2, $departure_posts );
+
+		/**
+		 * Test for softrip package code 4 - HIJ-456.
+		 */
+
+		// Get departure posts.
+		$departure_posts = get_posts(
+			[
+				'post_type'              => DEPARTURE_POST_TYPE,
+				'posts_per_page'         => -1,
+				'no_found_rows'          => true,
+				'update_post_meta_cache' => false,
+				'update_post_term_cache' => false,
+				'ignore_sticky_posts'    => true,
+				'suppress_filters'       => false,
+				'fields'                 => 'ids',
+				'order'                  => 'ASC',
+				'meta_query'             => [
+					[
+						'key'   => 'softrip_package_code',
+						'value' => $softrip_package_code4,
+					],
+				],
+			]
+		);
+		$this->assertCount( 4, $departure_posts );
+
 	}
 }
