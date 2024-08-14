@@ -317,6 +317,9 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 				'quark-tooltip'                               => [
 					'class' => true,
 				],
+				'quark-filter'                                => [
+					'class' => true,
+				],
 				'quark-country-selector'                      => [
 					'class' => true,
 				],
@@ -417,10 +420,12 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 				],
 				'tp-accordion-item'                           => [
 					'class'           => true,
+					'id'              => true,
 					'open-by-default' => true,
 				],
 				'tp-accordion-handle'                         => [
 					'class' => true,
+					'id'    => true,
 				],
 				'tp-accordion-content'                        => [
 					'class' => true,

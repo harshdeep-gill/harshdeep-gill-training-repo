@@ -5091,6 +5091,99 @@
 	</x-section>
 </x-component-demo>
 
+<x-component-demo :keys="[ 'dates-rates' ]">
+	<x-section>
+		<h2>Filters</h2>
+		<x-dates-rates.filters>
+			<x-dates-rates.filters-chips>
+				<x-dates-rates.filter title="Region & Season" accordion_id="accordion-region-season" />
+				<x-dates-rates.filter title="Expedition" accordion_id="accordion-expedition" />
+				<x-dates-rates.filter title="Adevnture Options" accordion_id="accordion-adevnture-options" />
+				<x-dates-rates.filter title="Departure Month" accordion_id="accordion-departure-month" />
+				<x-dates-rates.filter title="Duration" accordion_id="accordion-duration" />
+				<x-dates-rates.filter title="Ship" accordion_id="accordion-ship" />
+			</x-dates-rates.filters-chips>
+
+			<x-form.field class="dates-rates__form-field">
+				<x-form.select>
+					<x-form.option value="USD" label="$ USD" selected="yes">{{ __( '$ USD', 'qrk' ) }}</x-form.option>
+					<x-form.option value="CAD" label="$ CAD">{{ __( '$ CAD', 'qrk' ) }}</x-form.option>
+					<x-form.option value="AUD" label="$ AUD">{{ __( '$ AUD', 'qrk' ) }}</x-form.option>
+					<x-form.option value="GBP" label="£ GBP">{{ __( '£ GBP', 'qrk' ) }}</x-form.option>
+					<x-form.option value="EUR" label="€ EUR">{{ __( '€ EUR', 'qrk' ) }}</x-form.option>
+				</x-form.select>
+			</x-form.field>
+
+			<x-drawer id="dates-rates-filters" class="dates-rates__drawer">
+				<x-drawer.header>
+					<h3>Filters</h3>
+				</x-drawer.header>
+
+				<x-drawer.body>
+					<x-accordion>
+						<x-accordion.item id="accordion-region-season">
+							<x-accordion.item-handle title="Region & Season" />
+							<x-accordion.item-content>
+								<x-form.field-group :validation="[ 'checkbox-group-required' ]">
+									<x-form.checkbox name="" label="English" />
+									<x-form.checkbox name="" label="Italian" />
+									<x-form.checkbox name="" label="Arabic" />
+									<x-form.checkbox name="" label="Chinese, Mandarin" />
+									<x-form.checkbox name="" label="Japanese" />
+									<x-form.checkbox name="" label="Hindi" />
+									<x-form.checkbox name="" label="French" />
+									<x-form.checkbox name="" label="Korean" />
+									<x-form.checkbox name="" label="Portuguese" />
+									<x-form.checkbox name="" label="German" />
+									<x-form.checkbox name="" label="Russian" />
+									<x-form.checkbox name="" label="Other" />
+									<x-form.checkbox name="" label="Spanish" />
+									<x-form.checkbox name="" label="Bengali" />
+								</x-form.field-group>
+							</x-accordion.item-content>
+						</x-accordion.item>
+						<x-accordion.item id="accordion-expedition">
+							<x-accordion.item-handle title="Expedition" />
+							<x-accordion.item-content>
+								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.it further to meet your schedule, interests, and budget with one of our expert Travel Consultants.</p>
+							</x-accordion.item-content>
+						</x-accordion.item>
+						<x-accordion.item id="accordion-adevnture-options">
+							<x-accordion.item-handle title="Adventure Options (with availability)" />
+							<x-accordion.item-content>
+								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.</p>
+							</x-accordion.item-content>
+						</x-accordion.item>
+						<x-accordion.item id="accordion-departure-month">
+							<x-accordion.item-handle title="Departure Month" />
+							<x-accordion.item-content>
+								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.</p>
+							</x-accordion.item-content>
+						</x-accordion.item>
+						<x-accordion.item id="accordion-duration">
+							<x-accordion.item-handle title="Duration of Voyage (days)" />
+							<x-accordion.item-content>
+								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.</p>
+							</x-accordion.item-content>
+						</x-accordion.item>
+						<x-accordion.item id="accordion-ship">
+							<x-accordion.item-handle title="Ship" />
+							<x-accordion.item-content>
+								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.</p>
+							</x-accordion.item-content>
+						</x-accordion.item>
+					</x-accordion>
+				</x-drawer.body>
+
+				<x-drawer.footer>
+					<x-button href="#" appearance="outline" size="big">Clear all</x-button>
+					<x-button href="#" size="big">View Results (132)</x-button>
+				</x-drawer.footer>
+			</x-drawer>
+		</x-dates-rates.filters>
+	</x-section>
+</x-component-demo>
+
 <x-component-demo :keys="[ 'table' ]">
 	<x-section>
 		<x-section.heading>
