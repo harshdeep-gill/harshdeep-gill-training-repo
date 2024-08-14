@@ -344,7 +344,7 @@ function get_ship_data( int $ship_id = 0 ): array {
 }
 
 /**
- * Generate ship deck comparison data.
+ * Get cabins and decks for a ship.
  *
  * @param int $ship_id Ship ID.
  *
@@ -355,7 +355,7 @@ function get_ship_data( int $ship_id = 0 ): array {
  *     }
  * }
  */
-function generate_ship_deck_comparison_data( int $ship_id = 0 ): array {
+function get_cabins_and_decks( int $ship_id = 0 ): array {
 	// Init results.
 	$results = [];
 

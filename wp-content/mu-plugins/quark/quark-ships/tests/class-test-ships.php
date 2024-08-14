@@ -11,7 +11,7 @@ use WP_UnitTestCase;
 use WP_Post;
 
 use function Quark\Ships\get_ship_data;
-use function Quark\Ships\generate_ship_deck_comparison_data;
+use function Quark\Ships\get_cabins_and_decks;
 
 use const Quark\Ships\POST_TYPE as SHIP_POST_TYPE;
 use const Quark\ShipDecks\POST_TYPE as SHIP_DECK_POST_TYPE;
@@ -81,13 +81,13 @@ class Test_Ships extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Test generate_ship_deck_comparison_data.
+	 * Test get_cabins_and_decks.
 	 *
-	 * @covers \Quark\Ships\generate_ship_deck_comparison_data()
+	 * @covers \Quark\Ships\get_cabins_and_decks()
 	 *
 	 * @return void
 	 */
-	public function test_generate_ship_deck_comparison_data(): void {
+	public function test_get_cabins_and_decks(): void {
 		// Create Cabin Category posts.
 		$cabin_category_posts = [];
 
@@ -163,8 +163,8 @@ class Test_Ships extends WP_UnitTestCase {
 		// Check if post is created.
 		$this->assertTrue( $ship_post instanceof WP_Post );
 
-		// Get generate_ship_deck_comparison_data.
-		$comparison_data = generate_ship_deck_comparison_data( $ship_post->ID );
+		// Get get_cabins_and_decks.
+		$comparison_data = get_cabins_and_decks( $ship_post->ID );
 
 		// Assert comparison data.
 		$this->assertEqualsCanonicalizing(
