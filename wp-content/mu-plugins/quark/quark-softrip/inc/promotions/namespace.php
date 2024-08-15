@@ -39,8 +39,8 @@ function get_table_sql(): string {
 	$sql = "CREATE TABLE $table_name (
 			id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
 			code VARCHAR(255) NOT NULL UNIQUE,
-			start_date DATETIME NOT NULL,
-			end_date DATETIME NOT NULL,
+			start_date VARCHAR(20) NOT NULL,
+			end_date VARCHAR(20) NOT NULL,
 			description VARCHAR(255) NOT NULL,
 			discount_type VARCHAR(255) NOT NULL,
 			discount_value VARCHAR(255) NOT NULL,
@@ -122,7 +122,8 @@ function update_promotions( array $raw_promotions_data = [] ): bool {
 		}
 
 		// Bust the cache.
-		wp_cache_delete( CACHE_KEY_PREFIX . '_' . $formatted_data['code'], CACHE_GROUP );
+		wp_cache_delete( CACHE_KEY_PREFIX . '_promotion_code_' . $formatted_data['code'], CACHE_GROUP );
+		wp_cache_delete( CACHE_KEY_PREFIX . '_promotion_id_' . $updated_id, CACHE_GROUP );
 	}
 
 	// Return success.
@@ -197,7 +198,18 @@ function format_data( array $raw_promotion_data = [] ): array {
  * @param string $code   The promotion code.
  * @param bool   $force Whether to bypass the cache.
  *
- * @return mixed[][]
+ * @return array{}|array<int,
+ *   array{
+ *     id: int,
+ *     code: string,
+ *     start_date: string,
+ *     end_date: string,
+ *     description: string,
+ *     discount_type: string,
+ *     discount_value: string,
+ *     is_pif: int,
+ *   }
+ * >
  */
 function get_promotions_by_code( string $code = '', bool $force = false ): array {
 	// Bail out if no code.
@@ -206,7 +218,7 @@ function get_promotions_by_code( string $code = '', bool $force = false ): array
 	}
 
 	// Get the cache key.
-	$cache_key = CACHE_KEY_PREFIX . "_$code";
+	$cache_key = CACHE_KEY_PREFIX . "_promotion_code_$code";
 
 	// If not direct, check the cache.
 	if ( empty( $force ) ) {
@@ -320,7 +332,7 @@ function format_row_data_from_db( array $row_data = [] ): array {
  *
  * @param array<int, string[]> $rows_data Rows data from database.
  *
- * @return array{}|array{
+ * @return array{}|array<int,
  *   array{
  *     id: int,
  *     code: string,
@@ -331,7 +343,7 @@ function format_row_data_from_db( array $row_data = [] ): array {
  *     discount_value: string,
  *     is_pif: int,
  *   }
- * }
+ * >
  */
 function format_rows_data_from_db( array $rows_data = [] ): array {
 	// Bail out if no data.
