@@ -40,16 +40,21 @@
 			@endif
 		</button>
 		<template>
-			@if ( ! empty( $path ) && str_contains( $path, 'youtube.com' ) )
-				<iframe
-					data-path="{{ $path }}"
-					src="{{ $path }}"
-					title="{{ $title }}"
-					frameborder="0"
-					allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-					referrerpolicy="strict-origin-when-cross-origin"
-					allowfullscreen
-				></iframe>
+			@if ( ! empty( $path ) )
+				@if ( str_contains( $path, 'youtube.com' ) )
+					<iframe
+						data-path="{{ $path }}"
+						src="{{ $path }}"
+						title="{{ $title }}"
+						frameborder="0"
+						allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+						referrerpolicy="strict-origin-when-cross-origin"
+						allowfullscreen
+					></iframe>
+				@elseif ( str_contains( $path, 'wistia.com' ) )
+					<x-wistia-embed :url="$path" />
+				@endif
+
 			@elseif ( ! empty( $image_id ) )
 				<x-image
 					:image_id="$image_id"
