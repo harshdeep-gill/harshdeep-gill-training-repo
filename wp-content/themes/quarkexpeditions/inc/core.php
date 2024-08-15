@@ -343,6 +343,10 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 				'quark-featured-media-accordions'             => [
 					'class' => true,
 				],
+				'quark-wistia-embed'                          => [
+					'class'    => true,
+					'video-id' => true,
+				],
 				'tp-form'                                     => [
 					'class'          => true,
 					'prevent-submit' => true,

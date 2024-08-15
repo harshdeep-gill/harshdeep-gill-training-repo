@@ -220,9 +220,9 @@ class Itinerary {
 			$data['meta_input']['boilerplate'] = strval( $item['boilerplate'] );
 		}
 
-		// Set Softrip Package ID.
+		// Set Softrip Package Code.
 		if ( ! empty( $item['softrip_package_id'] ) ) {
-			$data['meta_input']['softrip_package_id'] = strval( qrk_sanitize_attribute( $item['softrip_package_id'] ) );
+			$data['meta_input']['softrip_package_code'] = strval( qrk_sanitize_attribute( $item['softrip_package_id'] ) );
 		}
 
 		// Set Duration in Days.

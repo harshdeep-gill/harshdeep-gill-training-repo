@@ -1,0 +1,26 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "quark/media-carousel",
+	"description": "Add a media carousel",
+	"title": "Media Carousel",
+	"keywords": [
+		"media",
+		"carousel"
+	],
+	"category": "media",
+	"textdomain": "qrk",
+	"attributes": {
+		"media": {
+			"type": "array",
+			"default": []
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

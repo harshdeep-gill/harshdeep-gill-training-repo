@@ -157,8 +157,8 @@ class Test_Departures extends WP_UnitTestCase {
 				'post_title'  => 'Test Post',
 				'post_status' => 'publish',
 				'meta_input'  => [
-					'region'    => 'value_1',
-					'itinerary' => $post_itinerary->ID,
+					'softrip_market_code' => 'value_1',
+					'itinerary'           => $post_itinerary->ID,
 				],
 			]
 		);

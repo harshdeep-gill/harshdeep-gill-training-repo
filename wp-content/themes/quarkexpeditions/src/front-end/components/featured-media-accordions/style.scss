@@ -29,7 +29,7 @@
 		}
 
 		img {
-			aspect-ratio: 5 / 3;
+			aspect-ratio: 16 / 9;
 			width: 100%;
 
 			@media screen and ( min-width: grid-size(lg) ) {
@@ -59,7 +59,9 @@
 
 	.two-columns {
 
-		@media screen and (max-width: grid-size(lg)) {
+		grid-template-columns: 600px 1fr;
+
+		@media screen and (max-width: calc(grid-size(lg) - 1px)) {
 			grid-template-columns: 1fr;
 		}
 	}
