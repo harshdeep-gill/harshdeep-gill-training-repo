@@ -639,7 +639,6 @@ function parse_block_attributes( WP_Post $post = null ): array {
 			if ( isset( $block['innerBlocks'] ) && is_array( $block['innerBlocks'] ) ) {
 				// Loop through inner blocks to find the quark/collage-media-item block.
 				foreach ( $block['innerBlocks'] as $inner_block ) {
-
 					// Initialize media item attributes.
 					$media_item_attrs = [];
 
