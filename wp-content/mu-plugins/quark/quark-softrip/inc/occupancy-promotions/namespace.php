@@ -416,9 +416,14 @@ function delete_occupancy_promotions_by_occupancy_id( int $occupancy_id = 0 ): b
 	// Get occupancy promotions by occupancy ID.
 	$occupancy_promotions = get_occupancy_promotions_by_occupancy( $occupancy_id, true );
 
-	// Bail out if empty.
-	if ( empty( $occupancy_promotions ) || ! is_array( $occupancy_promotions ) ) {
+	// Bail out if not array.
+	if ( ! is_array( $occupancy_promotions ) ) {
 		return false;
+	}
+
+	// Bail out if empty - nothing to delete.
+	if ( empty( $occupancy_promotions ) ) {
+		return true;
 	}
 
 	// Initialize promotion IDs.
