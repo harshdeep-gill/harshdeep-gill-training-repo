@@ -649,8 +649,16 @@ function get_lowest_price( int $post_id = 0, string $currency = 'USD' ): array {
 		/**
 		 * If the promotion price is less than the current lowest price, update the discounted as well as the original price.
 		 * For example, if the lowest promotion price is $100 and the corresponding original price is $200, the discounted price will be $100 and the original price will be $200.
+		 * Or if the promotion price is equal to the current lowest price, but the original price is less than the current original price, update the original price.
 		 */
-		if ( empty( $lowest_price['discounted'] ) || $promotion_lowest_price < $lowest_price['discounted'] ) {
+		if (
+			empty( $lowest_price['discounted'] ) ||
+			( ! empty( $promotion_lowest_price ) &&
+				( $promotion_lowest_price < $lowest_price['discounted'] ||
+				( $promotion_lowest_price === $lowest_price['discounted'] && absint( $occupancy[ $price_per_person_key ] < $lowest_price['original'] ) )
+				)
+			)
+		) {
 			$lowest_price['discounted'] = $promotion_lowest_price;
 			$lowest_price['original']   = absint( $occupancy[ $price_per_person_key ] );
 		}
@@ -677,7 +685,12 @@ function clear_occupancies_by_departure( int $departure_post_id = 0 ): bool {
 	}
 
 	// Get all occupancies by departure.
-	$occupancies = get_occupancies_by_departure( $departure_post_id );
+	$occupancies = get_occupancies_by_departure( $departure_post_id, true );
+
+	// Bail if empty.
+	if ( empty( $occupancies ) || ! is_array( $occupancies ) ) {
+		return false;
+	}
 
 	// Flag for if all occupancies are deleted.
 	$all_deleted = true;
@@ -738,7 +751,7 @@ function delete_occupancy_by_id( int $occupancy_id = 0 ): bool {
 	}
 
 	// Get softrip id.
-	$occupancy_data = get_occupancy_data_by_id( $occupancy_id );
+	$occupancy_data = get_occupancy_data_by_id( $occupancy_id, true );
 
 	// Bail if empty.
 	if ( empty( $occupancy_data ) || ! is_array( $occupancy_data ) ) {
@@ -817,19 +830,13 @@ function format_row_data_from_db( array $occupancy_data = [] ): array {
 		'mask',
 		'departure_post_id',
 		'cabin_category_post_id',
-		'spaces_available',
 		'availability_description',
 		'availability_status',
-		'price_per_person_usd',
-		'price_per_person_cad',
-		'price_per_person_aud',
-		'price_per_person_gbp',
-		'price_per_person_eur',
 	];
 
 	// Check if required columns are present.
 	foreach ( $required_columns as $column ) {
-		if ( ! array_key_exists( $column, $occupancy_data ) ) {
+		if ( empty( $occupancy_data[ $column ] ) ) {
 			return [];
 		}
 	}
@@ -842,14 +849,14 @@ function format_row_data_from_db( array $occupancy_data = [] ): array {
 		'mask'                     => sanitize_text_field( $occupancy_data['mask'] ),
 		'departure_post_id'        => absint( $occupancy_data['departure_post_id'] ),
 		'cabin_category_post_id'   => absint( $occupancy_data['cabin_category_post_id'] ),
-		'spaces_available'         => absint( $occupancy_data['spaces_available'] ),
+		'spaces_available'         => absint( $occupancy_data['spaces_available'] ?? 0 ),
 		'availability_description' => sanitize_text_field( $occupancy_data['availability_description'] ),
 		'availability_status'      => sanitize_text_field( $occupancy_data['availability_status'] ),
-		'price_per_person_usd'     => absint( $occupancy_data['price_per_person_usd'] ),
-		'price_per_person_cad'     => absint( $occupancy_data['price_per_person_cad'] ),
-		'price_per_person_aud'     => absint( $occupancy_data['price_per_person_aud'] ),
-		'price_per_person_gbp'     => absint( $occupancy_data['price_per_person_gbp'] ),
-		'price_per_person_eur'     => absint( $occupancy_data['price_per_person_eur'] ),
+		'price_per_person_usd'     => absint( $occupancy_data['price_per_person_usd'] ?? 0 ),
+		'price_per_person_cad'     => absint( $occupancy_data['price_per_person_cad'] ?? 0 ),
+		'price_per_person_aud'     => absint( $occupancy_data['price_per_person_aud'] ?? 0 ),
+		'price_per_person_gbp'     => absint( $occupancy_data['price_per_person_gbp'] ?? 0 ),
+		'price_per_person_eur'     => absint( $occupancy_data['price_per_person_eur'] ?? 0 ),
 	];
 
 	// Return the formatted data.
@@ -1017,8 +1024,16 @@ function get_lowest_price_by_cabin_category_and_departure( int $cabin_category_p
 		/**
 		 * If the promotion price is less than the current lowest price, update the discounted as well as the original price.
 		 * For example, if the lowest promotion price is $100 and the corresponding original price is $200, the discounted price will be $100 and the original price will be $200.
+		 * Or if the promotion price is equal to the current lowest price, but the original price is less than the current original price, update the original price.
 		 */
-		if ( empty( $lowest_price['discounted'] ) || ( ! empty( $promotion_lowest_price ) && $promotion_lowest_price < $lowest_price['discounted'] ) ) {
+		if (
+			empty( $lowest_price['discounted'] ) ||
+			( ! empty( $promotion_lowest_price ) &&
+				( $promotion_lowest_price < $lowest_price['discounted'] ||
+				( $promotion_lowest_price === $lowest_price['discounted'] && absint( $occupancy[ $price_per_person_key ] < $lowest_price['original'] ) )
+				)
+			)
+		) {
 			$lowest_price['discounted'] = $promotion_lowest_price;
 			$lowest_price['original']   = absint( $occupancy[ $price_per_person_key ] );
 		}
