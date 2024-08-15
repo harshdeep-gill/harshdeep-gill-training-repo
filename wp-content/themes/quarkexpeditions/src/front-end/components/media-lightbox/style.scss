@@ -95,14 +95,17 @@
 		}
 
 		img,
-		iframe {
+		iframe,
+		.wistia_embed {
 			border-radius: var(--border-radius-large);
 			width: 100%;
 			display: block;
 			border: none;
+			overflow: hidden;
 		}
 
-		iframe {
+		iframe,
+		.wistia_embed {
 			aspect-ratio: 16 / 9;
 			height: 100%;
 			max-height: 80vh;
@@ -253,4 +256,8 @@ tp-lightbox.media-lightbox[loading] {
 		height: 25px;
 		animation: lightbox-loading 0.8s infinite var(--transition-easing);
 	}
+}
+
+quark-wistia-embed {
+	display: block;
 }
