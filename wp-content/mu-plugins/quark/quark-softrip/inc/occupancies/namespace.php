@@ -77,7 +77,7 @@ function get_table_sql(): string {
  */
 function update_occupancies( array $raw_cabins_data = [], int $departure_post_id = 0 ): bool {
 	// Bail if empty.
-	if ( empty( $raw_cabins_data ) || ! is_array( $raw_cabins_data ) || empty( $departure_post_id ) ) {
+	if ( empty( $departure_post_id ) ) {
 		return false;
 	}
 
@@ -86,6 +86,26 @@ function update_occupancies( array $raw_cabins_data = [], int $departure_post_id
 
 	// Get the table name.
 	$table_name = get_table_name();
+
+	// Get existing occupancies by departure and cabin category.
+	$existing_occupancies = get_occupancies_by_departure( $departure_post_id, true );
+
+	// Initialize occupancies by Softrip ID.
+	$existing_occupancies_by_softrip_id = [];
+
+	// Loop through the existing occupancies.
+	foreach ( $existing_occupancies as $existing_occupancy ) {
+		// Continue if not array or empty.
+		if ( ! is_array( $existing_occupancy ) || empty( $existing_occupancy['softrip_id'] ) || empty( $existing_occupancy['id'] ) ) {
+			continue;
+		}
+
+		// Add to the existing occupancies by Softrip ID.
+		$existing_occupancies_by_softrip_id[ strval( $existing_occupancy['softrip_id'] ) ] = absint( $existing_occupancy['id'] );
+	}
+
+	// Initialize updated softrip ids.
+	$updated_softrip_ids = [];
 
 	// Loop through the raw cabin data.
 	foreach ( $raw_cabins_data as $raw_cabin_data ) {
@@ -101,26 +121,6 @@ function update_occupancies( array $raw_cabins_data = [], int $departure_post_id
 		if ( empty( $cabin_category_post_id ) ) {
 			continue;
 		}
-
-		// Get existing occupancies by departure and cabin category.
-		$existing_occupancies = get_occupancies_by_cabin_category_and_departure( $cabin_category_post_id, $departure_post_id );
-
-		// Initialize occupancies by Softrip ID.
-		$existing_occupancies_by_softrip_id = [];
-
-		// Loop through the existing occupancies.
-		foreach ( $existing_occupancies as $existing_occupancy ) {
-			// Continue if not array or empty.
-			if ( ! is_array( $existing_occupancy ) || empty( $existing_occupancy['softrip_id'] ) || empty( $existing_occupancy['id'] ) ) {
-				continue;
-			}
-
-			// Add to the existing occupancies by Softrip ID.
-			$existing_occupancies_by_softrip_id[ strval( $existing_occupancy['softrip_id'] ) ] = absint( $existing_occupancy['id'] );
-		}
-
-		// Initialize updated softrip ids.
-		$updated_softrip_ids = [];
 
 		// Iterate through the cabin occupancies.
 		foreach ( $raw_cabin_data['occupancies'] as $raw_cabin_occupancy_data ) {
@@ -187,27 +187,32 @@ function update_occupancies( array $raw_cabins_data = [], int $departure_post_id
 			wp_cache_delete( CACHE_KEY_PREFIX . '_occupancy_id_' . $updated_id, CACHE_GROUP );
 		}
 
-		// Get the difference between existing and updated occupancies by Softrip ID - that's non-updated occupancies which need to be deleted as no more present in the raw data.
-		$non_updated_softrip_ids = array_diff( array_keys( $existing_occupancies_by_softrip_id ), $updated_softrip_ids );
-
-		// Loop through the non-updated Softrip IDs.
-		foreach ( $non_updated_softrip_ids as $non_updated_softrip_id ) {
-			// Get the occupancy ID.
-			$occupancy_id = absint( $existing_occupancies_by_softrip_id[ $non_updated_softrip_id ] );
-
-			// Delete the occupancy promotions.
-			delete_occupancy_promotions_by_occupancy_id( $occupancy_id );
-
-			// Delete the occupancy.
-			delete_occupancy_by_id( $occupancy_id );
-
-			// Bust caches.
-			wp_cache_delete( CACHE_KEY_PREFIX . '_softrip_id_' . $non_updated_softrip_id, CACHE_GROUP );
-			wp_cache_delete( CACHE_KEY_PREFIX . '_occupancy_id_' . $occupancy_id, CACHE_GROUP );
-		}
-
 		// Bust caches at cabin category level.
 		wp_cache_delete( CACHE_KEY_PREFIX . '_cabin_category_post_id_' . $cabin_category_post_id . '_departure_post_id_' . $departure_post_id, CACHE_GROUP );
+	}
+
+	/**
+	 * Get the difference between existing and updated occupancies by Softrip ID
+	 * that's non-updated occupancies which need to be deleted as no more present in the raw data.
+	 */
+
+	// Get the difference between existing and updated occupancies by Softrip ID - that's non-updated occupancies which need to be deleted as no more present in the raw data.
+	$non_updated_softrip_ids = array_diff( array_keys( $existing_occupancies_by_softrip_id ), $updated_softrip_ids );
+
+	// Loop through the non-updated Softrip IDs.
+	foreach ( $non_updated_softrip_ids as $non_updated_softrip_id ) {
+		// Get the occupancy ID.
+		$occupancy_id = absint( $existing_occupancies_by_softrip_id[ $non_updated_softrip_id ] );
+
+		// Delete the occupancy promotions.
+		delete_occupancy_promotions_by_occupancy_id( $occupancy_id );
+
+		// Delete the occupancy.
+		delete_occupancy_by_id( $occupancy_id );
+
+		// Bust caches.
+		wp_cache_delete( CACHE_KEY_PREFIX . '_softrip_id_' . $non_updated_softrip_id, CACHE_GROUP );
+		wp_cache_delete( CACHE_KEY_PREFIX . '_occupancy_id_' . $occupancy_id, CACHE_GROUP );
 	}
 
 	// Bust caches at departure level.
@@ -350,7 +355,7 @@ function get_cabin_category_post_by_cabin_code( string $cabin_code = '' ): int {
  * @param string $softrip_id The Softrip ID.
  * @param bool   $force     Bypass cache.
  *
- * @return array{}|array{
+ * @return array{}|array<int,
  *   array{
  *     id: int,
  *     softrip_id: string,
@@ -367,7 +372,7 @@ function get_cabin_category_post_by_cabin_code( string $cabin_code = '' ): int {
  *     price_per_person_gbp: int,
  *     price_per_person_eur: int,
  *   }
- * }
+ * >
  */
 function get_occupancy_data_by_softrip_id( string $softrip_id = '', bool $force = false ): array {
 	// Bail if empty.
@@ -435,7 +440,7 @@ function get_occupancy_data_by_softrip_id( string $softrip_id = '', bool $force 
  * @param int  $departure_post_id The departure post ID.
  * @param bool $force Direct query.
  *
- * @return array{}|array{
+ * @return array{}|array<int,
  *   array{
  *     id: int,
  *     softrip_id: string,
@@ -452,7 +457,7 @@ function get_occupancy_data_by_softrip_id( string $softrip_id = '', bool $force 
  *     price_per_person_gbp: int,
  *     price_per_person_eur: int,
  *   }
- * }
+ * >
  */
 function get_occupancies_by_departure( int $departure_post_id = 0, bool $force = false ): array {
 	// Bail if empty.
@@ -856,7 +861,7 @@ function format_row_data_from_db( array $occupancy_data = [] ): array {
  *
  * @param array<int, string[]> $rows_data The rows data.
  *
- * @return array{}|array{
+ * @return array{}|array<int,
  *   array{
  *     id: int,
  *     softrip_id: string,
@@ -873,7 +878,7 @@ function format_row_data_from_db( array $occupancy_data = [] ): array {
  *     price_per_person_gbp: int,
  *     price_per_person_eur: int,
  *   }
- * }
+ * >
  */
 function format_rows_data_from_db( array $rows_data = [] ): array {
 	// Bail if empty.
@@ -1033,7 +1038,7 @@ function get_lowest_price_by_cabin_category_and_departure( int $cabin_category_p
  * @param int  $departure_post_id      The departure post ID.
  * @param bool $force                  Bypass cache.
  *
- * @return array{}|array{
+ * @return array{}|array<int,
  *  array{
  *    id: int,
  *    softrip_id: string,
@@ -1050,7 +1055,7 @@ function get_lowest_price_by_cabin_category_and_departure( int $cabin_category_p
  *    price_per_person_gbp: int,
  *    price_per_person_eur: int,
  *  }
- * }
+ * >
  */
 function get_occupancies_by_cabin_category_and_departure( int $cabin_category_post_id = 0, int $departure_post_id = 0, bool $force = false ): array {
 	// Bail if empty.
