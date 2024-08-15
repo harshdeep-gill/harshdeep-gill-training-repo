@@ -21,19 +21,28 @@
 	}
 
 	tp-multi-select-field {
-		max-height: 48px;
+		max-height: 46px;
 		display: block;
 	}
 
 	&__filters-chips {
-		display: flex;
-		flex-flow: row wrap;
-		gap: var(--spacing-3);
+		display: none;
+
+		@media screen and (min-width: grid-size(md)) {
+			display: flex;
+			flex-flow: row wrap;
+			gap: var(--spacing-3);
+		}
 	}
 
-	&__form-field {
-		width: auto;
-		min-width: 130px;
+	&__currency-field {
+		display: none;
+
+		@media screen and (min-width: grid-size(md)) {
+			display: block;
+			width: auto;
+			min-width: 130px;
+		}
 	}
 
 	&__drawer {
@@ -43,8 +52,11 @@
 		}
 
 		.drawer__content {
-			max-width: 624px;
 			padding: var(--spacing-6);
+
+			@media screen and (min-width: grid-size(md)) {
+				max-width: 624px;
+			}
 		}
 
 		.drawer__drawer-close {
@@ -59,6 +71,14 @@
 			gap: var(--spacing-4);
 			margin-top: -1px;
 			padding-top: var(--spacing-5);
+
+			.btn:last-child {
+				flex: 1;
+
+				@media screen and (min-width: grid-size(md)) {
+					flex: initial;
+				}
+			}
 		}
 	}
 
@@ -73,6 +93,53 @@
 		&:hover {
 			background-color: var(--color-gray-50);
 			border-color: var(--color-gray-50);
+		}
+	}
+
+	&__sticky-filters {
+		background: var(--color-gray-80);
+		border-radius: 50px;
+		position: fixed;
+		bottom: 32px;
+		left: 32px;
+		display: flex;
+		align-items: center;
+		width: calc(100% - 64px);
+		z-index: 99;
+
+		&::before {
+			content: "";
+			height: 30px;
+			width: 1px;
+			background-color: var(--color-gray-60);
+			margin: 0 auto;
+			position: absolute;
+			left: 0;
+			right: 0;
+		}
+
+		@media screen and (min-width: grid-size(md)) {
+			display: none;
+		}
+
+		quark-filter {
+			flex: 1;
+			min-width: 0;
+		}
+
+		.btn {
+			background-color: transparent;
+			color: var(--color-white);
+			border: 0;
+			text-align: center;
+			width: 100%;
+			min-height: 48px;
+			font-size: 14px;
+			font-weight: var(--font-weight-bold);
+
+			&:hover {
+				background-color: transparent;
+			}
 		}
 	}
 }

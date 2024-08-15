@@ -16,8 +16,7 @@ export default class DatesFilters extends HTMLElement {
 	 * Properties.
 	 */
 	private filterButton: HTMLButtonElement | null;
-	private drawerElement: HTMLElement | null;
-	private drawerAccordionItems: NodeListOf<Element> | null;
+	private drawerAccordionItems: NodeListOf<TPAccordionItemElement> | null;
 
 	/**
 	 * Constructor.
@@ -28,19 +27,19 @@ export default class DatesFilters extends HTMLElement {
 
 		// Elements.
 		this.filterButton = this.querySelector( '.dates-rates__filter-button' );
-		this.drawerElement = document.querySelector( '.dates-rates__drawer' );
 		this.drawerAccordionItems = document.querySelectorAll( '.dates-rates__drawer .accordion__item' );
 
 		// Events.
 		this.filterButton?.addEventListener( 'click', this.openDrawer.bind( this ) );
-		this.drawerElement?.addEventListener( 'open', this.openAccordionItemByID.bind( this ) );
-		this.drawerElement?.addEventListener( 'close', this.closeAllAccordionItems.bind( this ) );
 	}
 
 	/**
 	 * Open drawer.
 	 */
 	openDrawer() {
+		// Close all accordion items.
+		this.closeAllAccordionItems();
+
 		// Set the ID.
 		const filterButtonID = this.filterButton?.getAttribute( 'accordion_id' );
 
@@ -53,33 +52,11 @@ export default class DatesFilters extends HTMLElement {
 			return;
 		}
 
-		// Open the accordion item that is in hash.
-		accordionItem.open();
-	}
-
-	/**
-	 * Open accordion by hash in URL.
-	 *
-	 * @param {any} itemID - The ID of the accordion item to be opened.
-	 */
-	openAccordionItemByID( itemID: any ): void {
-		// Check if hash is not available, return.
-		if ( ! itemID ) {
-			// Hash not found, bail early.
-			return;
-		}
-
-		// Get the accordion item.
-		const accordionItem: TPAccordionItemElement | null = this.querySelector( `tp-accordion-item#${ itemID }` );
-
-		// Check if accordion item is not available, return.
-		if ( ! accordionItem ) {
-			// Accordion item not found, bail early.
-			return;
-		}
-
-		// Open the accordion item that is in hash.
-		accordionItem.open();
+		// Open the accordion item.
+		setTimeout( () => {
+			// Set attribute open to yes.
+			accordionItem.setAttribute( 'open', 'yes' );
+		}, 600 );
 	}
 
 	/**
@@ -93,10 +70,10 @@ export default class DatesFilters extends HTMLElement {
 		}
 
 		// For each item.
-		this.drawerAccordionItems.forEach( ( item ) => {
-			// Remove attribute open from all items.
-			item.removeAttribute( 'open' );
-		} );
+		this.drawerAccordionItems.forEach( ( ( item: TPAccordionItemElement ) => {
+			// Close items.
+			item.close();
+		} ) );
 	}
 }
 
