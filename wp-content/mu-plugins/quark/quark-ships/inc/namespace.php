@@ -639,11 +639,41 @@ function parse_block_attributes( WP_Post $post = null ): array {
 			if ( isset( $block['innerBlocks'] ) && is_array( $block['innerBlocks'] ) ) {
 				// Loop through inner blocks to find the quark/collage-media-item block.
 				foreach ( $block['innerBlocks'] as $inner_block ) {
+
+					// Initialize media item attributes.
+					$media_item_attrs = [];
+
 					// Check if the block is quark/collage-media-item.
 					if ( 'quark/collage-media-item' === $inner_block['blockName'] ) {
+						// Check attributes are available.
+						if ( empty( $inner_block['attrs'] ) && ! is_array( $inner_block['attrs'] ) ) {
+							continue;
+						}
+
 						// Retrieve attributes.
-						$collage_attrs[] = $inner_block['attrs'];
+						$media_item_attrs['media_type'] = $inner_block['attrs']['mediaType'] ?? 'image';
+						$media_item_attrs['size']       = $inner_block['attrs']['size'] ?? 'small';
+						$media_item_attrs['caption']    = $inner_block['attrs']['caption'] ?? '';
+						$media_item_attrs['video_url']  = $inner_block['attrs']['videoUrl'] ?? '';
+						$image                          = $inner_block['attrs']['image'] ?? [];
+
+						// Check if image is available.
+						if ( ! empty( $image ) && is_array( $image ) ) {
+							$media_item_attrs['image'] = [
+								'id'      => $image['id'] ?? 0,
+								'size'    => $image['size'] ?? '',
+								'src'     => $image['src'] ?? '',
+								'width'   => $image['width'] ?? '',
+								'height'  => $image['height'] ?? '',
+								'alt'     => $image['alt'] ?? '',
+								'title'   => $image['title'] ?? '',
+								'caption' => $image['caption'] ?? '',
+							];
+						}
 					}
+
+					// Add media item attributes to collage attributes.
+					$collage_attrs[] = $media_item_attrs;
 				}
 			}
 		}

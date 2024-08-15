@@ -373,7 +373,11 @@ class Test_Ships extends WP_UnitTestCase {
 				'data'            => [
 					'collage'         => [
 						[
-							'image' => [
+							'media_type' => 'image',
+							'size'       => 'small',
+							'caption'    => '',
+							'video_url'  => '',
+							'image'      => [
 								'id'      => 1324,
 								'src'     => '',
 								'width'   => 1234,
@@ -385,8 +389,11 @@ class Test_Ships extends WP_UnitTestCase {
 							],
 						],
 						[
-							'size'  => 'large',
-							'image' => [
+							'media_type' => 'image',
+							'size'       => 'large',
+							'caption'    => '',
+							'video_url'  => '',
+							'image'      => [
 								'id'      => 5421,
 								'src'     => '',
 								'width'   => 200,
@@ -398,8 +405,10 @@ class Test_Ships extends WP_UnitTestCase {
 							],
 						],
 						[
-							'mediaType' => 'video',
-							'videoUrl'  => 'https://abc.com/video.mp4',
+							'media_type' => 'video',
+							'video_url'  => 'https://abc.com/video.mp4',
+							'size'       => 'small',
+							'caption'    => '',
 						],
 					],
 					'vessel_features' => [
