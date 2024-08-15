@@ -9,7 +9,6 @@ namespace Quark\Expeditions\Tests;
 
 use WP_Post;
 use WP_Term;
-
 use Quark\Tests\Softrip\Softrip_TestCase;
 
 use function Quark\Expeditions\bust_post_cache;
@@ -20,6 +19,10 @@ use function Quark\Expeditions\get_minimum_duration;
 use function Quark\Expeditions\get_starting_from_locations;
 use function Quark\Expeditions\get_details_data;
 use function Quark\Expeditions\get_expedition_ship_ids;
+use function Quark\Expeditions\get_formatted_date_range;
+use function Quark\Expeditions\get_total_departures;
+use function Quark\Expeditions\get_ships;
+use function Quark\Softrip\Departures\get_departures_by_itinerary;
 use function Quark\Softrip\do_sync;
 
 use const Quark\Itineraries\DEPARTURE_LOCATION_TAXONOMY;
@@ -223,6 +226,7 @@ class Test_Expeditions extends Softrip_TestCase {
 	 * @covers \Quark\Expeditions\get_itineraries()
 	 * @covers \Quark\Expeditions\get_minimum_duration()
 	 * @covers \Quark\Expeditions\get_starting_from_locations()
+	 * @covers \Quark\Expeditions\get_starting_from_price()
 	 * @covers \Quark\Expeditions\get_details_data()
 	 *
 	 * @return void
@@ -562,5 +566,293 @@ class Test_Expeditions extends Softrip_TestCase {
 			[ $ship_post->ID ],
 			get_expedition_ship_ids( $expedition_post->ID )
 		);
+	}
+
+	/**
+	 * Test Getting formatted date range.
+	 *
+	 * @covers \Quark\Expeditions\get_formatted_date_range()
+	 * @covers \Quark\Expeditions\get_starting_from_date()
+	 * @covers \Quark\Expeditions\get_ending_to_date()
+	 *
+	 * @return void
+	 */
+	public function test_get_formatted_date_range(): void {
+		// Setup mock response.
+		add_filter( 'pre_http_request', 'Quark\Tests\Softrip\mock_softrip_http_request', 10, 3 );
+
+		// Sync departure posts.
+		do_sync();
+
+		// Get Itinerary posts.
+		$itinerary_query_args = [
+			'post_type'              => ITINERARY_POST_TYPE,
+			'no_found_rows'          => true,
+			'ignore_sticky_posts'    => true,
+			'update_post_term_cache' => false,
+			'fields'                 => 'ids',
+			'update_post_meta_cache' => false,
+			'meta_query'             => [
+				[
+					'key'   => 'softrip_package_code',
+					'value' => 'ABC-123',
+				],
+			],
+		];
+
+		// Get Itinerary posts.
+		$itinerary_posts = get_posts( $itinerary_query_args );
+
+		// Assert fetched posts are not empty.
+		$this->assertEquals( 1, count( $itinerary_posts ) );
+
+		// Create an Expedition post.
+		$expedition_post = $this->factory()->post->create_and_get(
+			[
+				'post_type'   => POST_TYPE,
+				'post_title'  => 'Test Expedition Post',
+				'post_status' => 'publish',
+				'meta_input'  => [
+					'related_itineraries' => $itinerary_posts,
+				],
+			]
+		);
+
+		// Assert created posts are instance of WP_Post.
+		$this->assertTrue( $expedition_post instanceof WP_Post );
+
+		// Get formatted date range.
+		$date_range = get_formatted_date_range( $expedition_post->ID );
+
+		// Assert date range is correct.
+		$this->assertEquals( 'between February 2026 to March 2026', $date_range );
+
+		// Get Departure posts.
+		$departure_post_ids = get_departures_by_itinerary( absint( $itinerary_posts[0] ) );
+
+		// Assert fetched post count is 1.
+		$this->assertEquals( 1, count( $departure_post_ids ) );
+
+		// Modify departure dates.
+		update_post_meta( $departure_post_ids[0], 'start_date', '2026-02-01' );
+		update_post_meta( $departure_post_ids[0], 'end_date', '2026-02-11' );
+
+		// Get formatted date range.
+		$date_range = get_formatted_date_range( $expedition_post->ID );
+
+		// Assert date range is correct.
+		$this->assertEquals( 'in February 2026', $date_range );
+
+		// Update expedition meta.
+		$itinerary_query_args['meta_query'] = [
+			[
+				'key'     => 'softrip_package_code',
+				'value'   => [
+					'ABC-123',
+					'PQR-345',
+					'JKL-012',
+				],
+				'compare' => 'IN',
+			],
+		];
+
+		// Get Itinerary posts.
+		$itinerary_posts = get_posts( $itinerary_query_args );
+
+		// Assert fetched posts are not empty.
+		$this->assertEquals( 3, count( $itinerary_posts ) );
+
+		// Update expedition meta.
+		update_post_meta( $expedition_post->ID, 'related_itineraries', $itinerary_posts );
+
+		// bust post cache.
+		bust_post_cache( $expedition_post->ID );
+
+		// Get formatted date range.
+		$date_range = get_formatted_date_range( $expedition_post->ID );
+
+		// Assert date range is correct.
+		$this->assertEquals( 'between January 2025 to February 2026', $date_range );
+	}
+
+	/**
+	 * Test get_total_departures.
+	 *
+	 * @covers \Quark\Expeditions\get_total_departures()
+	 *
+	 * @return void
+	 */
+	public function test_get_total_departures(): void {
+		// Create 3 Itineraries.
+		$itinerary_post_ids = $this->factory()->post->create_many(
+			3,
+			[
+				'post_type'   => ITINERARY_POST_TYPE,
+				'post_status' => 'publish',
+			]
+		);
+
+		// Create Expedition post.
+		$expedition_post = $this->factory()->post->create_and_get(
+			[
+				'post_type'   => POST_TYPE,
+				'post_title'  => 'Test Expedition Post',
+				'post_status' => 'publish',
+				'meta_input'  => [
+					'related_itineraries' => $itinerary_post_ids,
+				],
+			]
+		);
+
+		// Assert created posts are instance of WP_Post.
+		$this->assertTrue( $expedition_post instanceof WP_Post );
+
+		// Set expected total departures.
+		$expected_total = 0;
+
+		// Create 18 Departure posts.
+		// Assign 6 Departure posts to each Itinerary.
+		foreach ( $itinerary_post_ids as $itinerary_post_id ) {
+			$this->factory()->post->create_many(
+				6,
+				[
+					'post_type'   => DEPARTURE_POST_TYPE,
+					'post_status' => 'publish',
+					'post_parent' => $itinerary_post_id,
+					'meta_input'  => [
+						'itinerary'          => $itinerary_post_id,
+						'related_expedition' => $expedition_post->ID,
+					],
+				]
+			);
+
+			// Update expected total departures.
+			$expected_total += 6;
+
+			// Get total departures.
+			$total_departures = get_total_departures( $expedition_post->ID );
+
+			// Assert total departures is correct.
+			$this->assertEquals( $expected_total, $total_departures );
+		}
+
+		// Test : Get total departures for an Expedition post with extra departures.
+		// Create an itinerary post.
+		$itinerary_post = $this->factory()->post->create_and_get(
+			[
+				'post_type'   => ITINERARY_POST_TYPE,
+				'post_title'  => 'Test Itinerary Post',
+				'post_status' => 'publish',
+			]
+		);
+
+		// Assert created posts are instance of WP_Post.
+		$this->assertTrue( $itinerary_post instanceof WP_Post );
+
+		// Create a Departure post with no related Expedition.
+		$departure_post_no_expedition = $this->factory()->post->create_and_get(
+			[
+				'post_type'   => DEPARTURE_POST_TYPE,
+				'post_title'  => 'Test Departure Post',
+				'post_status' => 'publish',
+				'post_parent' => $itinerary_post->ID,
+				'meta_input'  => [
+					'itinerary' => $itinerary_post->ID,
+				],
+			]
+		);
+
+		// Assert created posts are instance of WP_Post.
+		$this->assertTrue( $departure_post_no_expedition instanceof WP_Post );
+
+		// Get total departures.
+		$this->assertEquals( $expected_total, get_total_departures( $expedition_post->ID ) );
+
+		// Test: Get total departures for an Expedition post with no related Itineraries.
+		$expedition_post_no_itineraries = $this->factory()->post->create_and_get(
+			[
+				'post_type'   => POST_TYPE,
+				'post_title'  => 'Test Expedition Post',
+				'post_status' => 'publish',
+			]
+		);
+
+		// Assert created posts are instance of WP_Post.
+		$this->assertTrue( $expedition_post_no_itineraries instanceof WP_Post );
+
+		// Get total departures.
+		$this->assertEmpty( get_total_departures( $expedition_post_no_itineraries->ID ) );
+	}
+
+	/**
+	 * Test get_ships.
+	 *
+	 * @covers \Quark\Expeditions\get_ships()
+	 *
+	 * @return void
+	 */
+	public function test_get_ships(): void {
+		// Add filter.
+		add_filter( 'pre_http_request', 'Quark\Tests\Softrip\mock_softrip_http_request', 10, 3 );
+
+		// Sync departure posts.
+		do_sync();
+
+		// Create Expedition post.
+		$expedition_post = $this->factory()->post->create_and_get(
+			[
+				'post_type'   => POST_TYPE,
+				'post_title'  => 'Test Expedition Post',
+				'post_status' => 'publish',
+			]
+		);
+
+		// Assert created posts are instance of WP_Post.
+		$this->assertTrue( $expedition_post instanceof WP_Post );
+
+		// Get ships.
+		$ships = get_ships();
+
+		// Assert ships is correct.
+		$this->assertEmpty( $ships );
+
+		// Get Itineraries posts.
+		$itinerary_query_args = [
+			'post_type'              => ITINERARY_POST_TYPE,
+			'no_found_rows'          => true,
+			'ignore_sticky_posts'    => true,
+			'update_post_term_cache' => false,
+			'fields'                 => 'ids',
+			'update_post_meta_cache' => false,
+			'meta_query'             => [
+				[
+					'key'     => 'softrip_package_code',
+					'value'   => [
+						'ABC-123',
+						'PQR-345',
+						'JKL-012',
+					],
+					'compare' => 'IN',
+				],
+			],
+		];
+
+		// Get Itinerary posts.
+		$itinerary_posts = get_posts( $itinerary_query_args );
+
+		// Assert fetched posts are not empty.
+		$this->assertEquals( 3, count( $itinerary_posts ) );
+
+		// Update expedition meta.
+		update_post_meta( $expedition_post->ID, 'related_itineraries', $itinerary_posts );
+
+		// Bust post cache.
+		bust_post_cache( $expedition_post->ID );
+
+		// Get ships.
+		$ships = get_ships( $expedition_post->ID );
+
+		// Assert ships is correct.
+		$this->assertEquals( 2, count( $ships ) );
 	}
 }
