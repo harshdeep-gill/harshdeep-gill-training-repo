@@ -612,9 +612,26 @@ function get_cabins_and_decks( int $ship_id = 0 ): array {
  * @param WP_Post|null $post The post object.
  *
  * @return array{}|array{
- *     collage: mixed[],
- *     vessel_features: string[],
- *     ship_amenities: string[],
+ *     collage: array{} | array{
+ *       media_type: string,
+ *       size: string,
+ *       caption: string,
+ *       video_url: string,
+ *       image ?: array{
+ *         int: array{
+ *           id: int,
+ *           size: string,
+ *           src: string,
+ *           width: int,
+ *           height: int,
+ *           alt: string,
+ *           title: string,
+ *           caption: string,
+ *        },
+ *      },
+ *    },
+ *    vessel_features: string[],
+ *    ship_amenities: string[],
  * }
  */
 function parse_block_attributes( WP_Post $post = null ): array {
@@ -650,23 +667,23 @@ function parse_block_attributes( WP_Post $post = null ): array {
 						}
 
 						// Retrieve attributes.
-						$media_item_attrs['media_type'] = $inner_block['attrs']['mediaType'] ?? 'image';
-						$media_item_attrs['size']       = $inner_block['attrs']['size'] ?? 'small';
-						$media_item_attrs['caption']    = $inner_block['attrs']['caption'] ?? '';
-						$media_item_attrs['video_url']  = $inner_block['attrs']['videoUrl'] ?? '';
+						$media_item_attrs['media_type'] = ! empty( $inner_block['attrs']['mediaType'] ) ? strval( $inner_block['attrs']['mediaType'] ) : 'image';
+						$media_item_attrs['size']       = ! empty( $inner_block['attrs']['size'] ) ? strval( $inner_block['attrs']['size'] ) : 'small';
+						$media_item_attrs['caption']    = ! empty( $inner_block['attrs']['caption'] ) ? strval( $inner_block['attrs']['caption'] ) : '';
+						$media_item_attrs['video_url']  = ! empty( $inner_block['attrs']['videoUrl'] ) ? strval( $inner_block['attrs']['videoUrl'] ) : '';
 						$image                          = $inner_block['attrs']['image'] ?? [];
 
 						// Check if image is available.
 						if ( ! empty( $image ) && is_array( $image ) ) {
 							$media_item_attrs['image'] = [
-								'id'      => $image['id'] ?? 0,
-								'size'    => $image['size'] ?? '',
-								'src'     => $image['src'] ?? '',
-								'width'   => $image['width'] ?? '',
-								'height'  => $image['height'] ?? '',
-								'alt'     => $image['alt'] ?? '',
-								'title'   => $image['title'] ?? '',
-								'caption' => $image['caption'] ?? '',
+								'id'      => ! empty( $image['id'] ) ? absint( $image['id'] ) : 0,
+								'size'    => ! empty( $image['size'] ) ? strval( $image['size'] ) : '',
+								'src'     => ! empty( $image['src'] ) ? strval( $image['src'] ) : '',
+								'width'   => ! empty( $image['width'] ) ? strval( $image['width'] ) : '',
+								'height'  => ! empty( $image['height'] ) ? strval( $image['height'] ) : '',
+								'alt'     => ! empty( $image['alt'] ) ? strval( $image['alt'] ) : '',
+								'title'   => ! empty( $image['title'] ) ? strval( $image['title'] ) : '',
+								'caption' => ! empty( $image['caption'] ) ? strval( $image['caption'] ) : '',
 							];
 						}
 					}
