@@ -107,17 +107,17 @@ class Test_Adventure_Options extends Softrip_TestCase {
 
 		// Test with invalid data.
 		$adventure_option_data = [
-			'softrip_option_id' => '123',
-			'departure_post_id' => 123,
-			'softrip_package_code' => 'UNQ-123',
-			'service_ids' => 'service_id_1,service_id_2',
-			'spaces_available' => 11,
+			'softrip_option_id'        => '123',
+			'departure_post_id'        => 123,
+			'softrip_package_code'     => 'UNQ-123',
+			'service_ids'              => 'service_id_1,service_id_2',
+			'spaces_available'         => 11,
 			'adventure_option_term_id' => 123,
-			'price_per_person_usd' => 100,
-			'price_per_person_cad' => 344,
-			'price_per_person_aud' => 293,
-			'price_per_person_gbp' => 234,
-			'price_per_person_eur' => 123,
+			'price_per_person_usd'     => 100,
+			'price_per_person_cad'     => 344,
+			'price_per_person_aud'     => 293,
+			'price_per_person_gbp'     => 234,
+			'price_per_person_eur'     => 123,
 		];
 		$expected              = false;
 		$actual                = update_adventure_options( $adventure_option_data );
@@ -125,22 +125,32 @@ class Test_Adventure_Options extends Softrip_TestCase {
 
 		// Create a departure.
 		$softrip_package_code1 = 'UNQ-123';
-		$departure_post_id1 = $this->factory()->post->create( [ 'post_type' => DEPARTURE_POST_TYPE, 'meta_input' => [
-			'softrip_package_code' => $softrip_package_code1,
-		], ] );
+		$departure_post_id1    = $this->factory()->post->create(
+			[
+				'post_type'  => DEPARTURE_POST_TYPE,
+				'meta_input' => [
+					'softrip_package_code' => $softrip_package_code1,
+				],
+			]
+		);
 		$this->assertIsInt( $departure_post_id1 );
 
 		// Create another departure.
 		$softrip_package_code2 = 'UNQ-456';
-		$departure_post_id2 = $this->factory()->post->create( [ 'post_type' => DEPARTURE_POST_TYPE, 'meta_input' => [
-			'softrip_package_code' => $softrip_package_code2,
-		], ] );
+		$departure_post_id2    = $this->factory()->post->create(
+			[
+				'post_type'  => DEPARTURE_POST_TYPE,
+				'meta_input' => [
+					'softrip_package_code' => $softrip_package_code2,
+				],
+			]
+		);
 		$this->assertIsInt( $departure_post_id2 );
 
 		// Test with valid data.
 		$raw_adventure_options = [];
-		$expected = true;
-		$actual = update_adventure_options( $raw_adventure_options, $departure_post_id1 );
+		$expected              = true;
+		$actual                = update_adventure_options( $raw_adventure_options, $departure_post_id1 );
 		$this->assertSame( $expected, $actual );
 
 		// Get adventure options meta on departure - it should have been set with empty array.
@@ -165,8 +175,8 @@ class Test_Adventure_Options extends Softrip_TestCase {
 
 		// Raw adventure option for departure 1.
 		$raw_adventure_option1 = [
-			'id' => '123',
-			'price' => [
+			'id'              => '123',
+			'price'           => [
 				'USD' => [
 					'pricePerPerson' => 100,
 				],
@@ -184,13 +194,13 @@ class Test_Adventure_Options extends Softrip_TestCase {
 				],
 			],
 			'spacesAvailable' => 11,
-			'serviceIds' => [ $service_id1, $service_id2 ],
+			'serviceIds'      => [ $service_id1, $service_id2 ],
 		];
 
 		// One more raw adventure option for departure 1.
 		$raw_adventure_option2 = [
-			'id' => '456',
-			'price' => [
+			'id'              => '456',
+			'price'           => [
 				'USD' => [
 					'pricePerPerson' => 200,
 				],
@@ -208,13 +218,13 @@ class Test_Adventure_Options extends Softrip_TestCase {
 				],
 			],
 			'spacesAvailable' => 22,
-			'serviceIds' => [ $service_id2 ],
+			'serviceIds'      => [ $service_id2 ],
 		];
 
 		// Raw adventure option for departure 2.
 		$raw_adventure_option3 = [
-			'id' => '789',
-			'price' => [
+			'id'              => '789',
+			'price'           => [
 				'USD' => [
 					'pricePerPerson' => 300,
 				],
@@ -232,7 +242,7 @@ class Test_Adventure_Options extends Softrip_TestCase {
 				],
 			],
 			'spacesAvailable' => 33,
-			'serviceIds' => [ $service_id3, $service_id2 ],
+			'serviceIds'      => [ $service_id3, $service_id2 ],
 		];
 
 		// Club raw adventure options for departure 1 and 2.
@@ -247,7 +257,7 @@ class Test_Adventure_Options extends Softrip_TestCase {
 
 		// Update adventure option for departure 1.
 		$expected = true;
-		$actual = update_adventure_options( $raw_adventure_options1, $departure_post_id1 );
+		$actual   = update_adventure_options( $raw_adventure_options1, $departure_post_id1 );
 		$this->assertSame( $expected, $actual );
 
 		// Get adventure option for departure 1.
@@ -262,7 +272,7 @@ class Test_Adventure_Options extends Softrip_TestCase {
 		$this->assertNotEmpty( $actual1 );
 
 		// Verify each field.
-		$this->assertArrayHasKey('id', $actual1);
+		$this->assertArrayHasKey( 'id', $actual1 );
 		$this->assertArrayHasKey( 'softrip_option_id', $actual1 );
 		$this->assertArrayHasKey( 'departure_post_id', $actual1 );
 		$this->assertArrayHasKey( 'softrip_package_code', $actual1 );
@@ -292,7 +302,7 @@ class Test_Adventure_Options extends Softrip_TestCase {
 		$this->assertNotEmpty( $actual2 );
 
 		// Verify each field.
-		$this->assertArrayHasKey('id', $actual2);
+		$this->assertArrayHasKey( 'id', $actual2 );
 		$this->assertArrayHasKey( 'softrip_option_id', $actual2 );
 		$this->assertArrayHasKey( 'departure_post_id', $actual2 );
 		$this->assertArrayHasKey( 'softrip_package_code', $actual2 );
@@ -322,7 +332,7 @@ class Test_Adventure_Options extends Softrip_TestCase {
 
 		// Update adventure option for departure 2.
 		$expected = true;
-		$actual3 = update_adventure_options( $raw_adventure_options2, $departure_post_id2 );
+		$actual3  = update_adventure_options( $raw_adventure_options2, $departure_post_id2 );
 		$this->assertSame( $expected, $actual3 );
 
 		// Get adventure option for departure 2.
@@ -337,7 +347,7 @@ class Test_Adventure_Options extends Softrip_TestCase {
 		$this->assertNotEmpty( $actual3_1 );
 
 		// Verify each field.
-		$this->assertArrayHasKey('id', $actual3_1);
+		$this->assertArrayHasKey( 'id', $actual3_1 );
 		$this->assertArrayHasKey( 'softrip_option_id', $actual3_1 );
 		$this->assertArrayHasKey( 'departure_post_id', $actual3_1 );
 		$this->assertArrayHasKey( 'softrip_package_code', $actual3_1 );
@@ -373,8 +383,8 @@ class Test_Adventure_Options extends Softrip_TestCase {
 		 * This should only update the first and since, the second is not provided, it should be deleted.
 		 */
 		$raw_adventure_options1 = [ $raw_adventure_option1 ];
-		$expected = true;
-		$actual = update_adventure_options( $raw_adventure_options1, $departure_post_id1 );
+		$expected               = true;
+		$actual                 = update_adventure_options( $raw_adventure_options1, $departure_post_id1 );
 		$this->assertSame( $expected, $actual );
 
 		// Get adventure option for departure 1.
@@ -403,10 +413,9 @@ class Test_Adventure_Options extends Softrip_TestCase {
 		$this->assertIsArray( $actual );
 		$this->assertNotEmpty( $actual );
 		$this->assertCount( 1, $actual );
-		$this->assertContains($adventure_option_term_id1, $actual);
-		$this->assertNotContains($adventure_option_term_id2, $actual);
+		$this->assertContains( $adventure_option_term_id1, $actual );
+		$this->assertNotContains( $adventure_option_term_id2, $actual );
 	}
-		
 
 	/**
 	 * Test format adventure option data.
@@ -428,50 +437,55 @@ class Test_Adventure_Options extends Softrip_TestCase {
 
 		// Test for required values.
 		$raw_adventure_option = [
-			'id' => '',
-			'price' => [],
+			'id'              => '',
+			'price'           => [],
 			'spacesAvailable' => 1,
 		];
-		$expected = [];
-		$actual   = format_adventure_option_data( $raw_adventure_option, 0 );
+		$expected             = [];
+		$actual               = format_adventure_option_data( $raw_adventure_option, 0 );
 		$this->assertSame( $expected, $actual );
 
 		// Test with valid data with non-existing departure post.
-		$departure_post_id = 9271;
+		$departure_post_id    = 9271;
 		$raw_adventure_option = [
-			'id' => '123',
-			'price' => [
-				[]
+			'id'              => '123',
+			'price'           => [
+				[],
 			],
 			'spacesAvailable' => 1,
 		];
-		$expected = [
-			'softrip_option_id' => '123',
-			'departure_post_id' => 9271,
-			'softrip_package_code' => '',
-			'service_ids' => '',
-			'spaces_available' => 1,
+		$expected             = [
+			'softrip_option_id'        => '123',
+			'departure_post_id'        => 9271,
+			'softrip_package_code'     => '',
+			'service_ids'              => '',
+			'spaces_available'         => 1,
 			'adventure_option_term_id' => 0,
-			'price_per_person_usd' => 0,
-			'price_per_person_cad' => 0,
-			'price_per_person_aud' => 0,
-			'price_per_person_gbp' => 0,
-			'price_per_person_eur' => 0,
+			'price_per_person_usd'     => 0,
+			'price_per_person_cad'     => 0,
+			'price_per_person_aud'     => 0,
+			'price_per_person_gbp'     => 0,
+			'price_per_person_eur'     => 0,
 		];
-		$actual   = format_adventure_option_data( $raw_adventure_option, $departure_post_id );
+		$actual               = format_adventure_option_data( $raw_adventure_option, $departure_post_id );
 		$this->assertEquals( $expected, $actual );
 
 		// Create a departure.
 		$softrip_package_code = 'PQO-123';
-		$departure_post_id = $this->factory()->post->create( [ 'post_type' => DEPARTURE_POST_TYPE, 'meta_input' => [
-			'softrip_package_code' => $softrip_package_code,
-		], ] );
+		$departure_post_id    = $this->factory()->post->create(
+			[
+				'post_type'  => DEPARTURE_POST_TYPE,
+				'meta_input' => [
+					'softrip_package_code' => $softrip_package_code,
+				],
+			]
+		);
 		$this->assertIsInt( $departure_post_id );
 
 		// Test with valid data.
 		$raw_adventure_option = [
-			'id' => '123',
-			'price' => [
+			'id'              => '123',
+			'price'           => [
 				'USD' => [
 					'pricePerPerson' => 100,
 				],
@@ -482,20 +496,20 @@ class Test_Adventure_Options extends Softrip_TestCase {
 			],
 			'spacesAvailable' => 1,
 		];
-		$expected = [
-			'softrip_option_id' => '123',
-			'departure_post_id' => $departure_post_id,
-			'softrip_package_code' => $softrip_package_code,
-			'service_ids' => '',
-			'spaces_available' => 1,
+		$expected             = [
+			'softrip_option_id'        => '123',
+			'departure_post_id'        => $departure_post_id,
+			'softrip_package_code'     => $softrip_package_code,
+			'service_ids'              => '',
+			'spaces_available'         => 1,
 			'adventure_option_term_id' => 0,
-			'price_per_person_usd' => 100,
-			'price_per_person_cad' => 0,
-			'price_per_person_aud' => 0,
-			'price_per_person_gbp' => 0,
-			'price_per_person_eur' => 0,
+			'price_per_person_usd'     => 100,
+			'price_per_person_cad'     => 0,
+			'price_per_person_aud'     => 0,
+			'price_per_person_gbp'     => 0,
+			'price_per_person_eur'     => 0,
 		];
-		$actual   = format_adventure_option_data( $raw_adventure_option, $departure_post_id );
+		$actual               = format_adventure_option_data( $raw_adventure_option, $departure_post_id );
 		$this->assertEquals( $expected, $actual );
 
 		// Create some adventure option taxonomy term.
@@ -510,8 +524,8 @@ class Test_Adventure_Options extends Softrip_TestCase {
 
 		// Without any service id assigned to term.
 		$raw_adventure_option = [
-			'id' => '123',
-			'price' => [
+			'id'                    => '123',
+			'price'                 => [
 				'USD' => [
 					'pricePerPerson' => 100,
 				],
@@ -520,33 +534,34 @@ class Test_Adventure_Options extends Softrip_TestCase {
 				],
 				'AUD' => [],
 			],
-			'spacesAvailable' => 1,
-			'serviceIds' => [ $service_id1, $service_id2 ],
+			'spacesAvailable'       => 1,
+			'serviceIds'            => [ $service_id1, $service_id2 ],
 			'adventureOptionTermId' => $adventure_option_term_id1,
 		];
-		$expected = [
-			'softrip_option_id' => '123',
-			'departure_post_id' => $departure_post_id,
-			'softrip_package_code' => $softrip_package_code,
-			'service_ids' => implode( ',', [ $service_id1, $service_id2 ] ),
-			'spaces_available' => 1,
+		$expected             = [
+			'softrip_option_id'        => '123',
+			'departure_post_id'        => $departure_post_id,
+			'softrip_package_code'     => $softrip_package_code,
+			'service_ids'              => implode( ',', [ $service_id1, $service_id2 ] ),
+			'spaces_available'         => 1,
 			'adventure_option_term_id' => 0,
-			'price_per_person_usd' => 100,
-			'price_per_person_cad' => 0,
-			'price_per_person_aud' => 0,
-			'price_per_person_gbp' => 0,
-			'price_per_person_eur' => 0,
+			'price_per_person_usd'     => 100,
+			'price_per_person_cad'     => 0,
+			'price_per_person_aud'     => 0,
+			'price_per_person_gbp'     => 0,
+			'price_per_person_eur'     => 0,
 		];
-		$actual   = format_adventure_option_data( $raw_adventure_option, $departure_post_id );
+		$actual               = format_adventure_option_data( $raw_adventure_option, $departure_post_id );
 		$this->assertEquals( $expected, $actual );
 
 		// With service id attached to term meta.
 		update_term_meta( $adventure_option_term_id1, 'softrip_0_id', $service_id1 );
 		update_term_meta( $adventure_option_term_id2, 'softrip_0_id', $service_id2 );
 
+		// First service id should be attached to term meta.
 		$raw_adventure_option = [
-			'id' => '123',
-			'price' => [
+			'id'              => '123',
+			'price'           => [
 				'USD' => [
 					'pricePerPerson' => 100,
 				],
@@ -556,31 +571,31 @@ class Test_Adventure_Options extends Softrip_TestCase {
 				'AUD' => [],
 			],
 			'spacesAvailable' => 1,
-			'serviceIds' => [ $service_id1, $service_id2 ],
+			'serviceIds'      => [ $service_id1, $service_id2 ],
 		];
-		$expected = [
-			'softrip_option_id' => '123',
-			'departure_post_id' => $departure_post_id,
-			'softrip_package_code' => $softrip_package_code,
-			'service_ids' => implode( ',', [ $service_id1, $service_id2 ] ),
-			'spaces_available' => 1,
+		$expected             = [
+			'softrip_option_id'        => '123',
+			'departure_post_id'        => $departure_post_id,
+			'softrip_package_code'     => $softrip_package_code,
+			'service_ids'              => implode( ',', [ $service_id1, $service_id2 ] ),
+			'spaces_available'         => 1,
 			'adventure_option_term_id' => $adventure_option_term_id1,
-			'price_per_person_usd' => 100,
-			'price_per_person_cad' => 0,
-			'price_per_person_aud' => 0,
-			'price_per_person_gbp' => 0,
-			'price_per_person_eur' => 0,
+			'price_per_person_usd'     => 100,
+			'price_per_person_cad'     => 0,
+			'price_per_person_aud'     => 0,
+			'price_per_person_gbp'     => 0,
+			'price_per_person_eur'     => 0,
 		];
-		$actual   = format_adventure_option_data( $raw_adventure_option, $departure_post_id );
+		$actual               = format_adventure_option_data( $raw_adventure_option, $departure_post_id );
 		$this->assertEquals( $expected, $actual );
 
-		// Create remove first service id from term meta.
+		// Remove first service id from term meta.
 		delete_term_meta( $adventure_option_term_id1, 'softrip_0_id' );
 
 		// Second service id should be attached to term meta.
 		$raw_adventure_option = [
-			'id' => '123',
-			'price' => [
+			'id'              => '123',
+			'price'           => [
 				'USD' => [
 					'pricePerPerson' => 100,
 				],
@@ -590,28 +605,28 @@ class Test_Adventure_Options extends Softrip_TestCase {
 				'AUD' => [],
 			],
 			'spacesAvailable' => 1,
-			'serviceIds' => [ $service_id1, $service_id2 ],
+			'serviceIds'      => [ $service_id1, $service_id2 ],
 		];
-		$expected = [
-			'softrip_option_id' => '123',
-			'departure_post_id' => $departure_post_id,
-			'softrip_package_code' => $softrip_package_code,
-			'service_ids' => implode( ',', [ $service_id1, $service_id2 ] ),
-			'spaces_available' => 1,
+		$expected             = [
+			'softrip_option_id'        => '123',
+			'departure_post_id'        => $departure_post_id,
+			'softrip_package_code'     => $softrip_package_code,
+			'service_ids'              => implode( ',', [ $service_id1, $service_id2 ] ),
+			'spaces_available'         => 1,
 			'adventure_option_term_id' => $adventure_option_term_id2,
-			'price_per_person_usd' => 100,
-			'price_per_person_cad' => 0,
-			'price_per_person_aud' => 0,
-			'price_per_person_gbp' => 0,
-			'price_per_person_eur' => 0,
+			'price_per_person_usd'     => 100,
+			'price_per_person_cad'     => 0,
+			'price_per_person_aud'     => 0,
+			'price_per_person_gbp'     => 0,
+			'price_per_person_eur'     => 0,
 		];
-		$actual   = format_adventure_option_data( $raw_adventure_option, $departure_post_id );
+		$actual               = format_adventure_option_data( $raw_adventure_option, $departure_post_id );
 		$this->assertEquals( $expected, $actual );
 
 		// Test with complete valid data.
 		$raw_adventure_option = [
-			'id' => '123',
-			'price' => [
+			'id'              => '123',
+			'price'           => [
 				'USD' => [
 					'pricePerPerson' => 100,
 				],
@@ -629,22 +644,22 @@ class Test_Adventure_Options extends Softrip_TestCase {
 				],
 			],
 			'spacesAvailable' => 11,
-			'serviceIds' => [ $service_id1, $service_id2 ],
+			'serviceIds'      => [ $service_id1, $service_id2 ],
 		];
-		$expected = [
-			'softrip_option_id' => '123',
-			'departure_post_id' => $departure_post_id,
-			'softrip_package_code' => $softrip_package_code,
-			'service_ids' => implode( ',', [ $service_id1, $service_id2 ] ),
-			'spaces_available' => 11,
+		$expected             = [
+			'softrip_option_id'        => '123',
+			'departure_post_id'        => $departure_post_id,
+			'softrip_package_code'     => $softrip_package_code,
+			'service_ids'              => implode( ',', [ $service_id1, $service_id2 ] ),
+			'spaces_available'         => 11,
 			'adventure_option_term_id' => $adventure_option_term_id2,
-			'price_per_person_usd' => 100,
-			'price_per_person_cad' => 344,
-			'price_per_person_aud' => 293,
-			'price_per_person_gbp' => 234,
-			'price_per_person_eur' => 123,
+			'price_per_person_usd'     => 100,
+			'price_per_person_cad'     => 344,
+			'price_per_person_aud'     => 293,
+			'price_per_person_gbp'     => 234,
+			'price_per_person_eur'     => 123,
 		];
-		$actual   = format_adventure_option_data( $raw_adventure_option, $departure_post_id );
+		$actual               = format_adventure_option_data( $raw_adventure_option, $departure_post_id );
 		$this->assertEquals( $expected, $actual );
 	}
 
@@ -655,7 +670,7 @@ class Test_Adventure_Options extends Softrip_TestCase {
 	 *
 	 * @return void
 	 */
-	public function test_get_adventure_option_taxonomy_term_by_service_id() {
+	public function test_get_adventure_option_taxonomy_term_by_service_id(): void {
 		// Test with no arguments.
 		$expected = [];
 		$actual   = get_adventure_option_taxonomy_term_by_service_id();
@@ -730,16 +745,26 @@ class Test_Adventure_Options extends Softrip_TestCase {
 
 		// Create a departure.
 		$softrip_package_code1 = 'UNQ-123';
-		$departure_post_id1 = $this->factory()->post->create( [ 'post_type' => DEPARTURE_POST_TYPE, 'meta_input' => [
-			'softrip_package_code' => $softrip_package_code1,
-		], ] );
+		$departure_post_id1    = $this->factory()->post->create(
+			[
+				'post_type'  => DEPARTURE_POST_TYPE,
+				'meta_input' => [
+					'softrip_package_code' => $softrip_package_code1,
+				],
+			]
+		);
 		$this->assertIsInt( $departure_post_id1 );
 
 		// Create another departure.
 		$softrip_package_code2 = 'UNQ-456';
-		$departure_post_id2 = $this->factory()->post->create( [ 'post_type' => DEPARTURE_POST_TYPE, 'meta_input' => [
-			'softrip_package_code' => $softrip_package_code2,
-		], ] );
+		$departure_post_id2    = $this->factory()->post->create(
+			[
+				'post_type'  => DEPARTURE_POST_TYPE,
+				'meta_input' => [
+					'softrip_package_code' => $softrip_package_code2,
+				],
+			]
+		);
 		$this->assertIsInt( $departure_post_id2 );
 
 		// Test with valid departure post id.
@@ -766,8 +791,8 @@ class Test_Adventure_Options extends Softrip_TestCase {
 
 		// Raw adventure option for departure 1.
 		$raw_adventure_option1 = [
-			'id' => '123',
-			'price' => [
+			'id'              => '123',
+			'price'           => [
 				'USD' => [
 					'pricePerPerson' => 100,
 				],
@@ -785,7 +810,7 @@ class Test_Adventure_Options extends Softrip_TestCase {
 				],
 			],
 			'spacesAvailable' => 11,
-			'serviceIds' => [ $service_id1, $service_id2 ],
+			'serviceIds'      => [ $service_id1, $service_id2 ],
 		];
 
 		// Format adventure option data.
@@ -800,12 +825,12 @@ class Test_Adventure_Options extends Softrip_TestCase {
 		$this->assertIsInt( $adventure_option_id1 );
 
 		// Cache should be empty.
-		$cache_key1 = CACHE_KEY_PREFIX . "_departure_post_id_$departure_post_id1";
+		$cache_key1        = CACHE_KEY_PREFIX . "_departure_post_id_$departure_post_id1";
 		$actual_from_cache = wp_cache_get( $cache_key1, CACHE_GROUP );
 		$this->assertFalse( $actual_from_cache );
 
 		// Get adventure option by departure post id.
-		$actual   = get_adventure_option_by_departure_post_id( $departure_post_id1 );
+		$actual = get_adventure_option_by_departure_post_id( $departure_post_id1 );
 		$this->assertNotEmpty( $actual );
 		$this->assertIsArray( $actual );
 		$this->assertCount( 1, $actual );
@@ -821,7 +846,7 @@ class Test_Adventure_Options extends Softrip_TestCase {
 		$this->assertIsArray( $actual1 );
 
 		// Verify each field.
-		$this->assertArrayHasKey('id', $actual1);
+		$this->assertArrayHasKey( 'id', $actual1 );
 		$this->assertEquals( $adventure_option_id1, $actual1['id'] );
 		$this->assertArrayHasKey( 'softrip_option_id', $actual1 );
 		$this->assertEquals( $raw_adventure_option1['id'], $actual1['softrip_option_id'] );
@@ -848,8 +873,8 @@ class Test_Adventure_Options extends Softrip_TestCase {
 
 		// Raw adventure option for departure 2.
 		$raw_adventure_option2 = [
-			'id' => '456',
-			'price' => [
+			'id'              => '456',
+			'price'           => [
 				'USD' => [
 					'pricePerPerson' => 200,
 				],
@@ -867,7 +892,7 @@ class Test_Adventure_Options extends Softrip_TestCase {
 				],
 			],
 			'spacesAvailable' => 22,
-			'serviceIds' => [ $service_id2 ],
+			'serviceIds'      => [ $service_id2 ],
 		];
 
 		// Format adventure option data.
@@ -881,7 +906,7 @@ class Test_Adventure_Options extends Softrip_TestCase {
 		$adventure_option_id2 = $wpdb->insert_id;
 
 		// Get adventure option by departure post id.
-		$actual   = get_adventure_option_by_departure_post_id( $departure_post_id2 );
+		$actual = get_adventure_option_by_departure_post_id( $departure_post_id2 );
 		$this->assertNotEmpty( $actual );
 		$this->assertIsArray( $actual );
 		$this->assertCount( 1, $actual );
@@ -891,7 +916,7 @@ class Test_Adventure_Options extends Softrip_TestCase {
 		$this->assertIsArray( $actual2 );
 
 		// Verify each field.
-		$this->assertArrayHasKey('id', $actual2);
+		$this->assertArrayHasKey( 'id', $actual2 );
 		$this->assertEquals( $adventure_option_id2, $actual2['id'] );
 		$this->assertArrayHasKey( 'softrip_option_id', $actual2 );
 		$this->assertEquals( $raw_adventure_option2['id'], $actual2['softrip_option_id'] );
@@ -918,8 +943,8 @@ class Test_Adventure_Options extends Softrip_TestCase {
 
 		// Insert one more adventure option for departure post 1.
 		$raw_adventure_option3 = [
-			'id' => '789',
-			'price' => [
+			'id'              => '789',
+			'price'           => [
 				'USD' => [
 					'pricePerPerson' => 300,
 				],
@@ -937,7 +962,7 @@ class Test_Adventure_Options extends Softrip_TestCase {
 				],
 			],
 			'spacesAvailable' => 33,
-			'serviceIds' => [ $service_id1 ],
+			'serviceIds'      => [ $service_id1 ],
 		];
 
 		// Format adventure option data.
@@ -954,7 +979,7 @@ class Test_Adventure_Options extends Softrip_TestCase {
 		$adventure_option_id3 = $wpdb->insert_id;
 
 		// Get adventure option by departure post id.
-		$actual   = get_adventure_option_by_departure_post_id( $departure_post_id1 );
+		$actual = get_adventure_option_by_departure_post_id( $departure_post_id1 );
 		$this->assertNotEmpty( $actual );
 		$this->assertIsArray( $actual );
 		$this->assertCount( 2, $actual );
@@ -962,14 +987,14 @@ class Test_Adventure_Options extends Softrip_TestCase {
 		// Get first adventure option data.
 		$actual3 = $actual[0];
 		$this->assertIsArray( $actual3 );
-		$this->assertEquals($actual1, $actual3);
+		$this->assertEquals( $actual1, $actual3 );
 
 		// Get second adventure option data.
 		$actual4 = $actual[1];
 		$this->assertIsArray( $actual4 );
 
 		// Verify each field.
-		$this->assertArrayHasKey('id', $actual3);
+		$this->assertArrayHasKey( 'id', $actual3 );
 		$this->assertEquals( $adventure_option_id3, $actual4['id'] );
 		$this->assertArrayHasKey( 'softrip_option_id', $actual4 );
 		$this->assertEquals( $raw_adventure_option3['id'], $actual4['softrip_option_id'] );
@@ -1022,16 +1047,26 @@ class Test_Adventure_Options extends Softrip_TestCase {
 
 		// Create a departure.
 		$softrip_package_code1 = 'UNQ-123';
-		$departure_post_id1 = $this->factory()->post->create( [ 'post_type' => DEPARTURE_POST_TYPE, 'meta_input' => [
-			'softrip_package_code' => $softrip_package_code1,
-		], ] );
+		$departure_post_id1    = $this->factory()->post->create(
+			[
+				'post_type'  => DEPARTURE_POST_TYPE,
+				'meta_input' => [
+					'softrip_package_code' => $softrip_package_code1,
+				],
+			]
+		);
 		$this->assertIsInt( $departure_post_id1 );
 
 		// Create another departure.
 		$softrip_package_code2 = 'UNQ-456';
-		$departure_post_id2 = $this->factory()->post->create( [ 'post_type' => DEPARTURE_POST_TYPE, 'meta_input' => [
-			'softrip_package_code' => $softrip_package_code2,
-		], ] );
+		$departure_post_id2    = $this->factory()->post->create(
+			[
+				'post_type'  => DEPARTURE_POST_TYPE,
+				'meta_input' => [
+					'softrip_package_code' => $softrip_package_code2,
+				],
+			]
+		);
 		$this->assertIsInt( $departure_post_id2 );
 
 		// Test with valid softrip option id.
@@ -1040,7 +1075,7 @@ class Test_Adventure_Options extends Softrip_TestCase {
 		$this->assertSame( $expected, $actual );
 
 		// Clear the cache.
-		wp_cache_delete( CACHE_KEY_PREFIX . "_softrip_option_id_123", CACHE_GROUP );
+		wp_cache_delete( CACHE_KEY_PREFIX . '_softrip_option_id_123', CACHE_GROUP );
 
 		// Create some adventure option taxonomy term.
 		$adventure_option_term_id1 = $this->factory()->term->create( [ 'taxonomy' => ADVENTURE_OPTION_CATEGORY ] );
@@ -1058,8 +1093,8 @@ class Test_Adventure_Options extends Softrip_TestCase {
 
 		// Raw adventure option for departure 1.
 		$raw_adventure_option1 = [
-			'id' => $softrip_option_id1,
-			'price' => [
+			'id'              => $softrip_option_id1,
+			'price'           => [
 				'USD' => [
 					'pricePerPerson' => 100,
 				],
@@ -1077,7 +1112,7 @@ class Test_Adventure_Options extends Softrip_TestCase {
 				],
 			],
 			'spacesAvailable' => 11,
-			'serviceIds' => [ $service_id1, $service_id2 ],
+			'serviceIds'      => [ $service_id1, $service_id2 ],
 		];
 
 		// Format adventure option data.
@@ -1091,11 +1126,11 @@ class Test_Adventure_Options extends Softrip_TestCase {
 		$adventure_option_id1 = $wpdb->insert_id;
 
 		// Cache should be empty.
-		$cache_key1 = CACHE_KEY_PREFIX . "_softrip_option_id_$softrip_option_id1";
+		$cache_key1        = CACHE_KEY_PREFIX . "_softrip_option_id_$softrip_option_id1";
 		$actual_from_cache = wp_cache_get( $cache_key1, CACHE_GROUP );
 
 		// Get adventure option by departure post id.
-		$actual   = get_adventure_option_by_softrip_option_id( $softrip_option_id1 );
+		$actual = get_adventure_option_by_softrip_option_id( $softrip_option_id1 );
 		$this->assertNotEmpty( $actual );
 		$this->assertIsArray( $actual );
 		$this->assertCount( 1, $actual );
@@ -1112,7 +1147,7 @@ class Test_Adventure_Options extends Softrip_TestCase {
 		$this->assertNotEmpty( $actual1 );
 
 		// Verify each field.
-		$this->assertArrayHasKey('id', $actual1);
+		$this->assertArrayHasKey( 'id', $actual1 );
 		$this->assertEquals( $adventure_option_id1, $actual1['id'] );
 		$this->assertArrayHasKey( 'softrip_option_id', $actual1 );
 		$this->assertEquals( $raw_adventure_option1['id'], $actual1['softrip_option_id'] );
@@ -1139,8 +1174,8 @@ class Test_Adventure_Options extends Softrip_TestCase {
 
 		// Raw adventure option for departure 2.
 		$raw_adventure_option2 = [
-			'id' => $softrip_option_id2,
-			'price' => [
+			'id'              => $softrip_option_id2,
+			'price'           => [
 				'USD' => [
 					'pricePerPerson' => 200,
 				],
@@ -1158,7 +1193,7 @@ class Test_Adventure_Options extends Softrip_TestCase {
 				],
 			],
 			'spacesAvailable' => 22,
-			'serviceIds' => [ $service_id2 ],
+			'serviceIds'      => [ $service_id2 ],
 		];
 
 		// Format adventure option data.
@@ -1172,12 +1207,12 @@ class Test_Adventure_Options extends Softrip_TestCase {
 		$adventure_option_id2 = $wpdb->insert_id;
 
 		// Cache should be empty.
-		$cache_key2 = CACHE_KEY_PREFIX . "_softrip_option_id_$softrip_option_id2";
+		$cache_key2        = CACHE_KEY_PREFIX . "_softrip_option_id_$softrip_option_id2";
 		$actual_from_cache = wp_cache_get( $cache_key2, CACHE_GROUP );
 		$this->assertFalse( $actual_from_cache );
 
 		// Get adventure option by departure post id.
-		$actual   = get_adventure_option_by_softrip_option_id( $softrip_option_id2 );
+		$actual = get_adventure_option_by_softrip_option_id( $softrip_option_id2 );
 		$this->assertNotEmpty( $actual );
 		$this->assertIsArray( $actual );
 		$this->assertCount( 1, $actual );
@@ -1194,7 +1229,7 @@ class Test_Adventure_Options extends Softrip_TestCase {
 		$this->assertNotEmpty( $actual2 );
 
 		// Verify each field.
-		$this->assertArrayHasKey('id', $actual2);
+		$this->assertArrayHasKey( 'id', $actual2 );
 		$this->assertEquals( $adventure_option_id2, $actual2['id'] );
 		$this->assertArrayHasKey( 'softrip_option_id', $actual2 );
 		$this->assertEquals( $raw_adventure_option2['id'], $actual2['softrip_option_id'] );
@@ -1235,17 +1270,17 @@ class Test_Adventure_Options extends Softrip_TestCase {
 
 		// Test with non-existing id.
 		$row_data = [
-			'softrip_option_id' => '123',
-			'departure_post_id' => 1,
-			'softrip_package_code' => 'UNQ-123',
-			'service_ids' => 'service_id_1,service_id_2',
-			'spaces_available' => 11,
+			'softrip_option_id'        => '123',
+			'departure_post_id'        => 1,
+			'softrip_package_code'     => 'UNQ-123',
+			'service_ids'              => 'service_id_1,service_id_2',
+			'spaces_available'         => 11,
 			'adventure_option_term_id' => 1,
-			'price_per_person_usd' => 100,
-			'price_per_person_cad' => 344,
-			'price_per_person_aud' => 293,
-			'price_per_person_gbp' => 234,
-			'price_per_person_eur' => 123,
+			'price_per_person_usd'     => 100,
+			'price_per_person_cad'     => 344,
+			'price_per_person_aud'     => 293,
+			'price_per_person_gbp'     => 234,
+			'price_per_person_eur'     => 123,
 		];
 		$expected = [];
 		$actual   = format_row_data_from_db( $row_data );
@@ -1253,18 +1288,18 @@ class Test_Adventure_Options extends Softrip_TestCase {
 
 		// Test with 0 id.
 		$row_data = [
-			'id' => 0,
-			'softrip_option_id' => '123',
-			'departure_post_id' => 1,
-			'softrip_package_code' => 'UNQ-123',
-			'service_ids' => 'service_id_1,service_id_2',
-			'spaces_available' => 11,
+			'id'                       => 0,
+			'softrip_option_id'        => '123',
+			'departure_post_id'        => 1,
+			'softrip_package_code'     => 'UNQ-123',
+			'service_ids'              => 'service_id_1,service_id_2',
+			'spaces_available'         => 11,
 			'adventure_option_term_id' => 1,
-			'price_per_person_usd' => 100,
-			'price_per_person_cad' => 344,
-			'price_per_person_aud' => 293,
-			'price_per_person_gbp' => 234,
-			'price_per_person_eur' => 123,
+			'price_per_person_usd'     => 100,
+			'price_per_person_cad'     => 344,
+			'price_per_person_aud'     => 293,
+			'price_per_person_gbp'     => 234,
+			'price_per_person_eur'     => 123,
 		];
 		$expected = [];
 		$actual   = format_row_data_from_db( $row_data );
@@ -1272,17 +1307,17 @@ class Test_Adventure_Options extends Softrip_TestCase {
 
 		// Test with non existing softrip option id.
 		$row_data = [
-			'id' => 1,
-			'departure_post_id' => 1,
-			'softrip_package_code' => 'UNQ-123',
-			'service_ids' => 'service_id_1,service_id_2',
-			'spaces_available' => 11,
+			'id'                       => 1,
+			'departure_post_id'        => 1,
+			'softrip_package_code'     => 'UNQ-123',
+			'service_ids'              => 'service_id_1,service_id_2',
+			'spaces_available'         => 11,
 			'adventure_option_term_id' => 1,
-			'price_per_person_usd' => 100,
-			'price_per_person_cad' => 344,
-			'price_per_person_aud' => 293,
-			'price_per_person_gbp' => 234,
-			'price_per_person_eur' => 123,
+			'price_per_person_usd'     => 100,
+			'price_per_person_cad'     => 344,
+			'price_per_person_aud'     => 293,
+			'price_per_person_gbp'     => 234,
+			'price_per_person_eur'     => 123,
 		];
 		$expected = [];
 		$actual   = format_row_data_from_db( $row_data );
@@ -1290,18 +1325,18 @@ class Test_Adventure_Options extends Softrip_TestCase {
 
 		// Test with empty string softrip option id.
 		$row_data = [
-			'id' => 1,
-			'softrip_option_id' => '',
-			'departure_post_id' => 1,
-			'softrip_package_code' => 'UNQ-123',
-			'service_ids' => 'service_id_1,service_id_2',
-			'spaces_available' => 11,
+			'id'                       => 1,
+			'softrip_option_id'        => '',
+			'departure_post_id'        => 1,
+			'softrip_package_code'     => 'UNQ-123',
+			'service_ids'              => 'service_id_1,service_id_2',
+			'spaces_available'         => 11,
 			'adventure_option_term_id' => 1,
-			'price_per_person_usd' => 100,
-			'price_per_person_cad' => 344,
-			'price_per_person_aud' => 293,
-			'price_per_person_gbp' => 234,
-			'price_per_person_eur' => 123,
+			'price_per_person_usd'     => 100,
+			'price_per_person_cad'     => 344,
+			'price_per_person_aud'     => 293,
+			'price_per_person_gbp'     => 234,
+			'price_per_person_eur'     => 123,
 		];
 		$expected = [];
 		$actual   = format_row_data_from_db( $row_data );
@@ -1309,17 +1344,17 @@ class Test_Adventure_Options extends Softrip_TestCase {
 
 		// Test with non-existing departure post id.
 		$row_data = [
-			'id' => 1,
-			'softrip_option_id' => '123',
-			'softrip_package_code' => 'UNQ-123',
-			'service_ids' => 'service_id_1,service_id_2',
-			'spaces_available' => 11,
+			'id'                       => 1,
+			'softrip_option_id'        => '123',
+			'softrip_package_code'     => 'UNQ-123',
+			'service_ids'              => 'service_id_1,service_id_2',
+			'spaces_available'         => 11,
 			'adventure_option_term_id' => 1,
-			'price_per_person_usd' => 100,
-			'price_per_person_cad' => 344,
-			'price_per_person_aud' => 293,
-			'price_per_person_gbp' => 234,
-			'price_per_person_eur' => 123,
+			'price_per_person_usd'     => 100,
+			'price_per_person_cad'     => 344,
+			'price_per_person_aud'     => 293,
+			'price_per_person_gbp'     => 234,
+			'price_per_person_eur'     => 123,
 		];
 		$expected = [];
 		$actual   = format_row_data_from_db( $row_data );
@@ -1327,18 +1362,18 @@ class Test_Adventure_Options extends Softrip_TestCase {
 
 		// Test with 0 departure post id.
 		$row_data = [
-			'id' => 1,
-			'softrip_option_id' => '123',
-			'departure_post_id' => 0,
-			'softrip_package_code' => 'UNQ-123',
-			'service_ids' => 'service_id_1,service_id_2',
-			'spaces_available' => 11,
+			'id'                       => 1,
+			'softrip_option_id'        => '123',
+			'departure_post_id'        => 0,
+			'softrip_package_code'     => 'UNQ-123',
+			'service_ids'              => 'service_id_1,service_id_2',
+			'spaces_available'         => 11,
 			'adventure_option_term_id' => 1,
-			'price_per_person_usd' => 100,
-			'price_per_person_cad' => 344,
-			'price_per_person_aud' => 293,
-			'price_per_person_gbp' => 234,
-			'price_per_person_eur' => 123,
+			'price_per_person_usd'     => 100,
+			'price_per_person_cad'     => 344,
+			'price_per_person_aud'     => 293,
+			'price_per_person_gbp'     => 234,
+			'price_per_person_eur'     => 123,
 		];
 		$expected = [];
 		$actual   = format_row_data_from_db( $row_data );
@@ -1346,12 +1381,12 @@ class Test_Adventure_Options extends Softrip_TestCase {
 
 		// Test with non-existing adventure option term id.
 		$row_data = [
-			'id' => 1,
-			'softrip_option_id' => '123',
-			'departure_post_id' => 1,
+			'id'                   => 1,
+			'softrip_option_id'    => '123',
+			'departure_post_id'    => 1,
 			'softrip_package_code' => 'UNQ-123',
-			'service_ids' => 'service_id_1,service_id_2',
-			'spaces_available' => 11,
+			'service_ids'          => 'service_id_1,service_id_2',
+			'spaces_available'     => 11,
 			'price_per_person_usd' => 100,
 			'price_per_person_cad' => 344,
 			'price_per_person_aud' => 293,
@@ -1364,18 +1399,18 @@ class Test_Adventure_Options extends Softrip_TestCase {
 
 		// Test with 0 adventure option term id.
 		$row_data = [
-			'id' => 1,
-			'softrip_option_id' => '123',
-			'departure_post_id' => 1,
-			'softrip_package_code' => 'UNQ-123',
-			'service_ids' => 'service_id_1,service_id_2',
-			'spaces_available' => 11,
+			'id'                       => 1,
+			'softrip_option_id'        => '123',
+			'departure_post_id'        => 1,
+			'softrip_package_code'     => 'UNQ-123',
+			'service_ids'              => 'service_id_1,service_id_2',
+			'spaces_available'         => 11,
 			'adventure_option_term_id' => 0,
-			'price_per_person_usd' => 100,
-			'price_per_person_cad' => 344,
-			'price_per_person_aud' => 293,
-			'price_per_person_gbp' => 234,
-			'price_per_person_eur' => 123,
+			'price_per_person_usd'     => 100,
+			'price_per_person_cad'     => 344,
+			'price_per_person_aud'     => 293,
+			'price_per_person_gbp'     => 234,
+			'price_per_person_eur'     => 123,
 		];
 		$expected = [];
 		$actual   = format_row_data_from_db( $row_data );
@@ -1383,217 +1418,217 @@ class Test_Adventure_Options extends Softrip_TestCase {
 
 		// Test with non-existing service ids.
 		$row_data = [
-			'id' => 1,
-			'softrip_option_id' => '123',
-			'departure_post_id' => 1,
-			'softrip_package_code' => 'UNQ-123',
-			'spaces_available' => 11,
+			'id'                       => 1,
+			'softrip_option_id'        => '123',
+			'departure_post_id'        => 1,
+			'softrip_package_code'     => 'UNQ-123',
+			'spaces_available'         => 11,
 			'adventure_option_term_id' => 1,
-			'price_per_person_usd' => 100,
-			'price_per_person_cad' => 344,
-			'price_per_person_aud' => 293,
-			'price_per_person_gbp' => 234,
-			'price_per_person_eur' => 123,
+			'price_per_person_usd'     => 100,
+			'price_per_person_cad'     => 344,
+			'price_per_person_aud'     => 293,
+			'price_per_person_gbp'     => 234,
+			'price_per_person_eur'     => 123,
 		];
 		$expected = [
-			'id' => 1,
-			'softrip_option_id' => '123',
-			'departure_post_id' => 1,
-			'softrip_package_code' => 'UNQ-123',
-			'service_ids' => '',
-			'spaces_available' => 11,
+			'id'                       => 1,
+			'softrip_option_id'        => '123',
+			'departure_post_id'        => 1,
+			'softrip_package_code'     => 'UNQ-123',
+			'service_ids'              => '',
+			'spaces_available'         => 11,
 			'adventure_option_term_id' => 1,
-			'price_per_person_usd' => 100,
-			'price_per_person_cad' => 344,
-			'price_per_person_aud' => 293,
-			'price_per_person_gbp' => 234,
-			'price_per_person_eur' => 123,
+			'price_per_person_usd'     => 100,
+			'price_per_person_cad'     => 344,
+			'price_per_person_aud'     => 293,
+			'price_per_person_gbp'     => 234,
+			'price_per_person_eur'     => 123,
 		];
 		$actual   = format_row_data_from_db( $row_data );
 		$this->assertEquals( $expected, $actual );
 
 		// Test with non-existing spaces available.
 		$row_data = [
-			'id' => 1,
-			'softrip_option_id' => '123',
-			'departure_post_id' => 1,
-			'softrip_package_code' => 'UNQ-123',
-			'service_ids' => 'service_id_1,service_id_2',
+			'id'                       => 1,
+			'softrip_option_id'        => '123',
+			'departure_post_id'        => 1,
+			'softrip_package_code'     => 'UNQ-123',
+			'service_ids'              => 'service_id_1,service_id_2',
 			'adventure_option_term_id' => 1,
-			'price_per_person_usd' => 100,
-			'price_per_person_cad' => 344,
-			'price_per_person_aud' => 293,
-			'price_per_person_gbp' => 234,
-			'price_per_person_eur' => 123,
+			'price_per_person_usd'     => 100,
+			'price_per_person_cad'     => 344,
+			'price_per_person_aud'     => 293,
+			'price_per_person_gbp'     => 234,
+			'price_per_person_eur'     => 123,
 		];
 		$expected = [
-			'id' => 1,
-			'softrip_option_id' => '123',
-			'departure_post_id' => 1,
-			'softrip_package_code' => 'UNQ-123',
-			'service_ids' => 'service_id_1,service_id_2',
-			'spaces_available' => 0,
+			'id'                       => 1,
+			'softrip_option_id'        => '123',
+			'departure_post_id'        => 1,
+			'softrip_package_code'     => 'UNQ-123',
+			'service_ids'              => 'service_id_1,service_id_2',
+			'spaces_available'         => 0,
 			'adventure_option_term_id' => 1,
-			'price_per_person_usd' => 100,
-			'price_per_person_cad' => 344,
-			'price_per_person_aud' => 293,
-			'price_per_person_gbp' => 234,
-			'price_per_person_eur' => 123,
+			'price_per_person_usd'     => 100,
+			'price_per_person_cad'     => 344,
+			'price_per_person_aud'     => 293,
+			'price_per_person_gbp'     => 234,
+			'price_per_person_eur'     => 123,
 		];
 		$actual   = format_row_data_from_db( $row_data );
 		$this->assertEquals( $expected, $actual );
 
 		// Test with non-existing price per person usd.
 		$row_data = [
-			'id' => 1,
-			'softrip_option_id' => '123',
-			'departure_post_id' => 1,
-			'softrip_package_code' => 'UNQ-123',
-			'service_ids' => 'service_id_1,service_id_2',
-			'spaces_available' => 11,
+			'id'                       => 1,
+			'softrip_option_id'        => '123',
+			'departure_post_id'        => 1,
+			'softrip_package_code'     => 'UNQ-123',
+			'service_ids'              => 'service_id_1,service_id_2',
+			'spaces_available'         => 11,
 			'adventure_option_term_id' => 1,
-			'price_per_person_cad' => 344,
-			'price_per_person_aud' => 293,
-			'price_per_person_gbp' => 234,
-			'price_per_person_eur' => 123,
+			'price_per_person_cad'     => 344,
+			'price_per_person_aud'     => 293,
+			'price_per_person_gbp'     => 234,
+			'price_per_person_eur'     => 123,
 		];
 		$expected = [
-			'id' => 1,
-			'softrip_option_id' => '123',
-			'departure_post_id' => 1,
-			'softrip_package_code' => 'UNQ-123',
-			'service_ids' => 'service_id_1,service_id_2',
-			'spaces_available' => 11,
+			'id'                       => 1,
+			'softrip_option_id'        => '123',
+			'departure_post_id'        => 1,
+			'softrip_package_code'     => 'UNQ-123',
+			'service_ids'              => 'service_id_1,service_id_2',
+			'spaces_available'         => 11,
 			'adventure_option_term_id' => 1,
-			'price_per_person_usd' => 0,
-			'price_per_person_cad' => 344,
-			'price_per_person_aud' => 293,
-			'price_per_person_gbp' => 234,
-			'price_per_person_eur' => 123,
+			'price_per_person_usd'     => 0,
+			'price_per_person_cad'     => 344,
+			'price_per_person_aud'     => 293,
+			'price_per_person_gbp'     => 234,
+			'price_per_person_eur'     => 123,
 		];
 		$actual   = format_row_data_from_db( $row_data );
 		$this->assertEquals( $expected, $actual );
 
 		// Test with non-existing price per person cad.
 		$row_data = [
-			'id' => 1,
-			'softrip_option_id' => '123',
-			'departure_post_id' => 1,
-			'softrip_package_code' => 'UNQ-123',
-			'service_ids' => 'service_id_1,service_id_2',
-			'spaces_available' => 11,
+			'id'                       => 1,
+			'softrip_option_id'        => '123',
+			'departure_post_id'        => 1,
+			'softrip_package_code'     => 'UNQ-123',
+			'service_ids'              => 'service_id_1,service_id_2',
+			'spaces_available'         => 11,
 			'adventure_option_term_id' => 1,
-			'price_per_person_usd' => 100,
-			'price_per_person_aud' => 293,
-			'price_per_person_gbp' => 234,
-			'price_per_person_eur' => 123,
+			'price_per_person_usd'     => 100,
+			'price_per_person_aud'     => 293,
+			'price_per_person_gbp'     => 234,
+			'price_per_person_eur'     => 123,
 		];
 		$expected = [
-			'id' => 1,
-			'softrip_option_id' => '123',
-			'departure_post_id' => 1,
-			'softrip_package_code' => 'UNQ-123',
-			'service_ids' => 'service_id_1,service_id_2',
-			'spaces_available' => 11,
+			'id'                       => 1,
+			'softrip_option_id'        => '123',
+			'departure_post_id'        => 1,
+			'softrip_package_code'     => 'UNQ-123',
+			'service_ids'              => 'service_id_1,service_id_2',
+			'spaces_available'         => 11,
 			'adventure_option_term_id' => 1,
-			'price_per_person_usd' => 100,
-			'price_per_person_cad' => 0,
-			'price_per_person_aud' => 293,
-			'price_per_person_gbp' => 234,
-			'price_per_person_eur' => 123,
+			'price_per_person_usd'     => 100,
+			'price_per_person_cad'     => 0,
+			'price_per_person_aud'     => 293,
+			'price_per_person_gbp'     => 234,
+			'price_per_person_eur'     => 123,
 		];
 		$actual   = format_row_data_from_db( $row_data );
 		$this->assertEquals( $expected, $actual );
 
 		// Test with non-existing price per person aud.
 		$row_data = [
-			'id' => 1,
-			'softrip_option_id' => '123',
-			'departure_post_id' => 1,
-			'softrip_package_code' => 'UNQ-123',
-			'service_ids' => 'service_id_1,service_id_2',
-			'spaces_available' => 11,
+			'id'                       => 1,
+			'softrip_option_id'        => '123',
+			'departure_post_id'        => 1,
+			'softrip_package_code'     => 'UNQ-123',
+			'service_ids'              => 'service_id_1,service_id_2',
+			'spaces_available'         => 11,
 			'adventure_option_term_id' => 1,
-			'price_per_person_usd' => 100,
-			'price_per_person_cad' => 344,
-			'price_per_person_gbp' => 234,
-			'price_per_person_eur' => 123,
+			'price_per_person_usd'     => 100,
+			'price_per_person_cad'     => 344,
+			'price_per_person_gbp'     => 234,
+			'price_per_person_eur'     => 123,
 		];
 		$expected = [
-			'id' => 1,
-			'softrip_option_id' => '123',
-			'departure_post_id' => 1,
-			'softrip_package_code' => 'UNQ-123',
-			'service_ids' => 'service_id_1,service_id_2',
-			'spaces_available' => 11,
+			'id'                       => 1,
+			'softrip_option_id'        => '123',
+			'departure_post_id'        => 1,
+			'softrip_package_code'     => 'UNQ-123',
+			'service_ids'              => 'service_id_1,service_id_2',
+			'spaces_available'         => 11,
 			'adventure_option_term_id' => 1,
-			'price_per_person_usd' => 100,
-			'price_per_person_cad' => 344,
-			'price_per_person_aud' => 0,
-			'price_per_person_gbp' => 234,
-			'price_per_person_eur' => 123,
+			'price_per_person_usd'     => 100,
+			'price_per_person_cad'     => 344,
+			'price_per_person_aud'     => 0,
+			'price_per_person_gbp'     => 234,
+			'price_per_person_eur'     => 123,
 		];
 		$actual   = format_row_data_from_db( $row_data );
 		$this->assertEquals( $expected, $actual );
 
 		// Test with non-existing price per person gbp.
 		$row_data = [
-			'id' => 1,
-			'softrip_option_id' => '123',
-			'departure_post_id' => 1,
-			'softrip_package_code' => 'UNQ-123',
-			'service_ids' => 'service_id_1,service_id_2',
-			'spaces_available' => 11,
+			'id'                       => 1,
+			'softrip_option_id'        => '123',
+			'departure_post_id'        => 1,
+			'softrip_package_code'     => 'UNQ-123',
+			'service_ids'              => 'service_id_1,service_id_2',
+			'spaces_available'         => 11,
 			'adventure_option_term_id' => 1,
-			'price_per_person_usd' => 100,
-			'price_per_person_cad' => 344,
-			'price_per_person_aud' => 293,
-			'price_per_person_eur' => 123,
+			'price_per_person_usd'     => 100,
+			'price_per_person_cad'     => 344,
+			'price_per_person_aud'     => 293,
+			'price_per_person_eur'     => 123,
 		];
 		$expected = [
-			'id' => 1,
-			'softrip_option_id' => '123',
-			'departure_post_id' => 1,
-			'softrip_package_code' => 'UNQ-123',
-			'service_ids' => 'service_id_1,service_id_2',
-			'spaces_available' => 11,
+			'id'                       => 1,
+			'softrip_option_id'        => '123',
+			'departure_post_id'        => 1,
+			'softrip_package_code'     => 'UNQ-123',
+			'service_ids'              => 'service_id_1,service_id_2',
+			'spaces_available'         => 11,
 			'adventure_option_term_id' => 1,
-			'price_per_person_usd' => 100,
-			'price_per_person_cad' => 344,
-			'price_per_person_aud' => 293,
-			'price_per_person_gbp' => 0,
-			'price_per_person_eur' => 123,
+			'price_per_person_usd'     => 100,
+			'price_per_person_cad'     => 344,
+			'price_per_person_aud'     => 293,
+			'price_per_person_gbp'     => 0,
+			'price_per_person_eur'     => 123,
 		];
 		$actual   = format_row_data_from_db( $row_data );
 		$this->assertEquals( $expected, $actual );
 
 		// Test with non-existing price per person eur.
 		$row_data = [
-			'id' => 1,
-			'softrip_option_id' => '123',
-			'departure_post_id' => 1,
-			'softrip_package_code' => 'UNQ-123',
-			'service_ids' => 'service_id_1,service_id_2',
-			'spaces_available' => 11,
+			'id'                       => 1,
+			'softrip_option_id'        => '123',
+			'departure_post_id'        => 1,
+			'softrip_package_code'     => 'UNQ-123',
+			'service_ids'              => 'service_id_1,service_id_2',
+			'spaces_available'         => 11,
 			'adventure_option_term_id' => 1,
-			'price_per_person_usd' => 100,
-			'price_per_person_cad' => 344,
-			'price_per_person_aud' => 293,
-			'price_per_person_gbp' => 234,
+			'price_per_person_usd'     => 100,
+			'price_per_person_cad'     => 344,
+			'price_per_person_aud'     => 293,
+			'price_per_person_gbp'     => 234,
 		];
 		$expected = [
-			'id' => 1,
-			'softrip_option_id' => '123',
-			'departure_post_id' => 1,
-			'softrip_package_code' => 'UNQ-123',
-			'service_ids' => 'service_id_1,service_id_2',
-			'spaces_available' => 11,
+			'id'                       => 1,
+			'softrip_option_id'        => '123',
+			'departure_post_id'        => 1,
+			'softrip_package_code'     => 'UNQ-123',
+			'service_ids'              => 'service_id_1,service_id_2',
+			'spaces_available'         => 11,
 			'adventure_option_term_id' => 1,
-			'price_per_person_usd' => 100,
-			'price_per_person_cad' => 344,
-			'price_per_person_aud' => 293,
-			'price_per_person_gbp' => 234,
-			'price_per_person_eur' => 0,
+			'price_per_person_usd'     => 100,
+			'price_per_person_cad'     => 344,
+			'price_per_person_aud'     => 293,
+			'price_per_person_gbp'     => 234,
+			'price_per_person_eur'     => 0,
 		];
 		$actual   = format_row_data_from_db( $row_data );
 		$this->assertEquals( $expected, $actual );
@@ -1615,17 +1650,17 @@ class Test_Adventure_Options extends Softrip_TestCase {
 		// Test with non-existing id.
 		$row_data = [
 			[
-				'softrip_option_id' => '123',
-				'departure_post_id' => '1',
-				'softrip_package_code' => 'UNQ-123',
-				'service_ids' => 'service_id_1,service_id_2',
-				'spaces_available' => '11',
+				'softrip_option_id'        => '123',
+				'departure_post_id'        => '1',
+				'softrip_package_code'     => 'UNQ-123',
+				'service_ids'              => 'service_id_1,service_id_2',
+				'spaces_available'         => '11',
 				'adventure_option_term_id' => '1',
-				'price_per_person_usd' => '100',
-				'price_per_person_cad' => '344',
-				'price_per_person_aud' => '293',
-				'price_per_person_gbp' => '234',
-				'price_per_person_eur' => '123',
+				'price_per_person_usd'     => '100',
+				'price_per_person_cad'     => '344',
+				'price_per_person_aud'     => '293',
+				'price_per_person_gbp'     => '234',
+				'price_per_person_eur'     => '123',
 			],
 		];
 		$expected = [];
@@ -1635,18 +1670,18 @@ class Test_Adventure_Options extends Softrip_TestCase {
 		// Test with 0 id.
 		$row_data = [
 			[
-				'id' => '0',
-				'softrip_option_id' => '123',
-				'departure_post_id' => '1',
-				'softrip_package_code' => 'UNQ-123',
-				'service_ids' => 'service_id_1,service_id_2',
-				'spaces_available' => '11',
+				'id'                       => '0',
+				'softrip_option_id'        => '123',
+				'departure_post_id'        => '1',
+				'softrip_package_code'     => 'UNQ-123',
+				'service_ids'              => 'service_id_1,service_id_2',
+				'spaces_available'         => '11',
 				'adventure_option_term_id' => '1',
-				'price_per_person_usd' => '100',
-				'price_per_person_cad' => '344',
-				'price_per_person_aud' => '293',
-				'price_per_person_gbp' => '234',
-				'price_per_person_eur' => '123',
+				'price_per_person_usd'     => '100',
+				'price_per_person_cad'     => '344',
+				'price_per_person_aud'     => '293',
+				'price_per_person_gbp'     => '234',
+				'price_per_person_eur'     => '123',
 			],
 		];
 		$expected = [];
@@ -1656,17 +1691,17 @@ class Test_Adventure_Options extends Softrip_TestCase {
 		// Test with non existing softrip option id.
 		$row_data = [
 			[
-				'id' => '1',
-				'departure_post_id' => '1',
-				'softrip_package_code' => 'UNQ-123',
-				'service_ids' => 'service_id_1,service_id_2',
-				'spaces_available' => '11',
+				'id'                       => '1',
+				'departure_post_id'        => '1',
+				'softrip_package_code'     => 'UNQ-123',
+				'service_ids'              => 'service_id_1,service_id_2',
+				'spaces_available'         => '11',
 				'adventure_option_term_id' => '1',
-				'price_per_person_usd' => '100',
-				'price_per_person_cad' => '344',
-				'price_per_person_aud' => '293',
-				'price_per_person_gbp' => '234',
-				'price_per_person_eur' => '123',
+				'price_per_person_usd'     => '100',
+				'price_per_person_cad'     => '344',
+				'price_per_person_aud'     => '293',
+				'price_per_person_gbp'     => '234',
+				'price_per_person_eur'     => '123',
 			],
 		];
 		$expected = [];
@@ -1676,62 +1711,62 @@ class Test_Adventure_Options extends Softrip_TestCase {
 		// Test with valid rows.
 		$row_data = [
 			[
-				'id' => '1',
-				'softrip_option_id' => '123',
-				'departure_post_id' => '1',
-				'softrip_package_code' => 'UNQ-123',
-				'service_ids' => 'service_id_1,service_id_2',
-				'spaces_available' => '11',
+				'id'                       => '1',
+				'softrip_option_id'        => '123',
+				'departure_post_id'        => '1',
+				'softrip_package_code'     => 'UNQ-123',
+				'service_ids'              => 'service_id_1,service_id_2',
+				'spaces_available'         => '11',
 				'adventure_option_term_id' => '1',
-				'price_per_person_usd' => '100',
-				'price_per_person_cad' => '344',
-				'price_per_person_aud' => '293',
-				'price_per_person_gbp' => '234',
-				'price_per_person_eur' => '123',
+				'price_per_person_usd'     => '100',
+				'price_per_person_cad'     => '344',
+				'price_per_person_aud'     => '293',
+				'price_per_person_gbp'     => '234',
+				'price_per_person_eur'     => '123',
 			],
 			[
-				'id' => '2',
-				'softrip_option_id' => '456',
-				'departure_post_id' => '2',
-				'softrip_package_code' => 'UNQ-456',
-				'service_ids' => 'service_id_2',
-				'spaces_available' => '22',
+				'id'                       => '2',
+				'softrip_option_id'        => '456',
+				'departure_post_id'        => '2',
+				'softrip_package_code'     => 'UNQ-456',
+				'service_ids'              => 'service_id_2',
+				'spaces_available'         => '22',
 				'adventure_option_term_id' => '2',
-				'price_per_person_usd' => '200',
-				'price_per_person_cad' => '344',
-				'price_per_person_aud' => '293',
-				'price_per_person_gbp' => '234',
-				'price_per_person_eur' => '123',
+				'price_per_person_usd'     => '200',
+				'price_per_person_cad'     => '344',
+				'price_per_person_aud'     => '293',
+				'price_per_person_gbp'     => '234',
+				'price_per_person_eur'     => '123',
 			],
 		];
 		$expected = [
 			[
-				'id' => 1,
-				'softrip_option_id' => '123',
-				'departure_post_id' => 1,
-				'softrip_package_code' => 'UNQ-123',
-				'service_ids' => 'service_id_1,service_id_2',
-				'spaces_available' => 11,
+				'id'                       => 1,
+				'softrip_option_id'        => '123',
+				'departure_post_id'        => 1,
+				'softrip_package_code'     => 'UNQ-123',
+				'service_ids'              => 'service_id_1,service_id_2',
+				'spaces_available'         => 11,
 				'adventure_option_term_id' => 1,
-				'price_per_person_usd' => 100,
-				'price_per_person_cad' => 344,
-				'price_per_person_aud' => 293,
-				'price_per_person_gbp' => 234,
-				'price_per_person_eur' => 123,
+				'price_per_person_usd'     => 100,
+				'price_per_person_cad'     => 344,
+				'price_per_person_aud'     => 293,
+				'price_per_person_gbp'     => 234,
+				'price_per_person_eur'     => 123,
 			],
 			[
-				'id' => 2,
-				'softrip_option_id' => '456',
-				'departure_post_id' => 2,
-				'softrip_package_code' => 'UNQ-456',
-				'service_ids' => 'service_id_2',
-				'spaces_available' => 22,
+				'id'                       => 2,
+				'softrip_option_id'        => '456',
+				'departure_post_id'        => 2,
+				'softrip_package_code'     => 'UNQ-456',
+				'service_ids'              => 'service_id_2',
+				'spaces_available'         => 22,
 				'adventure_option_term_id' => 2,
-				'price_per_person_usd' => 200,
-				'price_per_person_cad' => 344,
-				'price_per_person_aud' => 293,
-				'price_per_person_gbp' => 234,
-				'price_per_person_eur' => 123,
+				'price_per_person_usd'     => 200,
+				'price_per_person_cad'     => 344,
+				'price_per_person_aud'     => 293,
+				'price_per_person_gbp'     => 234,
+				'price_per_person_eur'     => 123,
 			],
 		];
 		$actual   = format_rows_data_from_db( $row_data );

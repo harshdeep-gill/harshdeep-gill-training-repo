@@ -160,12 +160,15 @@ abstract class Softrip_TestCase extends WP_UnitTestCase {
 	 * Get Date interval from a date string.
 	 *
 	 * @param string $datetime Date string.
+	 *
 	 * @return DateInterval
 	 */
-	protected function get_date_interval( string $datetime ): DateInterval {
+	protected function get_date_interval( string $datetime = '' ): DateInterval {
+		// Create a date interval from the string.
 		$interval_date = date_interval_create_from_date_string( $datetime );
-
 		$this->assertTrue( $interval_date instanceof DateInterval );
+
+		// Return date interval.
 		return $interval_date;
 	}
 
@@ -175,9 +178,11 @@ abstract class Softrip_TestCase extends WP_UnitTestCase {
 	 * @return DateTime
 	 */
 	protected function get_current_date(): DateTime {
+		// Create a date object.
 		$current_date = date_create();
 		$this->assertTrue( $current_date instanceof DateTime );
 
+		// Return the date object.
 		return $current_date;
 	}
 }

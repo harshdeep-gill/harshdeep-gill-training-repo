@@ -63,7 +63,7 @@ class Test_Update_Departures extends Softrip_TestCase {
 			],
 		];
 		$pqo_raw_departures          = $original_pqo_raw_departures;
-		$yesterday = date_format( date_sub( $this->get_current_date(), $this->get_date_interval( '1 days' ) ), 'Y-m-d' );
+		$yesterday                   = date_format( date_sub( $this->get_current_date(), $this->get_date_interval( '1 days' ) ), 'Y-m-d' );
 
 		// Create english term.
 		$english_term = wp_insert_term( 'English', SPOKEN_LANGUAGE_TAXONOMY );
@@ -649,7 +649,6 @@ class Test_Update_Departures extends Softrip_TestCase {
 		wp_delete_post( $ship_id_omx, true );
 
 		// Test with real mock data.
-
 		// Setup mock response.
 		add_filter( 'pre_http_request', 'Quark\Tests\Softrip\mock_softrip_http_request', 10, 3 );
 
@@ -720,7 +719,7 @@ class Test_Update_Departures extends Softrip_TestCase {
 		/**
 		 * Test for softrip package code 3 - JKL-012.
 		 */
-		
+
 		// Get departure posts.
 		$departure_posts = get_posts(
 			[
@@ -768,6 +767,5 @@ class Test_Update_Departures extends Softrip_TestCase {
 			]
 		);
 		$this->assertCount( 4, $departure_posts );
-
 	}
 }
