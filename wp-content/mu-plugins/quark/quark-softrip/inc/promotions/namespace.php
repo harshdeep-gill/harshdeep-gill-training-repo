@@ -97,11 +97,14 @@ function update_promotions( array $raw_promotions_data = [] ): bool {
 		// If the promotion exists, update it.
 		if ( ! empty( $existing_promotion_data['id'] ) ) {
 			// Update the promotion.
-			$updated_id = $wpdb->update(
+			$is_saved = $wpdb->update(
 				$table_name,
 				$formatted_data,
 				[ 'id' => $existing_promotion_data['id'] ]
 			);
+
+			// Get the updated ID.
+			$updated_id = $is_saved ? $existing_promotion_data['id'] : 0;
 		} else {
 			// Insert the promotion.
 			$wpdb->insert(

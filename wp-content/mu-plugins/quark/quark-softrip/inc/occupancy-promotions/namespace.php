@@ -153,11 +153,14 @@ function update_occupancy_promotions( array $raw_occupancy_promotions = [], int 
 		// If the occupancy promotion exists, update it.
 		if ( ! empty( $existing_occupancy_promotion ) && is_array( $existing_occupancy_promotion ) && ! empty( $existing_occupancy_promotion['id'] ) ) {
 			// Update the occupancy promotion.
-			$updated_id = $wpdb->update(
+			$wpdb->update(
 				$table_name,
 				$promo_data,
 				[ 'id' => $existing_occupancy_promotion['id'] ]
 			);
+
+			// Set the updated ID.
+			$updated_id = $existing_occupancy_promotion['id'];
 		} else {
 			// Insert the occupancy promotion.
 			$wpdb->insert(
