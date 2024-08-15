@@ -12,11 +12,16 @@ use Quark\Tests\Softrip\Softrip_TestCase;
 use function Quark\Softrip\do_sync;
 use function Quark\Softrip\get_engine_collate;
 use function Quark\Softrip\Occupancies\add_supplemental_and_mandatory_price;
+use function Quark\Softrip\Occupancies\clear_occupancies_by_departure;
+use function Quark\Softrip\Occupancies\delete_occupancy_by_id;
 use function Quark\Softrip\Occupancies\format_data;
+use function Quark\Softrip\Occupancies\format_row_data_from_db;
+use function Quark\Softrip\Occupancies\format_rows_data_from_db;
 use function Quark\Softrip\Occupancies\get_cabin_category_post_by_cabin_code;
 use function Quark\Softrip\Occupancies\get_cabin_category_post_ids_by_departure;
 use function Quark\Softrip\Occupancies\get_description_and_pax_count_by_mask;
 use function Quark\Softrip\Occupancies\get_lowest_price;
+use function Quark\Softrip\Occupancies\get_lowest_price_by_cabin_category_and_departure;
 use function Quark\Softrip\Occupancies\get_occupancies_by_cabin_category_and_departure;
 use function Quark\Softrip\Occupancies\get_occupancies_by_departure;
 use function Quark\Softrip\Occupancies\get_occupancy_data_by_id;
@@ -2001,6 +2006,7 @@ class Test_Occupancies extends Softrip_TestCase {
 
 		// Inserted occupancy ID.
 		$occupancy_id = $wpdb->insert_id;
+		$this->assertIsInt( $occupancy_id );
 
 		// Test with valid currency without any promotion.
 		$expected = [
@@ -2477,6 +2483,988 @@ class Test_Occupancies extends Softrip_TestCase {
 			'discounted' => 5,
 		];
 		$actual   = add_supplemental_and_mandatory_price( $lowest_price, $departure_post_id, 'USD' );
+		$this->assertEquals( $expected, $actual );
+	}
+
+	/**
+	 * Test delete occupancy by id.
+	 *
+	 * @covers \Quark\Softrip\Occupancies\delete_occupancy_by_id
+	 *
+	 * @return void
+	 */
+	public function test_delete_occupancy_by_id(): void {
+		// Test with no arguments.
+		$actual = delete_occupancy_by_id();
+		$this->assertFalse( $actual );
+
+		// Test with invalid occupancy ID.
+		$occupancy_id = 0;
+		$actual       = delete_occupancy_by_id( $occupancy_id );
+		$this->assertFalse( $actual );
+
+		// Test with non-existing occupancy ID.
+		$occupancy_id = 1;
+		$actual       = delete_occupancy_by_id( $occupancy_id );
+		$this->assertFalse( $actual );
+
+		// Create an occupancy without promotion.
+		$raw_occupancy_data     = [
+			'id'                      => 'PQO-123:2026-02-20:OEX-SGL:A',
+			'name'                    => 'Test Occupancy',
+			'mask'                    => 'A',
+			'spacesAvailable'         => 10,
+			'availabilityDescription' => 'Available',
+			'availabilityStatus'      => 'O',
+			'prices'                  => [
+				'USD' => [
+					'currencyCode'   => 'USD',
+					'pricePerPerson' => 100,
+				],
+				'CAD' => [
+					'currencyCode'   => 'CAD',
+					'pricePerPerson' => 150,
+				],
+				'AUD' => [
+					'currencyCode'   => 'AUD',
+					'pricePerPerson' => 200,
+				],
+				'GBP' => [
+					'currencyCode'   => 'GBP',
+					'pricePerPerson' => 250,
+				],
+				'EUR' => [
+					'currencyCode'   => 'EUR',
+					'pricePerPerson' => 300,
+				],
+			],
+		];
+		$departure_post_id      = 1231;
+		$cabin_category_post_id = 4561;
+		$formatted_data         = format_data( $raw_occupancy_data, $cabin_category_post_id, $departure_post_id );
+		$this->assertIsArray( $formatted_data );
+		$this->assertNotEmpty( $formatted_data );
+
+		// Get table name.
+		$table_name = get_table_name();
+
+		// Get global wpdb object.
+		global $wpdb;
+
+		// Insert occupancy data.
+		$wpdb->insert( $table_name, $formatted_data );
+
+		// Inserted occupancy ID.
+		$occupancy_id = $wpdb->insert_id;
+
+		// Get occupancy by id.
+		$occupancies = get_occupancy_data_by_id( $occupancy_id );
+		$this->assertIsArray( $occupancies );
+		$this->assertNotEmpty( $occupancies );
+		$this->assertCount( 1, $occupancies );
+
+		// Get first occupancy.
+		$occupancy = $occupancies[0];
+		$this->assertIsArray( $occupancy );
+		$this->assertNotEmpty( $occupancy );
+
+		// Get occupancy by softrip ID.
+		$occupancies_from_softrip_id = get_occupancy_data_by_softrip_id( $occupancies[0]['softrip_id'] );
+		$this->assertIsArray( $occupancies_from_softrip_id );
+		$this->assertNotEmpty( $occupancies_from_softrip_id );
+		$this->assertCount( 1, $occupancies_from_softrip_id );
+
+		// Cache key.
+		$id_cache_key         = CACHE_KEY_PREFIX . '_occupancy_id_' . $occupancy_id;
+		$softrip_id_cache_key = CACHE_KEY_PREFIX . '_softrip_id_' . $occupancy['softrip_id'];
+
+		// Cache should not be empty.
+		$actual_from_cache = wp_cache_get( $id_cache_key, CACHE_GROUP );
+		$this->assertIsArray( $actual_from_cache );
+		$this->assertNotEmpty( $actual_from_cache );
+		$this->assertEquals( $occupancies, $actual_from_cache );
+
+		// Cache should not be empty.
+		$actual_from_cache = wp_cache_get( $softrip_id_cache_key, CACHE_GROUP );
+		$this->assertIsArray( $actual_from_cache );
+		$this->assertNotEmpty( $actual_from_cache );
+		$this->assertEquals( $occupancies, $actual_from_cache );
+
+		// Test with valid occupancy ID.
+		$actual = delete_occupancy_by_id( $occupancy_id );
+		$this->assertTrue( $actual );
+
+		// Cache should be empty.
+		$actual_from_cache = wp_cache_get( $id_cache_key, CACHE_GROUP );
+		$this->assertFalse( $actual_from_cache );
+
+		// Cache should be empty.
+		$actual_from_cache = wp_cache_get( $softrip_id_cache_key, CACHE_GROUP );
+		$this->assertFalse( $actual_from_cache );
+	}
+
+	/**
+	 * Test delete occupancies by departure id.
+	 *
+	 * @covers \Quark\Softrip\Occupancies\clear_occupancies_by_departure
+	 *
+	 * @return void
+	 */
+	public function test_clear_occupancies_by_departure(): void {
+		// Test with no arguments.
+		$actual = clear_occupancies_by_departure();
+		$this->assertFalse( $actual );
+
+		// Test with invalid departure ID.
+		$departure_post_id = 0;
+		$actual            = clear_occupancies_by_departure( $departure_post_id );
+		$this->assertFalse( $actual );
+
+		// Test with non-existing departure ID.
+		$departure_post_id = 1;
+		$actual            = clear_occupancies_by_departure( $departure_post_id );
+		$this->assertFalse( $actual );
+
+		// Create an occupancy without promotion.
+		$raw_occupancy_data     = [
+			'id'                      => 'PQO-123:2026-02-20:OEX-SGL:A',
+			'name'                    => 'Test Occupancy',
+			'mask'                    => 'A',
+			'spacesAvailable'         => 10,
+			'availabilityDescription' => 'Available',
+			'availabilityStatus'      => 'O',
+			'prices'                  => [
+				'USD' => [
+					'currencyCode'   => 'USD',
+					'pricePerPerson' => 100,
+				],
+				'CAD' => [
+					'currencyCode'   => 'CAD',
+					'pricePerPerson' => 150,
+				],
+				'AUD' => [
+					'currencyCode'   => 'AUD',
+					'pricePerPerson' => 200,
+				],
+				'GBP' => [
+					'currencyCode'   => 'GBP',
+					'pricePerPerson' => 250,
+				],
+				'EUR' => [
+					'currencyCode'   => 'EUR',
+					'pricePerPerson' => 300,
+				],
+			],
+		];
+		$departure_post_id      = 1231;
+		$cabin_category_post_id = 4561;
+		$formatted_data         = format_data( $raw_occupancy_data, $cabin_category_post_id, $departure_post_id );
+		$this->assertIsArray( $formatted_data );
+		$this->assertNotEmpty( $formatted_data );
+
+		// Get table name.
+		$table_name = get_table_name();
+
+		// Get global wpdb object.
+		global $wpdb;
+
+		// Insert occupancy data.
+		$wpdb->insert( $table_name, $formatted_data );
+
+		// Inserted occupancy ID.
+		$occupancy_id = $wpdb->insert_id;
+
+		// Get occupancies by departure ID so that cache is warmed.
+		$occupancies = get_occupancies_by_departure( $departure_post_id );
+		$this->assertIsArray( $occupancies );
+		$this->assertNotEmpty( $occupancies );
+		$this->assertCount( 1, $occupancies );
+
+		// Get occupancy by cabin category ID.
+		$occupancies_by_cabin_category = get_occupancies_by_cabin_category_and_departure( $cabin_category_post_id, $departure_post_id );
+		$this->assertIsArray( $occupancies_by_cabin_category );
+		$this->assertNotEmpty( $occupancies_by_cabin_category );
+		$this->assertCount( 1, $occupancies_by_cabin_category );
+
+		// Get occupancy by softrip id.
+		$occupancies_by_softrip_id = get_occupancy_data_by_softrip_id( $occupancies[0]['softrip_id'] );
+		$this->assertIsArray( $occupancies_by_softrip_id );
+		$this->assertNotEmpty( $occupancies_by_softrip_id );
+		$this->assertCount( 1, $occupancies_by_softrip_id );
+
+		// Get occupancy by ID.
+		$occupancies_by_id = get_occupancy_data_by_id( $occupancy_id );
+		$this->assertIsArray( $occupancies_by_id );
+		$this->assertNotEmpty( $occupancies_by_id );
+		$this->assertCount( 1, $occupancies_by_id );
+
+		// Insert more occupancy.
+		$raw_occupancy_data2 = [
+			'id'                      => 'PQO-123:2026-02-20:OEX-SGL:AA',
+			'name'                    => 'Test Occupancy 2',
+			'mask'                    => 'AA',
+			'spacesAvailable'         => 10,
+			'availabilityDescription' => 'Available',
+			'availabilityStatus'      => 'O',
+			'prices'                  => [
+				'USD' => [
+					'currencyCode'   => 'USD',
+					'pricePerPerson' => 50,
+				],
+				'CAD' => [
+					'currencyCode'   => 'CAD',
+					'pricePerPerson' => 75,
+				],
+				'AUD' => [
+					'currencyCode'   => 'AUD',
+					'pricePerPerson' => 100,
+				],
+				'GBP' => [
+					'currencyCode'   => 'GBP',
+					'pricePerPerson' => 125,
+				],
+				'EUR' => [
+					'currencyCode'   => 'EUR',
+					'pricePerPerson' => 150,
+				],
+			],
+		];
+		$formatted_data2     = format_data( $raw_occupancy_data2, $cabin_category_post_id, $departure_post_id );
+		$this->assertIsArray( $formatted_data2 );
+		$this->assertNotEmpty( $formatted_data2 );
+
+		// Insert occupancy data.
+		$wpdb->insert( $table_name, $formatted_data2 );
+
+		// Get inserted occupancy ID.
+		$occupancy_id2 = $wpdb->insert_id;
+		$this->assertIsInt( $occupancy_id2 );
+
+		// Get occupancies.
+		$occupancies = get_occupancies_by_departure( $departure_post_id, true );
+		$this->assertIsArray( $occupancies );
+		$this->assertNotEmpty( $occupancies );
+		$this->assertCount( 2, $occupancies );
+
+		// Delete occupancies by departure ID.
+		$actual = clear_occupancies_by_departure( $departure_post_id );
+		$this->assertTrue( $actual );
+
+		// Departure caches should be empty.
+		$actual_from_cache = wp_cache_get( CACHE_KEY_PREFIX . '_departure_post_id_' . $departure_post_id, CACHE_GROUP );
+		$this->assertFalse( $actual_from_cache );
+
+		// Cabin category caches should be empty.
+		$actual_from_cache = wp_cache_get( CACHE_KEY_PREFIX . '_cabin_category_post_id_' . $cabin_category_post_id . '_departure_post_id_' . $departure_post_id, CACHE_GROUP );
+		$this->assertFalse( $actual_from_cache );
+
+		// Occupancy caches should be empty.
+		$actual_from_cache = wp_cache_get( CACHE_KEY_PREFIX . '_occupancy_id_' . $occupancy_id, CACHE_GROUP );
+		$this->assertFalse( $actual_from_cache );
+		$actual_from_cache = wp_cache_get( CACHE_KEY_PREFIX . '_occupancy_id_' . $occupancy_id2, CACHE_GROUP );
+		$this->assertFalse( $actual_from_cache );
+	}
+
+	/**
+	 * Get lowest price by cabin category and departure.
+	 *
+	 * @covers \Quark\Softrip\Occupancies\get_lowest_price_by_cabin_category_and_departure
+	 *
+	 * @return void
+	 */
+	public function test_get_lowest_price_by_cabin_category_and_departure(): void {
+		// Setup default expected.
+		$expected_default = [
+			'original'   => 0,
+			'discounted' => 0,
+		];
+
+		// Test with no arguments.
+		$actual = get_lowest_price_by_cabin_category_and_departure();
+		$this->assertEquals( $expected_default, $actual );
+
+		// Test with invalid cabin category ID.
+		$cabin_category_post_id = 0;
+		$departure_post_id      = 1231;
+		$actual                 = get_lowest_price_by_cabin_category_and_departure( $cabin_category_post_id, $departure_post_id );
+		$this->assertEquals( $expected_default, $actual );
+
+		// Test with invalid departure ID.
+		$cabin_category_post_id = 4561;
+		$departure_post_id      = 0;
+		$actual                 = get_lowest_price_by_cabin_category_and_departure( $cabin_category_post_id, $departure_post_id );
+		$this->assertEquals( $expected_default, $actual );
+
+		// Test with non-existing cabin category ID.
+		$cabin_category_post_id = 1;
+		$departure_post_id      = 1231;
+		$actual                 = get_lowest_price_by_cabin_category_and_departure( $cabin_category_post_id, $departure_post_id );
+		$this->assertEquals( $expected_default, $actual );
+
+		// Test with non-existing departure ID.
+		$cabin_category_post_id = 4561;
+		$departure_post_id      = 1;
+		$actual                 = get_lowest_price_by_cabin_category_and_departure( $cabin_category_post_id, $departure_post_id );
+		$this->assertEquals( $expected_default, $actual );
+
+		// Create an occupancy without promotion.
+		$raw_occupancy_data     = [
+			'id'                      => 'PQO-123:2026-02-20:OEX-SGL:A',
+			'name'                    => 'Test Occupancy',
+			'mask'                    => 'A',
+			'spacesAvailable'         => 10,
+			'availabilityDescription' => 'Available',
+			'availabilityStatus'      => 'O',
+			'prices'                  => [
+				'USD' => [
+					'currencyCode'   => 'USD',
+					'pricePerPerson' => 100,
+				],
+				'CAD' => [
+					'currencyCode'   => 'CAD',
+					'pricePerPerson' => 150,
+				],
+				'AUD' => [
+					'currencyCode'   => 'AUD',
+					'pricePerPerson' => 200,
+				],
+				'GBP' => [
+					'currencyCode'   => 'GBP',
+					'pricePerPerson' => 250,
+				],
+				'EUR' => [
+					'currencyCode'   => 'EUR',
+					'pricePerPerson' => 300,
+				],
+			],
+		];
+		$departure_post_id      = 1231;
+		$cabin_category_post_id = 4561;
+		$formatted_data         = format_data( $raw_occupancy_data, $cabin_category_post_id, $departure_post_id );
+		$this->assertIsArray( $formatted_data );
+		$this->assertNotEmpty( $formatted_data );
+
+		// Get table name.
+		$table_name = get_table_name();
+
+		// Get global wpdb object.
+		global $wpdb;
+
+		// Insert occupancy data.
+		$wpdb->insert( $table_name, $formatted_data );
+
+		// Inserted occupancy ID.
+		$occupancy_id = $wpdb->insert_id;
+		$this->assertIsInt( $occupancy_id );
+
+		// Get lowest price by cabin category and departure - USD.
+		$expected = [
+			'original'   => 100,
+			'discounted' => 0,
+		];
+		$actual   = get_lowest_price_by_cabin_category_and_departure( $cabin_category_post_id, $departure_post_id );
+		$this->assertEquals( $expected, $actual );
+
+		// Get lowest price by cabin category and departure - CAD.
+		$expected = [
+			'original'   => 150,
+			'discounted' => 0,
+		];
+		$actual   = get_lowest_price_by_cabin_category_and_departure( $cabin_category_post_id, $departure_post_id, 'CAD' );
+		$this->assertEquals( $expected, $actual );
+
+		// Get lowest price by cabin category and departure - AUD.
+		$expected = [
+			'original'   => 200,
+			'discounted' => 0,
+		];
+		$actual   = get_lowest_price_by_cabin_category_and_departure( $cabin_category_post_id, $departure_post_id, 'AUD' );
+		$this->assertEquals( $expected, $actual );
+
+		// Get lowest price by cabin category and departure - GBP. Also, smaller case currency.
+		$expected = [
+			'original'   => 250,
+			'discounted' => 0,
+		];
+		$actual   = get_lowest_price_by_cabin_category_and_departure( $cabin_category_post_id, $departure_post_id, 'gbp' );
+		$this->assertEquals( $expected, $actual );
+
+		// Get lowest price by cabin category and departure - EUR.
+		$expected = [
+			'original'   => 300,
+			'discounted' => 0,
+		];
+		$actual   = get_lowest_price_by_cabin_category_and_departure( $cabin_category_post_id, $departure_post_id, 'EUR' );
+
+		// Invalid currency.
+		$expected = $expected_default;
+		$actual   = get_lowest_price_by_cabin_category_and_departure( $cabin_category_post_id, $departure_post_id, 'XYZ' );
+		$this->assertEquals( $expected, $actual );
+
+		// Add one more occupancy to same cabin.
+		$raw_occupancy_data2 = [
+			'id'                      => 'PQO-123:2026-02-20:OEX-SGL:AA',
+			'name'                    => 'Test Occupancy 2',
+			'mask'                    => 'AA',
+			'spacesAvailable'         => 10,
+			'availabilityDescription' => 'Available',
+			'availabilityStatus'      => 'O',
+			'prices'                  => [
+				'USD' => [
+					'currencyCode'   => 'USD',
+					'pricePerPerson' => 50,
+				],
+				'CAD' => [
+					'currencyCode'   => 'CAD',
+					'pricePerPerson' => 75,
+				],
+				'AUD' => [
+					'currencyCode'   => 'AUD',
+					'pricePerPerson' => 100,
+				],
+				'GBP' => [
+					'currencyCode'   => 'GBP',
+					'pricePerPerson' => 125,
+				],
+				'EUR' => [
+					'currencyCode'   => 'EUR',
+					'pricePerPerson' => 150,
+				],
+			],
+		];
+		$formatted_data2     = format_data( $raw_occupancy_data2, $cabin_category_post_id, $departure_post_id );
+		$this->assertIsArray( $formatted_data2 );
+		$this->assertNotEmpty( $formatted_data2 );
+
+		// Insert occupancy data.
+		$wpdb->insert( $table_name, $formatted_data2 );
+
+		// Get inserted occupancy ID.
+		$occupancy_id2 = $wpdb->insert_id;
+		$this->assertIsInt( $occupancy_id2 );
+
+		// Flush cache.
+		wp_cache_flush();
+
+		// Get lowest price by cabin category and departure.
+		$expected = [
+			'original'   => 50,
+			'discounted' => 0,
+		];
+		$actual   = get_lowest_price_by_cabin_category_and_departure( $cabin_category_post_id, $departure_post_id, 'USD' );
+		$this->assertEquals( $expected, $actual );
+
+		// Get lowest price by cabin category and departure - CAD.
+		$expected = [
+			'original'   => 75,
+			'discounted' => 0,
+		];
+		$actual   = get_lowest_price_by_cabin_category_and_departure( $cabin_category_post_id, $departure_post_id, 'CAD' );
+		$this->assertEquals( $expected, $actual );
+
+		// Get lowest price by cabin category and departure - AUD.
+		$expected = [
+			'original'   => 100,
+			'discounted' => 0,
+		];
+		$actual   = get_lowest_price_by_cabin_category_and_departure( $cabin_category_post_id, $departure_post_id, 'AUD' );
+		$this->assertEquals( $expected, $actual );
+
+		// Get lowest price by cabin category and departure - GBP.
+		$expected = [
+			'original'   => 125,
+			'discounted' => 0,
+		];
+		$actual   = get_lowest_price_by_cabin_category_and_departure( $cabin_category_post_id, $departure_post_id, 'GBP' );
+		$this->assertEquals( $expected, $actual );
+
+		// Get lowest price by cabin category and departure - EUR.
+		$expected = [
+			'original'   => 150,
+			'discounted' => 0,
+		];
+		$actual   = get_lowest_price_by_cabin_category_and_departure( $cabin_category_post_id, $departure_post_id, 'eur' );
+		$this->assertEquals( $expected, $actual );
+
+		// Create an itinerary post.
+		$itinerary_post_id = wp_insert_post(
+			[
+				'post_title'  => 'Test Itinerary',
+				'post_type'   => ITINERARY_POST_TYPE,
+				'post_status' => 'publish',
+				'meta_input'  => [
+					'softrip_package_code' => 'PQO-123',
+				],
+			]
+		);
+		$this->assertIsInt( $itinerary_post_id );
+
+		// Update post meta.
+		update_post_meta( $departure_post_id, 'itinerary', $itinerary_post_id );
+
+		// Add supplemental price for USD for the departure.
+		$supplemental_price_usd = 10;
+		update_post_meta( $itinerary_post_id, 'supplemental_price_usd', $supplemental_price_usd );
+
+		// Add mandatory transfer price for USD for the departure.
+		$mandatory_transfer_price_usd = 5;
+		update_post_meta( $itinerary_post_id, 'mandatory_transfer_price_usd', $mandatory_transfer_price_usd );
+
+		// Flush the itinerary cache.
+		wp_cache_delete( ITINERARIES_CACHE_KEY . "_$itinerary_post_id", ITINERARIES_CACHE_GROUP );
+
+		// Get lowest price by cabin category and departure.
+		$expected = [
+			'original'   => 50 + $supplemental_price_usd + $mandatory_transfer_price_usd,
+			'discounted' => $supplemental_price_usd + $mandatory_transfer_price_usd,
+		];
+		$actual   = get_lowest_price_by_cabin_category_and_departure( $cabin_category_post_id, $departure_post_id, 'USD' );
+		$this->assertEquals( $expected, $actual );
+
+		// Get lowest price by cabin category and departure - CAD.
+		$expected = [
+			'original'   => 75,
+			'discounted' => 0,
+		];
+		$actual   = get_lowest_price_by_cabin_category_and_departure( $cabin_category_post_id, $departure_post_id, 'CAD' );
+		$this->assertEquals( $expected, $actual );
+
+		// Add one occupancy for different cabin category but same departure.
+		$raw_occupancy_data3    = [
+			'id'                      => 'PQO-123:2026-02-20:OEX-SGL:AB',
+			'name'                    => 'Test Occupancy 3',
+			'mask'                    => 'AB',
+			'spacesAvailable'         => 10,
+			'availabilityDescription' => 'Available',
+			'availabilityStatus'      => 'O',
+			'prices'                  => [
+				'USD' => [
+					'currencyCode'   => 'USD',
+					'pricePerPerson' => 75,
+				],
+				'CAD' => [
+					'currencyCode'   => 'CAD',
+					'pricePerPerson' => 100,
+				],
+				'AUD' => [
+					'currencyCode'   => 'AUD',
+					'pricePerPerson' => 125,
+				],
+				'GBP' => [
+					'currencyCode'   => 'GBP',
+					'pricePerPerson' => 150,
+				],
+				'EUR' => [
+					'currencyCode'   => 'EUR',
+					'pricePerPerson' => 175,
+				],
+			],
+		];
+		$cabin_category_post_id = 4562;
+		$formatted_data3        = format_data( $raw_occupancy_data3, $cabin_category_post_id, $departure_post_id );
+		$this->assertIsArray( $formatted_data3 );
+
+		// Insert occupancy data.
+		$wpdb->insert( $table_name, $formatted_data3 );
+
+		// Get inserted occupancy ID.
+		$occupancy_id3 = $wpdb->insert_id;
+		$this->assertIsInt( $occupancy_id3 );
+
+		// Flush cache.
+		wp_cache_flush();
+
+		// Get lowest price by cabin category and departure - USD.
+		$expected = [
+			'original'   => 75 + $supplemental_price_usd + $mandatory_transfer_price_usd,
+			'discounted' => $supplemental_price_usd + $mandatory_transfer_price_usd,
+		];
+		$actual   = get_lowest_price_by_cabin_category_and_departure( $cabin_category_post_id, $departure_post_id, 'USD' );
+		$this->assertEquals( $expected, $actual );
+
+		// Get lowest price by cabin category and departure - CAD.
+		$expected = [
+			'original'   => 100,
+			'discounted' => 0,
+		];
+		$actual   = get_lowest_price_by_cabin_category_and_departure( $cabin_category_post_id, $departure_post_id, 'CAD' );
+		$this->assertEquals( $expected, $actual );
+	}
+
+	/**
+	 * Test format row data from db.
+	 *
+	 * @covers \Quark\Softrip\Occupancies\format_row_data_from_db
+	 *
+	 * @return void
+	 */
+	public function test_format_row_data_from_db(): void {
+		// Test with no arguments.
+		$actual = format_row_data_from_db();
+		$this->assertEmpty( $actual );
+
+		// Test with empty data.
+		$data   = [];
+		$actual = format_row_data_from_db( $data );
+		$this->assertEmpty( $actual );
+
+		// Test with non-existing id.
+		$data     = [
+			'cabin_category_post_id'   => '123',
+			'departure_post_id'        => '456',
+			'softrip_id'               => 'PQO-123:2026-02-20:OEX-SGL:A',
+			'softrip_name'             => 'Test Occupancy',
+			'mask'                     => 'A',
+			'spaces_available'         => '10',
+			'availability_description' => 'Available',
+			'availability_status'      => 'O',
+		];
+		$expected = [];
+		$actual   = format_row_data_from_db( $data );
+		$this->assertEquals( $expected, $actual );
+
+		// Test with empty id.
+		$data     = [
+			'id'                       => '',
+			'cabin_category_post_id'   => '123',
+			'departure_post_id'        => '456',
+			'softrip_id'               => 'PQO-123:2026-02-20:OEX-SGL:A',
+			'softrip_name'             => 'Test Occupancy',
+			'mask'                     => 'A',
+			'spaces_available'         => '10',
+			'availability_description' => 'Available',
+			'availability_status'      => 'O',
+		];
+		$expected = [];
+		$actual   = format_row_data_from_db( $data );
+		$this->assertEquals( $expected, $actual );
+
+		// Test with non-existing cabin category post id.
+		$data     = [
+			'id'                       => '1',
+			'departure_post_id'        => '456',
+			'softrip_id'               => 'PQO-123:2026-02-20:OEX-SGL:A',
+			'softrip_name'             => 'Test Occupancy',
+			'mask'                     => 'A',
+			'spaces_available'         => '10',
+			'availability_description' => 'Available',
+			'availability_status'      => 'O',
+		];
+		$expected = [];
+		$actual   = format_row_data_from_db( $data );
+		$this->assertEquals( $expected, $actual );
+
+		// Test with empty cabin category post id.
+		$data     = [
+			'id'                       => '1',
+			'cabin_category_post_id'   => '',
+			'departure_post_id'        => '456',
+			'softrip_id'               => 'PQO-123:2026-02-20:OEX-SGL:A',
+			'softrip_name'             => 'Test Occupancy',
+			'mask'                     => 'A',
+			'spaces_available'         => '10',
+			'availability_description' => 'Available',
+			'availability_status'      => 'O',
+		];
+		$expected = [];
+		$actual   = format_row_data_from_db( $data );
+		$this->assertEquals( $expected, $actual );
+
+		// Test with non-existing departure post id.
+		$data     = [
+			'id'                       => '1',
+			'cabin_category_post_id'   => '123',
+			'softrip_id'               => 'PQO-123:2026-02-20:OEX-SGL:A',
+			'softrip_name'             => 'Test Occupancy',
+			'mask'                     => 'A',
+			'spaces_available'         => '10',
+			'availability_description' => 'Available',
+			'availability_status'      => 'O',
+		];
+		$expected = [];
+		$actual   = format_row_data_from_db( $data );
+		$this->assertEquals( $expected, $actual );
+
+		// Test with empty departure post id.
+		$data     = [
+			'id'                       => '1',
+			'cabin_category_post_id'   => '123',
+			'departure_post_id'        => '',
+			'softrip_id'               => 'PQO-123:2026-02-20:OEX-SGL:A',
+			'softrip_name'             => 'Test Occupancy',
+			'mask'                     => 'A',
+			'spaces_available'         => '10',
+			'availability_description' => 'Available',
+			'availability_status'      => 'O',
+		];
+		$expected = [];
+		$actual   = format_row_data_from_db( $data );
+		$this->assertEquals( $expected, $actual );
+
+		// Test with non-existing softrip id.
+		$data     = [
+			'id'                       => '1',
+			'cabin_category_post_id'   => '123',
+			'departure_post_id'        => '456',
+			'softrip_name'             => 'Test Occupancy',
+			'mask'                     => 'A',
+			'spaces_available'         => '10',
+			'availability_description' => 'Available',
+			'availability_status'      => 'O',
+		];
+		$expected = [];
+		$actual   = format_row_data_from_db( $data );
+		$this->assertEquals( $expected, $actual );
+
+		// Test with empty softrip id.
+		$data     = [
+			'id'                       => '1',
+			'cabin_category_post_id'   => '123',
+			'departure_post_id'        => '456',
+			'softrip_id'               => '',
+			'softrip_name'             => 'Test Occupancy',
+			'mask'                     => 'A',
+			'spaces_available'         => '10',
+			'availability_description' => 'Available',
+			'availability_status'      => 'O',
+		];
+		$expected = [];
+		$actual   = format_row_data_from_db( $data );
+		$this->assertEquals( $expected, $actual );
+
+		// Test with non-existing softrip name.
+		$data     = [
+			'id'                       => '1',
+			'cabin_category_post_id'   => '123',
+			'departure_post_id'        => '456',
+			'softrip_id'               => 'PQO-123:2026-02-20:OEX-SGL:A',
+			'mask'                     => 'A',
+			'spaces_available'         => '10',
+			'availability_description' => 'Available',
+			'availability_status'      => 'O',
+		];
+		$expected = [];
+		$actual   = format_row_data_from_db( $data );
+		$this->assertEquals( $expected, $actual );
+
+		// Test with empty softrip name.
+		$data     = [
+			'id'                       => '1',
+			'cabin_category_post_id'   => '123',
+			'departure_post_id'        => '456',
+			'softrip_id'               => 'PQO-123:2026-02-20:OEX-SGL:A',
+			'softrip_name'             => '',
+			'mask'                     => 'A',
+			'spaces_available'         => '10',
+			'availability_description' => 'Available',
+			'availability_status'      => 'O',
+		];
+		$expected = [];
+		$actual   = format_row_data_from_db( $data );
+		$this->assertEquals( $expected, $actual );
+
+		// Test with non-existing mask.
+		$data     = [
+			'id'                       => '1',
+			'cabin_category_post_id'   => '123',
+			'departure_post_id'        => '456',
+			'softrip_id'               => 'PQO-123:2026-02-20:OEX-SGL:A',
+			'softrip_name'             => 'Test Occupancy',
+			'spaces_available'         => '10',
+			'availability_description' => 'Available',
+			'availability_status'      => 'O',
+		];
+		$expected = [];
+		$actual   = format_row_data_from_db( $data );
+		$this->assertEquals( $expected, $actual );
+
+		// Test with empty mask.
+		$data     = [
+			'id'                       => '1',
+			'cabin_category_post_id'   => '123',
+			'departure_post_id'        => '456',
+			'softrip_id'               => 'PQO-123:2026-02-20:OEX-SGL:A',
+			'softrip_name'             => 'Test Occupancy',
+			'mask'                     => '',
+			'spaces_available'         => '10',
+			'availability_description' => 'Available',
+			'availability_status'      => 'O',
+		];
+		$expected = [];
+		$actual   = format_row_data_from_db( $data );
+		$this->assertEquals( $expected, $actual );
+
+		// Test with non-existing spaces available.
+		$data     = [
+			'id'                       => '1',
+			'cabin_category_post_id'   => '123',
+			'departure_post_id'        => '456',
+			'softrip_id'               => 'PQO-123:2026-02-20:OEX-SGL:A',
+			'softrip_name'             => 'Test Occupancy',
+			'mask'                     => 'A',
+			'availability_description' => 'Available',
+			'availability_status'      => 'O',
+		];
+		$expected = [
+			'id'                       => 1,
+			'cabin_category_post_id'   => 123,
+			'departure_post_id'        => 456,
+			'softrip_id'               => 'PQO-123:2026-02-20:OEX-SGL:A',
+			'softrip_name'             => 'Test Occupancy',
+			'mask'                     => 'A',
+			'spaces_available'         => 0,
+			'availability_description' => 'Available',
+			'availability_status'      => 'O',
+			'price_per_person_usd'     => 0,
+			'price_per_person_cad'     => 0,
+			'price_per_person_aud'     => 0,
+			'price_per_person_gbp'     => 0,
+			'price_per_person_eur'     => 0,
+		];
+		$actual   = format_row_data_from_db( $data );
+		$this->assertEquals( $expected, $actual );
+
+		// Test with valid data.
+		$data     = [
+			'id'                       => '1',
+			'cabin_category_post_id'   => '123',
+			'departure_post_id'        => '456',
+			'softrip_id'               => 'PQO-123:2026-02-20:OEX-SGL:A',
+			'softrip_name'             => 'Test Occupancy',
+			'mask'                     => 'A',
+			'spaces_available'         => '10',
+			'availability_description' => 'Available',
+			'availability_status'      => 'O',
+			'price_per_person_usd'     => '100',
+			'price_per_person_cad'     => '150',
+			'price_per_person_aud'     => '200',
+			'price_per_person_gbp'     => '250',
+			'price_per_person_eur'     => '300',
+		];
+		$expected = [
+			'id'                       => 1,
+			'cabin_category_post_id'   => 123,
+			'departure_post_id'        => 456,
+			'softrip_id'               => 'PQO-123:2026-02-20:OEX-SGL:A',
+			'softrip_name'             => 'Test Occupancy',
+			'mask'                     => 'A',
+			'spaces_available'         => 10,
+			'availability_description' => 'Available',
+			'availability_status'      => 'O',
+			'price_per_person_usd'     => 100,
+			'price_per_person_cad'     => 150,
+			'price_per_person_aud'     => 200,
+			'price_per_person_gbp'     => 250,
+			'price_per_person_eur'     => 300,
+		];
+		$actual   = format_row_data_from_db( $data );
+		$this->assertEquals( $expected, $actual );
+	}
+
+	/**
+	 * Test format rows data from db.
+	 *
+	 * @covers \Quark\Softrip\Occupancies\format_rows_data_from_db
+	 *
+	 * @return void
+	 */
+	public function test_format_rows_data_from_db(): void {
+		// Test with no arguments.
+		$actual = format_rows_data_from_db();
+		$this->assertEmpty( $actual );
+
+		// Test with empty data.
+		$data   = [];
+		$actual = format_rows_data_from_db( $data );
+		$this->assertEmpty( $actual );
+
+		// Test with non-existing data.
+		$data     = [
+			[
+				'cabin_category_post_id'   => '123',
+				'departure_post_id'        => '456',
+				'softrip_id'               => 'PQO-123:2026-02-20:OEX-SGL:A',
+				'softrip_name'             => 'Test Occupancy',
+				'mask'                     => 'A',
+				'spaces_available'         => '10',
+				'availability_description' => 'Available',
+				'availability_status'      => 'O',
+			],
+		];
+		$expected = [];
+		$actual   = format_rows_data_from_db( $data );
+		$this->assertEquals( $expected, $actual );
+
+		// Test with valid data.
+		$data     = [
+			[
+				'id'                       => '1',
+				'cabin_category_post_id'   => '123',
+				'departure_post_id'        => '456',
+				'softrip_id'               => 'PQO-123:2026-02-20:OEX-SGL:A',
+				'softrip_name'             => 'Test Occupancy',
+				'mask'                     => 'A',
+				'spaces_available'         => '10',
+				'availability_description' => 'Available',
+				'availability_status'      => 'O',
+				'price_per_person_usd'     => '100',
+				'price_per_person_cad'     => '150',
+				'price_per_person_aud'     => '200',
+				'price_per_person_gbp'     => '250',
+				'price_per_person_eur'     => '300',
+			],
+			[
+				'id'                       => '2',
+				'cabin_category_post_id'   => '123',
+				'departure_post_id'        => '456',
+				'softrip_id'               => 'PQO-123:2026-02-20:OEX-SGL:B',
+				'softrip_name'             => 'Test Occupancy 2',
+				'mask'                     => 'B',
+				'spaces_available'         => '20',
+				'availability_description' => 'Available',
+				'availability_status'      => 'O',
+				'price_per_person_usd'     => '200',
+				'price_per_person_cad'     => '250',
+				'price_per_person_aud'     => '300',
+				'price_per_person_gbp'     => '350',
+				'price_per_person_eur'     => '400',
+			],
+		];
+		$expected = [
+			[
+				'id'                       => 1,
+				'cabin_category_post_id'   => 123,
+				'departure_post_id'        => 456,
+				'softrip_id'               => 'PQO-123:2026-02-20:OEX-SGL:A',
+				'softrip_name'             => 'Test Occupancy',
+				'mask'                     => 'A',
+				'spaces_available'         => 10,
+				'availability_description' => 'Available',
+				'availability_status'      => 'O',
+				'price_per_person_usd'     => 100,
+				'price_per_person_cad'     => 150,
+				'price_per_person_aud'     => 200,
+				'price_per_person_gbp'     => 250,
+				'price_per_person_eur'     => 300,
+			],
+			[
+				'id'                       => 2,
+				'cabin_category_post_id'   => 123,
+				'departure_post_id'        => 456,
+				'softrip_id'               => 'PQO-123:2026-02-20:OEX-SGL:B',
+				'softrip_name'             => 'Test Occupancy 2',
+				'mask'                     => 'B',
+				'spaces_available'         => 20,
+				'availability_description' => 'Available',
+				'availability_status'      => 'O',
+				'price_per_person_usd'     => 200,
+				'price_per_person_cad'     => 250,
+				'price_per_person_aud'     => 300,
+				'price_per_person_gbp'     => 350,
+				'price_per_person_eur'     => 400,
+			],
+		];
+		$actual   = format_rows_data_from_db( $data );
 		$this->assertEquals( $expected, $actual );
 	}
 }
