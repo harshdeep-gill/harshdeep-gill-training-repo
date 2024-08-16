@@ -371,3 +371,81 @@ function format_rows_data_from_db( array $rows_data = [] ): array {
 	// Return the formatted data.
 	return $formatted_data;
 }
+
+/**
+ * Get promotions by promotion id.
+ *
+ * @param int  $promotion_id The promotion ID.
+ * @param bool $direct       Whether to bypass the cache.
+ *
+ * @return array{}|array<int,
+ *   array{
+ *     id: int,
+ *     code: string,
+ *     start_date: string,
+ *     end_date: string,
+ *     description: string,
+ *     discount_type: string,
+ *     discount_value: string,
+ *     is_pif: int,
+ *   }
+ * >
+ */
+function get_promotions_by_id( int $promotion_id = 0, bool $direct = false ): array {
+	// Bail out if no ID.
+	if ( empty( $promotion_id ) ) {
+		return [];
+	}
+
+	// Get the cache key.
+	$cache_key = CACHE_KEY_PREFIX . "_promotion_id_$promotion_id";
+
+	// If not direct, check the cache.
+	if ( empty( $direct ) ) {
+		// Get from cache.
+		$cached_value = wp_cache_get( $cache_key );
+
+		// Check if we have the data.
+		if ( ! empty( $cached_value ) && is_array( $cached_value ) ) {
+			return $cached_value;
+		}
+	}
+
+	// Get the global $wpdb object.
+	global $wpdb;
+
+	// Get the table name.
+	$table_name = get_table_name();
+
+	// Load the promotion data.
+	$promotion_data = $wpdb->get_results(
+		$wpdb->prepare(
+			'SELECT
+				*
+			FROM
+				%i
+			WHERE
+				id = %d
+			',
+			[
+				$table_name,
+				$promotion_id,
+			]
+		),
+		ARRAY_A
+	);
+
+	// Bail out if not an array.
+	if ( ! is_array( $promotion_data ) ) {
+		return [];
+	}
+
+	// Format the data.
+	$formatted_promotion_data = format_rows_data_from_db( $promotion_data );
+
+	// Cache the value.
+	wp_cache_set( $cache_key, $formatted_promotion_data, CACHE_GROUP );
+
+	// Return the promotion data.
+	return $formatted_promotion_data;
+}
