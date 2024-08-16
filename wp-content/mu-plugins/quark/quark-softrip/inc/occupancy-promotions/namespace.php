@@ -425,10 +425,11 @@ function get_occupancy_promotions_by_occupancy( int $occupancy_id = 0, bool $for
  *
  * @param int    $occupancy_id The occupancy ID.
  * @param string $currency The currency code.
+ * @param string $promotion_code The promotion code.
  *
  * @return int
  */
-function get_lowest_price( int $occupancy_id = 0, string $currency = 'USD' ): int {
+function get_lowest_price( int $occupancy_id = 0, string $currency = 'USD', string $promotion_code = '' ): int {
 	// Uppercase the currency.
 	$currency = strtoupper( $currency );
 
@@ -440,8 +441,33 @@ function get_lowest_price( int $occupancy_id = 0, string $currency = 'USD' ): in
 		return $lowest_price;
 	}
 
-	// Get the occupancy promotions by occupancy ID.
-	$occupancy_promotions = get_occupancy_promotions_by_occupancy( $occupancy_id );
+	// Initialize occupancy promotions.
+	$occupancy_promotions = [];
+
+	// If promotion code is not empty, get the promotions by code else get the occupancy promotions by occupancy ID.
+	if ( empty( $promotion_code ) ) {
+		// Get the occupancy promotions by occupancy ID.
+		$occupancy_promotions = get_occupancy_promotions_by_occupancy( $occupancy_id );
+	} else {
+		// Get the promotions by code.
+		$promotions = get_promotions_by_code( $promotion_code, true );
+
+		// Bail out if empty or more than one.
+		if ( empty( $promotions ) || 1 < count( $promotions ) ) {
+			return $lowest_price;
+		}
+
+		// Get the first item.
+		$promotion = $promotions[0];
+
+		// Bail out if empty.
+		if ( empty( $promotion['id'] ) ) {
+			return $lowest_price;
+		}
+
+		// Get the occupancy promotions by occupancy ID and promotion ID.
+		$occupancy_promotions = get_occupancy_promotions_by_occupancy_id_and_promotion_id( $occupancy_id, $promotion['id'] );
+	}
 
 	// Loop through the occupancy promotions.
 	foreach ( $occupancy_promotions as $occupancy_promotion ) {
