@@ -114,14 +114,14 @@ class Test_Promotions extends Softrip_TestCase {
 		$expected           = true;
 		$raw_promotion_data = [
 			[
-			'description'   => 'Test Promotion',
-			'discountType'  => 'percentage',
-			'discountValue' => '10',
-			'isPIF'         => true,
-			'startDate'     => '2021-01-01T00:00:00',
-			'endDate'       => '2021-01-01T00:00:00',
-			'promotionCode' => 'test-promotion',
-			]
+				'description'   => 'Test Promotion',
+				'discountType'  => 'percentage',
+				'discountValue' => '10',
+				'isPIF'         => true,
+				'startDate'     => '2021-01-01T00:00:00',
+				'endDate'       => '2021-01-01T00:00:00',
+				'promotionCode' => 'test-promotion',
+			],
 		];
 		$actual             = update_promotions( $raw_promotion_data, $departure_id );
 		$this->assertSame( $expected, $actual );
@@ -155,14 +155,14 @@ class Test_Promotions extends Softrip_TestCase {
 		$expected           = true;
 		$raw_promotion_data = [
 			[
-			'description'   => '<h1>Test Promotion 1</h1>',
-			'discountType'  => 'relative',
-			'discountValue' => '10',
-			'isPIF'         => true,
-			'startDate'     => '2021-01-01T00:00:00',
-			'endDate'       => '2021-01-01T00:00:00',
-			'promotionCode' => 'test-promotion',
-			]
+				'description'   => '<h1>Test Promotion 1</h1>',
+				'discountType'  => 'relative',
+				'discountValue' => '10',
+				'isPIF'         => true,
+				'startDate'     => '2021-01-01T00:00:00',
+				'endDate'       => '2021-01-01T00:00:00',
+				'promotionCode' => 'test-promotion',
+			],
 		];
 		$actual             = update_promotions( $raw_promotion_data, $departure_id );
 		$this->assertSame( $expected, $actual );
@@ -195,22 +195,22 @@ class Test_Promotions extends Softrip_TestCase {
 		$expected           = true;
 		$raw_promotion_data = [
 			[
-			'description'   => 'Test Promotion 2',
-			'discountType'  => 'percentage',
-			'discountValue' => '20',
-			'isPIF'         => false,
-			'startDate'     => '2021-01-01T00:00:00',
-			'endDate'       => '2021-01-01T00:00:00',
-			'promotionCode' => 'test-promotion-2',
+				'description'   => 'Test Promotion 2',
+				'discountType'  => 'percentage',
+				'discountValue' => '20',
+				'isPIF'         => false,
+				'startDate'     => '2021-01-01T00:00:00',
+				'endDate'       => '2021-01-01T00:00:00',
+				'promotionCode' => 'test-promotion-2',
 			],
 			[
-			'description'   => 'Test Promotion 3',
-			'discountType'  => 'percentage',
-			'discountValue' => '30',
-			'isPIF'         => true,
-			'startDate'     => '2021-01-01T00:00:00',
-			'endDate'       => '2021-01-01T00:00:00',
-			'promotionCode' => 'test-promotion-3',
+				'description'   => 'Test Promotion 3',
+				'discountType'  => 'percentage',
+				'discountValue' => '30',
+				'isPIF'         => true,
+				'startDate'     => '2021-01-01T00:00:00',
+				'endDate'       => '2021-01-01T00:00:00',
+				'promotionCode' => 'test-promotion-3',
 			],
 		];
 		$actual             = update_promotions( $raw_promotion_data, $departure_id );
