@@ -176,6 +176,7 @@ function bust_post_cache( int $post_id = 0 ): void {
  *     post: WP_Post|null,
  *     permalink: string,
  *     post_meta: mixed[],
+ *     data: mixed[],
  *     post_taxonomies: mixed[],
  * }
  */
@@ -195,6 +196,7 @@ function get( int $post_id = 0 ): array {
 			'post'            => $cached_value['post'],
 			'permalink'       => $cached_value['permalink'] ?? '',
 			'post_meta'       => $cached_value['post_meta'] ?? [],
+			'data'            => $cached_value['data'] ?? [],
 			'post_taxonomies' => $cached_value['post_taxonomies'] ?? [],
 		];
 	}
@@ -208,15 +210,20 @@ function get( int $post_id = 0 ): array {
 			'post'            => null,
 			'permalink'       => '',
 			'post_meta'       => [],
+			'data'            => [],
 			'post_taxonomies' => [],
 		];
 	}
+
+	// Get Ship block attrs.
+	$data = parse_block_attributes( $post );
 
 	// Build data.
 	$data = [
 		'post'            => $post,
 		'permalink'       => strval( get_permalink( $post ) ? : '' ),
 		'post_meta'       => [],
+		'data'            => $data,
 		'post_taxonomies' => [],
 	];
 
@@ -597,4 +604,137 @@ function get_cabins_and_decks( int $ship_id = 0 ): array {
 
 	// Return data.
 	return $results;
+}
+
+/**
+ * Parse the collage block attributes.
+ *
+ * @param WP_Post|null $post The post object.
+ *
+ * @return array{}|array{
+ *     collage: array{} | array{
+ *       media_type: string,
+ *       size: string,
+ *       caption: string,
+ *       video_url: string,
+ *       image ?: array{
+ *         int: array{
+ *           id: int,
+ *           size: string,
+ *           src: string,
+ *           width: int,
+ *           height: int,
+ *           alt: string,
+ *           title: string,
+ *           caption: string,
+ *        },
+ *      },
+ *    },
+ *    vessel_features: string[],
+ *    ship_amenities: string[],
+ * }
+ */
+function parse_block_attributes( WP_Post $post = null ): array {
+	// Check if the post valid WP_Post.
+	if ( empty( $post ) || ! $post instanceof WP_Post ) {
+		return [];
+	}
+
+	// Parse blocks.
+	$blocks = parse_blocks( $post->post_content );
+
+	// Initialize collage attributes.
+	$collage_attrs        = [];
+	$ship_vessel_features = [];
+	$ship_amenities       = [];
+
+	// Loop through blocks to find the quark/collage block.
+	foreach ( $blocks as $block ) {
+		// Check if the block is quark/collage.
+		if ( 'quark/collage' === $block['blockName'] ) {
+			// Loop through inner blocks (quark/collage-media-item).
+			if ( isset( $block['innerBlocks'] ) && is_array( $block['innerBlocks'] ) ) {
+				// Loop through inner blocks to find the quark/collage-media-item block.
+				foreach ( $block['innerBlocks'] as $inner_block ) {
+					// Initialize media item attributes.
+					$media_item_attrs = [];
+
+					// Check if the block is quark/collage-media-item.
+					if ( 'quark/collage-media-item' === $inner_block['blockName'] ) {
+						// Check attributes are available.
+						if ( empty( $inner_block['attrs'] ) && ! is_array( $inner_block['attrs'] ) ) {
+							continue;
+						}
+
+						// Retrieve attributes.
+						$media_item_attrs['media_type'] = ! empty( $inner_block['attrs']['mediaType'] ) ? strval( $inner_block['attrs']['mediaType'] ) : 'image';
+						$media_item_attrs['size']       = ! empty( $inner_block['attrs']['size'] ) ? strval( $inner_block['attrs']['size'] ) : 'small';
+						$media_item_attrs['caption']    = ! empty( $inner_block['attrs']['caption'] ) ? strval( $inner_block['attrs']['caption'] ) : '';
+						$media_item_attrs['video_url']  = ! empty( $inner_block['attrs']['videoUrl'] ) ? strval( $inner_block['attrs']['videoUrl'] ) : '';
+						$image                          = $inner_block['attrs']['image'] ?? [];
+
+						// Check if image is available.
+						if ( ! empty( $image ) && is_array( $image ) ) {
+							$media_item_attrs['image'] = [
+								'id'      => ! empty( $image['id'] ) ? absint( $image['id'] ) : 0,
+								'size'    => ! empty( $image['size'] ) ? strval( $image['size'] ) : '',
+								'src'     => ! empty( $image['src'] ) ? strval( $image['src'] ) : '',
+								'width'   => ! empty( $image['width'] ) ? strval( $image['width'] ) : '',
+								'height'  => ! empty( $image['height'] ) ? strval( $image['height'] ) : '',
+								'alt'     => ! empty( $image['alt'] ) ? strval( $image['alt'] ) : '',
+								'title'   => ! empty( $image['title'] ) ? strval( $image['title'] ) : '',
+								'caption' => ! empty( $image['caption'] ) ? strval( $image['caption'] ) : '',
+							];
+						}
+					}
+
+					// Add media item attributes to collage attributes.
+					$collage_attrs[] = $media_item_attrs;
+				}
+			}
+		}
+
+		// Check if the block is quark/ship-vessel-features.
+		if ( 'quark/ship-vessel-features' === $block['blockName'] ) {
+			// Loop through inner blocks (quark/ship-vessel-features-card).
+			if ( isset( $block['innerBlocks'] ) && is_array( $block['innerBlocks'] ) ) {
+				// Loop through inner blocks to find the quark/ship-vessel-features-card block.
+				foreach ( $block['innerBlocks'] as $inner_block ) {
+					// Check if the block is quark/ship-vessel-features-card.
+					if ( 'quark/ship-vessel-features-card' === $inner_block['blockName'] ) {
+						// Check attributes are available.
+						if ( isset( $inner_block['attrs'] ) && is_array( $inner_block['attrs'] ) && ! empty( $inner_block['attrs']['title'] ) ) {
+							// Retrieve attributes.
+							$ship_vessel_features[] = $inner_block['attrs']['title'];
+						}
+					}
+				}
+			}
+		}
+
+		// Check if the block is quark/ship-features-amenities.
+		if ( 'quark/ship-features-amenities' === $block['blockName'] ) {
+			// Loop through inner blocks (quark/ship-features-amenities-card).
+			if ( isset( $block['innerBlocks'] ) && is_array( $block['innerBlocks'] ) ) {
+				// Loop through inner blocks to find the quark/ship-features-amenities-card block.
+				foreach ( $block['innerBlocks'] as $inner_block ) {
+					// Check if the block is quark/ship-features-amenities-card.
+					if ( 'quark/ship-features-amenities-card' === $inner_block['blockName'] ) {
+						// Check attributes are available.
+						if ( isset( $inner_block['attrs'] ) && is_array( $inner_block['attrs'] ) && ! empty( $inner_block['attrs']['title'] ) ) {
+							// Retrieve attributes.
+							$ship_amenities[] = $inner_block['attrs']['title'];
+						}
+					}
+				}
+			}
+		}
+	}
+
+	// Return block attributes.
+	return [
+		'collage'         => $collage_attrs,
+		'vessel_features' => $ship_vessel_features,
+		'ship_amenities'  => $ship_amenities,
+	];
 }

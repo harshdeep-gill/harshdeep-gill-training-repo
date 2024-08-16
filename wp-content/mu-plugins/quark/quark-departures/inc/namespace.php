@@ -809,7 +809,7 @@ function bust_card_data_cache( int $post_id = 0 ): void {
 
 	// Loop through currencies.
 	foreach ( $currencies as $currency ) {
-		wp_cache_delete( 'departure_card_data_' . $post_id . '_' . $currency );
+		wp_cache_delete( 'departure_card_data_' . $post_id . '_' . $currency, CACHE_GROUP );
 	}
 }
 

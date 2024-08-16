@@ -9,18 +9,24 @@ namespace Quark\Departures\Tests;
 
 use WP_Post;
 use WP_Term;
-use WP_UnitTestCase;
+use Quark\Tests\Softrip\Softrip_TestCase;
 
+use function Quark\Core\get_available_currencies;
+use function Quark\Departures\bust_card_data_cache_on_expedition_update;
 use function Quark\Departures\bust_post_cache;
 use function Quark\Departures\get;
 use function Quark\Departures\get_region_and_season;
 use function Quark\Departures\get_paid_adventure_options;
 use function Quark\Departures\get_languages;
 use function Quark\Departures\get_promotion_tags;
+use function Quark\Departures\get_start_end_departure_date;
+use function Quark\Softrip\Departures\get_departures_by_itinerary;
+use function Quark\Softrip\do_sync;
 
 use const Quark\Departures\POST_TYPE;
 use const Quark\Departures\PROMOTION_TAG;
 use const Quark\Departures\SPOKEN_LANGUAGE_TAXONOMY;
+use const Quark\Expeditions\POST_TYPE as EXPEDITION_POST_TYPE;
 use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
 use const Quark\StaffMembers\SEASON_TAXONOMY;
 use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
@@ -28,7 +34,7 @@ use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
 /**
  * Class Test_Departure.
  */
-class Test_Departures extends WP_UnitTestCase {
+class Test_Departures extends Softrip_TestCase {
 
 	/**
 	 * Test bootstrap.
@@ -413,5 +419,230 @@ class Test_Departures extends WP_UnitTestCase {
 			],
 			$promotion_tags
 		);
+	}
+
+	/**
+	 * Test get_start_end_departure_date.
+	 *
+	 * @covers \Quark\Departures\get_start_end_departure_date()
+	 *
+	 * @return void
+	 */
+	public function test_get_start_end_departure_date(): void {
+		// Create a departure post.
+		$departure_post = $this->factory()->post->create_and_get(
+			[
+				'post_type'   => POST_TYPE,
+				'post_title'  => 'Test Departure Post',
+				'post_status' => 'publish',
+				'meta_input'  => [
+					'start_date' => '2021-01-01',
+					'end_date'   => '2021-01-10',
+				],
+			]
+		);
+
+		// Make sure post is created.
+		$this->assertTrue( $departure_post instanceof WP_Post );
+
+		// Get start and end date.
+		$start_end_date = get_start_end_departure_date( $departure_post->ID );
+
+		// Assert expected get data is equal to actual data.
+		$this->assertEquals( 'January 1-10, 2021', $start_end_date );
+
+		// Update dates.
+		update_post_meta( $departure_post->ID, 'start_date', '2021-02-25' );
+		update_post_meta( $departure_post->ID, 'end_date', '2021-03-15' );
+
+		// Bust post cache after updating post meta.
+		bust_post_cache( $departure_post->ID );
+
+		// Get start and end date.
+		$start_end_date = get_start_end_departure_date( $departure_post->ID );
+
+		// Assert expected get data is equal to actual data.
+		$this->assertEquals( 'February 25 - March 15, 2021', $start_end_date );
+
+		// Update dates.
+		update_post_meta( $departure_post->ID, 'start_date', '2020-12-21' );
+		update_post_meta( $departure_post->ID, 'end_date', '2021-01-05' );
+
+		// Bust post cache after updating post meta.
+		bust_post_cache( $departure_post->ID );
+
+		// Get start and end date.
+		$start_end_date = get_start_end_departure_date( $departure_post->ID );
+
+		// Assert expected get data is equal to actual data.
+		$this->assertEquals( 'December 21, 2020 - January 5, 2021', $start_end_date );
+	}
+
+	/**
+	 * Test bust_card_data_cache.
+	 *
+	 * @covers \Quark\Departures\bust_card_data_cache()
+	 *
+	 * @return void
+	 */
+	public function test_bust_card_data_cache(): void {
+		// Create a departure post.
+		$departure_post = $this->factory()->post->create_and_get(
+			[
+				'post_type'   => POST_TYPE,
+				'post_title'  => 'Test Departure Post',
+				'post_status' => 'publish',
+			]
+		);
+
+		// Make sure post is created.
+		$this->assertTrue( $departure_post instanceof WP_Post );
+
+		// Get currency list.
+		$currencies = get_available_currencies();
+
+		// Loop through currencies.
+		foreach ( $currencies as $currency ) {
+			// Set cache key.
+			$cache_key = 'departure_card_data_' . $departure_post->ID . '_' . $currency;
+
+			// Set cache data.
+			wp_cache_set( $cache_key, 'test data_' . $departure_post->ID . $currency, POST_TYPE );
+		}
+
+		// Verify cache data is set.
+		foreach ( $currencies as $currency ) {
+			// Set cache key.
+			$cache_key = 'departure_card_data_' . $departure_post->ID . '_' . $currency;
+
+			// Get cache data.
+			$cache_data = wp_cache_get( $cache_key, POST_TYPE );
+
+			// Assert cache data is set.
+			$this->assertEquals( 'test data_' . $departure_post->ID . $currency, $cache_data );
+		}
+
+		// Bust cache.
+		bust_post_cache( $departure_post->ID );
+
+		// Verify cache data is deleted.
+		foreach ( $currencies as $currency ) {
+			// Set cache key.
+			$cache_key = 'departure_card_data_' . $departure_post->ID . '_' . $currency;
+
+			// Get cache data.
+			$cache_data = wp_cache_get( $cache_key, POST_TYPE );
+
+			// Assert cache data is deleted.
+			$this->assertFalse( $cache_data );
+		}
+	}
+
+	/**
+	 * Test bust card cache on itinerary and expedition update.
+	 *
+	 * @covers \Quark\Departures\bust_card_data_cache_on_itinerary_update()
+	 * @covers \Quark\Departures\bust_card_data_cache_on_expedition_update()
+	 *
+	 * @return void
+	 */
+	public function test_bust_card_data_cache_on_expedition_update(): void {
+		// Setup mock response.
+		add_filter( 'pre_http_request', 'Quark\Tests\Softrip\mock_softrip_http_request', 10, 3 );
+
+		// Sync departure posts.
+		do_sync();
+
+		// Get Itinerary posts.
+		$itinerary_query_args = [
+			'post_type'              => ITINERARY_POST_TYPE,
+			'no_found_rows'          => true,
+			'ignore_sticky_posts'    => true,
+			'update_post_term_cache' => false,
+			'fields'                 => 'ids',
+			'update_post_meta_cache' => false,
+			'meta_query'             => [
+				[
+					'key'     => 'softrip_package_code',
+					'value'   => [
+						'ABC-123',
+						'PQR-345',
+						'JKL-012',
+					],
+					'compare' => 'IN',
+				],
+			],
+		];
+
+		// Get Itinerary posts.
+		$itinerary_posts = get_posts( $itinerary_query_args );
+
+		// Assert fetched posts are not empty.
+		$this->assertEquals( 3, count( $itinerary_posts ) );
+
+		// Create an Expedition post.
+		$expedition_post = $this->factory()->post->create_and_get(
+			[
+				'post_type'   => EXPEDITION_POST_TYPE,
+				'post_title'  => 'Test Expedition Post',
+				'post_status' => 'publish',
+				'meta_input'  => [
+					'related_itineraries' => $itinerary_posts,
+				],
+			]
+		);
+
+		// Assert created post is instance of WP_Post.
+		$this->assertTrue( $expedition_post instanceof WP_Post );
+
+		// Get Departure posts by itinerary.
+		foreach ( $itinerary_posts as $itinerary_post_id ) {
+			$departure_post_ids = get_departures_by_itinerary( absint( $itinerary_post_id ) );
+
+			// Loop through departure posts.
+			foreach ( $departure_post_ids as $departure_post_id ) {
+				// Get currency list.
+				$currencies = get_available_currencies();
+
+				// Loop through currencies.
+				foreach ( $currencies as $currency ) {
+					// Set cache key.
+					$cache_key = 'departure_card_data_' . $departure_post_id . '_' . $currency;
+
+					// Set cache data.
+					wp_cache_set( $cache_key, 'test data_' . $departure_post_id . $currency, POST_TYPE );
+
+					// Verify cache data is set.
+					$cache_data = wp_cache_get( $cache_key, POST_TYPE );
+					$this->assertEquals( 'test data_' . $departure_post_id . $currency, $cache_data );
+				}
+			}
+		}
+
+		// Bust cache using expedition post.
+		bust_card_data_cache_on_expedition_update( $expedition_post->ID );
+
+		// Verify cache data is set.
+		foreach ( $itinerary_posts as $itinerary_post_id ) {
+			$departure_post_ids = get_departures_by_itinerary( absint( $itinerary_post_id ) );
+
+			// Loop through departure posts.
+			foreach ( $departure_post_ids as $departure_post_id ) {
+				// Get currency list.
+				$currencies = get_available_currencies();
+
+				// Loop through currencies.
+				foreach ( $currencies as $currency ) {
+					// Set cache key.
+					$cache_key = 'departure_card_data_' . $departure_post_id . '_' . $currency;
+
+					// Get cache data.
+					$cache_data = wp_cache_get( $cache_key, POST_TYPE );
+
+					// Assert cache data is empty.
+					$this->assertEmpty( $cache_data );
+				}
+			}
+		}
 	}
 }
