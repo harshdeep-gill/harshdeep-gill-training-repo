@@ -591,6 +591,7 @@ function delete_occupancy_promotions_by_id( int $id = 0 ): bool {
 	// Bust cache.
 	wp_cache_delete( CACHE_KEY_PREFIX . '_occupancy_id_' . $occupancy_promotion['occupancy_id'], CACHE_GROUP );
 	wp_cache_delete( CACHE_KEY_PREFIX . '_occupancy_id_' . $occupancy_promotion['occupancy_id'] . '_promotion_id_' . $occupancy_promotion['promotion_id'], CACHE_GROUP );
+	wp_cache_delete( CACHE_KEY_PREFIX . '_id_' . $id, CACHE_GROUP );
 
 	// Return success.
 	return true;
