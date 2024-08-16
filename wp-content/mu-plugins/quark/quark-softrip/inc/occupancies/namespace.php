@@ -1047,6 +1047,59 @@ function get_lowest_price_by_cabin_category_and_departure( int $cabin_category_p
 }
 
 /**
+ * Get lowest price by cabin category post id, departure post id and promotion code.
+ *
+ * @param int    $cabin_category_post_id The cabin category post ID.
+ * @param int    $departure_post_id The departure post ID.
+ * @param string $promotion_code The promotion code.
+ * @param string $currency Currency code.
+ *
+ * @return int
+ */
+function get_lowest_price_by_cabin_category_and_departure_and_promotion_code( int $cabin_category_post_id = 0, int $departure_post_id = 0, string $promotion_code = '', string $currency = 'USD' ): int {
+	// Upper case currency.
+	$currency = strtoupper( $currency );
+
+	// Setup default return values.
+	$lowest_price = 0;
+
+	// Return default values if no post ID.
+	if ( empty( $cabin_category_post_id ) || empty( $departure_post_id ) || ! in_array( $currency, CURRENCIES, true ) ) {
+		return $lowest_price;
+	}
+
+	// Get all occupancies by cabin category for the current departure.
+	$occupancies = get_occupancies_by_cabin_category_and_departure( $cabin_category_post_id, $departure_post_id );
+
+	// Loop through each occupancy.
+	foreach ( $occupancies as $occupancy ) {
+		// Construct the price per person key.
+		$price_per_person_key = 'price_per_person_' . strtolower( $currency );
+
+		// Validate the price per person.
+		if ( ! is_array( $occupancy ) || empty( $occupancy[ $price_per_person_key ] ) || empty( $occupancy['id'] ) ) {
+			continue;
+		}
+
+		// Get lowest price for occupancy promotions.
+		$promotion_lowest_price = get_occupancy_promotion_lowest_price( $occupancy['id'], $currency, $promotion_code );
+
+		/**
+		 * If the promotion price is less than the current lowest price, update the lowest price.
+		 */
+		if (
+			empty( $lowest_price ) ||
+			( ! empty( $promotion_lowest_price ) && ( $promotion_lowest_price < $lowest_price ) )
+		) {
+			$lowest_price = $promotion_lowest_price;
+		}
+	}
+
+	// Return the lowest price.
+	return $lowest_price;
+}
+
+/**
  * Get occupancies by cabin category post ID and departure post ID.
  *
  * @param int  $cabin_category_post_id The cabin category post ID.
