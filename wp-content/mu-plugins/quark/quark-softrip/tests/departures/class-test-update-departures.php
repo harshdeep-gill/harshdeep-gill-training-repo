@@ -160,7 +160,6 @@ class Test_Update_Departures extends Softrip_TestCase {
 				'ignore_sticky_posts'    => true,
 				'suppress_filters'       => false,
 				'fields'                 => 'ids',
-				'order'                  => 'ASC',
 				'meta_query'             => [
 					[
 						'key'   => 'softrip_package_code',
