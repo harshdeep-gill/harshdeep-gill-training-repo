@@ -1235,12 +1235,84 @@ class Test_Occupancy_Promotions extends Softrip_TestCase {
 	public function test_get_lowest_price(): void {
 		// Setup variables.
 		global $wpdb;
-		$table_name = get_table_name();
+		$table_name  = get_table_name();
+		$promo_code1 = '10PROMO';
+		$promo_code2 = '20PROMO';
+		$promo_code3 = '30PROMO';
+
+		// Add all promotions.
+		$promotions = [
+			[
+				'endDate'       => '2050-12-31T00:00:00',
+				'startDate'     => '2023-09-28T00:00:00',
+				'description'   => 'Save 10%',
+				'discountType'  => 'percentage_off',
+				'discountValue' => '0.1',
+				'promotionCode' => $promo_code1,
+				'isPIF'         => false,
+			],
+			[
+				'endDate'       => '2050-12-31T00:00:00',
+				'startDate'     => '2023-09-28T00:00:00',
+				'description'   => 'Save 20%',
+				'discountType'  => 'percentage_off',
+				'discountValue' => '0.2',
+				'promotionCode' => $promo_code2,
+				'isPIF'         => false,
+			],
+			[
+				'endDate'       => '2050-12-31T00:00:00',
+				'startDate'     => '2023-09-28T00:00:00',
+				'description'   => 'Save 30%',
+				'discountType'  => 'percentage_off',
+				'discountValue' => '0.3',
+				'promotionCode' => $promo_code3,
+				'isPIF'         => false,
+			],
+		];
+		$is_saved   = update_promotions( $promotions );
+		$this->assertTrue( $is_saved );
+
+		// Get first promotion.
+		$promos = get_promotions_by_code( $promo_code1 );
+		$this->assertIsArray( $promos );
+		$this->assertNotEmpty( $promos );
+		$this->assertCount( 1, $promos );
+		$promo1 = $promos[0];
+		$this->assertIsArray( $promo1 );
+		$this->assertNotEmpty( $promo1 );
+		$this->assertArrayHasKey( 'id', $promo1 );
+		$promo_id1 = $promo1['id'];
+		$this->assertIsInt( $promo_id1 );
+
+		// Get second promotion.
+		$promos = get_promotions_by_code( $promo_code2 );
+		$this->assertIsArray( $promos );
+		$this->assertNotEmpty( $promos );
+		$this->assertCount( 1, $promos );
+		$promo2 = $promos[0];
+		$this->assertIsArray( $promo2 );
+		$this->assertNotEmpty( $promo2 );
+		$this->assertArrayHasKey( 'id', $promo2 );
+		$promo_id2 = $promo2['id'];
+		$this->assertIsInt( $promo_id2 );
+
+		// Get third promotion.
+		$promos = get_promotions_by_code( $promo_code3 );
+		$this->assertIsArray( $promos );
+		$this->assertNotEmpty( $promos );
+		$this->assertCount( 1, $promos );
+		$promo3 = $promos[0];
+		$this->assertIsArray( $promo3 );
+		$this->assertNotEmpty( $promo3 );
+		$this->assertArrayHasKey( 'id', $promo3 );
+		$promo_id3 = $promo3['id'];
+		$this->assertIsInt( $promo_id3 );
 
 		// Insert first occupancy promotion.
 		$occupancy_promotion_data1 = [
 			'occupancy_id'         => 1,
-			'promotion_id'         => 1,
+			'promotion_id'         => $promo_id1,
 			'price_per_person_usd' => 90,
 			'price_per_person_cad' => 110,
 			'price_per_person_aud' => 120,
@@ -1254,7 +1326,7 @@ class Test_Occupancy_Promotions extends Softrip_TestCase {
 		// Insert second occupancy promotion.
 		$occupancy_promotion_data2 = [
 			'occupancy_id'         => 1,
-			'promotion_id'         => 2,
+			'promotion_id'         => $promo_id2,
 			'price_per_person_usd' => 85,
 			'price_per_person_cad' => 105,
 			'price_per_person_aud' => 115,
@@ -1268,12 +1340,12 @@ class Test_Occupancy_Promotions extends Softrip_TestCase {
 		// Insert third occupancy promotion.
 		$occupancy_promotion_data3 = [
 			'occupancy_id'         => 2,
-			'promotion_id'         => 1,
-			'price_per_person_usd' => 90,
-			'price_per_person_cad' => 110,
-			'price_per_person_aud' => 120,
-			'price_per_person_gbp' => 130,
-			'price_per_person_eur' => 140,
+			'promotion_id'         => $promo_id1,
+			'price_per_person_usd' => 92,
+			'price_per_person_cad' => 88,
+			'price_per_person_aud' => 121,
+			'price_per_person_gbp' => 189,
+			'price_per_person_eur' => 110,
 		];
 		$wpdb->insert( $table_name, $occupancy_promotion_data3 );
 		$occupancy_promotion_id3 = $wpdb->insert_id;
@@ -1323,9 +1395,69 @@ class Test_Occupancy_Promotions extends Softrip_TestCase {
 		$actual = get_lowest_price( 1, 'EUR' );
 		$this->assertEquals( 135, $actual );
 
+		// Test with occupancy id, currency and promotion code - 10PROMO.
+		$actual = get_lowest_price( 1, 'USD', $promo_code1 );
+		$this->assertEquals( 90, $actual );
+
+		// Test with occupancy id, currency and promotion code - 20PROMO.
+		$actual = get_lowest_price( 1, 'USD', $promo_code2 );
+		$this->assertEquals( 85, $actual );
+
+		// Test with occupancy id, currency and promotion code - 30PROMO. Non-associated.
+		$actual = get_lowest_price( 1, 'USD', $promo_code3 );
+		$this->assertEquals( 0, $actual );
+
+		// Test with occupancy id, currency and promotion code - 10PROMO CAD.
+		$actual = get_lowest_price( 1, 'CAD', $promo_code1 );
+		$this->assertEquals( 110, $actual );
+
+		// Test with occupancy id, currency and promotion code - 20PROMO CAD.
+		$actual = get_lowest_price( 1, 'CAD', $promo_code2 );
+		$this->assertEquals( 105, $actual );
+
+		// Test with occupancy id, currency and promotion code - 30PROMO CAD. Non-associated.
+		$actual = get_lowest_price( 1, 'CAD', $promo_code3 );
+		$this->assertEquals( 0, $actual );
+
+		// Test with occupancy id, currency and promotion code - 10PROMO AUD.
+		$actual = get_lowest_price( 1, 'AUD', $promo_code1 );
+		$this->assertEquals( 120, $actual );
+
+		// Test with occupancy id, currency and promotion code - 20PROMO AUD.
+		$actual = get_lowest_price( 1, 'AUD', $promo_code2 );
+		$this->assertEquals( 115, $actual );
+
+		// Test with occupancy id, currency and promotion code - 30PROMO AUD. Non-associated.
+		$actual = get_lowest_price( 1, 'AUD', $promo_code3 );
+		$this->assertEquals( 0, $actual );
+
+		// Test with occupancy id, currency and promotion code - 10PROMO GBP.
+		$actual = get_lowest_price( 1, 'GBP', $promo_code1 );
+		$this->assertEquals( 130, $actual );
+
+		// Test with occupancy id, currency and promotion code - 20PROMO GBP.
+		$actual = get_lowest_price( 1, 'GBP', $promo_code2 );
+		$this->assertEquals( 125, $actual );
+
+		// Test with occupancy id, currency and promotion code - 30PROMO GBP. Non-associated.
+		$actual = get_lowest_price( 1, 'GBP', $promo_code3 );
+		$this->assertEquals( 0, $actual );
+
+		// Test with occupancy id, currency and promotion code - 10PROMO EUR.
+		$actual = get_lowest_price( 1, 'EUR', $promo_code1 );
+		$this->assertEquals( 140, $actual );
+
+		// Test with occupancy id, currency and promotion code - 20PROMO EUR.
+		$actual = get_lowest_price( 1, 'EUR', $promo_code2 );
+		$this->assertEquals( 135, $actual );
+
+		// Test with occupancy id, currency and promotion code - 30PROMO EUR. Non-associated.
+		$actual = get_lowest_price( 1, 'EUR', $promo_code3 );
+		$this->assertEquals( 0, $actual );
+
 		// Test for second occupancy.
 		$actual = get_lowest_price( 2 );
-		$this->assertEquals( 90, $actual );
+		$this->assertEquals( 92, $actual );
 
 		// Insert one more occupancy promotion for second occupancy.
 		$occupancy_promotion_data4 = [
@@ -1350,7 +1482,7 @@ class Test_Occupancy_Promotions extends Softrip_TestCase {
 
 		// Test for currency - CAD.
 		$actual = get_lowest_price( 2, 'CAD' );
-		$this->assertEquals( 100, $actual );
+		$this->assertEquals( 88, $actual );
 
 		// Test for currency - AUD.
 		$actual = get_lowest_price( 2, 'AUD' );
@@ -1362,7 +1494,67 @@ class Test_Occupancy_Promotions extends Softrip_TestCase {
 
 		// Test for currency - EUR.
 		$actual = get_lowest_price( 2, 'EUR' );
+		$this->assertEquals( 110, $actual );
+
+		// Test lowest price by promotion code - 20PROMO.
+		$actual = get_lowest_price( 2, 'USD', $promo_code2 );
+		$this->assertEquals( 80, $actual );
+
+		// Test lowest price by promotion code - 10PROMO.
+		$actual = get_lowest_price( 2, 'USD', $promo_code1 );
+		$this->assertEquals( 92, $actual );
+
+		// Test lowest price by promotion code - 30PROMO. Non-associated.
+		$actual = get_lowest_price( 2, 'USD', $promo_code3 );
+		$this->assertEquals( 0, $actual );
+
+		// Test lowest price by promotion code - 10PROMO CAD.
+		$actual = get_lowest_price( 2, 'CAD', $promo_code1 );
+		$this->assertEquals( 88, $actual );
+
+		// Test lowest price by promotion code - 20PROMO CAD.
+		$actual = get_lowest_price( 2, 'CAD', $promo_code2 );
+		$this->assertEquals( 100, $actual );
+
+		// Test lowest price by promotion code - 30PROMO CAD. Non-associated.
+		$actual = get_lowest_price( 2, 'CAD', $promo_code3 );
+		$this->assertEquals( 0, $actual );
+
+		// Test lowest price by promotion code - 10PROMO AUD.
+		$actual = get_lowest_price( 2, 'AUD', $promo_code1 );
+		$this->assertEquals( 121, $actual );
+
+		// Test lowest price by promotion code - 20PROMO AUD.
+		$actual = get_lowest_price( 2, 'AUD', $promo_code2 );
+		$this->assertEquals( 110, $actual );
+
+		// Test lowest price by promotion code - 30PROMO AUD. Non-associated.
+		$actual = get_lowest_price( 2, 'AUD', $promo_code3 );
+		$this->assertEquals( 0, $actual );
+
+		// Test lowest price by promotion code - 10PROMO GBP.
+		$actual = get_lowest_price( 2, 'GBP', $promo_code1 );
+		$this->assertEquals( 189, $actual );
+
+		// Test lowest price by promotion code - 20PROMO GBP.
+		$actual = get_lowest_price( 2, 'GBP', $promo_code2 );
+		$this->assertEquals( 120, $actual );
+
+		// Test lowest price by promotion code - 30PROMO GBP. Non-associated.
+		$actual = get_lowest_price( 2, 'GBP', $promo_code3 );
+		$this->assertEquals( 0, $actual );
+
+		// Test lowest price by promotion code - 10PROMO EUR.
+		$actual = get_lowest_price( 2, 'EUR', $promo_code1 );
+		$this->assertEquals( 110, $actual );
+
+		// Test lowest price by promotion code - 20PROMO EUR.
+		$actual = get_lowest_price( 2, 'EUR', $promo_code2 );
 		$this->assertEquals( 130, $actual );
+
+		// Test lowest price by promotion code - 30PROMO EUR. Non-associated.
+		$actual = get_lowest_price( 2, 'EUR', $promo_code3 );
+		$this->assertEquals( 0, $actual );
 	}
 
 	/**

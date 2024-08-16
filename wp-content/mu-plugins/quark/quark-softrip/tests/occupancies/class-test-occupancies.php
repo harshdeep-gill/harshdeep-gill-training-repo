@@ -22,12 +22,16 @@ use function Quark\Softrip\Occupancies\get_cabin_category_post_ids_by_departure;
 use function Quark\Softrip\Occupancies\get_description_and_pax_count_by_mask;
 use function Quark\Softrip\Occupancies\get_lowest_price;
 use function Quark\Softrip\Occupancies\get_lowest_price_by_cabin_category_and_departure;
+use function Quark\Softrip\Occupancies\get_lowest_price_by_cabin_category_and_departure_and_promotion_code;
 use function Quark\Softrip\Occupancies\get_occupancies_by_cabin_category_and_departure;
 use function Quark\Softrip\Occupancies\get_occupancies_by_departure;
 use function Quark\Softrip\Occupancies\get_occupancy_data_by_id;
 use function Quark\Softrip\Occupancies\get_occupancy_data_by_softrip_id;
 use function Quark\Softrip\Occupancies\get_table_name;
 use function Quark\Softrip\Occupancies\get_table_sql;
+use function Quark\Softrip\OccupancyPromotions\get_table_name as get_occupancy_promotions_table_name;
+use function Quark\Softrip\OccupancyPromotions\update_occupancy_promotions;
+use function Quark\Softrip\Promotions\get_table_name as get_promotions_table_name;
 
 use const Quark\CabinCategories\POST_TYPE as CABIN_CATEGORIES_POST_TYPE;
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
@@ -3465,6 +3469,424 @@ class Test_Occupancies extends Softrip_TestCase {
 			],
 		];
 		$actual   = format_rows_data_from_db( $data );
+		$this->assertEquals( $expected, $actual );
+	}
+
+	/**
+	 * Test get lowest price by cabin category and departure and promotion code.
+	 *
+	 * @covers \Quark\Softrip\Occupancies\get_lowest_price_by_cabin_category_and_departure_and_promotion_code
+	 *
+	 * @return void
+	 */
+	public function test_get_lowest_price_by_cabin_category_and_departure_and_promotion_code(): void {
+		// Setup default expected.
+		$expected_default = 0;
+
+		// Test with no arguments.
+		$actual = get_lowest_price_by_cabin_category_and_departure_and_promotion_code();
+		$this->assertEquals( $expected_default, $actual );
+
+		// Test with invalid cabin category ID.
+		$cabin_category_post_id = 0;
+		$departure_post_id      = 1231;
+		$promotion_code         = 'TEST';
+		$actual                 = get_lowest_price_by_cabin_category_and_departure_and_promotion_code( $cabin_category_post_id, $departure_post_id, $promotion_code );
+		$this->assertEquals( $expected_default, $actual );
+
+		// Test with invalid departure ID.
+		$cabin_category_post_id = 4561;
+		$departure_post_id      = 0;
+		$promotion_code         = 'TEST';
+		$actual                 = get_lowest_price_by_cabin_category_and_departure_and_promotion_code( $cabin_category_post_id, $departure_post_id, $promotion_code );
+		$this->assertEquals( $expected_default, $actual );
+
+		// Test with invalid promotion code.
+		$cabin_category_post_id = 4561;
+		$departure_post_id      = 1231;
+		$promotion_code         = '';
+		$actual                 = get_lowest_price_by_cabin_category_and_departure_and_promotion_code( $cabin_category_post_id, $departure_post_id, $promotion_code );
+		$this->assertEquals( $expected_default, $actual );
+
+		// Test with non-existing cabin category ID.
+		$cabin_category_post_id = 1;
+		$departure_post_id      = 1231;
+		$promotion_code         = 'TEST';
+		$actual                 = get_lowest_price_by_cabin_category_and_departure_and_promotion_code( $cabin_category_post_id, $departure_post_id, $promotion_code );
+		$this->assertEquals( $expected_default, $actual );
+
+		// Test with non-existing departure ID.
+		$cabin_category_post_id = 4561;
+		$departure_post_id      = 1;
+		$promotion_code         = 'TEST';
+		$actual                 = get_lowest_price_by_cabin_category_and_departure_and_promotion_code( $cabin_category_post_id, $departure_post_id, $promotion_code );
+		$this->assertEquals( $expected_default, $actual );
+
+		// Test with non-existing promotion code.
+		$cabin_category_post_id = 4561;
+		$departure_post_id      = 1231;
+		$promotion_code         = 'TEST';
+		$actual                 = get_lowest_price_by_cabin_category_and_departure_and_promotion_code( $cabin_category_post_id, $departure_post_id, $promotion_code );
+		$this->assertEquals( $expected_default, $actual );
+
+		// Setup variables.
+		global $wpdb;
+		$promotion_table_name            = get_promotions_table_name();
+		$promo_code1                     = '10PROMO';
+		$promo_code2                     = '20PROMO';
+		$promo_code3                     = '10PIF';
+		$occupancies_table_name          = get_table_name();
+		$occupancy_promotions_table_name = get_occupancy_promotions_table_name();
+
+		// Create a promotion - 10PROMO.
+		$promotion1 = [
+			'code'           => $promo_code1,
+			'start_date'     => '2024-02-20',
+			'end_date'       => '2026-02-20',
+			'description'    => '10% off',
+			'discount_type'  => 'percentage',
+			'discount_value' => '0.1',
+			'is_pif'         => '0',
+		];
+		$wpdb->insert( $promotion_table_name, $promotion1 );
+		$promotion1_id = $wpdb->insert_id;
+		$this->assertIsInt( $promotion1_id );
+
+		// Create a promotion - 20PROMO.
+		$promotion2 = [
+			'code'           => $promo_code2,
+			'start_date'     => '2024-03-18',
+			'end_date'       => '2026-01-20',
+			'description'    => '20% off',
+			'discount_type'  => 'percentage',
+			'discount_value' => '0.2',
+			'is_pif'         => '0',
+		];
+		$wpdb->insert( $promotion_table_name, $promotion2 );
+		$promotion2_id = $wpdb->insert_id;
+		$this->assertIsInt( $promotion2_id );
+
+		// Create a promotion - 10PIF.
+		$promotion3 = [
+			'code'           => $promo_code3,
+			'start_date'     => '2024-02-20',
+			'end_date'       => '2026-02-20',
+			'description'    => 'Pay in full at time of booking and save 10%',
+			'discount_type'  => 'percentage',
+			'discount_value' => '0.1',
+			'is_pif'         => '1',
+		];
+		$wpdb->insert( $promotion_table_name, $promotion3 );
+		$promotion3_id = $wpdb->insert_id;
+		$this->assertIsInt( $promotion3_id );
+
+		// Create a departure post.
+		$departure_post_id = $this->factory()->post->create(
+			[
+				'post_type'  => DEPARTURE_POST_TYPE,
+				'meta_input' => [
+					'softrip_id' => 'UNQ-123:2026-02-20',
+				],
+			]
+		);
+		$this->assertIsInt( $departure_post_id );
+
+		// Create a cabin category post.
+		$cabin_category_post_id = $this->factory()->post->create(
+			[
+				'post_type'  => CABIN_CATEGORIES_POST_TYPE,
+				'meta_input' => [
+					'cabin_category_id' => 'OEX-UNQ',
+				],
+			]
+		);
+		$this->assertIsInt( $cabin_category_post_id );
+
+		// Create an occupancy.
+		$raw_occupancy_data1 = [
+			'id'                      => 'UNQ-123:2026-02-20:OEX-SGL:A',
+			'name'                    => 'Test Occupancy 1',
+			'mask'                    => 'A',
+			'spacesAvailable'         => 10,
+			'availabilityDescription' => 'Available',
+			'availabilityStatus'      => 'O',
+			'prices'                  => [
+				'USD' => [
+					'currencyCode'   => 'USD',
+					'pricePerPerson' => 100,
+					'promos'         => [
+						'10PROMO' => [
+							'promoPricePerPerson' => 90,
+						],
+						'20PROMO' => [
+							'promoPricePerPerson' => 80,
+						],
+						'10PIF'   => [
+							'promoPricePerPerson' => 89,
+						],
+					],
+				],
+				'CAD' => [
+					'currencyCode'   => 'CAD',
+					'pricePerPerson' => 150,
+					'promos'         => [
+						'10PROMO' => [
+							'promoPricePerPerson' => 135,
+						],
+						'20PROMO' => [
+							'promoPricePerPerson' => 120,
+						],
+						'10PIF'   => [
+							'promoPricePerPerson' => 123,
+						],
+					],
+				],
+				'AUD' => [
+					'currencyCode'   => 'AUD',
+					'pricePerPerson' => 200,
+					'promos'         => [
+						'10PROMO' => [
+							'promoPricePerPerson' => 180,
+						],
+						'10PIF'   => [
+							'promoPricePerPerson' => 187,
+						],
+					],
+				],
+				'GBP' => [
+					'currencyCode'   => 'GBP',
+					'pricePerPerson' => 250,
+					'promos'         => [
+						'10PROMO' => [
+							'promoPricePerPerson' => 225,
+						],
+						'20PROMO' => [
+							'promoPricePerPerson' => 200,
+						],
+						'10PIF'   => [
+							'promoPricePerPerson' => 225,
+						],
+					],
+				],
+				'EUR' => [
+					'currencyCode'   => 'EUR',
+					'pricePerPerson' => 300,
+					'promos'         => [
+						'10PROMO' => [
+							'promoPricePerPerson' => 270,
+						],
+						'20PROMO' => [
+							'promoPricePerPerson' => 240,
+						],
+						'10PIF'   => [
+							'promoPricePerPerson' => 210,
+						],
+					],
+				],
+			],
+		];
+		$formatted_data1     = format_data( $raw_occupancy_data1, $cabin_category_post_id, $departure_post_id );
+		$this->assertIsArray( $formatted_data1 );
+		$this->assertNotEmpty( $formatted_data1 );
+
+		// Insert occupancy data.
+		$wpdb->insert( $occupancies_table_name, $formatted_data1 );
+
+		// Get inserted occupancy ID.
+		$occupancy_id1 = $wpdb->insert_id;
+		$this->assertIsInt( $occupancy_id1 );
+
+		// Update the first occupancy promotion.
+		$is_updated = update_occupancy_promotions( $raw_occupancy_data1['prices'], $occupancy_id1 );
+		$this->assertTrue( $is_updated );
+
+		// Create one more occupancy.
+		$raw_occupancy_data2 = [
+			'id'                      => 'UNQ-123:2026-02-20:OEX-SGL:B',
+			'name'                    => 'Test Occupancy 2',
+			'mask'                    => 'B',
+			'spacesAvailable'         => 20,
+			'availabilityDescription' => 'Available',
+			'availabilityStatus'      => 'O',
+			'prices'                  => [
+				'USD' => [
+					'currencyCode'   => 'USD',
+					'pricePerPerson' => 200,
+					'promos'         => [
+						'10PROMO' => [
+							'promoPricePerPerson' => 180,
+						],
+						'20PROMO' => [
+							'promoPricePerPerson' => 160,
+						],
+						'10PIF'   => [
+							'promoPricePerPerson' => 180,
+						],
+					],
+				],
+				'CAD' => [
+					'currencyCode'   => 'CAD',
+					'pricePerPerson' => 250,
+					'promos'         => [
+						'10PROMO' => [
+							'promoPricePerPerson' => 225,
+						],
+						'20PROMO' => [
+							'promoPricePerPerson' => 200,
+						],
+						'10PIF'   => [
+							'promoPricePerPerson' => 225,
+						],
+					],
+				],
+				'AUD' => [
+					'currencyCode'   => 'AUD',
+					'pricePerPerson' => 300,
+					'promos'         => [
+						'10PROMO' => [
+							'promoPricePerPerson' => 270,
+						],
+						'20PROMO' => [
+							'promoPricePerPerson' => 240,
+						],
+						'10PIF'   => [
+							'promoPricePerPerson' => 270,
+						],
+					],
+				],
+				'GBP' => [
+					'currencyCode'   => 'GBP',
+					'pricePerPerson' => 350,
+					'promos'         => [
+						'10PROMO' => [
+							'promoPricePerPerson' => 315,
+						],
+						'20PROMO' => [
+							'promoPricePerPerson' => 280,
+						],
+						'10PIF'   => [
+							'promoPricePerPerson' => 315,
+						],
+					],
+				],
+				'EUR' => [
+					'currencyCode'   => 'EUR',
+					'pricePerPerson' => 400,
+					'promos'         => [
+						'10PROMO' => [
+							'promoPricePerPerson' => 360,
+						],
+						'20PROMO' => [
+							'promoPricePerPerson' => 320,
+						],
+						'10PIF'   => [
+							'promoPricePerPerson' => 360,
+						],
+					],
+				],
+			],
+		];
+		$formatted_data2     = format_data( $raw_occupancy_data2, $cabin_category_post_id, $departure_post_id );
+		$this->assertIsArray( $formatted_data2 );
+		$this->assertNotEmpty( $formatted_data2 );
+
+		// Insert occupancy data.
+		$wpdb->insert( $occupancies_table_name, $formatted_data2 );
+
+		// Get inserted occupancy ID.
+		$occupancy_id2 = $wpdb->insert_id;
+		$this->assertIsInt( $occupancy_id2 );
+
+		// Update the second occupancy promotion.
+		$is_updated = update_occupancy_promotions( $raw_occupancy_data2['prices'], $occupancy_id2 );
+		$this->assertTrue( $is_updated );
+
+		// Flush cache.
+		wp_cache_flush();
+
+		// Get lowest price by cabin category and departure and promotion code - 10PROMO for USD.
+		$expected = 90;
+		$actual   = get_lowest_price_by_cabin_category_and_departure_and_promotion_code( $cabin_category_post_id, $departure_post_id, $promo_code1 );
+		$this->assertEquals( $expected, $actual );
+
+		// Get lowest price by cabin category and departure and promotion code - 20PROMO for USD.
+		$expected = 80;
+		$actual   = get_lowest_price_by_cabin_category_and_departure_and_promotion_code( $cabin_category_post_id, $departure_post_id, $promo_code2 );
+		$this->assertEquals( $expected, $actual );
+
+		// Get lowest price by cabin category and departure and promotion code - 10PIF for USD.
+		$expected = 89;
+		$actual   = get_lowest_price_by_cabin_category_and_departure_and_promotion_code( $cabin_category_post_id, $departure_post_id, $promo_code3 );
+		$this->assertEquals( $expected, $actual );
+
+		// Get lowest price by cabin category and departure and promotion code - 10PROMO for CAD.
+		$expected = 135;
+		$actual   = get_lowest_price_by_cabin_category_and_departure_and_promotion_code( $cabin_category_post_id, $departure_post_id, $promo_code1, 'CAD' );
+		$this->assertEquals( $expected, $actual );
+
+		// Get lowest price by cabin category and departure and promotion code - 20PROMO for CAD.
+		$expected = 120;
+		$actual   = get_lowest_price_by_cabin_category_and_departure_and_promotion_code( $cabin_category_post_id, $departure_post_id, $promo_code2, 'CAD' );
+		$this->assertEquals( $expected, $actual );
+
+		// Get lowest price by cabin category and departure and promotion code - 10PIF for CAD.
+		$expected = 123;
+		$actual   = get_lowest_price_by_cabin_category_and_departure_and_promotion_code( $cabin_category_post_id, $departure_post_id, $promo_code3, 'CAD' );
+		$this->assertEquals( $expected, $actual );
+
+		// Get lowest price by cabin category and departure and promotion code - 10PROMO for AUD.
+		$expected = 180;
+		$actual   = get_lowest_price_by_cabin_category_and_departure_and_promotion_code( $cabin_category_post_id, $departure_post_id, $promo_code1, 'AUD' );
+		$this->assertEquals( $expected, $actual );
+
+		// Get lowest price by cabin category and departure and promotion code - 20PROMO for AUD.
+		$expected = 240;
+		$actual   = get_lowest_price_by_cabin_category_and_departure_and_promotion_code( $cabin_category_post_id, $departure_post_id, $promo_code2, 'AUD' );
+		$this->assertEquals( $expected, $actual );
+
+		// Get lowest price by cabin category and departure and promotion code - 10PIF for AUD.
+		$expected = 187;
+		$actual   = get_lowest_price_by_cabin_category_and_departure_and_promotion_code( $cabin_category_post_id, $departure_post_id, $promo_code3, 'AUD' );
+		$this->assertEquals( $expected, $actual );
+
+		// Get lowest price by cabin category and departure and promotion code - 10PROMO for GBP.
+		$expected = 225;
+		$actual   = get_lowest_price_by_cabin_category_and_departure_and_promotion_code( $cabin_category_post_id, $departure_post_id, $promo_code1, 'GBP' );
+		$this->assertEquals( $expected, $actual );
+
+		// Get lowest price by cabin category and departure and promotion code - 20PROMO for GBP.
+		$expected = 200;
+		$actual   = get_lowest_price_by_cabin_category_and_departure_and_promotion_code( $cabin_category_post_id, $departure_post_id, $promo_code2, 'GBP' );
+		$this->assertEquals( $expected, $actual );
+
+		// Get lowest price by cabin category and departure and promotion code - 10PIF for GBP.
+		$expected = 225;
+		$actual   = get_lowest_price_by_cabin_category_and_departure_and_promotion_code( $cabin_category_post_id, $departure_post_id, $promo_code3, 'GBP' );
+		$this->assertEquals( $expected, $actual );
+
+		// Get lowest price by cabin category and departure and promotion code - 10PROMO for EUR.
+		$expected = 270;
+		$actual   = get_lowest_price_by_cabin_category_and_departure_and_promotion_code( $cabin_category_post_id, $departure_post_id, $promo_code1, 'EUR' );
+		$this->assertEquals( $expected, $actual );
+
+		// Get lowest price by cabin category and departure and promotion code - 20PROMO for EUR.
+		$expected = 240;
+		$actual   = get_lowest_price_by_cabin_category_and_departure_and_promotion_code( $cabin_category_post_id, $departure_post_id, $promo_code2, 'EUR' );
+		$this->assertEquals( $expected, $actual );
+
+		// Get lowest price by cabin category and departure and promotion code - 10PIF for EUR.
+		$expected = 210;
+		$actual   = get_lowest_price_by_cabin_category_and_departure_and_promotion_code( $cabin_category_post_id, $departure_post_id, $promo_code3, 'EUR' );
+		$this->assertEquals( $expected, $actual );
+
+		// For invalid promotion code.
+		$expected = 0;
+		$actual   = get_lowest_price_by_cabin_category_and_departure_and_promotion_code( $cabin_category_post_id, $departure_post_id, 'INVALID' );
+		$this->assertEquals( $expected, $actual );
+
+		// For invalid currency code.
+		$expected = 0;
+		$actual   = get_lowest_price_by_cabin_category_and_departure_and_promotion_code( $cabin_category_post_id, $departure_post_id, $promo_code1, 'INVALID' );
 		$this->assertEquals( $expected, $actual );
 	}
 }
