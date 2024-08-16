@@ -525,7 +525,7 @@ function get_occupancies_by_departure( int $departure_post_id = 0, bool $force =
  * @param int  $occupancy_id The occupancy ID.
  * @param bool $force Direct query.
  *
- * @return array{}|array{
+ * @return array{}|array<int,
  *   array{
  *     id: int,
  *     softrip_id: string,
@@ -542,7 +542,7 @@ function get_occupancies_by_departure( int $departure_post_id = 0, bool $force =
  *     price_per_person_gbp: int,
  *     price_per_person_eur: int,
  *   }
- * }
+ * >
  */
 function get_occupancy_data_by_id( int $occupancy_id = 0, bool $force = false ): array {
 	// Bail if empty.

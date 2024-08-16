@@ -378,7 +378,18 @@ function format_rows_data_from_db( array $rows_data = [] ): array {
  * @param int  $promotion_id The promotion ID.
  * @param bool $direct       Whether to bypass the cache.
  *
- * @return mixed[][]
+ * @return array{}|array<int,
+ *   array{
+ *     id: int,
+ *     code: string,
+ *     start_date: string,
+ *     end_date: string,
+ *     description: string,
+ *     discount_type: string,
+ *     discount_value: string,
+ *     is_pif: int,
+ *   }
+ * >
  */
 function get_promotions_by_id( int $promotion_id = 0, bool $direct = false ): array {
 	// Bail out if no ID.
@@ -424,9 +435,17 @@ function get_promotions_by_id( int $promotion_id = 0, bool $direct = false ): ar
 		ARRAY_A
 	);
 
+	// Bail out if not an array.
+	if ( ! is_array( $promotion_data ) ) {
+		return [];
+	}
+
+	// Format the data.
+	$formatted_promotion_data = format_rows_data_from_db( $promotion_data );
+
 	// Cache the value.
-	wp_cache_set( $cache_key, $promotion_data, CACHE_GROUP );
+	wp_cache_set( $cache_key, $formatted_promotion_data, CACHE_GROUP );
 
 	// Return the promotion data.
-	return $promotion_data;
+	return $formatted_promotion_data;
 }
