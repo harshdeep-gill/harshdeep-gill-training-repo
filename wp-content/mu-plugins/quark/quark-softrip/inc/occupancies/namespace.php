@@ -1064,7 +1064,7 @@ function get_lowest_price_by_cabin_category_and_departure_and_promotion_code( in
 	$lowest_price = 0;
 
 	// Return default values if no post ID.
-	if ( empty( $cabin_category_post_id ) || empty( $departure_post_id ) || ! in_array( $currency, CURRENCIES, true ) ) {
+	if ( empty( $cabin_category_post_id ) || empty( $departure_post_id ) || empty( $promotion_code ) || ! in_array( $currency, CURRENCIES, true ) ) {
 		return $lowest_price;
 	}
 
