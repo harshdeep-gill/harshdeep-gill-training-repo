@@ -57,7 +57,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 			'polar_region' => $attributes['polarRegion'],
 			'ship'         => $attributes['ship'],
 			'expedition'   => $attributes['expedition'],
-			'season'   => $attributes['season'],
+			'season'       => $attributes['season'],
 		],
 		'fields'           => [],
 	];
