@@ -5102,27 +5102,27 @@
 		<x-dates-rates>
 			<x-dates-rates.filters>
 				<x-dates-rates.filters-chips>
-					<x-dates-rates.filter drawer_id="dates-rates-filters" title="Region & Season" accordion_id="accordion-region-season" />
-					<x-dates-rates.filter drawer_id="dates-rates-filters" title="Expedition" accordion_id="accordion-expedition" />
-					<x-dates-rates.filter drawer_id="dates-rates-filters" title="Adevnture Options" accordion_id="accordion-adevnture-options" />
-					<x-dates-rates.filter drawer_id="dates-rates-filters" title="Departure Month" accordion_id="accordion-departure-month" />
-					<x-dates-rates.filter drawer_id="dates-rates-filters" title="Duration" accordion_id="accordion-duration" />
-					<x-dates-rates.filter drawer_id="dates-rates-filters" title="Ship" accordion_id="accordion-ship" />
+					<x-dates-rates.filter-chip drawer_id="dates-rates-filters" title="Region & Season" accordion_id="accordion-region-season" />
+					<x-dates-rates.filter-chip drawer_id="dates-rates-filters" title="Expedition" accordion_id="accordion-expedition" />
+					<x-dates-rates.filter-chip drawer_id="dates-rates-filters" title="Adevnture Options" accordion_id="accordion-adevnture-options" />
+					<x-dates-rates.filter-chip drawer_id="dates-rates-filters" title="Departure Month" accordion_id="accordion-departure-month" />
+					<x-dates-rates.filter-chip drawer_id="dates-rates-filters" title="Duration" accordion_id="accordion-duration" />
+					<x-dates-rates.filter-chip drawer_id="dates-rates-filters" title="Ship" accordion_id="accordion-ship" />
 				</x-dates-rates.filters-chips>
 
-				<x-form.field class="dates-rates__currency-field">
-					<x-form.select>
-						<x-form.option value="USD" label="$ USD" selected="yes">{{ __( '$ USD', 'qrk' ) }}</x-form.option>
-						<x-form.option value="CAD" label="$ CAD">{{ __( '$ CAD', 'qrk' ) }}</x-form.option>
-						<x-form.option value="AUD" label="$ AUD">{{ __( '$ AUD', 'qrk' ) }}</x-form.option>
-						<x-form.option value="GBP" label="£ GBP">{{ __( '£ GBP', 'qrk' ) }}</x-form.option>
-						<x-form.option value="EUR" label="€ EUR">{{ __( '€ EUR', 'qrk' ) }}</x-form.option>
-					</x-form.select>
-				</x-form.field>
+				<x-dates-rates.filter-currency>
+					<select>
+						<option value="USD" label="$ USD" selected="yes">{{ __( '$ USD', 'qrk' ) }}</option>
+						<option value="CAD" label="$ CAD">{{ __( '$ CAD', 'qrk' ) }}</option>
+						<option value="AUD" label="$ AUD">{{ __( '$ AUD', 'qrk' ) }}</option>
+						<option value="GBP" label="£ GBP">{{ __( '£ GBP', 'qrk' ) }}</option>
+						<option value="EUR" label="€ EUR">{{ __( '€ EUR', 'qrk' ) }}</option>
+					</select>
+				</x-dates-rates.filter-currency>
 
 				<x-dates-rates.sticky-filters>
-					<x-dates-rates.filter drawer_id="dates-rates-filters" title="Filter" accordion_id="accordion-region-season" />
-					<x-dates-rates.filter drawer_id="dates-rates-filters-currency" title="Currency: USD" />
+					<x-dates-rates.filter-chip drawer_id="dates-rates-filters" title="Filter" accordion_id="accordion-region-season" />
+					<x-dates-rates.filter-chip drawer_id="dates-rates-filters-currency" title="Currency: USD" />
 				</x-dates-rates.sticky-filters>
 
 				<x-drawer id="dates-rates-filters-currency" animation_direction="up" class="dates-rates__drawer">

@@ -4,14 +4,14 @@
 const { customElements, HTMLElement } = window;
 
 /**
- * Internal dependency.
+ * External dependency.
  */
 import { TPAccordionItemElement } from '@travelopia/web-components';
 
 /**
  * Dates Filters Class.
  */
-export default class DatesFilters extends HTMLElement {
+export default class DatesRatesFilters extends HTMLElement {
 	/**
 	 * Properties.
 	 */
@@ -26,7 +26,7 @@ export default class DatesFilters extends HTMLElement {
 		super();
 
 		// Elements.
-		this.filterButton = this.querySelector( '.dates-rates__filter-button' );
+		this.filterButton = this.querySelector( '.dates-rates__filter-chip-button' );
 		this.drawerAccordionItems = document.querySelectorAll( '.dates-rates__drawer .accordion__item' );
 
 		// Events.
@@ -80,4 +80,4 @@ export default class DatesFilters extends HTMLElement {
 /**
  * Initialize.
  */
-customElements.define( 'quark-filter', DatesFilters );
+customElements.define( 'quark-dates-rates-filter', DatesRatesFilters );
