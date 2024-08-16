@@ -228,7 +228,7 @@ function update_departures( array $raw_departures = [], string $softrip_package_
 
 		// Update promotions. This is done before cabins to get the promotion IDs.
 		if ( ! empty( $raw_departure['promotions'] ) ) {
-			update_promotions( $raw_departure['promotions'] );
+			update_promotions( $raw_departure['promotions'], $updated_post_id );
 		}
 
 		// Update Cabins.

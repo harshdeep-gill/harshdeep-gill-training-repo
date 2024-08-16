@@ -55,12 +55,13 @@ function get_table_sql(): string {
  * Update promotions data.
  *
  * @param mixed[] $raw_promotions_data Raw promotions data from Softrip.
+ * @param int     $departure_post_id   The departure post ID.
  *
  * @return boolean
  */
-function update_promotions( array $raw_promotions_data = [] ): bool {
+function update_promotions( array $raw_promotions_data = [], int $departure_post_id = 0 ): bool {
 	// Bail out if no data.
-	if ( empty( $raw_promotions_data ) || ! is_array( $raw_promotions_data ) ) {
+	if ( empty( $raw_promotions_data ) || ! is_array( $raw_promotions_data ) || empty( $departure_post_id ) ) {
 		return false;
 	}
 
@@ -69,6 +70,9 @@ function update_promotions( array $raw_promotions_data = [] ): bool {
 
 	// Get the table name.
 	$table_name = get_table_name();
+
+	// Updated promotion codes.
+	$updated_promotion_codes = [];
 
 	// Loop through each raw promotion data.
 	foreach ( $raw_promotions_data as $raw_promotion_data ) {
@@ -121,10 +125,16 @@ function update_promotions( array $raw_promotions_data = [] ): bool {
 			continue;
 		}
 
+		// Add the updated promotion code.
+		$updated_promotion_codes[] = $formatted_data['code'];
+
 		// Bust the cache.
 		wp_cache_delete( CACHE_KEY_PREFIX . '_promotion_code_' . $formatted_data['code'], CACHE_GROUP );
 		wp_cache_delete( CACHE_KEY_PREFIX . '_promotion_id_' . $updated_id, CACHE_GROUP );
 	}
+
+	// Update promotion code on departure meta.
+	update_post_meta( $departure_post_id, 'promotion_codes', $updated_promotion_codes );
 
 	// Return success.
 	return true;
