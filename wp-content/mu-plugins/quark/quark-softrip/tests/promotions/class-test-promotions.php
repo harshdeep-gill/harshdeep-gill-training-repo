@@ -17,7 +17,9 @@ use function Quark\Softrip\Promotions\get_promotions_by_code;
 use function Quark\Softrip\Promotions\get_promotions_by_id;
 use function Quark\Softrip\Promotions\get_table_name;
 use function Quark\Softrip\Promotions\get_table_sql;
+use function Quark\Softrip\Promotions\update_promotions;
 
+use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
 use const Quark\Softrip\Promotions\CACHE_GROUP;
 use const Quark\Softrip\Promotions\CACHE_KEY_PREFIX;
 use const Quark\Softrip\TABLE_PREFIX_NAME;
@@ -71,6 +73,191 @@ class Test_Promotions extends Softrip_TestCase {
 		$expected_sql = preg_replace( '/\r|\n|\s+/', '', $expected_sql );
 		$actual       = preg_replace( '/\r|\n|\s+/', '', $actual );
 		$this->assertEquals( $expected_sql, $actual );
+	}
+
+	/**
+	 * Test update promotions.
+	 *
+	 * @covers \Quark\Softrip\Promotions\update_promotions
+	 *
+	 * @return void
+	 */
+	public function test_update_promotions(): void {
+		// Test with no arguments.
+		$expected = false;
+		$actual   = update_promotions();
+		$this->assertSame( $expected, $actual );
+
+		// Test with default arguments.
+		$expected = false;
+		$actual   = update_promotions( [] );
+		$this->assertSame( $expected, $actual );
+
+		// Test with invalid data.
+		$expected           = false;
+		$raw_promotion_data = [
+			'description'   => 'Test Promotion',
+			'discountType'  => 'percentage',
+			'discountValue' => '10',
+			'isPif'         => 'true',
+			'startDate'     => '2021-01-01T00:00:00',
+			'endDate'       => '2021-01-01T00:00:00',
+		];
+		$actual             = update_promotions( $raw_promotion_data );
+		$this->assertSame( $expected, $actual );
+
+		// Create departure post.
+		$departure_id = $this->factory()->post->create( [ 'post_type' => DEPARTURE_POST_TYPE ] );
+		$this->assertIsInt( $departure_id );
+
+		// Test with valid data.
+		$expected           = true;
+		$raw_promotion_data = [
+			[
+			'description'   => 'Test Promotion',
+			'discountType'  => 'percentage',
+			'discountValue' => '10',
+			'isPIF'         => true,
+			'startDate'     => '2021-01-01T00:00:00',
+			'endDate'       => '2021-01-01T00:00:00',
+			'promotionCode' => 'test-promotion',
+			]
+		];
+		$actual             = update_promotions( $raw_promotion_data, $departure_id );
+		$this->assertSame( $expected, $actual );
+
+		// Get promotion by code.
+		$promotions = get_promotions_by_code( 'test-promotion' );
+		$this->assertNotEmpty( $promotions );
+		$this->assertIsArray( $promotions );
+		$this->assertCount( 1, $promotions );
+
+		// Get first promotion.
+		$promotion = $promotions[0];
+		$this->assertIsArray( $promotion );
+		$this->assertArrayHasKey( 'id', $promotion );
+		$this->assertArrayHasKey( 'code', $promotion );
+		$this->assertArrayHasKey( 'start_date', $promotion );
+		$this->assertArrayHasKey( 'end_date', $promotion );
+		$this->assertArrayHasKey( 'description', $promotion );
+		$this->assertArrayHasKey( 'discount_type', $promotion );
+		$this->assertArrayHasKey( 'discount_value', $promotion );
+		$this->assertArrayHasKey( 'is_pif', $promotion );
+		$this->assertSame( 'test-promotion', $promotion['code'] );
+		$this->assertSame( 'Test Promotion', $promotion['description'] );
+		$this->assertSame( 'percentage', $promotion['discount_type'] );
+		$this->assertSame( '10', $promotion['discount_value'] );
+		$this->assertEquals( 1, $promotion['is_pif'] );
+		$this->assertSame( '2021-01-01T00:00:00', $promotion['start_date'] );
+		$this->assertSame( '2021-01-01T00:00:00', $promotion['end_date'] );
+
+		// Test with special characters - update this time.
+		$expected           = true;
+		$raw_promotion_data = [
+			[
+			'description'   => '<h1>Test Promotion 1</h1>',
+			'discountType'  => 'relative',
+			'discountValue' => '10',
+			'isPIF'         => true,
+			'startDate'     => '2021-01-01T00:00:00',
+			'endDate'       => '2021-01-01T00:00:00',
+			'promotionCode' => 'test-promotion',
+			]
+		];
+		$actual             = update_promotions( $raw_promotion_data, $departure_id );
+		$this->assertSame( $expected, $actual );
+
+		// Get promotion by code.
+		$promotions = get_promotions_by_code( 'test-promotion' );
+		$this->assertNotEmpty( $promotions );
+		$this->assertIsArray( $promotions );
+		$this->assertCount( 1, $promotions );
+
+		// Get first promotion.
+		$promotion = $promotions[0];
+		$this->assertIsArray( $promotion );
+		$this->assertEquals( 'test-promotion', $promotion['code'] );
+		$this->assertEquals( 'Test Promotion 1', $promotion['description'] );
+		$this->assertEquals( 'relative', $promotion['discount_type'] );
+		$this->assertEquals( '10', $promotion['discount_value'] );
+		$this->assertEquals( 1, $promotion['is_pif'] );
+		$this->assertEquals( '2021-01-01T00:00:00', $promotion['start_date'] );
+		$this->assertEquals( '2021-01-01T00:00:00', $promotion['end_date'] );
+
+		// Get promotion codes on departure 1.
+		$codes = get_post_meta( $departure_id, 'promotion_codes', true );
+		$this->assertNotEmpty( $codes );
+		$this->assertIsArray( $codes );
+		$this->assertCount( 1, $codes );
+		$this->assertEquals( 'test-promotion', $codes[0] );
+
+		// Test with multiple promotions.
+		$expected           = true;
+		$raw_promotion_data = [
+			[
+			'description'   => 'Test Promotion 2',
+			'discountType'  => 'percentage',
+			'discountValue' => '20',
+			'isPIF'         => false,
+			'startDate'     => '2021-01-01T00:00:00',
+			'endDate'       => '2021-01-01T00:00:00',
+			'promotionCode' => 'test-promotion-2',
+			],
+			[
+			'description'   => 'Test Promotion 3',
+			'discountType'  => 'percentage',
+			'discountValue' => '30',
+			'isPIF'         => true,
+			'startDate'     => '2021-01-01T00:00:00',
+			'endDate'       => '2021-01-01T00:00:00',
+			'promotionCode' => 'test-promotion-3',
+			],
+		];
+		$actual             = update_promotions( $raw_promotion_data, $departure_id );
+		$this->assertSame( $expected, $actual );
+
+		// Get promotion by code.
+		$promotions = get_promotions_by_code( 'test-promotion-2' );
+		$this->assertNotEmpty( $promotions );
+		$this->assertIsArray( $promotions );
+		$this->assertCount( 1, $promotions );
+
+		// Get first promotion.
+		$promotion = $promotions[0];
+		$this->assertIsArray( $promotion );
+		$this->assertEquals( 'test-promotion-2', $promotion['code'] );
+		$this->assertEquals( 'Test Promotion 2', $promotion['description'] );
+		$this->assertEquals( 'percentage', $promotion['discount_type'] );
+		$this->assertEquals( '20', $promotion['discount_value'] );
+		$this->assertEquals( 0, $promotion['is_pif'] );
+		$this->assertEquals( '2021-01-01T00:00:00', $promotion['start_date'] );
+		$this->assertEquals( '2021-01-01T00:00:00', $promotion['end_date'] );
+
+		// Get promotion by code.
+		$promotions = get_promotions_by_code( 'test-promotion-3' );
+		$this->assertNotEmpty( $promotions );
+		$this->assertIsArray( $promotions );
+		$this->assertCount( 1, $promotions );
+
+		// Get first promotion.
+		$promotion = $promotions[0];
+		$this->assertIsArray( $promotion );
+		$this->assertEquals( 'test-promotion-3', $promotion['code'] );
+		$this->assertEquals( 'Test Promotion 3', $promotion['description'] );
+		$this->assertEquals( 'percentage', $promotion['discount_type'] );
+		$this->assertEquals( '30', $promotion['discount_value'] );
+		$this->assertEquals( 1, $promotion['is_pif'] );
+		$this->assertEquals( '2021-01-01T00:00:00', $promotion['start_date'] );
+		$this->assertEquals( '2021-01-01T00:00:00', $promotion['end_date'] );
+
+		// Get promotion codes on departure 1.
+		$codes = get_post_meta( $departure_id, 'promotion_codes', true );
+		$this->assertNotEmpty( $codes );
+		$this->assertIsArray( $codes );
+		$this->assertCount( 2, $codes );
+		$this->assertNotContains( 'test-promotion', $codes );
+		$this->assertContains( 'test-promotion-2', $codes );
+		$this->assertContains( 'test-promotion-3', $codes );
 	}
 
 	/**
