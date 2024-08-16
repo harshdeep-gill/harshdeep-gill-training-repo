@@ -30,10 +30,12 @@ use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
  *
  * @param mixed[] $raw_departures       Raw departures data from Softrip to update with.
  * @param string  $softrip_package_code Softrip package code.
+ * @param int[]   $specific_departure_post_ids   Specific Departure post IDs to update. Default is empty.
+ * @param bool    $unpublish_expired    Unpublish expired departures. Default is true.
  *
  * @return bool
  */
-function update_departures( array $raw_departures = [], string $softrip_package_code = '' ): bool {
+function update_departures( array $raw_departures = [], string $softrip_package_code = '', array $specific_departure_post_ids = [], bool $unpublish_expired = true ): bool {
 	// Bail out if empty softrip package code.
 	if ( empty( $softrip_package_code ) ) {
 		return false;
@@ -115,7 +117,7 @@ function update_departures( array $raw_departures = [], string $softrip_package_
 		}
 
 		// Get departure code.
-		$departure_code = strval( get_post_meta( $departure_post_id, 'softrip_id', true ) );
+		$departure_code = sanitize_text_field( strval( get_post_meta( $departure_post_id, 'softrip_id', true ) ) );
 
 		// Skip if empty.
 		if ( empty( $departure_code ) ) {
@@ -126,8 +128,8 @@ function update_departures( array $raw_departures = [], string $softrip_package_
 		$existing_departure_codes[ $departure_code ] = $departure_post_id;
 	}
 
-	// If empty raw departures, we loop through all departure posts and unpublish such departures whose start date is in past.
-	if ( empty( $raw_departures ) ) {
+	// If no raw departures and unpublish expired flag is set to true, unpublish expired departures.
+	if ( empty( $raw_departures ) && true === $unpublish_expired ) {
 		// Loop through existing departure codes.
 		foreach ( $existing_departure_codes as $departure_code => $departure_post_id ) {
 			// Skip if draft already.
@@ -178,8 +180,16 @@ function update_departures( array $raw_departures = [], string $softrip_package_
 			continue;
 		}
 
+		// Initialize softrip id.
+		$departure_softrip_id = sanitize_text_field( strval( $raw_departure['id'] ) );
+
 		// Find in existing departure codes.
-		$is_existing = in_array( $raw_departure['id'], array_keys( $existing_departure_codes ), true );
+		$is_existing = in_array( $departure_softrip_id, array_keys( $existing_departure_codes ), true );
+
+		// If specific departure post IDs are set, skip if not in the list.
+		if ( ! empty( $specific_departure_post_ids ) && ! in_array( $existing_departure_codes[ $departure_softrip_id ], $specific_departure_post_ids, true ) ) {
+			continue;
+		}
 
 		// Format raw departure data.
 		$formatted_data = format_raw_departure_data( $raw_departure, $itinerary_post_id, $expedition_post_id );
@@ -195,7 +205,7 @@ function update_departures( array $raw_departures = [], string $softrip_package_
 		// If existing, update the post.
 		if ( $is_existing ) {
 			// Add post ID to formatted data.
-			$formatted_data['ID'] = $existing_departure_codes[ $raw_departure['id'] ];
+			$formatted_data['ID'] = $existing_departure_codes[ $departure_softrip_id ];
 
 			// Update the post.
 			$updated_post_id = wp_update_post( $formatted_data, true );
@@ -212,7 +222,7 @@ function update_departures( array $raw_departures = [], string $softrip_package_
 			continue;
 		} else {
 			// Add to updated departure codes.
-			$updated_departure_codes[] = $raw_departure['id'];
+			$updated_departure_codes[] = $departure_softrip_id;
 
 			// Set spoken language for newly created departure.
 			if ( ! $is_existing ) {
@@ -237,31 +247,34 @@ function update_departures( array $raw_departures = [], string $softrip_package_
 		}
 	}
 
-	// Unpublish departure posts that are non-updated and has expired.
-	foreach ( $existing_departure_codes as $departure_code => $departure_post_id ) {
-		// Skip if departure code is in updated departure codes or already draft.
-		if ( in_array( $departure_code, $updated_departure_codes, true ) || 'draft' === get_post_status( $departure_post_id ) ) {
-			continue;
+	// If unpublish expired flag is set to true, unpublish non-updated expired departures.
+	if ( true === $unpublish_expired ) {
+		// Unpublish departure posts that are non-updated and has expired.
+		foreach ( $existing_departure_codes as $departure_code => $departure_post_id ) {
+			// Skip if departure code is in updated departure codes or already draft.
+			if ( in_array( $departure_code, $updated_departure_codes, true ) || 'draft' === get_post_status( $departure_post_id ) ) {
+				continue;
+			}
+
+			// Get start date meta.
+			$start_date = get_start_date( $departure_post_id );
+
+			// If empty start date or not in the past, skip.
+			if ( empty( $start_date ) || ! is_date_in_the_past( $start_date ) ) {
+				continue;
+			}
+
+			// Draft the post.
+			wp_update_post(
+				[
+					'ID'          => $departure_post_id,
+					'post_status' => 'draft',
+				]
+			);
+
+			// Bust the departure module cache.
+			wp_cache_delete( DEPARTURE_CACHE_KEY . "_$departure_post_id", DEPARTURE_CACHE_GROUP );
 		}
-
-		// Get start date meta.
-		$start_date = get_start_date( $departure_post_id );
-
-		// If empty start date or not in the past, skip.
-		if ( empty( $start_date ) || ! is_date_in_the_past( $start_date ) ) {
-			continue;
-		}
-
-		// Draft the post.
-		wp_update_post(
-			[
-				'ID'          => $departure_post_id,
-				'post_status' => 'draft',
-			]
-		);
-
-		// Bust the departure module cache.
-		wp_cache_delete( DEPARTURE_CACHE_KEY . "_$departure_post_id", DEPARTURE_CACHE_GROUP );
 	}
 
 	// Return successful.
