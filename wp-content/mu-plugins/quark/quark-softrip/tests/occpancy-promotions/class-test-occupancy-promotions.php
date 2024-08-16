@@ -26,6 +26,7 @@ use function Quark\Softrip\OccupancyPromotions\update_occupancy_promotions;
 use function Quark\Softrip\Promotions\get_promotions_by_code;
 use function Quark\Softrip\Promotions\update_promotions;
 
+use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
 use const Quark\Softrip\OccupancyPromotions\CACHE_GROUP;
 use const Quark\Softrip\OccupancyPromotions\CACHE_KEY_PREFIX;
 use const Quark\Softrip\TABLE_PREFIX_NAME;
@@ -213,7 +214,7 @@ class Test_Occupancy_Promotions extends Softrip_TestCase {
 				'isPIF'         => false,
 			],
 		];
-		$is_saved   = update_promotions( $promotions );
+		$is_saved   = update_promotions( $promotions, $departure_post_id );
 		$this->assertTrue( $is_saved );
 
 		// Get promotions by code.
@@ -420,6 +421,14 @@ class Test_Occupancy_Promotions extends Softrip_TestCase {
 		$expected = [];
 		$this->assertEquals( $expected, $actual );
 
+		// Create a departure post.
+		$departure_post_id = $this->factory()->post->create(
+			[
+				'post_type' => DEPARTURE_POST_TYPE,
+			]
+		);
+		$this->assertIsInt( $departure_post_id );
+
 		// Create promotions.
 		$promotions = [
 			[
@@ -441,7 +450,7 @@ class Test_Occupancy_Promotions extends Softrip_TestCase {
 				'isPIF'         => false,
 			],
 		];
-		$is_saved   = update_promotions( $promotions );
+		$is_saved   = update_promotions( $promotions, $departure_post_id );
 		$this->assertTrue( $is_saved );
 
 		// Get promotions by code.
@@ -681,7 +690,7 @@ class Test_Occupancy_Promotions extends Softrip_TestCase {
 				'isPIF'         => false,
 			],
 		];
-		$is_saved   = update_promotions( $promotions );
+		$is_saved   = update_promotions( $promotions, $departure_post_id );
 		$this->assertTrue( $is_saved );
 
 		// Update occupancy promotions with new data for occupancy 1.
@@ -1240,6 +1249,10 @@ class Test_Occupancy_Promotions extends Softrip_TestCase {
 		$promo_code2 = '20PROMO';
 		$promo_code3 = '30PROMO';
 
+		// Create departure post.
+		$departure_post_id = $this->factory()->post->create( [ 'post_type' => DEPARTURE_POST_TYPE ] );
+		$this->assertIsInt( $departure_post_id );
+
 		// Add all promotions.
 		$promotions = [
 			[
@@ -1270,7 +1283,7 @@ class Test_Occupancy_Promotions extends Softrip_TestCase {
 				'isPIF'         => false,
 			],
 		];
-		$is_saved   = update_promotions( $promotions );
+		$is_saved   = update_promotions( $promotions, $departure_post_id );
 		$this->assertTrue( $is_saved );
 
 		// Get first promotion.
