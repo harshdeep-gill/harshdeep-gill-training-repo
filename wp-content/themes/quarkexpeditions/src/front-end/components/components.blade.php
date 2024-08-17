@@ -5208,6 +5208,181 @@
 					</x-drawer.footer>
 				</x-drawer>
 			</x-dates-rates.filters>
+
+			<x-section>
+				<h2>Ocean Adventurer</h2>
+				<x-dates-rates.item>
+					<x-dates-rates.item-table title="Cabin Categories">
+						{{-- Table Head --}}
+						<x-dates-rates.item-table-head>
+							<x-dates-rates.item-table-heading>Expedition</x-dates-rates.item-table-heading>
+							<x-dates-rates.item-table-heading>Promo Offers</x-dates-rates.item-table-heading>
+							<x-dates-rates.item-table-heading>Triple</x-dates-rates.item-table-heading>
+							<x-dates-rates.item-table-heading>Lower Deck Twin</x-dates-rates.item-table-heading>
+							<x-dates-rates.item-table-heading>Main Deck Ttwin Porthole</x-dates-rates.item-table-heading>
+							<x-dates-rates.item-table-heading>Main Deck Twin Window</x-dates-rates.item-table-heading>
+							<x-dates-rates.item-table-heading>Superior</x-dates-rates.item-table-heading>
+							<x-dates-rates.item-table-heading>Deluxe</x-dates-rates.item-table-heading>
+							<x-dates-rates.item-table-heading>Suite</x-dates-rates.item-table-heading>
+							<x-dates-rates.item-table-heading>Owner's Suite</x-dates-rates.item-table-heading>
+						</x-dates-rates.item-table-head>
+						{{-- Row 1 --}}
+						<x-dates-rates.item-table-body>
+							<x-dates-rates.item-table-row>
+								<x-dates-rates.item-table-column rowspan="0">
+									<x-dates-rates.expedition>
+										<x-dates-rates.expedition-overline text="Antarctic | Ocean Adventurer" />
+										<x-dates-rates.expedition-title text="Spitsbergen Highlights: Expedition In Brief" />
+										<x-dates-rates.expedition-dates
+											start_date="Feb 27"
+											end_date="Mar 05"
+											year="2024"
+											duration="8"
+										/>
+										<x-dates-rates.expedition-meta>
+											<x-dates-rates.expedition-meta-item>
+												<x-dates-rates.expedition-meta-label>
+													Start Location
+												</x-dates-rates.expedition-meta-label>
+												<x-dates-rates.expedition-meta-value>
+													Punta Arenas, Chile
+												</x-dates-rates.expedition-meta-value>
+											</x-dates-rates.expedition-meta-item>
+											<x-dates-rates.expedition-meta-item>
+												<x-dates-rates.expedition-meta-label>
+													End Location
+												</x-dates-rates.expedition-meta-label>
+												<x-dates-rates.expedition-meta-value>
+													Punta Arenas, Chile
+												</x-dates-rates.expedition-meta-value>
+											</x-dates-rates.expedition-meta-item>
+											<x-dates-rates.expedition-meta-item>
+												<x-dates-rates.expedition-meta-label>
+													Languages
+												</x-dates-rates.expedition-meta-label>
+												<x-dates-rates.expedition-meta-value>
+													English
+												</x-dates-rates.expedition-meta-value>
+											</x-dates-rates.expedition-meta-item>
+										</x-dates-rates.expedition-meta>
+										<x-dates-rates.expedition-cta text="Request a Quote" url="#" />
+									</x-dates-rates.expedition>
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column>
+									Brochure Price
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column>
+									$11,995 USD
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column>
+									$13,995 USD
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column>
+									$14,495 USD
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column>
+									$15,995 USD
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column>
+									$17,495 USD
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column>
+									$17,495 USD
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column>
+									$19,995 USD
+								</x-dates-rates.item-table-column>
+								
+								<x-dates-rates.item-table-column>
+									$22,995 USD
+								</x-dates-rates.item-table-column>
+							</x-dates-rates.item-table-row>
+
+							<x-dates-rates.item-table-row>
+								<x-dates-rates.item-table-column>
+									Brochure Price
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column>
+									$11,995 USD
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column>
+									$13,995 USD
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column>
+									$14,495 USD
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column>
+									$15,995 USD
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column>
+									$17,495 USD
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column>
+									$17,495 USD
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column>
+									$19,995 USD
+								</x-dates-rates.item-table-column>
+								
+								<x-dates-rates.item-table-column>
+									$22,995 USD
+								</x-dates-rates.item-table-column>
+							</x-dates-rates.item-table-row>
+
+							<x-dates-rates.item-table-row>
+								<x-dates-rates.item-table-column>
+									Brochure Price
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column>
+									$11,995 USD
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column>
+									$13,995 USD
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column>
+									$14,495 USD
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column>
+									$15,995 USD
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column>
+									$17,495 USD
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column>
+									$17,495 USD
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column>
+									$19,995 USD
+								</x-dates-rates.item-table-column>
+								
+								<x-dates-rates.item-table-column>
+									$22,995 USD
+								</x-dates-rates.item-table-column>
+							</x-dates-rates.item-table-row>
+							{{-- Row 2 --}}
+							{{-- <x-dates-rates.item-table-row>
+								<x-dates-rates.adventure-options title="Included Adventure Options">
+									<x-dates-rates.adventure-options-item name="Walking/Hiking" icon="hiking" />
+									<x-dates-rates.adventure-options-item name="Polar Plunge" icon="polar-plunge" />
+								</x-dates-rates.adventure-options>
+								<x-dates-rates.adventure-options title="Included Adventure Options">
+									<x-dates-rates.adventure-options-item name="Padding Excursion" icon="paddling">
+										<x-dates-rates.adventure-options-item-price text="$ 995 USD" />
+									</x-dates-rates.adventure-options-item>
+									<x-dates-rates.adventure-options-item name="Sea Kayaking" icon="kayaking">
+										<x-dates-rates.adventure-options-item-price text="$ 995 USD" />
+									</x-dates-rates.adventure-options-item>
+									<x-dates-rates.adventure-options-item name="Polar Plunge" icon="polar-plunge">
+										<x-dates-rates.adventure-options-item-price text="$ 995 USD" />
+									</x-dates-rates.adventure-options-item>
+								</x-dates-rates.adventure-options>
+							</x-dates-rates.item-table-row> --}}
+
+						</x-dates-rates.item-table-body>
+					</x-dates-rates.item-table>
+					{{-- <x-dates-rates.info text="Prices are shown per person" /> --}}
+				</x-dates-rates.item>
+			</x-section>
 		</x-dates-rates>
 	</x-section>
 </x-component-demo>

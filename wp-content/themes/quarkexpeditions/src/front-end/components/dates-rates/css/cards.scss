@@ -1,0 +1,45 @@
+/**
+ * Dates rates - Cards.
+ */
+@import "../../../scss";
+
+.dates-rates {
+	$self: &;
+
+	.travelopia-table {
+		display: block;
+		overflow-x: auto;
+	}
+
+	&__table {
+		table-layout: auto;
+
+		td {
+			min-width: 130px;
+
+			&[rowspan="0"] {
+				min-width: 280px;
+			}
+		}
+
+		#{$self}__item-table-column--first {
+			min-width: 280px;
+		}
+	}
+
+	&__item-table-heading {
+		text-align: center;
+
+		&:first-child {
+			text-align: left;
+		}
+	}
+
+	&__item-table-title {
+		margin-bottom: calc(-1 * var(--typography-spacing));
+		text-align: center;
+		padding: var(--typography-spacing);
+		border: 1px solid var(--color-gray-20);
+		border-bottom: 0;
+	}
+}
