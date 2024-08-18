@@ -1,16 +1,16 @@
 <?php
 /**
- * Partial: Book Departures Expeditions.
+ * Partial: Book Departures: Ships.
  *
  * @package quark
  */
 
-namespace Quark\Theme\Partials\BookDeparturesExpeditions;
+namespace Quark\Theme\Partials\BookDeparturesShips;
 
 use function Quark\Search\Departures\search;
 use function Quark\Departures\get_cards_data;
 
-const PARTIAL_NAME = 'book-departures-expeditions';
+const PARTIAL_NAME = 'book-departures-ship';
 
 /**
  * Bootstrap this block.
@@ -66,7 +66,7 @@ function render( array $output = [], string $name = '', array $data = [] ): arra
 	// Return rendered partial.
 	return [
 		'markup'          => quark_get_component(
-			'parts.expedition-departure-cards',
+			'parts.ship-departure-cards',
 			$attributes
 		),
 		'noResultsMarkup' => 'No results found.',
