@@ -658,6 +658,35 @@ function get_starting_from_location( int $post_id = 0 ): string {
 }
 
 /**
+ * Get Ending To Location for Itinerary.
+ *
+ * @param int $post_id Post ID.
+ *
+ * @return string The ending to location.
+ */
+function get_ending_to_location( int $post_id = 0 ): string {
+	// Get post.
+	$itinerary          = get( $post_id );
+	$ending_to_location = '';
+
+	// Check for $itinerary has meta_data.
+	if ( ! is_array( $itinerary['post_meta'] ) || empty( $itinerary['post_meta']['end_location'] ) ) {
+		return $ending_to_location;
+	}
+
+	// Get starting from location.
+	$location_term = get_term_by( 'id', absint( $itinerary['post_meta']['end_location'] ), DEPARTURE_LOCATION_TAXONOMY );
+
+	// Check valid term.
+	if ( $location_term instanceof WP_Term ) {
+		$ending_to_location = $location_term->name;
+	}
+
+	// Return starting from location.
+	return $ending_to_location;
+}
+
+/**
  * Get Mandatory Transfer Price for Itinerary.
  *
  * @param int    $post_id Post ID.
@@ -723,8 +752,8 @@ function get_supplemental_price( int $post_id = 0, string $currency = 'USD' ): i
  *
  * @return array{
  *     title: string,
- *     sets: string[],
- *     price: float,
+ *     sets: array<string>,
+ *     price: int,
  *     formatted_price: string,
  * } Included transfer package.
  */
