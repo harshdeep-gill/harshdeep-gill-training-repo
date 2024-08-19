@@ -1,3 +1,26 @@
+@php
+	$countries = [
+		'IN' => 'India',
+		'AU' => 'Australia',
+		'US' => 'United States',
+		'CA' => 'Canada',
+	];
+	$states = [
+		'AU' => [
+			'ACT' => 'Australian Capital Territory',
+			'JBT' => 'Jervis Bay Territory',
+		],
+		'US' => [
+			'AA' => 'Armed Forces Americas',
+			'AE' => 'Armed Forces Europe',
+		],
+		'CA' => [
+			'AB' => 'Alberta',
+			'BC' => 'British Columbia',
+		],
+	];
+@endphp
+
 {{-- Required to prevent weird rendering issues. --}}
 <x-once id="media-lightbox">
 	<tp-lightbox id="media-lightbox" class="media-lightbox">
@@ -66,26 +89,8 @@
 				<x-hero.form>
 					<x-form-two-step
 						background_color="white"
-						:countries="[
-							'IN' => 'India',
-							'AU' => 'Australia',
-							'US' => 'United States',
-							'CA' => 'Canada',
-						]"
-						:states="[
-							'AU' => [
-								'ACT' => 'Australian Capital Territory',
-								'JBT' => 'Jervis Bay Territory',
-							],
-							'US' => [
-								'AA' => 'Armed Forces Americas',
-								'AE' => 'Armed Forces Europe',
-							],
-							'CA' => [
-								'AB' => 'Alberta',
-								'BC' => 'British Columbia',
-							],
-						]"
+						:countries="$countries"
+						:states="$states"
 					/>
 				</x-hero.form>
 			</x-hero.right>
@@ -5423,6 +5428,15 @@
 				</x-link-detail-cards.description>
 			</x-link-detail-cards.card>
 		</x-link-detail-cards>
+	</x-section>
+</x-component-demo>
+
+<x-component-demo :keys="[ 'form-contact-us' ]">
+	<x-section>
+		<x-form-contact-us
+			:countries="$countries"
+			:states="$states"
+		/>
 	</x-section>
 </x-component-demo>
 

@@ -174,6 +174,7 @@ module.exports = ( env ) => {
 			TPLightboxElement: `${ themePath }/src/vendor/tp-lightbox.js`,
 			TPAccordionItemElement: `${ themePath }/src/vendor/tp-accordion.js`,
 			TPMultiSelectElement: `${ themePath }/src/vendor/tp-multi-select.js`,
+			TPToggleAttributeElement: `${ themePath }/src/vendor/tp-toggle-attribute.js`,
 		},
 		output: {
 			...buildConfig.output,
