@@ -51,10 +51,10 @@ export default function Edit( { className }: BlockEditAttributes ): JSX.Element 
 					block={ name }
 					EmptyResponsePlaceholder={ () => (
 						<Placeholder
-							icon="palmtree"
+							icon="button"
 							label={ __( 'Ship Decks', 'qrk' ) }
 							instructions={ __(
-								'Select Ship decks to render the data in the frontend.',
+								'Select one or more Ship Decks.',
 								'qrk',
 							) }
 						/>
