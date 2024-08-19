@@ -65,15 +65,15 @@ class Test_Occupancy_Promotions extends Softrip_TestCase {
 
 		// Assert that SQL is correct.
 		$expected_sql = "CREATE TABLE $table_name (
-            id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-            occupancy_id BIGINT NOT NULL,
-            promotion_id BIGINT NOT NULL,
-            price_per_person_usd BIGINT NOT NULL,
-            price_per_person_cad BIGINT NOT NULL,
-            price_per_person_aud BIGINT NOT NULL,
-            price_per_person_gbp BIGINT NOT NULL,
-            price_per_person_eur BIGINT NOT NULL
-        ) $engine_collate";
+			id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+			occupancy_id BIGINT NOT NULL,
+			promotion_id BIGINT NOT NULL,
+			price_per_person_usd BIGINT NOT NULL,
+			price_per_person_cad BIGINT NOT NULL,
+			price_per_person_aud BIGINT NOT NULL,
+			price_per_person_gbp BIGINT NOT NULL,
+			price_per_person_eur BIGINT NOT NULL
+		) $engine_collate";
 		$actual       = get_table_sql();
 
 		// Replace \n\r\s with empty string.
