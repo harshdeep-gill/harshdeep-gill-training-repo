@@ -86,6 +86,8 @@ function update_departures( array $raw_departures = [], string $softrip_package_
 			'posts_per_page'         => -1,
 			'no_found_rows'          => true,
 			'update_post_term_cache' => false,
+			'update_post_meta_cache' => false,
+			'ignore_sticky_posts'    => true,
 			'post_status'            => [ 'draft', 'publish' ],
 			'meta_query'             => [
 				[
@@ -406,6 +408,8 @@ function get_departures_by_itinerary( int $itinerary_post_id = 0 ): array {
 		'posts_per_page'         => 100, // @todo Change to -1 if departures are more than 100.
 		'no_found_rows'          => true,
 		'update_post_term_cache' => false,
+		'update_post_meta_cache' => false,
+		'ignore_sticky_posts'    => true,
 		'post_parent'            => $itinerary_post_id,
 		'fields'                 => 'ids',
 	];
@@ -436,7 +440,7 @@ function get_related_ship( int $departure_post_id = 0 ): int {
 	$ship_code    = get_post_meta( $departure_post_id, 'ship_code', true );
 
 	// Return empty if no ship post ID.
-	if ( empty( $ship_post_id ) || ! is_int( $ship_post_id ) ) {
+	if ( empty( $ship_post_id ) || is_array( $ship_post_id ) ) {
 		// Check if ship code is available.
 		if ( empty( $ship_code ) || ! is_string( $ship_code ) ) {
 			return 0;
@@ -452,7 +456,7 @@ function get_related_ship( int $departure_post_id = 0 ): int {
 	}
 
 	// Return the ship post ID.
-	return $ship_post_id;
+	return absint( $ship_post_id );
 }
 
 /**

@@ -474,7 +474,7 @@ function get_occupancies_by_departure( int $departure_post_id = 0, bool $force =
 		$cached_data = wp_cache_get( $cache_key, CACHE_GROUP );
 
 		// If cached data, return it.
-		if ( is_array( $cached_data ) && ! empty( $cached_data ) ) {
+		if ( is_array( $cached_data ) ) {
 			return $cached_data;
 		}
 	}
