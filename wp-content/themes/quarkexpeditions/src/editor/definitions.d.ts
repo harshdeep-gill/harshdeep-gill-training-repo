@@ -46,4 +46,5 @@ interface Window {
 			RelationshipControl: typeof React.Component,
 		}
 	},
+	typenow: string,
 }
