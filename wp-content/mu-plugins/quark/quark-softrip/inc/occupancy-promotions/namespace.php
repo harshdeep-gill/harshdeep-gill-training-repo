@@ -9,7 +9,9 @@ namespace Quark\Softrip\OccupancyPromotions;
 
 use function Quark\Softrip\get_engine_collate;
 use function Quark\Softrip\add_prefix_to_table_name;
+use function Quark\Softrip\Occupancies\get_occupancy_data_by_id;
 use function Quark\Softrip\Promotions\get_promotions_by_code;
+use function Quark\Softrip\Promotions\get_promotions_by_id;
 
 use const Quark\Core\CURRENCIES;
 
@@ -48,7 +50,7 @@ function get_table_sql(): string {
 		price_per_person_aud BIGINT NOT NULL,
 		price_per_person_gbp BIGINT NOT NULL,
 		price_per_person_eur BIGINT NOT NULL
-	) $engine_collate;";
+	) $engine_collate";
 
 	// Return the SQL statement.
 	return $sql;
@@ -65,6 +67,14 @@ function get_table_sql(): string {
 function update_occupancy_promotions( array $raw_occupancy_promotions = [], int $occupancy_id = 0 ): bool {
 	// Bail out if empty.
 	if ( empty( $raw_occupancy_promotions ) || empty( $occupancy_id ) ) {
+		return false;
+	}
+
+	// Check if occupancy exists.
+	$existing_occupancies = get_occupancy_data_by_id( $occupancy_id, true );
+
+	// Bail out if empty or more than one.
+	if ( empty( $existing_occupancies ) || ! is_array( $existing_occupancies ) || 1 < count( $existing_occupancies ) ) {
 		return false;
 	}
 
@@ -107,8 +117,41 @@ function update_occupancy_promotions( array $raw_occupancy_promotions = [], int 
 			}
 
 			// Add to promos data.
-			$promos_data[ $promotion_code ][ 'price_per_person_' . strtolower( $raw_occupancy_promotion['currencyCode'] ) ] = doubleval( $value['promoPricePerPerson'] );
+			$promos_data[ $promotion_code ][ 'price_per_person_' . strtolower( $raw_occupancy_promotion['currencyCode'] ) ] = absint( $value['promoPricePerPerson'] );
 		}
+	}
+
+	// Get existing occupancy promotions by occupancy ID.
+	$existing_occupancy_promotions = get_occupancy_promotions_by_occupancy( $occupancy_id, true );
+
+	// Initialize occupancy promotion by promotion code.
+	$existing_occupancy_promotions_by_promo_code = [];
+
+	// Loop through the existing occupancy promotions.
+	foreach ( $existing_occupancy_promotions as $existing_occupancy_promotion ) {
+		// Skip if not array.
+		if ( ! is_array( $existing_occupancy_promotion ) || empty( $existing_occupancy_promotion['promotion_id'] ) ) {
+			continue;
+		}
+
+		// Get promotion detail.
+		$existing_promotions = get_promotions_by_id( $existing_occupancy_promotion['promotion_id'], true );
+
+		// Bail out if empty or more than one.
+		if ( empty( $existing_promotions ) || 1 < count( $existing_promotions ) ) {
+			continue;
+		}
+
+		// Get the first item.
+		$existing_promotion = $existing_promotions[0];
+
+		// If promotion code is empty, skip.
+		if ( empty( $existing_promotion['code'] ) || empty( $existing_promotion['id'] ) ) {
+			continue;
+		}
+
+		// Add to occupancy promotions by promotion code.
+		$existing_occupancy_promotions_by_promo_code[ $existing_promotion['code'] ] = $existing_promotion['id'];
 	}
 
 	// Setup defaults.
@@ -121,6 +164,9 @@ function update_occupancy_promotions( array $raw_occupancy_promotions = [], int 
 		'price_per_person_gbp' => 0,
 		'price_per_person_eur' => 0,
 	];
+
+	// Initialize updated promotion codes.
+	$updated_promotion_codes = [];
 
 	// Loop through the promos data.
 	foreach ( $promos_data as $promo_code => $promo_data ) {
@@ -153,11 +199,14 @@ function update_occupancy_promotions( array $raw_occupancy_promotions = [], int 
 		// If the occupancy promotion exists, update it.
 		if ( ! empty( $existing_occupancy_promotion ) && is_array( $existing_occupancy_promotion ) && ! empty( $existing_occupancy_promotion['id'] ) ) {
 			// Update the occupancy promotion.
-			$updated_id = $wpdb->update(
+			$wpdb->update(
 				$table_name,
 				$promo_data,
 				[ 'id' => $existing_occupancy_promotion['id'] ]
 			);
+
+			// Set the updated ID.
+			$updated_id = $existing_occupancy_promotion['id'];
 		} else {
 			// Insert the occupancy promotion.
 			$wpdb->insert(
@@ -174,9 +223,35 @@ function update_occupancy_promotions( array $raw_occupancy_promotions = [], int 
 			continue;
 		}
 
+		// Add to updated promotion codes.
+		$updated_promotion_codes[] = $promo_code;
+
 		// Bust caches.
 		wp_cache_delete( CACHE_KEY_PREFIX . '_occupancy_id_' . $occupancy_id . '_promotion_id_' . $existing_promotion['id'], CACHE_GROUP );
 		wp_cache_delete( CACHE_KEY_PREFIX . '_occupancy_id_' . $occupancy_id, CACHE_GROUP );
+	}
+
+	/**
+	 * Get the difference between the existing promotion codes and the updated promotion codes.
+	 * that's non-updated promotion codes which should be deleted.
+	 * These promo codes are no more applicable on this occupancy.
+	 */
+
+	// Get the difference between the existing promotion codes and the updated promotion codes.
+	$non_updated_promotion_codes = array_diff( array_keys( $existing_occupancy_promotions_by_promo_code ), $updated_promotion_codes );
+
+	// Loop through the non-updated promotion codes.
+	foreach ( $non_updated_promotion_codes as $non_updated_promotion_code ) {
+		// Skip if empty.
+		if ( empty( $existing_occupancy_promotions_by_promo_code[ $non_updated_promotion_code ] ) ) {
+			continue;
+		}
+
+		// Get the promotion ID.
+		$id = $existing_occupancy_promotions_by_promo_code[ $non_updated_promotion_code ];
+
+		// Delete the occupancy promotion by ID.
+		delete_occupancy_promotions_by_id( $id );
 	}
 
 	// Return success.
@@ -190,7 +265,7 @@ function update_occupancy_promotions( array $raw_occupancy_promotions = [], int 
  * @param int  $promotion_id  The promotion ID.
  * @param bool $force       Whether to bypass the cache.
  *
- * @return array{}|array{
+ * @return array{}|array<int,
  *   array{
  *    id: int,
  *    occupancy_id: int,
@@ -201,7 +276,7 @@ function update_occupancy_promotions( array $raw_occupancy_promotions = [], int 
  *    price_per_person_gbp: int,
  *    price_per_person_eur: int
  *   }
- * }
+ * >
  */
 function get_occupancy_promotions_by_occupancy_id_and_promotion_id( int $occupancy_id = 0, int $promotion_id = 0, bool $force = false ): array {
 	// Bail out if empty.
@@ -272,7 +347,7 @@ function get_occupancy_promotions_by_occupancy_id_and_promotion_id( int $occupan
  * @param int  $occupancy_id  The occupancy ID.
  * @param bool $force       Whether to bypass the cache.
  *
- * @return array{}|array{
+ * @return array{}|array<int,
  *   array{
  *    id: int,
  *    occupancy_id: int,
@@ -283,7 +358,7 @@ function get_occupancy_promotions_by_occupancy_id_and_promotion_id( int $occupan
  *    price_per_person_gbp: int,
  *    price_per_person_eur: int
  *   }
- * }
+ * >
  */
 function get_occupancy_promotions_by_occupancy( int $occupancy_id = 0, bool $force = false ): array {
 	// Bail out if empty.
@@ -350,10 +425,11 @@ function get_occupancy_promotions_by_occupancy( int $occupancy_id = 0, bool $for
  *
  * @param int    $occupancy_id The occupancy ID.
  * @param string $currency The currency code.
+ * @param string $promotion_code The promotion code.
  *
  * @return int
  */
-function get_lowest_price( int $occupancy_id = 0, string $currency = 'USD' ): int {
+function get_lowest_price( int $occupancy_id = 0, string $currency = 'USD', string $promotion_code = '' ): int {
 	// Uppercase the currency.
 	$currency = strtoupper( $currency );
 
@@ -365,8 +441,33 @@ function get_lowest_price( int $occupancy_id = 0, string $currency = 'USD' ): in
 		return $lowest_price;
 	}
 
-	// Get the occupancy promotions by occupancy ID.
-	$occupancy_promotions = get_occupancy_promotions_by_occupancy( $occupancy_id );
+	// Initialize occupancy promotions.
+	$occupancy_promotions = [];
+
+	// If promotion code is not empty, get the promotions by code else get the occupancy promotions by occupancy ID.
+	if ( empty( $promotion_code ) ) {
+		// Get the occupancy promotions by occupancy ID.
+		$occupancy_promotions = get_occupancy_promotions_by_occupancy( $occupancy_id );
+	} else {
+		// Get the promotions by code.
+		$promotions = get_promotions_by_code( $promotion_code, true );
+
+		// Bail out if empty or more than one.
+		if ( empty( $promotions ) || 1 < count( $promotions ) ) {
+			return $lowest_price;
+		}
+
+		// Get the first item.
+		$promotion = $promotions[0];
+
+		// Bail out if empty.
+		if ( empty( $promotion['id'] ) ) {
+			return $lowest_price;
+		}
+
+		// Get the occupancy promotions by occupancy ID and promotion ID.
+		$occupancy_promotions = get_occupancy_promotions_by_occupancy_id_and_promotion_id( $occupancy_id, $promotion['id'] );
+	}
 
 	// Loop through the occupancy promotions.
 	foreach ( $occupancy_promotions as $occupancy_promotion ) {
@@ -413,9 +514,14 @@ function delete_occupancy_promotions_by_occupancy_id( int $occupancy_id = 0 ): b
 	// Get occupancy promotions by occupancy ID.
 	$occupancy_promotions = get_occupancy_promotions_by_occupancy( $occupancy_id, true );
 
-	// Bail out if empty.
-	if ( empty( $occupancy_promotions ) || ! is_array( $occupancy_promotions ) ) {
+	// Bail out if not array.
+	if ( ! is_array( $occupancy_promotions ) ) {
 		return false;
+	}
+
+	// Bail out if empty - nothing to delete.
+	if ( empty( $occupancy_promotions ) ) {
+		return true;
 	}
 
 	// Initialize promotion IDs.
@@ -463,6 +569,140 @@ function delete_occupancy_promotions_by_occupancy_id( int $occupancy_id = 0 ): b
 }
 
 /**
+ * Delete occupancy promotions by id.
+ *
+ * @param int $id The ID.
+ *
+ * @return boolean
+ */
+function delete_occupancy_promotions_by_id( int $id = 0 ): bool {
+	// Bail out if empty.
+	if ( empty( $id ) ) {
+		return false;
+	}
+
+	// Get global DB object.
+	global $wpdb;
+
+	// Get the table name.
+	$table_name = get_table_name();
+
+	// Get the occupancy promotion by ID.
+	$occupancy_promotions = get_occupancy_promo_by_id( $id, true );
+
+	// Bail out if not array.
+	if ( empty( $occupancy_promotions ) || 1 < count( $occupancy_promotions ) ) {
+		return false;
+	}
+
+	// Get first item.
+	$occupancy_promotion = $occupancy_promotions[0];
+
+	// Bail out if empty.
+	if ( empty( $occupancy_promotion['id'] ) ) {
+		return false;
+	}
+
+	// Delete the occupancy promotion by ID.
+	$deleted = $wpdb->delete(
+		$table_name,
+		[ 'id' => $id ]
+	);
+
+	// Return false if no deleted.
+	if ( empty( $deleted ) ) {
+		return false;
+	}
+
+	// Bust cache.
+	wp_cache_delete( CACHE_KEY_PREFIX . '_occupancy_id_' . $occupancy_promotion['occupancy_id'], CACHE_GROUP );
+	wp_cache_delete( CACHE_KEY_PREFIX . '_occupancy_id_' . $occupancy_promotion['occupancy_id'] . '_promotion_id_' . $occupancy_promotion['promotion_id'], CACHE_GROUP );
+	wp_cache_delete( CACHE_KEY_PREFIX . '_id_' . $id, CACHE_GROUP );
+
+	// Return success.
+	return true;
+}
+
+/**
+ * Get occupancy promotion by id.
+ *
+ * @param int  $id    The ID.
+ * @param bool $force Whether to bypass the cache.
+ *
+ * @return array{}|array<int,
+ *   array{
+ *    id: int,
+ *    occupancy_id: int,
+ *    promotion_id: int,
+ *    price_per_person_usd: int,
+ *    price_per_person_cad: int,
+ *    price_per_person_aud: int,
+ *    price_per_person_gbp: int,
+ *    price_per_person_eur: int
+ *   }
+ * >
+ */
+function get_occupancy_promo_by_id( int $id = 0, bool $force = false ): array {
+	// Bail if empty.
+	if ( empty( $id ) ) {
+		return [];
+	}
+
+	// Cache key.
+	$cache_key = CACHE_KEY_PREFIX . '_id_' . $id;
+
+	// If not direct, get from cache.
+	if ( empty( $force ) ) {
+		// Check cache.
+		$cached_value = wp_cache_get( $cache_key, CACHE_GROUP );
+
+		// Return cached value if exists.
+		if ( ! empty( $cached_value ) && is_array( $cached_value ) ) {
+			return $cached_value;
+		}
+	}
+
+	// Get global DB object.
+	global $wpdb;
+
+	// Get the table name.
+	$table_name = get_table_name();
+
+	// Get the occupancy promotion by ID.
+	$occupancy_promotions = $wpdb->get_results(
+		$wpdb->prepare(
+			'
+			SELECT
+				*
+			FROM
+				%i
+			WHERE
+				id = %d
+			',
+			[
+				$table_name,
+				$id,
+			]
+		),
+		ARRAY_A
+	);
+
+	// Bail out if not array.
+	if ( ! is_array( $occupancy_promotions ) ) {
+		return [];
+	}
+
+	// Format the row data.
+	$occupancy_promotions = format_rows_data_from_db( $occupancy_promotions );
+
+	// Set cache.
+	wp_cache_set( $cache_key, $occupancy_promotions, CACHE_GROUP );
+
+	// Return the results.
+	return $occupancy_promotions;
+}
+
+/**
  * Format occupancy promotion row data from database.
  *
  * @param string[] $row_data The occupancy promotion row data.
@@ -489,11 +729,6 @@ function format_row_data_from_db( array $row_data = [] ): array {
 		'id',
 		'occupancy_id',
 		'promotion_id',
-		'price_per_person_usd',
-		'price_per_person_cad',
-		'price_per_person_aud',
-		'price_per_person_gbp',
-		'price_per_person_eur',
 	];
 
 	// Check if required fields are present.
@@ -509,11 +744,11 @@ function format_row_data_from_db( array $row_data = [] ): array {
 		'id'                   => absint( $row_data['id'] ),
 		'occupancy_id'         => absint( $row_data['occupancy_id'] ),
 		'promotion_id'         => absint( $row_data['promotion_id'] ),
-		'price_per_person_usd' => absint( $row_data['price_per_person_usd'] ),
-		'price_per_person_cad' => absint( $row_data['price_per_person_cad'] ),
-		'price_per_person_aud' => absint( $row_data['price_per_person_aud'] ),
-		'price_per_person_gbp' => absint( $row_data['price_per_person_gbp'] ),
-		'price_per_person_eur' => absint( $row_data['price_per_person_eur'] ),
+		'price_per_person_usd' => absint( $row_data['price_per_person_usd'] ?? 0 ),
+		'price_per_person_cad' => absint( $row_data['price_per_person_cad'] ?? 0 ),
+		'price_per_person_aud' => absint( $row_data['price_per_person_aud'] ?? 0 ),
+		'price_per_person_gbp' => absint( $row_data['price_per_person_gbp'] ?? 0 ),
+		'price_per_person_eur' => absint( $row_data['price_per_person_eur'] ?? 0 ),
 	];
 
 	// Return the formatted row data.
@@ -525,7 +760,7 @@ function format_row_data_from_db( array $row_data = [] ): array {
  *
  * @param array<int, string[]> $rows_data The occupancy promotion rows data.
  *
- * @return array{}|array{
+ * @return array{}|array<int,
  *   array{
  *    id: int,
  *    occupancy_id: int,
@@ -536,7 +771,7 @@ function format_row_data_from_db( array $row_data = [] ): array {
  *    price_per_person_gbp: int,
  *    price_per_person_eur: int
  *   }
- * }
+ * >
  */
 function format_rows_data_from_db( array $rows_data = [] ): array {
 	// Bail out if empty.

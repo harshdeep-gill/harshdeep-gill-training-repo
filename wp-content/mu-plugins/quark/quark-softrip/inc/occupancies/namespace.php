@@ -77,7 +77,7 @@ function get_table_sql(): string {
  */
 function update_occupancies( array $raw_cabins_data = [], int $departure_post_id = 0 ): bool {
 	// Bail if empty.
-	if ( empty( $raw_cabins_data ) || ! is_array( $raw_cabins_data ) || empty( $departure_post_id ) ) {
+	if ( empty( $departure_post_id ) ) {
 		return false;
 	}
 
@@ -86,6 +86,26 @@ function update_occupancies( array $raw_cabins_data = [], int $departure_post_id
 
 	// Get the table name.
 	$table_name = get_table_name();
+
+	// Get existing occupancies by departure and cabin category.
+	$existing_occupancies = get_occupancies_by_departure( $departure_post_id, true );
+
+	// Initialize occupancies by Softrip ID.
+	$existing_occupancies_by_softrip_id = [];
+
+	// Loop through the existing occupancies.
+	foreach ( $existing_occupancies as $existing_occupancy ) {
+		// Continue if not array or empty.
+		if ( ! is_array( $existing_occupancy ) || empty( $existing_occupancy['softrip_id'] ) || empty( $existing_occupancy['id'] ) ) {
+			continue;
+		}
+
+		// Add to the existing occupancies by Softrip ID.
+		$existing_occupancies_by_softrip_id[ strval( $existing_occupancy['softrip_id'] ) ] = absint( $existing_occupancy['id'] );
+	}
+
+	// Initialize updated softrip ids.
+	$updated_softrip_ids = [];
 
 	// Loop through the raw cabin data.
 	foreach ( $raw_cabins_data as $raw_cabin_data ) {
@@ -148,19 +168,51 @@ function update_occupancies( array $raw_cabins_data = [], int $departure_post_id
 				$updated_id = $wpdb->insert_id;
 			}
 
+			// Bail if empty.
+			if ( empty( $updated_id ) ) {
+				continue;
+			}
+
+			// Add to the updated occupancies by Softrip ID.
+			$updated_softrip_ids[] = $formatted_data['softrip_id'];
+
 			// Set occupancy promotions data.
-			if ( ! empty( $updated_id ) && ! empty( $raw_cabin_occupancy_data['prices'] ) && is_array( $raw_cabin_occupancy_data['prices'] ) ) {
+			if ( ! empty( $raw_cabin_occupancy_data['prices'] ) && is_array( $raw_cabin_occupancy_data['prices'] ) ) {
 				// Update the occupancy promotions.
 				update_occupancy_promotions( array_values( $raw_cabin_occupancy_data['prices'] ), $updated_id );
-
-				// Bust caches at occupancy level.
-				wp_cache_delete( CACHE_KEY_PREFIX . '_softrip_id_' . $formatted_data['softrip_id'], CACHE_GROUP );
-				wp_cache_delete( CACHE_KEY_PREFIX . '_occupancy_id_' . $updated_id, CACHE_GROUP );
 			}
+
+			// Bust caches at occupancy level.
+			wp_cache_delete( CACHE_KEY_PREFIX . '_softrip_id_' . $formatted_data['softrip_id'], CACHE_GROUP );
+			wp_cache_delete( CACHE_KEY_PREFIX . '_occupancy_id_' . $updated_id, CACHE_GROUP );
 		}
 
 		// Bust caches at cabin category level.
 		wp_cache_delete( CACHE_KEY_PREFIX . '_cabin_category_post_id_' . $cabin_category_post_id . '_departure_post_id_' . $departure_post_id, CACHE_GROUP );
+	}
+
+	/**
+	 * Get the difference between existing and updated occupancies by Softrip ID
+	 * that's non-updated occupancies which need to be deleted as no more present in the raw data.
+	 */
+
+	// Get the difference between existing and updated occupancies by Softrip ID - that's non-updated occupancies which need to be deleted as no more present in the raw data.
+	$non_updated_softrip_ids = array_diff( array_keys( $existing_occupancies_by_softrip_id ), $updated_softrip_ids );
+
+	// Loop through the non-updated Softrip IDs.
+	foreach ( $non_updated_softrip_ids as $non_updated_softrip_id ) {
+		// Get the occupancy ID.
+		$occupancy_id = absint( $existing_occupancies_by_softrip_id[ $non_updated_softrip_id ] );
+
+		// Delete the occupancy promotions.
+		delete_occupancy_promotions_by_occupancy_id( $occupancy_id );
+
+		// Delete the occupancy.
+		delete_occupancy_by_id( $occupancy_id );
+
+		// Bust caches.
+		wp_cache_delete( CACHE_KEY_PREFIX . '_softrip_id_' . $non_updated_softrip_id, CACHE_GROUP );
+		wp_cache_delete( CACHE_KEY_PREFIX . '_occupancy_id_' . $occupancy_id, CACHE_GROUP );
 	}
 
 	// Bust caches at departure level.
@@ -303,7 +355,7 @@ function get_cabin_category_post_by_cabin_code( string $cabin_code = '' ): int {
  * @param string $softrip_id The Softrip ID.
  * @param bool   $force     Bypass cache.
  *
- * @return array{}|array{
+ * @return array{}|array<int,
  *   array{
  *     id: int,
  *     softrip_id: string,
@@ -320,7 +372,7 @@ function get_cabin_category_post_by_cabin_code( string $cabin_code = '' ): int {
  *     price_per_person_gbp: int,
  *     price_per_person_eur: int,
  *   }
- * }
+ * >
  */
 function get_occupancy_data_by_softrip_id( string $softrip_id = '', bool $force = false ): array {
 	// Bail if empty.
@@ -388,7 +440,7 @@ function get_occupancy_data_by_softrip_id( string $softrip_id = '', bool $force 
  * @param int  $departure_post_id The departure post ID.
  * @param bool $force Direct query.
  *
- * @return array{}|array{
+ * @return array{}|array<int,
  *   array{
  *     id: int,
  *     softrip_id: string,
@@ -405,7 +457,7 @@ function get_occupancy_data_by_softrip_id( string $softrip_id = '', bool $force 
  *     price_per_person_gbp: int,
  *     price_per_person_eur: int,
  *   }
- * }
+ * >
  */
 function get_occupancies_by_departure( int $departure_post_id = 0, bool $force = false ): array {
 	// Bail if empty.
@@ -422,7 +474,7 @@ function get_occupancies_by_departure( int $departure_post_id = 0, bool $force =
 		$cached_data = wp_cache_get( $cache_key, CACHE_GROUP );
 
 		// If cached data, return it.
-		if ( is_array( $cached_data ) && ! empty( $cached_data ) ) {
+		if ( is_array( $cached_data ) ) {
 			return $cached_data;
 		}
 	}
@@ -473,7 +525,7 @@ function get_occupancies_by_departure( int $departure_post_id = 0, bool $force =
  * @param int  $occupancy_id The occupancy ID.
  * @param bool $force Direct query.
  *
- * @return array{}|array{
+ * @return array{}|array<int,
  *   array{
  *     id: int,
  *     softrip_id: string,
@@ -490,7 +542,7 @@ function get_occupancies_by_departure( int $departure_post_id = 0, bool $force =
  *     price_per_person_gbp: int,
  *     price_per_person_eur: int,
  *   }
- * }
+ * >
  */
 function get_occupancy_data_by_id( int $occupancy_id = 0, bool $force = false ): array {
 	// Bail if empty.
@@ -597,8 +649,16 @@ function get_lowest_price( int $post_id = 0, string $currency = 'USD' ): array {
 		/**
 		 * If the promotion price is less than the current lowest price, update the discounted as well as the original price.
 		 * For example, if the lowest promotion price is $100 and the corresponding original price is $200, the discounted price will be $100 and the original price will be $200.
+		 * Or if the promotion price is equal to the current lowest price, but the original price is less than the current original price, update the original price.
 		 */
-		if ( empty( $lowest_price['discounted'] ) || $promotion_lowest_price < $lowest_price['discounted'] ) {
+		if (
+			empty( $lowest_price['discounted'] ) ||
+			( ! empty( $promotion_lowest_price ) &&
+				( $promotion_lowest_price < $lowest_price['discounted'] ||
+				( $promotion_lowest_price === $lowest_price['discounted'] && absint( $occupancy[ $price_per_person_key ] < $lowest_price['original'] ) )
+				)
+			)
+		) {
 			$lowest_price['discounted'] = $promotion_lowest_price;
 			$lowest_price['original']   = absint( $occupancy[ $price_per_person_key ] );
 		}
@@ -625,7 +685,12 @@ function clear_occupancies_by_departure( int $departure_post_id = 0 ): bool {
 	}
 
 	// Get all occupancies by departure.
-	$occupancies = get_occupancies_by_departure( $departure_post_id );
+	$occupancies = get_occupancies_by_departure( $departure_post_id, true );
+
+	// Bail if empty.
+	if ( empty( $occupancies ) || ! is_array( $occupancies ) ) {
+		return false;
+	}
 
 	// Flag for if all occupancies are deleted.
 	$all_deleted = true;
@@ -686,7 +751,7 @@ function delete_occupancy_by_id( int $occupancy_id = 0 ): bool {
 	}
 
 	// Get softrip id.
-	$occupancy_data = get_occupancy_data_by_id( $occupancy_id );
+	$occupancy_data = get_occupancy_data_by_id( $occupancy_id, true );
 
 	// Bail if empty.
 	if ( empty( $occupancy_data ) || ! is_array( $occupancy_data ) ) {
@@ -765,19 +830,13 @@ function format_row_data_from_db( array $occupancy_data = [] ): array {
 		'mask',
 		'departure_post_id',
 		'cabin_category_post_id',
-		'spaces_available',
 		'availability_description',
 		'availability_status',
-		'price_per_person_usd',
-		'price_per_person_cad',
-		'price_per_person_aud',
-		'price_per_person_gbp',
-		'price_per_person_eur',
 	];
 
 	// Check if required columns are present.
 	foreach ( $required_columns as $column ) {
-		if ( ! array_key_exists( $column, $occupancy_data ) ) {
+		if ( empty( $occupancy_data[ $column ] ) ) {
 			return [];
 		}
 	}
@@ -790,14 +849,14 @@ function format_row_data_from_db( array $occupancy_data = [] ): array {
 		'mask'                     => sanitize_text_field( $occupancy_data['mask'] ),
 		'departure_post_id'        => absint( $occupancy_data['departure_post_id'] ),
 		'cabin_category_post_id'   => absint( $occupancy_data['cabin_category_post_id'] ),
-		'spaces_available'         => absint( $occupancy_data['spaces_available'] ),
+		'spaces_available'         => absint( $occupancy_data['spaces_available'] ?? 0 ),
 		'availability_description' => sanitize_text_field( $occupancy_data['availability_description'] ),
 		'availability_status'      => sanitize_text_field( $occupancy_data['availability_status'] ),
-		'price_per_person_usd'     => absint( $occupancy_data['price_per_person_usd'] ),
-		'price_per_person_cad'     => absint( $occupancy_data['price_per_person_cad'] ),
-		'price_per_person_aud'     => absint( $occupancy_data['price_per_person_aud'] ),
-		'price_per_person_gbp'     => absint( $occupancy_data['price_per_person_gbp'] ),
-		'price_per_person_eur'     => absint( $occupancy_data['price_per_person_eur'] ),
+		'price_per_person_usd'     => absint( $occupancy_data['price_per_person_usd'] ?? 0 ),
+		'price_per_person_cad'     => absint( $occupancy_data['price_per_person_cad'] ?? 0 ),
+		'price_per_person_aud'     => absint( $occupancy_data['price_per_person_aud'] ?? 0 ),
+		'price_per_person_gbp'     => absint( $occupancy_data['price_per_person_gbp'] ?? 0 ),
+		'price_per_person_eur'     => absint( $occupancy_data['price_per_person_eur'] ?? 0 ),
 	];
 
 	// Return the formatted data.
@@ -809,7 +868,7 @@ function format_row_data_from_db( array $occupancy_data = [] ): array {
  *
  * @param array<int, string[]> $rows_data The rows data.
  *
- * @return array{}|array{
+ * @return array{}|array<int,
  *   array{
  *     id: int,
  *     softrip_id: string,
@@ -826,7 +885,7 @@ function format_row_data_from_db( array $occupancy_data = [] ): array {
  *     price_per_person_gbp: int,
  *     price_per_person_eur: int,
  *   }
- * }
+ * >
  */
 function format_rows_data_from_db( array $rows_data = [] ): array {
 	// Bail if empty.
@@ -965,8 +1024,16 @@ function get_lowest_price_by_cabin_category_and_departure( int $cabin_category_p
 		/**
 		 * If the promotion price is less than the current lowest price, update the discounted as well as the original price.
 		 * For example, if the lowest promotion price is $100 and the corresponding original price is $200, the discounted price will be $100 and the original price will be $200.
+		 * Or if the promotion price is equal to the current lowest price, but the original price is less than the current original price, update the original price.
 		 */
-		if ( empty( $lowest_price['discounted'] ) || ( ! empty( $promotion_lowest_price ) && $promotion_lowest_price < $lowest_price['discounted'] ) ) {
+		if (
+			empty( $lowest_price['discounted'] ) ||
+			( ! empty( $promotion_lowest_price ) &&
+				( $promotion_lowest_price < $lowest_price['discounted'] ||
+				( $promotion_lowest_price === $lowest_price['discounted'] && absint( $occupancy[ $price_per_person_key ] < $lowest_price['original'] ) )
+				)
+			)
+		) {
 			$lowest_price['discounted'] = $promotion_lowest_price;
 			$lowest_price['original']   = absint( $occupancy[ $price_per_person_key ] );
 		}
@@ -980,13 +1047,66 @@ function get_lowest_price_by_cabin_category_and_departure( int $cabin_category_p
 }
 
 /**
+ * Get lowest price by cabin category post id, departure post id and promotion code.
+ *
+ * @param int    $cabin_category_post_id The cabin category post ID.
+ * @param int    $departure_post_id The departure post ID.
+ * @param string $promotion_code The promotion code.
+ * @param string $currency Currency code.
+ *
+ * @return int
+ */
+function get_lowest_price_by_cabin_category_and_departure_and_promotion_code( int $cabin_category_post_id = 0, int $departure_post_id = 0, string $promotion_code = '', string $currency = 'USD' ): int {
+	// Upper case currency.
+	$currency = strtoupper( $currency );
+
+	// Setup default return values.
+	$lowest_price = 0;
+
+	// Return default values if no post ID.
+	if ( empty( $cabin_category_post_id ) || empty( $departure_post_id ) || empty( $promotion_code ) || ! in_array( $currency, CURRENCIES, true ) ) {
+		return $lowest_price;
+	}
+
+	// Get all occupancies by cabin category for the current departure.
+	$occupancies = get_occupancies_by_cabin_category_and_departure( $cabin_category_post_id, $departure_post_id );
+
+	// Loop through each occupancy.
+	foreach ( $occupancies as $occupancy ) {
+		// Construct the price per person key.
+		$price_per_person_key = 'price_per_person_' . strtolower( $currency );
+
+		// Validate the price per person.
+		if ( ! is_array( $occupancy ) || empty( $occupancy[ $price_per_person_key ] ) || empty( $occupancy['id'] ) ) {
+			continue;
+		}
+
+		// Get lowest price for occupancy promotions.
+		$promotion_lowest_price = get_occupancy_promotion_lowest_price( $occupancy['id'], $currency, $promotion_code );
+
+		/**
+		 * If the promotion price is less than the current lowest price, update the lowest price.
+		 */
+		if (
+			empty( $lowest_price ) ||
+			( ! empty( $promotion_lowest_price ) && ( $promotion_lowest_price < $lowest_price ) )
+		) {
+			$lowest_price = $promotion_lowest_price;
+		}
+	}
+
+	// Return the lowest price.
+	return $lowest_price;
+}
+
+/**
  * Get occupancies by cabin category post ID and departure post ID.
  *
  * @param int  $cabin_category_post_id The cabin category post ID.
  * @param int  $departure_post_id      The departure post ID.
  * @param bool $force                  Bypass cache.
  *
- * @return array{}|array{
+ * @return array{}|array<int,
  *  array{
  *    id: int,
  *    softrip_id: string,
@@ -1003,7 +1123,7 @@ function get_lowest_price_by_cabin_category_and_departure( int $cabin_category_p
  *    price_per_person_gbp: int,
  *    price_per_person_eur: int,
  *  }
- * }
+ * >
  */
 function get_occupancies_by_cabin_category_and_departure( int $cabin_category_post_id = 0, int $departure_post_id = 0, bool $force = false ): array {
 	// Bail if empty.
