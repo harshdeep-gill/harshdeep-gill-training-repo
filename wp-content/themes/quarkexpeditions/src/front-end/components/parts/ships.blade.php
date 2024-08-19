@@ -29,7 +29,29 @@
 							{!! $ship['description'] ?? '' !!}
 						</x-section.description>
 						<x-section.content>
-							{{ $ship['content'] ?? '' }}
+							<x-two-columns>
+								<x-two-columns.column>
+									@if ( ! empty( $ship['amenities'] ) )
+										<h4>{{ __( 'Ship Amenities', 'qrk' ) }}</h4>
+										<ul>
+											@foreach ( $ship['amenities'] as $amenities )
+												<li>{{ $amenities ?? '' }}</li>
+											@endforeach
+										</ul>
+									@endif
+								</x-two-columns.column>
+								<x-two-columns.column>
+									@if ( ! empty( $ship['vessel_features'] ) )
+										<h4>{{ __( 'Ship Features', 'qrk' ) }}</h4>
+										<ul>
+											@foreach ( $ship['vessel_features'] as $vessel_features )
+												<li>{{ $vessel_features ?? '' }}</li>
+											@endforeach
+										</ul>
+									@endif
+								</x-two-columns.column>
+							</x-two-columns>
+							{!! $ship['collage'] ?? '' !!}
 						</x-section.content>
 					</x-section>
 					@if ( ! empty( $ship['decks'] ) )
