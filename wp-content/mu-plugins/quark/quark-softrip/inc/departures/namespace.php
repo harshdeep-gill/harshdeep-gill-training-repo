@@ -167,7 +167,7 @@ function update_departures( array $raw_departures = [], string $softrip_package_
 	 * 4. Update the promotions.
 	 * 5. Update the cabin occupancies.
 	 * 6. Update the occupancy prices.
-	 * 7. For non updated departures, check if start date is in past, then unpublish.
+	 * 7. For all existing departures, if unpublish expired flag is true and start date is in past, then unpublish.
 	 */
 
 	// Initialize departure codes which are updated.
@@ -247,12 +247,12 @@ function update_departures( array $raw_departures = [], string $softrip_package_
 		}
 	}
 
-	// If unpublish expired flag is set to true, unpublish non-updated expired departures.
+	// If unpublish expired flag is set to true, unpublish expired departures.
 	if ( true === $unpublish_expired ) {
 		// Unpublish departure posts that are non-updated and has expired.
 		foreach ( $existing_departure_codes as $departure_code => $departure_post_id ) {
-			// Skip if departure code is in updated departure codes or already draft.
-			if ( in_array( $departure_code, $updated_departure_codes, true ) || 'draft' === get_post_status( $departure_post_id ) ) {
+			// Skip if already draft.
+			if ( 'draft' === get_post_status( $departure_post_id ) ) {
 				continue;
 			}
 
