@@ -643,6 +643,14 @@ function parse_block_attributes( WP_Post $post = null ): array {
 	// Parse blocks.
 	$blocks = parse_blocks( $post->post_content );
 
+	// Skip if we don't have any blocks.
+	if ( empty( $blocks ) ) {
+		return [];
+	}
+
+	// Flatten blocks.
+	$blocks = _flatten_blocks( $blocks );
+
 	// Initialize collage attributes.
 	$collage_attrs        = [];
 	$ship_vessel_features = [];
