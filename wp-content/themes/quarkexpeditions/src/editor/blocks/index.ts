@@ -1,4 +1,9 @@
 /**
+ * WordPress dependencies.
+ */
+const { typenow } = window;
+
+/**
  * Import blocks.
  */
 import * as components from './components';
@@ -59,7 +64,10 @@ import * as shipFeaturesAmenities from './ship-features-amenities';
 import * as shipVesselFeatures from './ship-vessel-features';
 import * as excursionAccordions from './excursion-accordions';
 import * as shipRelatedAdventureOptions from './ship-related-adventure-options';
+import * as mediaCarousel from './media-carousel';
 import * as bookDeparturesExpeditions from './book-departures-expeditions';
+import * as shipCabinCategories from './ship-cabin-categories';
+import * as specifications from './specifications';
 
 /**
  * Add blocks.
@@ -123,8 +131,15 @@ const blocks = [
 	shipVesselFeatures,
 	excursionAccordions,
 	shipRelatedAdventureOptions,
+	mediaCarousel,
 	bookDeparturesExpeditions,
+	specifications,
 ];
+
+// Register blocks for ships.
+if ( typenow && 'qrk_ship' === typenow ) {
+	blocks.push( shipCabinCategories );
+}
 
 /**
  * Register blocks.

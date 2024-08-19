@@ -39,8 +39,8 @@ function get_table_sql(): string {
 	$sql = "CREATE TABLE $table_name (
 			id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
 			code VARCHAR(255) NOT NULL UNIQUE,
-			start_date DATETIME NOT NULL,
-			end_date DATETIME NOT NULL,
+			start_date VARCHAR(20) NOT NULL,
+			end_date VARCHAR(20) NOT NULL,
 			description VARCHAR(255) NOT NULL,
 			discount_type VARCHAR(255) NOT NULL,
 			discount_value VARCHAR(255) NOT NULL,
@@ -55,12 +55,13 @@ function get_table_sql(): string {
  * Update promotions data.
  *
  * @param mixed[] $raw_promotions_data Raw promotions data from Softrip.
+ * @param int     $departure_post_id   The departure post ID.
  *
  * @return boolean
  */
-function update_promotions( array $raw_promotions_data = [] ): bool {
+function update_promotions( array $raw_promotions_data = [], int $departure_post_id = 0 ): bool {
 	// Bail out if no data.
-	if ( empty( $raw_promotions_data ) || ! is_array( $raw_promotions_data ) ) {
+	if ( empty( $raw_promotions_data ) || ! is_array( $raw_promotions_data ) || empty( $departure_post_id ) ) {
 		return false;
 	}
 
@@ -69,6 +70,9 @@ function update_promotions( array $raw_promotions_data = [] ): bool {
 
 	// Get the table name.
 	$table_name = get_table_name();
+
+	// Updated promotion codes.
+	$updated_promotion_codes = [];
 
 	// Loop through each raw promotion data.
 	foreach ( $raw_promotions_data as $raw_promotion_data ) {
@@ -97,11 +101,14 @@ function update_promotions( array $raw_promotions_data = [] ): bool {
 		// If the promotion exists, update it.
 		if ( ! empty( $existing_promotion_data['id'] ) ) {
 			// Update the promotion.
-			$updated_id = $wpdb->update(
+			$is_saved = $wpdb->update(
 				$table_name,
 				$formatted_data,
 				[ 'id' => $existing_promotion_data['id'] ]
 			);
+
+			// Get the updated ID.
+			$updated_id = $is_saved ? $existing_promotion_data['id'] : 0;
 		} else {
 			// Insert the promotion.
 			$wpdb->insert(
@@ -118,9 +125,16 @@ function update_promotions( array $raw_promotions_data = [] ): bool {
 			continue;
 		}
 
+		// Add the updated promotion code.
+		$updated_promotion_codes[] = $formatted_data['code'];
+
 		// Bust the cache.
-		wp_cache_delete( CACHE_KEY_PREFIX . '_' . $formatted_data['code'], CACHE_GROUP );
+		wp_cache_delete( CACHE_KEY_PREFIX . '_promotion_code_' . $formatted_data['code'], CACHE_GROUP );
+		wp_cache_delete( CACHE_KEY_PREFIX . '_promotion_id_' . $updated_id, CACHE_GROUP );
 	}
+
+	// Update promotion code on departure meta.
+	update_post_meta( $departure_post_id, 'promotion_codes', $updated_promotion_codes );
 
 	// Return success.
 	return true;
@@ -194,7 +208,18 @@ function format_data( array $raw_promotion_data = [] ): array {
  * @param string $code   The promotion code.
  * @param bool   $force Whether to bypass the cache.
  *
- * @return mixed[][]
+ * @return array{}|array<int,
+ *   array{
+ *     id: int,
+ *     code: string,
+ *     start_date: string,
+ *     end_date: string,
+ *     description: string,
+ *     discount_type: string,
+ *     discount_value: string,
+ *     is_pif: int,
+ *   }
+ * >
  */
 function get_promotions_by_code( string $code = '', bool $force = false ): array {
 	// Bail out if no code.
@@ -203,7 +228,7 @@ function get_promotions_by_code( string $code = '', bool $force = false ): array
 	}
 
 	// Get the cache key.
-	$cache_key = CACHE_KEY_PREFIX . "_$code";
+	$cache_key = CACHE_KEY_PREFIX . "_promotion_code_$code";
 
 	// If not direct, check the cache.
 	if ( empty( $force ) ) {
@@ -317,7 +342,7 @@ function format_row_data_from_db( array $row_data = [] ): array {
  *
  * @param array<int, string[]> $rows_data Rows data from database.
  *
- * @return array{}|array{
+ * @return array{}|array<int,
  *   array{
  *     id: int,
  *     code: string,
@@ -328,7 +353,7 @@ function format_row_data_from_db( array $row_data = [] ): array {
  *     discount_value: string,
  *     is_pif: int,
  *   }
- * }
+ * >
  */
 function format_rows_data_from_db( array $rows_data = [] ): array {
 	// Bail out if no data.
@@ -355,4 +380,82 @@ function format_rows_data_from_db( array $rows_data = [] ): array {
 
 	// Return the formatted data.
 	return $formatted_data;
+}
+
+/**
+ * Get promotions by promotion id.
+ *
+ * @param int  $promotion_id The promotion ID.
+ * @param bool $direct       Whether to bypass the cache.
+ *
+ * @return array{}|array<int,
+ *   array{
+ *     id: int,
+ *     code: string,
+ *     start_date: string,
+ *     end_date: string,
+ *     description: string,
+ *     discount_type: string,
+ *     discount_value: string,
+ *     is_pif: int,
+ *   }
+ * >
+ */
+function get_promotions_by_id( int $promotion_id = 0, bool $direct = false ): array {
+	// Bail out if no ID.
+	if ( empty( $promotion_id ) ) {
+		return [];
+	}
+
+	// Get the cache key.
+	$cache_key = CACHE_KEY_PREFIX . "_promotion_id_$promotion_id";
+
+	// If not direct, check the cache.
+	if ( empty( $direct ) ) {
+		// Get from cache.
+		$cached_value = wp_cache_get( $cache_key );
+
+		// Check if we have the data.
+		if ( ! empty( $cached_value ) && is_array( $cached_value ) ) {
+			return $cached_value;
+		}
+	}
+
+	// Get the global $wpdb object.
+	global $wpdb;
+
+	// Get the table name.
+	$table_name = get_table_name();
+
+	// Load the promotion data.
+	$promotion_data = $wpdb->get_results(
+		$wpdb->prepare(
+			'SELECT
+				*
+			FROM
+				%i
+			WHERE
+				id = %d
+			',
+			[
+				$table_name,
+				$promotion_id,
+			]
+		),
+		ARRAY_A
+	);
+
+	// Bail out if not an array.
+	if ( ! is_array( $promotion_data ) ) {
+		return [];
+	}
+
+	// Format the data.
+	$formatted_promotion_data = format_rows_data_from_db( $promotion_data );
+
+	// Cache the value.
+	wp_cache_set( $cache_key, $formatted_promotion_data, CACHE_GROUP );
+
+	// Return the promotion data.
+	return $formatted_promotion_data;
 }

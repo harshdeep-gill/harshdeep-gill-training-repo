@@ -317,6 +317,9 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 				'quark-tooltip'                               => [
 					'class' => true,
 				],
+				'quark-dates-rates-filter'                    => [
+					'class' => true,
+				],
 				'quark-country-selector'                      => [
 					'class' => true,
 				],
@@ -339,6 +342,10 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 				],
 				'quark-featured-media-accordions'             => [
 					'class' => true,
+				],
+				'quark-wistia-embed'                          => [
+					'class'    => true,
+					'video-id' => true,
 				],
 				'tp-form'                                     => [
 					'class'          => true,
@@ -417,10 +424,12 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 				],
 				'tp-accordion-item'                           => [
 					'class'           => true,
+					'id'              => true,
 					'open-by-default' => true,
 				],
 				'tp-accordion-handle'                         => [
 					'class' => true,
+					'id'    => true,
 				],
 				'tp-accordion-content'                        => [
 					'class' => true,

@@ -7,9 +7,6 @@
 
 namespace Quark\Theme\Partials\BookDeparturesExpeditions;
 
-use WP_Post;
-
-use function Quark\Expeditions\get as get_expedition;
 use function Quark\Search\Departures\search;
 use function Quark\Departures\get_cards_data;
 

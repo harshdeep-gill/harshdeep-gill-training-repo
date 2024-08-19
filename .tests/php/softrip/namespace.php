@@ -517,6 +517,4059 @@ function mock_softrip_http_request( array|false $response = [], array $parsed_ar
 		];
 	}
 
+	// Add data for HIJ-456. This has multiple cabins, occupancies, promos and hence, extensive data.
+	if ( in_array( 'HIJ-456', $product_codes, true ) ) {
+		$data['HIJ-456'] = [
+			'departures' => [
+				[
+					'id'               => 'HIJ-456:2025-08-26',
+					'code'             => 'OEX20250826',
+					'packageCode'      => 'HIJ-456',
+					'startDate'        => '2025-08-26',
+					'endDate'          => '2025-09-05',
+					'duration'         => 11,
+					'shipCode'         => 'OEX',
+					'marketCode'       => 'ARC',
+					'cabins'           => [
+						[
+							'id'          => 'HIJ-456:2025-08-26:OEX-SGL',
+							'code'        => 'OEX-SGL',
+							'name'        => 'Studio Single',
+							'departureId' => 'HIJ-456:2025-08-26',
+							'occupancies' => [
+								[
+									'id'                      => 'HIJ-456:2025-08-26:OEX-SGL:A',
+									'name'                    => 'HIJ-456:2025-08-26:OEX-SGL:A',
+									'mask'                    => 'A',
+									'availabilityStatus'      => 'O',
+									'availabilityDescription' => 'Available',
+									'spacesAvailable'         => 5,
+									'seq'                     => '100',
+									'prices'                  => [
+										'USD' => [
+											'currencyCode'   => 'USD',
+											'pricePerPerson' => 16795,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 15116,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 15116,
+												],
+											],
+										],
+										'AUD' => [
+											'currencyCode'   => 'AUD',
+											'pricePerPerson' => 26400,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 23760,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 23760,
+												],
+											],
+										],
+										'CAD' => [
+											'currencyCode'   => 'CAD',
+											'pricePerPerson' => 22900,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 20610,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 20610,
+												],
+											],
+										],
+										'EUR' => [
+											'currencyCode'   => 'EUR',
+											'pricePerPerson' => 15700,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 14130,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 14130,
+												],
+											],
+										],
+										'GBP' => [
+											'currencyCode'   => 'GBP',
+											'pricePerPerson' => 13500,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 12150,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 12150,
+												],
+											],
+										],
+									],
+								],
+							],
+						],
+						[
+							'id'          => 'HIJ-456:2025-08-26:OEX-FWD',
+							'code'        => 'OEX-FWD',
+							'name'        => 'Deluxe Veranda Forward',
+							'departureId' => 'HIJ-456:2025-08-26',
+							'occupancies' => [
+								[
+									'id'                      => 'HIJ-456:2025-08-26:OEX-FWD:A',
+									'name'                    => 'HIJ-456:2025-08-26:OEX-FWD:A',
+									'mask'                    => 'A',
+									'availabilityStatus'      => 'O',
+									'availabilityDescription' => 'Available',
+									'spacesAvailable'         => 3,
+									'seq'                     => '200',
+									'prices'                  => [
+										'USD' => [
+											'currencyCode'   => 'USD',
+											'pricePerPerson' => 21752,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 19577,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 19577,
+												],
+											],
+										],
+										'AUD' => [
+											'currencyCode'   => 'AUD',
+											'pricePerPerson' => 34170,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 30753,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 30753,
+												],
+											],
+										],
+										'CAD' => [
+											'currencyCode'   => 'CAD',
+											'pricePerPerson' => 29750,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 26775,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 26775,
+												],
+											],
+										],
+										'EUR' => [
+											'currencyCode'   => 'EUR',
+											'pricePerPerson' => 20230,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 18207,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 18207,
+												],
+											],
+										],
+										'GBP' => [
+											'currencyCode'   => 'GBP',
+											'pricePerPerson' => 17510,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 15759,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 15759,
+												],
+											],
+										],
+									],
+								],
+								[
+									'id'                      => 'HIJ-456:2025-08-26:OEX-FWD:AA',
+									'name'                    => 'HIJ-456:2025-08-26:OEX-FWD:AA',
+									'mask'                    => 'AA',
+									'availabilityStatus'      => 'O',
+									'availabilityDescription' => 'Available',
+									'spacesAvailable'         => 3,
+									'seq'                     => '200',
+									'prices'                  => [
+										'USD' => [
+											'currencyCode'   => 'USD',
+											'pricePerPerson' => 12795,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 11516,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 11516,
+												],
+											],
+										],
+										'AUD' => [
+											'currencyCode'   => 'AUD',
+											'pricePerPerson' => 20100,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 18090,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 18090,
+												],
+											],
+										],
+										'CAD' => [
+											'currencyCode'   => 'CAD',
+											'pricePerPerson' => 17500,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 15750,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 15750,
+												],
+											],
+										],
+										'EUR' => [
+											'currencyCode'   => 'EUR',
+											'pricePerPerson' => 11900,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 10710,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 10710,
+												],
+											],
+										],
+										'GBP' => [
+											'currencyCode'   => 'GBP',
+											'pricePerPerson' => 10300,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 9270,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 9270,
+												],
+											],
+										],
+									],
+								],
+								[
+									'id'                      =>
+									'HIJ-456:2025-08-26:OEX-FWD:SAA',
+									'name'                    => 'HIJ-456:2025-08-26:OEX-FWD:SAA',
+									'mask'                    => 'SAA',
+									'availabilityStatus'      => 'O',
+									'availabilityDescription' => 'Available',
+									'spacesAvailable'         => 3,
+									'seq'                     => '200',
+									'prices'                  => [
+										'USD' => [
+											'currencyCode'   => 'USD',
+											'pricePerPerson' => 12795,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 11516,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 11516,
+												],
+											],
+										],
+										'AUD' => [
+											'currencyCode'   => 'AUD',
+											'pricePerPerson' => 20100,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 18090,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 18090,
+												],
+											],
+										],
+										'CAD' => [
+											'currencyCode'   => 'CAD',
+											'pricePerPerson' => 17500,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 15750,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 15750,
+												],
+											],
+										],
+										'EUR' => [
+											'currencyCode'   => 'EUR',
+											'pricePerPerson' => 11900,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 10710,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 10710,
+												],
+											],
+										],
+										'GBP' => [
+											'currencyCode'   => 'GBP',
+											'pricePerPerson' => 10300,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 9270,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 9270,
+												],
+											],
+										],
+									],
+								],
+							],
+						],
+						[
+							'id'          => 'HIJ-456:2025-08-26:OEX-JST',
+							'code'        => 'OEX-JST',
+							'name'        => 'Junior Suite',
+							'departureId' => 'HIJ-456:2025-08-26',
+							'occupancies' => [
+								[
+									'id'                      => 'HIJ-456:2025-08-26:OEX-JST:A',
+									'name'                    => 'HIJ-456:2025-08-26:OEX-JST:A',
+									'mask'                    => 'A',
+									'availabilityStatus'      => 'O',
+									'availabilityDescription' => 'Available',
+									'spacesAvailable'         => 6,
+									'seq'                     => '300',
+									'prices'                  => [
+										'USD' => [
+											'currencyCode'   => 'USD',
+											'pricePerPerson' => 33590,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 30231,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 30231,
+												],
+											],
+										],
+										'AUD' => [
+											'currencyCode'   => 'AUD',
+											'pricePerPerson' => 52800,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 47520,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 47520,
+												],
+											],
+										],
+										'CAD' => [
+											'currencyCode'   => 'CAD',
+											'pricePerPerson' => 45800,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 41220,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 41220,
+												],
+											],
+										],
+										'EUR' => [
+											'currencyCode'   => 'EUR',
+											'pricePerPerson' => 31400,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 28260,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 28260,
+												],
+											],
+										],
+										'GBP' => [
+											'currencyCode'   => 'GBP',
+											'pricePerPerson' => 27000,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 24300,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 24300,
+												],
+											],
+										],
+									],
+								],
+								[
+									'id'                      => 'HIJ-456:2025-08-26:OEX-JST:AA',
+									'name'                    => 'HIJ-456:2025-08-26:OEX-JST:AA',
+									'mask'                    => 'AA',
+									'availabilityStatus'      => 'O',
+									'availabilityDescription' => 'Available',
+									'spacesAvailable'         => 6,
+									'seq'                     => '300',
+									'prices'                  => [
+										'USD' => [
+											'currencyCode'   => 'USD',
+											'pricePerPerson' => 16795,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 15116,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 15116,
+												],
+											],
+										],
+										'AUD' => [
+											'currencyCode'   => 'AUD',
+											'pricePerPerson' => 26400,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 23760,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 23760,
+												],
+											],
+										],
+										'CAD' => [
+											'currencyCode'   => 'CAD',
+											'pricePerPerson' => 22900,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 20610,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 20610,
+												],
+											],
+										],
+										'EUR' => [
+											'currencyCode'   => 'EUR',
+											'pricePerPerson' => 15700,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 14130,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 14130,
+												],
+											],
+										],
+										'GBP' => [
+											'currencyCode'   => 'GBP',
+											'pricePerPerson' => 13500,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 12150,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 12150,
+												],
+											],
+										],
+									],
+								],
+							],
+						],
+						[
+							'id'          => 'HIJ-456:2025-08-26:OEX-SVS',
+							'code'        => 'OEX-SVS',
+							'name'        => 'Studio Veranda Single',
+							'departureId' => 'HIJ-456:2025-08-26',
+							'occupancies' => [
+								[
+									'id'                      => 'HIJ-456:2025-08-26:OEX-SVS:A',
+									'name'                    => 'HIJ-456:2025-08-26:OEX-SVS:A',
+									'mask'                    => 'A',
+									'availabilityStatus'      => 'C',
+									'availabilityDescription' => 'Unavailable',
+									'spacesAvailable'         => 0,
+									'seq'                     => '400',
+									'prices'                  => [
+										'USD' => [
+											'currencyCode'   => 'USD',
+											'pricePerPerson' => 18095,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 16286,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 16286,
+												],
+											],
+										],
+										'AUD' => [
+											'currencyCode'   => 'AUD',
+											'pricePerPerson' => 28500,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 25650,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 25650,
+												],
+											],
+										],
+										'CAD' => [
+											'currencyCode'   => 'CAD',
+											'pricePerPerson' => 24700,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 22230,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 22230,
+												],
+											],
+										],
+										'EUR' => [
+											'currencyCode'   => 'EUR',
+											'pricePerPerson' => 16900,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 15210,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 15210,
+												],
+											],
+										],
+										'GBP' => [
+											'currencyCode'   => 'GBP',
+											'pricePerPerson' => 14500,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 13050,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 13050,
+												],
+											],
+										],
+									],
+								],
+							],
+						],
+						[
+							'id'          => 'HIJ-456:2025-08-26:OEX-EXP',
+							'code'        => 'OEX-EXP',
+							'name'        => 'Penthouse Suite',
+							'departureId' => 'HIJ-456:2025-08-26',
+							'occupancies' => [
+								[
+									'id'                      => 'HIJ-456:2025-08-26:OEX-EXP:A',
+									'name'                    => 'HIJ-456:2025-08-26:OEX-EXP:A',
+									'mask'                    => 'A',
+									'availabilityStatus'      => 'O',
+									'availabilityDescription' => 'Available',
+									'spacesAvailable'         => 1,
+									'seq'                     => '500',
+									'prices'                  => [
+										'USD' => [
+											'currencyCode'   => 'USD',
+											'pricePerPerson' => 38990,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 35091,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 35091,
+												],
+											],
+										],
+										'AUD' => [
+											'currencyCode'   => 'AUD',
+											'pricePerPerson' => 61400,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 55260,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 55260,
+												],
+											],
+										],
+										'CAD' => [
+											'currencyCode'   => 'CAD',
+											'pricePerPerson' => 53200,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 47880,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 47880,
+												],
+											],
+										],
+										'EUR' => [
+											'currencyCode'   => 'EUR',
+											'pricePerPerson' => 36400,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 32760,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 32760,
+												],
+											],
+										],
+										'GBP' => [
+											'currencyCode'   => 'GBP',
+											'pricePerPerson' => 31200,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 28080,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 28080,
+												],
+											],
+										],
+									],
+								],
+								[
+									'id'                      => 'HIJ-456:2025-08-26:OEX-EXP:AA',
+									'name'                    => 'HIJ-456:2025-08-26:OEX-EXP:AA',
+									'mask'                    => 'AA',
+									'availabilityStatus'      => 'O',
+									'availabilityDescription' => 'Available',
+									'spacesAvailable'         => 1,
+									'seq'                     => '500',
+									'prices'                  => [
+										'USD' => [
+											'currencyCode'   => 'USD',
+											'pricePerPerson' => 19495,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 17546,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 17546,
+												],
+											],
+										],
+										'AUD' => [
+											'currencyCode'   => 'AUD',
+											'pricePerPerson' => 30700,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 27630,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 27630,
+												],
+											],
+										],
+										'CAD' => [
+											'currencyCode'   => 'CAD',
+											'pricePerPerson' => 26600,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 23940,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 23940,
+												],
+											],
+										],
+										'EUR' => [
+											'currencyCode'   => 'EUR',
+											'pricePerPerson' => 18200,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 16380,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 16380,
+												],
+											],
+										],
+										'GBP' => [
+											'currencyCode'   => 'GBP',
+											'pricePerPerson' => 15600,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 14040,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 14040,
+												],
+											],
+										],
+									],
+								],
+							],
+						],
+						[
+							'id'          => 'HIJ-456:2025-08-26:OEX-OWN',
+							'code'        => 'OEX-OWN',
+							'name'        => "Owner\'s Suite",
+							'departureId' => 'HIJ-456:2025-08-26',
+							'occupancies' => [
+								[
+									'id'                      => 'HIJ-456:2025-08-26:OEX-OWN:A',
+									'name'                    => 'HIJ-456:2025-08-26:OEX-OWN:A',
+									'mask'                    => 'A',
+									'availabilityStatus'      => 'O',
+									'availabilityDescription' => 'Available',
+									'spacesAvailable'         => 1,
+									'seq'                     => '600',
+									'prices'                  => [
+										'USD' => [
+											'currencyCode'   => 'USD',
+											'pricePerPerson' => 41590,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 37431,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 37431,
+												],
+											],
+										],
+										'AUD' => [
+											'currencyCode'   => 'AUD',
+											'pricePerPerson' => 65400,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 58860,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 58860,
+												],
+											],
+										],
+										'CAD' => [
+											'currencyCode'   => 'CAD',
+											'pricePerPerson' => 56600,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 50940,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 50940,
+												],
+											],
+										],
+										'EUR' => [
+											'currencyCode'   => 'EUR',
+											'pricePerPerson' => 38800,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 34920,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 34920,
+												],
+											],
+										],
+										'GBP' => [
+											'currencyCode'   => 'GBP',
+											'pricePerPerson' => 33400,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 30060,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 30060,
+												],
+											],
+										],
+									],
+								],
+								[
+									'id'                      => 'HIJ-456:2025-08-26:OEX-OWN:AA',
+									'name'                    => 'HIJ-456:2025-08-26:OEX-OWN:AA',
+									'mask'                    => 'AA',
+									'availabilityStatus'      => 'O',
+									'availabilityDescription' => 'Available',
+									'spacesAvailable'         => 1,
+									'seq'                     => '600',
+									'prices'                  => [
+										'USD' => [
+											'currencyCode'   => 'USD',
+											'pricePerPerson' => 20795,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 18716,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 18716,
+												],
+											],
+										],
+										'AUD' => [
+											'currencyCode'   => 'AUD',
+											'pricePerPerson' => 32700,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 29430,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 29430,
+												],
+											],
+										],
+										'CAD' => [
+											'currencyCode'   => 'CAD',
+											'pricePerPerson' => 28300,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 25470,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 25470,
+												],
+											],
+										],
+										'EUR' => [
+											'currencyCode'   => 'EUR',
+											'pricePerPerson' => 19400,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 17460,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 17460,
+												],
+											],
+										],
+										'GBP' => [
+											'currencyCode'   => 'GBP',
+											'pricePerPerson' => 16700,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 15030,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 15030,
+												],
+											],
+										],
+									],
+								],
+							],
+						],
+						[
+							'id'          => 'HIJ-456:2025-08-26:OEX-VER',
+							'code'        => 'OEX-VER',
+							'name'        => 'Veranda Stateroom',
+							'departureId' => 'HIJ-456:2025-08-26',
+							'occupancies' => [
+								[
+									'id'                      => 'HIJ-456:2025-08-26:OEX-VER:A',
+									'name'                    => 'HIJ-456:2025-08-26:OEX-VER:A',
+									'mask'                    => 'A',
+									'availabilityStatus'      => 'O',
+									'availabilityDescription' => 'Available',
+									'spacesAvailable'         => 17,
+									'seq'                     => '700',
+									'prices'                  => [
+										'USD' => [
+											'currencyCode'   => 'USD',
+											'pricePerPerson' => 22772,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 20495,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 20495,
+												],
+											],
+										],
+										'AUD' => [
+											'currencyCode'   => 'AUD',
+											'pricePerPerson' => 35870,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 32283,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 32283,
+												],
+											],
+										],
+										'CAD' => [
+											'currencyCode'   => 'CAD',
+											'pricePerPerson' => 31110,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 27999,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 27999,
+												],
+											],
+										],
+										'EUR' => [
+											'currencyCode'   => 'EUR',
+											'pricePerPerson' => 21250,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 19125,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 19125,
+												],
+											],
+										],
+										'GBP' => [
+											'currencyCode'   => 'GBP',
+											'pricePerPerson' => 18360,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 16524,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 16524,
+												],
+											],
+										],
+									],
+								],
+								[
+									'id'                      => 'HIJ-456:2025-08-26:OEX-VER:AA',
+									'name'                    => 'HIJ-456:2025-08-26:OEX-VER:AA',
+									'mask'                    => 'AA',
+									'availabilityStatus'      => 'O',
+									'availabilityDescription' => 'Available',
+									'spacesAvailable'         => 17,
+									'seq'                     => '700',
+									'prices'                  => [
+										'USD' => [
+											'currencyCode'   => 'USD',
+											'pricePerPerson' => 13395,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 12056,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 12056,
+												],
+											],
+										],
+										'AUD' => [
+											'currencyCode'   => 'AUD',
+											'pricePerPerson' => 21100,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 18990,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 18990,
+												],
+											],
+										],
+										'CAD' => [
+											'currencyCode'   => 'CAD',
+											'pricePerPerson' => 18300,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 16470,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 16470,
+												],
+											],
+										],
+										'EUR' => [
+											'currencyCode'   => 'EUR',
+											'pricePerPerson' => 12500,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 11250,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 11250,
+												],
+											],
+										],
+										'GBP' => [
+											'currencyCode'   => 'GBP',
+											'pricePerPerson' => 10800,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 9720,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 9720,
+												],
+											],
+										],
+									],
+								],
+								[
+									'id'                      =>
+									'HIJ-456:2025-08-26:OEX-VER:SAA',
+									'name'                    => 'HIJ-456:2025-08-26:OEX-VER:SAA',
+									'mask'                    => 'SAA',
+									'availabilityStatus'      => 'O',
+									'availabilityDescription' => 'Available',
+									'spacesAvailable'         => 17,
+									'seq'                     => '700',
+									'prices'                  => [
+										'USD' => [
+											'currencyCode'   => 'USD',
+											'pricePerPerson' => 13395,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 12056,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 12056,
+												],
+											],
+										],
+										'AUD' => [
+											'currencyCode'   => 'AUD',
+											'pricePerPerson' => 21100,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 18990,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 18990,
+												],
+											],
+										],
+										'CAD' => [
+											'currencyCode'   => 'CAD',
+											'pricePerPerson' => 18300,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 16470,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 16470,
+												],
+											],
+										],
+										'EUR' => [
+											'currencyCode'   => 'EUR',
+											'pricePerPerson' => 12500,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 11250,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 11250,
+												],
+											],
+										],
+										'GBP' => [
+											'currencyCode'   => 'GBP',
+											'pricePerPerson' => 10800,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 9720,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 9720,
+												],
+											],
+										],
+									],
+								],
+							],
+						],
+						[
+							'id'          => 'HIJ-456:2025-08-26:OEX-VST',
+							'code'        => 'OEX-VST',
+							'name'        => 'Veranda Suite',
+							'departureId' => 'HIJ-456:2025-08-26',
+							'occupancies' => [
+								[
+									'id'                      => 'HIJ-456:2025-08-26:OEX-VST:A',
+									'name'                    => 'HIJ-456:2025-08-26:OEX-VST:A',
+									'mask'                    => 'A',
+									'availabilityStatus'      => 'O',
+									'availabilityDescription' => 'Available',
+									'spacesAvailable'         => 33,
+									'seq'                     => '800',
+									'prices'                  => [
+										'USD' => [
+											'currencyCode'   => 'USD',
+											'pricePerPerson' => 24132,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 21719,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 21719,
+												],
+											],
+										],
+										'AUD' => [
+											'currencyCode'   => 'AUD',
+											'pricePerPerson' => 37910,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 34119,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 34119,
+												],
+											],
+										],
+										'CAD' => [
+											'currencyCode'   => 'CAD',
+											'pricePerPerson' => 32980,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 29682,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 29682,
+												],
+											],
+										],
+										'EUR' => [
+											'currencyCode'   => 'EUR',
+											'pricePerPerson' => 22610,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 20349,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 20349,
+												],
+											],
+										],
+										'GBP' => [
+											'currencyCode'   => 'GBP',
+											'pricePerPerson' => 19380,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 17442,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 17442,
+												],
+											],
+										],
+									],
+								],
+								[
+									'id'                      => 'HIJ-456:2025-08-26:OEX-VST:AA',
+									'name'                    => 'HIJ-456:2025-08-26:OEX-VST:AA',
+									'mask'                    => 'AA',
+									'availabilityStatus'      => 'O',
+									'availabilityDescription' => 'Available',
+									'spacesAvailable'         => 33,
+									'seq'                     => '800',
+									'prices'                  => [
+										'USD' => [
+											'currencyCode'   => 'USD',
+											'pricePerPerson' => 14195,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 12776,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 12776,
+												],
+											],
+										],
+										'AUD' => [
+											'currencyCode'   => 'AUD',
+											'pricePerPerson' => 22300,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 20070,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 20070,
+												],
+											],
+										],
+										'CAD' => [
+											'currencyCode'   => 'CAD',
+											'pricePerPerson' => 19400,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 17460,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 17460,
+												],
+											],
+										],
+										'EUR' => [
+											'currencyCode'   => 'EUR',
+											'pricePerPerson' => 13300,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 11970,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 11970,
+												],
+											],
+										],
+										'GBP' => [
+											'currencyCode'   => 'GBP',
+											'pricePerPerson' => 11400,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 10260,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 10260,
+												],
+											],
+										],
+									],
+								],
+								[
+									'id'                      =>
+									'HIJ-456:2025-08-26:OEX-VST:SAA',
+									'name'                    => 'HIJ-456:2025-08-26:OEX-VST:SAA',
+									'mask'                    => 'SAA',
+									'availabilityStatus'      => 'O',
+									'availabilityDescription' => 'Available',
+									'spacesAvailable'         => 33,
+									'seq'                     => '800',
+									'prices'                  => [
+										'USD' => [
+											'currencyCode'   => 'USD',
+											'pricePerPerson' => 14195,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 12776,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 12776,
+												],
+											],
+										],
+										'AUD' => [
+											'currencyCode'   => 'AUD',
+											'pricePerPerson' => 22300,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 20070,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 20070,
+												],
+											],
+										],
+										'CAD' => [
+											'currencyCode'   => 'CAD',
+											'pricePerPerson' => 19400,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 17460,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 17460,
+												],
+											],
+										],
+										'EUR' => [
+											'currencyCode'   => 'EUR',
+											'pricePerPerson' => 13300,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 11970,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 11970,
+												],
+											],
+										],
+										'GBP' => [
+											'currencyCode'   => 'GBP',
+											'pricePerPerson' => 11400,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 10260,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 10260,
+												],
+											],
+										],
+									],
+								],
+							],
+						],
+					],
+					'adventureOptions' => [
+						[
+							'id'              => 'HIJ-456:2025-08-26:KAYAK',
+							'spacesAvailable' => 7,
+							'serviceIds'      => [ 'KAYAK' ],
+							'price'           => [
+								'GBP' => [
+									'currencyCode'   => 'GBP',
+									'pricePerPerson' => 640,
+								],
+								'EUR' => [
+									'currencyCode'   => 'EUR',
+									'pricePerPerson' => 740,
+								],
+								'USD' => [
+									'currencyCode'   => 'USD',
+									'pricePerPerson' => 795,
+								],
+								'CAD' => [
+									'currencyCode'   => 'CAD',
+									'pricePerPerson' => 1090,
+								],
+								'AUD' => [
+									'currencyCode'   => 'AUD',
+									'pricePerPerson' => 1250,
+								],
+							],
+						],
+						[
+							'id'              => 'HIJ-456:2025-08-26:KAYEXP',
+							'spacesAvailable' => 7,
+							'serviceIds'      => [ 'KAYEXP', 'KAYEXP2' ],
+							'price'           => [
+								'GBP' => [
+									'currencyCode'   => 'GBP',
+									'pricePerPerson' => 160,
+								],
+								'EUR' => [
+									'currencyCode'   => 'EUR',
+									'pricePerPerson' => 190,
+								],
+								'USD' => [
+									'currencyCode'   => 'USD',
+									'pricePerPerson' => 195,
+								],
+								'CAD' => [
+									'currencyCode'   => 'CAD',
+									'pricePerPerson' => 270,
+								],
+								'AUD' => [
+									'currencyCode'   => 'AUD',
+									'pricePerPerson' => 310,
+								],
+							],
+						],
+					],
+					'promotions'       => [
+						[
+							'endDate'       => '2050-12-31T00:00:00',
+							'startDate'     => '2023-09-19T00:00:00',
+							'description'   =>
+							'Pay in full at time of booking & Save 10%',
+							'currencyCode'  => null,
+							'discountType'  => 'percentage_off',
+							'discountValue' => '0.1',
+							'promotionCode' => '10PIF',
+							'isPIF'         => true,
+						],
+						[
+							'endDate'       => '2050-12-31T00:00:00',
+							'startDate'     => '2023-09-28T00:00:00',
+							'description'   => 'Save 10%',
+							'currencyCode'  => null,
+							'discountType'  => 'percentage_off',
+							'discountValue' => '0.1',
+							'promotionCode' => '10PROMO',
+							'isPIF'         => false,
+						],
+					],
+				],
+				[
+					'id'               => 'HIJ-456:2025-09-04',
+					'code'             => 'OEX20250904',
+					'packageCode'      => 'HIJ-456',
+					'startDate'        => '2025-09-04',
+					'endDate'          => '2025-09-14',
+					'duration'         => 11,
+					'shipCode'         => 'OEX',
+					'marketCode'       => 'ARC',
+					'cabins'           => [
+						[
+							'id'          => 'HIJ-456:2025-09-04:OEX-SGL',
+							'code'        => 'OEX-SGL',
+							'name'        => 'Studio Single',
+							'departureId' => 'HIJ-456:2025-09-04',
+							'occupancies' => [
+								[
+									'id'                      => 'HIJ-456:2025-09-04:OEX-SGL:A',
+									'name'                    => 'HIJ-456:2025-09-04:OEX-SGL:A',
+									'mask'                    => 'A',
+									'availabilityStatus'      => 'O',
+									'availabilityDescription' => 'Available',
+									'spacesAvailable'         => 5,
+									'seq'                     => '100',
+									'prices'                  => [
+										'USD' => [
+											'currencyCode'   => 'USD',
+											'pricePerPerson' => 16795,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 15116,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 13436,
+												],
+											],
+										],
+										'AUD' => [
+											'currencyCode'   => 'AUD',
+											'pricePerPerson' => 26400,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 23760,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 21120,
+												],
+											],
+										],
+										'CAD' => [
+											'currencyCode'   => 'CAD',
+											'pricePerPerson' => 22900,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 20610,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 18320,
+												],
+											],
+										],
+										'EUR' => [
+											'currencyCode'   => 'EUR',
+											'pricePerPerson' => 15700,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 14130,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 12560,
+												],
+											],
+										],
+										'GBP' => [
+											'currencyCode'   => 'GBP',
+											'pricePerPerson' => 13500,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 12150,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 10800,
+												],
+											],
+										],
+									],
+								],
+							],
+						],
+						[
+							'id'          => 'HIJ-456:2025-09-04:OEX-FWD',
+							'code'        => 'OEX-FWD',
+							'name'        => 'Deluxe Veranda Forward',
+							'departureId' => 'HIJ-456:2025-09-04',
+							'occupancies' => [
+								[
+									'id'                      => 'HIJ-456:2025-09-04:OEX-FWD:A',
+									'name'                    => 'HIJ-456:2025-09-04:OEX-FWD:A',
+									'mask'                    => 'A',
+									'availabilityStatus'      => 'O',
+									'availabilityDescription' => 'Available',
+									'spacesAvailable'         => 1,
+									'seq'                     => '200',
+									'prices'                  => [
+										'USD' => [
+											'currencyCode'   => 'USD',
+											'pricePerPerson' => 21752,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 19577,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 17402,
+												],
+											],
+										],
+										'AUD' => [
+											'currencyCode'   => 'AUD',
+											'pricePerPerson' => 34170,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 30753,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 27336,
+												],
+											],
+										],
+										'CAD' => [
+											'currencyCode'   => 'CAD',
+											'pricePerPerson' => 29750,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 26775,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 23800,
+												],
+											],
+										],
+										'EUR' => [
+											'currencyCode'   => 'EUR',
+											'pricePerPerson' => 20230,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 18207,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 16184,
+												],
+											],
+										],
+										'GBP' => [
+											'currencyCode'   => 'GBP',
+											'pricePerPerson' => 17510,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 15759,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 14008,
+												],
+											],
+										],
+									],
+								],
+								[
+									'id'                      => 'HIJ-456:2025-09-04:OEX-FWD:AA',
+									'name'                    => 'HIJ-456:2025-09-04:OEX-FWD:AA',
+									'mask'                    => 'AA',
+									'availabilityStatus'      => 'O',
+									'availabilityDescription' => 'Available',
+									'spacesAvailable'         => 1,
+									'seq'                     => '200',
+									'prices'                  => [
+										'USD' => [
+											'currencyCode'   => 'USD',
+											'pricePerPerson' => 12795,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 11516,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 10236,
+												],
+											],
+										],
+										'AUD' => [
+											'currencyCode'   => 'AUD',
+											'pricePerPerson' => 20100,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 18090,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 16080,
+												],
+											],
+										],
+										'CAD' => [
+											'currencyCode'   => 'CAD',
+											'pricePerPerson' => 17500,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 15750,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 14000,
+												],
+											],
+										],
+										'EUR' => [
+											'currencyCode'   => 'EUR',
+											'pricePerPerson' => 11900,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 10710,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 9520,
+												],
+											],
+										],
+										'GBP' => [
+											'currencyCode'   => 'GBP',
+											'pricePerPerson' => 10300,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 9270,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 8240,
+												],
+											],
+										],
+									],
+								],
+								[
+									'id'                      =>
+									'HIJ-456:2025-09-04:OEX-FWD:SAA',
+									'name'                    => 'HIJ-456:2025-09-04:OEX-FWD:SAA',
+									'mask'                    => 'SAA',
+									'availabilityStatus'      => 'O',
+									'availabilityDescription' => 'Available',
+									'spacesAvailable'         => 1,
+									'seq'                     => '200',
+									'prices'                  => [
+										'USD' => [
+											'currencyCode'   => 'USD',
+											'pricePerPerson' => 12795,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 11516,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 10236,
+												],
+											],
+										],
+										'AUD' => [
+											'currencyCode'   => 'AUD',
+											'pricePerPerson' => 20100,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 18090,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 16080,
+												],
+											],
+										],
+										'CAD' => [
+											'currencyCode'   => 'CAD',
+											'pricePerPerson' => 17500,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 15750,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 14000,
+												],
+											],
+										],
+										'EUR' => [
+											'currencyCode'   => 'EUR',
+											'pricePerPerson' => 11900,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 10710,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 9520,
+												],
+											],
+										],
+										'GBP' => [
+											'currencyCode'   => 'GBP',
+											'pricePerPerson' => 10300,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 9270,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 8240,
+												],
+											],
+										],
+									],
+								],
+							],
+						],
+						[
+							'id'          => 'HIJ-456:2025-09-04:OEX-JST',
+							'code'        => 'OEX-JST',
+							'name'        => 'Junior Suite',
+							'departureId' => 'HIJ-456:2025-09-04',
+							'occupancies' => [
+								[
+									'id'                      => 'HIJ-456:2025-09-04:OEX-JST:A',
+									'name'                    => 'HIJ-456:2025-09-04:OEX-JST:A',
+									'mask'                    => 'A',
+									'availabilityStatus'      => 'O',
+									'availabilityDescription' => 'Available',
+									'spacesAvailable'         => 6,
+									'seq'                     => '300',
+									'prices'                  => [
+										'USD' => [
+											'currencyCode'   => 'USD',
+											'pricePerPerson' => 33590,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 30231,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 26872,
+												],
+											],
+										],
+										'AUD' => [
+											'currencyCode'   => 'AUD',
+											'pricePerPerson' => 52800,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 47520,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 42240,
+												],
+											],
+										],
+										'CAD' => [
+											'currencyCode'   => 'CAD',
+											'pricePerPerson' => 45800,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 41220,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 36640,
+												],
+											],
+										],
+										'EUR' => [
+											'currencyCode'   => 'EUR',
+											'pricePerPerson' => 31400,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 28260,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 25120,
+												],
+											],
+										],
+										'GBP' => [
+											'currencyCode'   => 'GBP',
+											'pricePerPerson' => 27000,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 24300,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 21600,
+												],
+											],
+										],
+									],
+								],
+							],
+						],
+						[
+							'id'          => 'HIJ-456:2025-09-04:OEX-SVS',
+							'code'        => 'OEX-SVS',
+							'name'        => 'Studio Veranda Single',
+							'departureId' => 'HIJ-456:2025-09-04',
+							'occupancies' => [
+								[
+									'id'                      => 'HIJ-456:2025-09-04:OEX-SVS:A',
+									'name'                    => 'HIJ-456:2025-09-04:OEX-SVS:A',
+									'mask'                    => 'A',
+									'availabilityStatus'      => 'C',
+									'availabilityDescription' => 'Unavailable',
+									'spacesAvailable'         => 0,
+									'seq'                     => '400',
+									'prices'                  => [
+										'USD' => [
+											'currencyCode'   => 'USD',
+											'pricePerPerson' => 18095,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 16286,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 14476,
+												],
+											],
+										],
+										'AUD' => [
+											'currencyCode'   => 'AUD',
+											'pricePerPerson' => 28500,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 25650,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 22800,
+												],
+											],
+										],
+										'CAD' => [
+											'currencyCode'   => 'CAD',
+											'pricePerPerson' => 24700,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 22230,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 19760,
+												],
+											],
+										],
+										'EUR' => [
+											'currencyCode'   => 'EUR',
+											'pricePerPerson' => 16900,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 15210,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 13520,
+												],
+											],
+										],
+										'GBP' => [
+											'currencyCode'   => 'GBP',
+											'pricePerPerson' => 14500,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 13050,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 11600,
+												],
+											],
+										],
+									],
+								],
+							],
+						],
+						[
+							'id'          => 'HIJ-456:2025-09-04:OEX-EXP',
+							'code'        => 'OEX-EXP',
+							'name'        => 'Penthouse Suite',
+							'departureId' => 'HIJ-456:2025-09-04',
+							'occupancies' => [
+								[
+									'id'                      => 'HIJ-456:2025-09-04:OEX-EXP:A',
+									'name'                    => 'HIJ-456:2025-09-04:OEX-EXP:A',
+									'mask'                    => 'A',
+									'availabilityStatus'      => 'O',
+									'availabilityDescription' => 'Available',
+									'spacesAvailable'         => 1,
+									'seq'                     => '500',
+									'prices'                  => [
+										'USD' => [
+											'currencyCode'   => 'USD',
+											'pricePerPerson' => 38990,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 35091,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 31192,
+												],
+											],
+										],
+										'AUD' => [
+											'currencyCode'   => 'AUD',
+											'pricePerPerson' => 61400,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 55260,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 49120,
+												],
+											],
+										],
+										'CAD' => [
+											'currencyCode'   => 'CAD',
+											'pricePerPerson' => 53200,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 47880,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 42560,
+												],
+											],
+										],
+										'EUR' => [
+											'currencyCode'   => 'EUR',
+											'pricePerPerson' => 36400,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 32760,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 29120,
+												],
+											],
+										],
+										'GBP' => [
+											'currencyCode'   => 'GBP',
+											'pricePerPerson' => 31200,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 28080,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 24960,
+												],
+											],
+										],
+									],
+								],
+								[
+									'id'                      => 'HIJ-456:2025-09-04:OEX-EXP:AA',
+									'name'                    => 'HIJ-456:2025-09-04:OEX-EXP:AA',
+									'mask'                    => 'AA',
+									'availabilityStatus'      => 'O',
+									'availabilityDescription' => 'Available',
+									'spacesAvailable'         => 1,
+									'seq'                     => '500',
+									'prices'                  => [
+										'USD' => [
+											'currencyCode'   => 'USD',
+											'pricePerPerson' => 19495,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 17546,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 15596,
+												],
+											],
+										],
+										'AUD' => [
+											'currencyCode'   => 'AUD',
+											'pricePerPerson' => 30700,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 27630,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 24560,
+												],
+											],
+										],
+										'CAD' => [
+											'currencyCode'   => 'CAD',
+											'pricePerPerson' => 26600,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 23940,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 21280,
+												],
+											],
+										],
+										'EUR' => [
+											'currencyCode'   => 'EUR',
+											'pricePerPerson' => 18200,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 16380,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 14560,
+												],
+											],
+										],
+										'GBP' => [
+											'currencyCode'   => 'GBP',
+											'pricePerPerson' => 15600,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 14040,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 12480,
+												],
+											],
+										],
+									],
+								],
+							],
+						],
+						[
+							'id'          => 'HIJ-456:2025-09-04:OEX-OWN',
+							'code'        => 'OEX-OWN',
+							'name'        => "Owner\'s Suite",
+							'departureId' => 'HIJ-456:2025-09-04',
+							'occupancies' => [
+								[
+									'id'                      => 'HIJ-456:2025-09-04:OEX-OWN:A',
+									'name'                    => 'HIJ-456:2025-09-04:OEX-OWN:A',
+									'mask'                    => 'A',
+									'availabilityStatus'      => 'C',
+									'availabilityDescription' => 'Unavailable',
+									'spacesAvailable'         => 0,
+									'seq'                     => '600',
+									'prices'                  => [
+										'USD' => [
+											'currencyCode'   => 'USD',
+											'pricePerPerson' => 41590,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 37431,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 33272,
+												],
+											],
+										],
+										'AUD' => [
+											'currencyCode'   => 'AUD',
+											'pricePerPerson' => 65400,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 58860,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 52320,
+												],
+											],
+										],
+										'CAD' => [
+											'currencyCode'   => 'CAD',
+											'pricePerPerson' => 56600,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 50940,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 45280,
+												],
+											],
+										],
+										'EUR' => [
+											'currencyCode'   => 'EUR',
+											'pricePerPerson' => 38800,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 34920,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 31040,
+												],
+											],
+										],
+										'GBP' => [
+											'currencyCode'   => 'GBP',
+											'pricePerPerson' => 33400,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 30060,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 26720,
+												],
+											],
+										],
+									],
+								],
+								[
+									'id'                      => 'HIJ-456:2025-09-04:OEX-OWN:AA',
+									'name'                    => 'HIJ-456:2025-09-04:OEX-OWN:AA',
+									'mask'                    => 'AA',
+									'availabilityStatus'      => 'C',
+									'availabilityDescription' => 'Unavailable',
+									'spacesAvailable'         => 0,
+									'seq'                     => '600',
+									'prices'                  => [
+										'USD' => [
+											'currencyCode'   => 'USD',
+											'pricePerPerson' => 20795,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 18716,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 16636,
+												],
+											],
+										],
+										'AUD' => [
+											'currencyCode'   => 'AUD',
+											'pricePerPerson' => 32700,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 29430,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 26160,
+												],
+											],
+										],
+										'CAD' => [
+											'currencyCode'   => 'CAD',
+											'pricePerPerson' => 28300,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 25470,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 22640,
+												],
+											],
+										],
+										'EUR' => [
+											'currencyCode'   => 'EUR',
+											'pricePerPerson' => 19400,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 17460,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 15520,
+												],
+											],
+										],
+										'GBP' => [
+											'currencyCode'   => 'GBP',
+											'pricePerPerson' => 16700,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 15030,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 13360,
+												],
+											],
+										],
+									],
+								],
+							],
+						],
+						[
+							'id'          => 'HIJ-456:2025-09-04:OEX-VER',
+							'code'        => 'OEX-VER',
+							'name'        => 'Veranda Stateroom',
+							'departureId' => 'HIJ-456:2025-09-04',
+							'occupancies' => [
+								[
+									'id'                      => 'HIJ-456:2025-09-04:OEX-VER:A',
+									'name'                    => 'HIJ-456:2025-09-04:OEX-VER:A',
+									'mask'                    => 'A',
+									'availabilityStatus'      => 'O',
+									'availabilityDescription' => 'Available',
+									'spacesAvailable'         => 18,
+									'seq'                     => '700',
+									'prices'                  => [
+										'USD' => [
+											'currencyCode'   => 'USD',
+											'pricePerPerson' => 22772,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 20495,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 18218,
+												],
+											],
+										],
+										'AUD' => [
+											'currencyCode'   => 'AUD',
+											'pricePerPerson' => 35870,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 32283,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 28696,
+												],
+											],
+										],
+										'CAD' => [
+											'currencyCode'   => 'CAD',
+											'pricePerPerson' => 31110,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 27999,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 24888,
+												],
+											],
+										],
+										'EUR' => [
+											'currencyCode'   => 'EUR',
+											'pricePerPerson' => 21250,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 19125,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 17000,
+												],
+											],
+										],
+										'GBP' => [
+											'currencyCode'   => 'GBP',
+											'pricePerPerson' => 18360,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 16524,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 14688,
+												],
+											],
+										],
+									],
+								],
+								[
+									'id'                      => 'HIJ-456:2025-09-04:OEX-VER:AA',
+									'name'                    => 'HIJ-456:2025-09-04:OEX-VER:AA',
+									'mask'                    => 'AA',
+									'availabilityStatus'      => 'O',
+									'availabilityDescription' => 'Available',
+									'spacesAvailable'         => 18,
+									'seq'                     => '700',
+									'prices'                  => [
+										'USD' => [
+											'currencyCode'   => 'USD',
+											'pricePerPerson' => 13395,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 12056,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 10716,
+												],
+											],
+										],
+										'AUD' => [
+											'currencyCode'   => 'AUD',
+											'pricePerPerson' => 21100,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 18990,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 16880,
+												],
+											],
+										],
+										'CAD' => [
+											'currencyCode'   => 'CAD',
+											'pricePerPerson' => 18300,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 16470,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 14640,
+												],
+											],
+										],
+										'EUR' => [
+											'currencyCode'   => 'EUR',
+											'pricePerPerson' => 12500,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 11250,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 10000,
+												],
+											],
+										],
+										'GBP' => [
+											'currencyCode'   => 'GBP',
+											'pricePerPerson' => 10800,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 9720,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 8640,
+												],
+											],
+										],
+									],
+								],
+								[
+									'id'                      =>
+									'HIJ-456:2025-09-04:OEX-VER:SAA',
+									'name'                    => 'HIJ-456:2025-09-04:OEX-VER:SAA',
+									'mask'                    => 'SAA',
+									'availabilityStatus'      => 'O',
+									'availabilityDescription' => 'Available',
+									'spacesAvailable'         => 18,
+									'seq'                     => '700',
+									'prices'                  => [
+										'USD' => [
+											'currencyCode'   => 'USD',
+											'pricePerPerson' => 13395,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 12056,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 10716,
+												],
+											],
+										],
+										'AUD' => [
+											'currencyCode'   => 'AUD',
+											'pricePerPerson' => 21100,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 18990,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 16880,
+												],
+											],
+										],
+										'CAD' => [
+											'currencyCode'   => 'CAD',
+											'pricePerPerson' => 18300,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 16470,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 14640,
+												],
+											],
+										],
+										'EUR' => [
+											'currencyCode'   => 'EUR',
+											'pricePerPerson' => 12500,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 11250,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 10000,
+												],
+											],
+										],
+										'GBP' => [
+											'currencyCode'   => 'GBP',
+											'pricePerPerson' => 10800,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 9720,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 8640,
+												],
+											],
+										],
+									],
+								],
+							],
+						],
+						[
+							'id'          => 'HIJ-456:2025-09-04:OEX-VST',
+							'code'        => 'OEX-VST',
+							'name'        => 'Veranda Suite',
+							'departureId' => 'HIJ-456:2025-09-04',
+							'occupancies' => [
+								[
+									'id'                      => 'HIJ-456:2025-09-04:OEX-VST:A',
+									'name'                    => 'HIJ-456:2025-09-04:OEX-VST:A',
+									'mask'                    => 'A',
+									'availabilityStatus'      => 'O',
+									'availabilityDescription' => 'Available',
+									'spacesAvailable'         => 32,
+									'seq'                     => '800',
+									'prices'                  => [
+										'USD' => [
+											'currencyCode'   => 'USD',
+											'pricePerPerson' => 24132,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 21719,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 19306,
+												],
+											],
+										],
+										'AUD' => [
+											'currencyCode'   => 'AUD',
+											'pricePerPerson' => 37910,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 34119,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 30328,
+												],
+											],
+										],
+										'CAD' => [
+											'currencyCode'   => 'CAD',
+											'pricePerPerson' => 32980,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 29682,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 26384,
+												],
+											],
+										],
+										'EUR' => [
+											'currencyCode'   => 'EUR',
+											'pricePerPerson' => 22610,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 20349,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 18088,
+												],
+											],
+										],
+										'GBP' => [
+											'currencyCode'   => 'GBP',
+											'pricePerPerson' => 19380,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 17442,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 15504,
+												],
+											],
+										],
+									],
+								],
+								[
+									'id'                      => 'HIJ-456:2025-09-04:OEX-VST:AA',
+									'name'                    => 'HIJ-456:2025-09-04:OEX-VST:AA',
+									'mask'                    => 'AA',
+									'availabilityStatus'      => 'O',
+									'availabilityDescription' => 'Available',
+									'spacesAvailable'         => 32,
+									'seq'                     => '800',
+									'prices'                  => [
+										'USD' => [
+											'currencyCode'   => 'USD',
+											'pricePerPerson' => 14195,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 12776,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 11356,
+												],
+											],
+										],
+										'AUD' => [
+											'currencyCode'   => 'AUD',
+											'pricePerPerson' => 22300,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 20070,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 17840,
+												],
+											],
+										],
+										'CAD' => [
+											'currencyCode'   => 'CAD',
+											'pricePerPerson' => 19400,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 17460,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 15520,
+												],
+											],
+										],
+										'EUR' => [
+											'currencyCode'   => 'EUR',
+											'pricePerPerson' => 13300,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 11970,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 10640,
+												],
+											],
+										],
+										'GBP' => [
+											'currencyCode'   => 'GBP',
+											'pricePerPerson' => 11400,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 10260,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 9120,
+												],
+											],
+										],
+									],
+								],
+								[
+									'id'                      =>
+									'HIJ-456:2025-09-04:OEX-VST:SAA',
+									'name'                    => 'HIJ-456:2025-09-04:OEX-VST:SAA',
+									'mask'                    => 'SAA',
+									'availabilityStatus'      => 'O',
+									'availabilityDescription' => 'Available',
+									'spacesAvailable'         => 32,
+									'seq'                     => '800',
+									'prices'                  => [
+										'USD' => [
+											'currencyCode'   => 'USD',
+											'pricePerPerson' => 14195,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 12776,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 11356,
+												],
+											],
+										],
+										'AUD' => [
+											'currencyCode'   => 'AUD',
+											'pricePerPerson' => 22300,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 20070,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 17840,
+												],
+											],
+										],
+										'CAD' => [
+											'currencyCode'   => 'CAD',
+											'pricePerPerson' => 19400,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 17460,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 15520,
+												],
+											],
+										],
+										'EUR' => [
+											'currencyCode'   => 'EUR',
+											'pricePerPerson' => 13300,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 11970,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 10640,
+												],
+											],
+										],
+										'GBP' => [
+											'currencyCode'   => 'GBP',
+											'pricePerPerson' => 11400,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 10260,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 9120,
+												],
+											],
+										],
+									],
+								],
+							],
+						],
+					],
+					'adventureOptions' => [
+						[
+							'id'              => 'HIJ-456:2025-09-04:KAYAK',
+							'spacesAvailable' => 0,
+							'serviceIds'      => [ 'KAYAK' ],
+							'price'           => [
+								'GBP' => [
+									'currencyCode'   => 'GBP',
+									'pricePerPerson' => 640,
+								],
+								'EUR' => [
+									'currencyCode'   => 'EUR',
+									'pricePerPerson' => 740,
+								],
+								'USD' => [
+									'currencyCode'   => 'USD',
+									'pricePerPerson' => 795,
+								],
+								'CAD' => [
+									'currencyCode'   => 'CAD',
+									'pricePerPerson' => 1090,
+								],
+								'AUD' => [
+									'currencyCode'   => 'AUD',
+									'pricePerPerson' => 1250,
+								],
+							],
+						],
+						[
+							'id'              => 'HIJ-456:2025-09-04:KAYEXP',
+							'spacesAvailable' => 13,
+							'serviceIds'      => [ 'KAYEXP', 'KAYEXP2' ],
+							'price'           => [
+								'GBP' => [
+									'currencyCode'   => 'GBP',
+									'pricePerPerson' => 160,
+								],
+								'EUR' => [
+									'currencyCode'   => 'EUR',
+									'pricePerPerson' => 190,
+								],
+								'USD' => [
+									'currencyCode'   => 'USD',
+									'pricePerPerson' => 195,
+								],
+								'CAD' => [
+									'currencyCode'   => 'CAD',
+									'pricePerPerson' => 270,
+								],
+								'AUD' => [
+									'currencyCode'   => 'AUD',
+									'pricePerPerson' => 310,
+								],
+							],
+						],
+					],
+					'promotions'       => [
+						[
+							'endDate'       => '2050-12-31T00:00:00',
+							'startDate'     => '2023-09-19T00:00:00',
+							'description'   =>
+							'Pay in full at time of booking & Save 10%',
+							'currencyCode'  => null,
+							'discountType'  => 'percentage_off',
+							'discountValue' => '0.1',
+							'promotionCode' => '10PIF',
+							'isPIF'         => true,
+						],
+						[
+							'endDate'       => '2050-12-31T00:00:00',
+							'startDate'     => '2023-09-28T00:00:00',
+							'description'   => 'Save 20%',
+							'currencyCode'  => null,
+							'discountType'  => 'percentage_off',
+							'discountValue' => '0.2',
+							'promotionCode' => '20PROMO',
+							'isPIF'         => false,
+						],
+					],
+				],
+				[
+					'id'               => 'HIJ-456:2025-09-13',
+					'code'             => 'OEX20250913',
+					'packageCode'      => 'HIJ-456',
+					'startDate'        => '2025-09-13',
+					'endDate'          => '2025-09-23',
+					'duration'         => 11,
+					'shipCode'         => 'OEX',
+					'marketCode'       => 'ARC',
+					'cabins'           => [
+						[
+							'id'          => 'HIJ-456:2025-09-13:OEX-SGL',
+							'code'        => 'OEX-SGL',
+							'name'        => 'Studio Single',
+							'departureId' => 'HIJ-456:2025-09-13',
+							'occupancies' => [
+								[
+									'id'                      => 'HIJ-456:2025-09-13:OEX-SGL:A',
+									'name'                    => 'HIJ-456:2025-09-13:OEX-SGL:A',
+									'mask'                    => 'A',
+									'availabilityStatus'      => 'O',
+									'availabilityDescription' => 'Available',
+									'spacesAvailable'         => 3,
+									'seq'                     => '100',
+									'prices'                  => [
+										'USD' => [
+											'currencyCode'   => 'USD',
+											'pricePerPerson' => 16795,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 15116,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 13436,
+												],
+											],
+										],
+										'AUD' => [
+											'currencyCode'   => 'AUD',
+											'pricePerPerson' => 26400,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 23760,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 21120,
+												],
+											],
+										],
+										'CAD' => [
+											'currencyCode'   => 'CAD',
+											'pricePerPerson' => 22900,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 20610,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 18320,
+												],
+											],
+										],
+										'EUR' => [
+											'currencyCode'   => 'EUR',
+											'pricePerPerson' => 15700,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 14130,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 12560,
+												],
+											],
+										],
+										'GBP' => [
+											'currencyCode'   => 'GBP',
+											'pricePerPerson' => 13500,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 12150,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 10800,
+												],
+											],
+										],
+									],
+								],
+							],
+						],
+						[
+							'id'          => 'HIJ-456:2025-09-13:OEX-FWD',
+							'code'        => 'OEX-FWD',
+							'name'        => 'Deluxe Veranda Forward',
+							'departureId' => 'HIJ-456:2025-09-13',
+							'occupancies' => [
+								[
+									'id'                      => 'HIJ-456:2025-09-13:OEX-FWD:A',
+									'name'                    => 'HIJ-456:2025-09-13:OEX-FWD:A',
+									'mask'                    => 'A',
+									'availabilityStatus'      => 'O',
+									'availabilityDescription' => 'Available',
+									'spacesAvailable'         => 4,
+									'seq'                     => '200',
+									'prices'                  => [
+										'USD' => [
+											'currencyCode'   => 'USD',
+											'pricePerPerson' => 21752,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 19577,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 17402,
+												],
+											],
+										],
+										'AUD' => [
+											'currencyCode'   => 'AUD',
+											'pricePerPerson' => 34170,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 30753,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 27336,
+												],
+											],
+										],
+										'CAD' => [
+											'currencyCode'   => 'CAD',
+											'pricePerPerson' => 29750,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 26775,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 23800,
+												],
+											],
+										],
+										'EUR' => [
+											'currencyCode'   => 'EUR',
+											'pricePerPerson' => 20230,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 18207,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 16184,
+												],
+											],
+										],
+										'GBP' => [
+											'currencyCode'   => 'GBP',
+											'pricePerPerson' => 17510,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 15759,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 14008,
+												],
+											],
+										],
+									],
+								],
+								[
+									'id'                      => 'HIJ-456:2025-09-13:OEX-FWD:AA',
+									'name'                    => 'HIJ-456:2025-09-13:OEX-FWD:AA',
+									'mask'                    => 'AA',
+									'availabilityStatus'      => 'O',
+									'availabilityDescription' => 'Available',
+									'spacesAvailable'         => 4,
+									'seq'                     => '200',
+									'prices'                  => [
+										'USD' => [
+											'currencyCode'   => 'USD',
+											'pricePerPerson' => 12795,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 11516,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 10236,
+												],
+											],
+										],
+										'AUD' => [
+											'currencyCode'   => 'AUD',
+											'pricePerPerson' => 20100,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 18090,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 16080,
+												],
+											],
+										],
+										'CAD' => [
+											'currencyCode'   => 'CAD',
+											'pricePerPerson' => 17500,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 15750,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 14000,
+												],
+											],
+										],
+										'EUR' => [
+											'currencyCode'   => 'EUR',
+											'pricePerPerson' => 11900,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 10710,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 9520,
+												],
+											],
+										],
+										'GBP' => [
+											'currencyCode'   => 'GBP',
+											'pricePerPerson' => 10300,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 9270,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 8240,
+												],
+											],
+										],
+									],
+								],
+								[
+									'id'                      =>
+									'HIJ-456:2025-09-13:OEX-FWD:SAA',
+									'name'                    => 'HIJ-456:2025-09-13:OEX-FWD:SAA',
+									'mask'                    => 'SAA',
+									'availabilityStatus'      => 'O',
+									'availabilityDescription' => 'Available',
+									'spacesAvailable'         => 4,
+									'seq'                     => '200',
+									'prices'                  => [
+										'USD' => [
+											'currencyCode'   => 'USD',
+											'pricePerPerson' => 12795,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 11516,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 10236,
+												],
+											],
+										],
+										'AUD' => [
+											'currencyCode'   => 'AUD',
+											'pricePerPerson' => 20100,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 18090,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 16080,
+												],
+											],
+										],
+										'CAD' => [
+											'currencyCode'   => 'CAD',
+											'pricePerPerson' => 17500,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 15750,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 14000,
+												],
+											],
+										],
+										'EUR' => [
+											'currencyCode'   => 'EUR',
+											'pricePerPerson' => 11900,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 10710,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 9520,
+												],
+											],
+										],
+										'GBP' => [
+											'currencyCode'   => 'GBP',
+											'pricePerPerson' => 10300,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 9270,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 8240,
+												],
+											],
+										],
+									],
+								],
+							],
+						],
+						[
+							'id'          => 'HIJ-456:2025-09-13:OEX-EXP',
+							'code'        => 'OEX-EXP',
+							'name'        => 'Penthouse Suite',
+							'departureId' => 'HIJ-456:2025-09-13',
+							'occupancies' => [
+								[
+									'id'                      => 'HIJ-456:2025-09-13:OEX-EXP:AA',
+									'name'                    => 'HIJ-456:2025-09-13:OEX-EXP:AA',
+									'mask'                    => 'AA',
+									'availabilityStatus'      => 'O',
+									'availabilityDescription' => 'Available',
+									'spacesAvailable'         => 1,
+									'seq'                     => '500',
+									'prices'                  => [
+										'USD' => [
+											'currencyCode'   => 'USD',
+											'pricePerPerson' => 19495,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 17546,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 15596,
+												],
+											],
+										],
+										'AUD' => [
+											'currencyCode'   => 'AUD',
+											'pricePerPerson' => 30700,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 27630,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 24560,
+												],
+											],
+										],
+										'CAD' => [
+											'currencyCode'   => 'CAD',
+											'pricePerPerson' => 26600,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 23940,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 21280,
+												],
+											],
+										],
+										'EUR' => [
+											'currencyCode'   => 'EUR',
+											'pricePerPerson' => 18200,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 16380,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 14560,
+												],
+											],
+										],
+										'GBP' => [
+											'currencyCode'   => 'GBP',
+											'pricePerPerson' => 15600,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 14040,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 12480,
+												],
+											],
+										],
+									],
+								],
+							],
+						],
+						[
+							'id'          => 'HIJ-456:2025-09-13:OEX-VER',
+							'code'        => 'OEX-VER',
+							'name'        => 'Veranda Stateroom',
+							'departureId' => 'HIJ-456:2025-09-13',
+							'occupancies' => [
+								[
+									'id'                      => 'HIJ-456:2025-09-13:OEX-VER:AA',
+									'name'                    => 'HIJ-456:2025-09-13:OEX-VER:AA',
+									'mask'                    => 'AA',
+									'availabilityStatus'      => 'O',
+									'availabilityDescription' => 'Available',
+									'spacesAvailable'         => 9,
+									'seq'                     => '700',
+									'prices'                  => [
+										'USD' => [
+											'currencyCode'   => 'USD',
+											'pricePerPerson' => 13395,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 12056,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 10716,
+												],
+											],
+										],
+										'AUD' => [
+											'currencyCode'   => 'AUD',
+											'pricePerPerson' => 21100,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 18990,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 16880,
+												],
+											],
+										],
+										'CAD' => [
+											'currencyCode'   => 'CAD',
+											'pricePerPerson' => 18300,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 16470,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 14640,
+												],
+											],
+										],
+										'EUR' => [
+											'currencyCode'   => 'EUR',
+											'pricePerPerson' => 12500,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 11250,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 10000,
+												],
+											],
+										],
+										'GBP' => [
+											'currencyCode'   => 'GBP',
+											'pricePerPerson' => 10800,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 9720,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 8640,
+												],
+											],
+										],
+									],
+								],
+								[
+									'id'                      =>
+									'HIJ-456:2025-09-13:OEX-VER:SAA',
+									'name'                    => 'HIJ-456:2025-09-13:OEX-VER:SAA',
+									'mask'                    => 'SAA',
+									'availabilityStatus'      => 'O',
+									'availabilityDescription' => 'Available',
+									'spacesAvailable'         => 9,
+									'seq'                     => '700',
+									'prices'                  => [
+										'USD' => [
+											'currencyCode'   => 'USD',
+											'pricePerPerson' => 13395,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 12056,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 10716,
+												],
+											],
+										],
+										'AUD' => [
+											'currencyCode'   => 'AUD',
+											'pricePerPerson' => 21100,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 18990,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 16880,
+												],
+											],
+										],
+										'CAD' => [
+											'currencyCode'   => 'CAD',
+											'pricePerPerson' => 18300,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 16470,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 14640,
+												],
+											],
+										],
+										'EUR' => [
+											'currencyCode'   => 'EUR',
+											'pricePerPerson' => 12500,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 11250,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 10000,
+												],
+											],
+										],
+										'GBP' => [
+											'currencyCode'   => 'GBP',
+											'pricePerPerson' => 10800,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 9720,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 8640,
+												],
+											],
+										],
+									],
+								],
+							],
+						],
+						[
+							'id'          => 'HIJ-456:2025-09-13:OEX-VST',
+							'code'        => 'OEX-VST',
+							'name'        => 'Veranda Suite',
+							'departureId' => 'HIJ-456:2025-09-13',
+							'occupancies' => [
+								[
+									'id'                      => 'HIJ-456:2025-09-13:OEX-VST:AA',
+									'name'                    => 'HIJ-456:2025-09-13:OEX-VST:AA',
+									'mask'                    => 'AA',
+									'availabilityStatus'      => 'O',
+									'availabilityDescription' => 'Available',
+									'spacesAvailable'         => 21,
+									'seq'                     => '800',
+									'prices'                  => [
+										'USD' => [
+											'currencyCode'   => 'USD',
+											'pricePerPerson' => 14195,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 12776,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 11356,
+												],
+											],
+										],
+										'AUD' => [
+											'currencyCode'   => 'AUD',
+											'pricePerPerson' => 22300,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 20070,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 17840,
+												],
+											],
+										],
+										'CAD' => [
+											'currencyCode'   => 'CAD',
+											'pricePerPerson' => 19400,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 17460,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 15520,
+												],
+											],
+										],
+										'EUR' => [
+											'currencyCode'   => 'EUR',
+											'pricePerPerson' => 13300,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 11970,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 10640,
+												],
+											],
+										],
+										'GBP' => [
+											'currencyCode'   => 'GBP',
+											'pricePerPerson' => 11400,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 10260,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 9120,
+												],
+											],
+										],
+									],
+								],
+								[
+									'id'                      =>
+									'HIJ-456:2025-09-13:OEX-VST:SAA',
+									'name'                    => 'HIJ-456:2025-09-13:OEX-VST:SAA',
+									'mask'                    => 'SAA',
+									'availabilityStatus'      => 'O',
+									'availabilityDescription' => 'Available',
+									'spacesAvailable'         => 21,
+									'seq'                     => '800',
+									'prices'                  => [
+										'USD' => [
+											'currencyCode'   => 'USD',
+											'pricePerPerson' => 14195,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 12776,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 11356,
+												],
+											],
+										],
+										'AUD' => [
+											'currencyCode'   => 'AUD',
+											'pricePerPerson' => 22300,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 20070,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 17840,
+												],
+											],
+										],
+										'CAD' => [
+											'currencyCode'   => 'CAD',
+											'pricePerPerson' => 19400,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 17460,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 15520,
+												],
+											],
+										],
+										'EUR' => [
+											'currencyCode'   => 'EUR',
+											'pricePerPerson' => 13300,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 11970,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 10640,
+												],
+											],
+										],
+										'GBP' => [
+											'currencyCode'   => 'GBP',
+											'pricePerPerson' => 11400,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 10260,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 9120,
+												],
+											],
+										],
+									],
+								],
+							],
+						],
+					],
+					'adventureOptions' => [
+						[
+							'id'              => 'HIJ-456:2025-09-13:KAYAK',
+							'spacesAvailable' => 6,
+							'serviceIds'      => [ 'KAYAK' ],
+							'price'           => [
+								'GBP' => [
+									'currencyCode'   => 'GBP',
+									'pricePerPerson' => 640,
+								],
+								'EUR' => [
+									'currencyCode'   => 'EUR',
+									'pricePerPerson' => 740,
+								],
+								'USD' => [
+									'currencyCode'   => 'USD',
+									'pricePerPerson' => 795,
+								],
+								'CAD' => [
+									'currencyCode'   => 'CAD',
+									'pricePerPerson' => 1090,
+								],
+								'AUD' => [
+									'currencyCode'   => 'AUD',
+									'pricePerPerson' => 1250,
+								],
+							],
+						],
+						[
+							'id'              => 'HIJ-456:2025-09-13:KAYEXP',
+							'spacesAvailable' => 16,
+							'serviceIds'      => [ 'KAYEXP', 'KAYEXP2' ],
+							'price'           => [
+								'GBP' => [
+									'currencyCode'   => 'GBP',
+									'pricePerPerson' => 160,
+								],
+								'EUR' => [
+									'currencyCode'   => 'EUR',
+									'pricePerPerson' => 190,
+								],
+								'USD' => [
+									'currencyCode'   => 'USD',
+									'pricePerPerson' => 195,
+								],
+								'CAD' => [
+									'currencyCode'   => 'CAD',
+									'pricePerPerson' => 270,
+								],
+								'AUD' => [
+									'currencyCode'   => 'AUD',
+									'pricePerPerson' => 310,
+								],
+							],
+						],
+					],
+					'promotions'       => [
+						[
+							'endDate'       => '2050-12-31T00:00:00',
+							'startDate'     => '2023-09-19T00:00:00',
+							'description'   =>
+							'Pay in full at time of booking & Save 10%',
+							'currencyCode'  => null,
+							'discountType'  => 'percentage_off',
+							'discountValue' => '0.1',
+							'promotionCode' => '10PIF',
+							'isPIF'         => true,
+						],
+						[
+							'endDate'       => '2050-12-31T00:00:00',
+							'startDate'     => '2023-09-28T00:00:00',
+							'description'   => 'Save 20%',
+							'currencyCode'  => null,
+							'discountType'  => 'percentage_off',
+							'discountValue' => '0.2',
+							'promotionCode' => '20PROMO',
+							'isPIF'         => false,
+						],
+					],
+				],
+				[
+					'id'               => 'HIJ-456:2025-09-22',
+					'code'             => 'OEX20250922',
+					'packageCode'      => 'HIJ-456',
+					'startDate'        => '2025-09-22',
+					'endDate'          => '2025-10-02',
+					'duration'         => 11,
+					'shipCode'         => 'OEX',
+					'marketCode'       => 'ARC',
+					'cabins'           => [
+						[
+							'id'          => 'HIJ-456:2025-09-22:OEX-FWD',
+							'code'        => 'OEX-FWD',
+							'name'        => 'Deluxe Veranda Forward',
+							'departureId' => 'HIJ-456:2025-09-22',
+							'occupancies' => [
+								[
+									'id'                      => 'HIJ-456:2025-09-22:OEX-FWD:A',
+									'name'                    => 'HIJ-456:2025-09-22:OEX-FWD:A',
+									'mask'                    => 'A',
+									'availabilityStatus'      => 'O',
+									'availabilityDescription' => 'Available',
+									'spacesAvailable'         => 2,
+									'seq'                     => '200',
+									'prices'                  => [
+										'USD' => [
+											'currencyCode'   => 'USD',
+											'pricePerPerson' => 21752,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 19577,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 17402,
+												],
+											],
+										],
+										'AUD' => [
+											'currencyCode'   => 'AUD',
+											'pricePerPerson' => 34170,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 30753,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 27336,
+												],
+											],
+										],
+										'CAD' => [
+											'currencyCode'   => 'CAD',
+											'pricePerPerson' => 29750,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 26775,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 23800,
+												],
+											],
+										],
+										'EUR' => [
+											'currencyCode'   => 'EUR',
+											'pricePerPerson' => 20230,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 18207,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 16184,
+												],
+											],
+										],
+										'GBP' => [
+											'currencyCode'   => 'GBP',
+											'pricePerPerson' => 17510,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 15759,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 14008,
+												],
+											],
+										],
+									],
+								],
+								[
+									'id'                      => 'HIJ-456:2025-09-22:OEX-FWD:AA',
+									'name'                    => 'HIJ-456:2025-09-22:OEX-FWD:AA',
+									'mask'                    => 'AA',
+									'availabilityStatus'      => 'O',
+									'availabilityDescription' => 'Available',
+									'spacesAvailable'         => 2,
+									'seq'                     => '200',
+									'prices'                  => [
+										'USD' => [
+											'currencyCode'   => 'USD',
+											'pricePerPerson' => 12795,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 11516,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 10236,
+												],
+											],
+										],
+										'AUD' => [
+											'currencyCode'   => 'AUD',
+											'pricePerPerson' => 20100,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 18090,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 16080,
+												],
+											],
+										],
+										'CAD' => [
+											'currencyCode'   => 'CAD',
+											'pricePerPerson' => 17500,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 15750,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 14000,
+												],
+											],
+										],
+										'EUR' => [
+											'currencyCode'   => 'EUR',
+											'pricePerPerson' => 11900,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 10710,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 9520,
+												],
+											],
+										],
+										'GBP' => [
+											'currencyCode'   => 'GBP',
+											'pricePerPerson' => 10300,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 9270,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 8240,
+												],
+											],
+										],
+									],
+								],
+								[
+									'id'                      =>
+									'HIJ-456:2025-09-22:OEX-FWD:SAA',
+									'name'                    => 'HIJ-456:2025-09-22:OEX-FWD:SAA',
+									'mask'                    => 'SAA',
+									'availabilityStatus'      => 'O',
+									'availabilityDescription' => 'Available',
+									'spacesAvailable'         => 2,
+									'seq'                     => '200',
+									'prices'                  => [
+										'USD' => [
+											'currencyCode'   => 'USD',
+											'pricePerPerson' => 12795,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 11516,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 10236,
+												],
+											],
+										],
+										'AUD' => [
+											'currencyCode'   => 'AUD',
+											'pricePerPerson' => 20100,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 18090,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 16080,
+												],
+											],
+										],
+										'CAD' => [
+											'currencyCode'   => 'CAD',
+											'pricePerPerson' => 17500,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 15750,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 14000,
+												],
+											],
+										],
+										'EUR' => [
+											'currencyCode'   => 'EUR',
+											'pricePerPerson' => 11900,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 10710,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 9520,
+												],
+											],
+										],
+										'GBP' => [
+											'currencyCode'   => 'GBP',
+											'pricePerPerson' => 10300,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 9270,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 8240,
+												],
+											],
+										],
+									],
+								],
+							],
+						],
+						[
+							'id'          => 'HIJ-456:2025-09-22:OEX-JST',
+							'code'        => 'OEX-JST',
+							'name'        => 'Junior Suite',
+							'departureId' => 'HIJ-456:2025-09-22',
+							'occupancies' => [
+								[
+									'id'                      => 'HIJ-456:2025-09-22:OEX-JST:A',
+									'name'                    => 'HIJ-456:2025-09-22:OEX-JST:A',
+									'mask'                    => 'A',
+									'availabilityStatus'      => 'O',
+									'availabilityDescription' => 'Available',
+									'spacesAvailable'         => 6,
+									'seq'                     => '300',
+									'prices'                  => [
+										'USD' => [
+											'currencyCode'   => 'USD',
+											'pricePerPerson' => 33590,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 30231,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 26872,
+												],
+											],
+										],
+										'AUD' => [
+											'currencyCode'   => 'AUD',
+											'pricePerPerson' => 52800,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 47520,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 42240,
+												],
+											],
+										],
+										'CAD' => [
+											'currencyCode'   => 'CAD',
+											'pricePerPerson' => 45800,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 41220,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 36640,
+												],
+											],
+										],
+										'EUR' => [
+											'currencyCode'   => 'EUR',
+											'pricePerPerson' => 31400,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 28260,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 25120,
+												],
+											],
+										],
+										'GBP' => [
+											'currencyCode'   => 'GBP',
+											'pricePerPerson' => 27000,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 24300,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 21600,
+												],
+											],
+										],
+									],
+								],
+								[
+									'id'                      => 'HIJ-456:2025-09-22:OEX-JST:AA',
+									'name'                    => 'HIJ-456:2025-09-22:OEX-JST:AA',
+									'mask'                    => 'AA',
+									'availabilityStatus'      => 'O',
+									'availabilityDescription' => 'Available',
+									'spacesAvailable'         => 6,
+									'seq'                     => '300',
+									'prices'                  => [
+										'USD' => [
+											'currencyCode'   => 'USD',
+											'pricePerPerson' => 16795,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 15116,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 13436,
+												],
+											],
+										],
+										'AUD' => [
+											'currencyCode'   => 'AUD',
+											'pricePerPerson' => 26400,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 23760,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 21120,
+												],
+											],
+										],
+										'CAD' => [
+											'currencyCode'   => 'CAD',
+											'pricePerPerson' => 22900,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 20610,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 18320,
+												],
+											],
+										],
+										'EUR' => [
+											'currencyCode'   => 'EUR',
+											'pricePerPerson' => 15700,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 14130,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 12560,
+												],
+											],
+										],
+										'GBP' => [
+											'currencyCode'   => 'GBP',
+											'pricePerPerson' => 13500,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 12150,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 10800,
+												],
+											],
+										],
+									],
+								],
+							],
+						],
+						[
+							'id'          => 'HIJ-456:2025-09-22:OEX-EXP',
+							'code'        => 'OEX-EXP',
+							'name'        => 'Penthouse Suite',
+							'departureId' => 'HIJ-456:2025-09-22',
+							'occupancies' => [
+								[
+									'id'                      => 'HIJ-456:2025-09-22:OEX-EXP:A',
+									'name'                    => 'HIJ-456:2025-09-22:OEX-EXP:A',
+									'mask'                    => 'A',
+									'availabilityStatus'      => 'O',
+									'availabilityDescription' => 'Available',
+									'spacesAvailable'         => 1,
+									'seq'                     => '500',
+									'prices'                  => [
+										'USD' => [
+											'currencyCode'   => 'USD',
+											'pricePerPerson' => 38990,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 35091,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 31192,
+												],
+											],
+										],
+										'AUD' => [
+											'currencyCode'   => 'AUD',
+											'pricePerPerson' => 61400,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 55260,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 49120,
+												],
+											],
+										],
+										'CAD' => [
+											'currencyCode'   => 'CAD',
+											'pricePerPerson' => 53200,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 47880,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 42560,
+												],
+											],
+										],
+										'EUR' => [
+											'currencyCode'   => 'EUR',
+											'pricePerPerson' => 36400,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 32760,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 29120,
+												],
+											],
+										],
+										'GBP' => [
+											'currencyCode'   => 'GBP',
+											'pricePerPerson' => 31200,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 28080,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 24960,
+												],
+											],
+										],
+									],
+								],
+								[
+									'id'                      => 'HIJ-456:2025-09-22:OEX-EXP:AA',
+									'name'                    => 'HIJ-456:2025-09-22:OEX-EXP:AA',
+									'mask'                    => 'AA',
+									'availabilityStatus'      => 'O',
+									'availabilityDescription' => 'Available',
+									'spacesAvailable'         => 1,
+									'seq'                     => '500',
+									'prices'                  => [
+										'USD' => [
+											'currencyCode'   => 'USD',
+											'pricePerPerson' => 19495,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 17546,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 15596,
+												],
+											],
+										],
+										'AUD' => [
+											'currencyCode'   => 'AUD',
+											'pricePerPerson' => 30700,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 27630,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 24560,
+												],
+											],
+										],
+										'CAD' => [
+											'currencyCode'   => 'CAD',
+											'pricePerPerson' => 26600,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 23940,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 21280,
+												],
+											],
+										],
+										'EUR' => [
+											'currencyCode'   => 'EUR',
+											'pricePerPerson' => 18200,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 16380,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 14560,
+												],
+											],
+										],
+										'GBP' => [
+											'currencyCode'   => 'GBP',
+											'pricePerPerson' => 15600,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 14040,
+												],
+												'20PROMO' => [
+													'promoPricePerPerson' => 12480,
+												],
+											],
+										],
+									],
+								],
+							],
+						],
+					],
+					'adventureOptions' => [
+						[
+							'id'              => 'HIJ-456:2025-09-22:KAYAK',
+							'spacesAvailable' => 6,
+							'serviceIds'      => [ 'KAYAK' ],
+							'price'           => [
+								'GBP' => [
+									'currencyCode'   => 'GBP',
+									'pricePerPerson' => 640,
+								],
+								'EUR' => [
+									'currencyCode'   => 'EUR',
+									'pricePerPerson' => 740,
+								],
+								'USD' => [
+									'currencyCode'   => 'USD',
+									'pricePerPerson' => 795,
+								],
+								'CAD' => [
+									'currencyCode'   => 'CAD',
+									'pricePerPerson' => 1090,
+								],
+								'AUD' => [
+									'currencyCode'   => 'AUD',
+									'pricePerPerson' => 1250,
+								],
+							],
+						],
+						[
+							'id'              => 'HIJ-456:2025-09-22:KAYEXP',
+							'spacesAvailable' => 17,
+							'serviceIds'      => [ 'KAYEXP', 'KAYEXP2' ],
+							'price'           => [
+								'GBP' => [
+									'currencyCode'   => 'GBP',
+									'pricePerPerson' => 160,
+								],
+								'EUR' => [
+									'currencyCode'   => 'EUR',
+									'pricePerPerson' => 190,
+								],
+								'USD' => [
+									'currencyCode'   => 'USD',
+									'pricePerPerson' => 195,
+								],
+								'CAD' => [
+									'currencyCode'   => 'CAD',
+									'pricePerPerson' => 270,
+								],
+								'AUD' => [
+									'currencyCode'   => 'AUD',
+									'pricePerPerson' => 310,
+								],
+							],
+						],
+					],
+					'promotions'       => [
+						[
+							'endDate'       => '2050-12-31T00:00:00',
+							'startDate'     => '2023-09-19T00:00:00',
+							'description'   =>
+							'Pay in full at time of booking & Save 10%',
+							'currencyCode'  => null,
+							'discountType'  => 'percentage_off',
+							'discountValue' => '0.1',
+							'promotionCode' => '10PIF',
+							'isPIF'         => true,
+						],
+						[
+							'endDate'       => '2050-12-31T00:00:00',
+							'startDate'     => '2023-09-28T00:00:00',
+							'description'   => 'Save 20%',
+							'currencyCode'  => null,
+							'discountType'  => 'percentage_off',
+							'discountValue' => '0.2',
+							'promotionCode' => '20PROMO',
+							'isPIF'         => false,
+						],
+					],
+				],
+			],
+		];
+	}
+
 	// Return the response.
 	return [
 		'body'     => wp_json_encode( $data ),

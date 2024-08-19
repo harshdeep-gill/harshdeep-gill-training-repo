@@ -26,6 +26,7 @@ function register_partials(): void {
 	// List of partials to register.
 	$partials = [
 		'BookDeparturesExpeditions' => 'book-departures-expeditions.php',
+		'BookDeparturesShips'       => 'book-departures-ships.php',
 	];
 
 	// Register partials.

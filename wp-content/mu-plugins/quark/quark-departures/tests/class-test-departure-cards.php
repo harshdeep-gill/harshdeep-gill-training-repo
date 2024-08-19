@@ -518,19 +518,20 @@ class Test_Departure_Cards extends Softrip_TestCase {
 			'update_post_term_cache' => false,
 			'fields'                 => 'ids',
 			'update_post_meta_cache' => false,
+			'posts_per_page'         => -1,
 		];
 
 		// Get Departure posts.
 		$all_departures = get_posts( $departure_query_args );
 
 		// assert fetched posts are 3.
-		$this->assertCount( 3, $all_departures );
+		$this->assertCount( 7, $all_departures );
 
 		// Get cards data.
 		$cards_data = get_cards_data( array_map( 'absint', $all_departures ) );
 
 		// Assert cards data.
-		$this->assertCount( 3, $cards_data );
+		$this->assertCount( 7, $cards_data );
 
 		// Get card data for departure post - 1.
 		$card_data = $cards_data[ $departure_post_1 ] ?? [];

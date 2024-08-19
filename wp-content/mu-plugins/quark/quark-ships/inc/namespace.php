@@ -176,6 +176,7 @@ function bust_post_cache( int $post_id = 0 ): void {
  *     post: WP_Post|null,
  *     permalink: string,
  *     post_meta: mixed[],
+ *     data: mixed[],
  *     post_taxonomies: mixed[],
  * }
  */
@@ -195,6 +196,7 @@ function get( int $post_id = 0 ): array {
 			'post'            => $cached_value['post'],
 			'permalink'       => $cached_value['permalink'] ?? '',
 			'post_meta'       => $cached_value['post_meta'] ?? [],
+			'data'            => $cached_value['data'] ?? [],
 			'post_taxonomies' => $cached_value['post_taxonomies'] ?? [],
 		];
 	}
@@ -208,15 +210,20 @@ function get( int $post_id = 0 ): array {
 			'post'            => null,
 			'permalink'       => '',
 			'post_meta'       => [],
+			'data'            => [],
 			'post_taxonomies' => [],
 		];
 	}
+
+	// Get Ship block attrs.
+	$data = parse_block_attributes( $post );
 
 	// Build data.
 	$data = [
 		'post'            => $post,
 		'permalink'       => strval( get_permalink( $post ) ? : '' ),
 		'post_meta'       => [],
+		'data'            => $data,
 		'post_taxonomies' => [],
 	];
 
@@ -359,6 +366,25 @@ function bust_ship_code_lookup_cache(): void {
  *    permalink: string,
  *    description: string,
  *    related_decks: int[]|array{},
+ *    specifications: array{
+ *        cruising_speed?: string,
+ *        guests?: string,
+ *        ice_class?: string,
+ *        length?: string,
+ *        life_boats?: string,
+ *        registration?: string,
+ *        staff_and_crew?: string,
+ *        draft?: string,
+ *        guest_ratio?: string,
+ *        stabilizers?: string,
+ *        propulsion?: string,
+ *        zodiacs?: string,
+ *        voltage?: string,
+ *        breadth?: string,
+ *        gross_tonnage?: string,
+ *        year_built?: string,
+ *        year_refurbished?: string,
+ *    }
  * }
  */
 function get_ship_data( int $ship_id = 0 ): array {
@@ -374,21 +400,108 @@ function get_ship_data( int $ship_id = 0 ): array {
 		return [];
 	}
 
-	// Prepare deck data.
-	$decks_ids = [];
+	// Prepare ship meta fields.
+	$decks_ids           = [];
+	$ship_specifications = [];
 
 	// Get Decks associated with the ship.
 	if ( ! empty( $ship_meta['related_decks'] ) && is_array( $ship_meta['related_decks'] ) ) {
 		$decks_ids = array_map( 'absint', $ship_meta['related_decks'] );
 	}
 
+	// Set ship specifications.
+	if ( ! empty( $ship_meta['cruising_speed'] ) ) {
+		$ship_specifications['cruising_speed'] = strval( $ship_meta['cruising_speed'] );
+	}
+
+	// Check for guest count.
+	if ( ! empty( $ship_meta['guests'] ) ) {
+		$ship_specifications['guests'] = strval( $ship_meta['guests'] );
+	}
+
+	// Check for ice class.
+	if ( ! empty( $ship_meta['ice_class'] ) ) {
+		$ship_specifications['ice_class'] = strval( $ship_meta['ice_class'] );
+	}
+
+	// Check for length.
+	if ( ! empty( $ship_meta['length'] ) ) {
+		$ship_specifications['length'] = strval( $ship_meta['length'] );
+	}
+
+	// Check for lifeboats.
+	if ( ! empty( $ship_meta['lifeboats'] ) ) {
+		$ship_specifications['life_boats'] = strval( $ship_meta['lifeboats'] );
+	}
+
+	// Check for other specifications.
+	if ( ! empty( $ship_meta['registration'] ) ) {
+		$ship_specifications['registration'] = strval( $ship_meta['registration'] );
+	}
+
+	// Check for Staff and Crew.
+	if ( ! empty( $ship_meta['staff_and_crew'] ) ) {
+		$ship_specifications['staff_and_crew'] = strval( $ship_meta['staff_and_crew'] );
+	}
+
+	// Check for draft.
+	if ( ! empty( $ship_meta['draft'] ) ) {
+		$ship_specifications['draft'] = strval( $ship_meta['draft'] );
+	}
+
+	// Check for guest ratio.
+	if ( ! empty( $ship_meta['guest_ratio'] ) ) {
+		$ship_specifications['guest_ratio'] = strval( $ship_meta['guest_ratio'] );
+	}
+
+	// Check for stabilizers.
+	if ( ! empty( $ship_meta['stabilizers'] ) ) {
+		$ship_specifications['stabilizers'] = strval( $ship_meta['stabilizers'] );
+	}
+
+	// Check for propulsion.
+	if ( ! empty( $ship_meta['propulsion'] ) ) {
+		$ship_specifications['propulsion'] = strval( $ship_meta['propulsion'] );
+	}
+
+	// Check for zodiacs.
+	if ( ! empty( $ship_meta['zodiacs'] ) ) {
+		$ship_specifications['zodiacs'] = strval( $ship_meta['zodiacs'] );
+	}
+
+	// Check for voltage.
+	if ( ! empty( $ship_meta['voltage'] ) ) {
+		$ship_specifications['voltage'] = strval( $ship_meta['voltage'] );
+	}
+
+	// Check for breadth.
+	if ( ! empty( $ship_meta['breadth'] ) ) {
+		$ship_specifications['breadth'] = strval( $ship_meta['breadth'] );
+	}
+
+	// Check for gross tonnage.
+	if ( ! empty( $ship_meta['gross_tonnage'] ) ) {
+		$ship_specifications['gross_tonnage'] = strval( $ship_meta['gross_tonnage'] );
+	}
+
+	// Check for year built.
+	if ( ! empty( $ship_meta['year_built'] ) ) {
+		$ship_specifications['year_built'] = strval( $ship_meta['year_built'] );
+	}
+
+	// Check for year refurbished.
+	if ( ! empty( $ship_meta['year_refurbished'] ) ) {
+		$ship_specifications['year_refurbished'] = strval( $ship_meta['year_refurbished'] );
+	}
+
 	// Return ship data.
 	return [
-		'name'          => $ship_post->post_name,
-		'title'         => $ship_post->post_title,
-		'permalink'     => $ship['permalink'],
-		'description'   => strval( apply_filters( 'the_content', $ship_post->post_content ) ),
-		'related_decks' => $decks_ids,
+		'name'           => $ship_post->post_name,
+		'title'          => $ship_post->post_title,
+		'permalink'      => $ship['permalink'],
+		'description'    => $ship_post->post_excerpt,
+		'related_decks'  => $decks_ids,
+		'specifications' => $ship_specifications,
 	];
 }
 
@@ -491,4 +604,137 @@ function get_cabins_and_decks( int $ship_id = 0 ): array {
 
 	// Return data.
 	return $results;
+}
+
+/**
+ * Parse the collage block attributes.
+ *
+ * @param WP_Post|null $post The post object.
+ *
+ * @return array{}|array{
+ *     collage: array{} | array{
+ *       media_type: string,
+ *       size: string,
+ *       caption: string,
+ *       video_url: string,
+ *       image ?: array{
+ *         int: array{
+ *           id: int,
+ *           size: string,
+ *           src: string,
+ *           width: int,
+ *           height: int,
+ *           alt: string,
+ *           title: string,
+ *           caption: string,
+ *        },
+ *      },
+ *    },
+ *    vessel_features: string[],
+ *    ship_amenities: string[],
+ * }
+ */
+function parse_block_attributes( WP_Post $post = null ): array {
+	// Check if the post valid WP_Post.
+	if ( empty( $post ) || ! $post instanceof WP_Post ) {
+		return [];
+	}
+
+	// Parse blocks.
+	$blocks = parse_blocks( $post->post_content );
+
+	// Initialize collage attributes.
+	$collage_attrs        = [];
+	$ship_vessel_features = [];
+	$ship_amenities       = [];
+
+	// Loop through blocks to find the quark/collage block.
+	foreach ( $blocks as $block ) {
+		// Check if the block is quark/collage.
+		if ( 'quark/collage' === $block['blockName'] ) {
+			// Loop through inner blocks (quark/collage-media-item).
+			if ( isset( $block['innerBlocks'] ) && is_array( $block['innerBlocks'] ) ) {
+				// Loop through inner blocks to find the quark/collage-media-item block.
+				foreach ( $block['innerBlocks'] as $inner_block ) {
+					// Initialize media item attributes.
+					$media_item_attrs = [];
+
+					// Check if the block is quark/collage-media-item.
+					if ( 'quark/collage-media-item' === $inner_block['blockName'] ) {
+						// Check attributes are available.
+						if ( empty( $inner_block['attrs'] ) && ! is_array( $inner_block['attrs'] ) ) {
+							continue;
+						}
+
+						// Retrieve attributes.
+						$media_item_attrs['media_type'] = ! empty( $inner_block['attrs']['mediaType'] ) ? strval( $inner_block['attrs']['mediaType'] ) : 'image';
+						$media_item_attrs['size']       = ! empty( $inner_block['attrs']['size'] ) ? strval( $inner_block['attrs']['size'] ) : 'small';
+						$media_item_attrs['caption']    = ! empty( $inner_block['attrs']['caption'] ) ? strval( $inner_block['attrs']['caption'] ) : '';
+						$media_item_attrs['video_url']  = ! empty( $inner_block['attrs']['videoUrl'] ) ? strval( $inner_block['attrs']['videoUrl'] ) : '';
+						$image                          = $inner_block['attrs']['image'] ?? [];
+
+						// Check if image is available.
+						if ( ! empty( $image ) && is_array( $image ) ) {
+							$media_item_attrs['image'] = [
+								'id'      => ! empty( $image['id'] ) ? absint( $image['id'] ) : 0,
+								'size'    => ! empty( $image['size'] ) ? strval( $image['size'] ) : '',
+								'src'     => ! empty( $image['src'] ) ? strval( $image['src'] ) : '',
+								'width'   => ! empty( $image['width'] ) ? strval( $image['width'] ) : '',
+								'height'  => ! empty( $image['height'] ) ? strval( $image['height'] ) : '',
+								'alt'     => ! empty( $image['alt'] ) ? strval( $image['alt'] ) : '',
+								'title'   => ! empty( $image['title'] ) ? strval( $image['title'] ) : '',
+								'caption' => ! empty( $image['caption'] ) ? strval( $image['caption'] ) : '',
+							];
+						}
+					}
+
+					// Add media item attributes to collage attributes.
+					$collage_attrs[] = $media_item_attrs;
+				}
+			}
+		}
+
+		// Check if the block is quark/ship-vessel-features.
+		if ( 'quark/ship-vessel-features' === $block['blockName'] ) {
+			// Loop through inner blocks (quark/ship-vessel-features-card).
+			if ( isset( $block['innerBlocks'] ) && is_array( $block['innerBlocks'] ) ) {
+				// Loop through inner blocks to find the quark/ship-vessel-features-card block.
+				foreach ( $block['innerBlocks'] as $inner_block ) {
+					// Check if the block is quark/ship-vessel-features-card.
+					if ( 'quark/ship-vessel-features-card' === $inner_block['blockName'] ) {
+						// Check attributes are available.
+						if ( isset( $inner_block['attrs'] ) && is_array( $inner_block['attrs'] ) && ! empty( $inner_block['attrs']['title'] ) ) {
+							// Retrieve attributes.
+							$ship_vessel_features[] = $inner_block['attrs']['title'];
+						}
+					}
+				}
+			}
+		}
+
+		// Check if the block is quark/ship-features-amenities.
+		if ( 'quark/ship-features-amenities' === $block['blockName'] ) {
+			// Loop through inner blocks (quark/ship-features-amenities-card).
+			if ( isset( $block['innerBlocks'] ) && is_array( $block['innerBlocks'] ) ) {
+				// Loop through inner blocks to find the quark/ship-features-amenities-card block.
+				foreach ( $block['innerBlocks'] as $inner_block ) {
+					// Check if the block is quark/ship-features-amenities-card.
+					if ( 'quark/ship-features-amenities-card' === $inner_block['blockName'] ) {
+						// Check attributes are available.
+						if ( isset( $inner_block['attrs'] ) && is_array( $inner_block['attrs'] ) && ! empty( $inner_block['attrs']['title'] ) ) {
+							// Retrieve attributes.
+							$ship_amenities[] = $inner_block['attrs']['title'];
+						}
+					}
+				}
+			}
+		}
+	}
+
+	// Return block attributes.
+	return [
+		'collage'         => $collage_attrs,
+		'vessel_features' => $ship_vessel_features,
+		'ship_amenities'  => $ship_amenities,
+	];
 }

@@ -83,6 +83,26 @@ function update_adventure_options( array $raw_adventure_options = [], int $depar
 	// Initialize adventure option term ids.
 	$adventure_option_term_ids = [];
 
+	// Existing adventure options by departure post ID.
+	$existing_adventure_options = get_adventure_option_by_departure_post_id( $departure_post_id, true );
+
+	// Map the existing adventure options to Softrip option ID.
+	$existing_adventure_options_by_softrip_option_id = [];
+
+	// Loop through the existing adventure options.
+	foreach ( $existing_adventure_options as $existing_adventure_option ) {
+		// Skip if empty.
+		if ( empty( $existing_adventure_option['softrip_option_id'] ) || empty( $existing_adventure_option['id'] ) ) {
+			continue;
+		}
+
+		// Add to the map.
+		$existing_adventure_options_by_softrip_option_id[ $existing_adventure_option['softrip_option_id'] ] = absint( $existing_adventure_option['id'] );
+	}
+
+	// Initialize updated option ids.
+	$updated_option_ids = [];
+
 	// What to do with empty raw adventure options?
 	foreach ( $raw_adventure_options as $raw_adventure_option ) {
 		// Validate the raw adventure option.
@@ -114,11 +134,14 @@ function update_adventure_options( array $raw_adventure_options = [], int $depar
 
 		// If existing, update the adventure option, else insert.
 		if ( ! empty( $existing_adventure_option['id'] ) ) {
-			$updated_id = $wpdb->update(
+			$wpdb->update(
 				$table_name,
 				$formatted_adventure_option,
 				[ 'id' => $existing_adventure_option['id'] ]
 			);
+
+			// Get the updated ID.
+			$updated_id = $existing_adventure_option['id'];
 		} else {
 			$wpdb->insert(
 				$table_name,
@@ -134,9 +157,36 @@ function update_adventure_options( array $raw_adventure_options = [], int $depar
 			continue;
 		}
 
+		// Add to the updated option IDs.
+		$updated_option_ids[] = $formatted_adventure_option['softrip_option_id'];
+
 		// Bust caches.
-		wp_cache_delete( CACHE_KEY_PREFIX . '_' . $formatted_adventure_option['softrip_option_id'], CACHE_GROUP );
-		wp_cache_delete( CACHE_KEY_PREFIX . '_' . $departure_post_id, CACHE_GROUP );
+		wp_cache_delete( CACHE_KEY_PREFIX . '_softrip_option_id_' . $formatted_adventure_option['softrip_option_id'], CACHE_GROUP );
+		wp_cache_delete( CACHE_KEY_PREFIX . '_departure_post_id_' . $departure_post_id, CACHE_GROUP );
+	}
+
+	// Delete the non-updated adventure options - redundant.
+	$non_updated_option_ids = array_diff( array_keys( $existing_adventure_options_by_softrip_option_id ), $updated_option_ids );
+
+	// Loop through the non-updated option IDs and remove them.
+	foreach ( $non_updated_option_ids as $non_updated_option_id ) {
+		// Get the ID.
+		$non_updated_option_id = absint( $existing_adventure_options_by_softrip_option_id[ $non_updated_option_id ] );
+
+		// Skip if empty.
+		if ( empty( $non_updated_option_id ) ) {
+			continue;
+		}
+
+		// Delete the non-updated option.
+		$wpdb->delete(
+			$table_name,
+			[ 'id' => $non_updated_option_id ]
+		);
+
+		// Bust caches.
+		wp_cache_delete( CACHE_KEY_PREFIX . '_softrip_option_id_' . $non_updated_option_id, CACHE_GROUP );
+		wp_cache_delete( CACHE_KEY_PREFIX . '_departure_post_id_' . $departure_post_id, CACHE_GROUP );
 	}
 
 	// Remove duplicates.
@@ -171,7 +221,7 @@ function update_adventure_options( array $raw_adventure_options = [], int $depar
  */
 function format_adventure_option_data( array $raw_adventure_option = [], int $departure_post_id = 0 ): array {
 	// Bail out if empty departure post ID.
-	if ( empty( $departure_post_id ) ) {
+	if ( empty( $departure_post_id ) || empty( $raw_adventure_option ) ) {
 		return [];
 	}
 
@@ -193,7 +243,7 @@ function format_adventure_option_data( array $raw_adventure_option = [], int $de
 
 	// Initialize formatted data.
 	$formatted_data = [
-		'softrip_option_id'        => $raw_adventure_option['id'],
+		'softrip_option_id'        => sanitize_text_field( strval( $raw_adventure_option['id'] ) ),
 		'departure_post_id'        => $departure_post_id,
 		'softrip_package_code'     => '',
 		'spaces_available'         => absint( $raw_adventure_option['spacesAvailable'] ),
@@ -210,14 +260,15 @@ function format_adventure_option_data( array $raw_adventure_option = [], int $de
 	$softrip_package_code = get_post_meta( $departure_post_id, 'softrip_package_code', true );
 
 	// Add package code to formatted data.
-	if ( ! empty( $softrip_package_code ) && is_string( $softrip_package_code ) ) {
-		$formatted_data['softrip_package_code'] = $softrip_package_code;
+	if ( ! empty( $softrip_package_code ) ) {
+		$formatted_data['softrip_package_code'] = strval( $softrip_package_code );
 	}
 
 	// Add service ids and term id to formatted data.
 	if ( ! empty( $raw_adventure_option['serviceIds'] ) && is_array( $raw_adventure_option['serviceIds'] ) ) {
-		// Initialize service IDs.
-		$service_ids = array_map( 'sanitize_text_field', $raw_adventure_option['serviceIds'] );
+		// Initialize service IDs by sanitizing.
+		$service_ids = array_map( 'strval', $raw_adventure_option['serviceIds'] );
+		$service_ids = array_map( 'sanitize_text_field', $service_ids );
 
 		// Add adventure option term id.
 		foreach ( $service_ids as $service_id ) {
@@ -297,7 +348,7 @@ function get_adventure_option_taxonomy_term_by_service_id( string $service_id = 
  * @param integer $departure_post_id The departure post ID.
  * @param boolean $force            Whether to bypass the cache.
  *
- * @return array{}|array{
+ * @return array{}|array<int,
  *   array{
  *     id: int,
  *     softrip_option_id: string,
@@ -312,7 +363,7 @@ function get_adventure_option_taxonomy_term_by_service_id( string $service_id = 
  *     price_per_person_gbp: int,
  *     price_per_person_eur: int
  *   }
- * }
+ * >
  */
 function get_adventure_option_by_departure_post_id( int $departure_post_id = 0, bool $force = false ): array {
 	// Validate departure post ID.
@@ -321,7 +372,7 @@ function get_adventure_option_by_departure_post_id( int $departure_post_id = 0, 
 	}
 
 	// Cache key.
-	$cache_key = CACHE_KEY_PREFIX . "_$departure_post_id";
+	$cache_key = CACHE_KEY_PREFIX . "_departure_post_id_$departure_post_id";
 
 	// If not direct, check for cached version.
 	if ( empty( $force ) ) {
@@ -404,7 +455,7 @@ function get_adventure_option_by_softrip_option_id( string $softrip_option_id = 
 	}
 
 	// Cache key.
-	$cache_key = CACHE_KEY_PREFIX . "_$softrip_option_id";
+	$cache_key = CACHE_KEY_PREFIX . "_softrip_option_id_$softrip_option_id";
 
 	// If not direct, check for cached version.
 	if ( empty( $force ) ) {
@@ -489,19 +540,12 @@ function format_row_data_from_db( array $row_data = [] ): array {
 		'softrip_option_id',
 		'departure_post_id',
 		'softrip_package_code',
-		'service_ids',
-		'spaces_available',
 		'adventure_option_term_id',
-		'price_per_person_usd',
-		'price_per_person_cad',
-		'price_per_person_aud',
-		'price_per_person_gbp',
-		'price_per_person_eur',
 	];
 
 	// Check for required fields.
 	foreach ( $required_fields as $required_field ) {
-		if ( ! array_key_exists( $required_field, $row_data ) ) {
+		if ( empty( $row_data[ $required_field ] ) ) {
 			return [];
 		}
 	}
@@ -509,17 +553,17 @@ function format_row_data_from_db( array $row_data = [] ): array {
 	// Initialize formatted data.
 	$formatted_data = [
 		'id'                       => absint( $row_data['id'] ),
-		'softrip_option_id'        => strval( $row_data['softrip_option_id'] ),
+		'softrip_option_id'        => sanitize_text_field( strval( $row_data['softrip_option_id'] ) ),
 		'departure_post_id'        => absint( $row_data['departure_post_id'] ),
-		'softrip_package_code'     => strval( $row_data['softrip_package_code'] ),
-		'service_ids'              => strval( $row_data['service_ids'] ),
-		'spaces_available'         => absint( $row_data['spaces_available'] ),
+		'softrip_package_code'     => sanitize_text_field( strval( $row_data['softrip_package_code'] ) ),
+		'service_ids'              => sanitize_text_field( strval( $row_data['service_ids'] ?? '' ) ),
+		'spaces_available'         => absint( $row_data['spaces_available'] ?? 0 ),
 		'adventure_option_term_id' => absint( $row_data['adventure_option_term_id'] ),
-		'price_per_person_usd'     => absint( $row_data['price_per_person_usd'] ),
-		'price_per_person_cad'     => absint( $row_data['price_per_person_cad'] ),
-		'price_per_person_aud'     => absint( $row_data['price_per_person_aud'] ),
-		'price_per_person_gbp'     => absint( $row_data['price_per_person_gbp'] ),
-		'price_per_person_eur'     => absint( $row_data['price_per_person_eur'] ),
+		'price_per_person_usd'     => absint( $row_data['price_per_person_usd'] ?? 0 ),
+		'price_per_person_cad'     => absint( $row_data['price_per_person_cad'] ?? 0 ),
+		'price_per_person_aud'     => absint( $row_data['price_per_person_aud'] ?? 0 ),
+		'price_per_person_gbp'     => absint( $row_data['price_per_person_gbp'] ?? 0 ),
+		'price_per_person_eur'     => absint( $row_data['price_per_person_eur'] ?? 0 ),
 	];
 
 	// Return the formatted data.
