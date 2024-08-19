@@ -17,14 +17,16 @@ if ( empty( $items ) || ! is_array( $items ) ) {
 			</tr>
 		</thead>
 		<tbody class="travelopia-table__row-container">
-		@foreach ( $items as $item )
-			<tr class="travelopia-table__row">
-				<td class="travelopia-table__column">
-					<strong>{{ $item['cabin_name'] ?? '' }}</strong>
-				</td>
-				<td class="travelopia-table__column">{!! implode( '<br>', $item['ship_deck'] ?? [] ) !!}</td>
-			</tr>
-		@endforeach
+			@foreach ( $items as $item )
+				<tr class="travelopia-table__row">
+					<td class="travelopia-table__column">
+						<strong>{{ $item['cabin_name'] ?? '' }}</strong>
+					</td>
+					<td class="travelopia-table__column">
+						<x-content :content="implode( '<br>', $item['ship_deck'] ?? [] )" />
+					</td>
+				</tr>
+			@endforeach
 		</tbody>
 
 	</table>
