@@ -82,12 +82,12 @@ class Test_Ships extends WP_UnitTestCase {
 		// Assert ship data.
 		$this->assertEquals(
 			[
-				'name'           => $ship_post->post_name,
-				'title'          => $ship_post->post_title,
-				'permalink'      => get_permalink( $ship_post->ID ),
-				'description'    => $ship_post->post_excerpt,
-				'related_decks'  => [ $deck_post_1->ID, $deck_post_2->ID ],
-				'specifications' => [
+				'name'            => $ship_post->post_name,
+				'title'           => $ship_post->post_title,
+				'permalink'       => get_permalink( $ship_post->ID ),
+				'description'     => $ship_post->post_excerpt,
+				'related_decks'   => [ $deck_post_1->ID, $deck_post_2->ID ],
+				'specifications'  => [
 					'cruising_speed'   => '10',
 					'guests'           => '100',
 					'ice_class'        => '1A',
@@ -96,6 +96,9 @@ class Test_Ships extends WP_UnitTestCase {
 					'staff_and_crew'   => '50',
 					'year_refurbished' => '2020',
 				],
+				'collage_images'  => [],
+				'vessel_features' => [],
+				'ship_amenities'  => [],
 			],
 			get_ship_data( $ship_post->ID )
 		);
@@ -376,6 +379,8 @@ class Test_Ships extends WP_UnitTestCase {
 							'media_type' => 'image',
 							'size'       => 'small',
 							'caption'    => '',
+							'title'      => 'ABC',
+							'image_id'   => 1324,
 							'video_url'  => '',
 							'image'      => [
 								'id'      => 1324,
@@ -392,6 +397,8 @@ class Test_Ships extends WP_UnitTestCase {
 							'media_type' => 'image',
 							'size'       => 'large',
 							'caption'    => '',
+							'title'      => '',
+							'image_id'   => 5421,
 							'video_url'  => '',
 							'image'      => [
 								'id'      => 5421,

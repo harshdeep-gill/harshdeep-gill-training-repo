@@ -384,7 +384,21 @@ function bust_ship_code_lookup_cache(): void {
  *        gross_tonnage?: string,
  *        year_built?: string,
  *        year_refurbished?: string,
- *    }
+ *    },
+ *    collage_images: array{}|array{
+ *        int: array{
+ *            id: int,
+ *            size: string,
+ *            src: string,
+ *            width: int,
+ *            height: int,
+ *            alt: string,
+ *            title: string,
+ *            caption: string,
+ *        },
+ *    },
+ *    vessel_features: string[],
+ *    ship_amenities: string[],
  * }
  */
 function get_ship_data( int $ship_id = 0 ): array {
@@ -401,8 +415,26 @@ function get_ship_data( int $ship_id = 0 ): array {
 	}
 
 	// Prepare ship meta fields.
-	$decks_ids           = [];
-	$ship_specifications = [];
+	$decks_ids            = [];
+	$ship_specifications  = [];
+	$ship_collage_images  = [];
+	$ship_vessel_features = [];
+	$ship_amenities       = [];
+
+	// Get Ship collage images.
+	if ( ! empty( $ship['data']['collage'] ) && is_array( $ship['data']['collage'] ) ) {
+		$ship_collage_images = $ship['data']['collage'];
+	}
+
+	// Get Ship vessel features.
+	if ( ! empty( $ship['data']['vessel_features'] ) && is_array( $ship['data']['vessel_features'] ) ) {
+		$ship_vessel_features = $ship['data']['vessel_features'];
+	}
+
+	// Get Ship amenities.
+	if ( ! empty( $ship['data']['ship_amenities'] ) && is_array( $ship['data']['ship_amenities'] ) ) {
+		$ship_amenities = $ship['data']['ship_amenities'];
+	}
 
 	// Get Decks associated with the ship.
 	if ( ! empty( $ship_meta['related_decks'] ) && is_array( $ship_meta['related_decks'] ) ) {
@@ -496,12 +528,15 @@ function get_ship_data( int $ship_id = 0 ): array {
 
 	// Return ship data.
 	return [
-		'name'           => $ship_post->post_name,
-		'title'          => $ship_post->post_title,
-		'permalink'      => $ship['permalink'],
-		'description'    => $ship_post->post_excerpt,
-		'related_decks'  => $decks_ids,
-		'specifications' => $ship_specifications,
+		'name'            => $ship_post->post_name,
+		'title'           => $ship_post->post_title,
+		'permalink'       => $ship['permalink'],
+		'description'     => $ship_post->post_excerpt,
+		'related_decks'   => $decks_ids,
+		'specifications'  => $ship_specifications,
+		'collage_images'  => $ship_collage_images,
+		'vessel_features' => $ship_vessel_features,
+		'ship_amenities'  => $ship_amenities,
 	];
 }
 
@@ -616,7 +651,9 @@ function get_cabins_and_decks( int $ship_id = 0 ): array {
  *       media_type: string,
  *       size: string,
  *       caption: string,
+ *       title: string,
  *       video_url: string,
+ *       image_id: int,
  *       image ?: array{
  *         int: array{
  *           id: int,
@@ -642,6 +679,14 @@ function parse_block_attributes( WP_Post $post = null ): array {
 
 	// Parse blocks.
 	$blocks = parse_blocks( $post->post_content );
+
+	// Skip if we don't have any blocks.
+	if ( empty( $blocks ) ) {
+		return [];
+	}
+
+	// Flatten blocks.
+	$blocks = _flatten_blocks( $blocks );
 
 	// Initialize collage attributes.
 	$collage_attrs        = [];
@@ -675,6 +720,10 @@ function parse_block_attributes( WP_Post $post = null ): array {
 
 						// Check if image is available.
 						if ( ! empty( $image ) && is_array( $image ) ) {
+							$media_item_attrs['image_id'] = ! empty( $image['id'] ) ? absint( $image['id'] ) : 0;
+							$media_item_attrs['title']    = ! empty( $image['title'] ) ? strval( $image['title'] ) : '';
+
+							// Add image attributes.
 							$media_item_attrs['image'] = [
 								'id'      => ! empty( $image['id'] ) ? absint( $image['id'] ) : 0,
 								'size'    => ! empty( $image['size'] ) ? strval( $image['size'] ) : '',

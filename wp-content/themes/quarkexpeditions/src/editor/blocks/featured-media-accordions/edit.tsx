@@ -53,10 +53,15 @@ export default function Edit( { className, clientId }: BlockEditAttributes ): JS
 			const childBlocks = select( blockEditorStore ).getBlocks( clientId );
 
 			// Find the child block that is selected.
-			const childBlock = childBlocks.find( ( block: any ) => {
+			let childBlock = childBlocks.find( ( block: any ) => {
 				// Check if the block is selected or has an inner block selected.
 				return select( blockEditorStore ).isBlockSelected( block.clientId ) || select( blockEditorStore ).hasSelectedInnerBlock( block.clientId, true );
 			} );
+
+			// If no child block is selected, select the first child block image.
+			if ( ! childBlock && childBlocks.length > 0 ) {
+				childBlock = childBlocks[ 0 ];
+			}
 
 			// Return the image attribute if the child block has an image.
 			return childBlock && 0 < Object.keys( childBlock.attributes.image ).length ? childBlock.attributes.image : null;
