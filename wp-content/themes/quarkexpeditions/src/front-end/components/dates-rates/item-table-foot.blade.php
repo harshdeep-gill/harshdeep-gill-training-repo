@@ -4,6 +4,6 @@
 	}
 @endphp
 
-<thead class="dates-rates__item-table-head">
+<tfoot class="dates-rates__item-table-foot">
 	{!! $slot !!}
-</thead>
+</tfoot>

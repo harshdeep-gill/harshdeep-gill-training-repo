@@ -1,5 +1,6 @@
 @props( [
-	'rowspan' => '1',
+	'rowspan' => '',
+	'colspan' => '',
 ] )
 
 @php
@@ -8,6 +9,14 @@
 	}
 @endphp
 
-<td class="dates-rates__item-table-column" rowspan="{{ $rowspan }}">
+<td
+	class="dates-rates__item-table-column"
+	@if ( ! empty( $rowspan ) )
+		rowspan="{{ $rowspan }}"
+	@endif
+	@if ( ! empty( $colspan ) )
+		colspan="{{ $colspan }}"
+	@endif
+>
 	{!! $slot !!}
 </td>

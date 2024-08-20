@@ -5215,16 +5215,18 @@
 					<x-dates-rates.item-table title="Cabin Categories">
 						{{-- Table Head --}}
 						<x-dates-rates.item-table-head>
-							<x-dates-rates.item-table-heading>Expedition</x-dates-rates.item-table-heading>
-							<x-dates-rates.item-table-heading>Promo Offers</x-dates-rates.item-table-heading>
-							<x-dates-rates.item-table-heading>Triple</x-dates-rates.item-table-heading>
-							<x-dates-rates.item-table-heading>Lower Deck Twin</x-dates-rates.item-table-heading>
-							<x-dates-rates.item-table-heading>Main Deck Ttwin Porthole</x-dates-rates.item-table-heading>
-							<x-dates-rates.item-table-heading>Main Deck Twin Window</x-dates-rates.item-table-heading>
-							<x-dates-rates.item-table-heading>Superior</x-dates-rates.item-table-heading>
-							<x-dates-rates.item-table-heading>Deluxe</x-dates-rates.item-table-heading>
-							<x-dates-rates.item-table-heading>Suite</x-dates-rates.item-table-heading>
-							<x-dates-rates.item-table-heading>Owner's Suite</x-dates-rates.item-table-heading>
+							<x-dates-rates.item-table-row>
+								<x-dates-rates.item-table-heading>Expedition</x-dates-rates.item-table-heading>
+								<x-dates-rates.item-table-heading>Promo Offers</x-dates-rates.item-table-heading>
+								<x-dates-rates.item-table-heading>Triple</x-dates-rates.item-table-heading>
+								<x-dates-rates.item-table-heading>Lower Deck Twin</x-dates-rates.item-table-heading>
+								<x-dates-rates.item-table-heading>Main Deck Ttwin Porthole</x-dates-rates.item-table-heading>
+								<x-dates-rates.item-table-heading>Main Deck Twin Window</x-dates-rates.item-table-heading>
+								<x-dates-rates.item-table-heading>Superior</x-dates-rates.item-table-heading>
+								<x-dates-rates.item-table-heading>Deluxe</x-dates-rates.item-table-heading>
+								<x-dates-rates.item-table-heading>Suite</x-dates-rates.item-table-heading>
+								<x-dates-rates.item-table-heading>Owner's Suite</x-dates-rates.item-table-heading>
+							</x-dates-rates.item-table-row>
 						</x-dates-rates.item-table-head>
 						{{-- Row 1 --}}
 						<x-dates-rates.item-table-body>
@@ -5328,59 +5330,35 @@
 									$22,995 USD
 								</x-dates-rates.item-table-column>
 							</x-dates-rates.item-table-row>
+						</x-dates-rates.item-table-body>
 
+						<x-dates-rates.item-table-foot>
 							<x-dates-rates.item-table-row>
-								<x-dates-rates.item-table-column>
-									Brochure Price
-								</x-dates-rates.item-table-column>
-								<x-dates-rates.item-table-column>
-									$11,995 USD
-								</x-dates-rates.item-table-column>
-								<x-dates-rates.item-table-column>
-									$13,995 USD
-								</x-dates-rates.item-table-column>
-								<x-dates-rates.item-table-column>
-									$14,495 USD
-								</x-dates-rates.item-table-column>
-								<x-dates-rates.item-table-column>
-									$15,995 USD
-								</x-dates-rates.item-table-column>
-								<x-dates-rates.item-table-column>
-									$17,495 USD
-								</x-dates-rates.item-table-column>
-								<x-dates-rates.item-table-column>
-									$17,495 USD
-								</x-dates-rates.item-table-column>
-								<x-dates-rates.item-table-column>
-									$19,995 USD
-								</x-dates-rates.item-table-column>
-								
-								<x-dates-rates.item-table-column>
-									$22,995 USD
+								<x-dates-rates.item-table-column colspan="10">
+									<x-dates-rates.adventure-options>
+										<x-dates-rates.adventure-options-column title="Included Adventure Options">
+											<x-dates-rates.adventure-options-item name="Walking/Hiking" icon="hiking" />
+											<x-dates-rates.adventure-options-item name="Polar Plunge" icon="polar-plunge" />
+										</x-dates-rates.adventure-options-column>
+
+										<x-dates-rates.adventure-options-column title="Included Adventure Options">
+											<x-dates-rates.adventure-options-item name="Padding Excursion" icon="paddling">
+												<x-dates-rates.adventure-options-item-price text="$ 995 USD" />
+											</x-dates-rates.adventure-options-item>
+											<x-dates-rates.adventure-options-item name="Sea Kayaking" icon="kayaking">
+												<x-dates-rates.adventure-options-item-price text="$ 995 USD" />
+											</x-dates-rates.adventure-options-item>
+											<x-dates-rates.adventure-options-item name="Polar Plunge" icon="polar-plunge">
+												<x-dates-rates.adventure-options-item-price text="$ 995 USD" />
+											</x-dates-rates.adventure-options-item>
+										</x-dates-rates.adventure-options-column>
+									</x-dates-rates.adventure-options>
 								</x-dates-rates.item-table-column>
 							</x-dates-rates.item-table-row>
-							{{-- Row 2 --}}
-							{{-- <x-dates-rates.item-table-row>
-								<x-dates-rates.adventure-options title="Included Adventure Options">
-									<x-dates-rates.adventure-options-item name="Walking/Hiking" icon="hiking" />
-									<x-dates-rates.adventure-options-item name="Polar Plunge" icon="polar-plunge" />
-								</x-dates-rates.adventure-options>
-								<x-dates-rates.adventure-options title="Included Adventure Options">
-									<x-dates-rates.adventure-options-item name="Padding Excursion" icon="paddling">
-										<x-dates-rates.adventure-options-item-price text="$ 995 USD" />
-									</x-dates-rates.adventure-options-item>
-									<x-dates-rates.adventure-options-item name="Sea Kayaking" icon="kayaking">
-										<x-dates-rates.adventure-options-item-price text="$ 995 USD" />
-									</x-dates-rates.adventure-options-item>
-									<x-dates-rates.adventure-options-item name="Polar Plunge" icon="polar-plunge">
-										<x-dates-rates.adventure-options-item-price text="$ 995 USD" />
-									</x-dates-rates.adventure-options-item>
-								</x-dates-rates.adventure-options>
-							</x-dates-rates.item-table-row> --}}
-
-						</x-dates-rates.item-table-body>
+						</x-dates-rates.item-table-foot>
 					</x-dates-rates.item-table>
-					{{-- <x-dates-rates.info text="Prices are shown per person" /> --}}
+
+					<x-dates-rates.info text="Prices are shown per person" />
 				</x-dates-rates.item>
 			</x-section>
 		</x-dates-rates>

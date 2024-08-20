@@ -9,6 +9,10 @@
 	.travelopia-table {
 		display: block;
 		overflow-x: auto;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
 	}
 
 	&__table {
@@ -41,5 +45,30 @@
 		padding: var(--typography-spacing);
 		border: 1px solid var(--color-gray-20);
 		border-bottom: 0;
+	}
+
+	&__adventure-options {
+		display: flex;
+	}
+
+	&__adventure-options-column {
+		flex: 1;
+		min-width: 0;
+
+		& + & {
+			border-left: 1px solid var(--color-gray-20);
+			padding-left: var(--spacing-5);
+		}
+	}
+
+	&__adventure-options-column-list {
+		list-style: none;
+		padding-left: 0;
+		display: flex;
+	}
+
+	&__info {
+		font-style: italic;
+		padding: var(--spacing-4);
 	}
 }

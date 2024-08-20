@@ -61,7 +61,7 @@ export default class DatesRatesTable extends HTMLElement {
 		}
 
 		// Set the rowspan of the first column to span all rows except the header row.
-		const rowSpanCount = rows.length - 1; // Subtract the header row
+		const rowSpanCount = rows.length - 1 - 1; // Subtract the header row and footer row.
 		firstColumn.rowSpan = rowSpanCount;
 		firstColumn.classList.add( 'dates-rates__item-table-column--first' );
 	}
