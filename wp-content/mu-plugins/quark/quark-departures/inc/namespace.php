@@ -13,7 +13,6 @@ use WP_Term_Query;
 use function Quark\CabinCategories\get_cabin_details_by_departure;
 use function Quark\Core\format_price;
 use function Quark\Core\get_available_currencies;
-use function Quark\Itineraries\get as get_itinerary;
 use function Quark\Itineraries\get_starting_from_location;
 use function Quark\Itineraries\get_included_transfer_package_details;
 use function Quark\Itineraries\get_policy_banner_details;
@@ -25,6 +24,7 @@ use function Quark\Softrip\Departures\get_end_date;
 use function Quark\Softrip\Departures\get_lowest_price;
 use function Quark\Softrip\Departures\get_related_ship;
 use function Quark\Softrip\Departures\get_start_date;
+use function Quark\AdventureOptions\get as get_adventure_option_post_data;
 
 use const Quark\StaffMembers\SEASON_TAXONOMY;
 use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
@@ -372,44 +372,67 @@ function bust_post_cache_on_term_assign( int $object_id = 0, array $terms = null
 }
 
 /**
- * Get departure Season.
+ * Get Included adventure options.
  *
  * @param int $post_id Departure Post ID.
  *
- * @return string
+ * @return array{}|array{
+ *     array{
+ *         term_id: int,
+ *         name: string,
+ *         slug: string,
+ *         term_group: int,
+ *         term_taxonomy_id: int,
+ *         taxonomy: string,
+ *         description: string,
+ *         parent: int,
+ *     }
+ * }
  */
-function get_season( int $post_id = 0 ): string {
+function get_included_adventure_options( int $post_id = 0 ): array {
 	// Get departure.
-	$departure = get( $post_id );
+	$departure                  = get( $post_id );
+	$included_adventure_options = [];
 
 	// Check post_meta is not empty.
-	if ( ! $departure['post_meta'] ) {
-		return '';
+	if ( empty( $departure['post_meta'] ) ) {
+		return $included_adventure_options;
 	}
 
-	// Get itinerary from meta.
-	$itinerary = $departure['post_meta']['itinerary'] ?? '';
+	// Get Expedition ID from meta.
+	$expedition_id = $departure['post_meta']['related_expedition'] ?? '';
 
-	// Check start date meta is empty.
-	if ( ! $itinerary ) {
-		return '';
+	// Check meta is empty.
+	if ( empty( $expedition_id ) ) {
+		return $included_adventure_options;
 	}
 
-	// Get itinerary.
-	$itinerary = get_itinerary( absint( $itinerary ) );
+	// Get Expedition.
+	$expedition = get_expedition( absint( $expedition_id ) );
 
-	// Check for Itinerary.
-	if ( empty( $itinerary['post_taxonomies'][ SEASON_TAXONOMY ] ) || ! is_array( $itinerary['post_taxonomies'][ SEASON_TAXONOMY ] ) ) {
-		return '';
+	// Get Adventure Options from meta.
+	$adventure_option_post_ids = $expedition['post_meta']['included_activities'] ?? [];
+
+	// Check meta is empty.
+	if ( empty( $adventure_option_post_ids ) || ! is_array( $adventure_option_post_ids ) ) {
+		return $included_adventure_options;
 	}
 
-	// Check for Season.
-	if ( ! isset( $itinerary['post_taxonomies'][ SEASON_TAXONOMY ][0] ) ) {
-		return '';
+	// Loop through Adventure Options posts.
+	foreach ( $adventure_option_post_ids as $adventure_option_post_id ) {
+		$adventure_option_post = get_adventure_option_post_data( absint( $adventure_option_post_id ) );
+
+		// validate Adventure Option taxonomy.
+		if ( empty( $adventure_option_post['post_taxonomies'][ ADVENTURE_OPTION_CATEGORY ] ) || ! is_array( $adventure_option_post['post_taxonomies'][ ADVENTURE_OPTION_CATEGORY ] ) ) {
+			continue;
+		}
+
+		// Merge Adventure Options.
+		$included_adventure_options = array_merge( $included_adventure_options, $adventure_option_post['post_taxonomies'][ ADVENTURE_OPTION_CATEGORY ] );
 	}
 
-	// Return Season.
-	return $itinerary['post_taxonomies'][ SEASON_TAXONOMY ][0]['name'] ?? '';
+	// Return Adventure Options.
+	return $included_adventure_options;
 }
 
 /**
@@ -453,37 +476,6 @@ function get_paid_adventure_options( int $post_id = 0 ): array {
 
 	// Return Adventure Options.
 	return $adventure_options_terms->terms;
-}
-
-/**
- * Get departure region and Season.
- *
- * @param int $post_id Departure Post ID.
- *
- * @return string
- */
-function get_region_and_season( int $post_id = 0 ): string {
-	// Get departure.
-	$departure = get( $post_id );
-
-	// Check post_meta is not empty.
-	if ( ! $departure['post_meta'] ) {
-		return '';
-	}
-
-	// Get region from meta.
-	$region = $departure['post_meta']['softrip_market_code'] ?? '';
-
-	// Get season.
-	$season = get_season( $post_id );
-
-	// Check region and season are empty.
-	if ( ! $region && ! $season ) {
-		return '';
-	}
-
-	// Return region and season.
-	return $region . '-' . $season;
 }
 
 /**

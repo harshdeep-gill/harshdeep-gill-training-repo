@@ -287,7 +287,8 @@ class Search {
 		$this->args['meta_query'][] = [
 			'key'     => 'duration',
 			'value'   => array_unique( $durations ),
-			'compare' => 'IN',
+			'type'    => 'NUMERIC',
+			'compare' => 'BETWEEN',
 		];
 	}
 
