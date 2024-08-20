@@ -10,7 +10,9 @@ namespace Quark\Tests\Softrip;
 use DateInterval;
 use DateTime;
 use WP_UnitTestCase;
+use WP_Term;
 
+use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
 use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
 use const Quark\CabinCategories\POST_TYPE as CABIN_CATEGORY_POST_TYPE;
 use const Quark\Expeditions\POST_TYPE as EXPEDITION_POST_TYPE;
@@ -92,14 +94,6 @@ abstract class Softrip_TestCase extends WP_UnitTestCase {
 			wp_cache_delete( ITINERARY_POST_TYPE . '_' . absint( $itinerary_id ), ITINERARY_POST_TYPE );
 		}
 
-		// Create Cabin Category posts.
-		$cabin_ids = self::factory()->post->create_many(
-			5,
-			[
-				'post_type' => CABIN_CATEGORY_POST_TYPE,
-			]
-		);
-
 		// List the Cabin softrip codes.
 		$softrip_cabin_ids = [
 			'OEX-SGL',
@@ -107,10 +101,21 @@ abstract class Softrip_TestCase extends WP_UnitTestCase {
 			'ULT-SGL',
 			'ULT-DBL',
 			'OEX-FWD',
+			'OEX-JST',
+			'OEX-SVS',
 		];
+
+		// Create Cabin Category posts.
+		$cabin_ids = self::factory()->post->create_many(
+			count( $softrip_cabin_ids ),
+			[
+				'post_type' => CABIN_CATEGORY_POST_TYPE,
+			]
+		);
 
 		// Loop through the cabins and set meta.
 		foreach ( $cabin_ids as $index => $cabin_id ) {
+			update_post_meta( absint( $cabin_id ), 'cabin_name', 'cabin_name - ' . $softrip_cabin_ids[ $index ] );
 			update_post_meta( absint( $cabin_id ), 'cabin_category_id', $softrip_cabin_ids[ $index ] );
 			wp_cache_delete( CABIN_CATEGORY_POST_TYPE . '_' . absint( $cabin_id ), CABIN_CATEGORY_POST_TYPE );
 		}
@@ -138,6 +143,42 @@ abstract class Softrip_TestCase extends WP_UnitTestCase {
 			update_post_meta( absint( $ship_id ), 'ship_code', $softrip_ship_ids[ $index ] );
 			wp_cache_delete( SHIP_POST_TYPE . '_' . absint( $ship_id ), SHIP_POST_TYPE );
 		}
+
+		// Create term of Adventure Options.
+		$adventure_option_term_1 = self::factory()->term->create_and_get(
+			[
+				'taxonomy' => ADVENTURE_OPTION_CATEGORY,
+				'name'     => 'adventure_option-1',
+			]
+		);
+
+		// Create term of Adventure Options.
+		$adventure_option_term_2 = self::factory()->term->create_and_get(
+			[
+				'taxonomy' => ADVENTURE_OPTION_CATEGORY,
+				'name'     => 'adventure_option-2',
+			]
+		);
+
+		// Create term of Adventure Options.
+		$adventure_option_term_3 = self::factory()->term->create_and_get(
+			[
+				'taxonomy' => ADVENTURE_OPTION_CATEGORY,
+				'name'     => 'adventure_option-3',
+			]
+		);
+
+		// Assert term is created.
+		self::assertTrue( $adventure_option_term_1 instanceof WP_Term );
+		self::assertTrue( $adventure_option_term_2 instanceof WP_Term );
+		self::assertTrue( $adventure_option_term_3 instanceof WP_Term );
+
+		// Set term meta.
+		update_term_meta( $adventure_option_term_1->term_id, 'softrip_0_id', 'KAYAK' );
+		update_term_meta( $adventure_option_term_1->term_id, 'icon', '234' );
+		update_term_meta( $adventure_option_term_2->term_id, 'softrip_0_id', 'KAYEXP' );
+		update_term_meta( $adventure_option_term_2->term_id, 'softrip_1_id', 'KAYEXP2' );
+		update_term_meta( $adventure_option_term_2->term_id, 'icon', '987' );
 	}
 
 	/**
