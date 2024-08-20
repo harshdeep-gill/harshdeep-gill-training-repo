@@ -135,6 +135,7 @@ const blocks = [
 	mediaCarousel,
 	bookDeparturesExpeditions,
 	expeditionHero,
+	shipSpecifications,
 ];
 
 // Register blocks for ships.
