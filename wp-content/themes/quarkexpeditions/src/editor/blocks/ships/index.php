@@ -13,7 +13,8 @@ use function Quark\Expeditions\get_expedition_ship_ids;
 use function Quark\ShipDecks\get_deck_data;
 use function Quark\Ships\get_ship_data;
 
-const COMPONENT = 'parts.ships';
+const COMPONENT    = 'parts.ships';
+const COLLAGE_PART = 'parts.collage';
 
 /**
  * Bootstrap this block.
@@ -71,6 +72,20 @@ function render( array $attributes = [] ): string {
 		// Check for ship data.
 		if ( empty( $ship ) || ! is_array( $ship ) ) {
 			continue;
+		}
+
+		// Initialize content variables.
+		$collage = '';
+
+		// Add collage images.
+		if ( ! empty( $ship['collage_images'] ) ) {
+			$collage = quark_get_component(
+				COLLAGE_PART,
+				[
+					'name'  => $ship['name'] . '_collage',
+					'items' => $ship['collage_images'],
+				]
+			);
 		}
 
 		// Initialize decks data.
@@ -154,13 +169,15 @@ function render( array $attributes = [] ): string {
 
 		// Get the post data.
 		$ships_data[] = [
-			'id'          => $ship['name'],
-			'title'       => $ship['title'],
-			'permalink'   => $ship['permalink'],
-			'description' => $ship['description'],
-			'content'     => '', // TODO: Will accommodate Ships feature, amenities & carousel Images.
-			'decks_id'    => $ship['name'] . '_decks',
-			'decks'       => $decks_data,
+			'id'              => $ship['name'],
+			'title'           => $ship['title'],
+			'permalink'       => $ship['permalink'],
+			'description'     => $ship['description'],
+			'collage'         => $collage,
+			'vessel_features' => $ship['vessel_features'],
+			'amenities'       => $ship['ship_amenities'],
+			'decks_id'        => $ship['name'] . '_decks',
+			'decks'           => $decks_data,
 		];
 	}
 

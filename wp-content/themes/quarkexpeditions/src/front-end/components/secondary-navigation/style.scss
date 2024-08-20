@@ -149,7 +149,15 @@
 		}
 	}
 
+	&:not(.secondary-navigation--is-sticky) {
+
+		.secondary-navigation__cta-buttons {
+			display: none;
+		}
+	}
+
 	&__cta-buttons {
+		display: block;
 
 		.buttons {
 			background-color: var(--color-white);
@@ -180,6 +188,10 @@
 			}
 
 			button {
+				width: 100%;
+			}
+
+			a {
 				width: 100%;
 			}
 		}
