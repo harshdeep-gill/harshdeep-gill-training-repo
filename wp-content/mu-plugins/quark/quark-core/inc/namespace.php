@@ -15,7 +15,12 @@ use WP_Term;
 
 use function Travelopia\Core\cached_nav_menu;
 
-const CURRENCIES         = [ 'USD', 'CAD', 'AUD', 'GBP', 'EUR' ];
+const AUD_CURRENCY	   = 'AUD';
+const CAD_CURRENCY	   = 'CAD';
+const EUR_CURRENCY	   = 'EUR';
+const GBP_CURRENCY	   = 'GBP';
+const USD_CURRENCY	   = 'USD';
+const CURRENCIES         = [ USD_CURRENCY, CAD_CURRENCY, AUD_CURRENCY, GBP_CURRENCY, EUR_CURRENCY ];
 const REST_API_NAMESPACE = 'quark-core/v1';
 
 /**
