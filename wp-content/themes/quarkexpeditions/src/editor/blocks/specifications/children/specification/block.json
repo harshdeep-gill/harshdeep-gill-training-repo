@@ -1,0 +1,30 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Specifications Item",
+	"name": "quark/specifications-item",
+	"description": "Display a single specification item",
+	"category": "layout",
+	"textdomain": "qrk",
+	"keywords": [
+		"specifications",
+		"item"
+	],
+	"attributes": {
+		"label": {
+			"type": "string",
+			"default": ""
+		},
+		"value": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}
