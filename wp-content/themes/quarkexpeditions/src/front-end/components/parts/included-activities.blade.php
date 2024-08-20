@@ -12,7 +12,7 @@ if ( empty( $activities ) ) {
 
 <x-info-cards layout="carousel">
 	@foreach( $activities as $activity )
-		<x-info-cards.card>
+		<x-info-cards.card :url="$activity['permalink'] ?? ''">
 			<x-info-cards.image image_id="{{ $activity['thumbnail'] ?? 0 }}" />
 			<x-info-cards.content position="bottom">
 				@if( $show_title )
