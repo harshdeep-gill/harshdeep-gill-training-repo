@@ -138,21 +138,6 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 						value={ attributes.expedition }
 						onChange={ ( expedition: string ) => setAttributes( { expedition } ) }
 					/>
-					<SelectControl
-						label={ __( 'Season', 'qrk' ) }
-						help={ __( 'Select the value for Season.', 'qrk' ) }
-						value={ attributes.season }
-						options={ [
-							{ label: __( 'Select season…', 'qrk' ), value: '' },
-							{ label: __( '2024', 'qrk' ), value: '2024' },
-							{ label: __( '2024-25', 'qrk' ), value: '2024-25' },
-							{ label: __( '2025', 'qrk' ), value: '2025' },
-							{ label: __( '2025-26', 'qrk' ), value: '2025-26' },
-							{ label: __( '2026', 'qrk' ), value: '2026' },
-							{ label: __( '2026-27', 'qrk' ), value: '2026-27' },
-						] }
-						onChange={ ( season: string ) => setAttributes( { season } ) }
-					/>
 				</PanelBody>
 			</InspectorControls>
 			<div { ...blockProps }>

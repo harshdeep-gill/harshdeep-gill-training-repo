@@ -48,7 +48,6 @@ export default class FormTwoStepModalCTA extends HTMLElement {
 			polarRegion: this.dataset.polarRegion ?? '',
 			ship: this.dataset.ship ?? '',
 			expedition: this.dataset.expedition ?? '',
-			season: this.dataset.season ?? '',
 		};
 
 		// Hidden Fields.
@@ -56,7 +55,6 @@ export default class FormTwoStepModalCTA extends HTMLElement {
 			polarRegion: form.querySelector( '.form__polar-region-field' ),
 			ship: form.querySelector( '.form__ship-field' ),
 			expedition: form.querySelector( '.form__expedition-field' ),
-			season: form.querySelector( '.form__season-field' ),
 		};
 
 		// Populate the values into the form fields.

@@ -29,7 +29,6 @@
 	data-polar-region="{{ $hidden_fields['polar_region'] ?? '' }}"
 	data-ship="{{ $hidden_fields['ship'] ?? '' }}"
 	data-expedition="{{ $hidden_fields['expedition'] ?? '' }}"
-	data-season="{{ $hidden_fields['season'] ?? '' }}"
 	data-modal-id="{{ $modal_id }}"
 >
 	<x-modal.modal-open :modal_id="$modal_id">

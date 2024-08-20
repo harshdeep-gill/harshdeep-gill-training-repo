@@ -28,10 +28,6 @@
 			"type": "string",
 			"default": ""
 		},
-		"season": {
-			"type": "string",
-			"default": ""
-		},
 		"backgroundColor": {
 			"type": "string",
 			"default": "black",
