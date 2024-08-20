@@ -1,12 +1,13 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
-	"title": "Specifications",
-	"name": "quark/specifications",
-	"description": "Display a list of specifications",
+	"title": "Ship Specifications",
+	"name": "quark/ship-specifications",
+	"description": "Display a list of ship specifications",
 	"category": "layout",
 	"textdomain": "qrk",
 	"keywords": [
+		"ship",
 		"specifications"
 	],
 	"attributes": {},

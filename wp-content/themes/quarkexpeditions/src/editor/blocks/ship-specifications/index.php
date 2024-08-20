@@ -1,15 +1,15 @@
 <?php
 /**
- * Block: Specifications.
+ * Block: Ship Specifications.
  *
  * @package quark
  */
 
-namespace Quark\Theme\Blocks\Specifications;
+namespace Quark\Theme\Blocks\ShipSpecifications;
 
 use function Quark\Ships\get_ship_data;
 
-const COMPONENT = 'parts.specifications';
+const COMPONENT = 'parts.ship-specifications';
 
 /**
  * Bootstrap this block.
