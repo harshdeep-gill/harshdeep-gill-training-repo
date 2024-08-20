@@ -25,7 +25,12 @@
 	<div class="form-contact-us__content">
 		<div class="form-contact-us__form">
 			<p class="form-contact-us__instructions">
-				Fill the form below, and we will get back to you on the same or next business day.
+				{!!
+					esc_html__(
+						'Fill the form below, and we will get back to you on the same or next business day.',
+						'qrk'
+					)
+				!!}
 			</p>
 
 			<div class="form-contact-us__fields">

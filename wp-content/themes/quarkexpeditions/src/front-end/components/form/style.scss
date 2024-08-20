@@ -1,15 +1,25 @@
 @import "../../scss";
 
 .form {
+	$self: &;
+
 	display: block;
 
 	&__required-indicator {
 		display: none;
 	}
 
-	.form-field[required="yes"] &__required-indicator {
-		display: inline;
-		color: var(--color-error-50);
+	&-field {
+
+		&[required="yes"],
+		&[checkbox-group-required="yes"],
+		&[radio-group-required="yes"] {
+
+			#{$self}__required-indicator {
+				display: inline;
+				color: var(--color-error-50);
+			}
+		}
 	}
 
 	&__inline-dropdown .tp-multi-select-options-container {
