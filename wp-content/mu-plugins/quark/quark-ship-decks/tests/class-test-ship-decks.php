@@ -146,6 +146,7 @@ class Test_Ship_Decks extends WP_UnitTestCase {
 		// Update post meta.
 		update_post_meta( $deck_post->ID, 'deck_name', 'Test Ship Deck Title' );
 		update_post_meta( $deck_post->ID, 'deck_plan_image', 777 );
+		update_post_meta( $deck_post->ID, 'vertical_deck_plan_image', 888 );
 		update_post_meta( $deck_post->ID, 'public_spaces_0_title', 'Test Public Space 0 Title' );
 		update_post_meta( $deck_post->ID, 'public_spaces_0_description', 'Test Public Space 0 Content' );
 		update_post_meta( $deck_post->ID, 'public_spaces_0_image', 0 );
@@ -157,11 +158,12 @@ class Test_Ship_Decks extends WP_UnitTestCase {
 		// Assert data.
 		$this->assertEquals(
 			[
-				'id'            => $deck_post->post_name,
-				'title'         => 'Test Ship Deck Title',
-				'image_id'      => 777,
-				'description'   => apply_filters( 'the_content', 'Test ship deck content' ),
-				'cabin_options' => [
+				'id'                => $deck_post->post_name,
+				'title'             => 'Test Ship Deck Title',
+				'image_id'          => 777,
+				'vertical_image_id' => 888,
+				'description'       => apply_filters( 'the_content', 'Test ship deck content' ),
+				'cabin_options'     => [
 					[
 						'id'          => $cabin_category_post->post_name,
 						'title'       => 'Test Title',
@@ -178,7 +180,7 @@ class Test_Ship_Decks extends WP_UnitTestCase {
 						],
 					],
 				],
-				'public_spaces' => [
+				'public_spaces'     => [
 					[
 						'title'       => 'Test Public Space 0 Title',
 						'description' => apply_filters( 'the_content', 'Test Public Space 0 Content' ),
