@@ -20,7 +20,6 @@ import '../../../front-end/components/two-columns/style.scss';
 import '../../../front-end/components/expedition-details/style.scss';
 import '../../../front-end/components/hero-card-slider/style.scss';
 
-
 /**
  * Children.
  */

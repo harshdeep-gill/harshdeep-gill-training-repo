@@ -25,10 +25,8 @@ import * as expeditionHeroContent from './children/content';
 /**
  * Edit Component.
  *
- * @param {Object}   props               Component properties.
- * @param {string}   props.className     Class name.
- * @param {Array}    props.attributes    Block attributes.
- * @param {Function} props.setAttributes Set block attributes.
+ * @param {Object} props           Component properties.
+ * @param {string} props.className Class name.
  */
 export default function edit( { className }: BlockEditAttributes ): JSX.Element {
 	// Set block props.

@@ -52,13 +52,13 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 	// Process child blocks.
 	if ( $block->inner_blocks instanceof WP_Block_List ) {
 		// Get the first child block.
-		$hero_content = $block->inner_blocks[0];
+		$hero_content = $block->inner_blocks->offsetGet( '0' );
 
 		// Check for child block and its name.
 		if (
 			! $hero_content instanceof WP_Block
-			&& 'quark/expedition-hero-content' !== $hero_content->name
-			&& ! $hero_content->inner_blocks instanceof WP_Block_List
+			|| 'quark/expedition-hero-content' !== $hero_content->name
+			|| ! $hero_content->inner_blocks instanceof WP_Block_List
 		) {
 			return $content;
 		}
@@ -68,16 +68,18 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 			// Check for child block.
 			if (
 				! $child_block instanceof WP_Block
-				&& ! $child_block->inner_blocks instanceof WP_Block_List
+				|| ! $child_block->inner_blocks instanceof WP_Block_List
 			) {
 				continue;
 			}
 
 			// Switch on the child block name.
 			switch ( $child_block->name ) {
+
+				// Build the expedition details.
 				case 'quark/expedition-hero-content-left':
 					// Check for its child block.
-					$expedition_details = $child_block->inner_blocks[0];
+					$expedition_details = $child_block->inner_blocks->offsetGet( '0' );
 
 					// Check for child block.
 					if (
@@ -90,9 +92,11 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 					// Render the child block.
 					$component_attributes['expedition_details'] = render_block( $expedition_details->parsed_block );
 					break;
+
+				// Build the hero card slider.
 				case 'quark/expedition-hero-content-right':
 					// Check for its child block.
-					$hero_card_slider = $child_block->inner_blocks[0];
+					$hero_card_slider = $child_block->inner_blocks->offsetGet( '0' );
 
 					// Check for child block.
 					if (
@@ -101,7 +105,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 					) {
 						continue;
 					}
-					
+
 					// Render the child block.
 					$component_attributes['hero_card_slider'] = render_block( $hero_card_slider->parsed_block );
 					break;
