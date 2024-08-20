@@ -69,6 +69,7 @@ import * as bookDeparturesExpeditions from './book-departures-expeditions';
 import * as shipCabinCategories from './ship-cabin-categories';
 import * as shipSpecifications from './ship-specifications';
 import * as expeditionHero from './expedition-hero';
+import * as specifications from './specifications';
 
 /**
  * Add blocks.
@@ -135,7 +136,7 @@ const blocks = [
 	mediaCarousel,
 	bookDeparturesExpeditions,
 	expeditionHero,
-	shipSpecifications,
+	specifications,
 ];
 
 // Register blocks for ships.
