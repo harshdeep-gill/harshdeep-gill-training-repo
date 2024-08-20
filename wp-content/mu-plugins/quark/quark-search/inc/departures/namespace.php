@@ -32,6 +32,10 @@ function bootstrap(): void {
 	add_filter( 'solr_index_custom_fields', __NAMESPACE__ . '\\solr_index_custom_fields' );
 	add_filter( 'solr_build_document', __NAMESPACE__ . '\\filter_solr_build_document', 10, 2 );
 
+	// Bust search cache on departure update.
+	// TODO - Improve this to bust cache once per auto sync or manual sync.
+	add_action( 'save_post_' . DEPARTURE_POST_TYPE, __NAMESPACE__ . '\\bust_search_cache' );
+
 	// Load search class.
 	require_once __DIR__ . '/class-search.php';
 }
@@ -242,6 +246,27 @@ function search( array $filters = [] ): array {
 		'result_count'    => $search->result_count,
 		'remaining_count' => $search->remaining_count,
 	];
+}
+
+/**
+ * Bust search cache on departure update.
+ *
+ * @return void
+ */
+function bust_search_cache(): void {
+	// Bust cache by group if supported.
+	if ( function_exists( 'wp_cache_delete_group' ) ) {
+		// Bust cache by group.
+		wp_cache_delete_group( CACHE_GROUP );
+	} else {
+		// Bust cache by key.
+		wp_cache_delete( 'search_filter_region_season_data', CACHE_GROUP );
+		wp_cache_delete( 'search_filter_expeditions_data', CACHE_GROUP );
+		wp_cache_delete( 'search_filter_adventure_options_data', CACHE_GROUP );
+		wp_cache_delete( 'search_filter_departure_month_data', CACHE_GROUP );
+		wp_cache_delete( 'search_filter_departure_duration_data', CACHE_GROUP );
+		wp_cache_delete( 'search_filter_ship_data', CACHE_GROUP );
+	}
 }
 
 /**
