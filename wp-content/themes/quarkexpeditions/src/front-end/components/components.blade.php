@@ -1175,12 +1175,6 @@
 		</x-section>
 	</x-component-demo>
 
-	<x-component-demo :keys="['itinerary-details']">
-		<x-section>
-			test
-		</x-section>
-	</x-component-demo>
-
 	<x-component-demo :keys="['simple-cards']">
 		<x-section :background="true" background_color="black">
 			<x-section.heading>

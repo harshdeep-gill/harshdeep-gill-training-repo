@@ -33,5 +33,6 @@
 	<x-image
 		:image_id="$image_id"
 		:args="$image_args"
+		class="itinerary-details__image"
 	/>
 </x-media-lightbox>
