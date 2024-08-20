@@ -1,0 +1,26 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Expedition Hero Content Left",
+	"name": "quark/expedition-hero-content-left",
+	"description": "Left half of Expedition hero content.",
+	"category": "layout",
+	"keywords": [
+		"expedition",
+		"hero",
+		"content",
+		"left"
+	],
+	"textdomain": "qrk",
+	"attributes": {},
+	"parent": [
+		"quark/expedition-hero-content"
+	],
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}
