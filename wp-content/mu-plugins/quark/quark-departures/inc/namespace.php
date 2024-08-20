@@ -17,7 +17,7 @@ use function Quark\Core\get_available_currencies;
 use function Quark\Expeditions\get_region_terms;
 use function Quark\Itineraries\get as get_itinerary;
 use function Quark\Itineraries\get_starting_from_location;
-use function Quark\Itineraries\get_ending_to_location;
+use function Quark\Itineraries\get_end_location;
 use function Quark\Itineraries\get_included_transfer_package_details;
 use function Quark\Itineraries\get_policy_banner_details;
 use function Quark\Expeditions\get as get_expedition;
@@ -488,7 +488,7 @@ function get_included_adventure_options( int $post_id = 0 ): array {
 	$included_adventure_options = [];
 
 	// Check post_meta is not empty.
-	if ( ! $departure['post_meta'] ) {
+	if ( empty( $departure['post_meta'] ) ) {
 		return $included_adventure_options;
 	}
 
@@ -496,7 +496,7 @@ function get_included_adventure_options( int $post_id = 0 ): array {
 	$expedition_id = $departure['post_meta']['related_expedition'] ?? '';
 
 	// Check meta is empty.
-	if ( ! $expedition_id ) {
+	if ( empty( $expedition_id ) ) {
 		return $included_adventure_options;
 	}
 
@@ -1133,9 +1133,9 @@ function get_dates_rates_card_data( int $departure_id = 0, string $currency = 'U
 		// Prepare the cabin data.
 		$cabin_price_data[ $cabin_code ] = [
 			'name'                     => strval( $cabin_data['post_meta']['cabin_name'] ?? '' ),
-			'availability_status'      => '', // @todo Add the availability status from quark-softrip.
-			'availability_description' => '', // @todo Add the availability description from quark-softrip.
-			'spaces_available'         => '', // @todo Add the spaces available from quark-softrip.
+			'availability_status'      => '', // @todo Add the availability status from quark-softrip. - https://tuispecialist.atlassian.net/browse/QE-499
+			'availability_description' => '', // @todo Add the availability description from quark-softrip. - https://tuispecialist.atlassian.net/browse/QE-499
+			'spaces_available'         => '', // @todo Add the spaces available from quark-softrip. - https://tuispecialist.atlassian.net/browse/QE-499
 		];
 
 		// Get the lowest price for the cabin.
@@ -1160,7 +1160,7 @@ function get_dates_rates_card_data( int $departure_id = 0, string $currency = 'U
 		'duration_days'              => absint( $departure['post_meta']['duration'] ?? 0 ),
 		'duration_dates'             => get_start_end_departure_date( $departure_id ),
 		'start_location'             => get_starting_from_location( $itinerary_id ),
-		'end_location'               => get_ending_to_location( $itinerary_id ),
+		'end_location'               => get_end_location( $itinerary_id ),
 		'languages'                  => implode( ', ', get_languages( $departure_id ) ),
 		'included_adventure_options' => $include_options_data,
 		'paid_adventure_options'     => $paid_adventure_options_data,
@@ -1174,77 +1174,4 @@ function get_dates_rates_card_data( int $departure_id = 0, string $currency = 'U
 
 	// Return departure card data.
 	return $data;
-}
-
-/**
- * Get Dates & Rates Cards Data.
- *
- * @param int[]  $departure_ids Departure IDs.
- * @param string $currency      Currency.
- *
- * @return array{}|array{
- *   array{
- *     region: string,
- *     ship_title: string,
- *     ship_link: string|false,
- *     expedition_title: string,
- *     expedition_link: string,
- *     duration_days: int,
- *     duration_dates: string,
- *     start_location: string,
- *     end_location: string,
- *     languages: string,
- *     included_adventure_options: array{}|array{
- *         array{
- *             title: string,
- *             icon_image_id: int,
- *         }
- *     },
- *     paid_adventure_options: array{}|array{
- *          array{
- *             title: string,
- *             icon_image_id: int,
- *         }
- *     },
- *     transfer_package_details: array{
- *         title: string,
- *         sets: array<string>,
- *         price: int,
- *         formatted_price: string,
- *     },
- *     available_promos: array{}| array{
- *         string: array{
- *             id: int,
- *             code: string,
- *             start_date: string,
- *             end_date: string,
- *             description: string,
- *             discount_type: string,
- *             discount_value: string,
- *             is_pif: int,
- *         },
- *     },
- *     cabin_data: array<
- *         string, array<string, string>
- *     >,
- *   }
- * }
- */
-function get_dates_rates_cards_data( array $departure_ids = [], string $currency = 'USD' ): array {
-	// Prepare the departure cards data.
-	$departure_cards = [];
-
-	// Validate departure_ids.
-	if ( empty( $departure_ids ) || ! is_array( $departure_ids ) ) {
-		return $departure_cards;
-	}
-
-	// Loop through departure_ids.
-	foreach ( $departure_ids as $departure_id ) {
-		// Get departure card data.
-		$departure_cards[ absint( $departure_id ) ] = get_dates_rates_card_data( $departure_id, $currency );
-	}
-
-	// Return departure cards data.
-	return $departure_cards;
 }

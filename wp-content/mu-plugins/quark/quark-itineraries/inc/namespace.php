@@ -664,7 +664,7 @@ function get_starting_from_location( int $post_id = 0 ): string {
  *
  * @return string The ending to location.
  */
-function get_ending_to_location( int $post_id = 0 ): string {
+function get_end_location( int $post_id = 0 ): string {
 	// Get post.
 	$itinerary          = get( $post_id );
 	$ending_to_location = '';
@@ -752,7 +752,7 @@ function get_supplemental_price( int $post_id = 0, string $currency = 'USD' ): i
  *
  * @return array{
  *     title: string,
- *     sets: array<string>,
+ *     sets: string[],
  *     price: int,
  *     formatted_price: string,
  * } Included transfer package.

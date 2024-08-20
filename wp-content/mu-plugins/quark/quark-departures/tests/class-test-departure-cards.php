@@ -15,7 +15,6 @@ use function Quark\Core\format_price;
 use function Quark\Departures\get_card_data;
 use function Quark\Departures\get_cards_data;
 use function Quark\Departures\get_dates_rates_card_data;
-use function Quark\Departures\get_dates_rates_cards_data;
 use function Quark\Softrip\do_sync;
 use function Quark\Softrip\Promotions\get_promotions_by_code;
 
@@ -1054,7 +1053,6 @@ class Test_Departure_Cards extends Softrip_TestCase {
 	 * Test get_dates_rates_card_data().
 	 *
 	 * @covers \Quark\Departures\get_dates_rates_card_data()
-	 * @covers \Quark\Departures\get_dates_rates_cards_data()
 	 *
 	 * @return void
 	 */
@@ -1132,13 +1130,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 		$this->assertCount( 7, $all_departures );
 
 		// Get cards data.
-		$cards_data = get_dates_rates_cards_data( array_map( 'absint', $all_departures ) );
-
-		// Assert cards data.
-		$this->assertCount( 7, $cards_data );
-
-		// Get card data for departure post - 1.
-		$card_data = $cards_data[ $departure_post_1 ] ?? [];
+		$card_data = get_dates_rates_card_data( $departure_post_1 );
 
 		// Prepare expected data.
 		$expected_data = [
@@ -1328,16 +1320,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 		$this->assertCount( 7, $all_departures );
 
 		// Get cards data.
-		$cards_data = get_dates_rates_cards_data( array_map( 'absint', $all_departures ), 'CAD' );
-
-		// Assert cards data.
-		$this->assertCount( 7, $cards_data );
-
-		// Assert keys.
-		$this->assertArrayHasKey( $departure_post_1, $cards_data );
-
-		// Get card data for departure post - 1.
-		$card_data = $cards_data[ $departure_post_1 ] ?? [];
+		$card_data = get_dates_rates_card_data( $departure_post_1, 'CAD' );
 
 		// Assert keys.
 		$this->assertArrayHasKey( 'included_adventure_options', $card_data );
