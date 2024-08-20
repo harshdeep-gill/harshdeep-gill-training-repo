@@ -61,11 +61,20 @@ function prepare_data(): array {
     // Initialize results.
     $results = [];
 
+    // Remove wptexturize filter.
+    remove_filter( 'the_title', 'wptexturize');
+    remove_filter( 'the_content', 'wptexturize' );
+
     // Get data for each expedition.
     foreach ( $expedition_post_ids as $expedition_post_id ) {
         $results[] = get_expedition_data( $expedition_post_id );
-        break;
     }
+
+    // Add filters back.
+    add_filter( 'the_title', 'wptexturize');
+    add_filter( 'the_content', 'wptexturize' );
+
+    error_log(print_r($results, true));
     
     return $results;
 }
@@ -75,13 +84,52 @@ function prepare_data(): array {
  *
  * @param int $expedition_post_id Expedition ID.
  *
- * @return mixed[]
+ * @return array{}|array<int,
+ *   array{
+ *     id: int,
+ *     name: string,
+ *     description: string,
+ *     images: array{}|array<int,
+ *       array{
+ *         id: int,
+ *         fullSizeUrl: string,
+ *         thumbnailUrl: string,
+ *         alt: string,
+ *       }
+ *     >,
+ *     destinations: array{}|array<int,
+ *        array{
+ *          id: int,
+ *          name: string,
+ *          region: array{
+ *             name: string,
+ *             code: string,
+ *          }
+ *        }
+ *     >,
+ *     itineraries: array{}|array<int,
+ *       array{
+ *        id: int,
+ *        packageId: string,
+ *        name: string,
+ *        startLocation: string,
+ *        endLocation: string,
+ *        departures: mixed[],
+ *       }
+ *     >
+ *   }
+ * >
  */
-function get_expedition_data( int $expedition_post_id ): array {
+function get_expedition_data( int $expedition_post_id = 0 ): array {
+    // Early return if no expedition post ID.
+    if ( empty( $expedition_post_id ) ) {
+        return [];
+    }
+
     // Initialize expedition data.
     $expedition_data = [
         'id' => $expedition_post_id,
-        'name' => get_the_title( $expedition_post_id ),
+        'name' => strval( wp_slash( wp_strip_all_tags( get_the_title( $expedition_post_id ) ) ) ),
         'description' => '', // @todo Get description after parsing post content.
         'images' => [], // @todo Get images after parsing post content for hero-slider block.
         'destinations' => [],
@@ -113,7 +161,12 @@ function get_expedition_data( int $expedition_post_id ): array {
  *  }
  * >
  */
-function get_destination_terms( int $expedition_post_id ): array {
+function get_destination_terms( int $expedition_post_id = 0 ): array {
+    // Early return if no expedition post ID.
+    if ( empty( $expedition_post_id ) ) {
+        return [];
+    }
+
     // Initialize region.
     $regions = [];
 
@@ -239,17 +292,18 @@ function get_itineraries( int $expedition_post_id = 0 ): array {
         // Initialize softrip_package_code.
         $softrip_package_code = strval( $itinerary_post['post_meta']['softrip_package_code'] );
 
+        // Bail if no softrip_package_code.
         if ( empty( $softrip_package_code ) ) {
             continue;
         }
 
+        // Initialize itinerary data.
         $itinerary_data = [
             'id' => $itinerary_post_id,
             'packageId' => $softrip_package_code,
             'name' => $itinerary_post['post']->post_title,
             'startLocation' => '',
             'endLocation' => '',
-            'ship' => [],
             'departures' => [],
         ];
 
@@ -377,7 +431,7 @@ function get_departures_data( int $expedition_post_id = 0, int $itinerary_post_i
                 $departure_data['ship'] = [
                     'id' => $ship_id,
                     'code' => $ship_code,
-                    'name' => get_the_title( $ship_id ),
+                    'name' => strval( wp_slash( wp_strip_all_tags( get_the_title( $ship_id ) ) ) ),
                 ];
             }
         }
@@ -423,7 +477,27 @@ function get_departures_data( int $expedition_post_id = 0, int $itinerary_post_i
  * @param int $itinerary_post_id  Itinerary post ID.
  * @param int $departure_post_id Departure post ID.
  *
- * @return mixed[]
+ * @return array{}|array<int,
+ *   array{
+ *      id: string,
+ *      name: string,
+ *      code: string,
+ *      description: string,
+ *      bedDescription: string,
+ *      location: string,
+ *      type: string,
+ *      size: string,
+ *      media: array{}|array<int,
+ *        array{
+ *          id: int,
+ *          fullSizeUrl: string,
+ *          thumbnailUrl: string,
+ *          alt: string,
+ *       }
+ *      >,
+ *      occupancies: mixed[],
+ *   }
+ * >
  */
 function get_cabins_data( int $expedition_post_id = 0, int $itinerary_post_id = 0, int $departure_post_id = 0 ): array {
     // Initialize cabins data.
@@ -492,11 +566,12 @@ function get_cabins_data( int $expedition_post_id = 0, int $itinerary_post_id = 
         // Initialize cabin category data.
         $cabin_category_data = [
             'id' => $cabin_category_id,
-            'name' => get_the_title( $cabin_category_post_id ),
+            'name' => wp_strip_all_tags( $cabin_category_post['post']->post_title, true ),
             'code' => $cabin_category_code,
-            'description' => strval( apply_filters( 'the_content', $cabin_category_post['post']->post_content ) ),
+            'description' => wp_strip_all_tags( $cabin_category_post['post']->post_content, true ),
             'bedDescription' => $cabin_category_post['post_meta']['cabin_bed_configuration'] ?? '',
             'type' => '',
+            'location' => '',
             'size' => '',
             'media' => [],
             'occupancies' => [],
@@ -522,6 +597,27 @@ function get_cabins_data( int $expedition_post_id = 0, int $itinerary_post_id = 
             $cabin_category_data['type'] = implode( ', ', $cabin_types );
         }
 
+        // Get location from meta.
+        if ( array_key_exists( 'related_decks', $cabin_category_post['post_meta'] ) && is_array( $cabin_category_post['post_meta']['related_decks'] ) ) {
+            $decks = [];
+
+            // Loop through related decks.
+            foreach ( $cabin_category_post['post_meta']['related_decks'] as $deck_id ) {
+                // Get deck name from meta.
+                $deck_name = strval( get_post_meta( $deck_id, 'deck_name', true ) );
+
+                // Validate deck name.
+                if ( empty( $deck_name ) ) {
+                    continue;
+                }
+
+                $decks[] = $deck_name;
+            }
+
+            // Set decks separated by comma.
+            $cabin_category_data['location'] = implode( ', ', $decks );
+        }
+
         // Get cabin size range from meta.
         if ( array_key_exists( 'cabin_category_size_range_from', $cabin_category_post['post_meta'] ) && array_key_exists( 'cabin_category_size_range_to', $cabin_category_post['post_meta'] ) ) {
             $from_range = strval( $cabin_category_post['post_meta']['cabin_category_size_range_from'] );
@@ -539,6 +635,22 @@ function get_cabins_data( int $expedition_post_id = 0, int $itinerary_post_id = 
 
             // Loop through media IDs.
             foreach ( $media_ids as $media_id ) {
+                // Full size url.
+                $full_size_url = wp_get_attachment_image_url( $media_id, 'full' );
+
+                // Validate full size url.
+                if ( empty( $full_size_url ) ) {
+                    continue;
+                }
+
+                // Thumbnail url.
+                $thumbnail_url = wp_get_attachment_image_url( $media_id, 'thumbnail' );
+
+                // Validate thumbnail url.
+                if ( empty( $thumbnail_url ) ) {
+                    continue;
+                }
+
                 // Alt text.
                 $alt_text = strval( get_post_meta( $media_id, '_wp_attachment_image_alt', true ) );
 
@@ -548,8 +660,8 @@ function get_cabins_data( int $expedition_post_id = 0, int $itinerary_post_id = 
 
                 $cabin_category_data['media'][] = [
                     'id' => $media_id,
-                    'fullSizeUrl' => wp_get_attachment_image_url( $media_id, 'full' ),
-                    'thumbnailUrl' => wp_get_attachment_image_url( $media_id, 'thumbnail' ),
+                    'fullSizeUrl' => $full_size_url,
+                    'thumbnailUrl' => $thumbnail_url,
                     'alt' => $alt_text,
                 ];
             }
@@ -579,7 +691,7 @@ function get_cabins_data( int $expedition_post_id = 0, int $itinerary_post_id = 
  *     description: string,
  *     availabilityStatus: string,
  *     availabilityDescription: string,
- *     spacesAvailable: string,
+ *     spacesAvailable: int,
  *     prices: array{
  *       AUD: array{
  *         price_per_person: int,
@@ -588,9 +700,9 @@ function get_cabins_data( int $expedition_post_id = 0, int $itinerary_post_id = 
  *         supplemental_price_per_person: int,
  *         promotions_applied: array{}|array<int,
  *           array{
- *            id: int,
- *            promotion_code: string,
- *            promo_price_per_person: int,
+ *             id: int,
+ *             promotion_code: string,
+ *             promo_price_per_person: int,
  *           }
  *         >
  *       },
@@ -601,9 +713,9 @@ function get_cabins_data( int $expedition_post_id = 0, int $itinerary_post_id = 
  *         supplemental_price_per_person: int,
  *         promotions_applied: array{}|array<int,
  *           array{
- *            id: int,
- *            promotion_code: string,
- *            promo_price_per_person: int,
+ *             id: int,
+ *             promotion_code: string,
+ *             promo_price_per_person: int,
  *           }
  *         >
  *       },
@@ -614,9 +726,9 @@ function get_cabins_data( int $expedition_post_id = 0, int $itinerary_post_id = 
  *         supplemental_price_per_person: int,
  *         promotions_applied: array{}|array<int,
  *           array{
- *            id: int,
- *            promotion_code: string,
- *            promo_price_per_person: int,
+ *             id: int,
+ *             promotion_code: string,
+ *             promo_price_per_person: int,
  *           }
  *         >
  *       },
@@ -627,9 +739,9 @@ function get_cabins_data( int $expedition_post_id = 0, int $itinerary_post_id = 
  *         supplemental_price_per_person: int,
  *         promotions_applied: array{}|array<int,
  *           array{
- *            id: int,
- *            promotion_code: string,
- *            promo_price_per_person: int,
+ *             id: int,
+ *             promotion_code: string,
+ *             promo_price_per_person: int,
  *           }
  *         >
  *       },
@@ -640,9 +752,9 @@ function get_cabins_data( int $expedition_post_id = 0, int $itinerary_post_id = 
  *         supplemental_price_per_person: int,
  *         promotions_applied: array{}|array<int,
  *           array{
- *            id: int,
- *            promotion_code: string,
- *            promo_price_per_person: int,
+ *             id: int,
+ *             promotion_code: string,
+ *             promo_price_per_person: int,
  *           }
  *         >
  *       }
@@ -692,30 +804,35 @@ function get_occupancies_data( int $itinerary_post_id = 0, int $departure_post_i
                     'price_per_person' => 0,
                     'currency_code' => AUD_CURRENCY,
                     'mandatory_transfer_price_per_person' => 0,
+                    'supplemental_price_per_person' => 0,
                     'promotions_applied' => [],
                 ],
                 USD_CURRENCY => [
                     'price_per_person' => 0,
                     'currency_code' => USD_CURRENCY,
                     'mandatory_transfer_price_per_person' => 0,
+                    'supplemental_price_per_person' => 0,
                     'promotions_applied' => [],
                 ],
                 EUR_CURRENCY => [
                     'price_per_person' => 0,
                     'currency_code' => EUR_CURRENCY,
                     'mandatory_transfer_price_per_person' => 0,
+                    'supplemental_price_per_person' => 0,
                     'promotions_applied' => [],
                 ],
                 GBP_CURRENCY => [
                     'price_per_person' => 0,
                     'currency_code' => GBP_CURRENCY,
                     'mandatory_transfer_price_per_person' => 0,
+                    'supplemental_price_per_person' => 0,
                     'promotions_applied' => [],
                 ],
                 CAD_CURRENCY => [
                     'price_per_person' => 0,
                     'currency_code' => CAD_CURRENCY,
                     'mandatory_transfer_price_per_person' => 0,
+                    'supplemental_price_per_person' => 0,
                     'promotions_applied' => [],
                 ],
             ]
