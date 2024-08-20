@@ -26,6 +26,7 @@
 			<input type="hidden" name="fields[Polar_Region__c]" value="" class="form__polar-region-field">
 			<input type="hidden" name="fields[Ship__c]" value="" class="form__ship-field">
 			<input type="hidden" name="fields[Expedition__c]" value="" class="form__expedition-field">
+			<input type="hidden" name="fields[season__c]" value="" class="form__season-field">
 
 			<div class="form-two-step__content">
 				@if( ! empty( $title ) || ! empty( $subtitle ) )
