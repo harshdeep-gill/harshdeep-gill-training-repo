@@ -572,7 +572,83 @@ function get_cabins_data( int $expedition_post_id = 0, int $itinerary_post_id = 
  * @param int $departure_post_id Departure post ID.
  * @param int $cabin_category_post_id Cabin category ID.
  *
- * @return mixed[]
+ * @return array{}|array<int,
+ *   array{
+ *     id: string,
+ *     mask: string,
+ *     description: string,
+ *     availabilityStatus: string,
+ *     availabilityDescription: string,
+ *     spacesAvailable: string,
+ *     prices: array{
+ *       AUD: array{
+ *         price_per_person: int,
+ *         currency_code: 'AUD'|'CAD'|'EUR'|'GBP'|'USD',
+ *         mandatory_transfer_price_per_person: int,
+ *         supplemental_price_per_person: int,
+ *         promotions_applied: array{}|array<int,
+ *           array{
+ *            id: int,
+ *            promotion_code: string,
+ *            promo_price_per_person: int,
+ *           }
+ *         >
+ *       },
+ *       USD: array{
+ *         price_per_person: int,
+ *         currency_code: 'AUD'|'CAD'|'EUR'|'GBP'|'USD',
+ *         mandatory_transfer_price_per_person: int,
+ *         supplemental_price_per_person: int,
+ *         promotions_applied: array{}|array<int,
+ *           array{
+ *            id: int,
+ *            promotion_code: string,
+ *            promo_price_per_person: int,
+ *           }
+ *         >
+ *       },
+ *       EUR: array{
+ *         price_per_person: int,
+ *         currency_code: 'AUD'|'CAD'|'EUR'|'GBP'|'USD',
+ *         mandatory_transfer_price_per_person: int,
+ *         supplemental_price_per_person: int,
+ *         promotions_applied: array{}|array<int,
+ *           array{
+ *            id: int,
+ *            promotion_code: string,
+ *            promo_price_per_person: int,
+ *           }
+ *         >
+ *       },
+ *       CAD: array{
+ *         price_per_person: int,
+ *         currency_code: 'AUD'|'CAD'|'EUR'|'GBP'|'USD',
+ *         mandatory_transfer_price_per_person: int,
+ *         supplemental_price_per_person: int,
+ *         promotions_applied: array{}|array<int,
+ *           array{
+ *            id: int,
+ *            promotion_code: string,
+ *            promo_price_per_person: int,
+ *           }
+ *         >
+ *       },
+ *       GBP: array{
+ *         price_per_person: int,
+ *         currency_code: 'AUD'|'CAD'|'EUR'|'GBP'|'USD',
+ *         mandatory_transfer_price_per_person: int,
+ *         supplemental_price_per_person: int,
+ *         promotions_applied: array{}|array<int,
+ *           array{
+ *            id: int,
+ *            promotion_code: string,
+ *            promo_price_per_person: int,
+ *           }
+ *         >
+ *       }
+ *     }
+ *   }
+ * >
  */
 function get_occupancies_data( int $itinerary_post_id = 0, int $departure_post_id = 0, int $cabin_category_post_id = 0 ): array {
     // Initialize occupancies data.
@@ -689,5 +765,4 @@ function get_occupancies_data( int $itinerary_post_id = 0, int $departure_post_i
 
     // Return occupancies data.
     return $occupancies_data;
-
 }
