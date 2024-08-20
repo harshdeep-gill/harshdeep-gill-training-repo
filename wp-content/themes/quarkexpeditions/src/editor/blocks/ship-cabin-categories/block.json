@@ -1,0 +1,22 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "title": "Ship Cabin Categories",
+  "name": "quark/ship-cabin-categories",
+  "description": "Display ship cabin categories ",
+  "category": "layout",
+  "textdomain": "qrk",
+  "keywords": [
+    "ship",
+    "cabin",
+    "categories"
+  ],
+  "attributes": {},
+  "supports": {
+    "alignWide": false,
+    "anchor": true,
+    "className": false,
+    "html": false,
+    "customClassName": false
+  }
+}
