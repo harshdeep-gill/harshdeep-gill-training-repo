@@ -141,6 +141,7 @@ const blocks = [
 // Register blocks for ships.
 if ( typenow && 'qrk_ship' === typenow ) {
 	blocks.push( shipCabinCategories );
+	blocks.push( shipSpecifications );
 }
 
 /**
