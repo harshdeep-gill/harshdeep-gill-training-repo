@@ -214,7 +214,8 @@ class Test_Search extends WP_UnitTestCase {
 					[
 						'key'     => 'duration',
 						'value'   => array_unique( [ 12, 15 ] ),
-						'compare' => 'IN',
+						'type'    => 'NUMERIC',
+						'compare' => 'BETWEEN',
 					],
 					'relation' => 'OR',
 				],

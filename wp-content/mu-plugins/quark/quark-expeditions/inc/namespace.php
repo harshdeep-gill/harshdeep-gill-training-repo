@@ -8,6 +8,7 @@
 namespace Quark\Expeditions;
 
 use WP_Post;
+use WP_Error;
 use WP_Term;
 use WP_REST_Response;
 use WP_Taxonomy;
@@ -1267,4 +1268,43 @@ function get_expedition_ship_ids( int $expedition_id = 0 ): array {
 
 	// Return the ships IDs.
 	return array_unique( $ships_ids );
+}
+
+/**
+ * Get Destination term by Softrip code.
+ *
+ * @param string $code Softrip code.
+ *
+ * @return null|WP_Term
+ */
+function get_destination_term_by_code( string $code = '' ): null|WP_Term {
+	// Check if code is empty.
+	if ( empty( $code ) ) {
+		return null;
+	}
+
+	// Prepare arguments for the query.
+	$args = [
+		'taxonomy'   => DESTINATION_TAXONOMY,
+		'hide_empty' => false,
+		'number'     => 1,
+		'meta_query' => [
+			[
+				'key'     => 'softrip_id',
+				'value'   => $code,
+				'compare' => '=',
+			],
+		],
+	];
+
+	// Perform the query.
+	$terms = get_terms( $args );
+
+	// Check if any terms are found.
+	if ( ! empty( $terms ) && ! $terms instanceof WP_Error && $terms[0] instanceof WP_Term ) {
+		return $terms[0];
+	}
+
+	// Return null if no term is found.
+	return null;
 }

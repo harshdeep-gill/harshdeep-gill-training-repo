@@ -381,47 +381,6 @@ function bust_post_cache_on_term_assign( int $object_id = 0, array $terms = null
 }
 
 /**
- * Get departure Season.
- *
- * @param int $post_id Departure Post ID.
- *
- * @return string
- */
-function get_season( int $post_id = 0 ): string {
-	// Get departure.
-	$departure = get( $post_id );
-
-	// Check post_meta is not empty.
-	if ( ! $departure['post_meta'] ) {
-		return '';
-	}
-
-	// Get itinerary from meta.
-	$itinerary = $departure['post_meta']['itinerary'] ?? '';
-
-	// Check start date meta is empty.
-	if ( ! $itinerary ) {
-		return '';
-	}
-
-	// Get itinerary.
-	$itinerary = get_itinerary( absint( $itinerary ) );
-
-	// Check for Itinerary.
-	if ( empty( $itinerary['post_taxonomies'][ SEASON_TAXONOMY ] ) || ! is_array( $itinerary['post_taxonomies'][ SEASON_TAXONOMY ] ) ) {
-		return '';
-	}
-
-	// Check for Season.
-	if ( ! isset( $itinerary['post_taxonomies'][ SEASON_TAXONOMY ][0] ) ) {
-		return '';
-	}
-
-	// Return Season.
-	return $itinerary['post_taxonomies'][ SEASON_TAXONOMY ][0]['name'] ?? '';
-}
-
-/**
  * Get paid adventure options.
  *
  * @param int $post_id Departure Post ID.
@@ -526,37 +485,6 @@ function get_included_adventure_options( int $post_id = 0 ): array {
 
 	// Return Adventure Options.
 	return $included_adventure_options;
-}
-
-/**
- * Get departure region and Season.
- *
- * @param int $post_id Departure Post ID.
- *
- * @return string
- */
-function get_region_and_season( int $post_id = 0 ): string {
-	// Get departure.
-	$departure = get( $post_id );
-
-	// Check post_meta is not empty.
-	if ( ! $departure['post_meta'] ) {
-		return '';
-	}
-
-	// Get region from meta.
-	$region = $departure['post_meta']['softrip_market_code'] ?? '';
-
-	// Get season.
-	$season = get_season( $post_id );
-
-	// Check region and season are empty.
-	if ( ! $region && ! $season ) {
-		return '';
-	}
-
-	// Return region and season.
-	return $region . '-' . $season;
 }
 
 /**
@@ -677,6 +605,11 @@ function get_card_data( int $departure_id = 0, string $currency = 'USD' ): array
 
 	// Get cached value.
 	$cached_value = wp_cache_get( $cache_key, CACHE_GROUP );
+
+	// Check for cached value.
+	if ( is_array( $cached_value ) && ! empty( $cached_value ) ) {
+		return $cached_value;
+	}
 
 	// Get departure.
 	$departure = get( $departure_id );
