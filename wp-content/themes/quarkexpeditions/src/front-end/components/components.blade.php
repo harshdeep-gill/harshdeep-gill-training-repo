@@ -136,6 +136,10 @@
 	</x-two-columns>
 </x-component-demo>
 
+<x-component-demo :keys="[ 'template-title' ]">
+	<x-template-title title="Template Title" />
+</x-component-demo>
+
 <x-component-demo :keys="[ 'review-cards', 'hero-refactor' ]">
 	<x-review-cards>
 		<x-review-cards.card>
