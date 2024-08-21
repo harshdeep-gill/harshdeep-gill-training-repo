@@ -1,11 +1,11 @@
 <?php
 /**
- * Block: Media CTA Banner.
+ * Block: CTA Banner.
  *
  * @package quark
  */
 
-namespace Quark\Theme\Blocks\MediaCtaBanner;
+namespace Quark\Theme\Blocks\CtaBanner;
 
 use WP_Block;
 
