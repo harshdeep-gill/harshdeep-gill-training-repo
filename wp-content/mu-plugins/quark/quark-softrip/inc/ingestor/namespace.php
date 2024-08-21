@@ -562,7 +562,7 @@ function get_departures_data( int $expedition_post_id = 0, int $itinerary_post_i
  *               array{
  *                 id: int,
  *                 promotionCode: string,
- *                 promo_price_per_person: int,
+ *                 promoPricePerPerson: int,
  *               }
  *             >
  *           },
@@ -575,7 +575,7 @@ function get_departures_data( int $expedition_post_id = 0, int $itinerary_post_i
  *               array{
  *                 id: int,
  *                 promotionCode: string,
- *                 promo_price_per_person: int,
+ *                 promoPricePerPerson: int,
  *               }
  *             >
  *           },
@@ -588,7 +588,7 @@ function get_departures_data( int $expedition_post_id = 0, int $itinerary_post_i
  *               array{
  *                 id: int,
  *                 promotionCode: string,
- *                 promo_price_per_person: int,
+ *                 promoPricePerPerson: int,
  *               }
  *             >
  *           },
@@ -601,7 +601,7 @@ function get_departures_data( int $expedition_post_id = 0, int $itinerary_post_i
  *               array{
  *                 id: int,
  *                 promotionCode: string,
- *                 promo_price_per_person: int,
+ *                 promoPricePerPerson: int,
  *               }
  *             >
  *           },
@@ -614,7 +614,7 @@ function get_departures_data( int $expedition_post_id = 0, int $itinerary_post_i
  *               array{
  *                 id: int,
  *                 promotionCode: string,
- *                 promo_price_per_person: int,
+ *                 promoPricePerPerson: int,
  *               }
  *             >
  *           }
@@ -831,7 +831,7 @@ function get_cabins_data( int $expedition_post_id = 0, int $itinerary_post_id = 
  *           array{
  *             id: int,
  *             promotionCode: string,
- *             promo_price_per_person: int,
+ *             promoPricePerPerson: int,
  *           }
  *         >
  *       },
@@ -844,7 +844,7 @@ function get_cabins_data( int $expedition_post_id = 0, int $itinerary_post_id = 
  *           array{
  *             id: int,
  *             promotionCode: string,
- *             promo_price_per_person: int,
+ *             promoPricePerPerson: int,
  *           }
  *         >
  *       },
@@ -857,7 +857,7 @@ function get_cabins_data( int $expedition_post_id = 0, int $itinerary_post_id = 
  *           array{
  *             id: int,
  *             promotionCode: string,
- *             promo_price_per_person: int,
+ *             promoPricePerPerson: int,
  *           }
  *         >
  *       },
@@ -870,7 +870,7 @@ function get_cabins_data( int $expedition_post_id = 0, int $itinerary_post_id = 
  *           array{
  *             id: int,
  *             promotionCode: string,
- *             promo_price_per_person: int,
+ *             promoPricePerPerson: int,
  *           }
  *         >
  *       },
@@ -883,7 +883,7 @@ function get_cabins_data( int $expedition_post_id = 0, int $itinerary_post_id = 
  *           array{
  *             id: int,
  *             promotionCode: string,
- *             promo_price_per_person: int,
+ *             promoPricePerPerson: int,
  *           }
  *         >
  *       }
@@ -1009,7 +1009,7 @@ function get_occupancies_data( int $itinerary_post_id = 0, int $departure_post_i
 				$occupancy_data['prices'][ $currency ]['promotionsApplied'][] = [
 					'id'                     => $occupancy_promotion['promotion_id'],
 					'promotionCode'         => $promotion_code,
-					'promo_price_per_person' => $occupancy_promotion[ 'price_per_person_' . strtolower( $currency ) ],
+					'promoPricePerPerson' => $promo_price_per_person,
 				];
 			}
 		}

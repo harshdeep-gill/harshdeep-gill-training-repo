@@ -1089,12 +1089,12 @@ class Test_Ingestor extends Softrip_TestCase {
                             [
                                 'id' => $promotion_id3,
                                 'promotionCode' => '10PIF',
-                                'promo_price_per_person' => 900,
+                                'promoPricePerPerson' => 900,
                             ],
                             [
                                 'id' => $promotion_id2,
                                 'promotionCode' => '20PROMO',
-                                'promo_price_per_person' => 800,
+                                'promoPricePerPerson' => 800,
                             ],
                         ],
                     ],
@@ -1107,17 +1107,17 @@ class Test_Ingestor extends Softrip_TestCase {
                             [
                                 'id' => $promotion_id3,
                                 'promotionCode' => '10PIF',
-                                'promo_price_per_person' => 7360,
+                                'promoPricePerPerson' => 7360,
                             ],
                             [
                                 'id' => $promotion_id2,
                                 'promotionCode' => '20PROMO',
-                                'promo_price_per_person' => 6544,
+                                'promoPricePerPerson' => 6544,
                             ],
                             [
                                 'id' => $promotion_id1,
                                 'promotionCode' => '10PROMO',
-                                'promo_price_per_person' => 5360,
+                                'promoPricePerPerson' => 5360,
                             ],
                         ],
                     ],
@@ -1130,12 +1130,12 @@ class Test_Ingestor extends Softrip_TestCase {
                             [
                                 'id' => $promotion_id3,
                                 'promotionCode' => '10PIF',
-                                'promo_price_per_person' => 900,
+                                'promoPricePerPerson' => 900,
                             ],
                             [
                                 'id' => $promotion_id2,
                                 'promotionCode' => '20PROMO',
-                                'promo_price_per_person' => 800,
+                                'promoPricePerPerson' => 800,
                             ],
                         ],
                     ],
@@ -1148,17 +1148,17 @@ class Test_Ingestor extends Softrip_TestCase {
                             [
                                 'id' => $promotion_id3,
                                 'promotionCode' => '10PIF',
-                                'promo_price_per_person' => 900,
+                                'promoPricePerPerson' => 900,
                             ],
                             [
                                 'id' => $promotion_id2,
                                 'promotionCode' => '20PROMO',
-                                'promo_price_per_person' => 800,
+                                'promoPricePerPerson' => 800,
                             ],
                             [
                                 'id' => $promotion_id1,
                                 'promotionCode' => '10PROMO',
-                                'promo_price_per_person' => 800,
+                                'promoPricePerPerson' => 800,
                             ],
                         ]
                     ],
@@ -1171,17 +1171,17 @@ class Test_Ingestor extends Softrip_TestCase {
                             [
                                 'id' => $promotion_id3,
                                 'promotionCode' => '10PIF',
-                                'promo_price_per_person' => 16850,
+                                'promoPricePerPerson' => 16850,
                             ],
                             [
                                 'id' => $promotion_id2,
                                 'promotionCode' => '20PROMO',
-                                'promo_price_per_person' => 14978,
+                                'promoPricePerPerson' => 14978,
                             ],
                             [
                                 'id' => $promotion_id1,
                                 'promotionCode' => '10PROMO',
-                                'promo_price_per_person' => 12300,
+                                'promoPricePerPerson' => 12300,
                             ],
                         ]
                     ],
