@@ -20,6 +20,7 @@
 			"default": ""
 		}
 	},
+	"parent": [ "quark/specifications" ],
 	"supports": {
 		"alignWide": false,
 		"anchor": true,
