@@ -632,35 +632,35 @@ class Test_Ingestor extends Softrip_TestCase {
                                 'currencyCode' => 'AUD',
                                 'pricePerPerson' => 1000,
                                 'mandatoryTransferPricePerPerson' => 0,
-                                'supplemental_price_per_person' => 0,
+                                'supplementalPricePerPerson' => 0,
                                 'promotions_applied' => [],
                             ],
                             'USD' => [
                                 'currencyCode' => 'USD',
                                 'pricePerPerson' => 0,
                                 'mandatoryTransferPricePerPerson' => 0,
-                                'supplemental_price_per_person' => 0,
+                                'supplementalPricePerPerson' => 0,
                                 'promotions_applied' => [],
                             ],
                             'EUR' => [
                                 'currencyCode' => 'EUR',
                                 'pricePerPerson' => 0,
                                 'mandatoryTransferPricePerPerson' => 0,
-                                'supplemental_price_per_person' => 0,
+                                'supplementalPricePerPerson' => 0,
                                 'promotions_applied' => [],
                             ],
                             'GBP' => [
                                 'currencyCode' => 'GBP',
                                 'pricePerPerson' => 0,
                                 'mandatoryTransferPricePerPerson' => 0,
-                                'supplemental_price_per_person' => 0,
+                                'supplementalPricePerPerson' => 0,
                                 'promotions_applied' => [],
                             ],
                             'CAD' => [
                                 'currencyCode' => 'CAD',
                                 'pricePerPerson' => 0,
                                 'mandatoryTransferPricePerPerson' => 0,
-                                'supplemental_price_per_person' => 0,
+                                'supplementalPricePerPerson' => 0,
                                 'promotions_applied' => [],
                             ],
 
@@ -774,35 +774,35 @@ class Test_Ingestor extends Softrip_TestCase {
                                 'currencyCode' => 'AUD',
                                 'pricePerPerson' => 1000,
                                 'mandatoryTransferPricePerPerson' => 0,
-                                'supplemental_price_per_person' => 0,
+                                'supplementalPricePerPerson' => 0,
                                 'promotions_applied' => [],
                             ],
                             'USD' => [
                                 'currencyCode' => 'USD',
                                 'pricePerPerson' => 0,
                                 'mandatoryTransferPricePerPerson' => 0,
-                                'supplemental_price_per_person' => 0,
+                                'supplementalPricePerPerson' => 0,
                                 'promotions_applied' => [],
                             ],
                             'EUR' => [
                                 'currencyCode' => 'EUR',
                                 'pricePerPerson' => 0,
                                 'mandatoryTransferPricePerPerson' => 0,
-                                'supplemental_price_per_person' => 0,
+                                'supplementalPricePerPerson' => 0,
                                 'promotions_applied' => [],
                             ],
                             'GBP' => [
                                 'currencyCode' => 'GBP',
                                 'pricePerPerson' => 0,
                                 'mandatoryTransferPricePerPerson' => 0,
-                                'supplemental_price_per_person' => 0,
+                                'supplementalPricePerPerson' => 0,
                                 'promotions_applied' => [],
                             ],
                             'CAD' => [
                                 'currencyCode' => 'CAD',
                                 'pricePerPerson' => 0,
                                 'mandatoryTransferPricePerPerson' => 0,
-                                'supplemental_price_per_person' => 0,
+                                'supplementalPricePerPerson' => 0,
                                 'promotions_applied' => [],
                             ],
                         ]
@@ -1084,7 +1084,7 @@ class Test_Ingestor extends Softrip_TestCase {
                         'currencyCode' => 'AUD',
                         'pricePerPerson' => 1000,
                         'mandatoryTransferPricePerPerson' => 0,
-                        'supplemental_price_per_person' => 0,
+                        'supplementalPricePerPerson' => 0,
                         'promotions_applied' => [
                             [
                                 'id' => $promotion_id3,
@@ -1102,7 +1102,7 @@ class Test_Ingestor extends Softrip_TestCase {
                         'currencyCode' => 'USD',
                         'pricePerPerson' => 8176,
                         'mandatoryTransferPricePerPerson' => 0,
-                        'supplemental_price_per_person' => 0,
+                        'supplementalPricePerPerson' => 0,
                         'promotions_applied' => [
                             [
                                 'id' => $promotion_id3,
@@ -1125,7 +1125,7 @@ class Test_Ingestor extends Softrip_TestCase {
                         'currencyCode' => 'CAD',
                         'pricePerPerson' => 1000,
                         'mandatoryTransferPricePerPerson' => 0,
-                        'supplemental_price_per_person' => 0,
+                        'supplementalPricePerPerson' => 0,
                         'promotions_applied' => [
                             [
                                 'id' => $promotion_id3,
@@ -1143,7 +1143,7 @@ class Test_Ingestor extends Softrip_TestCase {
                         'currencyCode' => 'EUR',
                         'pricePerPerson' => 780,
                         'mandatoryTransferPricePerPerson' => 0,
-                        'supplemental_price_per_person' => 0,
+                        'supplementalPricePerPerson' => 0,
                         'promotions_applied' => [
                             [
                                 'id' => $promotion_id3,
@@ -1166,7 +1166,7 @@ class Test_Ingestor extends Softrip_TestCase {
                         'currencyCode' => 'GBP',
                         'pricePerPerson' => 18722,
                         'mandatoryTransferPricePerPerson' => 0,
-                        'supplemental_price_per_person' => 0,
+                        'supplementalPricePerPerson' => 0,
                         'promotions_applied' => [
                             [
                                 'id' => $promotion_id3,
@@ -1199,35 +1199,35 @@ class Test_Ingestor extends Softrip_TestCase {
                         'currencyCode' => 'AUD',
                         'pricePerPerson' => 1000,
                         'mandatoryTransferPricePerPerson' => 0,
-                        'supplemental_price_per_person' => 0,
+                        'supplementalPricePerPerson' => 0,
                         'promotions_applied' => [],
                     ],
                     'USD' => [
                         'currencyCode' => 'USD',
                         'pricePerPerson' => 0,
                         'mandatoryTransferPricePerPerson' => 0,
-                        'supplemental_price_per_person' => 0,
+                        'supplementalPricePerPerson' => 0,
                         'promotions_applied' => [],
                     ],
                     'EUR' => [
                         'currencyCode' => 'EUR',
                         'pricePerPerson' => 0,
                         'mandatoryTransferPricePerPerson' => 0,
-                        'supplemental_price_per_person' => 0,
+                        'supplementalPricePerPerson' => 0,
                         'promotions_applied' => [],
                     ],
                     'GBP' => [
                         'currencyCode' => 'GBP',
                         'pricePerPerson' => 0,
                         'mandatoryTransferPricePerPerson' => 0,
-                        'supplemental_price_per_person' => 0,
+                        'supplementalPricePerPerson' => 0,
                         'promotions_applied' => [],
                     ],
                     'CAD' => [
                         'currencyCode' => 'CAD',
                         'pricePerPerson' => 0,
                         'mandatoryTransferPricePerPerson' => 0,
-                        'supplemental_price_per_person' => 0,
+                        'supplementalPricePerPerson' => 0,
                         'promotions_applied' => [],
                     ],
                 ]
