@@ -67,7 +67,7 @@ import * as shipRelatedAdventureOptions from './ship-related-adventure-options';
 import * as mediaCarousel from './media-carousel';
 import * as bookDeparturesExpeditions from './book-departures-expeditions';
 import * as shipCabinCategories from './ship-cabin-categories';
-import * as specifications from './specifications';
+import * as shipSpecifications from './ship-specifications';
 import * as expeditionHero from './expedition-hero';
 
 /**
@@ -134,13 +134,13 @@ const blocks = [
 	shipRelatedAdventureOptions,
 	mediaCarousel,
 	bookDeparturesExpeditions,
-	specifications,
 	expeditionHero,
 ];
 
 // Register blocks for ships.
 if ( typenow && 'qrk_ship' === typenow ) {
 	blocks.push( shipCabinCategories );
+	blocks.push( shipSpecifications );
 }
 
 /**

@@ -1,11 +1,11 @@
 <?php
 /**
- * Block: Specifications.
+ * Block: Ship Specifications.
  *
  * @package quark
  */
 
-namespace Quark\Theme\Blocks\Specifications;
+namespace Quark\Theme\Blocks\ShipSpecifications;
 
 use function Quark\Ships\get_ship_data;
 
