@@ -35,7 +35,7 @@ export const { name }: { name: string } = metadata;
 export default function Edit( { className }: BlockEditAttributes ): JSX.Element {
 	// Block properties.
 	const blockProps = useBlockProps( {
-		className: classnames( className, 'quark-specifications' ),
+		className: classnames( className, 'quark-ship-specifications' ),
 	} );
 
 	// Return the block's markup.
@@ -47,7 +47,7 @@ export default function Edit( { className }: BlockEditAttributes ): JSX.Element 
 					EmptyResponsePlaceholder={ () => (
 						<Placeholder
 							icon="palmtree"
-							label={ __( 'Specifications', 'qrk' ) }
+							label={ __( 'Ship Specifications', 'qrk' ) }
 							instructions={ __(
 								'Update the meta fields in this post to render the data in the frontend.',
 								'qrk',

@@ -159,6 +159,8 @@ class Test_Update_Departures extends Softrip_TestCase {
 				'update_post_term_cache' => false,
 				'ignore_sticky_posts'    => true,
 				'suppress_filters'       => false,
+				'order'                  => 'ASC',
+				'orderby'                => 'ID',
 				'fields'                 => 'ids',
 				'meta_query'             => [
 					[
@@ -307,6 +309,7 @@ class Test_Update_Departures extends Softrip_TestCase {
 				'suppress_filters'       => false,
 				'fields'                 => 'ids',
 				'order'                  => 'ASC',
+				'orderby'                => 'ID',
 				'meta_query'             => [
 					[
 						'key'   => 'softrip_package_code',
@@ -386,6 +389,7 @@ class Test_Update_Departures extends Softrip_TestCase {
 				'suppress_filters'       => false,
 				'fields'                 => 'ids',
 				'order'                  => 'ASC',
+				'orderby'                => 'ID',
 				'meta_query'             => [
 					[
 						'key'   => 'softrip_package_code',
@@ -418,6 +422,7 @@ class Test_Update_Departures extends Softrip_TestCase {
 				'suppress_filters'       => false,
 				'fields'                 => 'ids',
 				'order'                  => 'ASC',
+				'orderby'                => 'ID',
 				'meta_query'             => [
 					[
 						'key'   => 'softrip_package_code',
@@ -459,6 +464,7 @@ class Test_Update_Departures extends Softrip_TestCase {
 				'suppress_filters'       => false,
 				'fields'                 => 'ids',
 				'order'                  => 'ASC',
+				'orderby'                => 'ID',
 				'meta_query'             => [
 					[
 						'key'   => 'softrip_package_code',
@@ -484,6 +490,7 @@ class Test_Update_Departures extends Softrip_TestCase {
 				'suppress_filters'       => false,
 				'fields'                 => 'ids',
 				'order'                  => 'ASC',
+				'orderby'                => 'ID',
 				'post_status'            => 'draft',
 				'meta_query'             => [
 					[
@@ -532,6 +539,7 @@ class Test_Update_Departures extends Softrip_TestCase {
 				'suppress_filters'       => false,
 				'fields'                 => 'ids',
 				'order'                  => 'ASC',
+				'orderby'                => 'ID',
 				'meta_query'             => [
 					[
 						'key'   => 'softrip_package_code',
@@ -575,6 +583,7 @@ class Test_Update_Departures extends Softrip_TestCase {
 				'suppress_filters'       => false,
 				'fields'                 => 'ids',
 				'order'                  => 'ASC',
+				'orderby'                => 'ID',
 				'meta_query'             => [
 					[
 						'key'   => 'softrip_package_code',
@@ -619,6 +628,7 @@ class Test_Update_Departures extends Softrip_TestCase {
 				'suppress_filters'       => false,
 				'fields'                 => 'ids',
 				'order'                  => 'ASC',
+				'orderby'                => 'ID',
 				'meta_query'             => [
 					[
 						'key'   => 'softrip_package_code',
@@ -679,6 +689,7 @@ class Test_Update_Departures extends Softrip_TestCase {
 				'suppress_filters'       => false,
 				'fields'                 => 'ids',
 				'order'                  => 'ASC',
+				'orderby'                => 'ID',
 				'meta_query'             => [
 					[
 						'key'   => 'softrip_package_code',
@@ -705,6 +716,7 @@ class Test_Update_Departures extends Softrip_TestCase {
 				'suppress_filters'       => false,
 				'fields'                 => 'ids',
 				'order'                  => 'ASC',
+				'orderby'                => 'ID',
 				'meta_query'             => [
 					[
 						'key'   => 'softrip_package_code',
@@ -731,6 +743,7 @@ class Test_Update_Departures extends Softrip_TestCase {
 				'suppress_filters'       => false,
 				'fields'                 => 'ids',
 				'order'                  => 'ASC',
+				'orderby'                => 'ID',
 				'meta_query'             => [
 					[
 						'key'   => 'softrip_package_code',
@@ -757,6 +770,7 @@ class Test_Update_Departures extends Softrip_TestCase {
 				'suppress_filters'       => false,
 				'fields'                 => 'ids',
 				'order'                  => 'ASC',
+				'orderby'                => 'ID',
 				'meta_query'             => [
 					[
 						'key'   => 'softrip_package_code',
