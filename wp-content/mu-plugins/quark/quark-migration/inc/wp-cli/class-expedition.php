@@ -124,6 +124,11 @@ class Expedition {
 		} elseif ( $normalized_post['meta_input']['related_itineraries'] ) {
 			// set related itineraries.
 			update_field( 'related_itineraries', $normalized_post['meta_input']['related_itineraries'], $output );
+
+			// set related expedition to itinerary.
+			foreach ( $normalized_post['meta_input']['related_itineraries'] as $itinerary_id ) {
+				update_post_meta( $itinerary_id, 'related_expedition', $output );
+			}
 		}
 	}
 

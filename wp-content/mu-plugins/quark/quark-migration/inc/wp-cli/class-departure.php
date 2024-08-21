@@ -344,7 +344,7 @@ class Departure {
 				LEFT JOIN node__field_departure_staff_members AS field_departure_staff_members ON node.nid = field_departure_staff_members.entity_id AND node.langcode = field_departure_staff_members.langcode
 				LEFT JOIN node__field_itinerary AS field_itinerary ON node.nid = field_itinerary.entity_id AND node.langcode = field_itinerary.langcode
 		WHERE
-			node.type = 'departure'";
+			node.type = 'departure' and field_data.status = 1";
 
 		// Fetch data.
 		$result = $drupal_database->get_results( $query, ARRAY_A );
