@@ -42,41 +42,41 @@ use const Quark\Itineraries\DEPARTURE_LOCATION_TAXONOMY;
  * @return mixed[]
  */
 function prepare_data(): array {
-    // Prepare args.
-    $args = [
-        'post_type' => EXPEDITION_POST_TYPE,
-        'posts_per_page' => -1,
-        'post_status' => 'publish',
-        'fields' => 'ids',
-        'update_post_meta_cache' => false,
-        'update_post_term_cache' => false,
-        'no_found_rows' => true,
-    ];
+	// Prepare args.
+	$args = [
+		'post_type'              => EXPEDITION_POST_TYPE,
+		'posts_per_page'         => -1,
+		'post_status'            => 'publish',
+		'fields'                 => 'ids',
+		'update_post_meta_cache' => false,
+		'update_post_term_cache' => false,
+		'no_found_rows'          => true,
+	];
 
-    // Get all expedition IDs.
-    $expeditions = new WP_Query( $args );
-    $expedition_post_ids = $expeditions->posts;
-    $expedition_post_ids = array_map( 'absint', $expedition_post_ids );
+	// Get all expedition IDs.
+	$expeditions         = new WP_Query( $args );
+	$expedition_post_ids = $expeditions->posts;
+	$expedition_post_ids = array_map( 'absint', $expedition_post_ids );
 
-    // Initialize results.
-    $results = [];
+	// Initialize results.
+	$results = [];
 
-    // Remove wptexturize filter.
-    remove_filter( 'the_title', 'wptexturize');
-    remove_filter( 'the_content', 'wptexturize' );
+	// Remove wptexturize filter.
+	remove_filter( 'the_title', 'wptexturize' );
+	remove_filter( 'the_content', 'wptexturize' );
 
-    // Get data for each expedition.
-    foreach ( $expedition_post_ids as $expedition_post_id ) {
-        $results[] = get_expedition_data( $expedition_post_id );
-    }
+	// Get data for each expedition.
+	foreach ( $expedition_post_ids as $expedition_post_id ) {
+		$results[] = get_expedition_data( $expedition_post_id );
+	}
 
-    // Add filters back.
-    add_filter( 'the_title', 'wptexturize');
-    add_filter( 'the_content', 'wptexturize' );
+	// Add filters back.
+	add_filter( 'the_title', 'wptexturize' );
+	add_filter( 'the_content', 'wptexturize' );
 
-    error_log(print_r($results, true));
-    
-    return $results;
+	error_log( print_r( $results, true ) );
+
+	return $results;
 }
 
 /**
@@ -121,28 +121,28 @@ function prepare_data(): array {
  * >
  */
 function get_expedition_data( int $expedition_post_id = 0 ): array {
-    // Early return if no expedition post ID.
-    if ( empty( $expedition_post_id ) ) {
-        return [];
-    }
+	// Early return if no expedition post ID.
+	if ( empty( $expedition_post_id ) ) {
+		return [];
+	}
 
-    // Initialize expedition data.
-    $expedition_data = [
-        'id' => $expedition_post_id,
-        'name' => strval( wp_slash( wp_strip_all_tags( get_the_title( $expedition_post_id ) ) ) ),
-        'description' => '', // @todo Get description after parsing post content.
-        'images' => [], // @todo Get images after parsing post content for hero-slider block.
-        'destinations' => [],
-        'itineraries'  => [],
-    ];
+	// Initialize expedition data.
+	$expedition_data = [
+		'id'           => $expedition_post_id,
+		'name'         => strval( wp_slash( wp_strip_all_tags( get_the_title( $expedition_post_id ) ) ) ),
+		'description'  => '', // @todo Get description after parsing post content.
+		'images'       => [], // @todo Get images after parsing post content for hero-slider block.
+		'destinations' => [],
+		'itineraries'  => [],
+	];
 
-    // Get destination terms.
-    $expedition_data['destinations'] = get_destination_terms( $expedition_post_id );
+	// Get destination terms.
+	$expedition_data['destinations'] = get_destination_terms( $expedition_post_id );
 
-    // Get itineraries.
-    $expedition_data['itineraries'] = get_itineraries( $expedition_post_id );
+	// Get itineraries.
+	$expedition_data['itineraries'] = get_itineraries( $expedition_post_id );
 
-    return $expedition_data;
+	return $expedition_data;
 }
 
 /**
@@ -162,67 +162,67 @@ function get_expedition_data( int $expedition_post_id = 0 ): array {
  * >
  */
 function get_destination_terms( int $expedition_post_id = 0 ): array {
-    // Early return if no expedition post ID.
-    if ( empty( $expedition_post_id ) ) {
-        return [];
-    }
+	// Early return if no expedition post ID.
+	if ( empty( $expedition_post_id ) ) {
+		return [];
+	}
 
-    // Initialize region.
-    $regions = [];
+	// Initialize region.
+	$regions = [];
 
-    // Get expedition post.
-    $expedition_post = get_expedition( $expedition_post_id );
+	// Get expedition post.
+	$expedition_post = get_expedition( $expedition_post_id );
 
-    // Check for post.
-    if ( empty( $expedition_post['post'] ) || ! $expedition_post['post'] instanceof WP_Post ) {
-        return $regions;
-    }
+	// Check for post.
+	if ( empty( $expedition_post['post'] ) || ! $expedition_post['post'] instanceof WP_Post ) {
+		return $regions;
+	}
 
-    // Check for taxonomies.
-    if ( ! array_key_exists( DESTINATION_TAXONOMY, $expedition_post['post_taxonomies'] ) || 
-        ! is_array( $expedition_post['post_taxonomies'][DESTINATION_TAXONOMY] )
-    ) {
-        return $regions;
-    }
+	// Check for taxonomies.
+	if ( ! array_key_exists( DESTINATION_TAXONOMY, $expedition_post['post_taxonomies'] ) ||
+		! is_array( $expedition_post['post_taxonomies'][ DESTINATION_TAXONOMY ] )
+	) {
+		return $regions;
+	}
 
-    // Loop through each destination term.
-    foreach (  $expedition_post['post_taxonomies'][DESTINATION_TAXONOMY] as $destination_term ) {
-        if ( empty( $destination_term['parent'] ) ) {
-            continue;
-        }
+	// Loop through each destination term.
+	foreach ( $expedition_post['post_taxonomies'][ DESTINATION_TAXONOMY ] as $destination_term ) {
+		if ( empty( $destination_term['parent'] ) ) {
+			continue;
+		}
 
-        // Parent term ID.
-        $parent_term_id = absint( $destination_term['parent'] );
+		// Parent term ID.
+		$parent_term_id = absint( $destination_term['parent'] );
 
-        // Softrip ID for parent.
-        $softrip_id = get_term_meta( $parent_term_id, 'softrip_id', true );
+		// Softrip ID for parent.
+		$softrip_id = get_term_meta( $parent_term_id, 'softrip_id', true );
 
-        // Check for Softrip ID.
-        if ( empty( $softrip_id ) ) {
-            continue;
-        }
+		// Check for Softrip ID.
+		if ( empty( $softrip_id ) ) {
+			continue;
+		}
 
-        // Get parent term.
-        $parent_term = get_term( $parent_term_id, DESTINATION_TAXONOMY, ARRAY_A );
+		// Get parent term.
+		$parent_term = get_term( $parent_term_id, DESTINATION_TAXONOMY, ARRAY_A );
 
-        // Check for parent term.
-        if ( empty( $parent_term ) || ! is_array( $parent_term ) ) {
-            continue;
-        }
+		// Check for parent term.
+		if ( empty( $parent_term ) || ! is_array( $parent_term ) ) {
+			continue;
+		}
 
-        // Add region.
-        $regions[] = [
-            'id' => $destination_term['term_id'],
-            'name' => $destination_term['name'],
-            'region' => [
-                'name' => $parent_term['name'],
-                'code' => strval( $softrip_id ),
-            ],
-        ];
-    }
+		// Add region.
+		$regions[] = [
+			'id'     => $destination_term['term_id'],
+			'name'   => $destination_term['name'],
+			'region' => [
+				'name' => $parent_term['name'],
+				'code' => strval( $softrip_id ),
+			],
+		];
+	}
 
-    // Return region terms.
-    return $regions;
+	// Return region terms.
+	return $regions;
 }
 
 /**
@@ -242,102 +242,104 @@ function get_destination_terms( int $expedition_post_id = 0 ): array {
  * >
  */
 function get_itineraries( int $expedition_post_id = 0 ): array {
-    // Initialize itineraries.
-    $itineraries_data = [];
+	// Initialize itineraries.
+	$itineraries_data = [];
 
-    // Early return if no expedition post ID.
-    if ( empty( $expedition_post_id ) ) {
-        return $itineraries_data;
-    }
+	// Early return if no expedition post ID.
+	if ( empty( $expedition_post_id ) ) {
+		return $itineraries_data;
+	}
 
-    // Get expedition post.
-    $expedition_post = get_expedition( $expedition_post_id );
+	// Get expedition post.
+	$expedition_post = get_expedition( $expedition_post_id );
 
-    // Check for post.
-    if ( empty( $expedition_post['post'] ) || ! $expedition_post['post'] instanceof WP_Post ) {
-        return $itineraries_data;
-    }
+	// Check for post.
+	if ( empty( $expedition_post['post'] ) || ! $expedition_post['post'] instanceof WP_Post ) {
+		return $itineraries_data;
+	}
 
-    
-    // Check for itineraries.
-    if ( ! array_key_exists( 'related_itineraries', $expedition_post['post_meta'] ) || 
-    ! is_array( $expedition_post['post_meta']['related_itineraries'] )
-    ) {
-        return $itineraries_data;
-    }
+	// Check for itineraries.
+	if ( ! array_key_exists( 'related_itineraries', $expedition_post['post_meta'] ) ||
+	! is_array( $expedition_post['post_meta']['related_itineraries'] )
+	) {
+		return $itineraries_data;
+	}
 
-    // Validate itineraries.
-    $itinerary_post_ids = array_map( 'absint', $expedition_post['post_meta']['related_itineraries'] );
+	// Validate itineraries.
+	$itinerary_post_ids = array_map( 'absint', $expedition_post['post_meta']['related_itineraries'] );
 
-    // Filter itineraries.
-    $itinerary_post_ids = array_filter( $itinerary_post_ids, function( $itinerary_id ) {
-        return get_post_status( $itinerary_id ) === 'publish';
-    } );
+	// Filter itineraries.
+	$itinerary_post_ids = array_filter(
+		$itinerary_post_ids,
+		function ( $itinerary_id ) {
+			return get_post_status( $itinerary_id ) === 'publish';
+		}
+	);
 
-    // Loop through each itinerary.
-    foreach ( $itinerary_post_ids as $itinerary_post_id ) {
-        // Get itinerary post.
-        $itinerary_post = get_itinerary( $itinerary_post_id );
+	// Loop through each itinerary.
+	foreach ( $itinerary_post_ids as $itinerary_post_id ) {
+		// Get itinerary post.
+		$itinerary_post = get_itinerary( $itinerary_post_id );
 
-        // Check for post.
-        if ( empty( $itinerary_post['post'] ) || ! $itinerary_post['post'] instanceof WP_Post ) {
-            continue;
-        }
+		// Check for post.
+		if ( empty( $itinerary_post['post'] ) || ! $itinerary_post['post'] instanceof WP_Post ) {
+			continue;
+		}
 
-        // Validate softrip_package_code
-        if ( ! array_key_exists( 'softrip_package_code', $itinerary_post['post_meta'] ) ) {
-            continue;
-        }
+		// Validate softrip_package_code
+		if ( ! array_key_exists( 'softrip_package_code', $itinerary_post['post_meta'] ) ) {
+			continue;
+		}
 
-        // Initialize softrip_package_code.
-        $softrip_package_code = strval( $itinerary_post['post_meta']['softrip_package_code'] );
+		// Initialize softrip_package_code.
+		$softrip_package_code = strval( $itinerary_post['post_meta']['softrip_package_code'] );
 
-        // Bail if no softrip_package_code.
-        if ( empty( $softrip_package_code ) ) {
-            continue;
-        }
+		// Bail if no softrip_package_code.
+		if ( empty( $softrip_package_code ) ) {
+			continue;
+		}
 
-        // Initialize itinerary data.
-        $itinerary_data = [
-            'id' => $itinerary_post_id,
-            'packageId' => $softrip_package_code,
-            'name' => $itinerary_post['post']->post_title,
-            'startLocation' => '',
-            'endLocation' => '',
-            'departures' => [],
-        ];
+		// Initialize itinerary data.
+		$itinerary_data = [
+			'id'            => $itinerary_post_id,
+			'packageId'     => $softrip_package_code,
+			'name'          => $itinerary_post['post']->post_title,
+			'startLocation' => '',
+			'endLocation'   => '',
+			'departures'    => [],
+		];
 
-        // Get start location from meta.
-        $start_location_id = absint( get_post_meta( $itinerary_post_id, 'start_location', true ) );
+		// Get start location from meta.
+		$start_location_id = absint( get_post_meta( $itinerary_post_id, 'start_location', true ) );
 
-        // Get term name.
-        $start_location_term = get_term( $start_location_id, DEPARTURE_LOCATION_TAXONOMY, ARRAY_A );
+		// Get term name.
+		$start_location_term = get_term( $start_location_id, DEPARTURE_LOCATION_TAXONOMY, ARRAY_A );
 
-        // Check for term.
-        if ( ! empty( $start_location_term ) && is_array( $start_location_term ) ) {
-            $itinerary_data['startLocation'] = $start_location_term['name'];
-        }
+		// Check for term.
+		if ( ! empty( $start_location_term ) && is_array( $start_location_term ) ) {
+			$itinerary_data['startLocation'] = $start_location_term['name'];
+		}
 
-        // Get end location from meta.
-        $end_location_id = absint( get_post_meta( $itinerary_post_id, 'end_location', true ) );
+		// Get end location from meta.
+		$end_location_id = absint( get_post_meta( $itinerary_post_id, 'end_location', true ) );
 
-        // Get term name.
-        $end_location_term = get_term( $end_location_id, DEPARTURE_LOCATION_TAXONOMY, ARRAY_A );
+		// Get term name.
+		$end_location_term = get_term( $end_location_id, DEPARTURE_LOCATION_TAXONOMY, ARRAY_A );
 
-        // Check for term.
-        if ( ! empty( $end_location_term ) && is_array( $end_location_term ) ) {
-            $itinerary_data['endLocation'] = $end_location_term['name'];
-        }
+		// Check for term.
+		if ( ! empty( $end_location_term ) && is_array( $end_location_term ) ) {
+			$itinerary_data['endLocation'] = $end_location_term['name'];
+		}
 
-        // Add departure data.
-        $itinerary_data['departures'] = get_departures_data( $expedition_post_id, $itinerary_post_id );
+		// Add departure data.
+		$itinerary_data['departures'] = get_departures_data( $expedition_post_id, $itinerary_post_id );
 
-        // Add itinerary data to itineraries.
-        $itineraries_data[] = $itinerary_data;
-    }
+		// Add itinerary data to itineraries.
+		$itineraries_data[] = $itinerary_data;
+	}
 
-    // Itineraries data.
-    return $itineraries_data;
+	// Itineraries data.
+	return $itineraries_data;
 }
 
 /**
@@ -364,110 +366,110 @@ function get_itineraries( int $expedition_post_id = 0 ): array {
  * >
  */
 function get_departures_data( int $expedition_post_id = 0, int $itinerary_post_id = 0 ): array {
-    // Initialize departures data.
-    $departures_data = [];
+	// Initialize departures data.
+	$departures_data = [];
 
-    // Early return if no expedition or itinerary post ID.
-    if ( empty( $itinerary_post_id ) || empty( $expedition_post_id ) ) {
-        return $departures_data;
-    }
+	// Early return if no expedition or itinerary post ID.
+	if ( empty( $itinerary_post_id ) || empty( $expedition_post_id ) ) {
+		return $departures_data;
+	}
 
-    $departure_post_ids = get_children(
-        [
-            'post_parent' => $itinerary_post_id,
-            'post_type' => DEPARTURE_POST_TYPE,
-            'post_status' => 'publish',
-            'posts_per_page' => -1,
-            'fields' => 'ids',
-            'update_post_meta_cache' => false,
-            'update_post_term_cache' => false,
-            'no_found_rows' => true,
-        ],
-        ARRAY_N
-    );
+	$departure_post_ids = get_children(
+		[
+			'post_parent'            => $itinerary_post_id,
+			'post_type'              => DEPARTURE_POST_TYPE,
+			'post_status'            => 'publish',
+			'posts_per_page'         => -1,
+			'fields'                 => 'ids',
+			'update_post_meta_cache' => false,
+			'update_post_term_cache' => false,
+			'no_found_rows'          => true,
+		],
+		ARRAY_N
+	);
 
-    // Validate departure post IDs.
-    $departure_post_ids = array_map( 'absint', $departure_post_ids );
+	// Validate departure post IDs.
+	$departure_post_ids = array_map( 'absint', $departure_post_ids );
 
-    // Loop through each departure.
-    foreach ( $departure_post_ids as $departure_post_id ) {
-        $departure_post = get_departure( $departure_post_id );
+	// Loop through each departure.
+	foreach ( $departure_post_ids as $departure_post_id ) {
+		$departure_post = get_departure( $departure_post_id );
 
-        // Check for post.
-        if ( empty( $departure_post['post'] ) || ! $departure_post['post'] instanceof WP_Post ) {
-            continue;
-        }
+		// Check for post.
+		if ( empty( $departure_post['post'] ) || ! $departure_post['post'] instanceof WP_Post ) {
+			continue;
+		}
 
-        // Get softrip_id meta.
-        if ( ! array_key_exists( 'softrip_id', $departure_post['post_meta'] ) ) {
-            continue;
-        }
+		// Get softrip_id meta.
+		if ( ! array_key_exists( 'softrip_id', $departure_post['post_meta'] ) ) {
+			continue;
+		}
 
-        // Initialize softrip_id.
-        $softrip_id = strval( $departure_post['post_meta']['softrip_id'] );
+		// Initialize softrip_id.
+		$softrip_id = strval( $departure_post['post_meta']['softrip_id'] );
 
-        // Initialize departure data.
-        $departure_data = [
-            'id' => $softrip_id,
-            'name' => $departure_post['post']->post_title,
-            'startDate' => $departure_post['post_meta']['start_date'] ?? '',
-            'endDate' => $departure_post['post_meta']['end_date'] ?? '',
-            'durationInDays' => $departure_post['post_meta']['duration'] ?? '',
-            'ship' => [],
-            'languages' => '',
-            'cabins' => [],
-        ];
+		// Initialize departure data.
+		$departure_data = [
+			'id'             => $softrip_id,
+			'name'           => $departure_post['post']->post_title,
+			'startDate'      => $departure_post['post_meta']['start_date'] ?? '',
+			'endDate'        => $departure_post['post_meta']['end_date'] ?? '',
+			'durationInDays' => $departure_post['post_meta']['duration'] ?? '',
+			'ship'           => [],
+			'languages'      => '',
+			'cabins'         => [],
+		];
 
-        // Get related ship.
-        $ship_id = get_related_ship( $departure_post_id );
+		// Get related ship.
+		$ship_id = get_related_ship( $departure_post_id );
 
-        // Check for ship ID.
-        if ( ! empty( $ship_id ) ) {
-            // Get code.
-            $ship_code = strval( get_post_meta( $ship_id, 'ship_code', true ) );
+		// Check for ship ID.
+		if ( ! empty( $ship_id ) ) {
+			// Get code.
+			$ship_code = strval( get_post_meta( $ship_id, 'ship_code', true ) );
 
-            // Check for ship code.
-            if ( ! empty( $ship_code ) ) {
-                $departure_data['ship'] = [
-                    'id' => $ship_id,
-                    'code' => $ship_code,
-                    'name' => strval( wp_slash( wp_strip_all_tags( get_the_title( $ship_id ) ) ) ),
-                ];
-            }
-        }
+			// Check for ship code.
+			if ( ! empty( $ship_code ) ) {
+				$departure_data['ship'] = [
+					'id'   => $ship_id,
+					'code' => $ship_code,
+					'name' => strval( wp_slash( wp_strip_all_tags( get_the_title( $ship_id ) ) ) ),
+				];
+			}
+		}
 
-        // Get languages.
-        if ( array_key_exists( SPOKEN_LANGUAGE_TAXONOMY, $departure_post['post_taxonomies'] ) && is_array( $departure_post['post_taxonomies'][SPOKEN_LANGUAGE_TAXONOMY] ) && ! empty( $departure_post['post_taxonomies'][SPOKEN_LANGUAGE_TAXONOMY] ) ) {
-            // Initialize languages.
-            $departure_languages = [];
+		// Get languages.
+		if ( array_key_exists( SPOKEN_LANGUAGE_TAXONOMY, $departure_post['post_taxonomies'] ) && is_array( $departure_post['post_taxonomies'][ SPOKEN_LANGUAGE_TAXONOMY ] ) && ! empty( $departure_post['post_taxonomies'][ SPOKEN_LANGUAGE_TAXONOMY ] ) ) {
+			// Initialize languages.
+			$departure_languages = [];
 
-            // Iterate through languages.
-            foreach ( $departure_post['post_taxonomies'][SPOKEN_LANGUAGE_TAXONOMY] as $language_term ) {
-                // Get language term ID.
-                $language_term_id = absint( $language_term['term_id'] );
+			// Iterate through languages.
+			foreach ( $departure_post['post_taxonomies'][ SPOKEN_LANGUAGE_TAXONOMY ] as $language_term ) {
+				// Get language term ID.
+				$language_term_id = absint( $language_term['term_id'] );
 
-                // Get language code from meta.
-                $language_code = strval( get_term_meta( $language_term_id, 'language_code', true ) );
+				// Get language code from meta.
+				$language_code = strval( get_term_meta( $language_term_id, 'language_code', true ) );
 
-                // Check for language code.
-                if ( ! empty( $language_code ) ) {
-                    $departure_languages[] = $language_code;
-                }
-            }
+				// Check for language code.
+				if ( ! empty( $language_code ) ) {
+					$departure_languages[] = $language_code;
+				}
+			}
 
-            // Set languages.
-            $departure_data['languages'] = implode( ', ', $departure_languages );
-        }
+			// Set languages.
+			$departure_data['languages'] = implode( ', ', $departure_languages );
+		}
 
-        // Add cabins data.
-        $departure_data['cabins'] = get_cabins_data( $expedition_post_id, $itinerary_post_id, $departure_post_id );
+		// Add cabins data.
+		$departure_data['cabins'] = get_cabins_data( $expedition_post_id, $itinerary_post_id, $departure_post_id );
 
-        // Add departure data.
-        $departures_data[] = $departure_data;
-    }
+		// Add departure data.
+		$departures_data[] = $departure_data;
+	}
 
-    // Return departures data.
-    return $departures_data;
+	// Return departures data.
+	return $departures_data;
 }
 
 /**
@@ -500,181 +502,181 @@ function get_departures_data( int $expedition_post_id = 0, int $itinerary_post_i
  * >
  */
 function get_cabins_data( int $expedition_post_id = 0, int $itinerary_post_id = 0, int $departure_post_id = 0 ): array {
-    // Initialize cabins data.
-    $cabins_data = [];
+	// Initialize cabins data.
+	$cabins_data = [];
 
-    // Early return if no expedition, itinerary or departure post ID.
-    if ( empty( $itinerary_post_id ) || empty( $expedition_post_id ) || empty( $departure_post_id ) ) {
-        return $cabins_data;
-    }
+	// Early return if no expedition, itinerary or departure post ID.
+	if ( empty( $itinerary_post_id ) || empty( $expedition_post_id ) || empty( $departure_post_id ) ) {
+		return $cabins_data;
+	}
 
-    // Get cabin category post ids by departure.
-    $cabin_category_post_ids = get_cabin_category_post_ids_by_departure( $departure_post_id );
+	// Get cabin category post ids by departure.
+	$cabin_category_post_ids = get_cabin_category_post_ids_by_departure( $departure_post_id );
 
-    // Validate cabin category post IDs.
-    if ( empty( $cabin_category_post_ids ) ) {
-        return $cabins_data;
-    }
+	// Validate cabin category post IDs.
+	if ( empty( $cabin_category_post_ids ) ) {
+		return $cabins_data;
+	}
 
-    // Get departure post.
-    $departure_post = get_departure( $departure_post_id );
+	// Get departure post.
+	$departure_post = get_departure( $departure_post_id );
 
-    // Check for post.
-    if ( empty( $departure_post['post'] ) || ! $departure_post['post'] instanceof WP_Post ) {
-        return $cabins_data;
-    }
+	// Check for post.
+	if ( empty( $departure_post['post'] ) || ! $departure_post['post'] instanceof WP_Post ) {
+		return $cabins_data;
+	}
 
-    // Get departure softrip_id meta.
-    if ( ! array_key_exists( 'softrip_id', $departure_post['post_meta'] ) ) {
-        return $cabins_data;
-    }
+	// Get departure softrip_id meta.
+	if ( ! array_key_exists( 'softrip_id', $departure_post['post_meta'] ) ) {
+		return $cabins_data;
+	}
 
-    // Initialize departure softrip_id.
-    $departure_softrip_id = strval( $departure_post['post_meta']['softrip_id'] );
+	// Initialize departure softrip_id.
+	$departure_softrip_id = strval( $departure_post['post_meta']['softrip_id'] );
 
-    // Check for departure softrip_id.
-    if ( empty( $departure_softrip_id ) ) {
-        return $cabins_data;
-    }
+	// Check for departure softrip_id.
+	if ( empty( $departure_softrip_id ) ) {
+		return $cabins_data;
+	}
 
-    // Loop through each cabin category.
-    foreach ( $cabin_category_post_ids as $cabin_category_post_id ) {
-        // Get cabin category post.
-        $cabin_category_post = get_cabin_category( $cabin_category_post_id );
+	// Loop through each cabin category.
+	foreach ( $cabin_category_post_ids as $cabin_category_post_id ) {
+		// Get cabin category post.
+		$cabin_category_post = get_cabin_category( $cabin_category_post_id );
 
-        // Check for post.
-        if ( empty( $cabin_category_post['post'] ) || ! $cabin_category_post['post'] instanceof WP_Post ) {
-            continue;
-        }
+		// Check for post.
+		if ( empty( $cabin_category_post['post'] ) || ! $cabin_category_post['post'] instanceof WP_Post ) {
+			continue;
+		}
 
-        // Check if cabin category has cabin_category_id meta.
-        if ( ! array_key_exists( 'cabin_category_id', $cabin_category_post['post_meta'] ) ) {
-            continue;
-        }
+		// Check if cabin category has cabin_category_id meta.
+		if ( ! array_key_exists( 'cabin_category_id', $cabin_category_post['post_meta'] ) ) {
+			continue;
+		}
 
-        // Initialize cabin category code.
-        $cabin_category_code = strval( $cabin_category_post['post_meta']['cabin_category_id'] );
+		// Initialize cabin category code.
+		$cabin_category_code = strval( $cabin_category_post['post_meta']['cabin_category_id'] );
 
-        // Bail if no cabin category id.
-        if ( empty( $cabin_category_code ) ) {
-            continue;
-        }
+		// Bail if no cabin category id.
+		if ( empty( $cabin_category_code ) ) {
+			continue;
+		}
 
-        // Cabin category id as per Softrip.
-        $cabin_category_id = $departure_softrip_id . ':' . $cabin_category_code;
+		// Cabin category id as per Softrip.
+		$cabin_category_id = $departure_softrip_id . ':' . $cabin_category_code;
 
-        // Initialize cabin category data.
-        $cabin_category_data = [
-            'id' => $cabin_category_id,
-            'name' => wp_strip_all_tags( $cabin_category_post['post']->post_title, true ),
-            'code' => $cabin_category_code,
-            'description' => wp_strip_all_tags( $cabin_category_post['post']->post_content, true ),
-            'bedDescription' => $cabin_category_post['post_meta']['cabin_bed_configuration'] ?? '',
-            'type' => '',
-            'location' => '',
-            'size' => '',
-            'media' => [],
-            'occupancies' => [],
-        ];
+		// Initialize cabin category data.
+		$cabin_category_data = [
+			'id'             => $cabin_category_id,
+			'name'           => wp_strip_all_tags( $cabin_category_post['post']->post_title, true ),
+			'code'           => $cabin_category_code,
+			'description'    => wp_strip_all_tags( $cabin_category_post['post']->post_content, true ),
+			'bedDescription' => $cabin_category_post['post_meta']['cabin_bed_configuration'] ?? '',
+			'type'           => '',
+			'location'       => '',
+			'size'           => '',
+			'media'          => [],
+			'occupancies'    => [],
+		];
 
-        // Get cabin category type from cabin_class taxonomy
-        if ( array_key_exists( CABIN_CLASS_TAXONOMY, $cabin_category_post['post_taxonomies'] ) && is_array( $cabin_category_post['post_taxonomies'][CABIN_CLASS_TAXONOMY] ) && ! empty( $cabin_category_post['post_taxonomies'][CABIN_CLASS_TAXONOMY] ) ) {
-            // Initialize cabin types.
-            $cabin_types = [];
+		// Get cabin category type from cabin_class taxonomy
+		if ( array_key_exists( CABIN_CLASS_TAXONOMY, $cabin_category_post['post_taxonomies'] ) && is_array( $cabin_category_post['post_taxonomies'][ CABIN_CLASS_TAXONOMY ] ) && ! empty( $cabin_category_post['post_taxonomies'][ CABIN_CLASS_TAXONOMY ] ) ) {
+			// Initialize cabin types.
+			$cabin_types = [];
 
-            // Iterate through cabin classes.
-            foreach ( $cabin_category_post['post_taxonomies'][CABIN_CLASS_TAXONOMY] as $cabin_class_term ) {
-                // Validate term name.
-                if ( empty( $cabin_class_term['name'] ) ) {
-                    continue;
-                }
+			// Iterate through cabin classes.
+			foreach ( $cabin_category_post['post_taxonomies'][ CABIN_CLASS_TAXONOMY ] as $cabin_class_term ) {
+				// Validate term name.
+				if ( empty( $cabin_class_term['name'] ) ) {
+					continue;
+				}
 
-                // Add cabin class term name.
-                $cabin_types[] = $cabin_class_term['name'];
-            }
+				// Add cabin class term name.
+				$cabin_types[] = $cabin_class_term['name'];
+			}
 
-            // Set cabin types separated by comma.
-            $cabin_category_data['type'] = implode( ', ', $cabin_types );
-        }
+			// Set cabin types separated by comma.
+			$cabin_category_data['type'] = implode( ', ', $cabin_types );
+		}
 
-        // Get location from meta.
-        if ( array_key_exists( 'related_decks', $cabin_category_post['post_meta'] ) && is_array( $cabin_category_post['post_meta']['related_decks'] ) ) {
-            $decks = [];
+		// Get location from meta.
+		if ( array_key_exists( 'related_decks', $cabin_category_post['post_meta'] ) && is_array( $cabin_category_post['post_meta']['related_decks'] ) ) {
+			$decks = [];
 
-            // Loop through related decks.
-            foreach ( $cabin_category_post['post_meta']['related_decks'] as $deck_id ) {
-                // Get deck name from meta.
-                $deck_name = strval( get_post_meta( $deck_id, 'deck_name', true ) );
+			// Loop through related decks.
+			foreach ( $cabin_category_post['post_meta']['related_decks'] as $deck_id ) {
+				// Get deck name from meta.
+				$deck_name = strval( get_post_meta( $deck_id, 'deck_name', true ) );
 
-                // Validate deck name.
-                if ( empty( $deck_name ) ) {
-                    continue;
-                }
+				// Validate deck name.
+				if ( empty( $deck_name ) ) {
+					continue;
+				}
 
-                $decks[] = $deck_name;
-            }
+				$decks[] = $deck_name;
+			}
 
-            // Set decks separated by comma.
-            $cabin_category_data['location'] = implode( ', ', $decks );
-        }
+			// Set decks separated by comma.
+			$cabin_category_data['location'] = implode( ', ', $decks );
+		}
 
-        // Get cabin size range from meta.
-        if ( array_key_exists( 'cabin_category_size_range_from', $cabin_category_post['post_meta'] ) && array_key_exists( 'cabin_category_size_range_to', $cabin_category_post['post_meta'] ) ) {
-            $from_range = strval( $cabin_category_post['post_meta']['cabin_category_size_range_from'] );
-            $to_range = strval( $cabin_category_post['post_meta']['cabin_category_size_range_to'] );
+		// Get cabin size range from meta.
+		if ( array_key_exists( 'cabin_category_size_range_from', $cabin_category_post['post_meta'] ) && array_key_exists( 'cabin_category_size_range_to', $cabin_category_post['post_meta'] ) ) {
+			$from_range = strval( $cabin_category_post['post_meta']['cabin_category_size_range_from'] );
+			$to_range   = strval( $cabin_category_post['post_meta']['cabin_category_size_range_to'] );
 
-            // Validate range.
-            if ( ! empty( $from_range ) && ! empty( $to_range ) ) {
-                $cabin_category_data['size'] = $from_range . ' - ' . $to_range;
-            }
-        }
+			// Validate range.
+			if ( ! empty( $from_range ) && ! empty( $to_range ) ) {
+				$cabin_category_data['size'] = $from_range . ' - ' . $to_range;
+			}
+		}
 
-        // Get cabin media from meta.
-        if ( array_key_exists( 'cabin_images', $cabin_category_post['post_meta'] ) && is_array( $cabin_category_post['post_meta']['cabin_images'] ) ) {
-            $media_ids = array_map( 'absint', $cabin_category_post['post_meta']['cabin_images'] );
+		// Get cabin media from meta.
+		if ( array_key_exists( 'cabin_images', $cabin_category_post['post_meta'] ) && is_array( $cabin_category_post['post_meta']['cabin_images'] ) ) {
+			$media_ids = array_map( 'absint', $cabin_category_post['post_meta']['cabin_images'] );
 
-            // Loop through media IDs.
-            foreach ( $media_ids as $media_id ) {
-                // Full size url.
-                $full_size_url = wp_get_attachment_image_url( $media_id, 'full' );
+			// Loop through media IDs.
+			foreach ( $media_ids as $media_id ) {
+				// Full size url.
+				$full_size_url = wp_get_attachment_image_url( $media_id, 'full' );
 
-                // Validate full size url.
-                if ( empty( $full_size_url ) ) {
-                    continue;
-                }
+				// Validate full size url.
+				if ( empty( $full_size_url ) ) {
+					continue;
+				}
 
-                // Thumbnail url.
-                $thumbnail_url = wp_get_attachment_image_url( $media_id, 'thumbnail' );
+				// Thumbnail url.
+				$thumbnail_url = wp_get_attachment_image_url( $media_id, 'thumbnail' );
 
-                // Validate thumbnail url.
-                if ( empty( $thumbnail_url ) ) {
-                    continue;
-                }
+				// Validate thumbnail url.
+				if ( empty( $thumbnail_url ) ) {
+					continue;
+				}
 
-                // Alt text.
-                $alt_text = strval( get_post_meta( $media_id, '_wp_attachment_image_alt', true ) );
+				// Alt text.
+				$alt_text = strval( get_post_meta( $media_id, '_wp_attachment_image_alt', true ) );
 
-                if ( empty( $alt_text ) ) {
-                    $alt_text = get_post_field( 'post_title', $media_id );
-                }
+				if ( empty( $alt_text ) ) {
+					$alt_text = get_post_field( 'post_title', $media_id );
+				}
 
-                $cabin_category_data['media'][] = [
-                    'id' => $media_id,
-                    'fullSizeUrl' => $full_size_url,
-                    'thumbnailUrl' => $thumbnail_url,
-                    'alt' => $alt_text,
-                ];
-            }
-        }
+				$cabin_category_data['media'][] = [
+					'id'           => $media_id,
+					'fullSizeUrl'  => $full_size_url,
+					'thumbnailUrl' => $thumbnail_url,
+					'alt'          => $alt_text,
+				];
+			}
+		}
 
-        // Add occupancies data.
-        $cabin_category_data['occupancies'] = get_occupancies_data( $itinerary_post_id, $departure_post_id, $cabin_category_post_id );
+		// Add occupancies data.
+		$cabin_category_data['occupancies'] = get_occupancies_data( $itinerary_post_id, $departure_post_id, $cabin_category_post_id );
 
-        // Add cabin category data.
-        $cabins_data[] = $cabin_category_data;
-    }
+		// Add cabin category data.
+		$cabins_data[] = $cabin_category_data;
+	}
 
-    return $cabins_data;
+	return $cabins_data;
 }
 
 /**
@@ -763,123 +765,123 @@ function get_cabins_data( int $expedition_post_id = 0, int $itinerary_post_id = 
  * >
  */
 function get_occupancies_data( int $itinerary_post_id = 0, int $departure_post_id = 0, int $cabin_category_post_id = 0 ): array {
-    // Initialize occupancies data.
-    $occupancies_data = [];
+	// Initialize occupancies data.
+	$occupancies_data = [];
 
-    // Early return if no itinerary, departure or cabin category post ID.
-    if ( empty( $itinerary_post_id ) || empty( $departure_post_id ) || empty( $cabin_category_post_id ) ) {
-        return $occupancies_data;
-    }
+	// Early return if no itinerary, departure or cabin category post ID.
+	if ( empty( $itinerary_post_id ) || empty( $departure_post_id ) || empty( $cabin_category_post_id ) ) {
+		return $occupancies_data;
+	}
 
-    // Get occupancies by departure post id and cabin category post id.
-    $occupancies = get_occupancies_by_cabin_category_and_departure( $cabin_category_post_id, $departure_post_id );
+	// Get occupancies by departure post id and cabin category post id.
+	$occupancies = get_occupancies_by_cabin_category_and_departure( $cabin_category_post_id, $departure_post_id );
 
-    // Validate occupancies.
-    if ( empty( $occupancies ) ) {
-        return $occupancies_data;
-    }
+	// Validate occupancies.
+	if ( empty( $occupancies ) ) {
+		return $occupancies_data;
+	}
 
-    // Initialize mandatory transfer price.
-    $mandatory_transfer_price = [];
-    $supplemental_price = [];
+	// Initialize mandatory transfer price.
+	$mandatory_transfer_price = [];
+	$supplemental_price       = [];
 
-    // Get mandatory transfer and supplemental price for each currency.
-    foreach ( CURRENCIES as $currency ) {
-        $mandatory_transfer_price[ $currency ] = get_mandatory_transfer_price( $itinerary_post_id, $currency );
-        $supplemental_price[ $currency ] = get_supplemental_price( $itinerary_post_id, $currency );
-    }
+	// Get mandatory transfer and supplemental price for each currency.
+	foreach ( CURRENCIES as $currency ) {
+		$mandatory_transfer_price[ $currency ] = get_mandatory_transfer_price( $itinerary_post_id, $currency );
+		$supplemental_price[ $currency ]       = get_supplemental_price( $itinerary_post_id, $currency );
+	}
 
-    // Loop through each occupancy.
-    foreach ( $occupancies as $occupancy ) {
-        // Initialize occupancy data.
-        $occupancy_data = [
-            'id' => $occupancy['softrip_id'],
-            'mask' => $occupancy['mask'],
-            'description' => get_description_and_pax_count_by_mask( $occupancy['mask'] )['description'],
-            'availabilityStatus' => $occupancy['availability_status'],
-            'availabilityDescription' => $occupancy['availability_description'],
-            'spacesAvailable' => $occupancy['spaces_available'],
-            'prices' => [
-                AUD_CURRENCY => [
-                    'price_per_person' => 0,
-                    'currency_code' => AUD_CURRENCY,
-                    'mandatory_transfer_price_per_person' => 0,
-                    'supplemental_price_per_person' => 0,
-                    'promotions_applied' => [],
-                ],
-                USD_CURRENCY => [
-                    'price_per_person' => 0,
-                    'currency_code' => USD_CURRENCY,
-                    'mandatory_transfer_price_per_person' => 0,
-                    'supplemental_price_per_person' => 0,
-                    'promotions_applied' => [],
-                ],
-                EUR_CURRENCY => [
-                    'price_per_person' => 0,
-                    'currency_code' => EUR_CURRENCY,
-                    'mandatory_transfer_price_per_person' => 0,
-                    'supplemental_price_per_person' => 0,
-                    'promotions_applied' => [],
-                ],
-                GBP_CURRENCY => [
-                    'price_per_person' => 0,
-                    'currency_code' => GBP_CURRENCY,
-                    'mandatory_transfer_price_per_person' => 0,
-                    'supplemental_price_per_person' => 0,
-                    'promotions_applied' => [],
-                ],
-                CAD_CURRENCY => [
-                    'price_per_person' => 0,
-                    'currency_code' => CAD_CURRENCY,
-                    'mandatory_transfer_price_per_person' => 0,
-                    'supplemental_price_per_person' => 0,
-                    'promotions_applied' => [],
-                ],
-            ]
-        ];
+	// Loop through each occupancy.
+	foreach ( $occupancies as $occupancy ) {
+		// Initialize occupancy data.
+		$occupancy_data = [
+			'id'                      => $occupancy['softrip_id'],
+			'mask'                    => $occupancy['mask'],
+			'description'             => get_description_and_pax_count_by_mask( $occupancy['mask'] )['description'],
+			'availabilityStatus'      => $occupancy['availability_status'],
+			'availabilityDescription' => $occupancy['availability_description'],
+			'spacesAvailable'         => $occupancy['spaces_available'],
+			'prices'                  => [
+				AUD_CURRENCY => [
+					'price_per_person'                    => 0,
+					'currency_code'                       => AUD_CURRENCY,
+					'mandatory_transfer_price_per_person' => 0,
+					'supplemental_price_per_person'       => 0,
+					'promotions_applied'                  => [],
+				],
+				USD_CURRENCY => [
+					'price_per_person'                    => 0,
+					'currency_code'                       => USD_CURRENCY,
+					'mandatory_transfer_price_per_person' => 0,
+					'supplemental_price_per_person'       => 0,
+					'promotions_applied'                  => [],
+				],
+				EUR_CURRENCY => [
+					'price_per_person'                    => 0,
+					'currency_code'                       => EUR_CURRENCY,
+					'mandatory_transfer_price_per_person' => 0,
+					'supplemental_price_per_person'       => 0,
+					'promotions_applied'                  => [],
+				],
+				GBP_CURRENCY => [
+					'price_per_person'                    => 0,
+					'currency_code'                       => GBP_CURRENCY,
+					'mandatory_transfer_price_per_person' => 0,
+					'supplemental_price_per_person'       => 0,
+					'promotions_applied'                  => [],
+				],
+				CAD_CURRENCY => [
+					'price_per_person'                    => 0,
+					'currency_code'                       => CAD_CURRENCY,
+					'mandatory_transfer_price_per_person' => 0,
+					'supplemental_price_per_person'       => 0,
+					'promotions_applied'                  => [],
+				],
+			],
+		];
 
-        // Set price per person, mandatory transfer price per person and supplemental price per person for each currency.
-        foreach ( CURRENCIES as $currency ) {
-            // Set price per person.
-            $occupancy_data['prices'][$currency]['price_per_person'] = $occupancy['price_per_person_' . strtolower( $currency )];
+		// Set price per person, mandatory transfer price per person and supplemental price per person for each currency.
+		foreach ( CURRENCIES as $currency ) {
+			// Set price per person.
+			$occupancy_data['prices'][ $currency ]['price_per_person'] = $occupancy[ 'price_per_person_' . strtolower( $currency ) ];
 
-            // Set mandatory transfer price per person.
-            $occupancy_data['prices'][$currency]['mandatory_transfer_price_per_person'] = $mandatory_transfer_price[ $currency ];
+			// Set mandatory transfer price per person.
+			$occupancy_data['prices'][ $currency ]['mandatory_transfer_price_per_person'] = $mandatory_transfer_price[ $currency ];
 
-            // Set supplemental price per person.
-            $occupancy_data['prices'][$currency]['supplemental_price_per_person'] = $supplemental_price[ $currency ];
-        }
+			// Set supplemental price per person.
+			$occupancy_data['prices'][ $currency ]['supplemental_price_per_person'] = $supplemental_price[ $currency ];
+		}
 
-        // Get occupancy promotions.
-        $occupancy_promotions = get_occupancy_promotions_by_occupancy( $occupancy['id'] );
+		// Get occupancy promotions.
+		$occupancy_promotions = get_occupancy_promotions_by_occupancy( $occupancy['id'] );
 
-        // Loop through each promotion and add promotions applied to each price.
-        foreach ( $occupancy_promotions as $occupancy_promotion ) {
-            // Promotion code.
-            $promotion = get_promotions_by_id( $occupancy_promotion['promotion_id'] );
+		// Loop through each promotion and add promotions applied to each price.
+		foreach ( $occupancy_promotions as $occupancy_promotion ) {
+			// Promotion code.
+			$promotion = get_promotions_by_id( $occupancy_promotion['promotion_id'] );
 
-            // Check for promotion code.
-            if ( empty( $promotion ) ) {
-                continue;
-            }
+			// Check for promotion code.
+			if ( empty( $promotion ) ) {
+				continue;
+			}
 
-            // Extract promotion code.
-            $promotion_code = $promotion[0]['code'];
+			// Extract promotion code.
+			$promotion_code = $promotion[0]['code'];
 
-            // Add to each price.
-            foreach ( CURRENCIES as $currency ) {
-                $occupancy_data['prices'][$currency]['promotions_applied'][] = [
-                    'id' => $occupancy_promotion['id'],
-                    'promotion_code' => $promotion_code,
-                    'promo_price_per_person' => $occupancy_promotion['price_per_person_' . strtolower( $currency )],
-                ];
-            }
-        }
+			// Add to each price.
+			foreach ( CURRENCIES as $currency ) {
+				$occupancy_data['prices'][ $currency ]['promotions_applied'][] = [
+					'id'                     => $occupancy_promotion['id'],
+					'promotion_code'         => $promotion_code,
+					'promo_price_per_person' => $occupancy_promotion[ 'price_per_person_' . strtolower( $currency ) ],
+				];
+			}
+		}
 
-        // Add occupancy data.
-        $occupancies_data[] = $occupancy_data;
-    }
+		// Add occupancy data.
+		$occupancies_data[] = $occupancy_data;
+	}
 
-    // Return occupancies data.
-    return $occupancies_data;
+	// Return occupancies data.
+	return $occupancies_data;
 }
