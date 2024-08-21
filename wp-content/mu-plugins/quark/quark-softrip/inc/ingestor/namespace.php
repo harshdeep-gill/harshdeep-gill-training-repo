@@ -558,7 +558,7 @@ function get_departures_data( int $expedition_post_id = 0, int $itinerary_post_i
  *             currencyCode: string,
  *             mandatoryTransferPricePerPerson: int,
  *             supplementalPricePerPerson: int,
- *             promotions_applied: array{}|array<int,
+ *             promotionsApplied: array{}|array<int,
  *               array{
  *                 id: int,
  *                 promotion_code: string,
@@ -571,7 +571,7 @@ function get_departures_data( int $expedition_post_id = 0, int $itinerary_post_i
  *             currencyCode: string,
  *             mandatoryTransferPricePerPerson: int,
  *             supplementalPricePerPerson: int,
- *             promotions_applied: array{}|array<int,
+ *             promotionsApplied: array{}|array<int,
  *               array{
  *                 id: int,
  *                 promotion_code: string,
@@ -584,7 +584,7 @@ function get_departures_data( int $expedition_post_id = 0, int $itinerary_post_i
  *             currencyCode: string,
  *             mandatoryTransferPricePerPerson: int,
  *             supplementalPricePerPerson: int,
- *             promotions_applied: array{}|array<int,
+ *             promotionsApplied: array{}|array<int,
  *               array{
  *                 id: int,
  *                 promotion_code: string,
@@ -597,7 +597,7 @@ function get_departures_data( int $expedition_post_id = 0, int $itinerary_post_i
  *             currencyCode: string,
  *             mandatoryTransferPricePerPerson: int,
  *             supplementalPricePerPerson: int,
- *             promotions_applied: array{}|array<int,
+ *             promotionsApplied: array{}|array<int,
  *               array{
  *                 id: int,
  *                 promotion_code: string,
@@ -610,7 +610,7 @@ function get_departures_data( int $expedition_post_id = 0, int $itinerary_post_i
  *             currencyCode: string,
  *             mandatoryTransferPricePerPerson: int,
  *             supplementalPricePerPerson: int,
- *             promotions_applied: array{}|array<int,
+ *             promotionsApplied: array{}|array<int,
  *               array{
  *                 id: int,
  *                 promotion_code: string,
@@ -827,7 +827,7 @@ function get_cabins_data( int $expedition_post_id = 0, int $itinerary_post_id = 
  *         currencyCode: string,
  *         mandatoryTransferPricePerPerson: int,
  *         supplementalPricePerPerson: int,
- *         promotions_applied: array{}|array<int,
+ *         promotionsApplied: array{}|array<int,
  *           array{
  *             id: int,
  *             promotion_code: string,
@@ -840,7 +840,7 @@ function get_cabins_data( int $expedition_post_id = 0, int $itinerary_post_id = 
  *         currencyCode: string,
  *         mandatoryTransferPricePerPerson: int,
  *         supplementalPricePerPerson: int,
- *         promotions_applied: array{}|array<int,
+ *         promotionsApplied: array{}|array<int,
  *           array{
  *             id: int,
  *             promotion_code: string,
@@ -853,7 +853,7 @@ function get_cabins_data( int $expedition_post_id = 0, int $itinerary_post_id = 
  *         currencyCode: string,
  *         mandatoryTransferPricePerPerson: int,
  *         supplementalPricePerPerson: int,
- *         promotions_applied: array{}|array<int,
+ *         promotionsApplied: array{}|array<int,
  *           array{
  *             id: int,
  *             promotion_code: string,
@@ -866,7 +866,7 @@ function get_cabins_data( int $expedition_post_id = 0, int $itinerary_post_id = 
  *         currencyCode: string,
  *         mandatoryTransferPricePerPerson: int,
  *         supplementalPricePerPerson: int,
- *         promotions_applied: array{}|array<int,
+ *         promotionsApplied: array{}|array<int,
  *           array{
  *             id: int,
  *             promotion_code: string,
@@ -879,7 +879,7 @@ function get_cabins_data( int $expedition_post_id = 0, int $itinerary_post_id = 
  *         currencyCode: string,
  *         mandatoryTransferPricePerPerson: int,
  *         supplementalPricePerPerson: int,
- *         promotions_applied: array{}|array<int,
+ *         promotionsApplied: array{}|array<int,
  *           array{
  *             id: int,
  *             promotion_code: string,
@@ -934,35 +934,35 @@ function get_occupancies_data( int $itinerary_post_id = 0, int $departure_post_i
 					'currencyCode'                       => AUD_CURRENCY,
 					'mandatoryTransferPricePerPerson' => 0,
 					'supplementalPricePerPerson'       => 0,
-					'promotions_applied'                  => [],
+					'promotionsApplied'                  => [],
 				],
 				USD_CURRENCY => [
 					'pricePerPerson'                    => 0,
 					'currencyCode'                       => USD_CURRENCY,
 					'mandatoryTransferPricePerPerson' => 0,
 					'supplementalPricePerPerson'       => 0,
-					'promotions_applied'                  => [],
+					'promotionsApplied'                  => [],
 				],
 				EUR_CURRENCY => [
 					'pricePerPerson'                    => 0,
 					'currencyCode'                       => EUR_CURRENCY,
 					'mandatoryTransferPricePerPerson' => 0,
 					'supplementalPricePerPerson'       => 0,
-					'promotions_applied'                  => [],
+					'promotionsApplied'                  => [],
 				],
 				GBP_CURRENCY => [
 					'pricePerPerson'                    => 0,
 					'currencyCode'                       => GBP_CURRENCY,
 					'mandatoryTransferPricePerPerson' => 0,
 					'supplementalPricePerPerson'       => 0,
-					'promotions_applied'                  => [],
+					'promotionsApplied'                  => [],
 				],
 				CAD_CURRENCY => [
 					'pricePerPerson'                    => 0,
 					'currencyCode'                       => CAD_CURRENCY,
 					'mandatoryTransferPricePerPerson' => 0,
 					'supplementalPricePerPerson'       => 0,
-					'promotions_applied'                  => [],
+					'promotionsApplied'                  => [],
 				],
 			],
 		];
@@ -1006,7 +1006,7 @@ function get_occupancies_data( int $itinerary_post_id = 0, int $departure_post_i
 				}
 
 				// Add promotion to prices.
-				$occupancy_data['prices'][ $currency ]['promotions_applied'][] = [
+				$occupancy_data['prices'][ $currency ]['promotionsApplied'][] = [
 					'id'                     => $occupancy_promotion['promotion_id'],
 					'promotion_code'         => $promotion_code,
 					'promo_price_per_person' => $occupancy_promotion[ 'price_per_person_' . strtolower( $currency ) ],
