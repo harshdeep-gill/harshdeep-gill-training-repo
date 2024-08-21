@@ -134,7 +134,6 @@ const blocks = [
 	shipRelatedAdventureOptions,
 	mediaCarousel,
 	bookDeparturesExpeditions,
-	shipSpecifications,
 	expeditionHero,
 ];
 
