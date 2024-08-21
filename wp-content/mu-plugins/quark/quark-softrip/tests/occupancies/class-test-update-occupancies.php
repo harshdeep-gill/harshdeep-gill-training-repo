@@ -185,12 +185,12 @@ class Test_Update_Occupancies extends Softrip_TestCase {
 			'name'        => 'Explorer Suite',
 			'occupancies' => [
 				[
-					'id'                      => 'CAB1:OCC1',
-					'name'                    => 'Single',
-					'mask'                    => 'A',
-					'spacesAvailable'         => 10,
-					'availabilityDescription' => 'Available',
-					'saleStatusCode'      => 'C',
+					'id'              => 'CAB1:OCC1',
+					'name'            => 'Single',
+					'mask'            => 'A',
+					'spacesAvailable' => 10,
+					'saleStatus'      => 'Open',
+					'saleStatusCode'  => 'S',
 				],
 			],
 		];
@@ -207,13 +207,13 @@ class Test_Update_Occupancies extends Softrip_TestCase {
 			'name'        => 'Explorer Suite',
 			'occupancies' => [
 				[
-					'id'                      => 'CAB1:OCC1',
-					'name'                    => 'Single',
-					'mask'                    => 'A',
-					'spacesAvailable'         => 10,
-					'availabilityDescription' => 'Available',
-					'saleStatusCode'      => 'C',
-					'prices'                  => [
+					'id'              => 'CAB1:OCC1',
+					'name'            => 'Single',
+					'mask'            => 'A',
+					'spacesAvailable' => 10,
+					'saleStatus'      => 'Open',
+					'saleStatusCode'  => 'S',
+					'prices'          => [
 						'USD' => [
 							'pricePerPerson' => 1000,
 						],
@@ -247,8 +247,8 @@ class Test_Update_Occupancies extends Softrip_TestCase {
 		$this->assertSame( 'Single', $occupancy['softrip_name'] );
 		$this->assertSame( 'A', $occupancy['mask'] );
 		$this->assertSame( 10, $occupancy['spaces_available'] );
-		$this->assertSame( 'Available', $occupancy['availability_description'] );
-		$this->assertSame( 'C', $occupancy['availability_status'] );
+		$this->assertSame( 'Open', $occupancy['availability_description'] );
+		$this->assertSame( 'S', $occupancy['availability_status'] );
 		$this->assertSame( 1000, $occupancy['price_per_person_usd'] );
 		$this->assertSame( 0, $occupancy['price_per_person_cad'] );
 		$this->assertSame( 0, $occupancy['price_per_person_eur'] );
@@ -261,13 +261,13 @@ class Test_Update_Occupancies extends Softrip_TestCase {
 			'name'        => 'Explorer Suite',
 			'occupancies' => [
 				[
-					'id'                      => 'CAB1:OCC1',
-					'name'                    => 'Single',
-					'mask'                    => 'A',
-					'spacesAvailable'         => 10,
-					'availabilityDescription' => 'Available',
-					'saleStatusCode'      => 'C',
-					'prices'                  => [
+					'id'              => 'CAB1:OCC1',
+					'name'            => 'Single',
+					'mask'            => 'A',
+					'spacesAvailable' => 10,
+					'saleStatus'      => 'Open',
+					'saleStatusCode'  => 'S',
+					'prices'          => [
 						'USD' => [
 							'pricePerPerson' => 2000,
 						],
@@ -310,13 +310,13 @@ class Test_Update_Occupancies extends Softrip_TestCase {
 			'name'        => 'Explorer Suite',
 			'occupancies' => [
 				[
-					'id'                      => 'CAB1:OCC1',
-					'name'                    => 'Single',
-					'mask'                    => 'A',
-					'spacesAvailable'         => 10,
-					'availabilityDescription' => 'Available',
-					'saleStatusCode'      => 'R',
-					'prices'                  => [
+					'id'              => 'CAB1:OCC1',
+					'name'            => 'Single',
+					'mask'            => 'A',
+					'spacesAvailable' => 10,
+					'saleStatus'      => 'Open',
+					'saleStatusCode'  => 'R',
+					'prices'          => [
 						'USD' => [
 							'pricePerPerson' => 2000,
 						],
@@ -355,13 +355,13 @@ class Test_Update_Occupancies extends Softrip_TestCase {
 			'name'        => 'Explorer Suite',
 			'occupancies' => [
 				[
-					'id'                      => 'CAB1:OCC1',
-					'name'                    => 'Single',
-					'mask'                    => 'A',
-					'spacesAvailable'         => 10,
-					'availabilityDescription' => 'Available',
-					'saleStatusCode'      => 'C',
-					'prices'                  => [
+					'id'              => 'CAB1:OCC1',
+					'name'            => 'Single',
+					'mask'            => 'A',
+					'spacesAvailable' => 10,
+					'saleStatus'      => 'Open',
+					'saleStatusCode'  => 'S',
+					'prices'          => [
 						'USD' => [
 							'pricePerPerson' => 2000,
 						],
@@ -380,13 +380,13 @@ class Test_Update_Occupancies extends Softrip_TestCase {
 					],
 				],
 				[
-					'id'                      => 'CAB1:OCC2',
-					'name'                    => 'Double',
-					'mask'                    => 'B',
-					'spacesAvailable'         => 20,
-					'availabilityDescription' => 'Available',
-					'saleStatusCode'      => 'O',
-					'prices'                  => [
+					'id'              => 'CAB1:OCC2',
+					'name'            => 'Double',
+					'mask'            => 'B',
+					'spacesAvailable' => 20,
+					'saleStatus'      => 'Open',
+					'saleStatusCode'  => 'O',
+					'prices'          => [
 						'USD' => [
 							'pricePerPerson' => 1500,
 						],
@@ -421,8 +421,8 @@ class Test_Update_Occupancies extends Softrip_TestCase {
 		$this->assertSame( 'Single', $occupancy['softrip_name'] );
 		$this->assertSame( 'A', $occupancy['mask'] );
 		$this->assertSame( 10, $occupancy['spaces_available'] );
-		$this->assertSame( 'Available', $occupancy['availability_description'] );
-		$this->assertSame( 'C', $occupancy['availability_status'] );
+		$this->assertSame( 'Open', $occupancy['availability_description'] );
+		$this->assertSame( 'S', $occupancy['availability_status'] );
 		$this->assertSame( 2000, $occupancy['price_per_person_usd'] );
 		$this->assertSame( 2500, $occupancy['price_per_person_cad'] );
 		$this->assertSame( 3000, $occupancy['price_per_person_eur'] );
@@ -436,7 +436,7 @@ class Test_Update_Occupancies extends Softrip_TestCase {
 		$this->assertSame( 'Double', $occupancy['softrip_name'] );
 		$this->assertSame( 'B', $occupancy['mask'] );
 		$this->assertSame( 20, $occupancy['spaces_available'] );
-		$this->assertSame( 'Available', $occupancy['availability_description'] );
+		$this->assertSame( 'Open', $occupancy['availability_description'] );
 		$this->assertSame( 'O', $occupancy['availability_status'] );
 		$this->assertSame( 1500, $occupancy['price_per_person_usd'] );
 		$this->assertSame( 2000, $occupancy['price_per_person_cad'] );
@@ -450,13 +450,13 @@ class Test_Update_Occupancies extends Softrip_TestCase {
 			'name'        => 'Deluxe Suite',
 			'occupancies' => [
 				[
-					'id'                      => 'CAB2:OCC1',
-					'name'                    => 'Single',
-					'mask'                    => 'A',
-					'spacesAvailable'         => 5,
-					'availabilityDescription' => 'Available',
-					'saleStatusCode'      => 'C',
-					'prices'                  => [
+					'id'              => 'CAB2:OCC1',
+					'name'            => 'Single',
+					'mask'            => 'A',
+					'spacesAvailable' => 5,
+					'saleStatus'      => 'Open',
+					'saleStatusCode'  => 'S',
+					'prices'          => [
 						'USD' => [
 							'pricePerPerson' => 3000,
 						],
@@ -531,13 +531,13 @@ class Test_Update_Occupancies extends Softrip_TestCase {
 			'name'        => 'Deluxe Suite',
 			'occupancies' => [
 				[
-					'id'                      => 'CAB2:OCC1',
-					'name'                    => 'Single',
-					'mask'                    => 'A',
-					'spacesAvailable'         => 5,
-					'availabilityDescription' => 'Available',
-					'saleStatusCode'      => 'C',
-					'prices'                  => [
+					'id'              => 'CAB2:OCC1',
+					'name'            => 'Single',
+					'mask'            => 'A',
+					'spacesAvailable' => 5,
+					'saleStatus'      => 'Open',
+					'saleStatusCode'  => 'S',
+					'prices'          => [
 						'USD' => [
 							'pricePerPerson' => 3500,
 						],
@@ -572,8 +572,8 @@ class Test_Update_Occupancies extends Softrip_TestCase {
 		$this->assertSame( 'Single', $occupancy['softrip_name'] );
 		$this->assertSame( 'A', $occupancy['mask'] );
 		$this->assertSame( 5, $occupancy['spaces_available'] );
-		$this->assertSame( 'Available', $occupancy['availability_description'] );
-		$this->assertSame( 'C', $occupancy['availability_status'] );
+		$this->assertSame( 'Open', $occupancy['availability_description'] );
+		$this->assertSame( 'S', $occupancy['availability_status'] );
 		$this->assertSame( 3500, $occupancy['price_per_person_usd'] );
 		$this->assertSame( 4000, $occupancy['price_per_person_cad'] );
 		$this->assertSame( 4500, $occupancy['price_per_person_eur'] );
@@ -618,13 +618,13 @@ class Test_Update_Occupancies extends Softrip_TestCase {
 			'name'        => 'Deluxe Suite',
 			'occupancies' => [
 				[
-					'id'                      => 'CAB2:OCC1',
-					'name'                    => 'Single',
-					'mask'                    => 'A',
-					'spacesAvailable'         => 5,
-					'availabilityDescription' => 'Available',
-					'saleStatusCode'      => 'C',
-					'prices'                  => [
+					'id'              => 'CAB2:OCC1',
+					'name'            => 'Single',
+					'mask'            => 'A',
+					'spacesAvailable' => 5,
+					'saleStatus'      => 'Open',
+					'saleStatusCode'  => 'S',
+					'prices'          => [
 						'USD' => [
 							'pricePerPerson' => 3500,
 						],
@@ -643,13 +643,13 @@ class Test_Update_Occupancies extends Softrip_TestCase {
 					],
 				],
 				[
-					'id'                      => 'CAB2:OCC2',
-					'name'                    => 'Double',
-					'mask'                    => 'B',
-					'spacesAvailable'         => 10,
-					'availabilityDescription' => 'Available',
-					'saleStatusCode'      => 'C',
-					'prices'                  => [
+					'id'              => 'CAB2:OCC2',
+					'name'            => 'Double',
+					'mask'            => 'B',
+					'spacesAvailable' => 10,
+					'saleStatus'      => 'Open',
+					'saleStatusCode'  => 'S',
+					'prices'          => [
 						'USD' => [
 							'pricePerPerson' => 4000,
 						],
