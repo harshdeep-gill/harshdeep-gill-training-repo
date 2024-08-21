@@ -561,7 +561,7 @@ function get_departures_data( int $expedition_post_id = 0, int $itinerary_post_i
  *             promotionsApplied: array{}|array<int,
  *               array{
  *                 id: int,
- *                 promotion_code: string,
+ *                 promotionCode: string,
  *                 promo_price_per_person: int,
  *               }
  *             >
@@ -574,7 +574,7 @@ function get_departures_data( int $expedition_post_id = 0, int $itinerary_post_i
  *             promotionsApplied: array{}|array<int,
  *               array{
  *                 id: int,
- *                 promotion_code: string,
+ *                 promotionCode: string,
  *                 promo_price_per_person: int,
  *               }
  *             >
@@ -587,7 +587,7 @@ function get_departures_data( int $expedition_post_id = 0, int $itinerary_post_i
  *             promotionsApplied: array{}|array<int,
  *               array{
  *                 id: int,
- *                 promotion_code: string,
+ *                 promotionCode: string,
  *                 promo_price_per_person: int,
  *               }
  *             >
@@ -600,7 +600,7 @@ function get_departures_data( int $expedition_post_id = 0, int $itinerary_post_i
  *             promotionsApplied: array{}|array<int,
  *               array{
  *                 id: int,
- *                 promotion_code: string,
+ *                 promotionCode: string,
  *                 promo_price_per_person: int,
  *               }
  *             >
@@ -613,7 +613,7 @@ function get_departures_data( int $expedition_post_id = 0, int $itinerary_post_i
  *             promotionsApplied: array{}|array<int,
  *               array{
  *                 id: int,
- *                 promotion_code: string,
+ *                 promotionCode: string,
  *                 promo_price_per_person: int,
  *               }
  *             >
@@ -830,7 +830,7 @@ function get_cabins_data( int $expedition_post_id = 0, int $itinerary_post_id = 
  *         promotionsApplied: array{}|array<int,
  *           array{
  *             id: int,
- *             promotion_code: string,
+ *             promotionCode: string,
  *             promo_price_per_person: int,
  *           }
  *         >
@@ -843,7 +843,7 @@ function get_cabins_data( int $expedition_post_id = 0, int $itinerary_post_id = 
  *         promotionsApplied: array{}|array<int,
  *           array{
  *             id: int,
- *             promotion_code: string,
+ *             promotionCode: string,
  *             promo_price_per_person: int,
  *           }
  *         >
@@ -856,7 +856,7 @@ function get_cabins_data( int $expedition_post_id = 0, int $itinerary_post_id = 
  *         promotionsApplied: array{}|array<int,
  *           array{
  *             id: int,
- *             promotion_code: string,
+ *             promotionCode: string,
  *             promo_price_per_person: int,
  *           }
  *         >
@@ -869,7 +869,7 @@ function get_cabins_data( int $expedition_post_id = 0, int $itinerary_post_id = 
  *         promotionsApplied: array{}|array<int,
  *           array{
  *             id: int,
- *             promotion_code: string,
+ *             promotionCode: string,
  *             promo_price_per_person: int,
  *           }
  *         >
@@ -882,7 +882,7 @@ function get_cabins_data( int $expedition_post_id = 0, int $itinerary_post_id = 
  *         promotionsApplied: array{}|array<int,
  *           array{
  *             id: int,
- *             promotion_code: string,
+ *             promotionCode: string,
  *             promo_price_per_person: int,
  *           }
  *         >
@@ -1008,7 +1008,7 @@ function get_occupancies_data( int $itinerary_post_id = 0, int $departure_post_i
 				// Add promotion to prices.
 				$occupancy_data['prices'][ $currency ]['promotionsApplied'][] = [
 					'id'                     => $occupancy_promotion['promotion_id'],
-					'promotion_code'         => $promotion_code,
+					'promotionCode'         => $promotion_code,
 					'promo_price_per_person' => $occupancy_promotion[ 'price_per_person_' . strtolower( $currency ) ],
 				];
 			}
