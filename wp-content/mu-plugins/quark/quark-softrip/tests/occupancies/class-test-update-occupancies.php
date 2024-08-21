@@ -190,7 +190,7 @@ class Test_Update_Occupancies extends Softrip_TestCase {
 					'mask'                    => 'A',
 					'spacesAvailable'         => 10,
 					'availabilityDescription' => 'Available',
-					'availabilityStatus'      => 'C',
+					'saleStatusCode'      => 'C',
 				],
 			],
 		];
@@ -212,7 +212,7 @@ class Test_Update_Occupancies extends Softrip_TestCase {
 					'mask'                    => 'A',
 					'spacesAvailable'         => 10,
 					'availabilityDescription' => 'Available',
-					'availabilityStatus'      => 'C',
+					'saleStatusCode'      => 'C',
 					'prices'                  => [
 						'USD' => [
 							'pricePerPerson' => 1000,
@@ -266,7 +266,7 @@ class Test_Update_Occupancies extends Softrip_TestCase {
 					'mask'                    => 'A',
 					'spacesAvailable'         => 10,
 					'availabilityDescription' => 'Available',
-					'availabilityStatus'      => 'C',
+					'saleStatusCode'      => 'C',
 					'prices'                  => [
 						'USD' => [
 							'pricePerPerson' => 2000,
@@ -315,7 +315,7 @@ class Test_Update_Occupancies extends Softrip_TestCase {
 					'mask'                    => 'A',
 					'spacesAvailable'         => 10,
 					'availabilityDescription' => 'Available',
-					'availabilityStatus'      => 'R',
+					'saleStatusCode'      => 'R',
 					'prices'                  => [
 						'USD' => [
 							'pricePerPerson' => 2000,
@@ -360,7 +360,7 @@ class Test_Update_Occupancies extends Softrip_TestCase {
 					'mask'                    => 'A',
 					'spacesAvailable'         => 10,
 					'availabilityDescription' => 'Available',
-					'availabilityStatus'      => 'C',
+					'saleStatusCode'      => 'C',
 					'prices'                  => [
 						'USD' => [
 							'pricePerPerson' => 2000,
@@ -385,7 +385,7 @@ class Test_Update_Occupancies extends Softrip_TestCase {
 					'mask'                    => 'B',
 					'spacesAvailable'         => 20,
 					'availabilityDescription' => 'Available',
-					'availabilityStatus'      => 'O',
+					'saleStatusCode'      => 'O',
 					'prices'                  => [
 						'USD' => [
 							'pricePerPerson' => 1500,
@@ -455,7 +455,7 @@ class Test_Update_Occupancies extends Softrip_TestCase {
 					'mask'                    => 'A',
 					'spacesAvailable'         => 5,
 					'availabilityDescription' => 'Available',
-					'availabilityStatus'      => 'C',
+					'saleStatusCode'      => 'C',
 					'prices'                  => [
 						'USD' => [
 							'pricePerPerson' => 3000,
@@ -536,7 +536,7 @@ class Test_Update_Occupancies extends Softrip_TestCase {
 					'mask'                    => 'A',
 					'spacesAvailable'         => 5,
 					'availabilityDescription' => 'Available',
-					'availabilityStatus'      => 'C',
+					'saleStatusCode'      => 'C',
 					'prices'                  => [
 						'USD' => [
 							'pricePerPerson' => 3500,
@@ -623,7 +623,7 @@ class Test_Update_Occupancies extends Softrip_TestCase {
 					'mask'                    => 'A',
 					'spacesAvailable'         => 5,
 					'availabilityDescription' => 'Available',
-					'availabilityStatus'      => 'C',
+					'saleStatusCode'      => 'C',
 					'prices'                  => [
 						'USD' => [
 							'pricePerPerson' => 3500,
@@ -648,7 +648,7 @@ class Test_Update_Occupancies extends Softrip_TestCase {
 					'mask'                    => 'B',
 					'spacesAvailable'         => 10,
 					'availabilityDescription' => 'Available',
-					'availabilityStatus'      => 'C',
+					'saleStatusCode'      => 'C',
 					'prices'                  => [
 						'USD' => [
 							'pricePerPerson' => 4000,

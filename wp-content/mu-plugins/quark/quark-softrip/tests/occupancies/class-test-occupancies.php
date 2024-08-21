@@ -124,7 +124,7 @@ class Test_Occupancies extends Softrip_TestCase {
 			'mask'                    => '123456789012',
 			'spacesAvailable'         => 10,
 			'availabilityDescription' => 'Available',
-			'availabilityStatus'      => 'AV',
+			'saleStatusCode'      => 'AV',
 			'prices'                  => [
 				'USD' => '100',
 				'CAD' => '150',
@@ -172,7 +172,7 @@ class Test_Occupancies extends Softrip_TestCase {
 		$this->assertSame( $expected, $actual );
 
 		// Add empty availability status.
-		$raw_occupancy_data['availabilityStatus'] = '';
+		$raw_occupancy_data['saleStatusCode'] = '';
 		$expected                                 = [];
 		$actual                                   = format_data( $raw_occupancy_data, 123, 456 );
 		$this->assertSame( $expected, $actual );
@@ -194,7 +194,7 @@ class Test_Occupancies extends Softrip_TestCase {
 			'id'                      => '123',
 			'name'                    => 'Test Occupancy',
 			'mask'                    => '123456789012',
-			'availabilityStatus'      => 'AV',
+			'saleStatusCode'      => 'AV',
 			'availabilityDescription' => 'Available',
 			'prices'                  => [
 				'USD' => '100',
@@ -234,7 +234,7 @@ class Test_Occupancies extends Softrip_TestCase {
 			'mask'                    => '123456789012',
 			'spacesAvailable'         => 10,
 			'availabilityDescription' => 'Available',
-			'availabilityStatus'      => 'AV',
+			'saleStatusCode'      => 'AV',
 			'prices'                  => [
 				'USD'     => [
 					'currencyCode'   => 'USD',
@@ -415,7 +415,7 @@ class Test_Occupancies extends Softrip_TestCase {
 			'mask'                    => '123456789012',
 			'spacesAvailable'         => 10,
 			'availabilityDescription' => 'Available',
-			'availabilityStatus'      => 'AV',
+			'saleStatusCode'      => 'AV',
 			'prices'                  => [
 				'USD' => [
 					'currencyCode'   => 'USD',
@@ -521,7 +521,7 @@ class Test_Occupancies extends Softrip_TestCase {
 			'mask'                    => '123456789012',
 			'spacesAvailable'         => 20,
 			'availabilityDescription' => 'Available',
-			'availabilityStatus'      => 'AV',
+			'saleStatusCode'      => 'AV',
 			'prices'                  => [
 				'USD' => [
 					'currencyCode'   => 'USD',
@@ -749,7 +749,7 @@ class Test_Occupancies extends Softrip_TestCase {
 			'mask'                    => 'A',
 			'spacesAvailable'         => 10,
 			'availabilityDescription' => 'Available',
-			'availabilityStatus'      => 'O',
+			'saleStatusCode'      => 'O',
 			'prices'                  => [
 				'USD' => [
 					'currencyCode'   => 'USD',
@@ -961,7 +961,7 @@ class Test_Occupancies extends Softrip_TestCase {
 			'mask'                    => '123456789012',
 			'spacesAvailable'         => 10,
 			'availabilityDescription' => 'Available',
-			'availabilityStatus'      => 'AV',
+			'saleStatusCode'      => 'AV',
 			'prices'                  => [
 				'USD' => [
 					'currencyCode'   => 'USD',
@@ -1174,7 +1174,7 @@ class Test_Occupancies extends Softrip_TestCase {
 			'mask'                    => 'A',
 			'spacesAvailable'         => 10,
 			'availabilityDescription' => 'Available',
-			'availabilityStatus'      => 'O',
+			'saleStatusCode'      => 'O',
 			'prices'                  => [
 				'USD' => [
 					'currencyCode'   => 'USD',
@@ -1254,7 +1254,7 @@ class Test_Occupancies extends Softrip_TestCase {
 			'mask'                    => 'A',
 			'spacesAvailable'         => 10,
 			'availabilityDescription' => 'Available',
-			'availabilityStatus'      => 'O',
+			'saleStatusCode'      => 'O',
 			'prices'                  => [
 				'USD' => [
 					'currencyCode'   => 'USD',
@@ -1325,7 +1325,7 @@ class Test_Occupancies extends Softrip_TestCase {
 			'mask'                    => 'A',
 			'spacesAvailable'         => 10,
 			'availabilityDescription' => 'Available',
-			'availabilityStatus'      => 'O',
+			'saleStatusCode'      => 'O',
 			'prices'                  => [
 				'USD' => [
 					'currencyCode'   => 'USD',
@@ -1483,7 +1483,7 @@ class Test_Occupancies extends Softrip_TestCase {
 			'mask'                    => 'A',
 			'spacesAvailable'         => 10,
 			'availabilityDescription' => 'Available',
-			'availabilityStatus'      => 'O',
+			'saleStatusCode'      => 'O',
 			'prices'                  => [
 				'USD' => [
 					'currencyCode'   => 'USD',
@@ -1593,7 +1593,7 @@ class Test_Occupancies extends Softrip_TestCase {
 			'mask'                    => 'A',
 			'spacesAvailable'         => 10,
 			'availabilityDescription' => 'Available',
-			'availabilityStatus'      => 'O',
+			'saleStatusCode'      => 'O',
 			'prices'                  => [
 				'USD' => [
 					'currencyCode'   => 'USD',
@@ -1660,7 +1660,7 @@ class Test_Occupancies extends Softrip_TestCase {
 			'mask'                    => 'A',
 			'spacesAvailable'         => 10,
 			'availabilityDescription' => 'Available',
-			'availabilityStatus'      => 'O',
+			'saleStatusCode'      => 'O',
 			'prices'                  => [
 				'USD' => [
 					'currencyCode'   => 'USD',
@@ -1969,7 +1969,7 @@ class Test_Occupancies extends Softrip_TestCase {
 			'mask'                    => 'A',
 			'spacesAvailable'         => 10,
 			'availabilityDescription' => 'Available',
-			'availabilityStatus'      => 'O',
+			'saleStatusCode'      => 'O',
 			'prices'                  => [
 				'USD' => [
 					'currencyCode'   => 'USD',
@@ -2051,7 +2051,7 @@ class Test_Occupancies extends Softrip_TestCase {
 			'mask'                    => 'AA',
 			'spacesAvailable'         => 10,
 			'availabilityDescription' => 'Available',
-			'availabilityStatus'      => 'O',
+			'saleStatusCode'      => 'O',
 			'prices'                  => [
 				'USD' => [
 					'currencyCode'   => 'USD',
@@ -2519,7 +2519,7 @@ class Test_Occupancies extends Softrip_TestCase {
 			'mask'                    => 'A',
 			'spacesAvailable'         => 10,
 			'availabilityDescription' => 'Available',
-			'availabilityStatus'      => 'O',
+			'saleStatusCode'      => 'O',
 			'prices'                  => [
 				'USD' => [
 					'currencyCode'   => 'USD',
@@ -2636,7 +2636,7 @@ class Test_Occupancies extends Softrip_TestCase {
 			'mask'                    => 'A',
 			'spacesAvailable'         => 10,
 			'availabilityDescription' => 'Available',
-			'availabilityStatus'      => 'O',
+			'saleStatusCode'      => 'O',
 			'prices'                  => [
 				'USD' => [
 					'currencyCode'   => 'USD',
@@ -2709,7 +2709,7 @@ class Test_Occupancies extends Softrip_TestCase {
 			'mask'                    => 'AA',
 			'spacesAvailable'         => 10,
 			'availabilityDescription' => 'Available',
-			'availabilityStatus'      => 'O',
+			'saleStatusCode'      => 'O',
 			'prices'                  => [
 				'USD' => [
 					'currencyCode'   => 'USD',
@@ -2818,7 +2818,7 @@ class Test_Occupancies extends Softrip_TestCase {
 			'mask'                    => 'A',
 			'spacesAvailable'         => 10,
 			'availabilityDescription' => 'Available',
-			'availabilityStatus'      => 'O',
+			'saleStatusCode'      => 'O',
 			'prices'                  => [
 				'USD' => [
 					'currencyCode'   => 'USD',
@@ -2912,7 +2912,7 @@ class Test_Occupancies extends Softrip_TestCase {
 			'mask'                    => 'AA',
 			'spacesAvailable'         => 10,
 			'availabilityDescription' => 'Available',
-			'availabilityStatus'      => 'O',
+			'saleStatusCode'      => 'O',
 			'prices'                  => [
 				'USD' => [
 					'currencyCode'   => 'USD',
@@ -3040,7 +3040,7 @@ class Test_Occupancies extends Softrip_TestCase {
 			'mask'                    => 'AB',
 			'spacesAvailable'         => 10,
 			'availabilityDescription' => 'Available',
-			'availabilityStatus'      => 'O',
+			'saleStatusCode'      => 'O',
 			'prices'                  => [
 				'USD' => [
 					'currencyCode'   => 'USD',
@@ -3609,7 +3609,7 @@ class Test_Occupancies extends Softrip_TestCase {
 			'mask'                    => 'A',
 			'spacesAvailable'         => 10,
 			'availabilityDescription' => 'Available',
-			'availabilityStatus'      => 'O',
+			'saleStatusCode'      => 'O',
 			'prices'                  => [
 				'USD' => [
 					'currencyCode'   => 'USD',
@@ -3707,7 +3707,7 @@ class Test_Occupancies extends Softrip_TestCase {
 			'mask'                    => 'B',
 			'spacesAvailable'         => 20,
 			'availabilityDescription' => 'Available',
-			'availabilityStatus'      => 'O',
+			'saleStatusCode'      => 'O',
 			'prices'                  => [
 				'USD' => [
 					'currencyCode'   => 'USD',

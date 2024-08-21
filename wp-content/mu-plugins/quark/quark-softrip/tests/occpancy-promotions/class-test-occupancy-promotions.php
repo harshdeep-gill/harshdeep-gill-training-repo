@@ -124,7 +124,7 @@ class Test_Occupancy_Promotions extends Softrip_TestCase {
 			'id'                      => 'OCC1',
 			'name'                    => 'Single',
 			'mask'                    => 'A',
-			'availabilityStatus'      => 'O',
+			'saleStatusCode'      => 'O',
 			'availabilityDescription' => 'Available',
 			'spacesAvailable'         => 11,
 			'prices'                  => [
@@ -484,7 +484,7 @@ class Test_Occupancy_Promotions extends Softrip_TestCase {
 			'id'                      => 'OCC1',
 			'name'                    => 'Single',
 			'mask'                    => 'A',
-			'availabilityStatus'      => 'O',
+			'saleStatusCode'      => 'O',
 			'availabilityDescription' => 'Available',
 			'spacesAvailable'         => 11,
 			'prices'                  => [
