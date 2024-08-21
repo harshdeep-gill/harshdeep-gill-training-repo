@@ -1,5 +1,6 @@
 @props( [
-	'border' => false,
+	'border'          => false,
+	'stack_on_tablet' => false,
 ] )
 
 @php
@@ -11,6 +12,10 @@
 
 	if ( true === $border ) {
 		$classes[] = 'two-columns--has-border';
+	}
+
+	if ( true === $stack_on_tablet ) {
+		$classes[] = 'two-columns--stack-on-tablet';
 	}
 
 	// Get child count.
