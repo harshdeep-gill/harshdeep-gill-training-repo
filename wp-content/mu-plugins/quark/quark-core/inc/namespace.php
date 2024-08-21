@@ -522,3 +522,24 @@ function order_terms_by_hierarchy( array $terms = [], string $taxonomy = '' ): a
 	// Return organised terms.
 	return $organised_terms;
 }
+
+/**
+ * Get pure text from HTML.
+ * Useful for title or content of post.
+ *
+ * @param string $html HTML content.
+ *
+ * @return string
+ */
+function get_pure_text_from_html( string $html = '' ): string {
+	// Check if HTML is empty.
+	if ( empty( $html ) ) {
+		return '';
+	}
+
+	// Get pure text.
+	$text = wp_strip_all_tags( $html, true );
+
+	// Return pure text.
+	return $text;
+}
