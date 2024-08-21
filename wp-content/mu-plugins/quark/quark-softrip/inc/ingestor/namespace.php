@@ -554,8 +554,8 @@ function get_departures_data( int $expedition_post_id = 0, int $itinerary_post_i
  *         spacesAvailable: int,
  *         prices: array{
  *           AUD: array{
- *             price_per_person: int,
- *             currency_code: string,
+ *             pricePerPerson: int,
+ *             currencyCode: string,
  *             mandatory_transfer_price_per_person: int,
  *             supplemental_price_per_person: int,
  *             promotions_applied: array{}|array<int,
@@ -567,8 +567,8 @@ function get_departures_data( int $expedition_post_id = 0, int $itinerary_post_i
  *             >
  *           },
  *           USD: array{
- *             price_per_person: int,
- *             currency_code: string,
+ *             pricePerPerson: int,
+ *             currencyCode: string,
  *             mandatory_transfer_price_per_person: int,
  *             supplemental_price_per_person: int,
  *             promotions_applied: array{}|array<int,
@@ -580,8 +580,8 @@ function get_departures_data( int $expedition_post_id = 0, int $itinerary_post_i
  *             >
  *           },
  *           EUR: array{
- *             price_per_person: int,
- *             currency_code: string,
+ *             pricePerPerson: int,
+ *             currencyCode: string,
  *             mandatory_transfer_price_per_person: int,
  *             supplemental_price_per_person: int,
  *             promotions_applied: array{}|array<int,
@@ -593,8 +593,8 @@ function get_departures_data( int $expedition_post_id = 0, int $itinerary_post_i
  *             >
  *           },
  *           CAD: array{
- *             price_per_person: int,
- *             currency_code: string,
+ *             pricePerPerson: int,
+ *             currencyCode: string,
  *             mandatory_transfer_price_per_person: int,
  *             supplemental_price_per_person: int,
  *             promotions_applied: array{}|array<int,
@@ -606,8 +606,8 @@ function get_departures_data( int $expedition_post_id = 0, int $itinerary_post_i
  *             >
  *           },
  *           GBP: array{
- *             price_per_person: int,
- *             currency_code: string,
+ *             pricePerPerson: int,
+ *             currencyCode: string,
  *             mandatory_transfer_price_per_person: int,
  *             supplemental_price_per_person: int,
  *             promotions_applied: array{}|array<int,
@@ -823,8 +823,8 @@ function get_cabins_data( int $expedition_post_id = 0, int $itinerary_post_id = 
  *     spacesAvailable: int,
  *     prices: array{
  *       AUD: array{
- *         price_per_person: int,
- *         currency_code: string,
+ *         pricePerPerson: int,
+ *         currencyCode: string,
  *         mandatory_transfer_price_per_person: int,
  *         supplemental_price_per_person: int,
  *         promotions_applied: array{}|array<int,
@@ -836,8 +836,8 @@ function get_cabins_data( int $expedition_post_id = 0, int $itinerary_post_id = 
  *         >
  *       },
  *       USD: array{
- *         price_per_person: int,
- *         currency_code: string,
+ *         pricePerPerson: int,
+ *         currencyCode: string,
  *         mandatory_transfer_price_per_person: int,
  *         supplemental_price_per_person: int,
  *         promotions_applied: array{}|array<int,
@@ -849,8 +849,8 @@ function get_cabins_data( int $expedition_post_id = 0, int $itinerary_post_id = 
  *         >
  *       },
  *       EUR: array{
- *         price_per_person: int,
- *         currency_code: string,
+ *         pricePerPerson: int,
+ *         currencyCode: string,
  *         mandatory_transfer_price_per_person: int,
  *         supplemental_price_per_person: int,
  *         promotions_applied: array{}|array<int,
@@ -862,8 +862,8 @@ function get_cabins_data( int $expedition_post_id = 0, int $itinerary_post_id = 
  *         >
  *       },
  *       CAD: array{
- *         price_per_person: int,
- *         currency_code: string,
+ *         pricePerPerson: int,
+ *         currencyCode: string,
  *         mandatory_transfer_price_per_person: int,
  *         supplemental_price_per_person: int,
  *         promotions_applied: array{}|array<int,
@@ -875,8 +875,8 @@ function get_cabins_data( int $expedition_post_id = 0, int $itinerary_post_id = 
  *         >
  *       },
  *       GBP: array{
- *         price_per_person: int,
- *         currency_code: string,
+ *         pricePerPerson: int,
+ *         currencyCode: string,
  *         mandatory_transfer_price_per_person: int,
  *         supplemental_price_per_person: int,
  *         promotions_applied: array{}|array<int,
@@ -930,36 +930,36 @@ function get_occupancies_data( int $itinerary_post_id = 0, int $departure_post_i
 			'spacesAvailable'         => $occupancy['spaces_available'],
 			'prices'                  => [
 				AUD_CURRENCY => [
-					'price_per_person'                    => 0,
-					'currency_code'                       => AUD_CURRENCY,
+					'pricePerPerson'                    => 0,
+					'currencyCode'                       => AUD_CURRENCY,
 					'mandatory_transfer_price_per_person' => 0,
 					'supplemental_price_per_person'       => 0,
 					'promotions_applied'                  => [],
 				],
 				USD_CURRENCY => [
-					'price_per_person'                    => 0,
-					'currency_code'                       => USD_CURRENCY,
+					'pricePerPerson'                    => 0,
+					'currencyCode'                       => USD_CURRENCY,
 					'mandatory_transfer_price_per_person' => 0,
 					'supplemental_price_per_person'       => 0,
 					'promotions_applied'                  => [],
 				],
 				EUR_CURRENCY => [
-					'price_per_person'                    => 0,
-					'currency_code'                       => EUR_CURRENCY,
+					'pricePerPerson'                    => 0,
+					'currencyCode'                       => EUR_CURRENCY,
 					'mandatory_transfer_price_per_person' => 0,
 					'supplemental_price_per_person'       => 0,
 					'promotions_applied'                  => [],
 				],
 				GBP_CURRENCY => [
-					'price_per_person'                    => 0,
-					'currency_code'                       => GBP_CURRENCY,
+					'pricePerPerson'                    => 0,
+					'currencyCode'                       => GBP_CURRENCY,
 					'mandatory_transfer_price_per_person' => 0,
 					'supplemental_price_per_person'       => 0,
 					'promotions_applied'                  => [],
 				],
 				CAD_CURRENCY => [
-					'price_per_person'                    => 0,
-					'currency_code'                       => CAD_CURRENCY,
+					'pricePerPerson'                    => 0,
+					'currencyCode'                       => CAD_CURRENCY,
 					'mandatory_transfer_price_per_person' => 0,
 					'supplemental_price_per_person'       => 0,
 					'promotions_applied'                  => [],
@@ -970,7 +970,7 @@ function get_occupancies_data( int $itinerary_post_id = 0, int $departure_post_i
 		// Set price per person, mandatory transfer price per person and supplemental price per person for each currency.
 		foreach ( CURRENCIES as $currency ) {
 			// Set price per person.
-			$occupancy_data['prices'][ $currency ]['price_per_person'] = $occupancy[ 'price_per_person_' . strtolower( $currency ) ];
+			$occupancy_data['prices'][ $currency ]['pricePerPerson'] = $occupancy[ 'price_per_person_' . strtolower( $currency ) ];
 
 			// Set mandatory transfer price per person.
 			$occupancy_data['prices'][ $currency ]['mandatory_transfer_price_per_person'] = $mandatory_transfer_price[ $currency ];
