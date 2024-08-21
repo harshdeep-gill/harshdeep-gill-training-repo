@@ -70,6 +70,7 @@ import * as shipCabinCategories from './ship-cabin-categories';
 import * as shipSpecifications from './ship-specifications';
 import * as expeditionHero from './expedition-hero';
 import * as specifications from './specifications';
+import * as templateTitle from './template-title';
 
 /**
  * Add blocks.
@@ -137,6 +138,7 @@ const blocks = [
 	bookDeparturesExpeditions,
 	expeditionHero,
 	specifications,
+	templateTitle,
 ];
 
 // Register blocks for ships.
