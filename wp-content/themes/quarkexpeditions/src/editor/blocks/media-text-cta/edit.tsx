@@ -3,7 +3,7 @@
  */
 import { InspectorControls, RichText, useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
-import { PanelBody, RadioControl, TextControl, ToggleControl } from '@wordpress/components';
+import { PanelBody, RadioControl, SelectControl, TextControl, ToggleControl } from '@wordpress/components';
 
 /**
  * Styles.
@@ -32,6 +32,9 @@ import icons from '../icons';
  */
 import * as secondaryText from './children/secondary-text';
 import * as cta from './children/cta';
+import * as contentTitle from './children/content-title';
+import * as overline from './children/overline';
+import * as description from './children/description';
 
 /**
  * Edit component.
@@ -57,7 +60,15 @@ export default function edit( { className, attributes, setAttributes }: BlockEdi
 		className: classnames( 'media-text-cta__content' ),
 	},
 	{
-		allowedBlocks: [ 'core/paragraph', 'core/heading', secondaryText.name, cta.name ],
+		allowedBlocks: [
+			'core/paragraph',
+			'core/heading',
+			secondaryText.name,
+			cta.name,
+			contentTitle.name,
+			overline.name,
+			description.name,
+		],
 		template: [
 			[ 'core/heading' ],
 			[ 'core/paragraph', { placeholder: __( 'Write description…', 'qrk' ) } ],
@@ -102,6 +113,19 @@ export default function edit( { className, attributes, setAttributes }: BlockEdi
 						onChange={ ( image: object ) => setAttributes( { image } ) }
 					/>
 					{
+						'image' === attributes.mediaType &&
+						<SelectControl
+							label={ __( 'Image Aspect Ratio', 'qrk' ) }
+							help={ __( 'Select the image aspect ratio.', 'qrk' ) }
+							value={ attributes.imageAspectRatio }
+							options={ [
+								{ label: __( 'Landscape', 'qrk' ), value: 'landscape' },
+								{ label: __( 'Square', 'qrk' ), value: 'square' },
+							] }
+							onChange={ ( imageAspectRatio: string ) => setAttributes( { imageAspectRatio } ) }
+						/>
+					}
+					{
 						'video' === attributes.mediaType &&
 						<TextControl
 							label={ __( 'Video URL', 'qrk' ) }
@@ -129,7 +153,7 @@ export default function edit( { className, attributes, setAttributes }: BlockEdi
 				</PanelBody>
 			</InspectorControls>
 			<div { ...blockProps } >
-				<div className="media-text-cta__media-wrap">
+				<div className={ 'media-text-cta__media-wrap ' + attributes.imageAspectRatio }>
 					<Img className="media-text-cta__image" value={ attributes.image } />
 					{
 						'video' === attributes.mediaType &&
