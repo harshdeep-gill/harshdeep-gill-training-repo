@@ -930,39 +930,39 @@ function get_occupancies_data( int $itinerary_post_id = 0, int $departure_post_i
 			'spacesAvailable'         => $occupancy['spaces_available'],
 			'prices'                  => [
 				AUD_CURRENCY => [
-					'pricePerPerson'                    => 0,
-					'currencyCode'                       => AUD_CURRENCY,
+					'pricePerPerson'                  => 0,
+					'currencyCode'                    => AUD_CURRENCY,
 					'mandatoryTransferPricePerPerson' => 0,
-					'supplementalPricePerPerson'       => 0,
-					'promotionsApplied'                  => [],
+					'supplementalPricePerPerson'      => 0,
+					'promotionsApplied'               => [],
 				],
 				USD_CURRENCY => [
-					'pricePerPerson'                    => 0,
-					'currencyCode'                       => USD_CURRENCY,
+					'pricePerPerson'                  => 0,
+					'currencyCode'                    => USD_CURRENCY,
 					'mandatoryTransferPricePerPerson' => 0,
-					'supplementalPricePerPerson'       => 0,
-					'promotionsApplied'                  => [],
+					'supplementalPricePerPerson'      => 0,
+					'promotionsApplied'               => [],
 				],
 				EUR_CURRENCY => [
-					'pricePerPerson'                    => 0,
-					'currencyCode'                       => EUR_CURRENCY,
+					'pricePerPerson'                  => 0,
+					'currencyCode'                    => EUR_CURRENCY,
 					'mandatoryTransferPricePerPerson' => 0,
-					'supplementalPricePerPerson'       => 0,
-					'promotionsApplied'                  => [],
+					'supplementalPricePerPerson'      => 0,
+					'promotionsApplied'               => [],
 				],
 				GBP_CURRENCY => [
-					'pricePerPerson'                    => 0,
-					'currencyCode'                       => GBP_CURRENCY,
+					'pricePerPerson'                  => 0,
+					'currencyCode'                    => GBP_CURRENCY,
 					'mandatoryTransferPricePerPerson' => 0,
-					'supplementalPricePerPerson'       => 0,
-					'promotionsApplied'                  => [],
+					'supplementalPricePerPerson'      => 0,
+					'promotionsApplied'               => [],
 				],
 				CAD_CURRENCY => [
-					'pricePerPerson'                    => 0,
-					'currencyCode'                       => CAD_CURRENCY,
+					'pricePerPerson'                  => 0,
+					'currencyCode'                    => CAD_CURRENCY,
 					'mandatoryTransferPricePerPerson' => 0,
-					'supplementalPricePerPerson'       => 0,
-					'promotionsApplied'                  => [],
+					'supplementalPricePerPerson'      => 0,
+					'promotionsApplied'               => [],
 				],
 			],
 		];
@@ -1007,8 +1007,8 @@ function get_occupancies_data( int $itinerary_post_id = 0, int $departure_post_i
 
 				// Add promotion to prices.
 				$occupancy_data['prices'][ $currency ]['promotionsApplied'][] = [
-					'id'                     => $occupancy_promotion['promotion_id'],
-					'promotionCode'         => $promotion_code,
+					'id'                  => $occupancy_promotion['promotion_id'],
+					'promotionCode'       => $promotion_code,
 					'promoPricePerPerson' => $promo_price_per_person,
 				];
 			}
