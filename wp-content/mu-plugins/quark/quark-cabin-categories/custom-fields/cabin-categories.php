@@ -61,7 +61,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 					'aria-label'           => '',
 					'type'                 => 'post_object',
 					'instructions'         => 'Please choose the ship to which the cabin is available.',
-					'required'             => 0,
+					'required'             => 1,
 					'conditional_logic'    => 0,
 					'wrapper'              => [
 						'width' => '',

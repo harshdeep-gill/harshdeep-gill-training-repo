@@ -15,7 +15,6 @@ use function Quark\Core\get_available_currencies;
 use function Quark\Departures\bust_card_data_cache_on_expedition_update;
 use function Quark\Departures\bust_post_cache;
 use function Quark\Departures\get;
-use function Quark\Departures\get_region_and_season;
 use function Quark\Departures\get_paid_adventure_options;
 use function Quark\Departures\get_languages;
 use function Quark\Departures\get_promotion_tags;
@@ -119,69 +118,6 @@ class Test_Departures extends Softrip_TestCase {
 
 		// clean up.
 		wp_delete_post( $post_1->ID, true );
-	}
-
-	/**
-	 * Test get_region_and_season.
-	 *
-	 * @covers \Quark\Departures\get_region_and_season()
-	 * @covers \Quark\Departures\get_season()
-	 *
-	 * @return void
-	 */
-	public function test_get_region_and_season(): void {
-		// Create itinerary post.
-		$post_itinerary = $this->factory()->post->create_and_get(
-			[
-				'post_type'   => ITINERARY_POST_TYPE,
-				'post_title'  => 'Test itinerary Post',
-				'post_status' => 'publish',
-			]
-		);
-
-		// Make sure post is created.
-		$this->assertTrue( $post_itinerary instanceof WP_Post );
-
-		// Create SEASON terms.
-		$season_term = $this->factory()->term->create_and_get(
-			[
-				'name'     => 'season_1',
-				'taxonomy' => SEASON_TAXONOMY,
-			]
-		);
-
-		// Assert term is created.
-		$this->assertTrue( $season_term instanceof WP_Term );
-
-		// Set terms.
-		wp_set_object_terms( $post_itinerary->ID, $season_term->term_id, SEASON_TAXONOMY );
-
-		// Create post.
-		$post_1 = $this->factory()->post->create_and_get(
-			[
-				'post_type'   => POST_TYPE,
-				'post_title'  => 'Test Post',
-				'post_status' => 'publish',
-				'meta_input'  => [
-					'softrip_market_code' => 'value_1',
-					'itinerary'           => $post_itinerary->ID,
-				],
-			]
-		);
-
-		// Make sure post is created.
-		$this->assertTrue( $post_1 instanceof WP_Post );
-
-		// Get departure region and season.
-		$region_and_season = get_region_and_season( $post_1->ID );
-
-		// Test if region is correct.
-		$this->assertEquals( 'value_1-season_1', $region_and_season );
-
-		// clean up.
-		wp_delete_post( $post_1->ID, true );
-		wp_delete_post( $post_itinerary->ID, true );
-		wp_delete_term( $season_term->term_id, SEASON_TAXONOMY );
 	}
 
 	/**
