@@ -254,13 +254,13 @@ function format_data( array $raw_occupancy_data = [], int $cabin_category_post_i
 
 	// Setup the defaults.
 	$default = [
-		'id'                      => '',
-		'name'                    => '',
-		'mask'                    => '',
-		'availabilityStatus'      => '',
-		'availabilityDescription' => '',
-		'spacesAvailable'         => 0,
-		'prices'                  => [],
+		'id'              => '',
+		'name'            => '',
+		'mask'            => '',
+		'saleStatusCode'  => '',
+		'saleStatus'      => '',
+		'spacesAvailable' => 0,
+		'prices'          => [],
 	];
 
 	// Apply defaults.
@@ -271,8 +271,8 @@ function format_data( array $raw_occupancy_data = [], int $cabin_category_post_i
 		empty( $raw_occupancy_data['id'] ) ||
 		empty( $raw_occupancy_data['name'] ) ||
 		empty( $raw_occupancy_data['mask'] ) ||
-		empty( $raw_occupancy_data['availabilityStatus'] ) ||
-		empty( $raw_occupancy_data['availabilityDescription'] ) ||
+		empty( $raw_occupancy_data['saleStatusCode'] ) ||
+		empty( $raw_occupancy_data['saleStatus'] ) ||
 		empty( $raw_occupancy_data['prices'] )
 	) {
 		return [];
@@ -286,8 +286,8 @@ function format_data( array $raw_occupancy_data = [], int $cabin_category_post_i
 		'departure_post_id'        => absint( $departure_post_id ),
 		'cabin_category_post_id'   => absint( $cabin_category_post_id ),
 		'spaces_available'         => absint( $raw_occupancy_data['spacesAvailable'] ),
-		'availability_description' => sanitize_text_field( strval( $raw_occupancy_data['availabilityDescription'] ) ),
-		'availability_status'      => sanitize_text_field( strval( $raw_occupancy_data['availabilityStatus'] ) ),
+		'availability_description' => sanitize_text_field( strval( $raw_occupancy_data['saleStatus'] ) ),
+		'availability_status'      => sanitize_text_field( strval( $raw_occupancy_data['saleStatusCode'] ) ),
 		'price_per_person_usd'     => 0,
 		'price_per_person_cad'     => 0,
 		'price_per_person_aud'     => 0,
