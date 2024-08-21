@@ -346,7 +346,7 @@ function get_itineraries( int $expedition_post_id = 0 ): array {
 		$itinerary_data = [
 			'id'            => $itinerary_post_id,
 			'packageId'     => $softrip_package_code,
-			'name'          => $itinerary_post['post']->post_title,
+			'name'          => get_pure_text_from_html( $itinerary_post['post']->post_title ),
 			'startLocation' => '',
 			'endLocation'   => '',
 			'departures'    => [],
@@ -397,7 +397,7 @@ function get_itineraries( int $expedition_post_id = 0 ): array {
  *    name: string,
  *    startDate: string,
  *    endDate: string,
- *    durationInDays: string,
+ *    durationInDays: int,
  *    ship: array{}|array{
  *      id: int,
  *      code: string,
@@ -455,10 +455,10 @@ function get_departures_data( int $expedition_post_id = 0, int $itinerary_post_i
 		// Initialize departure data.
 		$departure_data = [
 			'id'             => $softrip_id,
-			'name'           => $departure_post['post']->post_title,
+			'name'           => get_pure_text_from_html( $departure_post['post']->post_title ),
 			'startDate'      => $departure_post['post_meta']['start_date'] ?? '',
 			'endDate'        => $departure_post['post_meta']['end_date'] ?? '',
-			'durationInDays' => $departure_post['post_meta']['duration'] ?? '',
+			'durationInDays' => absint( $departure_post['post_meta']['duration'] ?? '' ),
 			'ship'           => [],
 			'languages'      => '',
 			'cabins'         => [],
@@ -997,8 +997,17 @@ function get_occupancies_data( int $itinerary_post_id = 0, int $departure_post_i
 
 			// Add to each price.
 			foreach ( CURRENCIES as $currency ) {
+				// Price.
+				$promo_price_per_person = $occupancy_promotion[ 'price_per_person_' . strtolower( $currency ) ];
+
+				// Check for promo price per person.
+				if ( empty( $promo_price_per_person ) ) {
+					continue;
+				}
+
+				// Add promotion to prices.
 				$occupancy_data['prices'][ $currency ]['promotions_applied'][] = [
-					'id'                     => $occupancy_promotion['id'],
+					'id'                     => $occupancy_promotion['promotion_id'],
 					'promotion_code'         => $promotion_code,
 					'promo_price_per_person' => $occupancy_promotion[ 'price_per_person_' . strtolower( $currency ) ],
 				];
