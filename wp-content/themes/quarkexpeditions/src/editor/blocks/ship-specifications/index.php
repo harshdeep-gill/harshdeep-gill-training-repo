@@ -9,7 +9,7 @@ namespace Quark\Theme\Blocks\ShipSpecifications;
 
 use function Quark\Ships\get_ship_data;
 
-const COMPONENT = 'parts.ship-specifications';
+const COMPONENT = 'parts.specifications';
 
 /**
  * Bootstrap this block.
