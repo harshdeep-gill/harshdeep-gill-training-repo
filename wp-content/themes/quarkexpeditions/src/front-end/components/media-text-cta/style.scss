@@ -34,6 +34,10 @@
 		}
 	}
 
+	&__media-wrap.square {
+		aspect-ratio: 1 / 1;
+	}
+
 	.fancy-video__cover-wrap {
 		margin-top: 0;
 	}
