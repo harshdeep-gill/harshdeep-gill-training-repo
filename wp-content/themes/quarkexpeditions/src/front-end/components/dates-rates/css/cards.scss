@@ -19,16 +19,26 @@
 		table-layout: auto;
 
 		td {
-			min-width: 130px;
+			min-width: 132px;
+			text-align: center;
 
-			&[rowspan="0"] {
-				min-width: 280px;
+			&[rowspan] {
+				min-width: 300px;
 			}
 		}
+	}
 
-		#{$self}__item-table-column--first {
-			min-width: 280px;
+	&__item-table-column {
+
+		&--sold-out {
+			background-color: var(--color-gray-5);
+			opacity: 0.5;
 		}
+	}
+
+	&__item-table-column-title {
+		font-weight: var(--font-weight-bold);
+		text-align: left;
 	}
 
 	&__item-table-heading {
@@ -37,6 +47,80 @@
 		&:first-child {
 			text-align: left;
 		}
+
+		&:nth-child(n+3) {
+			background-color: var(--color-attention-10);
+		}
+
+		&:nth-child(n+7) {
+			background-color: var(--color-yellow);
+		}
+	}
+
+	&__expedition {
+		color: var(--color-gray-80);
+		text-align: left;
+	}
+
+	&__expedition-overline {
+		color: var(--color-gray-50);
+		letter-spacing: 0;
+
+		a {
+			color: var(--color-dark-blue);
+		}
+	}
+
+	&__expedition-overline-link {
+		border-right: 1px solid var(--color-gray-50);
+		display: inline-block;
+		margin-right: var(--spacing-1);
+		padding-right: var(--spacing-2);
+		line-height: 1;
+
+		&:last-child {
+			border-right: 0;
+			margin-right: 0;
+			padding-right: 0;
+		}
+	}
+
+	&__expedition-title {
+		font-size: 20px;
+		font-weight: var(--font-weight-bold);
+		margin-top: var(--spacing-2);
+		margin-bottom: var(--spacing-3);
+
+		&:first-child {
+			margin-top: 0;
+		}
+	}
+
+	&__expedition-dates {
+		display: flex;
+		align-items: center;
+		gap: var(--spacing-2);
+
+		svg {
+			color: var(--color-black);
+		}
+	}
+
+	&__expedition-meta {
+		margin-top: var(--spacing-6);
+	}
+
+	&__expedition-meta-item {
+		display: flex;
+	}
+
+	&__expedition-meta-label {
+		padding-right: var(--spacing-1);
+		white-space: nowrap;
+	}
+
+	&__expedition-cta {
+		margin-top: var(--spacing-4);
 	}
 
 	&__item-table-title {
@@ -54,11 +138,16 @@
 	&__adventure-options-column {
 		flex: 1;
 		min-width: 0;
+		text-align: left;
 
 		& + & {
 			border-left: 1px solid var(--color-gray-20);
 			padding-left: var(--spacing-5);
 		}
+	}
+
+	&__adventure-options-column-title {
+		font-weight: var(--font-weight-bold);
 	}
 
 	&__adventure-options-column-list {
@@ -70,5 +159,37 @@
 	&__info {
 		font-style: italic;
 		padding: var(--spacing-4);
+	}
+
+	&__adventure-options-item {
+		display: flex;
+		align-items: center;
+		gap: var(--spacing-2);
+		margin-right: var(--spacing-5);
+		min-width: 180px;
+
+		&:last-child {
+			margin-right: 0;
+		}
+
+		&--paid #{$self}__adventure-options-item-icon {
+			background-color: var(--color-success-10);
+		}
+	}
+
+	&__adventure-options-item-icon {
+		background-color: var(--color-gray-10);
+		border: 1px solid var(--color-gray-20);
+		border-radius: var(--border-small);
+		height: 56px;
+		width: 56px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	&__adventure-options-item-price,
+	&__adventure-options-item-currency {
+		color: var(--color-success-100);
 	}
 }

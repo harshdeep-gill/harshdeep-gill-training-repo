@@ -12,7 +12,7 @@
 <x-button
     href="{{ $url }}"
     size="big"
-    class="expedition-cta__cta"
+    class="dates-rates__expedition-cta"
 >
     <x-escape :content="$text" />
 </x-button>

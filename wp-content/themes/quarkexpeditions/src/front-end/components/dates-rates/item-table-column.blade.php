@@ -1,16 +1,23 @@
 @props( [
-	'rowspan' => '',
-	'colspan' => '',
+	'rowspan'     => '',
+	'colspan'     => '',
+	'is_sold_out' => false,
 ] )
 
 @php
 	if ( empty( $slot ) ) {
 		return;
 	}
+
+	$classes = [ 'dates-rates__item-table-column' ];
+
+	if ( true === $is_sold_out ) {
+		$classes[] = 'dates-rates__item-table-column--sold-out';
+	}
 @endphp
 
 <td
-	class="dates-rates__item-table-column"
+	@class( $classes )
 	@if ( ! empty( $rowspan ) )
 		rowspan="{{ $rowspan }}"
 	@endif

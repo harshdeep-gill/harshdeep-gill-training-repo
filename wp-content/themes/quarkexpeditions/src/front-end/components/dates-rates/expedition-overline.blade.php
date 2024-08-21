@@ -1,13 +1,9 @@
-@props( [
-	'text' => '',
-] )
-
 @php
-	if ( empty( $text ) ) {
+	if ( empty( $slot ) ) {
 		return;
 	}
 @endphp
 
-<p class="dates-rates__expedition-overline overline">
-	<x-escape :content="$text" />
-</p>
+<div class="dates-rates__expedition-overline overline">
+	{!! $slot !!}
+</div>

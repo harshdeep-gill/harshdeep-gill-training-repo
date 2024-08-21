@@ -5231,9 +5231,12 @@
 						{{-- Row 1 --}}
 						<x-dates-rates.item-table-body>
 							<x-dates-rates.item-table-row>
-								<x-dates-rates.item-table-column rowspan="0">
+								<x-dates-rates.item-table-column rowspan="2">
 									<x-dates-rates.expedition>
-										<x-dates-rates.expedition-overline text="Antarctic | Ocean Adventurer" />
+										<x-dates-rates.expedition-overline>
+											<x-dates-rates.expedition-overline-link title="Antarctic" url="" />
+											<x-dates-rates.expedition-overline-link title="Ocean Adventurer" url="#" />
+										</x-dates-rates.expedition-overline>
 										<x-dates-rates.expedition-title text="Spitsbergen Highlights: Expedition In Brief" />
 										<x-dates-rates.expedition-dates
 											start_date="Feb 27"
@@ -5271,63 +5274,61 @@
 									</x-dates-rates.expedition>
 								</x-dates-rates.item-table-column>
 								<x-dates-rates.item-table-column>
-									Brochure Price
+									<x-dates-rates.item-table-column-title text="Brochure Price" />
 								</x-dates-rates.item-table-column>
 								<x-dates-rates.item-table-column>
 									$11,995 USD
 								</x-dates-rates.item-table-column>
-								<x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column :is_sold_out="true">
 									$13,995 USD
 								</x-dates-rates.item-table-column>
-								<x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column :is_sold_out="true">
 									$14,495 USD
 								</x-dates-rates.item-table-column>
 								<x-dates-rates.item-table-column>
 									$15,995 USD
 								</x-dates-rates.item-table-column>
-								<x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column :is_sold_out="true">
 									$17,495 USD
 								</x-dates-rates.item-table-column>
-								<x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column :is_sold_out="true">
 									$17,495 USD
 								</x-dates-rates.item-table-column>
-								<x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column :is_sold_out="true">
 									$19,995 USD
 								</x-dates-rates.item-table-column>
-								
-								<x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column :is_sold_out="true">
 									$22,995 USD
 								</x-dates-rates.item-table-column>
 							</x-dates-rates.item-table-row>
 
 							<x-dates-rates.item-table-row>
 								<x-dates-rates.item-table-column>
-									Brochure Price
+									<x-dates-rates.item-table-column-title text="Availability" />
 								</x-dates-rates.item-table-column>
 								<x-dates-rates.item-table-column>
-									$11,995 USD
+									Please Call
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column :is_sold_out="true">
+									Sold Out
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column :is_sold_out="true">
+									Sold Out
 								</x-dates-rates.item-table-column>
 								<x-dates-rates.item-table-column>
-									$13,995 USD
+									Please Call
 								</x-dates-rates.item-table-column>
-								<x-dates-rates.item-table-column>
-									$14,495 USD
+								<x-dates-rates.item-table-column :is_sold_out="true">
+									Sold Out
 								</x-dates-rates.item-table-column>
-								<x-dates-rates.item-table-column>
-									$15,995 USD
+								<x-dates-rates.item-table-column :is_sold_out="true">
+									Sold Out
 								</x-dates-rates.item-table-column>
-								<x-dates-rates.item-table-column>
-									$17,495 USD
+								<x-dates-rates.item-table-column :is_sold_out="true">
+									Sold Out
 								</x-dates-rates.item-table-column>
-								<x-dates-rates.item-table-column>
-									$17,495 USD
-								</x-dates-rates.item-table-column>
-								<x-dates-rates.item-table-column>
-									$19,995 USD
-								</x-dates-rates.item-table-column>
-								
-								<x-dates-rates.item-table-column>
-									$22,995 USD
+								<x-dates-rates.item-table-column :is_sold_out="true">
+									Sold Out
 								</x-dates-rates.item-table-column>
 							</x-dates-rates.item-table-row>
 						</x-dates-rates.item-table-body>
@@ -5341,15 +5342,15 @@
 											<x-dates-rates.adventure-options-item name="Polar Plunge" icon="polar-plunge" />
 										</x-dates-rates.adventure-options-column>
 
-										<x-dates-rates.adventure-options-column title="Included Adventure Options">
-											<x-dates-rates.adventure-options-item name="Padding Excursion" icon="paddling">
-												<x-dates-rates.adventure-options-item-price text="$ 995 USD" />
+										<x-dates-rates.adventure-options-column title="Paid Adventure Options">
+											<x-dates-rates.adventure-options-item name="Padding Excursion" icon="paddling" :is_paid="true">
+												<x-dates-rates.adventure-options-item-price price="$995" currency="USD" count="00" />
 											</x-dates-rates.adventure-options-item>
-											<x-dates-rates.adventure-options-item name="Sea Kayaking" icon="kayaking">
-												<x-dates-rates.adventure-options-item-price text="$ 995 USD" />
+											<x-dates-rates.adventure-options-item name="Sea Kayaking" icon="kayaking" :is_paid="true">
+												<x-dates-rates.adventure-options-item-price price="$995" currency="USD" count="8" />
 											</x-dates-rates.adventure-options-item>
-											<x-dates-rates.adventure-options-item name="Polar Plunge" icon="polar-plunge">
-												<x-dates-rates.adventure-options-item-price text="$ 995 USD" />
+											<x-dates-rates.adventure-options-item name="Polar Plunge" icon="polar-plunge" :is_paid="true">
+												<x-dates-rates.adventure-options-item-price price="$995" currency="USD" count="9" />
 											</x-dates-rates.adventure-options-item>
 										</x-dates-rates.adventure-options-column>
 									</x-dates-rates.adventure-options>
