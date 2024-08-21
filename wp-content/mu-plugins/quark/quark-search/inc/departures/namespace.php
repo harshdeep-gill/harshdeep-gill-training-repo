@@ -397,16 +397,8 @@ function get_expedition_search_filter_data(): array {
 			continue;
 		}
 
-		// Get expedition data.
-		$expedition = get_post( $expedition_id );
-
-		// Validate expedition.
-		if ( ! $expedition instanceof WP_Post ) {
-			continue;
-		}
-
 		// Prepare expedition data.
-		$expeditions[ $expedition_id ] = $expedition->post_title;
+		$expeditions[ $expedition_id ] = get_the_title( $expedition_id );
 	}
 
 	// Set cache.
