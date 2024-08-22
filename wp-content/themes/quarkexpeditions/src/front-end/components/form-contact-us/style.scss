@@ -29,11 +29,23 @@
 		}
 	}
 
-	.form-row:has(&__existing-booking-info, &__existing-booking-agency-info) {
+	&__existing-booking-info,
+	&__existing-booking-agency-info {
 		display: none;
-	}
 
-	.form-row:has(:is(&__existing-booking-info, &__existing-booking-agency-info)[required="yes"]) {
-		display: grid;
+		/* stylelint-disable-next-line scss/selector-no-redundant-nesting-selector */
+		.form-row:has(&) {
+			display: none;
+		}
+
+		&[required="yes"] {
+			display: block;
+
+			/* stylelint-disable-next-line scss/selector-no-redundant-nesting-selector */
+			.form-row:has(&) {
+				display: grid;
+			}
+		}
+
 	}
 }
