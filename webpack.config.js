@@ -16,6 +16,9 @@ const DependencyExtractionWebpackPlugin = require( '@wordpress/dependency-extrac
 // Theme path.
 const themePath = `./wp-content/themes/quarkexpeditions`;
 
+// Plugins path.
+const softripPluginPath = `./wp-content/mu-plugins/quark/quark-softrip`;
+
 // Config.
 module.exports = ( env ) => {
 	// Build configuration.
@@ -165,6 +168,23 @@ module.exports = ( env ) => {
 		],
 	};
 
+	// Plugins Assets.
+	const pluginsAssetsConfig = {
+		...buildConfig,
+		entry: {
+			'quark-softrip-manual-sync': `${ softripPluginPath }/src/manual-sync/index.ts`,
+		},
+		output: {
+			...buildConfig.output,
+			filename: ( { chunk: { name } } ) => `${ softripPluginPath }/dist/${ name }.js`,
+		},
+		plugins: [
+			new MiniCssExtractPlugin( {
+				filename: ( { chunk: { name } } ) => `${ softripPluginPath }/dist/${ name }.css`,
+			} ),
+		],
+	};
+
 	// External libraries config.
 	const libConfig = {
 		...buildConfig,
@@ -203,8 +223,9 @@ module.exports = ( env ) => {
 		} ) );
 		buildConfig.devtool = 'source-map';
 		componentsConfig.devtool = 'source-map';
+		pluginsAssetsConfig.devtool = 'source-map';
 	}
 
 	// Return combined config.
-	return [ buildConfig, componentsConfig, libConfig ];
+	return [ buildConfig, componentsConfig, pluginsAssetsConfig, libConfig ];
 };
