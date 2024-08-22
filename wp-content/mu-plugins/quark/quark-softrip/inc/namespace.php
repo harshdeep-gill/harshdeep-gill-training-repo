@@ -8,11 +8,9 @@
 namespace Quark\Softrip;
 
 use cli\progress\Bar;
-use WP_Admin_Bar;
 use WP_CLI;
 use WP_Error;
 use WP_Query;
-use WP_Screen;
 
 use function Quark\Softrip\Departures\update_departures;
 use function Quark\Softrip\AdventureOptions\get_table_sql as get_adventure_options_table_sql;
