@@ -94,7 +94,7 @@ function render( array $attributes = [] ): string {
 					],
 				];
 
-				// Set the number of posts to show.
+				// Set the number of posts to show. Adding one extra to remove the current staff member.
 				$args['posts_per_page'] = 4;
 			}
 		}

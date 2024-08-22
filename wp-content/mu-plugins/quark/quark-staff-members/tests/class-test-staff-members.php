@@ -14,7 +14,9 @@ use WP_Term;
 
 use function Quark\StaffMembers\get_cards_data;
 use function Quark\StaffMembers\get;
+use function Quark\StaffMembers\get_department;
 
+use const Quark\StaffMembers\DEPARTMENT_TAXONOMY;
 use const Quark\StaffMembers\POST_TYPE as STAFF_MEMBER_POST_TYPE;
 
 /**
@@ -208,5 +210,52 @@ class Test_Staff_Members extends WP_UnitTestCase {
 		wp_delete_post( $staff_member_3->ID, true );
 		wp_delete_term( $season_1->term_id, 'qrk_season' );
 		wp_delete_term( $season_2->term_id, 'qrk_season' );
+	}
+
+	/**
+	 * Test get department function.
+	 *
+	 * @covers \Quark\StaffMembers\get_department()
+	 *
+	 * @return void
+	 */
+	public function test_get_department(): void {
+		// Create a post.
+		$post = $this->get_post();
+
+		// Test if this is a post.
+		$this->assertTrue( $post instanceof WP_Post );
+
+		// Assign Taxonomies.
+		$department = $this->factory()->term->create_and_get(
+			[
+				'taxonomy' => DEPARTMENT_TAXONOMY,
+				'name'     => 'Test Department',
+			]
+		);
+
+		// Assert the taxonomies are created.
+		$this->assertTrue( $department instanceof WP_Term );
+
+		// Assign taxonomies to the post.
+		wp_set_post_terms( $post->ID, [ $department->term_id ], DEPARTMENT_TAXONOMY );
+
+		// Assert the department.
+		$this->assertEquals(
+			[
+				'term_id'     => strval( $department->term_id ),
+				'name'        => $department->name,
+				'slug'        => $department->slug,
+				'term_group'  => $department->term_group,
+				'taxonomy'    => DEPARTMENT_TAXONOMY,
+				'description' => $department->description,
+				'parent'      => $department->parent,
+			],
+			get_department( $post->ID )
+		);
+
+		// Clean up.
+		wp_delete_post( $post->ID, true );
+		wp_delete_term( $department->term_id, DEPARTMENT_TAXONOMY );
 	}
 }
