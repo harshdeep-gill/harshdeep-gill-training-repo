@@ -1,0 +1,25 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Specifications",
+	"name": "quark/specifications",
+	"description": "Display a list of specifications",
+	"category": "layout",
+	"textdomain": "qrk",
+	"keywords": [
+		"specifications"
+	],
+	"attributes": {
+		"title": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}
