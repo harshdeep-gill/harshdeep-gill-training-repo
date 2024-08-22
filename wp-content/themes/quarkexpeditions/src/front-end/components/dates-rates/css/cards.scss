@@ -7,6 +7,7 @@
 	$self: &;
 
 	.travelopia-table {
+		border-left: 1px solid var(--color-gray-20);
 		display: block;
 		overflow-x: auto;
 
@@ -17,6 +18,7 @@
 
 	&__table {
 		table-layout: auto;
+		margin-left: -1px;
 
 		td {
 			min-width: 132px;
@@ -28,16 +30,32 @@
 		}
 	}
 
+	&__item {
+		min-width: calc(100vw / 2 + calc(var(--wrap-width) / 2));
+
+		& + & {
+			margin-top: var(--spacing-5);
+		}
+	}
+
 	&__item-table-column {
+
+		&--pay-in-full {
+			background-color: var(--color-success-10);
+		}
 
 		&--sold-out {
 			background-color: var(--color-gray-5);
 			opacity: 0.5;
 		}
+
+		&--stock-limited {
+			color: var(--color-attention-100);
+		}
 	}
 
 	&__item-table-column-title {
-		font-weight: var(--font-weight-bold);
+		min-width: 120px;
 		text-align: left;
 	}
 
@@ -191,5 +209,16 @@
 	&__adventure-options-item-price,
 	&__adventure-options-item-currency {
 		color: var(--color-success-100);
+	}
+
+	.tooltip__icon {
+		height: 16px;
+		width: 16px;
+		position: relative;
+		top: 3px;
+
+		svg {
+			width: 16px;
+		}
 	}
 }

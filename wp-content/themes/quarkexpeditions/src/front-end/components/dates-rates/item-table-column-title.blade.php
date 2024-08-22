@@ -1,13 +1,9 @@
-@props( [
-	'text' => '',
-] )
-
 @php
-	if ( empty( $text ) ) {
+	if ( empty( $slot ) ) {
 		return;
 	}
 @endphp
 
-<p class="dates-rates__item-table-column-title">
-	<x-escape content="{{ $text }}" />
-</p>
+<div class="dates-rates__item-table-column-title">
+	{!! $slot !!}
+</div>

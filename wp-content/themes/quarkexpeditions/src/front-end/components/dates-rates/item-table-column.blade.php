@@ -1,7 +1,9 @@
 @props( [
-	'rowspan'     => '',
-	'colspan'     => '',
-	'is_sold_out' => false,
+	'rowspan'          => '',
+	'colspan'          => '',
+	'is_sold_out'      => false,
+	'is_pay_in_full'   => false,
+	'is_stock_limited' => false,
 ] )
 
 @php
@@ -13,6 +15,14 @@
 
 	if ( true === $is_sold_out ) {
 		$classes[] = 'dates-rates__item-table-column--sold-out';
+	}
+
+	if ( true === $is_pay_in_full ) {
+		$classes[] = 'dates-rates__item-table-column--pay-in-full';
+	}
+
+	if ( true === $is_stock_limited ) {
+		$classes[] = 'dates-rates__item-table-column--stock-limited';
 	}
 @endphp
 

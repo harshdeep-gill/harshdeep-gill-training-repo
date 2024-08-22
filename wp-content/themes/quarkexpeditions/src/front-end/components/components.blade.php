@@ -5274,7 +5274,9 @@
 									</x-dates-rates.expedition>
 								</x-dates-rates.item-table-column>
 								<x-dates-rates.item-table-column>
-									<x-dates-rates.item-table-column-title text="Brochure Price" />
+									<x-dates-rates.item-table-column-title>
+										<strong>Brochure Price</strong>
+									</x-dates-rates.item-table-column-title>
 								</x-dates-rates.item-table-column>
 								<x-dates-rates.item-table-column>
 									$11,995 USD
@@ -5304,7 +5306,9 @@
 
 							<x-dates-rates.item-table-row>
 								<x-dates-rates.item-table-column>
-									<x-dates-rates.item-table-column-title text="Availability" />
+									<x-dates-rates.item-table-column-title>
+										<strong>Availability</strong>
+									</x-dates-rates.item-table-column-title>
 								</x-dates-rates.item-table-column>
 								<x-dates-rates.item-table-column>
 									Please Call
@@ -5326,6 +5330,197 @@
 								</x-dates-rates.item-table-column>
 								<x-dates-rates.item-table-column :is_sold_out="true">
 									Sold Out
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column :is_sold_out="true">
+									Sold Out
+								</x-dates-rates.item-table-column>
+							</x-dates-rates.item-table-row>
+						</x-dates-rates.item-table-body>
+
+						<x-dates-rates.item-table-foot>
+							<x-dates-rates.item-table-row>
+								<x-dates-rates.item-table-column colspan="10">
+									<x-dates-rates.adventure-options>
+										<x-dates-rates.adventure-options-column title="Included Adventure Options">
+											<x-dates-rates.adventure-options-item name="Walking/Hiking" icon="hiking" />
+											<x-dates-rates.adventure-options-item name="Polar Plunge" icon="polar-plunge" />
+										</x-dates-rates.adventure-options-column>
+
+										<x-dates-rates.adventure-options-column title="Paid Adventure Options">
+											<x-dates-rates.adventure-options-item name="Padding Excursion" icon="paddling" :is_paid="true">
+												<x-dates-rates.adventure-options-item-price price="$995" currency="USD" count="00" />
+											</x-dates-rates.adventure-options-item>
+											<x-dates-rates.adventure-options-item name="Sea Kayaking" icon="kayaking" :is_paid="true">
+												<x-dates-rates.adventure-options-item-price price="$995" currency="USD" count="8" />
+											</x-dates-rates.adventure-options-item>
+											<x-dates-rates.adventure-options-item name="Polar Plunge" icon="polar-plunge" :is_paid="true">
+												<x-dates-rates.adventure-options-item-price price="$995" currency="USD" count="9" />
+											</x-dates-rates.adventure-options-item>
+										</x-dates-rates.adventure-options-column>
+									</x-dates-rates.adventure-options>
+								</x-dates-rates.item-table-column>
+							</x-dates-rates.item-table-row>
+						</x-dates-rates.item-table-foot>
+					</x-dates-rates.item-table>
+
+					<x-dates-rates.info text="Prices are shown per person" />
+				</x-dates-rates.item>
+
+				<x-dates-rates.item>
+					<x-dates-rates.item-table title="Cabin Categories">
+						{{-- Table Head --}}
+						<x-dates-rates.item-table-head>
+							<x-dates-rates.item-table-row>
+								<x-dates-rates.item-table-heading>Expedition</x-dates-rates.item-table-heading>
+								<x-dates-rates.item-table-heading>Promo Offers</x-dates-rates.item-table-heading>
+								<x-dates-rates.item-table-heading>Triple</x-dates-rates.item-table-heading>
+								<x-dates-rates.item-table-heading>Lower Deck Twin</x-dates-rates.item-table-heading>
+								<x-dates-rates.item-table-heading>Main Deck Ttwin Porthole</x-dates-rates.item-table-heading>
+								<x-dates-rates.item-table-heading>Main Deck Twin Window</x-dates-rates.item-table-heading>
+								<x-dates-rates.item-table-heading>Superior</x-dates-rates.item-table-heading>
+								<x-dates-rates.item-table-heading>Deluxe</x-dates-rates.item-table-heading>
+								<x-dates-rates.item-table-heading>Suite</x-dates-rates.item-table-heading>
+								<x-dates-rates.item-table-heading>Owner's Suite</x-dates-rates.item-table-heading>
+							</x-dates-rates.item-table-row>
+						</x-dates-rates.item-table-head>
+						{{-- Row 1 --}}
+						<x-dates-rates.item-table-body>
+							<x-dates-rates.item-table-row>
+								<x-dates-rates.item-table-column rowspan="3">
+									<x-dates-rates.expedition>
+										<x-dates-rates.expedition-overline>
+											<x-dates-rates.expedition-overline-link title="Antarctic" url="" />
+											<x-dates-rates.expedition-overline-link title="Ocean Adventurer" url="#" />
+										</x-dates-rates.expedition-overline>
+										<x-dates-rates.expedition-title text="Spitsbergen Highlights: Expedition In Brief" />
+										<x-dates-rates.expedition-dates
+											start_date="Feb 27"
+											end_date="Mar 05"
+											year="2024"
+											duration="8"
+										/>
+										<x-dates-rates.expedition-meta>
+											<x-dates-rates.expedition-meta-item>
+												<x-dates-rates.expedition-meta-label>
+													Start Location
+												</x-dates-rates.expedition-meta-label>
+												<x-dates-rates.expedition-meta-value>
+													Punta Arenas, Chile
+												</x-dates-rates.expedition-meta-value>
+											</x-dates-rates.expedition-meta-item>
+											<x-dates-rates.expedition-meta-item>
+												<x-dates-rates.expedition-meta-label>
+													End Location
+												</x-dates-rates.expedition-meta-label>
+												<x-dates-rates.expedition-meta-value>
+													Punta Arenas, Chile
+												</x-dates-rates.expedition-meta-value>
+											</x-dates-rates.expedition-meta-item>
+											<x-dates-rates.expedition-meta-item>
+												<x-dates-rates.expedition-meta-label>
+													Languages
+												</x-dates-rates.expedition-meta-label>
+												<x-dates-rates.expedition-meta-value>
+													English
+												</x-dates-rates.expedition-meta-value>
+											</x-dates-rates.expedition-meta-item>
+										</x-dates-rates.expedition-meta>
+										<x-dates-rates.expedition-cta text="Request a Quote" url="#" />
+									</x-dates-rates.expedition>
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column>
+									<x-dates-rates.item-table-column-title>
+										<strong>Brochure Price</strong>
+										(Incl. Transfer Package)
+										<x-tooltip icon="info">
+											<p>Hiking, kayaking, mountain biking, mountaineering, etc.</p>
+										</x-tooltip>
+									</x-dates-rates.item-table-column-title>
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column>
+									$11,995 USD
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column :is_sold_out="true">
+									$13,995 USD
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column :is_sold_out="true">
+									$14,495 USD
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column>
+									$15,995 USD
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column :is_sold_out="true">
+									$17,495 USD
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column :is_sold_out="true">
+									$17,495 USD
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column :is_sold_out="true">
+									$19,995 USD
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column :is_sold_out="true">
+									$22,995 USD
+								</x-dates-rates.item-table-column>
+							</x-dates-rates.item-table-row>
+
+							<x-dates-rates.item-table-row>
+								<x-dates-rates.item-table-column :is_pay_in_full="true">
+									<x-dates-rates.item-table-column-title>
+										<strong>Pay in full at time of booking & Save 5%</strong>
+									</x-dates-rates.item-table-column-title>
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column :is_pay_in_full="true">
+									3,992 USD
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column :is_sold_out="true">
+									$4,995 USD
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column :is_sold_out="true">
+									$5,012 USD
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column :is_pay_in_full="true">
+									$5,795 USD
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column :is_sold_out="true">
+									$5,995 USD
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column :is_pay_in_full="true">
+									$5,995 USD
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column :is_pay_in_full="true">
+									$6,015 USD
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column :is_sold_out="true">
+									$6,075 USD
+								</x-dates-rates.item-table-column>
+							</x-dates-rates.item-table-row>
+
+							<x-dates-rates.item-table-row>
+								<x-dates-rates.item-table-column>
+									<x-dates-rates.item-table-column-title>
+										<strong>Availability</strong>
+									</x-dates-rates.item-table-column-title>
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column :is_stock_limited="true">
+									3 cabins
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column :is_sold_out="true">
+									Sold Out
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column :is_sold_out="true">
+									Sold Out
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column>
+									Please Call
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column :is_sold_out="true">
+									Sold Out
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column :is_sold_out="true">
+									Sold Out
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column :is_stock_limited="true">
+									2 Cabins
 								</x-dates-rates.item-table-column>
 								<x-dates-rates.item-table-column :is_sold_out="true">
 									Sold Out
