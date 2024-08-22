@@ -56,7 +56,7 @@ import * as highlights from './highlights';
 import * as secondaryNavigation from './secondary-navigation';
 import * as iconInfoGrid from './icon-info-grid';
 import * as expeditionDetails from './expedition-details';
-import * as mediaCtaBanner from './media-cta-banner';
+import * as ctaBanner from './cta-banner';
 import * as ships from './ships';
 import * as mediaDescriptionCards from './media-description-cards';
 import * as FeaturedMediaAccordions from './featured-media-accordions';
@@ -125,7 +125,7 @@ const blocks = [
 	secondaryNavigation,
 	iconInfoGrid,
 	expeditionDetails,
-	mediaCtaBanner,
+	ctaBanner,
 	ships,
 	mediaDescriptionCards,
 	FeaturedMediaAccordions,
