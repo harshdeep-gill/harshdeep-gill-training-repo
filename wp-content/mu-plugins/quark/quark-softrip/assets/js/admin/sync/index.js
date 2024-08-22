@@ -7,13 +7,13 @@
 /**
  * Global variables
  */
-const {wp} = window;
+const { wp } = window;
 const { __ } = wp.i18n;
 
 /**
  * Sync button.
  */
-class SyncButton {
+class SoftripSyncButton {
     /**
      * Constructor.
      */
@@ -40,17 +40,8 @@ class SyncButton {
             return;
         }
 
-        // Select JS element having sync button html.
-        this.syncButton = document.querySelector('#quark-softrip-sync-admin');
-
-        // If sync button is not found, return.
-        if (!this.syncButton || !this.syncButton.innerHTML) {
-            return;
-        }
-
-        // Create template element and set innerHTML.
-        const template = document.createElement('template');
-        template.innerHTML = this.syncButton.innerHTML;
+        // Select template containing sync button.
+        const template = document.querySelector('#quark-softrip-admin-bar-sync-button');
 
         // Validate template content.
         if (!template.content.children.length) {
@@ -93,4 +84,4 @@ class SyncButton {
     }
 }
 
-new SyncButton();
+new SoftripSyncButton();
