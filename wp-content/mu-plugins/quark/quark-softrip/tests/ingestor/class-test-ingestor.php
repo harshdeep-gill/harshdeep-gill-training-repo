@@ -1763,24 +1763,24 @@ class Test_Ingestor extends WP_UnitTestCase {
 				'spacesAvailable' => 10,
 				'price'           => [
 					AUD_CURRENCY => [
-						'currency_code'    => AUD_CURRENCY,
-						'price_per_person' => 1000,
+						'currencyCode'   => AUD_CURRENCY,
+						'pricePerPerson' => 1000,
 					],
 					USD_CURRENCY => [
-						'currency_code'    => USD_CURRENCY,
-						'price_per_person' => 8176,
+						'currencyCode'   => USD_CURRENCY,
+						'pricePerPerson' => 8176,
 					],
 					CAD_CURRENCY => [
-						'currency_code'    => CAD_CURRENCY,
-						'price_per_person' => 1000,
+						'currencyCode'   => CAD_CURRENCY,
+						'pricePerPerson' => 1000,
 					],
 					GBP_CURRENCY => [
-						'currency_code'    => GBP_CURRENCY,
-						'price_per_person' => 0,
+						'currencyCode'   => GBP_CURRENCY,
+						'pricePerPerson' => 0,
 					],
 					EUR_CURRENCY => [
-						'currency_code'    => EUR_CURRENCY,
-						'price_per_person' => 0,
+						'currencyCode'   => EUR_CURRENCY,
+						'pricePerPerson' => 0,
 					],
 				],
 			],
@@ -1800,24 +1800,24 @@ class Test_Ingestor extends WP_UnitTestCase {
 				'spacesAvailable' => 0,
 				'price'           => [
 					AUD_CURRENCY => [
-						'currency_code'    => AUD_CURRENCY,
-						'price_per_person' => 234,
+						'currencyCode'   => AUD_CURRENCY,
+						'pricePerPerson' => 234,
 					],
 					USD_CURRENCY => [
-						'currency_code'    => USD_CURRENCY,
-						'price_per_person' => 235456,
+						'currencyCode'   => USD_CURRENCY,
+						'pricePerPerson' => 235456,
 					],
 					CAD_CURRENCY => [
-						'currency_code'    => CAD_CURRENCY,
-						'price_per_person' => 29332,
+						'currencyCode'   => CAD_CURRENCY,
+						'pricePerPerson' => 29332,
 					],
 					GBP_CURRENCY => [
-						'currency_code'    => GBP_CURRENCY,
-						'price_per_person' => 0,
+						'currencyCode'   => GBP_CURRENCY,
+						'pricePerPerson' => 0,
 					],
 					EUR_CURRENCY => [
-						'currency_code'    => EUR_CURRENCY,
-						'price_per_person' => 0,
+						'currencyCode'   => EUR_CURRENCY,
+						'pricePerPerson' => 0,
 					],
 				],
 			],

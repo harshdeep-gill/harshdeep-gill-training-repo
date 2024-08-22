@@ -1247,24 +1247,24 @@ function get_adventure_option_category_data_from_meta( int $adventure_option_cat
  *       >,
  *       price: array{
  *          AUD: array{
- *             price_per_person: int,
- *             currency_code: string,
+ *             pricePerPerson: int,
+ *             currencyCode: string,
  *          },
  *          USD: array{
- *             price_per_person: int,
- *             currency_code: string,
+ *             pricePerPerson: int,
+ *             currencyCode: string,
  *          },
  *          EUR: array{
- *             price_per_person: int,
- *             currency_code: string,
+ *             pricePerPerson: int,
+ *             currencyCode: string,
  *          },
  *          GBP: array{
- *             price_per_person: int,
- *             currency_code: string,
+ *             pricePerPerson: int,
+ *             currencyCode: string,
  *          },
  *          CAD: array{
- *             price_per_person: int,
- *             currency_code: string,
+ *             pricePerPerson: int,
+ *             currencyCode: string,
  *          }
  *       }
  *    }
@@ -1320,31 +1320,31 @@ function get_paid_adventure_options_data( int $departure_post_id = 0 ): array {
 			'spacesAvailable' => absint( $adventure_option['spaces_available'] ),
 			'price'           => [
 				AUD_CURRENCY => [
-					'price_per_person' => 0,
-					'currency_code'    => AUD_CURRENCY,
+					'pricePerPerson' => 0,
+					'currencyCode'   => AUD_CURRENCY,
 				],
 				USD_CURRENCY => [
-					'price_per_person' => 0,
-					'currency_code'    => USD_CURRENCY,
+					'pricePerPerson' => 0,
+					'currencyCode'   => USD_CURRENCY,
 				],
 				EUR_CURRENCY => [
-					'price_per_person' => 0,
-					'currency_code'    => EUR_CURRENCY,
+					'pricePerPerson' => 0,
+					'currencyCode'   => EUR_CURRENCY,
 				],
 				GBP_CURRENCY => [
-					'price_per_person' => 0,
-					'currency_code'    => GBP_CURRENCY,
+					'pricePerPerson' => 0,
+					'currencyCode'   => GBP_CURRENCY,
 				],
 				CAD_CURRENCY => [
-					'price_per_person' => 0,
-					'currency_code'    => CAD_CURRENCY,
+					'pricePerPerson' => 0,
+					'currencyCode'   => CAD_CURRENCY,
 				],
 			],
 		];
 
 		// Set price per person for each currency.
 		foreach ( CURRENCIES as $currency ) {
-			$paid_adventure_option_data['price'][ $currency ]['price_per_person'] = $adventure_option[ 'price_per_person_' . strtolower( $currency ) ];
+			$paid_adventure_option_data['price'][ $currency ]['pricePerPerson'] = $adventure_option[ 'price_per_person_' . strtolower( $currency ) ];
 		}
 
 		// Add paid adventure option data.
