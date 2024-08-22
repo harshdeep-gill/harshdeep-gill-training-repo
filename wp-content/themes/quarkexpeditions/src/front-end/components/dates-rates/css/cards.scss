@@ -1,0 +1,224 @@
+/**
+ * Dates rates - Cards.
+ */
+@import "../../../scss";
+
+.dates-rates {
+	$self: &;
+
+	.travelopia-table {
+		border-left: 1px solid var(--color-gray-20);
+		display: block;
+		overflow-x: auto;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+
+	&__table {
+		table-layout: auto;
+		margin-left: -1px;
+
+		td {
+			min-width: 132px;
+			text-align: center;
+
+			&[rowspan] {
+				min-width: 300px;
+			}
+		}
+	}
+
+	&__item {
+		min-width: calc(100vw / 2 + calc(var(--wrap-width) / 2));
+
+		& + & {
+			margin-top: var(--spacing-5);
+		}
+	}
+
+	&__item-table-column {
+
+		&--pay-in-full {
+			background-color: var(--color-success-10);
+		}
+
+		&--sold-out {
+			background-color: var(--color-gray-5);
+			opacity: 0.5;
+		}
+
+		&--stock-limited {
+			color: var(--color-attention-100);
+		}
+	}
+
+	&__item-table-column-title {
+		min-width: 120px;
+		text-align: left;
+	}
+
+	&__item-table-heading {
+		text-align: center;
+
+		&:first-child {
+			text-align: left;
+		}
+
+		&:nth-child(n+3) {
+			background-color: var(--color-attention-10);
+		}
+
+		&:nth-child(n+7) {
+			background-color: var(--color-yellow);
+		}
+	}
+
+	&__expedition {
+		color: var(--color-gray-80);
+		text-align: left;
+	}
+
+	&__expedition-overline {
+		color: var(--color-gray-50);
+		letter-spacing: 0;
+
+		a {
+			color: var(--color-dark-blue);
+		}
+	}
+
+	&__expedition-overline-link {
+		border-right: 1px solid var(--color-gray-50);
+		display: inline-block;
+		margin-right: var(--spacing-1);
+		padding-right: var(--spacing-2);
+		line-height: 1;
+
+		&:last-child {
+			border-right: 0;
+			margin-right: 0;
+			padding-right: 0;
+		}
+	}
+
+	&__expedition-title {
+		font-size: 20px;
+		font-weight: var(--font-weight-bold);
+		margin-top: var(--spacing-2);
+		margin-bottom: var(--spacing-3);
+
+		&:first-child {
+			margin-top: 0;
+		}
+	}
+
+	&__expedition-dates {
+		display: flex;
+		align-items: center;
+		gap: var(--spacing-2);
+
+		svg {
+			color: var(--color-black);
+		}
+	}
+
+	&__expedition-meta {
+		margin-top: var(--spacing-6);
+	}
+
+	&__expedition-meta-item {
+		display: flex;
+	}
+
+	&__expedition-meta-label {
+		padding-right: var(--spacing-1);
+		white-space: nowrap;
+	}
+
+	&__expedition-cta {
+		margin-top: var(--spacing-4);
+	}
+
+	&__item-table-title {
+		margin-bottom: calc(-1 * var(--typography-spacing));
+		text-align: center;
+		padding: var(--typography-spacing);
+		border: 1px solid var(--color-gray-20);
+		border-bottom: 0;
+	}
+
+	&__adventure-options {
+		display: flex;
+	}
+
+	&__adventure-options-column {
+		flex: 1;
+		min-width: 0;
+		text-align: left;
+
+		& + & {
+			border-left: 1px solid var(--color-gray-20);
+			padding-left: var(--spacing-5);
+		}
+	}
+
+	&__adventure-options-column-title {
+		font-weight: var(--font-weight-bold);
+	}
+
+	&__adventure-options-column-list {
+		list-style: none;
+		padding-left: 0;
+		display: flex;
+	}
+
+	&__info {
+		font-style: italic;
+		padding: var(--spacing-4);
+	}
+
+	&__adventure-options-item {
+		display: flex;
+		align-items: center;
+		gap: var(--spacing-2);
+		margin-right: var(--spacing-5);
+		min-width: 180px;
+
+		&:last-child {
+			margin-right: 0;
+		}
+
+		&--paid #{$self}__adventure-options-item-icon {
+			background-color: var(--color-success-10);
+		}
+	}
+
+	&__adventure-options-item-icon {
+		background-color: var(--color-gray-10);
+		border: 1px solid var(--color-gray-20);
+		border-radius: var(--border-small);
+		height: 56px;
+		width: 56px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	&__adventure-options-item-price,
+	&__adventure-options-item-currency {
+		color: var(--color-success-100);
+	}
+
+	.tooltip__icon {
+		height: 16px;
+		width: 16px;
+		position: relative;
+		top: 3px;
+
+		svg {
+			width: 16px;
+		}
+	}
+}
