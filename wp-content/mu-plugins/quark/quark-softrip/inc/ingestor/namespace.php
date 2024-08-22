@@ -172,8 +172,8 @@ function get_expedition_data( int $expedition_post_id = 0 ): array {
 	$expedition_data = [
 		'id'           => $expedition_post_id,
 		'name'         => get_raw_text_from_html( $expedition_post['post']->post_title ),
-		'description'  => '', // @todo Get description after parsing post content.
-		'images'       => [], // @todo Get images after parsing post content for hero-slider block.
+		'description'  => '', // @todo https://tuispecialist.atlassian.net/browse/QE-580 - Get description after parsing post content.
+		'images'       => [], // @todo https://tuispecialist.atlassian.net/browse/QE-580 - Get images after parsing post content for hero-slider block.
 		'destinations' => [],
 		'itineraries'  => [],
 	];
