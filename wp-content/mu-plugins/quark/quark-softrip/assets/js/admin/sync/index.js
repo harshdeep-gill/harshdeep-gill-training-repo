@@ -41,7 +41,7 @@ class SyncButton {
         }
 
         // Select JS element having sync button html.
-        this.syncButton = document.querySelector('#quark-softrip-gutenberg');
+        this.syncButton = document.querySelector('#quark-softrip-sync-admin');
 
         // If sync button is not found, return.
         if (!this.syncButton || !this.syncButton.innerHTML) {

@@ -137,7 +137,7 @@ function print_admin_footer_js(): void {
 
 	// Print the script.
 	?>
-	<script id="quark-softrip-gutenberg" type="text/html">
+	<script id="quark-softrip-sync-admin" type="text/html">
 		<div id="quark-softrip-sync-button">
 			<a href="<?php echo esc_url( get_sync_admin_url( absint( get_the_ID() ) ) ); ?>" class="components-button is-secondary is-compact">
 				<span class="ab-icon dashicons-before dashicons-update">
@@ -214,7 +214,7 @@ function enqueue_admin_scripts(): void {
 
 	// Enqueue the script.
 	wp_enqueue_script(
-		'quark-softrip-gutenberg',
+		'quark-softrip-sync-admin',
 		plugin_dir_url( __DIR__ ) . 'assets/js/admin/sync/index.js',
 		[],
 		'1.0.0',
@@ -253,7 +253,7 @@ function enqueue_admin_scripts(): void {
 
 	// Localize data to script.
 	wp_localize_script(
-		'quark-softrip-gutenberg',
+		'quark-softrip-sync-admin',
 		'quarkSoftripAdmin',
 		$l10n_data
 	);
