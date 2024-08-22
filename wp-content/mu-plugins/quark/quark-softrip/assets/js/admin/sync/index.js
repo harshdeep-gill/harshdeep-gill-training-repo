@@ -67,12 +67,12 @@ class SyncButton {
      * @return {void}
      */
     displaySyncNotice() {
-        if ('undefined' === window.quarkSoftripGutenberg || 'object' !== typeof window.quarkSoftripGutenberg) {
+        if ('undefined' === window.quarkSoftripAdmin || 'object' !== typeof window.quarkSoftripAdmin) {
             return;
         }
 
         // Get the notice type.
-        const { type, message } = window.quarkSoftripGutenberg;
+        const { type, message } = window.quarkSoftripAdmin;
 
         // If notice type or message is not set, return.
         if ( 'undefined' === type || 'undefined' === message ) {

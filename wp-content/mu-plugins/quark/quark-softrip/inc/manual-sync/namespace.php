@@ -254,7 +254,7 @@ function enqueue_admin_scripts(): void {
 	// Localize data to script.
 	wp_localize_script(
 		'quark-softrip-gutenberg',
-		'quarkSoftripGutenberg',
+		'quarkSoftripAdmin',
 		$l10n_data
 	);
 
