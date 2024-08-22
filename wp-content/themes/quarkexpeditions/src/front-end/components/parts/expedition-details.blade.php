@@ -9,6 +9,7 @@
 	'tags'             => [],
 	'total_departures' => 0,
 	'date_range'       => '',
+	'departures_url'   => '',
 ] )
 
 <x-expedition-details :appearance="$appearance">
@@ -62,7 +63,7 @@
 	@endif
 
 	<x-expedition-details.cta>
-		<x-button size="big" color="black" href="#bookings">
+		<x-button size="big" color="black" href="{{ $departures_url }}">
 			<x-escape :content="__( 'View all Departures', 'qrk' )"/>
 		</x-button>
 	</x-expedition-details.cta>
