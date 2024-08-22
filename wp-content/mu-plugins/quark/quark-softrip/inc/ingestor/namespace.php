@@ -39,7 +39,7 @@ use const Quark\Expeditions\POST_TYPE as EXPEDITION_POST_TYPE;
 use const Quark\Itineraries\DEPARTURE_LOCATION_TAXONOMY;
 
 /**
- * Prepare data to be sent to ingestor.
+ * Get all data to be sent to ingestor.
  *
  * @return array{}|array<int,
  *   array{
@@ -77,7 +77,7 @@ use const Quark\Itineraries\DEPARTURE_LOCATION_TAXONOMY;
  *   }
  * >
  */
-function prepare_data(): array {
+function get_all_data(): array {
 	// Prepare args.
 	$args = [
 		'post_type'              => EXPEDITION_POST_TYPE,
