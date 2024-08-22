@@ -11,7 +11,7 @@ use WP_Post;
 use WP_Query;
 
 use function Quark\CabinCategories\get as get_cabin_category;
-use function Quark\Core\get_pure_text_from_html;
+use function Quark\Core\get_raw_text_from_html;
 use function Quark\Departures\get as get_departure;
 use function Quark\Expeditions\get as get_expedition;
 use function Quark\Itineraries\get as get_itinerary;
@@ -171,7 +171,7 @@ function get_expedition_data( int $expedition_post_id = 0 ): array {
 	// Initialize expedition data.
 	$expedition_data = [
 		'id'           => $expedition_post_id,
-		'name'         => get_pure_text_from_html( $expedition_post['post']->post_title ),
+		'name'         => get_raw_text_from_html( $expedition_post['post']->post_title ),
 		'description'  => '', // @todo Get description after parsing post content.
 		'images'       => [], // @todo Get images after parsing post content for hero-slider block.
 		'destinations' => [],
@@ -346,7 +346,7 @@ function get_itineraries( int $expedition_post_id = 0 ): array {
 		$itinerary_data = [
 			'id'            => $itinerary_post_id,
 			'packageId'     => $softrip_package_code,
-			'name'          => get_pure_text_from_html( $itinerary_post['post']->post_title ),
+			'name'          => get_raw_text_from_html( $itinerary_post['post']->post_title ),
 			'startLocation' => '',
 			'endLocation'   => '',
 			'departures'    => [],
@@ -455,7 +455,7 @@ function get_departures_data( int $expedition_post_id = 0, int $itinerary_post_i
 		// Initialize departure data.
 		$departure_data = [
 			'id'             => $softrip_id,
-			'name'           => get_pure_text_from_html( $departure_post['post']->post_title ),
+			'name'           => get_raw_text_from_html( $departure_post['post']->post_title ),
 			'startDate'      => $departure_post['post_meta']['start_date'] ?? '',
 			'endDate'        => $departure_post['post_meta']['end_date'] ?? '',
 			'durationInDays' => absint( $departure_post['post_meta']['duration'] ?? '' ),
@@ -480,7 +480,7 @@ function get_departures_data( int $expedition_post_id = 0, int $itinerary_post_i
 				$departure_data['ship'] = [
 					'id'   => $ship_id,
 					'code' => $ship_code,
-					'name' => get_pure_text_from_html( $ship_post['post']->post_title ),
+					'name' => get_raw_text_from_html( $ship_post['post']->post_title ),
 				];
 			}
 		}
@@ -691,9 +691,9 @@ function get_cabins_data( int $expedition_post_id = 0, int $itinerary_post_id = 
 		// Initialize cabin category data.
 		$cabin_category_data = [
 			'id'             => $cabin_category_id,
-			'name'           => get_pure_text_from_html( $cabin_category_post['post']->post_title ),
+			'name'           => get_raw_text_from_html( $cabin_category_post['post']->post_title ),
 			'code'           => $cabin_category_code,
-			'description'    => get_pure_text_from_html( $cabin_category_post['post']->post_content ),
+			'description'    => get_raw_text_from_html( $cabin_category_post['post']->post_content ),
 			'bedDescription' => $cabin_category_post['post_meta']['cabin_bed_configuration'] ?? '',
 			'type'           => '',
 			'location'       => '',

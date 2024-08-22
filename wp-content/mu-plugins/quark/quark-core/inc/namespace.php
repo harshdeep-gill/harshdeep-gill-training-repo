@@ -531,7 +531,7 @@ function order_terms_by_hierarchy( array $terms = [], string $taxonomy = '' ): a
  *
  * @return string
  */
-function get_pure_text_from_html( string $html = '' ): string {
+function get_raw_text_from_html( string $html = '' ): string {
 	// Check if HTML is empty.
 	if ( empty( $html ) ) {
 		return '';

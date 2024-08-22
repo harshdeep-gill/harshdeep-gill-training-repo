@@ -9,7 +9,7 @@ namespace Quark\Softrip\Tests\Ingestor;
 
 use Quark\Tests\Softrip\Softrip_TestCase;
 
-use function Quark\Core\get_pure_text_from_html;
+use function Quark\Core\get_raw_text_from_html;
 use function Quark\Softrip\Ingestor\get_cabins_data;
 use function Quark\Softrip\Ingestor\get_departures_data;
 use function Quark\Softrip\Ingestor\get_destination_terms;
@@ -221,7 +221,7 @@ class Test_Ingestor extends Softrip_TestCase {
 			[
 				'id'            => $itinerary_post_id1,
 				'packageId'     => 'UNQ-123',
-				'name'          => get_pure_text_from_html( get_the_title( $itinerary_post_id1 ) ),
+				'name'          => get_raw_text_from_html( get_the_title( $itinerary_post_id1 ) ),
 				'startLocation' => '',
 				'endLocation'   => '',
 				'departures'    => [],
@@ -258,7 +258,7 @@ class Test_Ingestor extends Softrip_TestCase {
 			[
 				'id'            => $itinerary_post_id1,
 				'packageId'     => 'UNQ-123',
-				'name'          => get_pure_text_from_html( get_the_title( $itinerary_post_id1 ) ),
+				'name'          => get_raw_text_from_html( get_the_title( $itinerary_post_id1 ) ),
 				'startLocation' => $start_location_term_name,
 				'endLocation'   => $end_location_term_name,
 				'departures'    => [],
@@ -289,7 +289,7 @@ class Test_Ingestor extends Softrip_TestCase {
 			[
 				'id'            => $itinerary_post_id1,
 				'packageId'     => 'UNQ-123',
-				'name'          => get_pure_text_from_html( get_the_title( $itinerary_post_id1 ) ),
+				'name'          => get_raw_text_from_html( get_the_title( $itinerary_post_id1 ) ),
 				'startLocation' => $start_location_term_name,
 				'endLocation'   => $end_location_term_name,
 				'departures'    => [],
@@ -297,7 +297,7 @@ class Test_Ingestor extends Softrip_TestCase {
 			[
 				'id'            => $itinerary_post_id2,
 				'packageId'     => 'UNQ-456',
-				'name'          => get_pure_text_from_html( get_the_title( $itinerary_post_id2 ) ),
+				'name'          => get_raw_text_from_html( get_the_title( $itinerary_post_id2 ) ),
 				'startLocation' => '',
 				'endLocation'   => '',
 				'departures'    => [],
@@ -371,7 +371,7 @@ class Test_Ingestor extends Softrip_TestCase {
 		$expected = [
 			[
 				'id'             => 'UNQ-123:2025-01-01',
-				'name'           => get_pure_text_from_html( get_the_title( $departure_post_id1 ) ),
+				'name'           => get_raw_text_from_html( get_the_title( $departure_post_id1 ) ),
 				'startDate'      => '',
 				'endDate'        => '',
 				'durationInDays' => 0,
@@ -423,14 +423,14 @@ class Test_Ingestor extends Softrip_TestCase {
 		$expected = [
 			[
 				'id'             => 'UNQ-123:2025-01-01',
-				'name'           => get_pure_text_from_html( get_the_title( $departure_post_id1 ) ),
+				'name'           => get_raw_text_from_html( get_the_title( $departure_post_id1 ) ),
 				'startDate'      => '2025-01-01',
 				'endDate'        => '2025-01-02',
 				'durationInDays' => 2,
 				'ship'           => [
 					'code' => 'OQP',
 					'id'   => $ship_post_id,
-					'name' => get_pure_text_from_html( get_the_title( $ship_post_id ) ),
+					'name' => get_raw_text_from_html( get_the_title( $ship_post_id ) ),
 				],
 				'languages'      => 'EN',
 				'cabins'         => [],
@@ -487,28 +487,28 @@ class Test_Ingestor extends Softrip_TestCase {
 		$expected = [
 			[
 				'id'             => 'UNQ-456:2025-01-01',
-				'name'           => get_pure_text_from_html( get_the_title( $departure_post_id2 ) ),
+				'name'           => get_raw_text_from_html( get_the_title( $departure_post_id2 ) ),
 				'startDate'      => '2025-01-01',
 				'endDate'        => '2025-01-02',
 				'durationInDays' => 2,
 				'ship'           => [
 					'code' => 'LOP',
 					'id'   => $ship_post_id2,
-					'name' => get_pure_text_from_html( get_the_title( $ship_post_id2 ) ),
+					'name' => get_raw_text_from_html( get_the_title( $ship_post_id2 ) ),
 				],
 				'languages'      => 'FR',
 				'cabins'         => [],
 			],
 			[
 				'id'             => 'UNQ-123:2025-01-01',
-				'name'           => get_pure_text_from_html( get_the_title( $departure_post_id1 ) ),
+				'name'           => get_raw_text_from_html( get_the_title( $departure_post_id1 ) ),
 				'startDate'      => '2025-01-01',
 				'endDate'        => '2025-01-02',
 				'durationInDays' => 2,
 				'ship'           => [
 					'code' => 'OQP',
 					'id'   => $ship_post_id,
-					'name' => get_pure_text_from_html( get_the_title( $ship_post_id ) ),
+					'name' => get_raw_text_from_html( get_the_title( $ship_post_id ) ),
 				],
 				'languages'      => 'EN',
 				'cabins'         => [],
@@ -664,9 +664,9 @@ class Test_Ingestor extends Softrip_TestCase {
 		$expected = [
 			[
 				'id'             => 'UNQ-123:2025-01-01:POQ-SGL',
-				'name'           => get_pure_text_from_html( get_the_title( $cabin_post_id1 ) ),
+				'name'           => get_raw_text_from_html( get_the_title( $cabin_post_id1 ) ),
 				'code'           => 'POQ-SGL',
-				'description'    => get_pure_text_from_html( get_the_content( null, false, $cabin_post_id1 ) ),
+				'description'    => get_raw_text_from_html( get_the_content( null, false, $cabin_post_id1 ) ),
 				'bedDescription' => '',
 				'type'           => '',
 				'location'       => '',
@@ -802,9 +802,9 @@ class Test_Ingestor extends Softrip_TestCase {
 		$expected = [
 			[
 				'id'             => 'UNQ-123:2025-01-01:POQ-SGL',
-				'name'           => get_pure_text_from_html( get_the_title( $cabin_post_id1 ) ),
+				'name'           => get_raw_text_from_html( get_the_title( $cabin_post_id1 ) ),
 				'code'           => 'POQ-SGL',
-				'description'    => get_pure_text_from_html( get_the_content( null, false, $cabin_post_id1 ) ),
+				'description'    => get_raw_text_from_html( get_the_content( null, false, $cabin_post_id1 ) ),
 				'bedDescription' => 'Twin',
 				'type'           => implode( ', ', [ $cabin_class_term_name, $cabin_class_term_name2 ] ),
 				'location'       => implode( ', ', [ 'Deck 1', 'Deck 2' ] ),
