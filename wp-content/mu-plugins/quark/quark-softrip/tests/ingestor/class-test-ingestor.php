@@ -774,45 +774,11 @@ class Test_Ingestor extends Softrip_TestCase {
 		update_post_meta( $cabin_post_id1, 'cabin_category_size_range_from', '100' );
 		update_post_meta( $cabin_post_id1, 'cabin_category_size_range_to', '200' );
 
-		// Upload dir path.
-		$wp_upload_dir = wp_upload_dir();
-		require_once ABSPATH . 'wp-admin/includes/image.php';
-
-		// Upload first cabin image.
-		$file_name = $wp_upload_dir['path'] . DIRECTORY_SEPARATOR . 'cabin1.jpg';
-		$file_type = wp_check_filetype( basename( $file_name ), null );
-		copy( __DIR__ . '/data/cabin.jpg', $file_name );
-
-		// Insert first cabin image.
-		$attachment     = [
-			'guid'           => $wp_upload_dir['url'] . '/' . basename( $file_name ),
-			'post_mime_type' => $file_type['type'],
-			'post_title'     => 'Cabin 1',
-			'post_content'   => '',
-			'post_status'    => 'inherit',
-		];
-		$media_post_id1 = wp_insert_attachment( $attachment, $file_name, $cabin_post_id1 );
+		// Create two media posts.
+		$media_post_id1 = $this->factory()->attachment->create_upload_object( __DIR__ . '/data/cabin.jpg' );
 		$this->assertIsInt( $media_post_id1 );
-		$attachment_data1 = wp_generate_attachment_metadata( $media_post_id1, $file_name );
-		wp_update_attachment_metadata( $media_post_id1, $attachment_data1 );
-
-		// Upload second cabin image.
-		$file_name2 = $wp_upload_dir['path'] . DIRECTORY_SEPARATOR . 'cabin2.jpg';
-		$file_type2 = wp_check_filetype( basename( $file_name2 ), null );
-		copy( __DIR__ . '/data/cabin.jpg', $file_name2 );
-
-		// Insert second cabin image.
-		$attachment2    = [
-			'guid'           => $wp_upload_dir['url'] . '/' . basename( $file_name2 ),
-			'post_mime_type' => $file_type2['type'],
-			'post_title'     => 'Cabin 2',
-			'post_content'   => '',
-			'post_status'    => 'inherit',
-		];
-		$media_post_id2 = wp_insert_attachment( $attachment2, $file_name2, $cabin_post_id1 );
+		$media_post_id2 = $this->factory()->attachment->create_upload_object( __DIR__ . '/data/cabin.jpg' );
 		$this->assertIsInt( $media_post_id2 );
-		$attachment_data2 = wp_generate_attachment_metadata( $media_post_id2, $file_name2 );
-		wp_update_attachment_metadata( $media_post_id2, $attachment_data2 );
 
 		// Get alt text for media post.
 		$alt_text1 = get_post_meta( $media_post_id1, '_wp_attachment_image_alt', true );
