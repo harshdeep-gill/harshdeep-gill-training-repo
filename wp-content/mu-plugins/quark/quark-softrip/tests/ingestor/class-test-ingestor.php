@@ -365,6 +365,10 @@ class Test_Ingestor extends Softrip_TestCase {
 				'ship'           => [],
 				'languages'      => '',
 				'cabins'         => [],
+				'adventureOptions' => [
+					'includedOptions' => [],
+					'paidOptions' => [],
+				],
 			],
 		];
 		$this->assertEquals( $expected, $actual );
@@ -421,6 +425,10 @@ class Test_Ingestor extends Softrip_TestCase {
 				],
 				'languages'      => 'EN',
 				'cabins'         => [],
+				'adventureOptions' => [
+					'includedOptions' => [],
+					'paidOptions' => [],
+				],
 			],
 		];
 		$this->assertEquals( $expected, $actual );
@@ -485,6 +493,10 @@ class Test_Ingestor extends Softrip_TestCase {
 				],
 				'languages'      => 'FR',
 				'cabins'         => [],
+				'adventureOptions' => [
+					'includedOptions' => [],
+					'paidOptions' => [],
+				],
 			],
 			[
 				'id'             => 'UNQ-123:2025-01-01',
@@ -499,6 +511,10 @@ class Test_Ingestor extends Softrip_TestCase {
 				],
 				'languages'      => 'EN',
 				'cabins'         => [],
+				'adventureOptions' => [
+					'includedOptions' => [],
+					'paidOptions' => [],
+				],
 			],
 		];
 		$this->assertEquals( $expected, $actual );
