@@ -17,22 +17,6 @@ use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
 use const Quark\Expeditions\POST_TYPE as EXPEDITION_POST_TYPE;
 
 /**
- * Bootstrap the Manual Sync
- *
- * @return void
- */
-function bootstrap(): void {
-	// Register admin controls.
-	if ( is_admin() ) {
-		add_action( 'admin_bar_menu', __NAMESPACE__ . '\\create_admin_bar_menus', 100 );
-		add_action( 'admin_footer', __NAMESPACE__ . '\\print_admin_footer_js' );
-		add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\\enqueue_admin_scripts' );
-		add_action( 'admin_action_sync', __NAMESPACE__ . '\\manually_synchronize' );
-		add_action( 'admin_notices', __NAMESPACE__ . '\\show_sync_admin_notice' );
-	}
-}
-
-/**
  * Create menus in admin bar for Softrip sync.
  * This is applicable for itinerary and departure as these have classic editor.
  *
@@ -108,7 +92,7 @@ function get_sync_admin_url( int $post_id = 0 ): string {
  *
  * @return void
  */
-function print_admin_footer_js(): void {
+function admin_footer_actions(): void {
 	// Get the current screen.
 	$current_screen = get_current_screen();
 
@@ -137,15 +121,13 @@ function print_admin_footer_js(): void {
 
 	// Print the script.
 	?>
-	<script id="quark-softrip-sync-admin" type="text/html">
-		<div id="quark-softrip-sync-button">
-			<a href="<?php echo esc_url( get_sync_admin_url( absint( get_the_ID() ) ) ); ?>" class="components-button is-secondary is-compact">
-				<span class="ab-icon dashicons-before dashicons-update">
-					<?php esc_html_e( 'Sync', 'quark' ); ?>
-				</span>
-			</a>
-		</div>
-	</script>
+	<template id="quark-softrip-admin-bar-sync-button">
+		<a href="<?php echo esc_url( get_sync_admin_url( absint( get_the_ID() ) ) ); ?>" class="components-button is-secondary is-compact">
+			<span class="ab-icon dashicons-before dashicons-update">
+				<?php esc_html_e( 'Sync', 'quark' ); ?>
+			</span>
+		</a>
+	</template>
 	<?php
 }
 
@@ -215,7 +197,7 @@ function enqueue_admin_scripts(): void {
 	// Enqueue the script.
 	wp_enqueue_script(
 		'quark-softrip-sync-admin',
-		plugin_dir_url( __DIR__ ) . 'assets/js/admin/sync/index.js',
+		plugin_dir_url( __DIR__ ) . '../assets/js/admin/sync/index.js',
 		[],
 		'1.0.0',
 		true

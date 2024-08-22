@@ -52,6 +52,18 @@ function bootstrap(): void {
 
 	// Register Stream log connector.
 	add_filter( 'wp_stream_connectors', __NAMESPACE__ . '\\setup_stream_connectors' );
+
+	// Require manual sync namespace functions.
+	require_once __DIR__ . '/manual-sync/namespace.php';
+
+	// Register admin controls for manual sync.
+	if ( is_admin() ) {
+		add_action( 'admin_bar_menu', __NAMESPACE__ . '\\ManualSync\create_admin_bar_menus', 100 );
+		add_action( 'admin_footer', __NAMESPACE__ . '\\ManualSync\admin_footer_actions' );
+		add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\\ManualSync\enqueue_admin_scripts' );
+		add_action( 'admin_action_sync', __NAMESPACE__ . '\\ManualSync\manually_synchronize' );
+		add_action( 'admin_notices', __NAMESPACE__ . '\\ManualSync\show_sync_admin_notice' );
+	}
 }
 
 /**

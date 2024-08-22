@@ -19,7 +19,6 @@ require_once __DIR__ . '/inc/adventure-options/namespace.php';
 require_once __DIR__ . '/inc/promotions/namespace.php';
 require_once __DIR__ . '/inc/occupancies/namespace.php';
 require_once __DIR__ . '/inc/occupancy-promotions/namespace.php';
-require_once __DIR__ . '/inc/manual-sync/namespace.php';
 
 // Kick it off.
 add_action( 'plugins_loaded', __NAMESPACE__ . '\\bootstrap' );
