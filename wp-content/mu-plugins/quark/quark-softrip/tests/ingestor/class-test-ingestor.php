@@ -157,12 +157,6 @@ class Test_Ingestor extends Softrip_TestCase {
 			],
 		];
 		$this->assertEquals( $expected, $actual );
-
-		// Clean up.
-		wp_delete_post( $expedition_post_id, true );
-		wp_delete_term( $destination_term_id1, DESTINATION_TAXONOMY );
-		wp_delete_term( $destination_term_id2, DESTINATION_TAXONOMY );
-		wp_delete_term( $destination_term_id3, DESTINATION_TAXONOMY );
 	}
 
 	/**
@@ -304,13 +298,6 @@ class Test_Ingestor extends Softrip_TestCase {
 			],
 		];
 		$this->assertEquals( $expected, $actual );
-
-		// Clean up.
-		wp_delete_post( $expedition_post_id, true );
-		wp_delete_post( $itinerary_post_id1, true );
-		wp_delete_post( $itinerary_post_id2, true );
-		wp_delete_term( $start_location_term_id, DEPARTURE_LOCATION_TAXONOMY );
-		wp_delete_term( $end_location_term_id, DEPARTURE_LOCATION_TAXONOMY );
 	}
 
 	/**
@@ -515,16 +502,6 @@ class Test_Ingestor extends Softrip_TestCase {
 			],
 		];
 		$this->assertEquals( $expected, $actual );
-
-		// Clean up.
-		wp_delete_post( $expedition_post_id, true );
-		wp_delete_post( $itinerary_post_id, true );
-		wp_delete_post( $departure_post_id1, true );
-		wp_delete_post( $departure_post_id2, true );
-		wp_delete_post( $ship_post_id, true );
-		wp_delete_post( $ship_post_id2, true );
-		wp_delete_term( $language_term_id, SPOKEN_LANGUAGE_TAXONOMY );
-		wp_delete_term( $language_term_id2, SPOKEN_LANGUAGE_TAXONOMY );
 	}
 
 	/**
@@ -873,17 +850,6 @@ class Test_Ingestor extends Softrip_TestCase {
 			],
 		];
 		$this->assertEquals( $expected, $actual );
-
-		// Clean up.
-		wp_delete_post( $media_post_id1, true );
-		wp_delete_post( $media_post_id2, true );
-		wp_delete_post( $deck_post_id1, true );
-		wp_delete_post( $deck_post_id2, true );
-		wp_delete_post( $cabin_post_id1, true );
-		wp_delete_post( $ship_post_id, true );
-		wp_delete_post( $departure_post_id, true );
-		wp_delete_post( $itinerary_post_id, true );
-		wp_delete_post( $expedition_post_id, true );
 	}
 
 	/**
