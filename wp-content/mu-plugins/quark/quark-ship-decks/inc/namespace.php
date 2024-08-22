@@ -172,6 +172,7 @@ function get( int $post_id = 0 ): array {
  *     id: string,
  *     title: string,
  *     image_id: int,
+ *     vertical_image_id: int,
  *     description: string,
  *     cabin_options:array{
  *         id: string,
@@ -203,12 +204,13 @@ function get_deck_data( int $deck_id = 0 ): array {
 
 	// Initialize deck data.
 	$decks_data = [
-		'id'            => '',
-		'title'         => '',
-		'image_id'      => 0,
-		'description'   => '',
-		'cabin_options' => [],
-		'public_spaces' => [],
+		'id'                => '',
+		'title'             => '',
+		'image_id'          => 0,
+		'vertical_image_id' => 0,
+		'description'       => '',
+		'cabin_options'     => [],
+		'public_spaces'     => [],
 	];
 
 	// Get the deck.
@@ -237,12 +239,13 @@ function get_deck_data( int $deck_id = 0 ): array {
 
 	// Prepare deck data.
 	$decks_data = [
-		'id'            => $deck_post->post_name,
-		'title'         => strval( $deck_meta['deck_name'] ),
-		'image_id'      => absint( $deck_meta['deck_plan_image'] ),
-		'description'   => strval( apply_filters( 'the_content', $deck_post->post_content ) ),
-		'cabin_options' => $cabin_options,
-		'public_spaces' => $public_spaces,
+		'id'                => $deck_post->post_name,
+		'title'             => strval( $deck_meta['deck_name'] ),
+		'image_id'          => absint( $deck_meta['deck_plan_image'] ),
+		'vertical_image_id' => absint( $deck_meta['vertical_deck_plan_image'] ),
+		'description'       => strval( apply_filters( 'the_content', $deck_post->post_content ) ),
+		'cabin_options'     => $cabin_options,
+		'public_spaces'     => $public_spaces,
 	];
 
 	// Return deck data.

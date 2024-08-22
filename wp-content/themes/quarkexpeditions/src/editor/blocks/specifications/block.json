@@ -9,7 +9,12 @@
 	"keywords": [
 		"specifications"
 	],
-	"attributes": {},
+	"attributes": {
+		"title": {
+			"type": "string",
+			"default": ""
+		}
+	},
 	"supports": {
 		"alignWide": false,
 		"anchor": true,

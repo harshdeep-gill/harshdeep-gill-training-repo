@@ -10,6 +10,7 @@ namespace Quark\Softrip\Departures;
 use WP_Error;
 use WP_Query;
 
+use function Quark\Itineraries\get_season;
 use function Quark\Ships\get_id_from_ship_code;
 use function Quark\Softrip\AdventureOptions\update_adventure_options;
 use function Quark\Softrip\Occupancies\update_occupancies;
@@ -364,6 +365,15 @@ function format_raw_departure_data( array $raw_departure_data = [], int $itinera
 			'softrip_market_code'  => sanitize_text_field( strval( $raw_departure_data['marketCode'] ) ),
 		],
 	];
+
+	// Get season for the itinerary.
+	$season = get_season( $itinerary_post_id );
+
+	// Check if season is available.
+	if ( ! empty( $season ) ) {
+		// Add region and season to formatted data.
+		$formatted_data['meta_input']['region_season'] = sanitize_text_field( strval( $raw_departure_data['marketCode'] ) ) . '-' . $season['slug'];
+	}
 
 	// Return formatted data.
 	return $formatted_data;

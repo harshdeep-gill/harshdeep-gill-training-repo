@@ -1,0 +1,25 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Expedition Hero Content",
+	"name": "quark/expedition-hero-content",
+	"description": "Container of Expedition hero content.",
+	"category": "layout",
+	"keywords": [
+		"expedition",
+		"hero",
+		"content"
+	],
+	"textdomain": "qrk",
+	"attributes": {},
+	"parent": [
+		"quark/expedition-hero"
+	],
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

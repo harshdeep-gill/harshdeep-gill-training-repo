@@ -56,7 +56,7 @@ import * as highlights from './highlights';
 import * as secondaryNavigation from './secondary-navigation';
 import * as iconInfoGrid from './icon-info-grid';
 import * as expeditionDetails from './expedition-details';
-import * as mediaCtaBanner from './media-cta-banner';
+import * as ctaBanner from './cta-banner';
 import * as ships from './ships';
 import * as mediaDescriptionCards from './media-description-cards';
 import * as FeaturedMediaAccordions from './featured-media-accordions';
@@ -67,7 +67,10 @@ import * as shipRelatedAdventureOptions from './ship-related-adventure-options';
 import * as mediaCarousel from './media-carousel';
 import * as bookDeparturesExpeditions from './book-departures-expeditions';
 import * as shipCabinCategories from './ship-cabin-categories';
+import * as shipSpecifications from './ship-specifications';
+import * as expeditionHero from './expedition-hero';
 import * as specifications from './specifications';
+import * as templateTitle from './template-title';
 
 /**
  * Add blocks.
@@ -123,7 +126,7 @@ const blocks = [
 	secondaryNavigation,
 	iconInfoGrid,
 	expeditionDetails,
-	mediaCtaBanner,
+	ctaBanner,
 	ships,
 	mediaDescriptionCards,
 	FeaturedMediaAccordions,
@@ -133,12 +136,15 @@ const blocks = [
 	shipRelatedAdventureOptions,
 	mediaCarousel,
 	bookDeparturesExpeditions,
+	expeditionHero,
 	specifications,
+	templateTitle,
 ];
 
 // Register blocks for ships.
 if ( typenow && 'qrk_ship' === typenow ) {
 	blocks.push( shipCabinCategories );
+	blocks.push( shipSpecifications );
 }
 
 /**

@@ -120,13 +120,13 @@ function update_promotions( array $raw_promotions_data = [], int $departure_post
 			$updated_id = $wpdb->insert_id;
 		}
 
+		// Add the updated promotion code.
+		$updated_promotion_codes[] = $formatted_data['code'];
+
 		// Skip if no updated ID.
 		if ( empty( $updated_id ) ) {
 			continue;
 		}
-
-		// Add the updated promotion code.
-		$updated_promotion_codes[] = $formatted_data['code'];
 
 		// Bust the cache.
 		wp_cache_delete( CACHE_KEY_PREFIX . '_promotion_code_' . $formatted_data['code'], CACHE_GROUP );

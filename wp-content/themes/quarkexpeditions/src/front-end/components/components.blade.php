@@ -136,6 +136,10 @@
 	</x-two-columns>
 </x-component-demo>
 
+<x-component-demo :keys="[ 'template-title' ]">
+	<x-template-title title="Template Title" />
+</x-component-demo>
+
 <x-component-demo :keys="[ 'review-cards', 'hero-refactor' ]">
 	<x-review-cards>
 		<x-review-cards.card>
@@ -1172,12 +1176,6 @@
 					</x-icon-columns>
 				</x-video-icons-card.icons>
 			</x-video-icons-card>
-		</x-section>
-	</x-component-demo>
-
-	<x-component-demo :keys="['itinerary-details']">
-		<x-section>
-			test
 		</x-section>
 	</x-component-demo>
 

@@ -250,7 +250,7 @@ table {
 	border-collapse: collapse;
 	width: 100%;
 
-	@media screen and (min-width: grid-size(md)) {
+	@media screen and (min-width: grid-size(lg)) {
 		table-layout: fixed;
 	}
 
@@ -289,6 +289,13 @@ table {
 
 	@media screen and (min-width: grid-size(xl)) {
 		overflow-x: visible;
+	}
+
+	// Set min-width to cap the responsiveness.
+	td::before {
+		content: "";
+		display: block;
+		width: 180px;
 	}
 }
 

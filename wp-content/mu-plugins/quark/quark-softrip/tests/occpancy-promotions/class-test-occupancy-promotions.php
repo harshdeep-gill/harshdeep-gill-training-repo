@@ -121,13 +121,13 @@ class Test_Occupancy_Promotions extends Softrip_TestCase {
 
 		// Create an occupancy.
 		$raw_occupancy_data     = [
-			'id'                      => 'OCC1',
-			'name'                    => 'Single',
-			'mask'                    => 'A',
-			'availabilityStatus'      => 'O',
-			'availabilityDescription' => 'Available',
-			'spacesAvailable'         => 11,
-			'prices'                  => [
+			'id'              => 'OCC1',
+			'name'            => 'Single',
+			'mask'            => 'A',
+			'saleStatusCode'  => 'O',
+			'saleStatus'      => 'Open',
+			'spacesAvailable' => 11,
+			'prices'          => [
 				'USD' => [
 					'currencyCode'   => 'USD',
 					'pricePerPerson' => 100,
@@ -481,13 +481,13 @@ class Test_Occupancy_Promotions extends Softrip_TestCase {
 
 		// Create an occupancy.
 		$raw_occupancy_data     = [
-			'id'                      => 'OCC1',
-			'name'                    => 'Single',
-			'mask'                    => 'A',
-			'availabilityStatus'      => 'O',
-			'availabilityDescription' => 'Available',
-			'spacesAvailable'         => 11,
-			'prices'                  => [
+			'id'              => 'OCC1',
+			'name'            => 'Single',
+			'mask'            => 'A',
+			'saleStatusCode'  => 'O',
+			'saleStatus'      => 'Open',
+			'spacesAvailable' => 11,
+			'prices'          => [
 				'USD' => [
 					'currencyCode'   => 'USD',
 					'pricePerPerson' => 100,

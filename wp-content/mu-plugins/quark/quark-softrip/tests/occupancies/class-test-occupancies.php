@@ -119,13 +119,13 @@ class Test_Occupancies extends Softrip_TestCase {
 
 		// Test with non-empty array of raw data but no cabin category post ID or departure post id.
 		$raw_occupancy_data = [
-			'id'                      => '123',
-			'name'                    => 'Test Occupancy',
-			'mask'                    => '123456789012',
-			'spacesAvailable'         => 10,
-			'availabilityDescription' => 'Available',
-			'availabilityStatus'      => 'AV',
-			'prices'                  => [
+			'id'              => '123',
+			'name'            => 'Test Occupancy',
+			'mask'            => '123456789012',
+			'spacesAvailable' => 10,
+			'saleStatus'      => 'Open',
+			'saleStatusCode'  => 'AV',
+			'prices'          => [
 				'USD' => '100',
 				'CAD' => '150',
 				'AUD' => '200',
@@ -172,9 +172,9 @@ class Test_Occupancies extends Softrip_TestCase {
 		$this->assertSame( $expected, $actual );
 
 		// Add empty availability status.
-		$raw_occupancy_data['availabilityStatus'] = '';
-		$expected                                 = [];
-		$actual                                   = format_data( $raw_occupancy_data, 123, 456 );
+		$raw_occupancy_data['saleStatusCode'] = '';
+		$expected                             = [];
+		$actual                               = format_data( $raw_occupancy_data, 123, 456 );
 		$this->assertSame( $expected, $actual );
 
 		// Add empty availability description.
@@ -191,12 +191,12 @@ class Test_Occupancies extends Softrip_TestCase {
 
 		// Set all values expect spaces available. It should be 0.
 		$raw_occupancy_data = [
-			'id'                      => '123',
-			'name'                    => 'Test Occupancy',
-			'mask'                    => '123456789012',
-			'availabilityStatus'      => 'AV',
-			'availabilityDescription' => 'Available',
-			'prices'                  => [
+			'id'             => '123',
+			'name'           => 'Test Occupancy',
+			'mask'           => '123456789012',
+			'saleStatusCode' => 'A',
+			'saleStatus'     => 'Open',
+			'prices'         => [
 				'USD' => '100',
 				'CAD' => '150',
 				'AUD' => '200',
@@ -211,8 +211,8 @@ class Test_Occupancies extends Softrip_TestCase {
 			'departure_post_id'        => 456,
 			'cabin_category_post_id'   => 123,
 			'spaces_available'         => 0,
-			'availability_description' => 'Available',
-			'availability_status'      => 'AV',
+			'availability_description' => 'Open',
+			'availability_status'      => 'A',
 			'price_per_person_usd'     => 0,
 			'price_per_person_cad'     => 0,
 			'price_per_person_aud'     => 0,
@@ -229,13 +229,13 @@ class Test_Occupancies extends Softrip_TestCase {
 		 * Should return an array with the formatted data.
 		 */
 		$raw_occupancy_data = [
-			'id'                      => '123',
-			'name'                    => 'Test Occupancy',
-			'mask'                    => '123456789012',
-			'spacesAvailable'         => 10,
-			'availabilityDescription' => 'Available',
-			'availabilityStatus'      => 'AV',
-			'prices'                  => [
+			'id'              => '123',
+			'name'            => 'Test Occupancy',
+			'mask'            => '123456789012',
+			'spacesAvailable' => 10,
+			'saleStatus'      => 'Open',
+			'saleStatusCode'  => 'A',
+			'prices'          => [
 				'USD'     => [
 					'currencyCode'   => 'USD',
 					'pricePerPerson' => 100,
@@ -265,8 +265,8 @@ class Test_Occupancies extends Softrip_TestCase {
 			'departure_post_id'        => 456,
 			'cabin_category_post_id'   => 123,
 			'spaces_available'         => 10,
-			'availability_description' => 'Available',
-			'availability_status'      => 'AV',
+			'availability_description' => 'Open',
+			'availability_status'      => 'A',
 			'price_per_person_usd'     => 100,
 			'price_per_person_cad'     => 150,
 			'price_per_person_aud'     => 200,
@@ -288,8 +288,8 @@ class Test_Occupancies extends Softrip_TestCase {
 			'departure_post_id'        => 456,
 			'cabin_category_post_id'   => 123,
 			'spaces_available'         => 10,
-			'availability_description' => 'Available',
-			'availability_status'      => 'AV',
+			'availability_description' => 'Open',
+			'availability_status'      => 'A',
 			'price_per_person_usd'     => 100,
 			'price_per_person_cad'     => 150,
 			'price_per_person_aud'     => 200,
@@ -410,13 +410,13 @@ class Test_Occupancies extends Softrip_TestCase {
 		 * Insert occupancy and then test getter.
 		 */
 		$raw_occupancy_data1 = [
-			'id'                      => 'PQO-123',
-			'name'                    => 'Test Occupancy',
-			'mask'                    => '123456789012',
-			'spacesAvailable'         => 10,
-			'availabilityDescription' => 'Available',
-			'availabilityStatus'      => 'AV',
-			'prices'                  => [
+			'id'              => 'PQO-123',
+			'name'            => 'Test Occupancy',
+			'mask'            => '123456789012',
+			'spacesAvailable' => 10,
+			'saleStatus'      => 'Open',
+			'saleStatusCode'  => 'AV',
+			'prices'          => [
 				'USD' => [
 					'currencyCode'   => 'USD',
 					'pricePerPerson' => 100,
@@ -516,13 +516,13 @@ class Test_Occupancies extends Softrip_TestCase {
 
 		// Insert one more row.
 		$raw_occupancy_data2 = [
-			'id'                      => 'PQO-456',
-			'name'                    => 'Test Occupancy 2',
-			'mask'                    => '123456789012',
-			'spacesAvailable'         => 20,
-			'availabilityDescription' => 'Available',
-			'availabilityStatus'      => 'AV',
-			'prices'                  => [
+			'id'              => 'PQO-456',
+			'name'            => 'Test Occupancy 2',
+			'mask'            => '123456789012',
+			'spacesAvailable' => 20,
+			'saleStatus'      => 'Open',
+			'saleStatusCode'  => 'AV',
+			'prices'          => [
 				'USD' => [
 					'currencyCode'   => 'USD',
 					'pricePerPerson' => 200,
@@ -744,13 +744,13 @@ class Test_Occupancies extends Softrip_TestCase {
 
 		// Insert occupancy and then test getter.
 		$raw_occupancy_data1     = [
-			'id'                      => 'PQO-123:2026-02-10:OEX-SGL:A',
-			'name'                    => 'Test Occupancy',
-			'mask'                    => 'A',
-			'spacesAvailable'         => 10,
-			'availabilityDescription' => 'Available',
-			'availabilityStatus'      => 'O',
-			'prices'                  => [
+			'id'              => 'PQO-123:2026-02-10:OEX-SGL:A',
+			'name'            => 'Test Occupancy',
+			'mask'            => 'A',
+			'spacesAvailable' => 10,
+			'saleStatus'      => 'Open',
+			'saleStatusCode'  => 'O',
+			'prices'          => [
 				'USD' => [
 					'currencyCode'   => 'USD',
 					'pricePerPerson' => 100,
@@ -956,13 +956,13 @@ class Test_Occupancies extends Softrip_TestCase {
 		 * Insert occupancy and then test getter.
 		 */
 		$raw_occupancy_data1     = [
-			'id'                      => 'PQO-123',
-			'name'                    => 'Test Occupancy',
-			'mask'                    => '123456789012',
-			'spacesAvailable'         => 10,
-			'availabilityDescription' => 'Available',
-			'availabilityStatus'      => 'AV',
-			'prices'                  => [
+			'id'              => 'PQO-123',
+			'name'            => 'Test Occupancy',
+			'mask'            => '123456789012',
+			'spacesAvailable' => 10,
+			'saleStatus'      => 'Open',
+			'saleStatusCode'  => 'AV',
+			'prices'          => [
 				'USD' => [
 					'currencyCode'   => 'USD',
 					'pricePerPerson' => 100,
@@ -1169,13 +1169,13 @@ class Test_Occupancies extends Softrip_TestCase {
 
 		// Insert occupancy and then test getter.
 		$raw_occupancy_data1     = [
-			'id'                      => 'PQO-123:2026-02-20:OEX-SGL:A',
-			'name'                    => 'Test Occupancy',
-			'mask'                    => 'A',
-			'spacesAvailable'         => 10,
-			'availabilityDescription' => 'Available',
-			'availabilityStatus'      => 'O',
-			'prices'                  => [
+			'id'              => 'PQO-123:2026-02-20:OEX-SGL:A',
+			'name'            => 'Test Occupancy',
+			'mask'            => 'A',
+			'spacesAvailable' => 10,
+			'saleStatus'      => 'Open',
+			'saleStatusCode'  => 'O',
+			'prices'          => [
 				'USD' => [
 					'currencyCode'   => 'USD',
 					'pricePerPerson' => 100,
@@ -1249,13 +1249,13 @@ class Test_Occupancies extends Softrip_TestCase {
 
 		// Let's insert one more occupancy with same departure post ID but different cabin category post ID.
 		$raw_occupancy_data2     = [
-			'id'                      => 'PQO-456:2026-02-19:OEX-SGL:A',
-			'name'                    => 'Test Occupancy',
-			'mask'                    => 'A',
-			'spacesAvailable'         => 10,
-			'availabilityDescription' => 'Available',
-			'availabilityStatus'      => 'O',
-			'prices'                  => [
+			'id'              => 'PQO-456:2026-02-19:OEX-SGL:A',
+			'name'            => 'Test Occupancy',
+			'mask'            => 'A',
+			'spacesAvailable' => 10,
+			'saleStatus'      => 'Open',
+			'saleStatusCode'  => 'O',
+			'prices'          => [
 				'USD' => [
 					'currencyCode'   => 'USD',
 					'pricePerPerson' => 100,
@@ -1320,13 +1320,13 @@ class Test_Occupancies extends Softrip_TestCase {
 
 		// Let's insert one more occupancy with same cabin category post ID but different departure post ID.
 		$raw_occupancy_data3 = [
-			'id'                      => 'PQO-123:2026-02-15:OEX-SGL:A',
-			'name'                    => 'Test Occupancy',
-			'mask'                    => 'A',
-			'spacesAvailable'         => 10,
-			'availabilityDescription' => 'Available',
-			'availabilityStatus'      => 'O',
-			'prices'                  => [
+			'id'              => 'PQO-123:2026-02-15:OEX-SGL:A',
+			'name'            => 'Test Occupancy',
+			'mask'            => 'A',
+			'spacesAvailable' => 10,
+			'saleStatus'      => 'Open',
+			'saleStatusCode'  => 'O',
+			'prices'          => [
 				'USD' => [
 					'currencyCode'   => 'USD',
 					'pricePerPerson' => 100,
@@ -1478,13 +1478,13 @@ class Test_Occupancies extends Softrip_TestCase {
 
 		// Insert occupancy and then test getter.
 		$raw_occupancy_data1     = [
-			'id'                      => 'PQO-123:2026-02-20:OEX-SGL:A',
-			'name'                    => 'Test Occupancy',
-			'mask'                    => 'A',
-			'spacesAvailable'         => 10,
-			'availabilityDescription' => 'Available',
-			'availabilityStatus'      => 'O',
-			'prices'                  => [
+			'id'              => 'PQO-123:2026-02-20:OEX-SGL:A',
+			'name'            => 'Test Occupancy',
+			'mask'            => 'A',
+			'spacesAvailable' => 10,
+			'saleStatus'      => 'Open',
+			'saleStatusCode'  => 'O',
+			'prices'          => [
 				'USD' => [
 					'currencyCode'   => 'USD',
 					'pricePerPerson' => 100,
@@ -1578,7 +1578,7 @@ class Test_Occupancies extends Softrip_TestCase {
 		$this->assertEquals( $departure_post_id1, $actual1['departure_post_id'] );
 		$this->assertEquals( $cabin_category_post_id1, $actual1['cabin_category_post_id'] );
 		$this->assertEquals( 10, $actual1['spaces_available'] );
-		$this->assertSame( 'Available', $actual1['availability_description'] );
+		$this->assertSame( 'Open', $actual1['availability_description'] );
 		$this->assertSame( 'O', $actual1['availability_status'] );
 		$this->assertEquals( 100, $actual1['price_per_person_usd'] );
 		$this->assertEquals( 150, $actual1['price_per_person_cad'] );
@@ -1588,13 +1588,13 @@ class Test_Occupancies extends Softrip_TestCase {
 
 		// Let's insert one more occupancy with same cabin category post ID and departure post ID.
 		$raw_occupancy_data2 = [
-			'id'                      => 'PQO-456:2026-02-20:OEX-SGL:A',
-			'name'                    => 'Test Occupancy',
-			'mask'                    => 'A',
-			'spacesAvailable'         => 10,
-			'availabilityDescription' => 'Available',
-			'availabilityStatus'      => 'O',
-			'prices'                  => [
+			'id'              => 'PQO-456:2026-02-20:OEX-SGL:A',
+			'name'            => 'Test Occupancy',
+			'mask'            => 'A',
+			'spacesAvailable' => 10,
+			'saleStatus'      => 'Open',
+			'saleStatusCode'  => 'O',
+			'prices'          => [
 				'USD' => [
 					'currencyCode'   => 'USD',
 					'pricePerPerson' => 100,
@@ -1655,13 +1655,13 @@ class Test_Occupancies extends Softrip_TestCase {
 
 		// Let's insert one more occupancy with same cabin category post ID but different departure post ID.
 		$raw_occupancy_data3 = [
-			'id'                      => 'PQO-123:2026-02-15:OEX-SGL:A',
-			'name'                    => 'Test Occupancy',
-			'mask'                    => 'A',
-			'spacesAvailable'         => 10,
-			'availabilityDescription' => 'Available',
-			'availabilityStatus'      => 'O',
-			'prices'                  => [
+			'id'              => 'PQO-123:2026-02-15:OEX-SGL:A',
+			'name'            => 'Test Occupancy',
+			'mask'            => 'A',
+			'spacesAvailable' => 10,
+			'saleStatus'      => 'Open',
+			'saleStatusCode'  => 'O',
+			'prices'          => [
 				'USD' => [
 					'currencyCode'   => 'USD',
 					'pricePerPerson' => 100,
@@ -1964,13 +1964,13 @@ class Test_Occupancies extends Softrip_TestCase {
 
 		// Create an occupancy without promotion.
 		$raw_occupancy_data     = [
-			'id'                      => 'PQO-123:2026-02-20:OEX-SGL:A',
-			'name'                    => 'Test Occupancy',
-			'mask'                    => 'A',
-			'spacesAvailable'         => 10,
-			'availabilityDescription' => 'Available',
-			'availabilityStatus'      => 'O',
-			'prices'                  => [
+			'id'              => 'PQO-123:2026-02-20:OEX-SGL:A',
+			'name'            => 'Test Occupancy',
+			'mask'            => 'A',
+			'spacesAvailable' => 10,
+			'saleStatus'      => 'Open',
+			'saleStatusCode'  => 'O',
+			'prices'          => [
 				'USD' => [
 					'currencyCode'   => 'USD',
 					'pricePerPerson' => 100,
@@ -2046,13 +2046,13 @@ class Test_Occupancies extends Softrip_TestCase {
 
 		// Add another occupancy without promotion.
 		$raw_occupancy_data2 = [
-			'id'                      => 'PQO-123:2026-02-20:OEX-SGL:AA',
-			'name'                    => 'Test Occupancy 2',
-			'mask'                    => 'AA',
-			'spacesAvailable'         => 10,
-			'availabilityDescription' => 'Available',
-			'availabilityStatus'      => 'O',
-			'prices'                  => [
+			'id'              => 'PQO-123:2026-02-20:OEX-SGL:AA',
+			'name'            => 'Test Occupancy 2',
+			'mask'            => 'AA',
+			'spacesAvailable' => 10,
+			'saleStatus'      => 'Open',
+			'saleStatusCode'  => 'O',
+			'prices'          => [
 				'USD' => [
 					'currencyCode'   => 'USD',
 					'pricePerPerson' => 50,
@@ -2514,13 +2514,13 @@ class Test_Occupancies extends Softrip_TestCase {
 
 		// Create an occupancy without promotion.
 		$raw_occupancy_data     = [
-			'id'                      => 'PQO-123:2026-02-20:OEX-SGL:A',
-			'name'                    => 'Test Occupancy',
-			'mask'                    => 'A',
-			'spacesAvailable'         => 10,
-			'availabilityDescription' => 'Available',
-			'availabilityStatus'      => 'O',
-			'prices'                  => [
+			'id'              => 'PQO-123:2026-02-20:OEX-SGL:A',
+			'name'            => 'Test Occupancy',
+			'mask'            => 'A',
+			'spacesAvailable' => 10,
+			'saleStatus'      => 'Open',
+			'saleStatusCode'  => 'O',
+			'prices'          => [
 				'USD' => [
 					'currencyCode'   => 'USD',
 					'pricePerPerson' => 100,
@@ -2631,13 +2631,13 @@ class Test_Occupancies extends Softrip_TestCase {
 
 		// Create an occupancy without promotion.
 		$raw_occupancy_data     = [
-			'id'                      => 'PQO-123:2026-02-20:OEX-SGL:A',
-			'name'                    => 'Test Occupancy',
-			'mask'                    => 'A',
-			'spacesAvailable'         => 10,
-			'availabilityDescription' => 'Available',
-			'availabilityStatus'      => 'O',
-			'prices'                  => [
+			'id'              => 'PQO-123:2026-02-20:OEX-SGL:A',
+			'name'            => 'Test Occupancy',
+			'mask'            => 'A',
+			'spacesAvailable' => 10,
+			'saleStatus'      => 'Open',
+			'saleStatusCode'  => 'O',
+			'prices'          => [
 				'USD' => [
 					'currencyCode'   => 'USD',
 					'pricePerPerson' => 100,
@@ -2704,13 +2704,13 @@ class Test_Occupancies extends Softrip_TestCase {
 
 		// Insert more occupancy.
 		$raw_occupancy_data2 = [
-			'id'                      => 'PQO-123:2026-02-20:OEX-SGL:AA',
-			'name'                    => 'Test Occupancy 2',
-			'mask'                    => 'AA',
-			'spacesAvailable'         => 10,
-			'availabilityDescription' => 'Available',
-			'availabilityStatus'      => 'O',
-			'prices'                  => [
+			'id'              => 'PQO-123:2026-02-20:OEX-SGL:AA',
+			'name'            => 'Test Occupancy 2',
+			'mask'            => 'AA',
+			'spacesAvailable' => 10,
+			'saleStatus'      => 'Open',
+			'saleStatusCode'  => 'O',
+			'prices'          => [
 				'USD' => [
 					'currencyCode'   => 'USD',
 					'pricePerPerson' => 50,
@@ -2813,13 +2813,13 @@ class Test_Occupancies extends Softrip_TestCase {
 
 		// Create an occupancy without promotion.
 		$raw_occupancy_data     = [
-			'id'                      => 'PQO-123:2026-02-20:OEX-SGL:A',
-			'name'                    => 'Test Occupancy',
-			'mask'                    => 'A',
-			'spacesAvailable'         => 10,
-			'availabilityDescription' => 'Available',
-			'availabilityStatus'      => 'O',
-			'prices'                  => [
+			'id'              => 'PQO-123:2026-02-20:OEX-SGL:A',
+			'name'            => 'Test Occupancy',
+			'mask'            => 'A',
+			'spacesAvailable' => 10,
+			'saleStatus'      => 'Open',
+			'saleStatusCode'  => 'O',
+			'prices'          => [
 				'USD' => [
 					'currencyCode'   => 'USD',
 					'pricePerPerson' => 100,
@@ -2907,13 +2907,13 @@ class Test_Occupancies extends Softrip_TestCase {
 
 		// Add one more occupancy to same cabin.
 		$raw_occupancy_data2 = [
-			'id'                      => 'PQO-123:2026-02-20:OEX-SGL:AA',
-			'name'                    => 'Test Occupancy 2',
-			'mask'                    => 'AA',
-			'spacesAvailable'         => 10,
-			'availabilityDescription' => 'Available',
-			'availabilityStatus'      => 'O',
-			'prices'                  => [
+			'id'              => 'PQO-123:2026-02-20:OEX-SGL:AA',
+			'name'            => 'Test Occupancy 2',
+			'mask'            => 'AA',
+			'spacesAvailable' => 10,
+			'saleStatus'      => 'Open',
+			'saleStatusCode'  => 'O',
+			'prices'          => [
 				'USD' => [
 					'currencyCode'   => 'USD',
 					'pricePerPerson' => 50,
@@ -3035,13 +3035,13 @@ class Test_Occupancies extends Softrip_TestCase {
 
 		// Add one occupancy for different cabin category but same departure.
 		$raw_occupancy_data3    = [
-			'id'                      => 'PQO-123:2026-02-20:OEX-SGL:AB',
-			'name'                    => 'Test Occupancy 3',
-			'mask'                    => 'AB',
-			'spacesAvailable'         => 10,
-			'availabilityDescription' => 'Available',
-			'availabilityStatus'      => 'O',
-			'prices'                  => [
+			'id'              => 'PQO-123:2026-02-20:OEX-SGL:AB',
+			'name'            => 'Test Occupancy 3',
+			'mask'            => 'AB',
+			'spacesAvailable' => 10,
+			'saleStatus'      => 'Open',
+			'saleStatusCode'  => 'O',
+			'prices'          => [
 				'USD' => [
 					'currencyCode'   => 'USD',
 					'pricePerPerson' => 75,
@@ -3604,13 +3604,13 @@ class Test_Occupancies extends Softrip_TestCase {
 
 		// Create an occupancy.
 		$raw_occupancy_data1 = [
-			'id'                      => 'UNQ-123:2026-02-20:OEX-SGL:A',
-			'name'                    => 'Test Occupancy 1',
-			'mask'                    => 'A',
-			'spacesAvailable'         => 10,
-			'availabilityDescription' => 'Available',
-			'availabilityStatus'      => 'O',
-			'prices'                  => [
+			'id'              => 'UNQ-123:2026-02-20:OEX-SGL:A',
+			'name'            => 'Test Occupancy 1',
+			'mask'            => 'A',
+			'spacesAvailable' => 10,
+			'saleStatus'      => 'Open',
+			'saleStatusCode'  => 'O',
+			'prices'          => [
 				'USD' => [
 					'currencyCode'   => 'USD',
 					'pricePerPerson' => 100,
@@ -3702,13 +3702,13 @@ class Test_Occupancies extends Softrip_TestCase {
 
 		// Create one more occupancy.
 		$raw_occupancy_data2 = [
-			'id'                      => 'UNQ-123:2026-02-20:OEX-SGL:B',
-			'name'                    => 'Test Occupancy 2',
-			'mask'                    => 'B',
-			'spacesAvailable'         => 20,
-			'availabilityDescription' => 'Available',
-			'availabilityStatus'      => 'O',
-			'prices'                  => [
+			'id'              => 'UNQ-123:2026-02-20:OEX-SGL:B',
+			'name'            => 'Test Occupancy 2',
+			'mask'            => 'B',
+			'spacesAvailable' => 20,
+			'saleStatus'      => 'Open',
+			'saleStatusCode'  => 'O',
+			'prices'          => [
 				'USD' => [
 					'currencyCode'   => 'USD',
 					'pricePerPerson' => 200,
