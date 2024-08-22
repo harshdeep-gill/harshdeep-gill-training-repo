@@ -61,7 +61,7 @@
     "zustand": "^4.5.4"
   },
   "dependencies": {
-    "@travelopia/web-components": "^0.6.8",
+    "@travelopia/web-components": "^0.6.9",
     "normalize.css": "^8.0.1"
   }
 }
