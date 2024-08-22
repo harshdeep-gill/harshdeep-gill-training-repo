@@ -432,6 +432,7 @@ function get_departures_data( int $expedition_post_id = 0, int $itinerary_post_i
 			'post_status'            => 'publish',
 			'posts_per_page'         => -1,
 			'fields'                 => 'ids',
+			'orderby'                => 'ID',
 			'update_post_meta_cache' => false,
 			'update_post_term_cache' => false,
 			'no_found_rows'          => true,
