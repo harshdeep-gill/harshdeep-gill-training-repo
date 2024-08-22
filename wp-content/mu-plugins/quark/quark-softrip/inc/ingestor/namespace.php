@@ -66,12 +66,12 @@ use const Quark\Itineraries\DEPARTURE_LOCATION_TAXONOMY;
  *       >,
  *       itineraries: array{}|array<int,
  *         array{
- *          id: int,
- *          packageId: string,
- *          name: string,
- *          startLocation: string,
- *          endLocation: string,
- *          departures: mixed[],
+ *           id: int,
+ *           packageId: string,
+ *           name: string,
+ *           startLocation: string,
+ *           endLocation: string,
+ *           departures: mixed[],
  *         }
  *       >
  *   }
