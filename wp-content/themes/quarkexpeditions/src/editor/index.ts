@@ -53,7 +53,6 @@ const blacklistBlocks = [
 	'core/post-content',
 	'core/post-date',
 	'core/post-excerpt',
-	'core/post-featured-image',
 	'core/loginout',
 	'core/social-links',
 	'core/separator',
