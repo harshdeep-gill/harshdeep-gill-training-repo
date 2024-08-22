@@ -47,6 +47,8 @@ function render( array $attributes = [], string $content = '' ): string {
 	// Build component attributes.
 	$attributes = [
 		'image_id' => $image_id,
+		'link'     => $attributes['isLink'] ? get_permalink() : '',
+		'target'   => $attributes['linkTarget'],
 	];
 
 	// Return rendered component.
