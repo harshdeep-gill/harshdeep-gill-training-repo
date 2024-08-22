@@ -663,7 +663,7 @@ class Test_Update_Departures extends Softrip_TestCase {
 		// Let's try updating only single departure.
 		$pqo_raw_departures[0]['startDate'] = '2027-08-27';
 		$pqo_raw_departures[0]['endDate']   = '2027-09-06';
-		$actual                             = update_departures( [ $pqo_raw_departures[0] ], $pqo_softrip_package_code, [ $departure_post1 ], true );
+		$actual                             = update_departures( [ $pqo_raw_departures[0] ], $pqo_softrip_package_code, [ $departure_post1 ] );
 		$this->assertTrue( $actual );
 
 		// Flush the cache.
@@ -719,7 +719,7 @@ class Test_Update_Departures extends Softrip_TestCase {
 		$pqo_raw_departures[0]['startDate'] = $yesterday;
 
 		// Update only departure 1 post with expired start date along with unpublish flag set to true.
-		$actual = update_departures( [ $pqo_raw_departures[0] ], $pqo_softrip_package_code, [ $departure_post1 ], true );
+		$actual = update_departures( [ $pqo_raw_departures[0] ], $pqo_softrip_package_code, [ $departure_post1 ] );
 		$this->assertTrue( $actual );
 
 		// Flush the cache.
