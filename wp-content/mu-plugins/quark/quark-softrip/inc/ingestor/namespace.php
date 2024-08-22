@@ -195,12 +195,12 @@ function get_expedition_data( int $expedition_post_id = 0 ): array {
  *
  * @return array{}|array<int,
  *  array{
- *   id: int,
- *   name: string,
- *   region: array{
- *     name: string,
- *     code: string,
- *   }
+ *    id: int,
+ *    name: string,
+ *    region: array{
+ *      name: string,
+ *      code: string,
+ *    }
  *  }
  * >
  */
