@@ -472,6 +472,8 @@ function get_details_tabs_data( array $itineraries = [] ): array {
 			// Check if the brochure pdf is not empty.
 			if ( ! empty( $_brochure['post_meta']['brochure_pdf'] ) ) {
 				$brochure = wp_get_attachment_url( absint( $_brochure['post_meta']['brochure_pdf'] ) );
+			} elseif ( ! empty( $_brochure['post_meta']['external_url'] ) ) {
+				$brochure = $_brochure['post_meta']['external_url'];
 			}
 		}
 

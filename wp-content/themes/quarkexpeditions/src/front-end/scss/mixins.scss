@@ -147,6 +147,8 @@
 
 @mixin spin( $duration: 1s, $ease: linear ) {
 
+	animation: spin $duration $ease infinite;
+
 	@keyframes spin {
 
 		0% {
@@ -157,8 +159,6 @@
 			transform: rotate(360deg);
 		}
 	}
-
-	animation: spin $duration $ease infinite;
 }
 
 
