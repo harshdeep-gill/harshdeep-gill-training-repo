@@ -1,0 +1,26 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Template title",
+	"name": "quark/template-title",
+	"description": "Display a template title.",
+	"category": "widgets",
+	"keywords": [
+		"template",
+		"title"
+	],
+	"textdomain": "qrk",
+	"attributes": {
+		"title": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

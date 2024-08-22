@@ -86,7 +86,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 						! $expedition_details instanceof WP_Block
 						|| 'quark/expedition-details' !== $expedition_details->name
 					) {
-						continue;
+						break;
 					}
 
 					// Render the child block.
@@ -103,7 +103,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 						! $hero_card_slider instanceof WP_Block
 						|| 'quark/hero-card-slider' !== $hero_card_slider->name
 					) {
-						continue;
+						break;
 					}
 
 					// Render the child block.

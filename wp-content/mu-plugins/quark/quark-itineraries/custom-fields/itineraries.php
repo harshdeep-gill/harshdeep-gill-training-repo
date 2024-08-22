@@ -76,9 +76,11 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 					'return_format'        => 'object',
 					'multiple'             => 0,
 					'allow_null'           => 0,
-					'bidirectional'        => 0,
 					'ui'                   => 1,
-					'bidirectional_target' => [],
+					'bidirectional'        => 1,
+					'bidirectional_target' => [
+						0 => 'field_6690db15ee66a',
+					],
 				],
 				[
 					'key'               => 'field_65f2db53046e1',
