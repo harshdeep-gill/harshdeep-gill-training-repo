@@ -850,6 +850,10 @@ class Test_Ingestor extends Softrip_TestCase {
 			],
 		];
 		$this->assertEquals( $expected, $actual );
+
+		// Delete media files.
+		wp_delete_attachment( $media_post_id1, true );
+		wp_delete_attachment( $media_post_id2, true );
 	}
 
 	/**
