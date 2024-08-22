@@ -117,37 +117,91 @@ function register_expedition_post_type(): void {
 		],
 		'template'            => [
 			[
-				'quark/section',
-				[
-					'hasTitle'        => false,
-					'hasBackground'   => true,
-					'backgroundColor' => 'black',
-					'hasPadding'      => true,
-				],
+				'quark/expedition-hero',
+				[],
+			],
+			[
+				'quark/secondary-navigation',
+				[],
 				[
 					[
-						'quark/two-columns',
-						[
-							'hasBorder' => true,
-						],
+						'quark/secondary-navigation-menu',
+						[],
 						[
 							[
-								'quark/column',
-								[],
+								'quark/secondary-navigation-item',
 								[
-									[
-										'quark/expedition-details',
-										[],
+									'title' => 'Overview',
+									'url'   => [
+										'url'  => 'overview',
+										'text' => 'Overview',
 									],
 								],
 							],
 							[
-								'quark/column',
+								'quark/secondary-navigation-item',
+								[
+									'title' => 'Itineraries',
+									'url'   => [
+										'url'  => 'itineraries',
+										'text' => 'Itineraries',
+									],
+								],
+							],
+							[
+								'quark/secondary-navigation-item',
+								[
+									'title' => "What's Onboard",
+									'url'   => [
+										'url'  => 'life-onboard',
+										'text' => "What's Onboard",
+									],
+								],
+							],
+							[
+								'quark/secondary-navigation-item',
+								[
+									'title' => "What's Included",
+									'url'   => [
+										'url'  => 'whats-included',
+										'text' => "What's Included",
+									],
+								],
+							],
+							[
+								'quark/secondary-navigation-item',
+								[
+									'title' => 'Know Before You Go',
+									'url'   => [
+										'url'  => 'know-before-you-go',
+										'text' => 'Know Before You Go',
+									],
+								],
+							],
+						],
+					],
+					[
+						'quark/secondary-navigation-cta-buttons',
+						[],
+						[
+							[
+								'quark/buttons',
 								[],
 								[
 									[
-										'quark/hero-card-slider',
-										[],
+										'quark/button',
+										[
+											'btnText'   => 'View Departures',
+											'isSizeBig' => true,
+										],
+									],
+									[
+										'quark/button',
+										[
+											'btnText'         => 'Request a Quote',
+											'backgroundColor' => 'black',
+											'isSizeBig'       => true,
+										],
 									],
 								],
 							],
@@ -156,12 +210,11 @@ function register_expedition_post_type(): void {
 				],
 			],
 			[
-				'quark/secondary-navigation',
-				[],
-			],
-			[
 				'quark/two-columns',
-				[ 'hasBorder' => false ],
+				[
+					'hasBorder' => false,
+					'anchor'    => 'overview',
+				],
 				[
 					[
 						'quark/column',
@@ -202,6 +255,7 @@ function register_expedition_post_type(): void {
 					'titleAlignment' => 'left',
 					'headingLevel'   => '2',
 					'hasDescription' => true,
+					'anchor'         => 'itineraries',
 				],
 				[
 					[
@@ -217,6 +271,7 @@ function register_expedition_post_type(): void {
 					'titleAlignment' => 'left',
 					'headingLevel'   => '2',
 					'hasDescription' => true,
+					'anchor'         => 'life-onboard',
 				],
 				[
 					[
@@ -240,6 +295,7 @@ function register_expedition_post_type(): void {
 					'titleAlignment' => 'left',
 					'headingLevel'   => '2',
 					'hasDescription' => true,
+					'anchor'         => 'whats-included',
 				],
 				[
 					[
@@ -327,11 +383,16 @@ function register_expedition_post_type(): void {
 				[],
 			],
 			[
+				'quark/cta-banner',
+				[],
+			],
+			[
 				'quark/section',
 				[
 					'title'          => 'Know Before You Go',
 					'titleAlignment' => 'left',
 					'headingLevel'   => '2',
+					'anchor'         => 'know-before-you-go',
 				],
 				[
 					[
