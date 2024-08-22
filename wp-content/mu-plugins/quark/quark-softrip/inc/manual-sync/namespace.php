@@ -197,9 +197,9 @@ function enqueue_admin_scripts(): void {
 	// Enqueue the script.
 	wp_enqueue_script(
 		'quark-softrip-sync-admin',
-		plugin_dir_url( __DIR__ ) . '../assets/js/admin/sync/index.js',
+		plugin_dir_url( __DIR__ ) . '../dist/quark-softrip-manual-sync.js',
 		[],
-		'1.0.0',
+		strval( filemtime( dirname( __DIR__ ) . '/../dist/quark-softrip-manual-sync.js' ) ),
 		true
 	);
 
