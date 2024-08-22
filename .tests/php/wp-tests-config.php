@@ -48,6 +48,22 @@ if ( ! defined( 'WP_HOME' ) ) {
 define( 'WP_CONTENT_DIR', dirname( __DIR__ ) . '/../wp-content' );
 define( 'WP_CONTENT_URL', WP_HOME . '/wp-content' );
 
+// Create "uploads" needed for tests.
+if ( ! is_dir( WP_CONTENT_DIR . '/uploads' ) ) {
+	mkdir( WP_CONTENT_DIR . '/uploads' );
+}
+
+// Somehow WP is not creating directories recursively.
+// Add Month and Year directories.
+if ( ! is_dir( WP_CONTENT_DIR . '/uploads/' . gmdate( 'Y' ) ) ) {
+	mkdir( WP_CONTENT_DIR . '/uploads/' . gmdate( 'Y' ) );
+}
+
+// Add Month directory.
+if ( ! is_dir( WP_CONTENT_DIR . '/uploads/' . gmdate( 'Y' ) . '/' . gmdate( 'm' ) ) ) {
+	mkdir( WP_CONTENT_DIR . '/uploads/' . gmdate( 'Y' ) . '/' . gmdate( 'm' ) );
+}
+
 // Prevent editing of files through WP Admin.
 define( 'DISALLOW_FILE_EDIT', true );
 define( 'DISALLOW_FILE_MODS', true );
