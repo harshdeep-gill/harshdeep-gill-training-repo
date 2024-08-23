@@ -10,7 +10,7 @@
     "dev": "npm run clear-assets && webpack --config ./webpack.config.js --mode production --env=development --watch",
     "clear-assets": "rm -rf wp-content/themes/quarkexpeditions/dist",
     "lint": "npm run lint:css && npm run lint:js && npm run lint:php",
-    "lint:js": "eslint wp-content/themes/quarkexpeditions/src",
+    "lint:js": "eslint wp-content/themes/quarkexpeditions/src wp-content/mu-plugins/quark/**/src",
     "lint:css": "stylelint wp-content/themes/quarkexpeditions/src",
     "lint:php": "composer lint",
     "test:php": "composer test",
