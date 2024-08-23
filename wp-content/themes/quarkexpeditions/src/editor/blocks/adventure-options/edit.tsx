@@ -7,6 +7,7 @@ import {
 	SelectControl,
 	Placeholder,
 	Tooltip,
+	RangeControl,
 } from '@wordpress/components';
 import { InspectorControls } from '@wordpress/block-editor';
 import { store as editorStore } from '@wordpress/editor';
@@ -68,7 +69,7 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 					<SelectControl
 						label={ __( 'Selection', 'qrk' ) }
 						help={ __( 'Select how you would like to select posts', 'qrk' ) }
-						value={ attributes.selection }
+						value={ attributes.selectionType }
 						options={ [
 							{ label: __( 'Automatic', 'qrk' ), value: 'auto' },
 							{ label: __( 'By Category', 'qrk' ), value: 'byCategory' },
@@ -93,6 +94,14 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 							buttonLabel={ __( 'Select Adventure Option Category', 'qrk' ) }
 						/>
 					}
+					<RangeControl
+						label={ __( 'Total Posts', 'qrk' ) }
+						help={ __( 'Select the total number of options to be displayed', 'qrk' ) }
+						value={ attributes.total }
+						onChange={ ( total ) => setAttributes( { total } ) }
+						min={ 1 }
+						max={ 20 }
+					/>
 				</PanelBody>
 			</InspectorControls>
 			<Section className={ classnames( className ) }>

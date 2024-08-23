@@ -23,6 +23,10 @@
 		"termIDs": {
 			"type": "array",
 			"default": []
+		},
+		"total": {
+			"type": "number",
+			"default": 12
 		}
 	},
 	"supports": {

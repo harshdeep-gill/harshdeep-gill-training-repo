@@ -85,6 +85,7 @@ function render( array $attributes = [] ): string {
 		'post_type'              => ADVENTURE_OPTIONS_POST_TYPE,
 		'post_status'            => 'publish',
 		'fields'                 => 'ids',
+		'posts_per_page'         => $attributes['total'],
 		'no_found_rows'          => true,
 		'update_post_meta_cache' => false,
 		'update_post_term_cache' => false,
