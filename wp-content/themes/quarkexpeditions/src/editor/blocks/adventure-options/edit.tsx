@@ -27,7 +27,10 @@ const { gumponents } = window;
 /**
  * External components.
  */
-const { TaxonomyRelationshipControl } = gumponents.components;
+const {
+	PostRelationshipControl,
+	TaxonomyRelationshipControl,
+} = gumponents.components;
 
 /**
  * Internal dependencies.
@@ -72,6 +75,7 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 						value={ attributes.selectionType }
 						options={ [
 							{ label: __( 'Automatic', 'qrk' ), value: 'auto' },
+							{ label: __( 'Manual', 'qrk' ), value: 'manual' },
 							{ label: __( 'By Category', 'qrk' ), value: 'byCategory' },
 						] }
 						onChange={ ( selectionType: string ) => setAttributes( { selectionType } ) }
@@ -84,6 +88,17 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 						</Tooltip>
 					}
 					{
+						'manual' === attributes.selectionType &&
+						<PostRelationshipControl
+							label={ __( 'Select Adventure Options', 'qrk' ) }
+							help={ __( 'Select Adventure Options', 'qrk' ) }
+							postTypes="qrk_adventure_option"
+							value={ attributes.ids }
+							onSelect={ ( postIDs: any ) => setAttributes( { ids: postIDs.map( ( post: any ) => post.ID ) } ) }
+							button={ __( 'Select Adventure Options', 'qrk' ) }
+						/>
+					}
+					{
 						'byCategory' === attributes.selectionType &&
 						<TaxonomyRelationshipControl
 							label={ __( 'Select Adventure Option Category.', 'et' ) }
@@ -94,14 +109,16 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 							buttonLabel={ __( 'Select Adventure Option Category', 'qrk' ) }
 						/>
 					}
-					<RangeControl
-						label={ __( 'Total Posts', 'qrk' ) }
-						help={ __( 'Select the total number of options to be displayed', 'qrk' ) }
-						value={ attributes.total }
-						onChange={ ( total ) => setAttributes( { total } ) }
-						min={ 1 }
-						max={ 20 }
-					/>
+					{	'manual' !== attributes.selectionType &&
+						<RangeControl
+							label={ __( 'Total Posts', 'qrk' ) }
+							help={ __( 'Select the total number of options to be displayed', 'qrk' ) }
+							value={ attributes.total }
+							onChange={ ( total ) => setAttributes( { total } ) }
+							min={ 1 }
+							max={ 20 }
+						/>
+					}
 				</PanelBody>
 			</InspectorControls>
 			<Section className={ classnames( className ) }>

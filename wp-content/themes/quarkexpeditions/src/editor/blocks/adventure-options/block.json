@@ -27,6 +27,10 @@
 		"total": {
 			"type": "number",
 			"default": 12
+		},
+		"ids": {
+			"type": "array",
+			"default": []
 		}
 	},
 	"supports": {

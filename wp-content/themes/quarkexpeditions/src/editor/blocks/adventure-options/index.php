@@ -49,6 +49,19 @@ function render( array $attributes = [] ): string {
 		return '';
 	}
 
+	// Build query args.
+	$args = [
+		'post_type'              => ADVENTURE_OPTIONS_POST_TYPE,
+		'post_status'            => 'publish',
+		'fields'                 => 'ids',
+		'posts_per_page'         => $attributes['total'],
+		'no_found_rows'          => true,
+		'update_post_meta_cache' => false,
+		'update_post_term_cache' => false,
+		'orderby'                => 'date',
+		'order'                  => 'DESC',
+	];
+
 	// Get the terms.
 	$terms = get_the_terms( $current_post_id, ADVENTURE_OPTION_CATEGORY );
 
@@ -64,10 +77,21 @@ function render( array $attributes = [] ): string {
 		// Set adventure option category.
 		$tax_query['taxonomy'] = ADVENTURE_OPTION_CATEGORY;
 		$tax_query['terms']    = $attributes['termIDs'];
+
+		// Set tax query.
+		$args['tax_query'] = [ $tax_query ];
 	} elseif ( ! empty( $attributes['destinationIDs'] ) && is_array( $attributes['destinationIDs'] ) && 'auto' === $attributes['selectionType'] ) {
 		// Set destination taxonomy.
 		$tax_query['taxonomy'] = DESTINATION_TAXONOMY;
 		$tax_query['terms']    = $attributes['destinationIDs'];
+
+		// Set tax query.
+		$args['tax_query'] = [ $tax_query ];
+	} elseif ( ! empty( $attributes['ids'] ) && is_array( $attributes['ids'] ) && 'manual' === $attributes['selectionType'] ) {
+		// Set post IDs.
+		$args['post__in']       = $attributes['ids'];
+		$args['orderby']        = 'post__in';
+		$args['posts_per_page'] = count( $attributes['ids'] );
 	} elseif ( ! empty( $terms ) && ! $terms instanceof WP_Error ) {
 		$tax_query['terms'] = array_map(
 			function ( $term ) {
@@ -79,20 +103,6 @@ function render( array $attributes = [] ): string {
 		// Bail.
 		return '';
 	}
-
-	// Build query args.
-	$args = [
-		'post_type'              => ADVENTURE_OPTIONS_POST_TYPE,
-		'post_status'            => 'publish',
-		'fields'                 => 'ids',
-		'posts_per_page'         => $attributes['total'],
-		'no_found_rows'          => true,
-		'update_post_meta_cache' => false,
-		'update_post_term_cache' => false,
-		'orderby'                => 'date',
-		'order'                  => 'DESC',
-		'tax_query'              => [ $tax_query ],
-	];
 
 	// Get posts.
 	$posts = new WP_Query( $args );
