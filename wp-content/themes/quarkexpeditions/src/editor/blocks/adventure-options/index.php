@@ -85,8 +85,9 @@ function render( array $attributes = [] ): string {
 		$tax_query['taxonomy'] = DESTINATION_TAXONOMY;
 		$tax_query['terms']    = $attributes['destinationIDs'];
 
-		// Set tax query.
-		$args['tax_query'] = [ $tax_query ];
+		// Set the args.
+		$args['tax_query']      = [ $tax_query ];
+		$args['posts_per_page'] = $attributes['total'] + 1;
 	} elseif ( ! empty( $attributes['ids'] ) && is_array( $attributes['ids'] ) && 'manual' === $attributes['selectionType'] ) {
 		// Set post IDs.
 		$args['post__in']       = $attributes['ids'];
