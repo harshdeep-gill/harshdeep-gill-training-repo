@@ -122,6 +122,17 @@ function update_occupancies( array $raw_cabins_data = [], int $departure_post_id
 			continue;
 		}
 
+		// Initialize spaces available.
+		$cabin_spaces_available = 0;
+
+		// Set spaces available if exists.
+		if ( ! empty( $raw_cabin_data['spacesAvailable'] ) ) {
+			$cabin_spaces_available = absint( $raw_cabin_data['spacesAvailable'] );
+		}
+
+		// Store cabin spaces available on departure meta.
+		update_post_meta( $departure_post_id, 'cabin_spaces_available_' . $cabin_category_post_id, $cabin_spaces_available );
+
 		// Iterate through the cabin occupancies.
 		foreach ( $raw_cabin_data['occupancies'] as $raw_cabin_occupancy_data ) {
 			// Continue if not array or empty.
