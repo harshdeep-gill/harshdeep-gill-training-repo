@@ -9,6 +9,7 @@ namespace Quark\Softrip\Occupancies;
 
 use WP_Query;
 
+use function Quark\Departures\bust_post_cache as bust_departure_post_cache;
 use function Quark\Itineraries\get_mandatory_transfer_price;
 use function Quark\Itineraries\get_supplemental_price;
 use function Quark\Softrip\get_engine_collate;
@@ -122,17 +123,6 @@ function update_occupancies( array $raw_cabins_data = [], int $departure_post_id
 			continue;
 		}
 
-		// Initialize spaces available.
-		$cabin_spaces_available = 0;
-
-		// Set spaces available if exists.
-		if ( ! empty( $raw_cabin_data['spacesAvailable'] ) ) {
-			$cabin_spaces_available = absint( $raw_cabin_data['spacesAvailable'] );
-		}
-
-		// Store cabin spaces available on departure meta.
-		update_post_meta( $departure_post_id, 'cabin_spaces_available_' . $cabin_category_post_id, $cabin_spaces_available );
-
 		// Iterate through the cabin occupancies.
 		foreach ( $raw_cabin_data['occupancies'] as $raw_cabin_occupancy_data ) {
 			// Continue if not array or empty.
@@ -198,6 +188,17 @@ function update_occupancies( array $raw_cabins_data = [], int $departure_post_id
 			wp_cache_delete( CACHE_KEY_PREFIX . '_occupancy_id_' . $updated_id, CACHE_GROUP );
 		}
 
+		// Initialize cabin spaces available.
+		$cabin_spaces_available = 0;
+
+		// Set spaces available if exists after all occupancies are updated.
+		if ( ! empty( $raw_cabin_data['spacesAvailable'] ) ) {
+			$cabin_spaces_available = absint( $raw_cabin_data['spacesAvailable'] );
+		}
+
+		// Store cabin spaces available on departure meta.
+		update_post_meta( $departure_post_id, 'cabin_spaces_available_' . $cabin_category_post_id, $cabin_spaces_available );
+
 		// Bust caches at cabin category level.
 		wp_cache_delete( CACHE_KEY_PREFIX . '_cabin_category_post_id_' . $cabin_category_post_id . '_departure_post_id_' . $departure_post_id, CACHE_GROUP );
 	}
@@ -215,15 +216,40 @@ function update_occupancies( array $raw_cabins_data = [], int $departure_post_id
 		// Get the occupancy ID.
 		$occupancy_id = absint( $existing_occupancies_by_softrip_id[ $non_updated_softrip_id ] );
 
+		// Get occupancy by id.
+		$occupancy_data = get_occupancy_data_by_id( $occupancy_id, true );
+
+		// Bail if empty.
+		if ( empty( $occupancy_data ) || ! is_array( $occupancy_data ) ) {
+			continue;
+		}
+
+		// First item.
+		$occupancy = $occupancy_data[0];
+
+		// Bail if empty.
+		if ( ! is_array( $occupancy ) || empty( $occupancy['softrip_id'] ) || empty( $occupancy['cabin_category_post_id'] ) ) {
+			continue;
+		}
+
+		// Get the cabin category post ID.
+		$cabin_category_post_id = absint( $occupancy['cabin_category_post_id'] );
+
 		// Delete the occupancy promotions.
 		delete_occupancy_promotions_by_occupancy_id( $occupancy_id );
 
 		// Delete the occupancy.
 		delete_occupancy_by_id( $occupancy_id );
 
+		// Delete post meta for cabin spaces available.
+		delete_post_meta( $departure_post_id, 'cabin_spaces_available_' . $cabin_category_post_id );
+
 		// Bust caches.
 		wp_cache_delete( CACHE_KEY_PREFIX . '_softrip_id_' . $non_updated_softrip_id, CACHE_GROUP );
 		wp_cache_delete( CACHE_KEY_PREFIX . '_occupancy_id_' . $occupancy_id, CACHE_GROUP );
+
+		// Bust departure cache as meta has been deleted.
+		bust_departure_post_cache( $departure_post_id );
 	}
 
 	// Bust caches at departure level.
