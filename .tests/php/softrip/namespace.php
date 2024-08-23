@@ -1123,9 +1123,9 @@ function mock_softrip_http_request( array|false $response = [], array $parsed_ar
 													'promoPricePerPerson' => 9180,
 												],
 											],
-										]
+										],
 									],
-								]
+								],
 							],
 						],
 						[

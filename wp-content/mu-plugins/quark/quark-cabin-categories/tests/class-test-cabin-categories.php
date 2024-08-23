@@ -12,12 +12,22 @@ use WP_Post;
 use WP_Query;
 use WP_Term;
 
+use function Quark\CabinCategories\get_availability_status_description;
+use function Quark\CabinCategories\get_cabin_availability_status;
 use function Quark\CabinCategories\get_cabin_categories_data;
 use function Quark\CabinCategories\get_cabin_details_by_departure;
+use function Quark\CabinCategories\get_cabin_spaces_available;
 use function Quark\Softrip\do_sync;
+use function Quark\Softrip\Occupancies\delete_occupancy_by_id;
+use function Quark\Softrip\Occupancies\get_cabin_category_post_ids_by_departure;
+use function Quark\Softrip\Occupancies\get_occupancies_by_cabin_category_and_departure;
 
+use const Quark\CabinCategories\AVAILABLE_STATUS;
 use const Quark\CabinCategories\POST_TYPE as CABIN_CATEGORY_POST_TYPE;
 use const Quark\CabinCategories\CABIN_CLASS_TAXONOMY;
+use const Quark\CabinCategories\ON_REQUEST_STATUS;
+use const Quark\CabinCategories\SOLD_OUT_STATUS;
+use const Quark\CabinCategories\UNAVAILABLE_STATUS;
 use const Quark\Core\AUD_CURRENCY;
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
 use const Quark\ShipDecks\POST_TYPE as SHIP_DECK_POST_TYPE;
@@ -430,5 +440,228 @@ class Test_Cabin_Categories extends Softrip_TestCase {
 
 		// Assert data.
 		$this->assertEquals( $expected, $cabin_details );
+	}
+
+	/**
+	 * Test get availability status description.
+	 *
+	 * @covers \Quark\CabinCategories\get_availability_status_description()
+	 *
+	 * @return void
+	 */
+	public function test_get_availability_status_description(): void {
+		// Not status given.
+		$expected = '';
+		$actual   = get_availability_status_description();
+		$this->assertSame( $expected, $actual );
+
+		// Invalid status.
+		$expected = '';
+		$actual   = get_availability_status_description( 'INVALID' );
+		$this->assertSame( $expected, $actual );
+
+		// Available status.
+		$expected = 'Available';
+		$actual   = get_availability_status_description( AVAILABLE_STATUS );
+		$this->assertSame( $expected, $actual );
+
+		// Not available status.
+		$expected = 'Unavailable';
+		$actual   = get_availability_status_description( UNAVAILABLE_STATUS );
+		$this->assertSame( $expected, $actual );
+
+		// Sold out.
+		$expected = 'Sold Out';
+		$actual   = get_availability_status_description( SOLD_OUT_STATUS );
+		$this->assertSame( $expected, $actual );
+
+		// On request.
+		$expected = 'Please Call';
+		$actual   = get_availability_status_description( ON_REQUEST_STATUS );
+		$this->assertSame( $expected, $actual );
+	}
+
+	/**
+	 * Test get cabin spaces available.
+	 *
+	 * @covers \Quark\CabinCategories\get_cabin_spaces_available()
+	 *
+	 * @return void
+	 */
+	public function test_get_cabin_spaces_available(): void {
+		// Test with no args.
+		$expected = 0;
+		$actual   = get_cabin_spaces_available();
+		$this->assertSame( $expected, $actual );
+
+		// Test with invalid args.
+		$expected = 0;
+		$actual   = get_cabin_spaces_available( 9999, 99999 );
+		$this->assertSame( $expected, $actual );
+
+		// Setup mock response.
+		add_filter( 'pre_http_request', 'Quark\Tests\Softrip\mock_softrip_http_request', 10, 3 );
+
+		// Sync.
+		do_sync();
+
+		// Flush cache.
+		wp_cache_flush();
+
+		// Remove filter.
+		remove_filter( 'pre_http_request', 'Quark\Tests\Softrip\mock_softrip_http_request', 10 );
+
+		// Fetch departure posts.
+		$departure_query_args = [
+			'post_type'              => DEPARTURE_POST_TYPE,
+			'no_found_rows'          => true,
+			'ignore_sticky_posts'    => true,
+			'update_post_term_cache' => false,
+			'fields'                 => 'ids',
+			'update_post_meta_cache' => false,
+			'meta_query'             => [
+				[
+					'key'     => 'softrip_code',
+					'value'   => 'OEX20250826',
+					'compare' => '=',
+				],
+			],
+		];
+
+		// Get departure post.
+		$departure_post_ids = get_posts( $departure_query_args );
+
+		// Assert fetched posts is 1.
+		$this->assertCount( 1, $departure_post_ids );
+
+		// Get first post.
+		$departure_post_id1 = $departure_post_ids[0];
+		$this->assertIsInt( $departure_post_id1 );
+
+		// Get all cabins of this departure.
+		$cabin_post_ids = get_cabin_category_post_ids_by_departure( $departure_post_id1 );
+
+		// Assert that there are 4 cabins.
+		$this->assertCount( 8, $cabin_post_ids );
+
+		// Initialize each cabin post id.
+		$cabin_post_id1 = $cabin_post_ids[0];
+		$cabin_post_id2 = $cabin_post_ids[1];
+		$cabin_post_id3 = $cabin_post_ids[2];
+		$cabin_post_id4 = $cabin_post_ids[3];
+
+		// Get cabin spaces available for each cabin.
+		$spaces_available1 = get_cabin_spaces_available( $departure_post_id1, $cabin_post_id1 );
+		$spaces_available2 = get_cabin_spaces_available( $departure_post_id1, $cabin_post_id2 );
+		$spaces_available3 = get_cabin_spaces_available( $departure_post_id1, $cabin_post_id3 );
+		$spaces_available4 = get_cabin_spaces_available( $departure_post_id1, $cabin_post_id4 );
+
+		// Assert that all cabins have spaces available.
+		$this->assertSame( 5, $spaces_available1 );
+		$this->assertSame( 0, $spaces_available2 );
+		$this->assertSame( 0, $spaces_available3 );
+		$this->assertSame( 0, $spaces_available4 );
+	}
+
+	/**
+	 * Test get cabin availability status.
+	 *
+	 * @covers \Quark\CabinCategories\get_cabin_availability_status()
+	 *
+	 * @return void
+	 */
+	public function test_get_cabin_availability_status(): void {
+		// Test with no args.
+		$expected = UNAVAILABLE_STATUS;
+		$actual   = get_cabin_availability_status();
+		$this->assertSame( $expected, $actual );
+
+		// Test with invalid args.
+		$expected = UNAVAILABLE_STATUS;
+		$actual   = get_cabin_availability_status( 9999, 99999 );
+		$this->assertSame( $expected, $actual );
+
+		// Setup mock response.
+		add_filter( 'pre_http_request', 'Quark\Tests\Softrip\mock_softrip_http_request', 10, 3 );
+
+		// Sync.
+		do_sync();
+
+		// Flush cache.
+		wp_cache_flush();
+
+		// Remove filter.
+		remove_filter( 'pre_http_request', 'Quark\Tests\Softrip\mock_softrip_http_request', 10 );
+
+		// Fetch departure posts.
+		$departure_query_args = [
+			'post_type'              => DEPARTURE_POST_TYPE,
+			'no_found_rows'          => true,
+			'ignore_sticky_posts'    => true,
+			'update_post_term_cache' => false,
+			'fields'                 => 'ids',
+			'update_post_meta_cache' => false,
+			'meta_query'             => [
+				[
+					'key'     => 'softrip_code',
+					'value'   => 'OEX20250826',
+					'compare' => '=',
+				],
+			],
+		];
+
+		// Get departure post.
+		$departure_post_ids = get_posts( $departure_query_args );
+
+		// Assert fetched posts is 1.
+		$this->assertCount( 1, $departure_post_ids );
+
+		// Get first post.
+		$departure_post_id1 = $departure_post_ids[0];
+		$this->assertIsInt( $departure_post_id1 );
+
+		// Get all cabins of this departure.
+		$cabin_post_ids = get_cabin_category_post_ids_by_departure( $departure_post_id1 );
+
+		// Assert that there are 8 cabins.
+		$this->assertCount( 8, $cabin_post_ids );
+
+		// Initialize each cabin post id.
+		$cabin_post_id1 = $cabin_post_ids[0];
+		$cabin_post_id2 = $cabin_post_ids[1];
+		$cabin_post_id3 = $cabin_post_ids[2];
+		$cabin_post_id4 = $cabin_post_ids[3];
+		$cabin_post_id5 = $cabin_post_ids[4];
+
+		// Get cabin availability status for each cabin.
+		$availability_status1 = get_cabin_availability_status( $departure_post_id1, $cabin_post_id1 );
+		$availability_status2 = get_cabin_availability_status( $departure_post_id1, $cabin_post_id2 );
+		$availability_status3 = get_cabin_availability_status( $departure_post_id1, $cabin_post_id3 );
+		$availability_status4 = get_cabin_availability_status( $departure_post_id1, $cabin_post_id4 );
+		$availability_status5 = get_cabin_availability_status( $departure_post_id1, $cabin_post_id5 );
+
+		// Assert that all cabins have spaces available.
+		$this->assertSame( AVAILABLE_STATUS, $availability_status1 );
+		$this->assertSame( ON_REQUEST_STATUS, $availability_status2 );
+		$this->assertSame( ON_REQUEST_STATUS, $availability_status3 );
+		$this->assertSame( SOLD_OUT_STATUS, $availability_status4 );
+		$this->assertSame( ON_REQUEST_STATUS, $availability_status5 );
+
+		// Get all occupancies for cabin 5.
+		$occupancies_for_cabin5 = get_occupancies_by_cabin_category_and_departure( $cabin_post_id5, $departure_post_id1 );
+		$this->assertNotEmpty( $occupancies_for_cabin5 );
+
+		// Delete all occupancies for cabin 5.
+		foreach ( $occupancies_for_cabin5 as $occupancy ) {
+			// Delete occupancy.
+			delete_occupancy_by_id( $occupancy['id'] );
+		}
+
+		// Flush cache.
+		wp_cache_flush();
+
+		// Get cabin availability status for cabin 5 - should be unavailable as there is no occupancy.
+		$availability_status5 = get_cabin_availability_status( $departure_post_id1, $cabin_post_id5 );
+		$this->assertSame( UNAVAILABLE_STATUS, $availability_status5 );
 	}
 }

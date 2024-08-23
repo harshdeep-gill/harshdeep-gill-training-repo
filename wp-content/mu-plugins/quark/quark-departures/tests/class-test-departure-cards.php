@@ -1366,7 +1366,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 		);
 
 		// Assert cabin count.
-		$this->assertCount( 4, $card_data['cabin_data'] ?? [] );
+		$this->assertCount( 8, $card_data['cabin_data'] ?? [] );
 		$this->assertEqualSetsWithIndex(
 			[
 				'name'                     => 'cabin_name - OEX-JST',
