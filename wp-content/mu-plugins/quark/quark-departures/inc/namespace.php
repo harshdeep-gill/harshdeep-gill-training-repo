@@ -34,6 +34,9 @@ use function Quark\Softrip\Occupancies\get_cabin_category_post_ids_by_departure;
 use function Quark\Softrip\Promotions\get_promotions_by_code;
 use function Quark\Softrip\AdventureOptions\get_adventure_option_by_departure_post_id;
 use function Quark\AdventureOptions\get as get_adventure_option_post_data;
+use function Quark\CabinCategories\get_availability_status_description;
+use function Quark\CabinCategories\get_cabin_availability_status;
+use function Quark\CabinCategories\get_cabin_spaces_available;
 
 use const Quark\StaffMembers\SEASON_TAXONOMY;
 use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
@@ -585,7 +588,7 @@ function get_promotion_tags( int $post_id = 0 ): array {
  *        specifications: array{
  *           availability_status: string,
  *           availability_description: string,
- *           spaces_available: string,
+ *           spaces_available: int,
  *           occupancy: string,
  *           location: string,
  *           size: string,
@@ -765,7 +768,7 @@ function get_start_end_departure_date( int $post_id = 0 ): string {
  *         specifications: array{
  *            availability_status: string,
  *            availability_description: string,
- *            spaces_available: string,
+ *            spaces_available: int,
  *            occupancy: string,
  *            location: string,
  *            size: string,
@@ -920,7 +923,7 @@ function bust_card_data_cache_on_expedition_update( int $expedition_id = 0 ): vo
  *         },
  *     },
  *     cabin_data: array<
- *         string, array<string, string>
+ *         string, array<string, string|int>
  *     >,
  * }
  */
@@ -1063,12 +1066,17 @@ function get_dates_rates_card_data( int $departure_id = 0, string $currency = 'U
 			continue;
 		}
 
+		// Get availability status.
+		$cabin_spaces_available = get_cabin_spaces_available( $departure_id, $cabin_id );
+		$availability_status = get_cabin_availability_status( $departure_id, $cabin_id );
+		$availability_description = get_availability_status_description( $availability_status );
+
 		// Prepare the cabin data.
 		$cabin_price_data[ $cabin_code ] = [
 			'name'                     => strval( $cabin_data['post_meta']['cabin_name'] ?? '' ),
-			'availability_status'      => '', // @todo Add the availability status from quark-softrip. - https://tuispecialist.atlassian.net/browse/QE-499
-			'availability_description' => '', // @todo Add the availability description from quark-softrip. - https://tuispecialist.atlassian.net/browse/QE-499
-			'spaces_available'         => '', // @todo Add the spaces available from quark-softrip. - https://tuispecialist.atlassian.net/browse/QE-499
+			'availability_status'      => $availability_status,
+			'availability_description' => $availability_description,
+			'spaces_available'         => $cabin_spaces_available,
 		];
 
 		// Get the lowest price for the cabin.
