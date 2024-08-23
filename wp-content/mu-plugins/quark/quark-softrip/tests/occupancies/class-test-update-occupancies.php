@@ -145,7 +145,7 @@ class Test_Update_Occupancies extends Softrip_TestCase {
 		);
 		$this->assertIsInt( $cabin_category_post_id1 );
 
-		// Try again with raw data. This time, cabin post exists byt raw data has empty occupancies.
+		// Try again with raw data. This time, cabin post exists but raw data has empty occupancies.
 		$raw_cabin_data1 = [
 			'code'        => 'CAB1',
 			'name'        => 'Explorer Suite',
