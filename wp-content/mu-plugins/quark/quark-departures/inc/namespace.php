@@ -1067,8 +1067,8 @@ function get_dates_rates_card_data( int $departure_id = 0, string $currency = 'U
 		}
 
 		// Get availability status.
-		$cabin_spaces_available = get_cabin_spaces_available( $departure_id, $cabin_id );
-		$availability_status = get_cabin_availability_status( $departure_id, $cabin_id );
+		$cabin_spaces_available   = get_cabin_spaces_available( $departure_id, $cabin_id );
+		$availability_status      = get_cabin_availability_status( $departure_id, $cabin_id );
 		$availability_description = get_availability_status_description( $availability_status );
 
 		// Prepare the cabin data.

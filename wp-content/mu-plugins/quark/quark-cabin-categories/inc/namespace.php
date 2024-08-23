@@ -27,10 +27,10 @@ const POST_TYPE            = 'qrk_cabin_category';
 const CABIN_CLASS_TAXONOMY = 'qrk_cabin_class';
 const CACHE_KEY            = POST_TYPE;
 const CACHE_GROUP          = POST_TYPE;
-const AVAILABLE_STATUS	   = 'A';
+const AVAILABLE_STATUS     = 'A';
 const UNAVAILABLE_STATUS   = 'U';
-const SOLD_OUT_STATUS	   = 'S';
-const ON_REQUEST_STATUS	   = 'R';
+const SOLD_OUT_STATUS      = 'S';
+const ON_REQUEST_STATUS    = 'R';
 
 /**
  * Bootstrap plugin.
@@ -538,8 +538,8 @@ function get_cabin_details_by_departure( int $departure_post_id = 0, string $cur
 		$formatted_price['original_price']   = format_price( $lowest_price['original'], $currency );
 
 		// Get availability status.
-		$cabin_spaces_available = get_cabin_spaces_available( $departure_post_id, $cabin_category_post_id );
-		$availability_status = get_cabin_availability_status( $departure_post_id, $cabin_category_post_id );
+		$cabin_spaces_available   = get_cabin_spaces_available( $departure_post_id, $cabin_category_post_id );
+		$availability_status      = get_cabin_availability_status( $departure_post_id, $cabin_category_post_id );
 		$availability_description = get_availability_status_description( $availability_status );
 
 		// Setup cabin structure data.
@@ -971,15 +971,26 @@ function get_cabin_spaces_available( int $departure_post_id = 0, int $cabin_cate
  * @return string
  */
 function get_availability_status_description( string $status = '' ): string {
+	// Check status.
 	switch ( $status ) {
+
+		// Available.
 		case AVAILABLE_STATUS:
 			return __( 'Available', 'quark' );
+
+		// Unavailable.
 		case UNAVAILABLE_STATUS:
 			return __( 'Unavailable', 'quark' );
+
+		// Sold out.
 		case SOLD_OUT_STATUS:
 			return __( 'Sold Out', 'quark' );
+
+		// On request.
 		case ON_REQUEST_STATUS:
 			return __( 'Please Call', 'quark' );
+
+		// Default.
 		default:
 			return '';
 	}

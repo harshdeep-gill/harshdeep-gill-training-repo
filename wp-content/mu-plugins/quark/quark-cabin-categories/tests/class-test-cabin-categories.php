@@ -126,17 +126,17 @@ class Test_Cabin_Categories extends Softrip_TestCase {
 	public function test_get_cabin_details_by_departure(): void {
 		// Test with no departure.
 		$expected = [];
-		$actual = get_cabin_details_by_departure();
+		$actual   = get_cabin_details_by_departure();
 		$this->assertEquals( $expected, $actual );
 
 		// Default args.
 		$expected = [];
-		$actual = get_cabin_details_by_departure( 0 );
+		$actual   = get_cabin_details_by_departure( 0 );
 		$this->assertEquals( $expected, $actual );
 
 		// Test with invalid departure.
 		$expected = [];
-		$actual = get_cabin_details_by_departure( 9999 );
+		$actual   = get_cabin_details_by_departure( 9999 );
 		$this->assertEquals( $expected, $actual );
 
 		// Setup mock response.
@@ -178,19 +178,19 @@ class Test_Cabin_Categories extends Softrip_TestCase {
 		// Get cabin category post for ULT-SGL.
 		$cabin_category_posts = get_posts(
 			[
-				'post_type'      => CABIN_CATEGORY_POST_TYPE,
-				'posts_per_page' => -1,
-				'fields'         => 'ids',
-				'no_found_rows'  => true,
+				'post_type'              => CABIN_CATEGORY_POST_TYPE,
+				'posts_per_page'         => -1,
+				'fields'                 => 'ids',
+				'no_found_rows'          => true,
 				'update_post_meta_cache' => false,
 				'update_post_term_cache' => false,
-				'suppress_filters' => false,
-				'ignore_sticky_posts' => true,
-				'meta_query' => [
+				'suppress_filters'       => false,
+				'ignore_sticky_posts'    => true,
+				'meta_query'             => [
 					[
-					'key' => 'cabin_category_id',
-					'value' => 'ULT-SGL',
-					]
+						'key'   => 'cabin_category_id',
+						'value' => 'ULT-SGL',
+					],
 				],
 			]
 		);
@@ -203,19 +203,19 @@ class Test_Cabin_Categories extends Softrip_TestCase {
 		// Get cabin category post for ULT-DBL.
 		$cabin_category_posts = get_posts(
 			[
-				'post_type'      => CABIN_CATEGORY_POST_TYPE,
-				'posts_per_page' => -1,
-				'fields'         => 'ids',
-				'no_found_rows'  => true,
+				'post_type'              => CABIN_CATEGORY_POST_TYPE,
+				'posts_per_page'         => -1,
+				'fields'                 => 'ids',
+				'no_found_rows'          => true,
 				'update_post_meta_cache' => false,
 				'update_post_term_cache' => false,
-				'suppress_filters' => false,
-				'ignore_sticky_posts' => true,
-				'meta_query' => [
+				'suppress_filters'       => false,
+				'ignore_sticky_posts'    => true,
+				'meta_query'             => [
 					[
-					'key' => 'cabin_category_id',
-					'value' => 'ULT-DBL',
-					]
+						'key'   => 'cabin_category_id',
+						'value' => 'ULT-DBL',
+					],
 				],
 			]
 		);
@@ -231,79 +231,79 @@ class Test_Cabin_Categories extends Softrip_TestCase {
 		// Prepare expected data.
 		$expected = [
 			'ULT-SGL' => [
-				'cabin_code' => 'ULT-SGL',
-				'description' => 'Post content 0000045',
-				'name' => 'cabin_name - ULT-SGL',
-				'gallery' => [],
-				'type' => '',
+				'cabin_code'     => 'ULT-SGL',
+				'description'    => get_post_field( 'post_content', $cabin_category_post_id1 ),
+				'name'           => 'cabin_name - ULT-SGL',
+				'gallery'        => [],
+				'type'           => '',
 				'specifications' => [
-					'availability_status' => 'R',
+					'availability_status'      => 'R',
 					'availability_description' => 'Please Call',
-					'spaces_available' => 0,
-					'occupancy' => '',
-					'location' => '',
-					'size' => '',
-					'bed_configuration' => '',
+					'spaces_available'         => 0,
+					'occupancy'                => '',
+					'location'                 => '',
+					'size'                     => '',
+					'bed_configuration'        => '',
 				],
-				'from_price' => [
+				'from_price'     => [
 					'discounted_price' => '$38,169 USD',
-					'original_price' => '$44,905 USD',
+					'original_price'   => '$44,905 USD',
 				],
-				'occupancies' => [
+				'occupancies'    => [
 					[
-						'name' => 'A',
-						'description' => 'Single Room',
+						'name'         => 'A',
+						'description'  => 'Single Room',
 						'no_of_guests' => '1',
-						'price' => [
-							'original_price' => '$44,905 USD',
+						'price'        => [
+							'original_price'   => '$44,905 USD',
 							'discounted_price' => '$38,169 USD',
 						],
-						'promotions' => [],
-					]
+						'promotions'   => [],
+					],
 				],
 			],
 			'ULT-DBL' => [
-				'cabin_code' => 'ULT-DBL',
-				'description' => 'Post content 0000046',
-				'name' => 'cabin_name - ULT-DBL',
-				'gallery' => [],
-				'type' => '',
+				'cabin_code'     => 'ULT-DBL',
+				'description'    => get_post_field( 'post_content', $cabin_category_post_id2 ),
+				'name'           => 'cabin_name - ULT-DBL',
+				'gallery'        => [],
+				'type'           => '',
 				'specifications' => [
-					'availability_status' => 'R',
+					'availability_status'      => 'R',
 					'availability_description' => 'Please Call',
-					'spaces_available' => 0,
-					'occupancy' => '',
-					'location' => '',
-					'size' => '',
-					'bed_configuration' => '',
+					'spaces_available'         => 0,
+					'occupancy'                => '',
+					'location'                 => '',
+					'size'                     => '',
+					'bed_configuration'        => '',
 				],
-				'from_price' => [
+				'from_price'     => [
 					'discounted_price' => '$29,410 USD',
-					'original_price' => '$34,600 USD',
+					'original_price'   => '$34,600 USD',
 				],
-				'occupancies' => [
+				'occupancies'    => [
 					[
-						'name' => 'A',
-						'description' => 'Single Room',
+						'name'         => 'A',
+						'description'  => 'Single Room',
 						'no_of_guests' => '1',
-						'price' => [
-							'original_price' => '$74,900 USD',
+						'price'        => [
+							'original_price'   => '$74,900 USD',
 							'discounted_price' => '$63,665 USD',
 						],
-						'promotions' => [],
+						'promotions'   => [],
 					],
 					[
-						'name' => 'AA',
-						'description' => 'Double Room',
+						'name'         => 'AA',
+						'description'  => 'Double Room',
 						'no_of_guests' => '2',
-						'price' => [
-							'original_price' => '$34,600 USD',
+						'price'        => [
+							'original_price'   => '$34,600 USD',
 							'discounted_price' => '$29,410 USD',
 						],
-						'promotions' => [],
-					]
+						'promotions'   => [],
+					],
 				],
-			]
+			],
 		];
 
 		// Assert data.
@@ -353,78 +353,78 @@ class Test_Cabin_Categories extends Softrip_TestCase {
 		// Prepare expected data.
 		$expected = [
 			'ULT-SGL' => [
-				'cabin_code' => 'ULT-SGL',
-				'description' => 'Post content 0000045',
-				'name' => 'cabin_name - ULT-SGL',
-				'gallery' => [1, 2, 3],
-				'type' => 'Standard',
+				'cabin_code'     => 'ULT-SGL',
+				'description'    => get_post_field( 'post_content', $cabin_category_post_id1 ),
+				'name'           => 'cabin_name - ULT-SGL',
+				'gallery'        => [ 1, 2, 3 ],
+				'type'           => 'Standard',
 				'specifications' => [
-					'availability_status' => 'R',
+					'availability_status'      => 'R',
 					'availability_description' => 'Please Call',
-					'spaces_available' => 0,
-					'occupancy' => '',
-					'location' => '',
-					'size' => '100 - 200',
-					'bed_configuration' => 'Test Bed Configuration',
+					'spaces_available'         => 0,
+					'occupancy'                => '',
+					'location'                 => '',
+					'size'                     => '100 - 200',
+					'bed_configuration'        => 'Test Bed Configuration',
 				],
-				'from_price' => [
+				'from_price'     => [
 					'discounted_price' => '$38,169 USD',
-					'original_price' => '$44,905 USD',
+					'original_price'   => '$44,905 USD',
 				],
-				'occupancies' => [
+				'occupancies'    => [
 					[
-						'name' => 'A',
-						'description' => 'Single Room',
+						'name'         => 'A',
+						'description'  => 'Single Room',
 						'no_of_guests' => '1',
-						'price' => [
-							'original_price' => '$44,905 USD',
+						'price'        => [
+							'original_price'   => '$44,905 USD',
 							'discounted_price' => '$38,169 USD',
 						],
-						'promotions' => [],
-					]
+						'promotions'   => [],
+					],
 				],
 			],
 			'ULT-DBL' => [
-				'cabin_code' => 'ULT-DBL',
-				'description' => 'Post content 0000046',
-				'name' => 'cabin_name - ULT-DBL',
-				'gallery' => [],
-				'type' => 'Premium',
+				'cabin_code'     => 'ULT-DBL',
+				'description'    => get_post_field( 'post_content', $cabin_category_post_id2 ),
+				'name'           => 'cabin_name - ULT-DBL',
+				'gallery'        => [],
+				'type'           => 'Premium',
 				'specifications' => [
-					'availability_status' => 'R',
+					'availability_status'      => 'R',
 					'availability_description' => 'Please Call',
-					'spaces_available' => 0,
-					'occupancy' => '',
-					'location' => '',
-					'size' => '',
-					'bed_configuration' => '',
+					'spaces_available'         => 0,
+					'occupancy'                => '',
+					'location'                 => '',
+					'size'                     => '',
+					'bed_configuration'        => '',
 				],
-				'from_price' => [
+				'from_price'     => [
 					'discounted_price' => '$29,410 USD',
-					'original_price' => '$34,600 USD',
+					'original_price'   => '$34,600 USD',
 				],
-				'occupancies' => [
+				'occupancies'    => [
 					[
-						'name' => 'A',
-						'description' => 'Single Room',
+						'name'         => 'A',
+						'description'  => 'Single Room',
 						'no_of_guests' => '1',
-						'price' => [
-							'original_price' => '$74,900 USD',
+						'price'        => [
+							'original_price'   => '$74,900 USD',
 							'discounted_price' => '$63,665 USD',
 						],
-						'promotions' => [],
+						'promotions'   => [],
 					],
 					[
-						'name' => 'AA',
-						'description' => 'Double Room',
+						'name'         => 'AA',
+						'description'  => 'Double Room',
 						'no_of_guests' => '2',
-						'price' => [
-							'original_price' => '$34,600 USD',
+						'price'        => [
+							'original_price'   => '$34,600 USD',
 							'discounted_price' => '$29,410 USD',
 						],
-						'promotions' => [],
-					]
-				]
+						'promotions'   => [],
+					],
+				],
 			],
 		];
 
