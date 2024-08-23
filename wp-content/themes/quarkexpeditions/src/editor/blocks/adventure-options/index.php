@@ -13,6 +13,7 @@ use WP_Query;
 use function Quark\AdventureOptions\get_cards_data;
 
 use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
+use const Quark\Expeditions\DESTINATION_TAXONOMY;
 use const Quark\AdventureOptions\POST_TYPE as ADVENTURE_OPTIONS_POST_TYPE;
 
 const COMPONENT = 'parts.adventure-options';
@@ -53,15 +54,20 @@ function render( array $attributes = [] ): string {
 
 	// Initialize tax query.
 	$tax_query = [
-		'taxonomy'         => ADVENTURE_OPTION_CATEGORY,
 		'field'            => 'term_id',
 		'include_children' => false,
 		'operator'         => 'IN',
 	];
 
 	// Check if terms were selected in the editor.
-	if ( ! empty( $attributes['termIDs'] ) && is_array( $attributes['termIDs'] ) ) {
-		$tax_query['terms'] = $attributes['termIDs'];
+	if ( ! empty( $attributes['termIDs'] ) && is_array( $attributes['termIDs'] ) && 'byCategory' === $attributes['selectionType'] ) {
+		// Set adventure option category.
+		$tax_query['taxonomy'] = ADVENTURE_OPTION_CATEGORY;
+		$tax_query['terms']    = $attributes['termIDs'];
+	} elseif ( ! empty( $attributes['destinationIDs'] ) && is_array( $attributes['destinationIDs'] ) && 'auto' === $attributes['selectionType'] ) {
+		// Set destination taxonomy.
+		$tax_query['taxonomy'] = DESTINATION_TAXONOMY;
+		$tax_query['terms']    = $attributes['destinationIDs'];
 	} elseif ( ! empty( $terms ) && ! $terms instanceof WP_Error ) {
 		$tax_query['terms'] = array_map(
 			function ( $term ) {
