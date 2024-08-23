@@ -10,6 +10,7 @@ namespace Quark\CabinCategories;
 use WP_Post;
 
 use function Quark\Core\format_price;
+use function Quark\Departures\get as get_departure;
 use function Quark\ShipDecks\get as get_ship_deck;
 use function Quark\Softrip\Occupancies\add_supplemental_and_mandatory_price;
 use function Quark\Softrip\Occupancies\get_cabin_category_post_ids_by_departure;
@@ -26,6 +27,10 @@ const POST_TYPE            = 'qrk_cabin_category';
 const CABIN_CLASS_TAXONOMY = 'qrk_cabin_class';
 const CACHE_KEY            = POST_TYPE;
 const CACHE_GROUP          = POST_TYPE;
+const AVAILABLE_STATUS	   = 'A';
+const UNAVAILABLE_STATUS   = 'U';
+const SOLD_OUT_STATUS	   = 'S';
+const ON_REQUEST_STATUS	   = 'R';
 
 /**
  * Bootstrap plugin.
@@ -477,7 +482,7 @@ function get_cabin_categories_data( int $cabin_id = 0 ): array {
  *     specifications: array{
  *          availability_status: string,
  *          availability_description: string,
- *          spaces_available: string,
+ *          spaces_available: int,
  *          occupancy: string,
  *          location: string,
  *          size: string,
@@ -532,6 +537,11 @@ function get_cabin_details_by_departure( int $departure_post_id = 0, string $cur
 		$formatted_price['discounted_price'] = format_price( $lowest_price['discounted'], $currency );
 		$formatted_price['original_price']   = format_price( $lowest_price['original'], $currency );
 
+		// Get availability status.
+		$cabin_spaces_available = get_cabin_spaces_available( $departure_post_id, $cabin_category_post_id );
+		$availability_status = get_cabin_availability_status( $departure_post_id, $cabin_category_post_id );
+		$availability_description = get_availability_status_description( $availability_status );
+
 		// Setup cabin structure data.
 		$struct = [
 			'name'           => strval( $cabin_data['post_meta']['cabin_name'] ?? '' ),
@@ -540,9 +550,9 @@ function get_cabin_details_by_departure( int $departure_post_id = 0, string $cur
 			'gallery'        => $cabin_data['post_meta']['cabin_images'] ?? [],
 			'type'           => get_cabin_category_class( $cabin_category_post_id ),
 			'specifications' => [
-				'availability_status'      => '', // @todo Add the availability status from quark-softrip.
-				'availability_description' => '', // @todo Add the availability description from quark-softrip.
-				'spaces_available'         => '', // @todo Add the spaces available from quark-softrip.
+				'availability_status'      => $availability_status,
+				'availability_description' => $availability_description,
+				'spaces_available'         => $cabin_spaces_available,
 				'occupancy'                => get_pax_range( $cabin_category_post_id ),
 				'location'                 => get_cabin_category_location( $cabin_category_post_id ),
 				'size'                     => get_size_range( $cabin_category_post_id ),
@@ -855,4 +865,122 @@ function get_occupancy_detail( int $occupancy_id = 0, int $departure_post_id = 0
 
 	// Return the occupancy detail.
 	return $detail;
+}
+
+/**
+ * Get cabin availability status.
+ *
+ * @param int $departure_post_id Departure post ID.
+ * @param int $cabin_category_post_id Cabin category post ID.
+ *
+ * @return string
+ */
+function get_cabin_availability_status( int $departure_post_id = 0, int $cabin_category_post_id = 0 ): string {
+	// Bail if empty.
+	if ( empty( $departure_post_id ) || empty( $cabin_category_post_id ) ) {
+		return UNAVAILABLE_STATUS;
+	}
+
+	// Get cabin spaces available.
+	$spaces_available = get_cabin_spaces_available( $departure_post_id, $cabin_category_post_id );
+
+	// Check if spaces available.
+	if ( $spaces_available > 0 ) {
+		return AVAILABLE_STATUS;
+	}
+
+	// Fetch all occupancies for this cabin and departure.
+	$occupancies = get_occupancies_by_cabin_category_and_departure( $cabin_category_post_id, $departure_post_id );
+
+	// Check if occupancies is empty.
+	if ( empty( $occupancies ) ) {
+		return UNAVAILABLE_STATUS;
+	}
+
+	// Initialize flag for sold out.
+	$are_all_sold_out = true;
+
+	// Loop through the occupancies.
+	foreach ( $occupancies as $occupancy ) {
+		// Bail if empty.
+		if ( empty( $occupancy['id'] ) || empty( $occupancy['availability_status'] ) ) {
+			continue;
+		}
+
+		// Availability status.
+		$availability_status = $occupancy['availability_status'];
+
+		// Check if available - when sale_status is 0.
+		if ( 'O' === $availability_status ) {
+			$are_all_sold_out = false;
+			break;
+		}
+	}
+
+	// Check if all are sold out.
+	if ( $are_all_sold_out ) {
+		return SOLD_OUT_STATUS;
+	}
+
+	// Finally, return on request status.
+	return ON_REQUEST_STATUS;
+}
+
+/**
+ * Get cabin spaces available.
+ *
+ * @param int $departure_post_id Departure post ID.
+ * @param int $cabin_category_post_id Cabin category post ID.
+ *
+ * @return int
+ */
+function get_cabin_spaces_available( int $departure_post_id = 0, int $cabin_category_post_id = 0 ): int {
+	// Bail if empty.
+	if ( empty( $departure_post_id ) || empty( $cabin_category_post_id ) ) {
+		return 0;
+	}
+
+	// Get departure post.
+	$departure_post = get_departure( $departure_post_id );
+
+	// Validate departure post.
+	if ( ! $departure_post['post'] instanceof WP_Post || empty( $departure_post['post_meta'] ) ) {
+		return 0;
+	}
+
+	// Meta key for cabin spaces available.
+	$meta_key = 'cabin_spaces_available_' . $cabin_category_post_id;
+
+	// Check if meta key exists.
+	if ( ! isset( $departure_post['post_meta'][ $meta_key ] ) ) {
+		return 0;
+	}
+
+	// Get cabin spaces available.
+	$spaces_available = absint( $departure_post['post_meta'][ $meta_key ] );
+
+	// Return spaces available.
+	return $spaces_available;
+}
+
+/**
+ * Get availability status description.
+ *
+ * @param string $status Availability status.
+ *
+ * @return string
+ */
+function get_availability_status_description( string $status = '' ): string {
+	switch ( $status ) {
+		case AVAILABLE_STATUS:
+			return __( 'Available', 'quark' );
+		case UNAVAILABLE_STATUS:
+			return __( 'Unavailable', 'quark' );
+		case SOLD_OUT_STATUS:
+			return __( 'Sold Out', 'quark' );
+		case ON_REQUEST_STATUS:
+			return __( 'Please Call', 'quark' );
+		default:
+			return '';
+	}
 }
