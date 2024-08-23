@@ -5102,7 +5102,7 @@
 				<x-dates-rates.filters-chips>
 					<x-dates-rates.filter-chip drawer_id="dates-rates-filters" title="Region & Season" accordion_id="accordion-region-season" />
 					<x-dates-rates.filter-chip drawer_id="dates-rates-filters" title="Expedition" accordion_id="accordion-expedition" />
-					<x-dates-rates.filter-chip drawer_id="dates-rates-filters" title="Adevnture Options" accordion_id="accordion-adevnture-options" />
+					<x-dates-rates.filter-chip drawer_id="dates-rates-filters" title="Adventure Options" accordion_id="accordion-adevnture-options" />
 					<x-dates-rates.filter-chip drawer_id="dates-rates-filters" title="Departure Month" accordion_id="accordion-departure-month" />
 					<x-dates-rates.filter-chip drawer_id="dates-rates-filters" title="Duration" accordion_id="accordion-duration" />
 					<x-dates-rates.filter-chip drawer_id="dates-rates-filters" title="Ship" accordion_id="accordion-ship" />
@@ -5123,7 +5123,7 @@
 					<x-dates-rates.filter-chip drawer_id="dates-rates-filters-currency" title="Currency: USD" />
 				</x-dates-rates.sticky-filters>
 
-				<x-drawer id="dates-rates-filters-currency" animation_direction="up" class="dates-rates__drawer">
+				<x-drawer id="dates-rates-filters-currency" animation_direction="up" class="dates-rates__drawer-currency">
 					<x-drawer.header>
 						<h3>Currency</h3>
 					</x-drawer.header>
@@ -5170,38 +5170,78 @@
 							<x-accordion.item id="accordion-expedition">
 								<x-accordion.item-handle title="Expedition" />
 								<x-accordion.item-content>
-									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.it further to meet your schedule, interests, and budget with one of our expert Travel Consultants.</p>
+									<x-form.field-group :validation="[ 'checkbox-group-required' ]">
+										<x-form.checkbox name="" label="Item 1" />
+										<x-form.checkbox name="" label="Item 2" />
+										<x-form.checkbox name="" label="Item 3" />
+										<x-form.checkbox name="" label="Item 4" />
+										<x-form.checkbox name="" label="Item 5" />
+										<x-form.checkbox name="" label="Item 6" />
+										<x-form.checkbox name="" label="Item 7" />
+									</x-form.field-group>
 								</x-accordion.item-content>
 							</x-accordion.item>
 							<x-accordion.item id="accordion-adevnture-options">
 								<x-accordion.item-handle title="Adventure Options (with availability)" />
 								<x-accordion.item-content>
-									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.</p>
+									<x-form.field-group :validation="[ 'checkbox-group-required' ]">
+										<x-form.checkbox name="" label="Item 1" />
+										<x-form.checkbox name="" label="Item 2" />
+										<x-form.checkbox name="" label="Item 3" />
+										<x-form.checkbox name="" label="Item 4" />
+										<x-form.checkbox name="" label="Item 5" />
+										<x-form.checkbox name="" label="Item 6" />
+										<x-form.checkbox name="" label="Item 7" />
+									</x-form.field-group>
 								</x-accordion.item-content>
 							</x-accordion.item>
 							<x-accordion.item id="accordion-departure-month">
 								<x-accordion.item-handle title="Departure Month" />
 								<x-accordion.item-content>
-									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.</p>
+									<x-form.field-group :validation="[ 'checkbox-group-required' ]">
+										<x-form.checkbox name="" label="Item 1" />
+										<x-form.checkbox name="" label="Item 2" />
+										<x-form.checkbox name="" label="Item 3" />
+										<x-form.checkbox name="" label="Item 4" />
+										<x-form.checkbox name="" label="Item 5" />
+										<x-form.checkbox name="" label="Item 6" />
+										<x-form.checkbox name="" label="Item 7" />
+									</x-form.field-group>
 								</x-accordion.item-content>
 							</x-accordion.item>
 							<x-accordion.item id="accordion-duration">
 								<x-accordion.item-handle title="Duration of Voyage (days)" />
 								<x-accordion.item-content>
-									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.</p>
+									<x-form.field-group :validation="[ 'checkbox-group-required' ]">
+										<x-form.checkbox name="" label="Item 1" />
+										<x-form.checkbox name="" label="Item 2" />
+										<x-form.checkbox name="" label="Item 3" />
+										<x-form.checkbox name="" label="Item 4" />
+										<x-form.checkbox name="" label="Item 5" />
+										<x-form.checkbox name="" label="Item 6" />
+										<x-form.checkbox name="" label="Item 7" />
+									</x-form.field-group>
 								</x-accordion.item-content>
 							</x-accordion.item>
 							<x-accordion.item id="accordion-ship">
 								<x-accordion.item-handle title="Ship" />
 								<x-accordion.item-content>
-									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.</p>
+									<x-form.field-group :validation="[ 'checkbox-group-required' ]">
+										<x-form.checkbox name="" label="Item 1" />
+										<x-form.checkbox name="" label="Item 2" />
+										<x-form.checkbox name="" label="Item 3" />
+										<x-form.checkbox name="" label="Item 4" />
+										<x-form.checkbox name="" label="Item 5" />
+										<x-form.checkbox name="" label="Item 6" />
+										<x-form.checkbox name="" label="Item 7" />
+									</x-form.field-group>
 								</x-accordion.item-content>
 							</x-accordion.item>
 						</x-accordion>
 					</x-drawer.body>
 
 					<x-drawer.footer>
-						<x-button href="#" appearance="outline" size="big">Clear all</x-button>
+						<x-dates-rates.cta-clear-filters />
 						<x-button href="#" size="big">View Results (132)</x-button>
 					</x-drawer.footer>
 				</x-drawer>
