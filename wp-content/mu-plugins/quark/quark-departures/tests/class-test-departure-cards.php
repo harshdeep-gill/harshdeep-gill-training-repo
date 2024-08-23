@@ -1060,7 +1060,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 		// Setup mock response.
 		add_filter( 'pre_http_request', 'Quark\Tests\Softrip\mock_softrip_http_request', 10, 3 );
 
-		// Sync softrip with exising posts.
+		// Sync softrip with existing posts.
 		do_sync();
 
 		// Fetch Departure posts.
@@ -1083,7 +1083,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 		// Get Departure posts.
 		$departure_posts = get_posts( $departure_query_args );
 
-		// Assert fetched posts are 2.
+		// Assert fetched posts count is 1.
 		$this->assertCount( 1, $departure_posts );
 
 		// Set departure post - 1.
