@@ -620,7 +620,7 @@ function mock_softrip_http_request( array|false $response = [], array $parsed_ar
 							'code'            => 'OEX-FWD',
 							'name'            => 'Deluxe Veranda Forward',
 							'departureId'     => 'HIJ-456:2025-08-26',
-							'spacesAvailable' => 9,
+							'spacesAvailable' => 0,
 							'occupancies'     => [
 								[
 									'id'              => 'HIJ-456:2025-08-26:OEX-FWD:A',
@@ -843,7 +843,7 @@ function mock_softrip_http_request( array|false $response = [], array $parsed_ar
 							'code'            => 'OEX-JST',
 							'name'            => 'Junior Suite',
 							'departureId'     => 'HIJ-456:2025-08-26',
-							'spacesAvailable' => 12,
+							'spacesAvailable' => 0,
 							'occupancies'     => [
 								[
 									'id'              => 'HIJ-456:2025-08-26:OEX-JST:A',
@@ -920,9 +920,9 @@ function mock_softrip_http_request( array|false $response = [], array $parsed_ar
 									'id'              => 'HIJ-456:2025-08-26:OEX-JST:AA',
 									'name'            => 'HIJ-456:2025-08-26:OEX-JST:AA',
 									'mask'            => 'AA',
-									'saleStatusCode'  => 'O',
-									'saleStatus'      => 'Open',
-									'spacesAvailable' => 6,
+									'saleStatusCode'  => 'S',
+									'saleStatus'      => 'Sold Out',
+									'spacesAvailable' => 0,
 									'seq'             => '300',
 									'prices'          => [
 										'USD' => [
@@ -1067,6 +1067,65 @@ function mock_softrip_http_request( array|false $response = [], array $parsed_ar
 										],
 									],
 								],
+								[
+									'id'              => 'HIJ-456:2025-08-26:OEX-SVS:AA',
+									'name'            => 'HIJ-456:2025-08-26:OEX-SVS:AA',
+									'mask'            => 'AA',
+									'saleStatusCode'  => 'S',
+									'saleStatus'      => 'Sold Out',
+									'spacesAvailable' => 0,
+									'seq'             => '400',
+									'prices'          => [
+										'USD' => [
+											'currencyCode'   => 'USD',
+											'pricePerPerson' => 10995,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 9896,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 9896,
+												],
+											],
+										],
+										'AUD' => [
+											'currencyCode'   => 'AUD',
+											'pricePerPerson' => 17200,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 15480,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 15480,
+												],
+											],
+										],
+										'CAD' => [
+											'currencyCode'   => 'CAD',
+											'pricePerPerson' => 14900,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 13410,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 13410,
+												],
+											],
+										],
+										'EUR' => [
+											'currencyCode'   => 'EUR',
+											'pricePerPerson' => 10200,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 9180,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 9180,
+												],
+											],
+										]
+									],
+								]
 							],
 						],
 						[
