@@ -22,6 +22,7 @@ use const Quark\Expeditions\POST_TYPE as EXPEDITION_POST_TYPE;
  * @return void
  */
 function bootstrap(): void {
+	// Add actions.
 	if ( is_admin() ) {
 		add_action( 'admin_bar_menu', __NAMESPACE__ . '\\create_admin_bar_menus', 100 );
 		add_action( 'admin_footer', __NAMESPACE__ . '\\admin_footer_actions' );
