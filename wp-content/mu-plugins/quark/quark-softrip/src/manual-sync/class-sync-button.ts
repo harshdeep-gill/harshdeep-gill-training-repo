@@ -6,8 +6,6 @@
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-import { dispatch } from '@wordpress/data';
-import { store as noticeStore } from '@wordpress/notices';
 
 /**
  * Global variables.
@@ -18,9 +16,11 @@ declare global {
             type?: string;
             message?: string;
         } | undefined;
+		wp: any;
     }
 }
 const { quarkSoftripAdmin } = window;
+const { wp } = window;
 
 /**
  * Sync Button.
@@ -97,8 +97,8 @@ export class SoftripSyncButton {
 			return;
 		}
 
-		// Dispatch.
-		dispatch( noticeStore ).createNotice(
+		// Dispatch the notice - using legacy method as dispatch(noticeStore).createNotice is not working.
+		wp.data?.dispatch( 'core/notices' )?.createNotice(
 			type,
 			message,
 			{
