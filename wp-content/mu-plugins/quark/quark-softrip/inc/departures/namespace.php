@@ -15,7 +15,6 @@ use function Quark\Ships\get_id_from_ship_code;
 use function Quark\Softrip\AdventureOptions\update_adventure_options;
 use function Quark\Softrip\Occupancies\update_occupancies;
 use function Quark\Softrip\is_date_in_the_past;
-use function Quark\Softrip\Occupancies\clear_occupancies_by_departure;
 use function Quark\Softrip\Occupancies\get_lowest_price as get_occupancies_lowest_price;
 use function Quark\Softrip\Promotions\update_promotions;
 
@@ -29,9 +28,9 @@ use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
 /**
  * Update the departure data.
  *
- * @param mixed[] $raw_departures       Raw departures data from Softrip to update with.
- * @param string  $softrip_package_code Softrip package code.
- * @param int[]   $specific_departure_post_ids   Specific Departure post IDs to update. Default is empty.
+ * @param mixed[] $raw_departures              Raw departures data from Softrip to update with.
+ * @param string  $softrip_package_code        Softrip package code.
+ * @param int[]   $specific_departure_post_ids Specific Departure post IDs to update. Default is empty.
  *
  * @return bool
  */
