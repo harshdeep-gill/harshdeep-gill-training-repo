@@ -1157,17 +1157,17 @@ class Test_Departure_Cards extends Softrip_TestCase {
 			'cabin_data'                 => [
 				'ULT-SGL' => [
 					'name'                     => 'cabin_name - ULT-SGL',
-					'availability_status'      => '',
-					'availability_description' => '',
-					'spaces_available'         => '',
+					'availability_status'      => 'A',
+					'availability_description' => 'Available',
+					'spaces_available'         => 10,
 					'brochure_price'           => '$45,105 USD',
 					'15PROMO'                  => '$38,169 USD',
 				],
 				'ULT-DBL' => [
 					'name'                     => 'cabin_name - ULT-DBL',
-					'availability_status'      => '',
-					'availability_description' => '',
-					'spaces_available'         => '',
+					'availability_status'      => 'A',
+					'availability_description' => 'Available',
+					'spaces_available'         => 20,
 					'brochure_price'           => '$34,800 USD',
 					'15PROMO'                  => '$29,410 USD',
 				],
@@ -1370,9 +1370,9 @@ class Test_Departure_Cards extends Softrip_TestCase {
 		$this->assertEqualSetsWithIndex(
 			[
 				'name'                     => 'cabin_name - OEX-JST',
-				'availability_status'      => '',
-				'availability_description' => '',
-				'spaces_available'         => '',
+				'availability_status'      => 'R',
+				'availability_description' => 'Please Call',
+				'spaces_available'         => 0,
 				'brochure_price'           => '$46,050 CAD',
 			],
 			$card_data['cabin_data']['OEX-JST'] ?? []
