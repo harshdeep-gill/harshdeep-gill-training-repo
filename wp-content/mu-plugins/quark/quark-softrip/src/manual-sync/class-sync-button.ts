@@ -1,7 +1,5 @@
 /**
  * Class to create sync button.
- *
- * @package quark-softrip
  */
 
 /**
@@ -9,7 +7,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { dispatch } from '@wordpress/data';
-import {store as noticeStore} from '@wordpress/notices';
+import { store as noticeStore } from '@wordpress/notices';
 
 /**
  * Global variables.
@@ -28,75 +26,84 @@ const { quarkSoftripAdmin } = window;
  * Sync Button.
  */
 export class SoftripSyncButton {
-    /**
-     * Properties.
-     */
-    private postHeaderToolbarContainer: HTMLElement | null;
-     /**
-     * Constructor.
-     */
-     constructor() {
-        this.postHeaderToolbarContainer = null;
+	/**
+	 * Properties.
+	 */
+	private postHeaderToolbarContainer: HTMLElement | null;
 
-        // Attach sync button.
-        setTimeout(() => {
-            this.attachSyncButton()
-        }, 500);
+	/**
+	 * Constructor.
+	 */
+	constructor() {
+		// Initialize properties.
+		this.postHeaderToolbarContainer = null;
 
-        // Display sync notice.
-        this.displaySyncNotice();
-    }
+		// Attach sync button.
+		setTimeout( () => {
+			// Attach sync button.
+			this.attachSyncButton();
+		}, 500 );
 
-    /**
-     * Attach sync button.
-     *
-     * @return {void}
-    */
-    attachSyncButton(): void {
-        this.postHeaderToolbarContainer = document.querySelector('.edit-post-header-toolbar');
+		// Display sync notice.
+		this.displaySyncNotice();
+	}
 
-        // If post save button is not found, return.
-        if (!this.postHeaderToolbarContainer) {
-            return;
-        }
+	/**
+	 * Attach sync button.
+	 *
+	 * @return {void}
+	 */
+	attachSyncButton(): void {
+		// Select post header toolbar container.
+		this.postHeaderToolbarContainer = document.querySelector( '.edit-post-header-toolbar' );
 
-        // Select template containing sync button.
-        const template: HTMLTemplateElement | null = document.querySelector('#quark-softrip-admin-bar-sync-button');
+		// If post save button is not found, return.
+		if ( ! this.postHeaderToolbarContainer ) {
+			// Bail out.
+			return;
+		}
 
-        // Validate template content.
-        if (!template || !template.content.children.length) {
-            return;
-        }
+		// Select template containing sync button.
+		const template: HTMLTemplateElement | null = document.querySelector( '#quark-softrip-admin-bar-sync-button' );
 
-        // Insert sync button at last.
-        this.postHeaderToolbarContainer.insertAdjacentElement('afterend', template.content.children[0]);
-    }
+		// Validate template content.
+		if ( ! template || ! template.content.children.length ) {
+			// Bail out.
+			return;
+		}
 
-    /**
-     * Display sync notice.
-     *
-     * @return {void}
-     */
-    displaySyncNotice(): void {
-        if (undefined === typeof quarkSoftripAdmin || 'object' !== typeof quarkSoftripAdmin) {
-            return;
-        }
+		// Insert sync button at last.
+		this.postHeaderToolbarContainer.insertAdjacentElement( 'afterend', template.content.children[ 0 ] );
+	}
 
-        // Get the notice type.
-        const { type, message } = quarkSoftripAdmin;
+	/**
+	 * Display sync notice.
+	 *
+	 * @return {void}
+	 */
+	displaySyncNotice(): void {
+		// If notice object is not set, return.
+		if ( 'undefined' === typeof quarkSoftripAdmin || 'object' !== typeof quarkSoftripAdmin ) {
+			// Bail out.
+			return;
+		}
 
-        // If notice type or message is not set, return.
-        if ( undefined === type || undefined === message ) {
-            return;
-        }
+		// Get the notice type.
+		const { type, message } = quarkSoftripAdmin;
 
-        // Dispatch.
-        dispatch(noticeStore).createNotice(
-            type,
-            message,
-            {
-                isDismissible: true,
-            }
-        );
-    }
+		// If notice type or message is not set, return.
+		if ( undefined === type || undefined === message ) {
+			// Bail out.
+			return;
+		}
+
+		// Dispatch.
+		dispatch( noticeStore ).createNotice(
+			type,
+			message,
+			{
+				isDismissible: true,
+			}
+		);
+	}
 }

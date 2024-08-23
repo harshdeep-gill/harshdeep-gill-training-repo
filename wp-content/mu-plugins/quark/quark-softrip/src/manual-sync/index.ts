@@ -1,7 +1,7 @@
 /**
  * Manual Sync entrypoint.
  *
- * @package quark-softrip
+ * @package
  */
 
 /**
