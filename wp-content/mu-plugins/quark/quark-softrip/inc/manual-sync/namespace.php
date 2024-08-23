@@ -17,6 +17,21 @@ use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
 use const Quark\Expeditions\POST_TYPE as EXPEDITION_POST_TYPE;
 
 /**
+ * Bootstrap.
+ *
+ * @return void
+ */
+function bootstrap(): void {
+	if ( is_admin() ) {
+		add_action( 'admin_bar_menu', __NAMESPACE__ . '\\create_admin_bar_menus', 100 );
+		add_action( 'admin_footer', __NAMESPACE__ . '\\admin_footer_actions' );
+		add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\\enqueue_admin_scripts' );
+		add_action( 'admin_action_sync', __NAMESPACE__ . '\\manually_synchronize' );
+		add_action( 'admin_notices', __NAMESPACE__ . '\\show_sync_admin_notice' );
+	}
+}
+
+/**
  * Create menus in admin bar for Softrip sync.
  * This is applicable for itinerary and departure as these have classic editor.
  *
