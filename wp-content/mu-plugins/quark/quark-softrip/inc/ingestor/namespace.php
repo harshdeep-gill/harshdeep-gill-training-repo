@@ -85,7 +85,7 @@ function get_all_data(): array {
 	$args = [
 		'post_type'              => EXPEDITION_POST_TYPE,
 		'posts_per_page'         => -1,
-		'post_status'            => 'publish',
+		'post_status'            => [ 'publish', 'draft' ],
 		'fields'                 => 'ids',
 		'update_post_meta_cache' => false,
 		'update_post_term_cache' => false,
@@ -126,6 +126,7 @@ function get_all_data(): array {
  * @return array{}|array{
  *     id: int,
  *     name: string,
+ *     published: bool,
  *     description: string,
  *     images: array{}|array<int,
  *       array{
@@ -175,6 +176,7 @@ function get_expedition_data( int $expedition_post_id = 0 ): array {
 	$expedition_data = [
 		'id'           => $expedition_post_id,
 		'name'         => get_raw_text_from_html( $expedition_post['post']->post_title ),
+		'published'    => 'publish' === $expedition_post['post']->post_status,
 		'description'  => '', // @todo https://tuispecialist.atlassian.net/browse/QE-580 - Get description after parsing post content.
 		'images'       => [], // @todo https://tuispecialist.atlassian.net/browse/QE-580 - Get images after parsing post content for hero-slider block.
 		'destinations' => [],
@@ -281,6 +283,7 @@ function get_destination_terms( int $expedition_post_id = 0 ): array {
  *     id: int,
  *     packageId: string,
  *     name: string,
+ *     published: bool,
  *     startLocation: string,
  *     endLocation: string,
  *     departures: mixed[],
@@ -314,14 +317,6 @@ function get_itineraries( int $expedition_post_id = 0 ): array {
 	// Validate itineraries.
 	$itinerary_post_ids = array_map( 'absint', $expedition_post['post_meta']['related_itineraries'] );
 
-	// Filter itineraries.
-	$itinerary_post_ids = array_filter(
-		$itinerary_post_ids,
-		function ( $itinerary_id ) {
-			return get_post_status( $itinerary_id ) === 'publish';
-		}
-	);
-
 	// Loop through each itinerary.
 	foreach ( $itinerary_post_ids as $itinerary_post_id ) {
 		// Get itinerary post.
@@ -329,6 +324,11 @@ function get_itineraries( int $expedition_post_id = 0 ): array {
 
 		// Check for post.
 		if ( empty( $itinerary_post['post'] ) || ! $itinerary_post['post'] instanceof WP_Post ) {
+			continue;
+		}
+
+		// Check for published or draft.
+		if ( ! in_array( $itinerary_post['post']->post_status, [ 'publish', 'draft' ], true ) ) {
 			continue;
 		}
 
@@ -350,6 +350,7 @@ function get_itineraries( int $expedition_post_id = 0 ): array {
 			'id'            => $itinerary_post_id,
 			'packageId'     => $softrip_package_code,
 			'name'          => get_raw_text_from_html( $itinerary_post['post']->post_title ),
+			'published'     => 'publish' === $itinerary_post['post']->post_status,
 			'startLocation' => '',
 			'endLocation'   => '',
 			'departures'    => [],
@@ -398,6 +399,7 @@ function get_itineraries( int $expedition_post_id = 0 ): array {
  *   array{
  *    id: string,
  *    name: string,
+ *    published: bool,
  *    startDate: string,
  *    endDate: string,
  *    durationInDays: int,
@@ -429,7 +431,7 @@ function get_departures_data( int $expedition_post_id = 0, int $itinerary_post_i
 		[
 			'post_parent'            => $itinerary_post_id,
 			'post_type'              => DEPARTURE_POST_TYPE,
-			'post_status'            => 'publish',
+			'post_status'            => [ 'publish', 'draft' ],
 			'posts_per_page'         => -1,
 			'fields'                 => 'ids',
 			'orderby'                => 'ID',
@@ -464,6 +466,7 @@ function get_departures_data( int $expedition_post_id = 0, int $itinerary_post_i
 		$departure_data = [
 			'id'               => $softrip_id,
 			'name'             => get_raw_text_from_html( $departure_post['post']->post_title ),
+			'published'        => 'publish' === $departure_post['post']->post_status,
 			'startDate'        => $departure_post['post_meta']['start_date'] ?? '',
 			'endDate'          => $departure_post['post_meta']['end_date'] ?? '',
 			'durationInDays'   => absint( $departure_post['post_meta']['duration'] ?? '' ),
