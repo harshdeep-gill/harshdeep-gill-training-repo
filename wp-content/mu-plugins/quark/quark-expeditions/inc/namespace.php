@@ -115,7 +115,310 @@ function register_expedition_post_type(): void {
 			'slug'       => 'expeditions',
 			'with_front' => false,
 		],
-		'template'            => [],
+		'template'            => [
+			[
+				'quark/expedition-hero',
+				[],
+			],
+			[
+				'quark/secondary-navigation',
+				[],
+				[
+					[
+						'quark/secondary-navigation-menu',
+						[],
+						[
+							[
+								'quark/secondary-navigation-item',
+								[
+									'title' => 'Overview',
+									'url'   => [
+										'url'  => 'overview',
+										'text' => 'Overview',
+									],
+								],
+							],
+							[
+								'quark/secondary-navigation-item',
+								[
+									'title' => 'Itineraries',
+									'url'   => [
+										'url'  => 'itineraries',
+										'text' => 'Itineraries',
+									],
+								],
+							],
+							[
+								'quark/secondary-navigation-item',
+								[
+									'title' => "What's Onboard",
+									'url'   => [
+										'url'  => 'life-onboard',
+										'text' => "What's Onboard",
+									],
+								],
+							],
+							[
+								'quark/secondary-navigation-item',
+								[
+									'title' => "What's Included",
+									'url'   => [
+										'url'  => 'whats-included',
+										'text' => "What's Included",
+									],
+								],
+							],
+							[
+								'quark/secondary-navigation-item',
+								[
+									'title' => 'Know Before You Go',
+									'url'   => [
+										'url'  => 'know-before-you-go',
+										'text' => 'Know Before You Go',
+									],
+								],
+							],
+						],
+					],
+					[
+						'quark/secondary-navigation-cta-buttons',
+						[],
+						[
+							[
+								'quark/buttons',
+								[],
+								[
+									[
+										'quark/button',
+										[
+											'btnText'   => 'View Departures',
+											'isSizeBig' => true,
+										],
+									],
+									[
+										'quark/button',
+										[
+											'btnText'         => 'Request a Quote',
+											'backgroundColor' => 'black',
+											'isSizeBig'       => true,
+										],
+									],
+								],
+							],
+						],
+					],
+				],
+			],
+			[
+				'quark/two-columns',
+				[
+					'hasBorder' => false,
+					'anchor'    => 'overview',
+				],
+				[
+					[
+						'quark/column',
+						[],
+						[
+							[
+								'core/heading',
+								[
+									'level'   => 2,
+									'content' => 'Expedition Overview',
+								],
+							],
+							[
+								'core/paragraph',
+								[],
+							],
+						],
+					],
+					[
+						'quark/column',
+						[],
+						[
+							[
+								'quark/highlights',
+								[
+									'title' => 'Highlights',
+									'info'  => 'Plus, add on adventure options, such as...',
+								],
+							],
+						],
+					],
+				],
+			],
+			[
+				'quark/section',
+				[
+					'title'          => 'Find Your Ideal Itinerary',
+					'titleAlignment' => 'left',
+					'headingLevel'   => '2',
+					'hasDescription' => true,
+					'anchor'         => 'itineraries',
+				],
+				[
+					[
+						'quark/itineraries',
+						[],
+					],
+				],
+			],
+			[
+				'quark/section',
+				[
+					'title'          => 'Your Life Onboard',
+					'titleAlignment' => 'left',
+					'headingLevel'   => '2',
+					'hasDescription' => true,
+					'anchor'         => 'life-onboard',
+				],
+				[
+					[
+						'quark/fancy-video',
+						[],
+					],
+				],
+			],
+			[
+				'quark/featured-media-accordions',
+				[],
+			],
+			[
+				'quark/ships',
+				[],
+			],
+			[
+				'quark/section',
+				[
+					'title'          => "What's Included",
+					'titleAlignment' => 'left',
+					'headingLevel'   => '2',
+					'hasDescription' => true,
+					'anchor'         => 'whats-included',
+				],
+				[
+					[
+						'quark/icon-info-grid',
+						[],
+					],
+				],
+			],
+			[
+				'quark/section',
+				[
+					'title'          => 'Included Activities',
+					'titleAlignment' => 'left',
+					'headingLevel'   => '2',
+				],
+				[
+					[
+						'quark/included-activities',
+						[],
+					],
+				],
+			],
+			[
+				'quark/section',
+				[
+					'title'          => 'Upgrade Your Expedition',
+					'titleAlignment' => 'left',
+					'headingLevel'   => '2',
+					'hasDescription' => true,
+					'description'    => 'Find out what add-on options are available for your expedition.',
+				],
+				[
+					[
+						'quark/section',
+						[
+							'title'          => 'Adventure Options',
+							'titleAlignment' => 'left',
+							'headingLevel'   => '3',
+							'hasDescription' => true,
+							'description'    => 'These can be booked in advance at an extra cost. Activities vary by itinerary, destination and are weather permitting.',
+						],
+						[
+							[
+								'quark/included-activities',
+								[
+									'showDescription' => false,
+								],
+							],
+						],
+					],
+					[
+						'quark/section',
+						[
+							'title'          => 'Trip Extensions',
+							'titleAlignment' => 'left',
+							'headingLevel'   => '3',
+							'hasDescription' => true,
+						],
+						[
+							[
+								'quark/trip-extensions',
+								[],
+							],
+						],
+					],
+					[
+						'quark/section',
+						[
+							'title'          => 'Possible Excursions',
+							'titleAlignment' => 'left',
+							'headingLevel'   => '3',
+							'hasDescription' => true,
+						],
+						[
+							[
+								'quark/excursion-accordion',
+								[],
+							],
+						],
+					],
+				],
+			],
+			[
+				'quark/book-departures-expeditions',
+				[],
+			],
+			[
+				'quark/cta-banner',
+				[],
+			],
+			[
+				'quark/section',
+				[
+					'title'          => 'Know Before You Go',
+					'titleAlignment' => 'left',
+					'headingLevel'   => '2',
+					'anchor'         => 'know-before-you-go',
+				],
+				[
+					[
+						'quark/accordion',
+						[],
+					],
+				],
+			],
+			[
+				'quark/section',
+				[
+					'title'          => 'Your Expedition Team',
+					'titleAlignment' => 'left',
+					'headingLevel'   => '2',
+				],
+				[
+					[
+						'quark/staff-members',
+						[
+							'selection'  => 'manual',
+							'isCarousel' => true,
+						],
+					],
+				],
+			],
+		],
 	];
 
 	// Register post type.
