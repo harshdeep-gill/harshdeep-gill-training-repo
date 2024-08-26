@@ -41,6 +41,12 @@ export default class DatesRatesFilters extends HTMLElement {
 		// Events.
 		this.filterButton?.addEventListener( 'click', debounce( this.openDrawer.bind( this ), 10 ), { passive: true } );
 		this.clearFilterButton?.addEventListener( 'click', this.clearAllCheckboxes.bind( this ) );
+
+		// Event for accordion items.
+		this.drawerAccordionItems.forEach( ( ( item: TPAccordionItemElement ) => {
+			// Close items.
+			item.addEventListener( 'click', this.handleAccordionItems.bind( this ) );
+		} ) );
 	}
 
 	/**
@@ -62,11 +68,8 @@ export default class DatesRatesFilters extends HTMLElement {
 			return;
 		}
 
-		// Open the accordion item.
-		setTimeout( () => {
-			// Set attribute open to yes.
-			accordionItem.setAttribute( 'open', 'yes' );
-		}, 600 );
+		// Set attribute open to yes.
+		accordionItem.setAttribute( 'open', 'yes' );
 	}
 
 	/**
@@ -82,8 +85,24 @@ export default class DatesRatesFilters extends HTMLElement {
 		// For each item.
 		this.drawerAccordionItems.forEach( ( ( item: TPAccordionItemElement ) => {
 			// Close items.
-			item.close();
+			item.removeAttribute( 'open' );
 		} ) );
+	}
+
+	/**
+	 * Handle accordion inside drawer.
+	 *
+	 * @param {Event} event
+	 */
+	handleAccordionItems( event: any ) {
+		// Set current item.
+		const currentItem = event.currentTarget;
+
+		// Close all accordion items.
+		this.closeAllAccordionItems();
+
+		// Open the current item.
+		currentItem.setAttribute( 'open', 'yes' );
 	}
 
 	/**
