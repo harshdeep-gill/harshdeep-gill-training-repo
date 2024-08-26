@@ -58,6 +58,12 @@ function bootstrap(): void {
 
 	// Register admin controls for manual sync.
 	ManualSync\bootstrap();
+
+	// Register cleanup.
+	require_once __DIR__ . '/cleanup/namespace.php';
+
+	// Bootstrap cleanup.
+	Cleanup\bootstrap();
 }
 
 /**
