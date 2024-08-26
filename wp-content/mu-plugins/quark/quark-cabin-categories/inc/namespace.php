@@ -976,19 +976,19 @@ function get_availability_status_description( string $status = '' ): string {
 
 		// Available.
 		case AVAILABLE_STATUS:
-			return __( 'Available', 'quark' );
+			return __( 'Available', 'qrk' );
 
 		// Unavailable.
 		case UNAVAILABLE_STATUS:
-			return __( 'Unavailable', 'quark' );
+			return __( 'Unavailable', 'qrk' );
 
 		// Sold out.
 		case SOLD_OUT_STATUS:
-			return __( 'Sold Out', 'quark' );
+			return __( 'Sold Out', 'qrk' );
 
 		// On request.
 		case ON_REQUEST_STATUS:
-			return __( 'Please Call', 'quark' );
+			return __( 'Please Call', 'qrk' );
 
 		// Default.
 		default:
