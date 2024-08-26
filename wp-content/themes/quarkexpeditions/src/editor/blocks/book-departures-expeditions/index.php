@@ -72,9 +72,10 @@ function render( array $attributes = [], string $content = '' ): string {
 	return quark_get_component(
 		COMPONENT,
 		[
-			'cards'         => $cards_data,
-			'results_count' => $search_results['result_count'],
-			'expedition_id' => $expedition_id,
+			'cards'           => $cards_data,
+			'results_count'   => $search_results['result_count'],
+			'remaining_count' => $search_results['remaining_count'],
+			'expedition_id'   => $expedition_id,
 		]
 	);
 }
