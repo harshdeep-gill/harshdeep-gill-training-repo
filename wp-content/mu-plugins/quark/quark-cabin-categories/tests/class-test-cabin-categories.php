@@ -16,7 +16,7 @@ use function Quark\CabinCategories\get_availability_status_description;
 use function Quark\CabinCategories\get_cabin_availability_status;
 use function Quark\CabinCategories\get_cabin_categories_data;
 use function Quark\CabinCategories\get_cabin_details_by_departure;
-use function Quark\CabinCategories\get_cabin_spaces_available;
+use function Quark\CabinCategories\get_available_cabin_spaces;
 use function Quark\Softrip\do_sync;
 use function Quark\Softrip\Occupancies\delete_occupancy_by_id;
 use function Quark\Softrip\Occupancies\get_cabin_category_post_ids_by_departure;
@@ -484,19 +484,19 @@ class Test_Cabin_Categories extends Softrip_TestCase {
 	/**
 	 * Test get cabin spaces available.
 	 *
-	 * @covers \Quark\CabinCategories\get_cabin_spaces_available()
+	 * @covers \Quark\CabinCategories\get_available_cabin_spaces()
 	 *
 	 * @return void
 	 */
-	public function test_get_cabin_spaces_available(): void {
+	public function test_get_available_cabin_spaces(): void {
 		// Test with no args.
 		$expected = 0;
-		$actual   = get_cabin_spaces_available();
+		$actual   = get_available_cabin_spaces();
 		$this->assertSame( $expected, $actual );
 
 		// Test with invalid args.
 		$expected = 0;
-		$actual   = get_cabin_spaces_available( 9999, 99999 );
+		$actual   = get_available_cabin_spaces( 9999, 99999 );
 		$this->assertSame( $expected, $actual );
 
 		// Setup mock response.
@@ -551,10 +551,10 @@ class Test_Cabin_Categories extends Softrip_TestCase {
 		$cabin_post_id4 = $cabin_post_ids[3];
 
 		// Get cabin spaces available for each cabin.
-		$spaces_available1 = get_cabin_spaces_available( $departure_post_id1, $cabin_post_id1 );
-		$spaces_available2 = get_cabin_spaces_available( $departure_post_id1, $cabin_post_id2 );
-		$spaces_available3 = get_cabin_spaces_available( $departure_post_id1, $cabin_post_id3 );
-		$spaces_available4 = get_cabin_spaces_available( $departure_post_id1, $cabin_post_id4 );
+		$spaces_available1 = get_available_cabin_spaces( $departure_post_id1, $cabin_post_id1 );
+		$spaces_available2 = get_available_cabin_spaces( $departure_post_id1, $cabin_post_id2 );
+		$spaces_available3 = get_available_cabin_spaces( $departure_post_id1, $cabin_post_id3 );
+		$spaces_available4 = get_available_cabin_spaces( $departure_post_id1, $cabin_post_id4 );
 
 		// Assert that all cabins have spaces available.
 		$this->assertSame( 5, $spaces_available1 );

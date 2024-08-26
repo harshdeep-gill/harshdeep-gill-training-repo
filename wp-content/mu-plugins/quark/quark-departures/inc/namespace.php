@@ -36,7 +36,7 @@ use function Quark\Softrip\AdventureOptions\get_adventure_option_by_departure_po
 use function Quark\AdventureOptions\get as get_adventure_option_post_data;
 use function Quark\CabinCategories\get_availability_status_description;
 use function Quark\CabinCategories\get_cabin_availability_status;
-use function Quark\CabinCategories\get_cabin_spaces_available;
+use function Quark\CabinCategories\get_available_cabin_spaces;
 
 use const Quark\StaffMembers\SEASON_TAXONOMY;
 use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
@@ -1067,7 +1067,7 @@ function get_dates_rates_card_data( int $departure_id = 0, string $currency = 'U
 		}
 
 		// Get availability status.
-		$cabin_spaces_available   = get_cabin_spaces_available( $departure_id, $cabin_id );
+		$cabin_spaces_available   = get_available_cabin_spaces( $departure_id, $cabin_id );
 		$availability_status      = get_cabin_availability_status( $departure_id, $cabin_id );
 		$availability_description = get_availability_status_description( $availability_status );
 

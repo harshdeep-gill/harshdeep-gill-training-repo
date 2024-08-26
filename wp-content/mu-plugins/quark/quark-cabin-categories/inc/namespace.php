@@ -538,7 +538,7 @@ function get_cabin_details_by_departure( int $departure_post_id = 0, string $cur
 		$formatted_price['original_price']   = format_price( $lowest_price['original'], $currency );
 
 		// Get availability status.
-		$cabin_spaces_available   = get_cabin_spaces_available( $departure_post_id, $cabin_category_post_id );
+		$cabin_spaces_available   = get_available_cabin_spaces( $departure_post_id, $cabin_category_post_id );
 		$availability_status      = get_cabin_availability_status( $departure_post_id, $cabin_category_post_id );
 		$availability_description = get_availability_status_description( $availability_status );
 
@@ -882,7 +882,7 @@ function get_cabin_availability_status( int $departure_post_id = 0, int $cabin_c
 	}
 
 	// Get cabin spaces available.
-	$spaces_available = get_cabin_spaces_available( $departure_post_id, $cabin_category_post_id );
+	$spaces_available = get_available_cabin_spaces( $departure_post_id, $cabin_category_post_id );
 
 	// Check if spaces available.
 	if ( $spaces_available > 0 ) {
@@ -934,7 +934,7 @@ function get_cabin_availability_status( int $departure_post_id = 0, int $cabin_c
  *
  * @return int
  */
-function get_cabin_spaces_available( int $departure_post_id = 0, int $cabin_category_post_id = 0 ): int {
+function get_available_cabin_spaces( int $departure_post_id = 0, int $cabin_category_post_id = 0 ): int {
 	// Bail if empty.
 	if ( empty( $departure_post_id ) || empty( $cabin_category_post_id ) ) {
 		return 0;
