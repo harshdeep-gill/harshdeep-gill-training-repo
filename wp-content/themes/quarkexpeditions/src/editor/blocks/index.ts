@@ -71,6 +71,7 @@ import * as shipSpecifications from './ship-specifications';
 import * as expeditionHero from './expedition-hero';
 import * as specifications from './specifications';
 import * as templateTitle from './template-title';
+import * as featuredImage from './featured-image';
 
 /**
  * Add blocks.
@@ -139,6 +140,7 @@ const blocks = [
 	expeditionHero,
 	specifications,
 	templateTitle,
+	featuredImage,
 ];
 
 // Register blocks for ships.

@@ -1,13 +1,13 @@
 <?php
 /**
- * Block Name: Post Featured Image.
+ * Block Name: Featured Image.
  *
  * @package quark
  */
 
 namespace Quark\Theme\Blocks\PostFeaturedImage;
 
-const COMPONENT = 'parts.image';
+const COMPONENT = 'featured-image';
 
 /**
  * Bootstrap this block.
@@ -15,12 +15,9 @@ const COMPONENT = 'parts.image';
  * @return void
  */
 function bootstrap(): void {
-	// Unregister the core block.
-	unregister_block_type( 'core/post-featured-image' );
-
 	// Register the block.
 	register_block_type_from_metadata(
-		ABSPATH . '/wp-includes/blocks/post-featured-image',
+		__DIR__,
 		[
 			'render_callback' => __NAMESPACE__ . '\\render',
 		]
@@ -47,8 +44,6 @@ function render( array $attributes = [], string $content = '' ): string {
 	// Build component attributes.
 	$attributes = [
 		'image_id' => $image_id,
-		'link'     => $attributes['isLink'] ? get_permalink() : '',
-		'target'   => $attributes['linkTarget'],
 	];
 
 	// Return rendered component.
