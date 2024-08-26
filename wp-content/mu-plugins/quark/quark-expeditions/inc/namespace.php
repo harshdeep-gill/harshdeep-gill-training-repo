@@ -102,6 +102,7 @@ function register_expedition_post_type(): void {
 			'title',
 			'editor',
 			'revisions',
+			'thumbnail',
 		],
 		'show_ui'             => true,
 		'show_in_menu'        => true,
