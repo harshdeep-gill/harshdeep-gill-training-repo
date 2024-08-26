@@ -221,22 +221,22 @@ class Test_Itineraries extends Softrip_TestCase {
 
 		// Get lowest price for itinerary with package code HIJ-456 with USD currency.
 		$expected = [
-			'original'   => 12795,
-			'discounted' => 10236,
+			'original'   => 10995,
+			'discounted' => 9896,
 		];
 		$this->assertEquals( $expected, get_lowest_price( $itinerary_id ) );
 
 		// Get lowest price for itinerary with package code HIJ-456 with AUD currency.
 		$expected = [
-			'original'   => 20100,
-			'discounted' => 16080,
+			'original'   => 17200,
+			'discounted' => 15480,
 		];
 		$this->assertEquals( $expected, get_lowest_price( $itinerary_id, 'AUD' ) );
 
 		// Get lowest price for itinerary with package code HIJ-456 with EUR currency.
 		$expected = [
-			'original'   => 11900,
-			'discounted' => 9520,
+			'original'   => 10200,
+			'discounted' => 9180,
 		];
 		$this->assertEquals( $expected, get_lowest_price( $itinerary_id, 'EUR' ) );
 

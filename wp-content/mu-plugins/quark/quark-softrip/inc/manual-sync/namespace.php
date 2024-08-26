@@ -70,7 +70,7 @@ function create_admin_bar_menus( ?WP_Admin_Bar $admin_bar = null ): void {
 			'id'     => sprintf( 'sync-%s', $post_type ),
 			'parent' => null,
 			'group'  => null,
-			'title'  => '<span class="ab-icon dashicons-update-alt"></span>' . esc_html__( 'Sync', 'quark' ),
+			'title'  => '<span class="ab-icon dashicons-update-alt"></span>' . esc_html__( 'Sync', 'qrk' ),
 			'href'   => get_sync_admin_url( absint( get_the_ID() ) ),
 		]
 	);
@@ -140,7 +140,7 @@ function admin_footer_actions(): void {
 	<template id="quark-softrip-admin-bar-sync-button">
 		<a href="<?php echo esc_url( get_sync_admin_url( absint( get_the_ID() ) ) ); ?>" class="components-button is-secondary is-compact">
 			<span class="ab-icon dashicons-before dashicons-update">
-				<?php esc_html_e( 'Sync', 'quark' ); ?>
+				<?php esc_html_e( 'Sync', 'qrk' ); ?>
 			</span>
 		</a>
 	</template>
@@ -245,7 +245,7 @@ function enqueue_admin_scripts(): void {
 
 	// Prepare localization data.
 	$l10n_data = [
-		'message' => $is_success ? __( 'Successfully synchronized', 'quark' ) : __( 'Failed to synchronize', 'quark' ),
+		'message' => $is_success ? __( 'Successfully synchronized', 'qrk' ) : __( 'Failed to synchronize', 'qrk' ),
 		'type'    => $is_success ? 'success' : 'error',
 	];
 
@@ -394,14 +394,14 @@ function show_sync_admin_notice(): void {
 		// translators: %s: Post title.
 		__(
 			'Successfully synchronized %s',
-			'quark'
+			'qrk'
 		),
 		$post_title
 	) : sprintf(
 		// translators: %s: Post title.
 		__(
 			'Failed to synchronize %s',
-			'quark'
+			'qrk'
 		),
 		$post_title
 	);
