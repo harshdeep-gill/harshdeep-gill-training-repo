@@ -12,6 +12,7 @@ use WP_CLI;
 use WP_Query;
 
 use function Quark\Departures\bust_post_cache as bust_departure_post_cache;
+use function Quark\Softrip\get_initiated_via;
 use function Quark\Softrip\Occupancies\delete_occupancy_by_id;
 use function Quark\Softrip\Occupancies\get_occupancies_by_departure;
 use function Quark\Softrip\OccupancyPromotions\delete_occupancy_promotions_by_occupancy_id;
@@ -119,6 +120,9 @@ function do_cleanup( array $departure_post_ids = [] ): void {
 		$progress = new Bar( 'Cleaning up departures', $total_posts, 100 );
 	}
 
+	// Initiated via.
+	$initiated_via = get_initiated_via();
+
 	// Counter for successful.
 	$success = 0;
 
@@ -127,6 +131,7 @@ function do_cleanup( array $departure_post_ids = [] ): void {
 		'quark_softrip_cleanup_initiated',
 		[
 			'total' => $total_posts,
+			'via'   => $initiated_via,
 		]
 	);
 
@@ -139,6 +144,7 @@ function do_cleanup( array $departure_post_ids = [] ): void {
 				'total'   => $total_posts,
 				'success' => 0,
 				'failed'  => 0,
+				'via'     => $initiated_via,
 			]
 		);
 
@@ -219,6 +225,7 @@ function do_cleanup( array $departure_post_ids = [] ): void {
 				[
 					'departure_post_id' => $departure_post_id,
 					'message'           => 'All occupancies are not deleted.',
+					'via'               => $initiated_via,
 				]
 			);
 
@@ -243,6 +250,7 @@ function do_cleanup( array $departure_post_ids = [] ): void {
 				[
 					'departure_post_id' => $departure_post_id,
 					'message'           => 'Departure post is not deleted, but it\'s all occupancies are deleted.',
+					'via'               => $initiated_via,
 				]
 			);
 
@@ -268,6 +276,7 @@ function do_cleanup( array $departure_post_ids = [] ): void {
 		[
 			'total'   => $total_posts,
 			'success' => $success,
+			'via'     => $initiated_via,
 		]
 	);
 

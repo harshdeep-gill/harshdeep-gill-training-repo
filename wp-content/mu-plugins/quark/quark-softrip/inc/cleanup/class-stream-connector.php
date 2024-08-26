@@ -62,9 +62,9 @@ class Stream_Connector extends Connector {
 	public function get_action_labels(): array {
 		// Return labels.
 		return [
-			'initiated' => __( 'Cleanup Initiated', 'qrk' ),
-			'completed' => __( 'Cleanup Completed', 'qrk' ),
-			'failed'    => __( 'Cleanup Failed', 'qrk' ),
+			'cleanup_initiated' => __( 'Cleanup Initiated', 'qrk' ),
+			'cleanup_completed' => __( 'Cleanup Completed', 'qrk' ),
+			'cleanup_failed'    => __( 'Cleanup Failed', 'qrk' ),
 		];
 	}
 
