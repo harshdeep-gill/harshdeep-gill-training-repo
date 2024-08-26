@@ -16,10 +16,6 @@
 			"type": "string",
 			"default": "auto"
 		},
-		"destinationIDs": {
-			"type": "array",
-			"default": []
-		},
 		"termIDs": {
 			"type": "array",
 			"default": []

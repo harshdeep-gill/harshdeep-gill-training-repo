@@ -10,10 +10,6 @@ import {
 	RangeControl,
 } from '@wordpress/components';
 import { InspectorControls } from '@wordpress/block-editor';
-import { store as editorStore } from '@wordpress/editor';
-import {
-	useSelect,
-} from '@wordpress/data';
 
 // @ts-ignore No Module Declaration.
 import ServerSideRender from '@wordpress/server-side-render';
@@ -52,18 +48,6 @@ export const { name }: { name: string } = metadata;
  * @param {Function} props.setAttributes Set block attributes.
  */
 export default function Edit( { className, attributes, setAttributes }: BlockEditAttributes ): JSX.Element {
-	// If automatic destination is selected, fetch the destination from the editor store.
-	if ( 'auto' === attributes.selectionType ) {
-		// Get the destination IDs.
-		const destinationIDs = useSelect(
-			( select: any ) => select( editorStore )?.getEditedPostAttribute( 'qrk_destination' ),
-			[],
-		);
-
-		// Set the destination IDs.
-		setAttributes( { destinationIDs } );
-	}
-
 	// Return the markup.
 	return (
 		<>
@@ -82,7 +66,7 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 					/>
 					{
 						// If automatic and no destination is selected, show a tooltip.
-						'auto' === attributes.selectionType && 0 === attributes.destinationIDs.length &&
+						'auto' === attributes.selectionType &&
 						<Tooltip>
 							<p>{ __( 'Please select Destination(s) for this block to display adventure options.', 'qrk' ) }</p>
 						</Tooltip>

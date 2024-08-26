@@ -62,9 +62,6 @@ function render( array $attributes = [] ): string {
 		'order'                  => 'DESC',
 	];
 
-	// Get the terms.
-	$terms = get_the_terms( $current_post_id, ADVENTURE_OPTION_CATEGORY );
-
 	// Initialize tax query.
 	$tax_query = [
 		'field'            => 'term_id',
@@ -73,33 +70,39 @@ function render( array $attributes = [] ): string {
 	];
 
 	// Check if terms were selected in the editor.
-	if ( ! empty( $attributes['termIDs'] ) && is_array( $attributes['termIDs'] ) && 'byCategory' === $attributes['selectionType'] ) {
-		// Set adventure option category.
-		$tax_query['taxonomy'] = ADVENTURE_OPTION_CATEGORY;
-		$tax_query['terms']    = $attributes['termIDs'];
-
-		// Set tax query.
-		$args['tax_query'] = [ $tax_query ];
-	} elseif ( ! empty( $attributes['destinationIDs'] ) && is_array( $attributes['destinationIDs'] ) && 'auto' === $attributes['selectionType'] ) {
+	if ( 'auto' === $attributes['selectionType'] ) {
 		// Set destination taxonomy.
 		$tax_query['taxonomy'] = DESTINATION_TAXONOMY;
-		$tax_query['terms']    = $attributes['destinationIDs'];
+		$terms                 = get_the_terms( $current_post_id, DESTINATION_TAXONOMY );
 
-		// Set the args.
-		$args['tax_query']      = [ $tax_query ];
-		$args['posts_per_page'] = $attributes['total'] + 1;
-	} elseif ( ! empty( $attributes['ids'] ) && is_array( $attributes['ids'] ) && 'manual' === $attributes['selectionType'] ) {
-		// Set post IDs.
-		$args['post__in']       = $attributes['ids'];
-		$args['orderby']        = 'post__in';
-		$args['posts_per_page'] = count( $attributes['ids'] );
-	} elseif ( ! empty( $terms ) && ! $terms instanceof WP_Error ) {
+		// Check if terms are available.
+		if ( empty( $terms ) || $terms instanceof WP_Error ) {
+			return '';
+		}
+
+		// Set terms.
 		$tax_query['terms'] = array_map(
 			function ( $term ) {
 				return absint( $term->term_id );
 			},
 			$terms
 		);
+
+		// Set the args.
+		$args['tax_query']      = [ $tax_query ];
+		$args['posts_per_page'] = $attributes['total'] + 1;
+	} elseif ( ! empty( $attributes['termIDs'] ) && is_array( $attributes['termIDs'] ) && 'byCategory' === $attributes['selectionType'] ) {
+		// Set adventure option category.
+		$tax_query['taxonomy'] = ADVENTURE_OPTION_CATEGORY;
+		$tax_query['terms']    = $attributes['termIDs'];
+
+		// Set tax query.
+		$args['tax_query'] = [ $tax_query ];
+	} elseif ( ! empty( $attributes['ids'] ) && is_array( $attributes['ids'] ) && 'manual' === $attributes['selectionType'] ) {
+		// Set post IDs.
+		$args['post__in']       = $attributes['ids'];
+		$args['orderby']        = 'post__in';
+		$args['posts_per_page'] = count( $attributes['ids'] );
 	} else {
 		// Bail.
 		return '';
