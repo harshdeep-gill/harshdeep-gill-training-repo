@@ -6,6 +6,7 @@
 	overflow-x: auto;
 	scroll-snap-type: x mandatory;
 	scroll-snap-stop: always;
+	padding-block-end: var(--spacing-1);
 
 	&__card {
 		padding: var(--spacing-3);
@@ -17,6 +18,9 @@
 		min-width: 290px;
 		width: 100%;
 		scroll-snap-align: start;
+		box-shadow: var(--shadow-1);
+
+		@include transition(box-shadow);
 
 		@media screen and (min-width: grid-size(sm)) {
 			min-width: 312px;
@@ -24,6 +28,10 @@
 
 		@media screen and (min-width: grid-size(md)) {
 			min-width: 352px;
+		}
+
+		&:hover {
+			box-shadow: var(--shadow-3);
 		}
 	}
 
