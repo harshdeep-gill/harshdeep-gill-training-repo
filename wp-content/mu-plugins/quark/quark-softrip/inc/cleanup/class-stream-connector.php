@@ -76,13 +76,27 @@ class Stream_Connector extends Connector {
 	 * @return void
 	 */
 	public function callback_quark_softrip_cleanup_initiated( array $data = [] ): void {
+		// Validate data.
+		if ( empty( $data ) || empty( $data['via'] ) || ! isset( $data['total'] ) ) {
+			return;
+		}
+
+		// Prepare message.
+		$message = sprintf(
+			// translators: %1$s: Via, %2$d: Total, %3$s: Departures.
+			__( 'Softrip cleanup initiated by %1$s for %2$d %3$s.', 'qrk' ),
+			strval( $data['via'] ),
+			absint( $data['total'] ),
+			_n( 'departure', 'departures', absint( $data['total'] ), 'qrk' )
+		);
+
 		// Log the action.
 		$this->log(
-			'Cleanup initiated.',
+			$message,
 			$data,
-			0,
-			'quark_softrip_cleanup_initiated',
-			'softrip_cleanup'
+			absint( wp_unique_id() ),
+			'softrip_cleanup',
+			'cleanup_initiated'
 		);
 	}
 
@@ -94,13 +108,28 @@ class Stream_Connector extends Connector {
 	 * @return void
 	 */
 	public function callback_quark_softrip_cleanup_completed( array $data = [] ): void {
+		// Validate data.
+		if ( empty( $data ) || empty( $data['via'] ) || ! isset( $data['success'] ) || ! isset( $data['total'] ) ) {
+			return;
+		}
+
+		// Prepare message.
+		$message = sprintf(
+			// translators: %1$s: Via, %2$d: Successful, %3$s: Departures, %4$d: Total.
+			__( 'Softrip cleanup completed by %1$s with %2$d successful %3$s out of %4$d.', 'qrk' ),
+			strval( $data['via'] ),
+			absint( $data['success'] ),
+			_n( 'departure', 'departures', absint( $data['success'] ), 'qrk' ),
+			absint( $data['total'] )
+		);
+
 		// Log the action.
 		$this->log(
-			'Cleanup completed.',
+			$message,
 			$data,
-			0,
-			'quark_softrip_cleanup_completed',
-			'softrip_cleanup'
+			absint( wp_unique_id() ),
+			'softrip_cleanup',
+			'cleanup_completed'
 		);
 	}
 
@@ -112,13 +141,27 @@ class Stream_Connector extends Connector {
 	 * @return void
 	 */
 	public function callback_quark_softrip_cleanup_failed( array $data = [] ): void {
+		// Validate data.
+		if ( empty( $data ) || empty( $data['via'] ) || empty( $data['departure_post_id'] ) || empty( $data['message'] ) ) {
+			return;
+		}
+
+		// Prepare message.
+		$message = sprintf(
+			// translators: %1$s: Via, %2$d: Departure ID, %3$s: Message.
+			__( 'Softrip cleanup failed by %1$s for departure %2$d with message: %3$s.', 'qrk' ),
+			strval( $data['via'] ),
+			absint( $data['departure_post_id'] ),
+			strval( $data['message'] )
+		);
+
 		// Log the action.
 		$this->log(
-			'Cleanup failed.',
+			$message,
 			$data,
-			0,
-			'quark_softrip_cleanup_failed',
-			'softrip_cleanup'
+			absint( wp_unique_id() ),
+			'softrip_cleanup',
+			'cleanup_failed'
 		);
 	}
 }

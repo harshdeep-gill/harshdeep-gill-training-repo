@@ -143,7 +143,6 @@ function do_cleanup( array $departure_post_ids = [] ): void {
 			[
 				'total'   => $total_posts,
 				'success' => 0,
-				'failed'  => 0,
 				'via'     => $initiated_via,
 			]
 		);
