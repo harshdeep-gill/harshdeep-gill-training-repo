@@ -922,8 +922,13 @@ function bust_card_data_cache_on_expedition_update( int $expedition_id = 0 ): vo
  *             is_pif: int,
  *         },
  *     },
- *     cabin_data: array<
- *         string, array<string, string|int>
+ *     cabin_data: array<string, array<string, string> | array{
+ *             name: string,
+ *             availability_status: string,
+ *             availability_description: string,
+ *             spaces_available: int,
+ *             brochure_price: string,
+ *          }
  *     >,
  * }
  */
