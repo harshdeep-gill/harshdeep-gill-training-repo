@@ -80,6 +80,7 @@ class Test_Ingestor extends WP_UnitTestCase {
 			[
 				'id'           => $expedition_post_id,
 				'name'         => get_raw_text_from_html( get_the_title( $expedition_post_id ) ),
+				'published'    => true,
 				'description'  => '', // @todo https://tuispecialist.atlassian.net/browse/QE-580 - Get description after parsing post content.
 				'images'       => [], // @todo https://tuispecialist.atlassian.net/browse/QE-580 - Get description after parsing post content.
 				'destinations' => [],
@@ -110,6 +111,7 @@ class Test_Ingestor extends WP_UnitTestCase {
 			[
 				'id'           => $expedition_post_id,
 				'name'         => get_raw_text_from_html( get_the_title( $expedition_post_id ) ),
+				'published'    => true,
 				'description'  => '', // @todo Get description after parsing post content.
 				'images'       => [], // @todo Get description after parsing post content.
 				'destinations' => [],
@@ -118,6 +120,7 @@ class Test_Ingestor extends WP_UnitTestCase {
 						'id'            => $itinerary_post_id,
 						'packageId'     => 'UNQ-123',
 						'name'          => get_raw_text_from_html( get_the_title( $itinerary_post_id ) ),
+						'published'     => true,
 						'startLocation' => '',
 						'endLocation'   => '',
 						'departures'    => [],
@@ -309,6 +312,7 @@ class Test_Ingestor extends WP_UnitTestCase {
 				'id'            => $itinerary_post_id1,
 				'packageId'     => 'UNQ-123',
 				'name'          => get_raw_text_from_html( get_the_title( $itinerary_post_id1 ) ),
+				'published'     => true,
 				'startLocation' => '',
 				'endLocation'   => '',
 				'departures'    => [],
@@ -346,6 +350,7 @@ class Test_Ingestor extends WP_UnitTestCase {
 				'id'            => $itinerary_post_id1,
 				'packageId'     => 'UNQ-123',
 				'name'          => get_raw_text_from_html( get_the_title( $itinerary_post_id1 ) ),
+				'published'     => true,
 				'startLocation' => $start_location_term_name,
 				'endLocation'   => $end_location_term_name,
 				'departures'    => [],
@@ -377,6 +382,7 @@ class Test_Ingestor extends WP_UnitTestCase {
 				'id'            => $itinerary_post_id1,
 				'packageId'     => 'UNQ-123',
 				'name'          => get_raw_text_from_html( get_the_title( $itinerary_post_id1 ) ),
+				'published'     => true,
 				'startLocation' => $start_location_term_name,
 				'endLocation'   => $end_location_term_name,
 				'departures'    => [],
@@ -385,6 +391,7 @@ class Test_Ingestor extends WP_UnitTestCase {
 				'id'            => $itinerary_post_id2,
 				'packageId'     => 'UNQ-456',
 				'name'          => get_raw_text_from_html( get_the_title( $itinerary_post_id2 ) ),
+				'published'     => true,
 				'startLocation' => '',
 				'endLocation'   => '',
 				'departures'    => [],
@@ -452,6 +459,7 @@ class Test_Ingestor extends WP_UnitTestCase {
 			[
 				'id'               => 'UNQ-123:2025-01-01',
 				'name'             => get_raw_text_from_html( get_the_title( $departure_post_id1 ) ),
+				'published'        => true,
 				'startDate'        => '',
 				'endDate'          => '',
 				'durationInDays'   => 0,
@@ -508,6 +516,7 @@ class Test_Ingestor extends WP_UnitTestCase {
 			[
 				'id'               => 'UNQ-123:2025-01-01',
 				'name'             => get_raw_text_from_html( get_the_title( $departure_post_id1 ) ),
+				'published'        => true,
 				'startDate'        => '2025-01-01',
 				'endDate'          => '2025-01-02',
 				'durationInDays'   => 2,
@@ -576,6 +585,7 @@ class Test_Ingestor extends WP_UnitTestCase {
 			[
 				'id'               => 'UNQ-456:2025-01-01',
 				'name'             => get_raw_text_from_html( get_the_title( $departure_post_id2 ) ),
+				'published'        => true,
 				'startDate'        => '2025-01-01',
 				'endDate'          => '2025-01-02',
 				'durationInDays'   => 2,
@@ -594,6 +604,7 @@ class Test_Ingestor extends WP_UnitTestCase {
 			[
 				'id'               => 'UNQ-123:2025-01-01',
 				'name'             => get_raw_text_from_html( get_the_title( $departure_post_id1 ) ),
+				'published'        => true,
 				'startDate'        => '2025-01-01',
 				'endDate'          => '2025-01-02',
 				'durationInDays'   => 2,
@@ -1851,12 +1862,22 @@ class Test_Ingestor extends WP_UnitTestCase {
 		);
 		$this->assertIsInt( $expedition_post_id2 );
 
-		// Test with expedition post - only first one should be returned.
+		// Test with expedition posts - should also include draft one.
 		$actual   = get_all_data();
 		$expected = [
 			[
+				'id'           => $expedition_post_id2,
+				'name'         => get_raw_text_from_html( get_the_title( $expedition_post_id2 ) ),
+				'published'    => false,
+				'description'  => '', // @todo https://tuispecialist.atlassian.net/browse/QE-580
+				'images'       => [],
+				'destinations' => [],
+				'itineraries'  => [],
+			],
+			[
 				'id'           => $expedition_post_id,
 				'name'         => get_raw_text_from_html( get_the_title( $expedition_post_id ) ),
+				'published'    => true,
 				'description'  => '', // @todo https://tuispecialist.atlassian.net/browse/QE-580 - Get description after parsing post content.
 				'images'       => [], // @todo https://tuispecialist.atlassian.net/browse/QE-580 - Get description after parsing post content.
 				'destinations' => [],
