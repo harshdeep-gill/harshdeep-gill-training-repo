@@ -14,6 +14,9 @@
 			@if ( ! empty( $card['image_id'] ) )
 				<x-product-cards.image :image_id="$card['image_id']" />
 			@endif
+			@if ( ! empty( $card['review_rating'] ) && ! empty( $card['total_reviews'] ) )
+				<x-product-cards.reviews :review_rating="$card['review_rating']" :total_reviews="$card['total_reviews']" />
+			@endif
 			@if ( ! empty(  $card['itinerary_days'] ) )
 				@php
 					$duration = $card['itinerary_days'] . __(' day Itinerary');

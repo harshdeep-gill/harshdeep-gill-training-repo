@@ -126,6 +126,8 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 		$cards[] = [
 			'title'            => $card_data['title'],
 			'image_id'         => get_post_thumbnail_id( $expedition_id ),
+			'review_rating'    => 5,  // TODO: Get real rating.
+			'total_reviews'    => 10, // TODO: Get real count.
 			'itinerary_days'   => $card_data['duration'],
 			'original_price'   => $card_data['from_price']['original'],
 			'discounted_price' => $card_data['from_price']['discounted'],
