@@ -98,10 +98,10 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 							] }
 							value={ attributes.taxonomies }
 							onChange={ ( taxonomies: any ) => setAttributes( { taxonomies } ) }
-							placeholder={ __( 'Select taxonomies', 'qrk' ) }
 						/>
 					}
 					{
+						'byTerms' === attributes.selection &&
 						attributes.taxonomies.length > 0 &&
 						<TaxonomyRelationshipControl
 							label={ __( 'Select Terms' ) }
