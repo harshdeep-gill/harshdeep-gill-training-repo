@@ -266,7 +266,7 @@ function do_sync( array $itinerary_post_ids = [], array $specific_departure_post
 	}
 
 	// Initiated via.
-	$initiated_via = get_sync_initiated_via();
+	$initiated_via = get_initiated_via();
 
 	// Log the sync initiated.
 	do_action(
@@ -355,7 +355,7 @@ function do_sync( array $itinerary_post_ids = [], array $specific_departure_post
  *
  * @return string
  */
-function get_sync_initiated_via(): string {
+function get_initiated_via(): string {
 	// Check if in CLI.
 	if ( defined( 'WP_CLI' ) && true === WP_CLI ) {
 		return 'CLI';
