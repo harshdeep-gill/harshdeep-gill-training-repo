@@ -635,18 +635,24 @@ function get_minimum_duration( int $post_id = 0 ): int {
  *
  * @param int $post_id Post ID.
  *
- * @return int Price.
+ * @return array{
+ *    original: int,
+ *    discounted: int,
+ * }
  */
-function get_starting_from_price( int $post_id = 0 ): int {
+function get_starting_from_price( int $post_id = 0 ): array {
 	// Get post.
 	$post = get( $post_id );
 
 	// Starting from price.
-	$starting_from_price = 0;
+	$lowest_prices = [
+		'original'   => 0,
+		'discounted' => 0,
+	];
 
 	// Check for post.
 	if ( empty( $post['post'] ) || ! $post['post'] instanceof WP_Post ) {
-		return $starting_from_price;
+		return $lowest_prices;
 	}
 
 	// Get itineraries.
@@ -654,7 +660,7 @@ function get_starting_from_price( int $post_id = 0 ): int {
 
 	// Check for itineraries.
 	if ( empty( $itineraries ) ) {
-		return $starting_from_price;
+		return $lowest_prices;
 	}
 
 	// Loop through itineraries and get minimum price.
@@ -669,16 +675,17 @@ function get_starting_from_price( int $post_id = 0 ): int {
 		}
 
 		// Get lowest price for Itinerary.
-		$price = get_lowest_price( $itinerary['post']->ID )['original'];
+		$price = get_lowest_price( $itinerary['post']->ID );
 
 		// Check minimum price.
-		if ( ! empty( $price ) && ( empty( $starting_from_price ) || $price < $starting_from_price ) ) {
-			$starting_from_price = $price;
+		if ( ! empty( $price['discounted'] ) && ( empty( $lowest_price ) || $price['discounted'] < $lowest_price ) ) {
+			$lowest_price  = $price['discounted'];
+			$lowest_prices = $price;
 		}
 	}
 
 	// Return starting from price.
-	return absint( $starting_from_price );
+	return $lowest_prices;
 }
 
 /**
@@ -1022,7 +1029,10 @@ function get_formatted_date_range( int $post_id = 0 ): string {
  *     title: string,
  *     duration: int,
  *     region: string,
- *     from_price: string,
+ *     from_price: array{
+ *         original: string,
+ *         discounted: string,
+ *     },
  *     starting_from ?: array{}|array{
  *         array{ title : string },
  *     },
@@ -1119,7 +1129,11 @@ function get_details_data( int $post_id = 0 ): array {
 	$data['duration'] = get_minimum_duration( $post_id );
 
 	// Set starting from price.
-	$data['from_price'] = format_price( get_starting_from_price( $post_id ) );
+	$prices             = get_starting_from_price( $post_id );
+	$data['from_price'] = [
+		'original'   => format_price( $prices['original'] ),
+		'discounted' => format_price( $prices['discounted'] ),
+	];
 
 	// Set starting from locations list.
 	$data['starting_from'] = get_starting_from_locations( $post_id );
