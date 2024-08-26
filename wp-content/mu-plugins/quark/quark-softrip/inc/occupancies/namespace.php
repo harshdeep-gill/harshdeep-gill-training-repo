@@ -236,17 +236,23 @@ function update_occupancies( array $raw_cabins_data = [], int $departure_post_id
 		$cabin_category_post_id = absint( $occupancy['cabin_category_post_id'] );
 
 		// Delete the occupancy promotions.
-		delete_occupancy_promotions_by_occupancy_id( $occupancy_id );
+		$is_occupancy_promotions_deleted = delete_occupancy_promotions_by_occupancy_id( $occupancy_id );
+
+		// Skip if not deleted.
+		if ( ! $is_occupancy_promotions_deleted ) {
+			continue;
+		}
 
 		// Delete the occupancy.
-		delete_occupancy_by_id( $occupancy_id );
+		$is_occupancy_deleted = delete_occupancy_by_id( $occupancy_id );
+
+		// Skip if not deleted.
+		if ( ! $is_occupancy_deleted ) {
+			continue;
+		}
 
 		// Delete post meta for cabin spaces available.
 		delete_post_meta( $departure_post_id, 'cabin_spaces_available_' . $cabin_category_post_id );
-
-		// Bust caches.
-		wp_cache_delete( CACHE_KEY_PREFIX . '_softrip_id_' . $non_updated_softrip_id, CACHE_GROUP );
-		wp_cache_delete( CACHE_KEY_PREFIX . '_occupancy_id_' . $occupancy_id, CACHE_GROUP );
 
 		// Bust departure cache as meta has been deleted.
 		bust_departure_post_cache( $departure_post_id );
