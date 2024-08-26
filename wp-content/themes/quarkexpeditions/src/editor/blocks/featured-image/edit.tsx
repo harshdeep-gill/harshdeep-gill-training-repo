@@ -19,7 +19,7 @@ export default function Edit( {}: BlockEditAttributes ): JSX.Element {
 	// Get the block props.
 	const blockProps = useBlockProps();
 
-	// TODO: Add comment.
+	// Render the block.
 	return (
 		<Section { ...blockProps }>
 			<Placeholder
