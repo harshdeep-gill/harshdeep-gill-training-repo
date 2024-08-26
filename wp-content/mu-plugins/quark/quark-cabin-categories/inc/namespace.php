@@ -471,7 +471,7 @@ function get_cabin_categories_data( int $cabin_id = 0 ): array {
  * Get cabin categories data by departure.
  *
  * @param int    $departure_post_id Departure Post ID.
- * @param string $currency Currency.
+ * @param string $currency          Currency.
  *
  * @return array<int|string, array{
  *     name: string,
@@ -870,7 +870,7 @@ function get_occupancy_detail( int $occupancy_id = 0, int $departure_post_id = 0
 /**
  * Get cabin availability status.
  *
- * @param int $departure_post_id Departure post ID.
+ * @param int $departure_post_id      Departure post ID.
  * @param int $cabin_category_post_id Cabin category post ID.
  *
  * @return string
@@ -929,7 +929,7 @@ function get_cabin_availability_status( int $departure_post_id = 0, int $cabin_c
 /**
  * Get cabin spaces available.
  *
- * @param int $departure_post_id Departure post ID.
+ * @param int $departure_post_id      Departure post ID.
  * @param int $cabin_category_post_id Cabin category post ID.
  *
  * @return int
