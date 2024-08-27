@@ -1345,6 +1345,10 @@
 	</x-section>
 </x-component-demo>
 
+<x-component-demo :keys="[ 'featured-image' ]">
+	<x-featured-image image_id="26" />
+</x-component-demo>
+
 <x-component-demo :keys="[ 'review-cards' ]">
 	<x-review-cards>
 		<x-review-cards.card

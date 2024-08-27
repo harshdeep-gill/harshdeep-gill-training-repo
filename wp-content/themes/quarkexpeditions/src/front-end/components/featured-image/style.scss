@@ -1,8 +1,24 @@
+/**
+ * Featured Image.
+ */
+@import "../../scss";
+
 .featured-image {
+	border-radius: var(--border-radius-large);
+	overflow: hidden;
+	aspect-ratio: 52 / 75;
+
+	@media screen and (min-width: grid-size(sm)) {
+		aspect-ratio: 864 / 516;
+	}
+
+	@media screen and (min-width: grid-size(lg)) {
+		aspect-ratio: 1120 / 516;
+	}
 
 	img {
 		width: 100%;
-		border-radius: var(--border-radius-large);
-		height: auto;
+		height: 100%;
+		object-fit: cover;
 	}
 }
