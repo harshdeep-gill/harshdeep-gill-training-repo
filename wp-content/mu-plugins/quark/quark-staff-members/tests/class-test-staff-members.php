@@ -262,7 +262,7 @@ class Test_Staff_Members extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Test get department function.
+	 * Test get departments function.
 	 *
 	 * @covers \Quark\StaffMembers\get_departments()
 	 *

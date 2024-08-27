@@ -414,7 +414,7 @@ function get_department( int $post_id = 0 ): array {
 }
 
 /**
- * Get Department.
+ * Get Departments.
  *
  * @param int $post_id Post ID.
  *
