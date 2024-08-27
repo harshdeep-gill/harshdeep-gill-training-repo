@@ -194,7 +194,7 @@ function register_region_post_type(): void {
 					'title'          => 'Overview',
 					'titleAlignment' => 'left',
 					'headingLevel'   => '2',
-					'hasDescription' => true,
+					'hasDescription' => false,
 					'anchor'         => 'overview',
 				],
 				[
@@ -252,7 +252,7 @@ function register_region_post_type(): void {
 					'title'          => 'Points of Interest',
 					'titleAlignment' => 'left',
 					'headingLevel'   => '2',
-					'hasDescription' => true,
+					'hasDescription' => false,
 					'anchor'         => 'points-of-interest',
 				],
 				[
@@ -302,7 +302,7 @@ function register_region_post_type(): void {
 					'title'          => 'Special Insights from Our Guests',
 					'titleAlignment' => 'left',
 					'headingLevel'   => '2',
-					'hasDescription' => true,
+					'hasDescription' => false,
 					'anchor'         => 'testimonials',
 				],
 				[
