@@ -16,6 +16,8 @@ use function Quark\StaffMembers\get_cards_data;
 use function Quark\StaffMembers\get;
 use function Quark\StaffMembers\get_department;
 
+use function Quark\StaffMembers\get_departments;
+
 use const Quark\StaffMembers\DEPARTMENT_TAXONOMY;
 use const Quark\StaffMembers\POST_TYPE as STAFF_MEMBER_POST_TYPE;
 
@@ -257,5 +259,71 @@ class Test_Staff_Members extends WP_UnitTestCase {
 		// Clean up.
 		wp_delete_post( $post->ID, true );
 		wp_delete_term( $department->term_id, DEPARTMENT_TAXONOMY );
+	}
+
+	/**
+	 * Test get department function.
+	 *
+	 * @covers \Quark\StaffMembers\get_departments()
+	 *
+	 * @return void
+	 */
+	public function test_get_departments(): void {
+		// Create a post.
+		$post = $this->get_post();
+
+		// Test if this is a post.
+		$this->assertTrue( $post instanceof WP_Post );
+
+		// Assign Taxonomies.
+		$department_one = $this->factory()->term->create_and_get(
+			[
+				'taxonomy' => DEPARTMENT_TAXONOMY,
+				'name'     => 'Test Department',
+			]
+		);
+		$department_two = $this->factory()->term->create_and_get(
+			[
+				'taxonomy' => DEPARTMENT_TAXONOMY,
+				'name'     => 'Test Department 2',
+			]
+		);
+
+		// Assert the taxonomies are created.
+		$this->assertTrue( $department_one instanceof WP_Term );
+		$this->assertTrue( $department_two instanceof WP_Term );
+
+		// Assign taxonomies to the post.
+		wp_set_post_terms( $post->ID, [ $department_one->term_id, $department_two->term_id ], DEPARTMENT_TAXONOMY );
+
+		// Assert the department.
+		$this->assertEquals(
+			[
+				[
+					'term_id'     => strval( $department_one->term_id ),
+					'name'        => $department_one->name,
+					'slug'        => $department_one->slug,
+					'term_group'  => $department_one->term_group,
+					'taxonomy'    => DEPARTMENT_TAXONOMY,
+					'description' => $department_one->description,
+					'parent'      => $department_one->parent,
+				],
+				[
+					'term_id'     => strval( $department_two->term_id ),
+					'name'        => $department_two->name,
+					'slug'        => $department_two->slug,
+					'term_group'  => $department_two->term_group,
+					'taxonomy'    => DEPARTMENT_TAXONOMY,
+					'description' => $department_two->description,
+					'parent'      => $department_two->parent,
+				],
+			],
+			get_departments( $post->ID )
+		);
+
+		// Clean up.
+		wp_delete_post( $post->ID, true );
+		wp_delete_term( $department_one->term_id, DEPARTMENT_TAXONOMY );
+		wp_delete_term( $department_two->term_id, DEPARTMENT_TAXONOMY );
 	}
 }
