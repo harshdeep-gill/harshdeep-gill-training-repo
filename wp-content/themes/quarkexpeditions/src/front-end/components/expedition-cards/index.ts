@@ -11,14 +11,10 @@ import { debounce } from '../../global/utility';
 /**
  * Departure Card.
  */
-export default class DepartureCard extends HTMLElement {
+export default class ExpeditionCard extends HTMLElement {
 	/**
 	 * Properties.
 	 */
-	private offersList: HTMLElement | null;
-	private offers: NodeListOf<Element> | null;
-	private offerCountButton: HTMLElement | null;
-	private offerCountSpan: HTMLElement | null;
 	private adventuresContainer: HTMLElement | null;
 	private adventuresItems: NodeListOf<Element> | null;
 	private adventurescountWrap: HTMLElement | null;
@@ -34,10 +30,6 @@ export default class DepartureCard extends HTMLElement {
 		super();
 
 		// Elements.
-		this.offersList = this.querySelector( '.expedition-cards__offers-list' );
-		this.offers = this.querySelectorAll( '.expedition-cards__offer' );
-		this.offerCountButton = this.querySelector( '.expedition-cards__offer-count-button' );
-		this.offerCountSpan = this.querySelector( '.expedition-cards__offer-count' );
 		this.adventuresContainer = this.querySelector( '.expedition-cards__options-list' );
 		this.adventuresItems = this.querySelectorAll( '.expedition-cards__option' );
 		this.adventurescountWrap = this.querySelector( '.expedition-cards__options-count-wrap' );
@@ -46,8 +38,6 @@ export default class DepartureCard extends HTMLElement {
 		this.moreDetails = this.querySelector( '.expedition-cards__more-details' );
 
 		// Events.
-		this.updateOfferHiddenItems();
-		window.addEventListener( 'resize', debounce( this.updateOfferHiddenItems.bind( this ), 10 ), { passive: true } );
 		this.updateAdventuresHiddenItems();
 		window.addEventListener( 'resize', debounce( this.updateAdventuresHiddenItems.bind( this ), 10 ), { passive: true } );
 		this.dropdownButton?.addEventListener( 'click', this.toggle.bind( this ) );
@@ -83,59 +73,6 @@ export default class DepartureCard extends HTMLElement {
 		// Remove 'open' attribute.
 		this.removeAttribute( 'open' );
 		this.moreDetails?.classList.remove( 'expedition-cards__more-details--active' );
-	}
-
-	/**
-	 * Toggle the visibility of the "items" based on the presence of overflow items.
-	 */
-	updateOfferHiddenItems(): void {
-		// Check if the offers exists.
-		if ( ! this.offers ) {
-			// Return if element does not exits.
-			return;
-		}
-
-		// Set the variables.
-		let hiddenCount: number = 0;
-		let totalWidth: number = 0;
-
-		// For each item.
-		this.offers.forEach( ( offer, index ) => {
-			// Remove class.
-			offer.classList.remove( 'expedition-cards__offer--hidden' );
-			totalWidth += offer.clientWidth;
-
-			// Check if the offers list exists.
-			if ( ! this.offersList || ! this.offers ) {
-				// Return if element does not exits.
-				return;
-			}
-
-			// Check for the width.
-			if ( totalWidth > this.offersList.clientWidth - 100 && index < this.offers.length - 1 ) {
-				// Add class.
-				offer.classList.add( 'expedition-cards__offer--hidden' );
-				hiddenCount++;
-			}
-		} );
-
-		// Check for count span.
-		if ( this.offerCountSpan ) {
-			// Set the count span.
-			this.offerCountSpan.textContent = hiddenCount.toString();
-		}
-
-		// Check if the count button exists.
-		if ( this.offerCountButton ) {
-			// Check hidden count.
-			if ( hiddenCount > 0 ) {
-				// Remove class from the button.
-				this.offerCountButton.classList.remove( 'expedition-cards__offer-count-button--hidden' );
-			} else {
-				// Add class from the button.
-				this.offerCountButton.classList.add( 'expedition-cards__offer-count-button--hidden' );
-			}
-		}
 	}
 
 	/**
@@ -193,4 +130,4 @@ export default class DepartureCard extends HTMLElement {
 /**
  * Initialize.
  */
-customElements.define( 'quark-expedition-card', DepartureCard );
+customElements.define( 'quark-expedition-card', ExpeditionCard );
