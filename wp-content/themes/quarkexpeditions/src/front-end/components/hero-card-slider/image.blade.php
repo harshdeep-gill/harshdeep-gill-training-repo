@@ -16,8 +16,8 @@
 			'height'  => 584,
 		],
 		'responsive' => [
-			'sizes'  => [ '(min-width: 1280px) 544px', '312px' ],
-			'widths' => [ 312, 544 ],
+			'sizes'  => [ '(min-width: 1280px) 544px', '(min-width: 768px) 100vw', '312px' ],
+			'widths' => [ 312, 544, 600, 700, 800, 900, 1000 ],
 		],
 	];
 

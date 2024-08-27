@@ -125,16 +125,17 @@ function mock_softrip_http_request( array|false $response = [], array $parsed_ar
 					'marketCode'  => 'ANT',
 					'cabins'      => [
 						[
-							'id'          => 'ABC-123:2026-02-28:OEX-SGL',
-							'code'        => 'OEX-SGL',
-							'name'        => 'Studio Single',
-							'departureId' => 'ABC-123:2026-02-28',
-							'occupancies' => [
+							'id'              => 'ABC-123:2026-02-28:OEX-SGL',
+							'code'            => 'OEX-SGL',
+							'name'            => 'Studio Single',
+							'departureId'     => 'ABC-123:2026-02-28',
+							'spacesAvailable' => 0,
+							'occupancies'     => [
 								[
 									'id'              => 'ABC-123:2026-02-28:OEX-SGL:A',
 									'name'            => 'ABC-123:2026-02-28:OEX-SGL:A',
 									'mask'            => 'A',
-									'saleStatusCode'  => 'C',
+									'saleStatusCode'  => 'S',
 									'saleStatus'      => 'Sold Out',
 									'spacesAvailable' => 0,
 									'seq'             => '100',
@@ -228,11 +229,12 @@ function mock_softrip_http_request( array|false $response = [], array $parsed_ar
 					'marketCode'  => 'ANT',
 					'cabins'      => [
 						[
-							'id'          => 'JKL-012:2025-01-09:ULT-SGL',
-							'code'        => 'ULT-SGL',
-							'name'        => 'Studio Single',
-							'departureId' => 'JKL-012:2025-01-09',
-							'occupancies' => [
+							'id'              => 'JKL-012:2025-01-09:ULT-SGL',
+							'code'            => 'ULT-SGL',
+							'name'            => 'Studio Single',
+							'departureId'     => 'JKL-012:2025-01-09',
+							'spacesAvailable' => 10,
+							'occupancies'     => [
 								[
 									'id'              => 'JKL-012:2025-01-09:ULT-SGL:A',
 									'name'            => 'JKL-012:2025-01-09:ULT-SGL:A',
@@ -292,11 +294,12 @@ function mock_softrip_http_request( array|false $response = [], array $parsed_ar
 							],
 						],
 						[
-							'id'          => 'JKL-012:2025-01-09:ULT-DBL',
-							'code'        => 'ULT-DBL',
-							'name'        => 'Studio Double',
-							'departureId' => 'JKL-012:2025-01-09',
-							'occupancies' => [
+							'id'              => 'JKL-012:2025-01-09:ULT-DBL',
+							'code'            => 'ULT-DBL',
+							'name'            => 'Studio Double',
+							'departureId'     => 'JKL-012:2025-01-09',
+							'spacesAvailable' => 20,
+							'occupancies'     => [
 								[
 									'id'              => 'JKL-012:2025-01-09:ULT-DBL:A',
 									'name'            => 'JKL-012:2025-01-09:ULT-DBL:A',
@@ -436,11 +439,12 @@ function mock_softrip_http_request( array|false $response = [], array $parsed_ar
 					'marketCode'  => 'ANT',
 					'cabins'      => [
 						[
-							'id'          => 'JKL-012:2026-01-16:ULT-SGL',
-							'code'        => 'ULT-SGL',
-							'name'        => 'Studio Single',
-							'departureId' => 'JKL-012:2026-01-16',
-							'occupancies' => [
+							'id'              => 'JKL-012:2026-01-16:ULT-SGL',
+							'code'            => 'ULT-SGL',
+							'name'            => 'Studio Single',
+							'departureId'     => 'JKL-012:2026-01-16',
+							'spacesAvailable' => 10,
+							'occupancies'     => [
 								[
 									'id'              => 'JKL-012:2026-01-16:ULT-SGL:A',
 									'name'            => 'JKL-012:2026-01-16:ULT-SGL:A',
@@ -532,11 +536,12 @@ function mock_softrip_http_request( array|false $response = [], array $parsed_ar
 					'marketCode'       => 'ARC',
 					'cabins'           => [
 						[
-							'id'          => 'HIJ-456:2025-08-26:OEX-SGL',
-							'code'        => 'OEX-SGL',
-							'name'        => 'Studio Single',
-							'departureId' => 'HIJ-456:2025-08-26',
-							'occupancies' => [
+							'id'              => 'HIJ-456:2025-08-26:OEX-SGL',
+							'code'            => 'OEX-SGL',
+							'name'            => 'Studio Single',
+							'departureId'     => 'HIJ-456:2025-08-26',
+							'spacesAvailable' => 5,
+							'occupancies'     => [
 								[
 									'id'              => 'HIJ-456:2025-08-26:OEX-SGL:A',
 									'name'            => 'HIJ-456:2025-08-26:OEX-SGL:A',
@@ -611,11 +616,12 @@ function mock_softrip_http_request( array|false $response = [], array $parsed_ar
 							],
 						],
 						[
-							'id'          => 'HIJ-456:2025-08-26:OEX-FWD',
-							'code'        => 'OEX-FWD',
-							'name'        => 'Deluxe Veranda Forward',
-							'departureId' => 'HIJ-456:2025-08-26',
-							'occupancies' => [
+							'id'              => 'HIJ-456:2025-08-26:OEX-FWD',
+							'code'            => 'OEX-FWD',
+							'name'            => 'Deluxe Veranda Forward',
+							'departureId'     => 'HIJ-456:2025-08-26',
+							'spacesAvailable' => 0,
+							'occupancies'     => [
 								[
 									'id'              => 'HIJ-456:2025-08-26:OEX-FWD:A',
 									'name'            => 'HIJ-456:2025-08-26:OEX-FWD:A',
@@ -833,11 +839,12 @@ function mock_softrip_http_request( array|false $response = [], array $parsed_ar
 							],
 						],
 						[
-							'id'          => 'HIJ-456:2025-08-26:OEX-JST',
-							'code'        => 'OEX-JST',
-							'name'        => 'Junior Suite',
-							'departureId' => 'HIJ-456:2025-08-26',
-							'occupancies' => [
+							'id'              => 'HIJ-456:2025-08-26:OEX-JST',
+							'code'            => 'OEX-JST',
+							'name'            => 'Junior Suite',
+							'departureId'     => 'HIJ-456:2025-08-26',
+							'spacesAvailable' => 0,
+							'occupancies'     => [
 								[
 									'id'              => 'HIJ-456:2025-08-26:OEX-JST:A',
 									'name'            => 'HIJ-456:2025-08-26:OEX-JST:A',
@@ -913,9 +920,9 @@ function mock_softrip_http_request( array|false $response = [], array $parsed_ar
 									'id'              => 'HIJ-456:2025-08-26:OEX-JST:AA',
 									'name'            => 'HIJ-456:2025-08-26:OEX-JST:AA',
 									'mask'            => 'AA',
-									'saleStatusCode'  => 'O',
-									'saleStatus'      => 'Open',
-									'spacesAvailable' => 6,
+									'saleStatusCode'  => 'S',
+									'saleStatus'      => 'Sold Out',
+									'spacesAvailable' => 0,
 									'seq'             => '300',
 									'prices'          => [
 										'USD' => [
@@ -983,16 +990,17 @@ function mock_softrip_http_request( array|false $response = [], array $parsed_ar
 							],
 						],
 						[
-							'id'          => 'HIJ-456:2025-08-26:OEX-SVS',
-							'code'        => 'OEX-SVS',
-							'name'        => 'Studio Veranda Single',
-							'departureId' => 'HIJ-456:2025-08-26',
-							'occupancies' => [
+							'id'              => 'HIJ-456:2025-08-26:OEX-SVS',
+							'code'            => 'OEX-SVS',
+							'name'            => 'Studio Veranda Single',
+							'departureId'     => 'HIJ-456:2025-08-26',
+							'spacesAvailable' => 0,
+							'occupancies'     => [
 								[
 									'id'              => 'HIJ-456:2025-08-26:OEX-SVS:A',
 									'name'            => 'HIJ-456:2025-08-26:OEX-SVS:A',
 									'mask'            => 'A',
-									'saleStatusCode'  => 'C',
+									'saleStatusCode'  => 'S',
 									'saleStatus'      => 'Sold Out',
 									'spacesAvailable' => 0,
 									'seq'             => '400',
@@ -1059,14 +1067,74 @@ function mock_softrip_http_request( array|false $response = [], array $parsed_ar
 										],
 									],
 								],
+								[
+									'id'              => 'HIJ-456:2025-08-26:OEX-SVS:AA',
+									'name'            => 'HIJ-456:2025-08-26:OEX-SVS:AA',
+									'mask'            => 'AA',
+									'saleStatusCode'  => 'S',
+									'saleStatus'      => 'Sold Out',
+									'spacesAvailable' => 0,
+									'seq'             => '400',
+									'prices'          => [
+										'USD' => [
+											'currencyCode'   => 'USD',
+											'pricePerPerson' => 10995,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 9896,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 9896,
+												],
+											],
+										],
+										'AUD' => [
+											'currencyCode'   => 'AUD',
+											'pricePerPerson' => 17200,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 15480,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 15480,
+												],
+											],
+										],
+										'CAD' => [
+											'currencyCode'   => 'CAD',
+											'pricePerPerson' => 14900,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 13410,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 13410,
+												],
+											],
+										],
+										'EUR' => [
+											'currencyCode'   => 'EUR',
+											'pricePerPerson' => 10200,
+											'promos'         => [
+												'10PIF'   => [
+													'promoPricePerPerson' => 9180,
+												],
+												'10PROMO' => [
+													'promoPricePerPerson' => 9180,
+												],
+											],
+										],
+									],
+								],
 							],
 						],
 						[
-							'id'          => 'HIJ-456:2025-08-26:OEX-EXP',
-							'code'        => 'OEX-EXP',
-							'name'        => 'Penthouse Suite',
-							'departureId' => 'HIJ-456:2025-08-26',
-							'occupancies' => [
+							'id'              => 'HIJ-456:2025-08-26:OEX-EXP',
+							'code'            => 'OEX-EXP',
+							'name'            => 'Penthouse Suite',
+							'departureId'     => 'HIJ-456:2025-08-26',
+							'spacesAvailable' => 0,
+							'occupancies'     => [
 								[
 									'id'              => 'HIJ-456:2025-08-26:OEX-EXP:A',
 									'name'            => 'HIJ-456:2025-08-26:OEX-EXP:A',
@@ -1142,8 +1210,8 @@ function mock_softrip_http_request( array|false $response = [], array $parsed_ar
 									'id'              => 'HIJ-456:2025-08-26:OEX-EXP:AA',
 									'name'            => 'HIJ-456:2025-08-26:OEX-EXP:AA',
 									'mask'            => 'AA',
-									'saleStatusCode'  => 'O',
-									'saleStatus'      => 'Open',
+									'saleStatusCode'  => 'S',
+									'saleStatus'      => 'Sold Out',
 									'spacesAvailable' => 1,
 									'seq'             => '500',
 									'prices'          => [
@@ -1212,11 +1280,12 @@ function mock_softrip_http_request( array|false $response = [], array $parsed_ar
 							],
 						],
 						[
-							'id'          => 'HIJ-456:2025-08-26:OEX-OWN',
-							'code'        => 'OEX-OWN',
-							'name'        => "Owner\'s Suite",
-							'departureId' => 'HIJ-456:2025-08-26',
-							'occupancies' => [
+							'id'              => 'HIJ-456:2025-08-26:OEX-OWN',
+							'code'            => 'OEX-OWN',
+							'name'            => "Owner\'s Suite",
+							'departureId'     => 'HIJ-456:2025-08-26',
+							'spacesAvailable' => 0,
+							'occupancies'     => [
 								[
 									'id'              => 'HIJ-456:2025-08-26:OEX-OWN:A',
 									'name'            => 'HIJ-456:2025-08-26:OEX-OWN:A',
@@ -1362,11 +1431,12 @@ function mock_softrip_http_request( array|false $response = [], array $parsed_ar
 							],
 						],
 						[
-							'id'          => 'HIJ-456:2025-08-26:OEX-VER',
-							'code'        => 'OEX-VER',
-							'name'        => 'Veranda Stateroom',
-							'departureId' => 'HIJ-456:2025-08-26',
-							'occupancies' => [
+							'id'              => 'HIJ-456:2025-08-26:OEX-VER',
+							'code'            => 'OEX-VER',
+							'name'            => 'Veranda Stateroom',
+							'departureId'     => 'HIJ-456:2025-08-26',
+							'spacesAvailable' => 34,
+							'occupancies'     => [
 								[
 									'id'              => 'HIJ-456:2025-08-26:OEX-VER:A',
 									'name'            => 'HIJ-456:2025-08-26:OEX-VER:A',
@@ -1584,17 +1654,18 @@ function mock_softrip_http_request( array|false $response = [], array $parsed_ar
 							],
 						],
 						[
-							'id'          => 'HIJ-456:2025-08-26:OEX-VST',
-							'code'        => 'OEX-VST',
-							'name'        => 'Veranda Suite',
-							'departureId' => 'HIJ-456:2025-08-26',
-							'occupancies' => [
+							'id'              => 'HIJ-456:2025-08-26:OEX-VST',
+							'code'            => 'OEX-VST',
+							'name'            => 'Veranda Suite',
+							'departureId'     => 'HIJ-456:2025-08-26',
+							'spacesAvailable' => 0,
+							'occupancies'     => [
 								[
 									'id'              => 'HIJ-456:2025-08-26:OEX-VST:A',
 									'name'            => 'HIJ-456:2025-08-26:OEX-VST:A',
 									'mask'            => 'A',
-									'saleStatusCode'  => 'O',
-									'saleStatus'      => 'Open',
+									'saleStatusCode'  => 'S',
+									'saleStatus'      => 'Sold Out',
 									'spacesAvailable' => 33,
 									'seq'             => '800',
 									'prices'          => [
@@ -2277,16 +2348,17 @@ function mock_softrip_http_request( array|false $response = [], array $parsed_ar
 							],
 						],
 						[
-							'id'          => 'HIJ-456:2025-09-04:OEX-SVS',
-							'code'        => 'OEX-SVS',
-							'name'        => 'Studio Veranda Single',
-							'departureId' => 'HIJ-456:2025-09-04',
-							'occupancies' => [
+							'id'              => 'HIJ-456:2025-09-04:OEX-SVS',
+							'code'            => 'OEX-SVS',
+							'name'            => 'Studio Veranda Single',
+							'departureId'     => 'HIJ-456:2025-09-04',
+							'spacesAvailable' => 0,
+							'occupancies'     => [
 								[
 									'id'              => 'HIJ-456:2025-09-04:OEX-SVS:A',
 									'name'            => 'HIJ-456:2025-09-04:OEX-SVS:A',
 									'mask'            => 'A',
-									'saleStatusCode'  => 'C',
+									'saleStatusCode'  => 'S',
 									'saleStatus'      => 'Sold Out',
 									'spacesAvailable' => 0,
 									'seq'             => '400',
@@ -2506,16 +2578,17 @@ function mock_softrip_http_request( array|false $response = [], array $parsed_ar
 							],
 						],
 						[
-							'id'          => 'HIJ-456:2025-09-04:OEX-OWN',
-							'code'        => 'OEX-OWN',
-							'name'        => "Owner\'s Suite",
-							'departureId' => 'HIJ-456:2025-09-04',
-							'occupancies' => [
+							'id'              => 'HIJ-456:2025-09-04:OEX-OWN',
+							'code'            => 'OEX-OWN',
+							'name'            => "Owner\'s Suite",
+							'departureId'     => 'HIJ-456:2025-09-04',
+							'spacesAvailable' => 0,
+							'occupancies'     => [
 								[
 									'id'              => 'HIJ-456:2025-09-04:OEX-OWN:A',
 									'name'            => 'HIJ-456:2025-09-04:OEX-OWN:A',
 									'mask'            => 'A',
-									'saleStatusCode'  => 'C',
+									'saleStatusCode'  => 'S',
 									'saleStatus'      => 'Sold Out',
 									'spacesAvailable' => 0,
 									'seq'             => '600',
@@ -2586,7 +2659,7 @@ function mock_softrip_http_request( array|false $response = [], array $parsed_ar
 									'id'              => 'HIJ-456:2025-09-04:OEX-OWN:AA',
 									'name'            => 'HIJ-456:2025-09-04:OEX-OWN:AA',
 									'mask'            => 'AA',
-									'saleStatusCode'  => 'C',
+									'saleStatusCode'  => 'S',
 									'saleStatus'      => 'Sold Out',
 									'spacesAvailable' => 0,
 									'seq'             => '600',
@@ -2656,11 +2729,12 @@ function mock_softrip_http_request( array|false $response = [], array $parsed_ar
 							],
 						],
 						[
-							'id'          => 'HIJ-456:2025-09-04:OEX-VER',
-							'code'        => 'OEX-VER',
-							'name'        => 'Veranda Stateroom',
-							'departureId' => 'HIJ-456:2025-09-04',
-							'occupancies' => [
+							'id'              => 'HIJ-456:2025-09-04:OEX-VER',
+							'code'            => 'OEX-VER',
+							'name'            => 'Veranda Stateroom',
+							'departureId'     => 'HIJ-456:2025-09-04',
+							'spacesAvailable' => 18,
+							'occupancies'     => [
 								[
 									'id'              => 'HIJ-456:2025-09-04:OEX-VER:A',
 									'name'            => 'HIJ-456:2025-09-04:OEX-VER:A',

@@ -652,6 +652,111 @@ class Test_Update_Departures extends Softrip_TestCase {
 		// First departure should be again drafted.
 		$this->assertEquals( 'draft', get_post_status( $departure_post1 ) );
 
+		// Reset the draft to publish.
+		wp_update_post(
+			[
+				'ID'          => $departure_post1,
+				'post_status' => 'publish',
+			]
+		);
+
+		// Let's try updating only single departure.
+		$pqo_raw_departures[0]['startDate'] = '2027-08-27';
+		$pqo_raw_departures[0]['endDate']   = '2027-09-06';
+		$actual                             = update_departures( [ $pqo_raw_departures[0] ], $pqo_softrip_package_code, [ $departure_post1 ] );
+		$this->assertTrue( $actual );
+
+		// Flush the cache.
+		wp_cache_flush();
+
+		// Both departures should still be present.
+		$departure_posts_updated = get_posts(
+			[
+				'post_type'              => DEPARTURE_POST_TYPE,
+				'posts_per_page'         => -1,
+				'no_found_rows'          => true,
+				'update_post_meta_cache' => false,
+				'update_post_term_cache' => false,
+				'ignore_sticky_posts'    => true,
+				'suppress_filters'       => false,
+				'fields'                 => 'ids',
+				'order'                  => 'ASC',
+				'meta_query'             => [
+					[
+						'key'   => 'softrip_package_code',
+						'value' => $pqo_softrip_package_code,
+					],
+				],
+			]
+		);
+		$this->assertCount( 2, $departure_posts_updated );
+
+		// Get the first departure post.
+		$departure_post1_updated = $departure_posts_updated[0];
+		$this->assertIsInt( $departure_post1_updated );
+
+		// Get the second departure post.
+		$departure_post2_updated = $departure_posts_updated[1];
+		$this->assertIsInt( $departure_post2_updated );
+
+		// Get start date of departure 1 - updated.
+		$start_date = strval( get_post_meta( $departure_post1, 'start_date', true ) );
+		$this->assertEquals( '2027-08-27', $start_date );
+
+		// Get start date of departure 2 - should remain same.
+		$start_date = strval( get_post_meta( $departure_post2, 'start_date', true ) );
+		$this->assertEquals( $pqo_raw_departures[1]['startDate'], $start_date );
+
+		// Same for end date.
+		$end_date = strval( get_post_meta( $departure_post1, 'end_date', true ) );
+		$this->assertEquals( '2027-09-06', $end_date );
+
+		// Same for end date.
+		$end_date = strval( get_post_meta( $departure_post2, 'end_date', true ) );
+		$this->assertEquals( $pqo_raw_departures[1]['endDate'], $end_date );
+
+		// Update the first departure to have start date as yesterday.
+		$pqo_raw_departures[0]['startDate'] = $yesterday;
+
+		// Update only departure 1 post with expired start date along with unpublish flag set to true.
+		$actual = update_departures( [ $pqo_raw_departures[0] ], $pqo_softrip_package_code, [ $departure_post1 ] );
+		$this->assertTrue( $actual );
+
+		// Flush the cache.
+		wp_cache_flush();
+
+		// Only the second departure should be there as first should have expired.
+		$departure_posts_updated = get_posts(
+			[
+				'post_type'              => DEPARTURE_POST_TYPE,
+				'posts_per_page'         => -1,
+				'no_found_rows'          => true,
+				'update_post_meta_cache' => false,
+				'update_post_term_cache' => false,
+				'ignore_sticky_posts'    => true,
+				'suppress_filters'       => false,
+				'fields'                 => 'ids',
+				'order'                  => 'ASC',
+				'meta_query'             => [
+					[
+						'key'   => 'softrip_package_code',
+						'value' => $pqo_softrip_package_code,
+					],
+				],
+			]
+		);
+		$this->assertCount( 1, $departure_posts_updated );
+
+		// First departure should not be there.
+		$this->assertNotContains( $departure_post1, $departure_posts_updated );
+
+		// Get the second departure post.
+		$departure_post2_updated = $departure_posts_updated[0];
+		$this->assertIsInt( $departure_post2_updated );
+
+		// Only the second departure should be there.
+		$this->assertEquals( $departure_post2, $departure_post2_updated );
+
 		// Clean up.
 		wp_delete_post( $itinerary_id, true );
 		wp_delete_post( $expedition_id, true );

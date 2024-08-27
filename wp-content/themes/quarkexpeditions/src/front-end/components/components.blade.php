@@ -6058,6 +6058,14 @@
 		<x-parts.book-departures-expeditions results_count="{{ $payload['resultCount'] ?? 0 }}" :payload="$payload" />
 	</x-section>
 </x-component-demo>
+<x-component-demo :keys="[ 'book-departures-ships' ]">
+	<x-section>
+		<x-section.heading>
+			<x-section.title title="Upcoming Departures" align="left" />
+		</x-section.heading>
+		<x-parts.book-departures-ships results_count="{{ $payload['resultCount'] ?? 0 }}" :payload="$payload" />
+	</x-section>
+</x-component-demo>
 
 <x-component-demo :keys="[ 'link-detail-cards' ]">
 	<x-section>
