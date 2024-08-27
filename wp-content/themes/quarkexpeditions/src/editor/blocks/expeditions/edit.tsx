@@ -134,7 +134,7 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 							/>
 						) : (
 							<Placeholder icon="layout" label={ __( 'Expeditions', 'qrk' ) }>
-								<p>{ __( 'Select the Expeditions to be displayed.', 'qrk' ) }</p>
+								<p>{ __( 'Select one or more options to display Expeditions.', 'qrk' ) }</p>
 							</Placeholder>
 						)
 				}

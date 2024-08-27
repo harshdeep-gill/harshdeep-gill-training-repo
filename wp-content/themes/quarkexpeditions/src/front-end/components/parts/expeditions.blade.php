@@ -19,7 +19,7 @@
 			@endif
 			@if ( ! empty(  $card['itinerary_days'] ) )
 				@php
-					$duration = $card['itinerary_days'] . __(' day Itinerary');
+					$duration = sprintf( __( '%d day itinerary', 'qrk' ), $card['itinerary_days'] )
 				@endphp
 				<x-product-cards.itinerary :duration="$duration" />
 			@endif
