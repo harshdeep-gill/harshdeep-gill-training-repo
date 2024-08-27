@@ -10,7 +10,7 @@
 @endphp
 
 <div class="expedition-cards__price-wrap">
-	<div class="expedition-cards__price-title">{{ __( 'from', 'qrk' ) }}</div>
+	<strong class="expedition-cards__price-title h4">{{ __( 'From', 'qrk' ) }}</strong>
 
 	@if ( ! empty( $discounted_price ) )
 		@if ( $discounted_price !== $original_price )

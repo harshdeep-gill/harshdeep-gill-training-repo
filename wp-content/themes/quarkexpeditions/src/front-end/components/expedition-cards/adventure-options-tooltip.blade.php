@@ -6,7 +6,8 @@
 
 <li class="expedition-cards__option expedition-cards__options-count-wrap">
 	<span>&hellip; +<span class="expedition-cards__options-count"></span> {{ __( 'more', 'qrk' ) }}</span>
-	<x-tooltip icon="info">
+
+	<x-expedition-cards.tooltip>
 		{!! $slot !!}
-	</x-tooltip>
+	</x-expedition-cards.tooltip>
 </li>
