@@ -9,7 +9,7 @@ const { customElements, HTMLElement } = window;
 import { debounce } from '../../global/utility';
 
 /**
- * Departure Card.
+ * Expedition Card.
  */
 export default class ExpeditionCard extends HTMLElement {
 	/**
