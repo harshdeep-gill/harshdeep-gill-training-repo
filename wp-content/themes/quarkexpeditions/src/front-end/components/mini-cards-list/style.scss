@@ -1,0 +1,60 @@
+@import "../../scss/";
+
+.mini-cards-list {
+	display: flex;
+	gap: var(--spacing-4);
+	overflow-x: auto;
+	scroll-snap-type: x mandatory;
+	scroll-snap-stop: always;
+	padding-block-end: var(--spacing-1);
+
+	&__card {
+		padding: var(--spacing-3);
+		display: flex;
+		gap: var(--spacing-4);
+		align-items: start;
+		border: solid 1px var(--color-gray-20);
+		border-radius: var(--border-radius-large);
+		min-width: 290px;
+		width: 100%;
+		scroll-snap-align: start;
+		box-shadow: var(--shadow-1);
+
+		@include transition(box-shadow);
+
+		@media screen and (min-width: grid-size(sm)) {
+			min-width: 312px;
+		}
+
+		@media screen and (min-width: grid-size(md)) {
+			min-width: 352px;
+		}
+
+		&:hover {
+			box-shadow: var(--shadow-3);
+		}
+	}
+
+	&__card-image {
+		margin-bottom: 0;
+		width: 72px;
+		aspect-ratio: 1;
+		overflow: hidden;
+		border-radius: var(--border-radius);
+		flex-shrink: 0;
+
+		img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+		}
+	}
+
+	&__card-title {
+		font-weight: var(--font-weight-bold);
+	}
+
+	&__card-date {
+		color: var(--color-gray-80);
+	}
+}
