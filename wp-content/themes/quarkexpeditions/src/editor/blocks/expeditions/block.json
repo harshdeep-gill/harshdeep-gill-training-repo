@@ -1,0 +1,41 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Expeditions",
+	"name": "quark/expeditions",
+	"description": "Add expeditions cards to your page.",
+	"category": "layout",
+	"keywords": [
+		"expeditions"
+	],
+	"textdomain": "qrk",
+	"attributes": {
+		"selection": {
+			"type": "string",
+			"default": "manual"
+		},
+		"ids": {
+			"type": "array",
+			"default": []
+		},
+		"taxonomies": {
+			"type": "array",
+			"default": []
+		},
+		"termIds": {
+			"type": "array",
+			"default": []
+		},
+		"totalPosts": {
+			"type": "number",
+			"default": 5
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}
