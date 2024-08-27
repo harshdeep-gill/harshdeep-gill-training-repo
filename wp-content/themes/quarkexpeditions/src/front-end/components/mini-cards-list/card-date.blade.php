@@ -1,9 +1,13 @@
+@props( [
+	'date' => '',
+] )
+
 @php
-	if ( empty( $slot ) ) {
+	if ( empty( $date ) ) {
 		return;
 	}
 @endphp
 
 <div class="mini-cards-list__card-date">
-	<x-content :content="$slot" />
+	<x-escape :content="$date" />
 </div>

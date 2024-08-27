@@ -1,9 +1,13 @@
+@props( [
+	'title' => '',
+] )
+
 @php
-	if ( empty( $slot ) ) {
+	if ( empty( $title ) ) {
 		return;
 	}
 @endphp
 
 <div class="mini-cards-list__card-title">
-	<x-content :content="$slot" />
+	<x-escape :content="$title" />
 </div>
