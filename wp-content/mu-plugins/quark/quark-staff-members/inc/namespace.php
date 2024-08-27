@@ -414,6 +414,43 @@ function get_department( int $post_id = 0 ): array {
 }
 
 /**
+ * Get Department.
+ *
+ * @param int $post_id Post ID.
+ *
+ * @return array{}|array{
+ *     term_id: int,
+ *     name: string,
+ *     slug: string,
+ *     term_group: int,
+ *     term_taxonomy_id: int,
+ *     taxonomy: string,
+ *     description: string,
+ *     parent: int,
+ * }[] Season data.
+ */
+function get_departments( int $post_id = 0 ): array {
+	// Get post ID.
+	$post = get( $post_id );
+
+	// If post not found then return empty array.
+	if ( ! $post['post'] instanceof WP_Post ) {
+		return [];
+	}
+
+	// If there is no season, return empty array.
+	if (
+		empty( $post['post_taxonomies'][ DEPARTMENT_TAXONOMY ] ) ||
+		! is_array( $post['post_taxonomies'][ DEPARTMENT_TAXONOMY ] )
+	) {
+		return [];
+	}
+
+	// Return season data.
+	return $post['post_taxonomies'][ DEPARTMENT_TAXONOMY ];
+}
+
+/**
  * Get data for adventure options cards.
  *
  * @param int[] $post_ids Post IDs.

@@ -71,6 +71,7 @@ import * as shipSpecifications from './ship-specifications';
 import * as expeditionHero from './expedition-hero';
 import * as specifications from './specifications';
 import * as templateTitle from './template-title';
+import * as staffMemberTitleMeta from './staff-member-title-meta';
 
 /**
  * Add blocks.
@@ -145,6 +146,11 @@ const blocks = [
 if ( typenow && 'qrk_ship' === typenow ) {
 	blocks.push( shipCabinCategories );
 	blocks.push( shipSpecifications );
+}
+
+// Register blocks for staff members.
+if ( typenow && 'qrk_staff_member' === typenow ) {
+	blocks.push( staffMemberTitleMeta );
 }
 
 /**
