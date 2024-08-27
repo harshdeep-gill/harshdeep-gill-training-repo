@@ -73,6 +73,266 @@ function register_region_post_type(): void {
 			'with_front' => false,
 		],
 		'capability_type'     => 'post',
+		'template'            => [
+			[
+				'quark/hero',
+				[],
+				[
+					[
+						'quark/breadcrumbs',
+						[],
+					],
+					[
+						'quark/hero-content',
+						[],
+						[
+							[
+								'quark/hero-content-left',
+								[],
+								[
+									[
+										'quark/hero-title',
+										[
+											'syncPostTitle' => true,
+										],
+									],
+									[
+										'quark/hero-subtitle',
+										[],
+									],
+									[
+										'quark/button',
+										[
+											'btnText' => 'View Expeditions',
+											'url'     => [
+												'url'  => '#expeditions',
+												'text' => 'View Expeditions',
+											],
+										],
+									],
+								],
+							],
+						],
+					],
+				],
+			],
+			[
+				'quark/secondary-navigation',
+				[],
+				[
+					[
+						'quark/secondary-navigation-menu',
+						[],
+						[
+							[
+								'quark/secondary-navigation-item',
+								[
+									'title' => 'Overview',
+									'url'   => [
+										'url'  => 'overview',
+										'text' => 'Overview',
+									],
+								],
+							],
+							[
+								'quark/secondary-navigation-item',
+								[
+									'title' => 'Destination Highlights',
+									'url'   => [
+										'url'  => 'destination-highlights',
+										'text' => 'Destination Highlights',
+									],
+								],
+							],
+							[
+								'quark/secondary-navigation-item',
+								[
+									'title' => 'Top Things to See',
+									'url'   => [
+										'url'  => 'top-things-to-see',
+										'text' => 'Top Things to See',
+									],
+								],
+							],
+							[
+								'quark/secondary-navigation-item',
+								[
+									'title' => 'When to Go',
+									'url'   => [
+										'url'  => 'when-to-go',
+										'text' => 'When to Go',
+									],
+								],
+							],
+							[
+								'quark/secondary-navigation-item',
+								[
+									'title' => 'Testimonials',
+									'url'   => [
+										'url'  => 'testimonials',
+										'text' => 'Testimonials',
+									],
+								],
+							],
+							[
+								'quark/secondary-navigation-item',
+								[
+									'title' => 'Expeditions',
+									'url'   => [
+										'url'  => 'expeditions',
+										'text' => 'Expeditions',
+									],
+								],
+							],
+						],
+					],
+				],
+			],
+			[
+				'quark/section',
+				[
+					'title'          => 'Overview',
+					'titleAlignment' => 'left',
+					'headingLevel'   => '2',
+					'hasDescription' => true,
+					'anchor'         => 'overview',
+				],
+				[
+					[
+						'core/paragraph',
+						[],
+					],
+					[
+						'quark/specifications',
+						[
+							'title' => 'Destination Specifications',
+						],
+					],
+				],
+			],
+			[
+				'quark/section',
+				[
+					'title'          => 'Destination Highlights',
+					'titleAlignment' => 'left',
+					'headingLevel'   => '2',
+					'hasDescription' => false,
+					'anchor'         => 'destination-highlights',
+				],
+				[
+					[
+						'quark/media-description-cards',
+						[],
+					],
+					[
+						'quark/fancy-video',
+						[],
+					],
+				],
+			],
+			[
+				'quark/section',
+				[
+					'title'          => 'Top Things to See',
+					'titleAlignment' => 'left',
+					'headingLevel'   => '2',
+					'hasDescription' => false,
+					'anchor'         => 'top-things-to-see',
+				],
+				[
+					[
+						'quark/media-description-cards',
+						[],
+					],
+				],
+			],
+			[
+				'quark/section',
+				[
+					'title'          => 'Points of Interest',
+					'titleAlignment' => 'left',
+					'headingLevel'   => '2',
+					'hasDescription' => true,
+					'anchor'         => 'points-of-interest',
+				],
+				[
+					[
+						'quark/media-text-cta',
+						[],
+						[
+							[
+								'core/heading',
+								[
+									'level' => 3,
+								],
+							],
+							[
+								'core/paragraph',
+								[],
+							],
+						],
+					],
+				],
+			],
+			[
+				'quark/section',
+				[
+					'title'          => 'When to Go',
+					'titleAlignment' => 'left',
+					'headingLevel'   => '2',
+					'hasDescription' => false,
+					'anchor'         => 'when-to-go',
+				],
+				[
+					[
+						'quark/icon-info-grid',
+						[],
+						[
+							[
+								'quark/icon-info-grid-item',
+								[],
+							],
+						],
+					],
+				],
+			],
+			[
+				'quark/section',
+				[
+					'title'          => 'Special Insights from Our Guests',
+					'titleAlignment' => 'left',
+					'headingLevel'   => '2',
+					'hasDescription' => true,
+					'anchor'         => 'testimonials',
+				],
+				[
+					[
+						'quark/review-cards',
+						[],
+					],
+				],
+			],
+			[
+				'quark/section',
+				[
+					'title'          => 'Expeditions to This Region',
+					'titleAlignment' => 'left',
+					'headingLevel'   => '2',
+					'hasDescription' => false,
+					'anchor'         => 'expeditions',
+				],
+				[
+					[
+						'quark/expeditions',
+						[],
+					],
+				],
+			],
+			[
+				'quark/cta-banner',
+				[],
+			],
+		],
 	];
 
 	// Register post type.
