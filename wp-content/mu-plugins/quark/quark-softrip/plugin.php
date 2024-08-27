@@ -20,9 +20,13 @@ require_once __DIR__ . '/inc/adventure-options/namespace.php';
 require_once __DIR__ . '/inc/promotions/namespace.php';
 require_once __DIR__ . '/inc/occupancies/namespace.php';
 require_once __DIR__ . '/inc/occupancy-promotions/namespace.php';
-
-// Kick it off.
-add_action( 'plugins_loaded', __NAMESPACE__ . '\\bootstrap' );
+require_once __DIR__ . '/inc/manual-sync/namespace.php';
+require_once __DIR__ . '/inc/cleanup/namespace.php';
 
 // Register Autoloader.
 spl_autoload_register( __NAMESPACE__ . '\\autoload' );
+
+// Kick it off.
+add_action( 'plugins_loaded', __NAMESPACE__ . '\\bootstrap' );
+add_action( 'plugins_loaded', __NAMESPACE__ . '\\ManualSync\\bootstrap' );
+add_action( 'plugins_loaded', __NAMESPACE__ . '\\Cleanup\\bootstrap' );
