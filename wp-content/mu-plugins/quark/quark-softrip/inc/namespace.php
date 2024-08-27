@@ -52,18 +52,6 @@ function bootstrap(): void {
 
 	// Register Stream log connector.
 	add_filter( 'wp_stream_connectors', __NAMESPACE__ . '\\setup_stream_connectors' );
-
-	// Require manual sync namespace functions.
-	require_once __DIR__ . '/manual-sync/namespace.php';
-
-	// Register admin controls for manual sync.
-	ManualSync\bootstrap();
-
-	// Register cleanup.
-	require_once __DIR__ . '/cleanup/namespace.php';
-
-	// Bootstrap cleanup.
-	Cleanup\bootstrap();
 }
 
 /**
