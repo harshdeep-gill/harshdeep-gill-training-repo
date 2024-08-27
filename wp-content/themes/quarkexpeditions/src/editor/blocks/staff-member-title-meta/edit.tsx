@@ -19,9 +19,9 @@ import metadata from './block.json';
 const { name }: { name: string } = metadata;
 
 /**
- * External dependencies.
+ * Styles.
  */
-import Section from '../../components/section';
+import '../../../front-end/components/staff-member-title-meta/style.scss';
 
 /**
  * Edit component.
@@ -34,7 +34,7 @@ export default function Edit( {}: BlockEditAttributes ): JSX.Element {
 
 	// Render the block.
 	return (
-		<Section { ...blockProps }>
+		<div { ...blockProps }>
 			<ServerSideRender
 				block={ name }
 				EmptyResponsePlaceholder={ () => (
@@ -48,6 +48,6 @@ export default function Edit( {}: BlockEditAttributes ): JSX.Element {
 					/>
 				) }
 			/>
-		</Section>
+		</div>
 	);
 }
