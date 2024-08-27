@@ -10,7 +10,7 @@ import ServerSideRender from '@wordpress/server-side-render';
  * External dependencies.
  */
 import Section from '../../components/section';
-import {name} from "../staff-members/edit";
+import { name } from '../staff-members/edit';
 
 /**
  * Edit component.

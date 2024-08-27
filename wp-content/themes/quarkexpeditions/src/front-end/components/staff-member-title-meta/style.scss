@@ -4,33 +4,20 @@
 
 @import "../../scss";
 
-.staff-member-title {
-	margin-top: var(--spacing-7);
-	font-weight: var(--font-weight-default);
-	line-height: var(--h1-line-height);
-
-	@media screen and (min-width: grid-size(md)) {
-		margin-top: var(--spacing-8);
-	}
+.staff-member-title-meta {
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-4);
 
 	@media screen and (min-width: grid-size(lg)) {
-		margin-top: var(--spacing-9);
-	}
-}
-
-.staff-member-roles {
-	font-weight: var(--font-weight-default);
-	line-height: var(--h1-line-height);
-
-	@media screen and (min-width: grid-size(md)) {
-		margin-top: var(--spacing-8);
+		gap: var(--spacing-5);
 	}
 
-	@media screen and (min-width: grid-size(lg)) {
-		margin-top: var(--spacing-9);
+	> * {
+		margin-block: 0;
 	}
-}
 
-.staff-member-title + .staff-member-roles {
-	margin-top: var(--spacing-3);
+	&__title {
+		font-weight: var(--font-weight-default);
+	}
 }
