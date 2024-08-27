@@ -84,6 +84,46 @@ function register_adventure_option_post_type(): void {
 			'with_front' => false,
 		],
 		'capability_type'     => 'post',
+		'template'            => [
+			[
+				'quark/hero',
+				[
+					'syncPostThumbnail' => true,
+				],
+				[
+					[
+						'quark/breadcrumbs',
+						[],
+					],
+					[
+						'quark/hero-content',
+						[],
+						[
+							[
+								'quark/hero-content-left',
+								[],
+								[
+									[
+										'quark/hero-title',
+										[
+											'syncPostTitle' => true,
+										],
+									],
+								],
+							],
+						],
+					],
+				],
+			],
+			[
+				'core/paragraph',
+				[],
+			],
+			[
+				'quark/collage',
+				[],
+			],
+		],
 	];
 
 	// Register post type.
