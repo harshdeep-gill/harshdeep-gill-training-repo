@@ -2,15 +2,26 @@
  * WordPress dependencies.
  */
 import { useBlockProps } from '@wordpress/block-editor';
+import { Placeholder } from '@wordpress/components';
+import { __ } from '@wordpress/i18n';
 
 // @ts-ignore No Module Declaration.
 import ServerSideRender from '@wordpress/server-side-render';
 
 /**
+ * Internal dependencies.
+ */
+import metadata from './block.json';
+
+/**
+ * Block name.
+ */
+const { name }: { name: string } = metadata;
+
+/**
  * External dependencies.
  */
 import Section from '../../components/section';
-import { name } from '../staff-members/edit';
 
 /**
  * Edit component.
@@ -26,6 +37,16 @@ export default function Edit( {}: BlockEditAttributes ): JSX.Element {
 		<Section { ...blockProps }>
 			<ServerSideRender
 				block={ name }
+				EmptyResponsePlaceholder={ () => (
+					<Placeholder
+						icon="palmtree"
+						label={ __( 'Staff Member Title & Meta', 'qrk' ) }
+						instructions={ __(
+							'Data will be displayed here once you add metadata.',
+							'qrk',
+						) }
+					/>
+				) }
 			/>
 		</Section>
 	);

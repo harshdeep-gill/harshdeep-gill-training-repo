@@ -11,7 +11,7 @@
 
 <div class="staff-member-title-meta">
 	<h1 class="staff-member-title-meta__title">
-		{{ $name}}
+		{{ $name }}
 	</h1>
 
 	@if ( ! empty( $roles ) )

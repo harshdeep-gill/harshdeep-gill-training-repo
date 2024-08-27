@@ -140,17 +140,13 @@ const blocks = [
 	expeditionHero,
 	specifications,
 	templateTitle,
+	staffMemberTitleMeta,
 ];
 
 // Register blocks for ships.
 if ( typenow && 'qrk_ship' === typenow ) {
 	blocks.push( shipCabinCategories );
 	blocks.push( shipSpecifications );
-}
-
-// Register blocks for staff members.
-if ( typenow && 'qrk_staff_member' === typenow ) {
-	blocks.push( staffMemberTitleMeta );
 }
 
 /**
