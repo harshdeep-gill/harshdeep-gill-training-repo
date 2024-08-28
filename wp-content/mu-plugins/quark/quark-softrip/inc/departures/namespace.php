@@ -15,7 +15,6 @@ use function Quark\Ships\get_id_from_ship_code;
 use function Quark\Softrip\AdventureOptions\update_adventure_options;
 use function Quark\Softrip\Occupancies\update_occupancies;
 use function Quark\Softrip\is_date_in_the_past;
-use function Quark\Softrip\Occupancies\clear_occupancies_by_departure;
 use function Quark\Softrip\Occupancies\get_lowest_price as get_occupancies_lowest_price;
 use function Quark\Softrip\Promotions\update_promotions;
 
@@ -29,12 +28,13 @@ use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
 /**
  * Update the departure data.
  *
- * @param mixed[] $raw_departures       Raw departures data from Softrip to update with.
- * @param string  $softrip_package_code Softrip package code.
+ * @param mixed[] $raw_departures              Raw departures data from Softrip to update with.
+ * @param string  $softrip_package_code        Softrip package code.
+ * @param int[]   $specific_departure_post_ids Specific Departure post IDs to update. Default is empty.
  *
  * @return bool
  */
-function update_departures( array $raw_departures = [], string $softrip_package_code = '' ): bool {
+function update_departures( array $raw_departures = [], string $softrip_package_code = '', array $specific_departure_post_ids = [] ): bool {
 	// Bail out if empty softrip package code.
 	if ( empty( $softrip_package_code ) ) {
 		return false;
@@ -116,7 +116,7 @@ function update_departures( array $raw_departures = [], string $softrip_package_
 		}
 
 		// Get departure code.
-		$departure_code = strval( get_post_meta( $departure_post_id, 'softrip_id', true ) );
+		$departure_code = sanitize_text_field( strval( get_post_meta( $departure_post_id, 'softrip_id', true ) ) );
 
 		// Skip if empty.
 		if ( empty( $departure_code ) ) {
@@ -127,8 +127,8 @@ function update_departures( array $raw_departures = [], string $softrip_package_
 		$existing_departure_codes[ $departure_code ] = $departure_post_id;
 	}
 
-	// If empty raw departures, we loop through all departure posts and unpublish such departures whose start date is in past.
-	if ( empty( $raw_departures ) ) {
+	// If no raw departures and no specific departure post IDs, then unpublish expired departures.
+	if ( empty( $raw_departures ) && empty( $specific_departure_post_ids ) ) {
 		// Loop through existing departure codes.
 		foreach ( $existing_departure_codes as $departure_code => $departure_post_id ) {
 			// Skip if draft already.
@@ -166,7 +166,7 @@ function update_departures( array $raw_departures = [], string $softrip_package_
 	 * 4. Update the promotions.
 	 * 5. Update the cabin occupancies.
 	 * 6. Update the occupancy prices.
-	 * 7. For non updated departures, check if start date is in past, then unpublish.
+	 * 7. For all existing departures, if unpublish expired flag is true and start date is in past, then unpublish.
 	 */
 
 	// Initialize departure codes which are updated.
@@ -179,8 +179,16 @@ function update_departures( array $raw_departures = [], string $softrip_package_
 			continue;
 		}
 
+		// Initialize softrip id.
+		$departure_softrip_id = sanitize_text_field( strval( $raw_departure['id'] ) );
+
 		// Find in existing departure codes.
-		$is_existing = in_array( $raw_departure['id'], array_keys( $existing_departure_codes ), true );
+		$is_existing = in_array( $departure_softrip_id, array_keys( $existing_departure_codes ), true );
+
+		// If specific departure post IDs are set, skip if not in the list.
+		if ( ! empty( $specific_departure_post_ids ) && ! in_array( $existing_departure_codes[ $departure_softrip_id ], $specific_departure_post_ids, true ) ) {
+			continue;
+		}
 
 		// Format raw departure data.
 		$formatted_data = format_raw_departure_data( $raw_departure, $itinerary_post_id, $expedition_post_id );
@@ -196,7 +204,7 @@ function update_departures( array $raw_departures = [], string $softrip_package_
 		// If existing, update the post.
 		if ( $is_existing ) {
 			// Add post ID to formatted data.
-			$formatted_data['ID'] = $existing_departure_codes[ $raw_departure['id'] ];
+			$formatted_data['ID'] = $existing_departure_codes[ $departure_softrip_id ];
 
 			// Update the post.
 			$updated_post_id = wp_update_post( $formatted_data, true );
@@ -213,7 +221,7 @@ function update_departures( array $raw_departures = [], string $softrip_package_
 			continue;
 		} else {
 			// Add to updated departure codes.
-			$updated_departure_codes[] = $raw_departure['id'];
+			$updated_departure_codes[] = $departure_softrip_id;
 
 			// Set spoken language for newly created departure.
 			if ( ! $is_existing ) {
@@ -240,8 +248,8 @@ function update_departures( array $raw_departures = [], string $softrip_package_
 
 	// Unpublish departure posts that are non-updated and has expired.
 	foreach ( $existing_departure_codes as $departure_code => $departure_post_id ) {
-		// Skip if departure code is in updated departure codes or already draft.
-		if ( in_array( $departure_code, $updated_departure_codes, true ) || 'draft' === get_post_status( $departure_post_id ) ) {
+		// Skip if already draft.
+		if ( 'draft' === get_post_status( $departure_post_id ) ) {
 			continue;
 		}
 

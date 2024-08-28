@@ -1,3 +1,26 @@
+@php
+	$countries = [
+		'IN' => 'India',
+		'AU' => 'Australia',
+		'US' => 'United States',
+		'CA' => 'Canada',
+	];
+	$states = [
+		'AU' => [
+			'ACT' => 'Australian Capital Territory',
+			'JBT' => 'Jervis Bay Territory',
+		],
+		'US' => [
+			'AA' => 'Armed Forces Americas',
+			'AE' => 'Armed Forces Europe',
+		],
+		'CA' => [
+			'AB' => 'Alberta',
+			'BC' => 'British Columbia',
+		],
+	];
+@endphp
+
 {{-- Required to prevent weird rendering issues. --}}
 <x-once id="media-lightbox">
 	<tp-lightbox id="media-lightbox" class="media-lightbox">
@@ -66,26 +89,8 @@
 				<x-hero.form>
 					<x-form-two-step
 						background_color="white"
-						:countries="[
-							'IN' => 'India',
-							'AU' => 'Australia',
-							'US' => 'United States',
-							'CA' => 'Canada',
-						]"
-						:states="[
-							'AU' => [
-								'ACT' => 'Australian Capital Territory',
-								'JBT' => 'Jervis Bay Territory',
-							],
-							'US' => [
-								'AA' => 'Armed Forces Americas',
-								'AE' => 'Armed Forces Europe',
-							],
-							'CA' => [
-								'AB' => 'Alberta',
-								'BC' => 'British Columbia',
-							],
-						]"
+						:countries="$countries"
+						:states="$states"
 					/>
 				</x-hero.form>
 			</x-hero.right>
@@ -5106,7 +5111,7 @@
 				<x-dates-rates.filters-chips>
 					<x-dates-rates.filter-chip drawer_id="dates-rates-filters" title="Region & Season" accordion_id="accordion-region-season" />
 					<x-dates-rates.filter-chip drawer_id="dates-rates-filters" title="Expedition" accordion_id="accordion-expedition" />
-					<x-dates-rates.filter-chip drawer_id="dates-rates-filters" title="Adevnture Options" accordion_id="accordion-adevnture-options" />
+					<x-dates-rates.filter-chip drawer_id="dates-rates-filters" title="Adventure Options" accordion_id="accordion-adevnture-options" />
 					<x-dates-rates.filter-chip drawer_id="dates-rates-filters" title="Departure Month" accordion_id="accordion-departure-month" />
 					<x-dates-rates.filter-chip drawer_id="dates-rates-filters" title="Duration" accordion_id="accordion-duration" />
 					<x-dates-rates.filter-chip drawer_id="dates-rates-filters" title="Ship" accordion_id="accordion-ship" />
@@ -5127,7 +5132,7 @@
 					<x-dates-rates.filter-chip drawer_id="dates-rates-filters-currency" title="Currency: USD" />
 				</x-dates-rates.sticky-filters>
 
-				<x-drawer id="dates-rates-filters-currency" animation_direction="up" class="dates-rates__drawer">
+				<x-drawer id="dates-rates-filters-currency" animation_direction="up" class="dates-rates__drawer-currency">
 					<x-drawer.header>
 						<h3>Currency</h3>
 					</x-drawer.header>
@@ -5174,42 +5179,431 @@
 							<x-accordion.item id="accordion-expedition">
 								<x-accordion.item-handle title="Expedition" />
 								<x-accordion.item-content>
-									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.it further to meet your schedule, interests, and budget with one of our expert Travel Consultants.</p>
+									<x-form.field-group :validation="[ 'checkbox-group-required' ]">
+										<x-form.checkbox name="" label="Item 1" />
+										<x-form.checkbox name="" label="Item 2" />
+										<x-form.checkbox name="" label="Item 3" />
+										<x-form.checkbox name="" label="Item 4" />
+										<x-form.checkbox name="" label="Item 5" />
+										<x-form.checkbox name="" label="Item 6" />
+										<x-form.checkbox name="" label="Item 7" />
+									</x-form.field-group>
 								</x-accordion.item-content>
 							</x-accordion.item>
 							<x-accordion.item id="accordion-adevnture-options">
 								<x-accordion.item-handle title="Adventure Options (with availability)" />
 								<x-accordion.item-content>
-									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.</p>
+									<x-form.field-group :validation="[ 'checkbox-group-required' ]">
+										<x-form.checkbox name="" label="Item 1" />
+										<x-form.checkbox name="" label="Item 2" />
+										<x-form.checkbox name="" label="Item 3" />
+										<x-form.checkbox name="" label="Item 4" />
+										<x-form.checkbox name="" label="Item 5" />
+										<x-form.checkbox name="" label="Item 6" />
+										<x-form.checkbox name="" label="Item 7" />
+									</x-form.field-group>
 								</x-accordion.item-content>
 							</x-accordion.item>
 							<x-accordion.item id="accordion-departure-month">
 								<x-accordion.item-handle title="Departure Month" />
 								<x-accordion.item-content>
-									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.</p>
+									<x-form.field-group :validation="[ 'checkbox-group-required' ]">
+										<x-form.checkbox name="" label="Item 1" />
+										<x-form.checkbox name="" label="Item 2" />
+										<x-form.checkbox name="" label="Item 3" />
+										<x-form.checkbox name="" label="Item 4" />
+										<x-form.checkbox name="" label="Item 5" />
+										<x-form.checkbox name="" label="Item 6" />
+										<x-form.checkbox name="" label="Item 7" />
+									</x-form.field-group>
 								</x-accordion.item-content>
 							</x-accordion.item>
 							<x-accordion.item id="accordion-duration">
 								<x-accordion.item-handle title="Duration of Voyage (days)" />
 								<x-accordion.item-content>
-									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.</p>
+									<x-form.field-group :validation="[ 'checkbox-group-required' ]">
+										<x-form.checkbox name="" label="Item 1" />
+										<x-form.checkbox name="" label="Item 2" />
+										<x-form.checkbox name="" label="Item 3" />
+										<x-form.checkbox name="" label="Item 4" />
+										<x-form.checkbox name="" label="Item 5" />
+										<x-form.checkbox name="" label="Item 6" />
+										<x-form.checkbox name="" label="Item 7" />
+									</x-form.field-group>
 								</x-accordion.item-content>
 							</x-accordion.item>
 							<x-accordion.item id="accordion-ship">
 								<x-accordion.item-handle title="Ship" />
 								<x-accordion.item-content>
-									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magnis dis parturient montes nascetur ridiculus mus mauris. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor. Aliquam nulla facilisi cras fermentum odio. Dolor sit amet consectetur adipiscing elit pellentesque habitant.</p>
+									<x-form.field-group :validation="[ 'checkbox-group-required' ]">
+										<x-form.checkbox name="" label="Item 1" />
+										<x-form.checkbox name="" label="Item 2" />
+										<x-form.checkbox name="" label="Item 3" />
+										<x-form.checkbox name="" label="Item 4" />
+										<x-form.checkbox name="" label="Item 5" />
+										<x-form.checkbox name="" label="Item 6" />
+										<x-form.checkbox name="" label="Item 7" />
+									</x-form.field-group>
 								</x-accordion.item-content>
 							</x-accordion.item>
 						</x-accordion>
 					</x-drawer.body>
 
 					<x-drawer.footer>
-						<x-button href="#" appearance="outline" size="big">Clear all</x-button>
+						<x-dates-rates.cta-clear-filters />
 						<x-button href="#" size="big">View Results (132)</x-button>
 					</x-drawer.footer>
 				</x-drawer>
 			</x-dates-rates.filters>
+
+			<x-section>
+				<h2>Ocean Adventurer</h2>
+				<x-dates-rates.item>
+					<x-dates-rates.item-table title="Cabin Categories">
+						{{-- Table Head --}}
+						<x-dates-rates.item-table-head>
+							<x-dates-rates.item-table-row>
+								<x-dates-rates.item-table-heading>Expedition</x-dates-rates.item-table-heading>
+								<x-dates-rates.item-table-heading>Promo Offers</x-dates-rates.item-table-heading>
+								<x-dates-rates.item-table-heading>Triple</x-dates-rates.item-table-heading>
+								<x-dates-rates.item-table-heading>Lower Deck Twin</x-dates-rates.item-table-heading>
+								<x-dates-rates.item-table-heading>Main Deck Ttwin Porthole</x-dates-rates.item-table-heading>
+								<x-dates-rates.item-table-heading>Main Deck Twin Window</x-dates-rates.item-table-heading>
+								<x-dates-rates.item-table-heading>Superior</x-dates-rates.item-table-heading>
+								<x-dates-rates.item-table-heading>Deluxe</x-dates-rates.item-table-heading>
+								<x-dates-rates.item-table-heading>Suite</x-dates-rates.item-table-heading>
+								<x-dates-rates.item-table-heading>Owner's Suite</x-dates-rates.item-table-heading>
+							</x-dates-rates.item-table-row>
+						</x-dates-rates.item-table-head>
+						{{-- Row 1 --}}
+						<x-dates-rates.item-table-body>
+							<x-dates-rates.item-table-row>
+								<x-dates-rates.item-table-column rowspan="2">
+									<x-dates-rates.expedition>
+										<x-dates-rates.expedition-overline>
+											<x-dates-rates.expedition-overline-link title="Antarctic" url="" />
+											<x-dates-rates.expedition-overline-link title="Ocean Adventurer" url="#" />
+										</x-dates-rates.expedition-overline>
+										<x-dates-rates.expedition-title text="Spitsbergen Highlights: Expedition In Brief" />
+										<x-dates-rates.expedition-dates
+											start_date="Feb 27"
+											end_date="Mar 05"
+											year="2024"
+											duration="8"
+										/>
+										<x-dates-rates.expedition-meta>
+											<x-dates-rates.expedition-meta-item>
+												<x-dates-rates.expedition-meta-label>
+													Start Location
+												</x-dates-rates.expedition-meta-label>
+												<x-dates-rates.expedition-meta-value>
+													Punta Arenas, Chile
+												</x-dates-rates.expedition-meta-value>
+											</x-dates-rates.expedition-meta-item>
+											<x-dates-rates.expedition-meta-item>
+												<x-dates-rates.expedition-meta-label>
+													End Location
+												</x-dates-rates.expedition-meta-label>
+												<x-dates-rates.expedition-meta-value>
+													Punta Arenas, Chile
+												</x-dates-rates.expedition-meta-value>
+											</x-dates-rates.expedition-meta-item>
+											<x-dates-rates.expedition-meta-item>
+												<x-dates-rates.expedition-meta-label>
+													Languages
+												</x-dates-rates.expedition-meta-label>
+												<x-dates-rates.expedition-meta-value>
+													English
+												</x-dates-rates.expedition-meta-value>
+											</x-dates-rates.expedition-meta-item>
+										</x-dates-rates.expedition-meta>
+										<x-dates-rates.expedition-cta text="Request a Quote" url="#" />
+									</x-dates-rates.expedition>
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column>
+									<x-dates-rates.item-table-column-title>
+										<strong>Brochure Price</strong>
+									</x-dates-rates.item-table-column-title>
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column>
+									$11,995 USD
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column :is_sold_out="true">
+									$13,995 USD
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column :is_sold_out="true">
+									$14,495 USD
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column>
+									$15,995 USD
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column :is_sold_out="true">
+									$17,495 USD
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column :is_sold_out="true">
+									$17,495 USD
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column :is_sold_out="true">
+									$19,995 USD
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column :is_sold_out="true">
+									$22,995 USD
+								</x-dates-rates.item-table-column>
+							</x-dates-rates.item-table-row>
+
+							<x-dates-rates.item-table-row>
+								<x-dates-rates.item-table-column>
+									<x-dates-rates.item-table-column-title>
+										<strong>Availability</strong>
+									</x-dates-rates.item-table-column-title>
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column>
+									Please Call
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column :is_sold_out="true">
+									Sold Out
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column :is_sold_out="true">
+									Sold Out
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column>
+									Please Call
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column :is_sold_out="true">
+									Sold Out
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column :is_sold_out="true">
+									Sold Out
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column :is_sold_out="true">
+									Sold Out
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column :is_sold_out="true">
+									Sold Out
+								</x-dates-rates.item-table-column>
+							</x-dates-rates.item-table-row>
+						</x-dates-rates.item-table-body>
+
+						<x-dates-rates.item-table-foot>
+							<x-dates-rates.item-table-row>
+								<x-dates-rates.item-table-column colspan="10">
+									<x-dates-rates.adventure-options>
+										<x-dates-rates.adventure-options-column title="Included Adventure Options">
+											<x-dates-rates.adventure-options-item name="Walking/Hiking" icon="hiking" />
+											<x-dates-rates.adventure-options-item name="Polar Plunge" icon="polar-plunge" />
+										</x-dates-rates.adventure-options-column>
+
+										<x-dates-rates.adventure-options-column title="Paid Adventure Options">
+											<x-dates-rates.adventure-options-item name="Padding Excursion" icon="paddling" :is_paid="true">
+												<x-dates-rates.adventure-options-item-price price="$995" currency="USD" count="00" />
+											</x-dates-rates.adventure-options-item>
+											<x-dates-rates.adventure-options-item name="Sea Kayaking" icon="kayaking" :is_paid="true">
+												<x-dates-rates.adventure-options-item-price price="$995" currency="USD" count="8" />
+											</x-dates-rates.adventure-options-item>
+											<x-dates-rates.adventure-options-item name="Polar Plunge" icon="polar-plunge" :is_paid="true">
+												<x-dates-rates.adventure-options-item-price price="$995" currency="USD" count="9" />
+											</x-dates-rates.adventure-options-item>
+										</x-dates-rates.adventure-options-column>
+									</x-dates-rates.adventure-options>
+								</x-dates-rates.item-table-column>
+							</x-dates-rates.item-table-row>
+						</x-dates-rates.item-table-foot>
+					</x-dates-rates.item-table>
+
+					<x-dates-rates.info text="Prices are shown per person" />
+				</x-dates-rates.item>
+
+				<x-dates-rates.item>
+					<x-dates-rates.item-table title="Cabin Categories">
+						{{-- Table Head --}}
+						<x-dates-rates.item-table-head>
+							<x-dates-rates.item-table-row>
+								<x-dates-rates.item-table-heading>Expedition</x-dates-rates.item-table-heading>
+								<x-dates-rates.item-table-heading>Promo Offers</x-dates-rates.item-table-heading>
+								<x-dates-rates.item-table-heading>Triple</x-dates-rates.item-table-heading>
+								<x-dates-rates.item-table-heading>Lower Deck Twin</x-dates-rates.item-table-heading>
+								<x-dates-rates.item-table-heading>Main Deck Ttwin Porthole</x-dates-rates.item-table-heading>
+								<x-dates-rates.item-table-heading>Main Deck Twin Window</x-dates-rates.item-table-heading>
+								<x-dates-rates.item-table-heading>Superior</x-dates-rates.item-table-heading>
+								<x-dates-rates.item-table-heading>Deluxe</x-dates-rates.item-table-heading>
+								<x-dates-rates.item-table-heading>Suite</x-dates-rates.item-table-heading>
+								<x-dates-rates.item-table-heading>Owner's Suite</x-dates-rates.item-table-heading>
+							</x-dates-rates.item-table-row>
+						</x-dates-rates.item-table-head>
+						{{-- Row 1 --}}
+						<x-dates-rates.item-table-body>
+							<x-dates-rates.item-table-row>
+								<x-dates-rates.item-table-column rowspan="3">
+									<x-dates-rates.expedition>
+										<x-dates-rates.expedition-overline>
+											<x-dates-rates.expedition-overline-link title="Antarctic" url="" />
+											<x-dates-rates.expedition-overline-link title="Ocean Adventurer" url="#" />
+										</x-dates-rates.expedition-overline>
+										<x-dates-rates.expedition-title text="Spitsbergen Highlights: Expedition In Brief" />
+										<x-dates-rates.expedition-dates
+											start_date="Feb 27"
+											end_date="Mar 05"
+											year="2024"
+											duration="8"
+										/>
+										<x-dates-rates.expedition-meta>
+											<x-dates-rates.expedition-meta-item>
+												<x-dates-rates.expedition-meta-label>
+													Start Location
+												</x-dates-rates.expedition-meta-label>
+												<x-dates-rates.expedition-meta-value>
+													Punta Arenas, Chile
+												</x-dates-rates.expedition-meta-value>
+											</x-dates-rates.expedition-meta-item>
+											<x-dates-rates.expedition-meta-item>
+												<x-dates-rates.expedition-meta-label>
+													End Location
+												</x-dates-rates.expedition-meta-label>
+												<x-dates-rates.expedition-meta-value>
+													Punta Arenas, Chile
+												</x-dates-rates.expedition-meta-value>
+											</x-dates-rates.expedition-meta-item>
+											<x-dates-rates.expedition-meta-item>
+												<x-dates-rates.expedition-meta-label>
+													Languages
+												</x-dates-rates.expedition-meta-label>
+												<x-dates-rates.expedition-meta-value>
+													English
+												</x-dates-rates.expedition-meta-value>
+											</x-dates-rates.expedition-meta-item>
+										</x-dates-rates.expedition-meta>
+										<x-dates-rates.expedition-cta text="Request a Quote" url="#" />
+									</x-dates-rates.expedition>
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column>
+									<x-dates-rates.item-table-column-title>
+										<strong>Brochure Price</strong>
+										(Incl. Transfer Package)
+										<x-tooltip icon="info">
+											<p>Hiking, kayaking, mountain biking, mountaineering, etc.</p>
+										</x-tooltip>
+									</x-dates-rates.item-table-column-title>
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column>
+									$11,995 USD
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column :is_sold_out="true">
+									$13,995 USD
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column :is_sold_out="true">
+									$14,495 USD
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column>
+									$15,995 USD
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column :is_sold_out="true">
+									$17,495 USD
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column :is_sold_out="true">
+									$17,495 USD
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column :is_sold_out="true">
+									$19,995 USD
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column :is_sold_out="true">
+									$22,995 USD
+								</x-dates-rates.item-table-column>
+							</x-dates-rates.item-table-row>
+
+							<x-dates-rates.item-table-row>
+								<x-dates-rates.item-table-column :is_pay_in_full="true">
+									<x-dates-rates.item-table-column-title>
+										<strong>Pay in full at time of booking & Save 5%</strong>
+									</x-dates-rates.item-table-column-title>
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column :is_pay_in_full="true">
+									3,992 USD
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column :is_sold_out="true">
+									$4,995 USD
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column :is_sold_out="true">
+									$5,012 USD
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column :is_pay_in_full="true">
+									$5,795 USD
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column :is_sold_out="true">
+									$5,995 USD
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column :is_pay_in_full="true">
+									$5,995 USD
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column :is_pay_in_full="true">
+									$6,015 USD
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column :is_sold_out="true">
+									$6,075 USD
+								</x-dates-rates.item-table-column>
+							</x-dates-rates.item-table-row>
+
+							<x-dates-rates.item-table-row>
+								<x-dates-rates.item-table-column>
+									<x-dates-rates.item-table-column-title>
+										<strong>Availability</strong>
+									</x-dates-rates.item-table-column-title>
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column :is_stock_limited="true">
+									3 cabins
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column :is_sold_out="true">
+									Sold Out
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column :is_sold_out="true">
+									Sold Out
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column>
+									Please Call
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column :is_sold_out="true">
+									Sold Out
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column :is_sold_out="true">
+									Sold Out
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column :is_stock_limited="true">
+									2 Cabins
+								</x-dates-rates.item-table-column>
+								<x-dates-rates.item-table-column :is_sold_out="true">
+									Sold Out
+								</x-dates-rates.item-table-column>
+							</x-dates-rates.item-table-row>
+						</x-dates-rates.item-table-body>
+
+						<x-dates-rates.item-table-foot>
+							<x-dates-rates.item-table-row>
+								<x-dates-rates.item-table-column colspan="10">
+									<x-dates-rates.adventure-options>
+										<x-dates-rates.adventure-options-column title="Included Adventure Options">
+											<x-dates-rates.adventure-options-item name="Walking/Hiking" icon="hiking" />
+											<x-dates-rates.adventure-options-item name="Polar Plunge" icon="polar-plunge" />
+										</x-dates-rates.adventure-options-column>
+
+										<x-dates-rates.adventure-options-column title="Paid Adventure Options">
+											<x-dates-rates.adventure-options-item name="Padding Excursion" icon="paddling" :is_paid="true">
+												<x-dates-rates.adventure-options-item-price price="$995" currency="USD" count="00" />
+											</x-dates-rates.adventure-options-item>
+											<x-dates-rates.adventure-options-item name="Sea Kayaking" icon="kayaking" :is_paid="true">
+												<x-dates-rates.adventure-options-item-price price="$995" currency="USD" count="8" />
+											</x-dates-rates.adventure-options-item>
+											<x-dates-rates.adventure-options-item name="Polar Plunge" icon="polar-plunge" :is_paid="true">
+												<x-dates-rates.adventure-options-item-price price="$995" currency="USD" count="9" />
+											</x-dates-rates.adventure-options-item>
+										</x-dates-rates.adventure-options-column>
+									</x-dates-rates.adventure-options>
+								</x-dates-rates.item-table-column>
+							</x-dates-rates.item-table-row>
+						</x-dates-rates.item-table-foot>
+					</x-dates-rates.item-table>
+
+					<x-dates-rates.info text="Prices are shown per person" />
+				</x-dates-rates.item>
+			</x-section>
 		</x-dates-rates>
 	</x-section>
 </x-component-demo>
@@ -5398,6 +5792,14 @@
 		<x-parts.book-departures-expeditions results_count="{{ $payload['resultCount'] ?? 0 }}" :payload="$payload" />
 	</x-section>
 </x-component-demo>
+<x-component-demo :keys="[ 'book-departures-ships' ]">
+	<x-section>
+		<x-section.heading>
+			<x-section.title title="Upcoming Departures" align="left" />
+		</x-section.heading>
+		<x-parts.book-departures-ships results_count="{{ $payload['resultCount'] ?? 0 }}" :payload="$payload" />
+	</x-section>
+</x-component-demo>
 
 <x-component-demo :keys="[ 'link-detail-cards' ]">
 	<x-section>
@@ -5426,6 +5828,41 @@
 			</x-link-detail-cards.card>
 		</x-link-detail-cards>
 	</x-section>
+</x-component-demo>
+
+<x-component-demo :keys="[ 'form-contact-us' ]">
+	<x-section>
+		<x-form-contact-us
+			:countries="$countries"
+			:states="$states"
+		/>
+	</x-section>
+</x-component-demo>
+
+<x-component-demo :keys="[ 'mini-cards-list' ]">
+	<x-mini-cards-list>
+		<x-mini-cards-list.card>
+			<x-mini-cards-list.card-image image_id="120" />
+			<x-mini-cards-list.card-info>
+				<x-mini-cards-list.card-title title="Antarctic Peninsula" />
+				<x-mini-cards-list.card-date date="June 2024" />
+			</x-mini-cards-list.card-info>
+		</x-mini-cards-list.card>
+		<x-mini-cards-list.card>
+			<x-mini-cards-list.card-image image_id="87" />
+			<x-mini-cards-list.card-info>
+				<x-mini-cards-list.card-title title="Patagonia" />
+				<x-mini-cards-list.card-date date="June 2025" />
+			</x-mini-cards-list.card-info>
+		</x-mini-cards-list.card>
+		<x-mini-cards-list.card>
+			<x-mini-cards-list.card-image image_id="108" />
+			<x-mini-cards-list.card-info>
+				<x-mini-cards-list.card-title title="Svalbard" />
+				<x-mini-cards-list.card-date date="January 2025" />
+			</x-mini-cards-list.card-info>
+		</x-mini-cards-list.card>
+	</x-mini-cards-list>
 </x-component-demo>
 
 <x-component-demo :keys="[ 'footer' ]">

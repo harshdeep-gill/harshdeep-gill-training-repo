@@ -9,7 +9,7 @@
 
 	grid-gap: var(--spacing-6);
 
-	@media screen and (min-width: calc( grid-size(lg) + 1px )) {
+	@media screen and (min-width: calc( grid-size(lg) )) {
 
 		@include grid-columns(2);
 	}

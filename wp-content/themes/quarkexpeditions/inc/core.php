@@ -95,6 +95,7 @@ function register_styles(): void {
 	wp_register_style( 'tp-lightbox', get_template_directory_uri() . '/dist/vendor/tplightboxelement.css', [], $assets_version );
 	wp_register_style( 'tp-tabs', get_template_directory_uri() . '/dist/vendor/tptabselement.css', [], $assets_version );
 	wp_register_style( 'tp-accordion', get_template_directory_uri() . '/dist/vendor/tpaccordionitemelement.css', [], $assets_version );
+	wp_register_style( 'tp-toggle-attribute', get_template_directory_uri() . '/dist/vendor/tptoggleattributeelement.css', [], $assets_version );
 
 	// Defer certain styles.
 	add_filter(
@@ -141,6 +142,7 @@ function register_scripts(): void {
 	wp_register_script( 'trustpilot', 'https://widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js', [], $assets_version, true );
 	wp_register_script( 'wistia-embed', 'https://fast.wistia.com/assets/external/E-v1.js', [], $assets_version, true );
 	wp_register_script( 'tp-lightbox', get_template_directory_uri() . '/dist/vendor/tplightboxelement.js', [], $assets_version, true );
+	wp_register_script( 'tp-toggle-attribute', get_template_directory_uri() . '/dist/vendor/tptoggleattributeelement.js', [], $assets_version, true );
 
 	// Pass variables to script.
 	wp_localize_script(
@@ -318,6 +320,9 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'class' => true,
 				],
 				'quark-dates-rates-filter'                    => [
+					'class' => true,
+				],
+				'quark-dates-rates-table'                     => [
 					'class' => true,
 				],
 				'quark-country-selector'                      => [

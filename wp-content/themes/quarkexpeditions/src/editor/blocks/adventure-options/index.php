@@ -13,6 +13,7 @@ use WP_Query;
 use function Quark\AdventureOptions\get_cards_data;
 
 use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
+use const Quark\Expeditions\DESTINATION_TAXONOMY;
 use const Quark\AdventureOptions\POST_TYPE as ADVENTURE_OPTIONS_POST_TYPE;
 
 const COMPONENT = 'parts.adventure-options';
@@ -48,44 +49,64 @@ function render( array $attributes = [] ): string {
 		return '';
 	}
 
-	// Get the terms.
-	$terms = get_the_terms( $current_post_id, ADVENTURE_OPTION_CATEGORY );
+	// Build query args.
+	$args = [
+		'post_type'              => ADVENTURE_OPTIONS_POST_TYPE,
+		'post_status'            => 'publish',
+		'fields'                 => 'ids',
+		'posts_per_page'         => $attributes['total'],
+		'no_found_rows'          => true,
+		'update_post_meta_cache' => false,
+		'update_post_term_cache' => false,
+		'orderby'                => 'date',
+		'order'                  => 'DESC',
+	];
 
 	// Initialize tax query.
 	$tax_query = [
-		'taxonomy'         => ADVENTURE_OPTION_CATEGORY,
 		'field'            => 'term_id',
 		'include_children' => false,
 		'operator'         => 'IN',
 	];
 
 	// Check if terms were selected in the editor.
-	if ( ! empty( $attributes['termIDs'] ) && is_array( $attributes['termIDs'] ) ) {
-		$tax_query['terms'] = $attributes['termIDs'];
-	} elseif ( ! empty( $terms ) && ! $terms instanceof WP_Error ) {
+	if ( 'auto' === $attributes['selectionType'] ) {
+		// Set destination taxonomy.
+		$tax_query['taxonomy'] = DESTINATION_TAXONOMY;
+		$terms                 = get_the_terms( $current_post_id, DESTINATION_TAXONOMY );
+
+		// Check if terms are available.
+		if ( empty( $terms ) || $terms instanceof WP_Error ) {
+			return '';
+		}
+
+		// Set terms.
 		$tax_query['terms'] = array_map(
 			function ( $term ) {
 				return absint( $term->term_id );
 			},
 			$terms
 		);
+
+		// Set the args.
+		$args['tax_query']      = [ $tax_query ];
+		$args['posts_per_page'] = $attributes['total'] + 1;
+	} elseif ( ! empty( $attributes['termIDs'] ) && is_array( $attributes['termIDs'] ) && 'byCategory' === $attributes['selectionType'] ) {
+		// Set adventure option category.
+		$tax_query['taxonomy'] = ADVENTURE_OPTION_CATEGORY;
+		$tax_query['terms']    = $attributes['termIDs'];
+
+		// Set tax query.
+		$args['tax_query'] = [ $tax_query ];
+	} elseif ( ! empty( $attributes['ids'] ) && is_array( $attributes['ids'] ) && 'manual' === $attributes['selectionType'] ) {
+		// Set post IDs.
+		$args['post__in']       = $attributes['ids'];
+		$args['orderby']        = 'post__in';
+		$args['posts_per_page'] = count( $attributes['ids'] );
 	} else {
 		// Bail.
 		return '';
 	}
-
-	// Build query args.
-	$args = [
-		'post_type'              => ADVENTURE_OPTIONS_POST_TYPE,
-		'post_status'            => 'publish',
-		'fields'                 => 'ids',
-		'no_found_rows'          => true,
-		'update_post_meta_cache' => false,
-		'update_post_term_cache' => false,
-		'orderby'                => 'date',
-		'order'                  => 'DESC',
-		'tax_query'              => [ $tax_query ],
-	];
 
 	// Get posts.
 	$posts = new WP_Query( $args );
