@@ -1121,3 +1121,30 @@ function get_dates_rates_card_data( int $departure_id = 0, string $currency = 'U
 	// Return departure card data.
 	return $data;
 }
+
+/**
+ * Get departure cards data.
+ *
+ * @param int[]  $departure_ids The departure IDs.
+ * @param string $currency      The currency.
+ *
+ * @return mixed[]
+ */
+function get_dates_rates_cards_data( array $departure_ids = [], string $currency = 'USD' ): array {
+	// Prepare the departure cards data.
+	$departure_cards = [];
+
+	// Validate departure_ids.
+	if ( empty( $departure_ids ) || ! is_array( $departure_ids ) ) {
+		return $departure_cards;
+	}
+
+	// Loop through departure_ids.
+	foreach ( $departure_ids as $departure_id ) {
+		// Get departure card data.
+		$departure_cards[ $departure_id ] = get_dates_rates_card_data( $departure_id, $currency );
+	}
+
+	// Return departure cards data.
+	return $departure_cards;
+}
