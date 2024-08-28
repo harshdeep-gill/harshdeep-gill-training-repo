@@ -1161,7 +1161,9 @@ class Test_Departure_Cards extends Softrip_TestCase {
 					'availability_description' => 'Available',
 					'spaces_available'         => 10,
 					'brochure_price'           => '$45,105 USD',
-					'15PROMO'                  => '$38,169 USD',
+					'promos'                   => [
+						'15PROMO'                  => '$38,169 USD',
+					],
 				],
 				'ULT-DBL' => [
 					'name'                     => 'cabin_name - ULT-DBL',
@@ -1169,7 +1171,9 @@ class Test_Departure_Cards extends Softrip_TestCase {
 					'availability_description' => 'Available',
 					'spaces_available'         => 20,
 					'brochure_price'           => '$34,800 USD',
-					'15PROMO'                  => '$29,410 USD',
+					'promos'                   => [
+						'15PROMO'                  => '$29,410 USD',
+					],
 				],
 			],
 		];
@@ -1354,12 +1358,14 @@ class Test_Departure_Cards extends Softrip_TestCase {
 					'icon_image_id'    => '234',
 					'spaces_available' => 0,
 					'price_per_person' => '$1,090 CAD',
+					'currency'         => 'CAD',
 				],
 				[
 					'title'            => 'adventure_option-2',
 					'icon_image_id'    => '987',
 					'price_per_person' => '$270 CAD',
 					'spaces_available' => 13,
+					'currency'         => 'CAD',
 				],
 			],
 			$card_data['paid_adventure_options'] ?? []
@@ -1374,6 +1380,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 				'availability_description' => 'Please Call',
 				'spaces_available'         => 0,
 				'brochure_price'           => '$46,050 CAD',
+				'promos'                   => [],
 			],
 			$card_data['cabin_data']['OEX-JST'] ?? []
 		);
