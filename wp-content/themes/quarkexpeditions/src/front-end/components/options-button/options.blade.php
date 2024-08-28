@@ -13,5 +13,5 @@
 		<ul class="options-button__options-dropdown">
 			{!! $slot !!}
 		</ul>
-		</div>
+	</div>
 </div>
