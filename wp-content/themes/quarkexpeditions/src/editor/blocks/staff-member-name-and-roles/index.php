@@ -12,7 +12,7 @@ use WP_Post;
 use function Quark\StaffMembers\get as get_staff_member;
 use function Quark\StaffMembers\get_departments;
 
-const COMPONENT = 'staff-member-title-meta';
+const COMPONENT = 'staff-member-name-and-roles';
 
 /**
  * Bootstrap this block.
