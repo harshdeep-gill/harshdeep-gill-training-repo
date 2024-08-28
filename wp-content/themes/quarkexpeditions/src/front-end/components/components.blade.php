@@ -4683,6 +4683,18 @@
 	</x-departure-cards>
 </x-component-demo>
 
+<x-component-demo :keys="[ 'options-button' ]">
+	<x-section>
+		<x-options-button>
+			<x-options-button.default-option url="#">View Cabin Pricing</x-options-button.default-option>
+			<x-options-button.options>
+				<x-options-button.option url="#">Request a callback</x-options-button.option>
+				<x-options-button.option url="#">Chat with us now</x-options-button.option>
+			</x-options-button.options>
+		</x-options-button>
+	</x-section>
+</x-component-demo>
+
 <x-component-demo :keys="[ 'expedition-cards' ]">
 	<x-expedition-cards>
 		<x-expedition-cards.card>
