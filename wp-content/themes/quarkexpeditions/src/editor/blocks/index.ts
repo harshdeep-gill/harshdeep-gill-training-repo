@@ -73,6 +73,7 @@ import * as specifications from './specifications';
 import * as templateTitle from './template-title';
 import * as featuredImage from './featured-image';
 import * as expeditions from './expeditions';
+import * as bookDeparturesShip from './book-departures-ship';
 
 /**
  * Add blocks.
@@ -149,6 +150,7 @@ const blocks = [
 if ( typenow && 'qrk_ship' === typenow ) {
 	blocks.push( shipCabinCategories );
 	blocks.push( shipSpecifications );
+	blocks.push( bookDeparturesShip );
 }
 
 /**
