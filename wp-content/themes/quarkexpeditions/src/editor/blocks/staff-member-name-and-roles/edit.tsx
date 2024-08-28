@@ -7,7 +7,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * External dependencies.
  */
-import classnames from "classnames";
+import classnames from 'classnames';
 
 /**
  * Styles.
@@ -23,13 +23,13 @@ export default function Edit( {}: BlockEditAttributes ): JSX.Element {
 	// Get the block props.
 	const blockProps = useBlockProps(
 		{
-			className: classnames( 'staff-member-name-and-roles' )
+			className: classnames( 'staff-member-name-and-roles' ),
 		}
 	);
 
 	// Render the block.
 	return (
-		<div {...blockProps}>
+		<div { ...blockProps }>
 			<h1 className="staff-member-name-and-roles__title">
 				{ __( 'John Doe', 'qrk' ) }
 			</h1>
