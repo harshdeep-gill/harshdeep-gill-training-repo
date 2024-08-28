@@ -81,8 +81,8 @@ class Test_Ingestor extends WP_UnitTestCase {
 				'id'           => $expedition_post_id,
 				'name'         => get_raw_text_from_html( get_the_title( $expedition_post_id ) ),
 				'published'    => true,
-				'description'  => '', // @todo https://tuispecialist.atlassian.net/browse/QE-580 - Get description after parsing post content.
-				'images'       => [], // @todo https://tuispecialist.atlassian.net/browse/QE-580 - Get description after parsing post content.
+				'description'  => '', // @todo https://tuispecialist.atlassian.net/browse/QE-589 - Get description after parsing post content.
+				'images'       => [],
 				'destinations' => [],
 				'itineraries'  => [],
 			];
