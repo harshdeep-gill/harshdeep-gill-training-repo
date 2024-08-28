@@ -136,6 +136,7 @@ class Test_Expeditions extends Softrip_TestCase {
 				'permalink'       => '',
 				'post_meta'       => [],
 				'post_taxonomies' => [],
+				'data'            => [],
 			],
 			get( $post_2->ID )
 		);
