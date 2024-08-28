@@ -1267,6 +1267,8 @@
 				size="medium"
 				image_id="33"
 				video_url="https://www.youtube.com/embed/KhVseF5ZD5g"
+				{{-- video_url="https://vimeo.com/factory01/workworkwork" --}}
+				{{-- video_url="https://fast.wistia.net/embed/iframe/p0k52ec113?seo=true&videoFoam=false" --}}
 				title="Video Caption"
 			/>
 			<x-collage.video
