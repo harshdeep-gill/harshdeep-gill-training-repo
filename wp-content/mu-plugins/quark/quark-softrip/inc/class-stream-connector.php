@@ -61,8 +61,8 @@ class Stream_Connector extends Connector {
 	public function get_action_labels(): array {
 		// Return labels.
 		return [
-			'initiated' => __( 'Sync Initiated', 'qrk' ),
-			'completed' => __( 'Sync Completed', 'qrk' ),
+			'sync_initiated' => __( 'Sync Initiated', 'qrk' ),
+			'sync_completed' => __( 'Sync Completed', 'qrk' ),
 		];
 	}
 
@@ -94,7 +94,7 @@ class Stream_Connector extends Connector {
 			[],
 			absint( wp_unique_id() ),
 			'softrip_sync',
-			'initiated'
+			'sync_initiated'
 		);
 	}
 
@@ -126,7 +126,7 @@ class Stream_Connector extends Connector {
 			[],
 			absint( wp_unique_id() ),
 			'softrip_sync',
-			'completed'
+			'sync_completed'
 		);
 	}
 }

@@ -72,6 +72,7 @@ import * as expeditionHero from './expedition-hero';
 import * as specifications from './specifications';
 import * as templateTitle from './template-title';
 import * as staffMemberNameAndRoles from './staff-member-name-and-roles';
+import * as featuredImage from './featured-image';
 import * as expeditions from './expeditions';
 
 /**
@@ -142,6 +143,7 @@ const blocks = [
 	specifications,
 	templateTitle,
 	staffMemberNameAndRoles,
+	featuredImage,
 	expeditions,
 ];
 
