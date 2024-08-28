@@ -46,9 +46,8 @@ export default function Edit( {}: BlockEditAttributes ): JSX.Element {
 			{ featuredImage && (
 				<figure className="featured-image typography-spacing">
 					<img
-						src={ featuredImage.source_url }
-						alt={ featuredImage.alt_text }
-						className="featured"
+						src={ featuredImage?.source_url }
+						alt={ featuredImage?.alt_text }
 					/>
 				</figure>
 			) }
