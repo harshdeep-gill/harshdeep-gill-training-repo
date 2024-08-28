@@ -5,5 +5,5 @@
 @endphp
 
 <ul class="expedition-cards__options-list">
-	{!! $slot !!}
+	<x-content :content="$slot" />
 </ul>

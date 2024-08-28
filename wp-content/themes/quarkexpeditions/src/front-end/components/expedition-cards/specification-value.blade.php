@@ -5,5 +5,5 @@
 @endphp
 
 <div class="expedition-cards__specification-value">
-	{!! $slot !!}
+	<x-content :content="$slot" />
 </div>

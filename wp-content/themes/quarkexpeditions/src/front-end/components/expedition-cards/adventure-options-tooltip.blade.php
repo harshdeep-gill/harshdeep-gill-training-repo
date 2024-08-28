@@ -8,6 +8,6 @@
 	<span>&hellip; +<span class="expedition-cards__options-count"></span> {{ __( 'more', 'qrk' ) }}</span>
 
 	<x-expedition-cards.tooltip>
-		{!! $slot !!}
+		<x-content :content="$slot" />
 	</x-expedition-cards.tooltip>
 </li>
