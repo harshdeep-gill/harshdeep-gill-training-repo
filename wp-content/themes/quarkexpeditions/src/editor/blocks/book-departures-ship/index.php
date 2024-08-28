@@ -1,20 +1,19 @@
 <?php
 /**
- * Block: Book Departures Expeditions.
+ * Block: Book Departures Ships.
  *
  * @package quark
  */
 
-namespace Quark\Theme\Blocks\BookDeparturesExpeditions;
+namespace Quark\Theme\Blocks\BookDeparturesShips;
 
-use WP_Block;
 use WP_Post;
 
 use function Quark\Departures\get_cards_data;
-use function Quark\Expeditions\get as get_expedition;
+use function Quark\Ships\get as get_ship;
 use function Quark\Search\Departures\search;
 
-const COMPONENT = 'parts.book-departures-expeditions';
+const COMPONENT = 'parts.book-departures-ships';
 
 /**
  * Bootstrap this block.
@@ -40,26 +39,25 @@ function bootstrap(): void {
  * @return string The block markup.
  */
 function render( array $attributes = [], string $content = '' ): string {
-	// Get the expedition.
-	$expedition = get_expedition();
+	// Get the ship.
+	$ship = get_ship();
 
-	// Check if the expedition is empty.
-	if ( empty( $expedition['post'] ) || ! $expedition['post'] instanceof WP_Post ) {
+	// Check if the ship is empty.
+	if ( empty( $ship['post'] ) || ! $ship['post'] instanceof WP_Post ) {
 		return $content;
 	}
 
 	// Get the expedition ID.
-	$expedition_id = $expedition['post']->ID;
+	$ship_id = $ship['post']->ID;
 
-	// TODO: Get the selected currency from the user.
 	// Set the currency.
 	$currency = 'USD';
 
 	// Init selected filters.
 	$selected_filter = [
-		'posts_per_load' => 4,
+		'posts_per_load' => 5,
 		'currency'       => $currency,
-		'expeditions'    => [ absint( $expedition_id ) ],
+		'ships'          => [ absint( $ship_id ) ],
 	];
 
 	// Search for Departure post.
@@ -73,9 +71,9 @@ function render( array $attributes = [], string $content = '' ): string {
 		COMPONENT,
 		[
 			'cards'           => $cards_data,
-			'results_count'   => $search_results['result_count'],
 			'remaining_count' => $search_results['remaining_count'],
-			'expedition_id'   => $expedition_id,
+			'results_count'   => $search_results['result_count'],
+			'ship_id'         => $ship_id,
 		]
 	);
 }
