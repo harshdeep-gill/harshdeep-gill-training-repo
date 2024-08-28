@@ -1134,7 +1134,60 @@ function get_dates_rates_card_data( int $departure_id = 0, string $currency = 'U
  * @param int[]  $departure_ids The departure IDs.
  * @param string $currency      The currency.
  *
- * @return mixed[]
+ * @return array{}|array<int, array{}|array{
+ *     region: string,
+ *     ship_title: string,
+ *     ship_link: string|false,
+ *     expedition_title: string,
+ *     expedition_link: string,
+ *     duration_days: int,
+ *     duration_dates: string,
+ *     start_location: string,
+ *     end_location: string,
+ *     languages: string,
+ *     included_adventure_options: array{}|array{
+ *         array{
+ *             title: string,
+ *             icon_image_id: int,
+ *         }
+ *     },
+ *     paid_adventure_options: array{}|array{
+ *          array{
+ *             title: string,
+ *             icon_image_id: int,
+ *             spaces_available: int,
+ *             price_per_person: string,
+ *             currency: string,
+ *         }
+ *     },
+ *     transfer_package_details: array{
+ *         title: string,
+ *         sets: array<string>,
+ *         price: int,
+ *         formatted_price: string,
+ *     },
+ *     available_promos: array{}| array{
+ *         string: array{
+ *             id: int,
+ *             code: string,
+ *             start_date: string,
+ *             end_date: string,
+ *             description: string,
+ *             discount_type: string,
+ *             discount_value: string,
+ *             is_pif: int,
+ *         },
+ *     },
+ *     cabin_data: array<string, array{
+ *             name: string,
+ *             availability_status: string,
+ *             availability_description: string,
+ *             spaces_available: int,
+ *             brochure_price: string,
+ *             promos: array{}|string[],
+ *          }
+ *     >,
+ * }>
  */
 function get_dates_rates_cards_data( array $departure_ids = [], string $currency = 'USD' ): array {
 	// Prepare the departure cards data.
