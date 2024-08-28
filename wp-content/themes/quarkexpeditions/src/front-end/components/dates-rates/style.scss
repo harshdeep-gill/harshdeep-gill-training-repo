@@ -52,11 +52,20 @@
 			margin-bottom: var(--spacing-5);
 		}
 
+		&[animation-direction="up"] .drawer__content {
+
+			@media screen and (max-width: calc(grid-size(md) - 1px)) {
+				height: 100%;
+				border-radius: 0;
+			}
+		}
+
 		.drawer__content {
 			padding: var(--spacing-6);
 
 			@media screen and (min-width: grid-size(md)) {
 				max-width: 624px;
+				width: 100%;
 			}
 		}
 
@@ -80,6 +89,21 @@
 					flex: initial;
 				}
 			}
+		}
+	}
+
+	&__drawer-currency {
+
+		.drawer__header {
+			margin-bottom: var(--spacing-5);
+		}
+
+		.drawer__content {
+			padding: var(--spacing-6);
+		}
+
+		.drawer__drawer-close {
+			inset: 40px 38px auto auto;
 		}
 	}
 
