@@ -9,7 +9,7 @@ import { useSelect } from '@wordpress/data';
 /**
  * External dependencies.
  */
-import Section from '../../components/section';
+import classnames from 'classnames';
 
 /**
  * Styles.
@@ -22,9 +22,6 @@ import '../../../front-end/components/featured-image/style.scss';
  * @param {Object} props Component properties.
  */
 export default function Edit( {}: BlockEditAttributes ): JSX.Element {
-	// Get the block props.
-	const blockProps = useBlockProps();
-
 	// Get the featured image.
 	const featuredImage = useSelect( ( select: any ) => {
 		// Get the featured image.
@@ -40,11 +37,18 @@ export default function Edit( {}: BlockEditAttributes ): JSX.Element {
 		return select( 'core' ).getMedia( image );
 	}, [] );
 
+	// Get the block props.
+	const blockProps = useBlockProps(
+		{
+			className: featuredImage ? classnames( 'featured-image typography-spacing' ) : classnames( '' ),
+		}
+	);
+
 	// Render the block.
 	return (
-		<Section { ...blockProps }>
+		<>
 			{ featuredImage && (
-				<figure className="featured-image typography-spacing">
+				<figure { ...blockProps }>
 					<img
 						src={ featuredImage?.source_url }
 						alt={ featuredImage?.alt_text }
@@ -52,12 +56,12 @@ export default function Edit( {}: BlockEditAttributes ): JSX.Element {
 				</figure>
 			) }
 			{ ! featuredImage && (
-				<Placeholder
+				<Placeholder { ...blockProps }
 					icon="format-image"
 					label={ __( 'Featured Image', 'quark' ) }
 					instructions={ __( 'Upload an image to be displayed as the featured image.', 'quark' ) }
 				/>
 			) }
-		</Section>
+		</>
 	);
 }
