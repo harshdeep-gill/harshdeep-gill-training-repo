@@ -902,6 +902,9 @@ function bust_card_data_cache_on_expedition_update( int $expedition_id = 0 ): vo
  *          array{
  *             title: string,
  *             icon_image_id: int,
+ *             spaces_available: int,
+ *             price_per_person: string,
+ *             currency: string,
  *         }
  *     },
  *     transfer_package_details: array{
@@ -922,12 +925,13 @@ function bust_card_data_cache_on_expedition_update( int $expedition_id = 0 ): vo
  *             is_pif: int,
  *         },
  *     },
- *     cabin_data: array<string, array<string, string> | array{
+ *     cabin_data: array<string, array{
  *             name: string,
  *             availability_status: string,
  *             availability_description: string,
  *             spaces_available: int,
  *             brochure_price: string,
+ *             promos: array{}|string[],
  *          }
  *     >,
  * }
@@ -972,7 +976,7 @@ function get_dates_rates_card_data( int $departure_id = 0, string $currency = 'U
 
 	// Check for regions.
 	if ( ! empty( $region_terms ) ) {
-		// Get region name comma seperated.
+		// Get region name comma separated.
 		foreach ( $region_terms as $region ) {
 			if ( ! is_array( $region ) || empty( $region['name'] ) ) {
 				continue;
@@ -1026,6 +1030,7 @@ function get_dates_rates_card_data( int $departure_id = 0, string $currency = 'U
 			'icon_image_id'    => get_term_meta( $paid_adventure_option['adventure_option_term_id'], 'icon', true ),
 			'spaces_available' => $paid_adventure_option['spaces_available'],
 			'price_per_person' => format_price( floatval( $paid_adventure_option[ 'price_per_person_' . strtolower( $currency ) ] ), $currency ),
+			'currency'         => strtoupper( $currency ),
 		];
 	}
 
@@ -1082,6 +1087,7 @@ function get_dates_rates_card_data( int $departure_id = 0, string $currency = 'U
 			'availability_status'      => $availability_status,
 			'availability_description' => $availability_description,
 			'spaces_available'         => $cabin_spaces_available,
+			'promos'                   => [],
 		];
 
 		// Get the lowest price for the cabin.
@@ -1092,7 +1098,7 @@ function get_dates_rates_card_data( int $departure_id = 0, string $currency = 'U
 
 		// Loop through available_promos for each promo.
 		foreach ( $available_promos as $promo_code => $promo_data ) {
-			$cabin_price_data[ $cabin_code ][ $promo_code ] = format_price( get_lowest_price_by_cabin_category_and_departure_and_promotion_code( $cabin_id, $departure_id, $promo_code, $currency ), $currency );
+			$cabin_price_data[ $cabin_code ]['promos'][ $promo_code ] = format_price( get_lowest_price_by_cabin_category_and_departure_and_promotion_code( $cabin_id, $departure_id, $promo_code, $currency ), $currency );
 		}
 	}
 
