@@ -1162,7 +1162,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 					'spaces_available'         => 10,
 					'brochure_price'           => '$45,105 USD',
 					'promos'                   => [
-						'15PROMO'                  => '$38,169 USD',
+						'15PROMO' => '$38,169 USD',
 					],
 				],
 				'ULT-DBL' => [
@@ -1172,7 +1172,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 					'spaces_available'         => 20,
 					'brochure_price'           => '$34,800 USD',
 					'promos'                   => [
-						'15PROMO'                  => '$29,410 USD',
+						'15PROMO' => '$29,410 USD',
 					],
 				],
 			],
