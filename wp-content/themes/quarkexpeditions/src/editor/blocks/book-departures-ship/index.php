@@ -50,13 +50,12 @@ function render( array $attributes = [], string $content = '' ): string {
 	// Get the expedition ID.
 	$ship_id = $ship['post']->ID;
 
-	// TODO: Get the selected currency from the user.
 	// Set the currency.
 	$currency = 'USD';
 
 	// Init selected filters.
 	$selected_filter = [
-		'posts_per_load' => 4,
+		'posts_per_load' => 5,
 		'currency'       => $currency,
 		'ships'          => [ absint( $ship_id ) ],
 	];
