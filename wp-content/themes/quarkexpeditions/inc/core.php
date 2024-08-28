@@ -630,8 +630,10 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'style'    => true,
 				],
 				'source'                                      => [
-					'src'  => true,
-					'type' => true,
+					'src'    => true,
+					'type'   => true,
+					'media'  => true,
+					'srcset' => true,
 				],
 				'dialog'                                      => [
 					'class' => true,
