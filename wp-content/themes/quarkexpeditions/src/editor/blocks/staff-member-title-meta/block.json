@@ -1,15 +1,15 @@
 {
     "$schema": "https://schemas.wp.org/trunk/block.json",
     "apiVersion": 3,
-    "name": "quark/staff-member-name-and-roles",
-    "description": "Displays the name and meta information for a staff member.",
-    "title": "Staff Member Name & Roles",
+    "name": "quark/staff-member-title-meta",
+    "description": "Displays the title and meta information for a staff member.",
+    "title": "Staff Member Title & Meta",
     "keywords": [
       "quark",
       "staff",
       "member",
-      "name",
-      "roles"
+      "title",
+      "meta"
     ],
     "category": "layout",
     "textdomain": "quark",

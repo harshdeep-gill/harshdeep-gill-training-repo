@@ -12,7 +12,7 @@ import classnames from 'classnames';
 /**
  * Styles.
  */
-import '../../../front-end/components/staff-member-name-and-roles/style.scss';
+import '../../../front-end/components/title-meta/style.scss';
 
 /**
  * Edit component.
@@ -23,17 +23,17 @@ export default function Edit( {}: BlockEditAttributes ): JSX.Element {
 	// Get the block props.
 	const blockProps = useBlockProps(
 		{
-			className: classnames( 'staff-member-name-and-roles' ),
+			className: classnames( 'title-meta' ),
 		}
 	);
 
 	// Render the block.
 	return (
 		<div { ...blockProps }>
-			<h1 className="staff-member-name-and-roles__title">
+			<h1 className="title-meta__title">
 				{ __( 'John Doe', 'qrk' ) }
 			</h1>
-			<p className="staff-member-name-and-roles__roles h5">
+			<p className="title-meta__meta h5">
 				{ __( '(Roles will appear here)', 'qrk' ) }
 			</p>
 		</div>

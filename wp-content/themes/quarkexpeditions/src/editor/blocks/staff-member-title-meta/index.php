@@ -12,7 +12,7 @@ use WP_Post;
 use function Quark\StaffMembers\get as get_staff_member;
 use function Quark\StaffMembers\get_departments;
 
-const COMPONENT = 'staff-member-name-and-roles';
+const COMPONENT = 'title-meta';
 
 /**
  * Bootstrap this block.
@@ -47,12 +47,12 @@ function render( array $attributes = [], string $content = '' ): string {
 	}
 
 	// Prepare name.
-	$name  = $staff_member['post_meta']['first_name'] ?? '';
-	$name .= $name ? ' ' . ( $staff_member['post_meta']['last_name'] ?? '' ) : '';
+	$title  = $staff_member['post_meta']['first_name'] ?? '';
+	$title .= $title ? ' ' . ( $staff_member['post_meta']['last_name'] ?? '' ) : '';
 
 	// Fall back to post title if name is empty.
-	if ( empty( $name ) ) {
-		$name = $staff_member['post']->post_title;
+	if ( empty( $title ) ) {
+		$title = $staff_member['post']->post_title;
 	}
 
 	// Prepare roles.
@@ -61,8 +61,8 @@ function render( array $attributes = [], string $content = '' ): string {
 
 	// Build component attributes.
 	$attributes = [
-		'name'  => $name,
-		'roles' => $roles,
+		'title' => $title,
+		'meta'  => $roles,
 	];
 
 	// Return rendered component.
