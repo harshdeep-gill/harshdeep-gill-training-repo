@@ -44,7 +44,7 @@
 			.two-columns--stack-on-tablet & {
 
 				@media screen and (min-width: grid-size(md)) and (max-width: calc(grid-size(lg) - 1px)) {
-					--hero-card-aspect-ratio: 2;
+					--hero-card-aspect-ratio: 9 / 5;
 					--hero-card-max-width: 100%;
 				}
 			}

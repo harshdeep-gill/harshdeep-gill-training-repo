@@ -11,7 +11,7 @@
 
 	// Image arguments.
 	$image_args = [
-		'size' =>       [
+		'size'       => [
 			'width'   => 544,
 			'height'  => 584,
 		],
@@ -19,6 +19,10 @@
 			'sizes'  => [ '(min-width: 1280px) 544px', '(min-width: 768px) 100vw', '312px' ],
 			'widths' => [ 312, 544, 600, 700, 800, 900, 1000 ],
 		],
+		'transform'  => [
+			'crop'    => 'fill',
+			'gravity' => 'auto'
+		]
 	];
 
 	// CSS classes for images.
