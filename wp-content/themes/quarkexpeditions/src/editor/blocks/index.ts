@@ -71,6 +71,7 @@ import * as shipSpecifications from './ship-specifications';
 import * as expeditionHero from './expedition-hero';
 import * as specifications from './specifications';
 import * as templateTitle from './template-title';
+import * as staffMemberTitleMeta from './staff-member-title-meta';
 import * as featuredImage from './featured-image';
 import * as expeditions from './expeditions';
 import * as bookDeparturesShip from './book-departures-ship';
@@ -142,6 +143,7 @@ const blocks = [
 	expeditionHero,
 	specifications,
 	templateTitle,
+	staffMemberTitleMeta,
 	featuredImage,
 	expeditions,
 ];
