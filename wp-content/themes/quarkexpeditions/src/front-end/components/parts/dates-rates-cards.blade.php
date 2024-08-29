@@ -258,7 +258,7 @@
 
 			</x-dates-rates.item-table>
 
-			<x-dates-rates.info text="Prices are shown per person" />
+			<x-dates-rates.info text="{{ __( 'Prices are shown per person' ,'qrk') }}" />
 
 		</x-dates-rates.item>
 
