@@ -11,12 +11,12 @@
 
 <div class="title-meta">
 	<h1 class="title-meta__title">
-		{{ $title }}
+		<x-content :content="$title" />
 	</h1>
 
 	@if ( ! empty( $meta ) )
 		<p class="title-meta__meta h5">
-			{{ $meta }}
+			<x-content :content="$meta" />
 		</p>
 	@endif
 </div>
