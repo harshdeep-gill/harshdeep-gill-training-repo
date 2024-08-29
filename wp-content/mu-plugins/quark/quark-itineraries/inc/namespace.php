@@ -430,8 +430,8 @@ function get_details_tabs_data( array $itineraries = [] ): array {
 
 		// Prepare the tab title.
 		if ( ! empty( $itinerary['post_meta']['duration_in_days'] ) ) {
-			$tab_title = sprintf( '%d %s', absint( $itinerary['post_meta']['duration_in_days'] ), _n( 'Day', 'Days', absint( $itinerary['post_meta']['duration_in_days'] ), 'quark' ) );
-			$duration  = sprintf( '%d %s', absint( $itinerary['post_meta']['duration_in_days'] ), _n( 'day', 'days', absint( $itinerary['post_meta']['duration_in_days'] ), 'quark' ) );
+			$tab_title = sprintf( '%d %s', absint( $itinerary['post_meta']['duration_in_days'] ), _n( 'Day', 'Days', absint( $itinerary['post_meta']['duration_in_days'] ), 'qrk' ) );
+			$duration  = sprintf( '%d %s', absint( $itinerary['post_meta']['duration_in_days'] ), _n( 'day', 'days', absint( $itinerary['post_meta']['duration_in_days'] ), 'qrk' ) );
 		}
 
 		// Prepare the tab subtitle.
@@ -472,6 +472,8 @@ function get_details_tabs_data( array $itineraries = [] ): array {
 			// Check if the brochure pdf is not empty.
 			if ( ! empty( $_brochure['post_meta']['brochure_pdf'] ) ) {
 				$brochure = wp_get_attachment_url( absint( $_brochure['post_meta']['brochure_pdf'] ) );
+			} elseif ( ! empty( $_brochure['post_meta']['external_url'] ) ) {
+				$brochure = $_brochure['post_meta']['external_url'];
 			}
 		}
 

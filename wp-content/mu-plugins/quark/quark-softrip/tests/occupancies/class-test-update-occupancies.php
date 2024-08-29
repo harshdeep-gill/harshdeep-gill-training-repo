@@ -145,7 +145,7 @@ class Test_Update_Occupancies extends Softrip_TestCase {
 		);
 		$this->assertIsInt( $cabin_category_post_id1 );
 
-		// Try again with raw data. This time, cabin post exists byt raw data has empty occupancies.
+		// Try again with raw data. This time, cabin post exists but raw data has empty occupancies.
 		$raw_cabin_data1 = [
 			'code'        => 'CAB1',
 			'name'        => 'Explorer Suite',
@@ -255,11 +255,16 @@ class Test_Update_Occupancies extends Softrip_TestCase {
 		$this->assertSame( 0, $occupancy['price_per_person_gbp'] );
 		$this->assertSame( 0, $occupancy['price_per_person_aud'] );
 
+		// Cabin spaces available should be set on departure post meta.
+		$spaces_available = absint( get_post_meta( $departure_id1, 'cabin_spaces_available_' . $cabin_category_post_id1, true ) );
+		$this->assertSame( 0, $spaces_available );
+
 		// Let's update the price.
 		$raw_cabin_data1 = [
-			'code'        => 'CAB1',
-			'name'        => 'Explorer Suite',
-			'occupancies' => [
+			'code'            => 'CAB1',
+			'name'            => 'Explorer Suite',
+			'spacesAvailable' => 10,
+			'occupancies'     => [
 				[
 					'id'              => 'CAB1:OCC1',
 					'name'            => 'Single',
@@ -304,11 +309,16 @@ class Test_Update_Occupancies extends Softrip_TestCase {
 		$this->assertSame( 3500, $occupancy['price_per_person_gbp'] );
 		$this->assertSame( 4000, $occupancy['price_per_person_aud'] );
 
+		// Cabin spaces available should be set on departure post meta.
+		$spaces_available = absint( get_post_meta( $departure_id1, 'cabin_spaces_available_' . $cabin_category_post_id1, true ) );
+		$this->assertSame( 10, $spaces_available );
+
 		// Update availability status.
 		$raw_cabin_data1 = [
-			'code'        => 'CAB1',
-			'name'        => 'Explorer Suite',
-			'occupancies' => [
+			'code'            => 'CAB1',
+			'name'            => 'Explorer Suite',
+			'spacesAvailable' => 10,
+			'occupancies'     => [
 				[
 					'id'              => 'CAB1:OCC1',
 					'name'            => 'Single',
@@ -611,6 +621,10 @@ class Test_Update_Occupancies extends Softrip_TestCase {
 		// Get second occupancy - shouldn't be present.
 		$occupancies = get_occupancy_data_by_softrip_id( 'CAB1:OCC2', true );
 		$this->assertEmpty( $occupancies );
+
+		// The cabin spaces available meta should also be deleted and hence, empty now.
+		$spaces_available = get_post_meta( $departure_id1, 'cabin_spaces_available_' . $cabin_category_post_id1, true );
+		$this->assertSame( '', $spaces_available );
 
 		// Add one more occupancy to cabin 2 - CAB2.
 		$raw_cabin_data2 = [

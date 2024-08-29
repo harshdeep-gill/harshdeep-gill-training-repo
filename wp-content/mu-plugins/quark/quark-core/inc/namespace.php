@@ -15,7 +15,12 @@ use WP_Term;
 
 use function Travelopia\Core\cached_nav_menu;
 
-const CURRENCIES         = [ 'USD', 'CAD', 'AUD', 'GBP', 'EUR' ];
+const AUD_CURRENCY       = 'AUD';
+const CAD_CURRENCY       = 'CAD';
+const EUR_CURRENCY       = 'EUR';
+const GBP_CURRENCY       = 'GBP';
+const USD_CURRENCY       = 'USD';
+const CURRENCIES         = [ USD_CURRENCY, CAD_CURRENCY, AUD_CURRENCY, GBP_CURRENCY, EUR_CURRENCY ];
 const REST_API_NAMESPACE = 'quark-core/v1';
 
 /**
@@ -516,4 +521,25 @@ function order_terms_by_hierarchy( array $terms = [], string $taxonomy = '' ): a
 
 	// Return organised terms.
 	return $organised_terms;
+}
+
+/**
+ * Get pure text from HTML.
+ * Useful for title or content of post.
+ *
+ * @param string $html HTML content.
+ *
+ * @return string
+ */
+function get_raw_text_from_html( string $html = '' ): string {
+	// Check if HTML is empty.
+	if ( empty( $html ) ) {
+		return '';
+	}
+
+	// Get pure text.
+	$text = wp_strip_all_tags( $html, true );
+
+	// Return pure text.
+	return $text;
 }

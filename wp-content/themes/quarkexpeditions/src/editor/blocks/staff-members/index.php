@@ -7,9 +7,12 @@
 
 namespace Quark\Theme\Blocks\StaffMembers;
 
+use WP_Post;
 use WP_Query;
 
+use function Quark\StaffMembers\get as get_staff_member;
 use function Quark\StaffMembers\get_cards_data;
+use function Quark\StaffMembers\get_department;
 
 use const Quark\StaffMembers\POST_TYPE as STAFF_MEMBER_POST_TYPE;
 use const Quark\StaffMembers\DEPARTMENT_TAXONOMY as STAFF_MEMBER_DEPARTMENT_TAXONOMY;
@@ -39,6 +42,9 @@ function bootstrap(): void {
  * @return string The block markup.
  */
 function render( array $attributes = [] ): string {
+	// Get the current staff member.
+	$current_staff_member = get_staff_member();
+
 	// Build query args.
 	$args = [
 		'post_type'              => STAFF_MEMBER_POST_TYPE,
@@ -72,6 +78,26 @@ function render( array $attributes = [] ): string {
 				'terms'    => $attributes['departmentIds'],
 			],
 		];
+	} elseif ( 'auto' === $attributes['selection'] ) {
+		// Check if we have a staff member.
+		if ( $current_staff_member['post'] instanceof WP_Post ) {
+			$department = get_department( $current_staff_member['post']->ID );
+
+			// Check if we have a department.
+			if ( ! empty( $department ) ) {
+				// Set WP_Query args for department selection.
+				$args['tax_query'] = [
+					[
+						'taxonomy' => STAFF_MEMBER_DEPARTMENT_TAXONOMY,
+						'field'    => 'term_id',
+						'terms'    => $department['term_id'],
+					],
+				];
+
+				// Set the number of posts to show. Adding one extra to remove the current staff member.
+				$args['posts_per_page'] = 4;
+			}
+		}
 	}
 
 	// Query posts.
@@ -79,6 +105,22 @@ function render( array $attributes = [] ): string {
 
 	// Get posts in array format of IDs.
 	$post_ids = $posts->posts;
+
+	// Check if we have posts.
+	if ( 'auto' === $attributes['selection'] && $current_staff_member['post'] instanceof WP_Post ) {
+		// Get the key of the current staff member.
+		$key = array_search( $current_staff_member['post']->ID, $post_ids, true );
+
+		// Remove the current staff member from the list.
+		if ( false !== $key ) {
+			unset( $post_ids[ $key ] );
+		}
+
+		// Make sure we have 3 posts.
+		if ( 4 <= count( $post_ids ) ) {
+			array_pop( $post_ids );
+		}
+	}
 
 	// Check if we have posts.
 	if ( empty( $post_ids ) ) {

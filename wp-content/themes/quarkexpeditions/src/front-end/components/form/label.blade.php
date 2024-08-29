@@ -21,7 +21,5 @@
 	@endif
 >
 	{!! $slot !!}
-	@if ( in_array( 'required', $validation, true ) )
-		<span class="form__required-indicator">*</span>
-	@endif
+	<span class="form__required-indicator">*</span>
 </label>

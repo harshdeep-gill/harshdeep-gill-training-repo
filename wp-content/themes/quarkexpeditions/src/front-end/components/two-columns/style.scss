@@ -9,8 +9,16 @@
 
 	grid-gap: var(--spacing-6);
 
-	@media screen and (min-width: grid-size(md)) {
-		grid-template-columns: repeat(2, 1fr);
+	@media screen and (min-width: calc( grid-size(lg) )) {
+
+		@include grid-columns(2);
+	}
+
+	&:not(&--stack-on-tablet) {
+
+		@media screen and (min-width: grid-size(md)) {
+			grid-template-columns: repeat(2, 1fr);
+		}
 	}
 
 	&__column {

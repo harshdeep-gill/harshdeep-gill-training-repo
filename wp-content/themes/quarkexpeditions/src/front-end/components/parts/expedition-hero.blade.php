@@ -4,7 +4,7 @@
 ] )
 
 <x-section background="true" background_color="black" padding="true" full_width="true">
-	<x-two-columns :border="false">
+	<x-two-columns :border="false" :stack_on_tablet="true">
 		<x-two-columns.column>
 			{!! $expedition_details !!}
 		</x-two-columns.column>

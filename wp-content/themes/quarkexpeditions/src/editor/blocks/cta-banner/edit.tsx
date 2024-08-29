@@ -51,7 +51,7 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 	return (
 		<>
 			<InspectorControls>
-				<PanelBody title={ __( 'Media CTA Banner Options', 'qrk' ) }>
+				<PanelBody title={ __( 'CTA Banner Options', 'qrk' ) }>
 					<ImageControl
 						label={ __( 'Background Image', 'qrk' ) }
 						value={ attributes.backgroundImage ? attributes.backgroundImage.id : null }

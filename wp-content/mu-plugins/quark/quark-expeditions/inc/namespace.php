@@ -102,6 +102,7 @@ function register_expedition_post_type(): void {
 			'title',
 			'editor',
 			'revisions',
+			'thumbnail',
 		],
 		'show_ui'             => true,
 		'show_in_menu'        => true,
@@ -115,7 +116,310 @@ function register_expedition_post_type(): void {
 			'slug'       => 'expeditions',
 			'with_front' => false,
 		],
-		'template'            => [],
+		'template'            => [
+			[
+				'quark/expedition-hero',
+				[],
+			],
+			[
+				'quark/secondary-navigation',
+				[],
+				[
+					[
+						'quark/secondary-navigation-menu',
+						[],
+						[
+							[
+								'quark/secondary-navigation-item',
+								[
+									'title' => 'Overview',
+									'url'   => [
+										'url'  => 'overview',
+										'text' => 'Overview',
+									],
+								],
+							],
+							[
+								'quark/secondary-navigation-item',
+								[
+									'title' => 'Itineraries',
+									'url'   => [
+										'url'  => 'itineraries',
+										'text' => 'Itineraries',
+									],
+								],
+							],
+							[
+								'quark/secondary-navigation-item',
+								[
+									'title' => "What's Onboard",
+									'url'   => [
+										'url'  => 'life-onboard',
+										'text' => "What's Onboard",
+									],
+								],
+							],
+							[
+								'quark/secondary-navigation-item',
+								[
+									'title' => "What's Included",
+									'url'   => [
+										'url'  => 'whats-included',
+										'text' => "What's Included",
+									],
+								],
+							],
+							[
+								'quark/secondary-navigation-item',
+								[
+									'title' => 'Know Before You Go',
+									'url'   => [
+										'url'  => 'know-before-you-go',
+										'text' => 'Know Before You Go',
+									],
+								],
+							],
+						],
+					],
+					[
+						'quark/secondary-navigation-cta-buttons',
+						[],
+						[
+							[
+								'quark/buttons',
+								[],
+								[
+									[
+										'quark/button',
+										[
+											'btnText'   => 'View Departures',
+											'isSizeBig' => true,
+										],
+									],
+									[
+										'quark/button',
+										[
+											'btnText'         => 'Request a Quote',
+											'backgroundColor' => 'black',
+											'isSizeBig'       => true,
+										],
+									],
+								],
+							],
+						],
+					],
+				],
+			],
+			[
+				'quark/two-columns',
+				[
+					'hasBorder' => false,
+					'anchor'    => 'overview',
+				],
+				[
+					[
+						'quark/column',
+						[],
+						[
+							[
+								'core/heading',
+								[
+									'level'   => 2,
+									'content' => 'Expedition Overview',
+								],
+							],
+							[
+								'core/paragraph',
+								[],
+							],
+						],
+					],
+					[
+						'quark/column',
+						[],
+						[
+							[
+								'quark/highlights',
+								[
+									'title' => 'Highlights',
+									'info'  => 'Plus, add on adventure options, such as...',
+								],
+							],
+						],
+					],
+				],
+			],
+			[
+				'quark/section',
+				[
+					'title'          => 'Find Your Ideal Itinerary',
+					'titleAlignment' => 'left',
+					'headingLevel'   => '2',
+					'hasDescription' => true,
+					'anchor'         => 'itineraries',
+				],
+				[
+					[
+						'quark/itineraries',
+						[],
+					],
+				],
+			],
+			[
+				'quark/section',
+				[
+					'title'          => 'Your Life Onboard',
+					'titleAlignment' => 'left',
+					'headingLevel'   => '2',
+					'hasDescription' => true,
+					'anchor'         => 'life-onboard',
+				],
+				[
+					[
+						'quark/fancy-video',
+						[],
+					],
+				],
+			],
+			[
+				'quark/featured-media-accordions',
+				[],
+			],
+			[
+				'quark/ships',
+				[],
+			],
+			[
+				'quark/section',
+				[
+					'title'          => "What's Included",
+					'titleAlignment' => 'left',
+					'headingLevel'   => '2',
+					'hasDescription' => true,
+					'anchor'         => 'whats-included',
+				],
+				[
+					[
+						'quark/icon-info-grid',
+						[],
+					],
+				],
+			],
+			[
+				'quark/section',
+				[
+					'title'          => 'Included Activities',
+					'titleAlignment' => 'left',
+					'headingLevel'   => '2',
+				],
+				[
+					[
+						'quark/included-activities',
+						[],
+					],
+				],
+			],
+			[
+				'quark/section',
+				[
+					'title'          => 'Upgrade Your Expedition',
+					'titleAlignment' => 'left',
+					'headingLevel'   => '2',
+					'hasDescription' => true,
+					'description'    => 'Find out what add-on options are available for your expedition.',
+				],
+				[
+					[
+						'quark/section',
+						[
+							'title'          => 'Adventure Options',
+							'titleAlignment' => 'left',
+							'headingLevel'   => '3',
+							'hasDescription' => true,
+							'description'    => 'These can be booked in advance at an extra cost. Activities vary by itinerary, destination and are weather permitting.',
+						],
+						[
+							[
+								'quark/included-activities',
+								[
+									'showDescription' => false,
+								],
+							],
+						],
+					],
+					[
+						'quark/section',
+						[
+							'title'          => 'Trip Extensions',
+							'titleAlignment' => 'left',
+							'headingLevel'   => '3',
+							'hasDescription' => true,
+						],
+						[
+							[
+								'quark/trip-extensions',
+								[],
+							],
+						],
+					],
+					[
+						'quark/section',
+						[
+							'title'          => 'Possible Excursions',
+							'titleAlignment' => 'left',
+							'headingLevel'   => '3',
+							'hasDescription' => true,
+						],
+						[
+							[
+								'quark/excursion-accordion',
+								[],
+							],
+						],
+					],
+				],
+			],
+			[
+				'quark/book-departures-expeditions',
+				[],
+			],
+			[
+				'quark/cta-banner',
+				[],
+			],
+			[
+				'quark/section',
+				[
+					'title'          => 'Know Before You Go',
+					'titleAlignment' => 'left',
+					'headingLevel'   => '2',
+					'anchor'         => 'know-before-you-go',
+				],
+				[
+					[
+						'quark/accordion',
+						[],
+					],
+				],
+			],
+			[
+				'quark/section',
+				[
+					'title'          => 'Your Expedition Team',
+					'titleAlignment' => 'left',
+					'headingLevel'   => '2',
+				],
+				[
+					[
+						'quark/staff-members',
+						[
+							'selection'  => 'manual',
+							'isCarousel' => true,
+						],
+					],
+				],
+			],
+		],
 	];
 
 	// Register post type.
@@ -380,6 +684,7 @@ function bust_post_cache( int $post_id = 0 ): void {
  *     post_meta: mixed[],
  *     post_taxonomies: mixed[],
  *     permalink: string,
+ *     data: mixed[],
  * }
  */
 function get( int $post_id = 0 ): array {
@@ -398,6 +703,7 @@ function get( int $post_id = 0 ): array {
 			'post'            => $cached_value['post'],
 			'post_meta'       => $cached_value['post_meta'] ?? [],
 			'post_taxonomies' => $cached_value['post_taxonomies'] ?? [],
+			'data'            => $cached_value['data'] ?? [],
 			'permalink'       => $cached_value['permalink'],
 		];
 	}
@@ -411,15 +717,20 @@ function get( int $post_id = 0 ): array {
 			'post'            => null,
 			'post_meta'       => [],
 			'post_taxonomies' => [],
+			'data'            => [],
 			'permalink'       => '',
 		];
 	}
+
+	// Get expedition block attrs.
+	$data = parse_block_attributes( $post );
 
 	// Build data.
 	$data = [
 		'post'            => $post,
 		'post_meta'       => [],
 		'post_taxonomies' => [],
+		'data'            => $data,
 		'permalink'       => strval( get_permalink( $post ) ? : '' ),
 	];
 
@@ -481,6 +792,72 @@ function get( int $post_id = 0 ): array {
 
 	// Return data.
 	return $data;
+}
+
+/**
+ * Parse block attributes.
+ *
+ * @param WP_Post|null $post Post object.
+ *
+ * @return array{}|array{
+ *    hero_card_slider_image_ids: int[],
+ * }
+ */
+function parse_block_attributes( WP_Post $post = null ): array {
+	// Check for post.
+	if ( ! $post instanceof WP_Post ) {
+		return [];
+	}
+
+	// Prase blocks.
+	$blocks = parse_blocks( $post->post_content );
+
+	// Skip if no blocks.
+	if ( empty( $blocks ) ) {
+		return [];
+	}
+
+	// Flatten blocks.
+	$flattened_blocks = _flatten_blocks( $blocks );
+
+	// Initialize attributes.
+	$hero_card_slider_image_ids = [];
+
+	// Loop through blocks.
+	foreach ( $flattened_blocks as $block ) {
+		// Check for block name.
+		if ( 'quark/hero-card-slider' === $block['blockName'] ) {
+			if ( ! isset( $block['attrs'] ) || ! is_array( $block['attrs'] ) ) {
+				continue;
+			}
+
+			// Check if items present.
+			if ( ! isset( $block['attrs']['items'] ) || ! is_array( $block['attrs']['items'] ) ) {
+				continue;
+			}
+
+			// Loop through items.
+			foreach ( $block['attrs']['items'] as $item ) {
+				// Check for item.
+				if ( ! is_array( $item ) ) {
+					continue;
+				}
+
+				// Check for image id.
+				if ( empty( $item['id'] ) ) {
+					continue;
+				}
+
+				// Add image id to array.
+				$hero_card_slider_image_ids[] = $item['id'];
+			}
+		}
+	}
+
+	// Return attributes.
+	return [
+		'hero_card_slider_image_ids' => $hero_card_slider_image_ids,
+	];
 }
 
 /**
@@ -635,18 +1012,24 @@ function get_minimum_duration( int $post_id = 0 ): int {
  *
  * @param int $post_id Post ID.
  *
- * @return int Price.
+ * @return array{
+ *    original: int,
+ *    discounted: int,
+ * }
  */
-function get_starting_from_price( int $post_id = 0 ): int {
+function get_starting_from_price( int $post_id = 0 ): array {
 	// Get post.
 	$post = get( $post_id );
 
 	// Starting from price.
-	$starting_from_price = 0;
+	$lowest_prices = [
+		'original'   => 0,
+		'discounted' => 0,
+	];
 
 	// Check for post.
 	if ( empty( $post['post'] ) || ! $post['post'] instanceof WP_Post ) {
-		return $starting_from_price;
+		return $lowest_prices;
 	}
 
 	// Get itineraries.
@@ -654,7 +1037,7 @@ function get_starting_from_price( int $post_id = 0 ): int {
 
 	// Check for itineraries.
 	if ( empty( $itineraries ) ) {
-		return $starting_from_price;
+		return $lowest_prices;
 	}
 
 	// Loop through itineraries and get minimum price.
@@ -669,16 +1052,17 @@ function get_starting_from_price( int $post_id = 0 ): int {
 		}
 
 		// Get lowest price for Itinerary.
-		$price = get_lowest_price( $itinerary['post']->ID )['original'];
+		$price = get_lowest_price( $itinerary['post']->ID );
 
 		// Check minimum price.
-		if ( ! empty( $price ) && ( empty( $starting_from_price ) || $price < $starting_from_price ) ) {
-			$starting_from_price = $price;
+		if ( ! empty( $price['discounted'] ) && ( empty( $lowest_price ) || $price['discounted'] < $lowest_price ) ) {
+			$lowest_price  = $price['discounted'];
+			$lowest_prices = $price;
 		}
 	}
 
 	// Return starting from price.
-	return absint( $starting_from_price );
+	return $lowest_prices;
 }
 
 /**
@@ -1022,7 +1406,10 @@ function get_formatted_date_range( int $post_id = 0 ): string {
  *     title: string,
  *     duration: int,
  *     region: string,
- *     from_price: string,
+ *     from_price: array{
+ *         original: string,
+ *         discounted: string,
+ *     },
  *     starting_from ?: array{}|array{
  *         array{ title : string },
  *     },
@@ -1119,7 +1506,11 @@ function get_details_data( int $post_id = 0 ): array {
 	$data['duration'] = get_minimum_duration( $post_id );
 
 	// Set starting from price.
-	$data['from_price'] = format_price( get_starting_from_price( $post_id ) );
+	$prices             = get_starting_from_price( $post_id );
+	$data['from_price'] = [
+		'original'   => format_price( $prices['original'] ),
+		'discounted' => format_price( $prices['discounted'] ),
+	];
 
 	// Set starting from locations list.
 	$data['starting_from'] = get_starting_from_locations( $post_id );
