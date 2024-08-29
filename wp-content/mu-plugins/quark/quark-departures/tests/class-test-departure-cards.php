@@ -1161,12 +1161,14 @@ class Test_Departure_Cards extends Softrip_TestCase {
 					'availability_description' => 'Available',
 					'spaces_available'         => 10,
 					'brochure_price'           => '$45,105 USD',
+					'checkout_url'             => 'https://local-checkout.quarkexpeditions.com?package_id=JKL-012&departure_date=2025-01-09&cabin_code=ULT-SGL&currency=USD',
 					'15PROMO'                  => '$38,169 USD',
 				],
 				'ULT-DBL' => [
 					'name'                     => 'cabin_name - ULT-DBL',
 					'availability_status'      => 'A',
 					'availability_description' => 'Available',
+					'checkout_url'             => 'https://local-checkout.quarkexpeditions.com?package_id=JKL-012&departure_date=2025-01-09&cabin_code=ULT-DBL&currency=USD',
 					'spaces_available'         => 20,
 					'brochure_price'           => '$34,800 USD',
 					'15PROMO'                  => '$29,410 USD',
@@ -1373,6 +1375,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 				'availability_status'      => 'R',
 				'availability_description' => 'Please Call',
 				'spaces_available'         => 0,
+				'checkout_url'             => 'https://local-checkout.quarkexpeditions.com?package_id=HIJ-456&departure_date=2025-09-04&cabin_code=OEX-JST&currency=CAD',
 				'brochure_price'           => '$46,050 CAD',
 			],
 			$card_data['cabin_data']['OEX-JST'] ?? []
