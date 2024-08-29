@@ -6,7 +6,7 @@
 	$prev_ship_title = '';
 @endphp
 
-<div>
+<x-section>
 	@foreach ( $cards as $card )
 		@php
 			$ship_title = $card['ship_title'] ?? '';
@@ -242,4 +242,4 @@
 		</x-dates-rates.item>
 
 	@endforeach
-</div>
+</x-section>
