@@ -4822,28 +4822,30 @@
 						</x-expedition-cards.specification-item>
 					</x-expedition-cards.specifications>
 
-					<x-expedition-cards.rating rating="5">
-						<a href="#">45 Reviews</a>
-					</x-expedition-cards.rating>
+					<x-expedition-cards.row>
+						<x-expedition-cards.rating rating="5">
+							<a href="#">45 Reviews</a>
+						</x-expedition-cards.rating>
 
-					<x-expedition-cards.price
-						original_price="$9,395 USD"
-						discounted_price="$7,271 USD"
-					/>
-
-					<x-expedition-cards.transfer_package
-						drawer_id="expedition-cards-id-1"
-						drawer_title="Mandatory Transfer Package"
-					>
-						<p><strong>Package Includes:</strong></p>
-						<ul>
-							<li>One night’s pre-expedition hotel night in Aberdeen</li>
-							<li>Group transfer from Aberdeen hotel to ship on embarkation day</li>
-							<li>Departure transfer in Longyearbyen on disembarkation day</li>
-							<li>Charter flight from Longyearbyen to Helsinki on disembarkation day</li>
-						</ul>
-						<p><strong>Package Price: $695 USD</strong></p>
-					</x-expedition-cards.transfer_package>
+						<x-expedition-cards.price
+							original_price="$9,395 USD"
+							discounted_price="$7,271 USD"
+						>
+							<x-expedition-cards.transfer_package
+								drawer_id="expedition-cards-id-1"
+								drawer_title="Mandatory Transfer Package"
+							>
+								<p><strong>Package Includes:</strong></p>
+								<ul>
+									<li>One night’s pre-expedition hotel night in Aberdeen</li>
+									<li>Group transfer from Aberdeen hotel to ship on embarkation day</li>
+									<li>Departure transfer in Longyearbyen on disembarkation day</li>
+									<li>Charter flight from Longyearbyen to Helsinki on disembarkation day</li>
+								</ul>
+								<p><strong>Package Price: $695 USD</strong></p>
+							</x-expedition-cards.transfer_package>
+						</x-expedition-cards.price>
+					</x-expedition-cards.row>
 
 					<x-expedition-cards.buttons>
 						<x-button href="#" color="black" size="big">View Expedition</x-button>
@@ -5174,28 +5176,30 @@
 								</x-expedition-cards.specification-item>
 							</x-expedition-cards.specifications>
 
-							<x-expedition-cards.rating rating="5">
-								<a href="#">45 Reviews</a>
-							</x-expedition-cards.rating>
+							<x-expedition-cards.row>
+								<x-expedition-cards.rating rating="5">
+									<a href="#">45 Reviews</a>
+								</x-expedition-cards.rating>
 
-							<x-expedition-cards.price
-								original_price="$9,395 USD"
-								discounted_price="$7,271 USD"
-							/>
-
-							<x-expedition-cards.transfer_package
-								drawer_id="expedition-cards-id-1"
-								drawer_title="Mandatory Transfer Package"
-							>
-								<p><strong>Package Includes:</strong></p>
-								<ul>
-									<li>One night’s pre-expedition hotel night in Aberdeen</li>
-									<li>Group transfer from Aberdeen hotel to ship on embarkation day</li>
-									<li>Departure transfer in Longyearbyen on disembarkation day</li>
-									<li>Charter flight from Longyearbyen to Helsinki on disembarkation day</li>
-								</ul>
-								<p><strong>Package Price: $695 USD</strong></p>
-							</x-expedition-cards.transfer_package>
+								<x-expedition-cards.price
+									original_price="$9,395 USD"
+									discounted_price="$7,271 USD"
+								>
+									<x-expedition-cards.transfer_package
+										drawer_id="expedition-cards-id-1"
+										drawer_title="Mandatory Transfer Package"
+									>
+										<p><strong>Package Includes:</strong></p>
+										<ul>
+											<li>One night’s pre-expedition hotel night in Aberdeen</li>
+											<li>Group transfer from Aberdeen hotel to ship on embarkation day</li>
+											<li>Departure transfer in Longyearbyen on disembarkation day</li>
+											<li>Charter flight from Longyearbyen to Helsinki on disembarkation day</li>
+										</ul>
+										<p><strong>Package Price: $695 USD</strong></p>
+									</x-expedition-cards.transfer_package>
+								</x-expedition-cards.price>
+							</x-expedition-cards.row>
 
 							<x-expedition-cards.buttons>
 								<x-button href="#" color="black" size="big">View Expedition</x-button>

@@ -185,6 +185,20 @@
 		font-weight: var(--font-weight-bold);
 	}
 
+	&__row {
+
+		@media screen and (min-width: grid-size(xl)) {
+			display: flex;
+			flex-direction: row-reverse;
+			justify-content: space-between;
+			align-items: flex-end;
+		}
+
+		.sidebar-grid & {
+			display: block;
+		}
+	}
+
 	&__rating {
 		display: flex;
 		align-items: center;
