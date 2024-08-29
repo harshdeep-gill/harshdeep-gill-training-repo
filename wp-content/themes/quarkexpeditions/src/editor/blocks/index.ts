@@ -75,6 +75,7 @@ import * as staffMemberTitleMeta from './staff-member-title-meta';
 import * as featuredImage from './featured-image';
 import * as expeditions from './expeditions';
 import * as bookDeparturesShip from './book-departures-ship';
+import * as shipDecks from './ship-decks';
 
 /**
  * Add blocks.
@@ -146,6 +147,7 @@ const blocks = [
 	staffMemberTitleMeta,
 	featuredImage,
 	expeditions,
+	shipDecks,
 ];
 
 // Register blocks for ships.
