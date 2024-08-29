@@ -21,17 +21,32 @@
 		border-bottom-left-radius: 0;
 		min-width: 60px;
 
-		&:hover {
-			background-color: var(--color-yellow);
+		.btn__content-text {
+			display: block;
+
+			@include transition();
 		}
 	}
 
 	&__options {
 		border-left: 2px solid var(--color-white);
 
-		&:hover #{$self}__options-dropdown-wrap {
-			opacity: 1;
-			visibility: visible;
+		&:hover {
+
+			#{$self}__options-dropdown-wrap {
+				opacity: 1;
+				visibility: visible;
+			}
+
+			#{$self}__options-button {
+				background-color: rgba(0, 0, 0, 0);
+
+				.btn__content-text {
+					transform: rotate(180deg);
+
+					@include transition();
+				}
+			}
 		}
 	}
 
@@ -45,7 +60,7 @@
 	}
 
 	&__options-dropdown {
-		background-color: var(--color-white);
+		background: var(--color-gray-10);
 		border: 1px solid var(--color-gray-20);
 		border-radius: var(--border-radius);
 		box-shadow: var(--shadow-2);
@@ -53,7 +68,15 @@
 		padding: var(--spacing-1);
 	}
 
-	&__option {
+	&__option-link {
+		border-radius: var(--border-small);
+		display: block;
 		padding: var(--spacing-2) var(--spacing-3);
+
+		&:hover {
+			background-color: var(--color-gray-20);
+			text-decoration: none;
+		}
 	}
+
 }
