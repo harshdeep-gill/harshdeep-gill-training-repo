@@ -1,6 +1,7 @@
 @props( [
-	'layout'          => 'grid',
-	'mobile_carousel' => true,
+	'layout'            => 'grid',
+	'mobile_carousel'   => true,
+	'carousel_overflow' => false,
 ] )
 
 @php
@@ -9,6 +10,10 @@
 	}
 
 	$classes = [ 'info-cards' ];
+
+	if ( true === $carousel_overflow ) {
+		$classes[] = 'info-cards--has-overflow';
+	}
 
 	quark_enqueue_style( 'tp-slider' );
 	quark_enqueue_script( 'tp-slider' );

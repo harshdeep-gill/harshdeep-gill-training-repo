@@ -9,17 +9,23 @@
 		return;
 	}
 
-	// Image arguments.
+	// Image arguments
 	$image_args = [
-		'size' =>       [
-			'width'   => 544,
-			'height'  => 584,
+		'size' => [
+			'width'   => 312,
+			'height'  => 208,
+			'picture' => [
+				'(min-width: 1024px)' => [ 544, 584 ],
+				'(min-width: 768px)'  => [ 1024, 577 ],
+			],
 		],
-		'responsive' => [
-			'sizes'  => [ '(min-width: 1280px) 544px', '(min-width: 768px) 100vw', '312px' ],
-			'widths' => [ 312, 544, 600, 700, 800, 900, 1000 ],
+		'transform' => [
+			'crop'    => 'fill',
+			'gravity' => 'auto',
+			'quality' => 90,
 		],
 	];
+
 
 	// CSS classes for images.
 	$classes = [ 'hero-card-slider__image' ];

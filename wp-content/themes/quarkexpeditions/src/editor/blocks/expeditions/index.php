@@ -129,8 +129,8 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 			'review_rating'    => 5,  // TODO: Get real rating.
 			'total_reviews'    => 10, // TODO: Get real count.
 			'itinerary_days'   => $card_data['duration'],
-			'original_price'   => $card_data['from_price']['original'],
-			'discounted_price' => $card_data['from_price']['discounted'],
+			'original_price'   => is_array( $card_data['from_price'] ) && ! empty( $card_data['from_price']['original'] ) ? $card_data['from_price']['original'] : '',
+			'discounted_price' => is_array( $card_data['from_price'] ) && ! empty( $card_data['from_price']['discounted'] ) ? $card_data['from_price']['discounted'] : '',
 		];
 	}
 

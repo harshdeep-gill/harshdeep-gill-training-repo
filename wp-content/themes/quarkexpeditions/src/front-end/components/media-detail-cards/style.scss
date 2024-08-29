@@ -25,6 +25,21 @@
 		#{$self}__title {
 			margin-bottom: 0;
 		}
+
+		.media-detail-cards__card {
+
+			@media screen and (min-width: grid-size(md)) {
+
+				@include grid-columns(1);
+			}
+		}
+
+		.media-detail-cards__media-wrap {
+
+			@media screen and (min-width: grid-size(md)) {
+				aspect-ratio: 4 / 3;
+			}
+		}
 	}
 
 	&__card {
@@ -32,11 +47,6 @@
 		@media screen and (min-width: grid-size(lg)) {
 
 			@include grid-columns(2);
-		}
-
-		@media screen and (min-width: grid-size(md)) {
-
-			@include grid-columns(1);
 		}
 
 		& + & {
@@ -56,10 +66,6 @@
 
 		@media screen and (min-width: grid-size(lg)) {
 			aspect-ratio: initial;
-		}
-
-		@media screen and (min-width: grid-size(md)) {
-			aspect-ratio: 4 / 3;
 		}
 	}
 

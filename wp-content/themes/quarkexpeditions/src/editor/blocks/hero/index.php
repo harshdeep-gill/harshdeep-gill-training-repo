@@ -196,7 +196,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 				}
 			}
 		} elseif ( 'quark/breadcrumbs' === $inner_block->name ) {
-			$attributes['breadcrumbs'] = render_block( $inner_block->parsed_block );
+			$component_attributes['breadcrumbs'] = render_block( $inner_block->parsed_block );
 		}
 	}
 

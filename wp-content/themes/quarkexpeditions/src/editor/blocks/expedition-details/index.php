@@ -68,7 +68,9 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 	}
 
 	// Set the from price to the discounted price.
-	$expedition_details_card_data['from_price'] = $expedition_details_card_data['from_price']['discounted'];
+	if ( is_array( $expedition_details_card_data['from_price'] ) && ! empty( $expedition_details_card_data['from_price']['discounted'] ) ) {
+		$expedition_details_card_data['from_price'] = $expedition_details_card_data['from_price']['discounted'];
+	}
 
 	// Parse data.
 	$expedition_details_card_data = wp_parse_args(

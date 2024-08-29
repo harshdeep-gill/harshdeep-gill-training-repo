@@ -684,6 +684,7 @@ function bust_post_cache( int $post_id = 0 ): void {
  *     post_meta: mixed[],
  *     post_taxonomies: mixed[],
  *     permalink: string,
+ *     data: mixed[],
  * }
  */
 function get( int $post_id = 0 ): array {
@@ -702,6 +703,7 @@ function get( int $post_id = 0 ): array {
 			'post'            => $cached_value['post'],
 			'post_meta'       => $cached_value['post_meta'] ?? [],
 			'post_taxonomies' => $cached_value['post_taxonomies'] ?? [],
+			'data'            => $cached_value['data'] ?? [],
 			'permalink'       => $cached_value['permalink'],
 		];
 	}
@@ -715,15 +717,20 @@ function get( int $post_id = 0 ): array {
 			'post'            => null,
 			'post_meta'       => [],
 			'post_taxonomies' => [],
+			'data'            => [],
 			'permalink'       => '',
 		];
 	}
+
+	// Get expedition block attrs.
+	$data = parse_block_attributes( $post );
 
 	// Build data.
 	$data = [
 		'post'            => $post,
 		'post_meta'       => [],
 		'post_taxonomies' => [],
+		'data'            => $data,
 		'permalink'       => strval( get_permalink( $post ) ? : '' ),
 	];
 
@@ -785,6 +792,72 @@ function get( int $post_id = 0 ): array {
 
 	// Return data.
 	return $data;
+}
+
+/**
+ * Parse block attributes.
+ *
+ * @param WP_Post|null $post Post object.
+ *
+ * @return array{}|array{
+ *    hero_card_slider_image_ids: int[],
+ * }
+ */
+function parse_block_attributes( WP_Post $post = null ): array {
+	// Check for post.
+	if ( ! $post instanceof WP_Post ) {
+		return [];
+	}
+
+	// Prase blocks.
+	$blocks = parse_blocks( $post->post_content );
+
+	// Skip if no blocks.
+	if ( empty( $blocks ) ) {
+		return [];
+	}
+
+	// Flatten blocks.
+	$flattened_blocks = _flatten_blocks( $blocks );
+
+	// Initialize attributes.
+	$hero_card_slider_image_ids = [];
+
+	// Loop through blocks.
+	foreach ( $flattened_blocks as $block ) {
+		// Check for block name.
+		if ( 'quark/hero-card-slider' === $block['blockName'] ) {
+			if ( ! isset( $block['attrs'] ) || ! is_array( $block['attrs'] ) ) {
+				continue;
+			}
+
+			// Check if items present.
+			if ( ! isset( $block['attrs']['items'] ) || ! is_array( $block['attrs']['items'] ) ) {
+				continue;
+			}
+
+			// Loop through items.
+			foreach ( $block['attrs']['items'] as $item ) {
+				// Check for item.
+				if ( ! is_array( $item ) ) {
+					continue;
+				}
+
+				// Check for image id.
+				if ( empty( $item['id'] ) ) {
+					continue;
+				}
+
+				// Add image id to array.
+				$hero_card_slider_image_ids[] = $item['id'];
+			}
+		}
+	}
+
+	// Return attributes.
+	return [
+		'hero_card_slider_image_ids' => $hero_card_slider_image_ids,
+	];
 }
 
 /**
