@@ -17,6 +17,10 @@
 			"type": "string",
 			"default": "no"
 		},
+		"contentOverlap": {
+			"type": "boolean",
+			"default": true
+		},
 		"textAlign": {
 			"type": "string",
 			"default": ""
