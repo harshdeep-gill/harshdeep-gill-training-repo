@@ -26,7 +26,10 @@
 	&__slider {
 		overflow-x: visible;
 		margin-inline: var(--grid-col-gutter);
-		width: 100vw;
+
+		#{$self}--has-overflow & {
+			width: 100vw;
+		}
 
 		&:has(div.thumbnail-cards__nav) {
 			#{$self}__track {
@@ -48,8 +51,11 @@
 			display: none;
 		}
 
-		@media screen and (min-width: grid-size(sm)) {
-			overflow-x: visible;
+		#{$self}--has-overflow & {
+
+			@media screen and (min-width: grid-size(sm)) {
+				overflow-x: visible;
+			}
 		}
 	}
 
