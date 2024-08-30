@@ -1,20 +1,20 @@
-@props([
+@props( [
 	'cards' => [],
-])
+] )
 
 @php
 	$prev_ship_title = '';
 @endphp
 
 <x-section>
-	@foreach ($cards as $card)
+	@foreach ( $cards as $card )
 		@php
 			$ship_title = $card['ship_title'] ?? '';
 			$number_of_promos = $card['available_promos'] ? count($card['available_promos']) : 0;
-			$number_of_cabins = !empty($card['cabin_data']) ? count($card['cabin_data']) : 0;
+			$number_of_cabins = !empty( $card['cabin_data'] ) ? count( $card['cabin_data'] ) : 0;
 		@endphp
 
-		@if ($ship_title !== $prev_ship_title)
+		@if ( $ship_title !== $prev_ship_title )
 			<h2>
 				<x-escape :content="$ship_title" />
 			</h2>
@@ -32,7 +32,7 @@
 						<x-dates-rates.item-table-heading>{{ __('Promo Offers', 'qrk') }}</x-dates-rates.item-table-heading>
 
 						{{-- Cabin Names --}}
-						@foreach ($card['cabin_data'] as $cabin)
+						@foreach ( $card['cabin_data'] as $cabin )
 							<x-dates-rates.item-table-heading>{{ $cabin['name'] ?? '' }}</x-dates-rates.item-table-heading>
 						@endforeach
 
@@ -90,14 +90,14 @@
 							<x-dates-rates.item-table-column-title>
 								<strong>{{ __('Brochure Price', 'qrk') }}</strong>
 
-								@if (!empty($card['transfer_package_details']))
+								@if ( !empty( $card['transfer_package_details'] ) )
 									({{ __('Incl. Transfer Package', 'qrk') }})
 									<x-tooltip icon="info">
 										<h5>{{ $card['transfer_package_details']['title'] ?? '' }}</h5>
 
-										@if (!empty($card['transfer_package_details']['sets']))
+										@if ( !empty( $card['transfer_package_details']['sets'] ) )
 											<ul>
-												@foreach ($card['transfer_package_details']['sets'] as $item)
+												@foreach ( $card['transfer_package_details']['sets'] as $item )
 													<li>
 														{{ $item }}
 													</li>
@@ -116,13 +116,15 @@
 						</x-dates-rates.item-table-column>
 
 						{{-- Cabin Details --}}
-						@foreach ($card['cabin_data'] as $cabin)
+						@foreach ( $card['cabin_data'] as $cabin )
 							<x-dates-rates.item-table-column>
 
-								@if (empty($cabin['promos']))
+								@if ( empty($cabin['promos'] ) )
 									{{ $cabin['brochure_price'] ?? 0 }}
 								@else
-									<del>{{ $cabin['brochure_price'] ?? 0 }}</del>
+									<del>
+										{{ $cabin['brochure_price'] ?? 0 }}
+									</del>
 								@endif
 
 							</x-dates-rates.item-table-column>
@@ -131,10 +133,10 @@
 					</x-dates-rates.item-table-row>
 
 					{{-- Promo prices --}}
-					@if (!empty($card['available_promos']))
-						@foreach ($card['available_promos'] as $promo_code => $promo_data)
+					@if ( !empty( $card['available_promos'] ) )
+						@foreach ( $card['available_promos'] as $promo_code => $promo_data )
 							@php
-								$is_pay_in_full = empty($promo_data['is_pif']) ? false : true;
+								$is_pay_in_full = empty( $promo_data['is_pif'] ) ? false : true;
 								$is_sold_out =
 									$cabin['availability_status'] === 'S' || $cabin['availability_status'] === 'R';
 							@endphp
@@ -148,9 +150,9 @@
 								</x-dates-rates.item-table-column>
 
 								{{-- Cabin-wise promo price --}}
-								@foreach ($card['cabin_data'] as $cabin)
+								@foreach ( $card['cabin_data'] as $cabin )
 									<x-dates-rates.item-table-column :is_pay_in_full="$is_pay_in_full" :is_sold_out="$is_sold_out">
-										@if (!empty($cabin['promos'][$promo_code]))
+										@if ( !empty( $cabin['promos'][$promo_code] ) )
 											{{ $cabin['promos'][$promo_code] }}
 										@endif
 									</x-dates-rates.item-table-column>
@@ -168,41 +170,41 @@
 						</x-dates-rates.item-table-column>
 
 						{{-- Cabin-wise availability --}}
-						@foreach ($card['cabin_data'] as $cabin)
+						@foreach ( $card['cabin_data'] as $cabin )
 							@php
 								// Initialize variables.
 								$is_limited_stock = false;
 								$availability_description = '';
 
 								// Check if the cabin is sold out or has limited stock.
-								$availability_status_code = !empty($cabin['availability_status'])
+								$availability_status_code = ! empty( $cabin['availability_status'] )
 									? $cabin['availability_status']
 									: '';
 								$is_sold_out = $availability_status_code === 'S' || $availability_status_code === 'R';
 
 								// Set availability description based on availability status.
-								if ($availability_status_code === 'A') {
+								if ( $availability_status_code === 'A' ) {
 									$spaces_available = $cabin['spaces_available'] ?? 0;
 
-									if ($spaces_available < 1) {
+									if ( $spaces_available < 1 ) {
 										// Cabin is sold out.
 										$is_sold_out = true;
-										$availability_description = 'Sold Out';
-									} elseif ($spaces_available <= 5) {
+										$availability_description = __( 'Sold Out', 'qrk' );
+									} elseif ( $spaces_available <= 5 ) {
 										// Cabin has limited stock.
 										$is_limited_stock = true;
 										$availability_description = sprintf(
 											'%d %s',
 											$cabin['spaces_available'],
-											_n('cabin', 'cabins', $cabin['spaces_available'], 'qrk'),
+											_n( 'cabin', 'cabins', $cabin['spaces_available'], 'qrk' ),
 										);
 									} else {
 										// Cabin has more than 5 cabins available.
-										$availability_description = '5+ cabins';
+										$availability_description = __( '5+ cabins', 'qrk' );
 									}
 								} else {
 									// Cabin is not available.
-									$availability_description = !empty($cabin['availability_description'])
+									$availability_description = ! empty( $cabin['availability_description'] )
 										? $cabin['availability_description']
 										: '';
 								}
@@ -221,8 +223,8 @@
 						<x-dates-rates.item-table-column colspan="{{ $number_of_cabins + 2 }}">
 							<x-dates-rates.adventure-options>
 
-								@if (!empty($card['included_adventure_options']))
-									<x-dates-rates.adventure-options-column title="Included Adventure Options">
+								@if ( ! empty( $card['included_adventure_options'] ) )
+									<x-dates-rates.adventure-options-column :title="__( 'Included Adventure Options' ,'qrk' )">
 
 										@foreach ($card['included_adventure_options'] as $included_adventure_option)
 											<x-dates-rates.adventure-options-item
@@ -234,10 +236,10 @@
 									</x-dates-rates.adventure-options-column>
 								@endif
 
-								@if ($card['paid_adventure_options'])
+								@if ( $card['paid_adventure_options'] )
 									<x-dates-rates.adventure-options-column title="Paid Adventure Options">
 
-										@foreach ($card['paid_adventure_options'] as $paid_adventure_option)
+										@foreach ( $card['paid_adventure_options'] as $paid_adventure_option )
 											<x-dates-rates.adventure-options-item
 												name="{{ $paid_adventure_option['title'] ?? '' }}"
 												{{-- icon="{{ $paid_adventure_option['icon_image_id'] }}" @todo Update icon component to accept image id and fetch the URL to display. --}} :is_paid="true">
@@ -258,7 +260,7 @@
 
 			</x-dates-rates.item-table>
 
-			<x-dates-rates.info text="{{ __( 'Prices are shown per person' ,'qrk') }}" />
+			<x-dates-rates.info :text="__( 'Prices are shown per person', 'qrk' )" />
 
 		</x-dates-rates.item>
 
