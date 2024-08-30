@@ -12,6 +12,7 @@ use WP_Post;
 use WP_Term;
 
 use function Quark\Core\format_price;
+use function Quark\Departures\bust_post_cache;
 use function Quark\Departures\get_card_data;
 use function Quark\Departures\get_cards_data;
 use function Quark\Departures\get_dates_rates_card_data;
@@ -537,16 +538,6 @@ class Test_Departure_Cards extends Softrip_TestCase {
 			SPOKEN_LANGUAGE_TAXONOMY
 		);
 
-		// Set terms.
-		wp_set_object_terms(
-			absint( $departure_posts[0] ),
-			[
-				self::$promotion_tag_terms[0]->term_id,
-				self::$promotion_tag_terms[2]->term_id,
-			],
-			PROMOTION_TAG
-		);
-
 		// Update post meta.
 		wp_update_post(
 			[
@@ -575,15 +566,31 @@ class Test_Departure_Cards extends Softrip_TestCase {
 		// Assert created post is int.
 		$this->assertIsInt( $departure_post_2 );
 
-		// Set terms.
-		wp_set_object_terms(
-			$departure_post_2,
+		// Update post meta.
+		update_post_meta(
+			$departure_post_1,
+			'related_promotion_tags',
 			[
 				self::$promotion_tag_terms[0]->term_id,
 				self::$promotion_tag_terms[2]->term_id,
-			],
-			PROMOTION_TAG
+			]
 		);
+
+		// Bust cache.
+		bust_post_cache( $departure_post_1 );
+
+		// Update post meta.
+		update_post_meta(
+			$departure_post_2,
+			'related_promotion_tags',
+			[
+				self::$promotion_tag_terms[0]->term_id,
+				self::$promotion_tag_terms[2]->term_id,
+			]
+		);
+
+		// Bust cache.
+		bust_post_cache( $departure_post_2 );
 
 		// departure posts.
 		$departure_query_args = [
@@ -782,6 +789,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 				'promotion_tag_1',
 				'promotion_tag_3',
 			],
+			'promotion_banner' => 'Save upto 15%',
 			'lowest_price'             => [
 				'discounted_price' => '$29,610 USD',
 				'original_price'   => '$34,800 USD',
@@ -882,6 +890,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 				'promotion_tag_1',
 				'promotion_tag_3',
 			],
+			'promotion_banner' => 'Save upto 25%',
 			'lowest_price'             => [
 				'discounted_price' => '$26,371 USD',
 				'original_price'   => '$35,095 USD',
@@ -976,6 +985,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 			'duration_dates'           => 'January 16 - February 1, 2026',
 			'starting_from_location'   => self::$departure_location_terms[0]->name,
 			'promotion_tags'           => [],
+			'promotion_banner' => 'Save upto 15%',
 			'lowest_price'             => [
 				'discounted_price' => '$40,069 USD',
 				'original_price'   => '$47,105 USD',

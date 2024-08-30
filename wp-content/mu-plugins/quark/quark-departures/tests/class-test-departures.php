@@ -344,6 +344,35 @@ class Test_Departures extends Softrip_TestCase {
 			PROMOTION_TAG
 		);
 
+		// Add non-array promotion tag to post meta.
+		update_post_meta(
+			$post_1->ID,
+			'related_promotion_tags',
+			'abc'
+		);
+
+		// Flush cache.
+		bust_post_cache( $post_1->ID );
+
+		// Get promotion tags.
+		$promotion_tags = get_promotion_tags( $post_1->ID );
+
+		// Assert expected get data is equal to actual data.
+		$this->assertEquals([], $promotion_tags);
+
+		// Add array promotion tag to post meta.
+		update_post_meta(
+			$post_1->ID,
+			'related_promotion_tags',
+			[
+				$promotion_tag_term_1->term_id,
+				$promotion_tag_term_3->term_id,
+			]
+		);
+
+		// Flush cache.
+		bust_post_cache( $post_1->ID );
+
 		// Get promotion tags.
 		$promotion_tags = get_promotion_tags( $post_1->ID );
 
