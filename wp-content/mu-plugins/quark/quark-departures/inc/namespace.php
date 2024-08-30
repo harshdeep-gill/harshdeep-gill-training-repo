@@ -531,17 +531,30 @@ function get_promotion_tags( int $post_id = 0 ): array {
 	$departure      = get( $post_id );
 	$promotion_tags = [];
 
-	// Get promotion tags from post_taxonomy.
-	$promotion_tag_terms = $departure['post_taxonomies'][ PROMOTION_TAG ] ?? [];
-
-	// Check promotion tags are empty.
-	if ( ! $promotion_tag_terms || ! is_array( $promotion_tag_terms ) ) {
+	// Check for post.
+	if ( ! $departure['post'] instanceof WP_Post || empty( $departure['post_meta'] ) || empty( $departure['post_meta']['related_promotion_tags'] ) ) {
 		return $promotion_tags;
 	}
 
-	// Loop through promotion tags - get name field.
-	foreach ( $promotion_tag_terms as $promotion_tag ) {
-		$promotion_tags[] = $promotion_tag['name'] ? strval( $promotion_tag['name'] ) : '';
+	// Get promotion tags from post_meta.
+	$promotion_tag_term_ids = $departure['post_meta']['related_promotion_tags'];
+
+	// Check promotion tags are empty.
+	if ( ! is_array( $promotion_tag_term_ids ) ) {
+		return $promotion_tags;
+	}
+
+	// Get Promotion Tags term names.
+	foreach ( $promotion_tag_term_ids as $promotion_tag_term_id ) {
+		$promotion_tag_term = get_term( absint( $promotion_tag_term_id ), PROMOTION_TAG, ARRAY_A );
+
+		// Check for term.
+		if ( empty( $promotion_tag_term ) || ! is_array( $promotion_tag_term ) || empty( $promotion_tag_term['name'] ) ) {
+			continue;
+		}
+
+		// Add term name to promotion tags.
+		$promotion_tags[] = $promotion_tag_term['name'];
 	}
 
 	// Return promotion tags.
@@ -573,6 +586,7 @@ function get_promotion_tags( int $post_id = 0 ): array {
  *     },
  *     promotion_tags: string[],
  *     ship_name: string,
+ *     promotion_banner: string,
  *     banner_details: array{
  *        title: string,
  *        description: string,
@@ -666,6 +680,7 @@ function get_card_data( int $departure_id = 0, string $currency = 'USD' ): array
 		'ship_name'                => $ship_name,
 		'banner_details'           => get_policy_banner_details( $itinerary_id ),
 		'cabins'                   => get_cabin_details_by_departure( $departure_id, $currency ),
+		'promotion_banner'         => get_discount_label( $lowest_price['original'], $lowest_price['discounted'] ),
 	];
 
 	// Set cache and return data.
@@ -1209,4 +1224,31 @@ function get_dates_rates_cards_data( array $departure_ids = [], string $currency
 
 	// Return departure cards data.
 	return $departure_cards;
+}
+
+/**
+ * Get discount label.
+ *
+ * @param int $original_price Original price.
+ * @param int $discounted_price Discounted price.
+ *
+ * @return string
+ */
+function get_discount_label( int $original_price = 0, int $discounted_price = 0 ): string {
+	// Validate prices.
+	if ( empty( $original_price ) || empty( $discounted_price ) || $original_price <= $discounted_price ) {
+		return '';
+	}
+
+	// Calculate the discount.
+	$discount = $original_price - $discounted_price;
+
+	// Calculate the discount percentage.
+	$discount_percentage = ( $discount / $original_price ) * 100;
+
+	// Prepare the discount label.
+	$discount_label = sprintf( 'Save upto %s%%', number_format( $discount_percentage, 0 ) );
+
+	// Return the discount label.
+	return $discount_label;
 }
