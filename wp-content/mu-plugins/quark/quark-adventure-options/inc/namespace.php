@@ -89,6 +89,8 @@ function register_adventure_option_post_type(): void {
 				'quark/hero',
 				[
 					'syncPostThumbnail' => true,
+					'immersive'         => 'bottom',
+					'contentOverlap'    => false,
 				],
 				[
 					[
