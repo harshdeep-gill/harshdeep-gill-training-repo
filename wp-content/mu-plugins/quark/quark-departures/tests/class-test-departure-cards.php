@@ -1240,25 +1240,17 @@ class Test_Departure_Cards extends Softrip_TestCase {
 			'order'                  => 'ASC',
 			'orderby'                => 'ID',
 			'meta_query'             => [
-				'relation' => 'OR',
 				[
 					'key'     => 'softrip_code',
 					'value'   => 'OEX20260228',
 					'compare' => '=',
 				],
-				[
-					'key'     => 'softrip_code',
-					'value'   => 'ULT20250109',
-					'compare' => '=',
-				],
 			],
 		];
-
-		// Get Departure posts.
-		$departure_posts = get_posts( $departure_query_args );
+		$departure_posts      = get_posts( $departure_query_args );
 
 		// Assert fetched posts count is 1.
-		$this->assertCount( 2, $departure_posts );
+		$this->assertCount( 1, $departure_posts );
 
 		// Set departure post - 1.
 		$departure_post_1 = $departure_posts[0];
@@ -1266,8 +1258,31 @@ class Test_Departure_Cards extends Softrip_TestCase {
 		// Assert created post is int.
 		$this->assertIsInt( $departure_post_1 );
 
+		// Fetch Departure posts.
+		$departure_query_args = [
+			'post_type'              => POST_TYPE,
+			'no_found_rows'          => true,
+			'ignore_sticky_posts'    => true,
+			'update_post_term_cache' => false,
+			'fields'                 => 'ids',
+			'update_post_meta_cache' => false,
+			'order'                  => 'ASC',
+			'orderby'                => 'ID',
+			'meta_query'             => [
+				[
+					'key'     => 'softrip_code',
+					'value'   => 'ULT20250109',
+					'compare' => '=',
+				],
+			],
+		];
+		$departure_posts      = get_posts( $departure_query_args );
+
+		// Assert fetched posts count is 1.
+		$this->assertCount( 1, $departure_posts );
+
 		// Second departure post.
-		$departure_post_2 = $departure_posts[1];
+		$departure_post_2 = $departure_posts[0];
 
 		// Assert created post is int.
 		$this->assertIsInt( $departure_post_2 );
@@ -1324,7 +1339,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 				'duration_dates'             => 'February 28 - March 11, 2026',
 				'start_location'             => self::$departure_location_terms[0]->name,
 				'end_location'               => self::$departure_location_terms[1]->name,
-				'languages'                  => 'spoken_language_1, spoken_language_2',
+				'languages'                  => 'english',
 				'included_adventure_options' => [],
 				'paid_adventure_options'     => [],
 				'transfer_package_details'   => [
@@ -1362,7 +1377,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 				'duration_dates'             => 'January 9-25, 2025',
 				'start_location'             => self::$departure_location_terms[0]->name,
 				'end_location'               => self::$departure_location_terms[1]->name,
-				'languages'                  => 'english',
+				'languages'                  => 'spoken_language_1, spoken_language_2',
 				'included_adventure_options' => [],
 				'paid_adventure_options'     => [],
 				'transfer_package_details'   => [
