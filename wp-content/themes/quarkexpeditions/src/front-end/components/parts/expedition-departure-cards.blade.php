@@ -96,15 +96,15 @@
 						@endif
 					</x-departure-cards.specifications>
 
-					@if ( ! empty( $card['available_offers'] ) )
-						<x-departure-cards.offers title="Available Offers">
-							@foreach( $card['available_offers'] as $offer )
+					@if ( ! empty( $card['promotion_tags'] ) )
+						<x-departure-cards.offers :title="__( 'Available Offers', 'qrk' )">
+							@foreach( $card['promotion_tags'] as $offer )
 								<x-departure-cards.offer title="{{ $offer }}"/>
 							@endforeach
 
 							<x-departure-cards.offers-modal title="{{ $card['expedition_name'] ?? '' }}">
 								<ul>
-									@foreach( $card['available_offers'] as $offer )
+									@foreach( $card['promotion_tags'] as $offer )
 										<li>{{ $offer }}</li>
 									@endforeach
 								</ul>
