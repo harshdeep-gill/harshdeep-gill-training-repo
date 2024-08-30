@@ -130,7 +130,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 								'type' => 'text-graphic',
 							];
 
-							// Add image id
+							// Add image id.
 							$textgraphic['image_id'] = $child_block->attributes['image']['id'] ?? '';
 
 							// Add to attributes.
