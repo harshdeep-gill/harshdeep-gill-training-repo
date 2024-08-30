@@ -1,0 +1,8 @@
+.hero {
+	&__text-graphic {
+		border: 2px solid var(--color-gray-20);
+		border-radius: var(--border-radius);
+		min-width: 40%;
+		min-height: 250px;
+	}
+}
