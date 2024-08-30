@@ -120,11 +120,17 @@ export default function edit( { className, attributes, setAttributes }: BlockEdi
 		}
 	};
 
+	// Set Content overlap on none immersive mode.
+	if ( 'none' === attributes.immersive || 'top' === attributes.immersive ) {
+		setAttributes( { contentOverlap: false } );
+	}
+
 	// Set block props.
 	const blockProps = useBlockProps( {
 		className: classnames(
 			className,
 			'hero',
+			attributes.contentOverlap ? '' : 'hero--content-no-overlap',
 			[ 'top', 'bottom', 'all', 'no' ].find(
 				( value: string ) => value === attributes.immersive
 			) ? `hero--immersive-${ attributes.immersive }` : ''
@@ -171,6 +177,14 @@ export default function edit( { className, attributes, setAttributes }: BlockEdi
 						] }
 						onChange={ ( immersive: string ) => setAttributes( { immersive } ) }
 					/>
+					{ ( attributes.immersive === 'bottom' || attributes.immersive === 'all' ) &&
+						<ToggleControl
+							label={ __( 'Overlap Following Content', 'qrk' ) }
+							checked={ attributes.contentOverlap }
+							onChange={ ( contentOverlap ) => setAttributes( { contentOverlap } ) }
+							help={ __( 'Should the hero overlap the following content?', 'qrk' ) }
+						/>
+					}
 					<SelectControl
 						label={ __( 'Text Alignment', 'qrk' ) }
 						help={ __( 'Select the text alignment', 'qrk' ) }

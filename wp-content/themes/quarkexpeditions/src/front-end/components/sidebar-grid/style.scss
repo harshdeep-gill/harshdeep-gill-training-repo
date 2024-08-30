@@ -9,12 +9,16 @@
 	margin-top: var(--spacing-7);
 
 	@media screen and (min-width: calc( grid-size(lg) + 1px )) {
-		grid-template-columns: 1fr 256px;
+		grid-template-columns: auto auto;
 		grid-column-gap: var(--spacing-5);
 	}
 
 	&__sidebar {
 		display: none;
+
+		@media screen and (min-width: calc( grid-size(lg) + 1px )) {
+			max-width: 256px;
+		}
 
 		&--show-on-mobile {
 			display: block;

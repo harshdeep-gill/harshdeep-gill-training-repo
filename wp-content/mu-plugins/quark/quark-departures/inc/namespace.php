@@ -37,8 +37,8 @@ use function Quark\AdventureOptions\get as get_adventure_option_post_data;
 use function Quark\CabinCategories\get_availability_status_description;
 use function Quark\CabinCategories\get_cabin_availability_status;
 use function Quark\CabinCategories\get_available_cabin_spaces;
+use function Quark\Checkout\get_checkout_url;
 
-use const Quark\StaffMembers\SEASON_TAXONOMY;
 use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
 
 const POST_TYPE                = 'qrk_departure';
@@ -594,6 +594,7 @@ function get_promotion_tags( int $post_id = 0 ): array {
  *           size: string,
  *           bed_configuration: string
  *       },
+ *       checkout_url: string,
  *       from_price: array{
  *          discounted_price: string,
  *          original_price: string,
@@ -930,6 +931,7 @@ function bust_card_data_cache_on_expedition_update( int $expedition_id = 0 ): vo
  *             availability_status: string,
  *             availability_description: string,
  *             spaces_available: int,
+ *             checkout_url: string,
  *             brochure_price: string,
  *             promos: array{}|string[],
  *          }
@@ -1088,6 +1090,7 @@ function get_dates_rates_card_data( int $departure_id = 0, string $currency = 'U
 			'availability_description' => $availability_description,
 			'spaces_available'         => $cabin_spaces_available,
 			'promos'                   => [],
+			'checkout_url'             => get_checkout_url( $departure_id, $cabin_id, $currency ),
 		];
 
 		// Get the lowest price for the cabin.

@@ -1,7 +1,8 @@
 @props( [
-	'results_count' => 0,
-	'cards'         => [],
-	'ship_id'       => 0,
+	'results_count'   => 0,
+	'remaining_count' => 0,
+	'cards'           => [],
+	'ship_id'         => 0,
 ] )
 
 <x-book-departures-ships>
@@ -13,7 +14,7 @@
 
 	{{-- Results --}}
 	<x-book-departures-ships.results
-		:count="$results_count"
+		:count="$remaining_count"
 		:ship_id="$ship_id ?? 0"
 	>
 		<x-parts.ship-departure-cards :cards="$cards ?? []" />

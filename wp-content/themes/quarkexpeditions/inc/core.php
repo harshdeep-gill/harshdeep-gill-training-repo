@@ -238,6 +238,9 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 				'quark-departure-card'                        => [
 					'class' => true,
 				],
+				'quark-expedition-card'                       => [
+					'class' => true,
+				],
 				'quark-toast-message'                         => [
 					'class'   => true,
 					'visible' => true,
@@ -627,8 +630,10 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'style'    => true,
 				],
 				'source'                                      => [
-					'src'  => true,
-					'type' => true,
+					'src'    => true,
+					'type'   => true,
+					'srcset' => true,
+					'media'  => true,
 				],
 				'dialog'                                      => [
 					'class' => true,

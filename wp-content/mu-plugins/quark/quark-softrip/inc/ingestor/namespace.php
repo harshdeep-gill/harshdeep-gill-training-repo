@@ -177,11 +177,51 @@ function get_expedition_data( int $expedition_post_id = 0 ): array {
 		'id'           => $expedition_post_id,
 		'name'         => get_raw_text_from_html( $expedition_post['post']->post_title ),
 		'published'    => 'publish' === $expedition_post['post']->post_status,
-		'description'  => '', // @todo https://tuispecialist.atlassian.net/browse/QE-580 - Get description after parsing post content.
-		'images'       => [], // @todo https://tuispecialist.atlassian.net/browse/QE-580 - Get images after parsing post content for hero-slider block.
+		'description'  => '', // @todo https://tuispecialist.atlassian.net/browse/QE-589 - Get description after parsing post content.
+		'images'       => [],
 		'destinations' => [],
 		'itineraries'  => [],
 	];
+
+	// Get images.
+	if ( ! empty( $expedition_post['data'] ) && ! empty( $expedition_post['data']['hero_card_slider_image_ids'] ) && is_array( $expedition_post['data']['hero_card_slider_image_ids'] ) ) {
+		$image_ids = array_map( 'absint', $expedition_post['data']['hero_card_slider_image_ids'] );
+
+		// Loop through image IDs.
+		foreach ( $image_ids as $image_id ) {
+			// Full size url.
+			$full_size_url = wp_get_attachment_image_url( $image_id, 'full' );
+
+			// Validate full size url.
+			if ( empty( $full_size_url ) ) {
+				continue;
+			}
+
+			// Thumbnail url.
+			$thumbnail_url = wp_get_attachment_image_url( $image_id, 'thumbnail' );
+
+			// Validate thumbnail url.
+			if ( empty( $thumbnail_url ) ) {
+				continue;
+			}
+
+			// Alt text.
+			$alt_text = strval( get_post_meta( $image_id, '_wp_attachment_image_alt', true ) );
+
+			// Get title if alt text is empty.
+			if ( empty( $alt_text ) ) {
+				$alt_text = get_post_field( 'post_title', $image_id );
+			}
+
+			// Add image.
+			$expedition_data['images'][] = [
+				'id'           => $image_id,
+				'fullSizeUrl'  => $full_size_url,
+				'thumbnailUrl' => $thumbnail_url,
+				'alt'          => $alt_text,
+			];
+		}
+	}
 
 	// Get destination terms.
 	$expedition_data['destinations'] = get_destination_terms( $expedition_post_id );

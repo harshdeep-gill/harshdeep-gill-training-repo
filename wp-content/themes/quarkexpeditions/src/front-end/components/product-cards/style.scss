@@ -186,6 +186,7 @@
 
 		@media screen and (min-width: grid-size(lg)) {
 			flex-direction: row;
+			flex-wrap: wrap;
 		}
 
 		> .lp-form-modal-cta .btn {

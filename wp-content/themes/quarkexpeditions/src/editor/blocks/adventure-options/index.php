@@ -126,7 +126,8 @@ function render( array $attributes = [] ): string {
 	return quark_get_component(
 		COMPONENT,
 		[
-			'cards' => $cards_data,
+			'cards'             => $cards_data,
+			'carousel_overflow' => $attributes['carouselOverflow'],
 		]
 	);
 }
