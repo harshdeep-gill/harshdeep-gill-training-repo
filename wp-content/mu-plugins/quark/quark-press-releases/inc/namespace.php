@@ -65,6 +65,33 @@ function register_press_release_post_type(): void {
 		'capability_type'     => 'post',
 		'show_in_rest'        => true,
 		'menu_position'       => 5,
+		'template'            => [
+			[
+				'core/heading',
+				[
+					'level'       => 5,
+					'placeholder' => 'Place - Date',
+				],
+			],
+			[
+				'core/paragraph',
+				[
+					'placeholder' => 'Press Release Content here....',
+				],
+			],
+			[
+				'core/paragraph',
+				[
+					'content' => '<b>For media Inquiries</b>: email media@quarkexpeditions.com',
+				],
+			],
+			[
+				'core/paragraph',
+				[
+					'content' => '<b>About Quark Expeditions</b>: The global leader in polar adventures for more than 30 years. The most passionate and seasoned team in the industry, taking explorers to the ends of the earth. Going where few ever dream, and walking where few ever will. Delivering extraordinary experiences and enriching lives through travel, Quark Expeditions is a Travelopia specialist company.',
+				],
+			],
+		],
 	];
 
 	// Register post type.
