@@ -4861,7 +4861,13 @@
 
 					<x-expedition-cards.buttons>
 						<x-button href="#" color="black" size="big">View Expedition</x-button>
-						<x-expedition-cards.cta text="View Cabin Pricing & Options" />
+						<x-options-button>
+							<x-options-button.default-option url="#">View Cabin Pricing</x-options-button.default-option>
+							<x-options-button.options>
+								<x-options-button.option url="#">Request a callback</x-options-button.option>
+								<x-options-button.option url="#">Chat with us now</x-options-button.option>
+							</x-options-button.options>
+						</x-options-button>
 					</x-expedition-cards.buttons>
 				</x-expedition-cards.grid-column>
 			</x-expedition-cards.grid>
@@ -5215,7 +5221,13 @@
 
 							<x-expedition-cards.buttons>
 								<x-button href="#" color="black" size="big">View Expedition</x-button>
-								<x-expedition-cards.cta text="View Cabin Pricing & Options" />
+								<x-options-button>
+									<x-options-button.default-option url="#">View Cabin Pricing</x-options-button.default-option>
+									<x-options-button.options>
+										<x-options-button.option url="#">Request a callback</x-options-button.option>
+										<x-options-button.option url="#">Chat with us now</x-options-button.option>
+									</x-options-button.options>
+								</x-options-button>
 							</x-expedition-cards.buttons>
 						</x-expedition-cards.grid-column>
 					</x-expedition-cards.grid>

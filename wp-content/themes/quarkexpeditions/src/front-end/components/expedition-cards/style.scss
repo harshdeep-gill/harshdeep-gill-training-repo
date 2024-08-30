@@ -10,7 +10,6 @@
 		border-radius: var(--border-radius-large);
 		box-shadow: var(--shadow-1);
 		padding: var(--grid-col-gutter);
-		overflow: hidden;
 
 		& + & {
 			margin-top: var(--grid-row-gutter);
@@ -18,7 +17,10 @@
 	}
 
 	&__card-banner {
+		border-top-right-radius: var(--border-radius-large);
+		border-top-left-radius: var(--border-radius-large);
 		margin: calc(-1 * var(--grid-col-gutter)) calc(-1 * var(--grid-col-gutter)) 0;
+		overflow: hidden;
 	}
 
 	&__card-banner-link {
@@ -43,9 +45,18 @@
 		margin-top: var(--grid-col-gutter);
 		position: relative;
 
-		@media screen and (min-width: grid-size(md)) {
+		@media screen and (min-width: grid-size(lg)) {
 			grid-template-columns: 288px 1fr;
 			grid-column-gap: var(--spacing-7);
+		}
+
+		.sidebar-grid & {
+			grid-template-columns: repeat(1, 1fr);
+
+			@media screen and (min-width: grid-size(xl)) {
+				grid-template-columns: 288px 1fr;
+				grid-column-gap: var(--spacing-7);
+			}
 		}
 	}
 
@@ -66,7 +77,7 @@
 		padding: 0 var(--spacing-2) 0 var(--spacing-3);
 		margin-left: calc(-1 * var(--grid-col-gutter));
 
-		@media screen and (min-width: grid-size(md)) {
+		@media screen and (min-width: grid-size(lg)) {
 			padding: 0 var(--spacing-3) 0 var(--spacing-2);
 			margin-right: calc(-1 * var(--grid-col-gutter));
 			margin-left: 0;
@@ -90,7 +101,7 @@
 			left: -15px;
 			display: none;
 
-			@media screen and (min-width: grid-size(md)) {
+			@media screen and (min-width: grid-size(lg)) {
 				display: block;
 			}
 		}
@@ -100,7 +111,7 @@
 			right: -15px;
 			display: block;
 
-			@media screen and (min-width: grid-size(md)) {
+			@media screen and (min-width: grid-size(lg)) {
 				display: none;
 			}
 		}
@@ -145,10 +156,21 @@
 		border-bottom: 1px solid var(--color-gray-20);
 		padding-bottom: var(--grid-row-gutter);
 
-		@media screen and (min-width: grid-size(xl)) {
+		@media screen and (min-width: grid-size(lg)) {
 			display: grid;
 			grid-template-columns: repeat(1, 1fr);
 			grid-template-columns: clamp(120px, 30%, 200px) 1fr;
+		}
+
+		.sidebar-grid & {
+			display: flex;
+			flex-direction: column;
+
+			@media screen and (min-width: grid-size(xl)) {
+				display: grid;
+				grid-template-columns: repeat(1, 1fr);
+				grid-template-columns: clamp(120px, 30%, 200px) 1fr;
+			}
 		}
 	}
 
@@ -158,7 +180,7 @@
 
 		&:first-child {
 
-			@media screen and (min-width: grid-size(md)) {
+			@media screen and (min-width: grid-size(lg)) {
 				padding-right: 160px; // Promo tag width.
 			}
 
@@ -287,11 +309,11 @@
 
 	&__buttons {
 		display: flex;
-		flex-direction: column;
+		flex-flow: column-reverse;
 		gap: var(--spacing-4);
 		margin-top: var(--grid-row-gutter);
 
-		@media screen and (min-width: grid-size(md)) {
+		@media screen and (min-width: grid-size(lg)) {
 			flex-flow: row wrap;
 		}
 
@@ -300,8 +322,12 @@
 			min-width: 0;
 		}
 
-		#{$self}__cta {
+		.options-button {
 			min-width: 60%;
+
+			.btn {
+				min-width: 60px;
+			}
 		}
 	}
 
@@ -432,7 +458,6 @@
 	// Media carousel.
 	.media-carousel {
 		display: flex;
-		align-items: center;
 		height: 100%;
 
 		&:hover .media-carousel__arrows {
@@ -443,13 +468,10 @@
 		&__track,
 		&__slides {
 			min-height: 100%;
-
-			@media screen and (min-width: grid-size(md)) {
-				height: 100% !important;
-			}
 		}
 
 		&__arrows {
+			align-self: center;
 			position: absolute;
 			left: 0;
 			z-index: 1;
@@ -463,17 +485,27 @@
 
 		&__item {
 
-			@media screen and (min-width: grid-size(md)) {
-				height: 100% !important;
-			}
-
 			img {
 				object-fit: cover;
 				width: 100%;
 				height: 100%;
 
-				@media screen and (min-width: grid-size(md)) {
+				@media screen and (min-width: grid-size(xl)) {
 					aspect-ratio: initial;
+				}
+			}
+		}
+
+		tp-slider-slides:first-of-type > tp-slider-slide {
+
+			@media screen and (min-width: grid-size(lg)) {
+				height: 100%;
+			}
+
+			.sidebar-grid & {
+
+				@media screen and (max-width: calc(grid-size(xl) - 1px)) {
+					height: auto;
 				}
 			}
 		}
