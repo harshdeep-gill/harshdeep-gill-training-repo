@@ -36,6 +36,12 @@
 						@endif
 					@endif
 
+					@if ( 'text-graphic' === $item['type'] )
+						@if ( ! empty( $item['image_id'] ) )
+							<x-hero.text-graphic :image_id="$item['image_id']" />
+						@endif
+					@endif
+
 					@if ( 'subtitle' === $item['type'] )
 						@if ( ! empty( $item['subtitle'] ) )
 							<x-hero.sub-title :title="$item['subtitle']" :text_color="$item['text_color']" />
