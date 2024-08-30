@@ -1,5 +1,6 @@
 @props( [
-	'cards' => [],
+	'cards'             => [],
+	'carousel_overflow' => false,
 ] )
 
 @php
@@ -8,7 +9,7 @@
 	}
 @endphp
 
-<x-info-cards layout="carousel">
+<x-info-cards layout="carousel" :carousel_overflow="$carousel_overflow">
 	@foreach ( $cards as $card )
 		<x-info-cards.card size="big" :url="$card['permalink'] ?? ''">
 			<x-info-cards.image :image_id="$card['featured_image'] ?? 0" />

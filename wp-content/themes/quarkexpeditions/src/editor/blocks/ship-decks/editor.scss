@@ -1,0 +1,9 @@
+.quark-ship-decks {
+
+	.tabs__content:not(:has(.tabs__tab[open])) {
+
+		.tabs__tab:first-child {
+			display: block;
+		}
+	}
+}

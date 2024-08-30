@@ -632,8 +632,8 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 				'source'                                      => [
 					'src'    => true,
 					'type'   => true,
-					'media'  => true,
 					'srcset' => true,
+					'media'  => true,
 				],
 				'dialog'                                      => [
 					'class' => true,
