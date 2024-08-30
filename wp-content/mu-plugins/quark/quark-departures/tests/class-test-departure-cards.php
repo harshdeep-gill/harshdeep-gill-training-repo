@@ -15,6 +15,7 @@ use function Quark\Core\format_price;
 use function Quark\Departures\get_card_data;
 use function Quark\Departures\get_cards_data;
 use function Quark\Departures\get_dates_rates_card_data;
+use function Quark\Departures\get_dates_rates_cards_data;
 use function Quark\Softrip\do_sync;
 use function Quark\Softrip\Promotions\get_promotions_by_code;
 
@@ -1056,7 +1057,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 	 *
 	 * @return void
 	 */
-	public function test_get_dates_rates_cards_data(): void {
+	public function test_get_dates_rates_card_data(): void {
 		// Setup mock response.
 		add_filter( 'pre_http_request', 'Quark\Tests\Softrip\mock_softrip_http_request', 10, 3 );
 
@@ -1161,8 +1162,10 @@ class Test_Departure_Cards extends Softrip_TestCase {
 					'availability_description' => 'Available',
 					'spaces_available'         => 10,
 					'brochure_price'           => '$45,105 USD',
+					'promos'                   => [
+						'15PROMO' => '$38,169 USD',
+					],
 					'checkout_url'             => 'https://local-checkout.quarkexpeditions.com?package_id=JKL-012&departure_date=2025-01-09&cabin_code=ULT-SGL&currency=USD',
-					'15PROMO'                  => '$38,169 USD',
 				],
 				'ULT-DBL' => [
 					'name'                     => 'cabin_name - ULT-DBL',
@@ -1171,7 +1174,9 @@ class Test_Departure_Cards extends Softrip_TestCase {
 					'checkout_url'             => 'https://local-checkout.quarkexpeditions.com?package_id=JKL-012&departure_date=2025-01-09&cabin_code=ULT-DBL&currency=USD',
 					'spaces_available'         => 20,
 					'brochure_price'           => '$34,800 USD',
-					'15PROMO'                  => '$29,410 USD',
+					'promos'                   => [
+						'15PROMO' => '$29,410 USD',
+					],
 				],
 			],
 		];
@@ -1202,6 +1207,260 @@ class Test_Departure_Cards extends Softrip_TestCase {
 
 		// Assert data.
 		$this->assertEqualSetsWithIndex( $expected_data, $card_data );
+
+		// Cleanup.
+		remove_filter( 'pre_http_request', 'Quark\Tests\Softrip\mock_softrip_http_request' );
+	}
+
+	/**
+	 * Test get_dates_rates_card_data().
+	 *
+	 * @covers \Quark\Departures\get_dates_rates_card_data()
+	 *
+	 * @return void
+	 */
+	public function test_get_dates_rates_cards_data(): void {
+		// Setup mock response.
+		add_filter( 'pre_http_request', 'Quark\Tests\Softrip\mock_softrip_http_request', 10, 3 );
+
+		// Sync softrip with existing posts.
+		do_sync();
+
+		// Flush cache.
+		wp_cache_flush();
+
+		// Fetch Departure posts.
+		$departure_query_args = [
+			'post_type'              => POST_TYPE,
+			'no_found_rows'          => true,
+			'ignore_sticky_posts'    => true,
+			'update_post_term_cache' => false,
+			'fields'                 => 'ids',
+			'update_post_meta_cache' => false,
+			'order'                  => 'ASC',
+			'orderby'                => 'ID',
+			'meta_query'             => [
+				[
+					'key'     => 'softrip_code',
+					'value'   => 'OEX20260228',
+					'compare' => '=',
+				],
+			],
+		];
+		$departure_posts      = get_posts( $departure_query_args );
+
+		// Assert fetched posts count is 1.
+		$this->assertCount( 1, $departure_posts );
+
+		// Set departure post - 1.
+		$departure_post_1 = $departure_posts[0];
+
+		// Assert created post is int.
+		$this->assertIsInt( $departure_post_1 );
+
+		// Fetch Departure posts.
+		$departure_query_args = [
+			'post_type'              => POST_TYPE,
+			'no_found_rows'          => true,
+			'ignore_sticky_posts'    => true,
+			'update_post_term_cache' => false,
+			'fields'                 => 'ids',
+			'update_post_meta_cache' => false,
+			'order'                  => 'ASC',
+			'orderby'                => 'ID',
+			'meta_query'             => [
+				[
+					'key'     => 'softrip_code',
+					'value'   => 'ULT20250109',
+					'compare' => '=',
+				],
+			],
+		];
+		$departure_posts      = get_posts( $departure_query_args );
+
+		// Assert fetched posts count is 1.
+		$this->assertCount( 1, $departure_posts );
+
+		// Second departure post.
+		$departure_post_2 = $departure_posts[0];
+
+		// Assert created post is int.
+		$this->assertIsInt( $departure_post_2 );
+
+		// Set terms.
+		wp_set_object_terms(
+			absint( $departure_posts[0] ),
+			[
+				self::$spoken_language_terms[0]->term_id,
+				self::$spoken_language_terms[1]->term_id,
+			],
+			SPOKEN_LANGUAGE_TAXONOMY
+		);
+
+		// Set terms.
+		wp_set_object_terms(
+			absint( self::$post_expedition->ID ),
+			[
+				self::$destination_terms[0]->term_id,
+				self::$destination_terms[1]->term_id,
+			],
+			DESTINATION_TAXONOMY
+		);
+
+		// departure posts.
+		$departure_query_args = [
+			'post_type'              => POST_TYPE,
+			'no_found_rows'          => true,
+			'ignore_sticky_posts'    => true,
+			'update_post_term_cache' => false,
+			'fields'                 => 'ids',
+			'update_post_meta_cache' => false,
+			'posts_per_page'         => -1,
+			'order'                  => 'ASC',
+			'orderby'                => 'ID',
+		];
+
+		// Get Departure posts.
+		$all_departures = get_posts( $departure_query_args );
+
+		// assert fetched posts are 3.
+		$this->assertCount( 7, $all_departures );
+
+		// Get cards data.
+		$card_data = get_dates_rates_cards_data( [ $departure_post_1, $departure_post_2 ] );
+
+		// Prepare expected data.
+		$expected_data = [
+			$departure_post_1 => [
+				'region'                     => 'Antarctica',
+				'expedition_title'           => 'Test Expedition Post',
+				'expedition_link'            => get_permalink( self::$post_expedition->ID ),
+				'duration_days'              => 11,
+				'duration_dates'             => 'February 28 - March 11, 2026',
+				'start_location'             => self::$departure_location_terms[0]->name,
+				'end_location'               => self::$departure_location_terms[1]->name,
+				'languages'                  => 'english',
+				'included_adventure_options' => [],
+				'paid_adventure_options'     => [],
+				'transfer_package_details'   => [
+					'title'           => 'Includes',
+					'sets'            => [
+						'Test Item 4',
+						'Test Item 5',
+						'Test Item 6',
+					],
+					'price'           => 200,
+					'formatted_price' => '$200 USD',
+				],
+				'cabin_data'                 => [
+					'OEX-SGL' => [
+						'name'                     => 'cabin_name - OEX-SGL',
+						'availability_status'      => 'S',
+						'availability_description' => 'Sold Out',
+						'spaces_available'         => 0,
+						'promos'                   => [
+							'25PROMO' => '$26,171 USD',
+						],
+						'brochure_price'           => '$35,095 USD',
+						'checkout_url'             => 'https://local-checkout.quarkexpeditions.com?package_id=ABC-123&departure_date=2026-02-28&cabin_code=OEX-SGL&currency=USD',
+					],
+				],
+				'available_promos'           => [
+					'25PROMO' => get_promotions_by_code( '25PROMO' )[0],
+				],
+			],
+			$departure_post_2 => [
+				'region'                     => 'Antarctica',
+				'expedition_title'           => 'Test Expedition Post',
+				'expedition_link'            => get_permalink( self::$post_expedition->ID ),
+				'duration_days'              => 16,
+				'duration_dates'             => 'January 9-25, 2025',
+				'start_location'             => self::$departure_location_terms[0]->name,
+				'end_location'               => self::$departure_location_terms[1]->name,
+				'languages'                  => 'spoken_language_1, spoken_language_2',
+				'included_adventure_options' => [],
+				'paid_adventure_options'     => [],
+				'transfer_package_details'   => [
+					'title'           => 'Includes',
+					'sets'            => [
+						'Test Item 4',
+						'Test Item 5',
+						'Test Item 6',
+					],
+					'price'           => 200,
+					'formatted_price' => '$200 USD',
+				],
+				'cabin_data'                 => [
+					'ULT-SGL' => [
+						'name'                     => 'cabin_name - ULT-SGL',
+						'availability_status'      => 'A',
+						'availability_description' => 'Available',
+						'spaces_available'         => 10,
+						'brochure_price'           => '$45,105 USD',
+						'promos'                   => [
+							'15PROMO' => '$38,169 USD',
+						],
+						'checkout_url'             => 'https://local-checkout.quarkexpeditions.com?package_id=JKL-012&departure_date=2025-01-09&cabin_code=ULT-SGL&currency=USD',
+					],
+					'ULT-DBL' => [
+						'name'                     => 'cabin_name - ULT-DBL',
+						'availability_status'      => 'A',
+						'availability_description' => 'Available',
+						'spaces_available'         => 20,
+						'brochure_price'           => '$34,800 USD',
+						'promos'                   => [
+							'15PROMO' => '$29,410 USD',
+						],
+						'checkout_url'             => 'https://local-checkout.quarkexpeditions.com?package_id=JKL-012&departure_date=2025-01-09&cabin_code=ULT-DBL&currency=USD',
+					],
+				],
+				'available_promos'           => [
+					'15PROMO' => get_promotions_by_code( '15PROMO' )[0],
+				],
+			],
+		];
+
+		// Search ship post with code OEX.
+		$ship_posts = get_posts(
+			[
+				'post_type'      => SHIP_POST_TYPE,
+				'posts_per_page' => 1,
+				'meta_query'     => [
+					[
+						'key'   => 'ship_code',
+						'value' => 'OEX',
+					],
+				],
+			]
+		);
+		$this->assertTrue( $ship_posts[0] instanceof WP_Post );
+		$expected_data[ $departure_post_1 ]['ship_title'] = $ship_posts[0]->post_title;
+		$expected_data[ $departure_post_1 ]['ship_link']  = get_permalink( $ship_posts[0]->ID );
+
+		// Search ship post with code ULT.
+		$ship_post2 = get_posts(
+			[
+				'post_type'      => SHIP_POST_TYPE,
+				'posts_per_page' => 1,
+				'meta_query'     => [
+					[
+						'key'   => 'ship_code',
+						'value' => 'ULT',
+					],
+				],
+			]
+		);
+		$this->assertTrue( $ship_post2[0] instanceof WP_Post );
+		$expected_data[ $departure_post_2 ]['ship_title'] = $ship_post2[0]->post_title;
+		$expected_data[ $departure_post_2 ]['ship_link']  = get_permalink( $ship_post2[0]->ID );
+
+		// Assert data.
+		$this->assertArrayHasKey( $departure_post_1, $card_data );
+		$this->assertArrayHasKey( $departure_post_2, $card_data );
+
+		// Assert data for each card.
+		$this->assertEqualSetsWithIndex( $expected_data[ $departure_post_1 ], $card_data[ $departure_post_1 ] );
+		$this->assertEqualSetsWithIndex( $expected_data[ $departure_post_2 ], $card_data[ $departure_post_2 ] );
 
 		// Cleanup.
 		remove_filter( 'pre_http_request', 'Quark\Tests\Softrip\mock_softrip_http_request' );
@@ -1356,12 +1615,14 @@ class Test_Departure_Cards extends Softrip_TestCase {
 					'icon_image_id'    => '234',
 					'spaces_available' => 0,
 					'price_per_person' => '$1,090 CAD',
+					'currency'         => 'CAD',
 				],
 				[
 					'title'            => 'adventure_option-2',
 					'icon_image_id'    => '987',
 					'price_per_person' => '$270 CAD',
 					'spaces_available' => 13,
+					'currency'         => 'CAD',
 				],
 			],
 			$card_data['paid_adventure_options'] ?? []
@@ -1377,6 +1638,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 				'spaces_available'         => 0,
 				'checkout_url'             => 'https://local-checkout.quarkexpeditions.com?package_id=HIJ-456&departure_date=2025-09-04&cabin_code=OEX-JST&currency=CAD',
 				'brochure_price'           => '$46,050 CAD',
+				'promos'                   => [],
 			],
 			$card_data['cabin_data']['OEX-JST'] ?? []
 		);
