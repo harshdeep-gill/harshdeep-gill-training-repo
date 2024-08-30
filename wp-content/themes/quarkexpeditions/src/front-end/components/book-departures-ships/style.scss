@@ -1,0 +1,110 @@
+@import "../../scss";
+
+.book-departures-ships {
+	$self: &;
+
+	&[loading="true"] {
+
+		#{$self}__results {
+
+			> * {
+				display: none;
+			}
+
+			&--loading {
+				display: block;
+			}
+		}
+	}
+
+	&__header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding-block-end: var(--spacing-5);
+		margin-block-start: var(--spacing-6);
+		flex-wrap: wrap;
+
+		@media screen and (min-width: grid-size(sm)) {
+			flex-wrap: nowrap;
+		}
+	}
+
+	&__filters {
+		display: flex;
+		column-gap: var(--spacing-5);
+		flex-wrap: wrap;
+		margin-block-start: var(--spacing-5);
+
+		@media screen and (min-width: grid-size(sm)) {
+			flex-wrap: nowrap;
+		}
+	}
+
+	&__results {
+		margin-block-end: var(--spacing-5);
+
+		&--loading {
+			display: none;
+			width: fit-content;
+			margin-inline: auto;
+			margin-block: var(--spacing-6);
+
+			> svg {
+				width: 80px;
+				height: 80px;
+
+				@include spin;
+
+				> path {
+					fill: var(--color-yellow);
+				}
+			}
+		}
+	}
+
+	&__load-more {
+		display: block;
+
+		&[active="false"] {
+
+			#{$self}__load-more-button-container {
+				display: none;
+			}
+		}
+
+		&[loading="false"] {
+
+			#{$self}__load-more-button {
+
+				> span.btn__icon-spinner {
+					display: none;
+				}
+			}
+		}
+
+		&[loading="true"] {
+
+			#{$self}__load-more-button {
+
+				> span.btn__icon-spinner {
+					display: inline-flex;
+				}
+			}
+		}
+
+		&-button-container {
+			display: block;
+			text-align: center;
+			margin-block-start: var(--spacing-6);
+
+			> button {
+				width: 100%;
+
+				@media screen and (min-width: grid-size(sm)) {
+					width: auto;
+				}
+			}
+		}
+	}
+}

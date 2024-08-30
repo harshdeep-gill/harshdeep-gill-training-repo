@@ -20,5 +20,8 @@
     "sourceMap": true,
     "allowSyntheticDefaultImports": true
   },
-  "include": ["wp-content/themes/quarkexpeditions/src/**/*"]
+  "include": [
+    "wp-content/themes/quarkexpeditions/src/**/*",
+    "wp-content/mu-plugins/quark/quark-softrip/src/**/*"
+  ]
 }

@@ -17,5 +17,10 @@
     "html": false,
     "customClassName": false
   },
-  "attributes": {}
+  "attributes": {
+    "departuresUrl": {
+      "type": "object",
+      "default": {}
+    }
+  }
 }

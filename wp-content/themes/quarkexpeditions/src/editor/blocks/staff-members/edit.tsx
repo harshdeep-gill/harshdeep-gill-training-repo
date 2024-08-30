@@ -67,11 +67,12 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 				<PanelBody title={ __( 'Staff Members Options', 'qrk' ) }>
 					<SelectControl
 						label={ __( 'Selection', 'qrk' ) }
-						help={ __( 'Select how you would like to select posts', 'qrk' ) }
+						help={ 'auto' === attributes.selection ? __( 'Automatically select, based on context. Do not select this if you are not sure', 'qrk' ) : __( 'Select how you would like to select posts', 'qrk' ) }
 						value={ attributes.selection }
 						options={ [
 							{ label: __( 'Manual', 'qrk' ), value: 'manual' },
 							{ label: __( 'Recent', 'qrk' ), value: 'recent' },
+							{ label: __( 'Auto', 'qrk' ), value: 'auto' },
 						] }
 						onChange={ ( selection ) => setAttributes( { selection } ) }
 					/>

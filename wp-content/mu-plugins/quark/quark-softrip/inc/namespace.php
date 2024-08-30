@@ -182,27 +182,35 @@ function cron_schedule_sync(): void {
  * Do the sync.
  *
  * @param int[] $itinerary_post_ids Itinerary post IDs.
+ * @param int[] $specific_departure_post_ids  Departure post IDs. Default is empty array. Meant for specific departures.
  *
- * @return void.
+ * @return bool.
  */
-function do_sync( array $itinerary_post_ids = [] ): void {
+function do_sync( array $itinerary_post_ids = [], array $specific_departure_post_ids = [] ): bool {
 	// If no itinerary post IDs are provided, get all itinerary post IDs.
 	if ( empty( $itinerary_post_ids ) ) {
-		// Prepare args.
-		$args = [
-			'post_type'              => ITINERARY_POST_TYPE,
-			'fields'                 => 'ids',
-			'no_found_rows'          => true,
-			'update_post_meta_cache' => false,
-			'update_term_meta_cache' => false,
-			'ignore_sticky_posts'    => true,
-			'post_status'            => [ 'draft', 'publish' ],
-			'posts_per_page'         => -1,
-		];
+		// Get all itinerary post IDs as all departures should be updated.
+		if ( empty( $specific_departure_post_ids ) ) {
+			// Prepare args.
+			$args = [
+				'post_type'              => ITINERARY_POST_TYPE,
+				'fields'                 => 'ids',
+				'no_found_rows'          => true,
+				'update_post_meta_cache' => false,
+				'update_term_meta_cache' => false,
+				'ignore_sticky_posts'    => true,
+				'post_status'            => [ 'draft', 'publish' ],
+				'posts_per_page'         => -1,
+			];
 
-		// Run WP_Query.
-		$query              = new WP_Query( $args );
-		$itinerary_post_ids = array_map( 'absint', $query->posts );
+			// Run WP_Query.
+			$query              = new WP_Query( $args );
+			$itinerary_post_ids = array_map( 'absint', $query->posts );
+		} else {
+			// Get itinerary post IDs for the specific departure post IDs.
+			$itinerary_post_ids = array_map( 'absint', array_map( 'wp_get_post_parent_id', $specific_departure_post_ids ) );
+			$itinerary_post_ids = array_unique( $itinerary_post_ids );
+		}
 	}
 
 	// Initialize package codes.
@@ -230,7 +238,7 @@ function do_sync( array $itinerary_post_ids = [] ): void {
 		}
 
 		// Bail out.
-		return;
+		return false;
 	}
 
 	// Total count.
@@ -245,12 +253,15 @@ function do_sync( array $itinerary_post_ids = [] ): void {
 		$progress = new Bar( 'Softrip sync', $total, 100 );
 	}
 
+	// Initiated via.
+	$initiated_via = get_initiated_via();
+
 	// Log the sync initiated.
 	do_action(
 		'quark_softrip_sync_initiated',
 		[
 			'count' => $total,
-			'via'   => $is_in_cli ? 'CLI' : 'cron',
+			'via'   => $initiated_via,
 		]
 	);
 
@@ -290,7 +301,7 @@ function do_sync( array $itinerary_post_ids = [] ): void {
 			}
 
 			// Update departure data.
-			$success = update_departures( $departures['departures'], $softrip_package_code );
+			$success = update_departures( $departures['departures'], $softrip_package_code, $specific_departure_post_ids );
 
 			// Update progress bar.
 			if ( $is_in_cli ) {
@@ -311,7 +322,7 @@ function do_sync( array $itinerary_post_ids = [] ): void {
 		[
 			'success' => $counter,
 			'failed'  => $total - $counter,
-			'via'     => $is_in_cli ? 'CLI' : 'cron',
+			'via'     => $initiated_via,
 		]
 	);
 
@@ -322,6 +333,29 @@ function do_sync( array $itinerary_post_ids = [] ): void {
 		// End notice.
 		WP_CLI::success( sprintf( 'Completed %d items with %d failed items', $counter, ( $total - $counter ) ) );
 	}
+
+	// Return true if successful.
+	return $counter === $total;
+}
+
+/**
+ * Get sync initiated via.
+ *
+ * @return string
+ */
+function get_initiated_via(): string {
+	// Check if in CLI.
+	if ( defined( 'WP_CLI' ) && true === WP_CLI ) {
+		return 'CLI';
+	}
+
+	// Check if in cron.
+	if ( defined( 'DOING_CRON' ) && true === DOING_CRON ) {
+		return 'cron';
+	}
+
+	// Default to manually.
+	return 'manually';
 }
 
 /**

@@ -1,0 +1,23 @@
+/**
+ * Title & Meta
+ */
+
+@import "../../scss";
+
+.title-meta {
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-4);
+
+	@media screen and (min-width: grid-size(lg)) {
+		gap: var(--spacing-5);
+	}
+
+	> * {
+		margin-block: 0;
+	}
+
+	&__title {
+		font-weight: var(--font-weight-default);
+	}
+}

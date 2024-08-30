@@ -7,6 +7,7 @@
 
 namespace Quark\Softrip\Tests;
 
+use Exception;
 use Quark\Tests\Softrip\Softrip_TestCase;
 use WP_Error;
 

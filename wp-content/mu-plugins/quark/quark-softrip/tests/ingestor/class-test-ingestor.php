@@ -80,8 +80,9 @@ class Test_Ingestor extends WP_UnitTestCase {
 			[
 				'id'           => $expedition_post_id,
 				'name'         => get_raw_text_from_html( get_the_title( $expedition_post_id ) ),
-				'description'  => '', // @todo https://tuispecialist.atlassian.net/browse/QE-580 - Get description after parsing post content.
-				'images'       => [], // @todo https://tuispecialist.atlassian.net/browse/QE-580 - Get description after parsing post content.
+				'published'    => true,
+				'description'  => '', // @todo https://tuispecialist.atlassian.net/browse/QE-589 - Get description after parsing post content.
+				'images'       => [],
 				'destinations' => [],
 				'itineraries'  => [],
 			];
@@ -102,6 +103,61 @@ class Test_Ingestor extends WP_UnitTestCase {
 		// Assign itinerary to the expedition post.
 		update_post_meta( $expedition_post_id, 'related_itineraries', [ $itinerary_post_id ] );
 
+		// Create some media post.
+		$media_post_id1 = $this->factory()->attachment->create_upload_object( __DIR__ . '/data/test.jpg' );
+		$this->assertIsInt( $media_post_id1 );
+		$media_post_id2 = $this->factory()->attachment->create_upload_object( __DIR__ . '/data/test.jpg' );
+		$this->assertIsInt( $media_post_id2 );
+
+		// Get alt text for media post.
+		$alt_text1 = get_post_meta( $media_post_id1, '_wp_attachment_image_alt', true );
+
+		// If empty alt, see title.
+		if ( empty( $alt_text1 ) ) {
+			$alt_text1 = get_the_title( $media_post_id1 );
+		}
+
+		// Get alt text for media post.
+		$alt_text2 = get_post_meta( $media_post_id2, '_wp_attachment_image_alt', true );
+
+		// If empty alt, see title.
+		if ( empty( $alt_text2 ) ) {
+			$alt_text2 = get_the_title( $media_post_id2 );
+		}
+
+		// Post content.
+		$post_content = sprintf(
+			'<!-- wp:paragraph -->
+			<p>On this extraordinary journey, you will pack all the excitement of an epic Arctic cruise into just seven days, experience incredible Arctic wilderness you never dreamt possible. Though this rocky island is covered in mountains and glaciers, the towering cliffs and fjords play host to a thriving and diverse ecosystem. Exploring as much of the area as possible, you will enjoy maximum opportunities to spot, among other wildlife, the walrus with its long tusks and distinctive whiskers, the resilient and Arctic birds in all their varied majesty, and that most iconic of Arctic creatures, the polar bear.</p>
+			<!-- /wp:paragraph -->
+
+			<!-- wp:quark/expedition-hero -->
+			<!-- wp:quark/expedition-hero-content -->
+			<!-- wp:quark/expedition-hero-content-left -->
+			<!-- wp:quark/expedition-details /-->
+			<!-- /wp:quark/expedition-hero-content-left -->
+
+			<!-- wp:quark/expedition-hero-content-right -->
+			<!-- wp:quark/hero-card-slider {"items":[{"id":%1$s,"src":"%3$s","width":300,"height":200,"alt":"","caption":"","size":"medium"},{"id":%2$s,"src":"%4$s","width":300,"height":200,"alt":"","caption":"","size":"medium"},{"id":6592,"src":"https://local.quarkexpeditions.com/wp-content/uploads/2024/08/strote-jared-201809-214x300.jpg","width":214,"height":300,"alt":"","caption":"","size":"medium"},{"id":6594,"src":"https://local.quarkexpeditions.com/wp-content/uploads/2024/08/white-andrew-202102-300x200.jpg","width":300,"height":200,"alt":"","caption":"","size":"medium"}]} /-->
+			<!-- /wp:quark/expedition-hero-content-right -->
+			<!-- /wp:quark/expedition-hero-content -->
+			<!-- /wp:quark/expedition-hero -->
+
+			<!-- wp:quark/book-departures-expeditions /-->',
+			$media_post_id1,
+			$media_post_id2,
+			wp_get_attachment_image_url( $media_post_id1, 'medium' ),
+			wp_get_attachment_image_url( $media_post_id2, 'full' )
+		);
+
+		// Update post content.
+		wp_update_post(
+			[
+				'ID'           => $expedition_post_id,
+				'post_content' => $post_content,
+			]
+		);
+
 		// Flush the cache.
 		wp_cache_flush();
 
@@ -110,14 +166,29 @@ class Test_Ingestor extends WP_UnitTestCase {
 			[
 				'id'           => $expedition_post_id,
 				'name'         => get_raw_text_from_html( get_the_title( $expedition_post_id ) ),
+				'published'    => true,
 				'description'  => '', // @todo Get description after parsing post content.
-				'images'       => [], // @todo Get description after parsing post content.
+				'images'       => [
+					[
+						'id'           => $media_post_id1,
+						'fullSizeUrl'  => wp_get_attachment_url( $media_post_id1 ),
+						'thumbnailUrl' => wp_get_attachment_image_url( $media_post_id1, 'thumbnail' ),
+						'alt'          => $alt_text1,
+					],
+					[
+						'id'           => $media_post_id2,
+						'fullSizeUrl'  => wp_get_attachment_url( $media_post_id2 ),
+						'thumbnailUrl' => wp_get_attachment_image_url( $media_post_id2, 'thumbnail' ),
+						'alt'          => $alt_text2,
+					],
+				], // @todo Get description after parsing post content.
 				'destinations' => [],
 				'itineraries'  => [
 					[
 						'id'            => $itinerary_post_id,
 						'packageId'     => 'UNQ-123',
 						'name'          => get_raw_text_from_html( get_the_title( $itinerary_post_id ) ),
+						'published'     => true,
 						'startLocation' => '',
 						'endLocation'   => '',
 						'departures'    => [],
@@ -309,6 +380,7 @@ class Test_Ingestor extends WP_UnitTestCase {
 				'id'            => $itinerary_post_id1,
 				'packageId'     => 'UNQ-123',
 				'name'          => get_raw_text_from_html( get_the_title( $itinerary_post_id1 ) ),
+				'published'     => true,
 				'startLocation' => '',
 				'endLocation'   => '',
 				'departures'    => [],
@@ -346,6 +418,7 @@ class Test_Ingestor extends WP_UnitTestCase {
 				'id'            => $itinerary_post_id1,
 				'packageId'     => 'UNQ-123',
 				'name'          => get_raw_text_from_html( get_the_title( $itinerary_post_id1 ) ),
+				'published'     => true,
 				'startLocation' => $start_location_term_name,
 				'endLocation'   => $end_location_term_name,
 				'departures'    => [],
@@ -377,6 +450,7 @@ class Test_Ingestor extends WP_UnitTestCase {
 				'id'            => $itinerary_post_id1,
 				'packageId'     => 'UNQ-123',
 				'name'          => get_raw_text_from_html( get_the_title( $itinerary_post_id1 ) ),
+				'published'     => true,
 				'startLocation' => $start_location_term_name,
 				'endLocation'   => $end_location_term_name,
 				'departures'    => [],
@@ -385,6 +459,7 @@ class Test_Ingestor extends WP_UnitTestCase {
 				'id'            => $itinerary_post_id2,
 				'packageId'     => 'UNQ-456',
 				'name'          => get_raw_text_from_html( get_the_title( $itinerary_post_id2 ) ),
+				'published'     => true,
 				'startLocation' => '',
 				'endLocation'   => '',
 				'departures'    => [],
@@ -452,6 +527,7 @@ class Test_Ingestor extends WP_UnitTestCase {
 			[
 				'id'               => 'UNQ-123:2025-01-01',
 				'name'             => get_raw_text_from_html( get_the_title( $departure_post_id1 ) ),
+				'published'        => true,
 				'startDate'        => '',
 				'endDate'          => '',
 				'durationInDays'   => 0,
@@ -508,6 +584,7 @@ class Test_Ingestor extends WP_UnitTestCase {
 			[
 				'id'               => 'UNQ-123:2025-01-01',
 				'name'             => get_raw_text_from_html( get_the_title( $departure_post_id1 ) ),
+				'published'        => true,
 				'startDate'        => '2025-01-01',
 				'endDate'          => '2025-01-02',
 				'durationInDays'   => 2,
@@ -576,6 +653,7 @@ class Test_Ingestor extends WP_UnitTestCase {
 			[
 				'id'               => 'UNQ-456:2025-01-01',
 				'name'             => get_raw_text_from_html( get_the_title( $departure_post_id2 ) ),
+				'published'        => true,
 				'startDate'        => '2025-01-01',
 				'endDate'          => '2025-01-02',
 				'durationInDays'   => 2,
@@ -594,6 +672,7 @@ class Test_Ingestor extends WP_UnitTestCase {
 			[
 				'id'               => 'UNQ-123:2025-01-01',
 				'name'             => get_raw_text_from_html( get_the_title( $departure_post_id1 ) ),
+				'published'        => true,
 				'startDate'        => '2025-01-01',
 				'endDate'          => '2025-01-02',
 				'durationInDays'   => 2,
@@ -1851,12 +1930,22 @@ class Test_Ingestor extends WP_UnitTestCase {
 		);
 		$this->assertIsInt( $expedition_post_id2 );
 
-		// Test with expedition post - only first one should be returned.
+		// Test with expedition posts - should also include draft one.
 		$actual   = get_all_data();
 		$expected = [
 			[
+				'id'           => $expedition_post_id2,
+				'name'         => get_raw_text_from_html( get_the_title( $expedition_post_id2 ) ),
+				'published'    => false,
+				'description'  => '', // @todo https://tuispecialist.atlassian.net/browse/QE-580
+				'images'       => [],
+				'destinations' => [],
+				'itineraries'  => [],
+			],
+			[
 				'id'           => $expedition_post_id,
 				'name'         => get_raw_text_from_html( get_the_title( $expedition_post_id ) ),
+				'published'    => true,
 				'description'  => '', // @todo https://tuispecialist.atlassian.net/browse/QE-580 - Get description after parsing post content.
 				'images'       => [], // @todo https://tuispecialist.atlassian.net/browse/QE-580 - Get description after parsing post content.
 				'destinations' => [],

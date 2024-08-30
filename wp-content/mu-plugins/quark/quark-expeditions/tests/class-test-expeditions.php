@@ -136,6 +136,7 @@ class Test_Expeditions extends Softrip_TestCase {
 				'permalink'       => '',
 				'post_meta'       => [],
 				'post_taxonomies' => [],
+				'data'            => [],
 			],
 			get( $post_2->ID )
 		);
@@ -408,7 +409,10 @@ class Test_Expeditions extends Softrip_TestCase {
 			'title'            => $post_1->post_title,
 			'region'           => $term_1->name,
 			'duration'         => 11,
-			'from_price'       => '',
+			'from_price'       => [
+				'original'   => '',
+				'discounted' => '',
+			],
 			'starting_from'    => [
 				$departure_location_term_1->term_id => [
 					'title' => $departure_location_term_1->name,
@@ -434,7 +438,10 @@ class Test_Expeditions extends Softrip_TestCase {
 		$expedition_details_card_data = get_details_data( $post_1->ID );
 
 		// Update expected data with softrip sync data.
-		$expected_data['from_price']       = '$34,600 USD';
+		$expected_data['from_price']       = [
+			'original'   => '$34,895 USD',
+			'discounted' => '$26,171 USD',
+		];
 		$expected_data['total_departures'] = 3;
 		$expected_data['date_range']       = 'between January 2025 to March 2026';
 
