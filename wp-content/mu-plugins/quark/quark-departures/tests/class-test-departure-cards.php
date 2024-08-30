@@ -1226,6 +1226,9 @@ class Test_Departure_Cards extends Softrip_TestCase {
 		// Sync softrip with existing posts.
 		do_sync();
 
+		// Flush cache.
+		wp_cache_flush();
+
 		// Fetch Departure posts.
 		$departure_query_args = [
 			'post_type'              => POST_TYPE,
@@ -1234,6 +1237,8 @@ class Test_Departure_Cards extends Softrip_TestCase {
 			'update_post_term_cache' => false,
 			'fields'                 => 'ids',
 			'update_post_meta_cache' => false,
+			'order'                  => 'ASC',
+			'orderby'                => 'ID',
 			'meta_query'             => [
 				'relation' => 'OR',
 				[
@@ -1286,9 +1291,6 @@ class Test_Departure_Cards extends Softrip_TestCase {
 			],
 			DESTINATION_TAXONOMY
 		);
-
-		// Flush cache.
-		wp_cache_flush();
 
 		// departure posts.
 		$departure_query_args = [
