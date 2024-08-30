@@ -71,6 +71,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 			'title'       => $adventure_option['post']->post_title,
 			'description' => apply_filters( 'the_content', $adventure_option['post']->post_excerpt ),
 			'thumbnail'   => $adventure_option['post_thumbnail'],
+			'permalink'   => $adventure_option['permalink'],
 		];
 	}
 

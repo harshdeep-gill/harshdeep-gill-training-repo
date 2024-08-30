@@ -62,6 +62,16 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 	// Get expedition details card data.
 	$expedition_details_card_data = get_details_data( $current_post_id );
 
+	// Check if data is available.
+	if ( empty( $expedition_details_card_data ) ) {
+		return '';
+	}
+
+	// Set the from price to the discounted price.
+	if ( is_array( $expedition_details_card_data['from_price'] ) && ! empty( $expedition_details_card_data['from_price']['discounted'] ) ) {
+		$expedition_details_card_data['from_price'] = $expedition_details_card_data['from_price']['discounted'];
+	}
+
 	// Parse data.
 	$expedition_details_card_data = wp_parse_args(
 		$expedition_details_card_data,

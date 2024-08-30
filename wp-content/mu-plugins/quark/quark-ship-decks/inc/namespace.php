@@ -221,7 +221,7 @@ function get_deck_data( int $deck_id = 0 ): array {
 	$deck_meta = $deck['post_meta'];
 
 	// Check for post.
-	if ( ! $deck_post instanceof WP_Post ) {
+	if ( ! $deck_post instanceof WP_Post || empty( $deck_meta ) ) {
 		return $decks_data;
 	}
 
@@ -240,9 +240,9 @@ function get_deck_data( int $deck_id = 0 ): array {
 	// Prepare deck data.
 	$decks_data = [
 		'id'                => $deck_post->post_name,
-		'title'             => strval( $deck_meta['deck_name'] ),
-		'image_id'          => absint( $deck_meta['deck_plan_image'] ),
-		'vertical_image_id' => absint( $deck_meta['vertical_deck_plan_image'] ),
+		'title'             => strval( $deck_meta['deck_name'] ?? '' ),
+		'image_id'          => absint( $deck_meta['deck_plan_image'] ?? 0 ),
+		'vertical_image_id' => absint( $deck_meta['vertical_deck_plan_image'] ?? 0 ),
 		'description'       => strval( apply_filters( 'the_content', $deck_post->post_content ) ),
 		'cabin_options'     => $cabin_options,
 		'public_spaces'     => $public_spaces,

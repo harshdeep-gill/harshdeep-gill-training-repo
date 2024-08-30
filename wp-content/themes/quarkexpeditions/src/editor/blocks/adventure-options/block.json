@@ -12,9 +12,25 @@
 	],
 	"textdomain": "qrk",
 	"attributes": {
+		"selectionType": {
+			"type": "string",
+			"default": "auto"
+		},
 		"termIDs": {
 			"type": "array",
 			"default": []
+		},
+		"total": {
+			"type": "number",
+			"default": 12
+		},
+		"ids": {
+			"type": "array",
+			"default": []
+		},
+		"carouselOverflow": {
+			"type": "boolean",
+			"default": false
 		}
 	},
 	"supports": {

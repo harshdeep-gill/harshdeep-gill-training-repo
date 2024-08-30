@@ -103,6 +103,10 @@ abstract class Softrip_TestCase extends WP_UnitTestCase {
 			'OEX-FWD',
 			'OEX-JST',
 			'OEX-SVS',
+			'OEX-EXP',
+			'OEX-OWN',
+			'OEX-VER',
+			'OEX-VST',
 		];
 
 		// Create Cabin Category posts.

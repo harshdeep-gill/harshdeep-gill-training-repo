@@ -10,7 +10,7 @@ namespace Quark\Theme\Partials\BookDeparturesShips;
 use function Quark\Search\Departures\search;
 use function Quark\Departures\get_cards_data;
 
-const PARTIAL_NAME = 'book-departures-ship';
+const PARTIAL_NAME = 'book-departures-ships';
 
 /**
  * Bootstrap this block.
