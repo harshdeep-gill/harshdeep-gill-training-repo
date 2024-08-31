@@ -251,9 +251,9 @@
 										</x-product-options-cards.rooms>
 									@endif
 
-									@if( ! empty( $cabin['promotions'] ) && is_array( $cabin['promotions'] ) )
+									@if( ! empty( $card['promotions'] ) && is_array( $card['promotions'] ) )
 										<x-product-options-cards.discounts>
-											@foreach( $cabin['promotions'] as $promotion )
+											@foreach( $card['promotions'] as $promotion )
 												@if( ! empty( $promotion ) )
 													<x-product-options-cards.discount name="{{ $promotion }}"/>
 												@endif

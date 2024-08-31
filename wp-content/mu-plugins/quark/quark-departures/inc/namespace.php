@@ -681,6 +681,7 @@ function get_card_data( int $departure_id = 0, string $currency = 'USD' ): array
 		'banner_details'           => get_policy_banner_details( $itinerary_id ),
 		'cabins'                   => get_cabin_details_by_departure( $departure_id, $currency ),
 		'promotion_banner'         => get_discount_label( $lowest_price['original'], $lowest_price['discounted'] ),
+		'promotions'               => get_promotions_description( $departure_id ),
 	];
 
 	// Set cache and return data.
@@ -1251,4 +1252,60 @@ function get_discount_label( int $original_price = 0, int $discounted_price = 0 
 
 	// Return the discount label.
 	return $discount_label;
+}
+
+/**
+ * Get promotions description.
+ *
+ * @param int $departure_id Departure ID.
+ *
+ * @return string[]
+ */
+function get_promotions_description( int $departure_id = 0 ): array {
+	// Check for departure ID.
+	if ( empty( $departure_id ) ) {
+		return [];
+	}
+
+	// Get departure post.
+	$departure = get( $departure_id );
+
+	// Check for post.
+	if ( ! $departure['post'] instanceof WP_Post || empty( $departure['post_meta'] ) ) {
+		return [];
+	}
+
+	// Get available promos from post_meta.
+	$available_promos = $departure['post_meta']['promotion_codes'] ?? [];
+
+	// Check available promos are empty.
+	if ( empty( $available_promos ) || ! is_array( $available_promos ) ) {
+		return [];
+	}
+
+	// Initialize the promo descriptions.
+	$promo_descriptions = [];
+
+	// Loop through available_promos.
+	foreach ( $available_promos as $promo_code ) {
+		// Get promo data.
+		$promo_data = get_promotions_by_code( strval( $promo_code ) );
+
+		// Check for promo data.
+		if ( empty( $promo_data ) ) {
+			continue;
+		}
+
+		// Get first promo data.
+		$promo_data = $promo_data[0];
+
+		// Prepare promo description.
+		$promo_description = sprintf( __( '%1$s - Offer Code %2$s', 'qrk' ), $promo_data['description'], $promo_data['code'] );
+
+		// Add promo description to array.
+		$promo_descriptions[] = $promo_description;
+	}
+
+	// Return promo descriptions.
+	return $promo_descriptions;
 }
