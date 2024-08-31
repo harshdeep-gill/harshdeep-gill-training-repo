@@ -1300,7 +1300,15 @@ function get_promotions_description( int $departure_id = 0 ): array {
 		$promo_data = $promo_data[0];
 
 		// Prepare promo description.
-		$promo_description = sprintf( __( '%1$s - Offer Code %2$s', 'qrk' ), $promo_data['description'], $promo_data['code'] );
+		$promo_description = sprintf(
+			// translators: %1$s: Promo Description, %2$s: Promo Code.
+			__(
+				'%1$s - Offer Code %2$s',
+				'qrk'
+			),
+			$promo_data['description'],
+			$promo_data['code']
+		);
 
 		// Add promo description to array.
 		$promo_descriptions[] = $promo_description;

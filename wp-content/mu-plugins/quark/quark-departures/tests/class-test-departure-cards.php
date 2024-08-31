@@ -816,8 +816,8 @@ class Test_Departure_Cards extends Softrip_TestCase {
 				'description' => 'Lorem Ipsum Dolor Sit Amet Consectetur',
 				'permalink'   => get_permalink( self::$policy_pages[1] ),
 			],
-			'promotions' => [
-				'Save 15% - Offer Code 15PROMO'
+			'promotions'               => [
+				'Save 15% - Offer Code 15PROMO',
 			],
 		];
 
@@ -917,8 +917,8 @@ class Test_Departure_Cards extends Softrip_TestCase {
 				'description' => '',
 				'permalink'   => '',
 			],
-			'promotions' => [
-				'Save 25% - Offer Code 25PROMO'
+			'promotions'               => [
+				'Save 25% - Offer Code 25PROMO',
 			],
 		];
 
@@ -1015,7 +1015,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 				'description' => 'Lorem Ipsum Dolor Sit Amet Consectetur',
 				'permalink'   => get_permalink( self::$policy_pages[1] ),
 			],
-			'promotions' => [],
+			'promotions'               => [],
 		];
 
 		// Search ship post with code OEX.
@@ -1719,32 +1719,32 @@ class Test_Departure_Cards extends Softrip_TestCase {
 		// Insert promotions in custom table.
 		$raw_promotions_data = [
 			[
-				'endDate'     => '2025-01-01',
-				'startDate'   => '2025-01-01',
-				'description' => 'Save 15%',
-				'discountType' => 'percentage',
+				'endDate'       => '2025-01-01',
+				'startDate'     => '2025-01-01',
+				'description'   => 'Save 15%',
+				'discountType'  => 'percentage',
 				'discountValue' => '0.15',
 				'promotionCode' => '15PROMO',
-				'isPIF' => 0,
+				'isPIF'         => 0,
 			],
 			[
-				'endDate'     => '2025-01-01',
-				'startDate'   => '2025-01-01',
-				'description' => 'Save 25%',
-				'discountType' => 'percentage',
+				'endDate'       => '2025-01-01',
+				'startDate'     => '2025-01-01',
+				'description'   => 'Save 25%',
+				'discountType'  => 'percentage',
 				'discountValue' => '0.25',
 				'promotionCode' => '25PROMO',
-				'isPIF' => 0,
+				'isPIF'         => 0,
 			],
 			[
-				'endDate'     => '2025-01-01',
-				'startDate'   => '2025-01-01',
-				'description' => 'Pay in Full and Save 30%',
-				'discountType' => 'percentage',
+				'endDate'       => '2025-01-01',
+				'startDate'     => '2025-01-01',
+				'description'   => 'Pay in Full and Save 30%',
+				'discountType'  => 'percentage',
 				'discountValue' => '0.30',
 				'promotionCode' => '30PIF',
-				'isPIF' => 1,
-			]
+				'isPIF'         => 1,
+			],
 		];
 		update_promotions( $raw_promotions_data, $departure_post_id );
 
@@ -1755,7 +1755,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 		$this->assertCount( 1, $promo_15 );
 		$this->assertCount( 1, $promo_25 );
 		$this->assertCount( 1, $promo_30 );
-		
+
 		// Get first item.
 		$promo_15 = $promo_15[0];
 		$promo_25 = $promo_25[0];
