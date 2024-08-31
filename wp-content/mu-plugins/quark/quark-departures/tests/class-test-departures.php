@@ -358,7 +358,7 @@ class Test_Departures extends Softrip_TestCase {
 		$promotion_tags = get_promotion_tags( $post_1->ID );
 
 		// Assert expected get data is equal to actual data.
-		$this->assertEquals([], $promotion_tags);
+		$this->assertEquals( [], $promotion_tags );
 
 		// Add array promotion tag to post meta.
 		update_post_meta(

@@ -789,7 +789,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 				'promotion_tag_1',
 				'promotion_tag_3',
 			],
-			'promotion_banner' => 'Save upto 15%',
+			'promotion_banner'         => 'Save upto 15%',
 			'lowest_price'             => [
 				'discounted_price' => '$29,610 USD',
 				'original_price'   => '$34,800 USD',
@@ -813,6 +813,9 @@ class Test_Departure_Cards extends Softrip_TestCase {
 				'icon_id'     => 0,
 				'description' => 'Lorem Ipsum Dolor Sit Amet Consectetur',
 				'permalink'   => get_permalink( self::$policy_pages[1] ),
+			],
+			'promotions' => [
+				'Save 15% - Offer Code 15PROMO'
 			],
 		];
 
@@ -890,7 +893,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 				'promotion_tag_1',
 				'promotion_tag_3',
 			],
-			'promotion_banner' => 'Save upto 25%',
+			'promotion_banner'         => 'Save upto 25%',
 			'lowest_price'             => [
 				'discounted_price' => '$26,371 USD',
 				'original_price'   => '$35,095 USD',
@@ -911,6 +914,9 @@ class Test_Departure_Cards extends Softrip_TestCase {
 				'icon_id'     => 0,
 				'description' => '',
 				'permalink'   => '',
+			],
+			'promotions' => [
+				'Save 25% - Offer Code 25PROMO'
 			],
 		];
 
@@ -985,7 +991,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 			'duration_dates'           => 'January 16 - February 1, 2026',
 			'starting_from_location'   => self::$departure_location_terms[0]->name,
 			'promotion_tags'           => [],
-			'promotion_banner' => 'Save upto 15%',
+			'promotion_banner'         => 'Save upto 15%',
 			'lowest_price'             => [
 				'discounted_price' => '$40,069 USD',
 				'original_price'   => '$47,105 USD',
@@ -1007,6 +1013,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 				'description' => 'Lorem Ipsum Dolor Sit Amet Consectetur',
 				'permalink'   => get_permalink( self::$policy_pages[1] ),
 			],
+			'promotions' => [],
 		];
 
 		// Search ship post with code OEX.
