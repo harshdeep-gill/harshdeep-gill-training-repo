@@ -12,12 +12,15 @@ use WP_Post;
 use WP_Term;
 
 use function Quark\Core\format_price;
+use function Quark\Departures\bust_post_cache;
 use function Quark\Departures\get_card_data;
 use function Quark\Departures\get_cards_data;
 use function Quark\Departures\get_dates_rates_card_data;
 use function Quark\Departures\get_dates_rates_cards_data;
+use function Quark\Departures\get_promotions_description;
 use function Quark\Softrip\do_sync;
 use function Quark\Softrip\Promotions\get_promotions_by_code;
+use function Quark\Softrip\Promotions\update_promotions;
 
 use const Quark\Departures\POST_TYPE;
 use const Quark\Departures\PROMOTION_TAG;
@@ -495,7 +498,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 		// Setup mock response.
 		add_filter( 'pre_http_request', 'Quark\Tests\Softrip\mock_softrip_http_request', 10, 3 );
 
-		// Sync softrip with exising posts.
+		// Sync softrip with existing posts.
 		do_sync();
 
 		// Fetch Departure posts.
@@ -537,16 +540,6 @@ class Test_Departure_Cards extends Softrip_TestCase {
 			SPOKEN_LANGUAGE_TAXONOMY
 		);
 
-		// Set terms.
-		wp_set_object_terms(
-			absint( $departure_posts[0] ),
-			[
-				self::$promotion_tag_terms[0]->term_id,
-				self::$promotion_tag_terms[2]->term_id,
-			],
-			PROMOTION_TAG
-		);
-
 		// Update post meta.
 		wp_update_post(
 			[
@@ -575,15 +568,31 @@ class Test_Departure_Cards extends Softrip_TestCase {
 		// Assert created post is int.
 		$this->assertIsInt( $departure_post_2 );
 
-		// Set terms.
-		wp_set_object_terms(
-			$departure_post_2,
+		// Update post meta.
+		update_post_meta(
+			$departure_post_1,
+			'related_promotion_tags',
 			[
 				self::$promotion_tag_terms[0]->term_id,
 				self::$promotion_tag_terms[2]->term_id,
-			],
-			PROMOTION_TAG
+			]
 		);
+
+		// Bust cache.
+		bust_post_cache( $departure_post_1 );
+
+		// Update post meta.
+		update_post_meta(
+			$departure_post_2,
+			'related_promotion_tags',
+			[
+				self::$promotion_tag_terms[0]->term_id,
+				self::$promotion_tag_terms[2]->term_id,
+			]
+		);
+
+		// Bust cache.
+		bust_post_cache( $departure_post_2 );
 
 		// departure posts.
 		$departure_query_args = [
@@ -782,6 +791,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 				'promotion_tag_1',
 				'promotion_tag_3',
 			],
+			'promotion_banner'         => 'Save upto 15%',
 			'lowest_price'             => [
 				'discounted_price' => '$29,610 USD',
 				'original_price'   => '$34,800 USD',
@@ -805,6 +815,9 @@ class Test_Departure_Cards extends Softrip_TestCase {
 				'icon_id'     => 0,
 				'description' => 'Lorem Ipsum Dolor Sit Amet Consectetur',
 				'permalink'   => get_permalink( self::$policy_pages[1] ),
+			],
+			'promotions'               => [
+				'Save 15% - Offer Code 15PROMO',
 			],
 		];
 
@@ -882,6 +895,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 				'promotion_tag_1',
 				'promotion_tag_3',
 			],
+			'promotion_banner'         => 'Save upto 25%',
 			'lowest_price'             => [
 				'discounted_price' => '$26,371 USD',
 				'original_price'   => '$35,095 USD',
@@ -902,6 +916,9 @@ class Test_Departure_Cards extends Softrip_TestCase {
 				'icon_id'     => 0,
 				'description' => '',
 				'permalink'   => '',
+			],
+			'promotions'               => [
+				'Save 25% - Offer Code 25PROMO',
 			],
 		];
 
@@ -976,6 +993,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 			'duration_dates'           => 'January 16 - February 1, 2026',
 			'starting_from_location'   => self::$departure_location_terms[0]->name,
 			'promotion_tags'           => [],
+			'promotion_banner'         => 'Save upto 15%',
 			'lowest_price'             => [
 				'discounted_price' => '$40,069 USD',
 				'original_price'   => '$47,105 USD',
@@ -997,6 +1015,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 				'description' => 'Lorem Ipsum Dolor Sit Amet Consectetur',
 				'permalink'   => get_permalink( self::$policy_pages[1] ),
 			],
+			'promotions'               => [],
 		];
 
 		// Search ship post with code OEX.
@@ -1531,7 +1550,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 			]
 		);
 
-		// Sync softrip with exising posts.
+		// Sync softrip with existing posts.
 		do_sync();
 
 		// Fetch Departure posts.
@@ -1641,6 +1660,125 @@ class Test_Departure_Cards extends Softrip_TestCase {
 				'promos'                   => [],
 			],
 			$card_data['cabin_data']['OEX-JST'] ?? []
+		);
+	}
+
+	/**
+	 * Test getting promotion descriptions.
+	 *
+	 * @covers \Quark\Departures\get_promotions_description()
+	 *
+	 * @return void
+	 */
+	public function test_get_promotions_description(): void {
+		// Default expected data.
+		$default_expected = [];
+
+		// Empty args.
+		$actual = get_promotions_description();
+		$this->assertEquals( $default_expected, $actual );
+
+		// Default args.
+		$actual = get_promotions_description( 0 );
+		$this->assertEquals( $default_expected, $actual );
+
+		// Invalid departure id.
+		$actual = get_promotions_description( 999 );
+		$this->assertEquals( $default_expected, $actual );
+
+		// Create departure post.
+		$departure_post_id = $this->factory()->post->create(
+			[
+				'post_type'   => POST_TYPE,
+				'post_status' => 'publish',
+			]
+		);
+		$this->assertIsInt( $departure_post_id );
+
+		// Test without setting any meta.
+		$actual = get_promotions_description( $departure_post_id );
+		$this->assertEquals( $default_expected, $actual );
+
+		// Set non-array promotion codes on meta.
+		update_post_meta( $departure_post_id, 'promotion_codes', '15PROMO' );
+
+		// Test with non-array promotion codes.
+		$actual = get_promotions_description( $departure_post_id );
+		$this->assertEquals( $default_expected, $actual );
+
+		// Bust cache.
+		bust_post_cache( $departure_post_id );
+
+		// Set valid promotion codes on meta.
+		update_post_meta( $departure_post_id, 'promotion_codes', [ '15PROMO', '25PROMO' ] );
+
+		// Test with valid promotion codes, but non-existing codes.
+		$actual = get_promotions_description( $departure_post_id );
+		$this->assertEquals( $default_expected, $actual );
+
+		// Insert promotions in custom table.
+		$raw_promotions_data = [
+			[
+				'endDate'       => '2025-01-01',
+				'startDate'     => '2025-01-01',
+				'description'   => 'Save 15%',
+				'discountType'  => 'percentage',
+				'discountValue' => '0.15',
+				'promotionCode' => '15PROMO',
+				'isPIF'         => 0,
+			],
+			[
+				'endDate'       => '2025-01-01',
+				'startDate'     => '2025-01-01',
+				'description'   => 'Save 25%',
+				'discountType'  => 'percentage',
+				'discountValue' => '0.25',
+				'promotionCode' => '25PROMO',
+				'isPIF'         => 0,
+			],
+			[
+				'endDate'       => '2025-01-01',
+				'startDate'     => '2025-01-01',
+				'description'   => 'Pay in Full and Save 30%',
+				'discountType'  => 'percentage',
+				'discountValue' => '0.30',
+				'promotionCode' => '30PIF',
+				'isPIF'         => 1,
+			],
+		];
+		update_promotions( $raw_promotions_data, $departure_post_id );
+
+		// Test if promotions are inserted.
+		$promo_15 = get_promotions_by_code( '15PROMO' );
+		$promo_25 = get_promotions_by_code( '25PROMO' );
+		$promo_30 = get_promotions_by_code( '30PIF' );
+		$this->assertCount( 1, $promo_15 );
+		$this->assertCount( 1, $promo_25 );
+		$this->assertCount( 1, $promo_30 );
+
+		// Get first item.
+		$promo_15 = $promo_15[0];
+		$promo_25 = $promo_25[0];
+		$promo_30 = $promo_30[0];
+		$this->assertNotEmpty( $promo_15 );
+		$this->assertNotEmpty( $promo_25 );
+		$this->assertNotEmpty( $promo_30 );
+
+		// Update post meta with valid and invalid promotion codes.
+		update_post_meta( $departure_post_id, 'promotion_codes', [ '15PROMO', '25PROMO', '30PIF', 'INVALID' ] );
+
+		// Bust cache.
+		bust_post_cache( $departure_post_id );
+
+		// Test with valid promotion codes.
+		$actual = get_promotions_description( $departure_post_id );
+		$this->assertEquals(
+			[
+				'Save 15% - Offer Code 15PROMO',
+				'Save 25% - Offer Code 25PROMO',
+				'Pay in Full and Save 30% - Offer Code 30PIF',
+			],
+			$actual
 		);
 	}
 }
