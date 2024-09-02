@@ -179,4 +179,38 @@
 			}
 		}
 	}
+
+	&__result-count {
+		display: flex;
+		gap: var(--spacing-5);
+		justify-content: space-between;
+		flex-wrap: wrap;
+	}
+
+	&__result-count-annotations {
+		display: flex;
+		gap: var(--spacing-5);
+		flex-wrap: wrap;
+	}
+
+	&__result-count-annotation {
+		display: flex;
+		gap: var(--spacing-3);
+		flex-wrap: nowrap;
+		align-items: center;
+
+		&::before {
+			content: "";
+			flex-shrink: 0;
+			display: block;
+			height: 24px;
+			width: 24px;
+			background-color: var(--color-attention-10);
+			border-radius: 50%;
+		}
+
+		&--premium::before {
+			background-color: var(--color-yellow);
+		}
+	}
 }

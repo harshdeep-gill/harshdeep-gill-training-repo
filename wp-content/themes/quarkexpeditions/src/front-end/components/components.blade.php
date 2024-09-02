@@ -5837,6 +5837,7 @@
 	<x-section>
 		<x-dates-rates>
 			<x-dates-rates.filters />
+			<x-dates-rates.result-count :count="10" :total_count="200" />
 
 			<x-section>
 				<h2>Ocean Adventurer</h2>
