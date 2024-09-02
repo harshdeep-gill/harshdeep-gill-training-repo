@@ -44,17 +44,10 @@
 				</x-media-text-cta.cta>
 			@endif
 
-			@if ( 'content-title' === $item['type'] )
-				<x-media-text-cta.content-title :title="$item['title'] ?? ''" :heading_level="$item['heading_level']" />
-			@endif
-
 			@if ( 'overline' === $item['type'] )
 				<x-media-text-cta.overline>{!! $item['text'] ?? '' !!}</x-media-text-cta.overline>
 			@endif
 
-			@if ( 'description' === $item['type'] )
-				<x-media-text-cta.description>{!! $item['text'] ?? '' !!}</x-media-text-cta.description>
-			@endif
 		@endforeach
 	</x-media-text-cta.content>
 </x-media-text-cta>
