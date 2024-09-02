@@ -282,7 +282,7 @@ function register_ship_post_type(): void {
 			[
 				'quark/section',
 				[
-					'title'          => 'We Use Helicopters for More Than Just Flightseeing!',
+					'title'          => '',
 					'titleAlignment' => 'left',
 					'hasDescription' => true,
 				],
@@ -295,7 +295,7 @@ function register_ship_post_type(): void {
 			[
 				'quark/section',
 				[
-					'title'          => 'Highlights of Quark Expeditions’ Industry-leading Helicopter Program',
+					'title'          => '',
 					'titleAlignment' => 'left',
 				],
 				[
@@ -319,7 +319,7 @@ function register_ship_post_type(): void {
 			[
 				'quark/section',
 				[
-					'title'          => 'Helicopter Adventure Options Available on Ultramarine',
+					'title'          => '',
 					'titleAlignment' => 'left',
 				],
 				[
