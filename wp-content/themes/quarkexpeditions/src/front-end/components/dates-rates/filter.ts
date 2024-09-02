@@ -1,17 +1,17 @@
 /**
  * Global variables.
  */
-const { customElements, HTMLElement } = window;
+const { HTMLElement } = window;
 
 /**
  * External dependency.
  */
-import { TPAccordionItemElement } from '@travelopia/web-components';
+import { TPAccordionHandleElement } from '@travelopia/web-components';
 
 /**
  * Internal Dependency.
  */
-import { debounce } from '../../../global/utility';
+import { debounce } from '../../global/utility';
 
 /**
  * Dates Filters Class.
@@ -22,7 +22,7 @@ export default class DatesRatesFilters extends HTMLElement {
 	 */
 	private filterButton: HTMLButtonElement | null;
 	private clearFilterButton: HTMLButtonElement | null;
-	private drawerAccordionItems: NodeListOf<TPAccordionItemElement> | null;
+	private drawerAccordionHandles: NodeListOf<TPAccordionHandleElement> | null;
 	private checkboxItems: NodeListOf<HTMLInputElement> | null;
 
 	/**
@@ -35,7 +35,7 @@ export default class DatesRatesFilters extends HTMLElement {
 		// Elements.
 		this.filterButton = this.querySelector( '.dates-rates__filter-chip-button' );
 		this.clearFilterButton = document.querySelector( '.dates-rates__cta-clear-filters' );
-		this.drawerAccordionItems = document.querySelectorAll( '.dates-rates__drawer .accordion__item' );
+		this.drawerAccordionHandles = document.querySelectorAll( '.dates-rates__drawer .accordion__handle' );
 		this.checkboxItems = document.querySelectorAll( '.dates-rates__drawer input[type="checkbox"]' );
 
 		// Events.
@@ -43,7 +43,7 @@ export default class DatesRatesFilters extends HTMLElement {
 		this.clearFilterButton?.addEventListener( 'click', this.clearAllCheckboxes.bind( this ) );
 
 		// Event for accordion items.
-		this.drawerAccordionItems.forEach( ( ( item: TPAccordionItemElement ) => {
+		this.drawerAccordionHandles.forEach( ( ( item: TPAccordionHandleElement ) => {
 			// Close items.
 			item.addEventListener( 'click', this.handleAccordionItems.bind( this ) );
 		} ) );
@@ -60,7 +60,7 @@ export default class DatesRatesFilters extends HTMLElement {
 		const filterButtonID = this.filterButton?.getAttribute( 'accordion_id' );
 
 		// Get the accordion item.
-		const accordionItem: TPAccordionItemElement | null = document.querySelector( `#${ filterButtonID }` );
+		const accordionItem: TPAccordionHandleElement | null = document.querySelector( `#${ filterButtonID }` );
 
 		// Check if accordion item is not available, return.
 		if ( ! accordionItem ) {
@@ -69,7 +69,7 @@ export default class DatesRatesFilters extends HTMLElement {
 		}
 
 		// Set attribute open to yes.
-		accordionItem.setAttribute( 'open', 'yes' );
+		this.openAccordion( accordionItem );
 	}
 
 	/**
@@ -79,13 +79,13 @@ export default class DatesRatesFilters extends HTMLElement {
 	 */
 	closeAllAccordionItems( skippedItem: HTMLElement | null = null ) {
 		// Check if items are present.
-		if ( ! this.drawerAccordionItems ) {
+		if ( ! this.drawerAccordionHandles ) {
 			// No, bail.
 			return;
 		}
 
 		// For each item.
-		this.drawerAccordionItems.forEach( ( ( item: TPAccordionItemElement ) => {
+		this.drawerAccordionHandles.forEach( ( ( item: TPAccordionHandleElement ) => {
 			// Check if this item should be skipped.
 			if ( item === skippedItem ) {
 				// This item should not be closed.
@@ -93,7 +93,7 @@ export default class DatesRatesFilters extends HTMLElement {
 			}
 
 			// Closse the item.
-			item.removeAttribute( 'open' );
+			this.closeAccordion( item );
 		} ) );
 	}
 
@@ -104,13 +104,13 @@ export default class DatesRatesFilters extends HTMLElement {
 	 */
 	handleAccordionItems( event: any ) {
 		// Set current item.
-		const currentItem = event.currentTarget as TPAccordionItemElement;
+		const currentItem = event.currentTarget as TPAccordionHandleElement;
 
 		// Open the current item.
-		if ( ! currentItem.hasAttribute( 'open' ) ) {
-			currentItem.setAttribute( 'open', 'yes' );
+		if ( ! currentItem.closest( 'tp-accordion-item' )?.hasAttribute( 'open' ) ) {
+			this.openAccordion( currentItem );
 		} else {
-			currentItem.removeAttribute( 'open' );
+			this.closeAccordion( currentItem );
 
 			// No need to close other items.
 			return;
@@ -130,9 +130,24 @@ export default class DatesRatesFilters extends HTMLElement {
 			checkbox.checked = false;
 		} );
 	}
-}
 
-/**
- * Initialize.
- */
-customElements.define( 'quark-dates-rates-filter', DatesRatesFilters );
+	/**
+	 * Adds `open` attribute to an accordion based on its handle.
+	 *
+	 * @param { TPAccordionHandleElement } handle The handle of the accordion.
+	 */
+	openAccordion( handle: TPAccordionHandleElement ) {
+		// Set the attribute.
+		handle?.closest( 'tp-accordion-item' )?.setAttribute( 'open', 'yes' );
+	}
+
+	/**
+	 * Removes `open` attribute from an accordion based on its handle.
+	 *
+	 * @param { TPAccordionHandleElement } handle The handle of the accordion.
+	 */
+	closeAccordion( handle: TPAccordionHandleElement ) {
+		// Set the attribute.
+		handle?.closest( 'tp-accordion-item' )?.removeAttribute( 'open' );
+	}
+}

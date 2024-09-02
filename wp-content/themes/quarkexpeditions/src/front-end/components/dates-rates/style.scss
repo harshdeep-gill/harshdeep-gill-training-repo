@@ -122,6 +122,10 @@
 				max-width: 624px;
 				width: 100%;
 			}
+
+			.form-field-group__group {
+				grid-template-columns: 1fr;
+			}
 		}
 
 		.drawer__drawer-close {
