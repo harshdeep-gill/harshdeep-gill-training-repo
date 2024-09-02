@@ -18,9 +18,11 @@ use function Quark\Expeditions\get_destination_term_by_code;
 use function Quark\Ships\get as get_ship_post;
 use function Quark\Softrip\Departures\get_lowest_price;
 
+use const Quark\CabinCategories\CABIN_CLASS_TAXONOMY;
 use const Quark\Core\CURRENCIES;
 use const Quark\Core\USD_CURRENCY;
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
+use const Quark\Departures\SPOKEN_LANGUAGE_TAXONOMY;
 use const Quark\StaffMembers\SEASON_TAXONOMY;
 
 const CACHE_GROUP = 'quark_search';
@@ -295,6 +297,7 @@ function bust_search_cache(): void {
 		wp_cache_delete( 'search_filter_departure_month_data', CACHE_GROUP );
 		wp_cache_delete( 'search_filter_departure_duration_data', CACHE_GROUP );
 		wp_cache_delete( 'search_filter_ship_data', CACHE_GROUP );
+		wp_cache_delete( 'search_filter_itinerary_length_data', CACHE_GROUP );
 	}
 }
 
@@ -694,4 +697,133 @@ function get_ship_search_filter_data(): array {
 
 	// Return ship data.
 	return $ships;
+}
+
+/**
+ * Get departure language search filter data.
+ *
+ * @return string[]
+ */
+function get_language_search_filter_data(): array {
+	// Get terms.
+	$the_terms = get_terms(
+		[
+			'taxonomy'   => SPOKEN_LANGUAGE_TAXONOMY,
+			'hide_empty' => true,
+			'fields'     => 'slugs',
+		]
+	);
+
+	// Validate terms.
+	if ( empty( $the_terms ) || ! is_array( $the_terms ) ) {
+		return [];
+	}
+
+	// Initialize term slugs.
+	$term_slugs = [];
+
+	// Loop through terms and prepare data.
+	foreach ( $the_terms as $term_slug ) {
+		$term_slug = strval( $term_slug );
+	}
+
+	return $term_slugs;
+}
+
+/**
+ * Get departure cabin class search filter data.
+ *
+ * @return string[]
+ */
+function get_cabin_class_search_filter_data(): array {
+	// Get terms.
+	$the_terms = get_terms(
+		[
+			'taxonomy'   => CABIN_CLASS_TAXONOMY,
+			'hide_empty' => true,
+			'fields'     => 'slugs',
+		]
+	);
+
+	// Validate terms.
+	if ( empty( $the_terms ) || ! is_array( $the_terms ) ) {
+		return [];
+	}
+
+	// Initialize term slugs.
+	$term_slugs = [];
+
+	// Loop through terms and prepare data.
+	foreach ( $the_terms as $term_slug ) {
+		$term_slug = strval( $term_slug );
+	}
+
+	return $term_slugs;
+}
+
+/**
+ * Get itinerary length search filter data.
+ *
+ * @return string[]
+ */
+function get_itinerary_length_search_filter_data(): array {
+	// Cache key.
+	$cache_key = 'search_filter_itinerary_length_data';
+
+	// Get from cache.
+	$itinerary_length_search_filter = wp_cache_get( $cache_key, CACHE_GROUP );
+
+	// Return cache data.
+	if ( ! empty( $itinerary_length_search_filter ) && is_array( $itinerary_length_search_filter ) ) {
+		return $itinerary_length_search_filter;
+	}
+
+	// Prepare search object.
+	$search = new Search();
+	$search->set_posts_per_page( -1 );
+
+	// Get departure ids.
+	$departure_ids = $search->search();
+	$itinerary_lengths = [];
+
+	// Validate departure ids.
+	if ( empty( $departure_ids ) ) {
+		return $itinerary_lengths;
+	}
+
+	// Get itinerary length data.
+	foreach ( $departure_ids as $departure_id ) {
+		$departure = get_departure( $departure_id );
+
+		// Get post meta.
+		if ( ! is_array( $departure['post_meta'] ) || empty( $departure['post_meta']['duration'] ) ) {
+			continue;
+		}
+
+		// Get itinerary length.
+		$itinerary_length = $departure['post_meta']['duration'];
+
+		// Prepare itinerary length data.
+		$itinerary_lengths[ $itinerary_length ] = $itinerary_length;
+	}
+
+	// Sort the itinerary lengths array by keys (dates).
+	ksort( $itinerary_lengths );
+
+	// Create a new array with key as length and value as label.
+	$itinerary_length_data = [];
+
+	// Loop through itinerary lengths.
+	foreach ( $itinerary_lengths as $itinerary_length ) {
+		// Prepare itinerary length data.
+		$itinerary_length_data[ $itinerary_length ] = sprintf( 
+			// translators: %d: Itinerary length/duration.
+			__( '%d Days', 'qrk' ), absint( $itinerary_length ) );
+	}
+
+	// Set cache.
+	wp_cache_set( $cache_key, $itinerary_length_data, CACHE_GROUP );
+
+	// Return itinerary length data.
+	return $itinerary_length_data;
 }
