@@ -30,14 +30,6 @@ class Search {
 	 *         key: string,
 	 *         order: string
 	 *     },
-	 *     'price-low': array{
-	 *         key: string,
-	 *         order: string
-	 *     },
-	 *     'price-high': array{
-	 *         key: string,
-	 *         order: string
-	 *     },
 	 *     'duration-short': array{
 	 *         key: string,
 	 *         order: string
@@ -46,6 +38,46 @@ class Search {
 	 *         key: string,
 	 *         order: string
 	 *     },
+	 *    'price-low-usd': array{
+	 *         key: string,
+	 *         order: string
+	 *    },
+	 *    'price-high-usd': array{
+	 *         key: string,
+	 *         order: string
+	 *    },
+	 *    'price-low-gbp': array{
+	 *         key: string,
+	 *         order: string
+	 *    },
+	 *    'price-high-gbp': array{
+	 *         key: string,
+	 *         order: string
+	 *    },
+	 *    'price-low-aud': array{
+	 *         key: string,
+	 *         order: string
+	 *    },
+	 *    'price-high-aud': array{
+	 *         key: string,
+	 *         order: string
+	 *    },
+	 *    'price-low-cad': array{
+	 *         key: string,
+	 *         order: string
+	 *    },
+	 *    'price-high-cad': array{
+	 *         key: string,
+	 *         order: string
+	 *    },
+	 *    'price-low-eur': array{
+	 *         key: string,
+	 *         order: string
+	 *    },
+	 *    'price-high-eur': array{
+	 *         key: string,
+	 *         order: string
+	 *    },
 	 * } Field mapping.
 	 */
 	private array $field_mapping = [
@@ -57,20 +89,52 @@ class Search {
 			'key'   => 'start_date_s',
 			'order' => 'desc',
 		],
-		'price-low'      => [
-			'key'   => 'departure_low_price_f',
-			'order' => 'asc',
-		],
-		'price-high'     => [
-			'key'   => 'departure_low_price_f',
-			'order' => 'desc',
-		],
 		'duration-short' => [
 			'key'   => 'duration_i',
 			'order' => 'asc',
 		],
 		'duration-long'  => [
 			'key'   => 'duration_i',
+			'order' => 'desc',
+		],
+		'price-low-usd'  => [
+			'key'   => 'lowest_price_usd_i',
+			'order' => 'asc',
+		],
+		'price-high-usd' => [
+			'key'   => 'lowest_price_usd_i',
+			'order' => 'desc',
+		],
+		'price-low-gbp'  => [
+			'key'   => 'lowest_price_gbp_i',
+			'order' => 'asc',
+		],
+		'price-high-gbp' => [
+			'key'   => 'lowest_price_gbp_i',
+			'order' => 'desc',
+		],
+		'price-low-eur'  => [
+			'key'   => 'lowest_price_eur_i',
+			'order' => 'asc',
+		],
+		'price-high-eur' => [
+			'key'   => 'lowest_price_eur_i',
+			'order' => 'desc',
+		],
+		'price-low-aud'  => [
+			'key'   => 'lowest_price_aud_i',
+			'order' => 'asc',
+		],
+		'price-high-aud' => [
+			'key'   => 'lowest_price_aud_i',
+			'order' => 'desc',
+		],
+		'price-low-cad'  => [
+			'key'   => 'lowest_price_cad_i',
+			'order' => 'asc',
+		],
+		'price-high-cad' => [
+			'key'   => 'lowest_price_cad_i',
 			'order' => 'desc',
 		],
 	];
@@ -391,9 +455,23 @@ class Search {
 	 *
 	 * @return void
 	 */
-	public function set_sort( string $sort = '' ): void {
+	public function set_sort( string $sort = '', string $currency = 'USD' ): void {
 		// Return early if sort is not set or field mapping is not set.
-		if ( empty( $sort ) || empty( $this->field_mapping[ $sort ] ) ) {
+		if ( empty( $sort ) ) {
+			return;
+		}
+
+		// Check if sort is for price.
+		if ( strpos( $sort, 'price-' ) !== false ) {
+			// Set currency.
+			$currency = strtolower( $currency );
+
+			// Update the sort key.
+			$sort = $sort . '-' . $currency;
+		}
+
+		// Check if sort is valid.
+		if ( empty( $this->field_mapping[ $sort ] ) ) {
 			return;
 		}
 

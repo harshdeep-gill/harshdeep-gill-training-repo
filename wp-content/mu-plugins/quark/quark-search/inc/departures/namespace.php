@@ -16,7 +16,10 @@ use function Quark\Departures\get_included_adventure_options;
 use function Quark\Departures\get_paid_adventure_options;
 use function Quark\Expeditions\get_destination_term_by_code;
 use function Quark\Ships\get as get_ship_post;
+use function Quark\Softrip\Departures\get_lowest_price;
 
+use const Quark\Core\CURRENCIES;
+use const Quark\Core\USD_CURRENCY;
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
 use const Quark\StaffMembers\SEASON_TAXONOMY;
 
@@ -64,6 +67,21 @@ function filter_solr_build_document( Document $document = null, WP_Post $post = 
 
 	// Set post title for sorting.
 	$document->setField( 'post_title_s', get_the_title( $post->ID ) );
+
+	// Price.
+	foreach ( CURRENCIES as $currency ) {
+		// Lowercase currency.
+		$currency = strtolower( $currency );
+
+		// Price key.
+		$key = 'lowest_price_' . $currency . '_i';
+
+		// Get original and discounted price.
+		$prices = get_lowest_price( $post->ID, $currency );
+
+		// Index the discounted price.
+		$document->setField( $key, $prices['discounted'] );
+	}
 
 	// Return document.
 	return $document;
@@ -135,6 +153,7 @@ function get_filters_from_url(): array {
  *     sort: string,
  *     page: int,
  *     posts_per_load: int,
+ *     currency: string,
  * }
  */
 function parse_filters( array $filters = [] ): array {
@@ -142,6 +161,7 @@ function parse_filters( array $filters = [] ): array {
 	$filters = wp_parse_args(
 		$filters,
 		[
+			'currency'          => USD_CURRENCY, // @todo https://tuispecialist.atlassian.net/browse/QE-326 Modify this to global currency switcher when implemented.
 			'seasons'           => '',
 			'expeditions'       => '',
 			'adventure_options' => '',
@@ -186,6 +206,13 @@ function parse_filters( array $filters = [] ): array {
 		$filters['ships'] = array_filter( array_map( 'trim', explode( ',', strval( $filters['ships'] ) ) ) );
 	}
 
+	// Validate currency.
+	if ( is_string( $filters['currency'] ) && in_array( $filters['currency'], CURRENCIES, true ) ) {
+		$filters['currency'] = trim( $filters['currency'] );
+	} else {
+		$filters['currency'] = USD_CURRENCY;
+	}
+
 	// Return parsed filters.
 	return [
 		'seasons'           => (array) $filters['seasons'],
@@ -197,6 +224,7 @@ function parse_filters( array $filters = [] ): array {
 		'page'              => absint( $filters['page'] ),
 		'sort'              => $filters['sort'],
 		'posts_per_load'    => absint( $filters['posts_per_load'] ),
+		'currency'          => $filters['currency'],
 	];
 }
 
@@ -236,7 +264,7 @@ function search( array $filters = [] ): array {
 	$search->set_ships( $ships );
 	$search->set_page( absint( $filters['page'] ) );
 	$search->set_posts_per_page( absint( $filters['posts_per_load'] ?: 5 ) );
-	$search->set_sort( $sort );
+	$search->set_sort( $sort, $filters['currency'] );
 
 	// Returned filtered trips.
 	return [
