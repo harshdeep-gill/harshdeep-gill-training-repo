@@ -5,7 +5,7 @@
 @endphp
 
 <div class="dates-rates__filters-container">
-	<h2 class="dates-rates__filters-heading">Filters</h2>
+	<h2 class="dates-rates__filters-heading">{{ __( 'Filters', 'qrk' ) }}</h2>
 	<div class="dates-rates__filters">
 		<x-dates-rates.filters-chips>
 			<x-dates-rates.filter-chip drawer_id="dates-rates-filters" title="Region & Season" accordion_id="filters-accordion-region-season" />

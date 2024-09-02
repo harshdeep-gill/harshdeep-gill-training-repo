@@ -5836,10 +5836,12 @@
 <x-component-demo :keys="[ 'dates-rates' ]">
 	<x-section>
 		<x-dates-rates>
-			<x-dates-rates.filters />
-			<x-dates-rates.result-count :count="10" :total_count="200" />
+			<x-dates-rates.header>
+				<x-dates-rates.filters />
+				<x-dates-rates.result-count :count="10" :total_count="200" />
+			</x-dates-rates.header>
 
-			<x-section>
+			<x-dates-rates.results>
 				<h2>Ocean Adventurer</h2>
 				<x-dates-rates.item>
 					<x-dates-rates.item-table title="Cabin Categories">
@@ -6182,7 +6184,7 @@
 
 					<x-dates-rates.info text="Prices are shown per person" />
 				</x-dates-rates.item>
-			</x-section>
+			</x-dates-rates.results>
 		</x-dates-rates>
 	</x-section>
 </x-component-demo>
