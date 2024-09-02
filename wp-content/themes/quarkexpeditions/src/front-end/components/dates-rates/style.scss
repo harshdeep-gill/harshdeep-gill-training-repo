@@ -7,6 +7,49 @@
 .dates-rates {
 	$self: &;
 
+	&[loading="true"] {
+
+		#{$self}__results {
+			display: none;
+
+			&--loading {
+				display: block;
+			}
+		}
+	}
+
+	&__results {
+		display: block;
+
+
+		&--loading {
+			display: none;
+		}
+
+		#{$self}[loading="true"] & {
+			display: none;
+
+			&--loading {
+				display: block;
+				width: fit-content;
+				margin-inline: auto;
+				margin-block: var(--spacing-6);
+
+				> svg {
+					width: 80px;
+					height: 80px;
+
+					@include spin;
+
+					> path {
+						fill: var(--color-yellow);
+					}
+				}
+			}
+		}
+
+	}
+
 	&__filters {
 		display: none;
 
