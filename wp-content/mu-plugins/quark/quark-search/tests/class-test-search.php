@@ -18,6 +18,7 @@ use function Quark\Search\Departures\parse_filters;
 use function Quark\Search\Departures\get_filters_from_url;
 
 use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
+use const Quark\Core\EUR_CURRENCY;
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
 
 /**
@@ -100,6 +101,77 @@ class Test_Search extends WP_UnitTestCase {
 				'page'              => 1,
 				'posts_per_load'    => 10,
 				'sort'              => 'date-now',
+				'currency'          => 'USD',
+			],
+			$filters
+		);
+
+		// Add invalid currency.
+		$query_vars['currency'] = 'invalid';
+
+		// Redirect to custom URL.
+		$this->go_to( add_query_arg( $query_vars, home_url() ) );
+
+		// Test if filters are parsed correctly.
+		$filters = parse_filters( get_filters_from_url() );
+
+		// Test if filters are parsed correctly.
+		$this->assertEquals(
+			[
+				'adventure_options' => [
+					'tracking',
+					'photo',
+				],
+				'expeditions'       => [ 123 ],
+				'durations'         => [ 12 ],
+				'seasons'           => [ '2021' ],
+				'ships'             => [
+					'99',
+					'22',
+				],
+				'months'            => [
+					'may',
+					'june',
+				],
+				'page'              => 1,
+				'posts_per_load'    => 10,
+				'sort'              => 'date-now',
+				'currency'          => 'USD',
+			],
+			$filters
+		);
+
+		// Test for other currency.
+		$query_vars['currency'] = EUR_CURRENCY;
+
+		// Redirect to custom URL.
+		$this->go_to( add_query_arg( $query_vars, home_url() ) );
+
+		// Test if filters are parsed correctly.
+		$filters = parse_filters( get_filters_from_url() );
+
+		// Test if filters are parsed correctly.
+		$this->assertEquals(
+			[
+				'adventure_options' => [
+					'tracking',
+					'photo',
+				],
+				'expeditions'       => [ 123 ],
+				'durations'         => [ 12 ],
+				'seasons'           => [ '2021' ],
+				'ships'             => [
+					'99',
+					'22',
+				],
+				'months'            => [
+					'may',
+					'june',
+				],
+				'page'              => 1,
+				'posts_per_load'    => 10,
+				'sort'              => 'date-now',
+				'currency'          => EUR_CURRENCY,
 			],
 			$filters
 		);

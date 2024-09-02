@@ -135,6 +135,7 @@ function get_filters_from_url(): array {
 		'ships'             => isset( $_GET['ships'] ) ? strval( $_GET['ships'] ) : '', // phpcs:ignore
 		'page'              => isset( $_GET['page'] ) ? strval( $_GET['page'] ) : '1', // phpcs:ignore
 		'sort'              => isset( $_GET['sort'] ) ? strval( $_GET['sort'] ) : 'date-now', // phpcs:ignore
+		'currency'          => isset( $_GET['currency'] ) ? strval( $_GET['currency'] ) : USD_CURRENCY, // phpcs:ignore
 	];
 }
 
