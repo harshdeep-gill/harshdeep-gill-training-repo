@@ -32,9 +32,7 @@ import icons from '../icons';
  */
 import * as secondaryText from './children/secondary-text';
 import * as cta from './children/cta';
-import * as contentTitle from './children/content-title';
 import * as overline from './children/overline';
-import * as description from './children/description';
 
 /**
  * Edit component.
@@ -65,9 +63,7 @@ export default function edit( { className, attributes, setAttributes }: BlockEdi
 			'core/heading',
 			secondaryText.name,
 			cta.name,
-			contentTitle.name,
 			overline.name,
-			description.name,
 		],
 		template: [
 			[ 'core/heading' ],

@@ -107,19 +107,6 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 			// Add to content.
 			$attributes['content'][] = $cta;
 
-		} elseif ( 'quark/media-text-cta-content-title' === $inner_block->name ) {
-			$content_title = [
-				'type' => 'content-title',
-			];
-
-			// Add the title.
-			$content_title['title'] = $inner_block->attributes['title'];
-
-			// Add heading level.
-			$content_title['heading_level'] = $inner_block->attributes['headingLevel'];
-
-			// Add to content.
-			$attributes['content'][] = $content_title;
 		} elseif ( 'quark/media-text-cta-overline' === $inner_block->name ) {
 			$overline = [
 				'type' => 'overline',
@@ -130,16 +117,6 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 
 			// Add to content.
 			$attributes['content'][] = $overline;
-		} elseif ( 'quark/media-text-cta-description' === $inner_block->name ) {
-			$description = [
-				'type' => 'description',
-			];
-
-			// Add the overline.
-			$description['text'] = $inner_block->attributes['text'];
-
-			// Add to content.
-			$attributes['content'][] = $description;
 		} else {
 			$slot = [
 				'type' => 'slot',
