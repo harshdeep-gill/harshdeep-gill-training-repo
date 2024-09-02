@@ -2,6 +2,7 @@
 	'immersive'       => 'none',
 	'text_align'      => '',
 	'overlay_opacity' => 0,
+	'content_overlap' => true,
 ] )
 
 @php
@@ -13,6 +14,10 @@
 
 	if ( ! empty( $immersive) && in_array( $immersive, [ 'all', 'bottom', 'top' ], true ) ) {
 		$classes[] = sprintf( 'hero--immersive-%s', $immersive );
+	}
+
+	if ( empty( $content_overlap ) ) {
+		$classes[] = 'hero--content-no-overlap';
 	}
 
 	if ( ! empty( $text_align ) && in_array( $text_align, [ 'center', 'left' ], true ) ) {

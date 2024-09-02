@@ -77,3 +77,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 define( 'QUARK_SOFTRIP_ADAPTER_BASE_URL', 'https://softrip-adapter.dev' );
 define( 'QUARK_SOFTRIP_ADAPTER_USERNAME', 'test' );
 define( 'QUARK_SOFTRIP_ADAPTER_PASSWORD', 'test' );
+
+// Checkout base URL.
+define( 'QUARK_CHECKOUT_BASE_URL', 'https://local-checkout.quarkexpeditions.com' );

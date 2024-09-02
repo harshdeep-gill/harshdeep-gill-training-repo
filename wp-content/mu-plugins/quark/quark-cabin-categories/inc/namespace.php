@@ -9,6 +9,7 @@ namespace Quark\CabinCategories;
 
 use WP_Post;
 
+use function Quark\Checkout\get_checkout_url;
 use function Quark\Core\format_price;
 use function Quark\Departures\get as get_departure;
 use function Quark\ShipDecks\get as get_ship_deck;
@@ -480,14 +481,15 @@ function get_cabin_categories_data( int $cabin_id = 0 ): array {
  *     cabin_code: string,
  *     type: string,
  *     specifications: array{
- *          availability_status: string,
- *          availability_description: string,
- *          spaces_available: int,
- *          occupancy: string,
- *          location: string,
- *          size: string,
- *          bed_configuration: string
- *      },
+ *         availability_status: string,
+ *         availability_description: string,
+ *         spaces_available: int,
+ *         occupancy: string,
+ *         location: string,
+ *         size: string,
+ *         bed_configuration: string
+ *     },
+ *     checkout_url: string,
  *     from_price: array{
  *         discounted_price: string,
  *         original_price: string,
@@ -560,6 +562,7 @@ function get_cabin_details_by_departure( int $departure_post_id = 0, string $cur
 			],
 			'from_price'     => $formatted_price,
 			'occupancies'    => [],
+			'checkout_url'   => get_checkout_url( $departure_post_id, $cabin_category_post_id, $currency ),
 		];
 
 		// Get all occupancies for this cabin and departure.
