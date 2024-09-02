@@ -74,8 +74,10 @@ export default class DatesRatesFilters extends HTMLElement {
 
 	/**
 	 * Close accordion inside drawer.
+	 *
+	 * @param { HTMLElement | null } skippedItem An item to be skipped while closing everything.
 	 */
-	closeAllAccordionItems() {
+	closeAllAccordionItems( skippedItem: HTMLElement | null = null ) {
 		// Check if items are present.
 		if ( ! this.drawerAccordionItems ) {
 			// No, bail.
@@ -84,7 +86,13 @@ export default class DatesRatesFilters extends HTMLElement {
 
 		// For each item.
 		this.drawerAccordionItems.forEach( ( ( item: TPAccordionItemElement ) => {
-			// Close items.
+			// Check if this item should be skipped.
+			if ( item === skippedItem ) {
+				// This item should not be closed.
+				return;
+			}
+
+			// Closse the item.
 			item.removeAttribute( 'open' );
 		} ) );
 	}
@@ -96,13 +104,20 @@ export default class DatesRatesFilters extends HTMLElement {
 	 */
 	handleAccordionItems( event: any ) {
 		// Set current item.
-		const currentItem = event.currentTarget;
-
-		// Close all accordion items.
-		this.closeAllAccordionItems();
+		const currentItem = event.currentTarget as TPAccordionItemElement;
 
 		// Open the current item.
-		currentItem.setAttribute( 'open', 'yes' );
+		if ( ! currentItem.hasAttribute( 'open' ) ) {
+			currentItem.setAttribute( 'open', 'yes' );
+		} else {
+			currentItem.removeAttribute( 'open' );
+
+			// No need to close other items.
+			return;
+		}
+
+		// Close all accordion items.
+		this.closeAllAccordionItems( currentItem );
 	}
 
 	/**
