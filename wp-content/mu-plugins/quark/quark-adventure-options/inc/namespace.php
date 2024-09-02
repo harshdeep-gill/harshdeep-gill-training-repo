@@ -31,6 +31,9 @@ function bootstrap(): void {
 	// Cache Purge.
 	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
 
+	// Breadcrumbs.
+	add_filter( 'travelopia_breadcrumbs_ancestors', __NAMESPACE__ . '\\breadcrumbs_ancestors' );
+
 	// Admin stuff.
 	if ( is_admin() ) {
 		// Custom fields.
@@ -377,4 +380,27 @@ function get_cards_data( array $post_ids = [] ): array {
 
 	// Return data.
 	return $data;
+}
+
+/**
+ * Breadcrumbs ancestors for this post type.
+ *
+ * @param mixed[] $breadcrumbs Breadcrumbs.
+ *
+ * @return mixed[]
+ */
+function breadcrumbs_ancestors( array $breadcrumbs = [] ): array {
+	// Check if current query is for this post type.
+	if ( ! is_singular( POST_TYPE ) ) {
+		return $breadcrumbs;
+	}
+
+	// Insert Adventure Options.
+	$breadcrumbs[] = [
+		'title' => __( 'Adventure Options', 'qrk' ),
+		'url'   => '#',
+	];
+
+	// Return updated breadcrumbs.
+	return $breadcrumbs;
 }
