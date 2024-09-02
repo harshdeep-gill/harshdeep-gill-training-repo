@@ -72,6 +72,7 @@
 		},
 		"typography": {
 		"letterSpacing": false,
+		"defaultFontSizes": false,
 		"customFontSize": false,
 		"lineHeight": false,
 		"fontStyle": false,
