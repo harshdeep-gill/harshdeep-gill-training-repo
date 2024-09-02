@@ -2,6 +2,15 @@
 	if ( empty( $slot ) ) {
 		return;
 	}
+
+	$filter_data = [
+		'seasons'            => Quark\Search\Departures\get_region_and_season_search_filter_data(),
+		'expeditions'        => Quark\Search\Departures\get_expedition_search_filter_data(),
+		'adventure_options'  => Quark\Search\Departures\get_adventure_options_search_filter_data(),
+		'months'             => Quark\Search\Departures\get_month_search_filter_data(),
+		'durations'          => Quark\Search\Departures\get_duration_search_filter_data(),
+		'ships'              => Quark\Search\Departures\get_ship_search_filter_data(),
+	];
 @endphp
 
 <div class="dates-rates__filters-container">
@@ -50,7 +59,7 @@
 
 	<x-drawer id="dates-rates-filters" animation_direction="up" class="dates-rates__drawer">
 		<x-drawer.header>
-			<h3>Filters</h3>
+			<h3>{{ __( 'Filters' , 'qrk' ) }}</h3>
 		</x-drawer.header>
 
 		<x-drawer.body>
@@ -58,91 +67,72 @@
 				<x-accordion.item id="filters-accordion-region-season">
 					<x-accordion.item-handle title="Region & Season" />
 					<x-accordion.item-content>
-						<x-form.field-group :validation="[ 'checkbox-group-required' ]">
-							<x-form.checkbox name="" label="English" />
-							<x-form.checkbox name="" label="Italian" />
-							<x-form.checkbox name="" label="Arabic" />
-							<x-form.checkbox name="" label="Chinese, Mandarin" />
-							<x-form.checkbox name="" label="Japanese" />
-							<x-form.checkbox name="" label="Hindi" />
-							<x-form.checkbox name="" label="French" />
-							<x-form.checkbox name="" label="Korean" />
-							<x-form.checkbox name="" label="Portuguese" />
-							<x-form.checkbox name="" label="German" />
-							<x-form.checkbox name="" label="Russian" />
-							<x-form.checkbox name="" label="Other" />
-							<x-form.checkbox name="" label="Spanish" />
-							<x-form.checkbox name="" label="Bengali" />
+						<x-form.field-group>
+							@if ( ! empty( $filter_data['seasons'] ) )
+								@foreach ( $filter_data['seasons'] as $filter_value => $filter_label )
+									<x-form.checkbox name="seasons" :label="$filter_label" :value="$filter_value" />
+								@endforeach
+							@endif
 						</x-form.field-group>
 					</x-accordion.item-content>
 				</x-accordion.item>
 				<x-accordion.item id="filters-accordion-expedition">
 					<x-accordion.item-handle title="Expedition" />
 					<x-accordion.item-content>
-						<x-form.field-group :validation="[ 'checkbox-group-required' ]">
-							<x-form.checkbox name="" label="Item 1" />
-							<x-form.checkbox name="" label="Item 2" />
-							<x-form.checkbox name="" label="Item 3" />
-							<x-form.checkbox name="" label="Item 4" />
-							<x-form.checkbox name="" label="Item 5" />
-							<x-form.checkbox name="" label="Item 6" />
-							<x-form.checkbox name="" label="Item 7" />
+						<x-form.field-group>
+							@if ( ! empty( $filter_data['expeditions'] ) )
+								@foreach ( $filter_data['expeditions'] as $filter_value => $filter_label )
+									<x-form.checkbox name="expeditions" :label="$filter_label" :value="$filter_value" />
+								@endforeach
+							@endif
 						</x-form.field-group>
 					</x-accordion.item-content>
 				</x-accordion.item>
 				<x-accordion.item id="filters-accordion-adevnture-options">
 					<x-accordion.item-handle title="Adventure Options (with availability)" />
 					<x-accordion.item-content>
-						<x-form.field-group :validation="[ 'checkbox-group-required' ]">
-							<x-form.checkbox name="" label="Item 1" />
-							<x-form.checkbox name="" label="Item 2" />
-							<x-form.checkbox name="" label="Item 3" />
-							<x-form.checkbox name="" label="Item 4" />
-							<x-form.checkbox name="" label="Item 5" />
-							<x-form.checkbox name="" label="Item 6" />
-							<x-form.checkbox name="" label="Item 7" />
+						<x-form.field-group>
+							@if ( ! empty( $filter_data['adventure_options'] ) )
+								@foreach ( $filter_data['adventure_options'] as $filter_value => $filter_label )
+									<x-form.checkbox name="adventure_options" :label="$filter_label" :value="$filter_value" />
+								@endforeach
+							@endif
 						</x-form.field-group>
 					</x-accordion.item-content>
 				</x-accordion.item>
 				<x-accordion.item id="filters-accordion-departure-month">
 					<x-accordion.item-handle title="Departure Month" />
 					<x-accordion.item-content>
-						<x-form.field-group :validation="[ 'checkbox-group-required' ]">
-							<x-form.checkbox name="" label="Item 1" />
-							<x-form.checkbox name="" label="Item 2" />
-							<x-form.checkbox name="" label="Item 3" />
-							<x-form.checkbox name="" label="Item 4" />
-							<x-form.checkbox name="" label="Item 5" />
-							<x-form.checkbox name="" label="Item 6" />
-							<x-form.checkbox name="" label="Item 7" />
+						<x-form.field-group>
+							@if ( ! empty( $filter_data['months'] ) )
+								@foreach ( $filter_data['months'] as $filter_value => $filter_label )
+									<x-form.checkbox name="months" :label="$filter_label" :value="$filter_value" />
+								@endforeach
+							@endif
 						</x-form.field-group>
 					</x-accordion.item-content>
 				</x-accordion.item>
 				<x-accordion.item id="filters-accordion-duration">
 					<x-accordion.item-handle title="Duration of Voyage (days)" />
 					<x-accordion.item-content>
-						<x-form.field-group :validation="[ 'checkbox-group-required' ]">
-							<x-form.checkbox name="" label="Item 1" />
-							<x-form.checkbox name="" label="Item 2" />
-							<x-form.checkbox name="" label="Item 3" />
-							<x-form.checkbox name="" label="Item 4" />
-							<x-form.checkbox name="" label="Item 5" />
-							<x-form.checkbox name="" label="Item 6" />
-							<x-form.checkbox name="" label="Item 7" />
+						<x-form.field-group>
+							@if ( ! empty( $filter_data['durations'] ) )
+								@foreach ( $filter_data['durations'] as $filter_value => $filter_label )
+									<x-form.checkbox name="durations" :label="$filter_label" :value="$filter_value" />
+								@endforeach
+							@endif
 						</x-form.field-group>
 					</x-accordion.item-content>
 				</x-accordion.item>
 				<x-accordion.item id="filters-accordion-ship">
 					<x-accordion.item-handle title="Ship" />
 					<x-accordion.item-content>
-						<x-form.field-group :validation="[ 'checkbox-group-required' ]">
-							<x-form.checkbox name="" label="Item 1" />
-							<x-form.checkbox name="" label="Item 2" />
-							<x-form.checkbox name="" label="Item 3" />
-							<x-form.checkbox name="" label="Item 4" />
-							<x-form.checkbox name="" label="Item 5" />
-							<x-form.checkbox name="" label="Item 6" />
-							<x-form.checkbox name="" label="Item 7" />
+						<x-form.field-group>
+							@if ( ! empty( $filter_data['ships'] ) )
+								@foreach ( $filter_data['ships'] as $filter_value => $filter_label )
+									<x-form.checkbox name="ships" :label="$filter_label" :value="$filter_value" />
+								@endforeach
+							@endif
 						</x-form.field-group>
 					</x-accordion.item-content>
 				</x-accordion.item>

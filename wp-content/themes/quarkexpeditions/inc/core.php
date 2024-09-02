@@ -614,6 +614,8 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'required'     => true,
 					'checked'      => true,
 					'value'        => true,
+					'id'           => true,
+					'form'         => true,
 				],
 				'textarea'                                    => [
 					'id'          => true,
