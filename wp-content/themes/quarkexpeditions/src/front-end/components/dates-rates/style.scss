@@ -8,9 +8,21 @@
 	$self: &;
 
 	&__filters {
-		display: flex;
-		justify-content: space-between;
-		gap: var(--spacing-5);
+		display: none;
+
+		@media screen and (min-width: grid-size(md)) {
+			display: flex;
+			justify-content: space-between;
+			gap: var(--spacing-5);
+		}
+	}
+
+	&__filters-heading {
+		display: none;
+
+		@media screen and (min-width: grid-size(md)) {
+			display: block;
+		}
 	}
 
 	&__filter-chip {
