@@ -14,6 +14,7 @@ use Solarium\QueryType\Update\Query\Document\Document;
 use function Quark\Departures\get as get_departure;
 use function Quark\Departures\get_included_adventure_options;
 use function Quark\Departures\get_paid_adventure_options;
+use function Quark\Expeditions\get as get_expedition_post;
 use function Quark\Expeditions\get_destination_term_by_code;
 use function Quark\Ships\get as get_ship_post;
 use function Quark\Softrip\Departures\get_lowest_price;
@@ -23,6 +24,7 @@ use const Quark\Core\CURRENCIES;
 use const Quark\Core\USD_CURRENCY;
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
 use const Quark\Departures\SPOKEN_LANGUAGE_TAXONOMY;
+use const Quark\Expeditions\DESTINATION_TAXONOMY;
 use const Quark\StaffMembers\SEASON_TAXONOMY;
 
 const CACHE_GROUP = 'quark_search';
@@ -801,7 +803,11 @@ function get_itinerary_length_search_filter_data(): array {
 		}
 
 		// Get itinerary length.
-		$itinerary_length = $departure['post_meta']['duration'];
+		$itinerary_length = absint( $departure['post_meta']['duration'] );
+
+		if ( empty( $itinerary_length ) || ! empty( $itinerary_lengths[ $itinerary_length ] ) ) {
+			continue;
+		}
 
 		// Prepare itinerary length data.
 		$itinerary_lengths[ $itinerary_length ] = $itinerary_length;
@@ -826,4 +832,64 @@ function get_itinerary_length_search_filter_data(): array {
 
 	// Return itinerary length data.
 	return $itinerary_length_data;
+}
+
+/**
+ * Get destinations search filter data.
+ *
+ * @return array{}|array<int, array{
+ *   id: int,
+ *   slug: string,
+ *   name: string,
+ *   children: array<int, array{
+ *      id: int,
+ *      slug: string,
+ *      name: string,
+ *      parent_id: int,
+ *   }>,
+ * }>
+ */
+function get_destination_search_filter_data(): array {
+	// Prepare search object.
+	$search = new Search();
+	$search->set_posts_per_page( -1 );
+
+	// Get departure ids.
+	$departure_ids = $search->search();
+	$expedition_ids = [];
+
+	// Validate departure ids.
+	if ( empty( $departure_ids ) ) {
+		return $expedition_ids;
+	}
+
+	// Get expedition data.
+	foreach ( $departure_ids as $departure_id ) {
+		// Get expedition id.
+		$expedition_id = absint( get_post_meta( $departure_id, 'related_expedition', true ) );
+
+		// Validate expedition id.
+		if ( empty( $expedition_id ) ) {
+			continue;
+		}
+
+		// Get expedition post by this id.
+		$expedition_post = get_expedition_post( $expedition_id );
+
+		// Validate expedition post.
+		if ( empty( $expedition_post['post'] ) || ! $expedition_post['post'] instanceof WP_Post ) {
+			continue;
+		}
+
+		// Check for taxonomies.
+		if ( ! array_key_exists( DESTINATION_TAXONOMY, $expedition_post['post_taxonomies'] ) ||
+			! is_array( $expedition_post['post_taxonomies'][ DESTINATION_TAXONOMY ] )
+		) {
+			continue;
+		}
+
+		// Loop through destinations.
+	}
+
+	return [];
 }
