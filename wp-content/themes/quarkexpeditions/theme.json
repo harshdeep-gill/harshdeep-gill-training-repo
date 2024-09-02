@@ -17,6 +17,10 @@
 		{
 			"name": "content-sidebar-table-of-contents",
 			"title": "Content with Table of Contents Sidebar"
+		},
+		{
+			"name": "single-qrk_adventure_option",
+			"title": "Adventure Option"
 		}
 	],
 	"templateParts": [

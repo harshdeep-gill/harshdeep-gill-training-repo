@@ -21,11 +21,11 @@
 	<div class="product-options-cards__price-info">
 		<div class="product-options-cards__price-discounted">
 			<h5>
-				<x-escape :content="$original_price" />
+				<x-escape :content="$discounted_price" />
 			</h5>{{ __( 'per person', 'qrk' ) }}
 		</div>
 		<div class="product-options-cards__price-original">
-			<x-escape :content="$discounted_price" />
+			<x-escape :content="$original_price" />
 		</div>
 	</div>
 </div>

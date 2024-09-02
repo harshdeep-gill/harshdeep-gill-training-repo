@@ -37,8 +37,8 @@ use function Quark\AdventureOptions\get as get_adventure_option_post_data;
 use function Quark\CabinCategories\get_availability_status_description;
 use function Quark\CabinCategories\get_cabin_availability_status;
 use function Quark\CabinCategories\get_available_cabin_spaces;
+use function Quark\Checkout\get_checkout_url;
 
-use const Quark\StaffMembers\SEASON_TAXONOMY;
 use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
 
 const POST_TYPE                = 'qrk_departure';
@@ -531,17 +531,30 @@ function get_promotion_tags( int $post_id = 0 ): array {
 	$departure      = get( $post_id );
 	$promotion_tags = [];
 
-	// Get promotion tags from post_taxonomy.
-	$promotion_tag_terms = $departure['post_taxonomies'][ PROMOTION_TAG ] ?? [];
-
-	// Check promotion tags are empty.
-	if ( ! $promotion_tag_terms || ! is_array( $promotion_tag_terms ) ) {
+	// Check for post.
+	if ( ! $departure['post'] instanceof WP_Post || empty( $departure['post_meta'] ) || empty( $departure['post_meta']['related_promotion_tags'] ) ) {
 		return $promotion_tags;
 	}
 
-	// Loop through promotion tags - get name field.
-	foreach ( $promotion_tag_terms as $promotion_tag ) {
-		$promotion_tags[] = $promotion_tag['name'] ? strval( $promotion_tag['name'] ) : '';
+	// Get promotion tags from post_meta.
+	$promotion_tag_term_ids = $departure['post_meta']['related_promotion_tags'];
+
+	// Check promotion tags are empty.
+	if ( ! is_array( $promotion_tag_term_ids ) ) {
+		return $promotion_tags;
+	}
+
+	// Get Promotion Tags term names.
+	foreach ( $promotion_tag_term_ids as $promotion_tag_term_id ) {
+		$promotion_tag_term = get_term( absint( $promotion_tag_term_id ), PROMOTION_TAG, ARRAY_A );
+
+		// Check for term.
+		if ( empty( $promotion_tag_term ) || ! is_array( $promotion_tag_term ) || empty( $promotion_tag_term['name'] ) ) {
+			continue;
+		}
+
+		// Add term name to promotion tags.
+		$promotion_tags[] = $promotion_tag_term['name'];
 	}
 
 	// Return promotion tags.
@@ -573,6 +586,7 @@ function get_promotion_tags( int $post_id = 0 ): array {
  *     },
  *     promotion_tags: string[],
  *     ship_name: string,
+ *     promotion_banner: string,
  *     banner_details: array{
  *        title: string,
  *        description: string,
@@ -594,6 +608,7 @@ function get_promotion_tags( int $post_id = 0 ): array {
  *           size: string,
  *           bed_configuration: string
  *       },
+ *       checkout_url: string,
  *       from_price: array{
  *          discounted_price: string,
  *          original_price: string,
@@ -665,6 +680,8 @@ function get_card_data( int $departure_id = 0, string $currency = 'USD' ): array
 		'ship_name'                => $ship_name,
 		'banner_details'           => get_policy_banner_details( $itinerary_id ),
 		'cabins'                   => get_cabin_details_by_departure( $departure_id, $currency ),
+		'promotion_banner'         => get_discount_label( $lowest_price['original'], $lowest_price['discounted'] ),
+		'promotions'               => get_promotions_description( $departure_id ),
 	];
 
 	// Set cache and return data.
@@ -902,6 +919,9 @@ function bust_card_data_cache_on_expedition_update( int $expedition_id = 0 ): vo
  *          array{
  *             title: string,
  *             icon_image_id: int,
+ *             spaces_available: int,
+ *             price_per_person: string,
+ *             currency: string,
  *         }
  *     },
  *     transfer_package_details: array{
@@ -922,12 +942,14 @@ function bust_card_data_cache_on_expedition_update( int $expedition_id = 0 ): vo
  *             is_pif: int,
  *         },
  *     },
- *     cabin_data: array<string, array<string, string> | array{
+ *     cabin_data: array<string, array{
  *             name: string,
  *             availability_status: string,
  *             availability_description: string,
  *             spaces_available: int,
+ *             checkout_url: string,
  *             brochure_price: string,
+ *             promos: array{}|string[],
  *          }
  *     >,
  * }
@@ -972,7 +994,7 @@ function get_dates_rates_card_data( int $departure_id = 0, string $currency = 'U
 
 	// Check for regions.
 	if ( ! empty( $region_terms ) ) {
-		// Get region name comma seperated.
+		// Get region name comma separated.
 		foreach ( $region_terms as $region ) {
 			if ( ! is_array( $region ) || empty( $region['name'] ) ) {
 				continue;
@@ -1026,6 +1048,7 @@ function get_dates_rates_card_data( int $departure_id = 0, string $currency = 'U
 			'icon_image_id'    => get_term_meta( $paid_adventure_option['adventure_option_term_id'], 'icon', true ),
 			'spaces_available' => $paid_adventure_option['spaces_available'],
 			'price_per_person' => format_price( floatval( $paid_adventure_option[ 'price_per_person_' . strtolower( $currency ) ] ), $currency ),
+			'currency'         => strtoupper( $currency ),
 		];
 	}
 
@@ -1082,6 +1105,8 @@ function get_dates_rates_card_data( int $departure_id = 0, string $currency = 'U
 			'availability_status'      => $availability_status,
 			'availability_description' => $availability_description,
 			'spaces_available'         => $cabin_spaces_available,
+			'promos'                   => [],
+			'checkout_url'             => get_checkout_url( $departure_id, $cabin_id, $currency ),
 		];
 
 		// Get the lowest price for the cabin.
@@ -1092,7 +1117,7 @@ function get_dates_rates_card_data( int $departure_id = 0, string $currency = 'U
 
 		// Loop through available_promos for each promo.
 		foreach ( $available_promos as $promo_code => $promo_data ) {
-			$cabin_price_data[ $cabin_code ][ $promo_code ] = format_price( get_lowest_price_by_cabin_category_and_departure_and_promotion_code( $cabin_id, $departure_id, $promo_code, $currency ), $currency );
+			$cabin_price_data[ $cabin_code ]['promos'][ $promo_code ] = format_price( get_lowest_price_by_cabin_category_and_departure_and_promotion_code( $cabin_id, $departure_id, $promo_code, $currency ), $currency );
 		}
 	}
 
@@ -1120,4 +1145,179 @@ function get_dates_rates_card_data( int $departure_id = 0, string $currency = 'U
 
 	// Return departure card data.
 	return $data;
+}
+
+/**
+ * Get departure cards data.
+ *
+ * @param int[]  $departure_ids The departure IDs.
+ * @param string $currency      The currency.
+ *
+ * @return array{}|array<int, array{}|array{
+ *     region: string,
+ *     ship_title: string,
+ *     ship_link: string|false,
+ *     expedition_title: string,
+ *     expedition_link: string,
+ *     duration_days: int,
+ *     duration_dates: string,
+ *     start_location: string,
+ *     end_location: string,
+ *     languages: string,
+ *     included_adventure_options: array{}|array{
+ *         array{
+ *             title: string,
+ *             icon_image_id: int,
+ *         }
+ *     },
+ *     paid_adventure_options: array{}|array{
+ *          array{
+ *             title: string,
+ *             icon_image_id: int,
+ *             spaces_available: int,
+ *             price_per_person: string,
+ *             currency: string,
+ *         }
+ *     },
+ *     transfer_package_details: array{
+ *         title: string,
+ *         sets: array<string>,
+ *         price: int,
+ *         formatted_price: string,
+ *     },
+ *     available_promos: array{}| array{
+ *         string: array{
+ *             id: int,
+ *             code: string,
+ *             start_date: string,
+ *             end_date: string,
+ *             description: string,
+ *             discount_type: string,
+ *             discount_value: string,
+ *             is_pif: int,
+ *         },
+ *     },
+ *     cabin_data: array<string, array{
+ *             name: string,
+ *             availability_status: string,
+ *             availability_description: string,
+ *             spaces_available: int,
+ *             brochure_price: string,
+ *             promos: array{}|string[],
+ *          }
+ *     >,
+ * }>
+ */
+function get_dates_rates_cards_data( array $departure_ids = [], string $currency = 'USD' ): array {
+	// Prepare the departure cards data.
+	$departure_cards = [];
+
+	// Validate departure_ids.
+	if ( empty( $departure_ids ) || ! is_array( $departure_ids ) ) {
+		return $departure_cards;
+	}
+
+	// Loop through departure_ids.
+	foreach ( $departure_ids as $departure_id ) {
+		// Get departure card data.
+		$departure_cards[ $departure_id ] = get_dates_rates_card_data( $departure_id, $currency );
+	}
+
+	// Return departure cards data.
+	return $departure_cards;
+}
+
+/**
+ * Get discount label.
+ *
+ * @param int $original_price   Original price.
+ * @param int $discounted_price Discounted price.
+ *
+ * @return string
+ */
+function get_discount_label( int $original_price = 0, int $discounted_price = 0 ): string {
+	// Validate prices.
+	if ( empty( $original_price ) || empty( $discounted_price ) || $original_price <= $discounted_price ) {
+		return '';
+	}
+
+	// Calculate the discount.
+	$discount = $original_price - $discounted_price;
+
+	// Calculate the discount percentage.
+	$discount_percentage = ( $discount / $original_price ) * 100;
+
+	// Prepare the discount label.
+	$discount_label = sprintf(
+		// translators: %s: Discount Percentage.
+		__( 'Save upto %s%%', 'qrk' ),
+		number_format( $discount_percentage, 0 )
+	);
+
+	// Return the discount label.
+	return $discount_label;
+}
+
+/**
+ * Get promotions description.
+ *
+ * @param int $departure_id Departure ID.
+ *
+ * @return string[]
+ */
+function get_promotions_description( int $departure_id = 0 ): array {
+	// Check for departure ID.
+	if ( empty( $departure_id ) ) {
+		return [];
+	}
+
+	// Get departure post.
+	$departure = get( $departure_id );
+
+	// Check for post.
+	if ( ! $departure['post'] instanceof WP_Post || empty( $departure['post_meta'] ) ) {
+		return [];
+	}
+
+	// Get available promos from post_meta.
+	$available_promos = $departure['post_meta']['promotion_codes'] ?? [];
+
+	// Check available promos are empty.
+	if ( empty( $available_promos ) || ! is_array( $available_promos ) ) {
+		return [];
+	}
+
+	// Initialize the promo descriptions.
+	$promo_descriptions = [];
+
+	// Loop through available_promos.
+	foreach ( $available_promos as $promo_code ) {
+		// Get promo data.
+		$promo_data = get_promotions_by_code( strval( $promo_code ) );
+
+		// Check for promo data.
+		if ( empty( $promo_data ) ) {
+			continue;
+		}
+
+		// Get first promo data.
+		$promo_data = $promo_data[0];
+
+		// Prepare promo description.
+		$promo_description = sprintf(
+			// translators: %1$s: Promo Description, %2$s: Promo Code.
+			__(
+				'%1$s - Offer Code %2$s',
+				'qrk'
+			),
+			$promo_data['description'],
+			$promo_data['code']
+		);
+
+		// Add promo description to array.
+		$promo_descriptions[] = $promo_description;
+	}
+
+	// Return promo descriptions.
+	return $promo_descriptions;
 }

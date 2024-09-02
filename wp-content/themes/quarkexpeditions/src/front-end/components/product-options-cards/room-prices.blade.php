@@ -19,10 +19,10 @@
 <div @class( $classes )>
 	<div class="product-options-cards__room-prices-info">
 		<div class="product-options-cards__room-prices-discounted">
-			<x-escape :content="$original_price" />
+			<x-escape :content="$discounted_price" />
 		</div>
 		<div class="product-options-cards__room-prices-original">
-			<x-escape :content="$discounted_price" />
+			<x-escape :content="$original_price" />
 		</div>
 	</div>
 </div>

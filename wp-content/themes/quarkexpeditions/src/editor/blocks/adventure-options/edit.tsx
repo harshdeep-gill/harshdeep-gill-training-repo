@@ -8,6 +8,7 @@ import {
 	Placeholder,
 	Tooltip,
 	RangeControl,
+	ToggleControl,
 } from '@wordpress/components';
 import { InspectorControls } from '@wordpress/block-editor';
 
@@ -103,6 +104,12 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 							max={ 20 }
 						/>
 					}
+					<ToggleControl
+						label={ __( 'Allow overflow?', 'qrk' ) }
+						checked={ attributes.carouselOverflow }
+						onChange={ ( carouselOverflow ) => setAttributes( { carouselOverflow } ) }
+						help={ __( 'Allow overflow of cards horizontally', 'qrk' ) }
+					/>
 				</PanelBody>
 			</InspectorControls>
 			<Section className={ classnames( className ) }>
