@@ -76,7 +76,10 @@ function register_region_post_type(): void {
 		'template'            => [
 			[
 				'quark/hero',
-				[],
+				[
+					'immersive'      => 'bottom',
+					'overlapContent' => false,
+				],
 				[
 					[
 						'quark/breadcrumbs',
