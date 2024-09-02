@@ -1230,7 +1230,7 @@ function get_dates_rates_cards_data( array $departure_ids = [], string $currency
 /**
  * Get discount label.
  *
- * @param int $original_price Original price.
+ * @param int $original_price   Original price.
  * @param int $discounted_price Discounted price.
  *
  * @return string
@@ -1248,7 +1248,11 @@ function get_discount_label( int $original_price = 0, int $discounted_price = 0 
 	$discount_percentage = ( $discount / $original_price ) * 100;
 
 	// Prepare the discount label.
-	$discount_label = sprintf( 'Save upto %s%%', number_format( $discount_percentage, 0 ) );
+	$discount_label = sprintf(
+		// translators: %s: Discount Percentage.
+		__( 'Save upto %s%%', 'qrk' ),
+		number_format( $discount_percentage, 0 )
+	);
 
 	// Return the discount label.
 	return $discount_label;
