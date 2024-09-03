@@ -2517,7 +2517,7 @@
 	</x-section>
 </x-component-demo>
 
-<x-component-demo :keys="[ 'change-currency' ]">
+<x-component-demo :keys="[ 'currency-switcher' ]">
 	<x-section>
 		<x-currency-switcher appearance="dark" />
 	</x-section>
