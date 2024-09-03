@@ -23,6 +23,16 @@
 		}
 	}
 
+	&--media-align-right {
+
+		#{$self}__media-wrap {
+
+			@media screen and (min-width: grid-size(lg)) {
+				order: 1;
+			}
+		}
+	}
+
 	&__media-wrap {
 		border-radius: var(--border-radius-large);
 		overflow: hidden;
