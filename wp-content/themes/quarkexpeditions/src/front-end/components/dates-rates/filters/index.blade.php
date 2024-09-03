@@ -18,12 +18,12 @@
 		<h2 class="dates-rates__filters-heading">{{ __( 'Filters', 'qrk' ) }}</h2>
 		<div class="dates-rates__filters">
 			<x-dates-rates.filters-chips>
-				<x-dates-rates.filter-chip drawer_id="dates-rates-filters" title="Region & Season" accordion_id="filters-accordion-region-season" />
-				<x-dates-rates.filter-chip drawer_id="dates-rates-filters" title="Expedition" accordion_id="filters-accordion-expedition" />
+				<x-dates-rates.filter-chip drawer_id="dates-rates-filters" title="Region & Season" accordion_id="filters-accordion-seasons" />
+				<x-dates-rates.filter-chip drawer_id="dates-rates-filters" title="Expedition" accordion_id="filters-accordion-expeditions" />
 				<x-dates-rates.filter-chip drawer_id="dates-rates-filters" title="Adventure Options" accordion_id="filters-accordion-adventure-options" />
-				<x-dates-rates.filter-chip drawer_id="dates-rates-filters" title="Departure Month" accordion_id="filters-accordion-departure-month" />
-				<x-dates-rates.filter-chip drawer_id="dates-rates-filters" title="Duration" accordion_id="filters-accordion-duration" />
-				<x-dates-rates.filter-chip drawer_id="dates-rates-filters" title="Ship" accordion_id="filters-accordion-ship" />
+				<x-dates-rates.filter-chip drawer_id="dates-rates-filters" title="Departure Month" accordion_id="filters-accordion-months" />
+				<x-dates-rates.filter-chip drawer_id="dates-rates-filters" title="Duration" accordion_id="filters-accordion-durations" />
+				<x-dates-rates.filter-chip drawer_id="dates-rates-filters" title="Ship" accordion_id="filters-accordion-ships" />
 			</x-dates-rates.filters-chips>
 
 			<x-dates-rates.filter-currency>
@@ -37,8 +37,10 @@
 			</x-dates-rates.filter-currency>
 		</div>
 
+		<x-dates-rates.selected-filters />
+
 		<x-dates-rates.sticky-filters>
-			<x-dates-rates.filter-chip drawer_id="dates-rates-filters" title="Filter" accordion_id="filters-accordion-region-season" type="sticky-filter" />
+			<x-dates-rates.filter-chip drawer_id="dates-rates-filters" title="Filter" accordion_id="filters-accordion-seasons" type="sticky-filter" />
 			<x-dates-rates.filter-chip drawer_id="dates-rates-filters-currency" type="currency" title="Currency: USD" />
 		</x-dates-rates.sticky-filters>
 
@@ -65,7 +67,7 @@
 
 			<x-drawer.body>
 				<x-accordion>
-					<x-accordion.item id="filters-accordion-region-season">
+					<x-accordion.item id="filters-accordion-seasons">
 						<x-accordion.item-handle title="Region & Season" />
 						<x-accordion.item-content>
 							<x-form.field-group>
@@ -77,7 +79,7 @@
 							</x-form.field-group>
 						</x-accordion.item-content>
 					</x-accordion.item>
-					<x-accordion.item id="filters-accordion-expedition">
+					<x-accordion.item id="filters-accordion-expeditions">
 						<x-accordion.item-handle title="Expedition" />
 						<x-accordion.item-content>
 							<x-form.field-group>
@@ -101,7 +103,7 @@
 							</x-form.field-group>
 						</x-accordion.item-content>
 					</x-accordion.item>
-					<x-accordion.item id="filters-accordion-departure-month">
+					<x-accordion.item id="filters-accordion-months">
 						<x-accordion.item-handle title="Departure Month" />
 						<x-accordion.item-content>
 							<x-form.field-group>
@@ -113,7 +115,7 @@
 							</x-form.field-group>
 						</x-accordion.item-content>
 					</x-accordion.item>
-					<x-accordion.item id="filters-accordion-duration">
+					<x-accordion.item id="filters-accordion-durations">
 						<x-accordion.item-handle title="Duration of Voyage (days)" />
 						<x-accordion.item-content>
 							<x-form.field-group>
@@ -125,7 +127,7 @@
 							</x-form.field-group>
 						</x-accordion.item-content>
 					</x-accordion.item>
-					<x-accordion.item id="filters-accordion-ship">
+					<x-accordion.item id="filters-accordion-ships">
 						<x-accordion.item-handle title="Ship" />
 						<x-accordion.item-content>
 							<x-form.field-group>

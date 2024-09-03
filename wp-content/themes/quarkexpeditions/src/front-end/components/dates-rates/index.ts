@@ -10,6 +10,7 @@ import './data';
 import DatesRatesFilterChip from './filter';
 import DatesRatesFiltersControllerElement from './filters';
 import DatesRatesResultsElement from './results';
+import DatesRatesSelectedFiltersElement from './selected-filters';
 
 /**
  * Define custom components.
@@ -17,3 +18,4 @@ import DatesRatesResultsElement from './results';
 customElements.define( 'quark-dates-rates-filter-chip', DatesRatesFilterChip );
 customElements.define( 'quark-dates-rates-filters-controller', DatesRatesFiltersControllerElement );
 customElements.define( 'quark-dates-rates-results', DatesRatesResultsElement );
+customElements.define( 'quark-dates-rates-selected-filters', DatesRatesSelectedFiltersElement );

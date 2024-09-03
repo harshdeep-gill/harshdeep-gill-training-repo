@@ -52,12 +52,12 @@ export default class DatesRatesFiltersControllerElement extends HTMLElement {
 		 * These need to be queried on the document because these
 		 * are inside a drawer which is pulled out of the parent on initialization.
 		 */
-		this.regionSeasonFilter = document.querySelectorAll( '#filters-accordion-region-season input[type="checkbox"]' );
-		this.expeditionsFilter = document.querySelectorAll( '#filters-accordion-expedition input[type="checkbox"]' );
+		this.regionSeasonFilter = document.querySelectorAll( '#filters-accordion-seasons input[type="checkbox"]' );
+		this.expeditionsFilter = document.querySelectorAll( '#filters-accordion-expeditions input[type="checkbox"]' );
 		this.adventureOptionsFilter = document.querySelectorAll( '#filters-accordion-adventure-options input[type="checkbox"]' );
-		this.departureMonthsFilter = document.querySelectorAll( '#filters-accordion-departure-month input[type="checkbox"]' );
-		this.durationsFilter = document.querySelectorAll( '#filters-accordion-duration input[type="checkbox"]' );
-		this.shipsFilter = document.querySelectorAll( '#filters-accordion-ship input[type="checkbox"]' );
+		this.departureMonthsFilter = document.querySelectorAll( '#filters-accordion-months input[type="checkbox"]' );
+		this.durationsFilter = document.querySelectorAll( '#filters-accordion-durations input[type="checkbox"]' );
+		this.shipsFilter = document.querySelectorAll( '#filters-accordion-ships input[type="checkbox"]' );
 		this.currencyDropdown = document.querySelector( '.dates-rates__filter-currency tp-multi-select' );
 		this.currencyFilter = document.querySelectorAll( '#dates-rates-filters-currency input[type="radio"]' );
 		this.applyFiltersButton = document.querySelector( '.dates-rates__apply-filters-btn' );
@@ -118,7 +118,7 @@ export default class DatesRatesFiltersControllerElement extends HTMLElement {
 			} );
 		}
 
-		// TODO: Add comment.
+		// Update the checkbox according to the state.
 		this.updateCheckboxes( this.regionSeasonFilter, seasons );
 		this.updateCheckboxes( this.adventureOptionsFilter, adventureOptions );
 		this.updateCheckboxes( this.durationsFilter, durations );

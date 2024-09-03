@@ -368,6 +368,16 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'class'  => true,
 					'data-*' => true,
 				],
+				'quark-dates-rates-selected-filters'          => [
+					'class' => true,
+					'empty' => true,
+				],
+				'quark-dates-rates-selected-filter-pill'      => [
+					'class'  => true,
+					'filter' => true,
+					'value'  => true,
+					'data-*' => true,
+				],
 				'tp-form'                                     => [
 					'class'          => true,
 					'prevent-submit' => true,
