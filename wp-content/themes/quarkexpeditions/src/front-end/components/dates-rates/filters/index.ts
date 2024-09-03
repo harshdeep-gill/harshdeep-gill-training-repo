@@ -1,4 +1,3 @@
-
 /**
  * Global variables
  */
@@ -7,12 +6,12 @@ const { HTMLElement, zustand } = window;
 /**
  * External dependencies.
  */
-import { TPMultiSelectElement } from "@travelopia/web-components";
+import { TPMultiSelectElement } from '@travelopia/web-components';
 
 /**
  * Internal dependencies.
  */
-import { updateCurrency, updateFilters } from "../actions";
+import { updateCurrency, updateFilters } from '../actions';
 
 /**
  * Get Store.
@@ -34,12 +33,11 @@ export default class DatesRatesFiltersControllerElement extends HTMLElement {
 	private readonly shipsFilter: NodeListOf<HTMLInputElement>;
 	private readonly currencyDropdown: TPMultiSelectElement | null;
 	private readonly currencyFilter: NodeListOf<HTMLInputElement>;
-	/**
-	 * This is to prevent stack overflow from recursive event listener calls.
-	 */
-	private areFiltersSyncing: boolean;
 	private readonly applyFiltersButton: HTMLButtonElement | null;
 	private readonly clearAllButton: HTMLButtonElement | null;
+
+	// This is to prevent stack overflow from recursive event listener calls.
+	private areFiltersSyncing: boolean;
 
 	/**
 	 * Constructor
@@ -68,7 +66,7 @@ export default class DatesRatesFiltersControllerElement extends HTMLElement {
 
 		// Add Event Listeners
 		this.currencyDropdown?.addEventListener( 'change', this.currencyDropdownUpdate.bind( this ) );
-		this.currencyFilter.forEach( currencyRadioInput => currencyRadioInput.addEventListener( 'change', this.currencyRadioUpdate.bind( this ) ) );
+		this.currencyFilter.forEach( ( currencyRadioInput ) => currencyRadioInput.addEventListener( 'change', this.currencyRadioUpdate.bind( this ) ) );
 		this.applyFiltersButton?.addEventListener( 'click', this.handleApplyFilters.bind( this ) );
 		this.clearAllButton?.addEventListener( 'click', this.handleClearAll.bind( this ) );
 
@@ -79,7 +77,7 @@ export default class DatesRatesFiltersControllerElement extends HTMLElement {
 	/**
 	 * Update component.
 	 *
-	 * @param { DatesRatesState } state
+	 * @param {Object} state
 	 */
 	update( state: DatesRatesState ) {
 		// Get the selected filters.
@@ -108,9 +106,10 @@ export default class DatesRatesFiltersControllerElement extends HTMLElement {
 			}
 
 			// Loop through the radio inputs.
-			this.currencyFilter.forEach( radioInput => {
+			this.currencyFilter.forEach( ( radioInput ) => {
 				// Check for proper value.
 				if ( radioInput.value !== currency ) {
+					// Bail.
 					return;
 				}
 
@@ -119,6 +118,7 @@ export default class DatesRatesFiltersControllerElement extends HTMLElement {
 			} );
 		}
 
+		// TODO: Add comment.
 		this.updateCheckboxes( this.regionSeasonFilter, seasons );
 		this.updateCheckboxes( this.adventureOptionsFilter, adventureOptions );
 		this.updateCheckboxes( this.durationsFilter, durations );
@@ -141,7 +141,7 @@ export default class DatesRatesFiltersControllerElement extends HTMLElement {
 		}
 
 		// Get the updated value.
-		const currencyValue = this.currencyDropdown.value[0] ?? 'USD';
+		const currencyValue = this.currencyDropdown.value[ 0 ] ?? 'USD';
 
 		// Update the state.
 		updateCurrency( currencyValue );
@@ -195,14 +195,14 @@ export default class DatesRatesFiltersControllerElement extends HTMLElement {
 	 *
 	 * @param {HTMLInputElement} filterList
 	 *
-	 * @returns {string[]} selectedFilters
+	 * @return {string[]} selectedFilters
 	 */
 	getSelectedFilterValues( filterList: NodeListOf<HTMLInputElement> ) {
 		// Initialize the selectedFilters.
 		const selectedFilters: string[] = [];
 
 		// Loop through the inputs.
-		filterList.forEach( checkboxInput => {
+		filterList.forEach( ( checkboxInput ) => {
 			// Check the value.
 			if ( checkboxInput.checked ) {
 				// Push to selected values.
@@ -217,12 +217,13 @@ export default class DatesRatesFiltersControllerElement extends HTMLElement {
 	/**
 	 * Updates all the checkboxes for the associated filter list.
 	 *
-	 * @param {NodeListOf<HTMLInputElement>} filterList     The filter list.
-	 * @param {string[]}                     selectedValues The selected values.
+	 * @param {NodeList} filterList     The filter list.
+	 * @param {string[]} selectedValues The selected values.
 	 */
 	updateCheckboxes( filterList: NodeListOf<HTMLInputElement>, selectedValues: string[] = [] ) {
 		// Clear the checkboxes.
-		filterList.forEach( checkboxInput => {
+		filterList.forEach( ( checkboxInput ) => {
+			// Check if the value of the checkbox is in the selected values.
 			if ( ! selectedValues.includes( checkboxInput.value ) ) {
 				checkboxInput.checked = false;
 			} else {
