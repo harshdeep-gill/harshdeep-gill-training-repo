@@ -380,9 +380,7 @@ class Search {
 		$months = array_unique( $months );
 
 		// Initialize meta query.
-		$meta_query = [
-			'relation' => 'OR',
-		];
+		$meta_query = [];
 
 		// Set search by destinations parameters in search arguments.
 		foreach ( $months as $departure ) {
@@ -406,8 +404,16 @@ class Search {
 			];
 		}
 
-		// Set meta query.
-		$this->args['meta_query'][] = $meta_query;
+		// Add relation if more than one meta query.
+		if ( 1 < count( $meta_query ) ) {
+			$meta_query['relation'] = 'OR';
+
+			// Set meta query.
+			$this->args['meta_query'][] = $meta_query;
+		} else {
+			// Set meta query.
+			$this->args['meta_query'][] = $meta_query[0];
+		}
 	}
 
 	/**
@@ -432,9 +438,7 @@ class Search {
 		$seasons = array_unique( $seasons );
 
 		// Initialize meta query.
-		$meta_query = [
-			'relation' => 'OR',
-		];
+		$meta_query = [];
 
 		// Set search by seasons parameters in search arguments.
 		foreach ( $seasons as $season ) {
@@ -446,8 +450,16 @@ class Search {
 			];
 		}
 
-		// Set meta query.
-		$this->args['meta_query'][] = $meta_query;
+		// Add relation if more than one meta query.
+		if ( 1 < count( $meta_query ) ) {
+			$meta_query['relation'] = 'OR';
+
+			// Set meta query.
+			$this->args['meta_query'][] = $meta_query;
+		} else {
+			// Set meta query.
+			$this->args['meta_query'][] = $meta_query[0];
+		}
 	}
 
 	/**
@@ -540,16 +552,24 @@ class Search {
 		// Get the args.
 		$args = $this->args;
 
-		// Set tax-query relation parameter.
+		// Set tax-query relation parameter. Various filters (tax queries) are combined using AND.
 		if ( is_array( $args['tax_query'] ) && ! empty( $args['tax_query'] ) ) {
-			$args['tax_query']['relation'] = 'AND';
+
+			// Add relation parameter if more than one tax query.
+			if ( 1 < count( $args['tax_query'] ) ) {
+				$args['tax_query']['relation'] = 'AND';
+			}
 		} else {
 			unset( $args['tax_query'] );
 		}
 
 		// Set meta-query relation parameter. Various filters (meta queries) are combined using AND.
 		if ( is_array( $args['meta_query'] ) && ! empty( $args['meta_query'] ) ) {
-			$args['meta_query']['relation'] = 'AND';
+
+			// Add relation parameter if more than one meta query.
+			if ( 1 < count( $args['meta_query'] ) ) {
+				$args['meta_query']['relation'] = 'AND';
+			}
 		} else {
 			unset( $args['meta_query'] );
 		}
