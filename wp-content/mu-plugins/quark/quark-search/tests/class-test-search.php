@@ -102,6 +102,7 @@ class Test_Search extends WP_UnitTestCase {
 				'posts_per_load'    => 10,
 				'sort'              => 'date-now',
 				'currency'          => 'USD',
+				'destinations'      => [],
 			],
 			$filters
 		);
@@ -137,6 +138,7 @@ class Test_Search extends WP_UnitTestCase {
 				'posts_per_load'    => 10,
 				'sort'              => 'date-now',
 				'currency'          => 'USD',
+				'destinations'      => [],
 			],
 			$filters
 		);
@@ -172,6 +174,7 @@ class Test_Search extends WP_UnitTestCase {
 				'posts_per_load'    => 10,
 				'sort'              => 'date-now',
 				'currency'          => EUR_CURRENCY,
+				'destinations'      => [],
 			],
 			$filters
 		);
@@ -237,16 +240,19 @@ class Test_Search extends WP_UnitTestCase {
 				],
 				'meta_query'             => [
 					[
-						'key'     => 'region_season',
-						'value'   => 2024,
-						'compare' => '=',
+						'relation' => 'OR',
+						[
+							'key'     => 'region_season',
+							'value'   => 2024,
+							'compare' => '=',
+						],
+						[
+							'key'     => 'region_season',
+							'value'   => 2025,
+							'compare' => '=',
+						],
 					],
-					[
-						'key'     => 'region_season',
-						'value'   => 2025,
-						'compare' => '=',
-					],
-					'relation' => 'OR',
+					'relation' => 'AND',
 				],
 			],
 			$solr_search->get_args(),
@@ -289,7 +295,7 @@ class Test_Search extends WP_UnitTestCase {
 						'type'    => 'NUMERIC',
 						'compare' => 'BETWEEN',
 					],
-					'relation' => 'OR',
+					'relation' => 'AND',
 				],
 			],
 			$solr_search->get_args(),
@@ -310,19 +316,22 @@ class Test_Search extends WP_UnitTestCase {
 				'update_post_term_cache' => false,
 				'posts_per_page'         => 10,
 				'meta_query'             => [
+					'relation' => 'AND',
 					[
-						'key'     => 'start_date',
-						'value'   => [ '2024-10-01', '2024-10-31' ],
-						'type'    => 'DATE',
-						'compare' => 'BETWEEN',
+						'relation' => 'OR',
+						[
+							'key'     => 'start_date',
+							'value'   => [ '2024-10-01', '2024-10-31' ],
+							'type'    => 'DATE',
+							'compare' => 'BETWEEN',
+						],
+						[
+							'key'     => 'start_date',
+							'value'   => [ '2025-04-01', '2025-04-30' ],
+							'type'    => 'DATE',
+							'compare' => 'BETWEEN',
+						],
 					],
-					[
-						'key'     => 'start_date',
-						'value'   => [ '2025-04-01', '2025-04-30' ],
-						'type'    => 'DATE',
-						'compare' => 'BETWEEN',
-					],
-					'relation' => 'OR',
 				],
 			],
 			$solr_search->get_args(),
