@@ -24,11 +24,6 @@ function setup(): void {
  * @return void
  */
 function register_blocks(): void {
-	// Avoid registering blocks in the admin to avoid a conflict with Blade.
-	if ( is_admin() ) {
-		return;
-	}
-
 	// Path to blocks file.
 	$blocks_path = __DIR__ . '/../dist/blocks.php';
 
