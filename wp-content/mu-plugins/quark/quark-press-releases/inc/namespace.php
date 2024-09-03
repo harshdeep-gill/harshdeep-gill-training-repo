@@ -65,6 +65,21 @@ function register_press_release_post_type(): void {
 		'capability_type'     => 'post',
 		'show_in_rest'        => true,
 		'menu_position'       => 5,
+		'template'            => [
+			[
+				'core/heading',
+				[
+					'level'       => 5,
+					'placeholder' => 'Place - Date',
+				],
+			],
+			[
+				'core/paragraph',
+				[
+					'placeholder' => 'Press Release Content here....',
+				],
+			],
+		],
 	];
 
 	// Register post type.

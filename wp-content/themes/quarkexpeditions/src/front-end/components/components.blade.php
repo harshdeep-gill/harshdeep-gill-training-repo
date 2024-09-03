@@ -3086,6 +3086,271 @@
 			</x-product-cards.buttons>
 		</x-product-cards.card>
 	</x-product-cards>
+
+	<h2>Variation - 1</h2>
+
+	<x-product-cards>
+		<x-product-cards.card url="#">
+			<x-product-cards.image
+				image_id="29"
+				:is_immersive="true"
+			>
+			</x-product-cards.image>
+			
+			<x-product-cards.overline text="12 Days" />
+			<x-product-cards.title title="Arctic Saga: Exploring Spitsbergen via the Faroes and Jan Mayen" />
+			<x-product-cards.subtitle title="Lorem Ipsum, Doler Tempor, Incididunt, Exercitation Ullamco" />
+			<x-product-cards.icon-content icon="fly-express">Fly/Cruise Express</x-product-cards.icon-content>
+			<x-product-cards.price-content text="From $XX,XXX USD per person" />
+		</x-product-cards.card>
+
+		<x-product-cards.card url="#">
+			<x-product-cards.image
+				image_id="29"
+				:is_immersive="true"
+			>
+			</x-product-cards.image>
+			
+			<x-product-cards.overline text="12 Days" />
+			<x-product-cards.title title="Arctic Saga: Exploring Spitsbergen via the Faroes and Jan Mayen" />
+			<x-product-cards.subtitle title="Lorem Ipsum, Doler Tempor, Incididunt, Exercitation Ullamco" />
+			<x-product-cards.price-content text="From $XX,XXX USD per person" />
+		</x-product-cards.card>
+
+		<x-product-cards.card url="#">
+			<x-product-cards.image
+				image_id="29"
+				:is_immersive="true"
+			>
+			</x-product-cards.image>
+			
+			<x-product-cards.overline text="12 Days" />
+			<x-product-cards.title title="Arctic Saga: Exploring Spitsbergen via the Faroes and Jan Mayen" />
+			<x-product-cards.subtitle title="Lorem Ipsum, Doler Tempor, Incididunt, Exercitation Ullamco" />
+			<x-product-cards.icon-content icon="fly-express">Fly/Cruise Express</x-product-cards.icon-content>
+			<x-product-cards.price-content text="From $XX,XXX USD per person" />
+		</x-product-cards.card>
+	</x-product-cards>
+
+	<h2>Variation - 2</h2>
+
+	<x-product-cards>
+		<x-product-cards.card url="#">
+			<x-product-cards.image
+				image_id="29"
+				:is_immersive="true"
+			>
+			</x-product-cards.image>
+			
+			<x-product-cards.overline text="Arctic" />
+			<x-product-cards.title title="Arctic Saga: Exploring Spitsbergen via the Faroes and Jan Mayen" />
+
+			<x-product-cards.specifications>
+				<x-product-cards.specification-item>
+					<x-product-cards.specification-label>
+						Ship
+					</x-product-cards.specification-label>
+					<x-product-cards.specification-value>
+						Ultramarine
+					</x-product-cards.specification-value>
+				</x-product-cards.specification-item>
+
+				<x-product-cards.specification-item>
+					<x-product-cards.specification-label>
+						Departs
+					</x-product-cards.specification-label>
+					<x-product-cards.specification-value>
+						1 Jan 2025
+					</x-product-cards.specification-value>
+				</x-product-cards.specification-item>
+			</x-product-cards.specifications>
+
+			<x-product-cards.price-content title="12 Days from" text="$13,998 USD per person" />
+
+			<x-product-cards.buttons :columns="2">
+				<x-button size="big">View</x-button>
+				<x-button size="big" appearance="outline">Enquire</x-button>
+			</x-product-cards.buttons>
+		</x-product-cards.card>
+
+		<x-product-cards.card url="#">
+			<x-product-cards.image
+				image_id="29"
+				:is_immersive="true"
+			>
+			</x-product-cards.image>
+			
+			<x-product-cards.overline text="Arctic" />
+			<x-product-cards.title title="Arctic Saga: Exploring Spitsbergen via the Faroes and Jan Mayen" />
+
+			<x-product-cards.specifications>
+				<x-product-cards.specification-item>
+					<x-product-cards.specification-label>
+						Ship
+					</x-product-cards.specification-label>
+					<x-product-cards.specification-value>
+						Ultramarine
+					</x-product-cards.specification-value>
+				</x-product-cards.specification-item>
+
+				<x-product-cards.specification-item>
+					<x-product-cards.specification-label>
+						Departs
+					</x-product-cards.specification-label>
+					<x-product-cards.specification-value>
+						1 Jan 2025
+					</x-product-cards.specification-value>
+				</x-product-cards.specification-item>
+			</x-product-cards.specifications>
+
+			<x-product-cards.price-content title="12 Days from" text="$13,998 USD per person" />
+
+			<x-product-cards.buttons :columns="2">
+				<x-button size="big">View</x-button>
+				<x-button size="big" appearance="outline">Enquire</x-button>
+			</x-product-cards.buttons>
+		</x-product-cards.card>
+
+		<x-product-cards.card url="#">
+			<x-product-cards.image
+				image_id="29"
+				:is_immersive="true"
+			>
+			</x-product-cards.image>
+			
+			<x-product-cards.overline text="Arctic" />
+			<x-product-cards.title title="Arctic Saga: Exploring Spitsbergen via the Faroes and Jan Mayen" />
+
+			<x-product-cards.specifications>
+				<x-product-cards.specification-item>
+					<x-product-cards.specification-label>
+						Ship
+					</x-product-cards.specification-label>
+					<x-product-cards.specification-value>
+						Ultramarine
+					</x-product-cards.specification-value>
+				</x-product-cards.specification-item>
+
+				<x-product-cards.specification-item>
+					<x-product-cards.specification-label>
+						Departs
+					</x-product-cards.specification-label>
+					<x-product-cards.specification-value>
+						1 Jan 2025
+					</x-product-cards.specification-value>
+				</x-product-cards.specification-item>
+			</x-product-cards.specifications>
+
+			<x-product-cards.price-content title="12 Days from" text="$13,998 USD per person" />
+
+			<x-product-cards.buttons :columns="2">
+				<x-button size="big">View</x-button>
+				<x-button size="big" appearance="outline">Enquire</x-button>
+			</x-product-cards.buttons>
+		</x-product-cards.card>
+	</x-product-cards>
+
+	<h2>Variation - 3</h2>
+
+	<x-product-cards>
+		<x-product-cards.card url="#">
+			<x-product-cards.image
+				image_id="29"
+			>
+				<x-product-cards.badge-cta text="Save 50%" />
+			</x-product-cards.image>
+			<x-product-cards.reviews
+				total_reviews="19 Reviews"
+				review_rating="5"
+			/>
+			<x-product-cards.itinerary duration="12 day itinerary" />
+			<x-product-cards.title title="Gems of West Greenland: Fjords, Icebergs, and Culture" />
+			<x-product-cards.price
+				title="Starting from (per person)"
+				original_price="$7,395 USD"
+				discounted_price="$6,171 USD"
+			/>
+
+			<x-product-cards.transfer_package
+				drawer_id="product-cards-id-1"
+				drawer_title="Mandatory Transfer Package"
+			>
+				<p><strong>Package Includes:</strong></p>
+				<ul>
+					<li>One night’s pre-expedition hotel night in Aberdeen</li>
+					<li>Group transfer from Aberdeen hotel to ship on embarkation day</li>
+					<li>Departure transfer in Longyearbyen on disembarkation day</li>
+					<li>Charter flight from Longyearbyen to Helsinki on disembarkation day</li>
+				</ul>
+				<p><strong>Package Price: $695 USD</strong></p>
+			</x-product-cards.transfer_package>
+		</x-product-cards.card>
+
+		<x-product-cards.card url="#">
+			<x-product-cards.image
+				image_id="29"
+			>
+				<x-product-cards.badge-time text="Just Added" />
+			</x-product-cards.image>
+			<x-product-cards.reviews
+				total_reviews="19 Reviews"
+				review_rating="5"
+			/>
+			<x-product-cards.itinerary duration="12 day itinerary" />
+			<x-product-cards.title title="Under the Northern Lights: Exploring Iceland & East Greenland" />
+			<x-product-cards.price
+				title="Starting from (per person)"
+				original_price="$7,395 USD"
+				discounted_price="$6,171 USD"
+			/>
+
+			<x-product-cards.transfer_package
+				drawer_id="product-cards-id-2"
+				drawer_title="Mandatory Transfer Package"
+			>
+				<p><strong>Package Includes:</strong></p>
+				<ul>
+					<li>One night’s pre-expedition hotel night in Aberdeen</li>
+					<li>Group transfer from Aberdeen hotel to ship on embarkation day</li>
+					<li>Departure transfer in Longyearbyen on disembarkation day</li>
+					<li>Charter flight from Longyearbyen to Helsinki on disembarkation day</li>
+				</ul>
+				<p><strong>Package Price: $695 USD</strong></p>
+			</x-product-cards.transfer_package>
+		</x-product-cards.card>
+
+		<x-product-cards.card url="#">
+			<x-product-cards.image
+				image_id="29"
+			>
+			</x-product-cards.image>
+			<x-product-cards.reviews
+				total_reviews="19 Reviews"
+				review_rating="5"
+			/>
+			<x-product-cards.itinerary duration="12 day itinerary" />
+			<x-product-cards.title title="Greenland Explorer: Sail and Soar the Alpine Arctic" />
+			<x-product-cards.price
+				title="Starting from (per person)"
+				original_price="$7,395 USD"
+				discounted_price="$6,171 USD"
+			/>
+
+			<x-product-cards.transfer_package
+				drawer_id="product-cards-id-3"
+				drawer_title="Mandatory Transfer Package"
+			>
+				<p><strong>Package Includes:</strong></p>
+				<ul>
+					<li>One night’s pre-expedition hotel night in Aberdeen</li>
+					<li>Group transfer from Aberdeen hotel to ship on embarkation day</li>
+					<li>Departure transfer in Longyearbyen on disembarkation day</li>
+					<li>Charter flight from Longyearbyen to Helsinki on disembarkation day</li>
+				</ul>
+				<p><strong>Package Price: $695 USD</strong></p>
+			</x-product-cards.transfer_package>
+		</x-product-cards.card>
+	</x-product-cards>
 </x-component-demo>
 
 <x-component-demo :keys="[ 'section-updated' ]">
