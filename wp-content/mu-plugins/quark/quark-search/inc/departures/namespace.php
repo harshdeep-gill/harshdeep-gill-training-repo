@@ -855,47 +855,76 @@ function get_itinerary_length_search_filter_data(): array {
  * }>
  */
 function get_destination_search_filter_data(): array {
-	// Prepare search object.
-	$search = new Search();
-	$search->set_posts_per_page( -1 );
+	// Get parent terms.
+	$parent_terms = get_terms(
+		[
+			'taxonomy'   => DESTINATION_TAXONOMY,
+			'hide_empty' => true,
+			'parent'     => 0,
+		]
+	);
 
-	// Get departure ids.
-	$departure_ids  = $search->search();
-	$expedition_ids = [];
-
-	// Validate departure ids.
-	if ( empty( $departure_ids ) ) {
-		return $expedition_ids;
+	// Validate terms.
+	if ( empty( $parent_terms ) || ! is_array( $parent_terms ) ) {
+		return [];
 	}
 
-	// Get expedition data.
-	foreach ( $departure_ids as $departure_id ) {
-		// Get expedition id.
-		$expedition_id = absint( get_post_meta( $departure_id, 'related_expedition', true ) );
+	// Initialize returned data.
+	$terms_data = [];
 
-		// Validate expedition id.
-		if ( empty( $expedition_id ) ) {
+	// Get child terms.
+	foreach ( $parent_terms as $parent_term ) {
+		// Validate parent term.
+		if ( ! $parent_term instanceof WP_Term ) {
 			continue;
 		}
 
-		// Get expedition post by this id.
-		$expedition_post = get_expedition_post( $expedition_id );
+		// Get parent term id.
+		$parent_id = absint( $parent_term->term_id );
 
-		// Validate expedition post.
-		if ( empty( $expedition_post['post'] ) || ! $expedition_post['post'] instanceof WP_Post ) {
+		// Prepare parent term.
+		$parent_term = [
+			'id'       => $parent_id,
+			'slug'     => $parent_term->slug,
+			'name'     => $parent_term->name,
+			'children' => [],
+		];
+
+		// Get child terms.
+		$child_terms = get_terms(
+			[
+				'taxonomy'   => DESTINATION_TAXONOMY,
+				'hide_empty' => true,
+				'parent'     => $parent_id,
+			]
+		);
+
+		// Validate child terms.
+		if ( empty( $child_terms ) || ! is_array( $child_terms ) ) {
+			$terms_data[] = $parent_term;
 			continue;
 		}
 
-		// Check for taxonomies.
-		if ( ! array_key_exists( DESTINATION_TAXONOMY, $expedition_post['post_taxonomies'] ) ||
-			! is_array( $expedition_post['post_taxonomies'][ DESTINATION_TAXONOMY ] )
-		) {
-			continue;
+		// Loop through child terms.
+		foreach ( $child_terms as $child_term ) {
+			// Validate child term.
+			if ( ! $child_term instanceof WP_Term ) {
+				continue;
+			}
+
+			// Prepare child term.
+			$parent_term['children'][] = [
+				'id'        => absint( $child_term->term_id ),
+				'slug'      => $child_term->slug,
+				'name'      => $child_term->name,
+				'parent_id' => $parent_id,
+			];
 		}
 
-		// Loop through destinations.
+		// Add parent term.
+		$terms_data[] = $parent_term;
 	}
 
 	// Return expedition data.
-	return [];
+	return $terms_data;
 }
