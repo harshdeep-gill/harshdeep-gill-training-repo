@@ -1,4 +1,5 @@
 @props( [
+	'title'            => __( 'Sale price from', 'qrk' ),
 	'original_price'   => '',
 	'discounted_price' => '',
 ] )
@@ -10,7 +11,7 @@
 @endphp
 
 <div class="product-cards__price-wrap">
-	<div class="product-cards__price-title">{{ __( 'Sale price from', 'qrk' ) }}</div>
+	<div class="product-cards__price-title">{{ $title }}</div>
 
 	@if ( ! empty( $discounted_price ) )
 		@if ( $discounted_price !== $original_price )

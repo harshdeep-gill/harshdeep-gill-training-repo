@@ -98,15 +98,15 @@
 						@endif
 					</x-departure-cards.specifications>
 
-					@if ( ! empty( $card['available_offers'] ) )
+					@if ( ! empty( $card['promotion_tags'] ) )
 						<x-departure-cards.offers title="Available Offers">
-							@foreach( $card['available_offers'] as $offer )
+							@foreach( $card['promotion_tags'] as $offer )
 								<x-departure-cards.offer title="{{ $offer ?? '' }}"/>
 							@endforeach
 
 							<x-departure-cards.offers-modal title="{{ $card['expedition_name'] ?? '' }}">
 								<ul>
-									@foreach( $card['available_offers'] as $offer )
+									@foreach( $card['promotion_tags'] as $offer )
 										<li>{{ $offer }}</li>
 									@endforeach
 								</ul>
@@ -251,9 +251,9 @@
 										</x-product-options-cards.rooms>
 									@endif
 
-									@if( ! empty( $cabin['promotions'] ) && is_array( $cabin['promotions'] ) )
+									@if( ! empty( $card['promotions'] ) && is_array( $card['promotions'] ) )
 										<x-product-options-cards.discounts>
-											@foreach( $cabin['promotions'] as $promotion )
+											@foreach( $card['promotions'] as $promotion )
 												@if( ! empty( $promotion ) )
 													<x-product-options-cards.discount name="{{ $promotion }}"/>
 												@endif

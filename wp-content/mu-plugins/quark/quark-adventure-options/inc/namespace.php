@@ -31,6 +31,9 @@ function bootstrap(): void {
 	// Cache Purge.
 	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
 
+	// Breadcrumbs.
+	add_filter( 'travelopia_breadcrumbs_ancestors', __NAMESPACE__ . '\\breadcrumbs_ancestors' );
+
 	// Admin stuff.
 	if ( is_admin() ) {
 		// Custom fields.
@@ -84,6 +87,48 @@ function register_adventure_option_post_type(): void {
 			'with_front' => false,
 		],
 		'capability_type'     => 'post',
+		'template'            => [
+			[
+				'quark/hero',
+				[
+					'syncPostThumbnail' => true,
+					'immersive'         => 'bottom',
+					'contentOverlap'    => false,
+				],
+				[
+					[
+						'quark/breadcrumbs',
+						[],
+					],
+					[
+						'quark/hero-content',
+						[],
+						[
+							[
+								'quark/hero-content-left',
+								[],
+								[
+									[
+										'quark/hero-title',
+										[
+											'syncPostTitle' => true,
+										],
+									],
+								],
+							],
+						],
+					],
+				],
+			],
+			[
+				'core/paragraph',
+				[],
+			],
+			[
+				'quark/collage',
+				[],
+			],
+		],
 	];
 
 	// Register post type.
@@ -335,4 +380,32 @@ function get_cards_data( array $post_ids = [] ): array {
 
 	// Return data.
 	return $data;
+}
+
+/**
+ * Breadcrumbs ancestors for this post type.
+ *
+ * @param mixed[] $breadcrumbs Breadcrumbs.
+ *
+ * @return mixed[]
+ */
+function breadcrumbs_ancestors( array $breadcrumbs = [] ): array {
+	// Check if current query is for this post type.
+	if ( ! is_singular( POST_TYPE ) ) {
+		return $breadcrumbs;
+	}
+
+	// Get archive page.
+	$adventure_options_archive_page = absint( get_option( 'options_adventure_options_page', 0 ) );
+
+	// Get it's title and URL for breadcrumbs if it's set.
+	if ( ! empty( $adventure_options_archive_page ) ) {
+		$breadcrumbs[] = [
+			'title' => get_the_title( $adventure_options_archive_page ),
+			'url'   => get_permalink( $adventure_options_archive_page ),
+		];
+	}
+
+	// Return updated breadcrumbs.
+	return $breadcrumbs;
 }

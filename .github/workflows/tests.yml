@@ -82,6 +82,13 @@ jobs:
           path: wp-content/mu-plugins/travelopia
           key: travelopia-packages-${{ hashFiles( 'composer.lock' ) }}-${{ hashFiles( '.github/workflows/tests.yml' ) }}
 
+      - name: WordPress Blade package cache
+        id: wordpress-blade-cache
+        uses: actions/cache@v4
+        with:
+          path: wp-content/mu-plugins/wordpress-blade
+          key: wordpress-blade-package-${{ hashFiles( 'composer.lock' ) }}-${{ hashFiles( '.github/workflows/tests.yml' ) }}
+
       - name: Install Composer dependencies
         if: steps.composer-cache.outputs.cache-hit != 'true' || steps.travelopia-packages-cache.outputs.cache-hit != 'true'
         run: composer install

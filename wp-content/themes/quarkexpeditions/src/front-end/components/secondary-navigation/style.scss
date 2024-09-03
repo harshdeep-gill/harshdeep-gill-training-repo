@@ -152,48 +152,51 @@
 	&:not(.secondary-navigation--is-sticky) {
 
 		.secondary-navigation__cta-buttons {
-			display: none;
+			visibility: hidden;
+			opacity: 0;
+
+			@include transition( $duration: 0.2s );
 		}
 	}
 
 	&__cta-buttons {
-		display: block;
+		background-color: var(--color-white);
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-4);
+		min-width: 0;
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		padding: var(--spacing-5);
+		visibility: visible;
+		opacity: 1;
 
-		.buttons {
-			background-color: var(--color-white);
-			display: flex;
-			flex-direction: column;
-			gap: var(--spacing-4);
-			min-width: 0;
-			position: fixed;
-			bottom: 0;
-			left: 0;
-			width: 100%;
-			padding: var(--spacing-5);
+		@include transition( $duration: 0.2s );
+
+		@media screen and (min-width: grid-size(lg)) {
+			flex-direction: row;
+			gap: var(--spacing-5);
+			position: initial;
+			padding: 0;
+			width: auto;
+		}
+
+		.btn--color-black {
+			order: 1;
 
 			@media screen and (min-width: grid-size(lg)) {
-				flex-direction: row;
-				gap: var(--spacing-5);
-				position: initial;
-				padding: 0;
-				width: auto;
+				order: initial;
 			}
+		}
 
-			.btn--color-black {
-				order: 1;
+		button {
+			width: 100%;
+		}
 
-				@media screen and (min-width: grid-size(lg)) {
-					order: initial;
-				}
-			}
-
-			button {
-				width: 100%;
-			}
-
-			a {
-				width: 100%;
-			}
+		a {
+			width: 100%;
 		}
 	}
 
