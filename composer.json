@@ -60,7 +60,7 @@
     "travelopia/wordpress-blocks": "^1.1.1"
   },
   "require-dev": {
-    "roots/wordpress": "6.6",
+    "roots/wordpress": "6.6.1",
     "vlucas/phpdotenv": "^v5.4.1",
     "oscarotero/env": "^v2.1.0",
     "squizlabs/php_codesniffer": "*",
