@@ -17,6 +17,7 @@ use function Quark\Departures\get_paid_adventure_options;
 use function Quark\Expeditions\get as get_expedition_post;
 use function Quark\Expeditions\get_destination_term_by_code;
 use function Quark\Itineraries\get_season;
+use function Quark\Search\update_post_in_index;
 use function Quark\Ships\get as get_ship_post;
 use function Quark\Softrip\Departures\get_lowest_price;
 
@@ -45,6 +46,9 @@ function bootstrap(): void {
 	// Bust search cache on departure update.
 	// TODO - Improve this to bust cache once per auto sync or manual sync.
 	add_action( 'save_post_' . DEPARTURE_POST_TYPE, __NAMESPACE__ . '\\bust_search_cache' );
+
+	// Trigger reindex on post update.
+	add_action( 'save_post', __NAMESPACE__ . '\\reindex_departures', 999, 3 );
 
 	// Load search class.
 	require_once __DIR__ . '/class-search.php';
@@ -105,12 +109,15 @@ function filter_solr_build_document( Document $document = null, WP_Post $post = 
 			'ids'   => [],
 			'slugs' => [],
 		];
+
+		// Loop through destination terms.
 		foreach ( $expedition['post_taxonomies'][ DESTINATION_TAXONOMY ] as $destination_term ) {
 			// Validate term.
 			if ( ! is_array( $destination_term ) || empty( $destination_term['term_id'] ) || empty( $destination_term['slug'] ) ) {
 				continue;
 			}
 
+			// Set destination field.
 			$destination_terms['ids'][]   = $destination_term['term_id'];
 			$destination_terms['slugs'][] = $destination_term['slug'];
 		}
@@ -366,6 +373,91 @@ function bust_search_cache(): void {
 		wp_cache_delete( 'search_filter_departure_duration_data', CACHE_GROUP );
 		wp_cache_delete( 'search_filter_ship_data', CACHE_GROUP );
 		wp_cache_delete( 'search_filter_itinerary_length_data', CACHE_GROUP );
+	}
+}
+
+/**
+ * Reindex departures on itinerary or expedition post update.
+ * As some expedition(destination taxonomy) and itinerary(season taxonomy) data is indexed on Solr, we need to reindex such that Solr has the lates data.
+ *
+ * @param int          $post_id       Post ID.
+ * @param WP_Post|null $post WP Post.
+ * @param bool         $update       Is update.
+ *
+ * @return void
+ */
+function reindex_departures( int $post_id = 0, ?WP_post $post = null, bool $update = false ): void {
+	// Validate post.
+	if ( empty( $post ) || ! $post instanceof WP_Post || empty( $update ) ) {
+		return;
+	}
+
+	// Get post type.
+	$post_type = $post->post_type;
+
+	// No-need for custom re-indexing for departure.
+	if ( DEPARTURE_POST_TYPE === $post_type ) {
+		return;
+	}
+
+	// Return if not a supported post type.
+	if ( ! in_array( $post_type, [ EXPEDITION_POST_TYPE, ITINERARY_POST_TYPE ], true ) ) {
+		return;
+	}
+
+	// Initialize itinerary ids.
+	$itinerary_ids = [];
+
+	// Get itinerary ids.
+	if ( EXPEDITION_POST_TYPE === $post_type ) {
+		// Get itinerary ids.
+		$related_itineraries = get_post_meta( $post_id, 'related_itineraries', true );
+
+		// Validate related itineraries.
+		if ( ! empty( $related_itineraries ) && is_array( $related_itineraries ) ) {
+			$itinerary_ids = array_map( 'absint', $related_itineraries );
+		}
+	} elseif ( ITINERARY_POST_TYPE === $post_type ) {
+		// Add itinerary id.
+		$itinerary_ids[] = $post_id;
+	}
+
+	// Initialize departure ids.
+	$departure_post_ids = [];
+
+	// Fetch all the departures for each itinerary and trigger reindex.
+	foreach ( $itinerary_ids as $itinerary_id ) {
+		// Get departure ids.
+		$departure_posts = get_posts(
+			[
+				'post_type'              => DEPARTURE_POST_TYPE,
+				'posts_per_page'         => -1,
+				'parent'                 => $itinerary_id,
+				'fields'                 => 'ids',
+				'no_found_rows'          => true,
+				'update_post_meta_cache' => false,
+				'update_post_term_cache' => false,
+				'cache_results'          => false,
+				'ignore_sticky_posts'    => true,
+				'suppress_filters'       => false,
+			]
+		);
+
+		// Validate departure ids.
+		if ( empty( $departure_posts ) ) {
+			continue;
+		}
+
+		// Convert to integer.
+		$departure_posts = array_map( 'absint', $departure_posts );
+
+		// Merge departure ids.
+		$departure_post_ids = array_merge( $departure_post_ids, $departure_posts );
+	}
+
+	// Update departures in index.
+	foreach ( $departure_post_ids as $departure_post_id ) {
+		update_post_in_index( $departure_post_id );
 	}
 }
 
