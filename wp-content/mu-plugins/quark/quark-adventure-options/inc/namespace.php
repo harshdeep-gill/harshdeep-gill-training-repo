@@ -395,11 +395,16 @@ function breadcrumbs_ancestors( array $breadcrumbs = [] ): array {
 		return $breadcrumbs;
 	}
 
-	// Insert Adventure Options.
-	$breadcrumbs[] = [
-		'title' => __( 'Adventure Options', 'qrk' ),
-		'url'   => '#',
-	];
+	// Get archive page.
+	$adventure_options_archive_page = absint( get_option( 'options_adventure_options_page', 0 ) );
+
+	// Get it's title and URL for breadcrumbs if it's set.
+	if ( ! empty( $adventure_options_archive_page ) ) {
+		$breadcrumbs[] = [
+			'title' => get_the_title( $adventure_options_archive_page ),
+			'url'   => get_permalink( $adventure_options_archive_page ),
+		];
+	}
 
 	// Return updated breadcrumbs.
 	return $breadcrumbs;
