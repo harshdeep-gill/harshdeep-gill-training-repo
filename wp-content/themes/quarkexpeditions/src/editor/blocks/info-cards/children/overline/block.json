@@ -1,0 +1,29 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Info Cards - Card Overline",
+	"name": "quark/info-card-overline",
+	"description": "Individual Info card Overline.",
+	"parent": [
+		"quark/info-card"
+	],
+	"category": "layout",
+	"keywords": [
+		"info",
+		"card",
+		"overline"
+	],
+	"textdomain": "qrk",
+	"attributes": {
+		"overline": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}
