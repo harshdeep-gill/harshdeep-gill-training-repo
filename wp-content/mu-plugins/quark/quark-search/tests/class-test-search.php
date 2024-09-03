@@ -20,6 +20,7 @@ use function Quark\Search\Departures\get_filters_from_url;
 use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
 use const Quark\Core\EUR_CURRENCY;
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
+use const Quark\Expeditions\DESTINATION_TAXONOMY;
 
 /**
  * Class Test_Search.
@@ -338,7 +339,7 @@ class Test_Search extends WP_UnitTestCase {
 			'Failed to test Solr Search default arguments.'
 		);
 
-		// Test solr sort arguments by trip priority.
+		// Test solr sort arguments.
 		$solr_search = new Search();
 
 		// Make private method accessible.
@@ -355,6 +356,99 @@ class Test_Search extends WP_UnitTestCase {
 				'start_date_s' => 'asc',
 			],
 			$sorts->getValue( $solr_search ),
+		);
+
+		// Test solr sort with empty args.
+		$solr_search = new Search();
+
+		// Make private method accessible.
+		$class         = new ReflectionClass( $solr_search );
+		$set_solr_sort = $class->getMethod( 'set_sort' );
+
+		// Without empty sort args.
+		$set_solr_sort->invokeArgs( $solr_search, [ '' ] );
+		$sorts = $class->getProperty( 'sorts' );
+
+		// Assert empty sort.
+		$this->assertEquals(
+			[],
+			$sorts->getValue( $solr_search ),
+		);
+
+		// Test sort for currency and price.
+		$solr_search = new Search();
+
+		// Make private method accessible.
+		$class         = new ReflectionClass( $solr_search );
+		$set_solr_sort = $class->getMethod( 'set_sort' );
+
+		// Pass price based sorting, but without any currency - should sort by USD.
+		$set_solr_sort->invokeArgs( $solr_search, [ 'price-low' ] );
+
+		// Assert sort by price USD.
+		$this->assertEquals(
+			[
+				'lowest_price_usd_i' => 'asc',
+			],
+			$sorts->getValue( $solr_search ),
+		);
+
+		// Test sort for currency and price for EUR.
+		$solr_search = new Search();
+		$class       = new ReflectionClass( $solr_search );
+
+		// Pass EUR price based sorting.
+		$set_solr_sort->invokeArgs( $solr_search, [ 'price-low', 'EUR' ] );
+
+		// Assert sort by price EUR.
+		$this->assertEquals(
+			[
+				'lowest_price_eur_i' => 'asc',
+			],
+			$sorts->getValue( $solr_search ),
+		);
+
+		// Test sort for currency and price for invalid currency.
+		$solr_search = new Search();
+		$class       = new ReflectionClass( $solr_search );
+
+		// Pass invalid currency.
+		$set_solr_sort->invokeArgs( $solr_search, [ 'price-low', 'invalid' ] );
+
+		// Assert sort by price USD.
+		$this->assertEmpty(
+			$sorts->getValue( $solr_search ),
+		);
+
+		// Test destination search.
+		$solr_search = new Search();
+		$class       = new ReflectionClass( $solr_search );
+
+		// Set destinations.
+		$solr_search->set_destinations( [ 1, 2, 3 ] );
+
+		// Assert destination search.
+		$this->assertEquals(
+			[
+				'post_type'              => DEPARTURE_POST_TYPE,
+				'post_status'            => 'publish',
+				'solr_integrate'         => true,
+				'order'                  => 'ASC',
+				'fields'                 => 'ids',
+				'update_post_meta_cache' => false,
+				'update_post_term_cache' => false,
+				'posts_per_page'         => 10,
+				'tax_query'              => [
+					'relation' => 'AND',
+					[
+						'taxonomy'         => DESTINATION_TAXONOMY,
+						'field'            => 'term_id',
+						'terms'            => [ 1, 2, 3 ],
+						'include_children' => false,
+					],
+				],
+			],
+			$solr_search->get_args(),
 		);
 	}
 }
