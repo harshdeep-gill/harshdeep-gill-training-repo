@@ -17,7 +17,7 @@ function setup(): void {
 	add_action( 'after_setup_theme', __NAMESPACE__ . '\\theme_support' );
 	add_action( 'wp_enqueue_scripts', __NAMESPACE__ . '\\register_styles' );
 	add_action( 'wp_enqueue_scripts', __NAMESPACE__ . '\\register_scripts' );
-	add_action( 'travelopia_blade_view', __NAMESPACE__ . '\\blade_view_before_load' );
+	add_action( 'wordpress_blade_before_view', __NAMESPACE__ . '\\blade_view_before_load' );
 	add_filter( 'wp_resource_hints', __NAMESPACE__ . '\\resource_hints', 10, 2 );
 	add_filter( 'wp_kses_allowed_html', __NAMESPACE__ . '\\kses_custom_allowed_html', 10, 2 );
 }

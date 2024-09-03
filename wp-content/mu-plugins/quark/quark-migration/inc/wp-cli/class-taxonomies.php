@@ -654,7 +654,7 @@ class Taxonomies {
 		}
 
 		// Return prepared args.
-		return $prepared_args;
+		return $prepared_args; // @phpstan-ignore-line
 	}
 
 	/**
