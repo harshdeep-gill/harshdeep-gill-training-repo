@@ -87,6 +87,36 @@ function filter_solr_build_document( Document $document = null, WP_Post $post = 
 		$document->setField( $key, $prices['discounted'] );
 	}
 
+	/**
+	 * Populate destinations field from expedition on each departure.
+	 */
+	$expedition_id = absint( get_post_meta( $post->ID, 'related_expedition', true ) );
+
+	// Get expedition post.
+	$expedition = get_expedition_post( $expedition_id );
+
+	// Validate post.
+	if ( $expedition['post'] instanceof WP_Post && ! empty( $expedition['post_taxonomies'] ) && ! empty( $expedition['post_taxonomies'][ DESTINATION_TAXONOMY ] ) && is_array( $expedition['post_taxonomies'][ DESTINATION_TAXONOMY ] ) ) {
+		// Get taxonomies.
+		$destination_terms = [
+			'ids' => [],
+			'slugs' => [],
+		];
+		foreach ( $expedition['post_taxonomies'][ DESTINATION_TAXONOMY ] as $destination_term ) {
+			// Validate term.
+			if ( ! is_array( $destination_term ) || empty( $destination_term['term_id'] ) || empty( $destination_term['slug'] ) ) {
+				continue;
+			}
+
+			$destination_terms['ids'][] = $destination_term['term_id'];
+			$destination_terms['slugs'][] = $destination_term['slug'];
+		}
+
+		// Set destination field.
+		$document->setField( 'destinations_taxonomy_id', $destination_terms['ids'] );
+		$document->setField( 'destinations_taxonomy_slug_str', $destination_terms['slugs'] );
+	}
+
 	// Return document.
 	return $document;
 }
