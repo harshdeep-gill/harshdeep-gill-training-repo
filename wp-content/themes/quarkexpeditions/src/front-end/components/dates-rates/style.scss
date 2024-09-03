@@ -72,7 +72,7 @@
 		display: block;
 	}
 
-	quark-dates-rates-filter {
+	quark-dates-rates-filter-chip {
 		display: block;
 	}
 
@@ -206,9 +206,19 @@
 			display: none;
 		}
 
-		quark-dates-rates-filter {
+		quark-dates-rates-filter-chip {
 			flex: 1;
 			min-width: 0;
+
+			&[filtered="yes"] .btn::after {
+				display: inline-block;
+				content: "";
+				width: 6px;
+				height: 6px;
+				background-color: var(--color-attention-50);
+				border-radius: 50%;
+				vertical-align: text-top;
+			}
 		}
 
 		.btn {

@@ -322,8 +322,10 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 				'quark-tooltip'                               => [
 					'class' => true,
 				],
-				'quark-dates-rates-filter'                    => [
-					'class' => true,
+				'quark-dates-rates-filter-chip'               => [
+					'class'        => true,
+					'accordion_id' => true,
+					'type'         => true,
 				],
 				'quark-dates-rates-table'                     => [
 					'class' => true,
@@ -354,6 +356,17 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 				'quark-wistia-embed'                          => [
 					'class'    => true,
 					'video-id' => true,
+				],
+				'quark-dates-rates-results'                   => [
+					'class'         => true,
+					'data-*'        => true,
+					'partial'       => true,
+					'selector'      => true,
+					'expedition-id' => true,
+				],
+				'quark-dates-rates-filters-controller'        => [
+					'class'  => true,
+					'data-*' => true,
 				],
 				'tp-form'                                     => [
 					'class'          => true,

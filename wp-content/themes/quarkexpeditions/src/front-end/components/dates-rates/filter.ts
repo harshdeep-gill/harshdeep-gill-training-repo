@@ -1,7 +1,7 @@
 /**
  * Global variables.
  */
-const { HTMLElement } = window;
+const { HTMLElement, zustand } = window;
 
 /**
  * External dependency.
@@ -14,16 +14,20 @@ import { TPAccordionHandleElement } from '@travelopia/web-components';
 import { debounce } from '../../global/utility';
 
 /**
- * Dates Filters Class.
+ * Get the store.
  */
-export default class DatesRatesFilters extends HTMLElement {
+const { subscribe } = zustand.stores.datesRates;
+
+/**
+ * Dates Filter Class.
+ */
+export default class DatesRatesFilterChip extends HTMLElement {
 	/**
 	 * Properties.
 	 */
 	private filterButton: HTMLButtonElement | null;
-	private clearFilterButton: HTMLButtonElement | null;
 	private drawerAccordionHandles: NodeListOf<TPAccordionHandleElement> | null;
-	private checkboxItems: NodeListOf<HTMLInputElement> | null;
+	private readonly filterType: string;
 
 	/**
 	 * Constructor.
@@ -34,19 +38,105 @@ export default class DatesRatesFilters extends HTMLElement {
 
 		// Elements.
 		this.filterButton = this.querySelector( '.dates-rates__filter-chip-button' );
-		this.clearFilterButton = document.querySelector( '.dates-rates__cta-clear-filters' );
 		this.drawerAccordionHandles = document.querySelectorAll( '.dates-rates__drawer .accordion__handle' );
-		this.checkboxItems = document.querySelectorAll( '.dates-rates__drawer input[type="checkbox"]' );
 
 		// Events.
 		this.filterButton?.addEventListener( 'click', debounce( this.openDrawer.bind( this ), 10 ), { passive: true } );
-		this.clearFilterButton?.addEventListener( 'click', this.clearAllCheckboxes.bind( this ) );
 
 		// Event for accordion items.
 		this.drawerAccordionHandles.forEach( ( ( item: TPAccordionHandleElement ) => {
 			// Close items.
 			item.addEventListener( 'click', this.handleAccordionItems.bind( this ) );
 		} ) );
+
+		// Get the filter type.
+		this.filterType = this.getAttribute( 'type' ) ?? '';
+
+		// Check if this is a currency filter chip.
+		if ( this.filterType && ( 'currency' === this.filterType || 'sticky-filter' === this.filterType ) ) {
+			subscribe( this.update.bind( this ) );
+		}
+	}
+
+	/**
+	 * Update the component.
+	 *
+	 * @param {Object} state
+	 */
+	update( state: DatesRatesState ) {
+		// Get the currency state.
+		const { selectedFilters } = state;
+
+		// Handle the currency state update.
+		this.handleCurrencyStateUpdate( selectedFilters.currency );
+
+		// Handle filter state update.
+		this.handleFilterStateUpdate( selectedFilters );
+	}
+
+	/**
+	 * Handles the change in currency state.
+	 *
+	 * @param {string|undefined} updatedCurrency The updated value.
+	 */
+	handleCurrencyStateUpdate( updatedCurrency: string | undefined ) {
+		// This function should only execute for currency sticky filter.
+		if ( 'currency' !== this.filterType ) {
+			// Bail.
+			return;
+		}
+
+		// Get the button text container.
+		const buttonTextContainer = this.querySelector( '.btn__content-text' );
+
+		// Null check.
+		if ( ! ( buttonTextContainer && updatedCurrency ) ) {
+			// Bail.
+			return;
+		}
+
+		// Update the currency markup.
+		buttonTextContainer.innerHTML = `Currency: ${ updatedCurrency }`;
+	}
+
+	/**
+	 * Handles the change in filter state.
+	 *
+	 * @param {Object} selectedFilters
+	 */
+	handleFilterStateUpdate( selectedFilters: DatesRatesFilters ) {
+		// Check if this is a currency filter.
+		if ( 'currency' === this.filterType ) {
+			// Yes, bail.
+			return;
+		}
+
+		//  Is there a filter?
+		let isFiltered = false;
+
+		// Loop through the object.
+		for ( const filterName in selectedFilters ) {
+			// Check if it is the currency filter.
+			if ( 'currency' === filterName ) {
+				// Do nothing.
+				continue;
+			}
+
+			// Check if any filter is active.
+			if ( selectedFilters[ filterName ] && selectedFilters[ filterName ].length ) {
+				isFiltered = true;
+				break;
+			}
+		}
+
+		// Check if it is filtered.
+		if ( isFiltered ) {
+			// Yes, add attribute.
+			this.setAttribute( 'filtered', 'yes' );
+		} else {
+			// No, remove attribute.
+			this.removeAttribute( 'filtered' );
+		}
 	}
 
 	/**
@@ -57,10 +147,10 @@ export default class DatesRatesFilters extends HTMLElement {
 		this.closeAllAccordionItems();
 
 		// Set the ID.
-		const filterButtonID = this.filterButton?.getAttribute( 'accordion_id' );
+		const filterButtonID = this.getAttribute( 'accordion_id' ) ?? '';
 
 		// Get the accordion item.
-		const accordionItem: TPAccordionHandleElement | null = document.querySelector( `#${ filterButtonID }` );
+		const accordionItem = document.getElementById( filterButtonID ) as TPAccordionHandleElement | null;
 
 		// Check if accordion item is not available, return.
 		if ( ! accordionItem ) {
@@ -118,17 +208,6 @@ export default class DatesRatesFilters extends HTMLElement {
 
 		// Close all accordion items.
 		this.closeAllAccordionItems( currentItem );
-	}
-
-	/**
-	 * Clear checkboxes.
-	 */
-	clearAllCheckboxes() {
-		// Uncheck each checkbox
-		this.checkboxItems?.forEach( ( checkbox ) => {
-			// Remove checked from checkboxe.
-			checkbox.checked = false;
-		} );
 	}
 
 	/**

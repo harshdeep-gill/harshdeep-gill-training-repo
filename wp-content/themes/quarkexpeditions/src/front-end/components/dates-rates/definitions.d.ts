@@ -3,13 +3,12 @@
  */
 interface DatesRatesFilters {
 	'currency'?: string,
-	'sort'?: string,
-	'seasons'?: string,
-	'months'?: string,
-	'expeditions'?: number,
-	'adventure_options'?: number,
-	'durations'?: number,
-	'ships'?: number
+	'seasons'?: string[],
+	'months'?: string[],
+	'expeditions'?: string[],
+	'adventure_options'?: string[],
+	'durations'?: string[],
+	'ships'?: string[],
 	[key: string]: any;
 }
 
