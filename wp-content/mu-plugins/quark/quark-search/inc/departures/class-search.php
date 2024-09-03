@@ -12,6 +12,7 @@ use Solarium\QueryType\Select\Query\Query;
 
 use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
+use const Quark\Expeditions\DESTINATION_TAXONOMY;
 
 /**
  * Class Search
@@ -369,7 +370,7 @@ class Search {
 			return;
 		}
 
-		// If mata query array not present, create it.
+		// If meta query array not present, create it.
 		if ( ! is_array( $this->args['meta_query'] ) ) {
 			$this->args['meta_query'] = [];
 		}
@@ -424,6 +425,33 @@ class Search {
 				'compare' => '=',
 			];
 		}
+	}
+
+	/**
+	 * Set destinations.
+	 *
+	 * @param int[] $destination_ids Destination IDs.
+	 *
+	 * @return void
+	 */
+	public function set_destinations( array $destination_ids = [] ): void {
+		// Return early if no destinations are passed.
+		if ( empty( $destination_ids ) ) {
+			return;
+		}
+
+		// If tax query array not present, create it.
+		if ( ! is_array( $this->args['tax_query'] ) ) {
+			$this->args['tax_query'] = [];
+		}
+
+		// Set search by destinations parameters in search arguments.
+		$this->args['tax_query'][] = [
+			'taxonomy'         => DESTINATION_TAXONOMY,
+			'field'            => 'term_id',
+			'terms'            => array_unique( $destination_ids ),
+			'include_children' => false,
+		];
 	}
 
 	/**
@@ -498,7 +526,7 @@ class Search {
 
 		// Set meta-query relation parameter.
 		if ( is_array( $args['meta_query'] ) && ! empty( $args['meta_query'] ) ) {
-			$args['meta_query']['relation'] = 'OR';
+			$args['meta_query']['relation'] = 'AND';
 		} else {
 			unset( $args['meta_query'] );
 		}

@@ -16,6 +16,7 @@ use function Quark\Departures\get_included_adventure_options;
 use function Quark\Departures\get_paid_adventure_options;
 use function Quark\Expeditions\get as get_expedition_post;
 use function Quark\Expeditions\get_destination_term_by_code;
+use function Quark\Itineraries\get_season;
 use function Quark\Ships\get as get_ship_post;
 use function Quark\Softrip\Departures\get_lowest_price;
 
@@ -25,6 +26,8 @@ use const Quark\Core\USD_CURRENCY;
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
 use const Quark\Departures\SPOKEN_LANGUAGE_TAXONOMY;
 use const Quark\Expeditions\DESTINATION_TAXONOMY;
+use const Quark\Expeditions\POST_TYPE as EXPEDITION_POST_TYPE;
+use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
 use const Quark\StaffMembers\SEASON_TAXONOMY;
 
 const CACHE_GROUP = 'quark_search';
@@ -99,7 +102,7 @@ function filter_solr_build_document( Document $document = null, WP_Post $post = 
 	if ( $expedition['post'] instanceof WP_Post && ! empty( $expedition['post_taxonomies'] ) && ! empty( $expedition['post_taxonomies'][ DESTINATION_TAXONOMY ] ) && is_array( $expedition['post_taxonomies'][ DESTINATION_TAXONOMY ] ) ) {
 		// Get taxonomies.
 		$destination_terms = [
-			'ids' => [],
+			'ids'   => [],
 			'slugs' => [],
 		];
 		foreach ( $expedition['post_taxonomies'][ DESTINATION_TAXONOMY ] as $destination_term ) {
@@ -108,13 +111,36 @@ function filter_solr_build_document( Document $document = null, WP_Post $post = 
 				continue;
 			}
 
-			$destination_terms['ids'][] = $destination_term['term_id'];
+			$destination_terms['ids'][]   = $destination_term['term_id'];
 			$destination_terms['slugs'][] = $destination_term['slug'];
 		}
 
 		// Set destination field.
-		$document->setField( 'destinations_taxonomy_id', $destination_terms['ids'] );
-		$document->setField( 'destinations_taxonomy_slug_str', $destination_terms['slugs'] );
+		$document->setField( DESTINATION_TAXONOMY . '_taxonomy_id', $destination_terms['ids'] );
+		$document->setField( DESTINATION_TAXONOMY . '_taxonomy_slug_str', $destination_terms['slugs'] );
+	}
+
+	/**
+	 * Populate the region from departure and season from itinerary on each departure in Solr.
+	 */
+	$itinerary_post_id = absint( get_post_meta( $post->ID, 'itinerary', true ) );
+
+	// Validate itinerary.
+	if ( ! empty( $itinerary_post_id ) ) {
+		// Get season.
+		$season = get_season( $itinerary_post_id );
+
+		// Get market code for current departure from meta.
+		$market_code = strval( get_post_meta( $post->ID, 'softrip_market_code', true ) );
+
+		// Validate market code.
+		if ( ! empty( $market_code ) && ! empty( $season ) ) {
+			$region_season = $market_code . '-' . $season['slug'];
+
+			// Add region and season to formatted data.
+			$document->setField( 'region_season_s', $region_season );
+			$document->setField( 'region_season_str', [ $region_season ] );
+		}
 	}
 
 	// Return document.
@@ -189,6 +215,7 @@ function get_filters_from_url(): array {
  *     page: int,
  *     posts_per_load: int,
  *     currency: string,
+ *     destinations: string[],
  * }
  */
 function parse_filters( array $filters = [] ): array {
@@ -206,6 +233,7 @@ function parse_filters( array $filters = [] ): array {
 			'sort'              => 'date-now',
 			'page'              => 1,
 			'posts_per_load'    => 10,
+			'destinations'      => '',
 		]
 	);
 
@@ -248,6 +276,11 @@ function parse_filters( array $filters = [] ): array {
 		$filters['currency'] = USD_CURRENCY;
 	}
 
+	// Parse destinations.
+	if ( is_string( $filters['destinations'] ) || is_int( $filters['destinations'] ) ) {
+		$filters['destinations'] = array_filter( array_map( 'trim', explode( ',', strval( $filters['destinations'] ) ) ) );
+	}
+
 	// Return parsed filters.
 	return [
 		'seasons'           => (array) $filters['seasons'],
@@ -260,6 +293,7 @@ function parse_filters( array $filters = [] ): array {
 		'sort'              => $filters['sort'],
 		'posts_per_load'    => absint( $filters['posts_per_load'] ),
 		'currency'          => $filters['currency'],
+		'destinations'      => (array) $filters['destinations'],
 	];
 }
 
@@ -288,6 +322,7 @@ function search( array $filters = [] ): array {
 	$adventure_options = array_map( 'absint', (array) $filters['adventure_options'] );
 	$durations         = array_map( 'absint', (array) $filters['durations'] );
 	$ships             = array_map( 'absint', (array) $filters['ships'] );
+	$destinations      = array_map( 'absint', (array) $filters['destinations'] );
 
 	// Prepare search object.
 	$search = new Search();
@@ -300,6 +335,7 @@ function search( array $filters = [] ): array {
 	$search->set_page( absint( $filters['page'] ) );
 	$search->set_posts_per_page( absint( $filters['posts_per_load'] ?: 5 ) );
 	$search->set_sort( $sort, $filters['currency'] );
+	$search->set_destinations( $destinations );
 
 	// Returned filtered trips.
 	return [
