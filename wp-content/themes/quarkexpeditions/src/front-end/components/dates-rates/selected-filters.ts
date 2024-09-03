@@ -119,7 +119,7 @@ export default class DatesRatesSelectedFiltersElement extends HTMLElement {
 					?.parentElement
 					?.querySelector( 'label' )
 					?.textContent
-					?.replace( /[^a-zA-Z\d\s:]/gi, '' ); // to remove non alpha-num characters.
+					?.replace( /\*\n/, '' );
 
 				// Null check.
 				if ( filterPillTextElement ) {

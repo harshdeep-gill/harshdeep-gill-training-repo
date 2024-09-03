@@ -1,4 +1,4 @@
-<quark-dates-rates-selected-filters class="dates-rates__selected-filters" empty="true">
+<quark-dates-rates-selected-filters class="dates-rates__selected-filters" empty="yes">
 	<template>
 		<quark-dates-rates-selected-filter-pill class="dates-rates__selected-filter-pill">
 			<span class="dates-rates__selected-filter-text"></span>
