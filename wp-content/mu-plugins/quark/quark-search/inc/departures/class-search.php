@@ -554,7 +554,6 @@ class Search {
 
 		// Set tax-query relation parameter. Various filters (tax queries) are combined using AND.
 		if ( is_array( $args['tax_query'] ) && ! empty( $args['tax_query'] ) ) {
-
 			// Add relation parameter if more than one tax query.
 			if ( 1 < count( $args['tax_query'] ) ) {
 				$args['tax_query']['relation'] = 'AND';
@@ -565,7 +564,6 @@ class Search {
 
 		// Set meta-query relation parameter. Various filters (meta queries) are combined using AND.
 		if ( is_array( $args['meta_query'] ) && ! empty( $args['meta_query'] ) ) {
-
 			// Add relation parameter if more than one meta query.
 			if ( 1 < count( $args['meta_query'] ) ) {
 				$args['meta_query']['relation'] = 'AND';
