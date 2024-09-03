@@ -359,6 +359,7 @@ class Search {
 
 	/**
 	 * Set Departure Months.
+	 * The meta query is set as OR relation.
 	 *
 	 * @param string[] $months Months. Format: Y-m.
 	 *
@@ -375,8 +376,16 @@ class Search {
 			$this->args['meta_query'] = [];
 		}
 
+		// Remove duplicate months.
+		$months = array_unique( $months );
+
+		// Initialize meta query.
+		$meta_query = [
+			'relation' => 'OR',
+		];
+
 		// Set search by destinations parameters in search arguments.
-		foreach ( array_unique( $months ) as $departure ) {
+		foreach ( $months as $departure ) {
 			// Validate departure format.
 			preg_match( '/^(?<month>\d{2})-(?<year>\d{4})$/', $departure, $match );
 
@@ -389,13 +398,16 @@ class Search {
 			$departure = absint( mktime( 0, 0, 0, absint( $match['month'] ), 01, absint( $match['year'] ) ) );
 
 			// Set departure meta query (date Format: Ymd).
-			$this->args['meta_query'][] = [
+			$meta_query[] = [
 				'key'     => 'start_date',
 				'value'   => [ gmdate( 'Y-m-01', $departure ), gmdate( 'Y-m-t', $departure ) ],
 				'type'    => 'DATE',
 				'compare' => 'BETWEEN',
 			];
 		}
+
+		// Set meta query.
+		$this->args['meta_query'][] = $meta_query;
 	}
 
 	/**
@@ -416,15 +428,26 @@ class Search {
 			$this->args['meta_query'] = [];
 		}
 
+		// Unique seasons.
+		$seasons = array_unique( $seasons );
+
+		// Initialize meta query.
+		$meta_query = [
+			'relation' => 'OR',
+		];
+
 		// Set search by seasons parameters in search arguments.
-		foreach ( array_unique( $seasons ) as $season ) {
+		foreach ( $seasons as $season ) {
 			// Set Season meta query.
-			$this->args['meta_query'][] = [
+			$meta_query[] = [
 				'key'     => 'region_season',
 				'value'   => $season,
 				'compare' => '=',
 			];
 		}
+
+		// Set meta query.
+		$this->args['meta_query'][] = $meta_query;
 	}
 
 	/**
@@ -524,7 +547,7 @@ class Search {
 			unset( $args['tax_query'] );
 		}
 
-		// Set meta-query relation parameter.
+		// Set meta-query relation parameter. Various filters (meta queries) are combined using AND.
 		if ( is_array( $args['meta_query'] ) && ! empty( $args['meta_query'] ) ) {
 			$args['meta_query']['relation'] = 'AND';
 		} else {
