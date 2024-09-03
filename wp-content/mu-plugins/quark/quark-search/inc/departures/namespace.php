@@ -729,6 +729,7 @@ function get_language_search_filter_data(): array {
 		$term_slug = strval( $term_slug );
 	}
 
+	// Return term slugs.
 	return $term_slugs;
 }
 
@@ -760,6 +761,7 @@ function get_cabin_class_search_filter_data(): array {
 		$term_slug = strval( $term_slug );
 	}
 
+	// Return term slugs.
 	return $term_slugs;
 }
 
@@ -785,7 +787,7 @@ function get_itinerary_length_search_filter_data(): array {
 	$search->set_posts_per_page( -1 );
 
 	// Get departure ids.
-	$departure_ids = $search->search();
+	$departure_ids     = $search->search();
 	$itinerary_lengths = [];
 
 	// Validate departure ids.
@@ -805,6 +807,7 @@ function get_itinerary_length_search_filter_data(): array {
 		// Get itinerary length.
 		$itinerary_length = absint( $departure['post_meta']['duration'] );
 
+		// Validate itinerary length.
 		if ( empty( $itinerary_length ) || ! empty( $itinerary_lengths[ $itinerary_length ] ) ) {
 			continue;
 		}
@@ -822,9 +825,11 @@ function get_itinerary_length_search_filter_data(): array {
 	// Loop through itinerary lengths.
 	foreach ( $itinerary_lengths as $itinerary_length ) {
 		// Prepare itinerary length data.
-		$itinerary_length_data[ $itinerary_length ] = sprintf( 
+		$itinerary_length_data[ $itinerary_length ] = sprintf(
 			// translators: %d: Itinerary length/duration.
-			__( '%d Days', 'qrk' ), absint( $itinerary_length ) );
+			__( '%d Days', 'qrk' ),
+			absint( $itinerary_length )
+		);
 	}
 
 	// Set cache.
@@ -855,7 +860,7 @@ function get_destination_search_filter_data(): array {
 	$search->set_posts_per_page( -1 );
 
 	// Get departure ids.
-	$departure_ids = $search->search();
+	$departure_ids  = $search->search();
 	$expedition_ids = [];
 
 	// Validate departure ids.
@@ -891,5 +896,6 @@ function get_destination_search_filter_data(): array {
 		// Loop through destinations.
 	}
 
+	// Return expedition data.
 	return [];
 }

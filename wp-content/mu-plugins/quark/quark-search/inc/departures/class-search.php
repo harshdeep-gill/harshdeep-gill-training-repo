@@ -451,7 +451,8 @@ class Search {
 	/**
 	 * Set Sort.
 	 *
-	 * @param string $sort Sort.
+	 * @param string $sort     Sort.
+	 * @param string $currency Currency.
 	 *
 	 * @return void
 	 */
