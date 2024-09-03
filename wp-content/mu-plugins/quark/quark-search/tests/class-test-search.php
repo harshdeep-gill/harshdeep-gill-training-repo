@@ -231,7 +231,6 @@ class Test_Search extends WP_UnitTestCase {
 				'posts_per_page'         => 5,
 				'paged'                  => 3,
 				'tax_query'              => [
-					'relation' => 'AND',
 					[
 						'taxonomy'         => ADVENTURE_OPTION_CATEGORY,
 						'field'            => 'term_id',
@@ -253,7 +252,6 @@ class Test_Search extends WP_UnitTestCase {
 							'compare' => '=',
 						],
 					],
-					'relation' => 'AND',
 				],
 			],
 			$solr_search->get_args(),
@@ -317,7 +315,6 @@ class Test_Search extends WP_UnitTestCase {
 				'update_post_term_cache' => false,
 				'posts_per_page'         => 10,
 				'meta_query'             => [
-					'relation' => 'AND',
 					[
 						'relation' => 'OR',
 						[
@@ -439,7 +436,6 @@ class Test_Search extends WP_UnitTestCase {
 				'update_post_term_cache' => false,
 				'posts_per_page'         => 10,
 				'tax_query'              => [
-					'relation' => 'AND',
 					[
 						'taxonomy'         => DESTINATION_TAXONOMY,
 						'field'            => 'term_id',
@@ -449,6 +445,177 @@ class Test_Search extends WP_UnitTestCase {
 				],
 			],
 			$solr_search->get_args(),
+		);
+
+		// Test with multiple filters.
+		$solr_search = new Search();
+		$class       = new ReflectionClass( $solr_search );
+
+		// Set multiple filters.
+		$solr_search->set_adventure_options( [ 1, 2, 3 ] );
+		$solr_search->set_expeditions( [ 4, 5, 6 ] );
+		$solr_search->set_ships( [ 7, 8, 9 ] );
+		$solr_search->set_durations( [ 10, 11, 12 ] );
+		$solr_search->set_months( [ '01-2024', '02-2024', '03-2024' ] );
+
+		// Assert multiple filters.
+		$this->assertEquals(
+			[
+				'post_type'              => DEPARTURE_POST_TYPE,
+				'post_status'            => 'publish',
+				'solr_integrate'         => true,
+				'order'                  => 'ASC',
+				'fields'                 => 'ids',
+				'update_post_meta_cache' => false,
+				'update_post_term_cache' => false,
+				'posts_per_page'         => 10,
+				'tax_query'              => [
+					[
+						'taxonomy'         => ADVENTURE_OPTION_CATEGORY,
+						'field'            => 'term_id',
+						'terms'            => [ 1, 2, 3 ],
+						'include_children' => false,
+					],
+				],
+				'meta_query'             => [
+					'relation' => 'AND',
+					[
+						'key'     => 'related_expedition',
+						'value'   => [ 4, 5, 6 ],
+						'compare' => 'IN',
+					],
+					[
+						'key'     => 'related_ship',
+						'value'   => [ 7, 8, 9 ],
+						'compare' => 'IN',
+					],
+					[
+						'key'     => 'duration',
+						'value'   => [ 10, 11, 12 ],
+						'type'    => 'NUMERIC',
+						'compare' => 'BETWEEN',
+					],
+					[
+						'relation' => 'OR',
+						[
+							'key'     => 'start_date',
+							'value'   => [ '2024-01-01', '2024-01-31' ],
+							'type'    => 'DATE',
+							'compare' => 'BETWEEN',
+						],
+						[
+							'key'     => 'start_date',
+							'value'   => [ '2024-02-01', '2024-02-29' ],
+							'type'    => 'DATE',
+							'compare' => 'BETWEEN',
+						],
+						[
+							'key'     => 'start_date',
+							'value'   => [ '2024-03-01', '2024-03-31' ],
+							'type'    => 'DATE',
+							'compare' => 'BETWEEN',
+						],
+					],
+				],
+			],
+			$solr_search->get_args()
+		);
+
+		// Test with all filters and sort as well.
+		$solr_search = new Search();
+		$class       = new ReflectionClass( $solr_search );
+
+		// Set multiple filters.
+		$solr_search->set_adventure_options( [ 1, 2, 3 ] );
+		$solr_search->set_expeditions( [ 4, 5, 6 ] );
+		$solr_search->set_ships( [ 7, 8, 9 ] );
+		$solr_search->set_durations( [ 10, 11, 12 ] );
+		$solr_search->set_months( [ '01-2024', '02-2024', '03-2024' ] );
+		$solr_search->set_sort( 'price-low', 'EUR' );
+		$solr_search->set_seasons( [ '2024', '2025' ] );
+		$solr_search->set_destinations( [ 1, 2, 3 ] );
+
+		// Assert multiple filters.
+		$this->assertEquals(
+			[
+				'post_type'              => DEPARTURE_POST_TYPE,
+				'post_status'            => 'publish',
+				'solr_integrate'         => true,
+				'order'                  => 'ASC',
+				'fields'                 => 'ids',
+				'update_post_meta_cache' => false,
+				'update_post_term_cache' => false,
+				'posts_per_page'         => 10,
+				'tax_query'              => [
+					'relation' => 'AND',
+					[
+						'taxonomy'         => ADVENTURE_OPTION_CATEGORY,
+						'field'            => 'term_id',
+						'terms'            => [ 1, 2, 3 ],
+						'include_children' => false,
+					],
+					[
+						'taxonomy'         => DESTINATION_TAXONOMY,
+						'field'            => 'term_id',
+						'terms'            => [ 1, 2, 3 ],
+						'include_children' => false,
+					],
+				],
+				'meta_query'             => [
+					'relation' => 'AND',
+					[
+						'key'     => 'related_expedition',
+						'value'   => [ 4, 5, 6 ],
+						'compare' => 'IN',
+					],
+					[
+						'key'     => 'related_ship',
+						'value'   => [ 7, 8, 9 ],
+						'compare' => 'IN',
+					],
+					[
+						'key'     => 'duration',
+						'value'   => [ 10, 11, 12 ],
+						'type'    => 'NUMERIC',
+						'compare' => 'BETWEEN',
+					],
+					[
+						'relation' => 'OR',
+						[
+							'key'     => 'start_date',
+							'value'   => [ '2024-01-01', '2024-01-31' ],
+							'type'    => 'DATE',
+							'compare' => 'BETWEEN',
+						],
+						[
+							'key'     => 'start_date',
+							'value'   => [ '2024-02-01', '2024-02-29' ],
+							'type'    => 'DATE',
+							'compare' => 'BETWEEN',
+						],
+						[
+							'key'     => 'start_date',
+							'value'   => [ '2024-03-01', '2024-03-31' ],
+							'type'    => 'DATE',
+							'compare' => 'BETWEEN',
+						],
+					],
+					[
+						'relation' => 'OR',
+						[
+							'key'     => 'region_season',
+							'value'   => '2024',
+							'compare' => '=',
+						],
+						[
+							'key'     => 'region_season',
+							'value'   => '2025',
+							'compare' => '=',
+						],
+					],
+				],
+			],
+			$solr_search->get_args()
 		);
 	}
 }
