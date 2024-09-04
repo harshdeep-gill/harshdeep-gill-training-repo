@@ -384,6 +384,9 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 				'quark-dates-rates-filter-currency-radios'    => [
 					'class' => true,
 				],
+				'quark-dates-rates-filter-sticky-filter'      => [
+					'class' => true,
+				],
 				'quark-dates-rates-filter-sticky-currency'    => [
 					'class' => true,
 				],

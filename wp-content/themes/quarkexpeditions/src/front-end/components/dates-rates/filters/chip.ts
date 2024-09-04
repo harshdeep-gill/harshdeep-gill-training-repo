@@ -1,7 +1,7 @@
 /**
  * Global variables.
  */
-const { HTMLElement, zustand } = window;
+const { HTMLElement } = window;
 
 /**
  * External dependency.
@@ -14,11 +14,6 @@ import { TPAccordionHandleElement } from '@travelopia/web-components';
 import { debounce } from '../../../global/utility';
 
 /**
- * Get the store.
- */
-const { subscribe } = zustand.stores.datesRates;
-
-/**
  * Dates Filter Class.
  */
 export default class DatesRatesFilterChipElement extends HTMLElement {
@@ -27,7 +22,6 @@ export default class DatesRatesFilterChipElement extends HTMLElement {
 	 */
 	private filterButton: HTMLButtonElement | null;
 	private drawerAccordionHandles: NodeListOf<TPAccordionHandleElement> | null;
-	private readonly filterType: string;
 
 	/**
 	 * Constructor.
@@ -48,67 +42,6 @@ export default class DatesRatesFilterChipElement extends HTMLElement {
 			// Close items.
 			item.addEventListener( 'click', this.handleAccordionItems.bind( this ) );
 		} ) );
-
-		// Get the filter type.
-		this.filterType = this.getAttribute( 'type' ) ?? '';
-
-		// Check if this is a currency filter chip.
-		if ( this.filterType && ( 'currency' === this.filterType || 'sticky-filter' === this.filterType ) ) {
-			subscribe( this.update.bind( this ) );
-		}
-	}
-
-	/**
-	 * Update the component.
-	 *
-	 * @param {Object} state
-	 */
-	update( state: DatesRatesState ) {
-		// Get the currency state.
-		const { selectedFilters } = state;
-
-		// Handle filter state update.
-		this.handleFilterStateUpdate( selectedFilters );
-	}
-
-	/**
-	 * Handles the change in filter state.
-	 *
-	 * @param {Object} selectedFilters
-	 */
-	handleFilterStateUpdate( selectedFilters: DatesRatesFilters ) {
-		// Check if this is a currency filter.
-		if ( 'currency' === this.filterType ) {
-			// Yes, bail.
-			return;
-		}
-
-		//  Is there a filter?
-		let isFiltered = false;
-
-		// Loop through the object.
-		for ( const filterName in selectedFilters ) {
-			// Check if it is the currency filter.
-			if ( 'currency' === filterName ) {
-				// Do nothing.
-				continue;
-			}
-
-			// Check if any filter is active.
-			if ( selectedFilters[ filterName ] && selectedFilters[ filterName ].length ) {
-				isFiltered = true;
-				break;
-			}
-		}
-
-		// Check if it is filtered.
-		if ( isFiltered ) {
-			// Yes, add attribute.
-			this.setAttribute( 'filtered', 'yes' );
-		} else {
-			// No, remove attribute.
-			this.removeAttribute( 'filtered' );
-		}
 	}
 
 	/**

@@ -32,7 +32,7 @@
 		<x-dates-rates.filters.selected />
 
 		<x-dates-rates.filters.sticky>
-			<x-dates-rates.filters.chip drawer_id="dates-rates-filters" title="Filter" accordion_id="filters-accordion-seasons" type="sticky-filter" />
+			<x-dates-rates.filters.sticky-filter drawer_id="dates-rates-filters" accordion_id="filters-accordion-seasons" />
 			<x-dates-rates.filters.sticky-currency />
 		</x-dates-rates.filters.sticky>
 

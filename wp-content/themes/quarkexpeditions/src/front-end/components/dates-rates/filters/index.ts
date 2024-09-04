@@ -13,6 +13,7 @@ import DatesRatesSelectedFiltersElement from './selected';
 import DatesRatesSelectedFilterPillElement from './selected-pill';
 import DatesRatesFilterStickyCurrencyElement from './sticky-currency';
 import DatesRatesFilterCurrencyRadiosElement from './currency-radios';
+import DatesRatesFilterStickyFilterElement from './sticky-filter';
 
 /**
  * Define custom components.
@@ -24,3 +25,4 @@ customElements.define( 'quark-dates-rates-selected-filter-pill', DatesRatesSelec
 customElements.define( 'quark-dates-rates-filter-currency-dropdown', DatesRatesFilterCurrencyDropdownElement );
 customElements.define( 'quark-dates-rates-filter-sticky-currency', DatesRatesFilterStickyCurrencyElement );
 customElements.define( 'quark-dates-rates-filter-currency-radios', DatesRatesFilterCurrencyRadiosElement );
+customElements.define( 'quark-dates-rates-filter-sticky-filter', DatesRatesFilterStickyFilterElement );
