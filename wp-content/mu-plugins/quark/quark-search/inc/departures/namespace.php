@@ -879,7 +879,7 @@ function get_language_search_filter_data(): array {
 
 	// Loop through terms and prepare data.
 	foreach ( $the_terms as $term_slug ) {
-		$term_slug = strval( $term_slug );
+		$term_slugs[] = strval( $term_slug );
 	}
 
 	// Return term slugs.
@@ -911,7 +911,7 @@ function get_cabin_class_search_filter_data(): array {
 
 	// Loop through terms and prepare data.
 	foreach ( $the_terms as $term_slug ) {
-		$term_slug = strval( $term_slug );
+		$term_slugs[] = strval( $term_slug );
 	}
 
 	// Return term slugs.
