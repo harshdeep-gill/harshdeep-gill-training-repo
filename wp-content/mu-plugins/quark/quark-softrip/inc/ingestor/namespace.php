@@ -177,7 +177,7 @@ function get_expedition_data( int $expedition_post_id = 0 ): array {
 		'id'           => $expedition_post_id,
 		'name'         => get_raw_text_from_html( $expedition_post['post']->post_title ),
 		'published'    => 'publish' === $expedition_post['post']->post_status,
-		'overview'  => '',
+		'overview'     => '',
 		'images'       => [],
 		'destinations' => [],
 		'itineraries'  => [],
