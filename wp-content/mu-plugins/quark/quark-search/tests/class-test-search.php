@@ -21,6 +21,8 @@ use function Quark\Search\Departures\parse_filters;
 use function Quark\Search\Departures\get_filters_from_url;
 use function Quark\Search\Departures\get_itinerary_length_search_filter_data;
 use function Quark\Search\Departures\get_language_search_filter_data;
+use function Quark\Search\Departures\reindex_departures;
+use function Quark\Search\Departures\schedule_reindex_departures;
 
 use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
 use const Quark\CabinCategories\CABIN_CLASS_TAXONOMY;
@@ -30,6 +32,9 @@ use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
 use const Quark\Departures\SPOKEN_LANGUAGE_TAXONOMY;
 use const Quark\Expeditions\DESTINATION_TAXONOMY;
 use const Quark\Expeditions\POST_TYPE as EXPEDITION_POST_TYPE;
+use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
+use const Quark\Search\Departures\REINDEX_POST_IDS_OPTION_KEY;
+use const Quark\Search\Departures\SCHEDULE_REINDEX_HOOK;
 
 /**
  * Class Test_Search.
@@ -968,5 +973,207 @@ class Test_Search extends WP_UnitTestCase {
 		];
 		$actual   = get_language_search_filter_data();
 		$this->assertEquals( $expected, $actual );
+	}
+
+	/**
+	 * Check if reindex cron has been scheduled.
+	 *
+	 * @covers \Quark\Search\Departures\schedule_reindex_departures()
+	 *
+	 * @return void
+	 */
+	public function test_schedule_reindex_departures(): void {
+		// Clear any existing scheduled event for testing.
+		wp_clear_scheduled_hook( SCHEDULE_REINDEX_HOOK );
+		$timestamp = wp_next_scheduled( SCHEDULE_REINDEX_HOOK );
+		$this->assertFalse( $timestamp );
+
+		// Test case 1: Test scheduling sync cron task.
+		schedule_reindex_departures();
+		$timestamp = wp_next_scheduled( SCHEDULE_REINDEX_HOOK );
+		$this->assertNotFalse( $timestamp );
+
+		// Verify the schedule interval.
+		$schedule = wp_get_schedule( SCHEDULE_REINDEX_HOOK );
+		$this->assertSame( 'hourly', $schedule );
+
+		// Test case 2: Test if repeated call should not schedule again.
+		schedule_reindex_departures();
+		$timestamp2 = wp_next_scheduled( SCHEDULE_REINDEX_HOOK );
+		$this->assertNotFalse( $timestamp2 );
+		$this->assertSame( $timestamp, $timestamp2 );
+
+		// Cleanup.
+		wp_clear_scheduled_hook( SCHEDULE_REINDEX_HOOK );
+	}
+
+	/**
+	 * Test if posts are tracked to be re-indexed.
+	 * On update of expedition and itinerary posts, the post ids should be tracked to be re-indexed.
+	 *
+	 * @covers \Quark\Search\Departures\track_posts_to_be_reindexed()
+	 * @covers \Quark\Search\Departures\reindex_departures()
+	 *
+	 * @return void
+	 */
+	public function test_track_posts_to_be_reindexed(): void {
+		// Clear any existing tracked post ids.
+		delete_option( REINDEX_POST_IDS_OPTION_KEY );
+
+		// Create a non-supported post.
+		$post_id = $this->factory()->post->create();
+		$this->assertIsInt( $post_id );
+
+		// Update the post.
+		wp_update_post(
+			[
+				'ID'         => $post_id,
+				'post_title' => 'Test Post',
+			]
+		);
+
+		// Option should still be empty.
+		$option = get_option( REINDEX_POST_IDS_OPTION_KEY, [] );
+		$this->assertEmpty( $option );
+
+		// Create a expedition post.
+		$expedition_post_id = $this->factory()->post->create(
+			[
+				'post_type' => EXPEDITION_POST_TYPE,
+			]
+		);
+		$this->assertIsInt( $expedition_post_id );
+
+		// Update the expedition post.
+		wp_update_post(
+			[
+				'ID'         => $expedition_post_id,
+				'post_title' => 'Test Expedition Post',
+			]
+		);
+
+		// Option should not be empty anymore.
+		$option = get_option( REINDEX_POST_IDS_OPTION_KEY, [] );
+		$this->assertIsArray( $option );
+		$this->assertNotEmpty( $option );
+		$this->assertContains( $expedition_post_id, $option );
+
+		// Try updating the expedition post again.
+		wp_update_post(
+			[
+				'ID'         => $expedition_post_id,
+				'post_title' => 'Test Expedition Post Updated',
+			]
+		);
+
+		// Option should not contain duplicate post id.
+		$option = get_option( REINDEX_POST_IDS_OPTION_KEY, [] );
+		$this->assertIsArray( $option );
+		$this->assertNotEmpty( $option );
+		$this->assertCount( 1, $option );
+		$this->assertContains( $expedition_post_id, $option );
+
+		// Create another expedition post.
+		$expedition_post_id2 = $this->factory()->post->create(
+			[
+				'post_type' => EXPEDITION_POST_TYPE,
+			]
+		);
+		$this->assertIsInt( $expedition_post_id2 );
+
+		// Option should not be updated on creation of post.
+		$option = get_option( REINDEX_POST_IDS_OPTION_KEY, [] );
+		$this->assertIsArray( $option );
+		$this->assertNotEmpty( $option );
+		$this->assertCount( 1, $option );
+		$this->assertContains( $expedition_post_id, $option );
+
+		// Update the expedition post.
+		wp_update_post(
+			[
+				'ID'         => $expedition_post_id2,
+				'post_title' => 'Test Expedition Post 2',
+			]
+		);
+
+		// Option should be updated with new post id.
+		$option = get_option( REINDEX_POST_IDS_OPTION_KEY, [] );
+		$this->assertIsArray( $option );
+		$this->assertNotEmpty( $option );
+		$this->assertCount( 2, $option );
+		$this->assertContains( $expedition_post_id, $option );
+		$this->assertContains( $expedition_post_id2, $option );
+
+		// Create itinerary post.
+		$itinerary_post_id = $this->factory()->post->create(
+			[
+				'post_type' => ITINERARY_POST_TYPE,
+			]
+		);
+		$this->assertIsInt( $itinerary_post_id );
+
+		// Update the itinerary post.
+		wp_update_post(
+			[
+				'ID'         => $itinerary_post_id,
+				'post_title' => 'Test Itinerary Post',
+			]
+		);
+
+		// Option should not be updated on creation of post.
+		$option = get_option( REINDEX_POST_IDS_OPTION_KEY, [] );
+		$this->assertIsArray( $option );
+		$this->assertNotEmpty( $option );
+		$this->assertCount( 3, $option );
+		$this->assertEquals( [ $expedition_post_id, $expedition_post_id2, $itinerary_post_id ], $option );
+
+		// Update the itinerary post.
+		wp_update_post(
+			[
+				'ID'         => $itinerary_post_id,
+				'post_title' => 'Test Itinerary Post Updated',
+			]
+		);
+
+		// Option should not contain duplicate post id.
+		$option = get_option( REINDEX_POST_IDS_OPTION_KEY, [] );
+		$this->assertIsArray( $option );
+		$this->assertNotEmpty( $option );
+		$this->assertCount( 3, $option );
+		$this->assertEquals( [ $expedition_post_id, $expedition_post_id2, $itinerary_post_id ], $option );
+
+		// Execute the re-indexing.
+		reindex_departures();
+
+		// Option should be empty after re-indexing.
+		$option = get_option( REINDEX_POST_IDS_OPTION_KEY, [] );
+		$this->assertIsArray( $option );
+		$this->assertEmpty( $option );
+
+		// Action for re-index initiation should be fired.
+		$this->assertTrue( did_action( 'quark_search_reindex_initiated' ) > 0 );
+
+		// Action for re-index completion should be fired.
+		$this->assertTrue( did_action( 'quark_search_reindex_completed' ) > 0 );
+
+		// Add a non-supported post id to option and check if it is removed.
+		update_option( REINDEX_POST_IDS_OPTION_KEY, [ $post_id ] );
+
+		// Execute the re-indexing.
+		reindex_departures();
+
+		// Option should be empty after re-indexing.
+		$option = get_option( REINDEX_POST_IDS_OPTION_KEY, [] );
+		$this->assertIsArray( $option );
+		$this->assertEmpty( $option );
+
+		// Action for re-index initiation should be again fired.
+		$this->assertTrue( did_action( 'quark_search_reindex_initiated' ) > 1 );
+
+		// Action for re-index completion should be again fired.
+		$this->assertTrue( did_action( 'quark_search_reindex_completed' ) > 1 );
+
+		// Action for re-index failed should be fired.
+		$this->assertTrue( did_action( 'quark_search_reindex_failed' ) > 0 );
 	}
 }
