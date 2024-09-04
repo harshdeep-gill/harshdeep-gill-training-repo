@@ -5838,7 +5838,7 @@
 		<x-dates-rates>
 			<x-dates-rates.header>
 				<x-dates-rates.filters />
-				<x-dates-rates.result-count :count="10" :total_count="200" />
+				<x-dates-rates.results.count :count="10" :total_count="200" />
 			</x-dates-rates.header>
 
 			<x-dates-rates.results>

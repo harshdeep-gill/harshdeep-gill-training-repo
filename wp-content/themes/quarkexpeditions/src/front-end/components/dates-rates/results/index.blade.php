@@ -10,8 +10,9 @@
 	}
 @endphp
 
-<x-dates-rates.results-container>
-	<x-dates-rates.result-count :count="$count" :total_count="$total_count" />
+
+<div class="dates-rates__results-container section">
+	<x-dates-rates.results.count :count="$count" :total_count="$total_count" />
 	<quark-dates-rates-results
 		class="dates-rates__results"
 		partial='dates-and-rates'
@@ -23,4 +24,5 @@
 	<div class="dates-rates__results--loading">
 		<x-svg name="spinner" />
 	</div>
-</x-dates-rates.results-container>
+</div>
+
