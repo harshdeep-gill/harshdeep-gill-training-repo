@@ -1020,7 +1020,6 @@ function get_language_search_filter_data(): array {
 		[
 			'taxonomy'   => SPOKEN_LANGUAGE_TAXONOMY,
 			'hide_empty' => true,
-			'fields'     => 'slugs',
 		]
 	);
 
@@ -1029,16 +1028,22 @@ function get_language_search_filter_data(): array {
 		return [];
 	}
 
-	// Initialize term slugs.
-	$term_slugs = [];
+	// Initialize filter data.
+	$filter_data = [];
 
 	// Loop through terms and prepare data.
-	foreach ( $the_terms as $term_slug ) {
-		$term_slugs[] = strval( $term_slug );
+	foreach ( $the_terms as $term ) {
+		// Validate term.
+		if ( ! $term instanceof WP_Term ) {
+			continue;
+		}
+
+		// Prepare filter data.
+		$filter_data[ $term->term_id ] = $term->name;
 	}
 
-	// Return term slugs.
-	return $term_slugs;
+	// Return filter data.
+	return $filter_data;
 }
 
 /**
@@ -1052,7 +1057,6 @@ function get_cabin_class_search_filter_data(): array {
 		[
 			'taxonomy'   => CABIN_CLASS_TAXONOMY,
 			'hide_empty' => true,
-			'fields'     => 'slugs',
 		]
 	);
 
@@ -1061,16 +1065,22 @@ function get_cabin_class_search_filter_data(): array {
 		return [];
 	}
 
-	// Initialize term slugs.
-	$term_slugs = [];
+	// Initialize filter data.
+	$filter_data = [];
 
 	// Loop through terms and prepare data.
-	foreach ( $the_terms as $term_slug ) {
-		$term_slugs[] = strval( $term_slug );
+	foreach ( $the_terms as $term ) {
+		// Validate term.
+		if ( ! $term instanceof WP_Term ) {
+			continue;
+		}
+
+		// Prepare filter data.
+		$filter_data[ $term->term_id ] = $term->name;
 	}
 
-	// Return term slugs.
-	return $term_slugs;
+	// Return filter data.
+	return $filter_data;
 }
 
 /**

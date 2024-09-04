@@ -905,8 +905,8 @@ class Test_Search extends WP_UnitTestCase {
 
 		// Test when cabin class exists and assigned to a post.
 		$expected = [
-			$term1['slug'],
-			$term2['slug'],
+			$term1['term_id'] => $term1['name'],
+			$term2['term_id'] => $term2['name'],
 		];
 		$actual   = get_cabin_class_search_filter_data();
 		$this->assertEquals( $expected, $actual );
@@ -916,7 +916,7 @@ class Test_Search extends WP_UnitTestCase {
 
 		// Test when cabin class updates.
 		$expected = [
-			$term3['slug'],
+			$term3['term_id'] => $term3['name'],
 		];
 		$actual   = get_cabin_class_search_filter_data();
 		$this->assertEquals( $expected, $actual );
@@ -963,8 +963,8 @@ class Test_Search extends WP_UnitTestCase {
 
 		// Test with language.
 		$expected = [
-			$term1['slug'],
-			$term2['slug'],
+			$term1['term_id'] => $term1['name'],
+			$term2['term_id'] => $term2['name'],
 		];
 		$actual   = get_language_search_filter_data();
 		$this->assertEquals( $expected, $actual );
