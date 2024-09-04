@@ -6928,16 +6928,7 @@
 				<x-footer.column-title title="Discover Your Dream Trip" />
 				<x-button  href="#" size="big" color="black">View All Expeditions</x-button>
 
-				<x-footer.column-title title="Change Currency" />
-				<x-form>
-					<x-form.field :validation="[ 'required' ]">
-						<select>
-							<option value="1" label="$ USD">$ USD</option>
-							<option value="2" label="Option 2">Option 2</option>
-							<option value="3" label="Option 3">Option 3</option>
-						</select>
-					</x-form.field>
-				</x-form>
+				<x-currency-switcher appearance="dark" />
 			</x-footer.column>
 
 			<x-footer.navigation title="Learn About the Polar Regions">

@@ -1,9 +1,14 @@
 @import "../../scss/";
 
 .currency-switcher {
+	display: block;
 
 	&--dark {
 		color: var(--color-gray-50);
+	}
+
+	label {
+		font-size: inherit;
 	}
 
 	tp-multi-select {
