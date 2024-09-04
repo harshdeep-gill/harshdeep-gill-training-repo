@@ -1,0 +1,33 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Info Cards - Card Tag",
+	"name": "quark/info-card-tag",
+	"description": "Individual Info card Tag.",
+	"parent": [
+		"quark/info-card"
+	],
+	"category": "layout",
+	"keywords": [
+		"info",
+		"card",
+		"tag"
+	],
+	"textdomain": "qrk",
+	"attributes": {
+		"backgroundColor": {
+			"type": "string",
+			"default": "yellow"
+		},
+		"text": {
+			"type": "string",
+			"default": "Tag"
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}
