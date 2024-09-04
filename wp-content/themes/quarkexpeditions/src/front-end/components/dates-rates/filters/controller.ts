@@ -4,6 +4,11 @@
 const { HTMLElement } = window;
 
 /**
+ * External Dependencies.
+ */
+import { QuarkDrawerElement } from '../../drawer/drawer';
+
+/**
  * Internal dependencies.
  */
 import { clearAllFilters } from '../actions';
@@ -26,10 +31,7 @@ export default class DatesRatesFiltersControllerElement extends HTMLElement {
 		super();
 
 		/**
-		 * Initialize filters.
-		 *
-		 * These need to be queried on the document because these
-		 * are inside a drawer which is pulled out of the parent on initialization.
+		 * Initialize properties.
 		 */
 		this.applyFiltersButton = document.querySelector( '.dates-rates__apply-filters-btn' );
 		this.clearAllButton = document.querySelector( '.dates-rates__cta-clear-filters' );
@@ -43,7 +45,8 @@ export default class DatesRatesFiltersControllerElement extends HTMLElement {
 	 * Handles the click on `Apply Filters` button.
 	 */
 	handleApplyFilters() {
-		// Update the state.
+		// close the drawer.
+		this.applyFiltersButton?.closest<QuarkDrawerElement>( 'quark-drawer' )?.close();
 	}
 
 	/**
@@ -52,5 +55,8 @@ export default class DatesRatesFiltersControllerElement extends HTMLElement {
 	handleClearAll() {
 		// Update the filters.
 		clearAllFilters();
+
+		// close the drawer.
+		this.clearAllButton?.closest<QuarkDrawerElement>( 'quark-drawer' )?.close();
 	}
 }
