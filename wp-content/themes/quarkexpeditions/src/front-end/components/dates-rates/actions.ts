@@ -1,7 +1,7 @@
 /**
  * External dependencies.
  */
-const { zustand, fetchPartial } = window;
+const { zustand } = window;
 
 /**
  * Internal dependencies.
@@ -31,9 +31,7 @@ export const updateCurrency = ( currency: string ) => {
 		updateMarkup: true,
 	} );
 
-	// Fetch Results.
-
-	//TODO: fetchResults( filterUpdated );
+	//TODO: fetch results
 };
 
 /**
@@ -54,65 +52,5 @@ export const updateFilters = ( filterValues: DatesRatesFilters ) => {
 		updateMarkup: true,
 	} );
 
-	// Fetch Results.
-
-	//TODO: fetchResults( filterUpdated );
-};
-
-/**
- * Fetch Results.
- *
- * @param {Function} callback Callback function.
- */
-export const fetchResults = ( callback: Function ) => {
-	// Get data from state.
-	const { selectedFilters, page, partial, selector, expeditionId }: DatesRatesState = getState();
-
-	// Set loading: true.
-	setState( {
-		loading: true,
-	} );
-
-	// Fetch partial.
-	fetchPartial( partial, {
-		selectedFilters: {
-			...selectedFilters,
-			page,
-			expeditions: [ expeditionId ],
-		},
-	}, callback, selector ).catch( () => {
-		// Set state.
-		setState( {
-			loading: false,
-		} );
-	} );
-};
-
-/**
- * Filters updated callback.
- *
- * @param {Object} response Response.
- */
-export const filterUpdated = ( response: PartialData ) => {
-	// Get state.
-	const { page } = getState();
-
-	// Get response data.
-	const {
-		markup,
-		data: { resultCount, nextPage },
-		noResultsMarkup,
-	} = response;
-
-	// Set state.
-	setState( {
-		markup: 0 !== resultCount ? markup : '',
-		noResultsMarkup,
-		resultCount,
-		hasNextPage: nextPage && nextPage > page,
-		nextPage,
-		updateMarkup: true,
-		resetMarkup: false,
-		loading: false,
-	} );
+	//TODO: fetch results
 };

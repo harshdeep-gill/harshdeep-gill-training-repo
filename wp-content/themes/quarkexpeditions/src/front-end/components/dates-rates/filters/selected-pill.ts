@@ -11,7 +11,7 @@ const { getState } = zustand.stores.datesRates;
 /**
  * Internal Dependencies
  */
-import { updateFilters } from './actions';
+import { updateFilters } from '../actions';
 
 /**
  * Selected Filter Pill Class.

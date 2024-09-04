@@ -11,7 +11,7 @@ const { subscribe } = zustand.stores.datesRates;
 /**
  * Internal Dependencies
  */
-import { updateFilters } from './actions';
+import { updateFilters } from '../actions';
 
 /**
  * Selected Filters Class.

@@ -18,12 +18,12 @@
 		<h2 class="dates-rates__filters-heading">{{ __( 'Filters', 'qrk' ) }}</h2>
 		<div class="dates-rates__filters">
 			<x-dates-rates.filters-chips>
-				<x-dates-rates.filter-chip drawer_id="dates-rates-filters" title="Region & Season" accordion_id="filters-accordion-seasons" />
-				<x-dates-rates.filter-chip drawer_id="dates-rates-filters" title="Expedition" accordion_id="filters-accordion-expeditions" />
-				<x-dates-rates.filter-chip drawer_id="dates-rates-filters" title="Adventure Options" accordion_id="filters-accordion-adventure-options" />
-				<x-dates-rates.filter-chip drawer_id="dates-rates-filters" title="Departure Month" accordion_id="filters-accordion-months" />
-				<x-dates-rates.filter-chip drawer_id="dates-rates-filters" title="Duration" accordion_id="filters-accordion-durations" />
-				<x-dates-rates.filter-chip drawer_id="dates-rates-filters" title="Ship" accordion_id="filters-accordion-ships" />
+				<x-dates-rates.filters.chip drawer_id="dates-rates-filters" title="Region & Season" accordion_id="filters-accordion-seasons" />
+				<x-dates-rates.filters.chip drawer_id="dates-rates-filters" title="Expedition" accordion_id="filters-accordion-expeditions" />
+				<x-dates-rates.filters.chip drawer_id="dates-rates-filters" title="Adventure Options" accordion_id="filters-accordion-adventure-options" />
+				<x-dates-rates.filters.chip drawer_id="dates-rates-filters" title="Departure Month" accordion_id="filters-accordion-months" />
+				<x-dates-rates.filters.chip drawer_id="dates-rates-filters" title="Duration" accordion_id="filters-accordion-durations" />
+				<x-dates-rates.filters.chip drawer_id="dates-rates-filters" title="Ship" accordion_id="filters-accordion-ships" />
 			</x-dates-rates.filters-chips>
 
 			<x-dates-rates.filter-currency>
@@ -37,11 +37,11 @@
 			</x-dates-rates.filter-currency>
 		</div>
 
-		<x-dates-rates.selected-filters />
+		<x-dates-rates.filters.selected />
 
 		<x-dates-rates.sticky-filters>
-			<x-dates-rates.filter-chip drawer_id="dates-rates-filters" title="Filter" accordion_id="filters-accordion-seasons" type="sticky-filter" />
-			<x-dates-rates.filter-chip drawer_id="dates-rates-filters-currency" type="currency" title="Currency: USD" />
+			<x-dates-rates.filters.chip drawer_id="dates-rates-filters" title="Filter" accordion_id="filters-accordion-seasons" type="sticky-filter" />
+			<x-dates-rates.filters.chip drawer_id="dates-rates-filters-currency" type="currency" title="Currency: USD" />
 		</x-dates-rates.sticky-filters>
 
 		<x-drawer id="dates-rates-filters-currency" animation_direction="up" class="dates-rates__drawer-currency">

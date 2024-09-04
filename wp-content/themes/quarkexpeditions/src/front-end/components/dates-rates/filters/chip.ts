@@ -11,7 +11,7 @@ import { TPAccordionHandleElement } from '@travelopia/web-components';
 /**
  * Internal Dependency.
  */
-import { debounce } from '../../global/utility';
+import { debounce } from '../../../global/utility';
 
 /**
  * Get the store.
