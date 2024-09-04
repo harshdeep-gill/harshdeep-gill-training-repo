@@ -32,8 +32,9 @@ use const Quark\Expeditions\POST_TYPE as EXPEDITION_POST_TYPE;
 use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
 use const Quark\StaffMembers\SEASON_TAXONOMY;
 
-const CACHE_GROUP           = 'quark_search';
-const SCHEDULE_REINDEX_HOOK = 'qrk_search_reindex_departures';
+const CACHE_GROUP                 = 'quark_search';
+const SCHEDULE_REINDEX_HOOK       = 'qrk_search_reindex_departures';
+const REINDEX_POST_IDS_OPTION_KEY = 'qrk_search_posts_to_be_reindexed';
 
 /**
  * Bootstrap.
@@ -447,7 +448,7 @@ function track_posts_to_be_reindexed( int $post_id = 0, ?WP_Post $post = null, b
 	}
 
 	// Get option.
-	$option = get_option( 'qrk_search_posts_to_be_reindexed', [] );
+	$option = get_option( REINDEX_POST_IDS_OPTION_KEY, [] );
 
 	// Validate option.
 	if ( ! is_array( $option ) ) {
@@ -463,7 +464,7 @@ function track_posts_to_be_reindexed( int $post_id = 0, ?WP_Post $post = null, b
 	$option[] = $post_id;
 
 	// Update the option.
-	update_option( 'qrk_search_posts_to_be_reindexed', $option );
+	update_option( REINDEX_POST_IDS_OPTION_KEY, $option );
 }
 
 /**
@@ -474,7 +475,7 @@ function track_posts_to_be_reindexed( int $post_id = 0, ?WP_Post $post = null, b
  */
 function reindex_departures(): void {
 	// Get option.
-	$post_ids = get_option( 'qrk_search_posts_to_be_reindexed', [] );
+	$post_ids = get_option( REINDEX_POST_IDS_OPTION_KEY, [] );
 
 	// Validate option.
 	if ( ! is_array( $post_ids ) ) {
@@ -608,7 +609,7 @@ function reindex_departures(): void {
 	);
 
 	// Reset the option.
-	update_option( 'qrk_search_posts_to_be_reindexed', [] );
+	update_option( REINDEX_POST_IDS_OPTION_KEY, [] );
 }
 
 /**
