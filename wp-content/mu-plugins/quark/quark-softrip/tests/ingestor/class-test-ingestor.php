@@ -81,7 +81,7 @@ class Test_Ingestor extends WP_UnitTestCase {
 				'id'           => $expedition_post_id,
 				'name'         => get_raw_text_from_html( get_the_title( $expedition_post_id ) ),
 				'published'    => true,
-				'description'  => '', // @todo https://tuispecialist.atlassian.net/browse/QE-589 - Get description after parsing post content.
+				'overview'     => '',
 				'images'       => [],
 				'destinations' => [],
 				'itineraries'  => [],
@@ -155,6 +155,9 @@ class Test_Ingestor extends WP_UnitTestCase {
 			[
 				'ID'           => $expedition_post_id,
 				'post_content' => $post_content,
+				'meta_input'   => [
+					'overview' => 'Here is the overview. <h1>Surfing</h1> You never know the world until you explore it.',
+				],
 			]
 		);
 
@@ -167,7 +170,7 @@ class Test_Ingestor extends WP_UnitTestCase {
 				'id'           => $expedition_post_id,
 				'name'         => get_raw_text_from_html( get_the_title( $expedition_post_id ) ),
 				'published'    => true,
-				'description'  => '', // @todo Get description after parsing post content.
+				'overview'     => 'Here is the overview. Surfing You never know the world until you explore it.',
 				'images'       => [
 					[
 						'id'           => $media_post_id1,
@@ -1937,7 +1940,7 @@ class Test_Ingestor extends WP_UnitTestCase {
 				'id'           => $expedition_post_id2,
 				'name'         => get_raw_text_from_html( get_the_title( $expedition_post_id2 ) ),
 				'published'    => false,
-				'description'  => '', // @todo https://tuispecialist.atlassian.net/browse/QE-580
+				'overview'     => '',
 				'images'       => [],
 				'destinations' => [],
 				'itineraries'  => [],
@@ -1946,8 +1949,8 @@ class Test_Ingestor extends WP_UnitTestCase {
 				'id'           => $expedition_post_id,
 				'name'         => get_raw_text_from_html( get_the_title( $expedition_post_id ) ),
 				'published'    => true,
-				'description'  => '', // @todo https://tuispecialist.atlassian.net/browse/QE-580 - Get description after parsing post content.
-				'images'       => [], // @todo https://tuispecialist.atlassian.net/browse/QE-580 - Get description after parsing post content.
+				'overview'     => '',
+				'images'       => [],
 				'destinations' => [],
 				'itineraries'  => [],
 			],
