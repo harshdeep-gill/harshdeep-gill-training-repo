@@ -24,70 +24,70 @@
 		@endif
 
 		<x-dates-rates.item>
-			<x-dates-rates.item-table title="Cabin Categories">
+			<x-dates-rates.item.table title="Cabin Categories">
 				{{-- Table Head --}}
-				<x-dates-rates.item-table-head>
-					<x-dates-rates.item-table-row>
-						<x-dates-rates.item-table-heading>{{ __('Expedition', 'qrk') }}</x-dates-rates.item-table-heading>
-						<x-dates-rates.item-table-heading>{{ __('Promo Offers', 'qrk') }}</x-dates-rates.item-table-heading>
+				<x-dates-rates.item.table-head>
+					<x-dates-rates.item.table-row>
+						<x-dates-rates.item.table-heading>{{ __('Expedition', 'qrk') }}</x-dates-rates.item.table-heading>
+						<x-dates-rates.item.table-heading>{{ __('Promo Offers', 'qrk') }}</x-dates-rates.item.table-heading>
 
 						{{-- Cabin Names --}}
 						@foreach ( $card['cabin_data'] as $cabin )
-							<x-dates-rates.item-table-heading>{{ $cabin['name'] ?? '' }}</x-dates-rates.item-table-heading>
+							<x-dates-rates.item.table-heading>{{ $cabin['name'] ?? '' }}</x-dates-rates.item.table-heading>
 						@endforeach
 
-					</x-dates-rates.item-table-row>
-				</x-dates-rates.item-table-head>
+					</x-dates-rates.item.table-row>
+				</x-dates-rates.item.table-head>
 
 				{{-- Table Body --}}
-				<x-dates-rates.item-table-body>
+				<x-dates-rates.item.table-body>
 
 					{{-- Expedition and cabin details with original price --}}
-					<x-dates-rates.item-table-row>
-						<x-dates-rates.item-table-column rowspan="{{ $number_of_promos + 2 }}">
+					<x-dates-rates.item.table-row>
+						<x-dates-rates.item.table-column rowspan="{{ $number_of_promos + 2 }}">
 							<x-dates-rates.expedition>
-								<x-dates-rates.expedition-overline>
-									<x-dates-rates.expedition-overline-link title="{{ $card['region'] ?? '' }}"
+								<x-dates-rates.expedition.overline>
+									<x-dates-rates.expedition.overline-link title="{{ $card['region'] ?? '' }}"
 										url="" />
-									<x-dates-rates.expedition-overline-link title="{{ $card['ship_title'] ?? '' }}"
+									<x-dates-rates.expedition.overline-link title="{{ $card['ship_title'] ?? '' }}"
 										url="{{ $card['ship_link'] ?? '' }}" />
-								</x-dates-rates.expedition-overline>
-								<x-dates-rates.expedition-title text="{{ $card['expedition_title'] ?? '' }}"
+								</x-dates-rates.expedition.overline>
+								<x-dates-rates.expedition.title text="{{ $card['expedition_title'] ?? '' }}"
 									url="{{ $card['expedition_link'] ?? '' }}" />
-								<x-dates-rates.expedition-dates duration_date="{{ $card['duration_dates'] ?? '' }}"
+								<x-dates-rates.expedition.dates duration_date="{{ $card['duration_dates'] ?? '' }}"
 									duration="{{ $card['duration_days'] ?? 0 }}" />
-								<x-dates-rates.expedition-meta>
-									<x-dates-rates.expedition-meta-item>
-										<x-dates-rates.expedition-meta-label>
+								<x-dates-rates.expedition.meta>
+									<x-dates-rates.expedition.meta-item>
+										<x-dates-rates.expedition.meta-label>
 											{{ __('Start Location', 'qrk') }}
-										</x-dates-rates.expedition-meta-label>
-										<x-dates-rates.expedition-meta-value>
+										</x-dates-rates.expedition.meta-label>
+										<x-dates-rates.expedition.meta-value>
 											{{ $card['start_location'] ?? '' }}
-										</x-dates-rates.expedition-meta-value>
-									</x-dates-rates.expedition-meta-item>
-									<x-dates-rates.expedition-meta-item>
-										<x-dates-rates.expedition-meta-label>
+										</x-dates-rates.expedition.meta-value>
+									</x-dates-rates.expedition.meta-item>
+									<x-dates-rates.expedition.meta-item>
+										<x-dates-rates.expedition.meta-label>
 											{{ __('End Location', 'qrk') }}
-										</x-dates-rates.expedition-meta-label>
-										<x-dates-rates.expedition-meta-value>
+										</x-dates-rates.expedition.meta-label>
+										<x-dates-rates.expedition.meta-value>
 											{{ $card['end_location'] ?? '' }}
-										</x-dates-rates.expedition-meta-value>
-									</x-dates-rates.expedition-meta-item>
-									<x-dates-rates.expedition-meta-item>
-										<x-dates-rates.expedition-meta-label>
+										</x-dates-rates.expedition.meta-value>
+									</x-dates-rates.expedition.meta-item>
+									<x-dates-rates.expedition.meta-item>
+										<x-dates-rates.expedition.meta-label>
 											{{ __('Languages', 'qrk') }}
-										</x-dates-rates.expedition-meta-label>
-										<x-dates-rates.expedition-meta-value>
+										</x-dates-rates.expedition.meta-label>
+										<x-dates-rates.expedition.meta-value>
 											{{ $card['languages'] ?? '' }}
-										</x-dates-rates.expedition-meta-value>
-									</x-dates-rates.expedition-meta-item>
-								</x-dates-rates.expedition-meta>
-								<x-dates-rates.expedition-cta text="Request a Quote" url="#" />
+										</x-dates-rates.expedition.meta-value>
+									</x-dates-rates.expedition.meta-item>
+								</x-dates-rates.expedition.meta>
+								<x-dates-rates.expedition.cta text="Request a Quote" url="#" />
 							</x-dates-rates.expedition>
-						</x-dates-rates.item-table-column>
+						</x-dates-rates.item.table-column>
 
-						<x-dates-rates.item-table-column>
-							<x-dates-rates.item-table-column-title>
+						<x-dates-rates.item.table-column>
+							<x-dates-rates.item.table-column-title>
 								<strong>{{ __('Brochure Price', 'qrk') }}</strong>
 
 								@if ( !empty( $card['transfer_package_details'] ) )
@@ -112,12 +112,12 @@
 									</x-tooltip>
 								@endif
 
-							</x-dates-rates.item-table-column-title>
-						</x-dates-rates.item-table-column>
+							</x-dates-rates.item.table-column-title>
+						</x-dates-rates.item.table-column>
 
 						{{-- Cabin Details --}}
 						@foreach ( $card['cabin_data'] as $cabin )
-							<x-dates-rates.item-table-column>
+							<x-dates-rates.item.table-column>
 
 								@if ( empty($cabin['promos'] ) )
 									{{ $cabin['brochure_price'] ?? 0 }}
@@ -127,10 +127,10 @@
 									</del>
 								@endif
 
-							</x-dates-rates.item-table-column>
+							</x-dates-rates.item.table-column>
 						@endforeach
 
-					</x-dates-rates.item-table-row>
+					</x-dates-rates.item.table-row>
 
 					{{-- Promo prices --}}
 					@if ( !empty( $card['available_promos'] ) )
@@ -140,34 +140,34 @@
 								$is_sold_out =
 									$cabin['availability_status'] === 'S' || $cabin['availability_status'] === 'R';
 							@endphp
-							<x-dates-rates.item-table-row>
-								<x-dates-rates.item-table-column>
-									<x-dates-rates.item-table-column-title>
+							<x-dates-rates.item.table-row>
+								<x-dates-rates.item.table-column>
+									<x-dates-rates.item.table-column-title>
 										<strong>
 											{{ $promo_data['description'] }}
 										</strong>
-									</x-dates-rates.item-table-column-title>
-								</x-dates-rates.item-table-column>
+									</x-dates-rates.item.table-column-title>
+								</x-dates-rates.item.table-column>
 
 								{{-- Cabin-wise promo price --}}
 								@foreach ( $card['cabin_data'] as $cabin )
-									<x-dates-rates.item-table-column :is_pay_in_full="$is_pay_in_full" :is_sold_out="$is_sold_out">
+									<x-dates-rates.item.table-column :is_pay_in_full="$is_pay_in_full" :is_sold_out="$is_sold_out">
 										@if ( !empty( $cabin['promos'][$promo_code] ) )
 											{{ $cabin['promos'][$promo_code] }}
 										@endif
-									</x-dates-rates.item-table-column>
+									</x-dates-rates.item.table-column>
 								@endforeach
-							</x-dates-rates.item-table-row>
+							</x-dates-rates.item.table-row>
 						@endforeach
 					@endif
 
 					{{-- Availability --}}
-					<x-dates-rates.item-table-row>
-						<x-dates-rates.item-table-column>
-							<x-dates-rates.item-table-column-title>
+					<x-dates-rates.item.table-row>
+						<x-dates-rates.item.table-column>
+							<x-dates-rates.item.table-column-title>
 								<strong>{{ __('Availability', 'qrk') }}</strong>
-							</x-dates-rates.item-table-column-title>
-						</x-dates-rates.item-table-column>
+							</x-dates-rates.item.table-column-title>
+						</x-dates-rates.item.table-column>
 
 						{{-- Cabin-wise availability --}}
 						@foreach ( $card['cabin_data'] as $cabin )
@@ -209,58 +209,58 @@
 										: '';
 								}
 							@endphp
-							<x-dates-rates.item-table-column :is_stock_limited="$is_limited_stock" :is_sold_out="$is_sold_out">
+							<x-dates-rates.item.table-column :is_stock_limited="$is_limited_stock" :is_sold_out="$is_sold_out">
 								{{ $availability_description }}
-							</x-dates-rates.item-table-column>
+							</x-dates-rates.item.table-column>
 						@endforeach
-					</x-dates-rates.item-table-row>
+					</x-dates-rates.item.table-row>
 
-				</x-dates-rates.item-table-body>
+				</x-dates-rates.item.table-body>
 
 				{{-- Table Foot --}}
-				<x-dates-rates.item-table-foot>
-					<x-dates-rates.item-table-row>
-						<x-dates-rates.item-table-column colspan="{{ $number_of_cabins + 2 }}">
+				<x-dates-rates.item.table-foot>
+					<x-dates-rates.item.table-row>
+						<x-dates-rates.item.table-column colspan="{{ $number_of_cabins + 2 }}">
 							<x-dates-rates.adventure-options>
 
 								@if ( ! empty( $card['included_adventure_options'] ) )
-									<x-dates-rates.adventure-options-column :title="__( 'Included Adventure Options' ,'qrk' )">
+									<x-dates-rates.adventure-options.column :title="__( 'Included Adventure Options' ,'qrk' )">
 
 										@foreach ($card['included_adventure_options'] as $included_adventure_option)
-											<x-dates-rates.adventure-options-item
+											<x-dates-rates.adventure-options.item
 												name="{{ $included_adventure_option['title'] ?? '' }}"
 												{{-- icon="{{ $included_adventure_option['icon_image_id'] }}" @todo - https://tuispecialist.atlassian.net/browse/QE-600 Update icon component to accept image id and fetch the URL to display. --}}>
-											</x-dates-rates.adventure-options-item>
+											</x-dates-rates.adventure-options.item>
 										@endforeach
 
-									</x-dates-rates.adventure-options-column>
+									</x-dates-rates.adventure-options.column>
 								@endif
 
 								@if ( $card['paid_adventure_options'] )
-									<x-dates-rates.adventure-options-column title="Paid Adventure Options">
+									<x-dates-rates.adventure-options.column title="Paid Adventure Options">
 
 										@foreach ( $card['paid_adventure_options'] as $paid_adventure_option )
-											<x-dates-rates.adventure-options-item
+											<x-dates-rates.adventure-options.item
 												name="{{ $paid_adventure_option['title'] ?? '' }}"
 												{{-- icon="{{ $paid_adventure_option['icon_image_id'] }}" @todo - https://tuispecialist.atlassian.net/browse/QE-600 Update icon component to accept image id and fetch the URL to display. --}} :is_paid="true">
-												<x-dates-rates.adventure-options-item-price
+												<x-dates-rates.adventure-options.item-price
 													price="{{ $paid_adventure_option['price_per_person'] ?? '' }}"
 													currency="{{ $paid_adventure_option['currency'] ?? '' }}"
 													count="{{ $paid_adventure_option['spaces_available'] ?? 0 }}" />
-											</x-dates-rates.adventure-options-item>
+											</x-dates-rates.adventure-options.item>
 										@endforeach
 
-									</x-dates-rates.adventure-options-column>
+									</x-dates-rates.adventure-options.column>
 								@endif
 
 							</x-dates-rates.adventure-options>
-						</x-dates-rates.item-table-column>
-					</x-dates-rates.item-table-row>
-				</x-dates-rates.item-table-foot>
+						</x-dates-rates.item.table-column>
+					</x-dates-rates.item.table-row>
+				</x-dates-rates.item.table-foot>
 
-			</x-dates-rates.item-table>
+			</x-dates-rates.item.table>
 
-			<x-dates-rates.info :text="__( 'Prices are shown per person', 'qrk' )" />
+			<x-dates-rates.item.info :text="__( 'Prices are shown per person', 'qrk' )" />
 
 		</x-dates-rates.item>
 

@@ -17,16 +17,16 @@
 	<div class="dates-rates__filters-container">
 		<h2 class="dates-rates__filters-heading">{{ __( 'Filters', 'qrk' ) }}</h2>
 		<div class="dates-rates__filters">
-			<x-dates-rates.filters-chips>
+			<x-dates-rates.filters.chips>
 				<x-dates-rates.filters.chip drawer_id="dates-rates-filters" title="Region & Season" accordion_id="filters-accordion-seasons" />
 				<x-dates-rates.filters.chip drawer_id="dates-rates-filters" title="Expedition" accordion_id="filters-accordion-expeditions" />
 				<x-dates-rates.filters.chip drawer_id="dates-rates-filters" title="Adventure Options" accordion_id="filters-accordion-adventure-options" />
 				<x-dates-rates.filters.chip drawer_id="dates-rates-filters" title="Departure Month" accordion_id="filters-accordion-months" />
 				<x-dates-rates.filters.chip drawer_id="dates-rates-filters" title="Duration" accordion_id="filters-accordion-durations" />
 				<x-dates-rates.filters.chip drawer_id="dates-rates-filters" title="Ship" accordion_id="filters-accordion-ships" />
-			</x-dates-rates.filters-chips>
+			</x-dates-rates.filters.chips>
 
-			<x-dates-rates.filter-currency>
+			<x-dates-rates.filters.currency>
 				<x-form.select>
 					<x-form.option value="USD" label="$ USD" selected="yes">{{ __( '$ USD', 'qrk' ) }}</x-form.option>
 					<x-form.option value="CAD" label="$ CAD">{{ __( '$ CAD', 'qrk' ) }}</x-form.option>
@@ -34,15 +34,15 @@
 					<x-form.option value="GBP" label="£ GBP">{{ __( '£ GBP', 'qrk' ) }}</x-form.option>
 					<x-form.option value="EUR" label="€ EUR">{{ __( '€ EUR', 'qrk' ) }}</x-form.option>
 				</x-form.select>
-			</x-dates-rates.filter-currency>
+			</x-dates-rates.filters.currency>
 		</div>
 
 		<x-dates-rates.filters.selected />
 
-		<x-dates-rates.sticky-filters>
+		<x-dates-rates.filters.sticky>
 			<x-dates-rates.filters.chip drawer_id="dates-rates-filters" title="Filter" accordion_id="filters-accordion-seasons" type="sticky-filter" />
 			<x-dates-rates.filters.chip drawer_id="dates-rates-filters-currency" type="currency" title="Currency: USD" />
-		</x-dates-rates.sticky-filters>
+		</x-dates-rates.filters.sticky>
 
 		<x-drawer id="dates-rates-filters-currency" animation_direction="up" class="dates-rates__drawer-currency">
 			<x-drawer.header>
@@ -143,7 +143,7 @@
 			</x-drawer.body>
 
 			<x-drawer.footer>
-				<x-dates-rates.cta-clear-filters />
+				<x-dates-rates.filters.cta-clear />
 				<x-button class="dates-rates__apply-filters-btn" size="big">View Results (132)</x-button>
 			</x-drawer.footer>
 		</x-drawer>
