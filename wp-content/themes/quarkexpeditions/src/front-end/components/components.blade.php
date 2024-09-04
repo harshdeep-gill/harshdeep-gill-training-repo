@@ -5834,10 +5834,23 @@
 </x-component-demo>
 
 <x-component-demo :keys="[ 'dates-rates' ]">
+	@php
+		/**
+		 * !!! This will be removed after the development of this component is complete and will be handled by the block.
+		 */
+		$filter_data = [
+			'seasons'            => Quark\Search\Departures\get_region_and_season_search_filter_data(),
+			'expeditions'        => Quark\Search\Departures\get_expedition_search_filter_data(),
+			'adventure_options'  => Quark\Search\Departures\get_adventure_options_search_filter_data(),
+			'months'             => Quark\Search\Departures\get_month_search_filter_data(),
+			'durations'          => Quark\Search\Departures\get_duration_search_filter_data(),
+			'ships'              => Quark\Search\Departures\get_ship_search_filter_data(),
+		];
+	@endphp
 	<x-section>
 		<x-dates-rates>
 			<x-dates-rates.header>
-				<x-dates-rates.filters />
+				<x-dates-rates.filters :filter_data="$filter_data" />
 				<x-dates-rates.results.count :count="10" :total_count="200" />
 			</x-dates-rates.header>
 

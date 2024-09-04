@@ -10,15 +10,6 @@
 ] )
 
 @php
-	$filter_data = [
-		'seasons'            => Quark\Search\Departures\get_region_and_season_search_filter_data(),
-		'expeditions'        => Quark\Search\Departures\get_expedition_search_filter_data(),
-		'adventure_options'  => Quark\Search\Departures\get_adventure_options_search_filter_data(),
-		'months'             => Quark\Search\Departures\get_month_search_filter_data(),
-		'durations'          => Quark\Search\Departures\get_duration_search_filter_data(),
-		'ships'              => Quark\Search\Departures\get_ship_search_filter_data(),
-	];
-
 	if ( empty( $filter_data ) || ! is_array( $filter_data ) ) {
 		return;
 	}
