@@ -134,8 +134,12 @@
 			margin-top: -1px;
 			padding-top: var(--spacing-5);
 
-			.btn:last-child {
+			#{$self}__apply-filters-btn {
 				flex: 1;
+
+				.btn {
+					width: 100%;
+				}
 
 				@media screen and (min-width: grid-size(md)) {
 					flex: initial;

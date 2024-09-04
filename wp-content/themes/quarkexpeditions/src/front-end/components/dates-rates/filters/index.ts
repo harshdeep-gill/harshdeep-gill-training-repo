@@ -7,7 +7,6 @@ const { customElements } = window;
  * Internal Dependencies
  */
 import DatesRatesFilterChipElement from './chip';
-import DatesRatesFiltersControllerElement from './controller';
 import DatesRatesFilterCurrencyDropdownElement from './currency-dropdown';
 import DatesRatesSelectedFiltersElement from './selected';
 import DatesRatesSelectedFilterPillElement from './selected-pill';
@@ -20,11 +19,12 @@ import DatesRatesFilterAdventureOptionsElement from './adventure-options';
 import DatesRatesFilterDepartureMonthsElement from './departure-months';
 import DatesRatesFilterDurationsElement from './durations';
 import DatesRatesFilterShipsElement from './ships';
+import DatesRatesFiltersCtaViewResultsElement from './cta-view-results';
+import DatesRatesFiltersCtaClearElement from './cta-clear';
 
 /**
  * Define custom components.
  */
-customElements.define( 'quark-dates-rates-filters-controller', DatesRatesFiltersControllerElement );
 customElements.define( 'quark-dates-rates-filter-chip', DatesRatesFilterChipElement );
 customElements.define( 'quark-dates-rates-selected-filters', DatesRatesSelectedFiltersElement );
 customElements.define( 'quark-dates-rates-selected-filter-pill', DatesRatesSelectedFilterPillElement );
@@ -38,3 +38,5 @@ customElements.define( 'quark-dates-rates-filter-adventure-options', DatesRatesF
 customElements.define( 'quark-dates-rates-filter-departure-months', DatesRatesFilterDepartureMonthsElement );
 customElements.define( 'quark-dates-rates-filter-durations', DatesRatesFilterDurationsElement );
 customElements.define( 'quark-dates-rates-filter-ships', DatesRatesFilterShipsElement );
+customElements.define( 'quark-dates-rates-filters-cta-view-results', DatesRatesFiltersCtaViewResultsElement );
+customElements.define( 'quark-dates-rates-filters-cta-clear-all', DatesRatesFiltersCtaClearElement );

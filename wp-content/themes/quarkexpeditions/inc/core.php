@@ -408,6 +408,12 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 				'quark-dates-rates-filter-ships'              => [
 					'class' => true,
 				],
+				'quark-dates-rates-filters-cta-view-results'  => [
+					'class' => true,
+				],
+				'quark-dates-rates-filters-cta-clear-all'     => [
+					'class' => true,
+				],
 				'tp-form'                                     => [
 					'class'          => true,
 					'prevent-submit' => true,
