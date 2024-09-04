@@ -395,11 +395,6 @@ function reindex_departures( int $post_id = 0, ?WP_post $post = null, bool $upda
 	// Get post type.
 	$post_type = $post->post_type;
 
-	// No-need for custom re-indexing for departure.
-	if ( DEPARTURE_POST_TYPE === $post_type ) {
-		return;
-	}
-
 	// Return if not a supported post type.
 	if ( ! in_array( $post_type, [ EXPEDITION_POST_TYPE, ITINERARY_POST_TYPE ], true ) ) {
 		return;
