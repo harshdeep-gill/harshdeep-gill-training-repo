@@ -50,7 +50,7 @@
 								<x-form.field-group>
 									@if ( ! empty( $filter_data['seasons'] ) )
 										@foreach ( $filter_data['seasons'] as $filter_value => $filter_label )
-											<x-form.checkbox name="seasons" :label="$filter_label" :value="$filter_value" data-label="{!! $filter_label !!}" />
+											<x-dates-rates.filters.checkbox name="seasons" :label="$filter_label" :value="$filter_value" data-label="{!! $filter_label !!}" />
 										@endforeach
 									@endif
 								</x-form.field-group>
@@ -60,61 +60,71 @@
 					<x-accordion.item id="filters-accordion-expeditions">
 						<x-accordion.item-handle title="Expedition" />
 						<x-accordion.item-content>
-							<x-form.field-group>
-								@if ( ! empty( $filter_data['expeditions'] ) )
-									@foreach ( $filter_data['expeditions'] as $filter_value => $filter_label )
-										<x-form.checkbox name="expeditions" :label="$filter_label" :value="$filter_value" />
-									@endforeach
-								@endif
-							</x-form.field-group>
+							<quark-dates-rates-filter-expeditions>
+								<x-form.field-group>
+									@if ( ! empty( $filter_data['expeditions'] ) )
+										@foreach ( $filter_data['expeditions'] as $filter_value => $filter_label )
+											<x-dates-rates.filters.checkbox name="expeditions" :label="$filter_label" :value="$filter_value" />
+										@endforeach
+									@endif
+								</x-form.field-group>
+							</quark-dates-rates-filter-expeditions>
 						</x-accordion.item-content>
 					</x-accordion.item>
 					<x-accordion.item id="filters-accordion-adventure-options">
 						<x-accordion.item-handle title="Adventure Options (with availability)" />
 						<x-accordion.item-content>
-							<x-form.field-group>
-								@if ( ! empty( $filter_data['adventure_options'] ) )
-									@foreach ( $filter_data['adventure_options'] as $filter_value => $filter_label )
-										<x-form.checkbox name="adventure_options" :label="$filter_label" :value="$filter_value" />
-									@endforeach
-								@endif
-							</x-form.field-group>
+							<quark-dates-rates-filter-adventure-options>
+								<x-form.field-group>
+									@if ( ! empty( $filter_data['adventure_options'] ) )
+										@foreach ( $filter_data['adventure_options'] as $filter_value => $filter_label )
+											<x-dates-rates.filters.checkbox name="adventure_options" :label="$filter_label" :value="$filter_value" />
+										@endforeach
+									@endif
+								</x-form.field-group>
+							</quark-dates-rates-filter-adventure-options>
 						</x-accordion.item-content>
 					</x-accordion.item>
 					<x-accordion.item id="filters-accordion-months">
 						<x-accordion.item-handle title="Departure Month" />
 						<x-accordion.item-content>
-							<x-form.field-group>
-								@if ( ! empty( $filter_data['months'] ) )
-									@foreach ( $filter_data['months'] as $filter_value => $filter_label )
-										<x-form.checkbox name="months" :label="$filter_label" :value="$filter_value" />
-									@endforeach
-								@endif
-							</x-form.field-group>
+							<quark-dates-rates-filter-departure-months>
+								<x-form.field-group>
+									@if ( ! empty( $filter_data['months'] ) )
+										@foreach ( $filter_data['months'] as $filter_value => $filter_label )
+											<x-dates-rates.filters.checkbox name="months" :label="$filter_label" :value="$filter_value" />
+										@endforeach
+									@endif
+								</x-form.field-group>
+							</quark-dates-rates-filter-departure-months>
 						</x-accordion.item-content>
 					</x-accordion.item>
 					<x-accordion.item id="filters-accordion-durations">
 						<x-accordion.item-handle title="Duration of Voyage (days)" />
 						<x-accordion.item-content>
-							<x-form.field-group>
-								@if ( ! empty( $filter_data['durations'] ) )
-									@foreach ( $filter_data['durations'] as $filter_value => $filter_label )
-										<x-form.checkbox name="durations" :label="$filter_label" :value="$filter_value" />
-									@endforeach
-								@endif
-							</x-form.field-group>
+							<quark-dates-rates-filter-durations>
+								<x-form.field-group>
+									@if ( ! empty( $filter_data['durations'] ) )
+										@foreach ( $filter_data['durations'] as $filter_value => $filter_label )
+											<x-dates-rates.filters.checkbox name="durations" :label="$filter_label" :value="$filter_value" />
+										@endforeach
+									@endif
+								</x-form.field-group>
+							</quark-dates-rates-filter-durations>
 						</x-accordion.item-content>
 					</x-accordion.item>
 					<x-accordion.item id="filters-accordion-ships">
 						<x-accordion.item-handle title="Ship" />
 						<x-accordion.item-content>
-							<x-form.field-group>
-								@if ( ! empty( $filter_data['ships'] ) )
-									@foreach ( $filter_data['ships'] as $filter_value => $filter_label )
-										<x-form.checkbox name="ships" :label="$filter_label" :value="$filter_value" />
-									@endforeach
-								@endif
-							</x-form.field-group>
+							<quark-dates-rates-filter-ships>
+								<x-form.field-group>
+									@if ( ! empty( $filter_data['ships'] ) )
+										@foreach ( $filter_data['ships'] as $filter_value => $filter_label )
+											<x-dates-rates.filters.checkbox name="ships" :label="$filter_label" :value="$filter_value" />
+										@endforeach
+									@endif
+								</x-form.field-group>
+							</quark-dates-rates-filter-ships>
 						</x-accordion.item-content>
 					</x-accordion.item>
 				</x-accordion>

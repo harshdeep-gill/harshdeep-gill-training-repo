@@ -68,9 +68,9 @@ const addFilterCreator = ( filterName: string ) => {
 	 *
 	 * @param {Object} filter A singular filter.
 	 */
-	return ( filter: DatesRatesFilter ) => {
+	return ( filter: DatesRatesFilterState ) => {
 		// Get the state.
-		const filterList: DatesRatesFilter[] = getState()[ filterName ];
+		const filterList: DatesRatesFilterState[] = getState()[ filterName ];
 
 		// Check if the given filter is already selected.
 		if ( filterList.find( ( existingFilter ) => existingFilter.value === filter.value ) ) {
@@ -79,7 +79,7 @@ const addFilterCreator = ( filterName: string ) => {
 		}
 
 		// Create an update object.
-		const updatedObject: { [key: string]: DatesRatesFilter[] } = {};
+		const updatedObject: { [key: string]: DatesRatesFilterState[] } = {};
 		updatedObject[ filterName ] = [ ...filterList, filter ];
 
 		// Set the state
@@ -102,10 +102,10 @@ const removeFilterCreator = ( filterName: string ) => {
 	 */
 	return ( filterValue: string ) => {
 		// Get the state.
-		const filterList: DatesRatesFilter[] = getState()[ filterName ];
+		const filterList: DatesRatesFilterState[] = getState()[ filterName ];
 
 		// Create an update object.
-		const updatedObject: { [key: string]: DatesRatesFilter[] } = {};
+		const updatedObject: { [key: string]: DatesRatesFilterState[] } = {};
 		updatedObject[ filterName ] = filterList.filter( ( existingFilter ) => existingFilter.value !== filterValue );
 
 		// Set the state.
@@ -116,3 +116,38 @@ const removeFilterCreator = ( filterName: string ) => {
 // seasons actions.
 export const addSeason = addFilterCreator( 'seasons' );
 export const removeSeason = removeFilterCreator( 'seasons' );
+
+// expeditions actions.
+export const addExpedition = addFilterCreator( 'expeditions' );
+export const removeExpedition = removeFilterCreator( 'expeditions' );
+
+// adventure_options actions.
+export const addAdventureOption = addFilterCreator( 'adventure_options' );
+export const removeAdventureOption = removeFilterCreator( 'adventure_options' );
+
+// months actions.
+export const addDepartureMonth = addFilterCreator( 'months' );
+export const removeDepartureMonth = removeFilterCreator( 'months' );
+
+// durations actions.
+export const addDuration = addFilterCreator( 'durations' );
+export const removeDuration = removeFilterCreator( 'durations' );
+
+// ships actions.
+export const addShip = addFilterCreator( 'ships' );
+export const removeShip = removeFilterCreator( 'ships' );
+
+/**
+ * Clears all the filters.
+ */
+export const clearAllFilters = () => {
+	// Set the state.
+	setState( {
+		seasons: [],
+		expeditions: [],
+		adventure_options: [],
+		months: [],
+		durations: [],
+		ships: [],
+	} );
+};

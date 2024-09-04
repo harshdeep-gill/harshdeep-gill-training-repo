@@ -13,9 +13,9 @@ interface DatesRatesFilters {
 }
 
 /**
- * Interface DatesRatesFilter
+ * Interface DatesRatesFilterState
  */
-interface DatesRatesFilter {
+interface DatesRatesFilterState {
 	value: string,
 	label: string,
 }
@@ -26,5 +26,10 @@ interface DatesRatesFilter {
 interface DatesRatesState {
 	selectedFilters: DatesRatesFilters,
 	areCurrencyFiltersSyncing: boolean,
-	seasons: DatesRatesFilter[],
+	seasons: DatesRatesFilterState[],
+	expeditions: DatesRatesFilterState[],
+	'adventure_options': DatesRatesFilterState[],
+	months: DatesRatesFilterState[],
+	durations: DatesRatesFilterState[],
+	ships: DatesRatesFilterState[],
 }

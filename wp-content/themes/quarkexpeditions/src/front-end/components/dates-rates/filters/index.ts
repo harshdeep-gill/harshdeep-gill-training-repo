@@ -15,6 +15,11 @@ import DatesRatesFilterStickyCurrencyElement from './sticky-currency';
 import DatesRatesFilterCurrencyRadiosElement from './currency-radios';
 import DatesRatesFilterStickyFilterElement from './sticky-filter';
 import DatesRatesFilterSeasonsElement from './seasons';
+import DatesRatesFilterExpeditionsElement from './expeditions';
+import DatesRatesFilterAdventureOptionsElement from './adventure-options';
+import DatesRatesFilterDepartureMonthsElement from './departure-months';
+import DatesRatesFilterDurationsElement from './durations';
+import DatesRatesFilterShipsElement from './ships';
 
 /**
  * Define custom components.
@@ -28,3 +33,8 @@ customElements.define( 'quark-dates-rates-filter-sticky-currency', DatesRatesFil
 customElements.define( 'quark-dates-rates-filter-currency-radios', DatesRatesFilterCurrencyRadiosElement );
 customElements.define( 'quark-dates-rates-filter-sticky-filter', DatesRatesFilterStickyFilterElement );
 customElements.define( 'quark-dates-rates-filter-seasons', DatesRatesFilterSeasonsElement );
+customElements.define( 'quark-dates-rates-filter-expeditions', DatesRatesFilterExpeditionsElement );
+customElements.define( 'quark-dates-rates-filter-adventure-options', DatesRatesFilterAdventureOptionsElement );
+customElements.define( 'quark-dates-rates-filter-departure-months', DatesRatesFilterDepartureMonthsElement );
+customElements.define( 'quark-dates-rates-filter-durations', DatesRatesFilterDurationsElement );
+customElements.define( 'quark-dates-rates-filter-ships', DatesRatesFilterShipsElement );

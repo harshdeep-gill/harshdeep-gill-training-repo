@@ -15,6 +15,11 @@ export const DEFAULT_STATE: DatesRatesState = {
 	selectedFilters: {},
 	areCurrencyFiltersSyncing: false,
 	seasons: [],
+	expeditions: [],
+	adventure_options: [],
+	months: [],
+	durations: [],
+	ships: [],
 };
 
 /**

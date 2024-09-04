@@ -393,6 +393,21 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 				'quark-dates-rates-filter-seasons'            => [
 					'class' => true,
 				],
+				'quark-dates-rates-filter-expeditions'        => [
+					'class' => true,
+				],
+				'quark-dates-rates-filter-adventure-options'  => [
+					'class' => true,
+				],
+				'quark-dates-rates-filter-departure-months'   => [
+					'class' => true,
+				],
+				'quark-dates-rates-filter-durations'          => [
+					'class' => true,
+				],
+				'quark-dates-rates-filter-ships'              => [
+					'class' => true,
+				],
 				'tp-form'                                     => [
 					'class'          => true,
 					'prevent-submit' => true,
