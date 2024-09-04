@@ -1,4 +1,6 @@
 /**
- * Imports.
+ * Internal Dependencies
  */
-import './filters/index';
+import './data';
+import './filters';
+import './results';
