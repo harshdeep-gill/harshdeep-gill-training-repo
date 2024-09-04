@@ -1,12 +1,14 @@
 @import "../../scss/";
 
 .product-options-cards {
-
 	$self: &;
+
+	display: block;
 
 	&__slides {
 		gap: var(--spacing-4);
 		align-items: stretch;
+		padding-bottom: var(--spacing-6);
 	}
 
 	&__track {
@@ -179,7 +181,7 @@
 		justify-content: space-between;
 		align-items: baseline;
 		flex-wrap: wrap;
-		margin-top: var(--spacing-6);
+		// margin-top: var(--spacing-6);
 		gap: var(--spacing-6);
 	}
 
@@ -192,6 +194,10 @@
 		&-text {
 			margin-bottom: 0;
 			font-weight: var(--font-weight-bold);
+		}
+
+		.btn {
+			white-space: normal;
 		}
 	}
 

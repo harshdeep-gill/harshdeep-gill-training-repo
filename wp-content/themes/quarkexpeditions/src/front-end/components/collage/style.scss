@@ -7,6 +7,10 @@
 
 	&__track {
 		border-radius: var(--border-radius-large);
+		margin-left: calc(-1 * var(--grid-col-gutter));
+		margin-right: calc(-1 * var(--grid-col-gutter));
+		padding-left: var(--grid-col-gutter);
+		padding-right: var(--grid-col-gutter);
 	}
 
 	&__slides-container {
@@ -22,7 +26,11 @@
 	&__video-item {
 		border-radius: var(--border-radius-large);
 		min-height: 180px;
-		flex-grow: 1;
+		flex: 0 0 96%;
+
+		@media screen and (min-width: grid-size(md)) {
+			flex-grow: 1;
+		}
 
 		img {
 			transform: scale(1);
