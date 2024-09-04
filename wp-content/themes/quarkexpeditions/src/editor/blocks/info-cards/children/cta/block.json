@@ -1,0 +1,29 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Info Cards - Card CTA",
+	"name": "quark/info-card-cta",
+	"description": "Individual Info card CTA.",
+	"parent": [
+		"quark/info-card"
+	],
+	"category": "layout",
+	"keywords": [
+		"info",
+		"card",
+		"cta"
+	],
+	"textdomain": "qrk",
+	"attributes": {
+		"text": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}
