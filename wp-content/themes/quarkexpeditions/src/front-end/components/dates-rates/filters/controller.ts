@@ -20,7 +20,6 @@ export default class DatesRatesFiltersControllerElement extends HTMLElement {
 	/**
 	 * Properties
 	 */
-	private readonly regionSeasonFilter: NodeListOf<HTMLInputElement>;
 	private readonly expeditionsFilter: NodeListOf<HTMLInputElement>;
 	private readonly adventureOptionsFilter: NodeListOf<HTMLInputElement>;
 	private readonly departureMonthsFilter: NodeListOf<HTMLInputElement>;
@@ -42,7 +41,6 @@ export default class DatesRatesFiltersControllerElement extends HTMLElement {
 		 * These need to be queried on the document because these
 		 * are inside a drawer which is pulled out of the parent on initialization.
 		 */
-		this.regionSeasonFilter = document.querySelectorAll( '#filters-accordion-seasons input[type="checkbox"]' );
 		this.expeditionsFilter = document.querySelectorAll( '#filters-accordion-expeditions input[type="checkbox"]' );
 		this.adventureOptionsFilter = document.querySelectorAll( '#filters-accordion-adventure-options input[type="checkbox"]' );
 		this.departureMonthsFilter = document.querySelectorAll( '#filters-accordion-months input[type="checkbox"]' );
@@ -70,7 +68,6 @@ export default class DatesRatesFiltersControllerElement extends HTMLElement {
 
 		// Get the currency value.
 		const {
-			seasons,
 			adventure_options: adventureOptions,
 			durations,
 			expeditions,
@@ -79,7 +76,6 @@ export default class DatesRatesFiltersControllerElement extends HTMLElement {
 		} = selectedFilters;
 
 		// Update the checkbox according to the state.
-		this.updateCheckboxes( this.regionSeasonFilter, seasons );
 		this.updateCheckboxes( this.adventureOptionsFilter, adventureOptions );
 		this.updateCheckboxes( this.durationsFilter, durations );
 		this.updateCheckboxes( this.expeditionsFilter, expeditions );
@@ -93,7 +89,6 @@ export default class DatesRatesFiltersControllerElement extends HTMLElement {
 	handleApplyFilters() {
 		// Update the state.
 		updateFilters( {
-			seasons: this.getSelectedFilterValues( this.regionSeasonFilter ),
 			expeditions: this.getSelectedFilterValues( this.expeditionsFilter ),
 			adventure_options: this.getSelectedFilterValues( this.adventureOptionsFilter ),
 			months: this.getSelectedFilterValues( this.departureMonthsFilter ),
@@ -150,7 +145,6 @@ export default class DatesRatesFiltersControllerElement extends HTMLElement {
 	handleClearAll() {
 		// Update the filters.
 		updateFilters( {
-			seasons: [],
 			expeditions: [],
 			adventure_options: [],
 			durations: [],

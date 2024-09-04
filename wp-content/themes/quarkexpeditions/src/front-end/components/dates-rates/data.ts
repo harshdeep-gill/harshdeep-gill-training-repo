@@ -14,6 +14,7 @@ export const STORE_NAME = 'datesRates';
 export const DEFAULT_STATE: DatesRatesState = {
 	selectedFilters: {},
 	areCurrencyFiltersSyncing: false,
+	seasons: [],
 };
 
 /**

@@ -13,9 +13,18 @@ interface DatesRatesFilters {
 }
 
 /**
+ * Interface DatesRatesFilter
+ */
+interface DatesRatesFilter {
+	value: string,
+	label: string,
+}
+
+/**
  * Interface DatesRatesState.
  */
 interface DatesRatesState {
 	selectedFilters: DatesRatesFilters,
 	areCurrencyFiltersSyncing: boolean,
+	seasons: DatesRatesFilter[],
 }

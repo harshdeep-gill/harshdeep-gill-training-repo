@@ -46,13 +46,15 @@
 					<x-accordion.item id="filters-accordion-seasons">
 						<x-accordion.item-handle title="Region & Season" />
 						<x-accordion.item-content>
-							<x-form.field-group>
-								@if ( ! empty( $filter_data['seasons'] ) )
-									@foreach ( $filter_data['seasons'] as $filter_value => $filter_label )
-										<x-form.checkbox name="seasons" :label="$filter_label" :value="$filter_value" />
-									@endforeach
-								@endif
-							</x-form.field-group>
+							<quark-dates-rates-filter-seasons>
+								<x-form.field-group>
+									@if ( ! empty( $filter_data['seasons'] ) )
+										@foreach ( $filter_data['seasons'] as $filter_value => $filter_label )
+											<x-form.checkbox name="seasons" :label="$filter_label" :value="$filter_value" data-label="{!! $filter_label !!}" />
+										@endforeach
+									@endif
+								</x-form.field-group>
+							</quark-dates-rates-filter-seasons>
 						</x-accordion.item-content>
 					</x-accordion.item>
 					<x-accordion.item id="filters-accordion-expeditions">

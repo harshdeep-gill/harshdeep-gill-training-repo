@@ -14,6 +14,7 @@ import DatesRatesSelectedFilterPillElement from './selected-pill';
 import DatesRatesFilterStickyCurrencyElement from './sticky-currency';
 import DatesRatesFilterCurrencyRadiosElement from './currency-radios';
 import DatesRatesFilterStickyFilterElement from './sticky-filter';
+import DatesRatesFilterSeasonsElement from './seasons';
 
 /**
  * Define custom components.
@@ -26,3 +27,4 @@ customElements.define( 'quark-dates-rates-filter-currency-dropdown', DatesRatesF
 customElements.define( 'quark-dates-rates-filter-sticky-currency', DatesRatesFilterStickyCurrencyElement );
 customElements.define( 'quark-dates-rates-filter-currency-radios', DatesRatesFilterCurrencyRadiosElement );
 customElements.define( 'quark-dates-rates-filter-sticky-filter', DatesRatesFilterStickyFilterElement );
+customElements.define( 'quark-dates-rates-filter-seasons', DatesRatesFilterSeasonsElement );

@@ -390,6 +390,9 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 				'quark-dates-rates-filter-sticky-currency'    => [
 					'class' => true,
 				],
+				'quark-dates-rates-filter-seasons'            => [
+					'class' => true,
+				],
 				'tp-form'                                     => [
 					'class'          => true,
 					'prevent-submit' => true,
@@ -651,6 +654,7 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'value'        => true,
 					'id'           => true,
 					'form'         => true,
+					'data-*'       => true,
 				],
 				'textarea'                                    => [
 					'id'          => true,
