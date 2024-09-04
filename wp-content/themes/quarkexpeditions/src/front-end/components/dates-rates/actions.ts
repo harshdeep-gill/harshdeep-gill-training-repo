@@ -25,10 +25,13 @@ export const updateCurrency = ( currency: string ) => {
 
 	// Set state.
 	setState( {
-		loading: true,
 		selectedFilters: updatedFilters,
-		page: 1,
-		updateMarkup: true,
+		areCurrencyFiltersSyncing: true,
+	} );
+
+	// Disable syncing status.
+	setState( {
+		areCurrencyFiltersSyncing: false,
 	} );
 
 	//TODO: fetch results
@@ -46,10 +49,7 @@ export const updateFilters = ( filterValues: DatesRatesFilters ) => {
 
 	// Set state.
 	setState( {
-		loading: true,
 		selectedFilters: updatedFilters,
-		page: 1,
-		updateMarkup: true,
 	} );
 
 	//TODO: fetch results

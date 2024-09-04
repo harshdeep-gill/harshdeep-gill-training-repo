@@ -12,21 +12,8 @@ export const STORE_NAME = 'datesRates';
  * Default state.
  */
 export const DEFAULT_STATE: DatesRatesState = {
-	partial: '',
-	selector: '',
 	selectedFilters: {},
-	expeditionId: 0,
-	page: 1,
-	hasNextPage: false,
-	resultCount: 0,
-	remainingCount: 0,
-	markup: '',
-	noResultsMarkup: '',
-	updateMarkup: false,
-	resetMarkup: false,
-	loadMoreResults: false,
-	loading: false,
-	initialized: false,
+	areCurrencyFiltersSyncing: false,
 };
 
 /**

@@ -378,6 +378,15 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'value'  => true,
 					'data-*' => true,
 				],
+				'quark-dates-rates-filter-currency-dropdown'  => [
+					'class' => true,
+				],
+				'quark-dates-rates-filter-currency-radios'    => [
+					'class' => true,
+				],
+				'quark-dates-rates-filter-sticky-currency'    => [
+					'class' => true,
+				],
 				'tp-form'                                     => [
 					'class'          => true,
 					'prevent-submit' => true,

@@ -26,39 +26,15 @@
 				<x-dates-rates.filters.chip drawer_id="dates-rates-filters" title="Ship" accordion_id="filters-accordion-ships" />
 			</x-dates-rates.filters.chips>
 
-			<x-dates-rates.filters.currency>
-				<x-form.select>
-					<x-form.option value="USD" label="$ USD" selected="yes">{{ __( '$ USD', 'qrk' ) }}</x-form.option>
-					<x-form.option value="CAD" label="$ CAD">{{ __( '$ CAD', 'qrk' ) }}</x-form.option>
-					<x-form.option value="AUD" label="$ AUD">{{ __( '$ AUD', 'qrk' ) }}</x-form.option>
-					<x-form.option value="GBP" label="£ GBP">{{ __( '£ GBP', 'qrk' ) }}</x-form.option>
-					<x-form.option value="EUR" label="€ EUR">{{ __( '€ EUR', 'qrk' ) }}</x-form.option>
-				</x-form.select>
-			</x-dates-rates.filters.currency>
+			<x-dates-rates.filters.currency-dropdown />
 		</div>
 
 		<x-dates-rates.filters.selected />
 
 		<x-dates-rates.filters.sticky>
 			<x-dates-rates.filters.chip drawer_id="dates-rates-filters" title="Filter" accordion_id="filters-accordion-seasons" type="sticky-filter" />
-			<x-dates-rates.filters.chip drawer_id="dates-rates-filters-currency" type="currency" title="Currency: USD" />
+			<x-dates-rates.filters.sticky-currency />
 		</x-dates-rates.filters.sticky>
-
-		<x-drawer id="dates-rates-filters-currency" animation_direction="up" class="dates-rates__drawer-currency">
-			<x-drawer.header>
-				<h3>Currency</h3>
-			</x-drawer.header>
-
-			<x-drawer.body>
-				<x-form.field-group>
-					<x-form.radio name="currency" value="USD" label="$ USD" checked />
-					<x-form.radio name="currency" value="CAD" label="$ CAD" />
-					<x-form.radio name="currency" value="AUD" label="$ AUD" />
-					<x-form.radio name="currency" value="GBP" label="$ GBP" />
-					<x-form.radio name="currency" value="EUR" label="$ EUR" />
-				</x-form.field-group>
-			</x-drawer.body>
-		</x-drawer>
 
 		<x-drawer id="dates-rates-filters" animation_direction="up" class="dates-rates__drawer">
 			<x-drawer.header>

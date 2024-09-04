@@ -16,6 +16,7 @@
 @endphp
 
 <quark-dates-rates-filter-chip
+	class="dates-rates__filter-chip-container"
 	@if ( ! empty( $accordion_id ) )
 		accordion_id="{{ $accordion_id }}"
 	@endif

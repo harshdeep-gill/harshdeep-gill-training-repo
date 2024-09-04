@@ -21,7 +21,7 @@ const { subscribe } = zustand.stores.datesRates;
 /**
  * Dates Filter Class.
  */
-export default class DatesRatesFilterChip extends HTMLElement {
+export default class DatesRatesFilterChipElement extends HTMLElement {
 	/**
 	 * Properties.
 	 */
@@ -67,36 +67,8 @@ export default class DatesRatesFilterChip extends HTMLElement {
 		// Get the currency state.
 		const { selectedFilters } = state;
 
-		// Handle the currency state update.
-		this.handleCurrencyStateUpdate( selectedFilters.currency );
-
 		// Handle filter state update.
 		this.handleFilterStateUpdate( selectedFilters );
-	}
-
-	/**
-	 * Handles the change in currency state.
-	 *
-	 * @param {string|undefined} updatedCurrency The updated value.
-	 */
-	handleCurrencyStateUpdate( updatedCurrency: string | undefined ) {
-		// This function should only execute for currency sticky filter.
-		if ( 'currency' !== this.filterType ) {
-			// Bail.
-			return;
-		}
-
-		// Get the button text container.
-		const buttonTextContainer = this.querySelector( '.btn__content-text' );
-
-		// Null check.
-		if ( ! ( buttonTextContainer && updatedCurrency ) ) {
-			// Bail.
-			return;
-		}
-
-		// Update the currency markup.
-		buttonTextContainer.innerHTML = `Currency: ${ updatedCurrency }`;
 	}
 
 	/**

@@ -4,14 +4,9 @@
 const { HTMLElement, zustand } = window;
 
 /**
- * External dependencies.
- */
-import { TPMultiSelectElement } from '@travelopia/web-components';
-
-/**
  * Internal dependencies.
  */
-import { updateCurrency, updateFilters } from '../actions';
+import { updateFilters } from '../actions';
 
 /**
  * Get Store.
@@ -31,13 +26,8 @@ export default class DatesRatesFiltersControllerElement extends HTMLElement {
 	private readonly departureMonthsFilter: NodeListOf<HTMLInputElement>;
 	private readonly durationsFilter: NodeListOf<HTMLInputElement>;
 	private readonly shipsFilter: NodeListOf<HTMLInputElement>;
-	private readonly currencyDropdown: TPMultiSelectElement | null;
-	private readonly currencyFilter: NodeListOf<HTMLInputElement>;
 	private readonly applyFiltersButton: HTMLButtonElement | null;
 	private readonly clearAllButton: HTMLButtonElement | null;
-
-	// This is to prevent stack overflow from recursive event listener calls.
-	private areFiltersSyncing: boolean;
 
 	/**
 	 * Constructor
@@ -58,15 +48,10 @@ export default class DatesRatesFiltersControllerElement extends HTMLElement {
 		this.departureMonthsFilter = document.querySelectorAll( '#filters-accordion-months input[type="checkbox"]' );
 		this.durationsFilter = document.querySelectorAll( '#filters-accordion-durations input[type="checkbox"]' );
 		this.shipsFilter = document.querySelectorAll( '#filters-accordion-ships input[type="checkbox"]' );
-		this.currencyDropdown = document.querySelector( '.dates-rates__filter-currency tp-multi-select' );
-		this.currencyFilter = document.querySelectorAll( '#dates-rates-filters-currency input[type="radio"]' );
 		this.applyFiltersButton = document.querySelector( '.dates-rates__apply-filters-btn' );
 		this.clearAllButton = document.querySelector( '.dates-rates__cta-clear-filters' );
-		this.areFiltersSyncing = false;
 
 		// Add Event Listeners
-		this.currencyDropdown?.addEventListener( 'change', this.currencyDropdownUpdate.bind( this ) );
-		this.currencyFilter.forEach( ( currencyRadioInput ) => currencyRadioInput.addEventListener( 'change', this.currencyRadioUpdate.bind( this ) ) );
 		this.applyFiltersButton?.addEventListener( 'click', this.handleApplyFilters.bind( this ) );
 		this.clearAllButton?.addEventListener( 'click', this.handleClearAll.bind( this ) );
 
@@ -83,12 +68,8 @@ export default class DatesRatesFiltersControllerElement extends HTMLElement {
 		// Get the selected filters.
 		const { selectedFilters } = state;
 
-		// Set the flag.
-		this.areFiltersSyncing = true;
-
 		// Get the currency value.
 		const {
-			currency,
 			seasons,
 			adventure_options: adventureOptions,
 			durations,
@@ -97,27 +78,6 @@ export default class DatesRatesFiltersControllerElement extends HTMLElement {
 			ships,
 		} = selectedFilters;
 
-		// Check and update currency inputs.
-		if ( currency ) {
-			// Standard null check.
-			if ( this.currencyDropdown ) {
-				// Select the appropriate value.
-				this.currencyDropdown.select( currency );
-			}
-
-			// Loop through the radio inputs.
-			this.currencyFilter.forEach( ( radioInput ) => {
-				// Check for proper value.
-				if ( radioInput.value !== currency ) {
-					// Bail.
-					return;
-				}
-
-				// Set the radio to checked.
-				radioInput.checked = true;
-			} );
-		}
-
 		// Update the checkbox according to the state.
 		this.updateCheckboxes( this.regionSeasonFilter, seasons );
 		this.updateCheckboxes( this.adventureOptionsFilter, adventureOptions );
@@ -125,54 +85,6 @@ export default class DatesRatesFiltersControllerElement extends HTMLElement {
 		this.updateCheckboxes( this.expeditionsFilter, expeditions );
 		this.updateCheckboxes( this.departureMonthsFilter, months );
 		this.updateCheckboxes( this.shipsFilter, ships );
-
-		// Unset the flag.
-		this.areFiltersSyncing = false;
-	}
-
-	/**
-	 * Handles the change event for the currency dropdown.
-	 */
-	currencyDropdownUpdate() {
-		// Check if the currency dropdown is null.
-		if ( ! this.currencyDropdown || this.areFiltersSyncing ) {
-			// bail.
-			return;
-		}
-
-		// Get the updated value.
-		const currencyValue = this.currencyDropdown.value[ 0 ] ?? 'USD';
-
-		// Update the state.
-		updateCurrency( currencyValue );
-	}
-
-	/**
-	 * Handles the change event for the currency radio inputs.
-	 *
-	 * @param { Event } event The event object.
-	 */
-	currencyRadioUpdate( event: Event ) {
-		// Null check.
-		if ( ! event.target || this.areFiltersSyncing ) {
-			// bail.
-			return;
-		}
-
-		// Get the radio input.
-		const theRadioInput = event.target as HTMLInputElement;
-
-		// Is the radio checked.
-		if ( ! theRadioInput.checked ) {
-			// No, bail.
-			return;
-		}
-
-		// Get the currency value.
-		const currencyValue = theRadioInput.value !== 'on' ? theRadioInput.value : 'USD';
-
-		// Update the state.
-		updateCurrency( currencyValue );
 	}
 
 	/**

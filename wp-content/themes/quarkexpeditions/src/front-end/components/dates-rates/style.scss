@@ -68,11 +68,8 @@
 		}
 	}
 
+	&__filter-chip-container,
 	&__filter-chip {
-		display: block;
-	}
-
-	quark-dates-rates-filter-chip {
 		display: block;
 	}
 
@@ -210,7 +207,7 @@
 			display: none;
 		}
 
-		quark-dates-rates-filter-chip {
+		> * {
 			flex: 1;
 			min-width: 0;
 
