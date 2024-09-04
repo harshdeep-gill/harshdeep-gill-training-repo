@@ -48,7 +48,7 @@ use const Quark\Itineraries\DEPARTURE_LOCATION_TAXONOMY;
  *   array{
  *       id: int,
  *       name: string,
- *       description: string,
+ *       overview: string,
  *       images: array{}|array<int,
  *         array{
  *           id: int,
@@ -127,7 +127,7 @@ function get_all_data(): array {
  *     id: int,
  *     name: string,
  *     published: bool,
- *     description: string,
+ *     overview: string,
  *     images: array{}|array<int,
  *       array{
  *         id: int,
@@ -177,7 +177,7 @@ function get_expedition_data( int $expedition_post_id = 0 ): array {
 		'id'           => $expedition_post_id,
 		'name'         => get_raw_text_from_html( $expedition_post['post']->post_title ),
 		'published'    => 'publish' === $expedition_post['post']->post_status,
-		'description'  => '', // @todo https://tuispecialist.atlassian.net/browse/QE-589 - Get description after parsing post content.
+		'overview'     => '',
 		'images'       => [],
 		'destinations' => [],
 		'itineraries'  => [],
@@ -221,6 +221,11 @@ function get_expedition_data( int $expedition_post_id = 0 ): array {
 				'alt'          => $alt_text,
 			];
 		}
+	}
+
+	// Add description.
+	if ( ! empty( $expedition_post['post_meta'] ) && ! empty( $expedition_post['post_meta']['overview'] ) && is_string( $expedition_post['post_meta']['overview'] ) ) {
+		$expedition_data['overview'] = get_raw_text_from_html( $expedition_post['post_meta']['overview'] );
 	}
 
 	// Get destination terms.
