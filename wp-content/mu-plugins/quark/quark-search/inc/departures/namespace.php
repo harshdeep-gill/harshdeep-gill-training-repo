@@ -7,6 +7,7 @@
 
 namespace Quark\Search\Departures;
 
+use Quark\Search\Stream_Connector;
 use WP_Post;
 use WP_Term;
 use Solarium\QueryType\Update\Query\Document\Document;
@@ -31,7 +32,8 @@ use const Quark\Expeditions\POST_TYPE as EXPEDITION_POST_TYPE;
 use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
 use const Quark\StaffMembers\SEASON_TAXONOMY;
 
-const CACHE_GROUP = 'quark_search';
+const CACHE_GROUP           = 'quark_search';
+const SCHEDULE_REINDEX_HOOK = 'qrk_search_reindex_departures';
 
 /**
  * Bootstrap.
@@ -48,10 +50,37 @@ function bootstrap(): void {
 	add_action( 'save_post_' . DEPARTURE_POST_TYPE, __NAMESPACE__ . '\\bust_search_cache' );
 
 	// Trigger reindex on post update.
-	add_action( 'save_post', __NAMESPACE__ . '\\reindex_departures', 999, 3 );
+	add_action( 'save_post', __NAMESPACE__ . '\\track_posts_to_be_reindexed', 999, 3 );
+
+	// Schedule reindex departures.
+	add_action( 'init', __NAMESPACE__ . '\\schedule_reindex_departures' );
+
+	// Register reindex departures cron.
+	add_action( SCHEDULE_REINDEX_HOOK, __NAMESPACE__ . '\\reindex_departures' );
+
+	// Register Stream log connector.
+	add_filter( 'wp_stream_connectors', __NAMESPACE__ . '\\setup_stream_connectors' );
 
 	// Load search class.
 	require_once __DIR__ . '/class-search.php';
+}
+
+/**
+ * Schedule reindex departures.
+ *
+ * @return void
+ */
+function schedule_reindex_departures(): void {
+	// Check if scheduled reindex departures.
+	if ( wp_next_scheduled( SCHEDULE_REINDEX_HOOK ) ) {
+		return;
+	}
+
+	// Set a time + 1 hour to schedule reindex departures.
+	$next_hour = strtotime( '+1 hour' );
+
+	// Schedule reindex departures.
+	wp_schedule_event( $next_hour, 'hourly', SCHEDULE_REINDEX_HOOK );
 }
 
 /**
@@ -152,6 +181,24 @@ function filter_solr_build_document( Document $document = null, WP_Post $post = 
 
 	// Return document.
 	return $document;
+}
+
+/**
+ * Register custom stream connectors for Solr reindex.
+ *
+ * @param array<string, mixed> $connectors Connectors.
+ *
+ * @return array<string, mixed>
+ */
+function setup_stream_connectors( array $connectors = [] ): array {
+	// Load Stream connector file.
+	require_once __DIR__ . '/class-stream-connector.php';
+
+	// Add our connector.
+	$connectors['quark_search_solr_reindex'] = new Stream_Connector();
+
+	// Return the connectors.
+	return $connectors;
 }
 
 /**
@@ -377,17 +424,16 @@ function bust_search_cache(): void {
 }
 
 /**
- * Reindex departures on itinerary or expedition post update.
- * As some expedition(destination taxonomy) and itinerary(season taxonomy) data is indexed on Solr, we need to reindex such that Solr has the lates data.
+ * Track posts to be reindexed.
  *
- * @param int          $post_id       Post ID.
- * @param WP_Post|null $post WP Post.
- * @param bool         $update       Is update.
+ * @param int          $post_id Post ID.
+ * @param WP_Post|null $post    WP Post.
+ * @param bool         $update  Is update.
  *
  * @return void
  */
-function reindex_departures( int $post_id = 0, ?WP_post $post = null, bool $update = false ): void {
-	// Validate post.
+function track_posts_to_be_reindexed( int $post_id = 0, ?WP_Post $post = null, bool $update = false ): void {
+	// Validate post. Reindex only on update.
 	if ( empty( $post ) || ! $post instanceof WP_Post || empty( $update ) ) {
 		return;
 	}
@@ -400,60 +446,169 @@ function reindex_departures( int $post_id = 0, ?WP_post $post = null, bool $upda
 		return;
 	}
 
-	// Initialize itinerary ids.
-	$itinerary_ids = [];
+	// Get option.
+	$option = get_option( 'qrk_search_posts_to_be_reindexed', [] );
 
-	// Get itinerary ids.
-	if ( EXPEDITION_POST_TYPE === $post_type ) {
-		// Get itinerary ids.
-		$related_itineraries = get_post_meta( $post_id, 'related_itineraries', true );
-
-		// Validate related itineraries.
-		if ( ! empty( $related_itineraries ) && is_array( $related_itineraries ) ) {
-			$itinerary_ids = array_map( 'absint', $related_itineraries );
-		}
-	} elseif ( ITINERARY_POST_TYPE === $post_type ) {
-		// Add itinerary id.
-		$itinerary_ids[] = $post_id;
+	// Validate option.
+	if ( ! is_array( $option ) ) {
+		$option = [];
 	}
 
-	// Initialize departure ids.
-	$departure_post_ids = [];
+	// Back-off if post already in the list.
+	if ( in_array( $post_id, $option, true ) ) {
+		return;
+	}
 
-	// Fetch all the departures for each itinerary and trigger reindex.
-	foreach ( $itinerary_ids as $itinerary_id ) {
-		// Get departure ids.
-		$departure_posts = get_posts(
-			[
-				'post_type'              => DEPARTURE_POST_TYPE,
-				'posts_per_page'         => -1,
-				'parent'                 => $itinerary_id,
-				'fields'                 => 'ids',
-				'no_found_rows'          => true,
-				'update_post_meta_cache' => false,
-				'update_post_term_cache' => false,
-				'cache_results'          => false,
-				'ignore_sticky_posts'    => true,
-				'suppress_filters'       => false,
-			]
-		);
+	// Add post to the list.
+	$option[] = $post_id;
 
-		// Validate departure ids.
-		if ( empty( $departure_posts ) ) {
+	// Update the option.
+	update_option( 'qrk_search_posts_to_be_reindexed', $option );
+}
+
+/**
+ * Reindex departures on itinerary or expedition post update.
+ * As some expedition(destination taxonomy) and itinerary(season taxonomy) data is indexed on Solr, we need to reindex such that Solr has the lates data.
+ *
+ * @return void
+ */
+function reindex_departures(): void {
+	// Get option.
+	$post_ids = get_option( 'qrk_search_posts_to_be_reindexed', [] );
+
+	// Validate option.
+	if ( ! is_array( $post_ids ) ) {
+		$post_ids = [];
+	}
+
+	// Back-off if no posts to reindex.
+	if ( empty( $post_ids ) ) {
+		return;
+	}
+
+	// Log action.
+	do_action(
+		'quark_search_reindex_initiated',
+		[
+			'total' => count( $post_ids ),
+		]
+	);
+
+	// Success count.
+	$success_count = 0;
+
+	// Loop through post ids.
+	foreach ( $post_ids as $post_id ) {
+		// Get post.
+		$post = get_post( $post_id );
+
+		// Validate post.
+		if ( empty( $post ) || ! $post instanceof WP_Post ) {
+			// Log the action.
+			do_action(
+				'quark_search_reindex_failed',
+				[
+					'post_id' => $post_id,
+					'error'   => __( 'Invalid post.', 'qrk' ),
+				]
+			);
+
+			// Continue to next post.
 			continue;
 		}
 
-		// Convert to integer.
-		$departure_posts = array_map( 'absint', $departure_posts );
+		// Get post type.
+		$post_type = $post->post_type;
 
-		// Merge departure ids.
-		$departure_post_ids = array_merge( $departure_post_ids, $departure_posts );
+		// Return if not a supported post type.
+		if ( ! in_array( $post_type, [ EXPEDITION_POST_TYPE, ITINERARY_POST_TYPE ], true ) ) {
+			// Log the action.
+			do_action(
+				'quark_search_reindex_failed',
+				[
+					'post_id' => $post_id,
+					'error'   => __( 'Unsupported post type. Neither a expedition, nor a itinerary post.', 'qrk' ),
+				]
+			);
+
+			// Continue to next post.
+			continue;
+		}
+
+		// Initialize itinerary ids.
+		$itinerary_ids = [];
+
+		// Get itinerary ids.
+		if ( EXPEDITION_POST_TYPE === $post_type ) {
+			// Get itinerary ids.
+			$related_itineraries = get_post_meta( $post_id, 'related_itineraries', true );
+
+			// Validate related itineraries.
+			if ( ! empty( $related_itineraries ) && is_array( $related_itineraries ) ) {
+				$itinerary_ids = array_map( 'absint', $related_itineraries );
+			}
+		} elseif ( ITINERARY_POST_TYPE === $post_type ) {
+			// Add itinerary id.
+			$itinerary_ids[] = $post_id;
+		}
+
+		// Initialize departure ids.
+		$departure_post_ids = [];
+
+		// Fetch all the departures for each itinerary and trigger reindex.
+		foreach ( $itinerary_ids as $itinerary_id ) {
+			// Get departure ids.
+			$departure_posts = get_posts(
+				[
+					'post_type'              => DEPARTURE_POST_TYPE,
+					'posts_per_page'         => -1,
+					'parent'                 => $itinerary_id,
+					'fields'                 => 'ids',
+					'no_found_rows'          => true,
+					'update_post_meta_cache' => false,
+					'update_post_term_cache' => false,
+					'cache_results'          => false,
+					'ignore_sticky_posts'    => true,
+					'suppress_filters'       => false,
+				]
+			);
+
+			// Validate departure ids.
+			if ( empty( $departure_posts ) ) {
+				continue;
+			}
+
+			// Convert to integer.
+			$departure_posts = array_map( 'absint', $departure_posts );
+
+			// Merge departure ids.
+			$departure_post_ids = array_merge( $departure_post_ids, $departure_posts );
+		}
+
+		// Unique departure ids.
+		$departure_post_ids = array_unique( $departure_post_ids );
+
+		// Update departures in index.
+		foreach ( $departure_post_ids as $departure_post_id ) {
+			update_post_in_index( $departure_post_id );
+		}
+
+		// Increment success count.
+		++$success_count;
 	}
 
-	// Update departures in index.
-	foreach ( $departure_post_ids as $departure_post_id ) {
-		update_post_in_index( $departure_post_id );
-	}
+	// Log the action.
+	do_action(
+		'quark_search_reindex_completed',
+		[
+			'total'   => count( $post_ids ),
+			'success' => $success_count,
+			'failed'  => count( $post_ids ) - $success_count,
+		]
+	);
+
+	// Reset the option.
+	update_option( 'qrk_search_posts_to_be_reindexed', [] );
 }
 
 /**
