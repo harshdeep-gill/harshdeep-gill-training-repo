@@ -11,45 +11,23 @@ const { setState, getState } = zustand.stores.datesRates;
 /**
  * Update currency filter value.
  *
- * @param {string} currency Selected Currency.
+ * @param {string} updatedCurrency Selected Currency.
  */
-export const updateCurrency = ( currency: string ) => {
+export const updateCurrency = ( updatedCurrency: string ) => {
 	// Get State.
-	const { selectedFilters } = getState();
-	const updatedFilters: DatesRatesFilters = { ...selectedFilters };
-
-	// If currency exists, update the value.
-	if ( currency ) {
-		updatedFilters.currency = currency;
+	if ( ! updatedCurrency ) {
+		updatedCurrency = 'USD';
 	}
 
 	// Set state.
 	setState( {
-		selectedFilters: updatedFilters,
+		currency: updatedCurrency,
 		areCurrencyFiltersSyncing: true,
 	} );
 
 	// Disable syncing status.
 	setState( {
 		areCurrencyFiltersSyncing: false,
-	} );
-
-	//TODO: fetch results
-};
-
-/**
- * Update filter values.
- *
- * @param {Object} filterValues Selected filters.
- */
-export const updateFilters = ( filterValues: DatesRatesFilters ) => {
-	// Get State.
-	const { selectedFilters } = getState();
-	const updatedFilters: DatesRatesFilters = { ...selectedFilters, ...filterValues };
-
-	// Set state.
-	setState( {
-		selectedFilters: updatedFilters,
 	} );
 
 	//TODO: fetch results
@@ -94,7 +72,7 @@ const addFilterCreator = ( filterName: string ) => {
  *
  * @return {Function} An add filter action.
  */
-const removeFilterCreator = ( filterName: string ) => {
+export const removeFilterCreator = ( filterName: string ) => {
 	/**
 	 * Remove a particular filter given its value.
 	 *

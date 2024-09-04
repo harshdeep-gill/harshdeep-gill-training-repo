@@ -29,22 +29,13 @@ export default class DatesRatesFilterStickyFilterElement extends HTMLElement {
 	 * @param {Object} state The state object.
 	 */
 	update( state: DatesRatesState ) {
-		// Get the selected filters.
-		const { selectedFilters } = state;
-
 		//  Is there a filter?
 		let isFiltered = false;
 
 		// Loop through the object.
-		for ( const filterName in selectedFilters ) {
-			// Check if it is the currency filter.
-			if ( 'currency' === filterName ) {
-				// Do nothing.
-				continue;
-			}
-
-			// Check if any filter is active.
-			if ( selectedFilters[ filterName ] && selectedFilters[ filterName ].length ) {
+		for ( const filterName of [ 'seasons', 'expeditions', 'adventure_options', 'months', 'durations', 'ships' ] ) {
+			// @ts-ignore, Check if any filter is active.
+			if ( state[ filterName ] && state[ filterName ].length ) {
 				isFiltered = true;
 				break;
 			}

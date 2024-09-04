@@ -12,7 +12,7 @@ export const STORE_NAME = 'datesRates';
  * Default state.
  */
 export const DEFAULT_STATE: DatesRatesState = {
-	selectedFilters: {},
+	currency: 'USD',
 	areCurrencyFiltersSyncing: false,
 	seasons: [],
 	expeditions: [],

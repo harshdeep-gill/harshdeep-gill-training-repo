@@ -11,7 +11,7 @@ const { subscribe } = zustand.stores.datesRates;
 /**
  * Internal Dependencies
  */
-import { updateFilters } from '../actions';
+import { clearAllFilters } from '../actions';
 
 /**
  * Selected Filters Class.
@@ -50,23 +50,15 @@ export default class DatesRatesSelectedFiltersElement extends HTMLElement {
 	 */
 	update( state: DatesRatesState ) {
 		// Get the selected filters.
-		const { selectedFilters } = state;
 		let areAnyFiltersSelected = false;
 
 		// Loop through the selected filters.
-		for ( const filterName in selectedFilters ) {
-			// Check if currency.
-			if ( 'currency' === filterName ) {
-				// Do nothing.
-				continue;
-			}
-
-			// Get the selected values for the filter.
-			const selectedValues = new Set<string>( selectedFilters[ filterName ] );
-			const filterInputsContainer = document.getElementById( `filters-accordion-${ filterName.slice( 0 ).replace( '_', '-' ) }` );
+		for ( const filterName of [ 'seasons', 'expeditions', 'adventure_options', 'months', 'durations', 'ships' ] ) {
+			// @ts-ignore Get the selected values for the filter.
+			const selectedValues: DatesRatesFilterState[] = [ ...state[ filterName ] ];
 
 			// Check if any filters are selected.
-			if ( selectedValues.size > 0 ) {
+			if ( selectedValues.length > 0 ) {
 				areAnyFiltersSelected = true;
 			}
 
@@ -79,25 +71,27 @@ export default class DatesRatesSelectedFiltersElement extends HTMLElement {
 				const pillValue = pill.getAttribute( 'value' ) ?? '';
 				const pillFilter = pill.getAttribute( 'filter' ) ?? '';
 
+				// Find the value.
+				const indexOfPillValueInSelectedValues = selectedValues.findIndex( ( selectedValue ) => selectedValue.value === pillValue );
+
 				// Check if the pill should exist.
 				if (
-					( pillValue && selectedValues.has( pillValue ) ) ||
-					( pillFilter && pillFilter !== filterName )
+					! pillFilter ||
+					! ( pillFilter in state ) ||
+					( pillFilter === filterName && -1 === indexOfPillValueInSelectedValues )
 				) {
-					// Delete the value from the set.
-					selectedValues.delete( pillValue );
-
-					// Bail.
-					return;
+					// Remove the child.
+					this.filtersList?.removeChild( pill );
 				}
 
-				// Remove the child.
-				this.filtersList?.removeChild( pill );
-				selectedValues.delete( pillValue );
+				// Update the set.
+				if ( indexOfPillValueInSelectedValues !== -1 ) {
+					selectedValues.splice( indexOfPillValueInSelectedValues, 1 );
+				}
 			} );
 
 			// Loop through the values and create new pills.
-			selectedValues.forEach( ( value: string ) => {
+			selectedValues.forEach( ( selectedValue: DatesRatesFilterState ) => {
 				// Clone the template.
 				const filterPillTemplateClone = this.selectedFilterPillTemplate?.content.cloneNode( true ) as HTMLElement | undefined;
 				const filterPill = filterPillTemplateClone?.querySelector( 'quark-dates-rates-selected-filter-pill' );
@@ -110,21 +104,15 @@ export default class DatesRatesSelectedFiltersElement extends HTMLElement {
 
 				// Set relevant attributes.
 				filterPill?.setAttribute( 'filter', filterName );
-				filterPill?.setAttribute( 'value', value );
+				filterPill?.setAttribute( 'value', selectedValue.value );
 
 				// Get relevant information.
 				const filterPillTextElement = filterPill?.querySelector( '.dates-rates__selected-filter-text' );
-				const relevantInputLabel = filterInputsContainer
-					?.querySelector( `input[value="${ value }"]` )
-					?.parentElement
-					?.querySelector( 'label' )
-					?.textContent
-					?.replace( /\*\n/, '' );
 
 				// Null check.
 				if ( filterPillTextElement ) {
 					// Set the inner html.
-					filterPillTextElement.textContent = relevantInputLabel ?? '';
+					filterPillTextElement.textContent = selectedValue.label;
 				}
 
 				// Append the child.
@@ -145,14 +133,6 @@ export default class DatesRatesSelectedFiltersElement extends HTMLElement {
 	 */
 	handleClearAll() {
 		// Update the filters.
-		updateFilters( {
-			seasons: [],
-			expeditions: [],
-			adventure_options: [],
-			durations: [],
-			months: [],
-			ships: [],
-			currency: 'USD',
-		} );
+		clearAllFilters();
 	}
 }

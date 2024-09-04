@@ -1,17 +1,12 @@
 /**
  * Global variables.
  */
-const { HTMLElement, zustand } = window;
-
-/**
- * Get the store.
- */
-const { getState } = zustand.stores.datesRates;
+const { HTMLElement } = window;
 
 /**
  * Internal Dependencies
  */
-import { updateFilters } from '../actions';
+import { removeFilterCreator } from '../actions';
 
 /**
  * Selected Filter Pill Class.
@@ -40,18 +35,11 @@ export default class DatesRatesSelectedFilterPillElement extends HTMLElement {
 	 * Handles the close pill action.
 	 */
 	handleClosePill() {
-		// Get the state.
-		const { selectedFilters }: DatesRatesState = getState();
-		const updatedFilters = { ...selectedFilters };
-
 		// Get the attributes.
 		const pillFilter = this.getAttribute( 'filter' ) ?? '';
-		const pillValue = this.getAttribute( 'value' );
-
-		// Set the updated filters.
-		updatedFilters[ pillFilter ] = updatedFilters[ pillFilter ].filter( ( value: string ) => value !== pillValue );
+		const pillValue = this.getAttribute( 'value' ) ?? '';
 
 		// Set filters state.
-		updateFilters( updatedFilters );
+		removeFilterCreator( pillFilter )( pillValue );
 	}
 }
