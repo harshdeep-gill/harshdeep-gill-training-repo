@@ -21,6 +21,7 @@ use function Quark\Search\Departures\parse_filters;
 use function Quark\Search\Departures\get_filters_from_url;
 use function Quark\Search\Departures\get_itinerary_length_search_filter_data;
 use function Quark\Search\Departures\get_language_search_filter_data;
+use function Quark\Search\Departures\get_travelers_search_filter_data;
 use function Quark\Search\Departures\reindex_departures;
 use function Quark\Search\Departures\schedule_reindex_departures;
 
@@ -1175,5 +1176,30 @@ class Test_Search extends WP_UnitTestCase {
 
 		// Action for re-index failed should be fired.
 		$this->assertTrue( did_action( 'quark_search_reindex_failed' ) > 0 );
+	}
+
+	/**
+	 * Test getting travelers search filter data.
+	 *
+	 * @covers \Quark\Search\Departures\get_travelers_search_filter_data()
+	 *
+	 * @return void
+	 */
+	public function test_get_travelers_search_filter_data(): void {
+		// Test.
+		$expected = [
+			'A'     => 'Single Room',
+			'AA'    => 'Double Room',
+			'SAA'   => 'Double Room Shared',
+			'SMAA'  => 'Double Room Shared (Male)',
+			'SFAA'  => 'Double Room Shared (Female)',
+			'AAA'   => 'Triple Room',
+			'SAAA'  => 'Triple Room Shared',
+			'SMAAA' => 'Triple Room Shared (Male)',
+			'SFAAA' => 'Triple Room Shared (Female)',
+			'AAAA'  => 'Quad Room',
+		];
+		$actual   = get_travelers_search_filter_data();
+		$this->assertEquals( $expected, $actual );
 	}
 }

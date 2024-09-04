@@ -21,6 +21,7 @@ use function Quark\Itineraries\get_season;
 use function Quark\Search\update_post_in_index;
 use function Quark\Ships\get as get_ship_post;
 use function Quark\Softrip\Departures\get_lowest_price;
+use function Quark\Softrip\Occupancies\get_masks_mapping;
 
 use const Quark\CabinCategories\CABIN_CLASS_TAXONOMY;
 use const Quark\Core\CURRENCIES;
@@ -1246,4 +1247,31 @@ function get_destination_search_filter_data(): array {
 
 	// Return expedition data.
 	return $terms_data;
+}
+
+/**
+ * Get travelers search filter data.
+ *
+ * @return string[]
+ */
+function get_travelers_search_filter_data(): array {
+	// Get occupancy mask.
+	$mask_mapping = get_masks_mapping();
+
+	// Prepare travelers data.
+	$travelers_data = [];
+
+	// Loop through occupancy mask.
+	foreach ( $mask_mapping as $mask => $mask_data ) {
+		// Validate mask data.
+		if ( ! is_array( $mask_data ) || empty( $mask_data['description'] ) ) {
+			continue;
+		}
+
+		// Prepare travelers data.
+		$travelers_data[ $mask ] = $mask_data['description'];
+	}
+
+	// Return travelers data.
+	return $travelers_data;
 }
