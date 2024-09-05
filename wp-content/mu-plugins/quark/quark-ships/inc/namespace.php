@@ -91,7 +91,8 @@ function register_ship_post_type(): void {
 			[
 				'quark/hero',
 				[
-					'immersive' => 'bottom',
+					'immersive'      => 'bottom',
+					'contentOverlap' => false,
 				],
 				[
 					[
