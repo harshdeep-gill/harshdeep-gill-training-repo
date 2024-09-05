@@ -336,7 +336,7 @@ function get_blog_post_author_info( int $post_id = 0 ): array {
 	}
 
 	// Get blog author ids.
-	$blog_author_ids = (array) $post['post_meta']['blog_authors'] ?: [];
+	$blog_author_ids = ! empty( $post['post_meta']['blog_authors'] ) ? (array) $post['post_meta']['blog_authors'] : [];
 
 	// Loop through blog author ids.
 	foreach ( $blog_author_ids as $blog_author_id ) {
