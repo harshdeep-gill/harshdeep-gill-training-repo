@@ -7,6 +7,10 @@
 	gap: var(--spacing-4);
 	padding: var(--spacing-4) var(--spacing-5);
 
+	> * {
+		flex: 1 1 fit-content;
+	}
+
 	@media screen and (min-width: grid-size(md)) {
 		border-top: 1px solid var(--color-gray-20);
 		border-bottom: 1px solid var(--color-gray-20);
@@ -16,13 +20,15 @@
 	&__container {
 		display: flex;
 		align-items: center;
-		justify-content: flex-end;
-		min-width: 40%;
 		gap: var(--spacing-4);
+		justify-content: center;
 
-		&:only-child {
-			flex: 1;
-			justify-content: center;
+		@media screen and (min-width: grid-size(md)) {
+			justify-content: flex-end;
+
+			&:only-child {
+				justify-content: center;
+			}
 		}
 	}
 
@@ -33,7 +39,6 @@
 			display: flex;
 			align-items: center;
 			gap: var(--spacing-2);
-			min-width: 40%;
 		}
 	}
 
@@ -41,13 +46,22 @@
 		display: none;
 
 		@media screen and (min-width: grid-size(md)) {
-			display: block;
+			display: flex;
+			justify-content: center;
+
+			&:first-child {
+				justify-content: flex-start;
+			}
 		}
 	}
 
 	&__items-per-page-select {
 		width: auto;
 		min-width: 80px;
+	}
+
+	&__items-per-page-text {
+		min-width: fit-content;
 	}
 
 	.page-numbers {
@@ -61,6 +75,10 @@
 		&.current {
 			opacity: 1;
 		}
+
+		&:hover {
+			opacity: 1;
+		}
 	}
 
 	&__first-page,
@@ -70,13 +88,6 @@
 
 		&:hover {
 			text-decoration: none;
-		}
-	}
-
-	a.page-numbers {
-
-		&:hover {
-			opacity: 1;
 		}
 	}
 

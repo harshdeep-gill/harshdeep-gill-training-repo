@@ -74,8 +74,7 @@
 	}
 
 	tp-multi-select-field {
-		max-height: 46px;
-		display: block;
+		padding-block: var(--spacing-2);
 	}
 
 	&__filters-chips {
