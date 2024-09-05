@@ -2517,6 +2517,18 @@
 	</x-section>
 </x-component-demo>
 
+<x-component-demo :keys="[ 'currency-switcher' ]">
+	<x-section>
+		<x-currency-switcher appearance="dark" />
+	</x-section>
+
+	<x-section>
+		<div style="background-color: var(--color-gray-90); padding: 24px;">
+			<x-currency-switcher appearance="dark" />
+		</div>
+	</x-section>
+</x-component-demo>
+
 <x-component-demo :keys="[ 'media-cta-banner' ]">
 	<x-media-cta-banner>
 		<x-media-cta-banner.image image_id="186" />
@@ -6784,16 +6796,7 @@
 				<x-footer.column-title title="Discover Your Dream Trip" />
 				<x-button  href="#" size="big" color="black">View All Expeditions</x-button>
 
-				<x-footer.column-title title="Change Currency" />
-				<x-form>
-					<x-form.field :validation="[ 'required' ]">
-						<select>
-							<option value="1" label="$ USD">$ USD</option>
-							<option value="2" label="Option 2">Option 2</option>
-							<option value="3" label="Option 3">Option 3</option>
-						</select>
-					</x-form.field>
-				</x-form>
+				<x-currency-switcher appearance="dark" />
 			</x-footer.column>
 
 			<x-footer.navigation title="Learn About the Polar Regions">

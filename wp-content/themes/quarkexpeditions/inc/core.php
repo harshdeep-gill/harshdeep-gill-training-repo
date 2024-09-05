@@ -333,6 +333,9 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 				'quark-country-selector'                      => [
 					'class' => true,
 				],
+				'quark-currency-switcher'                     => [
+					'class' => true,
+				],
 				'quark-load-more'                             => [
 					'class'   => true,
 					'loading' => true,
