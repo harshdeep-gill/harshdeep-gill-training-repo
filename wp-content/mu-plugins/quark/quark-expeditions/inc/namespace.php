@@ -1162,6 +1162,56 @@ function get_minimum_duration( int $post_id = 0 ): int {
 }
 
 /**
+ * Get Minimum Duration Itinerary for Expedition.
+ * From set Itineraries.
+ *
+ * @param int $post_id Post ID.
+ *
+ * @return WP_Post|null
+ */
+function get_minimum_duration_itinerary( int $post_id = 0 ): WP_Post|null {
+	// Get post.
+	$post = get( $post_id );
+
+	// Initialize minimum duration.
+	$minimum_duration           = 0;
+	$minimum_duration_itinerary = null;
+
+	// Check for post.
+	if ( empty( $post['post'] ) || ! $post['post'] instanceof WP_Post ) {
+		return $minimum_duration_itinerary;
+	}
+
+	// Get itineraries.
+	$itineraries = get_itineraries( $post_id );
+
+	// Check for itineraries.
+	if ( empty( $itineraries ) ) {
+		return $minimum_duration_itinerary;
+	}
+
+	// Loop through itineraries and get minimum duration.
+	foreach ( $itineraries as $itinerary ) {
+		// Check for Itinerary.
+		if ( ! is_array( $itinerary ) || empty( $itinerary['post_meta'] ) || empty( $itinerary['post_meta']['duration_in_days'] ) ) {
+			continue;
+		}
+
+		// Get duration.
+		$duration = absint( $itinerary['post_meta']['duration_in_days'] );
+
+		// Check minimum duration.
+		if ( empty( $minimum_duration ) || $duration < $minimum_duration ) {
+			$minimum_duration           = $duration;
+			$minimum_duration_itinerary = $itinerary['post'];
+		}
+	}
+
+	// Return minimum duration.
+	return $minimum_duration_itinerary;
+}
+
+/**
  * Get Starting From Price for Expedition.
  * From set Itineraries.
  *
