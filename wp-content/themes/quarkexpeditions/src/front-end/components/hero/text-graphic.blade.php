@@ -5,14 +5,13 @@
 
 @php
 	// Build image args.
-	$image_args = [
+		$image_args = [
 		'size' => [
-			'width'   => 475,
-			'height'  => 475,
-			'picture' => [
-			],
+			'width'   => 400,
+			'height'  => 400,
 		],
 		'transform' => [
+			'crop' => 'fit',
 		],
 	];
 
