@@ -129,3 +129,62 @@ export const clearAllFilters = () => {
 		ships: [],
 	} );
 };
+
+/**
+ * Sets the page.
+ *
+ * @param {number} updatedPage The updated page number.
+ */
+export const setPage = ( updatedPage: number ) => {
+	// Get the state.
+	const { totalPages }: DatesRatesState = getState();
+
+	// Is this a valid updated page number?
+	if ( Number.isNaN( updatedPage ) || updatedPage > totalPages || updatedPage < 1 ) {
+		// No, reject the update.
+		return;
+	}
+
+	// Set the state
+	setState( {
+		page: updatedPage,
+	} );
+};
+
+/**
+ * Set the page to the previous page number.
+ */
+export const setPreviousPage = () => {
+	// Get the state.
+	const { page }: DatesRatesState = getState();
+
+	// Is this the first page?
+	if ( page === 1 ) {
+		// There is no previous page.
+		return;
+	}
+
+	// Set the state
+	setState( {
+		page: page - 1,
+	} );
+};
+
+/**
+ * Set the page to the next page number.
+ */
+export const setNextPage = () => {
+	// Get the state.
+	const { page, totalPages }: DatesRatesState = getState();
+
+	// Is this the last page?
+	if ( page === totalPages ) {
+		// There is no next page.
+		return;
+	}
+
+	// Set the state
+	setState( {
+		page: page + 1,
+	} );
+};

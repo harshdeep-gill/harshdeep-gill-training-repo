@@ -18,4 +18,7 @@ interface DatesRatesState {
 	months: DatesRatesFilterState[],
 	durations: DatesRatesFilterState[],
 	ships: DatesRatesFilterState[],
+	page: number,
+	totalPages: number,
+	perPage: number,
 }

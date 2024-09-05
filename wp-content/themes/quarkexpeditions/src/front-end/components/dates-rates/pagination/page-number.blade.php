@@ -2,13 +2,13 @@
 	'prev'    => false,
 	'next'    => false,
 	'current' => false,
-	'number'  => 1,
+	'number'  => 0,
 ] )
 
 @php
 	if (
 		empty( $slot ) ||
-		( empty( $number ) && empty( $prev ) && empty( $next ) )
+		( ( empty( $number ) || 0 === $number ) && empty( $prev ) && empty( $next ) )
 	) {
 		return;
 	}
@@ -24,6 +24,10 @@
 	}
 @endphp
 
-<quark-dates-rates-pagination-page-number number="{!! esc_attr( $number ) !!}">
+<quark-dates-rates-pagination-page-number
+	@if ( 0 !== $number )
+		number="{!! esc_attr( $number ) !!}"
+	@endif
+>
 	<button @class( $classes )><x-content :content="$slot" /></button>
 </quark-dates-rates-pagination-page-number>

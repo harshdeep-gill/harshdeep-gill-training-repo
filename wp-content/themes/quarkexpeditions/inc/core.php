@@ -417,6 +417,11 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 				'quark-dates-rates-filters-cta-clear-all'     => [
 					'class' => true,
 				],
+				'quark-dates-rates-pagination-page-number'    => [
+					'class'  => true,
+					'number' => true,
+					'data-*' => true,
+				],
 				'tp-form'                                     => [
 					'class'          => true,
 					'prevent-submit' => true,

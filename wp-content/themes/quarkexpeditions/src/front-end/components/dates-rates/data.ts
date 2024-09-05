@@ -20,6 +20,9 @@ export const DEFAULT_STATE: DatesRatesState = {
 	months: [],
 	durations: [],
 	ships: [],
+	page: 1,
+	totalPages: 3,
+	perPage: 10,
 };
 
 /**
