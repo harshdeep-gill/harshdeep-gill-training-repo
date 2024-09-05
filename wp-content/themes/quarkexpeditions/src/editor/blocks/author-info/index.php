@@ -32,7 +32,11 @@ function bootstrap(): void {
 /**
  * Prepare attributes for this block.
  *
- * @return array{}
+ * @return array{}|array{
+ *     image_id?: int,
+ *     title?: string,
+ *     duration?: int,
+ * }
  */
 function prepare_attributes(): array {
 	// Get author info.
@@ -45,7 +49,7 @@ function prepare_attributes(): array {
 	if ( is_array( $author_info['authors'] ) ) {
 		// Iterate through authors.
 		foreach ( $author_info['authors'] as $author ) {
-			$attributes['image_id'] = $author['image_id'];
+			$attributes['image_id'] = absint( $author['image_id'] );
 			$attributes['title']    = $author['title'];
 
 			// Break the loop.

@@ -22,6 +22,7 @@ use function Quark\Expeditions\get_expedition_ship_ids;
 use function Quark\Expeditions\get_formatted_date_range;
 use function Quark\Expeditions\get_total_departures;
 use function Quark\Expeditions\get_ships;
+use function Quark\Expeditions\get_seo_structured_data;
 use function Quark\Softrip\Departures\get_departures_by_itinerary;
 use function Quark\Softrip\do_sync;
 
@@ -861,5 +862,205 @@ class Test_Expeditions extends Softrip_TestCase {
 
 		// Assert ships is correct.
 		$this->assertEquals( 2, count( $ships ) );
+	}
+
+	/**
+	 * Test get_seo_structured_data.
+	 *
+	 * @covers \Quark\Expeditions\get_seo_structured_data()
+	 *
+	 * @return void
+	 */
+	public function test_get_seo_structured_data(): void {
+		// Create Itinerary days post.
+		$itinerary_1_day_1_post = $this->factory()->post->create_and_get(
+			[
+				'post_type'    => ITINERARY_DAY_POST_TYPE,
+				'post_title'   => 'Test Itinerary 1 Day 1 Post',
+				'post_status'  => 'publish',
+				'post_content' => 'Itinerary 1 Day 1 content',
+				'meta_input'   => [
+					'day_number_from' => 1,
+					'day_number_to'   => 1,
+					'day_title'       => 'Exploring the Antarctic Peninsula',
+				],
+			]
+		);
+
+		// Assert created posts are instance of WP_Post.
+		$this->assertTrue( $itinerary_1_day_1_post instanceof WP_Post );
+
+		// Create Itinerary days post.
+		$itinerary_1_day_2_post = $this->factory()->post->create_and_get(
+			[
+				'post_type'    => ITINERARY_DAY_POST_TYPE,
+				'post_title'   => 'Test Itinerary 1 Day 2 Post',
+				'post_status'  => 'publish',
+				'post_content' => 'Itinerary 1 Day 2 content',
+				'meta_input'   => [
+					'day_number_from' => 2,
+					'day_number_to'   => 2,
+					'day_title'       => 'Exploring the Antarctic Peninsula 2',
+				],
+			]
+		);
+
+		// Assert created posts are instance of WP_Post.
+		$this->assertTrue( $itinerary_1_day_2_post instanceof WP_Post );
+
+		// Create Itinerary days post.
+		$itinerary_2_day_1_post = $this->factory()->post->create_and_get(
+			[
+				'post_type'    => ITINERARY_DAY_POST_TYPE,
+				'post_title'   => 'Test Itinerary 2 Day 1 Post',
+				'post_status'  => 'publish',
+				'post_content' => 'Itinerary 2 Day 1 content',
+				'meta_input'   => [
+					'day_number_from' => 1,
+					'day_number_to'   => 1,
+					'day_title'       => 'Exploring the Arctic Peninsula',
+				],
+			]
+		);
+
+		// Assert created posts are instance of WP_Post.
+		$this->assertTrue( $itinerary_2_day_1_post instanceof WP_Post );
+
+		// Create Itinerary days post.
+		$itinerary_2_day_2_post = $this->factory()->post->create_and_get(
+			[
+				'post_type'    => ITINERARY_DAY_POST_TYPE,
+				'post_title'   => 'Test Itinerary 2 Day 2 to 4 Post',
+				'post_content' => 'Itinerary 2 Day 2 to 4 content',
+				'post_status'  => 'publish',
+				'meta_input'   => [
+					'day_number_from' => 2,
+					'day_number_to'   => 4,
+					'day_title'       => 'Exploring the Arctic Peninsula 2 to 4',
+				],
+			]
+		);
+
+		// Assert created posts are instance of WP_Post.
+		$this->assertTrue( $itinerary_2_day_2_post instanceof WP_Post );
+
+		// Create Itinerary post.
+		$itinerary_post = $this->factory()->post->create_and_get(
+			[
+				'post_type'   => ITINERARY_POST_TYPE,
+				'post_title'  => 'ARC-SHL-2D2024: Arctic Express: Spitsbergen',
+				'post_status' => 'publish',
+				'meta_input'  => [
+					'softrip_package_code' => 'ABC-123',
+					'duration_in_days'     => 2,
+					'start_location'       => 'Longyearbyen',
+					'itinerary_days'       => [ $itinerary_1_day_1_post->ID, $itinerary_1_day_2_post->ID ],
+				],
+			]
+		);
+
+		// Assert created posts are instance of WP_Post.
+		$this->assertTrue( $itinerary_post instanceof WP_Post );
+
+		// Create Itinerary post.
+		$itinerary_post_2 = $this->factory()->post->create_and_get(
+			[
+				'post_type'   => ITINERARY_POST_TYPE,
+				'post_title'  => 'ARC-SHL-4D2025: Arctic Express: Spitsbergen 4',
+				'post_status' => 'publish',
+				'meta_input'  => [
+					'softrip_package_code' => 'PQR-345',
+					'duration_in_days'     => 4,
+					'start_location'       => 'Longyearbyen',
+					'itinerary_days'       => [ $itinerary_2_day_1_post->ID, $itinerary_2_day_2_post->ID ],
+				],
+			]
+		);
+
+		// Assert created posts are instance of WP_Post.
+		$this->assertTrue( $itinerary_post_2 instanceof WP_Post );
+
+		// Create Expedition post.
+		$expedition_post = $this->factory()->post->create_and_get(
+			[
+				'post_type'      => POST_TYPE,
+				'post_title'     => 'Test Expedition Post',
+				'post_status'    => 'publish',
+				'post_content'   => 'Expedition content',
+				'post_excerpt'   => 'Expedition excerpt',
+				'featured_image' => 1,
+				'meta_input'     => [
+					'related_itineraries' => [ $itinerary_post->ID, $itinerary_post_2->ID ],
+				],
+			]
+		);
+
+		// Assert created posts are instance of WP_Post.
+		$this->assertTrue( $expedition_post instanceof WP_Post );
+
+		// Assert SEO structured data is correct.
+		$this->assertEquals(
+			[
+				[
+					'@context'    => 'https://schema.org',
+					'@type'       => 'Product',
+					'name'        => 'Test Expedition Post',
+					'description' => 'Expedition excerpt',
+					'brand'       => 'Quark Expeditions',
+					'url'         => get_permalink( $expedition_post->ID ),
+					'image'       => get_the_post_thumbnail_url( $expedition_post->ID ),
+				],
+				[
+					'@context'    => 'https://schema.org',
+					'@type'       => 'TouristTrip',
+					'name'        => 'Test Expedition Post',
+					'description' => 'Expedition excerpt',
+					'subTrip'     => [
+						[
+							'@type'     => 'Trip',
+							'name'      => 'Arctic Express: Spitsbergen',
+							'itinerary' => [
+								[
+									'@type'       => 'TouristAttraction',
+									'name'        => 'Day 1: Exploring the Antarctic Peninsula',
+									'description' => 'Itinerary 1 Day 1 content',
+								],
+								[
+									'@type'       => 'TouristAttraction',
+									'name'        => 'Day 2: Exploring the Antarctic Peninsula 2',
+									'description' => 'Itinerary 1 Day 2 content',
+								],
+							],
+						],
+						[
+							'@type'     => 'Trip',
+							'name'      => 'Arctic Express: Spitsbergen 4',
+							'itinerary' => [
+								[
+									'@type'       => 'TouristAttraction',
+									'name'        => 'Day 1: Exploring the Arctic Peninsula',
+									'description' => 'Itinerary 2 Day 1 content',
+								],
+								[
+									'@type'       => 'TouristAttraction',
+									'name'        => 'Day 2 to 4: Exploring the Arctic Peninsula 2 to 4',
+									'description' => 'Itinerary 2 Day 2 to 4 content',
+								],
+							],
+						],
+					],
+				],
+			],
+			get_seo_structured_data( $expedition_post->ID )
+		);
+
+		// Cleanup.
+		wp_delete_post( $expedition_post->ID, true );
+		wp_delete_post( $itinerary_post->ID, true );
+		wp_delete_post( $itinerary_post_2->ID, true );
+		wp_delete_post( $itinerary_1_day_1_post->ID, true );
+		wp_delete_post( $itinerary_1_day_2_post->ID, true );
+		wp_delete_post( $itinerary_2_day_1_post->ID, true );
+		wp_delete_post( $itinerary_2_day_2_post->ID, true );
 	}
 }

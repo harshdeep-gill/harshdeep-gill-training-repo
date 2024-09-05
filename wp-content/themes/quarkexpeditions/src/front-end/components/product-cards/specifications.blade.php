@@ -4,6 +4,6 @@
 	}
 @endphp
 
-<div class="dates-rates__filter-currency">
+<div class="product-cards__specifications">
 	{!! $slot !!}
 </div>

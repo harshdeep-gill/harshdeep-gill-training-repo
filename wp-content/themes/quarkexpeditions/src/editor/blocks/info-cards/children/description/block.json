@@ -1,0 +1,24 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Info Cards - Card Description",
+	"name": "quark/info-card-description",
+	"description": "Individual Info card Description.",
+	"parent": [
+		"quark/info-card"
+	],
+	"category": "layout",
+	"keywords": [
+		"info",
+		"card",
+		"description"
+	],
+	"textdomain": "qrk",
+	"attributes": {},
+	"supports": {
+		"alignWide": false,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}
