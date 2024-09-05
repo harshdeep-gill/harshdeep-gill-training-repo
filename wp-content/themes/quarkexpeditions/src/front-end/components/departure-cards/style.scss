@@ -209,6 +209,15 @@
 
 	&__option {
 
+		&:first-child {
+
+			@media screen and (max-width: calc(grid-size(sm) - 1px)) {
+				max-width: calc(100% - 140px);
+				text-overflow: ellipsis;
+				overflow: hidden;
+			}
+		}
+
 		&--hidden {
 			display: none;
 		}
