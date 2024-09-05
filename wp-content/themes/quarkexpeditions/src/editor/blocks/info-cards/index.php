@@ -96,7 +96,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 							case 'quark/info-card-title':
 								// Check for title.
 								if ( ! isset( $content_inner_block->attributes['title'] ) ) {
-									continue;
+									break;
 								}
 
 								// Build title slot.
@@ -112,7 +112,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 							case 'quark/info-card-tag':
 								// Check for text.
 								if ( ! isset( $content_inner_block->attributes['text'] ) ) {
-									continue;
+									break;
 								}
 
 								// Build text slot.
@@ -129,7 +129,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 							case 'quark/info-card-overline':
 								// Check for text.
 								if ( ! isset( $content_inner_block->attributes['overline'] ) ) {
-									continue;
+									break;
 								}
 
 								// Build text slot.
@@ -148,7 +148,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 
 								// Check for paragraph block.
 								if ( ! $paragraph_block instanceof WP_Block ) {
-									continue;
+									break;
 								}
 
 								// Build text slot.
@@ -164,7 +164,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 							case 'quark/info-card-cta':
 								// Check for text.
 								if ( ! isset( $content_inner_block->attributes['text'] ) ) {
-									continue;
+									break;
 								}
 
 								// Build text slot.

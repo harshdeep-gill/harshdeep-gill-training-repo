@@ -7,17 +7,69 @@
 .dates-rates {
 	$self: &;
 
-	&__filters {
-		display: flex;
-		justify-content: space-between;
-		gap: var(--spacing-5);
+	&[loading="true"] {
+
+		#{$self}__results {
+			display: none;
+
+			&--loading {
+				display: block;
+			}
+		}
 	}
 
-	&__filter-chip {
+	&__results {
 		display: block;
+
+
+		&--loading {
+			display: none;
+		}
+
+		#{$self}[loading="true"] & {
+			display: none;
+
+			&--loading {
+				display: block;
+				width: fit-content;
+				margin-inline: auto;
+				margin-block: var(--spacing-6);
+
+				> svg {
+					width: 80px;
+					height: 80px;
+
+					@include spin;
+
+					> path {
+						fill: var(--color-yellow);
+					}
+				}
+			}
+		}
+
 	}
 
-	quark-dates-rates-filter {
+	&__filters {
+		display: none;
+
+		@media screen and (min-width: grid-size(md)) {
+			display: flex;
+			justify-content: space-between;
+			gap: var(--spacing-5);
+		}
+	}
+
+	&__filters-heading {
+		display: none;
+
+		@media screen and (min-width: grid-size(md)) {
+			display: block;
+		}
+	}
+
+	&__filter-chip-container,
+	&__filter-chip {
 		display: block;
 	}
 
@@ -82,13 +134,25 @@
 			margin-top: -1px;
 			padding-top: var(--spacing-5);
 
-			.btn:last-child {
+			#{$self}__apply-filters-btn {
 				flex: 1;
+
+				.btn {
+					width: 100%;
+				}
 
 				@media screen and (min-width: grid-size(md)) {
 					flex: initial;
 				}
 			}
+		}
+	}
+
+	&__drawer,
+	&__drawer-currency {
+
+		.form-field-group__group {
+			grid-template-columns: 1fr;
 		}
 	}
 
@@ -147,9 +211,19 @@
 			display: none;
 		}
 
-		quark-dates-rates-filter {
+		> * {
 			flex: 1;
 			min-width: 0;
+
+			&[filtered="yes"] .btn::after {
+				display: inline-block;
+				content: "";
+				width: 6px;
+				height: 6px;
+				background-color: var(--color-attention-50);
+				border-radius: 50%;
+				vertical-align: text-top;
+			}
 		}
 
 		.btn {
@@ -164,6 +238,122 @@
 
 			&:hover {
 				background-color: transparent;
+			}
+		}
+	}
+
+	&__result-count {
+		display: flex;
+		gap: var(--spacing-5);
+		justify-content: space-between;
+		flex-wrap: wrap;
+	}
+
+	&__result-count-annotations {
+		display: flex;
+		gap: var(--spacing-5);
+		flex-wrap: wrap;
+	}
+
+	&__result-count-annotation {
+		display: flex;
+		gap: var(--spacing-3);
+		flex-wrap: nowrap;
+		align-items: center;
+
+		&::before {
+			content: "";
+			flex-shrink: 0;
+			display: block;
+			height: 24px;
+			width: 24px;
+			background-color: var(--color-attention-10);
+			border-radius: 50%;
+		}
+
+		&--premium::before {
+			background-color: var(--color-yellow);
+		}
+	}
+
+	&__header {
+
+		> * {
+			margin-inline: 0;
+		}
+
+		> #{$self}__result-count {
+
+			@media screen and (min-width: grid-size(md)) {
+				margin-top: var(--spacing-6);
+			}
+		}
+	}
+
+	&__filters-container {
+
+		> * {
+			margin-bottom: var(--spacing-5);
+
+			&:last-child {
+				margin-bottom: 0;
+			}
+		}
+	}
+
+	&__selected-filters {
+		display: none;
+
+		@media screen and (min-width: grid-size(md)) {
+			display: flex;
+			align-items: baseline;
+			gap: var(--spacing-4);
+			flex-wrap: wrap;
+
+			&[empty="yes"] {
+				display: none;
+			}
+		}
+
+		> *:not(template) {
+			display: inline-flex;
+		}
+
+		&-list {
+			flex-wrap: wrap;
+			gap: var(--spacing-3);
+		}
+	}
+
+	&__selected-filter {
+
+		&-pill {
+			display: inline-flex;
+			padding: var(--spacing-1) var(--spacing-3);
+			border-radius: var(--border-radius-large);
+			background-color: var(--color-gray-80);
+			color: var(--color-white);
+			gap: var(--spacing-1);
+
+			> * {
+				flex-shrink: 0;
+			}
+		}
+
+		&-text {
+			font-size: var(--font-size-small);
+			font-weight: var(--font-weight-bold);
+			text-transform: uppercase;
+		}
+
+		&-close {
+			color: var(--color-white);
+			display: flex;
+			align-items: center;
+
+			svg {
+				width: 8px;
+				height: 8px;
 			}
 		}
 	}
