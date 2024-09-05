@@ -45,6 +45,8 @@
 		},
 		"color": {
 		"custom": false,
+		"background": false,
+		"text": false,
 		"customDuotone": false,
 		"customGradient": false,
 		"duotone": [],
