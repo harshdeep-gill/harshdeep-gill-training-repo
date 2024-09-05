@@ -9,7 +9,7 @@
 	{{-- Header --}}
 	<x-dates-rates.header>
 		<x-dates-rates.filters />
-		<x-dates-rates.result.count count="{{ $results_count }}" />
+		<x-dates-rates.results.count count="{{ $results_count }}" />
 	</x-dates-rates.header>
 
 	{{-- Results --}}
