@@ -15,6 +15,8 @@ use WP_Taxonomy;
 use WP_REST_Request;
 
 use function Quark\Itineraries\get as get_itinerary;
+use function Quark\Itineraries\format_itinerary_day_title;
+use function Quark\ItineraryDays\get as get_itinerary_day;
 use function Quark\Departures\get as get_departure;
 use function Quark\Core\format_price;
 use function Quark\Ships\get as get_ship;
@@ -57,6 +59,7 @@ function bootstrap(): void {
 
 	// Other hooks.
 	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
+	add_filter( 'travelopia_seo_structured_data_schema', __NAMESPACE__ . '\\seo_structured_data' );
 
 	// Bust cache for details data.
 	add_action( 'qe_expedition_post_cache_busted', __NAMESPACE__ . '\\bust_details_cache' );
@@ -672,6 +675,158 @@ function bust_post_cache( int $post_id = 0 ): void {
 
 	// Trigger action to clear cache for this post.
 	do_action( 'qe_expedition_post_cache_busted', $post_id );
+}
+
+/**
+ * SEO structured data for this post type.
+ *
+ * @param mixed[] $schema SEO schema.
+ *
+ * @return mixed[]
+ */
+function seo_structured_data( array $schema = [] ): array {
+	// If current post is not a expedition post, return the schema as is.
+	if ( ! is_singular( POST_TYPE ) ) {
+		return $schema;
+	}
+
+	// Add structured data for this post.
+	$schema[] = get_seo_structured_data( absint( get_the_ID() ) );
+
+	// Return updated schema.
+	return $schema;
+}
+
+/**
+ * Get structured data for an expedition.
+ *
+ * @param int $post_id Post ID.
+ *
+ * @return array<int, array{
+ *     '@context': string,
+ *     '@type': string,
+ *     name: string,
+ *     description: string,
+ *     brand?: string,
+ *     url?: string,
+ *     image?: string|false,
+ *     subTrip?: array<int, array{
+ *         '@type': string,
+ *         name: string,
+ *         itinerary: array<int, array{
+ *             '@type': string,
+ *             name: string,
+ *             description: string,
+ *         }>,
+ *     }>
+ * }>
+ */
+function get_seo_structured_data( int $post_id = 0 ): array {
+	// Get expedition.
+	$expedition = get( $post_id );
+
+	// Bail if no expedition.
+	if ( ! $expedition['post'] instanceof WP_Post ) {
+		return [];
+	}
+
+	// Initialize data.
+	$data                = [];
+	$product_schema      = [];
+	$tourist_trip_schema = [];
+
+	// Add product schema.
+	$product_schema = [
+		'@context'    => 'https://schema.org',
+		'@type'       => 'Product',
+		'name'        => $expedition['post']->post_title,
+		'description' => wp_trim_words( get_the_excerpt( $expedition['post'] ), 35, '...' ),
+		'brand'       => 'Quark Expeditions',
+		'url'         => $expedition['permalink'],
+		'image'       => get_the_post_thumbnail_url( $post_id ),
+	];
+
+	// Add tourist trip schema.
+	$tourist_trip_schema = [
+		'@context'    => 'https://schema.org',
+		'@type'       => 'TouristTrip',
+		'name'        => $expedition['post']->post_title,
+		'description' => wp_trim_words( get_the_excerpt( $expedition['post'] ), 35, '...' ),
+	];
+
+	// Get related Itineraries.
+	$itineraries = get_itineraries( $post_id );
+
+	// Check for itineraries.
+	if ( ! empty( $itineraries ) ) {
+		// Initialize itinerary schema.
+		$itinerary_schema = [];
+
+		// Loop through itineraries.
+		foreach ( $itineraries as $itinerary ) {
+			// Check for itinerary.
+			if ( ! $itinerary['post'] instanceof WP_Post || empty( $itinerary['post_meta'] ) || empty( $itinerary['post_meta']['itinerary_days'] ) ) {
+				continue;
+			}
+
+			// Initialize Itinerary Days schema.
+			$itinerary_days_schema = [];
+
+			// Get the Itinerary Days.
+			$itinerary_days = $itinerary['post_meta']['itinerary_days'];
+
+			// Check for array.
+			if ( ! is_array( $itinerary_days ) ) {
+				continue;
+			}
+
+			// Loop through Itinerary Days.
+			foreach ( $itinerary_days as $itinerary_day ) {
+				// Get Itinerary Day post.
+				$itinerary_day_post = get_itinerary_day( absint( $itinerary_day ) );
+
+				// Check for Itinerary Day.
+				if ( ! $itinerary_day_post['post'] instanceof WP_Post ) {
+					continue;
+				}
+
+				// Add Itinerary Day schema.
+				$itinerary_days_schema[] = [
+					'@type'       => 'TouristAttraction',
+					'name'        => format_itinerary_day_title( absint( $itinerary_day ) ),
+					'description' => wp_strip_all_tags( $itinerary_day_post['post']->post_content ),
+				];
+			}
+
+			// Get Itinerary name.
+			$itinerary_name = $itinerary['post']->post_title;
+
+			// Check for Itinerary name containing a colon.
+			$colon_position = strstr( $itinerary_name, ':' );
+
+			// Remove colon and space from Itinerary name.
+			if ( false !== $colon_position ) {
+				$itinerary_name = ltrim( $colon_position, ': ' );
+			}
+
+			// Add itinerary schema.
+			$itinerary_schema[] = [
+				'@type'     => 'Trip',
+				'name'      => $itinerary_name,
+				'itinerary' => $itinerary_days_schema,
+			];
+		}
+
+		// Add itinerary schema to tourist trip schema.
+		$tourist_trip_schema['subTrip'] = $itinerary_schema;
+	}
+
+	// Add the schemas to the data.
+	$data[] = $product_schema;
+	$data[] = $tourist_trip_schema;
+
+	// Return built data.
+	return $data;
 }
 
 /**
