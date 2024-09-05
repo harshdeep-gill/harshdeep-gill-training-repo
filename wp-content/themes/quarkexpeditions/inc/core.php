@@ -17,7 +17,7 @@ function setup(): void {
 	add_action( 'after_setup_theme', __NAMESPACE__ . '\\theme_support' );
 	add_action( 'wp_enqueue_scripts', __NAMESPACE__ . '\\register_styles' );
 	add_action( 'wp_enqueue_scripts', __NAMESPACE__ . '\\register_scripts' );
-	add_action( 'travelopia_blade_view', __NAMESPACE__ . '\\blade_view_before_load' );
+	add_action( 'wordpress_blade_before_view', __NAMESPACE__ . '\\blade_view_before_load' );
 	add_filter( 'wp_resource_hints', __NAMESPACE__ . '\\resource_hints', 10, 2 );
 	add_filter( 'wp_kses_allowed_html', __NAMESPACE__ . '\\kses_custom_allowed_html', 10, 2 );
 }
@@ -322,13 +322,18 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 				'quark-tooltip'                               => [
 					'class' => true,
 				],
-				'quark-dates-rates-filter'                    => [
-					'class' => true,
+				'quark-dates-rates-filter-chip'               => [
+					'class'        => true,
+					'accordion_id' => true,
+					'type'         => true,
 				],
 				'quark-dates-rates-table'                     => [
 					'class' => true,
 				],
 				'quark-country-selector'                      => [
+					'class' => true,
+				],
+				'quark-currency-switcher'                     => [
 					'class' => true,
 				],
 				'quark-load-more'                             => [
@@ -354,6 +359,63 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 				'quark-wistia-embed'                          => [
 					'class'    => true,
 					'video-id' => true,
+				],
+				'quark-dates-rates-results'                   => [
+					'class'         => true,
+					'data-*'        => true,
+					'partial'       => true,
+					'selector'      => true,
+					'expedition-id' => true,
+				],
+				'quark-dates-rates-filters-controller'        => [
+					'class'  => true,
+					'data-*' => true,
+				],
+				'quark-dates-rates-selected-filters'          => [
+					'class' => true,
+					'empty' => true,
+				],
+				'quark-dates-rates-selected-filter-pill'      => [
+					'class'  => true,
+					'filter' => true,
+					'value'  => true,
+					'data-*' => true,
+				],
+				'quark-dates-rates-filter-currency-dropdown'  => [
+					'class' => true,
+				],
+				'quark-dates-rates-filter-currency-radios'    => [
+					'class' => true,
+				],
+				'quark-dates-rates-filter-sticky-filter'      => [
+					'class' => true,
+				],
+				'quark-dates-rates-filter-sticky-currency'    => [
+					'class' => true,
+				],
+				'quark-dates-rates-filter-seasons'            => [
+					'class' => true,
+				],
+				'quark-dates-rates-filter-expeditions'        => [
+					'class' => true,
+				],
+				'quark-dates-rates-filter-adventure-options'  => [
+					'class' => true,
+				],
+				'quark-dates-rates-filter-departure-months'   => [
+					'class' => true,
+				],
+				'quark-dates-rates-filter-durations'          => [
+					'class' => true,
+				],
+				'quark-dates-rates-filter-ships'              => [
+					'class' => true,
+				],
+				'quark-dates-rates-filters-cta-view-results'  => [
+					'class' => true,
+				],
+				'quark-dates-rates-filters-cta-clear-all'     => [
+					'class' => true,
 				],
 				'tp-form'                                     => [
 					'class'          => true,
@@ -614,6 +676,9 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'required'     => true,
 					'checked'      => true,
 					'value'        => true,
+					'id'           => true,
+					'form'         => true,
+					'data-*'       => true,
 				],
 				'textarea'                                    => [
 					'id'          => true,

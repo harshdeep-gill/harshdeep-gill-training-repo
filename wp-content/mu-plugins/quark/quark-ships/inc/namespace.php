@@ -87,6 +87,289 @@ function register_ship_post_type(): void {
 			'with_front' => false,
 		],
 		'capability_type'     => 'post',
+		'template'            => [
+			[
+				'quark/hero',
+				[
+					'immersive'      => 'bottom',
+					'contentOverlap' => false,
+				],
+				[
+					[
+						'quark/breadcrumbs',
+					],
+					[
+						'quark/hero-content',
+						[],
+						[
+							[
+								'quark/hero-content-left',
+								[],
+								[
+									[
+										'quark/hero-title',
+										[
+											'title' => 'Expedition Ships',
+										],
+									],
+								],
+							],
+						],
+					],
+				],
+			],
+			[
+				'quark/secondary-navigation',
+				[],
+				[
+					[
+						'quark/secondary-navigation-menu',
+						[],
+						[
+							[
+								'quark/secondary-navigation-item',
+								[
+									'title' => 'Overview',
+									'url'   => [
+										'url'       => 'overview',
+										'text'      => '',
+										'newWindow' => false,
+									],
+								],
+							],
+							[
+								'quark/secondary-navigation-item',
+								[
+									'title' => 'Features & Amenities',
+									'url'   => [
+										'url'       => 'features-and-amenities',
+										'text'      => '',
+										'newWindow' => false,
+									],
+								],
+							],
+							[
+								'quark/secondary-navigation-item',
+								[
+									'title' => 'Deck Plans & Cabins',
+									'url'   => [
+										'url'       => 'deck-plans-and-cabins',
+										'text'      => '',
+										'newWindow' => false,
+									],
+								],
+							],
+						],
+					],
+					[
+						'quark/secondary-navigation-cta-buttons',
+						[],
+						[
+							[
+								'quark/buttons',
+								[],
+								[
+									[
+										'quark/button',
+										[
+											'backgroundColor' => 'black',
+											'btnText'         => 'Download Brochure',
+											'isSizeBig'       => true,
+										],
+									],
+									[
+										'quark/button',
+										[
+											'btnText'   => 'Upcoming Departures',
+											'isSizeBig' => true,
+											'url'       => [
+												'url'       => '#upcoming-departures',
+												'text'      => '',
+												'newWindow' => false,
+											],
+										],
+									],
+								],
+							],
+						],
+					],
+				],
+			],
+			[
+				'quark/section',
+				[
+					'anchor'         => 'overview',
+					'title'          => 'Overview',
+					'titleAlignment' => 'left',
+					'headingLevel'   => 2,
+				],
+				[
+					[
+						'core/paragraph',
+					],
+					[
+						'quark/ship-specifications',
+					],
+					[
+						'quark/collage',
+						[],
+						[
+							[
+								'quark/collage-media-item',
+							],
+							[
+								'quark/collage-media-item',
+							],
+							[
+								'quark/collage-media-item',
+							],
+							[
+								'quark/collage-media-item',
+							],
+						],
+					],
+				],
+			],
+			[
+				'quark/section',
+				[
+					'title'          => 'Features of the Vessel',
+					'titleAlignment' => 'left',
+				],
+				[
+					[
+						'quark/ship-vessel-features',
+						[],
+						[
+							[
+								'quark/ship-vessel-features-card',
+							],
+							[
+								'quark/ship-vessel-features-card',
+							],
+							[
+								'quark/ship-vessel-features-card',
+							],
+						],
+					],
+				],
+			],
+			[
+				'quark/section',
+				[
+					'title'          => 'Features & Amenities',
+					'titleAlignment' => 'left',
+					'anchor'         => 'features-and-amenities',
+					'headingLevel'   => 2,
+				],
+				[
+					[
+						'quark/ship-features-amenities',
+						[],
+						[
+							[
+								'quark/ship-features-amenities-card',
+							],
+							[
+								'quark/ship-features-amenities-card',
+							],
+							[
+								'quark/ship-features-amenities-card',
+							],
+						],
+					],
+				],
+			],
+			[
+				'quark/section',
+				[
+					'title'          => '',
+					'titleAlignment' => 'left',
+					'hasDescription' => true,
+				],
+				[
+					[
+						'quark/media-carousel',
+					],
+				],
+			],
+			[
+				'quark/section',
+				[
+					'title'          => '',
+					'titleAlignment' => 'left',
+				],
+				[
+					[
+						'quark/media-description-cards',
+						[],
+						[
+							[
+								'quark/media-description-card',
+							],
+							[
+								'quark/media-description-card',
+							],
+							[
+								'quark/media-description-card',
+							],
+						],
+					],
+				],
+			],
+			[
+				'quark/section',
+				[
+					'title'          => '',
+					'titleAlignment' => 'left',
+				],
+				[
+					[
+						'quark/ship-related-adventure-options',
+					],
+				],
+			],
+			[
+				'quark/section',
+				[
+					'title'          => 'Deck Plans & Cabins',
+					'titleAlignment' => 'left',
+					'anchor'         => 'deck-plans-and-cabins',
+					'headingLevel'   => 2,
+				],
+				[
+					[
+						'quark/ship-decks',
+					],
+				],
+			],
+			[
+				'quark/section',
+				[
+					'title'          => 'Comparison of All Cabins',
+					'titleAlignment' => 'left',
+				],
+				[
+					[
+						'quark/ship-cabin-categories',
+					],
+				],
+			],
+			[
+				'quark/section',
+				[
+					'title'          => 'Upcoming Departures',
+					'anchor'         => 'upcoming-departures',
+					'titleAlignment' => 'left',
+					'headingLevel'   => 2,
+				],
+				[
+					[
+						'quark/book-departures-ships',
+					],
+				],
+			],
+		],
 	];
 
 	// Register post type.

@@ -46,6 +46,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 	$component_attributes = [
 		'image_id'        => 0,
 		'immersive'       => $attributes['immersive'],
+		'content_overlap' => $attributes['contentOverlap'],
 		'text_align'      => $attributes['textAlign'],
 		'overlay_opacity' => $attributes['overlayOpacity'],
 		'left'            => [],

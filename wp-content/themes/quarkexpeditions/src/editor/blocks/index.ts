@@ -76,6 +76,7 @@ import * as featuredImage from './featured-image';
 import * as expeditions from './expeditions';
 import * as bookDeparturesShip from './book-departures-ship';
 import * as shipDecks from './ship-decks';
+import * as InfoCards from './info-cards';
 
 /**
  * Add blocks.
@@ -148,6 +149,7 @@ const blocks = [
 	featuredImage,
 	expeditions,
 	shipDecks,
+	InfoCards,
 ];
 
 // Register blocks for ships.

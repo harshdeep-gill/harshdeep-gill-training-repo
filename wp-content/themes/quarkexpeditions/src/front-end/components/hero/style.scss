@@ -70,7 +70,7 @@
 			&-bottom,
 			&-all {
 				padding-bottom: calc(var(--spacing-8) + ($image_bleed_bottom / 2));
-				margin-bottom: calc(-1 * $image-bleed-bottom / 2);
+				margin-bottom: calc(-1 * $image_bleed_bottom / 2);
 
 				@media screen and (min-width: grid-size(lg)) {
 					padding-bottom: calc(var(--spacing-9) + $image_bleed_bottom);
@@ -80,6 +80,11 @@
 				+ * {
 					margin-top: 0;
 					position: relative;
+				}
+
+				&.hero--content-no-overlap {
+					margin-bottom: calc($image_bleed_bottom / 2);
+					padding-bottom: calc($image_bleed_bottom / 4);
 				}
 			}
 		}

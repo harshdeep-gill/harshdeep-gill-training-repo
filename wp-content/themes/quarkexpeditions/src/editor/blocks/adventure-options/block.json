@@ -27,6 +27,10 @@
 		"ids": {
 			"type": "array",
 			"default": []
+		},
+		"carouselOverflow": {
+			"type": "boolean",
+			"default": false
 		}
 	},
 	"supports": {

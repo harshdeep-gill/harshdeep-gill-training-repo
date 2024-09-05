@@ -10,9 +10,17 @@
 			"name": "single-qrk_landing_page",
 			"title": "Landing Page"
 		},
+    {
+      "name": "single-qrk_staff_member",
+      "title": "Staff Member"
+    },
 		{
 			"name": "content-sidebar-table-of-contents",
 			"title": "Content with Table of Contents Sidebar"
+		},
+		{
+			"name": "single-qrk_adventure_option",
+			"title": "Adventure Option"
 		}
 	],
 	"templateParts": [
@@ -37,6 +45,8 @@
 		},
 		"color": {
 		"custom": false,
+		"background": false,
+		"text": false,
 		"customDuotone": false,
 		"customGradient": false,
 		"duotone": [],
@@ -64,6 +74,7 @@
 		},
 		"typography": {
 		"letterSpacing": false,
+		"defaultFontSizes": false,
 		"customFontSize": false,
 		"lineHeight": false,
 		"fontStyle": false,

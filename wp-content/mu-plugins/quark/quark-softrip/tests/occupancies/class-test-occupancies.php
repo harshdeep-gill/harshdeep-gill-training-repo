@@ -23,6 +23,7 @@ use function Quark\Softrip\Occupancies\get_description_and_pax_count_by_mask;
 use function Quark\Softrip\Occupancies\get_lowest_price;
 use function Quark\Softrip\Occupancies\get_lowest_price_by_cabin_category_and_departure;
 use function Quark\Softrip\Occupancies\get_lowest_price_by_cabin_category_and_departure_and_promotion_code;
+use function Quark\Softrip\Occupancies\get_masks_mapping;
 use function Quark\Softrip\Occupancies\get_occupancies_by_cabin_category_and_departure;
 use function Quark\Softrip\Occupancies\get_occupancies_by_departure;
 use function Quark\Softrip\Occupancies\get_occupancy_data_by_id;
@@ -3887,6 +3888,61 @@ class Test_Occupancies extends Softrip_TestCase {
 		// For invalid currency code.
 		$expected = 0;
 		$actual   = get_lowest_price_by_cabin_category_and_departure_and_promotion_code( $cabin_category_post_id, $departure_post_id, $promo_code1, 'INVALID' );
+		$this->assertEquals( $expected, $actual );
+	}
+
+	/**
+	 * Test getting mask mapping.
+	 *
+	 * @covers \Quark\Softrip\Occupancies\get_masks_mapping
+	 *
+	 * @return void
+	 */
+	public function test_get_masks_mapping(): void {
+		// Test.
+		$expected = [
+			'A'     => [
+				'description' => 'Single Room',
+				'pax_count'   => 1,
+			],
+			'AA'    => [
+				'description' => 'Double Room',
+				'pax_count'   => 2,
+			],
+			'SAA'   => [
+				'description' => 'Double Room Shared',
+				'pax_count'   => 1,
+			],
+			'SMAA'  => [
+				'description' => 'Double Room Shared (Male)',
+				'pax_count'   => 1,
+			],
+			'SFAA'  => [
+				'description' => 'Double Room Shared (Female)',
+				'pax_count'   => 1,
+			],
+			'AAA'   => [
+				'description' => 'Triple Room',
+				'pax_count'   => 3,
+			],
+			'SAAA'  => [
+				'description' => 'Triple Room Shared',
+				'pax_count'   => 1,
+			],
+			'SMAAA' => [
+				'description' => 'Triple Room Shared (Male)',
+				'pax_count'   => 1,
+			],
+			'SFAAA' => [
+				'description' => 'Triple Room Shared (Female)',
+				'pax_count'   => 1,
+			],
+			'AAAA'  => [
+				'description' => 'Quad Room',
+				'pax_count'   => 4,
+			],
+		];
+		$actual   = get_masks_mapping();
 		$this->assertEquals( $expected, $actual );
 	}
 }
