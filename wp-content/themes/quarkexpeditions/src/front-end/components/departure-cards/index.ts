@@ -86,12 +86,13 @@ export default class DepartureCard extends HTMLElement {
 	}
 
 	/**
-	 * Toggle the visibility of the "items" based on the presence of overflow items.
+	 * Toggle the visibility of the "items" based on screen size.
+	 * On mobile, hide all except the first item.
 	 */
 	updateOfferHiddenItems(): void {
 		// Check if the offers exists.
 		if ( ! this.offers ) {
-			// Return if element does not exits.
+			// Return if element does not exist.
 			return;
 		}
 
@@ -99,93 +100,117 @@ export default class DepartureCard extends HTMLElement {
 		let hiddenCount: number = 0;
 		let totalWidth: number = 0;
 
+		// For mobile layout only (screen width < 576px).
+		const isMobile = window.innerWidth < 576;
+
 		// For each item.
 		this.offers.forEach( ( offer, index ) => {
 			// Remove class.
 			offer.classList.remove( 'departure-cards__offer--hidden' );
-			totalWidth += offer.clientWidth;
 
-			// Check if the offers list exists.
-			if ( ! this.offersList || ! this.offers ) {
-				// Return if element does not exits.
-				return;
-			}
+			// On mobile, only show the first item.
+			if ( isMobile ) {
+				// Check for first item.
+				if ( index === 0 ) {
+					// Always show the first item.
+					totalWidth += offer.clientWidth;
 
-			// Check for the width.
-			if ( totalWidth > this.offersList.clientWidth - 100 && index < this.offers.length - 1 ) {
+					// Return.
+					return;
+				}
+
 				// Add class.
 				offer.classList.add( 'departure-cards__offer--hidden' );
 				hiddenCount++;
+			} else {
+				// Default behavior for larger screens.
+				totalWidth += offer.clientWidth;
+
+				// Check for the width.
+				if ( totalWidth > this.offersList!.clientWidth - 110 ) {
+					// Add class to hide the item.
+					offer.classList.add( 'departure-cards__offer--hidden' );
+					hiddenCount++;
+				}
 			}
 		} );
 
-		// Check for count span.
+		// Update the hidden item count.
 		if ( this.offerCountSpan ) {
-			// Set the count span.
 			this.offerCountSpan.textContent = hiddenCount.toString();
 		}
 
-		// Check if the count button exists.
+		// Toggle visibility of the count button.
 		if ( this.offerCountButton ) {
-			// Check hidden count.
+			// On mobile, only show the first item.
 			if ( hiddenCount > 0 ) {
-				// Remove class from the button.
+				// Remove class.
 				this.offerCountButton.classList.remove( 'departure-cards__offer-count-button--hidden' );
 			} else {
-				// Add class from the button.
+				// Add class.
 				this.offerCountButton.classList.add( 'departure-cards__offer-count-button--hidden' );
 			}
 		}
 	}
 
 	/**
-	 * Toggle the visibility of the "items" based on the presence of overflow items.
+	 * Toggle the visibility of the "items" in adventures based on screen size.
+	 * On mobile, hide all except the first item.
 	 */
 	updateAdventuresHiddenItems(): void {
-		// Check if the offers exists.
+		// Check if the element exists.
 		if ( ! this.adventuresContainer ) {
-			// Return if element does not exits.
+			// Return.
 			return;
 		}
 
-		// Set the variables.
+		// Set hidden count and total width.
 		let hiddenCount = 0;
 		let totalWidth = 0;
 
-		// For each item.
+		// Set is mobile variable.
+		const isMobile = window.innerWidth < 576;
+
+		// For each loop.
 		this.adventuresItems?.forEach( ( option, index ) => {
-			// Check if the offers list exists.
-			if ( ! this.adventuresContainer || ! this.adventuresItems || ! this.adventurescountWrap ) {
-				// Return if elements does not exits.
-				return;
-			}
-
-			// Remove the class and set the total width.
+			// Remove hidden class.
 			option.classList.remove( 'departure-cards__option--hidden' );
-			totalWidth += option.clientWidth;
 
-			// Check for width.
-			if ( totalWidth > this.adventuresContainer.clientWidth - this.adventurescountWrap.clientWidth && index < this.adventuresItems.length - 1 ) {
-				// Set the class.
+			// On mobile, only show the first item.
+			if ( isMobile ) {
+				// Check for first item.
+				if ( index === 0 ) {
+					// Set the total width.
+					totalWidth += option.clientWidth;
+
+					// Always show the first item.
+					return;
+				}
+
+				// Add hidden class.
 				option.classList.add( 'departure-cards__option--hidden' );
 				hiddenCount++;
+			} else {
+				// Default behavior for larger screens.
+				totalWidth += option.clientWidth;
+
+				// Width check.
+				if ( totalWidth > this.adventuresContainer!.clientWidth - this.adventurescountWrap!.clientWidth ) {
+					// Add hidden class
+					option.classList.add( 'departure-cards__option--hidden' );
+					hiddenCount++;
+				}
 			}
 		} );
 
-		// Check for elements.
-		if ( ! this.adventurescountWrap || ! this.adventurescountSpan ) {
-			// Return if elements does not exits.
-			return;
-		}
-
-		// Check for hidden count.
+		// Update count and toggle visibility.
 		if ( hiddenCount > 0 ) {
-			// Set the text and remove hidden class.
-			this.adventurescountSpan.textContent = hiddenCount.toString();
-			this.adventurescountWrap.classList.remove( 'departure-cards__options-count-wrap--hidden' );
+			// Set the text and remvoe hidden class.
+			this.adventurescountSpan!.textContent = hiddenCount.toString();
+			this.adventurescountWrap!.classList.remove( 'departure-cards__options-count-wrap--hidden' );
 		} else {
-			// Add hidden class.
-			this.adventurescountWrap.classList.add( 'departure-cards__options-count-wrap--hidden' );
+			// Add class.
+			this.adventurescountWrap!.classList.add( 'departure-cards__options-count-wrap--hidden' );
 		}
 	}
 }

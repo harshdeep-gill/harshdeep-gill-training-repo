@@ -4152,8 +4152,8 @@
 							</x-departure-cards.specification-label>
 							<x-departure-cards.specification-value>
 								<x-departure-cards.adventure-options>
-									<x-departure-cards.adventure-option title="Sea Kayaking" />
 									<x-departure-cards.adventure-option title="Stand-up Paddleboarding" />
+									<x-departure-cards.adventure-option title="Sea Kayaking" />
 									<x-departure-cards.adventure-option title="Zodiac Cruising" />
 									<x-departure-cards.adventure-option title="Heli-hiking" />
 									<x-departure-cards.adventure-option title="Polar Plunge" />
@@ -4413,7 +4413,7 @@
 		</x-departure-cards.card>
 
 		<x-departure-cards.card>
-			<x-departure-cards.card-banner text="Quark Protection Promise" url="#" />
+			<x-departure-cards.card-banner text="Quark Protection Promise" url="" />
 			<x-departure-cards.header>
 				<x-departure-cards.departing-on date="March 1, 2024" />
 				<x-departure-cards.promo-tag text="Save up to 24%" />
