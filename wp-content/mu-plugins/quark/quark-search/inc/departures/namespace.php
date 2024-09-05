@@ -51,38 +51,13 @@ function bootstrap(): void {
 	// TODO - Improve this to bust cache once per auto sync or manual sync.
 	add_action( 'save_post_' . DEPARTURE_POST_TYPE, __NAMESPACE__ . '\\bust_search_cache' );
 
-	// Trigger reindex on post update.
+	// Hooks for re-indexing departures on update.
 	add_action( 'save_post', __NAMESPACE__ . '\\track_posts_to_be_reindexed', 999, 3 );
-
-	// Schedule reindex departures.
-	add_action( 'init', __NAMESPACE__ . '\\schedule_reindex_departures' );
-
-	// Register reindex departures cron.
 	add_action( SCHEDULE_REINDEX_HOOK, __NAMESPACE__ . '\\reindex_departures' );
-
-	// Register Stream log connector.
 	add_filter( 'wp_stream_connectors', __NAMESPACE__ . '\\setup_stream_connectors' );
 
 	// Load search class.
 	require_once __DIR__ . '/class-search.php';
-}
-
-/**
- * Schedule reindex departures.
- *
- * @return void
- */
-function schedule_reindex_departures(): void {
-	// Check if scheduled reindex departures.
-	if ( wp_next_scheduled( SCHEDULE_REINDEX_HOOK ) ) {
-		return;
-	}
-
-	// Set a time + 1 hour to schedule reindex departures.
-	$next_hour = strtotime( '+1 hour' );
-
-	// Schedule reindex departures.
-	wp_schedule_event( $next_hour, 'hourly', SCHEDULE_REINDEX_HOOK );
 }
 
 /**
@@ -466,6 +441,11 @@ function track_posts_to_be_reindexed( int $post_id = 0, ?WP_Post $post = null, b
 
 	// Update the option.
 	update_option( REINDEX_POST_IDS_OPTION_KEY, $option );
+
+	// Schedule reindex if not yet.
+	if ( ! wp_next_scheduled( SCHEDULE_REINDEX_HOOK ) ) {
+		wp_schedule_single_event( strtotime( '+1 hour' ), SCHEDULE_REINDEX_HOOK );
+	}
 }
 
 /**
@@ -611,6 +591,9 @@ function reindex_departures(): void {
 
 	// Reset the option.
 	update_option( REINDEX_POST_IDS_OPTION_KEY, [] );
+
+	// Clear the cron.
+	wp_clear_scheduled_hook( SCHEDULE_REINDEX_HOOK );
 }
 
 /**

@@ -23,7 +23,6 @@ use function Quark\Search\Departures\get_itinerary_length_search_filter_data;
 use function Quark\Search\Departures\get_language_search_filter_data;
 use function Quark\Search\Departures\get_travelers_search_filter_data;
 use function Quark\Search\Departures\reindex_departures;
-use function Quark\Search\Departures\schedule_reindex_departures;
 
 use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
 use const Quark\CabinCategories\CABIN_CLASS_TAXONOMY;
@@ -977,38 +976,6 @@ class Test_Search extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Check if reindex cron has been scheduled.
-	 *
-	 * @covers \Quark\Search\Departures\schedule_reindex_departures()
-	 *
-	 * @return void
-	 */
-	public function test_schedule_reindex_departures(): void {
-		// Clear any existing scheduled event for testing.
-		wp_clear_scheduled_hook( SCHEDULE_REINDEX_HOOK );
-		$timestamp = wp_next_scheduled( SCHEDULE_REINDEX_HOOK );
-		$this->assertFalse( $timestamp );
-
-		// Test case 1: Test scheduling sync cron task.
-		schedule_reindex_departures();
-		$timestamp = wp_next_scheduled( SCHEDULE_REINDEX_HOOK );
-		$this->assertNotFalse( $timestamp );
-
-		// Verify the schedule interval.
-		$schedule = wp_get_schedule( SCHEDULE_REINDEX_HOOK );
-		$this->assertSame( 'hourly', $schedule );
-
-		// Test case 2: Test if repeated call should not schedule again.
-		schedule_reindex_departures();
-		$timestamp2 = wp_next_scheduled( SCHEDULE_REINDEX_HOOK );
-		$this->assertNotFalse( $timestamp2 );
-		$this->assertSame( $timestamp, $timestamp2 );
-
-		// Cleanup.
-		wp_clear_scheduled_hook( SCHEDULE_REINDEX_HOOK );
-	}
-
-	/**
 	 * Test if posts are tracked to be re-indexed.
 	 * On update of expedition and itinerary posts, the post ids should be tracked to be re-indexed.
 	 *
@@ -1020,6 +987,7 @@ class Test_Search extends WP_UnitTestCase {
 	public function test_track_posts_to_be_reindexed(): void {
 		// Clear any existing tracked post ids.
 		delete_option( REINDEX_POST_IDS_OPTION_KEY );
+		wp_unschedule_hook( SCHEDULE_REINDEX_HOOK );
 
 		// Create a non-supported post.
 		$post_id = $this->factory()->post->create();
@@ -1036,6 +1004,10 @@ class Test_Search extends WP_UnitTestCase {
 		// Option should still be empty.
 		$option = get_option( REINDEX_POST_IDS_OPTION_KEY, [] );
 		$this->assertEmpty( $option );
+
+		// Cron should not be scheduled.
+		$timestamp = wp_next_scheduled( SCHEDULE_REINDEX_HOOK );
+		$this->assertFalse( $timestamp );
 
 		// Create a expedition post.
 		$expedition_post_id = $this->factory()->post->create(
@@ -1059,6 +1031,13 @@ class Test_Search extends WP_UnitTestCase {
 		$this->assertNotEmpty( $option );
 		$this->assertContains( $expedition_post_id, $option );
 
+		// Cron should be scheduled.
+		$timestamp = wp_next_scheduled( SCHEDULE_REINDEX_HOOK );
+		$this->assertNotFalse( $timestamp );
+
+		// Time should be equal to 1 hour.
+		$this->assertEquals( time() + HOUR_IN_SECONDS, $timestamp );
+
 		// Try updating the expedition post again.
 		wp_update_post(
 			[
@@ -1073,6 +1052,13 @@ class Test_Search extends WP_UnitTestCase {
 		$this->assertNotEmpty( $option );
 		$this->assertCount( 1, $option );
 		$this->assertContains( $expedition_post_id, $option );
+
+		// Cron should not be scheduled again.
+		$timestamp = wp_next_scheduled( SCHEDULE_REINDEX_HOOK );
+		$this->assertNotFalse( $timestamp );
+
+		// Time should be under or equal to 1 hour.
+		$this->assertLessThanOrEqual( time() + HOUR_IN_SECONDS, $timestamp );
 
 		// Create another expedition post.
 		$expedition_post_id2 = $this->factory()->post->create(
@@ -1128,6 +1114,13 @@ class Test_Search extends WP_UnitTestCase {
 		$this->assertCount( 3, $option );
 		$this->assertEquals( [ $expedition_post_id, $expedition_post_id2, $itinerary_post_id ], $option );
 
+		// Cron should be scheduled.
+		$timestamp = wp_next_scheduled( SCHEDULE_REINDEX_HOOK );
+		$this->assertNotFalse( $timestamp );
+
+		// Time should be equal to 1 hour.
+		$this->assertLessThanOrEqual( time() + HOUR_IN_SECONDS, $timestamp );
+
 		// Update the itinerary post.
 		wp_update_post(
 			[
@@ -1157,6 +1150,10 @@ class Test_Search extends WP_UnitTestCase {
 		// Action for re-index completion should be fired.
 		$this->assertTrue( did_action( 'quark_search_reindex_completed' ) > 0 );
 
+		// There should be no more cron scheduled.
+		$timestamp = wp_next_scheduled( SCHEDULE_REINDEX_HOOK );
+		$this->assertFalse( $timestamp );
+
 		// Add a non-supported post id to option and check if it is removed.
 		update_option( REINDEX_POST_IDS_OPTION_KEY, [ $post_id ] );
 
@@ -1176,6 +1173,10 @@ class Test_Search extends WP_UnitTestCase {
 
 		// Action for re-index failed should be fired.
 		$this->assertTrue( did_action( 'quark_search_reindex_failed' ) > 0 );
+
+		// There should be no more cron scheduled.
+		$timestamp = wp_next_scheduled( SCHEDULE_REINDEX_HOOK );
+		$this->assertFalse( $timestamp );
 	}
 
 	/**
