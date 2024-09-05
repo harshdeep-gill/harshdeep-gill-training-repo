@@ -698,11 +698,28 @@ function seo_structured_data( array $schema = [] ): array {
 }
 
 /**
- * Get structured data for a expedition.
+ * Get structured data for an expedition.
  *
  * @param int $post_id Post ID.
  *
- * @return mixed[]
+ * @return array<int, array{
+ *     '@context': string,
+ *     '@type': string,
+ *     name: string,
+ *     description: string,
+ *     brand?: string,
+ *     url?: string,
+ *     image?: string|false,
+ *     subTrip?: array<int, array{
+ *         '@type': string,
+ *         name: string,
+ *         itinerary: array<int, array{
+ *             '@type': string,
+ *             name: string,
+ *             description: string,
+ *         }>,
+ *     }>
+ * }>
  */
 function get_seo_structured_data( int $post_id = 0 ): array {
 	// Get expedition.
