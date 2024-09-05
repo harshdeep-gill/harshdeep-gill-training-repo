@@ -630,14 +630,14 @@ function transform_drupal_media_tags( string $content = '' ): string {
 						strval(
 							$drupal_db->prepare(
 								'
-							SELECT
-								field_media_video_embed_field_value
-							FROM
-								media__field_media_video_embed_field
-							WHERE
-								entity_id = %d
-							LIMIT 1
-							',
+								SELECT
+									field_media_video_embed_field_value
+								FROM
+									media__field_media_video_embed_field
+								WHERE
+									entity_id = %d
+								LIMIT 1
+								',
 								$media['mid']
 							)
 						)
