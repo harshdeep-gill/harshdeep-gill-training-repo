@@ -8,7 +8,7 @@ const { persist, create, stores } = window.zustand;
  */
 export const STORE_NAME = 'global';
 
-// TODO: Add comment.
+// Global state type.
 interface GlobalState {
     currency: string,
 }
