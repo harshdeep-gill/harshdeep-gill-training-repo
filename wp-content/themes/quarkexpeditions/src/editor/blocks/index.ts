@@ -77,6 +77,7 @@ import * as expeditions from './expeditions';
 import * as bookDeparturesShip from './book-departures-ship';
 import * as shipDecks from './ship-decks';
 import * as InfoCards from './info-cards';
+import * as linkDetailCards from './link-detail-cards';
 
 /**
  * Add blocks.
@@ -150,6 +151,7 @@ const blocks = [
 	expeditions,
 	shipDecks,
 	InfoCards,
+	linkDetailCards,
 ];
 
 // Register blocks for ships.
