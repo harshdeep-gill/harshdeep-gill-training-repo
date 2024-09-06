@@ -6,7 +6,7 @@ const { HTMLElement, zustand } = window;
 /**
  * Internal dependencies
  */
-import { setPreviousPage } from '../actions';
+import { setNextPage } from '../actions';
 
 /**
  * Store
@@ -14,14 +14,15 @@ import { setPreviousPage } from '../actions';
 const { subscribe, getState } = zustand.stores.datesRates;
 
 /**
- * Previous Page class.
+ * Links controller class.
  */
-export default class DatesRatesPaginationPrevPageElement extends HTMLElement {
+export default class DatesRatesPaginationLinksControllerElement extends HTMLElement {
 	/**
 	 * Properties
 	 */
+	private readonly pageNumberTemplate: HTMLTemplateElement | null;
 	private readonly theButton: HTMLButtonElement | null;
-	private isPrevButton: boolean;
+	private isNextButton: boolean;
 
 	/**
 	 * Constructor
@@ -31,11 +32,10 @@ export default class DatesRatesPaginationPrevPageElement extends HTMLElement {
 		super();
 
 		// Initialize properties.
-		this.theButton = this.querySelector( 'button' );
-		this.isPrevButton = this.theButton?.classList.contains( 'prev' ) ?? false;
+		this.pageNumberTemplate = this.querySelector( '.dates-rates__template-pagination-page' );
 
 		// Do we have an invalid button?
-		if ( ! this.isPrevButton ) {
+		if ( ! this.isNextButton ) {
 			// Yes, bail.
 			return;
 		}
@@ -57,7 +57,7 @@ export default class DatesRatesPaginationPrevPageElement extends HTMLElement {
 	 */
 	update( state: DatesRatesState ) {
 		// Get the page number.
-		const { page } = state;
+		const { page, totalPages } = state;
 
 		// Null check.
 		if ( ! this.theButton ) {
@@ -68,7 +68,7 @@ export default class DatesRatesPaginationPrevPageElement extends HTMLElement {
 		/**
 		 * Check if we should hide the button.
 		 */
-		if ( page === 1 ) {
+		if ( page === totalPages ) {
 			this.setAttribute( 'data-hidden', '' );
 			this.theButton.disabled = true;
 		} else {
@@ -81,7 +81,7 @@ export default class DatesRatesPaginationPrevPageElement extends HTMLElement {
 	 * Handles the click event.
 	 */
 	handleClick() {
-		// Is this a prev button?
-		setPreviousPage();
+		// Is this a next button?
+		setNextPage();
 	}
 }
