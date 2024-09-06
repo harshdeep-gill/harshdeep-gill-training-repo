@@ -342,8 +342,8 @@ class Test_Staff_Members extends WP_UnitTestCase {
 		// Create a page.
 		$page = $this->factory()->post->create_and_get(
 			[
-				'post_title'   => 'Test Page',
-				'post_type'    => 'page',
+				'post_title' => 'Test Page',
+				'post_type'  => 'page',
 			]
 		);
 		$this->assertTrue( $page instanceof WP_Post );
