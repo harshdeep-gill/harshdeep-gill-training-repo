@@ -66,7 +66,7 @@ export default function edit( { className, attributes, setAttributes }: BlockEdi
 			overline.name,
 		],
 		template: [
-			[ 'core/heading' ],
+			[ 'core/heading', { level: 3 } ],
 			[ 'core/paragraph', { placeholder: __( 'Write description…', 'qrk' ) } ],
 			[ secondaryText.name ],
 			[ cta.name ],
@@ -110,16 +110,16 @@ export default function edit( { className, attributes, setAttributes }: BlockEdi
 					/>
 					{
 						'image' === attributes.mediaType &&
-						<SelectControl
-							label={ __( 'Image Aspect Ratio', 'qrk' ) }
-							help={ __( 'Select the image aspect ratio.', 'qrk' ) }
-							value={ attributes.imageAspectRatio }
-							options={ [
-								{ label: __( 'Landscape', 'qrk' ), value: 'landscape' },
-								{ label: __( 'Square', 'qrk' ), value: 'square' },
-							] }
-							onChange={ ( imageAspectRatio: string ) => setAttributes( { imageAspectRatio } ) }
-						/>
+							<SelectControl
+								label={ __( 'Image Aspect Ratio', 'qrk' ) }
+								help={ __( 'Select the image aspect ratio.', 'qrk' ) }
+								value={ attributes.imageAspectRatio }
+								options={ [
+									{ label: __( 'Landscape', 'qrk' ), value: 'landscape' },
+									{ label: __( 'Square', 'qrk' ), value: 'square' },
+								] }
+								onChange={ ( imageAspectRatio: string ) => setAttributes( { imageAspectRatio } ) }
+							/>
 					}
 					{
 						'video' === attributes.mediaType &&
@@ -149,7 +149,7 @@ export default function edit( { className, attributes, setAttributes }: BlockEdi
 				</PanelBody>
 			</InspectorControls>
 			<div { ...blockProps } >
-				<div className={ 'media-text-cta__media-wrap ' + attributes.imageAspectRatio }>
+				<div className={ `media-text-cta__media-wrap media-text-cta__media-wrap--${ attributes.imageAspectRatio }` }>
 					<Img className="media-text-cta__image" value={ attributes.image } />
 					{
 						'video' === attributes.mediaType &&

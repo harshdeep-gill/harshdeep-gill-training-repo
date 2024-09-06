@@ -42,10 +42,10 @@
 		@media screen and (min-width: grid-size(lg)) {
 			aspect-ratio: initial;
 		}
-	}
 
-	&__media-wrap.square {
-		aspect-ratio: 1 / 1;
+		&--square {
+			aspect-ratio: 1 / 1;
+		}
 	}
 
 	.fancy-video__cover-wrap {

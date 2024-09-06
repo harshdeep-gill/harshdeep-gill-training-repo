@@ -16,7 +16,7 @@
 
 <x-media-text-cta :media_align="$media_align">
 	@if ( 'image' === $media_type )
-		<x-media-text-cta.image :image_id="$image_id" aspect_ratio="{{ $image_aspect_ratio }}">
+		<x-media-text-cta.image :image_id="$image_id" :aspect_ratio="$image_aspect_ratio">
 			<x-media-text-cta.badge :text="$cta_badge_text ?? ''" />
 		</x-media-text-cta.image>
 	@endif
