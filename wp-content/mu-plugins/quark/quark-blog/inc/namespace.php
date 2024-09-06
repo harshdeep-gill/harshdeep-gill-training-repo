@@ -451,6 +451,34 @@ function breadcrumbs_ancestors( array $breadcrumbs = [] ): array {
 		return $breadcrumbs;
 	}
 
+	// Return breadcrumbs.
+	return array_merge(
+		$breadcrumbs,
+		get_breadcrumbs_ancestors( absint( get_the_ID() ) )
+	);
+}
+
+/**
+ * Get breadcrumbs ancestor.
+ *
+ * @param int $post_id Post ID.
+ *
+ * @return array{}|array{
+ *     array{
+ *         title: string,
+ *         url: string,
+ *     }
+ * }
+ */
+function get_breadcrumbs_ancestors( int $post_id = 0 ): array {
+	// Initialize breadcrumbs.
+	$breadcrumbs = [];
+
+	// Bail if post ID is not set.
+	if ( empty( $post_id ) ) {
+		return $breadcrumbs;
+	}
+
 	// Get archive page.
 	$blog_archive_page = absint( get_option( 'page_for_posts', 0 ) );
 
@@ -458,16 +486,8 @@ function breadcrumbs_ancestors( array $breadcrumbs = [] ): array {
 	if ( ! empty( $blog_archive_page ) ) {
 		$breadcrumbs[] = [
 			'title' => get_the_title( $blog_archive_page ),
-			'url'   => get_permalink( $blog_archive_page ),
+			'url'   => strval( get_permalink( $blog_archive_page ) ),
 		];
-	}
-
-	// Get post ID.
-	$post_id = get_the_ID();
-
-	// Get primary category for post.
-	if ( ! $post_id ) {
-		return $breadcrumbs;
 	}
 
 	// Get primary category.
@@ -483,9 +503,18 @@ function breadcrumbs_ancestors( array $breadcrumbs = [] ): array {
 
 	// Add primary category to breadcrumbs.
 	if ( $primary_category instanceof WP_Term ) {
+		// Get term link.
+		$term_url = get_term_link( $primary_category );
+
+		// Validate term URL.
+		if ( ! is_string( $term_url ) ) {
+			return $breadcrumbs;
+		}
+
+		// Add primary category to breadcrumbs.
 		$breadcrumbs[] = [
 			'title' => $primary_category->name,
-			'url'   => get_term_link( $primary_category ),
+			'url'   => $term_url,
 		];
 	}
 
