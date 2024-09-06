@@ -11,6 +11,7 @@ use WP_Post;
 use WP_Term;
 use WP_UnitTestCase;
 
+use function Quark\Blog\get_structured_data;
 use function Quark\Blog\primary_term_taxonomies;
 use function Quark\Blog\get;
 use function Quark\Blog\Authors\get as author_get;
@@ -589,5 +590,83 @@ class Test_Blog extends WP_UnitTestCase {
 			],
 			$author_info
 		);
+	}
+
+	/**
+	 * Test get structured data.
+	 *
+	 * @covers \Quark\Blog\get_structured_data()
+	 *
+	 * @return void
+	 */
+	public function test_get_structured_data(): void {
+		// create author.
+		$author = $this->factory()->post->create_and_get(
+			[
+				'post_type'   => AUTHOR_POST_TYPE,
+				'post_title'  => 'Test Author',
+				'post_status' => 'publish',
+			]
+		);
+
+		// Assert created posts are instance of WP_Post.
+		$this->assertTrue( $author instanceof WP_Post );
+
+		// Prepare post arguments.
+		$post_arguments = [
+			'post_title'   => 'Test Post',
+			'post_content' => 'Post content',
+			'post_status'  => 'publish',
+			'post_author'  => $author->ID,
+			'post_type'    => POST_TYPE,
+			'meta_input'   => [
+				'blog_authors' => [ $author->ID ],
+			],
+		];
+
+		// create article.
+		$post = $this->factory()->post->create_and_get( $post_arguments );
+
+		// Assert created posts are instance of WP_Post.
+		$this->assertTrue( $post instanceof WP_Post );
+
+		// Prepare structured data.
+		$structured_data = [
+			'@context'      => 'https://schema.org',
+			'@type'         => 'Article',
+			'headline'      => $post->post_title,
+			'datePublished' => $post->post_date,
+			'dateModified'  => $post->post_modified,
+			'image'         => [],
+			'author'        => [
+				'@type' => 'Person',
+				'name'  => $author->post_title,
+			],
+		];
+
+		// Assert modified structured data.
+		$this->assertEquals( $structured_data, get_structured_data( $post->ID ) );
+
+		// Delete Post.
+		wp_delete_post( $post->ID, true );
+
+		// Test when blog authors meta is not set.
+		$post_arguments['meta_input'] = [];
+
+		// create article.
+		$post = $this->factory()->post->create_and_get( $post_arguments );
+
+		// Assert created posts are instance of WP_Post.
+		$this->assertTrue( $post instanceof WP_Post );
+
+		// Prepare structured data.
+		unset( $structured_data['author'] );
+
+		// Assert modified structured data.
+		$this->assertEquals( $structured_data, get_structured_data( $post->ID ) );
+
+		// Delete Post.
+		wp_delete_post( $post->ID, true );
+		wp_delete_post( $author->ID, true );
 	}
 }

@@ -9,6 +9,7 @@
 
 	display: inline-flex;
 	cursor: pointer;
+	white-space: normal;
 
 	&:hover {
 		#{$self}__description {

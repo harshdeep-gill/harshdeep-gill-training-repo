@@ -42,6 +42,10 @@
 		@media screen and (min-width: grid-size(lg)) {
 			aspect-ratio: initial;
 		}
+
+		&--square {
+			aspect-ratio: 1 / 1;
+		}
 	}
 
 	.fancy-video__cover-wrap {
@@ -101,9 +105,6 @@
 		color: var(--color-gray-80);
 		font-weight: var(--font-weight-bold);
 		margin-top: var(--spacing-4);
-	}
-
-	&__description {
-		margin-top: var(--spacing-4);
+		margin-bottom: var(--spacing-4);
 	}
 }

@@ -11,6 +11,10 @@
 			"title": "Landing Page"
 		},
     {
+      "name": "single-qrk_press_release",
+      "title": "Press Release"
+    },
+    {
       "name": "single-qrk_staff_member",
       "title": "Staff Member"
     },
@@ -45,6 +49,8 @@
 		},
 		"color": {
 		"custom": false,
+		"background": false,
+		"text": false,
 		"customDuotone": false,
 		"customGradient": false,
 		"duotone": [],
