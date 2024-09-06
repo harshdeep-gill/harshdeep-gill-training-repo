@@ -6,7 +6,7 @@ const { HTMLElement, zustand } = window;
 /**
  * Internal dependencies
  */
-import { setPage } from '../actions';
+import { setPreviousPage } from '../actions';
 
 /**
  * Store
@@ -14,14 +14,14 @@ import { setPage } from '../actions';
 const { subscribe } = zustand.stores.datesRates;
 
 /**
- * Page Number class.
+ * Previous Page class.
  */
-export default class DatesRatesPaginationPageNumberElement extends HTMLElement {
+export default class DatesRatesPaginationPrevPageElement extends HTMLElement {
 	/**
 	 * Properties
 	 */
 	private readonly theButton: HTMLButtonElement | null;
-	private readonly pageNumber: number;
+	private isPrevButton: boolean;
 
 	/**
 	 * Constructor
@@ -32,10 +32,10 @@ export default class DatesRatesPaginationPageNumberElement extends HTMLElement {
 
 		// Initialize properties.
 		this.theButton = this.querySelector( 'button' );
-		this.pageNumber = parseInt( this.getAttribute( 'number' ) ?? '' );
+		this.isPrevButton = this.theButton?.classList.contains( 'prev' ) ?? false;
 
 		// Do we have an invalid button?
-		if ( Number.isNaN( this.pageNumber ) ) {
+		if ( ! this.isPrevButton ) {
 			// Yes, bail.
 			return;
 		}
@@ -62,11 +62,15 @@ export default class DatesRatesPaginationPageNumberElement extends HTMLElement {
 			return;
 		}
 
-		// Check if it is the current page.
-		if ( page === this.pageNumber ) {
-			this.theButton.classList.add( 'current' );
+		/**
+		 * Check if we should hide the button.
+		 */
+		if ( page === 1 ) {
+			this.setAttribute( 'data-hidden', '' );
+			this.theButton.disabled = true;
 		} else {
-			this.theButton.classList.remove( 'current' );
+			this.removeAttribute( 'data-hidden' );
+			this.theButton.disabled = false;
 		}
 	}
 
@@ -75,6 +79,6 @@ export default class DatesRatesPaginationPageNumberElement extends HTMLElement {
 	 */
 	handleClick() {
 		// Is this a prev button?
-		setPage( this.pageNumber );
+		setPreviousPage();
 	}
 }

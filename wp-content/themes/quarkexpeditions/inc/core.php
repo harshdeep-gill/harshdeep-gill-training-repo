@@ -420,6 +420,13 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 				'quark-dates-rates-pagination-page-number'    => [
 					'class'  => true,
 					'number' => true,
+				],
+				'quark-dates-rates-pagination-prev-page'      => [
+					'class'  => true,
+					'data-*' => true,
+				],
+				'quark-dates-rates-pagination-next-page'      => [
+					'class'  => true,
 					'data-*' => true,
 				],
 				'tp-form'                                     => [
