@@ -19,9 +19,9 @@ export default function Edit( {}: BlockEditAttributes ) {
 	const innerBlockProps = useInnerBlocksProps(
 		{ ...blockProps },
 		{
-			allowedBlocks: [ 'quark/buttons' ],
+			allowedBlocks: [ 'quark/button' ],
 			template: [
-				[ 'quark/buttons', {}, [ [ 'quark/button', { isSizeBig: true } ] ] ],
+				[ 'quark/button', { isSizeBig: true } ],
 			],
 		}
 	);

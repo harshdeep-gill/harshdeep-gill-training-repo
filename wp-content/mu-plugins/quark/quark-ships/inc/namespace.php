@@ -166,28 +166,22 @@ function register_ship_post_type(): void {
 						[],
 						[
 							[
-								'quark/buttons',
-								[],
+								'quark/button',
 								[
-									[
-										'quark/button',
-										[
-											'backgroundColor' => 'black',
-											'btnText'         => 'Download Brochure',
-											'isSizeBig'       => true,
-										],
-									],
-									[
-										'quark/button',
-										[
-											'btnText'   => 'Upcoming Departures',
-											'isSizeBig' => true,
-											'url'       => [
-												'url'       => '#upcoming-departures',
-												'text'      => '',
-												'newWindow' => false,
-											],
-										],
+									'backgroundColor' => 'black',
+									'btnText'         => 'Download Brochure',
+									'isSizeBig'       => true,
+								],
+							],
+							[
+								'quark/button',
+								[
+									'btnText'   => 'Upcoming Departures',
+									'isSizeBig' => true,
+									'url'       => [
+										'url'       => '#upcoming-departures',
+										'text'      => '',
+										'newWindow' => false,
 									],
 								],
 							],
