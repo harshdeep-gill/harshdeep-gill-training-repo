@@ -45,10 +45,15 @@ export default class DepartureCard extends HTMLElement {
 		this.dropdownButton = this.querySelector( '.departure-cards__cta' );
 		this.moreDetails = this.querySelector( '.departure-cards__more-details' );
 
+		// Run after DOM Content Loaded.
+		document.addEventListener( 'DOMContentLoaded', () => {
+			// Run after DOM Content Loaded.
+			this.updateOfferHiddenItems();
+			this.updateAdventuresHiddenItems();
+		} );
+
 		// Events.
-		this.updateOfferHiddenItems();
 		window.addEventListener( 'resize', debounce( this.updateOfferHiddenItems.bind( this ), 10 ), { passive: true } );
-		this.updateAdventuresHiddenItems();
 		window.addEventListener( 'resize', debounce( this.updateAdventuresHiddenItems.bind( this ), 10 ), { passive: true } );
 		this.dropdownButton?.addEventListener( 'click', this.toggle.bind( this ) );
 	}
