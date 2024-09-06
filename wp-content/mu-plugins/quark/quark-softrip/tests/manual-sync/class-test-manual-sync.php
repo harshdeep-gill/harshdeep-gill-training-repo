@@ -39,6 +39,17 @@ class Test_Manual_Sync extends WP_UnitTestCase {
 		// Assert the URL.
 		$expected = 'http://test.quarkexpeditions.com/wp-admin/admin.php?action=sync&post_id=' . $post_id . '&sync=';
 		$this->assertStringContainsString( $expected, $result );
+
+		// Test with redirect to.
+		$redirect_to = 'http://test.quarkexpeditions.com/wp-admin/edit.php';
+		$result      = get_sync_admin_url( $post_id, $redirect_to );
+
+		// Unescape the URL.
+		$result = html_entity_decode( $result );
+
+		// Assert the URL.
+		$expected = 'http://test.quarkexpeditions.com/wp-admin/admin.php?action=sync&post_id=' . $post_id . '&redirect_to=' . rawurlencode( $redirect_to );
+		$this->assertStringContainsString( $expected, $result );
 	}
 
 	/**
@@ -70,14 +81,13 @@ class Test_Manual_Sync extends WP_UnitTestCase {
 		$this->assertSame( admin_url(), $e_data['location'] );
 
 		// Valid post id.
-		$post_id       = 123;
-		$e_data        = [];
-		$redirect_args = [ 'success' => 'true' ];
+		$post_id = 123;
+		$e_data  = [];
 
 		// Test case 2: Test with valid post id.
 		try {
 			// Test with valid post id.
-			manual_sync_handle_redirect( $post_id, $redirect_args );
+			manual_sync_handle_redirect( $post_id );
 		} catch ( Exception $e ) {
 			$e_data = (array) json_decode( $e->getMessage(), true );
 		}
@@ -87,16 +97,32 @@ class Test_Manual_Sync extends WP_UnitTestCase {
 		$this->assertArrayHasKey( 'location', $e_data );
 		$this->assertNotEmpty( $e_data['location'] );
 		$expected_url = add_query_arg(
-			array_merge(
-				[
-					'post'   => $post_id,
-					'action' => 'edit',
-				],
-				$redirect_args
-			),
+			[
+				'post'   => $post_id,
+				'action' => 'edit',
+			],
 			admin_url( 'post.php' )
 		);
 		$this->assertSame( $expected_url, $e_data['location'] );
+
+		// Valid post id and redirect to.
+		$redirect_to = 'http://test.quarkexpeditions.com/wp-admin/edit.php';
+		$e_data      = [];
+		$post_id     = 123;
+
+		// Test case 3: Test with valid post id and redirect to.
+		try {
+			// Test with valid post id and redirect to.
+			manual_sync_handle_redirect( $post_id, $redirect_to );
+		} catch ( Exception $e ) {
+			$e_data = (array) json_decode( $e->getMessage(), true );
+		}
+
+		// Should redirect to post page.
+		$this->assertNotEmpty( $e_data );
+		$this->assertArrayHasKey( 'location', $e_data );
+		$this->assertNotEmpty( $e_data['location'] );
+		$this->assertSame( $redirect_to, $e_data['location'] );
 
 		// Removal.
 		remove_filter( 'wp_redirect', [ $this, 'wp_redirect_halt_redirect' ], 10 );
