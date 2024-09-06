@@ -42,6 +42,9 @@ function bootstrap(): void {
 		require_once __DIR__ . '/../custom-fields/blog.php';
 	}
 
+	// SEO.
+	add_filter( 'travelopia_seo_structured_data_schema', __NAMESPACE__ . '\\seo_structured_data' );
+
 	// Other hooks.
 	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
 }
@@ -193,6 +196,83 @@ function get( int $post_id = 0 ): array {
 
 	// Return data.
 	return $data;
+}
+
+/**
+ * Build structured data for schema.
+ *
+ * @param mixed[] $schema All schema data.
+ *
+ * @return mixed[]
+ */
+function seo_structured_data( array $schema = [] ): array {
+	// Check if this is blog page.
+	if ( ! is_singular( POST_TYPE ) ) {
+		return $schema;
+	}
+
+	// Get and insert the schema.
+	$schema[] = get_structured_data( absint( get_the_ID() ) );
+
+	// Return the schema.
+	return $schema;
+}
+
+/**
+ * Get structured data for this post type.
+ *
+ * @param int $post_id Post ID.
+ *
+ * @return array{}|array{
+ *    "@context": string,
+ *    "@type": string,
+ *    headline: string,
+ *    datePublished: string,
+ *    dateModified: string,
+ *    image: string[],
+ *    author?: array{
+ *        "@type": string,
+ *        name: string,
+ *    }
+ * }
+ */
+function get_structured_data( int $post_id = 0 ): array {
+	// Get post data.
+	$post = get( $post_id );
+
+	// Return early if post couldn't be fetched or not of this post type.
+	if ( ! $post['post'] instanceof WP_Post || POST_TYPE !== $post['post']->post_type ) {
+		return [];
+	}
+
+	// Get featured image url.
+	$featured_image = wp_get_attachment_image_url( absint( $post['post_thumbnail'] ), 'full' );
+
+	// Build schema.
+	$schema = [
+		'@context'      => 'https://schema.org',
+		'@type'         => 'Article',
+		'headline'      => $post['post']->post_title,
+		'datePublished' => $post['post']->post_date,
+		'dateModified'  => $post['post']->post_modified,
+		'image'         => $featured_image ? [ $featured_image ] : [],
+	];
+
+	// Get blog author.
+	if ( ! empty( $post['post_meta']['blog_authors'] ) && is_array( $post['post_meta']['blog_authors'] ) ) {
+		$blog_author = get_post_authors( absint( $post['post_meta']['blog_authors'][0] ) );
+
+		// Check if blog author is an instance of WP_Post and add to schema.
+		if ( $blog_author['post'] instanceof WP_Post ) {
+			$schema['author'] = [
+				'@type' => 'Person',
+				'name'  => $blog_author['post']->post_title,
+			];
+		}
+	}
+
+	// Return Schema.
+	return $schema;
 }
 
 /**
