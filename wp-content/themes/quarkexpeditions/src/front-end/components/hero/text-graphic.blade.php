@@ -5,14 +5,16 @@
 
 @php
 	// Build image args.
-		$image_args = [
-		'size' => [
+	$image_args = [
+		'size'       => [
 			'width'   => 400,
 			'height'  => 400,
 		],
-		'transform' => [
-			'crop' => 'fit',
+		'responsive' => [
+			'sizes'  => ['(min-width: 1024px) 400px', '100vw'],
+			'widths' => [250, 300, 350],
 		],
+
 	];
 
 	$classes = [ 'hero__text-graphic' ];
