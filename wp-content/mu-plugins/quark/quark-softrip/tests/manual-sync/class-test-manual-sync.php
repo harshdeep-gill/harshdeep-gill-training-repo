@@ -108,7 +108,7 @@ class Test_Manual_Sync extends WP_UnitTestCase {
 		// Valid post id and redirect to.
 		$redirect_to = 'http://test.quarkexpeditions.com/wp-admin/edit.php';
 		$e_data      = [];
-		$post_id	 = 123;
+		$post_id     = 123;
 
 		// Test case 3: Test with valid post id and redirect to.
 		try {
