@@ -522,7 +522,12 @@ function get_cards_data( array $post_ids = [] ): array {
  *
  * @param mixed[] $breadcrumbs Breadcrumbs.
  *
- * @return mixed[]
+ * @return array{}|array{
+ *    array{
+ *       title: string,
+ *       url: string,
+ *    }
+ * }
  */
 function breadcrumbs_ancestors( array $breadcrumbs = [] ): array {
 	// Check if current query is for this post type.
@@ -530,14 +535,35 @@ function breadcrumbs_ancestors( array $breadcrumbs = [] ): array {
 		return $breadcrumbs;
 	}
 
+	// Return the breadcrumbs ancestors.
+	return array_merge(
+		$breadcrumbs,
+		get_breadcrumbs_ancestors()
+	);
+}
+
+/**
+ * Get breadcrumbs ancestors for this post type.
+ *
+ * @return array{}|array{
+ *     array{
+ *         title: string,
+ *         url: string,
+ *     }
+ * }
+ */
+function get_breadcrumbs_ancestors(): array {
 	// Get archive page.
 	$archive_page_id = absint( get_option( 'options_staff_members_page', 0 ) );
+
+	// Initialize breadcrumbs.
+	$breadcrumbs = [];
 
 	// Get it's title and URL for breadcrumbs if it's set.
 	if ( ! empty( $archive_page_id ) ) {
 		$breadcrumbs[] = [
 			'title' => get_the_title( $archive_page_id ),
-			'url'   => get_permalink( $archive_page_id ),
+			'url'   => strval( get_permalink( $archive_page_id ) ),
 		];
 	}
 
