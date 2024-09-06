@@ -3,77 +3,80 @@
  */
 const { customElements, HTMLElement } = window;
 
-import { TPMultiSelectElement } from "@travelopia/web-components";
+// TODO: Add comment.
+import { TPMultiSelectElement } from '@travelopia/web-components';
 /**
  * Internal dependencies.
  */
-import { getCurrency, initialize, setCurrency } from "../../global/store/actions";
+import { getCurrency, initialize, setCurrency } from '../../global/store/actions';
 
 /**
  * CurrencySwitcher Class.
  */
 export class CurrencySwitcher extends HTMLElement {
-    /**
-     * Properties.
-     */
-    private currencyDropdown: TPMultiSelectElement | null;
+	/**
+	 * Properties.
+	 */
+	private currencyDropdown: TPMultiSelectElement | null;
 
-    /**
-     * Constructor
-     */
-    constructor() {
-        // Initialize super
-        super();
+	/**
+	 * Constructor
+	 */
+	constructor() {
+		// Initialize super
+		super();
 
-        // Elements.
-        this.currencyDropdown = this.querySelector( 'tp-multi-select' );
+		// Elements.
+		this.currencyDropdown = this.querySelector( 'tp-multi-select' );
 
-        // Events.
-        this.currencyDropdown?.addEventListener( 'change', this.updateCurrencyState.bind( this ) );
-    }
+		// Events.
+		this.currencyDropdown?.addEventListener( 'change', this.updateCurrencyState.bind( this ) );
+	}
 
-    /**
-     * Connected Callback.
-     */
-    connectedCallback() {
-        // Initialize.
-        this.initialize();
-    }
+	/**
+	 * Connected Callback.
+	 */
+	connectedCallback() {
+		// Initialize.
+		this.initialize();
+	}
 
-    /**
-     * Initialize component.
-     */
-    initialize() {
-        // Initialize data for the component.
-        initialize( {} );
+	/**
+	 * Initialize component.
+	 */
+	initialize() {
+		// Initialize data for the component.
+		initialize( {} );
 
-        // Bail out if currency dropdown is not available.
-        if ( ! this.currencyDropdown ) {
-            return;
-        }
+		// If currency dropdown is not available.
+		if ( ! this.currencyDropdown ) {
+			// Bail out.
+			return;
+		}
 
-        // Get currency from state.
-        const currency = getCurrency();
+		// Get currency from state.
+		const currency = getCurrency();
 
-        // Set currency to dropdown.
-        this.currencyDropdown?.select( currency );
-    }
+		// Set currency to dropdown.
+		this.currencyDropdown?.select( currency );
+	}
 
-    /**
-     * Update currency state.
-     */
-    updateCurrencyState() {
-        // If currency dropdown is not available, bail out.
-        if ( ! this.currencyDropdown ) {
-            return;
-        }
+	/**
+	 * Update currency state.
+	 */
+	updateCurrencyState() {
+		// If currency dropdown is not available.
+		if ( ! this.currencyDropdown ) {
+			// Bail out.
+			return;
+		}
 
-        // Get the currency dropdown value.
-        const currency = this.currencyDropdown?.value[ 0 ] ?? 'USD';
+		// Get the currency dropdown value.
+		const currency = this.currencyDropdown?.value[ 0 ] ?? 'USD';
 
-        // Set currency to cookie.
-        setCurrency( currency );
-    }
+		// Set currency to cookie.
+		setCurrency( currency );
+	}
 }
 
 // Define custom element.

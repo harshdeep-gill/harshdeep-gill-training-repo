@@ -8,6 +8,7 @@ const { persist, create, stores } = window.zustand;
  */
 export const STORE_NAME = 'global';
 
+// TODO: Add comment.
 interface GlobalState {
     currency: string,
 }
@@ -16,8 +17,8 @@ interface GlobalState {
  * Default state.
  */
 export const DEFAULT_STATE: GlobalState = {
-    currency: 'USD',
-}
+	currency: 'USD',
+};
 
 /**
  * Persistent keys.
