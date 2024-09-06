@@ -24,6 +24,11 @@ import './fetch-partial';
 import './zustand';
 
 /**
+ * Global Store.
+ */
+import './store';
+
+/**
  * TypeScript Stuff.
  */
 declare global {
