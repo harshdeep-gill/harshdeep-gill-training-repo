@@ -18,6 +18,7 @@ use function Quark\Departures\get_paid_adventure_options;
 use function Quark\Expeditions\get as get_expedition_post;
 use function Quark\Expeditions\get_destination_term_by_code;
 use function Quark\Itineraries\get_season;
+use function Quark\Localization\get_current_currency;
 use function Quark\Search\update_post_in_index;
 use function Quark\Ships\get as get_ship_post;
 use function Quark\Softrip\Departures\get_lowest_price;
@@ -226,7 +227,7 @@ function get_filters_from_url(): array {
 		'ships'             => isset( $_GET['ships'] ) ? strval( $_GET['ships'] ) : '', // phpcs:ignore
 		'page'              => isset( $_GET['page'] ) ? strval( $_GET['page'] ) : '1', // phpcs:ignore
 		'sort'              => isset( $_GET['sort'] ) ? strval( $_GET['sort'] ) : 'date-now', // phpcs:ignore
-		'currency'          => isset( $_GET['currency'] ) ? strval( $_GET['currency'] ) : USD_CURRENCY, // phpcs:ignore
+		'currency'          => isset( $_GET['currency'] ) ? strval( $_GET['currency'] ) : get_current_currency(), // phpcs:ignore
 	];
 }
 
@@ -254,7 +255,7 @@ function parse_filters( array $filters = [] ): array {
 	$filters = wp_parse_args(
 		$filters,
 		[
-			'currency'          => USD_CURRENCY, // @todo https://tuispecialist.atlassian.net/browse/QE-326 Modify this to global currency switcher when implemented.
+			'currency'          => get_current_currency(),
 			'seasons'           => '',
 			'expeditions'       => '',
 			'adventure_options' => '',
@@ -298,13 +299,6 @@ function parse_filters( array $filters = [] ): array {
 	// Parse ships.
 	if ( is_string( $filters['ships'] ) || is_int( $filters['ships'] ) ) {
 		$filters['ships'] = array_filter( array_map( 'trim', explode( ',', strval( $filters['ships'] ) ) ) );
-	}
-
-	// Validate currency.
-	if ( is_string( $filters['currency'] ) && in_array( $filters['currency'], CURRENCIES, true ) ) {
-		$filters['currency'] = trim( $filters['currency'] );
-	} else {
-		$filters['currency'] = USD_CURRENCY;
 	}
 
 	// Parse destinations.
