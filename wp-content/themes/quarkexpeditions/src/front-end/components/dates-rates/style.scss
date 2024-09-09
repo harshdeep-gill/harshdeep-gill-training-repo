@@ -362,7 +362,8 @@
 		pointer-events: none;
 	}
 
-	quark-dates-rates-pagination-links-controller {
+	quark-dates-rates-pagination-links-controller,
+	quark-dates-rates-pagination-total-pages {
 		display: contents;
 	}
 }

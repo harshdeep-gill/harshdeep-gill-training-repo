@@ -434,6 +434,9 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'current-page' => true,
 					'total-pages'  => true,
 				],
+				'quark-dates-rates-pagination-total-pages'      => [
+					'class' => true,
+				],
 				'tp-form'                                       => [
 					'class'          => true,
 					'prevent-submit' => true,
