@@ -16,7 +16,7 @@
 @endphp
 
 <x-pagination>
-	<x-pagination.items-per-page />
+	<x-dates-rates.pagination.items-per-page />
 	<x-dates-rates.pagination.total-pages :current_page="$current_page" :total_pages="$total_pages" />
 	<x-pagination.links>
 		<x-dates-rates.pagination.links :current_page="$current_page" :total_pages="$total_pages" />

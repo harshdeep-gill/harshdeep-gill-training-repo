@@ -9,7 +9,7 @@ const { HTMLElement, zustand } = window;
 const { subscribe, getState } = zustand.stores.datesRates;
 
 /**
- * Previous Page class.
+ * Total Pages class.
  */
 export default class DatesRatesPaginationTotalPagesElement extends HTMLElement {
 	/**
