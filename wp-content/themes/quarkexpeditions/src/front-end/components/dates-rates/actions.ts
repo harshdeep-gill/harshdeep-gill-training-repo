@@ -366,23 +366,6 @@ export const setNextPage = () => {
 	fetchResults();
 };
 
-/**
- * Sets the totalPages state.
- *
- * @param {number} updatedValue
- */
-export const setTotalPages = ( updatedValue: number ) => {
-	// Is this a valid updated totalPages?
-	if ( Number.isNaN( updatedValue ) || updatedValue < 1 ) {
-		// No, reject the update.
-		return;
-	}
-
-	// Set the state
-	setState( {
-		totalPages: updatedValue,
-	} );
-};
 
 /**
  * Set the items per page state.
@@ -404,24 +387,6 @@ export const setPerPage = ( updatedValue: number ) => {
 
 	// Fetch results.
 	fetchResults();
-};
-
-/**
- * Set the total items count.
- *
- * @param {number} updatedValue The updated value.
- */
-export const setTotalCount = ( updatedValue: number ) => {
-	// Is this a valid updated totalPages?
-	if ( Number.isNaN( updatedValue ) || updatedValue < 0 ) {
-		// No, reject the update.
-		return;
-	}
-
-	// Set the state
-	setState( {
-		totalItems: updatedValue,
-	} );
 };
 
 /**
