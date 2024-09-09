@@ -500,7 +500,6 @@ const fetchResults = () => {
 	// Set loading.
 	setState( {
 		isLoading: true,
-		shouldMarkupUpdate: true,
 	} );
 
 	// Fetch the partial.
@@ -540,7 +539,7 @@ const pluckValues = ( list: DatesRatesFilterState[] ): string[] | number[] => li
  */
 const resultsFetchedCallback = ( response: PartialData ) => {
 	// Get state.
-	const { perPage, totalPages }: DatesRatesState = getState();
+	const { perPage, totalPages, page }: DatesRatesState = getState();
 
 	// Get the data.
 	const {
@@ -556,6 +555,8 @@ const resultsFetchedCallback = ( response: PartialData ) => {
 		totalItems: resultCount,
 		totalPages: resultCount !== 0 ? Math.ceil( resultCount / perPage ) : totalPages,
 		isLoading: false,
+		page: resultCount !== 0 ? page : 1,
+		shouldMarkupUpdate: true,
 	} );
 };
 
