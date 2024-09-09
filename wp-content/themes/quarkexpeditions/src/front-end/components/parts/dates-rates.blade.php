@@ -1,22 +1,18 @@
 @props( [
-	'results_count'   => 0,
-	'remaining_count' => 0,
-	'cards'           => [],
-	'expedition_id'   => 0,
+	'filter_data' => [],
 ] )
 
-<x-dates-rates>
-	{{-- Header --}}
-	<x-dates-rates.header>
-		<x-dates-rates.filters />
-		<x-dates-rates.results.count count="{{ $results_count }}" />
-	</x-dates-rates.header>
+@php
+	if ( empty( $filter_data ) ) {
+		return;
+	}
+@endphp
 
-	{{-- Results --}}
-	<x-dates-rates.results
-		:count="$remaining_count"
-		:expedition_id="$expedition_id ?? 0"
-	>
-		<x-parts.dates-rates-cards :cards="$cards ?? []" />
-	</x-dates-rates.results>
+<x-dates-rates>
+	<x-dates-rates.header>
+		<x-dates-rates.filters :filter_data="$filter_data" />
+		<x-dates-rates.results.count />
+	</x-dates-rates.header>
+	<x-dates-rates.results />
+	<x-dates-rates.pagination />
 </x-dates-rates>
