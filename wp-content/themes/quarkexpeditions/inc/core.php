@@ -440,6 +440,10 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 				'quark-dates-rates-pagination-items-per-page'   => [
 					'class' => true,
 				],
+				'quark-dates-rates-results-count-controller'    => [
+					'class'       => true,
+					'total-count' => true,
+				],
 				'tp-form'                                       => [
 					'class'          => true,
 					'prevent-submit' => true,

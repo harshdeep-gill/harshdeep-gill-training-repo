@@ -224,3 +224,21 @@ export const setPerPage = ( updatedValue: number ) => {
 		perPage: updatedValue,
 	} );
 };
+
+/**
+ * Set the total items count.
+ *
+ * @param {number} updatedValue The updated value.
+ */
+export const setTotalCount = ( updatedValue: number ) => {
+	// Is this a valid updated totalPages?
+	if ( Number.isNaN( updatedValue ) || updatedValue < 0 ) {
+		// No, reject the update.
+		return;
+	}
+
+	// Set the state
+	setState( {
+		totalItems: updatedValue,
+	} );
+};

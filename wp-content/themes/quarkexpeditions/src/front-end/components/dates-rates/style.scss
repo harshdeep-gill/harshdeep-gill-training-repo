@@ -368,6 +368,30 @@
 		display: contents;
 	}
 
+	&__result-count-value {
+		display: none;
+
+		@media screen and (min-width: grid-size(md)) {
+			display: inline;
+		}
+	}
+
+	quark-dates-rates-pagination-items-per-page.dates-rates__result-count-selector {
+		display: contents;
+
+		.pagination__items-per-page {
+			display: inline-flex;
+
+			&-text {
+				display: none;
+			}
+		}
+
+		@media screen and (min-width: grid-size(md)) {
+			display: none;
+		}
+	}
+
 	.pagination {
 		display: grid;
 		grid-template-columns: 1fr;
