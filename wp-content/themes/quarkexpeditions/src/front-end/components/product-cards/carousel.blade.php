@@ -1,6 +1,5 @@
 @props( [
-	'layout'          => 'grid',
-	'mobile_carousel' => true,
+	'layout' => 'carousel',
 ] )
 
 @php
@@ -29,10 +28,6 @@
 				class="product-cards__nav"
 				@if ( ! empty( $layout ) && in_array( $layout, [ 'grid', 'carousel' ], true ) )
 					data-layout="{{ $layout }}"
-				@endif
-
-				@if ( ! empty( $mobile_carousel ) )
-					data-mobile-carousel="{{ $mobile_carousel }}"
 				@endif
 			>
 				<tp-slider-arrow direction="previous">
