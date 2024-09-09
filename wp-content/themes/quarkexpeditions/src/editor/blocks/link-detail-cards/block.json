@@ -1,0 +1,22 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Link Detail Cards",
+	"name": "quark/link-detail-cards",
+	"description": "Display a list of cards with descriptions & links to pages.",
+	"category": "layout",
+	"textdomain": "qrk",
+	"keywords": [
+		"link",
+		"detail",
+		"cards"
+	],
+	"attributes": {},
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

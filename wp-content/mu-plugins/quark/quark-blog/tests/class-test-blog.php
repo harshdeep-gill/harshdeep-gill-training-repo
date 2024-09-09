@@ -10,6 +10,7 @@ namespace Quark\Blog\Tests;
 use WP_Post;
 use WP_Term;
 use WP_UnitTestCase;
+use WPSEO_Meta;
 
 use function Quark\Blog\get_structured_data;
 use function Quark\Blog\primary_term_taxonomies;
@@ -18,6 +19,7 @@ use function Quark\Blog\Authors\get as author_get;
 use function Quark\Blog\get_blog_post_author_info;
 use function Quark\Blog\get_cards_data;
 use function Quark\Blog\breadcrumbs_ancestors;
+use function Quark\Blog\get_breadcrumbs_ancestors;
 
 use const Quark\Blog\POST_TYPE;
 use const Quark\Blog\Authors\POST_TYPE as AUTHOR_POST_TYPE;
@@ -668,5 +670,106 @@ class Test_Blog extends WP_UnitTestCase {
 		// Delete Post.
 		wp_delete_post( $post->ID, true );
 		wp_delete_post( $author->ID, true );
+	}
+
+	/**
+	 * Test get breadcrumbs ancestors.
+	 *
+	 * @covers \Quark\Blog\get_breadcrumbs_ancestors()
+	 *
+	 * @return void
+	 */
+	public function test_get_breadcrumbs_ancestors(): void {
+		// Test without any post id.
+		$this->assertEmpty( get_breadcrumbs_ancestors() );
+
+		// Create a blog post.
+		$post = $this->factory()->post->create_and_get(
+			[
+				'post_title'   => 'Test Post',
+				'post_content' => 'Post content',
+				'post_status'  => 'publish',
+				'post_type'    => POST_TYPE,
+			]
+		);
+
+		// Assert created post is instance of WP_Post.
+		$this->assertTrue( $post instanceof WP_Post );
+
+		// Test without any active post.
+		$this->assertEmpty( get_breadcrumbs_ancestors( $post->ID ) );
+
+		// Create a page.
+		$page = $this->factory()->post->create_and_get(
+			[
+				'post_title' => 'Test Page',
+				'post_type'  => 'page',
+			]
+		);
+
+		// Assert created page is instance of WP_Post.
+		$this->assertTrue( $page instanceof WP_Post );
+
+		// Set as archive page.
+		update_option( 'page_for_posts', $page->ID );
+
+		// Test with archive page.
+		$this->assertEquals(
+			[
+				[
+					'title' => $page->post_title,
+					'url'   => get_permalink( $page->ID ),
+				],
+			],
+			get_breadcrumbs_ancestors( $post->ID )
+		);
+
+		// Create a category term.
+		$category_term = $this->factory()->term->create_and_get(
+			[
+				'taxonomy' => 'category',
+			]
+		);
+
+		// Assert term is created.
+		$this->assertTrue( $category_term instanceof WP_Term );
+
+		// Set terms.
+		wp_set_object_terms( $post->ID, $category_term->term_id, 'category' );
+
+		// Get breadcrumbs ancestors.
+		$breadcrumbs = get_breadcrumbs_ancestors( $post->ID );
+
+		// Assert expected breadcrumbs is equal to actual breadcrumbs - without any primary term.
+		$this->assertEquals(
+			[
+				[
+					'title' => $page->post_title,
+					'url'   => get_permalink( $page->ID ),
+				],
+			],
+			$breadcrumbs
+		);
+
+		// Add a primary term.
+		update_post_meta( $post->ID, WPSEO_Meta::$meta_prefix . 'primary_category', $category_term->term_id );
+
+		// Get breadcrumbs ancestors.
+		$breadcrumbs = get_breadcrumbs_ancestors( $post->ID );
+
+		// Assert expected breadcrumbs is equal to actual breadcrumbs - with primary term.
+		$this->assertEquals(
+			[
+				[
+					'title' => $page->post_title,
+					'url'   => get_permalink( $page->ID ),
+				],
+				[
+					'title' => $category_term->name,
+					'url'   => get_term_link( $category_term ),
+				],
+			],
+			$breadcrumbs
+		);
 	}
 }
