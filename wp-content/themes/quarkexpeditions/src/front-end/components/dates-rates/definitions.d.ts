@@ -22,4 +22,9 @@ interface DatesRatesState {
 	perPage: number,
 	totalItems: number,
 	isLoading: boolean,
+	partial: string,
+	selector: '',
+	expeditionId: number,
+	isInitialized: boolean,
+	shouldMarkupUpdate: boolean,
 }

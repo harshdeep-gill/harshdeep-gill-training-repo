@@ -1,7 +1,7 @@
 /**
- * External dependencies.
+ * Globals.
  */
-const { zustand } = window;
+const { zustand, fetchPartial } = window;
 
 /**
  * Internal dependencies.
@@ -30,7 +30,8 @@ export const updateCurrency = ( updatedCurrency: string ) => {
 		areCurrencyFiltersSyncing: false,
 	} );
 
-	//TODO: fetch results
+	// Fetch results.
+	fetchResults();
 };
 
 /**
@@ -374,5 +375,126 @@ export const setTotalCount = ( updatedValue: number ) => {
 	// Set the state
 	setState( {
 		totalItems: updatedValue,
+	} );
+};
+
+/**
+ * Initializes the settings to be used for fetching the results.
+ *
+ * @param {Object} settings              The settings.
+ * @param {string} settings.partial      The name of the partial.
+ * @param {string} settings.selector     The DOM selector of the container of the results.
+ * @param {number} settings.expeditionId The expeditionId to be used.
+ */
+export const initializeFetchPartialSettings = (
+	settings: {
+		partial: string,
+		selector: string,
+		expeditionId: number
+	}
+) => {
+	// Get the state.
+	const { isInitialized }: DatesRatesState = getState();
+
+	// Is it already initialized?
+	if ( isInitialized ) {
+		// Yes, no need to proceed further.
+		return;
+	}
+
+	// Validation checks.
+	if ( ! (
+		settings.partial &&
+		settings.selector &&
+		! Number.isNaN( settings.expeditionId )
+	) ) {
+		// Invalid data.
+		return;
+	}
+
+	// Set the state.
+	setState( {
+		partial: settings.partial,
+		selector: settings.selector,
+		expeditionId: settings.expeditionId,
+		isInitialized: true,
+		shouldMarkupUpdate: true,
+	} );
+
+	// Fetch the results.
+	fetchResults();
+};
+
+/**
+ * Fetches the results based on selected filters.
+ */
+const fetchResults = () => {
+	// Get the state
+	const {
+		page,
+		partial,
+		selector,
+		seasons,
+		expeditions,
+		adventure_options: adventureOptions,
+		months,
+		durations,
+		ships,
+		perPage,
+		isInitialized,
+		isLoading,
+		currency,
+	}: DatesRatesState = getState();
+
+	// Sanity check.
+	if ( ! isInitialized || isLoading ) {
+		// Bail.
+		return;
+	}
+
+	// Set loading.
+	setState( {
+		isLoading: true,
+	} );
+
+	// Fetch the partial.
+	fetchPartial(
+		partial,
+		{
+			selectedFilters: {
+				seasons: pluckValues( seasons ),
+				expeditions: pluckValues( expeditions ),
+				adventure_options: pluckValues( adventureOptions ),
+				months: pluckValues( months ),
+				durations: pluckValues( durations ),
+				ships: pluckValues( ships ),
+				posts_per_load: perPage,
+				page,
+				currency,
+			},
+		},
+		resultsFetchedCallback,
+		selector
+	).catch( () => setState( { isLoading: false } ) );
+};
+
+/**
+ * Returns an array for values for a list of filters passed in.
+ *
+ * @param {Object[]} list
+ *
+ * @return {string[]|number[]} The array of values.
+ */
+const pluckValues = ( list: DatesRatesFilterState[] ) => list.map( ( filter ) => filter.value );
+
+/**
+ * Callback to run after partial has been fetched.
+ *
+ * @param {Object} data The partial data.
+ */
+const resultsFetchedCallback = ( data: PartialData ) => {
+	// Set state.
+	setState( {
+		isLoading: false,
 	} );
 };

@@ -24,6 +24,11 @@ export const DEFAULT_STATE: DatesRatesState = {
 	perPage: 10,
 	totalItems: 10,
 	isLoading: false,
+	expeditionId: 0,
+	partial: '',
+	selector: '',
+	isInitialized: false,
+	shouldMarkupUpdate: false,
 };
 
 /**
