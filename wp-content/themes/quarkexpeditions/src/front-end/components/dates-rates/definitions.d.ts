@@ -11,7 +11,6 @@ interface DatesRatesFilterState {
  */
 interface DatesRatesState {
 	currency: string,
-	areCurrencyFiltersSyncing: boolean,
 	seasons: DatesRatesFilterState[],
 	expeditions: DatesRatesFilterState[],
 	'adventure_options': DatesRatesFilterState[],

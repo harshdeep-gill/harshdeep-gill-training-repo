@@ -30,13 +30,7 @@ export default class DatesRatesFilterStickyCurrencyElement extends HTMLElement {
 	 */
 	update( state: DatesRatesState ) {
 		// Get the currency filter value.
-		const { currency, areCurrencyFiltersSyncing } = state;
-
-		// Check if we should sync.
-		if ( ! areCurrencyFiltersSyncing ) {
-			// No, we should not.
-			return;
-		}
+		const { currency } = state;
 
 		// Get the button text container.
 		const buttonTextContainer = this.querySelector( '.btn__content-text' );

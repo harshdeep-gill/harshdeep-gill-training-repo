@@ -13,7 +13,6 @@ export const STORE_NAME = 'datesRates';
  */
 export const DEFAULT_STATE: DatesRatesState = {
 	currency: 'USD',
-	areCurrencyFiltersSyncing: false,
 	seasons: [],
 	expeditions: [],
 	adventure_options: [],
