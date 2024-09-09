@@ -543,3 +543,13 @@ function get_raw_text_from_html( string $html = '' ): string {
 	// Return pure text.
 	return $text;
 }
+
+/**
+ * Check if the test is in progress.
+ *
+ * @return bool
+ */
+function doing_tests(): bool {
+	// Check if doing tests.
+	return defined( 'WP_TESTS' ) && true === WP_TESTS;
+}
