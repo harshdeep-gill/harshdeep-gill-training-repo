@@ -9,11 +9,11 @@ namespace Quark\Theme\Blocks\BookDeparturesShips;
 
 use WP_Post;
 
-use const Quark\Core\USD_CURRENCY;
-
 use function Quark\Departures\get_cards_data;
 use function Quark\Ships\get as get_ship;
 use function Quark\Search\Departures\search;
+
+use const Quark\Core\USD_CURRENCY;
 
 const COMPONENT = 'parts.book-departures-ships';
 

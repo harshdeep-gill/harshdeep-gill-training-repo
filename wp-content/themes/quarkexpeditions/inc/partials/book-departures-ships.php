@@ -7,11 +7,11 @@
 
 namespace Quark\Theme\Partials\BookDeparturesShips;
 
-use const Quark\Core\USD_CURRENCY;
-
 use function Quark\Search\Departures\search;
 use function Quark\Departures\get_cards_data;
 use function Quark\Localization\get_current_currency;
+
+use const Quark\Core\USD_CURRENCY;
 
 const PARTIAL_NAME = 'book-departures-ships';
 
