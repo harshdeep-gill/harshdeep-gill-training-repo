@@ -55,5 +55,8 @@ class Test_Localization extends WP_UnitTestCase {
 		// Cookie with html.
 		$_COOKIE[ CURRENCY_COOKIE ] = 'CAD<script>alert("XSS")</script>';
 		$this->assertEquals( 'CAD', get_current_currency() );
+
+		// Cleanup.
+		unset( $_COOKIE[ CURRENCY_COOKIE ] );
 	}
 }
