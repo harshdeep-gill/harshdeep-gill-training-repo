@@ -415,7 +415,7 @@ function doing_automated_test(): bool {
  *
  * @return string Formatted price.
  */
-function format_price( float $price = 0, string $currency = 'USD' ): string {
+function format_price( float $price = 0, string $currency = USD_CURRENCY ): string {
 	// Check if price is empty.
 	if ( empty( $price ) ) {
 		return '';
@@ -426,15 +426,15 @@ function format_price( float $price = 0, string $currency = 'USD' ): string {
 
 	// Set Currency symbol.
 	$currency_symbols = [
-		'AUD' => '$',
-		'CAD' => '$',
-		'USD' => '$',
-		'EUR' => '€',
-		'GBP' => '£',
+		AUD_CURRENCY => '$',
+		CAD_CURRENCY => '$',
+		USD_CURRENCY => '$',
+		EUR_CURRENCY => '€',
+		GBP_CURRENCY => '£',
 	];
 
 	// Validate currency.
-	$currency = array_key_exists( strtoupper( $currency ), $currency_symbols ) ? strtoupper( $currency ) : 'USD';
+	$currency = array_key_exists( strtoupper( $currency ), $currency_symbols ) ? strtoupper( $currency ) : USD_CURRENCY;
 
 	// Current symbol.
 	$currency_symbol     = $currency_symbols[ strtoupper( $currency ) ];

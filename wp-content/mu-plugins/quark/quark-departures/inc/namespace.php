@@ -40,6 +40,7 @@ use function Quark\CabinCategories\get_available_cabin_spaces;
 use function Quark\Checkout\get_checkout_url;
 
 use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
+use const Quark\Core\USD_CURRENCY;
 
 const POST_TYPE                = 'qrk_departure';
 const SPOKEN_LANGUAGE_TAXONOMY = 'qrk_spoken_language';
@@ -617,7 +618,7 @@ function get_promotion_tags( int $post_id = 0 ): array {
  *     }>,
  * }
  */
-function get_card_data( int $departure_id = 0, string $currency = 'USD' ): array {
+function get_card_data( int $departure_id = 0, string $currency = USD_CURRENCY ): array {
 	// Set cache key.
 	$cache_key = 'departure_card_data_' . $departure_id . '_' . $currency;
 
@@ -800,7 +801,7 @@ function get_start_end_departure_date( int $post_id = 0 ): string {
  *    }
  * }
  */
-function get_cards_data( array $departure_ids = [], string $currency = 'USD' ): array {
+function get_cards_data( array $departure_ids = [], string $currency = USD_CURRENCY ): array {
 	// Prepare the departure cards data.
 	$departure_cards = [];
 
@@ -954,7 +955,7 @@ function bust_card_data_cache_on_expedition_update( int $expedition_id = 0 ): vo
  *     >,
  * }
  */
-function get_dates_rates_card_data( int $departure_id = 0, string $currency = 'USD' ): array {
+function get_dates_rates_card_data( int $departure_id = 0, string $currency = USD_CURRENCY ): array {
 	// Set cache key.
 	$cache_key = 'date_and_rates_card_data_' . $departure_id . '_' . $currency;
 
@@ -1135,7 +1136,7 @@ function get_dates_rates_card_data( int $departure_id = 0, string $currency = 'U
 		'languages'                  => implode( ', ', get_languages( $departure_id ) ),
 		'included_adventure_options' => $include_options_data,
 		'paid_adventure_options'     => $paid_adventure_options_data,
-		'transfer_package_details'   => get_included_transfer_package_details( $itinerary_id, 'USD' ),
+		'transfer_package_details'   => get_included_transfer_package_details( $itinerary_id, USD_CURRENCY ),
 		'available_promos'           => $available_promos,
 		'cabin_data'                 => $cabin_price_data,
 	];
@@ -1208,7 +1209,7 @@ function get_dates_rates_card_data( int $departure_id = 0, string $currency = 'U
  *     >,
  * }>
  */
-function get_dates_rates_cards_data( array $departure_ids = [], string $currency = 'USD' ): array {
+function get_dates_rates_cards_data( array $departure_ids = [], string $currency = USD_CURRENCY ): array {
 	// Prepare the departure cards data.
 	$departure_cards = [];
 

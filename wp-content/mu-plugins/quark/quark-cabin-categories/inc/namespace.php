@@ -22,6 +22,7 @@ use function Quark\Softrip\Occupancies\get_occupancy_data_by_id;
 use function Quark\Softrip\OccupancyPromotions\get_lowest_price as get_occupancy_promotion_lowest_price;
 
 use const Quark\Core\CURRENCIES;
+use const Quark\Core\USD_CURRENCY;
 use const Quark\Ships\POST_TYPE as SHIP_POST_TYPE;
 
 const POST_TYPE            = 'qrk_cabin_category';
@@ -497,7 +498,7 @@ function get_cabin_categories_data( int $cabin_id = 0 ): array {
  *     occupancies: array<int<0, max>, array<string, mixed>>
  * }>
  */
-function get_cabin_details_by_departure( int $departure_post_id = 0, string $currency = 'USD' ): array {
+function get_cabin_details_by_departure( int $departure_post_id = 0, string $currency = USD_CURRENCY ): array {
 	// Bail out if no departure post ID.
 	if ( empty( $departure_post_id ) ) {
 		return [];
@@ -807,7 +808,7 @@ function get_size_range( int $cabin_category_post_id = 0 ): string {
  *   promotions: mixed[]
  * }
  */
-function get_occupancy_detail( int $occupancy_id = 0, int $departure_post_id = 0, string $currency = 'USD' ): array {
+function get_occupancy_detail( int $occupancy_id = 0, int $departure_post_id = 0, string $currency = USD_CURRENCY ): array {
 	// Uppercase currency.
 	$currency = strtoupper( $currency );
 

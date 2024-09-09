@@ -10,6 +10,8 @@ namespace Quark\Theme\Blocks\BookDeparturesExpeditions;
 use WP_Block;
 use WP_Post;
 
+use const Quark\Core\USD_CURRENCY;
+
 use function Quark\Departures\get_cards_data;
 use function Quark\Expeditions\get as get_expedition;
 use function Quark\Search\Departures\search;
@@ -53,7 +55,7 @@ function render( array $attributes = [], string $content = '' ): string {
 
 	// TODO: Get the selected currency from the user.
 	// Set the currency.
-	$currency = 'USD';
+	$currency = USD_CURRENCY;
 
 	// Init selected filters.
 	$selected_filter = [

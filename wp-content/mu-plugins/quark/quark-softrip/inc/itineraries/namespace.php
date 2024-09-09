@@ -14,6 +14,7 @@ use function Quark\Softrip\Departures\get_start_date as get_departure_start_date
 use function Quark\Softrip\Departures\get_end_date as get_departure_end_date;
 
 use const Quark\Core\CURRENCIES;
+use const Quark\Core\USD_CURRENCY;
 
 /**
  * Get lowest price for itinerary.
@@ -26,7 +27,7 @@ use const Quark\Core\CURRENCIES;
  *  discounted: int,
  * }
  */
-function get_lowest_price( int $post_id = 0, string $currency = 'USD' ): array {
+function get_lowest_price( int $post_id = 0, string $currency = USD_CURRENCY ): array {
 	// Uppercase the currency code.
 	$currency = strtoupper( $currency );
 

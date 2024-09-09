@@ -13,6 +13,7 @@ use function Quark\CabinCategories\get as get_cabin_category_post;
 use function Quark\Departures\get as get_departure_post;
 
 use const Quark\Core\CURRENCIES;
+use const Quark\Core\USD_CURRENCY;
 
 /**
  * Bootstrap the plugin.
@@ -32,7 +33,7 @@ function bootstrap(): void {
  *
  * @return string
  */
-function get_checkout_url( int $departure_post_id = 0, int $cabin_post_id = 0, string $currency = 'USD' ): string {
+function get_checkout_url( int $departure_post_id = 0, int $cabin_post_id = 0, string $currency = USD_CURRENCY ): string {
 	// Check base URL.
 	if ( ! defined( 'QUARK_CHECKOUT_BASE_URL' ) ) {
 		return '';

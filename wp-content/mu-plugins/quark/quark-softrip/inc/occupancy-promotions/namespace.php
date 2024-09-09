@@ -14,6 +14,7 @@ use function Quark\Softrip\Promotions\get_promotions_by_code;
 use function Quark\Softrip\Promotions\get_promotions_by_id;
 
 use const Quark\Core\CURRENCIES;
+use const Quark\Core\USD_CURRENCY;
 
 const CACHE_KEY_PREFIX = 'qrk_softrip_occupancy_promotion';
 const CACHE_GROUP      = 'qrk_softrip_occupancy_promotions';
@@ -429,7 +430,7 @@ function get_occupancy_promotions_by_occupancy( int $occupancy_id = 0, bool $for
  *
  * @return int
  */
-function get_lowest_price( int $occupancy_id = 0, string $currency = 'USD', string $promotion_code = '' ): int {
+function get_lowest_price( int $occupancy_id = 0, string $currency = USD_CURRENCY, string $promotion_code = '' ): int {
 	// Uppercase the currency.
 	$currency = strtoupper( $currency );
 

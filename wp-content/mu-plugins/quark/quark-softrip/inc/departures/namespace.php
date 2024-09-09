@@ -19,6 +19,7 @@ use function Quark\Softrip\Occupancies\get_lowest_price as get_occupancies_lowes
 use function Quark\Softrip\Promotions\update_promotions;
 
 use const Quark\Core\CURRENCIES;
+use const Quark\Core\USD_CURRENCY;
 use const Quark\Departures\CACHE_GROUP as DEPARTURE_CACHE_GROUP;
 use const Quark\Departures\CACHE_KEY as DEPARTURE_CACHE_KEY;
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
@@ -376,7 +377,7 @@ function format_raw_departure_data( array $raw_departure_data = [], int $itinera
  *   discounted: int,
  * }
  */
-function get_lowest_price( int $post_id = 0, string $currency = 'USD' ): array {
+function get_lowest_price( int $post_id = 0, string $currency = USD_CURRENCY ): array {
 	// Uppercase currency.
 	$currency = strtoupper( $currency );
 

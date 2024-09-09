@@ -20,6 +20,7 @@ use function Quark\Softrip\add_prefix_to_table_name;
 
 use const Quark\CabinCategories\POST_TYPE as CABIN_CATEGORY_POST_TYPE;
 use const Quark\Core\CURRENCIES;
+use const Quark\Core\USD_CURRENCY;
 
 const CACHE_KEY_PREFIX = 'quark_softrip_occupancy';
 const CACHE_GROUP      = 'quark_softrip_occupancies';
@@ -658,7 +659,7 @@ function get_occupancy_data_by_id( int $occupancy_id = 0, bool $force = false ):
  *  discounted: int,
  * }
  */
-function get_lowest_price( int $post_id = 0, string $currency = 'USD' ): array {
+function get_lowest_price( int $post_id = 0, string $currency = USD_CURRENCY ): array {
 	// Upper case currency.
 	$currency = strtoupper( $currency );
 
@@ -1033,7 +1034,7 @@ function get_cabin_category_post_ids_by_departure( int $departure_post_id = 0, b
  *   discounted: int,
  * }
  */
-function get_lowest_price_by_cabin_category_and_departure( int $cabin_category_post_id = 0, int $departure_post_id = 0, string $currency = 'USD' ): array {
+function get_lowest_price_by_cabin_category_and_departure( int $cabin_category_post_id = 0, int $departure_post_id = 0, string $currency = USD_CURRENCY ): array {
 	// Upper case currency.
 	$currency = strtoupper( $currency );
 
@@ -1099,7 +1100,7 @@ function get_lowest_price_by_cabin_category_and_departure( int $cabin_category_p
  *
  * @return int
  */
-function get_lowest_price_by_cabin_category_and_departure_and_promotion_code( int $cabin_category_post_id = 0, int $departure_post_id = 0, string $promotion_code = '', string $currency = 'USD' ): int {
+function get_lowest_price_by_cabin_category_and_departure_and_promotion_code( int $cabin_category_post_id = 0, int $departure_post_id = 0, string $promotion_code = '', string $currency = USD_CURRENCY ): int {
 	// Upper case currency.
 	$currency = strtoupper( $currency );
 
@@ -1272,7 +1273,7 @@ function get_description_and_pax_count_by_mask( string $mask = '' ): array {
  *   original: int,
  * }
  */
-function add_supplemental_and_mandatory_price( array $lowest_price = [ 'discounted' => 0, 'original' => 0 ], int $departure_post_id = 0, string $currency = 'USD' ): array { // phpcs:ignore WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound
+function add_supplemental_and_mandatory_price( array $lowest_price = [ 'discounted' => 0, 'original' => 0 ], int $departure_post_id = 0, string $currency = USD_CURRENCY ): array { // phpcs:ignore WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound
 	// Setup default return values.
 	$lowest_price_with_supplemental = [
 		'discounted' => 0,
