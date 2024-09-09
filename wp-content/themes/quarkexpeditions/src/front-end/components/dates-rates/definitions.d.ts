@@ -24,7 +24,6 @@ interface DatesRatesState {
 	isLoading: boolean,
 	partial: string,
 	selector: '',
-	expeditionId: number,
 	isInitialized: boolean,
 	shouldMarkupUpdate: boolean,
 	markup: '',

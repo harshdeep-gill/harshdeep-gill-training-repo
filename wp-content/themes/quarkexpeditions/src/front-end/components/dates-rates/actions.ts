@@ -292,6 +292,8 @@ export const clearAllFilters = () => {
 		months: [],
 		durations: [],
 		ships: [],
+		perPage: 10,
+		page: 1,
 	} );
 
 	// Fetch results.
@@ -391,16 +393,14 @@ export const setPerPage = ( updatedValue: number ) => {
 /**
  * Initializes the settings to be used for fetching the results.
  *
- * @param {Object} settings              The settings.
- * @param {string} settings.partial      The name of the partial.
- * @param {string} settings.selector     The DOM selector of the container of the results.
- * @param {number} settings.expeditionId The expeditionId to be used.
+ * @param {Object} settings          The settings.
+ * @param {string} settings.partial  The name of the partial.
+ * @param {string} settings.selector The DOM selector of the container of the results.
  */
 export const initializeFetchPartialSettings = (
 	settings: {
 		partial: string,
 		selector: string,
-		expeditionId: number
 	}
 ) => {
 	// Get the state.
@@ -415,8 +415,7 @@ export const initializeFetchPartialSettings = (
 	// Validation checks.
 	if ( ! (
 		settings.partial &&
-		settings.selector &&
-		! Number.isNaN( settings.expeditionId )
+		settings.selector
 	) ) {
 		// Invalid data.
 		return;
@@ -426,7 +425,6 @@ export const initializeFetchPartialSettings = (
 	setState( {
 		partial: settings.partial,
 		selector: settings.selector,
-		expeditionId: settings.expeditionId,
 		isInitialized: true,
 	} );
 
