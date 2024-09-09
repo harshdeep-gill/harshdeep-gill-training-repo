@@ -124,7 +124,7 @@ class Test_Search extends WP_UnitTestCase {
 		);
 
 		// Add invalid currency.
-		$_COOKIE[CURRENCY_COOKIE] = 'INVALID';
+		$_COOKIE[ CURRENCY_COOKIE ] = 'INVALID';
 
 		// Redirect to custom URL.
 		$this->go_to( add_query_arg( $query_vars, home_url() ) );
@@ -160,7 +160,7 @@ class Test_Search extends WP_UnitTestCase {
 		);
 
 		// Set new currency cookie.
-		$_COOKIE[CURRENCY_COOKIE] = 'EUR';
+		$_COOKIE[ CURRENCY_COOKIE ] = 'EUR';
 
 		// Redirect to custom URL.
 		$this->go_to( add_query_arg( $query_vars, home_url() ) );

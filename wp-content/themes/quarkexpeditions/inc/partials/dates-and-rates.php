@@ -7,10 +7,10 @@
 
 namespace Quark\Theme\Partials\DatesAndRates;
 
-use const Quark\Core\USD_CURRENCY;
-
 use function Quark\Departures\get_dates_rates_cards_data;
 use function Quark\Search\Departures\search;
+
+use const Quark\Core\USD_CURRENCY;
 
 const PARTIAL_NAME = 'dates-and-rates';
 
