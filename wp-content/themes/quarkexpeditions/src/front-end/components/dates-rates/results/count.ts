@@ -4,14 +4,9 @@
 const { HTMLElement, zustand } = window;
 
 /**
- * Internal Dependencies.
- */
-import { setTotalCount } from '../actions';
-
-/**
  * Store
  */
-const { getState, subscribe } = zustand.stores.datesRates;
+const { subscribe } = zustand.stores.datesRates;
 
 /**
  * Results Count Class
@@ -34,17 +29,8 @@ export default class DatesRatesResultsCountElement extends HTMLElement {
 		this.resultCountElement = this.querySelector( '.dates-rates__result-count-value' );
 		this.totalResultsCountElement = this.querySelector( '.dates-rates__result-count-total' );
 
-		// Get the initial state.
-		const initialTotalCount = parseInt( this.getAttribute( 'total-count' ) ?? '' );
-
-		// Set the initial total count
-		setTotalCount( initialTotalCount );
-
 		// Subscribe to the store.
 		subscribe( this.update.bind( this ) );
-
-		// Initial sync.
-		this.update( getState() );
 	}
 
 	/**
@@ -64,6 +50,6 @@ export default class DatesRatesResultsCountElement extends HTMLElement {
 
 		// Set output.
 		this.totalResultsCountElement.textContent = totalItems.toString();
-		this.resultCountElement.textContent = perPage.toString();
+		this.resultCountElement.textContent = ( perPage >= totalItems ? totalItems : perPage ).toString();
 	}
 }

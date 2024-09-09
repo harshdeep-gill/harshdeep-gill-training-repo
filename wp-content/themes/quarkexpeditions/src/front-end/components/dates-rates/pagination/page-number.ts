@@ -11,7 +11,7 @@ import { setPage } from '../actions';
 /**
  * Store
  */
-const { subscribe, getState } = zustand.stores.datesRates;
+const { subscribe } = zustand.stores.datesRates;
 
 /**
  * Page Number class.
@@ -45,9 +45,6 @@ export default class DatesRatesPaginationPageNumberElement extends HTMLElement {
 
 		// Subscribe to the store.
 		subscribe( this.update.bind( this ) );
-
-		// Initial sync.
-		this.update( getState() );
 	}
 
 	/**

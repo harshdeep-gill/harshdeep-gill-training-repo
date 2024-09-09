@@ -6,14 +6,13 @@ const { HTMLElement, zustand } = window;
 /**
  * Internal dependencies
  */
-import { setPage, setTotalPages } from '../actions';
 import DatesRatesPaginationNextPageElement from './next';
 import DatesRatesPaginationPrevPageElement from './prev';
 
 /**
  * Store
  */
-const { subscribe, getState } = zustand.stores.datesRates;
+const { subscribe } = zustand.stores.datesRates;
 
 /**
  * Links controller class.
@@ -26,8 +25,6 @@ export default class DatesRatesPaginationLinksControllerElement extends HTMLElem
 	private readonly dotsTemplate: HTMLTemplateElement | null;
 	private readonly prevPageElement: DatesRatesPaginationPrevPageElement | null;
 	private readonly nextPageElement: DatesRatesPaginationNextPageElement | null;
-	private readonly initialTotalPages: number;
-	private readonly initialCurrentPage: number;
 
 	/**
 	 * Constructor
@@ -41,18 +38,9 @@ export default class DatesRatesPaginationLinksControllerElement extends HTMLElem
 		this.dotsTemplate = this.querySelector( '.dates-rates__template-pagination-dots' );
 		this.prevPageElement = this.querySelector( 'quark-dates-rates-pagination-prev-page' );
 		this.nextPageElement = this.querySelector( 'quark-dates-rates-pagination-next-page' );
-		this.initialTotalPages = parseInt( this.getAttribute( 'total-pages' ) ?? '' );
-		this.initialCurrentPage = parseInt( this.getAttribute( 'current-page' ) ?? '' );
-
-		// Set the total pages state.
-		setTotalPages( this.initialTotalPages );
-		setPage( this.initialCurrentPage );
 
 		// Subscribe to the store.
 		subscribe( this.update.bind( this ) );
-
-		// Initial sync.
-		this.update( getState() );
 	}
 
 	/**

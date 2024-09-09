@@ -12,7 +12,7 @@ import { setPerPage } from '../actions';
 /**
  * Store
  */
-const { subscribe, getState } = zustand.stores.datesRates;
+const { subscribe } = zustand.stores.datesRates;
 
 /**
  * Items per page class.
@@ -46,9 +46,6 @@ export default class DatesRatesPaginationItemsPerPageElement extends HTMLElement
 
 		// Subscribe to the store.
 		subscribe( this.update.bind( this ) );
-
-		// Initial sync.
-		this.update( getState() );
 	}
 
 	/**
