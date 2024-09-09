@@ -366,7 +366,6 @@ export const setNextPage = () => {
 	fetchResults();
 };
 
-
 /**
  * Set the items per page state.
  *
