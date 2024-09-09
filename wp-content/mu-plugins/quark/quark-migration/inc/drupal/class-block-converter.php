@@ -1897,4 +1897,73 @@ class Block_Converter {
 		// Return data.
 		return $heading_block . PHP_EOL . $body . PHP_EOL;
 	}
+
+	/**
+	 * Convert list of drupal images to collage block.
+	 *
+	 * @param array<int> $images List of image ids.
+	 *
+	 * @return string
+	 */
+	public function convert_images_to_collage( array $images = [] ): string {
+		// Check if images are available.
+		if ( empty( $images ) ) {
+			return '';
+		}
+
+		// Collage media items.
+		$collage_media_items = '';
+
+		// Loop through each image.
+		foreach ( $images as $image ) {
+			$image_target_id = download_file_by_mid( absint( $image ) );
+
+			// Check if image found.
+			if ( $image_target_id instanceof WP_Error ) {
+				continue;
+			}
+
+			// Get attachment src.
+			$attachment_src = wp_get_attachment_image_src( absint( $image_target_id ), 'full' );
+
+			// Check if attachment src is not available.
+			if ( empty( $attachment_src ) ) {
+				continue;
+			}
+
+			// Build quark/collage-media-item block.
+			$collage_media_items .= serialize_block(
+				[
+					'blockName'    => 'quark/collage-media-item',
+					'attrs'        => [
+						'image' => [
+							'id'     => absint( $image_target_id ),
+							'src'    => $attachment_src[0],
+							'width'  => $attachment_src[1],
+							'height' => $attachment_src[2],
+							'title'  => get_the_title( absint( $image_target_id ) ),
+							'size'   => 'full',
+						],
+					],
+					'innerContent' => [],
+				]
+			);
+		}
+
+		// Check if collage_media_items are empty.
+		if ( empty( $collage_media_items ) ) {
+			return '';
+		}
+
+		// Return collage block.
+		return serialize_block(
+			[
+				'blockName'    => 'quark/collage',
+				'attrs'        => [],
+				'innerContent' => [
+					$collage_media_items,
+				],
+			]
+		) . PHP_EOL;
+	}
 }
