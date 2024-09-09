@@ -1,17 +1,32 @@
+@props( [
+	'currency' => 'USD',
+] )
+
 @php
 	if ( empty( $slot ) ) {
 		return;
 	}
+
+	// All available currencies.
+	$currencies = [
+		'USD' => __( '$ USD', 'qrk' ),
+		'CAD' => __( '$ CAD', 'qrk' ),
+		'AUD' => __( '$ AUD', 'qrk' ),
+		'GBP' => __( '£ GBP', 'qrk' ),
+		'EUR' => __( '€ EUR', 'qrk' ),
+	];
 @endphp
 
 <quark-book-departures-expeditions-filters class="book-departures-expeditions__filters">
 	<x-form.field class="book-departures-expeditions__filters-currency">
 		<x-form.inline-dropdown label="Currency">
-			<x-form.option value="USD" label="$ USD" selected="yes">{{ __( '$ USD', 'qrk' ) }}</x-form.option>
-			<x-form.option value="CAD" label="$ CAD">{{ __( '$ CAD', 'qrk' ) }}</x-form.option>
-			<x-form.option value="AUD" label="$ AUD">{{ __( '$ AUD', 'qrk' ) }}</x-form.option>
-			<x-form.option value="GBP" label="£ GBP">{{ __( '£ GBP', 'qrk' ) }}</x-form.option>
-			<x-form.option value="EUR" label="€ EUR">{{ __( '€ EUR', 'qrk' ) }}</x-form.option>
+			
+			@foreach ( $currencies as $code => $label )
+				<x-form.option value="{{ $code }}" label="{{ $label }}" selected="{{ $currency === $code ? 'yes' : '' }}">
+					{{ $label }}
+				</x-form.option>
+			@endforeach
+
 		</x-form.inline-dropdown>
 	</x-form.field>
 	<x-form.field class="book-departures-expeditions__filters-sort">
