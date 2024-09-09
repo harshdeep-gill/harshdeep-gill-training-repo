@@ -22,12 +22,6 @@ export const updateCurrency = ( updatedCurrency: string ) => {
 	// Set state.
 	setState( {
 		currency: updatedCurrency,
-		areCurrencyFiltersSyncing: true,
-	} );
-
-	// Disable syncing status.
-	setState( {
-		areCurrencyFiltersSyncing: false,
 	} );
 
 	// Fetch results.
@@ -53,6 +47,9 @@ export const addSeason = ( filter: DatesRatesFilterState ) => {
 	setState( {
 		seasons: [ ...seasons, filter ],
 	} );
+
+	// Fetch results.
+	fetchResults();
 };
 
 /**
@@ -68,6 +65,9 @@ export const removeSeason = ( filterValue: string ) => {
 	setState( {
 		seasons: seasons.filter( ( existingFilter ) => existingFilter.value !== filterValue ),
 	} );
+
+	// Fetch results.
+	fetchResults();
 };
 
 /**
@@ -89,6 +89,9 @@ export const addExpedition = ( filter: DatesRatesFilterState ) => {
 	setState( {
 		expeditions: [ ...expeditions, filter ],
 	} );
+
+	// Fetch results.
+	fetchResults();
 };
 
 /**
@@ -104,6 +107,9 @@ export const removeExpedition = ( filterValue: string ) => {
 	setState( {
 		expeditions: expeditions.filter( ( existingFilter ) => existingFilter.value !== filterValue ),
 	} );
+
+	// Fetch results.
+	fetchResults();
 };
 
 /**
@@ -125,6 +131,9 @@ export const addAdventureOption = ( filter: DatesRatesFilterState ) => {
 	setState( {
 		adventure_options: [ ...adventureOptions, filter ],
 	} );
+
+	// Fetch results.
+	fetchResults();
 };
 
 /**
@@ -140,6 +149,9 @@ export const removeAdventureOption = ( filterValue: string ) => {
 	setState( {
 		adventure_options: adventureOptions.filter( ( existingFilter ) => existingFilter.value !== filterValue ),
 	} );
+
+	// Fetch results.
+	fetchResults();
 };
 
 /**
@@ -161,6 +173,9 @@ export const addDepartureMonth = ( filter: DatesRatesFilterState ) => {
 	setState( {
 		months: [ ...months, filter ],
 	} );
+
+	// Fetch results.
+	fetchResults();
 };
 
 /**
@@ -176,6 +191,9 @@ export const removeDepartureMonth = ( filterValue: string ) => {
 	setState( {
 		months: months.filter( ( existingFilter ) => existingFilter.value !== filterValue ),
 	} );
+
+	// Fetch results.
+	fetchResults();
 };
 
 /**
@@ -197,6 +215,9 @@ export const addDuration = ( filter: DatesRatesFilterState ) => {
 	setState( {
 		durations: [ ...durations, filter ],
 	} );
+
+	// Fetch results.
+	fetchResults();
 };
 
 /**
@@ -212,6 +233,9 @@ export const removeDuration = ( filterValue: string ) => {
 	setState( {
 		durations: durations.filter( ( existingFilter ) => existingFilter.value !== filterValue ),
 	} );
+
+	// Fetch results.
+	fetchResults();
 };
 
 /**
@@ -233,6 +257,9 @@ export const addShip = ( filter: DatesRatesFilterState ) => {
 	setState( {
 		ships: [ ...ships, filter ],
 	} );
+
+	// Fetch results.
+	fetchResults();
 };
 
 /**
@@ -248,6 +275,9 @@ export const removeShip = ( filterValue: string ) => {
 	setState( {
 		ships: ships.filter( ( existingFilter ) => existingFilter.value !== filterValue ),
 	} );
+
+	// Fetch results.
+	fetchResults();
 };
 
 /**
@@ -263,6 +293,9 @@ export const clearAllFilters = () => {
 		durations: [],
 		ships: [],
 	} );
+
+	// Fetch results.
+	fetchResults();
 };
 
 /**
@@ -284,6 +317,9 @@ export const setPage = ( updatedPage: number ) => {
 	setState( {
 		page: updatedPage,
 	} );
+
+	// Fetch results.
+	fetchResults();
 };
 
 /**
@@ -303,6 +339,9 @@ export const setPreviousPage = () => {
 	setState( {
 		page: page - 1,
 	} );
+
+	// Fetch results.
+	fetchResults();
 };
 
 /**
@@ -322,6 +361,9 @@ export const setNextPage = () => {
 	setState( {
 		page: page + 1,
 	} );
+
+	// Fetch results.
+	fetchResults();
 };
 
 /**
@@ -357,7 +399,11 @@ export const setPerPage = ( updatedValue: number ) => {
 	// Set the state
 	setState( {
 		perPage: updatedValue,
+		page: 1,
 	} );
+
+	// Fetch results.
+	fetchResults();
 };
 
 /**
@@ -418,7 +464,6 @@ export const initializeFetchPartialSettings = (
 		selector: settings.selector,
 		expeditionId: settings.expeditionId,
 		isInitialized: true,
-		shouldMarkupUpdate: true,
 	} );
 
 	// Fetch the results.
@@ -455,6 +500,7 @@ const fetchResults = () => {
 	// Set loading.
 	setState( {
 		isLoading: true,
+		shouldMarkupUpdate: true,
 	} );
 
 	// Fetch the partial.
@@ -475,7 +521,7 @@ const fetchResults = () => {
 		},
 		resultsFetchedCallback,
 		selector
-	).catch( () => setState( { isLoading: false } ) );
+	).catch( () => setState( { isLoading: false, shouldMarkupUpdate: false } ) );
 };
 
 /**
@@ -485,16 +531,42 @@ const fetchResults = () => {
  *
  * @return {string[]|number[]} The array of values.
  */
-const pluckValues = ( list: DatesRatesFilterState[] ) => list.map( ( filter ) => filter.value );
+const pluckValues = ( list: DatesRatesFilterState[] ): string[] | number[] => list.map( ( filter ) => filter.value );
 
 /**
  * Callback to run after partial has been fetched.
  *
- * @param {Object} data The partial data.
+ * @param {Object} response The partial response.
  */
-const resultsFetchedCallback = ( data: PartialData ) => {
+const resultsFetchedCallback = ( response: PartialData ) => {
+	// Get state.
+	const { perPage, totalPages }: DatesRatesState = getState();
+
+	// Get the data.
+	const {
+		markup,
+		noResultsMarkup,
+		data: { resultCount },
+	} = response;
+
 	// Set state.
 	setState( {
+		markup: resultCount !== 0 ? markup : '',
+		noResultsMarkup: noResultsMarkup ?? '',
+		totalItems: resultCount,
+		totalPages: resultCount !== 0 ? Math.ceil( resultCount / perPage ) : totalPages,
 		isLoading: false,
+	} );
+};
+
+/**
+ * Action to indicated markup update completion.
+ *
+ */
+export const markupUpdated = () => {
+	// Set state
+	setState( {
+		isLoading: false,
+		shouldMarkupUpdate: false,
 	} );
 };

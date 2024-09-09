@@ -9,5 +9,5 @@
 @endphp
 
 <quark-dates-rates-pagination-page-number number="{!! esc_attr( $last_page ) !!}" data-hidden>
-	<x-pagination.first-page>{!! esc_html__( 'Last', 'qrk' ) !!}</x-pagination.first-page>
+	<x-pagination.last-page>{!! esc_html__( 'Last', 'qrk' ) !!}</x-pagination.last-page>
 </quark-dates-rates-pagination-page-number>

@@ -21,7 +21,7 @@ export default class DatesRatesPaginationPageNumberElement extends HTMLElement {
 	 * Properties
 	 */
 	private readonly theButton: HTMLButtonElement | null;
-	private readonly pageNumber: number;
+	private pageNumber: number;
 
 	/**
 	 * Constructor
@@ -57,7 +57,7 @@ export default class DatesRatesPaginationPageNumberElement extends HTMLElement {
 	 */
 	update( state: DatesRatesState ) {
 		// Get the page number.
-		const { page } = state;
+		const { page, totalPages } = state;
 
 		// Null check.
 		if ( ! this.theButton ) {
@@ -70,6 +70,13 @@ export default class DatesRatesPaginationPageNumberElement extends HTMLElement {
 			this.theButton.classList.add( 'current' );
 		} else {
 			this.theButton.classList.remove( 'current' );
+		}
+
+		// Check if this is the `last` link.
+		if ( this.theButton.classList.contains( 'pagination__last-page' ) ) {
+			// Update accordingly.
+			this.pageNumber = totalPages;
+			this.setAttribute( 'number', totalPages.toString() );
 		}
 	}
 

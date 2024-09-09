@@ -29,6 +29,8 @@ export const DEFAULT_STATE: DatesRatesState = {
 	selector: '',
 	isInitialized: false,
 	shouldMarkupUpdate: false,
+	markup: '',
+	noResultsMarkup: '',
 };
 
 /**

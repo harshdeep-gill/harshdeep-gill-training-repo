@@ -27,4 +27,6 @@ interface DatesRatesState {
 	expeditionId: number,
 	isInitialized: boolean,
 	shouldMarkupUpdate: boolean,
+	markup: '',
+	noResultsMarkup: '',
 }

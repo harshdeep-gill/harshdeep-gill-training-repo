@@ -83,8 +83,14 @@ export default class DatesRatesPaginationLinksControllerElement extends HTMLElem
 
 		// Check how many pages are left and update accordingly.
 		if ( maxNumlinks > pagesLeft ) {
-			pageNumberBegin = page - maxNumlinks + pagesLeft + 1;
 			pageNumberEnd = totalPages;
+
+			// If there are not enough pages.
+			if ( totalPages <= maxNumlinks ) {
+				pageNumberBegin = 1;
+			} else {
+				pageNumberBegin = totalPages - maxNumlinks + 1;
+			}
 		} else {
 			pageNumberEnd = pageNumberBegin + maxNumlinks - 1;
 		}
@@ -145,21 +151,25 @@ export default class DatesRatesPaginationLinksControllerElement extends HTMLElem
 		// Get the dots ready.
 		const dots = ( this.dotsTemplate.content.cloneNode( true ) as HTMLElement ).querySelector( '.page-numbers.dots' );
 
+		// Toggle the `first` link.
+		if ( 1 !== page ) {
+			this.prevPageElement.previousElementSibling?.removeAttribute( 'data-hidden' );
+		} else {
+			this.prevPageElement.previousElementSibling?.setAttribute( 'data-hidden', '' );
+		}
+
+		// Toggle the last page link.
+		if ( totalPages !== page ) {
+			this.nextPageElement.nextElementSibling?.removeAttribute( 'data-hidden' );
+		} else {
+			this.nextPageElement.nextElementSibling?.setAttribute( 'data-hidden', '' );
+		}
+
 		// Check and insert dots.
 		if ( dots && totalPages > maxNumlinks ) {
 			// Check if to insert at beginning.
 			if ( 1 !== page ) {
 				this.prevPageElement.insertAdjacentHTML( 'afterend', dots.outerHTML );
-				this.prevPageElement.previousElementSibling?.removeAttribute( 'data-hidden' );
-			} else {
-				this.prevPageElement.previousElementSibling?.setAttribute( 'data-hidden', '' );
-			}
-
-			// Toggle the last page link.
-			if ( totalPages !== page ) {
-				this.nextPageElement.nextElementSibling?.removeAttribute( 'data-hidden' );
-			} else {
-				this.nextPageElement.nextElementSibling?.setAttribute( 'data-hidden', '' );
 			}
 
 			// Check if to insert at end.

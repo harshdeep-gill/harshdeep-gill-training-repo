@@ -1,12 +1,17 @@
 /**
  * Globals
  */
-const { HTMLElement } = window;
+const { HTMLElement, zustand } = window;
+
+/**
+ * The store.
+ */
+const { subscribe } = zustand.stores.datesRates;
 
 /**
  * Internal dependencies.
  */
-import { initializeFetchPartialSettings } from '../actions';
+import { initializeFetchPartialSettings, markupUpdated } from '../actions';
 
 /**
  * Results Class
@@ -37,5 +42,37 @@ export default class DatesRatesResultsElement extends HTMLElement {
 			selector: this.selector,
 			expeditionId: this.expeditionId,
 		} );
+
+		// Subscribe to the store.
+		subscribe( this.update.bind( this ) );
+	}
+
+	/**
+	 * Updates the component.
+	 *
+	 * @param {Object} state The state object.
+	 */
+	update( state: DatesRatesState ) {
+		// Get the state.
+		const { shouldMarkupUpdate } = state;
+
+		// Should the markup be updated?
+		if ( ! shouldMarkupUpdate ) {
+			// No, bail.
+			return;
+		}
+
+		// Get the markup.
+		const { markup, noResultsMarkup } = state;
+
+		// Check if markup is available.
+		if ( markup ) {
+			this.innerHTML = markup;
+		} else {
+			this.innerHTML = noResultsMarkup;
+		}
+
+		// Done.
+		markupUpdated();
 	}
 }
