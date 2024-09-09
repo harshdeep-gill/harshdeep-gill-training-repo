@@ -34,86 +34,220 @@ export const updateCurrency = ( updatedCurrency: string ) => {
 };
 
 /**
- * The name of the filter for which to create an `add` action.
+ * Adds a season to the seasons list.
  *
- * @param {Object} filterName
- *
- * @return {Function} An add filter action.
+ * @param {Object} filter A singular filter.
  */
-const addFilterCreator = ( filterName: string ) => {
-	/**
-	 * Adds a filter to the filter list.
-	 *
-	 * @param {Object} filter A singular filter.
-	 */
-	return ( filter: DatesRatesFilterState ) => {
-		// Get the state.
-		const filterList: DatesRatesFilterState[] = getState()[ filterName ];
+export const addSeason = ( filter: DatesRatesFilterState ) => {
+	// Get the state.
+	const { seasons }: DatesRatesState = getState();
 
-		// Check if the given filter is already selected.
-		if ( filterList.find( ( existingFilter ) => existingFilter.value === filter.value ) ) {
-			// It is, bail.
-			return;
-		}
+	// Check if the given filter is already selected.
+	if ( seasons.find( ( existingFilter ) => existingFilter.value === filter.value ) ) {
+		// It is, bail.
+		return;
+	}
 
-		// Create an update object.
-		const updatedObject: { [key: string]: DatesRatesFilterState[] } = {};
-		updatedObject[ filterName ] = [ ...filterList, filter ];
-
-		// Set the state
-		setState( updatedObject );
-	};
+	// Set the state
+	setState( {
+		seasons: [ ...seasons, filter ],
+	} );
 };
 
 /**
- * The name of the filter for which to create an `remove` action.
+ * Remove a particular season given its value.
  *
- * @param {Object} filterName
- *
- * @return {Function} An add filter action.
+ * @param {string} filterValue
  */
-export const removeFilterCreator = ( filterName: string ) => {
-	/**
-	 * Remove a particular filter given its value.
-	 *
-	 * @param {string} filterValue
-	 */
-	return ( filterValue: string ) => {
-		// Get the state.
-		const filterList: DatesRatesFilterState[] = getState()[ filterName ];
+export const removeSeason = ( filterValue: string ) => {
+	// Get the state.
+	const { seasons }: DatesRatesState = getState();
 
-		// Create an update object.
-		const updatedObject: { [key: string]: DatesRatesFilterState[] } = {};
-		updatedObject[ filterName ] = filterList.filter( ( existingFilter ) => existingFilter.value !== filterValue );
-
-		// Set the state.
-		setState( updatedObject );
-	};
+	// Set the state.
+	setState( {
+		seasons: seasons.filter( ( existingFilter ) => existingFilter.value !== filterValue ),
+	} );
 };
 
-// seasons actions.
-export const addSeason = addFilterCreator( 'seasons' );
-export const removeSeason = removeFilterCreator( 'seasons' );
+/**
+ * Adds a expedition to the expeditions list.
+ *
+ * @param {Object} filter A singular filter.
+ */
+export const addExpedition = ( filter: DatesRatesFilterState ) => {
+	// Get the state.
+	const { expeditions }: DatesRatesState = getState();
 
-// expeditions actions.
-export const addExpedition = addFilterCreator( 'expeditions' );
-export const removeExpedition = removeFilterCreator( 'expeditions' );
+	// Check if the given filter is already selected.
+	if ( expeditions.find( ( existingFilter ) => existingFilter.value === filter.value ) ) {
+		// It is, bail.
+		return;
+	}
 
-// adventure_options actions.
-export const addAdventureOption = addFilterCreator( 'adventure_options' );
-export const removeAdventureOption = removeFilterCreator( 'adventure_options' );
+	// Set the state
+	setState( {
+		expeditions: [ ...expeditions, filter ],
+	} );
+};
 
-// months actions.
-export const addDepartureMonth = addFilterCreator( 'months' );
-export const removeDepartureMonth = removeFilterCreator( 'months' );
+/**
+ * Remove a particular expedition given its value.
+ *
+ * @param {string} filterValue
+ */
+export const removeExpedition = ( filterValue: string ) => {
+	// Get the state.
+	const { expeditions }: DatesRatesState = getState();
 
-// durations actions.
-export const addDuration = addFilterCreator( 'durations' );
-export const removeDuration = removeFilterCreator( 'durations' );
+	// Set the state.
+	setState( {
+		expeditions: expeditions.filter( ( existingFilter ) => existingFilter.value !== filterValue ),
+	} );
+};
 
-// ships actions.
-export const addShip = addFilterCreator( 'ships' );
-export const removeShip = removeFilterCreator( 'ships' );
+/**
+ * Adds a adventureOption to the adventureOptions list.
+ *
+ * @param {Object} filter A singular filter.
+ */
+export const addAdventureOption = ( filter: DatesRatesFilterState ) => {
+	// Get the state.
+	const { adventure_options: adventureOptions }: DatesRatesState = getState();
+
+	// Check if the given filter is already selected.
+	if ( adventureOptions.find( ( existingFilter ) => existingFilter.value === filter.value ) ) {
+		// It is, bail.
+		return;
+	}
+
+	// Set the state
+	setState( {
+		adventure_options: [ ...adventureOptions, filter ],
+	} );
+};
+
+/**
+ * Remove a particular adventureOption given its value.
+ *
+ * @param {string} filterValue
+ */
+export const removeAdventureOption = ( filterValue: string ) => {
+	// Get the state.
+	const { adventure_options: adventureOptions }: DatesRatesState = getState();
+
+	// Set the state.
+	setState( {
+		adventure_options: adventureOptions.filter( ( existingFilter ) => existingFilter.value !== filterValue ),
+	} );
+};
+
+/**
+ * Adds a month to the months list.
+ *
+ * @param {Object} filter A singular filter.
+ */
+export const addDepartureMonth = ( filter: DatesRatesFilterState ) => {
+	// Get the state.
+	const { months }: DatesRatesState = getState();
+
+	// Check if the given filter is already selected.
+	if ( months.find( ( existingFilter ) => existingFilter.value === filter.value ) ) {
+		// It is, bail.
+		return;
+	}
+
+	// Set the state
+	setState( {
+		months: [ ...months, filter ],
+	} );
+};
+
+/**
+ * Remove a particular month given its value.
+ *
+ * @param {string} filterValue
+ */
+export const removeDepartureMonth = ( filterValue: string ) => {
+	// Get the state.
+	const { months }: DatesRatesState = getState();
+
+	// Set the state.
+	setState( {
+		months: months.filter( ( existingFilter ) => existingFilter.value !== filterValue ),
+	} );
+};
+
+/**
+ * Adds a duration to the durations list.
+ *
+ * @param {Object} filter A singular filter.
+ */
+export const addDuration = ( filter: DatesRatesFilterState ) => {
+	// Get the state.
+	const { durations }: DatesRatesState = getState();
+
+	// Check if the given filter is already selected.
+	if ( durations.find( ( existingFilter ) => existingFilter.value === filter.value ) ) {
+		// It is, bail.
+		return;
+	}
+
+	// Set the state
+	setState( {
+		durations: [ ...durations, filter ],
+	} );
+};
+
+/**
+ * Remove a particular duration given its value.
+ *
+ * @param {string} filterValue
+ */
+export const removeDuration = ( filterValue: string ) => {
+	// Get the state.
+	const { durations }: DatesRatesState = getState();
+
+	// Set the state.
+	setState( {
+		durations: durations.filter( ( existingFilter ) => existingFilter.value !== filterValue ),
+	} );
+};
+
+/**
+ * Adds a ship to the ships list.
+ *
+ * @param {Object} filter A singular filter.
+ */
+export const addShip = ( filter: DatesRatesFilterState ) => {
+	// Get the state.
+	const { ships }: DatesRatesState = getState();
+
+	// Check if the given filter is already selected.
+	if ( ships.find( ( existingFilter ) => existingFilter.value === filter.value ) ) {
+		// It is, bail.
+		return;
+	}
+
+	// Set the state
+	setState( {
+		ships: [ ...ships, filter ],
+	} );
+};
+
+/**
+ * Remove a particular ship given its value.
+ *
+ * @param {string} filterValue
+ */
+export const removeShip = ( filterValue: string ) => {
+	// Get the state.
+	const { ships }: DatesRatesState = getState();
+
+	// Set the state.
+	setState( {
+		ships: ships.filter( ( existingFilter ) => existingFilter.value !== filterValue ),
+	} );
+};
 
 /**
  * Clears all the filters.
