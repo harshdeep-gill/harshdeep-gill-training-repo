@@ -1,12 +1,5 @@
 @props( [
-	'filter_data' => [
-		'seasons'           => [],
-		'expeditions'       => [],
-		'adventure_options' => [],
-		'months'            => [],
-		'durations'         => [],
-		'ships'             => [],
-	]
+	'filter_data' => []
 ] )
 
 @php

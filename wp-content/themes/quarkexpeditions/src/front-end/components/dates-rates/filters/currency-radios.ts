@@ -58,6 +58,9 @@ export default class DatesRatesFilterCurrencyRadiosElement extends HTMLElement {
 		this.currencyRadios.forEach( ( radioInput ) => {
 			// Check for proper value.
 			if ( radioInput.value !== currency ) {
+				// Uncheck the input.
+				radioInput.checked = false;
+
 				// Bail.
 				return;
 			}
