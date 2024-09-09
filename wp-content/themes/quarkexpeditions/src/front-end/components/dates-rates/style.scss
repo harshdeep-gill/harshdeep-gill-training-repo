@@ -366,5 +366,22 @@
 	quark-dates-rates-pagination-total-pages {
 		display: contents;
 	}
+
+	.pagination {
+		display: grid;
+		grid-template-columns: 1fr;
+
+		@media screen and (min-width: grid-size( md )) {
+			grid-template-columns: 1fr max-content minmax(350px, 1fr);
+		}
+
+		&__container {
+			justify-content: center;
+
+			@media screen and (min-width: grid-size(md)) {
+				justify-content: end;
+			}
+		}
+	}
 }
 
