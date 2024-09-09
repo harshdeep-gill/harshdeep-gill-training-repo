@@ -6,14 +6,140 @@
 .product-cards {
 	$self: &;
 
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(285px, max-content));
-	gap: var(--spacing-5);
-
 	&--align-center {
 
-		@media screen and (min-width: grid-size(md)) {
-			justify-content: center;
+		#{$self}__slides {
+
+			@media screen and (min-width: grid-size(md)) {
+				left: 0 !important;
+				min-width: 100%;
+				justify-content: center;
+			}
+		}
+	}
+
+	&__slider {
+		overflow-x: visible;
+		margin-inline: var(--grid-col-gutter);
+
+		#{$self}--has-overflow & {
+
+			@media screen and (min-width: grid-size(xl)) {
+				width: 100vw;
+			}
+		}
+
+		&:has(div.thumbnail-cards__nav) {
+			#{$self}__track {
+				margin-bottom: 0;
+			}
+		}
+
+		@media screen and (min-width: 1120px) {
+			margin-inline: 0;
+		}
+
+		&[total="1"] {
+
+			#{$self}__nav {
+				display: none;
+			}
+		}
+
+		&[total="2"] {
+
+			#{$self}__nav {
+
+				@media screen and (min-width: grid-size(md)) {
+					display: none;
+				}
+			}
+		}
+
+		&[total="3"] {
+
+			#{$self}__nav {
+
+				@media screen and (min-width: grid-size(xl)) {
+					display: none;
+				}
+			}
+		}
+	}
+
+	&__track {
+		margin: 0 calc(-1 * var(--grid-col-gutter)) calc(-1 * var(--spacing-6));
+		padding: 0 var(--grid-col-gutter) var(--spacing-6);
+		scrollbar-width: none; /* Firefox */
+
+		&::-webkit-scrollbar {
+			display: none;
+		}
+
+		#{$self}--has-overflow & {
+
+			@media screen and (min-width: grid-size(sm)) {
+				overflow-x: visible;
+			}
+		}
+	}
+
+	&__slides {
+		gap: var(--spacing-6);
+		align-items: stretch;
+	}
+
+	// Carousel layout.
+	&__slide {
+
+		@media screen and (min-width: grid-size(sm)) {
+			flex: 0 0 352px;
+		}
+	}
+
+	// Grid layout.
+	&--grid {
+
+		#{$self}__slides {
+			display: grid;
+			grid-auto-flow: row;
+			grid-template-columns: repeat(auto-fill, minmax(267px, 1fr));
+			max-width: 100%;
+		}
+
+		#{$self}__nav {
+			display: none;
+		}
+	}
+
+	&__nav {
+		display: flex;
+		column-gap: var(--spacing-5);
+		margin-top: var(--spacing-6);
+		margin-left: calc(-1 * var(--spacing-1));
+	}
+
+	&__arrow-button {
+		background-color: var(--color-black);
+		width: 27px;
+		height: 27px;
+		border-radius: 50%;
+		padding: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		cursor: pointer;
+
+		svg {
+			width: 7px;
+			height: 11px;
+		}
+
+		&--right {
+
+			svg {
+				transform: rotate(180deg);
+			}
 		}
 	}
 
@@ -26,13 +152,11 @@
 		gap: var(--spacing-4);
 		overflow: hidden;
 		padding: var(--spacing-5);
+		// max-width: calc(100vw - 2 * var(--grid-col-gutter));
+		height: 100%;
 
 		&:hover img {
 			transform: scale(var(--scale-size));
-		}
-
-		@media screen and (min-width: grid-size(lg)) {
-			max-width: 352px;
 		}
 	}
 

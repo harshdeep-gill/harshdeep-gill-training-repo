@@ -1,5 +1,7 @@
 @props( [
-	'align' => 'left',
+	'align'             => 'left',
+	'layout'            => 'carousel',
+	'carousel_overflow' => false,
 ] )
 
 @php
@@ -11,13 +13,25 @@
 
 	if ( ! empty( $align ) && 'center' === $align ) {
 		$classes[] = 'product-cards--align-center';
-	} else {
-		$classes[] = 'grid--cols-3';
 	}
+
+	if ( true === $carousel_overflow ) {
+		$classes[] = 'product-cards--has-overflow';
+	}
+
+	if ( ! empty( $layout ) ) {
+		$classes[] = sprintf( 'product-cards--%s', $layout );
+	}
+
+	quark_enqueue_style( 'tp-slider' );
+	quark_enqueue_script( 'tp-slider' );
 @endphp
 
-<x-section>
-	<div @class( $classes )>
+<x-section
+	@class( $classes )
+	:full_width="true"
+>
+	<x-product-cards.carousel :layout="$layout">
 		{!! $slot !!}
-	</div>
+	</x-product-cards.carousel>
 </x-section>
