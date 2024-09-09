@@ -48,7 +48,7 @@ export default class DatesRatesFiltersCtaViewResultsElement extends HTMLElement 
 	 */
 	update( state: DatesRatesState ) {
 		// Get the state.
-		const { totalItems } = state;
+		const { resultCount } = state;
 
 		// Get the button text element.
 		const buttonTextElement = this.theButton?.querySelector( '.btn__content-text' );
@@ -60,7 +60,7 @@ export default class DatesRatesFiltersCtaViewResultsElement extends HTMLElement 
 		}
 
 		// Set the text content.
-		buttonTextElement.textContent = buttonTextElement.textContent?.replace( /\([0-9]*\)/, `(${ totalItems.toString() })` ) ?? '';
+		buttonTextElement.textContent = buttonTextElement.textContent?.replace( /\([0-9]*\)/, `(${ resultCount.toString() })` ) ?? '';
 	}
 
 	/**

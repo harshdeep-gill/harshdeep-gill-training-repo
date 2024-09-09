@@ -22,7 +22,7 @@ export const DEFAULT_STATE: DatesRatesState = {
 	page: 1,
 	totalPages: 1,
 	perPage: 10,
-	totalItems: 10,
+	resultCount: 0,
 	isLoading: false,
 	partial: '',
 	selector: '',

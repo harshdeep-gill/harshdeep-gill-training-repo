@@ -46,6 +46,7 @@ export const addSeason = ( filter: DatesRatesFilterState ) => {
 	// Set the state
 	setState( {
 		seasons: [ ...seasons, filter ],
+		page: 1,
 	} );
 
 	// Fetch results.
@@ -64,6 +65,7 @@ export const removeSeason = ( filterValue: string ) => {
 	// Set the state.
 	setState( {
 		seasons: seasons.filter( ( existingFilter ) => existingFilter.value !== filterValue ),
+		page: 1,
 	} );
 
 	// Fetch results.
@@ -88,6 +90,7 @@ export const addExpedition = ( filter: DatesRatesFilterState ) => {
 	// Set the state
 	setState( {
 		expeditions: [ ...expeditions, filter ],
+		page: 1,
 	} );
 
 	// Fetch results.
@@ -106,6 +109,7 @@ export const removeExpedition = ( filterValue: string ) => {
 	// Set the state.
 	setState( {
 		expeditions: expeditions.filter( ( existingFilter ) => existingFilter.value !== filterValue ),
+		page: 1,
 	} );
 
 	// Fetch results.
@@ -130,6 +134,7 @@ export const addAdventureOption = ( filter: DatesRatesFilterState ) => {
 	// Set the state
 	setState( {
 		adventure_options: [ ...adventureOptions, filter ],
+		page: 1,
 	} );
 
 	// Fetch results.
@@ -148,6 +153,7 @@ export const removeAdventureOption = ( filterValue: string ) => {
 	// Set the state.
 	setState( {
 		adventure_options: adventureOptions.filter( ( existingFilter ) => existingFilter.value !== filterValue ),
+		page: 1,
 	} );
 
 	// Fetch results.
@@ -172,6 +178,7 @@ export const addDepartureMonth = ( filter: DatesRatesFilterState ) => {
 	// Set the state
 	setState( {
 		months: [ ...months, filter ],
+		page: 1,
 	} );
 
 	// Fetch results.
@@ -190,6 +197,7 @@ export const removeDepartureMonth = ( filterValue: string ) => {
 	// Set the state.
 	setState( {
 		months: months.filter( ( existingFilter ) => existingFilter.value !== filterValue ),
+		page: 1,
 	} );
 
 	// Fetch results.
@@ -214,6 +222,7 @@ export const addDuration = ( filter: DatesRatesFilterState ) => {
 	// Set the state
 	setState( {
 		durations: [ ...durations, filter ],
+		page: 1,
 	} );
 
 	// Fetch results.
@@ -232,6 +241,7 @@ export const removeDuration = ( filterValue: string ) => {
 	// Set the state.
 	setState( {
 		durations: durations.filter( ( existingFilter ) => existingFilter.value !== filterValue ),
+		page: 1,
 	} );
 
 	// Fetch results.
@@ -256,6 +266,7 @@ export const addShip = ( filter: DatesRatesFilterState ) => {
 	// Set the state
 	setState( {
 		ships: [ ...ships, filter ],
+		page: 1,
 	} );
 
 	// Fetch results.
@@ -274,6 +285,7 @@ export const removeShip = ( filterValue: string ) => {
 	// Set the state.
 	setState( {
 		ships: ships.filter( ( existingFilter ) => existingFilter.value !== filterValue ),
+		page: 1,
 	} );
 
 	// Fetch results.
@@ -514,9 +526,8 @@ const resultsFetchedCallback = ( response: PartialData ) => {
 	setState( {
 		markup: resultCount !== 0 ? markup : '',
 		noResultsMarkup: noResultsMarkup ?? '',
-		totalItems: resultCount,
+		resultCount,
 		totalPages: resultCount !== 0 ? Math.ceil( resultCount / perPage ) : totalPages,
-		isLoading: false,
 		page: resultCount !== 0 ? page : 1,
 		shouldMarkupUpdate: true,
 	} );

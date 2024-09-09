@@ -46,10 +46,10 @@ export default class DatesRatesResultsCountElement extends HTMLElement {
 		}
 
 		// Get the state
-		const { totalItems, perPage } = state;
+		const { resultCount, perPage } = state;
 
 		// Set output.
-		this.totalResultsCountElement.textContent = totalItems.toString();
-		this.resultCountElement.textContent = ( perPage >= totalItems ? totalItems : perPage ).toString();
+		this.totalResultsCountElement.textContent = resultCount.toString();
+		this.resultCountElement.textContent = ( perPage >= resultCount ? resultCount : perPage ).toString();
 	}
 }

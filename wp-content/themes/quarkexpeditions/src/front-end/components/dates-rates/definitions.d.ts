@@ -20,7 +20,7 @@ interface DatesRatesState {
 	page: number,
 	totalPages: number,
 	perPage: number,
-	totalItems: number,
+	resultCount: number,
 	isLoading: boolean,
 	partial: string,
 	selector: '',
