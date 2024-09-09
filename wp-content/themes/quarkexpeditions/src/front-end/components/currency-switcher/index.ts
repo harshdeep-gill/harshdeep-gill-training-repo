@@ -8,7 +8,7 @@ import { TPMultiSelectElement } from '@travelopia/web-components';
 /**
  * Internal dependencies.
  */
-import { getCurrency, initialize, setCurrency } from '../../global/store/actions';
+import { getCurrency, setCurrency } from '../../global/store/actions';
 
 /**
  * CurrencySwitcher Class.
@@ -31,12 +31,7 @@ export class CurrencySwitcher extends HTMLElement {
 
 		// Events.
 		this.currencyDropdown?.addEventListener( 'change', this.updateCurrencyState.bind( this ) );
-	}
 
-	/**
-	 * Connected Callback.
-	 */
-	connectedCallback() {
 		// Initialize.
 		this.initialize();
 	}
@@ -45,9 +40,6 @@ export class CurrencySwitcher extends HTMLElement {
 	 * Initialize component.
 	 */
 	initialize() {
-		// Initialize data for the component.
-		initialize( {} );
-
 		// If currency dropdown is not available.
 		if ( ! this.currencyDropdown ) {
 			// Bail out.
