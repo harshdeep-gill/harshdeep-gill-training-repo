@@ -23,6 +23,7 @@ use function Quark\Search\Departures\get_itinerary_length_search_filter_data;
 use function Quark\Search\Departures\get_language_search_filter_data;
 use function Quark\Search\Departures\get_travelers_search_filter_data;
 use function Quark\Search\Departures\reindex_departures;
+use function Quark\Search\public_rest_api_routes;
 
 use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
 use const Quark\CabinCategories\CABIN_CLASS_TAXONOMY;
@@ -35,6 +36,7 @@ use const Quark\Expeditions\POST_TYPE as EXPEDITION_POST_TYPE;
 use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
 use const Quark\Search\Departures\REINDEX_POST_IDS_OPTION_KEY;
 use const Quark\Search\Departures\SCHEDULE_REINDEX_HOOK;
+use const Quark\Search\REST_API_NAMESPACE;
 
 /**
  * Class Test_Search.
@@ -51,6 +53,9 @@ class Test_Search extends WP_UnitTestCase {
 	public function test_bootstrap(): void {
 		// Test if filters are registered.
 		$this->assertEquals( 10, has_filter( 'solr_scheme', 'Quark\Search\solr_scheme' ) );
+
+		// Test if REST API is registered.
+		$this->assertEquals( 10, has_action( 'rest_api_init', 'Quark\Search\register_rest_endpoints' ) );
 	}
 
 	/**
@@ -1201,6 +1206,22 @@ class Test_Search extends WP_UnitTestCase {
 			'AAAA'  => 'Quad Room',
 		];
 		$actual   = get_travelers_search_filter_data();
+		$this->assertEquals( $expected, $actual );
+	}
+
+	/**
+	 * Test if correct REST API routes are public.
+	 *
+	 * @covers \Quark\Search\public_rest_api_routes()
+	 *
+	 * @return void
+	 */
+	public function test_public_rest_api_routes(): void {
+		// Test.
+		$expected = [
+			'/' . REST_API_NAMESPACE . '/filter-options/by-destination-and-month',
+		];
+		$actual   = public_rest_api_routes();
 		$this->assertEquals( $expected, $actual );
 	}
 }
