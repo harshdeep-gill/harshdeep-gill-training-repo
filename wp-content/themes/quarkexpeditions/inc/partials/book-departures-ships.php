@@ -11,8 +11,6 @@ use function Quark\Search\Departures\search;
 use function Quark\Departures\get_cards_data;
 use function Quark\Localization\get_current_currency;
 
-use const Quark\Core\USD_CURRENCY;
-
 const PARTIAL_NAME = 'book-departures-ships';
 
 /**
@@ -40,10 +38,12 @@ function render( array $output = [], string $name = '', array $data = [] ): arra
 		return $output;
 	}
 
+	// Get currency.
+	$currency = get_current_currency();
+
 	// Init selected filters.
 	$selected_filter = [
 		'posts_per_load' => 4,
-		'currency'       => USD_CURRENCY,
 		'expeditions'    => [],
 	];
 
@@ -57,9 +57,6 @@ function render( array $output = [], string $name = '', array $data = [] ): arra
 
 	// Search for Departure post.
 	$search_results = search( $selected_filter );
-
-	// Get currency.
-	$currency = $selected_filter['currency'] ? strval( $selected_filter['currency'] ) : get_current_currency();
 
 	// Build component attributes.
 	$attributes = [
