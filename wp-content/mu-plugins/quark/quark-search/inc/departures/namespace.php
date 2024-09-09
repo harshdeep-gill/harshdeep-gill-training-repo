@@ -1310,8 +1310,6 @@ function get_destination_and_month_search_filter_data( int $destination_term_id 
 				continue;
 			}
 
-			// Prepare months if destination term id is not empty.
-			if ( ! empty( $destination_term_id ) ) {
 				// Get start date.
 				$start_date = $departure['post_meta']['start_date'];
 
@@ -1320,13 +1318,10 @@ function get_destination_and_month_search_filter_data( int $destination_term_id 
 				$month_value = gmdate( 'F Y', strtotime( $start_date ) );
 
 				// Check if month is already set.
-				if ( empty( $months[ $month_key ] ) ) {
-					$months[ $month_key ] = $month_value;
-				}
+			if ( empty( $months[ $month_key ] ) ) {
+				$months[ $month_key ] = $month_value;
 			}
 
-			// Prepare destinations if month is not empty.
-			if ( ! empty( $month ) ) {
 				// Expedition post id.
 				$expedition_id = absint( $departure['post_meta']['related_expedition'] );
 
@@ -1334,51 +1329,50 @@ function get_destination_and_month_search_filter_data( int $destination_term_id 
 				$expedition = get_expedition_post( $expedition_id );
 
 				// Validate expedition.
-				if ( ! $expedition['post'] instanceof WP_Post || empty( $expedition['post_taxonomies'] ) || empty( $expedition['post_taxonomies'][ DESTINATION_TAXONOMY ] ) || ! is_array( $expedition['post_taxonomies'][ DESTINATION_TAXONOMY ] ) ) {
+			if ( ! $expedition['post'] instanceof WP_Post || empty( $expedition['post_taxonomies'] ) || empty( $expedition['post_taxonomies'][ DESTINATION_TAXONOMY ] ) || ! is_array( $expedition['post_taxonomies'][ DESTINATION_TAXONOMY ] ) ) {
+				continue;
+			}
+
+				// Loop through each destination.
+			foreach ( $expedition['post_taxonomies'][ DESTINATION_TAXONOMY ] as $destination ) {
+				// Validate destination.
+				if ( ! is_array( $destination ) || empty( $destination['term_id'] ) || empty( $destination['name'] ) ) {
 					continue;
 				}
 
-				// Loop through each destination.
-				foreach ( $expedition['post_taxonomies'][ DESTINATION_TAXONOMY ] as $destination ) {
-					// Validate destination.
-					if ( ! is_array( $destination ) || empty( $destination['term_id'] ) || empty( $destination['name'] ) ) {
+				// Is it a parent term.
+				if ( empty( $destination['parent'] ) ) {
+					if ( empty( $destinations[ $destination['term_id'] ] ) ) {
+						$destinations[ $destination['term_id'] ] = [
+							'id'       => $destination['term_id'],
+							'label'    => $destination['name'],
+							'value'    => $destination['term_id'],
+							'children' => [],
+						];
+					}
+				} else {
+					// Validate parent.
+					if ( empty( $destinations[ $destination['parent'] ] ) ) {
 						continue;
 					}
 
-					// Is it a parent term.
-					if ( empty( $destination['parent'] ) ) {
-						if ( empty( $destinations[ $destination['term_id'] ] ) ) {
-							$destinations[ $destination['term_id'] ] = [
-								'id'       => $destination['term_id'],
-								'label'    => $destination['name'],
-								'value'    => $destination['term_id'],
-								'children' => [],
-							];
-						}
-					} else {
-						// Validate parent.
-						if ( empty( $destinations[ $destination['parent'] ] ) ) {
-							continue;
-						}
-
-						// Initialize children if empty.
-						if ( empty( $destinations[ $destination['parent'] ]['children'] ) ) {
-							$destinations[ $destination['parent'] ]['children'] = [];
-						}
-
-						// Check if already exists.
-						if ( ! empty( $destinations[ $destination['parent'] ]['children'][ $destination['term_id'] ] ) ) {
-							continue;
-						}
-
-						// Add to children.
-						$destinations[ $destination['parent'] ]['children'][ $destination['term_id'] ] = [
-							'id'        => $destination['term_id'],
-							'label'     => $destination['name'],
-							'value'     => $destination['term_id'],
-							'parent_id' => $destination['parent'],
-						];
+					// Initialize children if empty.
+					if ( empty( $destinations[ $destination['parent'] ]['children'] ) ) {
+						$destinations[ $destination['parent'] ]['children'] = [];
 					}
+
+					// Check if already exists.
+					if ( ! empty( $destinations[ $destination['parent'] ]['children'][ $destination['term_id'] ] ) ) {
+						continue;
+					}
+
+					// Add to children.
+					$destinations[ $destination['parent'] ]['children'][ $destination['term_id'] ] = [
+						'id'        => $destination['term_id'],
+						'label'     => $destination['name'],
+						'value'     => $destination['term_id'],
+						'parent_id' => $destination['parent'],
+					];
 				}
 			}
 		}
