@@ -3,8 +3,11 @@
  */
 const { customElements, HTMLElement } = window;
 
-// TODO: Add comment.
+/**
+ * External dependencies.
+ */
 import { TPMultiSelectElement } from '@travelopia/web-components';
+
 /**
  * Internal dependencies.
  */
