@@ -24,7 +24,6 @@ export const initialize = ( settings: {
 	// Get current state.
 	const currentState: BookDeparturesExpeditionsState = getState();
 	const selectedFilters: BookDeparturesExpeditionsFilters = {
-		currency: 'USD',
 		sort: 'date-now',
 	};
 
@@ -33,7 +32,7 @@ export const initialize = ( settings: {
 		...currentState,
 		...settings,
 		selectedFilters,
-		intialized: true,
+		initialized: true,
 		updateMarkup: true,
 	} );
 
@@ -68,33 +67,6 @@ const stateInitialized = ( response: PartialData ) => {
 		hasNextPage: nextPage && nextPage > page,
 		nextPage,
 	} );
-};
-
-/**
- * Update currency filter value.
- *
- * @param {string} currency Selected Currency.
- */
-export const updateCurrency = ( currency: string ) => {
-	// Get State.
-	const { selectedFilters } = getState();
-	const updatedFilters = { ...selectedFilters };
-
-	// If currency exists, update the value.
-	if ( currency ) {
-		updatedFilters.currency = currency;
-	}
-
-	// Set state.
-	setState( {
-		loading: true,
-		selectedFilters: updatedFilters,
-		page: 1,
-		updateMarkup: true,
-	} );
-
-	// Fetch Results.
-	fetchResults( filterUpdated );
 };
 
 /**
