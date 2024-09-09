@@ -33,6 +33,7 @@ use const Quark\Departures\SPOKEN_LANGUAGE_TAXONOMY;
 use const Quark\Expeditions\DESTINATION_TAXONOMY;
 use const Quark\Expeditions\POST_TYPE as EXPEDITION_POST_TYPE;
 use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
+use const Quark\Localization\CURRENCY_COOKIE;
 use const Quark\Search\Departures\REINDEX_POST_IDS_OPTION_KEY;
 use const Quark\Search\Departures\SCHEDULE_REINDEX_HOOK;
 
@@ -123,7 +124,7 @@ class Test_Search extends WP_UnitTestCase {
 		);
 
 		// Add invalid currency.
-		$query_vars['currency'] = 'invalid';
+		$_COOKIE[CURRENCY_COOKIE] = 'INVALID';
 
 		// Redirect to custom URL.
 		$this->go_to( add_query_arg( $query_vars, home_url() ) );
@@ -158,8 +159,8 @@ class Test_Search extends WP_UnitTestCase {
 			$filters
 		);
 
-		// Test for other currency.
-		$query_vars['currency'] = EUR_CURRENCY;
+		// Set new currency cookie.
+		$_COOKIE[CURRENCY_COOKIE] = 'EUR';
 
 		// Redirect to custom URL.
 		$this->go_to( add_query_arg( $query_vars, home_url() ) );
