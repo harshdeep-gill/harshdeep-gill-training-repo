@@ -11,7 +11,8 @@ import { TPMultiSelectElement } from '@travelopia/web-components';
 /**
  * Internal dependencies.
  */
-import { updateCurrency, updateSort } from '../actions';
+import { updateSort } from '../actions';
+import { setCurrency } from '../../../global/store/actions';
 
 /**
  * Get Store.
@@ -80,7 +81,7 @@ export class BookDeparturesExpeditionsFilters extends HTMLElement {
 		const currency: string = this.currencyDropdown?.value[ 0 ] ?? 'USD';
 
 		// Update currency.
-		updateCurrency( currency );
+		setCurrency( currency );
 	}
 
 	/**
