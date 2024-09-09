@@ -39,13 +39,6 @@
 			margin-inline: 0;
 		}
 
-		&[total="1"] {
-
-			#{$self}__nav {
-				display: none;
-			}
-		}
-
 		&[total="2"] {
 
 			#{$self}__nav {
