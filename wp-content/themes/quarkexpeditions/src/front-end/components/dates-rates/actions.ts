@@ -188,3 +188,21 @@ export const setNextPage = () => {
 		page: page + 1,
 	} );
 };
+
+/**
+ * Sets the totalPages state.
+ *
+ * @param {number} updatedValue
+ */
+export const setTotalPages = ( updatedValue: number ) => {
+	// Is this a valid updated totalPages?
+	if ( Number.isNaN( updatedValue ) || updatedValue < 1 ) {
+		// No, reject the update.
+		return;
+	}
+
+	// Set the state
+	setState( {
+		totalPages: updatedValue,
+	} );
+};

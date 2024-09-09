@@ -6479,7 +6479,7 @@
 					<x-dates-rates.item.info text="Prices are shown per person" />
 				</x-dates-rates.item>
 			</x-dates-rates.results>
-			<x-dates-rates.pagination :current_page="3" :total_pages="5" />
+			<x-dates-rates.pagination :current_page="1" :total_pages="10" />
 		</x-dates-rates>
 	</x-section>
 </x-component-demo>

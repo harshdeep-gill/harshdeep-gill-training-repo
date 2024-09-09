@@ -4,9 +4,15 @@
 ] )
 
 @php
-	if ( $current_page < 1 || $current_page > $total_pages ) {
+	if (
+		empty( $current_page ) ||
+		empty( $total_pages ) ||
+		$current_page < 1 ||
+		$current_page > $total_pages
+	) {
 		return;
 	}
+
 @endphp
 
 <x-pagination>
