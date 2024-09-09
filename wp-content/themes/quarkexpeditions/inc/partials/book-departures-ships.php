@@ -11,6 +11,7 @@ use const Quark\Core\USD_CURRENCY;
 
 use function Quark\Search\Departures\search;
 use function Quark\Departures\get_cards_data;
+use function Quark\Localization\get_current_currency;
 
 const PARTIAL_NAME = 'book-departures-ships';
 
@@ -58,7 +59,7 @@ function render( array $output = [], string $name = '', array $data = [] ): arra
 	$search_results = search( $selected_filter );
 
 	// Get currency.
-	$currency = $selected_filter['currency'] ? strval( $selected_filter['currency'] ) : USD_CURRENCY;
+	$currency = $selected_filter['currency'] ? strval( $selected_filter['currency'] ) : get_current_currency();
 
 	// Build component attributes.
 	$attributes = [
