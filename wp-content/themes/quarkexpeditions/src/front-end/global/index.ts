@@ -24,6 +24,12 @@ import './fetch-partial';
 import './zustand';
 
 /**
+ * Global Store.
+ */
+import './store';
+import { initialize } from './store/actions';
+
+/**
  * TypeScript Stuff.
  */
 declare global {
@@ -33,3 +39,8 @@ declare global {
 		};
 	}
 }
+
+/**
+ * Initialize global store.
+ */
+initialize( {} );
