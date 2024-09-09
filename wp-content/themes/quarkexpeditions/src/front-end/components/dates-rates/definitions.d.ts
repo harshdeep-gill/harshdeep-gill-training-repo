@@ -21,4 +21,5 @@ interface DatesRatesState {
 	totalPages: number,
 	perPage: number,
 	totalItems: number,
+	isLoading: boolean,
 }

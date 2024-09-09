@@ -23,6 +23,7 @@ export const DEFAULT_STATE: DatesRatesState = {
 	totalPages: 1,
 	perPage: 10,
 	totalItems: 10,
+	isLoading: false,
 };
 
 /**

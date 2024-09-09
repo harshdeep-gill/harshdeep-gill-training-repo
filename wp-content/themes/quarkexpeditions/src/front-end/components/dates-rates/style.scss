@@ -7,7 +7,7 @@
 .dates-rates {
 	$self: &;
 
-	&[loading="true"] {
+	&[loading="yes"] {
 
 		#{$self}__results {
 			display: none;
@@ -26,7 +26,7 @@
 			display: none;
 		}
 
-		#{$self}[loading="true"] & {
+		#{$self}[loading="yes"] & {
 			display: none;
 
 			&--loading {

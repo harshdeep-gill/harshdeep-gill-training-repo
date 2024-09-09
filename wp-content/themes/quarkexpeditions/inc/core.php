@@ -444,6 +444,10 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'class'       => true,
 					'total-count' => true,
 				],
+				'quark-dates-rates'                             => [
+					'class'   => true,
+					'loading' => true,
+				],
 				'tp-form'                                       => [
 					'class'          => true,
 					'prevent-submit' => true,
