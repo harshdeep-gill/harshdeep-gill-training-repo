@@ -42,6 +42,7 @@ interface DatesRatesFiltersSaved {
 	months: string[],
 	durations: string[],
 	ships: string[],
+	perPage: number,
 }
 
 /**

@@ -34,10 +34,11 @@ export const DEFAULT_STATE: DatesRatesState = {
 	allowedParams: [
 		'seasons',
 		'expeditions',
-		'adventure_options',
+		'adventureOptions',
 		'months',
 		'durations',
 		'ships',
+		'perPage',
 	],
 };
 

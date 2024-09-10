@@ -427,6 +427,9 @@ export const setPage = ( updatedPage: number ) => {
 	// Set the state.
 	setState( updateObject );
 
+	// Update URL.
+	updateUrlByFilters();
+
 	// Fetch results.
 	fetchResults();
 };
@@ -451,6 +454,9 @@ export const setPreviousPage = () => {
 
 	// Set the state.
 	setState( updateObject );
+
+	// Update URL.
+	updateUrlByFilters();
 
 	// Fetch results.
 	fetchResults();
@@ -477,6 +483,9 @@ export const setNextPage = () => {
 	// Set the state.
 	setState( updateObject );
 
+	// Update URL.
+	updateUrlByFilters();
+
 	// Fetch results.
 	fetchResults();
 };
@@ -501,6 +510,9 @@ export const setPerPage = ( updatedValue: number ) => {
 
 	// Set the state.
 	setState( updateObject );
+
+	// Update URL.
+	updateUrlByFilters();
 
 	// Fetch results.
 	fetchResults();
@@ -654,6 +666,12 @@ export const initialize = (
 				return { value: ship, label: filterInput?.getAttribute( 'data-label' ) ?? '' };
 			} ).filter( ( ship ) => ship.label !== '' );
 		}
+
+		// Other filters.
+		if ( ! settings.serverRenderData ) {
+			// Set the page related filters.
+			updateObject.perPage = savedFilters.perPage;
+		}
 	}
 
 	// Set the state.
@@ -793,6 +811,7 @@ const updateUrlByFilters = () => {
 		months,
 		durations,
 		ships,
+		perPage,
 	}: DatesRatesState = getState();
 
 	// Build url from filters.
@@ -803,6 +822,7 @@ const updateUrlByFilters = () => {
 		months: pluckValues( months ),
 		durations: pluckValues( durations ),
 		ships: pluckValues( ships ),
+		perPage,
 	} );
 
 	// Update the url with selected/added filters.
@@ -814,14 +834,15 @@ const updateUrlByFilters = () => {
 /**
  * Builds the URL from the selected filters.
  *
- * @param {Object}              filters                  The selected filters.
+ * @param {Object}   filters                  The selected filters.
  *
- * @param {string[] | number[]} filters.seasons          seasons.
- * @param {string[] | number[]} filters.expeditions      expeditions.
- * @param {string[] | number[]} filters.adventureOptions adventure options.
- * @param {string[] | number[]} filters.months           departure months.
- * @param {string[] | number[]} filters.durations        departure durations.
- * @param {string[] | number[]} filters.ships            ships.
+ * @param {string[]} filters.seasons          seasons.
+ * @param {string[]} filters.expeditions      expeditions.
+ * @param {string[]} filters.adventureOptions adventure options.
+ * @param {string[]} filters.months           departure months.
+ * @param {string[]} filters.durations        departure durations.
+ * @param {string[]} filters.ships            ships.
+ * @param {number}   filters.perPage          items per page.
  *
  * @return {string} The URL with params.
  */
@@ -850,11 +871,11 @@ const buildUrlFromFilters = ( filters: DatesRatesFiltersSaved ): string => {
 		const snakeCasedKey: string = camelToSnakeCase( key );
 
 		// @ts-ignore Stringified filters.
-		const stringifiedFilters = filters[ key ].toString();
+		const stringifiedFilter = filters[ key ].toString();
 
 		// Set the url params value based on key.
-		if ( stringifiedFilters ) {
-			urlParams[ snakeCasedKey ] = stringifiedFilters;
+		if ( stringifiedFilter ) {
+			urlParams[ snakeCasedKey ] = stringifiedFilter;
 		} else {
 			delete urlParams[ snakeCasedKey ];
 		}
@@ -918,6 +939,7 @@ const parseUrl = (): DatesRatesFiltersSaved | null => {
 		months: [],
 		durations: [],
 		ships: [],
+		perPage: 4,
 	};
 
 	// Get allowed params.
@@ -939,7 +961,7 @@ const parseUrl = (): DatesRatesFiltersSaved | null => {
 			case 'expeditions':
 				savedFilters.expeditions = parsedState.expeditions.split( ',' );
 				break;
-			case 'adventure_options':
+			case 'adventureOptions':
 				savedFilters.adventureOptions = parsedState.adventureOptions.split( ',' );
 				break;
 			case 'months':
@@ -950,6 +972,9 @@ const parseUrl = (): DatesRatesFiltersSaved | null => {
 				break;
 			case 'ships':
 				savedFilters.ships = parsedState.ships.split( ',' );
+				break;
+			case 'perPage':
+				savedFilters.perPage = parsedState.perPage;
 				break;
 		}
 	} );
