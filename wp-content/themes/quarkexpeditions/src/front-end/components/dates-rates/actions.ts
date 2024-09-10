@@ -15,7 +15,7 @@ const { setState, getState } = zustand.stores.datesRates;
 /**
  * External dependencies
  */
-import { camelToSnakeCase } from '../../global/utility';
+import { camelToSnakeCase, convertPropertiesFromSnakeCaseToCamelCase } from '../../global/utility';
 
 /**
  * Update currency filter value.
@@ -349,7 +349,7 @@ export const clearAllFilters = () => {
 		months: [],
 		durations: [],
 		ships: [],
-		perPage: 10,
+		perPage: 4,
 		page: 1,
 	} );
 
@@ -493,7 +493,7 @@ export const initialize = (
 	}
 
 	// Initialize updateObject.
-	const updateObject: { [key: string]: any } = {
+	const updateObject: DatesRatesStateUpdateObject = {
 		partial: settings.partial,
 		selector: settings.selector,
 		isInitialized: true,
@@ -506,6 +506,98 @@ export const initialize = (
 		updateObject.totalPages = settings.serverRenderData.totalPages;
 		updateObject.resultCount = settings.serverRenderData.resultCount;
 		updateObject.perPage = settings.serverRenderData.perPage;
+	}
+
+	// Get the saved state.
+	const savedFilters = parseUrl();
+
+	// Null check.
+	if ( savedFilters ) {
+		// Input containers for filters.
+		const seasonsInputContainer = document.getElementById( 'filters-accordion-seasons' );
+		const expeditionsInputContainer = document.getElementById( 'filters-accordion-expeditions' );
+		const adventureOptionsInputContainer = document.getElementById( 'filters-accordion-adventure-options' );
+		const monthsInputContainer = document.getElementById( 'filters-accordion-months' );
+		const durationsInputContainer = document.getElementById( 'filters-accordion-durations' );
+		const shipsInputContainer = document.getElementById( 'filters-accordion-ships' );
+
+		/**
+		 * Our filters are stored as individual lists of @type {DatesRatesFilterState} objects.
+		 * We will update the `value` and `label` field based on the values from the `input` elements related to the filter.
+		 *
+		 * We need to do this because we need the label for each filter value to show in the selected filters. However,
+		 * saving the labels in the URL is not a good idea.
+		 */
+		if ( seasonsInputContainer ) {
+			// Map and filter the valid filters.
+			updateObject.seasons = savedFilters.seasons.map( ( season ): DatesRatesFilterState => {
+				// Get the input element.
+				const filterInput = seasonsInputContainer.querySelector( `input[value="${ season }"]` );
+
+				// Return the filter.
+				return { value: season, label: filterInput?.getAttribute( 'data-label' ) ?? '' };
+			} ).filter( ( season ) => season.label !== '' );
+		}
+
+		// Set up expeditions
+		if ( expeditionsInputContainer ) {
+			// Map and filter the valid filters.
+			updateObject.expeditions = savedFilters.expeditions.map( ( expedition ): DatesRatesFilterState => {
+				// Get the input element.
+				const filterInput = expeditionsInputContainer.querySelector( `input[value="${ expedition }"]` );
+
+				// Return the filter.
+				return { value: expedition, label: filterInput?.getAttribute( 'data-label' ) ?? '' };
+			} ).filter( ( expedition ) => expedition.label !== '' );
+		}
+
+		// Set up adventure Options
+		if ( adventureOptionsInputContainer ) {
+			// Map and filter valid filters.
+			updateObject.adventureOptions = savedFilters.adventureOptions.map( ( adventureOption ): DatesRatesFilterState => {
+				// Get the input element.
+				const filterInput = adventureOptionsInputContainer.querySelector( `input[value="${ adventureOption }"]` );
+
+				// Return the filter.
+				return { value: adventureOption, label: filterInput?.getAttribute( 'data-label' ) ?? '' };
+			} ).filter( ( adventureOption ) => adventureOption.label !== '' );
+		}
+
+		// Set up months
+		if ( monthsInputContainer ) {
+			// Map and filter valid filters.
+			updateObject.months = savedFilters.months.map( ( month ): DatesRatesFilterState => {
+				// Get the input element.
+				const filterInput = monthsInputContainer.querySelector( `input[value="${ month }"]` );
+
+				// Return the filter.
+				return { value: month, label: filterInput?.getAttribute( 'data-label' ) ?? '' };
+			} ).filter( ( month ) => month.label !== '' );
+		}
+
+		// Set up durations
+		if ( durationsInputContainer ) {
+			// Map and filter valid filters.
+			updateObject.durations = savedFilters.durations.map( ( duration ): DatesRatesFilterState => {
+				// Get the input element.
+				const filterInput = durationsInputContainer.querySelector( `input[value="${ duration }"]` );
+
+				// Return the filter.
+				return { value: duration, label: filterInput?.getAttribute( 'data-label' ) ?? '' };
+			} ).filter( ( duration ) => duration.label !== '' );
+		}
+
+		// Set up ships
+		if ( shipsInputContainer ) {
+			// Map and filter valid filters.
+			updateObject.ships = savedFilters.ships.map( ( ship ): DatesRatesFilterState => {
+				// Get the input element.
+				const filterInput = shipsInputContainer.querySelector( `input[value="${ ship }"]` );
+
+				// Return the filter.
+				return { value: ship, label: filterInput?.getAttribute( 'data-label' ) ?? '' };
+			} ).filter( ( ship ) => ship.label !== '' );
+		}
 	}
 
 	// Set the state.
@@ -577,7 +669,7 @@ const fetchResults = () => {
  *
  * @return {string[]|number[]} The array of values.
  */
-const pluckValues = ( list: DatesRatesFilterState[] ): string[] | number[] => list.map( ( filter ) => filter.value );
+const pluckValues = ( list: DatesRatesFilterState[] ): string[] => list.map( ( filter ) => filter.value );
 
 /**
  * Callback to run after partial has been fetched.
@@ -662,16 +754,7 @@ const updateUrlByFilters = () => {
  *
  * @return {string} The URL with params.
  */
-const buildUrlFromFilters = (
-	filters: {
-		seasons: string[] | number[],
-		expeditions: string[] | number[],
-		adventureOptions: string[] | number[],
-		months: string[] | number[],
-		durations: string[] | number[],
-		ships: string[] | number[],
-	}
-): string => {
+const buildUrlFromFilters = ( filters: DatesRatesFiltersSaved ): string => {
 	// If queryString not available, early return.
 	if ( ! queryString ) {
 		// Return early.
@@ -737,4 +820,69 @@ const updateUrl = ( url: string ) => {
 	} else {
 		window.location.href = url;
 	}
+};
+
+/**
+ * Parse hash query string for user state.
+ *
+ * @return {Object} Return selected filters state passed from query string.
+ */
+const parseUrl = (): DatesRatesFiltersSaved | null => {
+	// If search url or query string not available, return.
+	if ( ! window.location.search || ! queryString ) {
+		// Early return.
+		return null;
+	}
+
+	// Get parsed state.
+	const parsedState: {
+		[ key: string ]: any
+	} = convertPropertiesFromSnakeCaseToCamelCase( queryString.parse( window.location.search ) );
+
+	// Initialize the saved filters object.
+	const savedFilters: DatesRatesFiltersSaved = {
+		seasons: [],
+		expeditions: [],
+		adventureOptions: [],
+		months: [],
+		durations: [],
+		ships: [],
+	};
+
+	// Get allowed params.
+	const { allowedParams }: DatesRatesState = getState();
+
+	// Loop through parsed state to build the selected filters from url.
+	Object.keys( parsedState ).forEach( ( key: string ) => {
+		// Check if the key is amongst the allowed params.
+		if ( ! allowedParams.includes( key ) ) {
+			// Early return.
+			return;
+		}
+
+		// Add filters.
+		switch ( key ) {
+			case 'seasons':
+				savedFilters.seasons = parsedState.seasons.split( ',' );
+				break;
+			case 'expeditions':
+				savedFilters.expeditions = parsedState.expeditions.split( ',' );
+				break;
+			case 'adventure_options':
+				savedFilters.adventureOptions = parsedState.adventureOptions.split( ',' );
+				break;
+			case 'months':
+				savedFilters.months = parsedState.months.split( ',' );
+				break;
+			case 'durations':
+				savedFilters.durations = parsedState.durations.split( ',' );
+				break;
+			case 'ships':
+				savedFilters.ships = parsedState.ships.split( ',' );
+				break;
+		}
+	} );
+
+	// Return selected filters state.
+	return savedFilters;
 };

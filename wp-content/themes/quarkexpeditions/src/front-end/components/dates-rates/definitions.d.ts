@@ -29,4 +29,22 @@ interface DatesRatesState {
 	markup: string,
 	noResultsMarkup: string,
 	baseUrl: string
+	allowedParams: string[],
 }
+
+/**
+ * Interface DatesRatesFiltersSaved
+ */
+interface DatesRatesFiltersSaved {
+	seasons: string[],
+	expeditions: string[],
+	adventureOptions: string[],
+	months: string[],
+	durations: string[],
+	ships: string[],
+}
+
+/**
+ * Interface StateUpdateObject
+ */
+interface DatesRatesStateUpdateObject extends Partial<DatesRatesState> {}
