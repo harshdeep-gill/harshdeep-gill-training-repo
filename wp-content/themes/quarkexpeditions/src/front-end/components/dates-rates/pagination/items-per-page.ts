@@ -7,12 +7,16 @@ const { HTMLElement, zustand } = window;
  * External Dependencies
  */
 import { TPMultiSelectElement } from '@travelopia/web-components';
+
+/**
+ * Internal Dependencies.
+ */
 import { setPerPage } from '../actions';
 
 /**
  * Store
  */
-const { subscribe } = zustand.stores.datesRates;
+const { subscribe, getState } = zustand.stores.datesRates;
 
 /**
  * Items per page class.
@@ -46,6 +50,9 @@ export default class DatesRatesPaginationItemsPerPageElement extends HTMLElement
 
 		// Subscribe to the store.
 		subscribe( this.update.bind( this ) );
+
+		// Initial sync.
+		this.update( getState() );
 	}
 
 	/**

@@ -11,7 +11,7 @@ import { setNextPage } from '../actions';
 /**
  * Store
  */
-const { subscribe } = zustand.stores.datesRates;
+const { subscribe, getState } = zustand.stores.datesRates;
 
 /**
  * Next Page class.
@@ -45,6 +45,9 @@ export default class DatesRatesPaginationNextPageElement extends HTMLElement {
 
 		// Subscribe to the store.
 		subscribe( this.update.bind( this ) );
+
+		// Initial sync.
+		this.update( getState() );
 	}
 
 	/**

@@ -11,7 +11,7 @@ import { setPreviousPage } from '../actions';
 /**
  * Store
  */
-const { subscribe } = zustand.stores.datesRates;
+const { subscribe, getState } = zustand.stores.datesRates;
 
 /**
  * Previous Page class.
@@ -45,6 +45,9 @@ export default class DatesRatesPaginationPrevPageElement extends HTMLElement {
 
 		// Subscribe to the store.
 		subscribe( this.update.bind( this ) );
+
+		// Initial sync
+		this.update( getState() );
 	}
 
 	/**

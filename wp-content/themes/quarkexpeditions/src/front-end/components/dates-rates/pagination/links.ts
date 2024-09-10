@@ -12,7 +12,7 @@ import DatesRatesPaginationPrevPageElement from './prev';
 /**
  * Store
  */
-const { subscribe } = zustand.stores.datesRates;
+const { subscribe, getState } = zustand.stores.datesRates;
 
 /**
  * Links controller class.
@@ -41,6 +41,9 @@ export default class DatesRatesPaginationLinksControllerElement extends HTMLElem
 
 		// Subscribe to the store.
 		subscribe( this.update.bind( this ) );
+
+		// Initial sync.
+		this.update( getState() );
 	}
 
 	/**

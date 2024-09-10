@@ -405,14 +405,25 @@ export const setPerPage = ( updatedValue: number ) => {
 /**
  * Initializes the settings to be used for fetching the results.
  *
- * @param {Object} settings          The settings.
- * @param {string} settings.partial  The name of the partial.
- * @param {string} settings.selector The DOM selector of the container of the results.
+ * @param {Object} settings                              The settings.
+ * @param {string} settings.partial                      The name of the partial.
+ * @param {string} settings.selector                     The DOM selector of the container of the results.
+ * @param {Object} settings.serverRenderData             The data passed during server render if done.
+ * @param {number} settings.serverRenderData.page        The current page that was rendered on the server.
+ * @param {number} settings.serverRenderData.totalPages  The total number of pages.
+ * @param {number} settings.serverRenderData.resultCount The total number of results.
+ * @param {number} settings.serverRenderData.perPage     The number of results per page.
  */
 export const initializeFetchPartialSettings = (
 	settings: {
 		partial: string,
 		selector: string,
+		serverRenderData?: {
+			page: number,
+			totalPages: number,
+			resultCount: number,
+			perPage: number,
+		}
 	}
 ) => {
 	// Get the state.
@@ -433,15 +444,28 @@ export const initializeFetchPartialSettings = (
 		return;
 	}
 
-	// Set the state.
-	setState( {
+	// Initialize updateObject.
+	const updateObject: { [key: string]: any } = {
 		partial: settings.partial,
 		selector: settings.selector,
 		isInitialized: true,
-	} );
+	};
+
+	// Check if we have server render data.
+	if ( settings.serverRenderData ) {
+		updateObject.page = settings.serverRenderData.page;
+		updateObject.totalPages = settings.serverRenderData.totalPages;
+		updateObject.resultCount = settings.serverRenderData.resultCount;
+		updateObject.perPage = settings.serverRenderData.perPage;
+	}
+
+	// Set the state.
+	setState( updateObject );
 
 	// Fetch the results.
-	fetchResults();
+	if ( ! settings.serverRenderData ) {
+		fetchResults();
+	}
 };
 
 /**

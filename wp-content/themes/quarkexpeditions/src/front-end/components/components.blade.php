@@ -6118,8 +6118,8 @@
 
 <x-component-demo :keys="[ 'dates-rates' ]">
 	@php
-		 // TODO: This will be removed after the development of this component is complete and will be handled by the block.
-		$filter_data = [
+		// TODO: This will be removed after the development of this component is complete and will be handled by the block.
+		$dates_rates_filter_data = [
 			'seasons'            => Quark\Search\Departures\get_region_and_season_search_filter_data(),
 			'expeditions'        => Quark\Search\Departures\get_expedition_search_filter_data(),
 			'adventure_options'  => Quark\Search\Departures\get_adventure_options_search_filter_data(),
@@ -6129,7 +6129,7 @@
 		];
 	@endphp
 	<x-section>
-		<x-parts.dates-rates :filter_data="$filter_data" />
+		<x-parts.dates-rates :filter_data="$dates_rates_filter_data" />
 	</x-section>
 </x-component-demo>
 

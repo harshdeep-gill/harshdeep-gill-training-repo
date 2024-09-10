@@ -361,11 +361,16 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'video-id' => true,
 				],
 				'quark-dates-rates-results'                     => [
-					'class'         => true,
-					'data-*'        => true,
-					'partial'       => true,
-					'selector'      => true,
-					'expedition-id' => true,
+					'class'           => true,
+					'data-*'          => true,
+					'partial'         => true,
+					'selector'        => true,
+					'expedition-id'   => true,
+					'page'            => true,
+					'total-pages'     => true,
+					'per-page'        => true,
+					'result-count'    => true,
+					'server-rendered' => true,
 				],
 				'quark-dates-rates-filters-controller'          => [
 					'class'  => true,
@@ -440,9 +445,8 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 				'quark-dates-rates-pagination-items-per-page'   => [
 					'class' => true,
 				],
-				'quark-dates-rates-results-count-controller'    => [
-					'class'       => true,
-					'total-count' => true,
+				'quark-dates-rates-results-count'               => [
+					'class' => true,
 				],
 				'quark-dates-rates'                             => [
 					'class'   => true,

@@ -6,7 +6,7 @@ const { HTMLElement, zustand } = window;
 /**
  * Store
  */
-const { subscribe } = zustand.stores.datesRates;
+const { subscribe, getState } = zustand.stores.datesRates;
 
 /**
  * Results Count Class
@@ -31,6 +31,9 @@ export default class DatesRatesResultsCountElement extends HTMLElement {
 
 		// Subscribe to the store.
 		subscribe( this.update.bind( this ) );
+
+		// Initial sync.
+		this.update( getState() );
 	}
 
 	/**
