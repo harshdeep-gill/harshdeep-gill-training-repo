@@ -222,12 +222,6 @@ export default class SecondaryNavigation extends HTMLElement {
 	 * Handle Navigation Highlights.
 	 */
 	navigationHighlighter() {
-		// If it's mobile early return.
-		if ( this.isMobile() ) {
-			// Early return.
-			return;
-		}
-
 		// Check if sections does not exist.
 		if ( ! this.sections || ! this.sections.length ) {
 			// No, bail early.
@@ -263,6 +257,7 @@ export default class SecondaryNavigation extends HTMLElement {
 			 */
 			const sectionTop = this.isMobile() ? containerSection.offsetTop - this.mobileTopOffset : containerSection.offsetTop - this.desktopTopOffset;
 			const sectionId = currentSection.getAttribute( 'id' );
+			const activeItem = document.querySelector( '.secondary-navigation__navigation-item[data-anchor*=' + sectionId + ']' );
 
 			/**
 			 * If our current scroll position enters the space where current section on screen is,
@@ -274,9 +269,16 @@ export default class SecondaryNavigation extends HTMLElement {
 				scrollY > sectionTop - ( window.innerHeight / 2 ) &&
 				scrollY <= sectionTop + sectionHeight
 			) {
-				document.querySelector( '.secondary-navigation__navigation-item[data-anchor*=' + sectionId + ']' )?.classList?.add( 'secondary-navigation__navigation-item--active' );
+				// Add active class.
+				activeItem?.classList?.add( 'secondary-navigation__navigation-item--active' );
+
+				// Scroll the active item to the center of the screen.
+				if ( activeItem ) {
+					// Scroll the active item.
+					this.scrollLeftOnMobile( activeItem );
+				}
 			} else {
-				document.querySelector( '.secondary-navigation__navigation-item[data-anchor*=' + sectionId + ']' )?.classList?.remove( 'secondary-navigation__navigation-item--active' );
+				activeItem?.classList?.remove( 'secondary-navigation__navigation-item--active' );
 			}
 		} );
 	}
@@ -450,7 +452,7 @@ export default class SecondaryNavigation extends HTMLElement {
 		 * Offset is added to increase the horizontal scroll position,
 		 * so that tab link after the clicked one, peeps in.
 		 */
-		const offset = item.getBoundingClientRect().width;
+		const offset = item.getBoundingClientRect().width - 32; // 32 is padding right.
 		const middle = navWrapperScrollPosition + itemHorizontalPosition - offset;
 
 		// Scroll to middle position.
