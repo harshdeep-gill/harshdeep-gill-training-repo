@@ -20,6 +20,8 @@ import { camelToSnakeCase, convertPropertiesFromSnakeCaseToCamelCase } from '../
 /**
  * Update currency filter value.
  *
+ * TODO: Remove this when the global currency switcher is available.
+ *
  * @param {string} updatedCurrency Selected Currency.
  */
 export const updateCurrency = ( updatedCurrency: string ) => {
@@ -28,10 +30,13 @@ export const updateCurrency = ( updatedCurrency: string ) => {
 		updatedCurrency = 'USD';
 	}
 
-	// Set state.
-	setState( {
+	// Update object.
+	const updateObject: DatesRatesStateUpdateObject = {
 		currency: updatedCurrency,
-	} );
+	};
+
+	// Set the state.
+	setState( updateObject );
 
 	// Fetch results.
 	fetchResults();
@@ -52,11 +57,14 @@ export const addSeason = ( filter: DatesRatesFilterState ) => {
 		return;
 	}
 
-	// Set the state
-	setState( {
+	// Create the updateObject.
+	const updateObject: DatesRatesStateUpdateObject = {
 		seasons: [ ...seasons, filter ],
 		page: 1,
-	} );
+	};
+
+	// Set the state
+	setState( updateObject );
 
 	// Update URL.
 	updateUrlByFilters();
@@ -74,11 +82,14 @@ export const removeSeason = ( filterValue: string ) => {
 	// Get the state.
 	const { seasons }: DatesRatesState = getState();
 
-	// Set the state.
-	setState( {
+	// Update object.
+	const updateObject: DatesRatesStateUpdateObject = {
 		seasons: seasons.filter( ( existingFilter ) => existingFilter.value !== filterValue ),
 		page: 1,
-	} );
+	};
+
+	// Set the state.
+	setState( updateObject );
 
 	// Update URL.
 	updateUrlByFilters();
@@ -102,11 +113,14 @@ export const addExpedition = ( filter: DatesRatesFilterState ) => {
 		return;
 	}
 
-	// Set the state
-	setState( {
+	// Update object.
+	const updateObject: DatesRatesStateUpdateObject = {
 		expeditions: [ ...expeditions, filter ],
 		page: 1,
-	} );
+	};
+
+	// Set the state
+	setState( updateObject );
 
 	// Update URL.
 	updateUrlByFilters();
@@ -124,11 +138,14 @@ export const removeExpedition = ( filterValue: string ) => {
 	// Get the state.
 	const { expeditions }: DatesRatesState = getState();
 
-	// Set the state.
-	setState( {
+	// Update object.
+	const updateObject: DatesRatesStateUpdateObject = {
 		expeditions: expeditions.filter( ( existingFilter ) => existingFilter.value !== filterValue ),
 		page: 1,
-	} );
+	};
+
+	// Set the state.
+	setState( updateObject );
 
 	// Update URL.
 	updateUrlByFilters();
@@ -152,11 +169,14 @@ export const addAdventureOption = ( filter: DatesRatesFilterState ) => {
 		return;
 	}
 
-	// Set the state
-	setState( {
+	// Update object.
+	const updateObject: DatesRatesStateUpdateObject = {
 		adventureOptions: [ ...adventureOptions, filter ],
 		page: 1,
-	} );
+	};
+
+	// Set the state
+	setState( updateObject );
 
 	// Update URL.
 	updateUrlByFilters();
@@ -174,11 +194,14 @@ export const removeAdventureOption = ( filterValue: string ) => {
 	// Get the state.
 	const { adventureOptions }: DatesRatesState = getState();
 
-	// Set the state.
-	setState( {
+	// Update object.
+	const updateObject: DatesRatesStateUpdateObject = {
 		adventureOptions: adventureOptions.filter( ( existingFilter ) => existingFilter.value !== filterValue ),
 		page: 1,
-	} );
+	};
+
+	// Set the state.
+	setState( updateObject );
 
 	// Update URL.
 	updateUrlByFilters();
@@ -202,11 +225,14 @@ export const addDepartureMonth = ( filter: DatesRatesFilterState ) => {
 		return;
 	}
 
-	// Set the state
-	setState( {
+	// Update object.
+	const updateObject: DatesRatesStateUpdateObject = {
 		months: [ ...months, filter ],
 		page: 1,
-	} );
+	};
+
+	// Set the state.
+	setState( updateObject );
 
 	// Update URL.
 	updateUrlByFilters();
@@ -224,11 +250,14 @@ export const removeDepartureMonth = ( filterValue: string ) => {
 	// Get the state.
 	const { months }: DatesRatesState = getState();
 
-	// Set the state.
-	setState( {
+	// Update object.
+	const updateObject: DatesRatesStateUpdateObject = {
 		months: months.filter( ( existingFilter ) => existingFilter.value !== filterValue ),
 		page: 1,
-	} );
+	};
+
+	// Set the state.
+	setState( updateObject );
 
 	// Update URL.
 	updateUrlByFilters();
@@ -252,11 +281,14 @@ export const addDuration = ( filter: DatesRatesFilterState ) => {
 		return;
 	}
 
-	// Set the state
-	setState( {
+	// Update object.
+	const updateObject: DatesRatesStateUpdateObject = {
 		durations: [ ...durations, filter ],
 		page: 1,
-	} );
+	};
+
+	// Set the state.
+	setState( updateObject );
 
 	// Update URL.
 	updateUrlByFilters();
@@ -274,11 +306,14 @@ export const removeDuration = ( filterValue: string ) => {
 	// Get the state.
 	const { durations }: DatesRatesState = getState();
 
-	// Set the state.
-	setState( {
+	// Update object.
+	const updateObject: DatesRatesStateUpdateObject = {
 		durations: durations.filter( ( existingFilter ) => existingFilter.value !== filterValue ),
 		page: 1,
-	} );
+	};
+
+	// Set the state.
+	setState( updateObject );
 
 	// Update URL.
 	updateUrlByFilters();
@@ -302,11 +337,14 @@ export const addShip = ( filter: DatesRatesFilterState ) => {
 		return;
 	}
 
-	// Set the state
-	setState( {
+	// Update object.
+	const updateObject: DatesRatesStateUpdateObject = {
 		ships: [ ...ships, filter ],
 		page: 1,
-	} );
+	};
+
+	// Set the state.
+	setState( updateObject );
 
 	// Update URL.
 	updateUrlByFilters();
@@ -324,11 +362,14 @@ export const removeShip = ( filterValue: string ) => {
 	// Get the state.
 	const { ships }: DatesRatesState = getState();
 
-	// Set the state.
-	setState( {
+	// Update object.
+	const updateObject: DatesRatesStateUpdateObject = {
 		ships: ships.filter( ( existingFilter ) => existingFilter.value !== filterValue ),
 		page: 1,
-	} );
+	};
+
+	// Set the state.
+	setState( updateObject );
 
 	// Update URL.
 	updateUrlByFilters();
@@ -341,8 +382,8 @@ export const removeShip = ( filterValue: string ) => {
  * Clears all the filters.
  */
 export const clearAllFilters = () => {
-	// Set the state.
-	setState( {
+	// Update object.
+	const updateObject: DatesRatesStateUpdateObject = {
 		seasons: [],
 		expeditions: [],
 		adventureOptions: [],
@@ -351,7 +392,10 @@ export const clearAllFilters = () => {
 		ships: [],
 		perPage: 4,
 		page: 1,
-	} );
+	};
+
+	// Set the state.
+	setState( updateObject );
 
 	// Update URL.
 	updateUrlByFilters();
@@ -375,10 +419,13 @@ export const setPage = ( updatedPage: number ) => {
 		return;
 	}
 
-	// Set the state
-	setState( {
+	// Update object.
+	const updateObject: DatesRatesStateUpdateObject = {
 		page: updatedPage,
-	} );
+	};
+
+	// Set the state.
+	setState( updateObject );
 
 	// Fetch results.
 	fetchResults();
@@ -397,10 +444,13 @@ export const setPreviousPage = () => {
 		return;
 	}
 
-	// Set the state
-	setState( {
+	// Update object.
+	const updateObject: DatesRatesStateUpdateObject = {
 		page: page - 1,
-	} );
+	};
+
+	// Set the state.
+	setState( updateObject );
 
 	// Fetch results.
 	fetchResults();
@@ -419,10 +469,13 @@ export const setNextPage = () => {
 		return;
 	}
 
-	// Set the state
-	setState( {
+	// Update object.
+	const updateObject: DatesRatesStateUpdateObject = {
 		page: page + 1,
-	} );
+	};
+
+	// Set the state.
+	setState( updateObject );
 
 	// Fetch results.
 	fetchResults();
@@ -440,11 +493,14 @@ export const setPerPage = ( updatedValue: number ) => {
 		return;
 	}
 
-	// Set the state
-	setState( {
+	// Update object.
+	const updateObject: DatesRatesStateUpdateObject = {
 		perPage: updatedValue,
 		page: 1,
-	} );
+	};
+
+	// Set the state.
+	setState( updateObject );
 
 	// Fetch results.
 	fetchResults();
@@ -637,9 +693,12 @@ const fetchResults = () => {
 	}
 
 	// Set loading.
-	setState( {
+	const updateObject: DatesRatesStateUpdateObject = {
 		isLoading: true,
-	} );
+	};
+
+	// Set the state.
+	setState( updateObject );
 
 	// Fetch the partial.
 	fetchPartial(
@@ -659,7 +718,13 @@ const fetchResults = () => {
 		},
 		resultsFetchedCallback,
 		selector
-	).catch( () => setState( { isLoading: false, shouldMarkupUpdate: false } ) );
+	).catch( () => {
+		// Update object.
+		const errorUpdateObject: DatesRatesStateUpdateObject = { isLoading: false, shouldMarkupUpdate: false };
+
+		// Set the state.
+		setState( errorUpdateObject );
+	} );
 };
 
 /**
@@ -687,15 +752,18 @@ const resultsFetchedCallback = ( response: PartialData ) => {
 		data: { resultCount },
 	} = response;
 
-	// Set state.
-	setState( {
+	// Update object.
+	const updateObject: DatesRatesStateUpdateObject = {
 		markup: resultCount !== 0 ? markup : '',
 		noResultsMarkup: noResultsMarkup ?? '',
 		resultCount,
 		totalPages: resultCount !== 0 ? Math.ceil( resultCount / perPage ) : 1,
 		page: resultCount !== 0 ? page : 1,
 		shouldMarkupUpdate: true,
-	} );
+	};
+
+	// Set the state.
+	setState( updateObject );
 };
 
 /**
@@ -703,11 +771,14 @@ const resultsFetchedCallback = ( response: PartialData ) => {
  *
  */
 export const markupUpdated = () => {
-	// Set state
-	setState( {
+	// Update object.
+	const updateObject: DatesRatesStateUpdateObject = {
 		isLoading: false,
 		shouldMarkupUpdate: false,
-	} );
+	};
+
+	// Set the state.
+	setState( updateObject );
 };
 
 /**
