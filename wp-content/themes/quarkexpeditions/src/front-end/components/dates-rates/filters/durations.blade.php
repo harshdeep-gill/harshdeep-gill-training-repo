@@ -10,8 +10,14 @@
 
 <quark-dates-rates-filter-durations>
 	<x-form.field-group>
-		@foreach ( $durations as $filter_value => $filter_label )
-			<x-dates-rates.filters.checkbox name="durations" :label="$filter_label" :value="$filter_value" data-label="{{ $filter_label }}" />
+
+		@foreach ( $durations as $duration )
+			@if ( empty( $duration['label'] ) || empty( $duration['value'] ) || ! isset( $duration['count'] ) )
+				@continue
+			@endif
+
+			<x-dates-rates.filters.checkbox name="durations" :label="$duration['label']" :value="$duration['value']" :count="$duration['count']" data-label="{{ $duration['label'] }}" />
 		@endforeach
+
 	</x-form.field-group>
 </quark-dates-rates-filter-durations>

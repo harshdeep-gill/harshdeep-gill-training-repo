@@ -2,6 +2,11 @@
 	'name'  => '',
 	'label' => '',
 	'value' => '',
+	'count' => '0',
 ] )
 
-<x-form.checkbox :name="$name" :label="$label" :value="$value" data-label="{{ $label }}" />
+@php
+	$label = $label . " ({$count})";
+@endphp
+
+<x-form.checkbox :name="$name1" :label="$label" :value="$value" data-label="{{ $label }}" />

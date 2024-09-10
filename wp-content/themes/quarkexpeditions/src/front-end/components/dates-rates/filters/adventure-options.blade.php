@@ -10,8 +10,14 @@
 
 <quark-dates-rates-filter-adventure-options>
 	<x-form.field-group>
-		@foreach ( $adventure_options as $filter_value => $filter_label )
-			<x-dates-rates.filters.checkbox name="adventure_options" :label="$filter_label" :value="$filter_value" data-label="{{ $filter_label }}" />
+
+		@foreach ( $adventure_options as $adventure_option )
+			@if ( empty( $adventure_option['label'] ) || empty( $adventure_option['value'] ) || ! isset( $adventure_option['count'] ) )
+				@continue
+			@endif
+
+			<x-dates-rates.filters.checkbox name="adventure_options" :label="$adventure_option['label']" :value="$adventure_option['value']" :count="$adventure_option['count']" data-label="{{ $adventure_option['label'] }}" />
 		@endforeach
+
 	</x-form.field-group>
 </quark-dates-rates-filter-adventure-options>
