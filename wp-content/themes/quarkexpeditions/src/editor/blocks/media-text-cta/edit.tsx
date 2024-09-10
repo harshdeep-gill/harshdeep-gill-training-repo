@@ -187,7 +187,7 @@ export default function edit( { className, attributes, setAttributes }: BlockEdi
 			</InspectorControls>
 			<div { ...blockProps } >
 				<div className={ `media-text-cta__media-wrap media-text-cta__media-wrap--${ attributes.imageAspectRatio }` }>
-					=					<Img className="media-text-cta__image" value={ attributes.image } />
+					<Img className="media-text-cta__image" value={ attributes.image } />
 					{
 						'video' === attributes.mediaType &&
 						<div className="fancy-video__play-btn-wrapper">
