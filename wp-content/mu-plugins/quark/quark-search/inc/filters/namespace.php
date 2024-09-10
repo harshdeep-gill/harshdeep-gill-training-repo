@@ -21,6 +21,9 @@ function bootstrap(): void {
 /**
  * Get filters data for dates-rates.
  *
+ * 1. Get filters data for selected filters.
+ * 2. Get filters data for selected filters without last filter - done to conserve the last filter to its one step previous.
+ *
  * @param mixed[] $selected_filters Selected filters.
  *
  * @return mixed[]
@@ -60,14 +63,12 @@ function get_filters_for_dates_rates( array $selected_filters = [] ): array {
 		],
 	];
 
-	// Remove non-filter keys.
-	$selected_filters = array_filter(
-		$selected_filters,
-		function ( $key ) use ( $filter_mapping ) {
-			return array_key_exists( $key, $filter_mapping );
-		},
-		ARRAY_FILTER_USE_KEY
-	);
+	// Remove non-filter keys along with empty filter keys.
+	foreach ( $selected_filters as $key => $value ) {
+		if ( ! array_key_exists( $key, $filter_mapping ) || empty( $value ) ) {
+			unset( $selected_filters[ $key ] );
+		}
+	}
 
 	// Run search.
 	$result = search( $selected_filters, true );
@@ -82,17 +83,25 @@ function get_filters_for_dates_rates( array $selected_filters = [] ): array {
 			continue;
 		}
 
-        // Get filter data.
+		// Get filter data.
 		$filters[ $filter_key ] = $filter['function']( $departure_ids );
 	}
 
-    // Return filters if no selected filters.
+	// Return filters if no selected filters.
 	if ( empty( $selected_filters ) ) {
 		return $filters;
 	}
 
-	// Unset the last filter.
-	$last_filter = array_pop( $selected_filters );
+	// Get last filter key.
+	$last_filter_key = array_key_last( $selected_filters );
+
+	// Bail if empty or not in filter mapping.
+	if ( empty( $last_filter_key ) || ! array_key_exists( $last_filter_key, $filter_mapping ) ) {
+		return $filters;
+	}
+
+	// Remove last filter.
+	array_pop( $selected_filters );
 
 	// Run search.
 	$result = search( $selected_filters, true );
@@ -100,6 +109,9 @@ function get_filters_for_dates_rates( array $selected_filters = [] ): array {
 	// Departure ids.
 	$departure_ids = $result['ids'];
 
-    // Get complete filters.
+	// Get last filter data.
+	$filters[ $last_filter_key ] = $filter_mapping[ $last_filter_key ]['function']( $departure_ids );
+
+	// Get complete filters.
 	return $filters;
 }
