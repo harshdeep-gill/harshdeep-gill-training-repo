@@ -395,14 +395,35 @@ function breadcrumbs_ancestors( array $breadcrumbs = [] ): array {
 		return $breadcrumbs;
 	}
 
+	// Return breadcrumbs.
+	return array_merge(
+		$breadcrumbs,
+		get_breadcrumbs_ancestors()
+	);
+}
+
+/**
+ * Get breadcrumbs ancestor.
+ *
+ * @return array{}|array{
+ *     array{
+ *         title: string,
+ *         url: string,
+ *     }
+ * }
+ */
+function get_breadcrumbs_ancestors(): array {
 	// Get archive page.
-	$adventure_options_archive_page = absint( get_option( 'options_adventure_options_page', 0 ) );
+	$press_release_archive_page = absint( get_option( 'options_adventure_options_page', 0 ) );
+
+	// Initialize breadcrumbs.
+	$breadcrumbs = [];
 
 	// Get it's title and URL for breadcrumbs if it's set.
-	if ( ! empty( $adventure_options_archive_page ) ) {
+	if ( ! empty( $press_release_archive_page ) ) {
 		$breadcrumbs[] = [
-			'title' => get_the_title( $adventure_options_archive_page ),
-			'url'   => get_permalink( $adventure_options_archive_page ),
+			'title' => get_the_title( $press_release_archive_page ),
+			'url'   => strval( get_permalink( $press_release_archive_page ) ),
 		];
 	}
 
