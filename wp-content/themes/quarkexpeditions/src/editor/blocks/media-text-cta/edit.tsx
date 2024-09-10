@@ -33,6 +33,7 @@ import icons from '../icons';
 import * as secondaryText from './children/secondary-text';
 import * as cta from './children/cta';
 import * as overline from './children/overline';
+import { getDynamicImageUrl } from '../../../../../../mu-plugins/travelopia/travelopia-media/src/media/utility';
 
 /**
  * Edit component.
@@ -85,6 +86,42 @@ export default function edit( { className, attributes, setAttributes }: BlockEdi
 		// Set attributes.
 		setAttributes( { videoUrl } );
 	};
+
+	/**
+	 * Handle a change in the Image.
+	 */
+	const handleImageChange = () => {
+		// Return if no image.
+		if ( ! attributes.image ) {
+			// Return.
+			return;
+		}
+
+		// Return if media type is not image.
+		if ( 'image' !== attributes.mediaType ) {
+			// Return.
+			return;
+		}
+
+		// Modify image aspect ratio.
+		if ( 'square' === attributes.imageAspectRatio ) {
+			attributes.image.height = 546;
+		} else {
+			attributes.image.height = 360;
+		}
+
+		// Prepare image arguments.
+		const imageArgs = {
+			width: 546,
+			height: attributes.image.height,
+		};
+
+		// Set image src.
+		attributes.image.src = getDynamicImageUrl( attributes.image.src, imageArgs );
+	};
+
+	// Handle image change.
+	handleImageChange();
 
 	// Return the block's markup.
 	return (
@@ -150,7 +187,7 @@ export default function edit( { className, attributes, setAttributes }: BlockEdi
 			</InspectorControls>
 			<div { ...blockProps } >
 				<div className={ `media-text-cta__media-wrap media-text-cta__media-wrap--${ attributes.imageAspectRatio }` }>
-					<Img className="media-text-cta__image" value={ attributes.image } />
+					=					<Img className="media-text-cta__image" value={ attributes.image } />
 					{
 						'video' === attributes.mediaType &&
 						<div className="fancy-video__play-btn-wrapper">
