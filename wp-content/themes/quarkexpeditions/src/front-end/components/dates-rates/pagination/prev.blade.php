@@ -1,3 +1,3 @@
 <quark-dates-rates-pagination-prev-page>
-	<button class="page-numbers prev">{!! esc_html__( 'Previous', 'qrk' ) !!}</button>
+	<button class="page-numbers prev"><x-escape :content="__( 'Previous', 'qrk' )" /></button>
 </quark-dates-rates-pagination-prev-page>
