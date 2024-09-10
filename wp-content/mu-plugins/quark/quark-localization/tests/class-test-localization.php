@@ -9,9 +9,15 @@ namespace Quark\Localization\Tests;
 
 use WP_UnitTestCase;
 
+use function Quark\Localization\get_currencies;
 use function Quark\Localization\get_current_currency;
 
 use const Quark\Localization\CURRENCY_COOKIE;
+use const Quark\Localization\USD_CURRENCY;
+use const Quark\Localization\AUD_CURRENCY;
+use const Quark\Localization\GBP_CURRENCY;
+use const Quark\Localization\EUR_CURRENCY;
+use const Quark\Localization\CAD_CURRENCY;
 
 /**
  * Class Test_Localization
@@ -58,5 +64,27 @@ class Test_Localization extends WP_UnitTestCase {
 
 		// Cleanup.
 		unset( $_COOKIE[ CURRENCY_COOKIE ] );
+	}
+
+	/**
+	 * Test get currency.
+	 *
+	 * @covers Quark\Localization\get_currencies
+	 *
+	 * @return void
+	 */
+	public function test_get_currencies(): void {
+		// Test.
+		$currencies = get_currencies();
+		$this->assertSame(
+			[
+				USD_CURRENCY,
+				AUD_CURRENCY,
+				CAD_CURRENCY,
+				EUR_CURRENCY,
+				GBP_CURRENCY,
+			],
+			$currencies
+		);
 	}
 }
