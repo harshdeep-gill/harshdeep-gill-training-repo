@@ -353,6 +353,9 @@ export const clearAllFilters = () => {
 		page: 1,
 	} );
 
+	// Update URL.
+	updateUrlByFilters();
+
 	// Fetch results.
 	fetchResults();
 };
@@ -698,6 +701,8 @@ const buildUrlFromFilters = (
 		// Set the url params value based on key.
 		if ( stringifiedFilters ) {
 			urlParams[ snakeCasedKey ] = stringifiedFilters;
+		} else {
+			delete urlParams[ snakeCasedKey ];
 		}
 	}
 
