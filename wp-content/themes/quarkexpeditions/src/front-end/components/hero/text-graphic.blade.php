@@ -14,6 +14,10 @@
 			'sizes'  => [ '(min-width: 1024px) 600px', '100vw' ],
 			'widths' => [ 350, 500, 600, 700, 800 ],
 		],
+		'transform' => [
+			'crop'    => 'fit',
+			'quality' => '100',
+		],
 	];
 
 	$classes = [ 'hero__text-graphic' ];
