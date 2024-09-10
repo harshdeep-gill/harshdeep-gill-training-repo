@@ -9,4 +9,4 @@
 	$label = $label . " ({$count})";
 @endphp
 
-<x-form.checkbox :name="$name1" :label="$label" :value="$value" data-label="{{ $label }}" />
+<x-form.checkbox :name="$name" :label="$label" :value="$value" data-label="{{ $label }}" />
