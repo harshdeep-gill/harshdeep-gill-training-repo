@@ -341,7 +341,7 @@ function parse_filters( array $filters = [] ): array {
  *     remaining_count: int,
  * }
  */
-function search( array $filters = [] ): array {
+function search( array $filters = [], bool $retrieve_all = false ): array {
 	// Parse filters.
 	$filters = parse_filters( $filters );
 
@@ -363,10 +363,15 @@ function search( array $filters = [] ): array {
 	$search->set_adventure_options( $adventure_options );
 	$search->set_durations( $durations );
 	$search->set_ships( $ships );
-	$search->set_page( absint( $filters['page'] ) );
-	$search->set_posts_per_page( absint( $filters['posts_per_load'] ?: 5 ) );
 	$search->set_sort( $sort, $filters['currency'] );
 	$search->set_destinations( $destinations );
+
+	if ( empty( $retrieve_all ) ) {
+		$search->set_page( absint( $filters['page'] ) );
+		$search->set_posts_per_page( absint( $filters['posts_per_load'] ?: 5 ) );
+	} else {
+		$search->set_posts_per_page( -1 );
+	}
 
 	// Returned filtered trips.
 	return [
@@ -599,24 +604,26 @@ function reindex_departures(): void {
 /**
  * Get region and season search filter data.
  *
- * @return string[]
+ * @param int[] $departure_ids Departure IDs.
+ *
+ * @return array<int, array{
+ *   label: string,
+ *   value: string,
+ *   count: int,
+ * }>
  */
-function get_region_and_season_search_filter_data(): array {
-	// Get from cache.
-	$cache_key                   = 'search_filter_region_season_data';
-	$region_season_search_filter = wp_cache_get( $cache_key, CACHE_GROUP );
+function get_region_and_season_search_filter_data( array $departure_ids = [] ): array {
+	// If empty departure ids, get all departure ids.
+	if ( empty( $departure_ids ) ) {
+		// Prepare search object.
+		$search = new Search();
+		$search->set_posts_per_page( -1 );
 
-	// Return cache data.
-	if ( ! empty( $region_season_search_filter ) && is_array( $region_season_search_filter ) ) {
-		return $region_season_search_filter;
+		// Get departure ids.
+		$departure_ids = $search->search();
 	}
 
-	// Prepare search object.
-	$search = new Search();
-	$search->set_posts_per_page( -1 );
-
-	// Get departure ids.
-	$departure_ids  = $search->search();
+	// Initialize region and season data.
 	$region_seasons = [];
 
 	// Validate departure ids.
@@ -666,41 +673,47 @@ function get_region_and_season_search_filter_data(): array {
 			continue;
 		}
 
+		// Continue if already set.
+		if ( ! empty( $filter_data[ $region_season ] ) ) {
+			continue;
+		}
+
 		// Prepare region and season data.
-		$filter_data[ $region_season ] = sprintf( '%s %s', $region_term->name, $season_term->name );
+		$filter_data[ $region_season ] = [
+			'label' => sprintf( '%s %s', $region_term->name, $season_term->name ),
+			'value' => $region_season,
+			'count' => 0, // @todo - Implement count.
+		];
 	}
 
-	// Set cache.
-	wp_cache_set( $cache_key, $filter_data, CACHE_GROUP );
-
 	// Return filter data.
-	return $filter_data;
+	return array_values( $filter_data );
 }
 
 /**
  * Get Expedition search filter data.
  *
- * @return array{}|array{
- *     int: string
- * }
+ * @param int[] $departure_ids Departure IDs.
+ *
+ * @return array<int, array{
+ *   label: string,
+ *   value: int,
+ *   count: int,
+ * }>
  */
-function get_expedition_search_filter_data(): array {
-	// Get from cache.
-	$cache_key                = 'search_filter_expeditions_data';
-	$expedition_search_filter = wp_cache_get( $cache_key, CACHE_GROUP );
+function get_expedition_search_filter_data( array $departure_ids = [] ): array {
+	// If empty departure ids, get all departure ids.
+	if ( empty( $departure_ids ) ) {
+		// Prepare search object.
+		$search = new Search();
+		$search->set_posts_per_page( -1 );
 
-	// Return cache data.
-	if ( ! empty( $expedition_search_filter ) && is_array( $expedition_search_filter ) ) {
-		return $expedition_search_filter;
+		// Get departure ids.
+		$departure_ids = $search->search();
 	}
 
-	// Prepare search object.
-	$search = new Search();
-	$search->set_posts_per_page( -1 );
-
-	// Get departure ids.
-	$departure_ids = $search->search();
-	$expeditions   = [];
+	// Initialize expedition data.
+	$expeditions = [];
 
 	// Validate departure ids.
 	if ( empty( $departure_ids ) ) {
@@ -720,44 +733,45 @@ function get_expedition_search_filter_data(): array {
 		$expedition_id = absint( $departure['post_meta']['related_expedition'] );
 
 		// Validate expedition.
-		if ( empty( $expedition_id ) ) {
+		if ( empty( $expedition_id ) || ! empty( $expeditions[ $expedition_id ] ) ) {
 			continue;
 		}
 
 		// Prepare expedition data.
-		$expeditions[ $expedition_id ] = get_the_title( $expedition_id );
+		$expeditions[ $expedition_id ] = [
+			'label' => get_the_title( $expedition_id ),
+			'value' => $expedition_id,
+			'count' => 0, // @todo - Implement count.
+		];
 	}
 
-	// Set cache.
-	wp_cache_set( $cache_key, $expeditions, CACHE_GROUP );
-
 	// Return expedition data.
-	return $expeditions;
+	return array_values( $expeditions );
 }
 
 /**
  * Get Adventure Options search filter data.
  *
- * @return array{}|array{
- *     int: string
- * }
+ * @param int[] $departure_ids Departure IDs.
+ *
+ * @return array<int, array{
+ *   label: string,
+ *   value: int,
+ *   count: int,
+ * }>
  */
-function get_adventure_options_search_filter_data(): array {
-	// Get from cache.
-	$cache_key                     = 'search_filter_adventure_options_data';
-	$adventure_options_search_data = wp_cache_get( $cache_key, CACHE_GROUP );
+function get_adventure_options_search_filter_data( array $departure_ids = [] ): array {
+	// If empty departure ids, get all departure ids.
+	if ( empty( $departure_ids ) ) {
+		// Prepare search object.
+		$search = new Search();
+		$search->set_posts_per_page( -1 );
 
-	// Return cache data.
-	if ( ! empty( $adventure_options_search_data ) && is_array( $adventure_options_search_data ) ) {
-		return $adventure_options_search_data;
+		// Get departure ids.
+		$departure_ids = $search->search();
 	}
 
-	// Prepare search object.
-	$search = new Search();
-	$search->set_posts_per_page( -1 );
-
-	// Get departure ids.
-	$departure_ids     = $search->search();
+	// Initialize adventure options data.
 	$adventure_options = [];
 
 	// Validate departure ids.
@@ -777,44 +791,59 @@ function get_adventure_options_search_filter_data(): array {
 			}
 
 			// Add to adventure options.
-			$adventure_options[ $include_option['term_id'] ] = $include_option['name'];
+			$adventure_options[ $include_option['term_id'] ] = [
+				'label' => $include_option['name'],
+				'value' => $include_option['term_id'],
+				'count' => 0, // @todo - Implement count.
+			];
 		}
 
-		// Prepare Paid Adventure Options details.
-		$adventure_options = array_replace( $adventure_options, get_paid_adventure_options( $departure_id ) );
+		// Paid adventure options.
+		$paid_adventure_options = get_paid_adventure_options( $departure_id );
+
+		// Loop through paid_adventure_options.
+		foreach ( $paid_adventure_options as $id => $name ) {
+			if ( empty( $name ) ) {
+				continue;
+			}
+
+			// Add to adventure options.
+			$adventure_options[ $id ] = [
+				'label' => $name,
+				'value' => $id,
+				'count' => 0, // @todo - Implement count.
+			];
+		}
 	}
 
-	// Set cache.
-	wp_cache_set( $cache_key, $adventure_options, CACHE_GROUP );
-
 	// Return adventure options data.
-	return $adventure_options;
+	return array_values( $adventure_options );
 }
 
 /**
  * Get Departure Month search filter data.
  *
- * @return array{}|array{
- *     string: string
- * }
+ * @param int[] $departure_ids Departure IDs.
+ *
+ * @return array<int, array{
+ *    label: string,
+ *    value: string,
+ *    count: int,
+ * }>
  */
-function get_month_search_filter_data(): array {
-	// Get from cache.
-	$cache_key           = 'search_filter_departure_month_data';
-	$month_search_filter = wp_cache_get( $cache_key, CACHE_GROUP );
+function get_month_search_filter_data( array $departure_ids = [] ): array {
+	// If empty departure ids, get all departure ids.
+	if ( empty( $departure_ids ) ) {
+		// Prepare search object.
+		$search = new Search();
+		$search->set_posts_per_page( -1 );
 
-	// Return cache data.
-	if ( ! empty( $month_search_filter ) && is_array( $month_search_filter ) ) {
-		return $month_search_filter;
+		// Get departure ids.
+		$departure_ids = $search->search();
 	}
 
-	// Prepare search object.
-	$search = new Search();
-	$search->set_posts_per_page( -1 );
-
-	// Get departure ids.
-	$departure_ids = $search->search();
-	$months        = [];
+	// Initialize month data.
+	$months = [];
 
 	// Validate departure ids.
 	if ( empty( $departure_ids ) ) {
@@ -838,7 +867,11 @@ function get_month_search_filter_data(): array {
 		$month_value = gmdate( 'F Y', strtotime( $start_date ) );
 
 		// Prepare month data.
-		$months[ $month_key ] = $month_value;
+		$months[ $month_key ] = [
+			'label' => $month_value,
+			'value' => $month_key,
+			'count' => 0, // @todo - Implement count.
+		];
 	}
 
 	// Sort the months array by keys (dates).
@@ -850,37 +883,34 @@ function get_month_search_filter_data(): array {
 		}
 	);
 
-	// Set cache.
-	wp_cache_set( $cache_key, $months, CACHE_GROUP );
-
 	// Return month data.
-	return $months;
+	return array_values( $months );
 }
 
 /**
  * Get Departure Duration search filter data.
  *
- * @return array{}|array{
- *     string: string
- * }
+ * @param int[] $departure_ids Departure IDs.
+ *
+ * @return array<int, array{
+ *   label: string,
+ *   value: string,
+ *   count: int,
+ * }>
  */
-function get_duration_search_filter_data(): array {
-	// Get from cache.
-	$cache_key              = 'search_filter_departure_duration_data';
-	$duration_search_filter = wp_cache_get( $cache_key, CACHE_GROUP );
+function get_duration_search_filter_data( array $departure_ids = [] ): array {
+	// If empty departure ids, get all departure ids.
+	if ( empty( $departure_ids ) ) {
+		// Prepare search object.
+		$search = new Search();
+		$search->set_posts_per_page( -1 );
 
-	// Return cache data.
-	if ( ! empty( $duration_search_filter ) && is_array( $duration_search_filter ) ) {
-		return $duration_search_filter;
+		// Get departure ids.
+		$departure_ids = $search->search();
 	}
 
-	// Prepare search object.
-	$search = new Search();
-	$search->set_posts_per_page( -1 );
-
-	// Get departure ids.
-	$departure_ids = $search->search();
-	$durations     = [];
+	// Initialize duration data.
+	$durations = [];
 
 	// Validate departure ids.
 	if ( empty( $departure_ids ) ) {
@@ -923,40 +953,41 @@ function get_duration_search_filter_data(): array {
 		$range_value = sprintf( '%d-%d Days', ( $range * 7 ) - 6, $range * 7 );
 
 		// Prepare range duration.
-		$range_durations[ $range_key ] = $range_value;
+		$range_durations[ $range_key ] = [
+			'label' => $range_value,
+			'value' => $range_key,
+			'count' => 0, // @todo - Implement count.
+		];
 	}
 
-	// Set cache.
-	wp_cache_set( $cache_key, $range_durations, CACHE_GROUP );
-
 	// Return duration data.
-	return $range_durations;
+	return array_values( $range_durations );
 }
 
 /**
  * Get Departure Ship search filter data.
  *
- * @return array{}|array{
- *     int: string
- * }
+ * @param int[] $departure_ids Departure IDs.
+ *
+ * @return array<int, array{
+ *   label: string,
+ *   value: int,
+ *   count: int,
+ * }>
  */
-function get_ship_search_filter_data(): array {
-	// Get from cache.
-	$cache_key          = 'search_filter_ship_data';
-	$ship_search_filter = wp_cache_get( $cache_key, CACHE_GROUP );
+function get_ship_search_filter_data( array $departure_ids = [] ): array {
+	// If empty departure ids, get all departure ids.
+	if ( empty( $departure_ids ) ) {
+		// Prepare search object.
+		$search = new Search();
+		$search->set_posts_per_page( -1 );
 
-	// Return cache data.
-	if ( ! empty( $ship_search_filter ) && is_array( $ship_search_filter ) ) {
-		return $ship_search_filter;
+		// Get departure ids.
+		$departure_ids = $search->search();
 	}
 
-	// Prepare search object.
-	$search = new Search();
-	$search->set_posts_per_page( -1 );
-
-	// Get departure ids.
-	$departure_ids = $search->search();
-	$ships         = [];
+	// Initialize ship data.
+	$ships = [];
 
 	// Validate departure ids.
 	if ( empty( $departure_ids ) ) {
@@ -984,14 +1015,15 @@ function get_ship_search_filter_data(): array {
 		}
 
 		// Prepare ship data.
-		$ships[ $ship_id ] = $ship['post']->post_title;
+		$ships[ $ship_id ] = [
+			'label' => $ship['post']->post_title,
+			'value' => $ship_id,
+			'count' => 0, // @todo - Implement count.
+		];
 	}
 
-	// Set cache.
-	wp_cache_set( $cache_key, $ships, CACHE_GROUP );
-
 	// Return ship data.
-	return $ships;
+	return array_values( $ships );
 }
 
 /**
