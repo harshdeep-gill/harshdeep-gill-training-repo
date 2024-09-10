@@ -51,7 +51,7 @@ export default class DatesRatesFiltersCtaViewResultsElement extends HTMLElement 
 		const { resultCount } = state;
 
 		// Get the button text element.
-		const buttonTextElement = this.theButton?.querySelector( '.btn__content-text' );
+		const buttonTextElement = this.theButton?.querySelector( '.dates-rates__apply-filters-btn-count' );
 
 		// Null check.
 		if ( ! buttonTextElement ) {
@@ -60,7 +60,7 @@ export default class DatesRatesFiltersCtaViewResultsElement extends HTMLElement 
 		}
 
 		// Set the text content.
-		buttonTextElement.textContent = buttonTextElement.textContent?.replace( /\([0-9]*\)/, `(${ resultCount.toString() })` ) ?? '';
+		buttonTextElement.textContent = `(${ resultCount })`;
 	}
 
 	/**
