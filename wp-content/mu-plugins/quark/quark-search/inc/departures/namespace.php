@@ -1253,3 +1253,179 @@ function get_travelers_search_filter_data(): array {
 	// Return travelers data.
 	return $travelers_data;
 }
+
+/**
+ * Get destination month search filter data.
+ *
+ * @param int    $destination_term_id Destination term ID.
+ * @param string $month               Month.
+ *
+ * @return mixed[]
+ */
+function get_destination_and_month_search_filter_data( int $destination_term_id = 0, string $month = '' ): array {
+	// Prepare search object.
+	$search = new Search();
+
+	// Set destination term id if provided.
+	if ( ! empty( $destination_term_id ) ) {
+		$search->set_destinations( [ $destination_term_id ] );
+	}
+
+	// Set month if provided.
+	if ( ! empty( $month ) ) {
+		$search->set_months( [ $month ] );
+	}
+
+	// Prepare filter data.
+	$filter_data = [
+		'months'       => [],
+		'destinations' => [],
+	];
+
+	// Set posts per page to -1.
+	$search->set_posts_per_page( -1 );
+
+	// Get departure ids.
+	$departure_ids = $search->search();
+
+	// Initialize month.
+	$months = [];
+
+	// Initialize destination ids.
+	$destinations = [];
+
+	// Prepare month and destination data if not empty.
+	if ( ! empty( $departure_ids ) ) {
+		// Loop through departure ids.
+		foreach ( $departure_ids as $departure_id ) {
+			$departure = get_departure( $departure_id );
+
+			// Get post meta.
+			if ( ! is_array( $departure['post_meta'] ) || empty( $departure['post_meta']['start_date'] ) || empty( $departure['post_meta']['related_expedition'] ) ) {
+				continue;
+			}
+
+				// Get start date.
+				$start_date = $departure['post_meta']['start_date'];
+
+				// Prepare month data - 10-2024 => October 2024.
+				$month_key   = gmdate( 'm-Y', strtotime( $start_date ) );
+				$month_value = gmdate( 'F Y', strtotime( $start_date ) );
+
+				// Check if month is already set.
+			if ( empty( $months[ $month_key ] ) ) {
+				$months[ $month_key ] = $month_value;
+			}
+
+				// Expedition post id.
+				$expedition_id = absint( $departure['post_meta']['related_expedition'] );
+
+				// Get expedition post.
+				$expedition = get_expedition_post( $expedition_id );
+
+				// Validate expedition.
+			if ( ! $expedition['post'] instanceof WP_Post || empty( $expedition['post_taxonomies'] ) || empty( $expedition['post_taxonomies'][ DESTINATION_TAXONOMY ] ) || ! is_array( $expedition['post_taxonomies'][ DESTINATION_TAXONOMY ] ) ) {
+				continue;
+			}
+
+				// Loop through each destination.
+			foreach ( $expedition['post_taxonomies'][ DESTINATION_TAXONOMY ] as $destination ) {
+				// Validate destination.
+				if ( ! is_array( $destination ) || empty( $destination['term_id'] ) || empty( $destination['name'] ) ) {
+					continue;
+				}
+
+				// Is it a parent term.
+				if ( empty( $destination['parent'] ) ) {
+					if ( empty( $destinations[ $destination['term_id'] ] ) ) {
+						$destinations[ $destination['term_id'] ] = [
+							'id'       => $destination['term_id'],
+							'label'    => $destination['name'],
+							'value'    => $destination['term_id'],
+							'image_id' => absint( get_term_meta( $destination['term_id'], 'destination_image', true ) ),
+							'children' => [],
+						];
+					}
+				} else {
+					// Validate parent.
+					if ( empty( $destinations[ $destination['parent'] ] ) ) {
+						// Get parent term.
+						$parent_term = get_term( $destination['parent'], DESTINATION_TAXONOMY, ARRAY_A );
+
+						// Validate parent term.
+						if ( ! is_array( $parent_term ) ) {
+							continue;
+						}
+
+						// Prepare parent term.
+						$destinations[ $destination['parent'] ] = [
+							'id'       => $destination['parent'],
+							'label'    => $parent_term['name'],
+							'value'    => $destination['parent'],
+							'image_id' => absint( get_term_meta( $destination['term_id'], 'destination_image', true ) ),
+							'children' => [],
+						];
+					}
+
+					// Initialize children if empty.
+					if ( empty( $destinations[ $destination['parent'] ]['children'] ) ) {
+						$destinations[ $destination['parent'] ]['children'] = [];
+					}
+
+					// Check if already exists.
+					if ( ! empty( $destinations[ $destination['parent'] ]['children'][ $destination['term_id'] ] ) ) {
+						continue;
+					}
+
+					// Add to children.
+					$destinations[ $destination['parent'] ]['children'][ $destination['term_id'] ] = [
+						'id'        => $destination['term_id'],
+						'label'     => $destination['name'],
+						'value'     => $destination['term_id'],
+						'parent_id' => $destination['parent'],
+						'image_id'  => absint( get_term_meta( $destination['term_id'], 'destination_image', true ) ),
+					];
+				}
+			}
+		}
+
+		// Sort and prepare month data.
+		if ( ! empty( $months ) ) {
+			// Sort the months array by keys (dates).
+			uksort(
+				$months,
+				function ( $a, $b ) {
+					// Adding "01-" to ensure proper date format for strtotime comparison.
+					return strtotime( '01-' . $a ) - strtotime( '01-' . $b );
+				}
+			);
+
+			// Prepare month data.
+			foreach ( $months as $month_key => $month_value ) {
+				$filter_data['months'][] = [
+					'label' => $month_value,
+					'value' => $month_key,
+				];
+			}
+		}
+
+		// Flatten children destinations.
+		if ( ! empty( $destinations ) ) {
+			// Loop through destinations.
+			foreach ( $destinations as $destination_term_id => $destination ) {
+				if ( empty( $destination['children'] ) ) {
+					continue;
+				}
+
+				// Flatten children.
+				$destinations[ $destination_term_id ]['children'] = array_values( $destination['children'] );
+			}
+
+			// Flatten destinations.
+			$filter_data['destinations'] = array_values( $destinations );
+		}
+	}
+
+	// Return filter data.
+	return $filter_data;
+}

@@ -4,6 +4,6 @@
 	}
 @endphp
 
-<div class="dates-rates">
+<quark-dates-rates class="dates-rates">
 	{!! $slot !!}
-</div>
+</quark-dates-rates>

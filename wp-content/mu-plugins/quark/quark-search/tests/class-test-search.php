@@ -14,7 +14,9 @@ use ReflectionException;
 use Quark\Search\Departures\Search;
 
 use function Quark\Departures\bust_post_cache;
+use function Quark\Expeditions\bust_post_cache as bust_expedition_post_cache;
 use function Quark\Search\Departures\get_cabin_class_search_filter_data;
+use function Quark\Search\Departures\get_destination_and_month_search_filter_data;
 use function Quark\Search\Departures\get_destination_search_filter_data;
 use function Quark\Search\solr_scheme;
 use function Quark\Search\Departures\parse_filters;
@@ -23,6 +25,7 @@ use function Quark\Search\Departures\get_itinerary_length_search_filter_data;
 use function Quark\Search\Departures\get_language_search_filter_data;
 use function Quark\Search\Departures\get_travelers_search_filter_data;
 use function Quark\Search\Departures\reindex_departures;
+use function Quark\Search\public_rest_api_routes;
 
 use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
 use const Quark\CabinCategories\CABIN_CLASS_TAXONOMY;
@@ -36,6 +39,7 @@ use const Quark\Localization\CURRENCY_COOKIE;
 use const Quark\Localization\EUR_CURRENCY;
 use const Quark\Search\Departures\REINDEX_POST_IDS_OPTION_KEY;
 use const Quark\Search\Departures\SCHEDULE_REINDEX_HOOK;
+use const Quark\Search\REST_API_NAMESPACE;
 
 /**
  * Class Test_Search.
@@ -52,6 +56,9 @@ class Test_Search extends WP_UnitTestCase {
 	public function test_bootstrap(): void {
 		// Test if filters are registered.
 		$this->assertEquals( 10, has_filter( 'solr_scheme', 'Quark\Search\solr_scheme' ) );
+
+		// Test if REST API is registered.
+		$this->assertEquals( 10, has_action( 'rest_api_init', 'Quark\Search\register_rest_endpoints' ) );
 	}
 
 	/**
@@ -1203,5 +1210,364 @@ class Test_Search extends WP_UnitTestCase {
 		];
 		$actual   = get_travelers_search_filter_data();
 		$this->assertEquals( $expected, $actual );
+	}
+
+	/**
+	 * Test if correct REST API routes are public.
+	 *
+	 * @covers \Quark\Search\public_rest_api_routes()
+	 *
+	 * @return void
+	 */
+	public function test_public_rest_api_routes(): void {
+		// Test.
+		$expected = [
+			'/' . REST_API_NAMESPACE . '/filter-options/by-destination-and-month',
+		];
+		$actual   = public_rest_api_routes();
+		$this->assertEquals( $expected, $actual );
+	}
+
+	/**
+	 * Get destination and month filter options.
+	 *
+	 * @covers \Quark\Search\Departures\get_destination_and_month_search_filter_data()
+	 *
+	 * @return void
+	 */
+	public function test_get_destination_and_month_search_filter_data(): void {
+		// Default expected.
+		$expected_default = [
+			'destinations' => [],
+			'months'       => [],
+		];
+
+		// Test with no departure post.
+		$actual = get_destination_and_month_search_filter_data();
+		$this->assertEquals( $expected_default, $actual );
+
+		// Create a departure post.
+		$departure_post_id = $this->factory()->post->create(
+			[
+				'post_type' => DEPARTURE_POST_TYPE,
+			]
+		);
+		$this->assertIsInt( $departure_post_id );
+
+		// Test with no destination and month.
+		$actual = get_destination_and_month_search_filter_data();
+		$this->assertEquals( $expected_default, $actual );
+
+		// Add month meta.
+		update_post_meta( $departure_post_id, 'start_date', '2026-01-01' );
+
+		// Bust cache.
+		bust_post_cache( $departure_post_id );
+
+		// Test with month but no destination.
+		$expected = [
+			'destinations' => [],
+			'months'       => [
+				'01-2026' => 'January 2026',
+			],
+		];
+		$actual   = get_destination_and_month_search_filter_data();
+		$this->assertEquals( $expected_default, $actual );
+
+		// Create expedition post.
+		$expedition_post_id = $this->factory()->post->create(
+			[
+				'post_type' => EXPEDITION_POST_TYPE,
+			]
+		);
+		$this->assertIsInt( $expedition_post_id );
+
+		// Update related expedition meta.
+		update_post_meta( $departure_post_id, 'related_expedition', $expedition_post_id );
+
+		// Bust cache.
+		bust_post_cache( $departure_post_id );
+
+		// Test with month and destination.
+		$expected = [
+			'destinations' => [],
+			'months'       => [
+				[
+					'label' => 'January 2026',
+					'value' => '01-2026',
+				],
+			],
+		];
+		$actual   = get_destination_and_month_search_filter_data();
+		$this->assertEquals( $expected, $actual );
+
+		// Create destination taxonomy terms.
+		$term1 = wp_insert_term( 'Destination 1', DESTINATION_TAXONOMY );
+		$this->assertIsArray( $term1 );
+		$term1 = get_term( $term1['term_id'], DESTINATION_TAXONOMY, ARRAY_A );
+		$this->assertIsArray( $term1 );
+
+		// Assign destination terms to the expedition post.
+		wp_set_object_terms( $expedition_post_id, [ $term1['term_id'] ], DESTINATION_TAXONOMY );
+
+		// Bust cache.
+		bust_post_cache( $departure_post_id );
+		bust_expedition_post_cache( $expedition_post_id );
+
+		// Test with month and destination.
+		$expected = [
+			'destinations' => [
+				[
+					'label'    => $term1['name'],
+					'id'       => $term1['term_id'],
+					'value'    => $term1['term_id'],
+					'image_id' => 0,
+					'children' => [],
+				],
+			],
+			'months'       => [
+				[
+					'label' => 'January 2026',
+					'value' => '01-2026',
+				],
+			],
+		];
+		$actual   = get_destination_and_month_search_filter_data();
+		$this->assertEquals( $expected, $actual );
+
+		// Create one more destination taxonomy term.
+		$term2 = wp_insert_term( 'Destination 2', DESTINATION_TAXONOMY );
+		$this->assertIsArray( $term2 );
+		$term2 = get_term( $term2['term_id'], DESTINATION_TAXONOMY, ARRAY_A );
+		$this->assertIsArray( $term2 );
+
+		// Create some media post.
+		$media_post_id1 = $this->factory()->attachment->create_upload_object( __DIR__ . '/data/test.jpg' );
+		$this->assertIsInt( $media_post_id1 );
+
+		// Update term1 with image.
+		update_term_meta( $term1['term_id'], 'destination_image', $media_post_id1 );
+
+		// Assign destination terms to the expedition post.
+		wp_set_object_terms( $expedition_post_id, [ $term1['term_id'], $term2['term_id'] ], DESTINATION_TAXONOMY );
+
+		// Bust cache.
+		bust_post_cache( $departure_post_id );
+		bust_expedition_post_cache( $expedition_post_id );
+
+		// Test with month and destination.
+		$expected = [
+			'destinations' => [
+				[
+					'label'    => $term1['name'],
+					'id'       => $term1['term_id'],
+					'value'    => $term1['term_id'],
+					'image_id' => $media_post_id1,
+					'children' => [],
+				],
+				[
+					'label'    => $term2['name'],
+					'id'       => $term2['term_id'],
+					'value'    => $term2['term_id'],
+					'image_id' => 0,
+					'children' => [],
+				],
+			],
+			'months'       => [
+				[
+					'label' => 'January 2026',
+					'value' => '01-2026',
+				],
+			],
+		];
+		$actual   = get_destination_and_month_search_filter_data();
+		$this->assertEquals( $expected, $actual );
+
+		// Create child terms of term1 and term2.
+		$child_term1 = wp_insert_term( 'Child Destination 1', DESTINATION_TAXONOMY, [ 'parent' => $term1['term_id'] ] );
+		$this->assertIsArray( $child_term1 );
+		$child_term1 = get_term( $child_term1['term_id'], DESTINATION_TAXONOMY, ARRAY_A );
+		$this->assertIsArray( $child_term1 );
+		$child_term2 = wp_insert_term( 'Child Destination 2', DESTINATION_TAXONOMY, [ 'parent' => $term2['term_id'] ] );
+		$this->assertIsArray( $child_term2 );
+		$child_term2 = get_term( $child_term2['term_id'], DESTINATION_TAXONOMY, ARRAY_A );
+		$this->assertIsArray( $child_term2 );
+
+		// Add image to child terms.
+		update_term_meta( $child_term1['term_id'], 'destination_image', $media_post_id1 );
+		update_term_meta( $child_term2['term_id'], 'destination_image', $media_post_id1 );
+
+		// Assign child terms to the expedition post.
+		wp_set_object_terms( $expedition_post_id, [ $term1['term_id'], $term2['term_id'], $child_term1['term_id'], $child_term2['term_id'] ], DESTINATION_TAXONOMY );
+
+		// Bust cache.
+		bust_post_cache( $departure_post_id );
+		bust_expedition_post_cache( $expedition_post_id );
+
+		// Test with month and destination.
+		$expected = [
+			'destinations' => [
+				[
+					'label'    => $term1['name'],
+					'id'       => $term1['term_id'],
+					'value'    => $term1['term_id'],
+					'image_id' => $media_post_id1,
+					'children' => [
+						[
+							'label'     => $child_term1['name'],
+							'id'        => $child_term1['term_id'],
+							'value'     => $child_term1['term_id'],
+							'parent_id' => $term1['term_id'],
+							'image_id'  => $media_post_id1,
+						],
+					],
+				],
+				[
+					'label'    => $term2['name'],
+					'id'       => $term2['term_id'],
+					'value'    => $term2['term_id'],
+					'image_id' => $media_post_id1,
+					'children' => [
+						[
+							'label'     => $child_term2['name'],
+							'id'        => $child_term2['term_id'],
+							'value'     => $child_term2['term_id'],
+							'parent_id' => $term2['term_id'],
+							'image_id'  => $media_post_id1,
+						],
+					],
+				],
+			],
+			'months'       => [
+				[
+					'label' => 'January 2026',
+					'value' => '01-2026',
+				],
+			],
+		];
+		$actual   = get_destination_and_month_search_filter_data();
+		$this->assertEquals( $expected, $actual );
+
+		// Create another expedition post.
+		$expedition_post_id2 = $this->factory()->post->create(
+			[
+				'post_type' => EXPEDITION_POST_TYPE,
+			]
+		);
+		$this->assertIsInt( $expedition_post_id2 );
+
+		// Create another departure post.
+		$departure_post_id2 = $this->factory()->post->create(
+			[
+				'post_type' => DEPARTURE_POST_TYPE,
+			]
+		);
+		$this->assertIsInt( $departure_post_id2 );
+
+		// Update related expedition meta.
+		update_post_meta( $departure_post_id2, 'related_expedition', $expedition_post_id2 );
+
+		// Update start date.
+		update_post_meta( $departure_post_id2, 'start_date', '2026-02-01' );
+
+		// Bust cache.
+		bust_post_cache( $departure_post_id2 );
+		bust_expedition_post_cache( $expedition_post_id2 );
+
+		// Test with month and destination.
+		$expected = [
+			'destinations' => [
+				[
+					'label'    => $term1['name'],
+					'id'       => $term1['term_id'],
+					'value'    => $term1['term_id'],
+					'image_id' => $media_post_id1,
+					'children' => [
+						[
+							'label'     => $child_term1['name'],
+							'id'        => $child_term1['term_id'],
+							'value'     => $child_term1['term_id'],
+							'parent_id' => $term1['term_id'],
+							'image_id'  => $media_post_id1,
+						],
+					],
+				],
+				[
+					'label'    => $term2['name'],
+					'id'       => $term2['term_id'],
+					'value'    => $term2['term_id'],
+					'image_id' => $media_post_id1,
+					'children' => [
+						[
+							'label'     => $child_term2['name'],
+							'id'        => $child_term2['term_id'],
+							'value'     => $child_term2['term_id'],
+							'parent_id' => $term2['term_id'],
+							'image_id'  => $media_post_id1,
+						],
+					],
+				],
+			],
+			'months'       => [
+				[
+					'label' => 'January 2026',
+					'value' => '01-2026',
+				],
+				[
+					'label' => 'February 2026',
+					'value' => '02-2026',
+				],
+			],
+		];
+		$actual   = get_destination_and_month_search_filter_data();
+		$this->assertEquals( $expected, $actual );
+
+		// Test filter by month.
+		$expected = [
+			'destinations' => [
+				[
+					'label'    => $term1['name'],
+					'id'       => $term1['term_id'],
+					'value'    => $term1['term_id'],
+					'image_id' => $media_post_id1,
+					'children' => [
+						[
+							'label'     => $child_term1['name'],
+							'id'        => $child_term1['term_id'],
+							'value'     => $child_term1['term_id'],
+							'parent_id' => $term1['term_id'],
+							'image_id'  => $media_post_id1,
+						],
+					],
+				],
+				[
+					'label'    => $term2['name'],
+					'id'       => $term2['term_id'],
+					'value'    => $term2['term_id'],
+					'image_id' => $media_post_id1,
+					'children' => [
+						[
+							'label'     => $child_term2['name'],
+							'id'        => $child_term2['term_id'],
+							'value'     => $child_term2['term_id'],
+							'parent_id' => $term2['term_id'],
+							'image_id'  => $media_post_id1,
+						],
+					],
+				],
+			],
+			'months'       => [
+				[
+					'label' => 'January 2026',
+					'value' => '01-2026',
+				],
+			],
+		];
+		$actual   = get_destination_and_month_search_filter_data( 0, '01-2026' );
+		$this->assertEquals( $expected, $actual );
+
+		/**
+		 * We can't test by destination term id as destination is linked to departure in Solr but not in WP.
+		 */
 	}
 }
