@@ -214,7 +214,7 @@ class Ship {
 			'post_modified'     => $modified_at,
 			'post_modified_gmt' => $modified_at,
 			'post_name'         => $post_name,
-			'post_content'      => prepare_content( strval( $post_content ) ),
+			'post_content'      => '',
 			'post_excerpt'      => $post_excerpt,
 			'post_status'       => $status,
 			'comment_status'    => 'closed',
