@@ -414,7 +414,7 @@ export const setPerPage = ( updatedValue: number ) => {
  * @param {number} settings.serverRenderData.resultCount The total number of results.
  * @param {number} settings.serverRenderData.perPage     The number of results per page.
  */
-export const initializeFetchPartialSettings = (
+export const initialize = (
 	settings: {
 		partial: string,
 		selector: string,
