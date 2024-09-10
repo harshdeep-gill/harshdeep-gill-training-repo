@@ -1,13 +1,14 @@
 /**
  * Globals
  */
-const { customElements, HTMLElement } = window;
+const { customElements } = window;
 
 /**
- * Results Class
+ * Internal Dependencies
  */
-export default class DatesRatesResultsElement extends HTMLElement {
-}
+import DatesRatesResultsElement from './results';
+import DatesRatesResultsCountElement from './count';
 
 // Define the element.
 customElements.define( 'quark-dates-rates-results', DatesRatesResultsElement );
+customElements.define( 'quark-dates-rates-results-count', DatesRatesResultsCountElement );

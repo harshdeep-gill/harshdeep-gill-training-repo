@@ -1,22 +1,36 @@
 @props( [
-	'results_count'   => 0,
-	'remaining_count' => 0,
-	'cards'           => [],
-	'expedition_id'   => 0,
+	'filter_data'    => [],
+	'result_count'   => 0,
+	'cards'          => [],
+	'page'           => 1,
+	'per_page'       => 10,
 ] )
 
-<x-dates-rates>
-	{{-- Header --}}
-	<x-dates-rates.header>
-		<x-dates-rates.filters />
-		<x-dates-rates.results.count count="{{ $results_count }}" />
-	</x-dates-rates.header>
+@php
+	if (
+		empty( $filter_data ) ||
+		! isset( $result_count ) ||
+		! isset( $page ) ||
+		! isset( $per_page ) ||
+		! is_array( $cards ) ||
+		1 > $per_page
+	) {
+		return;
+	}
+@endphp
 
-	{{-- Results --}}
+<x-dates-rates>
+	<x-dates-rates.header>
+		<x-dates-rates.filters :filter_data="$filter_data" />
+		<x-dates-rates.results.count />
+	</x-dates-rates.header>
 	<x-dates-rates.results
-		:count="$remaining_count"
-		:expedition_id="$expedition_id ?? 0"
+		page="{{ $page }}"
+		total_pages="{{ ceil( $result_count / $per_page ) }}"
+		per_page="{{ $per_page }}"
+		result_count="{{ $result_count }}"
 	>
-		<x-parts.dates-rates-cards :cards="$cards ?? []" />
+		<x-parts.dates-rates-cards :cards="$cards" />
 	</x-dates-rates.results>
+	<x-dates-rates.pagination />
 </x-dates-rates>

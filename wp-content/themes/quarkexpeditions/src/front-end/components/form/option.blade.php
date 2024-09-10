@@ -7,7 +7,9 @@
 <tp-multi-select-option
 	value="{{ $value }}"
 	label="{{ $label }}"
-	selected="{{ $selected }}"
+	@if ( ! empty( $selected ) )
+		selected="{{ $selected }}"
+	@endif
 >
 	{!! $slot !!}
 </tp-multi-select-option>
