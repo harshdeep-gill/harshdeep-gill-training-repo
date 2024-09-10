@@ -1,14 +1,14 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
-	"title": "Hero Content Right",
+	"title": "Hero Content Left",
 	"name": "quark/hero-content-left",
 	"description": "Right half of hero content.",
 	"category": "layout",
 	"keywords": [
 		"hero",
 		"content",
-		"right"
+		"left"
 	],
 	"textdomain": "qrk",
 	"attributes": {},
