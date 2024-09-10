@@ -15,7 +15,7 @@ export const DEFAULT_STATE: DatesRatesState = {
 	currency: 'USD',
 	seasons: [],
 	expeditions: [],
-	adventure_options: [],
+	adventureOptions: [],
 	months: [],
 	durations: [],
 	ships: [],
@@ -30,6 +30,7 @@ export const DEFAULT_STATE: DatesRatesState = {
 	shouldMarkupUpdate: false,
 	markup: '',
 	noResultsMarkup: '',
+	baseUrl: '',
 };
 
 /**

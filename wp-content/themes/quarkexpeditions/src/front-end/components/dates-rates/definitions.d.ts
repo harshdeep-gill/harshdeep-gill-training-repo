@@ -13,7 +13,7 @@ interface DatesRatesState {
 	currency: string,
 	seasons: DatesRatesFilterState[],
 	expeditions: DatesRatesFilterState[],
-	'adventure_options': DatesRatesFilterState[],
+	adventureOptions: DatesRatesFilterState[],
 	months: DatesRatesFilterState[],
 	durations: DatesRatesFilterState[],
 	ships: DatesRatesFilterState[],
@@ -23,9 +23,10 @@ interface DatesRatesState {
 	resultCount: number,
 	isLoading: boolean,
 	partial: string,
-	selector: '',
+	selector: string,
 	isInitialized: boolean,
 	shouldMarkupUpdate: boolean,
-	markup: '',
-	noResultsMarkup: '',
+	markup: string,
+	noResultsMarkup: string,
+	baseUrl: string
 }

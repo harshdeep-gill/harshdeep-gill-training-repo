@@ -51,8 +51,8 @@ export default class DatesRatesSelectedFilterPillElement extends HTMLElement {
 				removeExpedition( pillValue );
 				break;
 
-			// It is a adventure_options filter.
-			case 'adventure_options':
+			// It is a adventureOptions filter.
+			case 'adventureOptions':
 				removeAdventureOption( pillValue );
 				break;
 

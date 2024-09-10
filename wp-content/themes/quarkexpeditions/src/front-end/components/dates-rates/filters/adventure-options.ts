@@ -48,7 +48,7 @@ export default class DatesRatesFilterAdventureOptionsElement extends HTMLElement
 	 */
 	update( state: DatesRatesState ) {
 		// Get the state.
-		const { adventure_options: adventureOptions } = state;
+		const { adventureOptions } = state;
 
 		// Check if we should update.
 		this.isFilterUpdating = true;

@@ -1,12 +1,21 @@
 /**
  * Globals.
  */
-const { zustand, fetchPartial } = window;
+const {
+	zustand,
+	fetchPartial,
+	queryString,
+} = window;
 
 /**
  * Internal dependencies.
  */
 const { setState, getState } = zustand.stores.datesRates;
+
+/**
+ * External dependencies
+ */
+import { camelToSnakeCase } from '../../global/utility';
 
 /**
  * Update currency filter value.
@@ -49,6 +58,9 @@ export const addSeason = ( filter: DatesRatesFilterState ) => {
 		page: 1,
 	} );
 
+	// Update URL.
+	updateUrlByFilters();
+
 	// Fetch results.
 	fetchResults();
 };
@@ -67,6 +79,9 @@ export const removeSeason = ( filterValue: string ) => {
 		seasons: seasons.filter( ( existingFilter ) => existingFilter.value !== filterValue ),
 		page: 1,
 	} );
+
+	// Update URL.
+	updateUrlByFilters();
 
 	// Fetch results.
 	fetchResults();
@@ -93,6 +108,9 @@ export const addExpedition = ( filter: DatesRatesFilterState ) => {
 		page: 1,
 	} );
 
+	// Update URL.
+	updateUrlByFilters();
+
 	// Fetch results.
 	fetchResults();
 };
@@ -112,6 +130,9 @@ export const removeExpedition = ( filterValue: string ) => {
 		page: 1,
 	} );
 
+	// Update URL.
+	updateUrlByFilters();
+
 	// Fetch results.
 	fetchResults();
 };
@@ -123,7 +144,7 @@ export const removeExpedition = ( filterValue: string ) => {
  */
 export const addAdventureOption = ( filter: DatesRatesFilterState ) => {
 	// Get the state.
-	const { adventure_options: adventureOptions }: DatesRatesState = getState();
+	const { adventureOptions }: DatesRatesState = getState();
 
 	// Check if the given filter is already selected.
 	if ( adventureOptions.find( ( existingFilter ) => existingFilter.value === filter.value ) ) {
@@ -133,9 +154,12 @@ export const addAdventureOption = ( filter: DatesRatesFilterState ) => {
 
 	// Set the state
 	setState( {
-		adventure_options: [ ...adventureOptions, filter ],
+		adventureOptions: [ ...adventureOptions, filter ],
 		page: 1,
 	} );
+
+	// Update URL.
+	updateUrlByFilters();
 
 	// Fetch results.
 	fetchResults();
@@ -148,13 +172,16 @@ export const addAdventureOption = ( filter: DatesRatesFilterState ) => {
  */
 export const removeAdventureOption = ( filterValue: string ) => {
 	// Get the state.
-	const { adventure_options: adventureOptions }: DatesRatesState = getState();
+	const { adventureOptions }: DatesRatesState = getState();
 
 	// Set the state.
 	setState( {
-		adventure_options: adventureOptions.filter( ( existingFilter ) => existingFilter.value !== filterValue ),
+		adventureOptions: adventureOptions.filter( ( existingFilter ) => existingFilter.value !== filterValue ),
 		page: 1,
 	} );
+
+	// Update URL.
+	updateUrlByFilters();
 
 	// Fetch results.
 	fetchResults();
@@ -181,6 +208,9 @@ export const addDepartureMonth = ( filter: DatesRatesFilterState ) => {
 		page: 1,
 	} );
 
+	// Update URL.
+	updateUrlByFilters();
+
 	// Fetch results.
 	fetchResults();
 };
@@ -199,6 +229,9 @@ export const removeDepartureMonth = ( filterValue: string ) => {
 		months: months.filter( ( existingFilter ) => existingFilter.value !== filterValue ),
 		page: 1,
 	} );
+
+	// Update URL.
+	updateUrlByFilters();
 
 	// Fetch results.
 	fetchResults();
@@ -225,6 +258,9 @@ export const addDuration = ( filter: DatesRatesFilterState ) => {
 		page: 1,
 	} );
 
+	// Update URL.
+	updateUrlByFilters();
+
 	// Fetch results.
 	fetchResults();
 };
@@ -243,6 +279,9 @@ export const removeDuration = ( filterValue: string ) => {
 		durations: durations.filter( ( existingFilter ) => existingFilter.value !== filterValue ),
 		page: 1,
 	} );
+
+	// Update URL.
+	updateUrlByFilters();
 
 	// Fetch results.
 	fetchResults();
@@ -269,6 +308,9 @@ export const addShip = ( filter: DatesRatesFilterState ) => {
 		page: 1,
 	} );
 
+	// Update URL.
+	updateUrlByFilters();
+
 	// Fetch results.
 	fetchResults();
 };
@@ -288,6 +330,9 @@ export const removeShip = ( filterValue: string ) => {
 		page: 1,
 	} );
 
+	// Update URL.
+	updateUrlByFilters();
+
 	// Fetch results.
 	fetchResults();
 };
@@ -300,7 +345,7 @@ export const clearAllFilters = () => {
 	setState( {
 		seasons: [],
 		expeditions: [],
-		adventure_options: [],
+		adventureOptions: [],
 		months: [],
 		durations: [],
 		ships: [],
@@ -449,6 +494,7 @@ export const initialize = (
 		partial: settings.partial,
 		selector: settings.selector,
 		isInitialized: true,
+		baseUrl: window.location.origin + window.location.pathname,
 	};
 
 	// Check if we have server render data.
@@ -479,7 +525,7 @@ const fetchResults = () => {
 		selector,
 		seasons,
 		expeditions,
-		adventure_options: adventureOptions,
+		adventureOptions,
 		months,
 		durations,
 		ships,
@@ -537,7 +583,7 @@ const pluckValues = ( list: DatesRatesFilterState[] ): string[] | number[] => li
  */
 const resultsFetchedCallback = ( response: PartialData ) => {
 	// Get state.
-	const { perPage, totalPages, page }: DatesRatesState = getState();
+	const { perPage, page }: DatesRatesState = getState();
 
 	// Get the data.
 	const {
@@ -551,7 +597,7 @@ const resultsFetchedCallback = ( response: PartialData ) => {
 		markup: resultCount !== 0 ? markup : '',
 		noResultsMarkup: noResultsMarkup ?? '',
 		resultCount,
-		totalPages: resultCount !== 0 ? Math.ceil( resultCount / perPage ) : totalPages,
+		totalPages: resultCount !== 0 ? Math.ceil( resultCount / perPage ) : 1,
 		page: resultCount !== 0 ? page : 1,
 		shouldMarkupUpdate: true,
 	} );
@@ -567,4 +613,123 @@ export const markupUpdated = () => {
 		isLoading: false,
 		shouldMarkupUpdate: false,
 	} );
+};
+
+/**
+ * Build url from selected filters and update url.
+ */
+const updateUrlByFilters = () => {
+	// Get selected filters from state.
+	const {
+		seasons,
+		expeditions,
+		adventureOptions,
+		months,
+		durations,
+		ships,
+	}: DatesRatesState = getState();
+
+	// Build url from filters.
+	const urlWithParams: string = buildUrlFromFilters( {
+		seasons: pluckValues( seasons ),
+		expeditions: pluckValues( expeditions ),
+		adventureOptions: pluckValues( adventureOptions ),
+		months: pluckValues( months ),
+		durations: pluckValues( durations ),
+		ships: pluckValues( ships ),
+	} );
+
+	// Update the url with selected/added filters.
+	if ( urlWithParams ) {
+		updateUrl( urlWithParams );
+	}
+};
+
+/**
+ * Builds the URL from the selected filters.
+ *
+ * @param {Object}              filters                  The selected filters.
+ *
+ * @param {string[] | number[]} filters.seasons          seasons.
+ * @param {string[] | number[]} filters.expeditions      expeditions.
+ * @param {string[] | number[]} filters.adventureOptions adventure options.
+ * @param {string[] | number[]} filters.months           departure months.
+ * @param {string[] | number[]} filters.durations        departure durations.
+ * @param {string[] | number[]} filters.ships            ships.
+ *
+ * @return {string} The URL with params.
+ */
+const buildUrlFromFilters = (
+	filters: {
+		seasons: string[] | number[],
+		expeditions: string[] | number[],
+		adventureOptions: string[] | number[],
+		months: string[] | number[],
+		durations: string[] | number[],
+		ships: string[] | number[],
+	}
+): string => {
+	// If queryString not available, early return.
+	if ( ! queryString ) {
+		// Return early.
+		return '';
+	}
+
+	// Get current state.
+	const currentState: DatesRatesState = getState();
+	const { baseUrl } = currentState;
+
+	// Prepare URL params.
+	const urlParams: {
+		[ key: string ]: string;
+	} = {
+		// Preserve other params if any.
+		...queryString.parse( window.location.search ),
+	};
+
+	// Loop through selected filters and build url params.
+	for ( const key in filters ) {
+		// Convert camelCased key to snake_caked key.
+		const snakeCasedKey: string = camelToSnakeCase( key );
+
+		// @ts-ignore Stringified filters.
+		const stringifiedFilters = filters[ key ].toString();
+
+		// Set the url params value based on key.
+		if ( stringifiedFilters ) {
+			urlParams[ snakeCasedKey ] = stringifiedFilters;
+		}
+	}
+
+	/**
+	 * Return url with params.
+	 *
+	 * e.g. https://example.com/?expeditions=23,22&seasons=2023-04,2024-05
+	 */
+	return queryString.stringifyUrl(
+		{
+			url: baseUrl,
+			query: urlParams,
+		},
+	);
+};
+
+/**
+ * Update Url.
+ *
+ * @param {string} url Url.
+ */
+const updateUrl = ( url: string ) => {
+	// If url is not present, return.
+	if ( ! url ) {
+		// Early Return.
+		return;
+	}
+
+	// If 'pushState' exists, use that, else send the url to the url using window.location.
+	if ( window.history.pushState ) {
+		window.history.pushState( { path: url }, '', url );
+	} else {
+		window.location.href = url;
+	}
 };
