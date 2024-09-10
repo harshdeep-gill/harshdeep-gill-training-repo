@@ -18,6 +18,7 @@ use function Quark\Expeditions\get as get_expedition;
 use function Quark\Itineraries\get as get_itinerary;
 use function Quark\Itineraries\get_mandatory_transfer_price;
 use function Quark\Itineraries\get_supplemental_price;
+use function Quark\Localization\get_currencies;
 use function Quark\Ships\get as get_ship;
 use function Quark\Softrip\AdventureOptions\get_adventure_option_by_departure_post_id;
 use function Quark\Softrip\Departures\get_related_ship;
@@ -29,17 +30,16 @@ use function Quark\Softrip\Promotions\get_promotions_by_id;
 
 use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
 use const Quark\CabinCategories\CABIN_CLASS_TAXONOMY;
-use const Quark\Core\AUD_CURRENCY;
-use const Quark\Core\CAD_CURRENCY;
-use const Quark\Core\CURRENCIES;
-use const Quark\Core\EUR_CURRENCY;
-use const Quark\Core\GBP_CURRENCY;
-use const Quark\Core\USD_CURRENCY;
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
 use const Quark\Departures\SPOKEN_LANGUAGE_TAXONOMY;
 use const Quark\Expeditions\DESTINATION_TAXONOMY;
 use const Quark\Expeditions\POST_TYPE as EXPEDITION_POST_TYPE;
 use const Quark\Itineraries\DEPARTURE_LOCATION_TAXONOMY;
+use const Quark\Localization\AUD_CURRENCY;
+use const Quark\Localization\CAD_CURRENCY;
+use const Quark\Localization\EUR_CURRENCY;
+use const Quark\Localization\GBP_CURRENCY;
+use const Quark\Localization\USD_CURRENCY;
 
 /**
  * Get all data to be sent to ingestor.
@@ -976,8 +976,11 @@ function get_occupancies_data( int $itinerary_post_id = 0, int $departure_post_i
 	$mandatory_transfer_price = [];
 	$supplemental_price       = [];
 
+	// Available currencies.
+	$available_currencies = get_currencies();
+
 	// Get mandatory transfer and supplemental price for each currency.
-	foreach ( CURRENCIES as $currency ) {
+	foreach ( $available_currencies as $currency ) {
 		$mandatory_transfer_price[ $currency ] = get_mandatory_transfer_price( $itinerary_post_id, $currency );
 		$supplemental_price[ $currency ]       = get_supplemental_price( $itinerary_post_id, $currency );
 	}
@@ -1032,7 +1035,7 @@ function get_occupancies_data( int $itinerary_post_id = 0, int $departure_post_i
 		];
 
 		// Set price per person, mandatory transfer price per person and supplemental price per person for each currency.
-		foreach ( CURRENCIES as $currency ) {
+		foreach ( $available_currencies as $currency ) {
 			// Set price per person.
 			$occupancy_data['prices'][ $currency ]['pricePerPerson'] = $occupancy[ 'price_per_person_' . strtolower( $currency ) ];
 
@@ -1060,7 +1063,7 @@ function get_occupancies_data( int $itinerary_post_id = 0, int $departure_post_i
 			$promotion_code = $promotion[0]['code'];
 
 			// Add to each price.
-			foreach ( CURRENCIES as $currency ) {
+			foreach ( $available_currencies as $currency ) {
 				// Price.
 				$promo_price_per_person = $occupancy_promotion[ 'price_per_person_' . strtolower( $currency ) ];
 
@@ -1390,8 +1393,11 @@ function get_paid_adventure_options_data( int $departure_post_id = 0 ): array {
 			],
 		];
 
+		// Currencies.
+		$currencies = get_currencies();
+
 		// Set price per person for each currency.
-		foreach ( CURRENCIES as $currency ) {
+		foreach ( $currencies as $currency ) {
 			$paid_adventure_option_data['price'][ $currency ]['pricePerPerson'] = $adventure_option[ 'price_per_person_' . strtolower( $currency ) ];
 		}
 

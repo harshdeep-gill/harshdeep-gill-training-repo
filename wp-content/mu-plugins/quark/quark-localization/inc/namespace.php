@@ -9,9 +9,20 @@ namespace Quark\Localization;
 
 use function Quark\Core\doing_tests;
 
-use const Quark\Core\CURRENCIES;
-use const Quark\Core\USD_CURRENCY;
+const USD_CURRENCY = 'USD';
+const AUD_CURRENCY = 'AUD';
+const CAD_CURRENCY = 'CAD';
+const EUR_CURRENCY = 'EUR';
+const GBP_CURRENCY = 'GBP';
+const CURRENCIES   = [
+	USD_CURRENCY,
+	AUD_CURRENCY,
+	CAD_CURRENCY,
+	EUR_CURRENCY,
+	GBP_CURRENCY,
+];
 
+// Default currency and cookie.
 const DEFAULT_CURRENCY = USD_CURRENCY;
 const CURRENCY_COOKIE  = 'STYXKEY_currency';
 
@@ -22,6 +33,22 @@ const CURRENCY_COOKIE  = 'STYXKEY_currency';
  */
 function bootstrap(): void {
 	// Add actions.
+}
+
+/**
+ * Get currencies.
+ *
+ * @return array{
+ *   0: 'USD',
+ *   1: 'AUD',
+ *   2: 'CAD',
+ *   3: 'EUR',
+ *   4: 'GBP',
+ * }
+ */
+function get_currencies(): array {
+	// Return the currencies.
+	return CURRENCIES;
 }
 
 /**
@@ -49,7 +76,7 @@ function get_current_currency(): string {
 		$currency = strtoupper( sanitize_text_field( $_COOKIE[ CURRENCY_COOKIE ] ) );
 
 		// Validate currency.
-		if ( in_array( $currency, CURRENCIES, true ) ) {
+		if ( in_array( $currency, get_currencies(), true ) ) {
 			$current_currency = $currency;
 		}
 	}

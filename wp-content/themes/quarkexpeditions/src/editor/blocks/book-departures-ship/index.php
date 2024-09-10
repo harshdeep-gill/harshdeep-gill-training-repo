@@ -14,8 +14,6 @@ use function Quark\Localization\get_current_currency;
 use function Quark\Ships\get as get_ship;
 use function Quark\Search\Departures\search;
 
-use const Quark\Core\USD_CURRENCY;
-
 const COMPONENT = 'parts.book-departures-ships';
 
 /**

@@ -27,13 +27,13 @@ use function Quark\Search\Departures\reindex_departures;
 use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
 use const Quark\CabinCategories\CABIN_CLASS_TAXONOMY;
 use const Quark\CabinCategories\POST_TYPE as CABIN_POST_TYPE;
-use const Quark\Core\EUR_CURRENCY;
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
 use const Quark\Departures\SPOKEN_LANGUAGE_TAXONOMY;
 use const Quark\Expeditions\DESTINATION_TAXONOMY;
 use const Quark\Expeditions\POST_TYPE as EXPEDITION_POST_TYPE;
 use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
 use const Quark\Localization\CURRENCY_COOKIE;
+use const Quark\Localization\EUR_CURRENCY;
 use const Quark\Search\Departures\REINDEX_POST_IDS_OPTION_KEY;
 use const Quark\Search\Departures\SCHEDULE_REINDEX_HOOK;
 

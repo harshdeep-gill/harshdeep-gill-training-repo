@@ -17,10 +17,10 @@ use function Quark\Softrip\OccupancyPromotions\delete_occupancy_promotions_by_oc
 use function Quark\Softrip\OccupancyPromotions\get_lowest_price as get_occupancy_promotion_lowest_price;
 use function Quark\Softrip\OccupancyPromotions\update_occupancy_promotions;
 use function Quark\Softrip\add_prefix_to_table_name;
+use function Quark\Localization\get_currencies;
 
 use const Quark\CabinCategories\POST_TYPE as CABIN_CATEGORY_POST_TYPE;
-use const Quark\Core\CURRENCIES;
-use const Quark\Core\USD_CURRENCY;
+use const Quark\Localization\USD_CURRENCY;
 
 const CACHE_KEY_PREFIX = 'quark_softrip_occupancy';
 const CACHE_GROUP      = 'quark_softrip_occupancies';
@@ -339,8 +339,11 @@ function format_data( array $raw_occupancy_data = [], int $cabin_category_post_i
 		'price_per_person_eur'     => 0,
 	];
 
+	// Currencies.
+	$currencies = get_currencies();
+
 	// Loop through the currencies.
-	foreach ( CURRENCIES as $currency ) {
+	foreach ( $currencies as $currency ) {
 		// Check if the currency is set and price per person exists.
 		if ( empty( $raw_occupancy_data['prices'][ $currency ] ) || ! is_array( $raw_occupancy_data['prices'][ $currency ] ) || empty( $raw_occupancy_data['prices'][ $currency ]['pricePerPerson'] ) ) {
 			continue;
@@ -670,7 +673,7 @@ function get_lowest_price( int $post_id = 0, string $currency = USD_CURRENCY ): 
 	];
 
 	// Return default values if no post ID.
-	if ( empty( $post_id ) || ! in_array( $currency, CURRENCIES, true ) ) {
+	if ( empty( $post_id ) || ! in_array( $currency, get_currencies(), true ) ) {
 		return $lowest_price;
 	}
 
@@ -1045,7 +1048,7 @@ function get_lowest_price_by_cabin_category_and_departure( int $cabin_category_p
 	];
 
 	// Return default values if no post ID.
-	if ( empty( $cabin_category_post_id ) || ! in_array( $currency, CURRENCIES, true ) ) {
+	if ( empty( $cabin_category_post_id ) || ! in_array( $currency, get_currencies(), true ) ) {
 		return $lowest_price;
 	}
 
@@ -1108,7 +1111,7 @@ function get_lowest_price_by_cabin_category_and_departure_and_promotion_code( in
 	$lowest_price = 0;
 
 	// Return default values if no post ID.
-	if ( empty( $cabin_category_post_id ) || empty( $departure_post_id ) || empty( $promotion_code ) || ! in_array( $currency, CURRENCIES, true ) ) {
+	if ( empty( $cabin_category_post_id ) || empty( $departure_post_id ) || empty( $promotion_code ) || ! in_array( $currency, get_currencies(), true ) ) {
 		return $lowest_price;
 	}
 
@@ -1281,7 +1284,7 @@ function add_supplemental_and_mandatory_price( array $lowest_price = [ 'discount
 	];
 
 	// Bail if empty.
-	if ( ! is_array( $lowest_price ) || empty( $departure_post_id ) || ! in_array( $currency, CURRENCIES, true ) ) {
+	if ( ! is_array( $lowest_price ) || empty( $departure_post_id ) || ! in_array( $currency, get_currencies(), true ) ) {
 		return $lowest_price_with_supplemental;
 	}
 

@@ -18,6 +18,7 @@ use function Quark\Departures\get_paid_adventure_options;
 use function Quark\Expeditions\get as get_expedition_post;
 use function Quark\Expeditions\get_destination_term_by_code;
 use function Quark\Itineraries\get_season;
+use function Quark\Localization\get_currencies;
 use function Quark\Localization\get_current_currency;
 use function Quark\Search\update_post_in_index;
 use function Quark\Ships\get as get_ship_post;
@@ -25,8 +26,6 @@ use function Quark\Softrip\Departures\get_lowest_price;
 use function Quark\Softrip\Occupancies\get_masks_mapping;
 
 use const Quark\CabinCategories\CABIN_CLASS_TAXONOMY;
-use const Quark\Core\CURRENCIES;
-use const Quark\Core\USD_CURRENCY;
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
 use const Quark\Departures\SPOKEN_LANGUAGE_TAXONOMY;
 use const Quark\Expeditions\DESTINATION_TAXONOMY;
@@ -86,8 +85,11 @@ function filter_solr_build_document( Document $document = null, WP_Post $post = 
 	// Set post title for sorting.
 	$document->setField( 'post_title_s', get_the_title( $post->ID ) );
 
+	// Currencies.
+	$currencies = get_currencies();
+
 	// Price.
-	foreach ( CURRENCIES as $currency ) {
+	foreach ( $currencies as $currency ) {
 		// Lowercase currency.
 		$currency = strtolower( $currency );
 

@@ -11,9 +11,9 @@ use WP_Query;
 use Solarium\QueryType\Select\Query\Query;
 
 use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
-use const Quark\Core\USD_CURRENCY;
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
 use const Quark\Expeditions\DESTINATION_TAXONOMY;
+use const Quark\Localization\DEFAULT_CURRENCY;
 
 /**
  * Class Search
@@ -520,7 +520,7 @@ class Search {
 	 *
 	 * @return void
 	 */
-	public function set_sort( string $sort = '', string $currency = USD_CURRENCY ): void {
+	public function set_sort( string $sort = '', string $currency = DEFAULT_CURRENCY ): void {
 		// Return early if sort is not set or field mapping is not set.
 		if ( empty( $sort ) ) {
 			return;
