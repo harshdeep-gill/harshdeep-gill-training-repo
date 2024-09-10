@@ -331,7 +331,8 @@ function parse_filters( array $filters = [] ): array {
 /**
  * Fetch Departure as per the filters provided.
  *
- * @param mixed[] $filters Filters.
+ * @param mixed[] $filters      Filters.
+ * @param bool    $retrieve_all Retrieve all.
  *
  * @return array{
  *     ids: int[],
