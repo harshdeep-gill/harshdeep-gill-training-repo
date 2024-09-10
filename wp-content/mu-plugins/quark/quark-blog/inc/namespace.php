@@ -233,7 +233,7 @@ function seo_structured_data( array $schema = [] ): array {
  *    author?: array{
  *        "@type": string,
  *        name: string,
- *    }
+ *    }[],
  * }
  */
 function get_structured_data( int $post_id = 0 ): array {
@@ -260,14 +260,16 @@ function get_structured_data( int $post_id = 0 ): array {
 
 	// Get blog author.
 	if ( ! empty( $post['post_meta']['blog_authors'] ) && is_array( $post['post_meta']['blog_authors'] ) ) {
-		$blog_author = get_post_authors( absint( $post['post_meta']['blog_authors'][0] ) );
+		foreach ( $post['post_meta']['blog_authors'] as $blog_author_id ) {
+			$blog_author = get_post_authors( absint( $blog_author_id ) );
 
-		// Check if blog author is an instance of WP_Post and add to schema.
-		if ( $blog_author['post'] instanceof WP_Post ) {
-			$schema['author'] = [
-				'@type' => 'Person',
-				'name'  => $blog_author['post']->post_title,
-			];
+			// Check if blog author is an instance of WP_Post and add to schema.
+			if ( $blog_author['post'] instanceof WP_Post ) {
+				$schema['author'][] = [
+					'@type' => 'Person',
+					'name'  => $blog_author['post']->post_title,
+				];
+			}
 		}
 	}
 
