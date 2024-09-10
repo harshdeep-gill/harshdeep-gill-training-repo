@@ -215,7 +215,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 	}
 
 	// Image.
-	if ( is_array( $attributes['image'] ) && ! empty( $attributes['image']['id'] ) ) {
+	if ( ! empty( $attributes['image'] ) && is_array( $attributes['image'] ) && ! empty( $attributes['image']['id'] ) ) {
 		$component_attributes['image_id'] = $attributes['image']['id'];
 	}
 
