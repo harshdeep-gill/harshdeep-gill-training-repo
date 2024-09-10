@@ -1353,7 +1353,21 @@ function get_destination_and_month_search_filter_data( int $destination_term_id 
 				} else {
 					// Validate parent.
 					if ( empty( $destinations[ $destination['parent'] ] ) ) {
-						continue;
+						// Get parent term.
+						$parent_term = get_term( $destination['parent'], DESTINATION_TAXONOMY, ARRAY_A );
+
+						// Validate parent term.
+						if ( ! is_array( $parent_term ) ) {
+							continue;
+						}
+
+						// Prepare parent term.
+						$destinations[ $destination['parent'] ] = [
+							'id'       => $destination['parent'],
+							'label'    => $parent_term['name'],
+							'value'    => $destination['parent'],
+							'children' => [],
+						];
 					}
 
 					// Initialize children if empty.
