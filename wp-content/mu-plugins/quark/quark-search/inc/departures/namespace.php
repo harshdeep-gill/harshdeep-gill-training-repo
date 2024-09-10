@@ -1347,6 +1347,7 @@ function get_destination_and_month_search_filter_data( int $destination_term_id 
 							'id'       => $destination['term_id'],
 							'label'    => $destination['name'],
 							'value'    => $destination['term_id'],
+							'image_id' => absint( get_term_meta( $destination['term_id'], 'destination_image', true ) ),
 							'children' => [],
 						];
 					}
@@ -1366,6 +1367,7 @@ function get_destination_and_month_search_filter_data( int $destination_term_id 
 							'id'       => $destination['parent'],
 							'label'    => $parent_term['name'],
 							'value'    => $destination['parent'],
+							'image_id' => absint( get_term_meta( $destination['term_id'], 'destination_image', true ) ),
 							'children' => [],
 						];
 					}
@@ -1386,6 +1388,7 @@ function get_destination_and_month_search_filter_data( int $destination_term_id 
 						'label'     => $destination['name'],
 						'value'     => $destination['term_id'],
 						'parent_id' => $destination['parent'],
+						'image_id'  => absint( get_term_meta( $destination['term_id'], 'destination_image', true ) ),
 					];
 				}
 			}
