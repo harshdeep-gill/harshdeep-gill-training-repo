@@ -366,6 +366,7 @@ function search( array $filters = [], bool $retrieve_all = false ): array {
 	$search->set_sort( $sort, $filters['currency'] );
 	$search->set_destinations( $destinations );
 
+	// Set page and posts per page.
 	if ( empty( $retrieve_all ) ) {
 		$search->set_page( absint( $filters['page'] ) );
 		$search->set_posts_per_page( absint( $filters['posts_per_load'] ?: 5 ) );
