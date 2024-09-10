@@ -645,26 +645,12 @@ function transform_drupal_media_tags( string $content = '' ): string {
 
 					// If video URL found then build HTML.
 					if ( ! empty( $video_url ) ) {
-						// Prepare quark/fancy video block attrs.
-						$attrs = [
-							'videoUrl' => $video_url,
-							'image'    => [
-								'id'     => $image,
-								'src'    => $src[0],
-								'alt'    => $alt,
-								'width'  => $src[1],
-								'height' => $src[2],
-							],
-						];
-
-						// Return the block.
-						$image_html = serialize_block(
-							[
-								'blockName'    => 'quark/fancy-video',
-								'attrs'        => $attrs,
-								'innerContent' => [],
-							]
-						) . PHP_EOL;
+						$image_html = sprintf(
+							'<img class="fancy-video" src="%s" id="%s" alt="%s" />',
+							$video_url,
+							$image,
+							$alt
+						);
 					}
 				} else {
 					// Build image HTML.
@@ -684,7 +670,7 @@ function transform_drupal_media_tags( string $content = '' ): string {
 							'<figure class="wp-block-image %s">%s<figcaption>%s</figcaption></figure>',
 							$align[1] ?? 'alignnone',
 							$image_html,
-							$caption[1]
+							wp_strip_all_tags( html_entity_decode( $caption[1] ) ),
 						);
 					}
 				}
