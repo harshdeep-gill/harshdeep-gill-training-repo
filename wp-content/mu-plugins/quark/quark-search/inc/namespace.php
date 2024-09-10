@@ -11,6 +11,8 @@ use SolrPower_Sync;
 
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
 
+const REST_API_NAMESPACE = 'quark-search/v1';
+
 /**
  * Bootstrap.
  *
@@ -20,6 +22,10 @@ function bootstrap(): void {
 	// Filers.
 	add_filter( 'solr_scheme', __NAMESPACE__ . '\\solr_scheme' );
 	add_filter( 'solr_post_types', __NAMESPACE__ . '\\solr_post_types' );
+
+	// REST API.
+	add_action( 'rest_api_init', __NAMESPACE__ . '\\register_rest_endpoints' );
+	add_filter( 'travelopia_security_public_rest_api_routes', __NAMESPACE__ . '\\public_rest_api_routes' );
 }
 
 /**
@@ -67,4 +73,39 @@ function update_post_in_index( int $post_id = 0 ): void {
 	// Update post in index.
 	$sync = SolrPower_Sync::get_instance();
 	$sync->handle_modified( $post_id );
+}
+
+/**
+ * Register REST API endpoints.
+ *
+ * @return void
+ */
+function register_rest_endpoints(): void {
+	// Require REST API classes.
+	require_once __DIR__ . '/rest-api/class-destination-month-filters.php';
+
+	// REST API endpoints.
+	$endpoints = [
+		new REST_API\Destination_Month_Filters(),
+	];
+
+	// Register routes.
+	foreach ( $endpoints as $endpoint ) {
+		$endpoint->register_routes();
+	}
+}
+
+/**
+ * Register public REST API routes.
+ *
+ * @param string[] $routes Public routes.
+ *
+ * @return string[]
+ */
+function public_rest_api_routes( array $routes = [] ): array {
+	// Add REST API routes.
+	$routes[] = '/' . REST_API_NAMESPACE . '/filter-options/by-destination-and-month';
+
+	// Return routes.
+	return $routes;
 }
