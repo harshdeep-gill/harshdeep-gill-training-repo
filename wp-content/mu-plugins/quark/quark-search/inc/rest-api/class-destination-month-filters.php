@@ -39,7 +39,7 @@ class Destination_Month_Filters {
 						'required'          => false,
 						'type'              => 'string',
 						'description'       => __( 'Destination Term ID', 'qrk' ),
-						'sanitize_callback' => 'sanitize_text_field',
+						'sanitize_callback' => 'absint',
 					],
 					'month'               => [
 						'required'          => false,
@@ -71,7 +71,7 @@ class Destination_Month_Filters {
 
 		// Get the month.
 		$month = $request->get_param( 'month' );
-		$month = ! empty( $month ) ? sanitize_text_field( strval( $month ) ) : '';
+		$month = ! empty( $month ) ? strval( $month ) : '';
 
 		// Get filter options by terms.
 		$filter_options = get_destination_and_month_search_filter_data( $destination_term_id, $month );
