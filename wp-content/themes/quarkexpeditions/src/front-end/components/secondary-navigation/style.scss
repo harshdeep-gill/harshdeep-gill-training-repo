@@ -102,6 +102,14 @@
 		display: block;
 		line-height: 1.5;
 		padding: var(--spacing-3) var(--spacing-4);
+
+		&:hover {
+			text-decoration-color: currentcolor;
+
+			@media (hover: hover) {
+				text-decoration-color: var(--color-yellow);
+			}
+		}
 	}
 
 	&__navigation-dropdown {
