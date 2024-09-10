@@ -1320,6 +1320,7 @@ class Test_Search extends WP_UnitTestCase {
 					'label'    => $term1['name'],
 					'id'       => $term1['term_id'],
 					'value'    => $term1['term_id'],
+					'image_id' => 0,
 					'children' => [],
 				],
 			],
@@ -1339,6 +1340,13 @@ class Test_Search extends WP_UnitTestCase {
 		$term2 = get_term( $term2['term_id'], DESTINATION_TAXONOMY, ARRAY_A );
 		$this->assertIsArray( $term2 );
 
+		// Create some media post.
+		$media_post_id1 = $this->factory()->attachment->create_upload_object( __DIR__ . '/data/test.jpg' );
+		$this->assertIsInt( $media_post_id1 );
+
+		// Update term1 with image.
+		update_term_meta( $term1['term_id'], 'destination_image', $media_post_id1 );
+
 		// Assign destination terms to the expedition post.
 		wp_set_object_terms( $expedition_post_id, [ $term1['term_id'], $term2['term_id'] ], DESTINATION_TAXONOMY );
 
@@ -1353,12 +1361,14 @@ class Test_Search extends WP_UnitTestCase {
 					'label'    => $term1['name'],
 					'id'       => $term1['term_id'],
 					'value'    => $term1['term_id'],
+					'image_id' => $media_post_id1,
 					'children' => [],
 				],
 				[
 					'label'    => $term2['name'],
 					'id'       => $term2['term_id'],
 					'value'    => $term2['term_id'],
+					'image_id' => 0,
 					'children' => [],
 				],
 			],
@@ -1382,6 +1392,10 @@ class Test_Search extends WP_UnitTestCase {
 		$child_term2 = get_term( $child_term2['term_id'], DESTINATION_TAXONOMY, ARRAY_A );
 		$this->assertIsArray( $child_term2 );
 
+		// Add image to child terms.
+		update_term_meta( $child_term1['term_id'], 'destination_image', $media_post_id1 );
+		update_term_meta( $child_term2['term_id'], 'destination_image', $media_post_id1 );
+
 		// Assign child terms to the expedition post.
 		wp_set_object_terms( $expedition_post_id, [ $term1['term_id'], $term2['term_id'], $child_term1['term_id'], $child_term2['term_id'] ], DESTINATION_TAXONOMY );
 
@@ -1396,12 +1410,14 @@ class Test_Search extends WP_UnitTestCase {
 					'label'    => $term1['name'],
 					'id'       => $term1['term_id'],
 					'value'    => $term1['term_id'],
+					'image_id' => $media_post_id1,
 					'children' => [
 						[
 							'label'     => $child_term1['name'],
 							'id'        => $child_term1['term_id'],
 							'value'     => $child_term1['term_id'],
 							'parent_id' => $term1['term_id'],
+							'image_id'  => $media_post_id1,
 						],
 					],
 				],
@@ -1409,12 +1425,14 @@ class Test_Search extends WP_UnitTestCase {
 					'label'    => $term2['name'],
 					'id'       => $term2['term_id'],
 					'value'    => $term2['term_id'],
+					'image_id' => $media_post_id1,
 					'children' => [
 						[
 							'label'     => $child_term2['name'],
 							'id'        => $child_term2['term_id'],
 							'value'     => $child_term2['term_id'],
 							'parent_id' => $term2['term_id'],
+							'image_id'  => $media_post_id1,
 						],
 					],
 				],
@@ -1462,12 +1480,14 @@ class Test_Search extends WP_UnitTestCase {
 					'label'    => $term1['name'],
 					'id'       => $term1['term_id'],
 					'value'    => $term1['term_id'],
+					'image_id' => $media_post_id1,
 					'children' => [
 						[
 							'label'     => $child_term1['name'],
 							'id'        => $child_term1['term_id'],
 							'value'     => $child_term1['term_id'],
 							'parent_id' => $term1['term_id'],
+							'image_id'  => $media_post_id1,
 						],
 					],
 				],
@@ -1475,12 +1495,14 @@ class Test_Search extends WP_UnitTestCase {
 					'label'    => $term2['name'],
 					'id'       => $term2['term_id'],
 					'value'    => $term2['term_id'],
+					'image_id' => $media_post_id1,
 					'children' => [
 						[
 							'label'     => $child_term2['name'],
 							'id'        => $child_term2['term_id'],
 							'value'     => $child_term2['term_id'],
 							'parent_id' => $term2['term_id'],
+							'image_id'  => $media_post_id1,
 						],
 					],
 				],
@@ -1506,12 +1528,14 @@ class Test_Search extends WP_UnitTestCase {
 					'label'    => $term1['name'],
 					'id'       => $term1['term_id'],
 					'value'    => $term1['term_id'],
+					'image_id' => $media_post_id1,
 					'children' => [
 						[
 							'label'     => $child_term1['name'],
 							'id'        => $child_term1['term_id'],
 							'value'     => $child_term1['term_id'],
 							'parent_id' => $term1['term_id'],
+							'image_id'  => $media_post_id1,
 						],
 					],
 				],
@@ -1519,12 +1543,14 @@ class Test_Search extends WP_UnitTestCase {
 					'label'    => $term2['name'],
 					'id'       => $term2['term_id'],
 					'value'    => $term2['term_id'],
+					'image_id' => $media_post_id1,
 					'children' => [
 						[
 							'label'     => $child_term2['name'],
 							'id'        => $child_term2['term_id'],
 							'value'     => $child_term2['term_id'],
 							'parent_id' => $term2['term_id'],
+							'image_id'  => $media_post_id1,
 						],
 					],
 				],
