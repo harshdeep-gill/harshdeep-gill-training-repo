@@ -14,12 +14,13 @@ import './editor.scss';
  * External dependencies
  */
 import classnames from 'classnames';
-const { gumponents } = window;
+const { gumponents, travelopiaMedia } = window;
 
 /**
  * External components.
  */
-const { ImageControl, Img } = gumponents.components;
+const { ImageControl } = gumponents.components;
+const { DynamicImage } = travelopiaMedia;
 
 /**
  * Internal dependencies
@@ -33,7 +34,6 @@ import icons from '../icons';
 import * as secondaryText from './children/secondary-text';
 import * as cta from './children/cta';
 import * as overline from './children/overline';
-import { getDynamicImageUrl } from '../../../../../../mu-plugins/travelopia/travelopia-media/src/media/utility';
 
 /**
  * Edit component.
@@ -109,15 +109,6 @@ export default function edit( { className, attributes, setAttributes }: BlockEdi
 		} else {
 			attributes.image.height = 360;
 		}
-
-		// Prepare image arguments.
-		const imageArgs = {
-			width: 546,
-			height: attributes.image.height,
-		};
-
-		// Set image src.
-		attributes.image.src = getDynamicImageUrl( attributes.image.src, imageArgs );
 	};
 
 	// Handle image change.
@@ -187,7 +178,10 @@ export default function edit( { className, attributes, setAttributes }: BlockEdi
 			</InspectorControls>
 			<div { ...blockProps } >
 				<div className={ `media-text-cta__media-wrap media-text-cta__media-wrap--${ attributes.imageAspectRatio }` }>
-					<Img className="media-text-cta__image" value={ attributes.image } />
+					<DynamicImage
+						value={ attributes.image }
+						className="media-text-cta__image"
+					/>
 					{
 						'video' === attributes.mediaType &&
 						<div className="fancy-video__play-btn-wrapper">
