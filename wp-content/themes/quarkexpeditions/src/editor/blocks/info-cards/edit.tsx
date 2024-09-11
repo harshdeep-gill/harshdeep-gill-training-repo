@@ -83,10 +83,12 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 					/>
 				</PanelBody>
 			</InspectorControls>
-			<div { ...blockProps } >
-				<div className="info-cards__carousel">
-					<div className="info-cards__slider">
-						<div { ...innerBlockProps } />
+			<div className="quark-info-cards">
+				<div { ...blockProps } >
+					<div className="info-cards__carousel">
+						<div className="info-cards__slider">
+							<div { ...innerBlockProps } />
+						</div>
 					</div>
 				</div>
 			</div>
