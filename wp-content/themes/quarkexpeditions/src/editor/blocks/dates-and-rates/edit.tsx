@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useBlockProps } from '@wordpress/block-editor';
-import { Placeholder } from "@wordpress/components";
+import { Placeholder } from '@wordpress/components';
 
 /**
  * External dependencies.
@@ -13,8 +13,8 @@ import classnames from 'classnames';
 /**
  * Edit Component.
  *
- * @param {Object} props               Component properties.
- * @param {string} props.className     Class name.
+ * @param {Object} props           Component properties.
+ * @param {string} props.className Class name.
  */
 export default function Edit( { className }: BlockEditAttributes ) {
 	// Build block props.
