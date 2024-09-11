@@ -247,11 +247,6 @@ function convert_node_paragraph( string $output = '', ?DOMElement $node = null )
 			}
 		}
 
-		// if any child is an image, convert this into an image block.
-		if ( $child_node instanceof DOMElement && 'img' === $child_node->tagName ) {
-			$inner_html .= convert_node_to_block( $child_node );
-		}
-
 		// If any child is an IFRAME, convert this into an IFRAME block.
 		if ( $child_node instanceof DOMElement && 'iframe' === $child_node->tagName ) {
 			return convert_node_iframe( '', $child_node );
