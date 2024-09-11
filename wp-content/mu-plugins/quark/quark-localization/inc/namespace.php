@@ -32,7 +32,8 @@ const CURRENCY_COOKIE  = 'STYXKEY_currency';
  * @return void
  */
 function bootstrap(): void {
-	// Add actions.
+	// Frontend data.
+	add_action( 'quark_front_end_data', __NAMESPACE__ . '\\front_end_data' );
 }
 
 /**
@@ -83,4 +84,25 @@ function get_current_currency(): string {
 
 	// Return the current currency.
 	return $current_currency;
+}
+
+/**
+ * Front-end data.
+ *
+ * @param mixed[] $data Front-end data.
+ *
+ * @return mixed[]
+ */
+function front_end_data( array $data ): array {
+	// Add currency.
+	$data['currencies'] = [
+		USD_CURRENCY => __( '$ USD', 'qrk' ),
+		AUD_CURRENCY => __( '$ AUD', 'qrk' ),
+		CAD_CURRENCY => __( '$ CAD', 'qrk' ),
+		EUR_CURRENCY => __( '€ EUR', 'qrk' ),
+		GBP_CURRENCY => __( '£ GBP', 'qrk' ),
+	];
+
+	// Return data.
+	return $data;
 }

@@ -8,13 +8,12 @@
 	}
 
 	// All available currencies.
-	$currencies = [
-		'USD' => __( '$ USD', 'qrk' ),
-		'CAD' => __( '$ CAD', 'qrk' ),
-		'AUD' => __( '$ AUD', 'qrk' ),
-		'GBP' => __( '£ GBP', 'qrk' ),
-		'EUR' => __( '€ EUR', 'qrk' ),
-	];
+	$currencies = quark_get_template_data('currencies');
+
+	// If no currencies are available, set an empty array.
+	if ( ! is_array( $currencies ) || empty( $currencies ) ) {
+		$currencies = [];
+	}
 @endphp
 
 <quark-book-departures-expeditions-filters class="book-departures-expeditions__filters">
