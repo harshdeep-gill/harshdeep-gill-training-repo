@@ -1,0 +1,12 @@
+@import "../../scss/";
+
+.global-message {
+	background-color: var(--color-success-100);
+	color: var(--color-white);
+	text-align: center;
+	padding: var(--spacing-3) var(--grid-col-gutter);
+
+	a {
+		text-decoration: none;
+	}
+}
