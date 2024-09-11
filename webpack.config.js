@@ -139,6 +139,7 @@ module.exports = ( env ) => {
 		externals: {
 			wp: 'wp',
 			gumponents: 'gumponents',
+			queryString: 'queryString',
 		},
 		performance: {
 			hints: false,
@@ -195,6 +196,7 @@ module.exports = ( env ) => {
 			TPAccordionItemElement: `${ themePath }/src/vendor/tp-accordion.js`,
 			TPMultiSelectElement: `${ themePath }/src/vendor/tp-multi-select.js`,
 			TPToggleAttributeElement: `${ themePath }/src/vendor/tp-toggle-attribute.js`,
+			queryString: `${ themePath }/src/vendor/querystring.js`,
 		},
 		output: {
 			...buildConfig.output,
