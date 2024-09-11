@@ -1,21 +1,11 @@
-@props( [
-	'count'       => 0,
-	'total_count' => 0,
-] )
-
-@php
-	if ( empty( $count ) || empty( $total_count ) ) {
-		return;
-	}
-@endphp
-
 <div class="dates-rates__result-count">
-	<div class="dates-rates__result-count-values">
+	<quark-dates-rates-results-count class="dates-rates__result-count-values">
 		{{ __( 'Showing', 'qrk' ); }}
-		<span class="dates-rates__result-count-value">{{ $count ?? 0 }}</span>
+		<span class="dates-rates__result-count-value">1</span>
+		<x-dates-rates.pagination.items-per-page class="dates-rates__result-count-selector" />
 		{{ __( 'of total', 'qrk' ); }}
-		<span class="dates-rates__result-count-value">{{ $total_count ?? 0 }}</span>
-	</div>
+		<span class="dates-rates__result-count-total">1</span>
+	</quark-dates-rates-results-count>
 
 	<div class="dates-rates__result-count-annotations">
 		<span class="dates-rates__result-count-annotation">{{ __( 'Standard Cabin', 'qrk' ) }}</span>
