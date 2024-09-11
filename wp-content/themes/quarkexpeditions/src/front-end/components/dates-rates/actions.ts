@@ -526,10 +526,10 @@ export const initialize = (
 	}
 
 	// Get the saved state.
-	const savedFilters = parseUrl();
+	const urlFilters = parseUrl();
 
 	// Null check.
-	if ( savedFilters ) {
+	if ( urlFilters ) {
 		// Input containers for filters.
 		const seasonsInputContainer = document.getElementById( 'filters-accordion-seasons' );
 		const expeditionsInputContainer = document.getElementById( 'filters-accordion-expeditions' );
@@ -547,7 +547,7 @@ export const initialize = (
 		 */
 		if ( seasonsInputContainer ) {
 			// Map and filter the valid filters.
-			updateObject.seasons = savedFilters.seasons.map( ( season ): DatesRatesFilterState => {
+			updateObject.seasons = urlFilters.seasons.map( ( season ): DatesRatesFilterState => {
 				// Get the input element.
 				const filterInput = seasonsInputContainer.querySelector( `input[value="${ season }"]` );
 
@@ -559,7 +559,7 @@ export const initialize = (
 		// Set up expeditions
 		if ( expeditionsInputContainer ) {
 			// Map and filter the valid filters.
-			updateObject.expeditions = savedFilters.expeditions.map( ( expedition ): DatesRatesFilterState => {
+			updateObject.expeditions = urlFilters.expeditions.map( ( expedition ): DatesRatesFilterState => {
 				// Get the input element.
 				const filterInput = expeditionsInputContainer.querySelector( `input[value="${ expedition }"]` );
 
@@ -571,7 +571,7 @@ export const initialize = (
 		// Set up adventure Options
 		if ( adventureOptionsInputContainer ) {
 			// Map and filter valid filters.
-			updateObject.adventureOptions = savedFilters.adventureOptions.map( ( adventureOption ): DatesRatesFilterState => {
+			updateObject.adventureOptions = urlFilters.adventureOptions.map( ( adventureOption ): DatesRatesFilterState => {
 				// Get the input element.
 				const filterInput = adventureOptionsInputContainer.querySelector( `input[value="${ adventureOption }"]` );
 
@@ -583,7 +583,7 @@ export const initialize = (
 		// Set up months
 		if ( monthsInputContainer ) {
 			// Map and filter valid filters.
-			updateObject.months = savedFilters.months.map( ( month ): DatesRatesFilterState => {
+			updateObject.months = urlFilters.months.map( ( month ): DatesRatesFilterState => {
 				// Get the input element.
 				const filterInput = monthsInputContainer.querySelector( `input[value="${ month }"]` );
 
@@ -595,7 +595,7 @@ export const initialize = (
 		// Set up durations
 		if ( durationsInputContainer ) {
 			// Map and filter valid filters.
-			updateObject.durations = savedFilters.durations.map( ( duration ): DatesRatesFilterState => {
+			updateObject.durations = urlFilters.durations.map( ( duration ): DatesRatesFilterState => {
 				// Get the input element.
 				const filterInput = durationsInputContainer.querySelector( `input[value="${ duration }"]` );
 
@@ -607,7 +607,7 @@ export const initialize = (
 		// Set up ships
 		if ( shipsInputContainer ) {
 			// Map and filter valid filters.
-			updateObject.ships = savedFilters.ships.map( ( ship ): DatesRatesFilterState => {
+			updateObject.ships = urlFilters.ships.map( ( ship ): DatesRatesFilterState => {
 				// Get the input element.
 				const filterInput = shipsInputContainer.querySelector( `input[value="${ ship }"]` );
 
@@ -619,7 +619,7 @@ export const initialize = (
 		// Other filters.
 		if ( ! settings.serverRenderData ) {
 			// Set the page related filters.
-			updateObject.perPage = savedFilters.perPage;
+			updateObject.perPage = urlFilters.perPage;
 		}
 	}
 
@@ -881,7 +881,7 @@ const parseUrl = (): DatesRatesFiltersSaved | null => {
 	} = convertPropertiesFromSnakeCaseToCamelCase( queryString.parse( window.location.search ) );
 
 	// Initialize the saved filters object.
-	const savedFilters: DatesRatesFiltersSaved = {
+	const urlFilters: DatesRatesFiltersSaved = {
 		seasons: [],
 		expeditions: [],
 		adventureOptions: [],
@@ -905,31 +905,31 @@ const parseUrl = (): DatesRatesFiltersSaved | null => {
 		// Add filters.
 		switch ( key ) {
 			case 'seasons':
-				savedFilters.seasons = parsedState.seasons.split( ',' );
+				urlFilters.seasons = parsedState.seasons.split( ',' );
 				break;
 			case 'expeditions':
-				savedFilters.expeditions = parsedState.expeditions.split( ',' );
+				urlFilters.expeditions = parsedState.expeditions.split( ',' );
 				break;
 			case 'adventureOptions':
-				savedFilters.adventureOptions = parsedState.adventureOptions.split( ',' );
+				urlFilters.adventureOptions = parsedState.adventureOptions.split( ',' );
 				break;
 			case 'months':
-				savedFilters.months = parsedState.months.split( ',' );
+				urlFilters.months = parsedState.months.split( ',' );
 				break;
 			case 'durations':
-				savedFilters.durations = parsedState.durations.split( ',' );
+				urlFilters.durations = parsedState.durations.split( ',' );
 				break;
 			case 'ships':
-				savedFilters.ships = parsedState.ships.split( ',' );
+				urlFilters.ships = parsedState.ships.split( ',' );
 				break;
 			case 'perPage':
-				savedFilters.perPage = parsedState.perPage;
+				urlFilters.perPage = parsedState.perPage;
 				break;
 		}
 	} );
 
 	// Return selected filters state.
-	return savedFilters;
+	return urlFilters;
 };
 
 // Subscribe to the store and update URL on each state update.
