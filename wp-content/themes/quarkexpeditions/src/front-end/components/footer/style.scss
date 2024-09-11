@@ -375,4 +375,11 @@
 			border-color: inherit;
 		}
 	}
+
+	.currency-switcher {
+		margin-top: var(--spacing-7);
+		margin-left: auto;
+		margin-right: auto;
+		max-width: 350px;
+	}
 }

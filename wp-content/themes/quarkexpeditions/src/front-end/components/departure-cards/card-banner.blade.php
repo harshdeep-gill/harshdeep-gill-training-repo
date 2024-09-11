@@ -10,7 +10,7 @@
 @endphp
 
 <div class="departure-cards__card-banner overline">
-	<x-maybe-link href="{{ $url }}" class="departure-cards__card-banner-link">
+	<x-maybe-link href="{{ $url }}" class="departure-cards__card-banner-link" fallback_tag="div">
 		<x-svg name="shield" />
 		<span><x-escape :content="$text" /></span>
 	</x-maybe-link>

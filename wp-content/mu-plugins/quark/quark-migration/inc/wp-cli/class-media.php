@@ -25,6 +25,7 @@ use function Quark\Migration\WordPress\qrk_sanitize_attribute;
 use function WP_CLI\Utils\make_progress_bar;
 
 use const Quark\Brochures\POST_TYPE;
+use const Quark\StaffMembers\SEASON_TAXONOMY;
 
 /**
  * Class Media.
@@ -486,9 +487,12 @@ class Media {
 			$data['meta_input']['external_url'] = strval( $item['field_url_uri'] );
 		}
 
-		// Get PDF file season data.
+		// Set season_ids.
 		if ( ! empty( $item['field_season_value'] ) ) {
-			$data['meta_input']['season'] = strval( $item['field_season_value'] );
+			$season_ids = array_map( 'trim', explode( ',', strval( $item['field_season_value'] ) ) );
+
+			// Set season_ids.
+			$data['tax_input'][ SEASON_TAXONOMY ] = $season_ids;
 		}
 
 		// Return normalized data.

@@ -1,0 +1,25 @@
+@import "../../scss/";
+
+.currency-switcher {
+	display: block;
+
+	&--dark {
+		color: var(--color-gray-50);
+	}
+
+	label {
+		font-size: inherit;
+	}
+
+	tp-multi-select {
+		margin-top: var(--spacing-4);
+	}
+
+	tp-multi-select-field {
+		/* stylelint-disable-next-line function-url-quotes */
+		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M7.41 8.2998L12 12.8798L16.59 8.2998L18 9.7098L12 15.7098L6 9.7098L7.41 8.2998Z' fill='%23ffffff'/%3E%3C/svg%3E");
+		background-color: transparent;
+		color: var(--color-white);
+		font-size: inherit;
+	}
+}

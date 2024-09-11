@@ -1,0 +1,38 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Link Detail Cards - Card",
+	"name": "quark/link-detail-card",
+	"description": "Individual Link Detail card item.",
+	"parent": [
+		"quark/link-detail-cards"
+	],
+	"category": "layout",
+	"keywords": [
+		"link",
+		"detail",
+		"card",
+		"item"
+	],
+	"textdomain": "qrk",
+	"attributes": {
+		"url": {
+			"type": "object",
+			"default": null
+		},
+		"title": {
+			"type": "string",
+			"default": ""
+		},
+		"description": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

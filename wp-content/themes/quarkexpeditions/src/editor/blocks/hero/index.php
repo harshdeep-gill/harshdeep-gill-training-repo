@@ -125,6 +125,19 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 							$component_attributes['left'][] = $title;
 							break;
 
+						// Text Graphic.
+						case 'quark/hero-text-graphic':
+							$textgraphic = [
+								'type' => 'text-graphic',
+							];
+
+							// Add image id.
+							$textgraphic['image_id'] = $child_block->attributes['image']['id'] ?? '';
+
+							// Add to attributes.
+							$component_attributes['left'][] = $textgraphic;
+							break;
+
 						// Subtitle.
 						case 'quark/hero-subtitle':
 							$subtitle = [
@@ -202,7 +215,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 	}
 
 	// Image.
-	if ( is_array( $attributes['image'] ) && ! empty( $attributes['image']['id'] ) ) {
+	if ( ! empty( $attributes['image'] ) && is_array( $attributes['image'] ) && ! empty( $attributes['image']['id'] ) ) {
 		$component_attributes['image_id'] = $attributes['image']['id'];
 	}
 

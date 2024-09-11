@@ -9,6 +9,8 @@ namespace Quark\PressReleases;
 
 use WP_Post;
 
+use function Travelopia\Breadcrumbs\get_breadcrumbs;
+
 const POST_TYPE = 'qrk_press_release';
 
 /**
@@ -120,7 +122,12 @@ function get( int $post_id = 0 ): array {
  *
  * @param mixed[] $breadcrumbs Breadcrumbs.
  *
- * @return mixed[]
+ * @return array{}|array{
+ *     array{
+ *         title: string,
+ *         url: string,
+ *     }
+ * }
  */
 function breadcrumbs_ancestors( array $breadcrumbs = [] ): array {
 	// Check if current query is for this post type.
@@ -128,14 +135,35 @@ function breadcrumbs_ancestors( array $breadcrumbs = [] ): array {
 		return $breadcrumbs;
 	}
 
+	// Return breadcrumbs.
+	return array_merge(
+		$breadcrumbs,
+		get_breadcrumbs_ancestors()
+	);
+}
+
+/**
+ * Get breadcrumbs ancestor.
+ *
+ * @return array{}|array{
+ *     array{
+ *         title: string,
+ *         url: string,
+ *     }
+ * }
+ */
+function get_breadcrumbs_ancestors(): array {
 	// Get archive page.
 	$press_release_archive_page = absint( get_option( 'options_press_releases_page', 0 ) );
+
+	// Initialize breadcrumbs.
+	$breadcrumbs = [];
 
 	// Get it's title and URL for breadcrumbs if it's set.
 	if ( ! empty( $press_release_archive_page ) ) {
 		$breadcrumbs[] = [
 			'title' => get_the_title( $press_release_archive_page ),
-			'url'   => get_permalink( $press_release_archive_page ),
+			'url'   => strval( get_permalink( $press_release_archive_page ) ),
 		];
 	}
 

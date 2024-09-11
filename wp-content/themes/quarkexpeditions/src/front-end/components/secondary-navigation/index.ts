@@ -25,6 +25,9 @@ export default class SecondaryNavigation extends HTMLElement {
 	private allContentItems: NodeListOf<Element> | null;
 	private anchorItems: NodeListOf<HTMLElement>;
 	private sections: Array<HTMLElement | null>;
+	private mobileTopOffset: number;
+	private desktopTopOffset: number;
+	private headerHeight: number;
 
 	/**
 	 * Constructor.
@@ -44,6 +47,9 @@ export default class SecondaryNavigation extends HTMLElement {
 		this.anchorItems = this.querySelectorAll( '.secondary-navigation__navigation-item-link[href*="#"]' );
 		this.sections = this.getMenuSections();
 		this.navigationElement = document.querySelector( '.secondary-navigation' );
+		this.headerHeight = parseInt( getComputedStyle( document.body ).getPropertyValue( '--header-height' ) );
+		this.mobileTopOffset = this.headerHeight;
+		this.desktopTopOffset = this.headerHeight;
 
 		/**
 		 * Event on 'scroll'.
@@ -56,7 +62,7 @@ export default class SecondaryNavigation extends HTMLElement {
 		 * allowing the browser to optimize the scroll performance.
 		 * Without this you will get warning.
 		 */
-		document.body.addEventListener( 'scroll', debounce( this.onScroll.bind( this ), 10 ), { passive: true } );
+		this.ownerDocument.addEventListener( 'scroll', debounce( this.onScroll.bind( this ), 10 ), { passive: true } );
 
 		// Run on resize events.
 		window.addEventListener( 'resize', this.updateNav.bind( this ) );
@@ -125,8 +131,18 @@ export default class SecondaryNavigation extends HTMLElement {
 			return;
 		}
 
+		// Set top spacing
+		let topSpacing = 12;
+
+		// Check for the class.
+		if ( document.body.classList.contains( 'admin-bar' ) ) {
+			// Set the topSpacing.
+			topSpacing = document.getElementById( 'wpadminbar' )?.offsetHeight ?? topSpacing;
+			topSpacing = topSpacing + 12;
+		}
+
 		// Check if the page is scrolled down.
-		if ( this.navigationElement?.getBoundingClientRect()?.top < 12 ) {
+		if ( this.navigationElement?.getBoundingClientRect()?.top < topSpacing ) {
 			// Add classes.
 			this.navigationElement.classList.add( 'secondary-navigation--is-sticky' );
 			document.body.classList.add( 'has-sticky-secondary-navigation' );
@@ -206,46 +222,63 @@ export default class SecondaryNavigation extends HTMLElement {
 	 * Handle Navigation Highlights.
 	 */
 	navigationHighlighter() {
-		// Set the current section.
-		let currentSection = this.sections[ 0 ];
+		// Check if sections does not exist.
+		if ( ! this.sections || ! this.sections.length ) {
+			// No, bail early.
+			return;
+		}
 
-		// For each section.
-		this.sections.forEach( ( section ) => {
-			// Check if the section exists.
-			if ( ! section ) {
-				// Early return.
-				return;
-			}
+		// Get current scroll position
+		const scrollY = window.scrollY;
 
-			// Set the section top and height.
-			const sectionTop = section.getBoundingClientRect().top + window.scrollY;
-			const sectionHeight = section.clientHeight;
-
-			// Set the current section.
-			if ( window.scrollY >= sectionTop - sectionHeight ) {
-				currentSection = section;
-			}
-		} );
-
-		// For each all content items.
-		this.allContentItems?.forEach( ( item ) => {
-			// Check if the section exists.
+		// Now we loop through sections to get height, top and ID values for each
+		this.sections?.forEach( ( currentSection ) => {
+			// Check if current section exists.
 			if ( ! currentSection ) {
-				// Early return.
+				// No, bail early.
 				return;
 			}
 
-			// Remove the active class.
-			item.classList.remove( 'secondary-navigation__navigation-item--active' );
-			const anchor = item.getAttribute( 'data-anchor' );
+			// Initialize container section.
+			let containerSection = currentSection;
 
-			// Set the active class to the current section.
-			if ( anchor === `#${ currentSection.id }` ) {
-				// Add the active class.
-				item.classList.add( 'secondary-navigation__navigation-item--active' );
+			// Check if current section is a child of another section.
+			if ( currentSection?.parentElement?.classList?.contains( 'section' ) ) {
+				// Yes, get the parent element.
+				containerSection = currentSection?.parentElement;
+			}
+
+			// Get values for current section.
+			const sectionHeight = containerSection.offsetHeight;
+
+			/**
+			 * If it's mobile view, subtract the mobileTopOffset from container top offset and
+			 * If it's desktop view, subtract the desktopTopOffset from container top offset and
+			 */
+			const sectionTop = this.isMobile() ? containerSection.offsetTop - this.mobileTopOffset : containerSection.offsetTop - this.desktopTopOffset;
+			const sectionId = currentSection.getAttribute( 'id' );
+			const activeItem = document.querySelector( '.secondary-navigation__navigation-item[data-anchor*=' + sectionId + ']' );
+
+			/**
+			 * If our current scroll position enters the space where current section on screen is,
+			 * add .active class to corresponding navigation link, else remove it
+			 * To know which link needs an active class,
+			 * we use sectionId variable we are getting while looping through sections as an selector.
+			 */
+			if (
+				scrollY > sectionTop - ( window.innerHeight / 2 ) &&
+				scrollY <= sectionTop + sectionHeight
+			) {
+				// Add active class.
+				activeItem?.classList?.add( 'secondary-navigation__navigation-item--active' );
 
 				// Scroll the active item to the center of the screen.
-				this.scrollLeftOnMobile( item );
+				if ( activeItem ) {
+					// Scroll the active item.
+					this.scrollLeftOnMobile( activeItem );
+				}
+			} else {
+				activeItem?.classList?.remove( 'secondary-navigation__navigation-item--active' );
 			}
 		} );
 	}
@@ -419,7 +452,7 @@ export default class SecondaryNavigation extends HTMLElement {
 		 * Offset is added to increase the horizontal scroll position,
 		 * so that tab link after the clicked one, peeps in.
 		 */
-		const offset = item.getBoundingClientRect().width;
+		const offset = item.getBoundingClientRect().width - 32; // 32 is padding right.
 		const middle = navWrapperScrollPosition + itemHorizontalPosition - offset;
 
 		// Scroll to middle position.

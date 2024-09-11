@@ -1254,48 +1254,7 @@ function get_description_and_pax_count_by_mask( string $mask = '' ): array {
 	}
 
 	// The mask mapping.
-	$mask_mapping = [
-		'A'     => [
-			'description' => 'Single Room',
-			'pax_count'   => 1,
-		],
-		'AA'    => [
-			'description' => 'Double Room',
-			'pax_count'   => 2,
-		],
-		'SAA'   => [
-			'description' => 'Double Room Shared',
-			'pax_count'   => 1,
-		],
-		'SMAA'  => [
-			'description' => 'Double Room Shared (Male)',
-			'pax_count'   => 1,
-		],
-		'SFAA'  => [
-			'description' => 'Double Room Shared (Female)',
-			'pax_count'   => 1,
-		],
-		'AAA'   => [
-			'description' => 'Triple Room',
-			'pax_count'   => 3,
-		],
-		'SAAA'  => [
-			'description' => 'Triple Room Shared',
-			'pax_count'   => 1,
-		],
-		'SMAAA' => [
-			'description' => 'Triple Room Shared (Male)',
-			'pax_count'   => 1,
-		],
-		'SFAAA' => [
-			'description' => 'Triple Room Shared (Female)',
-			'pax_count'   => 1,
-		],
-		'AAAA'  => [
-			'description' => 'Quad Room',
-			'pax_count'   => 4,
-		],
-	];
+	$mask_mapping = get_masks_mapping();
 
 	// Return the description and pax count.
 	return $mask_mapping[ $mask ] ?? $description_and_pax_count;
@@ -1347,4 +1306,99 @@ function add_supplemental_and_mandatory_price( array $lowest_price = [ 'discount
 
 	// Return the lowest price.
 	return $lowest_price_with_supplemental;
+}
+
+/**
+ * Get masks mapping.
+ *
+ * @return array{
+ *   A: array{
+ *        description: string,
+ *        pax_count: int,
+ *   },
+ *   AA: array{
+ *         description: string,
+ *         pax_count: int,
+ *   },
+ *   SAA: array{
+ *          description: string,
+ *          pax_count: int,
+ *   },
+ *   SMAA: array{
+ *           description: string,
+ *           pax_count: int,
+ *   },
+ *   SFAA: array{
+ *           description: string,
+ *           pax_count: int,
+ *   },
+ *   AAA: array{
+ *          description: string,
+ *          pax_count: int,
+ *   },
+ *   SAAA: array{
+ *           description: string,
+ *           pax_count: int,
+ *   },
+ *   SMAAA: array{
+ *            description: string,
+ *            pax_count: int,
+ *   },
+ *   SFAAA: array{
+ *            description: string,
+ *            pax_count: int,
+ *   },
+ *   AAAA: array{
+ *           description: string,
+ *           pax_count: int,
+ *   },
+ * }
+ */
+function get_masks_mapping(): array {
+	// The mask mapping.
+	$mask_mapping = [
+		'A'     => [
+			'description' => 'Single Room',
+			'pax_count'   => 1,
+		],
+		'AA'    => [
+			'description' => 'Double Room',
+			'pax_count'   => 2,
+		],
+		'SAA'   => [
+			'description' => 'Double Room Shared',
+			'pax_count'   => 1,
+		],
+		'SMAA'  => [
+			'description' => 'Double Room Shared (Male)',
+			'pax_count'   => 1,
+		],
+		'SFAA'  => [
+			'description' => 'Double Room Shared (Female)',
+			'pax_count'   => 1,
+		],
+		'AAA'   => [
+			'description' => 'Triple Room',
+			'pax_count'   => 3,
+		],
+		'SAAA'  => [
+			'description' => 'Triple Room Shared',
+			'pax_count'   => 1,
+		],
+		'SMAAA' => [
+			'description' => 'Triple Room Shared (Male)',
+			'pax_count'   => 1,
+		],
+		'SFAAA' => [
+			'description' => 'Triple Room Shared (Female)',
+			'pax_count'   => 1,
+		],
+		'AAAA'  => [
+			'description' => 'Quad Room',
+			'pax_count'   => 4,
+		],
+	];
+
+	// Return the mask mapping.
+	return $mask_mapping;
 }
