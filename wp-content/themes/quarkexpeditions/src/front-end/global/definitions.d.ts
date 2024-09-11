@@ -79,6 +79,7 @@ interface PartialData {
 	markup: string;
 	noResultsMarkup?: string,
 	data: any;
+	filtersMarkup?: string;
 }
 
 /**
