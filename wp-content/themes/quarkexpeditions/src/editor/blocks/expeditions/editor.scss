@@ -1,5 +1,12 @@
 .wp-block-quark-expeditions {
 
+	.product-cards {
+
+		&__slides {
+			flex-wrap: wrap;
+		}
+	}
+
 	a {
 		text-decoration: none;
 	}
