@@ -42,7 +42,7 @@
 
 	@if ( ! empty( $description ) )
 		<x-section.description>
-			{{ $description }}
+			{!! $description !!}
 		</x-section.description>
 	@endif
 

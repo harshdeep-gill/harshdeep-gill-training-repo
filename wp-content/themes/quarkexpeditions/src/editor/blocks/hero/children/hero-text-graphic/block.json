@@ -1,19 +1,23 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
-	"title": "Hero Content Left",
-	"name": "quark/hero-content-left",
-	"description": "Right half of hero content.",
-	"category": "layout",
+	"title": "Hero Text Graphic",
+	"name": "quark/hero-text-graphic",
+	"description": "Select a Text Graphic.",
+	"category": "widgets",
 	"keywords": [
-		"hero",
-		"content",
-		"left"
+		"Hero",
+		"Text",
+		"Graphic"
 	],
 	"textdomain": "qrk",
-	"attributes": {},
+	"attributes": {
+    "image": {
+			"type": "object"
+		}
+  	},
 	"parent": [
-		"quark/hero-content"
+		"quark/hero-content-left"
 	],
 	"supports": {
 		"alignWide": false,
