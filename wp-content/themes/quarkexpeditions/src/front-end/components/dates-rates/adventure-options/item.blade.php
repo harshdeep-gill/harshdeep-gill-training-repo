@@ -22,7 +22,7 @@
 			'height'  => 56,
 		],
 		'transform'  =>[
-			'crop'    => 'fill',
+			'crop'    => 'fit',
 			'gravity' => 'auto',
 		]
 	];

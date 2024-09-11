@@ -3,7 +3,7 @@
 	'result_count'   => 0,
 	'cards'          => [],
 	'page'           => 1,
-	'per_page'       => 10,
+	'per_page'       => 4,
 ] )
 
 @php
