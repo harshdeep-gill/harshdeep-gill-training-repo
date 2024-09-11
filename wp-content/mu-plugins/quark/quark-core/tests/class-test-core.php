@@ -12,6 +12,12 @@ use WP_Term;
 
 use function Quark\Core\get_front_end_data;
 
+use const Quark\Localization\USD_CURRENCY;
+use const Quark\Localization\AUD_CURRENCY;
+use const Quark\Localization\CAD_CURRENCY;
+use const Quark\Localization\EUR_CURRENCY;
+use const Quark\Localization\GBP_CURRENCY;
+
 /**
  * Class Test_Core.
  */
@@ -42,6 +48,13 @@ class Test_Core extends WP_UnitTestCase {
 			'current_url'          => false,
 			'dynamic_phone_number' => [
 				'api_endpoint' => 'http://test.quarkexpeditions.com/wp-json/qrk-phone-numbers/v1/phone-number/get',
+			],
+			'currencies'           => [
+				USD_CURRENCY => '$ USD',
+				AUD_CURRENCY => '$ AUD',
+				CAD_CURRENCY => '$ CAD',
+				EUR_CURRENCY => '€ EUR',
+				GBP_CURRENCY => '£ GBP',
 			],
 		];
 
