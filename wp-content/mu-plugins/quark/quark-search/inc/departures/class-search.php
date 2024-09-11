@@ -454,6 +454,7 @@ class Search {
 		// Unique seasons.
 		$seasons = array_unique( $seasons );
 
+		// Set meta query.
 		$this->args['meta_query'][] = [
 			'key'     => 'region_season',
 			'value'   => $seasons,

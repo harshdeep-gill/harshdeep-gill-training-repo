@@ -301,14 +301,14 @@ function parse_filters( array $filters = [] ): array {
 		$filters['months'] = array_filter( array_map( 'trim', $filters['months'] ) );
 	}
 
-	// Parse adventure_options slugs.
+	// Parse adventure_options.
 	if ( is_string( $filters['adventure_options'] ) || is_int( $filters['adventure_options'] ) ) {
 		$filters['adventure_options'] = array_filter( array_map( 'trim', explode( ',', strval( $filters['adventure_options'] ) ) ) );
 	} elseif ( is_array( $filters['adventure_options'] ) ) {
 		$filters['adventure_options'] = array_filter( array_map( 'trim', $filters['adventure_options'] ) );
 	}
 
-	// Parse duration slugs.
+	// Parse duration.
 	if ( is_string( $filters['durations'] ) || is_int( $filters['durations'] ) ) {
 		$filters['durations'] = array_filter( array_map( 'trim', explode( '-', strval( $filters['durations'] ) ) ) );
 	} elseif ( is_array( $filters['durations'] ) ) {
@@ -316,13 +316,15 @@ function parse_filters( array $filters = [] ): array {
 		$filters['durations'] = array_map(
 			function ( $duration ) {
 				$duration = explode( '-', $duration );
+
+				// Return duration.
 				return $duration;
 			},
 			$filters['durations']
 		);
 	}
 
-	// Parse seasons slugs.
+	// Parse seasons.
 	if ( is_string( $filters['seasons'] ) ) {
 		$filters['seasons'] = array_filter( array_map( 'trim', explode( ',', $filters['seasons'] ) ) );
 	} elseif ( is_array( $filters['seasons'] ) ) {
@@ -397,6 +399,8 @@ function search( array $filters = [], bool $retrieve_all = false ): array {
 	$durations = array_map(
 		function ( $duration ) {
 			$duration = array_map( 'absint', $duration );
+
+			// Return duration.
 			return $duration;
 		},
 		$filters['durations']

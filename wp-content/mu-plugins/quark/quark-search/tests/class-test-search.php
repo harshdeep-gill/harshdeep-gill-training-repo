@@ -261,17 +261,9 @@ class Test_Search extends WP_UnitTestCase {
 				],
 				'meta_query'             => [
 					[
-						'relation' => 'OR',
-						[
-							'key'     => 'region_season',
-							'value'   => 2024,
-							'compare' => '=',
-						],
-						[
-							'key'     => 'region_season',
-							'value'   => 2025,
-							'compare' => '=',
-						],
+						'key'     => 'region_season',
+						'value'   => [ 2024, 2025 ],
+						'compare' => 'IN',
 					],
 				],
 			],
@@ -283,7 +275,7 @@ class Test_Search extends WP_UnitTestCase {
 		$solr_search = new Search();
 		$solr_search->set_expeditions( [ 20, 15, 20, 25 ] );
 		$solr_search->set_ships( [ 2, 1, 2, 5 ] );
-		$solr_search->set_durations( [ 12, 15 ] );
+		$solr_search->set_durations( [ [ 12, 15 ] ] );
 		$solr_search->set_order( 'DESC' );
 		$solr_search->set_order( 'DESC', 'meta_value_num', 'duration' );
 		$this->assertEquals(
@@ -476,7 +468,7 @@ class Test_Search extends WP_UnitTestCase {
 		$solr_search->set_adventure_options( [ 1, 2, 3 ] );
 		$solr_search->set_expeditions( [ 4, 5, 6 ] );
 		$solr_search->set_ships( [ 7, 8, 9 ] );
-		$solr_search->set_durations( [ 10, 11, 12 ] );
+		$solr_search->set_durations( [ [ 10, 11 ], [ 12 ] ] );
 		$solr_search->set_months( [ '01-2024', '02-2024', '03-2024' ] );
 
 		// Assert multiple filters.
@@ -511,10 +503,19 @@ class Test_Search extends WP_UnitTestCase {
 						'compare' => 'IN',
 					],
 					[
-						'key'     => 'duration',
-						'value'   => [ 10, 11, 12 ],
-						'type'    => 'NUMERIC',
-						'compare' => 'BETWEEN',
+						'relation' => 'OR',
+						[
+							'key'     => 'duration',
+							'value'   => [ 10, 11 ],
+							'type'    => 'NUMERIC',
+							'compare' => 'BETWEEN',
+						],
+						[
+							'key'     => 'duration',
+							'value'   => [ 12 ],
+							'type'    => 'NUMERIC',
+							'compare' => 'BETWEEN',
+						],
 					],
 					[
 						'relation' => 'OR',
@@ -550,7 +551,7 @@ class Test_Search extends WP_UnitTestCase {
 		$solr_search->set_adventure_options( [ 1, 2, 3 ] );
 		$solr_search->set_expeditions( [ 4, 5, 6 ] );
 		$solr_search->set_ships( [ 7, 8, 9 ] );
-		$solr_search->set_durations( [ 10, 11, 12 ] );
+		$solr_search->set_durations( [ [ 10, 11 ], [ 12, 15 ] ] );
 		$solr_search->set_months( [ '01-2024', '02-2024', '03-2024' ] );
 		$solr_search->set_sort( 'price-low', 'EUR' );
 		$solr_search->set_seasons( [ '2024', '2025' ] );
@@ -595,10 +596,19 @@ class Test_Search extends WP_UnitTestCase {
 						'compare' => 'IN',
 					],
 					[
-						'key'     => 'duration',
-						'value'   => [ 10, 11, 12 ],
-						'type'    => 'NUMERIC',
-						'compare' => 'BETWEEN',
+						'relation' => 'OR',
+						[
+							'key'     => 'duration',
+							'value'   => [ 10, 11 ],
+							'type'    => 'NUMERIC',
+							'compare' => 'BETWEEN',
+						],
+						[
+							'key'     => 'duration',
+							'value'   => [ 12, 15 ],
+							'type'    => 'NUMERIC',
+							'compare' => 'BETWEEN',
+						],
 					],
 					[
 						'relation' => 'OR',
@@ -622,17 +632,9 @@ class Test_Search extends WP_UnitTestCase {
 						],
 					],
 					[
-						'relation' => 'OR',
-						[
-							'key'     => 'region_season',
-							'value'   => '2024',
-							'compare' => '=',
-						],
-						[
-							'key'     => 'region_season',
-							'value'   => '2025',
-							'compare' => '=',
-						],
+						'key'     => 'region_season',
+						'value'   => [ 2024, 2025 ],
+						'compare' => 'IN',
 					],
 				],
 			],
