@@ -15,9 +15,8 @@
 		margin-bottom: var(--spacing-8);
 	}
 
-	@media screen and (min-width: grid-size(lg)) {
+	@media screen and (min-width: grid-size(xl)) {
 		margin-top: var(--spacing-9);
 		margin-bottom: var(--spacing-9);
 	}
-
 }
