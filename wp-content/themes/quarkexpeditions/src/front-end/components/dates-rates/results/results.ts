@@ -11,7 +11,7 @@ const { subscribe } = zustand.stores.datesRates;
 /**
  * Internal dependencies.
  */
-import { initializeFetchPartialSettings, markupUpdated } from '../actions';
+import { initialize, markupUpdated } from '../actions';
 
 /**
  * Results Class
@@ -63,7 +63,7 @@ export default class DatesRatesResultsElement extends HTMLElement {
 		subscribe( this.update.bind( this ) );
 
 		// Initialize the settings.
-		initializeFetchPartialSettings( {
+		initialize( {
 			partial: this.partial,
 			selector: this.selector,
 			serverRenderData: isServerRendered ? serverRenderData : undefined,

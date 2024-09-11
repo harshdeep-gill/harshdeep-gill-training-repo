@@ -13,7 +13,7 @@ interface DatesRatesState {
 	currency: string,
 	seasons: DatesRatesFilterState[],
 	expeditions: DatesRatesFilterState[],
-	'adventure_options': DatesRatesFilterState[],
+	adventureOptions: DatesRatesFilterState[],
 	months: DatesRatesFilterState[],
 	durations: DatesRatesFilterState[],
 	ships: DatesRatesFilterState[],
@@ -23,9 +23,29 @@ interface DatesRatesState {
 	resultCount: number,
 	isLoading: boolean,
 	partial: string,
-	selector: '',
+	selector: string,
 	isInitialized: boolean,
 	shouldMarkupUpdate: boolean,
-	markup: '',
-	noResultsMarkup: '',
+	markup: string,
+	noResultsMarkup: string,
+	baseUrl: string
+	allowedParams: string[],
 }
+
+/**
+ * Interface DatesRatesFiltersSaved
+ */
+interface DatesRatesFiltersSaved {
+	seasons: string[],
+	expeditions: string[],
+	adventureOptions: string[],
+	months: string[],
+	durations: string[],
+	ships: string[],
+	perPage: number,
+}
+
+/**
+ * Interface StateUpdateObject
+ */
+interface DatesRatesStateUpdateObject extends Partial<DatesRatesState> {}

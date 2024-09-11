@@ -33,7 +33,7 @@ export default class DatesRatesFilterStickyFilterElement extends HTMLElement {
 		let isFiltered = false;
 
 		// Loop through the object.
-		for ( const filterName of [ 'seasons', 'expeditions', 'adventure_options', 'months', 'durations', 'ships' ] ) {
+		for ( const filterName of [ 'seasons', 'expeditions', 'adventureOptions', 'months', 'durations', 'ships' ] ) {
 			// @ts-ignore, Check if any filter is active.
 			if ( state[ filterName ] && state[ filterName ].length ) {
 				isFiltered = true;

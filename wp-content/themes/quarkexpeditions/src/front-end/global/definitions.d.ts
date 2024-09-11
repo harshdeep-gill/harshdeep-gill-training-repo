@@ -38,6 +38,7 @@ interface Window {
 			};
 		};
 	};
+	queryString?: QueryString;
 }
 
 /**
@@ -78,4 +79,13 @@ interface PartialData {
 	markup: string;
 	noResultsMarkup?: string,
 	data: any;
+}
+
+/**
+ * Interface Query String.
+ */
+interface QueryString {
+	stringifyUrl: Function,
+	stringify: Function;
+	parse: Function;
 }
