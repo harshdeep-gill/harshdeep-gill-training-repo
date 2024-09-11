@@ -16,7 +16,7 @@
 				@continue
 			@endif
 
-			<x-dates-rates.filters.checkbox name="months" :label="$month['label']" :value="$month['value']" :count="$month['count']" data-label="{{ $month['label'] }}" />
+			<x-dates-rates.filters.checkbox name="months" :label="$month['label']" :value="$month['value']" :count="$month['count']" />
 		@endforeach
 
 	</x-form.field-group>

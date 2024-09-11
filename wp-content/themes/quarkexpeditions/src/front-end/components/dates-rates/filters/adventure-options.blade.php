@@ -16,7 +16,7 @@
 				@continue
 			@endif
 
-			<x-dates-rates.filters.checkbox name="adventure_options" :label="$adventure_option['label']" :value="$adventure_option['value']" :count="$adventure_option['count']" data-label="{{ $adventure_option['label'] }}" />
+			<x-dates-rates.filters.checkbox name="adventure_options" :label="$adventure_option['label']" :value="$adventure_option['value']" :count="$adventure_option['count']" />
 		@endforeach
 
 	</x-form.field-group>
