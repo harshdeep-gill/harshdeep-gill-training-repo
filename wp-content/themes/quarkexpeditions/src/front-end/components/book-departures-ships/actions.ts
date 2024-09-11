@@ -212,3 +212,13 @@ const moreResultsLoaded = ( response: PartialData ) => {
 		remainingCount,
 	} );
 };
+
+/**
+ * Set loading state.
+ *
+ * @param {boolean} loading Loading state.
+ */
+export const setLoading = ( loading: boolean ) => {
+	// Set loading state.
+	setState( { loading } );
+};

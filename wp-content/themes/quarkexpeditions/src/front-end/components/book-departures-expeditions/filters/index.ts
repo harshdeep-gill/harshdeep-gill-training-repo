@@ -11,7 +11,7 @@ import { TPMultiSelectElement } from '@travelopia/web-components';
 /**
  * Internal dependencies.
  */
-import { updateSort } from '../actions';
+import { setLoading, updateSort } from '../actions';
 import { setCurrency } from '../../../global/store/actions';
 
 /**
@@ -80,7 +80,8 @@ export class BookDeparturesExpeditionsFilters extends HTMLElement {
 		// Get currency if set, else set to default 'USD' value.
 		const currency: string = this.currencyDropdown?.value[ 0 ] ?? 'USD';
 
-		// Update currency.
+		// Update currency and set loading.
+		setLoading( true );
 		setCurrency( currency );
 	}
 

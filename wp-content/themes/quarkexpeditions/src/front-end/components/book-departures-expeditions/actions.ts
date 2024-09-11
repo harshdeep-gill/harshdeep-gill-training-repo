@@ -209,3 +209,13 @@ const moreResultsLoaded = ( response: PartialData ) => {
 		updateMarkup: true,
 	} );
 };
+
+/**
+ * Set loading state.
+ *
+ * @param {boolean} loading Loading state.
+ */
+export const setLoading = ( loading: boolean ) => {
+	// Set loading state.
+	setState( { loading } );
+};
