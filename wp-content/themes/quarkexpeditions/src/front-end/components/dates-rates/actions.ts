@@ -820,7 +820,13 @@ const buildUrlFromFilters = ( filters: DatesRatesFiltersSaved ): string => {
 		const snakeCasedKey: string = camelToSnakeCase( key );
 
 		// @ts-ignore Stringified filters.
-		const stringifiedFilter = filters[ key ].toString();
+		const theFilter = filters[ key ];
+		let stringifiedFilter = theFilter.toString();
+
+		// check if the filter was an array.
+		if ( Array.isArray( theFilter ) && theFilter.length > 0 ) {
+			stringifiedFilter = stringifiedFilter + ',';
+		}
 
 		// Set the url params value based on key.
 		if ( stringifiedFilter ) {
@@ -902,30 +908,8 @@ const parseUrl = (): DatesRatesFiltersSaved | null => {
 			return;
 		}
 
-		// Add filters.
-		switch ( key ) {
-			case 'seasons':
-				urlFilters.seasons = parsedState.seasons.split( ',' );
-				break;
-			case 'expeditions':
-				urlFilters.expeditions = parsedState.expeditions.split( ',' );
-				break;
-			case 'adventureOptions':
-				urlFilters.adventureOptions = parsedState.adventureOptions.split( ',' );
-				break;
-			case 'months':
-				urlFilters.months = parsedState.months.split( ',' );
-				break;
-			case 'durations':
-				urlFilters.durations = parsedState.durations.split( ',' );
-				break;
-			case 'ships':
-				urlFilters.ships = parsedState.ships.split( ',' );
-				break;
-			case 'perPage':
-				urlFilters.perPage = parsedState.perPage;
-				break;
-		}
+		// @ts-ignore Split the value only if it might have been an array.
+		urlFilters[ key ] = parsedState[ key ].includes( ',' ) ? parsedState[ key ].split( ',' ).filter( ( value ) => value !== '' ) : parsedState[ key ];
 	} );
 
 	// Return selected filters state.
