@@ -23,6 +23,7 @@ use function Quark\Ships\get as get_ship_post;
 use function Quark\Softrip\Departures\get_lowest_price;
 use function Quark\Softrip\Occupancies\get_masks_mapping;
 
+use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
 use const Quark\CabinCategories\CABIN_CLASS_TAXONOMY;
 use const Quark\Core\CURRENCIES;
 use const Quark\Core\USD_CURRENCY;
@@ -155,6 +156,24 @@ function filter_solr_build_document( Document $document = null, WP_Post $post = 
 			$document->setField( 'region_season_str', [ $region_season ] );
 		}
 	}
+
+	/**
+	 * Set adventure options in Solr index.
+	 */
+
+	// Get included adventure options for departure.
+	$included_options    = get_included_adventure_options( $post->ID );
+	$included_option_ids = array_column( $included_options, 'term_id' );
+
+	// Get paid adventure options for departure.
+	$paid_options    = get_paid_adventure_options( $post->ID );
+	$paid_option_ids = array_keys( $paid_options );
+
+	// Merge included and paid options.
+	$adventure_option_ids = array_merge( $included_option_ids, $paid_option_ids );
+
+	// Set adventure options in Solr index.
+	$document->setField( ADVENTURE_OPTION_CATEGORY . '_taxonomy_id', $adventure_option_ids );
 
 	// Return document.
 	return $document;

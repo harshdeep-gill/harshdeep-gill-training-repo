@@ -273,7 +273,7 @@ class Search {
 		$this->args['tax_query'][] = [
 			'taxonomy'         => ADVENTURE_OPTION_CATEGORY,
 			'field'            => 'term_id',
-			'terms'            => $adventure_option_ids,
+			'terms'            => array_unique( $adventure_option_ids ),
 			'include_children' => false,
 		];
 	}
