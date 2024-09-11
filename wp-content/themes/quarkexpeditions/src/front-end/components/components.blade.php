@@ -47,7 +47,7 @@
 
 <x-component-demo :keys="[ 'global-message' ]">
 	<x-global-message>
-		<p>Are you in the Travel Trade or a Travel agent? <a href="#">Login</a> to our portal.</p>
+		<p>Are you in the Travel Trade or a Travel agent? <a href="#"><strong>Login</strong></a> to our portal.</p>
 	</x-global-message>
 </x-component-demo>
 
