@@ -9,6 +9,7 @@ namespace Quark\Localization\Tests;
 
 use WP_UnitTestCase;
 
+use function Quark\Localization\front_end_data;
 use function Quark\Localization\get_currencies;
 use function Quark\Localization\get_current_currency;
 
@@ -86,5 +87,27 @@ class Test_Localization extends WP_UnitTestCase {
 			],
 			$currencies
 		);
+	}
+
+	/**
+	 * Test frontend data.
+	 *
+	 * @covers Quark\Localization\front_end_data
+	 *
+	 * @return void
+	 */
+	public function test_front_end_data(): void {
+		// Test.
+		$expected = [
+			'currencies' => [
+				USD_CURRENCY => '$ USD',
+				AUD_CURRENCY => '$ AUD',
+				CAD_CURRENCY => '$ CAD',
+				EUR_CURRENCY => '€ EUR',
+				GBP_CURRENCY => '£ GBP',
+			],
+		];
+		$actual   = front_end_data();
+		$this->assertSame( $expected, $actual );
 	}
 }

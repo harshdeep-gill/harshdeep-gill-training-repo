@@ -93,7 +93,7 @@ function get_current_currency(): string {
  *
  * @return mixed[]
  */
-function front_end_data( array $data ): array {
+function front_end_data( array $data = [] ): array {
 	// Add currency.
 	$data['currencies'] = [
 		USD_CURRENCY => __( '$ USD', 'qrk' ),
