@@ -6856,6 +6856,12 @@
 	</x-mini-cards-list>
 </x-component-demo>
 
+<x-component-demo :keys="[ 'search-filters-bar' ]">
+	<x-section>
+		<x-search-filters-bar />
+	</x-section>
+</x-component-demo>
+
 <x-component-demo :keys="[ 'footer' ]">
 	@php
 		$social_links = [
