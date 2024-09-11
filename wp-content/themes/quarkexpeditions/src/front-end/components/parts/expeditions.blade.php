@@ -44,7 +44,7 @@
 
 					<ul>
 						@foreach ( $card['transfer_package']['sets'] as $item )
-							<li>{{ $item }}</li>
+							<li>{!! $item !!}</li>
 						@endforeach
 					</ul>
 
