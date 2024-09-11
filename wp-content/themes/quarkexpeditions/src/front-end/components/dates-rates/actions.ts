@@ -10,7 +10,7 @@ const {
 /**
  * Internal dependencies.
  */
-const { setState, getState } = zustand.stores.datesRates;
+const { setState, getState, subscribe } = zustand.stores.datesRates;
 
 /**
  * External dependencies
@@ -66,9 +66,6 @@ export const addSeason = ( filter: DatesRatesFilterState ) => {
 	// Set the state
 	setState( updateObject );
 
-	// Update URL.
-	updateUrlByFilters();
-
 	// Fetch results.
 	fetchResults();
 };
@@ -90,9 +87,6 @@ export const removeSeason = ( filterValue: string ) => {
 
 	// Set the state.
 	setState( updateObject );
-
-	// Update URL.
-	updateUrlByFilters();
 
 	// Fetch results.
 	fetchResults();
@@ -122,9 +116,6 @@ export const addExpedition = ( filter: DatesRatesFilterState ) => {
 	// Set the state
 	setState( updateObject );
 
-	// Update URL.
-	updateUrlByFilters();
-
 	// Fetch results.
 	fetchResults();
 };
@@ -146,9 +137,6 @@ export const removeExpedition = ( filterValue: string ) => {
 
 	// Set the state.
 	setState( updateObject );
-
-	// Update URL.
-	updateUrlByFilters();
 
 	// Fetch results.
 	fetchResults();
@@ -178,9 +166,6 @@ export const addAdventureOption = ( filter: DatesRatesFilterState ) => {
 	// Set the state
 	setState( updateObject );
 
-	// Update URL.
-	updateUrlByFilters();
-
 	// Fetch results.
 	fetchResults();
 };
@@ -202,9 +187,6 @@ export const removeAdventureOption = ( filterValue: string ) => {
 
 	// Set the state.
 	setState( updateObject );
-
-	// Update URL.
-	updateUrlByFilters();
 
 	// Fetch results.
 	fetchResults();
@@ -234,9 +216,6 @@ export const addDepartureMonth = ( filter: DatesRatesFilterState ) => {
 	// Set the state.
 	setState( updateObject );
 
-	// Update URL.
-	updateUrlByFilters();
-
 	// Fetch results.
 	fetchResults();
 };
@@ -258,9 +237,6 @@ export const removeDepartureMonth = ( filterValue: string ) => {
 
 	// Set the state.
 	setState( updateObject );
-
-	// Update URL.
-	updateUrlByFilters();
 
 	// Fetch results.
 	fetchResults();
@@ -290,9 +266,6 @@ export const addDuration = ( filter: DatesRatesFilterState ) => {
 	// Set the state.
 	setState( updateObject );
 
-	// Update URL.
-	updateUrlByFilters();
-
 	// Fetch results.
 	fetchResults();
 };
@@ -314,9 +287,6 @@ export const removeDuration = ( filterValue: string ) => {
 
 	// Set the state.
 	setState( updateObject );
-
-	// Update URL.
-	updateUrlByFilters();
 
 	// Fetch results.
 	fetchResults();
@@ -346,9 +316,6 @@ export const addShip = ( filter: DatesRatesFilterState ) => {
 	// Set the state.
 	setState( updateObject );
 
-	// Update URL.
-	updateUrlByFilters();
-
 	// Fetch results.
 	fetchResults();
 };
@@ -370,9 +337,6 @@ export const removeShip = ( filterValue: string ) => {
 
 	// Set the state.
 	setState( updateObject );
-
-	// Update URL.
-	updateUrlByFilters();
 
 	// Fetch results.
 	fetchResults();
@@ -396,9 +360,6 @@ export const clearAllFilters = () => {
 
 	// Set the state.
 	setState( updateObject );
-
-	// Update URL.
-	updateUrlByFilters();
 
 	// Fetch results.
 	fetchResults();
@@ -427,9 +388,6 @@ export const setPage = ( updatedPage: number ) => {
 	// Set the state.
 	setState( updateObject );
 
-	// Update URL.
-	updateUrlByFilters();
-
 	// Fetch results.
 	fetchResults();
 };
@@ -454,9 +412,6 @@ export const setPreviousPage = () => {
 
 	// Set the state.
 	setState( updateObject );
-
-	// Update URL.
-	updateUrlByFilters();
 
 	// Fetch results.
 	fetchResults();
@@ -483,9 +438,6 @@ export const setNextPage = () => {
 	// Set the state.
 	setState( updateObject );
 
-	// Update URL.
-	updateUrlByFilters();
-
 	// Fetch results.
 	fetchResults();
 };
@@ -510,9 +462,6 @@ export const setPerPage = ( updatedValue: number ) => {
 
 	// Set the state.
 	setState( updateObject );
-
-	// Update URL.
-	updateUrlByFilters();
 
 	// Fetch results.
 	fetchResults();
@@ -982,3 +931,6 @@ const parseUrl = (): DatesRatesFiltersSaved | null => {
 	// Return selected filters state.
 	return savedFilters;
 };
+
+// Subscribe to the store and update URL on each state update.
+subscribe( updateUrlByFilters );
