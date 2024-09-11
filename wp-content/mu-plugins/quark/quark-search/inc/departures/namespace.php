@@ -259,7 +259,7 @@ function get_filters_from_url(): array {
  *     expeditions: int[],
  *     adventure_options: string[],
  *     months: string[],
- *     durations: string[],
+ *     durations: array<int, string[]>,
  *     ships: int[],
  *     sort: string,
  *     page: int,
@@ -274,22 +274,24 @@ function parse_filters( array $filters = [] ): array {
 		$filters,
 		[
 			'currency'          => USD_CURRENCY, // @todo https://tuispecialist.atlassian.net/browse/QE-326 Modify this to global currency switcher when implemented.
-			'seasons'           => '',
-			'expeditions'       => '',
-			'adventure_options' => '',
-			'months'            => '',
-			'durations'         => '',
-			'ships'             => '',
+			'seasons'           => [],
+			'expeditions'       => [],
+			'adventure_options' => [],
+			'months'            => [],
+			'durations'         => [],
+			'ships'             => [],
 			'sort'              => 'date-now',
 			'page'              => 1,
 			'posts_per_load'    => 10,
-			'destinations'      => '',
+			'destinations'      => [],
 		]
 	);
 
 	// Parse expeditions.
 	if ( is_string( $filters['expeditions'] ) || is_int( $filters['expeditions'] ) ) {
 		$filters['expeditions'] = array_filter( array_map( 'trim', explode( ',', strval( $filters['expeditions'] ) ) ) );
+	} elseif ( is_array( $filters['expeditions'] ) ) {
+		$filters['expeditions'] = array_filter( array_map( 'trim', $filters['expeditions'] ) );
 	}
 
 	// Parse months.
@@ -302,21 +304,36 @@ function parse_filters( array $filters = [] ): array {
 	// Parse adventure_options slugs.
 	if ( is_string( $filters['adventure_options'] ) || is_int( $filters['adventure_options'] ) ) {
 		$filters['adventure_options'] = array_filter( array_map( 'trim', explode( ',', strval( $filters['adventure_options'] ) ) ) );
+	} elseif ( is_array( $filters['adventure_options'] ) ) {
+		$filters['adventure_options'] = array_filter( array_map( 'trim', $filters['adventure_options'] ) );
 	}
 
 	// Parse duration slugs.
 	if ( is_string( $filters['durations'] ) || is_int( $filters['durations'] ) ) {
 		$filters['durations'] = array_filter( array_map( 'trim', explode( '-', strval( $filters['durations'] ) ) ) );
+	} elseif ( is_array( $filters['durations'] ) ) {
+		$filters['durations'] = array_filter( array_map( 'trim', $filters['durations'] ) );
+		$filters['durations'] = array_map(
+			function ( $duration ) {
+				$duration = explode( '-', $duration );
+				return $duration;
+			},
+			$filters['durations']
+		);
 	}
 
 	// Parse seasons slugs.
 	if ( is_string( $filters['seasons'] ) ) {
 		$filters['seasons'] = array_filter( array_map( 'trim', explode( ',', $filters['seasons'] ) ) );
+	} elseif ( is_array( $filters['seasons'] ) ) {
+		$filters['seasons'] = array_filter( array_map( 'trim', $filters['seasons'] ) );
 	}
 
 	// Parse ships.
 	if ( is_string( $filters['ships'] ) || is_int( $filters['ships'] ) ) {
 		$filters['ships'] = array_filter( array_map( 'trim', explode( ',', strval( $filters['ships'] ) ) ) );
+	} elseif ( is_array( $filters['ships'] ) ) {
+		$filters['ships'] = array_filter( array_map( 'trim', $filters['ships'] ) );
 	}
 
 	// Validate currency.
@@ -329,6 +346,8 @@ function parse_filters( array $filters = [] ): array {
 	// Parse destinations.
 	if ( is_string( $filters['destinations'] ) || is_int( $filters['destinations'] ) ) {
 		$filters['destinations'] = array_filter( array_map( 'trim', explode( ',', strval( $filters['destinations'] ) ) ) );
+	} elseif ( is_array( $filters['destinations'] ) ) {
+		$filters['destinations'] = array_filter( array_map( 'trim', $filters['destinations'] ) );
 	}
 
 	// Return parsed filters.
@@ -371,9 +390,17 @@ function search( array $filters = [], bool $retrieve_all = false ): array {
 	$months            = array_map( 'strval', (array) $filters['months'] );
 	$expeditions       = array_map( 'absint', (array) $filters['expeditions'] );
 	$adventure_options = array_map( 'absint', (array) $filters['adventure_options'] );
-	$durations         = array_map( 'absint', (array) $filters['durations'] );
 	$ships             = array_map( 'absint', (array) $filters['ships'] );
 	$destinations      = array_map( 'absint', (array) $filters['destinations'] );
+
+	// Validate durations.
+	$durations = array_map(
+		function ( $duration ) {
+			$duration = array_map( 'absint', $duration );
+			return $duration;
+		},
+		$filters['durations']
+	);
 
 	// Prepare search object.
 	$search = new Search();
