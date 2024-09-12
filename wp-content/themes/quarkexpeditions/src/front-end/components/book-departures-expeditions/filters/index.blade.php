@@ -8,7 +8,7 @@
 	}
 
 	// All available currencies.
-	$currencies = quark_get_template_data('currencies');
+	$currencies = quark_get_template_data( 'currencies' );
 
 	// If no currencies are available, set an empty array.
 	if ( ! is_array( $currencies ) || empty( $currencies ) ) {
