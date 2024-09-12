@@ -207,6 +207,9 @@ class Block_Converter {
 				break;
 		}
 
+		// Replace encoded ampersands.
+		$wp_block = str_replace( 'u0026', '&', $wp_block );
+
 		// Return WordPress block.
 		return $wp_block . PHP_EOL . PHP_EOL;
 	}
@@ -602,9 +605,18 @@ class Block_Converter {
 
 		// Set attributes.
 		$attrs['title']          = strval( $result['title'] );
-		$attrs['anchor']         = sanitize_html_class( $result['title'] );
+		$attrs['anchor']         = sanitize_title_with_dashes( $result['title'] );
 		$attrs['titleAlignment'] = 'left';
 		$attrs['headingLevel']   = 'h2';
+
+		// Access secondary nav.
+		global $secondary_nav;
+
+		// Add to secondary nav.
+		$secondary_nav[] = [
+			'title' => $attrs['title'],
+			'url'   => $attrs['anchor'],
+		];
 
 		// Return data.
 		return serialize_block(
@@ -754,9 +766,18 @@ class Block_Converter {
 
 		// Set attributes.
 		$attrs['title']          = strval( $result['title'] );
-		$attrs['anchor']         = sanitize_html_class( $result['title'] );
+		$attrs['anchor']         = sanitize_title_with_dashes( $result['title'] );
 		$attrs['titleAlignment'] = 'left';
 		$attrs['headingLevel']   = 'h2';
+
+		// Access secondary nav.
+		global $secondary_nav;
+
+		// Add to secondary nav.
+		$secondary_nav[] = [
+			'title' => $attrs['title'],
+			'url'   => $attrs['anchor'],
+		];
 
 		// Return data.
 		return serialize_block(
@@ -1094,7 +1115,7 @@ class Block_Converter {
 
 		// Set attributes.
 		$attrs['title']          = ! empty( $result['title'] ) ? strval( $result['title'] ) : '';
-		$attrs['anchor']         = sanitize_html_class( $result['title'] );
+		$attrs['anchor']         = sanitize_title_with_dashes( $result['title'] );
 		$attrs['titleAlignment'] = 'left';
 		$attrs['headingLevel']   = 'h2';
 
@@ -1115,6 +1136,17 @@ class Block_Converter {
 					'innerContent' => [ $icon_with_text_block_markup ],
 				]
 			) . PHP_EOL;
+		}
+
+		// Check title is set.
+		if ( ! empty( $attrs['title'] ) ) {
+			global $secondary_nav;
+
+			// Add to secondary nav.
+			$secondary_nav[] = [
+				'title' => $attrs['title'],
+				'url'   => $attrs['anchor'],
+			];
 		}
 
 		// Return data.
@@ -1330,7 +1362,7 @@ class Block_Converter {
 		$collage_block_markup    = '';
 		$attrs['background']     = ! empty( $result['background'] ) ? strval( $result['background'] ) : '';
 		$attrs['title']          = ! empty( $result['title'] ) ? strval( $result['title'] ) : '';
-		$attrs['anchor']         = sanitize_html_class( $result['title'] );
+		$attrs['anchor']         = sanitize_title_with_dashes( $result['title'] );
 		$attrs['titleAlignment'] = 'left';
 		$attrs['headingLevel']   = 'h2';
 
@@ -1352,6 +1384,14 @@ class Block_Converter {
 		// If title is set wrap collage in section.
 		if ( empty( $attrs['title'] ) ) {
 			return $collage_block_markup;
+		} else {
+			global $secondary_nav;
+
+			// Add to secondary nav.
+			$secondary_nav[] = [
+				'title' => $attrs['title'],
+				'url'   => $attrs['anchor'],
+			];
 		}
 
 		// Return data.
@@ -1404,7 +1444,7 @@ class Block_Converter {
 		// Set attributes.
 		$attrs['background']     = ! empty( $result['background'] ) ? strval( $result['background'] ) : '';
 		$attrs['title']          = ! empty( $result['title'] ) ? strval( $result['title'] ) : '';
-		$attrs['anchor']         = sanitize_html_class( $result['title'] );
+		$attrs['anchor']         = sanitize_title_with_dashes( $result['title'] );
 		$attrs['titleAlignment'] = 'left';
 		$attrs['headingLevel']   = 'h2';
 
@@ -1420,6 +1460,17 @@ class Block_Converter {
 				// Convert image_with_text block.
 				$image_with_text_block_content .= $this->convert_paragraph_image_with_text( [ 'id' => $itc_image_text_block ], $align );
 			}
+		}
+
+		// Check if title is set.
+		if ( ! empty( $attrs['title'] ) ) {
+			global $secondary_nav;
+
+			// Add to secondary nav.
+			$secondary_nav[] = [
+				'title' => $attrs['title'],
+				'url'   => $attrs['anchor'],
+			];
 		}
 
 		// Return data.
@@ -1472,7 +1523,7 @@ class Block_Converter {
 		// Set attributes.
 		$attrs['background']     = ! empty( $result['background'] ) ? strval( $result['background'] ) : '';
 		$attrs['title']          = ! empty( $result['title'] ) ? strval( $result['title'] ) : '';
-		$attrs['anchor']         = sanitize_html_class( $result['title'] );
+		$attrs['anchor']         = sanitize_title_with_dashes( $result['title'] );
 		$attrs['titleAlignment'] = 'left';
 		$attrs['headingLevel']   = 'h2';
 
@@ -1484,6 +1535,17 @@ class Block_Converter {
 			foreach ( $numbered_card_blocks as $numbered_card_block ) {
 				$numbered_card_content .= $this->convert_paragraph_simple_card( [ 'id' => $numbered_card_block ] );
 			}
+		}
+
+		// Check if title is set.
+		if ( ! empty( $attrs['title'] ) ) {
+			global $secondary_nav;
+
+			// Add to secondary nav.
+			$secondary_nav[] = [
+				'title' => $attrs['title'],
+				'url'   => $attrs['anchor'],
+			];
 		}
 
 		// Return data.
@@ -1752,7 +1814,7 @@ class Block_Converter {
 		// Set attributes.
 		$attrs['background']     = ! empty( $result['background'] ) ? strval( $result['background'] ) : '';
 		$attrs['title']          = ! empty( $result['title'] ) ? strval( $result['title'] ) : '';
-		$attrs['anchor']         = sanitize_html_class( $result['title'] );
+		$attrs['anchor']         = sanitize_title_with_dashes( $result['title'] );
 		$attrs['titleAlignment'] = 'left';
 		$attrs['headingLevel']   = 'h2';
 
@@ -1770,6 +1832,17 @@ class Block_Converter {
 			foreach ( $simple_cards as $simple_card ) {
 				$simple_cards_content .= $this->convert_paragraph_simple_card( [ 'id' => $simple_card ] );
 			}
+		}
+
+		// Check if title is set.
+		if ( ! empty( $attrs['title'] ) ) {
+			global $secondary_nav;
+
+			// Add to secondary nav.
+			$secondary_nav[] = [
+				'title' => $attrs['title'],
+				'url'   => $attrs['anchor'],
+			];
 		}
 
 		// Return data.
@@ -2123,7 +2196,7 @@ class Block_Converter {
 
 		// Set attributes.
 		$attrs['title']          = ! empty( $result['title'] ) ? strval( $result['title'] ) : '';
-		$attrs['anchor']         = sanitize_html_class( $result['title'] );
+		$attrs['anchor']         = sanitize_title_with_dashes( $result['title'] );
 		$attrs['titleAlignment'] = 'left';
 		$attrs['headingLevel']   = 'h2';
 
@@ -2167,6 +2240,17 @@ class Block_Converter {
 					],
 				]
 			) . PHP_EOL;
+		}
+
+		// Check if title is set.
+		if ( ! empty( $attrs['title'] ) ) {
+			global $secondary_nav;
+
+			// Add to secondary nav.
+			$secondary_nav[] = [
+				'title' => $attrs['title'],
+				'url'   => $attrs['anchor'],
+			];
 		}
 
 		// Return data.
@@ -2295,7 +2379,7 @@ class Block_Converter {
 		// Check if title is empty.
 		if ( ! empty( $result['title'] ) ) {
 			$attrs['title']          = strval( $result['title'] );
-			$attrs['anchor']         = sanitize_html_class( $result['title'] );
+			$attrs['anchor']         = sanitize_title_with_dashes( $result['title'] );
 			$attrs['titleAlignment'] = 'left';
 			$attrs['headingLevel']   = 'h2';
 		} else {
@@ -2370,6 +2454,28 @@ class Block_Converter {
 				'size'   => 'full',
 			];
 
+			// If there is only one item in gallery and it is a remote video, set the block as fancy-video.
+			if ( 1 === count( $images ) && 'remote_video' === $media_type ) {
+				// Return data.
+				return serialize_block(
+					[
+						'blockName'    => 'quark/section',
+						'attrs'        => [
+							'hasTitle' => false,
+						],
+						'innerContent' => [
+							serialize_block(
+								[
+									'blockName'    => 'quark/fancy-video',
+									'attrs'        => $attrs,
+									'innerContent' => [],
+								]
+							),
+						],
+					]
+				) . PHP_EOL;
+			}
+
 			// Build quark/collage-media-item block.
 			$collage_media_items .= serialize_block(
 				[
@@ -2392,6 +2498,63 @@ class Block_Converter {
 				'attrs'        => [],
 				'innerContent' => [
 					$collage_media_items,
+				],
+			]
+		) . PHP_EOL;
+	}
+
+	/**
+	 * Prepare secondary nav.
+	 *
+	 * @param array<int, array<string, string>> $secondary_nav Secondary nav items.
+	 *
+	 * @return string
+	 */
+	public function prepare_secondary_nav( array $secondary_nav = [] ): string {
+		// validate secondary_nav not empty.
+		if ( empty( $secondary_nav ) ) {
+			return '';
+		}
+
+		// Prepare secondary nav items.
+		$secondary_nav_items = '';
+
+		// Loop through secondary nav items.
+		foreach ( $secondary_nav as $nav_item ) {
+			// Prepare secondary nav item blocks.
+			$secondary_nav_items .= serialize_block(
+				[
+					'blockName'    => 'quark/secondary-navigation-item',
+					'attrs'        => [
+						'title' => $nav_item['title'],
+						'url'   => [
+							'url'  => $nav_item['url'],
+							'text' => $nav_item['title'],
+						],
+					],
+					'innerContent' => [],
+				]
+			);
+		}
+
+		// Check if secondary nav items are not empty.
+		if ( empty( $secondary_nav_items ) ) {
+			return '';
+		}
+
+		// Prepare secondary nav block.
+		return serialize_block(
+			[
+				'blockName'    => 'quark/secondary-navigation',
+				'attrs'        => [],
+				'innerContent' => [
+					serialize_block(
+						[
+							'blockName'    => 'quark/secondary-navigation-menu',
+							'attrs'        => [],
+							'innerContent' => [ $secondary_nav_items ],
+						]
+					),
 				],
 			]
 		) . PHP_EOL;
