@@ -467,7 +467,7 @@ function get_filters_for_dates_rates( array $selected_filters = [] ): array {
 	$solr_facets = array_column( $filter_mapping, 'solr_facet' );
 
 	// Run search.
-	$result            = search( $selected_filters, $solr_facets, true );
+	$result            = search( $selected_filters, $solr_facets );
 	$solr_facet_result = $result['facet_results'];
 
 	// Initialize filters.
@@ -530,7 +530,7 @@ function get_filters_for_dates_rates( array $selected_filters = [] ): array {
 	);
 
 	// Run search.
-	$result     = search( $selected_filters, $solr_facets, true );
+	$result     = search( $selected_filters, $solr_facets );
 	$facet_data = $result['facet_results'][ $solr_facet_key ];
 
 	// Validate facet results.
