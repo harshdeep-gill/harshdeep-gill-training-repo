@@ -397,12 +397,7 @@ function search( array $filters = [], bool $retrieve_all = false ): array {
 
 	// Validate durations.
 	$durations = array_map(
-		function ( $duration ) {
-			$duration = array_map( 'absint', $duration );
-
-			// Return duration.
-			return $duration;
-		},
+		fn ( array $duration = [] ) => array_map( 'absint', $duration ),
 		$filters['durations']
 	);
 
