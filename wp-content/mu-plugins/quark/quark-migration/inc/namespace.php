@@ -74,7 +74,7 @@ function add_drupal_migration_meta_box(): void {
 		'drupal-migration',
 		'Drupal Migration',
 		function () use ( $drupal_id ) {
-			$drupal_url = 'https://dev.quarkexpeditions.com/';
+			$drupal_url = 'https://www.quarkexpeditions.com/';
 			?>
 			<p>Drupal Node ID: <code><?php echo absint( $drupal_id ); ?></code></p>
 			<a href="<?php echo esc_url( sprintf( '%s/node/%d', $drupal_url, $drupal_id ) ); ?>" class="button button-secondary" target="_blank">View On Drupal</a>
