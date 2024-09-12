@@ -354,7 +354,7 @@ export const clearAllFilters = () => {
 		months: [],
 		durations: [],
 		ships: [],
-		perPage: 4,
+		perPage: 8,
 		page: 1,
 	};
 
@@ -729,6 +729,10 @@ const resultsFetchedCallback = ( response: PartialData ) => {
 		shouldMarkupUpdate: true,
 	};
 
+	/**
+	 * @todo Inject the filters markup HTML (`filtersMarkup`) from response in the filter drawer - #dates-rates-filters .drawer__body.
+	 */
+
 	// Set the state.
 	setState( updateObject );
 };
@@ -894,7 +898,7 @@ const parseUrl = (): DatesRatesFiltersSaved | null => {
 		months: [],
 		durations: [],
 		ships: [],
-		perPage: 4,
+		perPage: 8,
 	};
 
 	// Get allowed params.

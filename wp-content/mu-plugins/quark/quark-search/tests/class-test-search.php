@@ -30,12 +30,13 @@ use function Quark\Search\public_rest_api_routes;
 use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
 use const Quark\CabinCategories\CABIN_CLASS_TAXONOMY;
 use const Quark\CabinCategories\POST_TYPE as CABIN_POST_TYPE;
-use const Quark\Core\EUR_CURRENCY;
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
 use const Quark\Departures\SPOKEN_LANGUAGE_TAXONOMY;
 use const Quark\Expeditions\DESTINATION_TAXONOMY;
 use const Quark\Expeditions\POST_TYPE as EXPEDITION_POST_TYPE;
 use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
+use const Quark\Localization\CURRENCY_COOKIE;
+use const Quark\Localization\EUR_CURRENCY;
 use const Quark\Search\Departures\REINDEX_POST_IDS_OPTION_KEY;
 use const Quark\Search\Departures\SCHEDULE_REINDEX_HOOK;
 use const Quark\Search\REST_API_NAMESPACE;
@@ -130,7 +131,7 @@ class Test_Search extends WP_UnitTestCase {
 		);
 
 		// Add invalid currency.
-		$query_vars['currency'] = 'invalid';
+		$_COOKIE[ CURRENCY_COOKIE ] = 'INVALID';
 
 		// Redirect to custom URL.
 		$this->go_to( add_query_arg( $query_vars, home_url() ) );
@@ -165,8 +166,8 @@ class Test_Search extends WP_UnitTestCase {
 			$filters
 		);
 
-		// Test for other currency.
-		$query_vars['currency'] = EUR_CURRENCY;
+		// Set new currency cookie.
+		$_COOKIE[ CURRENCY_COOKIE ] = 'EUR';
 
 		// Redirect to custom URL.
 		$this->go_to( add_query_arg( $query_vars, home_url() ) );
@@ -261,17 +262,9 @@ class Test_Search extends WP_UnitTestCase {
 				],
 				'meta_query'             => [
 					[
-						'relation' => 'OR',
-						[
-							'key'     => 'region_season',
-							'value'   => 2024,
-							'compare' => '=',
-						],
-						[
-							'key'     => 'region_season',
-							'value'   => 2025,
-							'compare' => '=',
-						],
+						'key'     => 'region_season',
+						'value'   => [ 2024, 2025 ],
+						'compare' => 'IN',
 					],
 				],
 			],
@@ -283,7 +276,7 @@ class Test_Search extends WP_UnitTestCase {
 		$solr_search = new Search();
 		$solr_search->set_expeditions( [ 20, 15, 20, 25 ] );
 		$solr_search->set_ships( [ 2, 1, 2, 5 ] );
-		$solr_search->set_durations( [ 12, 15 ] );
+		$solr_search->set_durations( [ [ 12, 15 ] ] );
 		$solr_search->set_order( 'DESC' );
 		$solr_search->set_order( 'DESC', 'meta_value_num', 'duration' );
 		$this->assertEquals(
@@ -476,7 +469,7 @@ class Test_Search extends WP_UnitTestCase {
 		$solr_search->set_adventure_options( [ 1, 2, 3 ] );
 		$solr_search->set_expeditions( [ 4, 5, 6 ] );
 		$solr_search->set_ships( [ 7, 8, 9 ] );
-		$solr_search->set_durations( [ 10, 11, 12 ] );
+		$solr_search->set_durations( [ [ 10, 11 ], [ 12 ] ] );
 		$solr_search->set_months( [ '01-2024', '02-2024', '03-2024' ] );
 
 		// Assert multiple filters.
@@ -511,10 +504,19 @@ class Test_Search extends WP_UnitTestCase {
 						'compare' => 'IN',
 					],
 					[
-						'key'     => 'duration',
-						'value'   => [ 10, 11, 12 ],
-						'type'    => 'NUMERIC',
-						'compare' => 'BETWEEN',
+						'relation' => 'OR',
+						[
+							'key'     => 'duration',
+							'value'   => [ 10, 11 ],
+							'type'    => 'NUMERIC',
+							'compare' => 'BETWEEN',
+						],
+						[
+							'key'     => 'duration',
+							'value'   => [ 12 ],
+							'type'    => 'NUMERIC',
+							'compare' => 'BETWEEN',
+						],
 					],
 					[
 						'relation' => 'OR',
@@ -550,7 +552,7 @@ class Test_Search extends WP_UnitTestCase {
 		$solr_search->set_adventure_options( [ 1, 2, 3 ] );
 		$solr_search->set_expeditions( [ 4, 5, 6 ] );
 		$solr_search->set_ships( [ 7, 8, 9 ] );
-		$solr_search->set_durations( [ 10, 11, 12 ] );
+		$solr_search->set_durations( [ [ 10, 11 ], [ 12, 15 ] ] );
 		$solr_search->set_months( [ '01-2024', '02-2024', '03-2024' ] );
 		$solr_search->set_sort( 'price-low', 'EUR' );
 		$solr_search->set_seasons( [ '2024', '2025' ] );
@@ -595,10 +597,19 @@ class Test_Search extends WP_UnitTestCase {
 						'compare' => 'IN',
 					],
 					[
-						'key'     => 'duration',
-						'value'   => [ 10, 11, 12 ],
-						'type'    => 'NUMERIC',
-						'compare' => 'BETWEEN',
+						'relation' => 'OR',
+						[
+							'key'     => 'duration',
+							'value'   => [ 10, 11 ],
+							'type'    => 'NUMERIC',
+							'compare' => 'BETWEEN',
+						],
+						[
+							'key'     => 'duration',
+							'value'   => [ 12, 15 ],
+							'type'    => 'NUMERIC',
+							'compare' => 'BETWEEN',
+						],
 					],
 					[
 						'relation' => 'OR',
@@ -622,17 +633,9 @@ class Test_Search extends WP_UnitTestCase {
 						],
 					],
 					[
-						'relation' => 'OR',
-						[
-							'key'     => 'region_season',
-							'value'   => '2024',
-							'compare' => '=',
-						],
-						[
-							'key'     => 'region_season',
-							'value'   => '2025',
-							'compare' => '=',
-						],
+						'key'     => 'region_season',
+						'value'   => [ 2024, 2025 ],
+						'compare' => 'IN',
 					],
 				],
 			],

@@ -45,6 +45,12 @@
 </x-once>
 {{--  --}}
 
+<x-component-demo :keys="[ 'global-message' ]">
+	<x-global-message>
+		<p>Are you in the Travel Trade or a Travel agent? <a href="#"><strong>Login</strong></a> to our portal.</p>
+	</x-global-message>
+</x-component-demo>
+
 <x-component-demo :keys="[ 'sidebar-grid', 'lp-header', 'hero-refactor' ]">
 	<x-lp-header
 		tc_image_id="18"
@@ -3451,7 +3457,6 @@
 				:is_immersive="true"
 			>
 			</x-product-cards.image>
-
 			<x-product-cards.overline text="12 Days" />
 			<x-product-cards.title title="Arctic Saga: Exploring Spitsbergen via the Faroes and Jan Mayen" />
 			<x-product-cards.subtitle title="Lorem Ipsum, Doler Tempor, Incididunt, Exercitation Ullamco" />
@@ -3465,7 +3470,6 @@
 				:is_immersive="true"
 			>
 			</x-product-cards.image>
-
 			<x-product-cards.overline text="12 Days" />
 			<x-product-cards.title title="Arctic Saga: Exploring Spitsbergen via the Faroes and Jan Mayen" />
 			<x-product-cards.subtitle title="Lorem Ipsum, Doler Tempor, Incididunt, Exercitation Ullamco" />
@@ -3478,7 +3482,6 @@
 				:is_immersive="true"
 			>
 			</x-product-cards.image>
-
 			<x-product-cards.overline text="12 Days" />
 			<x-product-cards.title title="Arctic Saga: Exploring Spitsbergen via the Faroes and Jan Mayen" />
 			<x-product-cards.subtitle title="Lorem Ipsum, Doler Tempor, Incididunt, Exercitation Ullamco" />
@@ -3496,7 +3499,6 @@
 				:is_immersive="true"
 			>
 			</x-product-cards.image>
-
 			<x-product-cards.overline text="Arctic" />
 			<x-product-cards.title title="Arctic Saga: Exploring Spitsbergen via the Faroes and Jan Mayen" />
 
@@ -3534,7 +3536,6 @@
 				:is_immersive="true"
 			>
 			</x-product-cards.image>
-
 			<x-product-cards.overline text="Arctic" />
 			<x-product-cards.title title="Arctic Saga: Exploring Spitsbergen via the Faroes and Jan Mayen" />
 
@@ -3572,7 +3573,6 @@
 				:is_immersive="true"
 			>
 			</x-product-cards.image>
-
 			<x-product-cards.overline text="Arctic" />
 			<x-product-cards.title title="Arctic Saga: Exploring Spitsbergen via the Faroes and Jan Mayen" />
 

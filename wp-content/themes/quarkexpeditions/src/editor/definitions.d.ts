@@ -47,4 +47,8 @@ interface Window {
 		}
 	},
 	typenow: string,
+	travelopiaMedia: {
+		DynamicImage: new () => React.Component<any>,
+		getDynamicImageUrl: Function,
+	},
 }

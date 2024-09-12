@@ -20,6 +20,7 @@ use function Quark\Expeditions\get_starting_from_locations;
 use function Quark\Expeditions\get_details_data;
 use function Quark\Expeditions\get_expedition_ship_ids;
 use function Quark\Expeditions\get_formatted_date_range;
+use function Quark\Expeditions\get_minimum_duration_itinerary;
 use function Quark\Expeditions\get_total_departures;
 use function Quark\Expeditions\get_ships;
 use function Quark\Expeditions\get_seo_structured_data;
@@ -1062,5 +1063,94 @@ class Test_Expeditions extends Softrip_TestCase {
 		wp_delete_post( $itinerary_1_day_2_post->ID, true );
 		wp_delete_post( $itinerary_2_day_1_post->ID, true );
 		wp_delete_post( $itinerary_2_day_2_post->ID, true );
+	}
+
+	/**
+	 * Test get_minimum_duration_itinerary.
+	 *
+	 * @covers \Quark\Expeditions\get_minimum_duration_itinerary()
+	 *
+	 * @return void
+	 */
+	public function test_get_minimun_duration_itinerary(): void {
+		// Create Itinerary posts.
+		$itinerary_post_1 = $this->factory()->post->create_and_get(
+			[
+				'post_title'   => 'Test Post 1',
+				'post_content' => 'Post content 1',
+				'post_status'  => 'publish',
+				'post_type'    => ITINERARY_POST_TYPE,
+				'meta_input'   => [
+					'duration_in_days' => '10',
+				],
+			]
+		);
+
+		// Assert created posts are instance of WP_Post.
+		$this->assertTrue( $itinerary_post_1 instanceof WP_Post );
+
+		// Create Itinerary posts.
+		$itinerary_post_2 = $this->factory()->post->create_and_get(
+			[
+				'post_title'   => 'Test Post 2',
+				'post_content' => 'Post content 2',
+				'post_status'  => 'publish',
+				'post_type'    => ITINERARY_POST_TYPE,
+				'meta_input'   => [
+					'duration_in_days' => '5',
+				],
+			]
+		);
+
+		// Assert created posts are instance of WP_Post.
+		$this->assertTrue( $itinerary_post_2 instanceof WP_Post );
+
+		// Create Itinerary posts.
+		$itinerary_post_3 = $this->factory()->post->create_and_get(
+			[
+				'post_title'   => 'Test Post 3',
+				'post_content' => 'Post content 3',
+				'post_status'  => 'publish',
+				'post_type'    => ITINERARY_POST_TYPE,
+				'meta_input'   => [
+					'duration_in_days' => '15',
+				],
+			]
+		);
+
+		// Assert created posts are instance of WP_Post.
+		$this->assertTrue( $itinerary_post_3 instanceof WP_Post );
+
+		// Create Expedition post.
+		$expedition_post = $this->factory()->post->create_and_get(
+			[
+				'post_title'   => 'Test Expedition Post',
+				'post_content' => 'Expedition content',
+				'post_status'  => 'publish',
+				'post_type'    => POST_TYPE,
+				'meta_input'   => [
+					'related_itineraries' => [
+						$itinerary_post_1->ID,
+						$itinerary_post_2->ID,
+						$itinerary_post_3->ID,
+					],
+				],
+			]
+		);
+
+		// Assert created posts are instance of WP_Post.
+		$this->assertTrue( $expedition_post instanceof WP_Post );
+
+		// Assert the function returns the correct minimum duration itinerary post.
+		$this->assertEquals(
+			$itinerary_post_2,
+			get_minimum_duration_itinerary( $expedition_post->ID )
+		);
+
+		// Cleanup.
+		wp_delete_post( $itinerary_post_1->ID, true );
+		wp_delete_post( $itinerary_post_2->ID, true );
+		wp_delete_post( $itinerary_post_3->ID, true );
+		wp_delete_post( $expedition_post->ID, true );
 	}
 }

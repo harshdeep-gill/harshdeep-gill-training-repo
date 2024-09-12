@@ -15,12 +15,13 @@ use WP_Term;
 
 use function Travelopia\Core\cached_nav_menu;
 
-const AUD_CURRENCY       = 'AUD';
-const CAD_CURRENCY       = 'CAD';
-const EUR_CURRENCY       = 'EUR';
-const GBP_CURRENCY       = 'GBP';
-const USD_CURRENCY       = 'USD';
-const CURRENCIES         = [ USD_CURRENCY, CAD_CURRENCY, AUD_CURRENCY, GBP_CURRENCY, EUR_CURRENCY ];
+use const Quark\Localization\AUD_CURRENCY;
+use const Quark\Localization\CAD_CURRENCY;
+use const Quark\Localization\DEFAULT_CURRENCY;
+use const Quark\Localization\EUR_CURRENCY;
+use const Quark\Localization\GBP_CURRENCY;
+use const Quark\Localization\USD_CURRENCY;
+
 const REST_API_NAMESPACE = 'quark-core/v1';
 
 /**
@@ -415,7 +416,7 @@ function doing_automated_test(): bool {
  *
  * @return string Formatted price.
  */
-function format_price( float $price = 0, string $currency = 'USD' ): string {
+function format_price( float $price = 0, string $currency = DEFAULT_CURRENCY ): string {
 	// Check if price is empty.
 	if ( empty( $price ) ) {
 		return '';
@@ -426,15 +427,15 @@ function format_price( float $price = 0, string $currency = 'USD' ): string {
 
 	// Set Currency symbol.
 	$currency_symbols = [
-		'AUD' => '$',
-		'CAD' => '$',
-		'USD' => '$',
-		'EUR' => '€',
-		'GBP' => '£',
+		AUD_CURRENCY => '$',
+		CAD_CURRENCY => '$',
+		USD_CURRENCY => '$',
+		EUR_CURRENCY => '€',
+		GBP_CURRENCY => '£',
 	];
 
 	// Validate currency.
-	$currency = array_key_exists( strtoupper( $currency ), $currency_symbols ) ? strtoupper( $currency ) : 'USD';
+	$currency = array_key_exists( strtoupper( $currency ), $currency_symbols ) ? strtoupper( $currency ) : DEFAULT_CURRENCY;
 
 	// Current symbol.
 	$currency_symbol     = $currency_symbols[ strtoupper( $currency ) ];
@@ -454,33 +455,7 @@ function format_price( float $price = 0, string $currency = 'USD' ): string {
 }
 
 /**
- * Get currencies.
- *
- * @return string[]
- */
-function get_currencies(): array {
-	// Return the currencies.
-	return CURRENCIES;
-}
-
-/**
- * Get available currencies.
- *
- * @return string[]
- */
-function get_available_currencies(): array {
-	// Return available currencies.
-	return [
-		'USD',
-		'CAD',
-		'AUD',
-		'EUR',
-		'GBP',
-	];
-}
-
-/**
- * Organise terms by hierarchy.
+ * Organize terms by hierarchy.
  *
  * @param array<int> $terms Terms.
  * @param string     $taxonomy Taxonomy.
@@ -542,4 +517,14 @@ function get_raw_text_from_html( string $html = '' ): string {
 
 	// Return pure text.
 	return $text;
+}
+
+/**
+ * Check if the test is in progress.
+ *
+ * @return bool
+ */
+function doing_tests(): bool {
+	// Check if doing tests.
+	return defined( 'WP_TESTS' ) && true === WP_TESTS;
 }
