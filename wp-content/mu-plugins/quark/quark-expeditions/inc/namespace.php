@@ -1170,17 +1170,9 @@ function get_minimum_duration( int $post_id = 0 ): int {
  * @return WP_Post|null
  */
 function get_minimum_duration_itinerary( int $post_id = 0 ): WP_Post|null {
-	// Get post.
-	$post = get( $post_id );
-
 	// Initialize minimum duration.
 	$minimum_duration           = 0;
 	$minimum_duration_itinerary = null;
-
-	// Check for post.
-	if ( empty( $post['post'] ) || ! $post['post'] instanceof WP_Post ) {
-		return $minimum_duration_itinerary;
-	}
 
 	// Get itineraries.
 	$itineraries = get_itineraries( $post_id );

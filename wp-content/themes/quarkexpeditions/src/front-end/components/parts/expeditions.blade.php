@@ -38,9 +38,9 @@
 			@if ( ! empty( $card['transfer_package'] ) )
 				<x-product-cards.transfer_package
 					drawer_id="transfer-package-{{ $loop->index }}"
-					drawer_title="{{ __( 'Mandatory Transfer package', 'qrk' ) }}"
+					drawer_title="{!! __( 'Mandatory Transfer package', 'qrk' ) !!}"
 				>
-					<strong>{{ $card['transfer_package']['title'] }}</strong>
+					<strong>{!! $card['transfer_package']['title'] !!}</strong>
 
 					<ul>
 						@foreach ( $card['transfer_package']['sets'] as $item )
@@ -51,7 +51,7 @@
 					@php
 						$price = sprintf( __( 'Package Price: %s', 'qrk' ), $card['transfer_package']['formatted_price'] );
 					@endphp
-					<strong> {{ $price }}</strong>
+					<strong> {!! $price !!}</strong>
 
 				</x-product-cards.transfer-package>
 			@endif
