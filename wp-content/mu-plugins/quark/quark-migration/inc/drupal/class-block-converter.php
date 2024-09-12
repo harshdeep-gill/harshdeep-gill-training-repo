@@ -605,7 +605,7 @@ class Block_Converter {
 
 		// Set attributes.
 		$attrs['title']          = strval( $result['title'] );
-		$attrs['anchor']         = sanitize_html_class( $result['title'] );
+		$attrs['anchor']         = sanitize_title_with_dashes( $result['title'] );
 		$attrs['titleAlignment'] = 'left';
 		$attrs['headingLevel']   = 'h2';
 
@@ -766,7 +766,7 @@ class Block_Converter {
 
 		// Set attributes.
 		$attrs['title']          = strval( $result['title'] );
-		$attrs['anchor']         = sanitize_html_class( $result['title'] );
+		$attrs['anchor']         = sanitize_title_with_dashes( $result['title'] );
 		$attrs['titleAlignment'] = 'left';
 		$attrs['headingLevel']   = 'h2';
 
@@ -1115,7 +1115,7 @@ class Block_Converter {
 
 		// Set attributes.
 		$attrs['title']          = ! empty( $result['title'] ) ? strval( $result['title'] ) : '';
-		$attrs['anchor']         = sanitize_html_class( $result['title'] );
+		$attrs['anchor']         = sanitize_title_with_dashes( $result['title'] );
 		$attrs['titleAlignment'] = 'left';
 		$attrs['headingLevel']   = 'h2';
 
@@ -1362,7 +1362,7 @@ class Block_Converter {
 		$collage_block_markup    = '';
 		$attrs['background']     = ! empty( $result['background'] ) ? strval( $result['background'] ) : '';
 		$attrs['title']          = ! empty( $result['title'] ) ? strval( $result['title'] ) : '';
-		$attrs['anchor']         = sanitize_html_class( $result['title'] );
+		$attrs['anchor']         = sanitize_title_with_dashes( $result['title'] );
 		$attrs['titleAlignment'] = 'left';
 		$attrs['headingLevel']   = 'h2';
 
@@ -1444,7 +1444,7 @@ class Block_Converter {
 		// Set attributes.
 		$attrs['background']     = ! empty( $result['background'] ) ? strval( $result['background'] ) : '';
 		$attrs['title']          = ! empty( $result['title'] ) ? strval( $result['title'] ) : '';
-		$attrs['anchor']         = sanitize_html_class( $result['title'] );
+		$attrs['anchor']         = sanitize_title_with_dashes( $result['title'] );
 		$attrs['titleAlignment'] = 'left';
 		$attrs['headingLevel']   = 'h2';
 
@@ -1523,7 +1523,7 @@ class Block_Converter {
 		// Set attributes.
 		$attrs['background']     = ! empty( $result['background'] ) ? strval( $result['background'] ) : '';
 		$attrs['title']          = ! empty( $result['title'] ) ? strval( $result['title'] ) : '';
-		$attrs['anchor']         = sanitize_html_class( $result['title'] );
+		$attrs['anchor']         = sanitize_title_with_dashes( $result['title'] );
 		$attrs['titleAlignment'] = 'left';
 		$attrs['headingLevel']   = 'h2';
 
@@ -1814,7 +1814,7 @@ class Block_Converter {
 		// Set attributes.
 		$attrs['background']     = ! empty( $result['background'] ) ? strval( $result['background'] ) : '';
 		$attrs['title']          = ! empty( $result['title'] ) ? strval( $result['title'] ) : '';
-		$attrs['anchor']         = sanitize_html_class( $result['title'] );
+		$attrs['anchor']         = sanitize_title_with_dashes( $result['title'] );
 		$attrs['titleAlignment'] = 'left';
 		$attrs['headingLevel']   = 'h2';
 
@@ -2196,7 +2196,7 @@ class Block_Converter {
 
 		// Set attributes.
 		$attrs['title']          = ! empty( $result['title'] ) ? strval( $result['title'] ) : '';
-		$attrs['anchor']         = sanitize_html_class( $result['title'] );
+		$attrs['anchor']         = sanitize_title_with_dashes( $result['title'] );
 		$attrs['titleAlignment'] = 'left';
 		$attrs['headingLevel']   = 'h2';
 
@@ -2379,7 +2379,7 @@ class Block_Converter {
 		// Check if title is empty.
 		if ( ! empty( $result['title'] ) ) {
 			$attrs['title']          = strval( $result['title'] );
-			$attrs['anchor']         = sanitize_html_class( $result['title'] );
+			$attrs['anchor']         = sanitize_title_with_dashes( $result['title'] );
 			$attrs['titleAlignment'] = 'left';
 			$attrs['headingLevel']   = 'h2';
 		} else {
