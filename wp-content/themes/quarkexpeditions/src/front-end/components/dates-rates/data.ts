@@ -40,6 +40,7 @@ export const DEFAULT_STATE: DatesRatesState = {
 		'ships',
 		'perPage',
 	],
+	filtersMarkup: '',
 };
 
 /**

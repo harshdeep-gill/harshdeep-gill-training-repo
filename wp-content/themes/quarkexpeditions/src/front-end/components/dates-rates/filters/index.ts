@@ -21,6 +21,7 @@ import DatesRatesFilterDurationsElement from './durations';
 import DatesRatesFilterShipsElement from './ships';
 import DatesRatesFiltersCtaViewResultsElement from './cta-view-results';
 import DatesRatesFiltersCtaClearElement from './cta-clear';
+import DatesRatesFiltersInputsContainerElement from './inputs-container';
 
 /**
  * Define custom components.
@@ -40,3 +41,4 @@ customElements.define( 'quark-dates-rates-filter-durations', DatesRatesFilterDur
 customElements.define( 'quark-dates-rates-filter-ships', DatesRatesFilterShipsElement );
 customElements.define( 'quark-dates-rates-filters-cta-view-results', DatesRatesFiltersCtaViewResultsElement );
 customElements.define( 'quark-dates-rates-filters-cta-clear-all', DatesRatesFiltersCtaClearElement );
+customElements.define( 'quark-dates-rates-filters-inputs-container', DatesRatesFiltersInputsContainerElement );
