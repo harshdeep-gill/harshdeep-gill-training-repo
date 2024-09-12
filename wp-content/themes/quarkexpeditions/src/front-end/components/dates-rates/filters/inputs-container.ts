@@ -4,6 +4,11 @@
 const { HTMLElement, zustand } = window;
 
 /**
+ * External dependencies
+ */
+import { TPAccordionItemElement } from '@travelopia/web-components';
+
+/**
  * Store
  */
 const { subscribe } = zustand.stores.datesRates;
@@ -16,6 +21,7 @@ export default class DatesRatesFiltersInputsContainerElement extends HTMLElement
 	 * Properties
 	 */
 	private lastOpenedAccordionItemId: string;
+	private drawerAccordionItems: NodeListOf<TPAccordionItemElement> | null;
 
 	/**
 	 * Constructor
@@ -26,6 +32,10 @@ export default class DatesRatesFiltersInputsContainerElement extends HTMLElement
 
 		// Initialize properties.
 		this.lastOpenedAccordionItemId = '';
+		this.drawerAccordionItems = this.querySelectorAll( '.accordion__item' );
+
+		// Handle events
+		this.setupAccordionEvents();
 
 		// Subscribe to store.
 		subscribe( this.update.bind( this ) );
@@ -48,6 +58,10 @@ export default class DatesRatesFiltersInputsContainerElement extends HTMLElement
 
 		// Update the markup.
 		this.innerHTML = filtersMarkup;
+		this.drawerAccordionItems = this.querySelectorAll( '.accordion__item' );
+
+		// Setup events.
+		this.setupAccordionEvents();
 
 		// Get the accordion item that was opened.
 		const accordionItem = document.getElementById( this.lastOpenedAccordionItemId );
@@ -80,5 +94,61 @@ export default class DatesRatesFiltersInputsContainerElement extends HTMLElement
 
 		// Set the id.
 		this.lastOpenedAccordionItemId = accordionItemId;
+	}
+
+	/**
+	 * Sets up the event listeners for the accordion items.
+	 */
+	setupAccordionEvents() {
+		// Event for accordion items.
+		this.drawerAccordionItems?.forEach( ( ( item: TPAccordionItemElement ) => {
+			// Close items.
+			item.addEventListener( 'open', this.handleAccordionItems.bind( this ) );
+		} ) );
+	}
+
+	/**
+	 * Handle accordion inside drawer.
+	 *
+	 * @param {Event} event
+	 */
+	handleAccordionItems( event: Event ) {
+		// Set current item.
+		const currentItem = event.currentTarget as TPAccordionItemElement | null;
+
+		// Null check.
+		if ( ! currentItem ) {
+			// Bail.
+			return;
+		}
+
+		// Is the accordion item open?
+		this.closeAllAccordionItems( currentItem );
+	}
+
+	/**
+	 * Close accordion inside drawer.
+	 *
+	 * @param { HTMLElement | null } skippedItem An item to be skipped while closing everything.
+	 */
+	closeAllAccordionItems( skippedItem: HTMLElement | null = null ) {
+		// Check if items are present.
+		if ( ! this.drawerAccordionItems ) {
+			// No, bail.
+			return;
+		}
+
+		// For each item.
+		this.drawerAccordionItems.forEach( ( ( item: TPAccordionItemElement ) => {
+			// Check if this item should be skipped.
+			if ( item === skippedItem ) {
+				// This item should not be closed.
+				return;
+			}
+
+			// Close the item.
+			item.close();
+			item.removeAttribute( 'open' );
+		} ) );
 	}
 }
