@@ -178,6 +178,25 @@ function filter_solr_build_document( Document $document = null, WP_Post $post = 
 	// Set adventure options in Solr index.
 	$document->setField( ADVENTURE_OPTION_CATEGORY . '_taxonomy_id', $adventure_option_ids );
 
+	/**
+	 * Set start date in Date format in Solr index.
+	 */
+
+	// Get start date.
+	$start_date = get_post_meta( $post->ID, 'start_date', true );
+
+	// Validate start date.
+	if ( ! empty( $start_date ) && is_string( $start_date ) ) {
+		// Format start date.
+		$timestamp = strtotime( $start_date );
+
+		// Set start date in date format.
+		if ( ! empty( $timestamp ) ) {
+			// Set start date in date format.
+			$document->setField( 'start_date_dt', gmdate( 'Y-m-d\TH:i:s\Z', $timestamp ) );
+		}
+	}
+
 	// Return document.
 	return $document;
 }
