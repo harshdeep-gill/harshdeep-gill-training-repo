@@ -78,6 +78,7 @@ import * as bookDeparturesShip from './book-departures-ship';
 import * as shipDecks from './ship-decks';
 import * as InfoCards from './info-cards';
 import * as linkDetailCards from './link-detail-cards';
+import * as mediaTextCtaCarousel from './media-text-cta-carousel';
 
 /**
  * Add blocks.
@@ -152,6 +153,7 @@ const blocks = [
 	shipDecks,
 	InfoCards,
 	linkDetailCards,
+	mediaTextCtaCarousel,
 ];
 
 // Register blocks for ships.
