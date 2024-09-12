@@ -39,7 +39,7 @@ function render( array $output = [], string $name = '', array $data = [] ): arra
 
 	// Init selected filters.
 	$selected_filter = [
-		'posts_per_load' => 4,
+		'posts_per_load' => 8,
 		'currency'       => 'USD',
 		'expeditions'    => [],
 	];

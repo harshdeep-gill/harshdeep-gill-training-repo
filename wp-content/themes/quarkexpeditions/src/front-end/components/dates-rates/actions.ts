@@ -354,7 +354,7 @@ export const clearAllFilters = () => {
 		months: [],
 		durations: [],
 		ships: [],
-		perPage: 4,
+		perPage: 8,
 		page: 1,
 	};
 
@@ -894,7 +894,7 @@ const parseUrl = (): DatesRatesFiltersSaved | null => {
 		months: [],
 		durations: [],
 		ships: [],
-		perPage: 4,
+		perPage: 8,
 	};
 
 	// Get allowed params.

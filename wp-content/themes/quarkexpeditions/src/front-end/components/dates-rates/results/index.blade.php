@@ -1,7 +1,7 @@
 @props( [
 	'page'         => 1,
 	'total_pages'  => 1,
-	'per_page'     => 4,
+	'per_page'     => 8,
 	'result_count' => 0
 ] )
 
