@@ -731,10 +731,6 @@ const resultsFetchedCallback = ( response: PartialData ) => {
 		filtersMarkup: filtersMarkup ? filtersMarkup : filtersMarkupInState,
 	};
 
-	/**
-	 * @todo Inject the filters markup HTML (`filtersMarkup`) from response in the filter drawer - #dates-rates-filters .drawer__body.
-	 */
-
 	// Set the state.
 	setState( updateObject );
 };
