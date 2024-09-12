@@ -28,7 +28,7 @@ export default function Edit( { className }: BlockEditAttributes ) {
 			<Placeholder
 				icon="calendar-alt"
 				label={ __( 'Dates and Rates', 'qrk' ) }
-				instructions={ __( 'Dates and Rates block will be displayed on frontend.', 'qrk' ) }
+				instructions={ __( 'Dates and Rates will render on the front-end.', 'qrk' ) }
 			/>
 		</div>
 	);
