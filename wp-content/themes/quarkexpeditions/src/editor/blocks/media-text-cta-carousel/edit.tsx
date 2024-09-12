@@ -13,6 +13,7 @@ import classnames from 'classnames';
  * Internal dependencies
  */
 import * as mediaTextCta from '../media-text-cta';
+import Section from '../../components/section';
 
 /**
  * Edit component.
@@ -40,10 +41,12 @@ export default function edit( { className }: BlockEditAttributes ): JSX.Element 
 
 	// Return the block's markup.
 	return (
-		<div { ...blockProps } >
-			<div className={ 'media-text-cta-carousel__track' }>
-				<div { ...innerBlockProps } />
+		<Section>
+			<div { ...blockProps } >
+				<div className={ 'media-text-cta-carousel__track' }>
+					<div { ...innerBlockProps } />
+				</div>
 			</div>
-		</div>
+		</Section>
 	);
 }
