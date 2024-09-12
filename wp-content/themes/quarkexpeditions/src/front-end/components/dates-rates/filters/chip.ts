@@ -1,12 +1,17 @@
 /**
  * Global variables.
  */
-const { HTMLElement } = window;
+const { HTMLElement, zustand } = window;
 
 /**
  * External dependency.
  */
 import { TPAccordionHandleElement } from '@travelopia/web-components';
+
+/**
+ * Store
+ */
+const { subscribe } = zustand.stores.datesRates;
 
 /**
  * Internal Dependency.
@@ -37,8 +42,34 @@ export default class DatesRatesFilterChipElement extends HTMLElement {
 		// Events.
 		this.filterButton?.addEventListener( 'click', debounce( this.openDrawer.bind( this ), 10 ), { passive: true } );
 
+		// this.setupAccordionEvents();
+
+		// Subscribe to the store.
+		subscribe( this.update.bind( this ) );
+	}
+
+	/**
+	 * Updates the component.
+	 *
+	 * @param {Object} state State object.
+	 */
+	update( state: DatesRatesState ) {
+		// Check if we should update
+		if ( ! state.shouldMarkupUpdate ) {
+			// Bail.
+			return;
+		}
+
+		// Setup the events.
+		this.setupAccordionEvents();
+	}
+
+	/**
+	 * Sets up the event listeners for the accordion handles.
+	 */
+	setupAccordionEvents() {
 		// Event for accordion items.
-		this.drawerAccordionHandles.forEach( ( ( item: TPAccordionHandleElement ) => {
+		this.drawerAccordionHandles?.forEach( ( ( item: TPAccordionHandleElement ) => {
 			// Close items.
 			item.addEventListener( 'click', this.handleAccordionItems.bind( this ) );
 		} ) );

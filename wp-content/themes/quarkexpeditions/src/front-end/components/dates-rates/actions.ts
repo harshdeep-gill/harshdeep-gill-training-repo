@@ -710,13 +710,14 @@ const pluckValues = ( list: DatesRatesFilterState[] ): string[] => list.map( ( f
  */
 const resultsFetchedCallback = ( response: PartialData ) => {
 	// Get state.
-	const { perPage, page }: DatesRatesState = getState();
+	const { perPage, page, filtersMarkup: filtersMarkupInState }: DatesRatesState = getState();
 
 	// Get the data.
 	const {
 		markup,
 		noResultsMarkup,
 		data: { resultCount },
+		filtersMarkup,
 	} = response;
 
 	// Update object.
@@ -727,6 +728,7 @@ const resultsFetchedCallback = ( response: PartialData ) => {
 		totalPages: resultCount !== 0 ? Math.ceil( resultCount / perPage ) : 1,
 		page: resultCount !== 0 ? page : 1,
 		shouldMarkupUpdate: true,
+		filtersMarkup: filtersMarkup ? filtersMarkup : filtersMarkupInState,
 	};
 
 	/**

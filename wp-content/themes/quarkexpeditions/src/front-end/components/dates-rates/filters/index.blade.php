@@ -36,7 +36,9 @@
 		</x-drawer.header>
 
 		<x-drawer.body>
-			<x-dates-rates.filters.accordion :filter_data="$filter_data" />
+			<x-dates-rates.filters.inputs-container>
+				<x-dates-rates.filters.accordion :filter_data="$filter_data" />
+			</x-dates-rates.filters.inputs-container>
 		</x-drawer.body>
 
 		<x-drawer.footer>
