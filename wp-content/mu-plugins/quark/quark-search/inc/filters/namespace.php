@@ -9,6 +9,10 @@ namespace Quark\Search\Filters;
 
 use function Quark\Search\Departures\search;
 
+use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
+use const Quark\Search\Departures\FACET_TYPE_FIELD;
+use const Quark\Search\Departures\FACET_TYPE_RANGE;
+
 /**
  * Bootstrap filters.
  *
@@ -32,34 +36,68 @@ function get_filters_for_dates_rates( array $selected_filters = [] ): array {
 	// Filter mapping.
 	$filter_mapping = [
 		'seasons'           => [
-			'key'      => 'seasons',
-			'function' => '\Quark\Search\Departures\get_region_and_season_search_filter_data',
-			'default'  => [],
+			'key'        => 'seasons',
+			'solr_facet' => [
+				'key'  => 'region_season_str',
+				'type' => FACET_TYPE_FIELD,
+			],
+			'function'   => '\Quark\Search\Departures\get_region_and_season_search_filter_data',
+			'default'    => [],
 		],
 		'expeditions'       => [
-			'key'      => 'expeditions',
-			'function' => '\Quark\Search\Departures\get_expedition_search_filter_data',
-			'default'  => [],
+			'key'        => 'expeditions',
+			'solr_facet' => [
+				'key'  => 'related_expedition_str',
+				'type' => FACET_TYPE_FIELD,
+			],
+			'function'   => '\Quark\Search\Departures\get_expedition_search_filter_data',
+			'default'    => [],
 		],
 		'adventure_options' => [
-			'key'      => 'adventure_options',
-			'function' => '\Quark\Search\Departures\get_adventure_options_search_filter_data',
-			'default'  => [],
-		],
-		'months'            => [
-			'key'      => 'months',
-			'function' => '\Quark\Search\Departures\get_month_search_filter_data',
-			'default'  => [],
-		],
-		'durations'         => [
-			'key'      => 'durations',
-			'function' => '\Quark\Search\Departures\get_duration_search_filter_data',
-			'default'  => [],
+			'key'        => 'adventure_options',
+			'solr_facet' => [
+				'key'  => ADVENTURE_OPTION_CATEGORY . '_taxonomy_id',
+				'type' => FACET_TYPE_FIELD,
+			],
+			'function'   => '\Quark\Search\Departures\get_adventure_options_search_filter_data',
+			'default'    => [],
 		],
 		'ships'             => [
-			'key'      => 'ships',
-			'function' => '\Quark\Search\Departures\get_ship_search_filter_data',
-			'default'  => [],
+			'key'        => 'ships',
+			'solr_facet' => [
+				'key'  => 'related_ship_str',
+				'type' => FACET_TYPE_FIELD,
+			],
+			'function'   => '\Quark\Search\Departures\get_ship_search_filter_data',
+			'default'    => [],
+		],
+		'months'            => [
+			'key'        => 'months',
+			'solr_facet' => [
+				'key'  => 'start_date_dt',
+				'type' => FACET_TYPE_RANGE,
+				'args' => [
+					'start' => 'NOW/MONTH',
+					'end'   => 'NOW/MONTH+2YEAR',
+					'gap'   => '+1MONTH',
+				],
+			],
+			'function'   => '\Quark\Search\Departures\get_month_search_filter_data',
+			'default'    => [],
+		],
+		'durations'         => [
+			'key'        => 'durations',
+			'solr_facet' => [
+				'key'  => 'duration_i',
+				'type' => FACET_TYPE_RANGE,
+				'args' => [
+					'start' => 1,
+					'end'   => 50,
+					'gap'   => 7,
+				],
+			],
+			'function'   => '\Quark\Search\Departures\get_duration_search_filter_data',
+			'default'    => [],
 		],
 	];
 
@@ -70,8 +108,11 @@ function get_filters_for_dates_rates( array $selected_filters = [] ): array {
 		}
 	}
 
+	// Pluck solr_facet keys.
+	$solr_facets = array_column( $filter_mapping, 'solr_facet' );
+
 	// Run search.
-	$result = search( $selected_filters, true );
+	$result = search( $selected_filters, $solr_facets, true );
 
 	// Departure ids.
 	$departure_ids = $result['ids'];
@@ -100,11 +141,22 @@ function get_filters_for_dates_rates( array $selected_filters = [] ): array {
 		return $filters;
 	}
 
+	// Get last filter key solr_facet key.
+	$solr_facet_key = $filter_mapping[ $last_filter_key ]['solr_facet']['key'];
+
 	// Remove last filter.
 	array_pop( $selected_filters );
 
+	// Pluck solr_facet keys except last filter.
+	$solr_facets = array_filter(
+		$solr_facets,
+		function ( $solr_facet ) use ( $solr_facet_key ) {
+			return $solr_facet['key'] === $solr_facet_key;
+		}
+	);
+
 	// Run search.
-	$result = search( $selected_filters, true );
+	$result = search( $selected_filters, $solr_facets, true );
 
 	// Departure ids.
 	$departure_ids = $result['ids'];
