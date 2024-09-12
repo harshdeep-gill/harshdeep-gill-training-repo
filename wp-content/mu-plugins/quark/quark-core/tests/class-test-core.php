@@ -15,6 +15,7 @@ use function Quark\Core\get_front_end_data;
 use const Quark\Localization\USD_CURRENCY;
 use const Quark\Localization\AUD_CURRENCY;
 use const Quark\Localization\CAD_CURRENCY;
+use const Quark\Localization\DEFAULT_CURRENCY;
 use const Quark\Localization\EUR_CURRENCY;
 use const Quark\Localization\GBP_CURRENCY;
 
@@ -50,12 +51,28 @@ class Test_Core extends WP_UnitTestCase {
 				'api_endpoint' => 'http://test.quarkexpeditions.com/wp-json/qrk-phone-numbers/v1/phone-number/get',
 			],
 			'currencies'           => [
-				USD_CURRENCY => '$ USD',
-				AUD_CURRENCY => '$ AUD',
-				CAD_CURRENCY => '$ CAD',
-				EUR_CURRENCY => '€ EUR',
-				GBP_CURRENCY => '£ GBP',
+				USD_CURRENCY => [
+					'symbol'  => '$',
+					'display' => 'USD',
+				],
+				AUD_CURRENCY => [
+					'symbol'  => '$',
+					'display' => 'AUD',
+				],
+				CAD_CURRENCY => [
+					'symbol'  => '$',
+					'display' => 'CAD',
+				],
+				EUR_CURRENCY => [
+					'symbol'  => '€',
+					'display' => 'EUR',
+				],
+				GBP_CURRENCY => [
+					'symbol'  => '£',
+					'display' => 'GBP',
+				],
 			],
+			'default_currency'     => DEFAULT_CURRENCY,
 		];
 
 		// Test front-end data.

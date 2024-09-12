@@ -19,6 +19,7 @@ use const Quark\Localization\AUD_CURRENCY;
 use const Quark\Localization\GBP_CURRENCY;
 use const Quark\Localization\EUR_CURRENCY;
 use const Quark\Localization\CAD_CURRENCY;
+use const Quark\Localization\DEFAULT_CURRENCY;
 
 /**
  * Class Test_Localization
@@ -99,13 +100,29 @@ class Test_Localization extends WP_UnitTestCase {
 	public function test_front_end_data(): void {
 		// Test.
 		$expected = [
-			'currencies' => [
-				USD_CURRENCY => '$ USD',
-				AUD_CURRENCY => '$ AUD',
-				CAD_CURRENCY => '$ CAD',
-				EUR_CURRENCY => '€ EUR',
-				GBP_CURRENCY => '£ GBP',
+			'currencies'       => [
+				USD_CURRENCY => [
+					'symbol'  => '$',
+					'display' => 'USD',
+				],
+				AUD_CURRENCY => [
+					'symbol'  => '$',
+					'display' => 'AUD',
+				],
+				CAD_CURRENCY => [
+					'symbol'  => '$',
+					'display' => 'CAD',
+				],
+				EUR_CURRENCY => [
+					'symbol'  => '€',
+					'display' => 'EUR',
+				],
+				GBP_CURRENCY => [
+					'symbol'  => '£',
+					'display' => 'GBP',
+				],
 			],
+			'default_currency' => DEFAULT_CURRENCY,
 		];
 		$actual   = front_end_data();
 		$this->assertSame( $expected, $actual );
