@@ -386,6 +386,7 @@ function parse_filters( array $filters = [] ): array {
  * Fetch Departure as per the filters provided.
  *
  * @param mixed[] $filters      Filters.
+ * @param mixed[] $facets       Facets.
  * @param bool    $retrieve_all Retrieve all.
  *
  * @return array{
@@ -394,9 +395,10 @@ function parse_filters( array $filters = [] ): array {
  *     next_page: int,
  *     result_count: int,
  *     remaining_count: int,
+ *     facet_results: mixed[],
  * }
  */
-function search( array $filters = [], bool $retrieve_all = false ): array {
+function search( array $filters = [], array $facets = [], bool $retrieve_all = false ): array {
 	// Parse filters.
 	$filters = parse_filters( $filters );
 
@@ -434,6 +436,9 @@ function search( array $filters = [], bool $retrieve_all = false ): array {
 		$search->set_posts_per_page( -1 );
 	}
 
+	// Set facets.
+	$search->set_facets( $facets );
+
 	// Returned filtered trips.
 	return [
 		'ids'             => $search->search(),
@@ -441,6 +446,7 @@ function search( array $filters = [], bool $retrieve_all = false ): array {
 		'next_page'       => $search->next_page,
 		'result_count'    => $search->result_count,
 		'remaining_count' => $search->remaining_count,
+		'facet_results'   => $search->facet_results,
 	];
 }
 
