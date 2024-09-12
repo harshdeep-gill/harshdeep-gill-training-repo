@@ -87,6 +87,33 @@ function get_current_currency(): string {
 }
 
 /**
+ * Set current currency.
+ *
+ * @param string $currency Currency.
+ *
+ * @return void
+ */
+function set_current_currency( string $currency = '' ): void {
+	// Upper case currency.
+	$currency = strtoupper( $currency );
+
+	// Validate currency.
+	if ( ! in_array( $currency, get_currencies(), true ) ) {
+		return;
+	}
+
+	// Is doing unit test.
+	$is_doing_test = doing_tests();
+
+	// Set currency cookie.
+	if ( ! $is_doing_test ) {
+		setcookie( CURRENCY_COOKIE, $currency, time() + YEAR_IN_SECONDS );
+	} else {
+		$_COOKIE[ CURRENCY_COOKIE ] = $currency;
+	}
+}
+
+/**
  * Front-end data.
  *
  * @param mixed[] $data Front-end data.

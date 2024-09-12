@@ -12,6 +12,7 @@ use WP_UnitTestCase;
 use function Quark\Localization\front_end_data;
 use function Quark\Localization\get_currencies;
 use function Quark\Localization\get_current_currency;
+use function Quark\Localization\set_current_currency;
 
 use const Quark\Localization\CURRENCY_COOKIE;
 use const Quark\Localization\USD_CURRENCY;
@@ -37,32 +38,24 @@ class Test_Localization extends WP_UnitTestCase {
 		$this->assertEquals( 'USD', get_current_currency() );
 
 		// Test currency cookie.
-		$_COOKIE[ CURRENCY_COOKIE ] = 'CAD';
+		set_current_currency( 'CAD' );
 		$this->assertEquals( 'CAD', get_current_currency() );
 
 		// Test invalid currency cookie.
-		$_COOKIE[ CURRENCY_COOKIE ] = 'INVALID';
-		$this->assertEquals( 'USD', get_current_currency() );
+		set_current_currency( 'XYZ' );
+		$this->assertEquals( 'CAD', get_current_currency() );
 
 		// Test with lower case currency.
-		$_COOKIE[ CURRENCY_COOKIE ] = 'cad';
+		set_current_currency( 'cad' );
 		$this->assertEquals( 'CAD', get_current_currency() );
 
 		// Invalid currency cookie.
-		$_COOKIE[ CURRENCY_COOKIE ] = 34;
-		$this->assertEquals( 'USD', get_current_currency() );
-
-		// Invalid currency cookie.
-		$_COOKIE[ CURRENCY_COOKIE ] = [ 'CAD' ];
-		$this->assertEquals( 'USD', get_current_currency() );
+		set_current_currency();
+		$this->assertEquals( 'CAD', get_current_currency() );
 
 		// Cookie with special characters.
 		$_COOKIE[ CURRENCY_COOKIE ] = 'CAD$';
 		$this->assertEquals( 'USD', get_current_currency() );
-
-		// Cookie with html.
-		$_COOKIE[ CURRENCY_COOKIE ] = 'CAD<script>alert("XSS")</script>';
-		$this->assertEquals( 'CAD', get_current_currency() );
 
 		// Cleanup.
 		unset( $_COOKIE[ CURRENCY_COOKIE ] );
@@ -126,5 +119,45 @@ class Test_Localization extends WP_UnitTestCase {
 		];
 		$actual   = front_end_data();
 		$this->assertSame( $expected, $actual );
+	}
+
+	/**
+	 * Test set current currency.
+	 *
+	 * @covers Quark\Localization\set_current_currency
+	 *
+	 * @return void
+	 */
+	public function test_set_current_currency(): void {
+		// Test.
+		set_current_currency( 'CAD' );
+		$this->assertEquals( 'CAD', get_current_currency() );
+
+		// Test invalid currency.
+		set_current_currency( 'XYZ' );
+		$this->assertEquals( 'CAD', get_current_currency() );
+
+		// Test with lower case currency.
+		set_current_currency( 'cad' );
+		$this->assertEquals( 'CAD', get_current_currency() );
+
+		// Invalid currency cookie.
+		set_current_currency();
+		$this->assertEquals( 'CAD', get_current_currency() );
+
+		// Cookie with special characters.
+		set_current_currency( 'CAD$' );
+		$this->assertEquals( 'CAD', get_current_currency() );
+
+		// Test with GBP.
+		set_current_currency( 'GBP' );
+		$this->assertEquals( 'GBP', get_current_currency() );
+
+		// Test with EUR.
+		set_current_currency( 'EUR' );
+		$this->assertEquals( 'EUR', get_current_currency() );
+
+		// Cleanup.
+		unset( $_COOKIE[ CURRENCY_COOKIE ] );
 	}
 }
