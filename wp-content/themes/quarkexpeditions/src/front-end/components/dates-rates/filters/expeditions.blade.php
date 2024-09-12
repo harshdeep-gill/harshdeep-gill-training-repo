@@ -10,8 +10,14 @@
 
 <quark-dates-rates-filter-expeditions>
 	<x-form.field-group>
-		@foreach ( $expeditions as $filter_value => $filter_label )
-			<x-dates-rates.filters.checkbox name="expeditions" :label="$filter_label" :value="$filter_value" data-label="{{ $filter_label }}" />
+
+		@foreach ( $expeditions as $expedition )
+			@if ( empty( $expedition['label'] ) || empty( $expedition['value'] ) || ! isset( $expedition['count'] ) )
+				@continue
+			@endif
+
+			<x-dates-rates.filters.checkbox name="expeditions" :label="$expedition['label']" :value="$expedition['value']" :count="$expedition['count']" />
 		@endforeach
+
 	</x-form.field-group>
 </quark-dates-rates-filter-expeditions>

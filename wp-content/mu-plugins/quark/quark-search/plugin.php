@@ -13,6 +13,7 @@ namespace Quark\Search;
 
 require_once __DIR__ . '/inc/namespace.php';
 require_once __DIR__ . '/inc/departures/namespace.php';
+require_once __DIR__ . '/inc/filters/namespace.php';
 
 // Kick it off.
 add_action( 'plugins_loaded', __NAMESPACE__ . '\\bootstrap' );
