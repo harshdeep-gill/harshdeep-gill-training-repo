@@ -229,8 +229,8 @@
 										@foreach ($card['included_adventure_options'] as $included_adventure_option)
 											<x-dates-rates.adventure-options.item
 												name="{{ $included_adventure_option['title'] ?? '' }}"
-												{{-- icon="{{ $included_adventure_option['icon_image_id'] }}" @todo - https://tuispecialist.atlassian.net/browse/QE-600 Update icon component to accept image id and fetch the URL to display. --}}>
-											</x-dates-rates.adventure-options.item>
+												icon="{{ $included_adventure_option['icon_image_id'] }}"
+											/>
 										@endforeach
 
 									</x-dates-rates.adventure-options.column>
@@ -242,7 +242,7 @@
 										@foreach ( $card['paid_adventure_options'] as $paid_adventure_option )
 											<x-dates-rates.adventure-options.item
 												name="{{ $paid_adventure_option['title'] ?? '' }}"
-												{{-- icon="{{ $paid_adventure_option['icon_image_id'] }}" @todo - https://tuispecialist.atlassian.net/browse/QE-600 Update icon component to accept image id and fetch the URL to display. --}} :is_paid="true">
+												icon="{{ $paid_adventure_option['icon_image_id'] }}" :is_paid="true">
 												<x-dates-rates.adventure-options.item-price
 													price="{{ $paid_adventure_option['price_per_person'] ?? '' }}"
 													currency="{{ $paid_adventure_option['currency'] ?? '' }}"
