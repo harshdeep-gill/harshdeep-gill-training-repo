@@ -4,11 +4,11 @@
 	position: relative;
 
 	&__slides {
+		gap: var(--spacing-7);
 
 		@media screen and (min-width: grid-size(md)) {
 			display: grid;
 			grid-template-columns: repeat(1, 1fr);
-			gap: var(--spacing-7);
 			height: auto !important;
 		}
 
