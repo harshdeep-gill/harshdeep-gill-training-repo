@@ -9,6 +9,7 @@ namespace Quark\Theme\Partials\DatesAndRates;
 
 use function Quark\Departures\get_dates_rates_cards_data;
 use function Quark\Search\Departures\search;
+use function Quark\Search\Filters\get_filters_for_dates_rates;
 
 use const Quark\Localization\DEFAULT_CURRENCY;
 
@@ -65,6 +66,11 @@ function render( array $output = [], string $name = '', array $data = [] ): arra
 		'cards' => get_dates_rates_cards_data( array_map( 'absint', $search_results['ids'] ), $currency ),
 	];
 
+	// Filters attributes.
+	$filters_attributes = [
+		'filter_data' => get_filters_for_dates_rates( $selected_filter ),
+	];
+
 	// Return rendered partial.
 	return [
 		'markup'          => quark_get_component(
@@ -78,5 +84,9 @@ function render( array $output = [], string $name = '', array $data = [] ): arra
 			'nextPage'       => $search_results['next_page'],
 			'remainingCount' => $search_results['remaining_count'],
 		],
+		'filtersMarkup'   => quark_get_component(
+			'parts.dates-rates-filters',
+			$filters_attributes
+		),
 	];
 }

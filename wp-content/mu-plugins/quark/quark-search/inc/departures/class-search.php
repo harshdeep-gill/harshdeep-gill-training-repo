@@ -274,7 +274,7 @@ class Search {
 		$this->args['tax_query'][] = [
 			'taxonomy'         => ADVENTURE_OPTION_CATEGORY,
 			'field'            => 'term_id',
-			'terms'            => $adventure_option_ids,
+			'terms'            => array_unique( $adventure_option_ids ),
 			'include_children' => false,
 		];
 	}
@@ -334,7 +334,7 @@ class Search {
 	/**
 	 * Set Duration.
 	 *
-	 * @param int[] $durations Duration.
+	 * @param array<int, int[]> $durations Duration.
 	 *
 	 * @return void
 	 */
@@ -349,13 +349,30 @@ class Search {
 			$this->args['meta_query'] = [];
 		}
 
-		// Set durations meta query.
-		$this->args['meta_query'][] = [
-			'key'     => 'duration',
-			'value'   => array_unique( $durations ),
-			'type'    => 'NUMERIC',
-			'compare' => 'BETWEEN',
-		];
+		// Initialize meta query.
+		$meta_query = [];
+
+		// Loop through durations.
+		foreach ( $durations as $duration ) {
+			// Set duration meta query.
+			$meta_query[] = [
+				'key'     => 'duration',
+				'value'   => $duration,
+				'type'    => 'NUMERIC',
+				'compare' => 'BETWEEN',
+			];
+		}
+
+		// Add relation if more than one meta query.
+		if ( 1 < count( $meta_query ) ) {
+			$meta_query['relation'] = 'OR';
+
+			// Set meta query.
+			$this->args['meta_query'][] = $meta_query;
+		} else {
+			// Set meta query.
+			$this->args['meta_query'][] = $meta_query[0];
+		}
 	}
 
 	/**
@@ -438,29 +455,12 @@ class Search {
 		// Unique seasons.
 		$seasons = array_unique( $seasons );
 
-		// Initialize meta query.
-		$meta_query = [];
-
-		// Set search by seasons parameters in search arguments.
-		foreach ( $seasons as $season ) {
-			// Set Season meta query.
-			$meta_query[] = [
-				'key'     => 'region_season',
-				'value'   => $season,
-				'compare' => '=',
-			];
-		}
-
-		// Add relation if more than one meta query.
-		if ( 1 < count( $meta_query ) ) {
-			$meta_query['relation'] = 'OR';
-
-			// Set meta query.
-			$this->args['meta_query'][] = $meta_query;
-		} else {
-			// Set meta query.
-			$this->args['meta_query'][] = $meta_query[0];
-		}
+		// Set meta query.
+		$this->args['meta_query'][] = [
+			'key'     => 'region_season',
+			'value'   => $seasons,
+			'compare' => 'IN',
+		];
 	}
 
 	/**

@@ -2,8 +2,12 @@
 
 .link-detail-cards {
 	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(267px, 1fr));
+	grid-template-columns: repeat(1, 1fr);
 	gap: var(--spacing-6);
+
+	@media screen and (min-width: grid-size(md)) {
+		grid-template-columns: repeat(auto-fill, minmax(267px, 1fr));
+	}
 
 	&__card {
 		border-radius: var(--border-radius-large);
@@ -32,6 +36,15 @@
 		gap: var(--spacing-4);
 		justify-content: space-between;
 		align-items: start;
+
+		h3 {
+
+			@media screen and (min-width: grid-size(md)) {
+				min-height: 64px;
+
+				@include line-clamp(2);
+			}
+		}
 	}
 
 	&__chevron {
