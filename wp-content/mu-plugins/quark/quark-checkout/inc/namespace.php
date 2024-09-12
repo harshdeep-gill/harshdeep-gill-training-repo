@@ -11,8 +11,9 @@ use WP_Post;
 
 use function Quark\CabinCategories\get as get_cabin_category_post;
 use function Quark\Departures\get as get_departure_post;
+use function Quark\Localization\get_currencies;
 
-use const Quark\Core\CURRENCIES;
+use const Quark\Localization\DEFAULT_CURRENCY;
 
 /**
  * Bootstrap the plugin.
@@ -32,7 +33,7 @@ function bootstrap(): void {
  *
  * @return string
  */
-function get_checkout_url( int $departure_post_id = 0, int $cabin_post_id = 0, string $currency = 'USD' ): string {
+function get_checkout_url( int $departure_post_id = 0, int $cabin_post_id = 0, string $currency = DEFAULT_CURRENCY ): string {
 	// Check base URL.
 	if ( ! defined( 'QUARK_CHECKOUT_BASE_URL' ) ) {
 		return '';
@@ -50,7 +51,7 @@ function get_checkout_url( int $departure_post_id = 0, int $cabin_post_id = 0, s
 	$currency = strtoupper( $currency );
 
 	// Validate currency.
-	if ( ! in_array( $currency, CURRENCIES, true ) ) {
+	if ( ! in_array( $currency, get_currencies(), true ) ) {
 		return $url;
 	}
 

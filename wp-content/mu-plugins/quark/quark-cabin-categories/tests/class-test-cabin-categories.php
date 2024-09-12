@@ -28,7 +28,6 @@ use const Quark\CabinCategories\CABIN_CLASS_TAXONOMY;
 use const Quark\CabinCategories\ON_REQUEST_STATUS;
 use const Quark\CabinCategories\SOLD_OUT_STATUS;
 use const Quark\CabinCategories\UNAVAILABLE_STATUS;
-use const Quark\Core\AUD_CURRENCY;
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
 use const Quark\ShipDecks\POST_TYPE as SHIP_DECK_POST_TYPE;
 
