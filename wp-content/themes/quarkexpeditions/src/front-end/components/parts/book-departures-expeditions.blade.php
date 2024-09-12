@@ -3,7 +3,7 @@
 	'remaining_count' => 0,
 	'cards'           => [],
 	'expedition_id'   => 0,
-	'currency'        => 'USD',
+	'currency'        => quark_get_template_data( 'default_currency', 'USD' ),
 ] )
 
 <x-book-departures-expeditions>
