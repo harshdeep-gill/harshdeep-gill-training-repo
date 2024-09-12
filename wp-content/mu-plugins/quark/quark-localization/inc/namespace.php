@@ -96,12 +96,30 @@ function get_current_currency(): string {
 function front_end_data( array $data = [] ): array {
 	// Add currency.
 	$data['currencies'] = [
-		USD_CURRENCY => __( '$ USD', 'qrk' ),
-		AUD_CURRENCY => __( '$ AUD', 'qrk' ),
-		CAD_CURRENCY => __( '$ CAD', 'qrk' ),
-		EUR_CURRENCY => __( '€ EUR', 'qrk' ),
-		GBP_CURRENCY => __( '£ GBP', 'qrk' ),
+		USD_CURRENCY => [
+			'symbol'  => '$',
+			'display' => __( 'USD', 'qrk' ),
+		],
+		AUD_CURRENCY => [
+			'symbol'  => '$',
+			'display' => __( 'AUD', 'qrk' ),
+		],
+		CAD_CURRENCY => [
+			'symbol'  => '$',
+			'display' => __( 'CAD', 'qrk' ),
+		],
+		EUR_CURRENCY => [
+			'symbol'  => '€',
+			'display' => __( 'EUR', 'qrk' ),
+		],
+		GBP_CURRENCY => [
+			'symbol'  => '£',
+			'display' => __( 'GBP', 'qrk' ),
+		],
 	];
+
+	// Default currency.
+	$data['default_currency'] = DEFAULT_CURRENCY;
 
 	// Return data.
 	return $data;
