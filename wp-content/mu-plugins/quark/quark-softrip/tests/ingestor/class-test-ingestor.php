@@ -30,11 +30,11 @@ use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
 use const Quark\AdventureOptions\POST_TYPE as ADVENTURE_OPTION_POST_TYPE;
 use const Quark\CabinCategories\CABIN_CLASS_TAXONOMY;
 use const Quark\CabinCategories\POST_TYPE as CABIN_CATEGORY_POST_TYPE;
-use const Quark\Core\AUD_CURRENCY;
-use const Quark\Core\CAD_CURRENCY;
-use const Quark\Core\EUR_CURRENCY;
-use const Quark\Core\GBP_CURRENCY;
-use const Quark\Core\USD_CURRENCY;
+use const Quark\Localization\AUD_CURRENCY;
+use const Quark\Localization\CAD_CURRENCY;
+use const Quark\Localization\EUR_CURRENCY;
+use const Quark\Localization\GBP_CURRENCY;
+use const Quark\Localization\USD_CURRENCY;
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
 use const Quark\Departures\SPOKEN_LANGUAGE_TAXONOMY;
 use const Quark\Expeditions\DESTINATION_TAXONOMY;
@@ -81,7 +81,7 @@ class Test_Ingestor extends WP_UnitTestCase {
 				'id'           => $expedition_post_id,
 				'name'         => get_raw_text_from_html( get_the_title( $expedition_post_id ) ),
 				'published'    => true,
-				'description'  => '', // @todo https://tuispecialist.atlassian.net/browse/QE-589 - Get description after parsing post content.
+				'overview'     => '',
 				'images'       => [],
 				'destinations' => [],
 				'itineraries'  => [],
@@ -155,6 +155,9 @@ class Test_Ingestor extends WP_UnitTestCase {
 			[
 				'ID'           => $expedition_post_id,
 				'post_content' => $post_content,
+				'meta_input'   => [
+					'overview' => 'Here is the overview. <h1>Surfing</h1> You never know the world until you explore it.',
+				],
 			]
 		);
 
@@ -167,7 +170,7 @@ class Test_Ingestor extends WP_UnitTestCase {
 				'id'           => $expedition_post_id,
 				'name'         => get_raw_text_from_html( get_the_title( $expedition_post_id ) ),
 				'published'    => true,
-				'description'  => '', // @todo Get description after parsing post content.
+				'overview'     => 'Here is the overview. Surfing You never know the world until you explore it.',
 				'images'       => [
 					[
 						'id'           => $media_post_id1,
@@ -1937,7 +1940,7 @@ class Test_Ingestor extends WP_UnitTestCase {
 				'id'           => $expedition_post_id2,
 				'name'         => get_raw_text_from_html( get_the_title( $expedition_post_id2 ) ),
 				'published'    => false,
-				'description'  => '', // @todo https://tuispecialist.atlassian.net/browse/QE-580
+				'overview'     => '',
 				'images'       => [],
 				'destinations' => [],
 				'itineraries'  => [],
@@ -1946,8 +1949,8 @@ class Test_Ingestor extends WP_UnitTestCase {
 				'id'           => $expedition_post_id,
 				'name'         => get_raw_text_from_html( get_the_title( $expedition_post_id ) ),
 				'published'    => true,
-				'description'  => '', // @todo https://tuispecialist.atlassian.net/browse/QE-580 - Get description after parsing post content.
-				'images'       => [], // @todo https://tuispecialist.atlassian.net/browse/QE-580 - Get description after parsing post content.
+				'overview'     => '',
+				'images'       => [],
 				'destinations' => [],
 				'itineraries'  => [],
 			],

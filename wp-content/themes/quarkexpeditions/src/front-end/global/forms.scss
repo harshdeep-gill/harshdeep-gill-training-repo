@@ -458,8 +458,7 @@ tp-multi-select {
 		}
 
 		&:hover {
-			background-color: var(--color-blue);
-			color: var(--color-white);
+			background-color: var(--color-gray-20);
 			border-radius: var(--border-radius);
 
 			&[selected="yes"]::before {
@@ -476,6 +475,8 @@ tp-multi-select {
 		padding-inline: var(--spacing-1);
 		overflow: hidden;
 		min-width: max-content;
+		box-shadow: var(--shadow-2);
+		top: calc(100% + var(--spacing-2));
 
 		> div {
 			overflow-x: hidden;
@@ -489,7 +490,7 @@ tp-multi-select {
 	}
 
 	&-status {
-		margin-right: var(--spacing-4);
+		margin-right: var(--spacing-5);
 
 		@include line-clamp(1);
 	}

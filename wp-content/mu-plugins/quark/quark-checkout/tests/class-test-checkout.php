@@ -13,6 +13,10 @@ use function Quark\Checkout\get_checkout_url;
 
 use const Quark\CabinCategories\POST_TYPE as CABIN_POST_TYPE;
 use const Quark\Departures\POST_TYPE as POST_TYPE_DEPARTURE;
+use const Quark\Localization\USD_CURRENCY;
+use const Quark\Localization\CAD_CURRENCY;
+use const Quark\Localization\EUR_CURRENCY;
+use const Quark\Localization\GBP_CURRENCY;
 
 /**
  * Class Test_Checkout
@@ -72,21 +76,21 @@ class Test_Checkout extends WP_UnitTestCase {
 		$this->assertEquals( $default_checkout_url, $actual );
 
 		// Test with valid departure post ID, cabin post ID and currency, but without any valid meta.
-		$actual = get_checkout_url( $departure_post_id, $cabin_post_id, 'USD' );
+		$actual = get_checkout_url( $departure_post_id, $cabin_post_id, USD_CURRENCY );
 		$this->assertEquals( $default_checkout_url, $actual );
 
 		// Add softrip_package_code meta to departure post.
 		update_post_meta( $departure_post_id, 'softrip_package_code', 'UNQ-123' );
 
 		// Test with valid departure post ID, cabin post ID and currency but without start date.
-		$actual = get_checkout_url( $departure_post_id, $cabin_post_id, 'USD' );
+		$actual = get_checkout_url( $departure_post_id, $cabin_post_id, USD_CURRENCY );
 		$this->assertEquals( $default_checkout_url, $actual );
 
 		// Add start date to departure post.
 		update_post_meta( $departure_post_id, 'start_date', '2021-01-01' );
 
 		// Test with valid departure post ID, cabin post ID and currency.
-		$actual = get_checkout_url( $departure_post_id, $cabin_post_id, 'USD' );
+		$actual = get_checkout_url( $departure_post_id, $cabin_post_id, USD_CURRENCY );
 		$this->assertEquals( $default_checkout_url, $actual );
 
 		// Add cabin_category_id meta to cabin post.
@@ -96,23 +100,23 @@ class Test_Checkout extends WP_UnitTestCase {
 		wp_cache_flush();
 
 		// Test with valid departure post ID, cabin post ID and currency.
-		$actual = get_checkout_url( $departure_post_id, $cabin_post_id, 'USD' );
+		$actual = get_checkout_url( $departure_post_id, $cabin_post_id, USD_CURRENCY );
 		$this->assertSame( 'https://local-checkout.quarkexpeditions.com?package_id=UNQ-123&departure_date=2021-01-01&cabin_code=CAB-123&currency=USD', $actual );
 
 		// Test with smaller case currency.
-		$actual = get_checkout_url( $departure_post_id, $cabin_post_id, 'usd' );
+		$actual = get_checkout_url( $departure_post_id, $cabin_post_id, USD_CURRENCY );
 		$this->assertSame( 'https://local-checkout.quarkexpeditions.com?package_id=UNQ-123&departure_date=2021-01-01&cabin_code=CAB-123&currency=USD', $actual );
 
 		// Test with other currency.
-		$actual = get_checkout_url( $departure_post_id, $cabin_post_id, 'CAD' );
+		$actual = get_checkout_url( $departure_post_id, $cabin_post_id, CAD_CURRENCY );
 		$this->assertSame( 'https://local-checkout.quarkexpeditions.com?package_id=UNQ-123&departure_date=2021-01-01&cabin_code=CAB-123&currency=CAD', $actual );
 
 		// Test with other currency.
-		$actual = get_checkout_url( $departure_post_id, $cabin_post_id, 'EUR' );
+		$actual = get_checkout_url( $departure_post_id, $cabin_post_id, EUR_CURRENCY );
 		$this->assertSame( 'https://local-checkout.quarkexpeditions.com?package_id=UNQ-123&departure_date=2021-01-01&cabin_code=CAB-123&currency=EUR', $actual );
 
 		// Test with other currency.
-		$actual = get_checkout_url( $departure_post_id, $cabin_post_id, 'GBP' );
+		$actual = get_checkout_url( $departure_post_id, $cabin_post_id, GBP_CURRENCY );
 		$this->assertSame( 'https://local-checkout.quarkexpeditions.com?package_id=UNQ-123&departure_date=2021-01-01&cabin_code=CAB-123&currency=GBP', $actual );
 
 		// Update departure post for start date.
@@ -126,7 +130,7 @@ class Test_Checkout extends WP_UnitTestCase {
 		);
 
 		// Test if checkout url changes on departure post update.
-		$actual = get_checkout_url( $departure_post_id, $cabin_post_id, 'USD' );
+		$actual = get_checkout_url( $departure_post_id, $cabin_post_id, USD_CURRENCY );
 		$this->assertSame( 'https://local-checkout.quarkexpeditions.com?package_id=UNQ-123&departure_date=2021-01-02&cabin_code=CAB-123&currency=USD', $actual );
 	}
 }

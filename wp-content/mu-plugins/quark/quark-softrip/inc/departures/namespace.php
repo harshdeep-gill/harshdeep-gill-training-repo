@@ -11,6 +11,7 @@ use WP_Error;
 use WP_Query;
 
 use function Quark\Itineraries\get_season;
+use function Quark\Localization\get_currencies;
 use function Quark\Ships\get_id_from_ship_code;
 use function Quark\Softrip\AdventureOptions\update_adventure_options;
 use function Quark\Softrip\Occupancies\update_occupancies;
@@ -18,12 +19,12 @@ use function Quark\Softrip\is_date_in_the_past;
 use function Quark\Softrip\Occupancies\get_lowest_price as get_occupancies_lowest_price;
 use function Quark\Softrip\Promotions\update_promotions;
 
-use const Quark\Core\CURRENCIES;
 use const Quark\Departures\CACHE_GROUP as DEPARTURE_CACHE_GROUP;
 use const Quark\Departures\CACHE_KEY as DEPARTURE_CACHE_KEY;
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
 use const Quark\Departures\SPOKEN_LANGUAGE_TAXONOMY;
 use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
+use const Quark\Localization\DEFAULT_CURRENCY;
 
 /**
  * Update the departure data.
@@ -361,15 +362,6 @@ function format_raw_departure_data( array $raw_departure_data = [], int $itinera
 		],
 	];
 
-	// Get season for the itinerary.
-	$season = get_season( $itinerary_post_id );
-
-	// Check if season is available.
-	if ( ! empty( $season ) ) {
-		// Add region and season to formatted data.
-		$formatted_data['meta_input']['region_season'] = sanitize_text_field( strval( $raw_departure_data['marketCode'] ) ) . '-' . $season['slug'];
-	}
-
 	// Return formatted data.
 	return $formatted_data;
 }
@@ -385,7 +377,7 @@ function format_raw_departure_data( array $raw_departure_data = [], int $itinera
  *   discounted: int,
  * }
  */
-function get_lowest_price( int $post_id = 0, string $currency = 'USD' ): array {
+function get_lowest_price( int $post_id = 0, string $currency = DEFAULT_CURRENCY ): array {
 	// Uppercase currency.
 	$currency = strtoupper( $currency );
 
@@ -396,7 +388,7 @@ function get_lowest_price( int $post_id = 0, string $currency = 'USD' ): array {
 	];
 
 	// Return default values if no post ID.
-	if ( empty( $post_id ) || ! in_array( $currency, CURRENCIES, true ) ) {
+	if ( empty( $post_id ) || ! in_array( $currency, get_currencies(), true ) ) {
 		return $lowest_price;
 	}
 

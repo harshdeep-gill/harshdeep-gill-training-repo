@@ -2,8 +2,10 @@
 	if ( empty( $slot ) ) {
 		return;
 	}
+
+	quark_enqueue_script( 'querystring' );
 @endphp
 
-<div class="dates-rates">
+<quark-dates-rates class="dates-rates">
 	{!! $slot !!}
-</div>
+</quark-dates-rates>

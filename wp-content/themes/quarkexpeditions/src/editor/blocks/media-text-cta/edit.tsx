@@ -3,7 +3,7 @@
  */
 import { InspectorControls, RichText, useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
-import { PanelBody, RadioControl, TextControl, ToggleControl } from '@wordpress/components';
+import { PanelBody, RadioControl, SelectControl, TextControl, ToggleControl } from '@wordpress/components';
 
 /**
  * Styles.
@@ -14,12 +14,13 @@ import './editor.scss';
  * External dependencies
  */
 import classnames from 'classnames';
-const { gumponents } = window;
+const { gumponents, travelopiaMedia } = window;
 
 /**
  * External components.
  */
-const { ImageControl, Img } = gumponents.components;
+const { ImageControl } = gumponents.components;
+const { DynamicImage } = travelopiaMedia;
 
 /**
  * Internal dependencies
@@ -32,6 +33,7 @@ import icons from '../icons';
  */
 import * as secondaryText from './children/secondary-text';
 import * as cta from './children/cta';
+import * as overline from './children/overline';
 
 /**
  * Edit component.
@@ -57,9 +59,15 @@ export default function edit( { className, attributes, setAttributes }: BlockEdi
 		className: classnames( 'media-text-cta__content' ),
 	},
 	{
-		allowedBlocks: [ 'core/paragraph', 'core/heading', secondaryText.name, cta.name ],
+		allowedBlocks: [
+			'core/paragraph',
+			'core/heading',
+			secondaryText.name,
+			cta.name,
+			overline.name,
+		],
 		template: [
-			[ 'core/heading' ],
+			[ 'core/heading', { level: 3 } ],
 			[ 'core/paragraph', { placeholder: __( 'Write description…', 'qrk' ) } ],
 			[ secondaryText.name ],
 			[ cta.name ],
@@ -78,6 +86,33 @@ export default function edit( { className, attributes, setAttributes }: BlockEdi
 		// Set attributes.
 		setAttributes( { videoUrl } );
 	};
+
+	/**
+	 * Handle a change in the Image.
+	 */
+	const handleImageChange = () => {
+		// Return if no image.
+		if ( ! attributes.image ) {
+			// Return.
+			return;
+		}
+
+		// Return if media type is not image.
+		if ( 'image' !== attributes.mediaType ) {
+			// Return.
+			return;
+		}
+
+		// Modify image aspect ratio.
+		if ( 'square' === attributes.imageAspectRatio ) {
+			attributes.image.height = 546;
+		} else {
+			attributes.image.height = 360;
+		}
+	};
+
+	// Handle image change.
+	handleImageChange();
 
 	// Return the block's markup.
 	return (
@@ -101,6 +136,19 @@ export default function edit( { className, attributes, setAttributes }: BlockEdi
 						help={ __( 'Choose an image for this collage item.', 'qrk' ) }
 						onChange={ ( image: object ) => setAttributes( { image } ) }
 					/>
+					{
+						'image' === attributes.mediaType &&
+							<SelectControl
+								label={ __( 'Image Aspect Ratio', 'qrk' ) }
+								help={ __( 'Select the image aspect ratio.', 'qrk' ) }
+								value={ attributes.imageAspectRatio }
+								options={ [
+									{ label: __( 'Landscape', 'qrk' ), value: 'landscape' },
+									{ label: __( 'Square', 'qrk' ), value: 'square' },
+								] }
+								onChange={ ( imageAspectRatio: string ) => setAttributes( { imageAspectRatio } ) }
+							/>
+					}
 					{
 						'video' === attributes.mediaType &&
 						<TextControl
@@ -129,8 +177,11 @@ export default function edit( { className, attributes, setAttributes }: BlockEdi
 				</PanelBody>
 			</InspectorControls>
 			<div { ...blockProps } >
-				<div className="media-text-cta__media-wrap">
-					<Img className="media-text-cta__image" value={ attributes.image } />
+				<div className={ `media-text-cta__media-wrap media-text-cta__media-wrap--${ attributes.imageAspectRatio }` }>
+					<DynamicImage
+						value={ attributes.image }
+						className="media-text-cta__image"
+					/>
 					{
 						'video' === attributes.mediaType &&
 						<div className="fancy-video__play-btn-wrapper">

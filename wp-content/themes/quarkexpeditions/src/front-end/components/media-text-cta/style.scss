@@ -23,6 +23,16 @@
 		}
 	}
 
+	&--media-align-right {
+
+		#{$self}__media-wrap {
+
+			@media screen and (min-width: grid-size(lg)) {
+				order: 1;
+			}
+		}
+	}
+
 	&__media-wrap {
 		border-radius: var(--border-radius-large);
 		overflow: hidden;
@@ -31,6 +41,10 @@
 
 		@media screen and (min-width: grid-size(lg)) {
 			aspect-ratio: initial;
+		}
+
+		&--square {
+			aspect-ratio: 1 / 1;
 		}
 	}
 
@@ -91,9 +105,6 @@
 		color: var(--color-gray-80);
 		font-weight: var(--font-weight-bold);
 		margin-top: var(--spacing-4);
-	}
-
-	&__description {
-		margin-top: var(--spacing-4);
+		margin-bottom: var(--spacing-4);
 	}
 }

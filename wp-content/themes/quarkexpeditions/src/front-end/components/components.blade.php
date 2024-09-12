@@ -45,6 +45,12 @@
 </x-once>
 {{--  --}}
 
+<x-component-demo :keys="[ 'global-message' ]">
+	<x-global-message>
+		<p>Are you in the Travel Trade or a Travel agent? <a href="#"><strong>Login</strong></a> to our portal.</p>
+	</x-global-message>
+</x-component-demo>
+
 <x-component-demo :keys="[ 'sidebar-grid', 'lp-header', 'hero-refactor' ]">
 	<x-lp-header
 		tc_image_id="18"
@@ -2517,6 +2523,109 @@
 	</x-section>
 </x-component-demo>
 
+<x-component-demo :keys="[ 'media-text-cta-carousel' ]">
+	<x-section>
+		<x-media-text-cta-carousel>
+			<x-media-text-cta-carousel.item>
+				<x-media-text-cta>
+					<x-media-text-cta.image image_id="32">
+						<x-media-text-cta.badge text="Featured Expedition" />
+					</x-media-text-cta.image>
+
+					<x-media-text-cta.content>
+						<h2>South Georgia and Antarctic Peninsula: Penguin Safari</h2>
+						<p>This is the fastest way to visit both the Antarctic Peninsula and remote, wildlife rich South Georgia, where the beaches are teaming with King penguins and elephant seals. From here you sail south where Antarctica awaits with its soaring peaks and staggering expanse.</p>
+						<x-media-text-cta.secondary-text text="16/18 days | Starting from $12,946 USD" />
+						<x-media-text-cta.cta>
+							<x-button size="big" color="black">Request a Quote</x-button>
+						</x-media-text-cta.cta>
+					</x-media-text-cta.content>
+				</x-media-text-cta>
+			</x-media-text-cta-carousel.item>
+
+			<x-media-text-cta-carousel.item>
+				<x-media-text-cta media_align="right">
+					<x-media-text-cta.video>
+						<x-fancy-video url="https://www.youtube.com/embed/0fRAL7xROZg" image_id="32" />
+					</x-media-text-cta.video>
+
+					<x-media-text-cta.content>
+						<h2>Falklands, South Georgia, and Antarctica: Explorers & Kings</h2>
+						<p>The quickest way to get to the rarely visited Falkland Islands and South Georgia before stepping foot on the 7th Continent. Both islands are known as meccas for wildlife with epic displays of animals congregating by the thousands. Then, explore the stunning Antarctic Peninsula and enter a world of ice, snow and natural wonders.</p>
+						<x-media-text-cta.secondary-text text="20 days | Starting From $14,621 USD" />
+						<x-media-text-cta.cta>
+							<x-button size="big" color="black">Request a Quote</x-button>
+						</x-media-text-cta.cta>
+					</x-media-text-cta.content>
+				</x-media-text-cta>
+			</x-media-text-cta-carousel.item>
+
+			<x-media-text-cta-carousel.item>
+				<x-media-text-cta>
+					<x-media-text-cta.image image_id="32">
+						<x-media-text-cta.badge text="Featured Expedition" />
+					</x-media-text-cta.image>
+
+					<x-media-text-cta.content>
+						<h2>Epic Antarctica: Crossing the Circle via Falklands & South Georgia</h2>
+						<p>Our Epic Antarctica voyage is called so for a reason—it includes all of the major Antarctic highlights you can imagine. </p>
+						<x-media-text-cta.secondary-text text="23 days | Starting From $26,979 USD" />
+						<x-media-text-cta.cta>
+							<x-button size="big" color="black">Request a Quote</x-button>
+						</x-media-text-cta.cta>
+					</x-media-text-cta.content>
+				</x-media-text-cta>
+			</x-media-text-cta-carousel.item>
+
+			<x-media-text-cta-carousel.item>
+				<x-media-text-cta>
+					<x-media-text-cta.image image_id="32" aspect_ratio="square" />
+					<x-media-text-cta.content>
+						<x-media-text-cta.content-title title="Expedition Team" heading_level="2" />
+						<x-media-text-cta.overline>Expedition Guides and Education Team</x-media-text-cta.overline>
+						<x-media-text-cta.description>
+							<p>Quark Expeditions Guides and Education Team are Polar-passionate and seasoned veterans with rich backgrounds in marine biology, penguinology, history, geology, wildlife, glaciology and more. Many are skilled in guiding activities such Zodiac cruising, kayaking, hiking, photography and mountaineering.</p>
+						</x-media-text-cta.description>
+						<x-media-text-cta.cta>
+							<x-button size="big" color="black">Apply Now</x-button>
+						</x-media-text-cta.cta>
+					</x-media-text-cta.content>
+				</x-media-text-cta>
+			</x-media-text-cta-carousel.item>
+
+			<x-media-text-cta-carousel.item>
+				<x-media-text-cta media_align="right">
+					<x-media-text-cta.image image_id="32" aspect_ratio="square"/>
+					<x-media-text-cta.content>
+						<x-media-text-cta.content-title title="Corporate Team" heading_level="3" />
+						<x-media-text-cta.overline>Operations, Finance, IT, Marketing, Sales and Product Innovation</x-media-text-cta.overline>
+						<x-media-text-cta.description>
+							<p>Members of our corporate team—even though they spend their working days thousands of miles from the Arctic or Antarctic—become deeply connected to the Polar Regions.</p>
+							<p>Members of our corporate team—even though they spend their working days thousands of miles from the Arctic or Antarctic—become deeply connected to the Polar Regions.</p>
+							<p>Ready to explore a new career path? Talk to us.</p>
+						</x-media-text-cta.description>
+						<x-media-text-cta.cta>
+							<x-button size="big" color="black">View Open Opportunities</x-button>
+						</x-media-text-cta.cta>
+					</x-media-text-cta.content>
+				</x-media-text-cta>
+			</x-media-text-cta-carousel.item>
+		</x-media-text-cta-carousel>
+	</x-section>
+</x-component-demo>
+
+<x-component-demo :keys="[ 'currency-switcher' ]">
+	<x-section>
+		<x-currency-switcher appearance="dark" />
+	</x-section>
+
+	<x-section>
+		<div style="background-color: var(--color-gray-90); padding: 24px;">
+			<x-currency-switcher appearance="dark" />
+		</div>
+	</x-section>
+</x-component-demo>
+
 <x-component-demo :keys="[ 'media-cta-banner' ]">
 	<x-media-cta-banner>
 		<x-media-cta-banner.image image_id="186" />
@@ -2640,10 +2749,6 @@
 				>
 					<x-product-cards.badge-cta text="Save 50%" />
 				</x-product-cards.image>
-				<x-product-cards.reviews
-					total_reviews="19 Reviews"
-					review_rating="5"
-				/>
 				<x-product-cards.itinerary departure_date="Departing May 20, 2024" duration="10 Days" />
 				<x-product-cards.title title="Introduction to Spitsbergen" />
 				<x-product-cards.subtitle title="Fjords, Glaciers, and Wildlife of Svalbard" />
@@ -2668,10 +2773,6 @@
 					<x-product-cards.badge-cta text="Save 50%" />
 					<x-product-cards.badge-time text="Just Added" />
 				</x-product-cards.image>
-				<x-product-cards.reviews
-					total_reviews="9999 Reviews"
-					review_rating="3"
-				/>
 				<x-product-cards.itinerary departure_date="Departing May 28, 2024" duration="12 Days" />
 				<x-product-cards.title title="Spitsbergen Explorer" />
 				<x-product-cards.subtitle title="Wildlife Capital of the Arctic" />
@@ -2694,10 +2795,6 @@
 				>
 					<x-product-cards.badge-time text="Just Added" />
 				</x-product-cards.image>
-				<x-product-cards.reviews
-					total_reviews="100 Reviews"
-					review_rating="4"
-				/>
 				<x-product-cards.itinerary departure_date="Departing July 14, 2024" duration="11 Days" />
 				<x-product-cards.title title="Gems of West Greenland" />
 				<x-product-cards.subtitle title="Fjords, Icebergs, and Culture" />
@@ -2869,10 +2966,6 @@
 				>
 					<x-product-cards.badge-cta text="Save 50%" />
 				</x-product-cards.image>
-				<x-product-cards.reviews
-					total_reviews="19 Reviews"
-					review_rating="5"
-				/>
 				<x-product-cards.itinerary departure_date="Departing May 20, 2024" duration="10 Days" />
 				<x-product-cards.title title="Introduction to Spitsbergen" />
 				<x-product-cards.subtitle title="Fjords, Glaciers, and Wildlife of Svalbard" />
@@ -2897,10 +2990,6 @@
 					<x-product-cards.badge-cta text="Save 50%" />
 					<x-product-cards.badge-time text="Just Added" />
 				</x-product-cards.image>
-				<x-product-cards.reviews
-					total_reviews="9999 Reviews"
-					review_rating="3"
-				/>
 				<x-product-cards.itinerary departure_date="Departing May 28, 2024" duration="12 Days" />
 				<x-product-cards.title title="Spitsbergen Explorer" />
 				<x-product-cards.subtitle title="Wildlife Capital of the Arctic" />
@@ -2923,10 +3012,6 @@
 				>
 					<x-product-cards.badge-time text="Just Added" />
 				</x-product-cards.image>
-				<x-product-cards.reviews
-					total_reviews="100 Reviews"
-					review_rating="4"
-				/>
 				<x-product-cards.itinerary departure_date="Departing July 14, 2024" duration="11 Days" />
 				<x-product-cards.title title="Gems of West Greenland" />
 				<x-product-cards.subtitle title="Fjords, Icebergs, and Culture" />
@@ -2986,8 +3071,8 @@
 				<x-product-cards.info-ribbon>Additional 10% savings text</x-product-cards.info-ribbon>
 			</x-product-cards.image>
 			<x-product-cards.reviews
-				total_reviews="9999 Reviews"
-				review_rating="3"
+				total_reviews="19 Reviews"
+				review_rating="5"
 			/>
 			<x-product-cards.itinerary departure_date="Departing May 28, 2024" duration="12 Days" />
 			<x-product-cards.title title="Spitsbergen Explorer" />
@@ -3041,8 +3126,8 @@
 				<x-product-cards.badge-time text="Just Added" />
 			</x-product-cards.image>
 			<x-product-cards.reviews
-				total_reviews="9999 Reviews"
-				review_rating="3"
+				total_reviews="19 Reviews"
+				review_rating="5"
 			/>
 			<x-product-cards.itinerary departure_date="Departing May 28, 2024" duration="12 Days" />
 			<x-product-cards.title title="Spitsbergen Explorer" />
@@ -3067,9 +3152,285 @@
 				<x-product-cards.badge-time text="Just Added" />
 			</x-product-cards.image>
 			<x-product-cards.reviews
-				total_reviews="100 Reviews"
-				review_rating="4"
+				total_reviews="19 Reviews"
+				review_rating="5"
 			/>
+			<x-product-cards.itinerary departure_date="Departing July 14, 2024" duration="11 Days" />
+			<x-product-cards.title title="Gems of West Greenland" />
+			<x-product-cards.subtitle title="Fjords, Icebergs, and Culture" />
+			<x-product-cards.description>
+				<p>Features the best sites of West Greenland & delivers an in-depth experience in just 12 days.</p>
+			</x-product-cards.description>
+			<x-product-cards.price
+				original_price="$9,395 USD"
+				discounted_price="$8,571 USD"
+			/>
+			<x-product-cards.buttons :columns="2">
+				<x-button size="big">Request a Quote</x-button>
+				<x-button size="big" appearance="outline">Learn More</x-button>
+			</x-product-cards.buttons>
+		</x-product-cards.card>
+	</x-product-cards>
+
+	<x-product-cards layout="grid">
+		<x-product-cards.card url="#">
+			<x-product-cards.image
+				image_id="29"
+			>
+				<x-product-cards.badge-cta text="Save 50%" />
+			</x-product-cards.image>
+			<x-product-cards.itinerary departure_date="Departing May 20, 2024" duration="10 Days" />
+			<x-product-cards.title title="Introduction to Spitsbergen" />
+			<x-product-cards.subtitle title="Fjords, Glaciers, and Wildlife of Svalbard" />
+			<x-product-cards.description>
+				<p>This fascinating expedition provides a taste of everything Spitsbergen has to offer!</p>
+			</x-product-cards.description>
+			<x-product-cards.price
+				original_price="$7,395 USD"
+				discounted_price="$6,171 USD"
+			/>
+			<x-product-cards.buttons :columns="2">
+				<x-button size="big">Request a Quote</x-button>
+				<x-button size="big" appearance="outline">Learn More</x-button>
+			</x-product-cards.buttons>
+		</x-product-cards.card>
+
+		<x-product-cards.card url="#">
+			<x-product-cards.image
+				image_id="36"
+				:is_immersive="false"
+			>
+				<x-product-cards.badge-cta text="Save 50%" />
+				<x-product-cards.badge-time text="Just Added" />
+			</x-product-cards.image>
+			<x-product-cards.itinerary departure_date="Departing May 28, 2024" duration="12 Days" />
+			<x-product-cards.title title="Spitsbergen Explorer" />
+			<x-product-cards.subtitle title="Wildlife Capital of the Arctic" />
+			<x-product-cards.description>
+				<p>Witness the remarkable array of creatures who call this spectacular environment home.</p>
+			</x-product-cards.description>
+			<x-product-cards.price
+				original_price="$9,095 USD"
+				discounted_price="$7,361 USD"
+			/>
+			<x-product-cards.buttons :columns="2">
+				<x-button size="big" icon="phone">Book: +1 (866) 220-1915</x-button>
+			</x-product-cards.buttons>
+		</x-product-cards.card>
+
+		<x-product-cards.card url="#">
+			<x-product-cards.image
+				image_id="32"
+				:is_immersive="false"
+			>
+				<x-product-cards.badge-time text="Just Added" />
+			</x-product-cards.image>
+			<x-product-cards.itinerary departure_date="Departing July 14, 2024" duration="11 Days" />
+			<x-product-cards.title title="Gems of West Greenland" />
+			<x-product-cards.subtitle title="Fjords, Icebergs, and Culture" />
+			<x-product-cards.description>
+				<p>Features the best sites of West Greenland & delivers an in-depth experience in just 12 days.</p>
+			</x-product-cards.description>
+			<x-product-cards.price
+				original_price="$9,395 USD"
+				discounted_price="$8,571 USD"
+			/>
+			<x-product-cards.buttons :columns="2">
+				<x-button size="big">Request a Quote</x-button>
+				<x-button size="big" appearance="outline">Learn More</x-button>
+			</x-product-cards.buttons>
+		</x-product-cards.card>
+
+		<x-product-cards.card url="#">
+			<x-product-cards.image
+				image_id="29"
+			>
+				<x-product-cards.badge-cta text="Save 50%" />
+			</x-product-cards.image>
+			<x-product-cards.itinerary departure_date="Departing May 20, 2024" duration="10 Days" />
+			<x-product-cards.title title="Introduction to Spitsbergen" />
+			<x-product-cards.subtitle title="Fjords, Glaciers, and Wildlife of Svalbard" />
+			<x-product-cards.description>
+				<p>This fascinating expedition provides a taste of everything Spitsbergen has to offer!</p>
+			</x-product-cards.description>
+			<x-product-cards.price
+				original_price="$7,395 USD"
+				discounted_price="$6,171 USD"
+			/>
+			<x-product-cards.buttons :columns="2">
+				<x-button size="big">Request a Quote</x-button>
+				<x-button size="big" appearance="outline">Learn More</x-button>
+			</x-product-cards.buttons>
+		</x-product-cards.card>
+
+		<x-product-cards.card url="#">
+			<x-product-cards.image
+				image_id="36"
+				:is_immersive="false"
+			>
+				<x-product-cards.badge-cta text="Save 50%" />
+				<x-product-cards.badge-time text="Just Added" />
+			</x-product-cards.image>
+			<x-product-cards.itinerary departure_date="Departing May 28, 2024" duration="12 Days" />
+			<x-product-cards.title title="Spitsbergen Explorer" />
+			<x-product-cards.subtitle title="Wildlife Capital of the Arctic" />
+			<x-product-cards.description>
+				<p>Witness the remarkable array of creatures who call this spectacular environment home.</p>
+			</x-product-cards.description>
+			<x-product-cards.price
+				original_price="$9,095 USD"
+				discounted_price="$7,361 USD"
+			/>
+			<x-product-cards.buttons :columns="2">
+				<x-button size="big" icon="phone">Book: +1 (866) 220-1915</x-button>
+			</x-product-cards.buttons>
+		</x-product-cards.card>
+
+		<x-product-cards.card url="#">
+			<x-product-cards.image
+				image_id="32"
+				:is_immersive="false"
+			>
+				<x-product-cards.badge-time text="Just Added" />
+			</x-product-cards.image>
+			<x-product-cards.itinerary departure_date="Departing July 14, 2024" duration="11 Days" />
+			<x-product-cards.title title="Gems of West Greenland" />
+			<x-product-cards.subtitle title="Fjords, Icebergs, and Culture" />
+			<x-product-cards.description>
+				<p>Features the best sites of West Greenland & delivers an in-depth experience in just 12 days.</p>
+			</x-product-cards.description>
+			<x-product-cards.price
+				original_price="$9,395 USD"
+				discounted_price="$8,571 USD"
+			/>
+			<x-product-cards.buttons :columns="2">
+				<x-button size="big">Request a Quote</x-button>
+				<x-button size="big" appearance="outline">Learn More</x-button>
+			</x-product-cards.buttons>
+		</x-product-cards.card>
+	</x-product-cards>
+
+	<x-product-cards :carousel_overflow="true">
+		<x-product-cards.card url="#">
+			<x-product-cards.image
+				image_id="29"
+			>
+				<x-product-cards.badge-cta text="Save 50%" />
+			</x-product-cards.image>
+			<x-product-cards.itinerary departure_date="Departing May 20, 2024" duration="10 Days" />
+			<x-product-cards.title title="Introduction to Spitsbergen" />
+			<x-product-cards.subtitle title="Fjords, Glaciers, and Wildlife of Svalbard" />
+			<x-product-cards.description>
+				<p>This fascinating expedition provides a taste of everything Spitsbergen has to offer!</p>
+			</x-product-cards.description>
+			<x-product-cards.price
+				original_price="$7,395 USD"
+				discounted_price="$6,171 USD"
+			/>
+			<x-product-cards.buttons :columns="2">
+				<x-button size="big">Request a Quote</x-button>
+				<x-button size="big" appearance="outline">Learn More</x-button>
+			</x-product-cards.buttons>
+		</x-product-cards.card>
+
+		<x-product-cards.card url="#">
+			<x-product-cards.image
+				image_id="36"
+				:is_immersive="false"
+			>
+				<x-product-cards.badge-cta text="Save 50%" />
+				<x-product-cards.badge-time text="Just Added" />
+			</x-product-cards.image>
+			<x-product-cards.itinerary departure_date="Departing May 28, 2024" duration="12 Days" />
+			<x-product-cards.title title="Spitsbergen Explorer" />
+			<x-product-cards.subtitle title="Wildlife Capital of the Arctic" />
+			<x-product-cards.description>
+				<p>Witness the remarkable array of creatures who call this spectacular environment home.</p>
+			</x-product-cards.description>
+			<x-product-cards.price
+				original_price="$9,095 USD"
+				discounted_price="$7,361 USD"
+			/>
+			<x-product-cards.buttons :columns="2">
+				<x-button size="big" icon="phone">Book: +1 (866) 220-1915</x-button>
+			</x-product-cards.buttons>
+		</x-product-cards.card>
+
+		<x-product-cards.card url="#">
+			<x-product-cards.image
+				image_id="32"
+				:is_immersive="false"
+			>
+				<x-product-cards.badge-time text="Just Added" />
+			</x-product-cards.image>
+			<x-product-cards.itinerary departure_date="Departing July 14, 2024" duration="11 Days" />
+			<x-product-cards.title title="Gems of West Greenland" />
+			<x-product-cards.subtitle title="Fjords, Icebergs, and Culture" />
+			<x-product-cards.description>
+				<p>Features the best sites of West Greenland & delivers an in-depth experience in just 12 days.</p>
+			</x-product-cards.description>
+			<x-product-cards.price
+				original_price="$9,395 USD"
+				discounted_price="$8,571 USD"
+			/>
+			<x-product-cards.buttons :columns="2">
+				<x-button size="big">Request a Quote</x-button>
+				<x-button size="big" appearance="outline">Learn More</x-button>
+			</x-product-cards.buttons>
+		</x-product-cards.card>
+
+		<x-product-cards.card url="#">
+			<x-product-cards.image
+				image_id="29"
+			>
+				<x-product-cards.badge-cta text="Save 50%" />
+			</x-product-cards.image>
+			<x-product-cards.itinerary departure_date="Departing May 20, 2024" duration="10 Days" />
+			<x-product-cards.title title="Introduction to Spitsbergen" />
+			<x-product-cards.subtitle title="Fjords, Glaciers, and Wildlife of Svalbard" />
+			<x-product-cards.description>
+				<p>This fascinating expedition provides a taste of everything Spitsbergen has to offer!</p>
+			</x-product-cards.description>
+			<x-product-cards.price
+				original_price="$7,395 USD"
+				discounted_price="$6,171 USD"
+			/>
+			<x-product-cards.buttons :columns="2">
+				<x-button size="big">Request a Quote</x-button>
+				<x-button size="big" appearance="outline">Learn More</x-button>
+			</x-product-cards.buttons>
+		</x-product-cards.card>
+
+		<x-product-cards.card url="#">
+			<x-product-cards.image
+				image_id="36"
+				:is_immersive="false"
+			>
+				<x-product-cards.badge-cta text="Save 50%" />
+				<x-product-cards.badge-time text="Just Added" />
+			</x-product-cards.image>
+			<x-product-cards.itinerary departure_date="Departing May 28, 2024" duration="12 Days" />
+			<x-product-cards.title title="Spitsbergen Explorer" />
+			<x-product-cards.subtitle title="Wildlife Capital of the Arctic" />
+			<x-product-cards.description>
+				<p>Witness the remarkable array of creatures who call this spectacular environment home.</p>
+			</x-product-cards.description>
+			<x-product-cards.price
+				original_price="$9,095 USD"
+				discounted_price="$7,361 USD"
+			/>
+			<x-product-cards.buttons :columns="2">
+				<x-button size="big" icon="phone">Book: +1 (866) 220-1915</x-button>
+			</x-product-cards.buttons>
+		</x-product-cards.card>
+
+		<x-product-cards.card url="#">
+			<x-product-cards.image
+				image_id="32"
+				:is_immersive="false"
+			>
+				<x-product-cards.badge-time text="Just Added" />
+			</x-product-cards.image>
 			<x-product-cards.itinerary departure_date="Departing July 14, 2024" duration="11 Days" />
 			<x-product-cards.title title="Gems of West Greenland" />
 			<x-product-cards.subtitle title="Fjords, Icebergs, and Culture" />
@@ -3096,7 +3457,6 @@
 				:is_immersive="true"
 			>
 			</x-product-cards.image>
-			
 			<x-product-cards.overline text="12 Days" />
 			<x-product-cards.title title="Arctic Saga: Exploring Spitsbergen via the Faroes and Jan Mayen" />
 			<x-product-cards.subtitle title="Lorem Ipsum, Doler Tempor, Incididunt, Exercitation Ullamco" />
@@ -3110,7 +3470,6 @@
 				:is_immersive="true"
 			>
 			</x-product-cards.image>
-			
 			<x-product-cards.overline text="12 Days" />
 			<x-product-cards.title title="Arctic Saga: Exploring Spitsbergen via the Faroes and Jan Mayen" />
 			<x-product-cards.subtitle title="Lorem Ipsum, Doler Tempor, Incididunt, Exercitation Ullamco" />
@@ -3123,7 +3482,6 @@
 				:is_immersive="true"
 			>
 			</x-product-cards.image>
-			
 			<x-product-cards.overline text="12 Days" />
 			<x-product-cards.title title="Arctic Saga: Exploring Spitsbergen via the Faroes and Jan Mayen" />
 			<x-product-cards.subtitle title="Lorem Ipsum, Doler Tempor, Incididunt, Exercitation Ullamco" />
@@ -3141,7 +3499,6 @@
 				:is_immersive="true"
 			>
 			</x-product-cards.image>
-			
 			<x-product-cards.overline text="Arctic" />
 			<x-product-cards.title title="Arctic Saga: Exploring Spitsbergen via the Faroes and Jan Mayen" />
 
@@ -3179,7 +3536,6 @@
 				:is_immersive="true"
 			>
 			</x-product-cards.image>
-			
 			<x-product-cards.overline text="Arctic" />
 			<x-product-cards.title title="Arctic Saga: Exploring Spitsbergen via the Faroes and Jan Mayen" />
 
@@ -3217,7 +3573,6 @@
 				:is_immersive="true"
 			>
 			</x-product-cards.image>
-			
 			<x-product-cards.overline text="Arctic" />
 			<x-product-cards.title title="Arctic Saga: Exploring Spitsbergen via the Faroes and Jan Mayen" />
 
@@ -3259,10 +3614,6 @@
 			>
 				<x-product-cards.badge-cta text="Save 50%" />
 			</x-product-cards.image>
-			<x-product-cards.reviews
-				total_reviews="19 Reviews"
-				review_rating="5"
-			/>
 			<x-product-cards.itinerary duration="12 day itinerary" />
 			<x-product-cards.title title="Gems of West Greenland: Fjords, Icebergs, and Culture" />
 			<x-product-cards.price
@@ -3292,10 +3643,6 @@
 			>
 				<x-product-cards.badge-time text="Just Added" />
 			</x-product-cards.image>
-			<x-product-cards.reviews
-				total_reviews="19 Reviews"
-				review_rating="5"
-			/>
 			<x-product-cards.itinerary duration="12 day itinerary" />
 			<x-product-cards.title title="Under the Northern Lights: Exploring Iceland & East Greenland" />
 			<x-product-cards.price
@@ -3324,10 +3671,6 @@
 				image_id="29"
 			>
 			</x-product-cards.image>
-			<x-product-cards.reviews
-				total_reviews="19 Reviews"
-				review_rating="5"
-			/>
 			<x-product-cards.itinerary duration="12 day itinerary" />
 			<x-product-cards.title title="Greenland Explorer: Sail and Soar the Alpine Arctic" />
 			<x-product-cards.price
@@ -3366,10 +3709,6 @@
 				>
 					<x-product-cards.badge-cta text="Save 50%" />
 				</x-product-cards.image>
-				<x-product-cards.reviews
-					total_reviews="19 Reviews"
-					review_rating="5"
-				/>
 				<x-product-cards.itinerary departure_date="Departing May 20, 2024" duration="10 Days" />
 				<x-product-cards.title title="Introduction to Spitsbergen" />
 				<x-product-cards.subtitle title="Fjords, Glaciers, and Wildlife of Svalbard" />
@@ -3393,10 +3732,6 @@
 					<x-product-cards.badge-cta text="Save 50%" />
 					<x-product-cards.badge-time text="Just Added" />
 				</x-product-cards.image>
-				<x-product-cards.reviews
-					total_reviews="9999 Reviews"
-					review_rating="3"
-				/>
 				<x-product-cards.itinerary departure_date="Departing May 28, 2024" duration="12 Days" />
 				<x-product-cards.title title="Spitsbergen Explorer" />
 				<x-product-cards.subtitle title="Wildlife Capital of the Arctic" />
@@ -3418,10 +3753,6 @@
 				>
 					<x-product-cards.badge-time text="Just Added" />
 				</x-product-cards.image>
-				<x-product-cards.reviews
-					total_reviews="100 Reviews"
-					review_rating="4"
-				/>
 				<x-product-cards.itinerary departure_date="Departing July 14, 2024" duration="11 Days" />
 				<x-product-cards.title title="Gems of West Greenland" />
 				<x-product-cards.subtitle title="Fjords, Icebergs, and Culture" />
@@ -4140,8 +4471,8 @@
 							</x-departure-cards.specification-label>
 							<x-departure-cards.specification-value>
 								<x-departure-cards.adventure-options>
-									<x-departure-cards.adventure-option title="Sea Kayaking" />
 									<x-departure-cards.adventure-option title="Stand-up Paddleboarding" />
+									<x-departure-cards.adventure-option title="Sea Kayaking" />
 									<x-departure-cards.adventure-option title="Zodiac Cruising" />
 									<x-departure-cards.adventure-option title="Heli-hiking" />
 									<x-departure-cards.adventure-option title="Polar Plunge" />
@@ -4401,7 +4732,7 @@
 		</x-departure-cards.card>
 
 		<x-departure-cards.card>
-			<x-departure-cards.card-banner text="Quark Protection Promise" url="#" />
+			<x-departure-cards.card-banner text="Quark Protection Promise" url="" />
 			<x-departure-cards.header>
 				<x-departure-cards.departing-on date="March 1, 2024" />
 				<x-departure-cards.promo-tag text="Save up to 24%" />
@@ -5848,6 +6179,7 @@
 		<x-pagination.total-pages current_page="1" total_pages="11" />
 		<x-pagination.links>
 			<!-- Generated by WordPress `paginate_links()` -->
+			<x-pagination.first-page href="#" >First</x-pagination.first-page>
 			<a class="prev page-numbers" href="/travel-blog">Prev</a>
 			<a class="page-numbers" href="/travel-blog/page/2">1</a>
 			<span class="page-numbers current">2</span>
@@ -5855,12 +6187,14 @@
 			<span class="page-numbers dots">…</span>
 			<a class="page-numbers" href="/travel-blog/page/48">48</a>
 			<a class="next page-numbers" href="/travel-blog/page/2">Next</a>
+			<x-pagination.last-page href="#" >Last</x-pagination.last-page>
 		</x-pagination.links>
 	</x-pagination>
 
 	<x-pagination>
 		<x-pagination.total-pages current_page="1" total_pages="11" />
 		<x-pagination.links>
+			<x-pagination.first-page href="#" >First</x-pagination.first-page>
 			<!-- Generated by WordPress `paginate_links()` -->
 			<a class="prev page-numbers" href="/travel-blog">Prev</a>
 			<a class="page-numbers" href="/travel-blog/page/2">1</a>
@@ -5869,11 +6203,13 @@
 			<span class="page-numbers dots">…</span>
 			<a class="page-numbers" href="/travel-blog/page/48">48</a>
 			<a class="next page-numbers" href="/travel-blog/page/2">Next</a>
+			<x-pagination.last-page href="#" >Last</x-pagination.last-page>
 		</x-pagination.links>
 	</x-pagination>
 
 	<x-pagination>
 		<x-pagination.links>
+			<x-pagination.first-page href="#" >First</x-pagination.first-page>
 			<!-- Generated by WordPress `paginate_links()` -->
 			<a class="prev page-numbers" href="/travel-blog">Prev</a>
 			<a class="page-numbers" href="/travel-blog/page/2">1</a>
@@ -5882,6 +6218,7 @@
 			<span class="page-numbers dots">…</span>
 			<a class="page-numbers" href="/travel-blog/page/48">48</a>
 			<a class="next page-numbers" href="/travel-blog/page/2">Next</a>
+			<x-pagination.last-page href="#" >Last</x-pagination.last-page>
 		</x-pagination.links>
 	</x-pagination>
 </x-component-demo>
@@ -6115,503 +6452,19 @@
 </x-component-demo>
 
 <x-component-demo :keys="[ 'dates-rates' ]">
+	@php
+		// TODO: This will be removed after the development of this component is complete and will be handled by the block.
+		$dates_rates_filter_data = [
+			'seasons'            => Quark\Search\Departures\get_region_and_season_search_filter_data(),
+			'expeditions'        => Quark\Search\Departures\get_expedition_search_filter_data(),
+			'adventure_options'  => Quark\Search\Departures\get_adventure_options_search_filter_data(),
+			'months'             => Quark\Search\Departures\get_month_search_filter_data(),
+			'durations'          => Quark\Search\Departures\get_duration_search_filter_data(),
+			'ships'              => Quark\Search\Departures\get_ship_search_filter_data(),
+		];
+	@endphp
 	<x-section>
-		<h2>Filters</h2>
-		<x-dates-rates>
-			<x-dates-rates.filters>
-				<x-dates-rates.filters-chips>
-					<x-dates-rates.filter-chip drawer_id="dates-rates-filters" title="Region & Season" accordion_id="accordion-region-season" />
-					<x-dates-rates.filter-chip drawer_id="dates-rates-filters" title="Expedition" accordion_id="accordion-expedition" />
-					<x-dates-rates.filter-chip drawer_id="dates-rates-filters" title="Adventure Options" accordion_id="accordion-adevnture-options" />
-					<x-dates-rates.filter-chip drawer_id="dates-rates-filters" title="Departure Month" accordion_id="accordion-departure-month" />
-					<x-dates-rates.filter-chip drawer_id="dates-rates-filters" title="Duration" accordion_id="accordion-duration" />
-					<x-dates-rates.filter-chip drawer_id="dates-rates-filters" title="Ship" accordion_id="accordion-ship" />
-				</x-dates-rates.filters-chips>
-
-				<x-dates-rates.filter-currency>
-					<select>
-						<option value="USD" label="$ USD" selected="yes">{{ __( '$ USD', 'qrk' ) }}</option>
-						<option value="CAD" label="$ CAD">{{ __( '$ CAD', 'qrk' ) }}</option>
-						<option value="AUD" label="$ AUD">{{ __( '$ AUD', 'qrk' ) }}</option>
-						<option value="GBP" label="£ GBP">{{ __( '£ GBP', 'qrk' ) }}</option>
-						<option value="EUR" label="€ EUR">{{ __( '€ EUR', 'qrk' ) }}</option>
-					</select>
-				</x-dates-rates.filter-currency>
-
-				<x-dates-rates.sticky-filters>
-					<x-dates-rates.filter-chip drawer_id="dates-rates-filters" title="Filter" accordion_id="accordion-region-season" />
-					<x-dates-rates.filter-chip drawer_id="dates-rates-filters-currency" title="Currency: USD" />
-				</x-dates-rates.sticky-filters>
-
-				<x-drawer id="dates-rates-filters-currency" animation_direction="up" class="dates-rates__drawer-currency">
-					<x-drawer.header>
-						<h3>Currency</h3>
-					</x-drawer.header>
-
-					<x-drawer.body>
-						<x-form.field-group>
-							<x-form.radio name="currency" value="USD" label="$ USD" />
-							<x-form.radio name="currency" value="CAD" label="$ CAD" />
-							<x-form.radio name="currency" value="AUD" label="$ AUD" />
-							<x-form.radio name="currency" value="GBP" label="$ GBP" />
-							<x-form.radio name="currency" value="EUR" label="$ EUR" />
-						</x-form.field-group>
-					</x-drawer.body>
-				</x-drawer>
-
-				<x-drawer id="dates-rates-filters" animation_direction="up" class="dates-rates__drawer">
-					<x-drawer.header>
-						<h3>Filters</h3>
-					</x-drawer.header>
-
-					<x-drawer.body>
-						<x-accordion>
-							<x-accordion.item id="accordion-region-season">
-								<x-accordion.item-handle title="Region & Season" />
-								<x-accordion.item-content>
-									<x-form.field-group :validation="[ 'checkbox-group-required' ]">
-										<x-form.checkbox name="" label="English" />
-										<x-form.checkbox name="" label="Italian" />
-										<x-form.checkbox name="" label="Arabic" />
-										<x-form.checkbox name="" label="Chinese, Mandarin" />
-										<x-form.checkbox name="" label="Japanese" />
-										<x-form.checkbox name="" label="Hindi" />
-										<x-form.checkbox name="" label="French" />
-										<x-form.checkbox name="" label="Korean" />
-										<x-form.checkbox name="" label="Portuguese" />
-										<x-form.checkbox name="" label="German" />
-										<x-form.checkbox name="" label="Russian" />
-										<x-form.checkbox name="" label="Other" />
-										<x-form.checkbox name="" label="Spanish" />
-										<x-form.checkbox name="" label="Bengali" />
-									</x-form.field-group>
-								</x-accordion.item-content>
-							</x-accordion.item>
-							<x-accordion.item id="accordion-expedition">
-								<x-accordion.item-handle title="Expedition" />
-								<x-accordion.item-content>
-									<x-form.field-group :validation="[ 'checkbox-group-required' ]">
-										<x-form.checkbox name="" label="Item 1" />
-										<x-form.checkbox name="" label="Item 2" />
-										<x-form.checkbox name="" label="Item 3" />
-										<x-form.checkbox name="" label="Item 4" />
-										<x-form.checkbox name="" label="Item 5" />
-										<x-form.checkbox name="" label="Item 6" />
-										<x-form.checkbox name="" label="Item 7" />
-									</x-form.field-group>
-								</x-accordion.item-content>
-							</x-accordion.item>
-							<x-accordion.item id="accordion-adevnture-options">
-								<x-accordion.item-handle title="Adventure Options (with availability)" />
-								<x-accordion.item-content>
-									<x-form.field-group :validation="[ 'checkbox-group-required' ]">
-										<x-form.checkbox name="" label="Item 1" />
-										<x-form.checkbox name="" label="Item 2" />
-										<x-form.checkbox name="" label="Item 3" />
-										<x-form.checkbox name="" label="Item 4" />
-										<x-form.checkbox name="" label="Item 5" />
-										<x-form.checkbox name="" label="Item 6" />
-										<x-form.checkbox name="" label="Item 7" />
-									</x-form.field-group>
-								</x-accordion.item-content>
-							</x-accordion.item>
-							<x-accordion.item id="accordion-departure-month">
-								<x-accordion.item-handle title="Departure Month" />
-								<x-accordion.item-content>
-									<x-form.field-group :validation="[ 'checkbox-group-required' ]">
-										<x-form.checkbox name="" label="Item 1" />
-										<x-form.checkbox name="" label="Item 2" />
-										<x-form.checkbox name="" label="Item 3" />
-										<x-form.checkbox name="" label="Item 4" />
-										<x-form.checkbox name="" label="Item 5" />
-										<x-form.checkbox name="" label="Item 6" />
-										<x-form.checkbox name="" label="Item 7" />
-									</x-form.field-group>
-								</x-accordion.item-content>
-							</x-accordion.item>
-							<x-accordion.item id="accordion-duration">
-								<x-accordion.item-handle title="Duration of Voyage (days)" />
-								<x-accordion.item-content>
-									<x-form.field-group :validation="[ 'checkbox-group-required' ]">
-										<x-form.checkbox name="" label="Item 1" />
-										<x-form.checkbox name="" label="Item 2" />
-										<x-form.checkbox name="" label="Item 3" />
-										<x-form.checkbox name="" label="Item 4" />
-										<x-form.checkbox name="" label="Item 5" />
-										<x-form.checkbox name="" label="Item 6" />
-										<x-form.checkbox name="" label="Item 7" />
-									</x-form.field-group>
-								</x-accordion.item-content>
-							</x-accordion.item>
-							<x-accordion.item id="accordion-ship">
-								<x-accordion.item-handle title="Ship" />
-								<x-accordion.item-content>
-									<x-form.field-group :validation="[ 'checkbox-group-required' ]">
-										<x-form.checkbox name="" label="Item 1" />
-										<x-form.checkbox name="" label="Item 2" />
-										<x-form.checkbox name="" label="Item 3" />
-										<x-form.checkbox name="" label="Item 4" />
-										<x-form.checkbox name="" label="Item 5" />
-										<x-form.checkbox name="" label="Item 6" />
-										<x-form.checkbox name="" label="Item 7" />
-									</x-form.field-group>
-								</x-accordion.item-content>
-							</x-accordion.item>
-						</x-accordion>
-					</x-drawer.body>
-
-					<x-drawer.footer>
-						<x-dates-rates.cta-clear-filters />
-						<x-button href="#" size="big">View Results (132)</x-button>
-					</x-drawer.footer>
-				</x-drawer>
-			</x-dates-rates.filters>
-
-			<x-section>
-				<h2>Ocean Adventurer</h2>
-				<x-dates-rates.item>
-					<x-dates-rates.item-table title="Cabin Categories">
-						{{-- Table Head --}}
-						<x-dates-rates.item-table-head>
-							<x-dates-rates.item-table-row>
-								<x-dates-rates.item-table-heading>Expedition</x-dates-rates.item-table-heading>
-								<x-dates-rates.item-table-heading>Promo Offers</x-dates-rates.item-table-heading>
-								<x-dates-rates.item-table-heading>Triple</x-dates-rates.item-table-heading>
-								<x-dates-rates.item-table-heading>Lower Deck Twin</x-dates-rates.item-table-heading>
-								<x-dates-rates.item-table-heading>Main Deck Ttwin Porthole</x-dates-rates.item-table-heading>
-								<x-dates-rates.item-table-heading>Main Deck Twin Window</x-dates-rates.item-table-heading>
-								<x-dates-rates.item-table-heading>Superior</x-dates-rates.item-table-heading>
-								<x-dates-rates.item-table-heading>Deluxe</x-dates-rates.item-table-heading>
-								<x-dates-rates.item-table-heading>Suite</x-dates-rates.item-table-heading>
-								<x-dates-rates.item-table-heading>Owner's Suite</x-dates-rates.item-table-heading>
-							</x-dates-rates.item-table-row>
-						</x-dates-rates.item-table-head>
-						{{-- Row 1 --}}
-						<x-dates-rates.item-table-body>
-							<x-dates-rates.item-table-row>
-								<x-dates-rates.item-table-column rowspan="2">
-									<x-dates-rates.expedition>
-										<x-dates-rates.expedition-overline>
-											<x-dates-rates.expedition-overline-link title="Antarctic" url="" />
-											<x-dates-rates.expedition-overline-link title="Ocean Adventurer" url="#" />
-										</x-dates-rates.expedition-overline>
-										<x-dates-rates.expedition-title text="Spitsbergen Highlights: Expedition In Brief" />
-										<x-dates-rates.expedition-dates
-										    duration_date="Feb 27 - Mar 05, 2024"
-											duration="8"
-										/>
-										<x-dates-rates.expedition-meta>
-											<x-dates-rates.expedition-meta-item>
-												<x-dates-rates.expedition-meta-label>
-													Start Location
-												</x-dates-rates.expedition-meta-label>
-												<x-dates-rates.expedition-meta-value>
-													Punta Arenas, Chile
-												</x-dates-rates.expedition-meta-value>
-											</x-dates-rates.expedition-meta-item>
-											<x-dates-rates.expedition-meta-item>
-												<x-dates-rates.expedition-meta-label>
-													End Location
-												</x-dates-rates.expedition-meta-label>
-												<x-dates-rates.expedition-meta-value>
-													Punta Arenas, Chile
-												</x-dates-rates.expedition-meta-value>
-											</x-dates-rates.expedition-meta-item>
-											<x-dates-rates.expedition-meta-item>
-												<x-dates-rates.expedition-meta-label>
-													Languages
-												</x-dates-rates.expedition-meta-label>
-												<x-dates-rates.expedition-meta-value>
-													English
-												</x-dates-rates.expedition-meta-value>
-											</x-dates-rates.expedition-meta-item>
-										</x-dates-rates.expedition-meta>
-										<x-dates-rates.expedition-cta text="Request a Quote" url="#" />
-									</x-dates-rates.expedition>
-								</x-dates-rates.item-table-column>
-								<x-dates-rates.item-table-column>
-									<x-dates-rates.item-table-column-title>
-										<strong>Brochure Price</strong>
-									</x-dates-rates.item-table-column-title>
-								</x-dates-rates.item-table-column>
-								<x-dates-rates.item-table-column>
-									$11,995 USD
-								</x-dates-rates.item-table-column>
-								<x-dates-rates.item-table-column :is_sold_out="true">
-									$13,995 USD
-								</x-dates-rates.item-table-column>
-								<x-dates-rates.item-table-column :is_sold_out="true">
-									$14,495 USD
-								</x-dates-rates.item-table-column>
-								<x-dates-rates.item-table-column>
-									$15,995 USD
-								</x-dates-rates.item-table-column>
-								<x-dates-rates.item-table-column :is_sold_out="true">
-									$17,495 USD
-								</x-dates-rates.item-table-column>
-								<x-dates-rates.item-table-column :is_sold_out="true">
-									$17,495 USD
-								</x-dates-rates.item-table-column>
-								<x-dates-rates.item-table-column :is_sold_out="true">
-									$19,995 USD
-								</x-dates-rates.item-table-column>
-								<x-dates-rates.item-table-column :is_sold_out="true">
-									$22,995 USD
-								</x-dates-rates.item-table-column>
-							</x-dates-rates.item-table-row>
-
-							<x-dates-rates.item-table-row>
-								<x-dates-rates.item-table-column>
-									<x-dates-rates.item-table-column-title>
-										<strong>Availability</strong>
-									</x-dates-rates.item-table-column-title>
-								</x-dates-rates.item-table-column>
-								<x-dates-rates.item-table-column>
-									Please Call
-								</x-dates-rates.item-table-column>
-								<x-dates-rates.item-table-column :is_sold_out="true">
-									Sold Out
-								</x-dates-rates.item-table-column>
-								<x-dates-rates.item-table-column :is_sold_out="true">
-									Sold Out
-								</x-dates-rates.item-table-column>
-								<x-dates-rates.item-table-column>
-									Please Call
-								</x-dates-rates.item-table-column>
-								<x-dates-rates.item-table-column :is_sold_out="true">
-									Sold Out
-								</x-dates-rates.item-table-column>
-								<x-dates-rates.item-table-column :is_sold_out="true">
-									Sold Out
-								</x-dates-rates.item-table-column>
-								<x-dates-rates.item-table-column :is_sold_out="true">
-									Sold Out
-								</x-dates-rates.item-table-column>
-								<x-dates-rates.item-table-column :is_sold_out="true">
-									Sold Out
-								</x-dates-rates.item-table-column>
-							</x-dates-rates.item-table-row>
-						</x-dates-rates.item-table-body>
-
-						<x-dates-rates.item-table-foot>
-							<x-dates-rates.item-table-row>
-								<x-dates-rates.item-table-column colspan="10">
-									<x-dates-rates.adventure-options>
-										<x-dates-rates.adventure-options-column title="Included Adventure Options">
-											<x-dates-rates.adventure-options-item name="Walking/Hiking" icon="hiking" />
-											<x-dates-rates.adventure-options-item name="Polar Plunge" icon="polar-plunge" />
-										</x-dates-rates.adventure-options-column>
-
-										<x-dates-rates.adventure-options-column title="Paid Adventure Options">
-											<x-dates-rates.adventure-options-item name="Padding Excursion" icon="paddling" :is_paid="true">
-												<x-dates-rates.adventure-options-item-price price="$995" currency="USD" count="00" />
-											</x-dates-rates.adventure-options-item>
-											<x-dates-rates.adventure-options-item name="Sea Kayaking" icon="kayaking" :is_paid="true">
-												<x-dates-rates.adventure-options-item-price price="$995" currency="USD" count="8" />
-											</x-dates-rates.adventure-options-item>
-											<x-dates-rates.adventure-options-item name="Polar Plunge" icon="polar-plunge" :is_paid="true">
-												<x-dates-rates.adventure-options-item-price price="$995" currency="USD" count="9" />
-											</x-dates-rates.adventure-options-item>
-										</x-dates-rates.adventure-options-column>
-									</x-dates-rates.adventure-options>
-								</x-dates-rates.item-table-column>
-							</x-dates-rates.item-table-row>
-						</x-dates-rates.item-table-foot>
-					</x-dates-rates.item-table>
-
-					<x-dates-rates.info text="Prices are shown per person" />
-				</x-dates-rates.item>
-
-				<x-dates-rates.item>
-					<x-dates-rates.item-table title="Cabin Categories">
-						{{-- Table Head --}}
-						<x-dates-rates.item-table-head>
-							<x-dates-rates.item-table-row>
-								<x-dates-rates.item-table-heading>Expedition</x-dates-rates.item-table-heading>
-								<x-dates-rates.item-table-heading>Promo Offers</x-dates-rates.item-table-heading>
-								<x-dates-rates.item-table-heading>Triple</x-dates-rates.item-table-heading>
-								<x-dates-rates.item-table-heading>Lower Deck Twin</x-dates-rates.item-table-heading>
-								<x-dates-rates.item-table-heading>Main Deck Ttwin Porthole</x-dates-rates.item-table-heading>
-								<x-dates-rates.item-table-heading>Main Deck Twin Window</x-dates-rates.item-table-heading>
-								<x-dates-rates.item-table-heading>Superior</x-dates-rates.item-table-heading>
-								<x-dates-rates.item-table-heading>Deluxe</x-dates-rates.item-table-heading>
-								<x-dates-rates.item-table-heading>Suite</x-dates-rates.item-table-heading>
-								<x-dates-rates.item-table-heading>Owner's Suite</x-dates-rates.item-table-heading>
-							</x-dates-rates.item-table-row>
-						</x-dates-rates.item-table-head>
-						{{-- Row 1 --}}
-						<x-dates-rates.item-table-body>
-							<x-dates-rates.item-table-row>
-								<x-dates-rates.item-table-column rowspan="3">
-									<x-dates-rates.expedition>
-										<x-dates-rates.expedition-overline>
-											<x-dates-rates.expedition-overline-link title="Antarctic" url="" />
-											<x-dates-rates.expedition-overline-link title="Ocean Adventurer" url="#" />
-										</x-dates-rates.expedition-overline>
-										<x-dates-rates.expedition-title text="Spitsbergen Highlights: Expedition In Brief" />
-										<x-dates-rates.expedition-dates
-											duration_date="Feb 27, 2024 - Mar 05, 2025"
-											duration="8"
-										/>
-										<x-dates-rates.expedition-meta>
-											<x-dates-rates.expedition-meta-item>
-												<x-dates-rates.expedition-meta-label>
-													Start Location
-												</x-dates-rates.expedition-meta-label>
-												<x-dates-rates.expedition-meta-value>
-													Punta Arenas, Chile
-												</x-dates-rates.expedition-meta-value>
-											</x-dates-rates.expedition-meta-item>
-											<x-dates-rates.expedition-meta-item>
-												<x-dates-rates.expedition-meta-label>
-													End Location
-												</x-dates-rates.expedition-meta-label>
-												<x-dates-rates.expedition-meta-value>
-													Punta Arenas, Chile
-												</x-dates-rates.expedition-meta-value>
-											</x-dates-rates.expedition-meta-item>
-											<x-dates-rates.expedition-meta-item>
-												<x-dates-rates.expedition-meta-label>
-													Languages
-												</x-dates-rates.expedition-meta-label>
-												<x-dates-rates.expedition-meta-value>
-													English
-												</x-dates-rates.expedition-meta-value>
-											</x-dates-rates.expedition-meta-item>
-										</x-dates-rates.expedition-meta>
-										<x-dates-rates.expedition-cta text="Request a Quote" url="#" />
-									</x-dates-rates.expedition>
-								</x-dates-rates.item-table-column>
-								<x-dates-rates.item-table-column>
-									<x-dates-rates.item-table-column-title>
-										<strong>Brochure Price</strong>
-										(Incl. Transfer Package)
-										<x-tooltip icon="info">
-											<p>Hiking, kayaking, mountain biking, mountaineering, etc.</p>
-										</x-tooltip>
-									</x-dates-rates.item-table-column-title>
-								</x-dates-rates.item-table-column>
-								<x-dates-rates.item-table-column>
-									$11,995 USD
-								</x-dates-rates.item-table-column>
-								<x-dates-rates.item-table-column :is_sold_out="true">
-									$13,995 USD
-								</x-dates-rates.item-table-column>
-								<x-dates-rates.item-table-column :is_sold_out="true">
-									$14,495 USD
-								</x-dates-rates.item-table-column>
-								<x-dates-rates.item-table-column>
-									$15,995 USD
-								</x-dates-rates.item-table-column>
-								<x-dates-rates.item-table-column :is_sold_out="true">
-									$17,495 USD
-								</x-dates-rates.item-table-column>
-								<x-dates-rates.item-table-column :is_sold_out="true">
-									$17,495 USD
-								</x-dates-rates.item-table-column>
-								<x-dates-rates.item-table-column :is_sold_out="true">
-									$19,995 USD
-								</x-dates-rates.item-table-column>
-								<x-dates-rates.item-table-column :is_sold_out="true">
-									$22,995 USD
-								</x-dates-rates.item-table-column>
-							</x-dates-rates.item-table-row>
-
-							<x-dates-rates.item-table-row>
-								<x-dates-rates.item-table-column :is_pay_in_full="true">
-									<x-dates-rates.item-table-column-title>
-										<strong>Pay in full at time of booking & Save 5%</strong>
-									</x-dates-rates.item-table-column-title>
-								</x-dates-rates.item-table-column>
-								<x-dates-rates.item-table-column :is_pay_in_full="true">
-									3,992 USD
-								</x-dates-rates.item-table-column>
-								<x-dates-rates.item-table-column :is_sold_out="true">
-									$4,995 USD
-								</x-dates-rates.item-table-column>
-								<x-dates-rates.item-table-column :is_sold_out="true">
-									$5,012 USD
-								</x-dates-rates.item-table-column>
-								<x-dates-rates.item-table-column :is_pay_in_full="true">
-									$5,795 USD
-								</x-dates-rates.item-table-column>
-								<x-dates-rates.item-table-column :is_sold_out="true">
-									$5,995 USD
-								</x-dates-rates.item-table-column>
-								<x-dates-rates.item-table-column :is_pay_in_full="true">
-									$5,995 USD
-								</x-dates-rates.item-table-column>
-								<x-dates-rates.item-table-column :is_pay_in_full="true">
-									$6,015 USD
-								</x-dates-rates.item-table-column>
-								<x-dates-rates.item-table-column :is_sold_out="true">
-									$6,075 USD
-								</x-dates-rates.item-table-column>
-							</x-dates-rates.item-table-row>
-
-							<x-dates-rates.item-table-row>
-								<x-dates-rates.item-table-column>
-									<x-dates-rates.item-table-column-title>
-										<strong>Availability</strong>
-									</x-dates-rates.item-table-column-title>
-								</x-dates-rates.item-table-column>
-								<x-dates-rates.item-table-column :is_stock_limited="true">
-									3 cabins
-								</x-dates-rates.item-table-column>
-								<x-dates-rates.item-table-column :is_sold_out="true">
-									Sold Out
-								</x-dates-rates.item-table-column>
-								<x-dates-rates.item-table-column :is_sold_out="true">
-									Sold Out
-								</x-dates-rates.item-table-column>
-								<x-dates-rates.item-table-column>
-									Please Call
-								</x-dates-rates.item-table-column>
-								<x-dates-rates.item-table-column :is_sold_out="true">
-									Sold Out
-								</x-dates-rates.item-table-column>
-								<x-dates-rates.item-table-column :is_sold_out="true">
-									Sold Out
-								</x-dates-rates.item-table-column>
-								<x-dates-rates.item-table-column :is_stock_limited="true">
-									2 Cabins
-								</x-dates-rates.item-table-column>
-								<x-dates-rates.item-table-column :is_sold_out="true">
-									Sold Out
-								</x-dates-rates.item-table-column>
-							</x-dates-rates.item-table-row>
-						</x-dates-rates.item-table-body>
-
-						<x-dates-rates.item-table-foot>
-							<x-dates-rates.item-table-row>
-								<x-dates-rates.item-table-column colspan="10">
-									<x-dates-rates.adventure-options>
-										<x-dates-rates.adventure-options-column title="Included Adventure Options">
-											<x-dates-rates.adventure-options-item name="Walking/Hiking" icon="hiking" />
-											<x-dates-rates.adventure-options-item name="Polar Plunge" icon="polar-plunge" />
-										</x-dates-rates.adventure-options-column>
-
-										<x-dates-rates.adventure-options-column title="Paid Adventure Options">
-											<x-dates-rates.adventure-options-item name="Padding Excursion" icon="paddling" :is_paid="true">
-												<x-dates-rates.adventure-options-item-price price="$995" currency="USD" count="00" />
-											</x-dates-rates.adventure-options-item>
-											<x-dates-rates.adventure-options-item name="Sea Kayaking" icon="kayaking" :is_paid="true">
-												<x-dates-rates.adventure-options-item-price price="$995" currency="USD" count="8" />
-											</x-dates-rates.adventure-options-item>
-											<x-dates-rates.adventure-options-item name="Polar Plunge" icon="polar-plunge" :is_paid="true">
-												<x-dates-rates.adventure-options-item-price price="$995" currency="USD" count="9" />
-											</x-dates-rates.adventure-options-item>
-										</x-dates-rates.adventure-options-column>
-									</x-dates-rates.adventure-options>
-								</x-dates-rates.item-table-column>
-							</x-dates-rates.item-table-row>
-						</x-dates-rates.item-table-foot>
-					</x-dates-rates.item-table>
-
-					<x-dates-rates.info text="Prices are shown per person" />
-				</x-dates-rates.item>
-			</x-section>
-		</x-dates-rates>
+		<x-parts.dates-rates :filter_data="$dates_rates_filter_data" />
 	</x-section>
 </x-component-demo>
 
@@ -6932,16 +6785,7 @@
 				<x-footer.column-title title="Discover Your Dream Trip" />
 				<x-button  href="#" size="big" color="black">View All Expeditions</x-button>
 
-				<x-footer.column-title title="Change Currency" />
-				<x-form>
-					<x-form.field :validation="[ 'required' ]">
-						<select>
-							<option value="1" label="$ USD">$ USD</option>
-							<option value="2" label="Option 2">Option 2</option>
-							<option value="3" label="Option 3">Option 3</option>
-						</select>
-					</x-form.field>
-				</x-form>
+				<x-currency-switcher appearance="dark" />
 			</x-footer.column>
 
 			<x-footer.navigation title="Learn About the Polar Regions">

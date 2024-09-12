@@ -1,0 +1,29 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Hero Text Graphic",
+	"name": "quark/hero-text-graphic",
+	"description": "Select a Text Graphic.",
+	"category": "widgets",
+	"keywords": [
+		"Hero",
+		"Text",
+		"Graphic"
+	],
+	"textdomain": "qrk",
+	"attributes": {
+    "image": {
+			"type": "object"
+		}
+  	},
+	"parent": [
+		"quark/hero-content-left"
+	],
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

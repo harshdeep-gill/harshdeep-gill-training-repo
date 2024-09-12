@@ -12,6 +12,8 @@ use Solarium\QueryType\Select\Query\Query;
 
 use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
+use const Quark\Expeditions\DESTINATION_TAXONOMY;
+use const Quark\Localization\DEFAULT_CURRENCY;
 
 /**
  * Class Search
@@ -30,14 +32,6 @@ class Search {
 	 *         key: string,
 	 *         order: string
 	 *     },
-	 *     'price-low': array{
-	 *         key: string,
-	 *         order: string
-	 *     },
-	 *     'price-high': array{
-	 *         key: string,
-	 *         order: string
-	 *     },
 	 *     'duration-short': array{
 	 *         key: string,
 	 *         order: string
@@ -46,6 +40,46 @@ class Search {
 	 *         key: string,
 	 *         order: string
 	 *     },
+	 *    'price-low-usd': array{
+	 *         key: string,
+	 *         order: string
+	 *    },
+	 *    'price-high-usd': array{
+	 *         key: string,
+	 *         order: string
+	 *    },
+	 *    'price-low-gbp': array{
+	 *         key: string,
+	 *         order: string
+	 *    },
+	 *    'price-high-gbp': array{
+	 *         key: string,
+	 *         order: string
+	 *    },
+	 *    'price-low-aud': array{
+	 *         key: string,
+	 *         order: string
+	 *    },
+	 *    'price-high-aud': array{
+	 *         key: string,
+	 *         order: string
+	 *    },
+	 *    'price-low-cad': array{
+	 *         key: string,
+	 *         order: string
+	 *    },
+	 *    'price-high-cad': array{
+	 *         key: string,
+	 *         order: string
+	 *    },
+	 *    'price-low-eur': array{
+	 *         key: string,
+	 *         order: string
+	 *    },
+	 *    'price-high-eur': array{
+	 *         key: string,
+	 *         order: string
+	 *    },
 	 * } Field mapping.
 	 */
 	private array $field_mapping = [
@@ -57,20 +91,52 @@ class Search {
 			'key'   => 'start_date_s',
 			'order' => 'desc',
 		],
-		'price-low'      => [
-			'key'   => 'departure_low_price_f',
-			'order' => 'asc',
-		],
-		'price-high'     => [
-			'key'   => 'departure_low_price_f',
-			'order' => 'desc',
-		],
 		'duration-short' => [
 			'key'   => 'duration_i',
 			'order' => 'asc',
 		],
 		'duration-long'  => [
 			'key'   => 'duration_i',
+			'order' => 'desc',
+		],
+		'price-low-usd'  => [
+			'key'   => 'lowest_price_usd_i',
+			'order' => 'asc',
+		],
+		'price-high-usd' => [
+			'key'   => 'lowest_price_usd_i',
+			'order' => 'desc',
+		],
+		'price-low-gbp'  => [
+			'key'   => 'lowest_price_gbp_i',
+			'order' => 'asc',
+		],
+		'price-high-gbp' => [
+			'key'   => 'lowest_price_gbp_i',
+			'order' => 'desc',
+		],
+		'price-low-eur'  => [
+			'key'   => 'lowest_price_eur_i',
+			'order' => 'asc',
+		],
+		'price-high-eur' => [
+			'key'   => 'lowest_price_eur_i',
+			'order' => 'desc',
+		],
+		'price-low-aud'  => [
+			'key'   => 'lowest_price_aud_i',
+			'order' => 'asc',
+		],
+		'price-high-aud' => [
+			'key'   => 'lowest_price_aud_i',
+			'order' => 'desc',
+		],
+		'price-low-cad'  => [
+			'key'   => 'lowest_price_cad_i',
+			'order' => 'asc',
+		],
+		'price-high-cad' => [
+			'key'   => 'lowest_price_cad_i',
 			'order' => 'desc',
 		],
 	];
@@ -208,7 +274,7 @@ class Search {
 		$this->args['tax_query'][] = [
 			'taxonomy'         => ADVENTURE_OPTION_CATEGORY,
 			'field'            => 'term_id',
-			'terms'            => $adventure_option_ids,
+			'terms'            => array_unique( $adventure_option_ids ),
 			'include_children' => false,
 		];
 	}
@@ -268,7 +334,7 @@ class Search {
 	/**
 	 * Set Duration.
 	 *
-	 * @param int[] $durations Duration.
+	 * @param array<int, int[]> $durations Duration.
 	 *
 	 * @return void
 	 */
@@ -283,17 +349,35 @@ class Search {
 			$this->args['meta_query'] = [];
 		}
 
-		// Set durations meta query.
-		$this->args['meta_query'][] = [
-			'key'     => 'duration',
-			'value'   => array_unique( $durations ),
-			'type'    => 'NUMERIC',
-			'compare' => 'BETWEEN',
-		];
+		// Initialize meta query.
+		$meta_query = [];
+
+		// Loop through durations.
+		foreach ( $durations as $duration ) {
+			// Set duration meta query.
+			$meta_query[] = [
+				'key'     => 'duration',
+				'value'   => $duration,
+				'type'    => 'NUMERIC',
+				'compare' => 'BETWEEN',
+			];
+		}
+
+		// Add relation if more than one meta query.
+		if ( 1 < count( $meta_query ) ) {
+			$meta_query['relation'] = 'OR';
+
+			// Set meta query.
+			$this->args['meta_query'][] = $meta_query;
+		} else {
+			// Set meta query.
+			$this->args['meta_query'][] = $meta_query[0];
+		}
 	}
 
 	/**
 	 * Set Departure Months.
+	 * The meta query is set as OR relation.
 	 *
 	 * @param string[] $months Months. Format: Y-m.
 	 *
@@ -305,13 +389,19 @@ class Search {
 			return;
 		}
 
-		// If mata query array not present, create it.
+		// If meta query array not present, create it.
 		if ( ! is_array( $this->args['meta_query'] ) ) {
 			$this->args['meta_query'] = [];
 		}
 
+		// Remove duplicate months.
+		$months = array_unique( $months );
+
+		// Initialize meta query.
+		$meta_query = [];
+
 		// Set search by destinations parameters in search arguments.
-		foreach ( array_unique( $months ) as $departure ) {
+		foreach ( $months as $departure ) {
 			// Validate departure format.
 			preg_match( '/^(?<month>\d{2})-(?<year>\d{4})$/', $departure, $match );
 
@@ -324,12 +414,23 @@ class Search {
 			$departure = absint( mktime( 0, 0, 0, absint( $match['month'] ), 01, absint( $match['year'] ) ) );
 
 			// Set departure meta query (date Format: Ymd).
-			$this->args['meta_query'][] = [
+			$meta_query[] = [
 				'key'     => 'start_date',
 				'value'   => [ gmdate( 'Y-m-01', $departure ), gmdate( 'Y-m-t', $departure ) ],
 				'type'    => 'DATE',
 				'compare' => 'BETWEEN',
 			];
+		}
+
+		// Add relation if more than one meta query.
+		if ( 1 < count( $meta_query ) ) {
+			$meta_query['relation'] = 'OR';
+
+			// Set meta query.
+			$this->args['meta_query'][] = $meta_query;
+		} else {
+			// Set meta query.
+			$this->args['meta_query'][] = $meta_query[0];
 		}
 	}
 
@@ -351,15 +452,42 @@ class Search {
 			$this->args['meta_query'] = [];
 		}
 
-		// Set search by seasons parameters in search arguments.
-		foreach ( array_unique( $seasons ) as $season ) {
-			// Set Season meta query.
-			$this->args['meta_query'][] = [
-				'key'     => 'region_season',
-				'value'   => $season,
-				'compare' => '=',
-			];
+		// Unique seasons.
+		$seasons = array_unique( $seasons );
+
+		// Set meta query.
+		$this->args['meta_query'][] = [
+			'key'     => 'region_season',
+			'value'   => $seasons,
+			'compare' => 'IN',
+		];
+	}
+
+	/**
+	 * Set destinations.
+	 *
+	 * @param int[] $destination_ids Destination IDs.
+	 *
+	 * @return void
+	 */
+	public function set_destinations( array $destination_ids = [] ): void {
+		// Return early if no destinations are passed.
+		if ( empty( $destination_ids ) ) {
+			return;
 		}
+
+		// If tax query array not present, create it.
+		if ( ! is_array( $this->args['tax_query'] ) ) {
+			$this->args['tax_query'] = [];
+		}
+
+		// Set search by destinations parameters in search arguments.
+		$this->args['tax_query'][] = [
+			'taxonomy'         => DESTINATION_TAXONOMY,
+			'field'            => 'term_id',
+			'terms'            => array_unique( $destination_ids ),
+			'include_children' => false,
+		];
 	}
 
 	/**
@@ -387,13 +515,28 @@ class Search {
 	/**
 	 * Set Sort.
 	 *
-	 * @param string $sort Sort.
+	 * @param string $sort     Sort.
+	 * @param string $currency Currency.
 	 *
 	 * @return void
 	 */
-	public function set_sort( string $sort = '' ): void {
+	public function set_sort( string $sort = '', string $currency = DEFAULT_CURRENCY ): void {
 		// Return early if sort is not set or field mapping is not set.
-		if ( empty( $sort ) || empty( $this->field_mapping[ $sort ] ) ) {
+		if ( empty( $sort ) ) {
+			return;
+		}
+
+		// Check if sort is for price.
+		if ( strpos( $sort, 'price-' ) !== false ) {
+			// Set currency.
+			$currency = strtolower( $currency );
+
+			// Update the sort key.
+			$sort = $sort . '-' . $currency;
+		}
+
+		// Check if sort is valid.
+		if ( empty( $this->field_mapping[ $sort ] ) ) {
 			return;
 		}
 
@@ -410,16 +553,22 @@ class Search {
 		// Get the args.
 		$args = $this->args;
 
-		// Set tax-query relation parameter.
+		// Set tax-query relation parameter. Various filters (tax queries) are combined using AND.
 		if ( is_array( $args['tax_query'] ) && ! empty( $args['tax_query'] ) ) {
-			$args['tax_query']['relation'] = 'AND';
+			// Add relation parameter if more than one tax query.
+			if ( 1 < count( $args['tax_query'] ) ) {
+				$args['tax_query']['relation'] = 'AND';
+			}
 		} else {
 			unset( $args['tax_query'] );
 		}
 
-		// Set meta-query relation parameter.
+		// Set meta-query relation parameter. Various filters (meta queries) are combined using AND.
 		if ( is_array( $args['meta_query'] ) && ! empty( $args['meta_query'] ) ) {
-			$args['meta_query']['relation'] = 'OR';
+			// Add relation parameter if more than one meta query.
+			if ( 1 < count( $args['meta_query'] ) ) {
+				$args['meta_query']['relation'] = 'AND';
+			}
 		} else {
 			unset( $args['meta_query'] );
 		}

@@ -8,7 +8,7 @@
 	height: var(--header-height);
 	padding: 0 var(--grid-col-gutter);
 	position: sticky;
-	top: 0;
+	top: var(--wp-admin-bar-height);
 	z-index: 99;
 	gap: var(--spacing-4);
 

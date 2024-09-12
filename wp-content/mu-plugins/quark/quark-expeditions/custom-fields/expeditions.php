@@ -132,6 +132,26 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 					'bidirectional'        => 0,
 					'bidirectional_target' => [],
 				],
+				[
+					'key'               => 'field_66910e9dee66e',
+					'label'             => 'Overview',
+					'name'              => 'overview',
+					'aria-label'        => '',
+					'type'              => 'wysiwyg',
+					'instructions'      => 'Add text here that will be used as an overview in integrated applications',
+					'required'          => 0,
+					'conditional_logic' => 0,
+					'wrapper'           => [
+						'width' => '',
+						'class' => '',
+						'id'    => '',
+					],
+					'default_value'     => '',
+					'tabs'              => 'all',
+					'toolbar'           => 'full',
+					'media_upload'      => 0,
+					'delay'             => 0,
+				],
 			],
 			'location'              => [
 				[

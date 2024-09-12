@@ -623,29 +623,62 @@ function transform_drupal_media_tags( string $content = '' ): string {
 					$alt = $alt[1];
 				}
 
-				// Build image HTML.
-				$image_html = sprintf(
-					'<img class="%s wp-image-%d size-large" src="%s" alt="%s" width="%d" height="%d" />',
-					$align[1] ?? 'alignnone',
-					$image,
-					$src[0],
-					$alt,
-					$src[1],
-					$src[2]
-				);
-
-				// if caption is available then add it.
-				if ( ! empty( $caption ) ) {
-					$image_html = sprintf(
-						'<figure class="wp-block-image %s">%s<figcaption>%s</figcaption></figure>',
-						$align[1] ?? 'alignnone',
-						$image_html,
-						$caption[1]
+				// Check if it's remote video.
+				if ( 'remote_video' === $media['bundle'] ) {
+					// Get the video URL.
+					$video_url = $drupal_db->get_var(
+						strval(
+							$drupal_db->prepare(
+								'
+								SELECT
+									field_media_video_embed_field_value
+								FROM
+									media__field_media_video_embed_field
+								WHERE
+									entity_id = %d
+								LIMIT 1
+								',
+								$media['mid']
+							)
+						)
 					);
+
+					// If video URL found then build HTML.
+					if ( ! empty( $video_url ) ) {
+						$image_html = sprintf(
+							'<img class="fancy-video" src="%s" id="%s" alt="%s" />',
+							$video_url,
+							$image,
+							$alt
+						);
+					}
+				} else {
+					// Build image HTML.
+					$image_html = sprintf(
+						'<img class="%s wp-image-%d size-large" src="%s" alt="%s" width="%d" height="%d" />',
+						$align[1] ?? 'alignnone',
+						$image,
+						$src[0],
+						$alt,
+						$src[1],
+						$src[2]
+					);
+
+					// if caption is available then add it.
+					if ( ! empty( $caption ) ) {
+						$image_html = sprintf(
+							'<figure class="wp-block-image %s">%s<figcaption>%s</figcaption></figure>',
+							$align[1] ?? 'alignnone',
+							$image_html,
+							wp_strip_all_tags( html_entity_decode( $caption[1] ) ),
+						);
+					}
 				}
 
 				// Replace the drupal-media tag.
-				$content = str_replace( $matches[0][ $key ], $image_html, $content );
+				if ( ! empty( $image_html ) ) {
+					$content = str_replace( $matches[0][ $key ], $image_html, $content );
+				}
 			}
 		}
 	}
@@ -793,4 +826,42 @@ function prepare_seo_data( mixed $seo_meta_data = [] ): array {
 
 	// Return SEO data.
 	return $seo_data;
+}
+
+/**
+ * Get the remote video URL.
+ *
+ * @param int $entity_id Drupal entity ID.
+ *
+ * @return string
+ */
+function get_remote_video_url( int $entity_id = 0 ): string {
+	// validate entity ID.
+	if ( empty( $entity_id ) ) {
+		return '';
+	}
+
+	// Drupal database instance.
+	$drupal_db = get_database();
+
+	// Get the video URL.
+	$video_url = $drupal_db->get_var(
+		strval(
+			$drupal_db->prepare(
+				'
+				SELECT
+					field_media_video_embed_field_value
+				FROM
+					media__field_media_video_embed_field
+				WHERE
+					entity_id = %d AND deleted = 0
+				LIMIT 1
+				',
+				$entity_id
+			)
+		)
+	);
+
+	// Return video URL.
+	return strval( $video_url );
 }

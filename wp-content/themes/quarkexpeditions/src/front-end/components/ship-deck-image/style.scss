@@ -1,0 +1,27 @@
+/**
+ * Ship Deck Image
+ */
+@import "../../scss";
+
+.ship-deck-image {
+
+	&--horizontal {
+		display: none;
+
+		@media screen and (min-width: grid-size(md)) {
+			display: block;
+		}
+	}
+
+	&--vertical {
+		display: block;
+
+		img {
+			margin: 0 auto;
+		}
+
+		@media screen and (min-width: grid-size(md)) {
+			display: none;
+		}
+	}
+}
