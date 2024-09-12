@@ -89,8 +89,8 @@ function get_region_and_season_filter( array $region_season_facet = [] ): array 
 		];
 	}
 
+	// Return filter data.
 	return array_values( $filter_data );
-
 }
 
 /**
@@ -117,7 +117,7 @@ function get_expedition_filter( array $expedition_facet = [] ): array {
 	foreach ( $expedition_facet as $expedition_id => $count ) {
 		// Convert to integer.
 		$expedition_id = absint( $expedition_id );
-		$count = absint( $count );
+		$count         = absint( $count );
 
 		// Validate count.
 		if ( empty( $count ) || empty( $expedition_id ) ) {
@@ -176,7 +176,7 @@ function get_ship_filter( array $ship_facet = [] ): array {
 	foreach ( $ship_facet as $ship_id => $count ) {
 		// Convert to integer.
 		$ship_id = absint( $ship_id );
-		$count = absint( $count );
+		$count   = absint( $count );
 
 		// Validate count.
 		if ( empty( $count ) || empty( $ship_id ) ) {
@@ -235,7 +235,7 @@ function get_adventure_options_filter( array $adventure_options_facet = [] ): ar
 	foreach ( $adventure_options_facet as $adventure_option_id => $count ) {
 		// Convert to integer.
 		$adventure_option_id = absint( $adventure_option_id );
-		$count = absint( $count );
+		$count               = absint( $count );
 
 		// Validate count.
 		if ( empty( $count ) || empty( $adventure_option_id ) ) {
@@ -306,8 +306,8 @@ function get_month_filter( array $month_facet = [] ): array {
 		}
 
 		// Get month label and value.
-		$month_value = gmdate('m-Y', $month );
-		$month_label = gmdate('F Y', $month );
+		$month_value = gmdate( 'm-Y', $month );
+		$month_label = gmdate( 'F Y', $month );
 
 		// Continue if already set.
 		if ( ! empty( $filter_data[ $month_value ] ) ) {
@@ -349,7 +349,7 @@ function get_duration_filter( array $duration_facet = [] ): array {
 	// Loop through duration facet.
 	foreach ( $duration_facet as $duration => $count ) {
 		// Convert to integer.
-		$count = absint( $count );
+		$count    = absint( $count );
 		$duration = absint( $duration );
 
 		// Validate count.
@@ -467,7 +467,7 @@ function get_filters_for_dates_rates( array $selected_filters = [] ): array {
 	$solr_facets = array_column( $filter_mapping, 'solr_facet' );
 
 	// Run search.
-	$result = search( $selected_filters, $solr_facets, true );
+	$result            = search( $selected_filters, $solr_facets, true );
 	$solr_facet_result = $result['facet_results'];
 
 	// Initialize filters.
@@ -530,7 +530,7 @@ function get_filters_for_dates_rates( array $selected_filters = [] ): array {
 	);
 
 	// Run search.
-	$result = search( $selected_filters, $solr_facets, true );
+	$result     = search( $selected_filters, $solr_facets, true );
 	$facet_data = $result['facet_results'][ $solr_facet_key ];
 
 	// Validate facet results.
