@@ -13,11 +13,6 @@ import metadata from './block.json';
 import edit from './edit';
 
 /**
- * Styles.
- */
-import '../../../front-end/components/accordion/style.scss';
-
-/**
  * Block name.
  */
 export const { name }: { name: string } = metadata;
