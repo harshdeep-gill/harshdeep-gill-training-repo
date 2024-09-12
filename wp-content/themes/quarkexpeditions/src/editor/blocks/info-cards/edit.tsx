@@ -36,7 +36,7 @@ import * as infoCard from './children/card';
 export default function Edit( { className, attributes, setAttributes }: BlockEditAttributes ): JSX.Element {
 	// Set block properties.
 	const blockProps = useBlockProps( {
-		className: classnames( className, 'info-cards' ),
+		className: classnames( className, 'info-cards', 'quark-info-cards' ),
 		title: attributes.type,
 	} );
 
@@ -83,12 +83,10 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 					/>
 				</PanelBody>
 			</InspectorControls>
-			<div className="quark-info-cards">
-				<div { ...blockProps } >
-					<div className="info-cards__carousel">
-						<div className="info-cards__slider">
-							<div { ...innerBlockProps } />
-						</div>
+			<div { ...blockProps } >
+				<div className="info-cards__carousel">
+					<div className="info-cards__slider">
+						<div { ...innerBlockProps } />
 					</div>
 				</div>
 			</div>
