@@ -365,7 +365,15 @@ table {
 }
 
 .wp-block-post-title {
-	margin-bottom: var(--spacing-8);
+	margin-bottom: var(--spacing-6);
+
+	@media screen and (min-width: grid-size(md)) {
+		margin-bottom: var(--spacing-7);
+	}
+
+	@media screen and (min-width: grid-size(xl)) {
+		margin-bottom: var(--spacing-8);
+	}
 }
 
 // WordPress annoyingly adds .wp-block-template-part as a wrapper for all
