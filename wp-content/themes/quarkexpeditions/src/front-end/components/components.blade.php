@@ -5344,7 +5344,7 @@
 <x-component-demo :keys="[ 'expedition-cards' ]">
 	<x-expedition-cards>
 		<x-expedition-cards.card>
-			<x-expedition-cards.card-banner text="Quark Protection Promise" url="#" />
+			<x-expedition-cards.card-banner text="Quark Protection Promise" url="" />
 
 			<x-expedition-cards.grid>
 				<x-expedition-cards.grid-column>

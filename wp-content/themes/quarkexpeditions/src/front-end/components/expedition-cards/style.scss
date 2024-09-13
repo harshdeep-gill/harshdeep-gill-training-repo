@@ -35,7 +35,7 @@
 
 		@include transition();
 
-		&:hover {
+		&[href]:hover {
 			background-color: var(--color-blue);
 			text-decoration: none;
 		}
@@ -45,7 +45,7 @@
 		margin-top: var(--grid-col-gutter);
 		position: relative;
 
-		@media screen and (min-width: grid-size(lg)) {
+		@media screen and (min-width: grid-size(md)) {
 			grid-template-columns: 288px 1fr;
 			grid-column-gap: var(--spacing-7);
 		}
@@ -53,7 +53,7 @@
 		.sidebar-grid & {
 			grid-template-columns: repeat(1, 1fr);
 
-			@media screen and (min-width: grid-size(xl)) {
+			@media screen and (min-width: grid-size(md)) {
 				grid-template-columns: 288px 1fr;
 				grid-column-gap: var(--spacing-7);
 			}
@@ -77,7 +77,7 @@
 		padding: 0 var(--spacing-2) 0 var(--spacing-3);
 		margin-left: calc(-1 * var(--grid-col-gutter));
 
-		@media screen and (min-width: grid-size(lg)) {
+		@media screen and (min-width: grid-size(md)) {
 			padding: 0 var(--spacing-3) 0 var(--spacing-2);
 			margin-right: calc(-1 * var(--grid-col-gutter));
 			margin-left: 0;
@@ -101,7 +101,7 @@
 			left: -15px;
 			display: none;
 
-			@media screen and (min-width: grid-size(lg)) {
+			@media screen and (min-width: grid-size(md)) {
 				display: block;
 			}
 		}
@@ -111,7 +111,7 @@
 			right: -15px;
 			display: block;
 
-			@media screen and (min-width: grid-size(lg)) {
+			@media screen and (min-width: grid-size(md)) {
 				display: none;
 			}
 		}
@@ -156,9 +156,8 @@
 		border-bottom: 1px solid var(--color-gray-20);
 		padding-bottom: var(--grid-row-gutter);
 
-		@media screen and (min-width: grid-size(lg)) {
+		@media screen and (min-width: grid-size(xl)) {
 			display: grid;
-			grid-template-columns: repeat(1, 1fr);
 			grid-template-columns: clamp(120px, 30%, 200px) 1fr;
 		}
 
@@ -166,9 +165,8 @@
 			display: flex;
 			flex-direction: column;
 
-			@media screen and (min-width: grid-size(xl)) {
+			@media screen and (min-width: grid-size(xxl)) {
 				display: grid;
-				grid-template-columns: repeat(1, 1fr);
 				grid-template-columns: clamp(120px, 30%, 200px) 1fr;
 			}
 		}
@@ -180,19 +178,33 @@
 
 		&:first-child {
 
-			@media screen and (min-width: grid-size(lg)) {
-				padding-right: 160px; // Promo tag width.
+			@media screen and (min-width: grid-size(md)) {
+				padding-right: 170px; // Promo tag width.
 			}
 
-			@media screen and (min-width: grid-size(lg)) {
+			@media screen and (min-width: grid-size(xl)) {
 				padding-right: 0;
 			}
 		}
 
 		&:nth-child(2) {
 
-			@media screen and (min-width: grid-size(lg)) {
-				padding-right: 160px; // Promo tag width.
+			@media screen and (min-width: grid-size(xl)) {
+				padding-right: 170px; // Promo tag width.
+			}
+		}
+
+		.sidebar-grid & {
+
+			&:first-child {
+
+				@media screen and (min-width: grid-size(md)) {
+					padding-right: 170px; // Promo tag width.
+				}
+
+				@media screen and (min-width: grid-size(xxl)) {
+					padding-right: 0;
+				}
 			}
 		}
 	}
@@ -252,6 +264,15 @@
 
 	&__option {
 
+		&:first-child {
+
+			@media screen and (max-width: calc(grid-size(sm) - 1px)) {
+				max-width: calc(100% - 140px);
+				text-overflow: ellipsis;
+				overflow: hidden;
+			}
+		}
+
 		&--hidden {
 			display: none;
 		}
@@ -264,7 +285,7 @@
 	&__options-count-wrap {
 		display: flex;
 		align-items: center;
-		gap: var(--spacing-3);
+		gap: var(--spacing-2);
 
 		&::before {
 			display: none;
@@ -329,6 +350,14 @@
 				min-width: 60px;
 			}
 		}
+
+		.sidebar-grid & {
+			flex-direction: column;
+
+			@media screen and (min-width: grid-size(xl)) {
+				flex-flow: row wrap;
+			}
+		}
 	}
 
 	&__drawer-open {
@@ -386,6 +415,7 @@
 		cursor: pointer;
 		vertical-align: middle;
 		margin-left: var(--spacing-1);
+		white-space: normal;
 
 		&:hover {
 			#{$self}__tooltip-description {
@@ -417,9 +447,7 @@
 		border: 1px solid var(--color-black);
 		border-radius: var(--border-small);
 		margin: 0 auto var(--spacing-1);
-		font-size: var(--font-size-small);
 		font-weight: initial;
-		line-height: var(--line-height-small);
 		padding: var(--spacing-3) var(--spacing-4);
 		left: 0;
 		top: calc(100% + var(--spacing-4));
@@ -446,6 +474,10 @@
 
 		&::before {
 			border-color: rgba(0, 0, 0, 0) rgba(0, 0, 0, 0) var(--color-black) rgba(0, 0, 0, 0);
+		}
+
+		ul {
+			list-style-type: disc;
 		}
 	}
 
@@ -498,13 +530,13 @@
 
 		tp-slider-slides:first-of-type > tp-slider-slide {
 
-			@media screen and (min-width: grid-size(lg)) {
+			@media screen and (min-width: grid-size(md)) {
 				height: 100%;
 			}
 
 			.sidebar-grid & {
 
-				@media screen and (max-width: calc(grid-size(xl) - 1px)) {
+				@media screen and (max-width: calc(grid-size(md) - 1px)) {
 					height: auto;
 				}
 			}
