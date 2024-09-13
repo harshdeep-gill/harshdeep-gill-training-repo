@@ -1,9 +1,33 @@
+@props( [
+	'currency' => quark_get_template_data( 'default_currency', 'USD' ),
+] )
+
+@php
+	// All available currencies.
+	$currencies = quark_get_template_data( 'currencies' );
+
+	// If no currencies are available, set an empty array.
+	if ( ! is_array( $currencies ) || empty( $currencies ) ) {
+		$currencies = [];
+	}
+@endphp
+
 <quark-dates-rates-filter-currency-dropdown class="dates-rates__filter-currency">
 	<x-form.select>
-		<x-form.option value="USD" label="$ USD">{{ __( '$ USD', 'qrk' ) }}</x-form.option>
-		<x-form.option value="CAD" label="$ CAD">{{ __( '$ CAD', 'qrk' ) }}</x-form.option>
-		<x-form.option value="AUD" label="$ AUD">{{ __( '$ AUD', 'qrk' ) }}</x-form.option>
-		<x-form.option value="GBP" label="£ GBP">{{ __( '£ GBP', 'qrk' ) }}</x-form.option>
-		<x-form.option value="EUR" label="€ EUR">{{ __( '€ EUR', 'qrk' ) }}</x-form.option>
+
+		@foreach ( $currencies as $code => $currency_data )
+			@if ( ! is_array( $currency_data ) || empty( $currency_data['symbol'] ) || empty( $currency_data['display'] ) ) 
+				@continue
+			@endif
+
+			@php
+				$label = sprintf( '%s %s', $currency_data['symbol'],  $currency_data['display'] );
+			@endphp
+
+			<x-form.option value="{{ $code }}" label="{{ $label }}" selected="{{ $currency === $code ? 'yes' : '' }}">
+				{{ $label }}
+			</x-form.option>
+		@endforeach
+
 	</x-form.select>
 </quark-dates-rates-filter-currency-dropdown>

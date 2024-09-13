@@ -1,17 +1,12 @@
 /**
  * Global variables.
  */
-const { HTMLElement, zustand } = window;
+const { HTMLElement } = window;
 
 /**
  * Internal dependencies.
  */
-import { updateCurrency } from '../actions';
-
-/**
- * Get the store.
- */
-const { subscribe } = zustand.stores.datesRates;
+import { setCurrency } from '../../../global/store/actions';
 
 /**
  * Currency Radios Filter class
@@ -36,40 +31,6 @@ export default class DatesRatesFilterCurrencyRadiosElement extends HTMLElement {
 
 		// Events.
 		this.currencyRadios.forEach( ( currencyRadioInput ) => currencyRadioInput.addEventListener( 'change', this.handleCurrencyRadioChange.bind( this ) ) );
-
-		// Subscribe to the store.
-		subscribe( this.update.bind( this ) );
-	}
-
-	/**
-	 * Updates the component.
-	 *
-	 * @param {Object} state The state object.
-	 */
-	update( state: DatesRatesState ) {
-		// Get the currency filter value.
-		const { currency } = state;
-
-		// Set syncing
-		this.isSyncing = true;
-
-		// Loop through the radio inputs.
-		this.currencyRadios.forEach( ( radioInput ) => {
-			// Check for proper value.
-			if ( radioInput.value !== currency ) {
-				// Uncheck the input.
-				radioInput.checked = false;
-
-				// Bail.
-				return;
-			}
-
-			// Set the radio to checked.
-			radioInput.checked = true;
-		} );
-
-		// Unset syncing
-		this.isSyncing = false;
 	}
 
 	/**
@@ -97,6 +58,6 @@ export default class DatesRatesFilterCurrencyRadiosElement extends HTMLElement {
 		const currencyValue = theRadioInput.value !== 'on' ? theRadioInput.value : 'USD';
 
 		// Update the state.
-		updateCurrency( currencyValue );
+		setCurrency( currencyValue );
 	}
 }
