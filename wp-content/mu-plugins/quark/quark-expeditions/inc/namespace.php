@@ -744,6 +744,12 @@ function get_seo_structured_data( int $post_id = 0 ): array {
 		'brand'       => 'Quark Expeditions',
 		'url'         => $expedition['permalink'],
 		'image'       => get_the_post_thumbnail_url( $post_id ),
+		'offers'      => [
+			'@type'         => 'Offer',
+			'price'         => get_starting_from_price( $post_id )['discounted'],
+			'priceCurrency' => 'USD',
+			'url'           => $expedition['permalink'],
+		],
 	];
 
 	// Add tourist trip schema.
