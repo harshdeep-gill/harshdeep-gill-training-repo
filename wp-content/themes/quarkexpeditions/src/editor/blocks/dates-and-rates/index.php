@@ -11,13 +11,8 @@ use WP_Block;
 
 use function Quark\Departures\get_dates_rates_cards_data;
 use function Quark\Localization\get_current_currency;
-use function Quark\Search\Departures\get_region_and_season_search_filter_data;
-use function Quark\Search\Departures\get_expedition_search_filter_data;
-use function Quark\Search\Departures\get_adventure_options_search_filter_data;
-use function Quark\Search\Departures\get_month_search_filter_data;
-use function Quark\Search\Departures\get_duration_search_filter_data;
-use function Quark\Search\Departures\get_ship_search_filter_data;
 use function Quark\Search\Departures\search;
+use function Quark\Search\Filters\get_filters_for_dates_rates;
 
 const COMPONENT = 'parts.dates-rates';
 
@@ -61,14 +56,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 	];
 
 	// Get dates and rates filter data.
-	$dates_rates_filter_data = [
-		'seasons'           => get_region_and_season_search_filter_data(),
-		'expeditions'       => get_expedition_search_filter_data(),
-		'adventure_options' => get_adventure_options_search_filter_data(),
-		'months'            => get_month_search_filter_data(),
-		'durations'         => get_duration_search_filter_data(),
-		'ships'             => get_ship_search_filter_data(),
-	];
+	$dates_rates_filter_data = get_filters_for_dates_rates();
 
 	// Search for Departure post.
 	$result = search( $initial_filters );
