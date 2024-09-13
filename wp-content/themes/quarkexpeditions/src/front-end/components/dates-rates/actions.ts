@@ -48,7 +48,7 @@ export const updateCurrency = ( updatedCurrency: string ) => {
  *
  * @param {Object} filter A singular filter.
  */
-export const addSeason = ( filter: DatesRatesFilterState ) => {
+export const addSeason = ( filter: DatesRatesFilterValue ) => {
 	// Get the state.
 	const { seasons }: DatesRatesState = getState();
 
@@ -98,7 +98,7 @@ export const removeSeason = ( filterValue: string ) => {
  *
  * @param {Object} filter A singular filter.
  */
-export const addExpedition = ( filter: DatesRatesFilterState ) => {
+export const addExpedition = ( filter: DatesRatesFilterValue ) => {
 	// Get the state.
 	const { expeditions }: DatesRatesState = getState();
 
@@ -148,7 +148,7 @@ export const removeExpedition = ( filterValue: string ) => {
  *
  * @param {Object} filter A singular filter.
  */
-export const addAdventureOption = ( filter: DatesRatesFilterState ) => {
+export const addAdventureOption = ( filter: DatesRatesFilterValue ) => {
 	// Get the state.
 	const { adventureOptions }: DatesRatesState = getState();
 
@@ -198,7 +198,7 @@ export const removeAdventureOption = ( filterValue: string ) => {
  *
  * @param {Object} filter A singular filter.
  */
-export const addDepartureMonth = ( filter: DatesRatesFilterState ) => {
+export const addDepartureMonth = ( filter: DatesRatesFilterValue ) => {
 	// Get the state.
 	const { months }: DatesRatesState = getState();
 
@@ -248,7 +248,7 @@ export const removeDepartureMonth = ( filterValue: string ) => {
  *
  * @param {Object} filter A singular filter.
  */
-export const addDuration = ( filter: DatesRatesFilterState ) => {
+export const addDuration = ( filter: DatesRatesFilterValue ) => {
 	// Get the state.
 	const { durations }: DatesRatesState = getState();
 
@@ -298,7 +298,7 @@ export const removeDuration = ( filterValue: string ) => {
  *
  * @param {Object} filter A singular filter.
  */
-export const addShip = ( filter: DatesRatesFilterState ) => {
+export const addShip = ( filter: DatesRatesFilterValue ) => {
 	// Get the state.
 	const { ships }: DatesRatesState = getState();
 
@@ -540,7 +540,7 @@ export const initialize = (
 		const shipsInputContainer = document.getElementById( 'filters-accordion-ships' );
 
 		/**
-		 * Our filters are stored as individual lists of @type {DatesRatesFilterState} objects.
+		 * Our filters are stored as individual lists of @type {DatesRatesFilterValue} objects.
 		 * We will update the `value` and `label` field based on the values from the `input` elements related to the filter.
 		 *
 		 * We need to do this because we need the label for each filter value to show in the selected filters. However,
@@ -548,7 +548,7 @@ export const initialize = (
 		 */
 		if ( seasonsInputContainer ) {
 			// Map and filter the valid filters.
-			updateObject.seasons = urlFilters.seasons.map( ( season ): DatesRatesFilterState => {
+			updateObject.seasons = urlFilters.seasons.map( ( season ): DatesRatesFilterValue => {
 				// Get the input element.
 				const filterInput = seasonsInputContainer.querySelector( `input[value="${ season }"]` );
 
@@ -560,7 +560,7 @@ export const initialize = (
 		// Set up expeditions
 		if ( expeditionsInputContainer ) {
 			// Map and filter the valid filters.
-			updateObject.expeditions = urlFilters.expeditions.map( ( expedition ): DatesRatesFilterState => {
+			updateObject.expeditions = urlFilters.expeditions.map( ( expedition ): DatesRatesFilterValue => {
 				// Get the input element.
 				const filterInput = expeditionsInputContainer.querySelector( `input[value="${ expedition }"]` );
 
@@ -572,7 +572,7 @@ export const initialize = (
 		// Set up adventure Options
 		if ( adventureOptionsInputContainer ) {
 			// Map and filter valid filters.
-			updateObject.adventureOptions = urlFilters.adventureOptions.map( ( adventureOption ): DatesRatesFilterState => {
+			updateObject.adventureOptions = urlFilters.adventureOptions.map( ( adventureOption ): DatesRatesFilterValue => {
 				// Get the input element.
 				const filterInput = adventureOptionsInputContainer.querySelector( `input[value="${ adventureOption }"]` );
 
@@ -584,7 +584,7 @@ export const initialize = (
 		// Set up months
 		if ( monthsInputContainer ) {
 			// Map and filter valid filters.
-			updateObject.months = urlFilters.months.map( ( month ): DatesRatesFilterState => {
+			updateObject.months = urlFilters.months.map( ( month ): DatesRatesFilterValue => {
 				// Get the input element.
 				const filterInput = monthsInputContainer.querySelector( `input[value="${ month }"]` );
 
@@ -596,7 +596,7 @@ export const initialize = (
 		// Set up durations
 		if ( durationsInputContainer ) {
 			// Map and filter valid filters.
-			updateObject.durations = urlFilters.durations.map( ( duration ): DatesRatesFilterState => {
+			updateObject.durations = urlFilters.durations.map( ( duration ): DatesRatesFilterValue => {
 				// Get the input element.
 				const filterInput = durationsInputContainer.querySelector( `input[value="${ duration }"]` );
 
@@ -608,7 +608,7 @@ export const initialize = (
 		// Set up ships
 		if ( shipsInputContainer ) {
 			// Map and filter valid filters.
-			updateObject.ships = urlFilters.ships.map( ( ship ): DatesRatesFilterState => {
+			updateObject.ships = urlFilters.ships.map( ( ship ): DatesRatesFilterValue => {
 				// Get the input element.
 				const filterInput = shipsInputContainer.querySelector( `input[value="${ ship }"]` );
 
@@ -702,7 +702,7 @@ const fetchResults = () => {
  *
  * @return {string[]|number[]} The array of values.
  */
-const pluckValues = ( list: DatesRatesFilterState[] ): string[] => list.map( ( filter ) => filter.value );
+const pluckValues = ( list: DatesRatesFilterValue[] ): string[] => list.map( ( filter ) => filter.value );
 
 /**
  * Callback to run after partial has been fetched.
@@ -798,7 +798,7 @@ const updateUrlByFilters = () => {
  *
  * @return {string} The URL with params.
  */
-const buildUrlFromFilters = ( filters: DatesRatesFiltersSaved ): string => {
+const buildUrlFromFilters = ( filters: DatesRatesFiltersInUrl ): string => {
 	// If queryString not available, early return.
 	if ( ! queryString ) {
 		// Return early.
@@ -871,7 +871,7 @@ const updateUrl = ( url: string ) => {
  *
  * @return {Object} Return selected filters state passed from query string.
  */
-const parseUrl = (): DatesRatesFiltersSaved | null => {
+const parseUrl = (): DatesRatesFiltersInUrl | null => {
 	// If search url or query string not available, return.
 	if ( ! window.location.search || ! queryString ) {
 		// Early return.
@@ -884,7 +884,7 @@ const parseUrl = (): DatesRatesFiltersSaved | null => {
 	} = convertPropertiesFromSnakeCaseToCamelCase( queryString.parse( window.location.search ) );
 
 	// Initialize the saved filters object.
-	const urlFilters: DatesRatesFiltersSaved = {
+	const urlFilters: DatesRatesFiltersInUrl = {
 		seasons: [],
 		expeditions: [],
 		adventureOptions: [],

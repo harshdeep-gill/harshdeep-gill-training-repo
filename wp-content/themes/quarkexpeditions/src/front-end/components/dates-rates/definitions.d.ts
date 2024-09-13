@@ -1,9 +1,17 @@
 /**
+ * Interface DatesRatesFilterValue
+ */
+interface DatesRatesFilterValue {
+	value: string,
+	label: string,
+}
+
+/**
  * Interface DatesRatesFilterState
  */
 interface DatesRatesFilterState {
-	value: string,
-	label: string,
+	name: string,
+	values: DatesRatesFilterValue[],
 }
 
 /**
@@ -11,12 +19,12 @@ interface DatesRatesFilterState {
  */
 interface DatesRatesState {
 	currency: string,
-	seasons: DatesRatesFilterState[],
-	expeditions: DatesRatesFilterState[],
-	adventureOptions: DatesRatesFilterState[],
-	months: DatesRatesFilterState[],
-	durations: DatesRatesFilterState[],
-	ships: DatesRatesFilterState[],
+	seasons: DatesRatesFilterValue[],
+	expeditions: DatesRatesFilterValue[],
+	adventureOptions: DatesRatesFilterValue[],
+	months: DatesRatesFilterValue[],
+	durations: DatesRatesFilterValue[],
+	ships: DatesRatesFilterValue[],
 	page: number,
 	totalPages: number,
 	perPage: number,
@@ -31,12 +39,13 @@ interface DatesRatesState {
 	baseUrl: string
 	allowedParams: string[],
 	filtersMarkup: string,
+	selectedFilters: DatesRatesFilterState[],
 }
 
 /**
- * Interface DatesRatesFiltersSaved
+ * Interface DatesRatesFiltersInUrl
  */
-interface DatesRatesFiltersSaved {
+interface DatesRatesFiltersInUrl {
 	seasons: string[],
 	expeditions: string[],
 	adventureOptions: string[],
