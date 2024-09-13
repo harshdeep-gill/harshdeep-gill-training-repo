@@ -37,6 +37,8 @@ use const Quark\Expeditions\POST_TYPE as EXPEDITION_POST_TYPE;
 use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
 use const Quark\Localization\CURRENCY_COOKIE;
 use const Quark\Localization\EUR_CURRENCY;
+use const Quark\Search\Departures\FACET_TYPE_FIELD;
+use const Quark\Search\Departures\FACET_TYPE_RANGE;
 use const Quark\Search\Departures\REINDEX_POST_IDS_OPTION_KEY;
 use const Quark\Search\Departures\SCHEDULE_REINDEX_HOOK;
 use const Quark\Search\REST_API_NAMESPACE;
@@ -640,6 +642,124 @@ class Test_Search extends WP_UnitTestCase {
 				],
 			],
 			$solr_search->get_args()
+		);
+
+		/**
+		 * Test facets.
+		 */
+
+		// Test with no facets.
+		$solr_search = new Search();
+		$class       = new ReflectionClass( $solr_search );
+
+		// Assert no facets.
+		$this->assertEmpty( $solr_search->facet_results );
+		$facets = $class->getProperty( 'facets' );
+		$facets->setAccessible( true );
+		$this->assertEmpty( $facets->getValue( $solr_search ) );
+
+		// Set empty facets.
+		$solr_search->set_facets();
+		$this->assertEmpty( $solr_search->facet_results );
+		$this->assertEmpty( $facets->getValue( $solr_search ) );
+
+		// Set invalid facets.
+		$solr_search->set_facets( [ 'invalid' ] );
+		$this->assertEmpty( $solr_search->facet_results );
+		$this->assertEmpty( $facets->getValue( $solr_search ) );
+
+		// Set facet with key and invalid type.
+		$solr_search->set_facets(
+			[
+				'key'  => 'test',
+				'type' => 'string',
+			]
+		);
+		$this->assertEquals(
+			[],
+			$solr_search->facet_results
+		);
+		$this->assertEmpty( $facets->getValue( $solr_search ) );
+
+		// Set field type facet.
+		$solr_search->set_facets(
+			[
+				[
+					'key'  => 'test',
+					'type' => FACET_TYPE_FIELD,
+				],
+			]
+		);
+		$this->assertEquals(
+			[],
+			$solr_search->facet_results
+		);
+		$this->assertEquals(
+			[
+				'test' => [
+					'key'  => 'test',
+					'type' => FACET_TYPE_FIELD,
+					'args' => [],
+				],
+			],
+			$facets->getValue( $solr_search )
+		);
+
+		// Set range type facet.
+		$solr_search->set_facets(
+			[
+				[
+					'key'  => 'test',
+					'type' => FACET_TYPE_RANGE,
+				],
+			]
+		);
+		$this->assertEquals(
+			[],
+			$solr_search->facet_results
+		);
+		$this->assertEquals(
+			[
+				'test' => [
+					'key'  => 'test',
+					'type' => FACET_TYPE_RANGE,
+					'args' => [],
+				],
+			],
+			$facets->getValue( $solr_search )
+		);
+
+		// Set start, end, gap.
+		$solr_search->set_facets(
+			[
+				[
+					'key'  => 'test',
+					'type' => FACET_TYPE_RANGE,
+					'args' => [
+						'start' => 0,
+						'end'   => 100,
+						'gap'   => 10,
+					],
+				],
+			]
+		);
+		$this->assertEquals(
+			[],
+			$solr_search->facet_results
+		);
+		$this->assertEquals(
+			[
+				'test' => [
+					'key'  => 'test',
+					'type' => FACET_TYPE_RANGE,
+					'args' => [
+						'start' => 0,
+						'end'   => 100,
+						'gap'   => 10,
+					],
+				],
+			],
+			$facets->getValue( $solr_search )
 		);
 	}
 
