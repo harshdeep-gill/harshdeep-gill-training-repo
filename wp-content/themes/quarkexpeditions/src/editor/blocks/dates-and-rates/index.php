@@ -56,7 +56,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 
 	// Init selected filters.
 	$initial_filters = [
-		'posts_per_load' => 8,
+		'posts_per_load' => 12,
 		'currency'       => $currency,
 	];
 
