@@ -403,7 +403,8 @@ function convert_node_image( string $output = '', ?DOMElement $node = null, stri
 
 	// Check for image ID in class.
 	if ( ! empty( $class ) && str_contains( $class, 'wp-image-' ) ) {
-		preg_match( '#wp-image-([0-9])#', $class, $matches );
+		// Get the image id form class attribute.
+		preg_match( '/wp-image-(\d+)/', $class, $matches );
 
 		// Check for matches.
 		if ( ! empty( $matches[1] ) ) {

@@ -185,7 +185,7 @@ class Pre_Post_Trip_Options {
 			'post_modified'     => $modified_at,
 			'post_modified_gmt' => $modified_at,
 			'post_name'         => $post_name,
-			'post_content'      => prepare_content( $post_content ),
+			'post_content'      => $post_content,
 			'post_status'       => $status,
 			'comment_status'    => 'closed',
 			'ping_status'       => 'closed',
