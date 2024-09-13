@@ -30,6 +30,7 @@ interface DatesRatesState {
 	noResultsMarkup: string,
 	baseUrl: string
 	allowedParams: string[],
+	filtersMarkup: string,
 }
 
 /**

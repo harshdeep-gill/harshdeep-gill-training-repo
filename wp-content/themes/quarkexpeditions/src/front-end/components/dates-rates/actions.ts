@@ -11,6 +11,7 @@ const {
  * Internal dependencies.
  */
 const { setState, getState, subscribe } = zustand.stores.datesRates;
+import { DEFAULT_STATE } from './data';
 
 /**
  * External dependencies
@@ -27,7 +28,7 @@ import { camelToSnakeCase, convertPropertiesFromSnakeCaseToCamelCase } from '../
 export const updateCurrency = ( updatedCurrency: string ) => {
 	// Get State.
 	if ( ! updatedCurrency ) {
-		updatedCurrency = 'USD';
+		updatedCurrency = DEFAULT_STATE.currency;
 	}
 
 	// Update object.
@@ -60,7 +61,7 @@ export const addSeason = ( filter: DatesRatesFilterState ) => {
 	// Create the updateObject.
 	const updateObject: DatesRatesStateUpdateObject = {
 		seasons: [ ...seasons, filter ],
-		page: 1,
+		page: DEFAULT_STATE.page,
 	};
 
 	// Set the state
@@ -82,7 +83,7 @@ export const removeSeason = ( filterValue: string ) => {
 	// Update object.
 	const updateObject: DatesRatesStateUpdateObject = {
 		seasons: seasons.filter( ( existingFilter ) => existingFilter.value !== filterValue ),
-		page: 1,
+		page: DEFAULT_STATE.page,
 	};
 
 	// Set the state.
@@ -110,7 +111,7 @@ export const addExpedition = ( filter: DatesRatesFilterState ) => {
 	// Update object.
 	const updateObject: DatesRatesStateUpdateObject = {
 		expeditions: [ ...expeditions, filter ],
-		page: 1,
+		page: DEFAULT_STATE.page,
 	};
 
 	// Set the state
@@ -132,7 +133,7 @@ export const removeExpedition = ( filterValue: string ) => {
 	// Update object.
 	const updateObject: DatesRatesStateUpdateObject = {
 		expeditions: expeditions.filter( ( existingFilter ) => existingFilter.value !== filterValue ),
-		page: 1,
+		page: DEFAULT_STATE.page,
 	};
 
 	// Set the state.
@@ -160,7 +161,7 @@ export const addAdventureOption = ( filter: DatesRatesFilterState ) => {
 	// Update object.
 	const updateObject: DatesRatesStateUpdateObject = {
 		adventureOptions: [ ...adventureOptions, filter ],
-		page: 1,
+		page: DEFAULT_STATE.page,
 	};
 
 	// Set the state
@@ -182,7 +183,7 @@ export const removeAdventureOption = ( filterValue: string ) => {
 	// Update object.
 	const updateObject: DatesRatesStateUpdateObject = {
 		adventureOptions: adventureOptions.filter( ( existingFilter ) => existingFilter.value !== filterValue ),
-		page: 1,
+		page: DEFAULT_STATE.page,
 	};
 
 	// Set the state.
@@ -210,7 +211,7 @@ export const addDepartureMonth = ( filter: DatesRatesFilterState ) => {
 	// Update object.
 	const updateObject: DatesRatesStateUpdateObject = {
 		months: [ ...months, filter ],
-		page: 1,
+		page: DEFAULT_STATE.page,
 	};
 
 	// Set the state.
@@ -232,7 +233,7 @@ export const removeDepartureMonth = ( filterValue: string ) => {
 	// Update object.
 	const updateObject: DatesRatesStateUpdateObject = {
 		months: months.filter( ( existingFilter ) => existingFilter.value !== filterValue ),
-		page: 1,
+		page: DEFAULT_STATE.page,
 	};
 
 	// Set the state.
@@ -260,7 +261,7 @@ export const addDuration = ( filter: DatesRatesFilterState ) => {
 	// Update object.
 	const updateObject: DatesRatesStateUpdateObject = {
 		durations: [ ...durations, filter ],
-		page: 1,
+		page: DEFAULT_STATE.page,
 	};
 
 	// Set the state.
@@ -282,7 +283,7 @@ export const removeDuration = ( filterValue: string ) => {
 	// Update object.
 	const updateObject: DatesRatesStateUpdateObject = {
 		durations: durations.filter( ( existingFilter ) => existingFilter.value !== filterValue ),
-		page: 1,
+		page: DEFAULT_STATE.page,
 	};
 
 	// Set the state.
@@ -310,7 +311,7 @@ export const addShip = ( filter: DatesRatesFilterState ) => {
 	// Update object.
 	const updateObject: DatesRatesStateUpdateObject = {
 		ships: [ ...ships, filter ],
-		page: 1,
+		page: DEFAULT_STATE.page,
 	};
 
 	// Set the state.
@@ -332,7 +333,7 @@ export const removeShip = ( filterValue: string ) => {
 	// Update object.
 	const updateObject: DatesRatesStateUpdateObject = {
 		ships: ships.filter( ( existingFilter ) => existingFilter.value !== filterValue ),
-		page: 1,
+		page: DEFAULT_STATE.page,
 	};
 
 	// Set the state.
@@ -348,14 +349,14 @@ export const removeShip = ( filterValue: string ) => {
 export const clearAllFilters = () => {
 	// Update object.
 	const updateObject: DatesRatesStateUpdateObject = {
-		seasons: [],
-		expeditions: [],
-		adventureOptions: [],
-		months: [],
-		durations: [],
-		ships: [],
-		perPage: 8,
-		page: 1,
+		seasons: DEFAULT_STATE.seasons,
+		expeditions: DEFAULT_STATE.expeditions,
+		adventureOptions: DEFAULT_STATE.adventureOptions,
+		months: DEFAULT_STATE.months,
+		durations: DEFAULT_STATE.durations,
+		ships: DEFAULT_STATE.ships,
+		perPage: DEFAULT_STATE.perPage,
+		page: DEFAULT_STATE.page,
 	};
 
 	// Set the state.
@@ -449,7 +450,7 @@ export const setNextPage = () => {
  */
 export const setPerPage = ( updatedValue: number ) => {
 	// Is this a valid updated totalPages?
-	if ( Number.isNaN( updatedValue ) || updatedValue < 1 ) {
+	if ( Number.isNaN( updatedValue ) || updatedValue < DEFAULT_STATE.perPage ) {
 		// No, reject the update.
 		return;
 	}
@@ -457,7 +458,7 @@ export const setPerPage = ( updatedValue: number ) => {
 	// Update object.
 	const updateObject: DatesRatesStateUpdateObject = {
 		perPage: updatedValue,
-		page: 1,
+		page: DEFAULT_STATE.page,
 	};
 
 	// Set the state.
@@ -710,28 +711,26 @@ const pluckValues = ( list: DatesRatesFilterState[] ): string[] => list.map( ( f
  */
 const resultsFetchedCallback = ( response: PartialData ) => {
 	// Get state.
-	const { perPage, page }: DatesRatesState = getState();
+	const { perPage, page, filtersMarkup: filtersMarkupInState }: DatesRatesState = getState();
 
 	// Get the data.
 	const {
 		markup,
 		noResultsMarkup,
 		data: { resultCount },
+		filtersMarkup,
 	} = response;
 
 	// Update object.
 	const updateObject: DatesRatesStateUpdateObject = {
-		markup: resultCount !== 0 ? markup : '',
-		noResultsMarkup: noResultsMarkup ?? '',
+		markup: resultCount !== 0 ? markup : DEFAULT_STATE.markup,
+		noResultsMarkup: noResultsMarkup ?? DEFAULT_STATE.noResultsMarkup,
 		resultCount,
 		totalPages: resultCount !== 0 ? Math.ceil( resultCount / perPage ) : 1,
-		page: resultCount !== 0 ? page : 1,
+		page: resultCount !== 0 ? page : DEFAULT_STATE.page,
 		shouldMarkupUpdate: true,
+		filtersMarkup: filtersMarkup ? filtersMarkup : filtersMarkupInState,
 	};
-
-	/**
-	 * @todo Inject the filters markup HTML (`filtersMarkup`) from response in the filter drawer - #dates-rates-filters .drawer__body.
-	 */
 
 	// Set the state.
 	setState( updateObject );
@@ -824,13 +823,7 @@ const buildUrlFromFilters = ( filters: DatesRatesFiltersSaved ): string => {
 		const snakeCasedKey: string = camelToSnakeCase( key );
 
 		// @ts-ignore Stringified filters.
-		const theFilter = filters[ key ];
-		let stringifiedFilter = theFilter.toString();
-
-		// check if the filter was an array.
-		if ( Array.isArray( theFilter ) && theFilter.length > 0 ) {
-			stringifiedFilter = stringifiedFilter + ',';
-		}
+		const stringifiedFilter = filters[ key ].toString();
 
 		// Set the url params value based on key.
 		if ( stringifiedFilter ) {
@@ -898,7 +891,7 @@ const parseUrl = (): DatesRatesFiltersSaved | null => {
 		months: [],
 		durations: [],
 		ships: [],
-		perPage: 8,
+		perPage: DEFAULT_STATE.perPage,
 	};
 
 	// Get allowed params.
@@ -912,8 +905,23 @@ const parseUrl = (): DatesRatesFiltersSaved | null => {
 			return;
 		}
 
-		// @ts-ignore Split the value only if it might have been an array.
-		urlFilters[ key ] = parsedState[ key ].includes( ',' ) ? parsedState[ key ].split( ',' ).filter( ( value ) => value !== '' ) : parsedState[ key ];
+		// Initialize value.
+		let value: number | string[];
+
+		// Check if it is a numeric key.
+		if ( 'perPage' === key ) {
+			value = parseInt( parsedState[ key ] );
+
+			// Check if it is a valid number.
+			if ( Number.isNaN( value ) || value < DEFAULT_STATE.perPage ) {
+				value = DEFAULT_STATE.perPage;
+			}
+		} else {
+			value = parsedState[ key ]?.split( ',' ).filter( ( v: string ) => v !== '' ) ?? [];
+		}
+
+		// @ts-ignore
+		urlFilters[ key ] = value;
 	} );
 
 	// Return selected filters state.

@@ -7,6 +7,7 @@ const { HTMLElement, zustand } = window;
  * Internal dependencies
  */
 import { addAdventureOption, removeAdventureOption } from '../actions';
+import DatesRatesFiltersInputsContainerElement from './inputs-container';
 
 /**
  * Store
@@ -90,5 +91,8 @@ export default class DatesRatesFilterAdventureOptionsElement extends HTMLElement
 		} else {
 			removeAdventureOption( checkbox.value );
 		}
+
+		// Set this as the last opened accordion.
+		this.closest<DatesRatesFiltersInputsContainerElement>( 'quark-dates-rates-filters-inputs-container' )?.setLastOpenedAccordionItemId( this.closest( 'tp-accordion-item' )?.id ?? '' );
 	}
 }
