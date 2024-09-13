@@ -360,6 +360,7 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 				'quark-wistia-embed'                            => [
 					'class'    => true,
 					'video-id' => true,
+					'play'     => true,
 				],
 				'quark-dates-rates-results'                     => [
 					'class'           => true,

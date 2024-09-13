@@ -4,6 +4,11 @@
 const { customElements, HTMLElement } = window;
 
 /**
+ * External dependencies
+ */
+import QuarkWistiaEmbed from '../wistia-embed';
+
+/**
  * Fancy Video Class.
  */
 export default class FancyVideo extends HTMLElement {
@@ -12,7 +17,7 @@ export default class FancyVideo extends HTMLElement {
 	 */
 	private playButton: HTMLButtonElement | null;
 	private videoURL: string | null;
-	private videoIframeEl: HTMLIFrameElement | null;
+	private videoElement: HTMLIFrameElement | QuarkWistiaEmbed | null;
 
 	/**
 	 * Constructor.
@@ -23,7 +28,7 @@ export default class FancyVideo extends HTMLElement {
 
 		// Elements.
 		this.playButton = this.querySelector( '.fancy-video__play-btn' );
-		this.videoIframeEl = this.querySelector( '.fancy-video__iframe' );
+		this.videoElement = this.querySelector( '.fancy-video__video' );
 		this.videoURL = this.getAttribute( 'url' );
 
 		// Events.
@@ -35,8 +40,10 @@ export default class FancyVideo extends HTMLElement {
 	 */
 	playVideo() {
 		// Check if the video iframe element exists.
-		if ( this.videoIframeEl ) {
-			this.videoIframeEl.src = `${ this.videoURL }?autoplay=1`;
+		if ( this.videoElement instanceof HTMLIFrameElement ) {
+			this.videoElement.src = `${ this.videoURL }?autoplay=1`;
+		} else {
+			this.videoElement?.setAttribute( 'play', 'yes' );
 		}
 
 		// Toggle the attribute.
