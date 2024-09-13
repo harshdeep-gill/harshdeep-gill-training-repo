@@ -1010,6 +1010,12 @@ class Test_Expeditions extends Softrip_TestCase {
 					'brand'       => 'Quark Expeditions',
 					'url'         => get_permalink( $expedition_post->ID ),
 					'image'       => get_the_post_thumbnail_url( $expedition_post->ID ),
+					'offers'      => [
+						'@type'         => 'Offer',
+						'priceCurrency' => 'USD',
+						'price'         => 0,
+						'url'           => get_permalink( $expedition_post->ID ),
+					],
 				],
 				[
 					'@context'    => 'https://schema.org',
