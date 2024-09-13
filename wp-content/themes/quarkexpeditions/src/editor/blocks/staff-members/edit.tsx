@@ -31,6 +31,11 @@ const {
 } = gumponents.components;
 
 /**
+ * Styles.
+ */
+import './editor.scss';
+
+/**
  * Internal dependencies.
  */
 import Section from '../../components/section';

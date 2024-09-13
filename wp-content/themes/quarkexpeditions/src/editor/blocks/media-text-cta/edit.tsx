@@ -14,12 +14,13 @@ import './editor.scss';
  * External dependencies
  */
 import classnames from 'classnames';
-const { gumponents } = window;
+const { gumponents, travelopiaMedia } = window;
 
 /**
  * External components.
  */
-const { ImageControl, Img } = gumponents.components;
+const { ImageControl } = gumponents.components;
+const { DynamicImage } = travelopiaMedia;
 
 /**
  * Internal dependencies
@@ -86,6 +87,33 @@ export default function edit( { className, attributes, setAttributes }: BlockEdi
 		setAttributes( { videoUrl } );
 	};
 
+	/**
+	 * Handle a change in the Image.
+	 */
+	const handleImageChange = () => {
+		// Return if no image.
+		if ( ! attributes.image ) {
+			// Return.
+			return;
+		}
+
+		// Return if media type is not image.
+		if ( 'image' !== attributes.mediaType ) {
+			// Return.
+			return;
+		}
+
+		// Modify image aspect ratio.
+		if ( 'square' === attributes.imageAspectRatio ) {
+			attributes.image.height = 546;
+		} else {
+			attributes.image.height = 360;
+		}
+	};
+
+	// Handle image change.
+	handleImageChange();
+
 	// Return the block's markup.
 	return (
 		<>
@@ -150,7 +178,10 @@ export default function edit( { className, attributes, setAttributes }: BlockEdi
 			</InspectorControls>
 			<div { ...blockProps } >
 				<div className={ `media-text-cta__media-wrap media-text-cta__media-wrap--${ attributes.imageAspectRatio }` }>
-					<Img className="media-text-cta__image" value={ attributes.image } />
+					<DynamicImage
+						value={ attributes.image }
+						className="media-text-cta__image"
+					/>
 					{
 						'video' === attributes.mediaType &&
 						<div className="fancy-video__play-btn-wrapper">

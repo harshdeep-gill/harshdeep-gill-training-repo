@@ -12,8 +12,9 @@ use function Quark\Softrip\Departures\get_lowest_price as get_departure_lowest_p
 use function Quark\Softrip\Departures\get_related_ship;
 use function Quark\Softrip\Departures\get_start_date as get_departure_start_date;
 use function Quark\Softrip\Departures\get_end_date as get_departure_end_date;
+use function Quark\Localization\get_currencies;
 
-use const Quark\Core\CURRENCIES;
+use const Quark\Localization\DEFAULT_CURRENCY;
 
 /**
  * Get lowest price for itinerary.
@@ -26,7 +27,7 @@ use const Quark\Core\CURRENCIES;
  *  discounted: int,
  * }
  */
-function get_lowest_price( int $post_id = 0, string $currency = 'USD' ): array {
+function get_lowest_price( int $post_id = 0, string $currency = DEFAULT_CURRENCY ): array {
 	// Uppercase the currency code.
 	$currency = strtoupper( $currency );
 
@@ -37,7 +38,7 @@ function get_lowest_price( int $post_id = 0, string $currency = 'USD' ): array {
 	];
 
 	// Return default values if no post ID.
-	if ( empty( $post_id ) || ! in_array( $currency, CURRENCIES, true ) ) {
+	if ( empty( $post_id ) || ! in_array( $currency, get_currencies(), true ) ) {
 		return $lowest_price;
 	}
 

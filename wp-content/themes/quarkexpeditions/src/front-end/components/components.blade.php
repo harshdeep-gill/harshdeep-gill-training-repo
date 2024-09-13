@@ -45,6 +45,12 @@
 </x-once>
 {{--  --}}
 
+<x-component-demo :keys="[ 'global-message' ]">
+	<x-global-message>
+		<p>Are you in the Travel Trade or a Travel agent? <a href="#"><strong>Login</strong></a> to our portal.</p>
+	</x-global-message>
+</x-component-demo>
+
 <x-component-demo :keys="[ 'sidebar-grid', 'lp-header', 'hero-refactor' ]">
 	<x-lp-header
 		tc_image_id="18"
@@ -3451,7 +3457,6 @@
 				:is_immersive="true"
 			>
 			</x-product-cards.image>
-
 			<x-product-cards.overline text="12 Days" />
 			<x-product-cards.title title="Arctic Saga: Exploring Spitsbergen via the Faroes and Jan Mayen" />
 			<x-product-cards.subtitle title="Lorem Ipsum, Doler Tempor, Incididunt, Exercitation Ullamco" />
@@ -3465,7 +3470,6 @@
 				:is_immersive="true"
 			>
 			</x-product-cards.image>
-
 			<x-product-cards.overline text="12 Days" />
 			<x-product-cards.title title="Arctic Saga: Exploring Spitsbergen via the Faroes and Jan Mayen" />
 			<x-product-cards.subtitle title="Lorem Ipsum, Doler Tempor, Incididunt, Exercitation Ullamco" />
@@ -3478,7 +3482,6 @@
 				:is_immersive="true"
 			>
 			</x-product-cards.image>
-
 			<x-product-cards.overline text="12 Days" />
 			<x-product-cards.title title="Arctic Saga: Exploring Spitsbergen via the Faroes and Jan Mayen" />
 			<x-product-cards.subtitle title="Lorem Ipsum, Doler Tempor, Incididunt, Exercitation Ullamco" />
@@ -3496,7 +3499,6 @@
 				:is_immersive="true"
 			>
 			</x-product-cards.image>
-
 			<x-product-cards.overline text="Arctic" />
 			<x-product-cards.title title="Arctic Saga: Exploring Spitsbergen via the Faroes and Jan Mayen" />
 
@@ -3534,7 +3536,6 @@
 				:is_immersive="true"
 			>
 			</x-product-cards.image>
-
 			<x-product-cards.overline text="Arctic" />
 			<x-product-cards.title title="Arctic Saga: Exploring Spitsbergen via the Faroes and Jan Mayen" />
 
@@ -3572,7 +3573,6 @@
 				:is_immersive="true"
 			>
 			</x-product-cards.image>
-
 			<x-product-cards.overline text="Arctic" />
 			<x-product-cards.title title="Arctic Saga: Exploring Spitsbergen via the Faroes and Jan Mayen" />
 
@@ -6438,14 +6438,7 @@
 <x-component-demo :keys="[ 'dates-rates' ]">
 	@php
 		// TODO: This will be removed after the development of this component is complete and will be handled by the block.
-		$dates_rates_filter_data = [
-			'seasons'            => Quark\Search\Departures\get_region_and_season_search_filter_data(),
-			'expeditions'        => Quark\Search\Departures\get_expedition_search_filter_data(),
-			'adventure_options'  => Quark\Search\Departures\get_adventure_options_search_filter_data(),
-			'months'             => Quark\Search\Departures\get_month_search_filter_data(),
-			'durations'          => Quark\Search\Departures\get_duration_search_filter_data(),
-			'ships'              => Quark\Search\Departures\get_ship_search_filter_data(),
-		];
+		$dates_rates_filter_data = Quark\Search\Filters\get_filters_for_dates_rates();
 	@endphp
 	<x-section>
 		<x-parts.dates-rates :filter_data="$dates_rates_filter_data" />

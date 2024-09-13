@@ -21,7 +21,7 @@ export const DEFAULT_STATE: DatesRatesState = {
 	ships: [],
 	page: 1,
 	totalPages: 1,
-	perPage: 4,
+	perPage: 8,
 	resultCount: 0,
 	isLoading: false,
 	partial: '',
@@ -40,6 +40,7 @@ export const DEFAULT_STATE: DatesRatesState = {
 		'ships',
 		'perPage',
 	],
+	filtersMarkup: '',
 };
 
 /**

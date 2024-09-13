@@ -8,12 +8,14 @@
 namespace Quark\Migration\WP_CLI;
 
 use cli\progress\Bar;
+use Quark\Migration\Drupal\Block_Converter;
 use WP_CLI;
 use WP_Error;
 use WP_CLI\ExitException;
 use WP_Term;
 use WP_Post;
 
+use function Quark\Migration\Drupal\download_file_by_mid;
 use function Quark\Migration\Drupal\get_database;
 use function Quark\Migration\Drupal\get_term_by_id;
 use function Quark\Migration\Drupal\prepare_content;
@@ -30,6 +32,12 @@ use const Quark\Expeditions\DESTINATION_TAXONOMY;
  * Class Region_Landing_Page.
  */
 class Region_Landing_Page {
+	/**
+	 * Block_Converter instance.
+	 *
+	 * @var Block_Converter
+	 */
+	private Block_Converter $block_converter;
 
 	/**
 	 * Migrate all Region Landing Page.
@@ -67,6 +75,9 @@ class Region_Landing_Page {
 			// Bail out if progress bar not exists.
 			return;
 		}
+
+		// Create Block_Converter instance.
+		$this->block_converter = new Block_Converter();
 
 		// Start inserting posts.
 		foreach ( $data as $item ) {
@@ -185,16 +196,6 @@ class Region_Landing_Page {
 			$status = 'publish';
 		}
 
-		// post content.
-		if ( ! empty( $item['post_content'] ) ) {
-			$post_content = strval( $item['post_content'] );
-		}
-
-		// post excerpt.
-		if ( ! empty( $item['post_excerpt'] ) && is_string( $item['post_excerpt'] ) ) {
-			$post_excerpt = wp_strip_all_tags( trim( $item['post_excerpt'] ) );
-		}
-
 		// Post name.
 		if ( ! empty( $item['drupal_url'] ) && is_string( $item['drupal_url'] ) ) {
 			/**
@@ -218,6 +219,48 @@ class Region_Landing_Page {
 			}
 		}
 
+		// Hero banner.
+		if ( ! empty( $item['hero_banner_id'] ) ) {
+			$hero_block = $this->convert_paragraph_hero_banner( [ 'id' => absint( $item['hero_banner_id'] ) ] );
+
+			// Check if hero block is not empty.
+			if ( ! empty( $hero_block ) ) {
+				$post_content = $hero_block;
+			}
+		}
+
+		// Paragraphs for Post content.
+		$paragraph_data = $this->get_drupal_paragraph_data( $nid );
+
+		// Access global secondary nav.
+		global $secondary_nav;
+
+		// Check if paragraph data is not empty.
+		if ( ! empty( $paragraph_data ) ) {
+			// Reset secondary nav.
+			$secondary_nav = [];
+			$block_content = '';
+
+			// Loop through paragraph data.
+			foreach ( $paragraph_data as $paragraph ) {
+				$block = $this->block_converter->get_drupal_block_data( $paragraph );
+
+				// Check if block is not empty.
+				if ( ! empty( $block ) ) {
+					$block_content .= $block;
+				}
+			}
+
+			// Prepare secondary nav block.
+			$secondary_nav = $this->block_converter->prepare_secondary_nav( $secondary_nav );
+
+			// Append block content.
+			$post_content .= $secondary_nav . $block_content;
+		}
+
+		// Prepare post content.
+		$post_content = str_replace( 'u0026', '&', $post_content );
+
 		// Prepare post data.
 		$data = [
 			'post_type'         => POST_TYPE,
@@ -228,7 +271,7 @@ class Region_Landing_Page {
 			'post_modified'     => $modified_at,
 			'post_modified_gmt' => $modified_at,
 			'post_name'         => $post_name,
-			'post_content'      => prepare_content( $post_content ),
+			'post_content'      => $post_content,
 			'post_excerpt'      => $post_excerpt,
 			'post_status'       => $status,
 			'comment_status'    => 'closed',
@@ -314,5 +357,174 @@ class Region_Landing_Page {
 
 		// Return data.
 		return $result;
+	}
+
+	/**
+	 * Get drupal paragraph data.
+	 *
+	 * @param int $nid Drupal node id.
+	 *
+	 * @return array{}|array<int, array<string, int|string>> Drupal paragraph data.
+	 */
+	public function get_drupal_paragraph_data( int $nid = 0 ): array {
+		// Get database connection.
+		$drupal_database = get_database();
+
+		// Query.
+		$query = "SELECT
+			paragraphs_item.id,
+			paragraphs_item.type
+		FROM
+			node__field_components as components
+				LEFT JOIN paragraphs_item_field_data AS paragraphs_item ON paragraphs_item.id = components.field_components_target_id AND components.langcode = paragraphs_item.langcode AND paragraphs_item.parent_type = 'node' AND paragraphs_item.parent_id = components.entity_id
+		WHERE
+			components.entity_id = %s and components.langcode = 'en'
+		ORDER BY delta";
+
+		// Fetch data.
+		$result = $drupal_database->get_results( $drupal_database->prepare( $query, $nid ), ARRAY_A );
+
+		// Check if data is not array.
+		if ( ! is_array( $result ) ) {
+			WP_CLI::line( 'Unable to fetch paragraph data!' );
+
+			// Bail out.
+			return [];
+		}
+
+		// Return data.
+		return $result;
+	}
+
+	/**
+	 * Convert hero_banner block.
+	 *
+	 * @param array{}|array<int|string, string|int> $block Drupal block data.
+	 *
+	 * @return string
+	 */
+	public function convert_paragraph_hero_banner( array $block = [] ): string {
+		// Get database connection.
+		$drupal_database = get_database();
+
+		// Query.
+		$query = "SELECT
+			paragraph.id,
+			paragraph.type,
+			field_hb_h1_text.field_hb_h1_text_value,
+			field_hb_subtitle.field_hb_subtitle_value,
+			field_hb_image.field_hb_image_target_id
+		FROM
+			paragraphs_item_field_data AS paragraph
+				LEFT JOIN paragraph__field_hb_h1_text AS field_hb_h1_text ON paragraph.id = field_hb_h1_text.entity_id AND paragraph.langcode = field_hb_h1_text.langcode
+				LEFT JOIN paragraph__field_hb_subtitle AS field_hb_subtitle ON paragraph.id = field_hb_subtitle.entity_id AND paragraph.langcode = field_hb_subtitle.langcode
+				LEFT JOIN paragraph__field_hb_image AS field_hb_image ON paragraph.id = field_hb_image.entity_id AND paragraph.langcode = field_hb_image.langcode
+		WHERE
+			paragraph.type = 'hero_banner' AND paragraph.id = %s AND paragraph.langcode = 'en'";
+
+		// Fetch data.
+		$result = $drupal_database->get_row( $drupal_database->prepare( $query, $block['id'] ), ARRAY_A );
+
+		// Check if data is not array.
+		if ( ! is_array( $result ) ) {
+			WP_CLI::line( 'Unable to fetch hero_banner data!' );
+
+			// Bail out.
+			return '';
+		}
+
+		// Set attributes.
+		$hero_text       = ! empty( $result['field_hb_h1_text_value'] ) ? strval( $result['field_hb_h1_text_value'] ) : '';
+		$sub_title       = ! empty( $result['field_hb_subtitle_value'] ) ? strval( $result['field_hb_subtitle_value'] ) : '';
+		$image_target_id = ! empty( $result['field_hb_image_target_id'] ) ? download_file_by_mid( absint( $result['field_hb_image_target_id'] ) ) : '';
+
+		// Get attachment src.
+		$attachment_src = wp_get_attachment_image_src( absint( $image_target_id ), 'full' );
+
+		// Check if attachment src found.
+		if ( empty( $attachment_src ) ) {
+			return '';
+		}
+
+		// Title blocks.
+		$title_blocks = [
+			[
+				'blockName'    => 'quark/hero-title',
+				'attrs'        => [
+					'title'         => $hero_text,
+					'syncPostTitle' => false,
+				],
+				'innerContent' => [],
+			],
+		];
+
+		// Check if sub title is available.
+		if ( ! empty( $sub_title ) ) {
+			$title_blocks[] = [
+				'blockName'    => 'quark/hero-subtitle',
+				'attrs'        => [
+					'subtitle' => $sub_title,
+				],
+				'innerContent' => [],
+			];
+		}
+
+		// Add CTA.
+		$title_blocks[] = [
+			'blockName'    => 'quark/button',
+			'attrs'        => [
+				'btnText' => 'View Expeditions',
+				'url'     => [
+					'url'  => '#expeditions',
+					'text' => 'View Expeditions',
+				],
+			],
+			'innerContent' => [],
+		];
+
+		// Return data.
+		return serialize_block(
+			[
+				'blockName'    => 'quark/hero',
+				'attrs'        => [
+					'image'             => [
+						'id'     => $image_target_id,
+						'src'    => $attachment_src[0],
+						'width'  => $attachment_src[1],
+						'height' => $attachment_src[2],
+						'size'   => 'large',
+					],
+					'immersive'         => 'bottom',
+					'contentOverlap'    => false,
+					'syncPostThumbnail' => true,
+				],
+				'innerContent' => [
+					serialize_blocks(
+						[
+							[
+								'blockName'    => 'quark/breadcrumbs',
+								'attrs'        => [],
+								'innerContent' => [],
+							],
+							[
+								'blockName'    => 'quark/hero-content',
+								'attrs'        => [],
+								'innerContent' => [
+									serialize_block(
+										[
+											'blockName'    => 'quark/hero-content-left',
+											'attrs'        => [],
+											'innerContent' => [
+												serialize_blocks( $title_blocks ) . PHP_EOL,
+											],
+										],
+									) . PHP_EOL,
+								],
+							],
+						],
+					),
+				],
+			],
+		) . PHP_EOL;
 	}
 }

@@ -11,6 +11,7 @@ use WP_Post;
 
 use function Quark\StaffMembers\get as get_staff_member;
 use function Quark\StaffMembers\get_departments;
+use function Quark\StaffMembers\get_roles;
 
 const COMPONENT = 'title-meta';
 
@@ -56,8 +57,8 @@ function render( array $attributes = [], string $content = '' ): string {
 	}
 
 	// Prepare roles.
-	$departments = get_departments( $staff_member['post']->ID );
-	$roles       = $departments ? implode( ', ', array_column( $departments, 'name' ) ) : '';
+	$roles = get_roles( $staff_member['post']->ID );
+	$roles = $roles ? implode( ', ', array_column( $roles, 'name' ) ) : '';
 
 	// Build component attributes.
 	$attributes = [

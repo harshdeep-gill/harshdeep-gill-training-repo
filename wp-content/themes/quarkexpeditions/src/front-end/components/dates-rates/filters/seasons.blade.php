@@ -10,8 +10,13 @@
 
 <quark-dates-rates-filter-seasons>
 	<x-form.field-group>
-		@foreach ( $seasons as $filter_value => $filter_label )
-			<x-dates-rates.filters.checkbox name="seasons" :label="$filter_label" :value="$filter_value" data-label="{{ $filter_label }}" />
+
+		@foreach ( $seasons as $season )
+			@if ( empty( $season['label'] ) || empty( $season['value'] ) || ! isset( $season['count'] ) )
+				@continue
+			@endif
+
+			<x-dates-rates.filters.checkbox name="seasons" :label="$season['label']" :value="$season['value']" :count="$season['count']" />
 		@endforeach
 	</x-form.field-group>
 </quark-dates-rates-filter-seasons>

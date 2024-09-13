@@ -12,8 +12,9 @@ use function Quark\Softrip\add_prefix_to_table_name;
 use function Quark\Softrip\Occupancies\get_occupancy_data_by_id;
 use function Quark\Softrip\Promotions\get_promotions_by_code;
 use function Quark\Softrip\Promotions\get_promotions_by_id;
+use function Quark\Localization\get_currencies;
 
-use const Quark\Core\CURRENCIES;
+use const Quark\Localization\DEFAULT_CURRENCY;
 
 const CACHE_KEY_PREFIX = 'qrk_softrip_occupancy_promotion';
 const CACHE_GROUP      = 'qrk_softrip_occupancy_promotions';
@@ -105,7 +106,7 @@ function update_occupancy_promotions( array $raw_occupancy_promotions = [], int 
 		$raw_occupancy_promotion = wp_parse_args( $raw_occupancy_promotion, $defaults );
 
 		// Continue out if no promos.
-		if ( empty( $raw_occupancy_promotion['currencyCode'] ) || ! in_array( $raw_occupancy_promotion['currencyCode'], CURRENCIES, true ) || empty( $raw_occupancy_promotion['promos'] ) || ! is_array( $raw_occupancy_promotion['promos'] ) ) {
+		if ( empty( $raw_occupancy_promotion['currencyCode'] ) || ! in_array( $raw_occupancy_promotion['currencyCode'], get_currencies(), true ) || empty( $raw_occupancy_promotion['promos'] ) || ! is_array( $raw_occupancy_promotion['promos'] ) ) {
 			continue;
 		}
 
@@ -429,7 +430,7 @@ function get_occupancy_promotions_by_occupancy( int $occupancy_id = 0, bool $for
  *
  * @return int
  */
-function get_lowest_price( int $occupancy_id = 0, string $currency = 'USD', string $promotion_code = '' ): int {
+function get_lowest_price( int $occupancy_id = 0, string $currency = DEFAULT_CURRENCY, string $promotion_code = '' ): int {
 	// Uppercase the currency.
 	$currency = strtoupper( $currency );
 
@@ -437,7 +438,7 @@ function get_lowest_price( int $occupancy_id = 0, string $currency = 'USD', stri
 	$lowest_price = 0;
 
 	// Bail out if empty or invalid currency.
-	if ( empty( $occupancy_id ) || ! in_array( $currency, CURRENCIES, true ) ) {
+	if ( empty( $occupancy_id ) || ! in_array( $currency, get_currencies(), true ) ) {
 		return $lowest_price;
 	}
 
