@@ -10,7 +10,7 @@ class LPHeader extends HTMLElement {
 		super();
 
 		// Events
-		document.body.addEventListener( 'scroll', this.onBodyScroll.bind( this ) );
+		this.ownerDocument.addEventListener( 'scroll', this.onBodyScroll.bind( this ) );
 	}
 
 	/**

@@ -53,7 +53,7 @@ export default class DatesRatesSelectedFiltersElement extends HTMLElement {
 		let areAnyFiltersSelected = false;
 
 		// Loop through the selected filters.
-		for ( const filterName of [ 'seasons', 'expeditions', 'adventure_options', 'months', 'durations', 'ships' ] ) {
+		for ( const filterName of [ 'seasons', 'expeditions', 'adventureOptions', 'months', 'durations', 'ships' ] ) {
 			// @ts-ignore Get the selected values for the filter.
 			const selectedValues: DatesRatesFilterState[] = [ ...state[ filterName ] ];
 

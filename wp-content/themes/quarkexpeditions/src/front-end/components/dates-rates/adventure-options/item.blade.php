@@ -1,6 +1,6 @@
 @props( [
 	'name'    => '',
-	'icon'    => '',
+	'icon'    => 0,
 	'is_paid' => false,
 ] )
 
@@ -15,11 +15,22 @@
 	if ( true === $is_paid ) {
 		$classes[] = 'dates-rates__adventure-options-item--paid';
 	}
+
+	$icon_image_args = [
+		'size' =>       [
+			'width'   => 56,
+			'height'  => 56,
+		],
+		'transform'  =>[
+			'crop'    => 'fit',
+			'gravity' => 'auto',
+		]
+	];
 @endphp
 
 <li @class( $classes )>
 	<div class="dates-rates__adventure-options-item-icon">
-		<x-svg name="{{ $icon }}" />
+		<x-image :image_id="$icon" :args="$icon_image_args" />
 	</div>
 
 	<div class="dates-rates__adventure-options-item-content-wrap">

@@ -16,7 +16,7 @@ import { updateCurrency } from '../actions';
 /**
  * Get the store.
  */
-const { subscribe, getState } = zustand.stores.datesRates;
+const { subscribe } = zustand.stores.datesRates;
 
 /**
  * Currency Dropdown filter Class.
@@ -26,6 +26,7 @@ export default class DatesRatesFilterCurrencyDropdownElement extends HTMLElement
 	 * Properties
 	 */
 	private readonly currencySelector: TPMultiSelectElement | null;
+	private isSyncing: boolean;
 
 	/**
 	 * Constructor
@@ -36,6 +37,7 @@ export default class DatesRatesFilterCurrencyDropdownElement extends HTMLElement
 
 		// Initialize properties.
 		this.currencySelector = this.querySelector( 'tp-multi-select' );
+		this.isSyncing = false;
 
 		// Set up events.
 		this.currencySelector?.addEventListener( 'change', this.handleCurrencySelectorChange.bind( this ) );
@@ -51,30 +53,27 @@ export default class DatesRatesFilterCurrencyDropdownElement extends HTMLElement
 	 */
 	update( state: DatesRatesState ) {
 		// Get the currency filter value.
-		const { currency, areCurrencyFiltersSyncing } = state;
+		const { currency } = state;
 
-		// Check if we should sync.
-		if ( ! areCurrencyFiltersSyncing ) {
-			// No, we should not.
-			return;
-		}
+		// Set syncing
+		this.isSyncing = true;
 
 		// Check and update currency selector.
 		if ( currency && this.currencySelector ) {
 			// Select the appropriate value.
 			this.currencySelector.select( currency );
 		}
+
+		// Unset syncing.
+		this.isSyncing = false;
 	}
 
 	/**
 	 * Handles the change event for the currency dropdown.
 	 */
 	handleCurrencySelectorChange() {
-		// Check if currencyFilters are syncing.
-		const { areCurrencyFiltersSyncing }: DatesRatesState = getState();
-
 		// Check if the currency dropdown is null.
-		if ( ! this.currencySelector || areCurrencyFiltersSyncing ) {
+		if ( ! this.currencySelector || this.isSyncing ) {
 			// bail.
 			return;
 		}

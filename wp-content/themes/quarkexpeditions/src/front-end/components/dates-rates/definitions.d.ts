@@ -11,11 +11,42 @@ interface DatesRatesFilterState {
  */
 interface DatesRatesState {
 	currency: string,
-	areCurrencyFiltersSyncing: boolean,
 	seasons: DatesRatesFilterState[],
 	expeditions: DatesRatesFilterState[],
-	'adventure_options': DatesRatesFilterState[],
+	adventureOptions: DatesRatesFilterState[],
 	months: DatesRatesFilterState[],
 	durations: DatesRatesFilterState[],
 	ships: DatesRatesFilterState[],
+	page: number,
+	totalPages: number,
+	perPage: number,
+	resultCount: number,
+	isLoading: boolean,
+	partial: string,
+	selector: string,
+	isInitialized: boolean,
+	shouldMarkupUpdate: boolean,
+	markup: string,
+	noResultsMarkup: string,
+	baseUrl: string
+	allowedParams: string[],
+	filtersMarkup: string,
 }
+
+/**
+ * Interface DatesRatesFiltersSaved
+ */
+interface DatesRatesFiltersSaved {
+	seasons: string[],
+	expeditions: string[],
+	adventureOptions: string[],
+	months: string[],
+	durations: string[],
+	ships: string[],
+	perPage: number,
+}
+
+/**
+ * Interface StateUpdateObject
+ */
+interface DatesRatesStateUpdateObject extends Partial<DatesRatesState> {}

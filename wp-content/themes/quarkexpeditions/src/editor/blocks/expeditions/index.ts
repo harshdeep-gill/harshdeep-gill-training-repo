@@ -9,6 +9,7 @@ import {
 /**
  * Styles.
  */
+import '../../../vendor/tp-slider';
 import '../../../front-end/components/product-cards/style.scss';
 
 /**

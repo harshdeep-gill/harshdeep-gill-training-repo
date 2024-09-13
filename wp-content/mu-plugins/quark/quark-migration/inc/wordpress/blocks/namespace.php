@@ -39,6 +39,7 @@ function bootstrap(): void {
 	add_filter( 'qrk_convert_to_blocks_iframe', __NAMESPACE__ . '\\convert_node_iframe', 10, 2 );
 	add_filter( 'qrk_convert_to_blocks_table', __NAMESPACE__ . '\\convert_node_table', 10, 2 );
 	add_filter( 'qrk_convert_to_blocks_blockquote', __NAMESPACE__ . '\\convert_node_blockquote', 10, 2 );
+	add_filter( 'qrk_convert_to_blocks_fancy_video', __NAMESPACE__ . '\\convert_node_fancy_video', 10, 2 );
 }
 
 /**
@@ -246,11 +247,6 @@ function convert_node_paragraph( string $output = '', ?DOMElement $node = null )
 			}
 		}
 
-		// if any child is an image, convert this into an image block.
-		if ( $child_node instanceof DOMElement && 'img' === $child_node->tagName ) {
-			$inner_html .= convert_node_to_block( $child_node );
-		}
-
 		// If any child is an IFRAME, convert this into an IFRAME block.
 		if ( $child_node instanceof DOMElement && 'iframe' === $child_node->tagName ) {
 			return convert_node_iframe( '', $child_node );
@@ -400,9 +396,15 @@ function convert_node_image( string $output = '', ?DOMElement $node = null, stri
 	$id    = 0;
 	$class = $node->getAttribute( 'class' );
 
+	// Check for fancy video class.
+	if ( 'fancy-video' === $class ) {
+		return convert_node_fancy_video( $output, $node );
+	}
+
 	// Check for image ID in class.
 	if ( ! empty( $class ) && str_contains( $class, 'wp-image-' ) ) {
-		preg_match( '#wp-image-([0-9])#', $class, $matches );
+		// Get the image id form class attribute.
+		preg_match( '/wp-image-(\d+)/', $class, $matches );
 
 		// Check for matches.
 		if ( ! empty( $matches[1] ) ) {
@@ -846,6 +848,56 @@ function convert_node_blockquote( string $output = '', ?DOMElement $node = null 
 				'innerHTML' => '<blockquote class="wp-block-quote">' . $inner_html . '</blockquote>',
 			]
 		);
+	}
+
+	// Fallback.
+	return $output;
+}
+
+/**
+ * Convert a fancy video node into a block.
+ *
+ * @param string          $output Block output.
+ * @param DOMElement|null $node   Node element.
+ *
+ * @return string
+ */
+function convert_node_fancy_video( string $output = '', ?DOMElement $node = null ): string {
+	// Check for correct node.
+	if ( ! $node instanceof DOMElement ) {
+		return $output;
+	}
+
+	// Get attrs.
+	$video_url = $node->getAttribute( 'src' );
+	$image_id  = $node->getAttribute( 'id' );
+	$alt       = $node->getAttribute( 'alt' );
+
+	// Check for video URL and image ID.
+	if ( ! empty( $video_url ) && ! empty( $image_id ) ) {
+		// Get image src.
+		$src = wp_get_attachment_image_src( absint( $image_id ), 'large' );
+
+		// If image found then build HTML.
+		if ( ! empty( $src ) && is_array( $src ) ) {
+			// Return the block.
+			return serialize_block(
+				[
+					'blockName'    => 'quark/fancy-video',
+					'attrs'        => [
+						'videoUrl' => $video_url,
+						'image'    => [
+							'id'     => $image_id,
+							'src'    => $src[0],
+							'alt'    => $alt,
+							'width'  => $src[1],
+							'height' => $src[2],
+						],
+					],
+					'innerContent' => [],
+				]
+			) . PHP_EOL;
+		}
 	}
 
 	// Fallback.

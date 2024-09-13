@@ -2,15 +2,10 @@
 	'title'        => '',
 	'drawer_id'    => '',
 	'accordion_id' => '',
-	'type'         => '',
 ] )
 
 @php
 	if ( empty( $title ) ) {
-		return;
-	}
-
-	if ( ! in_array( $type, [ '', 'currency', 'sticky-filter' ], true ) ) {
 		return;
 	}
 @endphp
@@ -19,10 +14,6 @@
 	class="dates-rates__filter-chip-container"
 	@if ( ! empty( $accordion_id ) )
 		accordion_id="{{ $accordion_id }}"
-	@endif
-
-	@if ( ! empty( $type ) )
-		type="{{ $type }}"
 	@endif
 >
 	<x-drawer.drawer-open drawer_id="{{ $drawer_id }}" class="dates-rates__filter-chip">

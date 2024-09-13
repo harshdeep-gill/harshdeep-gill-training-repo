@@ -7,7 +7,7 @@
 .dates-rates {
 	$self: &;
 
-	&[loading="true"] {
+	&[loading="yes"] {
 
 		#{$self}__results {
 			display: none;
@@ -26,7 +26,7 @@
 			display: none;
 		}
 
-		#{$self}[loading="true"] & {
+		#{$self}[loading="yes"] & {
 			display: none;
 
 			&--loading {
@@ -74,8 +74,7 @@
 	}
 
 	tp-multi-select-field {
-		max-height: 46px;
-		display: block;
+		padding-block: var(--spacing-2);
 	}
 
 	&__filters-chips {
@@ -357,4 +356,62 @@
 			}
 		}
 	}
+
+	[data-hidden] {
+		display: none;
+		pointer-events: none;
+	}
+
+	quark-dates-rates-pagination-links-controller,
+	quark-dates-rates-pagination-total-pages,
+	quark-dates-rates-pagination-items-per-page,
+	quark-dates-rates-filters-inputs-container {
+		display: contents;
+	}
+
+	&__result-count-value {
+		display: none;
+
+		@media screen and (min-width: grid-size(md)) {
+			display: inline;
+		}
+	}
+
+	quark-dates-rates-pagination-items-per-page.dates-rates__result-count-selector {
+		display: contents;
+
+		.pagination__items-per-page {
+			display: inline-flex;
+
+			&-text {
+				display: none;
+			}
+		}
+
+		@media screen and (min-width: grid-size(md)) {
+			display: none;
+		}
+	}
+
+	.pagination {
+		display: grid;
+		grid-template-columns: 1fr;
+
+		@media screen and (min-width: grid-size( md )) {
+			grid-template-columns: 1fr max-content minmax(350px, 1fr);
+		}
+
+		&__container {
+			justify-content: center;
+
+			@media screen and (min-width: grid-size(md)) {
+				justify-content: end;
+			}
+		}
+	}
+
+	&__accordion-content--no-transition {
+		transition: none;
+	}
 }
+

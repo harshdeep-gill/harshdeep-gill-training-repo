@@ -645,26 +645,12 @@ function transform_drupal_media_tags( string $content = '' ): string {
 
 					// If video URL found then build HTML.
 					if ( ! empty( $video_url ) ) {
-						// Prepare quark/fancy video block attrs.
-						$attrs = [
-							'videoUrl' => $video_url,
-							'image'    => [
-								'id'     => $image,
-								'src'    => $src[0],
-								'alt'    => $alt,
-								'width'  => $src[1],
-								'height' => $src[2],
-							],
-						];
-
-						// Return the block.
-						$image_html = serialize_block(
-							[
-								'blockName'    => 'quark/fancy-video',
-								'attrs'        => $attrs,
-								'innerContent' => [],
-							]
-						) . PHP_EOL;
+						$image_html = sprintf(
+							'<img class="fancy-video" src="%s" id="%s" alt="%s" />',
+							$video_url,
+							$image,
+							$alt
+						);
 					}
 				} else {
 					// Build image HTML.
@@ -684,7 +670,7 @@ function transform_drupal_media_tags( string $content = '' ): string {
 							'<figure class="wp-block-image %s">%s<figcaption>%s</figcaption></figure>',
 							$align[1] ?? 'alignnone',
 							$image_html,
-							$caption[1]
+							wp_strip_all_tags( html_entity_decode( $caption[1] ) ),
 						);
 					}
 				}
@@ -840,4 +826,42 @@ function prepare_seo_data( mixed $seo_meta_data = [] ): array {
 
 	// Return SEO data.
 	return $seo_data;
+}
+
+/**
+ * Get the remote video URL.
+ *
+ * @param int $entity_id Drupal entity ID.
+ *
+ * @return string
+ */
+function get_remote_video_url( int $entity_id = 0 ): string {
+	// validate entity ID.
+	if ( empty( $entity_id ) ) {
+		return '';
+	}
+
+	// Drupal database instance.
+	$drupal_db = get_database();
+
+	// Get the video URL.
+	$video_url = $drupal_db->get_var(
+		strval(
+			$drupal_db->prepare(
+				'
+				SELECT
+					field_media_video_embed_field_value
+				FROM
+					media__field_media_video_embed_field
+				WHERE
+					entity_id = %d AND deleted = 0
+				LIMIT 1
+				',
+				$entity_id
+			)
+		)
+	);
+
+	// Return video URL.
+	return strval( $video_url );
 }

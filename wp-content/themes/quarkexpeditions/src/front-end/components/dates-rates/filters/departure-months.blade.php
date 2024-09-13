@@ -10,8 +10,14 @@
 
 <quark-dates-rates-filter-departure-months>
 	<x-form.field-group>
-		@foreach ( $months as $filter_value => $filter_label )
-			<x-dates-rates.filters.checkbox name="months" :label="$filter_label" :value="$filter_value" data-label="{!! $filter_label !!}" />
+
+		@foreach ( $months as $month )
+			@if ( empty( $month['label'] ) || empty( $month['value'] ) || ! isset( $month['count'] ) )
+				@continue
+			@endif
+
+			<x-dates-rates.filters.checkbox name="months" :label="$month['label']" :value="$month['value']" :count="$month['count']" />
 		@endforeach
+
 	</x-form.field-group>
 </quark-dates-rates-filter-departure-months>

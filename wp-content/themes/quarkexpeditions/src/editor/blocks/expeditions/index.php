@@ -10,7 +10,11 @@ namespace Quark\Theme\Blocks\Expeditions;
 use WP_Block;
 use WP_Query;
 
-use function Quark\Expeditions\get_details_data;
+use function Quark\Core\format_price;
+use function Quark\Expeditions\get_minimum_duration;
+use function Quark\Expeditions\get_minimum_duration_itinerary;
+use function Quark\Expeditions\get_starting_from_price;
+use function Quark\Itineraries\get_included_transfer_package_details;
 
 use const Quark\Expeditions\POST_TYPE as EXPEDITION_POST_TYPE;
 
@@ -115,22 +119,33 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 
 	// Build cards.
 	foreach ( $expedition_ids as $expedition_id ) {
-		$card_data = get_details_data( $expedition_id );
+		// Add Included Transfer package data.
+		$minimum_duration_itinerary = get_minimum_duration_itinerary( $expedition_id );
+		$transfer_package_data      = [];
 
-		// Skip if no data.
-		if ( empty( $card_data ) ) {
-			continue;
+		// Check if we have a minimum duration itinerary.
+		if ( ! empty( $minimum_duration_itinerary ) ) {
+			// Get included transfer package data.
+			$transfer_package_data = get_included_transfer_package_details( $minimum_duration_itinerary->ID );
+
+			// Reset if no inclusion sets.
+			if ( empty( $transfer_package_data['sets'] ) ) {
+				$transfer_package_data = [];
+			}
 		}
+
+		// Get Prices Data.
+		$prices_data = get_starting_from_price( $expedition_id );
 
 		// Build card data.
 		$cards[] = [
-			'title'            => $card_data['title'],
+			'title'            => get_the_title( $expedition_id ),
+			'url'              => get_the_permalink( $expedition_id ),
 			'image_id'         => get_post_thumbnail_id( $expedition_id ),
-			'review_rating'    => 5,  // TODO: Get real rating.
-			'total_reviews'    => 10, // TODO: Get real count.
-			'itinerary_days'   => $card_data['duration'],
-			'original_price'   => is_array( $card_data['from_price'] ) && ! empty( $card_data['from_price']['original'] ) ? $card_data['from_price']['original'] : '',
-			'discounted_price' => is_array( $card_data['from_price'] ) && ! empty( $card_data['from_price']['discounted'] ) ? $card_data['from_price']['discounted'] : '',
+			'itinerary_days'   => get_minimum_duration( $expedition_id ),
+			'original_price'   => format_price( $prices_data['original'] ),
+			'discounted_price' => format_price( $prices_data['discounted'] ),
+			'transfer_package' => $transfer_package_data,
 		];
 	}
 

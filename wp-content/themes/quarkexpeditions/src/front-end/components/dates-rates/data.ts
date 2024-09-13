@@ -13,13 +13,34 @@ export const STORE_NAME = 'datesRates';
  */
 export const DEFAULT_STATE: DatesRatesState = {
 	currency: 'USD',
-	areCurrencyFiltersSyncing: false,
 	seasons: [],
 	expeditions: [],
-	adventure_options: [],
+	adventureOptions: [],
 	months: [],
 	durations: [],
 	ships: [],
+	page: 1,
+	totalPages: 1,
+	perPage: 8,
+	resultCount: 0,
+	isLoading: false,
+	partial: '',
+	selector: '',
+	isInitialized: false,
+	shouldMarkupUpdate: false,
+	markup: '',
+	noResultsMarkup: '',
+	baseUrl: '',
+	allowedParams: [
+		'seasons',
+		'expeditions',
+		'adventureOptions',
+		'months',
+		'durations',
+		'ships',
+		'perPage',
+	],
+	filtersMarkup: '',
 };
 
 /**

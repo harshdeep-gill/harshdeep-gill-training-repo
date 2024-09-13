@@ -233,7 +233,7 @@ function seo_structured_data( array $schema = [] ): array {
  *    author?: array{
  *        "@type": string,
  *        name: string,
- *    }
+ *    }[],
  * }
  */
 function get_structured_data( int $post_id = 0 ): array {
@@ -260,14 +260,16 @@ function get_structured_data( int $post_id = 0 ): array {
 
 	// Get blog author.
 	if ( ! empty( $post['post_meta']['blog_authors'] ) && is_array( $post['post_meta']['blog_authors'] ) ) {
-		$blog_author = get_post_authors( absint( $post['post_meta']['blog_authors'][0] ) );
+		foreach ( $post['post_meta']['blog_authors'] as $blog_author_id ) {
+			$blog_author = get_post_authors( absint( $blog_author_id ) );
 
-		// Check if blog author is an instance of WP_Post and add to schema.
-		if ( $blog_author['post'] instanceof WP_Post ) {
-			$schema['author'] = [
-				'@type' => 'Person',
-				'name'  => $blog_author['post']->post_title,
-			];
+			// Check if blog author is an instance of WP_Post and add to schema.
+			if ( $blog_author['post'] instanceof WP_Post ) {
+				$schema['author'][] = [
+					'@type' => 'Person',
+					'name'  => $blog_author['post']->post_title,
+				];
+			}
 		}
 	}
 
@@ -350,7 +352,7 @@ function get_cards_data( array $post_ids = [] ): array {
 		$post = get( $post_id );
 
 		// Get blog author ids.
-		$blog_author_ids = (array) $post['post_meta']['blog_authors'] ?: [];
+		$blog_author_ids = empty( $post['post_meta']['blog_authors'] ) ? [] : (array) $post['post_meta']['blog_authors'];
 
 		// Initialize authors data.
 		$authors_data = [];
@@ -416,7 +418,7 @@ function get_blog_post_author_info( int $post_id = 0 ): array {
 	}
 
 	// Get blog author ids.
-	$blog_author_ids = (array) $post['post_meta']['blog_authors'] ?: [];
+	$blog_author_ids = ! empty( $post['post_meta']['blog_authors'] ) ? (array) $post['post_meta']['blog_authors'] : [];
 
 	// Loop through blog author ids.
 	foreach ( $blog_author_ids as $blog_author_id ) {

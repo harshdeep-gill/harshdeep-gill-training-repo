@@ -12,7 +12,9 @@ use WP_CLI;
 use WP_Error;
 use WP_Term;
 use WP_CLI\ExitException;
+use Quark\Migration\Drupal\Block_Converter;
 
+use function Quark\Migration\Drupal\download_file_by_mid;
 use function Quark\Migration\Drupal\get_database;
 use function Quark\Migration\Drupal\prepare_for_migration;
 use function Quark\Migration\Drupal\get_post_by_id;
@@ -29,6 +31,12 @@ use const Quark\Expeditions\DESTINATION_TAXONOMY;
  * Class Adventure_Option.
  */
 class Adventure_Option {
+	/**
+	 * Block_Converter instance.
+	 *
+	 * @var Block_Converter
+	 */
+	private Block_Converter $block_converter;
 
 	/**
 	 * Migrate all Adventure_Option.
@@ -66,6 +74,9 @@ class Adventure_Option {
 			// Bail out if progress bar not exists.
 			return;
 		}
+
+		// Create Block_Converter instance.
+		$this->block_converter = new Block_Converter();
 
 		// Start inserting posts.
 		foreach ( $data as $item ) {
@@ -194,6 +205,31 @@ class Adventure_Option {
 			$post_excerpt = strval( qrk_sanitize_attribute( $item['post_excerpt'] ) );
 		}
 
+		// Init block markup.
+		$hero_block_content   = '';
+		$collage_block_markup = '';
+
+		// Get hero block attributes.
+		$hero_attrs = $this->get_hero_block_attrs( absint( $item['field_hero_banner_target_id'] ) );
+
+		// Check if hero block attributes found.
+		if ( ! empty( $hero_attrs ) ) {
+			// Get hero block content.
+			$hero_block_content = $this->prepare_hero_block_content( $hero_attrs );
+		}
+
+		// Check if images found.
+		if ( ! empty( $item['images_target_ids'] ) ) {
+			// Get images.
+			$images = array_map( 'absint', explode( ',', strval( $item['images_target_ids'] ) ) );
+
+			// Convert images to collage block markup.
+			$collage_block_markup = PHP_EOL . $this->block_converter->convert_images_to_collage( $images );
+		}
+
+		// Prepare post content.
+		$post_content = str_replace( 'u0026', '&', $hero_block_content . $post_content . $collage_block_markup );
+
 		// Prepare post data.
 		$data = [
 			'post_type'         => POST_TYPE,
@@ -236,6 +272,11 @@ class Adventure_Option {
 					$data['tax_input'][ DESTINATION_TAXONOMY ][] = $term->term_id;
 				}
 			}
+		}
+
+		// Set post thumbnail metadata.
+		if ( ! empty( $hero_attrs ) && absint( $hero_attrs['hero_image'] ) ) {
+			$data['meta_input']['_thumbnail_id'] = absint( $hero_attrs['hero_image'] );
 		}
 
 		// Set drupal id metadata.
@@ -292,5 +333,142 @@ class Adventure_Option {
 
 		// Return data.
 		return $result;
+	}
+
+	/**
+	 * Get hero block attributes.
+	 *
+	 * @param int $hero_id Hero block ID.
+	 *
+	 * @return array{}|array{
+	 *     hero_text : string,
+	 *     hero_image : int,
+	 * }
+	 */
+	protected function get_hero_block_attrs( int $hero_id = 0 ): array {
+		// Bail out if empty.
+		if ( empty( $hero_id ) ) {
+			return [];
+		}
+
+		// Get database connection.
+		$drupal_database = get_database();
+
+		// Query.
+		$query = "SELECT
+			paragraph.id,
+			paragraph.type,
+			field_hb_h1_text.field_hb_h1_text_value,
+			field_hb_subtitle.field_hb_subtitle_value,
+			field_hb_image.field_hb_image_target_id
+		FROM
+			paragraphs_item_field_data AS paragraph
+				LEFT JOIN paragraph__field_hb_h1_text AS field_hb_h1_text ON paragraph.id = field_hb_h1_text.entity_id AND paragraph.langcode = field_hb_h1_text.langcode
+				LEFT JOIN paragraph__field_hb_subtitle AS field_hb_subtitle ON paragraph.id = field_hb_subtitle.entity_id AND paragraph.langcode = field_hb_subtitle.langcode
+				LEFT JOIN paragraph__field_hb_image AS field_hb_image ON paragraph.id = field_hb_image.entity_id AND paragraph.langcode = field_hb_image.langcode
+		WHERE
+			paragraph.type = 'hero_banner' AND paragraph.id = %s AND paragraph.langcode = 'en'";
+
+		// Fetch data.
+		$result = $drupal_database->get_row( $drupal_database->prepare( $query, $hero_id ), ARRAY_A );
+
+		// Check if data is not array.
+		if ( ! is_array( $result ) ) {
+			WP_CLI::line( 'Unable to fetch hero_banner data!' );
+
+			// Bail out.
+			return [];
+		}
+
+		// Set attributes.
+		$hero_text       = ! empty( $result['field_hb_h1_text_value'] ) ? strval( $result['field_hb_h1_text_value'] ) : '';
+		$image_target_id = ! empty( $result['field_hb_image_target_id'] ) ? download_file_by_mid( absint( $result['field_hb_image_target_id'] ) ) : '';
+
+		// Check if image found.
+		if ( $image_target_id instanceof WP_Error ) {
+			return [];
+		}
+
+		// Return hero block data.
+		return [
+			'hero_text'  => $hero_text,
+			'hero_image' => absint( $image_target_id ),
+		];
+	}
+
+	/**
+	 * Prepare hero block content from given ID.
+	 *
+	 * @param array<string, int|string> $hero_attrs Hero block attrs.
+	 *
+	 * @return string
+	 */
+	protected function prepare_hero_block_content( array $hero_attrs = [] ): string {
+		// Check if hero block attributes found.
+		if ( empty( $hero_attrs ) || ! absint( $hero_attrs['hero_image'] ) ) {
+			return '';
+		}
+
+		// Get attachment src.
+		$attachment_src = wp_get_attachment_image_src( absint( $hero_attrs['hero_image'] ), 'full' );
+
+		// Check if attachment src found.
+		if ( empty( $attachment_src ) ) {
+			return '';
+		}
+
+		// Return data.
+		return serialize_block(
+			[
+				'blockName'    => 'quark/hero',
+				'attrs'        => [
+					'image'             => [
+						'id'     => $hero_attrs['hero_image'],
+						'src'    => $attachment_src[0],
+						'width'  => $attachment_src[1],
+						'height' => $attachment_src[2],
+						'size'   => 'large',
+					],
+					'immersive'         => 'bottom',
+					'contentOverlap'    => false,
+					'syncPostThumbnail' => true,
+				],
+				'innerContent' => [
+					serialize_blocks(
+						[
+							[
+								'blockName'    => 'quark/breadcrumbs',
+								'attrs'        => [],
+								'innerContent' => [],
+							],
+							[
+								'blockName'    => 'quark/hero-content',
+								'attrs'        => [],
+								'innerContent' => [
+									serialize_block(
+										[
+											'blockName'    => 'quark/hero-content-left',
+											'attrs'        => [],
+											'innerContent' => [
+												serialize_block(
+													[
+														'blockName'    => 'quark/hero-title',
+														'attrs'        => [
+															'title'         => $hero_attrs['hero_text'],
+															'syncPostTitle' => true,
+														],
+														'innerContent' => [],
+													]
+												) . PHP_EOL,
+											],
+										],
+									) . PHP_EOL,
+								],
+							],
+						],
+					),
+				],
+			],
+		) . PHP_EOL;
 	}
 }

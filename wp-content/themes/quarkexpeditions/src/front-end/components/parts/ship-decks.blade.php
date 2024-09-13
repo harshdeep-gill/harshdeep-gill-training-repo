@@ -17,10 +17,12 @@
 	<x-tabs.content>
 		@foreach ( $decks as $deck )
 			<x-tabs.tab id="{{ $deck['id'] ?? '' }}">
-				@if ( ! empty( $deck['image_id'] ) )
-					<figure>
-						<x-image :image_id="$deck['image_id']" :alt="$deck['title'] ?? ''" />
-					</figure>
+				@if ( ! empty( $deck['image_id'] ) && ! empty( $deck['vertical_image_id'] ) )
+					<x-ship-deck-image
+						:horizontal_image_id="$deck['image_id']"
+						:vertical_image_id="$deck['vertical_image_id']"
+						:alt="$deck['title'] ?? ''"
+					/>
 				@endif
 				<br />
 				<x-content :content="$deck['description'] ?? ''" />
