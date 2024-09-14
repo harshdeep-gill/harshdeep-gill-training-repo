@@ -20,6 +20,73 @@ use const Quark\Search\Departures\FACET_TYPE_FIELD;
 use const Quark\Search\Departures\FACET_TYPE_RANGE;
 use const Quark\StaffMembers\SEASON_TAXONOMY;
 
+const FILTERS_MAPPING = [
+	'seasons'           => [
+		'key'        => 'seasons',
+		'solr_facet' => [
+			'key'  => 'region_season_str',
+			'type' => FACET_TYPE_FIELD,
+		],
+		'function'   => '\Quark\Search\Filters\get_region_and_season_filter',
+		'default'    => [],
+	],
+	'expeditions'       => [
+		'key'        => 'expeditions',
+		'solr_facet' => [
+			'key'  => 'related_expedition_str',
+			'type' => FACET_TYPE_FIELD,
+		],
+		'function'   => '\Quark\Search\Filters\get_expedition_filter',
+		'default'    => [],
+	],
+	'adventure_options' => [
+		'key'        => 'adventure_options',
+		'solr_facet' => [
+			'key'  => ADVENTURE_OPTION_CATEGORY . '_taxonomy_id',
+			'type' => FACET_TYPE_FIELD,
+		],
+		'function'   => '\Quark\Search\Filters\get_adventure_options_filter',
+		'default'    => [],
+	],
+	'ships'             => [
+		'key'        => 'ships',
+		'solr_facet' => [
+			'key'  => 'related_ship_str',
+			'type' => FACET_TYPE_FIELD,
+		],
+		'function'   => '\Quark\Search\Filters\get_ship_filter',
+		'default'    => [],
+	],
+	'months'            => [
+		'key'        => 'months',
+		'solr_facet' => [
+			'key'  => 'start_date_dt',
+			'type' => FACET_TYPE_RANGE,
+			'args' => [
+				'start' => 'NOW/MONTH',
+				'end'   => 'NOW/MONTH+2YEAR',
+				'gap'   => '+1MONTH',
+			],
+		],
+		'function'   => '\Quark\Search\Filters\get_month_filter',
+		'default'    => [],
+	],
+	'durations'         => [
+		'key'        => 'durations',
+		'solr_facet' => [
+			'key'  => 'duration_i',
+			'type' => FACET_TYPE_RANGE,
+			'args' => [
+				'start' => 1,
+				'end'   => 50,
+				'gap'   => 7,
+			],
+		],
+		'function'   => '\Quark\Search\Filters\get_duration_filter',
+		'default'    => [],
+	],
+];
+
 /**
  * Bootstrap filters.
  *
@@ -388,83 +455,15 @@ function get_duration_filter( array $duration_facet = [] ): array {
  * @return mixed[]
  */
 function get_filters_for_dates_rates( array $selected_filters = [] ): array {
-	// Filter mapping.
-	$filter_mapping = [
-		'seasons'           => [
-			'key'        => 'seasons',
-			'solr_facet' => [
-				'key'  => 'region_season_str',
-				'type' => FACET_TYPE_FIELD,
-			],
-			'function'   => '\Quark\Search\Filters\get_region_and_season_filter',
-			'default'    => [],
-		],
-		'expeditions'       => [
-			'key'        => 'expeditions',
-			'solr_facet' => [
-				'key'  => 'related_expedition_str',
-				'type' => FACET_TYPE_FIELD,
-			],
-			'function'   => '\Quark\Search\Filters\get_expedition_filter',
-			'default'    => [],
-		],
-		'adventure_options' => [
-			'key'        => 'adventure_options',
-			'solr_facet' => [
-				'key'  => ADVENTURE_OPTION_CATEGORY . '_taxonomy_id',
-				'type' => FACET_TYPE_FIELD,
-			],
-			'function'   => '\Quark\Search\Filters\get_adventure_options_filter',
-			'default'    => [],
-		],
-		'ships'             => [
-			'key'        => 'ships',
-			'solr_facet' => [
-				'key'  => 'related_ship_str',
-				'type' => FACET_TYPE_FIELD,
-			],
-			'function'   => '\Quark\Search\Filters\get_ship_filter',
-			'default'    => [],
-		],
-		'months'            => [
-			'key'        => 'months',
-			'solr_facet' => [
-				'key'  => 'start_date_dt',
-				'type' => FACET_TYPE_RANGE,
-				'args' => [
-					'start' => 'NOW/MONTH',
-					'end'   => 'NOW/MONTH+2YEAR',
-					'gap'   => '+1MONTH',
-				],
-			],
-			'function'   => '\Quark\Search\Filters\get_month_filter',
-			'default'    => [],
-		],
-		'durations'         => [
-			'key'        => 'durations',
-			'solr_facet' => [
-				'key'  => 'duration_i',
-				'type' => FACET_TYPE_RANGE,
-				'args' => [
-					'start' => 1,
-					'end'   => 50,
-					'gap'   => 7,
-				],
-			],
-			'function'   => '\Quark\Search\Filters\get_duration_filter',
-			'default'    => [],
-		],
-	];
-
 	// Remove non-filter keys along with empty filter keys.
 	foreach ( $selected_filters as $key => $value ) {
-		if ( ! array_key_exists( $key, $filter_mapping ) || empty( $value ) ) {
+		if ( ! array_key_exists( $key, FILTERS_MAPPING ) || empty( $value ) ) {
 			unset( $selected_filters[ $key ] );
 		}
 	}
 
 	// Pluck solr_facet keys.
-	$solr_facets = array_column( $filter_mapping, 'solr_facet' );
+	$solr_facets = array_column( FILTERS_MAPPING, 'solr_facet' );
 
 	// Run search.
 	$result            = search( $selected_filters, $solr_facets );
@@ -474,7 +473,7 @@ function get_filters_for_dates_rates( array $selected_filters = [] ): array {
 	$filters = [];
 
 	// Filters.
-	foreach ( $filter_mapping as $filter_key => $filter ) {
+	foreach ( FILTERS_MAPPING as $filter_key => $filter ) {
 		// Bail if function is not callable.
 		if ( ! is_callable( $filter['function'] ) ) {
 			continue;
@@ -511,12 +510,12 @@ function get_filters_for_dates_rates( array $selected_filters = [] ): array {
 	$last_filter_key = array_key_last( $selected_filters );
 
 	// Bail if empty or not in filter mapping.
-	if ( empty( $last_filter_key ) || ! array_key_exists( $last_filter_key, $filter_mapping ) ) {
+	if ( empty( $last_filter_key ) || ! array_key_exists( $last_filter_key, FILTERS_MAPPING ) ) {
 		return $filters;
 	}
 
 	// Get last filter key solr_facet key.
-	$solr_facet_key = $filter_mapping[ $last_filter_key ]['solr_facet']['key'];
+	$solr_facet_key = FILTERS_MAPPING[ $last_filter_key ]['solr_facet']['key'];
 
 	// Remove last filter.
 	array_pop( $selected_filters );
@@ -539,8 +538,30 @@ function get_filters_for_dates_rates( array $selected_filters = [] ): array {
 	}
 
 	// Get last filter data.
-	$filters[ $last_filter_key ] = $filter_mapping[ $last_filter_key ]['function']( $facet_data['values'] );
+	$filters[ $last_filter_key ] = FILTERS_MAPPING[ $last_filter_key ]['function']( $facet_data['values'] );
 
 	// Get complete filters.
 	return $filters;
+}
+
+/**
+ * Get filters from query params.
+ *
+ * @return mixed[]
+ */
+function get_selected_filters_from_query_params(): array {
+	// Filter query data.
+	$filter_query_data = filter_input_array( INPUT_GET, FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+
+	// Loop through filter query data.
+	foreach ( $filter_query_data as $key => $value ) {
+		// Validate key.
+		if ( array_key_exists( $key, FILTERS_MAPPING ) ) {
+			// Explode value.
+			$filter_query_data[ $key ] = explode( ',', $value );
+		}
+	}
+
+	// Return filter query data.
+	return $filter_query_data;
 }
