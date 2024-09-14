@@ -545,23 +545,23 @@ function get_filters_for_dates_rates( array $selected_filters = [] ): array {
 }
 
 /**
- * Get filters from query params.
+ * Extracts the selected filters from query params.
  *
  * @return mixed[]
  */
 function get_selected_filters_from_query_params(): array {
 	// Filter query data.
-	$filter_query_data = filter_input_array( INPUT_GET, FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+	$raw_query_data = filter_input_array( INPUT_GET, FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 
 	// Loop through filter query data.
-	foreach ( $filter_query_data as $key => $value ) {
+	foreach ( $raw_query_data as $key => $value ) {
 		// Validate key.
 		if ( array_key_exists( $key, FILTERS_MAPPING ) ) {
 			// Explode value.
-			$filter_query_data[ $key ] = explode( ',', $value );
+			$raw_query_data[ $key ] = explode( ',', $value );
 		}
 	}
 
 	// Return filter query data.
-	return $filter_query_data;
+	return $raw_query_data;
 }
