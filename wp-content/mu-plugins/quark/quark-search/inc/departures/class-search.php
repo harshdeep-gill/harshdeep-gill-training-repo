@@ -30,7 +30,7 @@ const FACET_FIELD_TYPES = [
 class Search {
 
 	/**
-	 * Field mapping.
+	 * Sort Options.
 	 *
 	 * @var array{
 	 *     'date-now': array{
@@ -89,9 +89,9 @@ class Search {
 	 *         key: string,
 	 *         order: string
 	 *    },
-	 * } Field mapping.
+	 * }
 	 */
-	private array $field_mapping = [
+	private array $sort_options = [
 		'date-now'       => [
 			'key'   => 'start_date_s',
 			'order' => 'asc',
@@ -200,11 +200,11 @@ class Search {
 	public int $next_page = 1;
 
 	/**
-	 * Facets.
+	 * Facet queries.
 	 *
 	 * @var array{}|array<string, array{key: string, type: string, args: mixed[]}> Facets.
 	 */
-	protected array $facets = [];
+	protected array $facet_queries = [];
 
 	/**
 	 * Query object.
@@ -221,7 +221,7 @@ class Search {
 	protected array $sorts = [];
 
 	/**
-	 * Facet result values.
+	 * Facet results
 	 *
 	 * @var mixed[] Facet values.
 	 */
@@ -278,7 +278,7 @@ class Search {
 	/**
 	 * Set Adventure Options.
 	 *
-	 * @param int[] $adventure_option_ids Adventure Option IDs.
+	 * @param int[] $adventure_option_ids Adventure Option category taxonomy IDs.
 	 *
 	 * @return void
 	 */
@@ -305,7 +305,7 @@ class Search {
 	/**
 	 * Set Expeditions.
 	 *
-	 * @param int[] $expeditions Expeditions IDs.
+	 * @param int[] $expeditions Expedition post IDs.
 	 *
 	 * @return void
 	 */
@@ -331,7 +331,7 @@ class Search {
 	/**
 	 * Set Ships.
 	 *
-	 * @param int[] $ships Ship IDs.
+	 * @param int[] $ships Ship post IDs.
 	 *
 	 * @return void
 	 */
@@ -356,6 +356,7 @@ class Search {
 
 	/**
 	 * Set Duration.
+	 * Example - [ [1, 7], [8, 14] ].
 	 *
 	 * @param array<int, int[]> $durations Duration.
 	 *
@@ -401,6 +402,7 @@ class Search {
 	/**
 	 * Set Departure Months.
 	 * The meta query is set as OR relation.
+	 * Example - [ '2021-01', '2021-02' ].
 	 *
 	 * @param string[] $months Months. Format: Y-m.
 	 *
@@ -458,7 +460,8 @@ class Search {
 	}
 
 	/**
-	 * Set season.
+	 * Set region and season.
+	 * Example - [ 'ANT-2025', 'ACT-2026' ].
 	 *
 	 * @param string[] $seasons Season slug.
 	 *
@@ -489,7 +492,7 @@ class Search {
 	/**
 	 * Set destinations.
 	 *
-	 * @param int[] $destination_ids Destination IDs.
+	 * @param int[] $destination_ids Destination taxonomy IDs.
 	 *
 	 * @return void
 	 */
@@ -544,7 +547,7 @@ class Search {
 	 * @return void
 	 */
 	public function set_sort( string $sort = '', string $currency = DEFAULT_CURRENCY ): void {
-		// Return early if sort is not set or field mapping is not set.
+		// Return early if sort is empty.
 		if ( empty( $sort ) ) {
 			return;
 		}
@@ -559,16 +562,58 @@ class Search {
 		}
 
 		// Check if sort is valid.
-		if ( empty( $this->field_mapping[ $sort ] ) ) {
+		if ( empty( $this->sort_options[ $sort ] ) ) {
 			return;
 		}
 
 		// Set sort.
-		$this->sorts[ $this->field_mapping[ $sort ]['key'] ] = $this->field_mapping[ $sort ]['order'];
+		$this->sorts[ $this->sort_options[ $sort ]['key'] ] = $this->sort_options[ $sort ]['order'];
 	}
 
 	/**
-	 * Get search args.
+	 * Set facets.
+	 * Example: [ [ 'key' => 'duration_i', 'type' => 'range', 'args' => [ 'start' => 1, 'end' => 7, 'gap' => 7 ] ] ].
+	 *
+	 * @param mixed[] $facets Facets.
+	 *
+	 * @return void
+	 */
+	public function set_facets( array $facets = [] ): void {
+		// Bail if facets are empty.
+		if ( empty( $facets ) || ! is_array( $facets ) ) {
+			return;
+		}
+
+		// Loop through facets.
+		foreach ( $facets as $facet ) {
+			// Validate facet.
+			if ( ! is_array( $facet ) || empty( $facet['key'] ) || empty( $facet['type'] ) ) {
+				continue;
+			}
+
+			// Set facet key and type.
+			$facet_key  = strval( $facet['key'] );
+			$facet_type = strval( $facet['type'] );
+
+			// Validate type.
+			if ( ! in_array( $facet['type'], FACET_FIELD_TYPES, true ) ) {
+				continue;
+			}
+
+			// Set facet.
+			$this->facet_queries[ $facet_key ] = [
+				'key'  => $facet_key,
+				'type' => $facet_type,
+				'args' => $facet['args'] ?? [],
+			];
+		}
+	}
+
+	/**
+	 * Get search query args.
+	 * Combines multiple tax queries and meta queries using AND relation.
+	 * This is to ensure that different filters are combined using AND.
+	 * While the same filter is combined using OR/IN in their respective functions.
 	 *
 	 * @return mixed[]
 	 */
@@ -612,7 +657,7 @@ class Search {
 	}
 
 	/**
-	 * Filter solr sort.
+	 * Modify Solr query.
 	 *
 	 * @param Query|null $query Query.
 	 *
@@ -636,17 +681,22 @@ class Search {
 		}
 
 		/**
-		 * Add facets.
+		 * Add facet queries if available.
 		 *
 		 * 1. Loop through all facets.
 		 * 2. Determine their type and set them using facet set instance.
 		 */
 
+		// Return early if no facets are set.
+		if ( empty( $this->facet_queries ) ) {
+			return $query;
+		}
+
 		// Get facet set instance.
 		$facet_set = $query->getFacetSet();
 
 		// Loop through facets and set them.
-		foreach ( $this->facets as $facet ) {
+		foreach ( $this->facet_queries as $facet ) {
 			// Validate facet.
 			if ( empty( $facet['key'] ) || empty( $facet['type'] ) ) {
 				continue;
@@ -750,10 +800,10 @@ class Search {
 		 */
 
 		// Solr query instance.
-		$query = SolrPower_WP_Query::get_instance();
+		$solr_query = SolrPower_WP_Query::get_instance();
 
 		// Get Solr facets from query.
-		$solr_facets = $query->facets;
+		$solr_facets = $solr_query->facets;
 
 		// Bail if facets are empty.
 		if ( empty( $solr_facets ) ) {
@@ -766,7 +816,7 @@ class Search {
 		// Loop through Solr facets.
 		foreach ( $solr_facets as $facet_key => $facet_result_object ) {
 			// Validate facet key.
-			if ( empty( $facet_key ) || ! in_array( $facet_key, array_keys( $this->facets ), true ) ) {
+			if ( empty( $facet_key ) || ! in_array( $facet_key, array_keys( $this->facet_queries ), true ) ) {
 				continue;
 			}
 
@@ -795,43 +845,5 @@ class Search {
 
 		// Return posts.
 		return $filtered_posts;
-	}
-
-	/**
-	 * Set facets.
-	 *
-	 * @param mixed[] $facets Facets.
-	 *
-	 * @return void
-	 */
-	public function set_facets( array $facets = [] ): void {
-		// Bail if facets are empty.
-		if ( empty( $facets ) || ! is_array( $facets ) ) {
-			return;
-		}
-
-		// Loop through facets.
-		foreach ( $facets as $facet ) {
-			// Validate facet.
-			if ( ! is_array( $facet ) || empty( $facet['key'] ) || empty( $facet['type'] ) ) {
-				continue;
-			}
-
-			// Set facet key and type.
-			$facet_key  = strval( $facet['key'] );
-			$facet_type = strval( $facet['type'] );
-
-			// Validate type.
-			if ( ! in_array( $facet['type'], FACET_FIELD_TYPES, true ) ) {
-				continue;
-			}
-
-			// Set facet.
-			$this->facets[ $facet_key ] = [
-				'key'  => $facet_key,
-				'type' => $facet_type,
-				'args' => $facet['args'] ?? [],
-			];
-		}
 	}
 }
