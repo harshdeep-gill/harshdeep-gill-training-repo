@@ -149,7 +149,7 @@
 									$cabin['availability_status'] === 'S' || $cabin['availability_status'] === 'R';
 							@endphp
 							<x-dates-rates.item.table-row>
-								<x-dates-rates.item.table-column>
+								<x-dates-rates.item.table-column :is_pay_in_full="$is_pay_in_full">
 									<x-dates-rates.item.table-column-title>
 										<strong>
 											{{ $promo_data['description'] }}
