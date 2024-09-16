@@ -140,7 +140,7 @@ const removeSelectedFilter = ( filterTypeToRemove: DatesRatesFilterType, filterV
  *
  * @return {Object[]} The filter values.
  */
-export const getSeasonsState = () => {
+export const getSeasonsState = (): DatesRatesSelectedFilter[] => {
 	// Get the selectedFilters.
 	const { selectedFilters }: DatesRatesState = getState();
 
@@ -167,7 +167,7 @@ export const removeSeason = ( filterValue: string ) => removeSelectedFilter( 'se
  *
  * @return {Object[]} The filter values.
  */
-export const getExpeditionsState = () => {
+export const getExpeditionsState = (): DatesRatesSelectedFilter[] => {
 	// Get the selectedFilters.
 	const { selectedFilters }: DatesRatesState = getState();
 
@@ -194,7 +194,7 @@ export const removeExpedition = ( filterValue: string ) => removeSelectedFilter(
  *
  * @return {Object[]} The filter values.
  */
-export const getAdventureOptionsState = () => {
+export const getAdventureOptionsState = (): DatesRatesSelectedFilter[] => {
 	// Get the selectedFilters.
 	const { selectedFilters }: DatesRatesState = getState();
 
@@ -221,7 +221,7 @@ export const removeAdventureOption = ( filterValue: string ) => removeSelectedFi
  *
  * @return {Object[]} The filter values.
  */
-export const getDepartureMonthsState = () => {
+export const getDepartureMonthsState = (): DatesRatesSelectedFilter[] => {
 	// Get the selectedFilters.
 	const { selectedFilters }: DatesRatesState = getState();
 
@@ -248,7 +248,7 @@ export const removeDepartureMonth = ( filterValue: string ) => removeSelectedFil
  *
  * @return {Object[]} The filter values.
  */
-export const getDurationsState = () => {
+export const getDurationsState = (): DatesRatesSelectedFilter[] => {
 	// Get the selectedFilters.
 	const { selectedFilters }: DatesRatesState = getState();
 
@@ -275,7 +275,7 @@ export const removeDuration = ( filterValue: string ) => removeSelectedFilter( '
  *
  * @return {Object[]} The filter values.
  */
-export const getShipsState = () => {
+export const getShipsState = (): DatesRatesSelectedFilter[] => {
 	// Get the selectedFilters.
 	const { selectedFilters }: DatesRatesState = getState();
 
@@ -303,7 +303,7 @@ export const removeShip = ( filterValue: string ) => removeSelectedFilter( 'ship
 export const clearAllFilters = () => {
 	// Update object.
 	const updateObject: DatesRatesStateUpdateObject = {
-		selectedFilters: DEFAULT_STATE.selectedFilters,
+		selectedFilters: [ ...DEFAULT_STATE.selectedFilters ],
 		perPage: DEFAULT_STATE.perPage,
 		page: DEFAULT_STATE.page,
 	};
@@ -570,12 +570,7 @@ const fetchResults = () => {
 		partial,
 		{
 			selectedFilters: {
-				seasons: pluckValues( seasons ),
-				expeditions: pluckValues( expeditions ),
-				adventure_options: pluckValues( adventureOptions ),
-				months: pluckValues( months ),
-				durations: pluckValues( durations ),
-				ships: pluckValues( ships ),
+				...Object.fromEntries( selectedFilters.map( ( selectedFilter ) => [ selectedFilter.type, pluckValues( selectedFilter.filters ) ] ) ),
 				posts_per_load: perPage,
 				page,
 				currency,
@@ -689,7 +684,7 @@ const buildUrlFromFilters = ( filters: DatesRatesFiltersInUrl ): string => {
 
 	// Get current state.
 	const currentState: DatesRatesState = getState();
-	const { baseUrl } = currentState;
+	const { baseUrl, allowedParams } = currentState;
 
 	// Prepare URL params.
 	const urlParams: {
@@ -698,6 +693,11 @@ const buildUrlFromFilters = ( filters: DatesRatesFiltersInUrl ): string => {
 		// Preserve other params if any.
 		...queryString.parse( window.location.search ),
 	};
+
+	// Remove filters from the url object. They will be populated again.
+	for ( const key of allowedParams ) {
+		delete urlParams[ key ];
+	}
 
 	// Loop through selected filters and build url params.
 	for ( const key in filters ) {
@@ -799,7 +799,7 @@ const parseUrl = (): DatesRatesFiltersInUrl | null => {
 
 	// Initialize the saved filters object.
 	const urlFilters: DatesRatesFiltersInUrl = {
-		selectedFilters: DEFAULT_STATE.selectedFilters,
+		selectedFilters: [ ...DEFAULT_STATE.selectedFilters ],
 		perPage: DEFAULT_STATE.perPage,
 	};
 
@@ -828,8 +828,12 @@ const parseUrl = (): DatesRatesFiltersInUrl | null => {
 		} else {
 			const values = parsedState[ key ]?.split( ',' ).filter( ( v: string ) => v !== '' ) ?? [];
 
-			// @ts-ignore.
-			urlFilters.selectedFilters.push( { type: key, filters: values.foreach( ( v: string ) => ( { label: '', value: v } ) ) } );
+			// Push the item.
+			urlFilters.selectedFilters.push( {
+				// @ts-ignore.
+				type: key,
+				filters: values.map( ( v: string ) => ( { label: '', value: v } ) ),
+			} );
 		}
 	} );
 
