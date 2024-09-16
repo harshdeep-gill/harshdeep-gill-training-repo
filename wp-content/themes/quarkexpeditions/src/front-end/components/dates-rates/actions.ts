@@ -33,7 +33,7 @@ const addSelectedFilter = ( filterToAdd: DatesRatesFilterStateUpdateObject ) => 
 	// Initialize the update object.
 	const updateObject: DatesRatesStateUpdateObject = {
 		selectedFilters: [ ...selectedFilters ],
-		page: DEFAULT_STATE.page,
+		pageNumber: DEFAULT_STATE.pageNumber,
 	};
 
 	// Null check.
@@ -100,7 +100,7 @@ const removeSelectedFilter = ( filterTypeToRemove: DatesRatesFilterType, filterV
 				filters: selectedFilter.filters.filter( ( singleSelectedFilter ) => singleSelectedFilter.value !== filterValueToRemove ),
 			};
 		} ).filter( ( selectedFilter ) => selectedFilter.filters.length > 0 ),
-		page: DEFAULT_STATE.page,
+		pageNumber: DEFAULT_STATE.pageNumber,
 	};
 
 	// Set the state.
@@ -280,7 +280,7 @@ export const clearAllFilters = () => {
 	const updateObject: DatesRatesStateUpdateObject = {
 		selectedFilters: [ ...DEFAULT_STATE.selectedFilters ],
 		perPage: DEFAULT_STATE.perPage,
-		page: DEFAULT_STATE.page,
+		pageNumber: DEFAULT_STATE.pageNumber,
 	};
 
 	// Set the state.
@@ -307,7 +307,7 @@ export const setPage = ( updatedPage: number ) => {
 
 	// Update object.
 	const updateObject: DatesRatesStateUpdateObject = {
-		page: updatedPage,
+		pageNumber: updatedPage,
 	};
 
 	// Set the state.
@@ -322,17 +322,17 @@ export const setPage = ( updatedPage: number ) => {
  */
 export const setPreviousPage = () => {
 	// Get the state.
-	const { page }: DatesRatesState = getState();
+	const { pageNumber }: DatesRatesState = getState();
 
 	// Is this the first page?
-	if ( page === 1 ) {
+	if ( pageNumber === 1 ) {
 		// There is no previous page.
 		return;
 	}
 
 	// Update object.
 	const updateObject: DatesRatesStateUpdateObject = {
-		page: page - 1,
+		pageNumber: pageNumber - 1,
 	};
 
 	// Set the state.
@@ -347,17 +347,17 @@ export const setPreviousPage = () => {
  */
 export const setNextPage = () => {
 	// Get the state.
-	const { page, totalPages }: DatesRatesState = getState();
+	const { pageNumber, totalPages }: DatesRatesState = getState();
 
 	// Is this the last page?
-	if ( page === totalPages ) {
+	if ( pageNumber === totalPages ) {
 		// There is no next page.
 		return;
 	}
 
 	// Update object.
 	const updateObject: DatesRatesStateUpdateObject = {
-		page: page + 1,
+		pageNumber: pageNumber + 1,
 	};
 
 	// Set the state.
@@ -382,7 +382,7 @@ export const setPerPage = ( updatedValue: number ) => {
 	// Update object.
 	const updateObject: DatesRatesStateUpdateObject = {
 		perPage: updatedValue,
-		page: DEFAULT_STATE.page,
+		pageNumber: DEFAULT_STATE.pageNumber,
 	};
 
 	// Set the state.
@@ -399,7 +399,7 @@ export const setPerPage = ( updatedValue: number ) => {
  * @param {string} settings.partial                      The name of the partial.
  * @param {string} settings.selector                     The DOM selector of the container of the results.
  * @param {Object} settings.serverRenderData             The data passed during server render if done.
- * @param {number} settings.serverRenderData.page        The current page that was rendered on the server.
+ * @param {number} settings.serverRenderData.pageNumber  The current pageNumber that was rendered on the server.
  * @param {number} settings.serverRenderData.totalPages  The total number of pages.
  * @param {number} settings.serverRenderData.resultCount The total number of results.
  * @param {number} settings.serverRenderData.perPage     The number of results per page.
@@ -409,7 +409,7 @@ export const initialize = (
 		partial: string,
 		selector: string,
 		serverRenderData?: {
-			page: number,
+			pageNumber: number,
 			totalPages: number,
 			resultCount: number,
 			perPage: number,
@@ -444,7 +444,7 @@ export const initialize = (
 
 	// Check if we have server render data.
 	if ( settings.serverRenderData ) {
-		updateObject.page = settings.serverRenderData.page;
+		updateObject.pageNumber = settings.serverRenderData.pageNumber;
 		updateObject.totalPages = settings.serverRenderData.totalPages;
 		updateObject.resultCount = settings.serverRenderData.resultCount;
 		updateObject.perPage = settings.serverRenderData.perPage;
@@ -498,6 +498,7 @@ export const initialize = (
 		if ( ! settings.serverRenderData ) {
 			// Set the page related filters.
 			updateObject.perPage = urlFilters.perPage;
+			updateObject.pageNumber = urlFilters.pageNumber;
 		}
 	}
 
@@ -516,7 +517,7 @@ export const initialize = (
 const fetchResults = () => {
 	// Get the state
 	const {
-		page,
+		pageNumber,
 		partial,
 		selector,
 		selectedFilters,
@@ -546,7 +547,7 @@ const fetchResults = () => {
 			selectedFilters: {
 				...Object.fromEntries( selectedFilters.map( ( selectedFilter ) => [ selectedFilter.type, pluckValues( selectedFilter.filters ) ] ) ),
 				posts_per_load: perPage,
-				page,
+				page: pageNumber,
 			},
 		},
 		resultsFetchedCallback,
@@ -576,7 +577,7 @@ const pluckValues = ( list: DatesRatesSelectedFilter[] ): string[] => list.map( 
  */
 const resultsFetchedCallback = ( response: PartialData ) => {
 	// Get state.
-	const { perPage, page, filtersMarkup: filtersMarkupInState }: DatesRatesState = getState();
+	const { perPage, pageNumber, filtersMarkup: filtersMarkupInState }: DatesRatesState = getState();
 
 	// Get the data.
 	const {
@@ -592,7 +593,7 @@ const resultsFetchedCallback = ( response: PartialData ) => {
 		noResultsMarkup: noResultsMarkup ?? DEFAULT_STATE.noResultsMarkup,
 		resultCount,
 		totalPages: resultCount !== 0 ? Math.ceil( resultCount / perPage ) : 1,
-		page: resultCount !== 0 ? page : DEFAULT_STATE.page,
+		pageNumber: resultCount !== 0 ? pageNumber : DEFAULT_STATE.pageNumber,
 		shouldMarkupUpdate: true,
 		filtersMarkup: filtersMarkup ? filtersMarkup : filtersMarkupInState,
 	};
@@ -624,12 +625,14 @@ const updateUrlByFilters = () => {
 	const {
 		selectedFilters,
 		perPage,
+		pageNumber,
 	}: DatesRatesState = getState();
 
 	// Build url from filters.
 	const urlWithParams: string = buildUrlFromFilters( {
-		selectedFilters,
 		perPage,
+		pageNumber,
+		selectedFilters,
 	} );
 
 	// Update the url with selected/added filters.
@@ -645,6 +648,7 @@ const updateUrlByFilters = () => {
  *
  * @param {Object[]} filters.selectedFilters The selected filters.
  * @param {number}   filters.perPage         The items per page.
+ * @param {number}   filters.pageNumber      The page number.
  *
  * @return {string} The URL with params.
  */
@@ -774,6 +778,7 @@ const parseUrl = (): DatesRatesFiltersInUrl | null => {
 	const urlFilters: DatesRatesFiltersInUrl = {
 		selectedFilters: [ ...DEFAULT_STATE.selectedFilters ],
 		perPage: DEFAULT_STATE.perPage,
+		pageNumber: DEFAULT_STATE.pageNumber,
 	};
 
 	// Get allowed params.
@@ -788,7 +793,7 @@ const parseUrl = (): DatesRatesFiltersInUrl | null => {
 		}
 
 		// Check if it is a numeric key.
-		if ( 'perPage' === key ) {
+		if ( [ 'perPage', 'pageNumber' ].includes( key ) ) {
 			let value = parseInt( parsedState[ key ] );
 
 			// Check if it is a valid number.

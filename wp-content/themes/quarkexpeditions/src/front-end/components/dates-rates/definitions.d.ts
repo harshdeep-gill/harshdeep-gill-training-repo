@@ -32,7 +32,7 @@ interface DatesRatesFilterStateUpdateObject {
  */
 interface DatesRatesState {
 	selectedFilters: DatesRatesFilterState[],
-	page: number,
+	pageNumber: number,
 	totalPages: number,
 	perPage: number,
 	resultCount: number,
@@ -54,6 +54,7 @@ interface DatesRatesState {
 interface DatesRatesFiltersInUrl {
 	selectedFilters: DatesRatesFilterState[],
 	perPage: number,
+	pageNumber: number,
 }
 
 /**
