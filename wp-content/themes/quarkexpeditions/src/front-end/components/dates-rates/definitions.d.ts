@@ -31,7 +31,6 @@ interface DatesRatesFilterStateUpdateObject {
  * Interface DatesRatesState.
  */
 interface DatesRatesState {
-	currency: string,
 	selectedFilters: DatesRatesFilterState[],
 	page: number,
 	totalPages: number,

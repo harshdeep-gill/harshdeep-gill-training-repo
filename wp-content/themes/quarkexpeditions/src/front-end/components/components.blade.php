@@ -251,7 +251,7 @@
 	</x-section>
 </x-component-demo>
 
-<x-component-demo :keys="[ 'hero', 'hero-refactor' ]">
+<x-component-demo :keys="[ 'hero', 'hero-refactor', 'hero-circle-badge' ]">
 	<x-hero text_align="center" immersive="none">
 		<x-hero.image image_id="26" />
 		<x-hero.content>
@@ -265,6 +265,7 @@
 				<x-hero.form-modal-cta>Get a Digital Brochure</x-hero.form-modal-cta>
 			</x-hero.left>
 			<x-hero.right>
+				<x-hero.circle-badge text="As seen on BBC and Discovery Channel's Frozen Planet" />
 			</x-hero.right>
 		</x-hero.content>
 	</x-hero>
@@ -2048,7 +2049,7 @@
 		<x-two-columns :border="false">
 			<x-two-columns.column>
 				<x-fancy-video
-					url="https://www.youtube.com/embed/0fRAL7xROZg"
+					url="https://quarkexpeditions.wistia.com/medias/rel589439q"
 					image_id="32"
 					title="Hear from fellow solo traveler Charlotte"
 				/>
@@ -6439,9 +6440,11 @@
 	@php
 		// TODO: This will be removed after the development of this component is complete and will be handled by the block.
 		$dates_rates_filter_data = Quark\Search\Filters\get_filters_for_dates_rates();
+
+		$currency = Quark\Localization\get_current_currency();
 	@endphp
 	<x-section>
-		<x-parts.dates-rates :filter_data="$dates_rates_filter_data" />
+		<x-parts.dates-rates :filter_data="$dates_rates_filter_data" :currency="$currency" />
 	</x-section>
 </x-component-demo>
 

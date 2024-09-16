@@ -1,7 +1,7 @@
 /**
  * Global variables.
  */
-const { HTMLElement, zustand } = window;
+const { HTMLElement } = window;
 
 /**
  * External dependency.
@@ -11,12 +11,7 @@ import { TPMultiSelectElement } from '@travelopia/web-components';
 /**
  * Internal dependencies.
  */
-import { updateCurrency } from '../actions';
-
-/**
- * Get the store.
- */
-const { subscribe } = zustand.stores.datesRates;
+import { setCurrency } from '../../../global/store/actions';
 
 /**
  * Currency Dropdown filter Class.
@@ -41,31 +36,6 @@ export default class DatesRatesFilterCurrencyDropdownElement extends HTMLElement
 
 		// Set up events.
 		this.currencySelector?.addEventListener( 'change', this.handleCurrencySelectorChange.bind( this ) );
-
-		// Subscribe to the store
-		subscribe( this.update.bind( this ) );
-	}
-
-	/**
-	 * Update component.
-	 *
-	 * @param {Object} state
-	 */
-	update( state: DatesRatesState ) {
-		// Get the currency filter value.
-		const { currency } = state;
-
-		// Set syncing
-		this.isSyncing = true;
-
-		// Check and update currency selector.
-		if ( currency && this.currencySelector ) {
-			// Select the appropriate value.
-			this.currencySelector.select( currency );
-		}
-
-		// Unset syncing.
-		this.isSyncing = false;
 	}
 
 	/**
@@ -82,6 +52,6 @@ export default class DatesRatesFilterCurrencyDropdownElement extends HTMLElement
 		const currencyValue = this.currencySelector.value[ 0 ] ?? 'USD';
 
 		// Update the state.
-		updateCurrency( currencyValue );
+		setCurrency( currencyValue );
 	}
 }
