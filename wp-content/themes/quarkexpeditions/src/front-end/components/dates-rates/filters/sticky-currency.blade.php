@@ -1,9 +1,9 @@
-@props([
+@props( [
 	'currency' => quark_get_template_data( 'default_currency', 'USD' ),
-])
+] )
 
 @php
-	$drawer_title = sprintf( '%s: %s', __( 'Currency', 'qrk' ), $currency );
+	$drawer_title = sprintf( __( 'Currency: %s', 'qrk' ), $currency );
 @endphp
 
 <quark-dates-rates-filter-sticky-currency>
