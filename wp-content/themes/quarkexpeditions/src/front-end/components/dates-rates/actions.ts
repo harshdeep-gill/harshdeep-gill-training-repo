@@ -19,31 +19,6 @@ import { DEFAULT_STATE } from './data';
 import { camelToSnakeCase, convertPropertiesFromSnakeCaseToCamelCase } from '../../global/utility';
 
 /**
- * Update currency filter value.
- *
- * TODO: Remove this when the global currency switcher is available.
- *
- * @param {string} updatedCurrency Selected Currency.
- */
-export const updateCurrency = ( updatedCurrency: string ) => {
-	// Get State.
-	if ( ! updatedCurrency ) {
-		updatedCurrency = DEFAULT_STATE.currency;
-	}
-
-	// Update object.
-	const updateObject: DatesRatesStateUpdateObject = {
-		currency: updatedCurrency,
-	};
-
-	// Set the state.
-	setState( updateObject );
-
-	// Fetch results.
-	fetchResults();
-};
-
-/**
  * Adds a season to the seasons list.
  *
  * @param {Object} filter A singular filter.
@@ -651,7 +626,6 @@ const fetchResults = () => {
 		perPage,
 		isInitialized,
 		isLoading,
-		currency,
 	}: DatesRatesState = getState();
 
 	// Sanity check.
@@ -681,7 +655,6 @@ const fetchResults = () => {
 				ships: pluckValues( ships ),
 				posts_per_load: perPage,
 				page,
-				currency,
 			},
 		},
 		resultsFetchedCallback,

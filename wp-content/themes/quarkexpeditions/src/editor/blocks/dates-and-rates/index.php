@@ -74,6 +74,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 		'result_count' => $result['result_count'],
 		'cards'        => get_dates_rates_cards_data( array_map( 'absint', $result['ids'] ), $currency ),
 		'per_page'     => $selected_filters['posts_per_load'],
+		'currency'     => $currency,
 	];
 
 	// Return rendered component.

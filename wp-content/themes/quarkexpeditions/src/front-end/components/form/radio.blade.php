@@ -1,7 +1,8 @@
 @props( [
-	'id'    => '',
-	'label' => '',
-	'class' => '',
+	'id'      => '',
+	'label'   => '',
+	'class'   => '',
+	'checked' => '',
 ] )
 
 @php
@@ -18,6 +19,7 @@
 	<input
 		type="radio"
 		{{ $attributes->filter( fn ( $value, $key ) => $key !== 'label' )->merge( [ 'id' => $id ] ) }}
+		{{ $checked ? 'checked' : '' }}
 	>
 
 	<x-form.label :id="$id">

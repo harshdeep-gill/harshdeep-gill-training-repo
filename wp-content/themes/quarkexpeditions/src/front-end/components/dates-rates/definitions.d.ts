@@ -10,7 +10,6 @@ interface DatesRatesFilterState {
  * Interface DatesRatesState.
  */
 interface DatesRatesState {
-	currency: string,
 	seasons: DatesRatesFilterState[],
 	expeditions: DatesRatesFilterState[],
 	adventureOptions: DatesRatesFilterState[],

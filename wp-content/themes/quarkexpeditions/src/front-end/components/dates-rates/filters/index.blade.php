@@ -1,5 +1,6 @@
 @props( [
-	'filter_data' => []
+	'filter_data' => [],
+	'currency'     => quark_get_template_data( 'default_currency', 'USD' ),
 ] )
 
 @php
@@ -20,14 +21,14 @@
 			<x-dates-rates.filters.chip drawer_id="dates-rates-filters" title="Ship" accordion_id="filters-accordion-ships" />
 		</x-dates-rates.filters.chips>
 
-		<x-dates-rates.filters.currency-dropdown />
+		<x-dates-rates.filters.currency-dropdown :currency="$currency" />
 	</div>
 
 	<x-dates-rates.filters.selected />
 
 	<x-dates-rates.filters.sticky>
 		<x-dates-rates.filters.sticky-filter drawer_id="dates-rates-filters" accordion_id="filters-accordion-seasons" />
-		<x-dates-rates.filters.sticky-currency />
+		<x-dates-rates.filters.sticky-currency :currency="$currency" />
 	</x-dates-rates.filters.sticky>
 
 	<x-drawer id="dates-rates-filters" animation_direction="up" class="dates-rates__drawer">
