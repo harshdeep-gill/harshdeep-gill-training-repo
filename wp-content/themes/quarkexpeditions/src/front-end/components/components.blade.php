@@ -6438,8 +6438,7 @@
 
 <x-component-demo :keys="[ 'dates-rates' ]">
 	@php
-		// TODO: This will be removed after the development of this component is complete and will be handled by the block.
-		$dates_rates_filter_data = Quark\Search\Filters\get_filters_for_dates_rates();
+		$dates_rates_filter_data = Quark\Theme\Search\Filters\get_filters_for_dates_rates();
 
 		$currency = Quark\Localization\get_current_currency();
 	@endphp

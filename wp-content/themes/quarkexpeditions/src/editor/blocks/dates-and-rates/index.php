@@ -12,8 +12,8 @@ use WP_Block;
 use function Quark\Departures\get_dates_rates_cards_data;
 use function Quark\Localization\get_current_currency;
 use function Quark\Search\Departures\search;
-use function Quark\Search\Filters\get_filters_for_dates_rates;
 use function Quark\Search\Filters\get_selected_filters_from_query_params;
+use function Quark\Theme\Search_Filters\get_filters_for_dates_rates;
 
 const COMPONENT = 'parts.dates-rates';
 
