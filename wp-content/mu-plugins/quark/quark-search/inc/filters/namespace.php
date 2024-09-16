@@ -454,10 +454,10 @@ function get_duration_filter( array $duration_facet = [] ): array {
 /**
  * Build filter options.
  *
- * @param string[] $filter_keys The list of filters to include (e.g., ['season', 'expedition', 'month', 'duration']).
+ * @param string[] $filter_keys      The list of filters to include (e.g., ['season', 'expedition', 'month', 'duration']).
  * @param mixed[]  $selected_filters The currently selected filters (e.g., ['season' => [1, 2], 'expedition' => [4, 5]]).
  *
- * @return mixed[]
+ * @return array<string, array<int, array{label: string, value: string|int, count:int}>>
  */
 function build_filter_options( array $filter_keys = [], array $selected_filters = [] ): array {
 	// Remove invalid filter keys.

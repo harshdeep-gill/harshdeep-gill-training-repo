@@ -21,7 +21,7 @@ use const Quark\Search\Filters\SHIP_FILTER_KEY;
  *
  * @param mixed[] $selected_filter Selected filters.
  *
- * @return mixed[]
+ * @return array<string, array<int, array{label: string, value: string|int, count: int}>>
  */
 function get_filters_for_dates_rates( array $selected_filter = [] ): array {
 	// Available filters on dates-rates.
