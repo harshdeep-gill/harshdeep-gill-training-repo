@@ -26,6 +26,8 @@
 	if ( ! empty( $class ) ) {
 		$classes[] = $class;
 	}
+
+	wp_enqueue_script( 'wistia-embed' );
 @endphp
 
 <quark-wistia-embed
