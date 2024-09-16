@@ -1073,6 +1073,50 @@ function get_region_terms( int $post_id = 0 ): array {
 }
 
 /**
+ * Get Expedition Category for the expedition.
+ *
+ * @param int $post_id Post ID.
+ *
+ * @return array{}| array{
+ *     array{
+ *         term_id: int,
+ *         name: string,
+ *         slug: string,
+ *         taxonomy: string,
+ *         description: string,
+ *         parent: int,
+ *         term_group: int,
+ *     }
+ * }
+ */
+function get_expedition_category_terms( int $post_id = 0 ): array {
+	// Get post.
+	$post       = get( $post_id );
+	$categories = [];
+
+	// Check for post.
+	if ( empty( $post['post'] ) || ! $post['post'] instanceof WP_Post ) {
+		return $categories;
+	}
+
+	// Get parent of qrk_expedition_category taxonomy.
+	if (
+		array_key_exists( EXPEDITION_CATEGORY_TAXONOMY, $post['post_taxonomies'] )
+		&& is_array( $post['post_taxonomies'][ EXPEDITION_CATEGORY_TAXONOMY ] )
+	) {
+		// Loop through taxonomy and get all with no parent term name.
+		foreach ( $post['post_taxonomies'][ EXPEDITION_CATEGORY_TAXONOMY ] as $term ) {
+			if ( empty( $term['parent'] ) ) {
+				$categories[] = $term;
+			}
+		}
+	}
+
+	// Return regions.
+	return $categories;
+}
+
+/**
  * Get Itineraries for the expedition.
  *
  * @param int $post_id Post ID.
