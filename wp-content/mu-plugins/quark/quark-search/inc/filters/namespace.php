@@ -20,9 +20,16 @@ use const Quark\Search\Departures\FACET_TYPE_FIELD;
 use const Quark\Search\Departures\FACET_TYPE_RANGE;
 use const Quark\StaffMembers\SEASON_TAXONOMY;
 
+const SEASON_FILTER_KEY           = 'seasons';
+const EXPEDITION_FILTER_KEY       = 'expeditions';
+const ADVENTURE_OPTION_FILTER_KEY = 'adventure_options';
+const SHIP_FILTER_KEY             = 'ships';
+const MONTH_FILTER_KEY            = 'months';
+const DURATION_FILTER_KEY         = 'durations';
+
 const FILTERS_MAPPING = [
-	'seasons'           => [
-		'key'        => 'seasons',
+	SEASON_FILTER_KEY           => [
+		'key'        => SEASON_FILTER_KEY,
 		'solr_facet' => [
 			'key'  => 'region_season_str',
 			'type' => FACET_TYPE_FIELD,
@@ -30,8 +37,8 @@ const FILTERS_MAPPING = [
 		'function'   => '\Quark\Search\Filters\get_region_and_season_filter',
 		'default'    => [],
 	],
-	'expeditions'       => [
-		'key'        => 'expeditions',
+	EXPEDITION_FILTER_KEY       => [
+		'key'        => EXPEDITION_FILTER_KEY,
 		'solr_facet' => [
 			'key'  => 'related_expedition_str',
 			'type' => FACET_TYPE_FIELD,
@@ -39,8 +46,8 @@ const FILTERS_MAPPING = [
 		'function'   => '\Quark\Search\Filters\get_expedition_filter',
 		'default'    => [],
 	],
-	'adventure_options' => [
-		'key'        => 'adventure_options',
+	ADVENTURE_OPTION_FILTER_KEY => [
+		'key'        => ADVENTURE_OPTION_FILTER_KEY,
 		'solr_facet' => [
 			'key'  => ADVENTURE_OPTION_CATEGORY . '_taxonomy_id',
 			'type' => FACET_TYPE_FIELD,
@@ -48,8 +55,8 @@ const FILTERS_MAPPING = [
 		'function'   => '\Quark\Search\Filters\get_adventure_options_filter',
 		'default'    => [],
 	],
-	'ships'             => [
-		'key'        => 'ships',
+	SHIP_FILTER_KEY             => [
+		'key'        => SHIP_FILTER_KEY,
 		'solr_facet' => [
 			'key'  => 'related_ship_str',
 			'type' => FACET_TYPE_FIELD,
@@ -57,8 +64,8 @@ const FILTERS_MAPPING = [
 		'function'   => '\Quark\Search\Filters\get_ship_filter',
 		'default'    => [],
 	],
-	'months'            => [
-		'key'        => 'months',
+	MONTH_FILTER_KEY            => [
+		'key'        => MONTH_FILTER_KEY,
 		'solr_facet' => [
 			'key'  => 'start_date_dt',
 			'type' => FACET_TYPE_RANGE,
@@ -71,8 +78,8 @@ const FILTERS_MAPPING = [
 		'function'   => '\Quark\Search\Filters\get_month_filter',
 		'default'    => [],
 	],
-	'durations'         => [
-		'key'        => 'durations',
+	DURATION_FILTER_KEY         => [
+		'key'        => DURATION_FILTER_KEY,
 		'solr_facet' => [
 			'key'  => 'duration_i',
 			'type' => FACET_TYPE_RANGE,
@@ -445,35 +452,58 @@ function get_duration_filter( array $duration_facet = [] ): array {
 }
 
 /**
- * Get filters data for dates-rates.
+ * Build filter options.
  *
- * 1. Get filters data for selected filters.
- * 2. Get filters data for selected filters without last filter - done to conserve the last filter to its one step previous.
- *
- * @param mixed[] $selected_filters Selected filters.
+ * @param string[] $filter_keys The list of filters to include (e.g., ['season', 'expedition', 'month', 'duration']).
+ * @param mixed[]  $selected_filters The currently selected filters (e.g., ['season' => [1, 2], 'expedition' => [4, 5]]).
  *
  * @return mixed[]
  */
-function get_filters_for_dates_rates( array $selected_filters = [] ): array {
+function build_filter_options( array $filter_keys = [], array $selected_filters = [] ): array {
+	// Remove invalid filter keys.
+	$filter_keys = array_filter(
+		$filter_keys,
+		function ( $filter_key ) {
+			return array_key_exists( $filter_key, FILTERS_MAPPING );
+		}
+	);
+
+	// If empty filter keys, return empty array.
+	if ( empty( $filter_keys ) ) {
+		return [];
+	}
+
 	// Remove non-filter keys along with empty filter keys.
 	foreach ( $selected_filters as $key => $value ) {
-		if ( ! array_key_exists( $key, FILTERS_MAPPING ) || empty( $value ) ) {
+		if ( empty( $key ) || ! array_key_exists( $key, FILTERS_MAPPING ) || empty( $value ) ) {
 			unset( $selected_filters[ $key ] );
 		}
 	}
 
-	// Pluck solr_facet keys.
-	$solr_facets = array_column( FILTERS_MAPPING, 'solr_facet' );
+	// Pluck solr_facet from mapping whose key is in filter keys.
+	$solr_facets = array_column(
+		array_filter(
+			FILTERS_MAPPING,
+			function ( $filter, $key ) use ( $filter_keys ) {
+				return in_array( $key, $filter_keys, true );
+			},
+			ARRAY_FILTER_USE_BOTH
+		),
+		'solr_facet'
+	);
 
 	// Run search.
 	$result            = search( $selected_filters, $solr_facets );
 	$solr_facet_result = $result['facet_results'];
 
-	// Initialize filters.
-	$filters = [];
+	// Initialize filter options.
+	$filter_options = [];
 
-	// Filters.
-	foreach ( FILTERS_MAPPING as $filter_key => $filter ) {
+	// Filter options.
+	foreach ( $filter_keys as $filter_key ) {
+		// Filter value.
+		$filter = FILTERS_MAPPING[ $filter_key ];
+
 		// Bail if function is not callable.
 		if ( ! is_callable( $filter['function'] ) ) {
 			continue;
@@ -493,16 +523,16 @@ function get_filters_for_dates_rates( array $selected_filters = [] ): array {
 		}
 
 		// Get filter data.
-		$filters[ $filter_key ] = $filter['function']( $facet_data['values'] );
+		$filter_options[ $filter_key ] = $filter['function']( $facet_data['values'] );
 	}
 
-	// Return filters if no selected filters.
+	// Return filter options if no selected filters.
 	if ( empty( $selected_filters ) ) {
-		return $filters;
+		return $filter_options;
 	}
 
 	/**
-	 * Get filters data for selected filters without last filter.
+	 * Get filters data for the last filter.
 	 * This is done to conserve the last filter to its one step previous.
 	 */
 
@@ -511,7 +541,7 @@ function get_filters_for_dates_rates( array $selected_filters = [] ): array {
 
 	// Bail if empty or not in filter mapping.
 	if ( empty( $last_filter_key ) || ! array_key_exists( $last_filter_key, FILTERS_MAPPING ) ) {
-		return $filters;
+		return $filter_options;
 	}
 
 	// Get last filter key solr_facet key.
@@ -520,7 +550,7 @@ function get_filters_for_dates_rates( array $selected_filters = [] ): array {
 	// Remove last filter.
 	array_pop( $selected_filters );
 
-	// Pluck solr_facet keys except last filter.
+	// Pluck solr_facet keys for last filter.
 	$solr_facets = array_filter(
 		$solr_facets,
 		function ( $solr_facet ) use ( $solr_facet_key ) {
@@ -534,14 +564,14 @@ function get_filters_for_dates_rates( array $selected_filters = [] ): array {
 
 	// Validate facet results.
 	if ( empty( $facet_data ) || ! is_array( $facet_data ) || empty( $facet_data['values'] ) ) {
-		return $filters;
+		return $filter_options;
 	}
 
 	// Get last filter data.
-	$filters[ $last_filter_key ] = FILTERS_MAPPING[ $last_filter_key ]['function']( $facet_data['values'] );
+	$filter_options[ $last_filter_key ] = FILTERS_MAPPING[ $last_filter_key ]['function']( $facet_data['values'] );
 
 	// Get complete filters.
-	return $filters;
+	return $filter_options;
 }
 
 /**
