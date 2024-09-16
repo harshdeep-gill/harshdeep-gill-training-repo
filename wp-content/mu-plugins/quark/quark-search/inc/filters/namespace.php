@@ -553,6 +553,11 @@ function get_selected_filters_from_query_params(): array {
 	// Filter query data.
 	$raw_query_data = filter_input_array( INPUT_GET, FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 
+	// Bail if empty.
+	if ( empty( $raw_query_data ) ) {
+		return [];
+	}
+
 	// Loop through filter query data.
 	foreach ( $raw_query_data as $key => $value ) {
 		// Validate key.
