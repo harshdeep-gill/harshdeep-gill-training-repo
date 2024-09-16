@@ -56,9 +56,6 @@ function bootstrap(): void {
 	add_action( 'save_post', __NAMESPACE__ . '\\track_posts_to_be_reindexed', 999, 3 );
 	add_action( SCHEDULE_REINDEX_HOOK, __NAMESPACE__ . '\\reindex_departures' );
 	add_filter( 'wp_stream_connectors', __NAMESPACE__ . '\\setup_stream_connectors' );
-
-	// Load search class.
-	require_once __DIR__ . '/class-search.php';
 }
 
 /**

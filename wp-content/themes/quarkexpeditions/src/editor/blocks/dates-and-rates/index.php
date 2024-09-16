@@ -13,6 +13,7 @@ use function Quark\Departures\get_dates_rates_cards_data;
 use function Quark\Localization\get_current_currency;
 use function Quark\Search\Departures\search;
 use function Quark\Search\Filters\get_filters_for_dates_rates;
+use function Quark\Search\Filters\get_selected_filters_from_query_params;
 
 const COMPONENT = 'parts.dates-rates';
 
@@ -49,24 +50,30 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 	// Get current currency.
 	$currency = get_current_currency();
 
-	// Init selected filters.
-	$initial_filters = [
-		'posts_per_load' => 12,
-		'currency'       => $currency,
-	];
+	// Selected filters from query params.
+	$filter_query = get_selected_filters_from_query_params();
 
-	// Get dates and rates filter data.
-	$dates_rates_filter_data = get_filters_for_dates_rates();
+	// Init selected filters.
+	$selected_filters = array_merge(
+		[
+			'posts_per_load' => 12,
+			'currency'       => $currency,
+		],
+		$filter_query
+	);
+
+	// Get filters data.
+	$dates_rates_filter_data = get_filters_for_dates_rates( $selected_filters );
 
 	// Search for Departure post.
-	$result = search( $initial_filters );
+	$result = search( $selected_filters );
 
 	// Build component attributes.
 	$component_attributes = [
 		'filter_data'  => $dates_rates_filter_data,
 		'result_count' => $result['result_count'],
 		'cards'        => get_dates_rates_cards_data( array_map( 'absint', $result['ids'] ), $currency ),
-		'per_page'     => $initial_filters['posts_per_load'],
+		'per_page'     => $selected_filters['posts_per_load'],
 		'currency'     => $currency,
 	];
 

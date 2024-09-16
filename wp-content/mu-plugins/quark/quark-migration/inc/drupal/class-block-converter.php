@@ -2313,14 +2313,15 @@ class Block_Converter {
 			// Check if attachment src is not available.
 			if ( ! empty( $attachment_src ) ) {
 				// Set image attributes.
-				$attrs['image'] = [
+				$attrs['image']   = [
 					'id'     => $image_target_id,
 					'src'    => $attachment_src[0],
 					'width'  => $attachment_src[1],
 					'height' => $attachment_src[2],
-					'title'  => get_the_title( absint( $image_target_id ) ),
+					'title'  => wp_get_attachment_caption( absint( $image_target_id ) ),
 					'size'   => 'full',
 				];
+				$attrs['caption'] = wp_get_attachment_caption( absint( $image_target_id ) );
 			}
 		}
 
@@ -2445,14 +2446,15 @@ class Block_Converter {
 			}
 
 			// Set image attributes.
-			$attrs['image'] = [
+			$attrs['image']   = [
 				'id'     => $image_target_id,
 				'src'    => $attachment_src[0],
 				'width'  => $attachment_src[1],
 				'height' => $attachment_src[2],
-				'title'  => get_the_title( absint( $image_target_id ) ),
+				'title'  => wp_get_attachment_caption( absint( $image_target_id ) ),
 				'size'   => 'full',
 			];
+			$attrs['caption'] = wp_get_attachment_caption( absint( $image_target_id ) );
 
 			// If there is only one item in gallery and it is a remote video, set the block as fancy-video.
 			if ( 1 === count( $images ) && 'remote_video' === $media_type ) {
