@@ -25,6 +25,7 @@ use function Quark\Search\Departures\get_itinerary_length_search_filter_data;
 use function Quark\Search\Departures\get_language_search_filter_data;
 use function Quark\Search\Departures\get_travelers_search_filter_data;
 use function Quark\Search\Departures\reindex_departures;
+use function Quark\Search\Departures\bust_search_cache;
 use function Quark\Search\public_rest_api_routes;
 
 use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
@@ -42,6 +43,7 @@ use const Quark\Search\Departures\FACET_TYPE_RANGE;
 use const Quark\Search\Departures\REINDEX_POST_IDS_OPTION_KEY;
 use const Quark\Search\Departures\SCHEDULE_REINDEX_HOOK;
 use const Quark\Search\REST_API_NAMESPACE;
+use const Quark\Search\Departures\CACHE_GROUP;
 
 /**
  * Class Test_Search.
@@ -951,7 +953,12 @@ class Test_Search extends WP_UnitTestCase {
 			'10' => '10 Days',
 			'15' => '15 Days',
 		];
-		$actual   = get_itinerary_length_search_filter_data();
+
+		// bust post cache.
+		wp_cache_delete( 'search_filter_itinerary_length_data', CACHE_GROUP );
+
+		// Get itinerary length search filter data.
+		$actual = get_itinerary_length_search_filter_data();
 		$this->assertEquals( $expected, $actual );
 
 		// Create another departure post.
@@ -965,6 +972,9 @@ class Test_Search extends WP_UnitTestCase {
 		);
 		$this->assertIsInt( $post_id );
 
+		// Bust post cache.
+		wp_cache_delete( 'search_filter_itinerary_length_data', CACHE_GROUP );
+
 		// Orders should be ascending.
 		$expected = [
 			'5'  => '5 Days',
@@ -973,6 +983,9 @@ class Test_Search extends WP_UnitTestCase {
 		];
 		$actual   = get_itinerary_length_search_filter_data();
 		$this->assertEquals( $expected, $actual );
+
+		// Bust post cache.
+		wp_cache_delete( 'search_filter_itinerary_length_data', CACHE_GROUP );
 
 		// Test for duplicate.
 		$post_id = $this->factory()->post->create(
@@ -986,12 +999,7 @@ class Test_Search extends WP_UnitTestCase {
 		$this->assertIsInt( $post_id );
 
 		// 5 should not be duplicated.
-		$expected = [
-			'5'  => '5 Days',
-			'10' => '10 Days',
-			'15' => '15 Days',
-		];
-		$actual   = get_itinerary_length_search_filter_data();
+		$actual = get_itinerary_length_search_filter_data();
 		$this->assertEquals( $expected, $actual );
 	}
 
