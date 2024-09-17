@@ -12,6 +12,7 @@ use WP_UnitTestCase;
 
 use function Quark\PressReleases\get;
 use function Quark\PressReleases\get_breadcrumbs_ancestors;
+use function Quark\PressReleases\get_cards_data;
 
 use const Quark\PressReleases\POST_TYPE;
 
@@ -102,6 +103,42 @@ class Test_Press_Releases extends WP_UnitTestCase {
 				],
 			],
 			get_breadcrumbs_ancestors()
+		);
+	}
+
+	/**
+	 * Test Get Cards Data.
+	 *
+	 * @covers Quark\PressReleases\get_cards_data()
+	 *
+	 * @return void
+	 */
+	public function test_get_cards_data(): void {
+		// Create a post.
+		$post = $this->factory()->post->create_and_get(
+			[
+				'post_title'   => 'Test Post',
+				'post_content' => 'Post content',
+				'post_status'  => 'publish',
+				'post_type'    => POST_TYPE,
+			]
+		);
+		$this->assertTrue( $post instanceof WP_Post );
+
+		// Get cards data.
+		$cards_data = get_cards_data( [ $post->ID ] );
+
+		// Assert the cards data.
+		$this->assertEquals(
+			[
+				[
+					'id'          => $post->ID,
+					'title'       => $post->post_title,
+					'description' => $post->post_excerpt,
+					'permalink'   => get_permalink( $post ),
+				],
+			],
+			$cards_data
 		);
 	}
 }
