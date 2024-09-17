@@ -34,7 +34,7 @@ const FILTERS_MAPPING = [
 			'key'  => 'region_season_str',
 			'type' => FACET_TYPE_FIELD,
 		],
-		'handler'   => '\Quark\Search\Filters\get_region_and_season_filter',
+		'handler'    => '\Quark\Search\Filters\get_region_and_season_filter',
 		'default'    => [],
 	],
 	EXPEDITION_FILTER_KEY       => [
@@ -43,7 +43,7 @@ const FILTERS_MAPPING = [
 			'key'  => 'related_expedition_str',
 			'type' => FACET_TYPE_FIELD,
 		],
-		'handler'   => '\Quark\Search\Filters\get_expedition_filter',
+		'handler'    => '\Quark\Search\Filters\get_expedition_filter',
 		'default'    => [],
 	],
 	ADVENTURE_OPTION_FILTER_KEY => [
@@ -52,7 +52,7 @@ const FILTERS_MAPPING = [
 			'key'  => ADVENTURE_OPTION_CATEGORY . '_taxonomy_id',
 			'type' => FACET_TYPE_FIELD,
 		],
-		'handler'   => '\Quark\Search\Filters\get_adventure_options_filter',
+		'handler'    => '\Quark\Search\Filters\get_adventure_options_filter',
 		'default'    => [],
 	],
 	SHIP_FILTER_KEY             => [
@@ -61,7 +61,7 @@ const FILTERS_MAPPING = [
 			'key'  => 'related_ship_str',
 			'type' => FACET_TYPE_FIELD,
 		],
-		'handler'   => '\Quark\Search\Filters\get_ship_filter',
+		'handler'    => '\Quark\Search\Filters\get_ship_filter',
 		'default'    => [],
 	],
 	MONTH_FILTER_KEY            => [
@@ -75,7 +75,7 @@ const FILTERS_MAPPING = [
 				'gap'   => '+1MONTH',
 			],
 		],
-		'handler'   => '\Quark\Search\Filters\get_month_filter',
+		'handler'    => '\Quark\Search\Filters\get_month_filter',
 		'default'    => [],
 	],
 	DURATION_FILTER_KEY         => [
@@ -89,7 +89,7 @@ const FILTERS_MAPPING = [
 				'gap'   => 7,
 			],
 		],
-		'handler'   => '\Quark\Search\Filters\get_duration_filter',
+		'handler'    => '\Quark\Search\Filters\get_duration_filter',
 		'default'    => [],
 	],
 ];
