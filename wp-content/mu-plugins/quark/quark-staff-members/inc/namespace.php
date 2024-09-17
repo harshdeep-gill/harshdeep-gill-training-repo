@@ -388,7 +388,7 @@ function get( int $post_id = 0 ): array {
  * @return mixed[]
  */
 function seo_structured_data( array $schema = [] ): array {
-	// Check if this is blog page.
+	// Check if this is a staff member page.
 	if ( ! is_singular( POST_TYPE ) ) {
 		return $schema;
 	}
