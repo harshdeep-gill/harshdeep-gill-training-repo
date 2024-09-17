@@ -8,6 +8,7 @@
 namespace Quark\Theme\Block\GlobalMessage;
 
 use WP_Block;
+use WP_Block_List;
 
 const COMPONENT = 'global-message';
 
@@ -46,19 +47,30 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 		'slot' => '',
 	];
 
-	// Access the first inner block of the current block.
-	$child_block = $block->inner_blocks[0];
+	// Process inner blocks.
+	if ( $block->inner_blocks instanceof WP_Block_List ) {
+		// Initialize a global message.
+		$global_message = [];
 
-	// Checking for block.
-	if ( $child_block instanceof WP_Block ) {
-		// If it is, check if it has inner content.
-		if ( ! empty( $child_block->parsed_block['innerContent'] ) ) {
-			// Concatenate the inner content into a single string.
-			$global_message = implode( '', $child_block->parsed_block['innerContent'] );
+		// Loop through inner blocks.
+		foreach ( $block->inner_blocks as $child_block ) {
+			// Check for inner block.
+			if ( ! $child_block instanceof WP_Block ) {
+				continue;
+			}
 
-			// Assign it to the 'slot' attribute.
-			$attribute_content['slot'] = $global_message;
+			// Checking for block.
+			if ( $child_block instanceof WP_Block ) {
+				// If it is, check if it has inner content.
+				if ( ! empty( $child_block->parsed_block['innerContent'] ) ) {
+					// Concatenate the inner content into a single string.
+					$global_message = implode( '', $child_block->parsed_block['innerContent'] );
+				}
+			}
 		}
+
+		// Assign it to the 'slot' attribute.
+		$attribute_content['slot'] = $global_message;
 	}
 
 	// Return the markup.
