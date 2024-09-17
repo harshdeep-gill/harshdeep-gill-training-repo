@@ -10,13 +10,18 @@ namespace Quark\Search\Tests\Filters;
 use WP_UnitTestCase;
 
 use function Quark\Search\Filters\get_adventure_options_filter;
+use function Quark\Search\Filters\get_destination_filter;
 use function Quark\Search\Filters\get_duration_filter;
 use function Quark\Search\Filters\get_expedition_filter;
+use function Quark\Search\Filters\get_itinerary_length_filter;
+use function Quark\Search\Filters\get_language_filter;
 use function Quark\Search\Filters\get_month_filter;
 use function Quark\Search\Filters\get_region_and_season_filter;
 use function Quark\Search\Filters\get_ship_filter;
 
 use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
+use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
+use const Quark\Departures\SPOKEN_LANGUAGE_TAXONOMY;
 use const Quark\Expeditions\DESTINATION_TAXONOMY;
 use const Quark\Expeditions\POST_TYPE as EXPEDITION_POST_TYPE;
 use const Quark\Ships\POST_TYPE as SHIP_POST_TYPE;
@@ -26,6 +31,310 @@ use const Quark\StaffMembers\SEASON_TAXONOMY;
  * Class Test_Filters
  */
 class Test_Filters extends WP_UnitTestCase {
+
+	/**
+	 * Test get itinerary length filter.
+	 *
+	 * @covers \Quark\Search\Filters\get_itinerary_length_filter
+	 *
+	 * @return void
+	 */
+	public function test_get_itinerary_length_filter(): void {
+		// Expected default.
+		$expected_default = [];
+
+		// Test with empty args.
+		$actual = get_itinerary_length_filter();
+		$this->assertEquals( $expected_default, $actual );
+
+		// Test with empty array.
+		$actual = get_itinerary_length_filter( [] );
+		$this->assertEquals( $expected_default, $actual );
+
+		// Test with invalid args.
+		$actual = get_itinerary_length_filter( [ 2 ] );
+		$this->assertEquals( $expected_default, $actual );
+
+		// Test with valid args.
+		$actual = get_itinerary_length_filter(
+			[
+				'1' => 1,
+				'2' => 2,
+			]
+		);
+		$this->assertEquals(
+			[
+				[
+					'label' => '1 Day',
+					'value' => 1,
+					'count' => 1,
+				],
+				[
+					'label' => '2 Days',
+					'value' => 2,
+					'count' => 2,
+				],
+			],
+			$actual
+		);
+
+		// Test with negative, and random order.
+		$actual = get_itinerary_length_filter(
+			[
+				'-1' => 1,
+				'9'  => 2,
+				'2'  => 3,
+			]
+		);
+		$this->assertEquals(
+			[
+				[
+					'label' => '1 Day',
+					'value' => 1,
+					'count' => 1,
+				],
+				[
+					'label' => '2 Days',
+					'value' => 2,
+					'count' => 3,
+				],
+				[
+					'label' => '9 Days',
+					'value' => 9,
+					'count' => 2,
+				],
+			],
+			$actual
+		);
+	}
+
+	/**
+	 * Test get language filter.
+	 *
+	 * @covers \Quark\Search\Filters\get_language_filter
+	 *
+	 * @return void
+	 */
+	public function test_get_language_filter(): void {
+		// Expected default.
+		$expected_default = [];
+
+		// Test with empty args.
+		$actual = get_language_filter();
+		$this->assertEquals( $expected_default, $actual );
+
+		// Test with empty array.
+		$actual = get_language_filter( [] );
+		$this->assertEquals( $expected_default, $actual );
+
+		// Test with invalid args.
+		$actual = get_language_filter( [ 2 ] );
+		$this->assertEquals( $expected_default, $actual );
+
+		// Test with non-existent language.
+		$actual = get_language_filter( [ 'language' => 2 ] );
+		$this->assertEquals( $expected_default, $actual );
+
+		// Create spoken language terms.
+		$term1 = wp_insert_term( 'Language 1', SPOKEN_LANGUAGE_TAXONOMY );
+		$this->assertIsArray( $term1 );
+		$term1 = get_term( $term1['term_id'], SPOKEN_LANGUAGE_TAXONOMY, ARRAY_A );
+		$this->assertIsArray( $term1 );
+		$term2 = wp_insert_term( 'Language 2', SPOKEN_LANGUAGE_TAXONOMY );
+		$this->assertIsArray( $term2 );
+		$term2 = get_term( $term2['term_id'], SPOKEN_LANGUAGE_TAXONOMY, ARRAY_A );
+		$this->assertIsArray( $term2 );
+
+		// Test with valid.
+		$actual = get_language_filter(
+			[
+				$term1['term_id'] => 1,
+				$term2['term_id'] => 2,
+			]
+		);
+		$this->assertEquals(
+			[
+				[
+					'label' => 'Language 1',
+					'value' => $term1['term_id'],
+					'count' => 1,
+				],
+				[
+					'label' => 'Language 2',
+					'value' => $term2['term_id'],
+					'count' => 2,
+				],
+			],
+			$actual
+		);
+	}
+
+	/**
+	 * Test get destination filter.
+	 *
+	 * @covers \Quark\Search\Filters\get_destination_filter
+	 *
+	 * @return void
+	 */
+	public function test_get_destination_filter(): void {
+		// Expected default.
+		$expected_default = [];
+
+		// Test with empty args.
+		$actual = get_destination_filter();
+		$this->assertEquals( $expected_default, $actual );
+
+		// Test with empty array.
+		$actual = get_destination_filter( [] );
+		$this->assertEquals( $expected_default, $actual );
+
+		// Test with invalid args.
+		$actual = get_destination_filter( [ 2 ] );
+		$this->assertEquals( $expected_default, $actual );
+
+		// Test with invalid args.
+		$actual = get_destination_filter( [ 'destination' => 2 ] );
+		$this->assertEquals( $expected_default, $actual );
+
+		// Create destination term.
+		$term_id1 = $this->factory()->term->create(
+			[
+				'taxonomy' => DESTINATION_TAXONOMY,
+				'name'     => 'Antarctica',
+			]
+		);
+		$this->assertIsInt( $term_id1 );
+		$term_id2 = $this->factory()->term->create(
+			[
+				'taxonomy' => DESTINATION_TAXONOMY,
+				'name'     => 'Arctic',
+			]
+		);
+		$this->assertIsInt( $term_id2 );
+
+		// Get term1.
+		$term1 = get_term( $term_id1, DESTINATION_TAXONOMY, ARRAY_A );
+		$this->assertIsArray( $term1 );
+		$term2 = get_term( $term_id2, DESTINATION_TAXONOMY, ARRAY_A );
+		$this->assertIsArray( $term2 );
+
+		// Test with valid.
+		$actual = get_destination_filter(
+			[
+				$term1['term_id'] => 1,
+				$term2['term_id'] => 2,
+			]
+		);
+		$this->assertEquals(
+			[
+				[
+					'label'    => 'Antarctica',
+					'value'    => $term1['term_id'],
+					'count'    => 1,
+					'children' => [],
+				],
+				[
+					'label'    => 'Arctic',
+					'value'    => $term2['term_id'],
+					'count'    => 2,
+					'children' => [],
+				],
+			],
+			$actual
+		);
+
+		// Create child terms of term1 and term2.
+		$child_term1 = wp_insert_term( 'Child Destination 1', DESTINATION_TAXONOMY, [ 'parent' => $term1['term_id'] ] );
+		$this->assertIsArray( $child_term1 );
+		$child_term1 = get_term( $child_term1['term_id'], DESTINATION_TAXONOMY, ARRAY_A );
+		$this->assertIsArray( $child_term1 );
+		$child_term2 = wp_insert_term( 'Child Destination 2', DESTINATION_TAXONOMY, [ 'parent' => $term2['term_id'] ] );
+		$this->assertIsArray( $child_term2 );
+		$child_term2 = get_term( $child_term2['term_id'], DESTINATION_TAXONOMY, ARRAY_A );
+		$this->assertIsArray( $child_term2 );
+
+		// Test with children.
+		$actual = get_destination_filter(
+			[
+				$term1['term_id']       => 1,
+				$term2['term_id']       => 2,
+				$child_term1['term_id'] => 3,
+				$child_term2['term_id'] => 4,
+			]
+		);
+		$this->assertEquals(
+			[
+				[
+					'label'    => 'Antarctica',
+					'value'    => $term1['term_id'],
+					'count'    => 1,
+					'children' => [
+						[
+							'label'     => 'Child Destination 1',
+							'value'     => $child_term1['term_id'],
+							'count'     => 3,
+							'parent_id' => $term1['term_id'],
+						],
+					],
+				],
+				[
+					'label'    => 'Arctic',
+					'value'    => $term2['term_id'],
+					'count'    => 2,
+					'children' => [
+						[
+							'label'     => 'Child Destination 2',
+							'value'     => $child_term2['term_id'],
+							'count'     => 4,
+							'parent_id' => $term2['term_id'],
+						],
+					],
+				],
+			],
+			$actual
+		);
+
+		// Test with children in different order.
+		$actual = get_destination_filter(
+			[
+				$child_term1['term_id'] => 3,
+				$child_term2['term_id'] => 4,
+				$term1['term_id']       => 1,
+				$term2['term_id']       => 2,
+			]
+		);
+		$this->assertEquals(
+			[
+				[
+					'label'    => 'Antarctica',
+					'value'    => $term1['term_id'],
+					'count'    => 1,
+					'children' => [
+						[
+							'label'     => 'Child Destination 1',
+							'value'     => $child_term1['term_id'],
+							'count'     => 3,
+							'parent_id' => $term1['term_id'],
+						],
+					],
+				],
+				[
+					'label'    => 'Arctic',
+					'value'    => $term2['term_id'],
+					'count'    => 2,
+					'children' => [
+						[
+							'label'     => 'Child Destination 2',
+							'value'     => $child_term2['term_id'],
+							'count'     => 4,
+							'parent_id' => $term2['term_id'],
+						],
+					],
+				],
+			],
+			$actual
+		);
+	}
 
 	/**
 	 * Test get region season filter.
