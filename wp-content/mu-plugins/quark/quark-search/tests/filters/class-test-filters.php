@@ -10,6 +10,7 @@ namespace Quark\Search\Tests\Filters;
 use WP_UnitTestCase;
 
 use function Quark\Search\Filters\get_adventure_options_filter;
+use function Quark\Search\Filters\get_cabin_class_filter;
 use function Quark\Search\Filters\get_destination_filter;
 use function Quark\Search\Filters\get_duration_filter;
 use function Quark\Search\Filters\get_expedition_filter;
@@ -18,8 +19,11 @@ use function Quark\Search\Filters\get_language_filter;
 use function Quark\Search\Filters\get_month_filter;
 use function Quark\Search\Filters\get_region_and_season_filter;
 use function Quark\Search\Filters\get_ship_filter;
+use function Quark\Search\Filters\get_travelers_filter;
 
 use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
+use const Quark\CabinCategories\CABIN_CLASS_TAXONOMY;
+use const Quark\CabinCategories\POST_TYPE as CABIN_CATEGORY_POST_TYPE;
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
 use const Quark\Departures\SPOKEN_LANGUAGE_TAXONOMY;
 use const Quark\Expeditions\DESTINATION_TAXONOMY;
@@ -835,5 +839,131 @@ class Test_Filters extends WP_UnitTestCase {
 			],
 			$actual
 		);
+	}
+
+	/**
+	 * Test getting cabin class filter data.
+	 *
+	 * @covers \Quark\Search\Filters\get_cabin_class_filter()
+	 *
+	 * @return void
+	 */
+	public function test_get_cabin_class_filter(): void {
+		// Test when no cabin class exists.
+		$expected = [];
+		$actual   = get_cabin_class_filter();
+		$this->assertEquals( $expected, $actual );
+
+		// Create cabin class taxonomy terms.
+		$term1 = wp_insert_term( 'Cabin Class 1', CABIN_CLASS_TAXONOMY );
+		$this->assertIsArray( $term1 );
+		$term1 = get_term( $term1['term_id'], CABIN_CLASS_TAXONOMY, ARRAY_A );
+		$this->assertIsArray( $term1 );
+		$term2 = wp_insert_term( 'Cabin Class 2', CABIN_CLASS_TAXONOMY );
+		$this->assertIsArray( $term2 );
+		$term2 = get_term( $term2['term_id'], CABIN_CLASS_TAXONOMY, ARRAY_A );
+		$this->assertIsArray( $term2 );
+		$term3 = wp_insert_term( 'Cabin Class 3', CABIN_CLASS_TAXONOMY );
+		$this->assertIsArray( $term3 );
+		$term3 = get_term( $term3['term_id'], CABIN_CLASS_TAXONOMY, ARRAY_A );
+		$this->assertIsArray( $term3 );
+
+		// Test when cabin class exists, but not assigned to any post.
+		$expected = [];
+		$actual   = get_cabin_class_filter();
+		$this->assertEquals( $expected, $actual );
+
+		// Create a cabin post.
+		$post_id = $this->factory()->post->create(
+			[
+				'post_type' => CABIN_CATEGORY_POST_TYPE,
+			]
+		);
+		$this->assertIsInt( $post_id );
+
+		// Assign cabin class terms to the cabin post.
+		wp_set_object_terms( $post_id, [ $term1['term_id'], $term2['term_id'] ], CABIN_CLASS_TAXONOMY );
+
+		// Test when cabin class exists and assigned to a post.
+		$expected = [
+			[
+				'value' => $term1['term_id'],
+				'label' => $term1['name'],
+			],
+			[
+				'value' => $term2['term_id'],
+				'label' => $term2['name'],
+			],
+		];
+		$actual   = get_cabin_class_filter();
+		$this->assertEquals( $expected, $actual );
+
+		// Associate another cabin class term to the cabin post.
+		wp_set_object_terms( $post_id, [ $term3['term_id'] ], CABIN_CLASS_TAXONOMY );
+
+		// Test when cabin class updates.
+		$expected = [
+			[
+				'value' => $term3['term_id'],
+				'label' => $term3['name'],
+			],
+		];
+		$actual   = get_cabin_class_filter();
+		$this->assertEquals( $expected, $actual );
+	}
+
+	/**
+	 * Test getting travelers filter data.
+	 *
+	 * @covers \Quark\Search\Filters\get_travelers_filter()
+	 *
+	 * @return void
+	 */
+	public function test_get_travelers_filter_data(): void {
+		// Test.
+		$expected = [
+			[
+				'value' => 'A',
+				'label' => 'Single Room',
+			],
+			[
+				'value' => 'AA',
+				'label' => 'Double Room',
+			],
+			[
+				'value' => 'SAA',
+				'label' => 'Double Room Shared',
+			],
+			[
+				'value' => 'SMAA',
+				'label' => 'Double Room Shared (Male)',
+			],
+			[
+				'value' => 'SFAA',
+				'label' => 'Double Room Shared (Female)',
+			],
+			[
+				'value' => 'AAA',
+				'label' => 'Triple Room',
+			],
+			[
+				'value' => 'SAAA',
+				'label' => 'Triple Room Shared',
+			],
+			[
+				'value' => 'SMAAA',
+				'label' => 'Triple Room Shared (Male)',
+			],
+			[
+				'value' => 'SFAAA',
+				'label' => 'Triple Room Shared (Female)',
+			],
+			[
+				'value' => 'AAAA',
+				'label' => 'Quad Room',
+			],
+		];
+		$actual   = get_travelers_filter();
+		$this->assertEquals( $expected, $actual );
 	}
 }
