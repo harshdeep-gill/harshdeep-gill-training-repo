@@ -16,6 +16,8 @@ use function Quark\Search\Departures\search;
 use function Quark\Ships\get as get_ship_post;
 
 use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
+use const Quark\Departures\SPOKEN_LANGUAGE_TAXONOMY;
+use const Quark\Expeditions\DESTINATION_TAXONOMY;
 use const Quark\Search\Departures\FACET_TYPE_FIELD;
 use const Quark\Search\Departures\FACET_TYPE_RANGE;
 use const Quark\StaffMembers\SEASON_TAXONOMY;
@@ -26,6 +28,9 @@ const ADVENTURE_OPTION_FILTER_KEY = 'adventure_options';
 const SHIP_FILTER_KEY             = 'ships';
 const MONTH_FILTER_KEY            = 'months';
 const DURATION_FILTER_KEY         = 'durations';
+const ITINERARY_LENGTH_FILTER_KEY = 'itinerary_lengths';
+const LANGUAGE_FILTER_KEY         = 'languages';
+const DESTINATION_FILTER_KEY      = 'destinations';
 
 const FILTERS_MAPPING = [
 	SEASON_FILTER_KEY           => [
@@ -90,6 +95,33 @@ const FILTERS_MAPPING = [
 			],
 		],
 		'handler'    => '\Quark\Search\Filters\get_duration_filter',
+		'default'    => [],
+	],
+	ITINERARY_LENGTH_FILTER_KEY => [
+		'key'        => ITINERARY_LENGTH_FILTER_KEY,
+		'solr_facet' => [
+			'key'  => 'duration_i',
+			'type' => FACET_TYPE_FIELD,
+		],
+		'handler'    => '\Quark\Search\Filters\get_itinerary_length_filter',
+		'default'    => [],
+	],
+	LANGUAGE_FILTER_KEY         => [
+		'key'        => LANGUAGE_FILTER_KEY,
+		'solr_facet' => [
+			'key'  => SPOKEN_LANGUAGE_TAXONOMY . '_taxonomy_id',
+			'type' => FACET_TYPE_FIELD,
+		],
+		'handler'    => '\Quark\Search\Filters\get_language_filter',
+		'default'    => [],
+	],
+	DESTINATION_FILTER_KEY      => [
+		'key'        => DESTINATION_FILTER_KEY,
+		'solr_facet' => [
+			'key'  => DESTINATION_TAXONOMY . '_taxonomy_id',
+			'type' => FACET_TYPE_FIELD,
+		],
+		'handler'    => '\Quark\Search\Filters\get_destination_filter',
 		'default'    => [],
 	],
 ];
@@ -445,6 +477,215 @@ function get_duration_filter( array $duration_facet = [] ): array {
 			'value' => $duration_value,
 			'count' => absint( $count ),
 		];
+	}
+
+	// Return filter data.
+	return array_values( $filter_data );
+}
+
+/**
+ * Construct itinerary length filter from facet.
+ *
+ * @param mixed[] $itinerary_length_facet Itinerary length facet.
+ *
+ * @return array<int, array{
+ *    label: string,
+ *    value: int,
+ *    count: int,
+ * }>
+ */
+function get_itinerary_length_filter( array $itinerary_length_facet = [] ): array {
+	// Bail if empty.
+	if ( empty( $itinerary_length_facet ) ) {
+		return [];
+	}
+
+	// Initialize filter data.
+	$filter_data = [];
+
+	// Loop through itinerary length facet.
+	foreach ( $itinerary_length_facet as $itinerary_length => $count ) {
+		// Convert to integer.
+		$itinerary_length = absint( $itinerary_length );
+		$count            = absint( $count );
+
+		// Validate count.
+		if ( empty( $count ) || empty( $itinerary_length ) ) {
+			continue;
+		}
+
+		// Continue if already set.
+		if ( ! empty( $filter_data[ $itinerary_length ] ) ) {
+			continue;
+		}
+
+		// Prepare itinerary length data.
+		$filter_data[ $itinerary_length ] = [
+			'label' => sprintf( '%d %s', $itinerary_length, _n( 'Day', 'Days', $itinerary_length, 'qrk' ) ),
+			'value' => $itinerary_length,
+			'count' => $count,
+		];
+	}
+
+	// Sort by length.
+	ksort( $filter_data );
+
+	// Return filter data.
+	return array_values( $filter_data );
+}
+
+/**
+ * Construct language filter from facet.
+ *
+ * @param mixed[] $language_facet Language facet.
+ *
+ * @return array<int, array{
+ *   label: string,
+ *   value: int,
+ *   count: int,
+ * }>
+ */
+function get_language_filter( array $language_facet = [] ): array {
+	// Bail if empty.
+	if ( empty( $language_facet ) ) {
+		return [];
+	}
+
+	// Initialize filter data.
+	$filter_data = [];
+
+	// Loop through language facet.
+	foreach ( $language_facet as $language_id => $count ) {
+		// Convert to integer.
+		$language_id = absint( $language_id );
+		$count       = absint( $count );
+
+		// Validate count.
+		if ( empty( $count ) || empty( $language_id ) ) {
+			continue;
+		}
+
+		// Get term.
+		$language_term = get_term_by( 'id', $language_id, SPOKEN_LANGUAGE_TAXONOMY );
+
+		// Validate term.
+		if ( ! $language_term instanceof WP_Term ) {
+			continue;
+		}
+
+		// Continue if already set.
+		if ( ! empty( $filter_data[ $language_id ] ) ) {
+			continue;
+		}
+
+		// Prepare language data.
+		$filter_data[ $language_id ] = [
+			'label' => $language_term->name,
+			'value' => $language_id,
+			'count' => $count,
+		];
+	}
+
+	// Return filter data.
+	return array_values( $filter_data );
+}
+
+/**
+ * Construct destination filter from facet.
+ *
+ * @param mixed[] $destination_facet Destination facet.
+ *
+ * @return array<int, array{
+ *   label: string,
+ *   value: int,
+ *   count: int,
+ *   children: array<int, array{
+ *      label: string,
+ *      value: int,
+ *      count: int,
+ *      parent_id: int,
+ *   }>,
+ * }>
+ */
+function get_destination_filter( array $destination_facet = [] ): array {
+	// Bail if empty.
+	if ( empty( $destination_facet ) ) {
+		return [];
+	}
+
+	// Initialize filter data.
+	$filter_data = [];
+
+	// Loop through destination facet.
+	foreach ( $destination_facet as $destination_id => $count ) {
+		// Convert to integer.
+		$destination_id = absint( $destination_id );
+		$count          = absint( $count );
+
+		// Validate count.
+		if ( empty( $count ) || empty( $destination_id ) ) {
+			continue;
+		}
+
+		// Get term.
+		$destination_term = get_term_by( 'id', $destination_id, DESTINATION_TAXONOMY );
+
+		// Validate term.
+		if ( ! $destination_term instanceof WP_Term ) {
+			continue;
+		}
+
+		// Get parent term.
+		if ( ! empty( $destination_term->parent ) ) {
+			// Get parent term.
+			$parent_term = get_term( $destination_term->parent, DESTINATION_TAXONOMY );
+
+			// Validate parent term.
+			if ( $parent_term instanceof WP_Term ) {
+				// Add parent to filter data if not set.
+				if ( empty( $filter_data[ $parent_term->term_id ] ) ) {
+					$filter_data[ $parent_term->term_id ] = [
+						'label'    => $parent_term->name,
+						'value'    => $parent_term->term_id,
+						'count'    => 0,
+						'children' => [],
+					];
+				}
+
+				// Add destination term as child.
+				$filter_data[ $parent_term->term_id ]['children'][] = [
+					'label'     => $destination_term->name,
+					'value'     => $destination_id,
+					'count'     => $count,
+					'parent_id' => $parent_term->term_id,
+				];
+			}
+		} else {
+			// Update count.
+			if ( ! empty( $filter_data[ $destination_id ] ) ) {
+				$filter_data[ $destination_id ]['count'] = $count;
+				continue;
+			}
+
+			// Prepare destination data.
+			$filter_data[ $destination_id ] = [
+				'label'    => $destination_term->name,
+				'value'    => $destination_id,
+				'count'    => $count,
+				'children' => [],
+			];
+		}
+	}
+
+	// Flatten children destinations.
+	foreach ( $filter_data as $destination_term_id => $destination ) {
+		// Continue if no children.
+		if ( empty( $destination['children'] ) ) {
+			continue;
+		}
+
+		// Flatten children.
+		$filter_data[ $destination_term_id ]['children'] = array_values( $destination['children'] );
 	}
 
 	// Return filter data.
