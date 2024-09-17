@@ -2649,9 +2649,10 @@
 	<x-media-cta-banner appearance="solid" background_colour="gray">
 		<x-media-cta-banner.image image_id="35" />
 		<x-media-cta-banner.content>
-			<x-media-cta-banner.overline text="The Shackleton Club" />
-			<h3>The Shackleton Club</h3>
-			<p>We always reward loyalty! If you’re a returning guest, enjoy an additional 5% savings on all future Quark Expeditions voyages.</p>
+			<x-media-cta-banner.overline text="Expedition Guides and Education Team" />
+			<h3>Discover Your Next Adventure</h3>
+			<h4>Experience the Polar Regions your own way</h4>
+			<p>Greenland is waiting to be explored. Browse all of our expedition options to the world's largest island.</p>
 			<x-button size="big" color="black">Join the Shackleton Club</x-button>
 		</x-media-cta-banner.content>
 	</x-media-cta-banner>
