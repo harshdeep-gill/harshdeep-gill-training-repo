@@ -83,8 +83,12 @@
 				}
 
 				&.hero--content-no-overlap {
-					margin-bottom: calc($image_bleed_bottom / 2);
-					padding-bottom: calc($image_bleed_bottom / 4);
+					margin-bottom: var(--grid-section-gutter);
+
+					@media screen and (min-width: grid-size(xl)) {
+						margin-bottom: calc($image_bleed_bottom / 2);
+						padding-bottom: calc($image_bleed_bottom / 4);
+					}
 				}
 			}
 		}

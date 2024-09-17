@@ -43,8 +43,8 @@
 	}
 
 	&__track {
-		padding-left: var(--spacing-5);
-		margin-left: calc(-1 * var(--spacing-5));
+		padding-left: var(--grid-col-gutter);
+		margin-left: calc(-1 * var(--grid-col-gutter));
 		scrollbar-width: none; /* Firefox */
 
 		&::-webkit-scrollbar {
@@ -60,7 +60,7 @@
 	}
 
 	&__slides {
-		gap: var(--spacing-5);
+		gap: var(--grid-col-gutter);
 		display: grid;
 		grid-auto-flow: column;
 		grid-auto-columns: max-content;
@@ -149,7 +149,7 @@
 		display: flex;
 		column-gap: var(--spacing-5);
 		margin-top: var(--spacing-6);
-		margin-left: calc(-1 * var(--spacing-1));
+		// margin-left: calc(-1 * var(--spacing-1));
 
 		@media screen and (min-width: grid-size(lg)) {
 			display: none;
