@@ -49,6 +49,12 @@ export default class DatesRatesFilterExpeditionsElement extends HTMLElement {
 		// Get the state.
 		const expeditions = getExpeditionsState();
 
+		// Do we have no filters?
+		if ( expeditions.length === 0 ) {
+			// Yes, bail.
+			return;
+		}
+
 		// Check if we should update.
 		this.isFilterUpdating = true;
 

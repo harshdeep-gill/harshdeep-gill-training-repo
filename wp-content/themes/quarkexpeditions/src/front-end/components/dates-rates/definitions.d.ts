@@ -1,7 +1,7 @@
 /**
  * Interface DatesRatesFilterValue
  */
-interface DatesRatesSelectedFilter {
+interface DatesRatesFilterState {
 	value: string,
 	label: string,
 }
@@ -12,26 +12,21 @@ interface DatesRatesSelectedFilter {
 type DatesRatesFilterType = 'seasons' | 'expeditions' | 'adventureOptions' | 'months' | 'durations' | 'ships';
 
 /**
- * Interface DatesRatesFilterState
+ * type DatesRatesAllowedParam
  */
-interface DatesRatesFilterState {
-	type: DatesRatesFilterType,
-	filters: DatesRatesSelectedFilter[],
-}
-
-/**
- * Interface DatesRatesFilterStateUpdateObject
- */
-interface DatesRatesFilterStateUpdateObject {
-	type: DatesRatesFilterType,
-	filter: DatesRatesSelectedFilter,
-}
+type DatesRatesAllowedParam = DatesRatesFilterType | 'perPage' | 'pageNumber';
 
 /**
  * Interface DatesRatesState.
  */
 interface DatesRatesState {
-	selectedFilters: DatesRatesFilterState[],
+	selectedFilters: DatesRatesFilterType[],
+	seasons: DatesRatesFilterState[],
+	expeditions: DatesRatesFilterState[],
+	adventureOptions: DatesRatesFilterState[],
+	months: DatesRatesFilterState[],
+	durations: DatesRatesFilterState[],
+	ships: DatesRatesFilterState[],
 	pageNumber: number,
 	totalPages: number,
 	perPage: number,
@@ -44,15 +39,30 @@ interface DatesRatesState {
 	markup: string,
 	noResultsMarkup: string,
 	baseUrl: string
-	allowedParams: string[],
+	allowedParams: DatesRatesAllowedParam[],
 	filtersMarkup: string,
 }
 
 /**
- * Interface DatesRatesFiltersInUrl
+ * Interface DatesRatesFiltersToUrl
  */
-interface DatesRatesFiltersInUrl {
-	selectedFilters: DatesRatesFilterState[],
+interface DatesRatesFiltersToUrl {
+	selectedFilters: DatesRatesFilterType[],
+	perPage: number,
+	pageNumber: number,
+}
+
+/**
+ * Interface DatesRatesFiltersFromUrl
+ */
+interface DatesRatesFiltersFromUrl {
+	seasons: string[],
+	expeditions: string[],
+	adventureOptions: string[],
+	months: string[],
+	durations: string[],
+	ships: string[],
+	selectedFilters: DatesRatesFilterType[],
 	perPage: number,
 	pageNumber: number,
 }

@@ -11,7 +11,7 @@
 
 	// Classes.
 	$classes = [ 'dates-rates__adventure-options-item' ];
-2
+
 	if ( true === $is_paid ) {
 		$classes[] = 'dates-rates__adventure-options-item--paid';
 	}

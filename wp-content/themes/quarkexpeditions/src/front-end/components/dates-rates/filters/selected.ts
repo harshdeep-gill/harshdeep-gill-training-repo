@@ -67,8 +67,8 @@ export default class DatesRatesSelectedFiltersElement extends HTMLElement {
 		// Loop through the filters.
 		selectedFilters.forEach( ( selectedFilter ) => {
 			// Get the selected values.
-			const selectedValues: DatesRatesSelectedFilter[] = selectedFilter.filters;
-			const filterName = selectedFilter.type;
+			const selectedValues: DatesRatesFilterState[] = state[ selectedFilter ];
+			const filterName = selectedFilter;
 
 			// Check if any filters are selected.
 			if ( selectedValues.length > 0 ) {
@@ -76,7 +76,7 @@ export default class DatesRatesSelectedFiltersElement extends HTMLElement {
 			}
 
 			// Loop through the values and create new pills.
-			selectedValues.forEach( ( selectedValue: DatesRatesSelectedFilter ) => {
+			selectedValues.forEach( ( selectedValue: DatesRatesFilterState ) => {
 				// Clone the template.
 				const filterPillTemplateClone = this.selectedFilterPillTemplate?.content.cloneNode( true ) as HTMLElement | undefined;
 				const filterPill = filterPillTemplateClone?.querySelector( 'quark-dates-rates-selected-filter-pill' );

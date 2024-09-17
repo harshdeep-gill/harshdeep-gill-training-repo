@@ -49,6 +49,12 @@ export default class DatesRatesFilterDurationsElement extends HTMLElement {
 		// Get the state.
 		const durations = getDurationsState();
 
+		// Do we have no filters?
+		if ( durations.length === 0 ) {
+			// Yes, bail.
+			return;
+		}
+
 		// Check if we should update.
 		this.isFilterUpdating = true;
 

@@ -49,6 +49,12 @@ export default class DatesRatesFilterShipsElement extends HTMLElement {
 		// Get the state.
 		const ships = getShipsState();
 
+		// Do we have no filters?
+		if ( ships.length === 0 ) {
+			// Yes, bail.
+			return;
+		}
+
 		// Check if we should update.
 		this.isFilterUpdating = true;
 

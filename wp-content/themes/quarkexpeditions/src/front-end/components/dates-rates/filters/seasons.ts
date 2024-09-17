@@ -49,6 +49,12 @@ export default class DatesRatesFilterSeasonsElement extends HTMLElement {
 		// Get the state.
 		const seasons = getSeasonsState();
 
+		// Do we have no filters?
+		if ( seasons.length === 0 ) {
+			// Yes, bail.
+			return;
+		}
+
 		// Check if we should update.
 		this.isFilterUpdating = true;
 

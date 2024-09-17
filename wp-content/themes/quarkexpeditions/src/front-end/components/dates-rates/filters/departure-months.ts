@@ -49,6 +49,12 @@ export default class DatesRatesFilterDepartureMonthsElement extends HTMLElement 
 		// Get the state.
 		const months = getDepartureMonthsState();
 
+		// Do we have no filters?
+		if ( months.length === 0 ) {
+			// Yes, bail.
+			return;
+		}
+
 		// Check if we should update.
 		this.isFilterUpdating = true;
 

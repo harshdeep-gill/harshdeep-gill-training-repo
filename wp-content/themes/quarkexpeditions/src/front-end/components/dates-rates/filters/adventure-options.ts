@@ -49,6 +49,12 @@ export default class DatesRatesFilterAdventureOptionsElement extends HTMLElement
 		// Get the state.
 		const adventureOptions = getAdventureOptionsState();
 
+		// Do we have no filters?
+		if ( adventureOptions.length === 0 ) {
+			// Yes, bail.
+			return;
+		}
+
 		// Check if we should update.
 		this.isFilterUpdating = true;
 
