@@ -1,0 +1,11 @@
+.press-releases {
+
+	.listing-cards {
+		margin-top: var(--spacing-7);
+
+		&__card {
+			border-radius: 16px;
+			padding: var(--spacing-8);
+		}
+	}
+}
