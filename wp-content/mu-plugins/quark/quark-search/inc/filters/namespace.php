@@ -34,7 +34,7 @@ const FILTERS_MAPPING = [
 			'key'  => 'region_season_str',
 			'type' => FACET_TYPE_FIELD,
 		],
-		'function'   => '\Quark\Search\Filters\get_region_and_season_filter',
+		'handler'   => '\Quark\Search\Filters\get_region_and_season_filter',
 		'default'    => [],
 	],
 	EXPEDITION_FILTER_KEY       => [
@@ -43,7 +43,7 @@ const FILTERS_MAPPING = [
 			'key'  => 'related_expedition_str',
 			'type' => FACET_TYPE_FIELD,
 		],
-		'function'   => '\Quark\Search\Filters\get_expedition_filter',
+		'handler'   => '\Quark\Search\Filters\get_expedition_filter',
 		'default'    => [],
 	],
 	ADVENTURE_OPTION_FILTER_KEY => [
@@ -52,7 +52,7 @@ const FILTERS_MAPPING = [
 			'key'  => ADVENTURE_OPTION_CATEGORY . '_taxonomy_id',
 			'type' => FACET_TYPE_FIELD,
 		],
-		'function'   => '\Quark\Search\Filters\get_adventure_options_filter',
+		'handler'   => '\Quark\Search\Filters\get_adventure_options_filter',
 		'default'    => [],
 	],
 	SHIP_FILTER_KEY             => [
@@ -61,7 +61,7 @@ const FILTERS_MAPPING = [
 			'key'  => 'related_ship_str',
 			'type' => FACET_TYPE_FIELD,
 		],
-		'function'   => '\Quark\Search\Filters\get_ship_filter',
+		'handler'   => '\Quark\Search\Filters\get_ship_filter',
 		'default'    => [],
 	],
 	MONTH_FILTER_KEY            => [
@@ -75,7 +75,7 @@ const FILTERS_MAPPING = [
 				'gap'   => '+1MONTH',
 			],
 		],
-		'function'   => '\Quark\Search\Filters\get_month_filter',
+		'handler'   => '\Quark\Search\Filters\get_month_filter',
 		'default'    => [],
 	],
 	DURATION_FILTER_KEY         => [
@@ -89,7 +89,7 @@ const FILTERS_MAPPING = [
 				'gap'   => 7,
 			],
 		],
-		'function'   => '\Quark\Search\Filters\get_duration_filter',
+		'handler'   => '\Quark\Search\Filters\get_duration_filter',
 		'default'    => [],
 	],
 ];
@@ -505,7 +505,7 @@ function build_filter_options( array $filter_keys = [], array $selected_filters 
 		$filter = FILTERS_MAPPING[ $filter_key ];
 
 		// Bail if function is not callable.
-		if ( ! is_callable( $filter['function'] ) ) {
+		if ( ! is_callable( $filter['handler'] ) ) {
 			continue;
 		}
 
@@ -523,7 +523,7 @@ function build_filter_options( array $filter_keys = [], array $selected_filters 
 		}
 
 		// Get filter data.
-		$filter_options[ $filter_key ] = $filter['function']( $facet_data['values'] );
+		$filter_options[ $filter_key ] = $filter['handler']( $facet_data['values'] );
 	}
 
 	// Return filter options if no selected filters.
@@ -568,7 +568,7 @@ function build_filter_options( array $filter_keys = [], array $selected_filters 
 	}
 
 	// Get last filter data.
-	$filter_options[ $last_filter_key ] = FILTERS_MAPPING[ $last_filter_key ]['function']( $facet_data['values'] );
+	$filter_options[ $last_filter_key ] = FILTERS_MAPPING[ $last_filter_key ]['handler']( $facet_data['values'] );
 
 	// Get complete filters.
 	return $filter_options;
