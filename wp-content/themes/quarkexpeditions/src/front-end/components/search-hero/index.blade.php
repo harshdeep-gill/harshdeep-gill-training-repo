@@ -1,6 +1,5 @@
 @props( [
 	'immersive'       => 'none',
-	'text_align'      => '',
 	'overlay_opacity' => 0,
 	'content_overlap' => true,
 ] )
@@ -18,12 +17,6 @@
 
 	if ( empty( $content_overlap ) ) {
 		$classes[] = 'search-hero--content-no-overlap';
-	}
-
-	if ( ! empty( $text_align ) && in_array( $text_align, [ 'center', 'left' ], true ) ) {
-		$classes[] = 'search-hero--text-' . $text_align;
-	} else {
-		$classes[] = 'search-hero--text-left';
 	}
 
 	$overlay_opacity = $overlay_opacity / 100;
