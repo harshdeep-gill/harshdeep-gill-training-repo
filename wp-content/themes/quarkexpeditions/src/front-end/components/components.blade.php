@@ -298,6 +298,65 @@
 	</x-hero>
 </x-component-demo>
 
+<x-component-demo :keys="[ 'search-hero' ]">
+	<x-search-hero text_align="left" immersive="all" :overlay_opacity="10">
+		<x-search-hero.image image_id="26" />
+		<x-search-hero.content>
+			<x-search-hero.left>
+				<x-search-hero.title-container>
+					<x-search-hero.overline>Journey of a lifetime</x-search-hero.overline>
+					<x-search-hero.title title="Not a cruise. A real polar expedition." />
+				</x-search-hero.title-container>
+				<x-search-hero.search-bar>
+					{{-- https://tuispecialist.atlassian.net/browse/QE-439 [In Progress] --}}
+					{{-- <x-search-filters-bar /> --}}
+					Search bar component
+				</x-search-hero.search-bar>
+				{{-- Existing component, needs video support update --}}
+				<x-thumbnail-cards :is_carousel="false" :full_width="false">
+					<x-thumbnail-cards.card size="small" url="#" orientation="portrait" video_id="167">
+						<x-thumbnail-cards.title title="Arctic Expeditions" align="bottom" />
+					</x-thumbnail-cards.card>
+					<x-thumbnail-cards.card size="small" url="#" orientation="portrait" image_id="30">
+						<x-thumbnail-cards.title title="Antarctic Expeditions" align="bottom" />
+					</x-thumbnail-cards.card>
+					<x-thumbnail-cards.card size="small" url="#" orientation="portrait" image_id="33">
+						<x-thumbnail-cards.title title="Patagonia Expeditions" align="bottom" />
+					</x-thumbnail-cards.card>
+				</x-thumbnail-cards>
+			</x-search-hero.left>
+			<x-search-hero.right>
+				<x-hero-card-slider :arrows="true">
+					<x-hero-card-slider.card>
+						<x-hero-card-slider.image image_id="29" />
+						<x-hero-card-slider.content>
+							<x-hero-card-slider.tag text="On-ship Experience" />
+							<x-hero-card-slider.title title="Life Onboard a Quark Expeditions Vessel: Incredible On-Ship Experiences" />
+							<x-hero-card-slider.card-cta text="Explore Experiences" url="#" />
+						</x-hero-card-slider.content>
+					</x-hero-card-slider.card>
+					<x-hero-card-slider.card>
+						<x-hero-card-slider.video video_id="167" />
+						<x-hero-card-slider.content>
+							<x-hero-card-slider.tag text="On-ship Experience" />
+							<x-hero-card-slider.title title="Life Onboard a Quark Expeditions Vessel: Incredible On-Ship Experiences" />
+							<x-button appearance="outline" size="big">Book Now</x-button>
+						</x-hero-card-slider.content>
+					</x-hero-card-slider.card>
+					<x-hero-card-slider.card>
+						<x-hero-card-slider.image image_id="34" />
+						<x-hero-card-slider.content>
+							<x-hero-card-slider.overline text="Limited time. Limited Cabins." />
+							<x-hero-card-slider.title title="Epic 50% Savings" />
+							<x-hero-card-slider.card-cta text="Explore Experiences" url="#" />
+						</x-hero-card-slider.content>
+					</x-hero-card-slider.card>
+				</x-hero-card-slider>
+			</x-search-hero.right>
+		</x-search-hero.content>
+	</x-search-hero>
+</x-component-demo>
+
 <x-component-demo :keys="[ 'secondary-navigation' ]">
 	<x-secondary-navigation>
 		<x-secondary-navigation.navigation :jump_to_navigation="true">
