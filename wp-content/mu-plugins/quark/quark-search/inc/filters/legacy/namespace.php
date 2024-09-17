@@ -7,7 +7,14 @@
 
 namespace Quark\Search\Filters\Legacy;
 
-use function Quark\Search\Filters\get_filters_for_dates_rates;
+use function Quark\Search\Filters\build_filter_options;
+
+use const Quark\Search\Filters\ADVENTURE_OPTION_FILTER_KEY;
+use const Quark\Search\Filters\DURATION_FILTER_KEY;
+use const Quark\Search\Filters\EXPEDITION_FILTER_KEY;
+use const Quark\Search\Filters\MONTH_FILTER_KEY;
+use const Quark\Search\Filters\SEASON_FILTER_KEY;
+use const Quark\Search\Filters\SHIP_FILTER_KEY;
 
 const LEGACY_SEASON_FILTER_KEY            = 'season';
 const LEGACY_EXPEDITION_FILTER_KEY        = 'expedition';
@@ -19,33 +26,33 @@ const LEGACY_SHIP_FILTER_KEY              = 'ship';
 const LEGACY_QUERY_PARAMS_MAPPING = [
 	LEGACY_SEASON_FILTER_KEY            => [
 		'key'     => LEGACY_SEASON_FILTER_KEY,
-		'new_key' => 'seasons',
+		'new_key' => SEASON_FILTER_KEY,
 		'retain'  => false,
 	],
 	LEGACY_EXPEDITION_FILTER_KEY        => [
 		'key'     => LEGACY_EXPEDITION_FILTER_KEY,
-		'new_key' => 'expeditions',
+		'new_key' => EXPEDITION_FILTER_KEY,
 		'retain'  => false,
 	],
 	LEGACY_ADVENTURE_OPTIONS_FILTER_KEY => [
 		'key'     => LEGACY_ADVENTURE_OPTIONS_FILTER_KEY,
-		'new_key' => 'adventure_options',
+		'new_key' => ADVENTURE_OPTION_FILTER_KEY,
 		'retain'  => false,
 	],
 	LEGACY_MONTH_FILTER_KEY             => [
 		'key'     => LEGACY_MONTH_FILTER_KEY,
-		'new_key' => 'months',
+		'new_key' => MONTH_FILTER_KEY,
 		'parser'  => __NAMESPACE__ . '\\parse_month_filter',
 		'retain'  => true,
 	],
 	LEGACY_DURATION_FILTER_KEY          => [
 		'key'     => LEGACY_DURATION_FILTER_KEY,
-		'new_key' => 'durations',
+		'new_key' => DURATION_FILTER_KEY,
 		'retain'  => true,
 	],
 	LEGACY_SHIP_FILTER_KEY              => [
 		'key'     => LEGACY_SHIP_FILTER_KEY,
-		'new_key' => 'ships',
+		'new_key' => SHIP_FILTER_KEY,
 		'retain'  => false,
 	],
 ];
@@ -87,6 +94,7 @@ function parse_month_filter( string $month = '' ): string {
 
 /**
  * Redirect legacy search query params.
+ * This updates the legacy query params to new query params without changing URL route. Then, redirects 302.
  *
  * @return void
  */
@@ -99,11 +107,11 @@ function redirect_legacy_search_query_params(): void {
 		return;
 	}
 
-	// Initialize new query params.
-	$new_query_params = [];
-
 	// Get all filter options.
-	$filter_options = get_filters_for_dates_rates();
+	$filter_options = build_filter_options( array_column( LEGACY_QUERY_PARAMS_MAPPING, 'new_key' ) );
+
+	// Is query params modified.
+	$is_query_params_modified = false;
 
 	// Loop over each legacy query param and map it to new query param.
 	foreach ( LEGACY_QUERY_PARAMS_MAPPING as $legacy_key => $value ) {
@@ -115,8 +123,14 @@ function redirect_legacy_search_query_params(): void {
 		// New key.
 		$new_key = $value['new_key'];
 
-		// Fetch input and decode HTML entities.
-		$json_data        = $query_params[ $legacy_key ];
+		// Get json data.
+		$json_data = $query_params[ $legacy_key ];
+
+		// Unset the legacy key.
+		unset( $query_params[ $legacy_key ] );
+		$is_query_params_modified = true;
+
+		// Decode json data.
 		$json_data        = html_entity_decode( $json_data );
 		$selected_filters = json_decode( $json_data, true );
 
@@ -135,9 +149,14 @@ function redirect_legacy_search_query_params(): void {
 			$selected_filters = array_map( $value['parser'], $selected_filters );
 		}
 
+		// Skip if selected filters are empty.
+		if ( empty( $selected_filters ) ) {
+			continue;
+		}
+
 		// Retain the filter if required.
 		if ( true === $value['retain'] ) {
-			$new_query_params[ $new_key ] = $selected_filters;
+			$query_params[ $new_key ] = $selected_filters;
 			continue;
 		}
 
@@ -170,16 +189,15 @@ function redirect_legacy_search_query_params(): void {
 
 		// If we have matched values, add them to the query.
 		if ( ! empty( $matched_values ) ) {
-			$new_query_params[ $new_key ] = $matched_values;
+			$query_params[ $new_key ] = $matched_values;
 		}
 	}
 
-	// Bail if no new query params.
-	if ( empty( $new_query_params ) ) {
+	// Bail if query params are not modified.
+	if ( ! $is_query_params_modified ) {
 		return;
 	}
 
-	// Redirect to new query params.
 	// Get current path.
 	$current_path = $_SERVER['REQUEST_URI'];
 
@@ -190,8 +208,18 @@ function redirect_legacy_search_query_params(): void {
 	$new_query = '';
 
 	// Loop over new query params.
-	foreach ( $new_query_params as $key => $value ) {
-		$new_query .= $key . '=' . urlencode_deep( implode( ',', $value ) ) . '&';
+	foreach ( $query_params as $key => $value ) {
+		// Skip if value is empty.
+		if ( empty( $value ) ) {
+			continue;
+		}
+
+		// Implode if array.
+		if ( is_array( $value ) ) {
+			$new_query .= $key . '=' . urlencode_deep( implode( ',', $value ) ) . '&';
+		} else {
+			$new_query .= $key . '=' . urlencode_deep( $value ) . '&';
+		}
 	}
 
 	// Redirect path.
