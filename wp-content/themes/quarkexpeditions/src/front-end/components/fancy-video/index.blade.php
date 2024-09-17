@@ -47,7 +47,19 @@
 			</div>
 
 			@if ( ! empty( $url ) )
-				<iframe class="fancy-video__iframe" width="1200" height="620" src="{{ $url }}" title="{{ $title }}" allow="modestbranding; accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+				@if ( str_contains( $url, 'youtube.com' ) )
+					<iframe
+						class="fancy-video__video"
+						width="1200"
+						height="620"
+						src="{{ $url }}"
+						title="{{ $title }}"
+						allow="modestbranding; accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+						allowfullscreen
+					></iframe>
+				@elseif ( str_contains( $url, 'wistia.com' ) )
+					<x-wistia-embed :url="$url" class="fancy-video__video" />
+				@endif
 			@endif
 		</div>
 	</div>

@@ -215,13 +215,18 @@ class Expedition {
 			'post_date_gmt'     => $created_at,
 			'post_modified'     => $modified_at,
 			'post_modified_gmt' => $modified_at,
-			'post_content'      => prepare_content( $post_content ),
+			'post_content'      => '',
 			'post_excerpt'      => trim( wp_strip_all_tags( strval( $item['post_excerpt'] ) ) ),
 			'post_status'       => $status,
 			'comment_status'    => 'closed',
 			'ping_status'       => 'closed',
 			'meta_input'        => [],
 		];
+
+		// Set post content as meta value.
+		if ( ! empty( $post_content ) ) {
+			$data['meta_input']['overview'] = wpautop( $post_content ); // phpcs:ignore
+		}
 
 		// Set expedition category term.
 		if ( ! empty( $item['expedition_category_id'] ) ) {

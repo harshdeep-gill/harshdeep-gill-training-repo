@@ -12,6 +12,7 @@ use WP_Post;
 
 use function Quark\Departures\get_cards_data;
 use function Quark\Expeditions\get as get_expedition;
+use function Quark\Localization\get_current_currency;
 use function Quark\Search\Departures\search;
 
 const COMPONENT = 'parts.book-departures-expeditions';
@@ -51,14 +52,12 @@ function render( array $attributes = [], string $content = '' ): string {
 	// Get the expedition ID.
 	$expedition_id = $expedition['post']->ID;
 
-	// TODO: Get the selected currency from the user.
 	// Set the currency.
-	$currency = 'USD';
+	$currency = get_current_currency();
 
 	// Init selected filters.
 	$selected_filter = [
 		'posts_per_load' => 4,
-		'currency'       => $currency,
 		'expeditions'    => [ absint( $expedition_id ) ],
 	];
 
@@ -76,6 +75,7 @@ function render( array $attributes = [], string $content = '' ): string {
 			'results_count'   => $search_results['result_count'],
 			'remaining_count' => $search_results['remaining_count'],
 			'expedition_id'   => $expedition_id,
+			'currency'        => $currency,
 		]
 	);
 }

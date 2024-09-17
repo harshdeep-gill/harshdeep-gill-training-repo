@@ -603,26 +603,33 @@ class Test_Blog extends WP_UnitTestCase {
 	 */
 	public function test_get_structured_data(): void {
 		// create author.
-		$author = $this->factory()->post->create_and_get(
+		$author_one = $this->factory()->post->create_and_get(
 			[
 				'post_type'   => AUTHOR_POST_TYPE,
-				'post_title'  => 'Test Author',
+				'post_title'  => 'Test Author 1',
+				'post_status' => 'publish',
+			]
+		);
+		$author_two = $this->factory()->post->create_and_get(
+			[
+				'post_type'   => AUTHOR_POST_TYPE,
+				'post_title'  => 'Test Author 2',
 				'post_status' => 'publish',
 			]
 		);
 
 		// Assert created posts are instance of WP_Post.
-		$this->assertTrue( $author instanceof WP_Post );
+		$this->assertTrue( $author_one instanceof WP_Post );
+		$this->assertTrue( $author_two instanceof WP_Post );
 
 		// Prepare post arguments.
 		$post_arguments = [
 			'post_title'   => 'Test Post',
 			'post_content' => 'Post content',
 			'post_status'  => 'publish',
-			'post_author'  => $author->ID,
 			'post_type'    => POST_TYPE,
 			'meta_input'   => [
-				'blog_authors' => [ $author->ID ],
+				'blog_authors' => [ $author_one->ID, $author_two->ID ],
 			],
 		];
 
@@ -641,8 +648,14 @@ class Test_Blog extends WP_UnitTestCase {
 			'dateModified'  => $post->post_modified,
 			'image'         => [],
 			'author'        => [
-				'@type' => 'Person',
-				'name'  => $author->post_title,
+				[
+					'@type' => 'Person',
+					'name'  => $author_one->post_title,
+				],
+				[
+					'@type' => 'Person',
+					'name'  => $author_two->post_title,
+				],
 			],
 		];
 
@@ -669,7 +682,8 @@ class Test_Blog extends WP_UnitTestCase {
 
 		// Delete Post.
 		wp_delete_post( $post->ID, true );
-		wp_delete_post( $author->ID, true );
+		wp_delete_post( $author_one->ID, true );
+		wp_delete_post( $author_two->ID, true );
 	}
 
 	/**

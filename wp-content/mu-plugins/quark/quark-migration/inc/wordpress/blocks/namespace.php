@@ -247,11 +247,6 @@ function convert_node_paragraph( string $output = '', ?DOMElement $node = null )
 			}
 		}
 
-		// if any child is an image, convert this into an image block.
-		if ( $child_node instanceof DOMElement && 'img' === $child_node->tagName ) {
-			$inner_html .= convert_node_to_block( $child_node );
-		}
-
 		// If any child is an IFRAME, convert this into an IFRAME block.
 		if ( $child_node instanceof DOMElement && 'iframe' === $child_node->tagName ) {
 			return convert_node_iframe( '', $child_node );
@@ -408,7 +403,8 @@ function convert_node_image( string $output = '', ?DOMElement $node = null, stri
 
 	// Check for image ID in class.
 	if ( ! empty( $class ) && str_contains( $class, 'wp-image-' ) ) {
-		preg_match( '#wp-image-([0-9])#', $class, $matches );
+		// Get the image id form class attribute.
+		preg_match( '/wp-image-(\d+)/', $class, $matches );
 
 		// Check for matches.
 		if ( ! empty( $matches[1] ) ) {

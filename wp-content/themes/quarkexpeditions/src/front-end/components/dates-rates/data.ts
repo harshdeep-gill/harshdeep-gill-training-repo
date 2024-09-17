@@ -12,16 +12,15 @@ export const STORE_NAME = 'datesRates';
  * Default state.
  */
 export const DEFAULT_STATE: DatesRatesState = {
-	currency: 'USD',
 	seasons: [],
 	expeditions: [],
-	adventure_options: [],
+	adventureOptions: [],
 	months: [],
 	durations: [],
 	ships: [],
 	page: 1,
 	totalPages: 1,
-	perPage: 4,
+	perPage: 8,
 	resultCount: 0,
 	isLoading: false,
 	partial: '',
@@ -30,6 +29,17 @@ export const DEFAULT_STATE: DatesRatesState = {
 	shouldMarkupUpdate: false,
 	markup: '',
 	noResultsMarkup: '',
+	baseUrl: '',
+	allowedParams: [
+		'seasons',
+		'expeditions',
+		'adventureOptions',
+		'months',
+		'durations',
+		'ships',
+		'perPage',
+	],
+	filtersMarkup: '',
 };
 
 /**

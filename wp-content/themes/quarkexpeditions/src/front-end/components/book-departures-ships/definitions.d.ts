@@ -2,7 +2,6 @@
  * Interface BookDeparturesShipsFilters.
  */
 interface BookDeparturesShipsFilters {
-	'currency'?: string,
 	'sort'?: string,
 	[key: string]: any;
 }

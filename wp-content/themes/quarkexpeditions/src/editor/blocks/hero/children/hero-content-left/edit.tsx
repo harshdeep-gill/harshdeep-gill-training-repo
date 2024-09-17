@@ -26,6 +26,7 @@ import * as overline from './../overline';
 import * as heroTitle from './../hero-title';
 import * as heroSubtitle from './../hero-subtitle';
 import * as heroDescription from './../hero-description';
+import * as heroTextGraphic from './../hero-text-graphic';
 
 /**
  * Edit Component.
@@ -50,11 +51,13 @@ export default function Edit( { className }: BlockEditAttributes ): JSX.Element 
 				heroTitle.name,
 				heroSubtitle.name,
 				heroDescription.name,
+				heroTextGraphic.name,
 				quarkButton.name,
 			],
 			template: [
 				[ overline.name ],
 				[ heroTitle.name ],
+				[ heroTextGraphic.name ],
 				[ heroSubtitle.name ],
 				[ heroDescription.name ],
 				[ iconBadge.name, { className: 'hero__tag' } ],

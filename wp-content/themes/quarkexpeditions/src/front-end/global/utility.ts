@@ -75,3 +75,63 @@ export const debounce = ( func: Function, delay = 300 ) => {
 		}, delay );
 	};
 };
+
+/**
+ * Camel To Snake Case
+ *
+ * @param {string} camelCaseString Camel Case String.
+ */
+export const camelToSnakeCase = ( camelCaseString: string ): string => {
+	// Check if camelCaseString is empty.
+	if ( ! camelCaseString ) {
+		// Early return.
+		return '';
+	}
+
+	// Replace each uppercase letter with an underscore followed by the lowercase version of the letter.
+	return camelCaseString.replace( /([A-Z])/g, '_$1' ).toLowerCase();
+};
+
+/**
+ * Snake To Camel Case
+ *
+ * @param {string} snakeCaseString Snake Case String.
+ */
+const snakeToCamelCase = ( snakeCaseString: string ): string => {
+	// Convert snake case to camel case.
+	return snakeCaseString.toLowerCase().replace( /(_\w)/g, ( match ) => {
+		// Return the matched value.
+		return match[ 1 ].toUpperCase();
+	} );
+};
+
+/**
+ * Convert all object properties from snake_case to camelCase.
+ *
+ * @param {Object} data Data.
+ */
+export const convertPropertiesFromSnakeCaseToCamelCase = ( data: object = {} ): object => {
+	// Recursive function to convert the snake_case to camelCase
+	const convert = ( theObject: { [ key: string ]: any } ): { [ key: string ]: any } => {
+		// Check if it's an object.
+		if ( typeof theObject === 'object' ) {
+			// Return the converted object.
+			return Object.keys( theObject ).reduce<{ [ key: string ]: any }>( ( accumulatedObject, key ) => {
+				// Get the cameCaseKey.
+				const camelCaseKey: string = snakeToCamelCase( key );
+
+				// Set the value of the property after converting it to camelCase.
+				accumulatedObject[ camelCaseKey ] = convert( theObject[ key ] );
+
+				// Return the converted object.
+				return accumulatedObject;
+			}, {} as Object );
+		}
+
+		// Return the object.
+		return theObject;
+	};
+
+	// Return the new converted object.
+	return convert( data );
+};

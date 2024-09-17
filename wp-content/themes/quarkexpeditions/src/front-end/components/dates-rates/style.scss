@@ -364,7 +364,8 @@
 
 	quark-dates-rates-pagination-links-controller,
 	quark-dates-rates-pagination-total-pages,
-	quark-dates-rates-pagination-items-per-page {
+	quark-dates-rates-pagination-items-per-page,
+	quark-dates-rates-filters-inputs-container {
 		display: contents;
 	}
 
@@ -407,6 +408,10 @@
 				justify-content: end;
 			}
 		}
+	}
+
+	&__accordion-content--no-transition {
+		transition: none;
 	}
 }
 

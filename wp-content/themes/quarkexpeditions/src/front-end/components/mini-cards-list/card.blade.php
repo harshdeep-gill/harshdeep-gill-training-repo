@@ -4,6 +4,6 @@
 	}
 @endphp
 
-<div class="mini-cards-list__card">
+<div class="mini-cards-list__card" tabindex="0">
 	{!! $slot !!}
 </div>

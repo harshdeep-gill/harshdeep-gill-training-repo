@@ -267,4 +267,37 @@
 		color: var(--color-white);
 		width: fit-content;
 	}
+
+	&__circle-badge {
+		padding: var(--spacing-6);
+		aspect-ratio: 1;
+		display: grid;
+		place-items: center;
+		font-weight: var(--font-weight-bold);
+		max-width: 190px;
+		align-self: flex-start;
+		position: relative;
+
+		@media screen and (min-width: grid-size(lg)) {
+			align-self: flex-end;
+		}
+
+		&::before {
+			content: "";
+			display: block;
+			position: absolute;
+			inset: 0;
+			background-color: var(--color-black);
+			z-index: -1;
+			border-radius: 50%;
+		}
+
+		p {
+			text-align: center;
+			max-height: 100%;
+			overflow: hidden;
+
+			@include line-clamp(4);
+		}
+	}
 }

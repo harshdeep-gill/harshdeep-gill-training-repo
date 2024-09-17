@@ -827,3 +827,41 @@ function prepare_seo_data( mixed $seo_meta_data = [] ): array {
 	// Return SEO data.
 	return $seo_data;
 }
+
+/**
+ * Get the remote video URL.
+ *
+ * @param int $entity_id Drupal entity ID.
+ *
+ * @return string
+ */
+function get_remote_video_url( int $entity_id = 0 ): string {
+	// validate entity ID.
+	if ( empty( $entity_id ) ) {
+		return '';
+	}
+
+	// Drupal database instance.
+	$drupal_db = get_database();
+
+	// Get the video URL.
+	$video_url = $drupal_db->get_var(
+		strval(
+			$drupal_db->prepare(
+				'
+				SELECT
+					field_media_video_embed_field_value
+				FROM
+					media__field_media_video_embed_field
+				WHERE
+					entity_id = %d AND deleted = 0
+				LIMIT 1
+				',
+				$entity_id
+			)
+		)
+	);
+
+	// Return video URL.
+	return strval( $video_url );
+}
