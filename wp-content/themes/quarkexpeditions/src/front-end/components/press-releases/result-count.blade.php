@@ -1,14 +1,14 @@
 @props( [
-	'current' => '',
-	'total' => '',
+	'current' => '0',
+	'total'   => '0',
 ] )
 
 @php
-if ( empty( $current ) || empty( $total ) ) {
-	return;
-}
+	if ( empty( $current ) || empty( $total ) ) {
+		return;
+	}
 @endphp
 
 <p class="result-count">
-	Showing {{ $current }} of {{ $total }} results
+	<x-escape :content="sprintf( __( 'Showing %s of %s results', 'qrk' ), $current, $total )" />
 </p>
