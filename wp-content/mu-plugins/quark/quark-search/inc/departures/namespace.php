@@ -1128,43 +1128,6 @@ function get_language_search_filter_data(): array {
 }
 
 /**
- * Get departure cabin class search filter data.
- *
- * @return string[]
- */
-function get_cabin_class_search_filter_data(): array {
-	// Get terms.
-	$the_terms = get_terms(
-		[
-			'taxonomy'   => CABIN_CLASS_TAXONOMY,
-			'hide_empty' => true,
-		]
-	);
-
-	// Validate terms.
-	if ( empty( $the_terms ) || ! is_array( $the_terms ) ) {
-		return [];
-	}
-
-	// Initialize filter data.
-	$filter_data = [];
-
-	// Loop through terms and prepare data.
-	foreach ( $the_terms as $term ) {
-		// Validate term.
-		if ( ! $term instanceof WP_Term ) {
-			continue;
-		}
-
-		// Prepare filter data.
-		$filter_data[ $term->term_id ] = $term->name;
-	}
-
-	// Return filter data.
-	return $filter_data;
-}
-
-/**
  * Get itinerary length search filter data.
  *
  * @return string[]
@@ -1326,33 +1289,6 @@ function get_destination_search_filter_data(): array {
 
 	// Return expedition data.
 	return $terms_data;
-}
-
-/**
- * Get travelers search filter data.
- *
- * @return string[]
- */
-function get_travelers_search_filter_data(): array {
-	// Get occupancy mask.
-	$mask_mapping = get_masks_mapping();
-
-	// Prepare travelers data.
-	$travelers_data = [];
-
-	// Loop through occupancy mask.
-	foreach ( $mask_mapping as $mask => $mask_data ) {
-		// Validate mask data.
-		if ( ! is_array( $mask_data ) || empty( $mask_data['description'] ) ) {
-			continue;
-		}
-
-		// Prepare travelers data.
-		$travelers_data[ $mask ] = $mask_data['description'];
-	}
-
-	// Return travelers data.
-	return $travelers_data;
 }
 
 /**

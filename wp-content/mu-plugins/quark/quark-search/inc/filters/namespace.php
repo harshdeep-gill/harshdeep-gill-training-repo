@@ -14,8 +14,10 @@ use function Quark\Expeditions\get as get_expedition_post;
 use function Quark\Expeditions\get_destination_term_by_code;
 use function Quark\Search\Departures\search;
 use function Quark\Ships\get as get_ship_post;
+use function Quark\Softrip\Occupancies\get_masks_mapping;
 
 use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
+use const Quark\CabinCategories\CABIN_CLASS_TAXONOMY;
 use const Quark\Departures\SPOKEN_LANGUAGE_TAXONOMY;
 use const Quark\Expeditions\DESTINATION_TAXONOMY;
 use const Quark\Search\Departures\FACET_TYPE_FIELD;
@@ -31,6 +33,8 @@ const DURATION_FILTER_KEY         = 'durations';
 const ITINERARY_LENGTH_FILTER_KEY = 'itinerary_lengths';
 const LANGUAGE_FILTER_KEY         = 'languages';
 const DESTINATION_FILTER_KEY      = 'destinations';
+const CABIN_CLASS_FILTER_KEY      = 'cabin_classes';
+const TRAVELERS_FILTER_KEY        = 'travelers';
 
 const FILTERS_MAPPING = [
 	SEASON_FILTER_KEY           => [
@@ -123,6 +127,16 @@ const FILTERS_MAPPING = [
 		],
 		'handler'    => '\Quark\Search\Filters\get_destination_filter',
 		'default'    => [],
+	],
+	CABIN_CLASS_FILTER_KEY      => [
+		'key'     => CABIN_CLASS_FILTER_KEY,
+		'handler' => '\Quark\Search\Filters\get_cabin_class_filter',
+		'default' => [],
+	],
+	TRAVELERS_FILTER_KEY        => [
+		'key'     => TRAVELERS_FILTER_KEY,
+		'handler' => '\Quark\Search\Filters\get_travelers_filter',
+		'default' => [],
 	],
 ];
 
@@ -693,12 +707,88 @@ function get_destination_filter( array $destination_facet = [] ): array {
 }
 
 /**
+ * Get departure cabin class search filter data.
+ *
+ * @return array<int, array{
+ *    label: string,
+ *    value: int,
+ * }>
+ */
+function get_cabin_class_filter(): array {
+	// Get terms.
+	$the_terms = get_terms(
+		[
+			'taxonomy'   => CABIN_CLASS_TAXONOMY,
+			'hide_empty' => true,
+		]
+	);
+
+	// Validate terms.
+	if ( empty( $the_terms ) || ! is_array( $the_terms ) ) {
+		return [];
+	}
+
+	// Initialize filter data.
+	$filter_data = [];
+
+	// Loop through terms and prepare data.
+	foreach ( $the_terms as $term ) {
+		// Validate term.
+		if ( ! $term instanceof WP_Term ) {
+			continue;
+		}
+
+		// Prepare filter data.
+		$filter_data[] = [
+			'label' => $term->name,
+			'value' => $term->term_id,
+		];
+	}
+
+	// Return filter data.
+	return $filter_data;
+}
+
+/**
+ * Get travelers filter data.
+ *
+ * @return array<int, array{
+ *    label: string,
+ *    value: string,
+ * }>
+ */
+function get_travelers_filter(): array {
+	// Get occupancy mask.
+	$mask_mapping = get_masks_mapping();
+
+	// Prepare travelers data.
+	$travelers_data = [];
+
+	// Loop through occupancy mask.
+	foreach ( $mask_mapping as $mask => $mask_data ) {
+		// Validate mask data.
+		if ( ! is_array( $mask_data ) || empty( $mask_data['description'] ) ) {
+			continue;
+		}
+
+		// Prepare travelers data.
+		$travelers_data[] = [
+			'label' => $mask_data['description'],
+			'value' => $mask,
+		];
+	}
+
+	// Return travelers data.
+	return $travelers_data;
+}
+
+/**
  * Build filter options.
  *
  * @param string[] $filter_keys      The list of filters to include (e.g., ['season', 'expedition', 'month', 'duration']).
  * @param mixed[]  $selected_filters The currently selected filters (e.g., ['season' => [1, 2], 'expedition' => [4, 5]]).
  *
- * @return array<string, array<int, array{label: string, value: string|int, count:int}>>
+ * @return array<string, array<int, array{label: string, value: string|int, count?:int, children?: array<int, array{label: string, value:int|string, count?:int, parent_id: int|string}>}>>
  */
 function build_filter_options( array $filter_keys = [], array $selected_filters = [] ): array {
 	// Remove invalid filter keys.
@@ -733,9 +823,14 @@ function build_filter_options( array $filter_keys = [], array $selected_filters 
 		'solr_facet'
 	);
 
-	// Run search.
-	$result            = search( $selected_filters, $solr_facets );
-	$solr_facet_result = $result['facet_results'];
+	// Initialize solr facet result.
+	$solr_facet_result = [];
+
+	// Run Solr search if solr facets are not empty.
+	if ( ! empty( $solr_facets ) ) {
+		$result            = search( $selected_filters, $solr_facets );
+		$solr_facet_result = $result['facet_results'];
+	}
 
 	// Initialize filter options.
 	$filter_options = [];
@@ -747,6 +842,12 @@ function build_filter_options( array $filter_keys = [], array $selected_filters 
 
 		// Bail if function is not callable.
 		if ( ! is_callable( $filter['handler'] ) ) {
+			continue;
+		}
+
+		// If filter doesn't have solr_facet, call handler directly.
+		if ( empty( $filter['solr_facet'] ) ) {
+			$filter_options[ $filter_key ] = call_user_func( $filter['handler'] );
 			continue;
 		}
 
@@ -764,7 +865,7 @@ function build_filter_options( array $filter_keys = [], array $selected_filters 
 		}
 
 		// Get filter data.
-		$filter_options[ $filter_key ] = $filter['handler']( $facet_data['values'] );
+		$filter_options[ $filter_key ] = call_user_func( $filter['handler'], $facet_data['values'] );
 	}
 
 	// Return filter options if no selected filters.
@@ -773,15 +874,28 @@ function build_filter_options( array $filter_keys = [], array $selected_filters 
 	}
 
 	/**
-	 * Get filters data for the last filter.
+	 * Get filters data for the last filter with solr facet.
 	 * This is done to conserve the last filter to its one step previous.
 	 */
 
-	// Get last filter key.
-	$last_filter_key = array_key_last( $selected_filters );
+	// Get last filter key from selected filters where solr_facet exists in filter mapping.
+	$last_filter_key = array_key_last(
+		array_filter(
+			$selected_filters,
+			function ( $key ) {
+				return array_key_exists( $key, FILTERS_MAPPING ) && ! empty( FILTERS_MAPPING[ $key ]['solr_facet'] );
+			},
+			ARRAY_FILTER_USE_KEY
+		)
+	);
 
 	// Bail if empty or not in filter mapping.
 	if ( empty( $last_filter_key ) || ! array_key_exists( $last_filter_key, FILTERS_MAPPING ) ) {
+		return $filter_options;
+	}
+
+	// Bail if last filter doesn't have solr_facet.
+	if ( empty( FILTERS_MAPPING[ $last_filter_key ]['solr_facet'] ) ) {
 		return $filter_options;
 	}
 
