@@ -17,17 +17,18 @@ const COMPONENT = 'global-message';
  * @return void
  */
 function bootstrap(): void {
-	//Register the block.
+	// Register the block.
 	register_block_type_from_metadata(
 		__DIR__,
 		[
 			'render_callback' => __NAMESPACE__ . '\\render',
 		]
-		);
+	);
 }
 
 /**
  * Render this block.
+ *
  * @param mixed[]       $attributes The block attributes.
  * @param string        $content The block content.
  * @param WP_Block|null $block The block instance.
@@ -39,6 +40,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 	if ( ! $block instanceof WP_Block ) {
 		return $content;
 	}
+
 	// Initialize an array to store the global message attributes.
 	$attribute_content = [
 		'slot' => '',
@@ -48,16 +50,17 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 	$child_block = $block->inner_blocks[0];
 
 	// Checking for block.
-	if($child_block instanceof WP_Block) {
+	if ( $child_block instanceof WP_Block ) {
 		// If it is, check if it has inner content.
 		if ( ! empty( $child_block->parsed_block['innerContent'] ) ) {
 			// Concatenate the inner content into a single string.
 			$global_message = implode( '', $child_block->parsed_block['innerContent'] );
+
 			// Assign it to the 'slot' attribute.
 			$attribute_content['slot'] = $global_message;
 		}
 	}
 
-	//Return the markup.
+	// Return the markup.
 	return quark_get_component( COMPONENT, $attribute_content );
 }

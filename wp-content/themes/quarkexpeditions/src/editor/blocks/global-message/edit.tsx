@@ -10,10 +10,9 @@ import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 import classnames from 'classnames';
 
 /**
- * Edit Component.
+ * Edit Block.
  *
- * @param {Object}   props               Component properties.
- * @param {string}   props.className     Class name.
+ * @param {string} className The block class name.
  */
 export default function Edit( { className }: BlockEditAttributes ): JSX.Element {
 	// eslint-disable-next-line react-hooks/rules-of-hooks
