@@ -1,5 +1,6 @@
 @props( [
-	'appearance' => 'light',
+	'appearance'        => 'light',
+	'background_colour' => 'gray',
 ] )
 
 @php
@@ -15,6 +16,14 @@
 
 	if ( 'dark' === $appearance ) {
 		$classes[] = 'media-cta-banner--dark color-context--dark';
+	}
+
+	if ( 'solid' === $appearance ) {
+		$classes[] = 'media-cta-banner--solid';
+		
+		if ( 'gray' === $background_colour ) {
+			$classes[] = 'color-context--gray';
+		}
 	}
 @endphp
 

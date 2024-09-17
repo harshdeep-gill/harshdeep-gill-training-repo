@@ -2645,6 +2645,16 @@
 			<x-button size="big" color="black">Join the Shackleton Club</x-button>
 		</x-media-cta-banner.content>
 	</x-media-cta-banner>
+
+	<x-media-cta-banner appearance="solid" background_colour="gray">
+		<x-media-cta-banner.image image_id="35" />
+		<x-media-cta-banner.content>
+			<x-media-cta-banner.overline text="The Shackleton Club" />
+			<h3>The Shackleton Club</h3>
+			<p>We always reward loyalty! If you’re a returning guest, enjoy an additional 5% savings on all future Quark Expeditions voyages.</p>
+			<x-button size="big" color="black">Join the Shackleton Club</x-button>
+		</x-media-cta-banner.content>
+	</x-media-cta-banner>
 </x-component-demo>
 
 <x-component-demo :keys="[ 'lp-footer', 'logo-grid' ]">
