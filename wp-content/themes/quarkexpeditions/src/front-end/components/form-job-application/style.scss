@@ -1,0 +1,96 @@
+/**
+ * Form Job Application
+ */
+@import "../../scss";
+
+.form-job-application {
+	$self: &;
+
+	&__section {
+		margin-top: var(--spacing-8);
+
+		@media screen and (min-width: grid-size(md)) {
+			margin-top: var(--spacing-7);
+		}
+
+		@media screen and (min-width: grid-size(lg)) {
+			margin-top: var(--spacing-8);
+		}
+
+		.form-row {
+			margin-top: var(--spacing-5);
+			margin-bottom: var(--spacing-4);
+		}
+	}
+
+	&__sub-section {
+		margin-bottom: var(--spacing-3);
+
+		& + & {
+			margin-top: var(--spacing-6);
+		}
+	}
+
+	&__toggle {
+
+		.form-field-group__group {
+			display: flex;
+			flex-direction: row;
+			gap: var(--spacing-5);
+		}
+	}
+
+	&__option-tooltip {
+		display: flex;
+		align-items: center;
+		gap: var(--spacing-2);
+
+		.tooltip__icon {
+			color: var(--color-black);
+		}
+	}
+
+	&__title {
+		margin-bottom: var(--spacing-5);
+	}
+
+	&__form {
+		margin-bottom: var(--spacing-4);
+	}
+
+	&__additional-information {
+		margin-top: var(--spacing-5);
+	}
+
+	&__resume {
+
+		label {
+			font-size: 16px;
+			font-weight: var(--font-weight-bold);
+		}
+
+		.form-field {
+			margin-top: var(--spacing-5);
+			margin-bottom: var(--spacing-3);
+		}
+	}
+
+	&__description {
+		font-size: 14px;
+		font-weight: var(--font-weight-default);
+	}
+
+	.form-submit {
+		margin-top: var(--spacing-4);
+
+		.btn {
+			min-width: 200px;
+			width: 100%;
+			height: 56px;
+
+			@media screen and (min-width: grid-size(sm)) {
+				width: auto;
+			}
+		}
+	}
+}
