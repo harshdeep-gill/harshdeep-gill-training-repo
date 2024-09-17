@@ -10,8 +10,11 @@ namespace Quark\Theme\Search_Filters;
 use function Quark\Search\Filters\build_filter_options;
 
 use const Quark\Search\Filters\ADVENTURE_OPTION_FILTER_KEY;
+use const Quark\Search\Filters\DESTINATION_FILTER_KEY;
 use const Quark\Search\Filters\DURATION_FILTER_KEY;
 use const Quark\Search\Filters\EXPEDITION_FILTER_KEY;
+use const Quark\Search\Filters\ITINERARY_LENGTH_FILTER_KEY;
+use const Quark\Search\Filters\LANGUAGE_FILTER_KEY;
 use const Quark\Search\Filters\MONTH_FILTER_KEY;
 use const Quark\Search\Filters\SEASON_FILTER_KEY;
 use const Quark\Search\Filters\SHIP_FILTER_KEY;
@@ -36,6 +39,30 @@ function get_filters_for_dates_rates( array $selected_filter = [] ): array {
 
 	// Build filter options.
 	$filter_options = build_filter_options( $filters_keys, $selected_filter );
+
+	// Return available filters.
+	return $filter_options;
+}
+
+/**
+ * Get filter options for sidebar search filters.
+ *
+ * @return array<string, array<int, array{label: string, value: string|int, count: int}>>
+ */
+function get_filters_for_sidebar_search(): array {
+	// Available filters on sidebar.
+	$filters_keys = [
+		DESTINATION_FILTER_KEY,
+		EXPEDITION_FILTER_KEY,
+		ADVENTURE_OPTION_FILTER_KEY,
+		MONTH_FILTER_KEY,
+		SHIP_FILTER_KEY,
+		ITINERARY_LENGTH_FILTER_KEY,
+		LANGUAGE_FILTER_KEY,
+	];
+
+	// Build filter options.
+	$filter_options = build_filter_options( $filters_keys );
 
 	// Return available filters.
 	return $filter_options;
