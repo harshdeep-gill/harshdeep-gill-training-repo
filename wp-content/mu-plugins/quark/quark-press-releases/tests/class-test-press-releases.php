@@ -113,12 +113,13 @@ class Test_Press_Releases extends WP_UnitTestCase {
 	 *
 	 * @return void
 	 */
-	public function test_get_cards_data(): void {
+	public function test_get_cards_datas(): void {
 		// Create a post.
 		$post = $this->factory()->post->create_and_get(
 			[
 				'post_title'   => 'Test Post',
 				'post_content' => 'Post content',
+				'post_excerpt' => 'Post excerpt',
 				'post_status'  => 'publish',
 				'post_type'    => POST_TYPE,
 			]
@@ -134,8 +135,8 @@ class Test_Press_Releases extends WP_UnitTestCase {
 				[
 					'id'          => $post->ID,
 					'title'       => $post->post_title,
-					'description' => $post->post_excerpt,
-					'permalink'   => get_permalink( $post ),
+					'description' => "<p>Post excerpt</p>\n",
+					'permalink'   => 'http://test.quarkexpeditions.com/press-releases/test-post',
 				],
 			],
 			$cards_data

@@ -152,7 +152,7 @@ function get_cards_data( array $post_ids = [] ): array {
 		$press_release_cards[] = [
 			'id'          => $press_release['post']->ID,
 			'title'       => $press_release['post']->post_title,
-			'description' => $press_release['post']->post_excerpt,
+			'description' => strval( apply_filters( 'the_content', $press_release['post']->post_excerpt ) ),
 			'permalink'   => $press_release['permalink'],
 		];
 	}

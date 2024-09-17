@@ -10,6 +10,7 @@ namespace Quark\Theme\Blocks\PressReleases;
 use WP_Block;
 use WP_Query;
 
+use function Quark\Core\get_pagination_links;
 use function Quark\PressReleases\get_cards_data;
 
 use const Quark\PressReleases\POST_TYPE;
@@ -69,10 +70,9 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 	}
 
 	// Get pagination.
-	$pagination = paginate_links(
+	$pagination = get_pagination_links(
 		[
-			'base'  => add_query_arg( 'paged', '%#%' ),
-			'total' => $press_releases->max_num_pages,
+			'query' => $press_releases,
 		]
 	);
 
