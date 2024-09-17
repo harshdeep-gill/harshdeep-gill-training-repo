@@ -5,16 +5,16 @@ import { __ } from '@wordpress/i18n';
 import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 
 /**
- * Edit Component.
- *
- * @parma {string} props.className Class name.
- */
-
-/**
  * External dependencies.
  */
 import classnames from 'classnames';
 
+/**
+ * Edit Component.
+ *
+ * @param {Object}   props               Component properties.
+ * @param {string}   props.className     Class name.
+ */
 export default function Edit( { className }: BlockEditAttributes ): JSX.Element {
 	// eslint-disable-next-line react-hooks/rules-of-hooks
 	const blocksProps = useBlockProps( {
@@ -25,13 +25,13 @@ export default function Edit( { className }: BlockEditAttributes ): JSX.Element 
 	const innerBlockProps = useInnerBlocksProps( { ...blocksProps },
 		{
 			allowedBlocks: [ 'core/paragraph' ],
-			template: [ [ 'core/paragraph', { placeholder: __( 'Write global message...', 'qrk' ) } ] ],
+			template: [ [ 'core/paragraph', { placeholder: __( 'Write global message…', 'qrk' ) } ] ],
 			templateLock: 'insert',
 		},
 	);
 
 	// Return tge block's markup.
-	return(
-	 <div { ...innerBlockProps } />
+	return (
+		<div { ...innerBlockProps } />
 	);
 }

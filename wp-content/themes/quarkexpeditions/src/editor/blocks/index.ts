@@ -153,7 +153,7 @@ const blocks = [
 	shipDecks,
 	InfoCards,
 	linkDetailCards,
-	globalMessage
+	globalMessage,
 ];
 
 // Register blocks for ships.

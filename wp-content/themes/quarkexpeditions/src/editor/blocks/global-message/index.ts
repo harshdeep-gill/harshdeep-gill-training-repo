@@ -11,6 +11,7 @@ import {
  */
 import metadata from './block.json';
 import edit from './edit';
+import save from './save';
 
 /**
  * Styles.
@@ -28,6 +29,7 @@ export const { name }: { name: string } = metadata;
 export const settings: BlockConfiguration = {
 	...metadata,
 	edit,
+	save,
 };
 
 /**
