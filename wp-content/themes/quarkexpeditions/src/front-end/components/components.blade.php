@@ -2646,7 +2646,7 @@
 		</x-media-cta-banner.content>
 	</x-media-cta-banner>
 
-	<x-media-cta-banner appearance="solid" background_colour="gray">
+	<x-media-cta-banner appearance="solid" background_color="gray">
 		<x-media-cta-banner.image image_id="35" />
 		<x-media-cta-banner.content>
 			<x-media-cta-banner.overline text="Expedition Guides and Education Team" />
