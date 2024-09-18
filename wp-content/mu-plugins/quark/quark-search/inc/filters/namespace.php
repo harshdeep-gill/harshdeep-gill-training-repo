@@ -35,6 +35,10 @@ const LANGUAGE_FILTER_KEY         = 'languages';
 const DESTINATION_FILTER_KEY      = 'destinations';
 const CABIN_CLASS_FILTER_KEY      = 'cabin_classes';
 const TRAVELERS_FILTER_KEY        = 'travelers';
+const SORT_FILTER_KEY             = 'sort';
+const PAGE_FILTER_KEY             = 'page';
+const PER_PAGE_FILTER_KEY         = 'posts_per_load';
+const CURRENCY_FILTER_KEY         = 'currency';
 
 const FILTERS_MAPPING = [
 	SEASON_FILTER_KEY           => [
