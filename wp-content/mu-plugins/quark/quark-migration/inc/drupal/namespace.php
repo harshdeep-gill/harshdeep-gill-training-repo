@@ -869,7 +869,7 @@ function get_remote_video_url( int $entity_id = 0 ): string {
  *
  * @return string
  */
-function get_wp_permalink( string $drupal_link = '', bool $dynamic_link = false ): string {
+function get_wp_permalink( string $drupal_link = '', bool $dynamic_link = true ): string {
 	// Clean up the link.
 	$drupal_link = str_replace( 'internal:', '', $drupal_link );
 	$drupal_link = str_replace( 'entity:', '', $drupal_link );
