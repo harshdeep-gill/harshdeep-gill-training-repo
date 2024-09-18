@@ -118,6 +118,10 @@
 		margin-bottom: var(--spacing-2);
 	}
 
+	.buttons {
+		flex-wrap: wrap;
+	}
+
 	.btn {
 		width: 100%;
 
