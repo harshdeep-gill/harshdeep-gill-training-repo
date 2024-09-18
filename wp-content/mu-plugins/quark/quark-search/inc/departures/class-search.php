@@ -448,6 +448,11 @@ class Search {
 			];
 		}
 
+		// Return early if meta query is empty.
+		if ( empty( $meta_query ) ) {
+			return;
+		}
+
 		// Add relation if more than one meta query.
 		if ( 1 < count( $meta_query ) ) {
 			$meta_query['relation'] = 'OR';
