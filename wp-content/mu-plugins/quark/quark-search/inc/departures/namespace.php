@@ -285,16 +285,18 @@ function get_filters_from_url(): array {
  *
  * @return array{
  *     seasons: string[],
- *     expeditions: int[],
+ *     expeditions: string[],
  *     adventure_options: string[],
  *     months: string[],
  *     durations: array<int, string[]>,
- *     ships: int[],
+ *     ships: string[],
  *     sort: string,
  *     page: int,
  *     posts_per_load: int,
  *     currency: string,
  *     destinations: string[],
+ *     languages: string[],
+ *     itinerary_lengths: string[],
  * }
  */
 function parse_filters( array $filters = [] ): array {
@@ -314,7 +316,12 @@ function parse_filters( array $filters = [] ): array {
 			PER_PAGE_FILTER_KEY         => 10,
 			DESTINATION_FILTER_KEY      => [],
 			LANGUAGE_FILTER_KEY         => [],
-			ITINERARY_LENGTH_FILTER_KEY => [],
+			ITINERARY_LENGTH_FILTER_KEY => [
+				11,
+				9,
+				6,
+				10
+			],
 		]
 	);
 
@@ -376,6 +383,20 @@ function parse_filters( array $filters = [] ): array {
 		$filters[ DESTINATION_FILTER_KEY ] = array_filter( array_map( 'trim', $filters[ DESTINATION_FILTER_KEY ] ) );
 	}
 
+	// Parse languages.
+	if ( is_string( $filters[ LANGUAGE_FILTER_KEY ] ) || is_int( $filters[ LANGUAGE_FILTER_KEY ] ) ) {
+		$filters[ LANGUAGE_FILTER_KEY ] = array_filter( array_map( 'trim', explode( ',', strval( $filters[ LANGUAGE_FILTER_KEY ] ) ) ) );
+	} elseif ( is_array( $filters[ LANGUAGE_FILTER_KEY ] ) ) {
+		$filters[ LANGUAGE_FILTER_KEY ] = array_filter( array_map( 'trim', $filters[ LANGUAGE_FILTER_KEY ] ) );
+	}
+
+	// Parse itinerary lengths.
+	if ( is_string( $filters[ ITINERARY_LENGTH_FILTER_KEY ] ) || is_int( $filters[ ITINERARY_LENGTH_FILTER_KEY ] ) ) {
+		$filters[ ITINERARY_LENGTH_FILTER_KEY ] = array_filter( array_map( 'trim', explode( ',', strval( $filters[ ITINERARY_LENGTH_FILTER_KEY ] ) ) ) );
+	} elseif ( is_array( $filters[ ITINERARY_LENGTH_FILTER_KEY ] ) ) {
+		$filters[ ITINERARY_LENGTH_FILTER_KEY ] = array_filter( array_map( 'trim', $filters[ ITINERARY_LENGTH_FILTER_KEY ] ) );
+	}
+
 	// Return parsed filters.
 	return [
 		SEASON_FILTER_KEY           => (array) $filters[ SEASON_FILTER_KEY ],
@@ -389,6 +410,8 @@ function parse_filters( array $filters = [] ): array {
 		PER_PAGE_FILTER_KEY         => absint( $filters[ PER_PAGE_FILTER_KEY ] ),
 		CURRENCY_FILTER_KEY         => $filters[ CURRENCY_FILTER_KEY ],
 		DESTINATION_FILTER_KEY      => (array) $filters[ DESTINATION_FILTER_KEY ],
+		LANGUAGE_FILTER_KEY         => (array) $filters[ LANGUAGE_FILTER_KEY ],
+		ITINERARY_LENGTH_FILTER_KEY => (array) $filters[ ITINERARY_LENGTH_FILTER_KEY ],
 	];
 }
 
@@ -420,6 +443,8 @@ function search( array $filters = [], array $facets = [], bool $retrieve_all = f
 	$adventure_options = array_map( 'absint', (array) $filters[ ADVENTURE_OPTION_FILTER_KEY ] );
 	$ships             = array_map( 'absint', (array) $filters[ SHIP_FILTER_KEY ] );
 	$destinations      = array_map( 'absint', (array) $filters[ DESTINATION_FILTER_KEY ] );
+	$languages         = array_map( 'absint', (array) $filters[ LANGUAGE_FILTER_KEY ] );
+	$itinerary_lengths = array_map( 'absint', (array) $filters[ ITINERARY_LENGTH_FILTER_KEY ] );
 
 	// Validate durations.
 	$durations = array_map(
@@ -435,8 +460,10 @@ function search( array $filters = [], array $facets = [], bool $retrieve_all = f
 	$search->set_adventure_options( $adventure_options );
 	$search->set_durations( $durations );
 	$search->set_ships( $ships );
-	$search->set_sort( $sort, $filters[ CURRENCY_FILTER_KEY ] );
 	$search->set_destinations( $destinations );
+	$search->set_languages( $languages );
+	$search->set_itinerary_lengths( $itinerary_lengths );
+	$search->set_sort( $sort, $filters[ CURRENCY_FILTER_KEY ] );
 
 	// Set page and posts per page.
 	if ( empty( $retrieve_all ) ) {
