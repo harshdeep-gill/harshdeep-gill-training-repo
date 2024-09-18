@@ -80,6 +80,7 @@ import * as InfoCards from './info-cards';
 import * as linkDetailCards from './link-detail-cards';
 import * as datesAndRates from './dates-and-rates';
 import * as mediaTextCtaCarousel from './media-text-cta-carousel';
+import * as pressReleases from './press-releases';
 
 /**
  * Add blocks.
@@ -156,6 +157,7 @@ const blocks = [
 	linkDetailCards,
 	datesAndRates,
 	mediaTextCtaCarousel,
+	pressReleases,
 ];
 
 // Register blocks for ships.
