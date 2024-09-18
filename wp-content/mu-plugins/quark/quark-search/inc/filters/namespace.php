@@ -662,21 +662,44 @@ function get_destination_filter( array $destination_facet = [] ): array {
 			if ( $parent_term instanceof WP_Term ) {
 				// Add parent to filter data if not set.
 				if ( empty( $filter_data[ $parent_term->term_id ] ) ) {
-					$filter_data[ $parent_term->term_id ] = [
+					// Prepare parent term data.
+					$term_element = [
 						'label'    => $parent_term->name,
 						'value'    => $parent_term->term_id,
 						'count'    => 0,
 						'children' => [],
 					];
+
+					// Get cover image id.
+					$cover_image_id = absint( get_term_meta( $parent_term->term_id, 'destination_image', true ) );
+
+					// Add cover image if available.
+					if ( ! empty( $cover_image_id ) ) {
+						$term_element['image_id'] = $cover_image_id;
+					}
+
+					// Add parent term to filter data.
+					$filter_data[ $parent_term->term_id ] = $term_element;
 				}
 
-				// Add destination term as child.
-				$filter_data[ $parent_term->term_id ]['children'][] = [
+				// Prepare destination data.
+				$term_element = [
 					'label'     => $destination_term->name,
 					'value'     => $destination_id,
 					'count'     => $count,
 					'parent_id' => $parent_term->term_id,
 				];
+
+				// Get cover image id.
+				$cover_image_id = absint( get_term_meta( $destination_id, 'destination_image', true ) );
+
+				// Add cover image if available.
+				if ( ! empty( $cover_image_id ) ) {
+					$term_element['image_id'] = $cover_image_id;
+				}
+
+				// Add destination term to parent term.
+				$filter_data[ $parent_term->term_id ]['children'][ $destination_id ] = $term_element;
 			}
 		} else {
 			// Update count.
@@ -692,6 +715,14 @@ function get_destination_filter( array $destination_facet = [] ): array {
 				'count'    => $count,
 				'children' => [],
 			];
+
+			// Get cover image id.
+			$cover_image_id = absint( get_term_meta( $destination_id, 'destination_image', true ) );
+
+			// Add cover image if available.
+			if ( ! empty( $cover_image_id ) ) {
+				$filter_data[ $destination_id ]['image_id'] = $cover_image_id;
+			}
 		}
 	}
 
@@ -789,8 +820,8 @@ function get_travelers_filter(): array {
 /**
  * Build filter options.
  *
- * @param string[] $filter_keys      The list of filters to include (e.g., ['season', 'expedition', 'month', 'duration']).
- * @param mixed[]  $selected_filters The currently selected filters (e.g., ['season' => [1, 2], 'expedition' => [4, 5]]).
+ * @param string[] $filter_keys       The list of filters to include (e.g., ['season', 'expedition', 'month', 'duration']).
+ * @param mixed[]  $selected_filters  The currently selected filters (e.g., ['season' => [1, 2], 'expedition' => [4, 5]]).
  *
  * @return array<string, array<int, array{label: string, value: string|int, count?:int, children?: array<int, array{label: string, value:int|string, count?:int, parent_id: int|string}>}>>
  */
@@ -958,4 +989,36 @@ function get_selected_filters_from_query_params(): array {
 
 	// Return filter query data.
 	return $raw_query_data;
+}
+
+/**
+ * Get destination and month filter options.
+ *
+ * @param int    $destination_term_id Destination term ID.
+ * @param string $month               Month.
+ *
+ * @return array<string, array<int, array{label: string, value: string|int, count?: int, children?: array<int, array{label: string, value: string|int, parent_id: int|string, image_id?: int, count?: int}>}>>
+ */
+function get_destination_and_month_filter_options( int $destination_term_id = 0, string $month = '' ): array {
+	// Filter keys.
+	$filter_keys = [
+		DESTINATION_FILTER_KEY,
+		MONTH_FILTER_KEY,
+	];
+
+	// Initialize selected filters.
+	$selected_filters = [];
+
+	// Set selected filters.
+	if ( ! empty( $destination_term_id ) ) {
+		$selected_filters[ DESTINATION_FILTER_KEY ] = [ $destination_term_id ];
+	} elseif ( ! empty( $month ) ) {
+		$selected_filters[ MONTH_FILTER_KEY ] = [ $month ];
+	}
+
+	// Get filter options.
+	$filter_options = build_filter_options( $filter_keys, $selected_filters );
+
+	// Return filter options.
+	return $filter_options;
 }
