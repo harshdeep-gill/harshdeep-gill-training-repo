@@ -44,34 +44,8 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 
 	// Initialize an array to store the global message attributes.
 	$attribute_content = [
-		'slot' => '',
+		'slot' => $content,
 	];
-
-	// Process inner blocks.
-	if ( $block->inner_blocks instanceof WP_Block_List ) {
-		// Initialize a global message.
-		$global_message = [];
-
-		// Loop through inner blocks.
-		foreach ( $block->inner_blocks as $child_block ) {
-			// Check for inner block.
-			if ( ! $child_block instanceof WP_Block ) {
-				continue;
-			}
-
-			// Checking for block.
-			if ( $child_block instanceof WP_Block ) {
-				// If it is, check if it has inner content.
-				if ( ! empty( $child_block->parsed_block['innerContent'] ) ) {
-					// Concatenate the inner content into a single string.
-					$global_message = implode( '', $child_block->parsed_block['innerContent'] );
-				}
-			}
-		}
-
-		// Assign it to the 'slot' attribute.
-		$attribute_content['slot'] = $global_message;
-	}
 
 	// Return the markup.
 	return quark_get_component( COMPONENT, $attribute_content );
