@@ -560,8 +560,8 @@ function get_pagination_links( array $args = [] ): string {
 			[
 				'current'   => max( 1, $args['query']->get( 'paged' ) ),
 				'total'     => $args['query']->max_num_pages,
-				'prev_text' => __( 'Previous', 'tcs' ),
-				'next_text' => __( 'Next ', 'tcs' ),
+				'prev_text' => __( 'Previous', 'qrk' ),
+				'next_text' => __( 'Next ', 'qrk' ),
 			]
 		)
 	);
