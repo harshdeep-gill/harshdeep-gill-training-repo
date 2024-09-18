@@ -16,11 +16,6 @@ const { gumponents } = window;
  */
 const { ImageControl, Img, ColorPaletteControl } = gumponents.components;
 
-// Background colors.
-export const colors: { [key: string]: string }[] = [
-	{ name: __( 'Gray', 'qrk' ), color: '#F5F7FB', slug: 'gray' },
-];
-
 /**
  * Edit component.
  *
@@ -85,16 +80,14 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 						<ColorPaletteControl
 							label={ __( 'Background Color', 'qrk' ) }
 							help={ __( 'Select the background color.', 'qrk' ) }
-							value={ colors.find( ( color ) => color.slug === attributes.backgroundColor )?.color }
-							colors={ colors.filter( ( color ) => [ 'gray' ].includes( color.slug ) ) }
+							value={ attributes.backgroundColor }
+							colors={ [ { color: '#F5F7FB', slug: 'gray' } ] }
 							onChange={ ( backgroundColor: {
 								color: string;
 								slug: string;
 							} ): void => {
 								// Set the background color attribute.
-								if ( backgroundColor.slug && [ 'gray' ].includes( backgroundColor.slug ) ) {
-									setAttributes( { backgroundColor: backgroundColor.slug } );
-								}
+								setAttributes( { backgroundColor: backgroundColor.slug } );
 							} }
 						/>
 					}
