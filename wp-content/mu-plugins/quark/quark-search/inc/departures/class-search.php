@@ -563,7 +563,7 @@ class Search {
 		}
 
 		// Sort.
-		ksort( $itinerary_lengths );
+		sort( $itinerary_lengths );
 
 		// Start and end.
 		$start = $itinerary_lengths[0];
@@ -576,7 +576,7 @@ class Search {
 
 		// Set meta query.
 		$this->args['meta_query'][] = [
-			'key'     => 'itinerary_length',
+			'key'     => 'duration',
 			'value'   => [
 				$start,
 				$end,
