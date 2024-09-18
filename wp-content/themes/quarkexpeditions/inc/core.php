@@ -143,6 +143,7 @@ function register_scripts(): void {
 	wp_register_script( 'wistia-embed', 'https://fast.wistia.com/assets/external/E-v1.js', [], $assets_version, true );
 	wp_register_script( 'tp-lightbox', get_template_directory_uri() . '/dist/vendor/tplightboxelement.js', [], $assets_version, true );
 	wp_register_script( 'tp-toggle-attribute', get_template_directory_uri() . '/dist/vendor/tptoggleattributeelement.js', [], $assets_version, true );
+	wp_register_script( 'querystring', get_template_directory_uri() . '/dist/vendor/querystring.js', [], $assets_version, true );
 
 	// Pass variables to script.
 	wp_localize_script(
@@ -359,6 +360,7 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 				'quark-wistia-embed'                            => [
 					'class'    => true,
 					'video-id' => true,
+					'play'     => true,
 				],
 				'quark-dates-rates-results'                     => [
 					'class'           => true,
@@ -452,6 +454,7 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'class'   => true,
 					'loading' => true,
 				],
+				'quark-dates-rates-filters-inputs-container'    => true,
 				'tp-form'                                       => [
 					'class'          => true,
 					'prevent-submit' => true,

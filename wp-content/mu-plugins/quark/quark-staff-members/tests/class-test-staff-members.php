@@ -16,10 +16,12 @@ use function Quark\StaffMembers\get_cards_data;
 use function Quark\StaffMembers\get;
 use function Quark\StaffMembers\get_breadcrumbs_ancestors;
 use function Quark\StaffMembers\get_department;
-
 use function Quark\StaffMembers\get_departments;
+use function Quark\StaffMembers\get_roles;
+use function Quark\StaffMembers\get_structured_data;
 
 use const Quark\StaffMembers\DEPARTMENT_TAXONOMY;
+use const Quark\StaffMembers\DEPARTURE_STAFF_ROLE_TAXONOMY;
 use const Quark\StaffMembers\POST_TYPE as STAFF_MEMBER_POST_TYPE;
 
 /**
@@ -329,6 +331,72 @@ class Test_Staff_Members extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Test get roles function.
+	 *
+	 * @covers \Quark\StaffMembers\get_roles()
+	 *
+	 * @return void
+	 */
+	public function test_get_roles(): void {
+		// Create a post.
+		$post = $this->get_post();
+
+		// Test if this is a post.
+		$this->assertTrue( $post instanceof WP_Post );
+
+		// Assign Taxonomies.
+		$role_one = $this->factory()->term->create_and_get(
+			[
+				'taxonomy' => DEPARTURE_STAFF_ROLE_TAXONOMY,
+				'name'     => 'Test Role',
+			]
+		);
+		$role_two = $this->factory()->term->create_and_get(
+			[
+				'taxonomy' => DEPARTURE_STAFF_ROLE_TAXONOMY,
+				'name'     => 'Test Role 2',
+			]
+		);
+
+		// Assert the taxonomies are created.
+		$this->assertTrue( $role_one instanceof WP_Term );
+		$this->assertTrue( $role_two instanceof WP_Term );
+
+		// Assign taxonomies to the post.
+		wp_set_post_terms( $post->ID, [ $role_one->term_id, $role_two->term_id ], DEPARTURE_STAFF_ROLE_TAXONOMY );
+
+		// Assert the department.
+		$this->assertEquals(
+			[
+				[
+					'term_id'     => strval( $role_one->term_id ),
+					'name'        => $role_one->name,
+					'slug'        => $role_one->slug,
+					'term_group'  => $role_one->term_group,
+					'taxonomy'    => DEPARTURE_STAFF_ROLE_TAXONOMY,
+					'description' => $role_one->description,
+					'parent'      => $role_one->parent,
+				],
+				[
+					'term_id'     => strval( $role_two->term_id ),
+					'name'        => $role_two->name,
+					'slug'        => $role_two->slug,
+					'term_group'  => $role_two->term_group,
+					'taxonomy'    => DEPARTURE_STAFF_ROLE_TAXONOMY,
+					'description' => $role_two->description,
+					'parent'      => $role_two->parent,
+				],
+			],
+			get_roles( $post->ID )
+		);
+
+		// Clean up.
+		wp_delete_post( $post->ID, true );
+		wp_delete_term( $role_one->term_id, DEPARTURE_STAFF_ROLE_TAXONOMY );
+		wp_delete_term( $role_two->term_id, DEPARTURE_STAFF_ROLE_TAXONOMY );
+	}
+
+	/**
 	 * Test get staff members breadcrumbs.
 	 *
 	 * @covers \Quark\StaffMembers\get_breadcrumbs_ancestors()
@@ -360,6 +428,77 @@ class Test_Staff_Members extends WP_UnitTestCase {
 				],
 			],
 			get_breadcrumbs_ancestors()
+		);
+	}
+
+	/**
+	 * Test get structured data function.
+	 *
+	 * @covers \Quark\StaffMembers\get_structured_data()
+	 *
+	 * @return void
+	 */
+	public function test_get_structured_data(): void {
+		// Create a post.
+		$post = $this->get_post();
+
+		// Test if this is a post.
+		$this->assertTrue( $post instanceof WP_Post );
+
+		// Assign Taxonomies.
+		$department = $this->factory()->term->create_and_get(
+			[
+				'taxonomy' => DEPARTMENT_TAXONOMY,
+				'name'     => 'Test Department',
+			]
+		);
+		$role_one   = $this->factory()->term->create_and_get(
+			[
+				'taxonomy' => DEPARTURE_STAFF_ROLE_TAXONOMY,
+				'name'     => 'Test Role',
+			]
+		);
+		$role_two   = $this->factory()->term->create_and_get(
+			[
+				'taxonomy' => DEPARTURE_STAFF_ROLE_TAXONOMY,
+				'name'     => 'Test Role 2',
+			]
+		);
+
+		// Assert the taxonomies are created.
+		$this->assertTrue( $department instanceof WP_Term );
+		$this->assertTrue( $role_one instanceof WP_Term );
+		$this->assertTrue( $role_two instanceof WP_Term );
+
+		// Assign taxonomies to the post.
+		wp_set_post_terms( $post->ID, [ $department->term_id ], DEPARTMENT_TAXONOMY );
+		wp_set_post_terms( $post->ID, [ $role_two->term_id, $role_one->term_id ], DEPARTURE_STAFF_ROLE_TAXONOMY );
+
+		// Add role post meta.
+		update_post_meta( $post->ID, 'first_name', 'Dummy' );
+		update_post_meta( $post->ID, 'last_name', 'Member' );
+
+		// Get role.
+		$role = get_roles( $post->ID );
+		$role = $role[0]['name'];
+
+		// Prepare the expected structured data.
+		$expected = [
+			'@context'    => 'https://schema.org',
+			'@type'       => 'Person',
+			'name'        => 'Dummy Member',
+			'jobTitle'    => $role,
+			'affiliation' => [
+				'@type' => 'Organization',
+				'name'  => 'Employee',
+			],
+			'url'         => 'http://test.quarkexpeditions.com/staff-members/test-post',
+		];
+
+		// Assert the structured data.
+		$this->assertEquals(
+			$expected,
+			get_structured_data( $post->ID )
 		);
 	}
 }

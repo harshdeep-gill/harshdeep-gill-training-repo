@@ -746,6 +746,19 @@ function get_seo_structured_data( int $post_id = 0 ): array {
 		'image'       => get_the_post_thumbnail_url( $post_id ),
 	];
 
+	// Get starting from price.
+	$expedition_price = get_starting_from_price( $post_id )['discounted'];
+
+	// Add offers schema.
+	if ( ! empty( $expedition_price ) ) {
+		$product_schema['offers'] = [
+			'@type'         => 'Offer',
+			'price'         => get_starting_from_price( $post_id )['discounted'],
+			'priceCurrency' => 'USD',
+			'url'           => $expedition['permalink'],
+		];
+	}
+
 	// Add tourist trip schema.
 	$tourist_trip_schema = [
 		'@context'    => 'https://schema.org',
@@ -1159,6 +1172,48 @@ function get_minimum_duration( int $post_id = 0 ): int {
 
 	// Return minimum duration.
 	return $minimum_duration;
+}
+
+/**
+ * Get Minimum Duration Itinerary for Expedition.
+ * From set Itineraries.
+ *
+ * @param int $post_id Post ID.
+ *
+ * @return WP_Post|null
+ */
+function get_minimum_duration_itinerary( int $post_id = 0 ): WP_Post|null {
+	// Initialize minimum duration.
+	$minimum_duration           = 0;
+	$minimum_duration_itinerary = null;
+
+	// Get itineraries.
+	$itineraries = get_itineraries( $post_id );
+
+	// Check for itineraries.
+	if ( empty( $itineraries ) ) {
+		return $minimum_duration_itinerary;
+	}
+
+	// Loop through itineraries and get minimum duration.
+	foreach ( $itineraries as $itinerary ) {
+		// Check for Itinerary.
+		if ( ! is_array( $itinerary ) || empty( $itinerary['post_meta'] ) || empty( $itinerary['post_meta']['duration_in_days'] ) ) {
+			continue;
+		}
+
+		// Get duration.
+		$duration = absint( $itinerary['post_meta']['duration_in_days'] );
+
+		// Check minimum duration.
+		if ( empty( $minimum_duration ) || $duration < $minimum_duration ) {
+			$minimum_duration           = $duration;
+			$minimum_duration_itinerary = $itinerary['post'];
+		}
+	}
+
+	// Return minimum duration.
+	return $minimum_duration_itinerary;
 }
 
 /**

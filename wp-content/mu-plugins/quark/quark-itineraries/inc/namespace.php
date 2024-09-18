@@ -19,6 +19,7 @@ use function Quark\Ships\get as get_ship;
 use function Quark\Softrip\Itineraries\get_lowest_price;
 use function Quark\Softrip\Itineraries\get_related_ships;
 
+use const Quark\Localization\DEFAULT_CURRENCY;
 use const Quark\StaffMembers\SEASON_TAXONOMY;
 
 const POST_TYPE                   = 'qrk_itinerary';
@@ -696,7 +697,7 @@ function get_end_location( int $post_id = 0 ): string {
  *
  * @return int Mandatory transfer price.
  */
-function get_mandatory_transfer_price( int $post_id = 0, string $currency = 'USD' ): int {
+function get_mandatory_transfer_price( int $post_id = 0, string $currency = DEFAULT_CURRENCY ): int {
 	// get Itinerary.
 	$itinerary = get( $post_id );
 
@@ -725,7 +726,7 @@ function get_mandatory_transfer_price( int $post_id = 0, string $currency = 'USD
  *
  * @return int Supplemental price.
  */
-function get_supplemental_price( int $post_id = 0, string $currency = 'USD' ): int {
+function get_supplemental_price( int $post_id = 0, string $currency = DEFAULT_CURRENCY ): int {
 	// get Itinerary.
 	$itinerary = get( $post_id );
 
@@ -759,7 +760,7 @@ function get_supplemental_price( int $post_id = 0, string $currency = 'USD' ): i
  *     formatted_price: string,
  * } Included transfer package.
  */
-function get_included_transfer_package_details( int $post_id = 0, string $currency = 'USD' ): array {
+function get_included_transfer_package_details( int $post_id = 0, string $currency = DEFAULT_CURRENCY ): array {
 	// get Itinerary.
 	$itinerary = get( $post_id );
 	$details   = [

@@ -45,6 +45,12 @@
 </x-once>
 {{--  --}}
 
+<x-component-demo :keys="[ 'global-message' ]">
+	<x-global-message>
+		<p>Are you in the Travel Trade or a Travel agent? <a href="#"><strong>Login</strong></a> to our portal.</p>
+	</x-global-message>
+</x-component-demo>
+
 <x-component-demo :keys="[ 'sidebar-grid', 'lp-header', 'hero-refactor' ]">
 	<x-lp-header
 		tc_image_id="18"
@@ -245,7 +251,7 @@
 	</x-section>
 </x-component-demo>
 
-<x-component-demo :keys="[ 'hero', 'hero-refactor' ]">
+<x-component-demo :keys="[ 'hero', 'hero-refactor', 'hero-circle-badge' ]">
 	<x-hero text_align="center" immersive="none">
 		<x-hero.image image_id="26" />
 		<x-hero.content>
@@ -259,6 +265,7 @@
 				<x-hero.form-modal-cta>Get a Digital Brochure</x-hero.form-modal-cta>
 			</x-hero.left>
 			<x-hero.right>
+				<x-hero.circle-badge text="As seen on BBC and Discovery Channel's Frozen Planet" />
 			</x-hero.right>
 		</x-hero.content>
 	</x-hero>
@@ -2042,7 +2049,7 @@
 		<x-two-columns :border="false">
 			<x-two-columns.column>
 				<x-fancy-video
-					url="https://www.youtube.com/embed/0fRAL7xROZg"
+					url="https://quarkexpeditions.wistia.com/medias/rel589439q"
 					image_id="32"
 					title="Hear from fellow solo traveler Charlotte"
 				/>
@@ -2638,6 +2645,17 @@
 			<x-button size="big" color="black">Join the Shackleton Club</x-button>
 		</x-media-cta-banner.content>
 	</x-media-cta-banner>
+
+	<x-media-cta-banner appearance="solid" background_color="gray">
+		<x-media-cta-banner.image image_id="35" />
+		<x-media-cta-banner.content>
+			<x-media-cta-banner.overline text="Expedition Guides and Education Team" />
+			<h3>Discover Your Next Adventure</h3>
+			<h4>Experience the Polar Regions your own way</h4>
+			<p>Greenland is waiting to be explored. Browse all of our expedition options to the world's largest island.</p>
+			<x-button size="big" color="black">Join the Shackleton Club</x-button>
+		</x-media-cta-banner.content>
+	</x-media-cta-banner>
 </x-component-demo>
 
 <x-component-demo :keys="[ 'lp-footer', 'logo-grid' ]">
@@ -2743,10 +2761,6 @@
 				>
 					<x-product-cards.badge-cta text="Save 50%" />
 				</x-product-cards.image>
-				<x-product-cards.reviews
-					total_reviews="19 Reviews"
-					review_rating="5"
-				/>
 				<x-product-cards.itinerary departure_date="Departing May 20, 2024" duration="10 Days" />
 				<x-product-cards.title title="Introduction to Spitsbergen" />
 				<x-product-cards.subtitle title="Fjords, Glaciers, and Wildlife of Svalbard" />
@@ -2771,10 +2785,6 @@
 					<x-product-cards.badge-cta text="Save 50%" />
 					<x-product-cards.badge-time text="Just Added" />
 				</x-product-cards.image>
-				<x-product-cards.reviews
-					total_reviews="9999 Reviews"
-					review_rating="3"
-				/>
 				<x-product-cards.itinerary departure_date="Departing May 28, 2024" duration="12 Days" />
 				<x-product-cards.title title="Spitsbergen Explorer" />
 				<x-product-cards.subtitle title="Wildlife Capital of the Arctic" />
@@ -2797,10 +2807,6 @@
 				>
 					<x-product-cards.badge-time text="Just Added" />
 				</x-product-cards.image>
-				<x-product-cards.reviews
-					total_reviews="100 Reviews"
-					review_rating="4"
-				/>
 				<x-product-cards.itinerary departure_date="Departing July 14, 2024" duration="11 Days" />
 				<x-product-cards.title title="Gems of West Greenland" />
 				<x-product-cards.subtitle title="Fjords, Icebergs, and Culture" />
@@ -2972,10 +2978,6 @@
 				>
 					<x-product-cards.badge-cta text="Save 50%" />
 				</x-product-cards.image>
-				<x-product-cards.reviews
-					total_reviews="19 Reviews"
-					review_rating="5"
-				/>
 				<x-product-cards.itinerary departure_date="Departing May 20, 2024" duration="10 Days" />
 				<x-product-cards.title title="Introduction to Spitsbergen" />
 				<x-product-cards.subtitle title="Fjords, Glaciers, and Wildlife of Svalbard" />
@@ -3000,10 +3002,6 @@
 					<x-product-cards.badge-cta text="Save 50%" />
 					<x-product-cards.badge-time text="Just Added" />
 				</x-product-cards.image>
-				<x-product-cards.reviews
-					total_reviews="9999 Reviews"
-					review_rating="3"
-				/>
 				<x-product-cards.itinerary departure_date="Departing May 28, 2024" duration="12 Days" />
 				<x-product-cards.title title="Spitsbergen Explorer" />
 				<x-product-cards.subtitle title="Wildlife Capital of the Arctic" />
@@ -3026,10 +3024,6 @@
 				>
 					<x-product-cards.badge-time text="Just Added" />
 				</x-product-cards.image>
-				<x-product-cards.reviews
-					total_reviews="100 Reviews"
-					review_rating="4"
-				/>
 				<x-product-cards.itinerary departure_date="Departing July 14, 2024" duration="11 Days" />
 				<x-product-cards.title title="Gems of West Greenland" />
 				<x-product-cards.subtitle title="Fjords, Icebergs, and Culture" />
@@ -3089,8 +3083,8 @@
 				<x-product-cards.info-ribbon>Additional 10% savings text</x-product-cards.info-ribbon>
 			</x-product-cards.image>
 			<x-product-cards.reviews
-				total_reviews="9999 Reviews"
-				review_rating="3"
+				total_reviews="19 Reviews"
+				review_rating="5"
 			/>
 			<x-product-cards.itinerary departure_date="Departing May 28, 2024" duration="12 Days" />
 			<x-product-cards.title title="Spitsbergen Explorer" />
@@ -3144,8 +3138,8 @@
 				<x-product-cards.badge-time text="Just Added" />
 			</x-product-cards.image>
 			<x-product-cards.reviews
-				total_reviews="9999 Reviews"
-				review_rating="3"
+				total_reviews="19 Reviews"
+				review_rating="5"
 			/>
 			<x-product-cards.itinerary departure_date="Departing May 28, 2024" duration="12 Days" />
 			<x-product-cards.title title="Spitsbergen Explorer" />
@@ -3170,9 +3164,285 @@
 				<x-product-cards.badge-time text="Just Added" />
 			</x-product-cards.image>
 			<x-product-cards.reviews
-				total_reviews="100 Reviews"
-				review_rating="4"
+				total_reviews="19 Reviews"
+				review_rating="5"
 			/>
+			<x-product-cards.itinerary departure_date="Departing July 14, 2024" duration="11 Days" />
+			<x-product-cards.title title="Gems of West Greenland" />
+			<x-product-cards.subtitle title="Fjords, Icebergs, and Culture" />
+			<x-product-cards.description>
+				<p>Features the best sites of West Greenland & delivers an in-depth experience in just 12 days.</p>
+			</x-product-cards.description>
+			<x-product-cards.price
+				original_price="$9,395 USD"
+				discounted_price="$8,571 USD"
+			/>
+			<x-product-cards.buttons :columns="2">
+				<x-button size="big">Request a Quote</x-button>
+				<x-button size="big" appearance="outline">Learn More</x-button>
+			</x-product-cards.buttons>
+		</x-product-cards.card>
+	</x-product-cards>
+
+	<x-product-cards layout="grid">
+		<x-product-cards.card url="#">
+			<x-product-cards.image
+				image_id="29"
+			>
+				<x-product-cards.badge-cta text="Save 50%" />
+			</x-product-cards.image>
+			<x-product-cards.itinerary departure_date="Departing May 20, 2024" duration="10 Days" />
+			<x-product-cards.title title="Introduction to Spitsbergen" />
+			<x-product-cards.subtitle title="Fjords, Glaciers, and Wildlife of Svalbard" />
+			<x-product-cards.description>
+				<p>This fascinating expedition provides a taste of everything Spitsbergen has to offer!</p>
+			</x-product-cards.description>
+			<x-product-cards.price
+				original_price="$7,395 USD"
+				discounted_price="$6,171 USD"
+			/>
+			<x-product-cards.buttons :columns="2">
+				<x-button size="big">Request a Quote</x-button>
+				<x-button size="big" appearance="outline">Learn More</x-button>
+			</x-product-cards.buttons>
+		</x-product-cards.card>
+
+		<x-product-cards.card url="#">
+			<x-product-cards.image
+				image_id="36"
+				:is_immersive="false"
+			>
+				<x-product-cards.badge-cta text="Save 50%" />
+				<x-product-cards.badge-time text="Just Added" />
+			</x-product-cards.image>
+			<x-product-cards.itinerary departure_date="Departing May 28, 2024" duration="12 Days" />
+			<x-product-cards.title title="Spitsbergen Explorer" />
+			<x-product-cards.subtitle title="Wildlife Capital of the Arctic" />
+			<x-product-cards.description>
+				<p>Witness the remarkable array of creatures who call this spectacular environment home.</p>
+			</x-product-cards.description>
+			<x-product-cards.price
+				original_price="$9,095 USD"
+				discounted_price="$7,361 USD"
+			/>
+			<x-product-cards.buttons :columns="2">
+				<x-button size="big" icon="phone">Book: +1 (866) 220-1915</x-button>
+			</x-product-cards.buttons>
+		</x-product-cards.card>
+
+		<x-product-cards.card url="#">
+			<x-product-cards.image
+				image_id="32"
+				:is_immersive="false"
+			>
+				<x-product-cards.badge-time text="Just Added" />
+			</x-product-cards.image>
+			<x-product-cards.itinerary departure_date="Departing July 14, 2024" duration="11 Days" />
+			<x-product-cards.title title="Gems of West Greenland" />
+			<x-product-cards.subtitle title="Fjords, Icebergs, and Culture" />
+			<x-product-cards.description>
+				<p>Features the best sites of West Greenland & delivers an in-depth experience in just 12 days.</p>
+			</x-product-cards.description>
+			<x-product-cards.price
+				original_price="$9,395 USD"
+				discounted_price="$8,571 USD"
+			/>
+			<x-product-cards.buttons :columns="2">
+				<x-button size="big">Request a Quote</x-button>
+				<x-button size="big" appearance="outline">Learn More</x-button>
+			</x-product-cards.buttons>
+		</x-product-cards.card>
+
+		<x-product-cards.card url="#">
+			<x-product-cards.image
+				image_id="29"
+			>
+				<x-product-cards.badge-cta text="Save 50%" />
+			</x-product-cards.image>
+			<x-product-cards.itinerary departure_date="Departing May 20, 2024" duration="10 Days" />
+			<x-product-cards.title title="Introduction to Spitsbergen" />
+			<x-product-cards.subtitle title="Fjords, Glaciers, and Wildlife of Svalbard" />
+			<x-product-cards.description>
+				<p>This fascinating expedition provides a taste of everything Spitsbergen has to offer!</p>
+			</x-product-cards.description>
+			<x-product-cards.price
+				original_price="$7,395 USD"
+				discounted_price="$6,171 USD"
+			/>
+			<x-product-cards.buttons :columns="2">
+				<x-button size="big">Request a Quote</x-button>
+				<x-button size="big" appearance="outline">Learn More</x-button>
+			</x-product-cards.buttons>
+		</x-product-cards.card>
+
+		<x-product-cards.card url="#">
+			<x-product-cards.image
+				image_id="36"
+				:is_immersive="false"
+			>
+				<x-product-cards.badge-cta text="Save 50%" />
+				<x-product-cards.badge-time text="Just Added" />
+			</x-product-cards.image>
+			<x-product-cards.itinerary departure_date="Departing May 28, 2024" duration="12 Days" />
+			<x-product-cards.title title="Spitsbergen Explorer" />
+			<x-product-cards.subtitle title="Wildlife Capital of the Arctic" />
+			<x-product-cards.description>
+				<p>Witness the remarkable array of creatures who call this spectacular environment home.</p>
+			</x-product-cards.description>
+			<x-product-cards.price
+				original_price="$9,095 USD"
+				discounted_price="$7,361 USD"
+			/>
+			<x-product-cards.buttons :columns="2">
+				<x-button size="big" icon="phone">Book: +1 (866) 220-1915</x-button>
+			</x-product-cards.buttons>
+		</x-product-cards.card>
+
+		<x-product-cards.card url="#">
+			<x-product-cards.image
+				image_id="32"
+				:is_immersive="false"
+			>
+				<x-product-cards.badge-time text="Just Added" />
+			</x-product-cards.image>
+			<x-product-cards.itinerary departure_date="Departing July 14, 2024" duration="11 Days" />
+			<x-product-cards.title title="Gems of West Greenland" />
+			<x-product-cards.subtitle title="Fjords, Icebergs, and Culture" />
+			<x-product-cards.description>
+				<p>Features the best sites of West Greenland & delivers an in-depth experience in just 12 days.</p>
+			</x-product-cards.description>
+			<x-product-cards.price
+				original_price="$9,395 USD"
+				discounted_price="$8,571 USD"
+			/>
+			<x-product-cards.buttons :columns="2">
+				<x-button size="big">Request a Quote</x-button>
+				<x-button size="big" appearance="outline">Learn More</x-button>
+			</x-product-cards.buttons>
+		</x-product-cards.card>
+	</x-product-cards>
+
+	<x-product-cards :carousel_overflow="true">
+		<x-product-cards.card url="#">
+			<x-product-cards.image
+				image_id="29"
+			>
+				<x-product-cards.badge-cta text="Save 50%" />
+			</x-product-cards.image>
+			<x-product-cards.itinerary departure_date="Departing May 20, 2024" duration="10 Days" />
+			<x-product-cards.title title="Introduction to Spitsbergen" />
+			<x-product-cards.subtitle title="Fjords, Glaciers, and Wildlife of Svalbard" />
+			<x-product-cards.description>
+				<p>This fascinating expedition provides a taste of everything Spitsbergen has to offer!</p>
+			</x-product-cards.description>
+			<x-product-cards.price
+				original_price="$7,395 USD"
+				discounted_price="$6,171 USD"
+			/>
+			<x-product-cards.buttons :columns="2">
+				<x-button size="big">Request a Quote</x-button>
+				<x-button size="big" appearance="outline">Learn More</x-button>
+			</x-product-cards.buttons>
+		</x-product-cards.card>
+
+		<x-product-cards.card url="#">
+			<x-product-cards.image
+				image_id="36"
+				:is_immersive="false"
+			>
+				<x-product-cards.badge-cta text="Save 50%" />
+				<x-product-cards.badge-time text="Just Added" />
+			</x-product-cards.image>
+			<x-product-cards.itinerary departure_date="Departing May 28, 2024" duration="12 Days" />
+			<x-product-cards.title title="Spitsbergen Explorer" />
+			<x-product-cards.subtitle title="Wildlife Capital of the Arctic" />
+			<x-product-cards.description>
+				<p>Witness the remarkable array of creatures who call this spectacular environment home.</p>
+			</x-product-cards.description>
+			<x-product-cards.price
+				original_price="$9,095 USD"
+				discounted_price="$7,361 USD"
+			/>
+			<x-product-cards.buttons :columns="2">
+				<x-button size="big" icon="phone">Book: +1 (866) 220-1915</x-button>
+			</x-product-cards.buttons>
+		</x-product-cards.card>
+
+		<x-product-cards.card url="#">
+			<x-product-cards.image
+				image_id="32"
+				:is_immersive="false"
+			>
+				<x-product-cards.badge-time text="Just Added" />
+			</x-product-cards.image>
+			<x-product-cards.itinerary departure_date="Departing July 14, 2024" duration="11 Days" />
+			<x-product-cards.title title="Gems of West Greenland" />
+			<x-product-cards.subtitle title="Fjords, Icebergs, and Culture" />
+			<x-product-cards.description>
+				<p>Features the best sites of West Greenland & delivers an in-depth experience in just 12 days.</p>
+			</x-product-cards.description>
+			<x-product-cards.price
+				original_price="$9,395 USD"
+				discounted_price="$8,571 USD"
+			/>
+			<x-product-cards.buttons :columns="2">
+				<x-button size="big">Request a Quote</x-button>
+				<x-button size="big" appearance="outline">Learn More</x-button>
+			</x-product-cards.buttons>
+		</x-product-cards.card>
+
+		<x-product-cards.card url="#">
+			<x-product-cards.image
+				image_id="29"
+			>
+				<x-product-cards.badge-cta text="Save 50%" />
+			</x-product-cards.image>
+			<x-product-cards.itinerary departure_date="Departing May 20, 2024" duration="10 Days" />
+			<x-product-cards.title title="Introduction to Spitsbergen" />
+			<x-product-cards.subtitle title="Fjords, Glaciers, and Wildlife of Svalbard" />
+			<x-product-cards.description>
+				<p>This fascinating expedition provides a taste of everything Spitsbergen has to offer!</p>
+			</x-product-cards.description>
+			<x-product-cards.price
+				original_price="$7,395 USD"
+				discounted_price="$6,171 USD"
+			/>
+			<x-product-cards.buttons :columns="2">
+				<x-button size="big">Request a Quote</x-button>
+				<x-button size="big" appearance="outline">Learn More</x-button>
+			</x-product-cards.buttons>
+		</x-product-cards.card>
+
+		<x-product-cards.card url="#">
+			<x-product-cards.image
+				image_id="36"
+				:is_immersive="false"
+			>
+				<x-product-cards.badge-cta text="Save 50%" />
+				<x-product-cards.badge-time text="Just Added" />
+			</x-product-cards.image>
+			<x-product-cards.itinerary departure_date="Departing May 28, 2024" duration="12 Days" />
+			<x-product-cards.title title="Spitsbergen Explorer" />
+			<x-product-cards.subtitle title="Wildlife Capital of the Arctic" />
+			<x-product-cards.description>
+				<p>Witness the remarkable array of creatures who call this spectacular environment home.</p>
+			</x-product-cards.description>
+			<x-product-cards.price
+				original_price="$9,095 USD"
+				discounted_price="$7,361 USD"
+			/>
+			<x-product-cards.buttons :columns="2">
+				<x-button size="big" icon="phone">Book: +1 (866) 220-1915</x-button>
+			</x-product-cards.buttons>
+		</x-product-cards.card>
+
+		<x-product-cards.card url="#">
+			<x-product-cards.image
+				image_id="32"
+				:is_immersive="false"
+			>
+				<x-product-cards.badge-time text="Just Added" />
+			</x-product-cards.image>
 			<x-product-cards.itinerary departure_date="Departing July 14, 2024" duration="11 Days" />
 			<x-product-cards.title title="Gems of West Greenland" />
 			<x-product-cards.subtitle title="Fjords, Icebergs, and Culture" />
@@ -3199,7 +3469,6 @@
 				:is_immersive="true"
 			>
 			</x-product-cards.image>
-
 			<x-product-cards.overline text="12 Days" />
 			<x-product-cards.title title="Arctic Saga: Exploring Spitsbergen via the Faroes and Jan Mayen" />
 			<x-product-cards.subtitle title="Lorem Ipsum, Doler Tempor, Incididunt, Exercitation Ullamco" />
@@ -3213,7 +3482,6 @@
 				:is_immersive="true"
 			>
 			</x-product-cards.image>
-
 			<x-product-cards.overline text="12 Days" />
 			<x-product-cards.title title="Arctic Saga: Exploring Spitsbergen via the Faroes and Jan Mayen" />
 			<x-product-cards.subtitle title="Lorem Ipsum, Doler Tempor, Incididunt, Exercitation Ullamco" />
@@ -3226,7 +3494,6 @@
 				:is_immersive="true"
 			>
 			</x-product-cards.image>
-
 			<x-product-cards.overline text="12 Days" />
 			<x-product-cards.title title="Arctic Saga: Exploring Spitsbergen via the Faroes and Jan Mayen" />
 			<x-product-cards.subtitle title="Lorem Ipsum, Doler Tempor, Incididunt, Exercitation Ullamco" />
@@ -3244,7 +3511,6 @@
 				:is_immersive="true"
 			>
 			</x-product-cards.image>
-
 			<x-product-cards.overline text="Arctic" />
 			<x-product-cards.title title="Arctic Saga: Exploring Spitsbergen via the Faroes and Jan Mayen" />
 
@@ -3282,7 +3548,6 @@
 				:is_immersive="true"
 			>
 			</x-product-cards.image>
-
 			<x-product-cards.overline text="Arctic" />
 			<x-product-cards.title title="Arctic Saga: Exploring Spitsbergen via the Faroes and Jan Mayen" />
 
@@ -3320,7 +3585,6 @@
 				:is_immersive="true"
 			>
 			</x-product-cards.image>
-
 			<x-product-cards.overline text="Arctic" />
 			<x-product-cards.title title="Arctic Saga: Exploring Spitsbergen via the Faroes and Jan Mayen" />
 
@@ -3362,10 +3626,6 @@
 			>
 				<x-product-cards.badge-cta text="Save 50%" />
 			</x-product-cards.image>
-			<x-product-cards.reviews
-				total_reviews="19 Reviews"
-				review_rating="5"
-			/>
 			<x-product-cards.itinerary duration="12 day itinerary" />
 			<x-product-cards.title title="Gems of West Greenland: Fjords, Icebergs, and Culture" />
 			<x-product-cards.price
@@ -3395,10 +3655,6 @@
 			>
 				<x-product-cards.badge-time text="Just Added" />
 			</x-product-cards.image>
-			<x-product-cards.reviews
-				total_reviews="19 Reviews"
-				review_rating="5"
-			/>
 			<x-product-cards.itinerary duration="12 day itinerary" />
 			<x-product-cards.title title="Under the Northern Lights: Exploring Iceland & East Greenland" />
 			<x-product-cards.price
@@ -3427,10 +3683,6 @@
 				image_id="29"
 			>
 			</x-product-cards.image>
-			<x-product-cards.reviews
-				total_reviews="19 Reviews"
-				review_rating="5"
-			/>
 			<x-product-cards.itinerary duration="12 day itinerary" />
 			<x-product-cards.title title="Greenland Explorer: Sail and Soar the Alpine Arctic" />
 			<x-product-cards.price
@@ -3469,10 +3721,6 @@
 				>
 					<x-product-cards.badge-cta text="Save 50%" />
 				</x-product-cards.image>
-				<x-product-cards.reviews
-					total_reviews="19 Reviews"
-					review_rating="5"
-				/>
 				<x-product-cards.itinerary departure_date="Departing May 20, 2024" duration="10 Days" />
 				<x-product-cards.title title="Introduction to Spitsbergen" />
 				<x-product-cards.subtitle title="Fjords, Glaciers, and Wildlife of Svalbard" />
@@ -3496,10 +3744,6 @@
 					<x-product-cards.badge-cta text="Save 50%" />
 					<x-product-cards.badge-time text="Just Added" />
 				</x-product-cards.image>
-				<x-product-cards.reviews
-					total_reviews="9999 Reviews"
-					review_rating="3"
-				/>
 				<x-product-cards.itinerary departure_date="Departing May 28, 2024" duration="12 Days" />
 				<x-product-cards.title title="Spitsbergen Explorer" />
 				<x-product-cards.subtitle title="Wildlife Capital of the Arctic" />
@@ -3521,10 +3765,6 @@
 				>
 					<x-product-cards.badge-time text="Just Added" />
 				</x-product-cards.image>
-				<x-product-cards.reviews
-					total_reviews="100 Reviews"
-					review_rating="4"
-				/>
 				<x-product-cards.itinerary departure_date="Departing July 14, 2024" duration="11 Days" />
 				<x-product-cards.title title="Gems of West Greenland" />
 				<x-product-cards.subtitle title="Fjords, Icebergs, and Culture" />
@@ -3542,6 +3782,66 @@
 			</x-product-cards.card>
 		</x-product-cards>
 	</x-section>
+</x-component-demo>
+
+<x-component-demo :keys="[ 'press-releases' ]">
+	<x-press-releases>
+		<x-press-releases.result-count current="1-8" total="138" />
+		<x-press-releases.results>
+			<x-listing-cards>
+				<x-listing-cards.card>
+					<x-listing-cards.overline text="Expedition Guides and Education Team" />
+					<x-listing-cards.title title="Quark Expeditions Invites Guests to “Raise a Glass and Stay Connected” with Free Wi-Fi and Bar Service" />
+					<x-listing-cards.subtitle subtitle="Experience the Polar Regions your own way" />
+					<x-listing-cards.description>
+						<p>Quark Expeditions, the global leader in polar adventures, is pleased to announce that all guests will enjoy complimentary Wi-Fi and alcohol on all voyages as of the Antarctic 2024/25 sailing season.</p>
+					</x-listing-cards.description>
+					<x-listing-cards.cta>
+						<x-button size="big" color="black">Read More</x-button>
+					</x-listing-cards.cta>
+				</x-listing-cards.card>
+
+				<x-listing-cards.card>
+					<x-listing-cards.overline text="Expedition Guides and Education Team" />
+					<x-listing-cards.title title="Ask Parker the Polar Bear! Quark Expeditions’ New AI-Driven Partner Portal Makes Every Travel Advisor a Polar Expert" />
+					<x-listing-cards.subtitle subtitle="Experience the Polar Regions your own way" />
+					<x-listing-cards.description>
+						<p>Greenland is waiting to be explored. Browse all of our expedition options to the world's largest island.</p>
+					</x-listing-cards.description>
+					<x-listing-cards.cta>
+						<x-button size="big" color="black">Read More</x-button>
+					</x-listing-cards.cta>
+				</x-listing-cards.card>
+
+				<x-listing-cards.card>
+					<x-listing-cards.overline text="Expedition Guides and Education Team" />
+					<x-listing-cards.title title="Quark Expeditions Invites Guests to “Raise a Glass and Stay Connected” with Free Wi-Fi and Bar Service" />
+					<x-listing-cards.subtitle subtitle="Experience the Polar Regions your own way" />
+					<x-listing-cards.description>
+						<p>Quark Expeditions, the global leader in polar adventures, is pleased to announce that all guests will enjoy complimentary Wi-Fi and alcohol on all voyages as of the Antarctic 2024/25 sailing season.</p>
+					</x-listing-cards.description>
+					<x-listing-cards.cta>
+						<x-button size="big" color="black">Read More</x-button>
+					</x-listing-cards.cta>
+				</x-listing-cards.card>
+			</x-listing-cards>
+		</x-press-releases.results>
+		<x-pagination>
+			<x-pagination.total-pages current_page="1" total_pages="11" />
+			<x-pagination.links>
+				<x-pagination.first-page href="#" >First</x-pagination.first-page>
+				<!-- Generated by WordPress `paginate_links()` -->
+				<a class="prev page-numbers" href="/travel-blog">Prev</a>
+				<a class="page-numbers current" href="/travel-blog/page/2">1</a>
+				<span class="page-numbers">2</span>
+				<a class="page-numbers" href="/travel-blog/page/3">3</a>
+				<span class="page-numbers dots">…</span>
+				<a class="page-numbers" href="/travel-blog/page/48">48</a>
+				<a class="next page-numbers" href="/travel-blog/page/2">Next</a>
+				<x-pagination.last-page href="#" >Last</x-pagination.last-page>
+			</x-pagination.links>
+		</x-pagination>
+	</x-press-releases>
 </x-component-demo>
 
 <x-component-demo :keys="[ 'thumbnail-cards' ]">
@@ -6209,18 +6509,12 @@
 
 <x-component-demo :keys="[ 'dates-rates' ]">
 	@php
-		// TODO: This will be removed after the development of this component is complete and will be handled by the block.
-		$dates_rates_filter_data = [
-			'seasons'            => Quark\Search\Departures\get_region_and_season_search_filter_data(),
-			'expeditions'        => Quark\Search\Departures\get_expedition_search_filter_data(),
-			'adventure_options'  => Quark\Search\Departures\get_adventure_options_search_filter_data(),
-			'months'             => Quark\Search\Departures\get_month_search_filter_data(),
-			'durations'          => Quark\Search\Departures\get_duration_search_filter_data(),
-			'ships'              => Quark\Search\Departures\get_ship_search_filter_data(),
-		];
+		$dates_rates_filter_data = Quark\Theme\Search_Filters\get_filters_for_dates_rates();
+
+		$currency = Quark\Localization\get_current_currency();
 	@endphp
 	<x-section>
-		<x-parts.dates-rates :filter_data="$dates_rates_filter_data" />
+		<x-parts.dates-rates :filter_data="$dates_rates_filter_data" :currency="$currency" />
 	</x-section>
 </x-component-demo>
 

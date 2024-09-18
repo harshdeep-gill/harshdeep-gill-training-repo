@@ -62,6 +62,7 @@
   },
   "dependencies": {
     "@travelopia/web-components": "^0.6.9",
-    "normalize.css": "^8.0.1"
+    "normalize.css": "^8.0.1",
+    "query-string": "^9.1.0"
   }
 }

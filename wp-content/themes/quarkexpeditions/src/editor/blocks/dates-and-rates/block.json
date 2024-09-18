@@ -1,0 +1,21 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "quark/dates-and-rates",
+    "description": "Display dates and rates block",
+    "title": "Dates and Rates",
+    "keywords": [
+        "dates",
+        "rates"
+    ],
+    "category": "layout",
+    "textdomain": "quark",
+    "attributes": {},
+    "supports": {
+        "alignWide": false,
+        "anchor": true,
+        "className": false,
+        "customClassName": false,
+        "html": false
+    }
+}

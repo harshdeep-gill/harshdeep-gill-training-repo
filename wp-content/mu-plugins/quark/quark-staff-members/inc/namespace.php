@@ -40,6 +40,9 @@ function bootstrap(): void {
 	// Breadcrumbs.
 	add_filter( 'travelopia_breadcrumbs_ancestors', __NAMESPACE__ . '\\breadcrumbs_ancestors' );
 
+	// SEO.
+	add_filter( 'travelopia_seo_structured_data_schema', __NAMESPACE__ . '\\seo_structured_data' );
+
 	// Admin stuff.
 	if ( is_admin() ) {
 		// Custom fields.
@@ -378,6 +381,73 @@ function get( int $post_id = 0 ): array {
 }
 
 /**
+ * Build structured data for schema.
+ *
+ * @param mixed[] $schema All schema data.
+ *
+ * @return mixed[]
+ */
+function seo_structured_data( array $schema = [] ): array {
+	// Check if this is a staff member page.
+	if ( ! is_singular( POST_TYPE ) ) {
+		return $schema;
+	}
+
+	// Get and insert the schema.
+	$schema[] = get_structured_data( absint( get_the_ID() ) );
+
+	// Return the schema.
+	return $schema;
+}
+
+/**
+ * Get structured data for this post type.
+ *
+ * @param int $post_id Post ID.
+ *
+ * @return array{}|array{
+ *    "@context": string,
+ *    "@type": string,
+ *    "name": string,
+ *    "jobTitle": string,
+ *    "affiliation": array{
+ *        "@type": string,
+ *        "name": string,
+ *    },
+ *   "url": string,
+ * }
+ */
+function get_structured_data( int $post_id = 0 ): array {
+	// Get post data.
+	$post = get( $post_id );
+
+	// Return early if post couldn't be fetched or not of this post type.
+	if ( ! $post['post'] instanceof WP_Post || POST_TYPE !== $post['post']->post_type ) {
+		return [];
+	}
+
+	// Get name.
+	$name = sprintf( '%s %s', strval( $post['post_meta']['first_name'] ), strval( $post['post_meta']['last_name'] ) );
+
+	// Get Job Title.
+	$role = get_roles( $post['post']->ID );
+	$role = ! empty( $role ) ? $role[0]['name'] : '';
+
+	// Return Schema.
+	return [
+		'@context'    => 'https://schema.org',
+		'@type'       => 'Person',
+		'name'        => $name,
+		'jobTitle'    => $role,
+		'affiliation' => [
+			'@type' => 'Organization',
+			'name'  => 'Employee',
+		],
+		'url'         => $post['permalink'],
+	];
+}
+
+/**
  * Get Department.
  *
  * @param int $post_id Post ID.
@@ -451,6 +521,43 @@ function get_departments( int $post_id = 0 ): array {
 
 	// Return season data.
 	return $post['post_taxonomies'][ DEPARTMENT_TAXONOMY ];
+}
+
+/**
+ * Get Departments.
+ *
+ * @param int $post_id Post ID.
+ *
+ * @return array{}|array{
+ *     term_id: int,
+ *     name: string,
+ *     slug: string,
+ *     term_group: int,
+ *     term_taxonomy_id: int,
+ *     taxonomy: string,
+ *     description: string,
+ *     parent: int,
+ * }[] Season data.
+ */
+function get_roles( int $post_id = 0 ): array {
+	// Get post ID.
+	$post = get( $post_id );
+
+	// If post not found then return empty array.
+	if ( ! $post['post'] instanceof WP_Post ) {
+		return [];
+	}
+
+	// If there is no season, return empty array.
+	if (
+		empty( $post['post_taxonomies'][ DEPARTURE_STAFF_ROLE_TAXONOMY ] ) ||
+		! is_array( $post['post_taxonomies'][ DEPARTURE_STAFF_ROLE_TAXONOMY ] )
+	) {
+		return [];
+	}
+
+	// Return season data.
+	return $post['post_taxonomies'][ DEPARTURE_STAFF_ROLE_TAXONOMY ];
 }
 
 /**

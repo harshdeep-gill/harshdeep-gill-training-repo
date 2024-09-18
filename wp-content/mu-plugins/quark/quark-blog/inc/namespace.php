@@ -352,7 +352,7 @@ function get_cards_data( array $post_ids = [] ): array {
 		$post = get( $post_id );
 
 		// Get blog author ids.
-		$blog_author_ids = (array) $post['post_meta']['blog_authors'] ?: [];
+		$blog_author_ids = empty( $post['post_meta']['blog_authors'] ) ? [] : (array) $post['post_meta']['blog_authors'];
 
 		// Initialize authors data.
 		$authors_data = [];

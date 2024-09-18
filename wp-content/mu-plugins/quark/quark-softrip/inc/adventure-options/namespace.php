@@ -9,11 +9,11 @@ namespace Quark\Softrip\AdventureOptions;
 
 use WP_Error;
 
+use function Quark\Localization\get_currencies;
 use function Quark\Softrip\get_engine_collate;
 use function Quark\Softrip\add_prefix_to_table_name;
 
 use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
-use const Quark\Core\CURRENCIES;
 
 const CACHE_KEY_PREFIX = 'qrk_softrip_adventure_options';
 const CACHE_GROUP      = 'qrk_softrip_adventure_options';
@@ -287,7 +287,7 @@ function format_adventure_option_data( array $raw_adventure_option = [], int $de
 	}
 
 	// Loop through the currencies.
-	foreach ( CURRENCIES as $currency ) {
+	foreach ( get_currencies() as $currency ) {
 		// Check if the currency is set and price per person exists.
 		if ( empty( $raw_adventure_option['price'][ $currency ] ) || ! is_array( $raw_adventure_option['price'][ $currency ] ) || empty( $raw_adventure_option['price'][ $currency ]['pricePerPerson'] ) ) {
 			continue;
