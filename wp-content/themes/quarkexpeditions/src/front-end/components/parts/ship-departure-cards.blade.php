@@ -151,12 +151,27 @@
 					<x-product-options-cards>
 						<x-product-options-cards.cards>
 							@foreach( $card['cabins'] as $cabin_code => $cabin )
-								<x-product-options-cards.card details_id="{{  $cabin_code . '_' . $departure_id }}">
+								@php
+									$cabin_availability_status = $cabin['specifications']['availability_status'] ?? 'U';
+
+									$card_badge_text = match ( $cabin_availability_status ) {
+										'S' => __( 'Sold Out', 'qrk' ),
+										'R' => __( 'Please Call', 'qrk' ),
+										'A' => $cabin['type'] ?? '',
+									};
+
+									if ( empty( $cabin_availability_status ) || 'U' === $cabin_availability_status ) {
+										continue;
+									}
+								@endphp
+								<x-product-options-cards.card details_id="{{  $cabin_code . '_' . $departure_id }}" :status="$cabin_availability_status" >
 
 									@if( ! empty( $cabin['gallery'] ) )
 										<x-product-options-cards.gallery :image_ids="$cabin['gallery']">
 											<x-product-options-cards.badge
-												type="{{ $cabin['type'] ?? __( 'standard', 'qrk' ) }}"
+												status="{{ $cabin_availability_status }}"
+												type="{{ $cabin['type'] }}"
+												text="{{ $card_badge_text }}"
 											/>
 										</x-product-options-cards.gallery>
 									@endif
@@ -209,6 +224,13 @@
 
 						<x-product-options-cards.more-details>
 							@foreach( $card['cabins'] as $cabin_code => $cabin )
+								@php
+									$cabin_availability_status = $cabin['specifications']['availability_status'] ?? 'U';
+
+									if ( empty( $cabin_availability_status ) || in_array( $cabin_availability_status, [ 'U', 'R', 'S' ] ) ) {
+										continue;
+									}
+								@endphp
 								<x-product-options-cards.card-details
 									id="{{ $cabin_code . '_' . $departure_id }}">
 

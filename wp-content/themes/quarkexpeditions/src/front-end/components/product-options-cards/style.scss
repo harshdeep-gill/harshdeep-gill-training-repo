@@ -24,7 +24,9 @@
 		position: relative;
 		box-shadow: var(--shadow-3);
 
-		&:has(#{$self}__badge--sold-out) {
+		&--sold-out,
+		&--please-call {
+			pointer-events: none;
 
 			#{$self}__gallery,
 			#{$self}__content > *:not(#{$self}__tooltip) {
@@ -111,7 +113,8 @@
 			background-color: var(--color-magenta);
 		}
 
-		&--sold-out {
+		&--sold-out,
+		&--please-call {
 			background-color: var(--color-gray-50);
 		}
 	}
