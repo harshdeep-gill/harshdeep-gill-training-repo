@@ -47,7 +47,7 @@ const FILTERS_MAPPING = [
 			'key'  => 'region_season_str',
 			'type' => FACET_TYPE_FIELD,
 		],
-		'handler'    => '\Quark\Search\Filters\get_region_and_season_filter',
+		'handler'    => __NAMESPACE__ . '\\get_region_season_filter_options',
 		'default'    => [],
 	],
 	EXPEDITION_FILTER_KEY       => [
@@ -56,7 +56,7 @@ const FILTERS_MAPPING = [
 			'key'  => 'related_expedition_str',
 			'type' => FACET_TYPE_FIELD,
 		],
-		'handler'    => '\Quark\Search\Filters\get_expedition_filter',
+		'handler'    => __NAMESPACE__ . '\\get_expedition_filter_options',
 		'default'    => [],
 	],
 	ADVENTURE_OPTION_FILTER_KEY => [
@@ -65,7 +65,7 @@ const FILTERS_MAPPING = [
 			'key'  => ADVENTURE_OPTION_CATEGORY . '_taxonomy_id',
 			'type' => FACET_TYPE_FIELD,
 		],
-		'handler'    => '\Quark\Search\Filters\get_adventure_options_filter',
+		'handler'    => __NAMESPACE__ . '\\get_adventure_options_filter_options',
 		'default'    => [],
 	],
 	SHIP_FILTER_KEY             => [
@@ -74,7 +74,7 @@ const FILTERS_MAPPING = [
 			'key'  => 'related_ship_str',
 			'type' => FACET_TYPE_FIELD,
 		],
-		'handler'    => '\Quark\Search\Filters\get_ship_filter',
+		'handler'    => __NAMESPACE__ . '\\get_ship_filter_options',
 		'default'    => [],
 	],
 	MONTH_FILTER_KEY            => [
@@ -88,7 +88,7 @@ const FILTERS_MAPPING = [
 				'gap'   => '+1MONTH',
 			],
 		],
-		'handler'    => '\Quark\Search\Filters\get_month_filter',
+		'handler'    => __NAMESPACE__ . '\\get_month_filter_options',
 		'default'    => [],
 	],
 	DURATION_FILTER_KEY         => [
@@ -102,7 +102,7 @@ const FILTERS_MAPPING = [
 				'gap'   => 7,
 			],
 		],
-		'handler'    => '\Quark\Search\Filters\get_duration_filter',
+		'handler'    => __NAMESPACE__ . '\\get_duration_filter_options',
 		'default'    => [],
 	],
 	ITINERARY_LENGTH_FILTER_KEY => [
@@ -111,7 +111,7 @@ const FILTERS_MAPPING = [
 			'key'  => 'duration_i',
 			'type' => FACET_TYPE_FIELD,
 		],
-		'handler'    => '\Quark\Search\Filters\get_itinerary_length_filter',
+		'handler'    => __NAMESPACE__ . '\\get_itinerary_length_filter_options',
 		'default'    => [],
 	],
 	LANGUAGE_FILTER_KEY         => [
@@ -120,7 +120,7 @@ const FILTERS_MAPPING = [
 			'key'  => SPOKEN_LANGUAGE_TAXONOMY . '_taxonomy_id',
 			'type' => FACET_TYPE_FIELD,
 		],
-		'handler'    => '\Quark\Search\Filters\get_language_filter',
+		'handler'    => __NAMESPACE__ . '\\get_language_filter_options',
 		'default'    => [],
 	],
 	DESTINATION_FILTER_KEY      => [
@@ -129,17 +129,17 @@ const FILTERS_MAPPING = [
 			'key'  => DESTINATION_TAXONOMY . '_taxonomy_id',
 			'type' => FACET_TYPE_FIELD,
 		],
-		'handler'    => '\Quark\Search\Filters\get_destination_filter',
+		'handler'    => __NAMESPACE__ . '\\get_destination_filter_options',
 		'default'    => [],
 	],
 	CABIN_CLASS_FILTER_KEY      => [
 		'key'     => CABIN_CLASS_FILTER_KEY,
-		'handler' => '\Quark\Search\Filters\get_cabin_class_filter',
+		'handler' => __NAMESPACE__ . '\\get_cabin_class_filter',
 		'default' => [],
 	],
 	TRAVELERS_FILTER_KEY        => [
 		'key'     => TRAVELERS_FILTER_KEY,
-		'handler' => '\Quark\Search\Filters\get_travelers_filter',
+		'handler' => __NAMESPACE__ . '\\get_travelers_filter',
 		'default' => [],
 	],
 ];
@@ -164,7 +164,7 @@ function bootstrap(): void {
  *   count: int,
  * }>
  */
-function get_region_and_season_filter( array $region_season_facet = [] ): array {
+function get_region_season_filter_options( array $region_season_facet = [] ): array {
 	// Bail if empty.
 	if ( empty( $region_season_facet ) ) {
 		return [];
@@ -228,7 +228,7 @@ function get_region_and_season_filter( array $region_season_facet = [] ): array 
  *   count: int,
  * }>
  */
-function get_expedition_filter( array $expedition_facet = [] ): array {
+function get_expedition_filter_options( array $expedition_facet = [] ): array {
 	// Bail if empty.
 	if ( empty( $expedition_facet ) ) {
 		return [];
@@ -287,7 +287,7 @@ function get_expedition_filter( array $expedition_facet = [] ): array {
  *   count: int,
  * }>
  */
-function get_ship_filter( array $ship_facet = [] ): array {
+function get_ship_filter_options( array $ship_facet = [] ): array {
 	// Bail if empty.
 	if ( empty( $ship_facet ) ) {
 		return [];
@@ -346,7 +346,7 @@ function get_ship_filter( array $ship_facet = [] ): array {
  *    count: int,
  * }>
  */
-function get_adventure_options_filter( array $adventure_options_facet = [] ): array {
+function get_adventure_options_filter_options( array $adventure_options_facet = [] ): array {
 	// Bail if empty.
 	if ( empty( $adventure_options_facet ) ) {
 		return [];
@@ -402,7 +402,7 @@ function get_adventure_options_filter( array $adventure_options_facet = [] ): ar
  *   count: int,
  * }>
  */
-function get_month_filter( array $month_facet = [] ): array {
+function get_month_filter_options( array $month_facet = [] ): array {
 	// Bail if empty.
 	if ( empty( $month_facet ) ) {
 		return [];
@@ -461,7 +461,7 @@ function get_month_filter( array $month_facet = [] ): array {
  *   count: int,
  * }>
  */
-function get_duration_filter( array $duration_facet = [] ): array {
+function get_duration_filter_options( array $duration_facet = [] ): array {
 	// Bail if empty.
 	if ( empty( $duration_facet ) ) {
 		return [];
@@ -512,7 +512,7 @@ function get_duration_filter( array $duration_facet = [] ): array {
  *    count: int,
  * }>
  */
-function get_itinerary_length_filter( array $itinerary_length_facet = [] ): array {
+function get_itinerary_length_filter_options( array $itinerary_length_facet = [] ): array {
 	// Bail if empty.
 	if ( empty( $itinerary_length_facet ) ) {
 		return [];
@@ -563,7 +563,7 @@ function get_itinerary_length_filter( array $itinerary_length_facet = [] ): arra
  *   count: int,
  * }>
  */
-function get_language_filter( array $language_facet = [] ): array {
+function get_language_filter_options( array $language_facet = [] ): array {
 	// Bail if empty.
 	if ( empty( $language_facet ) ) {
 		return [];
@@ -625,7 +625,7 @@ function get_language_filter( array $language_facet = [] ): array {
  *   }>,
  * }>
  */
-function get_destination_filter( array $destination_facet = [] ): array {
+function get_destination_filter_options( array $destination_facet = [] ): array {
 	// Bail if empty.
 	if ( empty( $destination_facet ) ) {
 		return [];

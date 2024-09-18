@@ -9,16 +9,16 @@ namespace Quark\Search\Tests\Filters;
 
 use WP_UnitTestCase;
 
-use function Quark\Search\Filters\get_adventure_options_filter;
+use function Quark\Search\Filters\get_adventure_options_filter_options;
 use function Quark\Search\Filters\get_cabin_class_filter;
-use function Quark\Search\Filters\get_destination_filter;
-use function Quark\Search\Filters\get_duration_filter;
-use function Quark\Search\Filters\get_expedition_filter;
-use function Quark\Search\Filters\get_itinerary_length_filter;
-use function Quark\Search\Filters\get_language_filter;
-use function Quark\Search\Filters\get_month_filter;
-use function Quark\Search\Filters\get_region_and_season_filter;
-use function Quark\Search\Filters\get_ship_filter;
+use function Quark\Search\Filters\get_destination_filter_options;
+use function Quark\Search\Filters\get_duration_filter_options;
+use function Quark\Search\Filters\get_expedition_filter_options;
+use function Quark\Search\Filters\get_itinerary_length_filter_options;
+use function Quark\Search\Filters\get_language_filter_options;
+use function Quark\Search\Filters\get_month_filter_options;
+use function Quark\Search\Filters\get_region_season_filter_options;
+use function Quark\Search\Filters\get_ship_filter_options;
 use function Quark\Search\Filters\get_travelers_filter;
 
 use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
@@ -39,28 +39,28 @@ class Test_Filters extends WP_UnitTestCase {
 	/**
 	 * Test get itinerary length filter.
 	 *
-	 * @covers \Quark\Search\Filters\get_itinerary_length_filter
+	 * @covers \Quark\Search\Filters\get_itinerary_length_filter_options
 	 *
 	 * @return void
 	 */
-	public function test_get_itinerary_length_filter(): void {
+	public function test_get_itinerary_length_filter_options(): void {
 		// Expected default.
 		$expected_default = [];
 
 		// Test with empty args.
-		$actual = get_itinerary_length_filter();
+		$actual = get_itinerary_length_filter_options();
 		$this->assertEquals( $expected_default, $actual );
 
 		// Test with empty array.
-		$actual = get_itinerary_length_filter( [] );
+		$actual = get_itinerary_length_filter_options( [] );
 		$this->assertEquals( $expected_default, $actual );
 
 		// Test with invalid args.
-		$actual = get_itinerary_length_filter( [ 2 ] );
+		$actual = get_itinerary_length_filter_options( [ 2 ] );
 		$this->assertEquals( $expected_default, $actual );
 
 		// Test with valid args.
-		$actual = get_itinerary_length_filter(
+		$actual = get_itinerary_length_filter_options(
 			[
 				'1' => 1,
 				'2' => 2,
@@ -83,7 +83,7 @@ class Test_Filters extends WP_UnitTestCase {
 		);
 
 		// Test with negative, and random order.
-		$actual = get_itinerary_length_filter(
+		$actual = get_itinerary_length_filter_options(
 			[
 				'-1' => 1,
 				'9'  => 2,
@@ -115,28 +115,28 @@ class Test_Filters extends WP_UnitTestCase {
 	/**
 	 * Test get language filter.
 	 *
-	 * @covers \Quark\Search\Filters\get_language_filter
+	 * @covers \Quark\Search\Filters\get_language_filter_options
 	 *
 	 * @return void
 	 */
-	public function test_get_language_filter(): void {
+	public function test_get_language_filter_options(): void {
 		// Expected default.
 		$expected_default = [];
 
 		// Test with empty args.
-		$actual = get_language_filter();
+		$actual = get_language_filter_options();
 		$this->assertEquals( $expected_default, $actual );
 
 		// Test with empty array.
-		$actual = get_language_filter( [] );
+		$actual = get_language_filter_options( [] );
 		$this->assertEquals( $expected_default, $actual );
 
 		// Test with invalid args.
-		$actual = get_language_filter( [ 2 ] );
+		$actual = get_language_filter_options( [ 2 ] );
 		$this->assertEquals( $expected_default, $actual );
 
 		// Test with non-existent language.
-		$actual = get_language_filter( [ 'language' => 2 ] );
+		$actual = get_language_filter_options( [ 'language' => 2 ] );
 		$this->assertEquals( $expected_default, $actual );
 
 		// Create spoken language terms.
@@ -150,7 +150,7 @@ class Test_Filters extends WP_UnitTestCase {
 		$this->assertIsArray( $term2 );
 
 		// Test with valid.
-		$actual = get_language_filter(
+		$actual = get_language_filter_options(
 			[
 				$term1['term_id'] => 1,
 				$term2['term_id'] => 2,
@@ -176,28 +176,28 @@ class Test_Filters extends WP_UnitTestCase {
 	/**
 	 * Test get destination filter.
 	 *
-	 * @covers \Quark\Search\Filters\get_destination_filter
+	 * @covers \Quark\Search\Filters\get_destination_filter_options
 	 *
 	 * @return void
 	 */
-	public function test_get_destination_filter(): void {
+	public function test_get_destination_filter_options(): void {
 		// Expected default.
 		$expected_default = [];
 
 		// Test with empty args.
-		$actual = get_destination_filter();
+		$actual = get_destination_filter_options();
 		$this->assertEquals( $expected_default, $actual );
 
 		// Test with empty array.
-		$actual = get_destination_filter( [] );
+		$actual = get_destination_filter_options( [] );
 		$this->assertEquals( $expected_default, $actual );
 
 		// Test with invalid args.
-		$actual = get_destination_filter( [ 2 ] );
+		$actual = get_destination_filter_options( [ 2 ] );
 		$this->assertEquals( $expected_default, $actual );
 
 		// Test with invalid args.
-		$actual = get_destination_filter( [ 'destination' => 2 ] );
+		$actual = get_destination_filter_options( [ 'destination' => 2 ] );
 		$this->assertEquals( $expected_default, $actual );
 
 		// Create destination term.
@@ -223,7 +223,7 @@ class Test_Filters extends WP_UnitTestCase {
 		$this->assertIsArray( $term2 );
 
 		// Test with valid.
-		$actual = get_destination_filter(
+		$actual = get_destination_filter_options(
 			[
 				$term1['term_id'] => 1,
 				$term2['term_id'] => 2,
@@ -258,7 +258,7 @@ class Test_Filters extends WP_UnitTestCase {
 		$this->assertIsArray( $child_term2 );
 
 		// Test with children.
-		$actual = get_destination_filter(
+		$actual = get_destination_filter_options(
 			[
 				$term1['term_id']       => 1,
 				$term2['term_id']       => 2,
@@ -299,7 +299,7 @@ class Test_Filters extends WP_UnitTestCase {
 		);
 
 		// Test with children in different order.
-		$actual = get_destination_filter(
+		$actual = get_destination_filter_options(
 			[
 				$child_term1['term_id'] => 3,
 				$child_term2['term_id'] => 4,
@@ -352,19 +352,19 @@ class Test_Filters extends WP_UnitTestCase {
 		$expected_default = [];
 
 		// Test with empty args.
-		$actual = get_region_and_season_filter();
+		$actual = get_region_season_filter_options();
 		$this->assertEquals( $expected_default, $actual );
 
 		// Test with empty array.
-		$actual = get_region_and_season_filter( [] );
+		$actual = get_region_season_filter_options( [] );
 		$this->assertEquals( $expected_default, $actual );
 
 		// Test with invalid args.
-		$actual = get_region_and_season_filter( [ 2 ] );
+		$actual = get_region_season_filter_options( [ 2 ] );
 		$this->assertEquals( $expected_default, $actual );
 
 		// Test with invalid args.
-		$actual = get_region_and_season_filter( [ 'region' => 2 ] );
+		$actual = get_region_season_filter_options( [ 'region' => 2 ] );
 		$this->assertEquals( $expected_default, $actual );
 
 		// Create a destination term.
@@ -394,7 +394,7 @@ class Test_Filters extends WP_UnitTestCase {
 		update_term_meta( $term_id2, 'softrip_id', 'ARC' );
 
 		// Test with region only.
-		$actual = get_region_and_season_filter(
+		$actual = get_region_season_filter_options(
 			[
 				'ANT' => 1,
 				'ARC' => 2,
@@ -425,7 +425,7 @@ class Test_Filters extends WP_UnitTestCase {
 		$this->assertIsArray( $term4 );
 
 		// Test with region and season.
-		$actual = get_region_and_season_filter(
+		$actual = get_region_season_filter_options(
 			[
 				'ANT-2025' => 1,
 				'ARC-2026' => 2,
@@ -463,28 +463,28 @@ class Test_Filters extends WP_UnitTestCase {
 	/**
 	 * Test get expedition filter.
 	 *
-	 * @covers \Quark\Search\Filters\get_expedition_filter
+	 * @covers \Quark\Search\Filters\get_expedition_filter_options
 	 *
 	 * @return void
 	 */
-	public function test_get_expedition_filter(): void {
+	public function test_get_expedition_filter_options(): void {
 		// Expected default.
 		$expected_default = [];
 
 		// Test with empty args.
-		$actual = get_expedition_filter();
+		$actual = get_expedition_filter_options();
 		$this->assertEquals( $expected_default, $actual );
 
 		// Test with empty array.
-		$actual = get_expedition_filter( [] );
+		$actual = get_expedition_filter_options( [] );
 		$this->assertEquals( $expected_default, $actual );
 
 		// Test with invalid args.
-		$actual = get_expedition_filter( [ 2 ] );
+		$actual = get_expedition_filter_options( [ 2 ] );
 		$this->assertEquals( $expected_default, $actual );
 
 		// Test with invalid args.
-		$actual = get_expedition_filter( [ 'expedition' => 2 ] );
+		$actual = get_expedition_filter_options( [ 'expedition' => 2 ] );
 		$this->assertEquals( $expected_default, $actual );
 
 		// Create expedition post.
@@ -504,7 +504,7 @@ class Test_Filters extends WP_UnitTestCase {
 		$this->assertIsInt( $post_id2 );
 
 		// Test with valid.
-		$actual = get_expedition_filter(
+		$actual = get_expedition_filter_options(
 			[
 				$post_id1 => 1,
 				$post_id2 => 2,
@@ -530,28 +530,28 @@ class Test_Filters extends WP_UnitTestCase {
 	/**
 	 * Test get ship filter.
 	 *
-	 * @covers \Quark\Search\Filters\get_ship_filter
+	 * @covers \Quark\Search\Filters\get_ship_filter_options
 	 *
 	 * @return void
 	 */
-	public function test_get_ship_filter(): void {
+	public function test_get_ship_filter_options(): void {
 		// Expected default.
 		$expected_default = [];
 
 		// Test with empty args.
-		$actual = get_ship_filter();
+		$actual = get_ship_filter_options();
 		$this->assertEquals( $expected_default, $actual );
 
 		// Test with empty array.
-		$actual = get_ship_filter( [] );
+		$actual = get_ship_filter_options( [] );
 		$this->assertEquals( $expected_default, $actual );
 
 		// Test with invalid args.
-		$actual = get_ship_filter( [ 2 ] );
+		$actual = get_ship_filter_options( [ 2 ] );
 		$this->assertEquals( $expected_default, $actual );
 
 		// Test with invalid args.
-		$actual = get_ship_filter( [ 'ship' => 2 ] );
+		$actual = get_ship_filter_options( [ 'ship' => 2 ] );
 		$this->assertEquals( $expected_default, $actual );
 
 		// Create ship post.
@@ -571,7 +571,7 @@ class Test_Filters extends WP_UnitTestCase {
 		$this->assertIsInt( $post_id2 );
 
 		// Test with valid.
-		$actual = get_ship_filter(
+		$actual = get_ship_filter_options(
 			[
 				$post_id1 => 1,
 				$post_id2 => 2,
@@ -597,28 +597,28 @@ class Test_Filters extends WP_UnitTestCase {
 	/**
 	 * Test get adventure options filter.
 	 *
-	 * @covers \Quark\Search\Filters\get_adventure_options_filter
+	 * @covers \Quark\Search\Filters\get_adventure_options_filter_options
 	 *
 	 * @return void
 	 */
-	public function test_get_adventure_options_filter(): void {
+	public function test_get_adventure_options_filter_options(): void {
 		// Expected default.
 		$expected_default = [];
 
 		// Test with empty args.
-		$actual = get_adventure_options_filter();
+		$actual = get_adventure_options_filter_options();
 		$this->assertEquals( $expected_default, $actual );
 
 		// Test with empty array.
-		$actual = get_adventure_options_filter( [] );
+		$actual = get_adventure_options_filter_options( [] );
 		$this->assertEquals( $expected_default, $actual );
 
 		// Test with invalid args.
-		$actual = get_adventure_options_filter( [ 2 ] );
+		$actual = get_adventure_options_filter_options( [ 2 ] );
 		$this->assertEquals( $expected_default, $actual );
 
 		// Test with invalid args.
-		$actual = get_adventure_options_filter( [ 'adventure' => 2 ] );
+		$actual = get_adventure_options_filter_options( [ 'adventure' => 2 ] );
 		$this->assertEquals( $expected_default, $actual );
 
 		// Create adventure option terms.
@@ -638,7 +638,7 @@ class Test_Filters extends WP_UnitTestCase {
 		$this->assertIsInt( $term_id2 );
 
 		// Test with valid.
-		$actual = get_adventure_options_filter(
+		$actual = get_adventure_options_filter_options(
 			[
 				$term_id1 => 1,
 				$term_id2 => 2,
@@ -664,32 +664,32 @@ class Test_Filters extends WP_UnitTestCase {
 	/**
 	 * Test get month filter.
 	 *
-	 * @covers \Quark\Search\Filters\get_month_filter
+	 * @covers \Quark\Search\Filters\get_month_filter_options
 	 *
 	 * @return void
 	 */
-	public function test_get_month_filter(): void {
+	public function test_get_month_filter_options(): void {
 		// Expected default.
 		$expected_default = [];
 
 		// Test with empty args.
-		$actual = get_month_filter();
+		$actual = get_month_filter_options();
 		$this->assertEquals( $expected_default, $actual );
 
 		// Test with empty array.
-		$actual = get_month_filter( [] );
+		$actual = get_month_filter_options( [] );
 		$this->assertEquals( $expected_default, $actual );
 
 		// Test with invalid args.
-		$actual = get_month_filter( [ 2 ] );
+		$actual = get_month_filter_options( [ 2 ] );
 		$this->assertEquals( $expected_default, $actual );
 
 		// Test with invalid args.
-		$actual = get_month_filter( [ 'month' => 2 ] );
+		$actual = get_month_filter_options( [ 'month' => 2 ] );
 		$this->assertEquals( $expected_default, $actual );
 
 		// Test with invalid time.
-		$actual = get_month_filter(
+		$actual = get_month_filter_options(
 			[
 				'2025' => 1,
 				'2026' => 2,
@@ -698,7 +698,7 @@ class Test_Filters extends WP_UnitTestCase {
 		$this->assertEquals( $expected_default, $actual );
 
 		// Test with valid time.
-		$actual = get_month_filter(
+		$actual = get_month_filter_options(
 			[
 				'2025-01' => 1,
 				'2025-02' => 2,
@@ -721,7 +721,7 @@ class Test_Filters extends WP_UnitTestCase {
 		);
 
 		// Test with different time format.
-		$actual = get_month_filter(
+		$actual = get_month_filter_options(
 			[
 				'2025-01-01' => 1,
 				'2025-02-01' => 2,
@@ -744,7 +744,7 @@ class Test_Filters extends WP_UnitTestCase {
 		);
 
 		// Test with ISO time format.
-		$actual = get_month_filter(
+		$actual = get_month_filter_options(
 			[
 				'2025-01-01T00:00:00' => 1,
 				'2025-02-01T00:00:00' => 2,
@@ -770,32 +770,32 @@ class Test_Filters extends WP_UnitTestCase {
 	/**
 	 * Test get duration filter.
 	 *
-	 * @covers \Quark\Search\Filters\get_duration_filter
+	 * @covers \Quark\Search\Filters\get_duration_filter_options
 	 *
 	 * @return void
 	 */
-	public function test_get_duration_filter(): void {
+	public function test_get_duration_filter_options(): void {
 		// Expected default.
 		$expected_default = [];
 
 		// Test with empty args.
-		$actual = get_duration_filter();
+		$actual = get_duration_filter_options();
 		$this->assertEquals( $expected_default, $actual );
 
 		// Test with empty array.
-		$actual = get_duration_filter( [] );
+		$actual = get_duration_filter_options( [] );
 		$this->assertEquals( $expected_default, $actual );
 
 		// Test with invalid args.
-		$actual = get_duration_filter( [ 2 ] );
+		$actual = get_duration_filter_options( [ 2 ] );
 		$this->assertEquals( $expected_default, $actual );
 
 		// Test with invalid args.
-		$actual = get_duration_filter( [ 'duration' => 2 ] );
+		$actual = get_duration_filter_options( [ 'duration' => 2 ] );
 		$this->assertEquals( $expected_default, $actual );
 
 		// Test with valid.
-		$actual = get_duration_filter(
+		$actual = get_duration_filter_options(
 			[
 				'1' => 1,
 				'2' => 2,
@@ -818,7 +818,7 @@ class Test_Filters extends WP_UnitTestCase {
 		);
 
 		// Test with negative.
-		$actual = get_duration_filter(
+		$actual = get_duration_filter_options(
 			[
 				'-1' => 1,
 				'-2' => 2,
