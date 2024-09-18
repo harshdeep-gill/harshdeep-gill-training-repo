@@ -43,8 +43,8 @@
 	}
 
 	&__track {
-		padding-left: var(--grid-col-gutter);
-		margin-left: calc(-1 * var(--grid-col-gutter));
+		padding-inline: var(--spacing-6);
+		margin-inline: calc(-1 * var(--spacing-6));
 		scrollbar-width: none; /* Firefox */
 
 		&::-webkit-scrollbar {
@@ -60,10 +60,14 @@
 	}
 
 	&__slides {
-		gap: var(--grid-col-gutter);
+		gap: var(--spacing-4);
 		display: grid;
 		grid-auto-flow: column;
 		grid-auto-columns: max-content;
+
+		@media screen and (min-width: grid-size(sm)) {
+			gap: var(--spacing-6);
+		}
 	}
 
 	&:not(:has(&__nav[data-layout="carousel"])) {
@@ -185,7 +189,7 @@
 	}
 
 	&__card {
-		max-width: calc(100vw - 2 * var(--grid-col-gutter));
+		max-width: calc(100vw - 2 * var(--spacing-6));
 		overflow: hidden;
 		position: relative;
 		border-radius: var(--border-radius-large);
