@@ -656,7 +656,7 @@ class Test_Search extends WP_UnitTestCase {
 
 		// Assert no facets.
 		$this->assertEmpty( $solr_search->facet_results );
-		$facets = $class->getProperty( 'facets' );
+		$facets = $class->getProperty( 'facet_queries' );
 		$facets->setAccessible( true );
 		$this->assertEmpty( $facets->getValue( $solr_search ) );
 
