@@ -269,8 +269,11 @@ function get_filters_from_url(): array {
 		MONTH_FILTER_KEY            => isset( $_GET[MONTH_FILTER_KEY] ) ? strval( $_GET[MONTH_FILTER_KEY] ) : '', // phpcs:ignore
 		DURATION_FILTER_KEY         => isset( $_GET[DURATION_FILTER_KEY] ) ? strval( $_GET[DURATION_FILTER_KEY] ) : '', // phpcs:ignore
 		SHIP_FILTER_KEY             => isset( $_GET[SHIP_FILTER_KEY] ) ? strval( $_GET[SHIP_FILTER_KEY] ) : '', // phpcs:ignore
-		PAGE_FILTER_KEY              => isset( $_GET[PAGE_FILTER_KEY] ) ? strval( $_GET[PAGE_FILTER_KEY] ) : '1', // phpcs:ignore
-		SORT_FILTER_KEY              => isset( $_GET[SORT_FILTER_KEY] ) ? strval( $_GET[SORT_FILTER_KEY] ) : 'date-now', // phpcs:ignore
+		PAGE_FILTER_KEY             => isset( $_GET[PAGE_FILTER_KEY] ) ? strval( $_GET[PAGE_FILTER_KEY] ) : '1', // phpcs:ignore
+		SORT_FILTER_KEY             => isset( $_GET[SORT_FILTER_KEY] ) ? strval( $_GET[SORT_FILTER_KEY] ) : 'date-now', // phpcs:ignore
+		LANGUAGE_FILTER_KEY         => isset( $_GET[LANGUAGE_FILTER_KEY] ) ? strval( $_GET[LANGUAGE_FILTER_KEY] ) : '', // phpcs:ignore
+		DESTINATION_FILTER_KEY      => isset( $_GET[DESTINATION_FILTER_KEY] ) ? strval( $_GET[DESTINATION_FILTER_KEY] ) : '', // phpcs:ignore
+		ITINERARY_LENGTH_FILTER_KEY => isset( $_GET[ITINERARY_LENGTH_FILTER_KEY] ) ? strval( $_GET[ITINERARY_LENGTH_FILTER_KEY] ) : '', // phpcs:ignore
 	];
 }
 
@@ -312,12 +315,7 @@ function parse_filters( array $filters = [] ): array {
 			PER_PAGE_FILTER_KEY         => 10,
 			DESTINATION_FILTER_KEY      => [],
 			LANGUAGE_FILTER_KEY         => [],
-			ITINERARY_LENGTH_FILTER_KEY => [
-				11,
-				9,
-				6,
-				10
-			],
+			ITINERARY_LENGTH_FILTER_KEY => [],
 		]
 	);
 
