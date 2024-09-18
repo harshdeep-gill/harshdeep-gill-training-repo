@@ -58,12 +58,12 @@ function render( array $output = [], string $name = '', array $data = [] ): arra
 
 	// Build component attributes.
 	$attributes = [
-		'cards' => [], // @todo implement get_expedition_search_cards_data after partial markup is developed - https://tuispecialist.atlassian.net/browse/QE-646
+		'cards' => [], // @todo implement get_expedition_search_cards_data - https://tuispecialist.atlassian.net/browse/QE-646
 	];
 
 	// Return rendered partial.
 	return [
-		'markup'          => quark_get_component( 'parts.expedition-search', $attributes ),
+		'markup'          => quark_get_component( 'parts.expedition-search', $attributes ), // @todo implement parts markup - https://tuispecialist.atlassian.net/browse/QE-646
 		'noResultsMarkup' => __( 'No results found', 'qrk' ),
 		'data'            => [
 			'resultCount'    => $search_results['result_count'],
