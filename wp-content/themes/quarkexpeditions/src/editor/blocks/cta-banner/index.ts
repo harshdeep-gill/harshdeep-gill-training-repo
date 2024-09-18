@@ -19,6 +19,11 @@ import save from './save';
 import '../../../front-end/components/media-cta-banner/style.scss';
 
 /**
+ * Child blocks.
+ */
+import * as overline from './children/overline';
+
+/**
  * Block name.
  */
 export const { name }: { name: string } = metadata;
@@ -38,4 +43,7 @@ export const settings: BlockConfiguration = {
 export const init = (): void => {
 	// Register block.
 	registerBlockType( name, settings );
+
+	// Register child blocks.
+	registerBlockType( overline.name, overline.settings );
 };
