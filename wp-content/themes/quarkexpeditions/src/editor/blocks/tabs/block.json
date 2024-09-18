@@ -1,0 +1,30 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "quark/tabs",
+	"title": "Tabs",
+	"description": "Add a set of tabs with content",
+	"allowedBlocks": ["quark/tabs-tab"],
+	"category": "text",
+	"textdomain": "qrk",
+	"attributes": {
+		"defaultTabIndex": {
+			"type": "number",
+			"default": 1
+		},
+		"updateURL": {
+			"type": "boolean",
+			"default": false
+		}
+	},
+	"providesContext": {
+		"quark/tabs": "activeTabClientId"
+	},
+	"supports": {
+		"alignWide": false,
+		"anchor": false,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}
