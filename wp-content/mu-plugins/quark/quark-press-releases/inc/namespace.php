@@ -91,7 +91,6 @@ function register_press_release_post_type(): void {
 	register_post_type( POST_TYPE, $args );
 }
 
-
 /**
  * Add date to press release permalink.
  *
@@ -102,7 +101,7 @@ function register_press_release_post_type(): void {
  */
 function add_date_to_permalink( string $post_link = '', WP_Post $post = null ): string {
 	// Check if post type is press release.
-	if ( POST_TYPE === $post->post_type ) {
+	if ( $post instanceof WP_Post && POST_TYPE === $post->post_type ) {
 		$year      = get_the_date( 'Y', $post );
 		$month     = get_the_date( 'm', $post );
 		$post_link = str_replace( '%year%', strval( $year ), $post_link );
