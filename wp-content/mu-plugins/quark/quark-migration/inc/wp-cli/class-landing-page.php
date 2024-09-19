@@ -29,20 +29,6 @@ use const Quark\Pages\POST_TYPE;
 class Landing_Page {
 
 	/**
-	 * Drupal Node ids of Spacial pages like Home, contact us which will not be in Landing page CPT.
-	 *
-	 * @var array|int[]
-	 */
-	private array $spacial_pages = [
-		102236,
-		103191,
-		103196,
-		103201,
-		103186,
-		102696,
-	];
-
-	/**
 	 * Migrate all Landing_Page.
 	 *
 	 * @subcommand all
@@ -83,11 +69,6 @@ class Landing_Page {
 		foreach ( $data as $item ) {
 			// Insert post.
 			$progress->tick();
-
-			// Skip special pages.
-			if ( in_array( absint( $item['nid'] ), $this->spacial_pages, true ) ) {
-				continue;
-			}
 
 			// Insert post.
 			$this->insert_post( $item );

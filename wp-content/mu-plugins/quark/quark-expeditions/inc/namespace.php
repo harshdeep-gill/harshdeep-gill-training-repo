@@ -746,6 +746,19 @@ function get_seo_structured_data( int $post_id = 0 ): array {
 		'image'       => get_the_post_thumbnail_url( $post_id ),
 	];
 
+	// Get starting from price.
+	$expedition_price = get_starting_from_price( $post_id )['discounted'];
+
+	// Add offers schema.
+	if ( ! empty( $expedition_price ) ) {
+		$product_schema['offers'] = [
+			'@type'         => 'Offer',
+			'price'         => get_starting_from_price( $post_id )['discounted'],
+			'priceCurrency' => 'USD',
+			'url'           => $expedition['permalink'],
+		];
+	}
+
 	// Add tourist trip schema.
 	$tourist_trip_schema = [
 		'@context'    => 'https://schema.org',

@@ -12,6 +12,8 @@ use JB\Cloudinary\Frontend as Cloudinary_Frontend;
 
 use WP_Post;
 use WP_Term;
+use WP_Query;
+use WP_User;
 
 use function Travelopia\Core\cached_nav_menu;
 
@@ -527,4 +529,66 @@ function get_raw_text_from_html( string $html = '' ): string {
 function doing_tests(): bool {
 	// Check if doing tests.
 	return defined( 'WP_TESTS' ) && true === WP_TESTS;
+}
+
+/**
+ * Get pagination links based on arguments.
+ *
+ * @param array<mixed|string> $args Pagination args.
+ *
+ * @return string
+ */
+function get_pagination_links( array $args = [] ): string {
+	// Build args.
+	$args = wp_parse_args(
+		$args,
+		[
+			'query'   => false,
+			'noindex' => false,
+		]
+	);
+
+	// Check for query.
+	if ( empty( $args['query'] ) || ! $args['query'] instanceof WP_Query ) {
+		global $wp_query;
+		$args['query'] = $wp_query;
+	}
+
+	// Get pagination links.
+	$pagination_links = strval(
+		paginate_links(
+			[
+				'current'   => max( 1, $args['query']->get( 'paged' ) ),
+				'total'     => $args['query']->max_num_pages,
+				'prev_text' => __( 'Previous', 'qrk' ),
+				'next_text' => __( 'Next ', 'qrk' ),
+			]
+		)
+	);
+
+	// Bail out if pagination links are empty.
+	if ( empty( $pagination_links ) ) {
+		return '';
+	}
+
+	// Check for noindex.
+	if ( true === $args['noindex'] ) {
+		$pagination_links = str_replace( ' href=', ' rel="noindex, nofollow" href=', $pagination_links );
+	}
+
+	// Remove trailing slash from main page.
+	$current_post = get_queried_object();
+
+	// Check if current post is instance of WP_Post.
+	if ( $current_post instanceof WP_Post ) {
+		$post_slug        = $current_post->post_name;
+		$pagination_links = str_replace( $post_slug . '/"', $post_slug . '"', $pagination_links );
+	} elseif ( $current_post instanceof WP_Term ) {
+		$pagination_links = str_replace( $current_post->slug . '/"', $current_post->slug . '"', $pagination_links );
+	} elseif ( $current_post instanceof WP_User ) {
+		$pagination_links = str_replace( $current_post->data->user_login . '/"', $current_post->data->user_login . '"', $pagination_links );
+	}
+
+	// All done, return build pagination links.
+	return $pagination_links;
 }

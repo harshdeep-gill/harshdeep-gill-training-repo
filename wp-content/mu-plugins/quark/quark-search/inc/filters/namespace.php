@@ -14,11 +14,135 @@ use function Quark\Expeditions\get as get_expedition_post;
 use function Quark\Expeditions\get_destination_term_by_code;
 use function Quark\Search\Departures\search;
 use function Quark\Ships\get as get_ship_post;
+use function Quark\Softrip\Occupancies\get_masks_mapping;
 
 use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
+use const Quark\CabinCategories\CABIN_CLASS_TAXONOMY;
+use const Quark\Departures\SPOKEN_LANGUAGE_TAXONOMY;
+use const Quark\Expeditions\DESTINATION_TAXONOMY;
 use const Quark\Search\Departures\FACET_TYPE_FIELD;
 use const Quark\Search\Departures\FACET_TYPE_RANGE;
 use const Quark\StaffMembers\SEASON_TAXONOMY;
+
+const SEASON_FILTER_KEY           = 'seasons';
+const EXPEDITION_FILTER_KEY       = 'expeditions';
+const ADVENTURE_OPTION_FILTER_KEY = 'adventure_options';
+const SHIP_FILTER_KEY             = 'ships';
+const MONTH_FILTER_KEY            = 'months';
+const DURATION_FILTER_KEY         = 'durations';
+const ITINERARY_LENGTH_FILTER_KEY = 'itinerary_lengths';
+const LANGUAGE_FILTER_KEY         = 'languages';
+const DESTINATION_FILTER_KEY      = 'destinations';
+const CABIN_CLASS_FILTER_KEY      = 'cabin_classes';
+const TRAVELERS_FILTER_KEY        = 'travelers';
+const SORT_FILTER_KEY             = 'sort';
+const PAGE_FILTER_KEY             = 'page';
+const PER_PAGE_FILTER_KEY         = 'posts_per_load';
+const CURRENCY_FILTER_KEY         = 'currency';
+
+const FILTERS_MAPPING = [
+	SEASON_FILTER_KEY           => [
+		'key'        => SEASON_FILTER_KEY,
+		'solr_facet' => [
+			'key'  => 'region_season_str',
+			'type' => FACET_TYPE_FIELD,
+		],
+		'handler'    => __NAMESPACE__ . '\\get_region_season_filter_options',
+		'default'    => [],
+	],
+	EXPEDITION_FILTER_KEY       => [
+		'key'        => EXPEDITION_FILTER_KEY,
+		'solr_facet' => [
+			'key'  => 'related_expedition_str',
+			'type' => FACET_TYPE_FIELD,
+		],
+		'handler'    => __NAMESPACE__ . '\\get_expedition_filter_options',
+		'default'    => [],
+	],
+	ADVENTURE_OPTION_FILTER_KEY => [
+		'key'        => ADVENTURE_OPTION_FILTER_KEY,
+		'solr_facet' => [
+			'key'  => ADVENTURE_OPTION_CATEGORY . '_taxonomy_id',
+			'type' => FACET_TYPE_FIELD,
+		],
+		'handler'    => __NAMESPACE__ . '\\get_adventure_options_filter_options',
+		'default'    => [],
+	],
+	SHIP_FILTER_KEY             => [
+		'key'        => SHIP_FILTER_KEY,
+		'solr_facet' => [
+			'key'  => 'related_ship_str',
+			'type' => FACET_TYPE_FIELD,
+		],
+		'handler'    => __NAMESPACE__ . '\\get_ship_filter_options',
+		'default'    => [],
+	],
+	MONTH_FILTER_KEY            => [
+		'key'        => MONTH_FILTER_KEY,
+		'solr_facet' => [
+			'key'  => 'start_date_dt',
+			'type' => FACET_TYPE_RANGE,
+			'args' => [
+				'start' => 'NOW/MONTH',
+				'end'   => 'NOW/MONTH+2YEAR',
+				'gap'   => '+1MONTH',
+			],
+		],
+		'handler'    => __NAMESPACE__ . '\\get_month_filter_options',
+		'default'    => [],
+	],
+	DURATION_FILTER_KEY         => [
+		'key'        => DURATION_FILTER_KEY,
+		'solr_facet' => [
+			'key'  => 'duration_i',
+			'type' => FACET_TYPE_RANGE,
+			'args' => [
+				'start' => 1,
+				'end'   => 50,
+				'gap'   => 7,
+			],
+		],
+		'handler'    => __NAMESPACE__ . '\\get_duration_filter_options',
+		'default'    => [],
+	],
+	ITINERARY_LENGTH_FILTER_KEY => [
+		'key'        => ITINERARY_LENGTH_FILTER_KEY,
+		'solr_facet' => [
+			'key'  => 'duration_i',
+			'type' => FACET_TYPE_FIELD,
+		],
+		'handler'    => __NAMESPACE__ . '\\get_itinerary_length_filter_options',
+		'default'    => [],
+	],
+	LANGUAGE_FILTER_KEY         => [
+		'key'        => LANGUAGE_FILTER_KEY,
+		'solr_facet' => [
+			'key'  => SPOKEN_LANGUAGE_TAXONOMY . '_taxonomy_id',
+			'type' => FACET_TYPE_FIELD,
+		],
+		'handler'    => __NAMESPACE__ . '\\get_language_filter_options',
+		'default'    => [],
+	],
+	DESTINATION_FILTER_KEY      => [
+		'key'        => DESTINATION_FILTER_KEY,
+		'solr_facet' => [
+			'key'  => DESTINATION_TAXONOMY . '_taxonomy_id',
+			'type' => FACET_TYPE_FIELD,
+		],
+		'handler'    => __NAMESPACE__ . '\\get_destination_filter_options',
+		'default'    => [],
+	],
+	CABIN_CLASS_FILTER_KEY      => [
+		'key'     => CABIN_CLASS_FILTER_KEY,
+		'handler' => __NAMESPACE__ . '\\get_cabin_class_filter',
+		'default' => [],
+	],
+	TRAVELERS_FILTER_KEY        => [
+		'key'     => TRAVELERS_FILTER_KEY,
+		'handler' => __NAMESPACE__ . '\\get_travelers_filter',
+		'default' => [],
+	],
+];
 
 /**
  * Bootstrap filters.
@@ -40,7 +164,7 @@ function bootstrap(): void {
  *   count: int,
  * }>
  */
-function get_region_and_season_filter( array $region_season_facet = [] ): array {
+function get_region_season_filter_options( array $region_season_facet = [] ): array {
 	// Bail if empty.
 	if ( empty( $region_season_facet ) ) {
 		return [];
@@ -104,7 +228,7 @@ function get_region_and_season_filter( array $region_season_facet = [] ): array 
  *   count: int,
  * }>
  */
-function get_expedition_filter( array $expedition_facet = [] ): array {
+function get_expedition_filter_options( array $expedition_facet = [] ): array {
 	// Bail if empty.
 	if ( empty( $expedition_facet ) ) {
 		return [];
@@ -163,7 +287,7 @@ function get_expedition_filter( array $expedition_facet = [] ): array {
  *   count: int,
  * }>
  */
-function get_ship_filter( array $ship_facet = [] ): array {
+function get_ship_filter_options( array $ship_facet = [] ): array {
 	// Bail if empty.
 	if ( empty( $ship_facet ) ) {
 		return [];
@@ -222,7 +346,7 @@ function get_ship_filter( array $ship_facet = [] ): array {
  *    count: int,
  * }>
  */
-function get_adventure_options_filter( array $adventure_options_facet = [] ): array {
+function get_adventure_options_filter_options( array $adventure_options_facet = [] ): array {
 	// Bail if empty.
 	if ( empty( $adventure_options_facet ) ) {
 		return [];
@@ -278,7 +402,7 @@ function get_adventure_options_filter( array $adventure_options_facet = [] ): ar
  *   count: int,
  * }>
  */
-function get_month_filter( array $month_facet = [] ): array {
+function get_month_filter_options( array $month_facet = [] ): array {
 	// Bail if empty.
 	if ( empty( $month_facet ) ) {
 		return [];
@@ -337,7 +461,7 @@ function get_month_filter( array $month_facet = [] ): array {
  *   count: int,
  * }>
  */
-function get_duration_filter( array $duration_facet = [] ): array {
+function get_duration_filter_options( array $duration_facet = [] ): array {
 	// Bail if empty.
 	if ( empty( $duration_facet ) ) {
 		return [];
@@ -378,105 +502,397 @@ function get_duration_filter( array $duration_facet = [] ): array {
 }
 
 /**
- * Get filters data for dates-rates.
+ * Construct itinerary length filter from facet.
  *
- * 1. Get filters data for selected filters.
- * 2. Get filters data for selected filters without last filter - done to conserve the last filter to its one step previous.
+ * @param mixed[] $itinerary_length_facet Itinerary length facet.
  *
- * @param mixed[] $selected_filters Selected filters.
- *
- * @return mixed[]
+ * @return array<int, array{
+ *    label: string,
+ *    value: int,
+ *    count: int,
+ * }>
  */
-function get_filters_for_dates_rates( array $selected_filters = [] ): array {
-	// Filter mapping.
-	$filter_mapping = [
-		'seasons'           => [
-			'key'        => 'seasons',
-			'solr_facet' => [
-				'key'  => 'region_season_str',
-				'type' => FACET_TYPE_FIELD,
-			],
-			'function'   => '\Quark\Search\Filters\get_region_and_season_filter',
-			'default'    => [],
-		],
-		'expeditions'       => [
-			'key'        => 'expeditions',
-			'solr_facet' => [
-				'key'  => 'related_expedition_str',
-				'type' => FACET_TYPE_FIELD,
-			],
-			'function'   => '\Quark\Search\Filters\get_expedition_filter',
-			'default'    => [],
-		],
-		'adventure_options' => [
-			'key'        => 'adventure_options',
-			'solr_facet' => [
-				'key'  => ADVENTURE_OPTION_CATEGORY . '_taxonomy_id',
-				'type' => FACET_TYPE_FIELD,
-			],
-			'function'   => '\Quark\Search\Filters\get_adventure_options_filter',
-			'default'    => [],
-		],
-		'ships'             => [
-			'key'        => 'ships',
-			'solr_facet' => [
-				'key'  => 'related_ship_str',
-				'type' => FACET_TYPE_FIELD,
-			],
-			'function'   => '\Quark\Search\Filters\get_ship_filter',
-			'default'    => [],
-		],
-		'months'            => [
-			'key'        => 'months',
-			'solr_facet' => [
-				'key'  => 'start_date_dt',
-				'type' => FACET_TYPE_RANGE,
-				'args' => [
-					'start' => 'NOW/MONTH',
-					'end'   => 'NOW/MONTH+2YEAR',
-					'gap'   => '+1MONTH',
-				],
-			],
-			'function'   => '\Quark\Search\Filters\get_month_filter',
-			'default'    => [],
-		],
-		'durations'         => [
-			'key'        => 'durations',
-			'solr_facet' => [
-				'key'  => 'duration_i',
-				'type' => FACET_TYPE_RANGE,
-				'args' => [
-					'start' => 1,
-					'end'   => 50,
-					'gap'   => 7,
-				],
-			],
-			'function'   => '\Quark\Search\Filters\get_duration_filter',
-			'default'    => [],
-		],
-	];
+function get_itinerary_length_filter_options( array $itinerary_length_facet = [] ): array {
+	// Bail if empty.
+	if ( empty( $itinerary_length_facet ) ) {
+		return [];
+	}
+
+	// Initialize filter data.
+	$filter_data = [];
+
+	// Loop through itinerary length facet.
+	foreach ( $itinerary_length_facet as $itinerary_length => $count ) {
+		// Convert to integer.
+		$itinerary_length = absint( $itinerary_length );
+		$count            = absint( $count );
+
+		// Validate count.
+		if ( empty( $count ) || empty( $itinerary_length ) ) {
+			continue;
+		}
+
+		// Continue if already set.
+		if ( ! empty( $filter_data[ $itinerary_length ] ) ) {
+			continue;
+		}
+
+		// Prepare itinerary length data.
+		$filter_data[ $itinerary_length ] = [
+			'label' => sprintf( '%d %s', $itinerary_length, _n( 'Day', 'Days', $itinerary_length, 'qrk' ) ),
+			'value' => $itinerary_length,
+			'count' => $count,
+		];
+	}
+
+	// Sort by length.
+	ksort( $filter_data );
+
+	// Return filter data.
+	return array_values( $filter_data );
+}
+
+/**
+ * Construct language filter from facet.
+ *
+ * @param mixed[] $language_facet Language facet.
+ *
+ * @return array<int, array{
+ *   label: string,
+ *   value: int,
+ *   count: int,
+ * }>
+ */
+function get_language_filter_options( array $language_facet = [] ): array {
+	// Bail if empty.
+	if ( empty( $language_facet ) ) {
+		return [];
+	}
+
+	// Initialize filter data.
+	$filter_data = [];
+
+	// Loop through language facet.
+	foreach ( $language_facet as $language_id => $count ) {
+		// Convert to integer.
+		$language_id = absint( $language_id );
+		$count       = absint( $count );
+
+		// Validate count.
+		if ( empty( $count ) || empty( $language_id ) ) {
+			continue;
+		}
+
+		// Get term.
+		$language_term = get_term_by( 'id', $language_id, SPOKEN_LANGUAGE_TAXONOMY );
+
+		// Validate term.
+		if ( ! $language_term instanceof WP_Term ) {
+			continue;
+		}
+
+		// Continue if already set.
+		if ( ! empty( $filter_data[ $language_id ] ) ) {
+			continue;
+		}
+
+		// Prepare language data.
+		$filter_data[ $language_id ] = [
+			'label' => $language_term->name,
+			'value' => $language_id,
+			'count' => $count,
+		];
+	}
+
+	// Return filter data.
+	return array_values( $filter_data );
+}
+
+/**
+ * Construct destination filter from facet.
+ *
+ * @param mixed[] $destination_facet Destination facet.
+ *
+ * @return array<int, array{
+ *   label: string,
+ *   value: int,
+ *   count: int,
+ *   children: array<int, array{
+ *      label: string,
+ *      value: int,
+ *      count: int,
+ *      parent_id: int,
+ *   }>,
+ * }>
+ */
+function get_destination_filter_options( array $destination_facet = [] ): array {
+	// Bail if empty.
+	if ( empty( $destination_facet ) ) {
+		return [];
+	}
+
+	// Initialize filter data.
+	$filter_data = [];
+
+	// Loop through destination facet.
+	foreach ( $destination_facet as $destination_id => $count ) {
+		// Convert to integer.
+		$destination_id = absint( $destination_id );
+		$count          = absint( $count );
+
+		// Validate count.
+		if ( empty( $count ) || empty( $destination_id ) ) {
+			continue;
+		}
+
+		// Get term.
+		$destination_term = get_term_by( 'id', $destination_id, DESTINATION_TAXONOMY );
+
+		// Validate term.
+		if ( ! $destination_term instanceof WP_Term ) {
+			continue;
+		}
+
+		// Get parent term.
+		if ( ! empty( $destination_term->parent ) ) {
+			// Get parent term.
+			$parent_term = get_term( $destination_term->parent, DESTINATION_TAXONOMY );
+
+			// Validate parent term.
+			if ( $parent_term instanceof WP_Term ) {
+				// Add parent to filter data if not set.
+				if ( empty( $filter_data[ $parent_term->term_id ] ) ) {
+					// Prepare parent term data.
+					$term_element = [
+						'label'    => $parent_term->name,
+						'value'    => $parent_term->term_id,
+						'count'    => 0,
+						'children' => [],
+					];
+
+					// Get cover image id.
+					$cover_image_id = absint( get_term_meta( $parent_term->term_id, 'destination_image', true ) );
+
+					// Add cover image if available.
+					if ( ! empty( $cover_image_id ) ) {
+						$term_element['image_id'] = $cover_image_id;
+					}
+
+					// Add parent term to filter data.
+					$filter_data[ $parent_term->term_id ] = $term_element;
+				}
+
+				// Prepare destination data.
+				$term_element = [
+					'label'     => $destination_term->name,
+					'value'     => $destination_id,
+					'count'     => $count,
+					'parent_id' => $parent_term->term_id,
+				];
+
+				// Get cover image id.
+				$cover_image_id = absint( get_term_meta( $destination_id, 'destination_image', true ) );
+
+				// Add cover image if available.
+				if ( ! empty( $cover_image_id ) ) {
+					$term_element['image_id'] = $cover_image_id;
+				}
+
+				// Add destination term to parent term.
+				$filter_data[ $parent_term->term_id ]['children'][ $destination_id ] = $term_element;
+			}
+		} else {
+			// Update count.
+			if ( ! empty( $filter_data[ $destination_id ] ) ) {
+				$filter_data[ $destination_id ]['count'] = $count;
+				continue;
+			}
+
+			// Prepare destination data.
+			$filter_data[ $destination_id ] = [
+				'label'    => $destination_term->name,
+				'value'    => $destination_id,
+				'count'    => $count,
+				'children' => [],
+			];
+
+			// Get cover image id.
+			$cover_image_id = absint( get_term_meta( $destination_id, 'destination_image', true ) );
+
+			// Add cover image if available.
+			if ( ! empty( $cover_image_id ) ) {
+				$filter_data[ $destination_id ]['image_id'] = $cover_image_id;
+			}
+		}
+	}
+
+	// Flatten children destinations.
+	foreach ( $filter_data as $destination_term_id => $destination ) {
+		// Continue if no children.
+		if ( empty( $destination['children'] ) ) {
+			continue;
+		}
+
+		// Flatten children.
+		$filter_data[ $destination_term_id ]['children'] = array_values( $destination['children'] );
+	}
+
+	// Return filter data.
+	return array_values( $filter_data );
+}
+
+/**
+ * Get departure cabin class search filter data.
+ *
+ * @return array<int, array{
+ *    label: string,
+ *    value: int,
+ * }>
+ */
+function get_cabin_class_filter(): array {
+	// Get terms.
+	$the_terms = get_terms(
+		[
+			'taxonomy'   => CABIN_CLASS_TAXONOMY,
+			'hide_empty' => true,
+		]
+	);
+
+	// Validate terms.
+	if ( empty( $the_terms ) || ! is_array( $the_terms ) ) {
+		return [];
+	}
+
+	// Initialize filter data.
+	$filter_data = [];
+
+	// Loop through terms and prepare data.
+	foreach ( $the_terms as $term ) {
+		// Validate term.
+		if ( ! $term instanceof WP_Term ) {
+			continue;
+		}
+
+		// Prepare filter data.
+		$filter_data[] = [
+			'label' => $term->name,
+			'value' => $term->term_id,
+		];
+	}
+
+	// Return filter data.
+	return $filter_data;
+}
+
+/**
+ * Get travelers filter data.
+ *
+ * @return array<int, array{
+ *    label: string,
+ *    value: string,
+ * }>
+ */
+function get_travelers_filter(): array {
+	// Get occupancy mask.
+	$mask_mapping = get_masks_mapping();
+
+	// Prepare travelers data.
+	$travelers_data = [];
+
+	// Loop through occupancy mask.
+	foreach ( $mask_mapping as $mask => $mask_data ) {
+		// Validate mask data.
+		if ( ! is_array( $mask_data ) || empty( $mask_data['description'] ) ) {
+			continue;
+		}
+
+		// Prepare travelers data.
+		$travelers_data[] = [
+			'label' => $mask_data['description'],
+			'value' => $mask,
+		];
+	}
+
+	// Return travelers data.
+	return $travelers_data;
+}
+
+/**
+ * Build filter options.
+ *
+ * @param string[] $filter_keys       The list of filters to include (e.g., ['season', 'expedition', 'month', 'duration']).
+ * @param mixed[]  $selected_filters  The currently selected filters (e.g., ['season' => [1, 2], 'expedition' => [4, 5]]).
+ *
+ * @return array<string, array<int, array{
+ *    label: string,
+ *    value: string|int,
+ *    count?:int,
+ *    children?: array<int, array{
+ *       label: string,
+ *       value:int|string,
+ *       count?:int,
+ *       parent_id: int|string
+ *     }>
+ * }>>
+ */
+function build_filter_options( array $filter_keys = [], array $selected_filters = [] ): array {
+	// Remove invalid filter keys.
+	$filter_keys = array_filter(
+		$filter_keys,
+		function ( $filter_key ) {
+			return array_key_exists( $filter_key, FILTERS_MAPPING );
+		}
+	);
+
+	// If empty filter keys, return empty array.
+	if ( empty( $filter_keys ) ) {
+		return [];
+	}
 
 	// Remove non-filter keys along with empty filter keys.
 	foreach ( $selected_filters as $key => $value ) {
-		if ( ! array_key_exists( $key, $filter_mapping ) || empty( $value ) ) {
+		if ( empty( $key ) || ! array_key_exists( $key, FILTERS_MAPPING ) || empty( $value ) ) {
 			unset( $selected_filters[ $key ] );
 		}
 	}
 
-	// Pluck solr_facet keys.
-	$solr_facets = array_column( $filter_mapping, 'solr_facet' );
+	// Pluck solr_facet from mapping whose key is in filter keys.
+	$solr_facets = array_column(
+		array_filter(
+			FILTERS_MAPPING,
+			function ( $filter, $key ) use ( $filter_keys ) {
+				return in_array( $key, $filter_keys, true );
+			},
+			ARRAY_FILTER_USE_BOTH
+		),
+		'solr_facet'
+	);
 
-	// Run search.
-	$result            = search( $selected_filters, $solr_facets );
-	$solr_facet_result = $result['facet_results'];
+	// Initialize solr facet result.
+	$solr_facet_result = [];
 
-	// Initialize filters.
-	$filters = [];
+	// Run Solr search if solr facets are not empty.
+	if ( ! empty( $solr_facets ) ) {
+		$result            = search( $selected_filters, $solr_facets );
+		$solr_facet_result = $result['facet_results'];
+	}
 
-	// Filters.
-	foreach ( $filter_mapping as $filter_key => $filter ) {
+	// Initialize filter options.
+	$filter_options = [];
+
+	// Filter options.
+	foreach ( $filter_keys as $filter_key ) {
+		// Filter value.
+		$filter = FILTERS_MAPPING[ $filter_key ];
+
 		// Bail if function is not callable.
-		if ( ! is_callable( $filter['function'] ) ) {
+		if ( ! is_callable( $filter['handler'] ) ) {
+			continue;
+		}
+
+		// If filter doesn't have solr_facet, call handler directly.
+		if ( empty( $filter['solr_facet'] ) ) {
+			$filter_options[ $filter_key ] = call_user_func( $filter['handler'] );
 			continue;
 		}
 
@@ -494,34 +910,47 @@ function get_filters_for_dates_rates( array $selected_filters = [] ): array {
 		}
 
 		// Get filter data.
-		$filters[ $filter_key ] = $filter['function']( $facet_data['values'] );
+		$filter_options[ $filter_key ] = call_user_func( $filter['handler'], $facet_data['values'] );
 	}
 
-	// Return filters if no selected filters.
+	// Return filter options if no selected filters.
 	if ( empty( $selected_filters ) ) {
-		return $filters;
+		return $filter_options;
 	}
 
 	/**
-	 * Get filters data for selected filters without last filter.
+	 * Get filters data for the last filter with solr facet.
 	 * This is done to conserve the last filter to its one step previous.
 	 */
 
-	// Get last filter key.
-	$last_filter_key = array_key_last( $selected_filters );
+	// Get last filter key from selected filters where solr_facet exists in filter mapping.
+	$last_filter_key = array_key_last(
+		array_filter(
+			$selected_filters,
+			function ( $key ) {
+				return array_key_exists( $key, FILTERS_MAPPING ) && ! empty( FILTERS_MAPPING[ $key ]['solr_facet'] );
+			},
+			ARRAY_FILTER_USE_KEY
+		)
+	);
 
 	// Bail if empty or not in filter mapping.
-	if ( empty( $last_filter_key ) || ! array_key_exists( $last_filter_key, $filter_mapping ) ) {
-		return $filters;
+	if ( empty( $last_filter_key ) || ! array_key_exists( $last_filter_key, FILTERS_MAPPING ) ) {
+		return $filter_options;
+	}
+
+	// Bail if last filter doesn't have solr_facet.
+	if ( empty( FILTERS_MAPPING[ $last_filter_key ]['solr_facet'] ) ) {
+		return $filter_options;
 	}
 
 	// Get last filter key solr_facet key.
-	$solr_facet_key = $filter_mapping[ $last_filter_key ]['solr_facet']['key'];
+	$solr_facet_key = FILTERS_MAPPING[ $last_filter_key ]['solr_facet']['key'];
 
 	// Remove last filter.
 	array_pop( $selected_filters );
 
-	// Pluck solr_facet keys except last filter.
+	// Pluck solr_facet keys for last filter.
 	$solr_facets = array_filter(
 		$solr_facets,
 		function ( $solr_facet ) use ( $solr_facet_key ) {
@@ -535,12 +964,82 @@ function get_filters_for_dates_rates( array $selected_filters = [] ): array {
 
 	// Validate facet results.
 	if ( empty( $facet_data ) || ! is_array( $facet_data ) || empty( $facet_data['values'] ) ) {
-		return $filters;
+		return $filter_options;
 	}
 
 	// Get last filter data.
-	$filters[ $last_filter_key ] = $filter_mapping[ $last_filter_key ]['function']( $facet_data['values'] );
+	$filter_options[ $last_filter_key ] = FILTERS_MAPPING[ $last_filter_key ]['handler']( $facet_data['values'] );
 
 	// Get complete filters.
-	return $filters;
+	return $filter_options;
+}
+
+/**
+ * Extracts the selected filters from query params.
+ *
+ * @return mixed[]
+ */
+function get_selected_filters_from_query_params(): array {
+	// Filter query data.
+	$raw_query_data = filter_input_array( INPUT_GET, FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+
+	// Bail if empty.
+	if ( empty( $raw_query_data ) ) {
+		return [];
+	}
+
+	// Loop through filter query data.
+	foreach ( $raw_query_data as $key => $value ) {
+		// Validate key.
+		if ( array_key_exists( $key, FILTERS_MAPPING ) ) {
+			// Explode value.
+			$raw_query_data[ $key ] = explode( ',', $value );
+		}
+	}
+
+	// Return filter query data.
+	return $raw_query_data;
+}
+
+/**
+ * Get destination and month filter options.
+ *
+ * @param int    $destination_term_id Destination term ID.
+ * @param string $month               Month.
+ *
+ * @return array<string, array<int, array{
+ *    label: string,
+ *    value: string|int,
+ *    count?: int,
+ *    children?: array<int, array{
+ *       label: string,
+ *       value: string|int,
+ *       parent_id: int|string,
+ *       image_id?: int,
+ *       count?: int
+ *    }>
+ * }>>
+ */
+function get_destination_and_month_filter_options( int $destination_term_id = 0, string $month = '' ): array {
+	// Filter keys.
+	$filter_keys = [
+		DESTINATION_FILTER_KEY,
+		MONTH_FILTER_KEY,
+	];
+
+	// Initialize selected filters.
+	$selected_filters = [];
+
+	// Set selected filters.
+	if ( ! empty( $destination_term_id ) ) {
+		$selected_filters[ DESTINATION_FILTER_KEY ] = [ $destination_term_id ];
+	} elseif ( ! empty( $month ) ) {
+		$selected_filters[ MONTH_FILTER_KEY ] = [ $month ];
+	}
+
+	// Get filter options.
+	$filter_options = build_filter_options( $filter_keys, $selected_filters );
+
+	// Return filter options.
+	return $filter_options;
 }

@@ -14,6 +14,7 @@ use WP_Error;
 
 use const Quark\Expeditions\PrePostTripOptions\POST_TYPE as PRE_POST_TRIP_POST_TYPE;
 use const Quark\Expeditions\POST_TYPE as EXPEDITION_POST_TYPE;
+use const Quark\Ships\POST_TYPE as SHIP_POST_TYPE;
 
 /**
  * Class Block_Converter.
@@ -417,7 +418,7 @@ class Block_Converter {
 		$attrs = [];
 
 		// Set attributes.
-		$attrs['url']['url']  = ! empty( $result['cta_link'] ) ? strval( $result['cta_link'] ) : '';
+		$attrs['url']['url']  = ! empty( $result['cta_link'] ) ? get_wp_permalink( strval( $result['cta_link'] ) ) : '';
 		$attrs['url']['text'] = ! empty( $result['cta_title'] ) ? strval( $result['cta_title'] ) : '';
 		$attrs['btnText']     = ! empty( $result['cta_title'] ) ? strval( $result['cta_title'] ) : '';
 
@@ -615,7 +616,7 @@ class Block_Converter {
 		// Add to secondary nav.
 		$secondary_nav[] = [
 			'title' => $attrs['title'],
-			'url'   => $attrs['anchor'],
+			'url'   => get_wp_permalink( $attrs['anchor'] ),
 		];
 
 		// Return data.
@@ -677,7 +678,7 @@ class Block_Converter {
 
 			// Loop through each blog card.
 			foreach ( $cards as $card ) {
-				$attrs['cards'][] = get_post_by_id( absint( $card ), 'any' );
+				$attrs['cards'][] = get_post_by_id( absint( $card ), [ EXPEDITION_POST_TYPE, SHIP_POST_TYPE ] );
 			}
 		}
 
@@ -766,7 +767,7 @@ class Block_Converter {
 
 		// Set attributes.
 		$attrs['title']          = strval( $result['title'] );
-		$attrs['anchor']         = sanitize_title_with_dashes( $result['title'] );
+		$attrs['anchor']         = 'expeditions';
 		$attrs['titleAlignment'] = 'left';
 		$attrs['headingLevel']   = 'h2';
 
@@ -776,7 +777,7 @@ class Block_Converter {
 		// Add to secondary nav.
 		$secondary_nav[] = [
 			'title' => $attrs['title'],
-			'url'   => $attrs['anchor'],
+			'url'   => get_wp_permalink( $attrs['anchor'] ),
 		];
 
 		// Return data.
@@ -1145,7 +1146,7 @@ class Block_Converter {
 			// Add to secondary nav.
 			$secondary_nav[] = [
 				'title' => $attrs['title'],
-				'url'   => $attrs['anchor'],
+				'url'   => get_wp_permalink( $attrs['anchor'] ),
 			];
 		}
 
@@ -1236,7 +1237,7 @@ class Block_Converter {
 					'blockName'    => 'quark/button',
 					'attrs'        => [
 						'url'     => [
-							'url'  => strval( $result['link'] ),
+							'url'  => get_wp_permalink( strval( $result['link'] ) ),
 							'text' => $link_text,
 						],
 						'btnText' => $link_text,
@@ -1258,7 +1259,7 @@ class Block_Converter {
 					'attrs'        => [
 						'backgroundColor' => 'black',
 						'url'             => [
-							'url'  => strval( $result['secondary_link'] ),
+							'url'  => get_wp_permalink( strval( $result['secondary_link'] ) ),
 							'text' => $secondary_link_text,
 						],
 						'btnText'         => $secondary_link_text,
@@ -1390,7 +1391,7 @@ class Block_Converter {
 			// Add to secondary nav.
 			$secondary_nav[] = [
 				'title' => $attrs['title'],
-				'url'   => $attrs['anchor'],
+				'url'   => get_wp_permalink( $attrs['anchor'] ),
 			];
 		}
 
@@ -1455,7 +1456,7 @@ class Block_Converter {
 			// Loop through each block.
 			foreach ( $itc_image_text_blocks as $index => $itc_image_text_block ) {
 				// set align as left for even blocks and right for odd blocks.
-				$align = 0 === $index % 2 ? 'left' : 'right';
+				$align = 0 === $index % 2 ? 'right' : 'left';
 
 				// Convert image_with_text block.
 				$image_with_text_block_content .= $this->convert_paragraph_image_with_text( [ 'id' => $itc_image_text_block ], $align );
@@ -1469,7 +1470,7 @@ class Block_Converter {
 			// Add to secondary nav.
 			$secondary_nav[] = [
 				'title' => $attrs['title'],
-				'url'   => $attrs['anchor'],
+				'url'   => get_wp_permalink( $attrs['anchor'] ),
 			];
 		}
 
@@ -1544,7 +1545,7 @@ class Block_Converter {
 			// Add to secondary nav.
 			$secondary_nav[] = [
 				'title' => $attrs['title'],
-				'url'   => $attrs['anchor'],
+				'url'   => get_wp_permalink( $attrs['anchor'] ),
 			];
 		}
 
@@ -1841,7 +1842,7 @@ class Block_Converter {
 			// Add to secondary nav.
 			$secondary_nav[] = [
 				'title' => $attrs['title'],
-				'url'   => $attrs['anchor'],
+				'url'   => get_wp_permalink( $attrs['anchor'] ),
 			];
 		}
 
@@ -1972,7 +1973,7 @@ class Block_Converter {
 		$attrs['title']        = ! empty( $result['title'] ) ? strval( $result['title'] ) : '';
 		$attrs['subtitle']     = ! empty( $result['subtitle'] ) ? strval( $result['subtitle'] ) : '';
 		$attrs['description']  = ! empty( $result['description'] ) ? strval( $result['description'] ) : '';
-		$attrs['link']['url']  = ! empty( $result['link'] ) ? strval( $result['link'] ) : '';
+		$attrs['link']['url']  = ! empty( $result['link'] ) ? get_wp_permalink( strval( $result['link'] ) ) : '';
 		$attrs['link']['text'] = ! empty( $result['link_title'] ) ? strval( $result['link_title'] ) : '';
 
 		// Check if image is available.
@@ -2249,7 +2250,7 @@ class Block_Converter {
 			// Add to secondary nav.
 			$secondary_nav[] = [
 				'title' => $attrs['title'],
-				'url'   => $attrs['anchor'],
+				'url'   => get_wp_permalink( $attrs['anchor'] ),
 			];
 		}
 
@@ -2313,14 +2314,15 @@ class Block_Converter {
 			// Check if attachment src is not available.
 			if ( ! empty( $attachment_src ) ) {
 				// Set image attributes.
-				$attrs['image'] = [
+				$attrs['image']   = [
 					'id'     => $image_target_id,
 					'src'    => $attachment_src[0],
 					'width'  => $attachment_src[1],
 					'height' => $attachment_src[2],
-					'title'  => get_the_title( absint( $image_target_id ) ),
+					'title'  => wp_get_attachment_caption( absint( $image_target_id ) ),
 					'size'   => 'full',
 				];
+				$attrs['caption'] = wp_get_attachment_caption( absint( $image_target_id ) );
 			}
 		}
 
@@ -2445,14 +2447,15 @@ class Block_Converter {
 			}
 
 			// Set image attributes.
-			$attrs['image'] = [
+			$attrs['image']   = [
 				'id'     => $image_target_id,
 				'src'    => $attachment_src[0],
 				'width'  => $attachment_src[1],
 				'height' => $attachment_src[2],
-				'title'  => get_the_title( absint( $image_target_id ) ),
+				'title'  => wp_get_attachment_caption( absint( $image_target_id ) ),
 				'size'   => 'full',
 			];
+			$attrs['caption'] = wp_get_attachment_caption( absint( $image_target_id ) );
 
 			// If there is only one item in gallery and it is a remote video, set the block as fancy-video.
 			if ( 1 === count( $images ) && 'remote_video' === $media_type ) {
@@ -2528,7 +2531,7 @@ class Block_Converter {
 					'attrs'        => [
 						'title' => $nav_item['title'],
 						'url'   => [
-							'url'  => $nav_item['url'],
+							'url'  => get_wp_permalink( $nav_item['url'] ),
 							'text' => $nav_item['title'],
 						],
 					],

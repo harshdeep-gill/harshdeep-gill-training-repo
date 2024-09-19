@@ -1,5 +1,5 @@
 @props( [
-	'currency' => 'USD',
+	'currency' => quark_get_template_data( 'default_currency', 'USD' ),
 ] )
 
 @php
