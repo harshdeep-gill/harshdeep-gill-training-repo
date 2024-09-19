@@ -69,7 +69,7 @@ function register_region_post_type(): void {
 		'query_var'           => true,
 		'can_export'          => true,
 		'rewrite'             => [
-			'slug'       => '/',
+			'slug'       => 'regions',
 			'with_front' => false,
 		],
 		'capability_type'     => 'post',
