@@ -26,7 +26,17 @@ use const Quark\Search\Filters\TRAVELERS_FILTER_KEY;
  *
  * @param mixed[] $selected_filter Selected filters.
  *
- * @return array<string, array<int, array{label: string, value: string|int, count?:int, children?: array<int, array{label: string, value:int|string, count?:int, parent_id: int|string}>}>>
+ * @return array<string, array<int, array{
+ *     label: string,
+ *     value: string|int,
+ *     count?:int,
+ *     children?: array<int, array{
+ *         label: string,
+ *         value:int|string,
+ *         count?:int,
+ *         parent_id: int|string
+ *      }>
+ * }>>
  */
 function get_filters_for_dates_rates( array $selected_filter = [] ): array {
 	// Available filters on dates-rates.
@@ -49,7 +59,17 @@ function get_filters_for_dates_rates( array $selected_filter = [] ): array {
 /**
  * Get filter options for sidebar search filters.
  *
- * @return array<string, array<int, array{label: string, value: string|int, count?:int, children?: array<int, array{label: string, value:int|string, count?:int, parent_id: int|string}>}>>
+ * @return array<string, array<int, array{
+ *     label: string,
+ *     value: string|int,
+ *     count?:int,
+ *     children?: array<int, array{
+ *         label: string,
+ *         value:int|string,
+ *         count?:int,
+ *         parent_id: int|string
+ *      }>
+ * }>>
  */
 function get_filters_for_sidebar_search(): array {
 	// Available filters on sidebar.

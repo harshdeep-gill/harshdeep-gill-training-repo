@@ -823,7 +823,17 @@ function get_travelers_filter(): array {
  * @param string[] $filter_keys       The list of filters to include (e.g., ['season', 'expedition', 'month', 'duration']).
  * @param mixed[]  $selected_filters  The currently selected filters (e.g., ['season' => [1, 2], 'expedition' => [4, 5]]).
  *
- * @return array<string, array<int, array{label: string, value: string|int, count?:int, children?: array<int, array{label: string, value:int|string, count?:int, parent_id: int|string}>}>>
+ * @return array<string, array<int, array{
+ *    label: string,
+ *    value: string|int,
+ *    count?:int,
+ *    children?: array<int, array{
+ *       label: string,
+ *       value:int|string,
+ *       count?:int,
+ *       parent_id: int|string
+ *     }>
+ * }>>
  */
 function build_filter_options( array $filter_keys = [], array $selected_filters = [] ): array {
 	// Remove invalid filter keys.
@@ -997,7 +1007,18 @@ function get_selected_filters_from_query_params(): array {
  * @param int    $destination_term_id Destination term ID.
  * @param string $month               Month.
  *
- * @return array<string, array<int, array{label: string, value: string|int, count?: int, children?: array<int, array{label: string, value: string|int, parent_id: int|string, image_id?: int, count?: int}>}>>
+ * @return array<string, array<int, array{
+ *    label: string,
+ *    value: string|int,
+ *    count?: int,
+ *    children?: array<int, array{
+ *       label: string,
+ *       value: string|int,
+ *       parent_id: int|string,
+ *       image_id?: int,
+ *       count?: int
+ *    }>
+ * }>>
  */
 function get_destination_and_month_filter_options( int $destination_term_id = 0, string $month = '' ): array {
 	// Filter keys.
