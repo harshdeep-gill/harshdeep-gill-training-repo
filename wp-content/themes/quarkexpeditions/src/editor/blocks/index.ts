@@ -82,6 +82,7 @@ import * as globalMessage from './global-message';
 import * as datesAndRates from './dates-and-rates';
 import * as mediaTextCtaCarousel from './media-text-cta-carousel';
 import * as pressReleases from './press-releases';
+import * as tabs from './tabs';
 
 /**
  * Add blocks.
@@ -160,6 +161,7 @@ const blocks = [
 	datesAndRates,
 	mediaTextCtaCarousel,
 	pressReleases,
+	tabs,
 ];
 
 // Register blocks for ships.

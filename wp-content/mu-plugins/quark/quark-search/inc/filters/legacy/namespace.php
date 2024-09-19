@@ -126,10 +126,6 @@ function redirect_legacy_search_query_params(): void {
 		// Get json data.
 		$json_data = $query_params[ $legacy_key ];
 
-		// Unset the legacy key.
-		unset( $query_params[ $legacy_key ] );
-		$is_query_params_modified = true;
-
 		// Decode json data.
 		$json_data        = html_entity_decode( $json_data );
 		$selected_filters = json_decode( $json_data, true );
@@ -156,6 +152,11 @@ function redirect_legacy_search_query_params(): void {
 
 		// Retain the filter if required.
 		if ( true === $value['retain'] ) {
+			// Unset the legacy key.
+			unset( $query_params[ $legacy_key ] );
+			$is_query_params_modified = true;
+
+			// Add new key.
 			$query_params[ $new_key ] = $selected_filters;
 			continue;
 		}
@@ -189,6 +190,11 @@ function redirect_legacy_search_query_params(): void {
 
 		// If we have matched values, add them to the query.
 		if ( ! empty( $matched_values ) ) {
+			// Unset the legacy key.
+			unset( $query_params[ $legacy_key ] );
+			$is_query_params_modified = true;
+
+			// Add new key.
 			$query_params[ $new_key ] = $matched_values;
 		}
 	}
