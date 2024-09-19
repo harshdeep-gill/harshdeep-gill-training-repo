@@ -368,6 +368,14 @@ table {
 	margin-bottom: var(--spacing-8);
 }
 
+.single-qrk_agreement {
+
+	.wp-block-post-title {
+		margin-top: var(--spacing-9);
+		margin-bottom: var(--spacing-6);
+	}
+}
+
 // WordPress annoyingly adds .wp-block-template-part as a wrapper for all
 // template parts. Display its contents to avoid styling issues
 // like sticky positioning, etc.
