@@ -493,13 +493,13 @@ function get_term_by_id( int $drupal_id = 0, string $taxonomy = '' ): false|WP_T
 /**
  * Get a WordPress post based on its Drupal ID.
  *
- * @param int    $drupal_id Drupal ID.
- * @param string $post_type WordPress post type.
- * @param string $meta_key  Meta key to search for Drupal ID.
+ * @param int                  $drupal_id Drupal ID.
+ * @param string|array<string> $post_type WordPress post type.
+ * @param string               $meta_key  Meta key to search for Drupal ID.
  *
  * @return WP_Post|false
  */
-function get_post_by_id( int $drupal_id = 0, string $post_type = 'post', string $meta_key = 'drupal_id' ): WP_Post|false {
+function get_post_by_id( int $drupal_id = 0, string|array $post_type = 'post', string $meta_key = 'drupal_id' ): WP_Post|false {
 	// Prepare arguments.
 	$arguments = [
 		'post_type'     => $post_type,
@@ -508,11 +508,6 @@ function get_post_by_id( int $drupal_id = 0, string $post_type = 'post', string 
 		'post_status'   => 'any',
 		'post_per_page' => 1,
 	];
-
-	// If post type is passed as "any" remove it from the arguments.
-	if ( 'any' === $post_type ) {
-		unset( $arguments['post_type'] );
-	}
 
 	// Query post.
 	$posts = new WP_Query( $arguments );
@@ -864,4 +859,130 @@ function get_remote_video_url( int $entity_id = 0 ): string {
 
 	// Return video URL.
 	return strval( $video_url );
+}
+
+/**
+ * Get the WordPress permalink based on Drupal link.
+ *
+ * @param string $drupal_link  Drupal link.
+ * @param bool   $dynamic_link Dynamic post link instead of permalink.
+ *
+ * @return string
+ */
+function get_wp_permalink( string $drupal_link = '', bool $dynamic_link = true ): string {
+	// Clean up the link.
+	$drupal_link = str_replace( 'internal:', '', $drupal_link );
+	$drupal_link = str_replace( 'entity:', '', $drupal_link );
+
+	// Get the post.
+	$post = get_wp_post_from_drupal_link( $drupal_link );
+
+	// If post found then return the link.
+	if ( $post instanceof WP_Post ) {
+		if ( true === $dynamic_link ) {
+			return home_url( 'post/' . $post->ID );
+		} else {
+			// Return the permalink.
+			return strval( get_permalink( $post ) );
+		}
+	}
+
+	// Return the Drupal link.
+	return $drupal_link;
+}
+
+/**
+ * Get a WordPress post based on Drupal link.
+ *
+ * @param string $drupal_link Drupal link.
+ *
+ * @return WP_Post|false
+ */
+function get_wp_post_from_drupal_link( string $drupal_link = '' ): WP_Post|false {
+	// Determine meta key.
+	if ( str_contains( $drupal_link, 'node/' ) ) {
+		$meta_key = 'drupal_id';
+	} else {
+		$meta_key = 'drupal_tid';
+	}
+
+	// Look for ID.
+	preg_match( '#(.*)/([0-9]+)#', $drupal_link, $matches );
+
+	// If no matches found then bail out.
+	if ( empty( $matches[2] ) ) {
+		return false;
+	}
+
+	// all post types.
+	$post_types = [
+		'post',
+		'page',
+		'qrk_press_release',
+		'qrk_adventure_option',
+		'qrk_expedition',
+		'qrk_agreement',
+		'qrk_region',
+		'qrk_ship',
+		'qrk_staff_member',
+		'qrk_cabin_category',
+		'qrk_inclusion_set',
+		'qrk_exclusion_set',
+		'qrk_pre_post_trip',
+		'qrk_itinerary',
+		'qrk_landing_page',
+		'qrk_offer',
+		'qrk_ship_deck',
+	];
+
+	// Get a post which matches this meta key and ID.
+	$post = get_post_by_id( absint( $matches[2] ), $post_types, $meta_key );
+
+	// We didn't find a post - lets look in our redirections list instead.
+	if ( ! $post instanceof WP_Post ) {
+		global $wpdb;
+		$fallback_redirect = $wpdb->get_row(
+			$wpdb->prepare(
+				"
+				SELECT
+					*
+				FROM
+					{$wpdb->prefix}redirection_items
+				WHERE
+					`url` = %s
+				ORDER BY
+					id DESC
+				LIMIT 1
+				",
+				[
+					'/' . ltrim( $drupal_link, '/' ),
+				]
+			),
+			ARRAY_A
+		);
+
+		// If no redirect found then bail out.
+		if ( empty( $fallback_redirect['action_data'] ) ) {
+			return false;
+		}
+
+		// We found a redirect, attempt to get the post.
+		$wp_link_post_id = url_to_postid( $fallback_redirect['action_data'] );
+
+		// If no post id found then bail out.
+		if ( empty( $wp_link_post_id ) ) {
+			return false;
+		}
+
+		// Get the post.
+		$post = get_post( $wp_link_post_id );
+
+		// If post not found then bail out.
+		if ( ! $post instanceof WP_Post ) {
+			return false;
+		}
+	}
+
+	// Return the post.
+	return $post;
 }
