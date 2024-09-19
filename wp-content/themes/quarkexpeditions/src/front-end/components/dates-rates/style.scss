@@ -408,6 +408,10 @@
 				justify-content: end;
 			}
 		}
+
+		button {
+			color: var(--color-black);
+		}
 	}
 
 	&__accordion-content--no-transition {
