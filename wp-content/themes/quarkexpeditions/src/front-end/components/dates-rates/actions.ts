@@ -23,7 +23,7 @@ import { camelToSnakeCase, convertPropertiesFromSnakeCaseToCamelCase } from '../
  *
  * @return {Object[]} The filter values.
  */
-export const getSeasonsState = (): DatesRatesFilterState[] => {
+export const getSeasons = (): DatesRatesFilterState[] => {
 	// Get the seasons.
 	const { seasons }: DatesRatesState = getState();
 
@@ -80,7 +80,7 @@ export const removeSeason = ( filterValue: string ) => {
 	const { seasons, selectedFilters }: DatesRatesState = getState();
 
 	// Get the new seasons.
-	const newSeasons = seasons.filter( ( season ) => season.value === filterValue );
+	const newSeasons = seasons.filter( ( season ) => season.value !== filterValue );
 
 	// Initialize the update object.
 	const updateObject: DatesRatesStateUpdateObject = {
@@ -105,7 +105,7 @@ export const removeSeason = ( filterValue: string ) => {
  *
  * @return {Object[]} The filter values.
  */
-export const getExpeditionsState = (): DatesRatesFilterState[] => {
+export const getExpeditions = (): DatesRatesFilterState[] => {
 	// Get the expeditions.
 	const { expeditions }: DatesRatesState = getState();
 
@@ -162,7 +162,7 @@ export const removeExpedition = ( filterValue: string ) => {
 	const { expeditions, selectedFilters }: DatesRatesState = getState();
 
 	// Get the new expeditions.
-	const newexpeditions = expeditions.filter( ( expedition ) => expedition.value === filterValue );
+	const newexpeditions = expeditions.filter( ( expedition ) => expedition.value !== filterValue );
 
 	// Initialize the update object.
 	const updateObject: DatesRatesStateUpdateObject = {
@@ -187,7 +187,7 @@ export const removeExpedition = ( filterValue: string ) => {
  *
  * @return {Object[]} The filter values.
  */
-export const getAdventureOptionsState = (): DatesRatesFilterState[] => {
+export const getAdventureOptions = (): DatesRatesFilterState[] => {
 	// Get the adventureOptions.
 	const { adventureOptions }: DatesRatesState = getState();
 
@@ -244,7 +244,7 @@ export const removeAdventureOption = ( filterValue: string ) => {
 	const { adventureOptions, selectedFilters }: DatesRatesState = getState();
 
 	// Get the new adventureOptions.
-	const newAdventureOptions = adventureOptions.filter( ( adventureOption ) => adventureOption.value === filterValue );
+	const newAdventureOptions = adventureOptions.filter( ( adventureOption ) => adventureOption.value !== filterValue );
 
 	// Initialize the update object.
 	const updateObject: DatesRatesStateUpdateObject = {
@@ -269,7 +269,7 @@ export const removeAdventureOption = ( filterValue: string ) => {
  *
  * @return {Object[]} The filter values.
  */
-export const getDepartureMonthsState = (): DatesRatesFilterState[] => {
+export const getDepartureMonths = (): DatesRatesFilterState[] => {
 	// Get the months.
 	const { months }: DatesRatesState = getState();
 
@@ -326,7 +326,7 @@ export const removeDepartureMonth = ( filterValue: string ) => {
 	const { months, selectedFilters }: DatesRatesState = getState();
 
 	// Get the new months.
-	const newMonths = months.filter( ( month ) => month.value === filterValue );
+	const newMonths = months.filter( ( month ) => month.value !== filterValue );
 
 	// Initialize the update object.
 	const updateObject: DatesRatesStateUpdateObject = {
@@ -351,7 +351,7 @@ export const removeDepartureMonth = ( filterValue: string ) => {
  *
  * @return {Object[]} The filter values.
  */
-export const getDurationsState = (): DatesRatesFilterState[] => {
+export const getDurations = (): DatesRatesFilterState[] => {
 	// Get the durations.
 	const { durations }: DatesRatesState = getState();
 
@@ -408,7 +408,7 @@ export const removeDuration = ( filterValue: string ) => {
 	const { durations, selectedFilters }: DatesRatesState = getState();
 
 	// Get the new durations.
-	const newDurations = durations.filter( ( duration ) => duration.value === filterValue );
+	const newDurations = durations.filter( ( duration ) => duration.value !== filterValue );
 
 	// Initialize the update object.
 	const updateObject: DatesRatesStateUpdateObject = {
@@ -433,7 +433,7 @@ export const removeDuration = ( filterValue: string ) => {
  *
  * @return {Object[]} The filter values.
  */
-export const getShipsState = (): DatesRatesFilterState[] => {
+export const getShips = (): DatesRatesFilterState[] => {
 	// Get the ships.
 	const { ships }: DatesRatesState = getState();
 
@@ -490,7 +490,7 @@ export const removeShip = ( filterValue: string ) => {
 	const { ships, selectedFilters }: DatesRatesState = getState();
 
 	// Get the new ships.
-	const newShips = ships.filter( ( ship ) => ship.value === filterValue );
+	const newShips = ships.filter( ( ship ) => ship.value !== filterValue );
 
 	// Initialize the update object.
 	const updateObject: DatesRatesStateUpdateObject = {

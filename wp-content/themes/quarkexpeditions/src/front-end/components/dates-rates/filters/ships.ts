@@ -6,7 +6,7 @@ const { HTMLElement, zustand } = window;
 /**
  * Internal dependencies
  */
-import { addShip, getShipsState, removeShip } from '../actions';
+import { addShip, getShips, removeShip } from '../actions';
 import DatesRatesFiltersInputsContainerElement from './inputs-container';
 
 /**
@@ -47,7 +47,7 @@ export default class DatesRatesFilterShipsElement extends HTMLElement {
 	 */
 	update() {
 		// Get the state.
-		const ships = getShipsState();
+		const ships = getShips();
 
 		// Do we have no filters?
 		if ( ships.length === 0 ) {

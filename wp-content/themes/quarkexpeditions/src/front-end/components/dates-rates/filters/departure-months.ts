@@ -6,7 +6,7 @@ const { HTMLElement, zustand } = window;
 /**
  * Internal dependencies
  */
-import { addDepartureMonth, getDepartureMonthsState, removeDepartureMonth } from '../actions';
+import { addDepartureMonth, getDepartureMonths, removeDepartureMonth } from '../actions';
 import DatesRatesFiltersInputsContainerElement from './inputs-container';
 
 /**
@@ -47,7 +47,7 @@ export default class DatesRatesFilterDepartureMonthsElement extends HTMLElement 
 	 */
 	update() {
 		// Get the state.
-		const months = getDepartureMonthsState();
+		const months = getDepartureMonths();
 
 		// Do we have no filters?
 		if ( months.length === 0 ) {
