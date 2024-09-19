@@ -22,6 +22,9 @@ function bootstrap(): void {
 	// Register post type.
 	add_action( 'init', __NAMESPACE__ . '\\register_press_release_post_type' );
 
+	// Add date to press release permalink.
+	add_filter( 'post_type_link', __NAMESPACE__ . '\\add_date_to_permalink', 10, 2 );
+
 	// Breadcrumbs.
 	add_filter( 'travelopia_breadcrumbs_ancestors', __NAMESPACE__ . '\\breadcrumbs_ancestors' );
 }
@@ -61,7 +64,7 @@ function register_press_release_post_type(): void {
 		'query_var'           => true,
 		'can_export'          => true,
 		'rewrite'             => [
-			'slug'       => 'press-releases',
+			'slug'       => 'press-releases/%year%/%monthnum%',
 			'with_front' => false,
 		],
 		'capability_type'     => 'post',
@@ -86,6 +89,28 @@ function register_press_release_post_type(): void {
 
 	// Register post type.
 	register_post_type( POST_TYPE, $args );
+}
+
+
+/**
+ * Add date to press release permalink.
+ *
+ * @param string       $post_link Post link.
+ * @param WP_Post|null $post Post object.
+ *
+ * @return string
+ */
+function add_date_to_permalink( string $post_link = '', WP_Post $post = null ): string {
+	// Check if post type is press release.
+	if ( POST_TYPE === $post->post_type ) {
+		$year      = get_the_date( 'Y', $post );
+		$month     = get_the_date( 'm', $post );
+		$post_link = str_replace( '%year%', strval( $year ), $post_link );
+		$post_link = str_replace( '%monthnum%', strval( $month ), $post_link );
+	}
+
+	// Return post link.
+	return $post_link;
 }
 
 /**
