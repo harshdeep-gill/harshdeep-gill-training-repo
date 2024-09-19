@@ -43,7 +43,7 @@ export default function Edit( {
 }: BlockEditAttributes ) {
 	// Block props.
 	const blockProps = useBlockProps( {
-		className: classnames( className, 'tabs', 'typography-spacing' ),
+		className: classnames( className, 'tabs' ),
 	} );
 
 	// Inner blocks props.
@@ -101,7 +101,7 @@ export default function Edit( {
 						options={ innerBlocks.map(
 							( innerBlock: BlockInstance, index: number ) => ( {
 								label:
-									innerBlock.attributes.title?.toUpperCase() ||
+									innerBlock.attributes.title ||
 									`No title ( tab ${ index + 1 } )`,
 								value: ( index + 1 ).toString(),
 							} ),
