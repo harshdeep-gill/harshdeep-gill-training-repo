@@ -1,18 +1,16 @@
 <?php
 /**
- * Partial: Dates and Rates.
+ * Partial: Expedition Search.
  *
  * @package quark
  */
 
-namespace Quark\Theme\Partials\DatesAndRates;
+namespace Quark\Theme\Partials\ExpeditionSearch;
 
-use function Quark\Departures\get_dates_rates_cards_data;
 use function Quark\Localization\get_current_currency;
 use function Quark\Search\Departures\search;
-use function Quark\Theme\Search_Filters\get_filters_for_dates_rates;
 
-const PARTIAL_NAME = 'dates-and-rates';
+const PARTIAL_NAME = 'expedition-search';
 
 /**
  * Bootstrap.
@@ -60,30 +58,18 @@ function render( array $output = [], string $name = '', array $data = [] ): arra
 
 	// Build component attributes.
 	$attributes = [
-		'cards' => get_dates_rates_cards_data( array_map( 'absint', $search_results['ids'] ), $currency ),
-	];
-
-	// Filters attributes.
-	$filters_attributes = [
-		'filter_data' => get_filters_for_dates_rates( $selected_filter ),
+		'cards' => [], // @todo implement get_expedition_search_cards_data - https://tuispecialist.atlassian.net/browse/QE-646
 	];
 
 	// Return rendered partial.
 	return [
-		'markup'          => quark_get_component(
-			'parts.dates-rates-cards',
-			$attributes
-		),
-		'noResultsMarkup' => 'No results found.',
+		'markup'          => quark_get_component( 'parts.expedition-search', $attributes ), // @todo implement parts markup - https://tuispecialist.atlassian.net/browse/QE-646
+		'noResultsMarkup' => __( 'No results found', 'qrk' ),
 		'data'            => [
 			'resultCount'    => $search_results['result_count'],
 			'page'           => $search_results['current_page'],
 			'nextPage'       => $search_results['next_page'],
 			'remainingCount' => $search_results['remaining_count'],
 		],
-		'filtersMarkup'   => quark_get_component(
-			'parts.dates-rates-filters',
-			$filters_attributes
-		),
 	];
 }
