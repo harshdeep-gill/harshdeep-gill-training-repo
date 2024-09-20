@@ -681,20 +681,22 @@
 </x-component-demo>
 
 <x-component-demo :keys="[ 'gated-brochure-modal' ]">
-	<x-gated-brochure-modal>
-		<x-gated-brochure-modal.cta modal_id="gated-brochure-modal">
-			<x-button>Download Our Free Brochure</x-button>
-		</x-gated-brochure-modal.cta>
+	<x-modal.modal-open modal_id="gated-brochure-modal">
+		<x-button>Download Our Free Brochure</x-button>
+	</x-modal.modal-open>
 
-		<x-gated-brochure-modal.modal modal_title="Download Our Free Brochure" modal_id="gated-brochure-modal">
-			<x-gated-brochure-modal.left>
-				<x-gated-brochure-modal.image image_id="36" />
-			</x-gated-brochure-modal.left>
+	<x-modal.modal-open modal_id="gated-brochure-modal">
+		<x-button>Another Brochure Button</x-button>
+	</x-modal.modal-open>
 
-			<x-gated-brochure-modal.right>
-				<x-gated-brochure-modal.form title="Download Our Free Brochure" :countries="$countries" :states="$states" />
-			</x-gated-brochure-modal.right>
-		</x-gated-brochure-modal.modal>
+	<x-gated-brochure-modal modal_title="Download Our Free Brochure" modal_id="gated-brochure-modal">
+		<x-gated-brochure-modal.left>
+			<x-gated-brochure-modal.image image_id="36" />
+		</x-gated-brochure-modal.left>
+
+		<x-gated-brochure-modal.right>
+			<x-gated-brochure-modal.form title="Download Our Free Brochure" :countries="$countries" :states="$states" brochure_url="#" />
+		</x-gated-brochure-modal.right>
 	</x-gated-brochure-modal>
 </x-component-demo>
 

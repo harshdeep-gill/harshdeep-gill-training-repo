@@ -4,6 +4,8 @@
 	'countries'      => [],
 	'states'         => [],
 	'title'          => '',
+	'brochure_id'    => '',
+	'brochure_url'   => '',
 ] )
 
 <x-form id="{{ $form_id }}">
@@ -47,7 +49,10 @@
 
 		<x-form.buttons>
 			<x-form.submit size="big">{{ __( 'View and Download Brochure', 'qrk' ) }}</x-form.submit>
-			<x-button class="gated-brochure-modal__skip-brochure-cta" size="big" href="#">{{ __( 'Skip to Brochure', 'qrk' ) }}</x-button>
+
+			@if ( ! empty( $brochure_url ) )
+				<x-button class="gated-brochure-modal__skip-brochure-cta" size="big" href="{{ $brochure_url }}">{{ __( 'Skip to Brochure', 'qrk' ) }}</x-button>
+			@endif
 		</x-form.buttons>
 	</div>
 

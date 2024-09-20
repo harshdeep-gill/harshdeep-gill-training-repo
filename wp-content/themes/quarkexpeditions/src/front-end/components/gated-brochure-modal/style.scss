@@ -6,71 +6,70 @@
 .gated-brochure-modal {
 	$self: &;
 
-	&__modal {
-		padding: 0;
+	padding: 0;
+
+	@media screen and (min-width: grid-size(md)) {
+		padding: var(--spacing-5);
+	}
+
+	.modal__content {
+		max-width: 100%;
+		padding-bottom: 0;
 
 		@media screen and (min-width: grid-size(md)) {
-			padding: var(--spacing-5);
+			max-width: 600px;
+			padding-bottom: var(--spacing-5);
 		}
 
-		.modal__content {
-			max-width: 100%;
-			padding-bottom: 0;
+		@media screen and (min-width: grid-size(xl)) {
+			max-width: 1072px;
+		}
+	}
 
-			@media screen and (min-width: grid-size(md)) {
-				max-width: 600px;
-				padding-bottom: var(--spacing-5);
-			}
+	.modal__body {
+		display: flex;
+		flex-flow: column;
+		gap: var(--spacing-5);
 
-			@media screen and (min-width: grid-size(xl)) {
-				max-width: 1072px;
-			}
+		@media screen and (min-width: grid-size(xl)) {
+			flex-flow: row;
 		}
 
-		.modal__body {
-			display: flex;
-			flex-flow: column;
-			gap: var(--spacing-5);
-
-			@media screen and (min-width: grid-size(xl)) {
-				flex-flow: row;
-			}
-
-			> * {
-				min-width: 0;
-				flex: 1;
-			}
+		> * {
+			min-width: 0;
+			flex: 1;
 		}
+	}
 
-		.modal__header {
-			text-align: center;
+	.modal__header {
+		text-align: center;
+		padding-bottom: 0;
 
-			@media screen and (min-width: grid-size(xl)) {
-				display: none;
-			}
+		@media screen and (min-width: grid-size(xl)) {
+			display: none;
 		}
+	}
 
-		.form-submit,
-		.form-field--buttons {
-			display: flex;
-			flex-direction: column;
+	.form-submit,
+	.form-field--buttons {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.form-field--buttons {
+
+		@media screen and (max-width: calc(grid-size(md) - 1px)) {
+			background: var(--color-white);
+			box-shadow: var(--shadow-1);
+			margin-inline: calc(-1 * var(--spacing-5));
+			position: fixed;
+			bottom: 0;
+			padding: var(--spacing-3) var(--spacing-5);
 		}
+	}
 
-		.form-field--buttons {
-
-			@media screen and (max-width: calc(grid-size(md) - 1px)) {
-				background: var(--color-white);
-				box-shadow: var(--shadow-1);
-				margin-inline: calc(-1 * var(--spacing-5));
-				position: fixed;
-				bottom: 0;
-				padding: var(--spacing-3) var(--spacing-5);
-			}
-		}
-
-		#{$self}__modal-content {
-			gap: var(--spacing-5);
-		}
+	#{$self}__modal-content {
+		gap: var(--spacing-5);
 	}
 
 	&__left {
