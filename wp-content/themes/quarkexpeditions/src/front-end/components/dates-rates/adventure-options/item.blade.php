@@ -21,10 +21,6 @@
 			'width'   => 56,
 			'height'  => 56,
 		],
-		'transform'  =>[
-			'crop'    => 'fit',
-			'gravity' => 'auto',
-		]
 	];
 @endphp
 

@@ -45,7 +45,6 @@ function render( array $output = [], string $name = '', array $data = [] ): arra
 	// Init selected filters.
 	$selected_filter = [
 		'posts_per_load' => 8,
-		'currency'       => $currency,
 	];
 
 	// Verify and get selected filters.

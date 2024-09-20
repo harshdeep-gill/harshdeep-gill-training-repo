@@ -288,6 +288,9 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 				'quark-hero-card-slider'                        => [
 					'class' => true,
 				],
+				'quark-thumbnail-cards-slider'                  => [
+					'class' => true,
+				],
 				'quark-tabs'                                    => [
 					'class' => true,
 				],

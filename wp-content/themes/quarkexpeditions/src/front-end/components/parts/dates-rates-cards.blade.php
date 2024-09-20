@@ -117,7 +117,14 @@
 
 						{{-- Cabin Details --}}
 						@foreach ( $card['cabin_data'] as $cabin )
-							<x-dates-rates.item.table-column>
+							@php
+								// Check if the cabin is sold out or has limited stock.
+								$availability_status_code = ! empty( $cabin['availability_status'] )
+									? $cabin['availability_status']
+									: '';
+								$is_sold_out = $availability_status_code === 'S';
+							@endphp
+							<x-dates-rates.item.table-column :is_sold_out="$is_sold_out">
 
 								@if ( empty($cabin['promos'] ) )
 									{{ $cabin['brochure_price'] ?? 0 }}
@@ -137,11 +144,12 @@
 						@foreach ( $card['available_promos'] as $promo_code => $promo_data )
 							@php
 								$is_pay_in_full = empty( $promo_data['is_pif'] ) ? false : true;
+								$is_discounted = ! $is_pay_in_full;
 								$is_sold_out =
 									$cabin['availability_status'] === 'S' || $cabin['availability_status'] === 'R';
 							@endphp
 							<x-dates-rates.item.table-row>
-								<x-dates-rates.item.table-column>
+								<x-dates-rates.item.table-column :is_pay_in_full="$is_pay_in_full">
 									<x-dates-rates.item.table-column-title>
 										<strong>
 											{{ $promo_data['description'] }}
@@ -151,7 +159,14 @@
 
 								{{-- Cabin-wise promo price --}}
 								@foreach ( $card['cabin_data'] as $cabin )
-									<x-dates-rates.item.table-column :is_pay_in_full="$is_pay_in_full" :is_sold_out="$is_sold_out">
+									@php
+										// Check if the cabin is sold out or has limited stock.
+										$availability_status_code = ! empty( $cabin['availability_status'] )
+											? $cabin['availability_status']
+											: '';
+										$is_sold_out = $availability_status_code === 'S';
+									@endphp
+									<x-dates-rates.item.table-column :is_pay_in_full="$is_pay_in_full" :is_sold_out="$is_sold_out" :is_discounted="$is_discounted">
 										@if ( !empty( $cabin['promos'][$promo_code] ) )
 											{{ $cabin['promos'][$promo_code] }}
 										@endif
@@ -180,7 +195,7 @@
 								$availability_status_code = ! empty( $cabin['availability_status'] )
 									? $cabin['availability_status']
 									: '';
-								$is_sold_out = $availability_status_code === 'S' || $availability_status_code === 'R';
+								$is_sold_out = $availability_status_code === 'S';
 
 								// Set availability description based on availability status.
 								if ( $availability_status_code === 'A' ) {

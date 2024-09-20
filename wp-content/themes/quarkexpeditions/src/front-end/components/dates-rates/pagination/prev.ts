@@ -57,7 +57,7 @@ export default class DatesRatesPaginationPrevPageElement extends HTMLElement {
 	 */
 	update( state: DatesRatesState ) {
 		// Get the page number.
-		const { page } = state;
+		const { pageNumber } = state;
 
 		// Null check.
 		if ( ! this.theButton ) {
@@ -68,7 +68,7 @@ export default class DatesRatesPaginationPrevPageElement extends HTMLElement {
 		/**
 		 * Check if we should hide the button.
 		 */
-		if ( page === 1 ) {
+		if ( pageNumber === 1 ) {
 			this.setAttribute( 'data-hidden', '' );
 			this.theButton.disabled = true;
 		} else {

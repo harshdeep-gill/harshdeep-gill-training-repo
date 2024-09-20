@@ -118,6 +118,50 @@ function get( int $post_id = 0 ): array {
 }
 
 /**
+ * Get press release cards data.
+ *
+ * @param int[] $post_ids Post IDs.
+ *
+ * @return array{}|array{
+ *     id: int,
+ *     title: string,
+ *     description: string,
+ *     permalink: string,
+ * }[] Press release cards data.
+ */
+function get_cards_data( array $post_ids = [] ): array {
+	// Return if empty post IDs.
+	if ( empty( $post_ids ) ) {
+		return [];
+	}
+
+	// Initialize press release cards.
+	$press_release_cards = [];
+
+	// Loop through post IDs.
+	foreach ( $post_ids as $post_id ) {
+		// Get press release.
+		$press_release = get( $post_id );
+
+		// Skip if post is not a press release.
+		if ( empty( $press_release['post'] ) ) {
+			continue;
+		}
+
+		// Add press release card.
+		$press_release_cards[] = [
+			'id'          => $press_release['post']->ID,
+			'title'       => $press_release['post']->post_title,
+			'description' => strval( apply_filters( 'the_content', $press_release['post']->post_excerpt ) ),
+			'permalink'   => $press_release['permalink'],
+		];
+	}
+
+	// Return press release cards.
+	return $press_release_cards;
+}
+
+/**
  * Breadcrumbs ancestors for this post type.
  *
  * @param mixed[] $breadcrumbs Breadcrumbs.

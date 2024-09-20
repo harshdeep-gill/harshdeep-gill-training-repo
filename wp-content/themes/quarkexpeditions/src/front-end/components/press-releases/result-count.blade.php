@@ -9,6 +9,6 @@
 	}
 @endphp
 
-<p class="result-count">
+<p class="press-releases__result-count">
 	<x-escape :content="sprintf( __( 'Showing %s of %s results', 'qrk' ), $current, $total )" />
 </p>
