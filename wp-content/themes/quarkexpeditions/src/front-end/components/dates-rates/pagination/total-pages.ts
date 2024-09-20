@@ -53,10 +53,10 @@ export default class DatesRatesPaginationTotalPagesElement extends HTMLElement {
 		}
 
 		// Get the page number.
-		const { page, totalPages } = state;
+		const { pageNumber, totalPages } = state;
 
 		// Setup output string.
-		const outputString = `Page ${ page } of ${ totalPages }`;
+		const outputString = `Page ${ pageNumber } of ${ totalPages }`;
 
 		// Output the string.
 		this.totalPagesElement.textContent = outputString;

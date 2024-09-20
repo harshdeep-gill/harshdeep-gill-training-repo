@@ -1,0 +1,31 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "title": "Hero Circle Badge",
+  "name": "quark/hero-circle-badge",
+  "description": "Circular badge in right side of hero content.",
+  "category": "widgets",
+  "keywords": [
+    "hero",
+    "circle",
+    "badge",
+    "text"
+  ],
+  "textdomain": "qrk",
+  "attributes": {
+    "text": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "parent": [
+    "quark/hero-content-right"
+  ],
+  "supports": {
+    "alignWide": false,
+    "anchor": true,
+    "className": false,
+    "html": false,
+    "customClassName": false
+  }
+}

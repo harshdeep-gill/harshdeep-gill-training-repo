@@ -91,7 +91,7 @@ function register_staff_member_post_type(): void {
 		'query_var'           => true,
 		'can_export'          => true,
 		'rewrite'             => [
-			'slug'       => 'staff-members',
+			'slug'       => 'staff',
 			'with_front' => false,
 		],
 		'capability_type'     => 'post',

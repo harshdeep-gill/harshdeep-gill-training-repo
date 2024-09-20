@@ -492,7 +492,7 @@ class Test_Staff_Members extends WP_UnitTestCase {
 				'@type' => 'Organization',
 				'name'  => 'Employee',
 			],
-			'url'         => 'http://test.quarkexpeditions.com/staff-members/test-post',
+			'url'         => 'http://test.quarkexpeditions.com/staff/test-post',
 		];
 
 		// Assert the structured data.

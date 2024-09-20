@@ -48,7 +48,7 @@ use const Quark\Localization\USD_CURRENCY;
  *   array{
  *       id: int,
  *       name: string,
- *       overview: string,
+ *       description: string,
  *       images: array{}|array<int,
  *         array{
  *           id: int,
@@ -127,7 +127,7 @@ function get_all_data(): array {
  *     id: int,
  *     name: string,
  *     published: bool,
- *     overview: string,
+ *     description: string,
  *     images: array{}|array<int,
  *       array{
  *         id: int,
@@ -177,7 +177,7 @@ function get_expedition_data( int $expedition_post_id = 0 ): array {
 		'id'           => $expedition_post_id,
 		'name'         => get_raw_text_from_html( $expedition_post['post']->post_title ),
 		'published'    => 'publish' === $expedition_post['post']->post_status,
-		'overview'     => '',
+		'description'  => '',
 		'images'       => [],
 		'destinations' => [],
 		'itineraries'  => [],
@@ -224,8 +224,8 @@ function get_expedition_data( int $expedition_post_id = 0 ): array {
 	}
 
 	// Add description.
-	if ( ! empty( $expedition_post['post_meta'] ) && ! empty( $expedition_post['post_meta']['overview'] ) && is_string( $expedition_post['post_meta']['overview'] ) ) {
-		$expedition_data['overview'] = get_raw_text_from_html( $expedition_post['post_meta']['overview'] );
+	if ( ! empty( $expedition_post['post_meta'] ) && ! empty( $expedition_post['post_meta']['description'] ) && is_string( $expedition_post['post_meta']['description'] ) ) {
+		$expedition_data['description'] = get_raw_text_from_html( $expedition_post['post_meta']['description'] );
 	}
 
 	// Get destination terms.
@@ -600,6 +600,7 @@ function get_departures_data( int $expedition_post_id = 0, int $itinerary_post_i
  *      location: string,
  *      type: string,
  *      size: string,
+ *      occupancySize: string,
  *      media: array{}|array<int,
  *        array{
  *          id: int,
@@ -762,6 +763,7 @@ function get_cabins_data( int $expedition_post_id = 0, int $itinerary_post_id = 
 			'type'           => '',
 			'location'       => '',
 			'size'           => '',
+			'occupancySize'  => '',
 			'media'          => [],
 			'occupancies'    => [],
 		];
@@ -816,6 +818,17 @@ function get_cabins_data( int $expedition_post_id = 0, int $itinerary_post_id = 
 			// Validate range.
 			if ( ! empty( $from_range ) && ! empty( $to_range ) ) {
 				$cabin_category_data['size'] = $from_range . ' - ' . $to_range;
+			}
+		}
+
+		// Get cabin occupancy size range from meta.
+		if ( array_key_exists( 'cabin_occupancy_pax_range_from', $cabin_category_post['post_meta'] ) && array_key_exists( 'cabin_occupancy_pax_range_to', $cabin_category_post['post_meta'] ) ) {
+			$from_range = strval( $cabin_category_post['post_meta']['cabin_occupancy_pax_range_from'] );
+			$to_range   = strval( $cabin_category_post['post_meta']['cabin_occupancy_pax_range_to'] );
+
+			// Validate range.
+			if ( ! empty( $from_range ) && ! empty( $to_range ) ) {
+				$cabin_category_data['occupancySize'] = $from_range . ' - ' . $to_range;
 			}
 		}
 

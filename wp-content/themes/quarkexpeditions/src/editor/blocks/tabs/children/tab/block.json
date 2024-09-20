@@ -1,0 +1,24 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "quark/tabs-tab",
+	"title": "Tab",
+	"description": "Add a single tab",
+	"parent": [ "quark/tabs" ],
+	"category": "text",
+	"textdomain": "qrk",
+	"usesContext": [ "quark/tabs" ],
+	"attributes": {
+		"title": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"anchor": false,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

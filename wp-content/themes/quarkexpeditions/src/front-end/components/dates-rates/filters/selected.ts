@@ -52,43 +52,28 @@ export default class DatesRatesSelectedFiltersElement extends HTMLElement {
 		// Get the selected filters.
 		let areAnyFiltersSelected = false;
 
-		// Loop through the selected filters.
-		for ( const filterName of [ 'seasons', 'expeditions', 'adventureOptions', 'months', 'durations', 'ships' ] ) {
-			// @ts-ignore Get the selected values for the filter.
-			const selectedValues: DatesRatesFilterState[] = [ ...state[ filterName ] ];
+		// Get the selected filters.
+		const { selectedFilters } = state;
+
+		// Null check.
+		if ( ! this.filtersList ) {
+			// Bail.
+			return;
+		}
+
+		// Reset selected filter chips markup.
+		this.filtersList.innerHTML = '';
+
+		// Loop through the filters.
+		selectedFilters.forEach( ( selectedFilter ) => {
+			// Get the selected values.
+			const selectedValues: DatesRatesFilterState[] = state[ selectedFilter ];
+			const filterName = selectedFilter;
 
 			// Check if any filters are selected.
 			if ( selectedValues.length > 0 ) {
 				areAnyFiltersSelected = true;
 			}
-
-			// Get the filter pills.
-			const relevantFilterPills = this.querySelectorAll( 'quark-dates-rates-selected-filter-pill' );
-
-			// Loop through the filter pills and remove unnecessary ones.
-			relevantFilterPills.forEach( ( pill ) => {
-				// Get the value.
-				const pillValue = pill.getAttribute( 'value' ) ?? '';
-				const pillFilter = pill.getAttribute( 'filter' ) ?? '';
-
-				// Find the value.
-				const indexOfPillValueInSelectedValues = selectedValues.findIndex( ( selectedValue ) => selectedValue.value === pillValue );
-
-				// Check if the pill should exist.
-				if (
-					! pillFilter ||
-					! ( pillFilter in state ) ||
-					( pillFilter === filterName && -1 === indexOfPillValueInSelectedValues )
-				) {
-					// Remove the child.
-					this.filtersList?.removeChild( pill );
-				}
-
-				// Update the set.
-				if ( indexOfPillValueInSelectedValues !== -1 ) {
-					selectedValues.splice( indexOfPillValueInSelectedValues, 1 );
-				}
-			} );
 
 			// Loop through the values and create new pills.
 			selectedValues.forEach( ( selectedValue: DatesRatesFilterState ) => {
@@ -118,7 +103,7 @@ export default class DatesRatesSelectedFiltersElement extends HTMLElement {
 				// Append the child.
 				this.filtersList?.appendChild( filterPill );
 			} );
-		}
+		} );
 
 		// Check if selected filters should be hidden.
 		if ( areAnyFiltersSelected ) {
