@@ -12,7 +12,7 @@
 	<div class="gated-brochure-modal__form-content">
 		@if ( ! empty( $modal_title ) )
 			<div class="gated-brochure-modal__form-title">
-				<h3>{{ $modal_title }}</h3>
+				<h3><x-escape :content="$modal_title" /></h3>
 			</div>
 		@endif
 
