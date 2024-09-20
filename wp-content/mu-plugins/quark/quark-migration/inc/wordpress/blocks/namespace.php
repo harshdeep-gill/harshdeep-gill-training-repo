@@ -227,7 +227,14 @@ function convert_node_span( string $output = '', ?DOMElement $node = null ): str
 	foreach ( $node->childNodes as $child_node ) {
 		// Get HTML of current child node.
 		if ( $child_node->ownerDocument instanceof DOMDocument ) {
-			$inner_html .= $child_node->ownerDocument->saveXML( $child_node );
+			$child_node_content = $child_node->ownerDocument->saveXML( $child_node );
+
+			// Check if its img tag.
+			if ( 'img' === $child_node->tagName ) {
+				$child_node_content = convert_node_to_block( $child_node );
+			}
+
+			$inner_html .= $child_node_content;
 		}
 	}
 
