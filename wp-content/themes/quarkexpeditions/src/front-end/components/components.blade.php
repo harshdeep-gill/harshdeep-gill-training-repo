@@ -680,6 +680,36 @@
 	</x-section>
 </x-component-demo>
 
+<x-component-demo :keys="[ 'gated-brochure-modal' ]">
+	<x-section>
+		<x-section.heading>
+			<x-section.title title="Gated Brochure Modal" />
+		</x-section.heading>
+
+		<x-gated-brochure-modal-cta
+			modal_id="gated-brochure-modal"
+			modal_title="Download Our Free Brochure"
+			:countries="$countries"
+			:states="$states"
+			brochure_url="#"
+			brochure_id="123"
+		>
+			<x-button>Brochure Button</x-button>
+		</x-gated-brochure-modal-cta>
+
+		<x-gated-brochure-modal-cta
+			modal_id="gated-brochure-modal"
+			modal_title="Download Our Free Brochure"
+			:countries="$countries"
+			:states="$states"
+			brochure_url="#"
+			brochure_id="123"
+		>
+			<x-button>Another Brochure Button</x-button>
+		</x-gated-brochure-modal-cta>
+	</x-section>
+</x-component-demo>
+
 <x-component-demo :keys="[ 'drawer' ]">
 	<x-section title="Flexible Multipurpose drawer">
 		<style>
