@@ -23,7 +23,7 @@ function bootstrap(): void {
 	add_action( 'init', __NAMESPACE__ . '\\register_press_release_post_type' );
 
 	// Add date to press release permalink.
-	add_filter( 'post_type_link', __NAMESPACE__ . '\\add_date_to_permalink', 10, 2 );
+	add_filter( 'post_type_link', __NAMESPACE__ . '\\update_permalink', 10, 2 );
 
 	// Breadcrumbs.
 	add_filter( 'travelopia_breadcrumbs_ancestors', __NAMESPACE__ . '\\breadcrumbs_ancestors' );
@@ -99,11 +99,11 @@ function register_press_release_post_type(): void {
  *
  * @return string
  */
-function add_date_to_permalink( string $post_link = '', WP_Post $post = null ): string {
+function update_permalink( string $post_link = '', WP_Post $post = null ): string {
 	// Check if post type is press release.
 	if ( $post instanceof WP_Post && POST_TYPE === $post->post_type ) {
-		$year      = get_the_date( 'Y', $post );
-		$month     = get_the_date( 'm', $post );
+		$year      = gmdate( 'Y', absint( strtotime( $post->post_date_gmt ) ) );
+		$month     = gmdate( 'm', absint( strtotime( $post->post_date_gmt ) ) );
 		$post_link = str_replace( '%year%', strval( $year ), $post_link );
 		$post_link = str_replace( '%monthnum%', strval( $month ), $post_link );
 	}

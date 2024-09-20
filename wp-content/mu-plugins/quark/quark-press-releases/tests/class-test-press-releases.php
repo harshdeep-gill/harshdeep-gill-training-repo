@@ -74,13 +74,13 @@ class Test_Press_Releases extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Test add_date_to_permalink.
+	 * Test update_permalink.
 	 *
-	 * @covers \Quark\PressReleases\add_date_to_permalink()
+	 * @covers \Quark\PressReleases\update_permalink()
 	 *
 	 * @return void
 	 */
-	public function test_add_date_to_permalink(): void {
+	public function test_update_permalink(): void {
 		// Create a post.
 		$post = $this->factory()->post->create_and_get(
 			[
