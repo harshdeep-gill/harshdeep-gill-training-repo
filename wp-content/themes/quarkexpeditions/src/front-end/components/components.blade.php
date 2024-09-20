@@ -4697,9 +4697,9 @@
 				<h4>Cabins Options</h4>
 				<x-product-options-cards>
 					<x-product-options-cards.cards>
-						<x-product-options-cards.card>
+						<x-product-options-cards.card status="A">
 							<x-product-options-cards.gallery :image_ids="[ 32, 34, 36]">
-								<x-product-options-cards.badge type="standard" />
+								<x-product-options-cards.badge status="A" type="standard" />
 							</x-product-options-cards.gallery>
 							<x-product-options-cards.content>
 								<x-product-options-cards.title title="Explorer Suite" />
@@ -4727,9 +4727,9 @@
 								/>
 							</x-product-options-cards.content>
 						</x-product-options-cards.card>
-						<x-product-options-cards.card details_id="some-random-id-2">
+						<x-product-options-cards.card status="A" details_id="some-random-id-2">
 							<x-product-options-cards.gallery :image_ids="[ 32, 34, 36]">
-								<x-product-options-cards.badge type="premium" />
+								<x-product-options-cards.badge type="premium" status="A" />
 							</x-product-options-cards.gallery>
 							<x-product-options-cards.content>
 								<x-product-options-cards.title title="Explorer Suite" />
@@ -4757,9 +4757,9 @@
 								/>
 							</x-product-options-cards.content>
 						</x-product-options-cards.card>
-						<x-product-options-cards.card details_id="some-random-id-3">
+						<x-product-options-cards.card status="S" details_id="some-random-id-3">
 							<x-product-options-cards.gallery :image_ids="[ 32, 34, 36]">
-								<x-product-options-cards.badge type="sold out" />
+								<x-product-options-cards.badge status="S" />
 							</x-product-options-cards.gallery>
 							<x-product-options-cards.content>
 								<x-product-options-cards.title title="Explorer Suite" />
@@ -5028,9 +5028,9 @@
 								/>
 							</x-product-options-cards.content>
 						</x-product-options-cards.card>
-						<x-product-options-cards.card details_id="some-random-id-2">
+						<x-product-options-cards.card status="A" details_id="some-random-id-2">
 							<x-product-options-cards.gallery :image_ids="[ 32, 34, 36]">
-								<x-product-options-cards.badge type="premium" />
+								<x-product-options-cards.badge type="premium" status="A" />
 							</x-product-options-cards.gallery>
 							<x-product-options-cards.content>
 								<x-product-options-cards.title title="Explorer Suite" />
@@ -5058,9 +5058,9 @@
 								/>
 							</x-product-options-cards.content>
 						</x-product-options-cards.card>
-						<x-product-options-cards.card details_id="some-random-id-3">
+						<x-product-options-cards.card status="S" details_id="some-random-id-3">
 							<x-product-options-cards.gallery :image_ids="[ 32, 34, 36]">
-								<x-product-options-cards.badge type="sold out" />
+								<x-product-options-cards.badge status="S" />
 							</x-product-options-cards.gallery>
 							<x-product-options-cards.content>
 								<x-product-options-cards.title title="Explorer Suite" />
@@ -5323,9 +5323,9 @@
 								/>
 							</x-product-options-cards.content>
 						</x-product-options-cards.card>
-						<x-product-options-cards.card details_id="some-random-id-2">
+						<x-product-options-cards.card status="A" details_id="some-random-id-2">
 							<x-product-options-cards.gallery :image_ids="[ 32, 34, 36]">
-								<x-product-options-cards.badge type="premium" />
+								<x-product-options-cards.badge type="premium" status="A" />
 							</x-product-options-cards.gallery>
 							<x-product-options-cards.content>
 								<x-product-options-cards.title title="Explorer Suite" />
@@ -5353,9 +5353,9 @@
 								/>
 							</x-product-options-cards.content>
 						</x-product-options-cards.card>
-						<x-product-options-cards.card details_id="some-random-id-3">
+						<x-product-options-cards.card status="S" details_id="some-random-id-3">
 							<x-product-options-cards.gallery :image_ids="[ 32, 34, 36]">
-								<x-product-options-cards.badge type="sold out" />
+								<x-product-options-cards.badge status="S" />
 							</x-product-options-cards.gallery>
 							<x-product-options-cards.content>
 								<x-product-options-cards.title title="Explorer Suite" />
@@ -5647,9 +5647,9 @@
 								/>
 							</x-product-options-cards.content>
 						</x-product-options-cards.card>
-						<x-product-options-cards.card details_id="some-random-id-2">
+						<x-product-options-cards.card status="A" details_id="some-random-id-2">
 							<x-product-options-cards.gallery :image_ids="[ 32, 34, 36]">
-								<x-product-options-cards.badge type="premium" />
+								<x-product-options-cards.badge type="premium" status="A" />
 							</x-product-options-cards.gallery>
 							<x-product-options-cards.content>
 								<x-product-options-cards.title title="Explorer Suite" />
@@ -5677,9 +5677,9 @@
 								/>
 							</x-product-options-cards.content>
 						</x-product-options-cards.card>
-						<x-product-options-cards.card details_id="some-random-id-3">
+						<x-product-options-cards.card status="S" details_id="some-random-id-3">
 							<x-product-options-cards.gallery :image_ids="[ 32, 34, 36]">
-								<x-product-options-cards.badge type="sold out" />
+								<x-product-options-cards.badge status="S" />
 							</x-product-options-cards.gallery>
 							<x-product-options-cards.content>
 								<x-product-options-cards.title title="Explorer Suite" />
@@ -5999,9 +5999,9 @@
 										/>
 									</x-product-options-cards.content>
 								</x-product-options-cards.card>
-								<x-product-options-cards.card details_id="some-random-id-2">
+								<x-product-options-cards.card status="A" details_id="some-random-id-2">
 									<x-product-options-cards.gallery :image_ids="[ 32, 34, 36]">
-										<x-product-options-cards.badge type="premium" />
+										<x-product-options-cards.badge type="premium" status="A" />
 									</x-product-options-cards.gallery>
 									<x-product-options-cards.content>
 										<x-product-options-cards.title title="Explorer Suite" />
@@ -6029,9 +6029,9 @@
 										/>
 									</x-product-options-cards.content>
 								</x-product-options-cards.card>
-								<x-product-options-cards.card details_id="some-random-id-3">
+								<x-product-options-cards.card status="S" details_id="some-random-id-3">
 									<x-product-options-cards.gallery :image_ids="[ 32, 34, 36]">
-										<x-product-options-cards.badge type="sold out" />
+										<x-product-options-cards.badge status="S" />
 									</x-product-options-cards.gallery>
 									<x-product-options-cards.content>
 										<x-product-options-cards.title title="Explorer Suite" />
@@ -6365,9 +6365,9 @@
 		<h4 style="margin-bottom: var(--spacing-6);">Cabins Options</h4>
 		<x-product-options-cards>
 			<x-product-options-cards.cards>
-				<x-product-options-cards.card details_id="some-random-id">
+				<x-product-options-cards.card status="A" details_id="some-random-id" status="A" >
 					<x-product-options-cards.gallery :image_ids="[ 32, 34, 36]">
-						<x-product-options-cards.badge type="standard" />
+						<x-product-options-cards.badge type="standard" status="A" />
 					</x-product-options-cards.gallery>
 					<x-product-options-cards.content>
 						<x-product-options-cards.title title="Explorer Suite" />
@@ -6395,9 +6395,9 @@
 						/>
 					</x-product-options-cards.content>
 				</x-product-options-cards.card>
-				<x-product-options-cards.card details_id="some-random-id-2">
+				<x-product-options-cards.card status="A" details_id="some-random-id-2">
 					<x-product-options-cards.gallery :image_ids="[ 32, 34, 36]">
-						<x-product-options-cards.badge type="premium" />
+						<x-product-options-cards.badge type="premium" status="A" />
 					</x-product-options-cards.gallery>
 					<x-product-options-cards.content>
 						<x-product-options-cards.title title="Explorer Suite" />
@@ -6425,9 +6425,9 @@
 						/>
 					</x-product-options-cards.content>
 				</x-product-options-cards.card>
-				<x-product-options-cards.card details_id="some-random-id-3">
+				<x-product-options-cards.card status="S" details_id="some-random-id-3">
 					<x-product-options-cards.gallery :image_ids="[ 32, 34, 36]">
-						<x-product-options-cards.badge type="sold out" />
+						<x-product-options-cards.badge status="S" />
 					</x-product-options-cards.gallery>
 					<x-product-options-cards.content>
 						<x-product-options-cards.title title="Explorer Suite" />

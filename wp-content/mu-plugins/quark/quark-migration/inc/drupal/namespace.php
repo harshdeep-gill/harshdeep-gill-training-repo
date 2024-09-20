@@ -537,9 +537,26 @@ function prepare_content( string $content = '' ): string {
 	// Transform shortcodes.
 	$content = transform_drupal_media_tags( $content );
 	$content = transform_image_tags( $content );
+	$content = remove_empty_paragraphs( $content );
 
 	// Convert to blocks and return output.
 	return convert_to_blocks( $content );
+}
+
+/**
+ * Remove empty paragraphs from content.
+ *
+ * @param string $content Input string.
+ *
+ * @return string
+ */
+function remove_empty_paragraphs( string $content = '' ): string {
+	// Remove empty <p> tags from the start and end of the content.
+	$content = preg_replace( '/^(<p>(\s|&nbsp;| )*<\/p>)+/', '', $content );
+	$content = preg_replace( '/(<p>(\s|&nbsp;| )*<\/p>)+$/', '', strval( $content ) );
+
+	// return output.
+	return strval( $content );
 }
 
 /**
@@ -573,6 +590,9 @@ function transform_drupal_media_tags( string $content = '' ): string {
 		preg_match( '/alt="(.*?)"/', $matches[0][ $key ], $alt );
 		preg_match( '/data-align="(.*?)"/', $matches[0][ $key ], $align );
 		preg_match( '/data-caption="(.*?)"/', $matches[0][ $key ], $caption );
+
+		// Initialize image HTML.
+		$image_html = '';
 
 		// Get Drupal media based on UUID.
 		$drupal_db = get_database();
@@ -669,13 +689,18 @@ function transform_drupal_media_tags( string $content = '' ): string {
 						);
 					}
 				}
-
-				// Replace the drupal-media tag.
-				if ( ! empty( $image_html ) ) {
-					$content = str_replace( $matches[0][ $key ], $image_html, $content );
-				}
 			}
+		} elseif ( $image instanceof WP_Error && 'QUARK_migration_media_download_failed' === $image->get_error_code() ) {
+			$image_html = sprintf(
+				'<figure class="wp-block-image %s"><img src="%s" alt=""/><figcaption>%s</figcaption></figure>',
+				$align[1] ?? 'alignnone',
+				strval( $image->get_error_data( 'QUARK_migration_media_download_failed' ) ),
+				! empty( $caption[1] ) ? wp_strip_all_tags( html_entity_decode( $caption[1] ) ) : ''
+			);
 		}
+
+		// Replace the closing tag in string.
+		$content = str_replace( $matches[0][ $key ] . '</drupal-media>', $image_html, $content );
 	}
 
 	// Return output.
