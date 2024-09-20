@@ -32,10 +32,12 @@ class Test_Press_Releases extends WP_UnitTestCase {
 		// Create post.
 		$post_1 = $this->factory()->post->create_and_get(
 			[
-				'post_title'   => 'Test Post',
-				'post_content' => 'Post content',
-				'post_status'  => 'publish',
-				'post_type'    => POST_TYPE,
+				'post_title'    => 'Test Post',
+				'post_content'  => 'Post content',
+				'post_status'   => 'publish',
+				'post_type'     => POST_TYPE,
+				'post_date'     => '2020-12-01 00:00:00',
+				'post_date_gmt' => '2020-12-01 00:00:00',
 			]
 		);
 
@@ -57,7 +59,7 @@ class Test_Press_Releases extends WP_UnitTestCase {
 
 		// Assert post's expected permalink is correct is equal to actual permalink.
 		$this->assertEquals(
-			'http://test.quarkexpeditions.com/press-releases/test-post',
+			'http://test.quarkexpeditions.com/press-releases/2020/12/test-post',
 			$the_post['permalink']
 		);
 
@@ -67,7 +69,38 @@ class Test_Press_Releases extends WP_UnitTestCase {
 				'post'      => null,
 				'permalink' => '',
 			],
-			\Quark\PressReleases\get( $post_2->ID )
+			get( $post_2->ID )
+		);
+	}
+
+	/**
+	 * Test update_permalink.
+	 *
+	 * @covers \Quark\PressReleases\update_permalink()
+	 *
+	 * @return void
+	 */
+	public function test_update_permalink(): void {
+		// Create a post.
+		$post = $this->factory()->post->create_and_get(
+			[
+				'post_title'    => 'Test Post',
+				'post_content'  => 'Post content',
+				'post_status'   => 'publish',
+				'post_type'     => POST_TYPE,
+				'post_date'     => '2021-01-01 00:00:00',
+				'post_date_gmt' => '2021-01-01 00:00:00',
+			]
+		);
+		$this->assertTrue( $post instanceof WP_Post );
+
+		// Get post permalink.
+		$permalink = get_permalink( $post );
+
+		// Assert the permalink.
+		$this->assertEquals(
+			'http://test.quarkexpeditions.com/press-releases/2021/01/test-post',
+			$permalink
 		);
 	}
 
@@ -117,11 +150,13 @@ class Test_Press_Releases extends WP_UnitTestCase {
 		// Create a post.
 		$post = $this->factory()->post->create_and_get(
 			[
-				'post_title'   => 'Test Post',
-				'post_content' => 'Post content',
-				'post_excerpt' => 'Post excerpt',
-				'post_status'  => 'publish',
-				'post_type'    => POST_TYPE,
+				'post_title'    => 'Test Post',
+				'post_content'  => 'Post content',
+				'post_excerpt'  => 'Post excerpt',
+				'post_status'   => 'publish',
+				'post_type'     => POST_TYPE,
+				'post_date'     => '2018-10-01 00:00:00',
+				'post_date_gmt' => '2018-10-01 00:00:00',
 			]
 		);
 		$this->assertTrue( $post instanceof WP_Post );
@@ -136,7 +171,7 @@ class Test_Press_Releases extends WP_UnitTestCase {
 					'id'          => $post->ID,
 					'title'       => $post->post_title,
 					'description' => "<p>Post excerpt</p>\n",
-					'permalink'   => 'http://test.quarkexpeditions.com/press-releases/test-post',
+					'permalink'   => 'http://test.quarkexpeditions.com/press-releases/2018/10/test-post',
 				],
 			],
 			$cards_data
