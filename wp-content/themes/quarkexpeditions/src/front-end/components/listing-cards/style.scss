@@ -4,13 +4,21 @@
 @import "../../scss";
 
 .listing-cards {
+	margin-top: var(--spacing-6);
+	margin-bottom: var(--spacing-6);
+
+	@media screen and (min-width: grid-size(lg)) {
+		margin-top: var(--spacing-7);
+		margin-bottom: var(--spacing-7);
+	}
 
 	&__card {
 		background: var(--color-gray-5);
 		padding: var(--spacing-5);
+		border-radius: var(--border-radius-large);
 
 		@media screen and (min-width: grid-size(md)) {
-			padding: var(--spacing-8) 80px;
+			padding: var(--spacing-8);
 		}
 
 		& + & {

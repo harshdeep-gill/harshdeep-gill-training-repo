@@ -18,6 +18,7 @@ use function Quark\Expeditions\get_itineraries;
 use function Quark\Expeditions\get_minimum_duration;
 use function Quark\Expeditions\get_starting_from_locations;
 use function Quark\Expeditions\get_details_data;
+use function Quark\Expeditions\get_expedition_category_terms;
 use function Quark\Expeditions\get_expedition_ship_ids;
 use function Quark\Expeditions\get_formatted_date_range;
 use function Quark\Expeditions\get_minimum_duration_itinerary;
@@ -220,6 +221,85 @@ class Test_Expeditions extends Softrip_TestCase {
 				],
 			],
 			$regions
+		);
+	}
+
+	/**
+	 * Test get_expedition_category_terms.
+	 *
+	 * @covers \Quark\Expeditions\get_expedition_category_terms()
+	 *
+	 * @return void
+	 */
+	public function test_get_expedition_category_terms(): void {
+		// Create post.
+		$post_1 = $this->factory()->post->create_and_get(
+			[
+				'post_title'   => 'Test Post',
+				'post_content' => 'Post content',
+				'post_status'  => 'publish',
+				'post_type'    => POST_TYPE,
+				'meta_input'   => [
+					'meta_1' => 'value_1',
+					'meta_2' => 'value_2',
+				],
+			]
+		);
+
+		// Assert created posts are instance of WP_Post.
+		$this->assertTrue( $post_1 instanceof WP_Post );
+
+		// Create term.
+		$term_1 = $this->factory()->term->create_and_get(
+			[
+				'taxonomy' => EXPEDITION_CATEGORY_TAXONOMY,
+			]
+		);
+
+		// Assert created terms are instance of WP_Term.
+		$this->assertTrue( $term_1 instanceof WP_Term );
+
+		// Create another term.
+		$term_2 = $this->factory()->term->create_and_get(
+			[
+				'taxonomy' => EXPEDITION_CATEGORY_TAXONOMY,
+				'parent'   => $term_1->term_id,
+			]
+		);
+
+		// Assert created terms are instance of WP_Term.
+		$this->assertTrue( $term_2 instanceof WP_Term );
+
+		// Set terms.
+		wp_set_object_terms(
+			$post_1->ID,
+			[
+				$term_1->term_id,
+				$term_2->term_id,
+			],
+			EXPEDITION_CATEGORY_TAXONOMY
+		);
+
+		// Bust post cache.
+		bust_post_cache( $post_1->ID );
+
+		// Test getting expedition categories.
+		$expedition_categories = get_expedition_category_terms( $post_1->ID );
+
+		// Assert expedition categories are correct.
+		$this->assertEquals(
+			[
+				[
+					'term_id'     => strval( $term_1->term_id ),
+					'name'        => $term_1->name,
+					'slug'        => $term_1->slug,
+					'taxonomy'    => $term_1->taxonomy,
+					'description' => $term_1->description,
+					'parent'      => $term_1->parent,
+					'term_group'  => $term_1->term_group,
+				],
+			],
+			$expedition_categories
 		);
 	}
 

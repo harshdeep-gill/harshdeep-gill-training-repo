@@ -210,6 +210,158 @@ class SEO {
 	}
 
 	/**
+	 * Migrate 301 redirects for terms new permalinks.
+	 *
+	 * @subcommand redirect-term-new-permalinks
+	 *
+	 * @return void
+	 *
+	 * @throws ExitException Exit on failure of command.
+	 **/
+	public function redirect_terms_new_permalinks(): void {
+		// Welcome message.
+		WP_CLI::log( WP_CLI::colorize( '%YMigrating terms permalink redirects...%n' ) );
+
+		// Build query.
+		global $wpdb;
+		$query = "
+		SELECT
+			tt.term_id,
+			tt.taxonomy,
+			tm.meta_value as drupal_id
+		FROM
+			wp_term_taxonomy as tt
+			LEFT JOIN
+				wp_termmeta as tm ON tt.term_id = tm.term_id
+		WHERE
+			tt.taxonomy = 'category' and tm.meta_key = 'drupal_term_id'
+		";
+
+		// Get terms.
+		$terms = $wpdb->get_results( $query, ARRAY_A ); // phpcs:ignore
+
+		// Check if we have terms.
+		if ( empty( $terms ) ) {
+			WP_CLI::error( 'No terms found!' );
+		}
+
+		// Progress bar.
+		$total_terms = count( $terms );
+		$progress    = make_progress_bar( 'Migrating', $total_terms );
+		$count       = 0;
+		$drupal_db   = get_database();
+		WP_CLI::log( WP_CLI::colorize( '%GFound terms: %n' . $total_terms ) );
+
+		// Check if progress bar exists or not.
+		if ( ! $progress instanceof Bar ) {
+			WP_CLI::error( 'Progress bar not found!' );
+
+			// Bail out if progress bar not exists.
+			return;
+		}
+
+		// Prepare for migration.
+		prepare_for_migration();
+
+		// Migrate permalink redirects.
+		foreach ( $terms as $term ) {
+			// Check for type.
+			if ( ! empty( $term['drupal_id'] ) ) {
+				$id = absint( $term['drupal_id'] );
+			} else {
+				$progress->tick();
+				continue;
+			}
+
+			// Get WordPress term URL.
+			$wordpress_url = get_term_link( absint( $term['term_id'] ), $term['taxonomy'] );
+
+			// Check if we have a URL.
+			if ( empty( $wordpress_url ) || ! is_string( $wordpress_url ) ) {
+				$progress->tick();
+				continue;
+			}
+
+			// Parse URL.
+			$wordpress_url = wp_parse_url( $wordpress_url );
+
+			// Check if we have a path.
+			if ( ! is_array( $wordpress_url ) || empty( $wordpress_url['path'] ) ) {
+				$progress->tick();
+				continue;
+			}
+
+			// Clean URL.
+			$wordpress_url = $wordpress_url['path'];
+
+			// Get Drupal URLs.
+			$drupal_urls = $drupal_db->get_results(
+				$drupal_db->prepare(
+					'
+					SELECT
+						path_alias.alias AS drupal_url
+					FROM
+						path_alias
+					WHERE
+						path_alias.path = %s
+					ORDER BY
+						path_alias.id DESC
+					',
+					[
+						'/taxonomy/term/' . $id,
+					]
+				),
+				ARRAY_A
+			);
+
+			// Check if we have Drupal URLs.
+			if ( ! is_array( $drupal_urls ) || empty( $drupal_urls ) ) {
+				$progress->tick();
+				continue;
+			}
+
+			// Traverse Drupal URLs.
+			foreach ( $drupal_urls as $drupal_url ) {
+				$drupal_url = trim( $drupal_url['drupal_url'] ?? '' );
+
+				// Skip if we have empty URL or same URL.
+				if ( empty( $drupal_url ) || $drupal_url === $wordpress_url ) {
+					continue;
+				}
+
+				// Make URL to be compatible with "redirection" plugin.
+				$url        = new Red_Url_Match( $drupal_url );
+				$drupal_url = $url->get_url();
+
+				// Create redirect.
+				$wpdb->insert(
+					$wpdb->prefix . 'redirection_items',
+					[
+						'url'         => $drupal_url,
+						'match_url'   => $drupal_url,
+						'group_id'    => 3,
+						'action_type' => 'url',
+						'action_code' => '301',
+						'action_data' => $wordpress_url,
+						'match_type'  => 'url',
+						'match_data'  => '{"source":{"flag_query":"pass"}}',
+					]
+				);
+
+				// Update count.
+				++$count;
+			}
+
+			// Update progress.
+			$progress->tick();
+		}
+
+		// All done!
+		$progress->finish();
+		WP_CLI::success( "Added $count redirects for $total_terms posts." );
+	}
+
+	/**
 	 * Migrate 301 redirects.
 	 *
 	 * @subcommand url-redirects
