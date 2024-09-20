@@ -5,15 +5,10 @@
 @import "../../scss";
 
 .template-title {
-	margin-top: var(--spacing-7);
-	margin-bottom: var(--spacing-7);
+	margin-top: var(--spacing-8);
+	margin-bottom: var(--spacing-8);
 	font-weight: var(--font-weight-default);
 	line-height: var(--h1-line-height);
-
-	@media screen and (min-width: grid-size(md)) {
-		margin-top: var(--spacing-8);
-		margin-bottom: var(--spacing-8);
-	}
 
 	@media screen and (min-width: grid-size(xl)) {
 		margin-top: var(--spacing-9);

@@ -43,6 +43,7 @@ import * as heroTitle from './children/hero-title';
 import * as heroSubtitle from './children/hero-subtitle';
 import * as overline from './children/overline';
 import * as heroTextGraphic from './children/hero-text-graphic';
+import * as heroCircleBadge from './children/hero-circle-badge';
 
 /**
  * Initialization.
@@ -60,4 +61,5 @@ export const init = (): void => {
 	registerBlockType( heroTextGraphic.name, heroTextGraphic.settings );
 	registerBlockType( heroSubtitle.name, heroSubtitle.settings );
 	registerBlockType( overline.name, overline.settings );
+	registerBlockType( heroCircleBadge.name, heroCircleBadge.settings );
 };

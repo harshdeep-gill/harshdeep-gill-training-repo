@@ -57,7 +57,7 @@ export default class DatesRatesPaginationPageNumberElement extends HTMLElement {
 	 */
 	update( state: DatesRatesState ) {
 		// Get the page number.
-		const { page, totalPages } = state;
+		const { pageNumber, totalPages } = state;
 
 		// Null check.
 		if ( ! this.theButton ) {
@@ -66,7 +66,7 @@ export default class DatesRatesPaginationPageNumberElement extends HTMLElement {
 		}
 
 		// Check if it is the current page.
-		if ( page === this.pageNumber ) {
+		if ( pageNumber === this.pageNumber ) {
 			this.theButton.classList.add( 'current' );
 		} else {
 			this.theButton.classList.remove( 'current' );

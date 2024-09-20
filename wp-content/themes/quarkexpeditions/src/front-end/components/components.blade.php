@@ -251,7 +251,7 @@
 	</x-section>
 </x-component-demo>
 
-<x-component-demo :keys="[ 'hero', 'hero-refactor' ]">
+<x-component-demo :keys="[ 'hero', 'hero-refactor', 'hero-circle-badge' ]">
 	<x-hero text_align="center" immersive="none">
 		<x-hero.image image_id="26" />
 		<x-hero.content>
@@ -265,6 +265,7 @@
 				<x-hero.form-modal-cta>Get a Digital Brochure</x-hero.form-modal-cta>
 			</x-hero.left>
 			<x-hero.right>
+				<x-hero.circle-badge text="As seen on BBC and Discovery Channel's Frozen Planet" />
 			</x-hero.right>
 		</x-hero.content>
 	</x-hero>
@@ -295,6 +296,65 @@
 			</x-hero.left>
 		</x-hero.content>
 	</x-hero>
+</x-component-demo>
+
+<x-component-demo :keys="[ 'search-hero' ]">
+	<x-search-hero text_align="left" immersive="all" :overlay_opacity="10">
+		<x-search-hero.image image_id="26" />
+		<x-search-hero.content>
+			<x-search-hero.left>
+				<x-search-hero.title-container>
+					<x-search-hero.overline>Journey of a lifetime</x-search-hero.overline>
+					<x-search-hero.title title="Not a cruise. A real polar expedition." />
+				</x-search-hero.title-container>
+				<x-search-hero.search-bar>
+					{{-- https://tuispecialist.atlassian.net/browse/QE-439 [In Progress] --}}
+					{{-- <x-search-filters-bar /> --}}
+					Search bar component
+				</x-search-hero.search-bar>
+				{{-- Existing component, needs video support update --}}
+				<x-thumbnail-cards :is_carousel="false" :full_width="false">
+					<x-thumbnail-cards.card size="small" url="#" orientation="portrait" video_id="167">
+						<x-thumbnail-cards.title title="Arctic Expeditions" align="bottom" />
+					</x-thumbnail-cards.card>
+					<x-thumbnail-cards.card size="small" url="#" orientation="portrait" image_id="30">
+						<x-thumbnail-cards.title title="Antarctic Expeditions" align="bottom" />
+					</x-thumbnail-cards.card>
+					<x-thumbnail-cards.card size="small" url="#" orientation="portrait" image_id="33">
+						<x-thumbnail-cards.title title="Patagonia Expeditions" align="bottom" />
+					</x-thumbnail-cards.card>
+				</x-thumbnail-cards>
+			</x-search-hero.left>
+			<x-search-hero.right>
+				<x-hero-card-slider :arrows="true">
+					<x-hero-card-slider.card>
+						<x-hero-card-slider.image image_id="29" />
+						<x-hero-card-slider.content>
+							<x-hero-card-slider.tag text="On-ship Experience" />
+							<x-hero-card-slider.title title="Life Onboard a Quark Expeditions Vessel: Incredible On-Ship Experiences" />
+							<x-hero-card-slider.card-cta text="Explore Experiences" url="#" />
+						</x-hero-card-slider.content>
+					</x-hero-card-slider.card>
+					<x-hero-card-slider.card>
+						<x-hero-card-slider.video video_id="167" />
+						<x-hero-card-slider.content>
+							<x-hero-card-slider.tag text="On-ship Experience" />
+							<x-hero-card-slider.title title="Life Onboard a Quark Expeditions Vessel: Incredible On-Ship Experiences" />
+							<x-button appearance="outline" size="big">Book Now</x-button>
+						</x-hero-card-slider.content>
+					</x-hero-card-slider.card>
+					<x-hero-card-slider.card>
+						<x-hero-card-slider.image image_id="34" />
+						<x-hero-card-slider.content>
+							<x-hero-card-slider.overline text="Limited time. Limited Cabins." />
+							<x-hero-card-slider.title title="Epic 50% Savings" />
+							<x-hero-card-slider.card-cta text="Explore Experiences" url="#" />
+						</x-hero-card-slider.content>
+					</x-hero-card-slider.card>
+				</x-hero-card-slider>
+			</x-search-hero.right>
+		</x-search-hero.content>
+	</x-search-hero>
 </x-component-demo>
 
 <x-component-demo :keys="[ 'secondary-navigation' ]">
@@ -2048,7 +2108,7 @@
 		<x-two-columns :border="false">
 			<x-two-columns.column>
 				<x-fancy-video
-					url="https://www.youtube.com/embed/0fRAL7xROZg"
+					url="https://quarkexpeditions.wistia.com/medias/rel589439q"
 					image_id="32"
 					title="Hear from fellow solo traveler Charlotte"
 				/>
@@ -2641,6 +2701,17 @@
 		<x-media-cta-banner.content>
 			<h3>The Shackleton Club</h3>
 			<p>We always reward loyalty! If you’re a returning guest, enjoy an additional 5% savings on all future Quark Expeditions voyages.</p>
+			<x-button size="big" color="black">Join the Shackleton Club</x-button>
+		</x-media-cta-banner.content>
+	</x-media-cta-banner>
+
+	<x-media-cta-banner appearance="solid" background_color="gray">
+		<x-media-cta-banner.image image_id="35" />
+		<x-media-cta-banner.content>
+			<x-media-cta-banner.overline text="Expedition Guides and Education Team" />
+			<h3>Discover Your Next Adventure</h3>
+			<h4>Experience the Polar Regions your own way</h4>
+			<p>Greenland is waiting to be explored. Browse all of our expedition options to the world's largest island.</p>
 			<x-button size="big" color="black">Join the Shackleton Club</x-button>
 		</x-media-cta-banner.content>
 	</x-media-cta-banner>
@@ -3772,6 +3843,64 @@
 	</x-section>
 </x-component-demo>
 
+<x-component-demo :keys="[ 'press-releases' ]">
+	<x-press-releases>
+		<x-press-releases.result-count current="1-8" total="138" />
+		<x-listing-cards>
+			<x-listing-cards.card>
+				<x-listing-cards.overline text="Expedition Guides and Education Team" />
+				<x-listing-cards.title title="Quark Expeditions Invites Guests to “Raise a Glass and Stay Connected” with Free Wi-Fi and Bar Service" />
+				<x-listing-cards.subtitle subtitle="Experience the Polar Regions your own way" />
+				<x-listing-cards.description>
+					<p>Quark Expeditions, the global leader in polar adventures, is pleased to announce that all guests will enjoy complimentary Wi-Fi and alcohol on all voyages as of the Antarctic 2024/25 sailing season.</p>
+				</x-listing-cards.description>
+				<x-listing-cards.cta>
+					<x-button size="big" color="black">Read More</x-button>
+				</x-listing-cards.cta>
+			</x-listing-cards.card>
+
+			<x-listing-cards.card>
+				<x-listing-cards.overline text="Expedition Guides and Education Team" />
+				<x-listing-cards.title title="Ask Parker the Polar Bear! Quark Expeditions’ New AI-Driven Partner Portal Makes Every Travel Advisor a Polar Expert" />
+				<x-listing-cards.subtitle subtitle="Experience the Polar Regions your own way" />
+				<x-listing-cards.description>
+					<p>Greenland is waiting to be explored. Browse all of our expedition options to the world's largest island.</p>
+				</x-listing-cards.description>
+				<x-listing-cards.cta>
+					<x-button size="big" color="black">Read More</x-button>
+				</x-listing-cards.cta>
+			</x-listing-cards.card>
+
+			<x-listing-cards.card>
+				<x-listing-cards.overline text="Expedition Guides and Education Team" />
+				<x-listing-cards.title title="Quark Expeditions Invites Guests to “Raise a Glass and Stay Connected” with Free Wi-Fi and Bar Service" />
+				<x-listing-cards.subtitle subtitle="Experience the Polar Regions your own way" />
+				<x-listing-cards.description>
+					<p>Quark Expeditions, the global leader in polar adventures, is pleased to announce that all guests will enjoy complimentary Wi-Fi and alcohol on all voyages as of the Antarctic 2024/25 sailing season.</p>
+				</x-listing-cards.description>
+				<x-listing-cards.cta>
+					<x-button size="big" color="black">Read More</x-button>
+				</x-listing-cards.cta>
+			</x-listing-cards.card>
+		</x-listing-cards>
+		<x-pagination>
+			<x-pagination.total-pages current_page="1" total_pages="11" />
+			<x-pagination.links>
+				<x-pagination.first-page href="#" >First</x-pagination.first-page>
+				<!-- Generated by WordPress `paginate_links()` -->
+				<a class="prev page-numbers" href="/travel-blog">Prev</a>
+				<a class="page-numbers current" href="/travel-blog/page/2">1</a>
+				<span class="page-numbers">2</span>
+				<a class="page-numbers" href="/travel-blog/page/3">3</a>
+				<span class="page-numbers dots">…</span>
+				<a class="page-numbers" href="/travel-blog/page/48">48</a>
+				<a class="next page-numbers" href="/travel-blog/page/2">Next</a>
+				<x-pagination.last-page href="#" >Last</x-pagination.last-page>
+			</x-pagination.links>
+		</x-pagination>
+	</x-press-releases>
+</x-component-demo>
+
 <x-component-demo :keys="[ 'thumbnail-cards' ]">
 	<x-section title="Thumbnail Cards: Small Portrait">
 		<x-thumbnail-cards :is_carousel="false">
@@ -4544,9 +4673,9 @@
 				<h4>Cabins Options</h4>
 				<x-product-options-cards>
 					<x-product-options-cards.cards>
-						<x-product-options-cards.card>
+						<x-product-options-cards.card status="A">
 							<x-product-options-cards.gallery :image_ids="[ 32, 34, 36]">
-								<x-product-options-cards.badge type="standard" />
+								<x-product-options-cards.badge status="A" type="standard" />
 							</x-product-options-cards.gallery>
 							<x-product-options-cards.content>
 								<x-product-options-cards.title title="Explorer Suite" />
@@ -4574,9 +4703,9 @@
 								/>
 							</x-product-options-cards.content>
 						</x-product-options-cards.card>
-						<x-product-options-cards.card details_id="some-random-id-2">
+						<x-product-options-cards.card status="A" details_id="some-random-id-2">
 							<x-product-options-cards.gallery :image_ids="[ 32, 34, 36]">
-								<x-product-options-cards.badge type="premium" />
+								<x-product-options-cards.badge type="premium" status="A" />
 							</x-product-options-cards.gallery>
 							<x-product-options-cards.content>
 								<x-product-options-cards.title title="Explorer Suite" />
@@ -4604,9 +4733,9 @@
 								/>
 							</x-product-options-cards.content>
 						</x-product-options-cards.card>
-						<x-product-options-cards.card details_id="some-random-id-3">
+						<x-product-options-cards.card status="S" details_id="some-random-id-3">
 							<x-product-options-cards.gallery :image_ids="[ 32, 34, 36]">
-								<x-product-options-cards.badge type="sold out" />
+								<x-product-options-cards.badge status="S" />
 							</x-product-options-cards.gallery>
 							<x-product-options-cards.content>
 								<x-product-options-cards.title title="Explorer Suite" />
@@ -4875,9 +5004,9 @@
 								/>
 							</x-product-options-cards.content>
 						</x-product-options-cards.card>
-						<x-product-options-cards.card details_id="some-random-id-2">
+						<x-product-options-cards.card status="A" details_id="some-random-id-2">
 							<x-product-options-cards.gallery :image_ids="[ 32, 34, 36]">
-								<x-product-options-cards.badge type="premium" />
+								<x-product-options-cards.badge type="premium" status="A" />
 							</x-product-options-cards.gallery>
 							<x-product-options-cards.content>
 								<x-product-options-cards.title title="Explorer Suite" />
@@ -4905,9 +5034,9 @@
 								/>
 							</x-product-options-cards.content>
 						</x-product-options-cards.card>
-						<x-product-options-cards.card details_id="some-random-id-3">
+						<x-product-options-cards.card status="S" details_id="some-random-id-3">
 							<x-product-options-cards.gallery :image_ids="[ 32, 34, 36]">
-								<x-product-options-cards.badge type="sold out" />
+								<x-product-options-cards.badge status="S" />
 							</x-product-options-cards.gallery>
 							<x-product-options-cards.content>
 								<x-product-options-cards.title title="Explorer Suite" />
@@ -5170,9 +5299,9 @@
 								/>
 							</x-product-options-cards.content>
 						</x-product-options-cards.card>
-						<x-product-options-cards.card details_id="some-random-id-2">
+						<x-product-options-cards.card status="A" details_id="some-random-id-2">
 							<x-product-options-cards.gallery :image_ids="[ 32, 34, 36]">
-								<x-product-options-cards.badge type="premium" />
+								<x-product-options-cards.badge type="premium" status="A" />
 							</x-product-options-cards.gallery>
 							<x-product-options-cards.content>
 								<x-product-options-cards.title title="Explorer Suite" />
@@ -5200,9 +5329,9 @@
 								/>
 							</x-product-options-cards.content>
 						</x-product-options-cards.card>
-						<x-product-options-cards.card details_id="some-random-id-3">
+						<x-product-options-cards.card status="S" details_id="some-random-id-3">
 							<x-product-options-cards.gallery :image_ids="[ 32, 34, 36]">
-								<x-product-options-cards.badge type="sold out" />
+								<x-product-options-cards.badge status="S" />
 							</x-product-options-cards.gallery>
 							<x-product-options-cards.content>
 								<x-product-options-cards.title title="Explorer Suite" />
@@ -5494,9 +5623,9 @@
 								/>
 							</x-product-options-cards.content>
 						</x-product-options-cards.card>
-						<x-product-options-cards.card details_id="some-random-id-2">
+						<x-product-options-cards.card status="A" details_id="some-random-id-2">
 							<x-product-options-cards.gallery :image_ids="[ 32, 34, 36]">
-								<x-product-options-cards.badge type="premium" />
+								<x-product-options-cards.badge type="premium" status="A" />
 							</x-product-options-cards.gallery>
 							<x-product-options-cards.content>
 								<x-product-options-cards.title title="Explorer Suite" />
@@ -5524,9 +5653,9 @@
 								/>
 							</x-product-options-cards.content>
 						</x-product-options-cards.card>
-						<x-product-options-cards.card details_id="some-random-id-3">
+						<x-product-options-cards.card status="S" details_id="some-random-id-3">
 							<x-product-options-cards.gallery :image_ids="[ 32, 34, 36]">
-								<x-product-options-cards.badge type="sold out" />
+								<x-product-options-cards.badge status="S" />
 							</x-product-options-cards.gallery>
 							<x-product-options-cards.content>
 								<x-product-options-cards.title title="Explorer Suite" />
@@ -5846,9 +5975,9 @@
 										/>
 									</x-product-options-cards.content>
 								</x-product-options-cards.card>
-								<x-product-options-cards.card details_id="some-random-id-2">
+								<x-product-options-cards.card status="A" details_id="some-random-id-2">
 									<x-product-options-cards.gallery :image_ids="[ 32, 34, 36]">
-										<x-product-options-cards.badge type="premium" />
+										<x-product-options-cards.badge type="premium" status="A" />
 									</x-product-options-cards.gallery>
 									<x-product-options-cards.content>
 										<x-product-options-cards.title title="Explorer Suite" />
@@ -5876,9 +6005,9 @@
 										/>
 									</x-product-options-cards.content>
 								</x-product-options-cards.card>
-								<x-product-options-cards.card details_id="some-random-id-3">
+								<x-product-options-cards.card status="S" details_id="some-random-id-3">
 									<x-product-options-cards.gallery :image_ids="[ 32, 34, 36]">
-										<x-product-options-cards.badge type="sold out" />
+										<x-product-options-cards.badge status="S" />
 									</x-product-options-cards.gallery>
 									<x-product-options-cards.content>
 										<x-product-options-cards.title title="Explorer Suite" />
@@ -6212,9 +6341,9 @@
 		<h4 style="margin-bottom: var(--spacing-6);">Cabins Options</h4>
 		<x-product-options-cards>
 			<x-product-options-cards.cards>
-				<x-product-options-cards.card details_id="some-random-id">
+				<x-product-options-cards.card status="A" details_id="some-random-id" status="A" >
 					<x-product-options-cards.gallery :image_ids="[ 32, 34, 36]">
-						<x-product-options-cards.badge type="standard" />
+						<x-product-options-cards.badge type="standard" status="A" />
 					</x-product-options-cards.gallery>
 					<x-product-options-cards.content>
 						<x-product-options-cards.title title="Explorer Suite" />
@@ -6242,9 +6371,9 @@
 						/>
 					</x-product-options-cards.content>
 				</x-product-options-cards.card>
-				<x-product-options-cards.card details_id="some-random-id-2">
+				<x-product-options-cards.card status="A" details_id="some-random-id-2">
 					<x-product-options-cards.gallery :image_ids="[ 32, 34, 36]">
-						<x-product-options-cards.badge type="premium" />
+						<x-product-options-cards.badge type="premium" status="A" />
 					</x-product-options-cards.gallery>
 					<x-product-options-cards.content>
 						<x-product-options-cards.title title="Explorer Suite" />
@@ -6272,9 +6401,9 @@
 						/>
 					</x-product-options-cards.content>
 				</x-product-options-cards.card>
-				<x-product-options-cards.card details_id="some-random-id-3">
+				<x-product-options-cards.card status="S" details_id="some-random-id-3">
 					<x-product-options-cards.gallery :image_ids="[ 32, 34, 36]">
-						<x-product-options-cards.badge type="sold out" />
+						<x-product-options-cards.badge status="S" />
 					</x-product-options-cards.gallery>
 					<x-product-options-cards.content>
 						<x-product-options-cards.title title="Explorer Suite" />
@@ -6437,18 +6566,12 @@
 
 <x-component-demo :keys="[ 'dates-rates' ]">
 	@php
-		// TODO: This will be removed after the development of this component is complete and will be handled by the block.
-		$dates_rates_filter_data = [
-			'seasons'            => Quark\Search\Departures\get_region_and_season_search_filter_data(),
-			'expeditions'        => Quark\Search\Departures\get_expedition_search_filter_data(),
-			'adventure_options'  => Quark\Search\Departures\get_adventure_options_search_filter_data(),
-			'months'             => Quark\Search\Departures\get_month_search_filter_data(),
-			'durations'          => Quark\Search\Departures\get_duration_search_filter_data(),
-			'ships'              => Quark\Search\Departures\get_ship_search_filter_data(),
-		];
+		$dates_rates_filter_data = Quark\Theme\Search_Filters\get_filters_for_dates_rates();
+
+		$currency = Quark\Localization\get_current_currency();
 	@endphp
 	<x-section>
-		<x-parts.dates-rates :filter_data="$dates_rates_filter_data" />
+		<x-parts.dates-rates :filter_data="$dates_rates_filter_data" :currency="$currency" />
 	</x-section>
 </x-component-demo>
 

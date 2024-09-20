@@ -374,6 +374,14 @@ table {
 	@media screen and (min-width: grid-size(xl)) {
 		margin-bottom: var(--spacing-8);
 	}
+
+	.template-title + & {
+		margin-bottom: var(--spacing-4);
+
+		@media screen and (min-width: grid-size(lg)) {
+			margin-bottom: var(--spacing-5);
+		}
+	}
 }
 
 // WordPress annoyingly adds .wp-block-template-part as a wrapper for all
