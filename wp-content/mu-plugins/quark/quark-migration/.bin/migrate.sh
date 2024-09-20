@@ -66,6 +66,7 @@ wp quark-migrate landing-page all --user=1
 
 # SEO redirect migration
 wp quark-migrate seo redirect-new-permalinks
+wp quark-migrate seo redirect-term-new-permalinks
 wp quark-migrate seo url-redirects
 wp quark-migrate seo update-internal-links
 

@@ -25,7 +25,11 @@
 		{
 			"name": "single-qrk_adventure_option",
 			"title": "Adventure Option"
-		}
+		},
+    {
+      "name": "single-qrk_agreement",
+      "title": "Terms and Conditions / Policy Pages"
+    }
 	],
 	"templateParts": [
 		{
