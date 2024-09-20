@@ -149,12 +149,6 @@
 							@php
 								$cabin_availability_status = $cabin['specifications']['availability_status'] ?? 'U';
 
-								$card_badge_text = match ( $cabin_availability_status ) {
-									'S' => __( 'Sold Out', 'qrk' ),
-									'R' => __( 'Please Call', 'qrk' ),
-									'A' => $cabin['type'] ?? '',
-								};
-
 								if ( empty( $cabin_availability_status ) || 'U' === $cabin_availability_status ) {
 									continue;
 								}
@@ -166,7 +160,6 @@
 										<x-product-options-cards.badge
 											status="{{ $cabin_availability_status }}"
 											type="{{ $cabin['type'] }}"
-											text="{{ $card_badge_text }}"
 										/>
 									</x-product-options-cards.gallery>
 								@endif

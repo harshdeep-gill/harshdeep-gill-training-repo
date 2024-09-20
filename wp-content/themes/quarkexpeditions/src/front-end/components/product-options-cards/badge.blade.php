@@ -2,11 +2,10 @@
 	'class'  => '',
 	'status' => 'A',
 	'type'   => 'standard',
-	'text'   => '',
 ] )
 
 @php
-	if ( empty( $status ) || empty( $text ) ) {
+	if ( empty( $status ) ) {
 		return;
 	}
 
@@ -34,6 +33,12 @@
 			'premium'  => 'premium',
 		};
 	}
+
+	$text = match ( $status ) {
+		'S' => __( 'Sold Out', 'qrk' ),
+		'R' => __( 'Please Call', 'qrk' ),
+		'A' => $type ?? '',
+	};
 
 	if ( ! empty( $class ) ) {
 		$classes[] = $class;
