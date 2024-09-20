@@ -3,16 +3,16 @@
 	'form_id'        => 'download-gated-brochure',
 	'countries'      => [],
 	'states'         => [],
-	'title'          => '',
+	'modal_title'    => '',
 	'brochure_id'    => '',
 	'brochure_url'   => '',
 ] )
 
 <x-form id="{{ $form_id }}">
 	<div class="gated-brochure-modal__form-content">
-		@if ( ! empty( $title ) )
+		@if ( ! empty( $modal_title ) )
 			<div class="gated-brochure-modal__form-title">
-				<h3>{{ $title }}</h3>
+				<h3>{{ $modal_title }}</h3>
 			</div>
 		@endif
 
