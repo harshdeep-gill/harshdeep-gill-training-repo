@@ -97,6 +97,19 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 							$component_attributes['right'][] = $form;
 							break;
 
+						// Circle badge in the hero section.
+						case 'quark/hero-circle-badge':
+							$circle_badge = [
+								'type' => 'circle-badge',
+							];
+
+							// Add the text.
+							$circle_badge['text'] = $child_block->attributes['text'] ?? '';
+
+							// Add to attributes.
+							$component_attributes['right'][] = $circle_badge;
+							break;
+
 						// Overline.
 						case 'quark/hero-overline':
 							$overline = [
