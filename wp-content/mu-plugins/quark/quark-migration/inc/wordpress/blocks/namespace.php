@@ -230,10 +230,11 @@ function convert_node_span( string $output = '', ?DOMElement $node = null ): str
 			$child_node_content = $child_node->ownerDocument->saveXML( $child_node );
 
 			// Check if its img tag.
-			if ( 'img' === $child_node->tagName ) {
+			if ( $child_node instanceof DOMElement && 'img' === $child_node->tagName ) {
 				$child_node_content = convert_node_to_block( $child_node );
 			}
 
+			// Append child node content.
 			$inner_html .= $child_node_content;
 		}
 	}
