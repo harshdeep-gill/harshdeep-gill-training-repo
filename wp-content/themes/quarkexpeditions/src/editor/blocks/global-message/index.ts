@@ -17,6 +17,7 @@ import save from './save';
  * Styles.
  */
 import '../../../front-end/components/global-message/style.scss';
+import './editor.scss';
 
 /**
  * Block name.
