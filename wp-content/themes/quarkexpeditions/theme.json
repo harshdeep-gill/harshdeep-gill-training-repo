@@ -2,93 +2,97 @@
   "$schema": "https://schemas.wp.org/trunk/theme.json",
   "version": 3,
   "customTemplates": [
-		{
-			"name": "single-post",
-			"title": "Blog Post"
-		},
-		{
-			"name": "single-qrk_landing_page",
-			"title": "Landing Page"
-		},
+    {
+      "name": "single-post",
+      "title": "Blog Post"
+    },
+    {
+      "name": "single-qrk_landing_page",
+      "title": "Landing Page"
+    },
     {
       "name": "single-qrk_press_release",
       "title": "Press Release"
     },
     {
+      "name": "page-offers",
+      "title": "Page : Offers"
+    },
+    {
       "name": "single-qrk_staff_member",
       "title": "Staff Member"
     },
-		{
-			"name": "content-sidebar-table-of-contents",
-			"title": "Content with Table of Contents Sidebar"
-		},
-		{
-			"name": "single-qrk_adventure_option",
-			"title": "Adventure Option"
-		},
+    {
+      "name": "content-sidebar-table-of-contents",
+      "title": "Content with Table of Contents Sidebar"
+    },
+    {
+      "name": "single-qrk_adventure_option",
+      "title": "Adventure Option"
+    },
     {
       "name": "single-qrk_agreement",
       "title": "Terms and Conditions / Policy Pages"
     }
-	],
-	"templateParts": [
-		{
-			"area": "uncategorized",
-			"name": "header",
-			"title": "Header"
-		},
-		{
-			"area": "uncategorized",
-			"name": "footer",
-			"title": "Footer"
-		}
-	],
-	"settings": {
-		"blocks": {
-		"core/button": {
-			"border": {
-			"radius": false
-			}
-		}
-		},
-		"color": {
-		"custom": false,
-		"background": false,
-		"text": false,
-		"customDuotone": false,
-		"customGradient": false,
-		"duotone": [],
-		"gradients": [],
-		"link": false,
-		"palette": [
-			{
-			"name": "Black",
-			"slug": "black",
-			"color": "#000"
-			},
-			{
-			"name": "White",
-			"slug": "white",
-			"color": "#fff"
-			}
-		]
-		},
-		"layout": {
-			"contentSize": "1120px"
-		},
-		"spacing": {
-			"customSpacingSize": false,
-			"units": []
-		},
-		"typography": {
-		"letterSpacing": false,
-		"defaultFontSizes": false,
-		"customFontSize": false,
-		"lineHeight": false,
-		"fontStyle": false,
-		"fontWeight": false,
-		"dropCap": false,
-		"fontSizes": []
-		}
-	}
+  ],
+  "templateParts": [
+    {
+      "area": "uncategorized",
+      "name": "header",
+      "title": "Header"
+    },
+    {
+      "area": "uncategorized",
+      "name": "footer",
+      "title": "Footer"
+    }
+  ],
+  "settings": {
+    "blocks": {
+    "core/button": {
+      "border": {
+      "radius": false
+      }
+    }
+    },
+    "color": {
+    "custom": false,
+    "background": false,
+    "text": false,
+    "customDuotone": false,
+    "customGradient": false,
+    "duotone": [],
+    "gradients": [],
+    "link": false,
+      "palette": [
+        {
+        "name": "Black",
+        "slug": "black",
+        "color": "#000"
+        },
+        {
+        "name": "White",
+        "slug": "white",
+        "color": "#fff"
+        }
+      ]
+    },
+    "layout": {
+      "contentSize": "1120px"
+    },
+    "spacing": {
+      "customSpacingSize": false,
+      "units": []
+    },
+    "typography": {
+    "letterSpacing": false,
+    "defaultFontSizes": false,
+    "customFontSize": false,
+    "lineHeight": false,
+    "fontStyle": false,
+    "fontWeight": false,
+    "dropCap": false,
+    "fontSizes": []
+    }
+  }
 }
