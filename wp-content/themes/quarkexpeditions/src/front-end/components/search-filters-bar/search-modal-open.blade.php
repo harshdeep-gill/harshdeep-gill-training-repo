@@ -1,9 +1,23 @@
 @props( [
-	'label'    => '',
+	'label'       => '',
 	'placeholder' => __( 'Select', 'qrk' ),
+	'type'        => '',
 ] )
 
-<div type="button" class="search-filters-bar__modal-open-button" selected="false">
+@php
+	$classes = [ 'search-filters-bar__modal-open-button' ];
+
+	// Add type class, if set.
+	if ( ! empty( $type ) ) {
+		$types = [ 'destinations', 'departures' ];
+
+		if ( in_array( $type, $types, true ) ) {
+			$classes[] = sprintf( 'search-filters-bar__modal-open-button-%s', $type );
+		}
+	}
+@endphp
+
+<div type="button" @class( $classes )>
 	<div class="search-filters-bar__modal-open-button-content">
 		<div class="search-filters-bar__modal-open-button-label body-small">{{ __( $label, 'qrk' ) }}</div>
 		<div class="search-filters-bar__modal-open-button-placeholder">{{ __( $placeholder, 'qrk' ) }}</div>

@@ -14,12 +14,14 @@
 			<x-search-filters-bar.search-modal-open
 				label="{!! __( 'Destinations', 'qrk' ) !!}"
 				:placeholder="$destinations_placeholder"
+				type="destinations"
 			/>
 		</x-modal.modal-open>
 		<x-modal.modal-open :modal_id="$modal_id">
 			<x-search-filters-bar.search-modal-open
 				label="{{ __( 'Departures', 'qrk' ) }}"
 				:placeholder="$departures_placeholder"
+				type="departures"
 			/>
 		</x-modal.modal-open>
 	</x-search-filters-bar.search-modal-open-container>

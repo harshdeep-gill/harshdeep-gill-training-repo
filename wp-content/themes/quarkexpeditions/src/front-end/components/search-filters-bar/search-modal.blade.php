@@ -5,7 +5,8 @@
 	'departures_placeholder'   => __( 'Any time', 'qrk' ),
 ] )
 
-<div>
+{{-- Render the modal only once even if there are multiple search bars present on a page --}}
+<x-once id="search-filters-bar-modal">
 	<x-modal :id="$modal_id" class="search-filters-bar__modal" >
 		<x-modal.header>
 			<h3>{{ __( 'Select your Preferences', 'qrk' ) }}</h3>
@@ -21,8 +22,10 @@
 				</div>
 				<x-search-filters-bar.search-button text="Search Expeditions" />
 			</quark-search-filters-bar>
+
+			{{-- Filter options --}}
 			<x-search-filters-bar.destinations.filter-options />
-			{{-- <x-search-filters-bar.departure-months.filter-options /> --}}
+			<x-search-filters-bar.departure-months.filter-options />
 		</x-modal.body>
 		<x-modal.footer>
 			<x-buttons class="search-filters-bar__modal-buttons">
@@ -39,4 +42,4 @@
 			</x-buttons>
 		</x-modal.footer>
 	</x-modal>
-</div>
+</x-once>
