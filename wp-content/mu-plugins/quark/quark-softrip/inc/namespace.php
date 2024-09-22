@@ -344,14 +344,14 @@ function do_sync( array $itinerary_post_ids = [], array $specific_departure_post
  * @return string
  */
 function get_initiated_via(): string {
-	// Check if in CLI.
-	if ( defined( 'WP_CLI' ) && true === WP_CLI ) {
-		return 'CLI';
-	}
-
 	// Check if in cron.
 	if ( defined( 'DOING_CRON' ) && true === DOING_CRON ) {
 		return 'cron';
+	}
+
+	// Check if in CLI.
+	if ( defined( 'WP_CLI' ) && true === WP_CLI ) {
+		return 'CLI';
 	}
 
 	// Default to manually.
