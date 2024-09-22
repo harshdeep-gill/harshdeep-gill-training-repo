@@ -1,0 +1,31 @@
+@import "../../scss/";
+
+.form-do-not-sell {
+
+	&__content,
+	&__form {
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-7);
+	}
+
+	&__form {
+		gap: var(--spacing-5);
+	}
+
+	&__instructions {
+		margin-bottom: 0;
+	}
+
+	.form-field--buttons {
+		margin-top: 0;
+
+		.btn {
+			width: 100%;
+
+			@media screen and (min-width: grid-size(sm)) {
+				max-width: 200px;
+			}
+		}
+	}
+}
