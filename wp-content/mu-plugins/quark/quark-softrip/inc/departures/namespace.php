@@ -199,7 +199,7 @@ function update_departures( array $raw_departures = [], string $softrip_package_
 		}
 
 		// Hashed formatted data.
-		$formatted_data_hash = md5( serialize( $formatted_data ) );
+		$formatted_data_hash = md5( strval( wp_json_encode( $formatted_data ) ) );
 
 		// Initialize post id.
 		$updated_post_id = 0;
@@ -212,9 +212,6 @@ function update_departures( array $raw_departures = [], string $softrip_package_
 
 		// If existing, update the post.
 		if ( $is_existing ) {
-			// Get hash of formatted data.
-			$formatted_data_hash = md5( serialize( $formatted_data ) );
-
 			// Get hash of existing formatted data.
 			$existing_formatted_data_hash = get_post_meta( $existing_departure_codes[ $departure_softrip_id ], 'formatted_data_hash', true );
 
@@ -222,9 +219,9 @@ function update_departures( array $raw_departures = [], string $softrip_package_
 			if ( $formatted_data_hash !== $existing_formatted_data_hash ) {
 				// Add post ID to formatted data.
 				$formatted_data['ID'] = $existing_departure_codes[ $departure_softrip_id ];
-	
+
 				// Update the post.
-				$updated_post_id = wp_update_post( $formatted_data, true );
+				$updated_post_id           = wp_update_post( $formatted_data, true );
 				$is_departure_post_updated = true;
 			} else {
 				// Set updated post ID.
@@ -233,8 +230,8 @@ function update_departures( array $raw_departures = [], string $softrip_package_
 		} else {
 			// Set post status to publish and insert the post.
 			$formatted_data['post_status'] = 'publish';
-			$updated_post_id = wp_insert_post( $formatted_data );
-			$is_departure_post_updated = true;
+			$updated_post_id               = wp_insert_post( $formatted_data );
+			$is_departure_post_updated     = true;
 		}
 
 		// Skip if error or empty post ID.
@@ -288,17 +285,23 @@ function update_departures( array $raw_departures = [], string $softrip_package_
 			 * @param int   $updated_post_id Updated departure post ID.
 			 * @param array $updated_fields  Updated fields.
 			 */
-			do_action( 'quark_softrip_sync_departure_updated', [
-				'post_id' => $updated_post_id,
-				'softrip_id' => $departure_softrip_id,
-				'updated_fields' => $updated_fields
-			] );
+			do_action(
+				'quark_softrip_sync_departure_updated',
+				[
+					'post_id'        => $updated_post_id,
+					'softrip_id'     => $departure_softrip_id,
+					'updated_fields' => $updated_fields,
+				]
+			);
 		} else {
 			// Fire action if no updates.
-			do_action( 'quark_softrip_sync_departure_no_updates', [
-				'post_id' => $updated_post_id,
-				'softrip_id' => $departure_softrip_id
-			] );
+			do_action(
+				'quark_softrip_sync_departure_no_updates',
+				[
+					'post_id'    => $updated_post_id,
+					'softrip_id' => $departure_softrip_id,
+				]
+			);
 		}
 	}
 
@@ -343,10 +346,13 @@ function update_departures( array $raw_departures = [], string $softrip_package_
 		 *
 		 * @param int $departure_post_id Departure post ID.
 		 */
-		do_action( 'quark_softrip_sync_departure_expired', [
-			'post_id' => $departure_post_id,
-			'softrip_id' => $departure_code
-		] );
+		do_action(
+			'quark_softrip_sync_departure_expired',
+			[
+				'post_id'    => $departure_post_id,
+				'softrip_id' => $departure_code,
+			]
+		);
 	}
 
 	// Return successful.

@@ -125,7 +125,7 @@ function update_promotions( array $raw_promotions_data = [], int $departure_post
 			);
 
 			// Get the inserted ID.
-			$updated_id = $wpdb->insert_id;
+			$updated_id  = $wpdb->insert_id;
 			$any_updated = true;
 		}
 

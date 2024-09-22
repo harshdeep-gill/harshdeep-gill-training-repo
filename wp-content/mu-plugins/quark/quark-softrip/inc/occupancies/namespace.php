@@ -175,7 +175,7 @@ function update_occupancies( array $raw_cabins_data = [], int $departure_post_id
 				);
 
 				// Set the updated ID.
-				$updated_id = $wpdb->insert_id;
+				$updated_id  = $wpdb->insert_id;
 				$any_updated = true;
 			}
 

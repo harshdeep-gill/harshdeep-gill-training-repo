@@ -224,7 +224,7 @@ function update_occupancy_promotions( array $raw_occupancy_promotions = [], int 
 			);
 
 			// Get the inserted ID.
-			$updated_id = $wpdb->insert_id;
+			$updated_id  = $wpdb->insert_id;
 			$any_updated = true;
 		}
 
