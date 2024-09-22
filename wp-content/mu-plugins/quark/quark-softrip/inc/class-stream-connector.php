@@ -9,6 +9,8 @@ namespace Quark\Softrip;
 
 use WP_Stream\Connector;
 
+use const Quark\Departures\POST_TYPE;
+
 /**
  * Class Stream Connector.
  */
@@ -180,8 +182,8 @@ class Stream_Connector extends Connector {
 
 		// Prepare message.
 		$message = sprintf(
-			// translators: %1$s: Softrip ID, %2$s: Updated Fields, %3$d: Post ID.
-			__( 'Departure Updated: %1$s | ID: %3$d | Fields: %2$s', 'qrk' ),
+			// translators: %1$s: Softrip ID, %2$s: Updated Fields.
+			__( 'Synced: %1$s | Fields: %2$s', 'qrk' ),
 			strval( $data['softrip_id'] ),
 			implode( ', ', $updated_field_labels ),
 			absint( $data['post_id'] )
@@ -191,7 +193,7 @@ class Stream_Connector extends Connector {
 		$this->log(
 			$message,
 			[],
-			absint( wp_unique_id() ),
+			absint( $data['post_id'] ),
 			'softrip_sync',
 			'sync_departure_updated'
 		);
@@ -213,16 +215,15 @@ class Stream_Connector extends Connector {
 		// Prepare message.
 		$message = sprintf(
 			// translators: %1$s: Softrip ID, %2$d: Post ID.
-			__( 'Departure Expired: %1$s | ID: %2$d', 'qrk' ),
+			__( 'Departure Expired: %1$s', 'qrk' ),
 			strval( $data['softrip_id'] ),
-			absint( $data['post_id'] )
 		);
 
 		// Log action.
 		$this->log(
 			$message,
 			[],
-			absint( wp_unique_id() ),
+			absint( $data['post_id'] ),
 			'softrip_sync',
 			'sync_departure_expired'
 		);
@@ -253,9 +254,61 @@ class Stream_Connector extends Connector {
 		$this->log(
 			$message,
 			[],
-			absint( wp_unique_id() ),
+			absint( $data['post_id'] ),
 			'softrip_sync',
 			'sync_departure_no_updates'
 		);
+	}
+
+	/**
+	 * Add action links to Stream drop row in admin list screen.
+	 *
+	 * @param string[] $links  Previous links registered.
+	 * @param object   $record Stream record.
+	 *
+	 * @filter wp_stream_action_links_{connector}
+	 *
+	 * @return string[]
+	 */
+	public function action_links( $links, $record ): array { // phpcs:ignore
+		// Validate record.
+		if ( empty( $record->object_id ) ) {
+			return $links;
+		}
+
+		// Get post type.
+		$post_type = get_post_type( $record->object_id );
+
+		// Validate post type.
+		if ( ! $post_type ) {
+			return $links;
+		}
+
+		// Get post.
+		$post = get_post( $record->object_id );
+
+		// Validate post.
+		if ( ! $post ) {
+			return $links;
+		}
+
+		// Validate post type.
+		if ( POST_TYPE !== $post_type ) {
+			return $links;
+		}
+
+		// Edit URL.
+		$edit_url = get_edit_post_link( $record->object_id );
+
+		// Validate edit URL.
+		if ( empty( $edit_url ) ) {
+			return $links;
+		}
+
+		// Add edit link.
+		$links[ __( 'Edit', 'qrk' ) ] = $edit_url;
+
+		// Return links.
+		return $links;
 	}
 }
