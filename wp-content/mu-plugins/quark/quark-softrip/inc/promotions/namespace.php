@@ -74,6 +74,9 @@ function update_promotions( array $raw_promotions_data = [], int $departure_post
 	// Updated promotion codes.
 	$updated_promotion_codes = [];
 
+	// Initialize if any updated.
+	$any_updated = false;
+
 	// Loop through each raw promotion data.
 	foreach ( $raw_promotions_data as $raw_promotion_data ) {
 		// Validate the raw promotion data.
@@ -107,6 +110,11 @@ function update_promotions( array $raw_promotions_data = [], int $departure_post
 				[ 'id' => $existing_promotion_data['id'] ]
 			);
 
+			// Fire the action on update.
+			if ( $is_saved > 0 ) {
+				$any_updated = true;
+			}
+
 			// Get the updated ID.
 			$updated_id = $is_saved ? $existing_promotion_data['id'] : 0;
 		} else {
@@ -118,6 +126,7 @@ function update_promotions( array $raw_promotions_data = [], int $departure_post
 
 			// Get the inserted ID.
 			$updated_id = $wpdb->insert_id;
+			$any_updated = true;
 		}
 
 		// Add the updated promotion code.
@@ -134,10 +143,15 @@ function update_promotions( array $raw_promotions_data = [], int $departure_post
 	}
 
 	// Update promotion code on departure meta.
-	update_post_meta( $departure_post_id, 'promotion_codes', $updated_promotion_codes );
+	$is_saved = update_post_meta( $departure_post_id, 'promotion_codes', $updated_promotion_codes );
 
-	// Return success.
-	return true;
+	// If meta saved, set any updated to true.
+	if ( ! empty( $is_saved ) ) {
+		$any_updated = true;
+	}
+
+	// Return if any updated.
+	return $any_updated;
 }
 
 /**
