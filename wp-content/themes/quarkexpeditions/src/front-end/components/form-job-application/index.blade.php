@@ -12,7 +12,7 @@
 		$classes[] = $class;
 	}
 
-	$resume_allowed_file_types = [ '.pdf' ]; // TODO
+	$resume_allowed_file_types = [ '.pdf' ];
 
 	wp_enqueue_script( 'tp-toggle-attribute' );
 	wp_enqueue_style( 'tp-toggle-attribute' );
@@ -30,7 +30,7 @@
 				<h3 class="form-job-application__title">{{ __('Quark Expeditions Department', 'qrk') }}</h3>
 				<x-form.row>
 					<x-form.field :validation="[ 'required' ]">
-						<x-form.select label="{{ __('Job Type', 'qrk') }}" name="fields[]">
+						<x-form.select label="{{ __('Job Type', 'qrk') }}" name="fields[Job_Type__c]">
 							<x-form.option value="">{{ __('- Select -', 'qrk') }}</x-form.option>
 							<x-form.option value="careers_expedition" label="{{ __('Careers - Expedition Guides and Education Team', 'qrk') }}">{{ __('Careers - Expedition Guides and Education Team', 'qrk') }}</x-form.option>
 						</x-form.select>
@@ -105,7 +105,6 @@
 						<x-form.textarea label="{{ __('Describe your experience, your role and what company you worked for.', 'qrk') }}" name="fields[Experience_with_Cruise_Line_or_Vessel__c]" placeholder="Describe" />
 					</x-form.field>
 				</div>
-
 
 				<div class="form-job-application__sub-section">
 					<x-form.row>
