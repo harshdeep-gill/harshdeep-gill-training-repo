@@ -10,6 +10,8 @@ namespace Quark\Theme\Blocks\BlogPostCards;
 use WP_Query;
 
 use function Quark\Blog\get_cards_data;
+use function Quark\Core\get_pagination_links;
+use function Quark\Core\is_gutenberg_editor;
 
 use const Quark\Blog\POST_TYPE as BLOG_POST_TYPE;
 
@@ -38,17 +40,20 @@ function bootstrap(): void {
  * @return string The block markup.
  */
 function render( array $attributes = [] ): string {
+	// Get current page.
+	$current_page = get_query_var( 'paged' ) ?: 1;
+
 	// Build query args.
 	$args = [
 		'post_type'              => BLOG_POST_TYPE,
 		'post_status'            => 'publish',
 		'fields'                 => 'ids',
-		'posts_per_page'         => $attributes['totalPosts'],
-		'no_found_rows'          => true,
+		'posts_per_page'         => ( false === $attributes['hasPagination'] ) ? $attributes['totalPosts'] : $attributes['postsPerPage'],
 		'update_post_meta_cache' => false,
 		'update_post_term_cache' => false,
 		'orderby'                => 'date',
 		'order'                  => 'DESC',
+		'paged'                  => $current_page,
 	];
 
 	// If the selection is manual, check if we have IDs.
@@ -61,7 +66,7 @@ function render( array $attributes = [] ): string {
 		// Set WP_Query args for manual selection.
 		$args['post__in']       = $attributes['ids'];
 		$args['orderby']        = 'post__in';
-		$args['posts_per_page'] = count( $attributes['ids'] ); // phpcs:ignore
+		$args['posts_per_page'] = ( true === $attributes['hasPagination'] ) ? $attributes['postsPerPage'] : count( $attributes['ids'] );
 	} elseif ( 'byTerms' === $attributes['selection'] ) {
 		// Return empty if selection by terms, but no terms or taxonomy were selected.
 		if ( empty( $attributes['termIds'] ) || empty( $attributes['taxonomies'] ) ) {
@@ -102,6 +107,18 @@ function render( array $attributes = [] ): string {
 	// Get blog post cards data.
 	$cards_data = get_cards_data( array_map( 'absint', $post_ids ) );
 
+	// Initialize pagination.
+	$pagination = '';
+
+	// Check if we have cards data pagination.
+	if ( ! empty( $attributes['hasPagination'] ) && ! is_gutenberg_editor() ) {
+		$pagination = get_pagination_links(
+			[
+				'query' => $posts,
+			]
+		);
+	}
+
 	// Return built component.
 	return quark_get_component(
 		COMPONENT,
@@ -109,6 +126,11 @@ function render( array $attributes = [] ): string {
 			'layout'             => $attributes['layout'],
 			'is_mobile_carousel' => $attributes['isMobileCarousel'],
 			'cards'              => $cards_data,
+			'pagination'         => $pagination,
+			'current_page'       => $current_page,
+			'total_pages'        => $posts->max_num_pages,
+			'first_page_link'    => 1 !== $current_page ? add_query_arg( 'paged', 1 ) : '',
+			'last_page_link'     => $current_page !== $posts->max_num_pages ? add_query_arg( 'paged', $posts->max_num_pages ) : '',
 		]
 	);
 }

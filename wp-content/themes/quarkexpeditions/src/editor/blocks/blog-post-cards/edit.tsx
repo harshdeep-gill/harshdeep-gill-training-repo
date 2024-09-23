@@ -132,8 +132,14 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 							onSelect={ ( terms: any ) => setAttributes( { termIds: terms.map( ( term: any ) => term.term_id ) } ) }
 						/>
 					}
+					<ToggleControl
+						label={ __( 'Has Pagination?', 'qrk' ) }
+						checked={ attributes.hasPagination }
+						help={ __( 'Show pagination for the blog posts on frontend.', 'qrk' ) }
+						onChange={ ( hasPagination: boolean ) => setAttributes( { hasPagination } ) }
+					/>
 					{
-						( 'byTerms' === attributes.selection || 'recent' === attributes.selection ) &&
+						( ( 'byTerms' === attributes.selection || 'recent' === attributes.selection ) && false === attributes.hasPagination ) &&
 							<RangeControl
 								label={ __( 'Total Posts', 'qrk' ) }
 								help={ __( 'Select the total number of posts to be displayed', 'qrk' ) }
@@ -142,6 +148,17 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 								min={ 'collage' === attributes.layout ? 5 : 1 }
 								max={ 100 }
 							/>
+					}
+					{
+						( true === attributes.hasPagination ) &&
+						<RangeControl
+							label={ __( 'Posts Per Page', 'qrk' ) }
+							help={ __( 'Select the total number of posts to be displayed per page', 'qrk' ) }
+							value={ attributes.postsPerPage }
+							onChange={ ( postsPerPage ) => setAttributes( { postsPerPage } ) }
+							min={ 'collage' === attributes.layout ? 5 : 1 }
+							max={ 100 }
+						/>
 					}
 					<ToggleControl
 						label={ __( 'Is Mobile Carousel?', 'qrk' ) }

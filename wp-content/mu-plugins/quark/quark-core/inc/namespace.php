@@ -592,3 +592,25 @@ function get_pagination_links( array $args = [] ): string {
 	// All done, return build pagination links.
 	return $pagination_links;
 }
+
+/**
+ * Check if we are in the gutenberg editor.
+ * We don't have any functionality to identify if we are in the gutenberg editor inside the block render callback.
+ *
+ * Warning: This function is not 100% reliable, it's just a workaround.
+ * And the function should be used strictly inside render callback.
+ *
+ * Reference:
+ * https://wordpress.stackexchange.com/questions/398378/gutenberg-how-to-hide-server-side-render-output-in-the-editor-but-keep-it-in-fr
+ *
+ * @return bool
+ */
+function is_gutenberg_editor(): bool {
+	// Check if we are in the gutenberg editor.
+	if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
+		return true;
+	}
+
+	// Not in gutenberg editor.
+	return false;
+}

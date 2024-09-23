@@ -3,6 +3,11 @@
 	'is_mobile_carousel' => false,
 	'has_offer_tag'      => false,
 	'cards'              => [],
+	'pagination'         => '',
+	'current_page'       => 0,
+	'total_pages'        => 0,
+	'first_page_link'    => '',
+	'last_page_link'     => '',
 ] )
 
 @php
@@ -36,3 +41,17 @@
 		</x-info-cards.card>
 	@endforeach
 </x-info-cards>
+@if ( ! empty( $pagination ) )
+	<x-pagination>
+		<x-pagination.total-pages :current_page="$current_page" :total_pages="$total_pages" />
+		<x-pagination.links>
+			@if ( ! empty( $first_page_link ) )
+				<x-pagination.first-page :href="$first_page_link" >First</x-pagination.first-page>
+			@endif
+			{!! $pagination !!}
+			@if ( ! empty( $last_page_link ) )
+				<x-pagination.last-page :href="$last_page_link" >Last</x-pagination.last-page>
+			@endif
+		</x-pagination.links>
+	</x-pagination>
+@endif
