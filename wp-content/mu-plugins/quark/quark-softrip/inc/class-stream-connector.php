@@ -183,10 +183,9 @@ class Stream_Connector extends Connector {
 		// Prepare message.
 		$message = sprintf(
 			// translators: %1$s: Softrip ID, %2$s: Updated Fields.
-			__( 'Synced: %1$s | Fields: %2$s', 'qrk' ),
+			__( '"%1$s" synced | Fields: %2$s', 'qrk' ),
 			strval( $data['softrip_id'] ),
-			implode( ', ', $updated_field_labels ),
-			absint( $data['post_id'] )
+			implode( ', ', $updated_field_labels )
 		);
 
 		// Log action.
@@ -215,7 +214,7 @@ class Stream_Connector extends Connector {
 		// Prepare message.
 		$message = sprintf(
 			// translators: %1$s: Softrip ID, %2$d: Post ID.
-			__( 'Departure Expired: %1$s', 'qrk' ),
+			__( '"%1$s" expired', 'qrk' ),
 			strval( $data['softrip_id'] ),
 		);
 
@@ -244,10 +243,9 @@ class Stream_Connector extends Connector {
 
 		// Prepare message.
 		$message = sprintf(
-			// translators: %1$s: Softrip ID, %2$d: Post ID.
-			__( 'Departure No Updates: %1$s | ID: %2$d', 'qrk' ),
-			strval( $data['softrip_id'] ),
-			absint( $data['post_id'] )
+			// translators: %1$s: Softrip ID.
+			__( '"%1$s" no updates', 'qrk' ),
+			strval( $data['softrip_id'] )
 		);
 
 		// Log action.
