@@ -36,6 +36,9 @@ function bootstrap(): void {
 	if ( is_admin() ) {
 		require_once __DIR__ . '/../custom-fields/leads.php';
 	}
+
+	// Job Form data processing.
+	add_filter( 'quark_leads_input_data', __NAMESPACE__ . '\\process_job_application_input_data', 10, 2 );
 }
 
 /**
@@ -161,7 +164,7 @@ function create_lead( array $lead_data = [] ): array|WP_Error {
 	$request_url = build_salesforce_request_uri( $lead_data['salesforce_object'] );
 
 	// Build request data.
-	$request_data = build_salesforce_request_data( $lead_data['fields'] );
+	$request_data = build_salesforce_request_data( $lead_data['fields'], $lead_data['salesforce_object'] );
 
 	// Send data to Salesforce.
 	$response = send_request( $request_url, $request_data );
@@ -199,6 +202,7 @@ function build_salesforce_request_uri( string $salesforce_object = '' ): string 
  * Build Salesforce request data from fields.
  *
  * @param mixed[] $fields Fields.
+ * @param string  $salesforce_object Salesforce object name.
  *
  * @return mixed[]
  *
@@ -206,12 +210,55 @@ function build_salesforce_request_uri( string $salesforce_object = '' ): string 
  *       but can be used to build a more complicated request in the future,
  *       like composite requests, etc.
  */
-function build_salesforce_request_data( array $fields = [] ): array {
+function build_salesforce_request_data( array $fields = [], string $salesforce_object = '' ): array {
 	// The fields are the only data required in the request.
 	return (array) apply_filters(
 		'quark_leads_input_data',
-		$fields
+		$fields,
+		$salesforce_object
 	);
+}
+
+/**
+ * Process Salesforce request data from fields for Job Application.
+ *
+ * @param mixed[] $fields            Fields.
+ * @param string  $salesforce_object Salesforce object name.
+ *
+ * @return mixed[]
+ */
+function process_job_application_input_data( array $fields = [], string $salesforce_object = '' ): array {
+	// If Salesforce object is not 'WebForm_Job_Application__c' then return fields.
+	if (
+		'WebForm_Job_Application__c' !== $salesforce_object
+		|| ! is_array( $fields )
+		|| empty( $fields )
+	) {
+		return $fields;
+	}
+
+	// Add WebForm_Submission_ID__c field.
+	$fields['WebForm_Submission_ID__c'] = uniqid( strval( time() ), true );
+
+	// TODO: Add or remvove extra fields.
+	unset( $fields['Webform_URL__c'] );
+	unset( $fields['UTM_Campaign__c'] );
+	unset( $fields['UTM_Content__c'] );
+	unset( $fields['UTM_Medium__c'] );
+	unset( $fields['UTM_Source__c'] );
+	unset( $fields['UTM_Term__c'] );
+	unset( $fields['GCLID__c'] );
+	unset( $fields['FBBID__c'] );
+	unset( $fields['FBCLID__c'] );
+	unset( $fields['MSCLID__c'] );
+	unset( $fields['Job_Type__c'] );
+
+	// Process state field.
+	$fields['State_Province__c'] = $fields['State_Code__c'];
+	unset( $fields['State_Code__c'] );
+
+	// Return fields.
+	return $fields;
 }
 
 /**
