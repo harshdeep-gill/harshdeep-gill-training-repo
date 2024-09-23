@@ -689,10 +689,10 @@ class Expedition {
 													],
 													'innerContent' => [],
 												]
-											),
+											) . PHP_EOL,
 										],
 									]
-								),
+								) . PHP_EOL,
 								serialize_block(
 									[
 										'blockName'    => 'quark/expedition-hero-content-right',
@@ -706,16 +706,16 @@ class Expedition {
 													],
 													'innerContent' => [],
 												]
-											),
+											) . PHP_EOL,
 										],
 									]
-								),
+								) . PHP_EOL,
 							],
 						]
-					),
+					) . PHP_EOL,
 				],
 			]
-		);
+		) . PHP_EOL;
 	}
 
 	/**
@@ -814,17 +814,17 @@ class Expedition {
 							'attrs'        => [],
 							'innerContent' => [ $overview ],
 						]
-					),
+					) . PHP_EOL,
 					serialize_block(
 						[
 							'blockName'    => 'quark/column',
 							'attrs'        => [],
 							'innerContent' => [ $highlights ],
 						]
-					),
+					) . PHP_EOL,
 				],
 			]
-		);
+		) . PHP_EOL;
 	}
 
 	/**
@@ -851,10 +851,10 @@ class Expedition {
 							'attrs'        => [],
 							'innerContent' => [],
 						]
-					),
+					) . PHP_EOL,
 				],
 			]
-		);
+		) . PHP_EOL;
 	}
 
 	/**
@@ -881,10 +881,10 @@ class Expedition {
 							'attrs'        => [],
 							'innerContent' => [],
 						]
-					),
+					) . PHP_EOL,
 				],
 			]
-		);
+		) . PHP_EOL;
 	}
 
 	/**
@@ -900,7 +900,7 @@ class Expedition {
 				'attrs'        => [],
 				'innerContent' => [],
 			]
-		);
+		) . PHP_EOL;
 	}
 
 	/**
@@ -921,10 +921,10 @@ class Expedition {
 							'attrs'        => [],
 							'innerContent' => [ '<!-- wp:paragraph {"placeholder":"Write Content…","lock":{"move":true,"remove":true}} --><p></p><!-- /wp:paragraph -->' ],
 						]
-					),
+					) . PHP_EOL,
 				],
 			]
-		);
+		) . PHP_EOL;
 	}
 
 	/**
@@ -951,10 +951,10 @@ class Expedition {
 							'attrs'        => [],
 							'innerContent' => [],
 						]
-					),
+					) . PHP_EOL,
 				],
 			]
-		);
+		) . PHP_EOL;
 	}
 
 	/**
@@ -979,10 +979,10 @@ class Expedition {
 							'attrs'        => [],
 							'innerContent' => [],
 						]
-					),
+					) . PHP_EOL,
 				],
 			]
-		);
+		) . PHP_EOL;
 	}
 
 	/**
@@ -1083,10 +1083,10 @@ class Expedition {
 										],
 										'innerContent' => [],
 									]
-								),
+								) . PHP_EOL,
 							],
 						]
-					),
+					) . PHP_EOL,
 					serialize_block(
 						[
 							'blockName'    => 'quark/section',
@@ -1103,10 +1103,10 @@ class Expedition {
 										'attrs'        => [],
 										'innerContent' => [],
 									]
-								),
+								) . PHP_EOL,
 							],
 						]
-					),
+					) . PHP_EOL,
 					serialize_block(
 						[
 							'blockName'    => 'quark/section',
@@ -1126,13 +1126,13 @@ class Expedition {
 										],
 										'innerContent' => [],
 									]
-								),
+								) . PHP_EOL,
 							],
 						]
-					),
+					) . PHP_EOL,
 				],
 			]
-		);
+		) . PHP_EOL;
 	}
 
 	/**
@@ -1148,7 +1148,7 @@ class Expedition {
 				'attrs'        => [],
 				'innerContent' => [],
 			]
-		);
+		) . PHP_EOL;
 	}
 
 	/**
@@ -1164,7 +1164,7 @@ class Expedition {
 				'attrs'        => [],
 				'innerContent' => [],
 			]
-		);
+		) . PHP_EOL;
 	}
 
 	/**
@@ -1191,10 +1191,10 @@ class Expedition {
 							'attrs'        => [],
 							'innerContent' => [],
 						]
-					),
+					) . PHP_EOL,
 				],
 			]
-		);
+		) . PHP_EOL;
 	}
 
 	/**
@@ -1222,10 +1222,10 @@ class Expedition {
 							],
 							'innerContent' => [],
 						]
-					),
+					) . PHP_EOL,
 				],
 			]
-		);
+		) . PHP_EOL;
 	}
 
 	/**
