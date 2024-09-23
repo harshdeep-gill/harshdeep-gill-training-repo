@@ -32,7 +32,7 @@
 					<x-form.field :validation="[ 'required' ]">
 						<x-form.select label="{{ __('Job Type', 'qrk') }}" name="fields[]">
 							<x-form.option value="">{{ __('- Select -', 'qrk') }}</x-form.option>
-							<x-form.option value="" label="{{ __('Careers - Expedition Guides and Education Team', 'qrk') }}">{{ __('Careers - Expedition Guides and Education Team', 'qrk') }}</x-form.option>
+							<x-form.option value="careers_expedition" label="{{ __('Careers - Expedition Guides and Education Team', 'qrk') }}">{{ __('Careers - Expedition Guides and Education Team', 'qrk') }}</x-form.option>
 						</x-form.select>
 					</x-form.field>
 				</x-form.row>
