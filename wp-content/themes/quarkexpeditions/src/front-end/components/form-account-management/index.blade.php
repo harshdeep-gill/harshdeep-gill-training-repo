@@ -15,7 +15,7 @@
 @endphp
 
 <x-form
-	salesforce_object=""
+	salesforce_object="Webform_CCPA_Deletion_Request__c"
 	id="{{ $form_id }}"
 	thank_you_page="{{ $thank_you_page }}"
 	@class( $classes )
