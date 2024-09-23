@@ -17,7 +17,7 @@ import classnames from 'classnames';
 export default function Edit( { className }: BlockEditAttributes ): JSX.Element {
 	// eslint-disable-next-line react-hooks/rules-of-hooks
 	const blocksProps = useBlockProps( {
-		className: classnames( className, 'global-message' ),
+		className: classnames( className, 'global-message', 'full-width' ),
 	} );
 
 	// eslint-disable-next-line react-hooks/rules-of-hooks
