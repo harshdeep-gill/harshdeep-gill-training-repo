@@ -285,7 +285,14 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'class'  => true,
 					'data-*' => true,
 				],
+				'quark-gated-brochure-modal-cta'                => [
+					'class'  => true,
+					'data-*' => true,
+				],
 				'quark-hero-card-slider'                        => [
+					'class' => true,
+				],
+				'quark-thumbnail-cards-slider'                  => [
 					'class' => true,
 				],
 				'quark-tabs'                                    => [

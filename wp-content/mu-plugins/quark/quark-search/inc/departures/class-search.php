@@ -13,6 +13,7 @@ use SolrPower_WP_Query;
 
 use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
+use const Quark\Departures\SPOKEN_LANGUAGE_TAXONOMY;
 use const Quark\Expeditions\DESTINATION_TAXONOMY;
 use const Quark\Localization\DEFAULT_CURRENCY;
 
@@ -518,6 +519,70 @@ class Search {
 			'field'            => 'term_id',
 			'terms'            => array_unique( $destination_ids ),
 			'include_children' => false,
+		];
+	}
+
+	/**
+	 * Set languages.
+	 *
+	 * @param int[] $language_ids Language taxonomy IDs.
+	 *
+	 * @return void
+	 */
+	public function set_languages( array $language_ids = [] ): void {
+		// Return early if no languages are passed.
+		if ( empty( $language_ids ) ) {
+			return;
+		}
+
+		// If tax query array not present, create it.
+		if ( ! is_array( $this->args['tax_query'] ) ) {
+			$this->args['tax_query'] = [];
+		}
+
+		// Set search by languages parameters in search arguments.
+		$this->args['tax_query'][] = [
+			'taxonomy'         => SPOKEN_LANGUAGE_TAXONOMY,
+			'field'            => 'term_id',
+			'terms'            => array_unique( $language_ids ),
+			'include_children' => false,
+		];
+	}
+
+	/**
+	 * Set itinerary length.
+	 *
+	 * @param int[] $itinerary_lengths Itinerary length.
+	 *
+	 * @return void
+	 */
+	public function set_itinerary_lengths( array $itinerary_lengths = [] ): void {
+		// Return early if no itinerary lengths are passed.
+		if ( empty( $itinerary_lengths ) || 2 > count( $itinerary_lengths ) ) {
+			return;
+		}
+
+		// Sort.
+		sort( $itinerary_lengths );
+
+		// Start and end.
+		$start = $itinerary_lengths[0];
+		$end   = absint( end( $itinerary_lengths ) );
+
+		// If meta query array not present, create it.
+		if ( ! is_array( $this->args['meta_query'] ) ) {
+			$this->args['meta_query'] = [];
+		}
+
+		// Set meta query.
+		$this->args['meta_query'][] = [
+			'key'     => 'duration',
+			'value'   => [
+				$start,
+				$end,
+			],
+			'type'    => 'NUMERIC',
+			'compare' => 'BETWEEN',
 		];
 	}
 
