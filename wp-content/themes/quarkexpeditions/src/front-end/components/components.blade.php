@@ -1902,6 +1902,43 @@
 	</x-collage>
 </x-component-demo>
 
+<x-component-demo :keys="[ 'bento-collage' ]">
+	<x-bento-collage>
+		<x-bento-collage.card size="small | medium | large | x-large ">
+			<x-bento-collage.image image_id="123" />
+			<x-bento-collage.content position="top | bottom">
+				<x-bento-collage.title title="Game Changing Ships" />
+				<x-bento-collage.description>
+					<p>We boast the most diverse fleet of small polar vessels, allowing us to navigate hard-to-reach places and provide an intimate onboard atmosphere.</p>
+				</x-bento-collage.description>
+				<x-bento-collage.cta text="View Our Ships" url="#" />
+			</x-bento-collage.content>
+		</x-bento-collage.card>
+
+		<x-bento-collage.card size="small">
+			<x-bento-collage.image image_id="123" />
+			<x-bento-collage.content position="top | bottom">
+				<x-bento-collage.title title="Game Changing Ships" />
+				<x-bento-collage.description>
+					<p>We boast the most diverse fleet of small polar vessels, allowing us to navigate hard-to-reach places and provide an intimate onboard atmosphere.</p>
+				</x-bento-collage.description>
+				<x-bento-collage.cta text="View Our Ships" url="#" />
+			</x-bento-collage.content>
+		</x-bento-collage.card>
+
+		<x-bento-collage.card size="large">
+			<x-bento-collage.image image_id="123" />
+			<x-bento-collage.content position="top | bottom">
+				<x-bento-collage.title title="Game Changing Ships" />
+				<x-bento-collage.description>
+					<p>We boast the most diverse fleet of small polar vessels, allowing us to navigate hard-to-reach places and provide an intimate onboard atmosphere.</p>
+				</x-bento-collage.description>
+				<x-bento-collage.cta text="View Our Ships" url="#" />
+			</x-bento-collage.content>
+		</x-bento-collage.card>
+	</x-bento-collage>
+</x-component-demo>
+
 <x-component-demo :keys="[ 'logo-grid', 'feel-safe' ]">
 	<x-section :narrow="true">
 		<h3 style="text-align: center;">Feel safe with a globally accredited company</h3>
