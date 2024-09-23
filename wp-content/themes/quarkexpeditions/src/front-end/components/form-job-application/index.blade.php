@@ -291,7 +291,7 @@
 			</div>
 
 			<div class="form-job-application__section">
-				<x-form.submit>
+				<x-form.submit class="form-job-application__submit">
 					{{ __('Submit', 'qrk') }}
 				</x-form.submit>
 			</div>
