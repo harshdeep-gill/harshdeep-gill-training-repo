@@ -16,15 +16,11 @@
 	<x-form.field-group>
 
 		@foreach ( $currencies as $code => $currency_data )
-			@if ( ! is_array( $currency_data ) || empty( $currency_data['symbol'] ) || empty( $currency_data['display'] ) ) 
+			@if ( ! is_array( $currency_data ) || empty( $currency_data['symbol'] ) || empty( $currency_data['display'] ) )
 				@continue
 			@endif
 
-			@php
-				$label = sprintf( '%s %s', $currency_data['symbol'],  $currency_data['display'] );
-			@endphp
-
-			<x-form.radio name="currency" value="{{ $code }}" label="{{ $label }}" checked="{{ $currency === $code ? 'checked' : '' }}" />
+			<x-form.radio name="currency" value="{{ $code }}" label="{{ $currency_data['display'] }}" checked="{{ $currency === $code ? 'checked' : '' }}" />
 		@endforeach
 
 	</x-form.field-group>
