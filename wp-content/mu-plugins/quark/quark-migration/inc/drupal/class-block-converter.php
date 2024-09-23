@@ -591,7 +591,8 @@ class Block_Converter {
 					[
 						'blockName'    => 'quark/blog-post-cards',
 						'attrs'        => [
-							'ids' => $card_ids,
+							'layout' => 'grid',
+							'ids'    => $card_ids,
 						],
 						'innerContent' => [],
 					]
@@ -915,7 +916,7 @@ class Block_Converter {
 			paragraph.id,
 			paragraph.type,
 			field_highlight.field_highlight_value as highlight,
-			(SELECT taxonomy_term__field_svg_file.field_svg_file_target_id FROM taxonomy_term__field_svg_file WHERE field_highlight_icon.field_highlight_icon_target_id = taxonomy_term__field_svg_file.entity_id) as icon_id
+			field_highlight_icon_target_id as icon_id
 		FROM
 			paragraphs_item_field_data AS paragraph
 				LEFT JOIN paragraph__field_highlight AS field_highlight ON paragraph.id = field_highlight.entity_id AND paragraph.langcode = field_highlight.langcode
@@ -938,18 +939,33 @@ class Block_Converter {
 		$attrs = [];
 
 		// Set attributes.
-		$attrs['title']  = ! empty( $result['highlight'] ) ? strval( $result['highlight'] ) : '';
-		$image_target_id = ! empty( $result['image'] ) ? download_file_by_fid( absint( $result['image'] ) ) : '';
+		$attrs['title'] = ! empty( $result['highlight'] ) ? wp_strip_all_tags( $result['highlight'] ) : '';
 
-		// Check if image found.
-		if ( ! $image_target_id instanceof WP_Error ) {
-			$attrs['image'] = absint( $image_target_id );
-		}
+		// Check if image target id is available.
+		$icon_term_mapping = [
+			5001 => 'phone',
+			5006 => 'mail',
+			5011 => 'brochure',
+			5016 => 'info',
+			5021 => 'flightseeing',
+			5386 => 'flightseeing',
+			5391 => 'flightseeing',
+			5446 => 'whale-tail',
+			6211 => 'iceberg',
+			6216 => 'ship',
+			5416 => 'zodiac-cruising',
+			5436 => 'compass',
+			5366 => 'ship',
+			5376 => 'penguin-chicks',
+		];
+
+		// Set icon.
+		$attrs['icon'] = ! empty( $icon_term_mapping[ absint( $result['icon_id'] ) ] ) ? $icon_term_mapping[ absint( $result['icon_id'] ) ] : 'star';
 
 		// Return data.
 		return serialize_block(
 			[
-				'blockName'    => 'quark/highlight',
+				'blockName'    => 'quark/highlight-item',
 				'attrs'        => $attrs,
 				'innerContent' => [],
 			]
@@ -988,24 +1004,19 @@ class Block_Converter {
 		}
 
 		// Block Markup.
-		$attrs      = [];
+		$attrs      = [
+			'title' => 'Highlights',
+			'info'  => 'Plus, add on adventure options, such as...',
+		];
 		$highlights = '';
-
-		// Set attributes.
-		$image_target_id = ! empty( $result['image'] ) ? download_file_by_mid( absint( $result['image'] ) ) : '';
-
-		// Check if image found.
-		if ( ! $image_target_id instanceof WP_Error ) {
-			$attrs['image'] = absint( $image_target_id );
-		}
 
 		// Check if highlights are available.
 		if ( ! empty( $result['highlights'] ) ) {
-			$highlights = explode( ',', $result['highlights'] );
+			$highlight_ids = explode( ',', $result['highlights'] );
 
 			// Loop through each card.
-			foreach ( $highlights as $highlight ) {
-				$highlights .= $this->convert_paragraph_highlight( [ 'id' => $highlight ] );
+			foreach ( $highlight_ids as $highlight_id ) {
+				$highlights .= $this->convert_paragraph_highlight( [ 'id' => $highlight_id ] );
 			}
 		}
 
@@ -1014,8 +1025,7 @@ class Block_Converter {
 			[
 				'blockName'    => 'quark/highlights',
 				'attrs'        => $attrs,
-				'innerContent' => [],
-				'innerHTML'    => sprintf( '<div class="quark-highlights--wrapper">%s</div>', $highlights ),
+				'innerContent' => [ $highlights ],
 			]
 		) . PHP_EOL;
 	}
@@ -2540,6 +2550,20 @@ class Block_Converter {
 			);
 		}
 
+		// Prepare secondary nav content.
+		$secondary_nav_content = '';
+
+		// Check if secondary nav items are not empty.
+		if ( ! empty( $secondary_nav_items ) ) {
+			$secondary_nav_content = serialize_block(
+				[
+					'blockName'    => 'quark/secondary-navigation-menu',
+					'attrs'        => [],
+					'innerContent' => [ $secondary_nav_items ],
+				]
+			);
+		}
+
 		// Check if secondary nav items are not empty.
 		if ( empty( $secondary_nav_items ) ) {
 			return '';
@@ -2550,15 +2574,7 @@ class Block_Converter {
 			[
 				'blockName'    => 'quark/secondary-navigation',
 				'attrs'        => [],
-				'innerContent' => [
-					serialize_block(
-						[
-							'blockName'    => 'quark/secondary-navigation-menu',
-							'attrs'        => [],
-							'innerContent' => [ $secondary_nav_items ],
-						]
-					),
-				],
+				'innerContent' => [ $secondary_nav_content ],
 			]
 		) . PHP_EOL;
 	}

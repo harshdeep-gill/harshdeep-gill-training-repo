@@ -493,6 +493,19 @@ function order_terms_by_hierarchy( array $terms = [], string $taxonomy = '' ): a
 			$organised_terms[ $term->term_id ]['parent_term'] = $term;
 		} else {
 			$organised_terms[ $term->parent ]['child_terms'][] = $term;
+
+			// Check parent term added.
+			if ( empty( $organised_terms[ $term->parent ]['parent_term'] ) ) {
+				$parent_term = get_term( $term->parent, $taxonomy );
+
+				// Check for term.
+				if ( ! $parent_term instanceof WP_Term ) {
+					continue;
+				}
+
+				// Add parent term.
+				$organised_terms[ $parent_term->term_id ]['parent_term'] = $parent_term;
+			}
 		}
 	}
 

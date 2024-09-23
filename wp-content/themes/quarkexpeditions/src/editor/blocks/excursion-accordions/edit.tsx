@@ -50,7 +50,7 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 					<TaxonomyRelationshipControl
 						label={ __( 'Select Destinations.', 'qrk' ) }
 						help={ __( 'Select one ore more Destination terms. They will be categorized automatically.', 'qrk' ) }
-						taxonomies="qrk_destination"
+						taxonomies="qrk_excursion"
 						value={ attributes.destinationTermIds }
 						onSelect={ ( termIDs: Array<{ term_id: number }> ) => setAttributes( { destinationTermIds: termIDs.map( ( term ) => term.term_id ) } ) }
 						buttonLabel={ __( 'Select Destinations', 'qrk' ) }
