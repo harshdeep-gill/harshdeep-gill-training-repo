@@ -94,24 +94,32 @@
 
 				<div class="form-job-application__sub-section">
 					<x-form.row>
-						<x-form.field-group title="{{ __('Do you have experience working on a cruise line or expedition vessel?', 'qrk') }}" :validation="[ 'required' ]"  class="form-job-application__toggle">
-							<x-form.radio label="{{ __('Yes', 'qrk') }}" name="fields[Has_Worked_on_Cruise_Line_or_Vessel__c]" value="Yes" />
-							<x-form.radio label="{{ __('No', 'qrk') }}" name="fields[Has_Worked_on_Cruise_Line_or_Vessel__c]" value="No" />
-						</x-form.field-group>
+						<tp-toggle-attribute trigger="input[type='radio']" target=".form-job-application__experience" value="Yes" attribute="required">
+							<x-form.field-group title="{{ __('Do you have experience working on a cruise line or expedition vessel?', 'qrk') }}" :validation="[ 'required' ]" class="form-job-application__toggle">
+								<x-form.radio label="{{ __('Yes', 'qrk') }}" name="fields[Has_Worked_on_Cruise_Line_or_Vessel__c]" value="Yes" />
+								<x-form.radio label="{{ __('No', 'qrk') }}" name="fields[Has_Worked_on_Cruise_Line_or_Vessel__c]" value="No" />
+							</x-form.field-group>
+						</tp-toggle-attribute>
 					</x-form.row>
-					<x-form.textarea label="{{ __('Describe your experience, your role and what company you worked for.', 'qrk') }}" name="fields[Experience_with_Cruise_Line_or_Vessel__c]" placeholder="Describe" />
+					<x-form.field class="form-job-application__experience">
+						<x-form.textarea label="{{ __('Describe your experience, your role and what company you worked for.', 'qrk') }}" name="fields[Experience_with_Cruise_Line_or_Vessel__c]" placeholder="Describe" />
+					</x-form.field>
 				</div>
 
 
 				<div class="form-job-application__sub-section">
 					<x-form.row>
-						<x-form.field-group title="{{ __('Have you worked in either of the Polar Regions before?', 'qrk') }}" :validation="[ 'required' ]"  class="form-job-application__toggle">
-							<x-form.radio label="{{ __('Yes', 'qrk') }}" name="fields[Has_Worked_in_Polar_Regions_Before__c]" value="Yes" />
-							<x-form.radio label="{{ __('No', 'qrk') }}" name="fields[Has_Worked_in_Polar_Regions_Before__c]" value="No" />
-						</x-form.field-group>
+						<tp-toggle-attribute trigger="input[type='radio']" target=".form-job-application__polar-experience" value="Yes" attribute="required">
+							<x-form.field-group title="{{ __('Have you worked in either of the Polar Regions before?', 'qrk') }}" :validation="[ 'required' ]" class="form-job-application__toggle">
+								<x-form.radio label="{{ __('Yes', 'qrk') }}" name="fields[Has_Worked_in_Polar_Regions_Before__c]" value="Yes" />
+								<x-form.radio label="{{ __('No', 'qrk') }}" name="fields[Has_Worked_in_Polar_Regions_Before__c]" value="No" />
+							</x-form.field-group>
+						</tp-toggle-attribute>
 					</x-form.row>
 
-					<x-form.textarea label="{{ __('Describe your experience working in the Polar Regions.', 'qrk') }}" name="fields[Experience_in_Polar_Regions__c]" placeholder="Describe" />
+					<x-form.field class="form-job-application__polar-experience">
+						<x-form.textarea label="{{ __('Describe your experience working in the Polar Regions.', 'qrk') }}" name="fields[Experience_in_Polar_Regions__c]" placeholder="Describe" />
+					</x-form.field>
 				</div>
 
 				<div class="form-job-application__sub-section">
@@ -155,15 +163,15 @@
 							<x-form.checkbox name="fields[Languages__c]" label="{{ __('Portuguese', 'qrk') }}" value="Portuguese" />
 							<x-form.checkbox name="fields[Languages__c]" label="{{ __('German', 'qrk') }}" value="German" />
 							<x-form.checkbox name="fields[Languages__c]" label="{{ __('Russian', 'qrk') }}" value="Russian" />
-							<x-form.checkbox name="fields[Languages__c]" label="{{ __('Spanish', 'qrk') }}" value="Spanish" />
-							<x-form.checkbox name="fields[Languages__c]" label="{{ __('Bengali', 'qrk') }}" value="Bengali" />
-							<tp-toggle-attribute trigger="select" target=".form-contact-us__other-languages" value="agent">
+							<tp-toggle-attribute target=".form-job-application__other-languages" value="true" attribute="required" attribute-value="yes">
 								<x-form.checkbox name="fields[Languages__c]" label="{{ __('Other', 'qrk') }}" value="Other" />
 							</tp-toggle-attribute>
+							<x-form.checkbox name="fields[Languages__c]" label="{{ __('Spanish', 'qrk') }}" value="Spanish" />
+							<x-form.checkbox name="fields[Languages__c]" label="{{ __('Bengali', 'qrk') }}" value="Bengali" />
 						</x-form.field-group>
 					</x-form.row>
-					<x-form.field class="form-contact-us__other-languages">
-						<x-form.input type="text" label="{{ __('Other Languages Spoken', 'qrk') }}" name="fields[Other_Languages__c]" placeholder="Enter Other Language you Speak" />
+					<x-form.field class="form-job-application__other-languages">
+						<x-form.input type="text" label="{{ __('Other Languages Spoken', 'qrk') }}" name="fields[Other_Languages__c]" placeholder="Enter Other Language you Speak"/>
 					</x-form.field>
 				</div>
 
@@ -215,7 +223,7 @@
 							<x-form.checkbox name="fields[Degree_Areas__c]" label="{{ __('Geology', 'qrk') }}" value="geology" />
 							<x-form.checkbox name="fields[Degree_Areas__c]" label="{{ __('History', 'qrk') }}" value="history" />
 							<x-form.checkbox name="fields[Degree_Areas__c]" label="{{ __('Marine Biology', 'qrk') }}" value="marine_biology" />
-							<tp-toggle-attribute trigger="select" target=".form-job-application__other-degree">
+							<tp-toggle-attribute value="true" attribute="required" attribute-value="yes" target=".form-job-application__other-degree">
 								<x-form.checkbox name="fields[Degree_Areas__c]" label="{{ __('Other', 'qrk') }}" value="other" />
 							</tp-toggle-attribute>
 						</x-form.field-group>
@@ -227,9 +235,10 @@
 
 				<div class="form-job-application__sub-section">
 					<x-form.row>
-						<x-form.field-group title="{{ __('In what season(s) are you available to work?', 'qrk') }}" :validation="[ 'required' ]" class="form-job-application__toggle">
+						<x-form.field-group title="{{ __('In what season(s) are you available to work?', 'qrk') }}" :validation="[ 'required' ]" class="form-job-application__season-availability">
 							<x-form.checkbox name="fields[Season_Availability__c]" label="{{ __('Arctic season: April to October', 'qrk') }}" value="arctic" />
 							<x-form.checkbox name="fields[Season_Availability__c]" label="{{ __('Antarctic season: October to April', 'qrk') }}" value="antarctic" />
+							<div />
 						</x-form.field-group>
 					</x-form.row>
 				</div>
@@ -249,12 +258,14 @@
 
 			<div class="form-job-application__section">
 				<h3 class="form-job-application__title">{{ __('Additional Information', 'qrk') }}</h3>
-				<x-form.field-group title="{{ __('Were you referred to us by someone who works at Quark Expeditions?', 'qrk') }}" :validation="[ 'required' ]">
-					<tp-toggle-attribute trigger="radio" target=".form-job-application__referrer-name" value="Yes">
-						<x-form.radio label="{{ __('Yes', 'qrk') }}" name="fields[Was_Referred__c]" value="Yes" />
+				<x-form.row>
+					<tp-toggle-attribute trigger="input[type='radio']" target=".form-job-application__referrer-name" value="Yes" attribute="required">
+						<x-form.field-group title="{{ __('Were you referred to us by someone who works at Quark Expeditions?', 'qrk') }}" :validation="[ 'required' ]" class="form-job-application__toggle">
+							<x-form.radio label="{{ __('Yes', 'qrk') }}" name="fields[Was_Referred__c]" value="Yes" />
+							<x-form.radio label="{{ __('No', 'qrk') }}" name="fields[Was_Referred__c]" value="No" />
+						</x-form.field-group>
 					</tp-toggle-attribute>
-					<x-form.radio label="{{ __('No', 'qrk') }}" name="fields[Was_Referred__c]" value="No" />
-				</x-form.field-group>
+				</x-form.row>
 				<x-form.field class="form-job-application__referrer-name">
 					<x-form.input type="text" label="{{ __('Who referred you?', 'qrk') }}" name="fields[Referrer_Name__c]" placeholder="Enter Name" />
 				</x-form.field>

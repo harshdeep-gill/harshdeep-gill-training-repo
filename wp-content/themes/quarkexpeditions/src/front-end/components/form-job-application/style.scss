@@ -40,6 +40,46 @@
 		}
 	}
 
+	&__experience {
+		display: none;
+
+		&[required="yes"] {
+			display: block;
+		}
+	}
+
+	&__polar-experience {
+		display: none;
+
+		&[required="yes"] {
+			display: block;
+		}
+	}
+
+	&__other-languages {
+		display: none;
+
+		&[required] {
+			display: block;
+		}
+	}
+
+	&__other-degree {
+		display: none;
+
+		&[required] {
+			display: block;
+		}
+	}
+
+	&__referrer-name {
+		display: none;
+
+		&[required="yes"] {
+			display: block;
+		}
+	}
+
 	&__option-tooltip {
 		display: flex;
 		align-items: center;
