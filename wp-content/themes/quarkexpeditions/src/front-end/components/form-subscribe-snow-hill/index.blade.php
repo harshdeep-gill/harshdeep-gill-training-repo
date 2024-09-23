@@ -22,15 +22,7 @@
 			<p class="form-snow-hill__instructions">
 				{!!
 					esc_html__(
-						'Guests who’ve traveled with us to the hard-to-reach Emperor penguin rookery on Snow Hill Island have described it as the best nature experience of their lives. The journey through the ice-packed Weddell Sea is as unforgettable as the moment you finally set eyes on the rarely-visited colony of 4,000 pairs of breeding Emperor penguins and their offspring. Voyages like this take planning—and we’re excited that you’re interested.',
-						'qrk'
-					)
-				!!}
-			</p>
-			<p class="form-snow-hill__instructions">
-				{!!
-					esc_html__(
-						'Fill in your details below so you’ll be among the first to know when our next expedition to Snow Hill Island is scheduled. Sometimes, the best things in life are worth waiting for.',
+						'Subscribe to our Snow Hill Newsletter.',
 						'qrk'
 					)
 				!!}
