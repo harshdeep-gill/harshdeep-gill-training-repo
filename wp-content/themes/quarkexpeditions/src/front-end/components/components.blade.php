@@ -6974,6 +6974,15 @@
 	</x-section>
 </x-component-demo>
 
+<x-component-demo :keys="[ 'form-job-application' ]">
+	<x-section>
+		<x-form-job-application
+			:countries="$countries"
+			:states="$states"
+		/>
+	</x-section>
+</x-component-demo>
+
 <x-component-demo :keys="[ 'mini-cards-list' ]">
 	<x-mini-cards-list>
 		<x-mini-cards-list.card>

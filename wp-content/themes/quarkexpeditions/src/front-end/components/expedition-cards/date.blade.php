@@ -5,5 +5,5 @@
 @endphp
 
 <p class="expedition-cards__date">
-	<x-escape :content="$slot" />
+	<x-content :content="$slot" />
 </p>
