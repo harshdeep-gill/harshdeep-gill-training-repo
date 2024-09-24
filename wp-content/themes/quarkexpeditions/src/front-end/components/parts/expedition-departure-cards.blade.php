@@ -8,7 +8,6 @@
 			$departure_id = $card['departure_id'] ?? uniqid();
 		@endphp
 
-		<x-button size="big" appearance="outline" href="tel:+55555555" class="dynamic-phone-number__link dynamic-phone-number-and-prefix">{{ __( 'Request a callback:', 'qrk' ) }} 555555</x-button>
 		<x-departure-cards.card>
 			<x-departure-cards.card-banner text="{{ $card['banner_details']['title'] ?? '' }}"/>
 			<x-departure-cards.header>
