@@ -1,5 +1,6 @@
 @props( [
 	'class' => '',
+	'name'  => '',
 ] )
 
 @php
@@ -14,6 +15,6 @@
 	}
 @endphp
 
-<x-form.radio @class( $classes )>
+<x-form.radio @class( $classes ) name="{{ $name }}">
 	{!! $slot !!}
 </x-form.radio>
