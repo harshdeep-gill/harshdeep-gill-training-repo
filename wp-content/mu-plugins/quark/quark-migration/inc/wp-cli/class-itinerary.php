@@ -600,8 +600,8 @@ class Itinerary {
 				'canadian_departure_gst',
 				TAX_TYPE_TAXONOMY,
 				[
-					'description' => 'Canadian Departure GST',
-					'slug'        => 'canadian_departure_gst',
+					'name' => 'Canadian Goods and Services Tax',
+					'slug' => 'canadian_departure_gst',
 				]
 			);
 
