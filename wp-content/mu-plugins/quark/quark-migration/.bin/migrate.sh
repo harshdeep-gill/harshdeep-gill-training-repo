@@ -56,7 +56,7 @@ wp quark-migrate itinerary all --user=1
 wp quark-migrate expedition all --user=1
 
 # Departure migration
-wp quark-migrate departure all --user=1
+#wp quark-migrate departure all --user=1
 
 # Marketing Promotion Landing Page migration
 wp quark-migrate offer all --user=1
