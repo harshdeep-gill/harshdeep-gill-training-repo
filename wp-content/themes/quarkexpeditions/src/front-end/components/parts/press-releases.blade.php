@@ -18,10 +18,6 @@
 
 				<x-listing-cards.title :title="$card['title'] ?? ''" />
 
-				@if( ! empty( $card['subtitle'] ) )
-					<x-listing-cards.subtitle :subtitle="$card['subtitle']" />
-				@endif
-
 				@if( ! empty( $card['description'] ) )
 					<x-listing-cards.description>
 						{!! $card['description'] !!}
