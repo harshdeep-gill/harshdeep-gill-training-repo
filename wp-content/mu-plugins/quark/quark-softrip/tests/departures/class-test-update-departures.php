@@ -50,6 +50,21 @@ class Test_Update_Departures extends Softrip_TestCase {
 				'duration'    => 11,
 				'shipCode'    => 'OMI',
 				'marketCode'  => 'PRC',
+				'cabins'      => [
+					[
+						'id'          => 'CAB-1',
+						'code'        => 'CAB-1',
+						'name'        => 'Cabin 1',
+						'departureId' => 'PQO-892:2027-08-26',
+						'occupancies' => [
+							[
+								'id'   => 'OCC-1',
+								'name' => 'Single',
+								'mask' => 'A',
+							],
+						],
+					],
+				],
 			],
 			[ // Valid departure.
 				'id'          => 'PQO-892:2027-09-05',
@@ -60,6 +75,21 @@ class Test_Update_Departures extends Softrip_TestCase {
 				'duration'    => 10,
 				'shipCode'    => 'OMX',
 				'marketCode'  => 'PRC',
+				'cabins'      => [
+					[
+						'id'          => 'CAB-2',
+						'code'        => 'CAB-2',
+						'name'        => 'Cabin 2',
+						'departureId' => 'PQO-892:2027-09-05',
+						'occupancies' => [
+							[
+								'id'   => 'OCC-2',
+								'name' => 'Single',
+								'mask' => 'A',
+							],
+						],
+					],
+				],
 			],
 		];
 		$pqo_raw_departures          = $original_pqo_raw_departures;
