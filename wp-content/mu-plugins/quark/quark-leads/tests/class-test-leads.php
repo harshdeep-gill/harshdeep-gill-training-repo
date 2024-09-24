@@ -18,6 +18,7 @@ use function Quark\Leads\build_salesforce_request_uri;
 use function Quark\Leads\build_salesforce_request_data;
 use function Quark\Leads\Forms\get_countries;
 use function Quark\Leads\Forms\get_states;
+use function Quark\Leads\process_job_application_input_data;
 
 use const Quark\Leads\REST_API_NAMESPACE;
 
@@ -250,6 +251,92 @@ class Test_Leads extends WP_UnitTestCase {
 
 		// Remove callback from filter.
 		remove_filter( 'quark_leads_input_data', $request_callback );
+	}
+
+	/**
+	 * Test to process job application input data.
+	 *
+	 * @covers \Quark\Leads\process_job_application_input_data()
+	 *
+	 * @return void
+	 */
+	public function test_process_job_application_input_data(): void {
+		// Initialize variables.
+		$salesforce_object = 'WebForm_Job_Application__c';
+		$fields            = [
+			'UTM_Campaign__c'                        => '',
+			'UTM_Content__c'                         => '',
+			'UTM_Medium__c'                          => '',
+			'UTM_Source__c'                          => '',
+			'UTM_Term__c'                            => '',
+			'GCLID__c'                               => '',
+			'FBBID__c'                               => '',
+			'FBCLID__c'                              => '',
+			'MSCLID__c'                              => '',
+			'Webform_URL__c'                         => '',
+			'Job_Type__c'                            => '',
+			'FirstName__c'                           => 'John',
+			'LastName__c'                            => 'Doe',
+			'Email__c'                               => 'johndoe@travelopia.com',
+			'Phone__c'                               => '1234567890',
+			'Address1__c'                            => '123 Main St',
+			'City__c'                                => 'Los Angeles',
+			'Postal_Code__c'                         => '90001',
+			'Country_Code__c'                        => 'US',
+			'State_Code__c'                          => 'CA',
+			'Was_a_Passenger__c'                     => 'Yes',
+			'Has_Worked_on_Cruise_Line_or_Vessel__c' => 'Yes',
+			'Has_Worked_in_Polar_Regions_Before__c'  => 'Yes',
+			'Expedition_Team_Roles__c'               => 'Naturalist',
+			'Languages__c'                           => 'English',
+			'Work_Areas__c'                          => 'Deck',
+			'Certifications__c'                      => 'First Aid',
+			'Degree_Areas__c'                        => 'Biology',
+			'Season_Availability__c'                 => 'Antarctica',
+			'Maximum_Contract_Length__c'             => '6_weeks',
+			'Was_Referred__c'                        => 'Yes',
+			'Referrer_Name__c'                       => 'Jane Doe',
+		];
+
+		// Process data.
+		$processed_data = process_job_application_input_data( $fields, $salesforce_object );
+
+		// Assert data.
+		$this->assertArrayHasKey( 'WebForm_Submission_ID__c', $processed_data );
+		$this->assertArrayNotHasKey( 'Webform_URL__c', $processed_data );
+		$this->assertArrayNotHasKey( 'UTM_Campaign__c', $processed_data );
+		$this->assertArrayNotHasKey( 'UTM_Content__c', $processed_data );
+		$this->assertArrayNotHasKey( 'UTM_Medium__c', $processed_data );
+		$this->assertArrayNotHasKey( 'UTM_Source__c', $processed_data );
+		$this->assertArrayNotHasKey( 'UTM_Term__c', $processed_data );
+		$this->assertArrayNotHasKey( 'GCLID__c', $processed_data );
+		$this->assertArrayNotHasKey( 'FBBID__c', $processed_data );
+		$this->assertArrayNotHasKey( 'FBCLID__c', $processed_data );
+		$this->assertArrayNotHasKey( 'MSCLID__c', $processed_data );
+		$this->assertArrayNotHasKey( 'Job_Type__c', $processed_data );
+		$this->assertArrayHasKey( 'State_Province__c', $processed_data );
+		$this->assertArrayNotHasKey( 'State_Code__c', $processed_data );
+		$this->assertEquals( 'CA', $processed_data['State_Province__c'] );
+		$this->assertEquals( 'John', $processed_data['FirstName__c'] );
+		$this->assertEquals( 'Doe', $processed_data['LastName__c'] );
+		$this->assertEquals( 'johndoe@travelopia.com', $processed_data['Email__c'] );
+		$this->assertEquals( '1234567890', $processed_data['Phone__c'] );
+		$this->assertEquals( '123 Main St', $processed_data['Address1__c'] );
+		$this->assertEquals( 'Los Angeles', $processed_data['City__c'] );
+		$this->assertEquals( '90001', $processed_data['Postal_Code__c'] );
+		$this->assertEquals( 'US', $processed_data['Country_Code__c'] );
+		$this->assertEquals( 'Yes', $processed_data['Was_a_Passenger__c'] );
+		$this->assertEquals( 'Yes', $processed_data['Has_Worked_on_Cruise_Line_or_Vessel__c'] );
+		$this->assertEquals( 'Yes', $processed_data['Has_Worked_in_Polar_Regions_Before__c'] );
+		$this->assertEquals( 'Naturalist', $processed_data['Expedition_Team_Roles__c'] );
+		$this->assertEquals( 'English', $processed_data['Languages__c'] );
+		$this->assertEquals( 'Deck', $processed_data['Work_Areas__c'] );
+		$this->assertEquals( 'First Aid', $processed_data['Certifications__c'] );
+		$this->assertEquals( 'Biology', $processed_data['Degree_Areas__c'] );
+		$this->assertEquals( 'Antarctica', $processed_data['Season_Availability__c'] );
+		$this->assertEquals( '6_weeks', $processed_data['Maximum_Contract_Length__c'] );
+		$this->assertEquals( 'Yes', $processed_data['Was_Referred__c'] );
+		$this->assertEquals( 'Jane Doe', $processed_data['Referrer_Name__c'] );
 	}
 
 	/**
