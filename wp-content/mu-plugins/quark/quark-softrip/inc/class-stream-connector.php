@@ -119,11 +119,13 @@ class Stream_Connector extends Connector {
 
 		// Prepare message.
 		$message = sprintf(
-			// translators: %1$s: Via, %2$d: Successful, %3$d: Failed.
-			__( 'Softrip sync completed via %1$s | Successful: %2$d | Failed: %3$d', 'qrk' ),
+			// translators: %1$s: Via, %2$d: Successful, %3$d: Failed, %4$s: Successful, %5$s: Failed.
+			__( 'Softrip sync completed via %1$s | Successful %4$s: %2$d | Failed %5$s: %3$d', 'qrk' ),
 			strval( $data['via'] ),
 			absint( $data['success'] ),
-			absint( $data['failed'] )
+			absint( $data['failed'] ),
+			_n( 'itinerary', 'itineraries', absint( $data['success'] ), 'qrk' ),
+			_n( 'itinerary', 'itineraries', absint( $data['failed'] ), 'qrk' )
 		);
 
 		// Log action.
@@ -181,7 +183,7 @@ class Stream_Connector extends Connector {
 		// Prepare message.
 		$message = sprintf(
 			// translators: %1$s: Softrip ID, %2$s: Updated Fields.
-			__( '"%1$s" synced | Fields: %2$s', 'qrk' ),
+			__( '"%1$s" synced | Updated fields: %2$s', 'qrk' ),
 			strval( $data['softrip_id'] ),
 			implode( ', ', $updated_field_labels )
 		);
