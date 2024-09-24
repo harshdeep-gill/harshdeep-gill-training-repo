@@ -48,14 +48,6 @@
 		}
 	}
 
-	&__subtitle {
-		margin-top: var(--spacing-5);
-
-		@media screen and (min-width: grid-size(md)) {
-			margin-top: var(--spacing-4);
-		}
-	}
-
 	&__cta {
 		display: flex;
 		flex-direction: column;
