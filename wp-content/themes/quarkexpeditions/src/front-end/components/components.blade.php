@@ -6864,7 +6864,7 @@
 
 <x-component-demo :keys="[ 'search-filters-bar' ]">
 	<x-section>
-		<x-search-filters-bar />
+		<x-parts.search-filters-bar />
 	</x-section>
 </x-component-demo>
 
