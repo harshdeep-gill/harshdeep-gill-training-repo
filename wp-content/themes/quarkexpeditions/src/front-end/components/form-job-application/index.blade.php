@@ -50,7 +50,7 @@
 				</x-form.row>
 				<x-form.row>
 					<x-form.field :validation="[ 'required', 'email' ]">
-						<x-form.input type="email" label="Email" placeholder="Enter Email" name="fields[Email__c]" />
+						<x-form.input type="email" label="Email Address" placeholder="Enter Email" name="fields[Email__c]" />
 					</x-form.field>
 					<x-form.field :validation="[ 'required' ]">
 						<x-form.input type="tel" label="Phone Number" placeholder="eg. (123) 456 7890" name="fields[Phone__c]" />
@@ -85,7 +85,7 @@
 				<h3 class="form-job-application__title">{{ __('Expedition Team Application Questions', 'qrk') }}</h3>
 				<div class="form-job-application__sub-section">
 					<x-form.row>
-						<x-form.field-group title="{{ __('Have you sailed with Quarks Expeditions as a passenger?', 'qrk') }}" :validation="[ 'required' ]" class="form-job-application__toggle">
+						<x-form.field-group title="{{ __('Have you sailed with Quarks Expeditions as a passenger?', 'qrk') }}" :validation="[ 'radio-group-required' ]" class="form-job-application__toggle">
 							<x-form.radio label="{{ __('Yes', 'qrk') }}" name="fields[Was_a_Passenger__c]" value="Yes" />
 							<x-form.radio label="{{ __('No', 'qrk') }}" name="fields[Was_a_Passenger__c]" value="No" />
 						</x-form.field-group>
@@ -95,7 +95,7 @@
 				<div class="form-job-application__sub-section form-job-application--expand-fields">
 					<x-form.row>
 						<tp-toggle-attribute trigger="input[type='radio']" target=".form-job-application__experience" value="Yes" attribute="required">
-							<x-form.field-group title="{{ __('Do you have experience working on a cruise line or expedition vessel?', 'qrk') }}" :validation="[ 'required' ]" class="form-job-application__toggle">
+							<x-form.field-group title="{{ __('Do you have experience working on a cruise line or expedition vessel?', 'qrk') }}" :validation="[ 'radio-group-required' ]" class="form-job-application__toggle">
 								<x-form.radio label="{{ __('Yes', 'qrk') }}" name="fields[Has_Worked_on_Cruise_Line_or_Vessel__c]" value="Yes" />
 								<x-form.radio label="{{ __('No', 'qrk') }}" name="fields[Has_Worked_on_Cruise_Line_or_Vessel__c]" value="No" />
 							</x-form.field-group>
@@ -109,7 +109,7 @@
 				<div class="form-job-application__sub-section form-job-application--expand-fields">
 					<x-form.row>
 						<tp-toggle-attribute trigger="input[type='radio']" target=".form-job-application__polar-experience" value="Yes" attribute="required">
-							<x-form.field-group title="{{ __('Have you worked in either of the Polar Regions before?', 'qrk') }}" :validation="[ 'required' ]" class="form-job-application__toggle">
+							<x-form.field-group title="{{ __('Have you worked in either of the Polar Regions before?', 'qrk') }}" :validation="[ 'radio-group-required' ]" class="form-job-application__toggle">
 								<x-form.radio label="{{ __('Yes', 'qrk') }}" name="fields[Has_Worked_in_Polar_Regions_Before__c]" value="Yes" />
 								<x-form.radio label="{{ __('No', 'qrk') }}" name="fields[Has_Worked_in_Polar_Regions_Before__c]" value="No" />
 							</x-form.field-group>
@@ -123,7 +123,7 @@
 
 				<div class="form-job-application__sub-section">
 					<x-form.row>
-						<x-form.field-group title="{{ __('What Expedition Team Role(s) are you applying for?', 'qrk') }}" :validation="[ 'required' ]">
+						<x-form.field-group title="{{ __('What Expedition Team Role(s) are you applying for?', 'qrk') }}" :validation="[ 'checkbox-group-required' ]">
 							<x-form.checkbox name="fields[Expedition_Team_Roles__c]" label="{{ __('Guest Services(On Ship)', 'qrk') }}" value="guest_services" />
 							<x-form.checkbox name="fields[Expedition_Team_Roles__c]" label="{{ __('Polar Retail Boutique Manager(On Ship)', 'qrk') }}" value="boutique_manager" />
 							<x-form.checkbox name="fields[Expedition_Team_Roles__c]" label="{{ __('Expedition Leader', 'qrk') }}" value="expedition_leader" />
@@ -150,7 +150,7 @@
 
 				<div class="form-job-application__sub-section form-job-application--expand-fields">
 					<x-form.row>
-						<x-form.field-group title="{{ __('What languages do you speak fluently?', 'qrk') }}" :validation="[ 'required' ]">
+						<x-form.field-group title="{{ __('What languages do you speak fluently?', 'qrk') }}" :validation="[ 'checkbox-group-required' ]">
 							<x-form.checkbox name="fields[Languages__c]" label="{{ __('English', 'qrk') }}" value="English" />
 							<x-form.checkbox name="fields[Languages__c]" label="{{ __('Italian', 'qrk') }}" value="Italian" />
 							<x-form.checkbox name="fields[Languages__c]" label="{{ __('Arabic', 'qrk') }}" value="Arabic" />
@@ -234,7 +234,7 @@
 
 				<div class="form-job-application__sub-section">
 					<x-form.row>
-						<x-form.field-group title="{{ __('In what season(s) are you available to work?', 'qrk') }}" :validation="[ 'required' ]" class="form-job-application__season-availability">
+						<x-form.field-group title="{{ __('In what season(s) are you available to work?', 'qrk') }}" :validation="[ 'checkbox-group-required' ]" class="form-job-application__season-availability">
 							<x-form.checkbox name="fields[Season_Availability__c]" label="{{ __('Arctic season: April to October', 'qrk') }}" value="arctic" />
 							<x-form.checkbox name="fields[Season_Availability__c]" label="{{ __('Antarctic season: October to April', 'qrk') }}" value="antarctic" />
 							<div />
@@ -244,12 +244,12 @@
 
 				<div class="form-job-application__sub-section">
 					<x-form.row>
-						<x-form.field-group title="{{ __('What is the longest contract you are able to commit to at a time?', 'qrk') }}" :validation="[ 'required' ]">
-							<x-form.checkbox name="fields[Maximum_Contract_Length__c]" label="{{ __('Less than 2 weeks', 'qrk') }}" value="less_than_2_weeks" />
-							<x-form.checkbox name="fields[Maximum_Contract_Length__c]" label="{{ __('2 weeks', 'qrk') }}" value="2_weeks" />
-							<x-form.checkbox name="fields[Maximum_Contract_Length__c]" label="{{ __('1 month', 'qrk') }}" value="1_month" />
-							<x-form.checkbox name="fields[Maximum_Contract_Length__c]" label="{{ __('1-3 months', 'qrk') }}" value="1_3_months" />
-							<x-form.checkbox name="fields[Maximum_Contract_Length__c]" label="{{ __('3 months or longer', 'qrk') }}" value="longer_than_3_months" />
+						<x-form.field-group title="{{ __('What is the longest contract you are able to commit to at a time?', 'qrk') }}" :validation="[ 'radio-group-required' ]">
+							<x-form.radio name="fields[Maximum_Contract_Length__c]" label="{{ __('Less than 2 weeks', 'qrk') }}" value="less_than_2_weeks" />
+							<x-form.radio name="fields[Maximum_Contract_Length__c]" label="{{ __('2 weeks', 'qrk') }}" value="2_weeks" />
+							<x-form.radio name="fields[Maximum_Contract_Length__c]" label="{{ __('1 month', 'qrk') }}" value="1_month" />
+							<x-form.radio name="fields[Maximum_Contract_Length__c]" label="{{ __('1-3 months', 'qrk') }}" value="1_3_months" />
+							<x-form.radio name="fields[Maximum_Contract_Length__c]" label="{{ __('3 months or longer', 'qrk') }}" value="longer_than_3_months" />
 						</x-form.field-group>
 					</x-form.row>
 				</div>
@@ -259,7 +259,7 @@
 				<h3 class="form-job-application__title">{{ __('Additional Information', 'qrk') }}</h3>
 				<x-form.row>
 					<tp-toggle-attribute trigger="input[type='radio']" target=".form-job-application__referrer-name" value="Yes" attribute="required">
-						<x-form.field-group title="{{ __('Were you referred to us by someone who works at Quark Expeditions?', 'qrk') }}" :validation="[ 'required' ]" class="form-job-application__toggle">
+						<x-form.field-group title="{{ __('Were you referred to us by someone who works at Quark Expeditions?', 'qrk') }}" :validation="[ 'radio-group-required' ]" class="form-job-application__toggle">
 							<x-form.radio label="{{ __('Yes', 'qrk') }}" name="fields[Was_Referred__c]" value="Yes" />
 							<x-form.radio label="{{ __('No', 'qrk') }}" name="fields[Was_Referred__c]" value="No" />
 						</x-form.field-group>
@@ -276,8 +276,8 @@
 
 			<div class="form-job-application__section form-job-application__resume">
 				<h3 class="form-job-application__title">{{ __('Resume and Cover Letter', 'qrk') }}</h3>
-				<x-form.label for="resume" class="form-job-application__file-label">{{ __('Please Attach Your CV/Résumé', 'qrk') }}</x-form.label>
 				<x-form.field :validation="[ 'required' ]">
+					<x-form.label for="resume" class="form-job-application__file-label">{{ __('Please Attach Your CV/Résumé', 'qrk') }}</x-form.label>
 					<x-form.file name="fields[Link_to_Resume__c]" id="resume" label="{{ __('Choose File', 'qrk') }}" :allowed_file_types="$resume_allowed_file_types" />
 				</x-form.field>
 				<p class="form-job-application__description">
