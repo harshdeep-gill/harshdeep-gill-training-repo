@@ -414,6 +414,31 @@ function format_raw_departure_data( array $raw_departure_data = [], int $itinera
 		return [];
 	}
 
+	// Check for cabins.
+	if ( empty( $raw_departure_data['cabins'] ) || ! is_array( $raw_departure_data['cabins'] ) ) {
+		return [];
+	}
+
+	// Check if any of cabin have valid occupancies.
+	$has_valid_occupancies = false;
+
+	// Loop through cabins.
+	foreach ( $raw_departure_data['cabins'] as $cabin ) {
+		// Skip if not an array or empty occupancies.
+		if ( ! is_array( $cabin ) || empty( $cabin['occupancies'] ) || ! is_array( $cabin['occupancies'] ) ) {
+			continue;
+		}
+
+		// Valid.
+		$has_valid_occupancies = true;
+		break;
+	}
+
+	// Return empty if no valid occupancies.
+	if ( ! $has_valid_occupancies ) {
+		return [];
+	}
+
 	// Prepare formatted data.
 	$formatted_data = [
 		'post_title'  => sanitize_text_field( strval( $raw_departure_data['id'] ) ),
