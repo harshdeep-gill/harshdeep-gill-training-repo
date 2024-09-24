@@ -607,7 +607,7 @@ function get_pagination_links( array $args = [] ): string {
  */
 function is_gutenberg_editor(): bool {
 	// Check if we are in the gutenberg editor.
-	if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
+	if ( wp_is_serving_rest_request() ) {
 		return true;
 	}
 

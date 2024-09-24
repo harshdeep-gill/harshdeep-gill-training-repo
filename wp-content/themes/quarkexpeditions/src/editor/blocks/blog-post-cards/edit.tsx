@@ -84,24 +84,6 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 		return options;
 	};
 
-	/**
-	 * Handle layout change.
-	 *
-	 * @param {boolean} hasPagination Has pagination.
-	 *
-	 * @return {void}
-	 */
-	const handleLayoutChange = ( hasPagination: boolean ): void => {
-		// Set layout to grid if pagination is enabled.
-		if ( ! hasPagination ) {
-			// Return if pagination is disabled.
-			return;
-		}
-
-		// Set layout to grid.
-		setAttributes( { layout: 'grid' } );
-	};
-
 	// Return the block's markup.
 	return (
 		<>
@@ -115,8 +97,11 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 							// Set hasPagination.
 							setAttributes( { hasPagination } );
 
-							// Handle layout change.
-							handleLayoutChange( hasPagination );
+							// Set layout to grid if pagination is enabled.
+							if ( hasPagination ) {
+								// Set layout to grid.
+								setAttributes( { layout: 'grid' } );
+							}
 						} }
 					/>
 					<RadioControl

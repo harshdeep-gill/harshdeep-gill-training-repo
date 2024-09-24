@@ -5,6 +5,8 @@
 	'pagination'           => '',
 	'current_page'         => 0,
 	'total_pages'          => 0,
+	'first_page_link'      => '',
+	'last_page_link'       => '',
 ] )
 
 <x-press-releases>
@@ -33,16 +35,5 @@
 			</x-listing-cards.card>
 		@endforeach
 	</x-listing-cards>
-	<x-pagination>
-		<x-pagination.total-pages :current_page="$current_page" :total_pages="$total_pages" />
-		<x-pagination.links>
-			@if ( ! empty( $first_page_link ) )
-				<x-pagination.first-page :href="$first_page_link" >First</x-pagination.first-page>
-			@endif
-			{!! $pagination !!}
-			@if ( ! empty( $last_page_link ) )
-				<x-pagination.last-page :href="$last_page_link" >Last</x-pagination.last-page>
-			@endif
-		</x-pagination.links>
-	</x-pagination>
+	<x-parts.pagination :pagination="$pagination" :current_page="$current_page" :total_pages="$total_pages" :first_page_link="$first_page_link" :last_page_link="$last_page_link" />
 </x-press-releases>
