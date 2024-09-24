@@ -31,10 +31,10 @@
 	}
 
 	&__item {
-		min-width: 100vw;
+		min-width: calc(100vw - 2 * var(--grid-col-gutter));
 
 		@media screen and (min-width: 1120px) { // Need to add 1120 --wrap-width for this case.
-			min-width: calc(100vw / 2 + calc(var(--wrap-width) / 2));
+			min-width: calc(50vw + var(--wrap-width) / 2 - var(--grid-col-gutter));
 		}
 
 		& + & {
