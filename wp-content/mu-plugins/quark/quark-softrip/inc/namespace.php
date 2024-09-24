@@ -199,7 +199,7 @@ function do_sync( array $itinerary_post_ids = [], array $specific_departure_post
 				'update_post_meta_cache' => false,
 				'update_term_meta_cache' => false,
 				'ignore_sticky_posts'    => true,
-				'post_status'            => [ 'draft', 'publish' ],
+				'post_status'            => [ 'publish' ],
 				'posts_per_page'         => -1,
 			];
 
