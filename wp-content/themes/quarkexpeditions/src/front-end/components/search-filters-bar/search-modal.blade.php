@@ -3,6 +3,9 @@
 	'is_search_page'           => false,
 	'destinations_placeholder' => __( 'Anywhere', 'qrk' ),
 	'departures_placeholder'   => __( 'Any time', 'qrk' ),
+	'destinations'             => [],
+	'available_months'         => [],
+	'filters_api_url'          => '',
 ] )
 
 {{-- Render the modal only once even if there are multiple search bars present on a page --}}
@@ -15,6 +18,7 @@
 			<quark-search-filters-bar
 				class="search-filters-bar"
 				is-search-page="{{ true === $is_search_page ? 'true' : 'false' }}"
+				filters-api-url="{{ $filters_api_url }}"
 			>
 				<div class="search-filters-bar__modal-filters-container">
 					<x-search-filters-bar.destinations />
@@ -24,8 +28,8 @@
 			</quark-search-filters-bar>
 
 			{{-- Filter options --}}
-			<x-search-filters-bar.destinations.filter-options />
-			<x-search-filters-bar.departure-months.filter-options />
+			<x-search-filters-bar.destinations.filter-options :destinations="$destinations" />
+			<x-search-filters-bar.departure-months.filter-options :available_months="$available_months" />
 		</x-modal.body>
 		<x-modal.footer>
 			<x-buttons class="search-filters-bar__modal-buttons">

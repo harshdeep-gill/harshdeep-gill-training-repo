@@ -4,6 +4,11 @@
 const { customElements, HTMLElement } = window;
 
 /**
+ * Internal dependencies.
+ */
+import { SearchFilterDestinationOption } from './filter-option';
+
+/**
  * Class SearchFilterDestinations.
  */
 export class SearchFilterDestinations extends HTMLElement {
@@ -11,8 +16,8 @@ export class SearchFilterDestinations extends HTMLElement {
 	 * Properties.
 	 */
 	private searchFiltersModal: HTMLElement | null;
-	private destinationFilters: HTMLElement | null | undefined;
-	private departureMonthsFilters: HTMLElement | null | undefined;
+	private destinationFiltersContainer: HTMLElement | null | undefined;
+	private departureMonthsFiltersContainer: HTMLElement | null | undefined;
 
 	/**
 	 * Constructor.
@@ -23,8 +28,8 @@ export class SearchFilterDestinations extends HTMLElement {
 
 		// Elements.
 		this.searchFiltersModal = document.querySelector( '.search-filters-bar__modal' );
-		this.destinationFilters = this.searchFiltersModal?.querySelector( '.search-filters-bar__destinations-filter-options' );
-		this.departureMonthsFilters = this.searchFiltersModal?.querySelector( '.search-filters-bar__departure-months-filter-options' );
+		this.destinationFiltersContainer = this.searchFiltersModal?.querySelector( '.search-filters-bar__destinations-filter-options' );
+		this.departureMonthsFiltersContainer = this.searchFiltersModal?.querySelector( '.search-filters-bar__departure-months-filter-options' );
 
 		// Event Listeners.
 		this.addEventListener( 'click', this.handleFilterClick.bind( this ) );
@@ -35,14 +40,104 @@ export class SearchFilterDestinations extends HTMLElement {
 	 */
 	handleFilterClick() {
 		// Check if the elements exist.
-		if ( ! this.destinationFilters || ! this.departureMonthsFilters ) {
+		if ( ! this.destinationFiltersContainer || ! this.departureMonthsFiltersContainer ) {
 			// Bail early.
 			return;
 		}
 
 		// Update active state of the filters in the modal.
-		this.destinationFilters?.setAttribute( 'active', 'true' );
-		this.departureMonthsFilters?.setAttribute( 'active', 'false' );
+		this.destinationFiltersContainer?.setAttribute( 'active', 'true' );
+		this.departureMonthsFiltersContainer?.setAttribute( 'active', 'false' );
+	}
+
+	/**
+	 * Get the value of this component.
+	 *
+	 * @return {Set} Value of this component.
+	 */
+	get value(): Set<string> {
+		// Get the value of the select field.
+		const value = new Set<string>();
+
+		// Get selected options.
+		const selectedOptions: NodeListOf<SearchFilterDestinationOption> | undefined = this.searchFiltersModal?.querySelectorAll( 'quark-search-filters-bar-destinations-option[selected="yes"]' );
+		selectedOptions?.forEach( ( option: SearchFilterDestinationOption ) => {
+			// Get option value.
+			const optionValue = option.getAttribute( 'value' );
+
+			// Add value to set.
+			if ( optionValue ) {
+				value.add( optionValue );
+			}
+		} );
+
+		// Return value.
+		return value;
+	}
+
+	/**
+	 * Select a value.
+	 *
+	 * @param {string} value Value to select.
+	 */
+	select( value: string = '' ): void {
+		// If single select.
+		if ( 'no' === this.getAttribute( 'multi-select' ) ) {
+			// First, unselect everything.
+			this.unSelectAll();
+
+			// If the value is blank, don't do anything else.
+			if ( '' === value ) {
+				// Exit.
+				return;
+			}
+		}
+
+		// Select the option.
+		const options: NodeListOf<SearchFilterDestinationOption> | undefined = this.searchFiltersModal?.querySelectorAll( `quark-search-filters-bar-destinations-option[value="${ value }"]` );
+		options?.forEach( ( option: SearchFilterDestinationOption ): void => {
+			// Update select field.
+			if ( 'yes' !== option.getAttribute( 'disabled' ) ) {
+				option.setAttribute( 'selected', 'yes' );
+			}
+		} );
+
+		// Dispatch change event.
+		this.dispatchEvent( new CustomEvent( 'change', { bubbles: true } ) );
+	}
+
+	/**
+	 * Un-select a value.
+	 *
+	 * @param {string} value Value to unselect.
+	 */
+	unSelect( value: string = '' ): void {
+		// Get all options with the specified value.
+		const allOptionsWithValue: NodeListOf<SearchFilterDestinationOption> | undefined = this.searchFiltersModal?.querySelectorAll( `quark-months-multi-select-option[value="${ value }"]` );
+
+		// Loop through all options with the matching value.
+		allOptionsWithValue?.forEach( ( option: SearchFilterDestinationOption ): void => {
+			// Remove selected attribute.
+			option.removeAttribute( 'selected' );
+		} );
+
+		// Dispatch change event.
+		this.dispatchEvent( new CustomEvent( 'change', { bubbles: true } ) );
+	}
+
+	/**
+	 * Un-select all values.
+	 */
+	unSelectAll(): void {
+		// Get all options.
+		const allOptions: NodeListOf<SearchFilterDestinationOption> | undefined = this.searchFiltersModal?.querySelectorAll( 'quark-search-filters-bar-destinations-option' );
+		allOptions?.forEach( ( option: SearchFilterDestinationOption ): void => {
+			// Remove selected attribute.
+			option.removeAttribute( 'selected' );
+		} );
+
+		// Dispatch change event.
+		this.dispatchEvent( new CustomEvent( 'change', { bubbles: true } ) );
 	}
 }
 

@@ -1,14 +1,12 @@
 @props( [
-	'destinations' => [],
+	'multi-select' => false,
 ] )
 
-@php
-	if ( empty( $destinations ) ) {
-		return;
-	}
-@endphp
-
-<quark-search-filters-bar-destinations class="search-filters-bar__destinations" selected="false">
+<quark-search-filters-bar-destinations
+	class="search-filters-bar__destinations"
+	selected="false"
+	multi-select="{{ $multi_select ? 'yes' : 'no' }}"
+>
 	<div class="search-filters-bar__destinations-content">
 		<div class="search-filters-bar__destinations-label body-small">{{ __( 'Destinations', 'qrk' ) }}</div>
 		<div class="search-filters-bar__destinations-placeholder">{{ __( 'Anywhere', 'qrk' ) }}</div>

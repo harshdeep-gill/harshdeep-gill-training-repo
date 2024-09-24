@@ -340,16 +340,12 @@
 				align-items: flex-start;
 				margin-bottom: 20px;
 
-				&--selected {
-
-					.menu-list__item-link {
-						font-weight: bold;
-					}
-				}
-
 				&-image {
+					position: relative;
 					width: 96px;
 					height: 96px;
+					background-color: var(--color-gray-20);
+					border-radius: var(--border-radius-large);
 
 					> img {
 						height: 100%;
@@ -358,8 +354,34 @@
 						border-radius: var(--border-radius-large);
 					}
 
+					> svg {
+						display: none;
+						position: absolute;
+						top: var(--spacing-2);
+						right: var(--spacing-2);
+					}
+
 					@media screen and (min-width: grid-size(sm)) {
 						display: none;
+					}
+				}
+
+				&[selected="yes"] {
+
+					.menu-list__item-link {
+						font-weight: bold;
+					}
+
+					#{$self}__destinations-filter-option-image > svg {
+						display: block;
+					}
+				}
+
+				&[disabled="yes"] {
+
+					a.menu-list__item-link {
+						color: var(--color-gray-20) !important;
+						cursor: not-allowed;
 					}
 				}
 
