@@ -6939,8 +6939,10 @@
 <x-component-demo :keys="[ 'link-detail-cards' ]">
 	<x-section>
 		<x-section.heading>
-			<x-section.title title="Link Detail Cards" />
+			<x-section.title title="Quark Expeditions Protection Promise" heading_level="1" align="left" />
 		</x-section.heading>
+
+		<x-section.description>We share your excitement as you pursue the expedition of a lifetime, and we offer flexibility that few in the industry can match.</x-section.description>
 
 		<x-link-detail-cards>
 			<x-link-detail-cards.card url="#">
