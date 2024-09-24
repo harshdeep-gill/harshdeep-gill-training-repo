@@ -18,6 +18,10 @@
 		border-radius: var(--border-radius-large);
 
 		@media screen and (min-width: grid-size(md)) {
+			padding: var(--spacing-7);
+		}
+
+		@media screen and (min-width: grid-size(lg)) {
 			padding: var(--spacing-8);
 		}
 
