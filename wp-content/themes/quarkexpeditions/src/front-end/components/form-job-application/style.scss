@@ -6,6 +6,12 @@
 .form-job-application {
 	$self: &;
 
+	.country-selector {
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-3);
+	}
+
 	&__section {
 		margin-top: var(--spacing-8);
 
@@ -42,43 +48,35 @@
 
 	&__experience {
 		display: none;
-
-		&[required="yes"] {
-			display: block;
-		}
 	}
 
 	&__polar-experience {
 		display: none;
-
-		&[required="yes"] {
-			display: block;
-		}
 	}
 
 	&__other-languages {
 		display: none;
-
-		&[required] {
-			display: block;
-		}
 	}
 
 	&__other-degree {
 		display: none;
-
-		&[required] {
-			display: block;
-		}
 	}
 
 	&__referrer-name {
 		display: none;
+	}
 
-		&[required="yes"] {
+	.expand-fields {
+
+		[required="yes"] {
+			display: block;
+		}
+
+		[required] {
 			display: block;
 		}
 	}
+
 
 	&__option-tooltip {
 		display: flex;
