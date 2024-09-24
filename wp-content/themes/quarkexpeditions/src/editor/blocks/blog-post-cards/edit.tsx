@@ -64,19 +64,66 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 		allOptionsSelected = true;
 	}
 
+	/**
+	 * Get layout options.
+	 *
+	 * @return {Array} Layout options.
+	 */
+	const getLayoutOptions = (): Array<any> => {
+		// Initialize options.
+		const options = [
+			{ label: __( 'Grid', 'qrk' ), value: 'grid' },
+		];
+
+		// Add collage layout option if pagination is disabled.
+		if ( ! attributes.hasPagination ) {
+			options.push( { label: __( 'Collage', 'qrk' ), value: 'collage' } );
+		}
+
+		// Return options.
+		return options;
+	};
+
+	/**
+	 * Handle layout change.
+	 *
+	 * @param {boolean} hasPagination Has pagination.
+	 *
+	 * @return {void}
+	 */
+	const handleLayoutChange = ( hasPagination: boolean ): void => {
+		// Set layout to grid if pagination is enabled.
+		if ( ! hasPagination ) {
+			// Return if pagination is disabled.
+			return;
+		}
+
+		// Set layout to grid.
+		setAttributes( { layout: 'grid' } );
+	};
+
 	// Return the block's markup.
 	return (
 		<>
 			<InspectorControls>
 				<PanelBody title={ __( 'Related Posts Options', 'qrk' ) }>
+					<ToggleControl
+						label={ __( 'Has Pagination?', 'qrk' ) }
+						checked={ attributes.hasPagination }
+						help={ __( 'Show pagination for the blog posts on frontend.', 'qrk' ) }
+						onChange={ ( hasPagination: boolean ) => {
+							// Set hasPagination.
+							setAttributes( { hasPagination } );
+
+							// Handle layout change.
+							handleLayoutChange( hasPagination );
+						} }
+					/>
 					<RadioControl
 						label={ __( 'Layout', 'qrk' ) }
 						help={ __( 'Select the layout of the cards', 'qrk' ) }
 						selected={ attributes.layout }
-						options={ [
-							{ label: __( 'Grid', 'qrk' ), value: 'grid' },
-							{ label: __( 'Collage', 'qrk' ), value: 'collage' },
-						] }
+						options={ getLayoutOptions() }
 						onChange={ ( layout: string ) => {
 							// Set layout.
 							setAttributes( { layout } );
@@ -132,12 +179,6 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 							onSelect={ ( terms: any ) => setAttributes( { termIds: terms.map( ( term: any ) => term.term_id ) } ) }
 						/>
 					}
-					<ToggleControl
-						label={ __( 'Has Pagination?', 'qrk' ) }
-						checked={ attributes.hasPagination }
-						help={ __( 'Show pagination for the blog posts on frontend.', 'qrk' ) }
-						onChange={ ( hasPagination: boolean ) => setAttributes( { hasPagination } ) }
-					/>
 					{
 						( ( 'byTerms' === attributes.selection || 'recent' === attributes.selection ) && false === attributes.hasPagination ) &&
 							<RangeControl
