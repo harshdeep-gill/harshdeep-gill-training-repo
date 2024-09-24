@@ -55,8 +55,7 @@ export class SearchFilterDestinationOption extends HTMLElement {
 
 			// Toggle selected state. Dispatch custom events accordingly.
 			if (
-				'yes' !== optionParentElement.getAttribute( 'selected' ) &&
-				'no' === optionParentElement.getAttribute( 'disabled' )
+				'yes' !== optionParentElement.getAttribute( 'selected' )
 			) {
 				this.destinationSelector?.select( value );
 				this.destinationSelector?.dispatchEvent( new CustomEvent( 'select', {

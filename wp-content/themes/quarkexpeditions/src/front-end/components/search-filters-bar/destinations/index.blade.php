@@ -1,5 +1,5 @@
 @props( [
-	'multi-select' => false,
+	'multi_select' => false,
 ] )
 
 <quark-search-filters-bar-destinations

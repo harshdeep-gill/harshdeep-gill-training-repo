@@ -99,7 +99,7 @@
 
 		tp-modal-close {
 			top: 28px;
-    		right: var(--spacing-5);
+			right: var(--spacing-5);
 
 			svg {
 				width: 16px;
@@ -172,7 +172,7 @@
 					}
 
 					&[active="true"] {
-						display: block
+						display: block;
 					}
 				}
 
@@ -263,6 +263,7 @@
 							display: none;
 
 							@media screen and (min-width: grid-size(md)) {
+
 								.thumbnail-cards__card--size-small.thumbnail-cards__card--orient-landscape {
 									max-width: 140px;
 									height: 190px;
@@ -369,7 +370,7 @@
 				&[selected="yes"] {
 
 					.menu-list__item-link {
-						font-weight: bold;
+						font-weight: var(--font-weight-bold);
 					}
 
 					#{$self}__destinations-filter-option-image > svg {
