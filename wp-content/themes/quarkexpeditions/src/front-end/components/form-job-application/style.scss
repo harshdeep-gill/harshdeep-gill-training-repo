@@ -66,7 +66,7 @@
 		display: none;
 	}
 
-	.expand-fields {
+	&--expand-fields {
 
 		[required="yes"] {
 			display: block;

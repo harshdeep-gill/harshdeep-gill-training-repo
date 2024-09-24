@@ -92,7 +92,7 @@
 					</x-form.row>
 				</div>
 
-				<div class="form-job-application__sub-section expand-fields">
+				<div class="form-job-application__sub-section form-job-application--expand-fields">
 					<x-form.row>
 						<tp-toggle-attribute trigger="input[type='radio']" target=".form-job-application__experience" value="Yes" attribute="required">
 							<x-form.field-group title="{{ __('Do you have experience working on a cruise line or expedition vessel?', 'qrk') }}" :validation="[ 'required' ]" class="form-job-application__toggle">
@@ -106,7 +106,7 @@
 					</x-form.field>
 				</div>
 
-				<div class="form-job-application__sub-section expand-fields">
+				<div class="form-job-application__sub-section form-job-application--expand-fields">
 					<x-form.row>
 						<tp-toggle-attribute trigger="input[type='radio']" target=".form-job-application__polar-experience" value="Yes" attribute="required">
 							<x-form.field-group title="{{ __('Have you worked in either of the Polar Regions before?', 'qrk') }}" :validation="[ 'required' ]" class="form-job-application__toggle">
@@ -148,7 +148,7 @@
 					</x-form.row>
 				</div>
 
-				<div class="form-job-application__sub-section expand-fields">
+				<div class="form-job-application__sub-section form-job-application--expand-fields">
 					<x-form.row>
 						<x-form.field-group title="{{ __('What languages do you speak fluently?', 'qrk') }}" :validation="[ 'required' ]">
 							<x-form.checkbox name="fields[Languages__c]" label="{{ __('English', 'qrk') }}" value="English" />
@@ -215,7 +215,7 @@
 					</x-form.row>
 				</div>
 
-				<div class="form-job-application__sub-section expand-fields">
+				<div class="form-job-application__sub-section form-job-application--expand-fields">
 					<x-form.row>
 						<x-form.field-group title="{{ __('Do you have a university degree (or higher) in any of the following subjects?', 'qrk') }}">
 							<x-form.checkbox name="fields[Degree_Areas__c]" label="{{ __('Climate Science', 'qrk') }}" value="climate_science" />
@@ -255,7 +255,7 @@
 				</div>
 			</div>
 
-			<div class="form-job-application__section expand-fields">
+			<div class="form-job-application__section form-job-application--expand-fields">
 				<h3 class="form-job-application__title">{{ __('Additional Information', 'qrk') }}</h3>
 				<x-form.row>
 					<tp-toggle-attribute trigger="input[type='radio']" target=".form-job-application__referrer-name" value="Yes" attribute="required">
