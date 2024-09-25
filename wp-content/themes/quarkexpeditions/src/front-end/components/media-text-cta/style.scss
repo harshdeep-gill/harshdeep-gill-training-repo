@@ -6,7 +6,7 @@
 .media-text-cta {
 	$self: &;
 
-	@media screen and (min-width: grid-size(lg)) {
+	@media screen and (min-width: grid-size(xl)) {
 
 		@include grid-columns(2);
 	}
@@ -18,7 +18,7 @@
 			margin-top: var(--spacing-7);
 		}
 
-		@media screen and (min-width: grid-size(lg)) {
+		@media screen and (min-width: grid-size(xl)) {
 			margin-top: var(--spacing-8);
 		}
 	}
@@ -27,7 +27,7 @@
 
 		#{$self}__media-wrap {
 
-			@media screen and (min-width: grid-size(lg)) {
+			@media screen and (min-width: grid-size(xl)) {
 				order: 1;
 			}
 		}
@@ -39,7 +39,7 @@
 		position: relative;
 		aspect-ratio: 16 / 9;
 
-		@media screen and (min-width: grid-size(lg)) {
+		@media screen and (min-width: grid-size(xl)) {
 			aspect-ratio: initial;
 		}
 
