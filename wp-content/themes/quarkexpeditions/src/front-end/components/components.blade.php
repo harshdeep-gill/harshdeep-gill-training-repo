@@ -167,9 +167,8 @@
 		</x-two-columns.column>
 		<x-two-columns.column>
 			<x-highlights>
-				<x-highlights.title title="Highlights" />
 				<x-highlights.item>
-					<x-highlights.icon icon="compass2" />
+					<x-highlights.icon icon="compass2" :border="true" />
 					<x-highlights.content>
 						<x-highlights.item-title title="When to Visit" />
 						<x-highlights.overline>November to march</x-highlights.overline>
@@ -177,7 +176,7 @@
 					</x-highlights.content>
 				</x-highlights.item>
 				<x-highlights.item>
-					<x-highlights.icon icon="zodiac-cruising" />
+					<x-highlights.icon icon="zodiac-cruising" :border="true" />
 					<x-highlights.content>
 						<x-highlights.item-title title="When to Visit 2" />
 						<x-highlights.overline>April to August</x-highlights.overline>
