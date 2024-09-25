@@ -9,7 +9,8 @@
 	padding: 0;
 
 	@media screen and (min-width: grid-size(md)) {
-		padding: var(--spacing-5);
+		align-items: flex-start;
+		padding: var(--spacing-6) var(--spacing-5) var(--spacing-5);
 	}
 
 	.modal__content {
