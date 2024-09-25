@@ -28,14 +28,14 @@
 				{{-- Table Head --}}
 				<x-dates-rates.item.table-head>
 					<x-dates-rates.item.table-row>
-						<x-dates-rates.item.table-heading>{{ __('Expedition', 'qrk') }}</x-dates-rates.item.table-heading>
+						<x-dates-rates.item.table-heading>{{ __( 'Expedition', 'qrk' ) }}</x-dates-rates.item.table-heading>
 
 						@if ( empty( $card['cabin_data'] ) )
 							<x-dates-rates.item.table-heading colspan="2">
-								{{ __('Cabins', 'qrk') }}
+								{{ __( 'Cabins', 'qrk' ) }}
 							</x-dates-rates.item.table-heading>
 						@else
-							<x-dates-rates.item.table-heading>{{ __('Promo Offers', 'qrk') }}</x-dates-rates.item.table-heading>
+							<x-dates-rates.item.table-heading>{{ __( 'Promo Offers', 'qrk' ) }}</x-dates-rates.item.table-heading>
 
 							{{-- Cabin Names --}}
 							@foreach ( $card['cabin_data'] as $cabin )
@@ -66,7 +66,7 @@
 								<x-dates-rates.expedition.meta>
 									<x-dates-rates.expedition.meta-item>
 										<x-dates-rates.expedition.meta-label>
-											{{ __('Start Location', 'qrk') }}
+											{{ __( 'Start Location', 'qrk' ) }}
 										</x-dates-rates.expedition.meta-label>
 										<x-dates-rates.expedition.meta-value>
 											{{ $card['start_location'] ?? '' }}
@@ -74,7 +74,7 @@
 									</x-dates-rates.expedition.meta-item>
 									<x-dates-rates.expedition.meta-item>
 										<x-dates-rates.expedition.meta-label>
-											{{ __('End Location', 'qrk') }}
+											{{ __( 'End Location', 'qrk' ) }}
 										</x-dates-rates.expedition.meta-label>
 										<x-dates-rates.expedition.meta-value>
 											{{ $card['end_location'] ?? '' }}
@@ -82,7 +82,7 @@
 									</x-dates-rates.expedition.meta-item>
 									<x-dates-rates.expedition.meta-item>
 										<x-dates-rates.expedition.meta-label>
-											{{ __('Languages', 'qrk') }}
+											{{ __( 'Languages', 'qrk' ) }}
 										</x-dates-rates.expedition.meta-label>
 										<x-dates-rates.expedition.meta-value>
 											{{ $card['languages'] ?? '' }}
@@ -96,10 +96,10 @@
 						@if ( ! empty( $card['cabin_data'] ) )
 							<x-dates-rates.item.table-column>
 								<x-dates-rates.item.table-column-title>
-									<strong>{{ __('Brochure Price', 'qrk') }}</strong>
+									<strong>{{ __( 'Brochure Price', 'qrk' ) }}</strong>
 
 									@if ( !empty( $card['transfer_package_details'] ) && !empty( $card['transfer_package_details']['title'] ) )
-										({{ __('Incl. Transfer Package', 'qrk') }})
+										({{ __( 'Incl. Transfer Package', 'qrk' ) }})
 										<x-tooltip icon="info">
 											<h5>{{ $card['transfer_package_details']['title'] }}</h5>
 
@@ -114,7 +114,7 @@
 											@endif
 
 											<p>
-												{{ __('Package Price:', 'qrk') }}
+												{{ __( 'Package Price:', 'qrk' ) }}
 												{{ $card['transfer_package_details']['formatted_price'] ?? 0 }}
 											</p>
 										</x-tooltip>
@@ -188,7 +188,7 @@
 					@if ( empty( $card['cabin_data'] ) )
 						<x-dates-rates.item.table-row>
 							<x-dates-rates.item.table-column colspan="{{ $number_of_cabins + 2 }}">
-								{{ __('No cabins available', 'qrk') }}
+								{{ __( 'No cabins available', 'qrk' ) }}
 							</x-dates-rates.item.table-column>
 						</x-dates-rates.item.table-row>
 					@else
@@ -196,7 +196,7 @@
 						<x-dates-rates.item.table-row>
 							<x-dates-rates.item.table-column>
 								<x-dates-rates.item.table-column-title>
-									<strong>{{ __('Availability', 'qrk') }}</strong>
+									<strong>{{ __( 'Availability', 'qrk' ) }}</strong>
 								</x-dates-rates.item.table-column-title>
 							</x-dates-rates.item.table-column>
 
@@ -258,7 +258,7 @@
 								@if ( ! empty( $card['included_adventure_options'] ) )
 									<x-dates-rates.adventure-options.column :title="__( 'Included Adventure Options' ,'qrk' )">
 
-										@foreach ($card['included_adventure_options'] as $included_adventure_option)
+										@foreach ( $card['included_adventure_options'] as $included_adventure_option )
 											<x-dates-rates.adventure-options.item
 												name="{{ $included_adventure_option['title'] ?? '' }}"
 												icon="{{ $included_adventure_option['icon_image_id'] }}"
