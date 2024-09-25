@@ -201,7 +201,7 @@ function build_salesforce_request_uri( string $salesforce_object = '' ): string 
 /**
  * Build Salesforce request data from fields.
  *
- * @param mixed[] $fields Fields.
+ * @param mixed[] $fields            Fields.
  * @param string  $salesforce_object Salesforce object name.
  *
  * @return mixed[]
@@ -231,7 +231,6 @@ function process_job_application_input_data( array $fields = [], string $salesfo
 	// If Salesforce object is not 'WebForm_Job_Application__c' then return fields.
 	if (
 		'WebForm_Job_Application__c' !== $salesforce_object
-		|| ! is_array( $fields )
 		|| empty( $fields )
 	) {
 		return $fields;
@@ -240,7 +239,7 @@ function process_job_application_input_data( array $fields = [], string $salesfo
 	// Add WebForm_Submission_ID__c field.
 	$fields['WebForm_Submission_ID__c'] = uniqid( strval( time() ), true );
 
-	// TODO: Add or remvove extra fields.
+	// Unset unnecessary fields.
 	unset( $fields['Webform_URL__c'] );
 	unset( $fields['UTM_Campaign__c'] );
 	unset( $fields['UTM_Content__c'] );
