@@ -51,7 +51,7 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 			<InspectorControls>
 				<PanelBody title={ __( 'Desktop Carousel', 'qrk' ) }>
 					<ToggleControl
-						label={ __( 'is Carousel', 'qrk' ) }
+						label={ __( 'is Carousel Desktop?', 'qrk' ) }
 						checked={ attributes.desktopCarousel }
 						help={ __( 'Should this require to be a carousel on desktop?', 'qrk' ) }
 						onChange={ ( desktopCarousel: boolean ) => setAttributes( { desktopCarousel } ) }
