@@ -168,6 +168,13 @@ define( 'QUARK_SOFTRIP_ADAPTER_BASE_URL', env( 'QUARK_SOFTRIP_ADAPTER_BASE_URL' 
 define( 'QUARK_SOFTRIP_ADAPTER_USERNAME', env( 'QUARK_SOFTRIP_ADAPTER_USERNAME' ) );
 define( 'QUARK_SOFTRIP_ADAPTER_PASSWORD', env( 'QUARK_SOFTRIP_ADAPTER_PASSWORD' ) );
 
+// Checkout
+define( 'QUARK_CHECKOUT_BASE_URL', env( 'QUARK_CHECKOUT_BASE_URL' ) );
+
+// Ingestor
+define( 'QUARK_INGESTOR_BASE_URL', env( 'QUARK_INGESTOR_BASE_URL' ) );
+define( 'QUARK_INGESTOR_API_KEY', env( 'QUARK_INGESTOR_API_KEY' ) );
+
 /* That's all, stop editing! Happy publishing. */
 
 /** Absolute path to the WordPress directory. */
