@@ -7,6 +7,9 @@
 
 namespace Quark\Ingestor;
 
+use cli\progress\Bar;
+use WP_CLI;
+use WP_Error;
 use WP_Post;
 use WP_Query;
 
@@ -22,6 +25,7 @@ use function Quark\Localization\get_currencies;
 use function Quark\Ships\get as get_ship;
 use function Quark\Softrip\AdventureOptions\get_adventure_option_by_departure_post_id;
 use function Quark\Softrip\Departures\get_related_ship;
+use function Quark\Softrip\get_initiated_via;
 use function Quark\Softrip\Occupancies\get_cabin_category_post_ids_by_departure;
 use function Quark\Softrip\Occupancies\get_description_and_pax_count_by_mask;
 use function Quark\Softrip\Occupancies\get_occupancies_by_cabin_category_and_departure;
@@ -35,12 +39,13 @@ use const Quark\Departures\SPOKEN_LANGUAGE_TAXONOMY;
 use const Quark\Expeditions\DESTINATION_TAXONOMY;
 use const Quark\Expeditions\POST_TYPE as EXPEDITION_POST_TYPE;
 use const Quark\Itineraries\DEPARTURE_LOCATION_TAXONOMY;
-use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
 use const Quark\Localization\AUD_CURRENCY;
 use const Quark\Localization\CAD_CURRENCY;
 use const Quark\Localization\EUR_CURRENCY;
 use const Quark\Localization\GBP_CURRENCY;
 use const Quark\Localization\USD_CURRENCY;
+
+const SCHEDULE_HOOK = 'quark_ingestor_push';
 
 /**
  * Bootstrap.
@@ -48,7 +53,337 @@ use const Quark\Localization\USD_CURRENCY;
  * @return void
  */
 function bootstrap(): void {
-	// Register actions.
+	// CLI commands.
+	if ( defined( 'WP_CLI' ) && true === WP_CLI ) {
+		// Require cli file.
+		require_once __DIR__ . '/wp-cli/class-push.php';
+
+		// Add CLI command.
+		WP_CLI::add_command( 'quark-ingestor push', __NAMESPACE__ . '\\WP_CLI\\Push' );
+	}
+
+	// Push cron handler.
+	add_action( SCHEDULE_HOOK, __NAMESPACE__ . '\\do_push' );
+
+	// Register cron.
+	add_action( 'init', __NAMESPACE__ . '\\cron_schedule_push' );
+}
+
+/**
+ * Check if the cron task is already scheduled.
+ *
+ * @return bool
+ */
+function cron_is_scheduled(): bool {
+	// Check if the schedule exists or not.
+	return ! empty( wp_next_scheduled( SCHEDULE_HOOK ) );
+}
+
+/**
+ * Register cron.
+ *
+ * @return void
+ */
+function cron_schedule_push(): void {
+	// Check if scheduled.
+	if ( cron_is_scheduled() ) {
+		return;
+	}
+
+	// Set a time + 1 hour.
+	$next_time = time() + HOUR_IN_SECONDS;
+
+	// Schedule the event. in 4 hours time.
+	wp_schedule_event( $next_time, 'hourly', SCHEDULE_HOOK );
+}
+
+/**
+ * Push data to the ingestor.
+ *
+ * @param int[] $expedition_post_ids Expedition post IDs.
+ * @param bool  $changed_only        Only push changed expeditions.
+ *
+ * @return void
+ */
+function do_push( array $expedition_post_ids = [], bool $changed_only = true ): void {
+	// If no expedition post IDs, get all.
+	if ( empty( $expedition_post_ids ) ) {
+		// Prepare args.
+		$args = [
+			'post_type'              => EXPEDITION_POST_TYPE,
+			'posts_per_page'         => -1,
+			'post_status'            => [ 'publish', 'draft' ],
+			'fields'                 => 'ids',
+			'update_post_meta_cache' => false,
+			'update_post_term_cache' => false,
+			'no_found_rows'          => true,
+			'ignore_sticky_posts'    => true,
+		];
+
+		// Get all expedition IDs.
+		$expeditions         = new WP_Query( $args );
+		$expedition_post_ids = $expeditions->posts;
+		$expedition_post_ids = array_map( 'absint', $expedition_post_ids );
+	}
+
+	// Initialize CLI variables.
+	$is_in_cli = defined( 'WP_CLI' ) && true === WP_CLI;
+	$progress  = null;
+
+	// Initiated via.
+	$initiated_via = get_initiated_via();
+
+	// If empty expedition posts.
+	if ( empty( $expedition_post_ids ) ) {
+		// Check if in CLI.
+		if ( $is_in_cli ) {
+			// Output message.
+			WP_CLI::error( 'No expeditions found.' );
+		}
+
+		// Log error.
+		do_action(
+			'quark_ingestor_push_error',
+			[
+				'error'         => __( 'No expeditions found.', 'qrk' ),
+				'initiated_via' => $initiated_via,
+			]
+		);
+
+		// Return.
+		return;
+	}
+
+	// Total count.
+	$total_count = count( $expedition_post_ids );
+
+	// Success count.
+	$success_count = 0;
+
+	// Log CLI message.
+	if ( $is_in_cli ) {
+		// Output message.
+		WP_CLI::log( 'Pushing expeditions to ingestor...' );
+
+		// Initialize progress.
+		$progress = new Bar( 'Ingestor push', $total_count );
+	}
+
+	// Log push initiated.
+	do_action(
+		'quark_ingestor_push_initiated',
+		[
+			'expedition_post_ids' => $expedition_post_ids,
+			'changed_only'        => $changed_only,
+			'initiated_via'       => $initiated_via,
+			'total_count'         => $total_count,
+		]
+	);
+
+	// Get data for each expedition.
+	foreach ( $expedition_post_ids as $expedition_post_id ) {
+		// Get expedition data.
+		$expedition_data = get_expedition_data( $expedition_post_id );
+
+		// Check for expedition data.
+		if ( empty( $expedition_data ) ) {
+			// Increment progress.
+			if ( $is_in_cli ) {
+				$progress->tick();
+			}
+
+			// Log error.
+			do_action(
+				'quark_ingestor_push_error',
+				[
+					'expedition_post_id' => $expedition_post_id,
+					'error'              => __( 'No expedition data found.', 'qrk' ),
+				]
+			);
+
+			// Continue.
+			continue;
+		}
+
+		// JSON encode expedition data.
+		$json_expedition_data = wp_json_encode( $expedition_data );
+
+		// Validate JSON.
+		if ( empty( $json_expedition_data ) ) {
+			// Increment progress.
+			if ( $is_in_cli ) {
+				$progress->tick();
+			}
+
+			// Log error.
+			do_action(
+				'quark_ingestor_push_error',
+				[
+					'expedition_post_id' => $expedition_post_id,
+					'error'              => __( 'Invalid JSON data.', 'qrk' ),
+				]
+			);
+
+			// Continue.
+			continue;
+		}
+
+		// Hash expedition data.
+		$new_hash = md5( $json_expedition_data );
+
+		// Check for changed only.
+		if ( $changed_only ) {
+			// Get old hash.
+			$old_hash = get_post_meta( $expedition_post_id, 'ingestor_data_hash', true );
+
+			// Compare hash.
+			if ( $new_hash === $old_hash ) {
+				// Increment progress.
+				if ( $is_in_cli ) {
+					$progress->tick();
+				}
+
+				// Log error.
+				do_action(
+					'quark_ingestor_push_error',
+					[
+						'expedition_post_id' => $expedition_post_id,
+						'error'              => __( 'No changes detected.', 'qrk' ),
+					]
+				);
+
+				// Continue.
+				continue;
+			}
+		}
+
+		// Update hash.
+		update_post_meta( $expedition_post_id, 'ingestor_data_hash', $new_hash );
+
+		// Push expedition data.
+		$push_result = push_expedition_data( $expedition_post_id, $json_expedition_data );
+
+		// Check for WP_Error.
+		if ( $push_result instanceof WP_Error ) {
+			// Log error.
+			do_action(
+				'quark_ingestor_push_error',
+				[
+					'expedition_post_id' => $expedition_post_id,
+					'error'              => $push_result->get_error_message(),
+				]
+			);
+		} elseif ( $push_result ) {
+				// Log success.
+				do_action(
+					'quark_ingestor_push_success',
+					[
+						'expedition_post_id' => $expedition_post_id,
+					]
+				);
+
+				// Increment success count.
+				++$success_count;
+		} else {
+			// Log error.
+			do_action(
+				'quark_ingestor_push_error',
+				[
+					'expedition_post_id' => $expedition_post_id,
+					'error'              => __( 'Failed to push data.', 'qrk' ),
+				]
+			);
+		}
+
+		// Increment progress.
+		if ( $is_in_cli ) {
+			$progress->tick();
+		}
+	}
+
+	// Log CLI message.
+	if ( $is_in_cli ) {
+		// Finish progress.
+		$progress->finish();
+
+		// Output message.
+		WP_CLI::success( sprintf( 'Pushed %d of %d expeditions.', $success_count, $total_count ) );
+	}
+
+	// Log push completed.
+	do_action(
+		'quark_ingestor_push_completed',
+		[
+			'expedition_post_ids' => $expedition_post_ids,
+			'changed_only'        => $changed_only,
+			'initiated_via'       => $initiated_via,
+			'success_count'       => $success_count,
+			'total_count'         => $total_count,
+		]
+	);
+}
+
+/**
+ * Push data to ingestor.
+ *
+ * @param int    $expedition_post_id   Expedition post ID.
+ * @param string $json_expedition_data JSON expedition data.
+ *
+ * @return bool|WP_Error
+ */
+function push_expedition_data( int $expedition_post_id = 0, string $json_expedition_data = '' ): bool|WP_Error {
+	// Check for expedition post ID.
+	if ( empty( $expedition_post_id ) ) {
+		return new WP_Error( 'qrk_ingestor_invalid_expedition_id', __( 'Invalid expedition post ID.', 'qrk' ) );
+	}
+
+	// Check for expedition data.
+	if ( empty( $json_expedition_data ) ) {
+		return new WP_Error( 'qrk_ingestor_invalid_expedition_data', __( 'Invalid expedition data.', 'qrk' ) );
+	}
+
+	// Validate credentials.
+	if (
+		! defined( 'QUARK_INGESTOR_BASE_URL' ) ||
+		empty( QUARK_INGESTOR_BASE_URL ) ||
+		! defined( 'QUARK_INGESTOR_API_KEY' ) ||
+		empty( QUARK_INGESTOR_API_KEY )
+	) {
+		return new WP_Error( 'qrk_ingestor_no_auth', __( 'Ingestor credentials missing', 'qrk' ) );
+	}
+
+	// Generate UUID.
+	$uuid = wp_generate_uuid4();
+
+	// Construct URL.
+	$url = trailingslashit( QUARK_INGESTOR_BASE_URL ) . $uuid . '_' . $expedition_post_id . '.json';
+
+	// Set request args.
+	$args = [
+		'method'  => 'PUT',
+		'timeout' => 20,
+		'headers' => [
+			'x-api-key'    => QUARK_INGESTOR_API_KEY,
+			'Content-Type' => 'application/json',
+		],
+		'body'    => $json_expedition_data,
+	];
+
+	// Do request.
+	$request = wp_remote_request( $url, $args );
+
+	// Return WP_Error if failed.
+	if ( $request instanceof WP_Error ) {
+		return $request;
+	}
+
+	// Check response code.
+	if ( 200 !== wp_remote_retrieve_response_code( $request ) ) {
+		return new WP_Error( 'qrk_ingestor_invalid_response', wp_remote_retrieve_response_message( $request ) );
+	}
+
+	// Return success.
+	return true;
 }
 
 /**
@@ -121,7 +456,7 @@ function get_all_data(): array {
 		}
 
 		// Add expedition data to results.
-		$results[] = $expedition_data;
+		$results[ $expedition_post_id ] = $expedition_data;
 	}
 
 	// Return results.
