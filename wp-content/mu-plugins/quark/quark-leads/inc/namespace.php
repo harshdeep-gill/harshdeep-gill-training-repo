@@ -211,6 +211,9 @@ function build_salesforce_request_uri( string $salesforce_object = '' ): string 
  *       like composite requests, etc.
  */
 function build_salesforce_request_data( array $fields = [], string $salesforce_object = '' ): array {
+	// Add WebForm_Submission_ID__c field.
+	$fields['WebForm_Submission_ID__c'] = uniqid( strval( time() ), true );
+
 	// The fields are the only data required in the request.
 	return (array) apply_filters(
 		'quark_leads_input_data',
@@ -235,9 +238,6 @@ function process_job_application_input_data( array $fields = [], string $salesfo
 	) {
 		return $fields;
 	}
-
-	// Add WebForm_Submission_ID__c field.
-	$fields['WebForm_Submission_ID__c'] = uniqid( strval( time() ), true );
 
 	// Unset unnecessary fields.
 	unset( $fields['Webform_URL__c'] );
