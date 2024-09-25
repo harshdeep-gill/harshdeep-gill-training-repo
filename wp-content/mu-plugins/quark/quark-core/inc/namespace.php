@@ -594,8 +594,8 @@ function get_pagination_links( array $args = [] ): string {
 }
 
 /**
- * Check if we are in the gutenberg editor.
- * We don't have any functionality to identify if we are in the gutenberg editor inside the block render callback.
+ * Check if we are in the block editor.
+ * We don't have any functionality to identify if we are in the block editor inside the block render callback.
  *
  * Warning: This function is not 100% reliable, it's just a workaround.
  * And the function should be used strictly inside render callback.
@@ -606,11 +606,11 @@ function get_pagination_links( array $args = [] ): string {
  * @return bool
  */
 function is_block_editor(): bool {
-	// Check if we are in the gutenberg editor.
+	// Check if we are in the block editor.
 	if ( wp_is_serving_rest_request() ) {
 		return true;
 	}
 
-	// Not in gutenberg editor.
+	// Not in the block editor.
 	return false;
 }
