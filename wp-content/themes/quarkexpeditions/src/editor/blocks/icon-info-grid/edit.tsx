@@ -1,10 +1,13 @@
 /**
  * WordPress dependencies.
  */
+import { __ } from '@wordpress/i18n';
 import {
 	useBlockProps,
 	useInnerBlocksProps,
+	InspectorControls
 } from '@wordpress/block-editor';
+import { PanelBody, ToggleControl } from '@wordpress/components';
 
 /**
  * External dependencies.
@@ -27,8 +30,10 @@ import Section from '../../components/section';
  *
  * @param {Object} props           Component properties.
  * @param {string} props.className Class name.
+ * @param {Array}    props.attributes    Block attributes.
+ * @param {Function} props.setAttributes Set block attributes.
  */
-export default function Edit( { className }: BlockEditAttributes ): JSX.Element {
+export default function Edit( { className, attributes, setAttributes }: BlockEditAttributes ): JSX.Element {
 	// Prepare block props.
 	const blockProps = useBlockProps( {
 		className: classnames( className, 'icon-info-grid' ),
@@ -42,8 +47,20 @@ export default function Edit( { className }: BlockEditAttributes ): JSX.Element 
 
 	// Return the block's markup.
 	return (
-		<Section { ...blockProps } >
-			<div { ...innerBlockProps } />
-		</Section>
+		<>
+			<InspectorControls>
+				<PanelBody title={ __( 'Desktop Carousel', 'qrk' ) }>
+					<ToggleControl
+						label={ __( 'is Carousel', 'qrk' ) }
+						checked={ attributes.desktopCarousel }
+						help={ __( 'Should this require to be a carousel on desktop?', 'qrk' ) }
+						onChange={ ( desktopCarousel: boolean ) => setAttributes( { desktopCarousel } ) }
+					/>
+				</PanelBody>
+			</InspectorControls>
+			<Section { ...blockProps } >
+				<div { ...innerBlockProps } />
+			</Section>
+		</>
 	);
 }
