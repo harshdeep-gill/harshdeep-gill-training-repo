@@ -31,7 +31,7 @@ export default function edit( { className, attributes, setAttributes }: BlockEdi
 		<RichText
 			{ ...blocksProps }
 			tagName="div"
-			placeholder={ __( 'Write Overline...', 'qrk' ) }
+			placeholder={ __( 'Write Overline…', 'qrk' ) }
 			value={ attributes.overline }
 			onChange={ ( overline: string ) => setAttributes( { overline } ) }
 			allowedFormats={ [] }

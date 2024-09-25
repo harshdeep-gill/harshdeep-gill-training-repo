@@ -31,7 +31,7 @@ export default function edit( { className, attributes, setAttributes }: BlockEdi
 		<RichText
 			{ ...blocksProps }
 			tagName="p"
-			placeholder={ __( 'Write Highlight Text...', 'qrk' ) }
+			placeholder={ __( 'Write Highlight Text…', 'qrk' ) }
 			value={ attributes.text }
 			onChange={ ( text: string ) => setAttributes( { text } ) }
 			allowedFormats={ [] }
