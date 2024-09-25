@@ -36,6 +36,9 @@ export const settings: BlockConfiguration = {
  * Child block.
  */
 import * as item from './children/highlight-item';
+import * as title from './children/title';
+import * as overline from './children/overline';
+import * as text from './children/text';
 
 /**
  * Initialization.
@@ -46,4 +49,7 @@ export const init = (): void => {
 
 	// Register child block.
 	registerBlockType( item.name, item.settings );
+	registerBlockType( title.name, title.settings );
+	registerBlockType( overline.name, overline.settings );
+	registerBlockType( text.name, text.settings );
 };
