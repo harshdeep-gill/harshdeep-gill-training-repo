@@ -10,7 +10,7 @@ export class Tooltip extends HTMLElement {
 	/**
 	 * Properties.
 	 */
-	private tooltipContent: HTMLElement | null;
+	private tooltipContentElement: HTMLElement | null;
 
 	/**
 	 * Constructor.
@@ -20,11 +20,10 @@ export class Tooltip extends HTMLElement {
 		super();
 
 		// Elements.
-		this.tooltipContent = this.querySelector( '.tooltip__description' );
+		this.tooltipContentElement = this.querySelector( '.tooltip__description' );
 
-		// Events.
-		this.addEventListener( 'mouseenter', this.positionTooltip.bind( this ) );
-		this.addEventListener( 'mouseleave', this.handleMouseLeave.bind( this ) );
+		// Events
+		this.tooltipContentElement?.addEventListener( 'toggle', this.handleTooltipToggled.bind( this ) );
 	}
 
 	/**
@@ -32,55 +31,184 @@ export class Tooltip extends HTMLElement {
 	 */
 	positionTooltip() {
 		// Check if tooltip is available.
-		if ( ! this.tooltipContent ) {
+		if ( ! this.tooltipContentElement ) {
 			// Retrun if the tooltip content is not available.
 			return;
 		}
 
 		// Get the rect of the tooltip.
-		const tooltipRect = this.getBoundingClientRect();
-		const tooltipContent = this.tooltipContent.getBoundingClientRect();
-		const tooltipContentHeight = tooltipContent.height;
-		const tooltipContentWidth = tooltipContent.width;
+		const tooltipTriggerRect = this.getBoundingClientRect();
+		const tooltipTriggerRectOffsets = [
+			{ dir: 'top', value: tooltipTriggerRect.top },
+			{ dir: 'bottom', value: window.innerHeight - tooltipTriggerRect.bottom },
+			{ dir: 'left', value: tooltipTriggerRect.left },
+			{ dir: 'right', value: window.innerWidth - tooltipTriggerRect.right },
+		].sort( ( offsetA, offsetB ) => offsetB.value - offsetA.value );
 
-		// Top position of tooltip text.
-		const tooltipTextTop = tooltipRect.bottom - tooltipContentHeight - 24; // 22px + 2px is the height of the info icon and the arrow border, to place arrow near the tooltip content.
+		// Get the rect for content element.
+		const contentElementRect = this.tooltipContentElement.getBoundingClientRect();
 
-		// Left position of tooltip text.
-		let tooltipTextLeft = tooltipRect.left + ( tooltipRect.width / 2 ) - ( tooltipContentWidth / 2 );
+		// Maximum value for height/width.
+		const TOOLTIP_CONTENT_MAX_DIMENSION = 360;
 
-		// If tooltip text is going outsite of screen in left side them give 10px from left.
-		if ( tooltipTextLeft <= 0 ) {
-			tooltipTextLeft = 10;
+		// The distance between content and screen edges / icon and content.
+		const MINIMUM_BUFFER_DISTANCE_VALUE = 20;
+
+		// Initialize offsets.
+		const largestOffset = tooltipTriggerRectOffsets[ 0 ];
+		let secondLargestOffset = tooltipTriggerRectOffsets[ 1 ];
+		const tooltipDirection = largestOffset.dir;
+
+		// Initialize max width/height.
+		let newMaxWidth = 0;
+		let newMaxHeight = 0;
+
+		// Initialize leftValue.
+		let leftValue = MINIMUM_BUFFER_DISTANCE_VALUE;
+
+		// Initial top value.
+		let topValue = MINIMUM_BUFFER_DISTANCE_VALUE;
+
+		// The largest directional offset.
+		if ( [ 'top', 'bottom' ].includes( largestOffset.dir ) ) {
+			//
+			if ( [ 'top', 'bottom' ].includes( secondLargestOffset.dir ) ) {
+				secondLargestOffset = tooltipTriggerRectOffsets[ 2 ];
+			}
+
+			// Setup max height.
+			if ( largestOffset.value >= TOOLTIP_CONTENT_MAX_DIMENSION + ( 2 * MINIMUM_BUFFER_DISTANCE_VALUE ) ) {
+				newMaxHeight = TOOLTIP_CONTENT_MAX_DIMENSION;
+			} else {
+				newMaxHeight = largestOffset.value - ( 2 * MINIMUM_BUFFER_DISTANCE_VALUE );
+			}
+
+			// Setup max width.
+			if ( secondLargestOffset.value >= TOOLTIP_CONTENT_MAX_DIMENSION + ( 2 * MINIMUM_BUFFER_DISTANCE_VALUE ) ) {
+				newMaxWidth = TOOLTIP_CONTENT_MAX_DIMENSION;
+			} else {
+				newMaxWidth = secondLargestOffset.value - ( 2 * MINIMUM_BUFFER_DISTANCE_VALUE );
+			}
+
+			// If the position is top.
+			if ( 'top' === largestOffset.dir ) {
+				topValue = tooltipTriggerRect.top - Math.min( contentElementRect.height, newMaxHeight ) - ( 2 * MINIMUM_BUFFER_DISTANCE_VALUE );
+			} else {
+				topValue = tooltipTriggerRect.bottom + MINIMUM_BUFFER_DISTANCE_VALUE;
+			}
+
+			// If the secondary position is left.
+			if ( 'left' === secondLargestOffset.dir ) {
+				const theRightOffset = tooltipTriggerRectOffsets.find( ( offset ) => 'right' === offset.dir )?.value ?? 0;
+				const availableSpaceOnRight = theRightOffset - MINIMUM_BUFFER_DISTANCE_VALUE;
+
+				// Get the mid point of the triggerRect.
+				const triggerMidPoint = tooltipTriggerRect.left + ( tooltipTriggerRect.width / 2 );
+
+				// Spread from left to available right.
+				if ( availableSpaceOnRight <= Math.min( newMaxWidth, contentElementRect.width ) / 2 ) {
+					leftValue = triggerMidPoint - ( Math.min( newMaxWidth, contentElementRect.width ) / 2 ) + availableSpaceOnRight;
+				} else {
+					leftValue = triggerMidPoint - ( Math.min( newMaxWidth, contentElementRect.width ) / 2 );
+				}
+			} else {
+				const theLeftOffset = tooltipTriggerRectOffsets.find( ( offset ) => 'left' === offset.dir )?.value ?? 0;
+				const availableSpaceOnLeft = theLeftOffset - MINIMUM_BUFFER_DISTANCE_VALUE;
+
+				// Get the mid point of the triggerRect.
+				const triggerMidPoint = tooltipTriggerRect.left + ( tooltipTriggerRect.width / 2 );
+
+				// Spread from left to available left.
+				if ( availableSpaceOnLeft <= Math.min( newMaxWidth, contentElementRect.width ) / 2 ) {
+					leftValue = triggerMidPoint - ( Math.min( newMaxWidth, contentElementRect.width ) / 2 ) + availableSpaceOnLeft;
+				} else {
+					leftValue = triggerMidPoint - ( Math.min( newMaxWidth, contentElementRect.width ) / 2 );
+				}
+			}
+		} else {
+			//
+			if ( [ 'left', 'right' ].includes( secondLargestOffset.dir ) ) {
+				secondLargestOffset = tooltipTriggerRectOffsets[ 2 ];
+			}
+
+			// Setup max height.
+			if ( largestOffset.value >= TOOLTIP_CONTENT_MAX_DIMENSION + ( 2 * MINIMUM_BUFFER_DISTANCE_VALUE ) ) {
+				newMaxWidth = TOOLTIP_CONTENT_MAX_DIMENSION;
+			} else {
+				newMaxWidth = largestOffset.value - ( 2 * MINIMUM_BUFFER_DISTANCE_VALUE );
+			}
+
+			// Setup max width.
+			if ( secondLargestOffset.value >= TOOLTIP_CONTENT_MAX_DIMENSION + ( 2 * MINIMUM_BUFFER_DISTANCE_VALUE ) ) {
+				newMaxHeight = TOOLTIP_CONTENT_MAX_DIMENSION;
+			} else {
+				newMaxHeight = secondLargestOffset.value - ( 2 * MINIMUM_BUFFER_DISTANCE_VALUE );
+			}
+
+			// If the position is left.
+			if ( 'left' === largestOffset.dir ) {
+				leftValue = tooltipTriggerRect.left - Math.min( contentElementRect.width, newMaxWidth ) - ( 2 * MINIMUM_BUFFER_DISTANCE_VALUE );
+			} else {
+				leftValue = tooltipTriggerRect.bottom + MINIMUM_BUFFER_DISTANCE_VALUE;
+			}
+
+			// If the secondary position is top.
+			if ( 'top' === secondLargestOffset.dir ) {
+				const theBottomOffset = tooltipTriggerRectOffsets.find( ( offset ) => 'bottom' === offset.dir )?.value ?? 0;
+				const availableSpaceOnBottom = theBottomOffset - MINIMUM_BUFFER_DISTANCE_VALUE;
+
+				// Get the mid point of the triggerRect.
+				const triggerMidPoint = tooltipTriggerRect.top + ( tooltipTriggerRect.height / 2 );
+
+				// Spread from top to available bottom.
+				if ( availableSpaceOnBottom <= Math.min( newMaxHeight, contentElementRect.height ) / 2 ) {
+					topValue = triggerMidPoint - ( Math.min( newMaxHeight, contentElementRect.height ) / 2 ) + availableSpaceOnBottom;
+				} else {
+					topValue = triggerMidPoint - ( Math.min( newMaxHeight, contentElementRect.height ) / 2 );
+				}
+			} else {
+				const theTopOffset = tooltipTriggerRectOffsets.find( ( offset ) => 'top' === offset.dir )?.value ?? 0;
+				const availableSpaceOnTop = theTopOffset - MINIMUM_BUFFER_DISTANCE_VALUE;
+
+				// Get the mid point of the triggerRect.
+				const triggerMidPoint = tooltipTriggerRect.top + ( tooltipTriggerRect.height / 2 );
+
+				// Spread from top to available top.
+				if ( availableSpaceOnTop <= Math.min( newMaxHeight, contentElementRect.height ) / 2 ) {
+					topValue = triggerMidPoint - ( Math.min( newMaxHeight, contentElementRect.height ) / 2 ) + availableSpaceOnTop;
+				} else {
+					topValue = triggerMidPoint - ( Math.min( newMaxHeight, contentElementRect.height ) / 2 );
+				}
+			}
 		}
 
-		// Set tooltip position.
-		this.tooltipContent.style.top = tooltipTextTop + 'px';
-		this.tooltipContent.style.left = tooltipTextLeft + 'px';
-
-		// If tooltip text is going outsite of screen in right side them give 10px from right and reset left position.
-		if ( tooltipTextLeft + tooltipContentWidth >= window.innerWidth ) {
-			this.tooltipContent.style.left = '';
-			this.tooltipContent.style.right = '10px';
-		}
-
-		// Prevent scroll.
-		document.body.classList.add( 'prevent-scroll' );
+		// Set the direction of the tooltip.
+		this.tooltipContentElement.style.maxWidth = newMaxWidth + 'px';
+		this.tooltipContentElement.style.maxHeight = newMaxHeight + 'px';
+		this.tooltipContentElement.style.top = topValue + 'px';
+		this.tooltipContentElement.style.left = leftValue + 'px';
+		this.setAttribute( 'tooltip-direction', tooltipDirection );
 	}
 
 	/**
-	 * Event: Mouse Leave.
+	 * Toggles the body element's scroll.
+	 *
+	 * @param {Event} evt The event object.
 	 */
-	handleMouseLeave() {
-		// Check if the tooltip content is available.
-		if ( this.tooltipContent ) {
-			this.tooltipContent.style.top = '';
-			this.tooltipContent.style.left = '';
-			this.tooltipContent.style.right = '';
+	handleTooltipToggled( evt: Event ) {
+		// Null check.
+		if ( ! ( 'newState' in evt ) ) {
+			// Bail.
+			return;
 		}
 
-		// Enable scroll.
-		document.body.classList.remove( 'prevent-scroll' );
+		// Check and toggle.
+		if ( 'open' === evt.newState ) {
+			requestAnimationFrame( this.positionTooltip.bind( this ) );
+			document.body.classList.add( 'prevent-scroll' );
+		} else {
+			document.body.classList.remove( 'prevent-scroll' );
+		}
 	}
 }
 
