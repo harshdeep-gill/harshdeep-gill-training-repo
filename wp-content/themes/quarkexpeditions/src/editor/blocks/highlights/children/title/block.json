@@ -1,0 +1,29 @@
+{
+	"schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Highlight Item Title",
+	"name": "quark/highlight-item-title",
+	"description": "Individual highlight in a highlights list.",
+	"parent": [
+		"quark/highlight-item"
+	],
+	"category": "layout",
+	"keywords": [
+		"highlight",
+		"item",
+		"title"
+	],
+	"textdomain": "qrk",
+	"attributes": {
+		"title": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}
