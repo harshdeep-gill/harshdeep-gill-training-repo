@@ -1,3 +1,7 @@
+@props( [
+	'desktop_carousel' => 'false',
+] )
+
 @php
 	if ( empty( $slot ) ) {
 		return;
@@ -10,7 +14,7 @@
 
 <x-section>
 	<div class="icon-info-grid">
-		<x-icon-info-grid.carousel>
+		<x-icon-info-grid.carousel :desktop_carousel="$desktop_carousel" >
 			{!! $slot !!}
 		</x-icon-info-grid.carousel>
 	</div>
