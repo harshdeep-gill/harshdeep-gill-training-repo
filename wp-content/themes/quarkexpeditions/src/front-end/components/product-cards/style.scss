@@ -61,8 +61,8 @@
 	}
 
 	&__track {
-		margin: 0 calc(-1 * var(--grid-col-gutter)) calc(-1 * var(--spacing-6));
-		padding: 0 var(--grid-col-gutter) var(--spacing-6);
+		margin: 0 calc(-1 * 18px) calc(-1 * var(--spacing-6));
+		padding: 0 18px var(--spacing-6);
 		scrollbar-width: none; /* Firefox */
 
 		&::-webkit-scrollbar {
@@ -70,6 +70,8 @@
 		}
 
 		#{$self}--has-overflow & {
+			margin: 0 calc(-1 * var(--grid-col-gutter)) calc(-1 * var(--spacing-6));
+			padding: 0 var(--grid-col-gutter) var(--spacing-6);
 
 			@media screen and (min-width: grid-size(sm)) {
 				overflow-x: visible;
@@ -360,6 +362,11 @@
 	&__drawer-open {
 		cursor: pointer;
 		display: flex;
+
+		svg {
+			max-width: 20px;
+			height: auto;
+		}
 	}
 
 	&__transfer-package-content {

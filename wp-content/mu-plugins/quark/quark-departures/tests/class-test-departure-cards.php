@@ -1015,7 +1015,9 @@ class Test_Departure_Cards extends Softrip_TestCase {
 				'description' => 'Lorem Ipsum Dolor Sit Amet Consectetur',
 				'permalink'   => get_permalink( self::$policy_pages[1] ),
 			],
-			'promotions'               => [],
+			'promotions'               => [
+				'Save 15% - Offer Code 15PROMO',
+			],
 		];
 
 		// Search ship post with code OEX.
@@ -1657,7 +1659,10 @@ class Test_Departure_Cards extends Softrip_TestCase {
 				'spaces_available'         => 0,
 				'checkout_url'             => 'https://local-checkout.quarkexpeditions.com?package_id=HIJ-456&departure_date=2025-09-04&cabin_code=OEX-JST&currency=CAD',
 				'brochure_price'           => '$46,050 CAD',
-				'promos'                   => [],
+				'promos'                   => [
+					'10PIF'   => '$41,220 CAD',
+					'20PROMO' => '$36,640 CAD',
+				],
 			],
 			$card_data['cabin_data']['OEX-JST'] ?? []
 		);

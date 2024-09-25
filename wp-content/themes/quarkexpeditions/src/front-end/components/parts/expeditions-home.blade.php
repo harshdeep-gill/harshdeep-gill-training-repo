@@ -8,7 +8,7 @@
 	}
 @endphp
 
-<x-product-cards carousel_overflow="true">
+<x-product-cards>
 	@foreach ( $cards as $card )
 		<x-product-cards.card>
 			@if ( ! empty( $card['image_id'] ) )

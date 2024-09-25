@@ -27,6 +27,30 @@ use const Quark\Pages\POST_TYPE;
  * Class Landing_Page.
  */
 class Landing_Page {
+	/**
+	 * Block converter instance.
+	 *
+	 * @var Block_Converter
+	 */
+	private Block_Converter $block_converter;
+
+	/**
+	 * Special page IDs.
+	 *
+	 * @var array<int>
+	 */
+	private $special_pages = [
+		'home'                            => 102236,
+		'home2'                           => 102696,
+		'travel-insurance-plan'           => 312,
+		'blog-archive'                    => 110506,
+		'privacy-policy'                  => 310,
+		'website-term-of-use'             => 311,
+		'expedition-terms-and-conditions' => 105726,
+		'know-before-you-go'              => 106661,
+		'expedition-ships'                => 109,
+		'brochure_archive'                => 116086,
+	];
 
 	/**
 	 * Migrate all Landing_Page.
@@ -57,6 +81,9 @@ class Landing_Page {
 		// Initialize progress bar.
 		$progress = make_progress_bar( 'Migrating "Landing Page" post-type', count( $data ) );
 
+		// Initialize block converter.
+		$this->block_converter = new Block_Converter();
+
 		// Check if progress bar exists or not.
 		if ( ! $progress instanceof Bar ) {
 			WP_CLI::error( 'Progress bar not found!' );
@@ -86,6 +113,14 @@ class Landing_Page {
 	 * @return void
 	 */
 	public function insert_post( array $drupal_post = [] ): void {
+		// Skip if its special page.
+		if ( ! empty( $drupal_post['nid'] ) && in_array( absint( $drupal_post['nid'] ), $this->special_pages, true ) ) {
+			WP_CLI::line( 'Skipping special page: ' . $drupal_post['nid'] );
+
+			// Bail out.
+			return;
+		}
+
 		// Normalize drupal post data.
 		$normalized_post = $this->normalize_drupal_post( $drupal_post );
 
@@ -175,7 +210,16 @@ class Landing_Page {
 
 		// post content.
 		if ( ! empty( $item['post_content'] ) ) {
-			$post_content = prepare_content( strval( $item['post_content'] ) );
+			$post_content = serialize_block(
+				[
+					'blockName'    => 'quark/section',
+					'attrs'        => [
+						'hasTitle' => false,
+						'isNarrow' => true,
+					],
+					'innerContent' => [ prepare_content( strval( $item['post_content'] ) ) ],
+				]
+			) . PHP_EOL;
 		}
 
 		// Post excerpt.
@@ -189,8 +233,7 @@ class Landing_Page {
 
 			// Convert block content.
 			if ( ! empty( $block ) ) {
-				$block_converter = new Block_Converter();
-				$block_content   = $block_converter->get_drupal_block_data( $block );
+				$block_content = $this->block_converter->get_drupal_block_data( $block );
 			}
 
 			// Check if hero banner exists.
@@ -198,6 +241,31 @@ class Landing_Page {
 				$post_content = $block_content . $post_content;
 			}
 		}
+
+		// Paragraphs for Post content.
+		$paragraph_data = $this->get_drupal_paragraph_data( $nid );
+
+		// Check if paragraph data is not empty.
+		if ( ! empty( $paragraph_data ) ) {
+			// initialize block content.
+			$block_content = '';
+
+			// Loop through paragraph data.
+			foreach ( $paragraph_data as $paragraph ) {
+				$block = $this->block_converter->get_drupal_block_data( $paragraph );
+
+				// Check if block is not empty.
+				if ( ! empty( $block ) ) {
+					$block_content .= $block;
+				}
+			}
+
+			// Append block content.
+			$post_content .= $block_content;
+		}
+
+		// Prepare post content.
+		$post_content = str_replace( 'u0026', '&', $post_content );
 
 		// Prepare post data.
 		$data = [
@@ -314,6 +382,43 @@ class Landing_Page {
 		// Check if data is not array.
 		if ( ! is_array( $result ) ) {
 			WP_CLI::line( 'Unable to fetch drupal_hero_banner_block data!' );
+
+			// Bail out.
+			return [];
+		}
+
+		// Return data.
+		return $result;
+	}
+
+	/**
+	 * Get drupal paragraph data.
+	 *
+	 * @param int $nid Drupal node id.
+	 *
+	 * @return array{}|array<int, array<string, int|string>> Drupal paragraph data.
+	 */
+	public function get_drupal_paragraph_data( int $nid = 0 ): array {
+		// Get database connection.
+		$drupal_database = get_database();
+
+		// Query.
+		$query = "SELECT
+			paragraphs_item.id,
+			paragraphs_item.type
+		FROM
+			node__field_components as components
+				LEFT JOIN paragraphs_item_field_data AS paragraphs_item ON paragraphs_item.id = components.field_components_target_id AND components.langcode = paragraphs_item.langcode AND paragraphs_item.parent_type = 'node' AND paragraphs_item.parent_id = components.entity_id
+		WHERE
+			components.entity_id = %s and components.langcode = 'en'
+		ORDER BY delta";
+
+		// Fetch data.
+		$result = $drupal_database->get_results( $drupal_database->prepare( $query, $nid ), ARRAY_A );
+
+		// Check if data is not array.
+		if ( ! is_array( $result ) ) {
+			WP_CLI::line( 'Unable to fetch paragraph data!' );
 
 			// Bail out.
 			return [];

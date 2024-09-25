@@ -18,7 +18,6 @@ use WP_Post;
 use function Quark\Migration\Drupal\download_file_by_mid;
 use function Quark\Migration\Drupal\get_database;
 use function Quark\Migration\Drupal\get_term_by_id;
-use function Quark\Migration\Drupal\prepare_content;
 use function Quark\Migration\Drupal\prepare_for_migration;
 use function Quark\Migration\Drupal\get_post_by_id;
 use function Quark\Migration\Drupal\prepare_seo_data;

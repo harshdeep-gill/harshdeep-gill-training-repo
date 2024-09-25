@@ -167,11 +167,6 @@ class Offer {
 			$modified_at = gmdate( 'Y-m-d H:i:s', absint( $item['changed'] ) );
 		}
 
-		// Status.
-		if ( ! empty( $item['status'] ) && 1 === absint( $item['status'] ) ) {
-			$status = 'publish';
-		}
-
 		// post content.
 		if ( ! empty( $item['post_content'] ) ) {
 			$post_content = strval( $item['post_content'] );

@@ -63,6 +63,9 @@ export class Tooltip extends HTMLElement {
 			this.tooltipContent.style.left = '';
 			this.tooltipContent.style.right = '10px';
 		}
+
+		// Prevent scroll.
+		document.body.classList.add( 'prevent-scroll' );
 	}
 
 	/**
@@ -75,6 +78,9 @@ export class Tooltip extends HTMLElement {
 			this.tooltipContent.style.left = '';
 			this.tooltipContent.style.right = '';
 		}
+
+		// Enable scroll.
+		document.body.classList.remove( 'prevent-scroll' );
 	}
 }
 

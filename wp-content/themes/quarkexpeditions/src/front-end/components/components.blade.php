@@ -1549,7 +1549,6 @@
 		<x-listing-cards.card>
 			<x-listing-cards.overline text="Expedition Guides and Education Team" />
 			<x-listing-cards.title title="Quark Expeditions Invites Guests to “Raise a Glass and Stay Connected” with Free Wi-Fi and Bar Service" />
-			<x-listing-cards.subtitle subtitle="Experience the Polar Regions your own way" />
 			<x-listing-cards.description>
 				<p>Quark Expeditions, the global leader in polar adventures, is pleased to announce that all guests will enjoy complimentary Wi-Fi and alcohol on all voyages as of the Antarctic 2024/25 sailing season.</p>
 			</x-listing-cards.description>
@@ -1562,7 +1561,6 @@
 		<x-listing-cards.card>
 			<x-listing-cards.overline text="Expedition Guides and Education Team" />
 			<x-listing-cards.title title="Ask Parker the Polar Bear! Quark Expeditions’ New AI-Driven Partner Portal Makes Every Travel Advisor a Polar Expert" />
-			<x-listing-cards.subtitle subtitle="Experience the Polar Regions your own way" />
 			<x-listing-cards.description>
 				<p>Greenland is waiting to be explored. Browse all of our expedition options to the world's largest island.</p>
 			</x-listing-cards.description>
@@ -1575,7 +1573,6 @@
 		<x-listing-cards.card>
 			<x-listing-cards.overline text="Expedition Guides and Education Team" />
 			<x-listing-cards.title title="Quark Expeditions Invites Guests to “Raise a Glass and Stay Connected” with Free Wi-Fi and Bar Service" />
-			<x-listing-cards.subtitle subtitle="Experience the Polar Regions your own way" />
 			<x-listing-cards.description>
 				<p>Quark Expeditions, the global leader in polar adventures, is pleased to announce that all guests will enjoy complimentary Wi-Fi and alcohol on all voyages as of the Antarctic 2024/25 sailing season.</p>
 			</x-listing-cards.description>
@@ -3411,6 +3408,144 @@
 		</x-product-cards.card>
 	</x-product-cards>
 
+	<x-product-cards :carousel_overflow="false">
+		<x-product-cards.card url="#">
+			<x-product-cards.image
+				image_id="29"
+			>
+				<x-product-cards.badge-cta text="Save 50%" />
+			</x-product-cards.image>
+			<x-product-cards.itinerary departure_date="Departing May 20, 2024" duration="10 Days" />
+			<x-product-cards.title title="Introduction to Spitsbergen" />
+			<x-product-cards.subtitle title="Fjords, Glaciers, and Wildlife of Svalbard" />
+			<x-product-cards.description>
+				<p>This fascinating expedition provides a taste of everything Spitsbergen has to offer!</p>
+			</x-product-cards.description>
+			<x-product-cards.price
+				original_price="$7,395 USD"
+				discounted_price="$6,171 USD"
+			/>
+			<x-product-cards.buttons :columns="2">
+				<x-button size="big">Request a Quote</x-button>
+				<x-button size="big" appearance="outline">Learn More</x-button>
+			</x-product-cards.buttons>
+		</x-product-cards.card>
+
+		<x-product-cards.card url="#">
+			<x-product-cards.image
+				image_id="36"
+				:is_immersive="false"
+			>
+				<x-product-cards.badge-cta text="Save 50%" />
+				<x-product-cards.badge-time text="Just Added" />
+			</x-product-cards.image>
+			<x-product-cards.itinerary departure_date="Departing May 28, 2024" duration="12 Days" />
+			<x-product-cards.title title="Spitsbergen Explorer" />
+			<x-product-cards.subtitle title="Wildlife Capital of the Arctic" />
+			<x-product-cards.description>
+				<p>Witness the remarkable array of creatures who call this spectacular environment home.</p>
+			</x-product-cards.description>
+			<x-product-cards.price
+				original_price="$9,095 USD"
+				discounted_price="$7,361 USD"
+			/>
+			<x-product-cards.buttons :columns="2">
+				<x-button size="big" icon="phone">Book: +1 (866) 220-1915</x-button>
+			</x-product-cards.buttons>
+		</x-product-cards.card>
+
+		<x-product-cards.card url="#">
+			<x-product-cards.image
+				image_id="32"
+				:is_immersive="false"
+			>
+				<x-product-cards.badge-time text="Just Added" />
+			</x-product-cards.image>
+			<x-product-cards.itinerary departure_date="Departing July 14, 2024" duration="11 Days" />
+			<x-product-cards.title title="Gems of West Greenland" />
+			<x-product-cards.subtitle title="Fjords, Icebergs, and Culture" />
+			<x-product-cards.description>
+				<p>Features the best sites of West Greenland & delivers an in-depth experience in just 12 days.</p>
+			</x-product-cards.description>
+			<x-product-cards.price
+				original_price="$9,395 USD"
+				discounted_price="$8,571 USD"
+			/>
+			<x-product-cards.buttons :columns="2">
+				<x-button size="big">Request a Quote</x-button>
+				<x-button size="big" appearance="outline">Learn More</x-button>
+			</x-product-cards.buttons>
+		</x-product-cards.card>
+
+		<x-product-cards.card url="#">
+			<x-product-cards.image
+				image_id="29"
+			>
+				<x-product-cards.badge-cta text="Save 50%" />
+			</x-product-cards.image>
+			<x-product-cards.itinerary departure_date="Departing May 20, 2024" duration="10 Days" />
+			<x-product-cards.title title="Introduction to Spitsbergen" />
+			<x-product-cards.subtitle title="Fjords, Glaciers, and Wildlife of Svalbard" />
+			<x-product-cards.description>
+				<p>This fascinating expedition provides a taste of everything Spitsbergen has to offer!</p>
+			</x-product-cards.description>
+			<x-product-cards.price
+				original_price="$7,395 USD"
+				discounted_price="$6,171 USD"
+			/>
+			<x-product-cards.buttons :columns="2">
+				<x-button size="big">Request a Quote</x-button>
+				<x-button size="big" appearance="outline">Learn More</x-button>
+			</x-product-cards.buttons>
+		</x-product-cards.card>
+
+		<x-product-cards.card url="#">
+			<x-product-cards.image
+				image_id="36"
+				:is_immersive="false"
+			>
+				<x-product-cards.badge-cta text="Save 50%" />
+				<x-product-cards.badge-time text="Just Added" />
+			</x-product-cards.image>
+			<x-product-cards.itinerary departure_date="Departing May 28, 2024" duration="12 Days" />
+			<x-product-cards.title title="Spitsbergen Explorer" />
+			<x-product-cards.subtitle title="Wildlife Capital of the Arctic" />
+			<x-product-cards.description>
+				<p>Witness the remarkable array of creatures who call this spectacular environment home.</p>
+			</x-product-cards.description>
+			<x-product-cards.price
+				original_price="$9,095 USD"
+				discounted_price="$7,361 USD"
+			/>
+			<x-product-cards.buttons :columns="2">
+				<x-button size="big" icon="phone">Book: +1 (866) 220-1915</x-button>
+			</x-product-cards.buttons>
+		</x-product-cards.card>
+
+		<x-product-cards.card url="#">
+			<x-product-cards.image
+				image_id="32"
+				:is_immersive="false"
+			>
+				<x-product-cards.badge-time text="Just Added" />
+			</x-product-cards.image>
+			<x-product-cards.itinerary departure_date="Departing July 14, 2024" duration="11 Days" />
+			<x-product-cards.title title="Gems of West Greenland" />
+			<x-product-cards.subtitle title="Fjords, Icebergs, and Culture" />
+			<x-product-cards.description>
+				<p>Features the best sites of West Greenland & delivers an in-depth experience in just 12 days.</p>
+			</x-product-cards.description>
+			<x-product-cards.price
+				original_price="$9,395 USD"
+				discounted_price="$8,571 USD"
+			/>
+			<x-product-cards.buttons :columns="2">
+				<x-button size="big">Request a Quote</x-button>
+				<x-button size="big" appearance="outline">Learn More</x-button>
+			</x-product-cards.buttons>
+		</x-product-cards.card>
+	</x-product-cards>
+
 	<x-product-cards :carousel_overflow="true">
 		<x-product-cards.card url="#">
 			<x-product-cards.image
@@ -3880,7 +4015,6 @@
 			<x-listing-cards.card>
 				<x-listing-cards.overline text="Expedition Guides and Education Team" />
 				<x-listing-cards.title title="Quark Expeditions Invites Guests to “Raise a Glass and Stay Connected” with Free Wi-Fi and Bar Service" />
-				<x-listing-cards.subtitle subtitle="Experience the Polar Regions your own way" />
 				<x-listing-cards.description>
 					<p>Quark Expeditions, the global leader in polar adventures, is pleased to announce that all guests will enjoy complimentary Wi-Fi and alcohol on all voyages as of the Antarctic 2024/25 sailing season.</p>
 				</x-listing-cards.description>
@@ -3892,7 +4026,6 @@
 			<x-listing-cards.card>
 				<x-listing-cards.overline text="Expedition Guides and Education Team" />
 				<x-listing-cards.title title="Ask Parker the Polar Bear! Quark Expeditions’ New AI-Driven Partner Portal Makes Every Travel Advisor a Polar Expert" />
-				<x-listing-cards.subtitle subtitle="Experience the Polar Regions your own way" />
 				<x-listing-cards.description>
 					<p>Greenland is waiting to be explored. Browse all of our expedition options to the world's largest island.</p>
 				</x-listing-cards.description>
@@ -3904,7 +4037,6 @@
 			<x-listing-cards.card>
 				<x-listing-cards.overline text="Expedition Guides and Education Team" />
 				<x-listing-cards.title title="Quark Expeditions Invites Guests to “Raise a Glass and Stay Connected” with Free Wi-Fi and Bar Service" />
-				<x-listing-cards.subtitle subtitle="Experience the Polar Regions your own way" />
 				<x-listing-cards.description>
 					<p>Quark Expeditions, the global leader in polar adventures, is pleased to announce that all guests will enjoy complimentary Wi-Fi and alcohol on all voyages as of the Antarctic 2024/25 sailing season.</p>
 				</x-listing-cards.description>
@@ -6801,8 +6933,10 @@
 <x-component-demo :keys="[ 'link-detail-cards' ]">
 	<x-section>
 		<x-section.heading>
-			<x-section.title title="Link Detail Cards" />
+			<x-section.title title="Quark Expeditions Protection Promise" heading_level="1" align="left" />
 		</x-section.heading>
+
+		<x-section.description>We share your excitement as you pursue the expedition of a lifetime, and we offer flexibility that few in the industry can match.</x-section.description>
 
 		<x-link-detail-cards>
 			<x-link-detail-cards.card url="#">
@@ -6830,6 +6964,15 @@
 <x-component-demo :keys="[ 'form-contact-us' ]">
 	<x-section>
 		<x-form-contact-us
+			:countries="$countries"
+			:states="$states"
+		/>
+	</x-section>
+</x-component-demo>
+
+<x-component-demo :keys="[ 'form-job-application' ]">
+	<x-section>
+		<x-form-job-application
 			:countries="$countries"
 			:states="$states"
 		/>
