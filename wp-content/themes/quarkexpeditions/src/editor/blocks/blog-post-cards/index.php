@@ -11,7 +11,7 @@ use WP_Query;
 
 use function Quark\Blog\get_cards_data;
 use function Quark\Core\get_pagination_links;
-use function Quark\Core\is_gutenberg_editor;
+use function Quark\Core\is_block_editor;
 
 use const Quark\Blog\POST_TYPE as BLOG_POST_TYPE;
 
@@ -111,7 +111,7 @@ function render( array $attributes = [] ): string {
 	$pagination = '';
 
 	// Check if we have cards data pagination.
-	if ( ! empty( $attributes['hasPagination'] ) && ! is_gutenberg_editor() ) {
+	if ( ! empty( $attributes['hasPagination'] ) && ! is_block_editor() ) {
 		$pagination = get_pagination_links(
 			[
 				'query' => $posts,
@@ -123,7 +123,7 @@ function render( array $attributes = [] ): string {
 	return quark_get_component(
 		COMPONENT,
 		[
-			'layout'             => $attributes['layout'],
+			'layout'             => ( false === $attributes['hasPagination'] ) ? $attributes['layout'] : 'grid',
 			'is_mobile_carousel' => $attributes['isMobileCarousel'],
 			'cards'              => $cards_data,
 			'pagination'         => $pagination,
