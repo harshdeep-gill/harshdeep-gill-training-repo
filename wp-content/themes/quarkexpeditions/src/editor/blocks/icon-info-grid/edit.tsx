@@ -5,7 +5,7 @@ import { __ } from '@wordpress/i18n';
 import {
 	useBlockProps,
 	useInnerBlocksProps,
-	InspectorControls
+	InspectorControls,
 } from '@wordpress/block-editor';
 import { PanelBody, ToggleControl } from '@wordpress/components';
 
@@ -28,8 +28,8 @@ import Section from '../../components/section';
 /**
  * Edit Component.
  *
- * @param {Object} props           Component properties.
- * @param {string} props.className Class name.
+ * @param {Object}   props               Component properties.
+ * @param {string}   props.className     Class name.
  * @param {Array}    props.attributes    Block attributes.
  * @param {Function} props.setAttributes Set block attributes.
  */
