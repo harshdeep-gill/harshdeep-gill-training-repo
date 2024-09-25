@@ -4,13 +4,14 @@
 import { __ } from '@wordpress/i18n';
 import {
 	useBlockProps,
-	RichText,
 	InspectorControls,
+	useInnerBlocksProps,
 } from '@wordpress/block-editor';
 import {
 	PanelBody,
 	SelectControl,
 	Icon,
+	ToggleControl,
 } from '@wordpress/components';
 
 /**
@@ -24,6 +25,13 @@ import icons from '../../../icons';
 import classnames from 'classnames';
 
 /**
+ * Child blocks.
+ */
+import * as highlightTitle from '../title';
+import * as highlightOverline from '../overline';
+import * as highlightText from '../text';
+
+/**
  * Edit Component.
  *
  * @param {Object}   props               Component properties.
@@ -35,6 +43,18 @@ export default function edit( { className, attributes, setAttributes }: BlockEdi
 	// Prepare block props.
 	const blocksProps = useBlockProps( {
 		className: classnames( className, 'highlights__item' ),
+	} );
+
+	// Prepare InnerBlocks props.
+	const innerBlockProps = useInnerBlocksProps( {
+		className: 'highlights__content',
+	}, {
+		allowedBlocks: [ highlightTitle.name, highlightOverline.name, highlightText.name ],
+		template: [
+			[ highlightTitle.name ],
+			[ highlightOverline.name ],
+			[ highlightText.name ],
+		],
 	} );
 
 	// Prepare icon.
@@ -51,6 +71,11 @@ export default function edit( { className, attributes, setAttributes }: BlockEdi
 	if ( ! selectedIcon || '' === selectedIcon ) {
 		selectedIcon = <Icon icon="no" />;
 	}
+
+	// Icon class.
+	const iconClasses = classnames( 'highlights__icon', {
+		'highlights__icon--border': attributes.border,
+	} );
 
 	// Return the block's markup.
 	return (
@@ -72,19 +97,19 @@ export default function edit( { className, attributes, setAttributes }: BlockEdi
 						] }
 						onChange={ ( icon: string ) => setAttributes( { icon } ) }
 					/>
+					<ToggleControl
+						label={ __( 'Icon border?', 'qrk' ) }
+						help={ __( 'Add a border to the Icon.', 'qrk' ) }
+						checked={ attributes.border }
+						onChange={ ( border: boolean ) => setAttributes( { border } ) }
+					/>
 				</PanelBody>
 			</InspectorControls>
 			<div { ...blocksProps }>
-				<div className="highlights__icon">
+				<div className={ iconClasses }>
 					{ selectedIcon }
 				</div>
-				<RichText
-					tagName="p"
-					placeholder={ __( 'Write highlight…', 'qrk' ) }
-					value={ attributes.title }
-					onChange={ ( title: string ) => setAttributes( { title } ) }
-					allowedFormats={ [] }
-				/>
+				<div { ...innerBlockProps } />
 			</div>
 		</>
 	);
