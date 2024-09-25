@@ -1942,7 +1942,7 @@ class Test_Ingestor extends WP_UnitTestCase {
 		// Test with expedition posts - should also include draft one.
 		$actual   = get_all_data();
 		$expected = [
-			[
+			$expedition_post_id2 => [
 				'id'           => $expedition_post_id2,
 				'name'         => get_raw_text_from_html( get_the_title( $expedition_post_id2 ) ),
 				'published'    => false,
@@ -1951,7 +1951,7 @@ class Test_Ingestor extends WP_UnitTestCase {
 				'destinations' => [],
 				'itineraries'  => [],
 			],
-			[
+			$expedition_post_id  => [
 				'id'           => $expedition_post_id,
 				'name'         => get_raw_text_from_html( get_the_title( $expedition_post_id ) ),
 				'published'    => true,
