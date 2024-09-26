@@ -39,8 +39,16 @@
 		"totalPosts": {
 			"type": "number",
 			"default": 5
-		}
-	},
+		},
+		"hasPagination": {
+			"type": "boolean",
+			"default": false
+		},
+    "postsPerPage": {
+      "type": "number",
+      "default": 5
+    }
+  },
 	"supports": {
 		"alignWide": false,
 		"anchor": true,
