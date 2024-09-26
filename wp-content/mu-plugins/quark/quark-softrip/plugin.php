@@ -21,6 +21,7 @@ require_once __DIR__ . '/inc/occupancies/namespace.php';
 require_once __DIR__ . '/inc/occupancy-promotions/namespace.php';
 require_once __DIR__ . '/inc/manual-sync/namespace.php';
 require_once __DIR__ . '/inc/cleanup/namespace.php';
+require_once __DIR__ . '/inc/admin/namespace.php';
 
 // Register Autoloader.
 spl_autoload_register( __NAMESPACE__ . '\\autoload' );
@@ -29,3 +30,4 @@ spl_autoload_register( __NAMESPACE__ . '\\autoload' );
 add_action( 'plugins_loaded', __NAMESPACE__ . '\\bootstrap' );
 add_action( 'plugins_loaded', __NAMESPACE__ . '\\ManualSync\\bootstrap' );
 add_action( 'plugins_loaded', __NAMESPACE__ . '\\Cleanup\\bootstrap' );
+add_action( 'plugins_loaded', __NAMESPACE__ . '\\Admin\\bootstrap' );
