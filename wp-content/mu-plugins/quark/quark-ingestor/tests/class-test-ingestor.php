@@ -11,16 +11,16 @@ use WP_UnitTestCase;
 
 use function Quark\Core\get_raw_text_from_html;
 use function Quark\Softrip\AdventureOptions\update_adventure_options;
-use function Quark\Softrip\Ingestor\get_adventure_option_category_data_from_meta;
-use function Quark\Softrip\Ingestor\get_all_data;
-use function Quark\Softrip\Ingestor\get_cabins_data;
-use function Quark\Softrip\Ingestor\get_departures_data;
-use function Quark\Softrip\Ingestor\get_destination_terms;
-use function Quark\Softrip\Ingestor\get_expedition_data;
-use function Quark\Softrip\Ingestor\get_included_adventure_options_data;
-use function Quark\Softrip\Ingestor\get_itineraries;
-use function Quark\Softrip\Ingestor\get_occupancies_data;
-use function Quark\Softrip\Ingestor\get_paid_adventure_options_data;
+use function Quark\Ingestor\get_adventure_option_category_data_from_meta;
+use function Quark\Ingestor\get_all_data;
+use function Quark\Ingestor\get_cabins_data;
+use function Quark\Ingestor\get_departures_data;
+use function Quark\Ingestor\get_destination_terms;
+use function Quark\Ingestor\get_expedition_data;
+use function Quark\Ingestor\get_included_adventure_options_data;
+use function Quark\Ingestor\get_itineraries;
+use function Quark\Ingestor\get_occupancies_data;
+use function Quark\Ingestor\get_paid_adventure_options_data;
 use function Quark\Softrip\Occupancies\get_description_and_pax_count_by_mask;
 use function Quark\Softrip\Occupancies\update_occupancies;
 use function Quark\Softrip\Promotions\get_promotions_by_code;
@@ -51,7 +51,7 @@ class Test_Ingestor extends WP_UnitTestCase {
 	/**
 	 * Test get expedition data.
 	 *
-	 * @covers \Quark\Softrip\Ingestor\get_expedition_data
+	 * @covers \Quark\Ingestor\get_expedition_data
 	 *
 	 * @return void
 	 */
@@ -205,7 +205,7 @@ class Test_Ingestor extends WP_UnitTestCase {
 	/**
 	 * Test get destination terms.
 	 *
-	 * @covers \Quark\Softrip\Ingestor\get_destination_terms
+	 * @covers \Quark\Ingestor\get_destination_terms
 	 *
 	 * @return void
 	 */
@@ -329,7 +329,7 @@ class Test_Ingestor extends WP_UnitTestCase {
 	/**
 	 * Test get itineraries.
 	 *
-	 * @covers \Quark\Softrip\Ingestor\get_itineraries
+	 * @covers \Quark\Ingestor\get_itineraries
 	 *
 	 * @return void
 	 */
@@ -474,7 +474,7 @@ class Test_Ingestor extends WP_UnitTestCase {
 	/**
 	 * Test get departures data.
 	 *
-	 * @covers \Quark\Softrip\Ingestor\get_departures_data
+	 * @covers \Quark\Ingestor\get_departures_data
 	 *
 	 * @return void
 	 */
@@ -698,7 +698,7 @@ class Test_Ingestor extends WP_UnitTestCase {
 	/**
 	 * Test get cabins data.
 	 *
-	 * @covers \Quark\Softrip\Ingestor\get_cabins_data
+	 * @covers \Quark\Ingestor\get_cabins_data
 	 *
 	 * @return void
 	 */
@@ -1056,7 +1056,7 @@ class Test_Ingestor extends WP_UnitTestCase {
 	/**
 	 * Test get occupancies data.
 	 *
-	 * @covers \Quark\Softrip\Ingestor\get_occupancies_data
+	 * @covers \Quark\Ingestor\get_occupancies_data
 	 *
 	 * @return void
 	 */
@@ -1485,7 +1485,7 @@ class Test_Ingestor extends WP_UnitTestCase {
 	/**
 	 * Test get included adventure options data.
 	 *
-	 * @covers \Quark\Softrip\Ingestor\get_included_adventure_options_data
+	 * @covers \Quark\Ingestor\get_included_adventure_options_data
 	 *
 	 * @return void
 	 */
@@ -1601,7 +1601,7 @@ class Test_Ingestor extends WP_UnitTestCase {
 	/**
 	 * Test get adventure option category data from meta.
 	 *
-	 * @covers \Quark\Softrip\Ingestor\get_adventure_option_category_data_from_meta
+	 * @covers \Quark\Ingestor\get_adventure_option_category_data_from_meta
 	 *
 	 * @return void
 	 */
@@ -1695,7 +1695,7 @@ class Test_Ingestor extends WP_UnitTestCase {
 	/**
 	 * Test get paid adventure options data.
 	 *
-	 * @covers \Quark\Softrip\Ingestor\get_paid_adventure_options_data
+	 * @covers \Quark\Ingestor\get_paid_adventure_options_data
 	 *
 	 * @return void
 	 */
@@ -1916,7 +1916,7 @@ class Test_Ingestor extends WP_UnitTestCase {
 	/**
 	 * Test get all data.
 	 *
-	 * @covers \Quark\Softrip\Ingestor\get_all_data
+	 * @covers \Quark\Ingestor\get_all_data
 	 *
 	 * @return void
 	 */

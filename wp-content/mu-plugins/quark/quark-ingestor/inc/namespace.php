@@ -5,7 +5,7 @@
  * @package quark-softrip
  */
 
-namespace Quark\Softrip\Ingestor;
+namespace Quark\Ingestor;
 
 use WP_Post;
 use WP_Query;
@@ -35,11 +35,21 @@ use const Quark\Departures\SPOKEN_LANGUAGE_TAXONOMY;
 use const Quark\Expeditions\DESTINATION_TAXONOMY;
 use const Quark\Expeditions\POST_TYPE as EXPEDITION_POST_TYPE;
 use const Quark\Itineraries\DEPARTURE_LOCATION_TAXONOMY;
+use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
 use const Quark\Localization\AUD_CURRENCY;
 use const Quark\Localization\CAD_CURRENCY;
 use const Quark\Localization\EUR_CURRENCY;
 use const Quark\Localization\GBP_CURRENCY;
 use const Quark\Localization\USD_CURRENCY;
+
+/**
+ * Bootstrap.
+ *
+ * @return void
+ */
+function bootstrap(): void {
+	// Register actions.
+}
 
 /**
  * Get all data to be sent to ingestor.
