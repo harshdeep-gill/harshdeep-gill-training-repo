@@ -9,14 +9,24 @@ namespace Quark\Softrip\Admin;
 
 use function Quark\Softrip\get_custom_db_table_mapping;
 
-const ADMIN_PAGE_SLUG = 'softrip-database-table';
+const ADMIN_PAGE_SLUG = 'softrip-database-tables';
+
+/**
+ * Bootstrap the admin pages.
+ *
+ * @return void
+ */
+function bootstrap(): void {
+	// Register admin pages.
+	add_action( 'admin_menu', __NAMESPACE__ . '\\register_custom_table_listing_pages' );
+}
 
 /**
  * Register admin pages.
  *
  * @return void
  */
-function register_table_listing_pages(): void {
+function register_custom_table_listing_pages(): void {
 	// Add a new top-level menu.
 	add_menu_page(
 		__( 'Softrip Custom Table', 'quark' ),

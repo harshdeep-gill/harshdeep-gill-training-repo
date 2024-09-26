@@ -52,9 +52,6 @@ function bootstrap(): void {
 
 	// Register Stream log connector.
 	add_filter( 'wp_stream_connectors', __NAMESPACE__ . '\\setup_stream_connectors' );
-
-	// Register admin page for softrip database table listing.
-	add_action( 'admin_menu', __NAMESPACE__ . '\\Admin\\register_table_listing_pages' );
 }
 
 /**
