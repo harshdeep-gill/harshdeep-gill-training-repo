@@ -36,9 +36,6 @@ function bootstrap(): void {
 	if ( is_admin() ) {
 		require_once __DIR__ . '/../custom-fields/leads.php';
 	}
-
-	// Job Form data processing.
-	add_filter( 'quark_leads_input_data', __NAMESPACE__ . '\\process_job_application_input_data', 10, 2 );
 }
 
 /**
@@ -220,44 +217,6 @@ function build_salesforce_request_data( array $fields = [], string $salesforce_o
 		$fields,
 		$salesforce_object
 	);
-}
-
-/**
- * Process Salesforce request data from fields for Job Application.
- *
- * @param mixed[] $fields            Fields.
- * @param string  $salesforce_object Salesforce object name.
- *
- * @return mixed[]
- */
-function process_job_application_input_data( array $fields = [], string $salesforce_object = '' ): array {
-	// If Salesforce object is not 'WebForm_Job_Application__c' then return fields.
-	if (
-		'WebForm_Job_Application__c' !== $salesforce_object
-		|| empty( $fields )
-	) {
-		return $fields;
-	}
-
-	// Unset unnecessary fields.
-	unset( $fields['Webform_URL__c'] );
-	unset( $fields['UTM_Campaign__c'] );
-	unset( $fields['UTM_Content__c'] );
-	unset( $fields['UTM_Medium__c'] );
-	unset( $fields['UTM_Source__c'] );
-	unset( $fields['UTM_Term__c'] );
-	unset( $fields['GCLID__c'] );
-	unset( $fields['FBBID__c'] );
-	unset( $fields['FBCLID__c'] );
-	unset( $fields['MSCLID__c'] );
-	unset( $fields['Job_Type__c'] );
-
-	// Process state field.
-	$fields['State_Province__c'] = $fields['State_Code__c'];
-	unset( $fields['State_Code__c'] );
-
-	// Return fields.
-	return $fields;
 }
 
 /**
