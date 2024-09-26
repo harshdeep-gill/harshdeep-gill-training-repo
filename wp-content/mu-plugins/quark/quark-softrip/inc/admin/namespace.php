@@ -29,7 +29,7 @@ function bootstrap(): void {
 function register_custom_table_listing_pages(): void {
 	// Add a new top-level menu.
 	add_menu_page(
-		__( 'Softrip Custom Table', 'quark' ),
+		'Softrip Custom Table',
 		'Softrip Tables',
 		'manage_options',
 		ADMIN_PAGE_SLUG,
