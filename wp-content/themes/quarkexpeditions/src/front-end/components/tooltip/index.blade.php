@@ -8,6 +8,8 @@
 	}
 
 	$popover_uid = quark_generate_unique_dom_id();
+
+	wp_enqueue_script( 'popover-polyfill' );
 @endphp
 
 <quark-tooltip class="tooltip">

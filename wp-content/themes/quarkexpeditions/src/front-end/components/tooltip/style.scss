@@ -4,6 +4,13 @@
 
 @import "../../scss";
 
+@supports not selector(:popover-open) {
+
+	[popover]:not(.\:popover-open) {
+		display: none;
+	}
+}
+
 .tooltip {
 	display: inline-flex;
 	height: 1em;
@@ -22,6 +29,7 @@
 		max-width: 360px;
 		max-height: 360px;
 		overflow: visible;
+		align-items: stretch;
 
 		&-content {
 			max-height: 100%;
@@ -33,7 +41,6 @@
 		/* stylelint-disable-next-line selector-pseudo-class-no-unknown */
 		&:popover-open {
 			display: flex;
-			align-items: stretch;
 		}
 	}
 

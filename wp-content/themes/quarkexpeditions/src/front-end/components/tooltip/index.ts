@@ -104,7 +104,7 @@ export class Tooltip extends HTMLElement {
 	 */
 	handleTooltipToggled( evt: Event ) {
 		// Null check.
-		if ( ! ( 'newState' in evt ) ) {
+		if ( ! ( 'newState' in evt ) || ! this.tooltipContentElement ) {
 			// Bail.
 			return;
 		}
@@ -113,8 +113,24 @@ export class Tooltip extends HTMLElement {
 		if ( 'open' === evt.newState ) {
 			document.body.classList.add( 'prevent-scroll' );
 			requestAnimationFrame( this.positionTooltip.bind( this ) );
+
+			/**
+			 * We need to do this for polyfilled browsers because popover-polyfill deletes any CSS
+			 * that contains any styles with class `.\:popover-open`
+			 * ref: https://github.com/oddbird/popover-polyfill?tab=readme-ov-file#caveats
+			 */
+			if ( this.tooltipContentElement.classList.contains( ':popover-open' ) ) {
+				this.tooltipContentElement.style.display = 'flex';
+			}
 		} else {
 			this.removeAttribute( 'tooltip-direction' );
+
+			/**
+			 * We need to do this for polyfilled browsers because popover-polyfill deletes any CSS
+			 * that contains any styles with class `.\:popover-open`
+			 * ref: https://github.com/oddbird/popover-polyfill?tab=readme-ov-file#caveats
+			 */
+			this.tooltipContentElement.style.display = '';
 			document.body.classList.remove( 'prevent-scroll' );
 		}
 	}
