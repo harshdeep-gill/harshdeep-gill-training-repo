@@ -111,9 +111,11 @@ export class Tooltip extends HTMLElement {
 
 		// Check and toggle.
 		if ( 'open' === evt.newState ) {
+			document.body.classList.add( 'prevent-scroll' );
 			requestAnimationFrame( this.positionTooltip.bind( this ) );
 		} else {
 			this.removeAttribute( 'tooltip-direction' );
+			document.body.classList.remove( 'prevent-scroll' );
 		}
 	}
 
