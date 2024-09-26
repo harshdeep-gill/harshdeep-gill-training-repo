@@ -19,5 +19,7 @@
 		<div class="tooltip__description-content">
 			{!! $slot !!}
 		</div>
+		<span class="tooltip__arrow"></span>
 	</div>
+
 </quark-tooltip>
