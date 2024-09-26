@@ -113,7 +113,7 @@ export class Tooltip extends HTMLElement {
 		if ( 'open' === evt.newState ) {
 			requestAnimationFrame( this.positionTooltip.bind( this ) );
 		} else {
-			// this.removeAttribute( 'tooltip-direction' );
+			this.removeAttribute( 'tooltip-direction' );
 		}
 	}
 

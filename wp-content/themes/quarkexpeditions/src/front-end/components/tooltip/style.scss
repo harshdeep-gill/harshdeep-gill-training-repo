@@ -82,4 +82,17 @@
 			left: calc(100% - 8px);
 		}
 	}
+
+	// This is added to have some buffer area around the icon so
+	// that the mouseleave event does not trigger when we go to the description.
+	&[tooltip-direction]::before {
+		content: "";
+		display: block;
+		position: absolute;
+		background-color: transparent;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		padding: var(--spacing-6);
+	}
 }
