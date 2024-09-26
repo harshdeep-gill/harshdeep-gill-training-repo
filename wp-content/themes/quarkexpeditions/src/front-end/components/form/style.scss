@@ -11,11 +11,23 @@
 
 	&-field {
 
+		&[required="yes"] {
+
+			#{$self}__required-indicator {
+				display: inline;
+				color: var(--color-error-50);
+			}
+		}
+	}
+
+	&-field-group {
+
 		&[required="yes"],
 		&[checkbox-group-required="yes"],
 		&[radio-group-required="yes"] {
 
-			#{$self}__required-indicator {
+			> label #{$self}__required-indicator,
+			.checkbox-container:only-child #{$self}__required-indicator {
 				display: inline;
 				color: var(--color-error-50);
 			}

@@ -364,7 +364,8 @@
 
 	quark-dates-rates-pagination-links-controller,
 	quark-dates-rates-pagination-total-pages,
-	quark-dates-rates-pagination-items-per-page {
+	quark-dates-rates-pagination-items-per-page,
+	quark-dates-rates-filters-inputs-container {
 		display: contents;
 	}
 
@@ -374,6 +375,10 @@
 		@media screen and (min-width: grid-size(md)) {
 			display: inline;
 		}
+	}
+
+	&__title {
+		margin-bottom: 0;
 	}
 
 	quark-dates-rates-pagination-items-per-page.dates-rates__result-count-selector {
@@ -407,6 +412,14 @@
 				justify-content: end;
 			}
 		}
+
+		button {
+			color: var(--color-black);
+		}
+	}
+
+	&__accordion-content--no-transition {
+		transition: none;
 	}
 }
 

@@ -12,6 +12,7 @@ use WP_CLI;
 use WP_Error;
 use WP_CLI\ExitException;
 use WP_Term;
+use WP_Term_Query;
 use WP_Post;
 
 use function Quark\Migration\Drupal\get_database;
@@ -22,6 +23,7 @@ use function Quark\Migration\WordPress\qrk_sanitize_attribute;
 use function WP_CLI\Utils\make_progress_bar;
 
 use const Quark\Itineraries\POST_TYPE;
+use const Quark\Itineraries\TAX_TYPE_TAXONOMY;
 use const Quark\Ports\POST_TYPE as PORT_POST_TYPE;
 use const Quark\Brochures\POST_TYPE as BROCHURE_POST_TYPE;
 use const Quark\InclusionSets\POST_TYPE as INCLUSION_SET_POST_TYPE;
@@ -458,6 +460,16 @@ class Itinerary {
 			$data['tax_input'][ SEASON_TAXONOMY ] = [ $item['season_value'] ];
 		}
 
+		// Set commerce_tax_type_id as term.
+		if ( ! empty( $item['commerce_tax_type_id'] ) ) {
+			$tax_type_term_id = $this->get_tax_type_term();
+
+			// Check if term exist.
+			if ( ! empty( $tax_type_term_id ) ) {
+				$data['tax_input'][ TAX_TYPE_TAXONOMY ] = $tax_type_term_id;
+			}
+		}
+
 		// Return normalized data.
 		return $data;
 	}
@@ -557,5 +569,58 @@ class Itinerary {
 
 		// Return data.
 		return $result;
+	}
+
+	/**
+	 * Insert Tax term.
+	 *
+	 * @return false|int
+	 */
+	public function get_tax_type_term(): false|int {
+		// Query term.
+		$term = new WP_Term_Query(
+			[
+				'taxonomy'   => TAX_TYPE_TAXONOMY,
+				'number'     => 1,
+				'hide_empty' => false,
+				'meta_query' => [
+					[
+						'key'     => 'drupal_tax_slug',
+						'value'   => 'canadian_departure_gst',
+						'compare' => '=',
+					],
+				],
+			]
+		);
+
+		// If no term found then insert.
+		if ( empty( $term->terms ) ) {
+			// Insert term.
+			$term = wp_insert_term(
+				'canadian_departure_gst',
+				TAX_TYPE_TAXONOMY,
+				[
+					'name' => 'Canadian Goods and Services Tax',
+					'slug' => 'canadian_departure_gst',
+				]
+			);
+
+			// Check if term is not inserted.
+			if ( $term instanceof WP_Error || empty( $term ) || empty( $term['term_id'] ) ) {
+				// Bail out unable to insert term.
+				return false;
+			}
+
+			// Update term meta.
+			update_term_meta( $term['term_id'], 'drupal_tax_slug', 'canadian_departure_gst' );
+			update_term_meta( $term['term_id'], 'rate', 5 );
+			update_term_meta( $term['term_id'], 'tax_type', 'GST' );
+
+			// Return term id.
+			return $term['term_id'];
+		}
+
+		// Return term id.
+		return $term->terms[0]->term_id;
 	}
 }

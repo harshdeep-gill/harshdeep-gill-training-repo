@@ -15,6 +15,28 @@
 		padding: var(--spacing-7);
 	}
 
+	&--solid {
+
+		#{$self}__image {
+			display: none;
+		}
+
+		#{$self}__content {
+
+			@media screen and (min-width: grid-size(sm)) {
+				width: 75%;
+			}
+		}
+
+		h4 {
+			margin-top: var(--spacing-4);
+		}
+	}
+
+	&--has-background-gray {
+		background-color: var(--color-gray-5);
+	}
+
 	&--light {
 		background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, #f6eddc 100%), #f5f7fb;
 
@@ -84,6 +106,20 @@
 				margin-top: var(--spacing-6);
 			}
 		}
+
+		> #{$self}__overline + * {
+			margin-top: 0;
+		}
+	}
+
+	&__overline {
+		font-weight: var(--font-weight-bold);
+		color: var(--color-gray-80);
+		margin-bottom: var(--spacing-2);
+	}
+
+	.buttons {
+		flex-wrap: wrap;
 	}
 
 	.btn {

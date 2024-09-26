@@ -78,7 +78,12 @@ import * as bookDeparturesShip from './book-departures-ship';
 import * as shipDecks from './ship-decks';
 import * as InfoCards from './info-cards';
 import * as linkDetailCards from './link-detail-cards';
+import * as globalMessage from './global-message';
+import * as datesAndRates from './dates-and-rates';
 import * as mediaTextCtaCarousel from './media-text-cta-carousel';
+import * as pressReleases from './press-releases';
+import * as tabs from './tabs';
+import * as detailedExpeditionCarousel from './detailed-expedition-carousel';
 
 /**
  * Add blocks.
@@ -153,7 +158,12 @@ const blocks = [
 	shipDecks,
 	InfoCards,
 	linkDetailCards,
+	globalMessage,
+	datesAndRates,
 	mediaTextCtaCarousel,
+	pressReleases,
+	tabs,
+	detailedExpeditionCarousel,
 ];
 
 // Register blocks for ships.

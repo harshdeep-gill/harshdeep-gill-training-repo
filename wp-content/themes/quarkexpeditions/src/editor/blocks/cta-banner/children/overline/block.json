@@ -1,0 +1,30 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "quark/cta-banner-overline",
+	"description": "Display an overline in the CTA Banner block",
+	"title": "Media Text CTA Overline",
+	"keywords": [
+		"cta",
+		"banner",
+		"overline"
+	],
+	"category": "layout",
+	"textdomain": "quark",
+	"parent": [
+		"quark/cta-banner"
+	],
+	"attributes": {
+		"text": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

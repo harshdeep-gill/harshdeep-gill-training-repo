@@ -72,7 +72,7 @@ class Test_Update_Occupancies extends Softrip_TestCase {
 			[],
 		];
 		$actual          = update_occupancies( $raw_cabins_data, $departure_id1 );
-		$this->assertTrue( $actual );
+		$this->assertFalse( $actual );
 
 		// Get occupancies for first departure.
 		$occupancies = get_occupancies_by_departure( $departure_id1, true );
@@ -85,7 +85,7 @@ class Test_Update_Occupancies extends Softrip_TestCase {
 			],
 		];
 		$actual          = update_occupancies( $raw_cabins_data, $departure_id1 );
-		$this->assertTrue( $actual );
+		$this->assertFalse( $actual );
 
 		// Get occupancies for first departure.
 		$occupancies = get_occupancies_by_departure( $departure_id1, true );
@@ -99,7 +99,7 @@ class Test_Update_Occupancies extends Softrip_TestCase {
 			],
 		];
 		$actual          = update_occupancies( $raw_cabins_data, $departure_id1 );
-		$this->assertTrue( $actual );
+		$this->assertFalse( $actual );
 
 		// Get occupancies for first departure.
 		$occupancies = get_occupancies_by_departure( $departure_id1, true );
@@ -113,7 +113,7 @@ class Test_Update_Occupancies extends Softrip_TestCase {
 			],
 		];
 		$actual          = update_occupancies( $raw_cabins_data, $departure_id1 );
-		$this->assertTrue( $actual );
+		$this->assertFalse( $actual );
 
 		// Get occupancies for first departure.
 		$occupancies = get_occupancies_by_departure( $departure_id1, true );
@@ -128,7 +128,7 @@ class Test_Update_Occupancies extends Softrip_TestCase {
 			],
 		];
 		$actual          = update_occupancies( [ $raw_cabin_data1 ], $departure_id1 );
-		$this->assertTrue( $actual );
+		$this->assertFalse( $actual );
 
 		// Get occupancies for first departure.
 		$occupancies = get_occupancies_by_departure( $departure_id1, true );
@@ -173,7 +173,7 @@ class Test_Update_Occupancies extends Softrip_TestCase {
 			],
 		];
 		$actual          = update_occupancies( [ $raw_cabin_data1 ], $departure_id1 );
-		$this->assertTrue( $actual );
+		$this->assertFalse( $actual );
 
 		// Get occupancies for first departure.
 		$occupancies = get_occupancies_by_departure( $departure_id1, true );
@@ -195,7 +195,7 @@ class Test_Update_Occupancies extends Softrip_TestCase {
 			],
 		];
 		$actual          = update_occupancies( [ $raw_cabin_data1 ], $departure_id1 );
-		$this->assertTrue( $actual );
+		$this->assertFalse( $actual );
 
 		// Get occupancies for first departure.
 		$occupancies = get_occupancies_by_departure( $departure_id1, true );
@@ -487,7 +487,7 @@ class Test_Update_Occupancies extends Softrip_TestCase {
 			],
 		];
 		$actual          = update_occupancies( [ $raw_cabin_data1, $raw_cabin_data2 ], $departure_id1 );
-		$this->assertTrue( $actual );
+		$this->assertFalse( $actual );
 
 		// Get occupancies for first departure. The second cabin doesn't exist. So, occupancy shouldn't be added.
 		$occupancies = get_occupancies_by_departure( $departure_id1, true );

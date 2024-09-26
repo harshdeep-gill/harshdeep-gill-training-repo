@@ -25,16 +25,16 @@
 			text-align: center;
 
 			&[rowspan] {
-				min-width: 300px;
+				min-width: 320px;
 			}
 		}
 	}
 
 	&__item {
-		min-width: 100vw;
+		min-width: calc(100vw - 2 * var(--grid-col-gutter));
 
 		@media screen and (min-width: 1120px) { // Need to add 1120 --wrap-width for this case.
-			min-width: calc(100vw / 2 + calc(var(--wrap-width) / 2));
+			min-width: calc(50vw + var(--wrap-width) / 2 - var(--grid-col-gutter));
 		}
 
 		& + & {
@@ -53,9 +53,19 @@
 			opacity: 0.5;
 		}
 
+		&--discounted {
+			color: var(--color-success-100);
+			font-weight: var(--font-weight-bold);
+		}
+
 		&--stock-limited {
 			color: var(--color-attention-100);
 		}
+
+		&--discounted:is(&--sold-out) {
+			color: var(--color-black);
+		}
+
 	}
 
 	&__item-table-column-title {
@@ -229,6 +239,7 @@
 		width: 16px;
 		position: relative;
 		top: 3px;
+		color: var(--color-blue);
 
 		svg {
 			width: 16px;

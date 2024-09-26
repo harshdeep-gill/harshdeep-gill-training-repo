@@ -1,0 +1,134 @@
+/**
+ * Gated brochure modal.
+ */
+@import "../../scss";
+
+.gated-brochure-modal {
+	$self: &;
+
+	padding: 0;
+
+	@media screen and (min-width: grid-size(md)) {
+		padding: var(--spacing-5);
+	}
+
+	.modal__content {
+		max-width: 100%;
+		padding-bottom: 0;
+
+		@media screen and (min-width: grid-size(md)) {
+			max-width: 600px;
+			padding-bottom: var(--spacing-5);
+		}
+
+		@media screen and (min-width: grid-size(xl)) {
+			max-width: 1072px;
+		}
+	}
+
+	.modal__body {
+		display: flex;
+		flex-flow: column;
+		gap: var(--spacing-5);
+
+		@media screen and (min-width: grid-size(xl)) {
+			flex-flow: row;
+		}
+
+		> * {
+			min-width: 0;
+			flex: 1;
+		}
+	}
+
+	.modal__header {
+		text-align: center;
+		padding-bottom: 0;
+
+		@media screen and (min-width: grid-size(xl)) {
+			display: none;
+		}
+	}
+
+	.form-submit,
+	.form-field--buttons {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.form-field--buttons {
+
+		@media screen and (max-width: calc(grid-size(md) - 1px)) {
+			background: var(--color-white);
+			box-shadow: var(--shadow-1);
+			margin-inline: calc(-1 * var(--spacing-5));
+			position: fixed;
+			bottom: 0;
+			padding: var(--spacing-3) var(--spacing-5);
+		}
+	}
+
+	#{$self}__modal-content {
+		gap: var(--spacing-5);
+	}
+
+	&__left {
+
+		@media screen and (min-width: grid-size(xl)) {
+			max-width: 352px;
+		}
+	}
+
+	&__image-wrap {
+		border-radius: var(--border-radius-large);
+		overflow: hidden;
+		aspect-ratio: 13/10;
+
+		@media screen and (min-width: grid-size(md)) {
+			aspect-ratio: 23/10;
+		}
+
+		@media screen and (min-width: grid-size(xl)) {
+			aspect-ratio: initial;
+			height: 100%;
+		}
+	}
+
+	&__image {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	&__skip-brochure-cta {
+		background-color: transparent;
+		border-color: transparent;
+		margin: 0 auto;
+		max-width: fit-content;
+		margin-top: var(--spacing-4);
+		padding: 0;
+
+		&:hover,
+		&:focus {
+			background-color: transparent;
+			border-color: transparent;
+		}
+	}
+
+	&__form-title {
+		display: none;
+		margin-bottom: var(--spacing-6);
+
+		@media screen and (min-width: grid-size(xl)) {
+			display: block;
+		}
+	}
+
+	&__form-content {
+		padding-bottom: 130px;
+
+		@media screen and (min-width: grid-size(md)) {
+			padding-bottom: 0;
+		}
+	}
+}

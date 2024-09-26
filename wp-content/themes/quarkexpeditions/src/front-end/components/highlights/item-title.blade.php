@@ -8,6 +8,6 @@
 	}
 @endphp
 
-<p class="highlights__item-title">
+<h2 class="highlights__item-title h5">
 	<x-escape :content="$title" />
-</p>
+</h2>

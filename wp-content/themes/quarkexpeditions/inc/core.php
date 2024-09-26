@@ -285,7 +285,14 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'class'  => true,
 					'data-*' => true,
 				],
+				'quark-gated-brochure-modal-cta'                => [
+					'class'  => true,
+					'data-*' => true,
+				],
 				'quark-hero-card-slider'                        => [
+					'class' => true,
+				],
+				'quark-thumbnail-cards-slider'                  => [
 					'class' => true,
 				],
 				'quark-tabs'                                    => [
@@ -360,6 +367,7 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 				'quark-wistia-embed'                            => [
 					'class'    => true,
 					'video-id' => true,
+					'play'     => true,
 				],
 				'quark-dates-rates-results'                     => [
 					'class'           => true,
@@ -453,6 +461,7 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'class'   => true,
 					'loading' => true,
 				],
+				'quark-dates-rates-filters-inputs-container'    => true,
 				'tp-form'                                       => [
 					'class'          => true,
 					'prevent-submit' => true,

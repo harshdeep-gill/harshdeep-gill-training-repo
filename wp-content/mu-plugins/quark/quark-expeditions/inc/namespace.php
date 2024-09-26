@@ -746,6 +746,19 @@ function get_seo_structured_data( int $post_id = 0 ): array {
 		'image'       => get_the_post_thumbnail_url( $post_id ),
 	];
 
+	// Get starting from price.
+	$expedition_price = get_starting_from_price( $post_id )['discounted'];
+
+	// Add offers schema.
+	if ( ! empty( $expedition_price ) ) {
+		$product_schema['offers'] = [
+			'@type'         => 'Offer',
+			'price'         => get_starting_from_price( $post_id )['discounted'],
+			'priceCurrency' => 'USD',
+			'url'           => $expedition['permalink'],
+		];
+	}
+
 	// Add tourist trip schema.
 	$tourist_trip_schema = [
 		'@context'    => 'https://schema.org',
@@ -1057,6 +1070,50 @@ function get_region_terms( int $post_id = 0 ): array {
 
 	// Return regions.
 	return $region;
+}
+
+/**
+ * Get Expedition Category for the expedition.
+ *
+ * @param int $post_id Post ID.
+ *
+ * @return array{}| array{
+ *     array{
+ *         term_id: int,
+ *         name: string,
+ *         slug: string,
+ *         taxonomy: string,
+ *         description: string,
+ *         parent: int,
+ *         term_group: int,
+ *     }
+ * }
+ */
+function get_expedition_category_terms( int $post_id = 0 ): array {
+	// Get post.
+	$post       = get( $post_id );
+	$categories = [];
+
+	// Check for post.
+	if ( empty( $post['post'] ) || ! $post['post'] instanceof WP_Post ) {
+		return $categories;
+	}
+
+	// Get parent of qrk_expedition_category taxonomy.
+	if (
+		array_key_exists( EXPEDITION_CATEGORY_TAXONOMY, $post['post_taxonomies'] )
+		&& is_array( $post['post_taxonomies'][ EXPEDITION_CATEGORY_TAXONOMY ] )
+	) {
+		// Loop through taxonomy and get all with no parent term name.
+		foreach ( $post['post_taxonomies'][ EXPEDITION_CATEGORY_TAXONOMY ] as $term ) {
+			if ( empty( $term['parent'] ) ) {
+				$categories[] = $term;
+			}
+		}
+	}
+
+	// Return regions.
+	return $categories;
 }
 
 /**

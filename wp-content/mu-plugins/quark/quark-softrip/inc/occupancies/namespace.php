@@ -109,6 +109,9 @@ function update_occupancies( array $raw_cabins_data = [], int $departure_post_id
 	// Initialize updated softrip ids.
 	$updated_softrip_ids = [];
 
+	// Initialize any updated.
+	$any_updated = false;
+
 	// Loop through the raw cabin data.
 	foreach ( $raw_cabins_data as $raw_cabin_data ) {
 		// Validate the raw cabin data.
@@ -151,11 +154,16 @@ function update_occupancies( array $raw_cabins_data = [], int $departure_post_id
 			// If the cabin exists, update it.
 			if ( ! empty( $existing_cabin_data['id'] ) ) {
 				// Update the cabin.
-				$wpdb->update(
+				$is_updated = $wpdb->update(
 					$table_name,
 					$formatted_data,
 					[ 'id' => $existing_cabin_data['id'] ]
 				);
+
+				// Fire the occupancy updated action.
+				if ( $is_updated > 0 ) {
+					$any_updated = true;
+				}
 
 				// Set the updated ID.
 				$updated_id = $existing_cabin_data['id'];
@@ -167,7 +175,8 @@ function update_occupancies( array $raw_cabins_data = [], int $departure_post_id
 				);
 
 				// Set the updated ID.
-				$updated_id = $wpdb->insert_id;
+				$updated_id  = $wpdb->insert_id;
+				$any_updated = true;
 			}
 
 			// Bail if empty.
@@ -181,7 +190,12 @@ function update_occupancies( array $raw_cabins_data = [], int $departure_post_id
 			// Set occupancy promotions data.
 			if ( ! empty( $raw_cabin_occupancy_data['prices'] ) && is_array( $raw_cabin_occupancy_data['prices'] ) ) {
 				// Update the occupancy promotions.
-				update_occupancy_promotions( array_values( $raw_cabin_occupancy_data['prices'] ), $updated_id );
+				$is_occupancy_promotions_updated = update_occupancy_promotions( array_values( $raw_cabin_occupancy_data['prices'] ), $updated_id );
+
+				// Set flag to true.
+				if ( $is_occupancy_promotions_updated ) {
+					$any_updated = true;
+				}
 			}
 
 			// Bust caches at occupancy level.
@@ -198,7 +212,12 @@ function update_occupancies( array $raw_cabins_data = [], int $departure_post_id
 		}
 
 		// Store cabin spaces available on departure meta.
-		update_post_meta( $departure_post_id, 'cabin_spaces_available_' . $cabin_category_post_id, $cabin_spaces_available );
+		$is_cabin_spaces_updated = update_post_meta( $departure_post_id, 'cabin_spaces_available_' . $cabin_category_post_id, $cabin_spaces_available );
+
+		// Set flag to true.
+		if ( $is_cabin_spaces_updated ) {
+			$any_updated = true;
+		}
 
 		// Bust caches at cabin category level.
 		wp_cache_delete( CACHE_KEY_PREFIX . '_cabin_category_post_id_' . $cabin_category_post_id . '_departure_post_id_' . $departure_post_id, CACHE_GROUP );
@@ -257,6 +276,9 @@ function update_occupancies( array $raw_cabins_data = [], int $departure_post_id
 
 		// Bust departure cache as meta has been deleted.
 		bust_departure_post_cache( $departure_post_id );
+
+		// Set flag to true.
+		$any_updated = true;
 	}
 
 	// Bust caches at departure level.
@@ -264,7 +286,7 @@ function update_occupancies( array $raw_cabins_data = [], int $departure_post_id
 	wp_cache_delete( CACHE_KEY_PREFIX . '_cabin_category_departure_post_id_' . $departure_post_id, CACHE_GROUP );
 
 	// Return success.
-	return true;
+	return $any_updated;
 }
 
 /**

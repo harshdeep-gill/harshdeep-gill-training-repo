@@ -4,6 +4,7 @@
 	'cards'          => [],
 	'page'           => 1,
 	'per_page'       => 4,
+	'currency'       => quark_get_template_data( 'default_currency', 'USD' ),
 ] )
 
 @php
@@ -21,7 +22,7 @@
 
 <x-dates-rates>
 	<x-dates-rates.header>
-		<x-dates-rates.filters :filter_data="$filter_data" />
+		<x-dates-rates.filters :filter_data="$filter_data" :currency="$currency" />
 		<x-dates-rates.results.count />
 	</x-dates-rates.header>
 	<x-dates-rates.results

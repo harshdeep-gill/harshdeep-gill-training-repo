@@ -227,6 +227,9 @@ class Adventure_Option {
 			$collage_block_markup = PHP_EOL . $this->block_converter->convert_images_to_collage( $images );
 		}
 
+		// Prepare post content.
+		$post_content = str_replace( 'u0026', '&', $hero_block_content . $post_content . $collage_block_markup );
+
 		// Prepare post data.
 		$data = [
 			'post_type'         => POST_TYPE,
@@ -236,7 +239,7 @@ class Adventure_Option {
 			'post_date_gmt'     => $created_at,
 			'post_modified'     => $modified_at,
 			'post_modified_gmt' => $modified_at,
-			'post_content'      => $hero_block_content . $post_content . $collage_block_markup,
+			'post_content'      => $post_content,
 			'post_name'         => $post_name,
 			'post_excerpt'      => $post_excerpt,
 			'post_status'       => $status,

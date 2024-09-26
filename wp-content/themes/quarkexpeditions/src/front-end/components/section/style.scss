@@ -28,13 +28,20 @@
 		}
 
 		@media screen and (min-width: grid-size(md)) {
+			margin-bottom: var(--spacing-7);
+
+			+ #{$self}__description {
+				margin-top: calc(-1 * var(--spacing-5) - var(--spacing-2)); // 16px spacing from top.
+			}
+		}
+
+		@media screen and (min-width: grid-size(xl)) {
 			margin-bottom: var(--spacing-8);
 
 			+ #{$self}__description {
 				margin-top: calc(-1 * var(--spacing-6) - var(--spacing-2)); // 24px spacing from top.
 			}
 		}
-
 	}
 
 	@supports (selector(:has(*))) {
