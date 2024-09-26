@@ -3,7 +3,7 @@
 	"apiVersion": 3,
 	"title": "Highlight Item Title",
 	"name": "quark/highlight-item-title",
-	"description": "Individual highlight in a highlights list.",
+	"description": "Individual highlight item title",
 	"parent": [
 		"quark/highlight-item"
 	],

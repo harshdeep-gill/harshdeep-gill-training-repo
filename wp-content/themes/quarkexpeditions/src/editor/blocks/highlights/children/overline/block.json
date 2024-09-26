@@ -3,7 +3,7 @@
 	"apiVersion": 3,
 	"title": "Highlight Item Overline",
 	"name": "quark/highlight-item-overline",
-	"description": "Individual highlight in a highlights list.",
+	"description": "Highlight item overline",
 	"parent": [
 		"quark/highlight-item"
 	],
