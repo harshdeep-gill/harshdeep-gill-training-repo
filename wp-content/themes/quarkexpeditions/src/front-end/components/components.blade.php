@@ -2997,7 +2997,7 @@
 				],
 			]"
 		/>
-</div>
+	</div>
 
 	<x-breadcrumbs
 		:breadcrumbs="[
