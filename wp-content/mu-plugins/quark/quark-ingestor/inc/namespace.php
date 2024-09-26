@@ -198,7 +198,8 @@ function do_push( array $expedition_post_ids = [], bool $changed_only = true ): 
 				'quark_ingestor_push_error',
 				[
 					'expedition_post_id' => $expedition_post_id,
-					'error'              => __( 'No expedition data found.', 'qrk' ),
+					'error'              => __( 'Expedition data is empty.', 'qrk' ),
+					'initiated_via'      => $initiated_via,
 				]
 			);
 
@@ -222,6 +223,7 @@ function do_push( array $expedition_post_ids = [], bool $changed_only = true ): 
 				[
 					'expedition_post_id' => $expedition_post_id,
 					'error'              => __( 'Invalid JSON data.', 'qrk' ),
+					'initiated_via'      => $initiated_via,
 				]
 			);
 
@@ -250,6 +252,7 @@ function do_push( array $expedition_post_ids = [], bool $changed_only = true ): 
 					[
 						'expedition_post_id' => $expedition_post_id,
 						'error'              => __( 'No changes detected.', 'qrk' ),
+						'initiated_via'      => $initiated_via,
 					]
 				);
 
@@ -280,6 +283,7 @@ function do_push( array $expedition_post_ids = [], bool $changed_only = true ): 
 					'quark_ingestor_push_success',
 					[
 						'expedition_post_id' => $expedition_post_id,
+						'initiated_via'      => $initiated_via,
 					]
 				);
 
@@ -292,6 +296,7 @@ function do_push( array $expedition_post_ids = [], bool $changed_only = true ): 
 				[
 					'expedition_post_id' => $expedition_post_id,
 					'error'              => __( 'Failed to push data.', 'qrk' ),
+					'initiated_via'      => $initiated_via,
 				]
 			);
 		}
@@ -346,9 +351,7 @@ function push_expedition_data( int $expedition_post_id = 0, string $json_expedit
 	// Validate credentials.
 	if (
 		! defined( 'QUARK_INGESTOR_BASE_URL' ) ||
-		empty( QUARK_INGESTOR_BASE_URL ) ||
-		! defined( 'QUARK_INGESTOR_API_KEY' ) ||
-		empty( QUARK_INGESTOR_API_KEY )
+		! defined( 'QUARK_INGESTOR_API_KEY' )
 	) {
 		return new WP_Error( 'qrk_ingestor_no_auth', __( 'Ingestor credentials missing', 'qrk' ) );
 	}
