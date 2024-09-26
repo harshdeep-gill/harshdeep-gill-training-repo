@@ -1,5 +1,5 @@
 @props( [
-	'desktop_carousel' => 'false',
+	'desktop_carousel' => false,
 ] )
 
 @php
