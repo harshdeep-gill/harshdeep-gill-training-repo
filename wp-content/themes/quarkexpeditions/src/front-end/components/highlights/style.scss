@@ -18,10 +18,6 @@
 			margin-top: var(--spacing-4);
 		}
 
-		&-title {
-			margin-bottom: 0;
-		}
-
 		&-overline {
 			color: var(--color-gray-80);
 			font-weight: var(--font-weight-bold);
@@ -36,6 +32,10 @@
 				flex-direction: row;
 			}
 		}
+	}
+
+	&__item-title {
+		margin-bottom: 0;
 	}
 
 	&__content {
