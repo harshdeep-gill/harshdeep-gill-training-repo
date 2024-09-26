@@ -11,7 +11,7 @@
 	$slide_count = quark_get_slot_child_count( $slot );
 
 	// Converting values in true and false.
-	if ( ! empty( $desktop_carousel )  ) {
+	if ( true === $desktop_carousel ) {
 		$desktop_carousel = 'true';
 	} else {
 		$desktop_carousel = 'false';
