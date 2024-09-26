@@ -2953,6 +2953,138 @@
 	</x-section>
 </x-component-demo>
 
+<x-component-demo :keys="[ 'breadcrumbs' ]">
+	<x-breadcrumbs
+		:breadcrumbs="[
+			[
+				'title' => 'Home',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Blog',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Antarctica',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Can I Travel Antarctica?',
+				'url'   => '#',
+			],
+		]"
+	/>
+
+	<div style="background-color: var(--color-gray-90); margin-inline: calc(-1* var(--grid-col-gutter)); padding-block: 4px; padding-inline: var(--grid-col-gutter);">
+		<x-breadcrumbs
+			appearance="dark"
+			:breadcrumbs="[
+				[
+					'title' => 'Home',
+					'url'   => '#',
+				],
+				[
+					'title' => 'Blog',
+					'url'   => '#',
+				],
+				[
+					'title' => 'Antarctica',
+					'url'   => '#',
+				],
+				[
+					'title' => 'Can I Travel Antarctica?',
+					'url'   => '#',
+				],
+			]"
+		/>
+	</div>
+
+	<x-breadcrumbs
+		:breadcrumbs="[
+			[
+				'title' => 'Home',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Destinations',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Antarctica',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Expeditions',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Current Expedition',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Preparation',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Packing List',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Arctic Gear',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Activities',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Iceberg Watching',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Wildlife Encounters',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Polar Plunge',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Travel Guide',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Visa Requirements',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Health and Safety',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Emergency Procedures',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Booking',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Reservation Form',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Payment Options',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Contact Us',
+				'url'   => '#',
+			],
+		]"
+	/>
+</x-component-demo>
+
 <x-component-demo :keys="[ 'sidebar-grid', 'table-of-contents', 'breadcrumbs', 'post-author-info' ]">
 	<x-breadcrumbs
 		:breadcrumbs="[
@@ -4259,114 +4391,6 @@
 			</x-accordion.item>
 		</x-accordion>
 	</x-section>
-</x-component-demo>
-
-<x-component-demo :keys="[ 'breadcrumbs' ]">
-	<x-breadcrumbs
-		:breadcrumbs="[
-			[
-				'title' => 'Home',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Blog',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Antarctica',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Can I Travel Antarctica?',
-				'url'   => '#',
-			],
-		]"
-	/>
-
-	<x-breadcrumbs
-		:breadcrumbs="[
-			[
-				'title' => 'Home',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Destinations',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Antarctica',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Expeditions',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Current Expedition',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Preparation',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Packing List',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Arctic Gear',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Activities',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Iceberg Watching',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Wildlife Encounters',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Polar Plunge',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Travel Guide',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Visa Requirements',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Health and Safety',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Emergency Procedures',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Booking',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Reservation Form',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Payment Options',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Contact Us',
-				'url'   => '#',
-			],
-		]"
-	/>
 </x-component-demo>
 
 <x-component-demo :keys="[ 'info-cards' ]">
