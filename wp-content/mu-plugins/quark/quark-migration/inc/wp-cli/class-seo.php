@@ -625,7 +625,7 @@ class SEO {
 
 		// Check if we have any matches.
 		if ( ! empty( $matches[2] ) ) {
-			foreach ( $matches[2] as $url ) {
+			foreach ( $matches[2] as $index => $url ) {
 				// Temp URL.
 				$temp_url = $url;
 
@@ -661,8 +661,8 @@ class SEO {
 
 				// Check if we have an existing redirect.
 				if ( ! empty( $existing_redirect ) ) {
-					$new_url = str_replace( $parsed_url['path'], $existing_redirect['action_data'], $url );
-					$content = str_replace( $url, $new_url, $content );
+					$new_url = str_replace( $url, $existing_redirect['action_data'], $matches[0][ $index ] );
+					$content = str_replace( $matches[0][ $index ], $new_url, $content );
 				}
 			}
 		}
