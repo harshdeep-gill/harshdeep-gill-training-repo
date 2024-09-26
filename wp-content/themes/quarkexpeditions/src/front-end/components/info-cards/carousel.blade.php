@@ -10,6 +10,16 @@
 
 	// Get slide count.
 	$slide_count = quark_get_slot_child_count( $slot );
+
+	// Build classes.
+	$classes = [ 'info-cards__slides' ];
+
+	// Adding classes for 3 and 4 slides view.
+	if ( 3 === $slide_count ) {
+		$classes[] = 'info-cards__slides-3';
+	} else if ( 4 === $slide_count ) {
+		$classes[] = 'info-cards__slides-4';
+	}
 @endphp
 
 <div class="info-cards__carousel">
@@ -19,7 +29,7 @@
 		infinite="yes"
 	>
 		<tp-slider-track class="info-cards__track">
-			<tp-slider-slides class="info-cards__slides">
+			<tp-slider-slides @class( $classes )>
 				{!! $slot !!}
 			</tp-slider-slides>
 		</tp-slider-track>

@@ -133,16 +133,59 @@
 
 			#{$self}__slides {
 				grid-template-columns: repeat(4, minmax(210px, 1fr));
+
+				&-3 #{$self}__card,
+				&-4 #{$self}__card,
+				#{$self}__card {
+					max-height: unset;
+					max-width: unset;
+
+					&:first-child {
+						grid-row: span 2;
+						grid-column: span 2;
+					}
+				}
+
+
+				&-3 {
+
+					#{$self}__card {
+
+						&:nth-child(2),
+						&:nth-child(3) {
+							grid-column: 3 / span 2;
+
+							img {
+								aspect-ratio: 520 / 379;
+							}
+						}
+
+					}
+				}
+
+				&-4 {
+
+					#{$self}__card {
+
+						&:last-child {
+							grid-row: 2 / 3;
+							grid-column: 3 / span 2;
+
+							img {
+								aspect-ratio: 520 / 378;
+							}
+						}
+					}
+				}
 			}
 
 			#{$self}__card {
-				max-height: unset;
-				max-width: unset;
-				align-self: stretch;
 
-				&:first-child {
-					grid-row: span 2;
-					grid-column: span 2;
+				&:not(:first-child) {
+
+					img {
+						aspect-ratio: 390 / 604;
+					}
 				}
 			}
 		}
