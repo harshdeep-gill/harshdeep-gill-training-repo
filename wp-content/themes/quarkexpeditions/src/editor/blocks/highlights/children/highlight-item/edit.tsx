@@ -94,6 +94,7 @@ export default function edit( { className, attributes, setAttributes }: BlockEdi
 							{ label: __( 'House', 'qrk' ), value: 'house' },
 							{ label: __( 'Iceberg', 'qrk' ), value: 'iceberg' },
 							{ label: __( 'Flight Seeing', 'qrk' ), value: 'flightseeing' },
+							{ label: __( 'Time', 'qrk' ), value: 'time2' },
 						] }
 						onChange={ ( icon: string ) => setAttributes( { icon } ) }
 					/>
