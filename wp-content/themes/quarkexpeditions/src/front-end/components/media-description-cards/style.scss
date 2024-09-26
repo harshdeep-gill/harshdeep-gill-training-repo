@@ -15,7 +15,7 @@
 	&:not(&--desktop-carousel) {
 		#{$self}__slides-container {
 
-			@media screen and (min-width: grid-size(lg)) {
+			@media screen and (min-width: grid-size(xl)) {
 				display: grid;
 				row-gap: var(--spacing-7);
 				height: auto !important;
@@ -27,7 +27,7 @@
 
 		#{$self}__nav {
 
-			@media screen and (min-width: grid-size(lg)) {
+			@media screen and (min-width: grid-size(xl)) {
 				display: none;
 			}
 		}
@@ -42,7 +42,7 @@
 				flex: 0 0 calc(45% - var(--spacing-4));
 			}
 
-			@media screen and (min-width: grid-size(lg)) {
+			@media screen and (min-width: grid-size(xl)) {
 				background-color: transparent;
 				min-width: auto;
 				box-shadow: none;
