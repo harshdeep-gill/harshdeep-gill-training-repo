@@ -725,7 +725,7 @@ class SEO {
 		}
 
 		// Files.
-		preg_match_all( '#https://www.quarkexpeditions.com/sites/default/files/(.+?)\.([a-zA-Z0-9]){3,4}#', $content, $matches );
+		preg_match_all( '#quarkexpeditions.com/sites/default/files/(.+?)\.([a-zA-Z0-9]){3,4}#', $content, $matches );
 
 		// Check if we have any matches.
 		if ( ! empty( $matches[0] ) ) {
@@ -747,7 +747,7 @@ class SEO {
 						LIMIT 1
 						',
 						[
-							'%' . str_replace( 'https://www.quarkexpeditions.com/sites/default/files/', '', $drupal_url ) . '%',
+							'%' . str_replace( 'quarkexpeditions.com/sites/default/files/', '', $drupal_url ) . '%',
 						]
 					),
 					ARRAY_A
