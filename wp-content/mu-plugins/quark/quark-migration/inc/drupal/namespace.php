@@ -690,6 +690,11 @@ function transform_drupal_media_tags( string $content = '' ): string {
 					}
 				}
 			}
+
+			// Replace the drupal-media tag.
+			if ( ! empty( $image_html ) ) {
+				$content = str_replace( $matches[0][ $key ], $image_html, $content );
+			}
 		} elseif ( $image instanceof WP_Error && 'QUARK_migration_media_download_failed' === $image->get_error_code() ) {
 			$image_html = sprintf(
 				'<figure class="wp-block-image %s"><img src="%s" alt=""/><figcaption>%s</figcaption></figure>',
