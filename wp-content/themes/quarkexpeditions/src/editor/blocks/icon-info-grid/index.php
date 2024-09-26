@@ -45,7 +45,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 	// Build component attributes.
 	$component_attributes = [
 		'slot'             => '',
-		'desktop_carousel' => $attributes['desktopCarousel'] ?? '',
+		'desktop_carousel' => $attributes['desktopCarousel'],
 	];
 
 	// Render inner blocks.
