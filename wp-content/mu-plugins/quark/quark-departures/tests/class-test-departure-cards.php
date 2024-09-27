@@ -639,6 +639,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 					'discounted_price' => format_price( 38369 ),
 				],
 				'promotions'   => [],
+				'checkout_url' => 'https://local-checkout.quarkexpeditions.com?package_id=JKL-012&departure_date=2025-01-09&cabin_code=ULT-SGL&currency=USD&mask=A',
 			],
 		];
 
@@ -656,6 +657,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 					'discounted_price' => format_price( 63865 ),
 				],
 				'promotions'   => [],
+				'checkout_url' => 'https://local-checkout.quarkexpeditions.com?package_id=JKL-012&departure_date=2025-01-09&cabin_code=ULT-DBL&currency=USD&mask=A',
 			],
 			[
 				'name'         => 'AA',
@@ -666,6 +668,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 					'discounted_price' => format_price( 29610 ),
 				],
 				'promotions'   => [],
+				'checkout_url' => 'https://local-checkout.quarkexpeditions.com?package_id=JKL-012&departure_date=2025-01-09&cabin_code=ULT-DBL&currency=USD&mask=AA',
 			],
 		];
 
@@ -704,6 +707,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 					'discounted_price' => format_price( 26371 ),
 				],
 				'promotions'   => [],
+				'checkout_url' => 'https://local-checkout.quarkexpeditions.com?package_id=ABC-123&departure_date=2026-02-28&cabin_code=OEX-SGL&currency=USD&mask=A',
 			],
 		];
 
