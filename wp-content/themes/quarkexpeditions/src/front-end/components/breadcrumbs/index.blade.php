@@ -1,14 +1,25 @@
 @props( [
 	'breadcrumbs' => [],
+	'appearance'  => 'light',
 ] )
 
 @php
 	if ( empty( $breadcrumbs ) ) {
 		return;
 	}
+
+	$classes = [ 'breadcrumbs' ];
+
+	if ( 'light' === $appearance ) {
+		$classes[] = 'breadcrumbs--light';
+	}
+
+	if ( 'dark' === $appearance ) {
+		$classes[] = 'breadcrumbs--dark';
+	}
 @endphp
 
-<div class="breadcrumbs">
+<div @class( $classes )>
 	@foreach ( $breadcrumbs as $breadcrumb )
 		<div class="breadcrumbs__breadcrumb">
 			<span class="breadcrumbs__breadcrumb-separator">

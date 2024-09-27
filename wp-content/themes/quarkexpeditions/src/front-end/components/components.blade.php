@@ -117,31 +117,72 @@
 				<x-highlights.title title="Highlights" />
 				<x-highlights.item>
 					<x-highlights.icon icon="compass2" />
-					<x-highlights.item-title title="Cross the Drake Passage, and venture beyond the remote at 66°33'S" />
+					<x-highlights.content>
+						<x-highlights.item-text text="Cross the Drake Passage, and venture beyond the remote at 66°33'S" />
+					</x-highlights.content>
 				</x-highlights.item>
 				<x-highlights.item>
 					<x-highlights.icon icon="zodiac-cruising" />
-					<x-highlights.item-title title="Head out on Zodiac cruises, go hiking, and take a Polar Plunge" />
+					<x-highlights.content>
+						<x-highlights.item-text text="Head out on Zodiac cruises, go hiking, and take a Polar Plunge" />
+					</x-highlights.content>
 				</x-highlights.item>
 				<x-highlights.item>
 					<x-highlights.icon icon="whale-tail" />
-					<x-highlights.item-title title="Witness abundant wildlife, including penguins, seals, and whales" />
+					<x-highlights.content>
+						<x-highlights.item-text text="Witness abundant wildlife, including penguins, seals, and whales" />
+					</x-highlights.content>
 				</x-highlights.item>
 				<x-highlights.item>
 					<x-highlights.icon icon="house" />
-					<x-highlights.item-title title="Visit Antarctic research stations and iconic landmarks" />
+					<x-highlights.content>
+						<x-highlights.item-text text="Visit Antarctic research stations and iconic landmarks" />
+					</x-highlights.content>
 				</x-highlights.item>
 				<x-highlights.item>
 					<x-highlights.icon icon="iceberg" />
-					<x-highlights.item-title title="Enjoy presentations on wildlife, history, glaciology, and geology by our onboard polar experts" />
+					<x-highlights.content>
+						<x-highlights.item-text text="Enjoy presentations on wildlife, history, glaciology, and geology by our onboard polar experts" />
+					</x-highlights.content>
 				</x-highlights.item>
 				<x-highlights.item>
 					<x-highlights.icon icon="flightseeing" />
-					<x-highlights.item-title title="Flightseeing (Only on Ultramarine)" />
+					<x-highlights.content>
+						<x-highlights.item-text text="Flightseeing (Only on Ultramarine)" />
+					</x-highlights.content>
 				</x-highlights.item>
 				<x-highlights.info>
 					<p>Plus, add on adventure options, such as a paddling excursion</p>
 				</x-highlights.info>
+			</x-highlights>
+		</x-two-columns.column>
+	</x-two-columns>
+
+	<x-two-columns :border="false">
+		<x-two-columns.column>
+			<h2>Highlight Variation 2.0</h2>
+			<p>Set foot on the Seventh Continent for a polar achievement few get to experience. But an even rarer milestone is getting to cross the iconic Antarctic Circle, which is one of the highlights of this unique small ship expedition!</p>
+			<p>Over 14 days as you navigate south, you’ll have the chance to witness dramatic ice formations, humpback whales swimming alongside the ship, leopard seals diving beneath your Zodiac, penguins sliding off icebergs into crystal waters, and even giant petrels soaring above the crackling sea.</p>
+			<p>We highly recommend the expedition itineraries aboard our pioneering purpose-built vessel, the Ultramarine, which includes a flightseeing tour and a range of adventure options more extensive than any other ship in its class.</p>
+		</x-two-columns.column>
+		<x-two-columns.column>
+			<x-highlights>
+				<x-highlights.item>
+					<x-highlights.icon icon="compass2" :border="true" />
+					<x-highlights.content>
+						<x-highlights.item-title title="When to Visit" />
+						<x-highlights.overline>November to march</x-highlights.overline>
+						<x-highlights.item-text text="This is summer in the Antarctic – the only time this region is accessible. Each month offers a unique Antarctic experience. " />
+					</x-highlights.content>
+				</x-highlights.item>
+				<x-highlights.item>
+					<x-highlights.icon icon="zodiac-cruising" :border="true" />
+					<x-highlights.content>
+						<x-highlights.item-title title="When to Visit 2" />
+						<x-highlights.overline>April to August</x-highlights.overline>
+						<x-highlights.item-text text="Head out on Zodiac cruises, go hiking, and take a Polar Plunge" />
+					</x-highlights.content>
+				</x-highlights.item>
 			</x-highlights>
 		</x-two-columns.column>
 	</x-two-columns>
@@ -2912,6 +2953,138 @@
 	</x-section>
 </x-component-demo>
 
+<x-component-demo :keys="[ 'breadcrumbs' ]">
+	<x-breadcrumbs
+		:breadcrumbs="[
+			[
+				'title' => 'Home',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Blog',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Antarctica',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Can I Travel Antarctica?',
+				'url'   => '#',
+			],
+		]"
+	/>
+
+	<div style="background-color: var(--color-gray-90); margin-inline: calc(-1* var(--grid-col-gutter)); padding-block: 4px; padding-inline: var(--grid-col-gutter);">
+		<x-breadcrumbs
+			appearance="dark"
+			:breadcrumbs="[
+				[
+					'title' => 'Home',
+					'url'   => '#',
+				],
+				[
+					'title' => 'Blog',
+					'url'   => '#',
+				],
+				[
+					'title' => 'Antarctica',
+					'url'   => '#',
+				],
+				[
+					'title' => 'Can I Travel Antarctica?',
+					'url'   => '#',
+				],
+			]"
+		/>
+	</div>
+
+	<x-breadcrumbs
+		:breadcrumbs="[
+			[
+				'title' => 'Home',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Destinations',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Antarctica',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Expeditions',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Current Expedition',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Preparation',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Packing List',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Arctic Gear',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Activities',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Iceberg Watching',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Wildlife Encounters',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Polar Plunge',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Travel Guide',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Visa Requirements',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Health and Safety',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Emergency Procedures',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Booking',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Reservation Form',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Payment Options',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Contact Us',
+				'url'   => '#',
+			],
+		]"
+	/>
+</x-component-demo>
+
 <x-component-demo :keys="[ 'sidebar-grid', 'table-of-contents', 'breadcrumbs', 'post-author-info' ]">
 	<x-breadcrumbs
 		:breadcrumbs="[
@@ -4218,114 +4391,6 @@
 			</x-accordion.item>
 		</x-accordion>
 	</x-section>
-</x-component-demo>
-
-<x-component-demo :keys="[ 'breadcrumbs' ]">
-	<x-breadcrumbs
-		:breadcrumbs="[
-			[
-				'title' => 'Home',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Blog',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Antarctica',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Can I Travel Antarctica?',
-				'url'   => '#',
-			],
-		]"
-	/>
-
-	<x-breadcrumbs
-		:breadcrumbs="[
-			[
-				'title' => 'Home',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Destinations',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Antarctica',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Expeditions',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Current Expedition',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Preparation',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Packing List',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Arctic Gear',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Activities',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Iceberg Watching',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Wildlife Encounters',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Polar Plunge',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Travel Guide',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Visa Requirements',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Health and Safety',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Emergency Procedures',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Booking',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Reservation Form',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Payment Options',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Contact Us',
-				'url'   => '#',
-			],
-		]"
-	/>
 </x-component-demo>
 
 <x-component-demo :keys="[ 'info-cards' ]">
