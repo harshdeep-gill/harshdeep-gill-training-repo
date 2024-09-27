@@ -16,7 +16,6 @@ use WP_CLI\ExitException;
 
 use function Quark\Migration\Drupal\get_database;
 use function Quark\Migration\Drupal\get_term_by_id;
-use function Quark\Migration\Drupal\prepare_content;
 use function Quark\Migration\Drupal\prepare_for_migration;
 use function Quark\Migration\Drupal\get_post_by_id;
 use function Quark\Migration\Drupal\download_file_by_mid;
@@ -348,6 +347,60 @@ class Ship {
 			$data['meta_input']['related_decks'] = $related_decks;
 		}
 
+		// Set Ship Amenities - Cabin.
+		if ( ! empty( $item['amenities_cabin'] ) ) {
+			$amenities_cabin = array_map( 'strval', explode( ',,', strval( $item['amenities_cabin'] ) ) );
+			$cabin_count     = 0;
+
+			// Set amenities cabin.
+			foreach ( $amenities_cabin as $index => $amenity ) {
+				$cabin_meta_key                        = sprintf( 'cabin_%d_item', $index );
+				$data['meta_input'][ $cabin_meta_key ] = $amenity;
+
+				// Set - cabin count.
+				++$cabin_count;
+			}
+
+			// Set - set count.
+			$data['meta_input']['cabin'] = $cabin_count;
+		}
+
+		// Set Ship Amenities - Aboard.
+		if ( ! empty( $item['amenities_aboard'] ) ) {
+			$amenities_aboard = array_map( 'strval', explode( ',,', strval( $item['amenities_aboard'] ) ) );
+			$aboard_count     = 0;
+
+			// Set amenities aboard.
+			foreach ( $amenities_aboard as $index => $amenity ) {
+				$aboard_meta_key                        = sprintf( 'aboard_%d_item', $index );
+				$data['meta_input'][ $aboard_meta_key ] = $amenity;
+
+				// Set - aboard count.
+				++$aboard_count;
+			}
+
+			// Set - set count.
+			$data['meta_input']['aboard'] = $aboard_count;
+		}
+
+		// Set Ship Amenities - Activities.
+		if ( ! empty( $item['amenities_activities'] ) ) {
+			$amenities_activities = array_map( 'strval', explode( ',,', strval( $item['amenities_activities'] ) ) );
+			$activities_count     = 0;
+
+			// Set amenities activities.
+			foreach ( $amenities_activities as $index => $amenity ) {
+				$activities_meta_key                        = sprintf( 'activities_%d_item', $index );
+				$data['meta_input'][ $activities_meta_key ] = $amenity;
+
+				// Set - activities count.
+				++$activities_count;
+			}
+
+			// Set - set count.
+			$data['meta_input']['activities'] = $activities_count;
+		}
+
 		// Return normalized data.
 		return $data;
 	}
@@ -395,7 +448,10 @@ class Ship {
 			field_year_built.field_year_built_value AS year_built,
 			field_zodiacs.field_zodiacs_value AS zodiacs,
 			field_deck_plan.field_deck_plan_target_id AS deck_plan,
-			(SELECT GROUP_CONCAT( field_ship_decks_target_id ORDER BY delta SEPARATOR ', ' ) FROM node__field_ship_decks AS field_ship_decks WHERE node.nid = field_ship_decks.entity_id AND field_ship_decks.langcode = node.langcode) AS related_decks
+			(SELECT GROUP_CONCAT( field_ship_decks_target_id ORDER BY delta SEPARATOR ', ' ) FROM node__field_ship_decks AS field_ship_decks WHERE node.nid = field_ship_decks.entity_id AND field_ship_decks.langcode = node.langcode) AS related_decks,
+			(SELECT GROUP_CONCAT( field_amenities_cabin_value ORDER BY delta SEPARATOR ',, ' ) FROM node__field_amenities_cabin AS field_amenities_cabin WHERE node.nid = field_amenities_cabin.entity_id AND field_amenities_cabin.langcode = node.langcode) AS amenities_cabin,
+			(SELECT GROUP_CONCAT( field_amenities_aboard_value ORDER BY delta SEPARATOR ',, ' ) FROM node__field_amenities_aboard AS field_amenities_aboard WHERE node.nid = field_amenities_aboard.entity_id AND field_amenities_aboard.langcode = node.langcode) AS amenities_aboard,
+			(SELECT GROUP_CONCAT( field_amenities_activities_value ORDER BY delta SEPARATOR ',, ' ) FROM node__field_amenities_activities AS field_amenities_activities WHERE node.nid = field_amenities_activities.entity_id AND field_amenities_activities.langcode = node.langcode) AS amenities_activities
 		FROM
 			node
 				LEFT JOIN node_field_data AS field_data ON node.nid = field_data.nid AND node.langcode = field_data.langcode
