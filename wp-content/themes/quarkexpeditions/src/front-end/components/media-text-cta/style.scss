@@ -101,7 +101,7 @@
 
 				@media screen and (min-width: grid-size(xl)) {
 					max-width: max-content;
-					min-width: 50%;
+					min-width: calc(50% - var(--spacing-5) / 2);
 				}
 			}
 		}
