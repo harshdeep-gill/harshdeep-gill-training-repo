@@ -225,7 +225,7 @@ function get_corporate_office_phone_number(): array {
  * @param string $country_code Country code.
  *
  * @return array{}|array{
- *    phone: string,
+ *    phone_number: string,
  *    prefix: string,
  * }
  */
@@ -250,8 +250,8 @@ function get_office_phone_number_by_country_code( string $country_code = 'US' ):
 		// Check if country code matches.
 		if ( in_array( strtoupper( $country_code ), (array) $office['coverage'], true ) ) {
 			$data = [
-				'phone'  => strval( $office['phone'] ),
-				'prefix' => strval( $office['phone_number_prefix'] ),
+				'phone_number' => strval( $office['phone'] ),
+				'prefix'       => strval( $office['phone_number_prefix'] ),
 			];
 			break;
 		}
