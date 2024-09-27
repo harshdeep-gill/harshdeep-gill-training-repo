@@ -362,6 +362,11 @@
 	&__drawer-open {
 		cursor: pointer;
 		display: flex;
+
+		svg {
+			max-width: 20px;
+			height: auto;
+		}
 	}
 
 	&__transfer-package-content {

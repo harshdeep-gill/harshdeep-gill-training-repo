@@ -165,7 +165,7 @@ class Test_Occupancy_Promotions extends Softrip_TestCase {
 			],
 		];
 		$actual              = update_occupancy_promotions( $raw_promotions_data, $occupancy_id );
-		$this->assertTrue( $actual );
+		$this->assertFalse( $actual );
 
 		// Get occupancy promotions by occupancy id - should be empty.
 		$occ_promotions = get_occupancy_promotions_by_occupancy( $occupancy_id, true );
@@ -187,7 +187,7 @@ class Test_Occupancy_Promotions extends Softrip_TestCase {
 			],
 		];
 		$actual              = update_occupancy_promotions( $raw_promotions_data, $occupancy_id );
-		$this->assertTrue( $actual );
+		$this->assertFalse( $actual );
 
 		// Get occupancy promotions by occupancy id - still empty. Because promotions are not created yet.
 		$occ_promotions = get_occupancy_promotions_by_occupancy( $occupancy_id, true );

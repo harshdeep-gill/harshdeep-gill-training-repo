@@ -1,8 +1,22 @@
 .breadcrumbs {
+	--link-color: var(--color-gray-70);
+	--link-hover-color: var(--color-gray-40);
+	--active-color: var(--color-black);
+
+	// Dark appearance.
+	&--dark {
+		--link-color: var(--color-gray-30);
+		--link-hover-color: var(--color-gray-70);
+		--active-color: var(--color-white);
+	}
+
 	display: flex;
 	gap: var(--spacing-4);
 	overflow-x: auto;
 	margin-block: var(--typography-spacing);
+	white-space: nowrap;
+	margin-inline: calc(-1 * var(--grid-col-gutter));
+	padding-inline: var(--grid-col-gutter);
 
 	-ms-overflow-style: none;
 	scrollbar-width: none;
@@ -18,7 +32,7 @@
 		flex: 0 0 fit-content;
 
 		&:last-child &-title {
-			color: var(--color-black);
+			color: var(--active-color);
 			font-weight: var(--font-weight-bold);
 
 			&:hover {
@@ -32,10 +46,10 @@
 
 		&-title {
 			text-decoration: none;
-			color: var(--color-gray-70);
+			color: var(--link-color);
 
 			&:hover {
-				text-decoration-color: var(--color-gray-40);
+				text-decoration-color: var(--link-hover-color);
 			}
 		}
 
@@ -47,7 +61,7 @@
 				rotate: 180deg;
 
 				path {
-					fill: var(--color-gray-70);
+					fill: var(--link-color);
 				}
 			}
 		}
