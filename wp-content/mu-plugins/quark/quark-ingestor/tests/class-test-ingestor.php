@@ -26,6 +26,7 @@ use function Quark\Ingestor\get_itineraries;
 use function Quark\Ingestor\get_occupancies_data;
 use function Quark\Ingestor\get_paid_adventure_options_data;
 use function Quark\Ingestor\push_expedition_data;
+use function Quark\Softrip\do_sync;
 use function Quark\Softrip\Occupancies\get_description_and_pax_count_by_mask;
 use function Quark\Softrip\Occupancies\update_occupancies;
 use function Quark\Softrip\Promotions\get_promotions_by_code;
@@ -286,6 +287,18 @@ class Test_Ingestor extends Softrip_TestCase {
 		add_action( 'quark_ingestor_push_initiated', [ $this, 'ingestor_push_initiated' ] );
 		add_action( 'quark_ingestor_push_success', [ $this, 'ingestor_push_success' ] );
 		add_action( 'quark_ingestor_push_completed', [ $this, 'ingestor_push_completed' ] );
+
+		// Setup mock response.
+		add_filter( 'pre_http_request', '\Quark\Tests\Softrip\mock_softrip_http_request', 10, 3 );
+
+		// Sync all data.
+		do_sync();
+
+		// Flush cache.
+		wp_cache_flush();
+
+		// Remove Softrip mock response.
+		remove_filter( 'pre_http_request', '\Quark\Tests\Softrip\mock_softrip_http_request', 10 );
 
 		// Setup mock response.
 		add_filter( 'pre_http_request', '\Quark\Tests\Ingestor\mock_ingestor_http_request', 10, 3 );
@@ -635,13 +648,108 @@ class Test_Ingestor extends Softrip_TestCase {
 		do_push( [], true );
 
 		// Verify if actions were triggered.
-		$this->assertEquals( 16, did_action( 'quark_ingestor_push_error' ) );
+		$this->assertEquals( 14, did_action( 'quark_ingestor_push_error' ) );
 		$this->assertEquals( 5, did_action( 'quark_ingestor_push_initiated' ) );
-		$this->assertEquals( 12, did_action( 'quark_ingestor_push_success' ) ); // Should be 13.
+		$this->assertEquals( 14, did_action( 'quark_ingestor_push_success' ) ); // Should be 13.
 		$this->assertEquals( 5, did_action( 'quark_ingestor_push_completed' ) );
+
+		// Verify push initiated data.
+		$this->assertNotEmpty( $this->push_initiated_data );
+
+		// Prepare expected push initiated data.
+		$expected_push_initiated_data = [
+			[
+				'expedition_post_ids' => $new_post_expedition_ids,
+				'initiated_via'       => 'manually',
+				'changed_only'        => true,
+				'total_count'         => count( $new_post_expedition_ids ),
+			],
+		];
+
+		// Verify push initiated data.
+		$this->assertEquals(
+			$expected_push_initiated_data,
+			$this->push_initiated_data
+		);
+
+		// Verify push success data.
+		$this->assertNotEmpty( $this->push_success_data );
+
+		// Prepare expected push success data.
+		$expected_push_success_data = [];
+
+		// Actual push success data.
+		$actual_push_success_data = $this->push_success_data;
+
+		// Updated expedition post id.
+		$updated_post_ids = [ $new_post_expedition_ids[1], $new_post_expedition_ids[2] ];
+
+		// Non-updated.
+		$non_updated_post_ids = array_diff( $new_post_expedition_ids, $updated_post_ids );
+
+		// Prepare expected push success data.
+		foreach ( $updated_post_ids as $expedition_post_id ) {
+			$expected_push_success_data[] = [
+				'expedition_post_id' => $expedition_post_id,
+				'initiated_via'      => 'manually',
+			];
+		}
+
+		// Verify push success data.
+		$this->assertEquals(
+			$expected_push_success_data,
+			$actual_push_success_data
+		);
+
+		// Prepare expected push completed data.
+		$expected_push_completed_data = [
+			[
+				'expedition_post_ids' => $new_post_expedition_ids,
+				'initiated_via'       => 'manually',
+				'changed_only'        => true,
+				'total_count'         => count( $new_post_expedition_ids ),
+				'success_count'       => 2,
+			],
+		];
+
+		// Verify push completed data.
+		$this->assertNotEmpty( $this->push_completed_data );
+
+		// Verify push completed data.
+		$this->assertEquals(
+			$expected_push_completed_data,
+			$this->push_completed_data
+		);
+
+		// Verify error data.
+		$this->assertNotEmpty( $this->push_error_data );
+
+		// Prepare expected push error data.
+		$expected_push_error_data = [];
+
+		// Prepare expected push error data.
+		foreach ( $non_updated_post_ids as $expedition_post_id ) {
+			$expected_push_error_data[] = [
+				'error'              => 'No changes detected.',
+				'expedition_post_id' => $expedition_post_id,
+				'initiated_via'      => 'manually',
+			];
+		}
+
+		// Verify push error data.
+		$this->assertEquals(
+			$expected_push_error_data,
+			$this->push_error_data
+		);
 
 		// Remove filter.
 		remove_filter( 'pre_http_request', '\Quark\Tests\Ingestor\mock_ingestor_http_request', 10 );
+
+		// Reset.
+		$this->push_completed_data = [];
+		$this->push_error_data     = [];
+		$this->push_initiated_data = [];
+		$this->push_success_data   = [];
 	}
 
 	/**
