@@ -81,7 +81,7 @@ class Stream_Connector extends Connector {
 	 */
 	public function callback_quark_ingestor_push_initiated( array $data = [] ): void {
 		// Validate data.
-		if ( empty( $data ) || empty( $data['expedition_post_ids'] ) || empty( $data['initiated_via'] ) || empty( $data['total_count'] ) || ! isset( $data['changed_only'] ) ) {
+		if ( empty( $data ) || empty( $data['expedition_post_ids'] ) || ! is_array( $data['expedition_post_ids'] ) || empty( $data['initiated_via'] ) || empty( $data['total_count'] ) || ! isset( $data['changed_only'] ) ) {
 			return;
 		}
 
@@ -110,7 +110,7 @@ class Stream_Connector extends Connector {
 		$this->log(
 			$message,
 			[
-				'expedition_post_ids' => $expedition_post_ids,
+				'expedition_post_ids' => implode( ',', $expedition_post_ids ),
 				'initiated_via'       => $initiated_via,
 				'changed_only'        => $changed_only,
 				'total_count'         => $total_count,
@@ -130,7 +130,7 @@ class Stream_Connector extends Connector {
 	 */
 	public function callback_quark_ingestor_push_completed( array $data = [] ): void {
 		// Validate data.
-		if ( empty( $data ) || empty( $data['expedition_post_ids'] ) || empty( $data['initiated_via'] ) || ! isset( $data['success_count'] ) || ! isset( $data['total_count'] ) || ! isset( $data['changed_only'] ) ) {
+		if ( empty( $data ) || empty( $data['expedition_post_ids'] ) || ! is_array( $data['expedition_post_ids'] ) || empty( $data['initiated_via'] ) || ! isset( $data['success_count'] ) || ! isset( $data['total_count'] ) || ! isset( $data['changed_only'] ) ) {
 			return;
 		}
 
@@ -163,7 +163,7 @@ class Stream_Connector extends Connector {
 		$this->log(
 			$message,
 			[
-				'expedition_post_ids' => $expedition_post_ids,
+				'expedition_post_ids' => implode( ',', $expedition_post_ids ),
 				'initiated_via'       => $initiated_via,
 				'success_count'       => $success_count,
 				'total_count'         => $total_count,

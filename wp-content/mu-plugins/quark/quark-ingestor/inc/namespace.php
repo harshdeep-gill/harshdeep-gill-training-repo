@@ -45,7 +45,7 @@ use const Quark\Localization\EUR_CURRENCY;
 use const Quark\Localization\GBP_CURRENCY;
 use const Quark\Localization\USD_CURRENCY;
 
-const SCHEDULE_HOOK = 'quark_ingestor_push';
+const SCHEDULE_HOOK = 'qrk_ingestor_push';
 const DATA_HASH_KEY = '_ingestor_data_hash';
 
 /**
@@ -293,9 +293,6 @@ function do_push( array $expedition_post_ids = [], bool $changed_only = true ): 
 			}
 		}
 
-		// Update hash.
-		update_post_meta( $expedition_post_id, DATA_HASH_KEY, $new_hash );
-
 		// Push expedition data.
 		$push_result = push_expedition_data( $expedition_post_id, $json_expedition_data );
 
@@ -311,6 +308,9 @@ function do_push( array $expedition_post_ids = [], bool $changed_only = true ): 
 				]
 			);
 		} elseif ( $push_result ) {
+				// Update hash if successful.
+				update_post_meta( $expedition_post_id, DATA_HASH_KEY, $new_hash );
+
 				// Log success.
 				do_action(
 					'quark_ingestor_push_success',
