@@ -34,7 +34,7 @@ window.addEventListener(
 			.then( ( response ) => response.json() )
 			.then( ( phoneNumberRule ) => {
 				// Get phone number and prefix.
-				const phoneNumber = phoneNumberRule?.phone_number;
+				const phoneNumber = phoneNumberRule?.phone;
 				const prefix = phoneNumberRule?.prefix;
 				const phoneNumberAndPrefix = prefix + ' : ' + phoneNumber;
 

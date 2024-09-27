@@ -199,8 +199,8 @@ function get_corporate_office_phone_number(): array {
 		// Check if corporate office.
 		if ( ! empty( $office['is_corporate_office'] ) ) {
 			$data = [
-				'phone_number' => strval( $office['phone'] ),
-				'prefix'       => strval( $office['phone_number_prefix'] ),
+				'phone'  => strval( $office['phone'] ),
+				'prefix' => strval( $office['phone_number_prefix'] ),
 			];
 			break;
 		}
