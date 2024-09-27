@@ -2572,6 +2572,66 @@
 	</x-offer-cards>
 </x-component-demo>
 
+<x-component-demo :keys="[ 'media-description-cards' ]">
+	<x-section>
+		<x-media-description-cards>
+			<x-media-description-cards.card>
+				<x-media-description-cards.image image_id="32" />
+				<x-media-description-cards.content>
+					<x-media-description-cards.title title="Antarctic Explorer: Discovering the 7th Continent" heading_level="4" />
+					<x-media-description-cards.description>
+						<p>Embark on a once-in-a-lifetime adventure on this diverse expedition—you’ll experience the spectacular flora and fauna of the Falkland Islands (Islas Malvinas) before immersing yourself in the unique history and exquisite, rare wildlife of South Georgia.</p>
+					</x-media-description-cards.description>
+				</x-media-description-cards.content>
+				<x-media-description-cards.cta url="#" text="View Expedition" />
+			</x-media-description-cards.card>
+
+			<x-media-description-cards.card>
+				<x-media-description-cards.image image_id="34" />
+				<x-media-description-cards.content>
+					<x-media-description-cards.title title="Greatest Wildlife Show on Earth" heading_level="4" />
+					<x-media-description-cards.description>
+						<p>Embark on a once-in-a-lifetime adventure on this diverse expedition—you’ll experience the spectacular flora and fauna of the Falkland Islands (Islas Malvinas) before immersing yourself in the unique history and exquisite, rare wildlife of South Georgia.</p>
+					</x-media-description-cards.description>
+				</x-media-description-cards.content>
+			</x-media-description-cards.card>
+
+			<x-media-description-cards.card>
+				<x-media-description-cards.image image_id="36" />
+				<x-media-description-cards.content>
+					<x-media-description-cards.title title="Into the Northwest Passage" heading_level="4" />
+					<x-media-description-cards.description>
+						<p>Embark on a once-in-a-lifetime adventure on this diverse expedition—you’ll experience the spectacular flora and fauna of the Falkland Islands (Islas Malvinas) before immersing yourself in the unique history and exquisite, rare wildlife of South Georgia.</p>
+					</x-media-description-cards.description>
+				</x-media-description-cards.content>
+				<x-media-description-cards.cta url="#" text="Learn More" />
+			</x-media-description-cards.card>
+
+			<x-media-description-cards.card>
+				<x-media-description-cards.image image_id="35" />
+				<x-media-description-cards.content>
+					<x-media-description-cards.title title="In the Footsteps of Franklin" heading_level="4" />
+					<x-media-description-cards.description>
+						<p>Embark on a once-in-a-lifetime adventure on this diverse expedition—you’ll experience the spectacular flora and fauna of the Falkland Islands (Islas Malvinas) before immersing yourself in the unique history and exquisite, rare wildlife of South Georgia.</p>
+					</x-media-description-cards.description>
+				</x-media-description-cards.content>
+				<x-media-description-cards.cta url="#" text="Read More" />
+			</x-media-description-cards.card>
+
+			<x-media-description-cards.card>
+				<x-media-description-cards.image image_id="33" />
+				<x-media-description-cards.content>
+					<x-media-description-cards.title title="Epic High Arctic" heading_level="4" />
+					<x-media-description-cards.description>
+						<p>Embark on a once-in-a-lifetime adventure on this diverse expedition—you’ll experience the spectacular flora and fauna of the Falkland Islands (Islas Malvinas) before immersing yourself in the unique history and exquisite, rare wildlife of South Georgia.</p>
+					</x-media-description-cards.description>
+				</x-media-description-cards.content>
+				<x-media-description-cards.cta url="#" text="Load More" />
+			</x-media-description-cards.card>
+		</x-media-description-cards>
+	</x-section>
+</x-component-demo>
+
 <x-component-demo :keys="[ 'media-text-cta' ]">
 	<x-section>
 		<x-media-text-cta>
