@@ -134,20 +134,7 @@
 			#{$self}__slides {
 				grid-template-columns: repeat(4, minmax(210px, 1fr));
 
-				&-3 #{$self}__card,
-				&-4 #{$self}__card,
-				#{$self}__card {
-					max-height: unset;
-					max-width: unset;
-
-					&:first-child {
-						grid-row: span 2;
-						grid-column: span 2;
-					}
-				}
-
-
-				&-3 {
+				&[total-slides="3"] {
 
 					#{$self}__card {
 
@@ -155,7 +142,7 @@
 						&:nth-child(3) {
 							grid-column: 3 / span 2;
 
-							img {
+							.info-cards__image-wrap {
 								aspect-ratio: 520 / 379;
 							}
 						}
@@ -163,7 +150,7 @@
 					}
 				}
 
-				&-4 {
+				&[total-slides="4"] {
 
 					#{$self}__card {
 
@@ -171,8 +158,8 @@
 							grid-row: 2 / 3;
 							grid-column: 3 / span 2;
 
-							img {
-								aspect-ratio: 520 / 378;
+							.info-cards__image-wrap {
+								aspect-ratio: 520 / 379;
 							}
 						}
 					}
@@ -180,10 +167,17 @@
 			}
 
 			#{$self}__card {
+				max-height: unset;
+				max-width: unset;
+
+				&:first-child {
+					grid-row: span 2;
+					grid-column: span 2;
+				}
 
 				&:not(:first-child) {
 
-					img {
+					.info-cards__image-wrap {
 						aspect-ratio: 390 / 604;
 					}
 				}
