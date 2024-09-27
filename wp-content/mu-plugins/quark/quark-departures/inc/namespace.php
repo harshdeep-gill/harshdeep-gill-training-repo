@@ -39,6 +39,7 @@ use function Quark\Checkout\get_checkout_url;
 use function Quark\Localization\get_currencies;
 
 use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
+use const Quark\Expeditions\EXPEDITION_CATEGORY_TAXONOMY;
 use const Quark\Localization\DEFAULT_CURRENCY;
 
 const POST_TYPE                = 'qrk_departure';
@@ -571,6 +572,7 @@ function get_promotion_tags( int $post_id = 0 ): array {
  *     departure_id: int,
  *     expedition_name: string,
  *     expedition_link: string,
+ *     expedition_slider_images: int[],
  *     package_id: string,
  *     duration_days: int,
  *     duration_dates: string,
@@ -608,7 +610,6 @@ function get_promotion_tags( int $post_id = 0 ): array {
  *           size: string,
  *           bed_configuration: string
  *       },
- *       checkout_url: string,
  *       from_price: array{
  *          discounted_price: string,
  *          original_price: string,
@@ -656,6 +657,14 @@ function get_card_data( int $departure_id = 0, string $currency = DEFAULT_CURREN
 		$ship_name = $ship_data['post']->post_title;
 	}
 
+	// Initialize hero image ids.
+	$hero_slider_image_ids = [];
+
+	// Get hero slider image ids.
+	if ( ! empty( $expedition_post['data'] ) && ! empty( $expedition_post['data']['hero_card_slider_image_ids'] ) && is_array( $expedition_post['data']['hero_card_slider_image_ids'] ) ) {
+		$hero_slider_image_ids = array_map( 'absint', $expedition_post['data']['hero_card_slider_image_ids'] );
+	}
+
 	// Get the lowest price.
 	$lowest_price = get_lowest_price( $departure_id, $currency );
 
@@ -663,11 +672,39 @@ function get_card_data( int $departure_id = 0, string $currency = DEFAULT_CURREN
 	$prices['discounted_price'] = format_price( $lowest_price['discounted'], $currency );
 	$prices['original_price']   = format_price( $lowest_price['original'], $currency );
 
+	// Initialize expedition category.
+	$expedition_category = [];
+
+	// Prepare expedition category.
+	if ( ! empty( $expedition_post['post_taxonomies'][ EXPEDITION_CATEGORY_TAXONOMY ] ) ) {
+		// Get expedition categories.
+		$expedition_categories = $expedition_post['post_taxonomies'][ EXPEDITION_CATEGORY_TAXONOMY ];
+
+		// Validate expedition categories.
+		if ( is_array( $expedition_categories ) ) {
+			// Loop through expedition categories.
+			foreach ( $expedition_categories as $category ) {
+				// Validate category.
+				if ( empty( $category['name'] ) ) {
+					continue;
+				}
+
+				// Add category to expedition category.
+				$expedition_category[] = [
+					'name'        => $category['name'],
+					'description' => $category['description'] ?? '',
+				];
+			}
+		}
+	}
+
 	// Prepare the departure card details.
 	$data = [
 		'departure_id'             => $departure_id,
 		'expedition_name'          => $expedition_name,
 		'expedition_link'          => $expedition_post['permalink'],
+		'expedition_slider_images' => $hero_slider_image_ids,
+		'expedition_categories'    => $expedition_category,
 		'package_id'               => strval( $departure['post_meta']['softrip_package_code'] ?? '' ),
 		'duration_days'            => absint( $departure['post_meta']['duration'] ?? 0 ),
 		'duration_dates'           => get_start_end_departure_date( $departure_id ),

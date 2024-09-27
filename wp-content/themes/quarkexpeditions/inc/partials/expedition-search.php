@@ -7,6 +7,7 @@
 
 namespace Quark\Theme\Partials\ExpeditionSearch;
 
+use function Quark\Departures\get_cards_data;
 use function Quark\Localization\get_current_currency;
 use function Quark\Search\Departures\search;
 
@@ -58,12 +59,12 @@ function render( array $output = [], string $name = '', array $data = [] ): arra
 
 	// Build component attributes.
 	$attributes = [
-		'cards' => [], // @todo implement get_expedition_search_cards_data - https://tuispecialist.atlassian.net/browse/QE-646
+		'cards' => get_cards_data( array_map( 'absint', $search_results['ids'] ), $currency ),
 	];
 
 	// Return rendered partial.
 	return [
-		'markup'          => quark_get_component( 'parts.expedition-search', $attributes ), // @todo implement parts markup - https://tuispecialist.atlassian.net/browse/QE-646
+		'markup'          => quark_get_component( 'parts.expedition-search-result-cards', $attributes ),
 		'noResultsMarkup' => __( 'No results found', 'qrk' ),
 		'data'            => [
 			'resultCount'    => $search_results['result_count'],

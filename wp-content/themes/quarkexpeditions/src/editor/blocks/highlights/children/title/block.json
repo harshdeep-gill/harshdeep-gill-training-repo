@@ -1,25 +1,23 @@
 {
 	"schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
-	"title": "Highlight Item",
-	"name": "quark/highlight-item",
-	"description": "Individual highlight in a highlights list.",
+	"title": "Highlight Item Title",
+	"name": "quark/highlight-item-title",
+	"description": "Individual highlight item title",
 	"parent": [
-		"quark/highlights"
+		"quark/highlight-item"
 	],
 	"category": "layout",
 	"keywords": [
-		"item"
+		"highlight",
+		"item",
+		"title"
 	],
 	"textdomain": "qrk",
 	"attributes": {
-		"icon": {
+		"title": {
 			"type": "string",
 			"default": ""
-		},
-		"border": {
-			"type": "boolean",
-			"default": false
 		}
 	},
 	"supports": {

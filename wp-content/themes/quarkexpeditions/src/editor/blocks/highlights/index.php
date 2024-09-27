@@ -57,6 +57,50 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 			continue;
 		}
 
+		// Process Inner Blocks.
+		$content_slot = '';
+
+		// Process content inner blocks.
+		foreach ( $inner_block->inner_blocks as $content_block ) {
+			// Check for content block.
+			if ( ! $content_block instanceof WP_Block ) {
+				continue;
+			}
+
+			// Switch on block name.
+			switch ( $content_block->name ) {
+				// Item Title.
+				case 'quark/highlight-item-title':
+					$content_slot .= quark_get_component(
+						COMPONENT . '.item-title',
+						[
+							'title' => $content_block->attributes['title'],
+						]
+					);
+					break;
+
+				// Item Overline.
+				case 'quark/highlight-item-overline':
+					$content_slot .= quark_get_component(
+						COMPONENT . '.overline',
+						[
+							'slot' => $content_block->attributes['overline'],
+						]
+					);
+					break;
+
+				// Item Text.
+				case 'quark/highlight-item-text':
+					$content_slot .= quark_get_component(
+						COMPONENT . '.item-text',
+						[
+							'text' => $content_block->attributes['text'],
+						]
+					);
+					break;
+			}
+		}
+
 		// Build item slot.
 		$slot .= quark_get_component(
 			COMPONENT . '.item',
@@ -64,12 +108,13 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 				'slot' => quark_get_component(
 					COMPONENT . '.icon',
 					[
-						'icon' => $inner_block->attributes['icon'],
+						'icon'   => $inner_block->attributes['icon'],
+						'border' => $inner_block->attributes['border'],
 					]
 				) . quark_get_component(
-					COMPONENT . '.item-title',
+					COMPONENT . '.content',
 					[
-						'title' => $inner_block->attributes['title'],
+						'slot' => $content_slot,
 					]
 				),
 			]
