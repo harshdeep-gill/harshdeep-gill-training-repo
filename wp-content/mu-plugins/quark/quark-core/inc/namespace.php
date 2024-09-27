@@ -567,17 +567,54 @@ function get_pagination_links( array $args = [] ): string {
 		$args['query'] = $wp_query;
 	}
 
+	// Get current page number.
+	$current = max( 1, $args['query']->get( 'paged' ) );
+	$total   = $args['query']->max_num_pages;
+
 	// Get pagination links.
-	$pagination_links = strval(
-		paginate_links(
-			[
-				'current'   => max( 1, $args['query']->get( 'paged' ) ),
-				'total'     => $args['query']->max_num_pages,
-				'prev_text' => __( 'Previous', 'qrk' ),
-				'next_text' => __( 'Next ', 'qrk' ),
-			]
-		)
+	$pagination_links = paginate_links(
+		[
+			'current'   => $current,
+			'total'     => $total,
+			'prev_text' => __( 'Previous', 'qrk' ),
+			'next_text' => __( 'Next ', 'qrk' ),
+			'type'      => 'array',
+		]
 	);
+
+	// Prepare pagination links.
+	if ( is_array( $pagination_links ) ) {
+		$previous = '';
+		$next     = '';
+
+		// Shift previous link.
+		if ( $current && 1 < $current ) {
+			$previous = array_shift( $pagination_links );
+		}
+
+		// Pop next link.
+		if ( $current < $total ) {
+			$next = array_pop( $pagination_links );
+		}
+
+		// Get First and Last page.
+		$first_page = strval( array_shift( $pagination_links ) );
+		$last_page  = strval( array_pop( $pagination_links ) );
+
+		// Add class to first & last page.
+		$first_page = str_replace( 'page-numbers', 'page-numbers page-numbers--first', $first_page );
+		$last_page  = str_replace( 'page-numbers', 'page-numbers page-numbers--last', $last_page );
+
+		// Prepare pagination links.
+		$pagination_links = sprintf(
+			"%s\n%s\n%s\n%s\n%s",
+			$previous,
+			$first_page,
+			implode( "\n", $pagination_links ),
+			$last_page,
+			$next
+		);
+	}
 
 	// Bail out if pagination links are empty.
 	if ( empty( $pagination_links ) ) {
