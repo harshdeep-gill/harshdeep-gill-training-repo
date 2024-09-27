@@ -168,8 +168,8 @@ class Test_Office_Phone_Numbers extends WP_UnitTestCase {
 
 		// Prepare expected data.
 		$expected_data = [
-			'phone_number' => '+11800123456',
-			'prefix'       => 'Call Us To Book',
+			'phone'  => '+11800123456',
+			'prefix' => 'Call Us To Book',
 		];
 
 		// Test data.
