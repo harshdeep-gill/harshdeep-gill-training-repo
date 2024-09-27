@@ -174,5 +174,5 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 		],
 	);
 
-// End if function exists.
+	// End if function exists.
 endif;
