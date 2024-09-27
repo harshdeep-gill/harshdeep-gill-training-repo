@@ -72,16 +72,20 @@
 		box-shadow: var(--shadow-1);
 		flex: 0 0 100%;
 		padding: var(--spacing-5);
+		display: flex;
 	}
 
 	&__card {
 		position: relative;
 		overflow: hidden;
 		min-width: 0;
+		display: flex;
+		flex-direction: column;
 	}
 
 	&__content {
 		margin-top: var(--spacing-5);
+		flex: 1;
 
 		&:first-child {
 			margin-top: 0;
@@ -106,6 +110,21 @@
 		gap: var(--spacing-6);
 		margin-top: var(--spacing-6);
 
+	}
+
+	&__cta-button {
+		margin-top: var(--spacing-5);
+
+		.buttons {
+			max-height: 56px;
+		}
+
+		.btn {
+			width: 100%;
+			height: 100%;
+			padding: 17px 20px;
+			line-height: 1.25;
+		}
 	}
 
 	&__arrow-button {

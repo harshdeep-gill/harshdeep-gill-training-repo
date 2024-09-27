@@ -1,25 +1,23 @@
 {
 	"schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
-	"title": "Highlight Item",
-	"name": "quark/highlight-item",
-	"description": "Individual highlight in a highlights list.",
+	"title": "Highlight Item Overline",
+	"name": "quark/highlight-item-overline",
+	"description": "Highlight item overline",
 	"parent": [
-		"quark/highlights"
+		"quark/highlight-item"
 	],
 	"category": "layout",
 	"keywords": [
-		"item"
+		"highlight",
+		"item",
+		"overline"
 	],
 	"textdomain": "qrk",
 	"attributes": {
-		"icon": {
+		"overline": {
 			"type": "string",
 			"default": ""
-		},
-		"border": {
-			"type": "boolean",
-			"default": false
 		}
 	},
 	"supports": {
