@@ -218,9 +218,7 @@ class Ship {
 			'post_status'       => $status,
 			'comment_status'    => 'closed',
 			'ping_status'       => 'closed',
-			'meta_input'        => [
-				'drupal_id' => $nid,
-			],
+			'meta_input'        => [],
 		];
 
 		// Set ship_category term_id.
@@ -400,6 +398,9 @@ class Ship {
 			// Set - set count.
 			$data['meta_input']['activities'] = $activities_count;
 		}
+
+		// Set meta - drupal_id.
+		$data['meta_input']['drupal_id'] = $nid;
 
 		// Return normalized data.
 		return $data;
