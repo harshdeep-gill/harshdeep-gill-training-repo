@@ -23,9 +23,16 @@
 		td {
 			max-width: 132px;
 			text-align: center;
+			min-height: 60px;
 
 			&[rowspan] {
 				min-width: 320px;
+			}
+
+			&::before {
+				content: "";
+				display: block;
+				width: 132px;
 			}
 		}
 	}
