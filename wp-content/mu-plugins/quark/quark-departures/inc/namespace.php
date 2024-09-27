@@ -608,7 +608,6 @@ function get_promotion_tags( int $post_id = 0 ): array {
  *           size: string,
  *           bed_configuration: string
  *       },
- *       checkout_url: string,
  *       from_price: array{
  *          discounted_price: string,
  *          original_price: string,
