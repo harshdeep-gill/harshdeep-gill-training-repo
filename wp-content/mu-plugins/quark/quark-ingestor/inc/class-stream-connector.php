@@ -9,7 +9,7 @@ namespace Quark\Ingestor;
 
 use WP_Stream\Connector;
 
-use const Quark\Departures\POST_TYPE;
+use const Quark\Expeditions\POST_TYPE;
 
 /**
  * Class Stream Connector.
@@ -21,7 +21,7 @@ class Stream_Connector extends Connector {
 	 *
 	 * @var string
 	 */
-	public $name = 'quark_ingestor';
+	public $name = 'quark_ingestor_push';
 
 	/**
 	 * Actions registered for this connector.
@@ -29,9 +29,10 @@ class Stream_Connector extends Connector {
 	 * @var string[]
 	 */
 	public $actions = [
-		'quake_ingestor_push_initiated',
-        'quake_ingestor_push_completed',
-        'quake_ingestor_push_failed',
+		'quark_ingestor_push_initiated',
+		'quark_ingestor_push_completed',
+		'quark_ingestor_push_error',
+		'quark_ingestor_push_success',
 	];
 
 	/**
@@ -41,7 +42,7 @@ class Stream_Connector extends Connector {
 	 */
 	public function get_label(): string {
 		// Return label.
-		return __( 'Softrip', 'qrk' );
+		return __( 'Ingestor', 'qrk' );
 	}
 
 	/**
@@ -52,7 +53,7 @@ class Stream_Connector extends Connector {
 	public function get_context_labels(): array {
 		// Return labels.
 		return [
-			'softrip_sync' => __( 'Softrip Sync', 'qrk' ),
+			'ingestor_push' => __( 'Ingestor Push', 'qrk' ),
 		];
 	}
 
@@ -64,166 +65,215 @@ class Stream_Connector extends Connector {
 	public function get_action_labels(): array {
 		// Return labels.
 		return [
-			'sync_initiated'         => __( 'Sync Initiated', 'qrk' ),
-			'sync_completed'         => __( 'Sync Completed', 'qrk' ),
-			'sync_departure_updated' => __( 'Departure Updated', 'qrk' ),
-			'sync_departure_expired' => __( 'Departure Expired', 'qrk' ),
+			'push_initiated' => __( 'Push Initiated', 'qrk' ),
+			'push_completed' => __( 'Push Completed', 'qrk' ),
+			'push_error'     => __( 'Push Error', 'qrk' ),
+			'push_success'   => __( 'Push Success', 'qrk' ),
 		];
 	}
 
 	/**
-	 * Callback for `quark_softrip_sync_initiated` action.
+	 * Callback for `quark_ingestor_push_initiated` action.
 	 *
 	 * @param mixed[] $data Data passed to the action.
 	 *
 	 * @return void
 	 */
-	public function callback_quark_softrip_sync_initiated( array $data = [] ): void {
+	public function callback_quark_ingestor_push_initiated( array $data = [] ): void {
 		// Validate data.
-		if ( empty( $data ) || empty( $data['via'] ) || ! isset( $data['count'] ) ) {
+		if ( empty( $data ) || empty( $data['expedition_post_ids'] ) || empty( $data['initiated_via'] ) || empty( $data['total_count'] ) || ! isset( $data['changed_only'] ) ) {
 			return;
 		}
 
+		// Get expedition post IDs.
+		$expedition_post_ids = $data['expedition_post_ids'];
+
+		// Get initiated via.
+		$initiated_via = strval( $data['initiated_via'] );
+
+		// Get changed only.
+		$changed_only = (bool) $data['changed_only'];
+
+		// Get total count.
+		$total_count = absint( $data['total_count'] );
+
 		// Prepare message.
 		$message = sprintf(
-			// translators: %1$s: Via, %2$s: Count, %3$d: Total.
-			__( 'Softrip sync initiated via %1$s | Total %2$s : %3$d', 'qrk' ),
-			strval( $data['via'] ),
-			_n( 'itinerary', 'itineraries', absint( $data['count'] ), 'qrk' ),
-			absint( $data['count'] )
+			/* translators: 1: Total count, 2: Initiated via, 3: Changed only */
+			__( 'Ingestor push initiated for %1$d expedition(s) via %2$s | Changed only: %3$s.', 'qrk' ),
+			$total_count,
+			$initiated_via,
+			$changed_only ? __( 'Yes', 'qrk' ) : __( 'No', 'qrk' )
 		);
 
-		// Log action.
+		// Log message.
 		$this->log(
 			$message,
-			[],
-			absint( wp_unique_id() ),
-			'softrip_sync',
-			'sync_initiated'
+			[
+				'expedition_post_ids' => $expedition_post_ids,
+				'initiated_via'       => $initiated_via,
+				'changed_only'        => $changed_only,
+				'total_count'         => $total_count,
+			],
+			0,
+			'ingestor_push',
+			'push_initiated'
 		);
 	}
 
 	/**
-	 * Callback for `quark_softrip_sync_completed` action.
+	 * Callback for `quark_ingestor_push_completed` action.
 	 *
 	 * @param mixed[] $data Data passed to the action.
 	 *
 	 * @return void
 	 */
-	public function callback_quark_softrip_sync_completed( array $data = [] ): void {
+	public function callback_quark_ingestor_push_completed( array $data = [] ): void {
 		// Validate data.
-		if ( empty( $data ) || empty( $data['via'] ) || ! isset( $data['success'] ) || ! isset( $data['failed'] ) ) {
+		if ( empty( $data ) || empty( $data['expedition_post_ids'] ) || empty( $data['initiated_via'] ) || ! isset( $data['success_count'] ) || ! isset( $data['total_count'] ) || ! isset( $data['changed_only'] ) ) {
 			return;
 		}
 
+		// Get expedition post IDs.
+		$expedition_post_ids = $data['expedition_post_ids'];
+
+		// Get initiated via.
+		$initiated_via = strval( $data['initiated_via'] );
+
+		// Get success count.
+		$success_count = absint( $data['success_count'] );
+
+		// Get total count.
+		$total_count = absint( $data['total_count'] );
+
+		// Get changed only.
+		$changed_only = (bool) $data['changed_only'];
+
 		// Prepare message.
 		$message = sprintf(
-			// translators: %1$s: Via, %2$d: Successful, %3$d: Failed, %4$s: Successful, %5$s: Failed.
-			__( 'Softrip sync completed via %1$s | Successful %4$s: %2$d | Failed %5$s: %3$d', 'qrk' ),
-			strval( $data['via'] ),
-			absint( $data['success'] ),
-			absint( $data['failed'] ),
-			_n( 'itinerary', 'itineraries', absint( $data['success'] ), 'qrk' ),
-			_n( 'itinerary', 'itineraries', absint( $data['failed'] ), 'qrk' )
+			/* translators: 1: Total count, 2: Initiated via, 3: Success count, 4: Changed only */
+			__( 'Ingestor push completed for %1$d expedition(s) via %2$s | Successful: %3$d | Changed only: %4$s.', 'qrk' ),
+			$total_count,
+			$initiated_via,
+			$success_count,
+			$changed_only ? __( 'Yes', 'qrk' ) : __( 'No', 'qrk' )
 		);
 
-		// Log action.
+		// Log message.
 		$this->log(
 			$message,
-			[],
-			absint( wp_unique_id() ),
-			'softrip_sync',
-			'sync_completed'
+			[
+				'expedition_post_ids' => $expedition_post_ids,
+				'initiated_via'       => $initiated_via,
+				'success_count'       => $success_count,
+				'total_count'         => $total_count,
+				'changed_only'        => $changed_only,
+			],
+			0,
+			'ingestor_push',
+			'push_completed'
 		);
 	}
 
 	/**
-	 * Get departure update fields mapping.
-	 *
-	 * @return string[]
-	 */
-	public function get_departure_update_fields_mapping(): array {
-		// Return mapping.
-		return [
-			'adventure_options' => __( 'Adventure Options', 'qrk' ),
-			'promotions'        => __( 'Promotions', 'qrk' ),
-			'occupancies'       => __( 'Occupancies', 'qrk' ),
-			'departure_post'    => __( 'Departure Post', 'qrk' ),
-		];
-	}
-
-	/**
-	 * Callback for `quark_softrip_sync_departure_updated` action.
+	 * Callback for `quark_ingestor_push_error` action.
 	 *
 	 * @param mixed[] $data Data passed to the action.
 	 *
 	 * @return void
 	 */
-	public function callback_quark_softrip_sync_departure_updated( array $data = [] ): void {
+	public function callback_quark_ingestor_push_error( array $data = [] ): void {
 		// Validate data.
-		if ( empty( $data ) || empty( $data['post_id'] ) || empty( $data['updated_fields'] ) || empty( $data['softrip_id'] ) ) {
+		if ( empty( $data ) || empty( $data['error'] ) || empty( $data['initiated_via'] ) ) {
 			return;
 		}
 
-		// Update fields mapping.
-		$fields_mapping = $this->get_departure_update_fields_mapping();
+		// Get expedition post ID.
+		$expedition_post_id = absint( $data['expedition_post_id'] ?? 0 );
 
-		// Validate what's updated.
-		$updated_field_labels = array_filter(
-			array_map(
-				function ( $field, $is_updated ) use ( $fields_mapping ) {
-					return $is_updated ? $fields_mapping[ $field ] : false;
-				},
-				array_keys( $data['updated_fields'] ),
-				array_values( $data['updated_fields'] )
-			)
-		);
+		// Get initiated via.
+		$initiated_via = strval( $data['initiated_via'] );
+
+		// Get error.
+		$error = strval( $data['error'] );
+
+		// Initialize message.
+		$message = '';
 
 		// Prepare message.
-		$message = sprintf(
-			// translators: %1$s: Softrip ID, %2$s: Updated Fields.
-			__( '"%1$s" synced | Updated fields: %2$s', 'qrk' ),
-			strval( $data['softrip_id'] ),
-			implode( ', ', $updated_field_labels )
-		);
+		if ( empty( $expedition_post_id ) ) {
+			$message = sprintf(
+				/* translators: 1: Initiated via, 2: Error message */
+				__( 'Ingestor push failed via %1$s | %2$s', 'qrk' ),
+				$initiated_via,
+				$error
+			);
+		} else {
+			$message = sprintf(
+				/* translators: 1: Expedition post title, 2: Initiated via, 3: Error message */
+				__( 'Ingestor push failed for expedition "%1$s" via %2$s | %3$s', 'qrk' ),
+				get_the_title( $expedition_post_id ),
+				$initiated_via,
+				$error
+			);
+		}
 
-		// Log action.
+		// Log message.
 		$this->log(
 			$message,
-			[],
-			absint( $data['post_id'] ),
-			'softrip_sync',
-			'sync_departure_updated'
+			[
+				'expedition_post_id' => $expedition_post_id,
+				'initiated_via'      => $initiated_via,
+				'error'              => $error,
+			],
+			$expedition_post_id,
+			'ingestor_push',
+			'push_error'
 		);
 	}
 
 	/**
-	 * Callback for `quark_softrip_sync_departure_expired` action.
+	 * Callback for `quark_ingestor_push_success` action.
 	 *
 	 * @param mixed[] $data Data passed to the action.
 	 *
 	 * @return void
 	 */
-	public function callback_quark_softrip_sync_departure_expired( array $data = [] ): void {
+	public function callback_quark_ingestor_push_success( array $data = [] ): void {
 		// Validate data.
-		if ( empty( $data ) || empty( $data['post_id'] ) || empty( $data['softrip_id'] ) ) {
+		if ( empty( $data ) || empty( $data['expedition_post_id'] ) || empty( $data['initiated_via'] ) || ! isset( $data['changed_only'] ) ) {
 			return;
 		}
 
+		// Get expedition post ID.
+		$expedition_post_id = absint( $data['expedition_post_id'] );
+
+		// Get initiated via.
+		$initiated_via = strval( $data['initiated_via'] );
+
+		// Get changed only.
+		$changed_only = (bool) $data['changed_only'];
+
 		// Prepare message.
 		$message = sprintf(
-			// translators: %1$s: Softrip ID, %2$d: Post ID.
-			__( '"%1$s" expired', 'qrk' ),
-			strval( $data['softrip_id'] ),
+			/* translators: 1: Expedition post title, 2: Initiated via, 3: Changed only */
+			__( 'Ingestor push successful for expedition "%1$s" via %2$s | Changed only: %3$s.', 'qrk' ),
+			get_the_title( $expedition_post_id ),
+			$initiated_via,
+			$changed_only ? __( 'Yes', 'qrk' ) : __( 'No', 'qrk' )
 		);
 
-		// Log action.
+		// Log message.
 		$this->log(
 			$message,
-			[],
-			absint( $data['post_id'] ),
-			'softrip_sync',
-			'sync_departure_expired'
+			[
+				'expedition_post_id' => $expedition_post_id,
+				'initiated_via'      => $initiated_via,
+				'changed_only'       => $changed_only,
+			],
+			$expedition_post_id,
+			'ingestor_push',
+			'push_success'
 		);
 	}
 

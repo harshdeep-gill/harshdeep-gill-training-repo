@@ -68,6 +68,27 @@ function bootstrap(): void {
 
 	// Register cron.
 	add_action( 'init', __NAMESPACE__ . '\\cron_schedule_push' );
+
+	// Register Stream log connector.
+	add_filter( 'wp_stream_connectors', __NAMESPACE__ . '\\setup_stream_connectors' );
+}
+
+/**
+ * Register custom stream connectors for Softrip sync.
+ *
+ * @param array<string, mixed> $connectors Connectors.
+ *
+ * @return array<string, mixed>
+ */
+function setup_stream_connectors( array $connectors = [] ): array {
+	// Load Stream connector file.
+	require_once __DIR__ . '/class-stream-connector.php';
+
+	// Add our connector.
+	$connectors['quark_ingestor_push'] = new Stream_Connector();
+
+	// Return the connectors.
+	return $connectors;
 }
 
 /**
@@ -125,6 +146,17 @@ function do_push( array $expedition_post_ids = [], bool $changed_only = true ): 
 		$expeditions         = new WP_Query( $args );
 		$expedition_post_ids = $expeditions->posts;
 		$expedition_post_ids = array_map( 'absint', $expedition_post_ids );
+	} else {
+		// Remove duplicates.
+		$expedition_post_ids = array_unique( $expedition_post_ids );
+
+		// Validate expedition post IDs.
+		$expedition_post_ids = array_filter(
+			$expedition_post_ids,
+			function ( $expedition_post_id ) {
+				return get_post_type( $expedition_post_id ) === EXPEDITION_POST_TYPE;
+			}
+		);
 	}
 
 	// Initialize CLI variables.
@@ -139,7 +171,7 @@ function do_push( array $expedition_post_ids = [], bool $changed_only = true ): 
 		// Check if in CLI.
 		if ( $is_in_cli ) {
 			// Output message.
-			WP_CLI::error( 'No expeditions found.' );
+			WP_CLI::log( 'No expeditions found.' );
 		}
 
 		// Log error.
@@ -275,6 +307,7 @@ function do_push( array $expedition_post_ids = [], bool $changed_only = true ): 
 				[
 					'expedition_post_id' => $expedition_post_id,
 					'error'              => $push_result->get_error_message(),
+					'initiated_via'      => $initiated_via,
 				]
 			);
 		} elseif ( $push_result ) {
@@ -284,6 +317,7 @@ function do_push( array $expedition_post_ids = [], bool $changed_only = true ): 
 					[
 						'expedition_post_id' => $expedition_post_id,
 						'initiated_via'      => $initiated_via,
+						'changed_only'       => $changed_only,
 					]
 				);
 

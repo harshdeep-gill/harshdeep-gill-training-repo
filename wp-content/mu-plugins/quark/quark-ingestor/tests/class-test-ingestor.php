@@ -207,15 +207,14 @@ class Test_Ingestor extends Softrip_TestCase {
 		$expedition_post_id = 999999;
 		do_push( [ $expedition_post_id ] );
 		$this->assertEquals( 2, did_action( 'quark_ingestor_push_error' ) );
-		$this->assertEquals( 1, did_action( 'quark_ingestor_push_initiated' ) );
+		$this->assertEquals( 0, did_action( 'quark_ingestor_push_initiated' ) );
 		$this->assertEquals( 0, did_action( 'quark_ingestor_push_success' ) );
-		$this->assertEquals( 1, did_action( 'quark_ingestor_push_completed' ) );
+		$this->assertEquals( 0, did_action( 'quark_ingestor_push_completed' ) );
 
 		// Error data 2.
 		$error_data2 = [
-			'error'              => 'Expedition data is empty.',
-			'expedition_post_id' => $expedition_post_id,
-			'initiated_via'      => 'manually',
+			'error'         => 'No expeditions found.',
+			'initiated_via' => 'manually',
 		];
 
 		// Verify error data.
@@ -226,45 +225,6 @@ class Test_Ingestor extends Softrip_TestCase {
 				$error_data2,
 			],
 			$this->push_error_data
-		);
-
-		// Push initiated data.
-		$push_initiated_data1 = [
-			'expedition_post_ids' => [
-				$expedition_post_id,
-			],
-			'initiated_via'       => 'manually',
-			'changed_only'        => true,
-			'total_count'         => 1,
-		];
-
-		// Verify push initiated data.
-		$this->assertNotEmpty( $this->push_initiated_data );
-		$this->assertEquals(
-			[
-				$push_initiated_data1,
-			],
-			$this->push_initiated_data
-		);
-
-		// Push completed data.
-		$push_completed_data1 = [
-			'expedition_post_ids' => [
-				$expedition_post_id,
-			],
-			'initiated_via'       => 'manually',
-			'changed_only'        => true,
-			'total_count'         => 1,
-			'success_count'       => 0,
-		];
-
-		// Verify push completed data.
-		$this->assertNotEmpty( $this->push_completed_data );
-		$this->assertEquals(
-			[
-				$push_completed_data1,
-			],
-			$this->push_completed_data
 		);
 
 		// Reset all data.
@@ -348,6 +308,7 @@ class Test_Ingestor extends Softrip_TestCase {
 			$expected_push_success_data[] = [
 				'expedition_post_id' => $expedition_post_id,
 				'initiated_via'      => 'manually',
+				'changed_only'       => true,
 			];
 		}
 
@@ -532,6 +493,7 @@ class Test_Ingestor extends Softrip_TestCase {
 			[
 				'expedition_post_id' => $draft_expedition_post_id,
 				'initiated_via'      => 'manually',
+				'changed_only'       => true,
 			],
 		];
 
@@ -587,6 +549,7 @@ class Test_Ingestor extends Softrip_TestCase {
 			$expected_push_success_data[] = [
 				'expedition_post_id' => $expedition_post_id,
 				'initiated_via'      => 'manually',
+				'changed_only'       => false,
 			];
 		}
 
@@ -692,6 +655,7 @@ class Test_Ingestor extends Softrip_TestCase {
 			$expected_push_success_data[] = [
 				'expedition_post_id' => $expedition_post_id,
 				'initiated_via'      => 'manually',
+				'changed_only'       => true,
 			];
 		}
 
