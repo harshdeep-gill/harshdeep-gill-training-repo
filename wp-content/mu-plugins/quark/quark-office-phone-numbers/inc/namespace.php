@@ -9,6 +9,8 @@ namespace Quark\OfficePhoneNumbers;
 
 use Quark\OfficePhoneNumbers\RestApi\Phone_Number;
 
+use function Quark\Core\get_visitor_geo_country;
+
 const OFFICE_CACHE_KEY = 'office_phone_number_data';
 const CACHE_GROUP      = 'qrk_options';
 
@@ -227,7 +229,7 @@ function get_corporate_office_phone_number(): array {
  *    prefix: string,
  * }
  */
-function get_office_phone_number( string $country_code = 'US' ): array {
+function get_office_phone_number_by_country_code( string $country_code = 'US' ): array {
 	// Cache key.
 	$cache_key = OFFICE_CACHE_KEY . '_' . $country_code;
 
@@ -266,6 +268,30 @@ function get_office_phone_number( string $country_code = 'US' ): array {
 
 	// Return empty array if country code is empty.
 	return [];
+}
+
+/**
+ * Get office phone number by geo location.
+ *
+ * @return array{}|array{
+ *     phone_number: string,
+ *     prefix: string,
+ * }
+ */
+function get_office_phone_number(): array {
+	// Get the visitor's country.
+	$country = get_visitor_geo_country();
+
+	// Get office phone number by country code.
+	$office_phone_number = get_office_phone_number_by_country_code( $country );
+
+	// Use corporate office phone number if no local office phone number is found.
+	if ( empty( $office_phone_number ) ) {
+		$office_phone_number = get_corporate_office_phone_number();
+	}
+
+	// Return the matching rule.
+	return $office_phone_number;
 }
 
 /**
