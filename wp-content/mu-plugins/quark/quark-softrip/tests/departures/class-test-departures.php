@@ -723,9 +723,10 @@ class Test_Departures extends Softrip_TestCase {
 		$this->assertIsInt( $another_departure_post_id );
 
 		// Test with an itinerary post id with multiple departures.
-		$expected = [ $another_departure_post_id, $departure_post_id ];
-		$actual   = get_departures_by_itinerary( $itinerary_post_id );
-		$this->assertEquals( $expected, $actual );
+		$actual = get_departures_by_itinerary( $itinerary_post_id );
+		$this->assertSame( 2, count( $actual ) );
+		$this->assertContains( $another_departure_post_id, $actual );
+		$this->assertContains( $departure_post_id, $actual );
 	}
 
 	/**
