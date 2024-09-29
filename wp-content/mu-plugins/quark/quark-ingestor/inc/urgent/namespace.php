@@ -12,6 +12,7 @@ use WP_Post;
 use function Quark\CabinCategories\get as get_cabin_post;
 use function Quark\Core\get_raw_text_from_html;
 use function Quark\Expeditions\get as get_expedition_post;
+use function Quark\Ingestor\do_push;
 use function Quark\Softrip\AdventureOptions\get_departures_by_adventure_option_term_id;
 use function Quark\Softrip\Occupancies\get_departures_by_cabin_category_id;
 
@@ -19,6 +20,7 @@ use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
 
 const URGENTLY_CHANGED_EXPEDITION_IDS_OPTION = '_urgently_changed_expedition_ids';
 const URGENTLY_TRACKED_DATA_HASH_META        = '_urgently_tracked_data_hash';
+const SCHEDULE_HOOK                          = 'qrk_ingestor_urgent_push';
 
 /**
  * Bootstrap.
@@ -34,6 +36,9 @@ function bootstrap(): void {
 
 	// Track adventure option taxonomy change.
 	add_action( 'saved_' . ADVENTURE_OPTION_CATEGORY, __NAMESPACE__ . '\\track_adventure_option_taxonomy_change', 999 );
+
+	// Hook for urgent push.
+	add_action( SCHEDULE_HOOK, __NAMESPACE__ . '\\push_urgent_data' );
 }
 
 /**
@@ -126,6 +131,9 @@ function track_expedition_post_type_change( int|string $post_id = 0 ): void {
 
 	// Update stored hash.
 	update_post_meta( $post_id, URGENTLY_TRACKED_DATA_HASH_META, $hash );
+
+	// Schedule urgent push.
+	schedule_urgent_push();
 }
 
 /**
@@ -263,6 +271,9 @@ function track_cabin_post_type_change( int|string $post_id = 0 ): void {
 
 	// Update stored hash.
 	update_post_meta( $post_id, URGENTLY_TRACKED_DATA_HASH_META, $hash );
+
+	// Schedule urgent push.
+	schedule_urgent_push();
 }
 
 /**
@@ -388,4 +399,50 @@ function track_adventure_option_taxonomy_change( int $term_id = 0 ): void {
 
 	// Update stored hash.
 	update_term_meta( $term_id, URGENTLY_TRACKED_DATA_HASH_META, $hash );
+
+	// Schedule urgent push.
+	schedule_urgent_push();
+}
+
+/**
+ * Schedule urgent push.
+ *
+ * @return void
+ */
+function schedule_urgent_push(): void {
+	// Schedule urgent push.
+	if ( ! wp_next_scheduled( SCHEDULE_HOOK ) ) {
+		wp_schedule_single_event( time(), SCHEDULE_HOOK );
+	}
+}
+
+/**
+ * Push urgent data.
+ * To avoid race-conditions, it always reads the changed expedition ids from options and resets it.
+ * So, a queue based approach is implemented where in one iteration, it pushes current batch of changed expedition ids.
+ * In next iteration, it pushes next batch of changed expedition ids.
+ * If next batch is empty, it stops pushing and ends the loop.
+ *
+ * @return void
+ */
+function push_urgent_data(): void {
+	// Push changed expedition ids.
+	do {
+		// Get changed expedition ids.
+		$changed_expedition_ids = get_option( URGENTLY_CHANGED_EXPEDITION_IDS_OPTION, [] );
+
+		// Validate changed expedition ids.
+		if ( empty( $changed_expedition_ids ) || ! is_array( $changed_expedition_ids ) ) {
+			break;
+		}
+
+		// Reset changed expedition ids.
+		update_option( URGENTLY_CHANGED_EXPEDITION_IDS_OPTION, [], false );
+
+		// Push current changed expedition ids.
+		do_push( $changed_expedition_ids );
+	} while ( true );
+
+	// Unschedule urgent push.
+	wp_clear_scheduled_hook( SCHEDULE_HOOK );
 }
