@@ -39,6 +39,7 @@ use function Quark\Checkout\get_checkout_url;
 use function Quark\Localization\get_currencies;
 
 use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
+use const Quark\CabinCategories\UNAVAILABLE_STATUS;
 use const Quark\Expeditions\EXPEDITION_CATEGORY_TAXONOMY;
 use const Quark\Localization\DEFAULT_CURRENCY;
 
@@ -1132,8 +1133,15 @@ function get_dates_rates_card_data( int $departure_id = 0, string $currency = DE
 		}
 
 		// Get availability status.
+		$availability_status = get_cabin_availability_status( $departure_id, $cabin_id );
+
+		// Skip if unavailable.
+		if ( UNAVAILABLE_STATUS === $availability_status ) {
+			continue;
+		}
+
+		// Get availability description.
 		$cabin_spaces_available   = get_available_cabin_spaces( $departure_id, $cabin_id );
-		$availability_status      = get_cabin_availability_status( $departure_id, $cabin_id );
 		$availability_description = get_availability_status_description( $availability_status );
 
 		// Prepare the cabin data.

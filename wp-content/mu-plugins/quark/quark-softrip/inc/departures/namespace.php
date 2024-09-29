@@ -10,6 +10,7 @@ namespace Quark\Softrip\Departures;
 use WP_Error;
 use WP_Query;
 
+use function Quark\Departures\bust_post_cache as bust_departure_post_cache;
 use function Quark\Localization\get_currencies;
 use function Quark\Ships\get_id_from_ship_code;
 use function Quark\Softrip\AdventureOptions\update_adventure_options;
@@ -18,8 +19,6 @@ use function Quark\Softrip\is_date_in_the_past;
 use function Quark\Softrip\Occupancies\get_lowest_price as get_occupancies_lowest_price;
 use function Quark\Softrip\Promotions\update_promotions;
 
-use const Quark\Departures\CACHE_GROUP as DEPARTURE_CACHE_GROUP;
-use const Quark\Departures\CACHE_KEY as DEPARTURE_CACHE_KEY;
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
 use const Quark\Departures\SPOKEN_LANGUAGE_TAXONOMY;
 use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
@@ -150,7 +149,7 @@ function update_departures( array $raw_departures = [], string $softrip_package_
 				);
 
 				// Bust the departure module cache.
-				wp_cache_delete( DEPARTURE_CACHE_KEY . "_$departure_post_id", DEPARTURE_CACHE_GROUP );
+				bust_departure_post_cache( $departure_post_id );
 			}
 		}
 
@@ -269,7 +268,7 @@ function update_departures( array $raw_departures = [], string $softrip_package_
 		// Validate if any of the updates are successful.
 		if ( $is_adventure_options_updated || $is_promotions_updated || $is_occupancies_updated || $is_departure_post_updated ) {
 			// Bust the departure module cache.
-			wp_cache_delete( DEPARTURE_CACHE_KEY . "_$updated_post_id", DEPARTURE_CACHE_GROUP );
+			bust_departure_post_cache( $updated_post_id );
 
 			// Updated fields.
 			$updated_fields = [
@@ -330,7 +329,7 @@ function update_departures( array $raw_departures = [], string $softrip_package_
 		}
 
 		// Bust the departure module cache.
-		wp_cache_delete( DEPARTURE_CACHE_KEY . "_$departure_post_id", DEPARTURE_CACHE_GROUP );
+		bust_departure_post_cache( $departure_post_id );
 
 		/**
 		 * Fires after a departure is expired and unpublished.

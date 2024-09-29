@@ -20,6 +20,7 @@ use function Quark\Softrip\Occupancies\get_description_and_pax_count_by_mask;
 use function Quark\Softrip\Occupancies\get_lowest_price_by_cabin_category_and_departure;
 use function Quark\Softrip\Occupancies\get_occupancies_by_cabin_category_and_departure;
 use function Quark\Softrip\Occupancies\get_occupancy_data_by_id;
+use function Quark\Softrip\Occupancies\is_occupancy_on_sale;
 use function Quark\Softrip\OccupancyPromotions\get_lowest_price as get_occupancy_promotion_lowest_price;
 
 use const Quark\Localization\DEFAULT_CURRENCY;
@@ -532,6 +533,14 @@ function get_cabin_details_by_departure( int $departure_post_id = 0, string $cur
 			continue;
 		}
 
+		// Get availability status.
+		$availability_status      = get_cabin_availability_status( $departure_post_id, $cabin_category_post_id );
+
+		// If unavailable, skip.
+		if ( UNAVAILABLE_STATUS === $availability_status ) {
+			continue;
+		}
+
 		// Get lowest price for this cabin.
 		$lowest_price = get_lowest_price_by_cabin_category_and_departure( $cabin_category_post_id, $departure_post_id, $currency );
 
@@ -539,9 +548,8 @@ function get_cabin_details_by_departure( int $departure_post_id = 0, string $cur
 		$formatted_price['discounted_price'] = format_price( $lowest_price['discounted'], $currency );
 		$formatted_price['original_price']   = format_price( $lowest_price['original'], $currency );
 
-		// Get availability status.
+		// Get available cabin spaces.
 		$cabin_spaces_available   = get_available_cabin_spaces( $departure_post_id, $cabin_category_post_id );
-		$availability_status      = get_cabin_availability_status( $departure_post_id, $cabin_category_post_id );
 		$availability_description = get_availability_status_description( $availability_status );
 
 		// Setup cabin structure data.
@@ -911,11 +919,12 @@ function get_cabin_availability_status( int $departure_post_id = 0, int $cabin_c
 			continue;
 		}
 
-		// Availability status.
-		$availability_status = $occupancy['availability_status'];
+		// Sale status.
+		$sale_status = $occupancy['availability_status'];
+		$is_occupancy_available = is_occupancy_on_sale( $sale_status );
 
-		// Check if available - when sale_status is 0.
-		if ( 'O' === $availability_status ) {
+		// Check if occupancy available.
+		if ( $is_occupancy_available ) {
 			$are_all_sold_out = false;
 			break;
 		}

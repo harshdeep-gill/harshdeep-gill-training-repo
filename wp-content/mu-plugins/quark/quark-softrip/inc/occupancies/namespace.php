@@ -708,7 +708,12 @@ function get_lowest_price( int $post_id = 0, string $currency = USD_CURRENCY ): 
 		$price_per_person_key = 'price_per_person_' . strtolower( $currency );
 
 		// Validate the price per person.
-		if ( ! is_array( $occupancy ) || empty( $occupancy[ $price_per_person_key ] ) || empty( $occupancy['id'] ) ) {
+		if ( ! is_array( $occupancy ) || empty( $occupancy[ $price_per_person_key ] ) || empty( $occupancy['id'] ) || empty( $occupancy['availability_status'] ) ) {
+			continue;
+		}
+
+		// Skip if not available.
+		if ( ! is_occupancy_on_sale( $occupancy['availability_status'] ) ) {
 			continue;
 		}
 
@@ -910,6 +915,11 @@ function format_row_data_from_db( array $occupancy_data = [] ): array {
 		}
 	}
 
+	// Skip if occupancy is not on sale.
+	if ( ! is_occupancy_on_sale( $occupancy_data['availability_status'] ) ) {
+		return [];
+	}
+
 	// Initialize the formatted data.
 	$formatted_data = [
 		'id'                       => absint( $occupancy_data['id'] ),
@@ -1083,7 +1093,12 @@ function get_lowest_price_by_cabin_category_and_departure( int $cabin_category_p
 		$price_per_person_key = 'price_per_person_' . strtolower( $currency );
 
 		// Validate the price per person.
-		if ( ! is_array( $occupancy ) || empty( $occupancy[ $price_per_person_key ] ) || empty( $occupancy['id'] ) ) {
+		if ( ! is_array( $occupancy ) || empty( $occupancy[ $price_per_person_key ] ) || empty( $occupancy['id'] ) || empty( $occupancy['availability_status'] ) ) {
+			continue;
+		}
+
+		// Skip if not on sale.
+		if ( ! is_occupancy_on_sale( $occupancy['availability_status'] ) ) {
 			continue;
 		}
 
@@ -1146,7 +1161,12 @@ function get_lowest_price_by_cabin_category_and_departure_and_promotion_code( in
 		$price_per_person_key = 'price_per_person_' . strtolower( $currency );
 
 		// Validate the price per person.
-		if ( ! is_array( $occupancy ) || empty( $occupancy[ $price_per_person_key ] ) || empty( $occupancy['id'] ) ) {
+		if ( ! is_array( $occupancy ) || empty( $occupancy[ $price_per_person_key ] ) || empty( $occupancy['id'] ) || empty( $occupancy['availability_status'] ) ) {
+			continue;
+		}
+
+		// Skip if not on sale.
+		if ( ! is_occupancy_on_sale( $occupancy['availability_status'] ) ) {
 			continue;
 		}
 
@@ -1427,4 +1447,39 @@ function get_masks_mapping(): array {
 
 	// Return the mask mapping.
 	return $mask_mapping;
+}
+
+/**
+ * Check if occupancy is available/on sale by sale status.
+ * This sale status comes from the Softrip.
+ *
+ * @param string $status Sale status.
+ *
+ * @return bool
+ */
+function is_occupancy_on_sale( string $status = '' ): bool {
+	/**
+	 * Sale Status mapping.
+	 *
+	 * O - Open -> Available
+	 * ON - Open -> Available
+	 * S - Sold Out -> Available
+	 * C - Closed -> Unavailable
+	 * N - No Display -> Unavailable
+	 * NO - No Display -> Unavailable
+	 * I - Internal -> Unavailable
+	 * W - Waitlisted -> Available
+	 */
+
+	// Check status.
+	switch ( $status ) {
+		// Open.
+		case 'O':
+		case 'ON':
+		case 'W':
+			return true;
+		// Default.
+		default:
+			return false;
+	}
 }
