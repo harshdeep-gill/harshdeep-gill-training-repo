@@ -1255,6 +1255,6 @@ class Expedition {
 		$post_content .= $this->get_your_expedition_team_block();
 
 		// Return post content.
-		return $post_content;
+		return str_replace( 'u0026', '&', $post_content );
 	}
 }

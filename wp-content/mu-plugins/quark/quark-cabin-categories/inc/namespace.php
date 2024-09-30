@@ -490,7 +490,6 @@ function get_cabin_categories_data( int $cabin_id = 0 ): array {
  *         size: string,
  *         bed_configuration: string
  *     },
- *     checkout_url: string,
  *     from_price: array{
  *         discounted_price: string,
  *         original_price: string,
@@ -563,7 +562,6 @@ function get_cabin_details_by_departure( int $departure_post_id = 0, string $cur
 			],
 			'from_price'     => $formatted_price,
 			'occupancies'    => [],
-			'checkout_url'   => get_checkout_url( $departure_post_id, $cabin_category_post_id, $currency ),
 		];
 
 		// Get all occupancies for this cabin and departure.
@@ -805,7 +803,8 @@ function get_size_range( int $cabin_category_post_id = 0 ): string {
  *     original_price: string,
  *     discounted_price: string,
  *   },
- *   promotions: mixed[]
+ *   promotions: mixed[],
+ *   checkout_url: string,
  * }
  */
 function get_occupancy_detail( int $occupancy_id = 0, int $departure_post_id = 0, string $currency = DEFAULT_CURRENCY ): array {
@@ -865,6 +864,7 @@ function get_occupancy_detail( int $occupancy_id = 0, int $departure_post_id = 0
 			'discounted_price' => format_price( $price_with_supplement_mandatory['discounted'], $currency ),
 		],
 		'promotions'   => [],
+		'checkout_url' => get_checkout_url( $departure_post_id, $occupancy['cabin_category_post_id'], $currency, $mask ),
 	];
 
 	// Return the occupancy detail.

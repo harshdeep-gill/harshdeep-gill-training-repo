@@ -1562,6 +1562,30 @@ class Block_Converter {
 					];
 				}
 			}
+
+			// Get the video URL.
+			$video_url = $this->database->get_var(
+				strval(
+					$this->database->prepare(
+						'
+								SELECT
+									field_media_video_embed_field_value
+								FROM
+									media__field_media_video_embed_field
+								WHERE
+									entity_id = %d
+								LIMIT 1
+								',
+						$result['media']
+					)
+				)
+			);
+
+			// If video URL found then build HTML.
+			if ( ! empty( $video_url ) ) {
+				$attrs['mediaType'] = 'video';
+				$attrs['videoUrl']  = $video_url;
+			}
 		}
 
 		// Align media to right.
@@ -2690,6 +2714,7 @@ class Block_Converter {
 			$attrs['anchor']         = sanitize_title_with_dashes( $result['title'] );
 			$attrs['titleAlignment'] = 'left';
 			$attrs['headingLevel']   = '2';
+			$attrs['isNarrow']       = true;
 		} else {
 			$attrs['hasTitle'] = false;
 		}

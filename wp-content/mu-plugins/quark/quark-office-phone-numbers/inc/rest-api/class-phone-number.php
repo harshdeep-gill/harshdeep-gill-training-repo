@@ -14,7 +14,7 @@ use WP_REST_Response;
 use WP_REST_Server;
 
 use function Quark\Core\get_visitor_geo_country;
-use function Quark\OfficePhoneNumbers\get_office_phone_number;
+use function Quark\OfficePhoneNumbers\get_office_phone_number_by_country_code;
 
 use const Quark\OfficePhoneNumbers\REST_API_NAMESPACE;
 
@@ -60,6 +60,6 @@ class Phone_Number extends WP_REST_Controller {
 		$country = get_visitor_geo_country();
 
 		// Return the matching rule.
-		return rest_ensure_response( get_office_phone_number( $country ) );
+		return rest_ensure_response( get_office_phone_number_by_country_code( $country ) );
 	}
 }

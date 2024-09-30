@@ -9,9 +9,9 @@ namespace Quark\PhoneNumbers\Tests;
 
 use WP_UnitTestCase;
 
+use function Quark\OfficePhoneNumbers\get_office_phone_number_by_country_code;
 use function Quark\OfficePhoneNumbers\office_phone_number_front_end_data;
 use function Quark\OfficePhoneNumbers\get_corporate_office_phone_number;
-use function Quark\OfficePhoneNumbers\get_office_phone_number;
 use function Quark\OfficePhoneNumbers\get_local_office_data;
 use function Quark\OfficePhoneNumbers\security_public_rest_api_routes;
 
@@ -164,12 +164,12 @@ class Test_Office_Phone_Numbers extends WP_UnitTestCase {
 		$this->assertEquals( $expected_data, $data );
 
 		// Get Office phone number by Country code.
-		$data = get_office_phone_number( 'ca' );
+		$data = get_office_phone_number_by_country_code( 'ca' );
 
 		// Prepare expected data.
 		$expected_data = [
-			'phone'  => '+11800123456',
-			'prefix' => 'Call Us To Book',
+			'phone_number' => '+11800123456',
+			'prefix'       => 'Call Us To Book',
 		];
 
 		// Test data.
