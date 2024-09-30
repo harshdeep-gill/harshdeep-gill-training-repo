@@ -534,7 +534,7 @@ function get_cabin_details_by_departure( int $departure_post_id = 0, string $cur
 		}
 
 		// Get availability status.
-		$availability_status      = get_cabin_availability_status( $departure_post_id, $cabin_category_post_id );
+		$availability_status = get_cabin_availability_status( $departure_post_id, $cabin_category_post_id );
 
 		// If unavailable, skip.
 		if ( UNAVAILABLE_STATUS === $availability_status ) {
@@ -920,7 +920,7 @@ function get_cabin_availability_status( int $departure_post_id = 0, int $cabin_c
 		}
 
 		// Sale status.
-		$sale_status = $occupancy['availability_status'];
+		$sale_status            = $occupancy['availability_status'];
 		$is_occupancy_available = is_occupancy_on_sale( $sale_status );
 
 		// Check if occupancy available.

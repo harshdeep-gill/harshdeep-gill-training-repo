@@ -271,9 +271,6 @@ function update_occupancies( array $raw_cabins_data = [], int $departure_post_id
 			continue;
 		}
 
-		// Delete post meta for cabin spaces available.
-		delete_post_meta( $departure_post_id, 'cabin_spaces_available_' . $cabin_category_post_id );
-
 		// Bust departure cache as meta has been deleted.
 		bust_departure_post_cache( $departure_post_id );
 
@@ -341,6 +338,14 @@ function format_data( array $raw_occupancy_data = [], int $cabin_category_post_i
 		empty( $raw_occupancy_data['saleStatus'] ) ||
 		empty( $raw_occupancy_data['prices'] )
 	) {
+		return [];
+	}
+
+	// Get is occupancy available.
+	$is_occupancy_available = is_occupancy_available( $raw_occupancy_data['saleStatusCode'] );
+
+	// Bail if occupancy is not available.
+	if ( ! $is_occupancy_available ) {
 		return [];
 	}
 
@@ -712,11 +717,6 @@ function get_lowest_price( int $post_id = 0, string $currency = USD_CURRENCY ): 
 			continue;
 		}
 
-		// Skip if not available.
-		if ( ! is_occupancy_on_sale( $occupancy['availability_status'] ) ) {
-			continue;
-		}
-
 		// Get lowest price for occupancy promotions.
 		$promotion_lowest_price = get_occupancy_promotion_lowest_price( $occupancy['id'], $currency );
 
@@ -915,11 +915,6 @@ function format_row_data_from_db( array $occupancy_data = [] ): array {
 		}
 	}
 
-	// Skip if occupancy is not on sale.
-	if ( ! is_occupancy_on_sale( $occupancy_data['availability_status'] ) ) {
-		return [];
-	}
-
 	// Initialize the formatted data.
 	$formatted_data = [
 		'id'                       => absint( $occupancy_data['id'] ),
@@ -1097,11 +1092,6 @@ function get_lowest_price_by_cabin_category_and_departure( int $cabin_category_p
 			continue;
 		}
 
-		// Skip if not on sale.
-		if ( ! is_occupancy_on_sale( $occupancy['availability_status'] ) ) {
-			continue;
-		}
-
 		// Get lowest price for occupancy promotions.
 		$promotion_lowest_price = get_occupancy_promotion_lowest_price( $occupancy['id'], $currency );
 
@@ -1162,11 +1152,6 @@ function get_lowest_price_by_cabin_category_and_departure_and_promotion_code( in
 
 		// Validate the price per person.
 		if ( ! is_array( $occupancy ) || empty( $occupancy[ $price_per_person_key ] ) || empty( $occupancy['id'] ) || empty( $occupancy['availability_status'] ) ) {
-			continue;
-		}
-
-		// Skip if not on sale.
-		if ( ! is_occupancy_on_sale( $occupancy['availability_status'] ) ) {
 			continue;
 		}
 
@@ -1450,14 +1435,35 @@ function get_masks_mapping(): array {
 }
 
 /**
- * Check if occupancy is available/on sale by sale status.
- * This sale status comes from the Softrip.
+ * Check if occupancy is on sale(open) by sale status.
  *
  * @param string $status Sale status.
  *
  * @return bool
  */
 function is_occupancy_on_sale( string $status = '' ): bool {
+	// Check status.
+	switch ( $status ) {
+		// Open.
+		case 'O':
+		case 'ON':
+		case 'W':
+			return true;
+
+		// Default.
+		default:
+			return false;
+	}
+}
+
+/**
+ * Is occupancy available.
+ *
+ * @param string $sale_status Sale status.
+ *
+ * @return bool
+ */
+function is_occupancy_available( string $sale_status = '' ): bool {
 	/**
 	 * Sale Status mapping.
 	 *
@@ -1472,12 +1478,14 @@ function is_occupancy_on_sale( string $status = '' ): bool {
 	 */
 
 	// Check status.
-	switch ( $status ) {
+	switch ( $sale_status ) {
 		// Open.
 		case 'O':
 		case 'ON':
+		case 'S':
 		case 'W':
 			return true;
+
 		// Default.
 		default:
 			return false;
