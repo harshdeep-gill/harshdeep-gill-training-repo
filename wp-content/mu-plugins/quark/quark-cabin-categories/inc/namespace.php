@@ -585,6 +585,11 @@ function get_cabin_details_by_departure( int $departure_post_id = 0, string $cur
 			// Get occupancy detail.
 			$occupancy_detail = get_occupancy_detail( $occupancy['id'], $departure_post_id, $currency );
 
+			// Validate occupancy detail.
+			if ( empty( $occupancy_detail ) ) {
+				continue;
+			}
+
 			// Add occupancy detail to occupancies.
 			$struct['occupancies'][] = $occupancy_detail;
 		}
