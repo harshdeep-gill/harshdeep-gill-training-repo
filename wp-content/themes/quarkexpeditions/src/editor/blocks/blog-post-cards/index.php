@@ -8,6 +8,7 @@
 namespace Quark\Theme\Blocks\BlogPostCards;
 
 use WP_Query;
+use WP_Term;
 
 use function Quark\Blog\get_cards_data;
 use function Quark\Core\get_pagination_links;
@@ -68,6 +69,17 @@ function render( array $attributes = [] ): string {
 		$args['orderby']        = 'post__in';
 		$args['posts_per_page'] = ( true === $attributes['hasPagination'] ) ? $attributes['postsPerPage'] : count( $attributes['ids'] );
 	} elseif ( 'byTerms' === $attributes['selection'] ) {
+		// check for Category archive page.
+		if ( is_archive() && is_category() ) {
+			$term = get_queried_object();
+
+			// check if its term.
+			if ( $term instanceof WP_Term ) {
+				$attributes['termIds']    = [ $term->term_id ];
+				$attributes['taxonomies'] = [ $term->taxonomy ];
+			}
+		}
+
 		// Return empty if selection by terms, but no terms or taxonomy were selected.
 		if ( empty( $attributes['termIds'] ) || empty( $attributes['taxonomies'] ) ) {
 			return '';

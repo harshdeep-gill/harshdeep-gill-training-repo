@@ -448,8 +448,36 @@ function get_blog_post_author_info( int $post_id = 0 ): array {
  * @return mixed[]
  */
 function breadcrumbs_ancestors( array $breadcrumbs = [] ): array {
+	// Set for category archive.
+	if ( is_category() ) {
+		// Get category.
+		$category = get_queried_object();
+
+		// Get archive page.
+		$blog_archive_page = absint( get_option( 'page_for_posts', 0 ) );
+
+		// Get it's title and URL for breadcrumbs if it's set.
+		if ( ! empty( $blog_archive_page ) ) {
+			$breadcrumbs[] = [
+				'title' => get_the_title( $blog_archive_page ),
+				'url'   => strval( get_permalink( $blog_archive_page ) ),
+			];
+		}
+
+		// Add category to breadcrumbs.
+		if ( $category instanceof WP_Term ) {
+			$breadcrumbs[] = [
+				'title' => $category->name,
+				'url'   => get_term_link( $category ),
+			];
+		}
+
+		// Return breadcrumbs.
+		return $breadcrumbs;
+	}
+
 	// Check if current query is for this post type.
-	if ( ! ( is_singular( POST_TYPE ) || is_author() || is_category() ) ) {
+	if ( ! is_singular( POST_TYPE ) ) {
 		return $breadcrumbs;
 	}
 
