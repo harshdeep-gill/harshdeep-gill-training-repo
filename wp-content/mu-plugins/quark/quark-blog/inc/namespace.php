@@ -33,6 +33,7 @@ function bootstrap(): void {
 
 	// Breadcrumbs.
 	add_filter( 'travelopia_breadcrumbs_ancestors', __NAMESPACE__ . '\\breadcrumbs_ancestors' );
+	add_filter( 'travelopia_breadcrumbs', __NAMESPACE__ . '\\remove_extra_breadcrumb_item_for_category_page' );
 
 	// Admin stuff.
 	if ( is_admin() || ( defined( 'WP_CLI' ) && true === WP_CLI ) ) {
@@ -549,5 +550,28 @@ function get_breadcrumbs_ancestors( int $post_id = 0 ): array {
 	}
 
 	// Return updated breadcrumbs.
+	return $breadcrumbs;
+}
+
+/**
+ * Remove extra breadcrumb item for category page.
+ *
+ * @param mixed[] $breadcrumbs Breadcrumbs.
+ *
+ * @return array{}|array{
+ *   array{
+ *     title: string,
+ *     url: string,
+ *   }
+ * }
+ */
+function remove_extra_breadcrumb_item_for_category_page( array $breadcrumbs = [] ): array {
+	// Check if current query is for category.
+	if ( is_category() ) {
+		// Remove the last item.
+		array_pop( $breadcrumbs );
+	}
+
+	// Return breadcrumbs.
 	return $breadcrumbs;
 }
