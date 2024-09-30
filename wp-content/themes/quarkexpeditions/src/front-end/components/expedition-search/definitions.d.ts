@@ -7,6 +7,15 @@ interface ExpeditionSearchFilters {
 }
 
 /**
+ * Interface ExpeditionSearchFilterState
+ */
+interface ExpeditionSearchFilterState {
+	value: string,
+	label: string,
+	parent?: string,
+}
+
+/**
  * Interface ExpeditionSearchState.
  */
 interface ExpeditionSearchState {
@@ -26,6 +35,7 @@ interface ExpeditionSearchState {
 	loading: boolean,
 	loadMoreResults: boolean,
 	areSearchFiltersShown: boolean,
+	destinations: ExpeditionSearchFilterState[],
 }
 
 /**

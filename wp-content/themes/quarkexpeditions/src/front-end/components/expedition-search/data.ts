@@ -28,6 +28,7 @@ export const DEFAULT_STATE: ExpeditionSearchState = {
 	loading: false,
 	initialized: false,
 	areSearchFiltersShown: true,
+	destinations: [],
 };
 
 /**

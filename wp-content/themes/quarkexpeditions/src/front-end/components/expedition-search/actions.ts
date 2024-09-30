@@ -244,3 +244,97 @@ export const showSearchFiltersAction = () => {
 	// Show the filters.
 	setState( updateObject );
 };
+
+/**
+ * Adds a list of destinations to the state.
+ *
+ * @param { Object[] } destinationsToAdd The list of destinations to add to the state.
+ */
+export const addDestinations = ( destinationsToAdd: ExpeditionSearchFilterState[] ) => {
+	// Get the state.
+	const { destinations }: ExpeditionSearchState = getState();
+
+	// Initialize the update Object.
+	const updateObject: ExpeditionsSearchStateUpdateObject = {
+		destinations: [ ...destinations ],
+	};
+
+	// Loop through the valid destinations.
+	destinationsToAdd.forEach( ( destinationToAdd ) => {
+		// Sanity check.
+		if (
+			'' === destinationToAdd.value ||
+			'' === destinationToAdd.label ||
+			( updateObject.destinations && updateObject.destinations?.findIndex( ( existingDestination ) => existingDestination.value === destinationToAdd.value ) > -1 )
+		) {
+			// Bail.
+			return;
+		}
+
+		// Remove the children of the current valid destination if any.
+		updateObject.destinations = updateObject.destinations?.filter( ( existingDestination ) => existingDestination.parent !== destinationToAdd.value );
+
+		// Push the valid Destination.
+		updateObject.destinations?.push( destinationToAdd );
+	} );
+
+	// Set the state
+	setState( updateObject );
+};
+
+/**
+ * Adds a destination.
+ *
+ * @param { Object } destinationToAdd the destination object.
+ */
+export const addDestination = ( destinationToAdd: ExpeditionSearchFilterState ) => {
+	// Sanity check.
+	if ( '' === destinationToAdd.value || '' === destinationToAdd.label ) {
+		// Bail.
+		return;
+	}
+
+	// Get the state.
+	const { destinations }: ExpeditionSearchState = getState();
+
+	// Check if it is already selected.
+	if ( destinations.findIndex( ( existingDestination ) => existingDestination.value === destinationToAdd.value ) > -1 ) {
+		// Yes it is. Bail.
+		return;
+	}
+
+	// Initialize update object.
+	const updateObject: ExpeditionsSearchStateUpdateObject = {};
+
+	// Does this destination have a parent?
+	if ( ! destinationToAdd.parent ) {
+		// Nope, it is the parent destination. Add it after removing its children.
+		updateObject.destinations = destinations.filter( ( existingDestination ) => existingDestination.parent !== destinationToAdd.value );
+		updateObject.destinations.push( destinationToAdd );
+	} else {
+		// Just add it normally.
+		updateObject.destinations = [ ...destinations, destinationToAdd ];
+	}
+
+	// Set the state;
+	setState( updateObject );
+};
+
+/**
+ * Removes a destination.
+ *
+ * @param { string } destinationValue The value of the destination to remove.
+ */
+export const removeDestination = ( destinationValue: string ) => {
+	// Get the state.
+	const { destinations }: ExpeditionSearchState = getState();
+
+	// Initialize the update object.
+	const updateObject: ExpeditionsSearchStateUpdateObject = {};
+
+	// Filter the destinations.
+	updateObject.destinations = destinations.filter( ( existingDestination ) => existingDestination.value !== destinationValue && existingDestination.parent !== destinationValue );
+
+	// Set the state.
+	setState( updateObject );
+};
