@@ -91,7 +91,7 @@ export default class ExpeditionSearchFilterDestinations extends HTMLElement {
 
 		// Does this have a parent value?
 		if ( parentValue ) {
-			parentElement = this.querySelector( `input[type="checkbox"][name="destinations"][value="${ parentValue }"]` );
+			parentElement = this.querySelector<HTMLInputElement>( `input[type="checkbox"][name="destinations"][value="${ parentValue }"]` );
 		}
 
 		// Is this input checked?
@@ -102,9 +102,44 @@ export default class ExpeditionSearchFilterDestinations extends HTMLElement {
 				value: input.value ?? '',
 			};
 
-			// Check if this is the parent and set the flag accordingly.
+			// Check if it has a parent and set the value accordingly.
 			if ( parentElement ) {
 				destination.parent = parentValue ?? undefined;
+
+				// Sibling count.
+				let siblingCount = 0;
+
+				// Loop and calculate.
+				this.inputs.forEach( ( maybeSibling ) => {
+					// Is this a sibling?
+					if ( maybeSibling.getAttribute( 'data-parent' ) !== parentValue ) {
+						// Nope.
+						return;
+					}
+
+					// Yes. We are also including the current input.
+					siblingCount++;
+				} );
+
+				// Get the state.
+				const { destinations }: ExpeditionSearchState = getState();
+				let selectedSiblingCount = 0;
+
+				// Loop through selected destinations.
+				destinations.forEach( ( maybeSelectedSibling ) => {
+					// Is this a selected sibling?
+					if ( maybeSelectedSibling.parent === parentValue && maybeSelectedSibling.value !== input.value ) {
+						selectedSiblingCount++;
+					}
+				} );
+
+				// If this sibling gets selected, then all will be selected.
+				if ( selectedSiblingCount === siblingCount - 1 ) {
+					// Selecte the parent instead.
+					destination.value = parentElement.value;
+					destination.label = parentElement.getAttribute( 'data-label' ) ?? '';
+					delete destination.parent;
+				}
 			}
 
 			// Add the destination.
