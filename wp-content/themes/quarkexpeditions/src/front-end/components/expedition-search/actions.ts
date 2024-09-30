@@ -222,3 +222,25 @@ export const setLoading = ( loading: boolean ) => {
 	// Set loading state.
 	setState( { loading } );
 };
+
+/**
+ * Turn off the show filters state.
+ */
+export const hideSearchFiltersAction = () => {
+	// Initialize the update object.
+	const updateObject: ExpeditionsSearchStateUpdateObject = { areSearchFiltersShown: false };
+
+	// Hide the filters.
+	setState( updateObject );
+};
+
+/**
+ * Turn on the show filters state.
+ */
+export const showSearchFiltersAction = () => {
+	// Initialize the update object.
+	const updateObject: ExpeditionsSearchStateUpdateObject = { areSearchFiltersShown: true };
+
+	// Show the filters.
+	setState( updateObject );
+};

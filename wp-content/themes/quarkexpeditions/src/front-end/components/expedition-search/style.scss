@@ -38,6 +38,7 @@
 
 			&-title {
 				display: inline;
+				margin-bottom: 0;
 			}
 
 			&-selected-count {
@@ -49,6 +50,8 @@
 			max-height: calc(100% - var(--spacing-6));
 			overflow-y: scroll;
 			margin-top: var(--spacing-5);
+
+			@include transition(height);
 
 			&-expedition,
 			&-cabin {
@@ -150,5 +153,9 @@
 				}
 			}
 		}
+	}
+
+	[data-hidden] {
+		display: none;
 	}
 }

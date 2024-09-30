@@ -28,23 +28,7 @@
 @endphp
 
 <quark-expedition-search-sidebar-filters class="expedition-search__sidebar-filters">
-	<x-button
-		size="big"
-		appearance="outline"
-		color="white"
-		class="expedition-search__sidebar-filters-toggle-button"
-		icon="filters"
-		icon_position="left"
-	>
-		{{ __( 'Show Filters', 'qrk' ) }}
-	</x-button>
-	<div class="expedition-search__sidebar-filters-header">
-		<h2 class="h4 expedition-search__sidebar-filters-header-title">
-			<x-escape :content="$title" />
-			<span class="expedition-search__sidebar-filters-header-selected-count">(X)</span>
-		</h2>
-		<a href="#">{{ __( 'Hide Filters', 'qrk' ) }}</a>
-	</div>
+	<x-expedition-search.sidebar-filters.header />
 	<div class="expedition-search__sidebar-filters-content">
 		<div class="expedition-search__sidebar-filters-content-expedition">
 			<h5 class="h5 expedition-search__sidebar-filters-content-title">{{ __( 'Expedition', 'qrk' ) }}</h5>

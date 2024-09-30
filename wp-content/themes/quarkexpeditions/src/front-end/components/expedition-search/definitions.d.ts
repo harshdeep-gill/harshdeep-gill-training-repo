@@ -25,4 +25,10 @@ interface ExpeditionSearchState {
 	initialized: boolean,
 	loading: boolean,
 	loadMoreResults: boolean,
+	areSearchFiltersShown: boolean,
 }
+
+/**
+ * Interface ExpeditionSearchStateUpdateObject
+ */
+interface ExpeditionsSearchStateUpdateObject extends Partial<ExpeditionSearchState>{}
