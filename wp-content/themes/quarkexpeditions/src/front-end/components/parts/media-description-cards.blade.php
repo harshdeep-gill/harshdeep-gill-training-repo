@@ -19,9 +19,9 @@
 					</x-media-description-cards.description>
 				</x-media-description-cards.content>
 				@if ( ! empty( $card['buttons'] ) )
-					<div class="media-description-cards__cta-button">
+					<x-media-description-cards.cta>
 						{!! $card['buttons'] !!}
-					</div>
+					</x-media-description-cards.cta>
 				@endif
 			</x-media-description-cards.card>
 		@endforeach
