@@ -18,6 +18,11 @@
 						{!! $card['description'] ?? '' !!}
 					</x-media-description-cards.description>
 				</x-media-description-cards.content>
+				@if ( ! empty( $card['buttons'] ) )
+					<div class="media-description-cards__cta-button">
+						{!! $card['buttons'] !!}
+					</div>
+				@endif
 			</x-media-description-cards.card>
 		@endforeach
 </x-media-description-cards>
