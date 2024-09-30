@@ -54,10 +54,10 @@ export default class ExpeditionSearchSidebarFilters extends HTMLElement {
 		// Set loading state.
 		if ( areSearchFiltersShown ) {
 			// Set loading to true.
-			slideElementDown( this.filtersContent, 600 );
+			slideElementDown( this.filtersContent, 300 );
 		} else {
 			// Set loading to false.
-			slideElementUp( this.filtersContent, 600 );
+			slideElementUp( this.filtersContent, 300 );
 		}
 	}
 }

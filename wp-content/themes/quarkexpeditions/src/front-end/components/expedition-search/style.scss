@@ -63,6 +63,14 @@
 				font-weight: var(--font-weight-normal);
 			}
 		}
+
+		&-children {
+			padding-left: var(--spacing-6);
+
+			label {
+				font-weight: var(--font-weight-normal);
+			}
+		}
 	}
 
 	&__filters {

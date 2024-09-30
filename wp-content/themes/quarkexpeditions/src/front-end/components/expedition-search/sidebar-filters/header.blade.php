@@ -6,6 +6,7 @@
 		class="expedition-search__sidebar-filters-show-button"
 		icon="filters"
 		icon_position="left"
+		data-hidden=""
 	>
 		{{ __( 'Show Filters', 'qrk' ) }}
 	</x-button>
