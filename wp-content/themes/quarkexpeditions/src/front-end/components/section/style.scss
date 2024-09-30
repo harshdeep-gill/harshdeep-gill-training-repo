@@ -6,6 +6,7 @@
 
 .section {
 	$self: &;
+	position: relative;
 
 	&__title,
 	&__description {
@@ -124,5 +125,47 @@
 		@media screen and (min-width: grid-size(md)) {
 			margin-top: var(--spacing-7);
 		}
+	}
+
+	&__image-wrap {
+		--section-gradient-color: transparent;
+		width: 100%;
+		height: 100%;
+		position: absolute;
+		inset: 0;
+		z-index: -1;
+
+		&::after {
+			content: '';
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			inset: 0;
+			z-index: 1;
+		}
+	}
+
+	&__image-gradient-top {
+		&::after {
+			background-image: linear-gradient( var(--section-gradient-color), transparent 40%);
+		}
+	}
+
+	&__image-gradient-bottom {
+		&::after {
+			background-image: linear-gradient( transparent 60%, var(--section-gradient-color) );
+		}
+	}
+
+	&__image-gradient-both {
+		&::after {
+			background-image: linear-gradient( var(--section-gradient-color), transparent 40%, transparent 60%, var(--section-gradient-color) );
+		}
+	}
+
+	&__image {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
 	}
 }
