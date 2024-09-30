@@ -639,6 +639,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 					'discounted_price' => format_price( 38369 ),
 				],
 				'promotions'   => [],
+				'checkout_url' => 'https://local-checkout.quarkexpeditions.com?package_id=JKL-012&departure_date=2025-01-09&cabin_code=ULT-SGL&currency=USD&mask=A',
 			],
 		];
 
@@ -656,6 +657,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 					'discounted_price' => format_price( 63865 ),
 				],
 				'promotions'   => [],
+				'checkout_url' => 'https://local-checkout.quarkexpeditions.com?package_id=JKL-012&departure_date=2025-01-09&cabin_code=ULT-DBL&currency=USD&mask=A',
 			],
 			[
 				'name'         => 'AA',
@@ -666,6 +668,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 					'discounted_price' => format_price( 29610 ),
 				],
 				'promotions'   => [],
+				'checkout_url' => 'https://local-checkout.quarkexpeditions.com?package_id=JKL-012&departure_date=2025-01-09&cabin_code=ULT-DBL&currency=USD&mask=AA',
 			],
 		];
 
@@ -704,6 +707,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 					'discounted_price' => format_price( 26371 ),
 				],
 				'promotions'   => [],
+				'checkout_url' => 'https://local-checkout.quarkexpeditions.com?package_id=ABC-123&departure_date=2026-02-28&cabin_code=OEX-SGL&currency=USD&mask=A',
 			],
 		];
 
@@ -782,6 +786,8 @@ class Test_Departure_Cards extends Softrip_TestCase {
 			'departure_id'             => $departure_post_1,
 			'expedition_name'          => 'Test Expedition Post',
 			'expedition_link'          => get_permalink( self::$post_expedition->ID ),
+			'expedition_slider_images' => [],
+			'expedition_categories'    => [],
 			'duration_days'            => 16,
 			'package_id'               => 'JKL-012',
 			'languages'                => 'spoken_language_1, spoken_language_2',
@@ -886,6 +892,8 @@ class Test_Departure_Cards extends Softrip_TestCase {
 			'departure_id'             => $departure_post_2,
 			'expedition_name'          => 'Test Expedition Post',
 			'expedition_link'          => get_permalink( self::$post_expedition->ID ),
+			'expedition_slider_images' => [],
+			'expedition_categories'    => [],
 			'duration_days'            => 11,
 			'package_id'               => 'ABC-123',
 			'languages'                => 'english',
@@ -987,6 +995,8 @@ class Test_Departure_Cards extends Softrip_TestCase {
 			'departure_id'             => $departure_post_3,
 			'expedition_name'          => 'Test Expedition Post',
 			'expedition_link'          => get_permalink( self::$post_expedition->ID ),
+			'expedition_slider_images' => [],
+			'expedition_categories'    => [],
 			'duration_days'            => 16,
 			'package_id'               => 'JKL-012',
 			'languages'                => 'english',
@@ -1015,7 +1025,9 @@ class Test_Departure_Cards extends Softrip_TestCase {
 				'description' => 'Lorem Ipsum Dolor Sit Amet Consectetur',
 				'permalink'   => get_permalink( self::$policy_pages[1] ),
 			],
-			'promotions'               => [],
+			'promotions'               => [
+				'Save 15% - Offer Code 15PROMO',
+			],
 		];
 
 		// Search ship post with code OEX.
@@ -1657,7 +1669,10 @@ class Test_Departure_Cards extends Softrip_TestCase {
 				'spaces_available'         => 0,
 				'checkout_url'             => 'https://local-checkout.quarkexpeditions.com?package_id=HIJ-456&departure_date=2025-09-04&cabin_code=OEX-JST&currency=CAD',
 				'brochure_price'           => '$46,050 CAD',
-				'promos'                   => [],
+				'promos'                   => [
+					'10PIF'   => '$41,220 CAD',
+					'20PROMO' => '$36,640 CAD',
+				],
 			],
 			$card_data['cabin_data']['OEX-JST'] ?? []
 		);

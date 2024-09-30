@@ -37,6 +37,12 @@
 						@endif
 					@endif
 
+					@if ( 'text-graphic' === $item['type'] )
+						@if ( ! empty( $item['image_id'] ) )
+							<x-hero.text-graphic :image_id="$item['image_id']" />
+						@endif
+					@endif
+
 					@if ( 'subtitle' === $item['type'] )
 						@if ( ! empty( $item['subtitle'] ) )
 							<x-hero.sub-title :title="$item['subtitle']" :text_color="$item['text_color']" />
@@ -75,12 +81,16 @@
 		</x-hero.left>
 		<x-hero.right>
 			@foreach ( $right as $item )
-				@if( 'form' === $item['type'] )
+				@if ( 'form' === $item['type'] )
 					@if ( ! empty( $item['form'] ) )
 						<x-hero.form>
 							{!! $item['form'] !!}
 						</x-hero.form>
 					@endif
+				@endif
+
+				@if ( 'circle-badge' === $item['type'] )
+					<x-hero.circle-badge :text="$item['text']" />
 				@endif
 			@endforeach
 		</x-hero.right>

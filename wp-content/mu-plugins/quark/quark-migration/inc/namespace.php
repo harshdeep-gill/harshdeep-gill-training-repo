@@ -41,6 +41,7 @@ function bootstrap(): void {
 		WP_CLI::add_command( 'quark-migrate departure', __NAMESPACE__ . '\\WP_CLI\\Departure' );
 		WP_CLI::add_command( 'quark-migrate policy-page', __NAMESPACE__ . '\\WP_CLI\\Policy_Pages' );
 		WP_CLI::add_command( 'quark-migrate landing-page', __NAMESPACE__ . '\\WP_CLI\\Landing_Page' );
+		WP_CLI::add_command( 'quark-migrate seo', __NAMESPACE__ . '\\WP_CLI\\SEO' );
 	}
 }
 
@@ -74,7 +75,7 @@ function add_drupal_migration_meta_box(): void {
 		'drupal-migration',
 		'Drupal Migration',
 		function () use ( $drupal_id ) {
-			$drupal_url = 'https://dev.quarkexpeditions.com/';
+			$drupal_url = 'https://www.quarkexpeditions.com/';
 			?>
 			<p>Drupal Node ID: <code><?php echo absint( $drupal_id ); ?></code></p>
 			<a href="<?php echo esc_url( sprintf( '%s/node/%d', $drupal_url, $drupal_id ) ); ?>" class="button button-secondary" target="_blank">View On Drupal</a>

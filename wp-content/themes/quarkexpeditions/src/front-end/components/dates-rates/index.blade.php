@@ -2,8 +2,11 @@
 	if ( empty( $slot ) ) {
 		return;
 	}
+
+	quark_enqueue_script( 'querystring' );
 @endphp
 
-<div class="dates-rates">
+<quark-dates-rates class="dates-rates">
+	<h1 class="dates-rates__title"><x-escape :content="__( 'Dates & Rates', 'qrk' )" /></h1>
 	{!! $slot !!}
-</div>
+</quark-dates-rates>

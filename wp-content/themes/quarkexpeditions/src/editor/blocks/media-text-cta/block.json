@@ -33,6 +33,11 @@
         "ctaBadgeText": {
             "type": "string",
             "default": ""
+        },
+        "imageAspectRatio": {
+            "type": "string",
+            "default": "landscape",
+            "enum": [ "landscape", "square" ]
         }
     },
     "supports": {

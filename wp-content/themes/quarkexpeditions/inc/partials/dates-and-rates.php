@@ -8,7 +8,9 @@
 namespace Quark\Theme\Partials\DatesAndRates;
 
 use function Quark\Departures\get_dates_rates_cards_data;
+use function Quark\Localization\get_current_currency;
 use function Quark\Search\Departures\search;
+use function Quark\Theme\Search_Filters\get_filters_for_dates_rates;
 
 const PARTIAL_NAME = 'dates-and-rates';
 
@@ -37,11 +39,12 @@ function render( array $output = [], string $name = '', array $data = [] ): arra
 		return $output;
 	}
 
+	// Current currency.
+	$currency = get_current_currency();
+
 	// Init selected filters.
 	$selected_filter = [
-		'posts_per_load' => 4,
-		'currency'       => 'USD',
-		'expeditions'    => [],
+		'posts_per_load' => 8,
 	];
 
 	// Verify and get selected filters.
@@ -55,12 +58,14 @@ function render( array $output = [], string $name = '', array $data = [] ): arra
 	// Search for Departure post.
 	$search_results = search( $selected_filter );
 
-	// Get currency.
-	$currency = $selected_filter['currency'] ? strval( $selected_filter['currency'] ) : 'USD';
-
 	// Build component attributes.
 	$attributes = [
 		'cards' => get_dates_rates_cards_data( array_map( 'absint', $search_results['ids'] ), $currency ),
+	];
+
+	// Filters attributes.
+	$filters_attributes = [
+		'filter_data' => get_filters_for_dates_rates( $selected_filter ),
 	];
 
 	// Return rendered partial.
@@ -76,5 +81,9 @@ function render( array $output = [], string $name = '', array $data = [] ): arra
 			'nextPage'       => $search_results['next_page'],
 			'remainingCount' => $search_results['remaining_count'],
 		],
+		'filtersMarkup'   => quark_get_component(
+			'parts.dates-rates-filters',
+			$filters_attributes
+		),
 	];
 }

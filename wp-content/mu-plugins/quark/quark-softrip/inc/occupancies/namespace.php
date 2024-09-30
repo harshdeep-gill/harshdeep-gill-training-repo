@@ -17,9 +17,10 @@ use function Quark\Softrip\OccupancyPromotions\delete_occupancy_promotions_by_oc
 use function Quark\Softrip\OccupancyPromotions\get_lowest_price as get_occupancy_promotion_lowest_price;
 use function Quark\Softrip\OccupancyPromotions\update_occupancy_promotions;
 use function Quark\Softrip\add_prefix_to_table_name;
+use function Quark\Localization\get_currencies;
 
 use const Quark\CabinCategories\POST_TYPE as CABIN_CATEGORY_POST_TYPE;
-use const Quark\Core\CURRENCIES;
+use const Quark\Localization\USD_CURRENCY;
 
 const CACHE_KEY_PREFIX = 'quark_softrip_occupancy';
 const CACHE_GROUP      = 'quark_softrip_occupancies';
@@ -108,6 +109,9 @@ function update_occupancies( array $raw_cabins_data = [], int $departure_post_id
 	// Initialize updated softrip ids.
 	$updated_softrip_ids = [];
 
+	// Initialize any updated.
+	$any_updated = false;
+
 	// Loop through the raw cabin data.
 	foreach ( $raw_cabins_data as $raw_cabin_data ) {
 		// Validate the raw cabin data.
@@ -150,11 +154,16 @@ function update_occupancies( array $raw_cabins_data = [], int $departure_post_id
 			// If the cabin exists, update it.
 			if ( ! empty( $existing_cabin_data['id'] ) ) {
 				// Update the cabin.
-				$wpdb->update(
+				$is_updated = $wpdb->update(
 					$table_name,
 					$formatted_data,
 					[ 'id' => $existing_cabin_data['id'] ]
 				);
+
+				// Fire the occupancy updated action.
+				if ( $is_updated > 0 ) {
+					$any_updated = true;
+				}
 
 				// Set the updated ID.
 				$updated_id = $existing_cabin_data['id'];
@@ -166,7 +175,8 @@ function update_occupancies( array $raw_cabins_data = [], int $departure_post_id
 				);
 
 				// Set the updated ID.
-				$updated_id = $wpdb->insert_id;
+				$updated_id  = $wpdb->insert_id;
+				$any_updated = true;
 			}
 
 			// Bail if empty.
@@ -180,7 +190,12 @@ function update_occupancies( array $raw_cabins_data = [], int $departure_post_id
 			// Set occupancy promotions data.
 			if ( ! empty( $raw_cabin_occupancy_data['prices'] ) && is_array( $raw_cabin_occupancy_data['prices'] ) ) {
 				// Update the occupancy promotions.
-				update_occupancy_promotions( array_values( $raw_cabin_occupancy_data['prices'] ), $updated_id );
+				$is_occupancy_promotions_updated = update_occupancy_promotions( array_values( $raw_cabin_occupancy_data['prices'] ), $updated_id );
+
+				// Set flag to true.
+				if ( $is_occupancy_promotions_updated ) {
+					$any_updated = true;
+				}
 			}
 
 			// Bust caches at occupancy level.
@@ -197,7 +212,12 @@ function update_occupancies( array $raw_cabins_data = [], int $departure_post_id
 		}
 
 		// Store cabin spaces available on departure meta.
-		update_post_meta( $departure_post_id, 'cabin_spaces_available_' . $cabin_category_post_id, $cabin_spaces_available );
+		$is_cabin_spaces_updated = update_post_meta( $departure_post_id, 'cabin_spaces_available_' . $cabin_category_post_id, $cabin_spaces_available );
+
+		// Set flag to true.
+		if ( $is_cabin_spaces_updated ) {
+			$any_updated = true;
+		}
 
 		// Bust caches at cabin category level.
 		wp_cache_delete( CACHE_KEY_PREFIX . '_cabin_category_post_id_' . $cabin_category_post_id . '_departure_post_id_' . $departure_post_id, CACHE_GROUP );
@@ -256,6 +276,9 @@ function update_occupancies( array $raw_cabins_data = [], int $departure_post_id
 
 		// Bust departure cache as meta has been deleted.
 		bust_departure_post_cache( $departure_post_id );
+
+		// Set flag to true.
+		$any_updated = true;
 	}
 
 	// Bust caches at departure level.
@@ -263,7 +286,7 @@ function update_occupancies( array $raw_cabins_data = [], int $departure_post_id
 	wp_cache_delete( CACHE_KEY_PREFIX . '_cabin_category_departure_post_id_' . $departure_post_id, CACHE_GROUP );
 
 	// Return success.
-	return true;
+	return $any_updated;
 }
 
 /**
@@ -338,8 +361,11 @@ function format_data( array $raw_occupancy_data = [], int $cabin_category_post_i
 		'price_per_person_eur'     => 0,
 	];
 
+	// Currencies.
+	$currencies = get_currencies();
+
 	// Loop through the currencies.
-	foreach ( CURRENCIES as $currency ) {
+	foreach ( $currencies as $currency ) {
 		// Check if the currency is set and price per person exists.
 		if ( empty( $raw_occupancy_data['prices'][ $currency ] ) || ! is_array( $raw_occupancy_data['prices'][ $currency ] ) || empty( $raw_occupancy_data['prices'][ $currency ]['pricePerPerson'] ) ) {
 			continue;
@@ -658,7 +684,7 @@ function get_occupancy_data_by_id( int $occupancy_id = 0, bool $force = false ):
  *  discounted: int,
  * }
  */
-function get_lowest_price( int $post_id = 0, string $currency = 'USD' ): array {
+function get_lowest_price( int $post_id = 0, string $currency = USD_CURRENCY ): array {
 	// Upper case currency.
 	$currency = strtoupper( $currency );
 
@@ -669,7 +695,7 @@ function get_lowest_price( int $post_id = 0, string $currency = 'USD' ): array {
 	];
 
 	// Return default values if no post ID.
-	if ( empty( $post_id ) || ! in_array( $currency, CURRENCIES, true ) ) {
+	if ( empty( $post_id ) || ! in_array( $currency, get_currencies(), true ) ) {
 		return $lowest_price;
 	}
 
@@ -1033,7 +1059,7 @@ function get_cabin_category_post_ids_by_departure( int $departure_post_id = 0, b
  *   discounted: int,
  * }
  */
-function get_lowest_price_by_cabin_category_and_departure( int $cabin_category_post_id = 0, int $departure_post_id = 0, string $currency = 'USD' ): array {
+function get_lowest_price_by_cabin_category_and_departure( int $cabin_category_post_id = 0, int $departure_post_id = 0, string $currency = USD_CURRENCY ): array {
 	// Upper case currency.
 	$currency = strtoupper( $currency );
 
@@ -1044,7 +1070,7 @@ function get_lowest_price_by_cabin_category_and_departure( int $cabin_category_p
 	];
 
 	// Return default values if no post ID.
-	if ( empty( $cabin_category_post_id ) || ! in_array( $currency, CURRENCIES, true ) ) {
+	if ( empty( $cabin_category_post_id ) || ! in_array( $currency, get_currencies(), true ) ) {
 		return $lowest_price;
 	}
 
@@ -1099,7 +1125,7 @@ function get_lowest_price_by_cabin_category_and_departure( int $cabin_category_p
  *
  * @return int
  */
-function get_lowest_price_by_cabin_category_and_departure_and_promotion_code( int $cabin_category_post_id = 0, int $departure_post_id = 0, string $promotion_code = '', string $currency = 'USD' ): int {
+function get_lowest_price_by_cabin_category_and_departure_and_promotion_code( int $cabin_category_post_id = 0, int $departure_post_id = 0, string $promotion_code = '', string $currency = USD_CURRENCY ): int {
 	// Upper case currency.
 	$currency = strtoupper( $currency );
 
@@ -1107,7 +1133,7 @@ function get_lowest_price_by_cabin_category_and_departure_and_promotion_code( in
 	$lowest_price = 0;
 
 	// Return default values if no post ID.
-	if ( empty( $cabin_category_post_id ) || empty( $departure_post_id ) || empty( $promotion_code ) || ! in_array( $currency, CURRENCIES, true ) ) {
+	if ( empty( $cabin_category_post_id ) || empty( $departure_post_id ) || empty( $promotion_code ) || ! in_array( $currency, get_currencies(), true ) ) {
 		return $lowest_price;
 	}
 
@@ -1254,6 +1280,108 @@ function get_description_and_pax_count_by_mask( string $mask = '' ): array {
 	}
 
 	// The mask mapping.
+	$mask_mapping = get_masks_mapping();
+
+	// Return the description and pax count.
+	return $mask_mapping[ $mask ] ?? $description_and_pax_count;
+}
+
+/**
+ * Add supplemental and mandatory price to the lowest price.
+ *
+ * @param array{discounted: int, original: int} $lowest_price The lowest price.
+ * @param int                                   $departure_post_id The departure post ID.
+ * @param string                                $currency The currency code.
+ *
+ * @return array{
+ *   discounted: int,
+ *   original: int,
+ * }
+ */
+function add_supplemental_and_mandatory_price( array $lowest_price = [ 'discounted' => 0, 'original' => 0 ], int $departure_post_id = 0, string $currency = USD_CURRENCY ): array { // phpcs:ignore WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound
+	// Setup default return values.
+	$lowest_price_with_supplemental = [
+		'discounted' => 0,
+		'original'   => 0,
+	];
+
+	// Bail if empty.
+	if ( ! is_array( $lowest_price ) || empty( $departure_post_id ) || ! in_array( $currency, get_currencies(), true ) ) {
+		return $lowest_price_with_supplemental;
+	}
+
+	// Upper case currency.
+	$currency = strtoupper( $currency );
+
+	// Get itinerary post ID.
+	$itinerary_post_id = absint( get_post_meta( $departure_post_id, 'itinerary', true ) );
+
+	// Initialize supplemental and mandatory price.
+	$supplemental_price = 0;
+	$mandatory_price    = 0;
+
+	// Get supplemental price.
+	if ( ! empty( $itinerary_post_id ) ) {
+		$supplemental_price = get_supplemental_price( $itinerary_post_id, $currency );
+		$mandatory_price    = get_mandatory_transfer_price( $itinerary_post_id, $currency );
+	}
+
+	// Add supplemental and mandatory price to the lowest price.
+	$lowest_price_with_supplemental['discounted'] = $lowest_price['discounted'] + $supplemental_price + $mandatory_price;
+	$lowest_price_with_supplemental['original']   = $lowest_price['original'] + $supplemental_price + $mandatory_price;
+
+	// Return the lowest price.
+	return $lowest_price_with_supplemental;
+}
+
+/**
+ * Get masks mapping.
+ *
+ * @return array{
+ *   A: array{
+ *        description: string,
+ *        pax_count: int,
+ *   },
+ *   AA: array{
+ *         description: string,
+ *         pax_count: int,
+ *   },
+ *   SAA: array{
+ *          description: string,
+ *          pax_count: int,
+ *   },
+ *   SMAA: array{
+ *           description: string,
+ *           pax_count: int,
+ *   },
+ *   SFAA: array{
+ *           description: string,
+ *           pax_count: int,
+ *   },
+ *   AAA: array{
+ *          description: string,
+ *          pax_count: int,
+ *   },
+ *   SAAA: array{
+ *           description: string,
+ *           pax_count: int,
+ *   },
+ *   SMAAA: array{
+ *            description: string,
+ *            pax_count: int,
+ *   },
+ *   SFAAA: array{
+ *            description: string,
+ *            pax_count: int,
+ *   },
+ *   AAAA: array{
+ *           description: string,
+ *           pax_count: int,
+ *   },
+ * }
+ */
+function get_masks_mapping(): array {
+	// The mask mapping.
 	$mask_mapping = [
 		'A'     => [
 			'description' => 'Single Room',
@@ -1297,54 +1425,6 @@ function get_description_and_pax_count_by_mask( string $mask = '' ): array {
 		],
 	];
 
-	// Return the description and pax count.
-	return $mask_mapping[ $mask ] ?? $description_and_pax_count;
-}
-
-/**
- * Add supplemental and mandatory price to the lowest price.
- *
- * @param array{discounted: int, original: int} $lowest_price The lowest price.
- * @param int                                   $departure_post_id The departure post ID.
- * @param string                                $currency The currency code.
- *
- * @return array{
- *   discounted: int,
- *   original: int,
- * }
- */
-function add_supplemental_and_mandatory_price( array $lowest_price = [ 'discounted' => 0, 'original' => 0 ], int $departure_post_id = 0, string $currency = 'USD' ): array { // phpcs:ignore WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound
-	// Setup default return values.
-	$lowest_price_with_supplemental = [
-		'discounted' => 0,
-		'original'   => 0,
-	];
-
-	// Bail if empty.
-	if ( ! is_array( $lowest_price ) || empty( $departure_post_id ) || ! in_array( $currency, CURRENCIES, true ) ) {
-		return $lowest_price_with_supplemental;
-	}
-
-	// Upper case currency.
-	$currency = strtoupper( $currency );
-
-	// Get itinerary post ID.
-	$itinerary_post_id = absint( get_post_meta( $departure_post_id, 'itinerary', true ) );
-
-	// Initialize supplemental and mandatory price.
-	$supplemental_price = 0;
-	$mandatory_price    = 0;
-
-	// Get supplemental price.
-	if ( ! empty( $itinerary_post_id ) ) {
-		$supplemental_price = get_supplemental_price( $itinerary_post_id, $currency );
-		$mandatory_price    = get_mandatory_transfer_price( $itinerary_post_id, $currency );
-	}
-
-	// Add supplemental and mandatory price to the lowest price.
-	$lowest_price_with_supplemental['discounted'] = $lowest_price['discounted'] + $supplemental_price + $mandatory_price;
-	$lowest_price_with_supplemental['original']   = $lowest_price['original'] + $supplemental_price + $mandatory_price;
-
-	// Return the lowest price.
-	return $lowest_price_with_supplemental;
+	// Return the mask mapping.
+	return $mask_mapping;
 }

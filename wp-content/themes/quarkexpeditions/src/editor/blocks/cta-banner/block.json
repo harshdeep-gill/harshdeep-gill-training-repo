@@ -12,9 +12,13 @@
 			"type": "object",
 			"default": {}
 		},
-		"darkMode": {
-			"type": "boolean",
-			"default": false
+		"appearance": {
+			"type": "string",
+			"default": "light"
+		},
+		"backgroundColor": {
+			"type": "string",
+			"default": "gray"
 		}
 	},
 	"supports": {

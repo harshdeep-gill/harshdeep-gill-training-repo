@@ -302,14 +302,26 @@ class Cabin_Category {
 			$related_image_mids = array_map( 'absint', explode( ',', strval( $item['images_target_ids'] ) ) );
 			$related_images     = [];
 
+			// Flag for featured image.
+			$set_featured_image = false;
+
 			// map drupal media with WordPress attachments.
 			foreach ( $related_image_mids as $image_mid ) {
 				$image = download_file_by_mid( $image_mid );
 
-				// Check if image exists.
-				if ( ! empty( $image ) ) {
-					$related_images[] = $image;
+				// Check valid image.
+				if ( empty( $image ) || $image instanceof WP_Error ) {
+					continue;
 				}
+
+				// Set thumbnail.
+				if ( false === $set_featured_image ) {
+					$data['meta_input']['_thumbnail_id'] = $image;
+					$set_featured_image                  = true;
+				}
+
+				// Add image to related images.
+				$related_images[] = $image;
 			}
 
 			// Set related_images metadata.

@@ -76,7 +76,10 @@ function register_region_post_type(): void {
 		'template'            => [
 			[
 				'quark/hero',
-				[],
+				[
+					'immersive'      => 'bottom',
+					'overlapContent' => false,
+				],
 				[
 					[
 						'quark/breadcrumbs',
@@ -257,18 +260,42 @@ function register_region_post_type(): void {
 				],
 				[
 					[
-						'quark/media-text-cta',
+						'quark/media-text-cta-carousel',
 						[],
 						[
 							[
-								'core/heading',
+								'quark/media-text-cta',
+								[],
 								[
-									'level' => 3,
+									[
+										'core/heading',
+										[
+											'level' => 3,
+										],
+									],
+									[
+										'core/paragraph',
+										[],
+									],
 								],
 							],
 							[
-								'core/paragraph',
-								[],
+								'quark/media-text-cta',
+								[
+									'mediaAlignment' => 'right',
+								],
+								[
+									[
+										'core/heading',
+										[
+											'level' => 3,
+										],
+									],
+									[
+										'core/paragraph',
+										[],
+									],
+								],
 							],
 						],
 					],

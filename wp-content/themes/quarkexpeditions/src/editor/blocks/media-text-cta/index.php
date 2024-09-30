@@ -49,12 +49,13 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 
 	// Initialize attributes.
 	$attributes = [
-		'image_id'       => 0,
-		'cta_badge_text' => '',
-		'media_type'     => 'image',
-		'media_align'    => 'left',
-		'video_url'      => '',
-		'content'        => [],
+		'image_id'           => 0,
+		'cta_badge_text'     => '',
+		'media_type'         => 'image',
+		'image_aspect_ratio' => 'landscape',
+		'media_align'        => 'left',
+		'video_url'          => '',
+		'content'            => [],
 	];
 
 	// Add Image Id.
@@ -65,6 +66,9 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 
 	// Add Media Type.
 	$attributes['media_type'] = $block->attributes['mediaType'];
+
+	// Add image aspect ratio.
+	$attributes['image_aspect_ratio'] = $block->attributes['imageAspectRatio'];
 
 	// Add Video URL.
 	$attributes['video_url'] = $block->attributes['videoUrl'];
@@ -103,6 +107,16 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 			// Add to content.
 			$attributes['content'][] = $cta;
 
+		} elseif ( 'quark/media-text-cta-overline' === $inner_block->name ) {
+			$overline = [
+				'type' => 'overline',
+			];
+
+			// Add the overline.
+			$overline['text'] = $inner_block->attributes['text'];
+
+			// Add to content.
+			$attributes['content'][] = $overline;
 		} else {
 			$slot = [
 				'type' => 'slot',

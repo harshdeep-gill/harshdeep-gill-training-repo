@@ -29,6 +29,9 @@ function bootstrap(): void {
 	add_filter( 'qrk_convert_to_blocks_h4', __NAMESPACE__ . '\\convert_node_heading', 10, 2 );
 	add_filter( 'qrk_convert_to_blocks_h5', __NAMESPACE__ . '\\convert_node_heading', 10, 2 );
 	add_filter( 'qrk_convert_to_blocks_h6', __NAMESPACE__ . '\\convert_node_heading', 10, 2 );
+	add_filter( 'qrk_convert_to_blocks_span', __NAMESPACE__ . '\\convert_node_span', 10, 2 );
+	add_filter( 'qrk_convert_to_blocks_strong', __NAMESPACE__ . '\\convert_node_strong', 10, 2 );
+	add_filter( 'qrk_convert_to_blocks_b', __NAMESPACE__ . '\\convert_node_strong', 10, 2 );
 	add_filter( 'qrk_convert_to_blocks_p', __NAMESPACE__ . '\\convert_node_paragraph', 10, 2 );
 	add_filter( 'qrk_convert_to_blocks_ul', __NAMESPACE__ . '\\convert_node_list', 10, 2 );
 	add_filter( 'qrk_convert_to_blocks_ol', __NAMESPACE__ . '\\convert_node_list', 10, 2 );
@@ -39,6 +42,7 @@ function bootstrap(): void {
 	add_filter( 'qrk_convert_to_blocks_iframe', __NAMESPACE__ . '\\convert_node_iframe', 10, 2 );
 	add_filter( 'qrk_convert_to_blocks_table', __NAMESPACE__ . '\\convert_node_table', 10, 2 );
 	add_filter( 'qrk_convert_to_blocks_blockquote', __NAMESPACE__ . '\\convert_node_blockquote', 10, 2 );
+	add_filter( 'qrk_convert_to_blocks_fancy_video', __NAMESPACE__ . '\\convert_node_fancy_video', 10, 2 );
 }
 
 /**
@@ -181,10 +185,106 @@ function convert_node_heading( string $output = '', ?DOMElement $node = null ): 
 			'innerHTML' => sprintf(
 				'<%1$s class="wp-block-heading">%2$s</%1$s>',
 				$tag_name,
-				$inner_html
+				wp_strip_all_tags( $inner_html )
 			),
 		]
 	);
+}
+
+/**
+ * Convert a span node into a block.
+ *
+ * @param string          $output Block output.
+ * @param DOMElement|null $node   Node element.
+ *
+ * @return string
+ */
+function convert_node_span( string $output = '', ?DOMElement $node = null ): string {
+	// Check for node.
+	if ( ! $node instanceof DOMElement ) {
+		return $output;
+	}
+
+	// Check for special tags.
+	if ( 1 === $node->childNodes->length && $node->childNodes[0] instanceof DOMElement ) {
+		// If the only child inside a P is one of these tags.
+		$special_tags = [
+			'img',
+			'strong',
+			'iframe',
+		];
+
+		// Look for special tags.
+		if ( in_array( $node->childNodes[0]->tagName, $special_tags, true ) ) {
+			return convert_node_to_block( $node->childNodes[0] );
+		}
+	}
+
+	// Prepare inner HTML.
+	$inner_html = '';
+
+	// Get inner HTML.
+	foreach ( $node->childNodes as $child_node ) {
+		// Get HTML of current child node.
+		if ( $child_node->ownerDocument instanceof DOMDocument ) {
+			$child_node_content = $child_node->ownerDocument->saveXML( $child_node );
+
+			// Check if its img tag.
+			if ( $child_node instanceof DOMElement && 'img' === $child_node->tagName ) {
+				$child_node_content = convert_node_to_block( $child_node );
+			}
+
+			// Append child node content.
+			$inner_html .= $child_node_content;
+		}
+	}
+
+	// Return output.
+	return $inner_html;
+}
+
+/**
+ * Convert a span node into a block.
+ *
+ * @param string          $output Block output.
+ * @param DOMElement|null $node   Node element.
+ *
+ * @return string
+ */
+function convert_node_strong( string $output = '', ?DOMElement $node = null ): string {
+	// Check for node.
+	if ( ! $node instanceof DOMElement ) {
+		return $output;
+	}
+
+	// Check for special tags.
+	if ( 1 === $node->childNodes->length && $node->childNodes[0] instanceof DOMElement ) {
+		// If the only child inside a P is one of these tags.
+		$special_tags = [
+			'img',
+			'iframe',
+			'span',
+		];
+
+		// Look for special tags.
+		if ( in_array( $node->childNodes[0]->tagName, $special_tags, true ) ) {
+			return convert_node_to_block( $node->childNodes[0] );
+		}
+	}
+
+	// Prepare inner HTML.
+	$inner_html = '';
+
+	// Get inner HTML.
+	foreach ( $node->childNodes as $child_node ) {
+		// Get HTML of current child node.
+		if ( $child_node->ownerDocument instanceof DOMDocument ) {
+			$inner_html .= $child_node->ownerDocument->saveXML( $child_node );
+		}
+	}
+
+	// Return output.
+	return ! empty( $inner_html ) ? '<strong>' . $inner_html . '</strong>' : '';
 }
 
 /**
@@ -224,6 +324,18 @@ function convert_node_paragraph( string $output = '', ?DOMElement $node = null )
 			if ( ! empty( $button ) ) {
 				return $button;
 			}
+		} elseif ( 'span' === $node->childNodes[0]->tagName ) {
+			// If the only child is a span.
+			$span_content = convert_node_span( '', $node->childNodes[0] );
+
+			// check its starts with <!--.
+			if ( ! str_starts_with( $span_content, '<!--' ) ) {
+				// Return span block.
+				$span_content = convert_to_blocks( $span_content );
+			}
+
+			// Return span block.
+			return $span_content;
 		}
 	}
 
@@ -242,22 +354,21 @@ function convert_node_paragraph( string $output = '', ?DOMElement $node = null )
 
 			// check if button is not empty.
 			if ( ! empty( $button ) ) {
-				return $button;
+				$inner_html .= $button;
 			}
-		}
-
-		// if any child is an image, convert this into an image block.
-		if ( $child_node instanceof DOMElement && 'img' === $child_node->tagName ) {
+		} elseif ( $child_node instanceof DOMElement && 'iframe' === $child_node->tagName ) {
+			// If any child is an IFRAME, convert this into an IFRAME block.
+			$inner_html .= convert_node_iframe( '', $child_node );
+		} elseif ( $child_node instanceof DOMElement && 'img' === $child_node->tagName ) {
+			// If any child is an IFRAME, convert this into an IFRAME block.
 			$inner_html .= convert_node_to_block( $child_node );
-		}
-
-		// If any child is an IFRAME, convert this into an IFRAME block.
-		if ( $child_node instanceof DOMElement && 'iframe' === $child_node->tagName ) {
-			return convert_node_iframe( '', $child_node );
-		}
-
-		// Get HTML of current child node.
-		if ( $child_node->ownerDocument instanceof DOMDocument ) {
+		} elseif ( $child_node instanceof DOMElement && 'span' === $child_node->tagName ) {
+			// If any child is a span.
+			$inner_html .= convert_node_span( '', $child_node );
+		} elseif ( $child_node instanceof DOMElement && 'strong' === $child_node->tagName ) {
+			// If any child is a span.
+			$inner_html .= convert_node_strong( '', $child_node );
+		} elseif ( $child_node->ownerDocument instanceof DOMDocument ) {
 			$inner_html .= $child_node->ownerDocument->saveHTML( $child_node );
 		}
 	}
@@ -400,9 +511,15 @@ function convert_node_image( string $output = '', ?DOMElement $node = null, stri
 	$id    = 0;
 	$class = $node->getAttribute( 'class' );
 
+	// Check for fancy video class.
+	if ( 'fancy-video' === $class ) {
+		return convert_node_fancy_video( $output, $node );
+	}
+
 	// Check for image ID in class.
 	if ( ! empty( $class ) && str_contains( $class, 'wp-image-' ) ) {
-		preg_match( '#wp-image-([0-9])#', $class, $matches );
+		// Get the image id form class attribute.
+		preg_match( '/wp-image-(\d+)/', $class, $matches );
 
 		// Check for matches.
 		if ( ! empty( $matches[1] ) ) {
@@ -621,16 +738,150 @@ function convert_node_table( string $output = '', ?DOMElement $node = null ): st
 
 	// Check for table class.
 	if ( $node->ownerDocument instanceof DOMDocument ) {
-		return serialize_block(
-			[
-				'blockName' => 'core/table',
-				'innerHTML' => '<figure class="wp-block-table">' . $node->ownerDocument->saveHTML( $node ) . '</figure>',
-			]
-		);
+		return convert_table_to_travelopia_table_block( strval( $node->ownerDocument->saveHTML( $node ) ) );
 	} else {
 		// Return empty string.
 		return $output;
 	}
+}
+
+/**
+ * Convert a table node into a travelopia table block.
+ *
+ * @param string $table_input table node content.
+ *
+ * @return string
+ */
+function convert_table_to_travelopia_table_block( string $table_input = '' ): string {
+	// Load the table input into a DOMDocument.
+	$dom = new DOMDocument();
+	libxml_use_internal_errors( true );
+	$dom->loadHTML( $table_input );
+
+	// Initialize variables for rows and columns count.
+	$rows    = 0;
+	$columns = 0;
+
+	// Find all the table rows.
+	$tbody = $dom->getElementsByTagName( 'tbody' )->item( 0 );
+
+	// Check for table body element.
+	if ( ! $tbody ) {
+		$tbody = $dom->getElementsByTagName( 'table' )->item( 0 );
+	}
+
+	// Check for table body element.
+	if ( ! $tbody ) {
+		return $table_input;
+	}
+
+	// Check for table rows.
+	$tr_elements = $tbody->getElementsByTagName( 'tr' );
+	$rows        = $tr_elements->length;
+
+	// Calculate the number of columns based on the first row.
+	$first_row = $tr_elements->item( 0 );
+
+	// Check for first row.
+	if ( $first_row ) {
+		$columns = $first_row->getElementsByTagName( 'td' )->length;
+	} else {
+		// Return if no row found.
+		return $table_input;
+	}
+
+	// Initialize the output with the table block header.
+	$block_id = uniqid();
+	$output   = sprintf(
+		'<!-- wp:travelopia/table {"rows":%d,"columns":%d,"blockId":"%s","hasThead":true} -->' . "\n",
+		$rows,
+		$columns,
+		$block_id
+	);
+
+	// Generate the header row.
+	$output .= sprintf( '<!-- wp:travelopia/table-row-container {"type":"thead","blockId":"%s"} -->' . "\n", uniqid() );
+	$output .= sprintf( '<!-- wp:travelopia/table-row {"blockId":"%s"} -->' . "\n", uniqid() );
+
+	// Generate the header cells.
+	$header_cells = $first_row->getElementsByTagName( 'td' );
+
+	// Loop through the header cells and generate the header row.
+	foreach ( $header_cells as $index => $header_cell ) {
+		$cell_content = $header_cell->nodeValue;
+		$output      .= sprintf(
+			'<!-- wp:travelopia/table-column {"row":1,"column":"%d","blockId":"%s"} -->' . "\n",
+			$index + 1,
+			uniqid()
+		);
+		$output      .= sprintf(
+			"<!-- wp:travelopia/table-cell -->\n<strong>%s</strong>\n<!-- /wp:travelopia/table-cell -->\n",
+			$cell_content
+		);
+		$output      .= "<!-- /wp:travelopia/table-column -->\n";
+	}
+
+	// Close the header row block.
+	$output .= "<!-- /wp:travelopia/table-row -->\n";
+	$output .= "<!-- /wp:travelopia/table-row-container -->\n";
+
+	// Loop through the remaining rows and generate body rows.
+	foreach ( $tr_elements as $row_index => $tr ) {
+		if ( 0 === $row_index ) {
+			continue; // Skip header row.
+		}
+
+		// Open the row block.
+		$output .= sprintf( '<!-- wp:travelopia/table-row-container {"blockId":"%s"} -->' . "\n", uniqid() );
+		$output .= sprintf( '<!-- wp:travelopia/table-row {"blockId":"%s"} -->' . "\n", uniqid() );
+
+		// Generate the cells.
+		$cells = $tr->getElementsByTagName( 'td' );
+
+		// Loop through the cells and generate the row.
+		foreach ( $cells as $cell_index => $cell ) {
+			$cell_content = '';
+
+			// Get cell_content inner HTML.
+			foreach ( $cell->childNodes as $cell_child_node ) {
+				// Get HTML of current child node.
+				if ( $cell_child_node->ownerDocument instanceof DOMDocument ) {
+					$cell_content .= $cell_child_node->ownerDocument->saveXML( $cell_child_node );
+				}
+			}
+
+			// Handle paragraphs.
+			$cell_content = str_replace( '<p>', '', $cell_content );
+			$cell_content = str_replace( '</p>', '<br>', $cell_content );
+
+			// Generate the column block.
+			$output .= sprintf(
+				'<!-- wp:travelopia/table-column {"row":"%d","column":"%d","blockId":"%s"} -->' . "\n",
+				$row_index + 1,
+				$cell_index + 1,
+				uniqid()
+			);
+
+			// Generate the cell content.
+			$output .= sprintf(
+				"<!-- wp:travelopia/table-cell -->\n%s\n<!-- /wp:travelopia/table-cell -->\n",
+				$cell_content
+			);
+
+			// Close the column block.
+			$output .= "<!-- /wp:travelopia/table-column -->\n";
+		}
+
+		// Close the row block.
+		$output .= "<!-- /wp:travelopia/table-row -->\n";
+		$output .= "<!-- /wp:travelopia/table-row-container -->\n";
+	}
+
+	// Close the table block.
+	$output .= '<!-- /wp:travelopia/table -->';
+
+	// Return the output.
+	return $output;
 }
 
 /**
@@ -846,6 +1097,56 @@ function convert_node_blockquote( string $output = '', ?DOMElement $node = null 
 				'innerHTML' => '<blockquote class="wp-block-quote">' . $inner_html . '</blockquote>',
 			]
 		);
+	}
+
+	// Fallback.
+	return $output;
+}
+
+/**
+ * Convert a fancy video node into a block.
+ *
+ * @param string          $output Block output.
+ * @param DOMElement|null $node   Node element.
+ *
+ * @return string
+ */
+function convert_node_fancy_video( string $output = '', ?DOMElement $node = null ): string {
+	// Check for correct node.
+	if ( ! $node instanceof DOMElement ) {
+		return $output;
+	}
+
+	// Get attrs.
+	$video_url = $node->getAttribute( 'src' );
+	$image_id  = $node->getAttribute( 'id' );
+	$alt       = $node->getAttribute( 'alt' );
+
+	// Check for video URL and image ID.
+	if ( ! empty( $video_url ) && ! empty( $image_id ) ) {
+		// Get image src.
+		$src = wp_get_attachment_image_src( absint( $image_id ), 'large' );
+
+		// If image found then build HTML.
+		if ( ! empty( $src ) && is_array( $src ) ) {
+			// Return the block.
+			return serialize_block(
+				[
+					'blockName'    => 'quark/fancy-video',
+					'attrs'        => [
+						'videoUrl' => $video_url,
+						'image'    => [
+							'id'     => $image_id,
+							'src'    => $src[0],
+							'alt'    => $alt,
+							'width'  => $src[1],
+							'height' => $src[2],
+						],
+					],
+					'innerContent' => [],
+				]
+			) . PHP_EOL;
+		}
 	}
 
 	// Fallback.

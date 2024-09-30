@@ -11,7 +11,6 @@ use WP_Post;
 use WP_Term;
 use Quark\Tests\Softrip\Softrip_TestCase;
 
-use function Quark\Core\get_available_currencies;
 use function Quark\Departures\bust_card_data_cache_on_expedition_update;
 use function Quark\Departures\bust_post_cache;
 use function Quark\Departures\get;
@@ -19,6 +18,7 @@ use function Quark\Departures\get_paid_adventure_options;
 use function Quark\Departures\get_languages;
 use function Quark\Departures\get_promotion_tags;
 use function Quark\Departures\get_start_end_departure_date;
+use function Quark\Localization\get_currencies;
 use function Quark\Softrip\Departures\get_departures_by_itinerary;
 use function Quark\Softrip\do_sync;
 
@@ -464,7 +464,7 @@ class Test_Departures extends Softrip_TestCase {
 		$this->assertTrue( $departure_post instanceof WP_Post );
 
 		// Get currency list.
-		$currencies = get_available_currencies();
+		$currencies = get_currencies();
 
 		// Loop through currencies.
 		foreach ( $currencies as $currency ) {
@@ -567,7 +567,7 @@ class Test_Departures extends Softrip_TestCase {
 			// Loop through departure posts.
 			foreach ( $departure_post_ids as $departure_post_id ) {
 				// Get currency list.
-				$currencies = get_available_currencies();
+				$currencies = get_currencies();
 
 				// Loop through currencies.
 				foreach ( $currencies as $currency ) {
@@ -594,7 +594,7 @@ class Test_Departures extends Softrip_TestCase {
 			// Loop through departure posts.
 			foreach ( $departure_post_ids as $departure_post_id ) {
 				// Get currency list.
-				$currencies = get_available_currencies();
+				$currencies = get_currencies();
 
 				// Loop through currencies.
 				foreach ( $currencies as $currency ) {

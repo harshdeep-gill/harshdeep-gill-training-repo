@@ -11,8 +11,9 @@ use WP_Post;
 
 use function Quark\CabinCategories\get as get_cabin_category_post;
 use function Quark\Departures\get as get_departure_post;
+use function Quark\Localization\get_currencies;
 
-use const Quark\Core\CURRENCIES;
+use const Quark\Localization\DEFAULT_CURRENCY;
 
 /**
  * Bootstrap the plugin.
@@ -29,10 +30,11 @@ function bootstrap(): void {
  * @param int    $departure_post_id Departure post ID.
  * @param int    $cabin_post_id     Cabin post ID.
  * @param string $currency          Currency.
+ * @param string $mask              Mask.
  *
  * @return string
  */
-function get_checkout_url( int $departure_post_id = 0, int $cabin_post_id = 0, string $currency = 'USD' ): string {
+function get_checkout_url( int $departure_post_id = 0, int $cabin_post_id = 0, string $currency = DEFAULT_CURRENCY, string $mask = '' ): string {
 	// Check base URL.
 	if ( ! defined( 'QUARK_CHECKOUT_BASE_URL' ) ) {
 		return '';
@@ -50,7 +52,7 @@ function get_checkout_url( int $departure_post_id = 0, int $cabin_post_id = 0, s
 	$currency = strtoupper( $currency );
 
 	// Validate currency.
-	if ( ! in_array( $currency, CURRENCIES, true ) ) {
+	if ( ! in_array( $currency, get_currencies(), true ) ) {
 		return $url;
 	}
 
@@ -94,14 +96,22 @@ function get_checkout_url( int $departure_post_id = 0, int $cabin_post_id = 0, s
 	// Get cabin code.
 	$cabin_code = strval( $cabin_post['post_meta']['cabin_category_id'] );
 
+	// Query params.
+	$query_params = [
+		'package_id'     => $package_code,
+		'departure_date' => $start_date,
+		'cabin_code'     => $cabin_code,
+		'currency'       => $currency,
+	];
+
+	// Check if mask is set.
+	if ( ! empty( $mask ) ) {
+		$query_params['mask'] = $mask;
+	}
+
 	// Build checkout URL.
 	$checkout_url = add_query_arg(
-		[
-			'package_id'     => $package_code,
-			'departure_date' => $start_date,
-			'cabin_code'     => $cabin_code,
-			'currency'       => $currency,
-		],
+		$query_params,
 		$url
 	);
 

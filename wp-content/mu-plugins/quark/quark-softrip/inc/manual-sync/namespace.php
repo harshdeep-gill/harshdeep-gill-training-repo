@@ -8,6 +8,7 @@
 namespace Quark\Softrip\ManualSync;
 
 use WP_Admin_Bar;
+use WP_Post;
 use WP_Screen;
 
 use function Quark\Softrip\do_sync;
@@ -29,6 +30,7 @@ function bootstrap(): void {
 		add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\\enqueue_admin_scripts' );
 		add_action( 'admin_action_sync', __NAMESPACE__ . '\\manually_synchronize' );
 		add_action( 'admin_notices', __NAMESPACE__ . '\\show_sync_admin_notice' );
+		add_filter( 'post_row_actions', __NAMESPACE__ . '\\add_sync_action_on_row', 99, 2 );
 	}
 }
 
@@ -79,23 +81,32 @@ function create_admin_bar_menus( ?WP_Admin_Bar $admin_bar = null ): void {
 /**
  * Get sync admin URL with nonce.
  *
- * @param int $post_id Post ID.
+ * @param int    $post_id        Post ID.
+ * @param string $redirect_to Redirect to.
  *
  * @return string
  */
-function get_sync_admin_url( int $post_id = 0 ): string {
+function get_sync_admin_url( int $post_id = 0, string $redirect_to = '' ): string {
 	// If empty post ID, return empty string.
 	if ( empty( $post_id ) ) {
 		return '';
 	}
 
+	// Query args.
+	$query_args = [
+		'action'  => 'sync',
+		'post_id' => $post_id,
+	];
+
+	// If redirect to is set, add to query args.
+	if ( ! empty( $redirect_to ) ) {
+		$query_args['redirect_to'] = rawurlencode( $redirect_to );
+	}
+
 	// Return the URL with nonce.
 	return wp_nonce_url(
 		add_query_arg(
-			[
-				'action'  => 'sync',
-				'post_id' => $post_id,
-			],
+			$query_args,
 			admin_url( 'admin.php?action=sync' )
 		),
 		'sync',
@@ -150,31 +161,36 @@ function admin_footer_actions(): void {
 /**
  * Handle redirect to post page.
  *
- * @param int                  $post_id Post ID.
- * @param array<string, mixed> $args    URL args.
+ * @param int    $post_id     Post ID.
+ * @param string $redirect_to Redirect to.
  *
  * @return void
  */
-function manual_sync_handle_redirect( int $post_id = 0, array $args = [] ): void {
+function manual_sync_handle_redirect( int $post_id = 0, string $redirect_to = '' ): void {
 	// If empty post ID, redirect to admin.
 	if ( empty( $post_id ) ) {
 		wp_safe_redirect( admin_url() );
 		exit;
 	}
 
-	// Redirect to post edit page.
-	wp_safe_redirect(
-		add_query_arg(
-			array_merge(
-				[
-					'post'   => $post_id,
-					'action' => 'edit',
-				],
-				$args
-			),
+	// Initialize redirect URL.
+	$redirect_url = '';
+
+	// If empty redirect to, redirect to post edit page.
+	if ( empty( $redirect_to ) ) {
+		$redirect_url = add_query_arg(
+			[
+				'post'   => $post_id,
+				'action' => 'edit',
+			],
 			admin_url( 'post.php' )
-		)
-	);
+		);
+	} else {
+		$redirect_url = $redirect_to;
+	}
+
+	// Redirect to post edit page.
+	wp_safe_redirect( $redirect_url );
 	exit;
 }
 
@@ -277,6 +293,9 @@ function manually_synchronize(): void {
 	// Verify nonce.
 	if ( ! wp_verify_nonce( $_GET['sync'], 'sync' ) ) {
 		manual_sync_handle_redirect();
+
+		// Bail.
+		return;
 	}
 
 	// Get post ID.
@@ -284,8 +303,14 @@ function manually_synchronize(): void {
 
 	// Bail if empty post ID.
 	if ( empty( $post_id ) ) {
+		manual_sync_handle_redirect();
+
+		// Bail.
 		return;
 	}
+
+	// Get redirect to.
+	$redirect_to = isset( $_GET['redirect_to'] ) ? sanitize_url( $_GET['redirect_to'] ) : '';
 
 	// Get the post type.
 	$post_type = get_post_type( $post_id );
@@ -332,7 +357,7 @@ function manually_synchronize(): void {
 	);
 
 	// Handle redirect.
-	manual_sync_handle_redirect( $post_id );
+	manual_sync_handle_redirect( $post_id, $redirect_to );
 }
 
 /**
@@ -345,7 +370,7 @@ function show_sync_admin_notice(): void {
 	$screen = get_current_screen();
 
 	// Check if the current screen is not an object.
-	if ( ! $screen || ! in_array( $screen->base, [ 'post' ], true ) ) {
+	if ( ! $screen || ! in_array( $screen->base, [ 'post', 'edit' ], true ) ) {
 		return;
 	}
 
@@ -428,4 +453,56 @@ function show_sync_admin_notice(): void {
 		// Update the transient.
 		set_transient( 'quark_softrip_sync_success', $sync_success, 300 );
 	}
+}
+
+/**
+ * Add sync action on row.
+ *
+ * @param mixed[]      $row_actions Row actions.
+ * @param WP_Post|null $post        Post object.
+ *
+ * @return mixed[]
+ */
+function add_sync_action_on_row( array $row_actions = [], WP_Post $post = null ): array {
+	// Validate post.
+	if ( empty( $post ) || ! $post instanceof WP_Post ) {
+		return $row_actions;
+	}
+
+	// Get current screen.
+	$current_screen = get_current_screen();
+
+	// Check if the current screen is not an object.
+	if ( ! $current_screen instanceof WP_Screen || ! in_array( $current_screen->base, [ 'edit' ], true ) ) {
+		return $row_actions;
+	}
+
+	// Get the post type.
+	$post_type = get_post_type( $post );
+
+	// Check if the post type is not allowed.
+	if ( ! in_array( $post_type, [ EXPEDITION_POST_TYPE, DEPARTURE_POST_TYPE, ITINERARY_POST_TYPE ], true ) ) {
+		return $row_actions;
+	}
+
+	// Get the admin URL.
+	global $wp;
+	$admin_url = admin_url( 'edit.php' );
+
+	// Get the redirect URL.
+	if ( empty( $wp->query_string ) ) {
+		$redirect_to = $admin_url;
+	} else {
+		$redirect_to = $admin_url . '?' . $wp->query_string . '&post=' . $post->ID;
+	}
+
+	// Add the sync action.
+	$row_actions['sync'] = sprintf(
+		'<a href="%s">%s</a>',
+		get_sync_admin_url( absint( $post->ID ), $redirect_to ),
+		esc_html__( 'Sync', 'qrk' )
+	);
+
+	// Return the row actions.
+	return $row_actions;
 }

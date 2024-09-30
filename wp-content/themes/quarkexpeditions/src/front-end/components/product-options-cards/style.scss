@@ -1,12 +1,14 @@
 @import "../../scss/";
 
 .product-options-cards {
-
 	$self: &;
+
+	display: block;
 
 	&__slides {
 		gap: var(--spacing-4);
 		align-items: stretch;
+		padding-bottom: var(--spacing-6);
 	}
 
 	&__track {
@@ -22,7 +24,9 @@
 		position: relative;
 		box-shadow: var(--shadow-3);
 
-		&:has(#{$self}__badge--sold-out) {
+		&--sold-out,
+		&--please-call {
+			pointer-events: none;
 
 			#{$self}__gallery,
 			#{$self}__content > *:not(#{$self}__tooltip) {
@@ -109,7 +113,8 @@
 			background-color: var(--color-magenta);
 		}
 
-		&--sold-out {
+		&--sold-out,
+		&--please-call {
 			background-color: var(--color-gray-50);
 		}
 	}
@@ -179,7 +184,6 @@
 		justify-content: space-between;
 		align-items: baseline;
 		flex-wrap: wrap;
-		margin-top: var(--spacing-6);
 		gap: var(--spacing-6);
 	}
 
@@ -192,6 +196,10 @@
 		&-text {
 			margin-bottom: 0;
 			font-weight: var(--font-weight-bold);
+		}
+
+		.btn {
+			white-space: normal;
 		}
 	}
 

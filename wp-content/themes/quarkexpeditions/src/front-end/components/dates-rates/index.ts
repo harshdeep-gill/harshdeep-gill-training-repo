@@ -1,4 +1,8 @@
 /**
- * Imports.
+ * Internal Dependencies
  */
-import './filters/index';
+import './data';
+import './dates-rates';
+import './filters';
+import './results';
+import './pagination';

@@ -14,6 +14,7 @@ require_once __DIR__ . '/inc/blocks.php';
 require_once __DIR__ . '/inc/partials.php';
 require_once __DIR__ . '/inc/template-tags.php';
 require_once __DIR__ . '/inc/helpers.php';
+require_once __DIR__ . '/inc/search-filters.php';
 
 // Setup.
 Core\setup();

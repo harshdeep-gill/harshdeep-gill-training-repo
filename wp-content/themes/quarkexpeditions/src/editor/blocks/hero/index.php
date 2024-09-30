@@ -97,6 +97,19 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 							$component_attributes['right'][] = $form;
 							break;
 
+						// Circle badge in the hero section.
+						case 'quark/hero-circle-badge':
+							$circle_badge = [
+								'type' => 'circle-badge',
+							];
+
+							// Add the text.
+							$circle_badge['text'] = $child_block->attributes['text'] ?? '';
+
+							// Add to attributes.
+							$component_attributes['right'][] = $circle_badge;
+							break;
+
 						// Overline.
 						case 'quark/hero-overline':
 							$overline = [
@@ -123,6 +136,19 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 
 							// Add to attributes.
 							$component_attributes['left'][] = $title;
+							break;
+
+						// Text Graphic.
+						case 'quark/hero-text-graphic':
+							$textgraphic = [
+								'type' => 'text-graphic',
+							];
+
+							// Add image id.
+							$textgraphic['image_id'] = $child_block->attributes['image']['id'] ?? '';
+
+							// Add to attributes.
+							$component_attributes['left'][] = $textgraphic;
 							break;
 
 						// Subtitle.
@@ -202,7 +228,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 	}
 
 	// Image.
-	if ( is_array( $attributes['image'] ) && ! empty( $attributes['image']['id'] ) ) {
+	if ( ! empty( $attributes['image'] ) && is_array( $attributes['image'] ) && ! empty( $attributes['image']['id'] ) ) {
 		$component_attributes['image_id'] = $attributes['image']['id'];
 	}
 

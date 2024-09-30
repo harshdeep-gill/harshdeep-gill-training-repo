@@ -6,14 +6,135 @@
 .product-cards {
 	$self: &;
 
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(285px, max-content));
-	gap: var(--spacing-5);
-
 	&--align-center {
 
-		@media screen and (min-width: grid-size(md)) {
-			justify-content: center;
+		#{$self}__slides {
+
+			@media screen and (min-width: grid-size(md)) {
+				left: 0 !important;
+				min-width: 100%;
+				justify-content: center;
+			}
+		}
+	}
+
+	&__slider {
+		overflow-x: visible;
+		margin-inline: var(--grid-col-gutter);
+
+		#{$self}--has-overflow & {
+
+			@media screen and (min-width: grid-size(xl)) {
+				width: 100vw;
+			}
+		}
+
+		&:has(div.thumbnail-cards__nav) {
+			#{$self}__track {
+				margin-bottom: 0;
+			}
+		}
+
+		@media screen and (min-width: 1120px) {
+			margin-inline: 0;
+		}
+
+		&[total="2"] {
+
+			#{$self}__nav {
+
+				@media screen and (min-width: grid-size(md)) {
+					display: none;
+				}
+			}
+		}
+
+		&[total="3"] {
+
+			#{$self}__nav {
+
+				@media screen and (min-width: grid-size(xl)) {
+					display: none;
+				}
+			}
+		}
+	}
+
+	&__track {
+		margin: 0 calc(-1 * 18px) calc(-1 * var(--spacing-6));
+		padding: 0 18px var(--spacing-6);
+		scrollbar-width: none; /* Firefox */
+
+		&::-webkit-scrollbar {
+			display: none;
+		}
+
+		#{$self}--has-overflow & {
+			margin: 0 calc(-1 * var(--grid-col-gutter)) calc(-1 * var(--spacing-6));
+			padding: 0 var(--grid-col-gutter) var(--spacing-6);
+
+			@media screen and (min-width: grid-size(sm)) {
+				overflow-x: visible;
+			}
+		}
+	}
+
+	&__slides {
+		gap: var(--spacing-6);
+		align-items: stretch;
+	}
+
+	// Carousel layout.
+	&__slide {
+
+		@media screen and (min-width: grid-size(sm)) {
+			flex: 0 0 352px;
+		}
+	}
+
+	// Grid layout.
+	&--grid {
+
+		#{$self}__slides {
+			display: grid;
+			grid-auto-flow: row;
+			grid-template-columns: repeat(auto-fill, minmax(267px, 1fr));
+			max-width: 100%;
+		}
+
+		#{$self}__nav {
+			display: none;
+		}
+	}
+
+	&__nav {
+		display: flex;
+		column-gap: var(--spacing-5);
+		margin-top: var(--spacing-6);
+		margin-left: calc(-1 * var(--spacing-1));
+	}
+
+	&__arrow-button {
+		background-color: var(--color-black);
+		width: 27px;
+		height: 27px;
+		border-radius: 50%;
+		padding: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		cursor: pointer;
+
+		svg {
+			width: 7px;
+			height: 11px;
+		}
+
+		&--right {
+
+			svg {
+				transform: rotate(180deg);
+			}
 		}
 	}
 
@@ -23,15 +144,13 @@
 		box-shadow: var(--shadow-1);
 		display: flex;
 		flex-direction: column;
+		gap: var(--spacing-4);
 		overflow: hidden;
 		padding: var(--spacing-5);
+		height: 100%;
 
 		&:hover img {
 			transform: scale(var(--scale-size));
-		}
-
-		@media screen and (min-width: grid-size(lg)) {
-			max-width: 352px;
 		}
 	}
 
@@ -88,7 +207,7 @@
 	}
 
 	&__image {
-		margin: calc(-1 * var(--spacing-5)) calc(-1 * var(--spacing-5)) var(--spacing-5);
+		margin: calc(-1 * var(--spacing-5)) calc(-1 * var(--spacing-5)) var(--spacing-2);
 		position: relative;
 		overflow: hidden;
 
@@ -123,39 +242,89 @@
 		}
 	}
 
+	&__overline {
+		font-weight: var(--font-weight-bold);
+		margin-bottom: 0;
+	}
+
 	&__reviews {
 		color: var(--color-gray-70);
 		display: flex;
 		align-items: center;
 		gap: var(--spacing-2);
-
-		&:not(:first-child) {
-			margin-top: var(--spacing-2);
-		}
 	}
 
 	&__title {
 		margin-bottom: 0;
-		margin-top: var(--spacing-1);
 	}
 
 	&__subtitle {
 		font-weight: var(--font-weight-bold);
-		margin-top: var(--spacing-1);
 		margin-bottom: 0;
 	}
 
 	&__description {
 		color: var(--color-gray-70);
-		margin-top: var(--spacing-1);
 	}
 
 	&__itinerary {
 		color: var(--color-gray-70);
+	}
 
-		&:not(:first-child) {
-			margin-top: var(--spacing-1);
+	&__icon-content {
+		display: flex;
+		align-items: center;
+		gap: var(--spacing-2);
+		font-weight: var(--font-weight-bold);
+		position: relative;
+	}
+
+	&__icon-svg {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		min-width: 28px;
+		min-height: 28px;
+	}
+
+	&__price-content {
+
+		&:last-child {
+			margin-top: auto;
 		}
+	}
+
+	&__price-content-text {
+		color: var(--color-success-100);
+	}
+
+	&__price-content-title {
+		color: var(--color-gray-70);
+		margin-top: var(--shadow-2);
+		margin-bottom: var(--spacing-1);
+	}
+
+	&__specifications {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: var(--spacing-4);
+	}
+
+	&__specification-item {
+
+		&:nth-child(n+3) {
+			grid-column: span 2;
+		}
+	}
+
+	&__specification-label {
+		color: var(--color-gray-80);
+		font-size: var(--font-size-small);
+		line-height: var(--line-height-small);
+	}
+
+	&__specification-value {
+		font-weight: var(--font-weight-bold);
 	}
 
 	&__price-wrap {
@@ -163,14 +332,72 @@
 		flex-flow: row wrap;
 		align-items: center;
 		justify-content: space-between;
-		gap: var(--spacing-2);
+		gap: var(--spacing-1);
 		margin-top: auto;
-		padding-top: var(--spacing-5);
 	}
 
 	&__price-title {
 		color: var(--color-gray-70);
 		flex: 0 0 100%;
+		margin-top: var(--spacing-2);
+	}
+
+	&__transfer-package {
+
+		#{$self}__price-wrap + & {
+			margin-top: calc(-1 * var(--spacing-3));
+		}
+	}
+
+	&__transfer-package-header {
+		display: flex;
+		align-items: center;
+		gap: var(--spacing-2);
+	}
+
+	&__transfer-package-label {
+		margin: 0;
+	}
+
+	&__drawer-open {
+		cursor: pointer;
+		display: flex;
+
+		svg {
+			max-width: 20px;
+			height: auto;
+		}
+	}
+
+	&__transfer-package-content {
+
+		.drawer__content {
+			max-width: 640px;
+			padding: var(--spacing-5);
+		}
+
+		.drawer__body {
+			margin-top: var(--spacing-5);
+		}
+
+		.drawer__drawer-close {
+			inset: var(--grid-row-gutter) var(--spacing-5) auto auto;
+		}
+
+		ul {
+			list-style: none;
+			padding-left: 0;
+		}
+
+		li {
+			background-color: var(--color-gray-5);
+			border-radius: var(--border-radius);
+			padding: var(--spacing-2) var(--spacing-3);
+
+			+ li {
+				margin-top: var(--spacing-2);
+			}
+		}
 	}
 
 	&__price-now {
@@ -179,7 +406,7 @@
 	}
 
 	&__buttons {
-		margin-top: var(--spacing-5);
+		margin-top: var(--spacing-1);
 		display: flex;
 		flex-direction: column;
 		gap: var(--spacing-3);

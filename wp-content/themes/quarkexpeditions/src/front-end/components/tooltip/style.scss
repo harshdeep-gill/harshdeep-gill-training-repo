@@ -9,6 +9,7 @@
 
 	display: inline-flex;
 	cursor: pointer;
+	white-space: normal;
 
 	&:hover {
 		#{$self}__description {
@@ -77,5 +78,7 @@
 		font-size: 14px;
 		line-height: 1.571;
 		padding: var(--spacing-3) var(--spacing-4);
+		max-height: 350px;
+		overflow-y: auto;
 	}
 }

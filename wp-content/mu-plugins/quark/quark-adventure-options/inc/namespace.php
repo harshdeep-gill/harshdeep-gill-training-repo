@@ -31,6 +31,9 @@ function bootstrap(): void {
 	// Cache Purge.
 	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
 
+	// Breadcrumbs.
+	add_filter( 'travelopia_breadcrumbs_ancestors', __NAMESPACE__ . '\\breadcrumbs_ancestors' );
+
 	// Admin stuff.
 	if ( is_admin() ) {
 		// Custom fields.
@@ -80,7 +83,7 @@ function register_adventure_option_post_type(): void {
 		'query_var'           => true,
 		'can_export'          => true,
 		'rewrite'             => [
-			'slug'       => 'adventure-option',
+			'slug'       => 'adventure-options',
 			'with_front' => false,
 		],
 		'capability_type'     => 'post',
@@ -377,4 +380,53 @@ function get_cards_data( array $post_ids = [] ): array {
 
 	// Return data.
 	return $data;
+}
+
+/**
+ * Breadcrumbs ancestors for this post type.
+ *
+ * @param mixed[] $breadcrumbs Breadcrumbs.
+ *
+ * @return mixed[]
+ */
+function breadcrumbs_ancestors( array $breadcrumbs = [] ): array {
+	// Check if current query is for this post type.
+	if ( ! is_singular( POST_TYPE ) ) {
+		return $breadcrumbs;
+	}
+
+	// Return breadcrumbs.
+	return array_merge(
+		$breadcrumbs,
+		get_breadcrumbs_ancestors()
+	);
+}
+
+/**
+ * Get breadcrumbs ancestor.
+ *
+ * @return array{}|array{
+ *     array{
+ *         title: string,
+ *         url: string,
+ *     }
+ * }
+ */
+function get_breadcrumbs_ancestors(): array {
+	// Get archive page.
+	$press_release_archive_page = absint( get_option( 'options_adventure_options_page', 0 ) );
+
+	// Initialize breadcrumbs.
+	$breadcrumbs = [];
+
+	// Get it's title and URL for breadcrumbs if it's set.
+	if ( ! empty( $press_release_archive_page ) ) {
+		$breadcrumbs[] = [
+			'title' => get_the_title( $press_release_archive_page ),
+			'url'   => strval( get_permalink( $press_release_archive_page ) ),
+		];
+	}
+
+	// Return updated breadcrumbs.
+	return $breadcrumbs;
 }

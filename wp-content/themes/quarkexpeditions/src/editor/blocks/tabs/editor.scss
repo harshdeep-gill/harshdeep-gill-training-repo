@@ -1,0 +1,42 @@
+.tabs {
+
+	&__nav-item {
+
+		&--active {
+			background-color: var(--color-gray-20);
+			border-radius: var(--buttons-border-radius);
+		}
+	}
+
+	&__tab {
+
+		&--active {
+			display: block;
+		}
+	}
+
+	.components-button {
+
+		&.block-editor-button-block-appender {
+			width: 60px;
+			background-color: var(--color-gray-30);
+			border-radius: var(--buttons-border-radius);
+			transition-property: color, background-color;
+			transition-duration: var(--transition-time);
+			transition-timing-function: var(--transition-easing);
+
+			svg {
+				fill: var(--color-gray-80);
+			}
+
+			&:hover {
+				background-color: var(--color-gray-20);
+				box-shadow: none;
+
+				svg {
+					fill: var(--color-white);
+				}
+			}
+		}
+	}
+}

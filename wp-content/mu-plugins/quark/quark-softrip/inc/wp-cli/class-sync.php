@@ -78,6 +78,7 @@ class Sync {
 			'update_post_meta_cache' => false,
 			'update_term_meta_cache' => false,
 			'ignore_sticky_posts'    => true,
+			'no_found_rows'          => true,
 			'post_status'            => [ 'draft', 'publish' ],
 		];
 

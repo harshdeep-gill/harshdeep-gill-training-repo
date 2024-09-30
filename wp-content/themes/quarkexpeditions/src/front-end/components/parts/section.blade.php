@@ -25,22 +25,24 @@
 	:padding="$padding"
 	:id="$id"
 >
-	<x-section.heading>
-		<x-section.title :title="$title" :heading_level="$heading_level" :align="$title_align" />
+	@if( ! empty( $title ) )
+		<x-section.heading>
+			<x-section.title :title="$title" :heading_level="$heading_level" :align="$title_align" />
 
-		@if ( ! empty( $has_heading_link ) && ! empty( $heading_link ) )
-			<x-section.heading-link
-				:url="$heading_link['url'] ?? ''"
-				:new_window="$heading_link['new_window']"
-			>
-				<x-escape :content="$heading_link['text']" />
-			</x-section.heading-link>
-		@endif
-	</x-section.heading>
+			@if ( ! empty( $has_heading_link ) && ! empty( $heading_link ) )
+				<x-section.heading-link
+					:url="$heading_link['url'] ?? ''"
+					:new_window="$heading_link['new_window']"
+				>
+					<x-escape :content="$heading_link['text']" />
+				</x-section.heading-link>
+			@endif
+		</x-section.heading>
+	@endif
 
 	@if ( ! empty( $description ) )
 		<x-section.description>
-			{{ $description }}
+			{!! $description !!}
 		</x-section.description>
 	@endif
 

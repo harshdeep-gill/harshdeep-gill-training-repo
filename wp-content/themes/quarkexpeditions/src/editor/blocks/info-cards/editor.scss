@@ -1,0 +1,30 @@
+.quark-info-cards .info-cards {
+
+	&__slider {
+		display: flex;
+		flex-wrap: wrap;
+		padding-left: var(--typography-spacing);
+	}
+
+	&__card {
+		margin-bottom: var(--typography-spacing);
+		width: 340px;
+
+		.block-list-appender {
+			display: none;
+		}
+	}
+
+	&__image-wrap {
+		aspect-ratio: 2 / 3;
+	}
+
+	.maybe-link {
+		text-decoration: none;
+	}
+
+	.block-list-appender {
+		position: relative;
+		width: 340px;
+	}
+}

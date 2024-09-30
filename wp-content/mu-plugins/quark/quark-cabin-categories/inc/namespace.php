@@ -12,6 +12,7 @@ use WP_Post;
 use function Quark\Checkout\get_checkout_url;
 use function Quark\Core\format_price;
 use function Quark\Departures\get as get_departure;
+use function Quark\Localization\get_currencies;
 use function Quark\ShipDecks\get as get_ship_deck;
 use function Quark\Softrip\Occupancies\add_supplemental_and_mandatory_price;
 use function Quark\Softrip\Occupancies\get_cabin_category_post_ids_by_departure;
@@ -21,7 +22,7 @@ use function Quark\Softrip\Occupancies\get_occupancies_by_cabin_category_and_dep
 use function Quark\Softrip\Occupancies\get_occupancy_data_by_id;
 use function Quark\Softrip\OccupancyPromotions\get_lowest_price as get_occupancy_promotion_lowest_price;
 
-use const Quark\Core\CURRENCIES;
+use const Quark\Localization\DEFAULT_CURRENCY;
 use const Quark\Ships\POST_TYPE as SHIP_POST_TYPE;
 
 const POST_TYPE            = 'qrk_cabin_category';
@@ -489,7 +490,6 @@ function get_cabin_categories_data( int $cabin_id = 0 ): array {
  *         size: string,
  *         bed_configuration: string
  *     },
- *     checkout_url: string,
  *     from_price: array{
  *         discounted_price: string,
  *         original_price: string,
@@ -497,7 +497,7 @@ function get_cabin_categories_data( int $cabin_id = 0 ): array {
  *     occupancies: array<int<0, max>, array<string, mixed>>
  * }>
  */
-function get_cabin_details_by_departure( int $departure_post_id = 0, string $currency = 'USD' ): array {
+function get_cabin_details_by_departure( int $departure_post_id = 0, string $currency = DEFAULT_CURRENCY ): array {
 	// Bail out if no departure post ID.
 	if ( empty( $departure_post_id ) ) {
 		return [];
@@ -562,7 +562,6 @@ function get_cabin_details_by_departure( int $departure_post_id = 0, string $cur
 			],
 			'from_price'     => $formatted_price,
 			'occupancies'    => [],
-			'checkout_url'   => get_checkout_url( $departure_post_id, $cabin_category_post_id, $currency ),
 		];
 
 		// Get all occupancies for this cabin and departure.
@@ -804,15 +803,16 @@ function get_size_range( int $cabin_category_post_id = 0 ): string {
  *     original_price: string,
  *     discounted_price: string,
  *   },
- *   promotions: mixed[]
+ *   promotions: mixed[],
+ *   checkout_url: string,
  * }
  */
-function get_occupancy_detail( int $occupancy_id = 0, int $departure_post_id = 0, string $currency = 'USD' ): array {
+function get_occupancy_detail( int $occupancy_id = 0, int $departure_post_id = 0, string $currency = DEFAULT_CURRENCY ): array {
 	// Uppercase currency.
 	$currency = strtoupper( $currency );
 
 	// Bail if empty.
-	if ( empty( $occupancy_id ) || ! in_array( $currency, CURRENCIES, true ) ) {
+	if ( empty( $occupancy_id ) || ! in_array( $currency, get_currencies(), true ) ) {
 		return [];
 	}
 
@@ -864,6 +864,7 @@ function get_occupancy_detail( int $occupancy_id = 0, int $departure_post_id = 0
 			'discounted_price' => format_price( $price_with_supplement_mandatory['discounted'], $currency ),
 		],
 		'promotions'   => [],
+		'checkout_url' => get_checkout_url( $departure_post_id, $occupancy['cabin_category_post_id'], $currency, $mask ),
 	];
 
 	// Return the occupancy detail.

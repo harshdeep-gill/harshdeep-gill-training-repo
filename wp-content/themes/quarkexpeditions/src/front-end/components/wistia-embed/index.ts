@@ -12,6 +12,7 @@ export default class QuarkWistiaEmbed extends HTMLElement {
 	 */
 	private videoPlayer: WistiaVideo | null;
 	private videoIntersectionObserver: IntersectionObserver | null;
+	static observedAttributes = [ 'play' ];
 
 	/**
 	 * Constructor
@@ -91,6 +92,28 @@ export default class QuarkWistiaEmbed extends HTMLElement {
 				this.videoPlayer?.pause();
 			}
 		} );
+	}
+
+	/**
+	 * Responds to attribute change.
+	 *
+	 * @param { string } name     Attribute name
+	 * @param { string } oldValue Old value
+	 * @param { string } newValue New value
+	 */
+	attributeChangedCallback( name: string, oldValue: string, newValue: string ) {
+		// Check if it is the play attribute.
+		if ( 'play' !== name || oldValue === newValue ) {
+			// Nope, bail.
+			return;
+		}
+
+		// Check the value and play/pause.
+		if ( 'yes' === newValue ) {
+			this.videoPlayer?.play();
+		} else {
+			this.videoPlayer?.pause();
+		}
 	}
 }
 

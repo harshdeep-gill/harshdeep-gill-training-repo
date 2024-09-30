@@ -149,7 +149,7 @@ class Test_Adventure_Options extends Softrip_TestCase {
 
 		// Test with valid data.
 		$raw_adventure_options = [];
-		$expected              = true;
+		$expected              = false;
 		$actual                = update_adventure_options( $raw_adventure_options, $departure_post_id1 );
 		$this->assertSame( $expected, $actual );
 

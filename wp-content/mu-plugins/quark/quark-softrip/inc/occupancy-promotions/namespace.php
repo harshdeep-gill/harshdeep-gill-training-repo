@@ -12,8 +12,9 @@ use function Quark\Softrip\add_prefix_to_table_name;
 use function Quark\Softrip\Occupancies\get_occupancy_data_by_id;
 use function Quark\Softrip\Promotions\get_promotions_by_code;
 use function Quark\Softrip\Promotions\get_promotions_by_id;
+use function Quark\Localization\get_currencies;
 
-use const Quark\Core\CURRENCIES;
+use const Quark\Localization\DEFAULT_CURRENCY;
 
 const CACHE_KEY_PREFIX = 'qrk_softrip_occupancy_promotion';
 const CACHE_GROUP      = 'qrk_softrip_occupancy_promotions';
@@ -87,6 +88,9 @@ function update_occupancy_promotions( array $raw_occupancy_promotions = [], int 
 	// Initialize the formatted data.
 	$promos_data = [];
 
+	// Initialize any updated.
+	$any_updated = false;
+
 	// Loop through the raw occupancy promotions.
 	foreach ( $raw_occupancy_promotions as $raw_occupancy_promotion ) {
 		// Skip if not array.
@@ -105,7 +109,7 @@ function update_occupancy_promotions( array $raw_occupancy_promotions = [], int 
 		$raw_occupancy_promotion = wp_parse_args( $raw_occupancy_promotion, $defaults );
 
 		// Continue out if no promos.
-		if ( empty( $raw_occupancy_promotion['currencyCode'] ) || ! in_array( $raw_occupancy_promotion['currencyCode'], CURRENCIES, true ) || empty( $raw_occupancy_promotion['promos'] ) || ! is_array( $raw_occupancy_promotion['promos'] ) ) {
+		if ( empty( $raw_occupancy_promotion['currencyCode'] ) || ! in_array( $raw_occupancy_promotion['currencyCode'], get_currencies(), true ) || empty( $raw_occupancy_promotion['promos'] ) || ! is_array( $raw_occupancy_promotion['promos'] ) ) {
 			continue;
 		}
 
@@ -199,11 +203,16 @@ function update_occupancy_promotions( array $raw_occupancy_promotions = [], int 
 		// If the occupancy promotion exists, update it.
 		if ( ! empty( $existing_occupancy_promotion ) && is_array( $existing_occupancy_promotion ) && ! empty( $existing_occupancy_promotion['id'] ) ) {
 			// Update the occupancy promotion.
-			$wpdb->update(
+			$is_updated = $wpdb->update(
 				$table_name,
 				$promo_data,
 				[ 'id' => $existing_occupancy_promotion['id'] ]
 			);
+
+			// Set any updated.
+			if ( $is_updated > 0 ) {
+				$any_updated = true;
+			}
 
 			// Set the updated ID.
 			$updated_id = $existing_occupancy_promotion['id'];
@@ -215,7 +224,8 @@ function update_occupancy_promotions( array $raw_occupancy_promotions = [], int 
 			);
 
 			// Get the inserted ID.
-			$updated_id = $wpdb->insert_id;
+			$updated_id  = $wpdb->insert_id;
+			$any_updated = true;
 		}
 
 		// Skip if no updated ID.
@@ -251,11 +261,16 @@ function update_occupancy_promotions( array $raw_occupancy_promotions = [], int 
 		$id = $existing_occupancy_promotions_by_promo_code[ $non_updated_promotion_code ];
 
 		// Delete the occupancy promotion by ID.
-		delete_occupancy_promotions_by_id( $id );
+		$is_deleted = delete_occupancy_promotions_by_id( $id );
+
+		// Set any updated.
+		if ( $is_deleted ) {
+			$any_updated = true;
+		}
 	}
 
 	// Return success.
-	return true;
+	return $any_updated;
 }
 
 /**
@@ -429,7 +444,7 @@ function get_occupancy_promotions_by_occupancy( int $occupancy_id = 0, bool $for
  *
  * @return int
  */
-function get_lowest_price( int $occupancy_id = 0, string $currency = 'USD', string $promotion_code = '' ): int {
+function get_lowest_price( int $occupancy_id = 0, string $currency = DEFAULT_CURRENCY, string $promotion_code = '' ): int {
 	// Uppercase the currency.
 	$currency = strtoupper( $currency );
 
@@ -437,7 +452,7 @@ function get_lowest_price( int $occupancy_id = 0, string $currency = 'USD', stri
 	$lowest_price = 0;
 
 	// Bail out if empty or invalid currency.
-	if ( empty( $occupancy_id ) || ! in_array( $currency, CURRENCIES, true ) ) {
+	if ( empty( $occupancy_id ) || ! in_array( $currency, get_currencies(), true ) ) {
 		return $lowest_price;
 	}
 

@@ -9,11 +9,11 @@ namespace Quark\Softrip\AdventureOptions;
 
 use WP_Error;
 
+use function Quark\Localization\get_currencies;
 use function Quark\Softrip\get_engine_collate;
 use function Quark\Softrip\add_prefix_to_table_name;
 
 use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
-use const Quark\Core\CURRENCIES;
 
 const CACHE_KEY_PREFIX = 'qrk_softrip_adventure_options';
 const CACHE_GROUP      = 'qrk_softrip_adventure_options';
@@ -66,7 +66,7 @@ function get_table_sql(): string {
  * @param mixed[] $raw_adventure_options Raw adventure options data from Softrip to update with.
  * @param int     $departure_post_id     Departure post ID.
  *
- * @return boolean
+ * @return boolean Whether any adventure options were updated/inserted.
  */
 function update_adventure_options( array $raw_adventure_options = [], int $departure_post_id = 0 ): bool {
 	// Bail out if empty departure post ID.
@@ -99,6 +99,9 @@ function update_adventure_options( array $raw_adventure_options = [], int $depar
 		// Add to the map.
 		$existing_adventure_options_by_softrip_option_id[ $existing_adventure_option['softrip_option_id'] ] = absint( $existing_adventure_option['id'] );
 	}
+
+	// Initialize if any updated.
+	$any_updated = false;
 
 	// Initialize updated option ids.
 	$updated_option_ids = [];
@@ -134,11 +137,16 @@ function update_adventure_options( array $raw_adventure_options = [], int $depar
 
 		// If existing, update the adventure option, else insert.
 		if ( ! empty( $existing_adventure_option['id'] ) ) {
-			$wpdb->update(
+			$is_updated = $wpdb->update(
 				$table_name,
 				$formatted_adventure_option,
 				[ 'id' => $existing_adventure_option['id'] ]
 			);
+
+			// Check if updated.
+			if ( $is_updated > 0 ) {
+				$any_updated = true;
+			}
 
 			// Get the updated ID.
 			$updated_id = $existing_adventure_option['id'];
@@ -150,6 +158,9 @@ function update_adventure_options( array $raw_adventure_options = [], int $depar
 
 			// Get the inserted ID.
 			$updated_id = $wpdb->insert_id;
+
+			// Set any updated to true.
+			$any_updated = true;
 		}
 
 		// Skip if no updated ID.
@@ -179,10 +190,18 @@ function update_adventure_options( array $raw_adventure_options = [], int $depar
 		}
 
 		// Delete the non-updated option.
-		$wpdb->delete(
+		$is_deleted = $wpdb->delete(
 			$table_name,
 			[ 'id' => $non_updated_option_id ]
 		);
+
+		// Skip if not deleted.
+		if ( empty( $is_deleted ) ) {
+			continue;
+		}
+
+		// Set any updated to true.
+		$any_updated = true;
 
 		// Bust caches.
 		wp_cache_delete( CACHE_KEY_PREFIX . '_softrip_option_id_' . $non_updated_option_id, CACHE_GROUP );
@@ -195,8 +214,8 @@ function update_adventure_options( array $raw_adventure_options = [], int $depar
 	// Update the post meta.
 	update_post_meta( $departure_post_id, 'adventure_options', $adventure_option_term_ids );
 
-	// Return successful.
-	return true;
+	// Return if any updated.
+	return $any_updated;
 }
 
 /**
@@ -287,7 +306,7 @@ function format_adventure_option_data( array $raw_adventure_option = [], int $de
 	}
 
 	// Loop through the currencies.
-	foreach ( CURRENCIES as $currency ) {
+	foreach ( get_currencies() as $currency ) {
 		// Check if the currency is set and price per person exists.
 		if ( empty( $raw_adventure_option['price'][ $currency ] ) || ! is_array( $raw_adventure_option['price'][ $currency ] ) || empty( $raw_adventure_option['price'][ $currency ]['pricePerPerson'] ) ) {
 			continue;

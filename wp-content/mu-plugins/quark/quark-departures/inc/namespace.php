@@ -13,9 +13,7 @@ use WP_Term_Query;
 use function Quark\CabinCategories\get as get_cabin_category_data;
 use function Quark\CabinCategories\get_cabin_details_by_departure;
 use function Quark\Core\format_price;
-use function Quark\Core\get_available_currencies;
 use function Quark\Expeditions\get_region_terms;
-use function Quark\Itineraries\get as get_itinerary;
 use function Quark\Itineraries\get_starting_from_location;
 use function Quark\Itineraries\get_end_location;
 use function Quark\Itineraries\get_included_transfer_package_details;
@@ -38,8 +36,11 @@ use function Quark\CabinCategories\get_availability_status_description;
 use function Quark\CabinCategories\get_cabin_availability_status;
 use function Quark\CabinCategories\get_available_cabin_spaces;
 use function Quark\Checkout\get_checkout_url;
+use function Quark\Localization\get_currencies;
 
 use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
+use const Quark\Expeditions\EXPEDITION_CATEGORY_TAXONOMY;
+use const Quark\Localization\DEFAULT_CURRENCY;
 
 const POST_TYPE                = 'qrk_departure';
 const SPOKEN_LANGUAGE_TAXONOMY = 'qrk_spoken_language';
@@ -571,6 +572,7 @@ function get_promotion_tags( int $post_id = 0 ): array {
  *     departure_id: int,
  *     expedition_name: string,
  *     expedition_link: string,
+ *     expedition_slider_images: int[],
  *     package_id: string,
  *     duration_days: int,
  *     duration_dates: string,
@@ -608,7 +610,6 @@ function get_promotion_tags( int $post_id = 0 ): array {
  *           size: string,
  *           bed_configuration: string
  *       },
- *       checkout_url: string,
  *       from_price: array{
  *          discounted_price: string,
  *          original_price: string,
@@ -617,7 +618,7 @@ function get_promotion_tags( int $post_id = 0 ): array {
  *     }>,
  * }
  */
-function get_card_data( int $departure_id = 0, string $currency = 'USD' ): array {
+function get_card_data( int $departure_id = 0, string $currency = DEFAULT_CURRENCY ): array {
 	// Set cache key.
 	$cache_key = 'departure_card_data_' . $departure_id . '_' . $currency;
 
@@ -656,6 +657,14 @@ function get_card_data( int $departure_id = 0, string $currency = 'USD' ): array
 		$ship_name = $ship_data['post']->post_title;
 	}
 
+	// Initialize hero image ids.
+	$hero_slider_image_ids = [];
+
+	// Get hero slider image ids.
+	if ( ! empty( $expedition_post['data'] ) && ! empty( $expedition_post['data']['hero_card_slider_image_ids'] ) && is_array( $expedition_post['data']['hero_card_slider_image_ids'] ) ) {
+		$hero_slider_image_ids = array_map( 'absint', $expedition_post['data']['hero_card_slider_image_ids'] );
+	}
+
 	// Get the lowest price.
 	$lowest_price = get_lowest_price( $departure_id, $currency );
 
@@ -663,11 +672,39 @@ function get_card_data( int $departure_id = 0, string $currency = 'USD' ): array
 	$prices['discounted_price'] = format_price( $lowest_price['discounted'], $currency );
 	$prices['original_price']   = format_price( $lowest_price['original'], $currency );
 
+	// Initialize expedition category.
+	$expedition_category = [];
+
+	// Prepare expedition category.
+	if ( ! empty( $expedition_post['post_taxonomies'][ EXPEDITION_CATEGORY_TAXONOMY ] ) ) {
+		// Get expedition categories.
+		$expedition_categories = $expedition_post['post_taxonomies'][ EXPEDITION_CATEGORY_TAXONOMY ];
+
+		// Validate expedition categories.
+		if ( is_array( $expedition_categories ) ) {
+			// Loop through expedition categories.
+			foreach ( $expedition_categories as $category ) {
+				// Validate category.
+				if ( empty( $category['name'] ) ) {
+					continue;
+				}
+
+				// Add category to expedition category.
+				$expedition_category[] = [
+					'name'        => $category['name'],
+					'description' => $category['description'] ?? '',
+				];
+			}
+		}
+	}
+
 	// Prepare the departure card details.
 	$data = [
 		'departure_id'             => $departure_id,
 		'expedition_name'          => $expedition_name,
 		'expedition_link'          => $expedition_post['permalink'],
+		'expedition_slider_images' => $hero_slider_image_ids,
+		'expedition_categories'    => $expedition_category,
 		'package_id'               => strval( $departure['post_meta']['softrip_package_code'] ?? '' ),
 		'duration_days'            => absint( $departure['post_meta']['duration'] ?? 0 ),
 		'duration_dates'           => get_start_end_departure_date( $departure_id ),
@@ -800,7 +837,7 @@ function get_start_end_departure_date( int $post_id = 0 ): string {
  *    }
  * }
  */
-function get_cards_data( array $departure_ids = [], string $currency = 'USD' ): array {
+function get_cards_data( array $departure_ids = [], string $currency = DEFAULT_CURRENCY ): array {
 	// Prepare the departure cards data.
 	$departure_cards = [];
 
@@ -828,7 +865,7 @@ function get_cards_data( array $departure_ids = [], string $currency = 'USD' ): 
  */
 function bust_card_data_cache( int $post_id = 0 ): void {
 	// Get currency list.
-	$currencies = get_available_currencies();
+	$currencies = get_currencies();
 
 	// Loop through currencies.
 	foreach ( $currencies as $currency ) {
@@ -954,7 +991,7 @@ function bust_card_data_cache_on_expedition_update( int $expedition_id = 0 ): vo
  *     >,
  * }
  */
-function get_dates_rates_card_data( int $departure_id = 0, string $currency = 'USD' ): array {
+function get_dates_rates_card_data( int $departure_id = 0, string $currency = DEFAULT_CURRENCY ): array {
 	// Set cache key.
 	$cache_key = 'date_and_rates_card_data_' . $departure_id . '_' . $currency;
 
@@ -1135,7 +1172,7 @@ function get_dates_rates_card_data( int $departure_id = 0, string $currency = 'U
 		'languages'                  => implode( ', ', get_languages( $departure_id ) ),
 		'included_adventure_options' => $include_options_data,
 		'paid_adventure_options'     => $paid_adventure_options_data,
-		'transfer_package_details'   => get_included_transfer_package_details( $itinerary_id, 'USD' ),
+		'transfer_package_details'   => get_included_transfer_package_details( $itinerary_id, $currency ),
 		'available_promos'           => $available_promos,
 		'cabin_data'                 => $cabin_price_data,
 	];
@@ -1208,7 +1245,7 @@ function get_dates_rates_card_data( int $departure_id = 0, string $currency = 'U
  *     >,
  * }>
  */
-function get_dates_rates_cards_data( array $departure_ids = [], string $currency = 'USD' ): array {
+function get_dates_rates_cards_data( array $departure_ids = [], string $currency = DEFAULT_CURRENCY ): array {
 	// Prepare the departure cards data.
 	$departure_cards = [];
 

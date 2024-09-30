@@ -2,7 +2,6 @@
  * Interface BookDeparturesExpeditionsFilters.
  */
 interface BookDeparturesExpeditionsFilters {
-	'currency'?: string,
 	'sort'?: string,
 	[key: string]: any;
 }
