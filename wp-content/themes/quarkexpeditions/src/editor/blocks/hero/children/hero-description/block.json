@@ -12,7 +12,7 @@
 	"attributes": {
 		"textColor": {
 			"type": "string",
-			"default": "black",
+			"default": "white",
 			"enum": [
 				"white",
 				"black"
