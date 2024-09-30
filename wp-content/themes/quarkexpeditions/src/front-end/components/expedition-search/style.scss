@@ -1,0 +1,154 @@
+@import "../../scss";
+
+.expedition-search {
+	$self: &;
+
+	&[loading="true"] {
+
+		#{$self}__results {
+
+			> * {
+				display: none;
+			}
+
+			&--loading {
+				display: block;
+			}
+		}
+	}
+
+	&__header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-block-start: var(--spacing-6);
+		flex-wrap: wrap;
+		border-bottom: 1px solid var(--color-gray-10);
+
+		@media screen and (min-width: grid-size(sm)) {
+			flex-wrap: nowrap;
+		}
+	}
+
+	&__sidebar-filters {
+
+		&-header {
+			display: flex;
+			justify-content: space-between;
+
+			&-title {
+				display: inline;
+			}
+
+			&-selected-count {
+				color: var(--color-gray-50);
+			}
+		}
+
+		&-content {
+			max-height: calc(100% - var(--spacing-6));
+			overflow-y: scroll;
+			margin-top: var(--spacing-5);
+
+			&-expedition,
+			&-cabin {
+				margin-bottom: var(--spacing-5);
+			}
+
+			.accordion__handle-btn-text {
+				font-size: var(--font-size);
+				font-weight: var(--font-weight-normal);
+			}
+		}
+	}
+
+	&__filters {
+		display: flex;
+		column-gap: var(--spacing-5);
+		flex-wrap: wrap;
+		margin-block-start: var(--spacing-5);
+
+		@media screen and (min-width: grid-size(sm)) {
+			flex-wrap: nowrap;
+		}
+
+		tp-multi-select {
+			cursor: pointer;
+		}
+	}
+
+	&__result-count {
+
+		&-value {
+			font-weight: var(--font-weight-bold);
+		}
+	}
+
+	&__results {
+		margin-block-end: var(--spacing-5);
+
+		&--loading {
+			display: none;
+			width: fit-content;
+			margin-inline: auto;
+			margin-block: var(--spacing-6);
+
+			> svg {
+				width: 80px;
+				height: 80px;
+
+				@include spin;
+
+				> path {
+					fill: var(--color-yellow);
+				}
+			}
+		}
+	}
+
+	&__load-more {
+		display: block;
+		margin-top: var(--spacing-6);
+
+		&[active="false"] {
+
+			#{$self}__load-more-button-container {
+				display: none;
+			}
+		}
+
+		&[loading="false"] {
+
+			#{$self}__load-more-button {
+
+				> span.btn__icon-spinner {
+					display: none;
+				}
+			}
+		}
+
+		&[loading="true"] {
+
+			#{$self}__load-more-button {
+
+				> span.btn__icon-spinner {
+					display: inline-flex;
+				}
+			}
+		}
+
+		&-button-container {
+			display: block;
+			text-align: center;
+			margin-block-start: var(--spacing-6);
+
+			> button {
+				width: 100%;
+
+				@media screen and (min-width: grid-size(sm)) {
+					width: auto;
+				}
+			}
+		}
+	}
+}

@@ -34,6 +34,10 @@
 			}
 		}
 
+		&-left {
+			order: -1;
+		}
+
 		@media screen and (min-width: calc(grid-size(lg) + 1px)) {
 			display: block;
 		}
