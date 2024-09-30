@@ -428,6 +428,9 @@ function schedule_urgent_push(): void {
 function push_urgent_data(): void {
 	// Push changed expedition ids.
 	do {
+		// Delete changed expedition ids cache in order to read latest from DB.
+		wp_cache_delete( URGENTLY_CHANGED_EXPEDITION_IDS_OPTION, 'options' );
+
 		// Get changed expedition ids.
 		$changed_expedition_ids = get_option( URGENTLY_CHANGED_EXPEDITION_IDS_OPTION, [] );
 
