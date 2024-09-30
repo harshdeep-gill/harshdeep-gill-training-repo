@@ -66,11 +66,6 @@
 		&.current {
 			opacity: 1;
 		}
-
-		&--first:not(.current),
-		&--last:not(.current) {
-			display: none;
-		}
 	}
 
 	&__first-page,
