@@ -22,6 +22,7 @@ export default class ExpeditionSearchFilterDestinations extends HTMLElement {
 	 */
 	private readonly inputs: NodeListOf<HTMLInputElement>;
 	private isFilterUpdating: boolean;
+	private readonly filterCountElement: HTMLElement | null;
 
 	/**
 	 * Constructor
@@ -33,6 +34,7 @@ export default class ExpeditionSearchFilterDestinations extends HTMLElement {
 		// Initialize properties.
 		this.inputs = this.querySelectorAll( 'input[type="checkbox"][name="destinations"]' );
 		this.isFilterUpdating = false;
+		this.filterCountElement = this.querySelector( '.expedition-search__filter-count' );
 
 		// Setup events.
 		this.inputs.forEach( ( input ) => input.addEventListener( 'change', this.handleInputChange.bind( this ) ) );
@@ -65,6 +67,16 @@ export default class ExpeditionSearchFilterDestinations extends HTMLElement {
 				input.checked = false;
 			}
 		} );
+
+		// Null check.
+		if ( this.filterCountElement ) {
+			// check and update count
+			if ( destinations.length > 0 ) {
+				this.filterCountElement.innerHTML = `(${ destinations.length })`;
+			} else {
+				this.filterCountElement.innerHTML = '';
+			}
+		}
 
 		// Unset the updating flag.
 		this.isFilterUpdating = false;

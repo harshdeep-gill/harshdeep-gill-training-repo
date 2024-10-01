@@ -35,6 +35,10 @@
 		padding-right: var(--spacing-1);
 	}
 
+	&__filter-count {
+		color: var(--color-gray-50);
+	}
+
 	&__sidebar-filters {
 
 		&-header {
@@ -46,9 +50,6 @@
 				margin-bottom: 0;
 			}
 
-			&-selected-count {
-				color: var(--color-gray-50);
-			}
 		}
 
 		&-content {

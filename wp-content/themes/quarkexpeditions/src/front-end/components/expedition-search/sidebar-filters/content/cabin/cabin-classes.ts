@@ -22,6 +22,7 @@ export default class ExpeditionSearchFilterCabinClasses extends HTMLElement {
 	 */
 	private readonly inputs: NodeListOf<HTMLInputElement>;
 	private isFilterUpdating: boolean;
+	private readonly filterCountElement: HTMLElement | null;
 
 	/**
 	 * Constructor
@@ -33,6 +34,7 @@ export default class ExpeditionSearchFilterCabinClasses extends HTMLElement {
 		// Initialize properties.
 		this.inputs = this.querySelectorAll( 'input[type="checkbox"][name="cabin-classes"]' );
 		this.isFilterUpdating = false;
+		this.filterCountElement = this.querySelector( '.expedition-search__filter-count' );
 
 		// Setup events.
 		this.inputs.forEach( ( input ) => input.addEventListener( 'change', this.handleInputChange.bind( this ) ) );
@@ -62,6 +64,16 @@ export default class ExpeditionSearchFilterCabinClasses extends HTMLElement {
 				input.checked = false;
 			}
 		} );
+
+		// Check and update count.
+		if ( this.filterCountElement ) {
+			// Check count.
+			if ( cabinClasses.length > 0 ) {
+				this.filterCountElement.innerHTML = `(${ cabinClasses.length })`;
+			} else {
+				this.filterCountElement.innerHTML = '';
+			}
+		}
 
 		// Unset the updating flag.
 		this.isFilterUpdating = false;

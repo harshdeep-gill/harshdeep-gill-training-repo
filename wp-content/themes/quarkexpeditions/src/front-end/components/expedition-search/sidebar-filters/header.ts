@@ -23,6 +23,7 @@ export default class ExpeditionSearchSidebarFiltersHeader extends HTMLElement {
 	private readonly hideFiltersBtn: HTMLButtonElement | null;
 	private readonly showFiltersBtn: HTMLButtonElement | null;
 	private readonly filtersHeaderTitle: HTMLElement | null;
+	private readonly filtersCountElements: NodeListOf<HTMLElement>;
 
 	/**
 	 * Constructor
@@ -38,6 +39,7 @@ export default class ExpeditionSearchSidebarFiltersHeader extends HTMLElement {
 		this.hideFiltersBtn = this.querySelector( '.expedition-search__sidebar-filters-hide-button' );
 		this.showFiltersBtn = this.querySelector( '.expedition-search__sidebar-filters-show-button' );
 		this.filtersHeaderTitle = this.querySelector( '.expedition-search__sidebar-filters-header-title' );
+		this.filtersCountElements = this.querySelectorAll( '.expedition-search__filter-count' );
 
 		// Events
 		this.hideFiltersBtn?.addEventListener( 'click', () => hideSearchFiltersAction() );
@@ -51,7 +53,38 @@ export default class ExpeditionSearchSidebarFiltersHeader extends HTMLElement {
 	 */
 	update( state: ExpeditionSearchState ): void {
 		// Get state.
-		const { areSearchFiltersShown } = state;
+		const {
+			areSearchFiltersShown,
+			destinations,
+			ships,
+			adventureOptions,
+			languages,
+			expeditions,
+			cabinClasses,
+			travelers,
+		} = state;
+
+		// Null check.
+		if ( this.filtersCountElements.length ) {
+			const filtersCount = destinations.length +
+				ships.length +
+				adventureOptions.length +
+				languages.length +
+				expeditions.length +
+				cabinClasses.length +
+				travelers.length;
+
+			// Initialize.
+			let countString = '';
+
+			// Check and update count.
+			if ( filtersCount > 0 ) {
+				countString = `(${ filtersCount })`;
+			}
+
+			// Set the inner html.
+			this.filtersCountElements.forEach( ( countElement ) => countElement.innerHTML = countString );
+		}
 
 		// Show and hide accordingly.
 		if ( areSearchFiltersShown ) {

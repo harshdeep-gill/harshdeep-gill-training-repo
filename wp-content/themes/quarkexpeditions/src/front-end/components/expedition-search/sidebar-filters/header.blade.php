@@ -8,11 +8,11 @@
 		icon_position="left"
 		data-hidden=""
 	>
-		{{ __( 'Show Filters', 'qrk' ) }}
+		{{ __( 'Show Filters', 'qrk' ) }} <span class="expedition-search__filter-count"></span>
 	</x-button>
 	<h2 class="h4 expedition-search__sidebar-filters-header-title">
 		<x-escape :content="__( 'Filters', 'qrk' )" />
-		<span class="expedition-search__sidebar-filters-header-selected-count">(X)</span>
+		<span class="expedition-search__filter-count"></span>
 	</h2>
 	<button class="expedition-search__sidebar-filters-hide-button" type="button">{{ __( 'Hide Filters', 'qrk' ) }}</button>
 </quark-expedition-search-sidebar-filters-header>
