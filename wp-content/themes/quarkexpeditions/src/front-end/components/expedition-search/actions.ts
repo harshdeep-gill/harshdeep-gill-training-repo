@@ -338,3 +338,53 @@ export const removeDestination = ( destinationValue: string ) => {
 	// Set the state.
 	setState( updateObject );
 };
+
+/**
+ * Adds a ship.
+ *
+ * @param { Object } shipToAdd the ship object.
+ */
+export const addShip = ( shipToAdd: ExpeditionSearchFilterState ) => {
+	// Sanity check.
+	if ( '' === shipToAdd.value || '' === shipToAdd.label ) {
+		// Bail.
+		return;
+	}
+
+	// Get the state.
+	const { ships }: ExpeditionSearchState = getState();
+
+	// Check if it is already selected.
+	if ( ships.findIndex( ( existingShip ) => existingShip.value === shipToAdd.value ) > -1 ) {
+		// Yes it is. Bail.
+		return;
+	}
+
+	// Initialize update object.
+	const updateObject: ExpeditionsSearchStateUpdateObject = {};
+
+	// Add the ship.
+	updateObject.ships = [ ...ships, shipToAdd ];
+
+	// Set the state;
+	setState( updateObject );
+};
+
+/**
+ * Removes a ship.
+ *
+ * @param { string } shipValue The value of the ship to remove.
+ */
+export const removeShip = ( shipValue: string ) => {
+	// Get the state.
+	const { ships }: ExpeditionSearchState = getState();
+
+	// Initialize the update object.
+	const updateObject: ExpeditionsSearchStateUpdateObject = {};
+
+	// Filter the ships.
+	updateObject.ships = ships.filter( ( existingShip ) => existingShip.value !== shipValue );
+
+	// Set the state.
+	setState( updateObject );
+};

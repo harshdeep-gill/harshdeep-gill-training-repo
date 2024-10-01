@@ -468,6 +468,9 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 				'quark-expedition-search-filter-destinations'    => [
 					'class' => true,
 				],
+				'quark-expedition-search-filter-ships'           => [
+					'class' => true,
+				],
 				'tp-form'                                        => [
 					'class'          => true,
 					'prevent-submit' => true,
