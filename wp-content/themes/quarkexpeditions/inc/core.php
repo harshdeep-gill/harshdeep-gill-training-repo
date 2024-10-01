@@ -486,6 +486,15 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 				'quark-expedition-search-filter-travelers'         => [
 					'class' => true,
 				],
+				'quark-expedition-search-filters-cta-clear-all'    => [
+					'class' => true,
+				],
+				'quark-expedition-search-filters-cta-view-results' => [
+					'class' => true,
+				],
+				'quark-expedition-search-sticky-filters'           => [
+					'class' => true,
+				],
 				'tp-form'                                          => [
 					'class'          => true,
 					'prevent-submit' => true,

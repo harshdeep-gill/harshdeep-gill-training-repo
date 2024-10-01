@@ -7,6 +7,7 @@ const { zustand, fetchPartial } = window;
  * Internal dependencies.
  */
 const { setState, getState } = zustand.stores.expeditionSearch;
+import { DEFAULT_STATE } from './data';
 
 /**
  * Initialize data for the component.
@@ -634,6 +635,25 @@ export const removeTraveler = ( travelerValue: string ) => {
 
 	// Filter the travelers.
 	updateObject.travelers = travelers.filter( ( existingTraveler ) => existingTraveler.value !== travelerValue );
+
+	// Set the state.
+	setState( updateObject );
+};
+
+/**
+ * Clears all the filters.
+ */
+export const clearAllFilters = () => {
+	// Prepare the update object.
+	const updateObject: ExpeditionsSearchStateUpdateObject = {
+		destinations: [ ...DEFAULT_STATE.destinations ],
+		ships: [ ...DEFAULT_STATE.ships ],
+		adventureOptions: [ ...DEFAULT_STATE.adventureOptions ],
+		languages: [ ...DEFAULT_STATE.languages ],
+		expeditions: [ ...DEFAULT_STATE.expeditions ],
+		cabinClasses: [ ...DEFAULT_STATE.cabinClasses ],
+		travelers: [ ...DEFAULT_STATE.travelers ],
+	};
 
 	// Set the state.
 	setState( updateObject );

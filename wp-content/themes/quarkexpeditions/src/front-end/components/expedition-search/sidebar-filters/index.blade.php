@@ -13,3 +13,7 @@
 	<x-expedition-search.sidebar-filters.header />
 	<x-expedition-search.sidebar-filters.content :filters_data="$filters_data" />
 </quark-expedition-search-sidebar-filters>
+
+<x-expedition-search.sidebar-filters.sticky-filters>
+	<x-expedition-search.sidebar-filters.content :filters_data="$filters_data" />
+</x-expedition-search.sidebar-filters.sticky-filters>
