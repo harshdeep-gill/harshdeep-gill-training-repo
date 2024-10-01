@@ -388,3 +388,53 @@ export const removeShip = ( shipValue: string ) => {
 	// Set the state.
 	setState( updateObject );
 };
+
+/**
+ * Adds a adventureOption.
+ *
+ * @param { Object } adventureOptionToAdd the adventureOption object.
+ */
+export const addAdventureOption = ( adventureOptionToAdd: ExpeditionSearchFilterState ) => {
+	// Sanity check.
+	if ( '' === adventureOptionToAdd.value || '' === adventureOptionToAdd.label ) {
+		// Bail.
+		return;
+	}
+
+	// Get the state.
+	const { adventureOptions }: ExpeditionSearchState = getState();
+
+	// Check if it is already selected.
+	if ( adventureOptions.findIndex( ( existingAdventureOption ) => existingAdventureOption.value === adventureOptionToAdd.value ) > -1 ) {
+		// Yes it is. Bail.
+		return;
+	}
+
+	// Initialize update object.
+	const updateObject: ExpeditionsSearchStateUpdateObject = {};
+
+	// Add the adventureOption.
+	updateObject.adventureOptions = [ ...adventureOptions, adventureOptionToAdd ];
+
+	// Set the state;
+	setState( updateObject );
+};
+
+/**
+ * Removes a adventureOption.
+ *
+ * @param { string } adventureOptionValue The value of the adventureOption to remove.
+ */
+export const removeAdventureOption = ( adventureOptionValue: string ) => {
+	// Get the state.
+	const { adventureOptions }: ExpeditionSearchState = getState();
+
+	// Initialize the update object.
+	const updateObject: ExpeditionsSearchStateUpdateObject = {};
+
+	// Filter the adventureOptions.
+	updateObject.adventureOptions = adventureOptions.filter( ( existingAdventureOption ) => existingAdventureOption.value !== adventureOptionValue );
+
+	// Set the state.
+	setState( updateObject );
+};

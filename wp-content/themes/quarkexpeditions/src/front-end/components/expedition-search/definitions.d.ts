@@ -37,6 +37,7 @@ interface ExpeditionSearchState {
 	areSearchFiltersShown: boolean,
 	destinations: ExpeditionSearchFilterState[],
 	ships: ExpeditionSearchFilterState[],
+	adventureOptions: ExpeditionSearchFilterState[],
 }
 
 /**
