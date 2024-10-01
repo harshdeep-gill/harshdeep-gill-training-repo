@@ -49,7 +49,6 @@
 						<x-form.checkbox name="fields[Subscribe_General_Newsletter__c]" label="In addition, I'd also like to subscribe to Quark Expedition's weekly newsletter." />
 					</x-form.field-group>
 				</x-form.row>
-				{!! $slot !!}
 			</div>
 		</div>
 
