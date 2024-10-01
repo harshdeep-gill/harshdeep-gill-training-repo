@@ -8,7 +8,6 @@
 namespace Quark\Ingestor\Tests;
 
 use Quark\Tests\Softrip\Softrip_TestCase;
-use WP_Query;
 
 use function Quark\Ingestor\Urgent\track_adventure_option_taxonomy_change;
 use function Quark\Ingestor\Urgent\track_cabin_post_type_change;
