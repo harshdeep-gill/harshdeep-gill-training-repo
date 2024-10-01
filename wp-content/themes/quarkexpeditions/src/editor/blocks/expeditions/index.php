@@ -13,6 +13,7 @@ use WP_Query;
 use function Quark\Core\format_price;
 use function Quark\Expeditions\get_minimum_duration;
 use function Quark\Expeditions\get_minimum_duration_itinerary;
+use function Quark\Expeditions\get_starting_from_date;
 use function Quark\Expeditions\get_starting_from_price;
 use function Quark\Itineraries\get_included_transfer_package_details;
 
@@ -137,15 +138,25 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 		// Get Prices Data.
 		$prices_data = get_starting_from_price( $expedition_id );
 
+		// Get Departure Date.
+		$departure_date = get_starting_from_date( $expedition_id );
+
+		// Build departure date.
+		if ( ! empty( $departure_date ) ) {
+			$departure_date = gmdate( 'F j, Y', absint( strtotime( $departure_date ) ) );
+		}
+
 		// Build card data.
 		$cards[] = [
-			'title'            => get_the_title( $expedition_id ),
-			'url'              => get_the_permalink( $expedition_id ),
-			'image_id'         => get_post_thumbnail_id( $expedition_id ),
-			'itinerary_days'   => get_minimum_duration( $expedition_id ),
-			'original_price'   => format_price( $prices_data['original'] ),
-			'discounted_price' => format_price( $prices_data['discounted'] ),
-			'transfer_package' => $transfer_package_data,
+			'title'               => get_the_title( $expedition_id ),
+			'url'                 => get_the_permalink( $expedition_id ),
+			'image_id'            => get_post_thumbnail_id( $expedition_id ),
+			'show_departure_date' => $attributes['showDepartureDate'] && ! empty( $departure_date ),
+			'itinerary_days'      => get_minimum_duration( $expedition_id ),
+			'departure_date'      => $departure_date,
+			'original_price'      => format_price( $prices_data['original'] ),
+			'discounted_price'    => format_price( $prices_data['discounted'] ),
+			'transfer_package'    => $transfer_package_data,
 		];
 	}
 
