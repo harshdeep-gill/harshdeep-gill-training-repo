@@ -488,3 +488,53 @@ export const removeLanguage = ( languageValue: string ) => {
 	// Set the state.
 	setState( updateObject );
 };
+
+/**
+ * Adds a expedition.
+ *
+ * @param { Object } expeditionToAdd the expedition object.
+ */
+export const addExpedition = ( expeditionToAdd: ExpeditionSearchFilterState ) => {
+	// Sanity check.
+	if ( '' === expeditionToAdd.value || '' === expeditionToAdd.label ) {
+		// Bail.
+		return;
+	}
+
+	// Get the state.
+	const { expeditions }: ExpeditionSearchState = getState();
+
+	// Check if it is already selected.
+	if ( expeditions.findIndex( ( existingExpedition ) => existingExpedition.value === expeditionToAdd.value ) > -1 ) {
+		// Yes it is. Bail.
+		return;
+	}
+
+	// Initialize update object.
+	const updateObject: ExpeditionsSearchStateUpdateObject = {};
+
+	// Add the expedition.
+	updateObject.expeditions = [ ...expeditions, expeditionToAdd ];
+
+	// Set the state;
+	setState( updateObject );
+};
+
+/**
+ * Removes a expedition.
+ *
+ * @param { string } expeditionValue The value of the expedition to remove.
+ */
+export const removeExpedition = ( expeditionValue: string ) => {
+	// Get the state.
+	const { expeditions }: ExpeditionSearchState = getState();
+
+	// Initialize the update object.
+	const updateObject: ExpeditionsSearchStateUpdateObject = {};
+
+	// Filter the expeditions.
+	updateObject.expeditions = expeditions.filter( ( existingExpedition ) => existingExpedition.value !== expeditionValue );
+
+	// Set the state.
+	setState( updateObject );
+};

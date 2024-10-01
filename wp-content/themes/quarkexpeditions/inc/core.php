@@ -477,6 +477,9 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 				'quark-expedition-search-filter-languages'         => [
 					'class' => true,
 				],
+				'quark-expedition-search-filter-expeditions'       => [
+					'class' => true,
+				],
 				'tp-form'                                          => [
 					'class'          => true,
 					'prevent-submit' => true,

@@ -39,6 +39,7 @@ interface ExpeditionSearchState {
 	ships: ExpeditionSearchFilterState[],
 	adventureOptions: ExpeditionSearchFilterState[],
 	languages: ExpeditionSearchFilterState[],
+	expeditions: ExpeditionSearchFilterState[],
 }
 
 /**
