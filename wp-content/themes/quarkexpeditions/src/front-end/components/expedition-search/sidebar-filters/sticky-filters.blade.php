@@ -23,6 +23,24 @@
 				<x-escape :content="__( 'Filters', 'qrk' )" />
 			</span>
 			{!! $slot !!}
+			<quark-expedition-search-filters>
+				<x-form.field class="expedition-search__filters-sort">
+					<x-form.select label="Sort by:">
+						<x-form.option value="date-now" label="{{ __( 'Date (upcoming to later)', 'qrk' ) }}" selected="yes">
+							{{ __( 'Date (upcoming to later)', 'qrk' ) }}
+						</x-form.option>
+						<x-form.option value="date-later" label="{{ __( 'Date (later to upcoming)', 'qrk' ) }}">
+							{{ __( 'Date (later to upcoming)', 'qrk' ) }}
+						</x-form.option>
+						<x-form.option value="price-low" label="{{ __( 'Price (low to high)', 'qrk' )  }}">
+							{{ __( 'Price (low to high)', 'qrk' ) }}
+						</x-form.option>
+						<x-form.option value="price-high" label="{{ __( 'Price (high to low)', 'qrk' )  }}">
+							{{ __( 'Price (high to low)', 'qrk' ) }}
+						</x-form.option>
+					</x-form.select>
+				</x-form.field>
+			</quark-expedition-search-filters>
 		</x-modal.body>
 		<x-modal.footer>
 			<x-expedition-search.sidebar-filters.cta-clear />

@@ -225,6 +225,12 @@ tp-modal.expedition-search__filters-modal {
 		padding-bottom: var(--spacing-5);
 	}
 
+	.expedition-search__filters-sort label {
+		font-size: var(--h4-font-size);
+		line-height: var(--h4-line-height);
+		margin-bottom: var(--h4-spacing);
+	}
+
 	.modal__content {
 		background-color: var(--color-white);
 	}
