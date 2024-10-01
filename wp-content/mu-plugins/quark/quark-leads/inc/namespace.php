@@ -36,6 +36,9 @@ function bootstrap(): void {
 	if ( is_admin() ) {
 		require_once __DIR__ . '/../custom-fields/leads.php';
 	}
+
+	// Others.
+	add_filter( 'quark_lead_data', __NAMESPACE__ . '\\process_job_application_form' );
 }
 
 /**
@@ -135,6 +138,9 @@ function setup_settings(): void {
  * @return WP_Error|mixed[]
  */
 function create_lead( array $lead_data = [] ): array|WP_Error {
+	// Filter lead data.
+	$lead_data = (array) apply_filters( 'quark_lead_data', $lead_data );
+
 	// Get lead data.
 	$lead_data = wp_parse_args(
 		$lead_data,
@@ -263,4 +269,60 @@ function validate_recaptcha_token( string $recaptcha_token = '' ): true|float|WP
 
 	// Return true when allowing reCaptcha to fail or reCaptcha score is not available.
 	return true;
+}
+
+/**
+ * Process job application form to attach resume.
+ *
+ * @param mixed[] $lead_data Lead data.
+ *
+ * @return mixed[]
+ */
+function process_job_application_form( array $lead_data = [] ): array {
+	// Check for empty data.
+	if ( empty( $lead_data ) || ! is_array( $lead_data ) ) {
+		return $lead_data;
+	}
+
+	// Extract Resume File.
+	$resume_file = $lead_data['files']['resume'] ?? null;
+
+	// Check if resume file is set.
+	if ( empty( $resume_file ) ) {
+		return $lead_data;
+	}
+
+	// Include wp_handle_upload function.
+	function_exists( 'wp_handle_upload' ) || require_once ABSPATH . 'wp-admin/includes/file.php';
+
+	// Handle file upload.
+	$uploaded_file = wp_handle_upload( $resume_file, [ 'test_form' => false ] );
+
+	// Check for errors.
+	if ( isset( $uploaded_file['error'] ) ) {
+		return $lead_data;
+	}
+
+	// Create attachment.
+	$attachment_id = wp_insert_attachment(
+		[
+			'post_mime_type' => $uploaded_file['type'],
+			'post_title'     => preg_replace( '/\.[^.]+$/', '', basename( $uploaded_file['file'] ) ),
+			'post_name'      => uniqid( 'job-application-resume-', true ) . '-' . basename( $uploaded_file['file'] ),
+			'post_content'   => '',
+			'post_status'    => 'inherit',
+		],
+		$uploaded_file['file']
+	);
+
+	// Check for errors.
+	if ( $attachment_id instanceof WP_Error ) {
+		return $lead_data;
+	}
+
+	// Attach file URL to the lead.
+	$lead_data['fields']['Link_to_Resume__c'] = wp_get_attachment_url( $attachment_id );
+
+	// Return lead data.
+	return $lead_data;
 }
