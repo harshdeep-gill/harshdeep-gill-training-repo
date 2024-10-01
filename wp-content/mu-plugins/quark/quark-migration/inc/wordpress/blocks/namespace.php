@@ -684,8 +684,7 @@ function convert_node_div( string $output = '', ?DOMElement $node = null ): stri
 					]
 				);
 			} else {
-				// No columns found, convert child node to block.
-				return convert_node_to_block( $child_node );
+				$freeform = true;
 			}
 		}
 	}

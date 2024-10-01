@@ -2419,8 +2419,8 @@ class Block_Converter {
 		$attrs = [];
 
 		// Set attributes.
-		$attrs['label'] = ! empty( $result['title'] ) ? strval( $result['title'] ) : '';
-		$attrs['value'] = ! empty( $result['description'] ) ? strval( $result['description'] ) : '';
+		$attrs['label'] = strval( $result['title'] );
+		$attrs['value'] = strval( $result['description'] );
 
 		// Return data.
 		return serialize_block(
