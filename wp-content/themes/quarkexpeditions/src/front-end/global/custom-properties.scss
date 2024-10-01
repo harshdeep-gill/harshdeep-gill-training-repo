@@ -143,7 +143,7 @@
 		--h5-line-height: 28px;
 	}
 
-	@media screen and (min-width: grid-size(lg)) {
+	@media screen and (min-width: grid-size(xl)) {
 		--grid-row-gutter: var(--spacing-6);
 		--grid-col-gutter: var(--spacing-6);
 		--grid-section-gutter: var(--spacing-9);
