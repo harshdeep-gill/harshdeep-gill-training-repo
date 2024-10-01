@@ -94,7 +94,6 @@
 						<x-form.checkbox name="fields[Verify_Request__c]" label="Verify Request." />
 					</x-form.field-group>
 				</x-form.row>
-				{!! $slot !!}
 			</div>
 		</div>
 
