@@ -43,8 +43,10 @@
 	}
 
 	&__track {
-		padding-left: var(--spacing-5);
-		margin-left: calc(-1 * var(--spacing-5));
+		margin-left: calc(-1 * var(--grid-col-gutter));
+		margin-right: calc(-1 * var(--grid-col-gutter));
+		padding-left: var(--grid-col-gutter);
+		padding-right: var(--grid-col-gutter);
 		scrollbar-width: none; /* Firefox */
 
 		&::-webkit-scrollbar {
@@ -60,10 +62,14 @@
 	}
 
 	&__slides {
-		gap: var(--spacing-5);
+		gap: var(--spacing-4);
 		display: grid;
 		grid-auto-flow: column;
 		grid-auto-columns: max-content;
+
+		@media screen and (min-width: grid-size(lg)) {
+			gap: var(--spacing-6);
+		}
 	}
 
 	&:not(:has(&__nav[data-layout="carousel"])) {
@@ -84,8 +90,6 @@
 			#{$self}__slides {
 				grid-auto-flow: row;
 				grid-template-columns: repeat(auto-fill, minmax(267px, 1fr));
-				column-gap: var(--spacing-6);
-				row-gap: var(--spacing-4);
 				max-width: 100%;
 			}
 
@@ -96,7 +100,6 @@
 			#{$self}__card {
 				max-width: unset;
 			}
-
 		}
 	}
 
@@ -111,7 +114,6 @@
 			#{$self}__slides {
 				grid-auto-flow: row;
 				grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-				gap: var(--spacing-5);
 			}
 
 			#{$self}__slider {
