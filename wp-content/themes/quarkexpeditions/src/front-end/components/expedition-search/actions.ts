@@ -438,3 +438,53 @@ export const removeAdventureOption = ( adventureOptionValue: string ) => {
 	// Set the state.
 	setState( updateObject );
 };
+
+/**
+ * Adds a language.
+ *
+ * @param { Object } languageToAdd the language object.
+ */
+export const addLanguage = ( languageToAdd: ExpeditionSearchFilterState ) => {
+	// Sanity check.
+	if ( '' === languageToAdd.value || '' === languageToAdd.label ) {
+		// Bail.
+		return;
+	}
+
+	// Get the state.
+	const { languages }: ExpeditionSearchState = getState();
+
+	// Check if it is already selected.
+	if ( languages.findIndex( ( existingLanguage ) => existingLanguage.value === languageToAdd.value ) > -1 ) {
+		// Yes it is. Bail.
+		return;
+	}
+
+	// Initialize update object.
+	const updateObject: ExpeditionsSearchStateUpdateObject = {};
+
+	// Add the language.
+	updateObject.languages = [ ...languages, languageToAdd ];
+
+	// Set the state;
+	setState( updateObject );
+};
+
+/**
+ * Removes a language.
+ *
+ * @param { string } languageValue The value of the language to remove.
+ */
+export const removeLanguage = ( languageValue: string ) => {
+	// Get the state.
+	const { languages }: ExpeditionSearchState = getState();
+
+	// Initialize the update object.
+	const updateObject: ExpeditionsSearchStateUpdateObject = {};
+
+	// Filter the languages.
+	updateObject.languages = languages.filter( ( existingLanguage ) => existingLanguage.value !== languageValue );
+
+	// Set the state.
+	setState( updateObject );
+};

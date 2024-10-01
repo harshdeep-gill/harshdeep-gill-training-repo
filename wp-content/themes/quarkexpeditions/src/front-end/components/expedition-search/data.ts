@@ -31,6 +31,7 @@ export const DEFAULT_STATE: ExpeditionSearchState = {
 	destinations: [],
 	ships: [],
 	adventureOptions: [],
+	languages: [],
 };
 
 /**
