@@ -34,6 +34,7 @@ export const DEFAULT_STATE: ExpeditionSearchState = {
 	languages: [],
 	expeditions: [],
 	cabinClasses: [],
+	travelers: [],
 };
 
 /**

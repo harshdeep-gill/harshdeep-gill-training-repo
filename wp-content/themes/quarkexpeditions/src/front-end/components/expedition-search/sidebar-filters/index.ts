@@ -14,6 +14,7 @@ import ExpeditionSearchFilterAdventureOptions from './content/expedition/adventu
 import ExpeditionSearchFilterLanguages from './content/expedition/languages';
 import ExpeditionSearchFilterExpeditions from './content/expedition/expeditions';
 import ExpeditionSearchFilterCabinClasses from './content/cabin/cabin-classes';
+import ExpeditionSearchFilterTravelers from './content/cabin/travelers';
 
 // Define elements.
 customElements.define( 'quark-expedition-search-sidebar-filters', ExpeditionSearchSidebarFilters );
@@ -24,3 +25,4 @@ customElements.define( 'quark-expedition-search-filter-adventure-options', Exped
 customElements.define( 'quark-expedition-search-filter-languages', ExpeditionSearchFilterLanguages );
 customElements.define( 'quark-expedition-search-filter-expeditions', ExpeditionSearchFilterExpeditions );
 customElements.define( 'quark-expedition-search-filter-cabin-classes', ExpeditionSearchFilterCabinClasses );
+customElements.define( 'quark-expedition-search-filter-travelers', ExpeditionSearchFilterTravelers );

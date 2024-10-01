@@ -588,3 +588,53 @@ export const removeCabinClass = ( cabinClassValue: string ) => {
 	// Set the state.
 	setState( updateObject );
 };
+
+/**
+ * Adds a traveler.
+ *
+ * @param { Object } travelerToAdd the traveler object.
+ */
+export const addTraveler = ( travelerToAdd: ExpeditionSearchFilterState ) => {
+	// Sanity check.
+	if ( '' === travelerToAdd.value || '' === travelerToAdd.label ) {
+		// Bail.
+		return;
+	}
+
+	// Get the state.
+	const { travelers }: ExpeditionSearchState = getState();
+
+	// Check if it is already selected.
+	if ( travelers.findIndex( ( existingTraveler ) => existingTraveler.value === travelerToAdd.value ) > -1 ) {
+		// Yes it is. Bail.
+		return;
+	}
+
+	// Initialize update object.
+	const updateObject: ExpeditionsSearchStateUpdateObject = {};
+
+	// Add the traveler.
+	updateObject.travelers = [ ...travelers, travelerToAdd ];
+
+	// Set the state;
+	setState( updateObject );
+};
+
+/**
+ * Removes a traveler.
+ *
+ * @param { string } travelerValue The value of the traveler to remove.
+ */
+export const removeTraveler = ( travelerValue: string ) => {
+	// Get the state.
+	const { travelers }: ExpeditionSearchState = getState();
+
+	// Initialize the update object.
+	const updateObject: ExpeditionsSearchStateUpdateObject = {};
+
+	// Filter the travelers.
+	updateObject.travelers = travelers.filter( ( existingTraveler ) => existingTraveler.value !== travelerValue );
+
+	// Set the state.
+	setState( updateObject );
+};

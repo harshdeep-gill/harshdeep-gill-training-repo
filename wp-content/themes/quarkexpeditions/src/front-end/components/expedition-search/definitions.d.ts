@@ -41,6 +41,7 @@ interface ExpeditionSearchState {
 	languages: ExpeditionSearchFilterState[],
 	expeditions: ExpeditionSearchFilterState[],
 	cabinClasses: ExpeditionSearchFilterState[],
+	travelers: ExpeditionSearchFilterState[],
 }
 
 /**
