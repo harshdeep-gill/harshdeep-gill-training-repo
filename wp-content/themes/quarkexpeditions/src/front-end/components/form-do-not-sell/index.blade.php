@@ -49,7 +49,6 @@
 						<x-form.checkbox name="fields[I_am_a_California_resident__c]" label="I am a California resident." />
 					</x-form.field-group>
 				</x-form.row>
-				{!! $slot !!}
 			</div>
 		</div>
 
