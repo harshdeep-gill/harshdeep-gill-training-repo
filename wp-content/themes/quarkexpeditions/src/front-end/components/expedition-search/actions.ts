@@ -538,3 +538,53 @@ export const removeExpedition = ( expeditionValue: string ) => {
 	// Set the state.
 	setState( updateObject );
 };
+
+/**
+ * Adds a cabinClass.
+ *
+ * @param { Object } cabinClassToAdd the cabinClass object.
+ */
+export const addCabinClass = ( cabinClassToAdd: ExpeditionSearchFilterState ) => {
+	// Sanity check.
+	if ( '' === cabinClassToAdd.value || '' === cabinClassToAdd.label ) {
+		// Bail.
+		return;
+	}
+
+	// Get the state.
+	const { cabinClasses }: ExpeditionSearchState = getState();
+
+	// Check if it is already selected.
+	if ( cabinClasses.findIndex( ( existingCabinClass ) => existingCabinClass.value === cabinClassToAdd.value ) > -1 ) {
+		// Yes it is. Bail.
+		return;
+	}
+
+	// Initialize update object.
+	const updateObject: ExpeditionsSearchStateUpdateObject = {};
+
+	// Add the cabinClass.
+	updateObject.cabinClasses = [ ...cabinClasses, cabinClassToAdd ];
+
+	// Set the state;
+	setState( updateObject );
+};
+
+/**
+ * Removes a cabinClass.
+ *
+ * @param { string } cabinClassValue The value of the cabinClass to remove.
+ */
+export const removeCabinClass = ( cabinClassValue: string ) => {
+	// Get the state.
+	const { cabinClasses }: ExpeditionSearchState = getState();
+
+	// Initialize the update object.
+	const updateObject: ExpeditionsSearchStateUpdateObject = {};
+
+	// Filter the cabinClasses.
+	updateObject.cabinClasses = cabinClasses.filter( ( existingCabinClass ) => existingCabinClass.value !== cabinClassValue );
+
+	// Set the state.
+	setState( updateObject );
+};

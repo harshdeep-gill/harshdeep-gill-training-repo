@@ -40,6 +40,7 @@ interface ExpeditionSearchState {
 	adventureOptions: ExpeditionSearchFilterState[],
 	languages: ExpeditionSearchFilterState[],
 	expeditions: ExpeditionSearchFilterState[],
+	cabinClasses: ExpeditionSearchFilterState[],
 }
 
 /**
