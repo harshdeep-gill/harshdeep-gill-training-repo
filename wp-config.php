@@ -168,12 +168,16 @@ define( 'QUARK_SOFTRIP_ADAPTER_BASE_URL', env( 'QUARK_SOFTRIP_ADAPTER_BASE_URL' 
 define( 'QUARK_SOFTRIP_ADAPTER_USERNAME', env( 'QUARK_SOFTRIP_ADAPTER_USERNAME' ) );
 define( 'QUARK_SOFTRIP_ADAPTER_PASSWORD', env( 'QUARK_SOFTRIP_ADAPTER_PASSWORD' ) );
 
-// Checkout
+// Checkout.
 define( 'QUARK_CHECKOUT_BASE_URL', env( 'QUARK_CHECKOUT_BASE_URL' ) );
 
-// Ingestor
+// Ingestor.
 define( 'QUARK_INGESTOR_BASE_URL', env( 'QUARK_INGESTOR_BASE_URL' ) );
 define( 'QUARK_INGESTOR_API_KEY', env( 'QUARK_INGESTOR_API_KEY' ) );
+
+// Github Action Token.
+define( 'QUARK_GITHUB_ACTION_TOKEN', env( 'QUARK_GITHUB_ACTION_TOKEN' ) );
+define( 'QUARK_GITHUB_API_DISPATCH_URL', env( 'QUARK_GITHUB_API_DISPATCH_URL' ) );
 
 /* That's all, stop editing! Happy publishing. */
 
