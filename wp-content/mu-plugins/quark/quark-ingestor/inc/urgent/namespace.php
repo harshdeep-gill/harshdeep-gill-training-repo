@@ -22,6 +22,7 @@ use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
 const URGENTLY_CHANGED_EXPEDITION_IDS_OPTION = '_urgently_changed_expedition_ids';
 const URGENTLY_TRACKED_DATA_HASH_META        = '_urgently_tracked_data_hash';
 const SCHEDULE_HOOK                          = 'qrk_ingestor_urgent_push';
+const URGENT_INGESTOR_PUSH_EVENT_NAME        = 'urgent-ingestor-push';
 
 /**
  * Bootstrap.
@@ -407,9 +408,14 @@ function track_adventure_option_taxonomy_change( int $term_id = 0 ): void {
  *
  * @param int[] $expedition_ids Expedition IDs.
  *
- * @return void
+ * @return bool
  */
-function dispatch_urgent_push_gh_event( array $expedition_ids = [] ): void {
+function dispatch_urgent_push_gh_event( array $expedition_ids = [] ): bool {
+	// Validate expedition ids.
+	if ( empty( $expedition_ids ) ) {
+		return false;
+	}
+
 	// Check credentials.
 	if (
 		! defined( 'QUARK_GITHUB_ACTION_TOKEN' ) ||
@@ -425,7 +431,7 @@ function dispatch_urgent_push_gh_event( array $expedition_ids = [] ): void {
 		);
 
 		// Bail.
-		return;
+		return false;
 	}
 
 	// Set request args.
@@ -437,7 +443,7 @@ function dispatch_urgent_push_gh_event( array $expedition_ids = [] ): void {
 		],
 		'body'    => wp_json_encode(
 			[
-				'event_type' => 'urgent-ingestor-push',
+				'event_type' => URGENT_INGESTOR_PUSH_EVENT_NAME,
 			]
 		),
 	];
@@ -457,7 +463,7 @@ function dispatch_urgent_push_gh_event( array $expedition_ids = [] ): void {
 		);
 
 		// Bail.
-		return;
+		return false;
 	}
 
 	// Check response code.
@@ -472,7 +478,7 @@ function dispatch_urgent_push_gh_event( array $expedition_ids = [] ): void {
 		);
 
 		// Bail.
-		return;
+		return false;
 	}
 
 	// Log success.
@@ -483,6 +489,9 @@ function dispatch_urgent_push_gh_event( array $expedition_ids = [] ): void {
 			'expedition_ids' => $expedition_ids,
 		]
 	);
+
+	// Return.
+	return true;
 }
 
 /**

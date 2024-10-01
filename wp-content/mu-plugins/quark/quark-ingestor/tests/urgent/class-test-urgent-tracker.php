@@ -9,6 +9,7 @@ namespace Quark\Ingestor\Tests;
 
 use Quark\Tests\Softrip\Softrip_TestCase;
 
+use function Quark\Ingestor\Urgent\dispatch_urgent_push_gh_event;
 use function Quark\Ingestor\Urgent\track_adventure_option_taxonomy_change;
 use function Quark\Ingestor\Urgent\track_cabin_post_type_change;
 use function Quark\Ingestor\Urgent\track_expedition_post_type_change;
@@ -19,6 +20,7 @@ use function Quark\Softrip\Occupancies\get_departures_by_cabin_category_id;
 use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
 use const Quark\CabinCategories\POST_TYPE as CABIN_POST_TYPE;
 use const Quark\Expeditions\POST_TYPE as EXPEDITION_POST_TYPE;
+use const Quark\Ingestor\Urgent\URGENT_INGESTOR_PUSH_EVENT_NAME;
 use const Quark\Ingestor\Urgent\URGENTLY_CHANGED_EXPEDITION_IDS_OPTION;
 
 /**
@@ -27,6 +29,23 @@ use const Quark\Ingestor\Urgent\URGENTLY_CHANGED_EXPEDITION_IDS_OPTION;
  * @package quark-ingestor
  */
 class Test_Urgent_Tracker extends Softrip_TestCase {
+	/**
+	 * GH API URL.
+	 */
+	const GH_API_URL = 'https://test.github-api.com'; // phpcs:ignore
+
+	/**
+	 * GH Action Token.
+	 */
+	const GH_ACTION_TOKEN = 'test-token'; // phpcs:ignore
+
+	/**
+	 * Dispatch data.
+	 *
+	 * @var mixed[]
+	 */
+	protected $dispatch_data = [];
+
 	/**
 	 * Test track expedition post type changes.
 	 *
@@ -662,5 +681,179 @@ class Test_Urgent_Tracker extends Softrip_TestCase {
 
 		// Reset option.
 		delete_option( URGENTLY_CHANGED_EXPEDITION_IDS_OPTION );
+	}
+
+	/**
+	 * Test if urgent push GH event is dispatched.
+	 *
+	 * @covers \Quark\Ingestor\Urgent\dispatch_urgent_push_gh_event
+	 *
+	 * @return void
+	 */
+	public function test_dispatch_urgent_push_gh_event(): void {
+		// Setup mock response.
+		add_filter( 'pre_http_request', [ $this, 'mock_ingestor_http_request' ], 10, 3 );
+
+		// Test with no args.
+		$actual = dispatch_urgent_push_gh_event();
+		$this->assertFalse( $actual );
+
+		// Test with empty array.
+		$actual = dispatch_urgent_push_gh_event( [] );
+		$this->assertFalse( $actual );
+
+		// Expedition ids.
+		$expedition_ids = [ 1, 2, 3 ];
+
+		// Add actions.
+		add_action( 'quark_ingestor_dispatch_gh_event', [ $this, 'listen_quark_ingestor_dispatch_gh_event' ] );
+
+		// Test with expedition ids.
+		$actual = dispatch_urgent_push_gh_event( $expedition_ids );
+		$this->assertFalse( $actual );
+
+		// Do action.
+		$this->assertSame( 1, did_action( 'quark_ingestor_dispatch_gh_event' ) );
+
+		// Verify data.
+		$this->assertEquals(
+			[
+				'expedition_ids' => $expedition_ids,
+				'error'          => 'Github credentials missing',
+			],
+			$this->dispatch_data
+		);
+
+		// Reset dispatch data.
+		$this->dispatch_data = [];
+
+		// Set github credentials.
+		define( 'QUARK_GITHUB_ACTION_TOKEN', self::GH_ACTION_TOKEN );
+		define( 'QUARK_GITHUB_API_DISPATCH_URL', self::GH_API_URL );
+
+		// Test with expedition ids.
+		$actual = dispatch_urgent_push_gh_event( $expedition_ids );
+		$this->assertTrue( $actual );
+
+		// Do action.
+		$this->assertSame( 2, did_action( 'quark_ingestor_dispatch_gh_event' ) );
+
+		// Verify data.
+		$this->assertEquals(
+			[
+				'expedition_ids' => $expedition_ids,
+				'success'        => 'Github event dispatched',
+			],
+			$this->dispatch_data
+		);
+
+		// Remove filter.
+		remove_filter( 'pre_http_request', [ $this, 'mock_ingestor_http_request' ], 10 );
+	}
+
+	/**
+	 * Listen to the quark_ingestor_dispatch_gh_event action.
+	 *
+	 * @param mixed[] $data Data.
+	 *
+	 * @return void
+	 */
+	public function listen_quark_ingestor_dispatch_gh_event( array $data = [] ): void {
+		// Set data.
+		$this->dispatch_data = $data;
+	}
+
+	/**
+	 * Mock the HTTP request.
+	 *
+	 * @param mixed[]|false $response    The response.
+	 * @param mixed[]       $parsed_args The parsed args.
+	 * @param string|null   $url         The URL.
+	 *
+	 * @return false|array{}|array{
+	 *    body: string|false,
+	 *    response: array{
+	 *      code: int,
+	 *      message: string,
+	 *    },
+	 *    headers: array{},
+	 * }
+	 */
+	public function mock_ingestor_http_request( array|false $response = [], array $parsed_args = [], string $url = null ): false|array {
+		// Validate URL.
+		if ( empty( $url ) ) {
+			return $response;
+		}
+
+		// Check if the URL is the one we want to mock.
+		if ( ! str_contains( $url, self::GH_API_URL ) ) {
+			return $response;
+		}
+
+		// Check if the request is a POST request.
+		if ( 'POST' !== $parsed_args['method'] ) {
+			return $response;
+		}
+
+		// Check if the request has the correct headers.
+		if ( ! isset( $parsed_args['headers']['Authorization'] ) ) {
+			return [
+				'body'     => strval( wp_json_encode( [ 'error' => 'Github credentials missing' ] ) ),
+				'response' => [
+					'code'    => 400,
+					'message' => 'Bad Request',
+				],
+				'headers'  => [],
+			];
+		}
+
+		// Check if the request has the correct headers.
+		if ( 'Bearer ' . self::GH_ACTION_TOKEN !== $parsed_args['headers']['Authorization'] ) {
+			return [
+				'body'     => strval( wp_json_encode( [ 'error' => 'API Token is invalid' ] ) ),
+				'response' => [
+					'code'    => 401,
+					'message' => 'Unauthorized',
+				],
+				'headers'  => [],
+			];
+		}
+
+		// Check body event_type.
+		$body = json_decode( $parsed_args['body'], true );
+
+		// Validate empty body.
+		if ( empty( $body ) || ! is_array( $body ) ) {
+			return [
+				'body'     => strval( wp_json_encode( [ 'error' => 'Body is empty' ] ) ),
+				'response' => [
+					'code'    => 400,
+					'message' => 'Bad Request',
+				],
+				'headers'  => [],
+			];
+		}
+
+		// Check if the request has the correct body.
+		if ( empty( $body['event_type'] ) || URGENT_INGESTOR_PUSH_EVENT_NAME !== $body['event_type'] ) {
+			return [
+				'body'     => strval( wp_json_encode( [ 'error' => 'Event type is invalid' ] ) ),
+				'response' => [
+					'code'    => 400,
+					'message' => 'Bad Request',
+				],
+				'headers'  => [],
+			];
+		}
+
+		// Return response.
+		return [
+			'body'     => '',
+			'response' => [
+				'code'    => 204,
+				'message' => 'No Content',
+			],
+			'headers'  => [],
+		];
 	}
 }
