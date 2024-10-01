@@ -114,6 +114,7 @@
 			#{$self}__slides {
 				grid-auto-flow: row;
 				grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+				row-gap: var(--spacing-5);
 			}
 
 			#{$self}__slider {
