@@ -1,3 +1,4 @@
+{{-- Add dynamic data - https://tuispecialist.atlassian.net/browse/QE-674 --}}
 <x-expedition-cards>
 	<x-expedition-cards.card>
 		<x-expedition-cards.card-banner text="Quark Protection Promise" url="#" />

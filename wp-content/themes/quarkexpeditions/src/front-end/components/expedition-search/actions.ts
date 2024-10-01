@@ -14,12 +14,10 @@ const { setState, getState } = zustand.stores.expeditionSearch;
  * @param {Object} settings          Settings.
  * @param {string} settings.partial  Partial Url.
  * @param {string} settings.selector Selector.
- * @param {string} settings.shipId   Ship ID.
  */
 export const initialize = ( settings: {
 	partial: string | undefined,
 	selector: string | undefined,
-	shipId: number | undefined,
 } ): void => {
 	// Get current state.
 	const currentState: ExpeditionSearchState = getState();

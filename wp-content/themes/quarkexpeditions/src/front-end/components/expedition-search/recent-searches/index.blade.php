@@ -2,6 +2,7 @@
 	'title' => __( 'Your recent searches', 'qrk' ),
 ] )
 
+{{-- This will be worked upon on this ticket - https://tuispecialist.atlassian.net/browse/QE-675 --}}
 <div class="expedition-seach__recent-searches">
 	<h4><x-escape :content="$title" /></h4>
 	<x-mini-cards-list>
