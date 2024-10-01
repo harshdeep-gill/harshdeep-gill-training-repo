@@ -35,6 +35,7 @@ require_once getenv( 'WP_PHPUNIT__DIR' ) . '/includes/functions.php';
 // Require the various namespace files.
 require_once __DIR__ . '/namespace.php';
 require_once __DIR__ . '/softrip/namespace.php';
+require_once __DIR__ . '/ingestor/namespace.php';
 
 // Bootstrap the tests.
 bootstrap();

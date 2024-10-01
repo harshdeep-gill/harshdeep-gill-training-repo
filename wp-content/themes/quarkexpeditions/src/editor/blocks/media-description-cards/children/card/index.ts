@@ -8,6 +8,7 @@ import { BlockConfiguration } from '@wordpress/blocks';
  */
 import metadata from './block.json';
 import edit from './edit';
+import save from './save';
 
 /**
  * Block name.
@@ -20,4 +21,5 @@ export const { name }: { name: string } = metadata;
 export const settings: BlockConfiguration = {
 	...metadata,
 	edit,
+	save,
 };

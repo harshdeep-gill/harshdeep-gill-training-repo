@@ -161,7 +161,7 @@ function create_lead( array $lead_data = [] ): array|WP_Error {
 	$request_url = build_salesforce_request_uri( $lead_data['salesforce_object'] );
 
 	// Build request data.
-	$request_data = build_salesforce_request_data( $lead_data['fields'] );
+	$request_data = build_salesforce_request_data( $lead_data['fields'], $lead_data['salesforce_object'] );
 
 	// Send data to Salesforce.
 	$response = send_request( $request_url, $request_data );
@@ -198,7 +198,8 @@ function build_salesforce_request_uri( string $salesforce_object = '' ): string 
 /**
  * Build Salesforce request data from fields.
  *
- * @param mixed[] $fields Fields.
+ * @param mixed[] $fields            Fields.
+ * @param string  $salesforce_object Salesforce object name.
  *
  * @return mixed[]
  *
@@ -206,11 +207,15 @@ function build_salesforce_request_uri( string $salesforce_object = '' ): string 
  *       but can be used to build a more complicated request in the future,
  *       like composite requests, etc.
  */
-function build_salesforce_request_data( array $fields = [] ): array {
+function build_salesforce_request_data( array $fields = [], string $salesforce_object = '' ): array {
+	// Add WebForm_Submission_ID__c field.
+	$fields['WebForm_Submission_ID__c'] = uniqid( strval( time() ), true );
+
 	// The fields are the only data required in the request.
 	return (array) apply_filters(
 		'quark_leads_input_data',
-		$fields
+		$fields,
+		$salesforce_object
 	);
 }
 

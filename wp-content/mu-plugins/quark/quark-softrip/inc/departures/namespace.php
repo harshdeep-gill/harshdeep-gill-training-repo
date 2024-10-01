@@ -25,6 +25,8 @@ use const Quark\Departures\SPOKEN_LANGUAGE_TAXONOMY;
 use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
 use const Quark\Localization\DEFAULT_CURRENCY;
 
+const DATA_HASH_KEY = '_formatted_data_hash';
+
 /**
  * Update the departure data.
  *
@@ -213,7 +215,7 @@ function update_departures( array $raw_departures = [], string $softrip_package_
 		// If existing, update the post.
 		if ( $is_existing ) {
 			// Get hash of existing formatted data.
-			$existing_formatted_data_hash = get_post_meta( $existing_departure_codes[ $departure_softrip_id ], 'formatted_data_hash', true );
+			$existing_formatted_data_hash = get_post_meta( $existing_departure_codes[ $departure_softrip_id ], DATA_HASH_KEY, true );
 
 			// Update the post if formatted data hash is different.
 			if ( $formatted_data_hash !== $existing_formatted_data_hash ) {
@@ -239,7 +241,7 @@ function update_departures( array $raw_departures = [], string $softrip_package_
 			continue;
 		} else {
 			// Set formatted data hash.
-			update_post_meta( $updated_post_id, 'formatted_data_hash', $formatted_data_hash );
+			update_post_meta( $updated_post_id, DATA_HASH_KEY, $formatted_data_hash );
 
 			// Add to updated departure codes.
 			$updated_departure_codes[] = $departure_softrip_id;
