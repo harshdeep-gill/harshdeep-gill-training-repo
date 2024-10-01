@@ -1,9 +1,5 @@
 @props( [
-	'url'        => '',
-	'text'       => '',
-	'new_window' => false,
-	'class'      => '',
-	'color'      => 'black',
+	'class' => '',
 ] )
 
 @php
@@ -19,13 +15,5 @@
 @endphp
 
 <div @class( $classes )>
-	<x-button
-		href="{{ $url }}"
-		:target="! empty( $new_window ) ? '_blank' : ''"
-		:color="$color"
-		size="big"
-		appearance="outline"
-	>
-		<x-escape :content="$text" />
-	</x-button>
+	{!! $slot !!}
 </div>

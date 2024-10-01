@@ -25,4 +25,13 @@
 			margin-right: 5px;
 		}
 	}
+
+	.wp-block-quark-buttons {
+
+		margin-bottom: var(--typography-spacing);
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
 }
