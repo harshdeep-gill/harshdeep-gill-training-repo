@@ -18,7 +18,6 @@
 
 	$icon_image_args = [
 		'size' =>       [
-			'width'   => 56,
 			'height'  => 56,
 		],
 	];
