@@ -16,8 +16,8 @@ function bootstrap(): void {
 	// Hooks.
 	add_filter( 'robots_txt', __NAMESPACE__ . '\\custom_robots_txt', 999999 ); // Override Yoast SEO hooked at 99999.
 
-	// Custom fields. Only enable main site.
-	if ( is_admin() && 1 === get_current_blog_id() ) {
+	// Custom fields.
+	if ( is_admin() ) {
 		// ACF options page.
 		add_action( 'admin_menu', __NAMESPACE__ . '\\setup_settings' );
 
