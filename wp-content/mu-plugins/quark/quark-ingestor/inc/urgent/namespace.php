@@ -7,6 +7,7 @@
 
 namespace Quark\Ingestor\Urgent;
 
+use WP_Error;
 use WP_Post;
 
 use function Quark\CabinCategories\get as get_cabin_post;
@@ -36,9 +37,6 @@ function bootstrap(): void {
 
 	// Track adventure option taxonomy change.
 	add_action( 'saved_' . ADVENTURE_OPTION_CATEGORY, __NAMESPACE__ . '\\track_adventure_option_taxonomy_change', 999 );
-
-	// Hook for urgent push.
-	add_action( SCHEDULE_HOOK, __NAMESPACE__ . '\\push_urgent_data' );
 }
 
 /**
@@ -133,7 +131,7 @@ function track_expedition_post_type_change( int|string $post_id = 0 ): void {
 	update_post_meta( $post_id, URGENTLY_TRACKED_DATA_HASH_META, $hash );
 
 	// Schedule urgent push.
-	schedule_urgent_push();
+	dispatch_urgent_push_gh_event( $changed_expedition_ids );
 }
 
 /**
@@ -273,7 +271,7 @@ function track_cabin_post_type_change( int|string $post_id = 0 ): void {
 	update_post_meta( $post_id, URGENTLY_TRACKED_DATA_HASH_META, $hash );
 
 	// Schedule urgent push.
-	schedule_urgent_push();
+	dispatch_urgent_push_gh_event( $changed_expedition_ids );
 }
 
 /**
@@ -401,19 +399,90 @@ function track_adventure_option_taxonomy_change( int $term_id = 0 ): void {
 	update_term_meta( $term_id, URGENTLY_TRACKED_DATA_HASH_META, $hash );
 
 	// Schedule urgent push.
-	schedule_urgent_push();
+	dispatch_urgent_push_gh_event( $changed_expedition_ids );
 }
 
 /**
- * Schedule urgent push.
+ * Dispatch urgent push event to Github.
+ *
+ * @param int[] $expedition_ids Expedition IDs.
  *
  * @return void
  */
-function schedule_urgent_push(): void {
-	// Schedule urgent push.
-	if ( ! wp_next_scheduled( SCHEDULE_HOOK ) ) {
-		wp_schedule_single_event( time(), SCHEDULE_HOOK );
+function dispatch_urgent_push_gh_event( array $expedition_ids = [] ): void {
+	// Check credentials.
+	if (
+		! defined( 'QUARK_GITHUB_ACTION_TOKEN' ) ||
+		! defined( 'QUARK_GITHUB_API_DISPATCH_URL' )
+	) {
+		// Log error.
+		do_action(
+			'quark_ingestor_dispatch_gh_event',
+			[
+				'error'          => 'Github credentials missing',
+				'expedition_ids' => $expedition_ids,
+			]
+		);
+
+		// Bail.
+		return;
 	}
+
+	// Set request args.
+	$args = [
+		'method'  => 'POST',
+		'timeout' => 20,
+		'headers' => [
+			'Authorization' => 'Bearer ' . QUARK_GITHUB_ACTION_TOKEN,
+		],
+		'body'    => wp_json_encode(
+			[
+				'event_type' => 'urgent-ingestor-push',
+			]
+		),
+	];
+
+	// Do request.
+	$request = wp_remote_request( QUARK_GITHUB_API_DISPATCH_URL, $args );
+
+	// Bail if failed.
+	if ( $request instanceof WP_Error ) {
+		// Log error.
+		do_action(
+			'quark_ingestor_dispatch_gh_event',
+			[
+				'error'          => $request->get_error_message(),
+				'expedition_ids' => $expedition_ids,
+			]
+		);
+
+		// Bail.
+		return;
+	}
+
+	// Check response code.
+	if ( 204 !== wp_remote_retrieve_response_code( $request ) ) {
+		// Log error.
+		do_action(
+			'quark_ingestor_dispatch_gh_event',
+			[
+				'error'          => wp_remote_retrieve_response_message( $request ),
+				'expedition_ids' => $expedition_ids,
+			]
+		);
+
+		// Bail.
+		return;
+	}
+
+	// Log success.
+	do_action(
+		'quark_ingestor_dispatch_gh_event',
+		[
+			'success'        => 'Github event dispatched',
+			'expedition_ids' => $expedition_ids,
+		]
+	);
 }
 
 /**
@@ -445,7 +514,4 @@ function push_urgent_data(): void {
 		// Push current changed expedition ids.
 		do_push( $changed_expedition_ids );
 	} while ( true );
-
-	// Unschedule urgent push.
-	wp_clear_scheduled_hook( SCHEDULE_HOOK );
 }
