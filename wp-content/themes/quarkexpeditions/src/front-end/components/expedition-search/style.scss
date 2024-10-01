@@ -30,6 +30,11 @@
 		}
 	}
 
+	.form-field-group__group {
+		grid-template-columns: 1fr;
+		padding-right: var(--spacing-1);
+	}
+
 	&__sidebar-filters {
 
 		&-header {
@@ -61,6 +66,17 @@
 			.accordion__handle-btn-text {
 				font-size: var(--font-size);
 				font-weight: var(--font-weight-normal);
+			}
+		}
+
+		label {
+			font-weight: var(--font-weight-normal);
+		}
+
+		&-with-children {
+
+			label {
+				font-weight: var(--font-weight-bold);
 			}
 		}
 
@@ -165,5 +181,15 @@
 
 	[data-hidden] {
 		display: none;
+	}
+
+	quark-expedition-search-filter-destinations,
+	quark-expedition-search-filter-ships,
+	quark-expedition-search-filter-adventure-options,
+	quark-expedition-search-filter-adventure-languages,
+	quark-expedition-search-filter-adventure-expeditions,
+	quark-expedition-search-filter-adventure-cabin-classes,
+	quark-expedition-search-filter-adventure-travelers {
+		display: contents;
 	}
 }
