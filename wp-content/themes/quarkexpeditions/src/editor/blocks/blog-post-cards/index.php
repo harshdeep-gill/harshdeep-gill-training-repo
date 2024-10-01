@@ -69,17 +69,6 @@ function render( array $attributes = [] ): string {
 		$args['orderby']        = 'post__in';
 		$args['posts_per_page'] = ( true === $attributes['hasPagination'] ) ? $attributes['postsPerPage'] : count( $attributes['ids'] );
 	} elseif ( 'byTerms' === $attributes['selection'] ) {
-		// check for Category archive page.
-		if ( is_archive() && is_category() ) {
-			$term = get_queried_object();
-
-			// check if its term.
-			if ( $term instanceof WP_Term ) {
-				$attributes['termIds']    = [ $term->term_id ];
-				$attributes['taxonomies'] = [ $term->taxonomy ];
-			}
-		}
-
 		// Return empty if selection by terms, but no terms or taxonomy were selected.
 		if ( empty( $attributes['termIds'] ) || empty( $attributes['taxonomies'] ) ) {
 			return '';
@@ -103,6 +92,31 @@ function render( array $attributes = [] ): string {
 
 		// Add tax query to args.
 		$args['tax_query'] = $tax_query;
+	} elseif ( 'automatic' === $attributes['selection'] ) {
+		// check for Category archive page.
+		if ( is_archive() && is_category() ) {
+			$term = get_queried_object();
+
+			// check if its term.
+			if ( ! $term instanceof WP_Term ) {
+				return '';
+			}
+
+			// Get term ID and taxonomy.
+			$term_id  = $term->term_id;
+			$taxonomy = $term->taxonomy;
+
+			// Build tax query.
+			$tax_query[] = [
+				'taxonomy' => $taxonomy,
+				'terms'    => $term_id,
+				'field'    => 'term_id',
+				'operator' => 'IN',
+			];
+
+			// Add tax query to args.
+			$args['tax_query'] = $tax_query;
+		}
 	}
 
 	// Get posts.
