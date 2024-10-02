@@ -511,7 +511,7 @@ function get_breadcrumbs_ancestors( int $post_id = 0 ): array {
 	}
 
 	// Get archive page.
-	$blog_archive_page = absint( get_option( 'page_for_posts', 0 ) );
+	$blog_archive_page = absint( get_option( 'options_blog_posts_page', 0 ) );
 
 	// Get it's title and URL for breadcrumbs if it's set.
 	if ( ! empty( $blog_archive_page ) ) {
