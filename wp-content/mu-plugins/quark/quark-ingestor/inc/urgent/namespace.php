@@ -22,7 +22,7 @@ use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
 const URGENTLY_CHANGED_EXPEDITION_IDS_OPTION = '_urgently_changed_expedition_ids';
 const URGENTLY_TRACKED_DATA_HASH_META        = '_urgently_tracked_data_hash';
 const SCHEDULE_HOOK                          = 'qrk_ingestor_urgent_push';
-const URGENT_INGESTOR_PUSH_EVENT_NAME        = 'urgent-ingestor-push';
+const URGENT_INGESTOR_PUSH_EVENT_NAME        = 'ingestor-urgent-push';
 
 /**
  * Bootstrap.

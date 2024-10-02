@@ -2,7 +2,7 @@ name: Ingestor Urgent Push (QA)
 
 on:
   repository_dispatch:
-    types: [urgent-ingestor-push]
+    types: [ingestor-urgent-push]
 
 jobs:
   wp-cron:
@@ -27,4 +27,4 @@ jobs:
       - name: Run ingestor urgent push
         env:
           PANTHEON_SSH_PRIVATE_KEY: ${{ secrets.PANTHEON_SSH_PRIVATE_KEY }}
-        run: bash .bin/urgent-ingestor-push-qa.sh
+        run: bash .bin/ingestor-urgent-push-qa.sh
