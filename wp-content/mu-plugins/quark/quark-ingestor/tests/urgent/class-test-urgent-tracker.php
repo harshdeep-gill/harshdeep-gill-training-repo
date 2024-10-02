@@ -706,14 +706,14 @@ class Test_Urgent_Tracker extends Softrip_TestCase {
 		$expedition_ids = [ 1, 2, 3 ];
 
 		// Add actions.
-		add_action( 'quark_ingestor_dispatch_gh_event', [ $this, 'listen_quark_ingestor_dispatch_gh_event' ] );
+		add_action( 'quark_ingestor_dispatch_github_event', [ $this, 'listen_quark_ingestor_dispatch_github_event' ] );
 
 		// Test with expedition ids.
 		$actual = dispatch_urgent_push_gh_event( $expedition_ids );
 		$this->assertFalse( $actual );
 
 		// Do action.
-		$this->assertSame( 1, did_action( 'quark_ingestor_dispatch_gh_event' ) );
+		$this->assertSame( 1, did_action( 'quark_ingestor_dispatch_github_event' ) );
 
 		// Verify data.
 		$this->assertEquals(
@@ -736,7 +736,7 @@ class Test_Urgent_Tracker extends Softrip_TestCase {
 		$this->assertTrue( $actual );
 
 		// Do action.
-		$this->assertSame( 2, did_action( 'quark_ingestor_dispatch_gh_event' ) );
+		$this->assertSame( 2, did_action( 'quark_ingestor_dispatch_github_event' ) );
 
 		// Verify data.
 		$this->assertEquals(
@@ -752,13 +752,13 @@ class Test_Urgent_Tracker extends Softrip_TestCase {
 	}
 
 	/**
-	 * Listen to the quark_ingestor_dispatch_gh_event action.
+	 * Listen to the quark_ingestor_dispatch_github_event action.
 	 *
 	 * @param mixed[] $data Data.
 	 *
 	 * @return void
 	 */
-	public function listen_quark_ingestor_dispatch_gh_event( array $data = [] ): void {
+	public function listen_quark_ingestor_dispatch_github_event( array $data = [] ): void {
 		// Set data.
 		$this->dispatch_data = $data;
 	}

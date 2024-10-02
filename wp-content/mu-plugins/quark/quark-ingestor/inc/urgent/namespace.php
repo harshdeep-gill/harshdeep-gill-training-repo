@@ -423,7 +423,7 @@ function dispatch_urgent_push_gh_event( array $expedition_ids = [] ): bool {
 	) {
 		// Log error.
 		do_action(
-			'quark_ingestor_dispatch_gh_event',
+			'quark_ingestor_dispatch_github_event',
 			[
 				'error'          => 'Github credentials missing',
 				'expedition_ids' => $expedition_ids,
@@ -455,7 +455,7 @@ function dispatch_urgent_push_gh_event( array $expedition_ids = [] ): bool {
 	if ( $request instanceof WP_Error ) {
 		// Log error.
 		do_action(
-			'quark_ingestor_dispatch_gh_event',
+			'quark_ingestor_dispatch_github_event',
 			[
 				'error'          => $request->get_error_message(),
 				'expedition_ids' => $expedition_ids,
@@ -470,7 +470,7 @@ function dispatch_urgent_push_gh_event( array $expedition_ids = [] ): bool {
 	if ( 204 !== wp_remote_retrieve_response_code( $request ) ) {
 		// Log error.
 		do_action(
-			'quark_ingestor_dispatch_gh_event',
+			'quark_ingestor_dispatch_github_event',
 			[
 				'error'          => wp_remote_retrieve_response_message( $request ),
 				'expedition_ids' => $expedition_ids,
@@ -483,7 +483,7 @@ function dispatch_urgent_push_gh_event( array $expedition_ids = [] ): bool {
 
 	// Log success.
 	do_action(
-		'quark_ingestor_dispatch_gh_event',
+		'quark_ingestor_dispatch_github_event',
 		[
 			'success'        => 'Github event dispatched',
 			'expedition_ids' => $expedition_ids,

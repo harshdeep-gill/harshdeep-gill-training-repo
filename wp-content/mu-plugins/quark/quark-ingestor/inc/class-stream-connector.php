@@ -33,7 +33,7 @@ class Stream_Connector extends Connector {
 		'quark_ingestor_push_completed',
 		'quark_ingestor_push_error',
 		'quark_ingestor_push_success',
-		'quark_ingestor_dispatch_gh_event',
+		'quark_ingestor_dispatch_github_event',
 	];
 
 	/**
@@ -280,13 +280,13 @@ class Stream_Connector extends Connector {
 	}
 
 	/**
-	 * Callback for `callback_quark_ingestor_dispatch_gh_event` action.
+	 * Callback for `callback_quark_ingestor_dispatch_github_event` action.
 	 *
 	 * @param mixed[] $data Data passed to the action.
 	 *
 	 * @return void
 	 */
-	public function callback_quark_ingestor_dispatch_gh_event( array $data = [] ): void {
+	public function callback_quark_ingestor_dispatch_github_event( array $data = [] ): void {
 		// Validate data.
 		if ( empty( $data ) || empty( $data['expedition_ids'] ) || ! is_array( $data['expedition_ids'] ) ) {
 			return;
