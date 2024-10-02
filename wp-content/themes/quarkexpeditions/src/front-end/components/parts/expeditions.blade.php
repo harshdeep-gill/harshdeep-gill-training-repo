@@ -17,8 +17,8 @@
 
 			@if ( ! empty( $card['departure_date'] ) )
 				@php
-					$card['departure_date']  = sprintf( __( 'Departs %s', 'quark' ), $card['departure_date'] );
-					$card['departure_date'] .= ! empty( $card['itinerary_days'] ) ? sprintf( __( ' | %s Days', 'quark' ), $card['itinerary_days'] ) : '';
+					$card['departure_date']  = sprintf( __( 'Departs %s', 'qrk' ), $card['departure_date'] );
+					$card['departure_date'] .= ! empty( $card['itinerary_days'] ) ? sprintf( __( ' | %s Days', 'qrk' ), $card['itinerary_days'] ) : '';
 				@endphp
 				<x-product-cards.itinerary :duration="$card['departure_date']" />
 			@else
