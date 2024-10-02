@@ -42,6 +42,11 @@ function render( array $attributes = [] ): string {
 
 	// If type is dynamic, and we are on an archive page, get the archive title.
 	if ( ! empty( $attributes['type'] ) && 'dynamic' === $attributes['type'] && is_archive() ) {
+		/*
+		 * This is specifically for archive page configuration. This will only work for archive page.
+		 *
+		 * It will not be available for block editor.
+		 */
 		add_filter( 'get_the_archive_title_prefix', '__return_empty_string', 1 );
 		$title = get_the_archive_title();
 		remove_filter( 'get_the_archive_title_prefix', '__return_empty_string', 1 );
