@@ -9,7 +9,7 @@ namespace Quark\Ingestor\Tests;
 
 use Quark\Tests\Softrip\Softrip_TestCase;
 
-use function Quark\Ingestor\Urgent\dispatch_urgent_push_gh_event;
+use function Quark\Ingestor\Urgent\dispatch_urgent_push_github_event;
 use function Quark\Ingestor\Urgent\track_adventure_option_taxonomy_change;
 use function Quark\Ingestor\Urgent\track_cabin_post_type_change;
 use function Quark\Ingestor\Urgent\track_expedition_post_type_change;
@@ -30,12 +30,12 @@ use const Quark\Ingestor\Urgent\URGENTLY_CHANGED_EXPEDITION_IDS_OPTION;
  */
 class Test_Urgent_Tracker extends Softrip_TestCase {
 	/**
-	 * GH API URL.
+	 * GitHub API URL.
 	 */
 	const GH_API_URL = 'https://test.github-api.com'; // phpcs:ignore
 
 	/**
-	 * GH Action Token.
+	 * GitHub Action Token.
 	 */
 	const GH_ACTION_TOKEN = 'test-token'; // phpcs:ignore
 
@@ -684,22 +684,22 @@ class Test_Urgent_Tracker extends Softrip_TestCase {
 	}
 
 	/**
-	 * Test if urgent push GH event is dispatched.
+	 * Test if urgent push GitHub event is dispatched.
 	 *
-	 * @covers \Quark\Ingestor\Urgent\dispatch_urgent_push_gh_event
+	 * @covers \Quark\Ingestor\Urgent\dispatch_urgent_push_github_event
 	 *
 	 * @return void
 	 */
-	public function test_dispatch_urgent_push_gh_event(): void {
+	public function test_dispatch_urgent_push_github_event(): void {
 		// Setup mock response.
 		add_filter( 'pre_http_request', [ $this, 'mock_ingestor_http_request' ], 10, 3 );
 
 		// Test with no args.
-		$actual = dispatch_urgent_push_gh_event();
+		$actual = dispatch_urgent_push_github_event();
 		$this->assertFalse( $actual );
 
 		// Test with empty array.
-		$actual = dispatch_urgent_push_gh_event( [] );
+		$actual = dispatch_urgent_push_github_event( [] );
 		$this->assertFalse( $actual );
 
 		// Expedition ids.
@@ -709,7 +709,7 @@ class Test_Urgent_Tracker extends Softrip_TestCase {
 		add_action( 'quark_ingestor_dispatch_github_event', [ $this, 'listen_quark_ingestor_dispatch_github_event' ] );
 
 		// Test with expedition ids.
-		$actual = dispatch_urgent_push_gh_event( $expedition_ids );
+		$actual = dispatch_urgent_push_github_event( $expedition_ids );
 		$this->assertFalse( $actual );
 
 		// Do action.
@@ -732,7 +732,7 @@ class Test_Urgent_Tracker extends Softrip_TestCase {
 		define( 'QUARK_GITHUB_API_DISPATCH_URL', self::GH_API_URL );
 
 		// Test with expedition ids.
-		$actual = dispatch_urgent_push_gh_event( $expedition_ids );
+		$actual = dispatch_urgent_push_github_event( $expedition_ids );
 		$this->assertTrue( $actual );
 
 		// Do action.

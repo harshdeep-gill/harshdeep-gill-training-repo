@@ -132,7 +132,7 @@ function track_expedition_post_type_change( int|string $post_id = 0 ): void {
 	update_post_meta( $post_id, URGENTLY_TRACKED_DATA_HASH_META, $hash );
 
 	// Schedule urgent push.
-	dispatch_urgent_push_gh_event( $changed_expedition_ids );
+	dispatch_urgent_push_github_event( $changed_expedition_ids );
 }
 
 /**
@@ -272,7 +272,7 @@ function track_cabin_post_type_change( int|string $post_id = 0 ): void {
 	update_post_meta( $post_id, URGENTLY_TRACKED_DATA_HASH_META, $hash );
 
 	// Schedule urgent push.
-	dispatch_urgent_push_gh_event( $changed_expedition_ids );
+	dispatch_urgent_push_github_event( $changed_expedition_ids );
 }
 
 /**
@@ -400,7 +400,7 @@ function track_adventure_option_taxonomy_change( int $term_id = 0 ): void {
 	update_term_meta( $term_id, URGENTLY_TRACKED_DATA_HASH_META, $hash );
 
 	// Schedule urgent push.
-	dispatch_urgent_push_gh_event( $changed_expedition_ids );
+	dispatch_urgent_push_github_event( $changed_expedition_ids );
 }
 
 /**
@@ -410,7 +410,7 @@ function track_adventure_option_taxonomy_change( int $term_id = 0 ): void {
  *
  * @return bool
  */
-function dispatch_urgent_push_gh_event( array $expedition_ids = [] ): bool {
+function dispatch_urgent_push_github_event( array $expedition_ids = [] ): bool {
 	// Validate expedition ids.
 	if ( empty( $expedition_ids ) ) {
 		return false;

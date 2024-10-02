@@ -10,7 +10,7 @@
 // Modify the $_SERVER global for testing environment.
 $_SERVER['HTTP_HOST'] = 'test.quarkexpeditions.com';
 
-// Define database constants for GH Actions or local testing.
+// Define database constants for GitHub Actions or local testing.
 if ( ! empty( getenv( 'GITHUB_ACTIONS' ) ) ) {
 	define( 'DB_NAME', getenv( 'DB_NAME' ) );
 	define( 'DB_USER', getenv( 'DB_USER' ) );

@@ -66,11 +66,11 @@ class Stream_Connector extends Connector {
 	public function get_action_labels(): array {
 		// Return labels.
 		return [
-			'push_initiated'    => __( 'Push Initiated', 'qrk' ),
-			'push_completed'    => __( 'Push Completed', 'qrk' ),
-			'push_error'        => __( 'Push Error', 'qrk' ),
-			'push_success'      => __( 'Push Success', 'qrk' ),
-			'dispatch_gh_event' => __( 'Dispatch Push GH Event', 'qrk' ),
+			'push_initiated'        => __( 'Push Initiated', 'qrk' ),
+			'push_completed'        => __( 'Push Completed', 'qrk' ),
+			'push_error'            => __( 'Push Error', 'qrk' ),
+			'push_success'          => __( 'Push Success', 'qrk' ),
+			'dispatch_github_event' => __( 'Dispatch GitHub Event', 'qrk' ),
 		];
 	}
 
@@ -321,14 +321,14 @@ class Stream_Connector extends Connector {
 		if ( ! empty( $error_message ) ) {
 			$message = sprintf(
 				/* translators: 1: Error message */
-				__( 'Dispatch urgent push GH event failed | %1$s | Expedition ids: %2$s', 'qrk' ),
+				__( 'Dispatch urgent push GitHub event failed | %1$s | Expedition ids: %2$s', 'qrk' ),
 				$error_message,
 				implode( ',', $expedition_ids )
 			);
 		} else {
 			$message = sprintf(
 				/* translators: 1: Success message */
-				__( 'Dispatch urgent push GH event successful | %1$s | Expedition ids: %2$s', 'qrk' ),
+				__( 'Dispatch urgent push GitHub event successful | %1$s | Expedition ids: %2$s', 'qrk' ),
 				$success_message,
 				implode( ',', $expedition_ids )
 			);
@@ -344,7 +344,7 @@ class Stream_Connector extends Connector {
 			],
 			0,
 			'ingestor_push',
-			'dispatch_gh_event'
+			'dispatch_github_event'
 		);
 	}
 
