@@ -8,5 +8,5 @@ ssh-agent -a /tmp/ssh_agent.sock > /dev/null
 echo "$PANTHEON_SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
 mkdir -p ~/.ssh && echo "StrictHostKeyChecking no" >> ~/.ssh/config
 
-# Run Cron
+# Run Command
 terminus wp quark-expeditions.qa -- quark-ingestor push urgent
