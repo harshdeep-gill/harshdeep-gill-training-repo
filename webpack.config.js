@@ -197,6 +197,7 @@ module.exports = ( env ) => {
 			TPMultiSelectElement: `${ themePath }/src/vendor/tp-multi-select.js`,
 			TPToggleAttributeElement: `${ themePath }/src/vendor/tp-toggle-attribute.js`,
 			queryString: `${ themePath }/src/vendor/querystring.js`,
+			popoverPolyfill: `${ themePath }/src/vendor/popover-polyfill.js`,
 		},
 		output: {
 			...buildConfig.output,
