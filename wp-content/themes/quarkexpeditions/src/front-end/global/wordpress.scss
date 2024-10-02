@@ -244,19 +244,6 @@
 	}
 }
 
-// Query Title.
-.wp-block-query-title {
-	margin-top: var(--spacing-8);
-	margin-bottom: var(--spacing-8);
-	font-weight: var(--font-weight-default);
-	line-height: var(--h1-line-height);
-
-	@media screen and (min-width: grid-size(xl)) {
-		margin-top: var(--spacing-9);
-		margin-bottom: var(--spacing-9);
-	}
-}
-
 // Table.
 table {
 	min-width: 100%;

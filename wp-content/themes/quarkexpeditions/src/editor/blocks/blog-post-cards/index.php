@@ -93,6 +93,11 @@ function render( array $attributes = [] ): string {
 		// Add tax query to args.
 		$args['tax_query'] = $tax_query;
 	} elseif ( 'automatic' === $attributes['selection'] ) {
+		/*
+		 * This is specifically for archive page configuration. This will only work for Category archive page.
+		 *
+		 * It will not be available for block editor.
+		 */
 		// check for Category archive page.
 		if ( is_archive() && is_category() ) {
 			$term = get_queried_object();
