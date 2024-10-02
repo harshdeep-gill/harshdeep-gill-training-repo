@@ -33,6 +33,7 @@ class Stream_Connector extends Connector {
 		'quark_softrip_sync_completed',
 		'quark_softrip_sync_departure_updated',
 		'quark_softrip_sync_departure_expired',
+		'quark_softrip_sync_error',
 	];
 
 	/**
@@ -69,6 +70,7 @@ class Stream_Connector extends Connector {
 			'sync_completed'         => __( 'Sync Completed', 'qrk' ),
 			'sync_departure_updated' => __( 'Departure Updated', 'qrk' ),
 			'sync_departure_expired' => __( 'Departure Expired', 'qrk' ),
+			'sync_error'             => __( 'Sync Error', 'qrk' ),
 		];
 	}
 
@@ -98,7 +100,7 @@ class Stream_Connector extends Connector {
 		$this->log(
 			$message,
 			[],
-			absint( wp_unique_id() ),
+			0,
 			'softrip_sync',
 			'sync_initiated'
 		);
@@ -132,7 +134,7 @@ class Stream_Connector extends Connector {
 		$this->log(
 			$message,
 			[],
-			absint( wp_unique_id() ),
+			0,
 			'softrip_sync',
 			'sync_completed'
 		);
@@ -225,6 +227,38 @@ class Stream_Connector extends Connector {
 			absint( $data['post_id'] ),
 			'softrip_sync',
 			'sync_departure_expired'
+		);
+	}
+
+	/**
+	 * Callback for `quark_softrip_sync_error` action.
+	 *
+	 * @param mixed[] $data Data passed to the action.
+	 *
+	 * @return void
+	 */
+	public function callback_quark_softrip_sync_error( array $data = [] ): void {
+		// Validate data.
+		if ( empty( $data ) || empty( $data['error'] ) || empty( $data['via'] ) || empty( $data['codes'] ) || ! is_array( $data['codes'] ) ) {
+			return;
+		}
+
+		// Prepare message.
+		$message = sprintf(
+			// translators: %1$s: Via, %2$s: Error, %3$s: Codes.
+			__( 'Softrip sync error via %1$s | Error: %2$s | Codes: %3$s', 'qrk' ),
+			strval( $data['via'] ),
+			strval( $data['error'] ),
+			implode( ', ', $data['codes'] )
+		);
+
+		// Log action.
+		$this->log(
+			$message,
+			[],
+			0,
+			'softrip_sync',
+			'sync_error'
 		);
 	}
 
