@@ -139,7 +139,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 		$prices_data = get_starting_from_price( $expedition_id );
 
 		// Get Departure Date.
-		$departure_date = get_starting_from_date( $expedition_id );
+		$departure_date = $attributes['showDepartureDate'] ? get_starting_from_date( $expedition_id ) : false;
 
 		// Build departure date.
 		if ( ! empty( $departure_date ) ) {
@@ -148,15 +148,14 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 
 		// Build card data.
 		$cards[] = [
-			'title'               => get_the_title( $expedition_id ),
-			'url'                 => get_the_permalink( $expedition_id ),
-			'image_id'            => get_post_thumbnail_id( $expedition_id ),
-			'show_departure_date' => $attributes['showDepartureDate'] && ! empty( $departure_date ),
-			'itinerary_days'      => get_minimum_duration( $expedition_id ),
-			'departure_date'      => $departure_date,
-			'original_price'      => format_price( $prices_data['original'] ),
-			'discounted_price'    => format_price( $prices_data['discounted'] ),
-			'transfer_package'    => $transfer_package_data,
+			'title'            => get_the_title( $expedition_id ),
+			'url'              => get_the_permalink( $expedition_id ),
+			'image_id'         => get_post_thumbnail_id( $expedition_id ),
+			'itinerary_days'   => get_minimum_duration( $expedition_id ),
+			'departure_date'   => $departure_date,
+			'original_price'   => format_price( $prices_data['original'] ),
+			'discounted_price' => format_price( $prices_data['discounted'] ),
+			'transfer_package' => $transfer_package_data,
 		];
 	}
 

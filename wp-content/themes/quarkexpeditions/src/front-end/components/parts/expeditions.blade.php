@@ -15,7 +15,7 @@
 				<x-product-cards.image :image_id="$card['image_id']" />
 			@endif
 
-			@if ( $card['show_departure_date'] && ! empty( $card['departure_date'] ) )
+			@if ( ! empty( $card['departure_date'] ) )
 				@php
 					$card['departure_date']  = sprintf( __( 'Departs %s', 'quark' ), $card['departure_date'] );
 					$card['departure_date'] .= ! empty( $card['itinerary_days'] ) ? sprintf( __( ' | %s Days', 'quark' ), $card['itinerary_days'] ) : '';
