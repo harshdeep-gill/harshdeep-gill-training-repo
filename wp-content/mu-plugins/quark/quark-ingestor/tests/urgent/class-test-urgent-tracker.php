@@ -728,7 +728,7 @@ class Test_Urgent_Tracker extends Softrip_TestCase {
 		$this->dispatch_data = [];
 
 		// Set github credentials.
-		define( 'QUARK_GITHUB_ACTION_TOKEN', self::GH_ACTION_TOKEN );
+		define( 'QUARK_GITHUB_ACTIONS_TOKEN', self::GH_ACTION_TOKEN );
 		define( 'QUARK_GITHUB_API_DISPATCH_URL', self::GH_API_URL );
 
 		// Test with expedition ids.

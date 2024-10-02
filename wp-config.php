@@ -175,8 +175,8 @@ define( 'QUARK_CHECKOUT_BASE_URL', env( 'QUARK_CHECKOUT_BASE_URL' ) );
 define( 'QUARK_INGESTOR_BASE_URL', env( 'QUARK_INGESTOR_BASE_URL' ) );
 define( 'QUARK_INGESTOR_API_KEY', env( 'QUARK_INGESTOR_API_KEY' ) );
 
-// Github Action Token.
-define( 'QUARK_GITHUB_ACTION_TOKEN', env( 'QUARK_GITHUB_ACTION_TOKEN' ) );
+// Github Actions Token.
+define( 'QUARK_GITHUB_ACTIONS_TOKEN', env( 'QUARK_GITHUB_ACTIONS_TOKEN' ) );
 define( 'QUARK_GITHUB_API_DISPATCH_URL', env( 'QUARK_GITHUB_API_DISPATCH_URL' ) );
 
 /* That's all, stop editing! Happy publishing. */

@@ -418,7 +418,7 @@ function dispatch_urgent_push_gh_event( array $expedition_ids = [] ): bool {
 
 	// Check credentials.
 	if (
-		! defined( 'QUARK_GITHUB_ACTION_TOKEN' ) ||
+		! defined( 'QUARK_GITHUB_ACTIONS_TOKEN' ) ||
 		! defined( 'QUARK_GITHUB_API_DISPATCH_URL' )
 	) {
 		// Log error.
@@ -439,7 +439,7 @@ function dispatch_urgent_push_gh_event( array $expedition_ids = [] ): bool {
 		'method'  => 'POST',
 		'timeout' => 20,
 		'headers' => [
-			'Authorization' => 'Bearer ' . QUARK_GITHUB_ACTION_TOKEN,
+			'Authorization' => 'Bearer ' . QUARK_GITHUB_ACTIONS_TOKEN,
 		],
 		'body'    => wp_json_encode(
 			[
