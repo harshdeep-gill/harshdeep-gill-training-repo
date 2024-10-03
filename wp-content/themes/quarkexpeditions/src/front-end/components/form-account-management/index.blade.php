@@ -23,12 +23,7 @@
 	<div class="form-account-management__content">
 		<div class="form-account-management__form">
 			<p class="form-account-management__instructions">
-				{!!
-					esc_html__(
-						'Fill the form below, and we will get back to you on the same or next business day.',
-						'qrk'
-					)
-				!!}
+				<x-escape content="Fill the form below, and we will get back to you on the same or next business day." />
 			</p>
 
 			<div class="form-account-management__fields">
