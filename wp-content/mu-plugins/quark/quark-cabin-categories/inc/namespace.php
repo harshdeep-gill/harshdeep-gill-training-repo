@@ -56,6 +56,7 @@ function bootstrap(): void {
 	if ( is_admin() || ( defined( 'WP_CLI' ) && true === WP_CLI ) ) {
 		// Custom fields.
 		require_once __DIR__ . '/../custom-fields/cabin-categories.php';
+		require_once __DIR__ . '/../custom-fields/cabin-classes.php';
 
 		// Taxonomy menu position.
 		add_action( 'admin_menu', __NAMESPACE__ . '\\set_cabin_classes_taxonomy_menu_position' );
@@ -482,6 +483,7 @@ function get_cabin_categories_data( int $cabin_id = 0 ): array {
  *     gallery: mixed,
  *     cabin_code: string,
  *     type: string,
+ *     sort_priority: int,
  *     specifications: array{
  *         availability_status: string,
  *         availability_description: string,
@@ -552,13 +554,17 @@ function get_cabin_details_by_departure( int $departure_post_id = 0, string $cur
 		$cabin_spaces_available   = get_available_cabin_spaces( $departure_post_id, $cabin_category_post_id );
 		$availability_description = get_availability_status_description( $availability_status );
 
+		// Cabin class data.
+		$cabin_class_data = get_cabin_category_class_data( $cabin_category_post_id );
+
 		// Setup cabin structure data.
 		$struct = [
 			'name'           => strval( $cabin_data['post_meta']['cabin_name'] ?? '' ),
 			'cabin_code'     => $cabin_code,
 			'description'    => $cabin_data['post']->post_content,
 			'gallery'        => $cabin_data['post_meta']['cabin_images'] ?? [],
-			'type'           => get_cabin_category_class( $cabin_category_post_id ),
+			'type'           => $cabin_class_data['name'] ?? '',
+			'sort_priority'  => $cabin_class_data['sort_priority'] ?? 0,
 			'specifications' => [
 				'availability_status'      => $availability_status,
 				'availability_description' => $availability_description,
@@ -598,6 +604,14 @@ function get_cabin_details_by_departure( int $departure_post_id = 0, string $cur
 		$cabin_categories_data[ $cabin_code ] = $struct;
 	}
 
+	// Sort cabin categories data by sort priority.
+	uasort(
+		$cabin_categories_data,
+		function ( $a, $b ) {
+			return $a['sort_priority'] <=> $b['sort_priority'];
+		}
+	);
+
 	// Return cabin details array.
 	return $cabin_categories_data;
 }
@@ -607,11 +621,15 @@ function get_cabin_details_by_departure( int $departure_post_id = 0, string $cur
  *
  * @param int $cabin_category_id Cabin category ID.
  *
- * @return string
+ * @return array{}|array{
+ *   name: string,
+ *   sort_priority: int,
+ *   description: string,
+ * }
  */
-function get_cabin_category_class( int $cabin_category_id = 0 ): string {
+function get_cabin_category_class_data( int $cabin_category_id = 0 ): array {
 	// Setup default return value.
-	$class = '';
+	$class = [];
 
 	// Bail out if no cabin category ID.
 	if ( empty( $cabin_category_id ) ) {
@@ -637,11 +655,15 @@ function get_cabin_category_class( int $cabin_category_id = 0 ): string {
 		return $class;
 	}
 
-	// Get the class name.
-	$class = $taxonomy_data['name'];
+	// Sort priority.
+	$sort_priority = absint( get_term_meta( $taxonomy_data['term_id'], 'sort_priority', true ) );
 
-	// Return class name.
-	return $class;
+	// Return class data.
+	return [
+		'name'          => strval( $taxonomy_data['name'] ),
+		'sort_priority' => $sort_priority,
+		'description'   => strval( $taxonomy_data['description'] ),
+	];
 }
 
 /**

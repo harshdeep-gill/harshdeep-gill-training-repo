@@ -602,6 +602,7 @@ function get_promotion_tags( int $post_id = 0 ): array {
  *        gallery: mixed,
  *        cabin_code: string,
  *        type: string,
+ *        sort_priority: int,
  *        specifications: array{
  *           availability_status: string,
  *           availability_description: string,
