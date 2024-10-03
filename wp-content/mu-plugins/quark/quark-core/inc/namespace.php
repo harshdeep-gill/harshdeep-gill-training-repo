@@ -567,17 +567,54 @@ function get_pagination_links( array $args = [] ): string {
 		$args['query'] = $wp_query;
 	}
 
+	// Get current page number.
+	$current = max( 1, $args['query']->get( 'paged' ) );
+	$total   = $args['query']->max_num_pages;
+
 	// Get pagination links.
-	$pagination_links = strval(
-		paginate_links(
-			[
-				'current'   => max( 1, $args['query']->get( 'paged' ) ),
-				'total'     => $args['query']->max_num_pages,
-				'prev_text' => __( 'Previous', 'qrk' ),
-				'next_text' => __( 'Next ', 'qrk' ),
-			]
-		)
+	$pagination_links = paginate_links(
+		[
+			'current'   => $current,
+			'total'     => $total,
+			'prev_text' => __( 'Previous', 'qrk' ),
+			'next_text' => __( 'Next ', 'qrk' ),
+			'type'      => 'array',
+		]
 	);
+
+	// Prepare pagination links.
+	if ( is_array( $pagination_links ) ) {
+		$previous = '';
+		$next     = '';
+
+		// Shift previous link.
+		if ( $current && 1 < $current ) {
+			$previous = array_shift( $pagination_links );
+		}
+
+		// Pop next link.
+		if ( $current < $total ) {
+			$next = array_pop( $pagination_links );
+		}
+
+		// Get First and Last page.
+		$first_page = strval( array_shift( $pagination_links ) );
+		$last_page  = strval( array_pop( $pagination_links ) );
+
+		// Check for dots.
+		$has_dots_after_first_page = str_contains( $pagination_links[0], 'dots' );
+		$has_dots_before_last_page = str_contains( $pagination_links[ count( $pagination_links ) - 1 ], 'dots' );
+
+		// Prepare pagination links.
+		$pagination_links = sprintf(
+			"%s\n%s\n%s\n%s\n%s",
+			$previous,
+			! $has_dots_after_first_page ? $first_page : '',
+			implode( "\n", $pagination_links ),
+			! $has_dots_before_last_page ? $last_page : '',
+			$next
+		);
+	}
 
 	// Bail out if pagination links are empty.
 	if ( empty( $pagination_links ) ) {

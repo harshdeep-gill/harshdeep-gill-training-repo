@@ -10,7 +10,6 @@
 		border-radius: var(--border-radius-large);
 		box-shadow: var(--shadow-1);
 		padding: var(--grid-col-gutter);
-		overflow: hidden;
 
 		& + & {
 			margin-top: var(--grid-row-gutter);
@@ -18,7 +17,10 @@
 	}
 
 	&__card-banner {
+		border-top-right-radius: var(--border-radius-large);
+		border-top-left-radius: var(--border-radius-large);
 		margin: calc(-1 * var(--grid-col-gutter)) calc(-1 * var(--grid-col-gutter)) 0;
+		overflow: hidden;
 	}
 
 	&__card-banner-link {
@@ -33,7 +35,7 @@
 
 		@include transition();
 
-		&:hover {
+		&[href]:hover {
 			background-color: var(--color-blue);
 			text-decoration: none;
 		}
@@ -46,6 +48,15 @@
 		@media screen and (min-width: grid-size(md)) {
 			grid-template-columns: 288px 1fr;
 			grid-column-gap: var(--spacing-7);
+		}
+
+		.sidebar-grid & {
+			grid-template-columns: repeat(1, 1fr);
+
+			@media screen and (min-width: grid-size(md)) {
+				grid-template-columns: 288px 1fr;
+				grid-column-gap: var(--spacing-7);
+			}
 		}
 	}
 
@@ -147,8 +158,17 @@
 
 		@media screen and (min-width: grid-size(xl)) {
 			display: grid;
-			grid-template-columns: repeat(1, 1fr);
 			grid-template-columns: clamp(120px, 30%, 200px) 1fr;
+		}
+
+		.sidebar-grid & {
+			display: flex;
+			flex-direction: column;
+
+			@media screen and (min-width: grid-size(xxl)) {
+				display: grid;
+				grid-template-columns: clamp(120px, 30%, 200px) 1fr;
+			}
 		}
 	}
 
@@ -159,18 +179,32 @@
 		&:first-child {
 
 			@media screen and (min-width: grid-size(md)) {
-				padding-right: 160px; // Promo tag width.
+				padding-right: 170px; // Promo tag width.
 			}
 
-			@media screen and (min-width: grid-size(lg)) {
+			@media screen and (min-width: grid-size(xl)) {
 				padding-right: 0;
 			}
 		}
 
 		&:nth-child(2) {
 
-			@media screen and (min-width: grid-size(lg)) {
-				padding-right: 160px; // Promo tag width.
+			@media screen and (min-width: grid-size(xl)) {
+				padding-right: 170px; // Promo tag width.
+			}
+		}
+
+		.sidebar-grid & {
+
+			&:first-child {
+
+				@media screen and (min-width: grid-size(md)) {
+					padding-right: 170px; // Promo tag width.
+				}
+
+				@media screen and (min-width: grid-size(xxl)) {
+					padding-right: 0;
+				}
 			}
 		}
 	}
@@ -183,6 +217,20 @@
 
 	&__specification-value {
 		font-weight: var(--font-weight-bold);
+	}
+
+	&__row {
+
+		@media screen and (min-width: grid-size(xl)) {
+			display: flex;
+			flex-direction: row-reverse;
+			justify-content: space-between;
+			align-items: flex-end;
+		}
+
+		.sidebar-grid & {
+			display: block;
+		}
 	}
 
 	&__rating {
@@ -216,6 +264,15 @@
 
 	&__option {
 
+		&:first-child {
+
+			@media screen and (max-width: calc(grid-size(sm) - 1px)) {
+				max-width: calc(100% - 140px);
+				text-overflow: ellipsis;
+				overflow: hidden;
+			}
+		}
+
 		&--hidden {
 			display: none;
 		}
@@ -228,7 +285,7 @@
 	&__options-count-wrap {
 		display: flex;
 		align-items: center;
-		gap: var(--spacing-3);
+		gap: var(--spacing-2);
 
 		&::before {
 			display: none;
@@ -273,11 +330,11 @@
 
 	&__buttons {
 		display: flex;
-		flex-direction: column;
+		flex-flow: column-reverse;
 		gap: var(--spacing-4);
 		margin-top: var(--grid-row-gutter);
 
-		@media screen and (min-width: grid-size(md)) {
+		@media screen and (min-width: grid-size(lg)) {
 			flex-flow: row wrap;
 		}
 
@@ -286,8 +343,20 @@
 			min-width: 0;
 		}
 
-		#{$self}__cta {
+		.options-button {
 			min-width: 60%;
+
+			.btn {
+				min-width: 60px;
+			}
+		}
+
+		.sidebar-grid & {
+			flex-direction: column;
+
+			@media screen and (min-width: grid-size(xl)) {
+				flex-flow: row wrap;
+			}
 		}
 	}
 
@@ -347,6 +416,7 @@
 		cursor: pointer;
 		vertical-align: middle;
 		margin-left: var(--spacing-1);
+		white-space: normal;
 
 		&:hover {
 			#{$self}__tooltip-description {
@@ -378,9 +448,7 @@
 		border: 1px solid var(--color-black);
 		border-radius: var(--border-small);
 		margin: 0 auto var(--spacing-1);
-		font-size: var(--font-size-small);
 		font-weight: initial;
-		line-height: var(--line-height-small);
 		padding: var(--spacing-3) var(--spacing-4);
 		left: 0;
 		top: calc(100% + var(--spacing-4));
@@ -408,6 +476,10 @@
 		&::before {
 			border-color: rgba(0, 0, 0, 0) rgba(0, 0, 0, 0) var(--color-black) rgba(0, 0, 0, 0);
 		}
+
+		ul {
+			list-style-type: disc;
+		}
 	}
 
 	&__tooltip-icon {
@@ -419,7 +491,6 @@
 	// Media carousel.
 	.media-carousel {
 		display: flex;
-		align-items: center;
 		height: 100%;
 
 		&:hover .media-carousel__arrows {
@@ -430,13 +501,10 @@
 		&__track,
 		&__slides {
 			min-height: 100%;
-
-			@media screen and (min-width: grid-size(md)) {
-				height: 100% !important;
-			}
 		}
 
 		&__arrows {
+			align-self: center;
 			position: absolute;
 			left: 0;
 			z-index: 1;
@@ -450,17 +518,27 @@
 
 		&__item {
 
-			@media screen and (min-width: grid-size(md)) {
-				height: 100% !important;
-			}
-
 			img {
 				object-fit: cover;
 				width: 100%;
 				height: 100%;
 
-				@media screen and (min-width: grid-size(md)) {
+				@media screen and (min-width: grid-size(xl)) {
 					aspect-ratio: initial;
+				}
+			}
+		}
+
+		tp-slider-slides:first-of-type > tp-slider-slide {
+
+			@media screen and (min-width: grid-size(md)) {
+				height: 100%;
+			}
+
+			.sidebar-grid & {
+
+				@media screen and (max-width: calc(grid-size(md) - 1px)) {
+					height: auto;
 				}
 			}
 		}

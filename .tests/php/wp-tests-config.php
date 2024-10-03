@@ -78,5 +78,9 @@ define( 'QUARK_SOFTRIP_ADAPTER_BASE_URL', 'https://softrip-adapter.dev' );
 define( 'QUARK_SOFTRIP_ADAPTER_USERNAME', 'test' );
 define( 'QUARK_SOFTRIP_ADAPTER_PASSWORD', 'test' );
 
+// Ingestor API credentials.
+define( 'QUARK_INGESTOR_BASE_URL', 'https://ingestor-adapter.dev' );
+define( 'QUARK_INGESTOR_API_KEY', 'test' );
+
 // Checkout base URL.
 define( 'QUARK_CHECKOUT_BASE_URL', 'https://local-checkout.quarkexpeditions.com' );

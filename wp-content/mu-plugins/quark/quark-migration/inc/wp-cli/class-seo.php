@@ -625,7 +625,7 @@ class SEO {
 
 		// Check if we have any matches.
 		if ( ! empty( $matches[2] ) ) {
-			foreach ( $matches[2] as $url ) {
+			foreach ( $matches[2] as $index => $url ) {
 				// Temp URL.
 				$temp_url = $url;
 
@@ -661,8 +661,8 @@ class SEO {
 
 				// Check if we have an existing redirect.
 				if ( ! empty( $existing_redirect ) ) {
-					$new_url = str_replace( $parsed_url['path'], $existing_redirect['action_data'], $url );
-					$content = str_replace( $url, $new_url, $content );
+					$new_url = str_replace( $url, $existing_redirect['action_data'], $matches[0][ $index ] );
+					$content = str_replace( $matches[0][ $index ], $new_url, $content );
 				}
 			}
 		}
@@ -725,7 +725,7 @@ class SEO {
 		}
 
 		// Files.
-		preg_match_all( '#https://www.quarkexpeditions.com/sites/default/files/(.+?)\.([a-zA-Z0-9]){3,4}#', $content, $matches );
+		preg_match_all( '#quarkexpeditions.com/sites/default/files/(.+?)\.([a-zA-Z0-9]){3,4}#', $content, $matches );
 
 		// Check if we have any matches.
 		if ( ! empty( $matches[0] ) ) {
@@ -747,7 +747,7 @@ class SEO {
 						LIMIT 1
 						',
 						[
-							'%' . str_replace( 'https://www.quarkexpeditions.com/sites/default/files/', '', $drupal_url ) . '%',
+							'%' . str_replace( 'quarkexpeditions.com/sites/default/files/', '', $drupal_url ) . '%',
 						]
 					),
 					ARRAY_A
@@ -775,5 +775,201 @@ class SEO {
 
 		// All done.
 		return $content;
+	}
+
+	/**
+	 * Search redirection loop.
+	 *
+	 * @subcommand search-redirection-loop
+	 *
+	 * @return void
+	 *
+	 * @throws ExitException Exit on failure of command.
+	 */
+	public function search_redirection_loop(): void {
+		// Welcome message.
+		WP_CLI::log( WP_CLI::colorize( '%YSearching for redirection loop...%n' ) );
+
+		// Get all redirections.
+		global $wpdb;
+		$redirections = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}redirection_items WHERE action_data LIKE '/post/%'", ARRAY_A );
+
+		// Check if we have redirections.
+		if ( ! is_array( $redirections ) || empty( $redirections ) ) {
+			WP_CLI::error( 'No redirections found!' );
+
+			// Bail out if progress bar not exists.
+			return;
+		}
+
+		// Progress bar.
+		$total_redirections = count( $redirections );
+		$progress           = make_progress_bar( 'Searching', $total_redirections );
+		$count              = 0;
+		WP_CLI::log( WP_CLI::colorize( '%GFound redirections: %n' . $total_redirections ) );
+
+		// Check if progress bar exists or not.
+		if ( ! $progress instanceof Bar ) {
+			WP_CLI::error( 'Progress bar not found!' );
+
+			// Bail out if progress bar not exists.
+			return;
+		}
+
+		// Prepare for migration.
+		prepare_for_migration();
+
+		// Search for redirection loop.
+		foreach ( $redirections as $redirection ) {
+			// Check if we have a redirect.
+			if ( empty( $redirection['url'] ) || empty( $redirection['action_data'] ) ) {
+				$progress->tick();
+				continue;
+			}
+
+			// Retrieve ID from action_data i.e. =  /post/18349.
+			$post_id = str_replace( '/post/', '', $redirection['action_data'] );
+
+			// Check if we have a post ID.
+			if ( empty( $post_id ) ) {
+				$progress->tick();
+				continue;
+			}
+
+			// Get post URL.
+			$post_url   = get_permalink( absint( $post_id ) );
+			$parsed_url = wp_parse_url( strval( $post_url ) );
+
+			// Check if we have a path.
+			if ( ! is_array( $parsed_url ) || empty( $parsed_url['path'] ) ) {
+				continue;
+			}
+
+			// Clean URL.
+			if ( $parsed_url['path'] === $redirection['url'] ) {
+				WP_CLI::warning( 'Redirection loop found!' );
+				WP_CLI::warning( 'ID: ' . $redirection['id'] );
+				WP_CLI::warning( 'URL: ' . $redirection['url'] );
+				WP_CLI::warning( 'Action Data: ' . $redirection['action_data'] );
+
+				// Disable redirection.
+				$wpdb->update(
+					$wpdb->prefix . 'redirection_items',
+					[
+						'status' => 'disabled',
+					],
+					[
+						'id' => $redirection['id'],
+					]
+				);
+
+				// Update count.
+				++$count;
+			}
+
+			// Update progress.
+			$progress->tick();
+		}
+
+		// All done!
+		$progress->finish();
+		WP_CLI::success( "Found $count out of $total_redirections." );
+	}
+
+	/**
+	 * Search for Multiple Redirects.
+	 *
+	 * @subcommand search-multiple-redirects
+	 *
+	 * @return void
+	 */
+	public function search_multiple_redirects(): void {
+		// Welcome message.
+		WP_CLI::log( WP_CLI::colorize( '%YSearching for multiple redirects...%n' ) );
+
+		// Get all redirections.
+		global $wpdb;
+		$redirections = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}redirection_items", ARRAY_A );
+
+		// Check if we have redirections.
+		if ( ! is_array( $redirections ) || empty( $redirections ) ) {
+			WP_CLI::error( 'No redirections found!' );
+
+			// Bail out if progress bar not exists.
+			return;
+		}
+
+		// Progress bar.
+		$total_redirections = count( $redirections );
+		$progress           = make_progress_bar( 'Searching', $total_redirections );
+		$count              = 0;
+		WP_CLI::log( WP_CLI::colorize( '%GFound redirections: %n' . $total_redirections ) );
+
+		// Check if progress bar exists or not.
+		if ( ! $progress instanceof Bar ) {
+			WP_CLI::error( 'Progress bar not found!' );
+
+			// Bail out if progress bar not exists.
+			return;
+		}
+
+		// Prepare for migration.
+		prepare_for_migration();
+
+		// Search for multiple redirects.
+		foreach ( $redirections as $redirection ) {
+			// Check if we have a redirect.
+			if ( empty( $redirection['url'] ) || empty( $redirection['action_data'] ) ) {
+				$progress->tick();
+				continue;
+			}
+
+			// Build query.
+			$redirects = $wpdb->get_row(
+				$wpdb->prepare(
+					"
+				SELECT
+					*
+				FROM
+					{$wpdb->prefix}redirection_items
+				WHERE
+					url = %s AND status = 'enabled'
+				",
+					[
+						$redirection['action_data'],
+					]
+				),
+				ARRAY_A
+			);
+
+			// Check if we have a redirect.
+			if ( ! empty( $redirects ) && is_array( $redirects ) ) {
+				WP_CLI::warning( 'Multiple redirects found!' );
+				WP_CLI::warning( 'ID: ' . $redirection['id'] );
+				WP_CLI::warning( 'URL: ' . $redirection['url'] );
+				WP_CLI::warning( 'Action Data: ' . $redirection['action_data'] );
+
+				// Update $redirection action_data with the first redirect found.
+				$wpdb->update(
+					$wpdb->prefix . 'redirection_items',
+					[
+						'action_data' => $redirects['action_data'],
+					],
+					[
+						'id' => $redirection['id'],
+					]
+				);
+
+				// Update count.
+				++$count;
+			}
+
+			// Update progress.
+			$progress->tick();
+		}
+
+		// All done!
+		$progress->finish();
+		WP_CLI::success( "Found $count out of $total_redirections." );
 	}
 }

@@ -26,7 +26,7 @@ use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
 
 const SCHEDULE_RECURRENCE       = 'qrk_softrip_4_hourly';
 const SCHEDULE_HOOK             = 'qrk_softrip_sync';
-const ITINERARY_SYNC_BATCH_SIZE = 5;
+const ITINERARY_SYNC_BATCH_SIZE = 2;
 const TABLE_PREFIX_NAME         = 'qrk_';
 
 /**
