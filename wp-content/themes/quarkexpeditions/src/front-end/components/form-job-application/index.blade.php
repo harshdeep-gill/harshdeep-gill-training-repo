@@ -1,5 +1,5 @@
 @props( [
-	'form_id'                   => '',
+	'form_id'                   => 'job-application-form',
 	'class'                     => '',
 	'countries'                 => [],
 	'states'                    => [],
@@ -280,7 +280,12 @@
 				<h3 class="form-job-application__title">{{ __('Resume and Cover Letter', 'qrk') }}</h3>
 				<x-form.field :validation="[ 'required' ]">
 					<x-form.label for="resume" class="form-job-application__file-label">{{ __('Please Attach Your CV/Résumé', 'qrk') }}</x-form.label>
-					<x-form.file name="fields[Link_to_Resume__c]" id="resume" label="{{ __('Choose File', 'qrk') }}" :allowed_file_types="$resume_allowed_file_types" />
+					<x-form.file
+						name="resume"
+						label="{{ __('Choose File', 'qrk') }}"
+						:allowed_file_types="$resume_allowed_file_types"
+						form="{{ $form_id }}"
+					/>
 				</x-form.field>
 				<p class="form-job-application__description">
 					{!!
