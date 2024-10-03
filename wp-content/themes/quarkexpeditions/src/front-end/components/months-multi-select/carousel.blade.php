@@ -15,20 +15,22 @@
 	</tp-slider-track>
 
 	<div class="months-multi-select__nav">
-		<a class="months-multi-select__reset-button" role="button">{{ __( 'I\'m flexible', 'qrk' ) }}</a>
+		<a class="months-multi-select__reset-button" role="button">{{ __( "I'm flexible", 'qrk' ) }}</a>
 
-		<div class="months-multi-select__nav-arrows">
-			<tp-slider-arrow direction="previous">
-				<button class="months-multi-select__arrow-button months-multi-select__arrow-button--left">
-					<x-svg name="chevron-left" />
-				</button>
-			</tp-slider-arrow>
+		@if ( $slide_count > 1 )
+			<div class="months-multi-select__nav-arrows">
+				<tp-slider-arrow direction="previous">
+					<button class="months-multi-select__arrow-button months-multi-select__arrow-button--left">
+						<x-svg name="chevron-left" />
+					</button>
+				</tp-slider-arrow>
 
-			<tp-slider-arrow direction="next">
-				<button class="months-multi-select__arrow-button months-multi-select__arrow-button--right">
-					<x-svg name="chevron-left" />
-				</button>
-			</tp-slider-arrow>
-		</div>
+				<tp-slider-arrow direction="next">
+					<button class="months-multi-select__arrow-button months-multi-select__arrow-button--right">
+						<x-svg name="chevron-left" />
+					</button>
+				</tp-slider-arrow>
+			</div>
+		@endif
 	</div>
 </tp-slider>
