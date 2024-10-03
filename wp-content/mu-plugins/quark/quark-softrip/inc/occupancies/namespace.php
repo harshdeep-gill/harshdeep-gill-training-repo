@@ -18,6 +18,7 @@ use function Quark\Softrip\OccupancyPromotions\get_lowest_price as get_occupancy
 use function Quark\Softrip\OccupancyPromotions\update_occupancy_promotions;
 use function Quark\Softrip\add_prefix_to_table_name;
 use function Quark\Localization\get_currencies;
+use function Quark\Softrip\get_initiated_via;
 
 use const Quark\CabinCategories\POST_TYPE as CABIN_CATEGORY_POST_TYPE;
 use const Quark\Localization\USD_CURRENCY;
@@ -124,6 +125,15 @@ function update_occupancies( array $raw_cabins_data = [], int $departure_post_id
 
 		// Bail if no cabin category post ID.
 		if ( empty( $cabin_category_post_id ) ) {
+			do_action(
+				'quark_softrip_sync_error',
+				[
+					'error' => 'Cabin category post not found with cabin code: ' . $raw_cabin_data['code'] . ' for departure post ID: ' . $departure_post_id,
+					'via'   => get_initiated_via(),
+				]
+			);
+
+			// Continue to next cabin.
 			continue;
 		}
 

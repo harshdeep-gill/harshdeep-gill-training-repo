@@ -239,18 +239,32 @@ class Stream_Connector extends Connector {
 	 */
 	public function callback_quark_softrip_sync_error( array $data = [] ): void {
 		// Validate data.
-		if ( empty( $data ) || empty( $data['error'] ) || empty( $data['via'] ) || empty( $data['codes'] ) || ! is_array( $data['codes'] ) ) {
+		if ( empty( $data ) || empty( $data['error'] ) || empty( $data['via'] ) ) {
 			return;
 		}
 
-		// Prepare message.
-		$message = sprintf(
-			// translators: %1$s: Via, %2$s: Error, %3$s: Codes.
-			__( 'Softrip sync error via %1$s | Error: %2$s | Codes: %3$s', 'qrk' ),
-			strval( $data['via'] ),
-			strval( $data['error'] ),
-			implode( ', ', $data['codes'] )
-		);
+		// Initialize message.
+		$message = '';
+
+		// Check if codes are available.
+		if ( ! empty( $data['codes'] ) && is_array( $data['codes'] ) ) {
+			// Prepare message.
+			$message = sprintf(
+				// translators: %1$s: Via, %2$s: Error, %3$s: Codes.
+				__( 'Softrip sync error via %1$s | Error: %2$s | Codes: %3$s', 'qrk' ),
+				strval( $data['via'] ),
+				strval( $data['error'] ),
+				implode( ', ', $data['codes'] )
+			);
+		} else {
+			// Prepare message.
+			$message = sprintf(
+				// translators: %1$s: Via, %2$s: Error.
+				__( 'Softrip sync error via %1$s | Error: %2$s', 'qrk' ),
+				strval( $data['via'] ),
+				strval( $data['error'] )
+			);
+		}
 
 		// Log action.
 		$this->log(
