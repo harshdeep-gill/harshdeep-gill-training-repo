@@ -33,6 +33,7 @@ function bootstrap(): void {
 
 	// Breadcrumbs.
 	add_filter( 'travelopia_breadcrumbs_ancestors', __NAMESPACE__ . '\\breadcrumbs_ancestors' );
+	add_filter( 'travelopia_breadcrumbs', __NAMESPACE__ . '\\remove_extra_breadcrumb_item_for_category_page' );
 
 	// Admin stuff.
 	if ( is_admin() || ( defined( 'WP_CLI' ) && true === WP_CLI ) ) {
@@ -448,8 +449,36 @@ function get_blog_post_author_info( int $post_id = 0 ): array {
  * @return mixed[]
  */
 function breadcrumbs_ancestors( array $breadcrumbs = [] ): array {
+	// Set for category archive.
+	if ( is_category() ) {
+		// Get category.
+		$category = get_queried_object();
+
+		// Get archive page.
+		$blog_archive_page = absint( get_option( 'options_blog_posts_page', 0 ) );
+
+		// Get it's title and URL for breadcrumbs if it's set.
+		if ( ! empty( $blog_archive_page ) ) {
+			$breadcrumbs[] = [
+				'title' => get_the_title( $blog_archive_page ),
+				'url'   => strval( get_permalink( $blog_archive_page ) ),
+			];
+		}
+
+		// Add category to breadcrumbs.
+		if ( $category instanceof WP_Term ) {
+			$breadcrumbs[] = [
+				'title' => $category->name,
+				'url'   => get_term_link( $category ),
+			];
+		}
+
+		// Return breadcrumbs.
+		return $breadcrumbs;
+	}
+
 	// Check if current query is for this post type.
-	if ( ! ( is_singular( POST_TYPE ) || is_author() || is_category() ) ) {
+	if ( ! is_singular( POST_TYPE ) ) {
 		return $breadcrumbs;
 	}
 
@@ -521,5 +550,28 @@ function get_breadcrumbs_ancestors( int $post_id = 0 ): array {
 	}
 
 	// Return updated breadcrumbs.
+	return $breadcrumbs;
+}
+
+/**
+ * Remove extra breadcrumb item for category page.
+ *
+ * @param mixed[] $breadcrumbs Breadcrumbs.
+ *
+ * @return array{}|array{
+ *   array{
+ *     title: string,
+ *     url: string,
+ *   }
+ * }
+ */
+function remove_extra_breadcrumb_item_for_category_page( array $breadcrumbs = [] ): array {
+	// Check if current query is for category.
+	if ( is_category() ) {
+		// Remove the last item.
+		array_pop( $breadcrumbs );
+	}
+
+	// Return breadcrumbs.
 	return $breadcrumbs;
 }

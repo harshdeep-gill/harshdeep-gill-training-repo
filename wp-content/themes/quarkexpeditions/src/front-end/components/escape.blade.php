@@ -4,7 +4,7 @@
 ] )
 
 @php
-	if ( empty( $content ) || empty( $type ) ) {
+	if ( ! isset( $content ) || '' === $content || empty( $type ) ) {
 	    return;
 	}
 
