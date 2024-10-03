@@ -10,9 +10,9 @@
 @endphp
 
 <x-button
-    href="{{ $url }}"
-    size="big"
-    class="dates-rates__expedition-cta"
+	href="{{ $url }}"
+	size="big"
+	class="dates-rates__expedition-cta"
 >
-    <x-escape :content="$text" />
+	<x-escape :content="$text" />
 </x-button>
