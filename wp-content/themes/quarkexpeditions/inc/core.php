@@ -495,6 +495,12 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 				'quark-expedition-search-sticky-filters'           => [
 					'class' => true,
 				],
+				'quark-expedition-search-selected-filters'         => [
+					'class' => true,
+				],
+				'quark-expedition-search-selected-filter-pill'     => [
+					'class' => true,
+				],
 				'tp-form'                                          => [
 					'class'          => true,
 					'prevent-submit' => true,

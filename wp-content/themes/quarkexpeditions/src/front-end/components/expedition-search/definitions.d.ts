@@ -42,6 +42,8 @@ interface ExpeditionSearchState {
 	expeditions: ExpeditionSearchFilterState[],
 	cabinClasses: ExpeditionSearchFilterState[],
 	travelers: ExpeditionSearchFilterState[],
+	months: ExpeditionSearchFilterState[],
+	itineraryLengths: ExpeditionSearchFilterState[],
 }
 
 /**

@@ -641,6 +641,106 @@ export const removeTraveler = ( travelerValue: string ) => {
 };
 
 /**
+ * Adds a month.
+ *
+ * @param { Object } monthToAdd the month object.
+ */
+export const addMonth = ( monthToAdd: ExpeditionSearchFilterState ) => {
+	// Sanity check.
+	if ( '' === monthToAdd.value || '' === monthToAdd.label ) {
+		// Bail.
+		return;
+	}
+
+	// Get the state.
+	const { months }: ExpeditionSearchState = getState();
+
+	// Check if it is already selected.
+	if ( months.findIndex( ( existingMonth ) => existingMonth.value === monthToAdd.value ) > -1 ) {
+		// Yes it is. Bail.
+		return;
+	}
+
+	// Initialize update object.
+	const updateObject: ExpeditionsSearchStateUpdateObject = {};
+
+	// Add the month.
+	updateObject.months = [ ...months, monthToAdd ];
+
+	// Set the state;
+	setState( updateObject );
+};
+
+/**
+ * Removes a month.
+ *
+ * @param { string } monthValue The value of the month to remove.
+ */
+export const removeMonth = ( monthValue: string ) => {
+	// Get the state.
+	const { months }: ExpeditionSearchState = getState();
+
+	// Initialize the update object.
+	const updateObject: ExpeditionsSearchStateUpdateObject = {};
+
+	// Filter the months.
+	updateObject.months = months.filter( ( existingMonth ) => existingMonth.value !== monthValue );
+
+	// Set the state.
+	setState( updateObject );
+};
+
+/**
+ * Adds a itineraryLength.
+ *
+ * @param { Object } itineraryLengthToAdd the itineraryLength object.
+ */
+export const addItineraryLength = ( itineraryLengthToAdd: ExpeditionSearchFilterState ) => {
+	// Sanity check.
+	if ( '' === itineraryLengthToAdd.value || '' === itineraryLengthToAdd.label ) {
+		// Bail.
+		return;
+	}
+
+	// Get the state.
+	const { itineraryLengths }: ExpeditionSearchState = getState();
+
+	// Check if it is already selected.
+	if ( itineraryLengths.findIndex( ( existingItineraryLength ) => existingItineraryLength.value === itineraryLengthToAdd.value ) > -1 ) {
+		// Yes it is. Bail.
+		return;
+	}
+
+	// Initialize update object.
+	const updateObject: ExpeditionsSearchStateUpdateObject = {};
+
+	// Add the itineraryLength.
+	updateObject.itineraryLengths = [ ...itineraryLengths, itineraryLengthToAdd ];
+
+	// Set the state;
+	setState( updateObject );
+};
+
+/**
+ * Removes a itineraryLength.
+ *
+ * @param { string } itineraryLengthValue The value of the itineraryLength to remove.
+ */
+export const removeItineraryLength = ( itineraryLengthValue: string ) => {
+	// Get the state.
+	const { itineraryLengths }: ExpeditionSearchState = getState();
+
+	// Initialize the update object.
+	const updateObject: ExpeditionsSearchStateUpdateObject = {};
+
+	// Filter the itineraryLengths.
+	updateObject.itineraryLengths = itineraryLengths.filter( ( existingItineraryLength ) => existingItineraryLength.value !== itineraryLengthValue );
+
+	// Set the state.
+	setState( updateObject );
+};
+
+/**
  * Clears all the filters.
  */
 export const clearAllFilters = () => {

@@ -215,6 +215,46 @@
 		}
 	}
 
+	&__selected-filters {
+		display: block;
+		overflow-x: auto;
+		margin-bottom: var(--spacing-5);
+		padding-bottom: var(--spacing-2);
+
+		&-list {
+			display: flex;
+			gap: var(--spacing-3);
+			align-items: baseline;
+			min-width: max-content;
+
+			#{$self}__selected-filter-pill {
+				flex: 1 0 max-content;
+				display: flex;
+				padding: var(--spacing-2) var(--spacing-4);
+				border: 1px solid var(--color-gray-30);
+				border-radius: 32px;
+				gap: var(--spacing-2);
+				align-items: center;
+				font-size: var(--font-size-small);
+			}
+
+			#{$self}__selected-filter-close {
+				height: fit-content;
+
+				svg {
+					height: 8px;
+				}
+			}
+		}
+
+		&-container {
+			padding-right: var(--spacing-5);
+			display: flex;
+			gap: var(--spacing-3);
+			align-items: baseline;
+			min-width: max-content;
+		}
+	}
 }
 
 tp-modal.expedition-search__filters-modal {
