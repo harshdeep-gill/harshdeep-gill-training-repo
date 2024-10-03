@@ -16,13 +16,38 @@ interface ExpeditionSearchFilterState {
 }
 
 /**
+ * type ExpeditionSearchFilterType
+ */
+type ExpeditionSearchFilterType = 'destinations' |
+	'months' |
+	'itineraryLengths' |
+	'adventureOptions' |
+	'languages' |
+	'ships' |
+	'expeditions' |
+	'cabinClasses' |
+	'travelers';
+
+/**
+ * type ExpeditionSearchAllowedParam
+ */
+type ExpeditionSearchAllowedParam = ExpeditionSearchFilterType; // Add more values here if required. e.g. for page number and so on.
+
+/**
+ * type ExpeditionSearchFiltersFromUrl
+ */
+type ExpeditionSearchFiltersFromUrl = {
+	[ key in ExpeditionSearchAllowedParam ]: string[]
+}
+
+/**
  * Interface ExpeditionSearchState.
  */
 interface ExpeditionSearchState {
 	partial: string,
 	selector: string,
 	selectedFilters: ExpeditionSearchFilters;
-	shipId: 0,
+	shipId: number,
 	page: number,
 	hasNextPage: boolean,
 	resultCount: number,
@@ -44,6 +69,8 @@ interface ExpeditionSearchState {
 	travelers: ExpeditionSearchFilterState[],
 	months: ExpeditionSearchFilterState[],
 	itineraryLengths: ExpeditionSearchFilterState[],
+	baseUrl: string,
+	allowedParams: ExpeditionSearchAllowedParam[],
 }
 
 /**

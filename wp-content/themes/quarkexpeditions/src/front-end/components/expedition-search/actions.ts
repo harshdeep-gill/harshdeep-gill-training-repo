@@ -1,13 +1,169 @@
 /**
  * External dependencies.
  */
-const { zustand, fetchPartial } = window;
+const { zustand, fetchPartial, queryString } = window;
 
 /**
  * Internal dependencies.
  */
-const { setState, getState } = zustand.stores.expeditionSearch;
+const { setState, getState, subscribe } = zustand.stores.expeditionSearch;
 import { DEFAULT_STATE } from './data';
+
+/**
+ * External dependencies
+ */
+import { camelToSnakeCase, convertPropertiesFromSnakeCaseToCamelCase } from '../../global/utility';
+
+/**
+ * Returns an array for values for a list of filters passed in.
+ *
+ * @param {Object[]} list
+ *
+ * @return {string[]|number[]} The array of values.
+ */
+const pluckValues = ( list: ExpeditionSearchFilterState[] ): string[] => list.map( ( filter ) => filter.value );
+
+/**
+ * Parse hash query string for user state.
+ *
+ * @return {Object} Return selected filters state passed from query string.
+ */
+const parseUrl = (): ExpeditionSearchFiltersFromUrl | null => {
+	// If search url or query string not available, return.
+	if ( ! window.location.search || ! queryString ) {
+		// Early return.
+		return null;
+	}
+
+	// Get parsed state.
+	const parsedState: {
+		[ key: string ]: any
+	} = convertPropertiesFromSnakeCaseToCamelCase( queryString.parse( window.location.search, { sort: false } ) );
+
+	// Initialize the saved filters object.
+	const urlFilters: ExpeditionSearchFiltersFromUrl = {
+		destinations: pluckValues( DEFAULT_STATE.destinations ),
+		months: pluckValues( DEFAULT_STATE.months ),
+		itineraryLengths: pluckValues( DEFAULT_STATE.itineraryLengths ),
+		ships: pluckValues( DEFAULT_STATE.ships ),
+		adventureOptions: pluckValues( DEFAULT_STATE.adventureOptions ),
+		languages: pluckValues( DEFAULT_STATE.languages ),
+		expeditions: pluckValues( DEFAULT_STATE.expeditions ),
+		cabinClasses: pluckValues( DEFAULT_STATE.cabinClasses ),
+		travelers: pluckValues( DEFAULT_STATE.travelers ),
+	};
+
+	// Get allowed params.
+	const { allowedParams }: ExpeditionSearchState = getState();
+
+	// Loop through parsed state to build the selected filters from url.
+	Object.keys( parsedState ).forEach( ( key: string ) => {
+		// Check if the key is amongst the allowed params.
+		if ( ! allowedParams.includes( <ExpeditionSearchFilterType>key ) ) {
+			// Early return.
+			return;
+		}
+
+		// Split values.
+		const values = parsedState[ key ].split( ',' ).filter( ( v: string ) => v !== '' ) ?? [];
+
+		// @ts-ignore Get and assign the filter values.
+		urlFilters[ key ] = values;
+	} );
+
+	// Return selected filters state.
+	return urlFilters;
+};
+
+/**
+ * Update Url.
+ *
+ * @param {string} url Url.
+ */
+const updateUrl = ( url: string ) => {
+	// If url is not present, return.
+	if ( ! url ) {
+		// Early Return.
+		return;
+	}
+
+	// If 'pushState' exists, use that, else send the url to the url using window.location.
+	if ( window.history.pushState ) {
+		window.history.pushState( { path: url }, '', url );
+	} else {
+		window.location.href = url;
+	}
+};
+
+/**
+ * Build url from selected filters and update url.
+ */
+const updateUrlByFilters = () => {
+	// Build url from filters.
+	const urlWithParams: string = buildUrlFromFilters();
+
+	// Update the url with selected/added filters.
+	if ( urlWithParams ) {
+		updateUrl( urlWithParams );
+	}
+};
+
+/**
+ * Builds the URL from the selected filters.
+ *
+ * @return {string} The URL with params.
+ */
+const buildUrlFromFilters = (): string => {
+	// If queryString not available, early return.
+	if ( ! queryString ) {
+		// Return early.
+		return '';
+	}
+
+	// Get current state.
+	const currentState: ExpeditionSearchState = getState();
+	const { baseUrl, allowedParams } = currentState;
+
+	// Prepare URL params.
+	const urlParams: {
+		[ key: string ]: string;
+	} = {
+		// Preserve other params if any.
+		...queryString.parse( window.location.search ),
+	};
+
+	// Remove filters from the url object. They will be populated again.
+	for ( const key of allowedParams ) {
+		delete urlParams[ camelToSnakeCase( key ) ];
+	}
+
+	// Loop through allowed params and build url params.
+	allowedParams.forEach( ( selectedFilter ) => {
+		// Do we have any selected values?
+		if ( currentState[ selectedFilter ].length === 0 ) {
+			// Nope, bail.
+			return;
+		}
+
+		// Convert camelCased key to snake_caked key.
+		const snakeCasedKey: string = camelToSnakeCase( selectedFilter );
+
+		// @ts-ignore Stringify the filter and set it in url params.
+		urlParams[ snakeCasedKey ] = currentState[ selectedFilter ].map( ( singleFilter ) => singleFilter.value ).toString();
+
+		// Delete if empty.
+		if ( urlParams[ snakeCasedKey ].length === 0 ) {
+			delete urlParams[ snakeCasedKey ];
+		}
+	} );
+
+	/**
+	 * Return url with params.
+	 *
+	 * e.g. https://example.com/?expeditions=23,22&destinations=2023-04,2024-05
+	 */
+	return queryString.stringifyUrl( { url: baseUrl, query: urlParams }, { sort: false } );
+};
 
 /**
  * Initialize data for the component.
@@ -15,7 +171,7 @@ import { DEFAULT_STATE } from './data';
  * @param {Object} settings          Settings.
  * @param {string} settings.partial  Partial Url.
  * @param {string} settings.selector Selector.
- * @param {string} settings.shipId   Ship ID.
+ * @param {number} settings.shipId   Ship ID.
  */
 export const initialize = ( settings: {
 	partial: string | undefined,
@@ -28,14 +184,60 @@ export const initialize = ( settings: {
 		sort: 'date-now',
 	};
 
-	// Initialize: Add settings in state.
-	setState( {
+	// Initial update object.
+	const initialUpdatePayload: ExpeditionsSearchStateUpdateObject = {
 		...currentState,
 		...settings,
 		selectedFilters,
 		initialized: true,
 		updateMarkup: true,
-	} );
+		baseUrl: window.location.origin + window.location.pathname,
+	};
+
+	// Get the state from url.
+	const urlFilters = parseUrl();
+
+	// Null check.
+	if ( urlFilters ) {
+		// Input containers for filters.
+		const filtersInputContainers = {
+			destinations: document.querySelector( 'quark-expedition-search-filter-destinations' ),
+			months: document.querySelector( 'quark-expedition-search-filter-months' ),
+			itineraryLengths: document.querySelector( 'quark-expedition-search-filter-itinerary-lengths' ),
+			ships: document.querySelector( 'quark-expedition-search-filter-ships' ),
+			adventureOptions: document.querySelector( 'quark-expedition-search-filter-adventure-options' ),
+			languages: document.querySelector( 'quark-expedition-search-filter-languages' ),
+			expeditions: document.querySelector( 'quark-expedition-search-filter-expeditions' ),
+			cabinClasses: document.querySelector( 'quark-expedition-search-filter-cabin-classes' ),
+			travelers: document.querySelector( 'quark-expedition-search-filter-travelers' ),
+		};
+
+		/**
+		 * Our filters are stored as individual lists of @type {ExpeditionSearchFilterState} objects.
+		 * We will update the `value` and `label` field based on the values from the `input` elements related to the filter.
+		 *
+		 * We need to do this because we need the label for each filter value to show in the selected filters. However,
+		 * saving the labels in the URL is not a good idea.
+		 */
+
+		// Loop through the url filters.
+		for ( const key of currentState.allowedParams ) {
+			// Loop through the url filters and assign to update object.
+			initialUpdatePayload[ key ] = urlFilters[ key ].map( ( singleFilterValue ) => {
+				// Get the corresponding input.
+				const correspondingInput = filtersInputContainers[ key ]?.querySelector( `input[name="${ key }"][value="${ singleFilterValue }"]` );
+
+				// Return the object.
+				return {
+					value: singleFilterValue,
+					label: correspondingInput?.getAttribute( 'data-label' ) ?? '',
+				};
+			} ).filter( ( singleFilterValue ) => singleFilterValue.label !== '' );
+		}
+	}
+
+	// Initialize: Add settings in state.
+	setState( initialUpdatePayload );
 
 	// Fetch Results.
 	fetchResults( stateInitialized );
@@ -758,3 +960,6 @@ export const clearAllFilters = () => {
 	// Set the state.
 	setState( updateObject );
 };
+
+// Subscribe to the store and update URL on each state update.
+subscribe( updateUrlByFilters );
