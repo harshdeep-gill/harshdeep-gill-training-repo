@@ -1,0 +1,25 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Form",
+	"name": "quark/form",
+	"description": "Add a form to your page.",
+	"category": "layout",
+	"keywords": [
+		"form"
+	],
+	"textdomain": "qrk",
+	"attributes": {
+		"form": {
+			"type": "string",
+			"default": "none"
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}
