@@ -280,7 +280,7 @@ function validate_recaptcha_token( string $recaptcha_token = '' ): true|float|WP
  */
 function process_job_application_form( array $lead_data = [] ): array {
 	// Check for empty data.
-	if ( empty( $lead_data ) || ! is_array( $lead_data ) ) {
+	if ( empty( $lead_data ) || ! is_array( $lead_data['files'] ) ) {
 		return $lead_data;
 	}
 
@@ -308,7 +308,7 @@ function process_job_application_form( array $lead_data = [] ): array {
 		[
 			'post_mime_type' => $uploaded_file['type'],
 			'post_title'     => preg_replace( '/\.[^.]+$/', '', basename( $uploaded_file['file'] ) ),
-			'post_name'      => uniqid( 'job-application-resume-', true ) . '-' . basename( $uploaded_file['file'] ),
+			'post_name'      => uniqid( 'job-application-resume-', true ),
 			'post_content'   => '',
 			'post_status'    => 'inherit',
 		],

@@ -110,6 +110,7 @@ class Test_Leads extends WP_UnitTestCase {
 			'recaptcha'         => [ 'test_recaptcha_token' ],
 			'salesforce_object' => 'test_saleseforce_object',
 			'fields'            => [],
+			'files'             => [],
 		];
 
 		// Test 1: When field data is not passed.
