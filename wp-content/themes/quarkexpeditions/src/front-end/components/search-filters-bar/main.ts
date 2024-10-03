@@ -164,6 +164,9 @@ export class SearchFiltersBar extends HTMLElement {
 				this.updateMonthsPlaceholder( label );
 			}
 		}
+
+		// Activate destinations filter.
+		this.toggleDestinationFilterOptions();
 	}
 
 	/**
