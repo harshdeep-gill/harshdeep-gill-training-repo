@@ -108,7 +108,13 @@ class Push extends WP_CLI {
 	 * @throws ExitException Exception on error.
 	 */
 	public function urgent( array $args = [], array $args_assoc = [] ): void {
+		// Log.
+		WP_CLI::log( 'Pushing urgent expeditions...' );
+
 		// Do urgent push.
 		push_urgent_data();
+
+		// Log.
+		WP_CLI::success( 'Urgent expeditions push completed.' );
 	}
 }
