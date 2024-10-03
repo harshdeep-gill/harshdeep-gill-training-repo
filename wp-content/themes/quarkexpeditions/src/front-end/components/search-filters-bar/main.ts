@@ -129,20 +129,22 @@ export class SearchFiltersBar extends HTMLElement {
 				this.updateDestinationsPlaceholder( label );
 			}
 		}
+
+		// Activate departure filter.
+		this.toggleDepartureFilterOptions();
 	}
 
 	/**
 	 * Update selected departure months state.
+	 *
+	 * @param {Event} event event.
 	 */
-	updateDepartureMonthsState() {
-		// Check.
-		if ( ! this.departureMonthsSelectors ) {
-			// Bail.
-			return;
-		}
+	updateDepartureMonthsState( event: Event ) {
+		// Get the current selector.
+		const currentSelector = event.target as MonthsMultiSelect;
 
 		// Get the selected value.
-		const value = this.departureMonthsSelectors[ 0 ]?.value;
+		const value = currentSelector?.value;
 		let label = '';
 
 		// Get the selected option.
