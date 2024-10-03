@@ -13,6 +13,13 @@
 	if ( ! empty( $class ) ) {
 		$classes[] = $class;
 	}
+
+	// Filter data attributes.
+	$data_attributes = $attributes->filter( fn ( $value, $key ) => str_starts_with( $key, 'data-' ) );
+
+	// Without data attributes.
+	$attributes = $attributes->filter( fn ( $value, $key ) => ! str_starts_with( $key, 'data-' ) );
+
 @endphp
 
 <div @class( $classes )>
@@ -20,6 +27,7 @@
 		type="radio"
 		{{ $attributes->filter( fn ( $value, $key ) => $key !== 'label' )->merge( [ 'id' => $id ] ) }}
 		{{ $checked ? 'checked' : '' }}
+		{!! $data_attributes !!}
 	>
 
 	<x-form.label :id="$id">

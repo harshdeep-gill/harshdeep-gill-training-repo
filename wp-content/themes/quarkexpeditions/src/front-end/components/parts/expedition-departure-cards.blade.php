@@ -239,7 +239,7 @@
 								@if( ! empty( $cabin['occupancies'] ) && is_array( $cabin['occupancies'] ) )
 									<x-product-options-cards.rooms title="Select Rooms">
 										@foreach( $cabin['occupancies'] as $index => $occupancy )
-											<x-product-options-cards.room :checkout_url="$occupancy['checkout_url'] ?? ''" id="room-type-id-{{ $departure_id }}-{{ $cabin_code }}-{{ $index }}" name="room-type-{{ $departure_id }}-{{ $cabin_code }}" checked="{{ $index == 0 ? 'checked' : '' }}">
+											<x-product-options-cards.room checkout_url="{!! $occupancy['checkout_url'] !!}" name="room-type-{{ $departure_id }}-{{ $cabin_code }}" checked="{{ $index == 0 ? 'checked' : '' }}">
 												<x-product-options-cards.room-title-container>
 													@if( ! empty( $occupancy['description'] ) )
 														<x-product-options-cards.room-title

@@ -23,7 +23,7 @@
 	name="{{ $name }}"
 	id="{{ $id }}"
 	checked="{{ $checked }}"
-	:data-checkout-url="$checkout_url"
+	data-checkout-url="{!! $checkout_url !!}"
 >
 	{!! $slot !!}
 </x-form.radio>
