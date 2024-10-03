@@ -15,7 +15,8 @@ export class ProductOptionsCards extends HTMLElement {
 	/**
 	 * Properties
 	 */
-	private readonly cards : NodeListOf<HTMLElement>;
+	private readonly cards: NodeListOf<HTMLElement>;
+	private readonly cardDetails: NodeListOf<HTMLElement>;
 	private readonly cardDetailsMap: Map<string, HTMLElement>;
 	private readonly moreDetailsElement: HTMLElement | null;
 
@@ -28,11 +29,13 @@ export class ProductOptionsCards extends HTMLElement {
 
 		// Get the cards
 		this.cards = this.querySelectorAll( '.product-options-cards__card' );
+		this.cardDetails = this.querySelectorAll( '.product-options-cards__card-details' );
 		this.cardDetailsMap = new Map<string, HTMLElement>();
 		this.moreDetailsElement = this.querySelector( '.product-options-cards__more-details' );
 
 		// Setup cards.
 		this.cards.forEach( this.setupCard.bind( this ) );
+		this.cardDetails.forEach( this.setCheckoutURL.bind( this ) );
 	}
 
 	/**
@@ -161,6 +164,36 @@ export class ProductOptionsCards extends HTMLElement {
 		if ( cardGallery ) {
 			cardGallery.addEventListener( 'click', ( evt: Event ) => evt.stopPropagation() );
 		}
+	}
+
+	/**
+	 * Setup checkout URL functionality for the card.
+	 *
+	 * @param { HTMLElement } card
+	 */
+	setCheckoutURL( card: HTMLElement ): void {
+		// Get the all input radio buttons.
+		card.querySelectorAll( '.product-options-cards__room input[type="radio"]' ).forEach( ( radioElement ) => {
+			// Cast to HTMLInputElement
+			const radioInput = radioElement as HTMLInputElement;
+
+			// Click event
+			radioInput.addEventListener( 'click', () => {
+				// Check if redio checked.
+				if ( radioInput.checked ) {
+					// Get the checkout URL from the selected radio button's data attribute
+					const checkoutUrl = radioInput.getAttribute( 'data-checkout-url' );
+
+					// Find the 'Book Expedition Now' button within the same card container
+					const bookNowButton = card.querySelector( '.product-options-cards__cta-book-now' ) as HTMLAnchorElement;
+
+					// Update the button's href with the new checkout URL
+					if ( bookNowButton && checkoutUrl ) {
+						bookNowButton.href = checkoutUrl;
+					}
+				}
+			} );
+		} );
 	}
 }
 
