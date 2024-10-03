@@ -506,6 +506,9 @@ export const addDestinations = ( destinationsToAdd: ExpeditionSearchFilterState[
 
 	// Set the state
 	setState( updateObject );
+
+	// Fetch the results.
+	fetchResults( filterUpdated );
 };
 
 /**
@@ -544,6 +547,9 @@ export const addDestination = ( destinationToAdd: ExpeditionSearchFilterState ) 
 
 	// Set the state;
 	setState( updateObject );
+
+	// Fetch the results.
+	fetchResults( filterUpdated );
 };
 
 /**
@@ -563,6 +569,9 @@ export const removeDestination = ( destinationValue: string ) => {
 
 	// Set the state.
 	setState( updateObject );
+
+	// Fetch the results.
+	fetchResults( filterUpdated );
 };
 
 /**
@@ -594,6 +603,9 @@ export const addShip = ( shipToAdd: ExpeditionSearchFilterState ) => {
 
 	// Set the state;
 	setState( updateObject );
+
+	// Fetch the results.
+	fetchResults( filterUpdated );
 };
 
 /**
@@ -613,6 +625,9 @@ export const removeShip = ( shipValue: string ) => {
 
 	// Set the state.
 	setState( updateObject );
+
+	// Fetch the results.
+	fetchResults( filterUpdated );
 };
 
 /**
@@ -644,6 +659,9 @@ export const addAdventureOption = ( adventureOptionToAdd: ExpeditionSearchFilter
 
 	// Set the state;
 	setState( updateObject );
+
+	// Fetch the results.
+	fetchResults( filterUpdated );
 };
 
 /**
@@ -663,6 +681,9 @@ export const removeAdventureOption = ( adventureOptionValue: string ) => {
 
 	// Set the state.
 	setState( updateObject );
+
+	// Fetch the results.
+	fetchResults( filterUpdated );
 };
 
 /**
@@ -694,6 +715,9 @@ export const addLanguage = ( languageToAdd: ExpeditionSearchFilterState ) => {
 
 	// Set the state;
 	setState( updateObject );
+
+	// Fetch the results.
+	fetchResults( filterUpdated );
 };
 
 /**
@@ -713,6 +737,9 @@ export const removeLanguage = ( languageValue: string ) => {
 
 	// Set the state.
 	setState( updateObject );
+
+	// Fetch the results.
+	fetchResults( filterUpdated );
 };
 
 /**
@@ -744,6 +771,9 @@ export const addExpedition = ( expeditionToAdd: ExpeditionSearchFilterState ) =>
 
 	// Set the state;
 	setState( updateObject );
+
+	// Fetch the results.
+	fetchResults( filterUpdated );
 };
 
 /**
@@ -763,6 +793,9 @@ export const removeExpedition = ( expeditionValue: string ) => {
 
 	// Set the state.
 	setState( updateObject );
+
+	// Fetch the results.
+	fetchResults( filterUpdated );
 };
 
 /**
@@ -794,6 +827,9 @@ export const addCabinClass = ( cabinClassToAdd: ExpeditionSearchFilterState ) =>
 
 	// Set the state;
 	setState( updateObject );
+
+	// Fetch the results.
+	fetchResults( filterUpdated );
 };
 
 /**
@@ -813,6 +849,9 @@ export const removeCabinClass = ( cabinClassValue: string ) => {
 
 	// Set the state.
 	setState( updateObject );
+
+	// Fetch the results.
+	fetchResults( filterUpdated );
 };
 
 /**
@@ -844,6 +883,9 @@ export const addTraveler = ( travelerToAdd: ExpeditionSearchFilterState ) => {
 
 	// Set the state;
 	setState( updateObject );
+
+	// Fetch the results.
+	fetchResults( filterUpdated );
 };
 
 /**
@@ -863,6 +905,9 @@ export const removeTraveler = ( travelerValue: string ) => {
 
 	// Set the state.
 	setState( updateObject );
+
+	// Fetch the results.
+	fetchResults( filterUpdated );
 };
 
 /**
@@ -894,6 +939,9 @@ export const addMonth = ( monthToAdd: ExpeditionSearchFilterState ) => {
 
 	// Set the state;
 	setState( updateObject );
+
+	// Fetch the results.
+	fetchResults( filterUpdated );
 };
 
 /**
@@ -913,6 +961,9 @@ export const removeMonth = ( monthValue: string ) => {
 
 	// Set the state.
 	setState( updateObject );
+
+	// Fetch the results.
+	fetchResults( filterUpdated );
 };
 
 /**
@@ -944,6 +995,9 @@ export const addItineraryLength = ( itineraryLengthToAdd: ExpeditionSearchFilter
 
 	// Set the state;
 	setState( updateObject );
+
+	// Fetch the results.
+	fetchResults( filterUpdated );
 };
 
 /**
@@ -963,6 +1017,9 @@ export const removeItineraryLength = ( itineraryLengthValue: string ) => {
 
 	// Set the state.
 	setState( updateObject );
+
+	// Fetch the results.
+	fetchResults( filterUpdated );
 };
 
 /**
@@ -984,6 +1041,9 @@ export const clearAllFilters = () => {
 
 	// Set the state.
 	setState( updateObject );
+
+	// Fetch the results.
+	fetchResults( filterUpdated );
 };
 
 // Subscribe to the store and update URL on each state update.
