@@ -20,12 +20,7 @@
 	<div class="form-snow-hill__content">
 		<div class="form-snow-hill__form">
 			<p class="form-snow-hill__instructions">
-				{!!
-					esc_html__(
-						'Subscribe to our Snow Hill Newsletter.',
-						'qrk'
-					)
-				!!}
+				<x-escape content="Subscribe to our Snow Hill Newsletter." />
 			</p>
 
 			<div class="form-snow-hill__fields">
