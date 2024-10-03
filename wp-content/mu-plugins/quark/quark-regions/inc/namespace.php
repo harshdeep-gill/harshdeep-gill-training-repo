@@ -28,7 +28,7 @@ function bootstrap(): void {
 
 	// Permalink and rewrite rules.
 	// Note: Priority 12 is to run after the pages post type.
-	add_action( 'init', __NAMESPACE__ . '\\rewrite_rules', 12 );
+	add_action( 'init', __NAMESPACE__ . '\\rewrite_rules' );
 	add_filter( 'post_type_link', __NAMESPACE__ . '\\get_custom_permalink', 10, 3 );
 
 	// Support same permalink structure as this post.
@@ -465,8 +465,7 @@ function rewrite_rules(): void {
 	// Match URLs with one or more slashes for parent-child relations.
 	add_rewrite_rule(
 		'^([a-zA-Z0-9_-]+(?:/[a-zA-Z0-9_-]+)*)/?$',
-		'index.php?' . POST_TYPE . '=$matches[1]',
-		'top'
+		'index.php?' . POST_TYPE . '=$matches[1]'
 	);
 }
 
