@@ -7,6 +7,7 @@
 
 namespace Quark\Regions;
 
+use WP;
 use WP_Post;
 
 const POST_TYPE   = 'qrk_region';
@@ -24,6 +25,16 @@ function bootstrap(): void {
 
 	// Opt into stuff.
 	add_filter( 'qe_destination_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
+
+	// Permalink and rewrite rules.
+	// Note: Priority 12 is to run after the pages post type.
+	add_action( 'init', __NAMESPACE__ . '\\rewrite_rules', 12 );
+	add_filter( 'post_type_link', __NAMESPACE__ . '\\get_custom_permalink', 10, 3 );
+
+	// Support same permalink structure as this post.
+	if ( ! is_admin() ) {
+		add_action( 'parse_request', __NAMESPACE__ . '\\support_same_permalink_structure' );
+	}
 
 	// Other hooks.
 	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
@@ -68,10 +79,7 @@ function register_region_post_type(): void {
 		'has_archive'         => false,
 		'query_var'           => true,
 		'can_export'          => true,
-		'rewrite'             => [
-			'slug'       => 'regions',
-			'with_front' => false,
-		],
+		'rewrite'             => false,
 		'capability_type'     => 'post',
 		'template'            => [
 			[
@@ -446,4 +454,127 @@ function get( int $page_id = 0 ): array {
 
 	// Return data.
 	return $data;
+}
+
+/**
+ * Rewrite rules for this post type.
+ *
+ * @return void
+ */
+function rewrite_rules(): void {
+	// Match URLs with one or more slashes for parent-child relations.
+	add_rewrite_rule(
+		'^([a-zA-Z0-9_-]+(?:/[a-zA-Z0-9_-]+)*)/?$',
+		'index.php?' . POST_TYPE . '=$matches[1]',
+		'top'
+	);
+}
+
+/**
+ * Get region parents.
+ *
+ * @param int    $post_id Post ID.
+ * @param string $slug    Slug.
+ *
+ * @return string
+ */
+function get_parent_slug( int $post_id = 0, string $slug = '' ): string {
+	// Get post.
+	$post = get_post( $post_id );
+
+	// Validate post.
+	if ( ! $post instanceof WP_Post ) {
+		return $slug;
+	}
+
+	// If the post has a parent, recursively get its parent's slug.
+	if ( ! empty( $post->post_parent ) ) {
+		$parent = get_post( $post->post_parent );
+
+		// Validate parent post.
+		if ( ! $parent instanceof WP_Post ) {
+			return $slug;
+		}
+
+		// Append parent slug to the current slug.
+		$slug = $parent->post_name . '/' . $slug;
+
+		// Recursively get parent's parent.
+		return get_parent_slug( $parent->ID, $slug );
+	}
+
+	// Return slug.
+	return $slug;
+}
+
+/**
+ * Get custom permalink for this post type.
+ *
+ * @param string       $permalink Original permalink.
+ * @param WP_Post|null $post      Post object.
+ * @param bool         $leavename Whether to keep the post name.
+ *
+ * @return string
+ */
+function get_custom_permalink( string $permalink = '', WP_Post $post = null, bool $leavename = false ): string {
+	// Return permalink if post is not a post type.
+	if ( ! $post instanceof WP_Post || POST_TYPE !== $post->post_type ) {
+		return $permalink;
+	}
+
+	/**
+	 * Start building slug.
+	 */
+	$slug = '';
+
+	// Get region parents.
+	$slug = untrailingslashit( get_parent_slug( $post->ID, $slug ) );
+
+	// Append the post type to the permalink.
+	$slug .= "/%$post->post_type%";
+
+	// Construct permalink.
+	$permalink = home_url( $slug );
+
+	// Check for `leavename`.
+	if ( ! $leavename ) {
+		$permalink = str_replace( "%$post->post_type%", $post->post_name, $permalink );
+	}
+
+	// Return permalink.
+	return $permalink;
+}
+
+/**
+ * Adds support for same permalink structure.
+ *
+ * Few post types have same permalink structure. Therefore WordPress picks up whichever rewrite rule is present on the
+ * top. If such a post type is encountered then also add other same permalink post types to the post type list of the
+ * query, so that they are also queried.
+ *
+ * @param WP|null $wp WP environment object.
+ *
+ * @return void
+ */
+function support_same_permalink_structure( WP $wp = null ): void {
+	// Return early if query is not valid WP object.
+	if ( ! $wp instanceof WP ) {
+		return;
+	}
+
+	// Return early if we are not querying by name.
+	if ( empty( $wp->query_vars['name'] ) || empty( $wp->query_vars['post_type'] ) ) {
+		return;
+	}
+
+	// Same permalink structure post types.
+	$same_permalink_post_types = [
+		'page',
+		POST_TYPE,
+	];
+
+	// If the request is for any one of the same permalink post types then search for all the similar permalink post types.
+	if ( in_array( $wp->query_vars['post_type'], $same_permalink_post_types, true ) ) {
+		$wp->set_query_var( 'post_type', $same_permalink_post_types );
+	}
 }
