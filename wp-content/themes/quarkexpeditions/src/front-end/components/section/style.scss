@@ -8,6 +8,11 @@
 	$self: &;
 	position: relative;
 
+	& > * {
+		position: relative;
+		z-index: 5;
+	}
+
 	&__title,
 	&__description {
 		text-align: center;
@@ -133,7 +138,7 @@
 		height: 100%;
 		position: absolute;
 		inset: 0;
-		z-index: -1;
+		z-index: 1;
 
 		&::after {
 			content: "";
@@ -141,7 +146,7 @@
 			height: 100%;
 			position: absolute;
 			inset: 0;
-			z-index: 1;
+			z-index: 2;
 		}
 	}
 

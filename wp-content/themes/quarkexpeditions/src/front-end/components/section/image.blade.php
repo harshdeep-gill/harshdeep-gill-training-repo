@@ -1,6 +1,5 @@
 @props( [
 	'image_id'          => 0,
-	'is_gradient'       => false,
 	'gradient_color'    => '',
 	'gradient_position' => 'top',
 ] )
@@ -25,33 +24,28 @@
 				'(min-width: 375px)'  => [ 550, 550 ],
 			],
 		],
-		'transform' => [
-			'quality' => 90,
-		],
 	];
 
 	// Bulding calss.
 	$classes = [ 'section__image-wrap', 'full-width' ];
 
 	// Checking for gradient color and passing as a css varibale.
-	if ( true === $is_gradient && in_array( $gradient_color, [ 'white', 'grey', 'black' ] ) ) {
+	if ( ! empty( $gradient_color ) && in_array( $gradient_color, [ 'white', 'grey', 'black' ] ) ) {
 		$gradient_color = "--section-gradient-color:$gradient_color";
 	}
 
 	// Adding a calss as per gradient position.
-	if ( true === $is_gradient && in_array( $gradient_position, [ 'top', 'bottom', 'both' ] ) ) {
+	if ( ! empty( $gradient_position ) && in_array( $gradient_position, [ 'top', 'bottom', 'both' ] ) ) {
 		$classes[] = "section__image-gradient-$gradient_position";
 	}
 @endphp
 
 <div
 	@class( $classes )
-	style="{!! $gradient_color !!}"
+	style="{!! esc_attr( $gradient_color ) !!}"
 >
 	<x-image
 		class="section__image"
-		loading="eager"
-		fetchpriority="high"
 		:image_id="$image_id"
 		:args="$image_args"
 	/>
