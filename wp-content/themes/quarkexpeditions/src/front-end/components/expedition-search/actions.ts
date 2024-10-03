@@ -335,7 +335,22 @@ const filterUpdated = ( response: PartialData ) => {
  */
 export const fetchResults = ( callback: Function ) => {
 	// Get data from state.
-	const { selectedFilters, loadMoreResults, page, partial, selector, shipId } = getState();
+	const {
+		selectedFilters,
+		loadMoreResults,
+		page,
+		partial,
+		selector,
+		destinations,
+		months,
+		itineraryLengths,
+		ships,
+		adventureOptions,
+		languages,
+		expeditions,
+		cabinClasses,
+		travelers,
+	}: ExpeditionSearchState = getState();
 
 	// Set loading: true if not loading more results.
 	if ( ! loadMoreResults ) {
@@ -349,7 +364,15 @@ export const fetchResults = ( callback: Function ) => {
 		selectedFilters: {
 			...selectedFilters,
 			page,
-			ships: [ shipId ],
+			destinations: pluckValues( destinations ),
+			months: pluckValues( months ),
+			itinerary_lengths: pluckValues( itineraryLengths ),
+			ships: pluckValues( ships ),
+			adventure_options: pluckValues( adventureOptions ),
+			languages: pluckValues( languages ),
+			expeditions: pluckValues( expeditions ),
+			cabin_classes: pluckValues( cabinClasses ),
+			travelers: pluckValues( travelers ),
 		},
 	}, callback, selector ).catch( () => {
 		// Set state.
