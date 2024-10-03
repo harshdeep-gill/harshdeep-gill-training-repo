@@ -288,6 +288,15 @@ tp-modal.expedition-search__filters-modal {
 		}
 	}
 
+	.expedition-search__sidebar-filters-with-children label {
+		font-weight: var(--font-weight-bold);
+	}
+
+	label,
+	.expedition-search__sidebar-filters-children label {
+		font-weight: var(--font-weight-normal);
+	}
+
 	@media screen and (min-width: grid-size(lg)) {
 		display: none;
 	}
