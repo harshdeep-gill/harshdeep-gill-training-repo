@@ -217,6 +217,13 @@ function build_salesforce_request_data( array $fields = [], string $salesforce_o
 	// Add WebForm_Submission_ID__c field.
 	$fields['WebForm_Submission_ID__c'] = uniqid( strval( time() ), true );
 
+	// Check for array fields and flatten them to a string. [ Needed for Salesforce Integration as they consume multipicklist values as strings. ]
+	foreach ( $fields as $key => $value ) {
+		if ( is_array( $value ) ) {
+			$fields[ $key ] = implode( '; ', $value );
+		}
+	}
+
 	// The fields are the only data required in the request.
 	return (array) apply_filters(
 		'quark_leads_input_data',
