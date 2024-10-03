@@ -269,6 +269,9 @@ export default class SecondaryNavigation extends HTMLElement {
 				scrollY > sectionTop - ( window.innerHeight / 2 ) &&
 				scrollY <= sectionTop + sectionHeight
 			) {
+				// Ensure only one item is active at a time.
+				this.clearActiveItems();
+
 				// Add active class.
 				activeItem?.classList?.add( 'secondary-navigation__navigation-item--active' );
 
@@ -413,17 +416,25 @@ export default class SecondaryNavigation extends HTMLElement {
 			return;
 		}
 
-		// Check for all content items.
-		if ( this.allContentItems ) {
-			// Loop through all content items.
-			this.allContentItems.forEach( ( item ) => {
-				// Remove any existing active class from other items.
-				item.classList.remove( 'secondary-navigation__navigation-item--active' );
-			} );
-		}
+		// Ensure only one item is active at a time.
+		this.clearActiveItems();
 
 		// Add class to the current active content item.
 		itemElement.classList.add( 'secondary-navigation__navigation-item--active' );
+	}
+
+	/**
+	 * Remove active class from all content items.
+	 */
+	clearActiveItems() {
+		// Check for all content items.
+		if ( this.allContentItems ) {
+			// Loop through all content items and remove the active class.
+			this.allContentItems.forEach( ( item ) => {
+				// Remove the active class.
+				item.classList.remove( 'secondary-navigation__navigation-item--active' );
+			} );
+		}
 	}
 
 	/**

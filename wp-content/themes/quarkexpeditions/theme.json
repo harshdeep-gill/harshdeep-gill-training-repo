@@ -19,6 +19,10 @@
       "title": "Staff Member"
     },
     {
+      "name": "single-qrk_region",
+      "title": "Region"
+    },
+    {
       "name": "content-sidebar-table-of-contents",
       "title": "Content with Table of Contents Sidebar"
     },

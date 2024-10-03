@@ -3,10 +3,15 @@
  * Block Converter.
  *
  * @package quark-migration
+ *
+ * phpcs:disable WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
  */
 
 namespace Quark\Migration\Drupal;
 
+use DOMDocument;
+use DOMElement;
+use Exception;
 use WP_Post;
 use WP_CLI;
 use wpdb;
@@ -1187,9 +1192,6 @@ class Block_Converter {
 		// Block Markup.
 		$attrs = [];
 
-		// Set attributes.
-		$attrs['title'] = ! empty( $result['highlight'] ) ? wp_strip_all_tags( $result['highlight'] ) : '';
-
 		// Check if image target id is available.
 		$icon_term_mapping = [
 			5001 => 'phone',
@@ -1216,7 +1218,17 @@ class Block_Converter {
 			[
 				'blockName'    => 'quark/highlight-item',
 				'attrs'        => $attrs,
-				'innerContent' => [],
+				'innerContent' => [
+					serialize_block(
+						[
+							'blockName'    => 'quark/highlight-item-text',
+							'attrs'        => [
+								'text' => ! empty( $result['highlight'] ) ? wp_strip_all_tags( $result['highlight'] ) : '',
+							],
+							'innerContent' => [],
+						]
+					),
+				],
 			]
 		) . PHP_EOL;
 	}
@@ -1873,6 +1885,8 @@ class Block_Converter {
 	 * @param array{}|array<int|string, string|int> $block Drupal block data.
 	 *
 	 * @return string
+	 *
+	 * @throws Exception If unable to fetch simple_card paragraph data.
 	 */
 	public function convert_paragraph_simple_card( array $block = [] ): string {
 		// Query.
@@ -1905,8 +1919,82 @@ class Block_Converter {
 		$attrs = [];
 
 		// Set attributes.
-		$attrs['title']       = ! empty( $result['title'] ) ? strval( $result['title'] ) : '';
-		$attrs['description'] = ! empty( $result['description'] ) ? wp_strip_all_tags( strval( $result['description'] ) ) : '';
+		$attrs['title'] = ! empty( $result['title'] ) ? strval( $result['title'] ) : '';
+		$description    = ! empty( $result['description'] ) ? strval( $result['description'] ) : '';
+		$buttons        = '';
+
+		// Check if description has anchor tags with class - btn.
+		if ( str_contains( $description, 'class="btn' ) ) {
+			// Load the HTML content.
+			$dom = new DOMDocument();
+
+			// Suppress warnings for invalid HTML structure.
+			libxml_use_internal_errors( true );
+
+			// Load the HTML into DOMDocument.
+			$dom->loadHTML( $description );
+			libxml_clear_errors();
+
+			// Get all the anchor tags.
+			$anchor_tags = $dom->getElementsByTagName( 'a' );
+
+			// Initialize an array to store anchor tag details.
+			$button_markup = '';
+
+			// Loop through each anchor tag and extract href and text.
+			foreach ( $anchor_tags as $tag ) {
+				// Validate $tag is DOMElement.
+				if ( ! $tag instanceof DOMElement ) {
+					continue;
+				}
+
+				// Get href, class, text and HTML content.
+				$href  = $tag->getAttribute( 'href' );
+				$class = $tag->getAttribute( 'class' );
+				$text  = strtoupper( strval( $tag->nodeValue ) );
+				$html  = $text;
+
+				// Get inner HTML.
+				if ( $tag->ownerDocument instanceof DOMDocument ) {
+					$html = $tag->ownerDocument->saveHTML( $tag );
+				}
+
+				// Prepare button block markup.
+				$button_markup .= serialize_block(
+					[
+						'blockName'    => 'quark/button',
+						'attrs'        => [
+							'url'             => [
+								'url'  => get_wp_permalink( $href ),
+								'text' => $text,
+							],
+							'btnText'         => $text,
+							'isSizeBig'       => false,
+							'backgroundColor' => str_contains( $class, 'secondary' ) ? 'black' : 'yellow',
+						],
+						'innerContent' => [],
+					]
+				) . PHP_EOL;
+
+				// Remove anchor tags from description.
+				$description = str_replace( strval( $html ), '', $description );
+			}
+
+			// Check if anchor tags are found.
+			if ( ! empty( $button_markup ) ) {
+				// Create quark/buttons block.
+				$buttons = serialize_block(
+					[
+						'blockName'    => 'quark/buttons',
+						'attrs'        => [],
+						'innerContent' => [ $button_markup ],
+					]
+				);
+			}
+		}
+
+		// Set description.
+		$attrs['description'] = wp_strip_all_tags( $description );
 
 		// Check if image is available.
 		if ( ! empty( $result['image'] ) ) {
@@ -1938,7 +2026,7 @@ class Block_Converter {
 			[
 				'blockName'    => 'quark/media-description-card',
 				'attrs'        => $attrs,
-				'innerContent' => [],
+				'innerContent' => [ $buttons ],
 			]
 		) . PHP_EOL;
 	}
@@ -2419,8 +2507,8 @@ class Block_Converter {
 		$attrs = [];
 
 		// Set attributes.
-		$attrs['label'] = ! empty( $result['title'] ) ? strval( $result['title'] ) : '';
-		$attrs['value'] = ! empty( $result['description'] ) ? strval( $result['description'] ) : '';
+		$attrs['label'] = strval( $result['title'] );
+		$attrs['value'] = strval( $result['description'] );
 
 		// Return data.
 		return serialize_block(

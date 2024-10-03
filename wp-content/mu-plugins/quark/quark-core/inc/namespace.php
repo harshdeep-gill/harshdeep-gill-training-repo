@@ -601,17 +601,17 @@ function get_pagination_links( array $args = [] ): string {
 		$first_page = strval( array_shift( $pagination_links ) );
 		$last_page  = strval( array_pop( $pagination_links ) );
 
-		// Add class to first & last page.
-		$first_page = str_replace( 'page-numbers', 'page-numbers page-numbers--first', $first_page );
-		$last_page  = str_replace( 'page-numbers', 'page-numbers page-numbers--last', $last_page );
+		// Check for dots.
+		$has_dots_after_first_page = str_contains( $pagination_links[0], 'dots' );
+		$has_dots_before_last_page = str_contains( $pagination_links[ count( $pagination_links ) - 1 ], 'dots' );
 
 		// Prepare pagination links.
 		$pagination_links = sprintf(
 			"%s\n%s\n%s\n%s\n%s",
 			$previous,
-			$first_page,
+			! $has_dots_after_first_page ? $first_page : '',
 			implode( "\n", $pagination_links ),
-			$last_page,
+			! $has_dots_before_last_page ? $last_page : '',
 			$next
 		);
 	}

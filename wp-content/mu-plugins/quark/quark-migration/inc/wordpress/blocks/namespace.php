@@ -684,8 +684,7 @@ function convert_node_div( string $output = '', ?DOMElement $node = null ): stri
 					]
 				);
 			} else {
-				// No columns found, convert child node to block.
-				return convert_node_to_block( $child_node );
+				$freeform = true;
 			}
 		}
 	}
@@ -903,8 +902,13 @@ function convert_node_link( string $output = '', DOMElement $node = null ): stri
 
 	// Check for button classes.
 	if ( ! str_contains( $class, 'btn btn-primary' ) ) {
-		// No class found, just return normal link.
-		return $output;
+		if ( $node->ownerDocument instanceof DOMDocument ) {
+			// No class found, just return node content.
+			return strval( $node->ownerDocument->saveHTML( $node ) );
+		}
+
+		// Return empty string.
+		return '';
 	}
 
 	// Return columns block.

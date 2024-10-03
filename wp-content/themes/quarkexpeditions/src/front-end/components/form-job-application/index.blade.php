@@ -1,5 +1,5 @@
 @props( [
-	'form_id'                   => '',
+	'form_id'                   => 'job-application-form',
 	'class'                     => '',
 	'countries'                 => [],
 	'states'                    => [],
@@ -22,6 +22,8 @@
 	salesforce_object="WebForm_Job_Application__c"
 	id="{{ $form_id }}"
 	thank_you_page="{{ $thank_you_page }}"
+	:marketing_fields="false"
+	:webform_url="false"
 	@class( $classes )
 >
 	<div class="form-job-application__content">
@@ -30,7 +32,7 @@
 				<h3 class="form-job-application__title">{{ __('Quark Expeditions Department', 'qrk') }}</h3>
 				<x-form.row>
 					<x-form.field :validation="[ 'required' ]">
-						<x-form.select label="{{ __('Job Type', 'qrk') }}" name="fields[Job_Type__c]">
+						<x-form.select label="{{ __('Job Type', 'qrk') }}">
 							<x-form.option value="">{{ __('- Select -', 'qrk') }}</x-form.option>
 							<x-form.option value="careers_expedition" label="{{ __('Careers - Expedition Guides and Education Team', 'qrk') }}">{{ __('Careers - Expedition Guides and Education Team', 'qrk') }}</x-form.option>
 						</x-form.select>
@@ -76,7 +78,7 @@
 						<x-form.input type="text" label="{{ __('Postal Code', 'qrk') }}" name="fields[Postal_Code__c]" placeholder="Enter Postal Code" />
 					</x-form.field>
 					<x-form.field :validation="[ 'required' ]">
-						<x-country-selector :countries="$countries" :states="$states" />
+						<x-country-selector :countries="$countries" :states="$states" :state_code_key="'State_Province__c'" />
 					</x-form.field>
 				</x-form.row>
 			</div>
@@ -278,7 +280,12 @@
 				<h3 class="form-job-application__title">{{ __('Resume and Cover Letter', 'qrk') }}</h3>
 				<x-form.field :validation="[ 'required' ]">
 					<x-form.label for="resume" class="form-job-application__file-label">{{ __('Please Attach Your CV/Résumé', 'qrk') }}</x-form.label>
-					<x-form.file name="fields[Link_to_Resume__c]" id="resume" label="{{ __('Choose File', 'qrk') }}" :allowed_file_types="$resume_allowed_file_types" />
+					<x-form.file
+						name="resume"
+						label="{{ __('Choose File', 'qrk') }}"
+						:allowed_file_types="$resume_allowed_file_types"
+						form="{{ $form_id }}"
+					/>
 				</x-form.field>
 				<p class="form-job-application__description">
 					{!!
