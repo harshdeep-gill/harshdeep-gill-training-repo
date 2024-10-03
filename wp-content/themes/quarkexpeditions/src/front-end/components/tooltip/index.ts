@@ -95,6 +95,9 @@ export class Tooltip extends HTMLElement {
 			this.tooltipArrowElement.style.top = '';
 			this.tooltipArrowElement.style.left = arrowPositionValue;
 		}
+
+		// Prevent body scroll.
+		document.body.classList.add( 'prevent-scroll' );
 	}
 
 	/**
@@ -111,7 +114,6 @@ export class Tooltip extends HTMLElement {
 
 		// Check and toggle.
 		if ( 'open' === evt.newState ) {
-			document.body.classList.add( 'prevent-scroll' );
 			requestAnimationFrame( this.positionTooltip.bind( this ) );
 
 			/**
