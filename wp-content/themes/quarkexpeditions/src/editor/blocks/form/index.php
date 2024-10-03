@@ -51,6 +51,12 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 		return $content;
 	}
 
+	// Component attributes.
+	$component_attributes = [
+		'countries' => get_countries(),
+		'states'    => get_states(),
+	];
+
 	// Set the form component.
 	switch ( $attributes['form'] ) {
 
@@ -75,11 +81,5 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 	}
 
 	// Return built component.
-	return quark_get_component(
-		$component,
-		[
-			'countries' => get_countries(),
-			'states'    => get_states(),
-		]
-	);
+	return quark_get_component( $component, $component_attributes );
 }
