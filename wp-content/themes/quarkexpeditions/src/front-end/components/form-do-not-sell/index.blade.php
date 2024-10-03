@@ -20,12 +20,7 @@
 	<div class="form-do-not-sell__content">
 		<div class="form-do-not-sell__form">
 			<p class="form-do-not-sell__instructions">
-				{!!
-					esc_html__(
-						'Fill the form below, and we will get back to you on the same or next business day.',
-						'qrk'
-					)
-				!!}
+				<x-escape content="Fill the form below, and we will get back to you on the same or next business day." />
 			</p>
 
 			<div class="form-do-not-sell__fields">
