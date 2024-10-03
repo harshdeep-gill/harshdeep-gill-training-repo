@@ -8,5 +8,12 @@
 
 	// Get departure months.
 	$departure_months = $search_filter_data['months'] ?? [];
+
+	// Get filters API URL.
+	$filters_api_url = home_url( 'wp-json/quark-search/v1/filter-options/by-destination-and-month' )
 @endphp
-<x-search-filters-bar :destinations="$destinations" :available_months="$departure_months" />
+<x-search-filters-bar
+	:destinations="$destinations"
+	:available_months="$departure_months"
+	:filters_api_url="$filters_api_url"
+/>

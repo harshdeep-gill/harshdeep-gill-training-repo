@@ -1,12 +1,17 @@
 /**
  * Global variables.
  */
-const { customElements, HTMLElement } = window;
+const { customElements, HTMLElement, zustand } = window;
 
 /**
  * Internal dependencies.
  */
 import { MonthsMultiSelect } from '../../months-multi-select/main';
+
+/**
+ * Get Store.
+ */
+const { subscribe } = zustand.stores.searchFiltersBar;
 
 /**
  * Class SearchFilterDepartureMonths.
@@ -24,8 +29,11 @@ export class SearchFilterDepartureMonths extends HTMLElement {
 	 * Constructor.
 	 */
 	constructor() {
-		// Initialize super
+		// Initialize super.
 		super();
+
+		// Subscribe.
+		subscribe( this.update.bind( this ) );
 
 		// Elements.
 		this.searchFiltersModal = document.querySelector( '.search-filters-bar__modal' );
@@ -35,7 +43,21 @@ export class SearchFilterDepartureMonths extends HTMLElement {
 
 		// Event Listeners.
 		this.addEventListener( 'click', this.handleFilterClick.bind( this ) );
-		this.departureMonthsSelector?.addEventListener( 'change', this.refreshFilters.bind( this ) );
+	}
+
+	/**
+	 * Update component.
+	 *
+	 * @param {Object} state State.
+	 */
+	update( state: SearchFiltersBarState ): void {
+		// Get state.
+		const { departureMonthOptions } = state;
+
+		// Set month options.
+		if ( departureMonthOptions.length > 0 ) {
+			this.refreshFilters( departureMonthOptions );
+		}
 	}
 
 	/**
@@ -53,9 +75,20 @@ export class SearchFilterDepartureMonths extends HTMLElement {
 		this.destinationFilters?.setAttribute( 'active', 'false' );
 	}
 
-	// TODO: Add comment.
-	refreshFilters() {
-		// Call action to make API Call to refresh filters.
+	/**
+	 * Refresh the departure month filters.
+	 *
+	 * @param {Array} options Available Options.
+	 */
+	refreshFilters( options: Array<object> ) {
+		// Check if options exist.
+		if ( ! options ) {
+			// Bail.
+			return;
+		}
+
+		// Set the available months attribute for months selector.
+		this.departureMonthsSelector?.setAttribute( 'available-months', JSON.stringify( options ) );
 	}
 }
 

@@ -11,7 +11,7 @@
 <quark-search-filters-bar-departure-months-filter-options
 	class="search-filters-bar__departure-months-filter-options"
 	active="false"
-	available-months="{{ wp_json_encode( $available_months ) }}"
+	default-placeholder="{{ __( 'Anytime', 'qrk' ) }}"
 >
 
 	<div class="search-filters-bar__departure-months-filter-options-selector">

@@ -5,7 +5,7 @@
 	'modal_id'                 => 'search-filters-bar-modal',
 	'destinations'             => [],
 	'available_months'         => [],
-	'filters_api_url'          => home_url( 'wp-json/quark-search/v1/filter-options/by-destination-and-month' ),
+	'filters_api_url'          => '',
 ] )
 
 <quark-search-filters-bar

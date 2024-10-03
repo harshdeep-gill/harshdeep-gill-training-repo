@@ -51,6 +51,33 @@ export class SearchFilterDestinations extends HTMLElement {
 	}
 
 	/**
+	 * Set the value of this component.
+	 *
+	 * @param {Array} value Value.
+	 */
+	set value( value: string[] ) {
+		// Bail if value is not an array.
+		if ( ! value || ! Array.isArray( value ) ) {
+			// Bail early.
+			return;
+		}
+
+		// Set the value of the select field.
+		const styledOptions: NodeListOf<SearchFilterDestinationOption> | null = this.querySelectorAll( 'tp-multi-select-option' );
+		styledOptions?.forEach( ( option: SearchFilterDestinationOption ): void => {
+			// Check if the value is in the array.
+			if ( value.includes( option.getAttribute( 'value' ) ?? '' ) ) {
+				option.setAttribute( 'selected', 'yes' );
+			} else {
+				option.removeAttribute( 'selected' );
+			}
+		} );
+
+		// Dispatch change event.
+		this.dispatchEvent( new CustomEvent( 'change', { bubbles: true } ) );
+	}
+
+	/**
 	 * Get the value of this component.
 	 *
 	 * @return {Set} Value of this component.
@@ -103,7 +130,7 @@ export class SearchFilterDestinations extends HTMLElement {
 		} );
 
 		// Dispatch change event.
-		this.dispatchEvent( new CustomEvent( 'change', { bubbles: true } ) );
+		this.dispatchEvent( new CustomEvent( 'change' ) );
 	}
 
 	/**
@@ -122,7 +149,7 @@ export class SearchFilterDestinations extends HTMLElement {
 		} );
 
 		// Dispatch change event.
-		this.dispatchEvent( new CustomEvent( 'change', { bubbles: true } ) );
+		this.dispatchEvent( new CustomEvent( 'change' ) );
 	}
 
 	/**
@@ -137,7 +164,7 @@ export class SearchFilterDestinations extends HTMLElement {
 		} );
 
 		// Dispatch change event.
-		this.dispatchEvent( new CustomEvent( 'change', { bubbles: true } ) );
+		this.dispatchEvent( new CustomEvent( 'change' ) );
 	}
 }
 
