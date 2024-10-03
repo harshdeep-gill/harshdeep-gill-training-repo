@@ -972,6 +972,8 @@ export const clearAllFilters = () => {
 	// Prepare the update object.
 	const updateObject: ExpeditionsSearchStateUpdateObject = {
 		destinations: [ ...DEFAULT_STATE.destinations ],
+		months: [ ...DEFAULT_STATE.months ],
+		itineraryLengths: [ ...DEFAULT_STATE.itineraryLengths ],
 		ships: [ ...DEFAULT_STATE.ships ],
 		adventureOptions: [ ...DEFAULT_STATE.adventureOptions ],
 		languages: [ ...DEFAULT_STATE.languages ],
