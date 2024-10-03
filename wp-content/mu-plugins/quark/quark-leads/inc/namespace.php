@@ -280,7 +280,7 @@ function validate_recaptcha_token( string $recaptcha_token = '' ): true|float|WP
  */
 function process_job_application_form( array $lead_data = [] ): array {
 	// Check for empty data.
-	if ( empty( $lead_data ) || ! is_array( $lead_data['files'] ) ) {
+	if ( empty( $lead_data ) || ! is_array( $lead_data ) || 'WebForm_Job_Application__c' !== $lead_data['salesforce_object'] ) {
 		return $lead_data;
 	}
 
