@@ -450,12 +450,10 @@ class Test_Cabin_Categories extends Softrip_TestCase {
 		// Assert data.
 		$this->assertEquals( $expected, $cabin_details );
 
-		// Flush cache.
 		// Update sort priority of terms.
 		update_term_meta( $standard_cabin_term->term_id, 'sort_priority', 5 );
 		update_term_meta( $premium_cabin_term->term_id, 'sort_priority', 8 );
 
-		wp_cache_flush();
 		// Get cabin details.
 		$cabin_details = get_cabin_details_by_departure( $departure_post_id1 );
 
