@@ -114,7 +114,6 @@
 						<x-form.checkbox name="fields[Subscribe_to_Newsletter__c]" label="I have read and agree to the privacy statement." />
 					</x-form.field-group>
 				</x-form.row>
-				{!! $slot !!}
 			</div>
 		</div>
 

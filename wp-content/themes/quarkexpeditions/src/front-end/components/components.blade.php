@@ -7120,6 +7120,12 @@
 	</x-section>
 </x-component-demo>
 
+<x-component-demo :keys="[ 'form-subscribe-snow-hill' ]">
+	<x-section>
+		<x-form-subscribe-snow-hill />
+	</x-section>
+</x-component-demo>
+
 <x-component-demo :keys="[ 'form-job-application' ]">
 	<x-section>
 		<x-form-job-application
@@ -7153,6 +7159,13 @@
 			</x-mini-cards-list.card-info>
 		</x-mini-cards-list.card>
 	</x-mini-cards-list>
+</x-component-demo>
+
+<x-component-demo :keys="[ 'form-newsletter' ]">
+	<x-form-newsletter
+		:countries="$countries"
+		:states="$states"
+	/>
 </x-component-demo>
 
 <x-component-demo :keys="[ 'footer' ]">
