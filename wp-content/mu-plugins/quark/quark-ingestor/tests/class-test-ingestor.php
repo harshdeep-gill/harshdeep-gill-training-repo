@@ -314,9 +314,22 @@ class Test_Ingestor extends Softrip_TestCase {
 
 		// Verify push success data.
 		$this->assertNotEmpty( $this->push_success_data );
+
+		// Unset file_name from success data.
+		$actual_push_success_data = $this->push_success_data;
+
+		// Loop through success data.
+		foreach ( $actual_push_success_data as $key => $data ) {
+			// Unset file_name from success data.
+			if ( is_array( $actual_push_success_data[ $key ] ) && ! empty( $actual_push_success_data[ $key ]['file_name'] ) ) {
+				unset( $actual_push_success_data[ $key ]['file_name'] );
+			}
+		}
+
+		// Assert.
 		$this->assertEquals(
 			$expected_push_success_data,
-			$this->push_success_data
+			$actual_push_success_data
 		);
 
 		// Reset all data.
@@ -499,9 +512,22 @@ class Test_Ingestor extends Softrip_TestCase {
 
 		// Verify push success data.
 		$this->assertNotEmpty( $this->push_success_data );
+
+		// Unset file_name from success data.
+		$actual_push_success_data = $this->push_success_data;
+
+		// Loop through success data.
+		foreach ( $actual_push_success_data as $key => $data ) {
+			// Unset file_name from success data.
+			if ( is_array( $actual_push_success_data[ $key ] ) && ! empty( $actual_push_success_data[ $key ]['file_name'] ) ) {
+				unset( $actual_push_success_data[ $key ]['file_name'] );
+			}
+		}
+
+		// Verify push success data.
 		$this->assertEquals(
 			$expected_push_success_data,
-			$this->push_success_data
+			$actual_push_success_data
 		);
 
 		// Reset all data.
@@ -553,10 +579,21 @@ class Test_Ingestor extends Softrip_TestCase {
 			];
 		}
 
+		// Unset file_name from success data.
+		$actual_push_success_data = $this->push_success_data;
+
+		// Loop through success data.
+		foreach ( $actual_push_success_data as $key => $data ) {
+			// Unset file_name from success data.
+			if ( is_array( $actual_push_success_data[ $key ] ) && ! empty( $actual_push_success_data[ $key ]['file_name'] ) ) {
+				unset( $actual_push_success_data[ $key ]['file_name'] );
+			}
+		}
+
 		// Verify push success data.
 		$this->assertEquals(
 			$expected_push_success_data,
-			$this->push_success_data
+			$actual_push_success_data
 		);
 
 		// Prepare expected push completed data.
@@ -657,6 +694,13 @@ class Test_Ingestor extends Softrip_TestCase {
 				'initiated_via'      => 'manually',
 				'changed_only'       => true,
 			];
+		}
+
+		// Unset file_name from success data.
+		foreach ( $actual_push_success_data as $key => $data ) {
+			if ( is_array( $actual_push_success_data[ $key ] ) && ! empty( $actual_push_success_data[ $key ]['file_name'] ) ) {
+				unset( $actual_push_success_data[ $key ]['file_name'] );
+			}
 		}
 
 		// Verify push success data.
@@ -870,7 +914,7 @@ class Test_Ingestor extends Softrip_TestCase {
 
 		// Test with valid expedition data.
 		$actual = push_expedition_data( 123, $expedition_data_json );
-		$this->assertTrue( $actual );
+		$this->assertNotEmpty( $actual );
 		$this->assertSame( 'PUT', $this->push_method );
 		$this->assertStringContainsString( QUARK_INGESTOR_BASE_URL, $this->push_url );
 		$this->assertMatchesRegularExpression( '/\/.*_123.json$/', $this->push_url );

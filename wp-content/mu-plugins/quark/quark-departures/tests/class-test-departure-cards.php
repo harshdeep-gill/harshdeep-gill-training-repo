@@ -1193,6 +1193,8 @@ class Test_Departure_Cards extends Softrip_TestCase {
 					'availability_description' => 'Available',
 					'spaces_available'         => 10,
 					'brochure_price'           => '$45,105 USD',
+					'type'                     => '',
+					'sort_priority'            => 0,
 					'promos'                   => [
 						'15PROMO' => '$38,169 USD',
 					],
@@ -1208,6 +1210,8 @@ class Test_Departure_Cards extends Softrip_TestCase {
 					'promos'                   => [
 						'15PROMO' => '$29,410 USD',
 					],
+					'type'                     => '',
+					'sort_priority'            => 0,
 				],
 			],
 		];
@@ -1394,6 +1398,8 @@ class Test_Departure_Cards extends Softrip_TestCase {
 						],
 						'brochure_price'           => '$35,095 USD',
 						'checkout_url'             => 'https://local-checkout.quarkexpeditions.com?package_id=ABC-123&departure_date=2026-02-28&cabin_code=OEX-SGL&currency=USD',
+						'type'                     => '',
+						'sort_priority'            => 0,
 					],
 				],
 				'available_promos'           => [
@@ -1432,6 +1438,8 @@ class Test_Departure_Cards extends Softrip_TestCase {
 							'15PROMO' => '$38,169 USD',
 						],
 						'checkout_url'             => 'https://local-checkout.quarkexpeditions.com?package_id=JKL-012&departure_date=2025-01-09&cabin_code=ULT-SGL&currency=USD',
+						'type'                     => '',
+						'sort_priority'            => 0,
 					],
 					'ULT-DBL' => [
 						'name'                     => 'cabin_name - ULT-DBL',
@@ -1443,6 +1451,8 @@ class Test_Departure_Cards extends Softrip_TestCase {
 							'15PROMO' => '$29,410 USD',
 						],
 						'checkout_url'             => 'https://local-checkout.quarkexpeditions.com?package_id=JKL-012&departure_date=2025-01-09&cabin_code=ULT-DBL&currency=USD',
+						'type'                     => '',
+						'sort_priority'            => 0,
 					],
 				],
 				'available_promos'           => [
@@ -1673,6 +1683,8 @@ class Test_Departure_Cards extends Softrip_TestCase {
 					'10PIF'   => '$41,220 CAD',
 					'20PROMO' => '$36,640 CAD',
 				],
+				'type'                     => '',
+				'sort_priority'            => 0,
 			],
 			$card_data['cabin_data']['OEX-JST'] ?? []
 		);

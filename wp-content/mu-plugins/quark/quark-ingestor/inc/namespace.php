@@ -307,7 +307,7 @@ function do_push( array $expedition_post_ids = [], bool $changed_only = true ): 
 					'initiated_via'      => $initiated_via,
 				]
 			);
-		} elseif ( $push_result ) {
+		} elseif ( ! empty( $push_result ) ) {
 				// Update hash if successful.
 				update_post_meta( $expedition_post_id, DATA_HASH_KEY, $new_hash );
 
@@ -318,6 +318,7 @@ function do_push( array $expedition_post_ids = [], bool $changed_only = true ): 
 						'expedition_post_id' => $expedition_post_id,
 						'initiated_via'      => $initiated_via,
 						'changed_only'       => $changed_only,
+						'file_name'          => $push_result,
 					]
 				);
 
@@ -369,9 +370,9 @@ function do_push( array $expedition_post_ids = [], bool $changed_only = true ): 
  * @param int    $expedition_post_id   Expedition post ID.
  * @param string $json_expedition_data JSON expedition data.
  *
- * @return bool|WP_Error
+ * @return string|WP_Error
  */
-function push_expedition_data( int $expedition_post_id = 0, string $json_expedition_data = '' ): bool|WP_Error {
+function push_expedition_data( int $expedition_post_id = 0, string $json_expedition_data = '' ): string|WP_Error {
 	// Check for expedition post ID.
 	if ( empty( $expedition_post_id ) ) {
 		return new WP_Error( 'qrk_ingestor_invalid_expedition_id', __( 'Invalid expedition post ID.', 'qrk' ) );
@@ -393,8 +394,11 @@ function push_expedition_data( int $expedition_post_id = 0, string $json_expedit
 	// Generate UUID.
 	$uuid = wp_generate_uuid4();
 
+	// File name.
+	$file_name = $uuid . '_' . $expedition_post_id . '.json';
+
 	// Construct URL.
-	$url = trailingslashit( QUARK_INGESTOR_BASE_URL ) . $uuid . '_' . $expedition_post_id . '.json';
+	$url = trailingslashit( QUARK_INGESTOR_BASE_URL ) . $file_name;
 
 	// Set request args.
 	$args = [
@@ -420,8 +424,8 @@ function push_expedition_data( int $expedition_post_id = 0, string $json_expedit
 		return new WP_Error( 'qrk_ingestor_invalid_response', wp_remote_retrieve_response_message( $request ) );
 	}
 
-	// Return success.
-	return true;
+	// Return url.
+	return $file_name;
 }
 
 /**
