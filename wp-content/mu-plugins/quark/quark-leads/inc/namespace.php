@@ -295,8 +295,8 @@ function process_job_application_form( array $lead_data = [] ): array {
 	// Extract Resume File.
 	$resume_file = $lead_data['files']['resume'] ?? null;
 
-	// Check if resume file is set.
-	if ( empty( $resume_file ) ) {
+	// Check if resume file is set and file type is pdf.
+	if ( empty( $resume_file ) || 'application/pdf' !== $resume_file['type'] ) {
 		return $lead_data;
 	}
 
