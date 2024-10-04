@@ -164,7 +164,6 @@ class Test_Softrip extends Softrip_TestCase {
 		// Test case 6: Test code array with five elements with only a few valid.
 		$test_codes = [
 			'ABC-123',
-			'DEF-456',
 		];
 		$result     = synchronize_itinerary_departures( $test_codes );
 		$this->assertIsArray( $result );
@@ -173,8 +172,13 @@ class Test_Softrip extends Softrip_TestCase {
 		$this->assertArrayHasKey( 'departures', $result['ABC-123'] );
 		$this->assertNotEmpty( $result['ABC-123']['departures'] );
 
-		// Check for DEF-456.
-		$this->assertArrayHasKey( 'DEF-456', $result ); // Invalid code.
+		// Test case: Test with invalid code.
+		$test_codes = [
+			'DEF-456',
+		];
+		$result     = synchronize_itinerary_departures( $test_codes );
+		$this->assertIsArray( $result );
+		$this->assertArrayHasKey( 'DEF-456', $result );
 		$this->assertIsArray( $result['DEF-456'] );
 		$this->assertArrayHasKey( 'departures', $result['DEF-456'] );
 		$this->assertEmpty( $result['DEF-456']['departures'] );
