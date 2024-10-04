@@ -59,7 +59,6 @@ export default class ExpeditionSearchSelectedFilters extends HTMLElement {
 		const searchFilters: { [ key: string ]: string } = {
 			destinations: 'Destination',
 			months: 'Departure',
-			itineraryLengths: 'Itinerary Length',
 			ships: 'Ship',
 			adventureOptions: 'Adventure Option',
 			languages: 'Language',

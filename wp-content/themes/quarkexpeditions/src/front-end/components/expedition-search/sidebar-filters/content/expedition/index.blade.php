@@ -13,6 +13,7 @@
 	<x-accordion>
 		<x-expedition-search.sidebar-filters.content.expedition.destinations :destinations="$filters_data['destinations']" />
 		<x-expedition-search.sidebar-filters.content.expedition.months :months="$filters_data['months']" />
+		<x-expedition-search.sidebar-filters.content.expedition.itinerary-lengths :itinerary_lengths="$filters_data['itinerary_lengths']" />
 		<x-expedition-search.sidebar-filters.content.expedition.ships :ships="$filters_data['ships']" />
 		<x-expedition-search.sidebar-filters.content.expedition.adventure-options :adventure_options="$filters_data['adventure_options']" />
 		<x-expedition-search.sidebar-filters.content.expedition.languages :languages="$filters_data['languages']" />

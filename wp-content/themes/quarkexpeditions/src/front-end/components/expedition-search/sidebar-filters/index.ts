@@ -11,6 +11,7 @@ import ExpeditionSearchSidebarFilters from './sidebar-filters';
 import ExpeditionSearchStickyFilters from './sticky-filters';
 import ExpeditionSearchFilterDestinations from './content/expedition/destinations';
 import ExpeditionSearchFilterMonths from './content/expedition/months';
+import ExpeditionSearchFilterItineraryLengths from './content/expedition/itinerary-lengths';
 import ExpeditionSearchFilterShips from './content/expedition/ships';
 import ExpeditionSearchFilterAdventureOptions from './content/expedition/adventure-options';
 import ExpeditionSearchFilterLanguages from './content/expedition/languages';
@@ -26,6 +27,7 @@ customElements.define( 'quark-expedition-search-sticky-filters', ExpeditionSearc
 customElements.define( 'quark-expedition-search-sidebar-filters-header', ExpeditionSearchSidebarFiltersHeader );
 customElements.define( 'quark-expedition-search-filter-destinations', ExpeditionSearchFilterDestinations );
 customElements.define( 'quark-expedition-search-filter-months', ExpeditionSearchFilterMonths );
+customElements.define( 'quark-expedition-search-filter-itinerary-lengths', ExpeditionSearchFilterItineraryLengths );
 customElements.define( 'quark-expedition-search-filter-ships', ExpeditionSearchFilterShips );
 customElements.define( 'quark-expedition-search-filter-adventure-options', ExpeditionSearchFilterAdventureOptions );
 customElements.define( 'quark-expedition-search-filter-languages', ExpeditionSearchFilterLanguages );

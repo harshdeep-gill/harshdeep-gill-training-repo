@@ -6,7 +6,7 @@ const { HTMLElement } = window;
 /**
  * Internal dependencies
  */
-import { removeAdventureOption, removeCabinClass, removeDestination, removeExpedition, removeItineraryLength, removeLanguage, removeMonth, removeShip, removeTraveler } from '../actions';
+import { removeAdventureOption, removeCabinClass, removeDestination, removeExpedition, removeLanguage, removeMonth, removeShip, removeTraveler } from '../actions';
 
 /**
  * ExpeditionSearchSelectedFilterPill Class.
@@ -49,11 +49,6 @@ export default class ExpeditionSearchSelectedFilterPill extends HTMLElement {
 			// Months.
 			case 'months':
 				removeMonth( pillValue );
-				break;
-
-			// Itinerary lengths.
-			case 'itineraryLengths':
-				removeItineraryLength( pillValue );
 				break;
 
 			// Ships.

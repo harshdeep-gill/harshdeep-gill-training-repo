@@ -504,6 +504,14 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 				'quark-expedition-search-selected-filter-pill'     => [
 					'class' => true,
 				],
+				'quark-range-slider'                               => [
+					'class'          => true,
+					'prefix'         => true,
+					'min'            => true,
+					'max'            => true,
+					'selected-value' => true,
+					'suffix'         => true,
+				],
 				'tp-form'                                          => [
 					'class'          => true,
 					'prevent-submit' => true,

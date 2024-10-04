@@ -44,7 +44,7 @@ const parseUrl = (): ExpeditionSearchFiltersFromUrl | null => {
 	const urlFilters: ExpeditionSearchFiltersFromUrl = {
 		destinations: pluckValues( DEFAULT_STATE.destinations ),
 		months: pluckValues( DEFAULT_STATE.months ),
-		itineraryLengths: pluckValues( DEFAULT_STATE.itineraryLengths ),
+		itineraryLengths: DEFAULT_STATE.itineraryLengths,
 		ships: pluckValues( DEFAULT_STATE.ships ),
 		adventureOptions: pluckValues( DEFAULT_STATE.adventureOptions ),
 		languages: pluckValues( DEFAULT_STATE.languages ),
@@ -198,12 +198,11 @@ export const initialize = ( settings: {
 	const urlFilters = parseUrl();
 
 	// Null check.
-	if ( urlFilters ) {
+	if ( urlFilters && 'destinations' in urlFilters ) {
 		// Input containers for filters.
 		const filtersInputContainers = {
 			destinations: document.querySelector( 'quark-expedition-search-filter-destinations' ),
 			months: document.querySelector( 'quark-expedition-search-filter-months' ),
-			itineraryLengths: document.querySelector( 'quark-expedition-search-filter-itinerary-lengths' ),
 			ships: document.querySelector( 'quark-expedition-search-filter-ships' ),
 			adventureOptions: document.querySelector( 'quark-expedition-search-filter-adventure-options' ),
 			languages: document.querySelector( 'quark-expedition-search-filter-languages' ),
@@ -222,17 +221,29 @@ export const initialize = ( settings: {
 
 		// Loop through the url filters.
 		for ( const key of currentState.allowedParams ) {
-			// Loop through the url filters and assign to update object.
-			initialUpdatePayload[ key ] = urlFilters[ key ].map( ( singleFilterValue ) => {
-				// Get the corresponding input.
-				const correspondingInput = filtersInputContainers[ key ]?.querySelector( `input[name="${ key }"][value="${ singleFilterValue }"]` );
+			// Check if it is itinerary length.
+			if ( 'itineraryLengths' !== key ) {
+				// Loop through the url filters and assign to update object.
+				initialUpdatePayload[ key ] = urlFilters[ key ].map( ( singleFilterValue ) => {
+					// Get the corresponding input.
+					const correspondingInput = filtersInputContainers[ key ]?.querySelector( `input[name="${ key }"][value="${ singleFilterValue }"]` );
 
-				// Return the object.
-				return {
-					value: singleFilterValue,
-					label: correspondingInput?.getAttribute( 'data-label' ) ?? '',
-				};
-			} ).filter( ( singleFilterValue ) => singleFilterValue.label !== '' );
+					// Return the object.
+					return {
+						value: singleFilterValue,
+						label: correspondingInput?.getAttribute( 'data-label' ) ?? '',
+					};
+				} ).filter( ( singleFilterValue ) => singleFilterValue.label !== '' );
+			} else {
+				// @ts-ignore
+				initialUpdatePayload[ key ] = urlFilters[ key ].map( ( value ) => {
+					// Get the number value.
+					const intValue = Number( value );
+
+					// Return number value.
+					return Number.isNaN( intValue ) ? 0 : intValue;
+				} ).slice( 0, 2 );
+			}
 		}
 	}
 
@@ -366,7 +377,18 @@ export const fetchResults = ( callback: Function ) => {
 			page,
 			destinations: pluckValues( destinations ),
 			months: pluckValues( months ),
-			itinerary_lengths: pluckValues( itineraryLengths ),
+			itinerary_lengths: ( () => {
+				// Initialize values.
+				const values = [];
+
+				// push into values.
+				for ( let i = itineraryLengths[ 0 ]; i <= itineraryLengths[ 1 ]; i++ ) {
+					values.push( i );
+				}
+
+				// Return the values.
+				return values;
+			} )(),
 			ships: pluckValues( ships ),
 			adventure_options: pluckValues( adventureOptions ),
 			languages: pluckValues( languages ),
@@ -967,55 +989,29 @@ export const removeMonth = ( monthValue: string ) => {
 };
 
 /**
- * Adds a itineraryLength.
+ * Updates a itineraryLength.
  *
- * @param { Object } itineraryLengthToAdd the itineraryLength object.
+ * @param { Object } itineraryLengthToUpdate the itineraryLength object.
  */
-export const addItineraryLength = ( itineraryLengthToAdd: ExpeditionSearchFilterState ) => {
+export const updateItineraryLength = ( itineraryLengthToUpdate: [ number, number ] ) => {
 	// Sanity check.
-	if ( '' === itineraryLengthToAdd.value || '' === itineraryLengthToAdd.label ) {
+	if (
+		! Array.isArray( itineraryLengthToUpdate ) ||
+		itineraryLengthToUpdate.length !== 2 ||
+		Number.isNaN( itineraryLengthToUpdate[ 0 ] ) ||
+		Number.isNaN( itineraryLengthToUpdate[ 1 ] )
+	) {
 		// Bail.
-		return;
-	}
-
-	// Get the state.
-	const { itineraryLengths }: ExpeditionSearchState = getState();
-
-	// Check if it is already selected.
-	if ( itineraryLengths.findIndex( ( existingItineraryLength ) => existingItineraryLength.value === itineraryLengthToAdd.value ) > -1 ) {
-		// Yes it is. Bail.
 		return;
 	}
 
 	// Initialize update object.
 	const updateObject: ExpeditionsSearchStateUpdateObject = {};
 
-	// Add the itineraryLength.
-	updateObject.itineraryLengths = [ ...itineraryLengths, itineraryLengthToAdd ];
+	// Update the itineraryLength.
+	updateObject.itineraryLengths = [ ...itineraryLengthToUpdate ];
 
-	// Set the state;
-	setState( updateObject );
-
-	// Fetch the results.
-	fetchResults( filterUpdated );
-};
-
-/**
- * Removes a itineraryLength.
- *
- * @param { string } itineraryLengthValue The value of the itineraryLength to remove.
- */
-export const removeItineraryLength = ( itineraryLengthValue: string ) => {
-	// Get the state.
-	const { itineraryLengths }: ExpeditionSearchState = getState();
-
-	// Initialize the update object.
-	const updateObject: ExpeditionsSearchStateUpdateObject = {};
-
-	// Filter the itineraryLengths.
-	updateObject.itineraryLengths = itineraryLengths.filter( ( existingItineraryLength ) => existingItineraryLength.value !== itineraryLengthValue );
-
-	// Set the state.
+	// Update the state;
 	setState( updateObject );
 
 	// Fetch the results.
