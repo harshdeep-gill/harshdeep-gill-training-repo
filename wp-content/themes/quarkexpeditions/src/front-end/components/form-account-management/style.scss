@@ -2,23 +2,8 @@
 
 .form-account-management {
 
-	&__content,
-	&__form {
-		display: flex;
-		flex-direction: column;
-		gap: var(--spacing-7);
-	}
-
-	&__form {
-		gap: var(--spacing-5);
-	}
-
-	&__instructions {
-		margin-bottom: 0;
-	}
-
 	.form-field--buttons {
-		margin-top: 0;
+		margin-top: var(--spacing-7);
 
 		.btn {
 			width: 100%;
