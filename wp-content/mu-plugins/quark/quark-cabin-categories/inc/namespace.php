@@ -633,7 +633,7 @@ function get_cabin_details_by_departure( int $departure_post_id = 0, string $cur
  *    brochure_price: string,
  *    promos: array{}|string[],
  *    type: string,
- *    sort_priority: int,         
+ *    sort_priority: int,
  * }>
  */
 function get_cabin_price_data_by_departure( int $departure_id = 0, string $currency = DEFAULT_CURRENCY ): array {
@@ -654,7 +654,7 @@ function get_cabin_price_data_by_departure( int $departure_id = 0, string $curre
 	$departure = get_departure( $departure_id );
 
 	// Validate departure data.
-	if ( empty( $departure['post'] ) ||  ! $departure['post'] instanceof WP_Post ) {
+	if ( empty( $departure['post'] ) || ! $departure['post'] instanceof WP_Post ) {
 		return [];
 	}
 
