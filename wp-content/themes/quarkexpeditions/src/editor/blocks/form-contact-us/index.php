@@ -48,7 +48,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 	$component_attributes = [
 		'countries'      => get_countries(),
 		'states'         => get_states(),
-		'thank_you_page' => isset( $attributes['thankYouPage'] ) ? $attributes['thankYouPage']['url'] : '',
+		'thank_you_page' => isset( $attributes['thankYouPage'] ) && is_array( $attributes['thankYouPage'] ) ? $attributes['thankYouPage']['url'] : '',
 	];
 
 	// Return built component.
