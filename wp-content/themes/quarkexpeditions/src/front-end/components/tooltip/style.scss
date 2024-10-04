@@ -32,7 +32,6 @@
 		align-items: stretch;
 
 		&-content {
-			max-height: 100%;
 			overflow-y: auto;
 			overscroll-behavior: contain;
 			padding-inline: var(--spacing-4);
