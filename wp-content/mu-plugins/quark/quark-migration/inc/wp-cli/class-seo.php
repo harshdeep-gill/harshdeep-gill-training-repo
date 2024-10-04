@@ -179,7 +179,7 @@ class SEO {
 
 				// Make URL to be compatible with "redirection" plugin.
 				$url        = new Red_Url_Match( $drupal_url );
-				$drupal_url = $url->get_url();
+				$drupal_url = untrailingslashit( $url->get_url() );
 
 				// Create redirect.
 				$wpdb->insert(
@@ -331,7 +331,7 @@ class SEO {
 
 				// Make URL to be compatible with "redirection" plugin.
 				$url        = new Red_Url_Match( $drupal_url );
-				$drupal_url = $url->get_url();
+				$drupal_url = untrailingslashit( $url->get_url() );
 
 				// Create redirect.
 				$wpdb->insert(
@@ -449,7 +449,7 @@ class SEO {
 
 			// Make URL to be compatible with "redirection" plugin.
 			$url    = new Red_Url_Match( $source );
-			$source = $url->get_url();
+			$source = untrailingslashit( $url->get_url() );
 
 			// Skip if wp-link starts with `/node/`.
 			// These nodes are - departures, agents, agents-updates, photographic-journal.
@@ -653,7 +653,7 @@ class SEO {
 					$wpdb->prepare(
 						"SELECT * FROM {$wpdb->prefix}redirection_items WHERE url = %s",
 						[
-							$parsed_path,
+							untrailingslashit( $parsed_path ),
 						]
 					),
 					ARRAY_A

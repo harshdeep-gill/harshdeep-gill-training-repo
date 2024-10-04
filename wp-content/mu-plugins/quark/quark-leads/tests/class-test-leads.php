@@ -110,6 +110,7 @@ class Test_Leads extends WP_UnitTestCase {
 			'recaptcha'         => [ 'test_recaptcha_token' ],
 			'salesforce_object' => 'test_saleseforce_object',
 			'fields'            => [],
+			'files'             => [],
 		];
 
 		// Test 1: When field data is not passed.
@@ -234,7 +235,12 @@ class Test_Leads extends WP_UnitTestCase {
 		];
 
 		// Assert data.
-		$this->assertEquals( $data, build_salesforce_request_data( $data ) );
+		$this->assertArrayHasKey( 'FirstName', build_salesforce_request_data( $data ) );
+		$this->assertequals( 'dummy', build_salesforce_request_data( $data )['FirstName'] );
+		$this->assertArrayHasKey( 'LastName', build_salesforce_request_data( $data ) );
+		$this->assertequals( 'test', build_salesforce_request_data( $data )['LastName'] );
+		$this->assertArrayHasKey( 'WebForm_Submission_ID__c', build_salesforce_request_data( $data ) );
+		$this->assertIsString( build_salesforce_request_data( $data )['WebForm_Submission_ID__c'] );
 
 		// Test 2: Check if function respects filter or not.
 		$request_callback = function () {

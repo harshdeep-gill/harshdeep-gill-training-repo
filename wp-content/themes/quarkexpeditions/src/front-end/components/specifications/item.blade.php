@@ -4,7 +4,7 @@
 ] )
 
 @php
-	if ( empty( $label ) || empty( $value ) ) {
+	if ( empty( $label ) || ! isset( $value ) || '' === $value ) {
 		return;
 	}
 @endphp

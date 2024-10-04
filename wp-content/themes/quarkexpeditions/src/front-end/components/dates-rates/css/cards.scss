@@ -14,6 +14,10 @@
 		&:last-child {
 			margin-bottom: 0;
 		}
+
+		body.prevent-scroll & {
+			overflow: hidden;
+		}
 	}
 
 	&__table {
@@ -21,11 +25,18 @@
 		margin-left: -1px;
 
 		td {
-			min-width: 132px;
+			max-width: 132px;
 			text-align: center;
+			min-height: 60px;
 
 			&[rowspan] {
 				min-width: 320px;
+			}
+
+			&::before {
+				content: "";
+				display: block;
+				width: 132px;
 			}
 		}
 	}
@@ -33,7 +44,8 @@
 	&__item {
 		min-width: calc(100vw - 2 * var(--grid-col-gutter));
 
-		@media screen and (min-width: 1120px) { // Need to add 1120 --wrap-width for this case.
+		@media screen and (min-width: 1120px) {
+			// Need to add 1120 --wrap-width for this case.
 			min-width: calc(50vw + var(--wrap-width) / 2 - var(--grid-col-gutter));
 		}
 
@@ -69,12 +81,12 @@
 	}
 
 	&__item-table-column-title {
-		min-width: 120px;
 		text-align: left;
 	}
 
 	&__item-table-heading {
 		text-align: center;
+		height: 98px;
 
 		&:first-child {
 			text-align: left;
@@ -122,6 +134,7 @@
 		font-weight: var(--font-weight-bold);
 		margin-top: var(--spacing-2);
 		margin-bottom: var(--spacing-3);
+		text-decoration: none;
 
 		&:first-child {
 			margin-top: 0;
@@ -186,7 +199,9 @@
 	&__adventure-options-column-list {
 		list-style: none;
 		padding-left: 0;
-		display: flex;
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+		gap: var(--spacing-4) var(--spacing-5);
 	}
 
 	&__info {
@@ -198,12 +213,7 @@
 		display: flex;
 		align-items: center;
 		gap: var(--spacing-2);
-		margin-right: var(--spacing-5);
 		min-width: 180px;
-
-		&:last-child {
-			margin-right: 0;
-		}
 
 		&--paid #{$self}__adventure-options-item-icon {
 			background-color: var(--color-success-10);
@@ -235,14 +245,6 @@
 	}
 
 	.tooltip__icon {
-		height: 16px;
-		width: 16px;
-		position: relative;
-		top: 3px;
 		color: var(--color-blue);
-
-		svg {
-			width: 16px;
-		}
 	}
 }
