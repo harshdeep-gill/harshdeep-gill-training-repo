@@ -95,6 +95,11 @@ class Lead extends WP_REST_Controller {
 			'fields'            => (array) $request->get_param( 'fields' ),
 		];
 
+		// Check for files.
+		if ( ! empty( $request->get_file_params() ) ) {
+			$lead_data['files'] = $request->get_file_params();
+		}
+
 		// Create lead.
 		$response = create_lead( $lead_data );
 

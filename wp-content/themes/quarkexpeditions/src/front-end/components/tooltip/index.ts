@@ -25,7 +25,7 @@ export class Tooltip extends HTMLElement {
 		this.tooltipArrowElement = this.querySelector( '.tooltip__arrow' );
 
 		// Events
-		this.tooltipContentElement?.addEventListener( 'toggle', this.handleTooltipToggled.bind( this ) );
+		this.tooltipContentElement?.addEventListener( 'beforetoggle', this.handleTooltipToggled.bind( this ) );
 		this.addEventListener( 'mouseenter', () => this.tooltipContentElement?.showPopover() );
 		this.addEventListener( 'mouseleave', () => this.tooltipContentElement?.hidePopover() );
 	}
@@ -111,6 +111,7 @@ export class Tooltip extends HTMLElement {
 
 		// Check and toggle.
 		if ( 'open' === evt.newState ) {
+			// Prevent body scroll.
 			document.body.classList.add( 'prevent-scroll' );
 			requestAnimationFrame( this.positionTooltip.bind( this ) );
 

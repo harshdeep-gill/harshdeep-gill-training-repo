@@ -463,6 +463,9 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'loading' => true,
 				],
 				'quark-dates-rates-filters-inputs-container'    => true,
+				'quark-form-newsletter'                         => [
+					'class' => true,
+				],
 				'tp-form'                                       => [
 					'class'          => true,
 					'prevent-submit' => true,

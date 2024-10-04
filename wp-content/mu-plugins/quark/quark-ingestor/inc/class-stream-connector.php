@@ -33,6 +33,7 @@ class Stream_Connector extends Connector {
 		'quark_ingestor_push_completed',
 		'quark_ingestor_push_error',
 		'quark_ingestor_push_success',
+		'quark_ingestor_dispatch_github_event',
 	];
 
 	/**
@@ -65,10 +66,11 @@ class Stream_Connector extends Connector {
 	public function get_action_labels(): array {
 		// Return labels.
 		return [
-			'push_initiated' => __( 'Push Initiated', 'qrk' ),
-			'push_completed' => __( 'Push Completed', 'qrk' ),
-			'push_error'     => __( 'Push Error', 'qrk' ),
-			'push_success'   => __( 'Push Success', 'qrk' ),
+			'push_initiated'        => __( 'Push Initiated', 'qrk' ),
+			'push_completed'        => __( 'Push Completed', 'qrk' ),
+			'push_error'            => __( 'Push Error', 'qrk' ),
+			'push_success'          => __( 'Push Success', 'qrk' ),
+			'dispatch_github_event' => __( 'Dispatch GitHub Event', 'qrk' ),
 		];
 	}
 
@@ -274,6 +276,75 @@ class Stream_Connector extends Connector {
 			$expedition_post_id,
 			'ingestor_push',
 			'push_success'
+		);
+	}
+
+	/**
+	 * Callback for `callback_quark_ingestor_dispatch_github_event` action.
+	 *
+	 * @param mixed[] $data Data passed to the action.
+	 *
+	 * @return void
+	 */
+	public function callback_quark_ingestor_dispatch_github_event( array $data = [] ): void {
+		// Validate data.
+		if ( empty( $data ) || empty( $data['expedition_ids'] ) || ! is_array( $data['expedition_ids'] ) ) {
+			return;
+		}
+
+		// Get expedition IDs.
+		$expedition_ids = $data['expedition_ids'];
+
+		// Initialize.
+		$error_message   = '';
+		$success_message = '';
+
+		// Get error message.
+		if ( isset( $data['error'] ) ) {
+			$error_message = strval( $data['error'] );
+		}
+
+		// Get success message.
+		if ( isset( $data['success'] ) ) {
+			$success_message = strval( $data['success'] );
+		}
+
+		// Bail if no error or success message.
+		if ( empty( $error_message ) && empty( $success_message ) ) {
+			return;
+		}
+
+		// Initialize message.
+		$message = '';
+
+		// Prepare message.
+		if ( ! empty( $error_message ) ) {
+			$message = sprintf(
+				/* translators: 1: Error message */
+				__( 'Dispatch urgent push GitHub event failed | %1$s | Expedition ids: %2$s', 'qrk' ),
+				$error_message,
+				implode( ',', $expedition_ids )
+			);
+		} else {
+			$message = sprintf(
+				/* translators: 1: Success message */
+				__( 'Dispatch urgent push GitHub event successful | %1$s | Expedition ids: %2$s', 'qrk' ),
+				$success_message,
+				implode( ',', $expedition_ids )
+			);
+		}
+
+		// Log message.
+		$this->log(
+			$message,
+			[
+				'expedition_ids' => implode( ',', $expedition_ids ),
+				'error'          => $error_message,
+				'success'        => $success_message,
+			],
+			0,
+			'ingestor_push',
+			'dispatch_github_event'
 		);
 	}
 

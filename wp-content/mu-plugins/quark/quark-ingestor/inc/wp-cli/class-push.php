@@ -11,6 +11,7 @@ use WP_CLI;
 use WP_CLI\ExitException;
 
 use function Quark\Ingestor\do_push;
+use function Quark\Ingestor\Urgent\push_urgent_data;
 use function WP_CLI\Utils\get_flag_value;
 
 /**
@@ -93,5 +94,27 @@ class Push extends WP_CLI {
 
 		// Do push.
 		do_push( [], $push_changed_only );
+	}
+
+	/**
+	 * Ingestor push urgent expeditions.
+	 *
+	 * @param mixed[] $args       WP CLI arguments.
+	 * @param mixed[] $args_assoc WP CLI associative arguments.
+	 *
+	 * @subcommand urgent
+	 *
+	 * @return void
+	 * @throws ExitException Exception on error.
+	 */
+	public function urgent( array $args = [], array $args_assoc = [] ): void {
+		// Log.
+		WP_CLI::log( 'Pushing urgent expeditions...' );
+
+		// Do urgent push.
+		push_urgent_data();
+
+		// Log.
+		WP_CLI::success( 'Urgent expeditions push completed.' );
 	}
 }
