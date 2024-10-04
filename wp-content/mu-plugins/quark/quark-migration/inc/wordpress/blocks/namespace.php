@@ -757,10 +757,6 @@ function convert_table_to_travelopia_table_block( string $table_input = '' ): st
 	libxml_use_internal_errors( true );
 	$dom->loadHTML( $table_input );
 
-	// Initialize variables for rows and columns count.
-	$rows    = 0;
-	$columns = 0;
-
 	// Find all the table rows.
 	$tbody = $dom->getElementsByTagName( 'tbody' )->item( 0 );
 
@@ -773,6 +769,9 @@ function convert_table_to_travelopia_table_block( string $table_input = '' ): st
 	if ( ! $tbody ) {
 		return $table_input;
 	}
+
+	// Get first thead element.
+	$thead = $dom->getElementsByTagName( 'thead' )->item( 0 );
 
 	// Check for table rows.
 	$tr_elements = $tbody->getElementsByTagName( 'tr' );
@@ -792,44 +791,57 @@ function convert_table_to_travelopia_table_block( string $table_input = '' ): st
 	// Initialize the output with the table block header.
 	$block_id = uniqid();
 	$output   = sprintf(
-		'<!-- wp:travelopia/table {"rows":%d,"columns":%d,"blockId":"%s","hasThead":true} -->' . "\n",
+		'<!-- wp:travelopia/table {"rows":%d,"columns":%d,"blockId":"%s","hasThead":%s} -->' . "\n",
 		$rows,
 		$columns,
-		$block_id
+		$block_id,
+		! empty( $thead ) ? 'true' : 'false'
 	);
 
-	// Generate the header row.
-	$output .= sprintf( '<!-- wp:travelopia/table-row-container {"type":"thead","blockId":"%s"} -->' . "\n", uniqid() );
-	$output .= sprintf( '<!-- wp:travelopia/table-row {"blockId":"%s"} -->' . "\n", uniqid() );
+	// Check for thead element.
+	if ( ! empty( $thead ) ) {
+		// Get thead rows.
+		$thead_rows = $thead->getElementsByTagName( 'tr' );
+		$first_row  = false;
 
-	// Generate the header cells.
-	$header_cells = $first_row->getElementsByTagName( 'td' );
+		// Check for thead rows.
+		if ( $thead_rows->length > 0 ) {
+			// Calculate the number of columns based on the first row.
+			$first_row = $thead_rows->item( 0 );
+		}
 
-	// Loop through the header cells and generate the header row.
-	foreach ( $header_cells as $index => $header_cell ) {
-		$cell_content = $header_cell->nodeValue;
-		$output      .= sprintf(
-			'<!-- wp:travelopia/table-column {"row":1,"column":"%d","blockId":"%s"} -->' . "\n",
-			$index + 1,
-			uniqid()
-		);
-		$output      .= sprintf(
-			"<!-- wp:travelopia/table-cell -->\n<strong>%s</strong>\n<!-- /wp:travelopia/table-cell -->\n",
-			$cell_content
-		);
-		$output      .= "<!-- /wp:travelopia/table-column -->\n";
+		// Check for first row.
+		if ( $first_row ) {
+			// Generate the header row.
+			$output .= sprintf( '<!-- wp:travelopia/table-row-container {"type":"thead","blockId":"%s"} -->' . "\n", uniqid() );
+			$output .= sprintf( '<!-- wp:travelopia/table-row {"blockId":"%s"} -->' . "\n", uniqid() );
+
+			// Generate the header cells.
+			$header_cells = $first_row->getElementsByTagName( 'th' );
+
+			// Loop through the header cells and generate the header row.
+			foreach ( $header_cells as $index => $header_cell ) {
+				$cell_content = $header_cell->nodeValue;
+				$output      .= sprintf(
+					'<!-- wp:travelopia/table-column {"row":1,"column":"%d","blockId":"%s"} -->' . "\n",
+					$index + 1,
+					uniqid()
+				);
+				$output      .= sprintf(
+					"<!-- wp:travelopia/table-cell -->\n<strong>%s</strong>\n<!-- /wp:travelopia/table-cell -->\n",
+					$cell_content
+				);
+				$output      .= "<!-- /wp:travelopia/table-column -->\n";
+			}
+
+			// Close the header row block.
+			$output .= "<!-- /wp:travelopia/table-row -->\n";
+			$output .= "<!-- /wp:travelopia/table-row-container -->\n";
+		}
 	}
-
-	// Close the header row block.
-	$output .= "<!-- /wp:travelopia/table-row -->\n";
-	$output .= "<!-- /wp:travelopia/table-row-container -->\n";
 
 	// Loop through the remaining rows and generate body rows.
 	foreach ( $tr_elements as $row_index => $tr ) {
-		if ( 0 === $row_index ) {
-			continue; // Skip header row.
-		}
-
 		// Open the row block.
 		$output .= sprintf( '<!-- wp:travelopia/table-row-container {"blockId":"%s"} -->' . "\n", uniqid() );
 		$output .= sprintf( '<!-- wp:travelopia/table-row {"blockId":"%s"} -->' . "\n", uniqid() );
@@ -845,13 +857,15 @@ function convert_table_to_travelopia_table_block( string $table_input = '' ): st
 			foreach ( $cell->childNodes as $cell_child_node ) {
 				// Get HTML of current child node.
 				if ( $cell_child_node->ownerDocument instanceof DOMDocument ) {
-					$cell_content .= $cell_child_node->ownerDocument->saveXML( $cell_child_node );
+					$cell_content .= $cell_child_node->ownerDocument->saveHTML( $cell_child_node );
 				}
 			}
 
-			// Handle paragraphs.
-			$cell_content = str_replace( '<p>', '', $cell_content );
-			$cell_content = str_replace( '</p>', '<br>', $cell_content );
+			// Remove all div tags.
+			$text = preg_replace( '/<div[^>]*>|<\/div>/', '', $cell_content );
+
+			// Replace <p> tags with <br>.
+			$text = preg_replace( '/<p[^>]*>|<\/p>/', '<br>', $cell_content );
 
 			// Generate the column block.
 			$output .= sprintf(
