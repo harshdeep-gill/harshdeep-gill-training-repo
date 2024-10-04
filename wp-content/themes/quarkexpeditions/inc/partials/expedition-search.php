@@ -63,7 +63,7 @@ function render( array $output = [], string $name = '', array $data = [] ): arra
 
 	// Return rendered partial.
 	return [
-		'markup'          => quark_get_component( 'parts.expedition-search', $attributes ), // @todo implement parts markup - https://tuispecialist.atlassian.net/browse/QE-646
+		'markup'          => quark_get_component( 'parts.expedition-search-result-cards', $attributes ), // @todo implement parts markup - https://tuispecialist.atlassian.net/browse/QE-646
 		'noResultsMarkup' => __( 'No results found', 'qrk' ),
 		'data'            => [
 			'resultCount'    => $search_results['result_count'],

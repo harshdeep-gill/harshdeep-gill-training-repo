@@ -7005,6 +7005,10 @@
 	</x-mini-cards-list>
 </x-component-demo>
 
+<x-component-demo :keys="[ 'expedition-search' ]">
+	<x-parts.expedition-search />
+</x-component-demo>
+
 <x-component-demo :keys="[ 'footer' ]">
 	@php
 		$social_links = [
