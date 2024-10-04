@@ -149,6 +149,10 @@ class Search {
 			'key'   => 'lowest_price_cad_i',
 			'order' => 'desc',
 		],
+		'related_ship'   => [
+			'key'   => 'related_ship_i',
+			'order' => 'desc',
+		],
 	];
 
 	/**

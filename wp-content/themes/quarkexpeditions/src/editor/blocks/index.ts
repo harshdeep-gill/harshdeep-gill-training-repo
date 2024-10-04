@@ -84,6 +84,7 @@ import * as mediaTextCtaCarousel from './media-text-cta-carousel';
 import * as pressReleases from './press-releases';
 import * as tabs from './tabs';
 import * as detailedExpeditionCarousel from './detailed-expedition-carousel';
+import * as form from './form';
 
 /**
  * Add blocks.
@@ -164,6 +165,7 @@ const blocks = [
 	pressReleases,
 	tabs,
 	detailedExpeditionCarousel,
+	form,
 ];
 
 // Register blocks for ships.

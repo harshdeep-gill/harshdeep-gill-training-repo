@@ -14,7 +14,8 @@ use function Travelopia\Salesforce\send_request;
 use function Travelopia\Security\validate_recaptcha;
 use function Travelopia\Security\get_recaptcha_settings;
 
-const REST_API_NAMESPACE = 'quark-leads/v1';
+const REST_API_NAMESPACE                  = 'quark-leads/v1';
+const SALESFORCE_MULTI_PICKLIST_DELIMITER = '; ';
 
 /**
  * Bootstrap plugin.
@@ -217,6 +218,13 @@ function build_salesforce_request_data( array $fields = [], string $salesforce_o
 	// Add WebForm_Submission_ID__c field.
 	$fields['WebForm_Submission_ID__c'] = uniqid( strval( time() ), true );
 
+	// Check for array fields and flatten them to a string. [ Needed for Salesforce Integration as they consume multipicklist values as strings ].
+	foreach ( $fields as $key => $value ) {
+		if ( is_array( $value ) ) {
+			$fields[ $key ] = implode( SALESFORCE_MULTI_PICKLIST_DELIMITER, $value );
+		}
+	}
+
 	// The fields are the only data required in the request.
 	return (array) apply_filters(
 		'quark_leads_input_data',
@@ -287,8 +295,8 @@ function process_job_application_form( array $lead_data = [] ): array {
 	// Extract Resume File.
 	$resume_file = $lead_data['files']['resume'] ?? null;
 
-	// Check if resume file is set.
-	if ( empty( $resume_file ) ) {
+	// Check if resume file is set and file type is pdf.
+	if ( empty( $resume_file ) || 'application/pdf' !== $resume_file['type'] ) {
 		return $lead_data;
 	}
 

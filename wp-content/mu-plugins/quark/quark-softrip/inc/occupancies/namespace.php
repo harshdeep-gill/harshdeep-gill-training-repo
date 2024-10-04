@@ -231,6 +231,7 @@ function update_occupancies( array $raw_cabins_data = [], int $departure_post_id
 
 		// Bust caches at cabin category level.
 		wp_cache_delete( CACHE_KEY_PREFIX . '_cabin_category_post_id_' . $cabin_category_post_id . '_departure_post_id_' . $departure_post_id, CACHE_GROUP );
+		wp_cache_delete( CACHE_KEY_PREFIX . '_departure_cabin_category_post_id_' . $cabin_category_post_id, CACHE_GROUP );
 	}
 
 	/**
@@ -806,6 +807,7 @@ function clear_occupancies_by_departure( int $departure_post_id = 0 ): bool {
 
 		// Bust cache.
 		wp_cache_delete( CACHE_KEY_PREFIX . '_cabin_category_post_id_' . $occupancy['cabin_category_post_id'] . '_departure_post_id_' . $departure_post_id, CACHE_GROUP );
+		wp_cache_delete( CACHE_KEY_PREFIX . '_departure_cabin_category_post_id_' . $occupancy['cabin_category_post_id'], CACHE_GROUP );
 	}
 
 	// Return failure if not all deleted.
@@ -1500,4 +1502,68 @@ function is_occupancy_available( string $sale_status = '' ): bool {
 		default:
 			return false;
 	}
+}
+
+/**
+ * Get departures by cabin category post id.
+ *
+ * @param int  $cabin_category_post_id The cabin category post ID.
+ * @param bool $force                  Bypass cache.
+ *
+ * @return int[]
+ */
+function get_departures_by_cabin_category_id( int $cabin_category_post_id = 0, bool $force = false ): array {
+	// Bail if empty.
+	if ( empty( $cabin_category_post_id ) ) {
+		return [];
+	}
+
+	// Cache key.
+	$cache_key = CACHE_KEY_PREFIX . '_departure_cabin_category_post_id_' . $cabin_category_post_id;
+
+	// Check the cache.
+	if ( ! $force ) {
+		// Check for cached version.
+		$cached_data = wp_cache_get( $cache_key, CACHE_GROUP );
+
+		// If cached data, return it.
+		if ( is_array( $cached_data ) ) {
+			return $cached_data;
+		}
+	}
+
+	// Get global $wpdb object.
+	global $wpdb;
+
+	// Get the table name.
+	$table_name = get_table_name();
+
+	// Get departures ids.
+	$departure_ids = $wpdb->get_col(
+		$wpdb->prepare(
+			'
+			SELECT
+				departure_post_id
+			FROM
+				%i
+			WHERE
+				cabin_category_post_id = %d
+			GROUP BY
+				departure_post_id
+			',
+			[
+				$table_name,
+				$cabin_category_post_id,
+			]
+		)
+	);
+
+	// Convert to integers.
+	$ids = array_map( 'absint', $departure_ids );
+
+	// Cache the data.
+	wp_cache_set( $cache_key, $ids, CACHE_GROUP );
+
+	// Return the departure post IDs.
+	return $ids;
 }

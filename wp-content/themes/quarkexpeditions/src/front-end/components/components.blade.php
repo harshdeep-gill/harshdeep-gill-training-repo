@@ -1219,7 +1219,7 @@
 			</x-section.heading>
 			<x-section.description>Discover what your Crossing the Circle Expedition includes</x-section.description>
 
-			<x-icon-info-grid>
+			<x-icon-info-grid :desktop_carousel="true" >
 				<x-icon-info-grid.item>
 					<x-icon-info-grid.icon icon="star" />
 					<h4>Specialist Expedition Leaders</h4>
@@ -7111,12 +7111,39 @@
 	</x-section>
 </x-component-demo>
 
+<x-component-demo :keys="[ 'form-request-quote' ]">
+	<x-section>
+		<x-form-request-quote
+			:countries="$countries"
+			:states="$states"
+		/>
+	</x-section>
+</x-component-demo>
+
+<x-component-demo :keys="[ 'form-subscribe-snow-hill' ]">
+	<x-section>
+		<x-form-subscribe-snow-hill />
+	</x-section>
+</x-component-demo>
+
 <x-component-demo :keys="[ 'form-job-application' ]">
 	<x-section>
 		<x-form-job-application
 			:countries="$countries"
 			:states="$states"
 		/>
+	</x-section>
+</x-component-demo>
+
+<x-component-demo :keys="[ 'form-do-not-sell' ]">
+	<x-section>
+		<x-form-do-not-sell />
+	</x-section>
+</x-component-demo>
+
+<x-component-demo :keys="[ 'form-account-management' ]">
+	<x-section>
+		<x-form-account-management />
 	</x-section>
 </x-component-demo>
 
