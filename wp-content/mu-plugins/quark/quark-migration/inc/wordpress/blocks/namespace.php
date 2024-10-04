@@ -862,10 +862,11 @@ function convert_table_to_travelopia_table_block( string $table_input = '' ): st
 			}
 
 			// Remove all div tags.
-			$text = preg_replace( '/<div[^>]*>|<\/div>/', '', $cell_content );
+			$cell_content = preg_replace( '/<div[^>]*>|<\/div>/', '', $cell_content );
 
 			// Replace <p> tags with <br>.
-			$text = preg_replace( '/<p[^>]*>|<\/p>/', '<br>', $cell_content );
+			$cell_content = preg_replace( '/<p[^>]*>/', '', strval( $cell_content ) );
+			$cell_content = preg_replace( '/<\/p>/', '<br>', strval( $cell_content ) );
 
 			// Generate the column block.
 			$output .= sprintf(
