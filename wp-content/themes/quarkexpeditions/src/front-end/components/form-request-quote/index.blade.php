@@ -12,6 +12,10 @@
 	// Tabs.
 	quark_enqueue_style( 'tp-tabs' );
 	quark_enqueue_script( 'tp-tabs' );
+
+	// Toogle the field.
+	wp_enqueue_script( 'tp-toggle-attribute' );
+	wp_enqueue_style( 'tp-toggle-attribute' );
 @endphp
 
 <x-section class="form-request-quote">
@@ -61,19 +65,21 @@
 					</x-form.row>
 
 					<x-form.row>
-						<x-form.field :validation="[ 'required' ]">
-							<x-form.select label="{{ __( 'Choose your expedition (optional)', 'qrk' ) }}">
-								<x-form.option value="">{{ __( '- None -', 'qrk' ) }}</x-form.option>
-								<x-form.option value="115841" label="{{ __( 'Adventures in Northeast Greenland: Glaciers, Fjords and the Northern Lights', 'qrk' ) }}">{{ __( 'Adventures in Northeast Greenland: Glaciers, Fjords and the Northern Lights', 'qrk' ) }}</x-form.option>
-								<x-form.option value="125" label="{{ __( 'Antarctic Explorer: Discovering the 7th Continent', 'qrk' ) }}">{{ __( 'Antarctic Explorer: Discovering the 7th Continent', 'qrk' ) }}</x-form.option>
-								<x-form.option value="24416" label="{{ __( 'Antarctic Explorer: Discovering the 7th Continent plus Cape Horn & Diego Ramirez', 'qrk' ) }}">{{ __( 'Antarctic Explorer: Discovering the 7th Continent plus Cape Horn & Diego Ramirez', 'qrk' ) }}</x-form.option>
-							</x-form.select>
+						<x-form.field :validation="[ 'required' ]" class="form-request-quote__toggle">
+							<tp-toggle-attribute trigger="select" target=".form-request-quote__travel-time">
+								<x-form.select label="{{ __( 'Choose your expedition (optional)', 'qrk' ) }}">
+									<x-form.option value="">{{ __( '- None -', 'qrk' ) }}</x-form.option>
+									<x-form.option value="115841" label="{{ __( 'Adventures in Northeast Greenland: Glaciers, Fjords and the Northern Lights', 'qrk' ) }}">{{ __( 'Adventures in Northeast Greenland: Glaciers, Fjords and the Northern Lights', 'qrk' ) }}</x-form.option>
+									<x-form.option value="125" label="{{ __( 'Antarctic Explorer: Discovering the 7th Continent', 'qrk' ) }}">{{ __( 'Antarctic Explorer: Discovering the 7th Continent', 'qrk' ) }}</x-form.option>
+									<x-form.option value="24416" label="{{ __( 'Antarctic Explorer: Discovering the 7th Continent plus Cape Horn & Diego Ramirez', 'qrk' ) }}">{{ __( 'Antarctic Explorer: Discovering the 7th Continent plus Cape Horn & Diego Ramirez', 'qrk' ) }}</x-form.option>
+								</x-form.select>
+							</tp-toggle-attribute>
 						</x-form.field>
 					</x-form.row>
 
-					<x-form.row>
+					<x-form.row class="form-request-quote__travel-time" data-toggle-value="any_available_departure,november_2024">
 						<x-form.field-group title="{{ __( 'When would you like to travel?', 'qrk' ) }}">
-							<x-form.checkbox name="fields[]" label="{{ __( 'Any Available Departure', 'qrk' ) }}" value="any_available_departure" />
+							<x-form.checkbox name="fields[]" label="{{ __( 'Any Available Departure', 'qrk' ) }}" value="any_available_departure" checked="checked" />
 							<x-form.checkbox name="fields[]" label="{{ __( 'November 2024', 'qrk' ) }}" value="november_2024" />
 							<x-form.checkbox name="fields[]" label="{{ __( 'December 2024', 'qrk' ) }}" value="december_2024" />
 							<x-form.checkbox name="fields[]" label="{{ __( 'January 2025', 'qrk' ) }}" value="january_2025" />
@@ -118,7 +124,7 @@
 					</x-form.row>
 
 					<x-form.row>
-						<x-form.field-group title="{{ __( 'Preferred Contact Method', 'qrk' ) }}" class="form-request-quote__toggle">
+						<x-form.field-group title="{{ __( 'Preferred Contact Method', 'qrk' ) }}">
 							<x-form.radio label="{{ __( 'Email', 'qrk' ) }}" name="fields[Preferred_Contact_Method__c]" value="email" />
 							<x-form.radio label="{{ __( 'Phone', 'qrk' ) }}" name="fields[Preferred_Contact_Method__c]" value="phone" checked="checked" />
 						</x-form.field-group>
