@@ -181,7 +181,7 @@ export class ProductOptionsCards extends HTMLElement {
 			radioInput.addEventListener( 'click', () => {
 				// Check if redio checked.
 				if ( radioInput.checked ) {
-					// Get the checkout URL from the selected radio button's data attribute
+					// Get the checkout URL from the selected radio button's value.
 					const checkoutUrl = radioInput.value;
 
 					// Find the 'Book Expedition Now' button within the same card container
