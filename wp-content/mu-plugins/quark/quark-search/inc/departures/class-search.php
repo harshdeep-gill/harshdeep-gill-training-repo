@@ -613,35 +613,38 @@ class Search {
 	}
 
 	/**
-	 * Set Sort.
+	 * Set Sorts.
 	 *
-	 * @param string $sort     Sort.
-	 * @param string $currency Currency.
+	 * @param string[] $sorts    Sort.
+	 * @param string   $currency Currency.
 	 *
 	 * @return void
 	 */
-	public function set_sort( string $sort = '', string $currency = DEFAULT_CURRENCY ): void {
+	public function set_sorts( array $sorts = [], string $currency = DEFAULT_CURRENCY ): void {
 		// Return early if sort is empty.
-		if ( empty( $sort ) ) {
+		if ( empty( $sorts ) ) {
 			return;
 		}
 
-		// Check if sort is for price.
-		if ( strpos( $sort, 'price-' ) !== false ) {
-			// Set currency.
-			$currency = strtolower( $currency );
+		// Loop through sorts.
+		foreach ( $sorts as $sort ) {
+			// Check if sort is for price.
+			if ( strpos( $sort, 'price-' ) !== false ) {
+				// Set currency.
+				$currency = strtolower( $currency );
 
-			// Update the sort key.
-			$sort = $sort . '-' . $currency;
+				// Update the sort key.
+				$sort = $sort . '-' . $currency;
+			}
+
+			// Check if sort is valid.
+			if ( empty( $this->sort_options[ $sort ] ) ) {
+				return;
+			}
+
+			// Set sort.
+			$this->sorts[ $this->sort_options[ $sort ]['key'] ] = $this->sort_options[ $sort ]['order'];
 		}
-
-		// Check if sort is valid.
-		if ( empty( $this->sort_options[ $sort ] ) ) {
-			return;
-		}
-
-		// Set sort.
-		$this->sorts[ $this->sort_options[ $sort ]['key'] ] = $this->sort_options[ $sort ]['order'];
 	}
 
 	/**
