@@ -796,7 +796,7 @@ class Search {
 				// Set field facet.
 				default:
 					// Get facet field instance.
-					$facet_field = $facet_set->createFacetField( $facet['key'] )->setField( $facet['key'] );
+					$facet_field = $facet_set->createFacetField( $facet['key'] )->setField( $facet['key'] )->setLimit( 100 );
 					break;
 			}
 		}
