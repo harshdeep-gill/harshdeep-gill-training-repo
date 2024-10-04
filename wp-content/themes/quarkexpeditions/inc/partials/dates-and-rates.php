@@ -45,7 +45,7 @@ function render( array $output = [], string $name = '', array $data = [] ): arra
 	// Init selected filters.
 	$selected_filter = [
 		'posts_per_load' => 8,
-		'sort'           => 'related_ship',
+		'sort'           => [ 'related_ship', 'date-now' ],
 	];
 
 	// Verify and get selected filters.
