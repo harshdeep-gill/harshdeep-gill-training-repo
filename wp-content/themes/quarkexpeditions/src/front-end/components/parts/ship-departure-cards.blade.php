@@ -243,8 +243,8 @@
 
 									@if( ! empty( $cabin['occupancies'] ) && is_array( $cabin['occupancies'] ) )
 										<x-product-options-cards.rooms title="Select Rooms">
-											@foreach( $cabin['occupancies'] as $occupancy )
-												<x-product-options-cards.room>
+											@foreach( $cabin['occupancies'] as $index => $occupancy )
+												<x-product-options-cards.room checkout_url="{!! $occupancy['checkout_url'] !!}" id="room-type-id-{{ $departure_id }}-{{ $cabin_code }}-{{ $index }}" name="room-type-{{ $departure_id }}-{{ $cabin_code }}" checked="{{ $index == 0 ? 'checked' : '' }}">
 													<x-product-options-cards.room-title-container>
 														@if( ! empty( $occupancy['description'] ) )
 															<x-product-options-cards.room-title
@@ -275,6 +275,14 @@
 											@endforeach
 										</x-product-options-cards.discounts>
 									@endif
+
+									<x-product-options-cards.cta-buttons>
+										<p class="product-options-cards__help-text">{{ __( 'Not ready to book?', 'qrk' ) }} <a href="#">{{ __( 'Request a quote', 'qrk' ) }}</a></p>
+										<x-product-options-cards.phone-number phone_number="+1 (877) 585-1235" text="Request a callback: +1 (866) 257-0754" />
+										@if ( ! empty( $cabin['occupancies'] ) && is_array( $cabin['occupancies'] ) )
+											<x-product-options-cards.cta-book-now :url="$cabin['occupancies'][0]['checkout_url'] ?? '#'" />
+										@endif
+									</x-product-options-cards.cta-buttons>
 								</x-product-options-cards.card-details>
 							@endforeach
 						</x-product-options-cards.more-details>
