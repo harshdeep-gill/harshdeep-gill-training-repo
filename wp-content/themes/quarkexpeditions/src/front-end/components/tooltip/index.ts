@@ -13,6 +13,8 @@ export class Tooltip extends HTMLElement {
 	private tooltipPopoverElement: HTMLElement | null;
 	private tooltipArrowElement: HTMLElement | null;
 	private tooltipContentElement: HTMLElement | null;
+	private readonly MINIMUM_BUFFER_DISTANCE_VALUE = 20;
+	private readonly TOOLTIP_POPOVER_MAX_DIMENSION = 360;
 
 	/**
 	 * Constructor.
@@ -83,8 +85,18 @@ export class Tooltip extends HTMLElement {
 		// Determine the primary axis and get the positioning data.
 		if ( tooltipTriggerHorizontalOffsets[ 0 ].value > tooltipTriggerVerticalOffsets[ 0 ].value ) {
 			primaryOffsetName = 'horizontal';
+
+			// Check if there is enough space in the vertical axis.
+			if ( tooltipTriggerVerticalOffsets[ 1 ].value <= this.MINIMUM_BUFFER_DISTANCE_VALUE ) {
+				primaryOffsetName = 'vertical';
+			}
 		} else {
 			primaryOffsetName = 'vertical';
+
+			// Check if there is enough space in the horizontal axis.
+			if ( tooltipTriggerHorizontalOffsets[ 1 ].value <= this.MINIMUM_BUFFER_DISTANCE_VALUE ) {
+				primaryOffsetName = 'horizontal';
+			}
 		}
 
 		// Get the positioning data.
@@ -202,12 +214,6 @@ export class Tooltip extends HTMLElement {
 			return;
 		}
 
-		// Maximum value for height/width.
-		const TOOLTIP_POPOVER_MAX_DIMENSION = 360;
-
-		// The distance between popover and screen edges / icon and popover.
-		const MINIMUM_BUFFER_DISTANCE_VALUE = 20;
-
 		// Tooltip direction.
 		const tooltipDirection = 'vertical' === primaryOffsetName ? tooltipTriggerVerticalOffsets[ 0 ].dir : tooltipTriggerHorizontalOffsets[ 0 ].dir;
 
@@ -236,7 +242,7 @@ export class Tooltip extends HTMLElement {
 		const popoverRect = this.tooltipPopoverElement.getBoundingClientRect();
 
 		// New max height.
-		let availableVerticalSpace = -2 * MINIMUM_BUFFER_DISTANCE_VALUE;
+		let availableVerticalSpace = -2 * this.MINIMUM_BUFFER_DISTANCE_VALUE;
 
 		// Calculate the available space.
 		if ( 'vertical' === primaryOffsetName ) {
@@ -246,10 +252,10 @@ export class Tooltip extends HTMLElement {
 		}
 
 		// Assign height accordingly.
-		const newMaxHeight = Math.min( availableVerticalSpace, TOOLTIP_POPOVER_MAX_DIMENSION );
+		const newMaxHeight = Math.min( availableVerticalSpace, this.TOOLTIP_POPOVER_MAX_DIMENSION );
 
 		// top
-		let topValue = MINIMUM_BUFFER_DISTANCE_VALUE;
+		let topValue = this.MINIMUM_BUFFER_DISTANCE_VALUE;
 		const desiredPopoverHeight = Math.min( newMaxHeight, popoverRect.height );
 		const triggerCenterOffsetTop = triggerTopOffset + ( triggerRect.height / 2 ); // top offset for the center of trigger.
 		const triggerCenterOffsetBottom = triggerBottomOffset + ( triggerRect.height / 2 ); // bottom offset for the center of trigger.
@@ -257,22 +263,22 @@ export class Tooltip extends HTMLElement {
 		// Check the direction and compute values.
 		if ( 'top' === tooltipDirection ) {
 			// Set the top value.
-			topValue = triggerTopOffset - desiredPopoverHeight - MINIMUM_BUFFER_DISTANCE_VALUE;
+			topValue = triggerTopOffset - desiredPopoverHeight - this.MINIMUM_BUFFER_DISTANCE_VALUE;
 		} else if ( 'bottom' === tooltipDirection ) {
-			topValue = triggerRect.bottom + MINIMUM_BUFFER_DISTANCE_VALUE;
+			topValue = triggerRect.bottom + this.MINIMUM_BUFFER_DISTANCE_VALUE;
 		} else if ( [ 'left', 'right' ].includes( tooltipDirection ) ) {
 			// If the main direction of the tooltip is horizontal, try to spread the popover across top and bottom.
 			if ( triggerCenterOffsetTop <= desiredPopoverHeight / 2 ) {
-				topValue = MINIMUM_BUFFER_DISTANCE_VALUE;
+				topValue = this.MINIMUM_BUFFER_DISTANCE_VALUE;
 			} else if ( triggerCenterOffsetBottom <= desiredPopoverHeight / 2 ) {
-				topValue = window.innerHeight - desiredPopoverHeight - MINIMUM_BUFFER_DISTANCE_VALUE;
+				topValue = window.innerHeight - desiredPopoverHeight - this.MINIMUM_BUFFER_DISTANCE_VALUE;
 			} else {
 				topValue = triggerCenterOffsetTop - ( desiredPopoverHeight / 2 );
 			}
 		}
 
 		// New max width
-		let availableHorizontalSpace = -2 * MINIMUM_BUFFER_DISTANCE_VALUE;
+		let availableHorizontalSpace = -2 * this.MINIMUM_BUFFER_DISTANCE_VALUE;
 
 		// Calculate the available space.
 		if ( 'vertical' === primaryOffsetName ) {
@@ -282,10 +288,10 @@ export class Tooltip extends HTMLElement {
 		}
 
 		// Assign new max width accordingly.
-		const newMaxWidth = Math.min( availableHorizontalSpace, TOOLTIP_POPOVER_MAX_DIMENSION );
+		const newMaxWidth = Math.min( availableHorizontalSpace, this.TOOLTIP_POPOVER_MAX_DIMENSION );
 
 		// left
-		let leftValue = MINIMUM_BUFFER_DISTANCE_VALUE;
+		let leftValue = this.MINIMUM_BUFFER_DISTANCE_VALUE;
 		const desiredPopoverWidth = Math.min( newMaxWidth, popoverRect.width );
 		const triggerCenterOffsetLeft = triggerLeftOffset + ( triggerRect.width / 2 ); // left offset for the center of trigger.
 		const triggerCenterOffsetRight = triggerRightOffset + ( triggerRect.width / 2 ); // right offset for the center of trigger.
@@ -293,15 +299,15 @@ export class Tooltip extends HTMLElement {
 		// Check the direction and compute values.
 		if ( 'left' === tooltipDirection ) {
 			// Set the left value.
-			leftValue = triggerLeftOffset - desiredPopoverWidth - MINIMUM_BUFFER_DISTANCE_VALUE;
+			leftValue = triggerLeftOffset - desiredPopoverWidth - this.MINIMUM_BUFFER_DISTANCE_VALUE;
 		} else if ( 'right' === tooltipDirection ) {
-			leftValue = triggerRect.right + MINIMUM_BUFFER_DISTANCE_VALUE;
+			leftValue = triggerRect.right + this.MINIMUM_BUFFER_DISTANCE_VALUE;
 		} else if ( [ 'top', 'bottom' ].includes( tooltipDirection ) ) {
 			// If the main direction of the tooltip is horizontal, try to spread the popover across left and right.
 			if ( triggerCenterOffsetLeft <= desiredPopoverWidth / 2 ) {
-				leftValue = MINIMUM_BUFFER_DISTANCE_VALUE;
+				leftValue = this.MINIMUM_BUFFER_DISTANCE_VALUE;
 			} else if ( triggerCenterOffsetRight <= desiredPopoverWidth / 2 ) {
-				leftValue = window.innerWidth - desiredPopoverWidth - MINIMUM_BUFFER_DISTANCE_VALUE;
+				leftValue = window.innerWidth - desiredPopoverWidth - this.MINIMUM_BUFFER_DISTANCE_VALUE;
 			} else {
 				leftValue = triggerCenterOffsetLeft - ( desiredPopoverWidth / 2 );
 			}
