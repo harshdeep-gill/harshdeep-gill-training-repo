@@ -70,7 +70,6 @@
 					<p class="form-newsletter__privacy">
 						We respect your privacy. You may unsubscribe from our communications at any time. Please refer to our privacy policy for full detail.
 					</p>
-					{!! $slot !!}
 				</div>
 				<x-form.buttons>
 					<x-form.submit size="big">Submit</x-form.submit>
