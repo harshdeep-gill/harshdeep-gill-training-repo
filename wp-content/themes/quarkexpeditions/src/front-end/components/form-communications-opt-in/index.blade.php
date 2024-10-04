@@ -18,6 +18,8 @@
 	id="{{ $form_id }}"
 	thank_you_page="{{ $thank_you_page }}"
 	@class( $classes )
+	marketing_fields=false
+	webform_url=false
 >
 	<div class="form-communications-opt-in__content">
 		<div class="form-communications-opt-in__form">
