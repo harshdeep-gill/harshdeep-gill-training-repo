@@ -182,7 +182,7 @@ export class ProductOptionsCards extends HTMLElement {
 				// Check if redio checked.
 				if ( radioInput.checked ) {
 					// Get the checkout URL from the selected radio button's data attribute
-					const checkoutUrl = radioInput.getAttribute( 'data-checkout-url' );
+					const checkoutUrl = radioInput.value;
 
 					// Find the 'Book Expedition Now' button within the same card container
 					const bookNowButton = card.querySelector( '.product-options-cards__cta-book-now' ) as HTMLAnchorElement;
