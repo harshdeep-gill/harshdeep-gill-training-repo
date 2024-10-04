@@ -1219,7 +1219,7 @@
 			</x-section.heading>
 			<x-section.description>Discover what your Crossing the Circle Expedition includes</x-section.description>
 
-			<x-icon-info-grid>
+			<x-icon-info-grid :desktop_carousel="true" >
 				<x-icon-info-grid.item>
 					<x-icon-info-grid.icon icon="star" />
 					<h4>Specialist Expedition Leaders</h4>
