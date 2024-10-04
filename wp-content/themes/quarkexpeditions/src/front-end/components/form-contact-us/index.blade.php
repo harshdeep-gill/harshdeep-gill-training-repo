@@ -20,6 +20,7 @@
 	salesforce_object="Webform_Contact_Us__c"
 	id="{{ $form_id }}"
 	thank_you_page="{{ $thank_you_page }}"
+	:webform_url="false"
 	@class( $classes )
 >
 	<div class="form-contact-us__content">
