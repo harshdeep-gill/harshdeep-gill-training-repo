@@ -27,7 +27,6 @@ function bootstrap(): void {
 	add_filter( 'qe_destination_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
 
 	// Permalink and rewrite rules.
-	// Note: Priority 12 is to run after the pages post type.
 	add_action( 'init', __NAMESPACE__ . '\\rewrite_rules' );
 	add_filter( 'post_type_link', __NAMESPACE__ . '\\get_custom_permalink', 10, 3 );
 
@@ -462,10 +461,16 @@ function get( int $page_id = 0 ): array {
  * @return void
  */
 function rewrite_rules(): void {
+	// Match URLs with one level post.
+	add_rewrite_rule(
+		'^([^/]+)/?$',
+		'index.php?' . POST_TYPE . '=$matches[1]'
+	);
+
 	// Match URLs with one or more slashes for parent-child relations.
 	add_rewrite_rule(
-		'^([a-zA-Z0-9_-]+(?:/[a-zA-Z0-9_-]+)*)/?$',
-		'index.php?' . POST_TYPE . '=$matches[1]'
+		'^([^/]+)/([^/]+)/?$',
+		'index.php?' . POST_TYPE . '=$matches[1]/$matches[2]'
 	);
 }
 
@@ -547,7 +552,7 @@ function get_custom_permalink( string $permalink = '', WP_Post $post = null, boo
 /**
  * Adds support for same permalink structure.
  *
- * Few post types have same permalink structure. Therefore WordPress picks up whichever rewrite rule is present on the
+ * Few post types have same permalink structure. Therefore, WordPress picks up whichever rewrite rule is present on the
  * top. If such a post type is encountered then also add other same permalink post types to the post type list of the
  * query, so that they are also queried.
  *
