@@ -433,29 +433,42 @@ class Test_Filters extends WP_UnitTestCase {
 				'ANT-2026' => 4,
 			]
 		);
-		$this->assertEquals(
+
+		// Expected.
+		$expected = [
 			[
-				[
-					'label' => $term1['name'] . ' ' . $term3['name'],
-					'value' => 'ANT-2025',
-					'count' => 1,
-				],
-				[
-					'label' => $term2['name'] . ' ' . $term4['name'],
-					'value' => 'ARC-2026',
-					'count' => 2,
-				],
-				[
-					'label' => $term2['name'] . ' ' . $term3['name'],
-					'value' => 'ARC-2025',
-					'count' => 3,
-				],
-				[
-					'label' => $term1['name'] . ' ' . $term4['name'],
-					'value' => 'ANT-2026',
-					'count' => 4,
-				],
+				'label' => $term1['name'] . ' ' . $term3['name'],
+				'value' => 'ANT-2025',
+				'count' => 1,
 			],
+			[
+				'label' => $term2['name'] . ' ' . $term4['name'],
+				'value' => 'ARC-2026',
+				'count' => 2,
+			],
+			[
+				'label' => $term2['name'] . ' ' . $term3['name'],
+				'value' => 'ARC-2025',
+				'count' => 3,
+			],
+			[
+				'label' => $term1['name'] . ' ' . $term4['name'],
+				'value' => 'ANT-2026',
+				'count' => 4,
+			],
+		];
+
+		// Sort expected by label.
+		usort(
+			$expected,
+			function ( $a, $b ) {
+				return strcmp( $a['label'], $b['label'] );
+			}
+		);
+
+		// Assert.
+		$this->assertEquals(
+			$expected,
 			$actual
 		);
 	}
@@ -644,19 +657,32 @@ class Test_Filters extends WP_UnitTestCase {
 				$term_id2 => 2,
 			]
 		);
-		$this->assertEquals(
+
+		// Expected.
+		$expected = [
 			[
-				[
-					'label' => 'Kayaking',
-					'value' => $term_id1,
-					'count' => 1,
-				],
-				[
-					'label' => 'Hiking',
-					'value' => $term_id2,
-					'count' => 2,
-				],
+				'label' => 'Kayaking',
+				'value' => $term_id1,
+				'count' => 1,
 			],
+			[
+				'label' => 'Hiking',
+				'value' => $term_id2,
+				'count' => 2,
+			],
+		];
+
+		// Sort expected by label.
+		usort(
+			$expected,
+			function ( $a, $b ) {
+				return strcmp( $a['label'], $b['label'] );
+			}
+		);
+
+		// Assert.
+		$this->assertEquals(
+			$expected,
 			$actual
 		);
 	}
