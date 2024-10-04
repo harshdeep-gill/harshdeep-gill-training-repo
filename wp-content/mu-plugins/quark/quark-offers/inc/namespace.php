@@ -65,7 +65,7 @@ function register_offer_post_type(): void {
 		'query_var'           => true,
 		'can_export'          => true,
 		'rewrite'             => [
-			'slug'       => 'offers',
+			'slug'       => 'offer',
 			'with_front' => false,
 		],
 		'capability_type'     => 'post',
