@@ -38,16 +38,16 @@
 				class="form-request-quote__form"
 			>
 				{{-- Step 1 --}}
-				<x-form-request-quote.tab id="travel-details" open="yes">
+				<x-form-request-quote.tab id="travel-details" class="form-request-quote__step-1" open="yes">
 					<x-form-request-quote.title title="{{ __( 'Travel Details', 'qrk' ) }}" />
 
 					<x-form.row>
 						<x-form.field :validation="[ 'required' ]">
-							<x-form.select label="{{ __('Are you interested in', 'qrk') }}">
-								<x-form.option value="">{{ __('- Select -', 'qrk') }}</x-form.option>
-								<x-form.option value="dreaming" label="{{ __('Learning about Polar Travel', 'qrk') }}">{{ __('Learning about Polar Travel', 'qrk') }}</x-form.option>
-								<x-form.option value="planning" label="{{ __('Planning a Trip', 'qrk') }}">{{ __('Planning a Trip', 'qrk') }}</x-form.option>
-								<x-form.option value="booking" label="{{ __('Booking a Trip', 'qrk') }}">{{ __('Booking a Trip', 'qrk') }}</x-form.option>
+							<x-form.select label="{{ __( 'Are you interested in', 'qrk' ) }}">
+								<x-form.option value="">{{ __( '- Select -', 'qrk' ) }}</x-form.option>
+								<x-form.option value="dreaming" label="{{ __( 'Learning about Polar Travel', 'qrk' ) }}">{{ __( 'Learning about Polar Travel', 'qrk' ) }}</x-form.option>
+								<x-form.option value="planning" label="{{ __( 'Planning a Trip', 'qrk' ) }}">{{ __( 'Planning a Trip', 'qrk' ) }}</x-form.option>
+								<x-form.option value="booking" label="{{ __( 'Booking a Trip', 'qrk' ) }}">{{ __( 'Booking a Trip', 'qrk' ) }}</x-form.option>
 							</x-form.select>
 						</x-form.field>
 
@@ -62,28 +62,28 @@
 
 					<x-form.row>
 						<x-form.field :validation="[ 'required' ]">
-							<x-form.select label="{{ __('Choose your expedition (optional)', 'qrk') }}">
-								<x-form.option value="">{{ __('- None -', 'qrk') }}</x-form.option>
-								<x-form.option value="115841" label="{{ __('Adventures in Northeast Greenland: Glaciers, Fjords and the Northern Lights', 'qrk') }}">{{ __('Adventures in Northeast Greenland: Glaciers, Fjords and the Northern Lights', 'qrk') }}</x-form.option>
-								<x-form.option value="125" label="{{ __('Antarctic Explorer: Discovering the 7th Continent', 'qrk') }}">{{ __('Antarctic Explorer: Discovering the 7th Continent', 'qrk') }}</x-form.option>
-								<x-form.option value="24416" label="{{ __('Antarctic Explorer: Discovering the 7th Continent plus Cape Horn & Diego Ramirez', 'qrk') }}">{{ __('Antarctic Explorer: Discovering the 7th Continent plus Cape Horn & Diego Ramirez', 'qrk') }}</x-form.option>
+							<x-form.select label="{{ __( 'Choose your expedition (optional)', 'qrk' ) }}">
+								<x-form.option value="">{{ __( '- None -', 'qrk' ) }}</x-form.option>
+								<x-form.option value="115841" label="{{ __( 'Adventures in Northeast Greenland: Glaciers, Fjords and the Northern Lights', 'qrk' ) }}">{{ __( 'Adventures in Northeast Greenland: Glaciers, Fjords and the Northern Lights', 'qrk' ) }}</x-form.option>
+								<x-form.option value="125" label="{{ __( 'Antarctic Explorer: Discovering the 7th Continent', 'qrk' ) }}">{{ __( 'Antarctic Explorer: Discovering the 7th Continent', 'qrk' ) }}</x-form.option>
+								<x-form.option value="24416" label="{{ __( 'Antarctic Explorer: Discovering the 7th Continent plus Cape Horn & Diego Ramirez', 'qrk' ) }}">{{ __( 'Antarctic Explorer: Discovering the 7th Continent plus Cape Horn & Diego Ramirez', 'qrk' ) }}</x-form.option>
 							</x-form.select>
 						</x-form.field>
 					</x-form.row>
 
 					<x-form.row>
-						<x-form.field-group title="{{ __('When would you like to travel?', 'qrk') }}">
-							<x-form.checkbox name="fields[]" label="{{ __('Any Available Departure', 'qrk') }}" value="any_available_departure" />
-							<x-form.checkbox name="fields[]" label="{{ __('November 2024', 'qrk') }}" value="november_2024" />
-							<x-form.checkbox name="fields[]" label="{{ __('December 2024', 'qrk') }}" value="december_2024" />
-							<x-form.checkbox name="fields[]" label="{{ __('January 2025', 'qrk') }}" value="january_2025" />
-							<x-form.checkbox name="fields[]" label="{{ __('February 2025', 'qrk') }}" value="february_2025" />
-							<x-form.checkbox name="fields[]" label="{{ __('March 2025', 'qrk') }}" value="march_2025" />
-							<x-form.checkbox name="fields[]" label="{{ __('November 2025', 'qrk') }}" value="november_2025" />
-							<x-form.checkbox name="fields[]" label="{{ __('December 2025', 'qrk') }}" value="december_2025" />
-							<x-form.checkbox name="fields[]" label="{{ __('January 2026', 'qrk') }}" value="january_2026" />
-							<x-form.checkbox name="fields[]" label="{{ __('February 2026', 'qrk') }}" value="february_2026" />
-							<x-form.checkbox name="fields[]" label="{{ __('March 2026', 'qrk') }}" value="march_2026" />
+						<x-form.field-group title="{{ __( 'When would you like to travel?', 'qrk' ) }}">
+							<x-form.checkbox name="fields[]" label="{{ __( 'Any Available Departure', 'qrk' ) }}" value="any_available_departure" />
+							<x-form.checkbox name="fields[]" label="{{ __( 'November 2024', 'qrk' ) }}" value="november_2024" />
+							<x-form.checkbox name="fields[]" label="{{ __( 'December 2024', 'qrk' ) }}" value="december_2024" />
+							<x-form.checkbox name="fields[]" label="{{ __( 'January 2025', 'qrk' ) }}" value="january_2025" />
+							<x-form.checkbox name="fields[]" label="{{ __( 'February 2025', 'qrk' ) }}" value="february_2025" />
+							<x-form.checkbox name="fields[]" label="{{ __( 'March 2025', 'qrk' ) }}" value="march_2025" />
+							<x-form.checkbox name="fields[]" label="{{ __( 'November 2025', 'qrk' ) }}" value="november_2025" />
+							<x-form.checkbox name="fields[]" label="{{ __( 'December 2025', 'qrk' ) }}" value="december_2025" />
+							<x-form.checkbox name="fields[]" label="{{ __( 'January 2026', 'qrk' ) }}" value="january_2026" />
+							<x-form.checkbox name="fields[]" label="{{ __( 'February 2026', 'qrk' ) }}" value="february_2026" />
+							<x-form.checkbox name="fields[]" label="{{ __( 'March 2026', 'qrk' ) }}" value="march_2026" />
 						</x-form.field-group>
 					</x-form.row>
 
@@ -95,15 +95,15 @@
 				</x-form-request-quote.tab>
 
 				{{-- Step 2 --}}
-				<x-form-request-quote.tab id="contact-details">
+				<x-form-request-quote.tab id="contact-details"  class="form-request-quote__step-2">
 					<x-form-request-quote.title title="{{ __( 'Contact Details', 'qrk' ) }}" />
 
 					<x-form.row>
 						<x-form.field :validation="[ 'required', 'no-empty-spaces' ]">
-							<x-form.input type="text" label="First Name" placeholder="Enter First Name" name="fields[FirstName__c]" />
+							<x-form.input type="text" label="{{ __( 'First Name', 'qrk' ) }}" placeholder="{{ __( 'Enter First Name', 'qrk' ) }}" name="fields[FirstName__c]" />
 						</x-form.field>
 						<x-form.field :validation="[ 'required', 'no-empty-spaces' ]">
-							<x-form.input type="text" label="Last Name" placeholder="Enter Last Name" name="fields[LastName__c]" />
+							<x-form.input type="text" label="{{ __( 'Last Name', 'qrk' ) }}" placeholder="{{ __( 'Enter Last Name', 'qrk' ) }}" name="fields[LastName__c]" />
 						</x-form.field>
 					</x-form.row>
 
@@ -111,21 +111,22 @@
 						<x-form.field :validation="[ 'required', 'email' ]">
 							<x-form.input type="email" label="Email" placeholder="Enter Email" name="fields[Email__c]" />
 						</x-form.field>
+
 						<x-form.field :validation="[ 'required' ]">
-							<x-form.input type="tel" label="Phone Number" placeholder="eg. (123) 456 7890" name="fields[Phone__c]" />
+							<x-form.input type="tel" label="{{ __( 'Phone Number', 'qrk' ) }}" placeholder="eg. (123) 456 7890" name="fields[Phone__c]" />
 						</x-form.field>
 					</x-form.row>
 
 					<x-form.row>
-						<x-form.field-group title="{{ __('Preferred Contact Method', 'qrk') }}" class="form-request-quote__toggle">
-							<x-form.radio label="{{ __('Email', 'qrk') }}" name="fields[Preferred_Contact_Method__c]" value="email" />
-							<x-form.radio label="{{ __('Phone', 'qrk') }}" name="fields[Preferred_Contact_Method__c]" value="phone" checked="checked" />
+						<x-form.field-group title="{{ __( 'Preferred Contact Method', 'qrk' ) }}" class="form-request-quote__toggle">
+							<x-form.radio label="{{ __( 'Email', 'qrk' ) }}" name="fields[Preferred_Contact_Method__c]" value="email" />
+							<x-form.radio label="{{ __( 'Phone', 'qrk' ) }}" name="fields[Preferred_Contact_Method__c]" value="phone" checked="checked" />
 						</x-form.field-group>
 					</x-form.row>
 
 					<x-form.row>
 						<x-form.field>
-							<x-form.textarea label="What else would you like us to know that is important to you? (optional)" placeholder="Ask us about our adventure options, any dietary requirements, specific departure dates in mind, etc." name="fields[]" />
+							<x-form.textarea label="{{ __( 'What else would you like us to know that is important to you? (optional)', 'qrk' ) }}" placeholder="{{ __( 'Ask us about our adventure options, any dietary requirements, specific departure dates in mind, etc.', 'qrk' ) }}" name="fields[]" />
 						</x-form.field>
 					</x-form.row>
 

@@ -11,11 +11,11 @@
 @endphp
 
 <div class="form-request-quote__buttons-wrap">
-	<x-button type="button" appearance="outline" size="big" class="form-request-quote__back-button">
-		<span class="form-request-quote__back-button-text">
+	<x-button type="button" appearance="outline" size="big" class="form-request-quote__previous-step-button">
+		<span class="form-request-quote__previous-step-button-text">
 			<x-escape :content="$back_button_text" />
 		</span>
-		<span class="form-request-quote__back-button-text-mobile">
+		<span class="form-request-quote__previous-step-button-text-mobile">
 			<x-escape :content="$back_button_text_mobile" />
 		</span>
 	</x-button>

@@ -42,6 +42,7 @@
 	}
 
 	&__tabs-nav-item {
+		pointer-events: none;
 
 		@media screen and (min-width: grid-size(lg)) {
 			min-width: 120px;
@@ -137,12 +138,12 @@
 		min-width: 0;
 	}
 
-	&__back-button {
+	&__previous-step-button {
 		max-width: max-content;
 		min-width: 96px;
 	}
 
-	&__back-button-text {
+	&__previous-step-button-text {
 		display: none;
 
 		@media screen and (min-width: grid-size(lg)) {
@@ -150,7 +151,7 @@
 		}
 	}
 
-	&__back-button-text-mobile {
+	&__previous-step-button-text-mobile {
 
 		@media screen and (min-width: grid-size(lg)) {
 			display: none;

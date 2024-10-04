@@ -1,5 +1,5 @@
 @props( [
-	'button_text' => __('Continue to Contact Details', 'qrk'),
+	'button_text' => __( 'Continue to Contact Details', 'qrk' ),
 ] )
 
 @php
