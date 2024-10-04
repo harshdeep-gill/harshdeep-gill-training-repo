@@ -85,6 +85,7 @@ import * as pressReleases from './press-releases';
 import * as tabs from './tabs';
 import * as detailedExpeditionCarousel from './detailed-expedition-carousel';
 import * as form from './form';
+import * as formContactUs from './form-contact-us';
 
 /**
  * Add blocks.
@@ -166,6 +167,7 @@ const blocks = [
 	tabs,
 	detailedExpeditionCarousel,
 	form,
+	formContactUs,
 ];
 
 // Register blocks for ships.
