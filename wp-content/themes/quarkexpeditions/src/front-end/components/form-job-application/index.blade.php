@@ -126,26 +126,26 @@
 				<div class="form-job-application__sub-section">
 					<x-form.row>
 						<x-form.field-group title="{{ __('What Expedition Team Role(s) are you applying for?', 'qrk') }}" :validation="[ 'checkbox-group-required' ]">
-							<x-form.checkbox name="fields[Expedition_Team_Roles__c]" label="{{ __('Guest Services(On Ship)', 'qrk') }}" value="guest_services" />
-							<x-form.checkbox name="fields[Expedition_Team_Roles__c]" label="{{ __('Polar Retail Boutique Manager(On Ship)', 'qrk') }}" value="boutique_manager" />
-							<x-form.checkbox name="fields[Expedition_Team_Roles__c]" label="{{ __('Expedition Leader', 'qrk') }}" value="expedition_leader" />
-							<x-form.checkbox name="fields[Expedition_Team_Roles__c]" label="{{ __('Expedition Coordinator', 'qrk') }}" value="expedition_coordinator" />
-							<x-form.checkbox name="fields[Expedition_Team_Roles__c]" label="{{ __('Expedition Guide', 'qrk') }}" value="expedition_guide" />
-							<x-form.checkbox name="fields[Expedition_Team_Roles__c]" label="{{ __('Glaciology Specialist', 'qrk') }}" value="glaciology_specialist" />
-							<x-form.checkbox name="fields[Expedition_Team_Roles__c]" label="{{ __('Geology Specialist', 'qrk') }}" value="geology_specialist" />
-							<x-form.checkbox name="fields[Expedition_Team_Roles__c]" label="{{ __('Ornithology Specialist', 'qrk') }}" value="ornithology_specialist" />
-							<x-form.checkbox name="fields[Expedition_Team_Roles__c]" label="{{ __('Marine Biology Specialist', 'qrk') }}" value="marine_biology_specialist" />
-							<x-form.checkbox name="fields[Expedition_Team_Roles__c]" label="{{ __('Polar History Specialist', 'qrk') }}" value="polar_history_specialist" />
-							<x-form.checkbox name="fields[Expedition_Team_Roles__c]" label="{{ __('Cultural Educator', 'qrk') }}" value="cultural_educator" />
-							<x-form.checkbox name="fields[Expedition_Team_Roles__c]" label="{{ __('Photography Guide', 'qrk') }}" value="photography_guide" />
-							<x-form.checkbox name="fields[Expedition_Team_Roles__c]" label="{{ __('French Linguist', 'qrk') }}" value="french_linguist" />
-							<x-form.checkbox name="fields[Expedition_Team_Roles__c]" label="{{ __('German Linguist', 'qrk') }}" value="german_linguist" />
-							<x-form.checkbox name="fields[Expedition_Team_Roles__c]" label="{{ __('Japanese Linguist', 'qrk') }}" value="japanese_linguist" />
-							<x-form.checkbox name="fields[Expedition_Team_Roles__c]" label="{{ __('Mandarin Linguist', 'qrk') }}" value="mandarin_linguist" />
-							<x-form.checkbox name="fields[Expedition_Team_Roles__c]" label="{{ __('Mountain Guide', 'qrk') }}" value="mountain_guide" />
-							<x-form.checkbox name="fields[Expedition_Team_Roles__c]" label="{{ __('Sea Kayak Guide', 'qrk') }}" value="sea_kayak_guide" />
-							<x-form.checkbox name="fields[Expedition_Team_Roles__c]" label="{{ __('SUP Guide', 'qrk') }}" value="sup_guide" />
-							<x-form.checkbox name="fields[Expedition_Team_Roles__c]" label="{{ __('Helicopter Operations Manager', 'qrk') }}" value="helicopter_operations_manager" />
+							<x-form.checkbox name="fields[Expedition_Team_Roles__c][]" label="{{ __('Guest Services(On Ship)', 'qrk') }}" value="guest_services" />
+							<x-form.checkbox name="fields[Expedition_Team_Roles__c][]" label="{{ __('Polar Retail Boutique Manager(On Ship)', 'qrk') }}" value="boutique_manager" />
+							<x-form.checkbox name="fields[Expedition_Team_Roles__c][]" label="{{ __('Expedition Leader', 'qrk') }}" value="expedition_leader" />
+							<x-form.checkbox name="fields[Expedition_Team_Roles__c][]" label="{{ __('Expedition Coordinator', 'qrk') }}" value="expedition_coordinator" />
+							<x-form.checkbox name="fields[Expedition_Team_Roles__c][]" label="{{ __('Expedition Guide', 'qrk') }}" value="expedition_guide" />
+							<x-form.checkbox name="fields[Expedition_Team_Roles__c][]" label="{{ __('Glaciology Specialist', 'qrk') }}" value="glaciology_specialist" />
+							<x-form.checkbox name="fields[Expedition_Team_Roles__c][]" label="{{ __('Geology Specialist', 'qrk') }}" value="geology_specialist" />
+							<x-form.checkbox name="fields[Expedition_Team_Roles__c][]" label="{{ __('Ornithology Specialist', 'qrk') }}" value="ornithology_specialist" />
+							<x-form.checkbox name="fields[Expedition_Team_Roles__c][]" label="{{ __('Marine Biology Specialist', 'qrk') }}" value="marine_biology_specialist" />
+							<x-form.checkbox name="fields[Expedition_Team_Roles__c][]" label="{{ __('Polar History Specialist', 'qrk') }}" value="polar_history_specialist" />
+							<x-form.checkbox name="fields[Expedition_Team_Roles__c][]" label="{{ __('Cultural Educator', 'qrk') }}" value="cultural_educator" />
+							<x-form.checkbox name="fields[Expedition_Team_Roles__c][]" label="{{ __('Photography Guide', 'qrk') }}" value="photography_guide" />
+							<x-form.checkbox name="fields[Expedition_Team_Roles__c][]" label="{{ __('French Linguist', 'qrk') }}" value="french_linguist" />
+							<x-form.checkbox name="fields[Expedition_Team_Roles__c][]" label="{{ __('German Linguist', 'qrk') }}" value="german_linguist" />
+							<x-form.checkbox name="fields[Expedition_Team_Roles__c][]" label="{{ __('Japanese Linguist', 'qrk') }}" value="japanese_linguist" />
+							<x-form.checkbox name="fields[Expedition_Team_Roles__c][]" label="{{ __('Mandarin Linguist', 'qrk') }}" value="mandarin_linguist" />
+							<x-form.checkbox name="fields[Expedition_Team_Roles__c][]" label="{{ __('Mountain Guide', 'qrk') }}" value="mountain_guide" />
+							<x-form.checkbox name="fields[Expedition_Team_Roles__c][]" label="{{ __('Sea Kayak Guide', 'qrk') }}" value="sea_kayak_guide" />
+							<x-form.checkbox name="fields[Expedition_Team_Roles__c][]" label="{{ __('SUP Guide', 'qrk') }}" value="sup_guide" />
+							<x-form.checkbox name="fields[Expedition_Team_Roles__c][]" label="{{ __('Helicopter Operations Manager', 'qrk') }}" value="helicopter_operations_manager" />
 						</x-form.field-group>
 					</x-form.row>
 				</div>
@@ -153,22 +153,22 @@
 				<div class="form-job-application__sub-section form-job-application--expand-fields">
 					<x-form.row>
 						<x-form.field-group title="{{ __('What languages do you speak fluently?', 'qrk') }}" :validation="[ 'checkbox-group-required' ]">
-							<x-form.checkbox name="fields[Languages__c]" label="{{ __('English', 'qrk') }}" value="English" />
-							<x-form.checkbox name="fields[Languages__c]" label="{{ __('Italian', 'qrk') }}" value="Italian" />
-							<x-form.checkbox name="fields[Languages__c]" label="{{ __('Arabic', 'qrk') }}" value="Arabic" />
-							<x-form.checkbox name="fields[Languages__c]" label="{{ __('Chinese, Mandarin', 'qrk') }}" value="Chinese, Mandarin" />
-							<x-form.checkbox name="fields[Languages__c]" label="{{ __('Hindi', 'qrk') }}" value="Hindi" />
-							<x-form.checkbox name="fields[Languages__c]" label="{{ __('Japanese', 'qrk') }}" value="Japanese" />
-							<x-form.checkbox name="fields[Languages__c]" label="{{ __('French', 'qrk') }}" value="French" />
-							<x-form.checkbox name="fields[Languages__c]" label="{{ __('Korean', 'qrk') }}" value="Korean" />
-							<x-form.checkbox name="fields[Languages__c]" label="{{ __('Portuguese', 'qrk') }}" value="Portuguese" />
-							<x-form.checkbox name="fields[Languages__c]" label="{{ __('German', 'qrk') }}" value="German" />
-							<x-form.checkbox name="fields[Languages__c]" label="{{ __('Russian', 'qrk') }}" value="Russian" />
+							<x-form.checkbox name="fields[Languages__c][]" label="{{ __('English', 'qrk') }}" value="English" />
+							<x-form.checkbox name="fields[Languages__c][]" label="{{ __('Italian', 'qrk') }}" value="Italian" />
+							<x-form.checkbox name="fields[Languages__c][]" label="{{ __('Arabic', 'qrk') }}" value="Arabic" />
+							<x-form.checkbox name="fields[Languages__c][]" label="{{ __('Chinese, Mandarin', 'qrk') }}" value="Chinese, Mandarin" />
+							<x-form.checkbox name="fields[Languages__c][]" label="{{ __('Hindi', 'qrk') }}" value="Hindi" />
+							<x-form.checkbox name="fields[Languages__c][]" label="{{ __('Japanese', 'qrk') }}" value="Japanese" />
+							<x-form.checkbox name="fields[Languages__c][]" label="{{ __('French', 'qrk') }}" value="French" />
+							<x-form.checkbox name="fields[Languages__c][]" label="{{ __('Korean', 'qrk') }}" value="Korean" />
+							<x-form.checkbox name="fields[Languages__c][]" label="{{ __('Portuguese', 'qrk') }}" value="Portuguese" />
+							<x-form.checkbox name="fields[Languages__c][]" label="{{ __('German', 'qrk') }}" value="German" />
+							<x-form.checkbox name="fields[Languages__c][]" label="{{ __('Russian', 'qrk') }}" value="Russian" />
 							<tp-toggle-attribute target=".form-job-application__other-languages" value="true" attribute="required" attribute-value="yes">
-								<x-form.checkbox name="fields[Languages__c]" label="{{ __('Other', 'qrk') }}" value="Other" />
+								<x-form.checkbox name="fields[Languages__c][]" label="{{ __('Other', 'qrk') }}" value="Other" />
 							</tp-toggle-attribute>
-							<x-form.checkbox name="fields[Languages__c]" label="{{ __('Spanish', 'qrk') }}" value="Spanish" />
-							<x-form.checkbox name="fields[Languages__c]" label="{{ __('Bengali', 'qrk') }}" value="Bengali" />
+							<x-form.checkbox name="fields[Languages__c][]" label="{{ __('Spanish', 'qrk') }}" value="Spanish" />
+							<x-form.checkbox name="fields[Languages__c][]" label="{{ __('Bengali', 'qrk') }}" value="Bengali" />
 						</x-form.field-group>
 					</x-form.row>
 					<x-form.field class="form-job-application__other-languages">
@@ -179,16 +179,16 @@
 				<div class="form-job-application__sub-section">
 					<x-form.row>
 						<x-form.field-group title="{{ __('What areas do you have work experience in?', 'qrk') }}">
-							<x-form.checkbox name="fields[Work_Areas__c]" label="{{ __('Guiding in Polar Region(s)', 'qrk') }}" value="polar_guiding" />
+							<x-form.checkbox name="fields[Work_Areas__c][]" label="{{ __('Guiding in Polar Region(s)', 'qrk') }}" value="polar_guiding" />
 							<div class="form-job-application__option-tooltip">
-								<x-form.checkbox name="fields[Work_Areas__c]" label="{{ __('Outdoor Guiding', 'qrk') }}" value="outdoor_guiding" />
+								<x-form.checkbox name="fields[Work_Areas__c][]" label="{{ __('Outdoor Guiding', 'qrk') }}" value="outdoor_guiding" />
 								<x-tooltip icon="info">{{ __('Hiking, Kayaking, mountain biking, mountaineering', 'qrk') }}</x-tooltip>
 							</div>
-							<x-form.checkbox name="fields[Work_Areas__c]" label="{{ __('Ship, Vessel or Boating', 'qrk') }}" value="boating" />
-							<x-form.checkbox name="fields[Work_Areas__c]" label="{{ __('Zodiac Driving', 'qrk') }}" value="zodiac_driving" />
-							<x-form.checkbox name="fields[Work_Areas__c]" label="{{ __('Public Speaking, Lectures and/or Presentations', 'qrk') }}" value="public_speaking" />
-							<x-form.checkbox name="fields[Work_Areas__c]" label="{{ __('Customer Service', 'qrk') }}" value="customer_service" />
-							<x-form.checkbox name="fields[Work_Areas__c]" label="{{ __('Helicopter Operations', 'qrk') }}" value="helicopter_operations" />
+							<x-form.checkbox name="fields[Work_Areas__c][]" label="{{ __('Ship, Vessel or Boating', 'qrk') }}" value="boating" />
+							<x-form.checkbox name="fields[Work_Areas__c][]" label="{{ __('Zodiac Driving', 'qrk') }}" value="zodiac_driving" />
+							<x-form.checkbox name="fields[Work_Areas__c][]" label="{{ __('Public Speaking, Lectures and/or Presentations', 'qrk') }}" value="public_speaking" />
+							<x-form.checkbox name="fields[Work_Areas__c][]" label="{{ __('Customer Service', 'qrk') }}" value="customer_service" />
+							<x-form.checkbox name="fields[Work_Areas__c][]" label="{{ __('Helicopter Operations', 'qrk') }}" value="helicopter_operations" />
 						</x-form.field-group>
 					</x-form.row>
 				</div>
@@ -196,21 +196,21 @@
 				<div class="form-job-application__sub-section">
 					<x-form.row>
 						<x-form.field-group title="{{ __('What certifications do you hold?', 'qrk') }}">
-							<x-form.checkbox name="fields[Certifications__c]" label="{{ __('STCW-95', 'qrk') }}" value="stcw-95" />
-							<x-form.checkbox name="fields[Certifications__c]" label="{{ __('Ship Security Awareness Certificate', 'qrk') }}" value="ship_security_awareness" />
-							<x-form.checkbox name="fields[Certifications__c]" label="{{ __('Seaman\'s Medical Certificate', 'qrk') }}" value="seamans_medical" />
-							<x-form.checkbox name="fields[Certifications__c]" label="{{ __('Seaman\'s Book', 'qrk') }}" value="seamans_book" />
-							<x-form.checkbox name="fields[Certifications__c]" label="{{ __('IAATO Field Staff Certificate', 'qrk') }}" value="iaato_field_staff" />
+							<x-form.checkbox name="fields[Certifications__c][]" label="{{ __('STCW-95', 'qrk') }}" value="stcw-95" />
+							<x-form.checkbox name="fields[Certifications__c][]" label="{{ __('Ship Security Awareness Certificate', 'qrk') }}" value="ship_security_awareness" />
+							<x-form.checkbox name="fields[Certifications__c][]" label="{{ __('Seaman\'s Medical Certificate', 'qrk') }}" value="seamans_medical" />
+							<x-form.checkbox name="fields[Certifications__c][]" label="{{ __('Seaman\'s Book', 'qrk') }}" value="seamans_book" />
+							<x-form.checkbox name="fields[Certifications__c][]" label="{{ __('IAATO Field Staff Certificate', 'qrk') }}" value="iaato_field_staff" />
 							<div class="form-job-application__option-tooltip">
-								<x-form.checkbox name="fields[Certifications__c]" label="{{ __('Boating License', 'qrk') }}" value="boating_license" />
+								<x-form.checkbox name="fields[Certifications__c][]" label="{{ __('Boating License', 'qrk') }}" value="boating_license" />
 								<x-tooltip icon="info">{{ __('SVOP, RYA or higher', 'qrk') }}</x-tooltip>
 							</div>
 							<div class="form-job-application__option-tooltip">
-								<x-form.checkbox name="fields[Certifications__c]" label="{{ __('Wilderness First Aid', 'qrk') }}" value="wilderness_first_aid" />
+								<x-form.checkbox name="fields[Certifications__c][]" label="{{ __('Wilderness First Aid', 'qrk') }}" value="wilderness_first_aid" />
 								<x-tooltip icon="info">{{ __('Please specify', 'qrk') }}</x-tooltip>
 							</div>
 							<div class="form-job-application__option-tooltip">
-								<x-form.checkbox name="fields[Certifications__c]" label="{{ __('Wilderness First Responder', 'qrk') }}" value="wilderness_first_responder" />
+								<x-form.checkbox name="fields[Certifications__c][]" label="{{ __('Wilderness First Responder', 'qrk') }}" value="wilderness_first_responder" />
 								<x-tooltip icon="info">{{ __('Please specify', 'qrk') }}</x-tooltip>
 							</div>
 						</x-form.field-group>
@@ -220,12 +220,12 @@
 				<div class="form-job-application__sub-section form-job-application--expand-fields">
 					<x-form.row>
 						<x-form.field-group title="{{ __('Do you have a university degree (or higher) in any of the following subjects?', 'qrk') }}">
-							<x-form.checkbox name="fields[Degree_Areas__c]" label="{{ __('Climate Science', 'qrk') }}" value="climate_science" />
-							<x-form.checkbox name="fields[Degree_Areas__c]" label="{{ __('Geology', 'qrk') }}" value="geology" />
-							<x-form.checkbox name="fields[Degree_Areas__c]" label="{{ __('History', 'qrk') }}" value="history" />
-							<x-form.checkbox name="fields[Degree_Areas__c]" label="{{ __('Marine Biology', 'qrk') }}" value="marine_biology" />
+							<x-form.checkbox name="fields[Degree_Areas__c][]" label="{{ __('Climate Science', 'qrk') }}" value="climate_science" />
+							<x-form.checkbox name="fields[Degree_Areas__c][]" label="{{ __('Geology', 'qrk') }}" value="geology" />
+							<x-form.checkbox name="fields[Degree_Areas__c][]" label="{{ __('History', 'qrk') }}" value="history" />
+							<x-form.checkbox name="fields[Degree_Areas__c][]" label="{{ __('Marine Biology', 'qrk') }}" value="marine_biology" />
 							<tp-toggle-attribute value="true" attribute="required" attribute-value="yes" target=".form-job-application__other-degree">
-								<x-form.checkbox name="fields[Degree_Areas__c]" label="{{ __('Other', 'qrk') }}" value="other" />
+								<x-form.checkbox name="fields[Degree_Areas__c][]" label="{{ __('Other', 'qrk') }}" value="other" />
 							</tp-toggle-attribute>
 						</x-form.field-group>
 					</x-form.row>
@@ -237,8 +237,8 @@
 				<div class="form-job-application__sub-section">
 					<x-form.row>
 						<x-form.field-group title="{{ __('In what season(s) are you available to work?', 'qrk') }}" :validation="[ 'checkbox-group-required' ]" class="form-job-application__season-availability">
-							<x-form.checkbox name="fields[Season_Availability__c]" label="{{ __('Arctic season: April to October', 'qrk') }}" value="arctic" />
-							<x-form.checkbox name="fields[Season_Availability__c]" label="{{ __('Antarctic season: October to April', 'qrk') }}" value="antarctic" />
+							<x-form.checkbox name="fields[Season_Availability__c][]" label="{{ __('Arctic season: April to October', 'qrk') }}" value="arctic" />
+							<x-form.checkbox name="fields[Season_Availability__c][]" label="{{ __('Antarctic season: October to April', 'qrk') }}" value="antarctic" />
 							<div />
 						</x-form.field-group>
 					</x-form.row>
