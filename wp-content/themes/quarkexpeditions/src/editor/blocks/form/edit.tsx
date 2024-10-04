@@ -16,6 +16,12 @@ import {
  * External dependencies.
  */
 import classnames from 'classnames';
+const { gumponents } = window;
+
+/**
+ * External components.
+ */
+const { LinkControl } = gumponents.components;
 
 /**
  * Internal dependencies.
@@ -27,10 +33,10 @@ import Section from '../../components/section';
  * Form Options.
  */
 const formOptions = [
-	{ label: __( 'None', 'qrk' ), value: 'none' },
-	{ label: __( 'Job Application', 'qrk' ), value: 'job-application' },
-	{ label: __( 'Contact Us', 'qrk' ), value: 'contact-us' },
-	{ label: __( 'Newsletter', 'qrk' ), value: 'newsletter' },
+	{ label: __( 'None', 'qrk' ), value: 'none', thankYouPage: false },
+	{ label: __( 'Job Application', 'qrk' ), value: 'job-application', thankYouPage: true },
+	{ label: __( 'Contact Us', 'qrk' ), value: 'contact-us', thankYouPage: true },
+	{ label: __( 'Newsletter', 'qrk' ), value: 'newsletter', thankYouPage: false },
 ];
 
 /**
@@ -64,6 +70,14 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 						value={ attributes.form }
 						onChange={ ( value ) => setAttributes( { form: value } ) }
 					/>
+					{ attributes.form && formOptions.find( ( option ) => option.value === attributes.form )?.thankYouPage && (
+						<LinkControl
+							label={ __( 'Thank You Page', 'qrk' ) }
+							value={ attributes.thankYouPage }
+							help={ __( 'Select the page you want the user to be redirected to after submitting the form.', 'qrk' ) }
+							onChange={ ( thankYouPage: object ) => setAttributes( { thankYouPage } ) }
+						/>
+					) }
 				</PanelBody>
 			</InspectorControls>
 			<Section { ...blockProps }>

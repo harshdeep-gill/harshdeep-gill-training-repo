@@ -53,8 +53,9 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 
 	// Component attributes.
 	$component_attributes = [
-		'countries' => get_countries(),
-		'states'    => get_states(),
+		'countries'      => get_countries(),
+		'states'         => get_states(),
+		'thank_you_page' => isset( $attributes['thankYouPage'] ) ? $attributes['thankYouPage']['url'] : '',
 	];
 
 	// Set the form component.
