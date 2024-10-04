@@ -164,9 +164,10 @@ class Test_Departures extends Softrip_TestCase {
 		// Add occupancy to the cabin.
 		$raw_departure_data['cabins'][0]['occupancies'] = [
 			[
-				'promoCode' => 'PROMO',
-				'price'     => '100',
-				'currency'  => 'USD',
+				'saleStatusCode' => 'O',
+				'promoCode'      => 'PROMO',
+				'price'          => '100',
+				'currency'       => 'USD',
 			],
 		];
 
@@ -216,9 +217,10 @@ class Test_Departures extends Softrip_TestCase {
 		// Add occupancy to any cabin.
 		$raw_departure_data['cabins'][1]['occupancies'] = [
 			[
-				'promoCode' => 'PROMO',
-				'price'     => '100',
-				'currency'  => 'USD',
+				'saleStatusCode' => 'O',
+				'promoCode'      => 'PROMO',
+				'price'          => '100',
+				'currency'       => 'USD',
 			],
 		];
 
@@ -303,9 +305,10 @@ class Test_Departures extends Softrip_TestCase {
 				'id'          => 'MYS3',
 				'occupancies' => [
 					[
-						'promoCode' => 'PROMO',
-						'price'     => '100',
-						'currency'  => 'USD',
+						'saleStatusCode' => 'O',
+						'promoCode'      => 'PROMO',
+						'price'          => '100',
+						'currency'       => 'USD',
 					],
 				],
 			],

@@ -14,9 +14,11 @@ use function Quark\Departures\bust_post_cache as bust_departure_post_cache;
 use function Quark\Localization\get_currencies;
 use function Quark\Ships\get_id_from_ship_code;
 use function Quark\Softrip\AdventureOptions\update_adventure_options;
+use function Quark\Softrip\get_initiated_via;
 use function Quark\Softrip\Occupancies\update_occupancies;
 use function Quark\Softrip\is_date_in_the_past;
 use function Quark\Softrip\Occupancies\get_lowest_price as get_occupancies_lowest_price;
+use function Quark\Softrip\Occupancies\is_occupancy_available;
 use function Quark\Softrip\Promotions\update_promotions;
 
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
@@ -430,13 +432,42 @@ function format_raw_departure_data( array $raw_departure_data = [], int $itinera
 			continue;
 		}
 
-		// Valid.
-		$has_valid_occupancies = true;
-		break;
+		// Loop through occupancies.
+		foreach ( $cabin['occupancies'] as $occupancy ) {
+			// Skip if not an array or empty occupancy.
+			if ( ! is_array( $occupancy ) || empty( $occupancy ) || empty( $occupancy['saleStatusCode'] ) ) {
+				continue;
+			}
+
+			// Skip if sale status code is not available.
+			if ( ! is_occupancy_available( $occupancy['saleStatusCode'] ) ) {
+				continue;
+			} else {
+				// Valid.
+				$has_valid_occupancies = true;
+				break;
+			}
+		}
+
+		// Break if valid occupancies.
+		if ( $has_valid_occupancies ) {
+			break;
+		}
 	}
 
 	// Return empty if no valid occupancies.
 	if ( ! $has_valid_occupancies ) {
+		// Log error.
+		do_action(
+			'quark_softrip_sync_error',
+			[
+				'error' => __( 'No valid occupancies found.', 'qrk' ),
+				'via'   => get_initiated_via(),
+				'codes' => [ $raw_departure_data['id'] ],
+			]
+		);
+
+		// Bail.
 		return [];
 	}
 
