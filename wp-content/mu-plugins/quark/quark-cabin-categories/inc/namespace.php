@@ -18,10 +18,12 @@ use function Quark\Softrip\Occupancies\add_supplemental_and_mandatory_price;
 use function Quark\Softrip\Occupancies\get_cabin_category_post_ids_by_departure;
 use function Quark\Softrip\Occupancies\get_description_and_pax_count_by_mask;
 use function Quark\Softrip\Occupancies\get_lowest_price_by_cabin_category_and_departure;
+use function Quark\Softrip\Occupancies\get_lowest_price_by_cabin_category_and_departure_and_promotion_code;
 use function Quark\Softrip\Occupancies\get_occupancies_by_cabin_category_and_departure;
 use function Quark\Softrip\Occupancies\get_occupancy_data_by_id;
 use function Quark\Softrip\Occupancies\is_occupancy_on_sale;
 use function Quark\Softrip\OccupancyPromotions\get_lowest_price as get_occupancy_promotion_lowest_price;
+use function Quark\Softrip\Promotions\get_promotions_by_code;
 
 use const Quark\Localization\DEFAULT_CURRENCY;
 use const Quark\Ships\POST_TYPE as SHIP_POST_TYPE;
@@ -614,6 +616,136 @@ function get_cabin_details_by_departure( int $departure_post_id = 0, string $cur
 
 	// Return cabin details array.
 	return $cabin_categories_data;
+}
+
+/**
+ * Get cabin price data by departure.
+ *
+ * @param int    $departure_id Departure Post ID.
+ * @param string $currency     Currency.
+ *
+ * @return array<string, array{
+ *    name: string,
+ *    availability_status: string,
+ *    availability_description: string,
+ *    spaces_available: int,
+ *    checkout_url: string,
+ *    brochure_price: string,
+ *    promos: array{}|string[],
+ *    type: string,
+ *    sort_priority: int,         
+ * }>
+ */
+function get_cabin_price_data_by_departure( int $departure_id = 0, string $currency = DEFAULT_CURRENCY ): array {
+	// Bail out if no departure ID.
+	if ( empty( $departure_id ) ) {
+		return [];
+	}
+
+	// Check for cabins.
+	$cabin_ids = get_cabin_category_post_ids_by_departure( $departure_id );
+
+	// Bail out if no cabin IDs.
+	if ( empty( $cabin_ids ) ) {
+		return [];
+	}
+
+	// Get departure data.
+	$departure = get_departure( $departure_id );
+
+	// Validate departure data.
+	if ( empty( $departure['post'] ) ||  ! $departure['post'] instanceof WP_Post ) {
+		return [];
+	}
+
+	// Available promos.
+	$available_promos = [];
+
+	// Get Available Promos for the Departure.
+	if ( ! empty( $departure['post_meta']['promotion_codes'] ) && is_array( $departure['post_meta']['promotion_codes'] ) ) {
+		$promotion_codes = $departure['post_meta']['promotion_codes'];
+
+		// Get promo details.
+		foreach ( $promotion_codes as $promo_code ) {
+			$promo_data = get_promotions_by_code( strval( $promo_code ) );
+
+			// Check for promo data.
+			if ( ! empty( $promo_data ) ) {
+				$available_promos[ strval( $promo_code ) ] = $promo_data[0];
+			}
+		}
+	}
+
+	// Prepare the cabin price data.
+	$cabin_price_data = [];
+
+	// Loop through cabin_ids.
+	foreach ( $cabin_ids as $cabin_id ) {
+		// Get cabin category data.
+		$cabin_data = get( absint( $cabin_id ) );
+
+		// Check if cabin category data is empty.
+		if ( empty( $cabin_data['post'] ) || ! $cabin_data['post'] instanceof WP_Post ) {
+			continue;
+		}
+
+		// Get cabin code from meta.
+		$cabin_code = strval( $cabin_data['post_meta']['cabin_category_id'] ?? '' );
+
+		// Skip if no cabin code.
+		if ( empty( $cabin_code ) ) {
+			continue;
+		}
+
+		// Get availability status.
+		$availability_status = get_cabin_availability_status( $departure_id, $cabin_id );
+
+		// Skip if unavailable.
+		if ( UNAVAILABLE_STATUS === $availability_status ) {
+			continue;
+		}
+
+		// Get availability description.
+		$cabin_spaces_available   = get_available_cabin_spaces( $departure_id, $cabin_id );
+		$availability_description = get_availability_status_description( $availability_status );
+
+		// Get cabin class data.
+		$cabin_class_data = get_cabin_category_class_data( $cabin_id );
+
+		// Prepare the cabin data.
+		$cabin_price_data[ $cabin_code ] = [
+			'name'                     => strval( $cabin_data['post_meta']['cabin_name'] ?? '' ),
+			'availability_status'      => $availability_status,
+			'availability_description' => $availability_description,
+			'spaces_available'         => $cabin_spaces_available,
+			'promos'                   => [],
+			'checkout_url'             => get_checkout_url( $departure_id, $cabin_id, $currency ),
+			'type'                     => $cabin_class_data['name'] ?? '',
+			'sort_priority'            => $cabin_class_data['sort_priority'] ?? 0,
+		];
+
+		// Get the lowest price for the cabin.
+		$cabin_price = get_lowest_price_by_cabin_category_and_departure( $cabin_id, $departure_id, $currency );
+
+		// Set the brochure price.
+		$cabin_price_data[ $cabin_code ]['brochure_price'] = format_price( $cabin_price['original'], $currency );
+
+		// Loop through available_promos for each promo.
+		foreach ( $available_promos as $promo_code => $promo_data ) {
+			$cabin_price_data[ $cabin_code ]['promos'][ $promo_code ] = format_price( get_lowest_price_by_cabin_category_and_departure_and_promotion_code( $cabin_id, $departure_id, $promo_code, $currency ), $currency );
+		}
+	}
+
+	// Sort cabin data by sort priority.
+	uasort(
+		$cabin_price_data,
+		function ( $a, $b ) {
+			return $a['sort_priority'] <=> $b['sort_priority'];
+		}
+	);
+
+	// Return cabin price data.
+	return $cabin_price_data;
 }
 
 /**
