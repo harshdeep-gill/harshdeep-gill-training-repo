@@ -8,8 +8,10 @@
 namespace Quark\Leads;
 
 use WP_Error;
+use WP_Post;
 
 use function Quark\Core\doing_automated_test;
+use function Quark\Departures\get as get_departure_post;
 use function Travelopia\Salesforce\send_request;
 use function Travelopia\Security\validate_recaptcha;
 use function Travelopia\Security\get_recaptcha_settings;
@@ -333,4 +335,55 @@ function process_job_application_form( array $lead_data = [] ): array {
 
 	// Return lead data.
 	return $lead_data;
+}
+
+/**
+ * Get request a quote URL.
+ *
+ * @param int $departure_id  Departure ID.
+ * @param int $expedition_id Expedition ID.
+ *
+ * @return string
+ */
+function get_request_a_quote_url( int $departure_id = 0, int $expedition_id = 0 ): string {
+	// Get request quote page ID.
+	$request_quote_page_id = absint( get_option( 'options_request_a_quote_page' ) );
+
+	// If request quote page ID is not set, return empty string.
+	if ( empty( $request_quote_page_id ) ) {
+		return '';
+	}
+
+	// Build request quote URL.
+	$request_quote_url = strval( get_permalink( $request_quote_page_id ) );
+
+	// If expedition ID is set, add it to the URL.
+	if ( ! empty( $expedition_id ) ) {
+		$request_quote_url = add_query_arg( 'expedition_id', $expedition_id, $request_quote_url );
+	}
+
+	// If departure ID is set, add it to the URL.
+	if ( ! empty( $departure_id ) ) {
+		// Add departure ID to the URL.
+		$request_quote_url = add_query_arg( 'departure_id', $departure_id, $request_quote_url );
+
+		// Add expedition ID to the URL if not already set.
+		if ( empty( $expedition_id ) ) {
+			// Get departure post.
+			$departure_post = get_departure_post( $departure_id );
+
+			// Validate departure post.
+			if ( ! empty( $departure_post['post_meta'] ) && ! empty( $departure_post['post_meta']['related_expedition'] ) ) {
+				$expedition_id = absint( $departure_post['post_meta']['related_expedition'] );
+
+				// Validate expedition post ID.
+				if ( ! empty( $expedition_id ) ) {
+					$request_quote_url = add_query_arg( 'expedition_id', $expedition_id, $request_quote_url );
+				}
+			}
+		}
+	}
+
+	// Return request quote URL.
+	return $request_quote_url;
 }
