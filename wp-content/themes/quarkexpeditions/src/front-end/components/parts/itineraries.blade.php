@@ -102,7 +102,9 @@ if ( empty( $itinerary_groups ) ) {
 
 								<x-itinerary-details.footer>
 									<x-itinerary-details.cta>
-										<x-button size="big" href="#">{{ __( 'Request a Quote', 'qrk' ) }}</x-button>
+										@if ( ! empty( $itinerary['request_a_quote_url'] ) )
+											<x-button size="big" href="{!! esc_url( $itinerary['request_a_quote_url'] ) !!}">{{ __( 'Request a Quote', 'qrk' ) }}</x-button>
+										@endif
 										<x-itinerary-details.download-button url="#" />
 									</x-itinerary-details.cta>
 								</x-itinerary-details.footer>
