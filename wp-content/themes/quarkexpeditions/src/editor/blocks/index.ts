@@ -88,6 +88,7 @@ import * as form from './form';
 import * as formContactUs from './form-contact-us';
 import * as formDoNotSellInformation from './form-do-not-sell-information';
 import * as formSnowHillNewsletter from './form-snow-hill-newsletter';
+import * as formJobApplication from './form-job-application';
 
 /**
  * Add blocks.
@@ -172,6 +173,7 @@ const blocks = [
 	formContactUs,
 	formDoNotSellInformation,
 	formSnowHillNewsletter,
+	formJobApplication,
 ];
 
 // Register blocks for ships.

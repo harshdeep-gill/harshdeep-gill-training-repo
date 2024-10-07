@@ -1,0 +1,27 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Form - Job Application",
+	"name": "quark/form-job-application",
+	"description": "Add the Job Application form to your page.",
+	"category": "layout",
+	"keywords": [
+		"job",
+		"application",
+		"form"
+	],
+	"textdomain": "qrk",
+	"attributes": {
+		"thankYouPage": {
+			"type": "object",
+			"default": null
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}
