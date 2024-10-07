@@ -24,7 +24,6 @@ export class ExpeditionSearch extends HTMLElement {
 	private resultCountValue: HTMLElement | null;
 	private partial: string | undefined;
 	private selector: string | undefined;
-	private shipId: number | undefined;
 
 	/**
 	 * Constructor
@@ -60,7 +59,6 @@ export class ExpeditionSearch extends HTMLElement {
 		initialize( {
 			partial: this.partial,
 			selector: this.selector,
-			shipId: this.shipId,
 		} );
 	}
 
@@ -102,7 +100,6 @@ export class ExpeditionSearch extends HTMLElement {
 		// Set all settings data.
 		this.partial = this.resultsContainer.getAttribute( 'partial' ) ?? 'expedition-search';
 		this.selector = this.resultsContainer.getAttribute( 'selector' ) ?? '';
-		this.shipId = Number( this.resultsContainer.getAttribute( 'ship-id' ) ) ?? 0;
 	}
 }
 
