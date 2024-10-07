@@ -40,7 +40,6 @@ function theme_support(): void {
 	add_theme_support( 'post-thumbnails' );
 
 	// Misc. support.
-	add_theme_support( 'title-tag' );
 	add_theme_support(
 		'html5',
 		[
