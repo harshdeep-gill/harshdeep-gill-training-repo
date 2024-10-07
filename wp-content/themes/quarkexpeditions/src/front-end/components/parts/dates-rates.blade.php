@@ -21,11 +21,6 @@
 @endphp
 
 <x-dates-rates>
-	<x-tooltip />
-	{{--
-		This has been added as a temporary fix for assets not loading due to tooltip not being present in the initial server side render of the component.
-		TODO: This needs a better solution. This is just a temporary fix.
-	--}}
 	<x-dates-rates.header>
 		<x-dates-rates.filters :filter_data="$filter_data" :currency="$currency" />
 		<x-dates-rates.results.count />

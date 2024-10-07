@@ -18,14 +18,6 @@
 		}
 	}
 
-	// This has been added as a temporary fix for assets not loading due to tooltip
-	// not being present in the initial server side render of the component.
-	// TODO: This needs a better solution. This is just a temporary fix.
-
-	> .tooltip {
-		display: none;
-	}
-
 	&__results {
 		display: block;
 
