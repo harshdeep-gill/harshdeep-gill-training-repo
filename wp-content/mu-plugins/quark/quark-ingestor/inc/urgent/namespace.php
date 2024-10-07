@@ -461,7 +461,7 @@ function dispatch_urgent_push_github_event( array $expedition_ids = [] ): bool {
 		],
 		'body'    => wp_json_encode(
 			[
-				'ref' => QUARK_GITHUB_ACTIONS_REF,
+				'ref'    => QUARK_GITHUB_ACTIONS_REF,
 				'inputs' => [
 					'environment' => $wp_environment,
 				],

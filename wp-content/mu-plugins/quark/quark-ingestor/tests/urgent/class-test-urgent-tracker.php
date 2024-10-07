@@ -749,7 +749,7 @@ class Test_Urgent_Tracker extends Softrip_TestCase {
 		$env = wp_get_environment_type();
 
 		// Set local environment.
-		putenv( 'WP_ENVIRONMENT_TYPE=local' );
+		putenv( 'WP_ENVIRONMENT_TYPE=local' ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.runtime_configuration_putenv
 
 		// Test with expedition ids.
 		$actual = dispatch_urgent_push_github_event( $expedition_ids );
@@ -759,7 +759,7 @@ class Test_Urgent_Tracker extends Softrip_TestCase {
 		$this->assertSame( 3, did_action( 'quark_ingestor_dispatch_github_event' ) );
 
 		// Set to production environment.
-		putenv( 'WP_ENVIRONMENT_TYPE=production' );
+		putenv( 'WP_ENVIRONMENT_TYPE=production' ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.runtime_configuration_putenv
 
 		// Test with expedition ids.
 		$actual = dispatch_urgent_push_github_event( $expedition_ids );
@@ -769,7 +769,7 @@ class Test_Urgent_Tracker extends Softrip_TestCase {
 		$this->assertSame( 4, did_action( 'quark_ingestor_dispatch_github_event' ) );
 
 		// Reset environment.
-		putenv( 'WP_ENVIRONMENT_TYPE=' . $env );
+		putenv( 'WP_ENVIRONMENT_TYPE=' . $env ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.runtime_configuration_putenv
 
 		// Verify data.
 		$this->assertEquals(
