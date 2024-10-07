@@ -37,12 +37,20 @@ const {
 	LinkButton,
 	ColorPaletteControl,
 	LinkControl,
+	ImageControl,
+	Img,
 } = gumponents.components;
 
 // Background colors.
 export const colors: { [key: string]: string }[] = [
 	{ name: __( 'Black', 'qrk' ), color: '#232933', slug: 'black' },
 	{ name: __( 'Gray', 'qrk' ), color: '#F5F7FB', slug: 'gray' },
+];
+
+export const gradientColors: { [key: string]: string }[] = [
+	{ name: __( 'Black', 'qrk' ), color: 'black', slug: 'black' },
+	{ name: __( 'Gray', 'qrk' ), color: 'grey', slug: 'grey' },
+	{ name: __( 'White', 'qrk' ), color: 'white', slug: 'white' },
 ];
 
 /**
@@ -66,6 +74,9 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 
 	// Inner blocks props.
 	const innerBlocksProps = useInnerBlocksProps( { className: 'section__content' } );
+
+	// Image Classes.
+	const imageClasses = classnames( 'section__image-wrap', 'full-width', 'section__image-gradient-' + attributes.gradientPosition );
 
 	// Return block.
 	return (
@@ -133,6 +144,44 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 							} }
 						/>
 					}
+					<ImageControl
+						label={ __( 'Image', 'qrk' ) }
+						value={ attributes.backgroundImage ? attributes.backgroundImage.id : null }
+						size="large"
+						help={ __( 'Choose an image', 'qrk' ) }
+						onChange={ ( backgroundImage: Object ) => setAttributes( { backgroundImage } ) }
+					/>
+					{ attributes.backgroundImage &&
+						<>
+							<SelectControl
+								label={ __( 'Gradient Position', 'qrk' ) }
+								help={ __( 'Select the gradient position.', 'qrk' ) }
+								value={ attributes.gradientPosition }
+								options={ [
+									{ label: __( 'None', 'qrk' ), value: 'none' },
+									{ label: __( 'Top', 'qrk' ), value: 'top' },
+									{ label: __( 'Bottom', 'qrk' ), value: 'bottom' },
+									{ label: __( 'Both', 'qrk' ), value: 'both' },
+								] }
+								onChange={ ( gradientPosition: string ) => setAttributes( { gradientPosition } ) }
+							/>
+							<ColorPaletteControl
+								label={ __( 'Image Gradient Color', 'qrk' ) }
+								help={ __( 'Select the gradient color.', 'qrk' ) }
+								value={ gradientColors.find( ( color ) => color.slug === attributes.gradientColor )?.color }
+								colors={ gradientColors.filter( ( color ) => [ 'black', 'grey', 'white' ].includes( color.slug ) ) }
+								onChange={ ( gradientColor: {
+									color: string;
+									slug: string;
+								} ): void => {
+									// Set the background color attribute.
+									if ( gradientColor.slug && [ 'black', 'grey', 'white' ].includes( gradientColor.slug ) ) {
+										setAttributes( { gradientColor: gradientColor.slug } );
+									}
+								} }
+							/>
+						</>
+					}
 					<ToggleControl
 						label={ __( 'Is Narrow', 'qrk' ) }
 						checked={ attributes.isNarrow }
@@ -183,6 +232,19 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 				seamless={ attributes.hasBackground }
 				narrow={ attributes.isNarrow }
 			>
+				{ attributes.backgroundImage && 'none' !== attributes.gradientColor &&
+					<div
+						className={ imageClasses }
+						style={ {
+							'--section-gradient-color': attributes.gradientColor,
+						} as React.CSSProperties }
+					>
+						<Img
+							className="section__image"
+							value={ attributes.backgroundImage }
+						/>
+					</div>
+				}
 				<div className="section__heading">
 					{ attributes.hasTitle && (
 						<RichText

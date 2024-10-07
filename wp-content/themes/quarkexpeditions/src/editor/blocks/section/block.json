@@ -55,6 +55,18 @@
 			"default": "gray",
 			"enum": [ "black", "gray" ]
 		},
+		"backgroundImage": {
+			"type": "object"
+		},
+		"gradientPosition": {
+			"type": "string",
+			"default": "none"
+		},
+		"gradientColor": {
+			"type": "string",
+			"default": "black",
+			"enum": [ "black", "gray", "white" ]
+		},
 		"hasPadding": {
 			"type": "boolean",
 			"default": false
