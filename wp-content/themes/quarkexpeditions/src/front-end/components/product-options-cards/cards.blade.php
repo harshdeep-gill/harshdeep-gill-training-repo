@@ -45,7 +45,7 @@
 
 			<div class="product-options-cards__help">
 				<p class="product-options-cards__help-text">{{ __( 'Not ready to book?', 'qrk' ) }} <a href="#">{{ __( 'Request a quote', 'qrk' ) }}</a></p>
-				<x-button size="big" appearance="outline" href="tel:+18662570754">{{ __( 'Request a callback:', 'qrk' ) }} +1 (866) 257-0754</x-button>
+				<x-product-options-cards.phone-number phone_number="+1 (877) 585-1235" text="Request a callback: +1 (866) 257-0754" />
 			</div>
 		</div>
 	@endif

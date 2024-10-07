@@ -34,6 +34,8 @@ class Push extends WP_CLI {
 	 * [--changed-only]
 	 * : Only push changed items. Default is false.
 	 *
+	 * @synopsis [--ids=<1,2>] [--changed-only]
+	 *
 	 * @return void
 	 * @throws ExitException Exception on error.
 	 */

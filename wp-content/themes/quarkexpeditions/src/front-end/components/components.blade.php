@@ -7135,6 +7135,18 @@
 	</x-section>
 </x-component-demo>
 
+<x-component-demo :keys="[ 'form-do-not-sell' ]">
+	<x-section>
+		<x-form-do-not-sell />
+	</x-section>
+</x-component-demo>
+
+<x-component-demo :keys="[ 'form-account-management' ]">
+	<x-section>
+		<x-form-account-management />
+	</x-section>
+</x-component-demo>
+
 <x-component-demo :keys="[ 'mini-cards-list' ]">
 	<x-mini-cards-list>
 		<x-mini-cards-list.card>

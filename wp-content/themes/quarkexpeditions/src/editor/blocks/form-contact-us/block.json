@@ -1,24 +1,22 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
-	"title": "Breadcrumbs",
-	"name": "quark/breadcrumbs",
-	"description": "Display a Breadcrumbs block.",
+	"title": "Form - Contact Us",
+	"name": "quark/form-contact-us",
+	"description": "Add the Contact Us form.",
 	"category": "layout",
 	"keywords": [
-		"breadcrumbs"
+		"contact",
+		"us",
+		"form"
 	],
 	"textdomain": "qrk",
 	"attributes": {
-		"textColor": {
-			"type": "string",
-			"default": "black",
-			"enum": [
-				"white",
-				"black"
-			]
+		"thankYouPage": {
+			"type": "object",
+			"default": null
 		}
-  },
+	},
 	"supports": {
 		"alignWide": false,
 		"anchor": true,

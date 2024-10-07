@@ -13,6 +13,7 @@
 	if ( ! empty( $class ) ) {
 		$classes[] = $class;
 	}
+
 @endphp
 
 <div @class( $classes )>

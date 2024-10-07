@@ -58,7 +58,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 		[
 			'posts_per_load' => 12,
 			'currency'       => $currency,
-			'sort'           => 'related_ship',
+			'sort'           => [ 'related_ship', 'date-now' ],
 		],
 		$filter_query
 	);
