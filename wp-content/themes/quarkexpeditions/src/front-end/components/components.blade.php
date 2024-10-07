@@ -292,6 +292,36 @@
 	</x-section>
 </x-component-demo>
 
+<x-component-demo :keys="[ 'section-image' ]">
+	<x-section :full_width="true">
+		<x-section.image :image_id="26" gradient_color="white" gradient_position="both" />
+		<x-review-cards>
+			<x-review-cards.card>
+				<x-review-cards.rating rating="4" />
+				<x-review-cards.title title="Falkland, South Georgia and the Antarctic Circle" />
+				<x-review-cards.content>
+					<p>
+						Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever. Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever.
+					</p>
+				</x-review-cards.content>
+				<x-review-cards.author name="Denise P." />
+				<x-review-cards.author-details text="South Georgia and Antarctic Peninsula: Penguin Safari South Georgia and Antarctic Peninsula: Penguin Safari" />
+			</x-review-cards.card>
+			<x-review-cards.card>
+				<x-review-cards.rating rating="4" />
+				<x-review-cards.title title="Antartica with quark – experience of a lifetime" />
+				<x-review-cards.content>
+					<p>
+						In a phrase, going to Antartica with Quark was “simply amazing”. Antartica is gorgeous and the team at Quark made it possible for us to enjoy every bit of it with their impeccable planning and attention to every detail.
+					</p>
+				</x-review-cards.content>
+				<x-review-cards.author name="Madhuchanda D." />
+				<x-review-cards.author-details text="Antarctic Express: Crossing the Circle" />
+			</x-review-cards.card>
+		</x-review-cards>
+	</x-section>
+</x-component-demo>
+
 <x-component-demo :keys="[ 'hero', 'hero-refactor', 'hero-circle-badge' ]">
 	<x-hero text_align="center" immersive="none">
 		<x-hero.image image_id="26" />
