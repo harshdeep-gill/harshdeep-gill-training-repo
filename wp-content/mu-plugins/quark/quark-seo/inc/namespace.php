@@ -7,8 +7,6 @@
 
 namespace Quark\SEO;
 
-use function Quark\Core\get_front_end_data;
-
 /**
  * Bootstrap plugin.
  *
