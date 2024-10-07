@@ -15,7 +15,7 @@
 	</tp-slider-track>
 
 	<div class="months-multi-select__nav">
-		<a class="months-multi-select__reset-button" role="button">{{ __( "I'm flexible", 'qrk' ) }}</a>
+		<button class="months-multi-select__reset-button">{{ __( "I'm flexible", 'qrk' ) }}</button>
 
 		@if ( $slide_count > 1 )
 			<div class="months-multi-select__nav-arrows">

@@ -9,13 +9,9 @@ const { customElements, HTMLElement, zustand } = window;
 const { subscribe } = zustand.stores.searchFiltersBar;
 
 /**
- * Class SearchFilterDestinationsOptions.
+ * Class SearchFilterDestinationOptions.
  */
 export class SearchFilterDestinationOptions extends HTMLElement {
-	/**
-	 * Properties.
-	 */
-
 	/**
 	 * Constructor.
 	 */

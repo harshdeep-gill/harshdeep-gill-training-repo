@@ -6,12 +6,14 @@
 	'destinations'             => [],
 	'available_months'         => [],
 	'filters_api_url'          => '',
+	'search_page_url'          => '',
 ] )
 
 <quark-search-filters-bar
 	class="search-filters-bar"
 	is-search-page="{{ true === $is_search_page ? 'true' : 'false' }}"
 	filters-api-url="{{ $filters_api_url }}"
+	search-page-url="{{ $search_page_url }}"
 >
 	<x-search-filters-bar.search-modal-open-container>
 		<x-modal.modal-open :modal_id="$modal_id">

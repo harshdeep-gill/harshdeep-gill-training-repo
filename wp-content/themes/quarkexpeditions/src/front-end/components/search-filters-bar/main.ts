@@ -30,6 +30,7 @@ export class SearchFiltersBar extends HTMLElement {
 	private destinationFilters: HTMLElement | null | undefined;
 	private departureMonthsFilters: HTMLElement | null | undefined;
 	private filtersApiUrl: string | null;
+	private searchPageUrl: string | null;
 	private destinationSelector: SearchFilterDestinations | null | undefined;
 	private departureMonthsSelectors: NodeListOf<MonthsMultiSelect> | null | undefined;
 	private defaultDepartureMonthsPlaceholder: string;
@@ -46,6 +47,7 @@ export class SearchFiltersBar extends HTMLElement {
 
 		// Settings.
 		this.filtersApiUrl = this.getAttribute( 'filters-api-url' );
+		this.searchPageUrl = this.getAttribute( 'search-page-url' );
 
 		// Elements.
 		this.searchFiltersModal = document.querySelector( '.search-filters-bar__modal' );
