@@ -40,7 +40,7 @@
 
 							{{-- Cabin Names --}}
 							@foreach ( $card['cabin_data'] as $cabin )
-								<x-dates-rates.item.table-heading>{{ $cabin['name'] ?? '' }}</x-dates-rates.item.table-heading>
+								<x-dates-rates.item.table-heading :type="strtolower( $cabin['type'] )" >{{ $cabin['name'] ?? '' }}</x-dates-rates.item.table-heading>
 							@endforeach
 						@endif
 
