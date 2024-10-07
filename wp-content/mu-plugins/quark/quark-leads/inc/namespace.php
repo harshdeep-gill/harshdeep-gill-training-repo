@@ -346,16 +346,22 @@ function process_job_application_form( array $lead_data = [] ): array {
  * @return string
  */
 function get_request_a_quote_url( int $departure_id = 0, int $expedition_id = 0 ): string {
-	// Get request quote page ID.
-	$request_quote_page_id = absint( get_option( 'options_request_a_quote_page' ) );
+	// Static variable.
+	static $request_quote_url = '';
 
-	// If request quote page ID is not set, return empty string.
-	if ( empty( $request_quote_page_id ) ) {
-		return '';
+	// Initialize request quote URL.
+	if ( empty( $request_quote_url ) ) {
+		// Get request quote page ID.
+		$request_quote_page_id = absint( get_option( 'options_request_a_quote_page' ) );
+
+		// If request quote page ID is not set, return empty string.
+		if ( empty( $request_quote_page_id ) ) {
+			return '';
+		}
+
+		// Build request quote URL.
+		$request_quote_url = strval( get_permalink( $request_quote_page_id ) );
 	}
-
-	// Build request quote URL.
-	$request_quote_url = strval( get_permalink( $request_quote_page_id ) );
 
 	// If expedition ID is set, add it to the URL.
 	if ( ! empty( $expedition_id ) ) {
