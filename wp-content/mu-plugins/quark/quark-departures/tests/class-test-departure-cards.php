@@ -18,6 +18,7 @@ use function Quark\Departures\get_cards_data;
 use function Quark\Departures\get_dates_rates_card_data;
 use function Quark\Departures\get_dates_rates_cards_data;
 use function Quark\Departures\get_promotions_description;
+use function Quark\Leads\get_request_a_quote_url;
 use function Quark\Softrip\do_sync;
 use function Quark\Softrip\Promotions\get_promotions_by_code;
 use function Quark\Softrip\Promotions\update_promotions;
@@ -792,6 +793,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 			'package_id'               => 'JKL-012',
 			'languages'                => 'spoken_language_1, spoken_language_2',
 			'duration_dates'           => 'January 9-25, 2025',
+			'request_a_quote_url'      => get_request_a_quote_url( $departure_post_1 ),
 			'starting_from_location'   => self::$departure_location_terms[0]->name,
 			'promotion_tags'           => [
 				'promotion_tag_1',
@@ -898,6 +900,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 			'package_id'               => 'ABC-123',
 			'languages'                => 'english',
 			'duration_dates'           => 'February 28 - March 11, 2026',
+			'request_a_quote_url'      => get_request_a_quote_url( $departure_post_2 ),
 			'starting_from_location'   => self::$departure_location_terms[0]->name,
 			'promotion_tags'           => [
 				'promotion_tag_1',
@@ -1004,6 +1007,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 			'starting_from_location'   => self::$departure_location_terms[0]->name,
 			'promotion_tags'           => [],
 			'promotion_banner'         => 'Save upto 15%',
+			'request_a_quote_url'      => get_request_a_quote_url( $departure_post_3 ),
 			'lowest_price'             => [
 				'discounted_price' => '$40,069 USD',
 				'original_price'   => '$47,105 USD',
@@ -1166,6 +1170,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 
 		// Prepare expected data.
 		$expected_data = [
+			'departure_id'               => $departure_post_1,
 			'region'                     => 'Antarctica',
 			'expedition_title'           => 'Test Expedition Post',
 			'expedition_link'            => get_permalink( self::$post_expedition->ID ),
@@ -1176,6 +1181,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 			'languages'                  => 'spoken_language_1, spoken_language_2',
 			'included_adventure_options' => [],
 			'paid_adventure_options'     => [],
+			'request_a_quote_url'        => get_request_a_quote_url( $departure_post_1 ),
 			'transfer_package_details'   => [
 				'title'           => 'Includes',
 				'sets'            => [
@@ -1193,6 +1199,8 @@ class Test_Departure_Cards extends Softrip_TestCase {
 					'availability_description' => 'Available',
 					'spaces_available'         => 10,
 					'brochure_price'           => '$45,105 USD',
+					'type'                     => '',
+					'sort_priority'            => 0,
 					'promos'                   => [
 						'15PROMO' => '$38,169 USD',
 					],
@@ -1208,6 +1216,8 @@ class Test_Departure_Cards extends Softrip_TestCase {
 					'promos'                   => [
 						'15PROMO' => '$29,410 USD',
 					],
+					'type'                     => '',
+					'sort_priority'            => 0,
 				],
 			],
 		];
@@ -1363,6 +1373,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 		// Prepare expected data.
 		$expected_data = [
 			$departure_post_1 => [
+				'departure_id'               => $departure_post_1,
 				'region'                     => 'Antarctica',
 				'expedition_title'           => 'Test Expedition Post',
 				'expedition_link'            => get_permalink( self::$post_expedition->ID ),
@@ -1373,6 +1384,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 				'languages'                  => 'english',
 				'included_adventure_options' => [],
 				'paid_adventure_options'     => [],
+				'request_a_quote_url'        => get_request_a_quote_url( $departure_post_1 ),
 				'transfer_package_details'   => [
 					'title'           => 'Includes',
 					'sets'            => [
@@ -1394,6 +1406,8 @@ class Test_Departure_Cards extends Softrip_TestCase {
 						],
 						'brochure_price'           => '$35,095 USD',
 						'checkout_url'             => 'https://local-checkout.quarkexpeditions.com?package_id=ABC-123&departure_date=2026-02-28&cabin_code=OEX-SGL&currency=USD',
+						'type'                     => '',
+						'sort_priority'            => 0,
 					],
 				],
 				'available_promos'           => [
@@ -1401,6 +1415,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 				],
 			],
 			$departure_post_2 => [
+				'departure_id'               => $departure_post_2,
 				'region'                     => 'Antarctica',
 				'expedition_title'           => 'Test Expedition Post',
 				'expedition_link'            => get_permalink( self::$post_expedition->ID ),
@@ -1411,6 +1426,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 				'languages'                  => 'spoken_language_1, spoken_language_2',
 				'included_adventure_options' => [],
 				'paid_adventure_options'     => [],
+				'request_a_quote_url'        => get_request_a_quote_url( $departure_post_2 ),
 				'transfer_package_details'   => [
 					'title'           => 'Includes',
 					'sets'            => [
@@ -1432,6 +1448,8 @@ class Test_Departure_Cards extends Softrip_TestCase {
 							'15PROMO' => '$38,169 USD',
 						],
 						'checkout_url'             => 'https://local-checkout.quarkexpeditions.com?package_id=JKL-012&departure_date=2025-01-09&cabin_code=ULT-SGL&currency=USD',
+						'type'                     => '',
+						'sort_priority'            => 0,
 					],
 					'ULT-DBL' => [
 						'name'                     => 'cabin_name - ULT-DBL',
@@ -1443,6 +1461,8 @@ class Test_Departure_Cards extends Softrip_TestCase {
 							'15PROMO' => '$29,410 USD',
 						],
 						'checkout_url'             => 'https://local-checkout.quarkexpeditions.com?package_id=JKL-012&departure_date=2025-01-09&cabin_code=ULT-DBL&currency=USD',
+						'type'                     => '',
+						'sort_priority'            => 0,
 					],
 				],
 				'available_promos'           => [
@@ -1673,6 +1693,8 @@ class Test_Departure_Cards extends Softrip_TestCase {
 					'10PIF'   => '$41,220 CAD',
 					'20PROMO' => '$36,640 CAD',
 				],
+				'type'                     => '',
+				'sort_priority'            => 0,
 			],
 			$card_data['cabin_data']['OEX-JST'] ?? []
 		);

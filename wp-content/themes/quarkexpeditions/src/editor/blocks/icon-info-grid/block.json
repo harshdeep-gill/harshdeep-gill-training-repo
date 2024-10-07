@@ -11,7 +11,12 @@
     ],
     "category": "layout",
     "textdomain": "quark",
-    "attributes": {},
+    "attributes": {
+      "desktopCarousel": {
+        "type": "boolean",
+        "default": false
+      }
+    },
     "supports": {
       "alignWide": false,
       "anchor": true,

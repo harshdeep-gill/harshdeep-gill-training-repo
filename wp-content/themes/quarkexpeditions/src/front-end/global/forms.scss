@@ -321,6 +321,8 @@ label {
 }
 
 .form-field-group {
+	$self: &;
+
 	display: flex;
 	flex-direction: column;
 	gap: var(--spacing-4);
@@ -331,7 +333,7 @@ label {
 		margin-bottom: 0;
 	}
 
-	> label {
+	&__title {
 		margin-bottom: 0;
 		font-weight: var(--font-weight-bold);
 		order: 1;
@@ -342,15 +344,21 @@ label {
 		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 		grid-column-gap: var(--spacing-6);
 		grid-row-gap: var(--spacing-2);
-		order: 3;
+
+		#{$self}__title ~ & {
+			order: 3;
+		}
 
 		.form__required-indicator {
 			display: none;
 		}
 	}
 
-	tp-form-error {
+	&__title ~ tp-form-error {
 		order: 2;
+	}
+
+	tp-form-error {
 		display: block;
 		color: var(--color-error-100);
 		font-weight: var(--font-weight-bold);
@@ -488,6 +496,9 @@ tp-multi-select {
 
 	&-status {
 		margin-right: var(--spacing-5);
+	}
+
+	&[selected="yes"] &-status {
 
 		@include line-clamp(1);
 	}

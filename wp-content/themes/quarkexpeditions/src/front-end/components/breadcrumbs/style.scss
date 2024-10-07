@@ -3,13 +3,6 @@
 	--link-hover-color: var(--color-gray-40);
 	--active-color: var(--color-black);
 
-	// Dark appearance.
-	&--dark {
-		--link-color: var(--color-gray-30);
-		--link-hover-color: var(--color-gray-70);
-		--active-color: var(--color-white);
-	}
-
 	display: flex;
 	gap: var(--spacing-4);
 	overflow-x: auto;
@@ -24,6 +17,13 @@
 
 	&::-webkit-scrollbar {
 		display: none;
+	}
+
+	// Dark appearance.
+	&--dark {
+		--link-color: var(--color-gray-30);
+		--link-hover-color: var(--color-gray-70);
+		--active-color: var(--color-white);
 	}
 
 	&__breadcrumb {

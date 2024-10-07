@@ -10,8 +10,11 @@ export class Tooltip extends HTMLElement {
 	/**
 	 * Properties.
 	 */
-	private tooltipContentElement: HTMLElement | null;
+	private tooltipPopoverElement: HTMLElement | null;
 	private tooltipArrowElement: HTMLElement | null;
+	private tooltipContentElement: HTMLElement | null;
+	private readonly MINIMUM_BUFFER_DISTANCE_VALUE = 20;
+	private readonly TOOLTIP_POPOVER_MAX_DIMENSION = 360;
 
 	/**
 	 * Constructor.
@@ -21,13 +24,34 @@ export class Tooltip extends HTMLElement {
 		super();
 
 		// Elements.
-		this.tooltipContentElement = this.querySelector( '.tooltip__description' );
+		this.tooltipPopoverElement = this.querySelector( '.tooltip__description' );
 		this.tooltipArrowElement = this.querySelector( '.tooltip__arrow' );
+		this.tooltipContentElement = this.querySelector( '.tooltip__description-content' );
 
 		// Events
-		this.tooltipContentElement?.addEventListener( 'toggle', this.handleTooltipToggled.bind( this ) );
-		this.addEventListener( 'mouseenter', () => this.tooltipContentElement?.showPopover() );
-		this.addEventListener( 'mouseleave', () => this.tooltipContentElement?.hidePopover() );
+		this.tooltipPopoverElement?.addEventListener( 'toggle', this.handleTooltipToggled.bind( this ) );
+		this.tooltipPopoverElement?.addEventListener( 'beforetoggle', this.handleBeforeToggled.bind( this ) );
+		this.addEventListener( 'mouseenter', () => this.tooltipPopoverElement?.showPopover() );
+		this.addEventListener( 'mouseleave', () => this.tooltipPopoverElement?.hidePopover() );
+
+		// Window scroll
+		window.addEventListener( 'scroll', this.handleWindowScroll.bind( this ), true );
+	}
+
+	/**
+	 * Handles the scroll outside of the tooltip.
+	 *
+	 * @param { Event } evt The event object.
+	 */
+	handleWindowScroll( evt: Event ) {
+		// If the content was the original target.
+		if ( evt.target === this.tooltipContentElement ) {
+			// Do nothing.
+			return;
+		}
+
+		// Hide the popover
+		this.tooltipPopoverElement?.hidePopover();
 	}
 
 	/**
@@ -35,7 +59,7 @@ export class Tooltip extends HTMLElement {
 	 */
 	positionTooltip() {
 		// Check if tooltip is available.
-		if ( ! this.tooltipContentElement || ! this.tooltipArrowElement ) {
+		if ( ! this.tooltipPopoverElement || ! this.tooltipArrowElement || ! this.tooltipContentElement ) {
 			// Retrun if the tooltip content is not available.
 			return;
 		}
@@ -61,8 +85,18 @@ export class Tooltip extends HTMLElement {
 		// Determine the primary axis and get the positioning data.
 		if ( tooltipTriggerHorizontalOffsets[ 0 ].value > tooltipTriggerVerticalOffsets[ 0 ].value ) {
 			primaryOffsetName = 'horizontal';
+
+			// Check if there is enough space in the vertical axis.
+			if ( tooltipTriggerVerticalOffsets[ 1 ].value <= this.MINIMUM_BUFFER_DISTANCE_VALUE ) {
+				primaryOffsetName = 'vertical';
+			}
 		} else {
 			primaryOffsetName = 'vertical';
+
+			// Check if there is enough space in the horizontal axis.
+			if ( tooltipTriggerHorizontalOffsets[ 1 ].value <= this.MINIMUM_BUFFER_DISTANCE_VALUE ) {
+				primaryOffsetName = 'horizontal';
+			}
 		}
 
 		// Get the positioning data.
@@ -78,10 +112,10 @@ export class Tooltip extends HTMLElement {
 		const { newMaxHeight, newMaxWidth, topValue, leftValue, tooltipDirection, tooltipArrowPosition } = positionData;
 
 		// Set the direction of the tooltip.
-		this.tooltipContentElement.style.maxWidth = newMaxWidth + 'px';
-		this.tooltipContentElement.style.maxHeight = newMaxHeight + 'px';
-		this.tooltipContentElement.style.top = topValue + 'px';
-		this.tooltipContentElement.style.left = leftValue + 'px';
+		this.tooltipPopoverElement.style.maxWidth = newMaxWidth + 'px';
+		this.tooltipPopoverElement.style.maxHeight = newMaxHeight + 'px';
+		this.tooltipPopoverElement.style.top = topValue + 'px';
+		this.tooltipPopoverElement.style.left = leftValue + 'px';
 		this.setAttribute( 'tooltip-direction', tooltipDirection );
 
 		// Arrow position.
@@ -95,6 +129,9 @@ export class Tooltip extends HTMLElement {
 			this.tooltipArrowElement.style.top = '';
 			this.tooltipArrowElement.style.left = arrowPositionValue;
 		}
+
+		// Make the tooltip visible.
+		this.tooltipPopoverElement.style.visibility = '';
 	}
 
 	/**
@@ -104,14 +141,14 @@ export class Tooltip extends HTMLElement {
 	 */
 	handleTooltipToggled( evt: Event ) {
 		// Null check.
-		if ( ! ( 'newState' in evt ) || ! this.tooltipContentElement ) {
+		if ( ! ( 'newState' in evt ) || ! this.tooltipPopoverElement ) {
 			// Bail.
 			return;
 		}
 
 		// Check and toggle.
 		if ( 'open' === evt.newState ) {
-			document.body.classList.add( 'prevent-scroll' );
+			// Prevent body scroll.
 			requestAnimationFrame( this.positionTooltip.bind( this ) );
 
 			/**
@@ -119,8 +156,8 @@ export class Tooltip extends HTMLElement {
 			 * that contains any styles with class `.\:popover-open`
 			 * ref: https://github.com/oddbird/popover-polyfill?tab=readme-ov-file#caveats
 			 */
-			if ( this.tooltipContentElement.classList.contains( ':popover-open' ) ) {
-				this.tooltipContentElement.style.display = 'flex';
+			if ( this.tooltipPopoverElement.classList.contains( ':popover-open' ) ) {
+				this.tooltipPopoverElement.style.display = 'flex';
 			}
 		} else {
 			this.removeAttribute( 'tooltip-direction' );
@@ -130,8 +167,26 @@ export class Tooltip extends HTMLElement {
 			 * that contains any styles with class `.\:popover-open`
 			 * ref: https://github.com/oddbird/popover-polyfill?tab=readme-ov-file#caveats
 			 */
-			this.tooltipContentElement.style.display = '';
-			document.body.classList.remove( 'prevent-scroll' );
+			this.tooltipPopoverElement.style.display = '';
+		}
+	}
+
+	/**
+	 * Toggles the body element's scroll.
+	 *
+	 * @param {Event} evt The event object.
+	 */
+	handleBeforeToggled( evt: Event ) {
+		// Null check.
+		if ( ! ( 'newState' in evt ) || ! this.tooltipPopoverElement ) {
+			// Bail.
+			return;
+		}
+
+		// Check and toggle.
+		if ( 'open' === evt.newState ) {
+			// Hide the tooltip
+			this.tooltipPopoverElement.style.visibility = 'hidden';
 		}
 	}
 
@@ -151,19 +206,13 @@ export class Tooltip extends HTMLElement {
 	) {
 		// Sanity check.
 		if (
-			! this.tooltipContentElement ||
+			! this.tooltipPopoverElement ||
 			tooltipTriggerHorizontalOffsets.length !== 2 ||
 			tooltipTriggerVerticalOffsets.length !== 2
 		) {
 			// Bail.
 			return;
 		}
-
-		// Maximum value for height/width.
-		const TOOLTIP_CONTENT_MAX_DIMENSION = 360;
-
-		// The distance between content and screen edges / icon and content.
-		const MINIMUM_BUFFER_DISTANCE_VALUE = 20;
 
 		// Tooltip direction.
 		const tooltipDirection = 'vertical' === primaryOffsetName ? tooltipTriggerVerticalOffsets[ 0 ].dir : tooltipTriggerHorizontalOffsets[ 0 ].dir;
@@ -188,12 +237,12 @@ export class Tooltip extends HTMLElement {
 			return;
 		}
 
-		// Get the rect for content element.
+		// Get the rect for popover element.
 		const triggerRect = this.getBoundingClientRect();
-		const contentRect = this.tooltipContentElement.getBoundingClientRect();
+		const popoverRect = this.tooltipPopoverElement.getBoundingClientRect();
 
 		// New max height.
-		let availableVerticalSpace = -2 * MINIMUM_BUFFER_DISTANCE_VALUE;
+		let availableVerticalSpace = -2 * this.MINIMUM_BUFFER_DISTANCE_VALUE;
 
 		// Calculate the available space.
 		if ( 'vertical' === primaryOffsetName ) {
@@ -203,33 +252,33 @@ export class Tooltip extends HTMLElement {
 		}
 
 		// Assign height accordingly.
-		const newMaxHeight = Math.min( availableVerticalSpace, TOOLTIP_CONTENT_MAX_DIMENSION );
+		const newMaxHeight = Math.min( availableVerticalSpace, this.TOOLTIP_POPOVER_MAX_DIMENSION );
 
 		// top
-		let topValue = MINIMUM_BUFFER_DISTANCE_VALUE;
-		const desiredContentHeight = Math.min( newMaxHeight, contentRect.height );
+		let topValue = this.MINIMUM_BUFFER_DISTANCE_VALUE;
+		const desiredPopoverHeight = Math.min( newMaxHeight, popoverRect.height );
 		const triggerCenterOffsetTop = triggerTopOffset + ( triggerRect.height / 2 ); // top offset for the center of trigger.
 		const triggerCenterOffsetBottom = triggerBottomOffset + ( triggerRect.height / 2 ); // bottom offset for the center of trigger.
 
 		// Check the direction and compute values.
 		if ( 'top' === tooltipDirection ) {
 			// Set the top value.
-			topValue = triggerTopOffset - desiredContentHeight - MINIMUM_BUFFER_DISTANCE_VALUE;
+			topValue = triggerTopOffset - desiredPopoverHeight - this.MINIMUM_BUFFER_DISTANCE_VALUE;
 		} else if ( 'bottom' === tooltipDirection ) {
-			topValue = triggerRect.bottom + MINIMUM_BUFFER_DISTANCE_VALUE;
+			topValue = triggerRect.bottom + this.MINIMUM_BUFFER_DISTANCE_VALUE;
 		} else if ( [ 'left', 'right' ].includes( tooltipDirection ) ) {
-			// If the main direction of the tooltip is horizontal, try to spread the content across top and bottom.
-			if ( triggerCenterOffsetTop <= desiredContentHeight / 2 ) {
-				topValue = MINIMUM_BUFFER_DISTANCE_VALUE;
-			} else if ( triggerCenterOffsetBottom <= desiredContentHeight / 2 ) {
-				topValue = window.innerHeight - desiredContentHeight - MINIMUM_BUFFER_DISTANCE_VALUE;
+			// If the main direction of the tooltip is horizontal, try to spread the popover across top and bottom.
+			if ( triggerCenterOffsetTop <= desiredPopoverHeight / 2 ) {
+				topValue = this.MINIMUM_BUFFER_DISTANCE_VALUE;
+			} else if ( triggerCenterOffsetBottom <= desiredPopoverHeight / 2 ) {
+				topValue = window.innerHeight - desiredPopoverHeight - this.MINIMUM_BUFFER_DISTANCE_VALUE;
 			} else {
-				topValue = triggerCenterOffsetTop - ( desiredContentHeight / 2 ) + MINIMUM_BUFFER_DISTANCE_VALUE;
+				topValue = triggerCenterOffsetTop - ( desiredPopoverHeight / 2 );
 			}
 		}
 
 		// New max width
-		let availableHorizontalSpace = -2 * MINIMUM_BUFFER_DISTANCE_VALUE;
+		let availableHorizontalSpace = -2 * this.MINIMUM_BUFFER_DISTANCE_VALUE;
 
 		// Calculate the available space.
 		if ( 'vertical' === primaryOffsetName ) {
@@ -239,28 +288,28 @@ export class Tooltip extends HTMLElement {
 		}
 
 		// Assign new max width accordingly.
-		const newMaxWidth = Math.min( availableHorizontalSpace, TOOLTIP_CONTENT_MAX_DIMENSION );
+		const newMaxWidth = Math.min( availableHorizontalSpace, this.TOOLTIP_POPOVER_MAX_DIMENSION );
 
 		// left
-		let leftValue = MINIMUM_BUFFER_DISTANCE_VALUE;
-		const desiredContentWidth = Math.min( newMaxWidth, contentRect.width );
+		let leftValue = this.MINIMUM_BUFFER_DISTANCE_VALUE;
+		const desiredPopoverWidth = Math.min( newMaxWidth, popoverRect.width );
 		const triggerCenterOffsetLeft = triggerLeftOffset + ( triggerRect.width / 2 ); // left offset for the center of trigger.
 		const triggerCenterOffsetRight = triggerRightOffset + ( triggerRect.width / 2 ); // right offset for the center of trigger.
 
 		// Check the direction and compute values.
 		if ( 'left' === tooltipDirection ) {
 			// Set the left value.
-			leftValue = triggerLeftOffset - desiredContentWidth - MINIMUM_BUFFER_DISTANCE_VALUE;
+			leftValue = triggerLeftOffset - desiredPopoverWidth - this.MINIMUM_BUFFER_DISTANCE_VALUE;
 		} else if ( 'right' === tooltipDirection ) {
-			leftValue = triggerRect.right + MINIMUM_BUFFER_DISTANCE_VALUE;
+			leftValue = triggerRect.right + this.MINIMUM_BUFFER_DISTANCE_VALUE;
 		} else if ( [ 'top', 'bottom' ].includes( tooltipDirection ) ) {
-			// If the main direction of the tooltip is horizontal, try to spread the content across left and right.
-			if ( triggerCenterOffsetLeft <= desiredContentWidth / 2 ) {
-				leftValue = MINIMUM_BUFFER_DISTANCE_VALUE;
-			} else if ( triggerCenterOffsetRight <= desiredContentWidth / 2 ) {
-				leftValue = window.innerWidth - desiredContentWidth - MINIMUM_BUFFER_DISTANCE_VALUE;
+			// If the main direction of the tooltip is horizontal, try to spread the popover across left and right.
+			if ( triggerCenterOffsetLeft <= desiredPopoverWidth / 2 ) {
+				leftValue = this.MINIMUM_BUFFER_DISTANCE_VALUE;
+			} else if ( triggerCenterOffsetRight <= desiredPopoverWidth / 2 ) {
+				leftValue = window.innerWidth - desiredPopoverWidth - this.MINIMUM_BUFFER_DISTANCE_VALUE;
 			} else {
-				leftValue = triggerCenterOffsetLeft - ( desiredContentWidth / 2 ) - MINIMUM_BUFFER_DISTANCE_VALUE;
+				leftValue = triggerCenterOffsetLeft - ( desiredPopoverWidth / 2 );
 			}
 		}
 

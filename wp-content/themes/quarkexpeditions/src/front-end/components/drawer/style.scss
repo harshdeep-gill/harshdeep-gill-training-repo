@@ -91,7 +91,7 @@
 	}
 
 	*:has( > #{$self}__body, > #{$self}__header, > #{self}__footer) {
-		max-height: 100vh;
+		max-height: 100svh;
 		display: flex;
 		flex-direction: column;
 	}

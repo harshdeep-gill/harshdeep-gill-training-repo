@@ -84,6 +84,12 @@ import * as mediaTextCtaCarousel from './media-text-cta-carousel';
 import * as pressReleases from './press-releases';
 import * as tabs from './tabs';
 import * as detailedExpeditionCarousel from './detailed-expedition-carousel';
+import * as form from './form';
+import * as formContactUs from './form-contact-us';
+import * as formDoNotSellInformation from './form-do-not-sell-information';
+import * as formSnowHillNewsletter from './form-snow-hill-newsletter';
+import * as formJobApplication from './form-job-application';
+import * as formNewsletter from './form-newsletter';
 
 /**
  * Add blocks.
@@ -164,6 +170,12 @@ const blocks = [
 	pressReleases,
 	tabs,
 	detailedExpeditionCarousel,
+	form,
+	formContactUs,
+	formDoNotSellInformation,
+	formSnowHillNewsletter,
+	formJobApplication,
+	formNewsletter,
 ];
 
 // Register blocks for ships.
