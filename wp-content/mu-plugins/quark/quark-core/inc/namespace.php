@@ -602,7 +602,7 @@ function get_pagination_links( array $args = [] ): string {
 		$last_page  = strval( array_pop( $pagination_links ) );
 
 		// Check for dots.
-		$has_dots_after_first_page =false;
+		$has_dots_after_first_page = false;
 		$has_dots_before_last_page = false;
 
 		// Check for dots.
