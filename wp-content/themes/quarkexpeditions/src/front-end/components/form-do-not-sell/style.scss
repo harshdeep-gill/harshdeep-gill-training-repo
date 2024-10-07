@@ -1,0 +1,16 @@
+@import "../../scss/";
+
+.form-do-not-sell {
+
+	.form-field--buttons {
+		margin-top: var(--spacing-7);
+
+		.btn {
+			width: 100%;
+
+			@media screen and (min-width: grid-size(sm)) {
+				max-width: 200px;
+			}
+		}
+	}
+}

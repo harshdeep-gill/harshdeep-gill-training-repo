@@ -4,6 +4,7 @@
 	'is_sold_out'      => false,
 	'is_pay_in_full'   => false,
 	'is_stock_limited' => false,
+	'is_discounted'    => false,
 ] )
 
 @php
@@ -12,6 +13,10 @@
 	}
 
 	$classes = [ 'dates-rates__item-table-column' ];
+
+	if ( true === $is_discounted ){
+		$classes[] = 'dates-rates__item-table-column--discounted';
+	}
 
 	if ( true === $is_sold_out ) {
 		$classes[] = 'dates-rates__item-table-column--sold-out';

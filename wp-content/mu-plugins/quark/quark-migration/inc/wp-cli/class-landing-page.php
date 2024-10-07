@@ -7,6 +7,7 @@
 
 namespace Quark\Migration\WP_CLI;
 
+use WP_Post;
 use cli\progress\Bar;
 use WP_CLI;
 use WP_Error;
@@ -27,19 +28,29 @@ use const Quark\Pages\POST_TYPE;
  * Class Landing_Page.
  */
 class Landing_Page {
+	/**
+	 * Block converter instance.
+	 *
+	 * @var Block_Converter
+	 */
+	private Block_Converter $block_converter;
 
 	/**
-	 * Drupal Node ids of Spacial pages like Home, contact us which will not be in Landing page CPT.
+	 * Special page IDs.
 	 *
-	 * @var array|int[]
+	 * @var array<int>
 	 */
-	private array $spacial_pages = [
-		102236,
-		103191,
-		103196,
-		103201,
-		103186,
-		102696,
+	private $special_pages = [
+		'home'                            => 102236,
+		'home2'                           => 102696,
+		'travel-insurance-plan'           => 312,
+		'blog-archive'                    => 110506,
+		'privacy-policy'                  => 310,
+		'website-term-of-use'             => 311,
+		'expedition-terms-and-conditions' => 105726,
+		'know-before-you-go'              => 106661,
+		'expedition-ships'                => 109,
+		'brochure_archive'                => 116086,
 	];
 
 	/**
@@ -71,6 +82,9 @@ class Landing_Page {
 		// Initialize progress bar.
 		$progress = make_progress_bar( 'Migrating "Landing Page" post-type', count( $data ) );
 
+		// Initialize block converter.
+		$this->block_converter = new Block_Converter();
+
 		// Check if progress bar exists or not.
 		if ( ! $progress instanceof Bar ) {
 			WP_CLI::error( 'Progress bar not found!' );
@@ -83,11 +97,6 @@ class Landing_Page {
 		foreach ( $data as $item ) {
 			// Insert post.
 			$progress->tick();
-
-			// Skip special pages.
-			if ( in_array( absint( $item['nid'] ), $this->spacial_pages, true ) ) {
-				continue;
-			}
 
 			// Insert post.
 			$this->insert_post( $item );
@@ -105,6 +114,14 @@ class Landing_Page {
 	 * @return void
 	 */
 	public function insert_post( array $drupal_post = [] ): void {
+		// Skip if its special page.
+		if ( ! empty( $drupal_post['nid'] ) && in_array( absint( $drupal_post['nid'] ), $this->special_pages, true ) ) {
+			WP_CLI::line( 'Skipping special page: ' . $drupal_post['nid'] );
+
+			// Bail out.
+			return;
+		}
+
 		// Normalize drupal post data.
 		$normalized_post = $this->normalize_drupal_post( $drupal_post );
 
@@ -164,13 +181,15 @@ class Landing_Page {
 		}
 
 		// Normalize data.
-		$nid          = ! empty( $item['nid'] ) ? absint( $item['nid'] ) : 0;
-		$title        = '';
-		$created_at   = gmdate( 'Y-m-d H:i:s' );
-		$modified_at  = gmdate( 'Y-m-d H:i:s' );
-		$status       = 'draft';
-		$post_content = '';
-		$post_excerpt = '';
+		$nid            = ! empty( $item['nid'] ) ? absint( $item['nid'] ) : 0;
+		$title          = '';
+		$created_at     = gmdate( 'Y-m-d H:i:s' );
+		$modified_at    = gmdate( 'Y-m-d H:i:s' );
+		$status         = 'draft';
+		$post_content   = '';
+		$post_excerpt   = '';
+		$post_name      = '';
+		$parent_post_id = 0;
 
 		// Title.
 		if ( is_string( $item['title'] ) && ! empty( $item['title'] ) ) {
@@ -194,7 +213,16 @@ class Landing_Page {
 
 		// post content.
 		if ( ! empty( $item['post_content'] ) ) {
-			$post_content = prepare_content( strval( $item['post_content'] ) );
+			$post_content = serialize_block(
+				[
+					'blockName'    => 'quark/section',
+					'attrs'        => [
+						'hasTitle' => false,
+						'isNarrow' => true,
+					],
+					'innerContent' => [ prepare_content( strval( $item['post_content'] ) ) ],
+				]
+			) . PHP_EOL;
 		}
 
 		// Post excerpt.
@@ -208,8 +236,7 @@ class Landing_Page {
 
 			// Convert block content.
 			if ( ! empty( $block ) ) {
-				$block_converter = new Block_Converter();
-				$block_content   = $block_converter->get_drupal_block_data( $block );
+				$block_content = $this->block_converter->get_drupal_block_data( $block );
 			}
 
 			// Check if hero banner exists.
@@ -218,11 +245,60 @@ class Landing_Page {
 			}
 		}
 
+		// Paragraphs for Post content.
+		$paragraph_data = $this->get_drupal_paragraph_data( $nid );
+
+		// Check if paragraph data is not empty.
+		if ( ! empty( $paragraph_data ) ) {
+			// initialize block content.
+			$block_content = '';
+
+			// Loop through paragraph data.
+			foreach ( $paragraph_data as $paragraph ) {
+				$block = $this->block_converter->get_drupal_block_data( $paragraph );
+
+				// Check if block is not empty.
+				if ( ! empty( $block ) ) {
+					$block_content .= $block;
+				}
+			}
+
+			// Append block content.
+			$post_content .= $block_content;
+		}
+
+		// Prepare post content.
+		$post_content = str_replace( 'u0026', '&', $post_content );
+
+		// Post name.
+		if ( ! empty( $item['drupal_url'] ) && is_string( $item['drupal_url'] ) ) {
+			/**
+			 * Break the url into parts and use the last part as post name.
+			 * i.e. - /sea-spirit.
+			 */
+			$parts     = explode( '/', $item['drupal_url'] );
+			$post_name = end( $parts );
+
+			// check if $parts[1] is set.
+			if ( isset( $parts[2] ) ) {
+				$parent_post_name = $parts[1];
+
+				// Get post by slug.
+				$parent_post = get_page_by_path( $parent_post_name, OBJECT, 'page' );
+
+				// Check if parent post exists.
+				if ( $parent_post instanceof WP_Post ) {
+					$parent_post_id = $parent_post->ID;
+				}
+			}
+		}
+
 		// Prepare post data.
 		$data = [
 			'post_type'         => POST_TYPE,
 			'post_author'       => '1',
 			'post_title'        => $title,
+			'post_name'         => $post_name,
 			'post_date'         => $created_at,
 			'post_date_gmt'     => $created_at,
 			'post_modified'     => $modified_at,
@@ -232,6 +308,7 @@ class Landing_Page {
 			'post_status'       => $status,
 			'comment_status'    => 'closed',
 			'ping_status'       => 'closed',
+			'post_parent'       => $parent_post_id,
 			'meta_input'        => [],
 		];
 
@@ -275,6 +352,7 @@ class Landing_Page {
 			field_data.title,
 			field_data.created,
 			field_data.changed,
+			( SELECT alias AS drupal_url FROM path_alias WHERE path = CONCAT( '/node/', node.nid ) ORDER BY id DESC LIMIT 0, 1 ) AS drupal_url,
 			body.body_value AS post_content,
 			body.body_summary AS post_excerpt,
 			field_hero_banner.field_hero_banner_target_id AS hero_banner_id,
@@ -333,6 +411,43 @@ class Landing_Page {
 		// Check if data is not array.
 		if ( ! is_array( $result ) ) {
 			WP_CLI::line( 'Unable to fetch drupal_hero_banner_block data!' );
+
+			// Bail out.
+			return [];
+		}
+
+		// Return data.
+		return $result;
+	}
+
+	/**
+	 * Get drupal paragraph data.
+	 *
+	 * @param int $nid Drupal node id.
+	 *
+	 * @return array{}|array<int, array<string, int|string>> Drupal paragraph data.
+	 */
+	public function get_drupal_paragraph_data( int $nid = 0 ): array {
+		// Get database connection.
+		$drupal_database = get_database();
+
+		// Query.
+		$query = "SELECT
+			paragraphs_item.id,
+			paragraphs_item.type
+		FROM
+			node__field_components as components
+				LEFT JOIN paragraphs_item_field_data AS paragraphs_item ON paragraphs_item.id = components.field_components_target_id AND components.langcode = paragraphs_item.langcode AND paragraphs_item.parent_type = 'node' AND paragraphs_item.parent_id = components.entity_id
+		WHERE
+			components.entity_id = %s and components.langcode = 'en'
+		ORDER BY delta";
+
+		// Fetch data.
+		$result = $drupal_database->get_results( $drupal_database->prepare( $query, $nid ), ARRAY_A );
+
+		// Check if data is not array.
+		if ( ! is_array( $result ) ) {
+			WP_CLI::line( 'Unable to fetch paragraph data!' );
 
 			// Bail out.
 			return [];

@@ -29,6 +29,10 @@
 		"totalPosts": {
 			"type": "number",
 			"default": 5
+		},
+		"showDepartureDate": {
+			"type": "boolean",
+			"default": false
 		}
 	},
 	"supports": {

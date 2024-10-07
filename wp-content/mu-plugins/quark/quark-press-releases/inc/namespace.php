@@ -22,6 +22,9 @@ function bootstrap(): void {
 	// Register post type.
 	add_action( 'init', __NAMESPACE__ . '\\register_press_release_post_type' );
 
+	// Add date to press release permalink.
+	add_filter( 'post_type_link', __NAMESPACE__ . '\\update_permalink', 10, 2 );
+
 	// Breadcrumbs.
 	add_filter( 'travelopia_breadcrumbs_ancestors', __NAMESPACE__ . '\\breadcrumbs_ancestors' );
 }
@@ -61,7 +64,7 @@ function register_press_release_post_type(): void {
 		'query_var'           => true,
 		'can_export'          => true,
 		'rewrite'             => [
-			'slug'       => 'press-releases',
+			'slug'       => 'press-releases/%year%/%monthnum%',
 			'with_front' => false,
 		],
 		'capability_type'     => 'post',
@@ -86,6 +89,27 @@ function register_press_release_post_type(): void {
 
 	// Register post type.
 	register_post_type( POST_TYPE, $args );
+}
+
+/**
+ * Add date to press release permalink.
+ *
+ * @param string       $post_link Post link.
+ * @param WP_Post|null $post Post object.
+ *
+ * @return string
+ */
+function update_permalink( string $post_link = '', WP_Post $post = null ): string {
+	// Check if post type is press release.
+	if ( $post instanceof WP_Post && POST_TYPE === $post->post_type ) {
+		$year      = gmdate( 'Y', absint( strtotime( $post->post_date_gmt ) ) );
+		$month     = gmdate( 'm', absint( strtotime( $post->post_date_gmt ) ) );
+		$post_link = str_replace( '%year%', strval( $year ), $post_link );
+		$post_link = str_replace( '%monthnum%', strval( $month ), $post_link );
+	}
+
+	// Return post link.
+	return $post_link;
 }
 
 /**
@@ -118,6 +142,50 @@ function get( int $post_id = 0 ): array {
 }
 
 /**
+ * Get press release cards data.
+ *
+ * @param int[] $post_ids Post IDs.
+ *
+ * @return array{}|array{
+ *     id: int,
+ *     title: string,
+ *     description: string,
+ *     permalink: string,
+ * }[] Press release cards data.
+ */
+function get_cards_data( array $post_ids = [] ): array {
+	// Return if empty post IDs.
+	if ( empty( $post_ids ) ) {
+		return [];
+	}
+
+	// Initialize press release cards.
+	$press_release_cards = [];
+
+	// Loop through post IDs.
+	foreach ( $post_ids as $post_id ) {
+		// Get press release.
+		$press_release = get( $post_id );
+
+		// Skip if post is not a press release.
+		if ( empty( $press_release['post'] ) ) {
+			continue;
+		}
+
+		// Add press release card.
+		$press_release_cards[] = [
+			'id'          => $press_release['post']->ID,
+			'title'       => $press_release['post']->post_title,
+			'description' => strval( apply_filters( 'the_content', $press_release['post']->post_excerpt ) ),
+			'permalink'   => $press_release['permalink'],
+		];
+	}
+
+	// Return press release cards.
+	return $press_release_cards;
+}
+
+/**
  * Breadcrumbs ancestors for this post type.
  *
  * @param mixed[] $breadcrumbs Breadcrumbs.
@@ -131,7 +199,7 @@ function get( int $post_id = 0 ): array {
  */
 function breadcrumbs_ancestors( array $breadcrumbs = [] ): array {
 	// Check if current query is for this post type.
-	if ( ! is_singular( POST_TYPE ) && ! is_author() && ! is_category() ) {
+	if ( ! is_singular( POST_TYPE ) ) {
 		return $breadcrumbs;
 	}
 

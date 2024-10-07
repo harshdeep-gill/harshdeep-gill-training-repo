@@ -51,10 +51,18 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 		'contents' => [],
 	];
 
+	// Get the post content.
+	$post_content = get_the_content();
+
+	// Check if post content is empty.
+	if ( empty( $post_content ) ) {
+		return $content;
+	}
+
 	// Load the post content into a dom document.
 	$dom                   = new DOMDocument();
 	$libxml_previous_state = libxml_use_internal_errors( true );
-	$is_dom_loaded         = $dom->loadHTML( get_the_content(), LIBXML_COMPACT );
+	$is_dom_loaded         = $dom->loadHTML( $post_content, LIBXML_COMPACT );
 
 	// Check if dom is loaded.
 	if ( $is_dom_loaded ) {

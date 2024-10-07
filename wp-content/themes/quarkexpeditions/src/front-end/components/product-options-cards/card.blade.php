@@ -1,6 +1,7 @@
 @props( [
 	'class'      => '',
 	'details_id' => '',
+	'status'     => '',
 ] )
 
 @php
@@ -12,6 +13,13 @@
 
 	if ( ! empty( $class ) ) {
 		$classes[] = $class;
+	}
+
+	if ( ! empty( $status ) && in_array( $status, [ 'R', 'S' ] ) ) {
+		$classes[] = 'product-options-cards__card--' . match ( $status ) {
+			'R' => 'please-call',
+			'S' => 'sold-out',
+		};
 	}
 @endphp
 

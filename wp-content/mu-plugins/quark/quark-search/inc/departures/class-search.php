@@ -13,6 +13,7 @@ use SolrPower_WP_Query;
 
 use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
+use const Quark\Departures\SPOKEN_LANGUAGE_TAXONOMY;
 use const Quark\Expeditions\DESTINATION_TAXONOMY;
 use const Quark\Localization\DEFAULT_CURRENCY;
 
@@ -146,6 +147,10 @@ class Search {
 		],
 		'price-high-cad' => [
 			'key'   => 'lowest_price_cad_i',
+			'order' => 'desc',
+		],
+		'related_ship'   => [
+			'key'   => 'related_ship_i',
 			'order' => 'desc',
 		],
 	];
@@ -447,6 +452,11 @@ class Search {
 			];
 		}
 
+		// Return early if meta query is empty.
+		if ( empty( $meta_query ) ) {
+			return;
+		}
+
 		// Add relation if more than one meta query.
 		if ( 1 < count( $meta_query ) ) {
 			$meta_query['relation'] = 'OR';
@@ -517,6 +527,70 @@ class Search {
 	}
 
 	/**
+	 * Set languages.
+	 *
+	 * @param int[] $language_ids Language taxonomy IDs.
+	 *
+	 * @return void
+	 */
+	public function set_languages( array $language_ids = [] ): void {
+		// Return early if no languages are passed.
+		if ( empty( $language_ids ) ) {
+			return;
+		}
+
+		// If tax query array not present, create it.
+		if ( ! is_array( $this->args['tax_query'] ) ) {
+			$this->args['tax_query'] = [];
+		}
+
+		// Set search by languages parameters in search arguments.
+		$this->args['tax_query'][] = [
+			'taxonomy'         => SPOKEN_LANGUAGE_TAXONOMY,
+			'field'            => 'term_id',
+			'terms'            => array_unique( $language_ids ),
+			'include_children' => false,
+		];
+	}
+
+	/**
+	 * Set itinerary length.
+	 *
+	 * @param int[] $itinerary_lengths Itinerary length.
+	 *
+	 * @return void
+	 */
+	public function set_itinerary_lengths( array $itinerary_lengths = [] ): void {
+		// Return early if no itinerary lengths are passed.
+		if ( empty( $itinerary_lengths ) || 2 > count( $itinerary_lengths ) ) {
+			return;
+		}
+
+		// Sort.
+		sort( $itinerary_lengths );
+
+		// Start and end.
+		$start = $itinerary_lengths[0];
+		$end   = absint( end( $itinerary_lengths ) );
+
+		// If meta query array not present, create it.
+		if ( ! is_array( $this->args['meta_query'] ) ) {
+			$this->args['meta_query'] = [];
+		}
+
+		// Set meta query.
+		$this->args['meta_query'][] = [
+			'key'     => 'duration',
+			'value'   => [
+				$start,
+				$end,
+			],
+			'type'    => 'NUMERIC',
+			'compare' => 'BETWEEN',
+		];
+	}
+
+	/**
 	 * Set Order.
 	 *
 	 * @param string $order Order.
@@ -539,35 +613,38 @@ class Search {
 	}
 
 	/**
-	 * Set Sort.
+	 * Set Sorts.
 	 *
-	 * @param string $sort     Sort.
-	 * @param string $currency Currency.
+	 * @param string[] $sorts    Sort.
+	 * @param string   $currency Currency.
 	 *
 	 * @return void
 	 */
-	public function set_sort( string $sort = '', string $currency = DEFAULT_CURRENCY ): void {
+	public function set_sorts( array $sorts = [], string $currency = DEFAULT_CURRENCY ): void {
 		// Return early if sort is empty.
-		if ( empty( $sort ) ) {
+		if ( empty( $sorts ) ) {
 			return;
 		}
 
-		// Check if sort is for price.
-		if ( strpos( $sort, 'price-' ) !== false ) {
-			// Set currency.
-			$currency = strtolower( $currency );
+		// Loop through sorts.
+		foreach ( $sorts as $sort ) {
+			// Check if sort is for price.
+			if ( strpos( $sort, 'price-' ) !== false ) {
+				// Set currency.
+				$currency = strtolower( $currency );
 
-			// Update the sort key.
-			$sort = $sort . '-' . $currency;
+				// Update the sort key.
+				$sort = $sort . '-' . $currency;
+			}
+
+			// Check if sort is valid.
+			if ( empty( $this->sort_options[ $sort ] ) ) {
+				return;
+			}
+
+			// Set sort.
+			$this->sorts[ $this->sort_options[ $sort ]['key'] ] = $this->sort_options[ $sort ]['order'];
 		}
-
-		// Check if sort is valid.
-		if ( empty( $this->sort_options[ $sort ] ) ) {
-			return;
-		}
-
-		// Set sort.
-		$this->sorts[ $this->sort_options[ $sort ]['key'] ] = $this->sort_options[ $sort ]['order'];
 	}
 
 	/**
@@ -726,7 +803,7 @@ class Search {
 				// Set field facet.
 				default:
 					// Get facet field instance.
-					$facet_field = $facet_set->createFacetField( $facet['key'] )->setField( $facet['key'] );
+					$facet_field = $facet_set->createFacetField( $facet['key'] )->setField( $facet['key'] )->setLimit( 100 );
 					break;
 			}
 		}

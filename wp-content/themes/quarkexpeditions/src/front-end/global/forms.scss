@@ -14,6 +14,7 @@ button {
 	box-shadow: none;
 	-webkit-appearance: none;
 	appearance: none;
+	color: var(--color-black);
 }
 
 input[type="search"] {
@@ -216,6 +217,7 @@ input[type="checkbox"] {
 	height: 20px;
 	border-radius: 4px;
 	padding: 0;
+	margin-top: 4px;
 }
 
 input[type="checkbox"]:checked {
@@ -240,6 +242,7 @@ input[type="radio"] {
 	height: 20px;
 	border-radius: 50%;
 	padding: 0;
+	margin-top: 4px;
 }
 
 input[type="radio"]:checked {
@@ -264,11 +267,12 @@ input[type="radio"]:checked {
 .radio-container {
 	display: flex;
 	gap: var(--spacing-2);
-	align-items: center;
 
 	> label {
 		margin: 0;
 		height: fit-content;
+		font-size: var(--font-size);
+		line-height: var(--line-height);
 	}
 }
 
@@ -317,22 +321,19 @@ label {
 }
 
 .form-field-group {
+	$self: &;
+
 	display: flex;
 	flex-direction: column;
 	gap: var(--spacing-4);
 	margin-bottom: var(--forms-field-spacing);
 	width: 100%;
 
-	label {
-		font-size: var(--font-size);
-		line-height: var(--line-height);
-	}
-
 	&:last-child {
 		margin-bottom: 0;
 	}
 
-	> label {
+	&__title {
 		margin-bottom: 0;
 		font-weight: var(--font-weight-bold);
 		order: 1;
@@ -343,15 +344,21 @@ label {
 		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 		grid-column-gap: var(--spacing-6);
 		grid-row-gap: var(--spacing-2);
-		order: 3;
+
+		#{$self}__title ~ & {
+			order: 3;
+		}
 
 		.form__required-indicator {
 			display: none;
 		}
 	}
 
-	tp-form-error {
+	&__title ~ tp-form-error {
 		order: 2;
+	}
+
+	tp-form-error {
 		display: block;
 		color: var(--color-error-100);
 		font-weight: var(--font-weight-bold);
@@ -388,16 +395,14 @@ tp-multi-select {
 	color: var(--color-black);
 
 	&-field {
-		padding: var(--spacing-3);
-		background-color: var(--color-white);
 		/* stylelint-disable-next-line function-url-quotes */
 		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M7.41 8.2998L12 12.8798L16.59 8.2998L18 9.7098L12 15.7098L6 9.7098L7.41 8.2998Z' fill='%23232933'/%3E%3C/svg%3E");
+		background-color: var(--color-white);
 		background-repeat: no-repeat;
 		background-position: center right 10px;
 		background-size: 24px;
 		overflow: hidden;
 		text-overflow: ellipsis;
-		max-height: 52px;
 	}
 
 	&.form__inline-dropdown {
@@ -491,6 +496,9 @@ tp-multi-select {
 
 	&-status {
 		margin-right: var(--spacing-5);
+	}
+
+	&[selected="yes"] &-status {
 
 		@include line-clamp(1);
 	}
