@@ -16,6 +16,10 @@
 	// Toogle the field.
 	wp_enqueue_script( 'tp-toggle-attribute' );
 	wp_enqueue_style( 'tp-toggle-attribute' );
+
+	// Number spinner.
+	wp_enqueue_script( 'tp-number-spinner' );
+	wp_enqueue_style( 'tp-number-spinner' );
 @endphp
 
 <x-section class="form-request-quote">
@@ -56,7 +60,18 @@
 						</x-form.field>
 
 						<x-form.field>
-							<x-form.input type="number" min="2" max="10" value="2" label="Number of passengers" name="" />
+							<x-form.label>{{ __( 'Number of passengers', 'qrk' ) }}</x-form.label>
+							<tp-number-spinner class="form-request-quote__number-spinner" min="1" max="10" step="1">
+								<tp-number-spinner-decrement>
+									<button class="btn" type="button">-</button>
+								</tp-number-spinner-decrement>
+								<tp-number-spinner-input>
+									<input type="text" value="1" readonly />
+								</tp-number-spinner-input>
+								<tp-number-spinner-increment>
+									<button class="btn" type="button">+</button>
+								</tp-number-spinner-increment>
+							</tp-number-spinner>
 						</x-form.field>
 					</x-form.row>
 
@@ -124,7 +139,7 @@
 					</x-form.row>
 
 					<x-form.row>
-						<x-form.field-group title="{{ __( 'Preferred Contact Method', 'qrk' ) }}">
+						<x-form.field-group class="form-request-quote__contact-method" title="{{ __( 'Preferred Contact Method', 'qrk' ) }}">
 							<x-form.radio label="{{ __( 'Email', 'qrk' ) }}" name="fields[Preferred_Contact_Method__c]" value="email" />
 							<x-form.radio label="{{ __( 'Phone', 'qrk' ) }}" name="fields[Preferred_Contact_Method__c]" value="phone" checked="checked" />
 						</x-form.field-group>
