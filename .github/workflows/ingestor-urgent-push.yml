@@ -1,11 +1,15 @@
 name: Ingestor Urgent Push
 
 on:
-  repository_dispatch:
-    types: [ingestor-urgent-push]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Pantheon Environment'
+        required: true
+        default: 'qa'
 
 jobs:
-  wp-cron:
+  ingestor-push:
     runs-on: ubuntu-latest
 
     steps:
@@ -27,4 +31,12 @@ jobs:
       - name: Run ingestor urgent push
         env:
           PANTHEON_SSH_PRIVATE_KEY: ${{ secrets.PANTHEON_SSH_PRIVATE_KEY }}
-        run: bash .bin/ingestor-urgent-push.sh
+        run: |
+          if [ "${{ github.event.inputs.environment }}" = "qa" ]; then
+            bash .bin/ingestor-urgent-push-qa.sh
+          elif [ "${{ github.event.inputs.environment }}" = "staging" ]; then
+            bash .bin/ingestor-urgent-push.sh
+          else
+            echo "Invalid environment: ${{ github.event.inputs.environment }}"
+            exit 1
+          fi

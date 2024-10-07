@@ -178,6 +178,7 @@ define( 'QUARK_INGESTOR_API_KEY', env( 'QUARK_INGESTOR_API_KEY' ) );
 // Github Actions Token.
 define( 'QUARK_GITHUB_ACTIONS_TOKEN', env( 'QUARK_GITHUB_ACTIONS_TOKEN' ) );
 define( 'QUARK_GITHUB_API_DISPATCH_URL', env( 'QUARK_GITHUB_API_DISPATCH_URL' ) );
+define( 'QUARK_GITHUB_ACTIONS_REF', env( 'QUARK_GITHUB_ACTIONS_REF' ) );
 
 /* That's all, stop editing! Happy publishing. */
 
