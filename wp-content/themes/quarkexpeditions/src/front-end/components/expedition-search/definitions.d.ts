@@ -36,8 +36,16 @@ type ExpeditionSearchAllowedParam = ExpeditionSearchFilterType; // Add more valu
 /**
  * type ExpeditionSearchFiltersFromUrl
  */
-type ExpeditionSearchFiltersFromUrl = { itineraryLengths: [ number, number ] } | {
-	[ key in ExpeditionSearchAllowedParam ]: string[]
+type ExpeditionSearchFiltersFromUrl = {
+	destinations: string[],
+	months: string[],
+	itineraryLengths: [ number, number ],
+	adventureOptions: string[],
+	languages: string[],
+	ships: string[],
+	expeditions: string[],
+	cabinClasses: string[],
+	travelers: string[],
 }
 
 /**

@@ -56,7 +56,14 @@ export default class ExpeditionSearchFilterItineraryLengths extends HTMLElement 
 		const { itineraryLengths } = state;
 
 		// Sanity check.
-		if ( ! this.rangeSlider || itineraryLengths.length !== 2 ) {
+		if (
+			! this.rangeSlider ||
+			itineraryLengths.length !== 2 ||
+			Number.isNaN( itineraryLengths[ 0 ] ) ||
+			Number.isNaN( itineraryLengths[ 1 ] ) ||
+			0 > itineraryLengths[ 0 ] ||
+			itineraryLengths[ 0 ] > itineraryLengths[ 1 ]
+		) {
 			// Bail.
 			return;
 		}
@@ -84,8 +91,27 @@ export default class ExpeditionSearchFilterItineraryLengths extends HTMLElement 
 		}
 
 		// Check if it has the values.
-		if ( 'detail' in evt && evt.detail instanceof Object ) {
-			const updatedValues = ( 'selectedValues' in evt.detail ? evt.detail.selectedValues : [ 0, 0 ] ) as [ number, number ];
+		if (
+			'detail' in evt &&
+			evt.detail instanceof Object &&
+			'selectedValues' in evt.detail &&
+			Array.isArray( evt.detail.selectedValues ) &&
+			2 === evt.detail.selectedValues.length
+		) {
+			const { selectedValues } = evt.detail;
+
+			// Initialize updated values.
+			let updatedValues: [ number, number ] = [ 0, 0 ];
+
+			// Check if we have valid values.
+			if (
+				'number' === typeof selectedValues[ 0 ] &&
+				'number' === typeof selectedValues[ 1 ] &&
+				! Number.isNaN( selectedValues[ 0 ] ) &&
+				! Number.isNaN( selectedValues[ 1 ] )
+			) {
+				updatedValues = [ selectedValues[ 0 ], selectedValues[ 1 ] ];
+			}
 
 			// Update the itinerary length.
 			updateItineraryLength( updatedValues );

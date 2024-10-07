@@ -44,7 +44,7 @@ const parseUrl = (): ExpeditionSearchFiltersFromUrl | null => {
 	const urlFilters: ExpeditionSearchFiltersFromUrl = {
 		destinations: pluckValues( DEFAULT_STATE.destinations ),
 		months: pluckValues( DEFAULT_STATE.months ),
-		itineraryLengths: DEFAULT_STATE.itineraryLengths,
+		itineraryLengths: [ ...DEFAULT_STATE.itineraryLengths ],
 		ships: pluckValues( DEFAULT_STATE.ships ),
 		adventureOptions: pluckValues( DEFAULT_STATE.adventureOptions ),
 		languages: pluckValues( DEFAULT_STATE.languages ),
@@ -148,8 +148,17 @@ const buildUrlFromFilters = (): string => {
 		// Convert camelCased key to snake_caked key.
 		const snakeCasedKey: string = camelToSnakeCase( selectedFilter );
 
-		// @ts-ignore Stringify the filter and set it in url params.
-		urlParams[ snakeCasedKey ] = currentState[ selectedFilter ].map( ( singleFilter ) => singleFilter.value ).toString();
+		// Stringify the filter and set it in url params.
+		urlParams[ snakeCasedKey ] = currentState[ selectedFilter ].map( ( singleFilter ) => {
+			// Check what type we are dealing with.
+			if ( singleFilter instanceof Object && 'value' in singleFilter ) {
+				// Return the value.
+				return singleFilter.value;
+			}
+
+			// Return the value.
+			return singleFilter;
+		} ).toString();
 
 		// Delete if empty.
 		if ( urlParams[ snakeCasedKey ].length === 0 ) {
@@ -198,7 +207,7 @@ export const initialize = ( settings: {
 	const urlFilters = parseUrl();
 
 	// Null check.
-	if ( urlFilters && 'destinations' in urlFilters ) {
+	if ( urlFilters ) {
 		// Input containers for filters.
 		const filtersInputContainers = {
 			destinations: document.querySelector( 'quark-expedition-search-filter-destinations' ),
@@ -989,17 +998,19 @@ export const removeMonth = ( monthValue: string ) => {
 };
 
 /**
- * Updates a itineraryLength.
+ * Updates the itineraryLength.
  *
- * @param { Object } itineraryLengthToUpdate the itineraryLength object.
+ * @param { [ number, number ] } updatedItineraryLengths the itineraryLength object.
  */
-export const updateItineraryLength = ( itineraryLengthToUpdate: [ number, number ] ) => {
+export const updateItineraryLength = ( updatedItineraryLengths: [ number, number ] ) => {
 	// Sanity check.
 	if (
-		! Array.isArray( itineraryLengthToUpdate ) ||
-		itineraryLengthToUpdate.length !== 2 ||
-		Number.isNaN( itineraryLengthToUpdate[ 0 ] ) ||
-		Number.isNaN( itineraryLengthToUpdate[ 1 ] )
+		! Array.isArray( updatedItineraryLengths ) ||
+		updatedItineraryLengths.length !== 2 ||
+		Number.isNaN( updatedItineraryLengths[ 0 ] ) ||
+		Number.isNaN( updatedItineraryLengths[ 1 ] ) ||
+		0 > updatedItineraryLengths[ 0 ] ||
+		updatedItineraryLengths[ 0 ] > updatedItineraryLengths[ 1 ]
 	) {
 		// Bail.
 		return;
@@ -1009,7 +1020,7 @@ export const updateItineraryLength = ( itineraryLengthToUpdate: [ number, number
 	const updateObject: ExpeditionsSearchStateUpdateObject = {};
 
 	// Update the itineraryLength.
-	updateObject.itineraryLengths = [ ...itineraryLengthToUpdate ];
+	updateObject.itineraryLengths = [ ...updatedItineraryLengths ];
 
 	// Update the state;
 	setState( updateObject );
