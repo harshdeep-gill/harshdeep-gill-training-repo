@@ -214,6 +214,11 @@ function update_adventure_options( array $raw_adventure_options = [], int $depar
 	// Update the post meta.
 	update_post_meta( $departure_post_id, 'adventure_options', $adventure_option_term_ids );
 
+	// Bust the cache.
+	foreach ( $adventure_option_term_ids as $adventure_option_term_id ) {
+		wp_cache_delete( CACHE_KEY_PREFIX . '_departure_adventure_option_term_id_' . $adventure_option_term_id, CACHE_GROUP );
+	}
+
 	// Return if any updated.
 	return $any_updated;
 }
@@ -635,4 +640,68 @@ function format_rows_data_from_db( array $rows_data = [] ): array {
 
 	// Return the formatted data.
 	return $formatted_data;
+}
+
+/**
+ * Get departures by adventure option term id.
+ *
+ * @param integer $adventure_option_term_id The adventure option term ID.
+ * @param boolean $force                    Whether to bypass the cache.
+ *
+ * @return int[]
+ */
+function get_departures_by_adventure_option_term_id( int $adventure_option_term_id = 0, bool $force = false ): array {
+	// Validate adventure option term ID.
+	if ( empty( $adventure_option_term_id ) ) {
+		return [];
+	}
+
+	// Cache key.
+	$cache_key = CACHE_KEY_PREFIX . "_departure_adventure_option_term_id_$adventure_option_term_id";
+
+	// If not direct, check for cached version.
+	if ( empty( $force ) ) {
+		// Check for cached version.
+		$cached_value = wp_cache_get( $cache_key, CACHE_GROUP );
+
+		// Check for cached value.
+		if ( is_array( $cached_value ) ) {
+			return $cached_value;
+		}
+	}
+
+	// Get global DB object.
+	global $wpdb;
+
+	// Get the table name.
+	$table_name = get_table_name();
+
+	// Load the departures.
+	$departure_ids = $wpdb->get_col(
+		$wpdb->prepare(
+			'
+			SELECT
+				departure_post_id
+			FROM
+				%i
+			WHERE
+				adventure_option_term_id = %d
+			GROUP BY
+				departure_post_id
+			',
+			[
+				$table_name,
+				$adventure_option_term_id,
+			]
+		)
+	);
+
+	// Convert to int.
+	$departure_ids = array_map( 'absint', $departure_ids );
+
+	// Cache the value.
+	wp_cache_set( $cache_key, $departure_ids, CACHE_GROUP );
+
+	// Return the departure IDs.
+	return $departure_ids;
 }

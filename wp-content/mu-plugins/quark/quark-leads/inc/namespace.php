@@ -14,7 +14,8 @@ use function Travelopia\Salesforce\send_request;
 use function Travelopia\Security\validate_recaptcha;
 use function Travelopia\Security\get_recaptcha_settings;
 
-const REST_API_NAMESPACE = 'quark-leads/v1';
+const REST_API_NAMESPACE                  = 'quark-leads/v1';
+const SALESFORCE_MULTI_PICKLIST_DELIMITER = '; ';
 
 /**
  * Bootstrap plugin.
@@ -36,6 +37,9 @@ function bootstrap(): void {
 	if ( is_admin() ) {
 		require_once __DIR__ . '/../custom-fields/leads.php';
 	}
+
+	// Others.
+	add_filter( 'quark_lead_data', __NAMESPACE__ . '\\process_job_application_form' );
 }
 
 /**
@@ -135,6 +139,9 @@ function setup_settings(): void {
  * @return WP_Error|mixed[]
  */
 function create_lead( array $lead_data = [] ): array|WP_Error {
+	// Filter lead data.
+	$lead_data = (array) apply_filters( 'quark_lead_data', $lead_data );
+
 	// Get lead data.
 	$lead_data = wp_parse_args(
 		$lead_data,
@@ -211,6 +218,13 @@ function build_salesforce_request_data( array $fields = [], string $salesforce_o
 	// Add WebForm_Submission_ID__c field.
 	$fields['WebForm_Submission_ID__c'] = uniqid( strval( time() ), true );
 
+	// Check for array fields and flatten them to a string. [ Needed for Salesforce Integration as they consume multipicklist values as strings ].
+	foreach ( $fields as $key => $value ) {
+		if ( is_array( $value ) ) {
+			$fields[ $key ] = implode( SALESFORCE_MULTI_PICKLIST_DELIMITER, $value );
+		}
+	}
+
 	// The fields are the only data required in the request.
 	return (array) apply_filters(
 		'quark_leads_input_data',
@@ -263,4 +277,60 @@ function validate_recaptcha_token( string $recaptcha_token = '' ): true|float|WP
 
 	// Return true when allowing reCaptcha to fail or reCaptcha score is not available.
 	return true;
+}
+
+/**
+ * Process job application form to attach resume.
+ *
+ * @param mixed[] $lead_data Lead data.
+ *
+ * @return mixed[]
+ */
+function process_job_application_form( array $lead_data = [] ): array {
+	// Check for empty data.
+	if ( empty( $lead_data ) || ! is_array( $lead_data ) || 'WebForm_Job_Application__c' !== $lead_data['salesforce_object'] ) {
+		return $lead_data;
+	}
+
+	// Extract Resume File.
+	$resume_file = $lead_data['files']['resume'] ?? null;
+
+	// Check if resume file is set and file type is pdf.
+	if ( empty( $resume_file ) || 'application/pdf' !== $resume_file['type'] ) {
+		return $lead_data;
+	}
+
+	// Include wp_handle_upload function.
+	function_exists( 'wp_handle_upload' ) || require_once ABSPATH . 'wp-admin/includes/file.php';
+
+	// Handle file upload.
+	$uploaded_file = wp_handle_upload( $resume_file, [ 'test_form' => false ] );
+
+	// Check for errors.
+	if ( isset( $uploaded_file['error'] ) ) {
+		return $lead_data;
+	}
+
+	// Create attachment.
+	$attachment_id = wp_insert_attachment(
+		[
+			'post_mime_type' => $uploaded_file['type'],
+			'post_title'     => preg_replace( '/\.[^.]+$/', '', basename( $uploaded_file['file'] ) ),
+			'post_name'      => uniqid( 'job-application-resume-', true ),
+			'post_content'   => '',
+			'post_status'    => 'inherit',
+		],
+		$uploaded_file['file']
+	);
+
+	// Check for errors.
+	if ( $attachment_id instanceof WP_Error ) {
+		return $lead_data;
+	}
+
+	// Attach file URL to the lead.
+	$lead_data['fields']['Link_to_Resume__c'] = wp_get_attachment_url( $attachment_id );
+
+	// Return lead data.
+	return $lead_data;
 }

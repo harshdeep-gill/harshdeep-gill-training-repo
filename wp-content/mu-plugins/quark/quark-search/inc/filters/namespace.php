@@ -213,6 +213,14 @@ function get_region_season_filter_options( array $region_season_facet = [] ): ar
 		];
 	}
 
+	// Sort alphabetically by label.
+	uasort(
+		$filter_data,
+		function ( $a, $b ) {
+			return strcasecmp( $a['label'], $b['label'] );
+		}
+	);
+
 	// Return filter data.
 	return array_values( $filter_data );
 }
@@ -271,6 +279,14 @@ function get_expedition_filter_options( array $expedition_facet = [] ): array {
 			'count' => $count,
 		];
 	}
+
+	// Sort alphabetically by label.
+	uasort(
+		$filter_data,
+		function ( $a, $b ) {
+			return strcasecmp( $a['label'], $b['label'] );
+		}
+	);
 
 	// Return filter data.
 	return array_values( $filter_data );
@@ -331,6 +347,14 @@ function get_ship_filter_options( array $ship_facet = [] ): array {
 		];
 	}
 
+	// Sort alphabetically by label.
+	uasort(
+		$filter_data,
+		function ( $a, $b ) {
+			return strcasecmp( $a['label'], $b['label'] );
+		}
+	);
+
 	// Return filter data.
 	return array_values( $filter_data );
 }
@@ -386,6 +410,14 @@ function get_adventure_options_filter_options( array $adventure_options_facet = 
 			'count' => $count,
 		];
 	}
+
+	// Sort alphabetically by label.
+	uasort(
+		$filter_data,
+		function ( $a, $b ) {
+			return strcasecmp( $a['label'], $b['label'] );
+		}
+	);
 
 	// Return filter data.
 	return array_values( $filter_data );

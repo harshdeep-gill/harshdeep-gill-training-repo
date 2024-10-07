@@ -14,6 +14,10 @@
 		&:last-child {
 			margin-bottom: 0;
 		}
+
+		body.prevent-scroll & {
+			overflow: hidden;
+		}
 	}
 
 	&__table {
@@ -82,7 +86,7 @@
 
 	&__item-table-heading {
 		text-align: center;
-		min-height: 98px;
+		height: 98px;
 
 		&:first-child {
 			text-align: left;

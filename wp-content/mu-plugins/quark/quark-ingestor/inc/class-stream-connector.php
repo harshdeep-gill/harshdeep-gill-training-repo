@@ -33,6 +33,7 @@ class Stream_Connector extends Connector {
 		'quark_ingestor_push_completed',
 		'quark_ingestor_push_error',
 		'quark_ingestor_push_success',
+		'quark_ingestor_dispatch_github_event',
 	];
 
 	/**
@@ -65,10 +66,11 @@ class Stream_Connector extends Connector {
 	public function get_action_labels(): array {
 		// Return labels.
 		return [
-			'push_initiated' => __( 'Push Initiated', 'qrk' ),
-			'push_completed' => __( 'Push Completed', 'qrk' ),
-			'push_error'     => __( 'Push Error', 'qrk' ),
-			'push_success'   => __( 'Push Success', 'qrk' ),
+			'push_initiated'        => __( 'Push Initiated', 'qrk' ),
+			'push_completed'        => __( 'Push Completed', 'qrk' ),
+			'push_error'            => __( 'Push Error', 'qrk' ),
+			'push_success'          => __( 'Push Success', 'qrk' ),
+			'dispatch_github_event' => __( 'Dispatch GitHub Event', 'qrk' ),
 		];
 	}
 
@@ -100,7 +102,7 @@ class Stream_Connector extends Connector {
 		// Prepare message.
 		$message = sprintf(
 			/* translators: 1: Total count, 2: Initiated via, 3: Changed only */
-			__( 'Ingestor push initiated for %1$d expedition(s) via %2$s | Changed only: %3$s.', 'qrk' ),
+			__( 'Push initiated for %1$d expedition(s) via %2$s | Changed only: %3$s.', 'qrk' ),
 			$total_count,
 			$initiated_via,
 			$changed_only ? __( 'Yes', 'qrk' ) : __( 'No', 'qrk' )
@@ -152,7 +154,7 @@ class Stream_Connector extends Connector {
 		// Prepare message.
 		$message = sprintf(
 			/* translators: 1: Total count, 2: Initiated via, 3: Success count, 4: Changed only */
-			__( 'Ingestor push completed for %1$d expedition(s) via %2$s | Successful: %3$d | Changed only: %4$s.', 'qrk' ),
+			__( 'Push completed for %1$d expedition(s) via %2$s | Successful: %3$d | Changed only: %4$s.', 'qrk' ),
 			$total_count,
 			$initiated_via,
 			$success_count,
@@ -204,14 +206,14 @@ class Stream_Connector extends Connector {
 		if ( empty( $expedition_post_id ) ) {
 			$message = sprintf(
 				/* translators: 1: Initiated via, 2: Error message */
-				__( 'Ingestor push failed via %1$s | %2$s', 'qrk' ),
+				__( 'Push failed via %1$s | %2$s', 'qrk' ),
 				$initiated_via,
 				$error
 			);
 		} else {
 			$message = sprintf(
 				/* translators: 1: Expedition post title, 2: Initiated via, 3: Error message */
-				__( 'Ingestor push failed for expedition "%1$s" via %2$s | %3$s', 'qrk' ),
+				__( 'Push failed for "%1$s" via %2$s | %3$s', 'qrk' ),
 				get_the_title( $expedition_post_id ),
 				$initiated_via,
 				$error
@@ -241,7 +243,7 @@ class Stream_Connector extends Connector {
 	 */
 	public function callback_quark_ingestor_push_success( array $data = [] ): void {
 		// Validate data.
-		if ( empty( $data ) || empty( $data['expedition_post_id'] ) || empty( $data['initiated_via'] ) || ! isset( $data['changed_only'] ) ) {
+		if ( empty( $data ) || empty( $data['expedition_post_id'] ) || empty( $data['initiated_via'] ) || ! isset( $data['changed_only'] ) || empty( $data['file_name'] ) ) {
 			return;
 		}
 
@@ -254,13 +256,17 @@ class Stream_Connector extends Connector {
 		// Get changed only.
 		$changed_only = (bool) $data['changed_only'];
 
+		// Get file name.
+		$file_name = strval( $data['file_name'] );
+
 		// Prepare message.
 		$message = sprintf(
-			/* translators: 1: Expedition post title, 2: Initiated via, 3: Changed only */
-			__( 'Ingestor push successful for expedition "%1$s" via %2$s | Changed only: %3$s.', 'qrk' ),
+			/* translators: 1: Expedition post title, 2: Initiated via, 3: Changed only, 4: File name */
+			__( 'Push successful for "%1$s" via %2$s | Changed only: %3$s | File name: %4$s', 'qrk' ),
 			get_the_title( $expedition_post_id ),
 			$initiated_via,
-			$changed_only ? __( 'Yes', 'qrk' ) : __( 'No', 'qrk' )
+			$changed_only ? __( 'Yes', 'qrk' ) : __( 'No', 'qrk' ),
+			$file_name
 		);
 
 		// Log message.
@@ -274,6 +280,75 @@ class Stream_Connector extends Connector {
 			$expedition_post_id,
 			'ingestor_push',
 			'push_success'
+		);
+	}
+
+	/**
+	 * Callback for `callback_quark_ingestor_dispatch_github_event` action.
+	 *
+	 * @param mixed[] $data Data passed to the action.
+	 *
+	 * @return void
+	 */
+	public function callback_quark_ingestor_dispatch_github_event( array $data = [] ): void {
+		// Validate data.
+		if ( empty( $data ) || empty( $data['expedition_ids'] ) || ! is_array( $data['expedition_ids'] ) ) {
+			return;
+		}
+
+		// Get expedition IDs.
+		$expedition_ids = $data['expedition_ids'];
+
+		// Initialize.
+		$error_message   = '';
+		$success_message = '';
+
+		// Get error message.
+		if ( isset( $data['error'] ) ) {
+			$error_message = strval( $data['error'] );
+		}
+
+		// Get success message.
+		if ( isset( $data['success'] ) ) {
+			$success_message = strval( $data['success'] );
+		}
+
+		// Bail if no error or success message.
+		if ( empty( $error_message ) && empty( $success_message ) ) {
+			return;
+		}
+
+		// Initialize message.
+		$message = '';
+
+		// Prepare message.
+		if ( ! empty( $error_message ) ) {
+			$message = sprintf(
+				/* translators: 1: Error message */
+				__( 'Dispatch GitHub event for urgent push failed | %1$s | Expedition ids: %2$s', 'qrk' ),
+				$error_message,
+				implode( ',', $expedition_ids )
+			);
+		} else {
+			$message = sprintf(
+				/* translators: 1: Success message */
+				__( 'Dispatch GitHub event for urgent push successful | %1$s | Expedition ids: %2$s', 'qrk' ),
+				$success_message,
+				implode( ',', $expedition_ids )
+			);
+		}
+
+		// Log message.
+		$this->log(
+			$message,
+			[
+				'expedition_ids' => implode( ',', $expedition_ids ),
+				'error'          => $error_message,
+				'success'        => $success_message,
+			],
+			0,
+			'ingestor_push',
+			'dispatch_github_event'
 		);
 	}
 
