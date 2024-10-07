@@ -86,10 +86,12 @@ function update_post_in_index( int $post_id = 0 ): void {
 function register_rest_endpoints(): void {
 	// Require REST API classes.
 	require_once __DIR__ . '/rest-api/class-destination-month-filters.php';
+	require_once __DIR__ . '/rest-api/class-expedition-month-filters.php';
 
 	// REST API endpoints.
 	$endpoints = [
 		new REST_API\Destination_Month_Filters(),
+		new REST_API\Expedition_Month_Filters(),
 	];
 
 	// Register routes.
@@ -108,6 +110,7 @@ function register_rest_endpoints(): void {
 function public_rest_api_routes( array $routes = [] ): array {
 	// Add REST API routes.
 	$routes[] = '/' . REST_API_NAMESPACE . '/filter-options/by-destination-and-month';
+	$routes[] = '/' . REST_API_NAMESPACE . '/filter-options/by-expedition';
 
 	// Return routes.
 	return $routes;
