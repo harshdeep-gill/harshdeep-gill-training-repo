@@ -97,6 +97,19 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 							$component_attributes['right'][] = $form;
 							break;
 
+						// Circle badge in the hero section.
+						case 'quark/hero-circle-badge':
+							$circle_badge = [
+								'type' => 'circle-badge',
+							];
+
+							// Add the text.
+							$circle_badge['text'] = $child_block->attributes['text'] ?? '';
+
+							// Add to attributes.
+							$component_attributes['right'][] = $circle_badge;
+							break;
+
 						// Overline.
 						case 'quark/hero-overline':
 							$overline = [
@@ -172,9 +185,16 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 								'type' => 'tag',
 							];
 
+							// Update the block.
+							$child_block = update_block_attribute( $child_block, 'className', 'hero__tag' );
+
 							// Add tag.
-							$child_block->attributes['className'] = 'hero__tag';
-							$tag['tag']                           = render_block( $child_block->parsed_block );
+							$tag['tag'] = '';
+
+							// Check if the child block is an instance of WP_Block.
+							if ( $child_block instanceof WP_Block ) {
+								$tag['tag'] = render_block( $child_block->parsed_block );
+							}
 
 							// Add to attributes.
 							$component_attributes['left'][] = $tag;
@@ -186,9 +206,16 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 								'type' => 'cta',
 							];
 
+							// Update the block.
+							$child_block = update_block_attribute( $child_block, 'className', 'hero__form-modal-cta color-context--dark' );
+
 							// Add cta.
-							$child_block->attributes['className'] = 'hero__form-modal-cta color-context--dark';
-							$cta['cta']                           = render_block( $child_block->parsed_block );
+							$cta['cta'] = '';
+
+							// Check if the child block is an instance of WP_Block.
+							if ( $child_block instanceof WP_Block ) {
+								$cta['cta'] = render_block( $child_block->parsed_block );
+							}
 
 							// Add to attributes.
 							$component_attributes['left'][] = $cta;
@@ -221,4 +248,38 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 
 	// Return the component.
 	return quark_get_component( COMPONENT, $component_attributes );
+}
+
+/**
+ * Wrapper function to update block attribute to avoid "Indirect modification of overloaded property" Notice.
+ *
+ * @param WP_Block|null $block The block instance.
+ * @param string        $name The attribute name.
+ * @param mixed         $value The attribute value.
+ *
+ * @return WP_Block|null The updated block.
+ */
+function update_block_attribute( WP_Block $block = null, string $name = '', mixed $value = '' ): WP_Block|null {
+	// Validate the block.
+	if ( ! $block instanceof WP_Block ) {
+		return $block;
+	}
+
+	// Create reflection of attributes.
+	$attributes = $block->attributes;
+
+	// Unset the block attributes.
+	unset( $block->attributes );
+
+	// Update the attribute.
+	$attributes[ $name ] = $value;
+
+	// Set the attributes.
+	$block->attributes = $attributes;
+
+	// Unset the attributes.
+	unset( $attributes );
+
+	// Return the block.
+	return $block;
 }

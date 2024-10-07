@@ -144,14 +144,22 @@
 					<x-escape :content="__( 'Cabins Options', 'qrk' )"/>
 				</h4>
 				<x-product-options-cards>
-					<x-product-options-cards.cards>
+					<x-product-options-cards.cards :request_a_quote_url="$card['request_a_quote_url'] ?? ''">
 						@foreach( $card['cabins'] as $cabin_code => $cabin )
-							<x-product-options-cards.card details_id="{{  $cabin_code . '_' . $departure_id }}">
+							@php
+								$cabin_availability_status = $cabin['specifications']['availability_status'] ?? 'U';
+
+								if ( empty( $cabin_availability_status ) || 'U' === $cabin_availability_status ) {
+									continue;
+								}
+							@endphp
+							<x-product-options-cards.card details_id="{{  $cabin_code . '_' . $departure_id }}" :status="$cabin_availability_status" >
 
 								@if( ! empty( $cabin['gallery'] ) )
 									<x-product-options-cards.gallery :image_ids="$cabin['gallery']">
 										<x-product-options-cards.badge
-											type="{{ $cabin['type'] ?? __( 'standard', 'qrk' ) }}"
+											status="{{ $cabin_availability_status }}"
+											type="{{ $cabin['type'] }}"
 										/>
 									</x-product-options-cards.gallery>
 								@endif
@@ -204,6 +212,13 @@
 
 					<x-product-options-cards.more-details>
 						@foreach( $card['cabins'] as $cabin_code => $cabin )
+							@php
+								$cabin_availability_status = $cabin['specifications']['availability_status'] ?? 'U';
+
+								if ( empty( $cabin_availability_status ) || in_array( $cabin_availability_status, [ 'U', 'R', 'S' ] ) ) {
+									continue;
+								}
+							@endphp
 							<x-product-options-cards.card-details
 								id="{{ $cabin_code . '_' . $departure_id }}">
 
@@ -223,8 +238,8 @@
 
 								@if( ! empty( $cabin['occupancies'] ) && is_array( $cabin['occupancies'] ) )
 									<x-product-options-cards.rooms title="Select Rooms">
-										@foreach( $cabin['occupancies'] as $occupancy )
-											<x-product-options-cards.room>
+										@foreach( $cabin['occupancies'] as $index => $occupancy )
+											<x-product-options-cards.room checkout_url="{!! $occupancy['checkout_url'] !!}" name="room-type-{{ $departure_id }}-{{ $cabin_code }}" checked="{{ $index == 0 ? 'checked' : '' }}">
 												<x-product-options-cards.room-title-container>
 													@if( ! empty( $occupancy['description'] ) )
 														<x-product-options-cards.room-title
@@ -255,6 +270,16 @@
 										@endforeach
 									</x-product-options-cards.discounts>
 								@endif
+
+								<x-product-options-cards.cta-buttons>
+									@if ( ! empty( $card['request_a_quote_url'] ) )
+										<p class="product-options-cards__help-text">{{ __( 'Not ready to book?', 'qrk' ) }} <a href="{!! esc_url( $card['request_a_quote_url'] ) !!}">{{ __( 'Request a quote', 'qrk' ) }}</a></p>
+									@endif
+									<x-product-options-cards.phone-number phone_number="+1 (877) 585-1235" text="Request a callback: +1 (866) 257-0754" />
+									@if ( ! empty( $cabin['occupancies'] ) && is_array( $cabin['occupancies'] ) )
+										<x-product-options-cards.cta-book-now :url="$cabin['occupancies'][0]['checkout_url'] ?? '#'" />
+									@endif
+								</x-product-options-cards.cta-buttons>
 							</x-product-options-cards.card-details>
 						@endforeach
 					</x-product-options-cards.more-details>

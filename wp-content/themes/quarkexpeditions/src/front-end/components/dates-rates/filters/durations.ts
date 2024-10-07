@@ -6,7 +6,7 @@ const { HTMLElement, zustand } = window;
 /**
  * Internal dependencies
  */
-import { addDuration, removeDuration } from '../actions';
+import { addDuration, getDurations, removeDuration } from '../actions';
 import DatesRatesFiltersInputsContainerElement from './inputs-container';
 
 /**
@@ -44,12 +44,16 @@ export default class DatesRatesFilterDurationsElement extends HTMLElement {
 
 	/**
 	 * Updates the component.
-	 *
-	 * @param {Object} state The state object.
 	 */
-	update( state: DatesRatesState ) {
+	update() {
 		// Get the state.
-		const { durations } = state;
+		const durations = getDurations();
+
+		// Do we have no filters?
+		if ( durations.length === 0 ) {
+			// Yes, bail.
+			return;
+		}
 
 		// Check if we should update.
 		this.isFilterUpdating = true;

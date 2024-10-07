@@ -1,5 +1,6 @@
 @props( [
-	'filter_data' => []
+	'filter_data' => [],
+	'currency'     => quark_get_template_data( 'default_currency', 'USD' ),
 ] )
 
 @php
@@ -12,22 +13,41 @@
 	<h2 class="dates-rates__filters-heading">{{ __( 'Filters', 'qrk' ) }}</h2>
 	<div class="dates-rates__filters">
 		<x-dates-rates.filters.chips>
-			<x-dates-rates.filters.chip drawer_id="dates-rates-filters" title="Region & Season" accordion_id="filters-accordion-seasons" />
-			<x-dates-rates.filters.chip drawer_id="dates-rates-filters" title="Expedition" accordion_id="filters-accordion-expeditions" />
-			<x-dates-rates.filters.chip drawer_id="dates-rates-filters" title="Adventure Options" accordion_id="filters-accordion-adventure-options" />
-			<x-dates-rates.filters.chip drawer_id="dates-rates-filters" title="Departure Month" accordion_id="filters-accordion-months" />
-			<x-dates-rates.filters.chip drawer_id="dates-rates-filters" title="Duration" accordion_id="filters-accordion-durations" />
-			<x-dates-rates.filters.chip drawer_id="dates-rates-filters" title="Ship" accordion_id="filters-accordion-ships" />
+
+			@if ( ! empty( $filter_data['seasons'] ) )
+				<x-dates-rates.filters.chip drawer_id="dates-rates-filters" title="Region & Season" accordion_id="filters-accordion-seasons" />
+			@endif
+
+			@if ( ! empty( $filter_data['expeditions'] ) )
+				<x-dates-rates.filters.chip drawer_id="dates-rates-filters" title="Expedition" accordion_id="filters-accordion-expeditions" />
+			@endif
+
+			@if ( ! empty( $filter_data['adventure_options'] ) )
+				<x-dates-rates.filters.chip drawer_id="dates-rates-filters" title="Adventure Options" accordion_id="filters-accordion-adventure-options" />
+			@endif
+
+			@if ( ! empty( $filter_data['months'] ) )
+				<x-dates-rates.filters.chip drawer_id="dates-rates-filters" title="Departure Month" accordion_id="filters-accordion-months" />
+			@endif
+
+			@if ( ! empty( $filter_data['durations'] ) )
+				<x-dates-rates.filters.chip drawer_id="dates-rates-filters" title="Duration" accordion_id="filters-accordion-durations" />
+			@endif
+
+			@if ( ! empty( $filter_data['ships'] ) )
+				<x-dates-rates.filters.chip drawer_id="dates-rates-filters" title="Ship" accordion_id="filters-accordion-ships" />
+			@endif
+
 		</x-dates-rates.filters.chips>
 
-		<x-dates-rates.filters.currency-dropdown />
+		<x-dates-rates.filters.currency-dropdown :currency="$currency" />
 	</div>
 
 	<x-dates-rates.filters.selected />
 
 	<x-dates-rates.filters.sticky>
 		<x-dates-rates.filters.sticky-filter drawer_id="dates-rates-filters" accordion_id="filters-accordion-seasons" />
-		<x-dates-rates.filters.sticky-currency />
+		<x-dates-rates.filters.sticky-currency :currency="$currency" />
 	</x-dates-rates.filters.sticky>
 
 	<x-drawer id="dates-rates-filters" animation_direction="up" class="dates-rates__drawer">

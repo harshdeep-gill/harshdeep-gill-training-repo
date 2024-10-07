@@ -78,8 +78,19 @@ import * as bookDeparturesShip from './book-departures-ship';
 import * as shipDecks from './ship-decks';
 import * as InfoCards from './info-cards';
 import * as linkDetailCards from './link-detail-cards';
+import * as globalMessage from './global-message';
 import * as datesAndRates from './dates-and-rates';
 import * as mediaTextCtaCarousel from './media-text-cta-carousel';
+import * as pressReleases from './press-releases';
+import * as tabs from './tabs';
+import * as detailedExpeditionCarousel from './detailed-expedition-carousel';
+import * as form from './form';
+import * as formContactUs from './form-contact-us';
+import * as formDoNotSellInformation from './form-do-not-sell-information';
+import * as formSnowHillNewsletter from './form-snow-hill-newsletter';
+import * as formJobApplication from './form-job-application';
+import * as formNewsletter from './form-newsletter';
+import * as formAccessDeletionRequest from './form-account-management';
 
 /**
  * Add blocks.
@@ -154,8 +165,19 @@ const blocks = [
 	shipDecks,
 	InfoCards,
 	linkDetailCards,
+	globalMessage,
 	datesAndRates,
 	mediaTextCtaCarousel,
+	pressReleases,
+	tabs,
+	detailedExpeditionCarousel,
+	form,
+	formContactUs,
+	formDoNotSellInformation,
+	formSnowHillNewsletter,
+	formJobApplication,
+	formNewsletter,
+	formAccessDeletionRequest,
 ];
 
 // Register blocks for ships.

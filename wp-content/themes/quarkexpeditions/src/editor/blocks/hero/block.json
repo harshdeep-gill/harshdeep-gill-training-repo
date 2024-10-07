@@ -27,7 +27,7 @@
 		},
 		"overlayOpacity": {
 			"type": "number",
-			"default": 0
+			"default": 30
 		},
 		"syncPostThumbnail": {
 			"type": "boolean",

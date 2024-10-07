@@ -12,6 +12,8 @@ use JB\Cloudinary\Frontend as Cloudinary_Frontend;
 
 use WP_Post;
 use WP_Term;
+use WP_Query;
+use WP_User;
 
 use function Travelopia\Core\cached_nav_menu;
 
@@ -491,6 +493,19 @@ function order_terms_by_hierarchy( array $terms = [], string $taxonomy = '' ): a
 			$organised_terms[ $term->term_id ]['parent_term'] = $term;
 		} else {
 			$organised_terms[ $term->parent ]['child_terms'][] = $term;
+
+			// Check parent term added.
+			if ( empty( $organised_terms[ $term->parent ]['parent_term'] ) ) {
+				$parent_term = get_term( $term->parent, $taxonomy );
+
+				// Check for term.
+				if ( ! $parent_term instanceof WP_Term ) {
+					continue;
+				}
+
+				// Add parent term.
+				$organised_terms[ $parent_term->term_id ]['parent_term'] = $parent_term;
+			}
 		}
 	}
 
@@ -527,4 +542,135 @@ function get_raw_text_from_html( string $html = '' ): string {
 function doing_tests(): bool {
 	// Check if doing tests.
 	return defined( 'WP_TESTS' ) && true === WP_TESTS;
+}
+
+/**
+ * Get pagination links based on arguments.
+ *
+ * @param array<mixed|string> $args Pagination args.
+ *
+ * @return string
+ */
+function get_pagination_links( array $args = [] ): string {
+	// Build args.
+	$args = wp_parse_args(
+		$args,
+		[
+			'query'   => false,
+			'noindex' => false,
+		]
+	);
+
+	// Check for query.
+	if ( empty( $args['query'] ) || ! $args['query'] instanceof WP_Query ) {
+		global $wp_query;
+		$args['query'] = $wp_query;
+	}
+
+	// Get current page number.
+	$current = max( 1, $args['query']->get( 'paged' ) );
+	$total   = $args['query']->max_num_pages;
+
+	// Get pagination links.
+	$pagination_links = paginate_links(
+		[
+			'current'   => $current,
+			'total'     => $total,
+			'prev_text' => __( 'Previous', 'qrk' ),
+			'next_text' => __( 'Next ', 'qrk' ),
+			'type'      => 'array',
+		]
+	);
+
+	// Prepare pagination links.
+	if ( is_array( $pagination_links ) ) {
+		$previous = '';
+		$next     = '';
+
+		// Shift previous link.
+		if ( $current && 1 < $current ) {
+			$previous = array_shift( $pagination_links );
+		}
+
+		// Pop next link.
+		if ( $current < $total ) {
+			$next = array_pop( $pagination_links );
+		}
+
+		// Get First and Last page.
+		$first_page = strval( array_shift( $pagination_links ) );
+		$last_page  = strval( array_pop( $pagination_links ) );
+
+		// Check for dots.
+		$has_dots_after_first_page = false;
+		$has_dots_before_last_page = false;
+
+		// Check for dots.
+		if ( ! empty( $pagination_links[0] ) ) {
+			$has_dots_after_first_page = str_contains( $pagination_links[0], 'dots' );
+		}
+
+		// Check for dots.
+		if ( ! empty( $pagination_links[ count( $pagination_links ) - 1 ] ) ) {
+			$has_dots_before_last_page = str_contains( $pagination_links[ count( $pagination_links ) - 1 ], 'dots' );
+		}
+
+		// Prepare pagination links.
+		$pagination_links = sprintf(
+			"%s\n%s\n%s\n%s\n%s",
+			$previous,
+			! $has_dots_after_first_page ? $first_page : '',
+			implode( "\n", $pagination_links ),
+			! $has_dots_before_last_page ? $last_page : '',
+			$next
+		);
+	}
+
+	// Bail out if pagination links are empty.
+	if ( empty( $pagination_links ) ) {
+		return '';
+	}
+
+	// Check for noindex.
+	if ( true === $args['noindex'] ) {
+		$pagination_links = str_replace( ' href=', ' rel="noindex, nofollow" href=', $pagination_links );
+	}
+
+	// Remove trailing slash from main page.
+	$current_post = get_queried_object();
+
+	// Check if current post is instance of WP_Post.
+	if ( $current_post instanceof WP_Post ) {
+		$post_slug        = $current_post->post_name;
+		$pagination_links = str_replace( $post_slug . '/"', $post_slug . '"', $pagination_links );
+	} elseif ( $current_post instanceof WP_Term ) {
+		$pagination_links = str_replace( $current_post->slug . '/"', $current_post->slug . '"', $pagination_links );
+	} elseif ( $current_post instanceof WP_User ) {
+		$pagination_links = str_replace( $current_post->data->user_login . '/"', $current_post->data->user_login . '"', $pagination_links );
+	}
+
+	// All done, return build pagination links.
+	return $pagination_links;
+}
+
+/**
+ * Check if we are in the block editor.
+ * We don't have any functionality to identify if we are in the block editor inside the block render callback.
+ *
+ * Warning: This function is not 100% reliable, it's just a workaround.
+ * And the function should be used strictly inside render callback.
+ *
+ * Reference:
+ * https://wordpress.stackexchange.com/questions/398378/gutenberg-how-to-hide-server-side-render-output-in-the-editor-but-keep-it-in-fr
+ *
+ * @return bool
+ */
+function is_block_editor(): bool {
+	// Check if we are in the block editor.
+	if ( wp_is_serving_rest_request() ) {
+		return true;
+	}
+
+	// Not in the block editor.
+	return false;
 }

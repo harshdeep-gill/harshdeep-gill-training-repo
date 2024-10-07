@@ -75,6 +75,7 @@
 	--spacing-9: 96px;
 
 	--wrap-width: 1120px;
+	--wrap-width-medium: 720px;
 	--narrow-wrap-width: 865px;
 	--grid-section-gutter: var(--spacing-8);
 	--grid-row-gutter: var(--spacing-5);
@@ -130,7 +131,7 @@
 		--h5-line-height: 26px;
 	}
 
-	@media screen and (min-width: grid-size(lg)) {
+	@media screen and (min-width: grid-size(xl)) {
 		--h1-font-size: 56px;
 		--h1-line-height: 72px;
 		--h2-font-size: 40px;

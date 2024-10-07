@@ -83,7 +83,7 @@ function register_adventure_option_post_type(): void {
 		'query_var'           => true,
 		'can_export'          => true,
 		'rewrite'             => [
-			'slug'       => 'adventure-option',
+			'slug'       => 'adventure-options',
 			'with_front' => false,
 		],
 		'capability_type'     => 'post',

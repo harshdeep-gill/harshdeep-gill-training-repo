@@ -11,7 +11,7 @@ use WP_Block;
 
 use function Quark\Core\order_terms_by_hierarchy;
 
-use const Quark\Expeditions\DESTINATION_TAXONOMY;
+use const Quark\Expeditions\EXCURSION_TAXONOMY;
 
 const COMPONENT = 'parts.excursion-accordions';
 
@@ -54,7 +54,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 	$terms = array_map( 'absint', $attributes['destinationTermIds'] );
 
 	// Organise terms.
-	$organised_terms = order_terms_by_hierarchy( $terms, DESTINATION_TAXONOMY );
+	$organised_terms = order_terms_by_hierarchy( $terms, EXCURSION_TAXONOMY );
 
 	// Initialize items.
 	$items = [];

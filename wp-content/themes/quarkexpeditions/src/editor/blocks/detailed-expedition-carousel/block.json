@@ -1,0 +1,51 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Detailed Expeditions Carousel",
+	"name": "quark/detailed-expeditions-carousel",
+	"description": "Add detailed expeditions cards to your page.",
+	"category": "layout",
+	"keywords": [
+		"detailed",
+		"expeditions",
+		"carousel"
+	],
+	"textdomain": "qrk",
+	"attributes": {
+		"selection": {
+			"type": "string",
+			"default": "manual"
+		},
+		"ids": {
+			"type": "array",
+			"default": []
+		},
+		"taxonomies": {
+			"type": "array",
+			"default": []
+		},
+		"termIds": {
+			"type": "array",
+			"default": []
+		},
+		"totalPosts": {
+			"type": "number",
+			"default": 5
+		},
+		"variation": {
+			"type": "string",
+			"default": "home",
+			"enum": [
+				"home",
+				"offers"
+			]
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

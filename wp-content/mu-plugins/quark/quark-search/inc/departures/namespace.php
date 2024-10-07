@@ -16,23 +16,30 @@ use function Quark\Departures\get as get_departure;
 use function Quark\Departures\get_included_adventure_options;
 use function Quark\Departures\get_paid_adventure_options;
 use function Quark\Expeditions\get as get_expedition_post;
-use function Quark\Expeditions\get_destination_term_by_code;
 use function Quark\Itineraries\get_season;
 use function Quark\Localization\get_currencies;
 use function Quark\Localization\get_current_currency;
 use function Quark\Search\update_post_in_index;
-use function Quark\Ships\get as get_ship_post;
 use function Quark\Softrip\Departures\get_lowest_price;
-use function Quark\Softrip\Occupancies\get_masks_mapping;
 
 use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
-use const Quark\CabinCategories\CABIN_CLASS_TAXONOMY;
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
-use const Quark\Departures\SPOKEN_LANGUAGE_TAXONOMY;
 use const Quark\Expeditions\DESTINATION_TAXONOMY;
 use const Quark\Expeditions\POST_TYPE as EXPEDITION_POST_TYPE;
 use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
-use const Quark\StaffMembers\SEASON_TAXONOMY;
+use const Quark\Search\Filters\ADVENTURE_OPTION_FILTER_KEY;
+use const Quark\Search\Filters\CURRENCY_FILTER_KEY;
+use const Quark\Search\Filters\DESTINATION_FILTER_KEY;
+use const Quark\Search\Filters\DURATION_FILTER_KEY;
+use const Quark\Search\Filters\EXPEDITION_FILTER_KEY;
+use const Quark\Search\Filters\ITINERARY_LENGTH_FILTER_KEY;
+use const Quark\Search\Filters\LANGUAGE_FILTER_KEY;
+use const Quark\Search\Filters\MONTH_FILTER_KEY;
+use const Quark\Search\Filters\PAGE_FILTER_KEY;
+use const Quark\Search\Filters\PER_PAGE_FILTER_KEY;
+use const Quark\Search\Filters\SEASON_FILTER_KEY;
+use const Quark\Search\Filters\SHIP_FILTER_KEY;
+use const Quark\Search\Filters\SORT_FILTER_KEY;
 
 const CACHE_GROUP                 = 'quark_search';
 const SCHEDULE_REINDEX_HOOK       = 'qrk_search_reindex_departures';
@@ -56,9 +63,6 @@ function bootstrap(): void {
 	add_action( 'save_post', __NAMESPACE__ . '\\track_posts_to_be_reindexed', 999, 3 );
 	add_action( SCHEDULE_REINDEX_HOOK, __NAMESPACE__ . '\\reindex_departures' );
 	add_filter( 'wp_stream_connectors', __NAMESPACE__ . '\\setup_stream_connectors' );
-
-	// Load search class.
-	require_once __DIR__ . '/class-search.php';
 }
 
 /**
@@ -259,14 +263,17 @@ function solr_index_custom_fields( array $custom_fields = [] ): array {
 function get_filters_from_url(): array {
 	// Get filters from URL.
 	return [
-		'seasons'           => isset( $_GET['seasons'] ) ? strval( $_GET['seasons'] ) : '', // phpcs:ignore
-		'expeditions'       => isset( $_GET['expeditions'] ) ? strval( $_GET['expeditions'] ) : '', // phpcs:ignore
-		'adventure_options' => isset( $_GET['adventure_options'] ) ? strval( $_GET['adventure_options'] ) : '', // phpcs:ignore
-		'months'            => isset( $_GET['months'] ) ? strval( $_GET['months'] ) : '', // phpcs:ignore
-		'durations'         => isset( $_GET['durations'] ) ? strval( $_GET['durations'] ) : '', // phpcs:ignore
-		'ships'             => isset( $_GET['ships'] ) ? strval( $_GET['ships'] ) : '', // phpcs:ignore
-		'page'              => isset( $_GET['page'] ) ? strval( $_GET['page'] ) : '1', // phpcs:ignore
-		'sort'              => isset( $_GET['sort'] ) ? strval( $_GET['sort'] ) : 'date-now', // phpcs:ignore
+		SEASON_FILTER_KEY           => isset( $_GET[SEASON_FILTER_KEY] ) ? strval( $_GET[SEASON_FILTER_KEY] ) : '', // phpcs:ignore
+		EXPEDITION_FILTER_KEY       => isset( $_GET[EXPEDITION_FILTER_KEY] ) ? strval( $_GET[EXPEDITION_FILTER_KEY] ) : '', // phpcs:ignore
+		ADVENTURE_OPTION_FILTER_KEY => isset( $_GET[ADVENTURE_OPTION_FILTER_KEY] ) ? strval( $_GET[ADVENTURE_OPTION_FILTER_KEY] ) : '', // phpcs:ignore
+		MONTH_FILTER_KEY            => isset( $_GET[MONTH_FILTER_KEY] ) ? strval( $_GET[MONTH_FILTER_KEY] ) : '', // phpcs:ignore
+		DURATION_FILTER_KEY         => isset( $_GET[DURATION_FILTER_KEY] ) ? strval( $_GET[DURATION_FILTER_KEY] ) : '', // phpcs:ignore
+		SHIP_FILTER_KEY             => isset( $_GET[SHIP_FILTER_KEY] ) ? strval( $_GET[SHIP_FILTER_KEY] ) : '', // phpcs:ignore
+		PAGE_FILTER_KEY             => isset( $_GET[PAGE_FILTER_KEY] ) ? strval( $_GET[PAGE_FILTER_KEY] ) : '1', // phpcs:ignore
+		SORT_FILTER_KEY             => isset( $_GET[SORT_FILTER_KEY] ) ? strval( $_GET[SORT_FILTER_KEY] ) : 'date-now', // phpcs:ignore
+		LANGUAGE_FILTER_KEY         => isset( $_GET[LANGUAGE_FILTER_KEY] ) ? strval( $_GET[LANGUAGE_FILTER_KEY] ) : '', // phpcs:ignore
+		DESTINATION_FILTER_KEY      => isset( $_GET[DESTINATION_FILTER_KEY] ) ? strval( $_GET[DESTINATION_FILTER_KEY] ) : '', // phpcs:ignore
+		ITINERARY_LENGTH_FILTER_KEY => isset( $_GET[ITINERARY_LENGTH_FILTER_KEY] ) ? strval( $_GET[ITINERARY_LENGTH_FILTER_KEY] ) : '', // phpcs:ignore
 	];
 }
 
@@ -277,16 +284,18 @@ function get_filters_from_url(): array {
  *
  * @return array{
  *     seasons: string[],
- *     expeditions: int[],
+ *     expeditions: string[],
  *     adventure_options: string[],
  *     months: string[],
  *     durations: array<int, string[]>,
- *     ships: int[],
- *     sort: string,
+ *     ships: string[],
+ *     sort: string[],
  *     page: int,
  *     posts_per_load: int,
  *     currency: string,
  *     destinations: string[],
+ *     languages: string[],
+ *     itinerary_lengths: string[],
  * }
  */
 function parse_filters( array $filters = [] ): array {
@@ -294,91 +303,116 @@ function parse_filters( array $filters = [] ): array {
 	$filters = wp_parse_args(
 		$filters,
 		[
-			'currency'          => get_current_currency(),
-			'seasons'           => [],
-			'expeditions'       => [],
-			'adventure_options' => [],
-			'months'            => [],
-			'durations'         => [],
-			'ships'             => [],
-			'sort'              => 'date-now',
-			'page'              => 1,
-			'posts_per_load'    => 10,
-			'destinations'      => [],
+			CURRENCY_FILTER_KEY         => get_current_currency(),
+			SEASON_FILTER_KEY           => [],
+			EXPEDITION_FILTER_KEY       => [],
+			ADVENTURE_OPTION_FILTER_KEY => [],
+			MONTH_FILTER_KEY            => [],
+			DURATION_FILTER_KEY         => [],
+			SHIP_FILTER_KEY             => [],
+			SORT_FILTER_KEY             => [ 'date-now' ],
+			PAGE_FILTER_KEY             => 1,
+			PER_PAGE_FILTER_KEY         => 10,
+			DESTINATION_FILTER_KEY      => [],
+			LANGUAGE_FILTER_KEY         => [],
+			ITINERARY_LENGTH_FILTER_KEY => [],
 		]
 	);
 
 	// Parse expeditions.
-	if ( is_string( $filters['expeditions'] ) || is_int( $filters['expeditions'] ) ) {
-		$filters['expeditions'] = array_filter( array_map( 'trim', explode( ',', strval( $filters['expeditions'] ) ) ) );
-	} elseif ( is_array( $filters['expeditions'] ) ) {
-		$filters['expeditions'] = array_filter( array_map( 'trim', $filters['expeditions'] ) );
+	if ( is_string( $filters[ EXPEDITION_FILTER_KEY ] ) || is_int( $filters[ EXPEDITION_FILTER_KEY ] ) ) {
+		$filters[ EXPEDITION_FILTER_KEY ] = array_filter( array_map( 'trim', explode( ',', strval( $filters[ EXPEDITION_FILTER_KEY ] ) ) ) );
+	} elseif ( is_array( $filters[ EXPEDITION_FILTER_KEY ] ) ) {
+		$filters[ EXPEDITION_FILTER_KEY ] = array_filter( array_map( 'trim', $filters[ EXPEDITION_FILTER_KEY ] ) );
 	}
 
 	// Parse months.
-	if ( is_string( $filters['months'] ) ) {
-		$filters['months'] = array_filter( array_map( 'trim', explode( ',', $filters['months'] ) ) );
-	} elseif ( is_array( $filters['months'] ) ) {
-		$filters['months'] = array_filter( array_map( 'trim', $filters['months'] ) );
+	if ( is_string( $filters[ MONTH_FILTER_KEY ] ) ) {
+		$filters[ MONTH_FILTER_KEY ] = array_filter( array_map( 'trim', explode( ',', $filters[ MONTH_FILTER_KEY ] ) ) );
+	} elseif ( is_array( $filters[ MONTH_FILTER_KEY ] ) ) {
+		$filters[ MONTH_FILTER_KEY ] = array_filter( array_map( 'trim', $filters[ MONTH_FILTER_KEY ] ) );
 	}
 
 	// Parse adventure_options.
-	if ( is_string( $filters['adventure_options'] ) || is_int( $filters['adventure_options'] ) ) {
-		$filters['adventure_options'] = array_filter( array_map( 'trim', explode( ',', strval( $filters['adventure_options'] ) ) ) );
-	} elseif ( is_array( $filters['adventure_options'] ) ) {
-		$filters['adventure_options'] = array_filter( array_map( 'trim', $filters['adventure_options'] ) );
+	if ( is_string( $filters[ ADVENTURE_OPTION_FILTER_KEY ] ) || is_int( $filters[ ADVENTURE_OPTION_FILTER_KEY ] ) ) {
+		$filters[ ADVENTURE_OPTION_FILTER_KEY ] = array_filter( array_map( 'trim', explode( ',', strval( $filters[ ADVENTURE_OPTION_FILTER_KEY ] ) ) ) );
+	} elseif ( is_array( $filters[ ADVENTURE_OPTION_FILTER_KEY ] ) ) {
+		$filters[ ADVENTURE_OPTION_FILTER_KEY ] = array_filter( array_map( 'trim', $filters[ ADVENTURE_OPTION_FILTER_KEY ] ) );
 	}
 
 	// Parse duration.
-	if ( is_string( $filters['durations'] ) || is_int( $filters['durations'] ) ) {
-		$filters['durations'] = array_filter( array_map( 'trim', explode( '-', strval( $filters['durations'] ) ) ) );
-	} elseif ( is_array( $filters['durations'] ) ) {
-		$filters['durations'] = array_filter( array_map( 'trim', $filters['durations'] ) );
-		$filters['durations'] = array_map(
+	if ( is_string( $filters[ DURATION_FILTER_KEY ] ) || is_int( $filters[ DURATION_FILTER_KEY ] ) ) {
+		$filters[ DURATION_FILTER_KEY ] = array_filter( array_map( 'trim', explode( '-', strval( $filters[ DURATION_FILTER_KEY ] ) ) ) );
+	} elseif ( is_array( $filters[ DURATION_FILTER_KEY ] ) ) {
+		$filters[ DURATION_FILTER_KEY ] = array_filter( array_map( 'trim', $filters[ DURATION_FILTER_KEY ] ) );
+		$filters[ DURATION_FILTER_KEY ] = array_map(
 			function ( $duration ) {
 				$duration = explode( '-', $duration );
 
 				// Return duration.
 				return $duration;
 			},
-			$filters['durations']
+			$filters[ DURATION_FILTER_KEY ]
 		);
 	}
 
 	// Parse seasons.
-	if ( is_string( $filters['seasons'] ) ) {
-		$filters['seasons'] = array_filter( array_map( 'trim', explode( ',', $filters['seasons'] ) ) );
-	} elseif ( is_array( $filters['seasons'] ) ) {
-		$filters['seasons'] = array_filter( array_map( 'trim', $filters['seasons'] ) );
+	if ( is_string( $filters[ SEASON_FILTER_KEY ] ) ) {
+		$filters[ SEASON_FILTER_KEY ] = array_filter( array_map( 'trim', explode( ',', $filters[ SEASON_FILTER_KEY ] ) ) );
+	} elseif ( is_array( $filters[ SEASON_FILTER_KEY ] ) ) {
+		$filters[ SEASON_FILTER_KEY ] = array_filter( array_map( 'trim', $filters[ SEASON_FILTER_KEY ] ) );
 	}
 
 	// Parse ships.
-	if ( is_string( $filters['ships'] ) || is_int( $filters['ships'] ) ) {
-		$filters['ships'] = array_filter( array_map( 'trim', explode( ',', strval( $filters['ships'] ) ) ) );
-	} elseif ( is_array( $filters['ships'] ) ) {
-		$filters['ships'] = array_filter( array_map( 'trim', $filters['ships'] ) );
+	if ( is_string( $filters[ SHIP_FILTER_KEY ] ) || is_int( $filters[ SHIP_FILTER_KEY ] ) ) {
+		$filters[ SHIP_FILTER_KEY ] = array_filter( array_map( 'trim', explode( ',', strval( $filters[ SHIP_FILTER_KEY ] ) ) ) );
+	} elseif ( is_array( $filters[ SHIP_FILTER_KEY ] ) ) {
+		$filters[ SHIP_FILTER_KEY ] = array_filter( array_map( 'trim', $filters[ SHIP_FILTER_KEY ] ) );
 	}
 
 	// Parse destinations.
-	if ( is_string( $filters['destinations'] ) || is_int( $filters['destinations'] ) ) {
-		$filters['destinations'] = array_filter( array_map( 'trim', explode( ',', strval( $filters['destinations'] ) ) ) );
-	} elseif ( is_array( $filters['destinations'] ) ) {
-		$filters['destinations'] = array_filter( array_map( 'trim', $filters['destinations'] ) );
+	if ( is_string( $filters[ DESTINATION_FILTER_KEY ] ) || is_int( $filters[ DESTINATION_FILTER_KEY ] ) ) {
+		$filters[ DESTINATION_FILTER_KEY ] = array_filter( array_map( 'trim', explode( ',', strval( $filters[ DESTINATION_FILTER_KEY ] ) ) ) );
+	} elseif ( is_array( $filters[ DESTINATION_FILTER_KEY ] ) ) {
+		$filters[ DESTINATION_FILTER_KEY ] = array_filter( array_map( 'trim', $filters[ DESTINATION_FILTER_KEY ] ) );
+	}
+
+	// Parse languages.
+	if ( is_string( $filters[ LANGUAGE_FILTER_KEY ] ) || is_int( $filters[ LANGUAGE_FILTER_KEY ] ) ) {
+		$filters[ LANGUAGE_FILTER_KEY ] = array_filter( array_map( 'trim', explode( ',', strval( $filters[ LANGUAGE_FILTER_KEY ] ) ) ) );
+	} elseif ( is_array( $filters[ LANGUAGE_FILTER_KEY ] ) ) {
+		$filters[ LANGUAGE_FILTER_KEY ] = array_filter( array_map( 'trim', $filters[ LANGUAGE_FILTER_KEY ] ) );
+	}
+
+	// Parse itinerary lengths.
+	if ( is_string( $filters[ ITINERARY_LENGTH_FILTER_KEY ] ) || is_int( $filters[ ITINERARY_LENGTH_FILTER_KEY ] ) ) {
+		$filters[ ITINERARY_LENGTH_FILTER_KEY ] = array_filter( array_map( 'trim', explode( ',', strval( $filters[ ITINERARY_LENGTH_FILTER_KEY ] ) ) ) );
+	} elseif ( is_array( $filters[ ITINERARY_LENGTH_FILTER_KEY ] ) ) {
+		$filters[ ITINERARY_LENGTH_FILTER_KEY ] = array_filter( array_map( 'trim', $filters[ ITINERARY_LENGTH_FILTER_KEY ] ) );
+	}
+
+	// Parse sort.
+	if ( is_string( $filters[ SORT_FILTER_KEY ] ) ) {
+		$filters[ SORT_FILTER_KEY ] = array_filter( array_map( 'trim', explode( ',', $filters[ SORT_FILTER_KEY ] ) ) );
+	} elseif ( is_array( $filters[ SORT_FILTER_KEY ] ) ) {
+		$filters[ SORT_FILTER_KEY ] = array_filter( array_map( 'trim', $filters[ SORT_FILTER_KEY ] ) );
 	}
 
 	// Return parsed filters.
 	return [
-		'seasons'           => (array) $filters['seasons'],
-		'expeditions'       => (array) $filters['expeditions'],
-		'months'            => (array) $filters['months'],
-		'adventure_options' => (array) $filters['adventure_options'],
-		'durations'         => (array) $filters['durations'],
-		'ships'             => (array) $filters['ships'],
-		'page'              => absint( $filters['page'] ),
-		'sort'              => $filters['sort'],
-		'posts_per_load'    => absint( $filters['posts_per_load'] ),
-		'currency'          => $filters['currency'],
-		'destinations'      => (array) $filters['destinations'],
+		SEASON_FILTER_KEY           => (array) $filters[ SEASON_FILTER_KEY ],
+		EXPEDITION_FILTER_KEY       => (array) $filters[ EXPEDITION_FILTER_KEY ],
+		MONTH_FILTER_KEY            => (array) $filters[ MONTH_FILTER_KEY ],
+		ADVENTURE_OPTION_FILTER_KEY => (array) $filters[ ADVENTURE_OPTION_FILTER_KEY ],
+		DURATION_FILTER_KEY         => (array) $filters[ DURATION_FILTER_KEY ],
+		SHIP_FILTER_KEY             => (array) $filters[ SHIP_FILTER_KEY ],
+		PAGE_FILTER_KEY             => absint( $filters[ PAGE_FILTER_KEY ] ),
+		SORT_FILTER_KEY             => (array) $filters[ SORT_FILTER_KEY ],
+		PER_PAGE_FILTER_KEY         => absint( $filters[ PER_PAGE_FILTER_KEY ] ),
+		CURRENCY_FILTER_KEY         => $filters[ CURRENCY_FILTER_KEY ],
+		DESTINATION_FILTER_KEY      => (array) $filters[ DESTINATION_FILTER_KEY ],
+		LANGUAGE_FILTER_KEY         => (array) $filters[ LANGUAGE_FILTER_KEY ],
+		ITINERARY_LENGTH_FILTER_KEY => (array) $filters[ ITINERARY_LENGTH_FILTER_KEY ],
 	];
 }
 
@@ -403,18 +437,20 @@ function search( array $filters = [], array $facets = [], bool $retrieve_all = f
 	$filters = parse_filters( $filters );
 
 	// Get the filters.
-	$sort              = $filters['sort'];
-	$seasons           = array_map( 'strval', (array) $filters['seasons'] );
-	$months            = array_map( 'strval', (array) $filters['months'] );
-	$expeditions       = array_map( 'absint', (array) $filters['expeditions'] );
-	$adventure_options = array_map( 'absint', (array) $filters['adventure_options'] );
-	$ships             = array_map( 'absint', (array) $filters['ships'] );
-	$destinations      = array_map( 'absint', (array) $filters['destinations'] );
+	$sorts             = array_map( 'strval', (array) $filters[ SORT_FILTER_KEY ] );
+	$seasons           = array_map( 'strval', (array) $filters[ SEASON_FILTER_KEY ] );
+	$months            = array_map( 'strval', (array) $filters[ MONTH_FILTER_KEY ] );
+	$expeditions       = array_map( 'absint', (array) $filters[ EXPEDITION_FILTER_KEY ] );
+	$adventure_options = array_map( 'absint', (array) $filters[ ADVENTURE_OPTION_FILTER_KEY ] );
+	$ships             = array_map( 'absint', (array) $filters[ SHIP_FILTER_KEY ] );
+	$destinations      = array_map( 'absint', (array) $filters[ DESTINATION_FILTER_KEY ] );
+	$languages         = array_map( 'absint', (array) $filters[ LANGUAGE_FILTER_KEY ] );
+	$itinerary_lengths = array_map( 'absint', (array) $filters[ ITINERARY_LENGTH_FILTER_KEY ] );
 
 	// Validate durations.
 	$durations = array_map(
 		fn ( array $duration = [] ) => array_map( 'absint', $duration ),
-		$filters['durations']
+		$filters[ DURATION_FILTER_KEY ]
 	);
 
 	// Prepare search object.
@@ -425,13 +461,15 @@ function search( array $filters = [], array $facets = [], bool $retrieve_all = f
 	$search->set_adventure_options( $adventure_options );
 	$search->set_durations( $durations );
 	$search->set_ships( $ships );
-	$search->set_sort( $sort, $filters['currency'] );
 	$search->set_destinations( $destinations );
+	$search->set_languages( $languages );
+	$search->set_itinerary_lengths( $itinerary_lengths );
+	$search->set_sorts( $sorts, $filters[ CURRENCY_FILTER_KEY ] );
 
 	// Set page and posts per page.
 	if ( empty( $retrieve_all ) ) {
-		$search->set_page( absint( $filters['page'] ) );
-		$search->set_posts_per_page( absint( $filters['posts_per_load'] ?: 5 ) );
+		$search->set_page( absint( $filters[ PAGE_FILTER_KEY ] ) );
+		$search->set_posts_per_page( absint( $filters[ PER_PAGE_FILTER_KEY ] ?: 5 ) );
 	} else {
 		$search->set_posts_per_page( -1 );
 	}
@@ -666,870 +704,4 @@ function reindex_departures(): void {
 
 	// Clear the cron.
 	wp_clear_scheduled_hook( SCHEDULE_REINDEX_HOOK );
-}
-
-/**
- * Get region and season search filter data.
- *
- * @param int[] $departure_ids Departure IDs.
- *
- * @return array<int, array{
- *   label: string,
- *   value: string,
- *   count: int,
- * }>
- */
-function get_region_and_season_search_filter_data( array $departure_ids = [] ): array {
-	// If empty departure ids, get all departure ids.
-	if ( empty( $departure_ids ) ) {
-		// Prepare search object.
-		$search = new Search();
-		$search->set_posts_per_page( -1 );
-
-		// Get departure ids.
-		$departure_ids = $search->search();
-	}
-
-	// Initialize region and season data.
-	$region_seasons = [];
-
-	// Validate departure ids.
-	if ( empty( $departure_ids ) ) {
-		return $region_seasons;
-	}
-
-	// Get region and season data.
-	foreach ( $departure_ids as $departure_id ) {
-		$departure = get_departure( $departure_id );
-
-		// Get post meta.
-		if ( ! is_array( $departure['post_meta'] ) || empty( $departure['post_meta']['region_season'] ) ) {
-			continue;
-		}
-
-		// Get region and season.
-		$region_seasons[ $departure_id ] = $departure['post_meta']['region_season'];
-	}
-
-	// Get unique region and season.
-	$region_seasons = array_unique( $region_seasons );
-
-	// Prepare filter data.
-	$filter_data = [];
-
-	// Prepare region and season data.
-	foreach ( $region_seasons as $region_season ) {
-		// region_season - ANT-2024-23.
-		// Get first 3 characters as region.
-		$region_code = substr( $region_season, 0, 3 );
-		$region_term = get_destination_term_by_code( $region_code );
-
-		// Validate term.
-		if ( ! $region_term instanceof WP_Term ) {
-			continue;
-		}
-
-		// Get last 4 characters as season.
-		$season = substr( $region_season, 4 );
-
-		// Get term data.
-		$season_term = get_term_by( 'slug', $season, SEASON_TAXONOMY );
-
-		// Validate term.
-		if ( ! $season_term instanceof WP_Term ) {
-			continue;
-		}
-
-		// Continue if already set.
-		if ( ! empty( $filter_data[ $region_season ] ) ) {
-			continue;
-		}
-
-		// Prepare region and season data.
-		$filter_data[ $region_season ] = [
-			'label' => sprintf( '%s %s', $region_term->name, $season_term->name ),
-			'value' => $region_season,
-			'count' => 0, // @todo - Implement count.
-		];
-	}
-
-	// Return filter data.
-	return array_values( $filter_data );
-}
-
-/**
- * Get Expedition search filter data.
- *
- * @param int[] $departure_ids Departure IDs.
- *
- * @return array<int, array{
- *   label: string,
- *   value: int,
- *   count: int,
- * }>
- */
-function get_expedition_search_filter_data( array $departure_ids = [] ): array {
-	// If empty departure ids, get all departure ids.
-	if ( empty( $departure_ids ) ) {
-		// Prepare search object.
-		$search = new Search();
-		$search->set_posts_per_page( -1 );
-
-		// Get departure ids.
-		$departure_ids = $search->search();
-	}
-
-	// Initialize expedition data.
-	$expeditions = [];
-
-	// Validate departure ids.
-	if ( empty( $departure_ids ) ) {
-		return $expeditions;
-	}
-
-	// Get expedition data.
-	foreach ( $departure_ids as $departure_id ) {
-		$departure = get_departure( $departure_id );
-
-		// Get post meta.
-		if ( ! is_array( $departure['post_meta'] ) || empty( $departure['post_meta']['related_expedition'] ) ) {
-			continue;
-		}
-
-		// Get expedition.
-		$expedition_id = absint( $departure['post_meta']['related_expedition'] );
-
-		// Validate expedition.
-		if ( empty( $expedition_id ) || ! empty( $expeditions[ $expedition_id ] ) ) {
-			continue;
-		}
-
-		// Prepare expedition data.
-		$expeditions[ $expedition_id ] = [
-			'label' => get_the_title( $expedition_id ),
-			'value' => $expedition_id,
-			'count' => 0, // @todo - Implement count.
-		];
-	}
-
-	// Return expedition data.
-	return array_values( $expeditions );
-}
-
-/**
- * Get Adventure Options search filter data.
- *
- * @param int[] $departure_ids Departure IDs.
- *
- * @return array<int, array{
- *   label: string,
- *   value: int,
- *   count: int,
- * }>
- */
-function get_adventure_options_search_filter_data( array $departure_ids = [] ): array {
-	// If empty departure ids, get all departure ids.
-	if ( empty( $departure_ids ) ) {
-		// Prepare search object.
-		$search = new Search();
-		$search->set_posts_per_page( -1 );
-
-		// Get departure ids.
-		$departure_ids = $search->search();
-	}
-
-	// Initialize adventure options data.
-	$adventure_options = [];
-
-	// Validate departure ids.
-	if ( empty( $departure_ids ) ) {
-		return $adventure_options;
-	}
-
-	// Get adventure options data.
-	foreach ( $departure_ids as $departure_id ) {
-		// Prepare Included Adventure Options details.
-		$include_options = get_included_adventure_options( $departure_id );
-
-		// Loop through include_options.
-		foreach ( $include_options as $include_option ) {
-			if ( empty( $include_option['term_id'] ) ) {
-				continue;
-			}
-
-			// Add to adventure options.
-			$adventure_options[ $include_option['term_id'] ] = [
-				'label' => $include_option['name'],
-				'value' => $include_option['term_id'],
-				'count' => 0, // @todo - Implement count.
-			];
-		}
-
-		// Paid adventure options.
-		$paid_adventure_options = get_paid_adventure_options( $departure_id );
-
-		// Loop through paid_adventure_options.
-		foreach ( $paid_adventure_options as $id => $name ) {
-			if ( empty( $name ) ) {
-				continue;
-			}
-
-			// Add to adventure options.
-			$adventure_options[ $id ] = [
-				'label' => $name,
-				'value' => $id,
-				'count' => 0, // @todo - Implement count.
-			];
-		}
-	}
-
-	// Return adventure options data.
-	return array_values( $adventure_options );
-}
-
-/**
- * Get Departure Month search filter data.
- *
- * @param int[] $departure_ids Departure IDs.
- *
- * @return array<int, array{
- *    label: string,
- *    value: string,
- *    count: int,
- * }>
- */
-function get_month_search_filter_data( array $departure_ids = [] ): array {
-	// If empty departure ids, get all departure ids.
-	if ( empty( $departure_ids ) ) {
-		// Prepare search object.
-		$search = new Search();
-		$search->set_posts_per_page( -1 );
-
-		// Get departure ids.
-		$departure_ids = $search->search();
-	}
-
-	// Initialize month data.
-	$months = [];
-
-	// Validate departure ids.
-	if ( empty( $departure_ids ) ) {
-		return $months;
-	}
-
-	// Get month data.
-	foreach ( $departure_ids as $departure_id ) {
-		$departure = get_departure( $departure_id );
-
-		// Get post meta.
-		if ( ! is_array( $departure['post_meta'] ) || empty( $departure['post_meta']['start_date'] ) ) {
-			continue;
-		}
-
-		// Get start date.
-		$start_date = $departure['post_meta']['start_date'];
-
-		// Prepare month data - 10-2024 => October 2024.
-		$month_key   = gmdate( 'm-Y', strtotime( $start_date ) );
-		$month_value = gmdate( 'F Y', strtotime( $start_date ) );
-
-		// Prepare month data.
-		$months[ $month_key ] = [
-			'label' => $month_value,
-			'value' => $month_key,
-			'count' => 0, // @todo - Implement count.
-		];
-	}
-
-	// Sort the months array by keys (dates).
-	uksort(
-		$months,
-		function ( $a, $b ) {
-			// Adding "01-" to ensure proper date format for strtotime comparison.
-			return strtotime( '01-' . $a ) - strtotime( '01-' . $b );
-		}
-	);
-
-	// Return month data.
-	return array_values( $months );
-}
-
-/**
- * Get Departure Duration search filter data.
- *
- * @param int[] $departure_ids Departure IDs.
- *
- * @return array<int, array{
- *   label: string,
- *   value: string,
- *   count: int,
- * }>
- */
-function get_duration_search_filter_data( array $departure_ids = [] ): array {
-	// If empty departure ids, get all departure ids.
-	if ( empty( $departure_ids ) ) {
-		// Prepare search object.
-		$search = new Search();
-		$search->set_posts_per_page( -1 );
-
-		// Get departure ids.
-		$departure_ids = $search->search();
-	}
-
-	// Initialize duration data.
-	$durations = [];
-
-	// Validate departure ids.
-	if ( empty( $departure_ids ) ) {
-		return $durations;
-	}
-
-	// Get duration data.
-	foreach ( $departure_ids as $departure_id ) {
-		$departure = get_departure( $departure_id );
-
-		// Get post meta.
-		if ( ! is_array( $departure['post_meta'] ) || empty( $departure['post_meta']['duration'] ) ) {
-			continue;
-		}
-
-		// Get duration.
-		$duration = $departure['post_meta']['duration'];
-
-		// Prepare duration data.
-		$durations[ $duration ] = $duration;
-	}
-
-	// Sort the durations array by keys (dates).
-	ksort( $durations );
-
-	// Create a new array with range of 7 days using the durations.
-	// i.e. - 1-7 => 1-7 days, 8-14 => 8-14 days, 15-21 => 15-21 days, 22-28 => 22-28 days.
-	$range_durations = [];
-
-	// Loop through durations.
-	foreach ( $durations as $duration ) {
-		// Get duration value.
-		$duration_value = absint( $duration );
-
-		// Get range.
-		$range = ceil( $duration_value / 7 );
-
-		// Prepare Key and value.
-		$range_key   = sprintf( '%d-%d', ( $range * 7 ) - 6, $range * 7 );
-		$range_value = sprintf( '%d-%d Days', ( $range * 7 ) - 6, $range * 7 );
-
-		// Prepare range duration.
-		$range_durations[ $range_key ] = [
-			'label' => $range_value,
-			'value' => $range_key,
-			'count' => 0, // @todo - Implement count.
-		];
-	}
-
-	// Return duration data.
-	return array_values( $range_durations );
-}
-
-/**
- * Get Departure Ship search filter data.
- *
- * @param int[] $departure_ids Departure IDs.
- *
- * @return array<int, array{
- *   label: string,
- *   value: int,
- *   count: int,
- * }>
- */
-function get_ship_search_filter_data( array $departure_ids = [] ): array {
-	// If empty departure ids, get all departure ids.
-	if ( empty( $departure_ids ) ) {
-		// Prepare search object.
-		$search = new Search();
-		$search->set_posts_per_page( -1 );
-
-		// Get departure ids.
-		$departure_ids = $search->search();
-	}
-
-	// Initialize ship data.
-	$ships = [];
-
-	// Validate departure ids.
-	if ( empty( $departure_ids ) ) {
-		return $ships;
-	}
-
-	// Get ship data.
-	foreach ( $departure_ids as $departure_id ) {
-		$departure = get_departure( $departure_id );
-
-		// Get post meta.
-		if ( ! is_array( $departure['post_meta'] ) || empty( $departure['post_meta']['related_ship'] ) ) {
-			continue;
-		}
-
-		// Get ship ID.
-		$ship_id = absint( $departure['post_meta']['related_ship'] );
-
-		// Get ship data.
-		$ship = get_ship_post( $ship_id );
-
-		// Validate ship.
-		if ( ! $ship['post'] instanceof WP_Post ) {
-			continue;
-		}
-
-		// Prepare ship data.
-		$ships[ $ship_id ] = [
-			'label' => $ship['post']->post_title,
-			'value' => $ship_id,
-			'count' => 0, // @todo - Implement count.
-		];
-	}
-
-	// Return ship data.
-	return array_values( $ships );
-}
-
-/**
- * Get departure language search filter data.
- *
- * @return string[]
- */
-function get_language_search_filter_data(): array {
-	// Get terms.
-	$the_terms = get_terms(
-		[
-			'taxonomy'   => SPOKEN_LANGUAGE_TAXONOMY,
-			'hide_empty' => true,
-		]
-	);
-
-	// Validate terms.
-	if ( empty( $the_terms ) || ! is_array( $the_terms ) ) {
-		return [];
-	}
-
-	// Initialize filter data.
-	$filter_data = [];
-
-	// Loop through terms and prepare data.
-	foreach ( $the_terms as $term ) {
-		// Validate term.
-		if ( ! $term instanceof WP_Term ) {
-			continue;
-		}
-
-		// Prepare filter data.
-		$filter_data[ $term->term_id ] = $term->name;
-	}
-
-	// Return filter data.
-	return $filter_data;
-}
-
-/**
- * Get departure cabin class search filter data.
- *
- * @return string[]
- */
-function get_cabin_class_search_filter_data(): array {
-	// Get terms.
-	$the_terms = get_terms(
-		[
-			'taxonomy'   => CABIN_CLASS_TAXONOMY,
-			'hide_empty' => true,
-		]
-	);
-
-	// Validate terms.
-	if ( empty( $the_terms ) || ! is_array( $the_terms ) ) {
-		return [];
-	}
-
-	// Initialize filter data.
-	$filter_data = [];
-
-	// Loop through terms and prepare data.
-	foreach ( $the_terms as $term ) {
-		// Validate term.
-		if ( ! $term instanceof WP_Term ) {
-			continue;
-		}
-
-		// Prepare filter data.
-		$filter_data[ $term->term_id ] = $term->name;
-	}
-
-	// Return filter data.
-	return $filter_data;
-}
-
-/**
- * Get itinerary length search filter data.
- *
- * @return string[]
- */
-function get_itinerary_length_search_filter_data(): array {
-	// Cache key.
-	$cache_key = 'search_filter_itinerary_length_data';
-
-	// Get from cache.
-	$itinerary_length_search_filter = wp_cache_get( $cache_key, CACHE_GROUP );
-
-	// Return cache data.
-	if ( ! empty( $itinerary_length_search_filter ) && is_array( $itinerary_length_search_filter ) ) {
-		return $itinerary_length_search_filter;
-	}
-
-	// Prepare search object.
-	$search = new Search();
-	$search->set_posts_per_page( -1 );
-
-	// Get departure ids.
-	$departure_ids     = $search->search();
-	$itinerary_lengths = [];
-
-	// Validate departure ids.
-	if ( empty( $departure_ids ) ) {
-		return $itinerary_lengths;
-	}
-
-	// Get itinerary length data.
-	foreach ( $departure_ids as $departure_id ) {
-		$departure = get_departure( $departure_id );
-
-		// Get post meta.
-		if ( ! is_array( $departure['post_meta'] ) || empty( $departure['post_meta']['duration'] ) ) {
-			continue;
-		}
-
-		// Get itinerary length.
-		$itinerary_length = absint( $departure['post_meta']['duration'] );
-
-		// Validate itinerary length.
-		if ( empty( $itinerary_length ) || ! empty( $itinerary_lengths[ $itinerary_length ] ) ) {
-			continue;
-		}
-
-		// Prepare itinerary length data.
-		$itinerary_lengths[ $itinerary_length ] = $itinerary_length;
-	}
-
-	// Sort the itinerary lengths array by keys (dates).
-	ksort( $itinerary_lengths );
-
-	// Create a new array with key as length and value as label.
-	$itinerary_length_data = [];
-
-	// Loop through itinerary lengths.
-	foreach ( $itinerary_lengths as $itinerary_length ) {
-		// Prepare itinerary length data.
-		$itinerary_length_data[ $itinerary_length ] = sprintf(
-			// translators: %d: Itinerary length/duration.
-			__( '%d Days', 'qrk' ),
-			absint( $itinerary_length )
-		);
-	}
-
-	// Set cache.
-	wp_cache_set( $cache_key, $itinerary_length_data, CACHE_GROUP );
-
-	// Return itinerary length data.
-	return $itinerary_length_data;
-}
-
-/**
- * Get destinations search filter data.
- *
- * @return array{}|array<int, array{
- *   id: int,
- *   slug: string,
- *   name: string,
- *   children: array<int, array{
- *      id: int,
- *      slug: string,
- *      name: string,
- *      parent_id: int,
- *   }>,
- * }>
- */
-function get_destination_search_filter_data(): array {
-	// Get parent terms.
-	$parent_terms = get_terms(
-		[
-			'taxonomy'   => DESTINATION_TAXONOMY,
-			'hide_empty' => true,
-			'parent'     => 0,
-		]
-	);
-
-	// Validate terms.
-	if ( empty( $parent_terms ) || ! is_array( $parent_terms ) ) {
-		return [];
-	}
-
-	// Initialize returned data.
-	$terms_data = [];
-
-	// Get child terms.
-	foreach ( $parent_terms as $parent_term ) {
-		// Validate parent term.
-		if ( ! $parent_term instanceof WP_Term ) {
-			continue;
-		}
-
-		// Get parent term id.
-		$parent_id = absint( $parent_term->term_id );
-
-		// Prepare parent term.
-		$parent_term = [
-			'id'       => $parent_id,
-			'slug'     => $parent_term->slug,
-			'name'     => $parent_term->name,
-			'children' => [],
-		];
-
-		// Get child terms.
-		$child_terms = get_terms(
-			[
-				'taxonomy'   => DESTINATION_TAXONOMY,
-				'hide_empty' => true,
-				'parent'     => $parent_id,
-			]
-		);
-
-		// Validate child terms.
-		if ( empty( $child_terms ) || ! is_array( $child_terms ) ) {
-			$terms_data[] = $parent_term;
-			continue;
-		}
-
-		// Loop through child terms.
-		foreach ( $child_terms as $child_term ) {
-			// Validate child term.
-			if ( ! $child_term instanceof WP_Term ) {
-				continue;
-			}
-
-			// Prepare child term.
-			$parent_term['children'][] = [
-				'id'        => absint( $child_term->term_id ),
-				'slug'      => $child_term->slug,
-				'name'      => $child_term->name,
-				'parent_id' => $parent_id,
-			];
-		}
-
-		// Add parent term.
-		$terms_data[] = $parent_term;
-	}
-
-	// Return expedition data.
-	return $terms_data;
-}
-
-/**
- * Get travelers search filter data.
- *
- * @return string[]
- */
-function get_travelers_search_filter_data(): array {
-	// Get occupancy mask.
-	$mask_mapping = get_masks_mapping();
-
-	// Prepare travelers data.
-	$travelers_data = [];
-
-	// Loop through occupancy mask.
-	foreach ( $mask_mapping as $mask => $mask_data ) {
-		// Validate mask data.
-		if ( ! is_array( $mask_data ) || empty( $mask_data['description'] ) ) {
-			continue;
-		}
-
-		// Prepare travelers data.
-		$travelers_data[ $mask ] = $mask_data['description'];
-	}
-
-	// Return travelers data.
-	return $travelers_data;
-}
-
-/**
- * Get destination month search filter data.
- *
- * @param int    $destination_term_id Destination term ID.
- * @param string $month               Month.
- *
- * @return mixed[]
- */
-function get_destination_and_month_search_filter_data( int $destination_term_id = 0, string $month = '' ): array {
-	// Prepare search object.
-	$search = new Search();
-
-	// Set destination term id if provided.
-	if ( ! empty( $destination_term_id ) ) {
-		$search->set_destinations( [ $destination_term_id ] );
-	}
-
-	// Set month if provided.
-	if ( ! empty( $month ) ) {
-		$search->set_months( [ $month ] );
-	}
-
-	// Prepare filter data.
-	$filter_data = [
-		'months'       => [],
-		'destinations' => [],
-	];
-
-	// Set posts per page to -1.
-	$search->set_posts_per_page( -1 );
-
-	// Get departure ids.
-	$departure_ids = $search->search();
-
-	// Initialize month.
-	$months = [];
-
-	// Initialize destination ids.
-	$destinations = [];
-
-	// Prepare month and destination data if not empty.
-	if ( ! empty( $departure_ids ) ) {
-		// Loop through departure ids.
-		foreach ( $departure_ids as $departure_id ) {
-			$departure = get_departure( $departure_id );
-
-			// Get post meta.
-			if ( ! is_array( $departure['post_meta'] ) || empty( $departure['post_meta']['start_date'] ) || empty( $departure['post_meta']['related_expedition'] ) ) {
-				continue;
-			}
-
-				// Get start date.
-				$start_date = $departure['post_meta']['start_date'];
-
-				// Prepare month data - 10-2024 => October 2024.
-				$month_key   = gmdate( 'm-Y', strtotime( $start_date ) );
-				$month_value = gmdate( 'F Y', strtotime( $start_date ) );
-
-				// Check if month is already set.
-			if ( empty( $months[ $month_key ] ) ) {
-				$months[ $month_key ] = $month_value;
-			}
-
-				// Expedition post id.
-				$expedition_id = absint( $departure['post_meta']['related_expedition'] );
-
-				// Get expedition post.
-				$expedition = get_expedition_post( $expedition_id );
-
-				// Validate expedition.
-			if ( ! $expedition['post'] instanceof WP_Post || empty( $expedition['post_taxonomies'] ) || empty( $expedition['post_taxonomies'][ DESTINATION_TAXONOMY ] ) || ! is_array( $expedition['post_taxonomies'][ DESTINATION_TAXONOMY ] ) ) {
-				continue;
-			}
-
-				// Loop through each destination.
-			foreach ( $expedition['post_taxonomies'][ DESTINATION_TAXONOMY ] as $destination ) {
-				// Validate destination.
-				if ( ! is_array( $destination ) || empty( $destination['term_id'] ) || empty( $destination['name'] ) ) {
-					continue;
-				}
-
-				// Is it a parent term.
-				if ( empty( $destination['parent'] ) ) {
-					if ( empty( $destinations[ $destination['term_id'] ] ) ) {
-						$destinations[ $destination['term_id'] ] = [
-							'id'       => $destination['term_id'],
-							'label'    => $destination['name'],
-							'value'    => $destination['term_id'],
-							'image_id' => absint( get_term_meta( $destination['term_id'], 'destination_image', true ) ),
-							'children' => [],
-						];
-					}
-				} else {
-					// Validate parent.
-					if ( empty( $destinations[ $destination['parent'] ] ) ) {
-						// Get parent term.
-						$parent_term = get_term( $destination['parent'], DESTINATION_TAXONOMY, ARRAY_A );
-
-						// Validate parent term.
-						if ( ! is_array( $parent_term ) ) {
-							continue;
-						}
-
-						// Prepare parent term.
-						$destinations[ $destination['parent'] ] = [
-							'id'       => $destination['parent'],
-							'label'    => $parent_term['name'],
-							'value'    => $destination['parent'],
-							'image_id' => absint( get_term_meta( $destination['term_id'], 'destination_image', true ) ),
-							'children' => [],
-						];
-					}
-
-					// Initialize children if empty.
-					if ( empty( $destinations[ $destination['parent'] ]['children'] ) ) {
-						$destinations[ $destination['parent'] ]['children'] = [];
-					}
-
-					// Check if already exists.
-					if ( ! empty( $destinations[ $destination['parent'] ]['children'][ $destination['term_id'] ] ) ) {
-						continue;
-					}
-
-					// Add to children.
-					$destinations[ $destination['parent'] ]['children'][ $destination['term_id'] ] = [
-						'id'        => $destination['term_id'],
-						'label'     => $destination['name'],
-						'value'     => $destination['term_id'],
-						'parent_id' => $destination['parent'],
-						'image_id'  => absint( get_term_meta( $destination['term_id'], 'destination_image', true ) ),
-					];
-				}
-			}
-		}
-
-		// Sort and prepare month data.
-		if ( ! empty( $months ) ) {
-			// Sort the months array by keys (dates).
-			uksort(
-				$months,
-				function ( $a, $b ) {
-					// Adding "01-" to ensure proper date format for strtotime comparison.
-					return strtotime( '01-' . $a ) - strtotime( '01-' . $b );
-				}
-			);
-
-			// Prepare month data.
-			foreach ( $months as $month_key => $month_value ) {
-				$filter_data['months'][] = [
-					'label' => $month_value,
-					'value' => $month_key,
-				];
-			}
-		}
-
-		// Flatten children destinations.
-		if ( ! empty( $destinations ) ) {
-			// Loop through destinations.
-			foreach ( $destinations as $destination_term_id => $destination ) {
-				if ( empty( $destination['children'] ) ) {
-					continue;
-				}
-
-				// Flatten children.
-				$destinations[ $destination_term_id ]['children'] = array_values( $destination['children'] );
-			}
-
-			// Flatten destinations.
-			$filter_data['destinations'] = array_values( $destinations );
-		}
-	}
-
-	// Return filter data.
-	return $filter_data;
 }
