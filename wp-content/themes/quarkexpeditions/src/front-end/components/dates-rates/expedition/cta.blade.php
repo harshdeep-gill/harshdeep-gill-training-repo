@@ -10,7 +10,7 @@
 @endphp
 
 <x-button
-	href="{{ $url }}"
+	:href="$url"
 	size="big"
 	class="dates-rates__expedition-cta"
 >

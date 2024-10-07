@@ -43,7 +43,7 @@
 @endphp
 
 @if ( ! empty( $href ) )
-	<a href="{{ $href }}"
+	<a href="{!! esc_url( $href ) !!}"
 	   class="{{ $classes }}"
 	   @if ( ! empty( $target ) )
 		   target="{{ $target }}"

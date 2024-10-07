@@ -10,6 +10,7 @@ namespace Quark\Leads\Tests;
 use WP_UnitTestCase;
 use WP_Error;
 
+use function Quark\Departures\bust_post_cache as bust_departure_post_cache;
 use function Quark\Leads\front_end_data;
 use function Quark\Leads\validate_recaptcha_token;
 use function Quark\Leads\create_lead;
@@ -18,7 +19,10 @@ use function Quark\Leads\build_salesforce_request_uri;
 use function Quark\Leads\build_salesforce_request_data;
 use function Quark\Leads\Forms\get_countries;
 use function Quark\Leads\Forms\get_states;
+use function Quark\Leads\get_request_a_quote_url;
 
+use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
+use const Quark\Expeditions\POST_TYPE as EXPEDITION_POST_TYPE;
 use const Quark\Leads\REST_API_NAMESPACE;
 
 /**
@@ -288,5 +292,103 @@ class Test_Leads extends WP_UnitTestCase {
 		foreach ( $keys_to_test as $key ) {
 			$this->assertArrayHasKey( $key, $states );
 		}
+	}
+
+	/**
+	 * Test get request a quote URL.
+	 *
+	 * @covers \Quark\Leads\get_request_a_quote_url()
+	 *
+	 * @return void
+	 */
+	public function test_get_request_a_quote_url(): void {
+		// Checkout without any page setting.
+		$this->assertEmpty( get_request_a_quote_url() );
+
+		// Create a page.
+		$page_id = $this->factory()->post->create(
+			[
+				'post_title'   => 'Request a Quote',
+				'post_content' => 'Request a Quote',
+				'post_status'  => 'publish',
+				'post_type'    => 'page',
+			]
+		);
+		$this->assertIsInt( $page_id );
+
+		// Get permalink.
+		$permalink = get_permalink( $page_id );
+		$this->assertIsString( $permalink );
+
+		// Set the page setting.
+		update_option( 'options_request_a_quote_page', $page_id );
+
+		// Assert the URL.
+		$this->assertEquals( $permalink, get_request_a_quote_url() );
+
+		// Create a departure post.
+		$departure_id = $this->factory()->post->create(
+			[
+				'post_title'   => 'Departure',
+				'post_content' => 'Departure',
+				'post_status'  => 'publish',
+				'post_type'    => DEPARTURE_POST_TYPE,
+			]
+		);
+		$this->assertIsInt( $departure_id );
+
+		// Test without expedition relation.
+		$actual   = get_request_a_quote_url( $departure_id );
+		$expected = add_query_arg( 'departure_id', $departure_id, $permalink );
+		$this->assertEquals( $expected, $actual );
+
+		// Create an expedition post.
+		$expedition_id = $this->factory()->post->create(
+			[
+				'post_title'   => 'Expedition',
+				'post_content' => 'Expedition',
+				'post_status'  => 'publish',
+				'post_type'    => EXPEDITION_POST_TYPE,
+			]
+		);
+		$this->assertIsInt( $expedition_id );
+
+		// Attach the meta.
+		update_post_meta( $departure_id, 'related_expedition', $expedition_id );
+
+		// Flush expedition cache.
+		bust_departure_post_cache( $departure_id );
+
+		// Test with expedition relation.
+		$actual   = get_request_a_quote_url( $departure_id );
+		$expected = add_query_arg(
+			[
+				'departure_id'  => $departure_id,
+				'expedition_id' => $expedition_id,
+			],
+			$permalink
+		);
+
+		// Assert the URL.
+		$this->assertEquals( $expected, $actual );
+
+		// Test with expedition id only.
+		$actual   = get_request_a_quote_url( 0, $expedition_id );
+		$expected = add_query_arg(
+			[
+				'expedition_id' => $expedition_id,
+			],
+			$permalink
+		);
+
+		// Assert the URL.
+		$this->assertEquals( $expected, $actual );
+
+		// Test with default id.
+		$actual   = get_request_a_quote_url( 0, 0 );
+		$expected = $permalink;
+
+		// Assert the URL.
+		$this->assertEquals( $expected, $actual );
 	}
 }

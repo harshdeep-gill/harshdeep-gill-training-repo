@@ -29,6 +29,7 @@ use function Quark\Softrip\Promotions\get_promotions_by_code;
 use function Quark\Softrip\AdventureOptions\get_adventure_option_by_departure_post_id;
 use function Quark\AdventureOptions\get as get_adventure_option_post_data;
 use function Quark\CabinCategories\get_cabin_price_data_by_departure;
+use function Quark\Leads\get_request_a_quote_url;
 use function Quark\Localization\get_currencies;
 
 use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
@@ -573,6 +574,7 @@ function get_promotion_tags( int $post_id = 0 ): array {
  *     languages: string,
  *     paid_adventure_options: string[],
  *     lowest_price: array<string, string>,
+ *     request_a_quote_url: string,
  *     transfer_package_details: array{
  *       title: string,
  *       sets: string[],
@@ -713,6 +715,7 @@ function get_card_data( int $departure_id = 0, string $currency = DEFAULT_CURREN
 		'cabins'                   => get_cabin_details_by_departure( $departure_id, $currency ),
 		'promotion_banner'         => get_discount_label( $lowest_price['original'], $lowest_price['discounted'] ),
 		'promotions'               => get_promotions_description( $departure_id ),
+		'request_a_quote_url'      => get_request_a_quote_url( $departure_id ),
 	];
 
 	// Set cache and return data.
@@ -793,6 +796,7 @@ function get_start_end_departure_date( int $post_id = 0 ): string {
  *      languages: string,
  *      paid_adventure_options: string[],
  *      lowest_price: array<string, string>,
+ *      request_a_quote_url: string,
  *      transfer_package_details: array{
  *        title: string,
  *        sets: array<string>,
@@ -930,6 +934,7 @@ function bust_card_data_cache_on_expedition_update( int $expedition_id = 0 ): vo
  * @param string $currency     Currency.
  *
  * @return array{}|array{
+ *     departure_id: int,
  *     region: string,
  *     ship_title: string,
  *     ship_link: string|false,
@@ -1105,6 +1110,7 @@ function get_dates_rates_card_data( int $departure_id = 0, string $currency = DE
 
 	// Prepare the departure card details.
 	$data = [
+		'departure_id'               => $departure_id,
 		'region'                     => implode( ', ', $regions ),
 		'ship_title'                 => $ship_name,
 		'ship_link'                  => get_permalink( $ship_id ),
@@ -1120,6 +1126,7 @@ function get_dates_rates_card_data( int $departure_id = 0, string $currency = DE
 		'transfer_package_details'   => get_included_transfer_package_details( $itinerary_id, $currency ),
 		'available_promos'           => $available_promos,
 		'cabin_data'                 => get_cabin_price_data_by_departure( $departure_id, $currency ),
+		'request_a_quote_url'        => get_request_a_quote_url( $departure_id ),
 	];
 
 	// Set cache and return data.
@@ -1136,6 +1143,7 @@ function get_dates_rates_card_data( int $departure_id = 0, string $currency = DE
  * @param string $currency      The currency.
  *
  * @return array{}|array<int, array{}|array{
+ *     departure_id: int,
  *     region: string,
  *     ship_title: string,
  *     ship_link: string|false,
