@@ -10,10 +10,14 @@
 	$departure_months = $search_filter_data['months'] ?? [];
 
 	// Get filters API URL.
-	$filters_api_url = home_url( 'wp-json/quark-search/v1/filter-options/by-destination-and-month' )
+	$filters_api_url = quark_get_template_data( 'filters_api_url' );
+
+	// Get search page url.
+	$search_page_url = home_url( '/expedition-search' ); // TODO: Replace with actual value from field.
 @endphp
 <x-search-filters-bar
 	:destinations="$destinations"
 	:available_months="$departure_months"
 	:filters_api_url="$filters_api_url"
+	:search_page_url="$search_page_url"
 />
