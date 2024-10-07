@@ -40,5 +40,6 @@
 		:destinations="$destinations"
 		:available_months="$available_months"
 		:filters_api_url="$filters_api_url"
+		:search_page_url="$search_page_url"
 	/>
 </quark-search-filters-bar>

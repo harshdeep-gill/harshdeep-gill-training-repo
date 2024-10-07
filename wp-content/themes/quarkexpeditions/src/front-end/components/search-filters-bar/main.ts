@@ -15,7 +15,7 @@ import { MonthsMultiSelectOption } from '../months-multi-select/months-multi-sel
 /**
  * Get Store.
  */
-const { subscribe } = zustand.stores.searchFiltersBar;
+const { subscribe, getState } = zustand.stores.searchFiltersBar;
 
 /**
  * Class SearchFiltersBar.
@@ -25,6 +25,7 @@ export class SearchFiltersBar extends HTMLElement {
 	 * Properties.
 	 */
 	private searchFiltersModal: HTMLElement | null;
+	private searchButton: HTMLElement | null;
 	private searchModalDestinationsButton: HTMLElement | null;
 	private searchModalDeparturesButton: HTMLElement | null;
 	private destinationFilters: HTMLElement | null | undefined;
@@ -58,6 +59,7 @@ export class SearchFiltersBar extends HTMLElement {
 		this.destinationSelector = this.searchFiltersModal?.querySelector( 'quark-search-filters-bar-destinations' );
 		this.departureMonthsSelectors = this.searchFiltersModal?.querySelectorAll( 'quark-months-multi-select' );
 		this.defaultDepartureMonthsPlaceholder = this.departureMonthsFilters?.getAttribute( 'default-placeholder' ) as string;
+		this.searchButton = this.querySelector( '.search-filters-bar__search-button' );
 
 		// Event Listeners.
 		this.searchModalDestinationsButton?.addEventListener(
@@ -76,6 +78,9 @@ export class SearchFiltersBar extends HTMLElement {
 			selector?.addEventListener( 'change', this.updateDepartureMonthsState.bind( this ) );
 			selector?.addEventListener( 'reset', this.updateMonthsPlaceholder.bind( this, this.defaultDepartureMonthsPlaceholder ) );
 		} );
+
+		// Search Button.
+		this.searchButton?.addEventListener( 'click', this.redirectToSearchPage.bind( this ) );
 	}
 
 	/**
@@ -87,6 +92,19 @@ export class SearchFiltersBar extends HTMLElement {
 	}
 
 	/**
+	 * Redirect to the search page URL.
+	 */
+	redirectToSearchPage() {
+		// Get state.
+		const { searchPageUrl } = getState();
+
+		// Redirect to Search URL from state.
+		if ( searchPageUrl ) {
+			window.location.href = searchPageUrl;
+		}
+	}
+
+	/**
 	 * Initialize component.
 	 */
 	initialize() {
@@ -94,6 +112,7 @@ export class SearchFiltersBar extends HTMLElement {
 		initialize(
 			{
 				filtersApiUrl: this.filtersApiUrl,
+				searchPageUrl: this.searchPageUrl,
 			}
 		);
 	}

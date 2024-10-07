@@ -13,8 +13,9 @@ const { setState, getState } = zustand.stores.searchFiltersBar;
  *
  * @param {Object} settings               Settings
  * @param {string} settings.filtersApiUrl Filters API URL
+ * @param {string} settings.searchPageUrl Search Page URL
  */
-export const initialize = ( settings: { filtersApiUrl: string | null } ): void => {
+export const initialize = ( settings: { filtersApiUrl: string | null, searchPageUrl: string | null } ): void => {
 	// Get current state.
 	const currentState: SearchFiltersBarState = getState();
 
@@ -33,7 +34,7 @@ export const initialize = ( settings: { filtersApiUrl: string | null } ): void =
  */
 export const updateDestinations = ( destinations: Set<string> | undefined ) => {
 	// Get State.
-	const { selectedDestinations } = getState();
+	const { selectedDestinations, selectedMonths } = getState();
 	let currentSelectedDestinations = { ...selectedDestinations };
 
 	// If destinations exist, update the value.
@@ -48,6 +49,9 @@ export const updateDestinations = ( destinations: Set<string> | undefined ) => {
 
 	// Fetch Results.
 	fetchFilterOptions();
+
+	// Update Search URL.
+	updateSearchUrl( Array.from( currentSelectedDestinations ), Array.from( selectedMonths ) );
 };
 
 /**
@@ -57,7 +61,7 @@ export const updateDestinations = ( destinations: Set<string> | undefined ) => {
  */
 export const updateDepartureMonths = ( months: Set<string> | undefined ) => {
 	// Get State.
-	const { selectedMonths } = getState();
+	const { selectedMonths, selectedDestinations } = getState();
 	let currentSelectedMonths = { ...selectedMonths };
 
 	// If months exist, update the value.
@@ -72,6 +76,9 @@ export const updateDepartureMonths = ( months: Set<string> | undefined ) => {
 
 	// Fetch Results.
 	fetchFilterOptions( 'months' );
+
+	// Update Search URL.
+	updateSearchUrl( Array.from( selectedDestinations ), Array.from( currentSelectedMonths ) );
 };
 
 /**
@@ -135,11 +142,34 @@ export const fetchFilterOptions = ( type: string = 'destinations' ) => {
 };
 
 /**
- * Set loading state.
+ * Update Search URL with selected filters.
  *
- * @param {boolean} loading Loading state.
+ * @param {Array} destinations Selected Destinations.
+ * @param {Array} months       Selected Months.
  */
-export const setLoading = ( loading: boolean ) => {
-	// Set loading state.
-	setState( { loading } );
+export const updateSearchUrl = ( destinations: Array<number> = [], months: Array<number> = [] ) => {
+	// Check if either destination or month exist.
+	if ( ! destinations.length && ! months.length ) {
+		// Bail.
+		return;
+	}
+
+	// Get State.
+	const { searchPageUrl } = getState();
+
+	// Get the Base URL and params.
+	const baseUrl = new URL( searchPageUrl );
+	const queryParams = new URLSearchParams( baseUrl.search );
+
+	// Set the params.
+	queryParams.set( 'destinations', destinations.toString() );
+	queryParams.set( 'months', months.toString() );
+
+	// Set the search query params for the URL.
+	baseUrl.search = queryParams.toString();
+
+	// Set State.
+	setState( {
+		searchPageUrl: baseUrl.href,
+	} );
 };

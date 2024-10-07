@@ -74,7 +74,7 @@ export class SearchFilterDestinations extends HTMLElement {
 		} );
 
 		// Dispatch change event.
-		this.dispatchEvent( new CustomEvent( 'change', { bubbles: true } ) );
+		this.dispatchEvent( new CustomEvent( 'change' ) );
 	}
 
 	/**
