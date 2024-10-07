@@ -7,6 +7,7 @@
 
 namespace Quark\Migration\WP_CLI;
 
+use WP_Post;
 use cli\progress\Bar;
 use WP_CLI;
 use WP_Error;
@@ -180,13 +181,15 @@ class Landing_Page {
 		}
 
 		// Normalize data.
-		$nid          = ! empty( $item['nid'] ) ? absint( $item['nid'] ) : 0;
-		$title        = '';
-		$created_at   = gmdate( 'Y-m-d H:i:s' );
-		$modified_at  = gmdate( 'Y-m-d H:i:s' );
-		$status       = 'draft';
-		$post_content = '';
-		$post_excerpt = '';
+		$nid            = ! empty( $item['nid'] ) ? absint( $item['nid'] ) : 0;
+		$title          = '';
+		$created_at     = gmdate( 'Y-m-d H:i:s' );
+		$modified_at    = gmdate( 'Y-m-d H:i:s' );
+		$status         = 'draft';
+		$post_content   = '';
+		$post_excerpt   = '';
+		$post_name      = '';
+		$parent_post_id = 0;
 
 		// Title.
 		if ( is_string( $item['title'] ) && ! empty( $item['title'] ) ) {
@@ -267,11 +270,35 @@ class Landing_Page {
 		// Prepare post content.
 		$post_content = str_replace( 'u0026', '&', $post_content );
 
+		// Post name.
+		if ( ! empty( $item['drupal_url'] ) && is_string( $item['drupal_url'] ) ) {
+			/**
+			 * Break the url into parts and use the last part as post name.
+			 * i.e. - /sea-spirit.
+			 */
+			$parts     = explode( '/', $item['drupal_url'] );
+			$post_name = end( $parts );
+
+			// check if $parts[1] is set.
+			if ( isset( $parts[2] ) ) {
+				$parent_post_name = $parts[1];
+
+				// Get post by slug.
+				$parent_post = get_page_by_path( $parent_post_name, OBJECT, 'page' );
+
+				// Check if parent post exists.
+				if ( $parent_post instanceof WP_Post ) {
+					$parent_post_id = $parent_post->ID;
+				}
+			}
+		}
+
 		// Prepare post data.
 		$data = [
 			'post_type'         => POST_TYPE,
 			'post_author'       => '1',
 			'post_title'        => $title,
+			'post_name'         => $post_name,
 			'post_date'         => $created_at,
 			'post_date_gmt'     => $created_at,
 			'post_modified'     => $modified_at,
@@ -281,6 +308,7 @@ class Landing_Page {
 			'post_status'       => $status,
 			'comment_status'    => 'closed',
 			'ping_status'       => 'closed',
+			'post_parent'       => $parent_post_id,
 			'meta_input'        => [],
 		];
 
@@ -324,6 +352,7 @@ class Landing_Page {
 			field_data.title,
 			field_data.created,
 			field_data.changed,
+			( SELECT alias AS drupal_url FROM path_alias WHERE path = CONCAT( '/node/', node.nid ) ORDER BY id DESC LIMIT 0, 1 ) AS drupal_url,
 			body.body_value AS post_content,
 			body.body_summary AS post_excerpt,
 			field_hero_banner.field_hero_banner_target_id AS hero_banner_id,
