@@ -6,7 +6,7 @@ on:
       environment:
         description: 'Pantheon Environment'
         required: true
-        default: 'qa'
+        default: 'development'
 
 jobs:
   ingestor-push:
