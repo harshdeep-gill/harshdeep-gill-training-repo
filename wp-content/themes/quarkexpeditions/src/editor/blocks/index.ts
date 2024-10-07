@@ -87,6 +87,7 @@ import * as detailedExpeditionCarousel from './detailed-expedition-carousel';
 import * as form from './form';
 import * as formContactUs from './form-contact-us';
 import * as formDoNotSellInformation from './form-do-not-sell-information';
+import * as formSnowHillNewsletter from './form-snow-hill-newsletter';
 
 /**
  * Add blocks.
@@ -170,6 +171,7 @@ const blocks = [
 	form,
 	formContactUs,
 	formDoNotSellInformation,
+	formSnowHillNewsletter,
 ];
 
 // Register blocks for ships.
