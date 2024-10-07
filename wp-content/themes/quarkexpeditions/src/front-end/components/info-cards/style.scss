@@ -133,16 +133,53 @@
 
 			#{$self}__slides {
 				grid-template-columns: repeat(4, minmax(210px, 1fr));
+
+				&[total-slides="3"] {
+
+					#{$self}__card {
+
+						&:nth-child(2),
+						&:nth-child(3) {
+							grid-column: 3 / span 2;
+
+							.info-cards__image-wrap {
+								aspect-ratio: 520 / 371;
+							}
+						}
+
+					}
+				}
+
+				&[total-slides="4"] {
+
+					#{$self}__card {
+
+						&:last-child {
+							grid-row: 2 / 3;
+							grid-column: 3 / span 2;
+
+							.info-cards__image-wrap {
+								aspect-ratio: 520 / 371;
+							}
+						}
+					}
+				}
 			}
 
 			#{$self}__card {
 				max-height: unset;
 				max-width: unset;
-				align-self: stretch;
 
 				&:first-child {
 					grid-row: span 2;
 					grid-column: span 2;
+				}
+
+				&:not(:first-child) {
+
+					.info-cards__image-wrap {
+						aspect-ratio: 390 / 591;
+					}
 				}
 			}
 		}
