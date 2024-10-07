@@ -20,7 +20,6 @@ use function Quark\Softrip\Occupancies\get_departures_by_cabin_category_id;
 use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
 use const Quark\CabinCategories\POST_TYPE as CABIN_POST_TYPE;
 use const Quark\Expeditions\POST_TYPE as EXPEDITION_POST_TYPE;
-use const Quark\Ingestor\Urgent\URGENT_INGESTOR_PUSH_EVENT_NAME;
 use const Quark\Ingestor\Urgent\URGENTLY_CHANGED_EXPEDITION_IDS_OPTION;
 
 /**
@@ -38,6 +37,11 @@ class Test_Urgent_Tracker extends Softrip_TestCase {
 	 * GitHub Action Token.
 	 */
 	const GH_ACTION_TOKEN = 'test-token'; // phpcs:ignore
+
+	/**
+	 * Github ref.
+	 */
+	const GH_REF = 'master'; // phpcs:ignore
 
 	/**
 	 * Dispatch data.
@@ -733,10 +737,39 @@ class Test_Urgent_Tracker extends Softrip_TestCase {
 
 		// Test with expedition ids.
 		$actual = dispatch_urgent_push_github_event( $expedition_ids );
-		$this->assertTrue( $actual );
+		$this->assertFalse( $actual );
 
 		// Do action.
 		$this->assertSame( 2, did_action( 'quark_ingestor_dispatch_github_event' ) );
+
+		// Set ref.
+		define( 'QUARK_GITHUB_ACTIONS_REF', self::GH_REF );
+
+		// Get current environment.
+		$env = wp_get_environment_type();
+
+		// Set local environment.
+		putenv( 'WP_ENVIRONMENT_TYPE=local' );
+
+		// Test with expedition ids.
+		$actual = dispatch_urgent_push_github_event( $expedition_ids );
+		$this->assertFalse( $actual );
+
+		// Do action.
+		$this->assertSame( 3, did_action( 'quark_ingestor_dispatch_github_event' ) );
+
+		// Set to production environment.
+		putenv( 'WP_ENVIRONMENT_TYPE=production' );
+
+		// Test with expedition ids.
+		$actual = dispatch_urgent_push_github_event( $expedition_ids );
+		$this->assertTrue( $actual );
+
+		// Do action.
+		$this->assertSame( 4, did_action( 'quark_ingestor_dispatch_github_event' ) );
+
+		// Reset environment.
+		putenv( 'WP_ENVIRONMENT_TYPE=' . $env );
 
 		// Verify data.
 		$this->assertEquals(
@@ -835,9 +868,9 @@ class Test_Urgent_Tracker extends Softrip_TestCase {
 		}
 
 		// Check if the request has the correct body.
-		if ( empty( $body['event_type'] ) || URGENT_INGESTOR_PUSH_EVENT_NAME !== $body['event_type'] ) {
+		if ( empty( $body['ref'] ) ) {
 			return [
-				'body'     => strval( wp_json_encode( [ 'error' => 'Event type is invalid' ] ) ),
+				'body'     => strval( wp_json_encode( [ 'error' => 'Ref is empty' ] ) ),
 				'response' => [
 					'code'    => 400,
 					'message' => 'Bad Request',
