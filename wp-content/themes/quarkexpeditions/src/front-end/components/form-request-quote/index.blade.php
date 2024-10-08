@@ -16,10 +16,6 @@
 	// Toogle the field.
 	wp_enqueue_script( 'tp-toggle-attribute' );
 	wp_enqueue_style( 'tp-toggle-attribute' );
-
-	// Number spinner.
-	wp_enqueue_script( 'tp-number-spinner' );
-	wp_enqueue_style( 'tp-number-spinner' );
 @endphp
 
 <x-section class="form-request-quote">
@@ -60,18 +56,12 @@
 						</x-form.field>
 
 						<x-form.field>
-							<x-form.label>{{ __( 'Number of passengers', 'qrk' ) }}</x-form.label>
-							<tp-number-spinner class="form-request-quote__number-spinner" min="1" max="10" step="1">
-								<tp-number-spinner-decrement>
-									<button class="btn" type="button">-</button>
-								</tp-number-spinner-decrement>
-								<tp-number-spinner-input>
-									<input type="text" value="1" readonly />
-								</tp-number-spinner-input>
-								<tp-number-spinner-increment>
-									<button class="btn" type="button">+</button>
-								</tp-number-spinner-increment>
-							</tp-number-spinner>
+							<x-number-spinner
+								label="{{ __( 'Number of passengers', 'qrk' ) }}"
+								min="1"
+								max="10"
+								step="1"
+							/>
 						</x-form.field>
 					</x-form.row>
 

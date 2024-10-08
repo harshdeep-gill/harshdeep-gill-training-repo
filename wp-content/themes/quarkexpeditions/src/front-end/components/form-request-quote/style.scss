@@ -164,32 +164,6 @@
 		text-align: center;
 	}
 
-	&__number-spinner {
-		border: 2px solid var(--forms-border-color);
-		border-radius: var(--forms-border-radius);
-		display: flex;
-		overflow: hidden;
-		width: fit-content;
-
-		.btn {
-			background-color: var(--color-black);
-			border-color: var(--color-black);
-			color: var(--color-white);
-			border-radius: 0;
-			min-width: 46px;
-			height: 100%;
-			font-size: 20px;
-		}
-
-		input[type="text"] {
-			border-top: 0;
-			border-bottom: 0;
-			border-radius: 0;
-			max-width: 100px;
-			text-align: center;
-		}
-	}
-
 	&__contact-method {
 
 		.form-field-group__group {
