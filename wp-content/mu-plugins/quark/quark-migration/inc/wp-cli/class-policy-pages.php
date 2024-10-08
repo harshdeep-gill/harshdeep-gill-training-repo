@@ -27,6 +27,15 @@ use const Quark\PolicyPages\POST_TYPE;
 class Policy_Pages {
 
 	/**
+	 * Special page IDs.
+	 *
+	 * @var array<int>
+	 */
+	private $special_pages = [
+		'protection-promise' => 105721,
+	];
+
+	/**
 	 * Migrate all Policy Pages.
 	 *
 	 * @subcommand all
@@ -82,6 +91,14 @@ class Policy_Pages {
 	 * @return void
 	 */
 	public function insert_post( array $drupal_post = [] ): void {
+		// Skip if its special page.
+		if ( ! empty( $drupal_post['nid'] ) && in_array( absint( $drupal_post['nid'] ), $this->special_pages, true ) ) {
+			WP_CLI::line( 'Skipping special page: ' . $drupal_post['nid'] );
+
+			// Bail out.
+			return;
+		}
+
 		// Normalize drupal post data.
 		$normalized_post = $this->normalize_drupal_post( $drupal_post );
 
