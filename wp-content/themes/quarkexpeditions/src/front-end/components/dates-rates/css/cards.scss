@@ -92,11 +92,11 @@
 			text-align: left;
 		}
 
-		&:nth-child(n+3) {
+		&--standard {
 			background-color: var(--color-attention-10);
 		}
 
-		&:nth-child(n+7) {
+		&--premium {
 			background-color: var(--color-yellow);
 		}
 	}

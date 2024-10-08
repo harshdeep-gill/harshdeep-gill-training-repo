@@ -7203,6 +7203,12 @@
 	</x-mini-cards-list>
 </x-component-demo>
 
+<x-component-demo :keys="[ 'search-filters-bar' ]">
+	<x-section>
+		<x-parts.search-filters-bar />
+	</x-section>
+</x-component-demo>
+
 <x-component-demo :keys="[ 'form-newsletter' ]">
 	<x-form-newsletter
 		:countries="$countries"
