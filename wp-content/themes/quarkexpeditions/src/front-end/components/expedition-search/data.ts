@@ -27,6 +27,28 @@ export const DEFAULT_STATE: ExpeditionSearchState = {
 	loadMoreResults: false,
 	loading: false,
 	initialized: false,
+	areSearchFiltersShown: true,
+	destinations: [],
+	ships: [],
+	adventureOptions: [],
+	languages: [],
+	expeditions: [],
+	cabinClasses: [],
+	travelers: [],
+	months: [],
+	itineraryLengths: [ 0, 0 ],
+	baseUrl: '',
+	allowedParams: [
+		'destinations',
+		'months',
+		'itineraryLengths',
+		'ships',
+		'adventureOptions',
+		'languages',
+		'expeditions',
+		'cabinClasses',
+		'travelers',
+	],
 };
 
 /**
