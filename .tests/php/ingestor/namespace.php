@@ -8,6 +8,19 @@
 namespace Quark\Tests\Ingestor;
 
 /**
+ * Setup Ingestor integration.
+ *
+ * @return void
+ */
+function setup_ingestor_integration(): void {
+	// Define constants.
+	if ( function_exists( 'getenv' ) ) {
+		define( 'QUARK_INGESTOR_BASE_URL', getenv( 'QUARK_INGESTOR_BASE_URL' ) );
+		define( 'QUARK_INGESTOR_API_KEY', getenv( 'QUARK_INGESTOR_API_KEY' ) );
+	}
+}
+
+/**
  * Mock the HTTP request.
  *
  * @param mixed[]|false $response    The response.
