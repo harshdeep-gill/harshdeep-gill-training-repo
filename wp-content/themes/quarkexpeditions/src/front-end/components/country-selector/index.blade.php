@@ -21,7 +21,7 @@
 	</x-form.field>
 
 	@foreach ( $states as $country_code => $country_states )
-		<x-form.field :validation="[ 'required' ]" data-country="{{ $country_code }}" class="country-selector__state" :name="$state_code_field_name">
+		<x-form.field :validation="[ 'required' ]" class="country-selector__state" data-country="{{ $country_code }}" data-name="{{ $state_code_field_name }}">
 			<x-form.select label="State/Province">
 				<x-form.option value="">- Select -</x-form.option>
 				@foreach ( $country_states as $state_code => $state_name )
