@@ -27,6 +27,15 @@ use const Quark\PolicyPages\POST_TYPE;
 class Policy_Pages {
 
 	/**
+	 * Special page IDs.
+	 *
+	 * @var array<int>
+	 */
+	private $special_pages = [
+		'protection-promise' => 105721,
+	];
+
+	/**
 	 * Migrate all Policy Pages.
 	 *
 	 * @subcommand all
