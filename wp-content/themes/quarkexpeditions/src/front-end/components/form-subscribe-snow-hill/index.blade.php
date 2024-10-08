@@ -20,7 +20,7 @@
 >
 	<div class="form-snow-hill__content">
 		<div class="form-snow-hill__form">
-			<h3 class="form-snow-hill__title">{{ __('Subscribe Snow Hill Newsletter', 'qrk') }}</h3>
+			<h3 class="form-snow-hill__title">{{ __( 'Subscribe Snow Hill Newsletter', 'qrk' ) }}</h3>
 
 			<x-form.row>
 				<x-form.field :validation="[ 'required', 'no-empty-spaces' ]">
