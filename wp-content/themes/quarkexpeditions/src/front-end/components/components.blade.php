@@ -379,11 +379,8 @@
 					<x-search-hero.title title="Not a cruise. A real polar expedition." />
 				</x-search-hero.title-container>
 				<x-search-hero.search-bar>
-					{{-- https://tuispecialist.atlassian.net/browse/QE-439 [In Progress] --}}
-					{{-- <x-search-filters-bar /> --}}
-					Search bar component
+					<x-parts.search-filters-bar />
 				</x-search-hero.search-bar>
-				{{-- Existing component, needs video support update --}}
 				<x-thumbnail-cards :is_carousel="false" :full_width="false">
 					<x-thumbnail-cards.card size="small" url="#" orientation="portrait" video_id="167">
 						<x-thumbnail-cards.title title="Arctic Expeditions" align="bottom" />
