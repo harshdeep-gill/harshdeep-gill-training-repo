@@ -238,11 +238,13 @@ class Landing_Page {
 			if ( ! empty( $block ) ) {
 				$block_content = $this->block_converter->get_drupal_block_data( $block );
 			}
+		} else {
+			$block_content = sprintf( '<!-- wp:quark/template-title {"title":"%s"} /-->', $title );
+		}
 
-			// Check if hero banner exists.
-			if ( ! empty( $block_content ) ) {
-				$post_content = $block_content . $post_content;
-			}
+		// Check if hero banner exists.
+		if ( ! empty( $block_content ) ) {
+			$post_content = $block_content . $post_content;
 		}
 
 		// Paragraphs for Post content.
