@@ -9,9 +9,6 @@ namespace Quark\Theme\Blocks\FormAccessDeletionRequest;
 
 use WP_Block;
 
-use function Quark\Leads\Forms\get_countries;
-use function Quark\Leads\Forms\get_states;
-
 const COMPONENT = 'form-account-management';
 
 /**
