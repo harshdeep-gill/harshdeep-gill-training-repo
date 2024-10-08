@@ -42,9 +42,6 @@
 					<x-form.checkbox name="fields[Subscribe_General_Newsletter__c]" label="In addition, I'd also like to subscribe to Quark Expedition's weekly newsletter." />
 				</x-form.field-group>
 			</x-form.row>
-			<p class="form-newsletter__privacy">
-						We respect your privacy. You may unsubscribe from our communications at any time. Please refer to our <a href="{{ $url }}">privacy policy</a> for full details.
-			</p>
 		</div>
 
 		<x-form.buttons>
