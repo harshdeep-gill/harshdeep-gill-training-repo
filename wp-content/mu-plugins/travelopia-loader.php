@@ -56,6 +56,8 @@ $tp_mu_plugins = array(
 	'quark/quark-search/plugin.php',
 	'quark/quark-checkout/plugin.php',
 	'quark/quark-localization/plugin.php',
+	'quark/quark-ingestor/plugin.php',
+	'quark/quark-seo/plugin.php',
 );
 
 foreach ( $tp_mu_plugins as $file ) {

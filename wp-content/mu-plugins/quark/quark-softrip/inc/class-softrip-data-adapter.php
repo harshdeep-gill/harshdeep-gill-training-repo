@@ -38,7 +38,7 @@ class Softrip_Data_Adapter {
 		// Set the request args.
 		$args = [
 			'method'  => $method,
-			'timeout' => 20,
+			'timeout' => 30,
 			'headers' => [
 				'Authorization' => 'basic ' . base64_encode( QUARK_SOFTRIP_ADAPTER_USERNAME . ':' . QUARK_SOFTRIP_ADAPTER_PASSWORD ), // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
 			],

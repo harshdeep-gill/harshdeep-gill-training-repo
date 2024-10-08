@@ -90,7 +90,7 @@ export const removeSeason = ( filterValue: string ) => {
 
 	// Remove the selected filter if no filters are selected.
 	if ( newSeasons.length === 0 ) {
-		updateObject.selectedFilters = selectedFilters.filter( ( selectedFilter ) => selectedFilter === 'seasons' );
+		updateObject.selectedFilters = selectedFilters.filter( ( selectedFilter ) => selectedFilter !== 'seasons' );
 	}
 
 	// Set the state.
@@ -172,7 +172,7 @@ export const removeExpedition = ( filterValue: string ) => {
 
 	// Remove the selected filter if no filters are selected.
 	if ( newexpeditions.length === 0 ) {
-		updateObject.selectedFilters = selectedFilters.filter( ( selectedFilter ) => selectedFilter === 'expeditions' );
+		updateObject.selectedFilters = selectedFilters.filter( ( selectedFilter ) => selectedFilter !== 'expeditions' );
 	}
 
 	// Set the state.
@@ -254,7 +254,7 @@ export const removeAdventureOption = ( filterValue: string ) => {
 
 	// Remove the selected filter if no filters are selected.
 	if ( newAdventureOptions.length === 0 ) {
-		updateObject.selectedFilters = selectedFilters.filter( ( selectedFilter ) => selectedFilter === 'adventureOptions' );
+		updateObject.selectedFilters = selectedFilters.filter( ( selectedFilter ) => selectedFilter !== 'adventureOptions' );
 	}
 
 	// Set the state.
@@ -336,7 +336,7 @@ export const removeDepartureMonth = ( filterValue: string ) => {
 
 	// Remove the selected filter if no filters are selected.
 	if ( newMonths.length === 0 ) {
-		updateObject.selectedFilters = selectedFilters.filter( ( selectedFilter ) => selectedFilter === 'months' );
+		updateObject.selectedFilters = selectedFilters.filter( ( selectedFilter ) => selectedFilter !== 'months' );
 	}
 
 	// Set the state.
@@ -418,7 +418,7 @@ export const removeDuration = ( filterValue: string ) => {
 
 	// Remove the selected filter if no filters are selected.
 	if ( newDurations.length === 0 ) {
-		updateObject.selectedFilters = selectedFilters.filter( ( selectedFilter ) => selectedFilter === 'durations' );
+		updateObject.selectedFilters = selectedFilters.filter( ( selectedFilter ) => selectedFilter !== 'durations' );
 	}
 
 	// Set the state.
@@ -500,7 +500,7 @@ export const removeShip = ( filterValue: string ) => {
 
 	// Remove the selected filter if no filters are selected.
 	if ( newShips.length === 0 ) {
-		updateObject.selectedFilters = selectedFilters.filter( ( selectedFilter ) => selectedFilter === 'ships' );
+		updateObject.selectedFilters = selectedFilters.filter( ( selectedFilter ) => selectedFilter !== 'ships' );
 	}
 
 	// Set the state.
@@ -941,8 +941,8 @@ const buildUrlFromFilters = ( filters: DatesRatesFiltersToUrl ): string => {
 		// @ts-ignore Stringified filters.
 		const stringifiedFilter = filters[ key ].toString();
 
-		// Set the url params value based on key.
-		if ( stringifiedFilter ) {
+		// @ts-ignore Set the url params value based on key.
+		if ( stringifiedFilter && filters[ key ] !== DEFAULT_STATE[ key ] ) {
 			urlParams[ snakeCasedKey ] = stringifiedFilter;
 		} else {
 			delete urlParams[ snakeCasedKey ];

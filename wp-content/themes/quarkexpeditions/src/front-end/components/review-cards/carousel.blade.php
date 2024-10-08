@@ -11,7 +11,7 @@
 	$slide_count = quark_get_slot_child_count( $slot );
 @endphp
 
-<div class="review-cards__carousel">
+<div class="review-cards__carousel" data-is-carousel="{{ $is_carousel }}">
 	<tp-slider
 		class="review-cards__slider"
 		swipe="yes"
@@ -24,7 +24,7 @@
 		</tp-slider-track>
 
 		@if ( $slide_count > 1 )
-			<div class="review-cards__nav" data-is-carousel="{{ $is_carousel }}">
+			<div class="review-cards__nav">
 				<tp-slider-arrow direction="previous">
 					<button class="review-cards__arrow-button review-cards__arrow-button--left">
 						<x-svg name="chevron-left" />

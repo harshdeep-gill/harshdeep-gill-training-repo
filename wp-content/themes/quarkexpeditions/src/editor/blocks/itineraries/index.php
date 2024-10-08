@@ -55,7 +55,12 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 	// Get the expedition.
 	$expedition = get_expedition();
 
-	// Check if the expedition is empty.
+	// Validate the expedition.
+	if ( empty( $expedition['post'] ) || ! $expedition['post'] instanceof WP_Post ) {
+		return $content;
+	}
+
+	// Check if the expedition meta is empty.
 	if ( empty( $expedition['post_meta']['related_itineraries'] ) ) {
 		return $content;
 	}
@@ -69,7 +74,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 	}
 
 	// Get detail tabs data.
-	$component_attributes = get_details_tabs_data( $itineraries );
+	$component_attributes = get_details_tabs_data( $itineraries, $expedition['post']->ID );
 
 	// Build the component attributes.
 	return quark_get_component( COMPONENT, $component_attributes );

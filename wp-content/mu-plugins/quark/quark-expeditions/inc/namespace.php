@@ -753,7 +753,7 @@ function get_seo_structured_data( int $post_id = 0 ): array {
 	if ( ! empty( $expedition_price ) ) {
 		$product_schema['offers'] = [
 			'@type'         => 'Offer',
-			'price'         => get_starting_from_price( $post_id )['discounted'],
+			'price'         => $expedition_price,
 			'priceCurrency' => 'USD',
 			'url'           => $expedition['permalink'],
 		];

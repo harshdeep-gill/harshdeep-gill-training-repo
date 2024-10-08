@@ -3,10 +3,15 @@
  * Block Converter.
  *
  * @package quark-migration
+ *
+ * phpcs:disable WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
  */
 
 namespace Quark\Migration\Drupal;
 
+use DOMDocument;
+use DOMElement;
+use Exception;
 use WP_Post;
 use WP_CLI;
 use wpdb;
@@ -72,6 +77,11 @@ class Block_Converter {
 				$wp_block = $this->convert_paragraph_cta( $block );
 				break;
 
+			// Convert cta_cards blocks.
+			case 'cta_cards':
+				$wp_block = $this->convert_paragraph_cta_cards( $block );
+				break;
+
 			// Convert cta_block blocks.
 			case 'cta_block':
 				$wp_block = $this->convert_paragraph_cta_block( $block );
@@ -129,7 +139,7 @@ class Block_Converter {
 
 			// Convert image_with_text block.
 			case 'image_with_text':
-				$wp_block = $this->convert_paragraph_image_with_text( $block );
+				$wp_block = $this->convert_paragraph_image_with_text( $block, 'right', true );
 				break;
 
 			// Convert image_with_text_list block.
@@ -202,6 +212,10 @@ class Block_Converter {
 				$wp_block = $this->convert_paragraph_wysiwyg( $block );
 				break;
 
+			// Skip hero_slider block.
+			case 'hero_slider':
+				break;
+
 			// Default.
 			default:
 				WP_CLI::line( sprintf( 'Block type not found! - %s (Block ID - %s)', $block['type'], $block['id'] ) );
@@ -252,9 +266,9 @@ class Block_Converter {
 		if ( $h1_text_value ) {
 			return serialize_block(
 				[
-					'blockName'    => 'quark/hero-default',
+					'blockName'    => 'quark/template-title',
 					'attrs'        => [
-						'heroText' => $h1_text_value,
+						'title' => $h1_text_value,
 					],
 					'innerContent' => [],
 				]
@@ -438,6 +452,209 @@ class Block_Converter {
 	}
 
 	/**
+	 * Convert card_group block.
+	 *
+	 * @param array{}|array<int|string, string|int> $block Drupal block data.
+	 *
+	 * @return string
+	 */
+	public function convert_paragraph_cta_cards( array $block = [] ): string {
+		// Query.
+		$query = "SELECT
+			paragraph.id,
+			paragraph.type,
+			field_wysiwyg_title.field_wysiwyg_title_value as title,
+			field_wysiwyg_body.field_wysiwyg_body_value as body,
+			(SELECT GROUP_CONCAT( field_cta_cards_target_id ORDER BY delta SEPARATOR ', ' ) FROM paragraph__field_cta_cards AS field_cta_cards WHERE paragraph.id = field_cta_cards.entity_id AND field_cta_cards.langcode = paragraph.langcode) AS cards
+		FROM
+			paragraphs_item_field_data AS paragraph
+				LEFT JOIN paragraph__field_wysiwyg_title AS field_wysiwyg_title ON paragraph.id = field_wysiwyg_title.entity_id AND paragraph.langcode = field_wysiwyg_title.langcode
+				LEFT JOIN paragraph__field_wysiwyg_body AS field_wysiwyg_body ON paragraph.id = field_wysiwyg_body.entity_id AND paragraph.langcode = field_wysiwyg_body.langcode
+
+		WHERE
+			paragraph.type = 'cta_cards' AND paragraph.id = %s AND paragraph.langcode = 'en';";
+
+		// Fetch data.
+		$result = $this->database->get_row( $this->database->prepare( $query, $block['id'] ), ARRAY_A );
+
+		// Check if data is not array.
+		if ( ! is_array( $result ) ) {
+			WP_CLI::line( 'Unable to fetch cta_cards paragraph data!' );
+
+			// Bail out.
+			return '';
+		}
+
+		// Block Markup.
+		$cta_cards_markup = '';
+
+		// Check if cards are available.
+		if ( ! empty( $result['cards'] ) ) {
+			$card_ids = array_map( 'absint', explode( ',', $result['cards'] ) );
+
+			// Loop through each card.
+			foreach ( $card_ids as $index => $card_id ) {
+				// set align as left for even blocks and right for odd blocks.
+				$align = 0 === $index % 2 ? 'right' : 'left';
+
+				// Convert cta_card block.
+				$cta_cards_markup .= $this->convert_paragraph_cta_card( [ 'id' => $card_id ], $align );
+			}
+		}
+
+		// if title is available then wrap in section.
+		if ( ! empty( $result['title'] ) ) {
+			// Set attributes.
+			$attrs['title']          = strval( $result['title'] );
+			$attrs['titleAlignment'] = 'left';
+			$attrs['headingLevel']   = '2';
+
+			// Description.
+			if ( ! empty( $result['body'] ) ) {
+				$attrs['hasDescription'] = true;
+				$attrs['description']    = wp_strip_all_tags( strval( $result['body'] ) );
+			}
+
+			// wrap with section block.
+			$cta_cards_markup = serialize_block(
+				[
+					'blockName'    => 'quark/section',
+					'attrs'        => $attrs,
+					'innerContent' => [ $cta_cards_markup ],
+				]
+			) . PHP_EOL;
+		}
+
+		// Return data.
+		return $cta_cards_markup;
+	}
+
+	/**
+	 * Convert cta_card block.
+	 *
+	 * @param array{}|array<int|string, string|int> $block Drupal block data.
+	 * @param string                                $align Image alignment.
+	 *
+	 * @return string
+	 */
+	public function convert_paragraph_cta_card( array $block = [], string $align = 'right' ): string {
+		// Query.
+		$query = "SELECT
+			paragraph.id,
+			paragraph.type,
+			field_cta_card_title.field_cta_card_title_value as title,
+			field_cta_card_body.field_cta_card_body_value as body,
+			field_cta_link.field_cta_link_uri as link_uri,
+			field_cta_link.field_cta_link_title as link_title,
+			field_icon.field_icon_target_id as icon_id
+		FROM
+			paragraphs_item_field_data AS paragraph
+				LEFT JOIN paragraph__field_cta_card_title AS field_cta_card_title ON paragraph.id = field_cta_card_title.entity_id AND paragraph.langcode = field_cta_card_title.langcode
+				LEFT JOIN paragraph__field_cta_card_body AS field_cta_card_body ON paragraph.id = field_cta_card_body.entity_id AND paragraph.langcode = field_cta_card_body.langcode
+				LEFT JOIN paragraph__field_cta_link AS field_cta_link ON paragraph.id = field_cta_link.entity_id AND paragraph.langcode = field_cta_link.langcode
+				LEFT JOIN paragraph__field_icon AS field_icon ON paragraph.id = field_icon.entity_id AND paragraph.langcode = field_icon.langcode
+		WHERE
+			paragraph.type = 'cta_card' AND paragraph.id = %s AND paragraph.langcode = 'en'";
+
+		// Fetch data.
+		$result = $this->database->get_row( $this->database->prepare( $query, $block['id'] ), ARRAY_A );
+
+		// Check if data is not array.
+		if ( ! is_array( $result ) ) {
+			WP_CLI::line( 'Unable to fetch cta_card paragraph data!' );
+
+			// Bail out.
+			return '';
+		}
+
+		// Block Markup.
+		$block_markup = '';
+
+		// if title set create block H3.
+		if ( ! empty( $result['title'] ) ) {
+			$block_markup .= sprintf( '<!-- wp:heading {"level":3} --><h3>%s</h3><!-- /wp:heading -->', $result['title'] ) . PHP_EOL;
+		}
+
+		// if description set create block paragraph.
+		if ( ! empty( $result['body'] ) ) {
+			$block_markup .= prepare_content( strval( $result['body'] ) ) . PHP_EOL;
+		}
+
+		// Buttons Markup.
+		$buttons = '';
+
+		// Check if link_uri is available.
+		if ( ! empty( $result['link_uri'] ) ) {
+			// Get link text.
+			$link_text = ! empty( $result['link_title'] ) ? strval( $result['link_title'] ) : wp_strip_all_tags( $result['title'] );
+
+			// Create button block.
+			$buttons .= serialize_block(
+				[
+					'blockName'    => 'quark/button',
+					'attrs'        => [
+						'url'     => [
+							'url'  => get_wp_permalink( strval( $result['link_uri'] ) ),
+							'text' => $link_text,
+						],
+						'btnText' => $link_text,
+					],
+					'innerContent' => [],
+				]
+			) . PHP_EOL;
+		}
+
+		// If buttons are available wrap in media-text-cta-cta block.
+		if ( ! empty( $buttons ) ) {
+			$block_markup .= serialize_block(
+				[
+					'blockName'    => 'quark/media-text-cta-cta',
+					'attrs'        => [],
+					'innerContent' => [ $buttons ],
+				]
+			) . PHP_EOL;
+		}
+
+		// Block attrs.
+		$attrs = [];
+
+		// Check if media is available.
+		if ( ! empty( $result['icon_id'] ) ) {
+			$media_target_id = download_file_by_mid( absint( $result['icon_id'] ) );
+
+			// Check if image found.
+			if ( ! $media_target_id instanceof WP_Error ) {
+				$attachment_src = wp_get_attachment_image_src( absint( $media_target_id ), 'full' );
+
+				// Check if attachment src found.
+				if ( ! empty( $attachment_src ) ) {
+					$attrs['image'] = [
+						'id'     => $media_target_id,
+						'src'    => $attachment_src[0],
+						'width'  => $attachment_src[1],
+						'height' => $attachment_src[2],
+						'size'   => 'large',
+					];
+				}
+			}
+		}
+
+		// Align media to right.
+		if ( 'right' === $align ) {
+			$attrs['mediaAlignment'] = 'right';
+		}
+
+		// Return data.
+		return serialize_block(
+			[
+				'blockName'    => 'quark/media-text-cta',
+				'attrs'        => $attrs,
+				'innerContent' => [ $block_markup ],
+			]
+		) . PHP_EOL;
+	}
+
+	/**
 	 * Convert cta_block block.
 	 *
 	 * @param array{}|array<int|string, string|int> $block Drupal block data.
@@ -591,7 +808,8 @@ class Block_Converter {
 					[
 						'blockName'    => 'quark/blog-post-cards',
 						'attrs'        => [
-							'ids' => $card_ids,
+							'layout' => 'grid',
+							'ids'    => $card_ids,
 						],
 						'innerContent' => [],
 					]
@@ -608,7 +826,7 @@ class Block_Converter {
 		$attrs['title']          = strval( $result['title'] );
 		$attrs['anchor']         = sanitize_title_with_dashes( $result['title'] );
 		$attrs['titleAlignment'] = 'left';
-		$attrs['headingLevel']   = 'h2';
+		$attrs['headingLevel']   = '2';
 
 		// Access secondary nav.
 		global $secondary_nav;
@@ -665,12 +883,8 @@ class Block_Converter {
 
 		// Block Markup.
 		$attrs = [
-			'cards' => [],
+			'ids' => [],
 		];
-
-		// Set attributes.
-		$attrs['background'] = ! empty( $result['background'] ) ? strval( $result['background'] ) : '';
-		$attrs['title']      = ! empty( $result['title'] ) ? strval( $result['title'] ) : '';
 
 		// Check if cards are available.
 		if ( ! empty( $result['cards'] ) ) {
@@ -678,18 +892,43 @@ class Block_Converter {
 
 			// Loop through each blog card.
 			foreach ( $cards as $card ) {
-				$attrs['cards'][] = get_post_by_id( absint( $card ), [ EXPEDITION_POST_TYPE, SHIP_POST_TYPE ] );
+				$post_data = get_post_by_id( absint( $card ), [ EXPEDITION_POST_TYPE, SHIP_POST_TYPE ] );
+
+				// Check if post data is available.
+				if ( $post_data instanceof WP_Post ) {
+					$attrs['ids'][] = $post_data->ID;
+				}
 			}
 		}
 
-		// Return data.
-		return serialize_block(
+		// block data.
+		$block = serialize_block(
 			[
-				'blockName'    => 'quark/related-cards',
+				'blockName'    => 'quark/expeditions',
 				'attrs'        => $attrs,
 				'innerContent' => [],
 			]
 		) . PHP_EOL;
+
+		// if title is available then wrap in section.
+		if ( ! empty( $result['title'] ) ) {
+			// Set attributes.
+			$attrs['title']          = strval( $result['title'] );
+			$attrs['titleAlignment'] = 'left';
+			$attrs['headingLevel']   = '2';
+
+			// Return data.
+			return serialize_block(
+				[
+					'blockName'    => 'quark/section',
+					'attrs'        => $attrs,
+					'innerContent' => [ $block ],
+				]
+			) . PHP_EOL;
+		}
+
+		// Return data.
+		return $block;
 	}
 
 	/**
@@ -769,7 +1008,7 @@ class Block_Converter {
 		$attrs['title']          = strval( $result['title'] );
 		$attrs['anchor']         = 'expeditions';
 		$attrs['titleAlignment'] = 'left';
-		$attrs['headingLevel']   = 'h2';
+		$attrs['headingLevel']   = '2';
 
 		// Access secondary nav.
 		global $secondary_nav;
@@ -826,16 +1065,15 @@ class Block_Converter {
 		$attrs = [];
 
 		// Set attributes.
-		$attrs['question'] = ! empty( $result['question'] ) ? strval( $result['question'] ) : '';
-		$answer            = ! empty( $result['answer'] ) ? prepare_content( strval( $result['answer'] ) ) : '';
+		$attrs['title'] = ! empty( $result['question'] ) ? strval( $result['question'] ) : '';
+		$answer         = ! empty( $result['answer'] ) ? prepare_content( strval( $result['answer'] ) ) : '';
 
 		// Return data.
 		return serialize_block(
 			[
-				'blockName'    => 'quark/faq',
+				'blockName'    => 'quark/accordion-item',
 				'attrs'        => $attrs,
-				'innerContent' => [],
-				'innerHTML'    => $answer,
+				'innerContent' => [ $answer ],
 			]
 		) . PHP_EOL;
 	}
@@ -874,12 +1112,7 @@ class Block_Converter {
 		}
 
 		// Block Markup.
-		$attrs      = [];
 		$faq_blocks = '';
-
-		// Set attributes.
-		$attrs['background'] = ! empty( $result['background'] ) ? strval( $result['background'] ) : '';
-		$attrs['title']      = ! empty( $result['title'] ) ? strval( $result['title'] ) : '';
 
 		// Check if cards are available.
 		if ( ! empty( $result['faqs'] ) ) {
@@ -892,14 +1125,36 @@ class Block_Converter {
 		}
 
 		// Return data.
-		return serialize_block(
+		$block = serialize_block(
 			[
-				'blockName'    => 'quark/faq-component',
-				'attrs'        => $attrs,
-				'innerContent' => [],
-				'innerHTML'    => $faq_blocks,
+				'blockName'    => 'quark/accordion',
+				'attrs'        => [
+					'faqSchema' => true,
+				],
+				'innerContent' => [ $faq_blocks ],
 			]
 		) . PHP_EOL;
+
+		// set the Title.
+		if ( ! empty( $result['title'] ) ) {
+			// Set attributes.
+			$attrs                   = [];
+			$attrs['title']          = strval( $result['title'] );
+			$attrs['titleAlignment'] = 'left';
+			$attrs['headingLevel']   = '2';
+
+			// Prepare section block.
+			$block = serialize_block(
+				[
+					'blockName'    => 'quark/section',
+					'attrs'        => $attrs,
+					'innerContent' => [ $block ],
+				]
+			) . PHP_EOL;
+		}
+
+		// Return data.
+		return $block;
 	}
 
 	/**
@@ -915,7 +1170,7 @@ class Block_Converter {
 			paragraph.id,
 			paragraph.type,
 			field_highlight.field_highlight_value as highlight,
-			(SELECT taxonomy_term__field_svg_file.field_svg_file_target_id FROM taxonomy_term__field_svg_file WHERE field_highlight_icon.field_highlight_icon_target_id = taxonomy_term__field_svg_file.entity_id) as icon_id
+			field_highlight_icon_target_id as icon_id
 		FROM
 			paragraphs_item_field_data AS paragraph
 				LEFT JOIN paragraph__field_highlight AS field_highlight ON paragraph.id = field_highlight.entity_id AND paragraph.langcode = field_highlight.langcode
@@ -937,21 +1192,43 @@ class Block_Converter {
 		// Block Markup.
 		$attrs = [];
 
-		// Set attributes.
-		$attrs['title']  = ! empty( $result['highlight'] ) ? strval( $result['highlight'] ) : '';
-		$image_target_id = ! empty( $result['image'] ) ? download_file_by_fid( absint( $result['image'] ) ) : '';
+		// Check if image target id is available.
+		$icon_term_mapping = [
+			5001 => 'phone',
+			5006 => 'mail',
+			5011 => 'brochure',
+			5016 => 'info',
+			5021 => 'flightseeing',
+			5386 => 'flightseeing',
+			5391 => 'flightseeing',
+			5446 => 'whale-tail',
+			6211 => 'iceberg',
+			6216 => 'ship',
+			5416 => 'zodiac-cruising',
+			5436 => 'compass',
+			5366 => 'ship',
+			5376 => 'penguin-chicks',
+		];
 
-		// Check if image found.
-		if ( ! $image_target_id instanceof WP_Error ) {
-			$attrs['image'] = absint( $image_target_id );
-		}
+		// Set icon.
+		$attrs['icon'] = ! empty( $icon_term_mapping[ absint( $result['icon_id'] ) ] ) ? $icon_term_mapping[ absint( $result['icon_id'] ) ] : 'star';
 
 		// Return data.
 		return serialize_block(
 			[
-				'blockName'    => 'quark/highlight',
+				'blockName'    => 'quark/highlight-item',
 				'attrs'        => $attrs,
-				'innerContent' => [],
+				'innerContent' => [
+					serialize_block(
+						[
+							'blockName'    => 'quark/highlight-item-text',
+							'attrs'        => [
+								'text' => ! empty( $result['highlight'] ) ? wp_strip_all_tags( $result['highlight'] ) : '',
+							],
+							'innerContent' => [],
+						]
+					),
+				],
 			]
 		) . PHP_EOL;
 	}
@@ -988,24 +1265,19 @@ class Block_Converter {
 		}
 
 		// Block Markup.
-		$attrs      = [];
+		$attrs      = [
+			'title' => 'Highlights',
+			'info'  => 'Plus, add on adventure options, such as...',
+		];
 		$highlights = '';
-
-		// Set attributes.
-		$image_target_id = ! empty( $result['image'] ) ? download_file_by_mid( absint( $result['image'] ) ) : '';
-
-		// Check if image found.
-		if ( ! $image_target_id instanceof WP_Error ) {
-			$attrs['image'] = absint( $image_target_id );
-		}
 
 		// Check if highlights are available.
 		if ( ! empty( $result['highlights'] ) ) {
-			$highlights = explode( ',', $result['highlights'] );
+			$highlight_ids = explode( ',', $result['highlights'] );
 
 			// Loop through each card.
-			foreach ( $highlights as $highlight ) {
-				$highlights .= $this->convert_paragraph_highlight( [ 'id' => $highlight ] );
+			foreach ( $highlight_ids as $highlight_id ) {
+				$highlights .= $this->convert_paragraph_highlight( [ 'id' => $highlight_id ] );
 			}
 		}
 
@@ -1014,8 +1286,7 @@ class Block_Converter {
 			[
 				'blockName'    => 'quark/highlights',
 				'attrs'        => $attrs,
-				'innerContent' => [],
-				'innerHTML'    => sprintf( '<div class="quark-highlights--wrapper">%s</div>', $highlights ),
+				'innerContent' => [ $highlights ],
 			]
 		) . PHP_EOL;
 	}
@@ -1118,7 +1389,7 @@ class Block_Converter {
 		$attrs['title']          = ! empty( $result['title'] ) ? strval( $result['title'] ) : '';
 		$attrs['anchor']         = sanitize_title_with_dashes( $result['title'] );
 		$attrs['titleAlignment'] = 'left';
-		$attrs['headingLevel']   = 'h2';
+		$attrs['headingLevel']   = '2';
 
 		// Check if icon_with_text_blocks are available.
 		if ( ! empty( $result['icon_with_text_blocks'] ) ) {
@@ -1163,12 +1434,13 @@ class Block_Converter {
 	/**
 	 * Convert image_with_text block.
 	 *
-	 * @param array{}|array<int|string, string|int> $block Drupal block data.
-	 * @param string                                $align Image alignment.
+	 * @param array{}|array<int|string, string|int> $block   Drupal block data.
+	 * @param string                                $align   Image alignment.
+	 * @param bool                                  $section Wrap in Section block.
 	 *
 	 * @return string
 	 */
-	public function convert_paragraph_image_with_text( array $block = [], string $align = 'right' ): string {
+	public function convert_paragraph_image_with_text( array $block = [], string $align = 'right', bool $section = false ): string {
 		// Query.
 		$query = "SELECT
 			paragraph.id,
@@ -1302,6 +1574,30 @@ class Block_Converter {
 					];
 				}
 			}
+
+			// Get the video URL.
+			$video_url = $this->database->get_var(
+				strval(
+					$this->database->prepare(
+						'
+								SELECT
+									field_media_video_embed_field_value
+								FROM
+									media__field_media_video_embed_field
+								WHERE
+									entity_id = %d
+								LIMIT 1
+								',
+						$result['media']
+					)
+				)
+			);
+
+			// If video URL found then build HTML.
+			if ( ! empty( $video_url ) ) {
+				$attrs['mediaType'] = 'video';
+				$attrs['videoUrl']  = $video_url;
+			}
 		}
 
 		// Align media to right.
@@ -1309,14 +1605,30 @@ class Block_Converter {
 			$attrs['mediaAlignment'] = 'right';
 		}
 
-		// Return data.
-		return serialize_block(
+		// Block data.
+		$block = serialize_block(
 			[
 				'blockName'    => 'quark/media-text-cta',
 				'attrs'        => $attrs,
 				'innerContent' => [ $block_markup ],
 			]
 		) . PHP_EOL;
+
+		// If section is set.
+		if ( true === $section ) {
+			$block = serialize_block(
+				[
+					'blockName'    => 'quark/section',
+					'attrs'        => [
+						'hasTitle' => false,
+					],
+					'innerContent' => [ $block ],
+				]
+			) . PHP_EOL;
+		}
+
+		// Return data.
+		return $block;
 	}
 
 	/**
@@ -1365,7 +1677,7 @@ class Block_Converter {
 		$attrs['title']          = ! empty( $result['title'] ) ? strval( $result['title'] ) : '';
 		$attrs['anchor']         = sanitize_title_with_dashes( $result['title'] );
 		$attrs['titleAlignment'] = 'left';
-		$attrs['headingLevel']   = 'h2';
+		$attrs['headingLevel']   = '2';
 
 		// Set description.
 		if ( ! empty( $result['description'] ) ) {
@@ -1447,7 +1759,7 @@ class Block_Converter {
 		$attrs['title']          = ! empty( $result['title'] ) ? strval( $result['title'] ) : '';
 		$attrs['anchor']         = sanitize_title_with_dashes( $result['title'] );
 		$attrs['titleAlignment'] = 'left';
-		$attrs['headingLevel']   = 'h2';
+		$attrs['headingLevel']   = '2';
 
 		// Check if icon_with_text_blocks are available.
 		if ( ! empty( $result['itc_image_text'] ) ) {
@@ -1526,7 +1838,7 @@ class Block_Converter {
 		$attrs['title']          = ! empty( $result['title'] ) ? strval( $result['title'] ) : '';
 		$attrs['anchor']         = sanitize_title_with_dashes( $result['title'] );
 		$attrs['titleAlignment'] = 'left';
-		$attrs['headingLevel']   = 'h2';
+		$attrs['headingLevel']   = '2';
 
 		// Check if numbered_cards are available.
 		if ( ! empty( $result['numbered_cards'] ) ) {
@@ -1573,6 +1885,8 @@ class Block_Converter {
 	 * @param array{}|array<int|string, string|int> $block Drupal block data.
 	 *
 	 * @return string
+	 *
+	 * @throws Exception If unable to fetch simple_card paragraph data.
 	 */
 	public function convert_paragraph_simple_card( array $block = [] ): string {
 		// Query.
@@ -1605,8 +1919,82 @@ class Block_Converter {
 		$attrs = [];
 
 		// Set attributes.
-		$attrs['title']       = ! empty( $result['title'] ) ? strval( $result['title'] ) : '';
-		$attrs['description'] = ! empty( $result['description'] ) ? wp_strip_all_tags( strval( $result['description'] ) ) : '';
+		$attrs['title'] = ! empty( $result['title'] ) ? strval( $result['title'] ) : '';
+		$description    = ! empty( $result['description'] ) ? strval( $result['description'] ) : '';
+		$buttons        = '';
+
+		// Check if description has anchor tags with class - btn.
+		if ( str_contains( $description, 'class="btn' ) ) {
+			// Load the HTML content.
+			$dom = new DOMDocument();
+
+			// Suppress warnings for invalid HTML structure.
+			libxml_use_internal_errors( true );
+
+			// Load the HTML into DOMDocument.
+			$dom->loadHTML( $description );
+			libxml_clear_errors();
+
+			// Get all the anchor tags.
+			$anchor_tags = $dom->getElementsByTagName( 'a' );
+
+			// Initialize an array to store anchor tag details.
+			$button_markup = '';
+
+			// Loop through each anchor tag and extract href and text.
+			foreach ( $anchor_tags as $tag ) {
+				// Validate $tag is DOMElement.
+				if ( ! $tag instanceof DOMElement ) {
+					continue;
+				}
+
+				// Get href, class, text and HTML content.
+				$href  = $tag->getAttribute( 'href' );
+				$class = $tag->getAttribute( 'class' );
+				$text  = strtoupper( strval( $tag->nodeValue ) );
+				$html  = $text;
+
+				// Get inner HTML.
+				if ( $tag->ownerDocument instanceof DOMDocument ) {
+					$html = $tag->ownerDocument->saveHTML( $tag );
+				}
+
+				// Prepare button block markup.
+				$button_markup .= serialize_block(
+					[
+						'blockName'    => 'quark/button',
+						'attrs'        => [
+							'url'             => [
+								'url'  => get_wp_permalink( $href ),
+								'text' => $text,
+							],
+							'btnText'         => $text,
+							'isSizeBig'       => false,
+							'backgroundColor' => str_contains( $class, 'secondary' ) ? 'black' : 'yellow',
+						],
+						'innerContent' => [],
+					]
+				) . PHP_EOL;
+
+				// Remove anchor tags from description.
+				$description = str_replace( strval( $html ), '', $description );
+			}
+
+			// Check if anchor tags are found.
+			if ( ! empty( $button_markup ) ) {
+				// Create quark/buttons block.
+				$buttons = serialize_block(
+					[
+						'blockName'    => 'quark/buttons',
+						'attrs'        => [],
+						'innerContent' => [ $button_markup ],
+					]
+				);
+			}
+		}
+
+		// Set description.
+		$attrs['description'] = wp_strip_all_tags( $description );
 
 		// Check if image is available.
 		if ( ! empty( $result['image'] ) ) {
@@ -1638,7 +2026,7 @@ class Block_Converter {
 			[
 				'blockName'    => 'quark/media-description-card',
 				'attrs'        => $attrs,
-				'innerContent' => [],
+				'innerContent' => [ $buttons ],
 			]
 		) . PHP_EOL;
 	}
@@ -1817,7 +2205,7 @@ class Block_Converter {
 		$attrs['title']          = ! empty( $result['title'] ) ? strval( $result['title'] ) : '';
 		$attrs['anchor']         = sanitize_title_with_dashes( $result['title'] );
 		$attrs['titleAlignment'] = 'left';
-		$attrs['headingLevel']   = 'h2';
+		$attrs['headingLevel']   = '2';
 
 		// Set description.
 		if ( ! empty( $result['description'] ) ) {
@@ -2034,23 +2422,53 @@ class Block_Converter {
 		}
 
 		// Block Markup.
-		$attrs = [];
+		$view      = ! empty( $result['view'] ) ? strval( $result['view'] ) : 'card';
+		$view_data = ! empty( $result['view_data'] ) ? maybe_unserialize( $result['view_data'] ) : [];
 
 		// Set attributes.
-		$attrs['title']       = ! empty( $result['title'] ) ? strval( $result['title'] ) : '';
-		$attrs['description'] = ! empty( $result['description'] ) ? strval( $result['description'] ) : '';
-		$attrs['background']  = ! empty( $result['background'] ) ? strval( $result['background'] ) : '';
-		$attrs['view']        = ! empty( $result['view'] ) ? strval( $result['view'] ) : '';
-		$attrs['viewData']    = ! empty( $result['view_data'] ) ? maybe_unserialize( $result['view_data'] ) : [];
+		$attrs['totalPosts'] = is_array( $view_data ) && ! empty( $view_data['argument'] ) ? absint( $view_data['argument'] ) : 6;
+		$attrs['selection']  = 'auto';
 
-		// Return data.
-		return serialize_block(
+		// Set view.
+		if ( in_array( $view, [ 'cards_slider', 'row' ], true ) ) {
+			$attrs['isCarousel'] = true;
+		}
+
+		// prepare data.
+		$block = serialize_block(
 			[
-				'blockName'    => 'quark/staff-member-list',
+				'blockName'    => 'quark/staff-members',
 				'attrs'        => $attrs,
 				'innerContent' => [],
 			]
 		) . PHP_EOL;
+
+		// set the Title.
+		if ( ! empty( $result['title'] ) ) {
+			// Set attributes.
+			$attrs                   = [];
+			$attrs['title']          = strval( $result['title'] );
+			$attrs['titleAlignment'] = 'left';
+			$attrs['headingLevel']   = '2';
+
+			// Set description.
+			if ( ! empty( $result['description'] ) ) {
+				$attrs['description']    = strval( $result['description'] );
+				$attrs['hasDescription'] = true;
+			}
+
+			// Prepare section block.
+			$block = serialize_block(
+				[
+					'blockName'    => 'quark/section',
+					'attrs'        => $attrs,
+					'innerContent' => [ $block ],
+				]
+			) . PHP_EOL;
+		}
+
+		// Return data.
+		return $block;
 	}
 
 	/**
@@ -2089,8 +2507,8 @@ class Block_Converter {
 		$attrs = [];
 
 		// Set attributes.
-		$attrs['label'] = ! empty( $result['title'] ) ? strval( $result['title'] ) : '';
-		$attrs['value'] = ! empty( $result['description'] ) ? strval( $result['description'] ) : '';
+		$attrs['label'] = strval( $result['title'] );
+		$attrs['value'] = strval( $result['description'] );
 
 		// Return data.
 		return serialize_block(
@@ -2199,7 +2617,7 @@ class Block_Converter {
 		$attrs['title']          = ! empty( $result['title'] ) ? strval( $result['title'] ) : '';
 		$attrs['anchor']         = sanitize_title_with_dashes( $result['title'] );
 		$attrs['titleAlignment'] = 'left';
-		$attrs['headingLevel']   = 'h2';
+		$attrs['headingLevel']   = '2';
 
 		// Check if testimonial is available.
 		if ( ! empty( $result['testimonial'] ) ) {
@@ -2383,7 +2801,8 @@ class Block_Converter {
 			$attrs['title']          = strval( $result['title'] );
 			$attrs['anchor']         = sanitize_title_with_dashes( $result['title'] );
 			$attrs['titleAlignment'] = 'left';
-			$attrs['headingLevel']   = 'h2';
+			$attrs['headingLevel']   = '2';
+			$attrs['isNarrow']       = true;
 		} else {
 			$attrs['hasTitle'] = false;
 		}
@@ -2540,6 +2959,20 @@ class Block_Converter {
 			);
 		}
 
+		// Prepare secondary nav content.
+		$secondary_nav_content = '';
+
+		// Check if secondary nav items are not empty.
+		if ( ! empty( $secondary_nav_items ) ) {
+			$secondary_nav_content = serialize_block(
+				[
+					'blockName'    => 'quark/secondary-navigation-menu',
+					'attrs'        => [],
+					'innerContent' => [ $secondary_nav_items ],
+				]
+			);
+		}
+
 		// Check if secondary nav items are not empty.
 		if ( empty( $secondary_nav_items ) ) {
 			return '';
@@ -2550,15 +2983,7 @@ class Block_Converter {
 			[
 				'blockName'    => 'quark/secondary-navigation',
 				'attrs'        => [],
-				'innerContent' => [
-					serialize_block(
-						[
-							'blockName'    => 'quark/secondary-navigation-menu',
-							'attrs'        => [],
-							'innerContent' => [ $secondary_nav_items ],
-						]
-					),
-				],
+				'innerContent' => [ $secondary_nav_content ],
 			]
 		) . PHP_EOL;
 	}

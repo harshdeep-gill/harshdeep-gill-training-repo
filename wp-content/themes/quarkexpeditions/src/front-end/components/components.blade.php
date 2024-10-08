@@ -117,31 +117,72 @@
 				<x-highlights.title title="Highlights" />
 				<x-highlights.item>
 					<x-highlights.icon icon="compass2" />
-					<x-highlights.item-title title="Cross the Drake Passage, and venture beyond the remote at 66°33'S" />
+					<x-highlights.content>
+						<x-highlights.item-text text="Cross the Drake Passage, and venture beyond the remote at 66°33'S" />
+					</x-highlights.content>
 				</x-highlights.item>
 				<x-highlights.item>
 					<x-highlights.icon icon="zodiac-cruising" />
-					<x-highlights.item-title title="Head out on Zodiac cruises, go hiking, and take a Polar Plunge" />
+					<x-highlights.content>
+						<x-highlights.item-text text="Head out on Zodiac cruises, go hiking, and take a Polar Plunge" />
+					</x-highlights.content>
 				</x-highlights.item>
 				<x-highlights.item>
 					<x-highlights.icon icon="whale-tail" />
-					<x-highlights.item-title title="Witness abundant wildlife, including penguins, seals, and whales" />
+					<x-highlights.content>
+						<x-highlights.item-text text="Witness abundant wildlife, including penguins, seals, and whales" />
+					</x-highlights.content>
 				</x-highlights.item>
 				<x-highlights.item>
 					<x-highlights.icon icon="house" />
-					<x-highlights.item-title title="Visit Antarctic research stations and iconic landmarks" />
+					<x-highlights.content>
+						<x-highlights.item-text text="Visit Antarctic research stations and iconic landmarks" />
+					</x-highlights.content>
 				</x-highlights.item>
 				<x-highlights.item>
 					<x-highlights.icon icon="iceberg" />
-					<x-highlights.item-title title="Enjoy presentations on wildlife, history, glaciology, and geology by our onboard polar experts" />
+					<x-highlights.content>
+						<x-highlights.item-text text="Enjoy presentations on wildlife, history, glaciology, and geology by our onboard polar experts" />
+					</x-highlights.content>
 				</x-highlights.item>
 				<x-highlights.item>
 					<x-highlights.icon icon="flightseeing" />
-					<x-highlights.item-title title="Flightseeing (Only on Ultramarine)" />
+					<x-highlights.content>
+						<x-highlights.item-text text="Flightseeing (Only on Ultramarine)" />
+					</x-highlights.content>
 				</x-highlights.item>
 				<x-highlights.info>
 					<p>Plus, add on adventure options, such as a paddling excursion</p>
 				</x-highlights.info>
+			</x-highlights>
+		</x-two-columns.column>
+	</x-two-columns>
+
+	<x-two-columns :border="false">
+		<x-two-columns.column>
+			<h2>Highlight Variation 2.0</h2>
+			<p>Set foot on the Seventh Continent for a polar achievement few get to experience. But an even rarer milestone is getting to cross the iconic Antarctic Circle, which is one of the highlights of this unique small ship expedition!</p>
+			<p>Over 14 days as you navigate south, you’ll have the chance to witness dramatic ice formations, humpback whales swimming alongside the ship, leopard seals diving beneath your Zodiac, penguins sliding off icebergs into crystal waters, and even giant petrels soaring above the crackling sea.</p>
+			<p>We highly recommend the expedition itineraries aboard our pioneering purpose-built vessel, the Ultramarine, which includes a flightseeing tour and a range of adventure options more extensive than any other ship in its class.</p>
+		</x-two-columns.column>
+		<x-two-columns.column>
+			<x-highlights>
+				<x-highlights.item>
+					<x-highlights.icon icon="compass2" :border="true" />
+					<x-highlights.content>
+						<x-highlights.item-title title="When to Visit" />
+						<x-highlights.overline>November to march</x-highlights.overline>
+						<x-highlights.item-text text="This is summer in the Antarctic – the only time this region is accessible. Each month offers a unique Antarctic experience. " />
+					</x-highlights.content>
+				</x-highlights.item>
+				<x-highlights.item>
+					<x-highlights.icon icon="zodiac-cruising" :border="true" />
+					<x-highlights.content>
+						<x-highlights.item-title title="When to Visit 2" />
+						<x-highlights.overline>April to August</x-highlights.overline>
+						<x-highlights.item-text text="Head out on Zodiac cruises, go hiking, and take a Polar Plunge" />
+					</x-highlights.content>
+				</x-highlights.item>
 			</x-highlights>
 		</x-two-columns.column>
 	</x-two-columns>
@@ -246,6 +287,36 @@
 				</x-review-cards.content>
 				<x-review-cards.author name="Denise P." />
 				<x-review-cards.author-details text="South Georgia and Antarctic Peninsula: Penguin Safari" />
+			</x-review-cards.card>
+		</x-review-cards>
+	</x-section>
+</x-component-demo>
+
+<x-component-demo :keys="[ 'section-image' ]">
+	<x-section :full_width="true">
+		<x-section.image :image_id="26" gradient_color="white" gradient_position="both" />
+		<x-review-cards>
+			<x-review-cards.card>
+				<x-review-cards.rating rating="4" />
+				<x-review-cards.title title="Falkland, South Georgia and the Antarctic Circle" />
+				<x-review-cards.content>
+					<p>
+						Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever. Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever.
+					</p>
+				</x-review-cards.content>
+				<x-review-cards.author name="Denise P." />
+				<x-review-cards.author-details text="South Georgia and Antarctic Peninsula: Penguin Safari South Georgia and Antarctic Peninsula: Penguin Safari" />
+			</x-review-cards.card>
+			<x-review-cards.card>
+				<x-review-cards.rating rating="4" />
+				<x-review-cards.title title="Antartica with quark – experience of a lifetime" />
+				<x-review-cards.content>
+					<p>
+						In a phrase, going to Antartica with Quark was “simply amazing”. Antartica is gorgeous and the team at Quark made it possible for us to enjoy every bit of it with their impeccable planning and attention to every detail.
+					</p>
+				</x-review-cards.content>
+				<x-review-cards.author name="Madhuchanda D." />
+				<x-review-cards.author-details text="Antarctic Express: Crossing the Circle" />
 			</x-review-cards.card>
 		</x-review-cards>
 	</x-section>
@@ -1178,7 +1249,7 @@
 			</x-section.heading>
 			<x-section.description>Discover what your Crossing the Circle Expedition includes</x-section.description>
 
-			<x-icon-info-grid>
+			<x-icon-info-grid :desktop_carousel="true" >
 				<x-icon-info-grid.item>
 					<x-icon-info-grid.icon icon="star" />
 					<h4>Specialist Expedition Leaders</h4>
@@ -1549,7 +1620,6 @@
 		<x-listing-cards.card>
 			<x-listing-cards.overline text="Expedition Guides and Education Team" />
 			<x-listing-cards.title title="Quark Expeditions Invites Guests to “Raise a Glass and Stay Connected” with Free Wi-Fi and Bar Service" />
-			<x-listing-cards.subtitle subtitle="Experience the Polar Regions your own way" />
 			<x-listing-cards.description>
 				<p>Quark Expeditions, the global leader in polar adventures, is pleased to announce that all guests will enjoy complimentary Wi-Fi and alcohol on all voyages as of the Antarctic 2024/25 sailing season.</p>
 			</x-listing-cards.description>
@@ -1562,7 +1632,6 @@
 		<x-listing-cards.card>
 			<x-listing-cards.overline text="Expedition Guides and Education Team" />
 			<x-listing-cards.title title="Ask Parker the Polar Bear! Quark Expeditions’ New AI-Driven Partner Portal Makes Every Travel Advisor a Polar Expert" />
-			<x-listing-cards.subtitle subtitle="Experience the Polar Regions your own way" />
 			<x-listing-cards.description>
 				<p>Greenland is waiting to be explored. Browse all of our expedition options to the world's largest island.</p>
 			</x-listing-cards.description>
@@ -1575,7 +1644,6 @@
 		<x-listing-cards.card>
 			<x-listing-cards.overline text="Expedition Guides and Education Team" />
 			<x-listing-cards.title title="Quark Expeditions Invites Guests to “Raise a Glass and Stay Connected” with Free Wi-Fi and Bar Service" />
-			<x-listing-cards.subtitle subtitle="Experience the Polar Regions your own way" />
 			<x-listing-cards.description>
 				<p>Quark Expeditions, the global leader in polar adventures, is pleased to announce that all guests will enjoy complimentary Wi-Fi and alcohol on all voyages as of the Antarctic 2024/25 sailing season.</p>
 			</x-listing-cards.description>
@@ -2534,6 +2602,66 @@
 	</x-offer-cards>
 </x-component-demo>
 
+<x-component-demo :keys="[ 'media-description-cards' ]">
+	<x-section>
+		<x-media-description-cards>
+			<x-media-description-cards.card>
+				<x-media-description-cards.image image_id="32" />
+				<x-media-description-cards.content>
+					<x-media-description-cards.title title="Antarctic Explorer: Discovering the 7th Continent" heading_level="4" />
+					<x-media-description-cards.description>
+						<p>Embark on a once-in-a-lifetime adventure on this diverse expedition—you’ll experience the spectacular flora and fauna of the Falkland Islands (Islas Malvinas) before immersing yourself in the unique history and exquisite, rare wildlife of South Georgia.</p>
+					</x-media-description-cards.description>
+				</x-media-description-cards.content>
+				<x-media-description-cards.cta url="#" text="View Expedition" />
+			</x-media-description-cards.card>
+
+			<x-media-description-cards.card>
+				<x-media-description-cards.image image_id="34" />
+				<x-media-description-cards.content>
+					<x-media-description-cards.title title="Greatest Wildlife Show on Earth" heading_level="4" />
+					<x-media-description-cards.description>
+						<p>Embark on a once-in-a-lifetime adventure on this diverse expedition—you’ll experience the spectacular flora and fauna of the Falkland Islands (Islas Malvinas) before immersing yourself in the unique history and exquisite, rare wildlife of South Georgia.</p>
+					</x-media-description-cards.description>
+				</x-media-description-cards.content>
+			</x-media-description-cards.card>
+
+			<x-media-description-cards.card>
+				<x-media-description-cards.image image_id="36" />
+				<x-media-description-cards.content>
+					<x-media-description-cards.title title="Into the Northwest Passage" heading_level="4" />
+					<x-media-description-cards.description>
+						<p>Embark on a once-in-a-lifetime adventure on this diverse expedition—you’ll experience the spectacular flora and fauna of the Falkland Islands (Islas Malvinas) before immersing yourself in the unique history and exquisite, rare wildlife of South Georgia.</p>
+					</x-media-description-cards.description>
+				</x-media-description-cards.content>
+				<x-media-description-cards.cta url="#" text="Learn More" />
+			</x-media-description-cards.card>
+
+			<x-media-description-cards.card>
+				<x-media-description-cards.image image_id="35" />
+				<x-media-description-cards.content>
+					<x-media-description-cards.title title="In the Footsteps of Franklin" heading_level="4" />
+					<x-media-description-cards.description>
+						<p>Embark on a once-in-a-lifetime adventure on this diverse expedition—you’ll experience the spectacular flora and fauna of the Falkland Islands (Islas Malvinas) before immersing yourself in the unique history and exquisite, rare wildlife of South Georgia.</p>
+					</x-media-description-cards.description>
+				</x-media-description-cards.content>
+				<x-media-description-cards.cta url="#" text="Read More" />
+			</x-media-description-cards.card>
+
+			<x-media-description-cards.card>
+				<x-media-description-cards.image image_id="33" />
+				<x-media-description-cards.content>
+					<x-media-description-cards.title title="Epic High Arctic" heading_level="4" />
+					<x-media-description-cards.description>
+						<p>Embark on a once-in-a-lifetime adventure on this diverse expedition—you’ll experience the spectacular flora and fauna of the Falkland Islands (Islas Malvinas) before immersing yourself in the unique history and exquisite, rare wildlife of South Georgia.</p>
+					</x-media-description-cards.description>
+				</x-media-description-cards.content>
+				<x-media-description-cards.cta url="#" text="Load More" />
+			</x-media-description-cards.card>
+		</x-media-description-cards>
+	</x-section>
+</x-component-demo>
+
 <x-component-demo :keys="[ 'media-text-cta' ]">
 	<x-section>
 		<x-media-text-cta>
@@ -2915,6 +3043,138 @@
 	</x-section>
 </x-component-demo>
 
+<x-component-demo :keys="[ 'breadcrumbs' ]">
+	<x-breadcrumbs
+		:breadcrumbs="[
+			[
+				'title' => 'Home',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Blog',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Antarctica',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Can I Travel Antarctica?',
+				'url'   => '#',
+			],
+		]"
+	/>
+
+	<div style="background-color: var(--color-gray-90); margin-inline: calc(-1* var(--grid-col-gutter)); padding-block: 4px; padding-inline: var(--grid-col-gutter);">
+		<x-breadcrumbs
+			appearance="dark"
+			:breadcrumbs="[
+				[
+					'title' => 'Home',
+					'url'   => '#',
+				],
+				[
+					'title' => 'Blog',
+					'url'   => '#',
+				],
+				[
+					'title' => 'Antarctica',
+					'url'   => '#',
+				],
+				[
+					'title' => 'Can I Travel Antarctica?',
+					'url'   => '#',
+				],
+			]"
+		/>
+	</div>
+
+	<x-breadcrumbs
+		:breadcrumbs="[
+			[
+				'title' => 'Home',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Destinations',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Antarctica',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Expeditions',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Current Expedition',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Preparation',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Packing List',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Arctic Gear',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Activities',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Iceberg Watching',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Wildlife Encounters',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Polar Plunge',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Travel Guide',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Visa Requirements',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Health and Safety',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Emergency Procedures',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Booking',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Reservation Form',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Payment Options',
+				'url'   => '#',
+			],
+			[
+				'title' => 'Contact Us',
+				'url'   => '#',
+			],
+		]"
+	/>
+</x-component-demo>
+
 <x-component-demo :keys="[ 'sidebar-grid', 'table-of-contents', 'breadcrumbs', 'post-author-info' ]">
 	<x-breadcrumbs
 		:breadcrumbs="[
@@ -3274,6 +3534,144 @@
 	</x-product-cards>
 
 	<x-product-cards layout="grid">
+		<x-product-cards.card url="#">
+			<x-product-cards.image
+				image_id="29"
+			>
+				<x-product-cards.badge-cta text="Save 50%" />
+			</x-product-cards.image>
+			<x-product-cards.itinerary departure_date="Departing May 20, 2024" duration="10 Days" />
+			<x-product-cards.title title="Introduction to Spitsbergen" />
+			<x-product-cards.subtitle title="Fjords, Glaciers, and Wildlife of Svalbard" />
+			<x-product-cards.description>
+				<p>This fascinating expedition provides a taste of everything Spitsbergen has to offer!</p>
+			</x-product-cards.description>
+			<x-product-cards.price
+				original_price="$7,395 USD"
+				discounted_price="$6,171 USD"
+			/>
+			<x-product-cards.buttons :columns="2">
+				<x-button size="big">Request a Quote</x-button>
+				<x-button size="big" appearance="outline">Learn More</x-button>
+			</x-product-cards.buttons>
+		</x-product-cards.card>
+
+		<x-product-cards.card url="#">
+			<x-product-cards.image
+				image_id="36"
+				:is_immersive="false"
+			>
+				<x-product-cards.badge-cta text="Save 50%" />
+				<x-product-cards.badge-time text="Just Added" />
+			</x-product-cards.image>
+			<x-product-cards.itinerary departure_date="Departing May 28, 2024" duration="12 Days" />
+			<x-product-cards.title title="Spitsbergen Explorer" />
+			<x-product-cards.subtitle title="Wildlife Capital of the Arctic" />
+			<x-product-cards.description>
+				<p>Witness the remarkable array of creatures who call this spectacular environment home.</p>
+			</x-product-cards.description>
+			<x-product-cards.price
+				original_price="$9,095 USD"
+				discounted_price="$7,361 USD"
+			/>
+			<x-product-cards.buttons :columns="2">
+				<x-button size="big" icon="phone">Book: +1 (866) 220-1915</x-button>
+			</x-product-cards.buttons>
+		</x-product-cards.card>
+
+		<x-product-cards.card url="#">
+			<x-product-cards.image
+				image_id="32"
+				:is_immersive="false"
+			>
+				<x-product-cards.badge-time text="Just Added" />
+			</x-product-cards.image>
+			<x-product-cards.itinerary departure_date="Departing July 14, 2024" duration="11 Days" />
+			<x-product-cards.title title="Gems of West Greenland" />
+			<x-product-cards.subtitle title="Fjords, Icebergs, and Culture" />
+			<x-product-cards.description>
+				<p>Features the best sites of West Greenland & delivers an in-depth experience in just 12 days.</p>
+			</x-product-cards.description>
+			<x-product-cards.price
+				original_price="$9,395 USD"
+				discounted_price="$8,571 USD"
+			/>
+			<x-product-cards.buttons :columns="2">
+				<x-button size="big">Request a Quote</x-button>
+				<x-button size="big" appearance="outline">Learn More</x-button>
+			</x-product-cards.buttons>
+		</x-product-cards.card>
+
+		<x-product-cards.card url="#">
+			<x-product-cards.image
+				image_id="29"
+			>
+				<x-product-cards.badge-cta text="Save 50%" />
+			</x-product-cards.image>
+			<x-product-cards.itinerary departure_date="Departing May 20, 2024" duration="10 Days" />
+			<x-product-cards.title title="Introduction to Spitsbergen" />
+			<x-product-cards.subtitle title="Fjords, Glaciers, and Wildlife of Svalbard" />
+			<x-product-cards.description>
+				<p>This fascinating expedition provides a taste of everything Spitsbergen has to offer!</p>
+			</x-product-cards.description>
+			<x-product-cards.price
+				original_price="$7,395 USD"
+				discounted_price="$6,171 USD"
+			/>
+			<x-product-cards.buttons :columns="2">
+				<x-button size="big">Request a Quote</x-button>
+				<x-button size="big" appearance="outline">Learn More</x-button>
+			</x-product-cards.buttons>
+		</x-product-cards.card>
+
+		<x-product-cards.card url="#">
+			<x-product-cards.image
+				image_id="36"
+				:is_immersive="false"
+			>
+				<x-product-cards.badge-cta text="Save 50%" />
+				<x-product-cards.badge-time text="Just Added" />
+			</x-product-cards.image>
+			<x-product-cards.itinerary departure_date="Departing May 28, 2024" duration="12 Days" />
+			<x-product-cards.title title="Spitsbergen Explorer" />
+			<x-product-cards.subtitle title="Wildlife Capital of the Arctic" />
+			<x-product-cards.description>
+				<p>Witness the remarkable array of creatures who call this spectacular environment home.</p>
+			</x-product-cards.description>
+			<x-product-cards.price
+				original_price="$9,095 USD"
+				discounted_price="$7,361 USD"
+			/>
+			<x-product-cards.buttons :columns="2">
+				<x-button size="big" icon="phone">Book: +1 (866) 220-1915</x-button>
+			</x-product-cards.buttons>
+		</x-product-cards.card>
+
+		<x-product-cards.card url="#">
+			<x-product-cards.image
+				image_id="32"
+				:is_immersive="false"
+			>
+				<x-product-cards.badge-time text="Just Added" />
+			</x-product-cards.image>
+			<x-product-cards.itinerary departure_date="Departing July 14, 2024" duration="11 Days" />
+			<x-product-cards.title title="Gems of West Greenland" />
+			<x-product-cards.subtitle title="Fjords, Icebergs, and Culture" />
+			<x-product-cards.description>
+				<p>Features the best sites of West Greenland & delivers an in-depth experience in just 12 days.</p>
+			</x-product-cards.description>
+			<x-product-cards.price
+				original_price="$9,395 USD"
+				discounted_price="$8,571 USD"
+			/>
+			<x-product-cards.buttons :columns="2">
+				<x-button size="big">Request a Quote</x-button>
+				<x-button size="big" appearance="outline">Learn More</x-button>
+			</x-product-cards.buttons>
+		</x-product-cards.card>
+	</x-product-cards>
+
+	<x-product-cards :carousel_overflow="false">
 		<x-product-cards.card url="#">
 			<x-product-cards.image
 				image_id="29"
@@ -3880,7 +4278,6 @@
 			<x-listing-cards.card>
 				<x-listing-cards.overline text="Expedition Guides and Education Team" />
 				<x-listing-cards.title title="Quark Expeditions Invites Guests to “Raise a Glass and Stay Connected” with Free Wi-Fi and Bar Service" />
-				<x-listing-cards.subtitle subtitle="Experience the Polar Regions your own way" />
 				<x-listing-cards.description>
 					<p>Quark Expeditions, the global leader in polar adventures, is pleased to announce that all guests will enjoy complimentary Wi-Fi and alcohol on all voyages as of the Antarctic 2024/25 sailing season.</p>
 				</x-listing-cards.description>
@@ -3892,7 +4289,6 @@
 			<x-listing-cards.card>
 				<x-listing-cards.overline text="Expedition Guides and Education Team" />
 				<x-listing-cards.title title="Ask Parker the Polar Bear! Quark Expeditions’ New AI-Driven Partner Portal Makes Every Travel Advisor a Polar Expert" />
-				<x-listing-cards.subtitle subtitle="Experience the Polar Regions your own way" />
 				<x-listing-cards.description>
 					<p>Greenland is waiting to be explored. Browse all of our expedition options to the world's largest island.</p>
 				</x-listing-cards.description>
@@ -3904,7 +4300,6 @@
 			<x-listing-cards.card>
 				<x-listing-cards.overline text="Expedition Guides and Education Team" />
 				<x-listing-cards.title title="Quark Expeditions Invites Guests to “Raise a Glass and Stay Connected” with Free Wi-Fi and Bar Service" />
-				<x-listing-cards.subtitle subtitle="Experience the Polar Regions your own way" />
 				<x-listing-cards.description>
 					<p>Quark Expeditions, the global leader in polar adventures, is pleased to announce that all guests will enjoy complimentary Wi-Fi and alcohol on all voyages as of the Antarctic 2024/25 sailing season.</p>
 				</x-listing-cards.description>
@@ -4086,114 +4481,6 @@
 			</x-accordion.item>
 		</x-accordion>
 	</x-section>
-</x-component-demo>
-
-<x-component-demo :keys="[ 'breadcrumbs' ]">
-	<x-breadcrumbs
-		:breadcrumbs="[
-			[
-				'title' => 'Home',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Blog',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Antarctica',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Can I Travel Antarctica?',
-				'url'   => '#',
-			],
-		]"
-	/>
-
-	<x-breadcrumbs
-		:breadcrumbs="[
-			[
-				'title' => 'Home',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Destinations',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Antarctica',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Expeditions',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Current Expedition',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Preparation',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Packing List',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Arctic Gear',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Activities',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Iceberg Watching',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Wildlife Encounters',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Polar Plunge',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Travel Guide',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Visa Requirements',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Health and Safety',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Emergency Procedures',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Booking',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Reservation Form',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Payment Options',
-				'url'   => '#',
-			],
-			[
-				'title' => 'Contact Us',
-				'url'   => '#',
-			],
-		]"
-	/>
 </x-component-demo>
 
 <x-component-demo :keys="[ 'info-cards' ]">
@@ -4702,7 +4989,7 @@
 			<x-departure-cards.more-details>
 				<h4>Cabins Options</h4>
 				<x-product-options-cards>
-					<x-product-options-cards.cards>
+					<x-product-options-cards.cards request_a_quote_url="https://example.com">
 						<x-product-options-cards.card status="A">
 							<x-product-options-cards.gallery :image_ids="[ 32, 34, 36]">
 								<x-product-options-cards.badge status="A" type="standard" />
@@ -5003,7 +5290,7 @@
 			<x-departure-cards.more-details>
 				<h4>Cabins Options</h4>
 				<x-product-options-cards>
-					<x-product-options-cards.cards>
+					<x-product-options-cards.cards request_a_quote_url="/request-a-quote">
 						<x-product-options-cards.card>
 							<x-product-options-cards.gallery :image_ids="[ 32, 34, 36]">
 								<x-product-options-cards.badge type="standard" />
@@ -5298,7 +5585,7 @@
 			<x-departure-cards.more-details>
 				<h4>Cabins Options</h4>
 				<x-product-options-cards>
-					<x-product-options-cards.cards>
+					<x-product-options-cards.cards request_a_quote_url="/request-a-quote">
 						<x-product-options-cards.card>
 							<x-product-options-cards.gallery :image_ids="[ 32, 34, 36]">
 								<x-product-options-cards.badge type="standard" />
@@ -5503,7 +5790,7 @@
 <x-component-demo :keys="[ 'expedition-cards' ]">
 	<x-expedition-cards>
 		<x-expedition-cards.card>
-			<x-expedition-cards.card-banner text="Quark Protection Promise" url="#" />
+			<x-expedition-cards.card-banner text="Quark Protection Promise" url="" />
 
 			<x-expedition-cards.grid>
 				<x-expedition-cards.grid-column>
@@ -5589,32 +5876,40 @@
 						</x-expedition-cards.specification-item>
 					</x-expedition-cards.specifications>
 
-					<x-expedition-cards.rating rating="5">
-						<a href="#">45 Reviews</a>
-					</x-expedition-cards.rating>
+					<x-expedition-cards.row>
+						<x-expedition-cards.rating rating="5">
+							<a href="#">45 Reviews</a>
+						</x-expedition-cards.rating>
 
-					<x-expedition-cards.price
-						original_price="$9,395 USD"
-						discounted_price="$7,271 USD"
-					/>
-
-					<x-expedition-cards.transfer_package
-						drawer_id="expedition-cards-id-1"
-						drawer_title="Mandatory Transfer Package"
-					>
-						<p><strong>Package Includes:</strong></p>
-						<ul>
-							<li>One night’s pre-expedition hotel night in Aberdeen</li>
-							<li>Group transfer from Aberdeen hotel to ship on embarkation day</li>
-							<li>Departure transfer in Longyearbyen on disembarkation day</li>
-							<li>Charter flight from Longyearbyen to Helsinki on disembarkation day</li>
-						</ul>
-						<p><strong>Package Price: $695 USD</strong></p>
-					</x-expedition-cards.transfer_package>
+						<x-expedition-cards.price
+							original_price="$9,395 USD"
+							discounted_price="$7,271 USD"
+						>
+							<x-expedition-cards.transfer_package
+								drawer_id="expedition-cards-id-1"
+								drawer_title="Mandatory Transfer Package"
+							>
+								<p><strong>Package Includes:</strong></p>
+								<ul>
+									<li>One night’s pre-expedition hotel night in Aberdeen</li>
+									<li>Group transfer from Aberdeen hotel to ship on embarkation day</li>
+									<li>Departure transfer in Longyearbyen on disembarkation day</li>
+									<li>Charter flight from Longyearbyen to Helsinki on disembarkation day</li>
+								</ul>
+								<p><strong>Package Price: $695 USD</strong></p>
+							</x-expedition-cards.transfer_package>
+						</x-expedition-cards.price>
+					</x-expedition-cards.row>
 
 					<x-expedition-cards.buttons>
 						<x-button href="#" color="black" size="big">View Expedition</x-button>
-						<x-expedition-cards.cta text="View Cabin Pricing & Options" />
+						<x-options-button>
+							<x-options-button.default-option url="#">View Cabin Pricing</x-options-button.default-option>
+							<x-options-button.options>
+								<x-options-button.option url="#">Request a callback</x-options-button.option>
+								<x-options-button.option url="#">Chat with us now</x-options-button.option>
+							</x-options-button.options>
+						</x-options-button>
 					</x-expedition-cards.buttons>
 				</x-expedition-cards.grid-column>
 			</x-expedition-cards.grid>
@@ -5622,7 +5917,7 @@
 			<x-expedition-cards.more-details>
 				<h4>Cabins Options</h4>
 				<x-product-options-cards>
-					<x-product-options-cards.cards>
+					<x-product-options-cards.cards request_a_quote_url="/request-a-quote">
 						<x-product-options-cards.card>
 							<x-product-options-cards.gallery :image_ids="[ 32, 34, 36]">
 								<x-product-options-cards.badge type="standard" />
@@ -5941,32 +6236,40 @@
 								</x-expedition-cards.specification-item>
 							</x-expedition-cards.specifications>
 
-							<x-expedition-cards.rating rating="5">
-								<a href="#">45 Reviews</a>
-							</x-expedition-cards.rating>
+							<x-expedition-cards.row>
+								<x-expedition-cards.rating rating="5">
+									<a href="#">45 Reviews</a>
+								</x-expedition-cards.rating>
 
-							<x-expedition-cards.price
-								original_price="$9,395 USD"
-								discounted_price="$7,271 USD"
-							/>
-
-							<x-expedition-cards.transfer_package
-								drawer_id="expedition-cards-id-1"
-								drawer_title="Mandatory Transfer Package"
-							>
-								<p><strong>Package Includes:</strong></p>
-								<ul>
-									<li>One night’s pre-expedition hotel night in Aberdeen</li>
-									<li>Group transfer from Aberdeen hotel to ship on embarkation day</li>
-									<li>Departure transfer in Longyearbyen on disembarkation day</li>
-									<li>Charter flight from Longyearbyen to Helsinki on disembarkation day</li>
-								</ul>
-								<p><strong>Package Price: $695 USD</strong></p>
-							</x-expedition-cards.transfer_package>
+								<x-expedition-cards.price
+									original_price="$9,395 USD"
+									discounted_price="$7,271 USD"
+								>
+									<x-expedition-cards.transfer_package
+										drawer_id="expedition-cards-id-1"
+										drawer_title="Mandatory Transfer Package"
+									>
+										<p><strong>Package Includes:</strong></p>
+										<ul>
+											<li>One night’s pre-expedition hotel night in Aberdeen</li>
+											<li>Group transfer from Aberdeen hotel to ship on embarkation day</li>
+											<li>Departure transfer in Longyearbyen on disembarkation day</li>
+											<li>Charter flight from Longyearbyen to Helsinki on disembarkation day</li>
+										</ul>
+										<p><strong>Package Price: $695 USD</strong></p>
+									</x-expedition-cards.transfer_package>
+								</x-expedition-cards.price>
+							</x-expedition-cards.row>
 
 							<x-expedition-cards.buttons>
 								<x-button href="#" color="black" size="big">View Expedition</x-button>
-								<x-expedition-cards.cta text="View Cabin Pricing & Options" />
+								<x-options-button>
+									<x-options-button.default-option url="#">View Cabin Pricing</x-options-button.default-option>
+									<x-options-button.options>
+										<x-options-button.option url="#">Request a callback</x-options-button.option>
+										<x-options-button.option url="#">Chat with us now</x-options-button.option>
+									</x-options-button.options>
+								</x-options-button>
 							</x-expedition-cards.buttons>
 						</x-expedition-cards.grid-column>
 					</x-expedition-cards.grid>
@@ -5974,7 +6277,7 @@
 					<x-expedition-cards.more-details>
 						<h4>Cabins Options</h4>
 						<x-product-options-cards>
-							<x-product-options-cards.cards>
+							<x-product-options-cards.cards request_a_quote_url="/request-a-quote">
 								<x-product-options-cards.card>
 									<x-product-options-cards.gallery :image_ids="[ 32, 34, 36]">
 										<x-product-options-cards.badge type="standard" />
@@ -6370,7 +6673,7 @@
 	<x-section>
 		<h4 style="margin-bottom: var(--spacing-6);">Cabins Options</h4>
 		<x-product-options-cards>
-			<x-product-options-cards.cards>
+			<x-product-options-cards.cards request_a_quote_url="/request-a-quote">
 				<x-product-options-cards.card status="A" details_id="some-random-id" status="A" >
 					<x-product-options-cards.gallery :image_ids="[ 32, 34, 36]">
 						<x-product-options-cards.badge type="standard" status="A" />
@@ -6801,8 +7104,10 @@
 <x-component-demo :keys="[ 'link-detail-cards' ]">
 	<x-section>
 		<x-section.heading>
-			<x-section.title title="Link Detail Cards" />
+			<x-section.title title="Quark Expeditions Protection Promise" heading_level="1" align="left" />
 		</x-section.heading>
+
+		<x-section.description>We share your excitement as you pursue the expedition of a lifetime, and we offer flexibility that few in the industry can match.</x-section.description>
 
 		<x-link-detail-cards>
 			<x-link-detail-cards.card url="#">
@@ -6836,6 +7141,42 @@
 	</x-section>
 </x-component-demo>
 
+<x-component-demo :keys="[ 'form-request-quote' ]">
+	<x-section>
+		<x-form-request-quote
+			:countries="$countries"
+			:states="$states"
+		/>
+	</x-section>
+</x-component-demo>
+
+<x-component-demo :keys="[ 'form-subscribe-snow-hill' ]">
+	<x-section>
+		<x-form-subscribe-snow-hill />
+	</x-section>
+</x-component-demo>
+
+<x-component-demo :keys="[ 'form-job-application' ]">
+	<x-section>
+		<x-form-job-application
+			:countries="$countries"
+			:states="$states"
+		/>
+	</x-section>
+</x-component-demo>
+
+<x-component-demo :keys="[ 'form-do-not-sell' ]">
+	<x-section>
+		<x-form-do-not-sell />
+	</x-section>
+</x-component-demo>
+
+<x-component-demo :keys="[ 'form-account-management' ]">
+	<x-section>
+		<x-form-account-management />
+	</x-section>
+</x-component-demo>
+
 <x-component-demo :keys="[ 'mini-cards-list' ]">
 	<x-mini-cards-list>
 		<x-mini-cards-list.card>
@@ -6866,6 +7207,13 @@
 	<x-section>
 		<x-parts.search-filters-bar />
 	</x-section>
+</x-component-demo>
+
+<x-component-demo :keys="[ 'form-newsletter' ]">
+	<x-form-newsletter
+		:countries="$countries"
+		:states="$states"
+	/>
 </x-component-demo>
 
 <x-component-demo :keys="[ 'footer' ]">

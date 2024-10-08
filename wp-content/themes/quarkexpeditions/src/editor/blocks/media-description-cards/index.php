@@ -57,11 +57,26 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 			continue;
 		}
 
+		// Initialize Buttons.
+		$inner_buttons = '';
+
+		// Build buttons.
+		foreach ( $inner_block->inner_blocks as $buttons_block ) {
+			// Check for block.
+			if ( ! $buttons_block instanceof WP_Block ) {
+				continue;
+			}
+
+			// Check if we have a button.
+			$inner_buttons .= render_block( $buttons_block->parsed_block );
+		}
+
 		// Add item.
 		$cards[] = [
 			'image_id'    => $inner_block->attributes['image']['id'] ?? 0,
 			'title'       => $inner_block->attributes['title'] ?? '',
 			'description' => $inner_block->attributes['description'] ?? '',
+			'buttons'     => $inner_buttons,
 		];
 	}
 

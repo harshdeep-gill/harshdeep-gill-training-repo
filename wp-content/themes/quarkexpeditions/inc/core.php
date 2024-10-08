@@ -40,7 +40,6 @@ function theme_support(): void {
 	add_theme_support( 'post-thumbnails' );
 
 	// Misc. support.
-	add_theme_support( 'title-tag' );
 	add_theme_support(
 		'html5',
 		[
@@ -144,6 +143,7 @@ function register_scripts(): void {
 	wp_register_script( 'tp-lightbox', get_template_directory_uri() . '/dist/vendor/tplightboxelement.js', [], $assets_version, true );
 	wp_register_script( 'tp-toggle-attribute', get_template_directory_uri() . '/dist/vendor/tptoggleattributeelement.js', [], $assets_version, true );
 	wp_register_script( 'querystring', get_template_directory_uri() . '/dist/vendor/querystring.js', [], $assets_version, true );
+	wp_register_script( 'popover-polyfill', get_template_directory_uri() . '/dist/vendor/popoverpolyfill.js', [], $assets_version, true );
 
 	// Pass variables to script.
 	wp_localize_script(
@@ -462,6 +462,9 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'loading' => true,
 				],
 				'quark-dates-rates-filters-inputs-container'    => true,
+				'quark-form-newsletter'                         => [
+					'class' => true,
+				],
 				'tp-form'                                       => [
 					'class'          => true,
 					'prevent-submit' => true,
