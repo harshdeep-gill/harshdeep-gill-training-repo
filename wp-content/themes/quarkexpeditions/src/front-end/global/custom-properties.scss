@@ -142,9 +142,8 @@
 		--h4-line-height: 32px;
 		--h5-font-size: 20px;
 		--h5-line-height: 28px;
-	}
 
-	@media screen and (min-width: grid-size(lg)) {
+		// Grid gaps.
 		--grid-row-gutter: var(--spacing-6);
 		--grid-col-gutter: var(--spacing-6);
 		--grid-section-gutter: var(--spacing-9);

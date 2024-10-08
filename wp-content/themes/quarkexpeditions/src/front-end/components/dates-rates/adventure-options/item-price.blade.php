@@ -1,7 +1,7 @@
 @props( [
 	'price'    => '',
 	'currency' => '',
-	'count'    => '',
+	'count'    => 0,
 ] )
 
 @php
@@ -14,8 +14,6 @@
 	<strong class="dates-rates__adventure-options-item-price"><x-escape content="{{ str_replace( [ 'USD', 'CAD', 'AUD', 'EUR', 'GBP' ], '', $price ) }}" /></strong>
 	<span class="dates-rates__adventure-options-item-currency"><x-escape content="{{ $currency }}" /></span>
 	<span>
-		@if ( ! empty( $count ) )
-			({{ $count }})
-		@endif
+		({{ $count }})
 	</span>
 </p>
