@@ -29,10 +29,13 @@ define( 'WP_DEBUG_DISPLAY', true );
 define( 'WP_TESTS_DOMAIN', 'localhost' );
 define( 'WP_TESTS_EMAIL', 'admin@example.org' );
 define( 'WP_TESTS_TITLE', 'Test Blog' );
-define( 'WP_ENVIRONMENT_TYPE', 'development' );
 define( 'WP_PHP_BINARY', 'php' );
 define( 'WP_TESTS_MULTISITE', false );
 define( 'WP_TESTS', true );
+define( 'WP_RUN_CORE_TESTS', false );
+
+// Set WP_ENVIRONMENT_TYPE to development via putenv so that it can be changed at runtime in tests.
+putenv( 'WP_ENVIRONMENT_TYPE=development' ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.runtime_configuration_putenv
 
 // Define Site URL.
 if ( ! defined( 'WP_SITEURL' ) ) {

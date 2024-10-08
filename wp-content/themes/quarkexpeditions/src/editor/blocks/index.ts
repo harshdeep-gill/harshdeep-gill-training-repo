@@ -90,6 +90,7 @@ import * as formDoNotSellInformation from './form-do-not-sell-information';
 import * as formSnowHillNewsletter from './form-snow-hill-newsletter';
 import * as formJobApplication from './form-job-application';
 import * as formNewsletter from './form-newsletter';
+import * as formAccessDeletionRequest from './form-account-management';
 
 /**
  * Add blocks.
@@ -176,6 +177,7 @@ const blocks = [
 	formSnowHillNewsletter,
 	formJobApplication,
 	formNewsletter,
+	formAccessDeletionRequest,
 ];
 
 // Register blocks for ships.

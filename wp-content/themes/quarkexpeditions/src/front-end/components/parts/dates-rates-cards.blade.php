@@ -40,7 +40,7 @@
 
 							{{-- Cabin Names --}}
 							@foreach ( $card['cabin_data'] as $cabin )
-								<x-dates-rates.item.table-heading>{{ $cabin['name'] ?? '' }}</x-dates-rates.item.table-heading>
+								<x-dates-rates.item.table-heading :type="strtolower( $cabin['type'] )" >{{ $cabin['name'] ?? '' }}</x-dates-rates.item.table-heading>
 							@endforeach
 						@endif
 
@@ -90,7 +90,9 @@
 										</x-dates-rates.expedition.meta-value>
 									</x-dates-rates.expedition.meta-item>
 								</x-dates-rates.expedition.meta>
-								<x-dates-rates.expedition.cta text="Request a Quote" url="/request-quote" />
+								@if ( ! empty( $card['request_a_quote_url'] ) )
+									<x-dates-rates.expedition.cta text="Request a Quote" :url="$card['request_a_quote_url']" />
+								@endif
 							</x-dates-rates.expedition>
 						</x-dates-rates.item.table-column>
 

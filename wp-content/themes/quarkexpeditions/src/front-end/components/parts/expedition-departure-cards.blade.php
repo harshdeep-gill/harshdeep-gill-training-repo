@@ -144,7 +144,7 @@
 					<x-escape :content="__( 'Cabins Options', 'qrk' )"/>
 				</h4>
 				<x-product-options-cards>
-					<x-product-options-cards.cards>
+					<x-product-options-cards.cards :request_a_quote_url="$card['request_a_quote_url'] ?? ''">
 						@foreach( $card['cabins'] as $cabin_code => $cabin )
 							@php
 								$cabin_availability_status = $cabin['specifications']['availability_status'] ?? 'U';
@@ -272,7 +272,9 @@
 								@endif
 
 								<x-product-options-cards.cta-buttons>
-									<p class="product-options-cards__help-text">{{ __( 'Not ready to book?', 'qrk' ) }} <a href="#">{{ __( 'Request a quote', 'qrk' ) }}</a></p>
+									@if ( ! empty( $card['request_a_quote_url'] ) )
+										<p class="product-options-cards__help-text">{{ __( 'Not ready to book?', 'qrk' ) }} <a href="{!! esc_url( $card['request_a_quote_url'] ) !!}">{{ __( 'Request a quote', 'qrk' ) }}</a></p>
+									@endif
 									<x-product-options-cards.phone-number phone_number="+1 (877) 585-1235" text="Request a callback: +1 (866) 257-0754" />
 									@if ( ! empty( $cabin['occupancies'] ) && is_array( $cabin['occupancies'] ) )
 										<x-product-options-cards.cta-book-now :url="$cabin['occupancies'][0]['checkout_url'] ?? '#'" />

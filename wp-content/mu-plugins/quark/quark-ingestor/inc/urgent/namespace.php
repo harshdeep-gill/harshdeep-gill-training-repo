@@ -22,7 +22,6 @@ use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
 const URGENTLY_CHANGED_EXPEDITION_IDS_OPTION = '_urgently_changed_expedition_ids';
 const URGENTLY_TRACKED_DATA_HASH_META        = '_urgently_tracked_data_hash';
 const SCHEDULE_HOOK                          = 'qrk_ingestor_urgent_push';
-const URGENT_INGESTOR_PUSH_EVENT_NAME        = 'ingestor-urgent-push';
 
 /**
  * Bootstrap.
@@ -419,13 +418,32 @@ function dispatch_urgent_push_github_event( array $expedition_ids = [] ): bool {
 	// Check credentials.
 	if (
 		! defined( 'QUARK_GITHUB_ACTIONS_TOKEN' ) ||
-		! defined( 'QUARK_GITHUB_API_DISPATCH_URL' )
+		! defined( 'QUARK_GITHUB_API_DISPATCH_URL' ) ||
+		! defined( 'QUARK_GITHUB_ACTIONS_REF' )
 	) {
 		// Log error.
 		do_action(
 			'quark_ingestor_dispatch_github_event',
 			[
 				'error'          => 'Github credentials missing',
+				'expedition_ids' => $expedition_ids,
+			]
+		);
+
+		// Bail.
+		return false;
+	}
+
+	// Get environment.
+	$wp_environment = wp_get_environment_type();
+
+	// Bail if local.
+	if ( 'local' === $wp_environment ) {
+		// Log error.
+		do_action(
+			'quark_ingestor_dispatch_github_event',
+			[
+				'error'          => 'Local environment',
 				'expedition_ids' => $expedition_ids,
 			]
 		);
@@ -443,7 +461,10 @@ function dispatch_urgent_push_github_event( array $expedition_ids = [] ): bool {
 		],
 		'body'    => wp_json_encode(
 			[
-				'event_type' => URGENT_INGESTOR_PUSH_EVENT_NAME,
+				'ref'    => QUARK_GITHUB_ACTIONS_REF,
+				'inputs' => [
+					'environment' => $wp_environment,
+				],
 			]
 		),
 	];
