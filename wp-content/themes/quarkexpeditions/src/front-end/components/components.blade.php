@@ -7216,6 +7216,13 @@
 	/>
 </x-component-demo>
 
+<x-component-demo :keys="[ 'form-communications-opt-in' ]">
+	<x-form-communications-opt-in
+		:countries="$countries"
+		:states="$states"
+	/>
+</x-component-demo>
+
 <x-component-demo :keys="[ 'footer' ]">
 	@php
 		$social_links = [
