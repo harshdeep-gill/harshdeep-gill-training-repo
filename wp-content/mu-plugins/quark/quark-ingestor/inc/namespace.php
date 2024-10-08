@@ -386,7 +386,9 @@ function push_expedition_data( int $expedition_post_id = 0, string $json_expedit
 	// Validate credentials.
 	if (
 		! defined( 'QUARK_INGESTOR_BASE_URL' ) ||
-		! defined( 'QUARK_INGESTOR_API_KEY' )
+		! defined( 'QUARK_INGESTOR_API_KEY' ) ||
+		empty( QUARK_INGESTOR_BASE_URL ) ||
+		empty( QUARK_INGESTOR_API_KEY )
 	) {
 		return new WP_Error( 'qrk_ingestor_no_auth', __( 'Ingestor credentials missing', 'qrk' ) );
 	}
