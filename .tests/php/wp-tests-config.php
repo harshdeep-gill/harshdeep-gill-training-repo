@@ -77,13 +77,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Softrip API credentials.
-define( 'QUARK_SOFTRIP_ADAPTER_BASE_URL', 'https://softrip-adapter.dev' );
-define( 'QUARK_SOFTRIP_ADAPTER_USERNAME', 'test' );
-define( 'QUARK_SOFTRIP_ADAPTER_PASSWORD', 'test' );
+putenv( 'QUARK_SOFTRIP_ADAPTER_BASE_URL=https://softrip-adapter.dev' );
+putenv( 'QUARK_SOFTRIP_ADAPTER_API_KEY=test' );
 
 // Ingestor API credentials.
-define( 'QUARK_INGESTOR_BASE_URL', 'https://ingestor-adapter.dev' );
-define( 'QUARK_INGESTOR_API_KEY', 'test' );
+putenv( 'QUARK_INGESTOR_BASE_URL=https://ingestor-adapter.dev' );
+putenv( 'QUARK_INGESTOR_API_KEY=test' );
 
 // Checkout base URL.
 define( 'QUARK_CHECKOUT_BASE_URL', 'https://local-checkout.quarkexpeditions.com' );

@@ -953,6 +953,13 @@ class Test_Ingestor extends Softrip_TestCase {
 			return $response;
 		}
 
+		// Bail if base URL is not defined.
+		if ( ! defined( 'QUARK_INGESTOR_BASE_URL' ) || empty( QUARK_INGESTOR_BASE_URL )
+		|| ! defined( 'QUARK_INGESTOR_API_KEY' ) || empty( QUARK_INGESTOR_API_KEY )
+		) {
+			return $response;
+		}
+
 		// Check if the URL is the one we want to mock.
 		if ( ! str_contains( $url, QUARK_INGESTOR_BASE_URL ) ) {
 			return $response;
