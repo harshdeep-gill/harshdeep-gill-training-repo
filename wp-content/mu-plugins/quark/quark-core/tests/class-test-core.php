@@ -73,6 +73,7 @@ class Test_Core extends WP_UnitTestCase {
 				],
 			],
 			'default_currency'     => DEFAULT_CURRENCY,
+			'filters_api_url'      => home_url( 'wp-json/quark-search/v1/filter-options/by-destination-and-month' ),
 		];
 
 		// Test front-end data.

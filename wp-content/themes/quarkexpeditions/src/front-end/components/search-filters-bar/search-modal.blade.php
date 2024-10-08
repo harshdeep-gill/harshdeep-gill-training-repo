@@ -6,6 +6,7 @@
 	'destinations'             => [],
 	'available_months'         => [],
 	'filters_api_url'          => '',
+	'search_page_url'          => '',
 ] )
 
 {{-- Render the modal only once even if there are multiple search bars present on a page --}}
@@ -19,6 +20,7 @@
 				class="search-filters-bar"
 				is-search-page="{{ true === $is_search_page ? 'true' : 'false' }}"
 				filters-api-url="{{ $filters_api_url }}"
+				search-page-url="{{ $search_page_url }}"
 			>
 				<div class="search-filters-bar__modal-filters-container">
 					<x-search-filters-bar.destinations />

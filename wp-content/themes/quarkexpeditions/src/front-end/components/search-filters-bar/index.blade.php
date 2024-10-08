@@ -5,13 +5,15 @@
 	'modal_id'                 => 'search-filters-bar-modal',
 	'destinations'             => [],
 	'available_months'         => [],
-	'filters_api_url'          => home_url( 'wp-json/quark-search/v1/filter-options/by-destination-and-month' ),
+	'filters_api_url'          => '',
+	'search_page_url'          => '',
 ] )
 
 <quark-search-filters-bar
 	class="search-filters-bar"
 	is-search-page="{{ true === $is_search_page ? 'true' : 'false' }}"
 	filters-api-url="{{ $filters_api_url }}"
+	search-page-url="{{ $search_page_url }}"
 >
 	<x-search-filters-bar.search-modal-open-container>
 		<x-modal.modal-open :modal_id="$modal_id">
@@ -38,5 +40,6 @@
 		:destinations="$destinations"
 		:available_months="$available_months"
 		:filters_api_url="$filters_api_url"
+		:search_page_url="$search_page_url"
 	/>
 </quark-search-filters-bar>

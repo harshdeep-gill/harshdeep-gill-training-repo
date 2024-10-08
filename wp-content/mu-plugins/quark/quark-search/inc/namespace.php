@@ -26,6 +26,9 @@ function bootstrap(): void {
 	// REST API.
 	add_action( 'rest_api_init', __NAMESPACE__ . '\\register_rest_endpoints' );
 	add_filter( 'travelopia_security_public_rest_api_routes', __NAMESPACE__ . '\\public_rest_api_routes' );
+
+	// Frontend data.
+	add_action( 'quark_front_end_data', __NAMESPACE__ . '\\front_end_data' );
 }
 
 /**
@@ -108,4 +111,19 @@ function public_rest_api_routes( array $routes = [] ): array {
 
 	// Return routes.
 	return $routes;
+}
+
+/**
+ * Front-end data.
+ *
+ * @param mixed[] $data Front-end data.
+ *
+ * @return mixed[]
+ */
+function front_end_data( array $data = [] ): array {
+	// Default currency.
+	$data['filters_api_url'] = home_url( 'wp-json/' . REST_API_NAMESPACE . '/filter-options/by-destination-and-month' );
+
+	// Return data.
+	return $data;
 }
