@@ -48,6 +48,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 	$component_attributes = [
 		'countries' => get_countries(),
 		'states'    => get_states(),
+		'links'     => quark_get_template_data( 'social_links' ),
 	];
 
 	// Return built component.
