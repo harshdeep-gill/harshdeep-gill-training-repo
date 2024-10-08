@@ -81,6 +81,7 @@ function register_staff_member_post_type(): void {
 			'editor',
 			'thumbnail',
 			'revisions',
+			'excerpt',
 		],
 		'show_ui'             => true,
 		'show_in_menu'        => true,
