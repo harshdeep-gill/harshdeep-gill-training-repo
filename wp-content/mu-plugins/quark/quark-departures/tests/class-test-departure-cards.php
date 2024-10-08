@@ -1202,7 +1202,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 					'type'                     => '',
 					'sort_priority'            => 0,
 					'promos'                   => [
-						'15PROMO' => '$38,169 USD',
+						'15PROMO' => '$38,369 USD',
 					],
 					'checkout_url'             => 'https://local-checkout.quarkexpeditions.com?package_id=JKL-012&departure_date=2025-01-09&cabin_code=ULT-SGL&currency=USD',
 				],
@@ -1214,7 +1214,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 					'spaces_available'         => 20,
 					'brochure_price'           => '$34,800 USD',
 					'promos'                   => [
-						'15PROMO' => '$29,410 USD',
+						'15PROMO' => '$29,610 USD',
 					],
 					'type'                     => '',
 					'sort_priority'            => 0,
@@ -1402,7 +1402,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 						'availability_description' => 'Sold Out',
 						'spaces_available'         => 0,
 						'promos'                   => [
-							'25PROMO' => '$26,171 USD',
+							'25PROMO' => '$26,371 USD',
 						],
 						'brochure_price'           => '$35,095 USD',
 						'checkout_url'             => 'https://local-checkout.quarkexpeditions.com?package_id=ABC-123&departure_date=2026-02-28&cabin_code=OEX-SGL&currency=USD',
@@ -1445,7 +1445,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 						'spaces_available'         => 10,
 						'brochure_price'           => '$45,105 USD',
 						'promos'                   => [
-							'15PROMO' => '$38,169 USD',
+							'15PROMO' => '$38,369 USD',
 						],
 						'checkout_url'             => 'https://local-checkout.quarkexpeditions.com?package_id=JKL-012&departure_date=2025-01-09&cabin_code=ULT-SGL&currency=USD',
 						'type'                     => '',
@@ -1458,7 +1458,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 						'spaces_available'         => 20,
 						'brochure_price'           => '$34,800 USD',
 						'promos'                   => [
-							'15PROMO' => '$29,410 USD',
+							'15PROMO' => '$29,610 USD',
 						],
 						'checkout_url'             => 'https://local-checkout.quarkexpeditions.com?package_id=JKL-012&departure_date=2025-01-09&cabin_code=ULT-DBL&currency=USD',
 						'type'                     => '',
@@ -1690,8 +1690,8 @@ class Test_Departure_Cards extends Softrip_TestCase {
 				'checkout_url'             => 'https://local-checkout.quarkexpeditions.com?package_id=HIJ-456&departure_date=2025-09-04&cabin_code=OEX-JST&currency=CAD',
 				'brochure_price'           => '$46,050 CAD',
 				'promos'                   => [
-					'10PIF'   => '$41,220 CAD',
-					'20PROMO' => '$36,640 CAD',
+					'10PIF'   => '$41,470 CAD',
+					'20PROMO' => '$36,890 CAD',
 				],
 				'type'                     => '',
 				'sort_priority'            => 0,
