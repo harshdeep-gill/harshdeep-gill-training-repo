@@ -3,10 +3,11 @@
 	'update_url'        => 'no',
 	'form_id'           => 'form-request-quote',
 	'expeditions'       => [],
+	'filters_endpoint'  => '',
 	'countries'         => [],
 	'states'            => [],
 	'thank_you_page'    => '',
-	'salesforce_object' => '',
+	'salesforce_object' => 'WebForm_RAQ__c',
 ] )
 
 @php
@@ -20,7 +21,7 @@
 @endphp
 
 <x-section class="form-request-quote">
-	<quark-form-request-quote class="form-request-quote__container">
+	<quark-form-request-quote class="form-request-quote__container" data-filters-endpoint="{{ $filters_endpoint }}">
 		<tp-tabs class="form-request-quote__tabs" current-tab="{{ $current_tab }}" update-url="{{ $update_url }}">
 			{{-- Naviation --}}
 			<x-form-request-quote.tabs-nav>
@@ -73,7 +74,7 @@
 					<x-form.row>
 						<x-form.field :validation="[ 'required' ]" class="form-request-quote__toggle">
 							<tp-toggle-attribute trigger="select" target=".form-request-quote__travel-time">
-								<x-form.select label="{{ __( 'Choose your expedition (optional)', 'qrk' ) }}" name="fields[Expedition__c]">
+								<x-form.select label="{{ __( 'Choose your expedition (optional)', 'qrk' ) }}" name="fields[Expedition__c]" class="form-request-quote__expedition">
 									<x-form.option value="">{{ __( '- None -', 'qrk' ) }}</x-form.option>
 									@foreach ( $expeditions as $expedition )
 										<x-form.option value="{{ $expedition['value'] }}" label="{{ $expedition['label'] }}">{{ $expedition['label'] }}</x-form.option>
@@ -83,21 +84,13 @@
 						</x-form.field>
 					</x-form.row>
 
-					<x-form.row class="form-request-quote__travel-time" data-toggle-value="any_available_departure,november_2024">
-						<x-form.field-group title="{{ __( 'When would you like to travel?', 'qrk' ) }}">
+					<x-form.row class="form-request-quote__travel-time" data-toggle-value="any_available_departure">
+						<x-form.field-group title="{{ __( 'When would you like to travel?', 'qrk' ) }}" class="form-request-quote__options">
 							<x-form.checkbox name="fields[Preferred_Travel_Seasons__c][]" label="{{ __( 'Any Available Departure', 'qrk' ) }}" value="any_available_departure" checked="checked" />
-							<x-form.checkbox name="fields[Preferred_Travel_Seasons__c][]" label="{{ __( 'November 2024', 'qrk' ) }}" value="november_2024" />
-							<x-form.checkbox name="fields[Preferred_Travel_Seasons__c][]" label="{{ __( 'December 2024', 'qrk' ) }}" value="december_2024" />
-							<x-form.checkbox name="fields[Preferred_Travel_Seasons__c][]" label="{{ __( 'January 2025', 'qrk' ) }}" value="january_2025" />
-							<x-form.checkbox name="fields[Preferred_Travel_Seasons__c][]" label="{{ __( 'February 2025', 'qrk' ) }}" value="february_2025" />
-							<x-form.checkbox name="fields[Preferred_Travel_Seasons__c][]" label="{{ __( 'March 2025', 'qrk' ) }}" value="march_2025" />
-							<x-form.checkbox name="fields[Preferred_Travel_Seasons__c][]" label="{{ __( 'November 2025', 'qrk' ) }}" value="november_2025" />
-							<x-form.checkbox name="fields[Preferred_Travel_Seasons__c][]" label="{{ __( 'December 2025', 'qrk' ) }}" value="december_2025" />
-							<x-form.checkbox name="fields[Preferred_Travel_Seasons__c][]" label="{{ __( 'January 2026', 'qrk' ) }}" value="january_2026" />
-							<x-form.checkbox name="fields[Preferred_Travel_Seasons__c][]" label="{{ __( 'February 2026', 'qrk' ) }}" value="february_2026" />
-							<x-form.checkbox name="fields[Preferred_Travel_Seasons__c][]" label="{{ __( 'March 2026', 'qrk' ) }}" value="march_2026" />
 						</x-form.field-group>
 					</x-form.row>
+
+					<template class="form-request-quote__template-month-option"><x-form.checkbox name="fields[Preferred_Travel_Seasons__c][]" /></template>
 
 					<x-form-request-quote.step-one-button />
 
