@@ -2,7 +2,11 @@
 	'title' => __( 'Your recent searches', 'qrk' ),
 ] )
 
-<div class="expedition-seach__recent-searches">
+@php
+	quark_component_enqueue_assets( 'search-filters-bar' );
+@endphp
+
+<quark-expedition-search-recent-searches class="expedition-seach__recent-searches">
 	<h4 class="h4"><x-escape :content="$title" /></h4>
 	<temlate>
 		<x-mini-cards-list.card>
@@ -16,4 +20,4 @@
 
 	<x-mini-cards-list>
 	</x-mini-cards-list>
-</div>
+</quark-expedition-search-recent-searches>

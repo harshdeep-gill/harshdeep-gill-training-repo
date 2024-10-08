@@ -25,7 +25,7 @@ export const DEFAULT_STATE: SearchFiltersBarState = {
 /**
  * Persistent keys.
  */
-export const PERSISTENT_STATE_KEYS = [ 'selectedFilters' ];
+export const PERSISTENT_STATE_KEYS = [ 'selectedMonths', 'selectedDestinations' ];
 
 /**
  * Create store.
