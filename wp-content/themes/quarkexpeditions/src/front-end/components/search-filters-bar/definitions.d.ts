@@ -1,22 +1,13 @@
 /**
- * Interface BookDeparturesShipsFilters.
- */
-interface SearchFiltersBarFilters {
-	'destinations'?: Set<string>,
-	'months'?: Set<string>,
-	[key: string]: any;
-}
-
-/**
  * Interface SearchFiltersBarState.
  */
 interface SearchFiltersBarState {
 	filtersApiUrl: string,
-	selectedFilters: SearchFiltersBarFilters;
+	searchPageUrl: string,
+	selectedDestinations: Set<string>,
+	selectedMonths: Set<string>,
 	departureMonthOptions: [],
 	destinationOptions: [],
 	resultCount: 0,
-	refreshDestinations: false,
-	refreshDepartures: false,
 	initialized: false,
 }

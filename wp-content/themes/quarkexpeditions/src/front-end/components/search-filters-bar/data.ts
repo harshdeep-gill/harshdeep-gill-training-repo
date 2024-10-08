@@ -13,12 +13,12 @@ export const STORE_NAME = 'searchFiltersBar';
  */
 export const DEFAULT_STATE: SearchFiltersBarState = {
 	filtersApiUrl: '',
+	searchPageUrl: '',
 	departureMonthOptions: [],
 	destinationOptions: [],
-	selectedFilters: {},
+	selectedDestinations: new Set( [] ),
+	selectedMonths: new Set( [] ),
 	resultCount: 0,
-	refreshDestinations: false,
-	refreshDepartures: false,
 	initialized: false,
 };
 

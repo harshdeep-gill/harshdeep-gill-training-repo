@@ -17,6 +17,7 @@ export class MonthsMultiSelect extends HTMLElement {
 	 */
 	private resetButton : HTMLElement | null;
 	private availableMonths: Array<object> | null;
+	static observedAttributes = [ 'available-months' ];
 
 	/**
 	 * Constructor.
@@ -30,12 +31,70 @@ export class MonthsMultiSelect extends HTMLElement {
 		this.availableMonths = JSON.parse( this.getAttribute( 'available-months' ) ?? '' );
 
 		// Event Listeners.
-		this.resetButton?.addEventListener( 'click', this.unSelectAll.bind( this ) );
+		this.resetButton?.addEventListener( 'click', this.resetSelector.bind( this ) );
 
 		// Disable unavailable month options.
 		if ( this.availableMonths ) {
-			this.disableUnavailableMonthOptions();
+			this.disableUnavailableMonthOptions( this.availableMonths );
 		}
+	}
+
+	/**
+	 * Responds to attribute change.
+	 *
+	 * @param { string } name     Attribute name
+	 * @param { string } oldValue Old value
+	 * @param { string } newValue New value
+	 */
+	attributeChangedCallback( name: string, oldValue: string, newValue: string ) {
+		// Check if available-months attribute.
+		if ( 'available-months' !== name || oldValue === newValue ) {
+			// Nope, bail.
+			return;
+		}
+
+		// Disable unavailable month options.
+		this.disableUnavailableMonthOptions( JSON.parse( this.getAttribute( 'available-months' ) ?? '' ) );
+	}
+
+	/**
+	 * Reset selected values.
+	 */
+	resetSelector() {
+		// Unselect all options.
+		this.unSelectAll();
+
+		// Dispatch reset custom event.
+		this.dispatchEvent( new CustomEvent( 'reset' ) );
+	}
+
+	/**
+	 * Set the value of this component.
+	 *
+	 * @param {Array} value Value.
+	 */
+	set value( value: string[] ) {
+		// Bail if value is not an array.
+		if ( ! value || ! Array.isArray( value ) ) {
+			// Bail early.
+			return;
+		}
+
+		// Set the value of the select field.
+		const allOptions: NodeListOf<MonthsMultiSelectOption> | null = this.querySelectorAll( 'tp-multi-select-option' );
+
+		// Loop through all options.
+		allOptions?.forEach( ( option: MonthsMultiSelectOption ): void => {
+			// Check if the value is in the array.
+			if ( value.includes( option.getAttribute( 'value' ) ?? '' ) ) {
+				option.setAttribute( 'selected', 'yes' );
+			} else {
+				option.removeAttribute( 'selected' );
+			}
+		} );
+
+		// Dispatch change event.
+		this.dispatchEvent( new CustomEvent( 'change' ) );
 	}
 
 	/**
@@ -91,7 +150,7 @@ export class MonthsMultiSelect extends HTMLElement {
 		} );
 
 		// Dispatch change event.
-		this.dispatchEvent( new CustomEvent( 'change', { bubbles: true } ) );
+		this.dispatchEvent( new CustomEvent( 'change' ) );
 	}
 
 	/**
@@ -110,7 +169,7 @@ export class MonthsMultiSelect extends HTMLElement {
 		} );
 
 		// Dispatch change event.
-		this.dispatchEvent( new CustomEvent( 'change', { bubbles: true } ) );
+		this.dispatchEvent( new CustomEvent( 'change' ) );
 	}
 
 	/**
@@ -124,25 +183,33 @@ export class MonthsMultiSelect extends HTMLElement {
 			option.removeAttribute( 'selected' );
 		} );
 
+		// Reset value.
+		this.value = [];
+
 		// Dispatch change event.
-		this.dispatchEvent( new CustomEvent( 'change', { bubbles: true } ) );
+		this.dispatchEvent( new CustomEvent( 'change' ) );
 	}
 
 	/**
 	 * Disable the month options that are not available.
+	 *
+	 * @param {Array} options Options.
 	 */
-	disableUnavailableMonthOptions(): void {
+	disableUnavailableMonthOptions( options: Array<object> ): void {
 		// Get all options with the specified value.
 		const allOptions: NodeListOf<MonthsMultiSelectOption> | null = this?.querySelectorAll( 'quark-months-multi-select-option' );
 
 		// Extract the "value" property from each object
-		const monthValues = this.availableMonths?.map( ( item: any ) => item?.value );
+		const monthValues = options?.map( ( item: any ) => item?.value );
 
 		// Loop through all options.
 		allOptions?.forEach( ( option: MonthsMultiSelectOption ): void => {
 			// Set disabled attribute.
-			if ( ! monthValues?.includes( option.getAttribute( 'value' ) ) ) {
+			if ( monthValues?.includes( option.getAttribute( 'value' ) as string ) ) {
+				option.setAttribute( 'disabled', 'no' );
+			} else {
 				option.setAttribute( 'disabled', 'yes' );
+				option.setAttribute( 'selected', 'no' );
 			}
 		} );
 	}

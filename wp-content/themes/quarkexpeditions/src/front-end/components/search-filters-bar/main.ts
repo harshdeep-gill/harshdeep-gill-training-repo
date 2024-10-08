@@ -15,7 +15,7 @@ import { MonthsMultiSelectOption } from '../months-multi-select/months-multi-sel
 /**
  * Get Store.
  */
-const { subscribe } = zustand.stores.searchFiltersBar;
+const { subscribe, getState } = zustand.stores.searchFiltersBar;
 
 /**
  * Class SearchFiltersBar.
@@ -25,13 +25,16 @@ export class SearchFiltersBar extends HTMLElement {
 	 * Properties.
 	 */
 	private searchFiltersModal: HTMLElement | null;
+	private searchButton: HTMLElement | null;
 	private searchModalDestinationsButton: HTMLElement | null;
 	private searchModalDeparturesButton: HTMLElement | null;
 	private destinationFilters: HTMLElement | null | undefined;
 	private departureMonthsFilters: HTMLElement | null | undefined;
 	private filtersApiUrl: string | null;
+	private searchPageUrl: string | null;
 	private destinationSelector: SearchFilterDestinations | null | undefined;
-	private departureMonthsSelector: MonthsMultiSelect | null | undefined;
+	private departureMonthsSelectors: NodeListOf<MonthsMultiSelect> | null | undefined;
+	private defaultDepartureMonthsPlaceholder: string;
 
 	/**
 	 * Constructor.
@@ -45,6 +48,7 @@ export class SearchFiltersBar extends HTMLElement {
 
 		// Settings.
 		this.filtersApiUrl = this.getAttribute( 'filters-api-url' );
+		this.searchPageUrl = this.getAttribute( 'search-page-url' );
 
 		// Elements.
 		this.searchFiltersModal = document.querySelector( '.search-filters-bar__modal' );
@@ -53,7 +57,9 @@ export class SearchFiltersBar extends HTMLElement {
 		this.destinationFilters = this.searchFiltersModal?.querySelector( '.search-filters-bar__destinations-filter-options' );
 		this.departureMonthsFilters = this.searchFiltersModal?.querySelector( '.search-filters-bar__departure-months-filter-options' );
 		this.destinationSelector = this.searchFiltersModal?.querySelector( 'quark-search-filters-bar-destinations' );
-		this.departureMonthsSelector = this.searchFiltersModal?.querySelector( 'quark-months-multi-select' );
+		this.departureMonthsSelectors = this.searchFiltersModal?.querySelectorAll( 'quark-months-multi-select' );
+		this.defaultDepartureMonthsPlaceholder = this.departureMonthsFilters?.getAttribute( 'default-placeholder' ) as string;
+		this.searchButton = this.querySelector( '.search-filters-bar__search-button' );
 
 		// Event Listeners.
 		this.searchModalDestinationsButton?.addEventListener(
@@ -65,7 +71,16 @@ export class SearchFiltersBar extends HTMLElement {
 			this.toggleDepartureFilterOptions.bind( this )
 		);
 		this.destinationSelector?.addEventListener( 'change', this.updateDestinationsState.bind( this ) );
-		this.departureMonthsSelector?.addEventListener( 'change', this.updateDepartureMonthsState.bind( this ) );
+
+		// Loop through all month selectors.
+		this.departureMonthsSelectors?.forEach( ( selector ) => {
+			// Add event listeners.
+			selector?.addEventListener( 'change', this.updateDepartureMonthsState.bind( this ) );
+			selector?.addEventListener( 'reset', this.updateMonthsPlaceholder.bind( this, this.defaultDepartureMonthsPlaceholder ) );
+		} );
+
+		// Search Button.
+		this.searchButton?.addEventListener( 'click', this.redirectToSearchPage.bind( this ) );
 	}
 
 	/**
@@ -77,17 +92,29 @@ export class SearchFiltersBar extends HTMLElement {
 	}
 
 	/**
+	 * Redirect to the search page URL.
+	 */
+	redirectToSearchPage() {
+		// Get state.
+		const { searchPageUrl } = getState();
+
+		// Redirect to Search URL from state.
+		if ( searchPageUrl ) {
+			window.location.href = searchPageUrl;
+		}
+	}
+
+	/**
 	 * Initialize component.
 	 */
 	initialize() {
 		// Initialize data for the component.
 		initialize(
 			{
-				departureMonthOptions: JSON.parse( this.departureMonthsFilters?.getAttribute( 'available-months' ) ?? '' ) ?? [],
-				destinationOptions: JSON.parse( this.destinationFilters?.getAttribute( 'destinations' ) ?? '' ) ?? [],
-			}, {
 				filtersApiUrl: this.filtersApiUrl,
-			} );
+				searchPageUrl: this.searchPageUrl,
+			}
+		);
 	}
 
 	/**
@@ -123,14 +150,22 @@ export class SearchFiltersBar extends HTMLElement {
 				this.updateDestinationsPlaceholder( label );
 			}
 		}
+
+		// Activate departure filter.
+		this.toggleDepartureFilterOptions();
 	}
 
 	/**
 	 * Update selected departure months state.
+	 *
+	 * @param {Event} event event.
 	 */
-	updateDepartureMonthsState() {
+	updateDepartureMonthsState( event: Event ) {
+		// Get the current selector.
+		const currentSelector = event.target as MonthsMultiSelect;
+
 		// Get the selected value.
-		const value = this.departureMonthsSelector?.value;
+		const value = currentSelector?.value;
 		let label = '';
 
 		// Get the selected option.
@@ -150,6 +185,9 @@ export class SearchFiltersBar extends HTMLElement {
 				this.updateMonthsPlaceholder( label );
 			}
 		}
+
+		// Activate destinations filter.
+		this.toggleDestinationFilterOptions();
 	}
 
 	/**
@@ -188,11 +226,17 @@ export class SearchFiltersBar extends HTMLElement {
 	 * @param {string} label Label.
 	 */
 	updateDestinationsPlaceholder( label: string ) {
+		// Check if label exists.
+		if ( ! label ) {
+			// Bail.
+			return;
+		}
+
 		// Get the destinations placeholder.
 		const destinationsPlaceholder = this.searchFiltersModal?.querySelector( '.search-filters-bar__destinations-placeholder' );
 
 		// Update the placeholder label.
-		if ( destinationsPlaceholder && label ) {
+		if ( destinationsPlaceholder ) {
 			destinationsPlaceholder.innerHTML = label;
 		}
 	}
@@ -203,12 +247,18 @@ export class SearchFiltersBar extends HTMLElement {
 	 * @param {string} label Label.
 	 */
 	updateMonthsPlaceholder( label: string ) {
-		// Get the destinations placeholder.
+		// Check if label exists.
+		if ( ! label ) {
+			// Bail.
+			return;
+		}
+
+		// Get the months placeholder.
 		const monthsPlaceholder = this.searchFiltersModal?.querySelector( '.search-filters-bar__departure-months-placeholder' );
 
 		// Update the placeholder label.
-		if ( monthsPlaceholder && label ) {
-			monthsPlaceholder.innerHTML = label;
+		if ( monthsPlaceholder ) {
+			monthsPlaceholder.innerHTML = label ?? '';
 		}
 	}
 }

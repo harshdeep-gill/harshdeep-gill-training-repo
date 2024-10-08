@@ -59,13 +59,11 @@ export class SearchFilterDestinationOption extends HTMLElement {
 			) {
 				this.destinationSelector?.select( value );
 				this.destinationSelector?.dispatchEvent( new CustomEvent( 'select', {
-					bubbles: true,
 					detail: { value },
 				} ) );
 			} else {
 				this.destinationSelector?.unSelect( value );
 				this.destinationSelector?.dispatchEvent( new CustomEvent( 'unselect', {
-					bubbles: true,
 					detail: { value },
 				} ) );
 			}
