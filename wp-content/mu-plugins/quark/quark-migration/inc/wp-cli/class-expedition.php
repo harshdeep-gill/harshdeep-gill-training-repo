@@ -1170,7 +1170,7 @@ class Expedition {
 				'attrs'        => [
 					'title'          => 'Departure Dates & Cabins',
 					'titleAlignment' => 'left',
-					'headingLevel'   => '3',
+					'headingLevel'   => '2',
 					'anchor'         => 'departures',
 				],
 				'innerContent' => [
