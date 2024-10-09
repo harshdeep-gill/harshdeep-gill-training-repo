@@ -289,7 +289,7 @@ function get_filters_from_url(): array {
  *     months: string[],
  *     durations: array<int, string[]>,
  *     ships: string[],
- *     sort: string,
+ *     sort: string[],
  *     page: int,
  *     posts_per_load: int,
  *     currency: string,
@@ -310,7 +310,7 @@ function parse_filters( array $filters = [] ): array {
 			MONTH_FILTER_KEY            => [],
 			DURATION_FILTER_KEY         => [],
 			SHIP_FILTER_KEY             => [],
-			SORT_FILTER_KEY             => 'date-now',
+			SORT_FILTER_KEY             => [ 'date-now' ],
 			PAGE_FILTER_KEY             => 1,
 			PER_PAGE_FILTER_KEY         => 10,
 			DESTINATION_FILTER_KEY      => [],
@@ -391,6 +391,13 @@ function parse_filters( array $filters = [] ): array {
 		$filters[ ITINERARY_LENGTH_FILTER_KEY ] = array_filter( array_map( 'trim', $filters[ ITINERARY_LENGTH_FILTER_KEY ] ) );
 	}
 
+	// Parse sort.
+	if ( is_string( $filters[ SORT_FILTER_KEY ] ) ) {
+		$filters[ SORT_FILTER_KEY ] = array_filter( array_map( 'trim', explode( ',', $filters[ SORT_FILTER_KEY ] ) ) );
+	} elseif ( is_array( $filters[ SORT_FILTER_KEY ] ) ) {
+		$filters[ SORT_FILTER_KEY ] = array_filter( array_map( 'trim', $filters[ SORT_FILTER_KEY ] ) );
+	}
+
 	// Return parsed filters.
 	return [
 		SEASON_FILTER_KEY           => (array) $filters[ SEASON_FILTER_KEY ],
@@ -400,7 +407,7 @@ function parse_filters( array $filters = [] ): array {
 		DURATION_FILTER_KEY         => (array) $filters[ DURATION_FILTER_KEY ],
 		SHIP_FILTER_KEY             => (array) $filters[ SHIP_FILTER_KEY ],
 		PAGE_FILTER_KEY             => absint( $filters[ PAGE_FILTER_KEY ] ),
-		SORT_FILTER_KEY             => $filters[ SORT_FILTER_KEY ],
+		SORT_FILTER_KEY             => (array) $filters[ SORT_FILTER_KEY ],
 		PER_PAGE_FILTER_KEY         => absint( $filters[ PER_PAGE_FILTER_KEY ] ),
 		CURRENCY_FILTER_KEY         => $filters[ CURRENCY_FILTER_KEY ],
 		DESTINATION_FILTER_KEY      => (array) $filters[ DESTINATION_FILTER_KEY ],
@@ -430,7 +437,7 @@ function search( array $filters = [], array $facets = [], bool $retrieve_all = f
 	$filters = parse_filters( $filters );
 
 	// Get the filters.
-	$sort              = $filters[ SORT_FILTER_KEY ];
+	$sorts             = array_map( 'strval', (array) $filters[ SORT_FILTER_KEY ] );
 	$seasons           = array_map( 'strval', (array) $filters[ SEASON_FILTER_KEY ] );
 	$months            = array_map( 'strval', (array) $filters[ MONTH_FILTER_KEY ] );
 	$expeditions       = array_map( 'absint', (array) $filters[ EXPEDITION_FILTER_KEY ] );
@@ -457,7 +464,7 @@ function search( array $filters = [], array $facets = [], bool $retrieve_all = f
 	$search->set_destinations( $destinations );
 	$search->set_languages( $languages );
 	$search->set_itinerary_lengths( $itinerary_lengths );
-	$search->set_sort( $sort, $filters[ CURRENCY_FILTER_KEY ] );
+	$search->set_sorts( $sorts, $filters[ CURRENCY_FILTER_KEY ] );
 
 	// Set page and posts per page.
 	if ( empty( $retrieve_all ) ) {

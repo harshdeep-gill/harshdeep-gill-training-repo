@@ -17,9 +17,9 @@
 			"type": "string",
 			"default": ""
 		},
-		"title": {
-			"type": "string",
-			"default": ""
+		"border": {
+			"type": "boolean",
+			"default": false
 		}
 	},
 	"supports": {

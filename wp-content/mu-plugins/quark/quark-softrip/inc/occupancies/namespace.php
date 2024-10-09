@@ -18,6 +18,7 @@ use function Quark\Softrip\OccupancyPromotions\get_lowest_price as get_occupancy
 use function Quark\Softrip\OccupancyPromotions\update_occupancy_promotions;
 use function Quark\Softrip\add_prefix_to_table_name;
 use function Quark\Localization\get_currencies;
+use function Quark\Softrip\get_initiated_via;
 
 use const Quark\CabinCategories\POST_TYPE as CABIN_CATEGORY_POST_TYPE;
 use const Quark\Localization\USD_CURRENCY;
@@ -124,6 +125,15 @@ function update_occupancies( array $raw_cabins_data = [], int $departure_post_id
 
 		// Bail if no cabin category post ID.
 		if ( empty( $cabin_category_post_id ) ) {
+			do_action(
+				'quark_softrip_sync_error',
+				[
+					'error' => 'Cabin category post not found with cabin code: ' . $raw_cabin_data['code'] . ' for departure post ID: ' . $departure_post_id,
+					'via'   => get_initiated_via(),
+				]
+			);
+
+			// Continue to next cabin.
 			continue;
 		}
 
@@ -221,6 +231,7 @@ function update_occupancies( array $raw_cabins_data = [], int $departure_post_id
 
 		// Bust caches at cabin category level.
 		wp_cache_delete( CACHE_KEY_PREFIX . '_cabin_category_post_id_' . $cabin_category_post_id . '_departure_post_id_' . $departure_post_id, CACHE_GROUP );
+		wp_cache_delete( CACHE_KEY_PREFIX . '_departure_cabin_category_post_id_' . $cabin_category_post_id, CACHE_GROUP );
 	}
 
 	/**
@@ -270,9 +281,6 @@ function update_occupancies( array $raw_cabins_data = [], int $departure_post_id
 		if ( ! $is_occupancy_deleted ) {
 			continue;
 		}
-
-		// Delete post meta for cabin spaces available.
-		delete_post_meta( $departure_post_id, 'cabin_spaces_available_' . $cabin_category_post_id );
 
 		// Bust departure cache as meta has been deleted.
 		bust_departure_post_cache( $departure_post_id );
@@ -341,6 +349,14 @@ function format_data( array $raw_occupancy_data = [], int $cabin_category_post_i
 		empty( $raw_occupancy_data['saleStatus'] ) ||
 		empty( $raw_occupancy_data['prices'] )
 	) {
+		return [];
+	}
+
+	// Get is occupancy available.
+	$is_occupancy_available = is_occupancy_available( $raw_occupancy_data['saleStatusCode'] );
+
+	// Bail if occupancy is not available.
+	if ( ! $is_occupancy_available ) {
 		return [];
 	}
 
@@ -708,7 +724,7 @@ function get_lowest_price( int $post_id = 0, string $currency = USD_CURRENCY ): 
 		$price_per_person_key = 'price_per_person_' . strtolower( $currency );
 
 		// Validate the price per person.
-		if ( ! is_array( $occupancy ) || empty( $occupancy[ $price_per_person_key ] ) || empty( $occupancy['id'] ) ) {
+		if ( ! is_array( $occupancy ) || empty( $occupancy[ $price_per_person_key ] ) || empty( $occupancy['id'] ) || empty( $occupancy['availability_status'] ) ) {
 			continue;
 		}
 
@@ -791,6 +807,7 @@ function clear_occupancies_by_departure( int $departure_post_id = 0 ): bool {
 
 		// Bust cache.
 		wp_cache_delete( CACHE_KEY_PREFIX . '_cabin_category_post_id_' . $occupancy['cabin_category_post_id'] . '_departure_post_id_' . $departure_post_id, CACHE_GROUP );
+		wp_cache_delete( CACHE_KEY_PREFIX . '_departure_cabin_category_post_id_' . $occupancy['cabin_category_post_id'], CACHE_GROUP );
 	}
 
 	// Return failure if not all deleted.
@@ -1083,7 +1100,7 @@ function get_lowest_price_by_cabin_category_and_departure( int $cabin_category_p
 		$price_per_person_key = 'price_per_person_' . strtolower( $currency );
 
 		// Validate the price per person.
-		if ( ! is_array( $occupancy ) || empty( $occupancy[ $price_per_person_key ] ) || empty( $occupancy['id'] ) ) {
+		if ( ! is_array( $occupancy ) || empty( $occupancy[ $price_per_person_key ] ) || empty( $occupancy['id'] ) || empty( $occupancy['availability_status'] ) ) {
 			continue;
 		}
 
@@ -1146,7 +1163,7 @@ function get_lowest_price_by_cabin_category_and_departure_and_promotion_code( in
 		$price_per_person_key = 'price_per_person_' . strtolower( $currency );
 
 		// Validate the price per person.
-		if ( ! is_array( $occupancy ) || empty( $occupancy[ $price_per_person_key ] ) || empty( $occupancy['id'] ) ) {
+		if ( ! is_array( $occupancy ) || empty( $occupancy[ $price_per_person_key ] ) || empty( $occupancy['id'] ) || empty( $occupancy['availability_status'] ) ) {
 			continue;
 		}
 
@@ -1163,6 +1180,17 @@ function get_lowest_price_by_cabin_category_and_departure_and_promotion_code( in
 			$lowest_price = $promotion_lowest_price;
 		}
 	}
+
+	// Add supplemental and mandatory price.
+	$updated_price = add_supplemental_and_mandatory_price(
+		[
+			'discounted' => $lowest_price,
+			'original'   => 0,
+		],
+		$departure_post_id,
+		$currency
+	);
+	$lowest_price  = $updated_price['discounted'];
 
 	// Return the lowest price.
 	return $lowest_price;
@@ -1427,4 +1455,126 @@ function get_masks_mapping(): array {
 
 	// Return the mask mapping.
 	return $mask_mapping;
+}
+
+/**
+ * Check if occupancy is on sale(open) by sale status.
+ *
+ * @param string $status Sale status.
+ *
+ * @return bool
+ */
+function is_occupancy_on_sale( string $status = '' ): bool {
+	// Check status.
+	switch ( $status ) {
+		// Open.
+		case 'O':
+		case 'ON':
+		case 'W':
+			return true;
+
+		// Default.
+		default:
+			return false;
+	}
+}
+
+/**
+ * Is occupancy available.
+ *
+ * @param string $sale_status Sale status.
+ *
+ * @return bool
+ */
+function is_occupancy_available( string $sale_status = '' ): bool {
+	/**
+	 * Sale Status mapping.
+	 *
+	 * O - Open -> Available
+	 * ON - Open -> Available
+	 * S - Sold Out -> Available
+	 * C - Closed -> Unavailable
+	 * N - No Display -> Unavailable
+	 * NO - No Display -> Unavailable
+	 * I - Internal -> Unavailable
+	 * W - Waitlisted -> Available
+	 */
+
+	// Check status.
+	switch ( $sale_status ) {
+		// Open.
+		case 'O':
+		case 'ON':
+		case 'S':
+		case 'W':
+			return true;
+
+		// Default.
+		default:
+			return false;
+	}
+}
+
+/**
+ * Get departures by cabin category post id.
+ *
+ * @param int  $cabin_category_post_id The cabin category post ID.
+ * @param bool $force                  Bypass cache.
+ *
+ * @return int[]
+ */
+function get_departures_by_cabin_category_id( int $cabin_category_post_id = 0, bool $force = false ): array {
+	// Bail if empty.
+	if ( empty( $cabin_category_post_id ) ) {
+		return [];
+	}
+
+	// Cache key.
+	$cache_key = CACHE_KEY_PREFIX . '_departure_cabin_category_post_id_' . $cabin_category_post_id;
+
+	// Check the cache.
+	if ( ! $force ) {
+		// Check for cached version.
+		$cached_data = wp_cache_get( $cache_key, CACHE_GROUP );
+
+		// If cached data, return it.
+		if ( is_array( $cached_data ) ) {
+			return $cached_data;
+		}
+	}
+
+	// Get global $wpdb object.
+	global $wpdb;
+
+	// Get the table name.
+	$table_name = get_table_name();
+
+	// Get departures ids.
+	$departure_ids = $wpdb->get_col(
+		$wpdb->prepare(
+			'
+			SELECT
+				departure_post_id
+			FROM
+				%i
+			WHERE
+				cabin_category_post_id = %d
+			GROUP BY
+				departure_post_id
+			',
+			[
+				$table_name,
+				$cabin_category_post_id,
+			]
+		)
+	);
+
+	// Convert to integers.
+	$ids = array_map( 'absint', $departure_ids );
+
+	// Cache the data.
+	wp_cache_set( $cache_key, $ids, CACHE_GROUP );
+
+	// Return the departure post IDs.
+	return $ids;
 }

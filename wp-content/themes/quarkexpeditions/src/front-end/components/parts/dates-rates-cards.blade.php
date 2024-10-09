@@ -12,6 +12,7 @@
 			$ship_title = $card['ship_title'] ?? '';
 			$number_of_promos = $card['available_promos'] ? count($card['available_promos']) : 0;
 			$number_of_cabins = ! empty( $card['cabin_data'] ) ? count( $card['cabin_data'] ) : 0;
+			$number_of_table_rows = $number_of_promos + 2; // 2 for brochure-price row and availability row.
 		@endphp
 
 		@if ( $ship_title !== $prev_ship_title )
@@ -39,7 +40,7 @@
 
 							{{-- Cabin Names --}}
 							@foreach ( $card['cabin_data'] as $cabin )
-								<x-dates-rates.item.table-heading>{{ $cabin['name'] ?? '' }}</x-dates-rates.item.table-heading>
+								<x-dates-rates.item.table-heading :type="strtolower( $cabin['type'] )" >{{ $cabin['name'] ?? '' }}</x-dates-rates.item.table-heading>
 							@endforeach
 						@endif
 
@@ -51,7 +52,7 @@
 
 					{{-- Expedition and cabin details with original price --}}
 					<x-dates-rates.item.table-row>
-						<x-dates-rates.item.table-column rowspan="{{ $number_of_promos + 2 }}">
+						<x-dates-rates.item.table-column rowspan="{{ $number_of_table_rows }}">
 							<x-dates-rates.expedition>
 								<x-dates-rates.expedition.overline>
 									<x-dates-rates.expedition.overline-link title="{{ $card['region'] ?? '' }}"
@@ -89,7 +90,9 @@
 										</x-dates-rates.expedition.meta-value>
 									</x-dates-rates.expedition.meta-item>
 								</x-dates-rates.expedition.meta>
-								<x-dates-rates.expedition.cta text="Request a Quote" url="#" />
+								@if ( ! empty( $card['request_a_quote_url'] ) )
+									<x-dates-rates.expedition.cta text="Request a Quote" :url="$card['request_a_quote_url']" />
+								@endif
 							</x-dates-rates.expedition>
 						</x-dates-rates.item.table-column>
 

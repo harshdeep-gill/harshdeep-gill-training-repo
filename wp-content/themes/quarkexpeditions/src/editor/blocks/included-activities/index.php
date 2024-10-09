@@ -66,6 +66,11 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 			continue;
 		}
 
+		// Check if the activity is published.
+		if ( 'publish' !== $activity['post']->post_status ) {
+			continue;
+		}
+
 		// Prepare activity data.
 		$activities[] = [
 			'title'       => $activity['post']->post_title,

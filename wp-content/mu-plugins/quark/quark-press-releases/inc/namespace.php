@@ -199,7 +199,7 @@ function get_cards_data( array $post_ids = [] ): array {
  */
 function breadcrumbs_ancestors( array $breadcrumbs = [] ): array {
 	// Check if current query is for this post type.
-	if ( ! is_singular( POST_TYPE ) && ! is_author() && ! is_category() ) {
+	if ( ! is_singular( POST_TYPE ) ) {
 		return $breadcrumbs;
 	}
 

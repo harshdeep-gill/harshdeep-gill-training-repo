@@ -10,20 +10,23 @@ namespace Quark\Softrip\Departures;
 use WP_Error;
 use WP_Query;
 
+use function Quark\Departures\bust_post_cache as bust_departure_post_cache;
 use function Quark\Localization\get_currencies;
 use function Quark\Ships\get_id_from_ship_code;
 use function Quark\Softrip\AdventureOptions\update_adventure_options;
+use function Quark\Softrip\get_initiated_via;
 use function Quark\Softrip\Occupancies\update_occupancies;
 use function Quark\Softrip\is_date_in_the_past;
 use function Quark\Softrip\Occupancies\get_lowest_price as get_occupancies_lowest_price;
+use function Quark\Softrip\Occupancies\is_occupancy_available;
 use function Quark\Softrip\Promotions\update_promotions;
 
-use const Quark\Departures\CACHE_GROUP as DEPARTURE_CACHE_GROUP;
-use const Quark\Departures\CACHE_KEY as DEPARTURE_CACHE_KEY;
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
 use const Quark\Departures\SPOKEN_LANGUAGE_TAXONOMY;
 use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
 use const Quark\Localization\DEFAULT_CURRENCY;
+
+const DATA_HASH_KEY = '_formatted_data_hash';
 
 /**
  * Update the departure data.
@@ -150,7 +153,7 @@ function update_departures( array $raw_departures = [], string $softrip_package_
 				);
 
 				// Bust the departure module cache.
-				wp_cache_delete( DEPARTURE_CACHE_KEY . "_$departure_post_id", DEPARTURE_CACHE_GROUP );
+				bust_departure_post_cache( $departure_post_id );
 			}
 		}
 
@@ -213,7 +216,7 @@ function update_departures( array $raw_departures = [], string $softrip_package_
 		// If existing, update the post.
 		if ( $is_existing ) {
 			// Get hash of existing formatted data.
-			$existing_formatted_data_hash = get_post_meta( $existing_departure_codes[ $departure_softrip_id ], 'formatted_data_hash', true );
+			$existing_formatted_data_hash = get_post_meta( $existing_departure_codes[ $departure_softrip_id ], DATA_HASH_KEY, true );
 
 			// Update the post if formatted data hash is different.
 			if ( $formatted_data_hash !== $existing_formatted_data_hash ) {
@@ -239,7 +242,7 @@ function update_departures( array $raw_departures = [], string $softrip_package_
 			continue;
 		} else {
 			// Set formatted data hash.
-			update_post_meta( $updated_post_id, 'formatted_data_hash', $formatted_data_hash );
+			update_post_meta( $updated_post_id, DATA_HASH_KEY, $formatted_data_hash );
 
 			// Add to updated departure codes.
 			$updated_departure_codes[] = $departure_softrip_id;
@@ -269,7 +272,7 @@ function update_departures( array $raw_departures = [], string $softrip_package_
 		// Validate if any of the updates are successful.
 		if ( $is_adventure_options_updated || $is_promotions_updated || $is_occupancies_updated || $is_departure_post_updated ) {
 			// Bust the departure module cache.
-			wp_cache_delete( DEPARTURE_CACHE_KEY . "_$updated_post_id", DEPARTURE_CACHE_GROUP );
+			bust_departure_post_cache( $updated_post_id );
 
 			// Updated fields.
 			$updated_fields = [
@@ -330,7 +333,7 @@ function update_departures( array $raw_departures = [], string $softrip_package_
 		}
 
 		// Bust the departure module cache.
-		wp_cache_delete( DEPARTURE_CACHE_KEY . "_$departure_post_id", DEPARTURE_CACHE_GROUP );
+		bust_departure_post_cache( $departure_post_id );
 
 		/**
 		 * Fires after a departure is expired and unpublished.
@@ -429,13 +432,42 @@ function format_raw_departure_data( array $raw_departure_data = [], int $itinera
 			continue;
 		}
 
-		// Valid.
-		$has_valid_occupancies = true;
-		break;
+		// Loop through occupancies.
+		foreach ( $cabin['occupancies'] as $occupancy ) {
+			// Skip if not an array or empty occupancy.
+			if ( ! is_array( $occupancy ) || empty( $occupancy ) || empty( $occupancy['saleStatusCode'] ) ) {
+				continue;
+			}
+
+			// Skip if sale status code is not available.
+			if ( ! is_occupancy_available( $occupancy['saleStatusCode'] ) ) {
+				continue;
+			} else {
+				// Valid.
+				$has_valid_occupancies = true;
+				break;
+			}
+		}
+
+		// Break if valid occupancies.
+		if ( $has_valid_occupancies ) {
+			break;
+		}
 	}
 
 	// Return empty if no valid occupancies.
 	if ( ! $has_valid_occupancies ) {
+		// Log error.
+		do_action(
+			'quark_softrip_sync_error',
+			[
+				'error' => __( 'No valid occupancies found.', 'qrk' ),
+				'via'   => get_initiated_via(),
+				'codes' => [ $raw_departure_data['id'] ],
+			]
+		);
+
+		// Bail.
 		return [];
 	}
 

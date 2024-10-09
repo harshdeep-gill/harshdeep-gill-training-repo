@@ -941,8 +941,8 @@ const buildUrlFromFilters = ( filters: DatesRatesFiltersToUrl ): string => {
 		// @ts-ignore Stringified filters.
 		const stringifiedFilter = filters[ key ].toString();
 
-		// Set the url params value based on key.
-		if ( stringifiedFilter ) {
+		// @ts-ignore Set the url params value based on key.
+		if ( stringifiedFilter && filters[ key ] !== DEFAULT_STATE[ key ] ) {
 			urlParams[ snakeCasedKey ] = stringifiedFilter;
 		} else {
 			delete urlParams[ snakeCasedKey ];

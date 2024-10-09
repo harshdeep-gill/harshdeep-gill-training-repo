@@ -164,9 +164,10 @@ class Test_Departures extends Softrip_TestCase {
 		// Add occupancy to the cabin.
 		$raw_departure_data['cabins'][0]['occupancies'] = [
 			[
-				'promoCode' => 'PROMO',
-				'price'     => '100',
-				'currency'  => 'USD',
+				'saleStatusCode' => 'O',
+				'promoCode'      => 'PROMO',
+				'price'          => '100',
+				'currency'       => 'USD',
 			],
 		];
 
@@ -216,9 +217,10 @@ class Test_Departures extends Softrip_TestCase {
 		// Add occupancy to any cabin.
 		$raw_departure_data['cabins'][1]['occupancies'] = [
 			[
-				'promoCode' => 'PROMO',
-				'price'     => '100',
-				'currency'  => 'USD',
+				'saleStatusCode' => 'O',
+				'promoCode'      => 'PROMO',
+				'price'          => '100',
+				'currency'       => 'USD',
 			],
 		];
 
@@ -303,9 +305,10 @@ class Test_Departures extends Softrip_TestCase {
 				'id'          => 'MYS3',
 				'occupancies' => [
 					[
-						'promoCode' => 'PROMO',
-						'price'     => '100',
-						'currency'  => 'USD',
+						'saleStatusCode' => 'O',
+						'promoCode'      => 'PROMO',
+						'price'          => '100',
+						'currency'       => 'USD',
 					],
 				],
 			],
@@ -723,9 +726,10 @@ class Test_Departures extends Softrip_TestCase {
 		$this->assertIsInt( $another_departure_post_id );
 
 		// Test with an itinerary post id with multiple departures.
-		$expected = [ $another_departure_post_id, $departure_post_id ];
-		$actual   = get_departures_by_itinerary( $itinerary_post_id );
-		$this->assertEquals( $expected, $actual );
+		$actual = get_departures_by_itinerary( $itinerary_post_id );
+		$this->assertSame( 2, count( $actual ) );
+		$this->assertContains( $another_departure_post_id, $actual );
+		$this->assertContains( $departure_post_id, $actual );
 	}
 
 	/**

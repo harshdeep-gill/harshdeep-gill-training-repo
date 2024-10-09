@@ -46,11 +46,9 @@ class Test_Softrip_Data_Adapter extends WP_UnitTestCase {
 	public function test_do_request(): void {
 		// Test case 1: Check for API credentials.
 		$this->assertTrue( defined( 'QUARK_SOFTRIP_ADAPTER_BASE_URL' ) );
-		$this->assertTrue( defined( 'QUARK_SOFTRIP_ADAPTER_USERNAME' ) );
-		$this->assertTrue( defined( 'QUARK_SOFTRIP_ADAPTER_PASSWORD' ) );
+		$this->assertTrue( defined( 'QUARK_SOFTRIP_ADAPTER_API_KEY' ) );
 		$this->assertNotEmpty( QUARK_SOFTRIP_ADAPTER_BASE_URL );
-		$this->assertNotEmpty( QUARK_SOFTRIP_ADAPTER_USERNAME );
-		$this->assertNotEmpty( QUARK_SOFTRIP_ADAPTER_PASSWORD );
+		$this->assertNotEmpty( QUARK_SOFTRIP_ADAPTER_API_KEY );
 
 		// Setup mock response.
 		add_filter( 'pre_http_request', 'Quark\Tests\Softrip\mock_softrip_http_request', 10, 3 );

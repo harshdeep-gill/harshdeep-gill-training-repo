@@ -1,10 +1,16 @@
 @props( [
 	'results_count'   => 0,
 	'remaining_count' => 0,
-	'cards'           => [],
+	'cards'           => Quark\Departures\get_cards_data( [ 21001, 21000 ], 'USD' ),
 	'currency'        => quark_get_template_data( 'default_currency', 'USD' ),
 	'filters_data'    => Quark\Theme\Search_Filters\get_filters_for_sidebar_search(),
 ] )
+
+@php
+	echo '<pre>';
+	print_r( $cards[21001] );
+	echo '</pre>';
+@endphp
 
 <x-expedition-search>
 	{{-- Header --}}
@@ -20,7 +26,7 @@
 				<x-expedition-search.selected-filters />
 				<x-expedition-search.recent-searches />
 				<x-expedition-search.results :count="$remaining_count">
-					<x-parts.expedition-search-result-cards />
+					<x-parts.expedition-search-result-cards :cards="$cards ?? []" />
 				</x-expedition-search.results>
 			</x-sidebar-grid.content>
 

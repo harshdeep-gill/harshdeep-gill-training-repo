@@ -142,7 +142,7 @@ export default function edit( { className, attributes, setAttributes }: BlockEdi
 		{ className: 'hero__wrap' },
 		{
 			allowedBlocks: [ heroContent.name, breadCrumbs.name ],
-			template: [ [ breadCrumbs.name ], [ heroContent.name ] ],
+			template: [ [ breadCrumbs.name, { textColor: 'white' } ], [ heroContent.name ] ],
 		}
 	);
 

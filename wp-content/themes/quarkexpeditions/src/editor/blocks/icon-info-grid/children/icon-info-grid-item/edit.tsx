@@ -52,6 +52,9 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 						value={ attributes.icon }
 						options={ [
 							{ label: 'Star', value: 'star' },
+							{ label: 'Ship', value: 'ship' },
+							{ label: 'Sun', value: 'sun' },
+							{ label: 'Compass', value: 'compass' },
 						] }
 						onChange={ ( value ) => setAttributes( { icon: value } ) }
 					/>
