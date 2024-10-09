@@ -293,7 +293,7 @@
 </x-component-demo>
 
 <x-component-demo :keys="[ 'section-image' ]">
-	<x-section :image_id="26">
+	<x-section class="full-width">
 		<x-section.image :image_id="26" gradient_color="white" gradient_position="both" />
 		<x-section.title title="Testing Section Title.." />
 		<x-section.description>Discover what your Crossing the Circle Expedition includes</x-section.description>
