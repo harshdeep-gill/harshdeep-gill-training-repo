@@ -760,7 +760,7 @@ function get_itineraries( int $expedition_post_id = 0 ): array {
 		}
 
 		// Get duration in days.
-		$durationInDays = absint( $itinerary_post['post_meta']['duration_in_days'] ?? '' );
+		$duration_in_days = absint( $itinerary_post['post_meta']['duration_in_days'] ?? '' );
 
 		// Validate softrip_package_code.
 		if ( ! array_key_exists( 'softrip_package_code', $itinerary_post['post_meta'] ) ) {
@@ -781,7 +781,7 @@ function get_itineraries( int $expedition_post_id = 0 ): array {
 			'packageId'      => $softrip_package_code,
 			'name'           => get_raw_text_from_html( $itinerary_post['post']->post_title ),
 			'published'      => 'publish' === $itinerary_post['post']->post_status,
-			'durationInDays' => $durationInDays,
+			'durationInDays' => $duration_in_days,
 			'startLocation'  => '',
 			'endLocation'    => '',
 			'departures'     => [],
