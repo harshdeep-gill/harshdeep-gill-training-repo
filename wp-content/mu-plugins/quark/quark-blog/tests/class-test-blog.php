@@ -248,8 +248,8 @@ class Test_Blog extends WP_UnitTestCase {
 		// Assert created page is instance of WP_Post.
 		$this->assertTrue( $page_1 instanceof WP_Post );
 
-		// Set page as page_for_posts.
-		\update_option( 'page_for_posts', $page_1->ID );
+		// Set page as options_blog_posts_page.
+		\update_option( 'options_blog_posts_page', $page_1->ID );
 
 		// Test getting post breadcrumbs.
 		$breadcrumbs = breadcrumbs_ancestors( [] );
@@ -270,7 +270,7 @@ class Test_Blog extends WP_UnitTestCase {
 		);
 
 		// Clean up.
-		update_option( 'page_for_posts', 0 );
+		update_option( 'options_blog_posts_page', 0 );
 
 		// remove posts and terms.
 		wp_delete_post( $post_1->ID, true );
@@ -725,7 +725,7 @@ class Test_Blog extends WP_UnitTestCase {
 		$this->assertTrue( $page instanceof WP_Post );
 
 		// Set as archive page.
-		update_option( 'page_for_posts', $page->ID );
+		update_option( 'options_blog_posts_page', $page->ID );
 
 		// Test with archive page.
 		$this->assertEquals(

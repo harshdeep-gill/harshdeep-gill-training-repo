@@ -196,7 +196,9 @@ module.exports = ( env ) => {
 			TPAccordionItemElement: `${ themePath }/src/vendor/tp-accordion.js`,
 			TPMultiSelectElement: `${ themePath }/src/vendor/tp-multi-select.js`,
 			TPToggleAttributeElement: `${ themePath }/src/vendor/tp-toggle-attribute.js`,
+			TPNumberSpinnerElement: `${ themePath }/src/vendor/tp-number-spinner.js`,
 			queryString: `${ themePath }/src/vendor/querystring.js`,
+			popoverPolyfill: `${ themePath }/src/vendor/popover-polyfill.js`,
 		},
 		output: {
 			...buildConfig.output,

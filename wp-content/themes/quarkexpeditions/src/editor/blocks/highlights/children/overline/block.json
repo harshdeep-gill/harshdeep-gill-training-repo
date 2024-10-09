@@ -1,0 +1,29 @@
+{
+	"schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Highlight Item Overline",
+	"name": "quark/highlight-item-overline",
+	"description": "Highlight item overline",
+	"parent": [
+		"quark/highlight-item"
+	],
+	"category": "layout",
+	"keywords": [
+		"highlight",
+		"item",
+		"overline"
+	],
+	"textdomain": "qrk",
+	"attributes": {
+		"overline": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

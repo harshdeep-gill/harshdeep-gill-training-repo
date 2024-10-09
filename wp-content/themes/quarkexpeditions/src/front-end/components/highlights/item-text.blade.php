@@ -8,6 +8,6 @@
 	}
 @endphp
 
-<x-button type="button" size="big" class="expedition-cards__cta">
+<p class="highlights__item-text">
 	<x-escape :content="$text" />
-</x-button>
+</p>

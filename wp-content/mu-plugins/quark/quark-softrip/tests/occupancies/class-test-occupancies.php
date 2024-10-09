@@ -190,12 +190,18 @@ class Test_Occupancies extends Softrip_TestCase {
 		$actual                       = format_data( $raw_occupancy_data, 123, 456 );
 		$this->assertSame( $expected, $actual );
 
+		// Test with invalid sale status other than O, ON, W, S.
+		$raw_occupancy_data['saleStatusCode'] = 'INVALID';
+		$expected                             = [];
+		$actual                               = format_data( $raw_occupancy_data, 123, 456 );
+		$this->assertSame( $expected, $actual );
+
 		// Set all values expect spaces available. It should be 0.
 		$raw_occupancy_data = [
 			'id'             => '123',
 			'name'           => 'Test Occupancy',
 			'mask'           => '123456789012',
-			'saleStatusCode' => 'A',
+			'saleStatusCode' => 'O',
 			'saleStatus'     => 'Open',
 			'prices'         => [
 				'USD' => '100',
@@ -213,7 +219,7 @@ class Test_Occupancies extends Softrip_TestCase {
 			'cabin_category_post_id'   => 123,
 			'spaces_available'         => 0,
 			'availability_description' => 'Open',
-			'availability_status'      => 'A',
+			'availability_status'      => 'O',
 			'price_per_person_usd'     => 0,
 			'price_per_person_cad'     => 0,
 			'price_per_person_aud'     => 0,
@@ -235,7 +241,7 @@ class Test_Occupancies extends Softrip_TestCase {
 			'mask'            => '123456789012',
 			'spacesAvailable' => 10,
 			'saleStatus'      => 'Open',
-			'saleStatusCode'  => 'A',
+			'saleStatusCode'  => 'O',
 			'prices'          => [
 				'USD'     => [
 					'currencyCode'   => 'USD',
@@ -267,7 +273,7 @@ class Test_Occupancies extends Softrip_TestCase {
 			'cabin_category_post_id'   => 123,
 			'spaces_available'         => 10,
 			'availability_description' => 'Open',
-			'availability_status'      => 'A',
+			'availability_status'      => 'O',
 			'price_per_person_usd'     => 100,
 			'price_per_person_cad'     => 150,
 			'price_per_person_aud'     => 200,
@@ -290,7 +296,7 @@ class Test_Occupancies extends Softrip_TestCase {
 			'cabin_category_post_id'   => 123,
 			'spaces_available'         => 10,
 			'availability_description' => 'Open',
-			'availability_status'      => 'A',
+			'availability_status'      => 'O',
 			'price_per_person_usd'     => 100,
 			'price_per_person_cad'     => 150,
 			'price_per_person_aud'     => 200,
@@ -416,7 +422,7 @@ class Test_Occupancies extends Softrip_TestCase {
 			'mask'            => '123456789012',
 			'spacesAvailable' => 10,
 			'saleStatus'      => 'Open',
-			'saleStatusCode'  => 'AV',
+			'saleStatusCode'  => 'O',
 			'prices'          => [
 				'USD' => [
 					'currencyCode'   => 'USD',
@@ -522,7 +528,7 @@ class Test_Occupancies extends Softrip_TestCase {
 			'mask'            => '123456789012',
 			'spacesAvailable' => 20,
 			'saleStatus'      => 'Open',
-			'saleStatusCode'  => 'AV',
+			'saleStatusCode'  => 'O',
 			'prices'          => [
 				'USD' => [
 					'currencyCode'   => 'USD',
@@ -962,7 +968,7 @@ class Test_Occupancies extends Softrip_TestCase {
 			'mask'            => '123456789012',
 			'spacesAvailable' => 10,
 			'saleStatus'      => 'Open',
-			'saleStatusCode'  => 'AV',
+			'saleStatusCode'  => 'O',
 			'prices'          => [
 				'USD' => [
 					'currencyCode'   => 'USD',

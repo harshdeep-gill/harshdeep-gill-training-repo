@@ -41,7 +41,7 @@
     },
     "isSizeBig": {
       "type": "boolean",
-      "default": false
+      "default": true
     },
     "appearance": {
       "type": "string",

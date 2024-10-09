@@ -1243,6 +1243,7 @@ class Expedition {
 		$post_content  = $this->get_hero_block_content( $nid );
 		$post_content .= $this->get_secondary_nav_content();
 		$post_content .= $this->get_overview_content( $nid );
+		$post_content .= $this->get_itinerary_content();
 		$post_content .= $this->get_life_onboard_block();
 		$post_content .= $this->get_media_accordion_block();
 		$post_content .= $this->get_whats_included_block();
@@ -1255,6 +1256,6 @@ class Expedition {
 		$post_content .= $this->get_your_expedition_team_block();
 
 		// Return post content.
-		return $post_content;
+		return str_replace( 'u0026', '&', $post_content );
 	}
 }
