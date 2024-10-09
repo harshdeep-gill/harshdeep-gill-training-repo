@@ -52,6 +52,7 @@
 								class="search-filters-bar__destinations-filter-option"
 								label="{{ $child_item['label'] ?? '' }}"
 								value="{{ $child_item['value'] ?? '' }}"
+								parent="{{ $destination_item['value'] ?? '' }}"
 								selected="no"
 								disabled="no"
 								image-url="{!! esc_url( $image_url ) !!}"

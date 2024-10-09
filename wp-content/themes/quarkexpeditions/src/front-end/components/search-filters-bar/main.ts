@@ -165,6 +165,7 @@ export class SearchFiltersBar extends HTMLElement {
 			const value = selectedOption.getAttribute( 'value' ) ?? '';
 			const label = selectedOption.getAttribute( 'label' ) ?? '';
 			const imageUrl = selectedOption.getAttribute( 'image-url' ) ?? '';
+			const parent = selectedOption.getAttribute( 'parent' ) ?? '';
 
 			// Empty checks
 			if ( ! ( value && label ) ) {
@@ -178,7 +179,7 @@ export class SearchFiltersBar extends HTMLElement {
 			}
 
 			// Add the destination.
-			destinations.push( { value, label, imageUrl } );
+			destinations.push( { value, label, imageUrl, parent } );
 		} );
 
 		// Update the destinations

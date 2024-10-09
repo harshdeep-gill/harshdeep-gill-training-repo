@@ -33,7 +33,7 @@
 			box-shadow: var(--shadow-3);
 		}
 
-		&:focus {
+		&[data-is-active] {
 			border: 1px solid var(--color-gray-80);
 		}
 	}

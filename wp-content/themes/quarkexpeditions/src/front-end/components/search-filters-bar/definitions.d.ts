@@ -5,6 +5,7 @@ interface SearchFiltersBarDestinationState {
 	value: string,
 	label: string,
 	imageUrl: string,
+	parent?: string,
 }
 
 /**
