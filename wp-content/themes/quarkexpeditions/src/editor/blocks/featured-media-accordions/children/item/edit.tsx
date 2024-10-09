@@ -80,7 +80,7 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 				<div className="accordion__handle">
 					<button className="accordion__handle-btn">
 						<RichText
-							tagName="h3"
+							tagName="p"
 							className="h5 accordion__handle-btn-text body-text-large"
 							placeholder={ __( 'Title here…', 'qrk' ) }
 							value={ attributes.title }
