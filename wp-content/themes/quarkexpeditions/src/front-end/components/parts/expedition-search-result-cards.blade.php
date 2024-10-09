@@ -11,7 +11,10 @@
 <x-expedition-cards>
 	@foreach ( $cards as $card)
 		<x-expedition-cards.card>
-			<x-expedition-cards.card-banner text="Quark Protection Promise" url="#" />
+			<x-expedition-cards.card-banner
+				text="{{ __( 'Quark Protection Promise', 'qrk' ) }}"
+				url="{{ $banner_details['permalink'] ?? '' }}"
+			/>
 
 			<x-expedition-cards.grid>
 				<x-expedition-cards.grid-column>
@@ -143,7 +146,9 @@
 								<x-options-button.option url="#">{{ __( 'Chat with us now', 'qrk' ) }}</x-options-button.option>
 							</x-options-button.options>
 						</x-options-button>
-						<x-button href="#" color="black" size="big">{{ __( 'View Expedition', 'qrk' ) }}</x-button>
+						<x-button href="{{ $card['expedition_link'] ?? '' }}" color="black" size="big">
+							{{ __( 'View Expedition', 'qrk' ) }}
+						</x-button>
 					</x-expedition-cards.buttons>
 				</x-expedition-cards.grid-column>
 			</x-expedition-cards.grid>
