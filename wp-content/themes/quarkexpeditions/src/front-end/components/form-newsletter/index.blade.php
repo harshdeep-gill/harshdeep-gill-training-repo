@@ -3,6 +3,7 @@
 	'class'     => '',
 	'countries' => [],
 	'states'    => [],
+	'links'     => [],
 ] )
 
 @php
@@ -21,15 +22,17 @@
 			id="{{ $form_id }}"
 		>
 			<div class="form-newsletter__content">
-				<h1 class="form-newsletter__title">Subscribe To Our Newsletter</h1>
+				<h1 class="form-newsletter__title"> {{ __( 'Subscribe To Our Newsletter', 'qrk' ) }}</h1>
 				<div class="form-newsletter__description">
-					<h3 class="form-newsletter__subtitle">Sign up to receive a regular dose of polar inspiration in your inbox!</h3>
+					<h3 class="form-newsletter__subtitle"> {{ __( 'Sign up to receive a regular dose of polar inspiration in your inbox!', 'qrk' ) }}</h3>
 					<p>
-						You'll get insider details on new Arctic and Antarctic itineraries
-						and product launches, the heads-up on special discounts, advanced
-						notice on expert-led webinars, plus early announcements of new
-						curated videos. In short, you'll receive the latest polar
-						inspiration before anybody else!
+						{{
+							__( 'You\'ll get insider details on new Arctic and Antarctic itineraries
+							and product launches, the heads-up on special discounts, advanced
+							notice on expert-led webinars, plus early announcements of new
+							curated videos. In short, you\'ll receive the latest polar
+							inspiration before anybody else!' , 'qrk' )
+						}}
 					</p>
 				</div>
 				<div class="form-newsletter__fields">
@@ -37,17 +40,17 @@
 						<x-form.field :validation="[ 'required', 'no-empty-spaces' ]">
 							<x-form.input
 								type="text"
-								label="First Name"
-								placeholder="Enter First Name"
+								label="{{ __('First Name', 'qrk') }}"
+								placeholder="{{ __('Enter First Name', 'qrk') }}"
 								name="fields[First_Name__c]"
 							/>
 						</x-form.field>
 						<x-form.field :validation="[ 'required', 'no-empty-spaces' ]">
 							<x-form.input
 								type="text"
-								label="Last
-								Name"
-								placeholder="Enter Last Name" name="fields[Last_Name__c]"
+								label="{{ __('Last Name', 'qrk') }}"
+								placeholder="{{ __('Enter Last Name', 'qrk') }}"
+								name="fields[Last_Name__c]"
 							/>
 						</x-form.field>
 					</x-form.row>
@@ -55,8 +58,8 @@
 						<x-form.field :validation="[ 'required', 'email' ]">
 							<x-form.input
 								type="email"
-								label="Email"
-								placeholder="Enter Email"
+								label="{{ __('Email Address', 'qrk') }}"
+								placeholder="{{ __('Enter Email Address', 'qrk') }}"
 								name="fields[Email__c]"
 							/>
 						</x-form.field>
@@ -64,30 +67,33 @@
 					</x-form.row>
 					<x-form.row>
 						<x-form.field-group>
-							<x-form.checkbox name="fields[Travel_Agent__c]" label="I am a Travel Agent" />
+							<x-form.checkbox name="fields[Travel_Agent__c]" label="{{ __('I am a Travel Agent', 'qrk') }}" />
 						</x-form.field-group>
 					</x-form.row>
 					<p class="form-newsletter__privacy">
-						We respect your privacy. You may unsubscribe from our communications at any time. Please refer to our privacy policy for full detail.
+						{{ __( 'We respect your privacy. You may unsubscribe from our communications at any time. Please refer to our privacy policy for full detail.', 'qrk' ) }}
 					</p>
 				</div>
 				<x-form.buttons>
-					<x-form.submit size="big">Submit</x-form.submit>
+					<x-form.submit size="big">{{ __( 'Submit', 'qrk' ) }}</x-form.submit>
 				</x-form.buttons>
 			</div>
 			<div class="form-newsletter__success">
-				<h1 class="form-newsletter__success-title">You've Been Subscribed</h1>
+				<h1 class="form-newsletter__success-title"> {{ __( 'You\'ve Been Subscribed', 'qrk' ) }} </h1>
 				<div class="form-newsletter__success-info">
-					<p>Thanks for signing up for our monthly newsletter.</p>
-					<p>We also invite you to join the conversation, see photos, videos and read some comments from our past travelers or share your favorite travel moment with us.</p>
-					<p class="form-newsletter__social-cta">Join the Quark Expeditions Community:</p>
-					<div class="form-newsletter__social-links">
-						<x-form-newsletter.social-link type="facebook" url="#" />
-						<x-form-newsletter.social-link type="twitter" url="#" />
-						<x-form-newsletter.social-link type="youtube" url="#" />
-						<x-form-newsletter.social-link type="google" url="#" />
-						<x-form-newsletter.social-link type="pinterest" url="#" />
-					</div>
+					<p>{{ __( 'Thanks for signing up for our monthly newsletter.', 'qrk' ) }}
+					<p>{{ __( 'We also invite you to join the conversation, see photos, videos and read some comments from our past travelers or share your favorite travel moment with us.', 'qrk' ) }}</p>
+					@if ( ! empty( $links ) )
+						<p class="form-newsletter__social-cta">{{ __( 'Join the Quark Expeditions Community:', 'qrk' ) }}</p>
+						<div class="form-newsletter__social-links">
+								@foreach ( $links as $type => $url )
+									@if ( empty( $url ) )
+										@continue
+									@endif
+									<x-form-newsletter.social-link type="{{ $type }}" url="{{ $url }}" />
+								@endforeach
+						</div>
+					@endif
 				</div>
 			</div>
 		</x-form>

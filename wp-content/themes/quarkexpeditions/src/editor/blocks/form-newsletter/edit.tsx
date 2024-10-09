@@ -38,8 +38,8 @@ export default function Edit( { className }: BlockEditAttributes ): JSX.Element 
 	// Return the block's markup.
 	return (
 		<Section { ...blockProps }>
-			<Placeholder icon="layout" label={ __( 'Form - Contact Us', 'qrk' ) }>
-				<p>{ __( 'Contact Us Form will be displayed on the front end.', 'qrk' ) }</p>
+			<Placeholder icon="layout" label={ __( 'Form - Newsletter', 'qrk' ) }>
+				<p>{ __( 'Newsletter Form will be displayed on the front end.', 'qrk' ) }</p>
 			</Placeholder>
 		</Section>
 	);
