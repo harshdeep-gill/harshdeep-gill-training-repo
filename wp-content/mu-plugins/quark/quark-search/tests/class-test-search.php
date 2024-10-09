@@ -1043,6 +1043,7 @@ class Test_Search extends WP_UnitTestCase {
 		// Test.
 		$expected = [
 			'/' . REST_API_NAMESPACE . '/filter-options/by-destination-and-month',
+			'/' . REST_API_NAMESPACE . '/filter-options/by-expedition',
 		];
 		$actual   = public_rest_api_routes();
 		$this->assertEquals( $expected, $actual );
