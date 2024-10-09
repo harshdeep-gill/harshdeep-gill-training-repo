@@ -11,6 +11,7 @@ export default class QuarkExpeditionSearchRecentSearches extends HTMLElement {
 	 * Properties
 	 */
 	private readonly recentSearchCardTemplate: HTMLTemplateElement | null;
+	private readonly recentSearchCardsContainer: HTMLElement | null;
 
 	/**
 	 * Constructor
@@ -21,6 +22,7 @@ export default class QuarkExpeditionSearchRecentSearches extends HTMLElement {
 
 		// Initialize properties.
 		this.recentSearchCardTemplate = this.querySelector( 'template' );
+		this.recentSearchCardsContainer = this.querySelector( '.mini-cards-list' );
 
 		/**
 		 * Setup on content load event
@@ -39,13 +41,57 @@ export default class QuarkExpeditionSearchRecentSearches extends HTMLElement {
 		const { history } = state;
 
 		// Null checks.
-		if ( ! this.recentSearchCardTemplate ) {
+		if ( ! this.recentSearchCardTemplate || ! history || ! Array.isArray( history ) ) {
 			// Bail.
 			return;
 		}
 
-		// Log the state.
-		console.log( history );
+		// Loop through the history.
+		history.forEach( ( historyItem ) => {
+			// Get the destination and month
+			const { destination, month } = historyItem;
+
+			// Null check
+			if (
+				! destination ||
+				! month ||
+				! destination.value ||
+				! destination.label ||
+				! destination.imageUrl ||
+				! month.label ||
+				! month.value ||
+				! this.recentSearchCardTemplate ||
+				! this.recentSearchCardsContainer
+			) {
+				// Bail.
+				return;
+			}
+
+			// Get the template clone.
+			const templateClone = this.recentSearchCardTemplate.content.cloneNode( true ) as HTMLElement;
+
+			// Get the card and its children elements.
+			const cardImageElement = templateClone.querySelector( 'img' );
+			const cardTitleElement = templateClone.querySelector( '.mini-cards-list__card-title' );
+			const cardDateElement = templateClone.querySelector( '.mini-cards-list__card-date' );
+			const cardElement = templateClone.querySelector( '.mini-cards-list__card' );
+
+			// Null check.
+			if ( ! cardImageElement || ! cardTitleElement || ! cardDateElement || ! cardElement ) {
+				// Bail.
+				return;
+			}
+
+			// Set the required properties.
+			cardImageElement.src = destination.imageUrl;
+			cardTitleElement.textContent = destination.label;
+			cardDateElement.textContent = month.label;
+			cardElement.setAttribute( 'data-destination', destination.value );
+			cardElement.setAttribute( 'data-date', month.value );
+
+			// Append the card.
+			this.recentSearchCardsContainer.appendChild( cardElement );
+		} );
 	}
 
 	/**
@@ -53,10 +99,11 @@ export default class QuarkExpeditionSearchRecentSearches extends HTMLElement {
 	 */
 	setupSubscription() {
 		// Get the subscribe function.
-		const { subscribe } = zustand.stores.searchFiltersBar;
+		const { subscribe, getState } = zustand.stores.searchFiltersBar;
 
 		// Subscribe to the store.
 		subscribe( this.update.bind( this ) );
+		this.update( getState() );
 	}
 }
 
