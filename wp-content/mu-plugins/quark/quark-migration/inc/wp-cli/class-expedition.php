@@ -1233,37 +1233,6 @@ class Expedition {
 	}
 
 	/**
-	 * Get your expedition team block.
-	 *
-	 * @return string Your expedition team block content.
-	 */
-	protected function get_your_expedition_team_block(): string {
-		// Prepare your expedition team block.
-		return serialize_block(
-			[
-				'blockName'    => 'quark/section',
-				'attrs'        => [
-					'title'          => 'Your Expedition Team',
-					'titleAlignment' => 'left',
-					'headingLevel'   => '2',
-				],
-				'innerContent' => [
-					serialize_block(
-						[
-							'blockName'    => 'quark/staff-members',
-							'attrs'        => [
-								'selection'  => 'manual',
-								'isCarousel' => true,
-							],
-							'innerContent' => [],
-						]
-					) . PHP_EOL,
-				],
-			]
-		) . PHP_EOL;
-	}
-
-	/**
 	 * Prepare post content.
 	 *
 	 * @param int $nid node ID.
@@ -1288,7 +1257,6 @@ class Expedition {
 		$post_content .= $this->get_book_departures_expedition_block();
 		$post_content .= $this->get_cta_banner_block();
 		$post_content .= $this->get_know_before_you_go_block();
-		$post_content .= $this->get_your_expedition_team_block();
 
 		// Return post content.
 		return str_replace( 'u0026', '&', $post_content );
