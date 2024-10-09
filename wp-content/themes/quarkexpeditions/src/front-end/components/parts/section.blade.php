@@ -6,6 +6,7 @@
 	'description'      => '',
 	'background'       => false,
 	'background_color' => '',
+	'background_image' => '',
 	'padding'          => false,
 	'narrow'           => false,
 	'cta_button'       => [],
@@ -18,12 +19,19 @@
 	'has_heading_link' => false,
 ] )
 
+@php
+	if ( ! empty( $background_image ) ) {
+		$class = "full-width";
+	}
+@endphp
+
 <x-section
 	:narrow="$narrow"
 	:background="$background"
 	:background_color="$background_color"
 	:padding="$padding"
 	:id="$id"
+	:class="$class";
 >
 	@if( ! empty( $title ) )
 		<x-section.heading>
