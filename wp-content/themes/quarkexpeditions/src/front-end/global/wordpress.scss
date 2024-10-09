@@ -384,7 +384,10 @@ table {
 	}
 }
 
-p.template-title {
+.is-style-template-title {
+
+	@extend %h1;
+
 	margin-top: var(--spacing-8);
 	margin-bottom: var(--spacing-8);
 

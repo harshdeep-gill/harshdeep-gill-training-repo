@@ -101,4 +101,15 @@ domReady( () => {
 		name: 'solid',
 		label: 'Solid',
 	} );
+
+	// Paragraph.
+	registerBlockStyle( 'core/paragraph', {
+		name: 'default',
+		label: 'Default',
+		isDefault: true,
+	} );
+	registerBlockStyle( 'core/paragraph', {
+		name: 'template-title',
+		label: 'Template Title',
+	} );
 } );
