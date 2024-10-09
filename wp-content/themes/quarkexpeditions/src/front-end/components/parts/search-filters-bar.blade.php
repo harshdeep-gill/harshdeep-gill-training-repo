@@ -13,7 +13,7 @@
 	$filters_api_url = quark_get_template_data( 'filters_api_url' );
 
 	// Get search page url.
-	$search_page_url = home_url( '/expedition-search' ); // TODO: Replace with actual value from field.
+	$search_page_url = Quark\Core\get_expeditions_search_page_url();
 @endphp
 <x-search-filters-bar
 	:destinations="$destinations"

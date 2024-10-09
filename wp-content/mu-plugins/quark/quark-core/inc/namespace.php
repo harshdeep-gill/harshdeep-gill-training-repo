@@ -657,6 +657,35 @@ function get_pagination_links( array $args = [] ): string {
 }
 
 /**
+ * Get the URL of the Expeditions Search Page.
+ *
+ * @return string
+ */
+function get_expeditions_search_page_url(): string {
+	// Static variable.
+	static $request_quote_page_permalink = '';
+
+	// Check if we already have the permalink.
+	if ( ! empty( $request_quote_page_permalink ) ) {
+		return $request_quote_page_permalink;
+	}
+
+	// Get Expeditions Search Page ID.
+	$search_page_id = absint( get_option( 'options_expedition_search_page' ) );
+
+	// Check if we have the page ID.
+	if ( empty( $search_page_id ) ) {
+		return '';
+	}
+
+	// Get search page URL.
+	$search_page_url = strval( get_permalink( $search_page_id ) );
+
+	// Return search page URL.
+	return $search_page_url;
+}
+
+/**
  * Check if we are in the block editor.
  * We don't have any functionality to identify if we are in the block editor inside the block render callback.
  *
