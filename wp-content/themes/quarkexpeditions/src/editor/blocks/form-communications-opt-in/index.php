@@ -1,15 +1,18 @@
 <?php
 /**
- * Block: Form - CCPA Access Deletion Request
+ * Block: Form - Onboard Email Opt In
  *
  * @package quark
  */
 
-namespace Quark\Theme\Blocks\FormAccessDeletionRequest;
+namespace Quark\Theme\Blocks\FormOnboardEmailOptIn;
 
 use WP_Block;
 
-const COMPONENT = 'form-account-management';
+use function Quark\Leads\Forms\get_countries;
+use function Quark\Leads\Forms\get_states;
+
+const COMPONENT = 'form-communications-opt-in';
 
 /**
  * Bootstrap this block.
@@ -43,6 +46,8 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 
 	// Component attributes.
 	$component_attributes = [
+		'countries'      => get_countries(),
+		'states'         => get_states(),
 		'thank_you_page' => isset( $attributes['thankYouPage'] ) && is_array( $attributes['thankYouPage'] ) ? $attributes['thankYouPage']['url'] : '',
 	];
 
