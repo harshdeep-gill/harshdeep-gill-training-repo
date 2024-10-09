@@ -21,19 +21,31 @@
 
 					<x-expedition-cards.icons>
 						<x-expedition-cards.icon icon="ship">{{ $card['ship_name'] ?? '' }}</x-expedition-cards.icon>
-						<x-expedition-cards.icon icon="fly-express">
-							Fly/Cruise Express
-							<x-expedition-cards.tooltip title="Fly/Cruise Express Edition">
-								<p>Spend less time traveling on Antarctic Peninsular Expeditions</p>
-							</x-expedition-cards.tooltip>
-						</x-expedition-cards.icon>
+
+						@if ( ! empty( $card['expedition_categories'] ) )
+						@foreach ( $card['expedition_categories'] as $category)
+							@if ( 'Fly/Cruise Expeditions' === $category['name'] )
+							<x-expedition-cards.icon icon="fly-express">
+								{{ __( 'Fly/Cruise Express', 'qrk' ) }}
+
+								@if ( ! empty( $category['description'] ) )
+									<x-expedition-cards.tooltip title="{{ $category['name'] ?? '' }}">
+										<p><x-escape :content="$category['description']" /></p>
+									</x-expedition-cards.tooltip>
+								@endif
+							</x-expedition-cards.icon>
+							@endif
+						@endforeach
+						@endif
 					</x-expedition-cards.icons>
 
-					<x-media-carousel>
-						<x-media-carousel.item image_id="29" />
-						<x-media-carousel.item image_id="32" />
-						<x-media-carousel.item image_id="152" />
-					</x-media-carousel>
+					@if ( ! empty( $card['expedition_slider_images']))
+						<x-media-carousel>
+							@foreach ( $card['expedition_slider_images'] as $image_id)
+								<x-media-carousel.item :image_id="$image_id ?? 0" />
+							@endforeach
+						</x-media-carousel>
+					@endif
 				</x-expedition-cards.grid-column>
 
 				<x-expedition-cards.grid-column>
@@ -93,10 +105,6 @@
 						</x-expedition-cards.specification-item>
 					</x-expedition-cards.specifications>
 
-					<x-expedition-cards.rating rating="5">
-						<a href="#">45 Reviews</a>
-					</x-expedition-cards.rating>
-
 					<x-expedition-cards.price
 						original_price="{{ $card['lowest_price']['original_price'] ?? '' }}"
 						discounted_price="{{ $card['lowest_price']['discounted_price'] ?? '' }}"
@@ -119,198 +127,163 @@
 					@endif
 
 					<x-expedition-cards.buttons>
-						<x-button href="#" color="black" size="big">View Expedition</x-button>
-						<x-expedition-cards.cta text="View Cabin Pricing & Options" />
+						<x-options-button>
+							<x-options-button.default-option class="expedition-cards__cta">
+								{{ __( 'View Cabin Pricing', 'qrk' ) }}
+							</x-options-button.default-option>
+							<x-options-button.options>
+								<x-options-button.option url="#">{{ __( 'Request a callback', 'qrk' ) }}</x-options-button.option>
+								<x-options-button.option url="#">{{ __( 'Chat with us now', 'qrk' ) }}</x-options-button.option>
+							</x-options-button.options>
+						</x-options-button>
+						<x-button href="#" color="black" size="big">{{ __( 'View Expedition', 'qrk' ) }}</x-button>
 					</x-expedition-cards.buttons>
 				</x-expedition-cards.grid-column>
 			</x-expedition-cards.grid>
 
 			<x-expedition-cards.more-details>
-				<h4>Cabins Options</h4>
+				<h4>
+					<x-escape :content="__( 'Cabins Options', 'qrk' )"/>
+				</h4>
 				<x-product-options-cards>
-					<x-product-options-cards.cards>
-						<x-product-options-cards.card>
-							<x-product-options-cards.gallery :image_ids="[ 32, 34, 36]">
-								<x-product-options-cards.badge type="standard" />
-							</x-product-options-cards.gallery>
-							<x-product-options-cards.content>
-								<x-product-options-cards.title title="Explorer Suite" />
-								<x-product-options-cards.specifications>
-									<x-product-options-cards.specification
-										label="Occupancy"
-										value="1-2 guests"
-									/>
-									<x-product-options-cards.specification
-										label="Number of Beds"
-										value="1 double or 2 single beds"
-									/>
-									<x-product-options-cards.specification
-										label="Location"
-										value="Deck 3"
-									/>
-									<x-product-options-cards.specification
-										label="Cabin Size"
-										value="226 sq. ft."
-									/>
-								</x-product-options-cards.specifications>
-								<x-product-options-cards.price
-									original_price="$9,395 USD"
-									discounted_price="$7,271 USD"
-								/>
-							</x-product-options-cards.content>
-						</x-product-options-cards.card>
-						<x-product-options-cards.card status="A" details_id="some-random-id-2">
-							<x-product-options-cards.gallery :image_ids="[ 32, 34, 36]">
-								<x-product-options-cards.badge type="premium" status="A" />
-							</x-product-options-cards.gallery>
-							<x-product-options-cards.content>
-								<x-product-options-cards.title title="Explorer Suite" />
-								<x-product-options-cards.specifications>
-									<x-product-options-cards.specification
-										label="Occupancy"
-										value="1-2 guests"
-									/>
-									<x-product-options-cards.specification
-										label="Number of Beds"
-										value="1 double or 2 single beds"
-									/>
-									<x-product-options-cards.specification
-										label="Location"
-										value="Deck 3"
-									/>
-									<x-product-options-cards.specification
-										label="Cabin Size"
-										value="226 sq. ft."
-									/>
-								</x-product-options-cards.specifications>
-								<x-product-options-cards.price
-									original_price="$9,395 USD"
-									discounted_price="$7,271 USD"
-								/>
-							</x-product-options-cards.content>
-						</x-product-options-cards.card>
-						<x-product-options-cards.card status="S" details_id="some-random-id-3">
-							<x-product-options-cards.gallery :image_ids="[ 32, 34, 36]">
-								<x-product-options-cards.badge status="S" />
-							</x-product-options-cards.gallery>
-							<x-product-options-cards.content>
-								<x-product-options-cards.title title="Explorer Suite" />
-								<x-product-options-cards.specifications>
-									<x-product-options-cards.specification
-										label="Occupancy"
-										value="1-2 guests"
-									/>
-									<x-product-options-cards.specification
-										label="Number of Beds"
-										value="1 double or 2 single beds"
-									/>
-									<x-product-options-cards.specification
-										label="Location"
-										value="Deck 3"
-									/>
-									<x-product-options-cards.specification
-										label="Cabin Size"
-										value="226 sq. ft."
-									/>
-								</x-product-options-cards.specifications>
-								<x-product-options-cards.price
-									original_price="$9,395 USD"
-									discounted_price="$7,271 USD"
-								/>
-							</x-product-options-cards.content>
-						</x-product-options-cards.card>
+					<x-product-options-cards.cards :request_a_quote_url="$card['request_a_quote_url'] ?? ''">
+						@foreach( $card['cabins'] as $cabin_code => $cabin )
+							@php
+								$cabin_availability_status = $cabin['specifications']['availability_status'] ?? 'U';
+
+								if ( empty( $cabin_availability_status ) || 'U' === $cabin_availability_status ) {
+									continue;
+								}
+							@endphp
+							<x-product-options-cards.card details_id="{{  $cabin_code . '_' . $departure_id }}" :status="$cabin_availability_status" >
+
+								@if( ! empty( $cabin['gallery'] ) )
+									<x-product-options-cards.gallery :image_ids="$cabin['gallery']">
+										<x-product-options-cards.badge
+											status="{{ $cabin_availability_status }}"
+											type="{{ $cabin['type'] }}"
+										/>
+									</x-product-options-cards.gallery>
+								@endif
+
+								<x-product-options-cards.content>
+									<x-product-options-cards.title title="{{ $cabin['name'] ?? '' }}"/>
+
+									@if( ! empty( $cabin['specifications'] ) && is_array( $cabin['specifications'] ) )
+										<x-product-options-cards.specifications>
+											@if( ! empty( $cabin['specifications']['occupancy'] ) )
+												<x-product-options-cards.specification
+													label="Occupancy"
+													value="{{ $cabin['specifications']['occupancy'] }}"
+												/>
+											@endif
+
+											@if( ! empty( $cabin['specifications']['bed_configuration'] ) )
+												<x-product-options-cards.specification
+													label="Number of Beds"
+													value="{{ $cabin['specifications']['bed_configuration'] }}"
+												/>
+											@endif
+
+											@if( ! empty( $cabin['specifications']['location'] ) )
+												<x-product-options-cards.specification
+													label="Location"
+													value="{{ $cabin['specifications']['location'] }}"
+												/>
+											@endif
+
+											@if( ! empty( $cabin['specifications']['size'] ) )
+												<x-product-options-cards.specification
+													label="Cabin Size"
+													value="{{ $cabin['specifications']['size'] }}"
+												/>
+											@endif
+										</x-product-options-cards.specifications>
+									@endif
+
+									@if( ! empty( $cabin['from_price'] ) && is_array( $cabin['from_price'] ) )
+										<x-product-options-cards.price
+											original_price="{{ $cabin['from_price']['original_price'] ?? '' }}"
+											discounted_price="{{ $cabin['from_price']['discounted_price'] ?? '' }}"
+										/>
+									@endif
+								</x-product-options-cards.content>
+							</x-product-options-cards.card>
+						@endforeach
 					</x-product-options-cards.cards>
+
 					<x-product-options-cards.more-details>
-						<x-product-options-cards.card-details id="some-random-id">
-							<x-product-options-cards.card-details-title title="Explorer Suite" />
-							<x-product-options-cards.description>
-								<p>These suites are perfect for people traveling together or solo guests looking to share with like-minded individuals. This suite maximizes interior living space while still offering guests the opportunity to stay connected to the outdoors.</p>
-							</x-product-options-cards.description>
-							<x-product-options-cards.features title="Features and Standard Amenities: ">
-								<p>one double or two single beds, sitting area with sofa bed, picture window, desk, refrigerator, TV, private bathroom with shower and heated floors, hair dryer, bathrobe, slippers, shampoo, conditioner, shower gel, complimentary water bottle.</p>
-							</x-product-options-cards.features>
-							<x-product-options-cards.gallery :image_ids="[ 32, 34, 36]" :full_size="true" />
-							<x-product-options-cards.rooms title="Select Rooms">
-								<x-product-options-cards.room>
-									<x-product-options-cards.room-title-container>
-										<x-product-options-cards.room-title title="Single Room" no_of_guests="1" />
-										<x-product-options-cards.room-subtitle subtitle="Price of the cabin for one guest" />
-									</x-product-options-cards.room-title-container>
-									<x-product-options-cards.room-prices
-										original_price="$9,395 USD"
-										discounted_price="$7,271 USD"
-									/>
-								</x-product-options-cards.room>
-							</x-product-options-cards.rooms>
-							<x-product-options-cards.discounts>
-								<x-product-options-cards.discount name="Save 50% - Offer Code 50PROMO" />
-							</x-product-options-cards.discounts>
-							<x-product-options-cards.cta-buttons>
-								<p>Not ready to book? <a>Request a Quote</a></p>
-								<x-button size="big" color="black">Request a Callback</x-button>
-								<x-button size="big">Book Expedition Now</x-button>
-							</x-product-options-cards.cta-buttons>
-						</x-product-options-cards.card-details>
-						<x-product-options-cards.card-details id="some-random-id-2">
-							<x-product-options-cards.card-details-title title="Explorer Suite" />
-							<x-product-options-cards.description>
-								<p>These suites are perfect for people traveling together or solo guests looking to share with like-minded individuals. This suite maximizes interior living space while still offering guests the opportunity to stay connected to the outdoors.</p>
-							</x-product-options-cards.description>
-							<x-product-options-cards.features title="Features and Standard Amenities: ">
-								<p>one double or two single beds, sitting area with sofa bed, picture window, desk, refrigerator, TV, private bathroom with shower and heated floors, hair dryer, bathrobe, slippers, shampoo, conditioner, shower gel, complimentary water bottle.</p>
-							</x-product-options-cards.features>
-							<x-product-options-cards.gallery :image_ids="[ 32, 34, 36]" :full_size="true" />
-							<x-product-options-cards.rooms title="Select Rooms">
-								<x-product-options-cards.room>
-									<x-product-options-cards.room-title-container>
-										<x-product-options-cards.room-title title="Single Room" no_of_guests="3" />
-										<x-product-options-cards.room-subtitle subtitle="Price of the cabin for one guest" />
-									</x-product-options-cards.room-title-container>
-									<x-product-options-cards.room-prices
-										original_price="$9,395 USD"
-										discounted_price="$7,271 USD"
-									/>
-								</x-product-options-cards.room>
-							</x-product-options-cards.rooms>
-							<x-product-options-cards.discounts>
-								<x-product-options-cards.discount name="Save 50% - Offer Code 50PROMO" />
-							</x-product-options-cards.discounts>
-							<x-product-options-cards.cta-buttons>
-								<p>Not ready to book? <a>Request a Quote</a></p>
-								<x-button size="big" color="black">Request a Callback</x-button>
-								<x-button size="big">Book Expedition Now</x-button>
-							</x-product-options-cards.cta-buttons>
-						</x-product-options-cards.card-details>
-						<x-product-options-cards.card-details id="some-random-id-3">
-							<x-product-options-cards.card-details-title title="Explorer Suite" />
-							<x-product-options-cards.description>
-								<p>These suites are perfect for people traveling together or solo guests looking to share with like-minded individuals. This suite maximizes interior living space while still offering guests the opportunity to stay connected to the outdoors.</p>
-							</x-product-options-cards.description>
-							<x-product-options-cards.features title="Features and Standard Amenities: ">
-								<p>one double or two single beds, sitting area with sofa bed, picture window, desk, refrigerator, TV, private bathroom with shower and heated floors, hair dryer, bathrobe, slippers, shampoo, conditioner, shower gel, complimentary water bottle.</p>
-							</x-product-options-cards.features>
-							<x-product-options-cards.gallery :image_ids="[ 32, 34, 36]" :full_size="true" />
-							<x-product-options-cards.rooms title="Select Rooms">
-								<x-product-options-cards.room>
-									<x-product-options-cards.room-title-container>
-										<x-product-options-cards.room-title title="Single Room" no_of_guests="1" />
-										<x-product-options-cards.room-subtitle subtitle="Price of the cabin for one guest" />
-									</x-product-options-cards.room-title-container>
-									<x-product-options-cards.room-prices
-										original_price="$9,395 USD"
-										discounted_price="$7,271 USD"
-									/>
-								</x-product-options-cards.room>
-							</x-product-options-cards.rooms>
-							<x-product-options-cards.discounts>
-								<x-product-options-cards.discount name="Save 50% - Offer Code 50PROMO" />
-							</x-product-options-cards.discounts>
-							<x-product-options-cards.cta-buttons>
-								<p>Not ready to book? <a>Request a Quote</a></p>
-								<x-button size="big" color="black">Request a Callback</x-button>
-								<x-button size="big">Book Expedition Now</x-button>
-							</x-product-options-cards.cta-buttons>
-						</x-product-options-cards.card-details>
+						@foreach( $card['cabins'] as $cabin_code => $cabin )
+							@php
+								$cabin_availability_status = $cabin['specifications']['availability_status'] ?? 'U';
+
+								if ( empty( $cabin_availability_status ) || in_array( $cabin_availability_status, [ 'U', 'R', 'S' ] ) ) {
+									continue;
+								}
+							@endphp
+							<x-product-options-cards.card-details
+								id="{{ $cabin_code . '_' . $departure_id }}">
+
+								@if( $cabin['name'] )
+									<x-product-options-cards.card-details-title title="{{ $cabin['name'] }}"/>
+								@endif
+
+								@if( ! empty( $cabin['description'] ) )
+									<x-product-options-cards.description>
+										{!! $cabin['description'] !!}
+									</x-product-options-cards.description>
+								@endif
+
+								@if( ! empty( $cabin['gallery'] ) )
+									<x-product-options-cards.gallery :image_ids="$cabin['gallery']" :full_size="true"/>
+								@endif
+
+								@if( ! empty( $cabin['occupancies'] ) && is_array( $cabin['occupancies'] ) )
+									<x-product-options-cards.rooms title="Select Rooms">
+										@foreach( $cabin['occupancies'] as $index => $occupancy )
+											<x-product-options-cards.room checkout_url="{!! $occupancy['checkout_url'] !!}" name="room-type-{{ $departure_id }}-{{ $cabin_code }}" checked="{{ $index == 0 ? 'checked' : '' }}" mask="{{ $occupancy['name'] ?? '' }}">
+												<x-product-options-cards.room-title-container>
+													@if( ! empty( $occupancy['description'] ) )
+														<x-product-options-cards.room-title
+															title="{{ $occupancy['description'] }}"
+															no_of_guests="{{ $occupancy['no_of_guests'] ?? '' }}"
+														/>
+													@endif
+													<x-product-options-cards.room-subtitle subtitle="Price of the cabin for one guest"/>
+												</x-product-options-cards.room-title-container>
+
+												@if( ! empty( $occupancy['price'] ) && is_array( $occupancy['price'] ) )
+													<x-product-options-cards.room-prices
+														original_price="{{ $occupancy['price']['original_price'] }}"
+														discounted_price="{{ $occupancy['price']['discounted_price'] }}"
+													/>
+												@endif
+											</x-product-options-cards.room>
+										@endforeach
+									</x-product-options-cards.rooms>
+								@endif
+
+								@if( ! empty( $card['promotions'] ) && is_array( $card['promotions'] ) )
+									<x-product-options-cards.discounts>
+										@foreach( $card['promotions'] as $promotion )
+											@if( ! empty( $promotion ) )
+												<x-product-options-cards.discount name="{{ $promotion }}"/>
+											@endif
+										@endforeach
+									</x-product-options-cards.discounts>
+								@endif
+
+								<x-product-options-cards.cta-buttons>
+									@if ( ! empty( $card['request_a_quote_url'] ) )
+										<p class="product-options-cards__help-text">{{ __( 'Not ready to book?', 'qrk' ) }} <a href="{!! esc_url( $card['request_a_quote_url'] ) !!}">{{ __( 'Request a quote', 'qrk' ) }}</a></p>
+									@endif
+									<x-product-options-cards.phone-number phone_number="+1 (877) 585-1235" text="Request a callback: +1 (866) 257-0754" />
+									@if ( ! empty( $cabin['occupancies'] ) && is_array( $cabin['occupancies'] ) )
+										<x-product-options-cards.cta-book-now :url="$cabin['occupancies'][0]['checkout_url'] ?? '#'" />
+									@endif
+								</x-product-options-cards.cta-buttons>
+							</x-product-options-cards.card-details>
+						@endforeach
 					</x-product-options-cards.more-details>
 				</x-product-options-cards>
 			</x-expedition-cards.more-details>

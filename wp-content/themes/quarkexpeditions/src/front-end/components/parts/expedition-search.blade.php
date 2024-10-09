@@ -1,7 +1,7 @@
 @props( [
 	'results_count'   => 0,
 	'remaining_count' => 0,
-	'cards'           => Quark\Departures\get_cards_data( [ 21001, 21000 ], 'USD' ),
+	'cards'           => Quark\Departures\get_cards_data( [ 21001, 21000 ], 'USD' ), // TODO: Replace with cards data from block.
 	'currency'        => quark_get_template_data( 'default_currency', 'USD' ),
 	'filters_data'    => Quark\Theme\Search_Filters\get_filters_for_sidebar_search(),
 ] )

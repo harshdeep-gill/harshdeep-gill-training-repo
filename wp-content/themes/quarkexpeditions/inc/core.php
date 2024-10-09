@@ -514,11 +514,10 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'selected-value' => true,
 					'suffix'         => true,
 				],
-				'quark-dates-rates-filters-inputs-container'    => true,
-				'quark-form-newsletter'                         => [
+				'quark-form-newsletter'                            => [
 					'class' => true,
 				],
-				'tp-form'                                       => [
+				'tp-form'                                          => [
 					'class'          => true,
 					'prevent-submit' => true,
 				],
