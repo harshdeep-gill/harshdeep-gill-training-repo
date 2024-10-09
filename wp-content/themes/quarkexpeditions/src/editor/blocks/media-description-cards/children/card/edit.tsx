@@ -4,6 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import {
 	useBlockProps,
+	useInnerBlocksProps,
 	RichText,
 } from '@wordpress/block-editor';
 
@@ -33,6 +34,16 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 			className,
 			'media-description-cards__card',
 		),
+	} );
+
+	// Set inner blocks props.
+	const innerBlockProps = useInnerBlocksProps( {
+		className: classnames( 'media-description-cards__cta-button' ),
+	},
+	{
+		allowedBlocks: [
+			'quark/buttons',
+		],
 	} );
 
 	// Return the block's markup.
@@ -70,6 +81,7 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 						/>
 					</div>
 				</div>
+				<div { ...innerBlockProps } />
 			</article>
 		</>
 	);

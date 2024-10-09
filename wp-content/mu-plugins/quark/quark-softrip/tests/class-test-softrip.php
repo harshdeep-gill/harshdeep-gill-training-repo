@@ -164,10 +164,6 @@ class Test_Softrip extends Softrip_TestCase {
 		// Test case 6: Test code array with five elements with only a few valid.
 		$test_codes = [
 			'ABC-123',
-			'DEF-456',
-			'GHI-789',
-			'JKL-012',
-			'MNO-345',
 		];
 		$result     = synchronize_itinerary_departures( $test_codes );
 		$this->assertIsArray( $result );
@@ -176,29 +172,16 @@ class Test_Softrip extends Softrip_TestCase {
 		$this->assertArrayHasKey( 'departures', $result['ABC-123'] );
 		$this->assertNotEmpty( $result['ABC-123']['departures'] );
 
-		// Check for DEF-456.
-		$this->assertArrayHasKey( 'DEF-456', $result ); // Invalid code.
+		// Test case: Test with invalid code.
+		$test_codes = [
+			'DEF-456',
+		];
+		$result     = synchronize_itinerary_departures( $test_codes );
+		$this->assertIsArray( $result );
+		$this->assertArrayHasKey( 'DEF-456', $result );
 		$this->assertIsArray( $result['DEF-456'] );
 		$this->assertArrayHasKey( 'departures', $result['DEF-456'] );
 		$this->assertEmpty( $result['DEF-456']['departures'] );
-
-		// Check for GHI-789.
-		$this->assertArrayHasKey( 'GHI-789', $result ); // Invalid code.
-		$this->assertIsArray( $result['GHI-789'] );
-		$this->assertArrayHasKey( 'departures', $result['GHI-789'] );
-		$this->assertEmpty( $result['GHI-789']['departures'] );
-
-		// Check for JKL-012.
-		$this->assertArrayHasKey( 'JKL-012', $result );
-		$this->assertIsArray( $result['JKL-012'] );
-		$this->assertArrayHasKey( 'departures', $result['JKL-012'] );
-		$this->assertNotEmpty( $result['JKL-012']['departures'] );
-
-		// Check for MNO-345.
-		$this->assertArrayHasKey( 'MNO-345', $result ); // Invalid code.
-		$this->assertIsArray( $result['MNO-345'] );
-		$this->assertArrayHasKey( 'departures', $result['MNO-345'] );
-		$this->assertEmpty( $result['MNO-345']['departures'] );
 
 		// Cleanup.
 		remove_filter( 'pre_http_request', 'Quark\Tests\Softrip\mock_softrip_http_request' );

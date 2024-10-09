@@ -15,6 +15,7 @@ use function Quark\InclusionSets\get as inclusion_sets_get;
 use function Quark\PolicyPages\get as get_policy_page_post;
 use function Quark\Brochures\get as get_brochure;
 use function Quark\ItineraryDays\get as get_itinerary_day;
+use function Quark\Leads\get_request_a_quote_url;
 use function Quark\Ships\get as get_ship;
 use function Quark\Softrip\Itineraries\get_lowest_price;
 use function Quark\Softrip\Itineraries\get_related_ships;
@@ -400,11 +401,17 @@ function get_season( int $post_id = 0 ): array {
 /**
  * Prepare details for itinerary tabs.
  *
- * @param array<int> $itineraries Array of itinerary post IDs.
+ * @param array<int> $itineraries   Array of itinerary post IDs.
+ * @param int        $expedition_id Expedition post ID.
  *
  * @return array<string|int, mixed>
  */
-function get_details_tabs_data( array $itineraries = [] ): array {
+function get_details_tabs_data( array $itineraries = [], int $expedition_id = 0 ): array {
+	// Validate expedition ID.
+	if ( empty( $expedition_id ) ) {
+		return [];
+	}
+
 	// Build the component attributes.
 	$details = [];
 
@@ -548,17 +555,18 @@ function get_details_tabs_data( array $itineraries = [] ): array {
 
 		// Append the itinerary to the component attributes.
 		$details['itinerary_groups'][ $season['slug'] ]['itineraries'][] = [
-			'tab_id'             => $tab_id,
-			'tab_title'          => $tab_title,
-			'tab_subtitle'       => $tab_subtitle,
-			'tab_content_header' => $tab_content_header,
-			'duration'           => $duration,
-			'departing_from'     => $departing_from,
-			'itinerary_days'     => $itinerary_days,
-			'map'                => $itinerary['post_meta']['map'] ?? 0,
-			'price'              => $price,
-			'brochure'           => $brochure,
-			'ships'              => $ships,
+			'tab_id'              => $tab_id,
+			'tab_title'           => $tab_title,
+			'tab_subtitle'        => $tab_subtitle,
+			'tab_content_header'  => $tab_content_header,
+			'duration'            => $duration,
+			'departing_from'      => $departing_from,
+			'itinerary_days'      => $itinerary_days,
+			'map'                 => $itinerary['post_meta']['map'] ?? 0,
+			'price'               => $price,
+			'brochure'            => $brochure,
+			'ships'               => $ships,
+			'request_a_quote_url' => get_request_a_quote_url( 0, $expedition_id ),
 		];
 	}
 

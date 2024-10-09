@@ -1,0 +1,29 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Form - Do not sell my information",
+	"name": "quark/form-do-not-sell-information",
+	"description": "Add the form to allow users to request their information not be sold",
+	"category": "layout",
+	"keywords": [
+		"do",
+		"not",
+		"sell",
+		"information",
+		"form"
+	],
+	"textdomain": "qrk",
+	"attributes": {
+		"thankYouPage": {
+			"type": "object",
+			"default": null
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

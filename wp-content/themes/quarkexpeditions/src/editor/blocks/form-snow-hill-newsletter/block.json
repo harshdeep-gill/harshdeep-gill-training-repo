@@ -1,0 +1,28 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Form - Snow Hill Newsletter",
+	"name": "quark/form-snow-hill-newsletter",
+	"description": "Add the Snow Hill Newsletter form to the page.",
+	"category": "layout",
+	"keywords": [
+		"snow",
+		"hill",
+		"newsletter",
+		"form"
+	],
+	"textdomain": "qrk",
+	"attributes": {
+		"thankYouPage": {
+			"type": "object",
+			"default": null
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

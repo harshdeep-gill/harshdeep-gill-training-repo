@@ -1,7 +1,7 @@
 @props( [
 	'price'    => '',
 	'currency' => '',
-	'count'    => '',
+	'count'    => 0,
 ] )
 
 @php
@@ -11,11 +11,9 @@
 @endphp
 
 <p class="dates-rates__adventure-options-item-price-wrap">
-	<strong class="dates-rates__adventure-options-item-price"><x-escape content="{{ $price }}" /></strong>
+	<strong class="dates-rates__adventure-options-item-price"><x-escape content="{{ str_replace( [ 'USD', 'CAD', 'AUD', 'EUR', 'GBP' ], '', $price ) }}" /></strong>
 	<span class="dates-rates__adventure-options-item-currency"><x-escape content="{{ $currency }}" /></span>
 	<span>
-		@if ( ! empty( $count ) )
-			({{ $count }})
-		@endif
+		({{ $count }})
 	</span>
 </p>
