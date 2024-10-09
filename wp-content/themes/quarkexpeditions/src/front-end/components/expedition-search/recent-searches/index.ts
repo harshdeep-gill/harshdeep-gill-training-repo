@@ -4,11 +4,6 @@
 const { HTMLElement, zustand, customElements } = window;
 
 /**
- * Get the store
- */
-const { subscribe } = zustand.stores.searchFiltersBar;
-
-/**
  * Class QuarkExpeditionSearchRecentSearches
  */
 export default class QuarkExpeditionSearchRecentSearches extends HTMLElement {
@@ -27,8 +22,11 @@ export default class QuarkExpeditionSearchRecentSearches extends HTMLElement {
 		// Initialize properties.
 		this.recentSearchCardTemplate = this.querySelector( 'template' );
 
-		// Subscribe to the store
-		subscribe( this.update.bind( this ) );
+		/**
+		 * Setup on content load event
+		 * This has been used instead of window.onload because window.onload can be overwritten.
+		 */
+		window.addEventListener( 'load', this.setupSubscription.bind( this ) );
 	}
 
 	/**
@@ -38,13 +36,27 @@ export default class QuarkExpeditionSearchRecentSearches extends HTMLElement {
 	 */
 	update( state: SearchFiltersBarState ) {
 		// Get the state
-		const { initialized, selectedDestinations, selectedMonths } = state;
+		const { history } = state;
 
 		// Null checks.
-		if ( ! initialized || ! selectedDestinations || ! selectedMonths || ! this.recentSearchCardTemplate ) {
+		if ( ! this.recentSearchCardTemplate ) {
 			// Bail.
 			return;
 		}
+
+		// Log the state.
+		console.log( history );
+	}
+
+	/**
+	 * Sets up the store subscription after content is loaded to prevent undefined errors.
+	 */
+	setupSubscription() {
+		// Get the subscribe function.
+		const { subscribe } = zustand.stores.searchFiltersBar;
+
+		// Subscribe to the store.
+		subscribe( this.update.bind( this ) );
 	}
 }
 

@@ -8,7 +8,7 @@
 
 <quark-expedition-search-recent-searches class="expedition-seach__recent-searches">
 	<h4 class="h4"><x-escape :content="$title" /></h4>
-	<temlate>
+	<template>
 		<x-mini-cards-list.card>
 			<x-mini-cards-list.card-image image_id="120" />
 			<x-mini-cards-list.card-info>
@@ -16,7 +16,7 @@
 				<x-mini-cards-list.card-date date="June 2024" />
 			</x-mini-cards-list.card-info>
 		</x-mini-cards-list.card>
-	</temlate>
+	</template>
 
 	<x-mini-cards-list>
 	</x-mini-cards-list>

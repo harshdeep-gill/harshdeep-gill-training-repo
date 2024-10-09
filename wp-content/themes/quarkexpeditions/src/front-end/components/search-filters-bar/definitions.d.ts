@@ -8,6 +8,7 @@ interface SearchFiltersBarState {
 	selectedMonths: Set<string>,
 	departureMonthOptions: [],
 	destinationOptions: [],
+	history: [],
 	resultCount: 0,
 	initialized: false,
 }

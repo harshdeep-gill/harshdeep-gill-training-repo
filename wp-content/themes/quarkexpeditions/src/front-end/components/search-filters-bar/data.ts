@@ -20,12 +20,13 @@ export const DEFAULT_STATE: SearchFiltersBarState = {
 	selectedMonths: new Set( [] ),
 	resultCount: 0,
 	initialized: false,
+	history: [],
 };
 
 /**
  * Persistent keys.
  */
-export const PERSISTENT_STATE_KEYS = [ 'selectedMonths', 'selectedDestinations' ];
+export const PERSISTENT_STATE_KEYS = [ 'history' ];
 
 /**
  * Create store.
