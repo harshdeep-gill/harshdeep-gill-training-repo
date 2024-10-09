@@ -129,27 +129,60 @@ export class SearchFiltersBar extends HTMLElement {
 	 * Update selected destinations state.
 	 */
 	updateDestinationsState() {
+		// Null check.
+		if ( ! this.destinationSelector || ! this.searchFiltersModal ) {
+			// Bail
+			return;
+		}
+
 		// Get the selected value.
-		const value = this.destinationSelector?.value;
-		let label = '';
+		const values = Array.from( this.destinationSelector.value );
+
+		// Check if we have an empty array
+		if ( values.length === 0 ) {
+			// Bail.
+			return;
+		}
+
+		// Get the attribute selector based on the selected values.
+		const valueAttributeSelector = values.map( ( value ) => `[value="${ value }"]` ).join( ',' );
 
 		// Get the selected option.
-		const selectedOption: SearchFilterDestinationOption | null | undefined = this.searchFiltersModal?.querySelector( `quark-search-filters-bar-destinations-option[value="${ value?.values().next().value }"]` );
+		const selectedOptions: NodeListOf<SearchFilterDestinationOption> = this.searchFiltersModal.querySelectorAll( `quark-search-filters-bar-destinations-option${ valueAttributeSelector }` );
 
-		// Get the label.
-		if ( selectedOption ) {
-			label = selectedOption?.getAttribute( 'label' ) ?? '';
-		}
+		// Initialize destinations.
+		const destinations: SearchFiltersBarDestinationState[] = [];
 
-		// Update destinations state.
-		if ( value ) {
-			updateDestinations( value );
+		// Initialize search field label.
+		let fieldLabel = '';
 
-			// Update the label.
-			if ( label ) {
-				this.updateDestinationsPlaceholder( label );
+		// Loop through the selected filters.
+		selectedOptions.forEach( ( selectedOption ) => {
+			// Get the attributes.
+			const value = selectedOption.getAttribute( 'value' ) ?? '';
+			const label = selectedOption.getAttribute( 'label' ) ?? '';
+			const imageUrl = selectedOption.getAttribute( 'image-url' ) ?? '';
+
+			// Empty checks
+			if ( ! ( value && label ) ) {
+				// Bail
+				return;
 			}
-		}
+
+			// Check and set field label.
+			if ( '' === fieldLabel ) {
+				fieldLabel = label;
+			}
+
+			// Add the destination.
+			destinations.push( { value, label, imageUrl } );
+		} );
+
+		// Update the destinations
+		updateDestinations( destinations );
+
+		// Update the destinations field label.
+		this.updateDestinationsPlaceholder( fieldLabel );
 
 		// Activate departure filter.
 		this.toggleDepartureFilterOptions();

@@ -32,14 +32,24 @@ export const initialize = ( settings: { filtersApiUrl: string | null, searchPage
  *
  * @param {Set} destinations Selected Destinations.
  */
-export const updateDestinations = ( destinations: Set<string> | undefined ) => {
+export const updateDestinations = ( destinations: SearchFiltersBarDestinationState[] ) => {
 	// Get State.
-	const { selectedDestinations, selectedMonths } = getState();
-	let currentSelectedDestinations = { ...selectedDestinations };
+	const { selectedDestinations, selectedMonths }: SearchFiltersBarState = getState();
+	let currentSelectedDestinations = [ ...selectedDestinations ];
 
 	// If destinations exist, update the value.
-	if ( destinations ) {
-		currentSelectedDestinations = destinations;
+	if ( destinations && Array.isArray( destinations ) && destinations.length ) {
+		// Only get the unique destinations.
+		currentSelectedDestinations = destinations.reduce( ( accumulator, current ) => {
+			// Check if the value is already there.
+			if ( ! accumulator.find( ( dest ) => dest.value === current.value ) ) {
+				// Add the destination.
+				accumulator.push( current );
+			}
+
+			// Return
+			return accumulator;
+		}, <SearchFiltersBarDestinationState[]>[] );
 	}
 
 	// Set state.
@@ -51,7 +61,10 @@ export const updateDestinations = ( destinations: Set<string> | undefined ) => {
 	fetchFilterOptions();
 
 	// Update Search URL.
-	updateSearchUrl( Array.from( currentSelectedDestinations ), Array.from( selectedMonths ) );
+	updateSearchUrl(
+		currentSelectedDestinations.map( ( dest ) => parseInt( dest.value ) ),
+		Array.from( selectedMonths ).map( ( month ) => parseInt( month ) )
+	);
 };
 
 /**
