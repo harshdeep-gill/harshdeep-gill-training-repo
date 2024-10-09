@@ -65,7 +65,7 @@
 						</x-form.field>
 						<x-country-selector :countries="$countries" :states="$states" />
 					</x-form.row>
-					<x-form.row>
+					<x-form.row class="form-newsletter__agent-check">
 						<x-form.field-group>
 							<x-form.checkbox name="fields[Travel_Agent__c]" label="{{ __('I am a Travel Agent', 'qrk') }}" />
 						</x-form.field-group>
