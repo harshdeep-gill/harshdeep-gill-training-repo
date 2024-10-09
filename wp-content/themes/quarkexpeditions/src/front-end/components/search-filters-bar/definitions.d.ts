@@ -8,13 +8,21 @@ interface SearchFiltersBarDestinationState {
 }
 
 /**
+ * Interface SearchFiltersBarMonthsState
+ */
+interface SearchFiltersBarMonthState {
+	value: string,
+	label: string,
+}
+
+/**
  * Interface SearchFiltersBarState.
  */
 interface SearchFiltersBarState {
 	filtersApiUrl: string,
 	searchPageUrl: string,
 	selectedDestinations: SearchFiltersBarDestinationState[],
-	selectedMonths: Set<string>,
+	selectedMonths: SearchFiltersBarMonthState[],
 	departureMonthOptions: [],
 	destinationOptions: [],
 	history: [],

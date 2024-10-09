@@ -30,7 +30,7 @@ export const initialize = ( settings: { filtersApiUrl: string | null, searchPage
 /**
  * Update destination filter value.
  *
- * @param {Set} destinations Selected Destinations.
+ * @param {Object[]} destinations Selected Destinations.
  */
 export const updateDestinations = ( destinations: SearchFiltersBarDestinationState[] ) => {
 	// Get State.
@@ -63,23 +63,33 @@ export const updateDestinations = ( destinations: SearchFiltersBarDestinationSta
 	// Update Search URL.
 	updateSearchUrl(
 		currentSelectedDestinations.map( ( dest ) => parseInt( dest.value ) ),
-		Array.from( selectedMonths ).map( ( month ) => parseInt( month ) )
+		Array.from( selectedMonths ).map( ( month ) => parseInt( month.value ) )
 	);
 };
 
 /**
  * Update months filter value.
  *
- * @param {Set} months Selected Months.
+ * @param {Object[]} months Selected Months.
  */
-export const updateDepartureMonths = ( months: Set<string> | undefined ) => {
+export const updateDepartureMonths = ( months: SearchFiltersBarMonthState[] ) => {
 	// Get State.
-	const { selectedMonths, selectedDestinations } = getState();
+	const { selectedMonths, selectedDestinations }: SearchFiltersBarState = getState();
 	let currentSelectedMonths = { ...selectedMonths };
 
 	// If months exist, update the value.
-	if ( months ) {
-		currentSelectedMonths = months;
+	if ( months && Array.isArray( months ) && months.length ) {
+		// Only get the unique months values.
+		currentSelectedMonths = months.reduce( ( accumulator, current ) => {
+			// Check if the value is already there.
+			if ( ! accumulator.find( ( month ) => month.value === current.value ) ) {
+				// Add the destination.
+				accumulator.push( current );
+			}
+
+			// Return
+			return accumulator;
+		}, <SearchFiltersBarMonthState[]>[] );
 	}
 
 	// Set state.
@@ -91,7 +101,10 @@ export const updateDepartureMonths = ( months: Set<string> | undefined ) => {
 	fetchFilterOptions( 'months' );
 
 	// Update Search URL.
-	updateSearchUrl( Array.from( selectedDestinations ), Array.from( currentSelectedMonths ) );
+	updateSearchUrl(
+		selectedDestinations.map( ( dest ) => parseInt( dest.value ) ),
+		currentSelectedMonths.map( ( month ) => parseInt( month.value ) )
+	);
 };
 
 /**

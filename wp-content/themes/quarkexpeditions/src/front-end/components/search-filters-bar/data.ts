@@ -17,7 +17,7 @@ export const DEFAULT_STATE: SearchFiltersBarState = {
 	departureMonthOptions: [],
 	destinationOptions: [],
 	selectedDestinations: [],
-	selectedMonths: new Set( [] ),
+	selectedMonths: [],
 	resultCount: 0,
 	initialized: false,
 	history: [],
