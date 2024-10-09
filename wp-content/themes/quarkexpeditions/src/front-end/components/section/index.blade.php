@@ -8,6 +8,7 @@
 	'background_color' => 'gray',
 	'padding'          => false,
 	'wrap'             => false,
+	'image_id'         => 0,
 ] )
 
 @php
@@ -43,6 +44,10 @@
 				$classes[] = sprintf( 'section--has-background-%s', $background_color );
 			}
 		}
+	}
+
+	if ( ! empty( $image_id ) ) {
+		$classes[] = 'full-width';
 	}
 
 	if ( ! empty( $padding ) && true === boolval( $padding ) ) {
