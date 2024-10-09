@@ -52,10 +52,10 @@
 				</x-form.row>
 				<x-form.row>
 					<x-form.field :validation="[ 'required', 'email' ]">
-						<x-form.input type="email" label="Email Address" placeholder="Enter Email" name="fields[Email__c]" />
+						<x-form.input type="email" label="{{ __( 'Email Address', 'qrk' ) }}" placeholder="{{ __( 'Enter Email Address', 'qrk' ) }}" name="fields[Email__c]" />
 					</x-form.field>
 					<x-form.field :validation="[ 'required' ]">
-						<x-form.input type="tel" label="Phone Number" placeholder="eg. (123) 456 7890" name="fields[Phone__c]" />
+						<x-form.input type="tel" label="{{ __( 'Phone Number', 'qrk' ) }}" placeholder="{{ __( 'Enter Phone Number', 'qrk' ) }}" name="fields[Phone__c]" />
 					</x-form.field>
 				</x-form.row>
 				<x-form.row>
@@ -207,11 +207,11 @@
 							</div>
 							<div class="form-job-application__option-tooltip">
 								<x-form.checkbox name="fields[Certifications__c][]" label="{{ __( 'Wilderness First Aid', 'qrk' ) }}" value="wilderness_first_aid" />
-								<x-tooltip icon="info">{{ __( 'Please specify', 'qrk' ) }}</x-tooltip>
+								<x-tooltip icon="info">{{ __( 'WFR 40 hours or equivalent', 'qrk' ) }}</x-tooltip>
 							</div>
 							<div class="form-job-application__option-tooltip">
 								<x-form.checkbox name="fields[Certifications__c][]" label="{{ __( 'Wilderness First Responder', 'qrk' ) }}" value="wilderness_first_responder" />
-								<x-tooltip icon="info">{{ __( 'Please specify', 'qrk' ) }}</x-tooltip>
+								<x-tooltip icon="info">{{ __( 'WFR 80 hours or equivalent', 'qrk' ) }}</x-tooltip>
 							</div>
 						</x-form.field-group>
 					</x-form.row>
