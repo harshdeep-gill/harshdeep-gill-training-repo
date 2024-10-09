@@ -1,4 +1,4 @@
-name: WordPress Cron
+name: WordPress Cron (Production)
 
 on:
   schedule:
