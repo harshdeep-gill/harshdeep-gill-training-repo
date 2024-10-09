@@ -62,8 +62,8 @@ export const updateDestinations = ( destinations: SearchFiltersBarDestinationSta
 
 	// Update Search URL.
 	updateSearchUrl(
-		currentSelectedDestinations.map( ( dest ) => parseInt( dest.value ) ),
-		Array.from( selectedMonths ).map( ( month ) => parseInt( month.value ) )
+		currentSelectedDestinations.map( ( dest ) => dest.value ),
+		Array.from( selectedMonths ).map( ( month ) => month.value )
 	);
 };
 
@@ -102,8 +102,8 @@ export const updateDepartureMonths = ( months: SearchFiltersBarMonthState[] ) =>
 
 	// Update Search URL.
 	updateSearchUrl(
-		selectedDestinations.map( ( dest ) => parseInt( dest.value ) ),
-		currentSelectedMonths.map( ( month ) => parseInt( month.value ) )
+		selectedDestinations.map( ( dest ) => dest.value ),
+		currentSelectedMonths.map( ( month ) => month.value )
 	);
 };
 
@@ -163,7 +163,7 @@ export const fetchFilterOptions = ( type: string = 'destinations' ) => {
 		} )
 		.catch( ( error ) => {
 			// Handle any errors that occur during the fetch.
-			console.error( error ) //eslint-disable-line
+			console.error(error) //eslint-disable-line
 		} );
 };
 
@@ -173,7 +173,7 @@ export const fetchFilterOptions = ( type: string = 'destinations' ) => {
  * @param {Array} destinations Selected Destinations.
  * @param {Array} months       Selected Months.
  */
-export const updateSearchUrl = ( destinations: Array<number> = [], months: Array<number> = [] ) => {
+export const updateSearchUrl = ( destinations: Array<string> = [], months: Array<string> = [] ) => {
 	// Check if either destination or month exist.
 	if ( ! destinations.length && ! months.length ) {
 		// Bail.
@@ -197,5 +197,78 @@ export const updateSearchUrl = ( destinations: Array<number> = [], months: Array
 	// Set State.
 	setState( {
 		searchPageUrl: baseUrl.href,
+	} );
+};
+
+/**
+ * Updates the search history.
+ */
+export const updateHistory = () => {
+	// Get the state.
+	const { searchPageUrl, selectedDestinations, selectedMonths, history }: SearchFiltersBarState = getState();
+
+	// Get Construct a url object.
+	let baseUrl: URL;
+
+	// Try constructing the url object.
+	try {
+		baseUrl = new URL( searchPageUrl );
+	} catch ( error ) {
+		console.error(error); // eslint-disable-line
+		return;
+	}
+
+	// Get the searchparams object.
+	const queryParams = new URLSearchParams( baseUrl.search );
+	const destinationsParam = queryParams.get( 'destinations' );
+	const monthsParam = queryParams.get( 'months' );
+
+	// Null check.
+	if ( ! destinationsParam || ! monthsParam ) {
+		// Bail.
+		return;
+	}
+
+	// Split the params into values.
+	const destinationParamValue = destinationsParam.split( ',' )[ 0 ];
+	const monthParamValue = monthsParam.split( ',' )[ 0 ];
+
+	// Get the respective objects.
+	const destinationObject = selectedDestinations.find( ( selectedDestination ) => selectedDestination.value === destinationParamValue );
+	const monthObject = selectedMonths.find( ( selectedMonth ) => selectedMonth.value === monthParamValue );
+
+	// Check if we have destination and month object.
+	if ( ! destinationObject || ! monthObject ) {
+		// Bail.
+		return;
+	}
+
+	// Initialize updated history
+	const updatedHistory = [ ...history ];
+
+	// Get the index in history.
+	const foundIndex = history.findIndex( ( historyItem ) => historyItem.destination.value === destinationObject.value && historyItem.month.value === monthObject.value );
+
+	// Is this item already in history?
+	if ( foundIndex > -1 ) {
+		// Yes, it is, remove the existing one.
+		updatedHistory.splice( foundIndex, 1 );
+	}
+
+	// Is the history full already?
+	if ( updatedHistory.length === 3 ) {
+		// Pop the least recent item.
+		updatedHistory.pop();
+	}
+
+	// Add the new item.
+	updatedHistory.unshift( {
+		destination: destinationObject,
+		month: monthObject,
+	} );
+
+	// Set the state
+	setState( {
+		history: updatedHistory,
 	} );
 };

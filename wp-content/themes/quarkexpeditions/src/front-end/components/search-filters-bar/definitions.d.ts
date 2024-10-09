@@ -16,6 +16,14 @@ interface SearchFiltersBarMonthState {
 }
 
 /**
+ * Interface SearchFiltersBarHistoryState
+ */
+interface SearchFiltersBarHistoryState {
+	destination: SearchFiltersBarDestinationState,
+	month: SearchFiltersBarMonthState,
+}
+
+/**
  * Interface SearchFiltersBarState.
  */
 interface SearchFiltersBarState {
@@ -25,7 +33,7 @@ interface SearchFiltersBarState {
 	selectedMonths: SearchFiltersBarMonthState[],
 	departureMonthOptions: [],
 	destinationOptions: [],
-	history: [],
+	history: SearchFiltersBarHistoryState[],
 	resultCount: 0,
 	initialized: false,
 }

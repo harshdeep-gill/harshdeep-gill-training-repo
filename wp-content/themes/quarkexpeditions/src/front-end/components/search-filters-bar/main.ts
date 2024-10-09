@@ -6,7 +6,7 @@ const { customElements, HTMLElement, zustand } = window;
 /**
  * Internal dependencies.
  */
-import { initialize, updateDepartureMonths, updateDestinations } from './actions';
+import { initialize, updateDepartureMonths, updateDestinations, updateHistory } from './actions';
 import { MonthsMultiSelect } from '../months-multi-select/main';
 import { SearchFilterDestinations } from './destinations';
 import { SearchFilterDestinationOption } from './destinations/filter-option';
@@ -97,6 +97,9 @@ export class SearchFiltersBar extends HTMLElement {
 	redirectToSearchPage() {
 		// Get state.
 		const { searchPageUrl } = getState();
+
+		// Update the history.
+		updateHistory();
 
 		// Redirect to Search URL from state.
 		if ( searchPageUrl ) {
