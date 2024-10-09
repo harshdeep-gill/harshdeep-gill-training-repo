@@ -23,19 +23,19 @@
 						<x-expedition-cards.icon icon="ship">{{ $card['ship_name'] ?? '' }}</x-expedition-cards.icon>
 
 						@if ( ! empty( $card['expedition_categories'] ) )
-						@foreach ( $card['expedition_categories'] as $category)
-							@if ( 'Fly/Cruise Expeditions' === $category['name'] )
-							<x-expedition-cards.icon icon="fly-express">
-								{{ __( 'Fly/Cruise Express', 'qrk' ) }}
+							@foreach ( $card['expedition_categories'] as $category )
+								@if ( 'Fly/Cruise Expeditions' === $category['name'] )
+									<x-expedition-cards.icon icon="fly-express">
+										{{ __( 'Fly/Cruise Express', 'qrk' ) }}
 
-								@if ( ! empty( $category['description'] ) )
-									<x-expedition-cards.tooltip title="{{ $category['name'] ?? '' }}">
-										<p><x-escape :content="$category['description']" /></p>
-									</x-expedition-cards.tooltip>
+										@if ( ! empty( $category['description'] ) )
+											<x-expedition-cards.tooltip title="{{ $category['name'] ?? '' }}">
+												<p><x-escape :content="$category['description']" /></p>
+											</x-expedition-cards.tooltip>
+										@endif
+									</x-expedition-cards.icon>
 								@endif
-							</x-expedition-cards.icon>
-							@endif
-						@endforeach
+							@endforeach
 						@endif
 					</x-expedition-cards.icons>
 
@@ -65,44 +65,50 @@
 							</x-expedition-cards.specification-value>
 						</x-expedition-cards.specification-item>
 
-						<x-expedition-cards.specification-item>
-							<x-expedition-cards.specification-label>
-								{{ __( 'Starting from', 'qrk' ) }}
-							</x-expedition-cards.specification-label>
-							<x-expedition-cards.specification-value>
-								{{ $card['starting_from_location'] ?? '' }}
-							</x-expedition-cards.specification-value>
-						</x-expedition-cards.specification-item>
+						@if ( ! empty( $card['starting_from_location'] ) )
+							<x-expedition-cards.specification-item>
+								<x-expedition-cards.specification-label>
+									{{ __( 'Starting from', 'qrk' ) }}
+								</x-expedition-cards.specification-label>
+								<x-expedition-cards.specification-value>
+									{{ $card['starting_from_location'] ?? '' }}
+								</x-expedition-cards.specification-value>
+							</x-expedition-cards.specification-item>
+						@endif
 
-						<x-expedition-cards.specification-item>
-							<x-expedition-cards.specification-label>
-								{{ __( 'Languages', 'qrk' ) }}
-							</x-expedition-cards.specification-label>
-							<x-expedition-cards.specification-value>
-								{{ $card['languages'] }}
-							</x-expedition-cards.specification-value>
-						</x-expedition-cards.specification-item>
+						@if ( ! empty( $card['languages'] ) )
+							<x-expedition-cards.specification-item>
+								<x-expedition-cards.specification-label>
+									{{ __( 'Languages', 'qrk' ) }}
+								</x-expedition-cards.specification-label>
+								<x-expedition-cards.specification-value>
+									{{ $card['languages'] ?? '' }}
+								</x-expedition-cards.specification-value>
+							</x-expedition-cards.specification-item>
+						@endif
 
-						<x-expedition-cards.specification-item>
-							<x-expedition-cards.specification-label>
-								{{ __( 'Adventure Options', 'qrk' ) }}
-							</x-expedition-cards.specification-label>
-							<x-expedition-cards.specification-value>
-								<x-expedition-cards.adventure-options>
-									@foreach( $card['paid_adventure_options'] as $option )
-										<x-expedition-cards.adventure-option title="{{ $option }}"/>
-									@endforeach
+						@if ( ! empty( $card['paid_adventure_options'] ) )
+							<x-expedition-cards.specification-item>
+								<x-expedition-cards.specification-label>
+									{{ __( 'Adventure Options', 'qrk' ) }}
+								</x-expedition-cards.specification-label>
+								<x-expedition-cards.specification-value>
+									<x-expedition-cards.adventure-options>
+										@foreach( $card['paid_adventure_options'] as $option )
+											<x-expedition-cards.adventure-option title="{{ $option }}"/>
+										@endforeach
 
-									<x-expedition-cards.adventure-options-tooltip>
-										<ul>
-											@foreach( $card['paid_adventure_options'] as $option )
-												<li>{{ $option }}</li>
-											@endforeach
-										</ul>
-									</x-expedition-cards.adventure-options-tooltip>
-								</x-expedition-cards.adventure-options>
-							</x-expedition-cards.specification-value>
-						</x-expedition-cards.specification-item>
+										<x-expedition-cards.adventure-options-tooltip>
+											<ul>
+												@foreach( $card['paid_adventure_options'] as $option )
+													<li>{{ $option }}</li>
+												@endforeach
+											</ul>
+										</x-expedition-cards.adventure-options-tooltip>
+									</x-expedition-cards.adventure-options>
+								</x-expedition-cards.specification-value>
+							</x-expedition-cards.specification-item>
+						@endif
 					</x-expedition-cards.specifications>
 
 					<x-expedition-cards.price
@@ -121,8 +127,9 @@
 									<li>{!! $set !!}</li>
 								@endforeach
 							</ul>
-							<p><strong>Package
-									Price: {{ $card['transfer_package_details']['formatted_price'] ?? '' }}</strong></p>
+							<p>
+								<strong>{{ __( 'Package Price: ', 'qrk' ) }} {{ $card['transfer_package_details']['formatted_price'] ?? '' }}</strong>
+							</p>
 						</x-expedition-cards.transfer_package>
 					@endif
 
@@ -155,7 +162,7 @@
 									continue;
 								}
 							@endphp
-							<x-product-options-cards.card details_id="{{  $cabin_code . '_' . $departure_id }}" :status="$cabin_availability_status" >
+							<x-product-options-cards.card details_id="{{  $cabin_code . '_' . $departure_id }}" :status="$cabin_availability_status" type="{{ $cabin['type'] ?? '' }}" >
 
 								@if( ! empty( $cabin['gallery'] ) )
 									<x-product-options-cards.gallery :image_ids="$cabin['gallery']">
