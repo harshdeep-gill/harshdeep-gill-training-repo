@@ -93,6 +93,7 @@ import * as formNewsletter from './form-newsletter';
 import * as formAccessDeletionRequest from './form-account-management';
 import * as formCommunicationsOptIn from './form-communications-opt-in';
 import * as formRequestAQuote from './form-request-quote';
+import * as searchFiltersBar from './search-filters-bar';
 
 /**
  * Add blocks.
@@ -182,6 +183,7 @@ const blocks = [
 	formAccessDeletionRequest,
 	formCommunicationsOptIn,
 	formRequestAQuote,
+	searchFiltersBar,
 ];
 
 // Register blocks for ships.
