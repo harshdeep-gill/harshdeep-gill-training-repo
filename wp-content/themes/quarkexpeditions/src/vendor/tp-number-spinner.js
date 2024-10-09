@@ -5,9 +5,9 @@
 import '@travelopia/web-components/dist/number-spinner/style.css';
 
 // Import the number-spinner element.
-import { TPNumberSpinner } from '@travelopia/web-components/dist/number-spinner';
+import { TPNumberSpinnerElement } from '@travelopia/web-components/dist/number-spinner';
 
 /**
- * Export TPNumberSpinner.
+ * Export TPNumberSpinnerElement.
  */
-export default TPNumberSpinner;
+export default TPNumberSpinnerElement;

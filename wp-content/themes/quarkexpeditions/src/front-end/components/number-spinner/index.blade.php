@@ -4,6 +4,7 @@
 	'max'   => '10',
 	'step'  => '1',
 	'label' => '',
+	'name'  => '',
 ] )
 
 @php
@@ -28,7 +29,7 @@
 		<button class="btn" type="button">-</button>
 	</tp-number-spinner-decrement>
 	<tp-number-spinner-input>
-		<input type="text" value="1" readonly />
+		<input type="text" value="1" readonly name="{{ $name }}" />
 	</tp-number-spinner-input>
 	<tp-number-spinner-increment>
 		<button class="btn" type="button">+</button>

@@ -63,6 +63,7 @@
 								min="1"
 								max="10"
 								step="1"
+								name="fields[PAX_Count__c]"
 							/>
 						</x-form.field>
 					</x-form.row>
