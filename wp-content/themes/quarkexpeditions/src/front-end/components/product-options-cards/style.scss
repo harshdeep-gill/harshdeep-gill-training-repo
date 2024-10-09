@@ -487,4 +487,74 @@
 			overflow: hidden;
 		}
 	}
+
+	&__dialog-cta {
+		background-color: var(--color-gray-20);
+	}
+
+	&__dialog {
+
+		.dialog__content {
+			background-color: var(--color-white);
+		}
+
+		.dialog__header {
+			padding-bottom: 0;
+		}
+
+		.dialog__body {
+			display: flex;
+			flex-direction: column;
+			gap: var(--spacing-6);
+		}
+
+		.dialog__footer {
+			border: 0;
+			box-shadow: var(--shadow-1);
+			padding-block: var(--spacing-4);
+		}
+
+		.dialog__close-button {
+			top: 25px;
+			right: 25px;
+
+			svg {
+				width: 16px;
+				height: auto;
+			}
+		}
+
+		#{$self}__cta-buttons {
+			flex-flow: column-reverse;
+
+			.btn {
+				width: 100%;
+			}
+		}
+
+		#{$self}__rooms {
+			gap: var(--spacing-5);
+		}
+
+		#{$self}__room {
+			gap: var(--spacing-5);
+		}
+
+		#{$self}__rooms-title {
+			margin-bottom: 0;
+		}
+
+		#{$self}__room label {
+			gap: var(--spacing-2);
+		}
+
+		#{$self}__help-text {
+			margin-bottom: var(--spacing-6);
+		}
+
+		#{$self}__gallery-slide {
+			border-radius: var(--border-radius-large);
+			overflow: hidden;
+		}
+	}
 }
