@@ -58,6 +58,10 @@
 
 	&__search-item {
 
+		.search-filters-bar {
+			display: none;
+		}
+
 		#{$self}__nav-item-link {
 			min-height: 56px;
 			min-width: 56px;
