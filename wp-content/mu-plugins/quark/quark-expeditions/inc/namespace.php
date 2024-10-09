@@ -344,7 +344,7 @@ function register_expedition_post_type(): void {
 						],
 						[
 							[
-								'quark/included-activities',
+								'quark/related-adventure-options',
 								[
 									'showDescription' => false,
 								],
