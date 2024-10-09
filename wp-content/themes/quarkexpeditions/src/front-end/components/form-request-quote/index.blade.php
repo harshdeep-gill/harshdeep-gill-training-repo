@@ -56,7 +56,12 @@
 						</x-form.field>
 
 						<x-form.field>
-							<x-form.input type="number" min="2" max="10" value="2" label="Number of passengers" name="" />
+							<x-number-spinner
+								label="{{ __( 'Number of passengers', 'qrk' ) }}"
+								min="1"
+								max="10"
+								step="1"
+							/>
 						</x-form.field>
 					</x-form.row>
 
@@ -124,7 +129,7 @@
 					</x-form.row>
 
 					<x-form.row>
-						<x-form.field-group title="{{ __( 'Preferred Contact Method', 'qrk' ) }}">
+						<x-form.field-group class="form-request-quote__contact-method" title="{{ __( 'Preferred Contact Method', 'qrk' ) }}">
 							<x-form.radio label="{{ __( 'Email', 'qrk' ) }}" name="fields[Preferred_Contact_Method__c]" value="email" />
 							<x-form.radio label="{{ __( 'Phone', 'qrk' ) }}" name="fields[Preferred_Contact_Method__c]" value="phone" checked="checked" />
 						</x-form.field-group>

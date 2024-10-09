@@ -50,7 +50,8 @@ class Landing_Page {
 		'expedition-terms-and-conditions' => 105726,
 		'know-before-you-go'              => 106661,
 		'expedition-ships'                => 109,
-		'brochure_archive'                => 116086,
+		'offers'                          => 115316,
+		'Brochures'                       => 114791,
 	];
 
 	/**
@@ -220,7 +221,7 @@ class Landing_Page {
 						'hasTitle' => false,
 						'isNarrow' => true,
 					],
-					'innerContent' => [ prepare_content( strval( $item['post_content'] ) ) ],
+					'innerContent' => [ prepare_content( str_replace( '&nbsp;', ' ', strval( $item['post_content'] ) ) ) ],
 				]
 			) . PHP_EOL;
 		}
