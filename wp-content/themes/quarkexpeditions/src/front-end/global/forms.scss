@@ -51,7 +51,7 @@ textarea,
 tp-multi-select-field {
 	background-color: var(--color-white);
 	border-radius: var(--forms-border-radius);
-	padding: 9px 10px;
+	padding: 7px 10px;
 	outline: none;
 	border: 2px solid var(--forms-border-color);
 	width: 100%;
@@ -89,9 +89,9 @@ textarea,
 tp-multi-select-field {
 	font-family: var(--font-family);
 	font-weight: var(--font-weight-default);
-	font-size: 15px;
+	font-size: var(--font-size);
 	color: var(--color-black);
-	line-height: 1.6;
+	line-height: var(--line-height);
 
 	&:disabled,
 	&.disabled,
@@ -334,8 +334,9 @@ label {
 	}
 
 	&__title {
-		margin-bottom: 0;
+		font-size: var(--font-size);
 		font-weight: var(--font-weight-bold);
+		margin-bottom: 0;
 		order: 1;
 	}
 

@@ -73,9 +73,9 @@
 					</x-form.row>
 
 					<x-form.row>
-						<x-form.field :validation="[ 'required' ]" class="form-request-quote__toggle">
+						<x-form.field class="form-request-quote__toggle">
 							<tp-toggle-attribute trigger="select" target=".form-request-quote__travel-time">
-								<x-form.select label="{{ __( 'Choose your expedition (optional)', 'qrk' ) }}" name="fields[Expedition__c]" class="form-request-quote__expedition">
+								<x-form.select label="{{ __( 'Choose your expedition', 'qrk' ) }}" :optional="true" name="fields[Expedition__c]" class="form-request-quote__expedition">
 									<x-form.option value="">{{ __( '- None -', 'qrk' ) }}</x-form.option>
 									@foreach ( $expeditions as $expedition )
 										<x-form.option value="{{ $expedition['value'] }}" label="{{ $expedition['label'] }}">{{ $expedition['label'] }}</x-form.option>
@@ -132,7 +132,7 @@
 
 					<x-form.row>
 						<x-form.field>
-							<x-form.textarea label="{{ __( 'What else would you like us to know that is important to you? (optional)', 'qrk' ) }}" placeholder="{{ __( 'Ask us about our adventure options, any dietary requirements, specific departure dates in mind, etc.', 'qrk' ) }}" name="fields[Comments__c]" />
+							<x-form.textarea label="{{ __( 'What else would you like us to know that is important to you?', 'qrk' ) }}" :optional="true" placeholder="{{ __( 'Ask us about our adventure options, any dietary requirements, specific departure dates in mind, etc.', 'qrk' ) }}" name="fields[Comments__c]" />
 						</x-form.field>
 					</x-form.row>
 
