@@ -102,6 +102,33 @@ domReady( () => {
 		label: 'Solid',
 	} );
 
+	// Heading.
+	registerBlockStyle( 'core/heading', {
+		name: 'default',
+		label: 'Default',
+		isDefault: true,
+	} );
+	registerBlockStyle( 'core/heading', {
+		name: 'h1',
+		label: 'H1',
+	} );
+	registerBlockStyle( 'core/heading', {
+		name: 'h2',
+		label: 'H2',
+	} );
+	registerBlockStyle( 'core/heading', {
+		name: 'h3',
+		label: 'H3',
+	} );
+	registerBlockStyle( 'core/heading', {
+		name: 'h4',
+		label: 'H4',
+	} );
+	registerBlockStyle( 'core/heading', {
+		name: 'h5',
+		label: 'H5',
+	} );
+
 	// Paragraph.
 	registerBlockStyle( 'core/paragraph', {
 		name: 'default',
@@ -111,5 +138,25 @@ domReady( () => {
 	registerBlockStyle( 'core/paragraph', {
 		name: 'template-title',
 		label: 'Template Title',
+	} );
+	registerBlockStyle( 'core/paragraph', {
+		name: 'h1',
+		label: 'H1',
+	} );
+	registerBlockStyle( 'core/paragraph', {
+		name: 'h2',
+		label: 'H2',
+	} );
+	registerBlockStyle( 'core/paragraph', {
+		name: 'h3',
+		label: 'H3',
+	} );
+	registerBlockStyle( 'core/paragraph', {
+		name: 'h4',
+		label: 'H4',
+	} );
+	registerBlockStyle( 'core/paragraph', {
+		name: 'h5',
+		label: 'H5',
 	} );
 } );

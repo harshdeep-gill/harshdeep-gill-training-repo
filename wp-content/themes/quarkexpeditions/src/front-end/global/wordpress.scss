@@ -384,19 +384,6 @@ table {
 	}
 }
 
-.is-style-template-title {
-
-	@extend %h1;
-
-	margin-top: var(--spacing-8);
-	margin-bottom: var(--spacing-8);
-
-	@media screen and (min-width: grid-size(xl)) {
-		margin-top: var(--spacing-9);
-		margin-bottom: var(--spacing-9);
-	}
-}
-
 // WordPress annoyingly adds .wp-block-template-part as a wrapper for all
 // template parts. Display its contents to avoid styling issues
 // like sticky positioning, etc.
