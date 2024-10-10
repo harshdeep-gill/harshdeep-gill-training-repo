@@ -188,7 +188,6 @@ class Landing_Page {
 		$modified_at    = gmdate( 'Y-m-d H:i:s' );
 		$status         = 'draft';
 		$post_content   = '';
-		$post_excerpt   = '';
 		$post_name      = '';
 		$parent_post_id = 0;
 
@@ -307,7 +306,7 @@ class Landing_Page {
 			'post_modified'     => $modified_at,
 			'post_modified_gmt' => $modified_at,
 			'post_content'      => $post_content,
-			'post_excerpt'      => $post_excerpt,
+			'post_excerpt'      => wp_strip_all_tags( strval( $item['post_excerpt'] ) ),
 			'post_status'       => $status,
 			'comment_status'    => 'closed',
 			'ping_status'       => 'closed',
@@ -323,6 +322,11 @@ class Landing_Page {
 			if ( ! empty( $seo_data ) ) {
 				$data['meta_input'] = array_merge( $seo_data, $data['meta_input'] );
 			}
+		}
+
+		// Set fallback as excerpt if meta description is empty.
+		if ( empty( $data['meta_input']['_yoast_wpseo_metadesc'] ) ) {
+			$data['meta_input']['_yoast_wpseo_metadesc'] = $data['post_excerpt'];
 		}
 
 		// Set migrate_to_qq to metadata.

@@ -1075,3 +1075,42 @@ function get_destination_and_month_filter_options( int $destination_term_id = 0,
 	// Return filter options.
 	return $filter_options;
 }
+
+/**
+ * Get month options by expedition.
+ *
+ * @param int $expedition_id Expedition ID.
+ *
+ * @return array<string, array<int, array{
+ *    label: string,
+ *    value: string|int,
+ *    count?:int,
+ *    children?: array<int, array{
+ *       label: string,
+ *       value:int|string,
+ *       count?:int,
+ *       parent_id: int|string
+ *     }>
+ * }>>
+ */
+function get_expeditions_and_month_options_by_expedition( int $expedition_id = 0 ): array {
+	// Filter keys.
+	$filter_keys = [
+		EXPEDITION_FILTER_KEY,
+		MONTH_FILTER_KEY,
+	];
+
+	// Initialize selected filters.
+	$selected_filters = [];
+
+	// Check if expedition ID is empty.
+	if ( $expedition_id ) {
+		$selected_filters[ EXPEDITION_FILTER_KEY ] = [ $expedition_id ];
+	}
+
+	// Get filter options.
+	$filter_options = build_filter_options( $filter_keys, $selected_filters );
+
+	// Return filter options.
+	return $filter_options;
+}

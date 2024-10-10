@@ -27,6 +27,11 @@
 
 	&__title {
 		margin-top: var(--spacing-2);
+		margin-bottom: 0;
+	}
+
+	&__sub-title {
+		margin-bottom: var(--spacing-5);
 	}
 
 	&__tags {

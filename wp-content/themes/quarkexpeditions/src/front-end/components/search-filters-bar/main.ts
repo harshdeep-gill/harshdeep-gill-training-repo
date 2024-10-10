@@ -26,6 +26,7 @@ export class SearchFiltersBar extends HTMLElement {
 	 */
 	private searchFiltersModal: HTMLElement | null;
 	private searchButton: HTMLElement | null;
+	private headerSearchButton: HTMLElement | null;
 	private searchModalDestinationsButton: HTMLElement | null;
 	private searchModalDeparturesButton: HTMLElement | null;
 	private destinationFilters: HTMLElement | null | undefined;
@@ -60,6 +61,7 @@ export class SearchFiltersBar extends HTMLElement {
 		this.departureMonthsSelectors = this.searchFiltersModal?.querySelectorAll( 'quark-months-multi-select' );
 		this.defaultDepartureMonthsPlaceholder = this.departureMonthsFilters?.getAttribute( 'default-placeholder' ) as string;
 		this.searchButton = this.querySelector( '.search-filters-bar__search-button' );
+		this.headerSearchButton = document.querySelector( '.header__search-item' );
 
 		// Event Listeners.
 		this.searchModalDestinationsButton?.addEventListener(
@@ -81,6 +83,7 @@ export class SearchFiltersBar extends HTMLElement {
 
 		// Search Button.
 		this.searchButton?.addEventListener( 'click', this.redirectToSearchPage.bind( this ) );
+		this.headerSearchButton?.addEventListener( 'click', this.toggleDestinationFilterOptions.bind( this ) );
 	}
 
 	/**

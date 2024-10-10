@@ -27,11 +27,19 @@
 		&--sticky {
 			position: static;
 
+			&-scroll {
+				overflow: scroll;
+			}
+
 			@media screen and (min-width: calc( grid-size(lg) + 1px )) {
 				position: sticky;
 				top: calc(var(--header-height) + var(--wp-admin-bar-height) + var(--spacing-5));
 				height: calc(100dvh - calc(var(--header-height) + var(--spacing-5) + var(--wp-admin-bar-height)));
 			}
+		}
+
+		&-left {
+			order: -1;
 		}
 
 		@media screen and (min-width: calc(grid-size(lg) + 1px)) {
