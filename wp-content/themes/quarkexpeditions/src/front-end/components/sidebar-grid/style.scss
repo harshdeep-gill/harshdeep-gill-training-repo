@@ -28,7 +28,7 @@
 			position: static;
 
 			&-scroll {
-				overflow: scroll;
+				overflow-y: auto;
 			}
 
 			@media screen and (min-width: calc( grid-size(lg) + 1px )) {
@@ -40,6 +40,10 @@
 
 		&-left {
 			order: -1;
+		}
+
+		li {
+			margin-left: var(--spacing-5);
 		}
 
 		@media screen and (min-width: calc(grid-size(lg) + 1px)) {
