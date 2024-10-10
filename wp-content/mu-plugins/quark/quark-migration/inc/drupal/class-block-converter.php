@@ -1211,7 +1211,7 @@ class Block_Converter {
 			5421 => 'building',
 			5426 => 'footsteps',
 			5431 => 'sea-kayaking',
-			5436 => 'compass',
+			5436 => 'compass2',
 			5441 => 'relaxed-traveling',
 			5446 => 'whale-tail',
 			5451 => 'wildlife-polar-bear',
