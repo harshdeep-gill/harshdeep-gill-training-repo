@@ -6,6 +6,6 @@
 
 <nav class="header__secondary-nav">
 	<ul class="header__nav-menu">
-		<x-content :content="$slot" />
+		{!! $slot !!}
 	</ul>
 </nav>

@@ -5,6 +5,7 @@ import Form from './form';
 import QuarkFileInput from './file-input';
 import * as radioGroupRequired from './validators/radio-group';
 import * as checkboxGroupRequired from './validators/checkbox-group';
+import './range-slider';
 
 /**
  * Validators.

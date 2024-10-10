@@ -58,7 +58,7 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 				<Img value={ attributes.image } className="header__nav-item-featured-image" />
 				<div className="header__nav-item-featured-content">
 					<RichText
-						tagName="h2"
+						tagName="p"
 						className="header__nav-item-featured-title h4"
 						placeholder={ __( 'Write title…', 'qrk' ) }
 						value={ attributes.title }

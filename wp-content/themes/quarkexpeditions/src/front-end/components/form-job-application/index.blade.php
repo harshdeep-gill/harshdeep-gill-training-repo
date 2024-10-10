@@ -154,25 +154,25 @@
 					<x-form.row>
 						<x-form.field-group title="{{ __( 'What languages do you speak fluently?', 'qrk' ) }}" :validation="[ 'checkbox-group-required' ]">
 							<x-form.checkbox name="fields[Languages__c][]" label="{{ __( 'English', 'qrk' ) }}" value="English" />
-							<x-form.checkbox name="fields[Languages__c][]" label="{{ __( 'Italian', 'qrk' ) }}" value="Italian" />
-							<x-form.checkbox name="fields[Languages__c][]" label="{{ __( 'Arabic', 'qrk' ) }}" value="Arabic" />
+							<x-form.checkbox name="fields[Other_Languages__c][]" label="{{ __( 'Italian', 'qrk' ) }}" value="Italian" />
+							<x-form.checkbox name="fields[Other_Languages__c][]" label="{{ __( 'Arabic', 'qrk' ) }}" value="Arabic" />
 							<x-form.checkbox name="fields[Languages__c][]" label="{{ __( 'Chinese, Mandarin', 'qrk' ) }}" value="Chinese, Mandarin" />
-							<x-form.checkbox name="fields[Languages__c][]" label="{{ __( 'Hindi', 'qrk' ) }}" value="Hindi" />
+							<x-form.checkbox name="fields[Other_Languages__c][]" label="{{ __( 'Hindi', 'qrk' ) }}" value="Hindi" />
 							<x-form.checkbox name="fields[Languages__c][]" label="{{ __( 'Japanese', 'qrk' ) }}" value="Japanese" />
 							<x-form.checkbox name="fields[Languages__c][]" label="{{ __( 'French', 'qrk' ) }}" value="French" />
-							<x-form.checkbox name="fields[Languages__c][]" label="{{ __( 'Korean', 'qrk' ) }}" value="Korean" />
-							<x-form.checkbox name="fields[Languages__c][]" label="{{ __( 'Portuguese', 'qrk' ) }}" value="Portuguese" />
+							<x-form.checkbox name="fields[Other_Languages__c][]" label="{{ __( 'Korean', 'qrk' ) }}" value="Korean" />
+							<x-form.checkbox name="fields[Other_Languages__c][]" label="{{ __( 'Portuguese', 'qrk' ) }}" value="Portuguese" />
 							<x-form.checkbox name="fields[Languages__c][]" label="{{ __( 'German', 'qrk' ) }}" value="German" />
 							<x-form.checkbox name="fields[Languages__c][]" label="{{ __( 'Russian', 'qrk' ) }}" value="Russian" />
 							<tp-toggle-attribute target=".form-job-application__other-languages" value="true" attribute="required" attribute-value="yes">
 								<x-form.checkbox name="fields[Languages__c][]" label="{{ __( 'Other', 'qrk' ) }}" value="Other" />
 							</tp-toggle-attribute>
 							<x-form.checkbox name="fields[Languages__c][]" label="{{ __( 'Spanish', 'qrk' ) }}" value="Spanish" />
-							<x-form.checkbox name="fields[Languages__c][]" label="{{ __( 'Bengali', 'qrk' ) }}" value="Bengali" />
+							<x-form.checkbox name="fields[Other_Languages__c][]" label="{{ __( 'Bengali', 'qrk' ) }}" value="Bengali" />
 						</x-form.field-group>
 					</x-form.row>
 					<x-form.field class="form-job-application__other-languages">
-						<x-form.input type="text" label="{{ __( 'Other Languages Spoken', 'qrk' ) }}" name="fields[Other_Languages__c]" placeholder="Enter Other Language you Speak"/>
+						<x-form.input type="text" label="{{ __( 'Other Languages Spoken', 'qrk' ) }}" name="fields[Other_Languages__c][]" placeholder="Enter Other Language you Speak"/>
 					</x-form.field>
 				</div>
 

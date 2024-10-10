@@ -318,7 +318,6 @@ function do_push( array $expedition_post_ids = [], bool $changed_only = true ): 
 						'expedition_post_id' => $expedition_post_id,
 						'initiated_via'      => $initiated_via,
 						'changed_only'       => $changed_only,
-						'file_name'          => $push_result,
 					]
 				);
 
@@ -370,9 +369,9 @@ function do_push( array $expedition_post_ids = [], bool $changed_only = true ): 
  * @param int    $expedition_post_id   Expedition post ID.
  * @param string $json_expedition_data JSON expedition data.
  *
- * @return string|WP_Error
+ * @return bool|WP_Error
  */
-function push_expedition_data( int $expedition_post_id = 0, string $json_expedition_data = '' ): string|WP_Error {
+function push_expedition_data( int $expedition_post_id = 0, string $json_expedition_data = '' ): bool|WP_Error {
 	// Check for expedition post ID.
 	if ( empty( $expedition_post_id ) ) {
 		return new WP_Error( 'qrk_ingestor_invalid_expedition_id', __( 'Invalid expedition post ID.', 'qrk' ) );
@@ -393,18 +392,12 @@ function push_expedition_data( int $expedition_post_id = 0, string $json_expedit
 		return new WP_Error( 'qrk_ingestor_no_auth', __( 'Ingestor credentials missing', 'qrk' ) );
 	}
 
-	// Generate UUID.
-	$uuid = wp_generate_uuid4();
-
-	// File name.
-	$file_name = $uuid . '_' . $expedition_post_id . '.json';
-
 	// Construct URL.
-	$url = trailingslashit( QUARK_INGESTOR_BASE_URL ) . $file_name;
+	$url = trailingslashit( QUARK_INGESTOR_BASE_URL );
 
 	// Set request args.
 	$args = [
-		'method'  => 'PUT',
+		'method'  => 'POST',
 		'timeout' => 20,
 		'headers' => [
 			'x-api-key'    => QUARK_INGESTOR_API_KEY,
@@ -427,7 +420,7 @@ function push_expedition_data( int $expedition_post_id = 0, string $json_expedit
 	}
 
 	// Return url.
-	return $file_name;
+	return true;
 }
 
 /**
@@ -694,7 +687,7 @@ function get_destination_terms( int $expedition_post_id = 0 ): array {
 
 		// Add region.
 		$regions[] = [
-			'id'     => $destination_term['term_id'],
+			'id'     => absint( $destination_term['term_id'] ),
 			'name'   => $destination_term['name'],
 			'region' => [
 				'name' => $parent_term['name'],
@@ -766,6 +759,9 @@ function get_itineraries( int $expedition_post_id = 0 ): array {
 			continue;
 		}
 
+		// Get duration in days.
+		$duration_in_days = absint( $itinerary_post['post_meta']['duration_in_days'] ?? '' );
+
 		// Validate softrip_package_code.
 		if ( ! array_key_exists( 'softrip_package_code', $itinerary_post['post_meta'] ) ) {
 			continue;
@@ -781,13 +777,14 @@ function get_itineraries( int $expedition_post_id = 0 ): array {
 
 		// Initialize itinerary data.
 		$itinerary_data = [
-			'id'            => $itinerary_post_id,
-			'packageId'     => $softrip_package_code,
-			'name'          => get_raw_text_from_html( $itinerary_post['post']->post_title ),
-			'published'     => 'publish' === $itinerary_post['post']->post_status,
-			'startLocation' => '',
-			'endLocation'   => '',
-			'departures'    => [],
+			'id'             => $itinerary_post_id,
+			'packageId'      => $softrip_package_code,
+			'name'           => get_raw_text_from_html( $itinerary_post['post']->post_title ),
+			'published'      => 'publish' === $itinerary_post['post']->post_status,
+			'durationInDays' => $duration_in_days,
+			'startLocation'  => '',
+			'endLocation'    => '',
+			'departures'     => [],
 		];
 
 		// Get start location from meta.
