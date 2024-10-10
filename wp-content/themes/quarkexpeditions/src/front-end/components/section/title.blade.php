@@ -10,11 +10,10 @@
 	}
 
 	$title_classes = [ 'section__title' ];
-	$tag_name = 'h3';
+	$tag_name      = 'h2';
 
 	if ( ! empty( $heading_level ) ) {
-		$title_classes[] = sprintf( 'h%s', $heading_level );
-		$tag_name = sprintf( 'h%s', $heading_level );;
+		$tag_name = sprintf( 'h%s', $heading_level );
 	}
 
 	if ( ! empty( $align ) && 'left' === $align ) {
