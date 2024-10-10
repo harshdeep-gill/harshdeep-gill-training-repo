@@ -11,7 +11,7 @@ const { subscribe } = zustand.stores.expeditionSearch;
 /**
  * Internal dependencies
  */
-import { addDestination, addMonth, removeDestination, removeMonth } from '../actions';
+import { addDestination, addMonth, clearAllFilters, removeDestination, removeMonth } from '../actions';
 
 /**
  * Class QuarkExpeditionSearchRecentSearches
@@ -111,6 +111,7 @@ export default class QuarkExpeditionSearchRecentSearches extends HTMLElement {
 				// Is this card active?
 				if ( ! isActive ) {
 					//Add the destination
+					clearAllFilters();
 					addDestination( { value: destination.value, label: destination.label, parent: destination.parent } );
 					addMonth( { value: month.value, label: month.label } );
 
