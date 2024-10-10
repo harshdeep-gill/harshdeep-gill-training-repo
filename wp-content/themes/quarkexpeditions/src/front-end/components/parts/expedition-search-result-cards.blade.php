@@ -112,7 +112,7 @@
 
 				<x-expedition-cards.buttons>
 					<x-button href="#" color="black" size="big">View Expedition</x-button>
-					{{-- <x-expedition-cards.cta text="View Cabin Pricing & Options" /> --}}
+					<x-expedition-cards.cta text="View Cabin Pricing & Options" />
 				</x-expedition-cards.buttons>
 			</x-expedition-cards.grid-column>
 		</x-expedition-cards.grid>
