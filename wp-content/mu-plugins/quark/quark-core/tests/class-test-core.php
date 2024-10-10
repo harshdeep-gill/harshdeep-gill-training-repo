@@ -74,6 +74,7 @@ class Test_Core extends WP_UnitTestCase {
 			],
 			'default_currency'     => DEFAULT_CURRENCY,
 			'filters_api_url'      => home_url( 'wp-json/quark-search/v1/filter-options/by-destination-and-month' ),
+			'search_page_url'      => '',
 		];
 
 		// Test front-end data.
@@ -329,38 +330,5 @@ class Test_Core extends WP_UnitTestCase {
 		wp_delete_term( $child_term_2->term_id, 'test_taxonomy' );
 		wp_delete_term( $child_term_3->term_id, 'test_taxonomy' );
 		unregister_taxonomy( 'test_taxonomy' );
-	}
-
-	/**
-	 * Test get_request_a_quote_page_url.
-	 *
-	 * @covers \Quark\Core\get_request_a_quote_page_url()
-	 *
-	 * @return void
-	 */
-	public function test_get_expeditions_search_page_url(): void {
-		// Checkout without any page setting.
-		$this->assertEmpty( get_expeditions_search_page_url() );
-
-		// Create a page.
-		$page_id = $this->factory()->post->create(
-			[
-				'post_type'    => 'page',
-				'post_title'   => 'Expedition Search',
-				'post_content' => 'Expedition Search',
-				'post_status'  => 'publish',
-			]
-		);
-		$this->assertIsInt( $page_id );
-
-		// Get permalink.
-		$permalink = get_permalink( $page_id );
-		$this->assertIsString( $permalink );
-
-		// Set the page setting.
-		update_option( 'options_expedition_search_page', $page_id );
-
-		// Test the function.
-		$this->assertEquals( $permalink, get_expeditions_search_page_url() );
 	}
 }

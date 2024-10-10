@@ -195,9 +195,10 @@ function core_front_end_data( array $data = [] ): array {
 	return array_merge(
 		$data,
 		[
-			'current_url'  => get_permalink(),
-			'header'       => $header_options,
-			'social_links' => $social_options,
+			'current_url'     => get_permalink(),
+			'header'          => $header_options,
+			'social_links'    => $social_options,
+			'search_page_url' => strval( get_permalink( absint( get_option( 'options_expedition_search_page' ) ) ) ),
 		]
 	);
 }
@@ -654,35 +655,6 @@ function get_pagination_links( array $args = [] ): string {
 
 	// All done, return build pagination links.
 	return $pagination_links;
-}
-
-/**
- * Get the URL of the Expeditions Search Page.
- *
- * @return string
- */
-function get_expeditions_search_page_url(): string {
-	// Static variable.
-	static $request_quote_page_permalink = '';
-
-	// Check if we already have the permalink.
-	if ( ! empty( $request_quote_page_permalink ) ) {
-		return $request_quote_page_permalink;
-	}
-
-	// Get Expeditions Search Page ID.
-	$search_page_id = absint( get_option( 'options_expedition_search_page' ) );
-
-	// Check if we have the page ID.
-	if ( empty( $search_page_id ) ) {
-		return '';
-	}
-
-	// Get search page URL.
-	$search_page_url = strval( get_permalink( $search_page_id ) );
-
-	// Return search page URL.
-	return $search_page_url;
 }
 
 /**
