@@ -464,6 +464,17 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'loading' => true,
 				],
 				'quark-dates-rates-filters-inputs-container'       => true,
+				'quark-expedition-search'                          => [
+					'class'   => true,
+					'loading' => true,
+				],
+				'quark-expedition-search-load-more'                => [
+					'class'          => true,
+					'load-more-text' => true,
+				],
+				'quark-expedition-search-filters'                  => [
+					'class' => true,
+				],
 				'quark-expedition-search-sidebar-filters-header'   => [
 					'class' => true,
 				],
@@ -471,6 +482,9 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'class' => true,
 				],
 				'quark-expedition-search-filter-months'            => [
+					'class' => true,
+				],
+				'quark-expedition-search-filter-itinerary-lengths' => [
 					'class' => true,
 				],
 				'quark-expedition-search-filter-ships'             => [
@@ -508,6 +522,14 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 				],
 				'quark-expedition-search-recent-searches'          => [
 					'class' => true,
+				],
+				'quark-expedition-search-sidebar-filters'          => [
+					'class' => true,
+				],
+				'quark-expedition-search-results'                  => [
+					'class'    => true,
+					'parital'  => true,
+					'selector' => true,
 				],
 				'quark-range-slider'                               => [
 					'class'          => true,
