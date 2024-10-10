@@ -6,12 +6,6 @@
 	'filters_data'    => Quark\Theme\Search_Filters\get_filters_for_sidebar_search(),
 ] )
 
-@php
-	echo '<pre>';
-	print_r( $cards['21001'] );
-	echo '</pre>';
-@endphp
-
 <x-expedition-search>
 	{{-- Header --}}
 	<x-expedition-search.header>
