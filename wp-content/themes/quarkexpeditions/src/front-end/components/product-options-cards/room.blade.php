@@ -4,6 +4,7 @@
 	'name'         => '',
 	'checked'      => '',
 	'checkout_url' => '',
+	'mask'         => '',
 ] )
 
 @php
@@ -23,6 +24,7 @@
 	name="{{ $name }}"
 	id="{{ $id }}"
 	checked="{{ $checked }}"
+	mask="{{ $mask }}"
 	value="{!! esc_url( $checkout_url ) !!}"
 >
 	{!! $slot !!}
