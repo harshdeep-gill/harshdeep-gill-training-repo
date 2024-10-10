@@ -9,6 +9,16 @@
 	overflow: hidden;
 	background: none;
 	border: none;
+	transition: translate 0.7s ease-out, overlay 0.7s ease-out, display 0.7s ease-out allow-discrete;
+  	translate: 0 100vh;
+
+	&[open] {
+		translate: 0 0;
+
+		@starting-style {
+			translate: 0 100vh;
+		}
+	}
 
 	@media screen and (max-width: calc(grid-size(sm) - 1px)) {
 		padding-inline: 0;
@@ -18,26 +28,6 @@
 		screen and (max-height: calc(grid-size(md) - 1px) ) {
 		padding-bottom: 0;
 		align-items: flex-end;
-	}
-
-	&--open {
-
-		@include fade-in;
-
-		#{$self}__content {
-
-			@include slide-up;
-		}
-	}
-
-	&--close {
-
-		@include fade-out;
-
-		#{$self}__content {
-
-			@include slide-down;
-		}
 	}
 
 	&__content {

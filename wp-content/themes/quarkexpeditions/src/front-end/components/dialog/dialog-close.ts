@@ -53,14 +53,5 @@ export class QuarkDialogCloseElement extends HTMLElement {
 
         // Remove scroll from body.
         document.querySelector( 'body' )?.classList?.remove( 'prevent-scroll' );
-
-		// Remove and add classes for slide out animation.
-		dialog?.classList.add( 'dialog--close' );
-		dialog?.addEventListener( 'animationend',
-			() => {
-                dialog?.classList.remove( 'dialog--close' )
-            },
-			{ once: true }
-		);
 	}
 }

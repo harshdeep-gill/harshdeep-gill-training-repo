@@ -56,14 +56,5 @@ export class QuarkDialogOpenElement extends HTMLElement {
 
 		// Add scroll from body.
 		document.querySelector( 'body' )?.classList?.add( 'prevent-scroll' );
-
-		// Add animation.
-		dialog?.classList.add( 'dialog--open' );
-		dialog?.addEventListener( 'animationend',
-			() => {
-				dialog?.classList.remove( 'dialog--open' )
-			},
-			{ once: true }
-		);
 	}
 }
