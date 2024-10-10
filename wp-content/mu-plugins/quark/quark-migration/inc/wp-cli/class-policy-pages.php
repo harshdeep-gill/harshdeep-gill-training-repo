@@ -164,7 +164,6 @@ class Policy_Pages {
 		$created_at   = gmdate( 'Y-m-d H:i:s' );
 		$modified_at  = gmdate( 'Y-m-d H:i:s' );
 		$status       = 'draft';
-		$post_content = '';
 		$post_excerpt = '';
 		$post_name    = '';
 
@@ -267,6 +266,11 @@ class Policy_Pages {
 					);
 				}
 			}
+		}
+
+		// Set fallback as excerpt if meta description is empty.
+		if ( empty( $data['meta_input']['_yoast_wpseo_metadesc'] ) ) {
+			$data['meta_input']['_yoast_wpseo_metadesc'] = $data['post_excerpt'];
 		}
 
 		// Set alternate title as ACF field.
