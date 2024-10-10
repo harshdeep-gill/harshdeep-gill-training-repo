@@ -77,6 +77,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 		$expedition_details_card_data,
 		[
 			'title'            => '',
+			'sub_title'        => '',
 			'region'           => '',
 			'duration'         => '',
 			'from_price'       => '',

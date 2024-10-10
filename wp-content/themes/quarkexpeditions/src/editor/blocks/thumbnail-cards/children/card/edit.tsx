@@ -90,7 +90,7 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 					) }
 				/>
 				<RichText
-					tagName="h3"
+					tagName="p"
 					className="thumbnail-cards__card-title h5 thumbnail-cards__card-title--align-bottom"
 					placeholder={ __( 'Title here…', 'qrk' ) }
 					value={ attributes.title }

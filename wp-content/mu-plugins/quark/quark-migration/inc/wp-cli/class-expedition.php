@@ -291,6 +291,11 @@ class Expedition {
 			}
 		}
 
+		// Set fallback as excerpt if meta description is empty.
+		if ( empty( $data['meta_input']['_yoast_wpseo_metadesc'] ) ) {
+			$data['meta_input']['_yoast_wpseo_metadesc'] = $data['post_excerpt'];
+		}
+
 		// Set adv_options_included.
 		if ( ! empty( $item['adv_options_included'] ) && is_string( $item['adv_options_included'] ) ) {
 			$adv_options_included_ids = explode( ',', $item['adv_options_included'] );
@@ -1243,6 +1248,7 @@ class Expedition {
 		$post_content  = $this->get_hero_block_content( $nid );
 		$post_content .= $this->get_secondary_nav_content();
 		$post_content .= $this->get_overview_content( $nid );
+		$post_content .= $this->get_itinerary_content();
 		$post_content .= $this->get_life_onboard_block();
 		$post_content .= $this->get_media_accordion_block();
 		$post_content .= $this->get_whats_included_block();

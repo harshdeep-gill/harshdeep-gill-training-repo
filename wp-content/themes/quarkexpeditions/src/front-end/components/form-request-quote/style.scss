@@ -163,4 +163,20 @@
 		margin-top: var(--spacing-4);
 		text-align: center;
 	}
+
+	&__contact-method {
+
+		.form-field-group__group {
+			display: flex;
+			grid-column-gap: var(--spacing-5);
+		}
+
+		.radio-container {
+			min-width: 110px;
+
+			@media screen and (min-width: grid-size(lg)) {
+				min-width: 160px;
+			}
+		}
+	}
 }

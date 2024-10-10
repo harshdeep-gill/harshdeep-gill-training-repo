@@ -18,6 +18,7 @@ use const Quark\PolicyPages\POST_TYPE as POLICY_PAGES_POST_TYPE;
 use const Quark\StaffMembers\SEASON_TAXONOMY;
 use const Quark\Ships\POST_TYPE as SHIPS_POST_TYPE;
 use const Quark\ItineraryDays\POST_TYPE as ITINERARY_DAYS_POST_TYPE;
+use const Quark\Expeditions\POST_TYPE as EXPEDITION_POST_TYPE;
 
 /**
  * Class Test_Itineraries.
@@ -707,8 +708,22 @@ class Test_Itineraries extends Softrip_TestCase {
 			];
 		}
 
-		// Get details tabs data.
+		// Test without expedition id.
 		$details = get_details_tabs_data( $itinerary_posts );
+		$this->assertEmpty( $details );
+
+		// Create expedition post.
+		$expedition_post = $this->factory()->post->create_and_get(
+			[
+				'post_type'   => EXPEDITION_POST_TYPE,
+				'post_title'  => 'Test Expedition',
+				'post_status' => 'publish',
+			]
+		);
+		$this->assertTrue( $expedition_post instanceof WP_Post );
+
+		// Test with expedition id.
+		$details = get_details_tabs_data( $itinerary_posts, $expedition_post->ID );
 
 		// Prepare expected details.
 		$expected_details = [
@@ -720,13 +735,13 @@ class Test_Itineraries extends Softrip_TestCase {
 					'active_tab'  => 'tab-2',
 					'itineraries' => [
 						[
-							'tab_id'             => 'tab-2',
-							'tab_title'          => '11 Days',
-							'tab_subtitle'       => 'From Japan',
-							'tab_content_header' => 'From Japan, 11 days',
-							'duration'           => '11 days',
-							'departing_from'     => 'Japan',
-							'itinerary_days'     => [
+							'tab_id'              => 'tab-2',
+							'tab_title'           => '11 Days',
+							'tab_subtitle'        => 'From Japan',
+							'tab_content_header'  => 'From Japan, 11 days',
+							'duration'            => '11 days',
+							'departing_from'      => 'Japan',
+							'itinerary_days'      => [
 								[
 									'title'   => 'Day 1: A',
 									'content' => 'Day One content',
@@ -740,10 +755,11 @@ class Test_Itineraries extends Softrip_TestCase {
 									'content' => 'Day Three content',
 								],
 							],
-							'map'                => 0,
-							'price'              => '',
-							'brochure'           => '',
-							'ships'              => [],
+							'map'                 => 0,
+							'price'               => '',
+							'brochure'            => '',
+							'ships'               => [],
+							'request_a_quote_url' => '',
 						],
 					],
 				],
@@ -753,13 +769,13 @@ class Test_Itineraries extends Softrip_TestCase {
 					'active_tab'  => 'tab-1',
 					'itineraries' => [
 						[
-							'tab_id'             => 'tab-1',
-							'tab_title'          => '10 Days',
-							'tab_subtitle'       => 'From India',
-							'tab_content_header' => 'From India, 10 days, on ' . $expected_ship_oex[0]['name'],
-							'duration'           => '10 days',
-							'departing_from'     => $departure_location_india->name,
-							'itinerary_days'     => [
+							'tab_id'              => 'tab-1',
+							'tab_title'           => '10 Days',
+							'tab_subtitle'        => 'From India',
+							'tab_content_header'  => 'From India, 10 days, on ' . $expected_ship_oex[0]['name'],
+							'duration'            => '10 days',
+							'departing_from'      => $departure_location_india->name,
+							'itinerary_days'      => [
 								[
 									'title'   => 'Day 1: A',
 									'content' => 'Day One content',
@@ -773,19 +789,20 @@ class Test_Itineraries extends Softrip_TestCase {
 									'content' => 'Day Three content',
 								],
 							],
-							'map'                => 0,
-							'price'              => '$34,895 USD per person',
-							'brochure'           => '',
-							'ships'              => $expected_ship_oex,
+							'map'                 => 0,
+							'price'               => '$34,895 USD per person',
+							'brochure'            => '',
+							'ships'               => $expected_ship_oex,
+							'request_a_quote_url' => '',
 						],
 						[
-							'tab_id'             => 'tab-3',
-							'tab_title'          => '12 Days',
-							'tab_subtitle'       => 'From India',
-							'tab_content_header' => 'From India, 12 days, on ' . $expected_ship_ult[0]['name'],
-							'duration'           => '12 days',
-							'departing_from'     => 'India',
-							'itinerary_days'     => [
+							'tab_id'              => 'tab-3',
+							'tab_title'           => '12 Days',
+							'tab_subtitle'        => 'From India',
+							'tab_content_header'  => 'From India, 12 days, on ' . $expected_ship_ult[0]['name'],
+							'duration'            => '12 days',
+							'departing_from'      => 'India',
+							'itinerary_days'      => [
 								[
 									'title'   => 'Day 1: A',
 									'content' => 'Day One content',
@@ -799,10 +816,11 @@ class Test_Itineraries extends Softrip_TestCase {
 									'content' => 'Day Three content',
 								],
 							],
-							'map'                => 0,
-							'price'              => '$34,600 USD per person',
-							'brochure'           => '',
-							'ships'              => $expected_ship_ult,
+							'map'                 => 0,
+							'price'               => '$34,600 USD per person',
+							'brochure'            => '',
+							'ships'               => $expected_ship_ult,
+							'request_a_quote_url' => '',
 						],
 					],
 				],

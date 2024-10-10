@@ -11,6 +11,22 @@ use function Quark\Softrip\create_custom_db_tables;
 use function Quark\Softrip\get_custom_db_table_mapping;
 
 /**
+ * Setup Softrip integration.
+ *
+ * @return void
+ */
+function setup_softrip_integration(): void {
+	// Define constants.
+	if ( function_exists( 'getenv' ) ) {
+		define( 'QUARK_SOFTRIP_ADAPTER_BASE_URL', getenv( 'QUARK_SOFTRIP_ADAPTER_BASE_URL' ) );
+		define( 'QUARK_SOFTRIP_ADAPTER_API_KEY', getenv( 'QUARK_SOFTRIP_ADAPTER_API_KEY' ) );
+	}
+
+	// Setup DB tables.
+	setup_softrip_db_tables();
+}
+
+/**
  * Setup Softrip DB.
  *
  * @return void
@@ -48,6 +64,13 @@ function setup_softrip_db_tables(): void {
  * }
  */
 function mock_softrip_http_request( array|false $response = [], array $parsed_args = [], string $url = null ): false|array {
+	// Check if the softrip constants are set.
+	if ( ! defined( 'QUARK_SOFTRIP_ADAPTER_BASE_URL' ) || empty( QUARK_SOFTRIP_ADAPTER_BASE_URL ) ||
+		! defined( 'QUARK_SOFTRIP_ADAPTER_API_KEY' ) || empty( QUARK_SOFTRIP_ADAPTER_API_KEY )
+	) {
+		return $response;
+	}
+
 	// Check if the URL is the one we want to mock.
 	if ( str_contains( $url, 'https://softrip-adapter.dev/' ) ) {
 		if ( 'https://softrip-adapter.dev/' === $url ) {

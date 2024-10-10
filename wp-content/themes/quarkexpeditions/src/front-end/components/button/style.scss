@@ -5,7 +5,7 @@ Buttons
 @import "../../scss";
 
 .btn {
-
+	$self: &;
 	text-align: center;
 	white-space: nowrap;
 
@@ -20,5 +20,12 @@ Buttons
 	&__icon-spinner {
 
 		@include spin;
+	}
+
+	&--color-white:hover {
+
+		#{$self}__icon > svg > path {
+			fill: var(--color-white);
+		}
 	}
 }

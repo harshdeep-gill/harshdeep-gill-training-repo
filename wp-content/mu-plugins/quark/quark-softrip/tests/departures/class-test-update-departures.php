@@ -58,9 +58,10 @@ class Test_Update_Departures extends Softrip_TestCase {
 						'departureId' => 'PQO-892:2027-08-26',
 						'occupancies' => [
 							[
-								'id'   => 'OCC-1',
-								'name' => 'Single',
-								'mask' => 'A',
+								'id'             => 'OCC-1',
+								'name'           => 'Single',
+								'mask'           => 'A',
+								'saleStatusCode' => 'O',
 							],
 						],
 					],
@@ -83,9 +84,10 @@ class Test_Update_Departures extends Softrip_TestCase {
 						'departureId' => 'PQO-892:2027-09-05',
 						'occupancies' => [
 							[
-								'id'   => 'OCC-2',
-								'name' => 'Single',
-								'mask' => 'A',
+								'id'             => 'OCC-2',
+								'name'           => 'Single',
+								'mask'           => 'A',
+								'saleStatusCode' => 'O',
 							],
 						],
 					],

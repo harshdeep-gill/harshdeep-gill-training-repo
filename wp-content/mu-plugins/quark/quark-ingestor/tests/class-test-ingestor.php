@@ -314,6 +314,8 @@ class Test_Ingestor extends Softrip_TestCase {
 
 		// Verify push success data.
 		$this->assertNotEmpty( $this->push_success_data );
+
+		// Assert.
 		$this->assertEquals(
 			$expected_push_success_data,
 			$this->push_success_data
@@ -499,9 +501,22 @@ class Test_Ingestor extends Softrip_TestCase {
 
 		// Verify push success data.
 		$this->assertNotEmpty( $this->push_success_data );
+
+		// Unset file_name from success data.
+		$actual_push_success_data = $this->push_success_data;
+
+		// Loop through success data.
+		foreach ( $actual_push_success_data as $key => $data ) {
+			// Unset file_name from success data.
+			if ( is_array( $actual_push_success_data[ $key ] ) && ! empty( $actual_push_success_data[ $key ]['file_name'] ) ) {
+				unset( $actual_push_success_data[ $key ]['file_name'] );
+			}
+		}
+
+		// Verify push success data.
 		$this->assertEquals(
 			$expected_push_success_data,
-			$this->push_success_data
+			$actual_push_success_data
 		);
 
 		// Reset all data.
@@ -553,10 +568,21 @@ class Test_Ingestor extends Softrip_TestCase {
 			];
 		}
 
+		// Unset file_name from success data.
+		$actual_push_success_data = $this->push_success_data;
+
+		// Loop through success data.
+		foreach ( $actual_push_success_data as $key => $data ) {
+			// Unset file_name from success data.
+			if ( is_array( $actual_push_success_data[ $key ] ) && ! empty( $actual_push_success_data[ $key ]['file_name'] ) ) {
+				unset( $actual_push_success_data[ $key ]['file_name'] );
+			}
+		}
+
 		// Verify push success data.
 		$this->assertEquals(
 			$expected_push_success_data,
-			$this->push_success_data
+			$actual_push_success_data
 		);
 
 		// Prepare expected push completed data.
@@ -871,9 +897,8 @@ class Test_Ingestor extends Softrip_TestCase {
 		// Test with valid expedition data.
 		$actual = push_expedition_data( 123, $expedition_data_json );
 		$this->assertTrue( $actual );
-		$this->assertSame( 'PUT', $this->push_method );
+		$this->assertSame( 'POST', $this->push_method );
 		$this->assertStringContainsString( QUARK_INGESTOR_BASE_URL, $this->push_url );
-		$this->assertMatchesRegularExpression( '/\/.*_123.json$/', $this->push_url );
 
 		// Test with invalid expedition data.
 		$actual = push_expedition_data( 123, 'invalid-json' );
@@ -881,7 +906,6 @@ class Test_Ingestor extends Softrip_TestCase {
 		$this->assertSame( 'qrk_ingestor_invalid_response', $actual->get_error_code() );
 		$this->assertSame( 'Bad Request', $actual->get_error_message() );
 		$this->assertStringContainsString( QUARK_INGESTOR_BASE_URL, $this->push_url );
-		$this->assertMatchesRegularExpression( '/\/.*_123.json$/', $this->push_url );
 
 		// Remove filter.
 		remove_filter( 'pre_http_request', [ $this, 'mock_ingestor_http_request' ], 10 );
@@ -909,6 +933,13 @@ class Test_Ingestor extends Softrip_TestCase {
 			return $response;
 		}
 
+		// Bail if base URL is not defined.
+		if ( ! defined( 'QUARK_INGESTOR_BASE_URL' ) || empty( QUARK_INGESTOR_BASE_URL )
+		|| ! defined( 'QUARK_INGESTOR_API_KEY' ) || empty( QUARK_INGESTOR_API_KEY )
+		) {
+			return $response;
+		}
+
 		// Check if the URL is the one we want to mock.
 		if ( ! str_contains( $url, QUARK_INGESTOR_BASE_URL ) ) {
 			return $response;
@@ -919,7 +950,7 @@ class Test_Ingestor extends Softrip_TestCase {
 		$this->push_method = strval( $parsed_args['method'] );
 
 		// Check if the request is a PUT request.
-		if ( 'PUT' !== $parsed_args['method'] ) {
+		if ( 'POST' !== $parsed_args['method'] ) {
 			return [
 				'response' => [
 					'code'    => 405,
@@ -1105,13 +1136,14 @@ class Test_Ingestor extends Softrip_TestCase {
 				'destinations' => [],
 				'itineraries'  => [
 					[
-						'id'            => $itinerary_post_id,
-						'packageId'     => 'UNQ-123',
-						'name'          => get_raw_text_from_html( get_the_title( $itinerary_post_id ) ),
-						'published'     => true,
-						'startLocation' => '',
-						'endLocation'   => '',
-						'departures'    => [],
+						'id'             => $itinerary_post_id,
+						'packageId'      => 'UNQ-123',
+						'name'           => get_raw_text_from_html( get_the_title( $itinerary_post_id ) ),
+						'published'      => true,
+						'startLocation'  => '',
+						'endLocation'    => '',
+						'departures'     => [],
+						'durationInDays' => 0,
 					],
 				],
 			];
@@ -1290,6 +1322,9 @@ class Test_Ingestor extends Softrip_TestCase {
 		// Add softrip code to the itinerary post.
 		update_post_meta( $itinerary_post_id1, 'softrip_package_code', 'UNQ-123' );
 
+		// Add duration in days.
+		update_post_meta( $itinerary_post_id1, 'duration_in_days', 7 );
+
 		// Flush the cache.
 		wp_cache_flush();
 
@@ -1297,13 +1332,14 @@ class Test_Ingestor extends Softrip_TestCase {
 		$actual   = get_itineraries( $expedition_post_id );
 		$expected = [
 			[
-				'id'            => $itinerary_post_id1,
-				'packageId'     => 'UNQ-123',
-				'name'          => get_raw_text_from_html( get_the_title( $itinerary_post_id1 ) ),
-				'published'     => true,
-				'startLocation' => '',
-				'endLocation'   => '',
-				'departures'    => [],
+				'id'             => $itinerary_post_id1,
+				'packageId'      => 'UNQ-123',
+				'name'           => get_raw_text_from_html( get_the_title( $itinerary_post_id1 ) ),
+				'published'      => true,
+				'startLocation'  => '',
+				'endLocation'    => '',
+				'departures'     => [],
+				'durationInDays' => 7,
 			],
 		];
 		$this->assertEquals( $expected, $actual );
@@ -1335,13 +1371,14 @@ class Test_Ingestor extends Softrip_TestCase {
 		$actual   = get_itineraries( $expedition_post_id );
 		$expected = [
 			[
-				'id'            => $itinerary_post_id1,
-				'packageId'     => 'UNQ-123',
-				'name'          => get_raw_text_from_html( get_the_title( $itinerary_post_id1 ) ),
-				'published'     => true,
-				'startLocation' => $start_location_term_name,
-				'endLocation'   => $end_location_term_name,
-				'departures'    => [],
+				'id'             => $itinerary_post_id1,
+				'packageId'      => 'UNQ-123',
+				'name'           => get_raw_text_from_html( get_the_title( $itinerary_post_id1 ) ),
+				'published'      => true,
+				'startLocation'  => $start_location_term_name,
+				'endLocation'    => $end_location_term_name,
+				'departures'     => [],
+				'durationInDays' => 7,
 			],
 		];
 		$this->assertEquals( $expected, $actual );
@@ -1367,22 +1404,24 @@ class Test_Ingestor extends Softrip_TestCase {
 		$actual   = get_itineraries( $expedition_post_id );
 		$expected = [
 			[
-				'id'            => $itinerary_post_id1,
-				'packageId'     => 'UNQ-123',
-				'name'          => get_raw_text_from_html( get_the_title( $itinerary_post_id1 ) ),
-				'published'     => true,
-				'startLocation' => $start_location_term_name,
-				'endLocation'   => $end_location_term_name,
-				'departures'    => [],
+				'id'             => $itinerary_post_id1,
+				'packageId'      => 'UNQ-123',
+				'name'           => get_raw_text_from_html( get_the_title( $itinerary_post_id1 ) ),
+				'published'      => true,
+				'startLocation'  => $start_location_term_name,
+				'endLocation'    => $end_location_term_name,
+				'departures'     => [],
+				'durationInDays' => 7,
 			],
 			[
-				'id'            => $itinerary_post_id2,
-				'packageId'     => 'UNQ-456',
-				'name'          => get_raw_text_from_html( get_the_title( $itinerary_post_id2 ) ),
-				'published'     => true,
-				'startLocation' => '',
-				'endLocation'   => '',
-				'departures'    => [],
+				'id'             => $itinerary_post_id2,
+				'packageId'      => 'UNQ-456',
+				'name'           => get_raw_text_from_html( get_the_title( $itinerary_post_id2 ) ),
+				'published'      => true,
+				'startLocation'  => '',
+				'endLocation'    => '',
+				'departures'     => [],
+				'durationInDays' => 0,
 			],
 		];
 		$this->assertEquals( $expected, $actual );

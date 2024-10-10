@@ -307,7 +307,7 @@ function do_push( array $expedition_post_ids = [], bool $changed_only = true ): 
 					'initiated_via'      => $initiated_via,
 				]
 			);
-		} elseif ( $push_result ) {
+		} elseif ( ! empty( $push_result ) ) {
 				// Update hash if successful.
 				update_post_meta( $expedition_post_id, DATA_HASH_KEY, $new_hash );
 
@@ -385,20 +385,19 @@ function push_expedition_data( int $expedition_post_id = 0, string $json_expedit
 	// Validate credentials.
 	if (
 		! defined( 'QUARK_INGESTOR_BASE_URL' ) ||
-		! defined( 'QUARK_INGESTOR_API_KEY' )
+		! defined( 'QUARK_INGESTOR_API_KEY' ) ||
+		empty( QUARK_INGESTOR_BASE_URL ) ||
+		empty( QUARK_INGESTOR_API_KEY )
 	) {
 		return new WP_Error( 'qrk_ingestor_no_auth', __( 'Ingestor credentials missing', 'qrk' ) );
 	}
 
-	// Generate UUID.
-	$uuid = wp_generate_uuid4();
-
 	// Construct URL.
-	$url = trailingslashit( QUARK_INGESTOR_BASE_URL ) . $uuid . '_' . $expedition_post_id . '.json';
+	$url = trailingslashit( QUARK_INGESTOR_BASE_URL );
 
 	// Set request args.
 	$args = [
-		'method'  => 'PUT',
+		'method'  => 'POST',
 		'timeout' => 20,
 		'headers' => [
 			'x-api-key'    => QUARK_INGESTOR_API_KEY,
@@ -420,7 +419,7 @@ function push_expedition_data( int $expedition_post_id = 0, string $json_expedit
 		return new WP_Error( 'qrk_ingestor_invalid_response', wp_remote_retrieve_response_message( $request ) );
 	}
 
-	// Return success.
+	// Return url.
 	return true;
 }
 
@@ -688,7 +687,7 @@ function get_destination_terms( int $expedition_post_id = 0 ): array {
 
 		// Add region.
 		$regions[] = [
-			'id'     => $destination_term['term_id'],
+			'id'     => absint( $destination_term['term_id'] ),
 			'name'   => $destination_term['name'],
 			'region' => [
 				'name' => $parent_term['name'],
@@ -760,6 +759,9 @@ function get_itineraries( int $expedition_post_id = 0 ): array {
 			continue;
 		}
 
+		// Get duration in days.
+		$duration_in_days = absint( $itinerary_post['post_meta']['duration_in_days'] ?? '' );
+
 		// Validate softrip_package_code.
 		if ( ! array_key_exists( 'softrip_package_code', $itinerary_post['post_meta'] ) ) {
 			continue;
@@ -775,13 +777,14 @@ function get_itineraries( int $expedition_post_id = 0 ): array {
 
 		// Initialize itinerary data.
 		$itinerary_data = [
-			'id'            => $itinerary_post_id,
-			'packageId'     => $softrip_package_code,
-			'name'          => get_raw_text_from_html( $itinerary_post['post']->post_title ),
-			'published'     => 'publish' === $itinerary_post['post']->post_status,
-			'startLocation' => '',
-			'endLocation'   => '',
-			'departures'    => [],
+			'id'             => $itinerary_post_id,
+			'packageId'      => $softrip_package_code,
+			'name'           => get_raw_text_from_html( $itinerary_post['post']->post_title ),
+			'published'      => 'publish' === $itinerary_post['post']->post_status,
+			'durationInDays' => $duration_in_days,
+			'startLocation'  => '',
+			'endLocation'    => '',
+			'departures'     => [],
 		];
 
 		// Get start location from meta.

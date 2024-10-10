@@ -85,6 +85,14 @@ import * as pressReleases from './press-releases';
 import * as tabs from './tabs';
 import * as detailedExpeditionCarousel from './detailed-expedition-carousel';
 import * as form from './form';
+import * as formContactUs from './form-contact-us';
+import * as formDoNotSellInformation from './form-do-not-sell-information';
+import * as formSnowHillNewsletter from './form-snow-hill-newsletter';
+import * as formJobApplication from './form-job-application';
+import * as formNewsletter from './form-newsletter';
+import * as formAccessDeletionRequest from './form-account-management';
+import * as formCommunicationsOptIn from './form-communications-opt-in';
+import * as formRequestAQuote from './form-request-quote';
 
 /**
  * Add blocks.
@@ -166,6 +174,14 @@ const blocks = [
 	tabs,
 	detailedExpeditionCarousel,
 	form,
+	formContactUs,
+	formDoNotSellInformation,
+	formSnowHillNewsletter,
+	formJobApplication,
+	formNewsletter,
+	formAccessDeletionRequest,
+	formCommunicationsOptIn,
+	formRequestAQuote,
 ];
 
 // Register blocks for ships.

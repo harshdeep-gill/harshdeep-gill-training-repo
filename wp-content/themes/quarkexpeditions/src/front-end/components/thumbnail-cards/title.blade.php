@@ -15,6 +15,6 @@
 	}
 @endphp
 
-<h3 @class($classes)>
+<p @class($classes)>
 	<x-escape :content="$title"/>
-</h3>
+</p>

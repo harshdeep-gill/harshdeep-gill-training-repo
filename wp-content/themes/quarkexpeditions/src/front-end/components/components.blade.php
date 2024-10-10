@@ -292,6 +292,36 @@
 	</x-section>
 </x-component-demo>
 
+<x-component-demo :keys="[ 'section-image' ]">
+	<x-section :full_width="true">
+		<x-section.image :image_id="26" gradient_color="white" gradient_position="both" />
+		<x-review-cards>
+			<x-review-cards.card>
+				<x-review-cards.rating rating="4" />
+				<x-review-cards.title title="Falkland, South Georgia and the Antarctic Circle" />
+				<x-review-cards.content>
+					<p>
+						Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever. Most exciting and wonderful, and educational experience of my life, thank you to all the experts for sharing so much information on the animals and arctic region, cruise staff and fellow passengers for making this trip one I will remember forever.
+					</p>
+				</x-review-cards.content>
+				<x-review-cards.author name="Denise P." />
+				<x-review-cards.author-details text="South Georgia and Antarctic Peninsula: Penguin Safari South Georgia and Antarctic Peninsula: Penguin Safari" />
+			</x-review-cards.card>
+			<x-review-cards.card>
+				<x-review-cards.rating rating="4" />
+				<x-review-cards.title title="Antartica with quark – experience of a lifetime" />
+				<x-review-cards.content>
+					<p>
+						In a phrase, going to Antartica with Quark was “simply amazing”. Antartica is gorgeous and the team at Quark made it possible for us to enjoy every bit of it with their impeccable planning and attention to every detail.
+					</p>
+				</x-review-cards.content>
+				<x-review-cards.author name="Madhuchanda D." />
+				<x-review-cards.author-details text="Antarctic Express: Crossing the Circle" />
+			</x-review-cards.card>
+		</x-review-cards>
+	</x-section>
+</x-component-demo>
+
 <x-component-demo :keys="[ 'hero', 'hero-refactor', 'hero-circle-badge' ]">
 	<x-hero text_align="center" immersive="none">
 		<x-hero.image image_id="26" />
@@ -4959,7 +4989,7 @@
 			<x-departure-cards.more-details>
 				<h4>Cabins Options</h4>
 				<x-product-options-cards>
-					<x-product-options-cards.cards>
+					<x-product-options-cards.cards request_a_quote_url="https://example.com">
 						<x-product-options-cards.card status="A">
 							<x-product-options-cards.gallery :image_ids="[ 32, 34, 36]">
 								<x-product-options-cards.badge status="A" type="standard" />
@@ -5260,7 +5290,7 @@
 			<x-departure-cards.more-details>
 				<h4>Cabins Options</h4>
 				<x-product-options-cards>
-					<x-product-options-cards.cards>
+					<x-product-options-cards.cards request_a_quote_url="/request-a-quote">
 						<x-product-options-cards.card>
 							<x-product-options-cards.gallery :image_ids="[ 32, 34, 36]">
 								<x-product-options-cards.badge type="standard" />
@@ -5555,7 +5585,7 @@
 			<x-departure-cards.more-details>
 				<h4>Cabins Options</h4>
 				<x-product-options-cards>
-					<x-product-options-cards.cards>
+					<x-product-options-cards.cards request_a_quote_url="/request-a-quote">
 						<x-product-options-cards.card>
 							<x-product-options-cards.gallery :image_ids="[ 32, 34, 36]">
 								<x-product-options-cards.badge type="standard" />
@@ -5887,7 +5917,7 @@
 			<x-expedition-cards.more-details>
 				<h4>Cabins Options</h4>
 				<x-product-options-cards>
-					<x-product-options-cards.cards>
+					<x-product-options-cards.cards request_a_quote_url="/request-a-quote">
 						<x-product-options-cards.card>
 							<x-product-options-cards.gallery :image_ids="[ 32, 34, 36]">
 								<x-product-options-cards.badge type="standard" />
@@ -6247,7 +6277,7 @@
 					<x-expedition-cards.more-details>
 						<h4>Cabins Options</h4>
 						<x-product-options-cards>
-							<x-product-options-cards.cards>
+							<x-product-options-cards.cards request_a_quote_url="/request-a-quote">
 								<x-product-options-cards.card>
 									<x-product-options-cards.gallery :image_ids="[ 32, 34, 36]">
 										<x-product-options-cards.badge type="standard" />
@@ -6643,7 +6673,7 @@
 	<x-section>
 		<h4 style="margin-bottom: var(--spacing-6);">Cabins Options</h4>
 		<x-product-options-cards>
-			<x-product-options-cards.cards>
+			<x-product-options-cards.cards request_a_quote_url="/request-a-quote">
 				<x-product-options-cards.card status="A" details_id="some-random-id" status="A" >
 					<x-product-options-cards.gallery :image_ids="[ 32, 34, 36]">
 						<x-product-options-cards.badge type="standard" status="A" />
@@ -7135,6 +7165,18 @@
 	</x-section>
 </x-component-demo>
 
+<x-component-demo :keys="[ 'form-do-not-sell' ]">
+	<x-section>
+		<x-form-do-not-sell />
+	</x-section>
+</x-component-demo>
+
+<x-component-demo :keys="[ 'form-account-management' ]">
+	<x-section>
+		<x-form-account-management />
+	</x-section>
+</x-component-demo>
+
 <x-component-demo :keys="[ 'mini-cards-list' ]">
 	<x-mini-cards-list>
 		<x-mini-cards-list.card>
@@ -7161,8 +7203,29 @@
 	</x-mini-cards-list>
 </x-component-demo>
 
+<x-component-demo :keys="[ 'expedition-search' ]">
+	<x-parts.expedition-search />
+</x-component-demo>
+
+<x-component-demo :keys="[ 'search-filters-bar' ]">
+	<x-section>
+		<x-parts.search-filters-bar />
+	</x-section>
+
+	<x-section>
+		<x-parts.search-filters-bar />
+	</x-section>
+</x-component-demo>
+
 <x-component-demo :keys="[ 'form-newsletter' ]">
 	<x-form-newsletter
+		:countries="$countries"
+		:states="$states"
+	/>
+</x-component-demo>
+
+<x-component-demo :keys="[ 'form-communications-opt-in' ]">
+	<x-form-communications-opt-in
 		:countries="$countries"
 		:states="$states"
 	/>

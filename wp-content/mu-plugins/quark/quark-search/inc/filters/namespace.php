@@ -213,6 +213,14 @@ function get_region_season_filter_options( array $region_season_facet = [] ): ar
 		];
 	}
 
+	// Sort alphabetically by label.
+	uasort(
+		$filter_data,
+		function ( $a, $b ) {
+			return strcasecmp( $a['label'], $b['label'] );
+		}
+	);
+
 	// Return filter data.
 	return array_values( $filter_data );
 }
@@ -271,6 +279,14 @@ function get_expedition_filter_options( array $expedition_facet = [] ): array {
 			'count' => $count,
 		];
 	}
+
+	// Sort alphabetically by label.
+	uasort(
+		$filter_data,
+		function ( $a, $b ) {
+			return strcasecmp( $a['label'], $b['label'] );
+		}
+	);
 
 	// Return filter data.
 	return array_values( $filter_data );
@@ -331,6 +347,14 @@ function get_ship_filter_options( array $ship_facet = [] ): array {
 		];
 	}
 
+	// Sort alphabetically by label.
+	uasort(
+		$filter_data,
+		function ( $a, $b ) {
+			return strcasecmp( $a['label'], $b['label'] );
+		}
+	);
+
 	// Return filter data.
 	return array_values( $filter_data );
 }
@@ -386,6 +410,14 @@ function get_adventure_options_filter_options( array $adventure_options_facet = 
 			'count' => $count,
 		];
 	}
+
+	// Sort alphabetically by label.
+	uasort(
+		$filter_data,
+		function ( $a, $b ) {
+			return strcasecmp( $a['label'], $b['label'] );
+		}
+	);
 
 	// Return filter data.
 	return array_values( $filter_data );
@@ -1035,6 +1067,45 @@ function get_destination_and_month_filter_options( int $destination_term_id = 0,
 		$selected_filters[ DESTINATION_FILTER_KEY ] = [ $destination_term_id ];
 	} elseif ( ! empty( $month ) ) {
 		$selected_filters[ MONTH_FILTER_KEY ] = [ $month ];
+	}
+
+	// Get filter options.
+	$filter_options = build_filter_options( $filter_keys, $selected_filters );
+
+	// Return filter options.
+	return $filter_options;
+}
+
+/**
+ * Get month options by expedition.
+ *
+ * @param int $expedition_id Expedition ID.
+ *
+ * @return array<string, array<int, array{
+ *    label: string,
+ *    value: string|int,
+ *    count?:int,
+ *    children?: array<int, array{
+ *       label: string,
+ *       value:int|string,
+ *       count?:int,
+ *       parent_id: int|string
+ *     }>
+ * }>>
+ */
+function get_expeditions_and_month_options_by_expedition( int $expedition_id = 0 ): array {
+	// Filter keys.
+	$filter_keys = [
+		EXPEDITION_FILTER_KEY,
+		MONTH_FILTER_KEY,
+	];
+
+	// Initialize selected filters.
+	$selected_filters = [];
+
+	// Check if expedition ID is empty.
+	if ( $expedition_id ) {
+		$selected_filters[ EXPEDITION_FILTER_KEY ] = [ $expedition_id ];
 	}
 
 	// Get filter options.

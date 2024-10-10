@@ -8,6 +8,19 @@
 namespace Quark\Tests\Ingestor;
 
 /**
+ * Setup Ingestor integration.
+ *
+ * @return void
+ */
+function setup_ingestor_integration(): void {
+	// Define constants.
+	if ( function_exists( 'getenv' ) ) {
+		define( 'QUARK_INGESTOR_BASE_URL', getenv( 'QUARK_INGESTOR_BASE_URL' ) );
+		define( 'QUARK_INGESTOR_API_KEY', getenv( 'QUARK_INGESTOR_API_KEY' ) );
+	}
+}
+
+/**
  * Mock the HTTP request.
  *
  * @param mixed[]|false $response    The response.
@@ -30,7 +43,7 @@ function mock_ingestor_http_request( array|false $response = [], array $parsed_a
 	}
 
 	// Check if the request is a PUT request.
-	if ( 'PUT' !== $parsed_args['method'] ) {
+	if ( 'POST' !== $parsed_args['method'] ) {
 		// Return the response if it is not a PUT request.
 		return $response;
 	}

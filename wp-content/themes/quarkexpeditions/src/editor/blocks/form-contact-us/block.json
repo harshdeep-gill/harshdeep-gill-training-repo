@@ -1,0 +1,27 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Form - Contact Us",
+	"name": "quark/form-contact-us",
+	"description": "Add the Contact Us form.",
+	"category": "layout",
+	"keywords": [
+		"contact",
+		"us",
+		"form"
+	],
+	"textdomain": "qrk",
+	"attributes": {
+		"thankYouPage": {
+			"type": "object",
+			"default": null
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

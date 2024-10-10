@@ -10,7 +10,6 @@ namespace Quark\Departures;
 use WP_Post;
 use WP_Term_Query;
 
-use function Quark\CabinCategories\get as get_cabin_category_data;
 use function Quark\CabinCategories\get_cabin_details_by_departure;
 use function Quark\Core\format_price;
 use function Quark\Expeditions\get_region_terms;
@@ -26,16 +25,11 @@ use function Quark\Softrip\Departures\get_end_date;
 use function Quark\Softrip\Departures\get_lowest_price;
 use function Quark\Softrip\Departures\get_related_ship;
 use function Quark\Softrip\Departures\get_start_date;
-use function Quark\Softrip\Occupancies\get_lowest_price_by_cabin_category_and_departure;
-use function Quark\Softrip\Occupancies\get_lowest_price_by_cabin_category_and_departure_and_promotion_code;
-use function Quark\Softrip\Occupancies\get_cabin_category_post_ids_by_departure;
 use function Quark\Softrip\Promotions\get_promotions_by_code;
 use function Quark\Softrip\AdventureOptions\get_adventure_option_by_departure_post_id;
 use function Quark\AdventureOptions\get as get_adventure_option_post_data;
-use function Quark\CabinCategories\get_availability_status_description;
-use function Quark\CabinCategories\get_cabin_availability_status;
-use function Quark\CabinCategories\get_available_cabin_spaces;
-use function Quark\Checkout\get_checkout_url;
+use function Quark\CabinCategories\get_cabin_price_data_by_departure;
+use function Quark\Leads\get_request_a_quote_url;
 use function Quark\Localization\get_currencies;
 
 use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
@@ -580,6 +574,7 @@ function get_promotion_tags( int $post_id = 0 ): array {
  *     languages: string,
  *     paid_adventure_options: string[],
  *     lowest_price: array<string, string>,
+ *     request_a_quote_url: string,
  *     transfer_package_details: array{
  *       title: string,
  *       sets: string[],
@@ -601,6 +596,7 @@ function get_promotion_tags( int $post_id = 0 ): array {
  *        gallery: mixed,
  *        cabin_code: string,
  *        type: string,
+ *        sort_priority: int,
  *        specifications: array{
  *           availability_status: string,
  *           availability_description: string,
@@ -719,6 +715,7 @@ function get_card_data( int $departure_id = 0, string $currency = DEFAULT_CURREN
 		'cabins'                   => get_cabin_details_by_departure( $departure_id, $currency ),
 		'promotion_banner'         => get_discount_label( $lowest_price['original'], $lowest_price['discounted'] ),
 		'promotions'               => get_promotions_description( $departure_id ),
+		'request_a_quote_url'      => get_request_a_quote_url( $departure_id ),
 	];
 
 	// Set cache and return data.
@@ -799,6 +796,7 @@ function get_start_end_departure_date( int $post_id = 0 ): string {
  *      languages: string,
  *      paid_adventure_options: string[],
  *      lowest_price: array<string, string>,
+ *      request_a_quote_url: string,
  *      transfer_package_details: array{
  *        title: string,
  *        sets: array<string>,
@@ -936,6 +934,7 @@ function bust_card_data_cache_on_expedition_update( int $expedition_id = 0 ): vo
  * @param string $currency     Currency.
  *
  * @return array{}|array{
+ *     departure_id: int,
  *     region: string,
  *     ship_title: string,
  *     ship_link: string|false,
@@ -987,6 +986,8 @@ function bust_card_data_cache_on_expedition_update( int $expedition_id = 0 ): vo
  *             checkout_url: string,
  *             brochure_price: string,
  *             promos: array{}|string[],
+ *             type: string,
+ *             sort_priority: int,
  *          }
  *     >,
  * }
@@ -1089,9 +1090,6 @@ function get_dates_rates_card_data( int $departure_id = 0, string $currency = DE
 		];
 	}
 
-	// Check for cabins.
-	$cabin_ids = get_cabin_category_post_ids_by_departure( $departure_id );
-
 	// Available promos.
 	$available_promos = [];
 
@@ -1110,56 +1108,9 @@ function get_dates_rates_card_data( int $departure_id = 0, string $currency = DE
 		}
 	}
 
-	// Prepare the cabin price data.
-	$cabin_price_data = [];
-
-	// Loop through cabin_ids.
-	foreach ( $cabin_ids as $cabin_id ) {
-		// Get cabin category data.
-		$cabin_data = get_cabin_category_data( absint( $cabin_id ) );
-
-		// Check if cabin category data is empty.
-		if ( empty( $cabin_data['post'] ) || ! $cabin_data['post'] instanceof WP_Post ) {
-			continue;
-		}
-
-		// Get cabin code from meta.
-		$cabin_code = strval( $cabin_data['post_meta']['cabin_category_id'] ?? '' );
-
-		// Skip if no cabin code.
-		if ( empty( $cabin_code ) ) {
-			continue;
-		}
-
-		// Get availability status.
-		$cabin_spaces_available   = get_available_cabin_spaces( $departure_id, $cabin_id );
-		$availability_status      = get_cabin_availability_status( $departure_id, $cabin_id );
-		$availability_description = get_availability_status_description( $availability_status );
-
-		// Prepare the cabin data.
-		$cabin_price_data[ $cabin_code ] = [
-			'name'                     => strval( $cabin_data['post_meta']['cabin_name'] ?? '' ),
-			'availability_status'      => $availability_status,
-			'availability_description' => $availability_description,
-			'spaces_available'         => $cabin_spaces_available,
-			'promos'                   => [],
-			'checkout_url'             => get_checkout_url( $departure_id, $cabin_id, $currency ),
-		];
-
-		// Get the lowest price for the cabin.
-		$cabin_price = get_lowest_price_by_cabin_category_and_departure( $cabin_id, $departure_id, $currency );
-
-		// Set the brochure price.
-		$cabin_price_data[ $cabin_code ]['brochure_price'] = format_price( $cabin_price['original'], $currency );
-
-		// Loop through available_promos for each promo.
-		foreach ( $available_promos as $promo_code => $promo_data ) {
-			$cabin_price_data[ $cabin_code ]['promos'][ $promo_code ] = format_price( get_lowest_price_by_cabin_category_and_departure_and_promotion_code( $cabin_id, $departure_id, $promo_code, $currency ), $currency );
-		}
-	}
-
 	// Prepare the departure card details.
 	$data = [
+		'departure_id'               => $departure_id,
 		'region'                     => implode( ', ', $regions ),
 		'ship_title'                 => $ship_name,
 		'ship_link'                  => get_permalink( $ship_id ),
@@ -1174,7 +1125,8 @@ function get_dates_rates_card_data( int $departure_id = 0, string $currency = DE
 		'paid_adventure_options'     => $paid_adventure_options_data,
 		'transfer_package_details'   => get_included_transfer_package_details( $itinerary_id, $currency ),
 		'available_promos'           => $available_promos,
-		'cabin_data'                 => $cabin_price_data,
+		'cabin_data'                 => get_cabin_price_data_by_departure( $departure_id, $currency ),
+		'request_a_quote_url'        => get_request_a_quote_url( $departure_id ),
 	];
 
 	// Set cache and return data.
@@ -1191,6 +1143,7 @@ function get_dates_rates_card_data( int $departure_id = 0, string $currency = DE
  * @param string $currency      The currency.
  *
  * @return array{}|array<int, array{}|array{
+ *     departure_id: int,
  *     region: string,
  *     ship_title: string,
  *     ship_link: string|false,
@@ -1241,6 +1194,8 @@ function get_dates_rates_card_data( int $departure_id = 0, string $currency = DE
  *             spaces_available: int,
  *             brochure_price: string,
  *             promos: array{}|string[],
+ *             type: string,
+ *             sort_priority: int,
  *          }
  *     >,
  * }>

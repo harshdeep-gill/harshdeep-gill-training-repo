@@ -15,6 +15,7 @@ namespace Quark\SEO;
 function bootstrap(): void {
 	// Hooks.
 	add_filter( 'robots_txt', __NAMESPACE__ . '\\custom_robots_txt', 999999 ); // Override Yoast SEO hooked at 99999.
+	add_filter( 'travelopia_seo_structured_data_schema', __NAMESPACE__ . '\\seo_structured_data' );
 
 	// Custom fields.
 	if ( is_admin() ) {
@@ -66,4 +67,134 @@ function custom_robots_txt( string $robots_txt = '' ): string {
 
 	// Return custom robots.txt value.
 	return $robots_txt;
+}
+
+/**
+ * Build structured data for schema.
+ *
+ * @param mixed[] $schema All schema data.
+ *
+ * @return mixed[]
+ */
+function seo_structured_data( array $schema = [] ): array {
+	// Check if this is homepage.
+	if ( ! is_front_page() ) {
+		return $schema;
+	}
+
+	// Get and insert the schema.
+	$schema[] = get_structured_data();
+
+	// Return the schema.
+	return $schema;
+}
+
+/**
+ * Get structured data for schema.
+ *
+ * @return array{
+ *    "@context": string,
+ *    "@graph": array{
+ *        "@type": string,
+ *        additionalType: string,
+ *        "@id": string,
+ *        description: string,
+ *        name: string,
+ *        sameAs: string[],
+ *        url: string,
+ *        telephone: string,
+ *        contactPoint: array{
+ *            "@type": string,
+ *            telephone: string[],
+ *            email: string,
+ *            contactType: string,
+ *            availableLanguage: string[],
+ *            contactOption: string,
+ *            areaServed: array{
+ *                "@type": string,
+ *                address: array{
+ *                    "@type": string,
+ *                    addressCountry: string[],
+ *                },
+ *            },
+ *        }[],
+ *        address: array{
+ *            "@type": string,
+ *            streetAddress: string[],
+ *            addressLocality: string,
+ *            addressRegion: string,
+ *            postalCode: string,
+ *            addressCountry: string,
+ *        },
+ *    }[],
+ * }
+ */
+function get_structured_data(): array {
+	// Get social links.
+	$social_links = [
+		strval( get_option( 'options_facebook_url' ) ),
+		strval( get_option( 'options_twitter_url' ) ),
+		strval( get_option( 'options_instagram_url' ) ),
+		strval( get_option( 'options_pinterest_url' ) ),
+		strval( get_option( 'options_youtube_url' ) ),
+	];
+	$social_links = array_values( array_filter( $social_links ) );
+
+	// Return schema.
+	return [
+		'@context' => 'https://schema.org',
+		'@graph'   => [
+			[
+				'@type'          => 'Organization',
+				'additionalType' => 'Corporation',
+				'@id'            => get_home_url(),
+				'description'    => 'Quark Expeditions is uncompromisingly polar, specializing in expeditions to the Antarctic and the Arctic. We have been the leading provider of polar adventure travel for over 25 years.',
+				'name'           => 'Quark Expeditions',
+				'sameAs'         => $social_links,
+				'url'            => get_home_url(),
+				'telephone'      => '+1-416-504-5900',
+				'contactPoint'   => [
+					[
+						'@type'             => 'ContactPoint',
+						'telephone'         => [
+							'+1-888-979-4073',
+							'+1-802-490-1843',
+						],
+						'email'             => 'explore@quarkexpeditions.com',
+						'contactType'       => 'Sales',
+						'availableLanguage' => [
+							'English',
+							'Spanish',
+							'French',
+							'Chinese/Mandarin',
+						],
+						'contactOption'     => 'TollFree',
+						'areaServed'        => [
+							'@type'   => 'AdministrativeArea',
+							'address' => [
+								'@type'          => 'PostalAddress',
+								'addressCountry' => [
+									'US',
+									'CA',
+									'AU',
+									'GB',
+								],
+							],
+						],
+					],
+				],
+				'address'        => [
+					'@type'           => 'PostalAddress',
+					'streetAddress'   => [
+						'3131 Elliot Avenue',
+						'Suite 250',
+					],
+					'addressLocality' => 'Seattle',
+					'addressRegion'   => 'WA',
+					'postalCode'      => '98121',
+					'addressCountry'  => 'US',
+				],
+			],
+		],
+	];
 }

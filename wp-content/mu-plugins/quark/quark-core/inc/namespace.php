@@ -55,6 +55,9 @@ function bootstrap(): void {
 	add_filter( 'add_attachment', __NAMESPACE__ . '\\update_svg_content', 10, 4 );
 	add_filter( 'upload_mimes', __NAMESPACE__ . '\\allow_mime_types' );
 
+	// Set Excerpt length - Set higher priority to override other plugins.
+	add_filter( 'excerpt_length', __NAMESPACE__ . '\\increase_excerpt_length', 999 );
+
 	// Custom fields.
 	if ( is_admin() ) {
 		require_once __DIR__ . '/../custom-fields/options-social.php';
@@ -602,8 +605,18 @@ function get_pagination_links( array $args = [] ): string {
 		$last_page  = strval( array_pop( $pagination_links ) );
 
 		// Check for dots.
-		$has_dots_after_first_page = str_contains( $pagination_links[0], 'dots' );
-		$has_dots_before_last_page = str_contains( $pagination_links[ count( $pagination_links ) - 1 ], 'dots' );
+		$has_dots_after_first_page = false;
+		$has_dots_before_last_page = false;
+
+		// Check for dots.
+		if ( ! empty( $pagination_links[0] ) ) {
+			$has_dots_after_first_page = str_contains( $pagination_links[0], 'dots' );
+		}
+
+		// Check for dots.
+		if ( ! empty( $pagination_links[ count( $pagination_links ) - 1 ] ) ) {
+			$has_dots_before_last_page = str_contains( $pagination_links[ count( $pagination_links ) - 1 ], 'dots' );
+		}
 
 		// Prepare pagination links.
 		$pagination_links = sprintf(
@@ -663,4 +676,14 @@ function is_block_editor(): bool {
 
 	// Not in the block editor.
 	return false;
+}
+
+/**
+ * Increase excerpt length.
+ *
+ * @return int
+ */
+function increase_excerpt_length(): int {
+	// Return excerpt length.
+	return 255;
 }
