@@ -9,6 +9,11 @@ namespace Quark\Theme\Blocks\ExpeditionSearch;
 
 use WP_Block;
 
+use function Quark\Departures\get_cards_data;
+use function Quark\Localization\get_current_currency;
+use function Quark\Search\Departures\search;
+use function Quark\Theme\Search_Filters\get_filters_for_sidebar_search;
+
 const COMPONENT = 'parts.expedition-search';
 
 /**
@@ -41,9 +46,26 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 		return $content;
 	}
 
+	// Current currency.
+	$currency = get_current_currency();
+
+	// Init selected filters.
+	$selected_filter = [
+		'posts_per_load' => 8,
+	];
+
+	// Search for Departure post.
+	$search_results = search( $selected_filter );
+
 	// Build component attributes.
-	$component_attributes = [];
+	$component_attributes = [
+		'results_count'   => $search_results['result_count'],
+		'remaining_count' => $search_results['remaining_count'],
+		'cards'           => get_cards_data( array_map( 'absint', $search_results['ids'] ), $currency ),
+		'currency'        => $currency,
+		'filters_data'    => get_filters_for_sidebar_search(),
+	];
 
 	// Return the rendered component.
-	return '';
+	return quark_get_component( COMPONENT, $component_attributes );
 }

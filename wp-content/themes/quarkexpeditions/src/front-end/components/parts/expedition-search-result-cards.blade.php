@@ -121,7 +121,7 @@
 
 					@if( ! empty( $card['transfer_package_details'] && ! empty( $card['transfer_package_details']['sets'] ) ) )
 						<x-expedition-cards.transfer_package
-							drawer_id="{{ 'drawer' . $departure_id }}"
+							drawer_id="{{ 'drawer' . $card['departure_id'] }}"
 							drawer_title="Mandatory Transfer Package"
 						>
 							<p><strong>{{ $card['transfer_package_details']['title'] ?? '' }}</strong></p>
@@ -167,7 +167,7 @@
 									continue;
 								}
 							@endphp
-							<x-product-options-cards.card details_id="{{  $cabin_code . '_' . $departure_id }}" :status="$cabin_availability_status" type="{{ $cabin['type'] ?? '' }}" >
+							<x-product-options-cards.card details_id="{{  $cabin_code . '_' . $card['departure_id'] }}" :status="$cabin_availability_status" type="{{ $cabin['type'] ?? '' }}" >
 
 								@if( ! empty( $cabin['gallery'] ) )
 									<x-product-options-cards.gallery :image_ids="$cabin['gallery']">
@@ -234,7 +234,7 @@
 								}
 							@endphp
 							<x-product-options-cards.card-details
-								id="{{ $cabin_code . '_' . $departure_id }}">
+								id="{{ $cabin_code . '_' . $card['departure_id'] }}">
 
 								@if( $cabin['name'] )
 									<x-product-options-cards.card-details-title title="{{ $cabin['name'] }}"/>
@@ -253,7 +253,7 @@
 								@if( ! empty( $cabin['occupancies'] ) && is_array( $cabin['occupancies'] ) )
 									<x-product-options-cards.rooms title="Select Rooms">
 										@foreach( $cabin['occupancies'] as $index => $occupancy )
-											<x-product-options-cards.room checkout_url="{!! $occupancy['checkout_url'] !!}" name="room-type-{{ $departure_id }}-{{ $cabin_code }}" checked="{{ $index == 0 ? 'checked' : '' }}" mask="{{ $occupancy['name'] ?? '' }}">
+											<x-product-options-cards.room checkout_url="{!! $occupancy['checkout_url'] !!}" name="room-type-{{ $card['departure_id'] }}-{{ $cabin_code }}" checked="{{ $index == 0 ? 'checked' : '' }}" mask="{{ $occupancy['name'] ?? '' }}">
 												<x-product-options-cards.room-title-container>
 													@if( ! empty( $occupancy['description'] ) )
 														<x-product-options-cards.room-title
