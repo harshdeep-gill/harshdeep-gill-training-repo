@@ -28,7 +28,7 @@
 		<x-accordion.item-content>
 			<x-months-multi-select
 				:available_months="$months"
-				:is_multi_select="false"
+				:is_multi_select="true"
 			>
 				@foreach ( $years as $year )
 					<x-months-multi-select.slide :years="[ $year ]" />
