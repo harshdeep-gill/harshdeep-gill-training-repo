@@ -55,6 +55,8 @@ function bootstrap(): void {
 	if ( is_admin() ) {
 		// Custom fields.
 		require_once __DIR__ . '/../custom-fields/itineraries.php';
+		require_once __DIR__ . '/../custom-fields/tax-types.php';
+		require_once __DIR__ . '/../custom-fields/departure-locations.php';
 	}
 }
 
