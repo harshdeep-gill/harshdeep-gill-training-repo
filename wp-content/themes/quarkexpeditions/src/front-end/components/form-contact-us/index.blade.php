@@ -118,9 +118,8 @@
 			</div>
 		</div>
 
-			<x-form.buttons>
-				<x-form.submit size="big" color="black">Submit</x-form.submit>
-			</x-form.buttons>
-		</div>
+		<x-form.buttons>
+			<x-form.submit size="big" color="black">Submit</x-form.submit>
+		</x-form.buttons>
 	</x-form>
 </x-section>
