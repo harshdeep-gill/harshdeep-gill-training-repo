@@ -220,6 +220,11 @@ class Press_Release {
 			}
 		}
 
+		// Set fallback as excerpt if meta description is empty.
+		if ( empty( $data['meta_input']['_yoast_wpseo_metadesc'] ) ) {
+			$data['meta_input']['_yoast_wpseo_metadesc'] = $data['post_excerpt'];
+		}
+
 		// Set drupal id metadata.
 		$data['meta_input']['drupal_id'] = $nid;
 

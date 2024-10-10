@@ -25,7 +25,7 @@
 			</x-sidebar-grid.content>
 
 			{{-- Filters --}}
-			<x-sidebar-grid.sidebar :sticky="true" :show_on_mobile="false" sidebar_position="left">
+			<x-sidebar-grid.sidebar :sticky="true" :show_on_mobile="false" sidebar_position="left" :scroll="false">
 				@if ( ! empty( $filters_data ) )
 					<x-expedition-search.sidebar-filters :filters_data="$filters_data" />
 				@endif

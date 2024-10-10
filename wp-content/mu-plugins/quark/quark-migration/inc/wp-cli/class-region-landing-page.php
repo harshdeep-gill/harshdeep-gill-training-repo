@@ -218,6 +218,11 @@ class Region_Landing_Page {
 			}
 		}
 
+		// post excerpt.
+		if ( ! empty( $item['post_excerpt'] ) && is_string( $item['post_excerpt'] ) ) {
+			$post_excerpt = wp_strip_all_tags( trim( $item['post_excerpt'] ) );
+		}
+
 		// Hero banner.
 		if ( ! empty( $item['hero_banner_id'] ) ) {
 			$hero_block = $this->convert_paragraph_hero_banner( [ 'id' => absint( $item['hero_banner_id'] ) ] );
@@ -299,6 +304,11 @@ class Region_Landing_Page {
 			if ( ! empty( $seo_data ) ) {
 				$data['meta_input'] = array_merge( $seo_data, $data['meta_input'] );
 			}
+		}
+
+		// Set fallback as excerpt if meta description is empty.
+		if ( empty( $data['meta_input']['_yoast_wpseo_metadesc'] ) ) {
+			$data['meta_input']['_yoast_wpseo_metadesc'] = $data['post_excerpt'];
 		}
 
 		// Set drupal id metadata.
