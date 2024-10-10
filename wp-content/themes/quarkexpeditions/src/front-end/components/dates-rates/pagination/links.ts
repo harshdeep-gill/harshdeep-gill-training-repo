@@ -64,12 +64,12 @@ export default class DatesRatesPaginationLinksControllerElement extends HTMLElem
 		}
 
 		// Get the state.
-		const { page, totalPages } = state;
+		const { pageNumber, totalPages } = state;
 
 		// Initialize page number start.
-		let pageNumberBegin = page;
+		let pageNumberBegin = pageNumber;
 		let pageNumberEnd = totalPages;
-		const pagesLeft = totalPages - page;
+		const pagesLeft = totalPages - pageNumber;
 		const maxNumlinks = 5;
 
 		// Check how many pages are left and update accordingly.
@@ -143,14 +143,14 @@ export default class DatesRatesPaginationLinksControllerElement extends HTMLElem
 		const dots = ( this.dotsTemplate.content.cloneNode( true ) as HTMLElement ).querySelector( '.page-numbers.dots' );
 
 		// Toggle the `first` link.
-		if ( 1 !== page ) {
+		if ( 1 !== pageNumber ) {
 			this.prevPageElement.previousElementSibling?.removeAttribute( 'data-hidden' );
 		} else {
 			this.prevPageElement.previousElementSibling?.setAttribute( 'data-hidden', '' );
 		}
 
 		// Toggle the last page link.
-		if ( totalPages !== page ) {
+		if ( totalPages !== pageNumber ) {
 			this.nextPageElement.nextElementSibling?.removeAttribute( 'data-hidden' );
 		} else {
 			this.nextPageElement.nextElementSibling?.setAttribute( 'data-hidden', '' );
@@ -159,7 +159,7 @@ export default class DatesRatesPaginationLinksControllerElement extends HTMLElem
 		// Check and insert dots.
 		if ( dots && totalPages > maxNumlinks ) {
 			// Check if to insert at beginning.
-			if ( 1 !== page ) {
+			if ( 1 !== pageNumber ) {
 				this.prevPageElement.insertAdjacentHTML( 'afterend', dots.outerHTML );
 			}
 

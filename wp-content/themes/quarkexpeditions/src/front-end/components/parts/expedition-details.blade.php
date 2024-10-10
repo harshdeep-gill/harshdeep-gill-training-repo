@@ -1,6 +1,7 @@
 @props( [
 	'appearance'       => 'dark',
 	'title'            => '',
+	'sub_title'        => '',
 	'region'           => '',
 	'duration'         => '',
 	'from_price'       => '',
@@ -15,6 +16,7 @@
 <x-expedition-details :appearance="$appearance">
 	<x-expedition-details.overline :region="$region" :duration="$duration" :from_price="$from_price"/>
 	<x-expedition-details.title :title="$title"/>
+	<x-expedition-details.sub-title :sub_title="$sub_title"/>
 
 	@if ( ! empty( $tags ) )
 		<x-expedition-details.tags>

@@ -6,7 +6,8 @@ const { HTMLElement, zustand } = window;
 /**
  * Internal dependencies
  */
-import { addShip, removeShip } from '../actions';
+import { addShip, getShips, removeShip } from '../actions';
+import DatesRatesFiltersInputsContainerElement from './inputs-container';
 
 /**
  * Store
@@ -43,12 +44,16 @@ export default class DatesRatesFilterShipsElement extends HTMLElement {
 
 	/**
 	 * Updates the component.
-	 *
-	 * @param {Object} state The state object.
 	 */
-	update( state: DatesRatesState ) {
+	update() {
 		// Get the state.
-		const { ships } = state;
+		const ships = getShips();
+
+		// Do we have no filters?
+		if ( ships.length === 0 ) {
+			// Yes, bail.
+			return;
+		}
 
 		// Check if we should update.
 		this.isFilterUpdating = true;
@@ -90,5 +95,8 @@ export default class DatesRatesFilterShipsElement extends HTMLElement {
 		} else {
 			removeShip( checkbox.value );
 		}
+
+		// Set this as the last opened accordion.
+		this.closest<DatesRatesFiltersInputsContainerElement>( 'quark-dates-rates-filters-inputs-container' )?.setLastOpenedAccordionItemId( this.closest( 'tp-accordion-item' )?.id ?? '' );
 	}
 }

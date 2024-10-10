@@ -24,6 +24,26 @@
 		@media screen and (min-width: 1120px) {
 			margin-inline: 0;
 		}
+
+		&[total="2"] {
+
+			#{$self}__nav {
+
+				@media screen and (min-width: grid-size(md)) {
+					display: none;
+				}
+			}
+		}
+
+		&[total="3"] {
+
+			#{$self}__nav {
+
+				@media screen and (min-width: grid-size(xl)) {
+					display: none;
+				}
+			}
+		}
 	}
 
 	&__track {
@@ -49,17 +69,9 @@
 		display: flex;
 		column-gap: var(--spacing-5);
 		margin-top: var(--spacing-6);
-		margin-left: calc(-1 * var(--spacing-1));
 
 		@media screen and (min-width: grid-size(md)) {
-			margin-top: var(--spacing-7);
-		}
-
-		@media screen and (min-width: grid-size(lg)) {
-
-			&[data-is-carousel="false"] {
-				display: none;
-			}
+			margin-top: calc(var(--spacing-7) - var(--spacing-4));
 		}
 	}
 

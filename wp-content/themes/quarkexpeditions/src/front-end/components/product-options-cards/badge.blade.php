@@ -1,28 +1,43 @@
 @props( [
-	'class' => '',
-	'type'  => 'standard',
+	'class'  => '',
+	'status' => 'A',
+	'type'   => 'standard',
 ] )
 
 @php
-	if ( empty( $type ) ) {
+	if ( empty( $status ) ) {
 		return;
 	}
 
-	$type = strtolower( $type );
-
-	if ( ! in_array( $type, [ 'standard', 'premium', 'sold out' ] ) ) {
+	if ( ! in_array( $status, [ 'A', 'S', 'R' ] ) ) {
 		return;
 	}
+
+	$type =  strtolower( $type );
 
 	$classes = [
 		'product-options-cards__badge',
 		'overline'
 	];
 
-	$classes[] = 'product-options-cards__badge--' . match ( $type ) {
-		'standard' => 'standard',
-		'premium'  => 'premium',
-		'sold out' => 'sold-out',
+	if ( 'S' === $status || 'R' === $status ) {
+		$classes[] = 'product-options-cards__badge--' . match ( $status ) {
+			'S' => 'sold-out',
+			'R' => 'please-call',
+		};
+	}
+
+	if ( ! empty( $type ) && in_array( $type, [ 'standard', 'premium' ] ) ) {
+		$classes[] = 'product-options-cards__badge--' . match ( $type ) {
+			'standard' => 'standard',
+			'premium'  => 'premium',
+		};
+	}
+
+	$text = match ( $status ) {
+		'S' => __( 'Sold Out', 'qrk' ),
+		'R' => __( 'Please Call', 'qrk' ),
+		'A' => $type ?? '',
 	};
 
 	if ( ! empty( $class ) ) {
@@ -31,5 +46,5 @@
 @endphp
 
 <div @class( $classes )>
-	<x-escape :content="$type" />
+	<x-escape :content="$text" />
 </div>

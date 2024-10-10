@@ -81,12 +81,16 @@
 		</x-hero.left>
 		<x-hero.right>
 			@foreach ( $right as $item )
-				@if( 'form' === $item['type'] )
+				@if ( 'form' === $item['type'] )
 					@if ( ! empty( $item['form'] ) )
 						<x-hero.form>
 							{!! $item['form'] !!}
 						</x-hero.form>
 					@endif
+				@endif
+
+				@if ( 'circle-badge' === $item['type'] )
+					<x-hero.circle-badge :text="$item['text']" />
 				@endif
 			@endforeach
 		</x-hero.right>

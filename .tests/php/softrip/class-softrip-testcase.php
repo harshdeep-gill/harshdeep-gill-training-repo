@@ -90,7 +90,25 @@ abstract class Softrip_TestCase extends WP_UnitTestCase {
 		// Loop through the itineraries and set softrip package code meta.
 		foreach ( self::$itinerary_ids as $index => $itinerary_id ) {
 			update_post_meta( absint( $itinerary_id ), 'softrip_package_code', $softrip_package_codes[ $index ] );
-			update_post_meta( absint( $itinerary_id ), 'related_expedition', self::$expedition_ids[ $index % 5 ] );
+
+			// Expedition id.
+			$expedition_id = self::$expedition_ids[ $index % 5 ];
+			update_post_meta( absint( $itinerary_id ), 'related_expedition', $expedition_id );
+
+			// Get related itineraries from expedition post meta.
+			$related_itineraries = get_post_meta( $expedition_id, 'related_itineraries', true );
+
+			// Add itinerary id to related itineraries.
+			if ( is_array( $related_itineraries ) ) {
+				$related_itineraries[] = $itinerary_id;
+			} else {
+				$related_itineraries = [ $itinerary_id ];
+			}
+
+			// Update related itineraries.
+			update_post_meta( $expedition_id, 'related_itineraries', $related_itineraries );
+
+			// Clear cache.
 			wp_cache_delete( ITINERARY_POST_TYPE . '_' . absint( $itinerary_id ), ITINERARY_POST_TYPE );
 		}
 

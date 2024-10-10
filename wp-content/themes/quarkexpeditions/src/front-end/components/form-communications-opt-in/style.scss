@@ -1,0 +1,40 @@
+@import "../../scss/";
+
+.form-communications-opt-in {
+
+	&__instructions {
+		margin-bottom: var(--spacing-7);
+	}
+
+	.form-field--buttons {
+		margin-top: var(--spacing-7);
+
+		.btn {
+			width: 100%;
+
+			@media screen and (min-width: grid-size(sm)) {
+				max-width: 200px;
+			}
+		}
+	}
+
+	&__existing-booking-info,
+	&__existing-booking-agency-info {
+		display: none;
+
+		/* stylelint-disable-next-line scss/selector-no-redundant-nesting-selector */
+		.form-row:has(&) {
+			display: none;
+		}
+
+		&[required="yes"] {
+			display: block;
+
+			/* stylelint-disable-next-line scss/selector-no-redundant-nesting-selector */
+			.form-row:has(&) {
+				display: grid;
+			}
+		}
+
+	}
+}

@@ -40,6 +40,9 @@ function bootstrap(): void {
 	// Breadcrumbs.
 	add_filter( 'travelopia_breadcrumbs_ancestors', __NAMESPACE__ . '\\breadcrumbs_ancestors' );
 
+	// SEO.
+	add_filter( 'travelopia_seo_structured_data_schema', __NAMESPACE__ . '\\seo_structured_data' );
+
 	// Admin stuff.
 	if ( is_admin() ) {
 		// Custom fields.
@@ -78,6 +81,7 @@ function register_staff_member_post_type(): void {
 			'editor',
 			'thumbnail',
 			'revisions',
+			'excerpt',
 		],
 		'show_ui'             => true,
 		'show_in_menu'        => true,
@@ -88,7 +92,7 @@ function register_staff_member_post_type(): void {
 		'query_var'           => true,
 		'can_export'          => true,
 		'rewrite'             => [
-			'slug'       => 'staff-members',
+			'slug'       => 'staff',
 			'with_front' => false,
 		],
 		'capability_type'     => 'post',
@@ -375,6 +379,73 @@ function get( int $post_id = 0 ): array {
 
 	// Return data.
 	return $data;
+}
+
+/**
+ * Build structured data for schema.
+ *
+ * @param mixed[] $schema All schema data.
+ *
+ * @return mixed[]
+ */
+function seo_structured_data( array $schema = [] ): array {
+	// Check if this is a staff member page.
+	if ( ! is_singular( POST_TYPE ) ) {
+		return $schema;
+	}
+
+	// Get and insert the schema.
+	$schema[] = get_structured_data( absint( get_the_ID() ) );
+
+	// Return the schema.
+	return $schema;
+}
+
+/**
+ * Get structured data for this post type.
+ *
+ * @param int $post_id Post ID.
+ *
+ * @return array{}|array{
+ *    "@context": string,
+ *    "@type": string,
+ *    "name": string,
+ *    "jobTitle": string,
+ *    "affiliation": array{
+ *        "@type": string,
+ *        "name": string,
+ *    },
+ *   "url": string,
+ * }
+ */
+function get_structured_data( int $post_id = 0 ): array {
+	// Get post data.
+	$post = get( $post_id );
+
+	// Return early if post couldn't be fetched or not of this post type.
+	if ( ! $post['post'] instanceof WP_Post || POST_TYPE !== $post['post']->post_type ) {
+		return [];
+	}
+
+	// Get name.
+	$name = sprintf( '%s %s', strval( $post['post_meta']['first_name'] ), strval( $post['post_meta']['last_name'] ) );
+
+	// Get Job Title.
+	$role = get_roles( $post['post']->ID );
+	$role = ! empty( $role ) ? $role[0]['name'] : '';
+
+	// Return Schema.
+	return [
+		'@context'    => 'https://schema.org',
+		'@type'       => 'Person',
+		'name'        => $name,
+		'jobTitle'    => $role,
+		'affiliation' => [
+			'@type' => 'Organization',
+			'name'  => 'Employee',
+		],
+		'url'         => $post['permalink'],
+	];
 }
 
 /**

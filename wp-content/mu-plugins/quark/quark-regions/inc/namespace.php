@@ -7,6 +7,7 @@
 
 namespace Quark\Regions;
 
+use WP;
 use WP_Post;
 
 const POST_TYPE   = 'qrk_region';
@@ -24,6 +25,10 @@ function bootstrap(): void {
 
 	// Opt into stuff.
 	add_filter( 'qe_destination_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
+
+	// Permalink and rewrite rules.
+	add_action( 'init', __NAMESPACE__ . '\\rewrite_rules' );
+	add_filter( 'post_type_link', __NAMESPACE__ . '\\get_custom_permalink', 10, 3 );
 
 	// Other hooks.
 	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
@@ -59,6 +64,7 @@ function register_region_post_type(): void {
 			'title',
 			'editor',
 			'page-attributes',
+			'excerpt',
 		],
 		'show_ui'             => true,
 		'show_in_menu'        => true,
@@ -260,18 +266,42 @@ function register_region_post_type(): void {
 				],
 				[
 					[
-						'quark/media-text-cta',
+						'quark/media-text-cta-carousel',
 						[],
 						[
 							[
-								'core/heading',
+								'quark/media-text-cta',
+								[],
 								[
-									'level' => 3,
+									[
+										'core/heading',
+										[
+											'level' => 3,
+										],
+									],
+									[
+										'core/paragraph',
+										[],
+									],
 								],
 							],
 							[
-								'core/paragraph',
-								[],
+								'quark/media-text-cta',
+								[
+									'mediaAlignment' => 'right',
+								],
+								[
+									[
+										'core/heading',
+										[
+											'level' => 3,
+										],
+									],
+									[
+										'core/paragraph',
+										[],
+									],
+								],
 							],
 						],
 					],
@@ -422,4 +452,41 @@ function get( int $page_id = 0 ): array {
 
 	// Return data.
 	return $data;
+}
+
+/**
+ * Rewrite rules for this post type.
+ *
+ * @return void
+ */
+function rewrite_rules(): void {
+	// Match URLs with one level post.
+	add_rewrite_rule(
+		'^([^/]+)/?$',
+		'index.php?' . POST_TYPE . '=$matches[1]'
+	);
+
+	// Match URLs with one or more slashes for parent-child relations.
+	add_rewrite_rule(
+		'^([^/]+)/([^/]+)/?$',
+		'index.php?' . POST_TYPE . '=$matches[1]/$matches[2]'
+	);
+}
+
+/**
+ * Get custom permalink for this post type.
+ *
+ * @param string       $permalink Original permalink.
+ * @param WP_Post|null $post      Post object.
+ *
+ * @return string
+ */
+function get_custom_permalink( string $permalink = '', WP_Post $post = null ): string {
+	// Return permalink if post is not a post type.
+	if ( ! $post instanceof WP_Post || POST_TYPE !== $post->post_type ) {
+		return $permalink;
+	}
+
+	// Construct permalink.
+	return str_replace( '/regions', '', $permalink );
 }

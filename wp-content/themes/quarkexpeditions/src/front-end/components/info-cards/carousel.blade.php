@@ -19,7 +19,7 @@
 		infinite="yes"
 	>
 		<tp-slider-track class="info-cards__track">
-			<tp-slider-slides class="info-cards__slides">
+			<tp-slider-slides class="info-cards__slides" total-slides="{{ $slide_count }}" >
 				{!! $slot !!}
 			</tp-slider-slides>
 		</tp-slider-track>

@@ -64,19 +64,51 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 		allOptionsSelected = true;
 	}
 
+	/**
+	 * Get layout options.
+	 *
+	 * @return {Array} Layout options.
+	 */
+	const getLayoutOptions = (): Array<any> => {
+		// Initialize options.
+		const options = [
+			{ label: __( 'Grid', 'qrk' ), value: 'grid' },
+		];
+
+		// Add collage layout option if pagination is disabled.
+		if ( ! attributes.hasPagination ) {
+			options.push( { label: __( 'Collage', 'qrk' ), value: 'collage' } );
+		}
+
+		// Return options.
+		return options;
+	};
+
 	// Return the block's markup.
 	return (
 		<>
 			<InspectorControls>
 				<PanelBody title={ __( 'Related Posts Options', 'qrk' ) }>
+					<ToggleControl
+						label={ __( 'Has Pagination?', 'qrk' ) }
+						checked={ attributes.hasPagination }
+						help={ __( 'Show pagination for the blog posts on frontend.', 'qrk' ) }
+						onChange={ ( hasPagination: boolean ) => {
+							// Set hasPagination.
+							setAttributes( { hasPagination } );
+
+							// Set layout to grid if pagination is enabled.
+							if ( hasPagination ) {
+								// Set layout to grid.
+								setAttributes( { layout: 'grid' } );
+							}
+						} }
+					/>
 					<RadioControl
 						label={ __( 'Layout', 'qrk' ) }
 						help={ __( 'Select the layout of the cards', 'qrk' ) }
 						selected={ attributes.layout }
-						options={ [
-							{ label: __( 'Grid', 'qrk' ), value: 'grid' },
-							{ label: __( 'Collage', 'qrk' ), value: 'collage' },
-						] }
+						options={ getLayoutOptions() }
 						onChange={ ( layout: string ) => {
 							// Set layout.
 							setAttributes( { layout } );
@@ -133,7 +165,7 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 						/>
 					}
 					{
-						( 'byTerms' === attributes.selection || 'recent' === attributes.selection ) &&
+						( ( 'byTerms' === attributes.selection || 'recent' === attributes.selection ) && false === attributes.hasPagination ) &&
 							<RangeControl
 								label={ __( 'Total Posts', 'qrk' ) }
 								help={ __( 'Select the total number of posts to be displayed', 'qrk' ) }
@@ -142,6 +174,17 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 								min={ 'collage' === attributes.layout ? 5 : 1 }
 								max={ 100 }
 							/>
+					}
+					{
+						( true === attributes.hasPagination ) &&
+						<RangeControl
+							label={ __( 'Posts Per Page', 'qrk' ) }
+							help={ __( 'Select the total number of posts to be displayed per page', 'qrk' ) }
+							value={ attributes.postsPerPage }
+							onChange={ ( postsPerPage ) => setAttributes( { postsPerPage } ) }
+							min={ 'collage' === attributes.layout ? 5 : 1 }
+							max={ 100 }
+						/>
 					}
 					<ToggleControl
 						label={ __( 'Is Mobile Carousel?', 'qrk' ) }

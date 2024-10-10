@@ -8,6 +8,7 @@ import { BlockConfiguration } from '@wordpress/blocks';
  */
 import metadata from './block.json';
 import edit from './edit';
+import save from './save';
 
 /**
  * Block name.
@@ -21,4 +22,5 @@ export const settings: BlockConfiguration = {
 	...metadata,
 	icon: 'screenoptions',
 	edit,
+	save,
 };

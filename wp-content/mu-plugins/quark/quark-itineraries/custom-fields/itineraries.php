@@ -264,7 +264,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 					'aria-label'           => '',
 					'type'                 => 'relationship',
 					'instructions'         => 'Select inclusion sets for itinerary.',
-					'required'             => 1,
+					'required'             => 0,
 					'conditional_logic'    => 0,
 					'wrapper'              => [
 						'width' => '50',
@@ -293,7 +293,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 					'aria-label'           => '',
 					'type'                 => 'relationship',
 					'instructions'         => 'Select exclusion sets for itinerary.',
-					'required'             => 1,
+					'required'             => 0,
 					'conditional_logic'    => 0,
 					'wrapper'              => [
 						'width' => '50',

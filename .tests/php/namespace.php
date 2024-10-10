@@ -7,8 +7,9 @@
 
 namespace Quark\Tests;
 
+use function Quark\Tests\Ingestor\setup_ingestor_integration;
 use function Quark\Tests\Softrip\drop_softrip_db_tables;
-use function Quark\Tests\Softrip\setup_softrip_db_tables;
+use function Quark\Tests\Softrip\setup_softrip_integration;
 
 /**
  * Bootstrap the tests.
@@ -60,7 +61,10 @@ function load_environment(): void {
 	);
 
 	// Setup Softrip database tables.
-	setup_softrip_db_tables();
+	setup_softrip_integration();
+
+	// Setup DataEngine/Ingestor.
+	setup_ingestor_integration();
 }
 
 /**

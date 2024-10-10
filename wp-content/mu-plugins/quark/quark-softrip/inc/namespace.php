@@ -26,7 +26,7 @@ use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
 
 const SCHEDULE_RECURRENCE       = 'qrk_softrip_4_hourly';
 const SCHEDULE_HOOK             = 'qrk_softrip_sync';
-const ITINERARY_SYNC_BATCH_SIZE = 5;
+const ITINERARY_SYNC_BATCH_SIZE = 1;
 const TABLE_PREFIX_NAME         = 'qrk_';
 
 /**
@@ -199,7 +199,7 @@ function do_sync( array $itinerary_post_ids = [], array $specific_departure_post
 				'update_post_meta_cache' => false,
 				'update_term_meta_cache' => false,
 				'ignore_sticky_posts'    => true,
-				'post_status'            => [ 'draft', 'publish' ],
+				'post_status'            => [ 'publish' ],
 				'posts_per_page'         => -1,
 			];
 
@@ -277,10 +277,33 @@ function do_sync( array $itinerary_post_ids = [], array $specific_departure_post
 		$raw_departures = synchronize_itinerary_departures( $softrip_codes );
 
 		// Handle if an error is found.
-		if ( ! is_array( $raw_departures ) || empty( $raw_departures ) ) {
+		if ( $raw_departures instanceof WP_Error || ! is_array( $raw_departures ) || empty( $raw_departures ) ) {
 			// Update progress bar.
 			if ( $is_in_cli ) {
 				$progress->tick( count( $softrip_codes ) );
+			}
+
+			// If WP_Error.
+			if ( $raw_departures instanceof WP_Error ) {
+				// Log the error.
+				do_action(
+					'quark_softrip_sync_error',
+					[
+						'error' => $raw_departures->get_error_message(),
+						'via'   => $initiated_via,
+						'codes' => $softrip_codes,
+					]
+				);
+			} else {
+				// Log the error.
+				do_action(
+					'quark_softrip_sync_error',
+					[
+						'error' => 'No departure or invalid data returned',
+						'via'   => $initiated_via,
+						'codes' => $softrip_codes,
+					]
+				);
 			}
 
 			// Skip since there was an error.
@@ -295,6 +318,16 @@ function do_sync( array $itinerary_post_ids = [], array $specific_departure_post
 				if ( $is_in_cli ) {
 					$progress->tick();
 				}
+
+				// Log the error.
+				do_action(
+					'quark_softrip_sync_error',
+					[
+						'error' => 'No departure or invalid data found',
+						'via'   => $initiated_via,
+						'codes' => [ $softrip_package_code ],
+					]
+				);
 
 				// Skip since there was an error, or departures are empty.
 				continue;
@@ -344,14 +377,14 @@ function do_sync( array $itinerary_post_ids = [], array $specific_departure_post
  * @return string
  */
 function get_initiated_via(): string {
-	// Check if in CLI.
-	if ( defined( 'WP_CLI' ) && true === WP_CLI ) {
-		return 'CLI';
-	}
-
 	// Check if in cron.
 	if ( defined( 'DOING_CRON' ) && true === DOING_CRON ) {
 		return 'cron';
+	}
+
+	// Check if in CLI.
+	if ( defined( 'WP_CLI' ) && true === WP_CLI ) {
+		return 'CLI';
 	}
 
 	// Default to manually.

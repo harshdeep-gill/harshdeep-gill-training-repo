@@ -18,7 +18,6 @@ use WP_Post;
 use function Quark\Migration\Drupal\download_file_by_mid;
 use function Quark\Migration\Drupal\get_database;
 use function Quark\Migration\Drupal\get_term_by_id;
-use function Quark\Migration\Drupal\prepare_content;
 use function Quark\Migration\Drupal\prepare_for_migration;
 use function Quark\Migration\Drupal\get_post_by_id;
 use function Quark\Migration\Drupal\prepare_seo_data;
@@ -232,17 +231,34 @@ class Region_Landing_Page {
 		// Paragraphs for Post content.
 		$paragraph_data = $this->get_drupal_paragraph_data( $nid );
 
+		// Access global secondary nav.
+		global $secondary_nav;
+
 		// Check if paragraph data is not empty.
 		if ( ! empty( $paragraph_data ) ) {
+			// Reset secondary nav.
+			$secondary_nav = [];
+			$block_content = '';
+
+			// Loop through paragraph data.
 			foreach ( $paragraph_data as $paragraph ) {
 				$block = $this->block_converter->get_drupal_block_data( $paragraph );
 
 				// Check if block is not empty.
 				if ( ! empty( $block ) ) {
-					$post_content .= $block;
+					$block_content .= $block;
 				}
 			}
+
+			// Prepare secondary nav block.
+			$secondary_nav = $this->block_converter->prepare_secondary_nav( $secondary_nav );
+
+			// Append block content.
+			$post_content .= $secondary_nav . $block_content;
 		}
+
+		// Prepare post content.
+		$post_content = str_replace( 'u0026', '&', $post_content );
 
 		// Prepare post data.
 		$data = [

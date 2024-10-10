@@ -72,7 +72,7 @@ class Test_Update_Occupancies extends Softrip_TestCase {
 			[],
 		];
 		$actual          = update_occupancies( $raw_cabins_data, $departure_id1 );
-		$this->assertTrue( $actual );
+		$this->assertFalse( $actual );
 
 		// Get occupancies for first departure.
 		$occupancies = get_occupancies_by_departure( $departure_id1, true );
@@ -85,7 +85,7 @@ class Test_Update_Occupancies extends Softrip_TestCase {
 			],
 		];
 		$actual          = update_occupancies( $raw_cabins_data, $departure_id1 );
-		$this->assertTrue( $actual );
+		$this->assertFalse( $actual );
 
 		// Get occupancies for first departure.
 		$occupancies = get_occupancies_by_departure( $departure_id1, true );
@@ -99,7 +99,7 @@ class Test_Update_Occupancies extends Softrip_TestCase {
 			],
 		];
 		$actual          = update_occupancies( $raw_cabins_data, $departure_id1 );
-		$this->assertTrue( $actual );
+		$this->assertFalse( $actual );
 
 		// Get occupancies for first departure.
 		$occupancies = get_occupancies_by_departure( $departure_id1, true );
@@ -113,7 +113,7 @@ class Test_Update_Occupancies extends Softrip_TestCase {
 			],
 		];
 		$actual          = update_occupancies( $raw_cabins_data, $departure_id1 );
-		$this->assertTrue( $actual );
+		$this->assertFalse( $actual );
 
 		// Get occupancies for first departure.
 		$occupancies = get_occupancies_by_departure( $departure_id1, true );
@@ -128,7 +128,7 @@ class Test_Update_Occupancies extends Softrip_TestCase {
 			],
 		];
 		$actual          = update_occupancies( [ $raw_cabin_data1 ], $departure_id1 );
-		$this->assertTrue( $actual );
+		$this->assertFalse( $actual );
 
 		// Get occupancies for first departure.
 		$occupancies = get_occupancies_by_departure( $departure_id1, true );
@@ -173,7 +173,7 @@ class Test_Update_Occupancies extends Softrip_TestCase {
 			],
 		];
 		$actual          = update_occupancies( [ $raw_cabin_data1 ], $departure_id1 );
-		$this->assertTrue( $actual );
+		$this->assertFalse( $actual );
 
 		// Get occupancies for first departure.
 		$occupancies = get_occupancies_by_departure( $departure_id1, true );
@@ -195,7 +195,7 @@ class Test_Update_Occupancies extends Softrip_TestCase {
 			],
 		];
 		$actual          = update_occupancies( [ $raw_cabin_data1 ], $departure_id1 );
-		$this->assertTrue( $actual );
+		$this->assertFalse( $actual );
 
 		// Get occupancies for first departure.
 		$occupancies = get_occupancies_by_departure( $departure_id1, true );
@@ -325,7 +325,7 @@ class Test_Update_Occupancies extends Softrip_TestCase {
 					'mask'            => 'A',
 					'spacesAvailable' => 10,
 					'saleStatus'      => 'Open',
-					'saleStatusCode'  => 'R',
+					'saleStatusCode'  => 'O',
 					'prices'          => [
 						'USD' => [
 							'pricePerPerson' => 2000,
@@ -357,13 +357,14 @@ class Test_Update_Occupancies extends Softrip_TestCase {
 		// Get first occupancy.
 		$occupancy = $occupancies[0];
 		$this->assertIsArray( $occupancy );
-		$this->assertSame( 'R', $occupancy['availability_status'] );
+		$this->assertSame( 'O', $occupancy['availability_status'] );
 
 		// Let's add one more occupancy to same cabin.
 		$raw_cabin_data1 = [
-			'code'        => 'CAB1',
-			'name'        => 'Explorer Suite',
-			'occupancies' => [
+			'code'            => 'CAB1',
+			'name'            => 'Explorer Suite',
+			'spacesAvailable' => 10,
+			'occupancies'     => [
 				[
 					'id'              => 'CAB1:OCC1',
 					'name'            => 'Single',
@@ -487,7 +488,7 @@ class Test_Update_Occupancies extends Softrip_TestCase {
 			],
 		];
 		$actual          = update_occupancies( [ $raw_cabin_data1, $raw_cabin_data2 ], $departure_id1 );
-		$this->assertTrue( $actual );
+		$this->assertFalse( $actual );
 
 		// Get occupancies for first departure. The second cabin doesn't exist. So, occupancy shouldn't be added.
 		$occupancies = get_occupancies_by_departure( $departure_id1, true );
@@ -545,7 +546,7 @@ class Test_Update_Occupancies extends Softrip_TestCase {
 					'name'            => 'Single',
 					'mask'            => 'A',
 					'spacesAvailable' => 5,
-					'saleStatus'      => 'Open',
+					'saleStatus'      => 'Sold Out',
 					'saleStatusCode'  => 'S',
 					'prices'          => [
 						'USD' => [
@@ -582,7 +583,7 @@ class Test_Update_Occupancies extends Softrip_TestCase {
 		$this->assertSame( 'Single', $occupancy['softrip_name'] );
 		$this->assertSame( 'A', $occupancy['mask'] );
 		$this->assertSame( 5, $occupancy['spaces_available'] );
-		$this->assertSame( 'Open', $occupancy['availability_description'] );
+		$this->assertSame( 'Sold Out', $occupancy['availability_description'] );
 		$this->assertSame( 'S', $occupancy['availability_status'] );
 		$this->assertSame( 3500, $occupancy['price_per_person_usd'] );
 		$this->assertSame( 4000, $occupancy['price_per_person_cad'] );
@@ -621,10 +622,6 @@ class Test_Update_Occupancies extends Softrip_TestCase {
 		// Get second occupancy - shouldn't be present.
 		$occupancies = get_occupancy_data_by_softrip_id( 'CAB1:OCC2', true );
 		$this->assertEmpty( $occupancies );
-
-		// The cabin spaces available meta should also be deleted and hence, empty now.
-		$spaces_available = get_post_meta( $departure_id1, 'cabin_spaces_available_' . $cabin_category_post_id1, true );
-		$this->assertSame( '', $spaces_available );
 
 		// Add one more occupancy to cabin 2 - CAB2.
 		$raw_cabin_data2 = [

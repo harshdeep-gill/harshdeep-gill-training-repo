@@ -39,6 +39,7 @@ function bootstrap(): void {
 	if ( is_admin() ) {
 		// Custom fields.
 		require_once __DIR__ . '/../custom-fields/ships.php';
+		require_once __DIR__ . '/../custom-fields/api-data.php';
 	}
 }
 
@@ -71,6 +72,7 @@ function register_ship_post_type(): void {
 		'supports'            => [
 			'title',
 			'editor',
+			'thumbnail',
 			'revisions',
 			'excerpt',
 		],

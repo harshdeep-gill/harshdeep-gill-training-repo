@@ -12,7 +12,7 @@ use WP_REST_Request;
 use WP_REST_Response;
 use WP_REST_Server;
 
-use function Quark\Search\Departures\get_destination_and_month_search_filter_data;
+use function Quark\Search\Filters\get_destination_and_month_filter_options;
 
 use const Quark\Search\REST_API_NAMESPACE;
 
@@ -74,7 +74,7 @@ class Destination_Month_Filters {
 		$month = ! empty( $month ) ? strval( $month ) : '';
 
 		// Get filter options by terms.
-		$filter_options = get_destination_and_month_search_filter_data( $destination_term_id, $month );
+		$filter_options = get_destination_and_month_filter_options( $destination_term_id, $month );
 
 		// Return the response.
 		return rest_ensure_response( $filter_options );

@@ -37,8 +37,13 @@ export default class ExpeditionCard extends HTMLElement {
 		this.dropdownButton = this.querySelector( '.expedition-cards__cta' );
 		this.moreDetails = this.querySelector( '.expedition-cards__more-details' );
 
+		// Run after DOM Content Loaded.
+		document.addEventListener( 'DOMContentLoaded', () => {
+			// Run after DOM Content Loaded.
+			this.updateAdventuresHiddenItems();
+		} );
+
 		// Events.
-		this.updateAdventuresHiddenItems();
 		window.addEventListener( 'resize', debounce( this.updateAdventuresHiddenItems.bind( this ), 10 ), { passive: true } );
 		this.dropdownButton?.addEventListener( 'click', this.toggle.bind( this ) );
 	}
@@ -76,53 +81,63 @@ export default class ExpeditionCard extends HTMLElement {
 	}
 
 	/**
-	 * Toggle the visibility of the "items" based on the presence of overflow items.
+	 * Toggle the visibility of the "items" in adventures based on screen size.
+	 * On mobile, hide all except the first item.
 	 */
 	updateAdventuresHiddenItems(): void {
-		// Check if the offers exists.
+		// Check if the element exists.
 		if ( ! this.adventuresContainer ) {
-			// Return if element does not exits.
+			// Return.
 			return;
 		}
 
-		// Set the variables.
+		// Set hidden count and total width.
 		let hiddenCount = 0;
 		let totalWidth = 0;
 
-		// For each item.
+		// Set is mobile variable.
+		const isMobile = window.innerWidth < 576;
+
+		// For each loop.
 		this.adventuresItems?.forEach( ( option, index ) => {
-			// Check if the offers list exists.
-			if ( ! this.adventuresContainer || ! this.adventuresItems || ! this.adventurescountWrap ) {
-				// Return if elements does not exits.
-				return;
-			}
-
-			// Remove the class and set the total width.
+			// Remove hidden class.
 			option.classList.remove( 'expedition-cards__option--hidden' );
-			totalWidth += option.clientWidth;
 
-			// Check for width.
-			if ( totalWidth > this.adventuresContainer.clientWidth - this.adventurescountWrap.clientWidth && index < this.adventuresItems.length - 1 ) {
-				// Set the class.
+			// On mobile, only show the first item.
+			if ( isMobile ) {
+				// Check for first item.
+				if ( index === 0 ) {
+					// Set the total width.
+					totalWidth += option.clientWidth;
+
+					// Always show the first item.
+					return;
+				}
+
+				// Add hidden class.
 				option.classList.add( 'expedition-cards__option--hidden' );
 				hiddenCount++;
+			} else {
+				// Default behavior for larger screens.
+				totalWidth += option.clientWidth;
+
+				// Width check.
+				if ( totalWidth > this.adventuresContainer!.clientWidth - this.adventurescountWrap!.clientWidth ) {
+					// Add hidden class
+					option.classList.add( 'expedition-cards__option--hidden' );
+					hiddenCount++;
+				}
 			}
 		} );
 
-		// Check for elements.
-		if ( ! this.adventurescountWrap || ! this.adventurescountSpan ) {
-			// Return if elements does not exits.
-			return;
-		}
-
-		// Check for hidden count.
+		// Update count and toggle visibility.
 		if ( hiddenCount > 0 ) {
-			// Set the text and remove hidden class.
-			this.adventurescountSpan.textContent = hiddenCount.toString();
-			this.adventurescountWrap.classList.remove( 'expedition-cards__options-count-wrap--hidden' );
+			// Set the text and remvoe hidden class.
+			this.adventurescountSpan!.textContent = hiddenCount.toString();
+			this.adventurescountWrap!.classList.remove( 'expedition-cards__options-count-wrap--hidden' );
 		} else {
-			// Add hidden class.
-			this.adventurescountWrap.classList.add( 'expedition-cards__options-count-wrap--hidden' );
+			// Add class.
+			this.adventurescountWrap!.classList.add( 'expedition-cards__options-count-wrap--hidden' );
 		}
 	}
 }
