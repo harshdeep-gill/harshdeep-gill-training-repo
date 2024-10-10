@@ -19,19 +19,15 @@
 	'has_heading_link' => false,
 ] )
 
-@php
-	if ( ! empty( $background_image ) ) {
-		$class = "full-width";
-	}
-@endphp
-
 <x-section
 	:narrow="$narrow"
 	:background="$background"
 	:background_color="$background_color"
 	:padding="$padding"
 	:id="$id"
-	:class="$class";
+	@if ( ! empty( $background_image ) )
+		:full_width="true"
+	@endif
 >
 	@if( ! empty( $title ) )
 		<x-section.heading>
