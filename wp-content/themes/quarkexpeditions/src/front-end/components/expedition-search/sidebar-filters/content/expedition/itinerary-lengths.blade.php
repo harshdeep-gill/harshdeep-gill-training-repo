@@ -40,7 +40,7 @@
 			<x-escape :content=" __( 'Itinerary Lengths', 'qrk' ) " />
 		</x-accordion-item.handle>
 		<x-accordion.item-content>
-			<x-form.range-slider name="itinerary-lengths" :range_suffix="_( 'Days', 'qrk' )" :min="$itinerary_length['min']" :max="$itinerary_length['max']" />
+			<x-form.range-slider name="itinerary-lengths" :range_suffix="__( 'Days', 'qrk' )" :min="$itinerary_length['min']" :max="$itinerary_length['max']" />
 		</x-accordion.item-content>
 </x-accordion.item>
 </quark-expedition-search-filter-itinerary-lengths>
