@@ -91,6 +91,8 @@ import * as formSnowHillNewsletter from './form-snow-hill-newsletter';
 import * as formJobApplication from './form-job-application';
 import * as formNewsletter from './form-newsletter';
 import * as formAccessDeletionRequest from './form-account-management';
+import * as formCommunicationsOptIn from './form-communications-opt-in';
+import * as formRequestAQuote from './form-request-quote';
 
 /**
  * Add blocks.
@@ -178,6 +180,8 @@ const blocks = [
 	formJobApplication,
 	formNewsletter,
 	formAccessDeletionRequest,
+	formCommunicationsOptIn,
+	formRequestAQuote,
 ];
 
 // Register blocks for ships.

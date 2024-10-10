@@ -95,7 +95,7 @@ function register_styles(): void {
 	wp_register_style( 'tp-tabs', get_template_directory_uri() . '/dist/vendor/tptabselement.css', [], $assets_version );
 	wp_register_style( 'tp-accordion', get_template_directory_uri() . '/dist/vendor/tpaccordionitemelement.css', [], $assets_version );
 	wp_register_style( 'tp-toggle-attribute', get_template_directory_uri() . '/dist/vendor/tptoggleattributeelement.css', [], $assets_version );
-	wp_register_style( 'tp-number-spinner', get_template_directory_uri() . '/dist/vendor/TPNumberSpinnerElement.css', [], $assets_version );
+	wp_register_style( 'tp-number-spinner', get_template_directory_uri() . '/dist/vendor/tpnumberspinnerelement.css', [], $assets_version );
 
 	// Defer certain styles.
 	add_filter(
@@ -143,7 +143,7 @@ function register_scripts(): void {
 	wp_register_script( 'wistia-embed', 'https://fast.wistia.com/assets/external/E-v1.js', [], $assets_version, true );
 	wp_register_script( 'tp-lightbox', get_template_directory_uri() . '/dist/vendor/tplightboxelement.js', [], $assets_version, true );
 	wp_register_script( 'tp-toggle-attribute', get_template_directory_uri() . '/dist/vendor/tptoggleattributeelement.js', [], $assets_version, true );
-	wp_register_script( 'tp-number-spinner', get_template_directory_uri() . '/dist/vendor/TPNumberSpinnerElement.js', [], $assets_version, true );
+	wp_register_script( 'tp-number-spinner', get_template_directory_uri() . '/dist/vendor/tpnumberspinnerelement.js', [], $assets_version, true );
 	wp_register_script( 'querystring', get_template_directory_uri() . '/dist/vendor/querystring.js', [], $assets_version, true );
 	wp_register_script( 'popover-polyfill', get_template_directory_uri() . '/dist/vendor/popoverpolyfill.js', [], $assets_version, true );
 

@@ -43,7 +43,7 @@ function mock_ingestor_http_request( array|false $response = [], array $parsed_a
 	}
 
 	// Check if the request is a PUT request.
-	if ( 'PUT' !== $parsed_args['method'] ) {
+	if ( 'POST' !== $parsed_args['method'] ) {
 		// Return the response if it is not a PUT request.
 		return $response;
 	}
