@@ -41,7 +41,7 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 
 	// eslint-disable-next-line react-hooks/rules-of-hooks
 	const innerBlocksProps = useInnerBlocksProps( { ...blocksProps }, {
-		allowedBlocks: [ tableOfContents ],
+		allowedBlocks: [ tableOfContents, 'core/paragraph', 'core/list' ],
 		template: [ [ 'core/paragraph', { placeholder: __( 'Sidebar…', 'qrk' ) } ] ],
 		templateLock: false,
 	} );
