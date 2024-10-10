@@ -133,3 +133,41 @@ p > iframe {
 
 	@extend %caption;
 }
+
+.is-style-h1 {
+
+	@extend %h1;
+}
+
+.is-style-h2 {
+
+	@extend %h2;
+}
+
+.is-style-h3 {
+
+	@extend %h3;
+}
+
+.is-style-h4 {
+
+	@extend %h4;
+}
+
+.is-style-h5 {
+
+	@extend %h5;
+}
+
+.is-style-template-title {
+
+	@extend %h1;
+
+	margin-top: var(--spacing-8);
+	margin-bottom: var(--spacing-8);
+
+	@media screen and (min-width: grid-size(xl)) {
+		margin-top: var(--spacing-9);
+		margin-bottom: var(--spacing-9);
+	}
+}
