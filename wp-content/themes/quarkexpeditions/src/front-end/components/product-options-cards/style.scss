@@ -578,4 +578,25 @@
 			overflow: hidden;
 		}
 	}
+
+	&__transfer-package {
+
+		.departure-cards__transfer-package {
+			display: none;
+		}
+
+		@media screen and (max-width: calc(grid-size(md) - 1px)) {
+			.departure-cards__transfer-package {
+				display: block;
+			}
+
+			#{$self}__tooltip {
+				display: none;
+			}
+
+			.departure-cards__drawer-open {
+				z-index: 10;
+			}
+		}
+	}
 }

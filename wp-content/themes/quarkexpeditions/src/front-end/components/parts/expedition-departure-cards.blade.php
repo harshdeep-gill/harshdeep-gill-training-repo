@@ -206,6 +206,47 @@
 										/>
 									@endif
 
+									@if( ! empty( $card['transfer_package_details'] && ! empty( $card['transfer_package_details']['sets'] ) ) )
+										<x-product-options-cards.transfer-package>
+											<x-departure-cards.transfer_package
+												drawer_id="transfer-price-{{ $cabin_code . '_' . $departure_id }}"
+												drawer_title="Mandatory Transfer Package"
+											>
+												<p><strong>{{ $card['transfer_package_details']['title'] ?? '' }}</strong></p>
+												<ul>
+													@foreach( $card['transfer_package_details']['sets'] as $set )
+														<li>{!! $set !!}</li>
+													@endforeach
+												</ul>
+												<p>
+													<strong>{{ __( 'Package Price:', 'qrk' ) }} {{ $card['transfer_package_details']['formatted_price'] ?? '' }}</strong>
+												</p>
+											</x-departure-cards.transfer_package>
+
+											<div class="product-options-cards__tooltip">
+												<span>{{ __( 'Inc. Transfer Package', 'qrk' ) }}</span>
+												<x-tooltip icon="info">
+													<h5>{{ $card['transfer_package_details']['title'] }}</h5>
+
+													@if ( !empty( $card['transfer_package_details']['sets'] ) )
+														<ul>
+															@foreach ( $card['transfer_package_details']['sets'] as $item )
+																<li>
+																	{{ $item }}
+																</li>
+															@endforeach
+														</ul>
+													@endif
+
+													<p>
+														{{ __( 'Package Price:', 'qrk' ) }}
+														{{ $card['transfer_package_details']['formatted_price'] ?? 0 }}
+													</p>
+												</x-tooltip>
+											</div>
+										</x-product-options-cards.transfer-package>
+									@endif
+
 								</x-product-options-cards.content>
 
 								{{-- Mobile Dialog CTA --}}
