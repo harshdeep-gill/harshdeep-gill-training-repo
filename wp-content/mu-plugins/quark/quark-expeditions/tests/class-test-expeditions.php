@@ -385,7 +385,7 @@ class Test_Expeditions extends Softrip_TestCase {
 		// Create post.
 		$post_1 = $this->factory()->post->create_and_get(
 			[
-				'post_title'   => 'Test Post',
+				'post_title'   => 'Test Post: Sub title',
 				'post_content' => 'Post content',
 				'post_status'  => 'publish',
 				'post_type'    => POST_TYPE,
@@ -488,7 +488,8 @@ class Test_Expeditions extends Softrip_TestCase {
 
 		// Assert expedition_details_card_data is correct.
 		$expected_data = [
-			'title'            => $post_1->post_title,
+			'title'            => 'Test Post',
+			'sub_title'        => 'Sub title',
 			'region'           => $term_1->name,
 			'duration'         => 11,
 			'from_price'       => [

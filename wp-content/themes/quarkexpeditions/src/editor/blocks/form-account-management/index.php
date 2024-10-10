@@ -1,6 +1,6 @@
 <?php
 /**
- * Block: Form - Snow Hill Newsletter
+ * Block: Form - CCPA Access Deletion Request
  *
  * @package quark
  */
@@ -8,9 +8,6 @@
 namespace Quark\Theme\Blocks\FormAccessDeletionRequest;
 
 use WP_Block;
-
-use function Quark\Leads\Forms\get_countries;
-use function Quark\Leads\Forms\get_states;
 
 const COMPONENT = 'form-account-management';
 

@@ -7203,7 +7203,15 @@
 	</x-mini-cards-list>
 </x-component-demo>
 
+<x-component-demo :keys="[ 'expedition-search' ]">
+	<x-parts.expedition-search />
+</x-component-demo>
+
 <x-component-demo :keys="[ 'search-filters-bar' ]">
+	<x-section>
+		<x-parts.search-filters-bar />
+	</x-section>
+
 	<x-section>
 		<x-parts.search-filters-bar />
 	</x-section>

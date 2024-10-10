@@ -76,6 +76,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	define( 'ABSPATH', dirname( __DIR__ ) . '/../wp/' );
 }
 
+/**
+ * Set following constants via putenv so that these can be changed at runtime in tests and hence, tested.
+ */
+
 // Softrip API credentials.
 putenv( 'QUARK_SOFTRIP_ADAPTER_BASE_URL=https://softrip-adapter.dev' );
 putenv( 'QUARK_SOFTRIP_ADAPTER_API_KEY=test' );
