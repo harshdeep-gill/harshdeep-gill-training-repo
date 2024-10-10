@@ -10,7 +10,7 @@
 ] )
 
 {{-- Render the modal only once even if there are multiple search bars present on a page --}}
-<x-once id="search-filters-bar-modal">
+<x-once id="{{ $modal_id }}">
 	<x-modal :id="$modal_id" class="search-filters-bar__modal" >
 		<x-modal.header>
 			<h3>{{ __( 'Select your Preferences', 'qrk' ) }}</h3>
