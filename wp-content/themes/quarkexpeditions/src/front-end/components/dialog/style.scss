@@ -10,11 +10,12 @@
 	background: none;
 	border: none;
 	transition: translate var(--transition-time) var(--transition-easing), overlay 0.7s ease-out, display 0.7s ease-out allow-discrete;
-  	translate: 0 100vh;
+	translate: 0 100vh;
 
 	&[open] {
 		translate: 0 0;
 
+		/* stylelint-disable-next-line scss/at-rule-no-unknown */
 		@starting-style {
 			translate: 0 100vh;
 		}

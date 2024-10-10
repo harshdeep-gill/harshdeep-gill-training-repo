@@ -3,8 +3,11 @@
  */
 const { HTMLElement } = window;
 
+/**
+ * QuarkDialogCloseElement Class.
+ */
 export class QuarkDialogCloseElement extends HTMLElement {
-    /**
+	/**
 	 * Properties.
 	 */
 	private dialog: HTMLDialogElement | null | undefined;
@@ -39,7 +42,7 @@ export class QuarkDialogCloseElement extends HTMLElement {
 		this.addEventListener( 'click', this.closeDialog.bind( this ) );
 	}
 
-    /**
+	/**
 	 * Event: 'click'.
 	 *
 	 * Closes Dialog On Element Click.
@@ -51,7 +54,7 @@ export class QuarkDialogCloseElement extends HTMLElement {
 		// Open the dialog.
 		dialog?.close();
 
-        // Remove scroll from body.
-        document.querySelector( 'body' )?.classList?.remove( 'prevent-scroll' );
+		// Remove scroll from body.
+		document.querySelector( 'body' )?.classList?.remove( 'prevent-scroll' );
 	}
 }
