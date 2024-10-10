@@ -14,12 +14,14 @@ use DOMElement;
 use Exception;
 use WP_Post;
 use WP_CLI;
+use WP_Term;
 use wpdb;
 use WP_Error;
 
 use const Quark\Expeditions\PrePostTripOptions\POST_TYPE as PRE_POST_TRIP_POST_TYPE;
 use const Quark\Expeditions\POST_TYPE as EXPEDITION_POST_TYPE;
 use const Quark\Ships\POST_TYPE as SHIP_POST_TYPE;
+use const Quark\StaffMembers\DEPARTMENT_TAXONOMY;
 
 /**
  * Class Block_Converter.
@@ -2426,12 +2428,20 @@ class Block_Converter {
 		$view_data = ! empty( $result['view_data'] ) ? maybe_unserialize( $result['view_data'] ) : [];
 
 		// Set attributes.
-		$attrs['totalPosts'] = is_array( $view_data ) && ! empty( $view_data['argument'] ) ? absint( $view_data['argument'] ) : 6;
+		$attrs['totalPosts'] = 21;
 		$attrs['selection']  = 'auto';
 
-		// Set view.
-		if ( in_array( $view, [ 'cards_slider', 'row' ], true ) ) {
-			$attrs['isCarousel'] = true;
+		// Set view data.
+		if ( is_array( $view_data ) && ! empty( $view_data['argument'] ) ) {
+			$attrs['selection'] = 'recent';
+
+			// Get Department category.
+			$department_term = get_term_by_id( absint( $view_data['argument'] ), DEPARTMENT_TAXONOMY );
+
+			// Check if term found.
+			if ( $department_term instanceof WP_Term ) {
+				$attrs['departmentIds'] = [ $department_term->term_id ];
+			}
 		}
 
 		// prepare data.

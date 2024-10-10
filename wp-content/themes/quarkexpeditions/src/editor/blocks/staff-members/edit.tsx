@@ -107,7 +107,7 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 								value={ attributes.totalPosts }
 								onChange={ ( totalPosts ) => setAttributes( { totalPosts } ) }
 								min={ 1 }
-								max={ 20 }
+								max={ 30 }
 							/>
 						</>
 					}
