@@ -687,7 +687,7 @@ function get_destination_terms( int $expedition_post_id = 0 ): array {
 
 		// Add region.
 		$regions[] = [
-			'id'     => $destination_term['term_id'],
+			'id'     => absint( $destination_term['term_id'] ),
 			'name'   => $destination_term['name'],
 			'region' => [
 				'name' => $parent_term['name'],
