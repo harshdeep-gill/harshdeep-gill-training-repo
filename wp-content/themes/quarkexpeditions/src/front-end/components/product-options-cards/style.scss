@@ -126,6 +126,7 @@
 		display: flex;
 		flex-direction: column;
 		gap: var(--spacing-5);
+		position: relative;
 
 		#{$self}__title {
 			font-size: var(--h5-font-size);
@@ -236,6 +237,10 @@
 		height: 0;
 
 		@include transition("height");
+
+		@media screen and (max-width: calc(grid-size(md) - 1px)) {
+			display: none;
+		}
 	}
 
 	&__card-details {
@@ -489,10 +494,25 @@
 	}
 
 	&__dialog-cta {
-		background-color: var(--color-gray-20);
+		color: transparent;
+		user-select: none;
+
+		@media screen and (max-width: calc( grid-size(md) - 1px )) {
+			background: none;
+			position: absolute;
+			height: 100%;
+			width: 100%;
+			left: 0;
+			top: 0;
+		}
+
+		@media screen and (min-width: grid-size(md)) {
+			display: none;
+		}
 	}
 
 	&__dialog {
+		margin-bottom: 0;
 
 		.dialog__content {
 			background-color: var(--color-white);

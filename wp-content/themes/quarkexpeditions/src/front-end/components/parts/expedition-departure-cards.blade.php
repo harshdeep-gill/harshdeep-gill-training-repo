@@ -212,7 +212,7 @@
 									</x-product-options-cards.cta-dialog>
 
 									{{-- Modal dialog --}}
-									<x-product-options-cards.dialog id="dialog-{{  $cabin_code . '_' . $departure_id }}">
+									<x-product-options-cards.dialog id="dialog-{{  $cabin_code . '_' . $departure_id }}" class="product-options-cards__card-details">
 										<x-dialog.header>
 											<h3>{{ $cabin['name'] ?? '' }}</h3>
 										</x-dialog.header>
