@@ -85,14 +85,7 @@
 					<p>{{ __( 'We also invite you to join the conversation, see photos, videos and read some comments from our past travelers or share your favorite travel moment with us.', 'qrk' ) }}</p>
 					@if ( ! empty( $links ) )
 						<p class="form-newsletter__social-cta">{{ __( 'Join the Quark Expeditions Community:', 'qrk' ) }}</p>
-						<div class="form-newsletter__social-links">
-								@foreach ( $links as $type => $url )
-									@if ( empty( $url ) )
-										@continue
-									@endif
-									<x-form-newsletter.social-link type="{{ $type }}" url="{{ $url }}" />
-								@endforeach
-						</div>
+						<x-social-links :links="$links" class="form-newsletter__social-links" />
 					@endif
 				</div>
 			</div>
