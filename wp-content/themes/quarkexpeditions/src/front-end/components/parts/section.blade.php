@@ -6,6 +6,7 @@
 	'description'      => '',
 	'background'       => false,
 	'background_color' => '',
+	'background_image' => '',
 	'padding'          => false,
 	'narrow'           => false,
 	'cta_button'       => [],
@@ -24,6 +25,9 @@
 	:background_color="$background_color"
 	:padding="$padding"
 	:id="$id"
+	@if ( ! empty( $background_image ) )
+		:full_width="true"
+	@endif
 >
 	@if( ! empty( $title ) )
 		<x-section.heading>

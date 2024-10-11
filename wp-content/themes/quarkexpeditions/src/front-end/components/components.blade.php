@@ -295,6 +295,8 @@
 <x-component-demo :keys="[ 'section-image' ]">
 	<x-section :full_width="true">
 		<x-section.image :image_id="26" gradient_color="white" gradient_position="both" />
+		<x-section.title title="Testing Section Title.." />
+		<x-section.description>Discover what your Crossing the Circle Expedition includes</x-section.description>
 		<x-review-cards>
 			<x-review-cards.card>
 				<x-review-cards.rating rating="4" />
@@ -319,6 +321,7 @@
 				<x-review-cards.author-details text="Antarctic Express: Crossing the Circle" />
 			</x-review-cards.card>
 		</x-review-cards>
+		<x-section.cta class="color-context--dark" text="Learn More" url="#" color="black" />
 	</x-section>
 </x-component-demo>
 
