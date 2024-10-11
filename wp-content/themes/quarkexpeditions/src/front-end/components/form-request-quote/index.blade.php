@@ -153,7 +153,7 @@
 			</div>
 			<p class="form-request-quote__success-content">{{ __( 'One of our Polar Travel Advisors will be in touch. You’re one step closer to making your polar dream a reality!', 'qrk' ) }}</p>
 
-			@if ( $home_url )
+			@if ( ! empty( $home_url ) )
 				<div class="form-request-quote__success-button-wrap">
 					<x-button url="{{ $home_url }}" size="big" class="form-request-quote__back-to-home">{{ __( 'Back to Home!', 'qrk' ) }}</x-button>
 				</div>
