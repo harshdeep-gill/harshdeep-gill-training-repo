@@ -50,6 +50,7 @@ export default class ExpeditionSearchResults extends HTMLElement {
 			resetMarkup,
 			markup,
 			loadMoreResults,
+			cabinClasses,
 		} = state;
 
 		// If results container element not available, return.
@@ -74,6 +75,44 @@ export default class ExpeditionSearchResults extends HTMLElement {
 		// Reset the markup to empty, if resetMarkup is true.
 		if ( resetMarkup ) {
 			this.resultsContainer.innerHTML = '';
+		}
+
+		// Check if cabin classes have been selected.
+		if ( cabinClasses.length ) {
+			const productOptionCards = this.querySelectorAll( '.product-options-cards__card' ) as NodeListOf<HTMLElement>;
+
+			// Check if product option cards exist.
+			if ( productOptionCards?.length ) {
+				// Get the cabin values.
+				const cabinValues = cabinClasses.map( ( cabin ) => cabin.value );
+
+				// Loop through the product option cards.
+				productOptionCards.forEach( ( productOptionCard ) => {
+					// Get the cabin type.
+					const cabinType = productOptionCard.getAttribute( 'type' );
+
+					// If cabin type exists.
+					if ( cabinType ) {
+						// Check if cabin type exists in selected cabin class values.
+						if ( ! cabinValues.includes( cabinType ) ) {
+							productOptionCard.style.display = 'none';
+						} else {
+							productOptionCard.style.display = 'block';
+						}
+					}
+				} );
+			}
+		} else {
+			const productOptionCards = this.querySelectorAll( '.product-options-cards__card' ) as NodeListOf<HTMLElement>;
+
+			// Check if product option cards exist.
+			if ( productOptionCards?.length ) {
+				// Loop through the product option cards.
+				productOptionCards.forEach( ( productOptionCard ) => {
+					// Set all cards display block.
+					productOptionCard.style.display = 'block';
+				} );
+			}
 		}
 	}
 }

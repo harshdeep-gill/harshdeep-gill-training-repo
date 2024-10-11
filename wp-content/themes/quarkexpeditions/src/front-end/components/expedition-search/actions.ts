@@ -863,9 +863,6 @@ export const addCabinClass = ( cabinClassToAdd: ExpeditionSearchFilterState ) =>
 
 	// Set the state;
 	setState( updateObject );
-
-	// Fetch the results.
-	fetchResults( filterUpdated );
 };
 
 /**
@@ -885,9 +882,6 @@ export const removeCabinClass = ( cabinClassValue: string ) => {
 
 	// Set the state.
 	setState( updateObject );
-
-	// Fetch the results.
-	fetchResults( filterUpdated );
 };
 
 /**
