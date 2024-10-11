@@ -15,6 +15,9 @@ export default class FormRequestQuote extends HTMLElement {
 	/**
 	 * Properties.
 	 */
+	private readonly quarkForm: HTMLElement | null;
+	private readonly successMessage: HTMLElement | null;
+	private readonly content: HTMLElement | null;
 	private readonly tabs: TPTabsElement | null;
 	private nextStepButton: HTMLButtonElement | null;
 	private previousStepButton: HTMLButtonElement | null;
@@ -32,6 +35,9 @@ export default class FormRequestQuote extends HTMLElement {
 		super();
 
 		// Elements.
+		this.quarkForm = this.querySelector( 'quark-form' );
+		this.successMessage = this.querySelector( '.form-request-quote__success' );
+		this.content = this.querySelector( '.form-request-quote__tabs' );
 		this.tabs = this.querySelector( '.form-request-quote__tabs' );
 		this.nextStepButton = this.querySelector( '.form-request-quote__next-step-btn' );
 		this.previousStepButton = this.querySelector( '.form-request-quote__previous-step-button' );
@@ -45,6 +51,7 @@ export default class FormRequestQuote extends HTMLElement {
 		this.nextStepButton?.addEventListener( 'click', () => this.handleStepOneValidation() );
 		this.previousStepButton?.addEventListener( 'click', () => this.goToPreviousStep() );
 		this.expeditions?.addEventListener( 'change', () => this.changeExpedition() );
+		this.quarkForm?.addEventListener( 'api-success', this.showSuccessMessage.bind( this ) );
 	}
 
 	/**
@@ -90,6 +97,21 @@ export default class FormRequestQuote extends HTMLElement {
 	goToPreviousStep() {
 		// Go to the previous step.
 		this.tabs?.setCurrentTab( 'travel-details' );
+	}
+
+	/**
+	 * Show thank you message.
+	 */
+	showSuccessMessage(): void {
+		// Check if we have content and thank you.
+		if ( ! this.content || ! this.successMessage ) {
+			// We don't, bail!
+			return;
+		}
+
+		// Hide content and show thank you instead.
+		this.content.classList.add( 'form-request-quote__tabs-hidden' );
+		this.successMessage.classList.add( 'form-request-quote__success-visible' );
 	}
 
 	/**
