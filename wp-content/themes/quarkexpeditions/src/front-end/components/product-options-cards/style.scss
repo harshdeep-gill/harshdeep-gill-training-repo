@@ -512,7 +512,11 @@
 	}
 
 	&__dialog {
-		margin-bottom: 0;
+
+		.dialog {
+			margin-bottom: 0;
+			min-width: 100vw;
+		}
 
 		.dialog__content {
 			background-color: var(--color-white);

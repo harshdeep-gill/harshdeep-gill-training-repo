@@ -143,4 +143,9 @@
 			min-width: 450px;
 		}
 	}
+
+	&::backdrop {
+		background-color: var(--color-black);
+		filter: blur(80px);
+	}
 }

@@ -7,19 +7,18 @@
 	if ( empty( $slot ) ) {
 		return;
 	}
-
-	$classes = [ 'dialog', $class ];
 @endphp
 
-<dialog
+<quark-dialog
 	@if ( ! empty( $id ) )
 		id="{{ $id }}"
 	@endif
-	@class( $classes )
-	overlay-click-close="yes"
+	class="{{ $class }}"
 >
-	<div class="dialog__content">
-		<x-dialog.dialog-close :dialog_id="$id" />
-		{!! $slot !!}
-	</div>
-</dialog>
+	<dialog class="dialog">
+		<div class="dialog__content">
+			<x-dialog.dialog-close />
+			{!! $slot !!}
+		</div>
+	</dialog>
+</quark-dialog>
