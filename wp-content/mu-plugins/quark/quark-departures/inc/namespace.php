@@ -29,6 +29,7 @@ use function Quark\Softrip\Promotions\get_promotions_by_code;
 use function Quark\Softrip\AdventureOptions\get_adventure_option_by_departure_post_id;
 use function Quark\AdventureOptions\get as get_adventure_option_post_data;
 use function Quark\CabinCategories\get_cabin_price_data_by_departure;
+use function Quark\Itineraries\get_tax_type_details;
 use function Quark\Leads\get_request_a_quote_url;
 use function Quark\Localization\get_currencies;
 
@@ -1127,6 +1128,7 @@ function get_dates_rates_card_data( int $departure_id = 0, string $currency = DE
 		'available_promos'           => $available_promos,
 		'cabin_data'                 => get_cabin_price_data_by_departure( $departure_id, $currency ),
 		'request_a_quote_url'        => get_request_a_quote_url( $departure_id ),
+		'tax_types'                  => get_tax_type_details( $itinerary_id ),
 	];
 
 	// Set cache and return data.
