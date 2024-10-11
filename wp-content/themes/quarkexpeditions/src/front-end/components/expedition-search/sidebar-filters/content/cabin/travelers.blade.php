@@ -20,7 +20,7 @@
 						@continue
 					@endif
 
-					<x-expedition-search.sidebar-filters.checkbox name="travelers" :label="$traveler['label']" :value="$traveler['value']" :count="$traveler['count']" />
+					<x-expedition-search.sidebar-filters.checkbox name="travelers" :label="$traveler['label']" :value="$traveler['value']" />
 				@endforeach
 			</x-form.field-group>
 		</x-accordion.item-content>

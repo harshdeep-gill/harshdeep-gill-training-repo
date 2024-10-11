@@ -30,16 +30,26 @@ export const initialize = ( settings: { filtersApiUrl: string | null, searchPage
 /**
  * Update destination filter value.
  *
- * @param {Set} destinations Selected Destinations.
+ * @param {Object[]} destinations Selected Destinations.
  */
-export const updateDestinations = ( destinations: Set<string> | undefined ) => {
+export const updateDestinations = ( destinations: SearchFiltersBarDestinationState[] ) => {
 	// Get State.
-	const { selectedDestinations, selectedMonths } = getState();
-	let currentSelectedDestinations = { ...selectedDestinations };
+	const { selectedDestinations, selectedMonths }: SearchFiltersBarState = getState();
+	let currentSelectedDestinations = [ ...selectedDestinations ];
 
 	// If destinations exist, update the value.
-	if ( destinations ) {
-		currentSelectedDestinations = destinations;
+	if ( destinations && Array.isArray( destinations ) && destinations.length ) {
+		// Only get the unique destinations.
+		currentSelectedDestinations = destinations.reduce( ( accumulator, current ) => {
+			// Check if the value is already there.
+			if ( ! accumulator.find( ( dest ) => dest.value === current.value ) ) {
+				// Add the destination.
+				accumulator.push( current );
+			}
+
+			// Return
+			return accumulator;
+		}, <SearchFiltersBarDestinationState[]>[] );
 	}
 
 	// Set state.
@@ -51,22 +61,35 @@ export const updateDestinations = ( destinations: Set<string> | undefined ) => {
 	fetchFilterOptions();
 
 	// Update Search URL.
-	updateSearchUrl( Array.from( currentSelectedDestinations ), Array.from( selectedMonths ) );
+	updateSearchUrl(
+		currentSelectedDestinations.map( ( dest ) => dest.value ),
+		Array.from( selectedMonths ).map( ( month ) => month.value )
+	);
 };
 
 /**
  * Update months filter value.
  *
- * @param {Set} months Selected Months.
+ * @param {Object[]} months Selected Months.
  */
-export const updateDepartureMonths = ( months: Set<string> | undefined ) => {
+export const updateDepartureMonths = ( months: SearchFiltersBarMonthState[] ) => {
 	// Get State.
-	const { selectedMonths, selectedDestinations } = getState();
+	const { selectedMonths, selectedDestinations }: SearchFiltersBarState = getState();
 	let currentSelectedMonths = { ...selectedMonths };
 
 	// If months exist, update the value.
-	if ( months ) {
-		currentSelectedMonths = months;
+	if ( months && Array.isArray( months ) && months.length ) {
+		// Only get the unique months values.
+		currentSelectedMonths = months.reduce( ( accumulator, current ) => {
+			// Check if the value is already there.
+			if ( ! accumulator.find( ( month ) => month.value === current.value ) ) {
+				// Add the destination.
+				accumulator.push( current );
+			}
+
+			// Return
+			return accumulator;
+		}, <SearchFiltersBarMonthState[]>[] );
 	}
 
 	// Set state.
@@ -78,7 +101,10 @@ export const updateDepartureMonths = ( months: Set<string> | undefined ) => {
 	fetchFilterOptions( 'months' );
 
 	// Update Search URL.
-	updateSearchUrl( Array.from( selectedDestinations ), Array.from( currentSelectedMonths ) );
+	updateSearchUrl(
+		selectedDestinations.map( ( dest ) => dest.value ),
+		currentSelectedMonths.map( ( month ) => month.value )
+	);
 };
 
 /**
@@ -137,7 +163,7 @@ export const fetchFilterOptions = ( type: string = 'destinations' ) => {
 		} )
 		.catch( ( error ) => {
 			// Handle any errors that occur during the fetch.
-			console.error( error ) //eslint-disable-line
+			console.error(error) //eslint-disable-line
 		} );
 };
 
@@ -147,7 +173,7 @@ export const fetchFilterOptions = ( type: string = 'destinations' ) => {
  * @param {Array} destinations Selected Destinations.
  * @param {Array} months       Selected Months.
  */
-export const updateSearchUrl = ( destinations: Array<number> = [], months: Array<number> = [] ) => {
+export const updateSearchUrl = ( destinations: Array<string> = [], months: Array<string> = [] ) => {
 	// Check if either destination or month exist.
 	if ( ! destinations.length && ! months.length ) {
 		// Bail.
@@ -171,5 +197,78 @@ export const updateSearchUrl = ( destinations: Array<number> = [], months: Array
 	// Set State.
 	setState( {
 		searchPageUrl: baseUrl.href,
+	} );
+};
+
+/**
+ * Updates the search history.
+ */
+export const updateHistory = () => {
+	// Get the state.
+	const { searchPageUrl, selectedDestinations, selectedMonths, history }: SearchFiltersBarState = getState();
+
+	// Get Construct a url object.
+	let baseUrl: URL;
+
+	// Try constructing the url object.
+	try {
+		baseUrl = new URL( searchPageUrl );
+	} catch ( error ) {
+		console.error(error); // eslint-disable-line
+		return;
+	}
+
+	// Get the searchparams object.
+	const queryParams = new URLSearchParams( baseUrl.search );
+	const destinationsParam = queryParams.get( 'destinations' );
+	const monthsParam = queryParams.get( 'months' );
+
+	// Null check.
+	if ( ! destinationsParam || ! monthsParam ) {
+		// Bail.
+		return;
+	}
+
+	// Split the params into values.
+	const destinationParamValue = destinationsParam.split( ',' )[ 0 ];
+	const monthParamValue = monthsParam.split( ',' )[ 0 ];
+
+	// Get the respective objects.
+	const destinationObject = selectedDestinations.find( ( selectedDestination ) => selectedDestination.value === destinationParamValue );
+	const monthObject = selectedMonths.find( ( selectedMonth ) => selectedMonth.value === monthParamValue );
+
+	// Check if we have destination and month object.
+	if ( ! destinationObject || ! monthObject ) {
+		// Bail.
+		return;
+	}
+
+	// Initialize updated history
+	const updatedHistory = [ ...history ];
+
+	// Get the index in history.
+	const foundIndex = history.findIndex( ( historyItem ) => historyItem.destination.value === destinationObject.value && historyItem.month.value === monthObject.value );
+
+	// Is this item already in history?
+	if ( foundIndex > -1 ) {
+		// Yes, it is, remove the existing one.
+		updatedHistory.splice( foundIndex, 1 );
+	}
+
+	// Is the history full already?
+	if ( updatedHistory.length === 3 ) {
+		// Pop the least recent item.
+		updatedHistory.pop();
+	}
+
+	// Add the new item.
+	updatedHistory.unshift( {
+		destination: destinationObject,
+		month: monthObject,
+	} );
+
+	// Set the state
+	setState( {
+		history: updatedHistory,
 	} );
 };
