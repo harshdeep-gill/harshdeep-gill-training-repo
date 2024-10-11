@@ -6,7 +6,7 @@ const { HTMLElement, zustand, customElements } = window;
 /**
  * Get the expedition search store.
  */
-const { subscribe } = zustand.stores.expeditionSearch;
+const { subscribe, getState } = zustand.stores.expeditionSearch;
 
 /**
  * Internal dependencies
@@ -51,7 +51,10 @@ export default class QuarkExpeditionSearchRecentSearches extends HTMLElement {
 		const { history } = state;
 
 		// Null checks.
-		if ( ! this.recentSearchCardTemplate || ! history || ! Array.isArray( history ) ) {
+		if ( ! this.recentSearchCardTemplate || ! history || ! Array.isArray( history ) || history.length === 0 ) {
+			// Hide the recent searches
+			this.setAttribute( 'data-hidden', '' );
+
 			// Bail.
 			return;
 		}
@@ -125,8 +128,8 @@ export default class QuarkExpeditionSearchRecentSearches extends HTMLElement {
 				}
 			} );
 
-			// Subscribe to update the active status for the card.
-			subscribe( ( expeditionSearchState: ExpeditionSearchState ) => {
+			// card update function
+			const updateCard = ( expeditionSearchState: ExpeditionSearchState ) => {
 				// Get the state.
 				const { destinations, months } = expeditionSearchState;
 
@@ -141,8 +144,15 @@ export default class QuarkExpeditionSearchRecentSearches extends HTMLElement {
 					// Remove the active attribute
 					cardElement.removeAttribute( 'data-is-active' );
 				}
-			} );
+			};
+
+			// Subscribe to update the active status for the card.
+			subscribe( updateCard );
+			updateCard( getState() );
 		} );
+
+		// Unhide the component
+		this.removeAttribute( 'data-hidden' );
 	}
 
 	/**

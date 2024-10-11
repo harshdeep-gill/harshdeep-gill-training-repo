@@ -232,8 +232,8 @@ export const initialize = ( settings: {
 			if ( 'itineraryLengths' !== key ) {
 				// Loop through the url filters and assign to update object.
 				initialUpdatePayload[ key ] = urlFilters[ key ].map( ( singleFilterValue ) => {
-					// Get the corresponding input.
-					let correspondingInput = filtersInputContainers[ key ]?.querySelector( `input[name="${ key }"][value="${ singleFilterValue }"]` );
+					// Get the corresponding input. We convert the key to kebab case here because the input name attributes are in kebab case
+					let correspondingInput = filtersInputContainers[ key ]?.querySelector( `input[name="${ camelToSnakeCase( key ).replace( '_', '-' ) }"][value="${ singleFilterValue }"]` );
 					let label = correspondingInput?.getAttribute( 'data-label' ) ?? '';
 
 					// Check if this is the months filter
