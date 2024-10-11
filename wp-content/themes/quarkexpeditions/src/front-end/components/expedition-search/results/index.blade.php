@@ -15,7 +15,7 @@
 	<quark-expedition-search-results
 		class="expedition-search__results"
 		partial='expedition-search'
-		selector='.departure-cards'
+		selector='.expedition-cards'
 	>
 		{!! $slot !!}
 	</quark-expedition-search-results>
