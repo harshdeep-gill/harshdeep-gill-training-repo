@@ -2835,18 +2835,6 @@
 	</x-section>
 </x-component-demo>
 
-<x-component-demo :keys="[ 'currency-switcher' ]">
-	<x-section>
-		<x-currency-switcher appearance="dark" />
-	</x-section>
-
-	<x-section>
-		<div style="background-color: var(--color-gray-90); padding: 24px;">
-			<x-currency-switcher appearance="dark" />
-		</div>
-	</x-section>
-</x-component-demo>
-
 <x-component-demo :keys="[ 'media-cta-banner' ]">
 	<x-media-cta-banner>
 		<x-media-cta-banner.image image_id="186" />
