@@ -7173,7 +7173,9 @@
 
 <x-component-demo :keys="[ 'form-account-management' ]">
 	<x-section>
-		<x-form-account-management />
+		<x-form-account-management
+			:states="$states['US'] ?? []"
+		/>
 	</x-section>
 </x-component-demo>
 

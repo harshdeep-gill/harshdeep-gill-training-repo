@@ -21,6 +21,7 @@ use function Quark\Migration\Drupal\prepare_content;
 use function Quark\Migration\Drupal\prepare_for_migration;
 use function Quark\Migration\Drupal\get_post_by_id;
 use function Quark\Migration\WordPress\qrk_sanitize_attribute;
+use function Quark\Migration\Drupal\prepare_seo_data;
 use function WP_CLI\Utils\make_progress_bar;
 
 use const Quark\StaffMembers\POST_TYPE;
@@ -216,10 +217,23 @@ class Staff_Member {
 			'post_status'       => $status,
 			'comment_status'    => 'closed',
 			'ping_status'       => 'closed',
-			'meta_input'        => [
-				'drupal_id' => $nid,
-			],
+			'meta_input'        => [],
 		];
+
+		// SEO meta data.
+		if ( ! empty( $item['metatags'] ) && is_string( $item['metatags'] ) ) {
+			$seo_data = prepare_seo_data( json_decode( $item['metatags'], true ) );
+
+			// Merge seo data if not empty.
+			if ( ! empty( $seo_data ) ) {
+				$data['meta_input'] = array_merge( $seo_data, $data['meta_input'] );
+			}
+		}
+
+		// Set fallback as excerpt if meta description is empty.
+		if ( empty( $data['meta_input']['_yoast_wpseo_metadesc'] ) ) {
+			$data['meta_input']['_yoast_wpseo_metadesc'] = $data['post_excerpt'];
+		}
 
 		// Set first_name.
 		if ( ! empty( $item['first_name'] ) && is_string( $item['first_name'] ) ) {
@@ -371,6 +385,9 @@ class Staff_Member {
 			// Set season_ids.
 			$data['tax_input'][ SEASON_TAXONOMY ] = $season_ids;
 		}
+
+		// Set meta - drupal_id.
+		$data['meta_input']['drupal_id'] = $nid;
 
 		// Return normalized data.
 		return $data;
