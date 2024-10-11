@@ -109,6 +109,7 @@
 		label {
 			font-size: var(--font-size);
 			font-weight: var(--font-weight-bold);
+			line-height: var(--line-height);
 			margin-bottom: var(--spacing-5);
 		}
 
@@ -140,6 +141,8 @@
 		margin-top: var(--spacing-4);
 
 		.btn {
+			font-size: var(--font-size);
+			line-height: var(--line-height);
 			width: 100%;
 			height: 56px;
 
