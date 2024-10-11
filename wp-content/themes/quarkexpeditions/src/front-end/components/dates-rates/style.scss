@@ -421,5 +421,13 @@
 	&__accordion-content--no-transition {
 		transition: none;
 	}
+
+	.gst-tax {
+
+		svg {
+			width: 20px;
+			height: 20px;
+		}
+	}
 }
 
