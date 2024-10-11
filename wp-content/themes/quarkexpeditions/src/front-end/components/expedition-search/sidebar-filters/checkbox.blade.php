@@ -1,9 +1,9 @@
 @props( [
-	'name'      => '',
-	'label'     => '',
-	'value'     => '',
-	'count'     => '0',
-	'parent'    => 0,
+	'name'   => '',
+	'label'  => '',
+	'value'  => '',
+	'count'  => '0',
+	'parent' => 0,
 ] )
 
 @php
