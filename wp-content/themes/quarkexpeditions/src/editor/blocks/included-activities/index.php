@@ -74,7 +74,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 		// Prepare activity data.
 		$activities[] = [
 			'title'       => $activity['post']->post_title,
-			'description' => apply_filters( 'the_content', $activity['post']->post_excerpt ),
+			'description' => get_the_excerpt( $activity['post']->ID ),
 			'thumbnail'   => $activity['post_thumbnail'],
 			'permalink'   => $activity['permalink'],
 		];

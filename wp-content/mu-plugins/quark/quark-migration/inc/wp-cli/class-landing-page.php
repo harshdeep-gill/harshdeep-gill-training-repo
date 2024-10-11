@@ -41,17 +41,14 @@ class Landing_Page {
 	 * @var array<int>
 	 */
 	private $special_pages = [
-		'home'                            => 102236,
-		'home2'                           => 102696,
-		'travel-insurance-plan'           => 312,
-		'blog-archive'                    => 110506,
-		'privacy-policy'                  => 310,
-		'website-term-of-use'             => 311,
-		'expedition-terms-and-conditions' => 105726,
-		'know-before-you-go'              => 106661,
-		'expedition-ships'                => 109,
-		'offers'                          => 115316,
-		'Brochures'                       => 114791,
+		'home'                => 102236,
+		'home2'               => 102696,
+		'blog-archive'        => 110506,
+		'website-term-of-use' => 311,
+		'know-before-you-go'  => 106661,
+		'expedition-ships'    => 109,
+		'offers'              => 115316,
+		'Brochures'           => 114791,
 	];
 
 	/**

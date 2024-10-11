@@ -81,6 +81,7 @@ import * as linkDetailCards from './link-detail-cards';
 import * as globalMessage from './global-message';
 import * as datesAndRates from './dates-and-rates';
 import * as mediaTextCtaCarousel from './media-text-cta-carousel';
+import * as expeditionSearch from './expedition-search';
 import * as pressReleases from './press-releases';
 import * as tabs from './tabs';
 import * as detailedExpeditionCarousel from './detailed-expedition-carousel';
@@ -93,6 +94,8 @@ import * as formNewsletter from './form-newsletter';
 import * as formAccessDeletionRequest from './form-account-management';
 import * as formCommunicationsOptIn from './form-communications-opt-in';
 import * as formRequestAQuote from './form-request-quote';
+import * as searchFiltersBar from './search-filters-bar';
+import * as socialLinks from './social-links';
 
 /**
  * Add blocks.
@@ -170,6 +173,7 @@ const blocks = [
 	globalMessage,
 	datesAndRates,
 	mediaTextCtaCarousel,
+	expeditionSearch,
 	pressReleases,
 	tabs,
 	detailedExpeditionCarousel,
@@ -182,6 +186,8 @@ const blocks = [
 	formAccessDeletionRequest,
 	formCommunicationsOptIn,
 	formRequestAQuote,
+	searchFiltersBar,
+	socialLinks,
 ];
 
 // Register blocks for ships.

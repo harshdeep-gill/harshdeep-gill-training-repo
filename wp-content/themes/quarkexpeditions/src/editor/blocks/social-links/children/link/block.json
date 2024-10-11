@@ -1,0 +1,40 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Link",
+	"name": "quark/social-links-link",
+	"description": "Link Item within Social Links Block.",
+	"parent": [
+		"quark/social-links"
+	],
+	"category": "layout",
+	"keywords": [
+		"link"
+	],
+	"textdomain": "qrk",
+	"attributes": {
+		"icon": {
+			"type": "string",
+			"default": "",
+			"enum": [
+				"facebook",
+				"twitter",
+				"instagram",
+				"youtube",
+				"google",
+				"pinterest",
+				""
+			]
+		},
+		"url": {
+			"type": "object",
+			"default": {}
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

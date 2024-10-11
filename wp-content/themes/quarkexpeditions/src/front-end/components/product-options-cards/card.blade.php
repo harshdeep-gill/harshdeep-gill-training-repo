@@ -2,6 +2,7 @@
 	'class'      => '',
 	'details_id' => '',
 	'status'     => '',
+	'type'       => '',
 ] )
 
 @php
@@ -27,6 +28,9 @@
 	@class( $classes )
 	@if ( ! empty( $details_id ) )
 		data-details-id="{!! esc_attr( $details_id ) !!}"
+	@endif
+	@if ( ! empty( $type ) )
+		type="{{ $type }}"
 	@endif
 >
 	{!! $slot !!}
