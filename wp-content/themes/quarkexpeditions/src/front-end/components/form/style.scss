@@ -29,7 +29,7 @@
 		&[radio-group-required="yes"] {
 
 			> label #{$self}__required-indicator,
-			.checkbox-container:only-child #{$self}__required-indicator {
+			.form-field-group__group > .checkbox-container:only-child #{$self}__required-indicator {
 				display: inline;
 				color: var(--color-error-50);
 			}

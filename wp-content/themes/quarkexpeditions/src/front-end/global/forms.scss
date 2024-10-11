@@ -188,6 +188,8 @@ input[type="file"] {
 		border: 1px solid var(--color-gray-20);
 		border-left: none;
 		border-radius: 0 var(--border-radius-large) var(--border-radius-large) 0;
+		min-width: 300px;
+		width: 100%;
 	}
 
 	&__file-info {
@@ -318,6 +320,16 @@ label {
 	&:has(>.form__inline-dropdown) {
 		white-space: nowrap;
 	}
+
+	&__file {
+
+		tp-form-error {
+			display: block;
+			color: var(--color-error-100);
+			font-weight: var(--font-weight-bold);
+			margin-top: var(--spacing-4);
+		}
+	}
 }
 
 .form-field-group {
@@ -334,8 +346,9 @@ label {
 	}
 
 	&__title {
-		margin-bottom: 0;
+		font-size: var(--font-size);
 		font-weight: var(--font-weight-bold);
+		margin-bottom: 0;
 		order: 1;
 	}
 
@@ -362,16 +375,21 @@ label {
 		display: block;
 		color: var(--color-error-100);
 		font-weight: var(--font-weight-bold);
-		margin-top: calc(-1 * var(--spacing-4));
+		margin-top: calc(-1 * var(--spacing-4) + var(--spacing-1));
 	}
 }
 
 .form-row {
 	display: grid;
-	gap: var(--spacing-4);
-	margin-bottom: var(--spacing-4);
+	gap: var(--spacing-5);
+	margin-bottom: var(--spacing-5);
 	grid-template-columns: repeat(1, 1fr);
 	min-width: 0;
+
+	@media screen and (min-width: grid-size(lg)) {
+		margin-bottom: var(--spacing-6);
+		gap: var(--spacing-6);
+	}
 
 	.form-field {
 		margin-bottom: 0;
