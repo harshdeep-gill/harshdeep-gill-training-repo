@@ -8,7 +8,7 @@
 	'states'            => [],
 	'thank_you_page'    => '',
 	'salesforce_object' => 'WebForm_RAQ__c',
-	'home_url'          => '#',
+	'home_url'          => '',
 ] )
 
 @php
