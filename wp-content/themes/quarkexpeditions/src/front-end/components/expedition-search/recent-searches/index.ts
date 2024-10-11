@@ -51,7 +51,10 @@ export default class QuarkExpeditionSearchRecentSearches extends HTMLElement {
 		const { history } = state;
 
 		// Null checks.
-		if ( ! this.recentSearchCardTemplate || ! history || ! Array.isArray( history ) ) {
+		if ( ! this.recentSearchCardTemplate || ! history || ! Array.isArray( history ) || history.length === 0 ) {
+			// Hide the recent searches
+			this.setAttribute( 'data-hidden', '' );
+
 			// Bail.
 			return;
 		}
@@ -143,6 +146,9 @@ export default class QuarkExpeditionSearchRecentSearches extends HTMLElement {
 				}
 			} );
 		} );
+
+		// Unhide the component
+		this.removeAttribute( 'data-hidden' );
 	}
 
 	/**
