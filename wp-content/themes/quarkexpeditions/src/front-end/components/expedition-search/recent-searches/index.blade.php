@@ -6,7 +6,7 @@
 	quark_component_enqueue_assets( 'search-filters-bar' );
 @endphp
 
-<quark-expedition-search-recent-searches class="expedition-seach__recent-searches">
+<quark-expedition-search-recent-searches class="expedition-search__recent-searches">
 	<h4 class="h4"><x-escape :content="$title" /></h4>
 	<template>
 		<x-mini-cards-list.card>

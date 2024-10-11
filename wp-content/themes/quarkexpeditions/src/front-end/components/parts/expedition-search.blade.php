@@ -6,7 +6,23 @@
 	'filters_data'    => [],
 ] )
 
+@php
+	$destinations = $filters_data['destinations'] ?? [];
+	$available_months = $filters_data['months'] ?? [];
+
+	$filters_api_url = quark_get_template_data( 'filters_api_url' );
+	$search_page_url = quark_get_template_data( 'search_page_url' );
+
+@endphp
+
 <x-expedition-search>
+	<x-search-filters-bar
+		:destinations="$destinations"
+		:available_months="$available_months"
+		:filters_api_url="$filters_api_url"
+		:search_page_url="$search_page_url"
+	/>
+
 	{{-- Header --}}
 	<x-expedition-search.header>
 		<x-expedition-search.result-count count="{{ $results_count }}" />
