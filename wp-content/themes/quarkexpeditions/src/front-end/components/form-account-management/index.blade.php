@@ -26,7 +26,7 @@
 			<h3 class="form-account-management__title">{{ __( 'CCPA Access/Deletion Request', 'qrk' ) }}</h3>
 
 			<x-form.row>
-				<tp-toggle-attribute trigger="select" target=".form-contact-us__request-type" value="requiest_type" attribute="required">
+				<tp-toggle-attribute trigger="select" target=".form-contact-us__request-type" value="request_type" attribute="required">
 					<x-form.field :validation="[ 'required' ]">
 						<x-form.select label="Request Type" name="fields[Request_Type__c]">
 							<x-form.option value="">- Select -</x-form.option>
@@ -95,8 +95,8 @@
 			<small>
 				<div>
 					<ul>
-						<li class="form-account-management__Verify-description">I verify that I am at least 13 years of age.</li>
-						<li class="form-account-management__Verify-description">I declare under penalty of perjury that the information in this form is true and correct and that I am either (i) the consumer identified in this request, or (ii) authorized to make this request on behalf of the consumer</li>
+						<li class="form-account-management__verify-description">I verify that I am at least 13 years of age.</li>
+						<li class="form-account-management__verify-description">I declare under penalty of perjury that the information in this form is true and correct and that I am either (i) the consumer identified in this request, or (ii) authorized to make this request on behalf of the consumer</li>
 					</ul>
 				</div>
 			</small>

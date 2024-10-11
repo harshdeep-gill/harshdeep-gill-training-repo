@@ -44,7 +44,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 	}
 
 	// Extrating states of US.
-	$states = get_states()['US'];
+	$states = get_states()['US'] ?? [];
 
 	// Component attributes.
 	$component_attributes = [
