@@ -233,8 +233,9 @@ class Expedition {
 			'meta_input'        => [],
 		];
 
-		// Set post content.
-		$data['post_content'] = $this->prepare_post_content( $nid );
+		// Get featured image.
+		global $wp_thumbnail_id;
+		$wp_thumbnail_id = 0;
 
 		// Get featured image.
 		if ( ! empty( $item['hero_banner_id'] ) ) {
@@ -245,6 +246,9 @@ class Expedition {
 				$data['meta_input']['_thumbnail_id'] = $wp_thumbnail_id;
 			}
 		}
+
+		// Set post content.
+		$data['post_content'] = $this->prepare_post_content( $nid );
 
 		// Set post content as meta value.
 		if ( ! empty( $post_content ) ) {
@@ -427,7 +431,7 @@ class Expedition {
 				LEFT JOIN node__field_primary_destination AS field_primary_destination ON node.nid = field_primary_destination.entity_id AND node.langcode = field_primary_destination.langcode
 				LEFT JOIN node__field_hero_banner AS field_hero_banner ON node.nid = field_hero_banner.entity_id AND node.langcode = field_hero_banner.langcode
 		WHERE
-			node.type = 'expedition'";
+			node.type = 'expedition' AND node.langcode = 'en';";
 
 		// Fetch data.
 		$result = $drupal_database->get_results( $query, ARRAY_A );
@@ -582,6 +586,32 @@ class Expedition {
 		// Get database connection.
 		$drupal_database = get_database();
 
+		// Set attributes.
+		$attrs = [];
+
+		// Get global featured image.
+		global $wp_thumbnail_id;
+
+		// Check if global featured image is not empty.
+		if ( ! empty( $wp_thumbnail_id ) && absint( $wp_thumbnail_id ) ) {
+			// Get attachment src.
+			$attachment_src = wp_get_attachment_image_src( $wp_thumbnail_id, 'full' );
+
+			// Check if attachment src is not available.
+			if ( is_array( $attachment_src ) ) {
+				// Set attributes.
+				$attrs[] = [
+					'id'      => absint( $wp_thumbnail_id ),
+					'src'     => $attachment_src[0],
+					'width'   => $attachment_src[1],
+					'height'  => $attachment_src[2],
+					'title'   => strval( wp_get_attachment_caption( absint( $wp_thumbnail_id ) ) ),
+					'caption' => strval( wp_get_attachment_caption( absint( $wp_thumbnail_id ) ) ),
+					'size'    => 'full',
+				];
+			}
+		}
+
 		// Query.
 		$query = "SELECT
 			paragraph.field_exp_gallery_target_id
@@ -595,7 +625,7 @@ class Expedition {
 
 		// Check if data is not array.
 		if ( ! is_array( $result ) || empty( $result['field_exp_gallery_target_id'] ) ) {
-			return [];
+			return $attrs;
 		}
 
 		// Query.
@@ -618,14 +648,11 @@ class Expedition {
 			WP_CLI::line( 'Unable to fetch hero_banner data!' );
 
 			// Bail out.
-			return [];
+			return $attrs;
 		}
 
-		// Set attributes.
-		$attrs = [];
-
 		// Loop through each image.
-		foreach ( $result as $index => $image ) {
+		foreach ( $result as $image ) {
 			$image_target_id = download_file_by_mid( absint( $image['image_id'] ) );
 
 			// Check if image found.
@@ -642,7 +669,7 @@ class Expedition {
 			}
 
 			// Set attributes.
-			$attrs[ $index ] = [
+			$attrs[] = [
 				'id'      => $image_target_id,
 				'src'     => $attachment_src[0],
 				'width'   => $attachment_src[1],
@@ -729,32 +756,25 @@ class Expedition {
 	 * @return string Secondary nav content.
 	 */
 	protected function get_secondary_nav_content(): string {
-		// Prepare nav items.
-		$nav_items = [
-			[
-				'title' => 'Overview',
-				'url'   => 'overview',
-			],
-			[
-				'title' => 'Itineraries',
-				'url'   => 'itineraries',
-			],
-			[
-				'title' => "What's Onboard",
-				'url'   => 'life-onboard',
-			],
-			[
-				'title' => "What's Included",
-				'url'   => 'whats-included',
-			],
-			[
-				'title' => 'Know Before You Go',
-				'url'   => 'know-before-you-go',
-			],
-		];
-
 		// Prepare secondary nav block.
-		return $this->block_converter->prepare_secondary_nav( $nav_items );
+		return '<!-- wp:quark/secondary-navigation -->
+			<!-- wp:quark/secondary-navigation-menu -->
+			<!-- wp:quark/secondary-navigation-item {"title":"Overview","url":{"url":"overview","text":"Overview","newWindow":false}} /-->
+
+			<!-- wp:quark/secondary-navigation-item {"title":"Itineraries","url":{"url":"itineraries","text":"Itineraries","newWindow":false}} /-->
+
+			<!-- wp:quark/secondary-navigation-item {"title":"What\'s Onboard","url":{"url":"life-onboard","text":"What\'s Onboard","newWindow":false}} /-->
+
+			<!-- wp:quark/secondary-navigation-item {"title":"What\'s Included","url":{"url":"whats-included","text":"What\'s Included","newWindow":false}} /-->
+			<!-- wp:quark/secondary-navigation-item {"title":"Know Before You Go","url":{"url":"know-before-you-go","text":"Know Before You Go","newWindow":false}} /-->
+			<!-- /wp:quark/secondary-navigation-menu -->
+
+			<!-- wp:quark/secondary-navigation-cta-buttons -->
+			<!-- wp:quark/button {"url":{"url":"#departures","text":"","newWindow":false},"backgroundColor":"black","btnText":"View Departures"} /-->
+
+			<!-- wp:quark/button {"url":{"url":"/request-quote","text":"","newWindow":false},"btnText":"Request A Quote"} /-->
+			<!-- /wp:quark/secondary-navigation-cta-buttons -->
+			<!-- /wp:quark/secondary-navigation -->';
 	}
 
 	/**
@@ -1082,7 +1102,7 @@ class Expedition {
 							'innerContent' => [
 								serialize_block(
 									[
-										'blockName'    => 'quark/included-activities',
+										'blockName'    => 'quark/related-adventure-options',
 										'attrs'        => [
 											'showDescription' => false,
 										],
@@ -1105,7 +1125,9 @@ class Expedition {
 								serialize_block(
 									[
 										'blockName'    => 'quark/trip-extensions',
-										'attrs'        => [],
+										'attrs'        => [
+											'showDescription' => true,
+										],
 										'innerContent' => [],
 									]
 								) . PHP_EOL,
@@ -1149,9 +1171,22 @@ class Expedition {
 		// Prepare book departures expedition block.
 		return serialize_block(
 			[
-				'blockName'    => 'quark/book-departures-expeditions',
-				'attrs'        => [],
-				'innerContent' => [],
+				'blockName'    => 'quark/section',
+				'attrs'        => [
+					'title'          => 'Departure Dates & Cabins',
+					'titleAlignment' => 'left',
+					'headingLevel'   => '2',
+					'anchor'         => 'departures',
+				],
+				'innerContent' => [
+					serialize_block(
+						[
+							'blockName'    => 'quark/book-departures-expeditions',
+							'attrs'        => [],
+							'innerContent' => [],
+						]
+					) . PHP_EOL,
+				],
 			]
 		) . PHP_EOL;
 	}
@@ -1203,37 +1238,6 @@ class Expedition {
 	}
 
 	/**
-	 * Get your expedition team block.
-	 *
-	 * @return string Your expedition team block content.
-	 */
-	protected function get_your_expedition_team_block(): string {
-		// Prepare your expedition team block.
-		return serialize_block(
-			[
-				'blockName'    => 'quark/section',
-				'attrs'        => [
-					'title'          => 'Your Expedition Team',
-					'titleAlignment' => 'left',
-					'headingLevel'   => '2',
-				],
-				'innerContent' => [
-					serialize_block(
-						[
-							'blockName'    => 'quark/staff-members',
-							'attrs'        => [
-								'selection'  => 'manual',
-								'isCarousel' => true,
-							],
-							'innerContent' => [],
-						]
-					) . PHP_EOL,
-				],
-			]
-		) . PHP_EOL;
-	}
-
-	/**
 	 * Prepare post content.
 	 *
 	 * @param int $nid node ID.
@@ -1258,7 +1262,6 @@ class Expedition {
 		$post_content .= $this->get_book_departures_expedition_block();
 		$post_content .= $this->get_cta_banner_block();
 		$post_content .= $this->get_know_before_you_go_block();
-		$post_content .= $this->get_your_expedition_team_block();
 
 		// Return post content.
 		return str_replace( 'u0026', '&', $post_content );
