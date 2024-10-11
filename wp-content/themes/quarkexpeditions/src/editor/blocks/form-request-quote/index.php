@@ -52,7 +52,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 		'countries'        => get_countries(),
 		'states'           => get_states(),
 		'filters_endpoint' => get_rest_url( null, '/' . REST_API_NAMESPACE . '/filter-options/by-expedition' ),
-		'thank_you_page'   => isset( $attributes['thankYouPage'] ) && is_array( $attributes['thankYouPage'] ) ? $attributes['thankYouPage']['url'] : '',
+		'home_url'         => home_url(),
 	];
 
 	// Build query args.

@@ -11,12 +11,7 @@
 		"form"
 	],
 	"textdomain": "qrk",
-	"attributes": {
-		"thankYouPage": {
-			"type": "object",
-			"default": null
-		}
-	},
+	"attributes": {},
 	"supports": {
 		"alignWide": false,
 		"anchor": true,
