@@ -954,4 +954,81 @@ class Test_Itineraries extends Softrip_TestCase {
 		$this->assertArrayHasKey( 'meta_1', $data['post_meta'] );
 		$this->assertEquals( 'value_1', $data['post_meta']['meta_1'] );
 	}
+
+	/**
+	 * Test get tax types.
+	 *
+	 * @covers ::get_tax_type_details
+	 *
+	 * @return void
+	 */
+	public function test_get_tax_type_details(): void {
+		// Empty post id.
+		$this->assertEmpty( get_tax_type_details() );
+
+		// Invalid post id.
+		$this->assertEmpty( get_tax_type_details( 9348 ) );
+
+		// Create a post.
+		$post = $this->factory()->post->create_and_get(
+			[
+				'post_type'   => POST_TYPE,
+				'post_title'  => 'Test Post',
+				'post_status' => 'publish',
+			]
+		);
+
+		// Check if post was created.
+		$this->assertTrue( $post instanceof WP_Post );
+
+		// Empty tax type.
+		$this->assertEmpty( get_tax_type_details( $post->ID ) );
+
+		// Add tax type term.
+		$tax_type = $this->factory()->term->create_and_get(
+			[
+				'taxonomy' => TAX_TYPE_TAXONOMY,
+				'name'     => 'Test Tax Type',
+			]
+		);
+
+		// Check if term was created.
+		$this->assertTrue( $tax_type instanceof WP_Term );
+
+		// Assign tax type to post.
+		wp_set_object_terms( $post->ID, $tax_type->term_id, TAX_TYPE_TAXONOMY );
+
+		// Get tax type details.
+		$tax_type_details = get_tax_type_details( $post->ID );
+		$this->assertNotEmpty( $tax_type_details );
+
+		// Expected.
+		$expected_details = [
+			[
+				'id'          => $tax_type->term_id,
+				'name'        => $tax_type->name,
+				'description' => $tax_type->description,
+				'rate'        => 0,
+			],
+		];
+		$this->assertEquals( $expected_details, $tax_type_details );
+
+		// Add 'rate' term meta.
+		update_term_meta( $tax_type->term_id, 'rate', 10 );
+
+		// Get tax type details.
+		$tax_type_details = get_tax_type_details( $post->ID );
+		$this->assertNotEmpty( $tax_type_details );
+
+		// Expected.
+		$expected_details = [
+			[
+				'id'          => $tax_type->term_id,
+				'name'        => $tax_type->name,
+				'description' => $tax_type->description,
+				'rate'        => 10,
+			],
+		];
+		$this->assertEquals( $expected_details, $tax_type_details );
+	}
 }
