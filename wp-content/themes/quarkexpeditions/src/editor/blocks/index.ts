@@ -94,6 +94,7 @@ import * as formAccessDeletionRequest from './form-account-management';
 import * as formCommunicationsOptIn from './form-communications-opt-in';
 import * as formRequestAQuote from './form-request-quote';
 import * as searchFiltersBar from './search-filters-bar';
+import * as socialLinks from './social-links';
 
 /**
  * Add blocks.
@@ -184,6 +185,7 @@ const blocks = [
 	formCommunicationsOptIn,
 	formRequestAQuote,
 	searchFiltersBar,
+	socialLinks,
 ];
 
 // Register blocks for ships.
