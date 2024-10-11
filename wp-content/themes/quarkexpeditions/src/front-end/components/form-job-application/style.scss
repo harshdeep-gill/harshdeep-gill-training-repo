@@ -9,7 +9,12 @@
 	.country-selector {
 		display: flex;
 		flex-direction: column;
-		gap: var(--spacing-3);
+		gap: var(--spacing-5);
+
+		@media screen and (min-width: grid-size(sm)) {
+			flex-direction: row;
+			gap: var(--spacing-6);
+		}
 	}
 
 	&__section {
@@ -89,6 +94,14 @@
 
 	&__additional-information {
 		margin-top: var(--spacing-5);
+
+		textarea {
+			min-height: 156px;
+
+			@media screen and (min-width: grid-size(md)) {
+				min-height: 92px;
+			}
+		}
 	}
 
 	&__resume {
