@@ -233,12 +233,19 @@ export const initialize = ( settings: {
 				// Loop through the url filters and assign to update object.
 				initialUpdatePayload[ key ] = urlFilters[ key ].map( ( singleFilterValue ) => {
 					// Get the corresponding input.
-					const correspondingInput = filtersInputContainers[ key ]?.querySelector( `input[name="${ key }"][value="${ singleFilterValue }"]` );
+					let correspondingInput = filtersInputContainers[ key ]?.querySelector( `input[name="${ key }"][value="${ singleFilterValue }"]` );
+					let label = correspondingInput?.getAttribute( 'data-label' ) ?? '';
+
+					// Check if this is the months filter
+					if ( 'months' === key ) {
+						correspondingInput = filtersInputContainers.months?.querySelector( `quark-months-multi-select-option[value="${ singleFilterValue }"]` );
+						label = correspondingInput?.getAttribute( 'label' ) ?? '';
+					}
 
 					// Return the object.
 					return {
 						value: singleFilterValue,
-						label: correspondingInput?.getAttribute( 'data-label' ) ?? '',
+						label,
 					};
 				} ).filter( ( singleFilterValue ) => singleFilterValue.label !== '' );
 			} else {
@@ -970,6 +977,40 @@ export const addMonth = ( monthToAdd: ExpeditionSearchFilterState ) => {
 	setState( updateObject );
 
 	// Fetch the results.
+	fetchResults( filterUpdated );
+};
+
+/**
+ * Updates the months
+ *
+ * @param { Object[] } monthsToAdd Array of month objects.
+ */
+export const updateMonths = ( monthsToAdd: ExpeditionSearchFilterState[] ) => {
+	// Get the current months state.
+	const { months }: ExpeditionSearchState = getState();
+	const updateObject: ExpeditionsSearchStateUpdateObject = {
+		months: [ ...months ],
+	};
+
+	// Sanity checks
+	if ( monthsToAdd && Array.isArray( monthsToAdd ) && monthsToAdd.length ) {
+		// Only get the unique months values.
+		updateObject.months = monthsToAdd.reduce( ( accumulator, current ) => {
+			// Check if the value is already there.
+			if ( ! accumulator.find( ( month ) => month.value === current.value ) ) {
+				// Add the destination.
+				accumulator.push( current );
+			}
+
+			// Return
+			return accumulator;
+		}, <SearchFiltersBarMonthState[]>[] );
+	}
+
+	// Set the state
+	setState( updateObject );
+
+	// Fetch the results
 	fetchResults( filterUpdated );
 };
 

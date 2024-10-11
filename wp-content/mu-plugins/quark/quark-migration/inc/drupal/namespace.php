@@ -535,7 +535,8 @@ function get_post_by_id( int $drupal_id = 0, string|array $post_type = 'post', s
  */
 function prepare_content( string $content = '' ): string {
 	// Transform shortcodes.
-	$content = transform_drupal_media_tags( $content );
+	$content = iconv( 'UTF-8', 'ASCII//TRANSLIT', $content );
+	$content = transform_drupal_media_tags( strval( $content ) );
 	$content = transform_image_tags( $content );
 	$content = remove_empty_paragraphs( $content );
 

@@ -2,8 +2,8 @@
 	'results_count'   => 0,
 	'remaining_count' => 0,
 	'cards'           => [],
-	'currency'        => quark_get_template_data( 'default_currency', 'USD' ),
-	'filters_data'    => Quark\Theme\Search_Filters\get_filters_for_sidebar_search(),
+	'currency'        => '',
+	'filters_data'    => [],
 ] )
 
 <x-expedition-search>
@@ -20,12 +20,12 @@
 				<x-expedition-search.selected-filters />
 				<x-expedition-search.recent-searches />
 				<x-expedition-search.results :count="$remaining_count">
-					<x-parts.expedition-search-result-cards />
+					<x-parts.expedition-search-result-cards :cards="$cards ?? []" />
 				</x-expedition-search.results>
 			</x-sidebar-grid.content>
 
 			{{-- Filters --}}
-			<x-sidebar-grid.sidebar :sticky="true" :show_on_mobile="false" sidebar_position="left">
+			<x-sidebar-grid.sidebar :sticky="true" :show_on_mobile="false" sidebar_position="left" :scroll="false">
 				@if ( ! empty( $filters_data ) )
 					<x-expedition-search.sidebar-filters :filters_data="$filters_data" />
 				@endif

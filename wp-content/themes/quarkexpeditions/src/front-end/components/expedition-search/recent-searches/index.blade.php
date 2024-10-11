@@ -2,10 +2,13 @@
 	'title' => __( 'Your recent searches', 'qrk' ),
 ] )
 
-{{-- This will be worked upon on this ticket - https://tuispecialist.atlassian.net/browse/QE-675 --}}
-<div class="expedition-seach__recent-searches">
-	<h4><x-escape :content="$title" /></h4>
-	<x-mini-cards-list>
+@php
+	quark_component_enqueue_assets( 'search-filters-bar' );
+@endphp
+
+<quark-expedition-search-recent-searches class="expedition-seach__recent-searches">
+	<h4 class="h4"><x-escape :content="$title" /></h4>
+	<template>
 		<x-mini-cards-list.card>
 			<x-mini-cards-list.card-image image_id="120" />
 			<x-mini-cards-list.card-info>
@@ -13,19 +16,8 @@
 				<x-mini-cards-list.card-date date="June 2024" />
 			</x-mini-cards-list.card-info>
 		</x-mini-cards-list.card>
-		<x-mini-cards-list.card>
-			<x-mini-cards-list.card-image image_id="87" />
-			<x-mini-cards-list.card-info>
-				<x-mini-cards-list.card-title title="Patagonia" />
-				<x-mini-cards-list.card-date date="June 2025" />
-			</x-mini-cards-list.card-info>
-		</x-mini-cards-list.card>
-		<x-mini-cards-list.card>
-			<x-mini-cards-list.card-image image_id="108" />
-			<x-mini-cards-list.card-info>
-				<x-mini-cards-list.card-title title="Svalbard" />
-				<x-mini-cards-list.card-date date="January 2025" />
-			</x-mini-cards-list.card-info>
-		</x-mini-cards-list.card>
+	</template>
+
+	<x-mini-cards-list>
 	</x-mini-cards-list>
-</div>
+</quark-expedition-search-recent-searches>

@@ -25,6 +25,7 @@
 
 		&[required="yes"],
 		&[checkbox-group-required="yes"],
+		&[checkbox-field-required="yes"],
 		&[radio-group-required="yes"] {
 
 			> label #{$self}__required-indicator,
