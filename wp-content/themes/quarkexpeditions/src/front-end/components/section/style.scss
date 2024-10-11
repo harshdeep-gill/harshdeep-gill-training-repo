@@ -8,9 +8,9 @@
 	$self: &;
 	position: relative;
 
+
 	&__title,
 	&__description {
-		position: relative;
 		text-align: center;
 	}
 
@@ -111,7 +111,6 @@
 	}
 
 	&__cta-button {
-		position: relative;
 		text-align: center;
 		margin-top: var(--spacing-6);
 
@@ -142,6 +141,13 @@
 			height: 100%;
 			position: absolute;
 			inset: 0;
+		}
+
+		~ #{$self}__title,
+		~ #{$self}__description,
+		~ #{$self}__cta-button,
+		~ div {
+			position: relative;
 		}
 	}
 
