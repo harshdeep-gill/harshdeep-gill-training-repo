@@ -39,4 +39,9 @@
 	&__inline-dropdown .tp-multi-select-options-container {
 		max-width: 230px;
 	}
+
+	&__label-optional-text {
+		color: var(--color-gray-50);
+		font-weight: 400;
+	}
 }

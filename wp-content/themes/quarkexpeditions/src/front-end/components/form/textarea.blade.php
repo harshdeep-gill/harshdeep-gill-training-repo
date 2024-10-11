@@ -1,6 +1,7 @@
 @props( [
-	'id'    => '',
-	'label' => '',
+	'id'       => '',
+	'label'    => '',
+	'optional' => false,
 ] )
 
 @php
@@ -10,6 +11,9 @@
 @if ( ! empty( $label ) )
 	<x-form.label :id="$id">
 		<x-escape :content="$label"/>
+		@if ( $optional )
+			<span class="form__label-optional-text">{{ __( '(optional)', 'qrk' ) }}</span>
+		@endif
 	</x-form.label>
 @endif
 
