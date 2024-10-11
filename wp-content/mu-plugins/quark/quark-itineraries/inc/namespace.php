@@ -900,12 +900,12 @@ function get_tax_type_details( int $post_id = 0 ): array {
 	}
 
 	// Validate taxonomies.
-	if ( empty( $itinerary['post_taxonomies'] ) || empty( $itinerary['post_taxonomies'][TAX_TYPE_TAXONOMY] ) || ! is_array( $itinerary['post_taxonomies'][TAX_TYPE_TAXONOMY] ) ) {
+	if ( empty( $itinerary['post_taxonomies'] ) || empty( $itinerary['post_taxonomies'][ TAX_TYPE_TAXONOMY ] ) || ! is_array( $itinerary['post_taxonomies'][ TAX_TYPE_TAXONOMY ] ) ) {
 		return $tax_types;
 	}
 
 	// Loop through taxonomies.
-	foreach ( $itinerary['post_taxonomies'][TAX_TYPE_TAXONOMY] as $tax_type ) {
+	foreach ( $itinerary['post_taxonomies'][ TAX_TYPE_TAXONOMY ] as $tax_type ) {
 		$tax_type = [
 			'id'          => absint( $tax_type['term_id'] ),
 			'name'        => strval( $tax_type['name'] ),
