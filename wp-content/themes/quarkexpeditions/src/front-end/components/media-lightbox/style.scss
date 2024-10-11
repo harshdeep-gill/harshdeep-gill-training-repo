@@ -113,6 +113,10 @@
 		img {
 			aspect-ratio: 16 / 9;
 			object-fit: cover;
+
+			@media (max-height: 720px) {
+				max-height: 80vh;
+			}
 		}
 	}
 
