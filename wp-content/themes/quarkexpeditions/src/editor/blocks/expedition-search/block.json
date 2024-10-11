@@ -1,0 +1,21 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "quark/expedition-search",
+    "description": "Display a search for expeditions",
+    "title": "Expedition Search",
+    "keywords": [
+      "expedition",
+      "search"
+    ],
+    "category": "layout",
+    "textdomain": "quark",
+    "attributes": {},
+    "supports": {
+      "alignWide": false,
+      "anchor": true,
+      "className": false,
+      "html": false,
+      "customClassName": false
+    }
+}
