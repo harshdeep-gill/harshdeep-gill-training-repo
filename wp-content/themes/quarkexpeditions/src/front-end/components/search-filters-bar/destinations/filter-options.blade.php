@@ -11,6 +11,16 @@
 
 	// Display the first two destinations.
 	$destinations = array_slice( $destinations, 0, 2 );
+
+	$image_args = [
+		'transform' => [
+			'height' => 72,
+			'width'  => 72,
+			'crop'    => 'fill',
+			'gravity' => 'auto',
+			'quality' => 100,
+		]
+	];
 @endphp
 
 <quark-search-filters-bar-destinations-filter-options
@@ -31,12 +41,21 @@
 					{{-- Filter options. --}}
 					<x-menu-list :title="$filters_list_title ?? ''">
 						@foreach ( $destination_item['children'] as $child_item )
+							@php
+								$image_url = '';
+
+								if ( ! empty( $child_item['image_id'] ) ) {
+									$image_url = quark_dynamic_image_url( array_merge( [ 'id' => $child_item[ 'image_id' ] ], $image_args ) );
+								}
+							@endphp
 							<quark-search-filters-bar-destinations-option
 								class="search-filters-bar__destinations-filter-option"
 								label="{{ $child_item['label'] ?? '' }}"
 								value="{{ $child_item['value'] ?? '' }}"
+								parent="{{ $destination_item['value'] ?? '' }}"
 								selected="no"
 								disabled="no"
+								image-url="{!! esc_url( $image_url ) !!}"
 							>
 								<figure class="search-filters-bar__destinations-filter-option-image">
 									<x-image :image_id="$child_item['image_id'] ?? ''" />
@@ -73,12 +92,21 @@
 							{{-- Filter options. --}}
 							<x-menu-list :title="$filters_list_title ?? ''">
 								@foreach ( $destination_item['children'] as $child_item )
+									@php
+										$image_url = '';
+
+										if ( ! empty( $child_item['image_id'] ) ) {
+											$image_url = quark_dynamic_image_url( array_merge( [ 'id' => $child_item[ 'image_id' ] ], $image_args ) );
+										}
+									@endphp
+
 									<quark-search-filters-bar-destinations-option
 										class="search-filters-bar__destinations-filter-option"
 										label="{{ $child_item['label'] ?? '' }}"
 										value="{{ $child_item['value'] ?? '' }}"
 										selected="no"
 										disabled="no"
+										image-url="{!! esc_url( $image_url ) !!}"
 									>
 										<figure class="search-filters-bar__destinations-filter-option-image">
 											<x-image :image_id="$child_item['image_id'] ?? ''" />

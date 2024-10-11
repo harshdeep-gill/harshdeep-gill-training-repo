@@ -3,10 +3,6 @@
 ] )
 
 @php
-	if ( empty( $slot ) ) {
-		return;
-	}
-
 	// Build expedition count text to be displayed.
 	$expedition_count_text = _n( 'expedition', 'expeditions', $count, 'qrk' );
 @endphp

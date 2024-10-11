@@ -257,6 +257,19 @@
 			min-width: max-content;
 		}
 	}
+
+	.months-multi-select__arrow-button {
+		width: 24px;
+		height: 24px;
+
+		svg {
+			transform: none;
+		}
+
+		&--right svg {
+			transform: rotate(180deg);
+		}
+	}
 }
 
 tp-modal.expedition-search__filters-modal {
@@ -301,5 +314,18 @@ tp-modal.expedition-search__filters-modal {
 
 	@media screen and (min-width: grid-size(lg)) {
 		display: none;
+	}
+
+	.months-multi-select__arrow-button {
+		width: 24px;
+		height: 24px;
+
+		svg {
+			transform: none;
+		}
+
+		&--right svg {
+			transform: rotate(180deg);
+		}
 	}
 }

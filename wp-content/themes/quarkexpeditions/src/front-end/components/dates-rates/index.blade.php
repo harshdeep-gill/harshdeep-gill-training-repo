@@ -8,6 +8,6 @@
 @endphp
 
 <quark-dates-rates class="dates-rates">
-	<h1 class="dates-rates__title"><x-escape :content="__( 'Dates & Rates', 'qrk' )" /></h1>
+	<h1 class="dates-rates__title"><x-escape :content="__( 'Dates and Rates', 'qrk' )" /></h1>
 	{!! $slot !!}
 </quark-dates-rates>
