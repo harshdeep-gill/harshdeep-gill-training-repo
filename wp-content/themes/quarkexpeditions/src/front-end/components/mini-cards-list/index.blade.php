@@ -5,5 +5,7 @@
 @endphp
 
 <div class="mini-cards-list">
-	{!! $slot !!}
+	@if ( ! empty( $slot ) )
+		{!! $slot !!}
+	@endif
 </div>

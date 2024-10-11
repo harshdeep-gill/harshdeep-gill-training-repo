@@ -8,6 +8,7 @@
 	'states'            => [],
 	'thank_you_page'    => '',
 	'salesforce_object' => 'WebForm_RAQ__c',
+	'home_url'          => '',
 ] )
 
 @php
@@ -144,5 +145,19 @@
 				</x-form-request-quote.tab>
 			</x-form>
 		</tp-tabs>
+
+		<x-section class="form-request-quote__success">
+			<div class="form-request-quote__success-header">
+				<x-svg name="circular-tick" />
+				<h2 class="h1">{{ __( 'Request Submitted!', 'qrk' ) }}</h2>
+			</div>
+			<p class="form-request-quote__success-content">{{ __( 'One of our Polar Travel Advisors will be in touch. You’re one step closer to making your polar dream a reality!', 'qrk' ) }}</p>
+
+			@if ( ! empty( $home_url ) )
+				<div class="form-request-quote__success-button-wrap">
+					<x-button href="{{ $home_url }}" size="big" class="form-request-quote__back-to-home">{{ __( 'Back to Home!', 'qrk' ) }}</x-button>
+				</div>
+			@endif
+		</x-section>
 	</quark-form-request-quote>
 </x-section>

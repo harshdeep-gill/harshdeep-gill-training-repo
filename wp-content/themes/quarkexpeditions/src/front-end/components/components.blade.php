@@ -295,6 +295,8 @@
 <x-component-demo :keys="[ 'section-image' ]">
 	<x-section :full_width="true">
 		<x-section.image :image_id="26" gradient_color="white" gradient_position="both" />
+		<x-section.title title="Testing Section Title.." />
+		<x-section.description>Discover what your Crossing the Circle Expedition includes</x-section.description>
 		<x-review-cards>
 			<x-review-cards.card>
 				<x-review-cards.rating rating="4" />
@@ -319,6 +321,7 @@
 				<x-review-cards.author-details text="Antarctic Express: Crossing the Circle" />
 			</x-review-cards.card>
 		</x-review-cards>
+		<x-section.cta class="color-context--dark" text="Learn More" url="#" color="black" />
 	</x-section>
 </x-component-demo>
 
@@ -2829,18 +2832,6 @@
 				</x-media-text-cta>
 			</x-media-text-cta-carousel.item>
 		</x-media-text-cta-carousel>
-	</x-section>
-</x-component-demo>
-
-<x-component-demo :keys="[ 'currency-switcher' ]">
-	<x-section>
-		<x-currency-switcher appearance="dark" />
-	</x-section>
-
-	<x-section>
-		<div style="background-color: var(--color-gray-90); padding: 24px;">
-			<x-currency-switcher appearance="dark" />
-		</div>
 	</x-section>
 </x-component-demo>
 
@@ -7173,7 +7164,9 @@
 
 <x-component-demo :keys="[ 'form-account-management' ]">
 	<x-section>
-		<x-form-account-management />
+		<x-form-account-management
+			:states="$states['US'] ?? []"
+		/>
 	</x-section>
 </x-component-demo>
 

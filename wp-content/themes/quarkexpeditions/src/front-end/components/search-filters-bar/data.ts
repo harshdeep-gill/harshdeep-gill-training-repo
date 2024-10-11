@@ -16,16 +16,17 @@ export const DEFAULT_STATE: SearchFiltersBarState = {
 	searchPageUrl: '',
 	departureMonthOptions: [],
 	destinationOptions: [],
-	selectedDestinations: new Set( [] ),
-	selectedMonths: new Set( [] ),
+	selectedDestinations: [],
+	selectedMonths: [],
 	resultCount: 0,
 	initialized: false,
+	history: [],
 };
 
 /**
  * Persistent keys.
  */
-export const PERSISTENT_STATE_KEYS = [ 'selectedFilters' ];
+export const PERSISTENT_STATE_KEYS = [ 'history' ];
 
 /**
  * Create store.

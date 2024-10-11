@@ -4,9 +4,15 @@
 const { HTMLElement, zustand } = window;
 
 /**
+ * External dependencies
+ */
+import { MonthsMultiSelect } from '../../../../months-multi-select/main';
+import { MonthsMultiSelectOption } from '../../../../months-multi-select/months-multi-select-option';
+
+/**
  * Internal dependencies
  */
-import { addMonth, removeMonth } from '../../../actions';
+import { updateMonths } from '../../../actions';
 
 /**
  * Get Store.
@@ -20,7 +26,7 @@ export default class ExpeditionSearchFilterMonths extends HTMLElement {
 	/**
 	 * Properties.
 	 */
-	private readonly inputs: NodeListOf<HTMLInputElement>;
+	private readonly monthsMultiSelect: MonthsMultiSelect | null;
 	private isFilterUpdating: boolean;
 	private readonly filterCountElement: HTMLElement | null;
 
@@ -32,12 +38,12 @@ export default class ExpeditionSearchFilterMonths extends HTMLElement {
 		super();
 
 		// Initialize properties.
-		this.inputs = this.querySelectorAll( 'input[type="checkbox"][name="months"]' );
 		this.isFilterUpdating = false;
 		this.filterCountElement = this.querySelector( '.expedition-search__filter-count' );
+		this.monthsMultiSelect = this.querySelector( 'quark-months-multi-select' );
 
 		// Setup events.
-		this.inputs.forEach( ( input ) => input.addEventListener( 'change', this.handleInputChange.bind( this ) ) );
+		this.monthsMultiSelect?.addEventListener( 'change', this.handleMonthsSelectorChange.bind( this ) );
 
 		// Subscribe to the store.
 		subscribe( this.update.bind( this ) );
@@ -49,20 +55,31 @@ export default class ExpeditionSearchFilterMonths extends HTMLElement {
 	 * @param {Object} state State.
 	 */
 	update( state: ExpeditionSearchState ): void {
+		// Null check.
+		if ( ! this.monthsMultiSelect ) {
+			// Bail.
+			return;
+		}
+
 		// Get state.
 		const { months } = state;
 
 		// Set updating flag.
 		this.isFilterUpdating = true;
 
-		// Update the filters.
-		this.inputs.forEach( ( input ) => {
-			// Check if the input is in the state.
-			if ( months.find( ( month ) => month.value === input.value ) ) {
-				input.checked = true;
-			} else {
-				input.checked = false;
+		// Unselect all the months first.
+		this.monthsMultiSelect.unSelectAll();
+
+		// Loop through the options to select.
+		months.forEach( ( month ) => {
+			// Empty check.
+			if ( ! month.value || ! month.label ) {
+				// Bail.
+				return;
 			}
+
+			// Select the month option.
+			this.monthsMultiSelect?.select( month.value );
 		} );
 
 		// Null check.
@@ -80,33 +97,67 @@ export default class ExpeditionSearchFilterMonths extends HTMLElement {
 	}
 
 	/**
-	 * Handles the input chage event.
+	 * Handles the months selector's change event
 	 *
-	 * @param { Event } evt The event object.
+	 * @param {Event} evt The event object
 	 */
-	handleInputChange( evt: Event ) {
-		// Check if the inputs are syncing with state.
-		if ( this.isFilterUpdating || ! evt.target ) {
-			// Bail to avoid stack overflow.
+	handleMonthsSelectorChange( evt: Event ) {
+		// Null check.
+		if ( ! evt.target || ! this.monthsMultiSelect || this.isFilterUpdating ) {
+			// Bail.
 			return;
 		}
 
-		// Get the input element.
-		const input = evt.target as HTMLInputElement;
+		// Get the values
+		const values = Array.from( this.monthsMultiSelect.value );
 
-		// Is this input checked?
-		if ( input.checked ) {
-			// Initialize month object.
-			const month: ExpeditionSearchFilterState = {
-				label: input.getAttribute( 'data-label' ) ?? '',
-				value: input.value,
-			};
-
-			// Add the month.
-			addMonth( month );
-		} else {
-			// Remove the month.
-			removeMonth( input.value );
+		// Check if we have the values
+		if ( 0 === values.length ) {
+			// Bail.
+			return;
 		}
+
+		// Get the attribute selector based on the values.
+		const valueAttributeSelector = values.map( ( value ) => {
+			// Empty check.
+			if ( ! value ) {
+				// Bail.
+				return '';
+			}
+
+			// Return the value attribute selector.
+			return `[value="${ value }"]`;
+		} ).filter( ( singleSelector ) => singleSelector !== '' ).join( ',' );
+
+		// Empty check.
+		if ( ! valueAttributeSelector ) {
+			// Bail.
+			return;
+		}
+
+		// Get the selected options
+		const selectedOptions: NodeListOf<MonthsMultiSelectOption> = this.querySelectorAll( `quark-months-multi-select-option${ valueAttributeSelector }` );
+
+		// Initialize months
+		const months: ExpeditionSearchFilterState[] = [];
+
+		// Loop through the selected options
+		selectedOptions.forEach( ( selectedOption ) => {
+			// Get the attributes of the option.
+			const value = selectedOption.getAttribute( 'value' );
+			const label = selectedOption.getAttribute( 'label' );
+
+			// Empty checks
+			if ( ! value || ! label ) {
+				// Bail.
+				return;
+			}
+
+			// Add the month
+			months.push( { value, label } );
+		} );
+
+		// Update the months
+		updateMonths( months );
 	}
 }

@@ -1,5 +1,6 @@
 @props( [
-	'class' => '',
+	'class'      => '',
+	'validation' => [],
 ] )
 
 @aware( [

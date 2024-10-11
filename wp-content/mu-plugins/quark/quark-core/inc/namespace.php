@@ -195,9 +195,10 @@ function core_front_end_data( array $data = [] ): array {
 	return array_merge(
 		$data,
 		[
-			'current_url'  => get_permalink(),
-			'header'       => $header_options,
-			'social_links' => $social_options,
+			'current_url'     => get_permalink(),
+			'header'          => $header_options,
+			'social_links'    => $social_options,
+			'search_page_url' => strval( get_permalink( absint( get_option( 'options_expedition_search_page' ) ) ) ),
 		]
 	);
 }

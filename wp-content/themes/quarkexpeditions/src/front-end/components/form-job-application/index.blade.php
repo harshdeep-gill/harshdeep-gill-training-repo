@@ -52,10 +52,10 @@
 				</x-form.row>
 				<x-form.row>
 					<x-form.field :validation="[ 'required', 'email' ]">
-						<x-form.input type="email" label="Email Address" placeholder="Enter Email" name="fields[Email__c]" />
+						<x-form.input type="email" label="{{ __( 'Email Address', 'qrk' ) }}" placeholder="{{ __( 'Enter Email Address', 'qrk' ) }}" name="fields[Email__c]" />
 					</x-form.field>
 					<x-form.field :validation="[ 'required' ]">
-						<x-form.input type="tel" label="Phone Number" placeholder="eg. (123) 456 7890" name="fields[Phone__c]" />
+						<x-form.input type="tel" label="{{ __( 'Phone Number', 'qrk' ) }}" placeholder="{{ __( 'Enter Phone Number', 'qrk' ) }}" name="fields[Phone__c]" />
 					</x-form.field>
 				</x-form.row>
 				<x-form.row>
@@ -70,13 +70,13 @@
 				</x-form.row>
 				<x-form.row>
 					<x-form.field :validation="[ 'required' ]">
+						<x-form.input type="text" label="{{ __( 'Postal Code', 'qrk' ) }}" name="fields[Postal_Code__c]" placeholder="Enter Postal Code" />
+					</x-form.field>
+					<x-form.field :validation="[ 'required' ]">
 						<x-form.input type="text" label="{{ __( 'City', 'qrk' ) }}" name="fields[City__c]" placeholder="Enter City" />
 					</x-form.field>
 				</x-form.row>
 				<x-form.row>
-					<x-form.field :validation="[ 'required' ]">
-						<x-form.input type="text" label="{{ __( 'Postal Code', 'qrk' ) }}" name="fields[Postal_Code__c]" placeholder="Enter Postal Code" />
-					</x-form.field>
 					<x-form.field :validation="[ 'required' ]">
 						<x-country-selector :countries="$countries" :states="$states" :state_code_key="'State_Province__c'" />
 					</x-form.field>
@@ -144,7 +144,7 @@
 							<x-form.checkbox name="fields[Expedition_Team_Roles__c][]" label="{{ __( 'Mandarin Linguist', 'qrk' ) }}" value="mandarin_linguist" />
 							<x-form.checkbox name="fields[Expedition_Team_Roles__c][]" label="{{ __( 'Mountain Guide', 'qrk' ) }}" value="mountain_guide" />
 							<x-form.checkbox name="fields[Expedition_Team_Roles__c][]" label="{{ __( 'Sea Kayak Guide', 'qrk' ) }}" value="sea_kayak_guide" />
-							<x-form.checkbox name="fields[Expedition_Team_Roles__c][]" label="{{ __( 'SUP Guide', 'qrk' ) }}" value="sup_guide" />
+							<x-form.checkbox name="fields[Expedition_Team_Roles__c][]" label="{{ __( 'Stand Up Paddleboard Guide', 'qrk' ) }}" value="sup_guide" />
 							<x-form.checkbox name="fields[Expedition_Team_Roles__c][]" label="{{ __( 'Helicopter Operations Manager', 'qrk' ) }}" value="helicopter_operations_manager" />
 						</x-form.field-group>
 					</x-form.row>
@@ -207,11 +207,11 @@
 							</div>
 							<div class="form-job-application__option-tooltip">
 								<x-form.checkbox name="fields[Certifications__c][]" label="{{ __( 'Wilderness First Aid', 'qrk' ) }}" value="wilderness_first_aid" />
-								<x-tooltip icon="info">{{ __( 'Please specify', 'qrk' ) }}</x-tooltip>
+								<x-tooltip icon="info">{{ __( 'WFR 40 hours or equivalent', 'qrk' ) }}</x-tooltip>
 							</div>
 							<div class="form-job-application__option-tooltip">
 								<x-form.checkbox name="fields[Certifications__c][]" label="{{ __( 'Wilderness First Responder', 'qrk' ) }}" value="wilderness_first_responder" />
-								<x-tooltip icon="info">{{ __( 'Please specify', 'qrk' ) }}</x-tooltip>
+								<x-tooltip icon="info">{{ __( 'WFR 80 hours or equivalent', 'qrk' ) }}</x-tooltip>
 							</div>
 						</x-form.field-group>
 					</x-form.row>
@@ -278,7 +278,7 @@
 
 			<div class="form-job-application__section form-job-application__resume">
 				<h3 class="form-job-application__title">{{ __( 'Resume and Cover Letter', 'qrk' ) }}</h3>
-				<x-form.field :validation="[ 'required' ]">
+				<x-form.field class="form-field__file" :validation="[ 'required', 'file-size-valid' ]">
 					<x-form.label for="resume" class="form-job-application__file-label">{{ __( 'Please Attach Your CV/Résumé', 'qrk' ) }}</x-form.label>
 					<x-form.file
 						name="resume"
