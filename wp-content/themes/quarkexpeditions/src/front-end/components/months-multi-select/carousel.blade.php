@@ -20,7 +20,7 @@
 
 	<div class="months-multi-select__nav">
 		@if ( ! empty( $button_text ) )
-			<button class="months-multi-select__reset-button">{{ $button_text }}</button>
+			<button class="months-multi-select__reset-button"><x-escape :content="$button_text" /></button>
 		@endif
 
 		@if ( $slide_count > 1 )
