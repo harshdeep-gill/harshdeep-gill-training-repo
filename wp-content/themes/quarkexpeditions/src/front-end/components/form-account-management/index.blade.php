@@ -59,12 +59,12 @@
 			</x-form.row>
 			<x-form.row>
 				<x-form.field :validation="[ 'required', 'no-empty-spaces' ]" class="form-account-management__address">
-					<x-form.input type="text" label="Address #1" placeholder="Enter Addresss" name="fields[Address1__c]" />
+					<x-form.input type="text" label="Address #1" placeholder="Enter Address" name="fields[Address1__c]" />
 				</x-form.field>
 			</x-form.row>
 			<x-form.row>
 				<x-form.field :validation="[ 'no-empty-spaces' ]" class="form-account-management__address">
-					<x-form.input type="text" label="Address #2" placeholder="Enter Addresss" name="fields[Address2__c]" />
+					<x-form.input type="text" label="Address #2" placeholder="Enter Address" name="fields[Address2__c]" />
 				</x-form.field>
 			</x-form.row>
 			<x-form.row>
