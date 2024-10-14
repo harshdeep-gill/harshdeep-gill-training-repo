@@ -8,22 +8,21 @@ const { persist, create, stores } = window.zustand;
  */
 export const STORE_NAME = 'global';
 
-// Global state type.
-interface GlobalState {
-    currency: string,
-}
-
 /**
  * Default state.
  */
 export const DEFAULT_STATE: GlobalState = {
 	currency: 'USD',
+	phoneNumberRule: {
+		prefix: '',
+		phone_number: '',
+	},
 };
 
 /**
  * Persistent keys.
  */
-export const PERSISTENT_STATE_KEYS = [];
+export const PERSISTENT_STATE_KEYS = [ 'phoneNumberRule' ];
 
 /**
  * Create store.

@@ -90,3 +90,13 @@ interface QueryString {
 	stringify: Function;
 	parse: Function;
 }
+
+// Global state type.
+interface GlobalState {
+	currency: string,
+	phoneNumberRule: {
+		// eslint-disable-next-line camelcase
+		phone_number: string,
+		prefix: string,
+	},
+}

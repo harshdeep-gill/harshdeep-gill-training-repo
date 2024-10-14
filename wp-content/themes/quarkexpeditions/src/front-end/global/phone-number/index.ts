@@ -1,9 +1,10 @@
 /**
  * Phone Number.
  */
+import { setPhoneNumberRule } from '../store/actions';
 
 // Check if dynamic phone number data exists.
-const { dynamicPhoneNumber } = window;
+const { dynamicPhoneNumber, zustand } = window;
 
 /**
  * Internal dependencies.
@@ -20,6 +21,18 @@ window.addEventListener(
 			return;
 		}
 
+		// Get global state.
+		const { getState } = zustand.stores.global;
+
+		// Get phone number rule from global state.
+		const { phoneNumberRule }: GlobalState = getState();
+
+		// Check if phone number rule exists.
+		if ( phoneNumberRule && phoneNumberRule.phone_number && phoneNumberRule.prefix ) {
+			// Phone number rule exists, return.
+			return;
+		}
+
 		// Get phone number for this URL.
 		fetch(
 			`${ dynamicPhoneNumber.api_endpoint }`,
@@ -32,107 +45,12 @@ window.addEventListener(
 			}
 		)
 			.then( ( response ) => response.json() )
-			.then( ( phoneNumberRule ) => {
-				// Get phone number and prefix.
-				const phoneNumber = phoneNumberRule?.phone;
-				const prefix = phoneNumberRule?.prefix;
-				const phoneNumberAndPrefix = prefix + ' : ' + phoneNumber;
-
-				// Check if phone number found.
-				if ( phoneNumber ) {
-					// Phone number found, update all phone numbers on page.
-					updateDynamicPhoneNumbers( phoneNumber );
-				}
-
-				// Check if prefix found.
-				if ( prefix ) {
-					// Prefix found, update all phone number prefix text on page.
-					updateDynamicPhoneNumberPrefix( prefix );
-				}
-
-				// Check if prefix and phone number found.
-				if ( prefix && phoneNumber ) {
-					// Prefix and phone number found, update all phone number prefix text on page.
-					updateDynamicPhoneNumberAndPrefix( phoneNumberAndPrefix );
-				}
+			.then( ( rule ) => {
+				// Set phone number rule in global state.
+				setPhoneNumberRule( rule );
 			} )
 			.catch( () => {
 				// Error fetching phone number, return.
 			} );
 	}
 );
-
-/**
- * Update all Phone number prefix text on current page.
- *
- * @param {string} prefix Phone number prefix to update.
- */
-const updateDynamicPhoneNumberPrefix = ( prefix: string ) => {
-	// Get all nodes with class name '.dynamic-phone-prefix__text'.
-	const phonePrefixNodes = document.getElementsByClassName( 'dynamic-phone-prefix__text' );
-
-	// Loop through all nodes with class name 'dynamic-phone-prefix__text'.
-	if ( phonePrefixNodes ) {
-		for ( const phonePrefixNode of phonePrefixNodes ) {
-			phonePrefixNode.innerHTML = prefix;
-		}
-	}
-};
-
-/**
- * Update all Phone number and prefix text on current page.
- *
- * @param {string} phoneNumberAndPrefix Phone number prefix to update.
- */
-const updateDynamicPhoneNumberAndPrefix = ( phoneNumberAndPrefix: string ) => {
-	// Get all nodes with class name '.dynamic-phone-number-and-prefix'.
-	const phonePrefixNodes = document.getElementsByClassName( 'dynamic-phone-number-and-prefix' );
-
-	// Loop through all nodes with class name 'dynamic-phone-number-and-prefix'.
-	if ( phonePrefixNodes ) {
-		for ( const phonePrefixNode of phonePrefixNodes ) {
-			phonePrefixNode.innerHTML = phoneNumberAndPrefix;
-		}
-	}
-};
-
-/**
- * Update all phone numbers on current page.
- *
- * @param {string} phoneNumber Phone number to update.
- */
-const updateDynamicPhoneNumbers = ( phoneNumber: string = '' ) => {
-	// Get all nodes with class name '.dynamic-phone-number__text'.
-	const phoneNumberNodes = document.getElementsByClassName( 'dynamic-phone-number__text' );
-
-	// Loop through all nodes with class name 'dynamic-phone-number__text'.
-	if ( phoneNumberNodes ) {
-		for ( const phoneNumberNode of phoneNumberNodes ) {
-			phoneNumberNode.innerHTML = phoneNumber;
-		}
-	}
-
-	// Get all nodes with class name '.dynamic-phone-number__btn .btn__content'.
-	let phoneNumberBtnNodes: NodeListOf<Element>|Element[] = document.querySelectorAll( '.dynamic-phone-number__btn .btn__content' );
-	phoneNumberBtnNodes = [ ...phoneNumberBtnNodes ];
-
-	// Loop through all nodes with class name 'dynamic-phone-number__btn'.
-	if ( phoneNumberBtnNodes ) {
-		for ( const phoneNumberBtnNode of phoneNumberBtnNodes ) {
-			phoneNumberBtnNode.innerHTML = phoneNumber;
-		}
-	}
-
-	// Get all nodes with class name 'dynamic-phone-number__link'.
-	const phoneNumberLinkNodes = document.getElementsByClassName( 'dynamic-phone-number__link' );
-
-	// Loop through all nodes with class name 'dynamic-phone-number__link'.
-	if ( phoneNumberLinkNodes ) {
-		for ( const phoneNumberLinkNode of phoneNumberLinkNodes ) {
-			// Check if node is an anchor element.
-			if ( phoneNumberLinkNode instanceof HTMLAnchorElement ) {
-				phoneNumberLinkNode.href = `tel:${ phoneNumber }`;
-			}
-		}
-	}
-};

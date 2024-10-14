@@ -69,3 +69,15 @@ export const getCurrency = (): string => {
 	// Get currency from state.
 	return getState().currency;
 };
+
+// TODO: Add comment.
+export const setPhoneNumberRule = ( phoneNumberRule: string ): void => {
+	// Get current state.
+	const currentState = getState();
+
+	// Set phone number.
+	setState( {
+		...currentState,
+		phoneNumberRule,
+	} );
+};

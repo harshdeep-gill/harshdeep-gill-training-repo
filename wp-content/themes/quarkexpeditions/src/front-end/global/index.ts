@@ -1,9 +1,4 @@
 /**
- * Global JavaScript.
- */
-import './phone-number';
-
-/**
  * Styles.
  */
 import './index.scss';
@@ -44,3 +39,8 @@ declare global {
  * Initialize global store.
  */
 initialize( {} );
+
+/**
+ * Global JavaScript.
+ */
+import './phone-number';

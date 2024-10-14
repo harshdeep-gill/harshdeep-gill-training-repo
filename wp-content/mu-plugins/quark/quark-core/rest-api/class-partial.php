@@ -14,6 +14,7 @@ use WP_REST_Response;
 use WP_Error;
 
 use function Quark\Tracking\add_infinity_tracking_class;
+
 use const Quark\Core\REST_API_NAMESPACE;
 
 /**
