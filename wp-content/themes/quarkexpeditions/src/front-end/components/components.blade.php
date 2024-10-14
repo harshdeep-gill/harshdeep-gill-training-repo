@@ -293,8 +293,46 @@
 </x-component-demo>
 
 <x-component-demo :keys="[ 'section-image' ]">
-	<x-section :full_width="true">
-		<x-section.image :image_id="26" gradient_color="white" gradient_position="both" />
+		<x-section :full_width="true" :padding="true" :seamless="true" :background="true" background_color="gray">
+		<div style="display: flex; flex-wrap: wrap; width: 100%;" class="typography-spacing">
+			<div style="width: 50%; padding: 24px; border: 1px solid var(--color-black);">
+				<div class="typography-spacing" style="display: flex; gap: 16px; flex-flow: row wrap;">
+					<x-button>Solid button</x-button>
+					<x-button appearance="outline">Outline button</x-button>
+					<x-button color="black">Solid black button</x-button>
+				</div>
+				<div class="typography-spacing" style="display: flex; gap: 16px; flex-flow: row wrap;">
+					<x-button size="big">Solid button</x-button>
+					<x-button size="big" appearance="outline">Outline button</x-button>
+					<x-button size="big" color="black">Solid black button</x-button>
+				</div>
+				<div class="typography-spacing" style="display: flex; gap: 16px; flex-flow: row wrap;">
+					<x-button size="big" :loading="true">Loading Button</x-button>
+					<x-button size="big" color="black" :loading="true">Loading Button</x-button>
+					<x-button size="big" appearance="outline" :loading="true">Loading button</x-button>
+				</div>
+			</div>
+			<div style="width: 50%; padding: 24px; background-color: var(--color-black);" class="color-context--dark">
+				<div class="typography-spacing" style="display: flex; gap: 16px; flex-flow: row wrap;">
+					<x-button>Solid button</x-button>
+					<x-button appearance="outline">Outline button</x-button>
+					<x-button color="black">Solid black button</x-button>
+				</div>
+				<div class="typography-spacing" style="display: flex; gap: 16px; flex-flow: row wrap;">
+					<x-button size="big">Solid button</x-button>
+					<x-button size="big" appearance="outline">Outline button</x-button>
+					<x-button size="big" color="black">Solid black button</x-button>
+				</div>
+				<div class="typography-spacing" style="display: flex; gap: 16px; flex-flow: row wrap;">
+					<x-button size="big" :loading="true">Loading Button</x-button>
+					<x-button size="big" color="black" :loading="true">Loading Button</x-button>
+					<x-button size="big" appearance="outline" :loading="true">Loading button</x-button>
+				</div>
+			</div>
+		</div>
+	</x-section>
+	<x-section :full_width="true" :padding="true">
+		<x-section.image :image_id="26" gradient_color="gray" gradient_position="both" />
 		<x-section.title title="Testing Section Title.." />
 		<x-section.description>Discover what your Crossing the Circle Expedition includes</x-section.description>
 		<x-review-cards>
@@ -322,6 +360,9 @@
 			</x-review-cards.card>
 		</x-review-cards>
 		<x-section.cta class="color-context--dark" text="Learn More" url="#" color="black" />
+	</x-section>
+	<x-section :full_width="true" :padding="true" :background="true" background_color="gray">
+		<x-global-styles-demo.color-palette />
 	</x-section>
 </x-component-demo>
 
