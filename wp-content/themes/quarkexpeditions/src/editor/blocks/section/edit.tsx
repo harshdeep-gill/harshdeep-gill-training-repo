@@ -47,6 +47,7 @@ export const colors: { [key: string]: string }[] = [
 	{ name: __( 'Gray', 'qrk' ), color: '#F5F7FB', slug: 'gray' },
 ];
 
+// Gradient colors.
 export const gradientColors: { [key: string]: string }[] = [
 	{ name: __( 'Black', 'qrk' ), color: 'black', slug: 'black' },
 	{ name: __( 'Gray', 'qrk' ), color: 'grey', slug: 'grey' },
@@ -77,6 +78,9 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 
 	// Image Classes.
 	const imageClasses = classnames( 'section__image-wrap', 'full-width', 'section__image-gradient-' + attributes.gradientPosition );
+
+	// Section classes.
+	const sectionClasses = classnames( className, 'section', attributes.hasBackground || attributes.hasBackgroundImage ? 'full-width' : '' );
 
 	// Return block.
 	return (
@@ -121,6 +125,7 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 					<ToggleControl
 						label={ __( 'Has Background', 'qrk' ) }
 						checked={ attributes.hasBackground }
+						disabled={ attributes.hasBackgroundImage }
 						onChange={ () => setAttributes( {
 							hasBackground: ! attributes.hasBackground,
 							hasPadding: ! attributes.hasBackground,
@@ -144,14 +149,29 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 							} }
 						/>
 					}
-					<ImageControl
-						label={ __( 'Image', 'qrk' ) }
-						value={ attributes.backgroundImage ? attributes.backgroundImage.id : null }
-						size="large"
-						help={ __( 'Choose an image', 'qrk' ) }
-						onChange={ ( backgroundImage: Object ) => setAttributes( { backgroundImage } ) }
+					<ToggleControl
+						label={ __( 'Has Background Image', 'qrk' ) }
+						checked={ attributes.hasBackgroundImage }
+						disabled={ attributes.hasBackground }
+						onChange={ () => setAttributes( {
+							hasBackgroundImage: ! attributes.hasBackgroundImage,
+							hasPadding: ! attributes.hasBackgroundImage,
+						} ) }
+						help={ __( 'Does this section have a background image?', 'qrk' ) }
 					/>
-					{ attributes.backgroundImage &&
+					{ attributes.hasBackgroundImage &&
+						<ImageControl
+							label={ __( 'Image', 'qrk' ) }
+							value={ attributes.backgroundImage ? attributes.backgroundImage.id : null }
+							size="large"
+							help={ __( 'Choose an image', 'qrk' ) }
+							onChange={ ( backgroundImage: Object ) => setAttributes( {
+								backgroundImage,
+								hasPadding: ! attributes.backgroundImage,
+							} ) }
+						/>
+					}
+					{ attributes.hasBackgroundImage && attributes.backgroundImage &&
 						<>
 							<SelectControl
 								label={ __( 'Gradient Position', 'qrk' ) }
@@ -225,7 +245,7 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 				</PanelBody>
 			</InspectorControls>
 			<Section
-				className={ classnames( className, 'section' ) }
+				className={ classnames( className, sectionClasses ) }
 				background={ attributes.hasBackground }
 				backgroundColor={ attributes.backgroundColor }
 				padding={ attributes.hasPadding }

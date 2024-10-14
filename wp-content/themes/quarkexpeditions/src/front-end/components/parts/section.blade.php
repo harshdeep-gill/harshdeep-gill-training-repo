@@ -24,6 +24,7 @@
 @php
 	// Set default values.
 	$full_width = false;
+
 	// Check if background image is set.
 	if ( ! empty( $background_image ) ) {
 		$full_width = true;

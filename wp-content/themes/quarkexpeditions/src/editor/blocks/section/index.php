@@ -41,7 +41,7 @@ function render( array $attributes = [], string $content = '' ): string {
 		'description'       => '',
 		'background'        => $attributes['hasBackground'],
 		'background_color'  => $attributes['backgroundColor'],
-		'background_image'  => isset( $attributes['backgroundImage'] ) ? $attributes['backgroundImage']['id'] : '',
+		'background_image'  => $attributes['hasBackgroundImage'] && isset( $attributes['backgroundImage'] ) && is_array( $attributes['backgroundImage'] ) ? $attributes['backgroundImage']['id'] : '',
 		'gradient_position' => $attributes['gradientPosition'],
 		'gradient_color'    => $attributes['gradientColor'],
 		'padding'           => $attributes['hasPadding'],
