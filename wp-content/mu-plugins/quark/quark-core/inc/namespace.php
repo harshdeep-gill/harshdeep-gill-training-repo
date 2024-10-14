@@ -15,6 +15,7 @@ use WP_Term;
 use WP_Query;
 use WP_User;
 
+use function Travelopia\Cache\clear_all_edge_cache_paths;
 use function Travelopia\Core\cached_nav_menu;
 
 use const Quark\Localization\AUD_CURRENCY;
@@ -687,4 +688,14 @@ function is_block_editor(): bool {
 function increase_excerpt_length(): int {
 	// Return excerpt length.
 	return 255;
+}
+
+/**
+ * Clear all edge cache.
+ *
+ * @return void
+ */
+function bust_complete_edge_cache(): void {
+	// Clear cache.
+	clear_all_edge_cache_paths();
 }
