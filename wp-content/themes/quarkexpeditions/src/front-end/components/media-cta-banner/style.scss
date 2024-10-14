@@ -75,6 +75,10 @@
 				background-image: linear-gradient(90deg, var(--color-black) 25%, rgba(0, 0, 0, 0.05) 70%);
 			}
 		}
+
+		#{$self}__overline {
+			color: inherit;
+		}
 	}
 
 	&__image {
