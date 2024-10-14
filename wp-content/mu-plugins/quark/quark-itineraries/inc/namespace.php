@@ -874,3 +874,57 @@ function get_policy_banner_details( int $itinerary_id = 0 ): array {
 		'permalink'   => strval( $policy_post['permalink'] ),
 	];
 }
+
+/**
+ * Get tax type details.
+ *
+ * @param int $post_id Post ID.
+ *
+ * @return array<int, array{
+ *   id: int,
+ *   name: string,
+ *   description: string,
+ *   rate: int,
+ * }>
+ */
+function get_tax_type_details( int $post_id = 0 ): array {
+	// Initialize tax types.
+	$tax_types = [];
+
+	// Get itinerary.
+	$itinerary = get( $post_id );
+
+	// Validate itinerary.
+	if ( ! $itinerary['post'] instanceof WP_Post ) {
+		return $tax_types;
+	}
+
+	// Validate taxonomies.
+	if ( empty( $itinerary['post_taxonomies'] ) || empty( $itinerary['post_taxonomies'][ TAX_TYPE_TAXONOMY ] ) || ! is_array( $itinerary['post_taxonomies'][ TAX_TYPE_TAXONOMY ] ) ) {
+		return $tax_types;
+	}
+
+	// Loop through taxonomies.
+	foreach ( $itinerary['post_taxonomies'][ TAX_TYPE_TAXONOMY ] as $tax_type ) {
+		$tax_type = [
+			'id'          => absint( $tax_type['term_id'] ),
+			'name'        => strval( $tax_type['name'] ),
+			'description' => strval( $tax_type['description'] ),
+			'rate'        => 0,
+		];
+
+		// Get rate from term meta.
+		$rate = absint( get_term_meta( $tax_type['id'], 'rate', true ) );
+
+		// Check for rate.
+		if ( $rate ) {
+			$tax_type['rate'] = $rate;
+		}
+
+		// Append tax type.
+		$tax_types[] = $tax_type;
+	}
+
+	// Return tax types.
+	return $tax_types;
+}
