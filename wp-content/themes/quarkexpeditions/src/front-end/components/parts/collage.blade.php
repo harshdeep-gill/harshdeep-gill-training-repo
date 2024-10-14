@@ -14,15 +14,15 @@
 		@if( 'image' === $item['media_type'] )
 			<x-collage.image
 				:size="$item['size']"
-				:image_id="$item['image_id']"
-				:title="$item['title']"
+				:image_id="$item['image_id'] ?? 0"
+				:title="$item['title'] ?? ''"
 			/>
 		@else
 			<x-collage.video
 				:size="$item['size']"
-				:image_id="$item['image_id']"
+				:image_id="$item['image_id'] ?? ''"
 				:video_url="$item['video_url']"
-				:title="$item['title']"
+				:title="$item['title'] ?? ''"
 			/>
 		@endif
 	@endforeach

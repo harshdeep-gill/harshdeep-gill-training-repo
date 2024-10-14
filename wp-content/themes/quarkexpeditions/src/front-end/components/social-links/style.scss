@@ -1,0 +1,16 @@
+.social-links {
+	display: flex;
+	gap: var(--spacing-4);
+	flex-wrap: wrap;
+
+	&__link {
+		background-color: var(--color-black);
+		color: var(--color-white);
+		width: 40px;
+		height: 40px;
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+}

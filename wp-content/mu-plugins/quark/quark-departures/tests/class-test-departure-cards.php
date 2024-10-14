@@ -1192,6 +1192,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 				'price'           => 200,
 				'formatted_price' => '$200 USD',
 			],
+			'tax_types'                  => [],
 			'cabin_data'                 => [
 				'ULT-SGL' => [
 					'name'                     => 'cabin_name - ULT-SGL',
@@ -1395,6 +1396,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 					'price'           => 200,
 					'formatted_price' => '$200 USD',
 				],
+				'tax_types'                  => [],
 				'cabin_data'                 => [
 					'OEX-SGL' => [
 						'name'                     => 'cabin_name - OEX-SGL',
@@ -1437,6 +1439,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 					'price'           => 200,
 					'formatted_price' => '$200 USD',
 				],
+				'tax_types'                  => [],
 				'cabin_data'                 => [
 					'ULT-SGL' => [
 						'name'                     => 'cabin_name - ULT-SGL',

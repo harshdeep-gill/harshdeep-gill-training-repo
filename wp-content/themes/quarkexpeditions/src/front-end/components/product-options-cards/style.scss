@@ -126,6 +126,7 @@
 		display: flex;
 		flex-direction: column;
 		gap: var(--spacing-5);
+		position: relative;
 
 		#{$self}__title {
 			font-size: var(--h5-font-size);
@@ -236,6 +237,10 @@
 		height: 0;
 
 		@include transition("height");
+
+		@media screen and (max-width: calc(grid-size(md) - 1px)) {
+			display: none;
+		}
 	}
 
 	&__card-details {
@@ -485,6 +490,118 @@
 		#{$self}__gallery-slide {
 			border-radius: var(--border-radius-large);
 			overflow: hidden;
+		}
+	}
+
+	&__dialog-cta {
+		color: transparent;
+		user-select: none;
+
+		@media screen and (max-width: calc( grid-size(md) - 1px )) {
+			background: none;
+			position: absolute;
+			height: 100%;
+			width: 100%;
+			left: 0;
+			top: 0;
+		}
+
+		@media screen and (min-width: grid-size(md)) {
+			display: none;
+		}
+	}
+
+	&__dialog {
+
+		.dialog {
+			margin-bottom: 0;
+			min-width: 100vw;
+		}
+
+		.dialog__content {
+			background-color: var(--color-white);
+			padding-bottom: var(--spacing-5);
+		}
+
+		.dialog__header {
+			padding-bottom: 0;
+		}
+
+		.dialog__body {
+			display: flex;
+			flex-direction: column;
+			gap: var(--spacing-6);
+		}
+
+		.dialog__footer {
+			border: 0;
+			box-shadow: var(--shadow-1);
+			padding-block: var(--spacing-4);
+		}
+
+		.dialog__close-button {
+			top: 25px;
+			right: 25px;
+
+			svg {
+				width: 16px;
+				height: auto;
+			}
+		}
+
+		#{$self}__cta-buttons {
+			flex-flow: column-reverse;
+
+			.btn {
+				width: 100%;
+			}
+		}
+
+		#{$self}__rooms {
+			gap: var(--spacing-5);
+		}
+
+		#{$self}__room {
+			gap: var(--spacing-5);
+		}
+
+		#{$self}__rooms-title {
+			margin-bottom: 0;
+		}
+
+		#{$self}__room label {
+			gap: var(--spacing-2);
+		}
+
+		#{$self}__help-text {
+			margin-bottom: var(--spacing-6);
+		}
+
+		#{$self}__gallery-slide {
+			border-radius: var(--border-radius-large);
+			overflow: hidden;
+		}
+	}
+
+	&__transfer-package {
+
+		.departure-cards__transfer-package {
+			display: none;
+		}
+
+		@media screen and (max-width: calc(grid-size(md) - 1px)) {
+
+			.departure-cards__transfer-package {
+				display: block;
+			}
+
+			#{$self}__tooltip {
+				display: none;
+			}
+
+			.departure-cards__drawer-open {
+				z-index: 10;
+			}
 		}
 	}
 }

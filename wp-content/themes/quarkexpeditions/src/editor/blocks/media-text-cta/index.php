@@ -92,7 +92,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 			];
 
 			// Add the text.
-			$secondary_text['text'] = $inner_block->attributes['secondaryText'];
+			$secondary_text['text'] = render_block( $inner_block->parsed_block );
 
 			// Add to content.
 			$attributes['content'][] = $secondary_text;

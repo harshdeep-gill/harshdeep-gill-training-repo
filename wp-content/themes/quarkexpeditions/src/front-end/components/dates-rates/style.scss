@@ -421,5 +421,13 @@
 	&__accordion-content--no-transition {
 		transition: none;
 	}
+
+	&__gst {
+
+		svg {
+			width: 20px;
+			height: 20px;
+		}
+	}
 }
 

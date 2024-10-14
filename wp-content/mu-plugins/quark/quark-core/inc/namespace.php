@@ -55,6 +55,9 @@ function bootstrap(): void {
 	add_filter( 'add_attachment', __NAMESPACE__ . '\\update_svg_content', 10, 4 );
 	add_filter( 'upload_mimes', __NAMESPACE__ . '\\allow_mime_types' );
 
+	// Set Excerpt length - Set higher priority to override other plugins.
+	add_filter( 'excerpt_length', __NAMESPACE__ . '\\increase_excerpt_length', 999 );
+
 	// Custom fields.
 	if ( is_admin() ) {
 		require_once __DIR__ . '/../custom-fields/options-social.php';
@@ -192,9 +195,10 @@ function core_front_end_data( array $data = [] ): array {
 	return array_merge(
 		$data,
 		[
-			'current_url'  => get_permalink(),
-			'header'       => $header_options,
-			'social_links' => $social_options,
+			'current_url'     => get_permalink(),
+			'header'          => $header_options,
+			'social_links'    => $social_options,
+			'search_page_url' => strval( get_permalink( absint( get_option( 'options_expedition_search_page' ) ) ) ),
 		]
 	);
 }
@@ -673,4 +677,14 @@ function is_block_editor(): bool {
 
 	// Not in the block editor.
 	return false;
+}
+
+/**
+ * Increase excerpt length.
+ *
+ * @return int
+ */
+function increase_excerpt_length(): int {
+	// Return excerpt length.
+	return 255;
 }

@@ -1,3 +1,7 @@
+@props( [
+	'button_text' => '',
+] )
+
 @php
 	if ( empty( $slot ) ) {
 		return;
@@ -15,7 +19,9 @@
 	</tp-slider-track>
 
 	<div class="months-multi-select__nav">
-		<button class="months-multi-select__reset-button">{{ __( "I'm flexible", 'qrk' ) }}</button>
+		@if ( ! empty( $button_text ) )
+			<button class="months-multi-select__reset-button"><x-escape :content="$button_text" /></button>
+		@endif
 
 		@if ( $slide_count > 1 )
 			<div class="months-multi-select__nav-arrows">

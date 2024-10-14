@@ -106,6 +106,7 @@ function register_expedition_post_type(): void {
 			'editor',
 			'revisions',
 			'thumbnail',
+			'excerpt',
 		],
 		'show_ui'             => true,
 		'show_in_menu'        => true,
@@ -343,7 +344,7 @@ function register_expedition_post_type(): void {
 						],
 						[
 							[
-								'quark/included-activities',
+								'quark/related-adventure-options',
 								[
 									'showDescription' => false,
 								],
@@ -1705,13 +1706,16 @@ function get_details_data( int $post_id = 0 ): array {
 
 	// Check if title parts are available.
 	if ( ! empty( $title_parts[0] ) ) {
-		$title = trim( $title_parts[0] );
+		$title     = trim( $title_parts[0] );
+		$sub_title = trim( $title_parts[1] ?? '' );
 	} else {
-		$title = $post['post']->post_title;
+		$title     = $post['post']->post_title;
+		$sub_title = '';
 	}
 
 	// Set title.
-	$data['title'] = $title;
+	$data['title']     = $title;
+	$data['sub_title'] = $sub_title;
 
 	// Init $tags.
 	$tags = [];

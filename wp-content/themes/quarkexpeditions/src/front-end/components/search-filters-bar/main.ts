@@ -6,7 +6,7 @@ const { customElements, HTMLElement, zustand } = window;
 /**
  * Internal dependencies.
  */
-import { initialize, updateDepartureMonths, updateDestinations } from './actions';
+import { initialize, updateDepartureMonths, updateDestinations, updateHistory } from './actions';
 import { MonthsMultiSelect } from '../months-multi-select/main';
 import { SearchFilterDestinations } from './destinations';
 import { SearchFilterDestinationOption } from './destinations/filter-option';
@@ -26,6 +26,7 @@ export class SearchFiltersBar extends HTMLElement {
 	 */
 	private searchFiltersModal: HTMLElement | null;
 	private searchButton: HTMLElement | null;
+	private headerSearchButton: HTMLElement | null;
 	private searchModalDestinationsButton: HTMLElement | null;
 	private searchModalDeparturesButton: HTMLElement | null;
 	private destinationFilters: HTMLElement | null | undefined;
@@ -60,6 +61,7 @@ export class SearchFiltersBar extends HTMLElement {
 		this.departureMonthsSelectors = this.searchFiltersModal?.querySelectorAll( 'quark-months-multi-select' );
 		this.defaultDepartureMonthsPlaceholder = this.departureMonthsFilters?.getAttribute( 'default-placeholder' ) as string;
 		this.searchButton = this.querySelector( '.search-filters-bar__search-button' );
+		this.headerSearchButton = document.querySelector( '.header__search-item' );
 
 		// Event Listeners.
 		this.searchModalDestinationsButton?.addEventListener(
@@ -81,6 +83,7 @@ export class SearchFiltersBar extends HTMLElement {
 
 		// Search Button.
 		this.searchButton?.addEventListener( 'click', this.redirectToSearchPage.bind( this ) );
+		this.headerSearchButton?.addEventListener( 'click', this.toggleDestinationFilterOptions.bind( this ) );
 	}
 
 	/**
@@ -97,6 +100,9 @@ export class SearchFiltersBar extends HTMLElement {
 	redirectToSearchPage() {
 		// Get state.
 		const { searchPageUrl } = getState();
+
+		// Update the history.
+		updateHistory();
 
 		// Redirect to Search URL from state.
 		if ( searchPageUrl ) {
@@ -129,27 +135,61 @@ export class SearchFiltersBar extends HTMLElement {
 	 * Update selected destinations state.
 	 */
 	updateDestinationsState() {
+		// Null check.
+		if ( ! this.destinationSelector || ! this.searchFiltersModal ) {
+			// Bail
+			return;
+		}
+
 		// Get the selected value.
-		const value = this.destinationSelector?.value;
-		let label = '';
+		const values = Array.from( this.destinationSelector.value );
 
-		// Get the selected option.
-		const selectedOption: SearchFilterDestinationOption | null | undefined = this.searchFiltersModal?.querySelector( `quark-search-filters-bar-destinations-option[value="${ value?.values().next().value }"]` );
-
-		// Get the label.
-		if ( selectedOption ) {
-			label = selectedOption?.getAttribute( 'label' ) ?? '';
+		// Check if we have an empty array
+		if ( values.length === 0 ) {
+			// Bail.
+			return;
 		}
 
-		// Update destinations state.
-		if ( value ) {
-			updateDestinations( value );
+		// Get the attribute selector based on the selected values.
+		const valueAttributeSelector = values.map( ( value ) => `[value="${ value }"]` ).join( ',' );
 
-			// Update the label.
-			if ( label ) {
-				this.updateDestinationsPlaceholder( label );
+		// Get the selected options.
+		const selectedOptions: NodeListOf<SearchFilterDestinationOption> = this.searchFiltersModal.querySelectorAll( `quark-search-filters-bar-destinations-option${ valueAttributeSelector }` );
+
+		// Initialize destinations.
+		const destinations: SearchFiltersBarDestinationState[] = [];
+
+		// Initialize search field label.
+		let fieldLabel = '';
+
+		// Loop through the selected filters.
+		selectedOptions.forEach( ( selectedOption ) => {
+			// Get the attributes.
+			const value = selectedOption.getAttribute( 'value' ) ?? '';
+			const label = selectedOption.getAttribute( 'label' ) ?? '';
+			const imageUrl = selectedOption.getAttribute( 'image-url' ) ?? '';
+			const parent = selectedOption.getAttribute( 'parent' ) ?? '';
+
+			// Empty checks
+			if ( ! ( value && label ) ) {
+				// Bail
+				return;
 			}
-		}
+
+			// Check and set field label.
+			if ( '' === fieldLabel ) {
+				fieldLabel = label;
+			}
+
+			// Add the destination.
+			destinations.push( { value, label, imageUrl, parent } );
+		} );
+
+		// Update the destinations
+		updateDestinations( destinations );
+
+		// Update the destinations field label.
+		this.updateDestinationsPlaceholder( fieldLabel );
 
 		// Activate departure filter.
 		this.toggleDepartureFilterOptions();
@@ -161,30 +201,62 @@ export class SearchFiltersBar extends HTMLElement {
 	 * @param {Event} event event.
 	 */
 	updateDepartureMonthsState( event: Event ) {
+		// Null check.
+		if ( ! event.target || ! this.searchFiltersModal ) {
+			// Bail.
+			return;
+		}
+
 		// Get the current selector.
 		const currentSelector = event.target as MonthsMultiSelect;
 
-		// Get the selected value.
-		const value = currentSelector?.value;
-		let label = '';
+		// Get the values.
+		const values = Array.from( currentSelector.value );
 
-		// Get the selected option.
-		const selectedOption: MonthsMultiSelectOption | null | undefined = this.searchFiltersModal?.querySelector( `quark-months-multi-select-option[value="${ value?.values().next().value }"]` );
-
-		// Get the label.
-		if ( selectedOption ) {
-			label = selectedOption?.getAttribute( 'label' ) ?? '';
+		// Check if we have an empty array
+		if ( values.length === 0 ) {
+			// Bail.
+			return;
 		}
 
-		// Update months state.
-		if ( value ) {
-			updateDepartureMonths( value );
+		// Get the attribute selector based on the selected values.
+		const valueAttributeSelector = values.map( ( value ) => `[value="${ value }"]` ).join( ',' );
 
-			// Update placeholder with label.
-			if ( label ) {
-				this.updateMonthsPlaceholder( label );
+		// Get the selected options
+		const selectedOptions: NodeListOf<MonthsMultiSelectOption> = this.searchFiltersModal?.querySelectorAll( `quark-months-multi-select-option${ valueAttributeSelector }` );
+
+		// Initialize months
+		const months: SearchFiltersBarMonthState[] = [];
+
+		// Initialize field label.
+		let fieldLabel = '';
+
+		// Loop through the selected filters.
+		selectedOptions.forEach( ( selectedOption ) => {
+			// Get the attributes
+			const value = selectedOption.getAttribute( 'value' ) ?? '';
+			const label = selectedOption.getAttribute( 'label' ) ?? '';
+
+			// Empty checks
+			if ( ! ( value && label ) ) {
+				// Bail.
+				return;
 			}
-		}
+
+			// Check and set field label.
+			if ( '' === fieldLabel ) {
+				fieldLabel = label;
+			}
+
+			// Add the month
+			months.push( { value, label } );
+		} );
+
+		// Update the months
+		updateDepartureMonths( months );
+
+		// Update the months filter label
+		this.updateMonthsPlaceholder( fieldLabel );
 
 		// Activate destinations filter.
 		this.toggleDestinationFilterOptions();

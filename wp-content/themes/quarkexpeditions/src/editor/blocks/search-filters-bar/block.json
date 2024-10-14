@@ -1,0 +1,22 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "quark/search-filters-bar",
+	"description": "Block to display search filters bar",
+	"title": "Search Filters Bar",
+	"category": "layout",
+	"keywords": [
+		"search",
+		"filters",
+		"bar"
+	],
+	"textdomain": "qrk",
+	"attributes": {},
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

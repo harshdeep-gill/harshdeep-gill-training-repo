@@ -41,6 +41,7 @@
     "composer/installers": "^v1.12.0",
     "travelopia/advanced-custom-fields-pro": "*",
     "travelopia/wordpress-blade": "*",
+    "travelopia/wordpress-blocks": "^1.1.1",
     "travelopia/wordpress-packages": "*",
     "junaidbhura/gumponents": "*",
     "humanmade/aws-ses-wp-mail": "^1.3.0",
@@ -56,11 +57,10 @@
     "wpackagist-plugin/wordpress-seo": "*",
     "wpackagist-plugin/wp-redis": "*",
     "ext-dom": "*",
-    "ext-libxml": "*",
-    "travelopia/wordpress-blocks": "^1.1.1"
+    "ext-libxml": "*"
   },
   "require-dev": {
-    "roots/wordpress": "6.6.1",
+    "roots/wordpress": "6.6.2",
     "vlucas/phpdotenv": "^v5.4.1",
     "oscarotero/env": "^v2.1.0",
     "squizlabs/php_codesniffer": "*",

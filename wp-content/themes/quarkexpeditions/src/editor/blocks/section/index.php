@@ -35,17 +35,20 @@ function bootstrap(): void {
 function render( array $attributes = [], string $content = '' ): string {
 	// Build component attributes.
 	$component_attributes = [
-		'id'               => $attributes['anchor'],
-		'title'            => '',
-		'title_align'      => $attributes['titleAlignment'],
-		'description'      => '',
-		'background'       => $attributes['hasBackground'],
-		'background_color' => $attributes['backgroundColor'],
-		'padding'          => $attributes['hasPadding'],
-		'narrow'           => $attributes['isNarrow'],
-		'slot'             => $content,
-		'heading_link'     => [],
-		'has_heading_link' => $attributes['hasHeadingLink'],
+		'id'                => $attributes['anchor'],
+		'title'             => '',
+		'title_align'       => $attributes['titleAlignment'],
+		'description'       => '',
+		'background'        => $attributes['hasBackground'],
+		'background_color'  => $attributes['backgroundColor'],
+		'background_image'  => $attributes['hasBackgroundImage'] && isset( $attributes['backgroundImage'] ) && is_array( $attributes['backgroundImage'] ) ? $attributes['backgroundImage']['id'] : '',
+		'gradient_position' => $attributes['gradientPosition'],
+		'gradient_color'    => $attributes['gradientColor'],
+		'padding'           => $attributes['hasPadding'],
+		'narrow'            => $attributes['isNarrow'],
+		'slot'              => $content,
+		'heading_link'      => [],
+		'has_heading_link'  => $attributes['hasHeadingLink'],
 	];
 
 	// Set heading link if it exists.

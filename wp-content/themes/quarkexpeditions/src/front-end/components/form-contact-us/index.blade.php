@@ -89,16 +89,20 @@
 				</x-form.row>
 				<x-form.row>
 					<x-form.field :validation="[ 'required', 'email' ]">
-						<x-form.input type="email" label="Email" placeholder="Enter Email" name="fields[Email__c]" />
+						<x-form.input type="email" label="Email Address" placeholder="Enter Email Address" name="fields[Email__c]" />
 					</x-form.field>
 				</x-form.row>
 				<x-form.row>
 					<x-form.field :validation="[ 'required' ]">
-						<x-form.input type="tel" label="Phone Number" placeholder="eg. (123) 456 7890" name="fields[Phone__c]" />
+						<x-form.input type="tel" label="Phone Number" placeholder="Enter Phone Number" name="fields[Phone__c]" />
 					</x-form.field>
 				</x-form.row>
 				<x-form.row>
-					<x-country-selector :countries="$countries" :states="$states" />
+					<x-country-selector
+						country_label="Country of Residence"
+						:countries="$countries"
+						:states="$states"
+					/>
 				</x-form.row>
 				<x-form.row>
 					<x-form.field :validation="[ 'required' ]">
@@ -111,16 +115,15 @@
 					</x-form.field-group>
 				</x-form.row>
 				<x-form.row>
-					<x-form.field-group :validation="[ 'checkbox-group-required' ]">
+					<x-form.field-group :validation="[ 'checkbox-field-required' ]" class="form-contact-us__privacy-statement">
 						<x-form.checkbox name="fields[Subscribe_to_Newsletter__c]" label="I have read and agree to the privacy statement." />
 					</x-form.field-group>
 				</x-form.row>
 			</div>
 		</div>
 
-			<x-form.buttons>
-				<x-form.submit size="big" color="black">Submit</x-form.submit>
-			</x-form.buttons>
-		</div>
+		<x-form.buttons>
+			<x-form.submit size="big" color="black">Submit</x-form.submit>
+		</x-form.buttons>
 	</x-form>
 </x-section>
