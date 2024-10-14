@@ -263,16 +263,13 @@
 								<x-dates-rates.item.table-row>
 									<x-dates-rates.item.table-column>
 										<x-dates-rates.item.table-column-title>
-											<strong>
-												{{ $tax_type['rate'] }}% {{ __( 'Goods and Services Tax (GST)', 'qrk' ) }}
-											</strong>
-											{{ __( '(not included)', 'qrk' ) }}
+											<x-dates-rates.item.gst-rate :rate="$tax_type['rate']" />
 										</x-dates-rates.item.table-column-title>
 									</x-dates-rates.item.table-column>
 
 									@for ( $i = $number_of_cabins; $i > 0; $i-- )
 										<x-dates-rates.item.table-column>
-											<span class="gst-tax"><x-svg name="check-straight" /></span>
+											<x-dates-rates.item.gst-icon />
 										</x-dates-rates.item.table-column>
 									@endfor
 
