@@ -42,6 +42,16 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 		template: [ [ 'core/heading', { level: 4 } ], [ 'core/paragraph' ] ],
 	} );
 
+	// Prepare icon.
+	let selectedIcon: any = '';
+
+	// Set icon.
+	if ( attributes.icon && '' !== attributes.icon ) {
+		// Kebab-case to camel-case.
+		const iconName: string = attributes.icon.replace( /-([a-z])/g, ( _: any, group:string ) => group.toUpperCase() );
+		selectedIcon = icons[ iconName ] ?? '';
+	}
+
 	// Return the block's markup.
 	return (
 		<div { ...blockProps } >
@@ -55,13 +65,16 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 							{ label: 'Ship', value: 'ship' },
 							{ label: 'Sun', value: 'sun' },
 							{ label: 'Compass', value: 'compass' },
+							{ label: 'Aid Icon', value: 'aid-icon' },
+							{ label: 'Departure Notification', value: 'departure-notification' },
+							{ label: 'Training', value: 'training' },
 						] }
 						onChange={ ( value ) => setAttributes( { icon: value } ) }
 					/>
 				</PanelBody>
 			</InspectorControls>
 			<div className={ 'icon-info-grid__icon' }>
-				{ icons?.[ attributes.icon ] }
+				{ selectedIcon }
 			</div>
 			<div { ...innerBlockProps } />
 		</div>

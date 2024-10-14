@@ -23,7 +23,10 @@
           "star",
           "ship",
           "compass",
-          "sun"
+          "sun",
+          "aid-icon",
+          "departure-notification",
+          "training"
         ]
       }
     },
