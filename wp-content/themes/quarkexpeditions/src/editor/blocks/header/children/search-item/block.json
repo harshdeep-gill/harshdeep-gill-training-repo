@@ -1,0 +1,23 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Search Item",
+	"name": "quark/search-item",
+	"description": "Search Item for Header",
+	"parent": [
+		"quark/secondary-nav"
+	],
+	"category": "layout",
+	"textdomain": "qrk",
+	"keywords": [
+		"search",
+		"item"
+	],
+	"attributes": {},
+	"supports": {
+		"alignWide": false,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}
