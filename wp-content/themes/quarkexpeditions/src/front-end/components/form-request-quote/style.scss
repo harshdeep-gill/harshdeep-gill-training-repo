@@ -17,6 +17,10 @@
 	margin-left: auto;
 	margin-right: auto;
 
+	&__heading {
+		margin-bottom: var(--grid-section-gutter);
+	}
+
 	&__tabs-hidden {
 		display: none;
 	}

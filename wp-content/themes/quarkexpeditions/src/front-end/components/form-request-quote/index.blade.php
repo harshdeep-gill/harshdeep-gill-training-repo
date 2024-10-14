@@ -22,7 +22,7 @@
 @endphp
 
 <x-section class="form-request-quote">
-	<h1 class="form-request-quote__title">{{ __( 'Register Your Email Now', 'qrk' ) }}</h1>
+	<h1 class="form-request-quote__heading">{{ __( 'Request a Quote', 'qrk' ) }}</h1>
 	<quark-form-request-quote class="form-request-quote__container" data-filters-endpoint="{{ $filters_endpoint }}">
 		<tp-tabs class="form-request-quote__tabs" current-tab="{{ $current_tab }}" update-url="{{ $update_url }}">
 			{{-- Naviation --}}
