@@ -35,6 +35,9 @@ function bootstrap(): void {
 	add_filter( 'travelopia_breadcrumbs_ancestors', __NAMESPACE__ . '\\breadcrumbs_ancestors' );
 	add_filter( 'travelopia_breadcrumbs', __NAMESPACE__ . '\\remove_extra_breadcrumb_item_for_category_page' );
 
+	// Limit post revision.
+	add_filter( 'wp_post_revisions_to_keep', __NAMESPACE__ . '\\limit_revisions_for_blog_post', 999 );
+
 	// Admin stuff.
 	if ( is_admin() || ( defined( 'WP_CLI' ) && true === WP_CLI ) ) {
 		add_filter( 'post_type_labels_' . POST_TYPE, __NAMESPACE__ . '\\update_blog_posts_admin_menu_label' );
@@ -574,4 +577,14 @@ function remove_extra_breadcrumb_item_for_category_page( array $breadcrumbs = []
 
 	// Return breadcrumbs.
 	return $breadcrumbs;
+}
+
+/**
+ * Limit revisions for Blog post type.
+ *
+ * @return int Number of revisions to save for the post.
+ */
+function limit_revisions_for_blog_post(): int {
+	// Limit to 5 revisions for this post type.
+	return 5;
 }

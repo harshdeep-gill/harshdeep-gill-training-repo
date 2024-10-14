@@ -19,6 +19,9 @@ const POST_TYPE = 'page';
 function bootstrap(): void {
 	// Layout.
 	add_action( 'template_redirect', __NAMESPACE__ . '\\layout' );
+
+	// Limit revisions for Page post type.
+	add_filter( 'wp_page_revisions_to_keep', __NAMESPACE__ . '\\limit_revisions_for_page' );
 }
 
 /**
@@ -83,4 +86,14 @@ function get( int $post_id = 0 ): array {
 		'permalink'      => strval( get_permalink( $post ) ?: '' ),
 		'post_thumbnail' => absint( get_post_thumbnail_id( $post ) ?: 0 ),
 	];
+}
+
+/**
+ * Limit revisions for Page post type.
+ *
+ * @return int Number of revisions to save for the post.
+ */
+function limit_revisions_for_page(): int {
+	// Return revisions limit as 5.
+	return 5;
 }
