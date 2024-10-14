@@ -153,7 +153,6 @@ const buildUrlFromFilters = (): string => {
 			'itineraryLengths' === selectedFilter &&
 			currentState.itineraryLengths[ 0 ] === currentState.initialItineraryLengths[ 0 ] &&
 			currentState.itineraryLengths[ 1 ] === currentState.initialItineraryLengths[ 1 ]
-
 		) {
 			// Delete the data from the url.
 			delete urlParams[ snakeCasedKey ];
@@ -1021,7 +1020,7 @@ export const updateMonths = ( monthsToAdd: ExpeditionSearchFilterState[] ) => {
 	};
 
 	// Sanity checks
-	if ( monthsToAdd && Array.isArray( monthsToAdd ) && monthsToAdd.length ) {
+	if ( monthsToAdd && Array.isArray( monthsToAdd ) ) {
 		// Only get the unique months values.
 		updateObject.months = monthsToAdd.reduce( ( accumulator, current ) => {
 			// Check if the value is already there.
