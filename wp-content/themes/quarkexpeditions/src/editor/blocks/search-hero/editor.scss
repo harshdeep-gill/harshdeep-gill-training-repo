@@ -1,0 +1,23 @@
+.search-hero {
+
+	&__title {
+		max-width: 100%;
+	}
+
+	&__image {
+		margin: 0;
+		max-width: 100%;
+	}
+
+	.thumbnail-cards {
+
+		&__slides {
+			column-gap: var(--spacing-6);
+			row-gap: var(--spacing-6);
+		}
+
+		&__card {
+			margin: 0;
+		}
+	}
+}
