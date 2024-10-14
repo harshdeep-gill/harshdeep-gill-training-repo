@@ -61,6 +61,7 @@ function register_agreement_post_type(): void {
 		'supports'            => [
 			'title',
 			'editor',
+			'excerpt',
 		],
 		'show_ui'             => true,
 		'show_in_menu'        => true,

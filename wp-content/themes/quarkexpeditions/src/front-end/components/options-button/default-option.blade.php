@@ -1,13 +1,16 @@
 @props( [
-	'url' => '',
+	'url'   => '',
+	'class' => ''
 ] )
 
 @php
-	if ( empty( $url ) ) {
-		return;
+	$classes = [ 'options-button__default-option' ];
+
+	if ( ! empty( $class ) ) {
+		$classes[] = $class;
 	}
 @endphp
 
-<x-button href="{{ $url }}" size="big" class="options-button__default-option">
+<x-button href="{{ $url ?? '' }}" size="big" @class( $classes )>
 	{!! $slot !!}
 </x-button>

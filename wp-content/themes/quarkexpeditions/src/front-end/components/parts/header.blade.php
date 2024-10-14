@@ -95,6 +95,11 @@
 	@if ( ! empty( $secondary_nav['items'] ) )
 		<x-header.secondary-nav>
 			@foreach ( $secondary_nav['items'] as $item )
+				@if ( 'search-item' === $item['type'] )
+					<x-header.search />
+					@continue
+				@endif
+
 				<x-header.nav-item
 					:title="$item['title'] ?? ''"
 					:icon="$item['icon'] ?? ''"

@@ -295,6 +295,8 @@
 <x-component-demo :keys="[ 'section-image' ]">
 	<x-section :full_width="true">
 		<x-section.image :image_id="26" gradient_color="white" gradient_position="both" />
+		<x-section.title title="Testing Section Title.." />
+		<x-section.description>Discover what your Crossing the Circle Expedition includes</x-section.description>
 		<x-review-cards>
 			<x-review-cards.card>
 				<x-review-cards.rating rating="4" />
@@ -319,6 +321,7 @@
 				<x-review-cards.author-details text="Antarctic Express: Crossing the Circle" />
 			</x-review-cards.card>
 		</x-review-cards>
+		<x-section.cta class="color-context--dark" text="Learn More" url="#" color="black" />
 	</x-section>
 </x-component-demo>
 
@@ -379,11 +382,8 @@
 					<x-search-hero.title title="Not a cruise. A real polar expedition." />
 				</x-search-hero.title-container>
 				<x-search-hero.search-bar>
-					{{-- https://tuispecialist.atlassian.net/browse/QE-439 [In Progress] --}}
-					{{-- <x-search-filters-bar /> --}}
-					Search bar component
+					<x-parts.search-filters-bar />
 				</x-search-hero.search-bar>
-				{{-- Existing component, needs video support update --}}
 				<x-thumbnail-cards :is_carousel="false" :full_width="false">
 					<x-thumbnail-cards.card size="small" url="#" orientation="portrait" video_id="167">
 						<x-thumbnail-cards.title title="Arctic Expeditions" align="bottom" />
@@ -2829,18 +2829,6 @@
 				</x-media-text-cta>
 			</x-media-text-cta-carousel.item>
 		</x-media-text-cta-carousel>
-	</x-section>
-</x-component-demo>
-
-<x-component-demo :keys="[ 'currency-switcher' ]">
-	<x-section>
-		<x-currency-switcher appearance="dark" />
-	</x-section>
-
-	<x-section>
-		<div style="background-color: var(--color-gray-90); padding: 24px;">
-			<x-currency-switcher appearance="dark" />
-		</div>
 	</x-section>
 </x-component-demo>
 
@@ -7173,7 +7161,9 @@
 
 <x-component-demo :keys="[ 'form-account-management' ]">
 	<x-section>
-		<x-form-account-management />
+		<x-form-account-management
+			:states="$states['US'] ?? []"
+		/>
 	</x-section>
 </x-component-demo>
 
@@ -7203,8 +7193,29 @@
 	</x-mini-cards-list>
 </x-component-demo>
 
+<x-component-demo :keys="[ 'expedition-search' ]">
+	<x-parts.expedition-search />
+</x-component-demo>
+
+<x-component-demo :keys="[ 'search-filters-bar' ]">
+	<x-section>
+		<x-parts.search-filters-bar />
+	</x-section>
+
+	<x-section>
+		<x-parts.search-filters-bar />
+	</x-section>
+</x-component-demo>
+
 <x-component-demo :keys="[ 'form-newsletter' ]">
 	<x-form-newsletter
+		:countries="$countries"
+		:states="$states"
+	/>
+</x-component-demo>
+
+<x-component-demo :keys="[ 'form-communications-opt-in' ]">
+	<x-form-communications-opt-in
 		:countries="$countries"
 		:states="$states"
 	/>

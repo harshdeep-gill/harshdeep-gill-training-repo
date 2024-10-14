@@ -15,10 +15,10 @@
 
 	&__slides-container {
 
-		@media screen and (min-width: grid-size(md)) {
+		@media screen and (min-width: grid-size(lg)) {
 			display: flex;
 			flex-wrap: wrap;
-			gap: var(--spacing-4);
+			gap: var(--spacing-6);
 		}
 	}
 
@@ -28,7 +28,7 @@
 		min-height: 180px;
 		flex: 0 0 96%;
 
-		@media screen and (min-width: grid-size(md)) {
+		@media screen and (min-width: grid-size(lg)) {
 			flex-grow: 1;
 		}
 
@@ -40,41 +40,39 @@
 			@include transition(transform);
 		}
 
-		:hover figure img {
+		:hover img {
 			transform: scale(1.03);
 		}
 
-		@media screen and (max-width: calc( grid-size(md) - 1px)) {
+		@media screen and (max-width: calc( grid-size(lg) - 1px)) {
 
 			&:not(:last-child) {
 				margin-right: var(--spacing-5);
 			}
 		}
 
-		@media screen and (min-width: grid-size(md)) {
-			height: 180px;
+		@media screen and (min-width: grid-size(lg)) {
+			height: 256px;
+			min-width: 256px;
 
 			&--small {
-				flex-basis: calc(25% - var(--spacing-4));
+				flex-basis: calc(25% - var(--spacing-6));
+				max-width: 256px;
 			}
 
 			&--medium {
-				flex-basis: calc(50% - var(--spacing-4));
+				flex: 1;
 			}
 
 			&--large {
-				flex-basis: calc(75% - var(--spacing-4));
+				flex: 1;
+				min-width: 50%;
 			}
 
 			&--x-large {
 				flex-basis: 100%;
 			}
 		}
-
-		@media screen and (min-width: grid-size(lg)) {
-			height: 270px;
-		}
-
 	}
 
 	&__video {
@@ -132,7 +130,7 @@
 		gap: var(--spacing-4);
 		margin-top: var(--spacing-4);
 
-		@media screen and (min-width: grid-size(md)) {
+		@media screen and (min-width: grid-size(lg)) {
 			display: none;
 		}
 	}

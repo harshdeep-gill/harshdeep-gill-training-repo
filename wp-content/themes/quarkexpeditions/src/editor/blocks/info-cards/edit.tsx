@@ -66,6 +66,7 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 						options={ [
 							{ label: __( 'Carousel', 'qrk' ), value: 'carousel' },
 							{ label: __( 'Grid', 'qrk' ), value: 'grid' },
+							{ label: __( 'Collage', 'qrk' ), value: 'collage' },
 						] }
 						onChange={ ( layout: string ) => setAttributes( { layout } ) }
 					/>

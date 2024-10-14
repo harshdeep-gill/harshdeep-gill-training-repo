@@ -51,7 +51,7 @@ textarea,
 tp-multi-select-field {
 	background-color: var(--color-white);
 	border-radius: var(--forms-border-radius);
-	padding: 9px 10px;
+	padding: 7px 10px;
 	outline: none;
 	border: 2px solid var(--forms-border-color);
 	width: 100%;
@@ -89,9 +89,9 @@ textarea,
 tp-multi-select-field {
 	font-family: var(--font-family);
 	font-weight: var(--font-weight-default);
-	font-size: 15px;
+	font-size: var(--font-size);
 	color: var(--color-black);
-	line-height: 1.6;
+	line-height: var(--line-height);
 
 	&:disabled,
 	&.disabled,
@@ -188,6 +188,8 @@ input[type="file"] {
 		border: 1px solid var(--color-gray-20);
 		border-left: none;
 		border-radius: 0 var(--border-radius-large) var(--border-radius-large) 0;
+		min-width: 300px;
+		width: 100%;
 	}
 
 	&__file-info {
@@ -318,6 +320,16 @@ label {
 	&:has(>.form__inline-dropdown) {
 		white-space: nowrap;
 	}
+
+	&__file {
+
+		tp-form-error {
+			display: block;
+			color: var(--color-error-100);
+			font-weight: var(--font-weight-bold);
+			margin-top: var(--spacing-4);
+		}
+	}
 }
 
 .form-field-group {
@@ -334,8 +346,10 @@ label {
 	}
 
 	&__title {
-		margin-bottom: 0;
+		font-size: var(--font-size);
 		font-weight: var(--font-weight-bold);
+		line-height: var(--line-height);
+		margin-bottom: 0;
 		order: 1;
 	}
 
@@ -362,16 +376,21 @@ label {
 		display: block;
 		color: var(--color-error-100);
 		font-weight: var(--font-weight-bold);
-		margin-top: calc(-1 * var(--spacing-4));
+		margin-top: calc(-1 * var(--spacing-4) + var(--spacing-1));
 	}
 }
 
 .form-row {
 	display: grid;
-	gap: var(--spacing-4);
-	margin-bottom: var(--spacing-4);
+	gap: var(--spacing-5);
+	margin-bottom: var(--spacing-5);
 	grid-template-columns: repeat(1, 1fr);
 	min-width: 0;
+
+	@media screen and (min-width: grid-size(lg)) {
+		margin-bottom: var(--spacing-6);
+		gap: var(--spacing-6);
+	}
 
 	.form-field {
 		margin-bottom: 0;
@@ -445,21 +464,21 @@ tp-multi-select {
 		margin-bottom: var(--spacing-1);
 		position: relative;
 		padding: var(--spacing-2);
-		padding-left: var(--spacing-5);
+		padding-right: var(--spacing-5);
 		white-space: normal;
 
 		&[selected="yes"]::before {
 			content: "";
 			display: block;
 			position: absolute;
-			inset: 50% auto auto var(--spacing-1);
-			height: 15px;
+			height: 100%;
 			width: 15px;
-			transform: translateY(-50%);
+			right: 8px;
+			top: 0;
 			/* stylelint-disable-next-line function-url-quotes */
 			background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='9' viewBox='0 0 13 9'%3E%3Cpolygon fill='%23232933' points='4.243 8.485 11.313 1.414 9.899 0 4.243 5.657 1.414 2.828 0 4.242' transform='translate(.76 .515)'/%3E%3C/svg%3E%0A");
 			background-repeat: no-repeat;
-			background-position: center left;
+			background-position: center right;
 		}
 
 		&:hover {
@@ -468,7 +487,7 @@ tp-multi-select {
 
 			&[selected="yes"]::before {
 				/* stylelint-disable-next-line function-url-quotes */
-				background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='9' viewBox='0 0 13 9'%3E%3Cpolygon fill='%23FFF' points='4.243 8.485 11.313 1.414 9.899 0 4.243 5.657 1.414 2.828 0 4.242' transform='translate(.76 .515)'/%3E%3C/svg%3E%0A");
+				background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='9' viewBox='0 0 13 9'%3E%3Cpolygon fill='%23232933' points='4.243 8.485 11.313 1.414 9.899 0 4.243 5.657 1.414 2.828 0 4.242' transform='translate(.76 .515)'/%3E%3C/svg%3E%0A");
 			}
 		}
 	}
@@ -479,7 +498,6 @@ tp-multi-select {
 		padding-block: var(--spacing-3);
 		padding-inline: var(--spacing-1);
 		overflow: hidden;
-		min-width: max-content;
 		box-shadow: var(--shadow-2);
 		top: calc(100% + var(--spacing-2));
 

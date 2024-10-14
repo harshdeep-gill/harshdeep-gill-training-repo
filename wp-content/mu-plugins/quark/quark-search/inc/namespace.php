@@ -26,6 +26,9 @@ function bootstrap(): void {
 	// REST API.
 	add_action( 'rest_api_init', __NAMESPACE__ . '\\register_rest_endpoints' );
 	add_filter( 'travelopia_security_public_rest_api_routes', __NAMESPACE__ . '\\public_rest_api_routes' );
+
+	// Frontend data.
+	add_action( 'quark_front_end_data', __NAMESPACE__ . '\\front_end_data' );
 }
 
 /**
@@ -83,10 +86,12 @@ function update_post_in_index( int $post_id = 0 ): void {
 function register_rest_endpoints(): void {
 	// Require REST API classes.
 	require_once __DIR__ . '/rest-api/class-destination-month-filters.php';
+	require_once __DIR__ . '/rest-api/class-expedition-month-filters.php';
 
 	// REST API endpoints.
 	$endpoints = [
 		new REST_API\Destination_Month_Filters(),
+		new REST_API\Expedition_Month_Filters(),
 	];
 
 	// Register routes.
@@ -105,7 +110,23 @@ function register_rest_endpoints(): void {
 function public_rest_api_routes( array $routes = [] ): array {
 	// Add REST API routes.
 	$routes[] = '/' . REST_API_NAMESPACE . '/filter-options/by-destination-and-month';
+	$routes[] = '/' . REST_API_NAMESPACE . '/filter-options/by-expedition';
 
 	// Return routes.
 	return $routes;
+}
+
+/**
+ * Front-end data.
+ *
+ * @param mixed[] $data Front-end data.
+ *
+ * @return mixed[]
+ */
+function front_end_data( array $data = [] ): array {
+	// Default currency.
+	$data['filters_api_url'] = home_url( 'wp-json/' . REST_API_NAMESPACE . '/filter-options/by-destination-and-month' );
+
+	// Return data.
+	return $data;
 }

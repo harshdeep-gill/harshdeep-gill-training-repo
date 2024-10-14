@@ -8,12 +8,7 @@
     "category": "layout",
     "textdomain": "qrk",
     "parent": [ "quark/media-text-cta" ],
-    "attributes": {
-        "secondaryText": {
-            "type": "string",
-            "default": ""
-        }
-    },
+    "attributes": {},
     "supports": {
         "alignWide": false,
         "className": false,

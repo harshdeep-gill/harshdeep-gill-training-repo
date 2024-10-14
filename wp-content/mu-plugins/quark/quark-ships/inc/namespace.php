@@ -72,6 +72,7 @@ function register_ship_post_type(): void {
 		'supports'            => [
 			'title',
 			'editor',
+			'thumbnail',
 			'revisions',
 			'excerpt',
 		],

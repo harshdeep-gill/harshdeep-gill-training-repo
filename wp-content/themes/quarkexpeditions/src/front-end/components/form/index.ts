@@ -5,6 +5,9 @@ import Form from './form';
 import QuarkFileInput from './file-input';
 import * as radioGroupRequired from './validators/radio-group';
 import * as checkboxGroupRequired from './validators/checkbox-group';
+import * as checkboxFieldRequired from './validators/checkbox-field';
+import * as fileSizeValid from './validators/file-size';
+import './range-slider';
 
 /**
  * Validators.
@@ -12,6 +15,8 @@ import * as checkboxGroupRequired from './validators/checkbox-group';
 const validators = [
 	radioGroupRequired,
 	checkboxGroupRequired,
+	checkboxFieldRequired,
+	fileSizeValid,
 ];
 
 // Add all validations.

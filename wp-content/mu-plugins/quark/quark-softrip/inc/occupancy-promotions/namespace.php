@@ -155,7 +155,7 @@ function update_occupancy_promotions( array $raw_occupancy_promotions = [], int 
 		}
 
 		// Add to occupancy promotions by promotion code.
-		$existing_occupancy_promotions_by_promo_code[ $existing_promotion['code'] ] = $existing_promotion['id'];
+		$existing_occupancy_promotions_by_promo_code[ $existing_promotion['code'] ] = $existing_occupancy_promotion['id'];
 	}
 
 	// Setup defaults.
