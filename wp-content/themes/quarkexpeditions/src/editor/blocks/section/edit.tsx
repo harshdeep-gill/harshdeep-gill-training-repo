@@ -252,7 +252,7 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 				seamless={ attributes.hasBackground }
 				narrow={ attributes.isNarrow }
 			>
-				{ attributes.backgroundImage && 'none' !== attributes.gradientColor &&
+				{ attributes.hasBackgroundImage && attributes.backgroundImage && 'none' !== attributes.gradientColor &&
 					<div
 						className={ imageClasses }
 						style={ {
