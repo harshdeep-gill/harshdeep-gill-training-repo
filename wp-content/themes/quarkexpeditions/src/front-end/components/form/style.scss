@@ -1,5 +1,6 @@
 @import "../../scss";
 @import "./range-slider/range-slider";
+@import "../../global";
 
 .form {
 	$self: &;
@@ -43,5 +44,10 @@
 	&__label-optional-text {
 		color: var(--color-gray-50);
 		font-weight: 400;
+	}
+
+	tp-form-submit[submitting] button[type="submit"] {
+
+		@extend %btn--loading !optional;
 	}
 }

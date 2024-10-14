@@ -167,6 +167,25 @@
 		}
 	}
 
+	&--loading {
+		position: relative;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: var(--spacing-2);
+
+		&::after {
+			content: "";
+			position: relative;
+			width: var(--font-size);
+			height: var(--font-size);
+			border: 2px solid;
+			border-radius: 100%;
+			border-left: 2px solid transparent;
+			animation: spin 1s linear infinite;
+		}
+	}
+
 	.color-context--dark & {
 
 		&:hover {
