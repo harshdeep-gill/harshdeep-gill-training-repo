@@ -68,20 +68,6 @@ export default class ExpeditionSearchFilterItineraryLengths extends HTMLElement 
 			return;
 		}
 
-		// Get the min value and max value.
-		let minValue = parseInt( this.rangeSlider.getAttribute( 'min' ) ?? '' );
-		let maxValue = parseInt( this.rangeSlider.getAttribute( 'max' ) ?? '' );
-		minValue = Number.isNaN( minValue ) ? 0 : minValue;
-		maxValue = Number.isNaN( maxValue ) ? 0 : maxValue;
-
-		// Do we have invalid state?
-		if ( itineraryLengths[ 0 ] < minValue || itineraryLengths[ 1 ] > maxValue ) {
-			updateItineraryLength( [ minValue, maxValue ] );
-
-			// Bail.
-			return;
-		}
-
 		// Set updating flag.
 		this.isFilterUpdating = true;
 
