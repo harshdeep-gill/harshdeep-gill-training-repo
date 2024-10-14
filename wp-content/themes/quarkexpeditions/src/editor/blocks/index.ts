@@ -96,6 +96,7 @@ import * as formCommunicationsOptIn from './form-communications-opt-in';
 import * as formRequestAQuote from './form-request-quote';
 import * as searchFiltersBar from './search-filters-bar';
 import * as socialLinks from './social-links';
+import * as currencySwitcher from './currency-switcher';
 
 /**
  * Add blocks.
@@ -188,6 +189,7 @@ const blocks = [
 	formRequestAQuote,
 	searchFiltersBar,
 	socialLinks,
+	currencySwitcher,
 ];
 
 // Register blocks for ships.
