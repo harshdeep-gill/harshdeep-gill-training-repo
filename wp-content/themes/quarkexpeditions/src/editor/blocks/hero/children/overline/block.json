@@ -18,10 +18,11 @@
 		},
 		"textColor": {
 			"type": "string",
-			"default": "blue",
+			"default": "white",
 			"enum": [
 				"blue",
-				"black"
+				"black",
+				"white"
 			]
 		}
 	},
