@@ -55,6 +55,10 @@ function bootstrap(): void {
 	add_filter( 'add_attachment', __NAMESPACE__ . '\\update_svg_content', 10, 4 );
 	add_filter( 'upload_mimes', __NAMESPACE__ . '\\allow_mime_types' );
 
+	// Get front-end markup for manipulation.
+	add_filter( 'template_redirect', __NAMESPACE__ . '\\start_output_buffering' );
+	add_filter( 'wp_footer', __NAMESPACE__ . '\\end_output_buffering' );
+
 	// Custom fields.
 	if ( is_admin() ) {
 		require_once __DIR__ . '/../custom-fields/options-social.php';
@@ -673,4 +677,30 @@ function is_block_editor(): bool {
 
 	// Not in the block editor.
 	return false;
+}
+
+/**
+ * Start output buffering.
+ *
+ * @return void
+ */
+function start_output_buffering(): void {
+	// Start output buffering.
+	ob_start();
+}
+
+/**
+ * End output buffering.
+ *
+ * @return void
+ */
+function end_output_buffering(): void {
+	// Get the buffered content.
+	$content = ob_get_clean();
+
+	// Apply filters before rendered.
+	$content = strval( apply_filters( 'quark_front_end_markup', $content ) );
+
+	// Render the markup.
+	echo $content; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 }

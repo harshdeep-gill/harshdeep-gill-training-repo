@@ -13,6 +13,7 @@ use WP_REST_Request;
 use WP_REST_Response;
 use WP_Error;
 
+use function Quark\Tracking\add_infinity_tracking_class;
 use const Quark\Core\REST_API_NAMESPACE;
 
 /**
@@ -82,6 +83,9 @@ class Partial extends WP_REST_Controller {
 			$name,
 			$data
 		);
+
+		// Add infinity tracking class to phone numbers.
+		$response['markup'] = add_infinity_tracking_class( strval( $response['markup'] ) );
 
 		// Return response.
 		return rest_ensure_response( $response );
