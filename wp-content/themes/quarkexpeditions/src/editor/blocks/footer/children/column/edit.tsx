@@ -28,6 +28,7 @@ import * as footerIcon from '../icon';
 import * as footerSocialLinks from '../social-links';
 import * as footerPaymentOptions from '../payment-options';
 import * as quarkButton from '../../../button';
+import * as currencySwitcher from '../../../currency-switcher';
 
 /**
  * Edit Component.
@@ -56,6 +57,7 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 				'core/paragraph',
 				'core/list',
 				'core/heading',
+				currencySwitcher.name,
 			],
 			template: [ [ 'core/paragraph' ] ],
 		}
