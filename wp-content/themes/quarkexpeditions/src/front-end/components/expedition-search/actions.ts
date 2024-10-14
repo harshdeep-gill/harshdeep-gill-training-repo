@@ -148,6 +148,20 @@ const buildUrlFromFilters = (): string => {
 		// Convert camelCased key to snake_caked key.
 		const snakeCasedKey: string = camelToSnakeCase( selectedFilter );
 
+		// Check if the itinerary lengths are default value. If so, don't store them in the URL.
+		if (
+			'itineraryLengths' === selectedFilter &&
+			currentState.itineraryLengths[ 0 ] === currentState.initialItineraryLengths[ 0 ] &&
+			currentState.itineraryLengths[ 1 ] === currentState.initialItineraryLengths[ 1 ]
+
+		) {
+			// Delete the data from the url.
+			delete urlParams[ snakeCasedKey ];
+
+			// Bail.
+			return;
+		}
+
 		// Stringify the filter and set it in url params.
 		urlParams[ snakeCasedKey ] = currentState[ selectedFilter ].map( ( singleFilter ) => {
 			// Check what type we are dealing with.
@@ -204,20 +218,21 @@ export const initialize = ( settings: {
 	// Get the state from url.
 	const urlFilters = parseUrl();
 
+	// Input containers for filters.
+	const filtersInputContainers = {
+		destinations: document.querySelector( 'quark-expedition-search-filter-destinations' ),
+		months: document.querySelector( 'quark-expedition-search-filter-months' ),
+		ships: document.querySelector( 'quark-expedition-search-filter-ships' ),
+		adventureOptions: document.querySelector( 'quark-expedition-search-filter-adventure-options' ),
+		itineraryLengths: document.querySelector( 'quark-expedition-search-filter-itinerary-lengths' ),
+		languages: document.querySelector( 'quark-expedition-search-filter-languages' ),
+		expeditions: document.querySelector( 'quark-expedition-search-filter-expeditions' ),
+		cabinClasses: document.querySelector( 'quark-expedition-search-filter-cabin-classes' ),
+		travelers: document.querySelector( 'quark-expedition-search-filter-travelers' ),
+	};
+
 	// Null check.
 	if ( urlFilters ) {
-		// Input containers for filters.
-		const filtersInputContainers = {
-			destinations: document.querySelector( 'quark-expedition-search-filter-destinations' ),
-			months: document.querySelector( 'quark-expedition-search-filter-months' ),
-			ships: document.querySelector( 'quark-expedition-search-filter-ships' ),
-			adventureOptions: document.querySelector( 'quark-expedition-search-filter-adventure-options' ),
-			languages: document.querySelector( 'quark-expedition-search-filter-languages' ),
-			expeditions: document.querySelector( 'quark-expedition-search-filter-expeditions' ),
-			cabinClasses: document.querySelector( 'quark-expedition-search-filter-cabin-classes' ),
-			travelers: document.querySelector( 'quark-expedition-search-filter-travelers' ),
-		};
-
 		/**
 		 * Our filters are stored as individual lists of @type {ExpeditionSearchFilterState} objects.
 		 * We will update the `value` and `label` field based on the values from the `input` elements related to the filter.
@@ -259,6 +274,31 @@ export const initialize = ( settings: {
 				} ).slice( 0, 2 );
 			}
 		}
+	}
+
+	// Get the range slider for it.
+	const rangeSlider = filtersInputContainers.itineraryLengths?.querySelector( 'quark-range-slider' );
+
+	// Null check
+	if ( rangeSlider ) {
+		// Get the values for the initial state or the min/max for this.
+		let minValue = parseInt( rangeSlider.getAttribute( 'min' ) ?? '' );
+		let maxValue = parseInt( rangeSlider.getAttribute( 'max' ) ?? '' );
+		minValue = Number.isNaN( minValue ) ? 0 : minValue;
+		maxValue = Number.isNaN( maxValue ) ? 0 : maxValue;
+
+		// Do we have invalid state?
+		if (
+			! initialUpdatePayload.itineraryLengths ||
+			initialUpdatePayload.itineraryLengths.length === 0 ||
+			initialUpdatePayload.itineraryLengths[ 0 ] < minValue ||
+			initialUpdatePayload.itineraryLengths[ 1 ] > maxValue
+		) {
+			initialUpdatePayload.itineraryLengths = [ minValue, maxValue ];
+		}
+
+		// Set the initial values.
+		initialUpdatePayload.initialItineraryLengths = [ minValue, maxValue ];
 	}
 
 	// Initialize: Add settings in state.
