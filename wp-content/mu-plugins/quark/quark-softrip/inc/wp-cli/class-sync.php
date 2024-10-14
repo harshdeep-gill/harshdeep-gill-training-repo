@@ -79,7 +79,7 @@ class Sync {
 			'update_term_meta_cache' => false,
 			'ignore_sticky_posts'    => true,
 			'no_found_rows'          => true,
-			'post_status'            => [ 'draft', 'publish' ],
+			'post_status'            => [ 'publish' ],
 		];
 
 		// Run WP_Query.

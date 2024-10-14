@@ -1,0 +1,22 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Form - Request a Quote",
+	"name": "quark/form-request-quote",
+	"description": "Add the form to request a quote",
+	"category": "layout",
+	"keywords": [
+		"request",
+		"quote",
+		"form"
+	],
+	"textdomain": "qrk",
+	"attributes": {},
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

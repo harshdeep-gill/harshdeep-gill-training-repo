@@ -20,7 +20,10 @@
         "type": "string",
         "default": "star",
         "enum": [
-          "star"
+          "star",
+          "ship",
+          "compass",
+          "sun"
         ]
       }
     },

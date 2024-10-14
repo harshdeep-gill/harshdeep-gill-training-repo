@@ -30,30 +30,37 @@ function add_infinity_tracking_class( string $markup = '' ): string {
 		return $markup;
 	}
 
+	// Callback function to add Infinity Tracking class to phone numbers.
+	$callback = function ( $matches ) {
+		$anchor_tag = $matches[0];
+
+		// Add Infinity Tracking class to phone numbers.
+		if ( str_starts_with( $matches['href'], 'tel:' ) ) {
+			if ( ! str_contains( $anchor_tag, 'class=' ) ) {
+				// If class attribute is not present.
+				$anchor_tag = str_replace( '<a ', '<a class="InfinityNumber" ', $anchor_tag );
+			} else {
+				// If class attribute is present.
+				$anchor_tag = str_replace( 'class="', 'class="InfinityNumber ', $anchor_tag );
+			}
+
+			// Return the updated markup.
+			return quark_get_component(
+				'dynamic-phone-number',
+				[
+					'slot' => $anchor_tag,
+				]
+			);
+		}
+
+		// Return the original markup if the href attribute is not a phone number.
+		return $anchor_tag;
+	};
+
 	// Add Infinity Tracking class to phone numbers.
 	$updated_markup = preg_replace_callback(
 		'/<a([^>]*)href=["\'](?<href>[^"\']+)["\']([^>]*)>(.*?)<\/a>/mis',
-		function ( $matches ) {
-			$anchor_tag = $matches[0];
-
-			// Add Infinity Tracking class to phone numbers.
-			if ( str_starts_with( $matches['href'], 'tel:' ) ) {
-				if ( str_contains( $anchor_tag, 'InfinityNumber' ) ) {
-					return sprintf( '<dynamic-phone-number>%s</dynamic-phone-number>', $anchor_tag );
-				}
-
-				// Add Infinity Tracking class to phone number.
-				if ( ! str_contains( $anchor_tag, 'class=' ) ) {
-					return sprintf( '<dynamic-phone-number>%s</dynamic-phone-number>', str_replace( '<a ', '<a class="InfinityNumber" ', $anchor_tag ) );
-				}
-
-				// Add Infinity Tracking class to phone number.
-				return sprintf( '<dynamic-phone-number>%s</dynamic-phone-number>', str_replace( 'class="', 'class="InfinityNumber ', $anchor_tag ) );
-			}
-
-			// Return the original markup if the href attribute is not a phone number.
-			return $anchor_tag;
-		},
+		$callback,
 		$markup
 	);
 

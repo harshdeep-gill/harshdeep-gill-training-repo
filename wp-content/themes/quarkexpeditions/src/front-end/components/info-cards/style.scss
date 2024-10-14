@@ -133,6 +133,29 @@
 
 			#{$self}__slides {
 				grid-template-columns: repeat(4, minmax(210px, 1fr));
+				grid-template-rows: repeat(2, 338px);
+
+				&[total-slides="3"] {
+
+					#{$self}__card {
+
+						&:nth-child(2),
+						&:nth-child(3) {
+							grid-column: 3 / span 2;
+						}
+					}
+				}
+
+				&[total-slides="4"] {
+
+					#{$self}__card {
+
+						&:last-child {
+							grid-row: 2 / 3;
+							grid-column: 3 / span 2;
+						}
+					}
+				}
 			}
 
 			#{$self}__card {

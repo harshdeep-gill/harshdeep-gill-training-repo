@@ -59,6 +59,9 @@ function bootstrap(): void {
 	add_filter( 'template_redirect', __NAMESPACE__ . '\\start_output_buffering' );
 	add_filter( 'wp_footer', __NAMESPACE__ . '\\end_output_buffering' );
 
+	// Set Excerpt length - Set higher priority to override other plugins.
+	add_filter( 'excerpt_length', __NAMESPACE__ . '\\increase_excerpt_length', 999 );
+
 	// Custom fields.
 	if ( is_admin() ) {
 		require_once __DIR__ . '/../custom-fields/options-social.php';
@@ -196,9 +199,10 @@ function core_front_end_data( array $data = [] ): array {
 	return array_merge(
 		$data,
 		[
-			'current_url'  => get_permalink(),
-			'header'       => $header_options,
-			'social_links' => $social_options,
+			'current_url'     => get_permalink(),
+			'header'          => $header_options,
+			'social_links'    => $social_options,
+			'search_page_url' => strval( get_permalink( absint( get_option( 'options_expedition_search_page' ) ) ) ),
 		]
 	);
 }
@@ -703,4 +707,14 @@ function end_output_buffering(): void {
 
 	// Render the markup.
 	echo $content; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+}
+
+/**
+ * Increase excerpt length.
+ *
+ * @return int
+ */
+function increase_excerpt_length(): int {
+	// Return excerpt length.
+	return 255;
 }

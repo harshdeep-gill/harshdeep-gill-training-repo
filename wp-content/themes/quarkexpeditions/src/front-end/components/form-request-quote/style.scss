@@ -17,6 +17,10 @@
 	margin-left: auto;
 	margin-right: auto;
 
+	&__tabs-hidden {
+		display: none;
+	}
+
 	&__tabs-nav {
 		display: flex;
 		max-width: fit-content;
@@ -162,5 +166,56 @@
 	&__note {
 		margin-top: var(--spacing-4);
 		text-align: center;
+	}
+
+	&__contact-method {
+
+		.form-field-group__group {
+			display: flex;
+			grid-column-gap: var(--spacing-5);
+		}
+
+		.radio-container {
+			min-width: 110px;
+
+			@media screen and (min-width: grid-size(lg)) {
+				min-width: 160px;
+			}
+		}
+	}
+
+	&__success {
+		display: none;
+
+		&-visible {
+			display: block;
+		}
+	}
+
+	&__success-header {
+		display: flex;
+		align-items: center;
+		gap: var(--spacing-4);
+	}
+
+	&__success-content {
+		margin-top: var(--spacing-5);
+	}
+
+	&__success-button-wrap {
+		display: flex;
+		margin-top: var(--spacing-5);
+
+		@media screen and (min-width: grid-size(md)) {
+			margin-top: var(--spacing-7);
+		}
+
+		@media screen and (min-width: grid-size(lg)) {
+			margin-top: var(--spacing-8);
+		}
+	}
+
+	&__back-to-home {
+		width: 100%;
 	}
 }

@@ -156,6 +156,9 @@ export default class Form extends HTMLElement {
 						}
 					}
 				} );
+
+				// Enable the form.
+				this.form?.removeAttribute( 'inert' );
 			} ).catch( ( error ) => handleError( error ) );
 		};
 

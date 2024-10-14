@@ -210,7 +210,120 @@
 												discounted_price="{{ $cabin['from_price']['discounted_price'] ?? '' }}"
 											/>
 										@endif
+
+										@if( ! empty( $card['transfer_package_details'] && ! empty( $card['transfer_package_details']['sets'] ) ) )
+											<x-product-options-cards.transfer-package>
+												<x-departure-cards.transfer_package
+													drawer_id="transfer-price-{{ $cabin_code . '_' . $departure_id }}"
+													drawer_title="Mandatory Transfer Package"
+												>
+													<p><strong>{{ $card['transfer_package_details']['title'] ?? '' }}</strong></p>
+													<ul>
+														@foreach( $card['transfer_package_details']['sets'] as $set )
+															<li>{!! $set !!}</li>
+														@endforeach
+													</ul>
+													<p>
+														<strong>{{ __( 'Package Price:', 'qrk' ) }} {{ $card['transfer_package_details']['formatted_price'] ?? '' }}</strong>
+													</p>
+												</x-departure-cards.transfer_package>
+
+												<div class="product-options-cards__tooltip">
+													<span>{{ __( 'Inc. Transfer Package', 'qrk' ) }}</span>
+													<x-tooltip icon="info">
+														<h5>{{ $card['transfer_package_details']['title'] }}</h5>
+
+														@if ( !empty( $card['transfer_package_details']['sets'] ) )
+															<ul>
+																@foreach ( $card['transfer_package_details']['sets'] as $item )
+																	<li>
+																		{{ $item }}
+																	</li>
+																@endforeach
+															</ul>
+														@endif
+
+														<p>
+															{{ __( 'Package Price:', 'qrk' ) }}
+															{{ $card['transfer_package_details']['formatted_price'] ?? 0 }}
+														</p>
+													</x-tooltip>
+												</div>
+											</x-product-options-cards.transfer-package>
+										@endif
+
 									</x-product-options-cards.content>
+
+									{{-- Mobile Dialog CTA --}}
+									<x-product-options-cards.cta-dialog dialog_id="dialog-{{  $cabin_code . '_' . $departure_id }}">
+										{{ __( 'View', 'qrk' ) }}
+									</x-product-options-cards.cta-dialog>
+
+									{{-- Modal dialog --}}
+									<x-product-options-cards.dialog id="dialog-{{  $cabin_code . '_' . $departure_id }}" class="product-options-cards__card-details">
+										<x-dialog.header>
+											<h3>{{ $cabin['name'] ?? '' }}</h3>
+										</x-dialog.header>
+
+										<x-dialog.body>
+											@if( ! empty( $cabin['description'] ) )
+												<x-product-options-cards.description>
+													{!! $cabin['description'] !!}
+												</x-product-options-cards.description>
+											@endif
+
+											@if( ! empty( $cabin['gallery'] ) )
+												<x-product-options-cards.gallery :image_ids="$cabin['gallery']" :full_size="true"/>
+											@endif
+
+											@if( ! empty( $cabin['occupancies'] ) && is_array( $cabin['occupancies'] ) )
+												<x-product-options-cards.rooms title="Select Rooms">
+													@foreach( $cabin['occupancies'] as $index => $occupancy )
+														<x-product-options-cards.room :checkout_url="$occupancy['checkout_url'] ?? ''" id="modal-room-type-id-{{ $departure_id }}-{{ $cabin_code }}-{{ $index }}" name="modal-room-type-{{ $departure_id }}-{{ $cabin_code }}" checked="{{ $index == 0 ? 'checked' : '' }}">
+															<x-product-options-cards.room-title-container>
+																@if( ! empty( $occupancy['description'] ) )
+																	<x-product-options-cards.room-title
+																		title="{{ $occupancy['description'] }}"
+																		no_of_guests="{{ $occupancy['no_of_guests'] ?? '' }}"
+																	/>
+																@endif
+																<x-product-options-cards.room-subtitle subtitle="Price of the cabin for one guest"/>
+															</x-product-options-cards.room-title-container>
+
+															@if( ! empty( $occupancy['price'] ) && is_array( $occupancy['price'] ) )
+																<x-product-options-cards.room-prices
+																	original_price="{{ $occupancy['price']['original_price'] }}"
+																	discounted_price="{{ $occupancy['price']['discounted_price'] }}"
+																/>
+															@endif
+														</x-product-options-cards.room>
+													@endforeach
+												</x-product-options-cards.rooms>
+											@endif
+
+											@if( ! empty( $card['promotions'] ) && is_array( $card['promotions'] ) )
+												<x-product-options-cards.discounts>
+													@foreach( $card['promotions'] as $promotion )
+														@if( ! empty( $promotion ) )
+															<x-product-options-cards.discount name="{{ $promotion }}"/>
+														@endif
+													@endforeach
+												</x-product-options-cards.discounts>
+											@endif
+
+											<p class="product-options-cards__help-text">{{ __( 'Not ready to book?', 'qrk' ) }} <a href="#">{{ __( 'Request a quote', 'qrk' ) }}</a></p>
+										</x-dialog.body>
+
+										<x-dialog.footer>
+											<x-product-options-cards.cta-buttons>
+												<x-product-options-cards.phone-number phone_number="+1 (877) 585-1235" text="Request a callback: +1 (866) 257-0754" />
+												@if ( ! empty( $cabin['occupancies'] ) && is_array( $cabin['occupancies'] ) )
+													<x-product-options-cards.cta-book-now :url="$cabin['occupancies'][0]['checkout_url'] ?? '#'" />
+												@endif
+											</x-product-options-cards.cta-buttons>
+										</x-dialog.footer>
+									</x-product-options-cards.dialog>
+
 								</x-product-options-cards.card>
 							@endforeach
 						</x-product-options-cards.cards>

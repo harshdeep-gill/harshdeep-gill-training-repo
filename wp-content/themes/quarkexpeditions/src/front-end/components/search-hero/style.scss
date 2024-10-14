@@ -194,9 +194,6 @@
 	}
 
 	&__search-bar {
-		background-color: var(--color-white);
-		border-radius: var(--border-radius-large);
-		padding: var(--spacing-3) var(--spacing-4);
 
 		@media screen and (min-width: grid-size(xl)) {
 			position: relative;

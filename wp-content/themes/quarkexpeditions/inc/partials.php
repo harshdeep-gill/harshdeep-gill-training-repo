@@ -28,6 +28,7 @@ function register_partials(): void {
 		'BookDeparturesExpeditions' => 'book-departures-expeditions.php',
 		'BookDeparturesShips'       => 'book-departures-ships.php',
 		'DatesAndRates'             => 'dates-and-rates.php',
+		'ExpeditionSearch'          => 'expedition-search.php',
 	];
 
 	// Register partials.
