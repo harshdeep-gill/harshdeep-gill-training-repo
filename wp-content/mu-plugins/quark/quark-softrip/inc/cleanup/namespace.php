@@ -132,6 +132,17 @@ function do_cleanup( array $departure_post_ids = [], bool $delete_departure_post
 	// Total posts found.
 	$total_posts = count( $departure_post_ids );
 
+	// Bail if empty.
+	if ( empty( $total_posts ) ) {
+		// Log message if in CLI.
+		if ( $is_in_cli ) {
+			WP_CLI::success( 'No posts found to cleanup.' );
+		}
+
+		// Bail out.
+		return;
+	}
+
 	// Log CLI message.
 	if ( $is_in_cli ) {
 		WP_CLI::line( sprintf( 'Found %d departures to cleanup.', $total_posts ) );
@@ -154,27 +165,6 @@ function do_cleanup( array $departure_post_ids = [], bool $delete_departure_post
 			'via'   => $initiated_via,
 		]
 	);
-
-	// Bail if no posts found.
-	if ( empty( $departure_post_ids ) ) {
-		// Log the action.
-		do_action(
-			'quark_softrip_cleanup_completed',
-			[
-				'total'   => $total_posts,
-				'success' => 0,
-				'via'     => $initiated_via,
-			]
-		);
-
-		// Log message if in CLI.
-		if ( $is_in_cli ) {
-			WP_CLI::success( 'No posts found to cleanup.' );
-		}
-
-		// Bail out.
-		return;
-	}
 
 	// Delete occupancies.
 	foreach ( $departure_post_ids as $departure_post_id ) {
