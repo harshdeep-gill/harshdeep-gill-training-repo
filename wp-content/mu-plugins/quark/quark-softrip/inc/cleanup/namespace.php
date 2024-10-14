@@ -86,6 +86,16 @@ function do_cleanup( array $departure_post_ids = [], bool $delete_departure_post
 	$args = [
 		'post_type'              => POST_TYPE,
 		'posts_per_page'         => -1,
+		'post_status'            => [
+			'publish',
+			'future',
+			'private',
+			'pending',
+			'draft',
+			'trash',
+			'auto-draft',
+			'inherit',
+		],
 		'fields'                 => 'ids',
 		'no_found_rows'          => true,
 		'update_post_meta_cache' => false,
@@ -93,11 +103,8 @@ function do_cleanup( array $departure_post_ids = [], bool $delete_departure_post
 		'ignore_sticky_posts'    => true,
 	];
 
-	// Add post in if provided.
-	if ( ! empty( $departure_post_ids ) ) {
-		$args['post__in'] = $departure_post_ids;
-
-	} else {
+	// If departure post IDs are empty - get expired departures, else get the departures by IDs.
+	if ( empty( $departure_post_ids ) ) {
 		// Add meta query.
 		$args['meta_query'] = [
 			[
@@ -112,6 +119,8 @@ function do_cleanup( array $departure_post_ids = [], bool $delete_departure_post
 			'draft',
 			'trash',
 		];
+	} else {
+		$args['post__in'] = $departure_post_ids;
 	}
 
 	// Get the posts.
