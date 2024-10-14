@@ -85,10 +85,6 @@ function do_cleanup( array $departure_post_ids = [], bool $delete_departure_post
 	// Prepare args. Start date is past 4 months.
 	$args = [
 		'post_type'              => POST_TYPE,
-		'post_status'            => [
-			'draft',
-			'trash',
-		],
 		'posts_per_page'         => -1,
 		'fields'                 => 'ids',
 		'no_found_rows'          => true,
@@ -102,12 +98,19 @@ function do_cleanup( array $departure_post_ids = [], bool $delete_departure_post
 		$args['post__in'] = $departure_post_ids;
 
 	} else {
+		// Add meta query.
 		$args['meta_query'] = [
 			[
 				'key'     => 'start_date',
 				'value'   => gmdate( 'Y-m-d', strtotime( '-4 months' ) ),
 				'compare' => '<',
 			],
+		];
+
+		// Add post status.
+		$args['post_status'] = [
+			'draft',
+			'trash',
 		];
 	}
 
