@@ -92,6 +92,12 @@
 			padding: var(--spacing-2) var(--spacing-1);
 			border-radius: var(--border-small);
 
+			@include transition(background-color, 0.2s);
+
+			@media screen and (min-width: grid-size(lg)) {
+				min-width: 160px;
+			}
+
 			&:hover {
 				cursor: pointer;
 				background-color: var(--color-gray-20);
@@ -110,8 +116,6 @@
 				background-color: var(--color-black);
 				color: var(--color-white);
 			}
-
-			@include transition(background-color, 0.2s);
 		}
 	}
 
