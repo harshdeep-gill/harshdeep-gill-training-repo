@@ -9,6 +9,7 @@ namespace Quark\Softrip\Tests\Cleanup;
 
 use Quark\Tests\Softrip\Softrip_TestCase;
 
+use function Quark\Departures\get_card_data;
 use function Quark\Softrip\Cleanup\do_cleanup;
 use function Quark\Softrip\Cleanup\is_scheduled;
 use function Quark\Softrip\Cleanup\schedule_cleanup;
@@ -331,5 +332,123 @@ class Test_Cleanup extends Softrip_TestCase {
 		// Occupancies for second departure should not be present.
 		$occupancies2 = get_occupancies_by_departure( $departure_id2 );
 		$this->assertEmpty( $occupancies2 );
+
+		// Create departure post.
+		$departure_id4 = $this->factory()->post->create(
+			[
+				'post_type'    => POST_TYPE,
+				'post_status'  => 'publish',
+				'post_title'   => 'Test Departure 4',
+				'post_content' => 'Test Departure 4',
+			]
+		);
+		$this->assertIsInt( $departure_id4 );
+
+		// Try deleting a published departure post.
+		do_cleanup( [ $departure_id4 ] );
+
+		// Departure should still be present as it's published.
+		$departure_ids7 = get_posts(
+			[
+				'post_type'              => POST_TYPE,
+				'posts_per_page'         => -1,
+				'post_status'            => 'publish',
+				'fields'                 => 'ids',
+				'no_found_rows'          => true,
+				'update_post_meta_cache' => false,
+				'update_post_term_cache' => false,
+				'ignore_sticky_posts'    => true,
+			]
+		);
+		$this->assertNotContains( $departure_id4, $departure_ids7 );
+
+		// Create departure post.
+		$departure_id4 = $this->factory()->post->create(
+			[
+				'post_type'    => POST_TYPE,
+				'post_status'  => 'publish',
+				'post_title'   => 'Test Departure 4',
+				'post_content' => 'Test Departure 4',
+			]
+		);
+		$this->assertIsInt( $departure_id4 );
+
+		// Mark this departure as trash.
+		wp_update_post(
+			[
+				'ID'          => $departure_id4,
+				'post_status' => 'trash',
+			]
+		);
+
+		// Run cleanup.
+		do_cleanup( [ $departure_id4 ] );
+
+		// Departure should not be present as it's trashed and cleaned up.
+		$departure_ids8 = get_posts(
+			[
+				'post_type'              => POST_TYPE,
+				'post__in'               => [ $departure_id4 ],
+				'fields'                 => 'ids',
+				'no_found_rows'          => true,
+				'update_post_meta_cache' => false,
+				'update_post_term_cache' => false,
+				'ignore_sticky_posts'    => true,
+			]
+		);
+		$this->assertNotContains( $departure_id4, $departure_ids8 );
+
+		// Get departure by softrip id - JKL-012.
+		$departure_ids5 = get_posts(
+			[
+				'post_type'              => POST_TYPE,
+				'posts_per_page'         => -1,
+				'meta_query'             => [
+					[
+						'key'     => 'softrip_package_code',
+						'value'   => 'HIJ-456',
+						'compare' => '=',
+					],
+				],
+				'fields'                 => 'ids',
+				'no_found_rows'          => true,
+				'update_post_meta_cache' => false,
+				'update_post_term_cache' => false,
+				'ignore_sticky_posts'    => true,
+			]
+		);
+		$this->assertNotEmpty( $departure_ids5 );
+
+		// Convert to int.
+		$departure_ids5 = array_map( 'absint', $departure_ids5 );
+
+		// Prepare cards data.
+		$card_data = get_card_data( $departure_ids5[0] );
+		$this->assertNotEmpty( $card_data );
+
+		// Do cleanup for this departure.
+		do_cleanup( [ $departure_ids5[0] ] );
+
+		// Departure should not be present as it's cleaned up.
+		$departure_ids6 = get_posts(
+			[
+				'post_type'              => POST_TYPE,
+				'post__in'               => [ $departure_ids5[0] ],
+				'fields'                 => 'ids',
+				'no_found_rows'          => true,
+				'update_post_meta_cache' => false,
+				'update_post_term_cache' => false,
+				'ignore_sticky_posts'    => true,
+			]
+		);
+		$this->assertEmpty( $departure_ids6 );
+
+		// Get card data again - should be empty.
+		$card_data = get_card_data( $departure_ids5[0] );
+		$this->assertEmpty( $card_data );
+
+		// Card data for second departure should still be present.
+		$card_data2 = get_card_data( $departure_ids5[1] );
+		$this->assertNotEmpty( $card_data2 );
 	}
 }
