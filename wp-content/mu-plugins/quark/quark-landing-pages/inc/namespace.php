@@ -47,7 +47,7 @@ function register_landing_page_post_type(): void {
 			'menu_name'          => 'Landing Pages',
 		],
 		'hierarchical'        => false,
-		'supports'            => [ 'title', 'editor' ],
+		'supports'            => [ 'title', 'editor', 'revisions' ],
 		'public'              => true,
 		'show_ui'             => true,
 		'show_in_menu'        => true,

@@ -107,7 +107,6 @@ function register_departure_post_type(): void {
 		'hierarchical'        => false,
 		'supports'            => [
 			'title',
-			'revisions',
 		],
 		'show_ui'             => true,
 		'show_in_menu'        => true,
