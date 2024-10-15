@@ -11,8 +11,8 @@
 	// Build image args.
 	$image_args = [
 		'size' => [
-			'width'   => 1120,
-			'height'  => 516,
+			'width'   => 335,
+			'height'  => 450,
 		],
 		'responsive'  => [
 			'sizes'   => [ '(min-width: 1200px) 1120px','(min-width: 1024px) 864px', '100vw' ],
@@ -21,6 +21,7 @@
 		'transform'   => [
 			'crop'    => 'lfill',
 			'quality' => 90,
+			'gravity' => 'face',
 		],
 	];
 @endphp
