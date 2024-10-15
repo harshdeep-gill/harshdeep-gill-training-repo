@@ -1,0 +1,22 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "quark/currency-switcher",
+    "description": "Display currency switcher dropdown",
+    "title": "Currency Switcher",
+    "keywords": [
+      "currency",
+      "switcher"
+    ],
+	"parent": [ "quark/footer-column" ],
+    "category": "layout",
+    "textdomain": "quark",
+    "attributes": {},
+    "supports": {
+      "alignWide": false,
+      "anchor": true,
+      "className": false,
+      "html": false,
+      "customClassName": false
+    }
+}
