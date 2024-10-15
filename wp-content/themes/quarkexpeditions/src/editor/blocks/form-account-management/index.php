@@ -9,6 +9,8 @@ namespace Quark\Theme\Blocks\FormAccessDeletionRequest;
 
 use WP_Block;
 
+use function Quark\Leads\Forms\get_states;
+
 const COMPONENT = 'form-account-management';
 
 /**
@@ -41,8 +43,12 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 		return $content;
 	}
 
+	// Extrating states of US.
+	$states = get_states()['US'] ?? [];
+
 	// Component attributes.
 	$component_attributes = [
+		'states'         => $states,
 		'thank_you_page' => isset( $attributes['thankYouPage'] ) && is_array( $attributes['thankYouPage'] ) ? $attributes['thankYouPage']['url'] : '',
 	];
 

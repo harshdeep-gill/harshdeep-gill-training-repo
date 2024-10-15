@@ -122,6 +122,8 @@
 		background-color: var(--color-white);
 		border-radius: var(--border-radius);
 
+		@include transition(background-color);
+
 		&:hover {
 			background-color: var(--color-gray-10);
 			cursor: pointer;
@@ -392,8 +394,6 @@
 				}
 			}
 		}
-
-		@include transition(background-color);
 	}
 
 	&__destinations {
@@ -479,6 +479,8 @@
 			justify-content: space-between;
 			padding-inline: 0;
 
+			@include transition(background-color);
+
 			@media screen and (min-width: grid-size(sm)) {
 				padding: var(--spacing-1) var(--spacing-2);
 				background-color: var(--color-white);
@@ -520,8 +522,6 @@
 					}
 				}
 			}
-
-			@include transition(background-color);
 		}
 	}
 

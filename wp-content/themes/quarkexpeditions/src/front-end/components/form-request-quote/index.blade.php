@@ -8,6 +8,7 @@
 	'states'            => [],
 	'thank_you_page'    => '',
 	'salesforce_object' => 'WebForm_RAQ__c',
+	'home_url'          => '',
 ] )
 
 @php
@@ -23,6 +24,7 @@
 <x-section class="form-request-quote">
 	<quark-form-request-quote class="form-request-quote__container" data-filters-endpoint="{{ $filters_endpoint }}">
 		<tp-tabs class="form-request-quote__tabs" current-tab="{{ $current_tab }}" update-url="{{ $update_url }}">
+			<h1 class="form-request-quote__heading">{{ __( 'Request a Quote', 'qrk' ) }}</h1>
 			{{-- Naviation --}}
 			<x-form-request-quote.tabs-nav>
 				<x-form-request-quote.tabs-nav-item id="travel-details">
@@ -73,9 +75,9 @@
 					</x-form.row>
 
 					<x-form.row>
-						<x-form.field :validation="[ 'required' ]" class="form-request-quote__toggle">
+						<x-form.field class="form-request-quote__toggle">
 							<tp-toggle-attribute trigger="select" target=".form-request-quote__travel-time">
-								<x-form.select label="{{ __( 'Choose your expedition (optional)', 'qrk' ) }}" name="fields[Expedition__c]" class="form-request-quote__expedition">
+								<x-form.select label="{{ __( 'Choose your expedition', 'qrk' ) }}" :optional="true" name="fields[Expedition__c]" class="form-request-quote__expedition">
 									<x-form.option value="">{{ __( '- None -', 'qrk' ) }}</x-form.option>
 									@foreach ( $expeditions as $expedition )
 										<x-form.option value="{{ $expedition['value'] }}" label="{{ $expedition['label'] }}">{{ $expedition['label'] }}</x-form.option>
@@ -132,7 +134,7 @@
 
 					<x-form.row>
 						<x-form.field>
-							<x-form.textarea label="{{ __( 'What else would you like us to know that is important to you? (optional)', 'qrk' ) }}" placeholder="{{ __( 'Ask us about our adventure options, any dietary requirements, specific departure dates in mind, etc.', 'qrk' ) }}" name="fields[Comments__c]" />
+							<x-form.textarea label="{{ __( 'What else would you like us to know that is important to you?', 'qrk' ) }}" :optional="true" placeholder="{{ __( 'Ask us about our adventure options, any dietary requirements, specific departure dates in mind, etc.', 'qrk' ) }}" name="fields[Comments__c]" />
 						</x-form.field>
 					</x-form.row>
 
@@ -144,5 +146,19 @@
 				</x-form-request-quote.tab>
 			</x-form>
 		</tp-tabs>
+
+		<x-section class="form-request-quote__success">
+			<div class="form-request-quote__success-header">
+				<x-svg name="circular-tick" />
+				<h2 class="h1">{{ __( 'Request Submitted!', 'qrk' ) }}</h2>
+			</div>
+			<p class="form-request-quote__success-content">{{ __( 'One of our Polar Travel Advisors will be in touch. You’re one step closer to making your polar dream a reality!', 'qrk' ) }}</p>
+
+			@if ( ! empty( $home_url ) )
+				<div class="form-request-quote__success-button-wrap">
+					<x-button href="{{ $home_url }}" size="big" class="form-request-quote__back-to-home">{{ __( 'Back to Home!', 'qrk' ) }}</x-button>
+				</div>
+			@endif
+		</x-section>
 	</quark-form-request-quote>
 </x-section>

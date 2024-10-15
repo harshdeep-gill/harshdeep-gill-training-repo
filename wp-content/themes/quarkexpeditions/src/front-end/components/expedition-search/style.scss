@@ -19,9 +19,9 @@
 
 	&__header {
 		display: flex;
+		padding-block: var(--spacing-5);
 		justify-content: space-between;
 		align-items: center;
-		margin-block-start: var(--spacing-6);
 		flex-wrap: wrap;
 		border-bottom: 1px solid var(--color-gray-10);
 
@@ -94,15 +94,40 @@
 		display: flex;
 		column-gap: var(--spacing-5);
 		flex-wrap: wrap;
-		margin-block-start: var(--spacing-5);
 
 		@media screen and (min-width: grid-size(sm)) {
 			flex-wrap: nowrap;
 		}
 
+		.form-field,
+		label {
+			margin-bottom: 0;
+		}
+
 		tp-multi-select {
 			cursor: pointer;
 		}
+	}
+
+	&__body {
+
+		.sidebar-grid {
+			margin-top: var(--spacing-5);
+		}
+	}
+
+	.expedition-search__recent-searches {
+		display: block;
+		margin-bottom: var(--spacing-6);
+		padding-bottom: var(--spacing-5);
+
+		> .h4 {
+			margin-bottom: var(--spacing-5);
+		}
+	}
+
+	.search-filters-bar {
+		margin-top: var(--spacing-4);
 	}
 
 	&__result-count {
@@ -136,7 +161,6 @@
 
 	&__load-more {
 		display: block;
-		margin-top: var(--spacing-6);
 
 		&[active="false"] {
 
@@ -257,6 +281,19 @@
 			min-width: max-content;
 		}
 	}
+
+	.months-multi-select__arrow-button {
+		width: 24px;
+		height: 24px;
+
+		svg {
+			transform: none;
+		}
+
+		&--right svg {
+			transform: rotate(180deg);
+		}
+	}
 }
 
 tp-modal.expedition-search__filters-modal {
@@ -301,5 +338,18 @@ tp-modal.expedition-search__filters-modal {
 
 	@media screen and (min-width: grid-size(lg)) {
 		display: none;
+	}
+
+	.months-multi-select__arrow-button {
+		width: 24px;
+		height: 24px;
+
+		svg {
+			transform: none;
+		}
+
+		&--right svg {
+			transform: rotate(180deg);
+		}
 	}
 }

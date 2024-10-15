@@ -29,7 +29,24 @@
 		display: none;
 
 		@media screen and (min-width: grid-size(sm)) {
-			display: block;
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+
+			> #{$self}__year:nth-child(2n) {
+				border-left: 1px solid var(--color-gray-30);
+				padding-left: var(--spacing-3);
+			}
+
+			> #{$self}__year:nth-child(2n + 1) {
+				padding-right: var(--spacing-3);
+			}
+
+			> #{$self}__year:only-child {
+				padding-left: 0;
+				padding-right: 0;
+				border-left: none;
+				grid-column: span 2;
+			}
 		}
 
 		&--compact {
@@ -57,15 +74,16 @@
 		}
 	}
 
+
 	&__options {
-		display: flex;
-		flex-wrap: wrap;
+		display: grid;
+		grid-template-columns: 1fr 1fr 1fr;
 		list-style-type: none;
 		row-gap: var(--spacing-2);
 		column-gap: var(--spacing-1);
 
 		&-item {
-			min-width: 95px;
+			min-width: 50px;
 			flex: 1;
 			display: flex;
 			align-items: center;
@@ -73,6 +91,8 @@
 			text-transform: uppercase;
 			padding: var(--spacing-2) var(--spacing-1);
 			border-radius: var(--border-small);
+
+			@include transition(background-color, 0.2s);
 
 			@media screen and (min-width: grid-size(lg)) {
 				min-width: 160px;
@@ -96,8 +116,6 @@
 				background-color: var(--color-black);
 				color: var(--color-white);
 			}
-
-			@include transition(background-color, 0.2s);
 		}
 	}
 

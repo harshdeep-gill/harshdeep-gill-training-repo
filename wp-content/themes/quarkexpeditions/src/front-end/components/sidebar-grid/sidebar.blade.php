@@ -2,6 +2,7 @@
 	'sticky'           => false,
 	'show_on_mobile'   => false,
 	'sidebar_position' => 'right',
+	'scroll'           => true,
 ] )
 
 @php
@@ -13,6 +14,10 @@
 
 	if ( ! empty( $sticky ) ) {
 		$classes[] = 'sidebar-grid__sidebar--sticky';
+
+		if ( ! empty( $scroll ) ) {
+			$classes[] = 'sidebar-grid__sidebar--sticky-scroll';
+		}
 	}
 
 	if ( ! empty( $show_on_mobile ) ) {

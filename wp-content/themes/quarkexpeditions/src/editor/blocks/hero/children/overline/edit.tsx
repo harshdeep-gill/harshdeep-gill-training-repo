@@ -28,6 +28,7 @@ const {
 export const colors: { [key: string]: string }[] = [
 	{ name: __( 'Blue', 'qrk' ), color: '#4c8bbf', slug: 'blue' },
 	{ name: __( 'Black', 'qrk' ), color: '#232933', slug: 'black' },
+	{ name: __( 'White', 'qrk' ), color: '#ffffff', slug: 'white' },
 ];
 
 /**
@@ -58,13 +59,13 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 						label={ __( 'Overline Color', 'qrk' ) }
 						help={ __( 'Select the text color for the overline', 'qrk' ) }
 						value={ colors.find( ( color ) => color.slug === attributes.textColor )?.color }
-						colors={ colors.filter( ( color ) => [ 'blue', 'black' ].includes( color.slug ) ) }
+						colors={ colors.filter( ( color ) => [ 'blue', 'black', 'white' ].includes( color.slug ) ) }
 						onChange={ ( textColor: {
 							color: string;
 							slug: string;
 						} ): void => {
 							// Set the background color attribute.
-							if ( textColor.slug && [ 'blue', 'black' ].includes( textColor.slug ) ) {
+							if ( textColor.slug && [ 'blue', 'black', 'white' ].includes( textColor.slug ) ) {
 								setAttributes( { textColor: textColor.slug } );
 							}
 						} }

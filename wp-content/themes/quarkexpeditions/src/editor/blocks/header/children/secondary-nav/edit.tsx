@@ -16,6 +16,7 @@ import classnames from 'classnames';
 /**
  * Child blocks.
  */
+import * as searchItem from '../search-item';
 import * as menuItem from '../menu-item';
 import * as secondaryMenuItem from '../secondary-menu-item';
 
@@ -36,10 +37,10 @@ export default function Edit( { className }: BlockEditAttributes ) {
 		className: classnames( 'header__nav-menu' ),
 	},
 	{
-		allowedBlocks: [ menuItem.name, secondaryMenuItem.name ],
+		allowedBlocks: [ searchItem.name, menuItem.name, secondaryMenuItem.name ],
 		template: [
-			[ menuItem.name, { hasIcon: true } ],
-			[ secondaryMenuItem.name, { placeholder: __( 'Secondary Menu Item…', 'qrk' ) } ],
+			[ searchItem.name ],
+			[ menuItem.name ],
 			[ secondaryMenuItem.name, { placeholder: __( 'Secondary Menu Item…', 'qrk' ) } ],
 		],
 		renderAppender: InnerBlocks.DefaultBlockAppender,

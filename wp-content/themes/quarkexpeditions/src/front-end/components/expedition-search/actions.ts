@@ -148,6 +148,19 @@ const buildUrlFromFilters = (): string => {
 		// Convert camelCased key to snake_caked key.
 		const snakeCasedKey: string = camelToSnakeCase( selectedFilter );
 
+		// Check if the itinerary lengths are default value. If so, don't store them in the URL.
+		if (
+			'itineraryLengths' === selectedFilter &&
+			currentState.itineraryLengths[ 0 ] === currentState.initialItineraryLengths[ 0 ] &&
+			currentState.itineraryLengths[ 1 ] === currentState.initialItineraryLengths[ 1 ]
+		) {
+			// Delete the data from the url.
+			delete urlParams[ snakeCasedKey ];
+
+			// Bail.
+			return;
+		}
+
 		// Stringify the filter and set it in url params.
 		urlParams[ snakeCasedKey ] = currentState[ selectedFilter ].map( ( singleFilter ) => {
 			// Check what type we are dealing with.
@@ -204,20 +217,21 @@ export const initialize = ( settings: {
 	// Get the state from url.
 	const urlFilters = parseUrl();
 
+	// Input containers for filters.
+	const filtersInputContainers = {
+		destinations: document.querySelector( 'quark-expedition-search-filter-destinations' ),
+		months: document.querySelector( 'quark-expedition-search-filter-months' ),
+		ships: document.querySelector( 'quark-expedition-search-filter-ships' ),
+		adventureOptions: document.querySelector( 'quark-expedition-search-filter-adventure-options' ),
+		itineraryLengths: document.querySelector( 'quark-expedition-search-filter-itinerary-lengths' ),
+		languages: document.querySelector( 'quark-expedition-search-filter-languages' ),
+		expeditions: document.querySelector( 'quark-expedition-search-filter-expeditions' ),
+		cabinClasses: document.querySelector( 'quark-expedition-search-filter-cabin-classes' ),
+		travelers: document.querySelector( 'quark-expedition-search-filter-travelers' ),
+	};
+
 	// Null check.
 	if ( urlFilters ) {
-		// Input containers for filters.
-		const filtersInputContainers = {
-			destinations: document.querySelector( 'quark-expedition-search-filter-destinations' ),
-			months: document.querySelector( 'quark-expedition-search-filter-months' ),
-			ships: document.querySelector( 'quark-expedition-search-filter-ships' ),
-			adventureOptions: document.querySelector( 'quark-expedition-search-filter-adventure-options' ),
-			languages: document.querySelector( 'quark-expedition-search-filter-languages' ),
-			expeditions: document.querySelector( 'quark-expedition-search-filter-expeditions' ),
-			cabinClasses: document.querySelector( 'quark-expedition-search-filter-cabin-classes' ),
-			travelers: document.querySelector( 'quark-expedition-search-filter-travelers' ),
-		};
-
 		/**
 		 * Our filters are stored as individual lists of @type {ExpeditionSearchFilterState} objects.
 		 * We will update the `value` and `label` field based on the values from the `input` elements related to the filter.
@@ -232,13 +246,20 @@ export const initialize = ( settings: {
 			if ( 'itineraryLengths' !== key ) {
 				// Loop through the url filters and assign to update object.
 				initialUpdatePayload[ key ] = urlFilters[ key ].map( ( singleFilterValue ) => {
-					// Get the corresponding input.
-					const correspondingInput = filtersInputContainers[ key ]?.querySelector( `input[name="${ key }"][value="${ singleFilterValue }"]` );
+					// Get the corresponding input. We convert the key to kebab case here because the input name attributes are in kebab case
+					let correspondingInput = filtersInputContainers[ key ]?.querySelector( `input[name="${ camelToSnakeCase( key ).replace( '_', '-' ) }"][value="${ singleFilterValue }"]` );
+					let label = correspondingInput?.getAttribute( 'data-label' ) ?? '';
+
+					// Check if this is the months filter
+					if ( 'months' === key ) {
+						correspondingInput = filtersInputContainers.months?.querySelector( `quark-months-multi-select-option[value="${ singleFilterValue }"]` );
+						label = correspondingInput?.getAttribute( 'label' ) ?? '';
+					}
 
 					// Return the object.
 					return {
 						value: singleFilterValue,
-						label: correspondingInput?.getAttribute( 'data-label' ) ?? '',
+						label,
 					};
 				} ).filter( ( singleFilterValue ) => singleFilterValue.label !== '' );
 			} else {
@@ -252,6 +273,31 @@ export const initialize = ( settings: {
 				} ).slice( 0, 2 );
 			}
 		}
+	}
+
+	// Get the range slider for it.
+	const rangeSlider = filtersInputContainers.itineraryLengths?.querySelector( 'quark-range-slider' );
+
+	// Null check
+	if ( rangeSlider ) {
+		// Get the values for the initial state or the min/max for this.
+		let minValue = parseInt( rangeSlider.getAttribute( 'min' ) ?? '' );
+		let maxValue = parseInt( rangeSlider.getAttribute( 'max' ) ?? '' );
+		minValue = Number.isNaN( minValue ) ? 0 : minValue;
+		maxValue = Number.isNaN( maxValue ) ? 0 : maxValue;
+
+		// Do we have invalid state?
+		if (
+			! initialUpdatePayload.itineraryLengths ||
+			initialUpdatePayload.itineraryLengths.length === 0 ||
+			initialUpdatePayload.itineraryLengths[ 0 ] < minValue ||
+			initialUpdatePayload.itineraryLengths[ 1 ] > maxValue
+		) {
+			initialUpdatePayload.itineraryLengths = [ minValue, maxValue ];
+		}
+
+		// Set the initial values.
+		initialUpdatePayload.initialItineraryLengths = [ minValue, maxValue ];
 	}
 
 	// Initialize: Add settings in state.
@@ -856,9 +902,6 @@ export const addCabinClass = ( cabinClassToAdd: ExpeditionSearchFilterState ) =>
 
 	// Set the state;
 	setState( updateObject );
-
-	// Fetch the results.
-	fetchResults( filterUpdated );
 };
 
 /**
@@ -878,9 +921,6 @@ export const removeCabinClass = ( cabinClassValue: string ) => {
 
 	// Set the state.
 	setState( updateObject );
-
-	// Fetch the results.
-	fetchResults( filterUpdated );
 };
 
 /**
@@ -912,9 +952,6 @@ export const addTraveler = ( travelerToAdd: ExpeditionSearchFilterState ) => {
 
 	// Set the state;
 	setState( updateObject );
-
-	// Fetch the results.
-	fetchResults( filterUpdated );
 };
 
 /**
@@ -934,9 +971,6 @@ export const removeTraveler = ( travelerValue: string ) => {
 
 	// Set the state.
 	setState( updateObject );
-
-	// Fetch the results.
-	fetchResults( filterUpdated );
 };
 
 /**
@@ -970,6 +1004,40 @@ export const addMonth = ( monthToAdd: ExpeditionSearchFilterState ) => {
 	setState( updateObject );
 
 	// Fetch the results.
+	fetchResults( filterUpdated );
+};
+
+/**
+ * Updates the months
+ *
+ * @param { Object[] } monthsToAdd Array of month objects.
+ */
+export const updateMonths = ( monthsToAdd: ExpeditionSearchFilterState[] ) => {
+	// Get the current months state.
+	const { months }: ExpeditionSearchState = getState();
+	const updateObject: ExpeditionsSearchStateUpdateObject = {
+		months: [ ...months ],
+	};
+
+	// Sanity checks
+	if ( monthsToAdd && Array.isArray( monthsToAdd ) ) {
+		// Only get the unique months values.
+		updateObject.months = monthsToAdd.reduce( ( accumulator, current ) => {
+			// Check if the value is already there.
+			if ( ! accumulator.find( ( month ) => month.value === current.value ) ) {
+				// Add the destination.
+				accumulator.push( current );
+			}
+
+			// Return
+			return accumulator;
+		}, <SearchFiltersBarMonthState[]>[] );
+	}
+
+	// Set the state
+	setState( updateObject );
+
+	// Fetch the results
 	fetchResults( filterUpdated );
 };
 

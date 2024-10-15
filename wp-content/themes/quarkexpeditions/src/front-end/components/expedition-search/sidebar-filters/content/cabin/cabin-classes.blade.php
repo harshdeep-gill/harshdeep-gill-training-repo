@@ -20,7 +20,7 @@
 						@continue
 					@endif
 
-					<x-expedition-search.sidebar-filters.checkbox name="cabin-classes" :label="$cabin_class['label']" :value="$cabin_class['value']" :count="$cabin_class['count']" />
+					<x-expedition-search.sidebar-filters.checkbox name="cabin-classes" :label="$cabin_class['label']" :value="$cabin_class['label']" />
 				@endforeach
 			</x-form.field-group>
 		</x-accordion.item-content>
