@@ -35,6 +35,9 @@ export default class DatesRates extends HTMLElement {
 		// Check and set loading attribute.
 		if ( isLoading ) {
 			this.setAttribute( 'loading', 'yes' );
+
+			// Scroll into view
+			this.scrollIntoView();
 		} else {
 			this.removeAttribute( 'loading' );
 		}
