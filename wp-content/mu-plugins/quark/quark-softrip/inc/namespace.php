@@ -12,7 +12,6 @@ use WP_CLI;
 use WP_Error;
 use WP_Query;
 
-use function Quark\Core\bust_complete_edge_cache;
 use function Quark\Softrip\Departures\update_departures;
 use function Quark\Softrip\AdventureOptions\get_table_sql as get_adventure_options_table_sql;
 use function Quark\Softrip\Occupancies\get_table_sql as get_occupancies_table_sql;
@@ -22,6 +21,7 @@ use function Quark\Softrip\AdventureOptions\get_table_name as get_adventure_opti
 use function Quark\Softrip\Occupancies\get_table_name as get_occupancies_table_name;
 use function Quark\Softrip\OccupancyPromotions\get_table_name as get_occupancy_promotions_table_name;
 use function Quark\Softrip\Promotions\get_table_name as get_promotions_table_name;
+use function Travelopia\Cache\clear_all_edge_cache_paths;
 
 use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
 
@@ -53,6 +53,9 @@ function bootstrap(): void {
 
 	// Register Stream log connector.
 	add_filter( 'wp_stream_connectors', __NAMESPACE__ . '\\setup_stream_connectors' );
+
+	// Flush page cache on sync completion.
+	add_action( 'quark_softrip_sync_completed', __NAMESPACE__ . '\\flush_page_cache' );
 }
 
 /**
@@ -368,11 +371,6 @@ function do_sync( array $itinerary_post_ids = [], array $specific_departure_post
 		WP_CLI::success( sprintf( 'Completed %d items with %d failed items', $counter, ( $total - $counter ) ) );
 	}
 
-	// Flush page cache.
-	if ( 0 < $counter ) {
-		bust_complete_edge_cache();
-	}
-
 	// Return true if successful.
 	return $counter === $total;
 }
@@ -511,4 +509,22 @@ function get_engine_collate(): string {
 
 	// Return the engine and collate string.
 	return $engine_collate;
+}
+
+/**
+ * Flush edge page cache.
+ *
+ * @param mixed[] $data Data args.
+ *
+ * @return void
+ */
+function flush_page_cache( array $data = [] ): void {
+	// Validate data.
+	if ( empty( $data['success'] ) ) {
+		// Bail out.
+		return;
+	}
+
+	// Flush CDN page cache.
+	clear_all_edge_cache_paths();
 }
