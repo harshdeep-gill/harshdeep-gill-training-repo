@@ -25,6 +25,7 @@ import * as thumbnailCard from '../../../thumbnail-cards/children/card';
  */
 import * as menuItemContentColumn from '../menu-item-content-column';
 import * as featuredSection from '../menu-item-featured-section';
+import * as searchFiltersBar from '../../../search-filters-bar';
 
 /**
  * Edit Component.
@@ -40,7 +41,7 @@ export default function Edit( { className }: BlockEditAttributes ): JSX.Element 
 
 	// eslint-disable-next-line react-hooks/rules-of-hooks
 	const innerBlocksProps = useInnerBlocksProps( { ...blockProps }, {
-		allowedBlocks: [ menuItemContentColumn.name ],
+		allowedBlocks: [ menuItemContentColumn.name, searchFiltersBar.name ],
 		template: [
 			[
 				menuItemContentColumn.name,

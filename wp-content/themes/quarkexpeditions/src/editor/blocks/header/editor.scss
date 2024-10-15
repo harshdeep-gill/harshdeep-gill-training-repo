@@ -16,6 +16,12 @@
 			min-width: 360px;
 			min-height: 240px;
 
+			&:has(.quark-search-filters-bar) {
+				min-height: auto;
+				min-width: auto;
+				padding: var(--spacing-3);
+			}
+
 			.thumbnail-cards {
 
 				&__card--size-medium.thumbnail-cards__card--orient-landscape {

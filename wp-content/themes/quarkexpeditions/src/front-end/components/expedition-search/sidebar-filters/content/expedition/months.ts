@@ -113,6 +113,9 @@ export default class ExpeditionSearchFilterMonths extends HTMLElement {
 
 		// Check if we have the values
 		if ( 0 === values.length ) {
+			// Update the state
+			updateMonths( [] );
+
 			// Bail.
 			return;
 		}

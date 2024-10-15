@@ -12,6 +12,8 @@ use WP_CLI;
 use WP_Query;
 
 use function Quark\Departures\bust_post_cache as bust_departure_post_cache;
+use function Quark\Softrip\AdventureOptions\delete_adventure_option_by_id;
+use function Quark\Softrip\AdventureOptions\get_adventure_option_by_departure_post_id;
 use function Quark\Softrip\get_initiated_via;
 use function Quark\Softrip\Occupancies\delete_occupancy_by_id;
 use function Quark\Softrip\Occupancies\get_occupancies_by_departure;
@@ -71,10 +73,11 @@ function is_scheduled(): bool {
  * Do Cleanup.
  *
  * @param int[] $departure_post_ids Departure post IDs.
+ * @param bool  $delete_departure_post Delete departure post or not.
  *
  * @return void
  */
-function do_cleanup( array $departure_post_ids = [] ): void {
+function do_cleanup( array $departure_post_ids = [], bool $delete_departure_post = true ): void {
 	// Initialize CLI variables.
 	$is_in_cli = defined( 'WP_CLI' ) && true === WP_CLI;
 	$progress  = null;
@@ -82,24 +85,41 @@ function do_cleanup( array $departure_post_ids = [] ): void {
 	// Prepare args. Start date is past 4 months.
 	$args = [
 		'post_type'              => POST_TYPE,
-		'post_status'            => 'draft',
 		'posts_per_page'         => -1,
+		'post_status'            => [
+			'publish',
+			'future',
+			'private',
+			'pending',
+			'draft',
+			'trash',
+			'auto-draft',
+			'inherit',
+		],
 		'fields'                 => 'ids',
 		'no_found_rows'          => true,
 		'update_post_meta_cache' => false,
 		'update_post_term_cache' => false,
 		'ignore_sticky_posts'    => true,
-		'meta_query'             => [
+	];
+
+	// If departure post IDs are empty - get expired departures, else get the departures by IDs.
+	if ( empty( $departure_post_ids ) ) {
+		// Add meta query.
+		$args['meta_query'] = [
 			[
 				'key'     => 'start_date',
 				'value'   => gmdate( 'Y-m-d', strtotime( '-4 months' ) ),
 				'compare' => '<',
 			],
-		],
-	];
+		];
 
-	// Add post in if provided.
-	if ( ! empty( $departure_post_ids ) ) {
+		// Add post status.
+		$args['post_status'] = [
+			'draft',
+			'trash',
+		];
+	} else {
 		$args['post__in'] = $departure_post_ids;
 	}
 
@@ -111,6 +131,17 @@ function do_cleanup( array $departure_post_ids = [] ): void {
 
 	// Total posts found.
 	$total_posts = count( $departure_post_ids );
+
+	// Bail if empty.
+	if ( empty( $total_posts ) ) {
+		// Log message if in CLI.
+		if ( $is_in_cli ) {
+			WP_CLI::success( 'No posts found to cleanup.' );
+		}
+
+		// Bail out.
+		return;
+	}
 
 	// Log CLI message.
 	if ( $is_in_cli ) {
@@ -135,45 +166,10 @@ function do_cleanup( array $departure_post_ids = [] ): void {
 		]
 	);
 
-	// Bail if no posts found.
-	if ( empty( $departure_post_ids ) ) {
-		// Log the action.
-		do_action(
-			'quark_softrip_cleanup_completed',
-			[
-				'total'   => $total_posts,
-				'success' => 0,
-				'via'     => $initiated_via,
-			]
-		);
-
-		// Log message if in CLI.
-		if ( $is_in_cli ) {
-			WP_CLI::success( 'No posts found to cleanup.' );
-		}
-
-		// Bail out.
-		return;
-	}
-
 	// Delete occupancies.
 	foreach ( $departure_post_ids as $departure_post_id ) {
 		// Get occupancies.
 		$occupancies = get_occupancies_by_departure( $departure_post_id );
-
-		// Bail if no occupancies found.
-		if ( empty( $occupancies ) ) {
-			// Log message if in CLI.
-			if ( $is_in_cli ) {
-				WP_CLI::log( sprintf( 'No occupancies found for departure %d.', $departure_post_id ) );
-
-				// Update progress.
-				$progress->tick();
-			}
-
-			// Bail out.
-			continue;
-		}
 
 		// Flag if all occupancies are deleted.
 		$all_occupancies_deleted = true;
@@ -228,18 +224,41 @@ function do_cleanup( array $departure_post_ids = [] ): void {
 				]
 			);
 
+			// Bust departure cache.
+			bust_departure_post_cache( $departure_post_id );
+
 			// Bail out.
 			continue;
 		}
 
-		// Delete departure post.
-		$is_departure_deleted = wp_delete_post( $departure_post_id, true );
+		// Get adventure options by departure.
+		$adventure_options = get_adventure_option_by_departure_post_id( $departure_post_id );
 
-		// Skip if not deleted.
-		if ( empty( $is_departure_deleted ) ) {
+		// Flag if all adventure options are deleted.
+		$all_adventure_options_deleted = true;
+
+		// Delete adventure options.
+		foreach ( $adventure_options as $adventure_option ) {
+			// Check if valid adventure option.
+			if ( ! is_array( $adventure_option ) || empty( $adventure_option['id'] ) ) {
+				continue;
+			}
+
+			// Delete adventure option.
+			$is_adventure_option_deleted = delete_adventure_option_by_id( $adventure_option['id'] );
+
+			// If adventure option is not deleted.
+			if ( ! $is_adventure_option_deleted ) {
+				$all_adventure_options_deleted = false;
+				continue;
+			}
+		}
+
+		// Skip the deletion of departure post if any adventure option is not deleted.
+		if ( ! $all_adventure_options_deleted ) {
 			// Update progress.
 			if ( $is_in_cli ) {
-				WP_CLI::log( sprintf( 'Departure %d post is not deleted, but it\'s all occupancies are deleted.', $departure_post_id ) );
+				WP_CLI::log( sprintf( 'All adventure options are not deleted for departure %d.', $departure_post_id ) );
 				$progress->tick();
 			}
 
@@ -248,13 +267,44 @@ function do_cleanup( array $departure_post_ids = [] ): void {
 				'quark_softrip_cleanup_failed',
 				[
 					'departure_post_id' => $departure_post_id,
-					'message'           => 'Departure post is not deleted, but it\'s all occupancies are deleted.',
+					'message'           => 'All adventure options are not deleted.',
 					'via'               => $initiated_via,
 				]
 			);
 
+			// Bust departure cache.
+			bust_departure_post_cache( $departure_post_id );
+
 			// Bail out.
 			continue;
+		}
+
+		// Delete departure post if flag is set.
+		if ( $delete_departure_post ) {
+			// Delete departure post.
+			$is_departure_deleted = wp_delete_post( $departure_post_id, true );
+
+			// Skip if not deleted.
+			if ( empty( $is_departure_deleted ) ) {
+				// Update progress.
+				if ( $is_in_cli ) {
+					WP_CLI::log( sprintf( 'Departure %d post is not deleted, but it\'s all occupancies and adventure options are deleted.', $departure_post_id ) );
+					$progress->tick();
+				}
+
+				// Log failed action.
+				do_action(
+					'quark_softrip_cleanup_failed',
+					[
+						'departure_post_id' => $departure_post_id,
+						'message'           => 'Departure post is not deleted, but it\'s all occupancies and adventure options are deleted.',
+						'via'               => $initiated_via,
+					]
+				);
+
+				// Bail out.
+				continue;
+			}
 		}
 
 		// Bust departure cache.
