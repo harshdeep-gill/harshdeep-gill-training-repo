@@ -48,6 +48,6 @@
 
 	tp-form-submit[submitting] button[type="submit"] {
 
-		@extend %btn--loading !optional;
+		@extend .btn--loading; /* stylelint-disable-line */
 	}
 }
