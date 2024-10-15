@@ -33,7 +33,7 @@
 		},
 		"icon": {
 			"type": "string",
-			"default": "search"
+			"default": "button"
 		},
 		"placeholder": {
 			"type": "string",

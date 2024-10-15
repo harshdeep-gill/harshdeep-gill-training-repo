@@ -31,11 +31,10 @@ jobs:
       - name: Run ingestor urgent push
         env:
           PANTHEON_SSH_PRIVATE_KEY: ${{ secrets.PANTHEON_SSH_PRIVATE_KEY }}
-        # @TODO Add production environment - https://tuispecialist.atlassian.net/browse/QE-748
         run: |
           if [ "${{ github.event.inputs.environment }}" = "development" ]; then
             bash .bin/ingestor-urgent-push-qa.sh
-          elif [ "${{ github.event.inputs.environment }}" = "staging" ]; then
+          elif [ "${{ github.event.inputs.environment }}" = "production" ]; then
             bash .bin/ingestor-urgent-push-staging.sh
           else
             echo "Invalid environment: ${{ github.event.inputs.environment }}"

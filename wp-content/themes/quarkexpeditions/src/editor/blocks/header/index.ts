@@ -46,6 +46,7 @@ import * as menuItemContentColumn from './children/menu-item-content-column';
 import * as menuItemFeaturedSection from './children/menu-item-featured-section';
 import * as raqButton from './children/raq-button';
 import * as secondaryMenuItem from './children/secondary-menu-item';
+import * as searchItem from './children/search-item';
 import * as secondaryNav from './children/secondary-nav';
 
 /**
@@ -65,5 +66,6 @@ export const init = (): void => {
 	registerBlockType( menuItemFeaturedSection.name, menuItemFeaturedSection.settings );
 	registerBlockType( raqButton.name, raqButton.settings );
 	registerBlockType( secondaryMenuItem.name, secondaryMenuItem.settings );
+	registerBlockType( searchItem.name, searchItem.settings );
 	registerBlockType( secondaryNav.name, secondaryNav.settings );
 };

@@ -58,7 +58,6 @@ function register_brochure_post_type(): void {
 		],
 		'supports'            => [
 			'title',
-			'revisions',
 			'thumbnail',
 		],
 		'hierarchical'        => false,

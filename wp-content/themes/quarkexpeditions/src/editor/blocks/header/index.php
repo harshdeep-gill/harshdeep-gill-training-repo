@@ -165,6 +165,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 						$secondary_menu_item_attributes['title'] = $secondary_menu_item->attributes['title'] ?? '';
 						$secondary_menu_item_attributes['icon']  = ! empty( $secondary_menu_item->attributes['hasIcon'] ) ? 'search' : '';
 						$secondary_menu_item_attributes['url']   = $secondary_menu_item->attributes['url']['url'] ?? '';
+						$secondary_menu_item_attributes['type']  = 'default-item';
 
 						// Check if the menu item has dropdown content.
 						if ( $secondary_menu_item->inner_blocks instanceof WP_Block_List ) {
@@ -183,27 +184,33 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 									continue;
 								}
 
-								// Loop through columns.
-								foreach ( $content_column->inner_blocks as $content_item ) {
-									// Check for block.
-									if ( ! $content_item instanceof WP_Block ) {
-										continue;
-									}
+								// Check for block name.
+								if ( 'quark/search-filters-bar' === $content_column->name ) {
+									// Set the type to search.
+									$secondary_menu_item_attributes['type'] = 'search-item';
+								} else {
+									// Loop through columns.
+									foreach ( $content_column->inner_blocks as $content_item ) {
+										// Check for block.
+										if ( ! $content_item instanceof WP_Block ) {
+											continue;
+										}
 
-									// Process the block.
-									if ( 'quark/header-menu-item-featured-section' === $content_item->name ) {
-										$secondary_menu_item_attributes['contents'][] = [
-											'type'     => 'featured-section',
-											'image_id' => $content_item->attributes['image']['id'] ?? '',
-											'title'    => $content_item->attributes['title'],
-											'subtitle' => $content_item->attributes['subtitle'],
-											'cta_text' => $content_item->attributes['ctaText'],
-										];
-									} elseif ( 'quark/two-columns' === $content_item->name ) {
-										$secondary_menu_item_attributes['contents'][] = [
-											'type' => 'slot',
-											'slot' => implode( '', array_map( 'render_block', $content_column->parsed_block['innerBlocks'] ) ),
-										];
+										// Process the block.
+										if ( 'quark/header-menu-item-featured-section' === $content_item->name ) {
+											$secondary_menu_item_attributes['contents'][] = [
+												'type'     => 'featured-section',
+												'image_id' => $content_item->attributes['image']['id'] ?? '',
+												'title'    => $content_item->attributes['title'],
+												'subtitle' => $content_item->attributes['subtitle'],
+												'cta_text' => $content_item->attributes['ctaText'],
+											];
+										} elseif ( 'quark/two-columns' === $content_item->name ) {
+											$secondary_menu_item_attributes['contents'][] = [
+												'type' => 'slot',
+												'slot' => implode( '', array_map( 'render_block', $content_column->parsed_block['innerBlocks'] ) ),
+											];
+										}
 									}
 								}
 							}

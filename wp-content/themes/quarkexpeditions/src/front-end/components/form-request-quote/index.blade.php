@@ -24,6 +24,7 @@
 <x-section class="form-request-quote">
 	<quark-form-request-quote class="form-request-quote__container" data-filters-endpoint="{{ $filters_endpoint }}">
 		<tp-tabs class="form-request-quote__tabs" current-tab="{{ $current_tab }}" update-url="{{ $update_url }}">
+			<h1 class="form-request-quote__heading">{{ __( 'Request a Quote', 'qrk' ) }}</h1>
 			{{-- Naviation --}}
 			<x-form-request-quote.tabs-nav>
 				<x-form-request-quote.tabs-nav-item id="travel-details">

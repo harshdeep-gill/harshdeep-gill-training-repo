@@ -1,0 +1,38 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Search Hero",
+	"name": "quark/search-hero",
+	"description": "Search hero block.",
+	"category": "layout",
+	"keywords": [
+		"search",
+		"hero"
+	],
+	"textdomain": "qrk",
+	"attributes": {
+		"backgroundImage": {
+			"type": "object",
+			"default": {}
+		},
+		"immersive": {
+			"type": "string",
+			"default": "no"
+		},
+		"overlayOpacity": {
+			"type": "number",
+			"default": 30
+		},
+		"contentOverlap": {
+			"type": "boolean",
+			"default": true
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

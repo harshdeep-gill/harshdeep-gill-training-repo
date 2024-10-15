@@ -229,6 +229,7 @@ function process_column_block( array $block = [] ): array {
 					'core/paragraph',
 					'core/list',
 					'core/heading',
+					'quark/currency-switcher',
 				],
 				true
 			) ) {
@@ -300,6 +301,14 @@ function process_column_block( array $block = [] ): array {
 				case 'quark/button':
 					$column['content'][] = [
 						'type'    => 'button',
+						'content' => render_block( $column_inner_block ),
+					];
+					break;
+
+				// Quark Currency Switcher.
+				case 'quark/currency-switcher':
+					$column['content'][] = [
+						'type'    => 'currency',
 						'content' => render_block( $column_inner_block ),
 					];
 					break;

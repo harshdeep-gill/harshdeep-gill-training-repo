@@ -58,6 +58,9 @@ function bootstrap(): void {
 	// Set Excerpt length - Set higher priority to override other plugins.
 	add_filter( 'excerpt_length', __NAMESPACE__ . '\\increase_excerpt_length', 999 );
 
+	// Limit post revision.
+	add_filter( 'wp_revisions_to_keep', __NAMESPACE__ . '\\limit_revisions_for_posts', 10, 2 );
+
 	// Custom fields.
 	if ( is_admin() ) {
 		require_once __DIR__ . '/../custom-fields/options-social.php';
@@ -687,4 +690,26 @@ function is_block_editor(): bool {
 function increase_excerpt_length(): int {
 	// Return excerpt length.
 	return 255;
+}
+
+/**
+ * Limit revisions for posts.
+ *
+ * @param int          $num Number of revisions to save for the posts.
+ * @param WP_Post|null $post Post object.
+ *
+ * @return int Number of revisions to save for the posts.
+ */
+function limit_revisions_for_posts( int $num = 0, WP_Post $post = null ): int {
+	// Check if post is not null and post type supports revisions.
+	if (
+		$post instanceof WP_Post
+		&& post_type_supports( $post->post_type, 'revisions' )
+	) {
+		// Limit to 5 revisions for posts.
+		$num = 5;
+	}
+
+	// Return number of revisions.
+	return $num;
 }
