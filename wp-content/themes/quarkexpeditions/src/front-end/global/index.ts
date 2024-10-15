@@ -31,6 +31,7 @@ declare global {
 	interface Window {
 		dynamicPhoneNumber: {
 			api_endpoint?: string; // eslint-disable-line
+			default_phone_number?: string; // eslint-disable-line
 		};
 	}
 }

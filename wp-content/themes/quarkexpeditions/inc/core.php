@@ -850,7 +850,7 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 				'template'                                         => [
 					'class' => true,
 				],
-				'quark-dynamic-phone-number'                    => true,
+				'quark-dynamic-phone-number'                       => true,
 			]
 		);
 	}
