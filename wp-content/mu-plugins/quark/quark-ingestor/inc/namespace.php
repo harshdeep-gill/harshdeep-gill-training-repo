@@ -610,8 +610,8 @@ function get_expedition_data( int $expedition_post_id = 0 ): array {
 	}
 
 	// Add description.
-	if ( ! empty( $expedition_post['post_meta'] ) && ! empty( $expedition_post['post_meta']['description'] ) && is_string( $expedition_post['post_meta']['description'] ) ) {
-		$expedition_data['description'] = get_raw_text_from_html( $expedition_post['post_meta']['description'] );
+	if ( ! empty( $expedition_post['post_meta'] ) && ! empty( $expedition_post['post_meta']['overview'] ) && is_string( $expedition_post['post_meta']['overview'] ) ) {
+		$expedition_data['description'] = get_raw_text_from_html( $expedition_post['post_meta']['overview'] );
 	}
 
 	// Get destination terms.
