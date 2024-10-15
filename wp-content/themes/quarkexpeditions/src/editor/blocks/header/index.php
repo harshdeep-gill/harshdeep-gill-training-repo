@@ -256,13 +256,13 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 							$component_attributes['cta_buttons'][] = $current_cta_button;
 						} elseif ( 'quark/raq-button' === $cta_button_item->name ) {
 							// Get the phone number.
-							$btn_text = ! empty( $prefix ) ? $prefix : $cta_button_item->attributes['btnText'];
-							$btn_url  = ! empty( $phone_number ) ? 'tel:' . $phone_number : $cta_button_item->attributes['url']['url'];
+							$btn_text = $cta_button_item->attributes['btnText'] ?? '';
+							$btn_url  = $cta_button_item->attributes['url']['url'] ?? '';
 
 							// Add to cta buttons.
 							$current_cta_button = [
 								'type'       => 'raq',
-								'class'      => 'header__request-quote-btn dynamic-phone-prefix__text dynamic-phone-number__link',
+								'class'      => 'header__request-quote-btn',
 								'text'       => ! empty( $btn_text ) ? $btn_text : '',
 								'url'        => ! empty( $btn_url ) ? $btn_url : '',
 								'appearance' => $cta_button_item->attributes['appearance'] ?? '',
@@ -307,7 +307,7 @@ function extract_menu_list_items( array $blocks = [] ): array {
 	// Loop through the two columns block innerblocks.
 	if ( 'quark/two-columns' === $blocks[0]['blockName'] && ! empty( $blocks[0]['innerBlocks'] ) ) {
 		foreach ( $blocks[0]['innerBlocks'] as $column ) {
-			if ( 'quark/two-columns-column' === $column['blockName'] && ! empty( $column['innerBlocks'] ) ) {
+			if ( 'quark/column' === $column['blockName'] && ! empty( $column['innerBlocks'] ) ) {
 				// Initialize column items.
 				$column_items = [];
 
