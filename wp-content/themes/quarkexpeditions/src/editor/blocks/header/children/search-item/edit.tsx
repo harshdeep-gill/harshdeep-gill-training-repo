@@ -6,7 +6,11 @@ import {
 	useBlockProps,
 	useInnerBlocksProps,
 } from '@wordpress/block-editor';
-import { Icon } from '@wordpress/components';
+
+/**
+ * Internal dependencies.
+ */
+import icons from '../../../icons';
 
 /**
  * External dependencies.
@@ -116,7 +120,7 @@ export default function Edit( { className }: BlockEditAttributes ): JSX.Element 
 	return (
 		<li { ...blockProps }>
 			<button className="header__nav-item-link" onClick={ openDropdown }>
-				<Icon icon="search" />
+				{ icons.search }
 			</button>
 			{
 				<div { ...innerBlockProps } />
