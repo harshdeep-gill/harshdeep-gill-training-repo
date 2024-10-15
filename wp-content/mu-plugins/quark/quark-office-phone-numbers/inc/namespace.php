@@ -74,16 +74,9 @@ function office_phone_number_front_end_data( array $data = [] ): array {
 
 	// Add dynamic phone number data.
 	$data['dynamic_phone_number'] = [
-		'api_endpoint' => '',
+		'api_endpoint'         => home_url( 'wp-json/' . REST_API_NAMESPACE . '/phone-number/get' ),
+		'default_phone_number' => get_option( 'options_default_phone_number', '' ),
 	];
-
-	// Update phone number if any rules match.
-	$data['dynamic_phone_number'] = array_merge(
-		$data['dynamic_phone_number'],
-		[
-			'api_endpoint' => home_url( 'wp-json/' . REST_API_NAMESPACE . '/phone-number/get' ),
-		]
-	);
 
 	// Return updated data.
 	return $data;
@@ -283,7 +276,7 @@ function get_office_phone_number(): array {
 	$country = get_visitor_geo_country();
 
 	// Get office phone number by country code.
-	$office_phone_number = get_office_phone_number_by_country_code( $country );
+	$office_phone_number = get_office_phone_number_by_country_code( 'GB' );
 
 	// Use corporate office phone number if no local office phone number is found.
 	if ( empty( $office_phone_number ) ) {
