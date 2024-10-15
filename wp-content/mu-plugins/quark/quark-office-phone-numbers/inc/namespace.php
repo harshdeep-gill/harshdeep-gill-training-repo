@@ -276,7 +276,7 @@ function get_office_phone_number(): array {
 	$country = get_visitor_geo_country();
 
 	// Get office phone number by country code.
-	$office_phone_number = get_office_phone_number_by_country_code( 'GB' );
+	$office_phone_number = get_office_phone_number_by_country_code( $country );
 
 	// Use corporate office phone number if no local office phone number is found.
 	if ( empty( $office_phone_number ) ) {
