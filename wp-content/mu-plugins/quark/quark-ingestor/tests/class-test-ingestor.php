@@ -1104,7 +1104,7 @@ class Test_Ingestor extends Softrip_TestCase {
 				'ID'           => $expedition_post_id,
 				'post_content' => $post_content,
 				'meta_input'   => [
-					'description' => 'Here is the overview. <h1>Surfing</h1> You never know the world until you explore it.',
+					'overview' => 'Here is the overview. <h1>Surfing</h1> You never know the world until you explore it.',
 				],
 			]
 		);
