@@ -1,0 +1,25 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Search Hero - Search Bar",
+	"name": "quark/search-hero-search-bar",
+	"description": "Search bar for the Search hero.",
+	"category": "layout",
+	"keywords": [
+		"search",
+		"bar",
+		"hero"
+	],
+	"textdomain": "qrk",
+	"attributes": {},
+	"parent": [
+		"quark/search-hero-content-left"
+	],
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

@@ -36,7 +36,8 @@ export const DEFAULT_STATE: ExpeditionSearchState = {
 	cabinClasses: [],
 	travelers: [],
 	months: [],
-	itineraryLengths: [ 0, 0 ],
+	itineraryLengths: [],
+	initialItineraryLengths: [],
 	baseUrl: '',
 	allowedParams: [
 		'destinations',

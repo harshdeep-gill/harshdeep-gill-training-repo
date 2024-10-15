@@ -4,7 +4,7 @@
 	}
 @endphp
 
-<tp-form-submit class="form-submit" submitting-text="{{ __( 'Submitting...', 'qrk' ) }}">
+<tp-form-submit class="form-submit" submitting-text="{{ __( 'Submitting', 'qrk' ) }}">
 	<x-button type="submit" {{ $attributes }}>
 		{!! $slot !!}
 	</x-button>

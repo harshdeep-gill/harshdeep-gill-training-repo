@@ -1,4 +1,4 @@
-name: WordPress Cron
+name: WordPress Cron (Staging)
 
 on:
   schedule:
@@ -27,4 +27,4 @@ jobs:
       - name: Run WordPress Cron
         env:
           PANTHEON_SSH_PRIVATE_KEY: ${{ secrets.PANTHEON_SSH_PRIVATE_KEY }}
-        run: bash .bin/cron.sh
+        run: bash .bin/cron-staging.sh

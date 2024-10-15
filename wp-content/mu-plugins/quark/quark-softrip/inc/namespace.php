@@ -18,11 +18,13 @@ use function Quark\Softrip\Occupancies\get_table_sql as get_occupancies_table_sq
 use function Quark\Softrip\Promotions\get_table_sql as get_promotions_table_sql;
 use function Quark\Softrip\OccupancyPromotions\get_table_sql as get_occupancy_promotions_table_sql;
 use function Quark\Softrip\AdventureOptions\get_table_name as get_adventure_options_table_name;
+use function Quark\Softrip\Cleanup\do_cleanup;
 use function Quark\Softrip\Occupancies\get_table_name as get_occupancies_table_name;
 use function Quark\Softrip\OccupancyPromotions\get_table_name as get_occupancy_promotions_table_name;
 use function Quark\Softrip\Promotions\get_table_name as get_promotions_table_name;
 use function Travelopia\Cache\clear_all_edge_cache_paths;
 
+use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
 use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
 
 const SCHEDULE_RECURRENCE       = 'qrk_softrip_4_hourly';
@@ -56,6 +58,9 @@ function bootstrap(): void {
 
 	// Flush page cache on sync completion.
 	add_action( 'quark_softrip_sync_completed', __NAMESPACE__ . '\\flush_page_cache' );
+
+	// Delete custom data on departure post deletion.
+	add_action( 'delete_post_' . DEPARTURE_POST_TYPE, __NAMESPACE__ . '\\delete_custom_data' );
 }
 
 /**
@@ -527,4 +532,21 @@ function flush_page_cache( array $data = [] ): void {
 
 	// Flush CDN page cache.
 	clear_all_edge_cache_paths();
+}
+
+/**
+ * Delete departure data on departure post deletion.
+ *
+ * @param int $post_id Post ID.
+ *
+ * @return void
+ */
+function delete_custom_data( int $post_id = 0 ): void {
+	// Validate post ID.
+	if ( empty( $post_id ) ) {
+		return;
+	}
+
+	// Remove departure data.
+	do_cleanup( [ $post_id ], false );
 }
