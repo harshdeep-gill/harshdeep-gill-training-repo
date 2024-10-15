@@ -1,0 +1,74 @@
+@import "../../../front-end/global/custom-properties";
+@import "../../../front-end/components/hero-card-slider/style";
+@import "@travelopia/web-components/dist/slider/style";
+
+.hero-details-card-slider__modal-overlay {
+	z-index: 999;
+}
+
+.components-modal__screen-overlay {
+
+	.hero-details-card-slider__modal {
+		--hero-card-aspect-ratio: 9 / 16;
+		max-height: 90%;
+
+		.hero-details-card-slider {
+
+			&__editor-button {
+				margin-bottom: var(--spacing-3);
+			}
+
+			&__card {
+				background-color: var(--color-gray-20);
+				border-radius: var(--border-radius);
+				width: 100%;
+				padding: 20px;
+				max-width: 300px;
+
+				.section {
+					margin-bottom: var(--spacing-3);
+				}
+			}
+
+			&__slides {
+				display: flex;
+				flex-wrap: wrap;
+				gap: var(--spacing-4);
+			}
+
+			&__video {
+				border-radius: var(--border-radius);
+			}
+		}
+
+		.gumponents-select-image {
+			height: 280px;
+		}
+	}
+}
+
+.hero-card-slider {
+	font-family: var(--font-family);
+	color: var(--color-white);
+
+	&__title.h4 {
+		font-size: var(--h4-font-size);
+		line-height: var(--h4-line-height);
+		margin-bottom: var(--h4-spacing);
+		font-weight: var(--font-weight-bold);
+	}
+
+	&__tag,
+	&__overline {
+		letter-spacing: 2px;
+		text-transform: uppercase;
+	}
+
+	&__description,
+	&__card-cta {
+		color: var(--color-white);
+		font-size: var(--font-size);
+		line-height: var(--line-height);
+		font-weight: var(--font-weight-default);
+	}
+}
