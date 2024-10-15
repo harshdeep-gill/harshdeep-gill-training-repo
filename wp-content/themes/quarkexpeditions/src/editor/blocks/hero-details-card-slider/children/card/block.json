@@ -1,0 +1,61 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "quark/hero-details-card-slider-item",
+	"description": "A single item in the hero details card slider",
+	"title": "Hero Details Card Slider - Item",
+	"keywords": [
+		"hero",
+		"details",
+		"card",
+		"slider",
+		"item"
+	],
+	"category": "layout",
+	"textdomain": "quark",
+	"attributes": {
+		"mediaType": {
+			"type": "string",
+			"default": "image"
+		},
+		"media": {
+			"type": "object",
+			"default": {}
+		},
+		"hasTag": {
+			"type": "boolean",
+			"default": false
+		},
+		"tagType": {
+			"type": "string",
+			"default": "tag"
+		},
+		"tagText": {
+			"type": "string",
+			"default": ""
+		},
+		"title": {
+			"type": "string",
+			"default": ""
+		},
+		"descriptionText": {
+			"type": "string",
+			"default": ""
+		},
+		"hasCtaLink": {
+			"type": "boolean",
+			"default": false
+		},
+		"cta": {
+			"type": "object",
+			"default": {}
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}
