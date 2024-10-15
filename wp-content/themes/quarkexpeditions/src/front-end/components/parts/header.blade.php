@@ -222,7 +222,7 @@
 						@foreach ( $cta_buttons as $button )
 							@if ( 'contact' === $button['type'] )
 								<li>
-									<a href="{{ $button['url'] ?? '' }}" class="dynamic-phone-number__link dynamic-phone-number-and-prefix">
+									<a href="{{ $button['url'] ?? '' }}">
 										{!! $button['drawer_text'] ?? '' !!}
 										{!! $button['text'] ?? '' !!}
 									</a>
@@ -238,7 +238,7 @@
 					@if ( 'raq' === $button['type'] )
 						<x-button
 							:href="$button['url'] ?? ''"
-							class="header__drawer-request-quote-btn dynamic-phone-number__link dynamic-phone-number__text"
+							class="header__drawer-request-quote-btn"
 							size="big"
 						>
 							{!! $button['text'] ?? '' !!}

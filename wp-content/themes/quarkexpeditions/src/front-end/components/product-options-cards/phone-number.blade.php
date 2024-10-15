@@ -13,7 +13,6 @@
     size="big"
     appearance="outline"
     href="tel:{{ $phone_number }}"
-    class="dynamic-phone-number__link dynamic-phone-number-and-prefix"
 >
     <x-escape :content="$text" />
 </x-button>

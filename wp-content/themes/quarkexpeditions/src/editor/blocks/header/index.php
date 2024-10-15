@@ -244,7 +244,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 							// Add to cta buttons.
 							$current_cta_button = [
 								'type'        => 'contact',
-								'class'       => 'header__phone-btn dynamic-phone-number__btn dynamic-phone-number__link',
+								'class'       => 'header__phone-btn',
 								'text'        => ! empty( $btn_text ) ? $btn_text : '',
 								'url'         => ! empty( $btn_url ) ? $btn_url : '',
 								'drawer_text' => $drawer_btn_text,
@@ -262,7 +262,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 							// Add to cta buttons.
 							$current_cta_button = [
 								'type'       => 'raq',
-								'class'      => 'header__request-quote-btn dynamic-phone-prefix__text dynamic-phone-number__link',
+								'class'      => 'header__request-quote-btn',
 								'text'       => ! empty( $btn_text ) ? $btn_text : '',
 								'url'        => ! empty( $btn_url ) ? $btn_url : '',
 								'appearance' => $cta_button_item->attributes['appearance'] ?? '',
