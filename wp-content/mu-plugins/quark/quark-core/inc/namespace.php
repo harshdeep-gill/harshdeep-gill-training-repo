@@ -689,13 +689,3 @@ function increase_excerpt_length(): int {
 	// Return excerpt length.
 	return 255;
 }
-
-/**
- * Clear all edge cache.
- *
- * @return void
- */
-function bust_complete_edge_cache(): void {
-	// Clear cache.
-	clear_all_edge_cache_paths();
-}
