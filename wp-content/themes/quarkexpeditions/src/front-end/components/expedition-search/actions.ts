@@ -190,13 +190,24 @@ const buildUrlFromFilters = (): string => {
 /**
  * Initialize data for the component.
  *
- * @param {Object} settings          Settings.
- * @param {string} settings.partial  Partial Url.
- * @param {string} settings.selector Selector.
+ * @param {Object} settings                                 Settings.
+ * @param {string} settings.partial                         Partial Url.
+ * @param {string} settings.selector                        Selector.
+ * @param {Object} settings.serverRenderData                Server render data.
+ * @param {number} settings.serverRenderData.resultsCount   The number of results
+ * @param {number} settings.serverRenderData.remainingCount The number of results
+ * @param {number} settings.serverRenderData.page           The page number
+ * @param {number} settings.serverRenderData.nextPage       The next page number
  */
 export const initialize = ( settings: {
 	partial: string | undefined,
 	selector: string | undefined,
+	serverRenderData?: {
+		resultsCount: number,
+		remainingCount: number,
+		page: number,
+		nextPage: number,
+	}
 } ): void => {
 	// Get current state.
 	const currentState: ExpeditionSearchState = getState();
@@ -213,6 +224,15 @@ export const initialize = ( settings: {
 		updateMarkup: true,
 		baseUrl: window.location.origin + window.location.pathname,
 	};
+
+	// Check if we have server render data.
+	if ( settings.serverRenderData ) {
+		initialUpdatePayload.resultCount = settings.serverRenderData.resultsCount;
+		initialUpdatePayload.remainingCount = settings.serverRenderData.remainingCount;
+		initialUpdatePayload.page = settings.serverRenderData.page;
+		initialUpdatePayload.hasNextPage = settings.serverRenderData.nextPage > settings.serverRenderData.page;
+		initialUpdatePayload.nextPage = settings.serverRenderData.nextPage;
+	}
 
 	// Get the state from url.
 	const urlFilters = parseUrl();
@@ -304,7 +324,9 @@ export const initialize = ( settings: {
 	setState( initialUpdatePayload );
 
 	// Fetch Results.
-	fetchResults( stateInitialized );
+	if ( ! settings.serverRenderData ) {
+		fetchResults( stateInitialized );
+	}
 };
 
 /**

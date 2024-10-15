@@ -64,6 +64,8 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 		'cards'           => get_cards_data( array_map( 'absint', $search_results['ids'] ), $currency ),
 		'currency'        => $currency,
 		'filters_data'    => get_filters_for_sidebar_search(),
+		'page'            => $search_results['current_page'],
+		'next_page'       => $search_results['next_page'],
 	];
 
 	// Return the rendered component.
