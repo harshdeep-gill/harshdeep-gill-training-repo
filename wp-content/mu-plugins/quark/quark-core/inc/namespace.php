@@ -15,6 +15,7 @@ use WP_Term;
 use WP_Query;
 use WP_User;
 
+use function Travelopia\Cache\clear_all_edge_cache_paths;
 use function Travelopia\Core\cached_nav_menu;
 
 use const Quark\Localization\AUD_CURRENCY;
