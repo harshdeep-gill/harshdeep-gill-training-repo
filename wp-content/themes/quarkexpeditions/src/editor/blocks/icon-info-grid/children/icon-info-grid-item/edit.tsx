@@ -10,7 +10,7 @@ import {
 import {
 	PanelBody,
 	SelectControl,
-	ToggleControl
+	ToggleControl,
 } from '@wordpress/components';
 
 /**

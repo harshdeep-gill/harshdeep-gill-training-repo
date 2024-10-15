@@ -54,6 +54,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 		if ( ! $icon_info_grid_item_block instanceof WP_Block ) {
 			continue;
 		}
+
 		// Icon Info Grid Item.
 		$icon_info_grid_item_component_attributes = [
 			'slot' => '',
@@ -61,7 +62,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 
 		// If has Icon is false remove Icon.
 		if ( $icon_info_grid_item_block->attributes['hasIcon'] ) {
-		// Icon.
+			// Icon.
 			$icon_info_grid_item_component_attributes['slot'] .= quark_get_component(
 				COMPONENT . '.icon',
 				[
