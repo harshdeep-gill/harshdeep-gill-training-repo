@@ -32,9 +32,6 @@ const REST_API_NAMESPACE = 'quark-core/v1';
  * @return void
  */
 function bootstrap(): void {
-	// Layout.
-	add_action( 'template_redirect', __NAMESPACE__ . '\\layout' );
-
 	// Other hooks.
 	add_action( 'admin_menu', __NAMESPACE__ . '\\setup_settings' );
 	add_action( 'init', __NAMESPACE__ . '\\nav_menus' );
@@ -56,7 +53,7 @@ function bootstrap(): void {
 	add_filter( 'upload_mimes', __NAMESPACE__ . '\\allow_mime_types' );
 
 	// Get front-end markup for manipulation.
-	add_filter( 'template_redirect', __NAMESPACE__ . '\\start_output_buffering' );
+	add_filter( 'wp_head', __NAMESPACE__ . '\\start_output_buffering' );
 	add_filter( 'wp_footer', __NAMESPACE__ . '\\end_output_buffering' );
 
 	// Set Excerpt length - Set higher priority to override other plugins.
@@ -68,30 +65,6 @@ function bootstrap(): void {
 		require_once __DIR__ . '/../custom-fields/attachments.php';
 		require_once __DIR__ . '/../custom-fields/pages-setup.php';
 	}
-}
-
-/**
- * Front-end layout.
- *
- * @return void
- */
-function layout(): void {
-	// Check if 404 page.
-	if ( is_404() ) {
-		add_filter( 'quark_front_end_data', __NAMESPACE__ . '\\layout_404' );
-	}
-}
-
-/**
- * Layout: 404.
- *
- * @param mixed[] $data Front-end data.
- *
- * @return mixed[]
- */
-function layout_404( array $data = [] ): array {
-	// Return updated data.
-	return $data;
 }
 
 /**
