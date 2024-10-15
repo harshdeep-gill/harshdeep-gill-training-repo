@@ -1,7 +1,7 @@
 @props( [
 	'is_search_page'           => false,
 	'destinations_placeholder' => __( 'Anywhere', 'qrk' ),
-	'departures_placeholder'   => __( 'Any time', 'qrk' ),
+	'departures_placeholder'   => __( 'I\'m Flexible', 'qrk' ),
 	'modal_id'                 => 'search-filters-bar-modal',
 	'destinations'             => [],
 	'available_months'         => [],
