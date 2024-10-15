@@ -66,17 +66,23 @@ export class ExpeditionSearch extends HTMLElement {
 		const serverRenderData = {
 			resultsCount: Number.NaN,
 			remainingCount: Number.NaN,
+			page: Number.NaN,
+			nextPage: Number.NaN,
 		};
 
 		// Is it server rendered?
 		if ( isServerRendered && serverRenderData ) {
 			serverRenderData.resultsCount = parseInt( this.resultsContainer.getAttribute( 'results-count' ) ?? '' );
 			serverRenderData.remainingCount = parseInt( this.resultsContainer.getAttribute( 'remaining-count' ) ?? '' );
+			serverRenderData.page = parseInt( this.resultsContainer.getAttribute( 'page' ) ?? '' );
+			serverRenderData.nextPage = parseInt( this.resultsContainer.getAttribute( 'next-page' ) ?? '' );
 
 			// Check if we have valid values.
 			isServerRendered = ! (
 				Number.isNaN( serverRenderData.remainingCount ) ||
-				Number.isNaN( serverRenderData.resultsCount )
+				Number.isNaN( serverRenderData.resultsCount ) ||
+				Number.isNaN( serverRenderData.page ) ||
+				Number.isNaN( serverRenderData.nextPage )
 			);
 		}
 

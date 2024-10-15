@@ -1,6 +1,8 @@
 @props( [
 	'remaining_count' => 0,
 	'results_count'   => 0,
+	'page'            => 1,
+	'next_page'       => 1,
 ] )
 
 @php
@@ -28,6 +30,8 @@
 			server-rendered="yes"
 			remaining-count="{{ $remaining_count }}"
 			results-count="{{ $results_count }}"
+			page="{{ $page }}"
+			next-page="{{ $next_page }}"
 		@endif
 	>
 		{!! $slot !!}

@@ -196,6 +196,8 @@ const buildUrlFromFilters = (): string => {
  * @param {Object} settings.serverRenderData                Server render data.
  * @param {number} settings.serverRenderData.resultsCount   The number of results
  * @param {number} settings.serverRenderData.remainingCount The number of results
+ * @param {number} settings.serverRenderData.page           The page number
+ * @param {number} settings.serverRenderData.nextPage       The next page number
  */
 export const initialize = ( settings: {
 	partial: string | undefined,
@@ -203,6 +205,8 @@ export const initialize = ( settings: {
 	serverRenderData?: {
 		resultsCount: number,
 		remainingCount: number,
+		page: number,
+		nextPage: number,
 	}
 } ): void => {
 	// Get current state.
@@ -225,6 +229,9 @@ export const initialize = ( settings: {
 	if ( settings.serverRenderData ) {
 		initialUpdatePayload.resultCount = settings.serverRenderData.resultsCount;
 		initialUpdatePayload.remainingCount = settings.serverRenderData.remainingCount;
+		initialUpdatePayload.page = settings.serverRenderData.page;
+		initialUpdatePayload.hasNextPage = settings.serverRenderData.nextPage > settings.serverRenderData.page;
+		initialUpdatePayload.nextPage = settings.serverRenderData.nextPage;
 	}
 
 	// Get the state from url.

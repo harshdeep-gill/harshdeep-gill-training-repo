@@ -29,7 +29,7 @@ type ExpeditionSearchFilterType = 'destinations' |
 	'travelers';
 
 /**
- * type ExpeditionSearchAllowedParam
+ * type ExpeditionSearchAllowedPara
  */
 type ExpeditionSearchAllowedParam = ExpeditionSearchFilterType; // Add more values here if required. e.g. for page number and so on.
 
@@ -57,6 +57,7 @@ interface ExpeditionSearchState {
 	selectedFilters: ExpeditionSearchFilters;
 	shipId: number,
 	page: number,
+	nextPage: number,
 	hasNextPage: boolean,
 	resultCount: number,
 	remainingCount: number,
