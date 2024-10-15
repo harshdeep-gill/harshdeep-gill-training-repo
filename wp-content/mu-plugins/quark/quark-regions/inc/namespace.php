@@ -65,6 +65,7 @@ function register_region_post_type(): void {
 			'editor',
 			'page-attributes',
 			'excerpt',
+			'revisions',
 		],
 		'show_ui'             => true,
 		'show_in_menu'        => true,

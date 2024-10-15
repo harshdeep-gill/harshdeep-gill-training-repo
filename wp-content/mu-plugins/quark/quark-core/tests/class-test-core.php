@@ -9,8 +9,7 @@ namespace Quark\Core;
 
 use WP_UnitTestCase;
 use WP_Term;
-
-use function Quark\Core\get_front_end_data;
+use WP_Post;
 
 use const Quark\Localization\USD_CURRENCY;
 use const Quark\Localization\AUD_CURRENCY;
@@ -18,6 +17,8 @@ use const Quark\Localization\CAD_CURRENCY;
 use const Quark\Localization\DEFAULT_CURRENCY;
 use const Quark\Localization\EUR_CURRENCY;
 use const Quark\Localization\GBP_CURRENCY;
+
+use const Quark\Brochures\POST_TYPE as BROCHURE_POST_TYPE;
 
 /**
  * Class Test_Core.
@@ -330,5 +331,48 @@ class Test_Core extends WP_UnitTestCase {
 		wp_delete_term( $child_term_2->term_id, 'test_taxonomy' );
 		wp_delete_term( $child_term_3->term_id, 'test_taxonomy' );
 		unregister_taxonomy( 'test_taxonomy' );
+	}
+
+	/**
+	 * Test limit_revisions_for_posts.
+	 *
+	 * @covers \Quark\Core\limit_revisions_for_posts()
+	 *
+	 * @return void
+	 */
+	public function test_limit_revisions_for_posts(): void {
+		// Create a post.
+		$post = $this->factory()->post->create_and_get();
+
+		// Assert the $post.
+		$this->assertTrue( $post instanceof WP_Post );
+
+		// Assert the post has the default number of revisions.
+		$this->assertEquals(
+			5,
+			wp_revisions_to_keep( $post )
+		);
+
+		// Assert the post has the correct number of revisions.
+		$this->assertEquals(
+			5,
+			wp_revisions_to_keep( $post )
+		);
+
+		// Create A post of Brochure type.
+		$brochure_post = $this->factory()->post->create_and_get(
+			[
+				'post_type' => BROCHURE_POST_TYPE,
+			]
+		);
+
+		// Assert the $brochure_post.
+		$this->assertTrue( $brochure_post instanceof WP_Post );
+
+		// Assert the post has the default number of revisions.
+		$this->assertEquals(
+			0,
+			wp_revisions_to_keep( $brochure_post )
+		);
 	}
 }

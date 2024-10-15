@@ -63,7 +63,6 @@ function register_ship_deck_post_type(): void {
 		'supports'            => [
 			'title',
 			'editor',
-			'revisions',
 		],
 		'show_ui'             => true,
 		'show_in_menu'        => 'edit.php?post_type=qrk_ship',

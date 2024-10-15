@@ -57,7 +57,6 @@ function register_blog_author_post_type(): void {
 		'supports'            => [
 			'title',
 			'editor',
-			'revisions',
 			'thumbnail',
 		],
 		'hierarchical'        => false,
