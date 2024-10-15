@@ -53,7 +53,7 @@ function bootstrap(): void {
 	add_filter( 'upload_mimes', __NAMESPACE__ . '\\allow_mime_types' );
 
 	// Get front-end markup for manipulation.
-	add_filter( 'wp_head', __NAMESPACE__ . '\\start_output_buffering' );
+	add_filter( 'wp_body_open', __NAMESPACE__ . '\\start_output_buffering' );
 	add_filter( 'wp_footer', __NAMESPACE__ . '\\end_output_buffering' );
 
 	// Set Excerpt length - Set higher priority to override other plugins.
