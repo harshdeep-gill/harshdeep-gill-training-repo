@@ -11,8 +11,8 @@
 	// Build image args.
 	$image_args = [
 		'size' => [
-			'width'   => 335,
-			'height'  => 450,
+			'width'   => 440,
+			'height'  => 260,
 		],
 		'responsive'  => [
 			'sizes'   => [ '(min-width: 1200px) 1120px','(min-width: 1024px) 864px', '100vw' ],
