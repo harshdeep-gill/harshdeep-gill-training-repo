@@ -527,9 +527,12 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'class' => true,
 				],
 				'quark-expedition-search-results'                  => [
-					'class'    => true,
-					'parital'  => true,
-					'selector' => true,
+					'class'           => true,
+					'parital'         => true,
+					'selector'        => true,
+					'remaining-count' => true,
+					'results-count'   => true,
+					'server-rendered' => true,
 				],
 				'quark-range-slider'                               => [
 					'class'          => true,

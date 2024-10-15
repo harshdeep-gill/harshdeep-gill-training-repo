@@ -35,7 +35,7 @@
 			<x-sidebar-grid.content>
 				<x-expedition-search.selected-filters />
 				<x-expedition-search.recent-searches />
-				<x-expedition-search.results :count="$remaining_count">
+				<x-expedition-search.results :remaining_count="$remaining_count" :results_count="$results_count" >
 					<x-parts.expedition-search-result-cards :cards="$cards ?? []" />
 				</x-expedition-search.results>
 			</x-sidebar-grid.content>
