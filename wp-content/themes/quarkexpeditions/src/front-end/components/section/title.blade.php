@@ -1,7 +1,7 @@
 @props( [
 	'title'         => '',
 	'align'         => '',
-	'heading_level' => '3',
+	'heading_level' => '2',
 ] )
 
 @php
