@@ -95,8 +95,7 @@ interface QueryString {
 interface GlobalState {
 	currency: string,
 	phoneNumberRule: {
-		// eslint-disable-next-line camelcase
-		phone_number: string,
+		phoneNumber: string,
 		prefix: string,
 	},
 }

@@ -15,7 +15,7 @@ export const DEFAULT_STATE: GlobalState = {
 	currency: 'USD',
 	phoneNumberRule: {
 		prefix: '',
-		phone_number: '',
+		phoneNumber: '',
 	},
 };
 

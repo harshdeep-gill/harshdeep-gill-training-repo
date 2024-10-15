@@ -28,7 +28,7 @@ window.addEventListener(
 		const { phoneNumberRule }: GlobalState = getState();
 
 		// Check if phone number rule exists.
-		if ( phoneNumberRule && phoneNumberRule.phone_number && phoneNumberRule.prefix ) {
+		if ( phoneNumberRule && phoneNumberRule.phoneNumber && phoneNumberRule.prefix ) {
 			// Phone number rule exists, return.
 			return;
 		}
@@ -46,6 +46,12 @@ window.addEventListener(
 		)
 			.then( ( response ) => response.json() )
 			.then( ( rule ) => {
+				// Update phone number key.
+				rule.phoneNumber = rule.phone_number;
+
+				// Delete phone number key.
+				delete rule.phone_number;
+
 				// Set phone number rule in global state.
 				setPhoneNumberRule( rule );
 			} )

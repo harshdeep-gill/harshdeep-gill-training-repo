@@ -46,7 +46,7 @@ class QuarkDynamicPhoneNumber extends HTMLElement {
 		}
 
 		// Get phone number and prefix.
-		const phoneNumber = phoneNumberRule?.phone_number;
+		const phoneNumber = phoneNumberRule?.phoneNumber;
 
 		// Update default phone number.
 		this.updateDefaultPhoneNumber( phoneNumber );
