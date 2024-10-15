@@ -201,6 +201,43 @@ function update_departures( array $raw_departures = [], string $softrip_package_
 			continue;
 		}
 
+		// Has valid occupancies.
+		$has_valid_occupancies = has_raw_departure_valid_occupancies( $raw_departure );
+
+		// If no valid occupancies.
+		if ( ! $has_valid_occupancies ) {
+			// Skip if not existing.
+			if ( ! $is_existing ) {
+				$message = __( 'No valid occupancies found for new departure.', 'qrk' );
+			} else {
+				$message = __( 'No valid occupancies found for existing departure. So, converting to draft.', 'qrk' );
+
+				// Unpublish the post.
+				wp_update_post(
+					[
+						'ID'          => $existing_departure_codes[ $departure_softrip_id ],
+						'post_status' => 'draft',
+					]
+				);
+
+				// Bust the departure module cache.
+				bust_departure_post_cache( $existing_departure_codes[ $departure_softrip_id ] );
+			}
+
+			// Log error.
+			do_action(
+				'quark_softrip_sync_error',
+				[
+					'error' => $message,
+					'via'   => get_initiated_via(),
+					'codes' => [ $departure_softrip_id ],
+				]
+			);
+
+			// Continue to next departure.
+			continue;
+		}
+
 		// Hashed formatted data.
 		$formatted_data_hash = md5( strval( wp_json_encode( $formatted_data ) ) );
 
@@ -417,60 +454,6 @@ function format_raw_departure_data( array $raw_departure_data = [], int $itinera
 		return [];
 	}
 
-	// Check for cabins.
-	if ( empty( $raw_departure_data['cabins'] ) || ! is_array( $raw_departure_data['cabins'] ) ) {
-		return [];
-	}
-
-	// Check if any of cabin have valid occupancies.
-	$has_valid_occupancies = false;
-
-	// Loop through cabins.
-	foreach ( $raw_departure_data['cabins'] as $cabin ) {
-		// Skip if not an array or empty occupancies.
-		if ( ! is_array( $cabin ) || empty( $cabin['occupancies'] ) || ! is_array( $cabin['occupancies'] ) ) {
-			continue;
-		}
-
-		// Loop through occupancies.
-		foreach ( $cabin['occupancies'] as $occupancy ) {
-			// Skip if not an array or empty occupancy.
-			if ( ! is_array( $occupancy ) || empty( $occupancy ) || empty( $occupancy['saleStatusCode'] ) ) {
-				continue;
-			}
-
-			// Skip if sale status code is not available.
-			if ( ! is_occupancy_available( $occupancy['saleStatusCode'] ) ) {
-				continue;
-			} else {
-				// Valid.
-				$has_valid_occupancies = true;
-				break;
-			}
-		}
-
-		// Break if valid occupancies.
-		if ( $has_valid_occupancies ) {
-			break;
-		}
-	}
-
-	// Return empty if no valid occupancies.
-	if ( ! $has_valid_occupancies ) {
-		// Log error.
-		do_action(
-			'quark_softrip_sync_error',
-			[
-				'error' => __( 'No valid occupancies found.', 'qrk' ),
-				'via'   => get_initiated_via(),
-				'codes' => [ $raw_departure_data['id'] ],
-			]
-		);
-
-		// Bail.
-		return [];
-	}
-
 	// Prepare formatted data.
 	$formatted_data = [
 		'post_title'  => sanitize_text_field( strval( $raw_departure_data['id'] ) ),
@@ -652,4 +635,54 @@ function get_end_date( int $departure_post_id = 0 ): string {
 
 	// Return start date.
 	return $end_date;
+}
+
+/**
+ * Has raw departure the valid occupancies.
+ *
+ * @param mixed[] $occupancy_data Occupancy data.
+ *
+ * @return bool
+ */
+function has_raw_departure_valid_occupancies( array $occupancy_data = [] ): bool {
+	// Check for cabins.
+	if ( empty( $occupancy_data['cabins'] ) || ! is_array( $occupancy_data['cabins'] ) ) {
+		return false;
+	}
+
+	// Check if any of cabin have valid occupancies.
+	$has_valid_occupancies = false;
+
+	// Loop through cabins.
+	foreach ( $occupancy_data['cabins'] as $cabin ) {
+		// Skip if not an array or empty occupancies.
+		if ( ! is_array( $cabin ) || empty( $cabin['occupancies'] ) || ! is_array( $cabin['occupancies'] ) ) {
+			continue;
+		}
+
+		// Loop through occupancies.
+		foreach ( $cabin['occupancies'] as $occupancy ) {
+			// Skip if not an array or empty occupancy.
+			if ( ! is_array( $occupancy ) || empty( $occupancy ) || empty( $occupancy['saleStatusCode'] ) ) {
+				continue;
+			}
+
+			// Skip if sale status code is not available.
+			if ( ! is_occupancy_available( $occupancy['saleStatusCode'] ) ) {
+				continue;
+			} else {
+				// Valid.
+				$has_valid_occupancies = true;
+				break;
+			}
+		}
+
+		// Break if valid occupancies.
+		if ( $has_valid_occupancies ) {
+			break;
+		}
+	}
+
+	// Return if valid occupancies.
+	return $has_valid_occupancies;
 }
