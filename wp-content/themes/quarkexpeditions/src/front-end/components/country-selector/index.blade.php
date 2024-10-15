@@ -10,6 +10,9 @@
 @php
 	$country_code_field_name = sprintf( 'fields[%s]', $country_code_key );
 	$state_code_field_name   = sprintf( 'fields[%s]', $state_code_key );
+
+	// Sort countries alphabetically by name.
+	asort( $countries );
 @endphp
 
 <quark-country-selector class="country-selector">

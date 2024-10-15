@@ -24,7 +24,12 @@
 <x-section class="form-request-quote">
 	<quark-form-request-quote class="form-request-quote__container" data-filters-endpoint="{{ $filters_endpoint }}">
 		<tp-tabs class="form-request-quote__tabs" current-tab="{{ $current_tab }}" update-url="{{ $update_url }}">
+			{{-- Title --}}
 			<h1 class="form-request-quote__heading">{{ __( 'Request a Quote', 'qrk' ) }}</h1>
+
+			{{-- Toast Message --}}
+			<x-toast-message type="error" message="{{ __( 'Fields marked with an asterisk (*) are required', 'qrk' ) }}" />
+
 			{{-- Naviation --}}
 			<x-form-request-quote.tabs-nav>
 				<x-form-request-quote.tabs-nav-item id="travel-details">
@@ -53,9 +58,9 @@
 						<x-form.field :validation="[ 'required' ]">
 							<x-form.select label="{{ __( 'Are you interested in', 'qrk' ) }}" name="fields[Journey_Stage__c]">
 								<x-form.option value="">{{ __( '- Select -', 'qrk' ) }}</x-form.option>
-								<x-form.option value="dreaming" label="{{ __( 'Learning about Polar Travel', 'qrk' ) }}">{{ __( 'Learning about Polar Travel', 'qrk' ) }}</x-form.option>
-								<x-form.option value="planning" label="{{ __( 'Planning a Trip', 'qrk' ) }}">{{ __( 'Planning a Trip', 'qrk' ) }}</x-form.option>
 								<x-form.option value="booking" label="{{ __( 'Booking a Trip', 'qrk' ) }}">{{ __( 'Booking a Trip', 'qrk' ) }}</x-form.option>
+								<x-form.option value="planning" label="{{ __( 'Planning a Trip', 'qrk' ) }}">{{ __( 'Planning a Trip', 'qrk' ) }}</x-form.option>
+								<x-form.option value="dreaming" label="{{ __( 'Learning about Polar Travel', 'qrk' ) }}">{{ __( 'Learning about Polar Travel', 'qrk' ) }}</x-form.option>
 							</x-form.select>
 						</x-form.field>
 
@@ -108,10 +113,10 @@
 
 					<x-form.row>
 						<x-form.field :validation="[ 'required', 'no-empty-spaces' ]">
-							<x-form.input type="text" label="{{ __( 'First Name', 'qrk' ) }}" placeholder="{{ __( 'Enter First Name', 'qrk' ) }}" name="fields[FirstName__c]" />
+							<x-form.input type="text" maxlength="40" label="{{ __( 'First Name', 'qrk' ) }}" placeholder="{{ __( 'Enter First Name', 'qrk' ) }}" name="fields[FirstName__c]" />
 						</x-form.field>
 						<x-form.field :validation="[ 'required', 'no-empty-spaces' ]">
-							<x-form.input type="text" label="{{ __( 'Last Name', 'qrk' ) }}" placeholder="{{ __( 'Enter Last Name', 'qrk' ) }}" name="fields[LastName__c]" />
+							<x-form.input type="text" maxlength="80" label="{{ __( 'Last Name', 'qrk' ) }}" placeholder="{{ __( 'Enter Last Name', 'qrk' ) }}" name="fields[LastName__c]" />
 						</x-form.field>
 					</x-form.row>
 
@@ -120,8 +125,8 @@
 							<x-form.input type="email" label="Email" placeholder="Enter Email" name="fields[Email__c]" />
 						</x-form.field>
 
-						<x-form.field :validation="[ 'required' ]">
-							<x-form.input type="tel" label="{{ __( 'Phone Number', 'qrk' ) }}" placeholder="eg. (123) 456 7890" name="fields[Phone__c]" />
+						<x-form.field :validation="[ 'required', 'phone-field-validation' ]">
+							<x-form.input type="tel" maxlength="20" label="{{ __( 'Phone Number', 'qrk' ) }}" placeholder="eg. (123) 456 7890" name="fields[Phone__c]" />
 						</x-form.field>
 					</x-form.row>
 
