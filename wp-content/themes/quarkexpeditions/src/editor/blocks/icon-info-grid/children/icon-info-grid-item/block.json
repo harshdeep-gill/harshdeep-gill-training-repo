@@ -16,6 +16,10 @@
       "quark/icon-info-grid"
     ],
     "attributes": {
+      "hasIcon": {
+        "type": "boolean",
+        "default": "true"
+      },
       "icon": {
         "type": "string",
         "default": "star",

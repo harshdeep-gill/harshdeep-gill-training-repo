@@ -54,19 +54,21 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 		if ( ! $icon_info_grid_item_block instanceof WP_Block ) {
 			continue;
 		}
-
 		// Icon Info Grid Item.
 		$icon_info_grid_item_component_attributes = [
 			'slot' => '',
 		];
 
+		// If has Icon is false remove Icon.
+		if ( $icon_info_grid_item_block->attributes['hasIcon'] ) {
 		// Icon.
-		$icon_info_grid_item_component_attributes['slot'] .= quark_get_component(
-			COMPONENT . '.icon',
-			[
-				'icon' => $icon_info_grid_item_block->attributes['icon'],
-			]
-		);
+			$icon_info_grid_item_component_attributes['slot'] .= quark_get_component(
+				COMPONENT . '.icon',
+				[
+					'icon' => $icon_info_grid_item_block->attributes['icon'],
+				]
+			);
+		}
 
 		// Render inner blocks.
 		foreach ( $icon_info_grid_item_block->inner_blocks as $inner_block ) {
