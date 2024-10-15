@@ -209,6 +209,9 @@ function update_departures( array $raw_departures = [], string $softrip_package_
 			// Skip if not existing.
 			if ( ! $is_existing ) {
 				$message = __( 'No valid occupancies found for new departure.', 'qrk' );
+
+				// Continue to next departure - no need to create.
+				continue;
 			} else {
 				$message = __( 'No valid occupancies found for existing departure. So, converting to draft.', 'qrk' );
 
@@ -234,8 +237,7 @@ function update_departures( array $raw_departures = [], string $softrip_package_
 				]
 			);
 
-			// Continue to next departure.
-			continue;
+			// Not bailing out as departure's other data (cabins, occupancies) might be updated.
 		}
 
 		// Hashed formatted data.
