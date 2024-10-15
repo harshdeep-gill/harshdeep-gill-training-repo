@@ -16,6 +16,7 @@ use WP_Query;
 use function Quark\AdventureOptions\get as get_adventure_option_post;
 use function Quark\CabinCategories\get as get_cabin_category;
 use function Quark\Core\get_raw_text_from_html;
+use function Quark\Core\init_auto_cloudinary;
 use function Quark\Departures\get as get_departure;
 use function Quark\Expeditions\get as get_expedition;
 use function Quark\Itineraries\get as get_itinerary;
@@ -128,6 +129,9 @@ function cron_schedule_push(): void {
  * @return void
  */
 function do_push( array $expedition_post_ids = [], bool $changed_only = true ): void {
+	// Initialize Cloudinary. This ensures that media URLs are of Cloudinary.
+	init_auto_cloudinary();
+
 	// If no expedition post IDs, get all.
 	if ( empty( $expedition_post_ids ) ) {
 		// Prepare args.
