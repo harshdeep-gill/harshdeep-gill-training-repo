@@ -2022,7 +2022,7 @@ class Test_Occupancies extends Softrip_TestCase {
 		// Test with valid currency without any promotion.
 		$expected = [
 			'original'   => 100,
-			'discounted' => 0,
+			'discounted' => 100,
 		];
 		$actual   = get_lowest_price( $departure_post_id, 'USD' );
 		$this->assertEquals( $expected, $actual );
@@ -2030,7 +2030,7 @@ class Test_Occupancies extends Softrip_TestCase {
 		// Test with AUD currency without any promotion.
 		$expected = [
 			'original'   => 200,
-			'discounted' => 0,
+			'discounted' => 200,
 		];
 		$actual   = get_lowest_price( $departure_post_id, 'AUD' );
 		$this->assertEquals( $expected, $actual );
@@ -2038,7 +2038,7 @@ class Test_Occupancies extends Softrip_TestCase {
 		// Test with GBP currency without any promotion.
 		$expected = [
 			'original'   => 250,
-			'discounted' => 0,
+			'discounted' => 250,
 		];
 		$actual   = get_lowest_price( $departure_post_id, 'GBP' );
 		$this->assertEquals( $expected, $actual );
@@ -2046,7 +2046,7 @@ class Test_Occupancies extends Softrip_TestCase {
 		// Test with EUR currency without any promotion.
 		$expected = [
 			'original'   => 300,
-			'discounted' => 0,
+			'discounted' => 300,
 		];
 		$actual   = get_lowest_price( $departure_post_id, 'EUR' );
 		$this->assertEquals( $expected, $actual );
@@ -2095,7 +2095,7 @@ class Test_Occupancies extends Softrip_TestCase {
 		// Test with USD currency without any promotion.
 		$expected = [
 			'original'   => 50,
-			'discounted' => 0,
+			'discounted' => 50,
 		];
 		$actual   = get_lowest_price( $departure_post_id, 'USD' );
 		$this->assertEquals( $expected, $actual );
@@ -2103,7 +2103,7 @@ class Test_Occupancies extends Softrip_TestCase {
 		// Test with CAD currency without any promotion.
 		$expected = [
 			'original'   => 75,
-			'discounted' => 0,
+			'discounted' => 75,
 		];
 		$actual   = get_lowest_price( $departure_post_id, 'CAD' );
 		$this->assertEquals( $expected, $actual );
@@ -2111,7 +2111,7 @@ class Test_Occupancies extends Softrip_TestCase {
 		// Test with AUD currency without any promotion.
 		$expected = [
 			'original'   => 100,
-			'discounted' => 0,
+			'discounted' => 100,
 		];
 		$actual   = get_lowest_price( $departure_post_id, 'AUD' );
 		$this->assertEquals( $expected, $actual );
@@ -2119,7 +2119,7 @@ class Test_Occupancies extends Softrip_TestCase {
 		// Test with GBP currency without any promotion.
 		$expected = [
 			'original'   => 125,
-			'discounted' => 0,
+			'discounted' => 125,
 		];
 		$actual   = get_lowest_price( $departure_post_id, 'GBP' );
 		$this->assertEquals( $expected, $actual );
@@ -2127,7 +2127,7 @@ class Test_Occupancies extends Softrip_TestCase {
 		// Test with EUR currency without any promotion.
 		$expected = [
 			'original'   => 150,
-			'discounted' => 0,
+			'discounted' => 150,
 		];
 		$actual   = get_lowest_price( $departure_post_id, 'EUR' );
 		$this->assertEquals( $expected, $actual );
@@ -2140,7 +2140,7 @@ class Test_Occupancies extends Softrip_TestCase {
 		// Lowercase valid currency.
 		$expected = [
 			'original'   => 50,
-			'discounted' => 0,
+			'discounted' => 50,
 		];
 		$actual   = get_lowest_price( $departure_post_id, 'usd' );
 		$this->assertEquals( $expected, $actual );
@@ -2175,7 +2175,7 @@ class Test_Occupancies extends Softrip_TestCase {
 		// Test the lowest price.
 		$expected = [
 			'original'   => 60, // Including the supplemental price.
-			'discounted' => 10, // The supplemental price only.
+			'discounted' => 60, // Including supplemental price only.
 		];
 		$actual   = get_lowest_price( $departure_post_id, 'USD' );
 		$this->assertEquals( $expected, $actual );
@@ -2183,7 +2183,7 @@ class Test_Occupancies extends Softrip_TestCase {
 		// Test the lowest price for AUD.
 		$expected = [
 			'original'   => 120, // Including the supplemental price.
-			'discounted' => 20, // The supplemental price only.
+			'discounted' => 120, // Including the supplemental price.
 		];
 		$actual   = get_lowest_price( $departure_post_id, 'AUD' );
 		$this->assertEquals( $expected, $actual );
@@ -2191,7 +2191,7 @@ class Test_Occupancies extends Softrip_TestCase {
 		// Test the lowest price for GBP, remains same.
 		$expected = [
 			'original'   => 125,
-			'discounted' => 0,
+			'discounted' => 125,
 		];
 		$actual   = get_lowest_price( $departure_post_id, 'GBP' );
 		$this->assertEquals( $expected, $actual );
@@ -2210,14 +2210,14 @@ class Test_Occupancies extends Softrip_TestCase {
 		// Test the lowest price.
 		$expected = [
 			'original'   => 65, // Including the supplemental price and mandatory transfer price.
-			'discounted' => 15, // The supplemental price only.
+			'discounted' => 65, // Including the supplemental price and mandatory transfer price.
 		];
 		$actual   = get_lowest_price( $departure_post_id, 'USD' );
 
 		// Test the lowest price for AUD.
 		$expected = [
 			'original'   => 130, // Including the supplemental price and mandatory transfer price.
-			'discounted' => 30, // The supplemental price only.
+			'discounted' => 130, // Including the supplemental price and mandatory transfer price.
 		];
 		$actual   = get_lowest_price( $departure_post_id, 'AUD' );
 
@@ -2871,7 +2871,7 @@ class Test_Occupancies extends Softrip_TestCase {
 		// Get lowest price by cabin category and departure - USD.
 		$expected = [
 			'original'   => 100,
-			'discounted' => 0,
+			'discounted' => 100,
 		];
 		$actual   = get_lowest_price_by_cabin_category_and_departure( $cabin_category_post_id, $departure_post_id );
 		$this->assertEquals( $expected, $actual );
@@ -2879,7 +2879,7 @@ class Test_Occupancies extends Softrip_TestCase {
 		// Get lowest price by cabin category and departure - CAD.
 		$expected = [
 			'original'   => 150,
-			'discounted' => 0,
+			'discounted' => 150,
 		];
 		$actual   = get_lowest_price_by_cabin_category_and_departure( $cabin_category_post_id, $departure_post_id, 'CAD' );
 		$this->assertEquals( $expected, $actual );
@@ -2887,7 +2887,7 @@ class Test_Occupancies extends Softrip_TestCase {
 		// Get lowest price by cabin category and departure - AUD.
 		$expected = [
 			'original'   => 200,
-			'discounted' => 0,
+			'discounted' => 200,
 		];
 		$actual   = get_lowest_price_by_cabin_category_and_departure( $cabin_category_post_id, $departure_post_id, 'AUD' );
 		$this->assertEquals( $expected, $actual );
@@ -2895,7 +2895,7 @@ class Test_Occupancies extends Softrip_TestCase {
 		// Get lowest price by cabin category and departure - GBP. Also, smaller case currency.
 		$expected = [
 			'original'   => 250,
-			'discounted' => 0,
+			'discounted' => 250,
 		];
 		$actual   = get_lowest_price_by_cabin_category_and_departure( $cabin_category_post_id, $departure_post_id, 'gbp' );
 		$this->assertEquals( $expected, $actual );
@@ -2903,7 +2903,7 @@ class Test_Occupancies extends Softrip_TestCase {
 		// Get lowest price by cabin category and departure - EUR.
 		$expected = [
 			'original'   => 300,
-			'discounted' => 0,
+			'discounted' => 300,
 		];
 		$actual   = get_lowest_price_by_cabin_category_and_departure( $cabin_category_post_id, $departure_post_id, 'EUR' );
 
@@ -2960,7 +2960,7 @@ class Test_Occupancies extends Softrip_TestCase {
 		// Get lowest price by cabin category and departure.
 		$expected = [
 			'original'   => 50,
-			'discounted' => 0,
+			'discounted' => 50,
 		];
 		$actual   = get_lowest_price_by_cabin_category_and_departure( $cabin_category_post_id, $departure_post_id, 'USD' );
 		$this->assertEquals( $expected, $actual );
@@ -2968,7 +2968,7 @@ class Test_Occupancies extends Softrip_TestCase {
 		// Get lowest price by cabin category and departure - CAD.
 		$expected = [
 			'original'   => 75,
-			'discounted' => 0,
+			'discounted' => 75,
 		];
 		$actual   = get_lowest_price_by_cabin_category_and_departure( $cabin_category_post_id, $departure_post_id, 'CAD' );
 		$this->assertEquals( $expected, $actual );
@@ -2976,7 +2976,7 @@ class Test_Occupancies extends Softrip_TestCase {
 		// Get lowest price by cabin category and departure - AUD.
 		$expected = [
 			'original'   => 100,
-			'discounted' => 0,
+			'discounted' => 100,
 		];
 		$actual   = get_lowest_price_by_cabin_category_and_departure( $cabin_category_post_id, $departure_post_id, 'AUD' );
 		$this->assertEquals( $expected, $actual );
@@ -2984,7 +2984,7 @@ class Test_Occupancies extends Softrip_TestCase {
 		// Get lowest price by cabin category and departure - GBP.
 		$expected = [
 			'original'   => 125,
-			'discounted' => 0,
+			'discounted' => 125,
 		];
 		$actual   = get_lowest_price_by_cabin_category_and_departure( $cabin_category_post_id, $departure_post_id, 'GBP' );
 		$this->assertEquals( $expected, $actual );
@@ -2992,7 +2992,7 @@ class Test_Occupancies extends Softrip_TestCase {
 		// Get lowest price by cabin category and departure - EUR.
 		$expected = [
 			'original'   => 150,
-			'discounted' => 0,
+			'discounted' => 150,
 		];
 		$actual   = get_lowest_price_by_cabin_category_and_departure( $cabin_category_post_id, $departure_post_id, 'eur' );
 		$this->assertEquals( $expected, $actual );
@@ -3027,7 +3027,7 @@ class Test_Occupancies extends Softrip_TestCase {
 		// Get lowest price by cabin category and departure.
 		$expected = [
 			'original'   => 50 + $supplemental_price_usd + $mandatory_transfer_price_usd,
-			'discounted' => $supplemental_price_usd + $mandatory_transfer_price_usd,
+			'discounted' => 50 + $supplemental_price_usd + $mandatory_transfer_price_usd,
 		];
 		$actual   = get_lowest_price_by_cabin_category_and_departure( $cabin_category_post_id, $departure_post_id, 'USD' );
 		$this->assertEquals( $expected, $actual );
@@ -3035,7 +3035,7 @@ class Test_Occupancies extends Softrip_TestCase {
 		// Get lowest price by cabin category and departure - CAD.
 		$expected = [
 			'original'   => 75,
-			'discounted' => 0,
+			'discounted' => 75,
 		];
 		$actual   = get_lowest_price_by_cabin_category_and_departure( $cabin_category_post_id, $departure_post_id, 'CAD' );
 		$this->assertEquals( $expected, $actual );
@@ -3088,7 +3088,7 @@ class Test_Occupancies extends Softrip_TestCase {
 		// Get lowest price by cabin category and departure - USD.
 		$expected = [
 			'original'   => 75 + $supplemental_price_usd + $mandatory_transfer_price_usd,
-			'discounted' => $supplemental_price_usd + $mandatory_transfer_price_usd,
+			'discounted' => 75 + $supplemental_price_usd + $mandatory_transfer_price_usd,
 		];
 		$actual   = get_lowest_price_by_cabin_category_and_departure( $cabin_category_post_id, $departure_post_id, 'USD' );
 		$this->assertEquals( $expected, $actual );
@@ -3096,7 +3096,7 @@ class Test_Occupancies extends Softrip_TestCase {
 		// Get lowest price by cabin category and departure - CAD.
 		$expected = [
 			'original'   => 100,
-			'discounted' => 0,
+			'discounted' => 100,
 		];
 		$actual   = get_lowest_price_by_cabin_category_and_departure( $cabin_category_post_id, $departure_post_id, 'CAD' );
 		$this->assertEquals( $expected, $actual );
