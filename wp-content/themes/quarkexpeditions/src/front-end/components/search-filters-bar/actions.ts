@@ -102,8 +102,8 @@ export const updateDepartureMonths = ( months: SearchFiltersBarMonthState[] ) =>
 
 	// Update Search URL.
 	updateSearchUrl(
-		selectedDestinations.map( ( dest ) => dest.value ),
-		currentSelectedMonths.map( ( month ) => month.value )
+		selectedDestinations?.map( ( dest ) => dest.value ),
+		currentSelectedMonths?.map( ( month ) => month.value )
 	);
 };
 

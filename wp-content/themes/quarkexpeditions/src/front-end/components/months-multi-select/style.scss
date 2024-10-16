@@ -21,13 +21,28 @@
 	}
 
 	&__reset-button {
-		font-weight: var(--font-weight-bold);
-		border-bottom: 1px solid var(--color-black);
-		padding-bottom: var(--spacing-1);
-		cursor: pointer;
+		display: none;
 
-		&:hover {
-			border-bottom-color: var(--color-yellow);
+		@media screen and (min-width: grid-size(sm)) {
+			display: block;
+			font-weight: var(--font-weight-bold);
+			border-bottom: 1px solid var(--color-black);
+			padding-bottom: var(--spacing-1);
+			cursor: pointer;
+
+			&:hover {
+				border-bottom-color: var(--color-yellow);
+			}
+		}
+
+		&-mobile {
+			display: block;
+			margin-block: var(--spacing-5);
+			width: 100%;
+
+			@media screen and (min-width: grid-size(sm)) {
+				display: none;
+			}
 		}
 	}
 

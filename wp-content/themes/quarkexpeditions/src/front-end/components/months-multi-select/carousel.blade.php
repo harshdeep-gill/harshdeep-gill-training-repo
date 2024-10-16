@@ -1,5 +1,5 @@
 @props( [
-	'reset_button_text' => __( "I'm flexible", 'qrk' ),
+	'reset_button_text' => __( "I'm Flexible", 'qrk' ),
 ] )
 
 @php
@@ -13,6 +13,15 @@
 
 <tp-slider class="months-multi-select__slider" swipe="yes" infinite="yes">
 	<tp-slider-track class="months-multi-select__track">
+		@if ( ! empty( $reset_button_text ) )
+			<x-button
+				class="months-multi-select__reset-button months-multi-select__reset-button-mobile"
+				appearance="outline"
+				color="black"
+			>
+				<x-escape :content="$reset_button_text" />
+			</x-button>
+		@endif
 		<tp-slider-slides>
 			{!! $slot !!}
 		</tp-slider-slides>

@@ -29,6 +29,7 @@ export class SearchFiltersBar extends HTMLElement {
 	private headerSearchButton: HTMLElement | null;
 	private searchModalDestinationsButton: HTMLElement | null;
 	private searchModalDeparturesButton: HTMLElement | null;
+	private clearAllButton: HTMLElement | null;
 	private destinationFilters: HTMLElement | null | undefined;
 	private departureMonthsFilters: HTMLElement | null | undefined;
 	private filtersApiUrl: string | null;
@@ -62,6 +63,7 @@ export class SearchFiltersBar extends HTMLElement {
 		this.defaultDepartureMonthsPlaceholder = this.departureMonthsFilters?.getAttribute( 'default-placeholder' ) as string;
 		this.searchButton = this.querySelector( '.search-filters-bar__search-button' );
 		this.headerSearchButton = document.querySelector( '.header__search-item' );
+		this.clearAllButton = document.querySelector( '.search-filters-bar__modal-button-clear-all' );
 
 		// Event Listeners.
 		this.searchModalDestinationsButton?.addEventListener(
@@ -78,12 +80,16 @@ export class SearchFiltersBar extends HTMLElement {
 		this.departureMonthsSelectors?.forEach( ( selector ) => {
 			// Add event listeners.
 			selector?.addEventListener( 'change', this.updateDepartureMonthsState.bind( this ) );
+			selector?.addEventListener( 'reset', this.updateDepartureMonthsState.bind( this ) );
 			selector?.addEventListener( 'reset', this.updateMonthsPlaceholder.bind( this, this.defaultDepartureMonthsPlaceholder ) );
 		} );
 
 		// Search Button.
 		this.searchButton?.addEventListener( 'click', this.redirectToSearchPage.bind( this ) );
 		this.headerSearchButton?.addEventListener( 'click', this.toggleDestinationFilterOptions.bind( this ) );
+
+		// Clear All Button.
+		this.clearAllButton?.addEventListener( 'click', this.clearAllFilterSelection.bind( this ) );
 	}
 
 	/**
@@ -329,6 +335,17 @@ export class SearchFiltersBar extends HTMLElement {
 		if ( monthsPlaceholder ) {
 			monthsPlaceholder.innerHTML = label ?? '';
 		}
+	}
+
+	/**
+	 * Clear all filter selection.
+	 */
+	clearAllFilterSelection() {
+		// Loop through all month selectors.
+		this.departureMonthsSelectors?.forEach( ( selector ) => {
+			// Reset the selector.
+			selector?.resetSelector();
+		} );
 	}
 }
 
