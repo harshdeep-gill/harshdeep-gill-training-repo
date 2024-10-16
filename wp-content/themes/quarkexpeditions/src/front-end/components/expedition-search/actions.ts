@@ -397,7 +397,7 @@ const filterUpdated = ( response: PartialData ) => {
 	// Get response data.
 	const {
 		markup,
-		data: { resultCount, nextPage },
+		data: { resultCount, nextPage, remainingCount },
 		noResultsMarkup,
 	} = response;
 
@@ -411,6 +411,7 @@ const filterUpdated = ( response: PartialData ) => {
 		updateMarkup: true,
 		resetMarkup: false,
 		loading: false,
+		remainingCount,
 	} );
 };
 
