@@ -226,7 +226,7 @@
 						@foreach ( $cta_buttons as $button )
 							@if ( 'contact' === $button['type'] )
 								<li>
-									<a href="{{ $button['url'] ?? '' }}" class="dynamic-phone-number__link dynamic-phone-number-and-prefix">
+									<a href="{{ $button['url'] ?? '' }}">
 										{!! $button['drawer_text'] ?? '' !!}
 										{!! $button['text'] ?? '' !!}
 									</a>
