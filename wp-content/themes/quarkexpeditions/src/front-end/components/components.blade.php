@@ -293,7 +293,19 @@
 </x-component-demo>
 
 <x-component-demo :keys="[ 'section-image' ]">
-		<x-section :full_width="true" :padding="true" :seamless="true" :background="true" background_color="gray">
+	<x-section :full_width="true" :padding="true">
+	<x-section.image :image_id="26" gradient_color="gray" gradient_position="bottom" />
+		<div class="section__content-wrap">
+			<ul>
+				<li>Most exciting and wonderful, and educational experience of my life</li>
+				<li>Most exciting and wonderful, and educational experience of my life</li>
+				<li>Most exciting and wonderful, and educational experience of my life</li>
+				<li>Most exciting and wonderful, and educational experience of my life</li>
+				<li>Most exciting and wonderful, and educational experience of my life</li>
+			</ul>
+		</div>
+	</x-section>
+	<x-section :full_width="true" :padding="true" :seamless="true" :background="true" background_color="gray">
 		<div style="display: flex; flex-wrap: wrap; width: 100%;" class="typography-spacing">
 			<div style="width: 50%; padding: 24px; border: 1px solid var(--color-black);">
 				<div class="typography-spacing" style="display: flex; gap: 16px; flex-flow: row wrap;">
@@ -332,7 +344,7 @@
 		</div>
 	</x-section>
 	<x-section :full_width="true" :padding="true">
-		<x-section.image :image_id="26" gradient_color="gray" gradient_position="both" />
+		<x-section.image :image_id="30" gradient_color="gray" gradient_position="both" />
 		<x-section.title title="Testing Section Title.." />
 		<x-section.description>Discover what your Crossing the Circle Expedition includes</x-section.description>
 		<x-review-cards>

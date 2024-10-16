@@ -65,7 +65,7 @@
 	@endif
 
 	@if ( ! empty( $background_image ) )
-		<div>
+		<div class="section__content-wrap">
 	@endif
 
 	{!! $slot !!}
