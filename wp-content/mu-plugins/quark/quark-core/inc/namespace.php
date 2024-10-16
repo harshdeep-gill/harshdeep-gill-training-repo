@@ -177,6 +177,8 @@ function core_front_end_data( array $data = [] ): array {
 		$data,
 		[
 			'current_url'     => get_permalink(),
+			'site_url'        => home_url(),
+			'site_name'       => get_bloginfo( 'name' ),
 			'header'          => $header_options,
 			'social_links'    => $social_options,
 			'search_page_url' => strval( get_permalink( absint( get_option( 'options_expedition_search_page' ) ) ) ),
