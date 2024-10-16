@@ -1,5 +1,6 @@
 @props( [
 	'button_text' => '',
+	'is_compact'  => false,
 ] )
 
 @php
@@ -9,9 +10,15 @@
 
 	// Get slide count.
 	$slide_count = quark_get_slot_child_count( $slot );
+
+	$classes = [ 'months-multi-select__slider' ];
+
+	if ( ! empty( $is_compact ) ) {
+		$classes[] = 'months-multi-select__slider--compact';
+	}
 @endphp
 
-<tp-slider class="months-multi-select__slider" swipe="yes" infinite="yes">
+<tp-slider @class( $classes ) swipe="yes" infinite="yes">
 	<tp-slider-track class="months-multi-select__track">
 		<tp-slider-slides>
 			{!! $slot !!}

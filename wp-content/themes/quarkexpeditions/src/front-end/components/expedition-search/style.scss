@@ -309,6 +309,14 @@
 			transform: rotate(180deg);
 		}
 	}
+
+	.months-multi-select__slider,
+	.months-multi-select__slide {
+
+		@media screen and (min-width: grid-size(sm)) {
+			display: block;
+		}
+	}
 }
 
 tp-modal.expedition-search__filters-modal {
@@ -365,6 +373,14 @@ tp-modal.expedition-search__filters-modal {
 
 		&--right svg {
 			transform: rotate(180deg);
+		}
+	}
+
+	.months-multi-select__slider--compact,
+	.months-multi-select__slide--compact {
+
+		@media screen and (min-width: grid-size(sm)) {
+			display: block;
 		}
 	}
 }

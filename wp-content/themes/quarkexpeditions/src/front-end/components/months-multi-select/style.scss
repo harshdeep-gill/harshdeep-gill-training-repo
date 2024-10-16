@@ -25,6 +25,22 @@
 		cursor: pointer;
 	}
 
+	&__slider {
+		display: none;
+
+		@media screen and (min-width: grid-size(sm)) {
+			display: block;
+		}
+
+		&--compact {
+			display: block;
+
+			@media screen and (min-width: grid-size(sm)) {
+				display: none;
+			}
+		}
+	}
+
 	&__slide {
 		display: none;
 

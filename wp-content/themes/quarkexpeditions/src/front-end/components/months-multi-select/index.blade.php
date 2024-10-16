@@ -17,7 +17,5 @@
 	available-months="{{ wp_json_encode( $available_months ) }}"
 	multi-select="{{ $is_multi_select ? 'yes' : 'no' }}"
 >
-	<x-months-multi-select.carousel>
 		{!! $slot !!}
-	</x-months-multi-select.carousel>
 </quark-months-multi-select>
