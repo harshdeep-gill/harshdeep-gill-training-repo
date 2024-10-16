@@ -17,6 +17,10 @@ export const DEFAULT_STATE: GlobalState = {
 		prefix: '',
 		phoneNumber: '',
 	},
+	dynamicPhoneNumber: {
+		apiEndpoint: '',
+		defaultPhoneNumber: '',
+	},
 };
 
 /**

@@ -4,7 +4,7 @@
 import { setPhoneNumberRule } from '../store/actions';
 
 // Check if dynamic phone number data exists.
-const { dynamicPhoneNumber, zustand } = window;
+const { zustand } = window;
 
 /**
  * Internal dependencies.
@@ -15,17 +15,17 @@ export {};
 window.addEventListener(
 	'DOMContentLoaded',
 	() => {
-		// Check if we have dynamic phone number data.
-		if ( ! dynamicPhoneNumber || ! dynamicPhoneNumber?.api_endpoint ) {
-			// No dynamic phone number data found, return.
-			return;
-		}
-
 		// Get global state.
 		const { getState } = zustand.stores.global;
 
 		// Get phone number rule from global state.
-		const { phoneNumberRule }: GlobalState = getState();
+		const { dynamicPhoneNumber, phoneNumberRule }: GlobalState = getState();
+
+		// Check if we have dynamic phone number endpoint.
+		if ( ! dynamicPhoneNumber.apiEndpoint ) {
+			// No dynamic phone number endpoint found, return.
+			return;
+		}
 
 		// Check if phone number rule exists.
 		if ( phoneNumberRule && phoneNumberRule.phoneNumber && phoneNumberRule.prefix ) {
@@ -35,7 +35,7 @@ window.addEventListener(
 
 		// Get phone number for this URL.
 		fetch(
-			`${ dynamicPhoneNumber.api_endpoint }`,
+			`${ dynamicPhoneNumber.apiEndpoint }`,
 			{
 				method: 'POST',
 				cache: 'no-cache',

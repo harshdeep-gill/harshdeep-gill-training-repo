@@ -1,6 +1,6 @@
 @props( [
 	'cards'                => [],
-	'default_phone_number' => quark_get_template_data( 'dynamic_phone_number' )['default_phone_number'],
+	'default_phone_number' => quark_get_template_data( 'dynamic_phone_number', [] )['default_phone_number'] ?? '',
 ] )
 
 <x-departure-cards>

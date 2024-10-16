@@ -147,7 +147,9 @@ function register_scripts(): void {
 	wp_register_script( 'querystring', get_template_directory_uri() . '/dist/vendor/querystring.js', [], $assets_version, true );
 	wp_register_script( 'popover-polyfill', get_template_directory_uri() . '/dist/vendor/popoverpolyfill.js', [], $assets_version, true );
 
-	// Enqueue component assets.
+	/**
+	 * This is a special case because this component needs to be loaded on all pages whether its initialize or not.
+	 */
 	quark_component_enqueue_assets( 'dynamic-phone-number' );
 
 	// Pass variables to script.

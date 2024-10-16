@@ -1,7 +1,7 @@
 /**
  * Global variables.
  */
-const { zustand, dynamicPhoneNumber } = window;
+const { zustand } = window;
 
 // Get global state.
 const { getState, subscribe } = zustand.stores.global;
@@ -17,12 +17,6 @@ class QuarkDynamicPhoneNumber extends HTMLElement {
 		// Initialize super
 		super();
 
-		// Check if we have dynamic phone number data.
-		if ( ! dynamicPhoneNumber || ! dynamicPhoneNumber?.default_phone_number ) {
-			// No dynamic phone number data found, return.
-			return;
-		}
-
 		// Subscribe to global state.
 		subscribe( this.update.bind( this ) );
 
@@ -37,7 +31,13 @@ class QuarkDynamicPhoneNumber extends HTMLElement {
 	 */
 	update( state: GlobalState ) {
 		// Get phone number rule from global state.
-		const { phoneNumberRule }: GlobalState = state;
+		const { dynamicPhoneNumber, phoneNumberRule }: GlobalState = state;
+
+		// Check if we have dynamic phone number data.
+		if ( ! dynamicPhoneNumber.defaultPhoneNumber ) {
+			// No dynamic phone number data found, return.
+			return;
+		}
 
 		// Check if phone number rule exists.
 		if ( ! phoneNumberRule ) {
@@ -49,15 +49,16 @@ class QuarkDynamicPhoneNumber extends HTMLElement {
 		const phoneNumber = phoneNumberRule?.phoneNumber;
 
 		// Update default phone number.
-		this.updateDefaultPhoneNumber( phoneNumber );
+		this.updateDefaultPhoneNumber( phoneNumber, dynamicPhoneNumber.defaultPhoneNumber );
 	}
 
 	/**
 	 * Update default phone number on current page.
 	 *
-	 * @param {string} phoneNumber Phone number to update.
+	 * @param {string} phoneNumber        Phone number to update.
+	 * @param {string} defaultPhoneNumber Default phone number.
 	 */
-	updateDefaultPhoneNumber = ( phoneNumber: string = '' ) => {
+	updateDefaultPhoneNumber = ( phoneNumber: string = '', defaultPhoneNumber: string = '' ) => {
 		// Check if phone number is not found.
 		if ( ! phoneNumber ) {
 			// Return.
@@ -86,13 +87,13 @@ class QuarkDynamicPhoneNumber extends HTMLElement {
 		existingPhoneNumber = existingPhoneNumber.replace( 'tel:', '' );
 
 		// Check if phone number is already updated.
-		if ( dynamicPhoneNumber.default_phone_number !== decodeURI( existingPhoneNumber ) ) {
+		if ( defaultPhoneNumber !== decodeURI( existingPhoneNumber ) ) {
 			// Return.
 			return;
 		}
 
 		// Update phone number.
-		anchor.innerHTML = anchor.innerHTML.replace( dynamicPhoneNumber.default_phone_number, phoneNumber );
+		anchor.innerHTML = anchor.innerHTML.replace( defaultPhoneNumber, phoneNumber );
 		anchor.href = `tel:${ phoneNumber }`;
 	};
 }

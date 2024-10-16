@@ -98,4 +98,8 @@ interface GlobalState {
 		phoneNumber: string,
 		prefix: string,
 	},
+	dynamicPhoneNumber: {
+		apiEndpoint: string,
+		defaultPhoneNumber: string,
+	},
 }
