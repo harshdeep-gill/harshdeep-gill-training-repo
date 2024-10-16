@@ -10,7 +10,7 @@
 
 <div class="dates-rates__item-table">
 	<p class="dates-rates__item-table-title overline">
-		<x-escape content="{{ $title }}" />
+		<x-escape :content="$title" />
 	</p>
 
 	<quark-dates-rates-table class="travelopia-table">
