@@ -322,6 +322,7 @@ function do_push( array $expedition_post_ids = [], bool $changed_only = true ): 
 						'expedition_post_id' => $expedition_post_id,
 						'initiated_via'      => $initiated_via,
 						'changed_only'       => $changed_only,
+						'hash'               => $new_hash,
 					]
 				);
 
