@@ -421,10 +421,20 @@ const filterUpdated = ( response: PartialData ) => {
  * @param {Function} callback Callback function.
  */
 export const fetchResults = ( callback: Function ) => {
+	// Get the current state
+	const { loadMoreResults }: ExpeditionSearchState = getState();
+
+	// Set loading: true if not loading more results.
+	if ( ! loadMoreResults ) {
+		setState( {
+			loading: true,
+			page: 1, // Important to set this if a filter is changed so that we don't get invalid results
+		} );
+	}
+
 	// Get data from state.
 	const {
 		selectedFilters,
-		loadMoreResults,
 		page,
 		partial,
 		selector,
@@ -438,13 +448,6 @@ export const fetchResults = ( callback: Function ) => {
 		cabinClasses,
 		travelers,
 	}: ExpeditionSearchState = getState();
-
-	// Set loading: true if not loading more results.
-	if ( ! loadMoreResults ) {
-		setState( {
-			loading: true,
-		} );
-	}
 
 	// Fetch partial.
 	fetchPartial( partial, {
