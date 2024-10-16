@@ -221,7 +221,7 @@ export const initialize = ( settings: {
 		...settings,
 		selectedFilters,
 		initialized: true,
-		updateMarkup: true,
+		updateMarkup: ! settings.serverRenderData,
 		baseUrl: window.location.origin + window.location.pathname,
 	};
 
