@@ -98,6 +98,7 @@ import * as searchFiltersBar from './search-filters-bar';
 import * as socialLinks from './social-links';
 import * as currencySwitcher from './currency-switcher';
 import * as searchHero from './search-hero';
+import * as heroDetailsCardSlider from './hero-details-card-slider';
 
 /**
  * Add blocks.
@@ -192,6 +193,7 @@ const blocks = [
 	socialLinks,
 	currencySwitcher,
 	searchHero,
+	heroDetailsCardSlider,
 ];
 
 // Register blocks for ships.
