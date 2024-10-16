@@ -59,7 +59,7 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 			<InspectorControls>
 				<PanelBody title={ __( 'Icon Info Grid Item Options', 'qrk' ) }>
 					<ToggleControl
-						label={ __( 'has Icon?', 'qrk' ) }
+						label={ __( 'Has Icon?', 'qrk' ) }
 						checked={ attributes.hasIcon }
 						onChange={ ( hasIcon: boolean ) => setAttributes( { hasIcon } ) }
 						help={ __( 'Does the card require Icon.', 'qrk' ) }
