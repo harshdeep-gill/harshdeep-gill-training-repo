@@ -170,17 +170,17 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 					break;
 
 				// Hero Card Slider.
-				case 'quark/hero-card-slider':
+				case 'quark/hero-details-card-slider':
 					// Check for block.
 					if ( ! $child_block instanceof WP_Block ) {
 						break;
 					}
 
 					// Render block.
-					$hero_card_slider = render_block( $child_block->parsed_block );
+					$hero_details_card_slider = render_block( $child_block->parsed_block );
 
 					// Add to attributes.
-					$component_attributes['right'] = $hero_card_slider;
+					$component_attributes['right'] = $hero_details_card_slider;
 					break;
 			}
 		}
