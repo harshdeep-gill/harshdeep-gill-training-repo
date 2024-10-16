@@ -13,14 +13,16 @@
 		'size' => [
 			'width'   => 1120,
 			'height'  => 516,
-		],
-		'responsive'  => [
-			'sizes'   => [ '(min-width: 1200px) 1120px','(min-width: 1024px) 864px', '100vw' ],
-			'widths'  => [ 335, 440, 540, 620, 864, 960, 1280 ],
+			'picture' => [
+				'(min-width: 1280px)' => [ 1120, 526 ],
+				'(min-width: 768px)'  => [ 864, 516 ],
+				'(min-width: 375px)'  => [ 312, 450 ],
+			],
 		],
 		'transform'   => [
 			'crop'    => 'lfill',
 			'quality' => 90,
+			'gravity' => 'face',
 		],
 	];
 @endphp
