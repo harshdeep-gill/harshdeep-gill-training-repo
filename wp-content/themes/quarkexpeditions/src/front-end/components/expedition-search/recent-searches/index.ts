@@ -151,8 +151,13 @@ export default class QuarkExpeditionSearchRecentSearches extends HTMLElement {
 			updateCard( getState() );
 		} );
 
-		// Unhide the component
-		this.removeAttribute( 'data-hidden' );
+		// Check the child count
+		if ( this.recentSearchCardsContainer?.children.length ) {
+			// Unhide the component
+			this.removeAttribute( 'data-hidden' );
+		} else {
+			this.setAttribute( 'data-hidden', '' );
+		}
 	}
 
 	/**

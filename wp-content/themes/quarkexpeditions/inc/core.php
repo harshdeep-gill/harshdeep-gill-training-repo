@@ -526,7 +526,8 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'class' => true,
 				],
 				'quark-expedition-search-recent-searches'          => [
-					'class' => true,
+					'class'  => true,
+					'data-*' => true,
 				],
 				'quark-expedition-search-sidebar-filters'          => [
 					'class' => true,
