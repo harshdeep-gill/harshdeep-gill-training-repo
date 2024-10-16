@@ -31,7 +31,7 @@ export default class ExpeditionSearchResults extends HTMLElement {
 		super();
 
 		// Element.
-		this.selector = this.getAttribute( 'selector' ) ?? '.expedition-search__results';
+		this.selector = this.getAttribute( 'selector' ) ?? '.expedition-cards';
 		this.resultsContainer = this.querySelector( this.selector );
 
 		// Subscribe.

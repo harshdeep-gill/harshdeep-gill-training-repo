@@ -1,9 +1,5 @@
-@php
-	if ( empty( $slot ) ) {
-		return;
-	}
-@endphp
-
 <x-section class="expedition-cards">
-	{!! $slot !!}
+	@if ( ! empty( $slot ) )
+		{!! $slot !!}
+	@endif
 </x-section>
