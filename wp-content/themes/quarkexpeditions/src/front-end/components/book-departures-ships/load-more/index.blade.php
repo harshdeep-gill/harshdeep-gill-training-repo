@@ -11,6 +11,7 @@
 
 <quark-book-departures-ships-load-more
 	class="book-departures-ships__load-more typography-spacing"
+	active="false"
 	loading="false"
 	load-more-text="{{ $load_more_text }}"
 >
