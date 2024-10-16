@@ -101,12 +101,17 @@ export class ExpeditionSearch extends HTMLElement {
 	 */
 	update( state: ExpeditionSearchState ): void {
 		// Get state.
-		const { loading, resultCount } = state;
+		const { loading, resultCount, loadMoreResults } = state;
 
 		// Set loading state.
 		if ( loading ) {
 			// Set loading to true.
 			this.setAttribute( 'loading', 'true' );
+
+			// Check if we loaded more results?
+			if ( ! loadMoreResults ) {
+				this.scrollIntoView();
+			}
 		} else {
 			// Set loading to false.
 			this.setAttribute( 'loading', 'false' );

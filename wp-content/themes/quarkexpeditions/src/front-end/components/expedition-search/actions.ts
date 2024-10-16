@@ -484,14 +484,24 @@ export const fetchResults = ( callback: Function ) => {
  * Markup updated callback.
  */
 export const markupUpdated = () => {
-	// Reset all the relevant states, when markup is updated.
-	setState( {
+	// Get the state
+	const { loadMoreResults } = getState();
+
+	// Initialize the update object.
+	const updatePayload: ExpeditionsSearchStateUpdateObject = {
 		loading: false,
 		updateMarkup: false,
-		loadMoreResults: false,
 		resetMarkup: false,
 		markup: '',
-	} );
+	};
+
+	// Only unset it if it was set before.
+	if ( loadMoreResults ) {
+		updatePayload.loadMoreResults = false;
+	}
+
+	// Reset all the relevant states, when markup is updated.
+	setState( updatePayload );
 };
 
 /**
