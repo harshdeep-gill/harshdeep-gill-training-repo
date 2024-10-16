@@ -8,6 +8,11 @@
 @import "../front-end/scss";
 @import "../front-end/global/placeholders";
 
+/**
+ * Custom Blocks CSS.
+ */
+@import "./blocks/hero-details-card-slider/custom";
+
 .editor-post-title__input {
 	font-family: var(--heading-font-family);
 	margin-bottom: 1rem !important;

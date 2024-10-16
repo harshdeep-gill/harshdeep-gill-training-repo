@@ -147,6 +147,11 @@ function register_scripts(): void {
 	wp_register_script( 'querystring', get_template_directory_uri() . '/dist/vendor/querystring.js', [], $assets_version, true );
 	wp_register_script( 'popover-polyfill', get_template_directory_uri() . '/dist/vendor/popoverpolyfill.js', [], $assets_version, true );
 
+	/**
+	 * This is a special case because this component needs to be loaded on all pages whether its initialize or not.
+	 */
+	quark_component_enqueue_assets( 'dynamic-phone-number' );
+
 	// Pass variables to script.
 	wp_localize_script(
 		'global',
@@ -527,9 +532,12 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'class' => true,
 				],
 				'quark-expedition-search-results'                  => [
-					'class'    => true,
-					'parital'  => true,
-					'selector' => true,
+					'class'           => true,
+					'parital'         => true,
+					'selector'        => true,
+					'remaining-count' => true,
+					'results-count'   => true,
+					'server-rendered' => true,
 				],
 				'quark-range-slider'                               => [
 					'class'          => true,
@@ -847,6 +855,7 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 				'template'                                         => [
 					'class' => true,
 				],
+				'quark-dynamic-phone-number'                       => true,
 			]
 		);
 	}

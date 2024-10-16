@@ -31,6 +31,9 @@ function bootstrap(): void {
 	add_action( 'rest_api_init', __NAMESPACE__ . '\\register_rest_endpoints' );
 	add_filter( 'travelopia_security_public_rest_api_routes', __NAMESPACE__ . '\\security_public_rest_api_routes' );
 
+	// Replace [quark_default_phone_number] string with the default phone number.
+	add_filter( 'quark_front_end_markup', __NAMESPACE__ . '\\replace_default_phone_number_shortcode' );
+
 	// Custom fields.
 	if ( is_admin() ) {
 		require_once __DIR__ . '/../custom-fields/options-office.php';
@@ -74,16 +77,9 @@ function office_phone_number_front_end_data( array $data = [] ): array {
 
 	// Add dynamic phone number data.
 	$data['dynamic_phone_number'] = [
-		'api_endpoint' => '',
+		'api_endpoint'         => home_url( 'wp-json/' . REST_API_NAMESPACE . '/phone-number/get' ),
+		'default_phone_number' => get_option( 'options_default_phone_number', '' ),
 	];
-
-	// Update phone number if any rules match.
-	$data['dynamic_phone_number'] = array_merge(
-		$data['dynamic_phone_number'],
-		[
-			'api_endpoint' => home_url( 'wp-json/' . REST_API_NAMESPACE . '/phone-number/get' ),
-		]
-	);
 
 	// Return updated data.
 	return $data;
@@ -314,4 +310,22 @@ function purge_local_office_data_cache( string $page_id = '', string $page_slug 
 
 	// Trigger action to clear cache for office data.
 	do_action( 'qe_office_data_cache_busted' );
+}
+
+/**
+ * Replace shortcode with the default phone number.
+ *
+ * @param string $markup The current markup.
+ *
+ * @return string
+ */
+function replace_default_phone_number_shortcode( string $markup = '' ): string {
+	// Replace shortcode with default phone number.
+	return strval(
+		str_replace(
+			'[quark_default_phone_number]',
+			strval( get_option( 'options_default_phone_number', '' ) ),
+			$markup
+		)
+	);
 }

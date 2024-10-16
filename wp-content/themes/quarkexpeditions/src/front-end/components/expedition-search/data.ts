@@ -17,6 +17,7 @@ export const DEFAULT_STATE: ExpeditionSearchState = {
 	selectedFilters: {},
 	shipId: 0,
 	page: 1,
+	nextPage: 1,
 	hasNextPage: false,
 	resultCount: 0,
 	remainingCount: 0,

@@ -316,7 +316,7 @@
 
 										<x-dialog.footer>
 											<x-product-options-cards.cta-buttons>
-												<x-product-options-cards.phone-number phone_number="+1 (877) 585-1235" text="Give us a Call: +1 (866) 257-0754" />
+												<x-product-options-cards.phone-number />
 												@if ( ! empty( $cabin['occupancies'] ) && is_array( $cabin['occupancies'] ) )
 													<x-product-options-cards.cta-book-now :url="$cabin['occupancies'][0]['checkout_url'] ?? '#'" />
 												@endif
@@ -393,7 +393,7 @@
 										@if ( ! empty( $card['request_a_quote_url'] ) )
 											<p class="product-options-cards__help-text">{{ __( 'Not ready to book?', 'qrk' ) }} <a href="{!! esc_url( $card['request_a_quote_url'] ) !!}">{{ __( 'Request a quote', 'qrk' ) }}</a></p>
 										@endif
-										<x-product-options-cards.phone-number phone_number="+1 (877) 585-1235" text="Give us a Call: +1 (866) 257-0754" />
+										<x-product-options-cards.phone-number />
 										@if ( ! empty( $cabin['occupancies'] ) && is_array( $cabin['occupancies'] ) )
 											<x-product-options-cards.cta-book-now :url="$cabin['occupancies'][0]['checkout_url'] ?? '#'" />
 										@endif

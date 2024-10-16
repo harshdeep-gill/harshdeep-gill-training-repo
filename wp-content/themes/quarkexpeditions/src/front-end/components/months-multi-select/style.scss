@@ -74,6 +74,9 @@
 		}
 	}
 
+	&__year {
+		min-width: 0;
+	}
 
 	&__options {
 		display: grid;
@@ -94,7 +97,7 @@
 
 			@include transition(background-color, 0.2s);
 
-			@media screen and (min-width: grid-size(lg)) {
+			@media screen and (min-width: grid-size(xl)) {
 				min-width: 160px;
 			}
 

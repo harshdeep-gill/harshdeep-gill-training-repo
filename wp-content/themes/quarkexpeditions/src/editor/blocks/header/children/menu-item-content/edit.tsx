@@ -59,7 +59,7 @@ export default function Edit( { className }: BlockEditAttributes ): JSX.Element 
 						{},
 						[
 							[
-								'quark/two-columns-column',
+								'quark/column',
 								{},
 								[
 									[ menuList.name ],
@@ -73,7 +73,7 @@ export default function Edit( { className }: BlockEditAttributes ): JSX.Element 
 								],
 							],
 							[
-								'quark/two-columns-column',
+								'quark/two-column',
 								{},
 								[
 									[ menuList.name ],

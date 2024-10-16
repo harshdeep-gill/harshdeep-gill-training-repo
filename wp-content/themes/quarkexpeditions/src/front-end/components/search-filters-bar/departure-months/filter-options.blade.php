@@ -11,7 +11,7 @@
 <quark-search-filters-bar-departure-months-filter-options
 	class="search-filters-bar__departure-months-filter-options"
 	active="false"
-	default-placeholder="{{ __( 'Anytime', 'qrk' ) }}"
+	default-placeholder="{{ __( 'I\'m Flexible', 'qrk' ) }}"
 >
 
 	<div class="search-filters-bar__departure-months-filter-options-selector">

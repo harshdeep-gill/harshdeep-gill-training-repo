@@ -1,7 +1,7 @@
 /**
  * Global variables.
  */
-const { zustand, location } = window;
+const { zustand, location, dynamicPhoneNumber } = window;
 
 /**
  * Internal dependencies
@@ -16,11 +16,13 @@ export const CURRENCY_COOKIE_NAME = `STYXKEY_currency`;
 /**
  * Initialize data.
  *
- * @param {Object} settings          Settings.
- * @param {string} settings.currency Currency.
+ * @param {Object} settings                    Settings.
+ * @param {string} settings.currency           Currency.
+ * @param {Object} settings.dynamicPhoneNumber Dynamic phone number.
  */
 export const initialize = ( settings: {
     currency?: string,
+	dynamicPhoneNumber?: object,
 } ): void => {
 	// Get current state.
 	const currentState = getState();
@@ -30,6 +32,7 @@ export const initialize = ( settings: {
 		...currentState,
 		...settings,
 		currency: getCurrencyFromCookie(),
+		dynamicPhoneNumber: getUpdatedDynamicPhoneNumber(),
 	} );
 };
 
@@ -63,9 +66,36 @@ export const getCurrencyFromCookie = (): string => {
 };
 
 /**
+ * Get updated object of dynamic phone number.
+ */
+export const getUpdatedDynamicPhoneNumber = (): object => {
+	// Return updated object of dynamic phone number.
+	return {
+		apiEndpoint: dynamicPhoneNumber.api_endpoint,
+		defaultPhoneNumber: dynamicPhoneNumber.default_phone_number,
+	};
+};
+
+/**
  * Get currency from state.
  */
 export const getCurrency = (): string => {
 	// Get currency from state.
 	return getState().currency;
+};
+
+/**
+ * Set phone number rule.
+ *
+ * @param {Object} phoneNumberRule Phone number rule.
+ */
+export const setPhoneNumberRule = ( phoneNumberRule: object ): void => {
+	// Get current state.
+	const currentState = getState();
+
+	// Set phone number.
+	setState( {
+		...currentState,
+		phoneNumberRule,
+	} );
 };

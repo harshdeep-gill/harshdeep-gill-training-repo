@@ -30,8 +30,12 @@
 	$classes = [ 'section__image-wrap', 'full-width' ];
 
 	// Checking for gradient color and passing as a css varibale.
-	if ( ! empty( $gradient_color ) && in_array( $gradient_color, [ 'white', 'grey', 'black' ] ) ) {
-		$gradient_color = "--section-gradient-color:$gradient_color";
+	if ( ! empty( $gradient_color ) && in_array( $gradient_color, [ 'white', 'gray', 'black' ] ) ) {
+		if ( "gray" === $gradient_color ) {
+			$gradient_color = "--section-gradient-color:var(--color-$gradient_color-5)";
+		} else {
+			$gradient_color = "--section-gradient-color:var(--color-$gradient_color)";
+		}
 	}
 
 	// Adding a calss as per gradient position.

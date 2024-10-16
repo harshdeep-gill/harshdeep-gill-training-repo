@@ -372,6 +372,10 @@
 
 	&__transfer-package-content {
 
+		.drawer__header {
+			padding-right: var(--spacing-6);
+		}
+
 		.drawer__content {
 			max-width: 640px;
 			width: 100%;

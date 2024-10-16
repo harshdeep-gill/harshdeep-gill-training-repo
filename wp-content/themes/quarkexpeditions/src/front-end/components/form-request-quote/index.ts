@@ -26,6 +26,7 @@ export default class FormRequestQuote extends HTMLElement {
 	private monthOptionsContainer: HTMLDivElement;
 	private monthOptionTemplate: HTMLTemplateElement | null;
 	private filtersEndpoint: string;
+	private readonly toastMessage: ToastMessage | null;
 
 	/**
 	 * Constructor.
@@ -46,12 +47,18 @@ export default class FormRequestQuote extends HTMLElement {
 		this.expeditions = this.querySelector( '.form-request-quote__expedition' );
 		this.monthOptionsContainer = this.querySelector( '.form-request-quote__options .form-field-group__group' ) as HTMLDivElement;
 		this.monthOptionTemplate = this.querySelector( '.form-request-quote__template-month-option' );
+		this.toastMessage = this.querySelector( 'quark-toast-message' );
 
 		// Events
 		this.nextStepButton?.addEventListener( 'click', () => this.handleStepOneValidation() );
 		this.previousStepButton?.addEventListener( 'click', () => this.goToPreviousStep() );
 		this.expeditions?.addEventListener( 'change', () => this.changeExpedition() );
+		this.quarkForm?.addEventListener( 'validation-error', this.showToastMessage.bind( this ) );
+		this.quarkForm?.addEventListener( 'validation-success', this.hideToastMessage.bind( this ) );
 		this.quarkForm?.addEventListener( 'api-success', this.showSuccessMessage.bind( this ) );
+
+		// Add radio button toggle event listener.
+		this.initializeRadioToggle();
 	}
 
 	/**
@@ -65,6 +72,12 @@ export default class FormRequestQuote extends HTMLElement {
 		if ( isStepOneValidated ) {
 			// Set the current tab.
 			this.tabs?.setCurrentTab( 'contact-details' );
+
+			// Hide the toast message.
+			this.hideToastMessage();
+		} else {
+			// Show the toast message.
+			this.showToastMessage();
 		}
 	}
 
@@ -97,6 +110,69 @@ export default class FormRequestQuote extends HTMLElement {
 	goToPreviousStep() {
 		// Go to the previous step.
 		this.tabs?.setCurrentTab( 'travel-details' );
+	}
+
+	/**
+	 * Show toast message.
+	 */
+	showToastMessage(): void {
+		// Show toast message.
+		this.toastMessage?.show();
+	}
+
+	/**
+	 * Hide toast message.
+	 */
+	hideToastMessage(): void {
+		// Hide toast message.
+		this.toastMessage?.hide();
+	}
+
+	/**
+	 * Initialize radio button toggle functionality.
+	 */
+	initializeRadioToggle() {
+		// Get all the radio buttons.
+		const radios = this.querySelectorAll( '.form-request-quote__contact-method input[type="radio"]' );
+
+		// Track the last checked radio button.
+		let lastCheckedRadio: HTMLInputElement | null = null;
+
+		// For each loop.
+		radios.forEach( ( radio ) => {
+			// Set the radio element.
+			const radioElement = radio as HTMLInputElement;
+
+			// Click event.
+			radioElement.addEventListener( 'click', ( event ) => {
+				// Set the target element.
+				const target = event.target as HTMLInputElement;
+
+				// Check if the current radio was already checked
+				if ( target === lastCheckedRadio ) {
+					// If it was already checked, uncheck it
+					target.checked = false;
+
+					// Reset the tracking variable.
+					lastCheckedRadio = null;
+				} else {
+					// If it's a new selection, uncheck all others and set this one as checked
+					radios.forEach( ( otherRadio ) => {
+						// Set the other radio elements.
+						const otherRadioElement = otherRadio as HTMLInputElement;
+
+						// Uncheck other radios.
+						otherRadioElement.checked = false;
+					} );
+
+					// Manually set the clicked radio to checked.
+					target.checked = true;
+
+					// Store the reference to the checked radio.
+					lastCheckedRadio = target;
+				}
+			} );
+		} );
 	}
 
 	/**

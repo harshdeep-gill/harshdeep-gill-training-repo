@@ -789,6 +789,114 @@ class Test_Update_Departures extends Softrip_TestCase {
 		// Only the second departure should be there.
 		$this->assertEquals( $departure_post2, $departure_post2_updated );
 
+		// Remove cabins from first departure.
+		unset( $pqo_raw_departures[0]['cabins'] );
+
+		// Update the first departure post with no cabins.
+		$actual = update_departures( [ $pqo_raw_departures[0] ], $pqo_softrip_package_code, [ $departure_post1 ] );
+		$this->assertTrue( $actual );
+
+		// First departure should have been draft and second should be only present in published status - as cabin has been removed.
+		$departure_posts_updated = get_posts(
+			[
+				'post_type'              => DEPARTURE_POST_TYPE,
+				'posts_per_page'         => -1,
+				'no_found_rows'          => true,
+				'update_post_meta_cache' => false,
+				'update_post_term_cache' => false,
+				'ignore_sticky_posts'    => true,
+				'suppress_filters'       => false,
+				'fields'                 => 'ids',
+				'order'                  => 'ASC',
+				'orderby'                => 'ID',
+				'meta_query'             => [
+					[
+						'key'   => 'softrip_package_code',
+						'value' => $pqo_softrip_package_code,
+					],
+				],
+			]
+		);
+		$this->assertCount( 1, $departure_posts_updated );
+
+		// Get the first departure post.
+		$departure_post1_updated = $departure_posts_updated[0];
+		$this->assertIsInt( $departure_post1_updated );
+
+		// Set the second departure's first occupancy saleStatus to 'C'.
+		$pqo_raw_departures[1]['cabins'][0]['occupancies'][0]['saleStatusCode'] = 'C'; // Closed.
+
+		// Add some more invalid occupancies to the second departure.
+		$pqo_raw_departures[1]['cabins'][0]['occupancies'][] = [
+			'id'             => 'OCC-3',
+			'name'           => 'Occupancy 3',
+			'mask'           => 'SMAA',
+			'saleStatusCode' => 'N', // No display.
+		];
+		$pqo_raw_departures[1]['cabins'][0]['occupancies'][] = [
+			'id'             => 'OCC-4',
+			'name'           => 'Occupancy 4',
+			'mask'           => 'SMAA',
+			'saleStatusCode' => 'N', // No display.
+		];
+		$pqo_raw_departures[1]['cabins'][0]['occupancies'][] = [
+			'id'             => 'OCC-4',
+			'name'           => 'Occupancy 4',
+			'mask'           => 'SMAA',
+			'saleStatusCode' => 'I', // Internal.
+		];
+
+		// This way all occupancies are now invalid(unavailable). The second departure should be marked as draft.
+		$actual = update_departures( [ $pqo_raw_departures[1] ], $pqo_softrip_package_code, [ $departure_post2 ] );
+		$this->assertTrue( $actual );
+
+		// No more published departures.
+		$departure_posts_updated = get_posts(
+			[
+				'post_type'              => DEPARTURE_POST_TYPE,
+				'posts_per_page'         => -1,
+				'no_found_rows'          => true,
+				'update_post_meta_cache' => false,
+				'update_post_term_cache' => false,
+				'ignore_sticky_posts'    => true,
+				'suppress_filters'       => false,
+				'fields'                 => 'ids',
+				'order'                  => 'ASC',
+				'orderby'                => 'ID',
+				'meta_query'             => [
+					[
+						'key'   => 'softrip_package_code',
+						'value' => $pqo_softrip_package_code,
+					],
+				],
+			]
+		);
+		$this->assertCount( 0, $departure_posts_updated );
+
+		// Get draft departures.
+		$drafted_departure_posts = get_posts(
+			[
+				'post_type'              => DEPARTURE_POST_TYPE,
+				'posts_per_page'         => -1,
+				'no_found_rows'          => true,
+				'update_post_meta_cache' => false,
+				'update_post_term_cache' => false,
+				'ignore_sticky_posts'    => true,
+				'suppress_filters'       => false,
+				'fields'                 => 'ids',
+				'order'                  => 'ASC',
+				'orderby'                => 'ID',
+				'post_status'            => 'draft',
+				'meta_query'             => [
+					[
+						'key'   => 'softrip_package_code',
+						'value' => $pqo_softrip_package_code,
+					],
+				],
+			]
+		);
+		$this->assertCount( 2, $drafted_departure_posts );
+
 		// Clean up.
 		wp_delete_post( $itinerary_id, true );
 		wp_delete_post( $expedition_id, true );

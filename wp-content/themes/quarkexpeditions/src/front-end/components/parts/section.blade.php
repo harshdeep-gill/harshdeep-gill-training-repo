@@ -64,8 +64,15 @@
 		</x-section.description>
 	@endif
 
+	@if ( ! empty( $background_image ) )
+		<div class="section__content-wrap">
+	@endif
+
 	{!! $slot !!}
 
+	@if ( ! empty( $background_image ) )
+		</div>
+	@endif
 	@if ( ! empty( $cta_button ) )
 		<x-section.cta
 			:class="$cta_button['class']"

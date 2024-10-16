@@ -14,7 +14,7 @@
 		@include grid-columns(2);
 	}
 
-	&:not(&--stack-on-tablet) {
+	&:not(&--stack-on-tablet):not(&--only-child) {
 
 		@media screen and (min-width: grid-size(md)) {
 			grid-template-columns: repeat(2, 1fr);

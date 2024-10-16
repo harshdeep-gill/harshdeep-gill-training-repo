@@ -2,7 +2,7 @@
 	'modal_id'                 => 'search-filters-bar-modal',
 	'is_search_page'           => false,
 	'destinations_placeholder' => __( 'Anywhere', 'qrk' ),
-	'departures_placeholder'   => __( 'Any time', 'qrk' ),
+	'departures_placeholder'   => __( 'I\'m Flexible', 'qrk' ),
 	'destinations'             => [],
 	'available_months'         => [],
 	'filters_api_url'          => '',

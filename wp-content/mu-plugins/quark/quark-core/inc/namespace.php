@@ -15,6 +15,7 @@ use WP_Term;
 use WP_Query;
 use WP_User;
 
+use function Travelopia\Cache\clear_all_edge_cache_paths;
 use function Travelopia\Core\cached_nav_menu;
 
 use const Quark\Localization\AUD_CURRENCY;
@@ -32,9 +33,6 @@ const REST_API_NAMESPACE = 'quark-core/v1';
  * @return void
  */
 function bootstrap(): void {
-	// Layout.
-	add_action( 'template_redirect', __NAMESPACE__ . '\\layout' );
-
 	// Other hooks.
 	add_action( 'admin_menu', __NAMESPACE__ . '\\setup_settings' );
 	add_action( 'init', __NAMESPACE__ . '\\nav_menus' );
@@ -55,6 +53,10 @@ function bootstrap(): void {
 	add_filter( 'add_attachment', __NAMESPACE__ . '\\update_svg_content', 10, 4 );
 	add_filter( 'upload_mimes', __NAMESPACE__ . '\\allow_mime_types' );
 
+	// Get front-end markup for manipulation.
+	add_filter( 'wp_body_open', __NAMESPACE__ . '\\start_output_buffering' );
+	add_filter( 'wp_footer', __NAMESPACE__ . '\\end_output_buffering' );
+
 	// Set Excerpt length - Set higher priority to override other plugins.
 	add_filter( 'excerpt_length', __NAMESPACE__ . '\\increase_excerpt_length', 999 );
 
@@ -67,30 +69,6 @@ function bootstrap(): void {
 		require_once __DIR__ . '/../custom-fields/attachments.php';
 		require_once __DIR__ . '/../custom-fields/pages-setup.php';
 	}
-}
-
-/**
- * Front-end layout.
- *
- * @return void
- */
-function layout(): void {
-	// Check if 404 page.
-	if ( is_404() ) {
-		add_filter( 'quark_front_end_data', __NAMESPACE__ . '\\layout_404' );
-	}
-}
-
-/**
- * Layout: 404.
- *
- * @param mixed[] $data Front-end data.
- *
- * @return mixed[]
- */
-function layout_404( array $data = [] ): array {
-	// Return updated data.
-	return $data;
 }
 
 /**
@@ -199,6 +177,8 @@ function core_front_end_data( array $data = [] ): array {
 		$data,
 		[
 			'current_url'     => get_permalink(),
+			'site_url'        => home_url(),
+			'site_name'       => get_bloginfo( 'name' ),
 			'header'          => $header_options,
 			'social_links'    => $social_options,
 			'search_page_url' => strval( get_permalink( absint( get_option( 'options_expedition_search_page' ) ) ) ),
@@ -680,6 +660,32 @@ function is_block_editor(): bool {
 
 	// Not in the block editor.
 	return false;
+}
+
+/**
+ * Start output buffering.
+ *
+ * @return void
+ */
+function start_output_buffering(): void {
+	// Start output buffering.
+	ob_start();
+}
+
+/**
+ * End output buffering.
+ *
+ * @return void
+ */
+function end_output_buffering(): void {
+	// Get the buffered content.
+	$content = ob_get_clean();
+
+	// Apply filters before rendered.
+	$content = strval( apply_filters( 'quark_front_end_markup', $content ) );
+
+	// Render the markup.
+	echo $content; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 }
 
 /**

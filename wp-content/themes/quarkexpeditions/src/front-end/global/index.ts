@@ -1,9 +1,4 @@
 /**
- * Global JavaScript.
- */
-import './phone-number';
-
-/**
  * Styles.
  */
 import './index.scss';
@@ -36,6 +31,7 @@ declare global {
 	interface Window {
 		dynamicPhoneNumber: {
 			api_endpoint?: string; // eslint-disable-line
+			default_phone_number?: string; // eslint-disable-line
 		};
 	}
 }
@@ -44,3 +40,8 @@ declare global {
  * Initialize global store.
  */
 initialize( {} );
+
+/**
+ * Global JavaScript.
+ */
+import './phone-number';

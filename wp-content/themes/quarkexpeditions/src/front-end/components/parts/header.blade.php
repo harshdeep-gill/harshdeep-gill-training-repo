@@ -25,9 +25,11 @@
 										<x-header.nav-item-featured :image_id="$content_item['image_id'] ?? 0">
 											<x-header.nav-item-featured-title :title="$content_item['title'] ?? ''" />
 											<x-header.nav-item-featured-subtitle :subtitle="$content_item['subtitle'] ?? ''" />
-											<x-button href="{{ $content_item['url'] ?? '' }}" size="big">
-												{!! $content_item['cta_text'] ?? '' !!}
-											</x-button>
+											@if ( ! empty( $content_item['cta_text'] ) )
+												<x-button href="{{ $content_item['url'] ?? '' }}" size="big">
+													{!! $content_item['cta_text'] !!}
+												</x-button>
+											@endif
 										</x-header.nav-item-featured>
 									</x-header.nav-item-dropdown-content-column>
 								@elseif ( 'slot' === $content_item['type'] )
@@ -54,9 +56,11 @@
 								<x-header.nav-item-featured :image_id="$content_item['image_id'] ?? 0">
 									<x-header.nav-item-featured-title :title="$content_item['title'] ?? ''" />
 									<x-header.nav-item-featured-subtitle :subtitle="$content_item['subtitle'] ?? ''" />
-									<x-button href="{{ $content_item['url'] ?? '' }}" size="big">
-										{!! $content_item['cta_text'] ?? '' !!}
-									</x-button>
+									@if ( ! empty( $content_item['cta_text'] ) )
+										<x-button href="{{ $content_item['url'] ?? '' }}" size="big">
+											{!! $content_item['cta_text'] !!}
+										</x-button>
+									@endif
 								</x-header.nav-item-featured>
 							</x-header.nav-item-dropdown-content-column>
 						@elseif ( 'menu-items' === $content_item['type'] )
@@ -222,7 +226,7 @@
 						@foreach ( $cta_buttons as $button )
 							@if ( 'contact' === $button['type'] )
 								<li>
-									<a href="{{ $button['url'] ?? '' }}" class="dynamic-phone-number__link dynamic-phone-number-and-prefix">
+									<a href="{{ $button['url'] ?? '' }}">
 										{!! $button['drawer_text'] ?? '' !!}
 										{!! $button['text'] ?? '' !!}
 									</a>
@@ -238,7 +242,7 @@
 					@if ( 'raq' === $button['type'] )
 						<x-button
 							:href="$button['url'] ?? ''"
-							class="header__drawer-request-quote-btn dynamic-phone-number__link dynamic-phone-number__text"
+							class="header__drawer-request-quote-btn"
 							size="big"
 						>
 							{!! $button['text'] ?? '' !!}

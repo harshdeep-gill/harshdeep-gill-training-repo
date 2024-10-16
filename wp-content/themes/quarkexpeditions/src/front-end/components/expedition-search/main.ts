@@ -55,10 +55,42 @@ export class ExpeditionSearch extends HTMLElement {
 	 * Initialize component.
 	 */
 	initialize() {
+		// Null check
+		if ( ! this.resultsContainer ) {
+			// Bail.
+			return;
+		}
+
+		// Get the server rendered values if available
+		let isServerRendered = this.resultsContainer.getAttribute( 'server-rendered' ) === 'yes';
+		const serverRenderData = {
+			resultsCount: Number.NaN,
+			remainingCount: Number.NaN,
+			page: Number.NaN,
+			nextPage: Number.NaN,
+		};
+
+		// Is it server rendered?
+		if ( isServerRendered && serverRenderData ) {
+			serverRenderData.resultsCount = parseInt( this.resultsContainer.getAttribute( 'results-count' ) ?? '' );
+			serverRenderData.remainingCount = parseInt( this.resultsContainer.getAttribute( 'remaining-count' ) ?? '' );
+			serverRenderData.page = parseInt( this.resultsContainer.getAttribute( 'page' ) ?? '' );
+			serverRenderData.nextPage = parseInt( this.resultsContainer.getAttribute( 'next-page' ) ?? '' );
+
+			// Check if we have valid values.
+			isServerRendered = ! (
+				Number.isNaN( serverRenderData.remainingCount ) ||
+				Number.isNaN( serverRenderData.resultsCount ) ||
+				Number.isNaN( serverRenderData.page ) ||
+				Number.isNaN( serverRenderData.nextPage )
+			);
+		}
+
 		// Initialize data for the component.
 		initialize( {
 			partial: this.partial,
 			selector: this.selector,
+			serverRenderData: isServerRendered ? serverRenderData : undefined,
 		} );
 	}
 
