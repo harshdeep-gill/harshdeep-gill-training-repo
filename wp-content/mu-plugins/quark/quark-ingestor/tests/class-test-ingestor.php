@@ -45,6 +45,7 @@ use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
 use const Quark\Departures\SPOKEN_LANGUAGE_TAXONOMY;
 use const Quark\Expeditions\DESTINATION_TAXONOMY;
 use const Quark\Expeditions\POST_TYPE as EXPEDITION_POST_TYPE;
+use const Quark\Ingestor\DATA_HASH_KEY;
 use const Quark\Ingestor\SCHEDULE_HOOK;
 use const Quark\Itineraries\DEPARTURE_LOCATION_TAXONOMY;
 use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
@@ -305,10 +306,15 @@ class Test_Ingestor extends Softrip_TestCase {
 
 		// Prepare expected push success data.
 		foreach ( $expedition_post_ids as $expedition_post_id ) {
+			// Data hash.
+			$hash = get_post_meta( $expedition_post_id, DATA_HASH_KEY, true );
+
+			// Add to expected push success data.
 			$expected_push_success_data[] = [
 				'expedition_post_id' => $expedition_post_id,
 				'initiated_via'      => 'manually',
 				'changed_only'       => true,
+				'hash'               => $hash,
 			];
 		}
 
@@ -490,12 +496,16 @@ class Test_Ingestor extends Softrip_TestCase {
 			$this->push_error_data
 		);
 
+		// Data hash.
+		$hash = get_post_meta( $draft_expedition_post_id, DATA_HASH_KEY, true );
+
 		// Prepare expected success data.
 		$expected_push_success_data = [
 			[
 				'expedition_post_id' => $draft_expedition_post_id,
 				'initiated_via'      => 'manually',
 				'changed_only'       => true,
+				'hash'               => $hash,
 			],
 		];
 
@@ -561,10 +571,15 @@ class Test_Ingestor extends Softrip_TestCase {
 
 		// Prepare expected push success data.
 		foreach ( $new_post_expedition_ids as $expedition_post_id ) {
+			// Data hash.
+			$hash = get_post_meta( $expedition_post_id, DATA_HASH_KEY, true );
+
+			// Add to expected push success data.
 			$expected_push_success_data[] = [
 				'expedition_post_id' => $expedition_post_id,
 				'initiated_via'      => 'manually',
 				'changed_only'       => false,
+				'hash'               => $hash,
 			];
 		}
 
@@ -678,10 +693,15 @@ class Test_Ingestor extends Softrip_TestCase {
 
 		// Prepare expected push success data.
 		foreach ( $updated_post_ids as $expedition_post_id ) {
+			// Data hash.
+			$hash = get_post_meta( $expedition_post_id, DATA_HASH_KEY, true );
+
+			// Add to expected push success data.
 			$expected_push_success_data[] = [
 				'expedition_post_id' => $expedition_post_id,
 				'initiated_via'      => 'manually',
 				'changed_only'       => true,
+				'hash'               => $hash,
 			];
 		}
 
