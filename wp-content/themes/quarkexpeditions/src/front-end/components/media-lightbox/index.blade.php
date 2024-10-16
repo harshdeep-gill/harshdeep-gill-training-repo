@@ -73,7 +73,7 @@
 					]"
 				/>
 			@endif
-			<p class="media-lightbox__caption">{{ $title }}</p>
+			<p class="media-lightbox__caption">{{ htmlspecialchars_decode( $title ) }}</p>
 		</template>
 	</tp-lightbox-trigger>
 </quark-media-lightbox>
