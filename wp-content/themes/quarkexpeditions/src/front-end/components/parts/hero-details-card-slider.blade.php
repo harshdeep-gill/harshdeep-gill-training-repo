@@ -25,9 +25,9 @@
 			<x-hero-card-slider.content>
 				@if ( ! empty( $item['tag'] ) )
 					@if ( 'overline' === $item['tag']['type'] )
-						<x-hero-card-slider.overline :text="$item['tag']['text']" />
+						<x-hero-card-slider.overline :text="$item['tag']['text'] ?? ''" />
 					@elseif ( 'tag' === $item['tag']['type'] )
-						<x-hero-card-slider.tag :text="$item['tag']['text']" />
+						<x-hero-card-slider.tag :text="$item['tag']['text'] ?? ''" />
 					@endif
 				@endif
 				@if ( ! empty( $item['title'] ) )
@@ -41,7 +41,7 @@
 				@endif
 
 				@if ( ! empty( $item['cta'] ) )
-					<x-hero-card-slider.card-cta :text="$item['cta']['text']" :url="$item['cta']['url']" />
+					<x-hero-card-slider.card-cta :text="$item['cta']['text'] ?? ''" :url="$item['cta']['url'] ?? ''" />
 				@endif
 			</x-hero-card-slider.content>
 		</x-hero-card-slider.card>
