@@ -64,7 +64,7 @@ export class ExpeditionSearch extends HTMLElement {
 		// Get the server rendered values if available
 		let isServerRendered = this.resultsContainer.getAttribute( 'server-rendered' ) === 'yes';
 		const serverRenderData = {
-			resultsCount: Number.NaN,
+			resultCount: Number.NaN,
 			remainingCount: Number.NaN,
 			page: Number.NaN,
 			nextPage: Number.NaN,
@@ -72,7 +72,7 @@ export class ExpeditionSearch extends HTMLElement {
 
 		// Is it server rendered?
 		if ( isServerRendered && serverRenderData ) {
-			serverRenderData.resultsCount = parseInt( this.resultsContainer.getAttribute( 'results-count' ) ?? '' );
+			serverRenderData.resultCount = parseInt( this.resultsContainer.getAttribute( 'result-count' ) ?? '' );
 			serverRenderData.remainingCount = parseInt( this.resultsContainer.getAttribute( 'remaining-count' ) ?? '' );
 			serverRenderData.page = parseInt( this.resultsContainer.getAttribute( 'page' ) ?? '' );
 			serverRenderData.nextPage = parseInt( this.resultsContainer.getAttribute( 'next-page' ) ?? '' );
@@ -80,7 +80,7 @@ export class ExpeditionSearch extends HTMLElement {
 			// Check if we have valid values.
 			isServerRendered = ! (
 				Number.isNaN( serverRenderData.remainingCount ) ||
-				Number.isNaN( serverRenderData.resultsCount ) ||
+				Number.isNaN( serverRenderData.resultCount ) ||
 				Number.isNaN( serverRenderData.page ) ||
 				Number.isNaN( serverRenderData.nextPage )
 			);

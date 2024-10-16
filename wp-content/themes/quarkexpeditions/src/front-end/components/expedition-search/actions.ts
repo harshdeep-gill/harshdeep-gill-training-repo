@@ -194,7 +194,7 @@ const buildUrlFromFilters = (): string => {
  * @param {string} settings.partial                         Partial Url.
  * @param {string} settings.selector                        Selector.
  * @param {Object} settings.serverRenderData                Server render data.
- * @param {number} settings.serverRenderData.resultsCount   The number of results
+ * @param {number} settings.serverRenderData.resultCount    The number of results
  * @param {number} settings.serverRenderData.remainingCount The number of results
  * @param {number} settings.serverRenderData.page           The page number
  * @param {number} settings.serverRenderData.nextPage       The next page number
@@ -203,7 +203,7 @@ export const initialize = ( settings: {
 	partial: string | undefined,
 	selector: string | undefined,
 	serverRenderData?: {
-		resultsCount: number,
+		resultCount: number,
 		remainingCount: number,
 		page: number,
 		nextPage: number,
@@ -227,7 +227,7 @@ export const initialize = ( settings: {
 
 	// Check if we have server render data.
 	if ( settings.serverRenderData ) {
-		initialUpdatePayload.resultCount = settings.serverRenderData.resultsCount;
+		initialUpdatePayload.resultCount = settings.serverRenderData.resultCount;
 		initialUpdatePayload.remainingCount = settings.serverRenderData.remainingCount;
 		initialUpdatePayload.page = settings.serverRenderData.page;
 		initialUpdatePayload.hasNextPage = settings.serverRenderData.nextPage > settings.serverRenderData.page;
