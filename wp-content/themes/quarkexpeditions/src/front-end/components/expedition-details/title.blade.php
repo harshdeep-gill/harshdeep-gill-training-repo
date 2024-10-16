@@ -9,7 +9,6 @@
 @endphp
 
 <h1 class="expedition-details__title h1">
-	<x-escape content="{{ $title }}" />
-
+	<x-escape :content="$title" />
 	{!! $slot !!}
 </h1>

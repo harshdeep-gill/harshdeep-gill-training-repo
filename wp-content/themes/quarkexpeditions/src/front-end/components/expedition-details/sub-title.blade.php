@@ -9,5 +9,5 @@
 @endphp
 
 <span class="expedition-details__sub-title h3">
-	<x-escape content="{{ $sub_title }}" />
+	<x-escape :content="$sub_title" />
 </span>
