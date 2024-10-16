@@ -13,6 +13,9 @@
 	],
 	"category": "layout",
 	"textdomain": "quark",
+	"parent": [
+		"quark/hero-details-card-slider"
+	],
 	"attributes": {
 		"mediaType": {
 			"type": "string",

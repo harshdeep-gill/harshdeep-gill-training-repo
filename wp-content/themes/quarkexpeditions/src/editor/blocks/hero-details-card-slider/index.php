@@ -80,35 +80,52 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 		$card_attributes = [];
 
 		// Prepare the card attributes.
-		if ( 'quark/hero-details-card-slider-item' === $inner_block['name'] || 'quark/hero-details-card-slider-item' === $inner_block['blockName'] ) {
+		if (
+			( ! empty( $inner_block['name'] ) && 'quark/hero-details-card-slider-item' === $inner_block['name'] ) ||
+			( ! empty( $inner_block['blockName'] ) && 'quark/hero-details-card-slider-item' === $inner_block['blockName'] )
+		) {
 			// Prepare the card attributes.
-			$media_type = $block_attributes['mediaType'];
-
-			// Check for media.
-			if ( ! empty( $media_type ) ) {
-				$card_attributes['media_type'] = $media_type;
-				$card_attributes['media_id']   = $block_attributes['media']['id'];
+			if ( ! empty( $block_attributes['mediaType'] ) ) {
+				$media_type = $block_attributes['mediaType'];
 			} else {
-				$card_attributes['media_type'] = 'image';
-				$card_attributes['media_id']   = $block_attributes['media']['id'];
+				$media_type = 'image';
 			}
 
+			// Check for media.
+			if ( empty( $block_attributes['media'] ) ) {
+				continue;
+			}
+
+			// Set media.
+			$card_attributes['media_type'] = $media_type;
+			$card_attributes['media_id']   = $block_attributes['media']['id'];
+
 			// Set title.
-			$card_attributes['title']       = $block_attributes['title'];
-			$card_attributes['description'] = $block_attributes['descriptionText'];
+			$card_attributes['title']       = ! empty( $block_attributes['title'] ) ? $block_attributes['title'] : '';
+			$card_attributes['description'] = ! empty( $block_attributes['descriptionText'] ) ? $block_attributes['descriptionText'] : '';
 
 			// Check for tag.
-			if ( $block_attributes['hasTag'] ) {
-				$card_attributes['tag']['text'] = $block_attributes['tagText'];
-				$card_attributes['tag']['type'] = $block_attributes['tagType'] ?? 'tag';
+			if ( ! empty( $block_attributes['hasTag'] ) ) {
+				// Check for tag.
+				if ( ! empty( $block_attributes['tagText'] ) ) {
+					// Prepare the tag attributes.
+					$card_attributes['tag'] = [
+						'text' => $block_attributes['tagText'],
+						'type' => $block_attributes['tagType'] ?? 'tag',
+					];
+				}
 			}
 
 			// Check for CTA.
-			if ( $block_attributes['hasCtaLink'] ) {
-				$card_attributes['cta'] = [
-					'text' => $block_attributes['cta']['text'],
-					'url'  => $block_attributes['cta']['url'],
-				];
+			if ( ! empty( $block_attributes['hasCtaLink'] ) ) {
+				// Check for CTA.
+				if ( ! empty( $block_attributes['cta'] ) ) {
+					// Prepare the CTA attributes.
+					$card_attributes['cta'] = [
+						'text' => $block_attributes['cta']['text'],
+						'url'  => $block_attributes['cta']['url'],
+					];
+				}
 			}
 		}
 

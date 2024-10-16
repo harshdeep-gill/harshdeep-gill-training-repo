@@ -118,7 +118,12 @@
 		@include line-clamp(2);
 	}
 
+	&__cta-text {
+		text-decoration: underline;
+	}
+
 	&__card-cta,
+	&__cta-text,
 	&__tag,
 	&__overline,
 	.btn {
@@ -132,6 +137,7 @@
 
 	&__description,
 	&__card-cta,
+	&__cta-text,
 	&__overline,
 	.btn {
 		display: none;

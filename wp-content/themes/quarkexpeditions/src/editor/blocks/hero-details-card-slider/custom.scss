@@ -4,13 +4,11 @@
 
 .hero-details-card-slider__modal-overlay {
 	z-index: 999;
-}
-
-.components-modal__screen-overlay {
 
 	.hero-details-card-slider__modal {
 		--hero-card-aspect-ratio: 9 / 16;
 		max-height: 90%;
+		border-radius: var(--border-radius);
 
 		.hero-details-card-slider {
 
@@ -19,7 +17,7 @@
 			}
 
 			&__card {
-				background-color: var(--color-gray-20);
+				background-color: var(--color-gray-10);
 				border-radius: var(--border-radius);
 				width: 100%;
 				padding: 20px;
@@ -33,7 +31,11 @@
 			&__slides {
 				display: flex;
 				flex-wrap: wrap;
-				gap: var(--spacing-4);
+				gap: var(--spacing-6);
+			}
+
+			&__image img {
+				border-radius: var(--border-radius);
 			}
 
 			&__video {
@@ -48,8 +50,11 @@
 }
 
 .hero-card-slider {
-	font-family: var(--font-family);
-	color: var(--color-white);
+
+	&__content {
+		font-family: var(--font-family);
+		color: var(--color-white);
+	}
 
 	&__title.h4 {
 		font-size: var(--h4-font-size);

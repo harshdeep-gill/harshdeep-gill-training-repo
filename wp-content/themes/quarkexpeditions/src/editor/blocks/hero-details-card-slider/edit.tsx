@@ -32,6 +32,16 @@ const { gumponents } = window;
 import icons from '../icons';
 
 /**
+ * Internal dependencies.
+ */
+import metadata from './block.json';
+
+/**
+ * Block name.
+ */
+export const { name }: { name: string } = metadata;
+
+/**
  * Styles.
  */
 import './editor.scss';
@@ -96,6 +106,7 @@ export default function edit( { className, attributes, setAttributes, clientId }
 			className: 'hero-details-card-slider__slides',
 		},
 		{
+			allowedBlocks: [ card.name ],
 			template: [
 				[ card.name ],
 				[ card.name ],
@@ -164,39 +175,41 @@ export default function edit( { className, attributes, setAttributes, clientId }
 						instructions={ __( 'Select the slide items', 'qrk' ) }
 					/>
 				}
-				<div className="hero-card-slider">
-					<div className="hero-card-slider__card">
-						{
-							attributes.showControls && (
-								<div className="hero-card-slider__arrows">
-									<button className="hero-card-slider__arrow-button hero-card-slider__arrow-button--left">
-										{ icons.chevronLeft }
-									</button>
-									<button className="hero-card-slider__arrow-button hero-card-slider__arrow-button--right">
-										{ icons.chevronRight }
-									</button>
+				{ 0 !== innerBlocks?.length &&
+					<div className="hero-card-slider">
+						<div className="hero-card-slider__card">
+							{
+								attributes.showControls && (
+									<div className="hero-card-slider__arrows">
+										<button className="hero-card-slider__arrow-button hero-card-slider__arrow-button--left">
+											{ icons.chevronLeft }
+										</button>
+										<button className="hero-card-slider__arrow-button hero-card-slider__arrow-button--right">
+											{ icons.chevronRight }
+										</button>
+									</div>
+								)
+							}
+							<figure className="hero-card-slider__image">
+								<Img
+									value={ innerBlocks?.[ 0 ]?.attributes?.media }
+								/>
+							</figure>
+							<div className="hero-card-slider__overlay" />
+							<div className="hero-card-slider__content">
+								<div className={ classnames( 'overline', 'hero-card-slider__' + innerBlocks?.[ 0 ]?.attributes?.tagType ) }>
+									{ innerBlocks?.[ 0 ]?.attributes?.tagText }
 								</div>
-							)
-						}
-						<figure className="hero-card-slider__image">
-							<Img
-								value={ innerBlocks?.[ 0 ]?.attributes?.media }
-							/>
-						</figure>
-						<div className="hero-card-slider__overlay" />
-						<div className="hero-card-slider__content">
-							<div className={ classnames( 'overline', 'hero-card-slider__' + innerBlocks?.[ 0 ]?.attributes?.tagType ) }>
-								{ innerBlocks?.[ 0 ]?.attributes?.tagText }
-							</div>
-							<div className="hero-card-slider__title">
-								{ innerBlocks?.[ 0 ]?.attributes?.title }
-							</div>
-							<div className="hero-card-slider__description">
-								{ innerBlocks?.[ 0 ]?.attributes?.descriptionText }
+								<div className="hero-card-slider__title">
+									{ innerBlocks?.[ 0 ]?.attributes?.title }
+								</div>
+								<div className="hero-card-slider__description">
+									{ innerBlocks?.[ 0 ]?.attributes?.descriptionText }
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
+				}
 			</div>
 			{ isModalOpen &&
 				<Modal
@@ -219,7 +232,7 @@ export default function edit( { className, attributes, setAttributes, clientId }
 						<div { ...innerBlocksProps } />
 					) : (
 						<ServerSideRender
-							block={ 'quark/hero-details-card-slider' }
+							block={ name }
 							attributes={ { innerBlocks } }
 							EmptyResponsePlaceholder={ () => (
 								<Placeholder

@@ -60,6 +60,7 @@ export default function Edit( {
 					{ 'image' === attributes.mediaType &&
 						<SelectImage
 							placeholder={ __( 'Choose image', 'qrk' ) }
+							className="hero-details-card-slider__image"
 							size="large"
 							image={ attributes.media }
 							onChange={ ( media: object ) => setAttributes( { media } ) }
@@ -82,7 +83,7 @@ export default function Edit( {
 										)
 									}
 									<button className="button" onClick={ open }>
-										{ ! attributes.media.id ? __( 'Select video', 'qrk' ) : __( 'Change video', 'qrk' ) }
+										{ ! attributes.media.id ? __( 'Select Video', 'qrk' ) : __( 'Change Video', 'qrk' ) }
 									</button>
 								</>
 							) }
@@ -140,15 +141,15 @@ export default function Edit( {
 				</Section>
 				<Section>
 					<ToggleControl
-						label={ __( 'Show CTA link', 'qrk' ) }
+						label={ __( 'Has link?', 'qrk' ) }
 						checked={ attributes.hasCtaLink }
 						onChange={ ( hasCtaLink: boolean ) => setAttributes( { hasCtaLink } ) }
 					/>
 					{ attributes.hasCtaLink && (
 						<LinkControl
-							label={ __( 'CTA link', 'qrk' ) }
+							label={ __( 'Link', 'qrk' ) }
 							value={ attributes.cta }
-							help={ __( 'This is the CTA link that will be displayed on the card.', 'qrk' ) }
+							help={ __( 'The Card will be clickable. If Link Text is added it will be displayed as CTA.', 'qrk' ) }
 							onChange={ ( cta: object ) => setAttributes( { cta } ) }
 						/>
 					) }

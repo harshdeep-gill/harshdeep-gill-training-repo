@@ -13,7 +13,7 @@
 
 <x-hero-card-slider :arrows="$show_controls" :interval="$interval" :auto_slide="'auto' === $transition_type">
 	@foreach ( $items as $item )
-		<x-hero-card-slider.card>
+		<x-hero-card-slider.card :url="$item['cta']['url'] ?? ''">
 			@if ( ! empty( $item['media_id'] ) && 'video' === $item['media_type'] )
 				<x-hero-card-slider.video video_id="{{ $item['media_id'] }}" />
 			@endif
@@ -40,8 +40,8 @@
 					</x-hero-card-slider.description>
 				@endif
 
-				@if ( ! empty( $item['cta'] ) )
-					<x-hero-card-slider.card-cta :text="$item['cta']['text'] ?? ''" :url="$item['cta']['url'] ?? ''" />
+				@if ( ! empty( $item['cta']['text'] ) )
+					<x-hero-card-slider.cta-text :text="$item['cta']['text'] ?? ''" />
 				@endif
 			</x-hero-card-slider.content>
 		</x-hero-card-slider.card>
