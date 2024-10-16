@@ -67,11 +67,11 @@ class Stream_Connector extends Connector {
 	public function get_action_labels(): array {
 		// Return labels.
 		return [
-			'sync_initiated'         => __( 'Sync Initiated', 'qrk' ),
-			'sync_completed'         => __( 'Sync Completed', 'qrk' ),
-			'sync_departure_updated' => __( 'Departure Updated', 'qrk' ),
-			'sync_departure_expired' => __( 'Departure Expired', 'qrk' ),
-			'sync_error'             => __( 'Sync Error', 'qrk' ),
+			'sync_initiated'            => __( 'Sync Initiated', 'qrk' ),
+			'sync_completed'            => __( 'Sync Completed', 'qrk' ),
+			'sync_departure_updated'    => __( 'Departure Updated', 'qrk' ),
+			'sync_departure_expired'    => __( 'Departure Expired', 'qrk' ),
+			'sync_error'                => __( 'Sync Error', 'qrk' ),
 			'sync_departure_no_updates' => __( 'Departure No Updates', 'qrk' ),
 		];
 	}
