@@ -11,7 +11,7 @@ import { loadMoreResults } from '../actions';
 /**
  * Get Store.
  */
-const { subscribe, getState } = zustand.stores.expeditionSearch;
+const { subscribe } = zustand.stores.expeditionSearch;
 
 /**
  * LoadMore Class.
@@ -30,9 +30,6 @@ export class LoadMore extends HTMLElement {
 		// Parent.
 		super();
 
-		// Subscribe.
-		subscribe( this.update.bind( this ) );
-
 		// Elements.
 		this.loadMoreButton = this.querySelector( '.expedition-search__load-more-button' );
 		this.loadMoreButtonText = this.querySelector( '.expedition-search__load-more-button > .btn__content-text' );
@@ -40,8 +37,8 @@ export class LoadMore extends HTMLElement {
 		// Events.
 		this.loadMoreButton?.addEventListener( 'click', loadMoreResults.bind( this ) );
 
-		// Update initially.
-		this.update( getState() );
+		// Subscribe.
+		subscribe( this.update.bind( this ) );
 	}
 
 	/**

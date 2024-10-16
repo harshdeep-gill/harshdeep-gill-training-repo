@@ -1,5 +1,6 @@
 @props( [
-	'months' => [],
+	'months'     => [],
+	'is_compact' => false,
 ] )
 
 @php
@@ -26,14 +27,29 @@
 			<x-escape :content=" __( 'Months', 'qrk' ) " /> <span class="expedition-search__filter-count"></span>
 		</x-accordion-item.handle>
 		<x-accordion.item-content>
-			<x-months-multi-select
-				:available_months="$months"
-				:is_multi_select="true"
-			>
-				@foreach ( $years as $year )
-					<x-months-multi-select.slide :years="[ $year ]" />
-				@endforeach
-			</x-months-multi-select>
+			@if ( ! empty( $is_compact ) )
+				<x-months-multi-select
+					:available_months="$months"
+					:is_multi_select="true"
+				>
+					<x-months-multi-select.carousel :is_compact="true">
+							@foreach ( $years as $year )
+								<x-months-multi-select.slide :years="[ $year ]" :is_compact="true" />
+							@endforeach
+					</x-months-multi-select.carousel>
+				</x-months-multi-select>
+			@else
+				<x-months-multi-select
+					:available_months="$months"
+					:is_multi_select="true"
+				>
+					<x-months-multi-select.carousel>
+						@foreach ( $years as $year )
+							<x-months-multi-select.slide :years="[ $year ]" />
+						@endforeach
+					</x-months-multi-select.carousel>
+				</x-months-multi-select>
+			@endif
 
 		</x-accordion.item-content>
 </x-accordion.item>

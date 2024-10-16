@@ -68,7 +68,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 
 	// Build component attributes.
 	$component_attributes = [
-		'results_count'   => $search_results['result_count'],
+		'result_count'    => $search_results['result_count'],
 		'remaining_count' => $search_results['remaining_count'],
 		'cards'           => get_cards_data( array_map( 'absint', $search_results['ids'] ), $currency ),
 		'currency'        => $currency,
