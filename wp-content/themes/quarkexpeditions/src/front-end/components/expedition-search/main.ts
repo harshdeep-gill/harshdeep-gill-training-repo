@@ -38,6 +38,9 @@ export class ExpeditionSearch extends HTMLElement {
 		// Elements.
 		this.resultsContainer = this.querySelector( '.expedition-search__results' );
 		this.resultCountValue = this.querySelector( '.expedition-search__result-count-value' );
+
+		// Set on load event to make sure all the children are updated about the state.
+		window.addEventListener( 'load', this.initialize.bind( this ) );
 	}
 
 	/**
@@ -46,9 +49,6 @@ export class ExpeditionSearch extends HTMLElement {
 	connectedCallback() {
 		// Set settings data.
 		this.setSettingsData();
-
-		// Initialize.
-		this.initialize();
 	}
 
 	/**
