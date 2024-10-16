@@ -10,7 +10,7 @@ import {
 /**
  * Internal dependencies.
  */
-import * as heroCardSlider from '../../../hero-card-slider';
+import * as heroDetailsCardSlider from '../../../hero-details-card-slider';
 
 /**
  * External dependencies.
@@ -33,8 +33,8 @@ export default function Edit( { className }: BlockEditAttributes ): JSX.Element 
 	const innerBlockProps = useInnerBlocksProps(
 		{ ...blockProps },
 		{
-			allowedBlocks: [ heroCardSlider.name ],
-			template: [ [ heroCardSlider.name, { showControls: false } ] ],
+			allowedBlocks: [ heroDetailsCardSlider.name ],
+			template: [ [ heroDetailsCardSlider.name, { showControls: false } ] ],
 		}
 	);
 
