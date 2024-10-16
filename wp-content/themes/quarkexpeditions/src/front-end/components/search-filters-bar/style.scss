@@ -378,6 +378,8 @@
 
 					.menu-list__item-link {
 						font-weight: var(--font-weight-bold);
+						text-decoration: underline var(--color-yellow);
+						text-underline-offset: var(--spacing-2);
 					}
 
 					#{$self}__destinations-filter-option-image > svg {

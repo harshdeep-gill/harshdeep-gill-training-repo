@@ -257,9 +257,6 @@ export class SearchFiltersBar extends HTMLElement {
 
 		// Update the months filter label
 		this.updateMonthsPlaceholder( fieldLabel );
-
-		// Activate destinations filter.
-		this.toggleDestinationFilterOptions();
 	}
 
 	/**

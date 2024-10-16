@@ -1,5 +1,5 @@
 @props( [
-	'button_text' => '',
+	'reset_button_text' => __( "I'm flexible", 'qrk' ),
 ] )
 
 @php
@@ -19,8 +19,8 @@
 	</tp-slider-track>
 
 	<div class="months-multi-select__nav">
-		@if ( ! empty( $button_text ) )
-			<button class="months-multi-select__reset-button"><x-escape :content="$button_text" /></button>
+		@if ( ! empty( $reset_button_text ) )
+			<button class="months-multi-select__reset-button"><x-escape :content="$reset_button_text" /></button>
 		@endif
 
 		@if ( $slide_count > 1 )
