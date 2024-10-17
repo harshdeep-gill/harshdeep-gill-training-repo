@@ -58,6 +58,9 @@
 				<input type="hidden" name="fields[MSCLID__c]" value="" class="form__msclkid">
 				<input type="hidden" name="fields[PCLID__c]" value="" class="form__pclid">
 			@endif
+			@if ( ! empty( $extra_field_key ) )
+				<input type="hidden" name="fields[{{ $extra_field_key }}]" value="" class="form__extra_field">
+			@endif
 
 			@if ( true === $recaptcha )
 				<input type="hidden" name="recaptcha_token" value="" />

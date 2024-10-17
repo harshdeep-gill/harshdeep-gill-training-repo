@@ -20,6 +20,7 @@
 	@class( $classes )
 	marketing_fields=false
 	webform_url=false
+	extra_field_key="Departure_ID__c"
 >
 	<div class="form-communications-opt-in__content">
 		<div class="form-communications-opt-in__form">
