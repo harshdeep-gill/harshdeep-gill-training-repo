@@ -413,6 +413,7 @@
 				</x-expedition-cards.more-details>
 			</x-expedition-cards.card>
 		@endforeach
-
+	@else
+		<x-escape :content="__( 'No expeditions found.', 'qrk' )" />
 	@endif
 </x-expedition-cards>
