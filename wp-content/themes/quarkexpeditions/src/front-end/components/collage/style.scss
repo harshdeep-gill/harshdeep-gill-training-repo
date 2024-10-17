@@ -32,18 +32,6 @@
 			flex-grow: 1;
 		}
 
-		img {
-			transform: scale(1);
-			height: 100%;
-			object-fit: cover;
-
-			@include transition(transform);
-		}
-
-		:hover img {
-			transform: scale(1.03);
-		}
-
 		@media screen and (max-width: calc( grid-size(lg) - 1px)) {
 
 			&:not(:last-child) {
@@ -72,6 +60,21 @@
 			&--x-large {
 				flex-basis: 100%;
 			}
+		}
+	}
+
+	.media-lightbox__image-wrap {
+
+		img {
+			transform: scale(1);
+			height: 100%;
+			object-fit: cover;
+
+			@include transition(transform);
+		}
+
+		&:hover img {
+			transform: scale(1.03);
 		}
 	}
 
