@@ -31,7 +31,7 @@ export default class ExpeditionSearchResults extends HTMLElement {
 		super();
 
 		// Element.
-		this.selector = this.getAttribute( 'selector' ) ?? '.expedition-search__results';
+		this.selector = this.getAttribute( 'selector' ) ?? '.expedition-cards';
 		this.resultsContainer = this.querySelector( this.selector );
 
 		// Subscribe.
@@ -52,6 +52,7 @@ export default class ExpeditionSearchResults extends HTMLElement {
 			loadMoreResults,
 			cabinClasses,
 			travelers,
+			noResultsMarkup,
 		} = state;
 
 		// If results container element not available, return.
@@ -65,8 +66,10 @@ export default class ExpeditionSearchResults extends HTMLElement {
 			// Update markup.
 			if ( loadMoreResults ) {
 				this.resultsContainer.innerHTML += markup;
-			} else {
+			} else if ( markup ) {
 				this.resultsContainer.innerHTML = markup;
+			} else {
+				this.resultsContainer.innerHTML = noResultsMarkup;
 			}
 
 			// Call markupUpdated for handing actions after markup is updated.

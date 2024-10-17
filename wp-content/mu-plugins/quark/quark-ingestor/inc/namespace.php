@@ -113,8 +113,8 @@ function cron_schedule_push(): void {
 		return;
 	}
 
-	// Set a time + 1 hour.
-	$next_time = time() + HOUR_IN_SECONDS;
+	// Set a time + 1 hour + 90 seconds.
+	$next_time = time() + HOUR_IN_SECONDS + 90;
 
 	// Schedule the event. in 4 hours time.
 	wp_schedule_event( $next_time, 'hourly', SCHEDULE_HOOK );
@@ -322,6 +322,7 @@ function do_push( array $expedition_post_ids = [], bool $changed_only = true ): 
 						'expedition_post_id' => $expedition_post_id,
 						'initiated_via'      => $initiated_via,
 						'changed_only'       => $changed_only,
+						'hash'               => $new_hash,
 					]
 				);
 

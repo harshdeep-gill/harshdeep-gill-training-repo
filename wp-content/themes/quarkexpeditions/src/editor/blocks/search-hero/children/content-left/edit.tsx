@@ -40,7 +40,7 @@ export default function Edit( { className }: BlockEditAttributes ): JSX.Element 
 		{ ...blockProps },
 		{
 			allowedBlocks: [ titleContainer.name, searchBar.name, thumbnailCards.name ],
-			template: [ [ titleContainer.name ], [ searchBar.name ], [ thumbnailCards.name ] ],
+			template: [ [ titleContainer.name ], [ searchBar.name ], [ thumbnailCards.name, { isCarousel: false } ] ],
 		}
 	);
 

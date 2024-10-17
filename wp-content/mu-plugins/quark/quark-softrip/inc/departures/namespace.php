@@ -335,6 +335,15 @@ function update_departures( array $raw_departures = [], string $softrip_package_
 					'updated_fields' => $updated_fields,
 				]
 			);
+		} else {
+			// Fire action if no updates.
+			do_action(
+				'quark_softrip_sync_departure_no_updates',
+				[
+					'post_id'    => $updated_post_id,
+					'softrip_id' => $departure_softrip_id,
+				]
+			);
 		}
 	}
 

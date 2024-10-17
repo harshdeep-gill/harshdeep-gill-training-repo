@@ -1,7 +1,7 @@
 @props( [
 	'remaining_count' => 0,
-	'results_count'   => 0,
 	'page'            => 1,
+	'result_count'   => 0,
 	'next_page'       => 1,
 ] )
 
@@ -12,7 +12,7 @@
 
 	$is_server_rendered = false;
 
-	if ( $remaining_count > 0 && $remaining_count <= $results_count ) {
+	if ( $remaining_count >= 0 && $remaining_count <= $result_count ) {
 		$is_server_rendered = true;
 	}
 
@@ -29,7 +29,7 @@
 		@if ( $is_server_rendered )
 			server-rendered="yes"
 			remaining-count="{{ $remaining_count }}"
-			results-count="{{ $results_count }}"
+			result-count="{{ $result_count }}"
 			page="{{ $page }}"
 			next-page="{{ $next_page }}"
 		@endif

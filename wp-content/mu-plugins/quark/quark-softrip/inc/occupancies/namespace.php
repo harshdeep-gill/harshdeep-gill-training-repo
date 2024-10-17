@@ -731,6 +731,11 @@ function get_lowest_price( int $post_id = 0, string $currency = USD_CURRENCY ): 
 		// Get lowest price for occupancy promotions.
 		$promotion_lowest_price = get_occupancy_promotion_lowest_price( $occupancy['id'], $currency );
 
+		// Set original price if promotion price is empty.
+		if ( empty( $promotion_lowest_price ) ) {
+			$promotion_lowest_price = absint( $occupancy[ $price_per_person_key ] );
+		}
+
 		/**
 		 * If the promotion price is less than the current lowest price, update the discounted as well as the original price.
 		 * For example, if the lowest promotion price is $100 and the corresponding original price is $200, the discounted price will be $100 and the original price will be $200.
@@ -1106,6 +1111,11 @@ function get_lowest_price_by_cabin_category_and_departure( int $cabin_category_p
 
 		// Get lowest price for occupancy promotions.
 		$promotion_lowest_price = get_occupancy_promotion_lowest_price( $occupancy['id'], $currency );
+
+		// If promotion price is empty, set it to the original price.
+		if ( empty( $promotion_lowest_price ) ) {
+			$promotion_lowest_price = absint( $occupancy[ $price_per_person_key ] );
+		}
 
 		/**
 		 * If the promotion price is less than the current lowest price, update the discounted as well as the original price.
