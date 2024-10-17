@@ -74,7 +74,7 @@
 			</x-form.row>
 			<x-form.row>
 				<x-form.field :validation="[ 'required', 'no-empty-spaces' ]" class="form-account-management__state-of-residency">
-					<x-state-selector :states="$states" />
+					<x-state-selector :states="$states" state_code_key="State_of_Residency__c" />
 				</x-form.field>
 			</x-form.row>
 			<x-form.row>
