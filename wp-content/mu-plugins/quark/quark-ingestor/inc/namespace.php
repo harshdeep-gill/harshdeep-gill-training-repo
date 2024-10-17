@@ -674,11 +674,8 @@ function get_destination_terms( int $expedition_post_id = 0 ): array {
 		// Parent term ID.
 		$parent_term_id = get_parent_term_with_softrip_id( $destination_term['term_id'] );
 
-		// Softrip ID for parent.
-		$softrip_id = get_term_meta( $parent_term_id, 'softrip_id', true );
-
-		// Check for Softrip ID.
-		if ( empty( $softrip_id ) ) {
+		// If empty parent term ID.
+		if ( empty( $parent_term_id ) ) {
 			continue;
 		}
 
@@ -687,6 +684,14 @@ function get_destination_terms( int $expedition_post_id = 0 ): array {
 
 		// Check for parent term.
 		if ( empty( $parent_term ) || ! is_array( $parent_term ) ) {
+			continue;
+		}
+
+		// Softrip ID for parent.
+		$softrip_id = get_term_meta( $parent_term_id, 'softrip_id', true );
+
+		// Check for Softrip ID.
+		if ( empty( $softrip_id ) ) {
 			continue;
 		}
 
@@ -729,20 +734,20 @@ function get_parent_term_with_softrip_id( int $term_id = 0 ): int {
 		return $parent_term_id;
 	}
 
-	// Get softrip_id from meta.
-	$softrip_id = get_term_meta( $term_id, 'softrip_id', true );
-
-	// Check for softrip_id.
-	if ( ! empty( $softrip_id ) ) {
-		// Return term ID.
-		return $term_id;
-	}
-
 	// Get parent term.
 	$parent_term_id = absint( $term['parent'] );
 
 	// Check for parent term.
 	if ( empty( $parent_term_id ) ) {
+		return $parent_term_id;
+	}
+
+	// Get softrip_id from meta.
+	$softrip_id = get_term_meta( $parent_term_id, 'softrip_id', true );
+
+	// Check for softrip_id.
+	if ( ! empty( $softrip_id ) ) {
+		// Return term ID.
 		return $parent_term_id;
 	}
 
