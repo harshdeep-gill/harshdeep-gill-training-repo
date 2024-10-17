@@ -1,9 +1,7 @@
 @props( [
-	'destinations'           => [],
-	'antarctic_cta_image_id' => 0,
-	'arctic_cta_image_id'    => 0,
-	'antarctic_cta_url'      => '',
-	'arctic_cta_url'         => '',
+	'destinations' => [],
+	'image_ids'    => [],
+	'cta_urls'     => [],
 ] )
 
 @php
@@ -68,12 +66,31 @@
 					</x-menu-list>
 
 					{{-- CTA --}}
-					<x-thumbnail-cards :is_carousel="false">
-						<x-thumbnail-cards.card size="small" url="#" orientation="landscape" image_id="29">
-							{{-- TODO: Make dynamic. --}}
-							<x-thumbnail-cards.title title="View All Expeditions" align="bottom" />
-						</x-thumbnail-cards.card>
-					</x-thumbnail-cards>
+					@php
+						$destination_array_key = strtolower( $destination_parent_name );
+					@endphp
+					@if (
+						array_key_exists(  $destination_array_key, $image_ids ) &&
+						array_key_exists(  $destination_array_key, $cta_urls ) &&
+						! empty( $image_ids[$destination_array_key] ) &&
+						! empty( $cta_urls[$destination_array_key] )
+					)
+						@php
+							$image_id = $image_ids[$destination_array_key];
+							$cta_url  = $cta_urls[$destination_array_key]['url'] ?? '#';
+							$cta_text = $cta_urls[$destination_array_key]['text'] ?? '';
+						@endphp
+						<x-thumbnail-cards :is_carousel="false">
+							<x-thumbnail-cards.card
+								size="small"
+								url="{{ $cta_url }}"
+								orientation="landscape"
+								:image_id="$image_id"
+							>
+								<x-thumbnail-cards.title :title="$cta_text" align="bottom" />
+							</x-thumbnail-cards.card>
+						</x-thumbnail-cards>
+					@endif
 				</x-two-columns.column>
 			@endforeach
 		@endif

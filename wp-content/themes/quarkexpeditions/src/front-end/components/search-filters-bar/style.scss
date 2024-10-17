@@ -319,6 +319,13 @@
 									overflow-y: auto;
 								}
 							}
+
+							&__item {
+
+								@media screen and (min-width: grid-size(sm)) {
+									padding-bottom: var(--spacing-4);
+								}
+							}
 						}
 					}
 

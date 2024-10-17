@@ -7,6 +7,8 @@
 	'available_months'         => [],
 	'filters_api_url'          => '',
 	'search_page_url'          => '',
+	'image_ids'                => [],
+	'cta_urls'                 => [],
 ] )
 
 {{-- Render the modal only once even if there are multiple search bars present on a page --}}
@@ -30,7 +32,11 @@
 			</quark-search-filters-bar>
 
 			{{-- Filter options --}}
-			<x-search-filters-bar.destinations.filter-options :destinations="$destinations" />
+			<x-search-filters-bar.destinations.filter-options
+				:destinations="$destinations"
+				:image_ids="$image_ids"
+				:cta_urls="$cta_urls"
+			/>
 			<x-search-filters-bar.departure-months.filter-options :available_months="$available_months" />
 		</x-modal.body>
 		<x-modal.footer>
