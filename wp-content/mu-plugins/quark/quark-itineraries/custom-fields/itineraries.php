@@ -75,7 +75,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 					'taxonomy'             => '',
 					'return_format'        => 'object',
 					'multiple'             => 0,
-					'allow_null'           => 0,
+					'allow_null'           => 1,
 					'ui'                   => 1,
 					'bidirectional'        => 0,
 					'bidirectional_target' => [],
