@@ -214,6 +214,7 @@
 		overflow: hidden;
 		position: relative;
 		border-radius: var(--border-radius-large);
+		min-height: 100%;
 
 		@media screen and (min-width: grid-size(sm)) {
 			max-width: 352px;
