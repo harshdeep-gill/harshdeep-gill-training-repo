@@ -16,6 +16,7 @@ use function Quark\PolicyPages\get as get_policy_page_post;
 use function Quark\Brochures\get as get_brochure;
 use function Quark\ItineraryDays\get as get_itinerary_day;
 use function Quark\Leads\get_request_a_quote_url;
+use function Quark\Localization\get_current_currency;
 use function Quark\Ships\get as get_ship;
 use function Quark\Softrip\Itineraries\get_lowest_price;
 use function Quark\Softrip\Itineraries\get_related_ships;
@@ -487,8 +488,8 @@ function get_details_tabs_data( array $itineraries = [], int $expedition_id = 0 
 			}
 		}
 
-		// TODO: Add currency change support.
-		$price = format_price( get_lowest_price( $itinerary['post']->ID )['original'] );
+		// Get the itinerary lowest price.
+		$price = format_price( get_lowest_price( $itinerary['post']->ID )['discounted'], get_current_currency() );
 
 		// Translators: %s is the lowest price.
 		$price = ! empty( $price ) ? sprintf( __( '%s per person', 'qrk' ), $price ) : '';

@@ -1213,7 +1213,15 @@ function get_dates_rates_cards_data( array $departure_ids = [], string $currency
 	// Loop through departure_ids.
 	foreach ( $departure_ids as $departure_id ) {
 		// Get departure card data.
-		$departure_cards[ $departure_id ] = get_dates_rates_card_data( $departure_id, $currency );
+		$card_data = get_dates_rates_card_data( $departure_id, $currency );
+
+		// Validate card_data.
+		if ( empty( $card_data ) ) {
+			continue;
+		}
+
+		// Add card data to departure cards.
+		$departure_cards[ $departure_id ] = $card_data;
 	}
 
 	// Return departure cards data.
