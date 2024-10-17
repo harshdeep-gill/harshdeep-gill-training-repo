@@ -159,8 +159,15 @@
 
 	&__price {
 
-		&-discounted,
-		> p {
+		&-title {
+			font-weight: var(--font-weight-bold);
+
+			&[discounted="1"] {
+				color: var(--color-success-100);
+			}
+		}
+
+		&-discounted {
 			color: var(--color-success-100);
 			font-weight: var(--font-weight-bold);
 		}
