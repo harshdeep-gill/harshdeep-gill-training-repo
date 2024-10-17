@@ -34,6 +34,7 @@ class Stream_Connector extends Connector {
 		'quark_softrip_sync_departure_updated',
 		'quark_softrip_sync_departure_expired',
 		'quark_softrip_sync_error',
+		'quark_softrip_sync_departure_no_updates',
 	];
 
 	/**
@@ -66,11 +67,12 @@ class Stream_Connector extends Connector {
 	public function get_action_labels(): array {
 		// Return labels.
 		return [
-			'sync_initiated'         => __( 'Sync Initiated', 'qrk' ),
-			'sync_completed'         => __( 'Sync Completed', 'qrk' ),
-			'sync_departure_updated' => __( 'Departure Updated', 'qrk' ),
-			'sync_departure_expired' => __( 'Departure Expired', 'qrk' ),
-			'sync_error'             => __( 'Sync Error', 'qrk' ),
+			'sync_initiated'            => __( 'Sync Initiated', 'qrk' ),
+			'sync_completed'            => __( 'Sync Completed', 'qrk' ),
+			'sync_departure_updated'    => __( 'Departure Updated', 'qrk' ),
+			'sync_departure_expired'    => __( 'Departure Expired', 'qrk' ),
+			'sync_error'                => __( 'Sync Error', 'qrk' ),
+			'sync_departure_no_updates' => __( 'Departure No Updates', 'qrk' ),
 		];
 	}
 
@@ -273,6 +275,36 @@ class Stream_Connector extends Connector {
 			0,
 			'softrip_sync',
 			'sync_error'
+		);
+	}
+
+	/**
+	 * Callback for `quark_softrip_sync_departure_no_updates` action.
+	 *
+	 * @param mixed[] $data Data passed to the action.
+	 *
+	 * @return void
+	 */
+	public function callback_quark_softrip_sync_departure_no_updates( array $data = [] ): void {
+		// Validate data.
+		if ( empty( $data ) || empty( $data['post_id'] ) || empty( $data['softrip_id'] ) ) {
+			return;
+		}
+
+		// Prepare message.
+		$message = sprintf(
+			// translators: %1$s: Softrip ID.
+			__( '"%1$s" no updates', 'qrk' ),
+			strval( $data['softrip_id'] )
+		);
+
+		// Log action.
+		$this->log(
+			$message,
+			[],
+			absint( $data['post_id'] ),
+			'softrip_sync',
+			'sync_departure_no_updates'
 		);
 	}
 

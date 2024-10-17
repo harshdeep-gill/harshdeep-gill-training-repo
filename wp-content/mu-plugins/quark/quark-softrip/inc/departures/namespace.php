@@ -75,7 +75,23 @@ function update_departures( array $raw_departures = [], string $softrip_package_
 	$itinerary_post_id = absint( $itinerary_post_ids[0] );
 
 	// Get the expedition post ID.
-	$expedition_post_id = absint( get_post_meta( $itinerary_post_id, 'related_expedition', true ) );
+	$expedition_post_ids = get_post_meta( $itinerary_post_id, 'related_expedition', true );
+
+	// Validate for empty or multiple expedition post IDs.
+	if ( empty( $expedition_post_ids ) ) {
+		return false;
+	} elseif ( is_array( $expedition_post_ids ) ) {
+		// Validate for multiple expedition post IDs.
+		if ( 1 < count( $expedition_post_ids ) ) {
+			return false;
+		}
+
+		// Get the expedition post ID.
+		$expedition_post_id = absint( $expedition_post_ids[0] );
+	} else {
+		// Get the expedition post ID.
+		$expedition_post_id = absint( $expedition_post_ids );
+	}
 
 	// Bail out if empty expedition post ID.
 	if ( empty( $expedition_post_id ) ) {
@@ -294,17 +310,17 @@ function update_departures( array $raw_departures = [], string $softrip_package_
 		}
 
 		// Update adventure options.
-		if ( ! empty( $raw_departure['adventureOptions'] ) ) {
+		if ( isset( $raw_departure['adventureOptions'] ) && is_array( $raw_departure['adventureOptions'] ) ) {
 			$is_adventure_options_updated = update_adventure_options( $raw_departure['adventureOptions'], $updated_post_id );
 		}
 
 		// Update promotions. This is done before cabins to get the promotion IDs.
-		if ( ! empty( $raw_departure['promotions'] ) ) {
+		if ( isset( $raw_departure['promotions'] ) && is_array( $raw_departure['promotions'] ) ) {
 			$is_promotions_updated = update_promotions( $raw_departure['promotions'], $updated_post_id );
 		}
 
 		// Update Cabins.
-		if ( ! empty( $raw_departure['cabins'] ) ) {
+		if ( isset( $raw_departure['cabins'] ) && is_array( $raw_departure['cabins'] ) ) {
 			$is_occupancies_updated = update_occupancies( $raw_departure['cabins'], $updated_post_id );
 		}
 
@@ -333,6 +349,15 @@ function update_departures( array $raw_departures = [], string $softrip_package_
 					'post_id'        => $updated_post_id,
 					'softrip_id'     => $departure_softrip_id,
 					'updated_fields' => $updated_fields,
+				]
+			);
+		} else {
+			// Fire action if no updates.
+			do_action(
+				'quark_softrip_sync_departure_no_updates',
+				[
+					'post_id'    => $updated_post_id,
+					'softrip_id' => $departure_softrip_id,
 				]
 			);
 		}

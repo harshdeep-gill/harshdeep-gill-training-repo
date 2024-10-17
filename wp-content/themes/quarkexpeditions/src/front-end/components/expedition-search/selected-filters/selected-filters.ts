@@ -48,6 +48,9 @@ export default class ExpeditionSearchSelectedFilters extends HTMLElement {
 	update( state: ExpeditionSearchState ) {
 		// Null check.
 		if ( ! this.selectedFiltersList || ! this.selectedFilterPillTemplate ) {
+			// Hide this component.
+			this.setAttribute( 'data-hidden', '' );
+
 			// Bail.
 			return;
 		}

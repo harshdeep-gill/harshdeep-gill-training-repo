@@ -46,6 +46,22 @@
 		}
 	}
 
+	&__slider {
+		display: none;
+
+		@media screen and (min-width: grid-size(sm)) {
+			display: block;
+		}
+
+		&--compact {
+			display: block;
+
+			@media screen and (min-width: grid-size(sm)) {
+				display: none;
+			}
+		}
+	}
+
 	&__slide {
 		display: none;
 
@@ -95,9 +111,6 @@
 		}
 	}
 
-	&__year {
-		min-width: 0;
-	}
 
 	&__options {
 		display: grid;
@@ -115,12 +128,6 @@
 			text-transform: uppercase;
 			padding: var(--spacing-2) var(--spacing-1);
 			border-radius: var(--border-small);
-
-			@include transition(background-color, 0.2s);
-
-			@media screen and (min-width: grid-size(xl)) {
-				min-width: 160px;
-			}
 
 			&:hover {
 				cursor: pointer;
@@ -140,6 +147,8 @@
 				background-color: var(--color-black);
 				color: var(--color-white);
 			}
+
+			@include transition(background-color, 0.2s);
 		}
 	}
 

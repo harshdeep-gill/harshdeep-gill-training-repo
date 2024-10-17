@@ -11,6 +11,8 @@ use WP_Block;
 use WP_Query;
 
 use function Quark\Core\get_pagination_links;
+use function Quark\Core\get_first_pagination_link;
+use function Quark\Core\get_last_pagination_link;
 use function Quark\PressReleases\get_cards_data;
 
 use const Quark\PressReleases\POST_TYPE;
@@ -88,8 +90,8 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 		'total_pages'          => $press_releases->max_num_pages,
 		'current_page'         => $current_page,
 		'pagination'           => $pagination,
-		'first_page_link'      => 1 !== $current_page ? add_query_arg( 'paged', 1 ) : '',
-		'last_page_link'       => $current_page !== $press_releases->max_num_pages ? add_query_arg( 'paged', $press_releases->max_num_pages ) : '',
+		'first_page_link'      => 1 !== $current_page ? get_first_pagination_link() : '',
+		'last_page_link'       => $current_page !== $press_releases->max_num_pages ? get_last_pagination_link( [ 'total' => $press_releases->max_num_pages ] ) : '',
 	];
 
 	// Return the rendered component.
