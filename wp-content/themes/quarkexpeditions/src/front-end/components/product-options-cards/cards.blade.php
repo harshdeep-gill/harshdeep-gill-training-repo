@@ -1,7 +1,6 @@
 @props( [
-	'class'                => '',
-	'request_a_quote_url'  => '',
-	'default_phone_number' => quark_get_template_data( 'dynamic_phone_number', [] )['default_phone_number'] ?? '',
+	'class'               => '',
+	'request_a_quote_url' => '',
 ] )
 
 @php
@@ -49,7 +48,7 @@
 				@if ( ! empty( $request_a_quote_url ) )
 					<p class="product-options-cards__help-text">{{ __( 'Not ready to book?', 'qrk' ) }} <a href="{!! esc_url( $request_a_quote_url ) !!}">{{ __( 'Request a quote', 'qrk' ) }}</a></p>
 				@endif
-				<x-product-options-cards.phone-number :phone_number="$default_phone_number" text="Request a callback: {{ $default_phone_number }}" />
+				<x-product-options-cards.phone-number />
 			</div>
 		</div>
 	@endif

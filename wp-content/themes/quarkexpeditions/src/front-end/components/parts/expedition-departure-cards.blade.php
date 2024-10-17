@@ -1,6 +1,5 @@
 @props( [
-	'cards'                => [],
-	'default_phone_number' => quark_get_template_data( 'dynamic_phone_number', [] )['default_phone_number'] ?? '',
+	'cards' => [],
 ] )
 
 <x-departure-cards>
@@ -312,7 +311,7 @@
 
 									<x-dialog.footer>
 										<x-product-options-cards.cta-buttons>
-											<x-product-options-cards.phone-number :phone_number="$default_phone_number" text="Request a callback: {{ $default_phone_number }}" />
+											<x-product-options-cards.phone-number />
 											@if ( ! empty( $cabin['occupancies'] ) && is_array( $cabin['occupancies'] ) )
 												<x-product-options-cards.cta-book-now :url="$cabin['occupancies'][0]['checkout_url'] ?? '#'" />
 											@endif
@@ -390,7 +389,7 @@
 									@if ( ! empty( $card['request_a_quote_url'] ) )
 										<p class="product-options-cards__help-text">{{ __( 'Not ready to book?', 'qrk' ) }} <a href="{!! esc_url( $card['request_a_quote_url'] ) !!}">{{ __( 'Request a quote', 'qrk' ) }}</a></p>
 									@endif
-									<x-product-options-cards.phone-number :phone_number="$default_phone_number" text="Request a callback: {{ $default_phone_number }}" />
+									<x-product-options-cards.phone-number />
 									@if ( ! empty( $cabin['occupancies'] ) && is_array( $cabin['occupancies'] ) )
 										<x-product-options-cards.cta-book-now :url="$cabin['occupancies'][0]['checkout_url'] ?? '#'" />
 									@endif
