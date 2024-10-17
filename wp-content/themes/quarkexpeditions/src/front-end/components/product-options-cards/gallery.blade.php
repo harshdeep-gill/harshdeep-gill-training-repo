@@ -31,14 +31,19 @@
 	];
 
 	if ( ! empty( $full_size ) ) {
-		$image_args['size'] = [
-			'width'  => 928,
-			'height' => 480,
-		];
-
-		$image_args['responsive'] = [
-			'sizes'  => [ '(min-width: 1024px) 928px', '(min-width: 768px) 660px', '520px' ],
-			'widths' => [ 520, 660, 1056 ],
+		$image_args = [
+			'size' => [
+				'width'  => 1160,
+				'height' => 600,
+			],
+			'responsive' => [
+				'sizes'  => [ '(min-width: 1024px) 928px', '(min-width: 768px) 660px', '520px' ],
+				'widths' => [ 520, 660, 1160 ],
+			],
+			'transform' => [
+				'crop' => 'fit',
+				'quality' => 100
+			]
 		];
 	}
 
