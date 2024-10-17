@@ -42,4 +42,5 @@
 		:filters_api_url="$filters_api_url"
 		:search_page_url="$search_page_url"
 	/>
+	<x-search-filters-bar.sticky-cta />
 </quark-search-filters-bar>
