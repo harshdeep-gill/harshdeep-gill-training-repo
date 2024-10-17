@@ -9,6 +9,7 @@ namespace Quark\Expeditions;
 
 use WP_Post;
 use WP_Error;
+use WP_Screen;
 use WP_Term;
 use WP_REST_Response;
 use WP_Taxonomy;
@@ -65,6 +66,9 @@ function bootstrap(): void {
 	add_action( 'qe_expedition_post_cache_busted', __NAMESPACE__ . '\\bust_details_cache' );
 	add_action( 'qe_itinerary_post_cache_busted', __NAMESPACE__ . '\\bust_details_cache_on_itinerary_update', 1 );
 	add_action( 'qe_departure_post_cache_busted', __NAMESPACE__ . '\\bust_details_cache_on_departure_update', 1 );
+
+	// Related Itineraries Meta box.
+	add_action( 'add_meta_boxes', __NAMESPACE__ . '\\add_related_itineraries_meta_box' );
 
 	// Admin stuff.
 	if ( is_admin() ) {
@@ -1956,4 +1960,57 @@ function get_destination_term_by_code( string $code = '' ): null|WP_Term {
 
 	// Return null if no term is found.
 	return null;
+}
+
+/**
+ * Add related Itineraries meta box.
+ *
+ * @return void
+ */
+function add_related_itineraries_meta_box(): void {
+	// Get current screen detail.
+	$screen = get_current_screen();
+
+	// If it's not post type screen then bail out.
+	if ( ! $screen instanceof WP_Screen || empty( $screen->post_type ) || POST_TYPE !== $screen->post_type ) {
+		return;
+	}
+
+	// Add meta box.
+	add_meta_box( 'related-itineraries', 'Related Itineraries', __NAMESPACE__ . '\\add_related_itineraries_meta_box_content', [ POST_TYPE ], 'side', 'low' );
+}
+
+/**
+ * Add related Itineraries meta box content.
+ *
+ * @param WP_Post|null $post Post object.
+ *
+ * @return void
+ */
+function add_related_itineraries_meta_box_content( WP_Post $post = null ): void {
+	// Validate is post is not empty and type of current post type.
+	if ( ! $post instanceof WP_Post || POST_TYPE !== $post->post_type ) {
+		return;
+	}
+
+	// Get Related Itineraries meta.
+	$related_itineraries = get_post_meta( $post->ID, 'related_itineraries', true );
+
+	// If Related Itineraries is not exists then bail out.
+	if ( ! is_array( $related_itineraries ) || empty( $related_itineraries ) ) {
+		echo '<p>The itineraries have not been mapped to the expedition.</p>';
+
+		// Return.
+		return;
+	}
+
+	// List Itineraries.
+	foreach ( $related_itineraries as $itinerary_id ) {
+		printf(
+			'<p>%1$s -- <em>%2$s</em> <a href="%3$s" target="_blank">(Edit)</a></p>',
+			esc_html( get_the_title( $itinerary_id ) ),
+			esc_html( strval( get_post_status( $itinerary_id ) ) ),
+			esc_url( strval( get_edit_post_link( $itinerary_id ) ) )
+		);
+	}
 }
