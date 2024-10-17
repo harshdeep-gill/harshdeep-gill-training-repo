@@ -1,7 +1,9 @@
 @props( [
-	'destinations' => [],
-	'cta_image_id' => 0,
-	'cta_url'      => '',
+	'destinations'           => [],
+	'antarctic_cta_image_id' => 0,
+	'arctic_cta_image_id'    => 0,
+	'antarctic_cta_url'      => '',
+	'arctic_cta_url'         => '',
 ] )
 
 @php
@@ -78,7 +80,7 @@
 
 		{{-- Filter options in accordion for mobile --}}
 		<x-accordion>
-			<x-accordion.item id="accordion-destinations" :open="true">
+			<x-accordion.item id="search-filters-bar-destinations-accordion" :open="true">
 				<x-accordion.item-handle title="Destinations" />
 				<x-accordion.item-content>
 					@if ( ! empty( $destinations ) )

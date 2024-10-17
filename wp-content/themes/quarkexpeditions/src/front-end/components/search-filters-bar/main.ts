@@ -11,6 +11,7 @@ import { MonthsMultiSelect } from '../months-multi-select/main';
 import { SearchFilterDestinations } from './destinations';
 import { SearchFilterDestinationOption } from './destinations/filter-option';
 import { MonthsMultiSelectOption } from '../months-multi-select/months-multi-select-option';
+import { TPAccordionHandleElement, TPAccordionItemElement } from '@travelopia/web-components';
 
 /**
  * Get Store.
@@ -37,6 +38,10 @@ export class SearchFiltersBar extends HTMLElement {
 	private destinationSelector: SearchFilterDestinations | null | undefined;
 	private departureMonthsSelectors: NodeListOf<MonthsMultiSelect> | null | undefined;
 	private defaultDepartureMonthsPlaceholder: string;
+	private destinationsAccordion: TPAccordionItemElement | null | undefined;
+	private departuresAccordion: TPAccordionItemElement | null | undefined;
+	private destinationsAccordionHandle: TPAccordionHandleElement | null | undefined;
+	private departuresAccordionHandle: TPAccordionHandleElement | null | undefined;
 
 	/**
 	 * Constructor.
@@ -64,6 +69,10 @@ export class SearchFiltersBar extends HTMLElement {
 		this.searchButton = this.querySelector( '.search-filters-bar__search-button' );
 		this.headerSearchButton = document.querySelector( '.header__search-item' );
 		this.clearAllButton = document.querySelector( '.search-filters-bar__modal-button-clear-all' );
+		this.destinationsAccordion = this.searchFiltersModal?.querySelector( 'tp-accordion-item#search-filters-bar-destinations-accordion' );
+		this.destinationsAccordionHandle = this.searchFiltersModal?.querySelector( 'tp-accordion-item#search-filters-bar-destinations-accordion > tp-accordion-handle' );
+		this.departuresAccordion = this.searchFiltersModal?.querySelector( 'tp-accordion-item#search-filters-bar-departures-accordion' );
+		this.departuresAccordionHandle = this.searchFiltersModal?.querySelector( 'tp-accordion-item#search-filters-bar-departures-accordion > tp-accordion-handle' );
 
 		// Event Listeners.
 		this.searchModalDestinationsButton?.addEventListener(
@@ -80,7 +89,7 @@ export class SearchFiltersBar extends HTMLElement {
 		this.departureMonthsSelectors?.forEach( ( selector ) => {
 			// Add event listeners.
 			selector?.addEventListener( 'change', this.updateDepartureMonthsState.bind( this ) );
-			selector?.addEventListener( 'reset', this.updateDepartureMonthsState.bind( this ) );
+			selector?.addEventListener( 'reset', this.updateMonthsPlaceholder.bind( this, this.defaultDepartureMonthsPlaceholder ) );
 		} );
 
 		// Search Button.
@@ -89,6 +98,36 @@ export class SearchFiltersBar extends HTMLElement {
 
 		// Clear All Button.
 		this.clearAllButton?.addEventListener( 'click', this.clearAllFilterSelection.bind( this ) );
+
+		// Accordion Handles.
+		this.destinationsAccordionHandle?.addEventListener( 'click', () => {
+			// Check if destinations accordion is open
+			const isDestinationsOpen = this.destinationsAccordion?.hasAttribute( 'open' );
+
+			// Check if destinations is open.
+			if ( ! isDestinationsOpen ) {
+				this.destinationsAccordion?.open();
+				this.departuresAccordion?.close();
+			} else {
+				this.departuresAccordion?.open();
+				this.destinationsAccordion?.close();
+			}
+		} );
+
+		// Departures Accordion.
+		this.departuresAccordionHandle?.addEventListener( 'click', () => {
+			// Check if departures accordion is open
+			const isDeparturesOpen = this.departuresAccordion?.hasAttribute( 'open' );
+
+			// Check if departures is open.
+			if ( ! isDeparturesOpen ) {
+				this.departuresAccordion?.open();
+				this.destinationsAccordion?.close();
+			} else {
+				this.destinationsAccordion?.open();
+				this.departuresAccordion?.close();
+			}
+		} );
 	}
 
 	/**
