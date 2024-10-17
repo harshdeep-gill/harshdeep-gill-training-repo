@@ -25,6 +25,7 @@
 
 		@media screen and (min-width: calc( grid-size(lg) + 1px )) {
 			max-width: 256px;
+			order: 1;
 		}
 
 		&--show-on-mobile {
