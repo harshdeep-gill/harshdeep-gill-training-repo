@@ -9,8 +9,15 @@
 	margin-top: var(--spacing-7);
 
 	@media screen and (min-width: calc( grid-size(lg) + 1px )) {
-		grid-template-columns: auto 1fr;
 		grid-column-gap: var(--spacing-5);
+		grid-template-columns: 1fr auto;
+	}
+
+	&:has(&__sidebar-left) {
+
+		@media screen and (min-width: calc(grid-size(lg) + 1px)) {
+			grid-template-columns: auto 1fr;
+		}
 	}
 
 	&__sidebar {
