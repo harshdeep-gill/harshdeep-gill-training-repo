@@ -45,12 +45,12 @@ function add_infinity_tracking_class( string $markup = '' ): string {
 			}
 
 			// Return the updated markup.
-			return quark_get_component(
-				'dynamic-phone-number',
-				[
-					'slot' => $anchor_tag,
-				]
-			);
+			// return quark_get_component(
+			// 	'dynamic-phone-number',
+			// 	[
+			// 		'slot' => $anchor_tag,
+			// 	]
+			// );
 		}
 
 		// Return the original markup if the href attribute is not a phone number.
