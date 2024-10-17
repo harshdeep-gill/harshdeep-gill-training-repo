@@ -1,16 +1,17 @@
 @props( [
 	'phone_number' => quark_get_template_data( 'dynamic_phone_number', [] )['default_phone_number'] ?? '',
-	'text'         => '',
+	'text'         => __( 'Give us a Call', 'qrk' ),
 ] )
 
 @php
-	if ( empty( $text ) ) {
-		$text = __( 'Give us a Call' );
-		$text = ! empty( $phone_number ) ? sprintf( '%s: %s', $text, $phone_number ) : $text;
+	if ( empty( $phone_number ) ) {
+		return;
 	}
 
-	if ( empty( $phone_number ) || empty( $text ) ) {
-		return;
+	if ( ! empty( $text ) ) {
+		$text = sprintf( '%s: %s', $text, $phone_number );
+	} else {
+		$text = $phone_number;
 	}
 @endphp
 
