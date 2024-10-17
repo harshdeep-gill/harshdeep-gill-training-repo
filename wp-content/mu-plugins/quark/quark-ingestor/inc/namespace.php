@@ -672,7 +672,7 @@ function get_destination_terms( int $expedition_post_id = 0 ): array {
 		}
 
 		// Parent term ID.
-		$parent_term_id = absint( $destination_term['parent'] );
+		$parent_term_id = get_parent_term_with_softrip_id( $destination_term['term_id'] );
 
 		// Softrip ID for parent.
 		$softrip_id = get_term_meta( $parent_term_id, 'softrip_id', true );
@@ -703,6 +703,54 @@ function get_destination_terms( int $expedition_post_id = 0 ): array {
 
 	// Return region terms.
 	return $regions;
+}
+
+/**
+ * Get parent term with softrip id.
+ *
+ * @param int $term_id Term ID.
+ *
+ * @return int
+ */
+function get_parent_term_with_softrip_id( int $term_id = 0 ): int {
+	// Initialize parent term ID.
+	$parent_term_id = 0;
+
+	// Check for term ID.
+	if ( empty( $term_id ) ) {
+		return $parent_term_id;
+	}
+
+	// Get term.
+	$term = get_term( $term_id, DESTINATION_TAXONOMY, ARRAY_A );
+
+	// Validate term.
+	if ( empty( $term ) || ! is_array( $term ) ) {
+		return $parent_term_id;
+	}
+
+	// Get softrip_id from meta.
+	$softrip_id = get_term_meta( $term_id, 'softrip_id', true );
+
+	// Check for softrip_id.
+	if ( ! empty( $softrip_id ) ) {
+		// Return term ID.
+		return $term_id;
+	}
+
+	// Get parent term.
+	$parent_term_id = absint( $term['parent'] );
+
+	// Check for parent term.
+	if ( empty( $parent_term_id ) ) {
+		return $parent_term_id;
+	}
+
+	// Get parent term.
+	$parent_term_id = get_parent_term_with_softrip_id( $parent_term_id );
+
+	// Return parent term ID.
+	return $parent_term_id;
 }
 
 /**
@@ -1565,7 +1613,7 @@ function get_included_adventure_options_data( int $expedition_post_id = 0 ): arr
 		$adventure_option_category_data = get_adventure_option_category_data_from_meta( $adventure_option_category_id );
 
 		// Add included option data.
-		$included_options_data[] = [
+		$included_options_data[ $adventure_option_category_id ] = [
 			'id'        => $adventure_option_category_id,
 			'name'      => get_raw_text_from_html( $adventure_option_category['name'] ),
 			'icon'      => $adventure_option_category_data['icon'],
@@ -1574,7 +1622,7 @@ function get_included_adventure_options_data( int $expedition_post_id = 0 ): arr
 	}
 
 	// Return included options data.
-	return $included_options_data;
+	return array_values( $included_options_data );
 }
 
 /**
