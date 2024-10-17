@@ -19,18 +19,14 @@
 <quark-expedition-search-filters class="expedition-search__filters">
 	<x-form.field class="expedition-search__filters-currency">
 		<x-form.inline-dropdown label="Currency">
-			
+
 			@foreach ( $currencies as $code => $currency_data )
-				@if ( ! is_array( $currency_data ) || empty( $currency_data['symbol'] ) || empty( $currency_data['display'] ) ) 
+				@if ( ! is_array( $currency_data ) || empty( $currency_data['symbol'] ) || empty( $currency_data['display'] ) )
 					@continue
 				@endif
 
-				@php
-					$label = sprintf( '%s %s', $currency_data['symbol'],  $currency_data['display'] );
-				@endphp
-
-				<x-form.option value="{{ $code }}" label="{{ $label }}" selected="{{ $currency === $code ? 'yes' : '' }}">
-					{{ $label }}
+				<x-form.option value="{{ $code }}" label="{{ $currency_data['display'] }}" selected="{{ $currency === $code ? 'yes' : '' }}">
+					{{ $currency_data['display'] }}
 				</x-form.option>
 			@endforeach
 

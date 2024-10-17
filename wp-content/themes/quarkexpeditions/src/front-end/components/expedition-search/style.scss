@@ -317,6 +317,13 @@
 			display: block;
 		}
 	}
+
+	&__filters-currency {
+
+		tp-multi-select-options {
+			min-width: 98px;
+		}
+	}
 }
 
 tp-modal.expedition-search__filters-modal {
