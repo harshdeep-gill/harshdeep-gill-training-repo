@@ -26,6 +26,11 @@
 		@extend %btn--media;
 	}
 
+	&--loading {
+
+		@extend %btn--loading;
+	}
+
 	&--has-icon {
 		display: inline-flex;
 		justify-content: center;

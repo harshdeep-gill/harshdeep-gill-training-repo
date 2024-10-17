@@ -38,6 +38,9 @@ export class ExpeditionSearch extends HTMLElement {
 		// Elements.
 		this.resultsContainer = this.querySelector( '.expedition-search__results' );
 		this.resultCountValue = this.querySelector( '.expedition-search__result-count-value' );
+
+		// Set on load event to make sure all the children are updated about the state.
+		window.addEventListener( 'load', this.initialize.bind( this ) );
 	}
 
 	/**
@@ -46,19 +49,48 @@ export class ExpeditionSearch extends HTMLElement {
 	connectedCallback() {
 		// Set settings data.
 		this.setSettingsData();
-
-		// Initialize.
-		this.initialize();
 	}
 
 	/**
 	 * Initialize component.
 	 */
 	initialize() {
+		// Null check
+		if ( ! this.resultsContainer ) {
+			// Bail.
+			return;
+		}
+
+		// Get the server rendered values if available
+		let isServerRendered = this.resultsContainer.getAttribute( 'server-rendered' ) === 'yes';
+		const serverRenderData = {
+			resultCount: Number.NaN,
+			remainingCount: Number.NaN,
+			page: Number.NaN,
+			nextPage: Number.NaN,
+		};
+
+		// Is it server rendered?
+		if ( isServerRendered && serverRenderData ) {
+			serverRenderData.resultCount = parseInt( this.resultsContainer.getAttribute( 'result-count' ) ?? '' );
+			serverRenderData.remainingCount = parseInt( this.resultsContainer.getAttribute( 'remaining-count' ) ?? '' );
+			serverRenderData.page = parseInt( this.resultsContainer.getAttribute( 'page' ) ?? '' );
+			serverRenderData.nextPage = parseInt( this.resultsContainer.getAttribute( 'next-page' ) ?? '' );
+
+			// Check if we have valid values.
+			isServerRendered = ! (
+				Number.isNaN( serverRenderData.remainingCount ) ||
+				Number.isNaN( serverRenderData.resultCount ) ||
+				Number.isNaN( serverRenderData.page ) ||
+				Number.isNaN( serverRenderData.nextPage )
+			);
+		}
+
 		// Initialize data for the component.
 		initialize( {
 			partial: this.partial,
 			selector: this.selector,
+			serverRenderData: isServerRendered ? serverRenderData : undefined,
 		} );
 	}
 
@@ -69,12 +101,17 @@ export class ExpeditionSearch extends HTMLElement {
 	 */
 	update( state: ExpeditionSearchState ): void {
 		// Get state.
-		const { loading, resultCount } = state;
+		const { loading, resultCount, loadMoreResults } = state;
 
 		// Set loading state.
 		if ( loading ) {
 			// Set loading to true.
 			this.setAttribute( 'loading', 'true' );
+
+			// Check if we loaded more results?
+			if ( ! loadMoreResults ) {
+				this.scrollIntoView();
+			}
 		} else {
 			// Set loading to false.
 			this.setAttribute( 'loading', 'false' );

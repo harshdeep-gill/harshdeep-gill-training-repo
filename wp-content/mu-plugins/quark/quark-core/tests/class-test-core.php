@@ -49,7 +49,8 @@ class Test_Core extends WP_UnitTestCase {
 			'leads_api_endpoint'   => 'http://test.quarkexpeditions.com/wp-json/quark-leads/v1/leads/create',
 			'current_url'          => false,
 			'dynamic_phone_number' => [
-				'api_endpoint' => 'http://test.quarkexpeditions.com/wp-json/qrk-phone-numbers/v1/phone-number/get',
+				'api_endpoint'         => 'http://test.quarkexpeditions.com/wp-json/qrk-phone-numbers/v1/phone-number/get',
+				'default_phone_number' => '+1234567890',
 			],
 			'currencies'           => [
 				USD_CURRENCY => [
@@ -76,7 +77,12 @@ class Test_Core extends WP_UnitTestCase {
 			'default_currency'     => DEFAULT_CURRENCY,
 			'filters_api_url'      => home_url( 'wp-json/quark-search/v1/filter-options/by-destination-and-month' ),
 			'search_page_url'      => '',
+			'site_url'             => 'http://test.quarkexpeditions.com',
+			'site_name'            => 'Quark',
 		];
+
+		// Update default phone number.
+		update_option( 'options_default_phone_number', '+1234567890' );
 
 		// Test front-end data.
 		$this->assertEquals(

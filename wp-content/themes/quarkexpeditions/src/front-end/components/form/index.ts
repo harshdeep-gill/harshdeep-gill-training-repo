@@ -7,6 +7,7 @@ import * as radioGroupRequired from './validators/radio-group';
 import * as checkboxGroupRequired from './validators/checkbox-group';
 import * as checkboxFieldRequired from './validators/checkbox-field';
 import * as fileSizeValid from './validators/file-size';
+import * as phoneFieldValidation from './validators/phone';
 import './range-slider';
 
 /**
@@ -17,6 +18,7 @@ const validators = [
 	checkboxGroupRequired,
 	checkboxFieldRequired,
 	fileSizeValid,
+	phoneFieldValidation,
 ];
 
 // Add all validations.

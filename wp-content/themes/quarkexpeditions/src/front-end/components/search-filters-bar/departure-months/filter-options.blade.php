@@ -11,7 +11,7 @@
 <quark-search-filters-bar-departure-months-filter-options
 	class="search-filters-bar__departure-months-filter-options"
 	active="false"
-	default-placeholder="{{ __( 'Anytime', 'qrk' ) }}"
+	default-placeholder="{{ __( 'I\'m Flexible', 'qrk' ) }}"
 >
 
 	<div class="search-filters-bar__departure-months-filter-options-selector">
@@ -19,8 +19,10 @@
 			:available_months="$available_months"
 			:is_multi_select="false"
 		>
-			<x-months-multi-select.slide :years="[ '2024', '2025' ]" />
-			<x-months-multi-select.slide :years="[ '2026', '2027' ]" />
+			<x-months-multi-select.carousel>
+				<x-months-multi-select.slide :years="[ '2024', '2025' ]" />
+				<x-months-multi-select.slide :years="[ '2026', '2027' ]" />
+			</x-months-multi-select.carousel>
 		</x-months-multi-select>
 	</div>
 
@@ -34,8 +36,10 @@
 						:available_months="$available_months"
 						:is_multi_select="false"
 					>
-						<x-months-multi-select.slide :years="[ '2024', '2025' ]" />
-						<x-months-multi-select.slide :years="[ '2026', '2027' ]" />
+						<x-months-multi-select.carousel :is_compact="true">
+								<x-months-multi-select.slide :years="[ '2024', '2025' ]" :is_compact="true" />
+								<x-months-multi-select.slide :years="[ '2026', '2027' ]" :is_compact="true" />
+						</x-months-multi-select.carousel>
 					</x-months-multi-select>
 				</x-accordion.item-content>
 			</x-accordion.item>

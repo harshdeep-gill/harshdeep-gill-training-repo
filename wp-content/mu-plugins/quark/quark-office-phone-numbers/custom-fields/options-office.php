@@ -17,6 +17,26 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 			'title'                 => 'Office',
 			'fields'                => [
 				[
+					'key'               => 'field_6661bd6972b2b',
+					'label'             => 'Default Phone Number',
+					'name'              => 'default_phone_number',
+					'aria-label'        => '',
+					'type'              => 'text',
+					'instructions'      => 'By changing default phone number, all the places where current phone number is added will not be updated by user\'s location.',
+					'required'          => 0,
+					'conditional_logic' => 0,
+					'wrapper'           => [
+						'width' => '',
+						'class' => '',
+						'id'    => '',
+					],
+					'default_value'     => '',
+					'maxlength'         => '',
+					'placeholder'       => '',
+					'prepend'           => '',
+					'append'            => '',
+				],
+				[
 					'key'               => 'field_6661bc6962d3d',
 					'label'             => 'Country',
 					'name'              => 'country',

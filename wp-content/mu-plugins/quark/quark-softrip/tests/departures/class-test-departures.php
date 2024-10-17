@@ -137,29 +137,29 @@ class Test_Departures extends Softrip_TestCase {
 		$related_ship_id = get_id_from_ship_code( $raw_departure_data['shipCode'] );
 
 		// Test with raw departure data, itinerary post id, and expedition post id but without cabins.
-		$expected = [];
+		$expected = [
+			'post_title'  => '123',
+			'post_type'   => DEPARTURE_POST_TYPE,
+			'post_parent' => 123,
+			'meta_input'  => [
+				'related_expedition'   => 456,
+				'itinerary'            => 123,
+				'related_ship'         => $related_ship_id,
+				'softrip_package_code' => 'DEF',
+				'softrip_id'           => '123',
+				'softrip_code'         => 'ABC',
+				'start_date'           => '2021-01-01',
+				'end_date'             => '2021-01-02',
+				'duration'             => 2,
+				'ship_code'            => 'GHI',
+				'softrip_market_code'  => 'JKL',
+			],
+		];
 		$actual   = format_raw_departure_data( $raw_departure_data, 123, 456 );
 		$this->assertEquals( $expected, $actual );
 
 		// Add empty cabin array to the raw departure data.
 		$raw_departure_data['cabins'] = [];
-
-		// Test with raw departure data, itinerary post id, expedition post id, and cabins.
-		$expected = [];
-		$actual   = format_raw_departure_data( $raw_departure_data, 123, 456 );
-		$this->assertEquals( $expected, $actual );
-
-		// Add cabins to the raw departure data.
-		$raw_departure_data['cabins'] = [
-			[
-				'id' => 'MYS',
-			],
-		];
-
-		// Test with raw departure data, itinerary post id, expedition post id, and cabins.
-		$expected = [];
-		$actual   = format_raw_departure_data( $raw_departure_data, 123, 456 );
-		$this->assertEquals( $expected, $actual );
 
 		// Add occupancy to the cabin.
 		$raw_departure_data['cabins'][0]['occupancies'] = [
@@ -191,26 +191,6 @@ class Test_Departures extends Softrip_TestCase {
 				'softrip_market_code'  => 'JKL',
 			],
 		];
-		$actual   = format_raw_departure_data( $raw_departure_data, 123, 456 );
-		$this->assertEquals( $expected, $actual );
-
-		// Test with raw departure data, itinerary post id, expedition post id, and cabins with multiple empty occupancies.
-		$raw_departure_data['cabins'] = [
-			[
-				'id' => 'MYS',
-			],
-			[
-				'id'          => 'MYS2',
-				'occupancies' => [],
-			],
-			[
-				'id'          => 'MYS3',
-				'occupancies' => [],
-			],
-		];
-
-		// Test with raw departure data, itinerary post id, expedition post id, and cabins.
-		$expected = [];
 		$actual   = format_raw_departure_data( $raw_departure_data, 123, 456 );
 		$this->assertEquals( $expected, $actual );
 

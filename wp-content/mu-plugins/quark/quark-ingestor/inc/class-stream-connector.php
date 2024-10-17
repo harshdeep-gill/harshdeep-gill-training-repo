@@ -243,7 +243,7 @@ class Stream_Connector extends Connector {
 	 */
 	public function callback_quark_ingestor_push_success( array $data = [] ): void {
 		// Validate data.
-		if ( empty( $data ) || empty( $data['expedition_post_id'] ) || empty( $data['initiated_via'] ) || ! isset( $data['changed_only'] ) ) {
+		if ( empty( $data ) || empty( $data['expedition_post_id'] ) || empty( $data['initiated_via'] ) || ! isset( $data['changed_only'] ) || empty( $data['hash'] ) ) {
 			return;
 		}
 
@@ -259,10 +259,11 @@ class Stream_Connector extends Connector {
 		// Prepare message.
 		$message = sprintf(
 			/* translators: 1: Expedition post title, 2: Initiated via, 3: Changed only */
-			__( 'Push successful for "%1$s" via %2$s | Changed only: %3$s', 'qrk' ),
+			__( 'Push successful for "%1$s" via %2$s | Changed only: %3$s | Hash: %4$s', 'qrk' ),
 			get_the_title( $expedition_post_id ),
 			$initiated_via,
-			$changed_only ? __( 'Yes', 'qrk' ) : __( 'No', 'qrk' )
+			$changed_only ? __( 'Yes', 'qrk' ) : __( 'No', 'qrk' ),
+			$data['hash']
 		);
 
 		// Log message.

@@ -30,15 +30,15 @@ export class LoadMore extends HTMLElement {
 		// Parent.
 		super();
 
-		// Subscribe.
-		subscribe( this.update.bind( this ) );
-
 		// Elements.
 		this.loadMoreButton = this.querySelector( '.expedition-search__load-more-button' );
 		this.loadMoreButtonText = this.querySelector( '.expedition-search__load-more-button > .btn__content-text' );
 
 		// Events.
 		this.loadMoreButton?.addEventListener( 'click', loadMoreResults.bind( this ) );
+
+		// Subscribe.
+		subscribe( this.update.bind( this ) );
 	}
 
 	/**

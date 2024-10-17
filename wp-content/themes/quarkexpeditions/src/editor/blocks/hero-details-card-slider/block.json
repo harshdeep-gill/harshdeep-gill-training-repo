@@ -1,0 +1,41 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "quark/hero-details-card-slider",
+	"description": "A slider of hero details cards",
+	"title": "Hero Details Card Slider",
+	"keywords": [
+		"hero",
+		"details",
+		"card",
+		"slider"
+	],
+	"category": "layout",
+	"textdomain": "quark",
+	"attributes": {
+		"showControls": {
+			"type": "boolean",
+			"default": true
+		},
+		"transitionType": {
+			"type": "string",
+			"default": "manual",
+			"enum": [ "manual", "auto" ]
+		},
+		"interval": {
+			"type": "number",
+			"default": 5
+		},
+		"innerBlocks" : {
+			"type": "array",
+			"default": []
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

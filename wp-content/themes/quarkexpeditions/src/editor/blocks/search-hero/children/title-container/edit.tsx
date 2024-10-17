@@ -35,8 +35,8 @@ export default function Edit( { className }: BlockEditAttributes ): JSX.Element 
 	const innerBlockProps = useInnerBlocksProps(
 		{ ...blockProps },
 		{
-			allowedBlocks: [ title.name, overline.name, subtitle.name ],
-			template: [ [ title.name ], [ overline.name ], [ subtitle.name ] ],
+			allowedBlocks: [ overline.name, title.name, subtitle.name ],
+			template: [ [ overline.name ], [ title.name ], [ subtitle.name ] ],
 		}
 	);
 

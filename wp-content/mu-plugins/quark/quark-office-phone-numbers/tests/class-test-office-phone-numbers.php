@@ -107,12 +107,16 @@ class Test_Office_Phone_Numbers extends WP_UnitTestCase {
 	 * @return void
 	 */
 	public function test_office_phone_number_front_end_data(): void {
+		// Update default phone number.
+		update_option( 'options_default_phone_number', '+1234567890' );
+
 		// Get data.
 		$data = office_phone_number_front_end_data();
 
 		// Prepare expected data.
 		$expected_data = [
-			'api_endpoint' => 'http://test.quarkexpeditions.com/wp-json/qrk-phone-numbers/v1/phone-number/get',
+			'api_endpoint'         => 'http://test.quarkexpeditions.com/wp-json/qrk-phone-numbers/v1/phone-number/get',
+			'default_phone_number' => '+1234567890',
 		];
 
 		// Test data.

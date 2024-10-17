@@ -146,6 +146,7 @@ export default class Form extends HTMLElement {
 						if ( this.thankYouPageUrl ) {
 							// Redirect to thank you page, if present.
 							window.location.href = this.thankYouPageUrl;
+							this.form?.reset();
 						} else {
 							// If not, trigger an event.
 							this.dispatchEvent( new CustomEvent( 'api-success', {

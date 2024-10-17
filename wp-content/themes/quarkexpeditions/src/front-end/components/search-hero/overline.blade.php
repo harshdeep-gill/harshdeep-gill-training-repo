@@ -1,5 +1,5 @@
 @props( [
-	'color' => 'blue',
+	'color' => 'black',
 ] )
 
 @php

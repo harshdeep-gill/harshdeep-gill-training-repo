@@ -190,13 +190,24 @@ const buildUrlFromFilters = (): string => {
 /**
  * Initialize data for the component.
  *
- * @param {Object} settings          Settings.
- * @param {string} settings.partial  Partial Url.
- * @param {string} settings.selector Selector.
+ * @param {Object} settings                                 Settings.
+ * @param {string} settings.partial                         Partial Url.
+ * @param {string} settings.selector                        Selector.
+ * @param {Object} settings.serverRenderData                Server render data.
+ * @param {number} settings.serverRenderData.resultCount    The number of results
+ * @param {number} settings.serverRenderData.remainingCount The number of results
+ * @param {number} settings.serverRenderData.page           The page number
+ * @param {number} settings.serverRenderData.nextPage       The next page number
  */
 export const initialize = ( settings: {
 	partial: string | undefined,
 	selector: string | undefined,
+	serverRenderData?: {
+		resultCount: number,
+		remainingCount: number,
+		page: number,
+		nextPage: number,
+	}
 } ): void => {
 	// Get current state.
 	const currentState: ExpeditionSearchState = getState();
@@ -210,9 +221,18 @@ export const initialize = ( settings: {
 		...settings,
 		selectedFilters,
 		initialized: true,
-		updateMarkup: true,
+		updateMarkup: ! settings.serverRenderData,
 		baseUrl: window.location.origin + window.location.pathname,
 	};
+
+	// Check if we have server render data.
+	if ( settings.serverRenderData ) {
+		initialUpdatePayload.resultCount = settings.serverRenderData.resultCount;
+		initialUpdatePayload.remainingCount = settings.serverRenderData.remainingCount;
+		initialUpdatePayload.page = settings.serverRenderData.page;
+		initialUpdatePayload.hasNextPage = settings.serverRenderData.nextPage > settings.serverRenderData.page;
+		initialUpdatePayload.nextPage = settings.serverRenderData.nextPage;
+	}
 
 	// Get the state from url.
 	const urlFilters = parseUrl();
@@ -304,7 +324,9 @@ export const initialize = ( settings: {
 	setState( initialUpdatePayload );
 
 	// Fetch Results.
-	fetchResults( stateInitialized );
+	if ( ! settings.serverRenderData ) {
+		fetchResults( stateInitialized );
+	}
 };
 
 /**
@@ -375,7 +397,7 @@ const filterUpdated = ( response: PartialData ) => {
 	// Get response data.
 	const {
 		markup,
-		data: { resultCount, nextPage },
+		data: { resultCount, nextPage, remainingCount },
 		noResultsMarkup,
 	} = response;
 
@@ -389,6 +411,7 @@ const filterUpdated = ( response: PartialData ) => {
 		updateMarkup: true,
 		resetMarkup: false,
 		loading: false,
+		remainingCount,
 	} );
 };
 
@@ -398,10 +421,20 @@ const filterUpdated = ( response: PartialData ) => {
  * @param {Function} callback Callback function.
  */
 export const fetchResults = ( callback: Function ) => {
+	// Get the current state
+	const { loadMoreResults }: ExpeditionSearchState = getState();
+
+	// Set loading: true if not loading more results.
+	if ( ! loadMoreResults ) {
+		setState( {
+			loading: true,
+			page: 1, // Important to set this if a filter is changed so that we don't get invalid results
+		} );
+	}
+
 	// Get data from state.
 	const {
 		selectedFilters,
-		loadMoreResults,
 		page,
 		partial,
 		selector,
@@ -415,13 +448,6 @@ export const fetchResults = ( callback: Function ) => {
 		cabinClasses,
 		travelers,
 	}: ExpeditionSearchState = getState();
-
-	// Set loading: true if not loading more results.
-	if ( ! loadMoreResults ) {
-		setState( {
-			loading: true,
-		} );
-	}
 
 	// Fetch partial.
 	fetchPartial( partial, {
@@ -461,14 +487,24 @@ export const fetchResults = ( callback: Function ) => {
  * Markup updated callback.
  */
 export const markupUpdated = () => {
-	// Reset all the relevant states, when markup is updated.
-	setState( {
+	// Get the state
+	const { loadMoreResults } = getState();
+
+	// Initialize the update object.
+	const updatePayload: ExpeditionsSearchStateUpdateObject = {
 		loading: false,
 		updateMarkup: false,
-		loadMoreResults: false,
 		resetMarkup: false,
 		markup: '',
-	} );
+	};
+
+	// Only unset it if it was set before.
+	if ( loadMoreResults ) {
+		updatePayload.loadMoreResults = false;
+	}
+
+	// Reset all the relevant states, when markup is updated.
+	setState( updatePayload );
 };
 
 /**

@@ -73,7 +73,9 @@
 					]"
 				/>
 			@endif
-			<p class="media-lightbox__caption">{{ $title }}</p>
+			<p class="media-lightbox__caption">
+				<x-escape :content="$title" />
+			</p>
 		</template>
 	</tp-lightbox-trigger>
 </quark-media-lightbox>
