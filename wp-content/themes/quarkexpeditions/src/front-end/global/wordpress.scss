@@ -402,12 +402,3 @@ table {
 		min-height: 800px;
 	}
 }
-
-// Style - Single Adventure Options.
-.single-qrk_adventure_option {
-
-	// Hide the section if it doesn't have any info cards.
-	.wp-site-blocks > .section:not(:has(section.info-cards)) {
-		display: none;
-	}
-}
