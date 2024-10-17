@@ -4,10 +4,6 @@
 const { customElements, HTMLElement } = window;
 
 /**
- * Internal dependencies.
- */
-
-/**
  * Class SearchFilterDestinationsOption.
  */
 export class SearchFilterStickyElement extends HTMLElement {
