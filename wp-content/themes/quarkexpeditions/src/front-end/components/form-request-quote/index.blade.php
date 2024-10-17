@@ -49,8 +49,8 @@
 				id="{{ $form_id }}"
 				thank_you_page="{{ $thank_you_page }}"
 				class="form-request-quote__form"
-				extra_field_key="GA_Clint_id__c"
 			>
+				<input type="hidden" name="fields[GA_Clint_id__c]" value="" class="form__ga-clint-id">
 				{{-- Step 1 --}}
 				<x-form-request-quote.tab id="travel-details" class="form-request-quote__step-1" open="yes">
 					<x-form-request-quote.title title="{{ __( 'Travel Details', 'qrk' ) }}" />

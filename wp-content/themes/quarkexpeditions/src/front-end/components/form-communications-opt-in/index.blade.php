@@ -20,8 +20,8 @@
 	@class( $classes )
 	marketing_fields=false
 	webform_url=false
-	extra_field_key="Departure_ID__c"
 >
+	<input type="hidden" name="fields[Departure_ID__c]" value="" class="form__departure-id">
 	<div class="form-communications-opt-in__content">
 		<div class="form-communications-opt-in__form">
 			<h3 class="form-communications-opt-in__title">{{ __( 'Register Your Email Now', 'qrk' ) }}</h3>
