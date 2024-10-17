@@ -1135,11 +1135,13 @@ export const updateItineraryLength = ( updatedItineraryLengths: [ number, number
  * Clears all the filters.
  */
 export const clearAllFilters = () => {
+	// Get the state.
+	const { initialItineraryLengths }: ExpeditionSearchState = getState();
 	// Prepare the update object.
 	const updateObject: ExpeditionsSearchStateUpdateObject = {
 		destinations: [ ...DEFAULT_STATE.destinations ],
 		months: [ ...DEFAULT_STATE.months ],
-		itineraryLengths: [ ...DEFAULT_STATE.itineraryLengths ],
+		itineraryLengths: [ ...initialItineraryLengths ],
 		ships: [ ...DEFAULT_STATE.ships ],
 		adventureOptions: [ ...DEFAULT_STATE.adventureOptions ],
 		languages: [ ...DEFAULT_STATE.languages ],
