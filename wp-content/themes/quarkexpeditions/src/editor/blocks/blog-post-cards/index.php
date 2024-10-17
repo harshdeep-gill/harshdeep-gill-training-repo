@@ -12,6 +12,8 @@ use WP_Term;
 
 use function Quark\Blog\get_cards_data;
 use function Quark\Core\get_pagination_links;
+use function Quark\Core\get_first_pagination_link;
+use function Quark\Core\get_last_pagination_link;
 use function Quark\Core\is_block_editor;
 
 use const Quark\Blog\POST_TYPE as BLOG_POST_TYPE;
@@ -160,8 +162,8 @@ function render( array $attributes = [] ): string {
 			'pagination'         => $pagination,
 			'current_page'       => $current_page,
 			'total_pages'        => $posts->max_num_pages,
-			'first_page_link'    => 1 !== $current_page ? add_query_arg( 'paged', 1 ) : '',
-			'last_page_link'     => $current_page !== $posts->max_num_pages ? add_query_arg( 'paged', $posts->max_num_pages ) : '',
+			'first_page_link'    => 1 !== $current_page ? get_first_pagination_link() : '',
+			'last_page_link'     => $current_page !== $posts->max_num_pages ? get_last_pagination_link( [ 'total' => $posts->max_num_pages ] ) : '',
 		]
 	);
 }
