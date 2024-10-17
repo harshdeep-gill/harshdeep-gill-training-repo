@@ -48,6 +48,7 @@ function bootstrap(): void {
 
 	// Other hooks.
 	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
+	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\update_related_expedition_on_itineraries_save', 1 );
 
 	// Bust cache on term update.
 	add_action( 'set_object_terms', __NAMESPACE__ . '\\bust_post_cache_on_term_assign', 10, 6 );
@@ -58,6 +59,73 @@ function bootstrap(): void {
 		require_once __DIR__ . '/../custom-fields/itineraries.php';
 		require_once __DIR__ . '/../custom-fields/tax-types.php';
 		require_once __DIR__ . '/../custom-fields/departure-locations.php';
+	}
+}
+
+/**
+ * Update related itineraries meta of Expedition.
+ *
+ * @param int $post_id Post ID.
+ *
+ * @return void
+ */
+function update_related_expedition_on_itineraries_save( int $post_id = 0 ): void {
+	// Avoid running on auto-save, bulk edit, or during an Ajax request.
+	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+		return;
+	}
+
+	// Ensure this only runs for the intended post type.
+	if ( get_post_type( $post_id ) !== POST_TYPE ) {
+		return;
+	}
+
+	// Meta key that we are monitoring in Post A.
+	$meta_key = 'related_expedition';
+
+	// Get the old meta value before the update.
+	$old_meta_value = get_post_meta( $post_id, $meta_key, true );
+
+	// Check if there is a new value being set in the post request.
+	$new_meta_value = ! empty( $_POST['acf'] ) && ! empty( $_POST['acf']['field_65f2dab2046df'] ) ? sanitize_text_field( $_POST['acf']['field_65f2dab2046df'] ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing
+
+	// Skip if both value are same.
+	if ( $old_meta_value === $new_meta_value ) {
+		return;
+	}
+
+	// If the old meta value existed and has been updated in the new data.
+	// Let's remove it from the old expedition post.
+	if ( ! empty( $old_meta_value ) && absint( $old_meta_value ) ) {
+		// Get Expedition post meta 'related_itineraries' from old meta value.
+		$related_itineraries = get_post_meta( absint( $old_meta_value ), 'related_itineraries', true );
+
+		// Check if related_itineraries is not empty.
+		if ( ! empty( $related_itineraries ) && is_array( $related_itineraries ) ) {
+			// Remove the current itinerary from the related_itineraries.
+			$related_itineraries = array_diff( $related_itineraries, [ $post_id ] );
+
+			// Update the expedition post meta 'related_itineraries'.
+			update_post_meta( absint( $old_meta_value ), 'related_itineraries', array_unique( $related_itineraries ) );
+		}
+	}
+
+	// Add relation to new Expedition.
+	if ( ! empty( $new_meta_value ) && absint( $new_meta_value ) ) {
+		// Get Expedition post meta 'related_itineraries' from new meta value.
+		$related_itineraries = get_post_meta( absint( $new_meta_value ), 'related_itineraries', true );
+
+		// Check if related_itineraries is not empty.
+		if ( ! empty( $related_itineraries ) && is_array( $related_itineraries ) ) {
+			// Add the current itinerary to the related_itineraries.
+			$related_itineraries[] = $post_id;
+
+			// Update the expedition post meta 'related_itineraries'.
+			update_post_meta( absint( $new_meta_value ), 'related_itineraries', array_unique( $related_itineraries ) );
+		} else {
+			// Update the expedition post meta 'related_itineraries'.
+			update_post_meta( absint( $new_meta_value ), 'related_itineraries', [ $post_id ] );
+		}
 	}
 }
 

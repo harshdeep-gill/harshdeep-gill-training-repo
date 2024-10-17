@@ -1031,4 +1031,140 @@ class Test_Itineraries extends Softrip_TestCase {
 		];
 		$this->assertEquals( $expected_details, $tax_type_details );
 	}
+
+	/**
+	 * Test update_related_expedition_on_itineraries_save function.
+	 *
+	 * @covers ::update_related_expedition_on_itineraries_save
+	 *
+	 * @return void
+	 */
+	public function test_update_related_expedition_on_itineraries_save(): void {
+		// Mock $_POST data.
+		global $_POST; // phpcs:ignore
+
+		// Create expedition post.
+		$expedition_1 = $this->factory()->post->create_and_get(
+			[
+				'post_type'   => EXPEDITION_POST_TYPE,
+				'post_title'  => 'Test Expedition 1',
+				'post_status' => 'publish',
+			]
+		);
+
+		// Create two expedition post.
+		$expedition_2 = $this->factory()->post->create_and_get(
+			[
+				'post_type'   => EXPEDITION_POST_TYPE,
+				'post_title'  => 'Test Expedition 2',
+				'post_status' => 'publish',
+			]
+		);
+
+		// Verify posts were created.
+		$this->assertTrue( $expedition_1 instanceof WP_Post );
+		$this->assertTrue( $expedition_2 instanceof WP_Post );
+
+		// Case 1 - it skips different post_type.
+		// Create a post.
+		$post = $this->factory()->post->create_and_get(
+			[
+				'post_type'   => 'post',
+				'post_title'  => 'Test Post',
+				'post_status' => 'publish',
+				'meta_input'  => [
+					'related_expedition' => $expedition_1->ID,
+				],
+			]
+		);
+
+		// Check if post was created.
+		$this->assertTrue( $post instanceof WP_Post );
+
+		// Mock $_POST data.
+		$_POST['acf']['field_65f2dab2046df'] = $expedition_1->ID;
+
+		// Update the post using update_post().
+		$args = [
+			'ID'           => $post->ID,
+			'post_content' => 'Lorem ipsum',
+		];
+		wp_update_post( $args );
+
+		// Verify no meta was added.
+		$this->assertEmpty( get_post_meta( $expedition_1->ID, 'related_itineraries', true ) );
+
+		// Case 2 - it skips same meta data.
+		// Create an itinerary post.
+		$post = $this->factory()->post->create_and_get(
+			[
+				'post_type'   => POST_TYPE,
+				'post_title'  => 'Test Post',
+				'post_status' => 'publish',
+				'meta_input'  => [
+					'related_expedition' => $expedition_1->ID,
+				],
+			]
+		);
+
+		// Check if post was created.
+		$this->assertTrue( $post instanceof WP_Post );
+
+		// Update the post using update_post().
+		$args = [
+			'ID'           => $post->ID,
+			'post_content' => 'Lorem ipsum',
+			'meta_input'   => [
+				'related_expedition' => $expedition_1->ID,
+			],
+		];
+
+		// Update the post using update_post().
+		wp_update_post( $args );
+
+		// Verify no meta was added.
+		$this->assertEmpty( get_post_meta( $expedition_1->ID, 'related_itineraries', true ) );
+
+		// Case 3 - it updates meta data.
+		// Mock $_POST data.
+		$_POST['acf']['field_65f2dab2046df'] = $expedition_2->ID;
+
+		// Update the post using update_post().
+		wp_update_post( $args );
+
+		// Verify no meta was added.
+		$this->assertEquals( [ $post->ID ], get_post_meta( $expedition_2->ID, 'related_itineraries', true ) );
+
+		// Case 4 - it removes meta data.
+		// Set Expedition meta.
+		update_post_meta( $post->ID, 'related_expedition', $expedition_1->ID );
+		update_post_meta( $expedition_1->ID, 'related_itineraries', [ 123, $post->ID, 456 ] );
+		update_post_meta( $expedition_2->ID, 'related_itineraries', [ 123 ] );
+
+		// Mock $_POST data.
+		$_POST['acf']['field_65f2dab2046df'] = $expedition_2->ID;
+
+		// Update the post using update_post().
+		wp_update_post( $args );
+
+		// Now it should remove the post ID from $expedition_1 - related_itineraries and added to $expedition_2.
+		$this->assertEqualsCanonicalizing( [ 123, 456 ], get_post_meta( $expedition_1->ID, 'related_itineraries', true ) );
+		$this->assertEqualsCanonicalizing( [ 123, $post->ID ], get_post_meta( $expedition_2->ID, 'related_itineraries', true ) );
+
+		// Case 5 - it removes old meta data.
+		// Mock $_POST data.
+		$_POST['acf']['field_65f2dab2046df'] = '';
+
+		// Set Expedition meta.
+		update_post_meta( $post->ID, 'related_expedition', $expedition_1->ID );
+		update_post_meta( $expedition_1->ID, 'related_itineraries', [ 123, $post->ID, 456 ] );
+		update_post_meta( $expedition_2->ID, 'related_itineraries', [ 123 ] );
+
+		// Update the post using update_post().
+		wp_update_post( $args );
+
+		// Now it should remove the post ID from $expedition_1 - related_itineraries.
+		$this->assertEqualsCanonicalizing( [ 123, 456 ], get_post_meta( $expedition_1->ID, 'related_itineraries', true ) );
+		$this->assertEqualsCanonicalizing( [ 123 ], get_post_meta( $expedition_2->ID, 'related_itineraries', true ) );
+	}
 }
