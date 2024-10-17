@@ -555,6 +555,7 @@
 			justify-content: center;
 
 			@media screen and (min-width: calc(grid-size(md) - 1px)) {
+
 				&:has(:nth-child(15)) {
 					padding-inline-start: var(--spacing-2);
 					justify-content: flex-start;
