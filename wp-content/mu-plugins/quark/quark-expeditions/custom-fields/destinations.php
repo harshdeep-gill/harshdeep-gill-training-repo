@@ -58,6 +58,25 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 					'mime_types'        => '',
 					'preview_size'      => 'medium',
 				],
+				[
+					'key'               => 'field_65ee94274a3e1',
+					'label'             => 'Show next year in itinerary section?',
+					'name'              => 'show_next_year',
+					'type'              => 'true_false',
+					'instructions'      => 'Whether to show next year on itinerary section or not - (2025.26 or 2025) on expedition page',
+					'required'          => 0,
+					'conditional_logic' => 0,
+					'wrapper'           => [
+						'width' => '',
+						'class' => '',
+						'id'    => '',
+					],
+					'message'           => '',
+					'default_value'     => 0,
+					'ui'                => 0,
+					'ui_on_text'        => '',
+					'ui_off_text'       => '',
+				],
 			],
 			'location'              => [
 				[
