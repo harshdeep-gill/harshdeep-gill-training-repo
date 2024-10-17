@@ -61,8 +61,17 @@ function get_table_sql(): string {
  */
 function update_promotions( array $raw_promotions_data = [], int $departure_post_id = 0 ): bool {
 	// Bail out if no data.
-	if ( empty( $raw_promotions_data ) || ! is_array( $raw_promotions_data ) || empty( $departure_post_id ) ) {
+	if ( ! is_array( $raw_promotions_data ) || empty( $departure_post_id ) ) {
 		return false;
+	}
+
+	// If empty promotions data, delete all promotions.
+	if ( empty( $raw_promotions_data ) ) {
+		// Delete from meta.
+		delete_post_meta( $departure_post_id, 'promotion_codes' );
+
+		// Return success.
+		return true;
 	}
 
 	// Get the global $wpdb object.
