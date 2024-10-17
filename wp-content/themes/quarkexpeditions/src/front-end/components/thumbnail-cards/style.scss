@@ -127,6 +127,7 @@
 
 			&.thumbnail-cards__card--orient-landscape {
 				max-width: 250px;
+				height: 140px;
 
 				#{$self}__card-title {
 					padding: var(--spacing-4);
