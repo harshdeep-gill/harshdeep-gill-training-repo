@@ -477,12 +477,20 @@ function get_included_adventure_options( int $post_id = 0 ): array {
 			continue;
 		}
 
-		// Merge Adventure Options.
-		$included_adventure_options = array_merge( $included_adventure_options, $adventure_option_post['post_taxonomies'][ ADVENTURE_OPTION_CATEGORY ] );
+		// Loop through Adventure Option taxonomies.
+		foreach ( $adventure_option_post['post_taxonomies'][ ADVENTURE_OPTION_CATEGORY ] as $adventure_option ) {
+			// Check for term_id.
+			if ( ! is_array( $adventure_option ) || empty( $adventure_option['term_id'] ) ) {
+				continue;
+			}
+
+			// Add Adventure Option to included options.
+			$included_adventure_options[ $adventure_option['term_id'] ] = $adventure_option;
+		}
 	}
 
 	// Return Adventure Options.
-	return $included_adventure_options;
+	return array_values( $included_adventure_options );
 }
 
 /**
