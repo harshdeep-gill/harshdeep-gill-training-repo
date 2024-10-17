@@ -641,6 +641,99 @@ function get_pagination_links( array $args = [] ): string {
 }
 
 /**
+ * Get first pagination link.
+ *
+ * @param array<mixed|string> $args Pagination args.
+ *
+ * @return string
+ */
+function get_first_pagination_link( array $args = [] ): string {
+	// Build args.
+	$args = wp_parse_args(
+		$args,
+		[
+			'noindex' => false,
+		]
+	);
+
+	// Get first page link.
+	$first_page_link = get_pagenum_link();
+
+	// Check if we have first page link.
+	if ( empty( $first_page_link ) ) {
+		return '';
+	}
+
+	// Check for noindex.
+	if ( true === $args['noindex'] ) {
+		$first_page_link = str_replace( ' href=', ' rel="noindex, nofollow" href=', $first_page_link );
+	}
+
+	// Remove trailing slash from main page.
+	$current_post = get_queried_object();
+
+	// Check if current post is instance of WP_Post.
+	if ( $current_post instanceof WP_Post ) {
+		$post_slug       = $current_post->post_name;
+		$first_page_link = str_replace( $post_slug . '/"', $post_slug . '"', $first_page_link );
+	} elseif ( $current_post instanceof WP_Term ) {
+		$first_page_link = str_replace( $current_post->slug . '/"', $current_post->slug . '"', $first_page_link );
+	} elseif ( $current_post instanceof WP_User ) {
+		$first_page_link = str_replace( $current_post->data->user_login . '/"', $current_post->data->user_login . '"', $first_page_link );
+	}
+
+	// Return first page link.
+	return $first_page_link;
+}
+
+/**
+ * Get last pagination link.
+ *
+ * @param array<mixed|string> $args Pagination args.
+ *
+ * @return string
+ */
+function get_last_pagination_link( array $args = [] ): string {
+	// Build args.
+	$args = wp_parse_args(
+		$args,
+		[
+			'total'   => 1,
+			'noindex' => false,
+		]
+	);
+
+	// Get last page link.
+	$last_page_link = get_pagenum_link( $args['total'] );
+
+	// Check if we have last page link.
+	if ( empty( $last_page_link ) ) {
+		return '';
+	}
+
+	// Check for noindex.
+	if ( true === $args['noindex'] ) {
+		$last_page_link = str_replace( ' href=', ' rel="noindex, nofollow" href=', $last_page_link );
+	}
+
+	// Remove trailing slash from main page.
+	$current_post = get_queried_object();
+
+	// Check if current post is instance of WP_Post.
+	if ( $current_post instanceof WP_Post ) {
+		$post_slug      = $current_post->post_name;
+		$last_page_link = str_replace( $post_slug . '/"', $post_slug . '"', $last_page_link );
+	} elseif ( $current_post instanceof WP_Term ) {
+		$last_page_link = str_replace( $current_post->slug . '/"', $current_post->slug . '"', $last_page_link );
+	} elseif ( $current_post instanceof WP_User ) {
+		$last_page_link = str_replace( $current_post->data->user_login . '/"', $current_post->data->user_login . '"', $last_page_link );
+	}
+
+	// Return last page link.
+	return $last_page_link;
+}
+
+/**
  * Check if we are in the block editor.
  * We don't have any functionality to identify if we are in the block editor inside the block render callback.
  *
