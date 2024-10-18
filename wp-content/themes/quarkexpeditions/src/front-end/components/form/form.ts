@@ -93,6 +93,26 @@ export default class Form extends HTMLElement {
 		};
 
 		/**
+		 * Handle a successful form submission.
+		 *
+		 * @param {any} result Result object.
+		 */
+		const handleSuccess = ( result: any ) => {
+			// Reset the form.
+			this.form?.reset();
+
+			// Trigger event.
+			this.dispatchEvent( new CustomEvent( 'submit-success', {
+				detail: {
+					result,
+				},
+			} ) );
+
+			// Reset submit button.
+			this.tpFormSubmit?.removeAttribute( 'submitting' );
+		};
+
+		/**
 		 * Send request to the server.
 		 */
 		const sendRequest = async () => {
@@ -146,7 +166,9 @@ export default class Form extends HTMLElement {
 						if ( this.thankYouPageUrl ) {
 							// Redirect to thank you page, if present.
 							window.location.href = this.thankYouPageUrl;
-							this.form?.reset();
+
+							// Handle success.
+							handleSuccess( result );
 						} else {
 							// If not, trigger an event.
 							this.dispatchEvent( new CustomEvent( 'api-success', {
