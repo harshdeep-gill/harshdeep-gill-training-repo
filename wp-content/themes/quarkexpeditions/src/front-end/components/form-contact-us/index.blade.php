@@ -102,6 +102,8 @@
 						country_label="Country of Residence"
 						:countries="$countries"
 						:states="$states"
+						:enable_name_fields="true"
+						state_key="State_Province__c"
 					/>
 				</x-form.row>
 				<x-form.row>

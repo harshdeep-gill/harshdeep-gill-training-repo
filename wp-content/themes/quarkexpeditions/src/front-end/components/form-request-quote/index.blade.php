@@ -76,7 +76,7 @@
 					</x-form.row>
 
 					<x-form.row>
-						<x-country-selector :countries="$countries" :states="$states" />
+						<x-country-selector :countries="$countries" :states="$states" :enable_name_fields="true"/>
 					</x-form.row>
 
 					<x-form.row>
