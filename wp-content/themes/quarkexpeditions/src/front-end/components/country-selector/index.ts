@@ -42,6 +42,9 @@ export default class QuarkCountrySelectorElement extends HTMLElement {
 
 		// Trigger change in country.
 		this.changeCountry();
+
+		// Trigger change in State.
+		this.changeState();
 	}
 
 	/**
