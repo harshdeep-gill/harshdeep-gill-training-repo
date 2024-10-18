@@ -1,15 +1,20 @@
 @props( [
-	'countries'        => [],
-	'states'           => [],
-	'country_label'    => 'Country',
-	'state_label'      => 'State/Province',
-	'country_code_key' => 'Country_Code__c',
-	'state_code_key'   => 'State_Code__c',
+	'countries'          => [],
+	'states'             => [],
+	'enable_name_fields' => false,
+	'country_label'      => 'Country',
+	'state_label'        => 'State/Province',
+	'country_code_key'   => 'Country_Code__c',
+	'country_key'        => 'Country__c',
+	'state_code_key'     => 'State_Code__c',
+	'state_key'          => 'State__c',
 ] )
 
 @php
 	$country_code_field_name = sprintf( 'fields[%s]', $country_code_key );
+	$country_field_name      = sprintf( 'fields[%s]', $country_key );
 	$state_code_field_name   = sprintf( 'fields[%s]', $state_code_key );
+	$state_field_name        = sprintf( 'fields[%s]', $state_key );
 
 	// Sort countries alphabetically by name.
 	asort( $countries );
@@ -35,4 +40,9 @@
 			</x-form.select>
 		</x-form.field>
 	@endforeach
+
+	@if ( true === $enable_name_fields )
+		<x-form.input type="hidden" :name="$country_field_name" class="country-selector__country-name"/>
+		<x-form.input type="hidden" :name="$state_field_name" class="country-selector__state-name"/>
+	@endif
 </quark-country-selector>
