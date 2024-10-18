@@ -61,7 +61,7 @@
 			@endif
 
 			@if ( true === $ga_client )
-				<input type="hidden" name="fields[GA_Client__c]" value="" class="form__ga-client">
+				<input type="hidden" name="fields[GA_Client_ID__c]" value="" class="form__ga-client">
 			@endif
 
 			@if ( true === $recaptcha )
