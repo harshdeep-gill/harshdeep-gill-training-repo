@@ -21,7 +21,6 @@
 		salesforce_object="Webform_Contact_Us__c"
 		id="{{ $form_id }}"
 		thank_you_page="{{ $thank_you_page }}"
-		:webform_url="false"
 	>
 		<div class="form-contact-us__content">
 			<div class="form-contact-us__form">
@@ -43,7 +42,6 @@
 									<x-form.option value="trip_information" label="Trip Information">Trip Information</x-form.option>
 									<x-form.option value="new_booking" label="A New Booking">A New Booking</x-form.option>
 									<x-form.option value="existing_booking" label="An Existing Booking">An Existing Booking</x-form.option>
-									<x-form.option value="media_inquiry" label="Media Inquiry">Media Inquiry</x-form.option>
 									<x-form.option value="subscription" label="Mailing List Subscription">Mailing List Subscription</x-form.option>
 									<x-form.option value="general" label="Other">Other</x-form.option>
 								</x-form.select>
@@ -52,7 +50,7 @@
 					</x-form.row>
 
 				<x-form.row>
-					<tp-toggle-attribute trigger="select" target=".form-contact-us__existing-booking-agency-info" value="agent" attribute="required">
+					<tp-toggle-attribute trigger="select" target=".form-contact-us__existing-booking-agency-info" attribute="required">
 						<x-form.field class="form-contact-us__existing-booking-info">
 							<x-form.select label="How did you book?" name="fields[Booking_Type__c]">
 								<x-form.option value="">- Select -</x-form.option>
@@ -63,17 +61,17 @@
 					</tp-toggle-attribute>
 				</x-form.row>
 				<x-form.row>
-					<x-form.field :validation="[ 'no-empty-spaces' ]" class="form-contact-us__existing-booking-agency-info">
+					<x-form.field :validation="[ 'no-empty-spaces' ]" class="form-contact-us__existing-booking-agency-info" data-toggle-value="direct,agent">
 						<x-form.input type="text" label="Reservation Number" placeholder="Enter Reservation Number" name="fields[Reservation_Number__c]" />
 					</x-form.field>
 				</x-form.row>
 				<x-form.row>
-					<x-form.field :validation="[ 'no-empty-spaces' ]" class="form-contact-us__existing-booking-agency-info">
+					<x-form.field :validation="[ 'no-empty-spaces' ]" class="form-contact-us__existing-booking-agency-info" data-toggle-value="agent">
 						<x-form.input type="text" label="Agency Name" placeholder="Enter Agency Name" name="fields[Agency_Name__c]" />
 					</x-form.field>
 				</x-form.row>
 				<x-form.row>
-					<x-form.field :validation="[ 'no-empty-spaces' ]" class="form-contact-us__existing-booking-agency-info">
+					<x-form.field :validation="[ 'no-empty-spaces' ]" class="form-contact-us__existing-booking-agency-info" data-toggle-value="agent">
 						<x-form.input type="text" label="Agent Name" placeholder="Enter Agent Name" name="fields[Agency_Contact_Name__c]" />
 					</x-form.field>
 				</x-form.row>
@@ -116,7 +114,7 @@
 				</x-form.row>
 				<x-form.row>
 					<x-form.field-group :validation="[ 'checkbox-field-required' ]" class="form-contact-us__privacy-statement">
-						<x-form.checkbox name="fields[Subscribe_to_Newsletter__c]" label="I have read and agree to the privacy statement." />
+						<x-form.checkbox name="fields[Privacy_Policy_Agreement__c]" label="I have read and agree to the privacy statement." />
 					</x-form.field-group>
 				</x-form.row>
 			</div>
