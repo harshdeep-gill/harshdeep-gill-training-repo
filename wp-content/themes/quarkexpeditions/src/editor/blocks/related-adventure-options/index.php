@@ -62,7 +62,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 		$adventure_option = get_adventure_option( absint( $adventure_option ) );
 
 		// Check if the related adventure option is empty.
-		if ( ! $adventure_option['post'] instanceof WP_Post ) {
+		if ( ! $adventure_option['post'] instanceof WP_Post || 'publish' !== $adventure_option['post']->post_status ) {
 			continue;
 		}
 
