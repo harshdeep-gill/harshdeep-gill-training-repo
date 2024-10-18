@@ -366,7 +366,7 @@ tp-modal.expedition-search__filters-modal {
 		font-weight: var(--font-weight-normal);
 	}
 
-	@media screen and (min-width: grid-size(lg)) {
+	@media screen and (min-width: calc(grid-size(lg) + 1px)) {
 		display: none;
 	}
 
