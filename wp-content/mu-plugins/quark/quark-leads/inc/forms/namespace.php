@@ -353,6 +353,7 @@ function get_states(): array {
 			'WA' => 'Washington',
 			'WI' => 'Wisconsin',
 			'WV' => 'West Virginia',
+			'WY' => 'Wyoming',
 		],
 		'CA' => [
 			'AB' => 'Alberta',
