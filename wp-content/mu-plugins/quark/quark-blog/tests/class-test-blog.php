@@ -605,16 +605,20 @@ class Test_Blog extends WP_UnitTestCase {
 		// create author.
 		$author_one = $this->factory()->post->create_and_get(
 			[
-				'post_type'   => AUTHOR_POST_TYPE,
-				'post_title'  => 'Test Author 1',
-				'post_status' => 'publish',
+				'post_type'     => AUTHOR_POST_TYPE,
+				'post_title'    => 'Test Author 1',
+				'post_status'   => 'publish',
+				'post_date'     => '2024-10-10 10:00:00',
+				'post_date_gmt' => '2024-10-10 10:00:00',
 			]
 		);
 		$author_two = $this->factory()->post->create_and_get(
 			[
-				'post_type'   => AUTHOR_POST_TYPE,
-				'post_title'  => 'Test Author 2',
-				'post_status' => 'publish',
+				'post_type'     => AUTHOR_POST_TYPE,
+				'post_title'    => 'Test Author 2',
+				'post_status'   => 'publish',
+				'post_date'     => '2024-10-10 10:00:00',
+				'post_date_gmt' => '2024-10-10 10:00:00',
 			]
 		);
 
@@ -624,12 +628,17 @@ class Test_Blog extends WP_UnitTestCase {
 
 		// Prepare post arguments.
 		$post_arguments = [
-			'post_title'   => 'Test Post',
-			'post_content' => 'Post content',
-			'post_status'  => 'publish',
-			'post_type'    => POST_TYPE,
-			'meta_input'   => [
-				'blog_authors' => [ $author_one->ID, $author_two->ID ],
+			'post_title'    => 'Test Post',
+			'post_content'  => 'Post content',
+			'post_status'   => 'publish',
+			'post_type'     => POST_TYPE,
+			'post_date'     => '2024-10-10 10:00:00',
+			'post_date_gmt' => '2024-10-10 10:00:00',
+			'meta_input'    => [
+				'blog_authors' => [
+					$author_one->ID,
+					$author_two->ID,
+				],
 			],
 		];
 
