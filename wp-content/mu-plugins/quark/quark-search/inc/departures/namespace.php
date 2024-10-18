@@ -705,3 +705,28 @@ function reindex_departures(): void {
 	// Clear the cron.
 	wp_clear_scheduled_hook( SCHEDULE_REINDEX_HOOK );
 }
+
+/**
+ * Get departures by expeditions and months.
+ *
+ * @param int      $expedition_id Expedition ID.
+ * @param string[] $months       Months.
+ *
+ * @return int[]
+ */
+function get_departures_by_expeditions_and_months( int $expedition_id = 0, array $months = [] ): array {
+	// Search for departures.
+	$departures_search = new Search();
+
+	// Set expedition.
+	$departures_search->set_expeditions( [ $expedition_id ] );
+
+	// Set months.
+	$departures_search->set_months( $months );
+
+	// Sort by date.
+	$departures_search->set_sorts( [ 'date-now' ] );
+
+	// Return search results.
+	return $departures_search->search();
+}
