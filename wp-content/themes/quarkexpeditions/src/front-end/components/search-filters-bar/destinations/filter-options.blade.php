@@ -1,7 +1,8 @@
 @props( [
-	'destinations' => [],
-	'image_ids'    => [],
-	'cta_urls'     => [],
+	'destinations'         => [],
+	'image_ids'            => [],
+	'cta_urls'             => [],
+	'all_destinations_cta' => [],
 ] )
 
 @php
@@ -139,12 +140,16 @@
 					@endif
 
 					{{-- CTA Link --}}
-					<div class="search-filters-bar__destinations-filter-options-cta">
-						<a href="#" class="search-filters-bar__destinations-filter-options-cta-link">
-							{{ __( 'Explore All Destinations', 'qrk') }}
-						</a>
-						<x-svg name="chevron-right" />
-					</div>
+					@if ( ! empty( $all_destinations_cta ) )
+						<div class="search-filters-bar__destinations-filter-options-cta">
+							<a
+								href="{{ $all_destinations_cta['url'] ?? '' }}" class="search-filters-bar__destinations-filter-options-cta-link"
+							>
+								{{ $all_destinations_cta['text'] ?? __( 'Explore All Destinations', 'qrk' ) }}
+							</a>
+							<x-svg name="chevron-right" />
+						</div>
+					@endif
 				</x-accordion.item-content>
 			</x-accordion.item>
 		</x-accordion>

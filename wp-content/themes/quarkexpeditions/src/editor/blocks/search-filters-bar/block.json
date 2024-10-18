@@ -25,6 +25,10 @@
 		"arcticCtaUrl": {
 			"type": "object",
 			"default": {}
+		},
+		"allDestinationsUrl": {
+			"type": "object",
+			"default": {}
 		}
 	},
 	"supports": {

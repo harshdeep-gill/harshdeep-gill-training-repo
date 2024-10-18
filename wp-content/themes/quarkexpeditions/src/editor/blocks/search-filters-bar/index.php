@@ -43,10 +43,11 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 
 	// Initialize the component attributes.
 	$component_attributes = [
-		'antarctic_image_id' => 0,
-		'arctic_image_id'    => 0,
-		'antarctic_cta'      => [],
-		'arctic_cta'         => [],
+		'antarctic_image_id'   => 0,
+		'arctic_image_id'      => 0,
+		'antarctic_cta'        => [],
+		'arctic_cta'           => [],
+		'all_destinations_cta' => [],
 	];
 
 	// Check if antarctic image exists.
@@ -73,6 +74,14 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 		$component_attributes['arctic_cta'] = [
 			'url'  => $attributes['arcticCtaUrl']['url'] ?? '',
 			'text' => $attributes['arcticCtaUrl']['text'] ?? '',
+		];
+	}
+
+	// check if all destintions url exists.
+	if ( ! empty( $attributes['allDestinationsUrl'] && is_array( $attributes['allDestinationsUrl'] ) ) ) {
+		$component_attributes['all_destinations_cta'] = [
+			'url'  => $attributes['allDestinationsUrl']['url'] ?? '',
+			'text' => $attributes['allDestinationsUrl']['text'] ?? '',
 		];
 	}
 

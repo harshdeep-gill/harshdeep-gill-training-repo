@@ -81,6 +81,12 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 						help={ __( 'Enter an URL for Arctic CTA', 'qrk' ) }
 						onChange={ ( arcticCtaUrl: object ) => setAttributes( { arcticCtaUrl } ) }
 					/>
+					<LinkControl
+						label={ __( 'All Destinations CTA URL', 'qrk' ) }
+						value={ attributes.allDestinationsUrl }
+						help={ __( 'Enter URL and Text for All Destinations CTA', 'qrk' ) }
+						onChange={ ( allDestinationsUrl: object ) => setAttributes( { allDestinationsUrl } ) }
+					/>
 				</PanelBody>
 			</InspectorControls>
 			<Section { ...blockProps }>

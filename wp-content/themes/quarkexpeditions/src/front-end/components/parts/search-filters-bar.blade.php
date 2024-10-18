@@ -1,8 +1,9 @@
 @props( [
-	'antarctic_image_id' => 0,
-	'arctic_image_id'    => 0,
-	'antarctic_cta'  => '',
-	'arctic_cta'     => '',
+	'antarctic_image_id'   => 0,
+	'arctic_image_id'      => 0,
+	'antarctic_cta'        => '',
+	'arctic_cta'           => '',
+	'all_destinations_cta' => [],
 ] )
 
 @php
@@ -51,4 +52,5 @@
 	:search_page_url="$search_page_url"
 	:image_ids="$image_ids"
 	:cta_urls="$cta_urls"
+	:all_destinations_cta="$all_destinations_cta"
 />

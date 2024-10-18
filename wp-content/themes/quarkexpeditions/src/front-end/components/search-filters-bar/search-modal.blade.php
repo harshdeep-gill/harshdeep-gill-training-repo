@@ -9,6 +9,7 @@
 	'search_page_url'          => '',
 	'image_ids'                => [],
 	'cta_urls'                 => [],
+	'all_destinations_cta'     => [],
 ] )
 
 {{-- Render the modal only once even if there are multiple search bars present on a page --}}
@@ -36,6 +37,7 @@
 				:destinations="$destinations"
 				:image_ids="$image_ids"
 				:cta_urls="$cta_urls"
+				:all_destinations_cta="$all_destinations_cta"
 			/>
 			<x-search-filters-bar.departure-months.filter-options :available_months="$available_months" />
 		</x-modal.body>
