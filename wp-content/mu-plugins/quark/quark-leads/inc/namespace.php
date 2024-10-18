@@ -391,7 +391,7 @@ function process_raq_form( array $lead_data = [] ): array {
 
 	// Prepare Preferred season travel.
 	if ( 'ANT' === $region && ! empty( $departure_year ) ) {
-		// Add 1 year to the departure year. But only the last 2 digits. This was a bug in the drupal will be addressed later.
+		// Add 1 year to the departure year. But only the last 2 digits. TODO: Rework on this post launch after business review. [QE-869].
 		$preferred_season_travel = $departure_year . '-' . ( $departure_year % 100 + 1 );
 	} elseif ( 'ARC' === $region && ! empty( $departure_year ) ) {
 		$preferred_season_travel = $departure_year;
