@@ -136,15 +136,9 @@
 						@endif
 
 						<x-expedition-cards.buttons>
-							<x-options-button>
-								<x-options-button.default-option class="expedition-cards__cta">
-									{{ __( 'View Cabin Pricing', 'qrk' ) }}
-								</x-options-button.default-option>
-								<x-options-button.options>
-									<x-options-button.option url="#">{{ __( 'Request a callback', 'qrk' ) }}</x-options-button.option>
-									<x-options-button.option url="#">{{ __( 'Chat with us now', 'qrk' ) }}</x-options-button.option>
-								</x-options-button.options>
-							</x-options-button>
+							<x-button href="" class="expedition-cards__cta" size="big">
+								{{ __( 'View Cabin Pricing', 'qrk' ) }}
+							</x-button>
 							<x-button href="{{ $card['expedition_link'] ?? '' }}" color="black" size="big">
 								{{ __( 'View Expedition', 'qrk' ) }}
 							</x-button>
