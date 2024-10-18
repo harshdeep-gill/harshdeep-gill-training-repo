@@ -51,9 +51,8 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 		return $content;
 	}
 
-	// Total posts.
-	$total_departures = 0;
-	$expedition_ids   = [];
+	// Initialize expedition IDs.
+	$expedition_ids = [];
 
 	// If the selection is manual, we need to check if we have IDs.
 	if ( 'manual' === $attributes['selection'] ) {
@@ -63,8 +62,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 		}
 
 		// Get the expedition IDs.
-		$expedition_ids   = $attributes['ids'];
-		$total_departures = count( $expedition_ids );
+		$expedition_ids = $attributes['ids'];
 	} elseif ( 'byTerms' === $attributes['selection'] ) {
 		// Return empty if selection by terms, but no terms or taxonomy were selected.
 		if ( empty( $attributes['termIds'] ) || empty( $attributes['taxonomies'] ) ) {
@@ -120,6 +118,11 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 
 	// Build cards.
 	foreach ( $expedition_ids as $expedition_id ) {
+		// Check if Expedition is published.
+		if ( 'publish' !== get_post_status( $expedition_id ) ) {
+			continue;
+		}
+
 		// Add Included Transfer package data.
 		$minimum_duration_itinerary = get_minimum_duration_itinerary( $expedition_id );
 		$transfer_package_data      = [];
