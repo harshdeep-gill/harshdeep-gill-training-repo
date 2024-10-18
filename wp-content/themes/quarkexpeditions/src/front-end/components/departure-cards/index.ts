@@ -48,6 +48,11 @@ export default class DepartureCard extends HTMLElement {
 		// Events.
 		window.addEventListener( 'resize', debounce( this.updateOfferHiddenItems.bind( this ), 10 ), { passive: true } );
 		window.addEventListener( 'resize', debounce( this.updateAdventuresHiddenItems.bind( this ), 10 ), { passive: true } );
+		window.addEventListener( 'load', () => {
+			// Update the hidden items.
+			this.updateOfferHiddenItems();
+			this.updateAdventuresHiddenItems();
+		} );
 		this.dropdownButton?.addEventListener( 'click', this.toggle.bind( this ) );
 	}
 
