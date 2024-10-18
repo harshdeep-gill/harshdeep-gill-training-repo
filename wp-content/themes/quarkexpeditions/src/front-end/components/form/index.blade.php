@@ -58,9 +58,6 @@
 				<input type="hidden" name="fields[FBCLID__c]" value="" class="form__fbclid">
 				<input type="hidden" name="fields[MSCLID__c]" value="" class="form__msclkid">
 				<input type="hidden" name="fields[PCLID__c]" value="" class="form__pclid">
-			@endif
-
-			@if ( true === $ga_client )
 				<input type="hidden" name="fields[GA_Client_ID__c]" value="" class="form__ga-client">
 			@endif
 
