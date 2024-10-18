@@ -1,6 +1,7 @@
 @props( [
 	'border'          => false,
 	'stack_on_tablet' => false,
+	'id'              => '',
 ] )
 
 @php
@@ -24,9 +25,11 @@
 	if ( 2 > $child_count ) {
 		$classes[] = 'two-columns--only-child';
 	}
+
+	var_dump( $id );
 @endphp
 
-<x-section>
+<x-section id="{{ $id }}">
 	<div @class( $classes )>
 		{!! $slot !!}
 	</div>

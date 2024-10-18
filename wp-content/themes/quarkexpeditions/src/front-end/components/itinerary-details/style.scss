@@ -17,11 +17,22 @@
 			margin-left: calc(-1 * var(--grid-col-gutter));
 			margin-right: calc(-1 * var(--grid-col-gutter));
 			padding: var(--spacing-7) var(--grid-col-gutter);
+			color: var(--color-white);
 
-			#{$self}__tabs-nav-link {
+			#{$self}__tabs-nav-item {
 				background-color: var(--color-gray-90);
-				border-color: var(--color-gray-80);
-				color: var(--color-white);
+			}
+
+			#{$self}__tab {
+				color: var(--color-black);
+			}
+
+			.tabs__nav-item[active] {
+
+				.tabs__nav-link {
+					background-color: var(--color-gray-90);
+					border-color: var(--color-gray-80);
+				}
 			}
 		}
 	}
@@ -94,6 +105,9 @@
 
 			@media screen and (max-width: calc(grid-size(md) - 1px)) {
 				top: var(--spacing-8);
+				bottom: 0;
+				display: flex;
+				flex-direction: column;
 				visibility: visible;
 				opacity: 1;
 			}
@@ -108,10 +122,9 @@
 
 		@media screen and (max-width: calc(grid-size(md) - 1px)) {
 			position: fixed;
-			height: 100%;
-			width: 100%;
 			background: var(--color-white);
 			left: 0;
+			bottom: -100%;
 			top: 100%;
 			display: block;
 			visibility: hidden;
@@ -144,7 +157,7 @@
 	&__body {
 
 		@media screen and (max-width: calc(grid-size(md) - 1px)) {
-			max-height: calc(100vh - 64px - 64px - 48px - 48px - 128px); // Full height - top spacing - header height - padding - gap - footer.
+			flex: 1;
 			overflow: auto;
 		}
 	}
