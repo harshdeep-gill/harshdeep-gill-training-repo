@@ -590,6 +590,11 @@ function get_cabin_details_by_departure( int $departure_post_id = 0, string $cur
 				continue;
 			}
 
+			// Skip if not on sale.
+			if ( ! is_occupancy_on_sale( $occupancy['availability_status'] ) ) {
+				continue;
+			}
+
 			// Get occupancy detail.
 			$occupancy_detail = get_occupancy_detail( $occupancy['id'], $departure_post_id, $currency );
 
@@ -1052,14 +1057,6 @@ function get_cabin_availability_status( int $departure_post_id = 0, int $cabin_c
 		return UNAVAILABLE_STATUS;
 	}
 
-	// Get cabin spaces available.
-	$spaces_available = get_available_cabin_spaces( $departure_post_id, $cabin_category_post_id );
-
-	// Check if spaces available.
-	if ( $spaces_available > 0 ) {
-		return AVAILABLE_STATUS;
-	}
-
 	// Fetch all occupancies for this cabin and departure.
 	$occupancies = get_occupancies_by_cabin_category_and_departure( $cabin_category_post_id, $departure_post_id );
 
@@ -1092,6 +1089,14 @@ function get_cabin_availability_status( int $departure_post_id = 0, int $cabin_c
 	// Check if all are sold out.
 	if ( $are_all_sold_out ) {
 		return SOLD_OUT_STATUS;
+	}
+
+	// Get cabin spaces available.
+	$spaces_available = get_available_cabin_spaces( $departure_post_id, $cabin_category_post_id );
+
+	// Check if spaces available.
+	if ( $spaces_available > 0 ) {
+		return AVAILABLE_STATUS;
 	}
 
 	// Finally, return on request status.
