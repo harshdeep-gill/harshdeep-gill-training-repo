@@ -63,7 +63,7 @@
 								name="fields[Email__c]"
 							/>
 						</x-form.field>
-						<x-country-selector :countries="$countries" :states="$states" />
+						<x-country-selector :countries="$countries" :states="$states" :enable_name_fields="true" />
 					</x-form.row>
 					<x-form.row class="form-newsletter__agent-check">
 						<x-form.field-group>
