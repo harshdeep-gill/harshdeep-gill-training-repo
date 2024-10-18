@@ -378,8 +378,11 @@ function process_raq_form( array $lead_data = [] ): array {
 		$softrip_departure_ids[]    = get_post_meta( $departure_id, 'softrip_code', true );
 	}
 
-	// Prepare departure year.
-	$departure_start_date = strtotime( strval( $departure_starting_dates[0] ) );
+	// Check for empty departure starting dates.
+	if ( ! empty( $departure_starting_dates ) ) {
+		// Prepare departure year.
+		$departure_start_date = strtotime( strval( $departure_starting_dates[0] ) );
+	}
 
 	// Check for empty departure start date.
 	if ( ! empty( $departure_start_date ) ) {
@@ -399,7 +402,7 @@ function process_raq_form( array $lead_data = [] ): array {
 	// Add attributes to the lead data.
 	$lead_data['fields']['Expedition__c']               = get_the_title( $expedition_id );
 	$lead_data['fields']['Requested_Ship__c']           = get_post_meta( $earliest_departure, 'ship_code', true );
-	$lead_data['fields']['Departure_Date__c']           = $departure_starting_dates[0] ?? '';
+	$lead_data['fields']['Departure_Date__c']           = ! empty( $departure_starting_dates ) ? $departure_starting_dates[0] : '';
 	$lead_data['fields']['Departure_Dates__c']          = implode( ';', array_unique( $departure_starting_dates ) );
 	$lead_data['fields']['Regions__c']                  = $region;
 	$lead_data['fields']['Departure_IDs__c']            = implode( ';', array_unique( $softrip_departure_ids ) );
