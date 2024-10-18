@@ -133,7 +133,7 @@
 
 			#{$self}__slides {
 				grid-template-columns: repeat(4, minmax(210px, 1fr));
-				grid-template-rows: repeat(2, 338px);
+				grid-template-rows: repeat(2, 388px);
 
 				&[total-slides="3"] {
 

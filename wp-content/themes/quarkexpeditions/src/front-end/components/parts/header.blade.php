@@ -32,7 +32,7 @@
 											@endif
 										</x-header.nav-item-featured>
 									</x-header.nav-item-dropdown-content-column>
-								@elseif ( 'slot' === $content_item['type'] )
+								@elseif ( 'slot' === $content_item['type'] && ! empty( $content_item['slot'] ) )
 									<x-header.nav-item-dropdown-content-column>
 										{!! $content_item['slot'] ?? '' !!}
 									</x-header.nav-item-dropdown-content-column>
@@ -63,32 +63,36 @@
 									@endif
 								</x-header.nav-item-featured>
 							</x-header.nav-item-dropdown-content-column>
-						@elseif ( 'menu-items' === $content_item['type'] )
+						@elseif ( 'menu-items' === $content_item['type'] && ! empty( $content_item['items'][0]['menu_list_items'] ) )
 							<x-header.nav-item-dropdown-content-column>
 								<x-two-columns>
-									<x-two-columns.column>
-										<x-menu-list title="More">
-											@foreach ( $content_item['items'][0]['menu_list_items']['items'] as $menu_item )
-												<x-menu-list.item
-													:title="$menu_item['title'] ?? ''"
-													:url="$menu_item['url'] ?? ''"
-												/>
-											@endforeach
-
-											{{-- More items from Secondary Nav. --}}
-											@if ( ! empty( $secondary_nav['items'] ) )
-												@foreach ( $secondary_nav['items'] as $nav_item )
-													@if ( ! empty( $nav_item['url'] ) )
-														<x-menu-list.item
-															:title="$nav_item['title'] ?? ''"
-															:url="$nav_item['url'] ?? ''"
-														/>
-													@endif
+										<x-two-columns.column>
+											<x-menu-list title="More">
+												@foreach ( $content_item['items'][0]['menu_list_items']['items'] as $menu_item )
+													<x-menu-list.item
+														:title="$menu_item['title'] ?? ''"
+														:url="$menu_item['url'] ?? ''"
+													/>
 												@endforeach
-											@endif
-										</x-menu-list>
-									</x-two-columns.column>
+
+												{{-- More items from Secondary Nav. --}}
+												@if ( ! empty( $secondary_nav['items'] ) )
+													@foreach ( $secondary_nav['items'] as $nav_item )
+														@if ( ! empty( $nav_item['url'] ) )
+															<x-menu-list.item
+																:title="$nav_item['title'] ?? ''"
+																:url="$nav_item['url'] ?? ''"
+															/>
+														@endif
+													@endforeach
+												@endif
+											</x-menu-list>
+										</x-two-columns.column>
 								</x-two-columns>
+							</x-header.nav-item-dropdown-content-column>
+						@elseif ( 'slot' === $content_item['type'] && ! empty( $content_item['slot'] ) )
+							<x-header.nav-item-dropdown-content-column>
+								{!! $content_item['slot'] !!}
 							</x-header.nav-item-dropdown-content-column>
 						@endif
 					@endforeach

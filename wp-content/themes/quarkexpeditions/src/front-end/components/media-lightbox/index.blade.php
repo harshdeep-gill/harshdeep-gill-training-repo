@@ -60,16 +60,17 @@
 					:image_id="$image_id"
 					:args="[
 						'size' => [
-							'width'  => 1152,
-							'height' => 630,
+							'width'  => 1200,
+							'height' => 600,
 						],
 						'responsive' => [
-							'sizes'  => [ '(min-width: 992px) 1152px', '100vw' ],
-							'widths' => [ 360, 450, 576, 768, 992, 1120 ],
+							'sizes'  => [ '(min-width: 992px) 1200px', '100vw' ],
+							'widths' => [ 360, 400, 600, 800, 1024, 1200 ],
 						],
+						'focal_point' => [],
 						'transform' => [
-							'crop'    => 'fill',
-						]
+							'crop' => 'fit',
+						],
 					]"
 				/>
 			@endif
