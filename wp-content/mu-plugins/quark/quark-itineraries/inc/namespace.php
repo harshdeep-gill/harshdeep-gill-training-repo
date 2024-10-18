@@ -14,6 +14,7 @@ use function Quark\Core\format_price;
 use function Quark\InclusionSets\get as inclusion_sets_get;
 use function Quark\PolicyPages\get as get_policy_page_post;
 use function Quark\Brochures\get as get_brochure;
+use function Quark\Expeditions\get as get_expedition;
 use function Quark\ItineraryDays\get as get_itinerary_day;
 use function Quark\Leads\get_request_a_quote_url;
 use function Quark\Localization\get_current_currency;
@@ -21,6 +22,7 @@ use function Quark\Ships\get as get_ship;
 use function Quark\Softrip\Itineraries\get_lowest_price;
 use function Quark\Softrip\Itineraries\get_related_ships;
 
+use const Quark\Expeditions\DESTINATION_TAXONOMY;
 use const Quark\Localization\DEFAULT_CURRENCY;
 use const Quark\StaffMembers\SEASON_TAXONOMY;
 
@@ -483,6 +485,14 @@ function get_details_tabs_data( array $itineraries = [], int $expedition_id = 0 
 		return [];
 	}
 
+	// Get expedition.
+	$expedition = get_expedition( $expedition_id );
+
+	// Validate expedition.
+	if ( empty( $expedition['post'] ) || ! $expedition['post'] instanceof WP_Post ) {
+		return [];
+	}
+
 	// Build the component attributes.
 	$details = [];
 
@@ -611,13 +621,51 @@ function get_details_tabs_data( array $itineraries = [], int $expedition_id = 0 
 		}
 
 		// Active tab for seasons tabs.
-		if ( ! isset( $details['active_tab'] ) || absint( $season['slug'] ) > absint( $details['active_tab'] ) ) {
+		if ( ! isset( $details['active_tab'] ) || absint( $season['slug'] ) < absint( $details['active_tab'] ) ) {
 			$details['active_tab'] = $season['slug'];
 		}
 
 		// Seasons tab data.
-		$details['itinerary_groups'][ $season['slug'] ]['tab_id']    = $season['slug'];
-		$details['itinerary_groups'][ $season['slug'] ]['tab_title'] = sprintf( '%d.%d Season', $season['name'], absint( substr( $season['name'], -2 ) ) + 1 );
+		$details['itinerary_groups'][ $season['slug'] ]['tab_id'] = $season['slug'];
+
+		// To show next year - show only if root destination term has meta show_next_year set to true.
+		$to_show_next_year = false;
+
+		// Get destination terms of expedition.
+		$destinations = $expedition['post_taxonomies'][ DESTINATION_TAXONOMY ] ?? [];
+
+		// Check if destinations is not empty.
+		if ( is_array( $destinations ) && ! empty( $destinations ) ) {
+			// Select destination whose parent is empty.
+			$destinations = array_filter(
+				$destinations,
+				fn( $destination ) => empty( $destination['parent'] )
+			);
+
+			// Check if destinations is not empty.
+			if ( ! empty( $destinations ) ) {
+				// Select first.
+				$destination = reset( $destinations );
+
+				// Check if destination is not empty.
+				if ( ! empty( $destination ) && is_array( $destination ) && ! empty( $destination['term_id'] ) ) {
+					// Get term meta.
+					$term_meta = get_term_meta( $destination['term_id'], 'show_next_year', true );
+
+					// Check if term meta is not empty.
+					if ( ! empty( $term_meta ) ) {
+						$to_show_next_year = true;
+					}
+				}
+			}
+		}
+
+		// Set tab title.
+		if ( $to_show_next_year ) {
+			$details['itinerary_groups'][ $season['slug'] ]['tab_title'] = sprintf( '%d.%d Season', $season['name'], absint( substr( $season['name'], -2 ) ) + 1 );
+		} else {
+			$details['itinerary_groups'][ $season['slug'] ]['tab_title'] = sprintf( '%d Season', $season['name'] );
+		}
 
 		// Active tab for itinerary tabs.
 		if ( ! isset( $details['itinerary_groups'][ $season['slug'] ]['active_tab'] ) ) {
@@ -644,7 +692,6 @@ function get_details_tabs_data( array $itineraries = [], int $expedition_id = 0 
 	// Sort the itinerary groups.
 	if ( isset( $details['itinerary_groups'] ) ) {
 		ksort( $details['itinerary_groups'] );
-		$details['itinerary_groups'] = array_reverse( $details['itinerary_groups'] );
 	}
 
 	// Return the component attributes.

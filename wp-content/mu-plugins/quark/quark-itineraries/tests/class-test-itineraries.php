@@ -11,8 +11,10 @@ use WP_Post;
 use WP_Term;
 use Quark\Tests\Softrip\Softrip_TestCase;
 
+use function Quark\Expeditions\bust_post_cache as bust_expedition_post_cache;
 use function Quark\Softrip\do_sync;
 
+use const Quark\Expeditions\DESTINATION_TAXONOMY;
 use const Quark\InclusionSets\POST_TYPE as INCLUSION_SETS_POST_TYPE;
 use const Quark\PolicyPages\POST_TYPE as POLICY_PAGES_POST_TYPE;
 use const Quark\StaffMembers\SEASON_TAXONOMY;
@@ -727,11 +729,72 @@ class Test_Itineraries extends Softrip_TestCase {
 
 		// Prepare expected details.
 		$expected_details = [
-			'active_tab'       => '2023',
+			'active_tab'       => '2022',
 			'itinerary_groups' => [
-				[
+				2022 => [
+					'tab_id'      => '2022',
+					'tab_title'   => '2022 Season',
+					'active_tab'  => 'tab-1',
+					'itineraries' => [
+						[
+							'tab_id'              => 'tab-1',
+							'tab_title'           => '10 Days',
+							'tab_subtitle'        => 'From India',
+							'tab_content_header'  => 'From India, 10 days, on ' . $expected_ship_oex[0]['name'],
+							'duration'            => '10 days',
+							'departing_from'      => $departure_location_india->name,
+							'itinerary_days'      => [
+								[
+									'title'   => 'Day 1: A',
+									'content' => 'Day One content',
+								],
+								[
+									'title'   => 'Day 2 & 3: B',
+									'content' => 'Day Two content',
+								],
+								[
+									'title'   => 'Day 4 to 6: C',
+									'content' => 'Day Three content',
+								],
+							],
+							'map'                 => 0,
+							'price'               => '$26,171 USD per person',
+							'brochure'            => '',
+							'ships'               => $expected_ship_oex,
+							'request_a_quote_url' => '',
+						],
+						[
+							'tab_id'              => 'tab-3',
+							'tab_title'           => '12 Days',
+							'tab_subtitle'        => 'From India',
+							'tab_content_header'  => 'From India, 12 days, on ' . $expected_ship_ult[0]['name'],
+							'duration'            => '12 days',
+							'departing_from'      => 'India',
+							'itinerary_days'      => [
+								[
+									'title'   => 'Day 1: A',
+									'content' => 'Day One content',
+								],
+								[
+									'title'   => 'Day 2 & 3: B',
+									'content' => 'Day Two content',
+								],
+								[
+									'title'   => 'Day 4 to 6: C',
+									'content' => 'Day Three content',
+								],
+							],
+							'map'                 => 0,
+							'price'               => '$29,410 USD per person',
+							'brochure'            => '',
+							'ships'               => $expected_ship_ult,
+							'request_a_quote_url' => '',
+						],
+					],
+				],
+				2023 => [
 					'tab_id'      => '2023',
-					'tab_title'   => '2023.24 Season',
+					'tab_title'   => '2023 Season',
 					'active_tab'  => 'tab-2',
 					'itineraries' => [
 						[
@@ -763,7 +826,40 @@ class Test_Itineraries extends Softrip_TestCase {
 						],
 					],
 				],
-				[
+			],
+		];
+
+		// Assert details.
+		$this->assertEquals( $expected_details, $details );
+
+		// Create a destination term.
+		$destination = $this->factory()->term->create_and_get(
+			[
+				'taxonomy' => DESTINATION_TAXONOMY,
+				'name'     => 'Test Destination',
+			]
+		);
+
+		// Check if term was created.
+		$this->assertTrue( $destination instanceof WP_Term );
+
+		// Assign destination term to posts.
+		wp_set_post_terms( $expedition_post->ID, [ $destination->term_id ], DESTINATION_TAXONOMY );
+
+		// Update term meta.
+		update_term_meta( $destination->term_id, 'show_next_year', true );
+
+		// Bust expedition post cache.
+		bust_expedition_post_cache( $expedition_post->ID );
+
+		// Test with expedition id.
+		$details = get_details_tabs_data( $itinerary_posts, $expedition_post->ID );
+
+		// Prepare expected details.
+		$expected_details = [
+			'active_tab'       => '2022',
+			'itinerary_groups' => [
+				2022 => [
 					'tab_id'      => '2022',
 					'tab_title'   => '2022.23 Season',
 					'active_tab'  => 'tab-1',
@@ -820,6 +916,40 @@ class Test_Itineraries extends Softrip_TestCase {
 							'price'               => '$29,410 USD per person',
 							'brochure'            => '',
 							'ships'               => $expected_ship_ult,
+							'request_a_quote_url' => '',
+						],
+					],
+				],
+				2023 => [
+					'tab_id'      => '2023',
+					'tab_title'   => '2023.24 Season',
+					'active_tab'  => 'tab-2',
+					'itineraries' => [
+						[
+							'tab_id'              => 'tab-2',
+							'tab_title'           => '11 Days',
+							'tab_subtitle'        => 'From Japan',
+							'tab_content_header'  => 'From Japan, 11 days',
+							'duration'            => '11 days',
+							'departing_from'      => 'Japan',
+							'itinerary_days'      => [
+								[
+									'title'   => 'Day 1: A',
+									'content' => 'Day One content',
+								],
+								[
+									'title'   => 'Day 2 & 3: B',
+									'content' => 'Day Two content',
+								],
+								[
+									'title'   => 'Day 4 to 6: C',
+									'content' => 'Day Three content',
+								],
+							],
+							'map'                 => 0,
+							'price'               => '',
+							'brochure'            => '',
+							'ships'               => [],
 							'request_a_quote_url' => '',
 						],
 					],
