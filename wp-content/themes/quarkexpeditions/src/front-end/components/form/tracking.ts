@@ -3,7 +3,7 @@
  */
 
 // Campaign params.
-export const campaignParams: string[] = [ 'utm_source', 'utm_term', 'utm_campaign', 'utm_keyword', 'utm_content', 'utm_theme', 'utm_medium', 'gclid', 'msclkid', 'fbid', 'fbclid', "ga_client_id" ];
+export const campaignParams: string[] = [ 'utm_source', 'utm_term', 'utm_campaign', 'utm_keyword', 'utm_content', 'utm_theme', 'utm_medium', 'gclid', 'msclkid', 'fbid', 'fbclid', 'ga_client_id' ];
 
 /**
  * Get campaign params from URL.
