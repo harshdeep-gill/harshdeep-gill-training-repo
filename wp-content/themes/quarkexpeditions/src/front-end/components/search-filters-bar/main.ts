@@ -27,6 +27,7 @@ export class SearchFiltersBar extends HTMLElement {
 	 */
 	private searchFiltersModal: HTMLElement | null;
 	private searchButton: HTMLElement | null;
+	private searchModalButton: HTMLElement | null | undefined;
 	private headerSearchButton: HTMLElement | null;
 	private searchModalDestinationsButton: HTMLElement | null;
 	private searchModalDeparturesButton: HTMLElement | null;
@@ -67,6 +68,7 @@ export class SearchFiltersBar extends HTMLElement {
 		this.departureMonthsSelectors = this.searchFiltersModal?.querySelectorAll( 'quark-months-multi-select' );
 		this.defaultDepartureMonthsPlaceholder = this.departureMonthsFilters?.getAttribute( 'default-placeholder' ) as string;
 		this.searchButton = this.querySelector( '.search-filters-bar__search-button' );
+		this.searchModalButton = this.searchFiltersModal?.querySelector( '.search-filters-bar__modal-button-search' );
 		this.headerSearchButton = document.querySelector( '.header__search-item' );
 		this.clearAllButton = document.querySelector( '.search-filters-bar__modal-button-clear-all' );
 		this.destinationsAccordion = this.searchFiltersModal?.querySelector( 'tp-accordion-item#search-filters-bar-destinations-accordion' );
@@ -94,6 +96,7 @@ export class SearchFiltersBar extends HTMLElement {
 
 		// Search Button.
 		this.searchButton?.addEventListener( 'click', this.redirectToSearchPage.bind( this ) );
+		this.searchModalButton?.addEventListener( 'click', this.redirectToSearchPage.bind( this ) );
 		this.headerSearchButton?.addEventListener( 'click', this.toggleDestinationFilterOptions.bind( this ) );
 
 		// Clear All Button.
