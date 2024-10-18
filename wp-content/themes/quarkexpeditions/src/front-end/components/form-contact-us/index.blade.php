@@ -23,8 +23,8 @@
 		thank_you_page="{{ $thank_you_page }}"
 		:webform_url="false"
 		:referrer_url="true"
+		:ga_client="true"
 	>
-		<input type="hidden" name="fields[GA_Clint_id__c]" value="" class="form__ga-clint-id">
 		<div class="form-contact-us__content">
 			<div class="form-contact-us__form">
 				<p class="form-contact-us__instructions">
