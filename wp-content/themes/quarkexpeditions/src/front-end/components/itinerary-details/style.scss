@@ -17,11 +17,18 @@
 			margin-left: calc(-1 * var(--grid-col-gutter));
 			margin-right: calc(-1 * var(--grid-col-gutter));
 			padding: var(--spacing-7) var(--grid-col-gutter);
+			color: var(--color-white);
 
-			#{$self}__tabs-nav-link {
-				background-color: var(--color-gray-90);
-				border-color: var(--color-gray-80);
+			.tabs_nav-link {
 				color: var(--color-white);
+			}
+
+			.tabs__nav-item[active] {
+
+				.tabs__nav-link {
+					background-color: var(--color-gray-90);
+					border-color: var(--color-gray-80);
+				}
 			}
 		}
 	}
