@@ -66,8 +66,13 @@ export class LoadMore extends HTMLElement {
 			this.setAttribute( 'loading', 'false' );
 		}
 
-		// Update load more button text with remaining count.
-		if ( this.loadMoreButtonText && typeof remainingCount === 'number' ) {
+		// Update load more button text.
+		if ( this.loadMoreButtonText && loadMoreState ) {
+			// Update load more button text with loading text.
+			const loadingText = this.getAttribute( 'loading-text' ) ?? '';
+			this.loadMoreButtonText.innerText = loadingText;
+		} else if ( this.loadMoreButtonText && typeof remainingCount === 'number' ) {
+			// Update load more button text with remaining count.
 			const loadMoreText = this.getAttribute( 'load-more-text' ) ?? '';
 			this.loadMoreButtonText.innerText = `${ loadMoreText } (${ remainingCount })`;
 		}

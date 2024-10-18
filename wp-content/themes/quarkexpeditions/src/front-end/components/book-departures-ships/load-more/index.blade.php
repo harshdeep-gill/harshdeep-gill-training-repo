@@ -1,4 +1,5 @@
 @props( [
+	'loading_text'   => __( 'Loading...', 'qrk' ),
 	'load_more_text' => __( 'Load More', 'qrk' ),
 ] )
 
@@ -11,8 +12,10 @@
 
 <quark-book-departures-ships-load-more
 	class="book-departures-ships__load-more typography-spacing"
+	active="false"
 	loading="false"
 	load-more-text="{{ $load_more_text }}"
+	loading-text="{{ $loading_text }}"
 >
 	{!! $slot !!}
 
