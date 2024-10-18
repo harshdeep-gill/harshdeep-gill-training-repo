@@ -17,6 +17,10 @@
 		justify-content: space-between;
 	}
 
+	&:has(+ .expedition-search) {
+		margin-top: var(--spacing-2);
+	}
+
 	&__modal {
 		z-index: 103;
 
@@ -319,6 +323,13 @@
 									overflow-y: auto;
 								}
 							}
+
+							&__item {
+
+								@media screen and (min-width: grid-size(sm)) {
+									padding-bottom: var(--spacing-4);
+								}
+							}
 						}
 					}
 
@@ -342,7 +353,6 @@
 				display: flex;
 				flex-direction: column;
 				align-items: flex-start;
-				margin-top: var(--spacing-4);
 
 				&:first-child {
 					margin-top: 0;
@@ -371,6 +381,7 @@
 
 					@media screen and (min-width: grid-size(sm)) {
 						display: none;
+						margin-top: var(--spacing-4);
 					}
 				}
 
@@ -378,6 +389,8 @@
 
 					.menu-list__item-link {
 						font-weight: var(--font-weight-bold);
+						text-decoration: underline var(--color-yellow);
+						text-underline-offset: var(--spacing-2);
 					}
 
 					#{$self}__destinations-filter-option-image > svg {
@@ -549,5 +562,33 @@
 	&__departure-months-icon,
 	&__modal-open-button-icon {
 		margin-right: var(--spacing-2);
+	}
+
+	&__sticky-cta {
+		opacity: 0;
+		display: flex;
+		position: fixed;
+		z-index: 5;
+		bottom: 0;
+		left: 0;
+		background-color: var(--color-white);
+		width: 100%;
+		padding: var(--spacing-4);
+		box-shadow: var(--shadow-4);
+
+		quark-modal-open,
+		button {
+			width: 100%;
+		}
+
+		&[show] {
+			opacity: 1;
+		}
+
+		@include transition();
+
+		@media screen and (min-width: grid-size(sm)) {
+			display: none;
+		}
 	}
 }

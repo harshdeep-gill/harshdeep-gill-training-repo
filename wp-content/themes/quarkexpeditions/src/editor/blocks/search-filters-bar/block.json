@@ -11,7 +11,26 @@
 		"bar"
 	],
 	"textdomain": "qrk",
-	"attributes": {},
+	"attributes": {
+		"antarcticImage": {
+			"type": "object"
+		},
+		"arcticImage": {
+			"type": "object"
+		},
+		"antarcticCtaUrl": {
+			"type": "object",
+			"default": {}
+		},
+		"arcticCtaUrl": {
+			"type": "object",
+			"default": {}
+		},
+		"allDestinationsUrl": {
+			"type": "object",
+			"default": {}
+		}
+	},
 	"supports": {
 		"alignWide": false,
 		"anchor": true,

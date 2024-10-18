@@ -1,4 +1,5 @@
 @props( [
+	'reset_button_text' => __( "I'm Flexible", 'qrk' ),
 	'button_text' => '',
 	'is_compact'  => false,
 ] )
@@ -20,14 +21,23 @@
 
 <tp-slider @class( $classes ) swipe="yes" infinite="yes">
 	<tp-slider-track class="months-multi-select__track">
+		@if ( ! empty( $reset_button_text ) )
+			<x-button
+				class="months-multi-select__reset-button months-multi-select__reset-button-mobile"
+				appearance="outline"
+				color="black"
+			>
+				<x-escape :content="$reset_button_text" />
+			</x-button>
+		@endif
 		<tp-slider-slides>
 			{!! $slot !!}
 		</tp-slider-slides>
 	</tp-slider-track>
 
 	<div class="months-multi-select__nav">
-		@if ( ! empty( $button_text ) )
-			<button class="months-multi-select__reset-button"><x-escape :content="$button_text" /></button>
+		@if ( ! empty( $reset_button_text ) )
+			<button class="months-multi-select__reset-button"><x-escape :content="$reset_button_text" /></button>
 		@endif
 
 		@if ( $slide_count > 1 )

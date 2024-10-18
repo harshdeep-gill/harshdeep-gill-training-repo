@@ -11,6 +11,7 @@ import { MonthsMultiSelect } from '../months-multi-select/main';
 import { SearchFilterDestinations } from './destinations';
 import { SearchFilterDestinationOption } from './destinations/filter-option';
 import { MonthsMultiSelectOption } from '../months-multi-select/months-multi-select-option';
+import { TPAccordionHandleElement, TPAccordionItemElement } from '@travelopia/web-components';
 
 /**
  * Get Store.
@@ -29,6 +30,7 @@ export class SearchFiltersBar extends HTMLElement {
 	private headerSearchButton: HTMLElement | null;
 	private searchModalDestinationsButton: HTMLElement | null;
 	private searchModalDeparturesButton: HTMLElement | null;
+	private clearAllButton: HTMLElement | null;
 	private destinationFilters: HTMLElement | null | undefined;
 	private departureMonthsFilters: HTMLElement | null | undefined;
 	private filtersApiUrl: string | null;
@@ -36,6 +38,10 @@ export class SearchFiltersBar extends HTMLElement {
 	private destinationSelector: SearchFilterDestinations | null | undefined;
 	private departureMonthsSelectors: NodeListOf<MonthsMultiSelect> | null | undefined;
 	private defaultDepartureMonthsPlaceholder: string;
+	private destinationsAccordion: TPAccordionItemElement | null | undefined;
+	private departuresAccordion: TPAccordionItemElement | null | undefined;
+	private destinationsAccordionHandle: TPAccordionHandleElement | null | undefined;
+	private departuresAccordionHandle: TPAccordionHandleElement | null | undefined;
 
 	/**
 	 * Constructor.
@@ -62,6 +68,11 @@ export class SearchFiltersBar extends HTMLElement {
 		this.defaultDepartureMonthsPlaceholder = this.departureMonthsFilters?.getAttribute( 'default-placeholder' ) as string;
 		this.searchButton = this.querySelector( '.search-filters-bar__search-button' );
 		this.headerSearchButton = document.querySelector( '.header__search-item' );
+		this.clearAllButton = document.querySelector( '.search-filters-bar__modal-button-clear-all' );
+		this.destinationsAccordion = this.searchFiltersModal?.querySelector( 'tp-accordion-item#search-filters-bar-destinations-accordion' );
+		this.destinationsAccordionHandle = this.searchFiltersModal?.querySelector( 'tp-accordion-item#search-filters-bar-destinations-accordion > tp-accordion-handle' );
+		this.departuresAccordion = this.searchFiltersModal?.querySelector( 'tp-accordion-item#search-filters-bar-departures-accordion' );
+		this.departuresAccordionHandle = this.searchFiltersModal?.querySelector( 'tp-accordion-item#search-filters-bar-departures-accordion > tp-accordion-handle' );
 
 		// Event Listeners.
 		this.searchModalDestinationsButton?.addEventListener(
@@ -84,6 +95,39 @@ export class SearchFiltersBar extends HTMLElement {
 		// Search Button.
 		this.searchButton?.addEventListener( 'click', this.redirectToSearchPage.bind( this ) );
 		this.headerSearchButton?.addEventListener( 'click', this.toggleDestinationFilterOptions.bind( this ) );
+
+		// Clear All Button.
+		this.clearAllButton?.addEventListener( 'click', this.clearAllFilterSelection.bind( this ) );
+
+		// Accordion Handles.
+		this.destinationsAccordionHandle?.addEventListener( 'click', () => {
+			// Check if destinations accordion is open
+			const isDestinationsOpen = this.destinationsAccordion?.hasAttribute( 'open' );
+
+			// Check if destinations is open.
+			if ( ! isDestinationsOpen ) {
+				this.destinationsAccordion?.open();
+				this.departuresAccordion?.close();
+			} else {
+				this.departuresAccordion?.open();
+				this.destinationsAccordion?.close();
+			}
+		} );
+
+		// Departures Accordion.
+		this.departuresAccordionHandle?.addEventListener( 'click', () => {
+			// Check if departures accordion is open
+			const isDeparturesOpen = this.departuresAccordion?.hasAttribute( 'open' );
+
+			// Check if departures is open.
+			if ( ! isDeparturesOpen ) {
+				this.departuresAccordion?.open();
+				this.destinationsAccordion?.close();
+			} else {
+				this.destinationsAccordion?.open();
+				this.departuresAccordion?.close();
+			}
+		} );
 	}
 
 	/**
@@ -257,9 +301,6 @@ export class SearchFiltersBar extends HTMLElement {
 
 		// Update the months filter label
 		this.updateMonthsPlaceholder( fieldLabel );
-
-		// Activate destinations filter.
-		this.toggleDestinationFilterOptions();
 	}
 
 	/**
@@ -331,6 +372,22 @@ export class SearchFiltersBar extends HTMLElement {
 		// Update the placeholder label.
 		if ( monthsPlaceholder ) {
 			monthsPlaceholder.innerHTML = label ?? '';
+		}
+	}
+
+	/**
+	 * Clear all filter selection.
+	 */
+	clearAllFilterSelection() {
+		// Loop through all month selectors.
+		this.departureMonthsSelectors?.forEach( ( selector ) => {
+			// Reset the selector.
+			selector?.resetSelector();
+		} );
+
+		// Unselect all destination options.
+		if ( this.destinationSelector ) {
+			this.destinationSelector.unSelectAll();
 		}
 	}
 }

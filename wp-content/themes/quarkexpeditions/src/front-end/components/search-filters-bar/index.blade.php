@@ -7,6 +7,9 @@
 	'available_months'         => [],
 	'filters_api_url'          => '',
 	'search_page_url'          => '',
+	'image_ids'                => [],
+	'cta_urls'                 => [],
+	'all_destinations_cta'     => [],
 ] )
 
 <quark-search-filters-bar
@@ -41,5 +44,9 @@
 		:available_months="$available_months"
 		:filters_api_url="$filters_api_url"
 		:search_page_url="$search_page_url"
+		:image_ids="$image_ids"
+		:cta_urls="$cta_urls"
+		:all_destinations_cta="$all_destinations_cta"
 	/>
+	<x-search-filters-bar.sticky-cta />
 </quark-search-filters-bar>

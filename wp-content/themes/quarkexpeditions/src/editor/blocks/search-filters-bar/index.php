@@ -41,6 +41,50 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 		return $content;
 	}
 
+	// Initialize the component attributes.
+	$component_attributes = [
+		'antarctic_image_id'   => 0,
+		'arctic_image_id'      => 0,
+		'antarctic_cta'        => [],
+		'arctic_cta'           => [],
+		'all_destinations_cta' => [],
+	];
+
+	// Check if antarctic image exists.
+	if ( ! empty( $attributes['antarcticImage'] ) && is_array( $attributes['antarcticImage'] ) ) {
+		$component_attributes['antarctic_image_id'] = $attributes['antarcticImage']['id'];
+		$component_attributes['arctic_image_id']    = $attributes['arcticImage']['id'];
+	}
+
+	// Check if arctic image exists.
+	if ( ! empty( $attributes['arcticImage'] ) && is_array( $attributes['arcticImage'] ) ) {
+		$component_attributes['arctic_image_id'] = $attributes['arcticImage']['id'];
+	}
+
+	// Check is antarctic cta url exists.
+	if ( ! empty( $attributes['antarcticCtaUrl'] ) && is_array( $attributes['antarcticCtaUrl'] ) ) {
+		$component_attributes['antarctic_cta'] = [
+			'url'  => $attributes['antarcticCtaUrl']['url'] ?? 0,
+			'text' => $attributes['antarcticCtaUrl']['text'] ?? 0,
+		];
+	}
+
+	// Check is arctic cta url exists.
+	if ( ! empty( $attributes['arcticCtaUrl'] ) && is_array( $attributes['arcticCtaUrl'] ) ) {
+		$component_attributes['arctic_cta'] = [
+			'url'  => $attributes['arcticCtaUrl']['url'] ?? '',
+			'text' => $attributes['arcticCtaUrl']['text'] ?? '',
+		];
+	}
+
+	// check if all destintions url exists.
+	if ( ! empty( $attributes['allDestinationsUrl'] && is_array( $attributes['allDestinationsUrl'] ) ) ) {
+		$component_attributes['all_destinations_cta'] = [
+			'url'  => $attributes['allDestinationsUrl']['url'] ?? '',
+			'text' => $attributes['allDestinationsUrl']['text'] ?? '',
+		];
+	}
+
 	// Return built component.
-	return quark_get_component( COMPONENT );
+	return quark_get_component( COMPONENT, $component_attributes );
 }

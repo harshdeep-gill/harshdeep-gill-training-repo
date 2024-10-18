@@ -1,7 +1,8 @@
 @props( [
-	'destinations' => [],
-	'cta_image_id' => 0,
-	'cta_url'      => '',
+	'destinations'         => [],
+	'image_ids'            => [],
+	'cta_urls'             => [],
+	'all_destinations_cta' => [],
 ] )
 
 @php
@@ -66,19 +67,38 @@
 					</x-menu-list>
 
 					{{-- CTA --}}
-					<x-thumbnail-cards :is_carousel="false">
-						<x-thumbnail-cards.card size="small" url="#" orientation="landscape" image_id="29">
-							{{-- TODO: Make dynamic. --}}
-							<x-thumbnail-cards.title title="View All Expeditions" align="bottom" />
-						</x-thumbnail-cards.card>
-					</x-thumbnail-cards>
+					@php
+						$destination_array_key = strtolower( $destination_parent_name );
+					@endphp
+					@if (
+						array_key_exists(  $destination_array_key, $image_ids ) &&
+						array_key_exists(  $destination_array_key, $cta_urls ) &&
+						! empty( $image_ids[$destination_array_key] ) &&
+						! empty( $cta_urls[$destination_array_key] )
+					)
+						@php
+							$image_id = $image_ids[$destination_array_key];
+							$cta_url  = $cta_urls[$destination_array_key]['url'] ?? '#';
+							$cta_text = $cta_urls[$destination_array_key]['text'] ?? '';
+						@endphp
+						<x-thumbnail-cards :is_carousel="false">
+							<x-thumbnail-cards.card
+								size="small"
+								url="{{ $cta_url }}"
+								orientation="landscape"
+								:image_id="$image_id"
+							>
+								<x-thumbnail-cards.title :title="$cta_text" align="bottom" />
+							</x-thumbnail-cards.card>
+						</x-thumbnail-cards>
+					@endif
 				</x-two-columns.column>
 			@endforeach
 		@endif
 
 		{{-- Filter options in accordion for mobile --}}
 		<x-accordion>
-			<x-accordion.item id="accordion-destinations" :open="true">
+			<x-accordion.item id="search-filters-bar-destinations-accordion" :open="true">
 				<x-accordion.item-handle title="Destinations" />
 				<x-accordion.item-content>
 					@if ( ! empty( $destinations ) )
@@ -120,12 +140,16 @@
 					@endif
 
 					{{-- CTA Link --}}
-					<div class="search-filters-bar__destinations-filter-options-cta">
-						<a href="#" class="search-filters-bar__destinations-filter-options-cta-link">
-							{{ __( 'Explore All Destinations', 'qrk') }}
-						</a>
-						<x-svg name="chevron-right" />
-					</div>
+					@if ( ! empty( $all_destinations_cta ) )
+						<div class="search-filters-bar__destinations-filter-options-cta">
+							<a
+								href="{{ $all_destinations_cta['url'] ?? '' }}" class="search-filters-bar__destinations-filter-options-cta-link"
+							>
+								{{ $all_destinations_cta['text'] ?? __( 'Explore All Destinations', 'qrk' ) }}
+							</a>
+							<x-svg name="chevron-right" />
+						</div>
+					@endif
 				</x-accordion.item-content>
 			</x-accordion.item>
 		</x-accordion>

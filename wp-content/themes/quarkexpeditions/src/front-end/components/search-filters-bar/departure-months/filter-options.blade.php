@@ -29,7 +29,7 @@
 	{{-- Filter options in accordion for mobile devices --}}
 	<div class="search-filters-bar__departure-months-filter-options-accordion">
 		<x-accordion>
-			<x-accordion.item id="accordion-departure-months">
+			<x-accordion.item id="search-filters-bar-departures-accordion">
 				<x-accordion.item-handle title="Departure" />
 				<x-accordion.item-content>
 					<x-months-multi-select

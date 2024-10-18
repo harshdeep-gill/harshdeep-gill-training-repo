@@ -15,7 +15,7 @@ export class MonthsMultiSelect extends HTMLElement {
 	/**
 	 * Properties.
 	 */
-	private resetButton : HTMLElement | null;
+	private resetButtons : NodeListOf<HTMLElement> | null;
 	private availableMonths: Array<object> | null;
 	static observedAttributes = [ 'available-months' ];
 
@@ -27,11 +27,16 @@ export class MonthsMultiSelect extends HTMLElement {
 		super();
 
 		// Elements.
-		this.resetButton = this.querySelector( '.months-multi-select__reset-button' );
+		this.resetButtons = this.querySelectorAll( '.months-multi-select__reset-button' );
 		this.availableMonths = JSON.parse( this.getAttribute( 'available-months' ) ?? '' );
 
 		// Event Listeners.
-		this.resetButton?.addEventListener( 'click', this.resetSelector.bind( this ) );
+		if ( this.resetButtons ) {
+			this.resetButtons.forEach( ( buttonElement ) => {
+				// Add event listener to the reset button.
+				buttonElement?.addEventListener( 'click', this.resetSelector.bind( this ) );
+			} );
+		}
 
 		// Disable unavailable month options.
 		if ( this.availableMonths ) {
