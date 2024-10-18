@@ -18,13 +18,6 @@
 @endphp
 
 <x-expedition-search>
-	<x-search-filters-bar
-		:destinations="$destinations"
-		:available_months="$available_months"
-		:filters_api_url="$filters_api_url"
-		:search_page_url="$search_page_url"
-	/>
-
 	{{-- Header --}}
 	<x-expedition-search.header>
 		<x-expedition-search.result-count count="{{ $result_count }}" />
