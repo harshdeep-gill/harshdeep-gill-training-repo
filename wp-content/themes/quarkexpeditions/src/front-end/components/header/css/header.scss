@@ -12,7 +12,7 @@
 	z-index: 99;
 	gap: var(--spacing-4);
 
-	@media screen and (min-width: grid-size(xxxl)) {
+	@media screen and (min-width: grid-size(lg)) {
 		gap: var(--spacing-5);
 		padding: 0 80px;
 	}

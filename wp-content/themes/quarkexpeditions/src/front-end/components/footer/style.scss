@@ -11,7 +11,7 @@
 	padding: var(--spacing-7) var(--spacing-5);
 	margin-top: var(--grid-section-gutter);
 
-	@media screen and (min-width: grid-size(xxxl)) {
+	@media screen and (min-width: grid-size(lg)) {
 		padding-inline: 80px;
 	}
 
