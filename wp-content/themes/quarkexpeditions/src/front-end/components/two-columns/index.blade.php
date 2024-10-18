@@ -25,8 +25,6 @@
 	if ( 2 > $child_count ) {
 		$classes[] = 'two-columns--only-child';
 	}
-
-	var_dump( $id );
 @endphp
 
 <x-section id="{{ $id }}">
