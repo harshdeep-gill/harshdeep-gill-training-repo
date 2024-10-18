@@ -137,7 +137,11 @@
 	}
 
 	textarea {
-		min-height: 92px;
+		min-height: 102px;
+
+		@media screen and (min-width: grid-size(md)) {
+			min-height: 92px;
+		}
 	}
 
 	&__title {
@@ -154,10 +158,18 @@
 		}
 	}
 
-	&__next-step-btn,
-	&__submit-button {
+	&__next-step-btn {
 		flex: 1;
 		min-width: 0;
+	}
+
+	.form-submit {
+		flex: 1;
+		min-width: 0;
+
+		.btn {
+			width: 100%;
+		}
 	}
 
 	&__previous-step-button {
@@ -203,6 +215,10 @@
 
 	&__success {
 		display: none;
+
+		&.section {
+			margin-top: var(--grid-section-gutter);
+		}
 
 		&-visible {
 			display: block;

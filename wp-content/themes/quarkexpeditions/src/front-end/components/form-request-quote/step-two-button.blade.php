@@ -20,7 +20,7 @@
 		</span>
 	</x-button>
 
-	<x-button type="submit" size="big" class="form-request-quote__submit-button">
+	<x-form.submit size="big">
 		<x-escape :content="$button_text" />
-	</x-button>
+	</x-form.submit>
 </div>

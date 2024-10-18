@@ -161,7 +161,7 @@
 
 			@if ( ! empty( $home_url ) )
 				<div class="form-request-quote__success-button-wrap">
-					<x-button href="{{ $home_url }}" size="big" class="form-request-quote__back-to-home">{{ __( 'Back to Home!', 'qrk' ) }}</x-button>
+					<x-button href="{{ $home_url }}" size="big" class="form-request-quote__back-to-home">{{ __( 'Back to Home', 'qrk' ) }}</x-button>
 				</div>
 			@endif
 		</x-section>
