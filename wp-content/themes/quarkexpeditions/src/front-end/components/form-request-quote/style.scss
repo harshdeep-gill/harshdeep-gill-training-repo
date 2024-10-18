@@ -9,13 +9,13 @@
 
 	--section-spacing: var(--spacing-5);
 
-	@media screen and (min-width: grid-size(lg)) {
-		--section-spacing: var(--spacing-7);
-	}
-
 	max-width: var(--wrap-width-medium);
 	margin-left: auto;
 	margin-right: auto;
+
+	@media screen and (min-width: grid-size(lg)) {
+		--section-spacing: var(--spacing-7);
+	}
 
 	&__heading {
 		margin-top: var(--spacing-7);
