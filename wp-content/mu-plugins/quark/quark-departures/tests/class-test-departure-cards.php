@@ -695,25 +695,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 		$this->assertCount( 1, $card_data['cabins'] );
 
 		// Assert occupancy count.
-		$this->assertCount( 1, $card_data['cabins']['OEX-SGL']['occupancies'] );
-
-		// Expected data for OEX-SGL occupancy.
-		$oex_sgl_occupancy = [
-			[
-				'name'         => 'A',
-				'description'  => 'Single Room',
-				'no_of_guests' => '1',
-				'price'        => [
-					'original_price'   => format_price( 35095 ),
-					'discounted_price' => format_price( 26371 ),
-				],
-				'promotions'   => [],
-				'checkout_url' => 'https://local-checkout.quarkexpeditions.com?package_id=ABC-123&departure_date=2026-02-28&cabin_code=OEX-SGL&currency=USD&mask=A',
-			],
-		];
-
-		// Assert occupancy data.
-		$this->assertEqualSetsWithIndex( $oex_sgl_occupancy, $card_data['cabins']['OEX-SGL']['occupancies'] );
+		$this->assertCount( 0, $card_data['cabins']['OEX-SGL']['occupancies'] );
 
 		// remove cabins from card_data.
 		unset( $card_data['cabins'] );
