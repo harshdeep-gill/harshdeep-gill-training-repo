@@ -1065,6 +1065,14 @@ function get_cabin_availability_status( int $departure_post_id = 0, int $cabin_c
 		return UNAVAILABLE_STATUS;
 	}
 
+	// Get cabin spaces available.
+	$spaces_available = get_available_cabin_spaces( $departure_post_id, $cabin_category_post_id );
+
+	// Check if spaces available.
+	if ( $spaces_available > 0 ) {
+		return AVAILABLE_STATUS;
+	}
+
 	// Initialize flag for sold out.
 	$are_all_sold_out = true;
 
@@ -1089,14 +1097,6 @@ function get_cabin_availability_status( int $departure_post_id = 0, int $cabin_c
 	// Check if all are sold out.
 	if ( $are_all_sold_out ) {
 		return SOLD_OUT_STATUS;
-	}
-
-	// Get cabin spaces available.
-	$spaces_available = get_available_cabin_spaces( $departure_post_id, $cabin_category_post_id );
-
-	// Check if spaces available.
-	if ( $spaces_available > 0 ) {
-		return AVAILABLE_STATUS;
 	}
 
 	// Finally, return on request status.
