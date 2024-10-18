@@ -12,6 +12,7 @@
 	'thank_you_page'    => '',
 	'marketing_fields'  => true,
 	'webform_url'       => true,
+	'referrer_url'      => false,
 ] )
 
 <quark-form
@@ -38,6 +39,10 @@
 
 			@if ( true === $webform_url )
 				<input type="hidden" name="fields[Webform_URL__c]" value="{{ $permalink }}">
+			@endif
+
+			@if ( true === $referrer_url )
+				<input type="hidden" name="fields[Referrer_URL__c]" value="{{ $permalink }}">
 			@endif
 
 			@if ( true === $marketing_fields )
