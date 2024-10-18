@@ -21,6 +21,8 @@
 		salesforce_object="Webform_Contact_Us__c"
 		id="{{ $form_id }}"
 		thank_you_page="{{ $thank_you_page }}"
+		:webform_url="false"
+		:referrer_url="true"
 	>
 		<div class="form-contact-us__content">
 			<div class="form-contact-us__form">
