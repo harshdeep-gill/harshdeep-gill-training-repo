@@ -12,6 +12,7 @@ use WP_Post;
 
 use function Quark\Core\doing_automated_test;
 use function Quark\Departures\get as get_departure_post;
+use function Quark\Search\Departures\get_departures_by_expeditions_and_months;
 use function Travelopia\Salesforce\send_request;
 use function Travelopia\Security\validate_recaptcha;
 use function Travelopia\Security\get_recaptcha_settings;
@@ -42,6 +43,7 @@ function bootstrap(): void {
 
 	// Others.
 	add_filter( 'quark_lead_data', __NAMESPACE__ . '\\process_job_application_form' );
+	add_filter( 'quark_lead_data', __NAMESPACE__ . '\\process_raq_form' );
 }
 
 /**
@@ -332,6 +334,79 @@ function process_job_application_form( array $lead_data = [] ): array {
 
 	// Attach file URL to the lead.
 	$lead_data['fields']['Link_to_Resume__c'] = wp_get_attachment_url( $attachment_id );
+
+	// Return lead data.
+	return $lead_data;
+}
+
+/**
+ * Process request a quote form.
+ *
+ * @param mixed[] $lead_data Lead data.
+ *
+ * @return mixed[]
+ */
+function process_raq_form( array $lead_data = [] ): array {
+	// Check for empty data.
+	if ( empty( $lead_data ) || ! is_array( $lead_data ) || 'WebForm_RAQ__c' !== $lead_data['salesforce_object'] ) {
+		return $lead_data;
+	}
+
+	// Extract expedition ID.
+	$expedition_id    = absint( $lead_data['fields']['Expedition__c'] );
+	$departure_months = $lead_data['fields']['Preferred_Travel_Seasons__c'] ?? [];
+
+	// Check for empty expedition ID and departure months.
+	if ( empty( $expedition_id ) && 1 === count( $departure_months ) && 'any_available_departure' === $departure_months[0] ) {
+		return $lead_data;
+	}
+
+	// Search for departures.
+	$available_departures = get_departures_by_expeditions_and_months( $expedition_id, $departure_months );
+
+	// Prepare Attributes.
+	$departure_starting_dates = [];
+	$softrip_departure_ids    = [];
+	$preferred_season_travel  = '';
+	$earliest_departure       = $available_departures[0] ?? 0;
+	$region                   = get_post_meta( $earliest_departure, 'softrip_market_code', true );
+
+	// Prepare departure data.
+	foreach ( $available_departures as $departure_id ) {
+		// Get Ship code.
+		$departure_starting_dates[] = get_post_meta( $departure_id, 'start_date', true );
+		$softrip_departure_ids[]    = get_post_meta( $departure_id, 'softrip_code', true );
+	}
+
+	// Check for empty departure starting dates.
+	if ( ! empty( $departure_starting_dates ) ) {
+		// Prepare departure year.
+		$departure_start_date = strtotime( strval( $departure_starting_dates[0] ) );
+	}
+
+	// Check for empty departure start date.
+	if ( ! empty( $departure_start_date ) ) {
+		$departure_year = absint( gmdate( 'Y', $departure_start_date ) );
+	}
+
+	// Prepare Preferred season travel.
+	if ( 'ANT' === $region && ! empty( $departure_year ) ) {
+		// Add 1 year to the departure year. But only the last 2 digits. TODO: Rework on this post launch after business review. [QE-869].
+		$preferred_season_travel = $departure_year . '-' . ( $departure_year % 100 + 1 );
+	} elseif ( 'ARC' === $region && ! empty( $departure_year ) ) {
+		$preferred_season_travel = $departure_year;
+	} else {
+		$region = '';
+	}
+
+	// Add attributes to the lead data.
+	$lead_data['fields']['Expedition__c']               = get_the_title( $expedition_id );
+	$lead_data['fields']['Requested_Ship__c']           = get_post_meta( $earliest_departure, 'ship_code', true );
+	$lead_data['fields']['Departure_Date__c']           = ! empty( $departure_starting_dates ) ? $departure_starting_dates[0] : '';
+	$lead_data['fields']['Departure_Dates__c']          = implode( ';', array_unique( $departure_starting_dates ) );
+	$lead_data['fields']['Regions__c']                  = $region;
+	$lead_data['fields']['Departure_IDs__c']            = implode( ';', array_unique( $softrip_departure_ids ) );
+	$lead_data['fields']['Preferred_Travel_Seasons__c'] = $preferred_season_travel;
 
 	// Return lead data.
 	return $lead_data;
