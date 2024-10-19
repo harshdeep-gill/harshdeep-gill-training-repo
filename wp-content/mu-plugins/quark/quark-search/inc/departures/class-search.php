@@ -246,7 +246,12 @@ class Search {
 		'update_post_meta_cache' => false,
 		'update_post_term_cache' => false,
 		'tax_query'              => [],
-		'meta_query'             => [],
+		'meta_query'             => [
+			[
+				'key'     => 'related_expedition',
+				'compare' => 'EXISTS',
+			],
+		],
 	];
 
 	/**
