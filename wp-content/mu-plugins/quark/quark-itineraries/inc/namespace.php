@@ -176,7 +176,7 @@ function update_related_expedition_on_itineraries_save( int $post_id = 0 ): void
 			update_post_meta( $departure_post_id, 'related_expedition', $new_expedition_post_id );
 		} else {
 			// Remove related expedition.
-			delete_post_meta( $departure_post_id, 'related_expedition', '' );
+			delete_post_meta( $departure_post_id, 'related_expedition' );
 		}
 
 		// Bust cache.
