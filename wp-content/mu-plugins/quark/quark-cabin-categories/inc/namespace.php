@@ -1016,6 +1016,11 @@ function get_occupancy_detail( int $occupancy_id = 0, int $departure_post_id = 0
 	// Get discounted price.
 	$discounted_price = get_occupancy_promotion_lowest_price( $occupancy['id'], $currency );
 
+	// If empty, set original price.
+	if ( empty( $discounted_price ) ) {
+		$discounted_price = $original_price;
+	}
+
 	// Add supplemental and mandatory price.
 	$price_with_supplement_mandatory = add_supplemental_and_mandatory_price(
 		[
