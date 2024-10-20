@@ -284,6 +284,8 @@ function update_occupancies( array $raw_cabins_data = [], int $departure_post_id
 
 		// Bust departure cache as meta has been deleted.
 		bust_departure_post_cache( $departure_post_id );
+		wp_cache_delete( CACHE_KEY_PREFIX . '_cabin_category_post_id_' . $cabin_category_post_id . '_departure_post_id_' . $departure_post_id, CACHE_GROUP );
+		wp_cache_delete( CACHE_KEY_PREFIX . '_departure_cabin_category_post_id_' . $cabin_category_post_id, CACHE_GROUP );
 
 		// Set flag to true.
 		$any_updated = true;
