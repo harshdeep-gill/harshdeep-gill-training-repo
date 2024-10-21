@@ -41,8 +41,6 @@ export class SearchFiltersBar extends HTMLElement {
 	private defaultDepartureMonthsPlaceholder: string;
 	private destinationsAccordion: TPAccordionItemElement | null | undefined;
 	private departuresAccordion: TPAccordionItemElement | null | undefined;
-	private destinationsAccordionHandle: TPAccordionHandleElement | null | undefined;
-	private departuresAccordionHandle: TPAccordionHandleElement | null | undefined;
 
 	/**
 	 * Constructor.
@@ -72,9 +70,7 @@ export class SearchFiltersBar extends HTMLElement {
 		this.headerSearchButton = document.querySelector( '.header__search-item' );
 		this.clearAllButton = document.querySelector( '.search-filters-bar__modal-button-clear-all' );
 		this.destinationsAccordion = this.searchFiltersModal?.querySelector( 'tp-accordion-item#search-filters-bar-destinations-accordion' );
-		this.destinationsAccordionHandle = this.searchFiltersModal?.querySelector( 'tp-accordion-item#search-filters-bar-destinations-accordion > tp-accordion-handle' );
 		this.departuresAccordion = this.searchFiltersModal?.querySelector( 'tp-accordion-item#search-filters-bar-departures-accordion' );
-		this.departuresAccordionHandle = this.searchFiltersModal?.querySelector( 'tp-accordion-item#search-filters-bar-departures-accordion > tp-accordion-handle' );
 
 		// Event Listeners.
 		this.searchModalDestinationsButton?.addEventListener(
@@ -102,34 +98,36 @@ export class SearchFiltersBar extends HTMLElement {
 		// Clear All Button.
 		this.clearAllButton?.addEventListener( 'click', this.clearAllFilterSelection.bind( this ) );
 
-		// Accordion Handles.
-		this.destinationsAccordionHandle?.addEventListener( 'click', () => {
-			// Check if destinations accordion is open
-			const isDestinationsOpen = this.destinationsAccordion?.hasAttribute( 'open' );
+		/**
+		 * Destinations Accordion Events.
+		 */
 
-			// Check if destinations is open.
-			if ( ! isDestinationsOpen ) {
-				this.destinationsAccordion?.open();
-				this.departuresAccordion?.close();
-			} else {
-				this.departuresAccordion?.open();
-				this.destinationsAccordion?.close();
-			}
+		// close.
+		this.destinationsAccordion?.addEventListener( 'close', () => {
+			// Open departures accordion.
+			this.departuresAccordion?.setAttribute( 'open', 'yes' );
 		} );
 
-		// Departures Accordion.
-		this.departuresAccordionHandle?.addEventListener( 'click', () => {
-			// Check if departures accordion is open
-			const isDeparturesOpen = this.departuresAccordion?.hasAttribute( 'open' );
+		// open.
+		this.destinationsAccordion?.addEventListener( 'open', () => {
+			// close departures accordion.
+			this.departuresAccordion?.removeAttribute( 'open' );
+		} );
 
-			// Check if departures is open.
-			if ( ! isDeparturesOpen ) {
-				this.departuresAccordion?.open();
-				this.destinationsAccordion?.close();
-			} else {
-				this.destinationsAccordion?.open();
-				this.departuresAccordion?.close();
-			}
+		/**
+		 * Departures Accordion Events.
+		 */
+
+		// close.
+		this.departuresAccordion?.addEventListener( 'close', () => {
+			// Open destinations accordion.
+			this.destinationsAccordion?.setAttribute( 'open', 'yes' );
+		} );
+
+		// open.
+		this.departuresAccordion?.addEventListener( 'open', () => {
+			// Close destinations accordion.
+			this.destinationsAccordion?.removeAttribute( 'open' );
 		} );
 	}
 
