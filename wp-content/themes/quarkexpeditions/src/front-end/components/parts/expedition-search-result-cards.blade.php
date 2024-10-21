@@ -414,6 +414,6 @@
 			</x-expedition-cards.card>
 		@endforeach
 	@else
-		<x-escape :content="__( 'No expeditions found.', 'qrk' )" />
+		<x-expedition-search.results.no-results />
 	@endif
 </x-expedition-cards>

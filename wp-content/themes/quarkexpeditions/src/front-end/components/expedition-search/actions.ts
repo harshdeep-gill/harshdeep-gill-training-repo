@@ -403,7 +403,7 @@ const filterUpdated = ( response: PartialData ) => {
 
 	// Set state.
 	setState( {
-		markup: 0 !== resultCount ? markup : '',
+		markup: markup ?? '',
 		noResultsMarkup,
 		resultCount,
 		hasNextPage: nextPage && nextPage > page,

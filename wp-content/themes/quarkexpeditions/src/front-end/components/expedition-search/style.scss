@@ -324,6 +324,20 @@
 			min-width: 98px;
 		}
 	}
+
+	&__no-results {
+		margin-inline: auto;
+		width: min-content;
+
+		.btn {
+			width: 100%;
+		}
+
+		&-heading {
+			text-wrap: nowrap;
+			min-width: 300px;
+		}
+	}
 }
 
 tp-modal.expedition-search__filters-modal {
