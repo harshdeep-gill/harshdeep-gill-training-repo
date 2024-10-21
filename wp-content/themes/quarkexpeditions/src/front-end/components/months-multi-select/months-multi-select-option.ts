@@ -42,7 +42,7 @@ export class MonthsMultiSelectOption extends HTMLElement {
 		const value: string = this.getAttribute( 'value' ) ?? '';
 
 		// Toggle selected state. Dispatch custom events accordingly.
-		if ( 'yes' !== this.getAttribute( 'selected' ) ) {
+		if ( 'yes' !== this.getAttribute( 'selected' ) && 'yes' !== this.getAttribute( 'disabled' ) ) {
 			monthsMultiSelect?.select( value );
 			monthsMultiSelect?.dispatchEvent( new CustomEvent( 'select', {
 				bubbles: true,
