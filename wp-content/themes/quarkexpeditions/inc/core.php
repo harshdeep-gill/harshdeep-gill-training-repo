@@ -20,6 +20,7 @@ function setup(): void {
 	add_action( 'wordpress_blade_before_view', __NAMESPACE__ . '\\blade_view_before_load' );
 	add_filter( 'wp_resource_hints', __NAMESPACE__ . '\\resource_hints', 10, 2 );
 	add_filter( 'wp_kses_allowed_html', __NAMESPACE__ . '\\kses_custom_allowed_html', 10, 2 );
+	add_filter( 'template_include', __NAMESPACE__ . '\\remove_default_title_tag' );
 }
 
 /**
@@ -40,6 +41,7 @@ function theme_support(): void {
 	add_theme_support( 'post-thumbnails' );
 
 	// Misc. support.
+	add_theme_support( 'title-tag' );
 	add_theme_support(
 		'html5',
 		[
@@ -903,4 +905,21 @@ function get_assets_version(): string {
 
 	// Return the version found in the assets file.
 	return $version;
+}
+
+/**
+ * Remove the default title tag.
+ *
+ * This should be ideally handled by Yoast, but it doesn't invoke this remove_action on correct hook, therefore this patch for now.
+ *
+ * @param string $template Template to be rendered.
+ *
+ * @return string
+ */
+function remove_default_title_tag( string $template = '' ): string {
+	// Remove the default title tag added by WordPress when a block theme is activated.
+	remove_action( 'wp_head', '_block_template_render_title_tag', 1 );
+
+	// Return the template as-it-is.
+	return $template;
 }
