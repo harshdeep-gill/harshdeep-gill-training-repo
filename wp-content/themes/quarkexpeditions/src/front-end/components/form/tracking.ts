@@ -36,7 +36,7 @@ export const getCampaignParamsFromUrl = (): any => {
  */
 export const getGaCookie = (): string => {
 	// Get the cookie.
-	let gaCookie: string = document.cookie.split( '; ' ).find( cookie => cookie.match( /^_ga=GA\d\.\d\./ ) ) ?? '';
+	let gaCookie: string = document.cookie.split( '; ' ).find( ( cookie ) => cookie.match( /^_ga=GA\d\.\d\./ ) ) ?? '';
 
 	// Check if we have a cookie.
 	if ( gaCookie ) {
