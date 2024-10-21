@@ -230,7 +230,7 @@ export default class FormRequestQuote extends HTMLElement {
 
 			// Format the month value.
 			const monthValue = month.value.split( '-' );
-			const formattedValue = `${ monthValue[ 1 ] }-${ monthValue[ 0 ] }`;
+			const formattedValue = `${ monthValue[ 0 ] }-${ monthValue[ 1 ] }`;
 
 			// Set the option attributes.
 			input.setAttribute( 'value', formattedValue );
