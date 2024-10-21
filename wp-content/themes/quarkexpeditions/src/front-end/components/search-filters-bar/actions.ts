@@ -75,7 +75,7 @@ export const updateDestinations = ( destinations: SearchFiltersBarDestinationSta
 export const updateDepartureMonths = ( months: SearchFiltersBarMonthState[] ) => {
 	// Get State.
 	const { selectedMonths, selectedDestinations }: SearchFiltersBarState = getState();
-	let currentSelectedMonths = { ...selectedMonths };
+	let currentSelectedMonths = [ ...selectedMonths ];
 
 	// If months exist, update the value.
 	if ( months && Array.isArray( months ) && months.length ) {
@@ -90,6 +90,8 @@ export const updateDepartureMonths = ( months: SearchFiltersBarMonthState[] ) =>
 			// Return
 			return accumulator;
 		}, <SearchFiltersBarMonthState[]>[] );
+	} else {
+		currentSelectedMonths = [];
 	}
 
 	// Set state.

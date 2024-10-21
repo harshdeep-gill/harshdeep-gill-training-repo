@@ -9,7 +9,13 @@
 	}
 @endphp
 
-<x-info-cards layout="carousel" :carousel_overflow="$carousel_overflow">
+<x-info-cards
+	layout="carousel"
+	:carousel_overflow="$carousel_overflow"
+	:title="__( 'More Adventure Options', 'qrk' )"
+	title_align="left"
+	title_heading_level="2"
+>
 	@foreach ( $cards as $card )
 		<x-info-cards.card size="big" :url="$card['permalink'] ?? ''">
 			<x-info-cards.image :image_id="$card['featured_image'] ?? 0" />

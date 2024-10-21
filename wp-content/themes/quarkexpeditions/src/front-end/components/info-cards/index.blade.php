@@ -1,7 +1,10 @@
 @props( [
-	'layout'            => 'grid',
-	'mobile_carousel'   => true,
-	'carousel_overflow' => false,
+	'layout'              => 'grid',
+	'mobile_carousel'     => true,
+	'carousel_overflow'   => false,
+	'title'               => '',
+	'title_align'         => '',
+	'title_heading_level' => '2',
 ] )
 
 @php
@@ -23,6 +26,15 @@
 	@class( $classes )
 	:full_width="true"
 >
+	@if ( ! empty( $title ) )
+		<x-section.heading>
+			<x-section.title
+				:title="$title"
+				:align="$title_align ?? ''"
+				:heading_level="$title_heading_level ?? ''"
+			/>
+		</x-section.heading>
+	@endif
 	<x-info-cards.carousel :layout="$layout" :mobile_carousel="$mobile_carousel">
 		{!! $slot !!}
 	</x-info-cards.carousel>

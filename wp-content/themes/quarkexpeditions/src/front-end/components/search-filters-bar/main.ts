@@ -88,6 +88,7 @@ export class SearchFiltersBar extends HTMLElement {
 			// Add event listeners.
 			selector?.addEventListener( 'change', this.updateDepartureMonthsState.bind( this ) );
 			selector?.addEventListener( 'reset', this.updateMonthsPlaceholder.bind( this, this.defaultDepartureMonthsPlaceholder ) );
+			selector?.addEventListener( 'reset', () => updateDepartureMonths( [] ) );
 		} );
 
 		// Search Button.
