@@ -105,7 +105,9 @@ if ( empty( $itinerary_groups ) ) {
 										@if ( ! empty( $itinerary['request_a_quote_url'] ) )
 											<x-button size="big" :href="$itinerary['request_a_quote_url']">{{ __( 'Request a Quote', 'qrk' ) }}</x-button>
 										@endif
-										<x-itinerary-details.download-button url="#" />
+										@if( ! empty( $itinerary['brochure'] ) )
+											<x-itinerary-details.download-button url="{{ $itinerary['brochure'] }}" />
+										@endif
 									</x-itinerary-details.cta>
 								</x-itinerary-details.footer>
 							</x-itinerary-details.tab>
