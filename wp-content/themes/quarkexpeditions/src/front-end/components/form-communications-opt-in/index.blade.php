@@ -21,6 +21,12 @@
 	marketing_fields=false
 	webform_url=false
 >
+   {{--
+		Need to update this input field ( From line: 29) in future as we are not sure about the value for this field.
+		After some discution on this ticket with Ankur as conclusion we depriority this form changes.
+		Need to updated post lounch based on the description from ticket QE-885 [https://tuispecialist.atlassian.net/browse/QE-885];
+    --}}
+	{{-- <input type="hidden" name="fields[Departure_ID__c]" value="" class="form__departure-id"> --}}
 	<div class="form-communications-opt-in__content">
 		<div class="form-communications-opt-in__form">
 			<h3 class="form-communications-opt-in__title">{{ __( 'Register Your Email Now', 'qrk' ) }}</h3>

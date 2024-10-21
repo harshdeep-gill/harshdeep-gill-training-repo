@@ -30,14 +30,39 @@ export const getCampaignParamsFromUrl = (): any => {
 };
 
 /**
+ * Get _ga cookie and return the value.
+ *
+ * @return {string} _ga cookie value.
+ */
+export const getGaCookie = (): string => {
+	// Get the cookie.
+	let gaCookie: string = document.cookie.split( '; ' ).find( ( cookie ) => cookie.startsWith( '/_ga=GA\d\.\d\./i' ) ) ?? '';
+
+	// Check if we have a cookie.
+	if ( gaCookie ) {
+		// Split the cookie.
+		const splitCookie = gaCookie.split( '/_ga=GA\d\.\d\./i' );
+
+		// Check if we got two values
+		if ( splitCookie.length === 2 ) {
+			gaCookie = splitCookie[ 1 ];
+		}
+	}
+
+	// Return the cookie.
+	return gaCookie;
+};
+
+/**
  * Initialize tracking.
  */
 export const initializeTracking = (): void => {
 	// Get URL campaign params.
 	const urlCampaignParams = getCampaignParamsFromUrl();
+	const gaCookie = getGaCookie();
 
 	// Trigger an event.
-	window.dispatchEvent( new CustomEvent( 'visitor-tracked', { detail: urlCampaignParams } ) );
+	window.dispatchEvent( new CustomEvent( 'visitor-tracked', { detail: { urlCampaignParams, gaCookie } } ) );
 };
 
 // Track when DOM is ready.

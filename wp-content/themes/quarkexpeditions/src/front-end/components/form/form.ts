@@ -45,7 +45,7 @@ export default class Form extends HTMLElement {
 		this.thankYouPageUrl = this.getAttribute( 'thank-you-url' ) || '';
 
 		// Events.
-		window.addEventListener( 'visitor-tracked', ( ( event: CustomEvent ) => this.updateCampaignParams( event ) ) as EventListener );
+		window.addEventListener( 'visitor-tracked', ( ( event: CustomEvent ) => this.updateTrackingInfo( event ) ) as EventListener );
 	}
 
 	/**
@@ -190,24 +190,34 @@ export default class Form extends HTMLElement {
 	}
 
 	/**
-	 * Update campaign params.
+	 * Update tracking info.
 	 *
 	 * @param {Event} e Tracking event.
 	 */
-	updateCampaignParams( e: CustomEvent ): void {
+	updateTrackingInfo( e: CustomEvent ): void {
 		// Check if we have details.
-		if ( ! e.detail || 0 === e.detail.length ) {
+		if ( ! e.detail || ! e.detail.urlCampaignParams || 0 === e.detail.urlCampaignParams.length ) {
 			// We don't, bail early.
 			return;
 		}
 
 		// Fill in the details into corresponding hidden fields.
-		for ( const key in e.detail ) {
+		for ( const key in e.detail.urlCampaignParams ) {
 			const field: HTMLElement | null = this.querySelector( `.form__${ key.replace( '_', '-' ) }` );
 
 			// Update adwords data.
 			if ( field && 'value' in field ) {
 				field.value = decodeURIComponent( e.detail[ key ] );
+			}
+		}
+
+		// Get the detail cookie
+		if ( e.detail.gaCookie ) {
+			const field: HTMLElement | null = this.querySelector( '.form__ga-client' );
+
+			// Update the cookie field
+			if ( field && 'value' in field ) {
+				field.value = decodeURIComponent( e.detail.gaCookie );
 			}
 		}
 	}
