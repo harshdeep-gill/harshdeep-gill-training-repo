@@ -62,7 +62,7 @@ export default class QuarkCountrySelectorElement extends HTMLElement {
 
 		// Update country field.
 		if ( this.countryField ) {
-			this.countryField.value = this.countrySelector?.querySelector( 'tp-multi-select-status' )?.innerHTML ?? '';
+			this.countryField.value = this.countrySelector?.querySelector( 'select' )?.selectedOptions[ 0 ].innerText ?? '';
 		}
 
 		// Show / hide states based on country.
@@ -97,7 +97,7 @@ export default class QuarkCountrySelectorElement extends HTMLElement {
 			if ( state.getAttribute( 'data-country' ) === country ) {
 				// Update state field.
 				if ( this.stateField ) {
-					this.stateField.value = state.querySelector( 'tp-multi-select-status' )?.innerHTML ?? '';
+					this.stateField.value = state.querySelector( 'select' )?.selectedOptions[ 0 ].innerText ?? '';
 				}
 			}
 		} );
