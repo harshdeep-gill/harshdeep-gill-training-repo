@@ -58,7 +58,7 @@ export const updateDestinations = ( destinations: SearchFiltersBarDestinationSta
 	} );
 
 	// Fetch Results.
-	fetchFilterOptions();
+	fetchFilterOptions( 'destinations' );
 
 	// Update Search URL.
 	updateSearchUrl(
@@ -128,10 +128,10 @@ export const fetchFilterOptions = ( type: string = 'destinations' ) => {
 	// If request type is destinations, then update the api url with the query param.
 	if ( 'destinations' === type && selectedDestinations ) {
 		// Get the first selected destination term.
-		const destinations = Array.from( selectedDestinations );
+		const destinations: Array<SearchFiltersBarDestinationState> = Array.from( selectedDestinations );
 
 		// Add the query param.
-		updatedApiUrl = `${ filtersApiUrl }?destination_term_id=${ destinations[ 0 ] }`;
+		updatedApiUrl = `${ filtersApiUrl }?destination_term_id=${ destinations[ 0 ]?.value }`;
 	}
 
 	// If request type is months, then update the api url with the query param.
