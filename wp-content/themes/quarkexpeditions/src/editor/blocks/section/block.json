@@ -69,7 +69,7 @@
 		"gradientColor": {
 			"type": "string",
 			"default": "black",
-			"enum": [ "black", "grey", "white" ]
+			"enum": [ "black", "gray", "white" ]
 		},
 		"hasPadding": {
 			"type": "boolean",
