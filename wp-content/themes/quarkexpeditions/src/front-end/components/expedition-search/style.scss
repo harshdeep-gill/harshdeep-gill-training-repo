@@ -351,6 +351,23 @@
 				display: none;
 			}
 		}
+
+		// stylelint-disable-next-line
+		.sidebar-grid__content:has(&) {
+
+			@media screen and (min-width: calc(grid-size(lg) - 1px)) {
+				display: flex;
+				flex-direction: column;
+			}
+		}
+
+		// stylelint-disable-next-line
+		#{$self}__load-more:has(&) {
+
+			@media screen and (min-width: calc(grid-size(lg) - 1px)) {
+				flex: 1;
+			}
+		}
 	}
 }
 
