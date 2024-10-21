@@ -11,7 +11,7 @@ import { MonthsMultiSelect } from '../months-multi-select/main';
 import { SearchFilterDestinations } from './destinations';
 import { SearchFilterDestinationOption } from './destinations/filter-option';
 import { MonthsMultiSelectOption } from '../months-multi-select/months-multi-select-option';
-import { TPAccordionHandleElement, TPAccordionItemElement } from '@travelopia/web-components';
+import { TPAccordionItemElement } from '@travelopia/web-components';
 
 /**
  * Get Store.
