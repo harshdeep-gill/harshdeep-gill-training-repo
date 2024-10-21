@@ -324,6 +324,51 @@
 			min-width: 98px;
 		}
 	}
+
+	&__no-results {
+		width: min-content;
+
+		.btn {
+			width: 100%;
+		}
+
+		&-heading {
+			text-wrap: nowrap;
+			min-width: 300px;
+		}
+
+		// stylelint-disable-next-line
+		:is(#{$self}__load-more, #{$self}__results, .expedition-cards):has(&) {
+
+			@media screen and (min-width: calc(grid-size(lg) - 1px)) {
+				height: 100%;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+
+			#{$self}__load-more-button-container {
+				display: none;
+			}
+		}
+
+		// stylelint-disable-next-line
+		.sidebar-grid__content:has(&) {
+
+			@media screen and (min-width: calc(grid-size(lg) - 1px)) {
+				display: flex;
+				flex-direction: column;
+			}
+		}
+
+		// stylelint-disable-next-line
+		#{$self}__load-more:has(&) {
+
+			@media screen and (min-width: calc(grid-size(lg) - 1px)) {
+				flex: 1;
+			}
+		}
+	}
 }
 
 tp-modal.expedition-search__filters-modal {

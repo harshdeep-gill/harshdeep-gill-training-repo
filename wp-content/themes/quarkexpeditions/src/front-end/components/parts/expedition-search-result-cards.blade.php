@@ -407,6 +407,7 @@
 				</x-expedition-cards.more-details>
 			</x-expedition-cards.card>
 		@endforeach
-
+	@else
+		<x-expedition-search.results.no-results />
 	@endif
 </x-expedition-cards>

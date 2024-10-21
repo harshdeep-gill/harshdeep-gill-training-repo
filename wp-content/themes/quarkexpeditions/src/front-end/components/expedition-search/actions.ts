@@ -403,7 +403,7 @@ const filterUpdated = ( response: PartialData ) => {
 
 	// Set state.
 	setState( {
-		markup: 0 !== resultCount ? markup : '',
+		markup: markup ?? '',
 		noResultsMarkup,
 		resultCount,
 		hasNextPage: nextPage && nextPage > page,
@@ -1091,6 +1091,78 @@ export const removeMonth = ( monthValue: string ) => {
 
 	// Filter the months.
 	updateObject.months = months.filter( ( existingMonth ) => existingMonth.value !== monthValue );
+
+	// Set the state.
+	setState( updateObject );
+
+	// Fetch the results.
+	fetchResults( filterUpdated );
+};
+
+/**
+ * Updates the state based on history.
+ *
+ * @param { Object } destination The destination object.
+ * @param { Object } month       The month object.
+ */
+export const setStateFromHistory = ( destination: ExpeditionSearchFilterState, month: ExpeditionSearchFilterState ) => {
+	// Check if we should proceed.
+	if ( ! (
+		destination &&
+		destination.value &&
+		destination.label &&
+		month &&
+		month.value &&
+		month.label
+	) ) {
+		// Bail.
+		return;
+	}
+
+	// Get the state.
+	const { initialItineraryLengths }: ExpeditionSearchState = getState();
+
+	// Prepare the update object.
+	const updateObject: ExpeditionsSearchStateUpdateObject = {
+		destinations: [ destination ],
+		months: [ month ],
+		itineraryLengths: [ ...initialItineraryLengths ],
+		ships: [ ...DEFAULT_STATE.ships ],
+		adventureOptions: [ ...DEFAULT_STATE.adventureOptions ],
+		languages: [ ...DEFAULT_STATE.languages ],
+		expeditions: [ ...DEFAULT_STATE.expeditions ],
+		cabinClasses: [ ...DEFAULT_STATE.cabinClasses ],
+		travelers: [ ...DEFAULT_STATE.travelers ],
+	};
+
+	// Set the state
+	setState( updateObject );
+
+	// Fetch the results.
+	fetchResults( filterUpdated );
+};
+
+/**
+ * Removes the filters from a history card from history.
+ *
+ * @param { string } destinationValue The destination value
+ * @param { string } monthValue       The month value
+ */
+export const removeHistoryFromFilters = ( destinationValue: string, monthValue: string ) => {
+	// Check if we can proceed
+	if ( ! destinationValue || ! monthValue ) {
+		// Bail.
+		return;
+	}
+
+	// Get the state
+	const { destinations, months }: ExpeditionSearchState = getState();
+
+	// Initialize the update object.
+	const updateObject: ExpeditionsSearchStateUpdateObject = {
+		destinations: destinations.filter( ( dest ) => dest.value !== destinationValue && dest.parent !== destinationValue ),
+		months: months.filter( ( month ) => month.value !== monthValue ),
+	};
 
 	// Set the state.
 	setState( updateObject );
