@@ -13,7 +13,7 @@
 	'marketing_fields'  => true,
 	'webform_url'       => true,
 	'referrer_url'      => false,
-	'ga_client'         => false,
+	'ga_client_id'         => false,
 ] )
 
 <quark-form
@@ -60,7 +60,7 @@
 				<input type="hidden" name="fields[PCLID__c]" value="" class="form__pclid">
 			@endif
 
-			@if ( true === $ga_client )
+			@if ( true === $ga_client_id )
 				<input type="hidden" name="fields[GA_Client_ID__c]" value="" class="form__ga-client">
 			@endif
 

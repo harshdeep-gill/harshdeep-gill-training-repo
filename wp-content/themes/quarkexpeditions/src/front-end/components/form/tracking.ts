@@ -36,12 +36,12 @@ export const getCampaignParamsFromUrl = (): any => {
  */
 export const getGaCookie = (): string => {
 	// Get the cookie.
-	let gaCookie: string = document.cookie.split( '; ' ).find( ( cookie ) => cookie.startsWith( '_ga=GA1.1.' ) ) ?? '';
+	let gaCookie: string = document.cookie.split( '; ' ).find( ( cookie ) => cookie.startsWith( '/_ga=GA\d\.\d\./i' ) ) ?? '';
 
 	// Check if we have a cookie.
 	if ( gaCookie ) {
 		// Split the cookie.
-		const splitCookie = gaCookie.split( '_ga=GA1.1.' );
+		const splitCookie = gaCookie.split( '/_ga=GA\d\.\d\./i' );
 
 		// Check if we got two values
 		if ( splitCookie.length === 2 ) {
