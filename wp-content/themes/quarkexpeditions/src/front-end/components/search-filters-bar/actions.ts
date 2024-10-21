@@ -176,12 +176,6 @@ export const fetchFilterOptions = ( type: string = 'destinations' ) => {
  * @param {Array} months       Selected Months.
  */
 export const updateSearchUrl = ( destinations: Array<string> = [], months: Array<string> = [] ) => {
-	// Check if either destination or month exist.
-	if ( ! destinations.length && ! months.length ) {
-		// Bail.
-		return;
-	}
-
 	// Get State.
 	const { searchPageUrl } = getState();
 

@@ -262,6 +262,10 @@ export class SearchFiltersBar extends HTMLElement {
 		// Check if we have an empty array
 		if ( values.length === 0 ) {
 			// Bail.
+			this.updateMonthsPlaceholder( this.defaultDepartureMonthsPlaceholder );
+			updateDepartureMonths( [] );
+
+			// Bail.
 			return;
 		}
 
@@ -362,18 +366,12 @@ export class SearchFiltersBar extends HTMLElement {
 	 * @param {string} label Label.
 	 */
 	updateMonthsPlaceholder( label: string ) {
-		// Check if label exists.
-		if ( ! label ) {
-			// Bail.
-			return;
-		}
-
 		// Get the months placeholder.
 		const monthsPlaceholder = this.searchFiltersModal?.querySelector( '.search-filters-bar__departure-months-placeholder' );
 
 		// Update the placeholder label.
 		if ( monthsPlaceholder ) {
-			monthsPlaceholder.innerHTML = label ?? '';
+			monthsPlaceholder.innerHTML = label ? label : this.defaultDepartureMonthsPlaceholder;
 		}
 	}
 

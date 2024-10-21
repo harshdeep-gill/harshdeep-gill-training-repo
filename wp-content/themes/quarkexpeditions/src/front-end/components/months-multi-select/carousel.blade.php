@@ -37,7 +37,10 @@
 
 	<div class="months-multi-select__nav">
 		@if ( ! empty( $reset_button_text ) )
+		<div class="months-multi-select__reset">
 			<button class="months-multi-select__reset-button"><x-escape :content="$reset_button_text" /></button>
+			<span><x-svg name="check-circle" /></span>
+		</div>
 		@endif
 
 		@if ( $slide_count > 1 )
