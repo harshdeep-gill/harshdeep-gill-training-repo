@@ -188,6 +188,26 @@ export default class FormRequestQuote extends HTMLElement {
 		// Hide content and show thank you instead.
 		this.content.classList.add( 'form-request-quote__tabs-hidden' );
 		this.successMessage.classList.add( 'form-request-quote__success-visible' );
+
+		// Scroll to the success message
+		this.scrollToSuccessMessage();
+	}
+
+	/**
+	 * Scroll to the success message element.
+	 */
+	scrollToSuccessMessage(): void {
+		// Set the scroll element.
+		const successElement = document.getElementById( 'form-request-quote__success' );
+
+		// Check if the element exists.
+		if ( successElement ) {
+			// Scroll to the element.
+			window.scrollTo( {
+				top: successElement.offsetTop,
+				behavior: 'smooth',
+			} );
+		}
 	}
 
 	/**

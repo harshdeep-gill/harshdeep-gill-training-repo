@@ -152,7 +152,7 @@
 			</x-form>
 		</tp-tabs>
 
-		<x-section class="form-request-quote__success">
+		<x-section id="form-request-quote__success" class="form-request-quote__success">
 			<div class="form-request-quote__success-header">
 				<x-svg name="circular-tick" />
 				<h2 class="h1">{{ __( 'Request Submitted!', 'qrk' ) }}</h2>
