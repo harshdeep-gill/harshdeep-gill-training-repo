@@ -111,11 +111,10 @@
 		}
 
 		img {
+			margin-inline: auto;
 			object-fit: cover;
-
-			@media (max-height: 720px) {
-				max-height: 80vh;
-			}
+			max-height: 80vh;
+			width: auto;
 		}
 	}
 
