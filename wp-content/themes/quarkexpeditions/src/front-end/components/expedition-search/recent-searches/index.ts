@@ -11,7 +11,7 @@ const { subscribe, getState } = zustand.stores.expeditionSearch;
 /**
  * Internal dependencies
  */
-import { addDestination, addMonth, clearAllFilters, removeDestination, removeMonth } from '../actions';
+import { removeHistoryFromFilters, setStateFromHistory } from '../actions';
 
 /**
  * Class QuarkExpeditionSearchRecentSearches
@@ -113,18 +113,18 @@ export default class QuarkExpeditionSearchRecentSearches extends HTMLElement {
 
 				// Is this card active?
 				if ( ! isActive ) {
-					//Add the destination
-					clearAllFilters();
-					addDestination( { value: destination.value, label: destination.label, parent: destination.parent } );
-					addMonth( { value: month.value, label: month.label } );
+					//Add the data from history
+					setStateFromHistory(
+						{ value: destination.value, label: destination.label, parent: destination.parent },
+						{ value: month.value, label: month.label }
+					);
 
 					// Add is active
 					cardElement.setAttribute( 'data-is-active', '' );
 				} else {
 					// Remove is active
 					cardElement.removeAttribute( 'data-is-active' );
-					removeDestination( destination.value );
-					removeMonth( month.value );
+					removeHistoryFromFilters( destination.value, month.value );
 				}
 			} );
 
