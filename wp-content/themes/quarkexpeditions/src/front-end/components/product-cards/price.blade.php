@@ -18,11 +18,9 @@
 			<strong class="product-cards__price product-cards__price-now h4">{{ $discounted_price }}</strong>
 			<strong><del class="product-cards__price product-cards__price--original">{{ $original_price }}</del></strong>
 		@else
-			<span class="product-cards__price">{{ $original_price }}</span>
+			<span class="product-cards__price product-cards__price-now h4">{{ $original_price }}</span>
 		@endif
-	@endif
-
-	@if ( empty( $discounted_price ) )
-		<strong class="product-cards__price">{{ $original_price }}</strong>
+	@else
+		<strong class="product-cards__price product-cards__price-now h4">{{ $original_price }}</strong>
 	@endif
 </div>
