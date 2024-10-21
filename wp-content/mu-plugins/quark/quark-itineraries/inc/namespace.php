@@ -14,6 +14,8 @@ use function Quark\Core\format_price;
 use function Quark\InclusionSets\get as inclusion_sets_get;
 use function Quark\PolicyPages\get as get_policy_page_post;
 use function Quark\Brochures\get as get_brochure;
+use function Quark\Departures\bust_post_cache as bust_departure_post_cache;
+use function Quark\Expeditions\bust_post_cache as bust_expedition_post_cache;
 use function Quark\Expeditions\get as get_expedition;
 use function Quark\ItineraryDays\get as get_itinerary_day;
 use function Quark\Leads\get_request_a_quote_url;
@@ -22,6 +24,7 @@ use function Quark\Ships\get as get_ship;
 use function Quark\Softrip\Itineraries\get_lowest_price;
 use function Quark\Softrip\Itineraries\get_related_ships;
 
+use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
 use const Quark\Expeditions\DESTINATION_TAXONOMY;
 use const Quark\Localization\DEFAULT_CURRENCY;
 use const Quark\StaffMembers\SEASON_TAXONOMY;
@@ -72,6 +75,11 @@ function bootstrap(): void {
  * @return void
  */
 function update_related_expedition_on_itineraries_save( int $post_id = 0 ): void {
+	// Bail if post ID is not provided.
+	if ( empty( $post_id ) ) {
+		return;
+	}
+
 	// Avoid running on auto-save, bulk edit, or during an Ajax request.
 	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
 		return;
@@ -86,21 +94,21 @@ function update_related_expedition_on_itineraries_save( int $post_id = 0 ): void
 	$meta_key = 'related_expedition';
 
 	// Get the old meta value before the update.
-	$old_meta_value = get_post_meta( $post_id, $meta_key, true );
+	$old_expedition_post_id = absint( get_post_meta( $post_id, $meta_key, true ) );
 
 	// Check if there is a new value being set in the post request.
-	$new_meta_value = ! empty( $_POST['acf'] ) && ! empty( $_POST['acf']['field_65f2dab2046df'] ) ? sanitize_text_field( $_POST['acf']['field_65f2dab2046df'] ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing
+	$new_expedition_post_id = ! empty( $_POST['acf'] ) && ! empty( $_POST['acf']['field_65f2dab2046df'] ) ? absint( sanitize_text_field( $_POST['acf']['field_65f2dab2046df'] ) ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing
 
 	// Skip if both value are same.
-	if ( $old_meta_value === $new_meta_value ) {
+	if ( $old_expedition_post_id === $new_expedition_post_id ) {
 		return;
 	}
 
 	// If the old meta value existed and has been updated in the new data.
 	// Let's remove it from the old expedition post.
-	if ( ! empty( $old_meta_value ) && absint( $old_meta_value ) ) {
+	if ( ! empty( $old_expedition_post_id ) ) {
 		// Get Expedition post meta 'related_itineraries' from old meta value.
-		$related_itineraries = get_post_meta( absint( $old_meta_value ), 'related_itineraries', true );
+		$related_itineraries = get_post_meta( $old_expedition_post_id, 'related_itineraries', true );
 
 		// Check if related_itineraries is not empty.
 		if ( ! empty( $related_itineraries ) && is_array( $related_itineraries ) ) {
@@ -108,14 +116,17 @@ function update_related_expedition_on_itineraries_save( int $post_id = 0 ): void
 			$related_itineraries = array_diff( $related_itineraries, [ $post_id ] );
 
 			// Update the expedition post meta 'related_itineraries'.
-			update_post_meta( absint( $old_meta_value ), 'related_itineraries', array_unique( $related_itineraries ) );
+			update_post_meta( $old_expedition_post_id, 'related_itineraries', array_unique( $related_itineraries ) );
+
+			// Bust cache.
+			bust_expedition_post_cache( $old_expedition_post_id );
 		}
 	}
 
 	// Add relation to new Expedition.
-	if ( ! empty( $new_meta_value ) && absint( $new_meta_value ) ) {
+	if ( ! empty( $new_expedition_post_id ) ) {
 		// Get Expedition post meta 'related_itineraries' from new meta value.
-		$related_itineraries = get_post_meta( absint( $new_meta_value ), 'related_itineraries', true );
+		$related_itineraries = get_post_meta( $new_expedition_post_id, 'related_itineraries', true );
 
 		// Check if related_itineraries is not empty.
 		if ( ! empty( $related_itineraries ) && is_array( $related_itineraries ) ) {
@@ -123,11 +134,53 @@ function update_related_expedition_on_itineraries_save( int $post_id = 0 ): void
 			$related_itineraries[] = $post_id;
 
 			// Update the expedition post meta 'related_itineraries'.
-			update_post_meta( absint( $new_meta_value ), 'related_itineraries', array_unique( $related_itineraries ) );
+			update_post_meta( $new_expedition_post_id, 'related_itineraries', array_unique( $related_itineraries ) );
 		} else {
 			// Update the expedition post meta 'related_itineraries'.
-			update_post_meta( absint( $new_meta_value ), 'related_itineraries', [ $post_id ] );
+			update_post_meta( $new_expedition_post_id, 'related_itineraries', [ $post_id ] );
 		}
+
+		// Bust cache.
+		bust_expedition_post_cache( $new_expedition_post_id );
+	}
+
+	/**
+	 * Update related expedition on departure posts.
+	 * Departures are children of itineraries.
+	 */
+
+	// Get departures of this itinerary.
+	$departure_post_ids = get_children(
+		[
+			'post_parent'            => $post_id,
+			'post_type'              => DEPARTURE_POST_TYPE,
+			'post_status'            => [ 'publish', 'draft' ],
+			'posts_per_page'         => -1,
+			'fields'                 => 'ids',
+			'orderby'                => 'ID',
+			'update_post_meta_cache' => false,
+			'update_post_term_cache' => false,
+			'no_found_rows'          => true,
+		],
+		ARRAY_N
+	);
+
+	// Validate departure post IDs.
+	$departure_post_ids = array_map( 'absint', $departure_post_ids );
+
+	// Loop through each departure.
+	foreach ( $departure_post_ids as $departure_post_id ) {
+		// Update related expedition on departure.
+		if ( ! empty( $new_expedition_post_id ) ) {
+			// Update related expedition.
+			update_post_meta( $departure_post_id, 'related_expedition', $new_expedition_post_id );
+		} else {
+			// Remove related expedition.
+			delete_post_meta( $departure_post_id, 'related_expedition' );
+		}
+
+		// Bust cache.
+		bust_departure_post_cache( $departure_post_id );
 	}
 }
 

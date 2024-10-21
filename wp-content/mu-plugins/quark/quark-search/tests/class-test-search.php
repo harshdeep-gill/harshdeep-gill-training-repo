@@ -280,6 +280,12 @@ class Test_Search extends WP_UnitTestCase {
 				'update_post_meta_cache' => false,
 				'update_post_term_cache' => false,
 				'posts_per_page'         => 10,
+				'meta_query'             => [
+					[
+						'key'     => 'related_expedition',
+						'compare' => 'EXISTS',
+					],
+				],
 			],
 			$solr_search->get_args(),
 			'Failed to test Solr Search default arguments.'
@@ -311,6 +317,11 @@ class Test_Search extends WP_UnitTestCase {
 					],
 				],
 				'meta_query'             => [
+					'relation' => 'AND',
+					[
+						'key'     => 'related_expedition',
+						'compare' => 'EXISTS',
+					],
 					[
 						'key'     => 'region_season',
 						'value'   => [ 2024, 2025 ],
@@ -342,6 +353,10 @@ class Test_Search extends WP_UnitTestCase {
 				'orderby'                => 'meta_value_num',
 				'meta_key'               => 'duration',
 				'meta_query'             => [
+					[
+						'key'     => 'related_expedition',
+						'compare' => 'EXISTS',
+					],
 					[
 						'key'     => 'related_expedition',
 						'value'   => array_unique( [ 20, 15, 20, 25 ] ),
@@ -379,6 +394,11 @@ class Test_Search extends WP_UnitTestCase {
 				'update_post_term_cache' => false,
 				'posts_per_page'         => 10,
 				'meta_query'             => [
+					'relation' => 'AND',
+					[
+						'key'     => 'related_expedition',
+						'compare' => 'EXISTS',
+					],
 					[
 						'relation' => 'OR',
 						[
@@ -507,6 +527,12 @@ class Test_Search extends WP_UnitTestCase {
 						'include_children' => false,
 					],
 				],
+				'meta_query'             => [
+					[
+						'key'     => 'related_expedition',
+						'compare' => 'EXISTS',
+					],
+				],
 			],
 			$solr_search->get_args(),
 		);
@@ -543,6 +569,10 @@ class Test_Search extends WP_UnitTestCase {
 				],
 				'meta_query'             => [
 					'relation' => 'AND',
+					[
+						'key'     => 'related_expedition',
+						'compare' => 'EXISTS',
+					],
 					[
 						'key'     => 'related_expedition',
 						'value'   => [ 4, 5, 6 ],
@@ -644,6 +674,10 @@ class Test_Search extends WP_UnitTestCase {
 				],
 				'meta_query'             => [
 					'relation' => 'AND',
+					[
+						'key'     => 'related_expedition',
+						'compare' => 'EXISTS',
+					],
 					[
 						'key'     => 'related_expedition',
 						'value'   => [ 4, 5, 6 ],
