@@ -218,7 +218,7 @@ export default class FormRequestQuote extends HTMLElement {
 		this.monthOptionsContainer.innerHTML = '';
 
 		// Get Selected expedition.
-		const selectedExpeditionId: string = this.expeditions?.querySelector( 'tp-multi-select-option[selected="yes"]' )?.getAttribute( 'value' ) as string;
+		const selectedExpeditionId: string = this.expeditions?.value as string;
 
 		// Month options to be displayed.
 		const monthOptions = await this.fetchMonthOptions( selectedExpeditionId );

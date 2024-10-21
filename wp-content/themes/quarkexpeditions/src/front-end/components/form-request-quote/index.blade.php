@@ -56,12 +56,15 @@
 
 					<x-form.row>
 						<x-form.field :validation="[ 'required' ]">
-							<x-form.select label="{{ __( 'Are you interested in', 'qrk' ) }}" name="fields[Journey_Stage__c]">
-								<x-form.option value="">{{ __( '- Select -', 'qrk' ) }}</x-form.option>
-								<x-form.option value="booking" label="{{ __( 'Booking a Trip', 'qrk' ) }}">{{ __( 'Booking a Trip', 'qrk' ) }}</x-form.option>
-								<x-form.option value="planning" label="{{ __( 'Planning a Trip', 'qrk' ) }}">{{ __( 'Planning a Trip', 'qrk' ) }}</x-form.option>
-								<x-form.option value="dreaming" label="{{ __( 'Learning about Polar Travel', 'qrk' ) }}">{{ __( 'Learning about Polar Travel', 'qrk' ) }}</x-form.option>
-							</x-form.select>
+							<x-form.label id="journey_stage">
+								{{ __( 'Are you interested in', 'qrk' ) }}
+							</x-form.label>
+							<select name="fields[Journey_Stage__c]" class="form-request-quote__journey-stage">
+								<option value="">{{ __( '- Select -', 'qrk' ) }}</option>
+								<option value="booking">{{ __( 'Booking a Trip', 'qrk' ) }}</option>
+								<option value="planning">{{ __( 'Planning a Trip', 'qrk' ) }}</option>
+								<option value="dreaming">{{ __( 'Learning about Polar Travel', 'qrk' ) }}</option>
+							</select>
 						</x-form.field>
 
 						<x-form.field>
@@ -82,12 +85,16 @@
 					<x-form.row>
 						<x-form.field class="form-request-quote__toggle">
 							<tp-toggle-attribute trigger="select" target=".form-request-quote__travel-time">
-								<x-form.select label="{{ __( 'Choose your expedition', 'qrk' ) }}" :optional="true" name="fields[Expedition__c]" class="form-request-quote__expedition">
-									<x-form.option value="">{{ __( '- None -', 'qrk' ) }}</x-form.option>
+								<x-form.label id="expeditions">
+									{{ __( 'Choose your expedition', 'qrk' ) }}
+									<span class="form__label-optional-text">{{ __( '(optional)', 'qrk' ) }}</span>
+								</x-form.label>
+								<select name="fields[Expedition__c]" class="form-request-quote__expedition">
+									<option value="">{{ __( '- None -', 'qrk' ) }}</option>
 									@foreach ( $expeditions as $expedition )
-										<x-form.option value="{{ $expedition['value'] }}" label="{{ $expedition['label'] }}">{{ $expedition['label'] }}</x-form.option>
+										<option value="{{ $expedition['value'] }}">{{ $expedition['label'] }}</option>
 									@endforeach
-								</x-form.select>
+								</select>
 							</tp-toggle-attribute>
 						</x-form.field>
 					</x-form.row>
