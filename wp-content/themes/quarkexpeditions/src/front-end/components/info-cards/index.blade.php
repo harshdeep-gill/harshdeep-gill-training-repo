@@ -1,12 +1,10 @@
 @props( [
-	'layout'            => 'grid',
-	'mobile_carousel'   => true,
-	'carousel_overflow' => false,
-	'heading'           => [
-		'title'         => '',
-		'align'         => '',
-		'heading_level' => '2',
-	]
+	'layout'              => 'grid',
+	'mobile_carousel'     => true,
+	'carousel_overflow'   => false,
+	'title'               => '',
+	'title_align'         => '',
+	'title_heading_level' => '2',
 ] )
 
 @php
@@ -28,12 +26,12 @@
 	@class( $classes )
 	:full_width="true"
 >
-	@if ( ! empty( $heading ) && ! empty( $heading['title'] ) )
+	@if ( ! empty( $title ) )
 		<x-section.heading>
 			<x-section.title
-				:title="$heading['title'] ?? ''"
-				:align="$heading['align'] ?? ''"
-				:heading_level="$heading['heading_level'] ?? ''"
+				:title="$title"
+				:align="$title_align ?? ''"
+				:heading_level="$title_heading_level ?? ''"
 			/>
 		</x-section.heading>
 	@endif
