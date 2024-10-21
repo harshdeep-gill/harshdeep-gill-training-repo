@@ -294,7 +294,7 @@
 
 <x-component-demo :keys="[ 'section-image' ]">
 	<x-section :full_width="true" :padding="true">
-	<x-section.image :image_id="26" gradient_color="gray" gradient_position="bottom" />
+	<x-section.image :image_id="26" gradient_color="gray-5" gradient_position="bottom" />
 		<div class="section__content-wrap">
 			<ul>
 				<li>Most exciting and wonderful, and educational experience of my life</li>
@@ -344,7 +344,7 @@
 		</div>
 	</x-section>
 	<x-section :full_width="true" :padding="true">
-		<x-section.image :image_id="30" gradient_color="gray" gradient_position="both" />
+		<x-section.image :image_id="30" gradient_color="gray-5" gradient_position="both" />
 		<x-section.title title="Testing Section Title.." />
 		<x-section.description>Discover what your Crossing the Circle Expedition includes</x-section.description>
 		<x-review-cards>
