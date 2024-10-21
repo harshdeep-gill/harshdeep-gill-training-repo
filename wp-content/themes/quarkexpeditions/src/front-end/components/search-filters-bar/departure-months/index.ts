@@ -23,7 +23,7 @@ export class SearchFilterDepartureMonths extends HTMLElement {
 	private searchFiltersModal: HTMLElement | null;
 	private destinationFilters: HTMLElement | null | undefined;
 	private departureMonthsFilters: HTMLElement | null | undefined;
-	private departureMonthsSelector: MonthsMultiSelect | null | undefined;
+	private departureMonthsSelectors: NodeListOf<MonthsMultiSelect> | null | undefined;
 
 	/**
 	 * Constructor.
@@ -39,7 +39,7 @@ export class SearchFilterDepartureMonths extends HTMLElement {
 		this.searchFiltersModal = document.querySelector( '.search-filters-bar__modal' );
 		this.destinationFilters = this.searchFiltersModal?.querySelector( '.search-filters-bar__destinations-filter-options' );
 		this.departureMonthsFilters = this.searchFiltersModal?.querySelector( '.search-filters-bar__departure-months-filter-options' );
-		this.departureMonthsSelector = this.searchFiltersModal?.querySelector( 'quark-months-multi-select' );
+		this.departureMonthsSelectors = this.searchFiltersModal?.querySelectorAll( 'quark-months-multi-select' );
 
 		// Event Listeners.
 		this.addEventListener( 'click', this.handleFilterClick.bind( this ) );
@@ -87,8 +87,11 @@ export class SearchFilterDepartureMonths extends HTMLElement {
 			return;
 		}
 
-		// Set the available months attribute for months selector.
-		this.departureMonthsSelector?.setAttribute( 'available-months', JSON.stringify( options ) );
+		// Set the available months attribute for month selectors.
+		this.departureMonthsSelectors?.forEach( ( monthSelector ) => {
+			// Set filter options.
+			monthSelector?.setAttribute( 'available-months', JSON.stringify( options ) );
+		} );
 	}
 }
 
