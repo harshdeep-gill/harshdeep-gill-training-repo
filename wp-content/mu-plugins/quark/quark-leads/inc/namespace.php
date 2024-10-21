@@ -361,7 +361,23 @@ function process_raq_form( array $lead_data = [] ): array {
 		return $lead_data;
 	}
 
-	// Search for departures.
+	// Do we need to search all months?
+	$search_all_months = false;
+
+	// Loop through departure months.
+	foreach ( $departure_months as $month ) {
+		// Check for any available departure.
+		if ( 'any_available_departure' === $month ) {
+			$search_all_months = true;
+		}
+	}
+
+	// If search all months, set departure months to all months.
+	if ( $search_all_months ) {
+		$departure_months = [];
+	}
+
+	// Search for departures. Note: SF integration has some limit on `Departure_IDs__c` field, so we have limitied the departure dates to 10 for now.
 	$available_departures = get_departures_by_expeditions_and_months( $expedition_id, $departure_months );
 
 	// Prepare Attributes.
