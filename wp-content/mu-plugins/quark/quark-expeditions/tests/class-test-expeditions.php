@@ -24,6 +24,7 @@ use function Quark\Expeditions\get_formatted_date_range;
 use function Quark\Expeditions\get_minimum_duration_itinerary;
 use function Quark\Expeditions\get_total_departures;
 use function Quark\Expeditions\get_ships;
+use function Quark\Expeditions\get_breadcrumbs_ancestors;
 use function Quark\Expeditions\get_seo_structured_data;
 use function Quark\Softrip\Departures\get_departures_by_itinerary;
 use function Quark\Softrip\do_sync;
@@ -1233,5 +1234,58 @@ class Test_Expeditions extends Softrip_TestCase {
 		wp_delete_post( $itinerary_post_2->ID, true );
 		wp_delete_post( $itinerary_post_3->ID, true );
 		wp_delete_post( $expedition_post->ID, true );
+	}
+
+	/**
+	 * Test get breadcrumbs ancestors.
+	 *
+	 * @covers \Quark\Expeditions\get_breadcrumbs_ancestors()
+	 *
+	 * @return void
+	 */
+	public function test_get_breadcrumbs_ancestors(): void {
+		// Test without any post id.
+		$this->assertEmpty( get_breadcrumbs_ancestors() );
+
+		// Create a blog post.
+		$post = $this->factory()->post->create_and_get(
+			[
+				'post_title'   => 'Test Post',
+				'post_content' => 'Post content',
+				'post_status'  => 'publish',
+				'post_type'    => POST_TYPE,
+			]
+		);
+
+		// Assert created post is instance of WP_Post.
+		$this->assertTrue( $post instanceof WP_Post );
+
+		// Test without any active post.
+		$this->assertEmpty( get_breadcrumbs_ancestors( $post->ID ) );
+
+		// Create a page.
+		$page = $this->factory()->post->create_and_get(
+			[
+				'post_title' => 'Test Page',
+				'post_type'  => 'page',
+			]
+		);
+
+		// Assert created page is instance of WP_Post.
+		$this->assertTrue( $page instanceof WP_Post );
+
+		// Set as archive page.
+		update_option( 'options_expeditions_page', $page->ID );
+
+		// Test with archive page.
+		$this->assertEquals(
+			[
+				[
+					'title' => $page->post_title,
+					'url'   => get_permalink( $page->ID ),
+				],
+			],
+			get_breadcrumbs_ancestors( $post->ID )
+		);
 	}
 }

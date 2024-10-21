@@ -67,6 +67,9 @@ function bootstrap(): void {
 	add_action( 'qe_itinerary_post_cache_busted', __NAMESPACE__ . '\\bust_details_cache_on_itinerary_update', 1 );
 	add_action( 'qe_departure_post_cache_busted', __NAMESPACE__ . '\\bust_details_cache_on_departure_update', 1 );
 
+	// Breadcrumbs.
+	add_filter( 'travelopia_breadcrumbs_ancestors', __NAMESPACE__ . '\\breadcrumbs_ancestors' );
+
 	// Related Itineraries Meta box.
 	add_action( 'add_meta_boxes', __NAMESPACE__ . '\\add_related_itineraries_meta_box' );
 
@@ -2013,4 +2016,60 @@ function add_related_itineraries_meta_box_content( WP_Post $post = null ): void 
 			esc_url( strval( get_edit_post_link( $itinerary_id ) ) )
 		);
 	}
+}
+
+/**
+ * Breadcrumbs ancestors for this post type.
+ *
+ * @param mixed[] $breadcrumbs Breadcrumbs.
+ *
+ * @return mixed[]
+ */
+function breadcrumbs_ancestors( array $breadcrumbs = [] ): array {
+	// Check if current query is for this post type.
+	if ( ! is_singular( POST_TYPE ) ) {
+		return $breadcrumbs;
+	}
+
+	// Return breadcrumbs.
+	return array_merge(
+		$breadcrumbs,
+		get_breadcrumbs_ancestors( absint( get_the_ID() ) )
+	);
+}
+
+/**
+ * Get breadcrumbs ancestor.
+ *
+ * @param int $post_id Post ID.
+ *
+ * @return array{}|array{
+ *     array{
+ *         title: string,
+ *         url: string,
+ *     }
+ * }
+ */
+function get_breadcrumbs_ancestors( int $post_id = 0 ): array {
+	// Initialize breadcrumbs.
+	$breadcrumbs = [];
+
+	// Bail if post ID is not set.
+	if ( empty( $post_id ) ) {
+		return $breadcrumbs;
+	}
+
+	// Get archive page.
+	$expeditions_landing_page = absint( get_option( 'options_expeditions_page', 0 ) );
+
+	// Get it's title and URL for breadcrumbs if it's set.
+	if ( ! empty( $expeditions_landing_page ) ) {
+		$breadcrumbs[] = [
+			'title' => get_the_title( $expeditions_landing_page ),
+			'url'   => strval( get_permalink( $expeditions_landing_page ) ),
+		];
+	}
+
+	// Return updated breadcrumbs.
+	return $breadcrumbs;
 }

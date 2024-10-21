@@ -90,7 +90,8 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 					}
 
 					// Render the child block.
-					$component_attributes['expedition_details'] = render_block( $expedition_details->parsed_block );
+					$breadcrumbs                                = do_blocks( '<!-- wp:quark/breadcrumbs /-->' );
+					$component_attributes['expedition_details'] = $breadcrumbs . render_block( $expedition_details->parsed_block );
 					break;
 
 				// Build the hero card slider.
