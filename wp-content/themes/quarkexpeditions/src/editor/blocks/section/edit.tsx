@@ -50,7 +50,7 @@ export const colors: { [key: string]: string }[] = [
 // Gradient colors.
 export const gradientColors: { [key: string]: string }[] = [
 	{ name: __( 'Black', 'qrk' ), color: 'black', slug: 'black' },
-	{ name: __( 'Gray', 'qrk' ), color: 'gray', slug: 'gray-5' },
+	{ name: __( 'Gray', 'qrk' ), color: '#F5F7FB', slug: 'gray-5' },
 	{ name: __( 'White', 'qrk' ), color: 'white', slug: 'white' },
 ];
 
