@@ -50,7 +50,7 @@ export const colors: { [key: string]: string }[] = [
 // Gradient colors.
 export const gradientColors: { [key: string]: string }[] = [
 	{ name: __( 'Black', 'qrk' ), color: 'black', slug: 'black' },
-	{ name: __( 'Gray', 'qrk' ), color: 'grey', slug: 'grey' },
+	{ name: __( 'Gray', 'qrk' ), color: '#F5F7FB', slug: 'gray-5' },
 	{ name: __( 'White', 'qrk' ), color: 'white', slug: 'white' },
 ];
 
@@ -189,13 +189,13 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 								label={ __( 'Image Gradient Color', 'qrk' ) }
 								help={ __( 'Select the gradient color.', 'qrk' ) }
 								value={ gradientColors.find( ( color ) => color.slug === attributes.gradientColor )?.color }
-								colors={ gradientColors.filter( ( color ) => [ 'black', 'grey', 'white' ].includes( color.slug ) ) }
+								colors={ gradientColors.filter( ( color ) => [ 'black', 'gray-5', 'white' ].includes( color.slug ) ) }
 								onChange={ ( gradientColor: {
 									color: string;
 									slug: string;
 								} ): void => {
 									// Set the background color attribute.
-									if ( gradientColor.slug && [ 'black', 'grey', 'white' ].includes( gradientColor.slug ) ) {
+									if ( gradientColor.slug && [ 'black', 'gray-5', 'white' ].includes( gradientColor.slug ) ) {
 										setAttributes( { gradientColor: gradientColor.slug } );
 									}
 								} }
@@ -256,7 +256,7 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 					<div
 						className={ imageClasses }
 						style={ {
-							'--section-gradient-color': attributes.gradientColor,
+							'--section-gradient-color': 'var(--color-' + attributes.gradientColor + ')',
 						} as React.CSSProperties }
 					>
 						<Img
