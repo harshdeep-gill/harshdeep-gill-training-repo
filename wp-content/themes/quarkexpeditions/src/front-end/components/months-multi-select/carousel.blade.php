@@ -26,6 +26,7 @@
 				class="months-multi-select__reset-button months-multi-select__reset-button-mobile"
 				appearance="outline"
 				color="black"
+				active
 			>
 				<x-escape :content="$reset_button_text" />
 			</x-button>
@@ -37,7 +38,12 @@
 
 	<div class="months-multi-select__nav">
 		@if ( ! empty( $reset_button_text ) )
-			<button class="months-multi-select__reset-button"><x-escape :content="$reset_button_text" /></button>
+		<div class="months-multi-select__reset">
+			<button class="months-multi-select__reset-button" active>
+				<x-escape :content="$reset_button_text" />
+			</button>
+			<x-svg name="check-circle" />
+		</div>
 		@endif
 
 		@if ( $slide_count > 1 )

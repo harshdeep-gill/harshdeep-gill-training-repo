@@ -31,10 +31,15 @@ export class MonthsMultiSelect extends HTMLElement {
 		this.availableMonths = JSON.parse( this.getAttribute( 'available-months' ) ?? '' );
 
 		// Event Listeners.
+		this.addEventListener( 'select', this.toggleAllResetButtons.bind( this, 'off' ) );
+		this.addEventListener( 'unselect', this.toggleAllResetButtons.bind( this, 'on' ) );
+
+		// Reset buttons.
 		if ( this.resetButtons ) {
 			this.resetButtons.forEach( ( buttonElement ) => {
 				// Add event listener to the reset button.
 				buttonElement?.addEventListener( 'click', this.resetSelector.bind( this ) );
+				buttonElement?.addEventListener( 'click', this.toggleActiveAttribute.bind( this ) );
 			} );
 		}
 
@@ -60,6 +65,40 @@ export class MonthsMultiSelect extends HTMLElement {
 
 		// Disable unavailable month options.
 		this.disableUnavailableMonthOptions( JSON.parse( this.getAttribute( 'available-months' ) ?? '' ) );
+	}
+
+	/**
+	 * Toggle active attribute on reset button.
+	 *
+	 * @param {Event} event Event.
+	 */
+	toggleActiveAttribute( event: Event ) {
+		// Get target.
+		const target = event.target as HTMLElement | HTMLButtonElement;
+
+		// Check if target exists and is a button.
+		if ( target && target instanceof HTMLButtonElement ) {
+			target.toggleAttribute( 'active' );
+		} else {
+			target.parentElement?.toggleAttribute( 'active' );
+		}
+	}
+
+	/**
+	 * Toggle attribute for all reset buttons.
+	 *
+	 * @param {string} type Type - on/off.
+	 */
+	toggleAllResetButtons( type: string ) {
+		// If type all then toggle attribute for all buttons.
+		this.resetButtons?.forEach( ( button ) => {
+			// Toggle active attribute.
+			if ( 'on' === type ) {
+				button.setAttribute( 'active', '' );
+			} else {
+				button.removeAttribute( 'active' );
+			}
+		} );
 	}
 
 	/**
