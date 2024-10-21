@@ -326,7 +326,6 @@
 	}
 
 	&__no-results {
-		margin-inline: auto;
 		width: min-content;
 
 		.btn {
@@ -336,6 +335,21 @@
 		&-heading {
 			text-wrap: nowrap;
 			min-width: 300px;
+		}
+
+		// stylelint-disable-next-line
+		:is(#{$self}__load-more, #{$self}__results, .expedition-cards):has(&) {
+
+			@media screen and (min-width: calc(grid-size(lg) - 1px)) {
+				height: 100%;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+
+			#{$self}__load-more-button-container {
+				display: none;
+			}
 		}
 	}
 }
