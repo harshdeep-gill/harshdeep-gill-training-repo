@@ -17,6 +17,8 @@
 
 	&__content-wrap {
 		position: relative;
+		padding-left: var(--grid-col-gutter);
+		padding-right: var(--grid-col-gutter);
 	}
 
 	&__title {
@@ -149,6 +151,11 @@
 			inset: 0;
 		}
 
+		~ #{$self}__heading,
+		~ #{$self}__description {
+			padding-left: var(--grid-col-gutter);
+			padding-right: var(--grid-col-gutter);
+		}
 	}
 
 	&__image-gradient-top {
