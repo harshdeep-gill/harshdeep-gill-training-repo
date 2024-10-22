@@ -31,7 +31,7 @@
 @endphp
 
 <div @class( $classes )>
-	<p @class( $class_title )">{{ __( 'From', 'qrk' ) }}</p>
+	<p @class( $class_title )>{{ __( 'From', 'qrk' ) }}</p>
 
 	@if ( true === $is_discounted )
 			<div class="product-options-cards__price-info">
