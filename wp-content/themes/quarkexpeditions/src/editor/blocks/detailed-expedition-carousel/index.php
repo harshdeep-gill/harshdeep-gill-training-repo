@@ -17,6 +17,7 @@ use function Quark\Expeditions\get_minimum_duration_itinerary;
 use function Quark\Expeditions\get_starting_from_date;
 use function Quark\Expeditions\get_starting_from_price;
 use function Quark\Itineraries\get_included_transfer_package_details;
+use function Quark\Localization\get_current_currency;
 
 use const Quark\Expeditions\POST_TYPE as EXPEDITION_POST_TYPE;
 
@@ -165,6 +166,9 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 		// Get Prices Data.
 		$prices_data = get_starting_from_price( $expedition_id );
 
+		// Currency.
+		$currency = get_current_currency();
+
 		// Build card data.
 		$cards[] = [
 			'title'            => $title,
@@ -174,7 +178,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 			'image_id'         => get_post_thumbnail_id( $expedition_id ),
 			'start_date'       => ! empty( $start_date ) ? $start_date->format( 'F j, Y' ) : '',
 			'itinerary_days'   => get_minimum_duration( $expedition_id ),
-			'discounted_price' => format_price( $prices_data['discounted'] ),
+			'discounted_price' => format_price( $prices_data['discounted'], $currency ),
 		];
 	}
 

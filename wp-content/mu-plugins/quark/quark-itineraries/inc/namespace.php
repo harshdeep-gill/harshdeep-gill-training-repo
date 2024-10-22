@@ -619,8 +619,11 @@ function get_details_tabs_data( array $itineraries = [], int $expedition_id = 0 
 			}
 		}
 
+		// Currency.
+		$currency = get_current_currency();
+
 		// Get the itinerary lowest price.
-		$price = format_price( get_lowest_price( $itinerary['post']->ID )['discounted'], get_current_currency() );
+		$price = format_price( get_lowest_price( $itinerary['post']->ID, $currency )['discounted'], $currency );
 
 		// Translators: %s is the lowest price.
 		$price = ! empty( $price ) ? sprintf( __( '%s per person', 'qrk' ), $price ) : '';
