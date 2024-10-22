@@ -5056,7 +5056,7 @@
 									/>
 								</x-product-options-cards.specifications>
 								<x-product-options-cards.price
-									original_price="$9,395 USD"
+									original_price="$7,271 USD"
 									discounted_price="$7,271 USD"
 								/>
 							</x-product-options-cards.content>
@@ -5169,7 +5169,7 @@
 										<x-product-options-cards.room-subtitle subtitle="Price of the cabin for one guest" />
 									</x-product-options-cards.room-title-container>
 									<x-product-options-cards.room-prices
-										original_price="$9,395 USD"
+										original_price="$7,271 USD"
 										discounted_price="$7,271 USD"
 									/>
 								</x-product-options-cards.room>
