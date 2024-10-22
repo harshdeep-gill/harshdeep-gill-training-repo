@@ -24,10 +24,12 @@
 @php
 	// Set default values.
 	$full_width = false;
+	$wrap = false;
 
 	// Check if background image is set.
 	if ( ! empty( $background_image ) ) {
 		$full_width = true;
+		$wrap = true;
 	}
 @endphp
 
@@ -38,6 +40,7 @@
 	:padding="$padding"
 	:id="$id"
 	:full_width="$full_width"
+	:wrap="$wrap"
 >
 	@if( ! empty( $background_image ) )
 		<x-section.image :image_id="$background_image" :gradient_position="$gradient_position" :gradient_color="$gradient_color" />
