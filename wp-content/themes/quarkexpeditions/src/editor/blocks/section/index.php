@@ -45,7 +45,7 @@ function render( array $attributes = [], string $content = '' ): string {
 		'gradient_position' => $attributes['gradientPosition'],
 		'gradient_color'    => $attributes['gradientColor'],
 		'padding'           => $attributes['hasPadding'],
-		'narrow'            => ! $attributes['backgroundImage'] ? $attributes['isNarrow'] : '',
+		'narrow'            => $attributes['hasBackgroundImage'] ? '' : $attributes['isNarrow'],
 		'slot'              => $content,
 		'heading_link'      => [],
 		'has_heading_link'  => $attributes['hasHeadingLink'],
