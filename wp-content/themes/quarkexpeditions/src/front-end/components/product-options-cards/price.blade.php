@@ -19,7 +19,6 @@
 	$is_discounted = false;
 	$class_title = [ 'product-options-cards__price-title' ];
 
-
 	// Checking if the discounted price is different from the original or not.
 	if ( ! empty( $discounted_price ) ) {
 		if ( $discounted_price !== $original_price ) {
