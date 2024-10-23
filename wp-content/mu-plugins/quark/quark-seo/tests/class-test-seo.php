@@ -11,6 +11,7 @@ use WP_UnitTestCase;
 
 use function Quark\SEO\custom_robots_txt;
 use function Quark\SEO\get_structured_data;
+use function Quark\SEO\set_canonical_scheme;
 
 /**
  * Class Test_SEO.
@@ -128,5 +129,23 @@ class Test_SEO extends WP_UnitTestCase {
 
 		// Test schema.
 		$this->assertEquals( $expected, $actual );
+	}
+
+	/**
+	 * Test set_canonical_scheme.
+	 *
+	 * @covers \Quark\SEO\set_canonical_scheme()
+	 *
+	 * @return void
+	 */
+	public function test_set_canonical_scheme(): void {
+		// Test empty.
+		$this->assertEquals( '', set_canonical_scheme() );
+
+		// Test http.
+		$this->assertEquals( 'https://example.com', set_canonical_scheme( 'http://example.com' ) );
+
+		// Test https.
+		$this->assertEquals( 'https://example.com', set_canonical_scheme( 'https://example.com' ) );
 	}
 }

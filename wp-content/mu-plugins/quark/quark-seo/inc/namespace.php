@@ -17,6 +17,9 @@ function bootstrap(): void {
 	add_filter( 'robots_txt', __NAMESPACE__ . '\\custom_robots_txt', 999999 ); // Override Yoast SEO hooked at 99999.
 	add_filter( 'travelopia_seo_structured_data_schema', __NAMESPACE__ . '\\seo_structured_data' );
 
+	// Set https scheme for canonical.
+	add_filter( 'wpseo_canonical', __NAMESPACE__ . '\\set_canonical_scheme' );
+
 	// Custom fields.
 	if ( is_admin() ) {
 		// ACF options page.
@@ -197,4 +200,22 @@ function get_structured_data(): array {
 			],
 		],
 	];
+}
+
+/**
+ * Set https scheme for canonical.
+ *
+ * @param string $canonical Original canonical URL.
+ *
+ * @return string
+ */
+function set_canonical_scheme( string $canonical = '' ): string {
+	// Check if canonical URL is not empty and starts with "http://".
+	if ( ! empty( $canonical ) && str_starts_with( $canonical, 'http://' ) ) {
+		// Replace "http" with "https".
+		$canonical = str_replace( 'http://', 'https://', $canonical );
+	}
+
+	// Return canonical URL.
+	return $canonical;
 }
