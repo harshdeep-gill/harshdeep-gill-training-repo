@@ -115,9 +115,9 @@ class Test_Checkout extends WP_UnitTestCase {
 		$actual = get_checkout_url( $departure_post_id, $cabin_post_id, EUR_CURRENCY );
 		$this->assertSame( 'https://local-checkout.quarkexpeditions.com?package_id=UNQ-123&departure_date=2021-01-01&cabin_code=CAB-123&currency=EUR', $actual );
 
-		// Test with other currency.
+		// Test with GBP currency - restricted.
 		$actual = get_checkout_url( $departure_post_id, $cabin_post_id, GBP_CURRENCY );
-		$this->assertSame( 'https://local-checkout.quarkexpeditions.com?package_id=UNQ-123&departure_date=2021-01-01&cabin_code=CAB-123&currency=GBP', $actual );
+		$this->assertSame( '', $actual );
 
 		// Update departure post for start date.
 		wp_update_post(
