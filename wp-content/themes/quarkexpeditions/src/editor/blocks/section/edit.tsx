@@ -156,6 +156,7 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 						onChange={ () => setAttributes( {
 							hasBackgroundImage: ! attributes.hasBackgroundImage,
 							hasPadding: ! attributes.hasBackgroundImage,
+							isNarrow: false,
 						} ) }
 						help={ __( 'Does this section have a background image?', 'qrk' ) }
 					/>
@@ -202,14 +203,16 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 							/>
 						</>
 					}
-					<ToggleControl
-						label={ __( 'Is Narrow', 'qrk' ) }
-						checked={ attributes.isNarrow }
-						onChange={ () => setAttributes( {
-							isNarrow: ! attributes.isNarrow,
-						} ) }
-						help={ __( 'Does this section have narrow width?', 'qrk' ) }
-					/>
+					{ ! attributes.hasBackgroundImage &&
+						<ToggleControl
+							label={ __( 'Is Narrow', 'qrk' ) }
+							checked={ attributes.isNarrow }
+							onChange={ () => setAttributes( {
+								isNarrow: ! attributes.isNarrow,
+							} ) }
+							help={ __( 'Does this section have narrow width?', 'qrk' ) }
+						/>
+					}
 					<ToggleControl
 						label={ __( 'Has Padding', 'qrk' ) }
 						checked={ attributes.hasPadding }
