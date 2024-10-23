@@ -551,13 +551,9 @@
 
 		tp-slider-nav {
 			display: flex;
-			width: 100%;
-			justify-content: flex-end;
-			padding: var(--spacing-2);
-			overflow: auto;
 
-			@media screen and (min-width: calc(grid-size(md) - 1px)) {
-				justify-content: flex-start;
+			tp-slider-nav-item:nth-child(n+15) {
+				display: none;
 			}
 		}
 	}

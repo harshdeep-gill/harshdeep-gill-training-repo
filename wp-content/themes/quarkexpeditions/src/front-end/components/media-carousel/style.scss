@@ -9,11 +9,15 @@
 		width: 100%;
 	}
 
-	&__item img {
-		aspect-ratio: 20 / 11;
+	&__item {
+		border-radius: var(--border-radius-large);
 
-		@media screen and (min-width: grid-size(md)) {
-			aspect-ratio: 2;
+		img {
+			aspect-ratio: 20 / 11;
+
+			@media screen and (min-width: grid-size(md)) {
+				aspect-ratio: 2;
+			}
 		}
 	}
 
@@ -42,15 +46,20 @@
 	}
 
 	tp-slider-nav {
-		position: absolute;
-		bottom: var(--spacing-3);
-		left: 50%;
-		transform: translate(-50%);
-		z-index: 5;
 		display: none;
+		position: absolute;
+		bottom: var(--spacing-4);
+		overflow: hidden;
+		margin: 0 auto;
+		padding-inline: var(--spacing-2);
+		left: 0;
+		right: 0;
+		width: fit-content;
+		z-index: 1;
 
 		@media screen and (min-width: grid-size(md)) {
 			display: flex;
+			justify-content: center;
 		}
 	}
 
