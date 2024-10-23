@@ -20,6 +20,8 @@ use function Quark\Itineraries\format_itinerary_day_title;
 use function Quark\ItineraryDays\get as get_itinerary_day;
 use function Quark\Departures\get as get_departure;
 use function Quark\Core\format_price;
+use function Quark\Localization\get_currencies;
+use function Quark\Localization\get_current_currency;
 use function Quark\Ships\get as get_ship;
 use function Quark\Softrip\Departures\get_departures_by_itinerary;
 use function Quark\Softrip\Itineraries\get_end_date;
@@ -1302,6 +1304,9 @@ function get_starting_from_price( int $post_id = 0 ): array {
 		return $lowest_prices;
 	}
 
+	// Current currency.
+	$currency = get_current_currency();
+
 	// Loop through itineraries and get minimum price.
 	foreach ( $itineraries as $itinerary ) {
 		// Check for Itinerary.
@@ -1314,7 +1319,7 @@ function get_starting_from_price( int $post_id = 0 ): array {
 		}
 
 		// Get lowest price for Itinerary.
-		$price = get_lowest_price( $itinerary['post']->ID );
+		$price = get_lowest_price( $itinerary['post']->ID, $currency );
 
 		// Check minimum price.
 		if ( ! empty( $price['discounted'] ) && ( empty( $lowest_price ) || $price['discounted'] < $lowest_price ) ) {
@@ -1686,8 +1691,11 @@ function get_formatted_date_range( int $post_id = 0 ): string {
  * }
  */
 function get_details_data( int $post_id = 0 ): array {
+	// Currency.
+	$currency = get_current_currency();
+
 	// Check for cached version.
-	$cache_key    = CACHE_KEY . "_details_$post_id";
+	$cache_key    = CACHE_KEY . "_details_$post_id" . '_' . $currency;
 	$cached_value = wp_cache_get( $cache_key, CACHE_GROUP );
 
 	// Check for cached value.
@@ -1773,8 +1781,8 @@ function get_details_data( int $post_id = 0 ): array {
 	// Set starting from price.
 	$prices             = get_starting_from_price( $post_id );
 	$data['from_price'] = [
-		'original'   => format_price( $prices['original'] ),
-		'discounted' => format_price( $prices['discounted'] ),
+		'original'   => format_price( $prices['original'], $currency ),
+		'discounted' => format_price( $prices['discounted'], $currency ),
 	];
 
 	// Set starting from locations list.
@@ -1818,8 +1826,14 @@ function get_details_data( int $post_id = 0 ): array {
  * @return void
  */
 function bust_details_cache( int $post_id = 0 ): void {
-	// Clear cache for this post.
-	wp_cache_delete( CACHE_KEY . "_details_$post_id", CACHE_GROUP );
+	// Currencies.
+	$currencies = get_currencies();
+
+	// Loop through currencies and bust cache.
+	foreach ( $currencies as $currency ) {
+		// Clear cache for this post.
+		wp_cache_delete( CACHE_KEY . "_details_$post_id" . '_' . $currency, CACHE_GROUP );
+	}
 }
 
 /**

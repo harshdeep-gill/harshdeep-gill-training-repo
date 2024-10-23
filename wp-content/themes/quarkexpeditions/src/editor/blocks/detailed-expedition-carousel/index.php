@@ -17,6 +17,7 @@ use function Quark\Expeditions\get_minimum_duration_itinerary;
 use function Quark\Expeditions\get_starting_from_date;
 use function Quark\Expeditions\get_starting_from_price;
 use function Quark\Itineraries\get_included_transfer_package_details;
+use function Quark\Localization\get_current_currency;
 
 use const Quark\Expeditions\POST_TYPE as EXPEDITION_POST_TYPE;
 
@@ -55,6 +56,9 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 
 	// Initialize expedition IDs.
 	$expedition_ids = [];
+
+	// Currency.
+	$currency = get_current_currency();
 
 	// If the selection is manual, we need to check if we have IDs.
 	if ( 'manual' === $attributes['selection'] ) {
@@ -138,7 +142,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 		// Check if we have a minimum duration itinerary.
 		if ( ! empty( $minimum_duration_itinerary ) ) {
 			// Get included transfer package data.
-			$transfer_package_data = get_included_transfer_package_details( $minimum_duration_itinerary->ID );
+			$transfer_package_data = get_included_transfer_package_details( $minimum_duration_itinerary->ID, $currency );
 
 			// Reset if no inclusion sets.
 			if ( empty( $transfer_package_data['sets'] ) ) {
@@ -174,7 +178,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 			'image_id'         => get_post_thumbnail_id( $expedition_id ),
 			'start_date'       => ! empty( $start_date ) ? $start_date->format( 'F j, Y' ) : '',
 			'itinerary_days'   => get_minimum_duration( $expedition_id ),
-			'discounted_price' => format_price( $prices_data['discounted'] ),
+			'discounted_price' => format_price( $prices_data['discounted'], $currency ),
 		];
 	}
 
