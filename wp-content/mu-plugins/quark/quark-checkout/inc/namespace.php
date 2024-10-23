@@ -14,6 +14,7 @@ use function Quark\Departures\get as get_departure_post;
 use function Quark\Localization\get_currencies;
 
 use const Quark\Localization\DEFAULT_CURRENCY;
+use const Quark\Localization\GBP_CURRENCY;
 
 /**
  * Bootstrap the plugin.
@@ -40,16 +41,26 @@ function get_checkout_url( int $departure_post_id = 0, int $cabin_post_id = 0, s
 		return '';
 	}
 
+	// Uppercase currency.
+	$currency = strtoupper( $currency );
+
+	// Empty currency.
+	if ( empty( $currency ) ) {
+		return '';
+	}
+
+	// Restrict GBP currency.
+	if ( GBP_CURRENCY === $currency ) {
+		return '';
+	}
+
 	// Get base URL.
 	$url = QUARK_CHECKOUT_BASE_URL;
 
 	// Validate departure post ID, cabin post ID and currency.
-	if ( empty( $departure_post_id ) || empty( $cabin_post_id ) || empty( $currency ) ) {
+	if ( empty( $departure_post_id ) || empty( $cabin_post_id ) ) {
 		return $url;
 	}
-
-	// Uppercase currency.
-	$currency = strtoupper( $currency );
 
 	// Validate currency.
 	if ( ! in_array( $currency, get_currencies(), true ) ) {
