@@ -57,6 +57,9 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 	// Initialize expedition IDs.
 	$expedition_ids = [];
 
+	// Currency.
+	$currency = get_current_currency();
+
 	// If the selection is manual, we need to check if we have IDs.
 	if ( 'manual' === $attributes['selection'] ) {
 		// Return empty if manual select, but no IDs were selected.
@@ -139,7 +142,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 		// Check if we have a minimum duration itinerary.
 		if ( ! empty( $minimum_duration_itinerary ) ) {
 			// Get included transfer package data.
-			$transfer_package_data = get_included_transfer_package_details( $minimum_duration_itinerary->ID );
+			$transfer_package_data = get_included_transfer_package_details( $minimum_duration_itinerary->ID, $currency );
 
 			// Reset if no inclusion sets.
 			if ( empty( $transfer_package_data['sets'] ) ) {
@@ -165,9 +168,6 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 
 		// Get Prices Data.
 		$prices_data = get_starting_from_price( $expedition_id );
-
-		// Currency.
-		$currency = get_current_currency();
 
 		// Build card data.
 		$cards[] = [

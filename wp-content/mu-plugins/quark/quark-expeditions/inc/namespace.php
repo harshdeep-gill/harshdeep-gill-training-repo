@@ -1695,7 +1695,7 @@ function get_details_data( int $post_id = 0 ): array {
 	$currency = get_current_currency();
 
 	// Check for cached version.
-	$cache_key    = CACHE_KEY . "_details_$post_id" . "_$currency";
+	$cache_key    = CACHE_KEY . "_details_$post_id" . '_' . $currency;
 	$cached_value = wp_cache_get( $cache_key, CACHE_GROUP );
 
 	// Check for cached value.
@@ -1832,7 +1832,7 @@ function bust_details_cache( int $post_id = 0 ): void {
 	// Loop through currencies and bust cache.
 	foreach ( $currencies as $currency ) {
 		// Clear cache for this post.
-		wp_cache_delete( CACHE_KEY . "_details_$post_id" . "_$currency", CACHE_GROUP );
+		wp_cache_delete( CACHE_KEY . "_details_$post_id" . '_' . $currency, CACHE_GROUP );
 	}
 }
 
