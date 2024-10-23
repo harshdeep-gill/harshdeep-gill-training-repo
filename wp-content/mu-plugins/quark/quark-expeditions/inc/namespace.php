@@ -20,6 +20,7 @@ use function Quark\Itineraries\format_itinerary_day_title;
 use function Quark\ItineraryDays\get as get_itinerary_day;
 use function Quark\Departures\get as get_departure;
 use function Quark\Core\format_price;
+use function Quark\Localization\get_current_currency;
 use function Quark\Ships\get as get_ship;
 use function Quark\Softrip\Departures\get_departures_by_itinerary;
 use function Quark\Softrip\Itineraries\get_end_date;
@@ -1302,6 +1303,9 @@ function get_starting_from_price( int $post_id = 0 ): array {
 		return $lowest_prices;
 	}
 
+	// Current currency.
+	$currency = get_current_currency();
+
 	// Loop through itineraries and get minimum price.
 	foreach ( $itineraries as $itinerary ) {
 		// Check for Itinerary.
@@ -1314,7 +1318,7 @@ function get_starting_from_price( int $post_id = 0 ): array {
 		}
 
 		// Get lowest price for Itinerary.
-		$price = get_lowest_price( $itinerary['post']->ID );
+		$price = get_lowest_price( $itinerary['post']->ID, $currency );
 
 		// Check minimum price.
 		if ( ! empty( $price['discounted'] ) && ( empty( $lowest_price ) || $price['discounted'] < $lowest_price ) ) {
@@ -1770,11 +1774,14 @@ function get_details_data( int $post_id = 0 ): array {
 	// Set minimum duration.
 	$data['duration'] = get_minimum_duration( $post_id );
 
+	// Currency.
+	$currency = get_current_currency();
+
 	// Set starting from price.
 	$prices             = get_starting_from_price( $post_id );
 	$data['from_price'] = [
-		'original'   => format_price( $prices['original'] ),
-		'discounted' => format_price( $prices['discounted'] ),
+		'original'   => format_price( $prices['original'], $currency ),
+		'discounted' => format_price( $prices['discounted'], $currency ),
 	];
 
 	// Set starting from locations list.
