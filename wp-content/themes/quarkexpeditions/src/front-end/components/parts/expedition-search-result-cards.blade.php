@@ -316,14 +316,14 @@
 											<p class="product-options-cards__help-text">{{ __( 'Not ready to book?', 'qrk' ) }} <a href="#">{{ __( 'Request a quote', 'qrk' ) }}</a></p>
 										</x-dialog.body>
 
-										<x-dialog.footer>
-											<x-product-options-cards.cta-buttons>
-												<x-product-options-cards.phone-number />
-												@if ( ! empty( $cabin['occupancies'] ) && is_array( $cabin['occupancies'] ) )
-													<x-product-options-cards.cta-book-now :url="$cabin['occupancies'][0]['checkout_url'] ?? '#'" />
-												@endif
-											</x-product-options-cards.cta-buttons>
-										</x-dialog.footer>
+										@if ( ! empty( $cabin['occupancies'] ) && is_array( $cabin['occupancies'] ) && is_array( $cabin['occupancies'][0] ) && ! empty( $cabin['occupancies'][0]['checkout_url'] ) )
+											<x-dialog.footer>
+												<x-product-options-cards.cta-buttons>
+													<x-product-options-cards.phone-number />
+														<x-product-options-cards.cta-book-now :url="$cabin['occupancies'][0]['checkout_url']" />
+												</x-product-options-cards.cta-buttons>
+											</x-dialog.footer>
+										@endif
 									</x-product-options-cards.dialog>
 
 								</x-product-options-cards.card>
@@ -396,7 +396,7 @@
 											<p class="product-options-cards__help-text">{{ __( 'Not ready to book?', 'qrk' ) }} <a href="{!! esc_url( $card['request_a_quote_url'] ) !!}">{{ __( 'Request a quote', 'qrk' ) }}</a></p>
 										@endif
 										<x-product-options-cards.phone-number />
-										@if ( ! empty( $cabin['occupancies'] ) && is_array( $cabin['occupancies'] ) )
+										@if ( ! empty( $cabin['occupancies'] ) && is_array( $cabin['occupancies'] ) && is_array( $cabin['occupancies'][0] ) && ! empty( $cabin['occupancies'][0]['checkout_url'] ) )
 											<x-product-options-cards.cta-book-now :url="$cabin['occupancies'][0]['checkout_url'] ?? '#'" />
 										@endif
 									</x-product-options-cards.cta-buttons>

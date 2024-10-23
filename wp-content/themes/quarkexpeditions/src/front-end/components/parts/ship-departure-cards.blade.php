@@ -279,7 +279,7 @@
 											@if( ! empty( $cabin['occupancies'] ) && is_array( $cabin['occupancies'] ) )
 												<x-product-options-cards.rooms title="Select Rooms">
 													@foreach( $cabin['occupancies'] as $index => $occupancy )
-														<x-product-options-cards.room :checkout_url="$occupancy['checkout_url'] ?? ''" id="modal-room-type-id-{{ $departure_id }}-{{ $cabin_code }}-{{ $index }}" name="modal-room-type-{{ $departure_id }}-{{ $cabin_code }}" checked="{{ $index == 0 ? 'checked' : '' }}">
+														<x-product-options-cards.room :checkout_url="$occupancy['checkout_url'] ?? ''" id="modal-room-type-id-{{ $departure_id }}-{{ $cabin_code }}-{{ $index }}" name="modal-room-type-{{ $departure_id }}-{{ $cabin_code }}" checked="{{ $index == 0 ? 'checked' : '' }}" mask="{{ $occupancy['name'] ?? '' }}">
 															<x-product-options-cards.room-title-container>
 																@if( ! empty( $occupancy['description'] ) )
 																	<x-product-options-cards.room-title
@@ -314,14 +314,14 @@
 											<p class="product-options-cards__help-text">{{ __( 'Not ready to book?', 'qrk' ) }} <a href="#">{{ __( 'Request a quote', 'qrk' ) }}</a></p>
 										</x-dialog.body>
 
-										<x-dialog.footer>
-											<x-product-options-cards.cta-buttons>
-												<x-product-options-cards.phone-number />
-												@if ( ! empty( $cabin['occupancies'] ) && is_array( $cabin['occupancies'] ) )
-													<x-product-options-cards.cta-book-now :url="$cabin['occupancies'][0]['checkout_url'] ?? '#'" />
-												@endif
-											</x-product-options-cards.cta-buttons>
-										</x-dialog.footer>
+										@if ( ! empty( $cabin['occupancies'] ) && is_array( $cabin['occupancies'] ) && is_array( $cabin['occupancies'][0] ) && ! empty( $cabin['occupancies'][0]['checkout_url'] ) )
+											<x-dialog.footer>
+												<x-product-options-cards.cta-buttons>
+													<x-product-options-cards.phone-number />
+														<x-product-options-cards.cta-book-now :url="$cabin['occupancies'][0]['checkout_url']" />
+												</x-product-options-cards.cta-buttons>
+											</x-dialog.footer>
+										@endif
 									</x-product-options-cards.dialog>
 
 								</x-product-options-cards.card>
@@ -357,7 +357,7 @@
 									@if( ! empty( $cabin['occupancies'] ) && is_array( $cabin['occupancies'] ) )
 										<x-product-options-cards.rooms title="Select Rooms">
 											@foreach( $cabin['occupancies'] as $index => $occupancy )
-												<x-product-options-cards.room checkout_url="{!! $occupancy['checkout_url'] !!}" id="room-type-id-{{ $departure_id }}-{{ $cabin_code }}-{{ $index }}" name="room-type-{{ $departure_id }}-{{ $cabin_code }}" checked="{{ $index == 0 ? 'checked' : '' }}">
+												<x-product-options-cards.room checkout_url="{!! $occupancy['checkout_url'] !!}" id="room-type-id-{{ $departure_id }}-{{ $cabin_code }}-{{ $index }}" name="room-type-{{ $departure_id }}-{{ $cabin_code }}" checked="{{ $index == 0 ? 'checked' : '' }}" mask="{{ $occupancy['name'] ?? '' }}">
 													<x-product-options-cards.room-title-container>
 														@if( ! empty( $occupancy['description'] ) )
 															<x-product-options-cards.room-title
@@ -394,7 +394,7 @@
 											<p class="product-options-cards__help-text">{{ __( 'Not ready to book?', 'qrk' ) }} <a href="{!! esc_url( $card['request_a_quote_url'] ) !!}">{{ __( 'Request a quote', 'qrk' ) }}</a></p>
 										@endif
 										<x-product-options-cards.phone-number />
-										@if ( ! empty( $cabin['occupancies'] ) && is_array( $cabin['occupancies'] ) )
+										@if ( ! empty( $cabin['occupancies'] ) && is_array( $cabin['occupancies'] ) && is_array( $cabin['occupancies'][0] ) && ! empty( $cabin['occupancies'][0]['checkout_url'] ) )
 											<x-product-options-cards.cta-book-now :url="$cabin['occupancies'][0]['checkout_url'] ?? '#'" />
 										@endif
 									</x-product-options-cards.cta-buttons>
