@@ -134,7 +134,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 		// Check if we have a minimum duration itinerary.
 		if ( ! empty( $minimum_duration_itinerary ) ) {
 			// Get included transfer package data.
-			$transfer_package_data = get_included_transfer_package_details( $minimum_duration_itinerary->ID );
+			$transfer_package_data = get_included_transfer_package_details( $minimum_duration_itinerary->ID, $currency );
 
 			// Reset if no inclusion sets.
 			if ( empty( $transfer_package_data['sets'] ) ) {

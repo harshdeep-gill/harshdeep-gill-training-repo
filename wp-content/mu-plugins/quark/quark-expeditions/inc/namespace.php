@@ -20,6 +20,7 @@ use function Quark\Itineraries\format_itinerary_day_title;
 use function Quark\ItineraryDays\get as get_itinerary_day;
 use function Quark\Departures\get as get_departure;
 use function Quark\Core\format_price;
+use function Quark\Localization\get_currencies;
 use function Quark\Localization\get_current_currency;
 use function Quark\Ships\get as get_ship;
 use function Quark\Softrip\Departures\get_departures_by_itinerary;
@@ -1690,8 +1691,11 @@ function get_formatted_date_range( int $post_id = 0 ): string {
  * }
  */
 function get_details_data( int $post_id = 0 ): array {
+	// Currency.
+	$currency = get_current_currency();
+
 	// Check for cached version.
-	$cache_key    = CACHE_KEY . "_details_$post_id";
+	$cache_key    = CACHE_KEY . "_details_$post_id" . '_' . $currency;
 	$cached_value = wp_cache_get( $cache_key, CACHE_GROUP );
 
 	// Check for cached value.
@@ -1774,9 +1778,6 @@ function get_details_data( int $post_id = 0 ): array {
 	// Set minimum duration.
 	$data['duration'] = get_minimum_duration( $post_id );
 
-	// Currency.
-	$currency = get_current_currency();
-
 	// Set starting from price.
 	$prices             = get_starting_from_price( $post_id );
 	$data['from_price'] = [
@@ -1825,8 +1826,14 @@ function get_details_data( int $post_id = 0 ): array {
  * @return void
  */
 function bust_details_cache( int $post_id = 0 ): void {
-	// Clear cache for this post.
-	wp_cache_delete( CACHE_KEY . "_details_$post_id", CACHE_GROUP );
+	// Currencies.
+	$currencies = get_currencies();
+
+	// Loop through currencies and bust cache.
+	foreach ( $currencies as $currency ) {
+		// Clear cache for this post.
+		wp_cache_delete( CACHE_KEY . "_details_$post_id" . '_' . $currency, CACHE_GROUP );
+	}
 }
 
 /**
