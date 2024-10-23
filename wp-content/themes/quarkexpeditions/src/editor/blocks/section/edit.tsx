@@ -156,6 +156,7 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 						onChange={ () => setAttributes( {
 							hasBackgroundImage: ! attributes.hasBackgroundImage,
 							hasPadding: ! attributes.hasBackgroundImage,
+							isNarrow: false,
 						} ) }
 						help={ __( 'Does this section have a background image?', 'qrk' ) }
 					/>
