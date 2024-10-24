@@ -58,7 +58,6 @@ function render( array $attributes = [] ): string {
 		'post_status'            => 'publish',
 		'fields'                 => 'ids',
 		'posts_per_page'         => $attributes['totalPosts'],
-		'no_found_rows'          => true,
 		'update_post_meta_cache' => false,
 		'update_post_term_cache' => false,
 		'orderby'                => 'date',
