@@ -10,9 +10,13 @@ namespace Quark\Theme\Blocks\StaffMembers;
 use WP_Post;
 use WP_Query;
 
+use function Quark\Core\get_first_pagination_link;
+use function Quark\Core\get_last_pagination_link;
+use function Quark\Core\get_pagination_links;
 use function Quark\StaffMembers\get as get_staff_member;
 use function Quark\StaffMembers\get_cards_data;
 use function Quark\StaffMembers\get_department;
+use function Quark\Core\is_block_editor;
 
 use const Quark\StaffMembers\POST_TYPE as STAFF_MEMBER_POST_TYPE;
 use const Quark\StaffMembers\DEPARTMENT_TAXONOMY as STAFF_MEMBER_DEPARTMENT_TAXONOMY;
@@ -45,6 +49,9 @@ function render( array $attributes = [] ): string {
 	// Get the current staff member.
 	$current_staff_member = get_staff_member();
 
+	// Get the current page.
+	$current_page = get_query_var( 'paged' ) ?: 1;
+
 	// Build query args.
 	$args = [
 		'post_type'              => STAFF_MEMBER_POST_TYPE,
@@ -56,6 +63,7 @@ function render( array $attributes = [] ): string {
 		'update_post_term_cache' => false,
 		'orderby'                => 'date',
 		'order'                  => 'DESC',
+		'paged'                  => $current_page,
 	];
 
 	// If the selection is manual, we need to check if we have IDs.
@@ -133,16 +141,33 @@ function render( array $attributes = [] ): string {
 	// Layout of the cards.
 	$layout = $attributes['isCarousel'] ? 'carousel' : 'grid';
 
+	// Initialize pagination.
+	$pagination = '';
+
+	// Check if we have cards data pagination.
+	if ( ! empty( $attributes['hasPagination'] ) && ! is_block_editor() ) {
+		$pagination = get_pagination_links(
+			[
+				'query' => $posts,
+			]
+		);
+	}
+
 	// Return built component.
 	return quark_get_component(
 		COMPONENT,
 		[
-			'cards'      => $cards_data,
-			'layout'     => $layout,
-			'showSeason' => $attributes['showSeason'],
-			'showTitle'  => $attributes['showTitle'],
-			'showRole'   => $attributes['showRole'],
-			'showCta'    => $attributes['showCta'],
+			'cards'           => $cards_data,
+			'layout'          => $layout,
+			'showSeason'      => $attributes['showSeason'],
+			'showTitle'       => $attributes['showTitle'],
+			'showRole'        => $attributes['showRole'],
+			'showCta'         => $attributes['showCta'],
+			'pagination'      => $pagination,
+			'current_page'    => $current_page,
+			'total_pages'     => $posts->max_num_pages,
+			'first_page_link' => 1 !== $current_page ? get_first_pagination_link() : '',
+			'last_page_link'  => $current_page !== $posts->max_num_pages ? get_last_pagination_link( [ 'total' => $posts->max_num_pages ] ) : '',
 		]
 	);
 }
