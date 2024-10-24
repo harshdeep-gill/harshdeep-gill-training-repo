@@ -7,6 +7,16 @@ const { HTMLElement } = window;
  * External dependency
  */
 import { TPFormFieldElement, TPTabsElement } from '@travelopia/web-components';
+import { prefillForm } from '../form/utility';
+
+/**
+ * Prefill Mapping.
+ */
+const journeyStageMapping = { 'element' : 'select', 'fieldName' : 'Journey_Stage__c' };
+const passengerCountMapping = { 'element' : 'input', 'fieldName' : 'PAX_Count__c' };
+const expeditionIdMapping = { 'element' : 'select', 'fieldName' : 'Expedition__c', 'event' : 'change' };
+const contactMethodMapping = { 'element' : 'input', 'fieldName' : 'Preferred_Contact_Methods__c', 'type' : 'radio' };
+const monthMapping = { 'element' : 'input', 'type' : 'checkbox', 'fieldName' : 'Preferred_Travel_Seasons__c' };
 
 /**
  * FormRequestQuote Class.
@@ -16,6 +26,7 @@ export default class FormRequestQuote extends HTMLElement {
 	 * Properties.
 	 */
 	private readonly quarkForm: HTMLElement | null;
+	private readonly form: HTMLFormElement | null;
 	private readonly successMessage: HTMLElement | null;
 	private readonly content: HTMLElement | null;
 	private readonly tabs: TPTabsElement | null;
@@ -37,6 +48,7 @@ export default class FormRequestQuote extends HTMLElement {
 
 		// Elements.
 		this.quarkForm = this.querySelector( 'quark-form' );
+		this.form = this.querySelector( 'quark-form form' );
 		this.successMessage = this.querySelector( '.form-request-quote__success' );
 		this.content = this.querySelector( '.form-request-quote__tabs' );
 		this.tabs = this.querySelector( '.form-request-quote__tabs' );
@@ -52,13 +64,40 @@ export default class FormRequestQuote extends HTMLElement {
 		// Events
 		this.nextStepButton?.addEventListener( 'click', () => this.handleStepOneValidation() );
 		this.previousStepButton?.addEventListener( 'click', () => this.goToPreviousStep() );
-		this.expeditions?.addEventListener( 'change', () => this.changeExpedition() );
+		this.expeditions?.addEventListener( 'change', async () => await this.changeExpedition() );
 		this.quarkForm?.addEventListener( 'validation-error', this.showToastMessage.bind( this ) );
 		this.quarkForm?.addEventListener( 'validation-success', this.hideToastMessage.bind( this ) );
 		this.quarkForm?.addEventListener( 'api-success', this.showSuccessMessage.bind( this ) );
 
 		// Add radio button toggle event listener.
 		this.initializeRadioToggle();
+
+		/*
+		* Prefill the form with the initial values.
+		*/
+		const initialMapping = {
+			'journey_stage': journeyStageMapping,
+			'passenger_count': passengerCountMapping,
+			'expedition_id': expeditionIdMapping,
+			'contact_method': contactMethodMapping,
+		};
+
+		// Prefill the form.
+		this.prefillForm( initialMapping );
+	}
+
+	/**
+	 * Prefill the form.
+	 */
+	prefillForm( mapping: Record<string, Record<string, string>> = {} ) {
+		// Check if the form exists.
+		if ( ! this.form ) {
+			// Return early.
+			return;
+		}
+
+		// Call the prefillForm function.
+		prefillForm( this.form, mapping );
 	}
 
 	/**
@@ -261,6 +300,9 @@ export default class FormRequestQuote extends HTMLElement {
 			// Append the option to the month options container.
 			this.monthOptionsContainer.appendChild( option );
 		}
+
+		// Prefill the form.
+		this.prefillForm( { 'month': monthMapping } );
 	}
 
 	/**
