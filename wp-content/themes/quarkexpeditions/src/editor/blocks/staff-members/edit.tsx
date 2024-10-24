@@ -110,6 +110,17 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 							/>
 						</>
 					}
+					{ 'manual' !== attributes.selection &&
+						<ToggleControl
+							label={ __( 'Has Pagination?', 'qrk' ) }
+							checked={ attributes.hasPagination }
+							help={ __( 'Show pagination for the staff members on frontend.', 'qrk' ) }
+							onChange={ ( hasPagination: boolean ) => {
+								// Set hasPagination.
+								setAttributes( { hasPagination } );
+							} }
+						/>
+					}
 					<ToggleControl
 						label={ __( 'Is Carousel?', 'qrk' ) }
 						checked={ attributes.isCarousel }

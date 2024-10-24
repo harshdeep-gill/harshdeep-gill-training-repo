@@ -23,6 +23,10 @@
 			"type": "number",
 			"default": 3
 		},
+		"hasPagination": {
+			"type": "boolean",
+			"default": false
+		},
 		"departmentIds": {
 			"type": "array",
 			"default": []
