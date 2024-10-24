@@ -61,8 +61,8 @@ function render( array $attributes = [] ): string {
 		'no_found_rows'          => ! $attributes['hasPagination'],
 		'update_post_meta_cache' => false,
 		'update_post_term_cache' => false,
-		'orderby'                => 'date',
-		'order'                  => 'DESC',
+		'orderby'                => 'title',
+		'order'                  => 'ASC',
 		'paged'                  => $current_page,
 	];
 
