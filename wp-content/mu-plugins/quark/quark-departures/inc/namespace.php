@@ -42,6 +42,7 @@ const SPOKEN_LANGUAGE_TAXONOMY = 'qrk_spoken_language';
 const PROMOTION_TAG            = 'qrk_promotion_tags';
 const CACHE_KEY                = POST_TYPE;
 const CACHE_GROUP              = POST_TYPE;
+const FLIGHT_SEEING_TID        = 289; // Flight seeing Adventure Option Term ID.
 
 /**
  * Bootstrap plugin.
@@ -452,6 +453,9 @@ function get_included_adventure_options( int $post_id = 0 ): array {
 	// Get Expedition ID from meta.
 	$expedition_id = $departure['post_meta']['related_expedition'] ?? '';
 
+	// Get ship ID from departure.
+	$ship_code = get_post_meta( $post_id, 'ship_code', true );
+
 	// Check meta is empty.
 	if ( empty( $expedition_id ) ) {
 		return $included_adventure_options;
@@ -487,6 +491,11 @@ function get_included_adventure_options( int $post_id = 0 ): array {
 			// Add Adventure Option to included options.
 			$included_adventure_options[ $adventure_option['term_id'] ] = $adventure_option;
 		}
+	}
+
+	// Remove Flight seeing for all except Ultramarine.
+	if ( 'ULT' !== $ship_code && array_key_exists( FLIGHT_SEEING_TID, $included_adventure_options ) ) {
+		unset( $included_adventure_options[ FLIGHT_SEEING_TID ] );
 	}
 
 	// Return Adventure Options.

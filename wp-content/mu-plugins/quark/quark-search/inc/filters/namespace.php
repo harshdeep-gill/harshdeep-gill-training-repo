@@ -189,6 +189,12 @@ function get_region_season_filter_options( array $region_season_facet = [] ): ar
 			continue;
 		}
 
+		// Get term meta.
+		$term_meta = get_term_meta( $region_term->term_id, 'show_next_year', true );
+
+		// Check if term meta is not empty.
+		$to_show_next_year = ! empty( $term_meta );
+
 		// Get last 4 characters as season.
 		$season = substr( $region_season, 4 );
 
@@ -205,9 +211,16 @@ function get_region_season_filter_options( array $region_season_facet = [] ): ar
 			continue;
 		}
 
+		// Set tab title.
+		if ( $to_show_next_year ) {
+			$season_label = sprintf( '%d.%d', $season_term->name, absint( substr( $season_term->name, -2 ) ) + 1 );
+		} else {
+			$season_label = sprintf( '%d', $season_term->name );
+		}
+
 		// Prepare region and season data.
 		$filter_data[ $region_season ] = [
-			'label' => sprintf( '%s %s', $region_term->name, $season_term->name ),
+			'label' => sprintf( '%s %s', $region_term->name, $season_label ),
 			'value' => $region_season,
 			'count' => absint( $count ),
 		];
