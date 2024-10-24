@@ -12,6 +12,7 @@ use WP_REST_Request;
 use WP_REST_Response;
 use WP_REST_Server;
 
+use function Quark\Search\Departures\get_departures_by_expeditions_and_months;
 use function Quark\Search\Filters\get_expeditions_and_month_options_by_expedition;
 
 use const Quark\Search\REST_API_NAMESPACE;
@@ -59,8 +60,31 @@ class Expedition_Month_Filters {
 			return new WP_Error( 'invalid_request', __( 'Invalid request.', 'qrk' ), [ 'status' => 400 ] );
 		}
 
+		// Expedition ID.
+		$expedition_id = absint( $request->get_param( 'expedition_id' ) );
+
 		// Get the destination and month filter options.
-		$options = get_expeditions_and_month_options_by_expedition( absint( $request->get_param( 'expedition_id' ) ) );
+		$options = get_expeditions_and_month_options_by_expedition( $expedition_id );
+
+		// Initialize the months.
+		$months = [];
+
+		// For each month, add its equivalent departures.
+		foreach ( $options['months'] as $month ) {
+			// Initialize the departure.
+			$departure = get_departures_by_expeditions_and_months( $expedition_id, [ $month['value'] ] );
+
+			// Add the departure to the month.
+			$months[] = [
+				'value'      => $month['value'],
+				'label'      => $month['label'],
+				'count'      => $month['count'],
+				'departures' => $departure,
+			];
+		}
+
+		// Update the months.
+		$options['months'] = $months;
 
 		// Return the response.
 		return rest_ensure_response( $options );

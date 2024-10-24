@@ -49,6 +49,7 @@ export const prefillForm = ( form: HTMLFormElement,  mapping: Record<string, Rec
 		const type = 'type' in mapping[ elementItem ] ? mapping[ elementItem ].type : '';
 		const fieldName = 'fieldName' in mapping[ elementItem ] ? mapping[ elementItem ].fieldName : 'value';
 		const event = 'event' in mapping[ elementItem ] ? mapping[ elementItem ].event : '';
+		const dataAttribute = 'dataAttribute' in mapping[ elementItem ] ? mapping[ elementItem ].dataAttribute : false;
 
 		// Check if the value exists.
 		if ( value ) {
@@ -60,15 +61,34 @@ export const prefillForm = ( form: HTMLFormElement,  mapping: Record<string, Rec
 				case 'checkbox':
 					// Get the checkboxes.
 					formElements = form.querySelectorAll( `${ element }[name="fields\\[${ fieldName }\\]\\[\\]"]` ) as NodeListOf<HTMLInputElement>;
+					const values = value.split( ';' );
 
 					// If checkboxes are present.
 					if ( formElements && formElements?.length ) {
 						// Loop through the checkboxes.
 						formElements.forEach( ( checkbox ) => {
-							// Check if the value is present.
-							if ( value === checkbox.getAttribute( 'value' ) ) {
-								// Check the checkbox.
-								checkbox.setAttribute( 'checked', 'checked' );
+							// Check data attribute.
+							if ( dataAttribute ) {
+								// Get the data attribute.
+								const dataAttributeValue = checkbox.getAttribute( `data-${dataAttribute}` );
+
+								// Loop through the values.
+								for ( const valueItem of values ) {
+									// Check if the value is present.
+									if ( dataAttributeValue?.includes( valueItem ) ) {
+										// Check the checkbox.
+										checkbox.setAttribute( 'checked', 'checked' );
+									}
+								}
+							} else {
+								// Loop through the values.
+								for ( const valueItem of values ) {
+									// Check if the value is present.
+									if ( valueItem === checkbox.getAttribute( 'value' ) ) {
+										// Check the checkbox.
+										checkbox.setAttribute( 'checked', 'checked' );
+									}
+								}
 							}
 						} );
 					}

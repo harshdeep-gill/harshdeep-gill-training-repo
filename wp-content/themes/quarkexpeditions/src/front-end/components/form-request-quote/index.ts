@@ -16,7 +16,7 @@ const journeyStageMapping = { 'element' : 'select', 'fieldName' : 'Journey_Stage
 const passengerCountMapping = { 'element' : 'input', 'fieldName' : 'PAX_Count__c' };
 const expeditionIdMapping = { 'element' : 'select', 'fieldName' : 'Expedition__c', 'event' : 'change' };
 const contactMethodMapping = { 'element' : 'input', 'fieldName' : 'Preferred_Contact_Methods__c', 'type' : 'radio' };
-const monthMapping = { 'element' : 'input', 'type' : 'checkbox', 'fieldName' : 'Preferred_Travel_Seasons__c' };
+const departureMapping = { 'element' : 'input', 'type' : 'checkbox', 'fieldName' : 'Preferred_Travel_Seasons__c', 'dataAttribute' : 'departures' };
 
 /**
  * FormRequestQuote Class.
@@ -290,11 +290,13 @@ export default class FormRequestQuote extends HTMLElement {
 			// Format the month value.
 			const monthValue = month.value.split( '-' );
 			const formattedValue = `${ monthValue[ 0 ] }-${ monthValue[ 1 ] }`;
+			const departures = month.departures;
 
 			// Set the option attributes.
 			input.setAttribute( 'value', formattedValue );
 			input.setAttribute( 'id', `month-${ month.value }` );
 			label.setAttribute( 'for', `month-${ month.value }` );
+			input.setAttribute( 'data-departures', JSON.stringify( departures ) );
 			label.innerHTML = month.label;
 
 			// Append the option to the month options container.
@@ -302,7 +304,7 @@ export default class FormRequestQuote extends HTMLElement {
 		}
 
 		// Prefill the form.
-		this.prefillForm( { 'month': monthMapping } );
+		this.prefillForm( { 'departure_id': departureMapping } );
 	}
 
 	/**
