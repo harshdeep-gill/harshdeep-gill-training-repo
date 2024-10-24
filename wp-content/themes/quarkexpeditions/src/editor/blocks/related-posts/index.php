@@ -8,6 +8,7 @@
 namespace Quark\Theme\Blocks\RelatedPosts;
 
 use WP_Query;
+use WP_Post;
 
 use function Quark\Blog\get_cards_data;
 
@@ -51,6 +52,9 @@ function render( array $attributes = [] ): string {
 		'order'                  => 'DESC',
 	];
 
+	// Get queried post object.
+	$current_post = get_queried_object();
+
 	// If the selection is manual, we need to check if we have IDs.
 	if ( 'manual' === $attributes['selection'] ) {
 		// Return empty if manual select, but no IDs were selected.
@@ -62,6 +66,17 @@ function render( array $attributes = [] ): string {
 		$args['post__in']       = $attributes['ids'];
 		$args['orderby']        = 'post__in';
 		$args['posts_per_page'] = count( $attributes['ids'] ); // phpcs:ignore
+	} elseif ( 'auto' === $attributes['selection'] ) {
+		// Check if we have a post object.
+		if ( $current_post instanceof WP_Post && BLOG_POST_TYPE === $current_post->post_type ) {
+			$categories = wp_get_post_categories( $current_post->ID );
+
+			// Check if we have categories.
+			if ( ! empty( $categories ) && is_array( $categories ) ) {
+				$args['category__in']   = $categories;
+				$args['posts_per_page'] = $attributes['totalPosts'] + 1;
+			}
+		}
 	}
 
 	// Query posts.
@@ -69,6 +84,20 @@ function render( array $attributes = [] ): string {
 
 	// Get posts in array format of IDs.
 	$post_ids = $posts->posts;
+
+	// Check if we have posts.
+	if ( 'auto' === $attributes['selection'] && $current_post instanceof WP_Post ) {
+		// Get the key of the current staff member.
+		$key = array_search( $current_post->ID, $post_ids, true );
+
+		// Remove the current post from the list.
+		if ( false !== $key ) {
+			unset( $post_ids[ $key ] );
+		}
+
+		// Make sure we don't have extra post.
+		$post_ids = array_slice( $post_ids, 0, $attributes['totalPosts'] );
+	}
 
 	// Check if we have posts.
 	if ( empty( $post_ids ) ) {
