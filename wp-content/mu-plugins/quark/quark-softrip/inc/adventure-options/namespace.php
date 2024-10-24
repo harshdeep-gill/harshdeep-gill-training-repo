@@ -404,7 +404,7 @@ function get_adventure_option_by_departure_post_id( int $departure_post_id = 0, 
 		$cached_value = wp_cache_get( $cache_key, CACHE_GROUP );
 
 		// Check for cached value.
-		if ( ! empty( $cached_value ) && is_array( $cached_value ) ) {
+		if ( is_array( $cached_value ) ) {
 			return $cached_value;
 		}
 	}
@@ -487,7 +487,7 @@ function get_adventure_option_by_softrip_option_id( string $softrip_option_id = 
 		$cached_value = wp_cache_get( $cache_key, CACHE_GROUP );
 
 		// Check for cached value.
-		if ( ! empty( $cached_value ) && is_array( $cached_value ) ) {
+		if ( is_array( $cached_value ) ) {
 			return $cached_value;
 		}
 	}
@@ -665,7 +665,7 @@ function get_departures_by_adventure_option_term_id( int $adventure_option_term_
 		$cached_value = wp_cache_get( $cache_key, CACHE_GROUP );
 
 		// Check for cached value.
-		if ( ! empty( $cached_value ) && is_array( $cached_value ) ) {
+		if ( is_array( $cached_value ) ) {
 			return $cached_value;
 		}
 	}
@@ -744,7 +744,7 @@ function get_adventure_options_by_id( int $id = 0, bool $force = false ): array 
 		$cached_value = wp_cache_get( $cache_key, CACHE_GROUP );
 
 		// Return cached value if exists.
-		if ( ! empty( $cached_value ) && is_array( $cached_value ) ) {
+		if ( is_array( $cached_value ) ) {
 			return $cached_value;
 		}
 	}

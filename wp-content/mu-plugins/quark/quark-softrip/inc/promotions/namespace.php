@@ -259,7 +259,7 @@ function get_promotions_by_code( string $code = '', bool $force = false ): array
 		$cached_value = wp_cache_get( $cache_key );
 
 		// Check if we have the data.
-		if ( ! empty( $cached_value ) && is_array( $cached_value ) ) {
+		if ( is_array( $cached_value ) ) {
 			return $cached_value;
 		}
 	}
@@ -439,7 +439,7 @@ function get_promotions_by_id( int $promotion_id = 0, bool $direct = false ): ar
 		$cached_value = wp_cache_get( $cache_key );
 
 		// Check if we have the data.
-		if ( ! empty( $cached_value ) && is_array( $cached_value ) ) {
+		if ( is_array( $cached_value ) ) {
 			return $cached_value;
 		}
 	}
