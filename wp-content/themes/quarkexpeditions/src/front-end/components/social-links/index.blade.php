@@ -13,10 +13,18 @@
 
 <div @class( $classes )>
 	@foreach ( $links as $type => $url )
-		@if ( empty( $url ) || empty( $type ) )
+		@if ( empty( $url ) || empty( $url['link'] ) || empty( $type ) )
 			@continue
 		@endif
-		<a href="{{ $url }}" class="social-links__link" title="{{ $type }}" target="_blank" rel="nofollow noopener noreferrer">
+		<a
+			href="{{ $url['link'] }}"
+			class="social-links__link"
+			title="{{ $type }}"
+			rel="nofollow noopener noreferrer"
+			@if ( ! empty( $url['target'] ) )
+				target="{{ $url['target'] }}"
+			@endif
+		>
 			<x-svg name="social/{{ $type }}" />
 		</a>
 	@endforeach
