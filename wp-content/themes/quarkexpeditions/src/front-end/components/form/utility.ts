@@ -28,10 +28,10 @@ export const getErrorMessage = ( error: string = '' ): string => {
 /**
  * Prefill the form based on the mapping.
  *
- * @param {HTMLFormElement} form The form element.
+ * @param {HTMLFormElement}                        form    The form element.
  * @param {Record<string, Record<string, string>>} mapping The mapping of the form elements.
  */
-export const prefillForm = ( form: HTMLFormElement,  mapping: Record<string, Record<string, string>> ): void => {
+export const prefillForm = ( form: HTMLFormElement, mapping: Record<string, Record<string, string>> ): void => {
 	// Get the URL search params.
 	const searchParams = new URLSearchParams( window.location.search );
 
@@ -39,8 +39,7 @@ export const prefillForm = ( form: HTMLFormElement,  mapping: Record<string, Rec
 	const formElements = Object.keys( mapping );
 
 	// Loop through the form elements.
-	formElements.forEach(
-		( elementItem ) => {
+	formElements.forEach( ( elementItem ) => {
 		// Get the value from the search params.
 		const value = searchParams.get( elementItem );
 
@@ -54,23 +53,23 @@ export const prefillForm = ( form: HTMLFormElement,  mapping: Record<string, Rec
 		// Check if the value exists.
 		if ( value ) {
 			// Initialize the form element.
-			let formElements: HTMLSelectElement | NodeListOf<HTMLInputElement> | HTMLInputElement | null;
+			let formElement: HTMLSelectElement | NodeListOf<HTMLInputElement> | HTMLInputElement | null;
 
 			// Switch based on the element type.
 			switch ( type ) {
+				// Checkbox element.
 				case 'checkbox':
-					// Get the checkboxes.
-					formElements = form.querySelectorAll( `${ element }[name="fields\\[${ fieldName }\\]\\[\\]"]` ) as NodeListOf<HTMLInputElement>;
+					formElement = form.querySelectorAll( `${ element }[name="fields\\[${ fieldName }\\]\\[\\]"]` ) as NodeListOf<HTMLInputElement>;
 					const values = value.split( ';' );
 
 					// If checkboxes are present.
-					if ( formElements && formElements?.length ) {
+					if ( formElement && formElement?.length ) {
 						// Loop through the checkboxes.
-						formElements.forEach( ( checkbox ) => {
+						formElement.forEach( ( checkbox ) => {
 							// Check data attribute.
 							if ( dataAttribute ) {
 								// Get the data attribute.
-								const dataAttributeValue = checkbox.getAttribute( `data-${dataAttribute}` );
+								const dataAttributeValue = checkbox.getAttribute( `data-${ dataAttribute }` );
 
 								// Loop through the values.
 								for ( const valueItem of values ) {
@@ -94,14 +93,14 @@ export const prefillForm = ( form: HTMLFormElement,  mapping: Record<string, Rec
 					}
 					break;
 
+				// Radio element.
 				case 'radio':
-					// Get the radio buttons.
-					formElements = form.querySelectorAll( `${ element }[name="fields\\[${ fieldName }\\]"]` ) as NodeListOf<HTMLInputElement>;
+					formElement = form.querySelectorAll( `${ element }[name="fields\\[${ fieldName }\\]"]` ) as NodeListOf<HTMLInputElement>;
 
 					// If radios are present.
-					if ( formElements && formElements?.length ) {
+					if ( formElement && formElement?.length ) {
 						// Loop through the radios.
-						formElements.forEach( ( radio ) => {
+						formElement.forEach( ( radio ) => {
 							// Check if the value is present.
 							if ( value === radio.getAttribute( 'value' ) ) {
 								// Check the radio.
@@ -111,20 +110,20 @@ export const prefillForm = ( form: HTMLFormElement,  mapping: Record<string, Rec
 					}
 					break;
 
+				// Select/Input element.
 				default:
-					// Get the form element.
-					formElements = form.querySelector( `${ element }[name="fields\\[${ fieldName }\\]"]` ) as HTMLSelectElement | HTMLInputElement;
+					formElement = form.querySelector( `${ element }[name="fields\\[${ fieldName }\\]"]` ) as HTMLSelectElement | HTMLInputElement;
 
 					// Check if the form element exists.
-					if ( formElements ) {
+					if ( formElement ) {
 						// Set the value.
-						formElements.value = value;
+						formElement.value = value;
 					}
 
 					// If event is present in mapping, trigger the event.
-					if ( event && formElements ) {
+					if ( event && formElement ) {
 						// Trigger the event.
-						formElements.dispatchEvent( new Event( mapping[ elementItem ].event ) );
+						formElement.dispatchEvent( new Event( mapping[ elementItem ].event ) );
 					}
 					break;
 			}

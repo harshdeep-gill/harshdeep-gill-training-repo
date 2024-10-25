@@ -12,11 +12,11 @@ import { prefillForm } from '../form/utility';
 /**
  * Prefill Mapping.
  */
-const journeyStageMapping = { 'element' : 'select', 'fieldName' : 'Journey_Stage__c' };
-const passengerCountMapping = { 'element' : 'input', 'fieldName' : 'PAX_Count__c' };
-const expeditionIdMapping = { 'element' : 'select', 'fieldName' : 'Expedition__c', 'event' : 'change' };
-const contactMethodMapping = { 'element' : 'input', 'fieldName' : 'Preferred_Contact_Methods__c', 'type' : 'radio' };
-const departureMapping = { 'element' : 'input', 'type' : 'checkbox', 'fieldName' : 'Preferred_Travel_Seasons__c', 'dataAttribute' : 'departures' };
+const journeyStageMapping = { element: 'select', fieldName: 'Journey_Stage__c' };
+const passengerCountMapping = { element: 'input', fieldName: 'PAX_Count__c' };
+const expeditionIdMapping = { element: 'select', fieldName: 'Expedition__c', event: 'change' };
+const contactMethodMapping = { element: 'input', fieldName: 'Preferred_Contact_Methods__c', type: 'radio' };
+const departureMapping = { element: 'input', type: 'checkbox', fieldName: 'Preferred_Travel_Seasons__c', dataAttribute: 'departures' };
 
 /**
  * FormRequestQuote Class.
@@ -72,14 +72,12 @@ export default class FormRequestQuote extends HTMLElement {
 		// Add radio button toggle event listener.
 		this.initializeRadioToggle();
 
-		/*
-		* Prefill the form with the initial values.
-		*/
+		// Initial Prefill Mapping.
 		const initialMapping = {
-			'journey_stage': journeyStageMapping,
-			'passenger_count': passengerCountMapping,
-			'expedition_id': expeditionIdMapping,
-			'contact_method': contactMethodMapping,
+			journey_stage: journeyStageMapping,
+			passenger_count: passengerCountMapping,
+			expedition_id: expeditionIdMapping,
+			contact_method: contactMethodMapping,
 		};
 
 		// Prefill the form.
@@ -88,6 +86,8 @@ export default class FormRequestQuote extends HTMLElement {
 
 	/**
 	 * Prefill the form.
+	 *
+	 * @param { Record<string, Record<string, string>> } mapping Mapping of the form fields.
 	 */
 	prefillForm( mapping: Record<string, Record<string, string>> = {} ) {
 		// Check if the form exists.
@@ -304,7 +304,7 @@ export default class FormRequestQuote extends HTMLElement {
 		}
 
 		// Prefill the form.
-		this.prefillForm( { 'departure_id': departureMapping } );
+		this.prefillForm( { departure_id: departureMapping } );
 	}
 
 	/**

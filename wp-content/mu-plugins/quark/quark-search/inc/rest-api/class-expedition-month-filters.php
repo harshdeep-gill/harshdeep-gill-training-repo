@@ -72,15 +72,10 @@ class Expedition_Month_Filters {
 		// For each month, add its equivalent departures.
 		foreach ( $options['months'] as $month ) {
 			// Initialize the departure.
-			$departure = get_departures_by_expeditions_and_months( $expedition_id, [ $month['value'] ] );
+			$departure = get_departures_by_expeditions_and_months( $expedition_id, [ strval( $month['value'] ) ] );
 
 			// Add the departure to the month.
-			$months[] = [
-				'value'      => $month['value'],
-				'label'      => $month['label'],
-				'count'      => $month['count'],
-				'departures' => $departure,
-			];
+			$months[] = array_merge( $month, [ 'departures' => $departure ] );
 		}
 
 		// Update the months.
