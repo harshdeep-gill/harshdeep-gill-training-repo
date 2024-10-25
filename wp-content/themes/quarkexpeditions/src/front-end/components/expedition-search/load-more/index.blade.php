@@ -1,4 +1,5 @@
 @props( [
+	'loading_text'   => __( 'Loading...', 'qrk' ),
 	'load_more_text' => __( 'Load More', 'qrk' ),
 ] )
 
@@ -13,6 +14,7 @@
 	class="expedition-search__load-more typography-spacing"
 	loading="false"
 	load-more-text="{{ $load_more_text }}"
+	loading-text="{{ $loading_text }}"
 >
 	{!! $slot !!}
 
