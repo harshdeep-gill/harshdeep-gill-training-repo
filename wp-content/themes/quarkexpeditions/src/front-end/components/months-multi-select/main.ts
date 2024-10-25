@@ -229,9 +229,6 @@ export class MonthsMultiSelect extends HTMLElement {
 
 		// Reset value.
 		this.value = [];
-
-		// Dispatch change event.
-		this.dispatchEvent( new CustomEvent( 'change' ) );
 	}
 
 	/**
