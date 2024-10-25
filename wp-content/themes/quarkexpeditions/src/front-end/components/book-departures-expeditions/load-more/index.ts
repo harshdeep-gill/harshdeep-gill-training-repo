@@ -48,7 +48,7 @@ export class LoadMore extends HTMLElement {
 	 */
 	update( state: BookDeparturesExpeditionsState ): void {
 		// Get state.
-		const { hasNextPage, loadMoreResults: loadMoreState, remainingCount } = state;
+		const { hasNextPage, loadMoreResults: loadMoreState, remainingCount, page } = state;
 
 		// If next page is available, show the Load more button, else hide it.
 		if ( hasNextPage ) {
@@ -66,10 +66,49 @@ export class LoadMore extends HTMLElement {
 			this.setAttribute( 'loading', 'false' );
 		}
 
-		// Update load more button text with remaining count.
-		if ( this.loadMoreButtonText && typeof remainingCount === 'number' ) {
+		// Update load more button text.
+		if ( this.loadMoreButtonText && loadMoreState ) {
+			// Update load more button text with loading text.
+			const loadingText = this.getAttribute( 'loading-text' ) ?? '';
+			this.loadMoreButtonText.innerText = loadingText;
+		} else if ( this.loadMoreButtonText && typeof remainingCount === 'number' ) {
+			// Update load more button text with remaining count.
 			const loadMoreText = this.getAttribute( 'load-more-text' ) ?? '';
 			this.loadMoreButtonText.innerText = `${ loadMoreText } (${ remainingCount })`;
+
+			// Scroll into view.
+			if ( page > 1 ) {
+				this.scrollToNewCards( page );
+			}
+		}
+	}
+
+	/**
+	 * Scroll to new cards.
+	 *
+	 * @param {number} page New loaded Page.
+	 */
+	scrollToNewCards( page: number ): void {
+		/**
+		 * Get card index to focus.
+		 *
+		 * Page: current page no.
+		 * 4: number of cards per page - partials/book-departure-expeditions.php.
+		 * 1: first card in the new page.
+		 *
+		 * Example:
+		 * page: 1
+		 * page - 1: 1 * 4 + 1 = 5
+		 *
+		 * page: 2
+		 * page - 1: 2 * 4 + 1 = 9
+		 */
+		const focusCardIndex = ( ( page - 1 ) * 4 ) + 1;
+		const focusCard = document.querySelector( `.book-departures-expeditions__results .departure-cards__card:nth-child(${ focusCardIndex })` );
+
+		// Validate focus card and scroll into view.
+		if ( typeof focusCard === 'object' && focusCard !== null ) {
+			focusCard.scrollIntoView();
 		}
 	}
 }
