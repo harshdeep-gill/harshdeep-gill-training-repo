@@ -75,8 +75,9 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 						$secondary_navigation_menu_component_attributes['slot'] .= quark_get_component(
 							COMPONENT . '.nav-item',
 							[
-								'href' => $menu_item->attributes['url']['url'] ?? '',
-								'slot' => $menu_item->attributes['title'],
+								'href'   => $menu_item->attributes['url']['url'] ?? '',
+								'target' => $menu_item->attributes['url']['newWindow'] ? '_blank' : '',
+								'slot'   => $menu_item->attributes['title'],
 							]
 						);
 					}
