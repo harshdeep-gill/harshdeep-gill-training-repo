@@ -60,6 +60,7 @@
 		position: relative;
 
 		#{$self}__image-wrap {
+
 			&::after {
 				position: absolute;
 				content: "";
