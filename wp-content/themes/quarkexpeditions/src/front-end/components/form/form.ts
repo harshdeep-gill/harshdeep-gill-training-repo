@@ -207,7 +207,7 @@ export default class Form extends HTMLElement {
 
 			// Update adwords data.
 			if ( field && 'value' in field ) {
-				field.value = decodeURIComponent( e.detail[ key ] );
+				field.value = decodeURIComponent( e.detail.urlCampaignParams[ key ] );
 			}
 		}
 
