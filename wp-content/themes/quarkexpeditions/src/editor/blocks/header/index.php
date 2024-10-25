@@ -91,7 +91,9 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 						$mega_menu_item_attributes = [];
 
 						// Add title.
-						$mega_menu_item_attributes['title'] = $mega_menu_item->attributes['title'];
+						$mega_menu_item_attributes['title']  = $mega_menu_item->attributes['title'];
+						$mega_menu_item_attributes['url']    = $mega_menu_item->attributes['url']['url'] ?? '';
+						$mega_menu_item_attributes['target'] = ! empty( $mega_menu_item->attributes['url']['newWindow'] ) ? '_blank' : '';
 
 						// Check if the menu item has dropdown content.
 						if ( $mega_menu_item->inner_blocks instanceof WP_Block_List ) {
@@ -126,6 +128,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 											'subtitle' => $content_item->attributes['subtitle'],
 											'cta_text' => $content_item->attributes['ctaText'],
 											'url'      => $content_item->attributes['url']['url'] ?? '',
+											'target'   => $content_item->attributes['url']['newWindow'] ? '_blank' : '',
 										];
 									} elseif ( 'quark/two-columns' === $content_item->name ) {
 										$mega_menu_item_attributes['contents'][] = [
@@ -162,10 +165,11 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 						$secondary_menu_item_attributes = [];
 
 						// Add title.
-						$secondary_menu_item_attributes['title'] = $secondary_menu_item->attributes['title'] ?? '';
-						$secondary_menu_item_attributes['icon']  = ! empty( $secondary_menu_item->attributes['hasIcon'] ) ? 'search' : '';
-						$secondary_menu_item_attributes['url']   = $secondary_menu_item->attributes['url']['url'] ?? '';
-						$secondary_menu_item_attributes['type']  = 'default-item';
+						$secondary_menu_item_attributes['title']  = $secondary_menu_item->attributes['title'] ?? '';
+						$secondary_menu_item_attributes['icon']   = ! empty( $secondary_menu_item->attributes['hasIcon'] ) ? 'search' : '';
+						$secondary_menu_item_attributes['url']    = $secondary_menu_item->attributes['url']['url'] ?? '';
+						$secondary_menu_item_attributes['target'] = ! empty( $secondary_menu_item->attributes['url']['newWindow'] ) ? '_blank' : '';
+						$secondary_menu_item_attributes['type']   = 'default-item';
 
 						// Check if the menu item has dropdown content.
 						if ( $secondary_menu_item->inner_blocks instanceof WP_Block_List ) {
@@ -256,8 +260,9 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 							$component_attributes['cta_buttons'][] = $current_cta_button;
 						} elseif ( 'quark/raq-button' === $cta_button_item->name ) {
 							// Get the phone number.
-							$btn_text = $cta_button_item->attributes['btnText'] ?? '';
-							$btn_url  = $cta_button_item->attributes['url']['url'] ?? '';
+							$btn_text   = $cta_button_item->attributes['btnText'] ?? '';
+							$btn_url    = $cta_button_item->attributes['url']['url'] ?? '';
+							$btn_target = $cta_button_item->attributes['url']['newWindow'] ? '_blank' : '';
 
 							// Add to cta buttons.
 							$current_cta_button = [
@@ -265,6 +270,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 								'class'      => 'header__request-quote-btn',
 								'text'       => ! empty( $btn_text ) ? $btn_text : '',
 								'url'        => ! empty( $btn_url ) ? $btn_url : '',
+								'target'     => ! empty( $btn_target ) ? $btn_target : '',
 								'appearance' => $cta_button_item->attributes['appearance'] ?? '',
 								'color'      => $cta_button_item->attributes['backgroundColor'] ?? '',
 							];
@@ -325,8 +331,9 @@ function extract_menu_list_items( array $blocks = [] ): array {
 						foreach ( $inner_block['innerBlocks'] as $menu_list_item ) {
 							if ( 'quark/menu-list-item' === $menu_list_item['blockName'] ) {
 								$list_item_attrs = [
-									'title' => $menu_list_item['attrs']['title'] ?? '',
-									'url'   => $menu_list_item['attrs']['url']['url'] ?? '',
+									'title'  => $menu_list_item['attrs']['title'] ?? '',
+									'url'    => $menu_list_item['attrs']['url']['url'] ?? '',
+									'target' => $menu_list_item['attrs']['url']['newWindow'] ? '_blank' : '',
 								];
 
 								// Add to the menu list items.
@@ -343,8 +350,9 @@ function extract_menu_list_items( array $blocks = [] ): array {
 						// Loop through the items.
 						foreach ( $inner_block['innerBlocks'] as $thumbnail_card ) {
 							$thumbnail_card_item = [
-								'title' => $thumbnail_card['attrs']['title'] ?? '',
-								'url'   => $thumbnail_card['attrs']['url']['url'] ?? '',
+								'title'  => $thumbnail_card['attrs']['title'] ?? '',
+								'url'    => $thumbnail_card['attrs']['url']['url'] ?? '',
+								'target' => $thumbnail_card['attrs']['url']['newWindow'] ? '_blank' : '',
 							];
 
 							// Add to thumbnail card items.
