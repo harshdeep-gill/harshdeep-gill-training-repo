@@ -45,10 +45,12 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 
 	// Initialize departures URL.
 	$departures_url = '';
+	$target         = '_self';
 
 	// Check for block attributes.
 	if ( is_array( $attributes['departuresUrl'] ) && isset( $attributes['departuresUrl']['url'] ) ) {
 		$departures_url = $attributes['departuresUrl']['url'];
+		$target         = $attributes['departuresUrl']['newWindow'] ? '_blank' : '_self';
 	}
 
 	// Current post ID.
@@ -88,6 +90,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 			'from_date'        => '',
 			'to_date'          => '',
 			'departures_url'   => $departures_url,
+			'target'           => $target,
 		]
 	);
 
