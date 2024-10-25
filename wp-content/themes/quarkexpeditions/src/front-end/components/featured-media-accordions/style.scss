@@ -38,17 +38,6 @@
 		}
 	}
 
-	.accordion__content {
-
-		&-inner {
-
-			> p {
-
-				@include line-clamp(3);
-			}
-		}
-	}
-
 	.two-columns__column:first-child {
 		display: none;
 
