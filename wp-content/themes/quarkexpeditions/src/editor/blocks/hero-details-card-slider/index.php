@@ -122,8 +122,9 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 				if ( ! empty( $block_attributes['cta'] ) ) {
 					// Prepare the CTA attributes.
 					$card_attributes['cta'] = [
-						'text' => $block_attributes['cta']['text'],
-						'url'  => $block_attributes['cta']['url'],
+						'text'   => $block_attributes['cta']['text'],
+						'url'    => $block_attributes['cta']['url'],
+						'target' => $block_attributes['cta']['newWindow'] ? '_blank' : '',
 					];
 				}
 			}

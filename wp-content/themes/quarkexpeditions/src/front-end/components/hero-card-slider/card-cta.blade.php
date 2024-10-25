@@ -1,7 +1,8 @@
 @props( [
-	'class' => '',
-	'text'  => '',
-	'url'   => '#',
+	'class'  => '',
+	'text'   => '',
+	'url'    => '#',
+	'target' => '',
 ] )
 
 @php
@@ -16,9 +17,12 @@
 	}
 @endphp
 
-
 <a
 	@class( $classes )
-	href="{!! esc_url( $url ) !!}">
+	href="{!! esc_url( $url ) !!}"
+	@if ( ! empty( $target ) )
+		target="{{ $target }}"
+	@endif
+>
 	<x-escape :content="$text" />
 </a>
