@@ -4,6 +4,7 @@
 @import "../../scss";
 
 .collage {
+	--qrk-collage-columns: 12;
 
 	&__track {
 		border-radius: var(--border-radius-large);
@@ -16,8 +17,11 @@
 	&__slides-container {
 
 		@media screen and (min-width: grid-size(lg)) {
-			display: flex;
-			flex-wrap: wrap;
+			// display: flex;
+			// flex-wrap: wrap;
+
+			display: grid;
+			grid-template-columns: repeat(var(--qrk-collage-columns), 1fr);
 			gap: var(--spacing-6);
 		}
 	}
@@ -40,25 +44,29 @@
 		}
 
 		@media screen and (min-width: grid-size(lg)) {
-			height: 256px;
-			min-width: 256px;
+			// height: 256px;
+			// min-width: 256px;
 
 			&--small {
 				flex-basis: calc(25% - var(--spacing-6));
-				max-width: 256px;
+				// max-width: 256px;
+				grid-column: auto/span calc(var(--qrk-collage-columns) / 4);
 			}
 
 			&--medium {
 				flex: 1;
+				grid-column: auto/span calc(var(--qrk-collage-columns) / 2);
 			}
 
 			&--large {
 				flex: 1;
 				min-width: 50%;
+				grid-column: auto/span 8;
 			}
 
 			&--x-large {
 				flex-basis: 100%;
+				grid-column: auto/span var(--qrk-collage-columns);
 			}
 		}
 	}
