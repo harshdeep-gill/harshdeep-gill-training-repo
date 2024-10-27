@@ -9,10 +9,8 @@ namespace Quark\Theme\Blocks\BookDeparturesShips;
 
 use WP_Post;
 
-use function Quark\Departures\get_cards_data;
 use function Quark\Localization\get_current_currency;
 use function Quark\Ships\get as get_ship;
-use function Quark\Search\Departures\search;
 
 const COMPONENT = 'parts.book-departures-ships';
 
@@ -54,25 +52,10 @@ function render( array $attributes = [], string $content = '' ): string {
 	// Set the currency.
 	$currency = get_current_currency();
 
-	// Init selected filters.
-	$selected_filter = [
-		'posts_per_load' => 5,
-		'ships'          => [ absint( $ship_id ) ],
-	];
-
-	// Search for Departure post.
-	$search_results = search( $selected_filter );
-
-	// Build component attributes.
-	$cards_data = get_cards_data( array_map( 'absint', $search_results['ids'] ), $currency );
-
 	// Return built component.
 	return quark_get_component(
 		COMPONENT,
 		[
-			'cards'           => $cards_data,
-			'remaining_count' => $search_results['remaining_count'],
-			'results_count'   => $search_results['result_count'],
 			'ship_id'         => $ship_id,
 			'currency'        => $currency,
 		]
