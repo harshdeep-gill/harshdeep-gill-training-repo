@@ -56,8 +56,8 @@ function render( array $attributes = [], string $content = '' ): string {
 	return quark_get_component(
 		COMPONENT,
 		[
-			'ship_id'         => $ship_id,
-			'currency'        => $currency,
+			'ship_id'  => $ship_id,
+			'currency' => $currency,
 		]
 	);
 }
