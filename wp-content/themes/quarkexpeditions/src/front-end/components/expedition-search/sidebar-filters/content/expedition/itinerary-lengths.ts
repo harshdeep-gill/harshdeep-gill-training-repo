@@ -12,6 +12,7 @@ import { updateItineraryLength } from '../../../actions';
  * External Dependencies
  */
 import QuarkRangeSlider from '../../../../form/range-slider';
+import { debounce } from '../../../../../global/utility';
 
 /**
  * Get Store.
@@ -27,6 +28,7 @@ export default class ExpeditionSearchFilterItineraryLengths extends HTMLElement 
 	 */
 	private readonly rangeSlider: QuarkRangeSlider | null;
 	private isFilterUpdating: boolean;
+	private handleSliderEvent: Function;
 
 	/**
 	 * Constructor
@@ -38,6 +40,38 @@ export default class ExpeditionSearchFilterItineraryLengths extends HTMLElement 
 		// Initialize properties.
 		this.rangeSlider = this.querySelector( 'quark-range-slider' );
 		this.isFilterUpdating = false;
+
+		// Setup debounced eventhandler
+		this.handleSliderEvent = debounce( ( evt: Event ) => {
+			// Check if it has the values.
+			if (
+				evt &&
+				evt.target === this.rangeSlider &&
+				'detail' in evt &&
+				evt.detail instanceof Object &&
+				'selectedValues' in evt.detail &&
+				Array.isArray( evt.detail.selectedValues ) &&
+				2 === evt.detail.selectedValues.length
+			) {
+				const { selectedValues } = evt.detail;
+
+				// Initialize updated values.
+				let updatedValues: [ number, number ] = [ 0, 0 ];
+
+				// Check if we have valid values.
+				if (
+					'number' === typeof selectedValues[ 0 ] &&
+					'number' === typeof selectedValues[ 1 ] &&
+					! Number.isNaN( selectedValues[ 0 ] ) &&
+					! Number.isNaN( selectedValues[ 1 ] )
+				) {
+					updatedValues = [ selectedValues[ 0 ], selectedValues[ 1 ] ];
+				}
+
+				// Update the itinerary length.
+				updateItineraryLength( updatedValues );
+			}
+		} );
 
 		// Setup events.
 		this.rangeSlider?.addEventListener( 'change', this.handleInputChange.bind( this ) );
@@ -85,36 +119,12 @@ export default class ExpeditionSearchFilterItineraryLengths extends HTMLElement 
 	 */
 	handleInputChange( evt: Event ) {
 		// Check if the input is syncing with state.
-		if ( this.isFilterUpdating || ! evt.target ) {
+		if ( this.isFilterUpdating || ! evt.target || evt.target !== this.rangeSlider ) {
 			// Bail to avoid stack overflow.
 			return;
 		}
 
-		// Check if it has the values.
-		if (
-			'detail' in evt &&
-			evt.detail instanceof Object &&
-			'selectedValues' in evt.detail &&
-			Array.isArray( evt.detail.selectedValues ) &&
-			2 === evt.detail.selectedValues.length
-		) {
-			const { selectedValues } = evt.detail;
-
-			// Initialize updated values.
-			let updatedValues: [ number, number ] = [ 0, 0 ];
-
-			// Check if we have valid values.
-			if (
-				'number' === typeof selectedValues[ 0 ] &&
-				'number' === typeof selectedValues[ 1 ] &&
-				! Number.isNaN( selectedValues[ 0 ] ) &&
-				! Number.isNaN( selectedValues[ 1 ] )
-			) {
-				updatedValues = [ selectedValues[ 0 ], selectedValues[ 1 ] ];
-			}
-
-			// Update the itinerary length.
-			updateItineraryLength( updatedValues );
-		}
+		// Handle the slider's change event.
+		this.handleSliderEvent( evt );
 	}
 }

@@ -456,18 +456,7 @@ export const fetchResults = ( callback: Function ) => {
 			page,
 			destinations: pluckValues( destinations ),
 			months: pluckValues( months ),
-			itinerary_lengths: ( () => {
-				// Initialize values.
-				const values = [];
-
-				// push into values.
-				for ( let i = itineraryLengths[ 0 ]; i <= itineraryLengths[ 1 ]; i++ ) {
-					values.push( i );
-				}
-
-				// Return the values.
-				return values;
-			} )(),
+			itinerary_lengths: itineraryLengths,
 			ships: pluckValues( ships ),
 			adventure_options: pluckValues( adventureOptions ),
 			languages: pluckValues( languages ),
