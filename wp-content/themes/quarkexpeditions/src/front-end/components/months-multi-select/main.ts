@@ -126,7 +126,7 @@ export class MonthsMultiSelect extends HTMLElement {
 		this.value = [];
 
 		// Dispatch reset custom event.
-		this.dispatchEvent( new CustomEvent( 'reset' ) );
+		this.dispatchEvent( new CustomEvent( 'reset', { bubbles: true } ) );
 	}
 
 	/**
@@ -178,7 +178,7 @@ export class MonthsMultiSelect extends HTMLElement {
 		this.setAttribute( 'value', this._value.toString() );
 
 		// Dispatch change event.
-		this.dispatchEvent( new CustomEvent( 'change' ) );
+		this.dispatchEvent( new CustomEvent( 'change', { bubbles: true } ) );
 	}
 
 	/**
