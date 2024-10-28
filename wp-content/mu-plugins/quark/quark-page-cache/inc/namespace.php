@@ -7,6 +7,7 @@
 
 namespace Quark\PageCache;
 
+use WP_CLI;
 use WP_Query;
 
 use function Quark\Core\doing_tests;
@@ -44,6 +45,11 @@ const CACHED_POST_TYPE_SLUGS = [
  * @return void
  */
 function bootstrap(): void {
+	// CLI commands.
+	if ( defined( 'WP_CLI' ) && true === WP_CLI ) {
+		WP_CLI::add_command( 'quark-cache pricing', __NAMESPACE__ . '\\WP_CLI\\Pricing' );
+	}
+
 	// Register Stream log connector.
 	add_filter( 'wp_stream_connectors', __NAMESPACE__ . '\\setup_stream_connectors' );
 }
