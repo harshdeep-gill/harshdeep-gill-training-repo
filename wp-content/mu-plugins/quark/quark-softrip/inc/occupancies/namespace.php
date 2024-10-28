@@ -476,7 +476,7 @@ function get_occupancy_data_by_softrip_id( string $softrip_id = '', bool $force 
 		$cached_data = wp_cache_get( $cache_key, CACHE_GROUP );
 
 		// If cached data, return it.
-		if ( is_array( $cached_data ) && ! empty( $cached_data ) ) {
+		if ( is_array( $cached_data ) ) {
 			return $cached_data;
 		}
 	}
@@ -646,7 +646,7 @@ function get_occupancy_data_by_id( int $occupancy_id = 0, bool $force = false ):
 		$cached_data = wp_cache_get( $cache_key, CACHE_GROUP );
 
 		// If cached data, return it.
-		if ( is_array( $cached_data ) && ! empty( $cached_data ) ) {
+		if ( is_array( $cached_data ) ) {
 			return $cached_data;
 		}
 	}
