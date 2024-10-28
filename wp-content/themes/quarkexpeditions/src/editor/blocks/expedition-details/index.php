@@ -50,7 +50,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 	// Check for block attributes.
 	if ( is_array( $attributes['departuresUrl'] ) && isset( $attributes['departuresUrl']['url'] ) ) {
 		$departures_url = $attributes['departuresUrl']['url'];
-		$target         = $attributes['departuresUrl']['newWindow'] ? '_blank' : '_self';
+		$target         = ! empty( $attributes['departuresUrl']['newWindow'] ) ? '_blank' : '';
 	}
 
 	// Current post ID.

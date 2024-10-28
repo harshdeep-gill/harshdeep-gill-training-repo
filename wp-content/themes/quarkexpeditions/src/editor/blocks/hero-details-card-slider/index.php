@@ -124,7 +124,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 					$card_attributes['cta'] = [
 						'text'   => $block_attributes['cta']['text'],
 						'url'    => $block_attributes['cta']['url'],
-						'target' => $block_attributes['cta']['newWindow'] ? '_blank' : '',
+						'target' => ! empty( $block_attributes['cta']['newWindow'] ) ? '_blank' : '',
 					];
 				}
 			}

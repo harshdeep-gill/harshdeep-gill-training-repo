@@ -64,7 +64,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 
 				// Initialize attributes.
 				$url     = $inner_block->attributes['url']['url'];
-				$target  = $inner_block->attributes['url']['newWindow'] ? '_blank' : '';
+				$target  = ! empty( $inner_block->attributes['url']['newWindow'] ) ? '_blank' : '';
 				$content = '';
 
 				// Build title slot.

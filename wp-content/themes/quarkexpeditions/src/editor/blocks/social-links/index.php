@@ -62,7 +62,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 			// Add to items.
 			$social_links[ $inner_block->attributes['icon'] ] = [
 				'link'   => $inner_block->attributes['url']['url'],
-				'target' => $inner_block->attributes['url']['newWindow'] ? '_blank' : '',
+				'target' => ! empty( $inner_block->attributes['url']['newWindow'] ) ? '_blank' : '',
 			];
 		}
 	}

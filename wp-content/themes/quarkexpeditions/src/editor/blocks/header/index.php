@@ -128,7 +128,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 											'subtitle' => $content_item->attributes['subtitle'],
 											'cta_text' => $content_item->attributes['ctaText'],
 											'url'      => $content_item->attributes['url']['url'] ?? '',
-											'target'   => $content_item->attributes['url']['newWindow'] ? '_blank' : '',
+											'target'   => ! empty( $content_item->attributes['url']['newWindow'] ) ? '_blank' : '',
 										];
 									} elseif ( 'quark/two-columns' === $content_item->name ) {
 										$mega_menu_item_attributes['contents'][] = [
@@ -262,7 +262,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 							// Get the phone number.
 							$btn_text   = $cta_button_item->attributes['btnText'] ?? '';
 							$btn_url    = $cta_button_item->attributes['url']['url'] ?? '';
-							$btn_target = $cta_button_item->attributes['url']['newWindow'] ? '_blank' : '';
+							$btn_target = ! empty( $cta_button_item->attributes['url']['newWindow'] ) ? '_blank' : '';
 
 							// Add to cta buttons.
 							$current_cta_button = [
@@ -333,7 +333,7 @@ function extract_menu_list_items( array $blocks = [] ): array {
 								$list_item_attrs = [
 									'title'  => $menu_list_item['attrs']['title'] ?? '',
 									'url'    => $menu_list_item['attrs']['url']['url'] ?? '',
-									'target' => $menu_list_item['attrs']['url']['newWindow'] ? '_blank' : '',
+									'target' => ! empty( $menu_list_item['attrs']['url']['newWindow'] ) ? '_blank' : '',
 								];
 
 								// Add to the menu list items.
@@ -352,7 +352,7 @@ function extract_menu_list_items( array $blocks = [] ): array {
 							$thumbnail_card_item = [
 								'title'  => $thumbnail_card['attrs']['title'] ?? '',
 								'url'    => $thumbnail_card['attrs']['url']['url'] ?? '',
-								'target' => $thumbnail_card['attrs']['url']['newWindow'] ? '_blank' : '',
+								'target' => ! empty( $thumbnail_card['attrs']['url']['newWindow'] ) ? '_blank' : '',
 							];
 
 							// Add to thumbnail card items.

@@ -76,7 +76,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 							COMPONENT . '.nav-item',
 							[
 								'href'   => $menu_item->attributes['url']['url'] ?? '',
-								'target' => $menu_item->attributes['url']['newWindow'] ? '_blank' : '',
+								'target' => ! empty( $menu_item->attributes['url']['newWindow'] ) ? '_blank' : '',
 								'slot'   => $menu_item->attributes['title'],
 							]
 						);
