@@ -139,7 +139,7 @@
 		position: relative;
 		z-index: 1;
 
-		@media screen and (min-width: grid-size(lg)) {
+		@media screen and (min-width: calc(grid-size(lg) + 1px)) {
 			flex-direction: row;
 			gap: var(--spacing-6);
 			justify-content: space-between;
@@ -160,7 +160,7 @@
 	&__right {
 		display: none;
 
-		@media screen and (min-width: grid-size(xl)) {
+		@media screen and (min-width: calc(grid-size(lg) + 1px)) {
 			display: flex;
 		}
 	}
@@ -171,7 +171,7 @@
 		gap: var(--spacing-4);
 		width: 100%;
 
-		@media screen and (min-width: grid-size(lg)) {
+		@media screen and (min-width: calc(grid-size(lg) + 1px)) {
 			max-width: unset;
 		}
 	}
@@ -190,7 +190,7 @@
 
 	&__search-bar {
 
-		@media screen and (min-width: grid-size(xl)) {
+		@media screen and (min-width: calc(grid-size(lg) + 1px)) {
 			position: relative;
 			max-width: 658px;
 			width: 100vw;
@@ -202,7 +202,7 @@
 		display: none;
 		margin-top: auto;
 
-		@media screen and (min-width: grid-size(xl)) {
+		@media screen and (min-width: calc(grid-size(lg) + 1px)) {
 			display: flex;
 		}
 
@@ -222,6 +222,11 @@
 
 		.thumbnail-cards__card {
 
+			@media screen and (min-width: calc(grid-size(lg) + 1px)) {
+				max-width: 140px;
+				height: 200px;
+			}
+
 			@media screen and (min-width: grid-size(xl)) {
 				max-width: 160px;
 				height: 240px;
@@ -235,7 +240,7 @@
 		&-mobile {
 			display: flex;
 
-			@media screen and (min-width: grid-size(xl)) {
+			@media screen and (min-width: calc(grid-size(lg) + 1px)) {
 				display: none;
 			}
 		}

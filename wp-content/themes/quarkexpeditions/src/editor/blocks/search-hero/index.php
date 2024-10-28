@@ -213,6 +213,14 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 
 							// If item exists.
 							if ( 'quark/hero-details-card-slider-item' === $card_item['blockName'] ) {
+								if (
+									( ! empty( $card_item['attrs']['mediaType'] ) && 'video' === $card_item['attrs']['mediaType'] ) ||
+									empty( $card_item['attrs']['media']['id'] )
+								) {
+									continue;
+								}
+
+								// Add attributes.
 								$item['media_id'] = $card_item['attrs']['media']['id'] ?? 0;
 								$item['tag_text'] = ! empty( $card_item['attrs']['hasTag'] ) ? $card_item['attrs']['tagText'] : '';
 								$item['title']    = $card_item['attrs']['title'] ?? '';

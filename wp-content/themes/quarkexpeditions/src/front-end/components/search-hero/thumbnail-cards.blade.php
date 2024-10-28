@@ -10,14 +10,17 @@
 @if ( ! empty( $items ) )
 	<div class="search-hero__thumbnail-cards search-hero__thumbnail-cards-mobile">
 		<x-thumbnail-cards :is_carousel="true" :full_width="true">
-			@if ( ! empty( $hero_details_slider['items'] ) && ! empty( $hero_details_slider['items'][0] ) )
-				<x-thumbnail-cards.card
-					size="large"
-					url="{{ $hero_details_slider['items'][0]['cta']['url'] ?? '' }}"
-					:image_id="$hero_details_slider['items'][0]['media_id'] ?? 0"
-				>
-					<x-thumbnail-cards.title :title="$hero_details_slider['items'][0]['title'] ?? ''" />
-				</x-thumbnail-cards.card>
+			@if ( ! empty( $hero_details_slider['items'] ) )
+				@foreach ( $hero_details_slider['items'] as $item )
+					<x-thumbnail-cards.card
+						size="large"
+						url="{{ $item['cta']['url'] ?? '' }}"
+						:image_id="$item['media_id'] ?? 0"
+					>
+						<x-thumbnail-cards.tag :text="$item['tag_text'] ?? ''" />
+						<x-thumbnail-cards.title :title="$item['title'] ?? ''" />
+					</x-thumbnail-cards.card>
+				@endforeach
 			@endif
 			@foreach ( $items as $item)
 				<x-thumbnail-cards.card
