@@ -222,10 +222,7 @@
 		color: var(--color-white);
 		font-weight: var(--font-weight-bold);
 		padding: var(--spacing-2) var(--spacing-3);
-		margin: var(--spacing-6) 0 0 var(--spacing-6);
+		margin: var(--spacing-6);
 		box-shadow: var(--shadow-5);
-		overflow: hidden;
-
-		@include line-clamp(1);
 	}
 }
