@@ -43,6 +43,10 @@
 		tp-multi-select {
 			cursor: pointer;
 		}
+
+		tp-multi-select-options {
+			min-width: 98px;
+		}
 	}
 
 	&__results {
