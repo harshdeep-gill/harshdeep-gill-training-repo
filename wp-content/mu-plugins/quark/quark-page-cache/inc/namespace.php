@@ -129,6 +129,76 @@ function flush_and_warm_up_page_cache(): void {
 }
 
 /**
+ * Flush page cache and warm it up.
+ *
+ * @return void
+ */
+function flush_and_warm_up_cache_for_pricing_page(): void {
+	// Start time.
+	$start_time = microtime( true );
+
+	// Prepare query args.
+	$args = [
+		'no_found_rows'          => true,
+		'posts_per_page'         => -1,
+		'fields'                 => 'ids',
+		'update_post_meta_cache' => false,
+		'update_post_term_cache' => false,
+		'meta_query'             => [
+			[
+				'key'   => '_has_quark_pricing_block',
+				'value' => '1',
+			],
+		],
+	];
+
+	// Run query.
+	$query    = new WP_Query( $args );
+	$post_ids = $query->posts;
+
+	// Convert to integers.
+	$post_ids = array_map( 'absint', $post_ids );
+
+	// Skip if doing tests.
+	if ( doing_tests() ) {
+		return;
+	}
+
+	// Get permalink.
+	foreach ( $post_ids as $post_id ) {
+		$permalink = get_permalink( $post_id );
+
+		// Bail if no permalink.
+		if ( ! $permalink ) {
+			continue;
+		}
+
+		// Clear cache.
+		clear_edge_paths_by_post_id( $post_id );
+
+		// Make request to warm cache.
+		wp_remote_get(
+			$permalink,
+			[
+				'blocking' => false,
+			]
+		);
+	}
+
+	// End time.
+	$end_time       = microtime( true );
+	$execution_time = $end_time - $start_time;
+
+	// Log action.
+	do_action(
+		'quark_page_cache_flushed',
+		[
+			'time_took' => $execution_time,
+		]
+	);
+}
+
+/**
  * Register custom stream connectors for Softrip sync.
  *
  * @param array<string, mixed> $connectors Connectors.
