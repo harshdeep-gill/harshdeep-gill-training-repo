@@ -52,7 +52,7 @@ function bootstrap(): void {
  *
  * @return void
  */
-function flush_page_cache(): void {
+function flush_and_warm_up_page_cache(): void {
     // Start time.
     $start_time = microtime( true );
 
