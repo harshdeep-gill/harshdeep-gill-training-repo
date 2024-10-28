@@ -248,6 +248,7 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 				</PanelBody>
 			</InspectorControls>
 			<Section
+				{ ...blockProps }
 				className={ classnames( className, sectionClasses ) }
 				background={ attributes.hasBackground }
 				backgroundColor={ attributes.backgroundColor }
@@ -295,9 +296,7 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 						allowedFormats={ [] }
 					/>
 				) }
-				<div { ...blockProps }>
-					<div { ...innerBlocksProps } />
-				</div>
+				<div { ...innerBlocksProps } />
 				{ attributes.hasCta && (
 					<div className={
 						`section__cta-button ${ 'black' === attributes.backgroundColor && attributes.hasBackground ? 'color-context--dark' : '' }`
