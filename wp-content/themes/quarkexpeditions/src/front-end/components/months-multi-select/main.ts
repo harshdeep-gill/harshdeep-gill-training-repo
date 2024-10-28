@@ -42,15 +42,20 @@ export class MonthsMultiSelect extends HTMLElement {
 		}
 
 		// Event Listeners.
-		this.addEventListener( 'select', this.toggleAllResetButtons.bind( this, 'off' ) );
-		this.addEventListener( 'unselect', this.toggleAllResetButtons.bind( this, 'on' ) );
+		this.addEventListener( 'change', () => {
+			// Check the values.
+			if ( this.value.length ) {
+				this.toggleAllResetButtons( 'off' );
+			} else {
+				this.toggleAllResetButtons( 'on' );
+			}
+		} );
 
 		// Reset buttons.
 		if ( this.resetButtons ) {
 			this.resetButtons.forEach( ( buttonElement ) => {
 				// Add event listener to the reset button.
 				buttonElement?.addEventListener( 'click', this.resetSelector.bind( this ) );
-				buttonElement?.addEventListener( 'click', this.toggleActiveAttribute.bind( this ) );
 			} );
 		}
 
@@ -249,7 +254,7 @@ export class MonthsMultiSelect extends HTMLElement {
 		}
 
 		// Get the value attribute selector
-		const valueAttributeSelector = `quark-months-multi-select-option[value="${ value }"][disabled="no"]`;
+		const valueAttributeSelector = `quark-months-multi-select-option[value="${ value }"]`;
 		const opt = this.querySelector( valueAttributeSelector );
 
 		// Null check.
@@ -258,7 +263,7 @@ export class MonthsMultiSelect extends HTMLElement {
 		}
 
 		// Set the value.
-		this.value.splice( valueIndex );
+		this.value.splice( valueIndex, 1 );
 		this.dispatchEvent( new CustomEvent( 'change', { bubbles: true } ) );
 	}
 
