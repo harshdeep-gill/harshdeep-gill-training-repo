@@ -165,10 +165,9 @@ export default class QuarkExpeditionSearchRecentSearches extends HTMLElement {
 	 */
 	setupSubscription() {
 		// Get the subscribe function.
-		const { subscribe: subscribeToFiltersBarStore, getState: getFiltersBarState } = zustand.stores.searchFiltersBar;
+		const { getState: getFiltersBarState } = zustand.stores.searchFiltersBar;
 
 		// Subscribe to the store.
-		subscribeToFiltersBarStore( this.update.bind( this ) );
 		this.update( getFiltersBarState() );
 	}
 }
