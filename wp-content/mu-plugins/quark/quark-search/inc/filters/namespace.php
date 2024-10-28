@@ -943,6 +943,7 @@ function build_filter_options( array $filter_keys = [], array $selected_filters 
 
 		// Check if filter key exists in solr facet result.
 		if ( empty( $solr_facet_result[ $filter['solr_facet']['key'] ] ) ) {
+			$filter_options[ $filter_key ] = [];
 			continue;
 		}
 
@@ -951,6 +952,7 @@ function build_filter_options( array $filter_keys = [], array $selected_filters 
 
 		// Validate facet data.
 		if ( ! is_array( $facet_data ) || empty( $facet_data['values'] ) ) {
+			$filter_options[ $filter_key ] = [];
 			continue;
 		}
 
