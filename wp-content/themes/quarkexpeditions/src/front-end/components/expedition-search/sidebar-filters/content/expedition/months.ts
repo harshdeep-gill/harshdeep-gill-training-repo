@@ -112,7 +112,7 @@ export default class ExpeditionSearchFilterMonths extends HTMLElement {
 		}
 
 		// Get the values
-		const values = Array.from( this.monthsMultiSelect.value );
+		const values = this.monthsMultiSelect.value;
 
 		// Check if we have the values
 		if ( 0 === values.length ) {
@@ -132,7 +132,7 @@ export default class ExpeditionSearchFilterMonths extends HTMLElement {
 			}
 
 			// Return the value attribute selector.
-			return `[value="${ value }"]`;
+			return `quark-months-multi-select-option[value="${ value }"]`;
 		} ).filter( ( singleSelector ) => singleSelector !== '' ).join( ',' );
 
 		// Empty check.
@@ -142,7 +142,7 @@ export default class ExpeditionSearchFilterMonths extends HTMLElement {
 		}
 
 		// Get the selected options
-		const selectedOptions: NodeListOf<MonthsMultiSelectOption> = this.querySelectorAll( `quark-months-multi-select-option${ valueAttributeSelector }` );
+		const selectedOptions: NodeListOf<MonthsMultiSelectOption> = this.querySelectorAll( valueAttributeSelector );
 
 		// Initialize months
 		const months: ExpeditionSearchFilterState[] = [];
