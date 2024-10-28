@@ -162,11 +162,33 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 						break;
 					}
 
+					// Parsed Block.
+					$thumbnail_cards_attrs                            = $child_block->parsed_block;
+					$component_attributes['thumbnail_cards']['items'] = [];
+
 					// Render block.
 					$thumbnail_cards = render_block( $child_block->parsed_block );
 
+					// Loop through all hero slider items.
+					if ( ! empty( $thumbnail_cards_attrs['innerBlocks'] ) ) {
+						foreach ( $thumbnail_cards_attrs['innerBlocks'] as $card_item ) {
+							// Initialize item.
+							$item = [];
+
+							// If item exists.
+							if ( 'quark/thumbnail-cards-card' === $card_item['blockName'] ) {
+								$item['image_id'] = $card_item['attrs']['image']['id'] ?? 0;
+								$item['title']    = $card_item['attrs']['title'] ?? '';
+								$item['url']      = $card_item['attrs']['url']['url'] ?? '';
+
+								// Add item attributes.
+								$component_attributes['left']['thumbnail_cards']['items'][] = $item;
+							}
+						}
+					}
+
 					// Add to attributes.
-					$component_attributes['left']['thumbnail_cards'] = $thumbnail_cards;
+					$component_attributes['left']['thumbnail_cards']['slot'] = $thumbnail_cards;
 					break;
 
 				// Hero Card Slider.
@@ -176,8 +198,31 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 						break;
 					}
 
+					// Parsed Block.
+					$hero_details_card_slider_attrs                       = $child_block->parsed_block;
+					$component_attributes['hero_details_slider']['items'] = [];
+
 					// Render block.
-					$hero_details_card_slider = render_block( $child_block->parsed_block );
+					$hero_details_card_slider = render_block( $hero_details_card_slider_attrs );
+
+					// Loop through all hero slider items.
+					if ( ! empty( $hero_details_card_slider_attrs['innerBlocks'] ) ) {
+						foreach ( $hero_details_card_slider_attrs['innerBlocks'] as $card_item ) {
+							// Initialize item.
+							$item = [];
+
+							// If item exists.
+							if ( 'quark/hero-details-card-slider-item' === $card_item['blockName'] ) {
+								$item['media_id'] = $card_item['attrs']['media']['id'] ?? 0;
+								$item['tag_text'] = ! empty( $card_item['attrs']['hasTag'] ) ? $card_item['attrs']['tagText'] : '';
+								$item['title']    = $card_item['attrs']['title'] ?? '';
+								$item['cta']      = ! empty( $card_item['attrs']['hasCtaLink'] ) ? $card_item['attrs']['cta'] : [];
+
+								// Add item attributes.
+								$component_attributes['hero_details_slider']['items'][] = $item;
+							}
+						}
+					}
 
 					// Add to attributes.
 					$component_attributes['right'] = $hero_details_card_slider;
