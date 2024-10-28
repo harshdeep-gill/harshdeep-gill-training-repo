@@ -67,6 +67,7 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 			attributes.hasIcon ? 'btn--has-icon' : '',
 			attributes.isSizeBig ? 'btn--size-big' : '',
 			'black' === attributes.backgroundColor ? 'btn--color-black' : '',
+			'white' === attributes.backgroundColor ? 'btn--color-white' : '',
 			'outline' === attributes.appearance ? 'btn--outline' : '',
 		),
 	} );
