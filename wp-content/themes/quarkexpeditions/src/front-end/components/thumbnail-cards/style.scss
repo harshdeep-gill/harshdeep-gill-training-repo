@@ -212,4 +212,20 @@
 		height: 100%;
 		object-fit: cover;
 	}
+
+	&__tag {
+		position: absolute;
+	    top: 0;
+		width: fit-content;
+		max-width: 100%;
+		background-color: var(--color-magenta);
+		color: var(--color-white);
+		font-weight: var(--font-weight-bold);
+		padding: var(--spacing-2) var(--spacing-3);
+    	margin: var(--spacing-6) 0 0 var(--spacing-6);
+		box-shadow: var(--shadow-5);
+		overflow: hidden;
+
+		@include line-clamp(1);
+	}
 }
