@@ -123,29 +123,10 @@
 		}
 	}
 
-	&--color-white:not(:hover) {
-		border-color: var(--color-black);
-		background-color: var(--color-white);
-		color: var(--color-black);
-
-		> span.btn__icon-spinner {
-
-			svg > path {
-				fill: var(--color-black);
-			}
-		}
-	}
-
 	&--outline:not(:hover),
 	&--color-black:hover {
 		background-color: transparent;
 		color: var(--color-black);
-		border-color: var(--color-black);
-	}
-
-	&--color-white:hover {
-		background-color: var(--color-black);
-		color: var(--color-white);
 		border-color: var(--color-black);
 	}
 
@@ -247,32 +228,6 @@
 
 				svg > path {
 					fill: var(--color-white);
-				}
-			}
-		}
-
-		&--color-white:not(:hover) {
-			background-color: var(--color-black);
-			color: var(--color-white);
-			border-color: var(--color-white);
-
-			> span.btn__icon-spinner {
-
-				svg > path {
-					fill: var(--color-white);
-				}
-			}
-		}
-
-		&--color-white:hover {
-			background-color: var(--color-white);
-			border-color: var(--color-black);
-			color: var(--color-black);
-
-			> span.btn__icon-spinner {
-
-				svg > path {
-					fill: var(--color-black);
 				}
 			}
 		}
