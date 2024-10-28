@@ -38,6 +38,12 @@
 		border-radius: var(--border-radius-large);
 		overflow: hidden;
 
+		&:hover {
+			#{$self}__cta-text {
+				text-decoration-color: var(--color-yellow);
+			}
+		}
+
 		&:not(#{&}:has(#{$self}__content)) {
 			--hero-card-aspect-ratio: 3 / 2;
 
@@ -118,8 +124,22 @@
 		@include line-clamp(2);
 	}
 
-	&__cta-text {
-		text-decoration: underline;
+	&__cta {
+		display: flex;
+		gap: var(--spacing-1);
+		width: fit-content;
+
+		&-text {
+			text-decoration: underline;
+		}
+
+		&-icon {
+			transform: translate(2px, 1px);
+
+			svg {
+				rotate: 180deg;
+			}
+		}
 	}
 
 	&__card-cta,
