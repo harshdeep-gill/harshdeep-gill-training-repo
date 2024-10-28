@@ -67,8 +67,8 @@ export default class ExpeditionSearchFilterMonths extends HTMLElement {
 		// Set updating flag.
 		this.isFilterUpdating = true;
 
-		// Unselect all the months first.
-		this.monthsMultiSelect.unSelectAll();
+		// New value for month selector.
+		const newValue: string[] = [];
 
 		// Loop through the options to select.
 		months.forEach( ( month ) => {
@@ -79,8 +79,11 @@ export default class ExpeditionSearchFilterMonths extends HTMLElement {
 			}
 
 			// Select the month option.
-			this.monthsMultiSelect?.select( month.value );
+			newValue.push( month.value );
 		} );
+
+		// Set the value
+		this.monthsMultiSelect.value = newValue;
 
 		// Null check.
 		if ( this.filterCountElement ) {

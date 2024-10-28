@@ -17,7 +17,8 @@ export class MonthsMultiSelect extends HTMLElement {
 	 */
 	private resetButtons : NodeListOf<HTMLElement> | null;
 	private availableMonths: Array<object> | null;
-	static observedAttributes = [ 'available-months' ];
+	private _value: string[];
+	static observedAttributes = [ 'available-months', 'value' ];
 
 	/**
 	 * Constructor.
@@ -29,6 +30,16 @@ export class MonthsMultiSelect extends HTMLElement {
 		// Elements.
 		this.resetButtons = this.querySelectorAll( '.months-multi-select__reset-button' );
 		this.availableMonths = JSON.parse( this.getAttribute( 'available-months' ) ?? '' );
+		this._value = [];
+
+		// Get the value attribute.
+		const valueAttribute = this.getAttribute( 'value' ) ?? '';
+
+		// Check and assign
+		if ( valueAttribute ) {
+			// Get the value.
+			this.value = valueAttribute.split( ',' ).filter( ( v ) => v !== '' );
+		}
 
 		// Event Listeners.
 		this.addEventListener( 'select', this.toggleAllResetButtons.bind( this, 'off' ) );
@@ -58,13 +69,19 @@ export class MonthsMultiSelect extends HTMLElement {
 	 */
 	attributeChangedCallback( name: string, oldValue: string, newValue: string ) {
 		// Check if available-months attribute.
-		if ( 'available-months' !== name || oldValue === newValue ) {
+		if ( ! MonthsMultiSelect.observedAttributes.includes( name ) || oldValue === newValue ) {
 			// Nope, bail.
 			return;
 		}
 
-		// Disable unavailable month options.
-		this.disableUnavailableMonthOptions( JSON.parse( this.getAttribute( 'available-months' ) ?? '' ) );
+		// Check and process accordingly.
+		if ( 'available-months' === name ) {
+			// Disable unavailable month options.
+			this.disableUnavailableMonthOptions( JSON.parse( this.getAttribute( 'available-months' ) ?? '' ) );
+		} else if ( 'value' === name ) {
+			// Get the value.
+			this.value = newValue.split( ',' ).filter( ( v ) => v !== '' );
+		}
 	}
 
 	/**
@@ -106,7 +123,7 @@ export class MonthsMultiSelect extends HTMLElement {
 	 */
 	resetSelector() {
 		// Unselect all options.
-		this.unSelectAll();
+		this.value = [];
 
 		// Dispatch reset custom event.
 		this.dispatchEvent( new CustomEvent( 'reset' ) );
@@ -124,18 +141,41 @@ export class MonthsMultiSelect extends HTMLElement {
 			return;
 		}
 
-		// Set the value of the select field.
-		const allOptions: NodeListOf<MonthsMultiSelectOption> | null = this.querySelectorAll( 'tp-multi-select-option' );
+		// Get the values that are not in the new value array ( Essentially, the values that are no longer selected ).
+		const valuesToUnselect = this._value.filter( ( v ) => ! value.includes( v ) && '' !== v );
 
-		// Loop through all options.
-		allOptions?.forEach( ( option: MonthsMultiSelectOption ): void => {
-			// Check if the value is in the array.
-			if ( value.includes( option.getAttribute( 'value' ) ?? '' ) ) {
-				option.setAttribute( 'selected', 'yes' );
-			} else {
-				option.removeAttribute( 'selected' );
+		// Check if we have some values to unselect.
+		if ( valuesToUnselect.length ) {
+			// Value attribute selector.
+			const valueAttributeSelector = valuesToUnselect.map( ( val ) => `quark-months-multi-select-option[value="${ val }"]` ).join( ',' );
+
+			// Get the options to unselect.
+			this.querySelectorAll( valueAttributeSelector ).forEach( ( opt ) => opt.removeAttribute( 'selected' ) );
+		}
+
+		// Set the value
+		this._value = [];
+
+		// Check if we have some values to select.
+		if ( value.length ) {
+			// Value attribute selector.
+			const valueAttributeSelector = value.filter( ( val ) => '' !== val ).map( ( val ) => `quark-months-multi-select-option[value="${ val }"][disabled="no"]` ).join( ',' );
+
+			// Check if we have the selector
+			if ( valueAttributeSelector !== '' ) {
+				// Select the option.
+				this.querySelectorAll( valueAttributeSelector ).forEach( ( opt ) => {
+					// Add the selected attribute.
+					opt.setAttribute( 'selected', 'yes' );
+
+					// Push the value.
+					this._value.push( opt.getAttribute( 'value' ) ?? '' );
+				} );
 			}
-		} );
+		}
+
+		// Set the value attribute
+		this.setAttribute( 'value', this._value.toString() );
 
 		// Dispatch change event.
 		this.dispatchEvent( new CustomEvent( 'change' ) );
@@ -144,26 +184,11 @@ export class MonthsMultiSelect extends HTMLElement {
 	/**
 	 * Get the value of this component.
 	 *
-	 * @return {Set} Value of this component.
+	 * @return {string[]} Value of this component.
 	 */
-	get value(): Set<string> {
-		// Get the value of the select field.
-		const value = new Set<string>();
-
-		// Get selected options.
-		const selectedOptions: NodeListOf<MonthsMultiSelectOption> | null = this.querySelectorAll( 'quark-months-multi-select-option[selected="yes"]' );
-		selectedOptions?.forEach( ( option: MonthsMultiSelectOption ) => {
-			// Get option value.
-			const optionValue = option.getAttribute( 'value' );
-
-			// Add value to set.
-			if ( optionValue ) {
-				value.add( optionValue );
-			}
-		} );
-
+	get value(): string[] {
 		// Return value.
-		return value;
+		return this._value;
 	}
 
 	/**
@@ -174,27 +199,38 @@ export class MonthsMultiSelect extends HTMLElement {
 	select( value: string = '' ): void {
 		// Stuff for single-select.
 		if ( 'no' === this.getAttribute( 'multi-select' ) ) {
-			// First, unselect everything silently.
-			this.unSelectAll( true );
-
 			// If the value is blank, don't do anything else.
 			if ( '' === value ) {
+				// Set the value
+				this.value = [];
+
 				// Exit.
 				return;
 			}
-		}
 
-		// Select the option.
-		const options: NodeListOf<MonthsMultiSelectOption> | null = this.querySelectorAll( `quark-months-multi-select-option[value="${ value }"]` );
-		options?.forEach( ( option: MonthsMultiSelectOption ): void => {
-			// Update select field.
-			if ( 'yes' !== option.getAttribute( 'disabled' ) ) {
-				option.setAttribute( 'selected', 'yes' );
+			// Set the value.
+			this.value = [ value ];
+		} else if ( ! this.value.includes( value ) ) {
+			// Check if the value is empty.
+			if ( '' === value ) {
+				// Bail.
+				return;
 			}
-		} );
 
-		// Dispatch change event.
-		this.dispatchEvent( new CustomEvent( 'change' ) );
+			// Get the value attribute selector
+			const valueAttributeSelector = `quark-months-multi-select-option[value="${ value }"][disabled="no"]`;
+			const opt = this.querySelector( valueAttributeSelector );
+
+			// Check if we have the selector
+			if ( opt ) {
+				// Select the option.
+				opt.setAttribute( 'selected', 'yes' );
+
+				// Push the value.
+				this.value.push( value );
+				this.dispatchEvent( new CustomEvent( 'change', { bubbles: true } ) );
+			}
+		}
 	}
 
 	/**
@@ -203,36 +239,27 @@ export class MonthsMultiSelect extends HTMLElement {
 	 * @param {string} value Value to unselect.
 	 */
 	unSelect( value: string = '' ): void {
-		// Get all options with the specified value.
-		const allOptionsWithValue: NodeListOf<MonthsMultiSelectOption> | null = this.querySelectorAll( `quark-months-multi-select-option[value="${ value }"]` );
+		// The index of the value.
+		const valueIndex = this.value.indexOf( value );
 
-		// Loop through all options with the matching value.
-		allOptionsWithValue?.forEach( ( option: MonthsMultiSelectOption ): void => {
-			// Remove selected attribute.
-			option.removeAttribute( 'selected' );
-		} );
-
-		// Dispatch change event.
-		this.dispatchEvent( new CustomEvent( 'change' ) );
-	}
-
-	/**
-	 * Un-select all values.
-	 *
-	 * @param { boolean } silent Should the unselect happen without triggering change event?
-	 */
-	unSelectAll( silent: boolean = false ): void {
-		// Get all options.
-		const allOptions: NodeListOf<MonthsMultiSelectOption> | null = this.querySelectorAll( 'quark-months-multi-select-option' );
-		allOptions?.forEach( ( option: MonthsMultiSelectOption ): void => {
-			// Remove selected attribute.
-			option.removeAttribute( 'selected' );
-		} );
-
-		// Check if silent
-		if ( ! silent ) {
-			this.dispatchEvent( new CustomEvent( 'change', { bubbles: true } ) );
+		// The value is already not selected.
+		if ( -1 === valueIndex ) {
+			// Bail.
+			return;
 		}
+
+		// Get the value attribute selector
+		const valueAttributeSelector = `quark-months-multi-select-option[value="${ value }"][disabled="no"]`;
+		const opt = this.querySelector( valueAttributeSelector );
+
+		// Null check.
+		if ( opt ) {
+			opt.removeAttribute( 'selected' );
+		}
+
+		// Set the value.
+		this.value.splice( valueIndex );
+		this.dispatchEvent( new CustomEvent( 'change', { bubbles: true } ) );
 	}
 
 	/**
