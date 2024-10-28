@@ -9,6 +9,7 @@ namespace Quark\PageCache;
 
 use WP_Query;
 
+use function Quark\Core\doing_tests;
 use function Travelopia\Cache\clear_edge_paths_by_post_id;
 
 use const Quark\AdventureOptions\POST_TYPE as ADVENTURE_OPTIONS_POST_TYPE;
@@ -80,6 +81,11 @@ function flush_and_warm_up_page_cache(): void {
 
 		// Convert to integers.
 		$post_ids = array_map( 'absint', $post_ids );
+
+		// Skip if doing tests.
+		if ( doing_tests() ) {
+			continue;
+		}
 
 		// Get permalink.
 		foreach ( $post_ids as $post_id ) {
