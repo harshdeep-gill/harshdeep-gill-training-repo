@@ -227,7 +227,22 @@
 		}
 	}
 
-	&__image-immersive {
+	&__image-immersive:not(&__image-has-url) {
+
+		&::after {
+			background: linear-gradient(0deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 50%);
+			content: "";
+			display: block;
+			position: absolute;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			height: 100%;
+		}
+	}
+
+	&__image-link {
+		display: block;
 
 		&::after {
 			background: linear-gradient(0deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 50%);
