@@ -527,12 +527,11 @@ function get_season( int $post_id = 0 ): array {
 /**
  * Prepare details for itinerary tabs.
  *
- * @param array<int> $itineraries   Array of itinerary post IDs.
- * @param int        $expedition_id Expedition post ID.
+ * @param int $expedition_id Expedition post ID.
  *
  * @return array<string|int, mixed>
  */
-function get_details_tabs_data( array $itineraries = [], int $expedition_id = 0 ): array {
+function get_details_tabs_data( int $expedition_id = 0 ): array {
 	// Validate expedition ID.
 	if ( empty( $expedition_id ) ) {
 		return [];
@@ -543,6 +542,19 @@ function get_details_tabs_data( array $itineraries = [], int $expedition_id = 0 
 
 	// Validate expedition.
 	if ( empty( $expedition['post'] ) || ! $expedition['post'] instanceof WP_Post ) {
+		return [];
+	}
+
+	// Check if the expedition meta is empty.
+	if ( empty( $expedition['post_meta']['related_itineraries'] ) ) {
+		return [];
+	}
+
+	// Get the itineraries.
+	$itineraries = $expedition['post_meta']['related_itineraries'];
+
+	// Check if the itineraries is an array.
+	if ( ! is_array( $itineraries ) ) {
 		return [];
 	}
 
