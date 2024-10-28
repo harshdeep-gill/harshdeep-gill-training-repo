@@ -43,13 +43,6 @@ const {
  */
 import './editor.scss';
 
-// Background colors.
-export const colors: { [key: string]: string }[] = [
-	{ name: __( 'Yellow', 'qrk' ), color: '#fdb52b', slug: 'yellow' },
-	{ name: __( 'Black', 'qrk' ), color: '#232933', slug: 'black' },
-	{ name: __( 'White', 'qrk' ), color: '#fff', slug: 'white' },
-];
-
 /**
  * Edit component.
  *
@@ -67,10 +60,86 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 			attributes.hasIcon ? 'btn--has-icon' : '',
 			attributes.isSizeBig ? 'btn--size-big' : '',
 			'black' === attributes.backgroundColor ? 'btn--color-black' : '',
-			'white' === attributes.backgroundColor ? 'btn--color-white' : '',
-			'outline' === attributes.appearance ? 'btn--outline' : '',
+			'white' === attributes.backgroundColor ? 'btn--outline' : '',
 		),
 	} );
+
+	/**
+	 * Get appearance options.
+	 *
+	 * @return {Array} Appearance options.
+	 */
+	const getAppearanceOptions = (): { label: string, value: string }[] => {
+		// Default.
+		return [
+			{ label: __( 'Solid', 'qrk' ), value: 'solid' },
+			{ label: __( 'Outline', 'qrk' ), value: 'outline' },
+		];
+	};
+
+	/**
+	 * Get color options.
+	 *
+	 * @return {Array} Color options.
+	 */
+	const getColorOptions = (): { name: string, color: string, slug: string }[] => {
+		// Return color options based on the appearance.
+		if ( 'outline' === attributes.appearance ) {
+			// Return white color.
+			return [
+				{ name: __( 'White', 'qrk' ), color: '#fff', slug: 'white' },
+			];
+		}
+
+		// Default.
+		return [
+			{ name: __( 'Yellow', 'qrk' ), color: '#fdb52b', slug: 'yellow' },
+			{ name: __( 'Black', 'qrk' ), color: '#232933', slug: 'black' },
+		];
+	};
+
+	/**
+	 * Handle background color change.
+	 *
+	 * @param {string} backgroundColor Background color.
+	 */
+	const handleBackgroundColorChange = ( backgroundColor: string ) => {
+		// Set the appearance based on the background color.
+		if ( 'white' === backgroundColor ) {
+			setAttributes( { appearance: 'outline' } );
+		} else {
+			setAttributes( { appearance: 'solid' } );
+		}
+
+		// Set the background color attribute.
+		setAttributes( { backgroundColor } );
+	};
+
+	/**
+	 * Handle appearance change.
+	 *
+	 * @param {string} appearance Appearance.
+	 */
+	const handleAppearanceChange = ( appearance: string ) => {
+		// Set the background color based on the appearance.
+		if ( 'outline' === appearance ) {
+			setAttributes( { backgroundColor: 'white' } );
+		} else {
+			setAttributes( { backgroundColor: 'yellow' } );
+		}
+
+		// Set the appearance attribute.
+		setAttributes( { appearance } );
+	};
+
+	// Appearance options.
+	const appearanceOptions = getAppearanceOptions();
+
+	// Color options.
+	const colors = getColorOptions();
+
+	// Trigger handlers to update the block attributes.
+	handleBackgroundColorChange( attributes.backgroundColor );
 
 	// Prepare icon.
 	let selectedIcon: any = '';
@@ -102,11 +171,8 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 						label={ __( 'Appearance', 'qrk' ) }
 						help={ __( 'Select the appearance of the button.', 'qrk' ) }
 						selected={ attributes.appearance }
-						options={ [
-							{ label: __( 'Solid', 'qrk' ), value: 'solid' },
-							{ label: __( 'Outline', 'qrk' ), value: 'outline' },
-						] }
-						onChange={ ( appearance: string ) => setAttributes( { appearance } ) }
+						options={ appearanceOptions }
+						onChange={ handleAppearanceChange }
 					/>
 					<ToggleControl
 						label={ __( 'Is Size Big?', 'qrk' ) }
@@ -158,6 +224,9 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 							if ( backgroundColor.slug && [ 'black', 'yellow', 'white' ].includes( backgroundColor.slug ) ) {
 								setAttributes( { backgroundColor: backgroundColor.slug } );
 							}
+
+							// Handle the background color change.
+							handleBackgroundColorChange( backgroundColor.slug );
 						} }
 					/>
 				</PanelBody>
