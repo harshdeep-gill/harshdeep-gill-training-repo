@@ -11,6 +11,7 @@ export class SearchFilterStickyElement extends HTMLElement {
 	 * Properties.
 	 */
 	private searchButton: HTMLElement | null;
+	private triggerButton: HTMLElement | null;
 
 	/**
 	 * Constructor.
@@ -21,6 +22,7 @@ export class SearchFilterStickyElement extends HTMLElement {
 
 		// Elements.
 		this.searchButton = document.querySelector( '.search-filters-bar__search-button' );
+		this.triggerButton = this.querySelector( '.modal__modal-open > button' );
 
 		// Instantiate IntersectionObserver.
 		const observer = new window.IntersectionObserver( this.intersectionObserverCallback.bind( this ), {
@@ -46,9 +48,11 @@ export class SearchFilterStickyElement extends HTMLElement {
 
 			// Set 'show' attribute if not intersecting.
 			if ( ! isIntersecting ) {
+				this.triggerButton?.removeAttribute( 'disabled' );
 				this.setAttribute( 'show', 'yes' );
 			} else {
 				this.removeAttribute( 'show' );
+				this.triggerButton?.setAttribute( 'disabled', '' );
 			}
 		} );
 	}
