@@ -5,20 +5,20 @@
  * @package quark-page-cache
  */
 
-namespace Quark\PageCache\WP_CLI;
+namespace Quark\Cache\WP_CLI;
 
 use cli\progress\Bar;
 use WP_CLI;
 use WP_CLI\ExitException;
 use WP_Query;
 
-use const Quark\Cache\Edge\CACHED_POST_TYPE_SLUGS;
-
 use function Quark\Cache\set_meta_for_pricing_block_posts;
 use function WP_CLI\Utils\make_progress_bar;
 
+use const Quark\Cache\Edge\CACHED_POST_TYPE_SLUGS;
+
 /**
- * Class Pricing_Information.
+ * Pricing Information CLI command.
  */
 class Pricing_Information {
 	/**
