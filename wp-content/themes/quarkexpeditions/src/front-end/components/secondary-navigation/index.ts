@@ -257,7 +257,7 @@ export default class SecondaryNavigation extends HTMLElement {
 			 */
 			const sectionTop = this.isMobile() ? containerSection.offsetTop - this.mobileTopOffset : containerSection.offsetTop - this.desktopTopOffset;
 			const sectionId = currentSection.getAttribute( 'id' );
-			const activeItem = document.querySelector( '.secondary-navigation__navigation-item[data-anchor*=' + sectionId + ']' );
+			const activeItem = document.querySelector( '.secondary-navigation__navigation-item[data-anchor="#' + sectionId + '"]' );
 
 			/**
 			 * If our current scroll position enters the space where current section on screen is,
