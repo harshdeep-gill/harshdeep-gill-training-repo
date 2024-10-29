@@ -8,6 +8,7 @@
 namespace Quark\PageCache\Tests;
 
 use WP_UnitTestCase;
+use WP_Post;
 
 use function Quark\PageCache\flush_and_warm_up_page_cache;
 
@@ -21,7 +22,7 @@ class Test_Page_Cache extends WP_UnitTestCase {
 	 *
 	 * @var mixed
 	 */
-	private $time_took;
+	private $time_taken;
 
 	/**
 	 * Test flush_and_warm_up_page_cache function.
@@ -35,26 +36,26 @@ class Test_Page_Cache extends WP_UnitTestCase {
 		add_action( 'quark_page_cache_flushed', [ $this, 'quark_page_cache_flushed' ] );
 
 		// Time took should be empty.
-		$this->assertEmpty( $this->time_took );
+		$this->assertEmpty( $this->time_taken );
 
 		// Test that the action is not fired before the function is called.
 		$this->assertEmpty( did_action( 'quark_page_cache_flushed' ) );
-		$this->assertEmpty( $this->time_took );
+		$this->assertEmpty( $this->time_taken );
 
 		// Call the function.
 		flush_and_warm_up_page_cache();
 
 		// Test that the action is fired after the function is called.
 		$this->assertNotEmpty( did_action( 'quark_page_cache_flushed' ) );
-		$this->assertNotEmpty( $this->time_took );
-		$this->assertIsScalar( $this->time_took );
-		$this->assertIsFloat( $this->time_took );
+		$this->assertNotEmpty( $this->time_taken );
+		$this->assertIsScalar( $this->time_taken );
+		$this->assertIsFloat( $this->time_taken );
 
 		// Reset the hook.
 		remove_action( 'quark_page_cache_flushed', [ $this, 'quark_page_cache_flushed' ] );
 
 		// Reset variable.
-		$this->time_took = null;
+		$this->time_taken = null;
 	}
 
 	/**
@@ -67,9 +68,43 @@ class Test_Page_Cache extends WP_UnitTestCase {
 	public function quark_page_cache_flushed( array $data = [] ): void {
 		// Validate.
 		$this->assertNotEmpty( $data );
-		$this->assertArrayHasKey( 'time_took', $data );
+		$this->assertArrayHasKey( 'time_taken', $data );
 
 		// Set the time took.
-		$this->time_took = $data['time_took'];
+		$this->time_taken = $data['time_taken'];
+	}
+
+	/**
+	 * Test set_meta_for_pricing_block_posts function.
+	 *
+	 * @covers \Quark\PageCache\set_meta_for_pricing_block_posts
+	 *
+	 * @return void
+	 */
+	public function test_set_meta_for_pricing_block_posts(): void {
+		// Create and get post.
+		$post = $this->factory()->post->create_and_get(
+			[
+				'post_title'   => 'Test Post',
+				'post_content' => 'Post content',
+				'post_status'  => 'publish',
+				'post_type'    => 'post',
+			]
+		);
+		$this->assertTrue( $post instanceof WP_Post );
+
+		// Assert that the meta is not set.
+		$this->assertEmpty( get_post_meta( $post->ID, '_has_a_block_with_pricing_information', true ) );
+
+		// Update the post.
+		wp_update_post(
+			[
+				'ID'           => $post->ID,
+				'post_content' => '<!-- wp:quark/book-departures-expeditions /-->',
+			]
+		);
+
+		// Assert that the meta is set.
+		$this->assertTrue( (bool) get_post_meta( $post->ID, '_has_a_block_with_pricing_information', true ) );
 	}
 }
