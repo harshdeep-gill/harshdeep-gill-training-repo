@@ -21,39 +21,47 @@
 
 	// Build image args.
 	if ( 'small' === $size ) {
+		$width = 600;
+		$height = 600;
 		$picture = [
-			'(min-width: 1280px)' => [ 300, 300 ],
-			'(min-width: 768px)'  => [ 864, 516 ],
-			'(min-width: 375px)'  => [ 312, 450 ],
+			'(min-width: 1024px)' => [ 600, 600 ],
+			'(min-width: 768px)'  => [ 624, 352 ],
+			'(min-width: 375px)'  => [ 546, 308 ],
 		];
 	} elseif ( 'medium' === $size ) {
+		$width = 544;
+		$height = 256;
 		$picture = [
-			'(min-width: 1280px)' => [ 600, 300 ],
-			'(min-width: 768px)'  => [ 864, 516 ],
-			'(min-width: 375px)'  => [ 312, 450 ],
+			'(min-width: 1024px)' => [ 1088, 512 ],
+			'(min-width: 768px)'  => [ 624, 352 ],
+			'(min-width: 375px)'  => [ 546, 308 ],
 		];
 	} elseif ( 'large' === $size ) {
+		$width = 832;
+		$height = 256;
 		$picture = [
-			'(min-width: 1280px)' => [ 850, 250 ],
-			'(min-width: 768px)'  => [ 864, 516 ],
-			'(min-width: 375px)'  => [ 312, 450 ],
+			'(min-width: 1024px)' => [ 1300, 400 ],
+			'(min-width: 768px)'  => [ 624, 352 ],
+			'(min-width: 375px)'  => [ 546, 308 ],
 		];
 	} else {
+		$width = 1400;
+		$height = 320;
 		$picture = [
-			'(min-width: 1280px)' => [ 1000, 500 ],
-			'(min-width: 768px)'  => [ 864, 516 ],
-			'(min-width: 375px)'  => [ 312, 450 ],
+			'(min-width: 1024px)' => [ 1400, 320 ],
+			'(min-width: 768px)'  => [ 624, 352 ],
+			'(min-width: 375px)'  => [ 546, 308 ],
 		];
 	}
 
 	$image_args = [
 		'size' => [
-			'width'   => 1200,
-			'height'  => 600,
+			'width'   => $width,
+			'height'  => $height,
 			'picture' => $picture,
 		],
 		'transform'   => [
-			'crop'    => 'lfill',
+			'crop'    => 'fill',
 			'quality' => 90,
 		],
 	];
