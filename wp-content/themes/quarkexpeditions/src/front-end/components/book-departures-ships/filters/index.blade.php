@@ -1,5 +1,5 @@
 @props( [
-	'currency' => 'USD',
+	'currency' => quark_get_template_data( 'default_currency', 'USD' ),
 ] )
 
 @php
@@ -19,14 +19,14 @@
 <quark-book-departures-ships-filters class="book-departures-ships__filters">
 	<x-form.field class="book-departures-ships__filters-currency">
 		<x-form.inline-dropdown label="Currency">
-			
+
 			@foreach ( $currencies as $code => $currency_data )
-				@if ( ! is_array( $currency_data ) || empty( $currency_data['symbol'] ) || empty( $currency_data['display'] ) ) 
+				@if ( ! is_array( $currency_data ) || empty( $currency_data['display'] ) )
 					@continue
 				@endif
 
 				@php
-					$label = sprintf( '%s %s', $currency_data['symbol'],  $currency_data['display'] );
+					$label = sprintf( '%s', $currency_data['display'] );
 				@endphp
 
 				<x-form.option value="{{ $code }}" label="{{ $label }}" selected="{{ $currency === $code ? 'yes' : '' }}">

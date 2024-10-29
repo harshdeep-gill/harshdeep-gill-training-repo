@@ -9,11 +9,15 @@ namespace Quark\Softrip\Tests\Departures;
 
 use Quark\Tests\Softrip\Softrip_TestCase;
 
+use function Quark\Expeditions\get_starting_from_price;
+use function Quark\Localization\set_current_currency;
 use function Quark\Softrip\Departures\update_departures;
 use function Quark\Softrip\do_sync;
 
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
 use const Quark\Departures\SPOKEN_LANGUAGE_TAXONOMY;
+use const Quark\Expeditions\CACHE_GROUP as EXPEDITION_CACHE_GROUP;
+use const Quark\Expeditions\CACHE_KEY as EXPEDITION_CACHE_KEY;
 use const Quark\Expeditions\POST_TYPE as EXPEDITION_POST_TYPE;
 use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
 use const Quark\Ships\POST_TYPE as SHIP_POST_TYPE;
@@ -1025,5 +1029,223 @@ class Test_Update_Departures extends Softrip_TestCase {
 			]
 		);
 		$this->assertCount( 4, $departure_posts );
+
+		// Get first departure.
+		$departure_post1 = $departure_posts[0];
+		$this->assertIsInt( $departure_post1 );
+
+		// Get expedition id.
+		$expedition_id = absint( get_post_meta( $departure_post1, 'related_expedition', true ) );
+		$this->assertIsInt( $expedition_id );
+
+		// Get starting price of this expedition.
+		set_current_currency( 'USD' );
+		$cache_key_prefix   = EXPEDITION_CACHE_KEY . '_starting_from_price_' . $expedition_id;
+		$cache_key_usd      = $cache_key_prefix . '_USD';
+		$starting_price_usd = get_starting_from_price( $expedition_id );
+		$this->assertEquals( 9896, $starting_price_usd['discounted'] );
+		$this->assertEquals( 10995, $starting_price_usd['original'] );
+		$this->assertNotFalse( wp_cache_get( $cache_key_usd, EXPEDITION_CACHE_GROUP ) );
+
+		// Get starting price of this expedition in EUR.
+		set_current_currency( 'EUR' );
+		$cache_key_eur      = $cache_key_prefix . '_EUR';
+		$starting_price_eur = get_starting_from_price( $expedition_id );
+		$this->assertEquals( 9180, $starting_price_eur['discounted'] );
+		$this->assertEquals( 10200, $starting_price_eur['original'] );
+		$this->assertNotFalse( wp_cache_get( $cache_key_eur, EXPEDITION_CACHE_GROUP ) );
+
+		// Get starting price of this expedition in GBP.
+		set_current_currency( 'GBP' );
+		$cache_key_gbp      = $cache_key_prefix . '_GBP';
+		$starting_price_gbp = get_starting_from_price( $expedition_id );
+		$this->assertEquals( 8240, $starting_price_gbp['discounted'] );
+		$this->assertEquals( 10300, $starting_price_gbp['original'] );
+		$this->assertNotFalse( wp_cache_get( $cache_key_gbp, EXPEDITION_CACHE_GROUP ) );
+
+		// Get starting price of this expedition in AUD.
+		set_current_currency( 'AUD' );
+		$cache_key_aud      = $cache_key_prefix . '_AUD';
+		$starting_price_aud = get_starting_from_price( $expedition_id );
+		$this->assertEquals( 15480, $starting_price_aud['discounted'] );
+		$this->assertEquals( 17200, $starting_price_aud['original'] );
+		$this->assertNotFalse( wp_cache_get( $cache_key_aud, EXPEDITION_CACHE_GROUP ) );
+
+		// Get starting price of this expedition in CAD.
+		set_current_currency( 'CAD' );
+		$cache_key_cad      = $cache_key_prefix . '_CAD';
+		$starting_price_cad = get_starting_from_price( $expedition_id );
+		$this->assertEquals( 13410, $starting_price_cad['discounted'] );
+		$this->assertEquals( 14900, $starting_price_cad['original'] );
+		$this->assertNotFalse( wp_cache_get( $cache_key_cad, EXPEDITION_CACHE_GROUP ) );
+
+		// Update price for HIJ-456.
+		$hij_raw_departure = [
+			[
+				'id'          => 'HIJ-456:2025-09-13',
+				'code'        => 'OEX20250913',
+				'packageCode' => 'HIJ-456',
+				'startDate'   => '2025-09-13',
+				'endDate'     => '2025-09-23',
+				'duration'    => 11,
+				'shipCode'    => 'OEX',
+				'marketCode'  => 'ARC',
+				'cabins'      => [
+					[
+						'id'          => 'HIJ-456:2025-09-13:OEX-SGL',
+						'code'        => 'OEX-SGL',
+						'name'        => 'Studio Single',
+						'departureId' => 'HIJ-456:2025-09-13',
+						'occupancies' => [
+							[
+								'id'              => 'HIJ-456:2025-09-13:OEX-SGL:A',
+								'name'            => 'HIJ-456:2025-09-13:OEX-SGL:A',
+								'mask'            => 'A',
+								'saleStatusCode'  => 'O',
+								'saleStatus'      => 'Open',
+								'spacesAvailable' => 3,
+								'seq'             => '100',
+								'prices'          => [
+									'USD' => [
+										'currencyCode'   => 'USD',
+										'pricePerPerson' => 5490,
+										'promos'         => [
+											'10PIF'   => [
+												'promoPricePerPerson' => 4859,
+											],
+											'20PROMO' => [
+												'promoPricePerPerson' => 4100,
+											],
+										],
+									],
+									'AUD' => [
+										'currencyCode'   => 'AUD',
+										'pricePerPerson' => 2600,
+										'promos'         => [
+											'10PIF'   => [
+												'promoPricePerPerson' => 2360,
+											],
+											'20PROMO' => [
+												'promoPricePerPerson' => 2120,
+											],
+										],
+									],
+									'CAD' => [
+										'currencyCode'   => 'CAD',
+										'pricePerPerson' => 2290,
+										'promos'         => [
+											'10PIF'   => [
+												'promoPricePerPerson' => 2061,
+											],
+											'20PROMO' => [
+												'promoPricePerPerson' => 1832,
+											],
+										],
+									],
+									'EUR' => [
+										'currencyCode'   => 'EUR',
+										'pricePerPerson' => 1570,
+										'promos'         => [
+											'10PIF'   => [
+												'promoPricePerPerson' => 1413,
+											],
+											'20PROMO' => [
+												'promoPricePerPerson' => 1256,
+											],
+										],
+									],
+									'GBP' => [
+										'currencyCode'   => 'GBP',
+										'pricePerPerson' => 1350,
+										'promos'         => [
+											'10PIF'   => [
+												'promoPricePerPerson' => 1215,
+											],
+											'20PROMO' => [
+												'promoPricePerPerson' => 1080,
+											],
+										],
+									],
+								],
+							],
+						],
+					],
+				],
+			],
+		];
+
+		// Update the departure.
+		$actual = update_departures( $hij_raw_departure, $softrip_package_code4 );
+
+		// Get the updated departure post.
+		$departure_posts = get_posts(
+			[
+				'post_type'              => DEPARTURE_POST_TYPE,
+				'posts_per_page'         => 1,
+				'no_found_rows'          => true,
+				'update_post_meta_cache' => false,
+				'update_post_term_cache' => false,
+				'ignore_sticky_posts'    => true,
+				'suppress_filters'       => false,
+				'fields'                 => 'ids',
+				'order'                  => 'ASC',
+				'orderby'                => 'ID',
+				'meta_query'             => [
+					[
+						'key'   => 'softrip_package_code',
+						'value' => $softrip_package_code4,
+					],
+				],
+			]
+		);
+		$this->assertCount( 1, $departure_posts );
+
+		// Get the updated departure post.
+		$departure_post = $departure_posts[0];
+		$this->assertIsInt( $departure_post );
+
+		// Cache should be flushed.
+		$this->assertFalse( wp_cache_get( $cache_key_usd, EXPEDITION_CACHE_GROUP ) );
+		$this->assertFalse( wp_cache_get( $cache_key_eur, EXPEDITION_CACHE_GROUP ) );
+		$this->assertFalse( wp_cache_get( $cache_key_gbp, EXPEDITION_CACHE_GROUP ) );
+		$this->assertFalse( wp_cache_get( $cache_key_aud, EXPEDITION_CACHE_GROUP ) );
+
+		// Get updated starting price of this expedition.
+		set_current_currency( 'USD' );
+		$starting_price_usd = get_starting_from_price( $expedition_id );
+		$this->assertEquals( 4100, $starting_price_usd['discounted'] );
+		$this->assertEquals( 5490, $starting_price_usd['original'] );
+		$this->assertNotFalse( wp_cache_get( $cache_key_usd, EXPEDITION_CACHE_GROUP ) );
+
+		// Get updated starting price of this expedition in EUR.
+		set_current_currency( 'EUR' );
+		$starting_price_eur = get_starting_from_price( $expedition_id );
+		$this->assertEquals( 1256, $starting_price_eur['discounted'] );
+		$this->assertEquals( 1570, $starting_price_eur['original'] );
+		$this->assertNotFalse( wp_cache_get( $cache_key_eur, EXPEDITION_CACHE_GROUP ) );
+
+		// Get updated starting price of this expedition in GBP.
+		set_current_currency( 'GBP' );
+		$starting_price_gbp = get_starting_from_price( $expedition_id );
+		$this->assertEquals( 1080, $starting_price_gbp['discounted'] );
+		$this->assertEquals( 1350, $starting_price_gbp['original'] );
+		$this->assertNotFalse( wp_cache_get( $cache_key_gbp, EXPEDITION_CACHE_GROUP ) );
+
+		// Get updated starting price of this expedition in AUD.
+		set_current_currency( 'AUD' );
+		$starting_price_aud = get_starting_from_price( $expedition_id );
+		$this->assertEquals( 2120, $starting_price_aud['discounted'] );
+		$this->assertEquals( 2600, $starting_price_aud['original'] );
+		$this->assertNotFalse( wp_cache_get( $cache_key_aud, EXPEDITION_CACHE_GROUP ) );
+
+		// Get updated starting price of this expedition in CAD.
+		set_current_currency( 'CAD' );
+		$starting_price_cad = get_starting_from_price( $expedition_id );
+		$this->assertEquals( 1832, $starting_price_cad['discounted'] );
+		$this->assertEquals( 2290, $starting_price_cad['original'] );
+		$this->assertNotFalse( wp_cache_get( $cache_key_cad, EXPEDITION_CACHE_GROUP ) );
+
+		// Reset currency.
+		set_current_currency( 'USD' );
 	}
 }

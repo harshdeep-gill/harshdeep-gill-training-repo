@@ -199,7 +199,7 @@ export const loadMoreResults = () => {
 const moreResultsLoaded = ( response: PartialData ) => {
 	// Get state.
 	const { page } = getState();
-	const { markup, data: { nextPage } } = response;
+	const { markup, data: { nextPage, remainingCount } } = response;
 
 	// Set State.
 	setState( {
@@ -207,6 +207,8 @@ const moreResultsLoaded = ( response: PartialData ) => {
 		hasNextPage: nextPage && nextPage > page,
 		nextPage,
 		updateMarkup: true,
+		remainingCount,
+		page,
 	} );
 };
 

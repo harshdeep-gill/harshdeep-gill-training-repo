@@ -42,6 +42,7 @@ export const DEFAULT_STATE: DatesRatesState = {
 	],
 	filtersMarkup: '',
 	selectedFilters: [],
+	allowedPerPage: [],
 };
 
 /**

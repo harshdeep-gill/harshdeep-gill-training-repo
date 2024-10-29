@@ -26,6 +26,8 @@ use function Quark\Expeditions\get_total_departures;
 use function Quark\Expeditions\get_ships;
 use function Quark\Expeditions\get_breadcrumbs_ancestors;
 use function Quark\Expeditions\get_seo_structured_data;
+use function Quark\Expeditions\get_starting_from_price;
+use function Quark\Localization\set_current_currency;
 use function Quark\Softrip\Departures\get_departures_by_itinerary;
 use function Quark\Softrip\do_sync;
 
@@ -36,6 +38,8 @@ use const Quark\Expeditions\POST_TYPE;
 use const Quark\Expeditions\EXPEDITION_CATEGORY_TAXONOMY;
 use const Quark\Ships\POST_TYPE as SHIP_POST_TYPE;
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
+use const Quark\Expeditions\CACHE_GROUP;
+use const Quark\Expeditions\CACHE_KEY;
 use const Quark\ItineraryDays\POST_TYPE as ITINERARY_DAY_POST_TYPE;
 
 /**
@@ -517,6 +521,9 @@ class Test_Expeditions extends Softrip_TestCase {
 
 		// Sync softrip with exising posts.
 		do_sync();
+
+		// Flush cache.
+		wp_cache_flush();
 
 		// Get get_details_data.
 		$expedition_details_card_data = get_details_data( $post_1->ID );
@@ -1287,5 +1294,112 @@ class Test_Expeditions extends Softrip_TestCase {
 			],
 			get_breadcrumbs_ancestors( $post->ID )
 		);
+	}
+
+	/**
+	 * Test get starting price.
+	 *
+	 * @covers \Quark\Expeditions\get_starting_from_price()
+	 *
+	 * @return void
+	 */
+	public function test_get_starting_from_price(): void {
+		// Default lowest price.
+		$default_lowest_price = [
+			'discounted' => 0,
+			'original'   => 0,
+		];
+
+		// Cache prefix.
+		$cache_prefix = CACHE_KEY . '_starting_from_price_';
+
+		// Test without any post id.
+		$this->assertEquals( $default_lowest_price, get_starting_from_price() );
+
+		// Invalid post id.
+		$this->assertEquals( $default_lowest_price, get_starting_from_price( 0 ) );
+
+		// Non-expedition post.
+		$this->assertEquals( $default_lowest_price, get_starting_from_price( 1938 ) );
+		$cache_key = $cache_prefix . '1938';
+		$this->assertFalse( wp_cache_get( $cache_key, CACHE_GROUP ) );
+
+		// Setup mock response.
+		add_filter( 'pre_http_request', 'Quark\Tests\Softrip\mock_softrip_http_request', 10, 3 );
+
+		// Sync softrip with existing posts.
+		do_sync();
+
+		// Remove filter.
+		remove_filter( 'pre_http_request', 'Quark\Tests\Softrip\mock_softrip_http_request' );
+
+		// Get one expedition.
+		$expedition_posts = get_posts(
+			[
+				'post_type'      => POST_TYPE,
+				'posts_per_page' => 5,
+				'fields'         => 'ids',
+				'no_found_rows'  => true,
+			]
+		);
+		$this->assertNotEmpty( $expedition_posts );
+
+		// Convert to integer.
+		$expedition_posts = array_map( 'absint', $expedition_posts );
+
+		// First expedition.
+		$expedition_post1 = $expedition_posts[0];
+
+		// Get starting price.
+		$starting_price = get_starting_from_price( $expedition_post1 );
+		$this->assertEmpty( $starting_price['discounted'] );
+		$this->assertEmpty( $starting_price['original'] );
+
+		// Second expedition.
+		$expedition_post2 = $expedition_posts[1];
+
+		// Cache key.
+		$cache_key_usd = $cache_prefix . $expedition_post2 . '_USD';
+
+		// Get starting price USD.
+		$starting_price = get_starting_from_price( $expedition_post2 );
+		$this->assertEquals( '34600', $starting_price['original'] );
+		$this->assertEquals( '29410', $starting_price['discounted'] );
+		$this->assertNotFalse( wp_cache_get( $cache_key_usd, CACHE_GROUP ) );
+
+		// Get starting price EUR.
+		set_current_currency( 'EUR' );
+		$cache_key_eur  = $cache_prefix . $expedition_post2 . '_EUR';
+		$starting_price = get_starting_from_price( $expedition_post2 );
+		$this->assertEquals( '32200', $starting_price['original'] );
+		$this->assertEquals( '27370', $starting_price['discounted'] );
+		$this->assertNotFalse( wp_cache_get( $cache_key_eur, CACHE_GROUP ) );
+
+		// Get starting price GBP.
+		set_current_currency( 'GBP' );
+		$cache_key_gbp  = $cache_prefix . $expedition_post2 . '_GBP';
+		$starting_price = get_starting_from_price( $expedition_post2 );
+		$this->assertEquals( '27600', $starting_price['original'] );
+		$this->assertEquals( '23460', $starting_price['discounted'] );
+		$this->assertNotFalse( wp_cache_get( $cache_key_gbp, CACHE_GROUP ) );
+
+		// Get starting price AUD.
+		set_current_currency( 'AUD' );
+		$cache_key_aud  = $cache_prefix . $expedition_post2 . '_AUD';
+		$starting_price = get_starting_from_price( $expedition_post2 );
+		$this->assertEquals( '54200', $starting_price['original'] );
+		$this->assertEquals( '46070', $starting_price['discounted'] );
+		$this->assertNotFalse( wp_cache_get( $cache_key_aud, CACHE_GROUP ) );
+
+		// Get starting price CAD.
+		set_current_currency( 'CAD' );
+		$cache_key_cad  = $cache_prefix . $expedition_post2 . '_CAD';
+		$starting_price = get_starting_from_price( $expedition_post2 );
+		$this->assertEquals( '47000', $starting_price['original'] );
+		$this->assertEquals( '39950', $starting_price['discounted'] );
+		$this->assertNotFalse( wp_cache_get( $cache_key_cad, CACHE_GROUP ) );
+
+		// Reset currency.
+		set_current_currency( 'USD' );
 	}
 }

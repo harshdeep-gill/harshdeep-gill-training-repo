@@ -2519,6 +2519,9 @@ class Test_Occupancies extends Softrip_TestCase {
 		$actual       = delete_occupancy_by_id( $occupancy_id );
 		$this->assertFalse( $actual );
 
+		// Delete cache.
+		wp_cache_delete( CACHE_KEY_PREFIX . '_occupancy_id_' . $occupancy_id, CACHE_GROUP );
+
 		// Create an occupancy without promotion.
 		$raw_occupancy_data     = [
 			'id'              => 'PQO-123:2026-02-20:OEX-SGL:A',
@@ -2571,7 +2574,6 @@ class Test_Occupancies extends Softrip_TestCase {
 		// Get occupancy by id.
 		$occupancies = get_occupancy_data_by_id( $occupancy_id );
 		$this->assertIsArray( $occupancies );
-		$this->assertNotEmpty( $occupancies );
 		$this->assertCount( 1, $occupancies );
 
 		// Get first occupancy.

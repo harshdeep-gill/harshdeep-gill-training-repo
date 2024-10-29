@@ -55,9 +55,6 @@ export class MonthsMultiSelectOption extends HTMLElement {
 				detail: { value },
 			} ) );
 		}
-
-		// Dispatch change event.
-		monthsMultiSelect?.dispatchEvent( new CustomEvent( 'change', { bubbles: true } ) );
 	}
 }
 
