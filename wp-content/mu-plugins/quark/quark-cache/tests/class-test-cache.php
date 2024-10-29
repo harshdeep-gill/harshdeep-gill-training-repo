@@ -1,8 +1,8 @@
 <?php
 /**
- * Tests for the Page cache functions.
+ * Tests for the cache functions.
  *
- * @package quark-page-cache
+ * @package quark-cache
  */
 
 namespace Quark\Cache\Tests;
@@ -13,9 +13,9 @@ use WP_Post;
 use function Quark\Cache\Edge\flush_and_warm_edge_cache;
 
 /**
- * Class Test_Page_Cache
+ * Class Test_Cache
  */
-class Test_Page_Cache extends WP_UnitTestCase {
+class Test_Cache extends WP_UnitTestCase {
 
 	/**
 	 * Time took.
@@ -27,45 +27,45 @@ class Test_Page_Cache extends WP_UnitTestCase {
 	/**
 	 * Test flush_and_warm_edge_cache function.
 	 *
-	 * @covers \Quark\PageCache\flush_and_warm_edge_cache
+	 * @covers \Quark\Cache\Edge\flush_and_warm_edge_cache
 	 *
 	 * @return void
 	 */
 	public function test_flush_and_warm_edge_cache(): void {
 		// Attach the hook.
-		add_action( 'quark_page_cache_flushed', [ $this, 'quark_page_cache_flushed' ] );
+		add_action( 'quark_edge_cache_flushed', [ $this, 'quark_edge_cache_flushed' ] );
 
 		// Time took should be empty.
 		$this->assertEmpty( $this->time_taken );
 
 		// Test that the action is not fired before the function is called.
-		$this->assertEmpty( did_action( 'quark_page_cache_flushed' ) );
+		$this->assertEmpty( did_action( 'quark_edge_cache_flushed' ) );
 		$this->assertEmpty( $this->time_taken );
 
 		// Call the function.
 		flush_and_warm_edge_cache();
 
 		// Test that the action is fired after the function is called.
-		$this->assertNotEmpty( did_action( 'quark_page_cache_flushed' ) );
+		$this->assertNotEmpty( did_action( 'quark_edge_cache_flushed' ) );
 		$this->assertNotEmpty( $this->time_taken );
 		$this->assertIsScalar( $this->time_taken );
 		$this->assertIsFloat( $this->time_taken );
 
 		// Reset the hook.
-		remove_action( 'quark_page_cache_flushed', [ $this, 'quark_page_cache_flushed' ] );
+		remove_action( 'quark_edge_cache_flushed', [ $this, 'quark_edge_cache_flushed' ] );
 
 		// Reset variable.
 		$this->time_taken = null;
 	}
 
 	/**
-	 * Hook on `quark_page_cache_flushed`.
+	 * Hook on `quark_edge_cache_flushed`.
 	 *
 	 * @param mixed[] $data Data.
 	 *
 	 * @return void
 	 */
-	public function quark_page_cache_flushed( array $data = [] ): void {
+	public function quark_edge_cache_flushed( array $data = [] ): void {
 		// Validate.
 		$this->assertNotEmpty( $data );
 		$this->assertArrayHasKey( 'time_taken', $data );
@@ -77,7 +77,7 @@ class Test_Page_Cache extends WP_UnitTestCase {
 	/**
 	 * Test set_meta_for_pricing_block_posts function.
 	 *
-	 * @covers \Quark\PageCache\set_meta_for_pricing_block_posts
+	 * @covers \Quark\Cache\set_meta_for_pricing_block_posts
 	 *
 	 * @return void
 	 */
