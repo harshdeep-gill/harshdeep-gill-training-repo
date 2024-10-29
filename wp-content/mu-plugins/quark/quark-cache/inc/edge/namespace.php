@@ -12,7 +12,7 @@ use WP_CLI;
 use WP_Query;
 
 use function Quark\Core\doing_tests;
-use function Travelopia\Cache\clear_edge_paths_by_post_id;
+use function Travelopia\Cache\clear_edge_cache_paths;
 
 use const Quark\AdventureOptions\POST_TYPE as ADVENTURE_OPTIONS_POST_TYPE;
 use const Quark\Blog\POST_TYPE as BLOG_POST_TYPE;
@@ -148,7 +148,24 @@ function flush_and_warm_edge_cache( bool $pricing_pages_only = false ): void {
 			}
 
 			// Clear cache.
-			clear_edge_paths_by_post_id( $post_id );
+			$paths = wp_parse_url( $permalink );
+
+			// Validate $paths.
+			if ( ! is_array( $paths ) || ! isset( $paths['path'] ) ) {
+				// Update progress bar.
+				if ( $progress ) {
+					$progress->tick();
+				}
+
+				// Continue to next post.
+				continue;
+			}
+
+			// edge cache.
+			clear_edge_cache_paths( [ $paths['path'] ] );
+
+			// delay for 200 milliseconds.
+			usleep( 200000 );
 
 			// Make request to warm cache.
 			wp_remote_get(
@@ -165,9 +182,6 @@ function flush_and_warm_edge_cache( bool $pricing_pages_only = false ): void {
 			if ( $progress ) {
 				$progress->tick();
 			}
-
-			// delay for 50 milliseconds.
-			usleep( 50000 );
 		}
 
 		// End time.
