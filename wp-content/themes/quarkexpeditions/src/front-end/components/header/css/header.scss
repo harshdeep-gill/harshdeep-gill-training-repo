@@ -9,8 +9,9 @@
 	padding: 0 var(--grid-col-gutter);
 	position: sticky;
 	top: var(--wp-admin-bar-height);
-	z-index: 99;
+	z-index: var(--header-z-index);
 	gap: var(--spacing-4);
+	opacity: 1;
 
 	body.has-navigation-dropdown-open & {
 		z-index: 103;

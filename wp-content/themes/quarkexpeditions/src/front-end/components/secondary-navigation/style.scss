@@ -231,6 +231,8 @@ body.has-sticky-secondary-navigation {
 	.lp-header {
 		opacity: 0;
 		visibility: hidden;
+
+		@include transition();
 	}
 }
 
