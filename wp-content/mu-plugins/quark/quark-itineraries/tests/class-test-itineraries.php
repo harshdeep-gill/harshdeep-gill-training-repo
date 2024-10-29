@@ -711,7 +711,7 @@ class Test_Itineraries extends Softrip_TestCase {
 		}
 
 		// Test without expedition id.
-		$details = get_details_tabs_data( $itinerary_posts );
+		$details = get_details_tabs_data();
 		$this->assertEmpty( $details );
 
 		// Create expedition post.
@@ -720,12 +720,15 @@ class Test_Itineraries extends Softrip_TestCase {
 				'post_type'   => EXPEDITION_POST_TYPE,
 				'post_title'  => 'Test Expedition',
 				'post_status' => 'publish',
+				'meta_input'  => [
+					'related_itineraries' => $itinerary_posts,
+				],
 			]
 		);
 		$this->assertTrue( $expedition_post instanceof WP_Post );
 
 		// Test with expedition id.
-		$details = get_details_tabs_data( $itinerary_posts, $expedition_post->ID );
+		$details = get_details_tabs_data( $expedition_post->ID );
 
 		// Prepare expected details.
 		$expected_details = [
@@ -853,7 +856,7 @@ class Test_Itineraries extends Softrip_TestCase {
 		bust_expedition_post_cache( $expedition_post->ID );
 
 		// Test with expedition id.
-		$details = get_details_tabs_data( $itinerary_posts, $expedition_post->ID );
+		$details = get_details_tabs_data( $expedition_post->ID );
 
 		// Prepare expected details.
 		$expected_details = [

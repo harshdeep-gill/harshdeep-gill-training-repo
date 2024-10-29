@@ -45,3 +45,4 @@ initialize( {} );
  * Global JavaScript.
  */
 import './phone-number';
+import './tracking';

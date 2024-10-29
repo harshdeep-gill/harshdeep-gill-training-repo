@@ -174,8 +174,8 @@ export class MonthsMultiSelect extends HTMLElement {
 	select( value: string = '' ): void {
 		// Stuff for single-select.
 		if ( 'no' === this.getAttribute( 'multi-select' ) ) {
-			// First, unselect everything.
-			this.unSelectAll();
+			// First, unselect everything silently.
+			this.unSelectAll( true );
 
 			// If the value is blank, don't do anything else.
 			if ( '' === value ) {
@@ -218,8 +218,10 @@ export class MonthsMultiSelect extends HTMLElement {
 
 	/**
 	 * Un-select all values.
+	 *
+	 * @param { boolean } silent Should the unselect happen without triggering change event?
 	 */
-	unSelectAll(): void {
+	unSelectAll( silent: boolean = false ): void {
 		// Get all options.
 		const allOptions: NodeListOf<MonthsMultiSelectOption> | null = this.querySelectorAll( 'quark-months-multi-select-option' );
 		allOptions?.forEach( ( option: MonthsMultiSelectOption ): void => {
@@ -227,11 +229,10 @@ export class MonthsMultiSelect extends HTMLElement {
 			option.removeAttribute( 'selected' );
 		} );
 
-		// Reset value.
-		this.value = [];
-
-		// Dispatch change event.
-		this.dispatchEvent( new CustomEvent( 'change' ) );
+		// Check if silent
+		if ( ! silent ) {
+			this.dispatchEvent( new CustomEvent( 'change', { bubbles: true } ) );
+		}
 	}
 
 	/**

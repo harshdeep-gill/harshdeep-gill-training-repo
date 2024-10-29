@@ -41,6 +41,7 @@ interface DatesRatesState {
 	baseUrl: string
 	allowedParams: DatesRatesAllowedParam[],
 	filtersMarkup: string,
+	allowedPerPage: number[],
 }
 
 /**

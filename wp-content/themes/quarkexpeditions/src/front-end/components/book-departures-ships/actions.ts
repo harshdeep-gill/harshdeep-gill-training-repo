@@ -211,6 +211,7 @@ const moreResultsLoaded = ( response: PartialData ) => {
 		nextPage,
 		updateMarkup: true,
 		remainingCount,
+		page,
 	} );
 };
 

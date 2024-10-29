@@ -23,6 +23,8 @@ use function Quark\Softrip\Promotions\update_promotions;
 
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
 use const Quark\Departures\SPOKEN_LANGUAGE_TAXONOMY;
+use const Quark\Expeditions\CACHE_KEY as EXPEDITION_CACHE_KEY;
+use const Quark\Expeditions\CACHE_GROUP as EXPEDITION_CACHE_GROUP;
 use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
 use const Quark\Localization\DEFAULT_CURRENCY;
 
@@ -226,9 +228,39 @@ function update_departures( array $raw_departures = [], string $softrip_package_
 			if ( ! $is_existing ) {
 				$message = __( 'No valid occupancies found for new departure.', 'qrk' );
 
+				// Log error.
+				do_action(
+					'quark_softrip_sync_error',
+					[
+						'error' => $message,
+						'via'   => get_initiated_via(),
+						'codes' => [ $departure_softrip_id ],
+					]
+				);
+
 				// Continue to next departure - no need to create.
 				continue;
 			} else {
+				// Check if already draft.
+				if ( 'draft' === get_post_status( $existing_departure_codes[ $departure_softrip_id ] ) ) {
+					// Prepare message.
+					$message = __( 'No valid occupancies found for existing draft departure.', 'qrk' );
+
+					// Log error.
+					do_action(
+						'quark_softrip_sync_error',
+						[
+							'error' => $message,
+							'via'   => get_initiated_via(),
+							'codes' => [ $departure_softrip_id ],
+						]
+					);
+
+					// Continue to next departure - no need to update.
+					continue;
+				}
+
+				// Prepare message.
 				$message = __( 'No valid occupancies found for existing departure. So, converting to draft.', 'qrk' );
 
 				// Unpublish the post.
@@ -241,19 +273,19 @@ function update_departures( array $raw_departures = [], string $softrip_package_
 
 				// Bust the departure module cache.
 				bust_departure_post_cache( $existing_departure_codes[ $departure_softrip_id ] );
+
+				// Log error.
+				do_action(
+					'quark_softrip_sync_error',
+					[
+						'error' => $message,
+						'via'   => get_initiated_via(),
+						'codes' => [ $departure_softrip_id ],
+					]
+				);
+
+				// Not bailing out as departure's other data (cabins, occupancies) might be updated.
 			}
-
-			// Log error.
-			do_action(
-				'quark_softrip_sync_error',
-				[
-					'error' => $message,
-					'via'   => get_initiated_via(),
-					'codes' => [ $departure_softrip_id ],
-				]
-			);
-
-			// Not bailing out as departure's other data (cabins, occupancies) might be updated.
 		}
 
 		// Hashed formatted data.
@@ -351,6 +383,21 @@ function update_departures( array $raw_departures = [], string $softrip_package_
 					'updated_fields' => $updated_fields,
 				]
 			);
+
+			/**
+			 * Bust starting price cache of expedition if occupancy is updated.
+			 */
+
+			// Bust if occupancy is updated.
+			if ( $is_occupancies_updated ) {
+				// Bust starting price cache of expedition.
+				foreach ( get_currencies() as $currency ) {
+					$cache_key = EXPEDITION_CACHE_KEY . '_starting_from_price_' . $expedition_post_id . '_' . $currency;
+
+					// Delete cache.
+					wp_cache_delete( $cache_key, EXPEDITION_CACHE_GROUP );
+				}
+			}
 		} else {
 			// Fire action if no updates.
 			do_action(
