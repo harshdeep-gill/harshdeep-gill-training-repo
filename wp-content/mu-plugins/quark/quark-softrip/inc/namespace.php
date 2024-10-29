@@ -57,7 +57,7 @@ function bootstrap(): void {
 	add_filter( 'wp_stream_connectors', __NAMESPACE__ . '\\setup_stream_connectors' );
 
 	// Flush page cache on sync completion.
-	add_action( 'quark_softrip_sync_completed', __NAMESPACE__ . '\\flush_page_cache' );
+	add_action( 'quark_softrip_sync_completed', __NAMESPACE__ . '\\flush_page_cache', 9999 );
 
 	// Delete custom data on departure post deletion.
 	add_action( 'delete_post_' . DEPARTURE_POST_TYPE, __NAMESPACE__ . '\\delete_custom_data' );
@@ -531,7 +531,7 @@ function flush_page_cache( array $data = [] ): void {
 	}
 
 	// Flush cache and warm up.
-	flush_and_warm_edge_cache( 'manually' === get_initiated_via() );
+	flush_and_warm_edge_cache();
 }
 
 /**
