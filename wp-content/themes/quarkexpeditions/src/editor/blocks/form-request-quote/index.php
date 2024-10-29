@@ -56,7 +56,15 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 	];
 
 	// Build query args.
-	$expeditions = get_expeditions_and_month_options_by_expedition()['expeditions'];
+	$filter_options = get_expeditions_and_month_options_by_expedition();
+
+	// Initialize.
+	$expeditions = [];
+
+	// Get expeditions.
+	if ( ! empty( $filter_options['expeditions'] ) ) {
+		$expeditions = $filter_options['expeditions'];
+	}
 
 	// Add expeditions to component attributes.
 	$component_attributes['expeditions'] = $expeditions;
