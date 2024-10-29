@@ -7,6 +7,8 @@
 
 namespace Quark\PageCache;
 
+use WP_CLI;
+use WP_Post;
 use WP_Query;
 
 use function Quark\Core\doing_tests;
@@ -24,6 +26,21 @@ use const Quark\Regions\POST_TYPE as REGIONS_POST_TYPE;
 use const Quark\Ships\POST_TYPE as SHIPS_POST_TYPE;
 use const Quark\StaffMembers\POST_TYPE as STAFF_MEMBERS_POST_TYPE;
 
+// Pricing blocks.
+const PRICING_BLOCKS = [
+	'quark/book-departures-expeditions',
+	'quark/book-departures-ships',
+	'quark/dates-and-rates',
+	'quark/detailed-expeditions-carousel',
+	'quark/expedition-details',
+	'quark/expedition-search',
+	'quark/expeditions',
+	'quark/itineraries',
+	'quark/product-cards',
+	'quark/product-departures-card',
+];
+
+// Post types to cache.
 const CACHED_POST_TYPE_SLUGS = [
 	PAGE_POST_TYPE,
 	EXPEDITIONS_POST_TYPE,
@@ -44,16 +61,26 @@ const CACHED_POST_TYPE_SLUGS = [
  * @return void
  */
 function bootstrap(): void {
+	// CLI commands.
+	if ( defined( 'WP_CLI' ) && true === WP_CLI ) {
+		WP_CLI::add_command( 'quark-cache pricing-information', __NAMESPACE__ . '\\WP_CLI\\Pricing_Information' );
+	}
+
 	// Register Stream log connector.
 	add_filter( 'wp_stream_connectors', __NAMESPACE__ . '\\setup_stream_connectors' );
+
+	// Set meta for pricing block page.
+	add_action( 'save_post', __NAMESPACE__ . '\\set_meta_for_pricing_block_posts' );
 }
 
 /**
  * Flush page cache and warm it up.
  *
+ * @param bool $invalidate_pricing_posts Invalidate all posts edge cache.
+ *
  * @return void
  */
-function flush_and_warm_up_page_cache(): void {
+function flush_and_warm_up_page_cache( bool $invalidate_pricing_posts = true ): void {
 	// Start time.
 	$start_time = microtime( true );
 
@@ -69,6 +96,16 @@ function flush_and_warm_up_page_cache(): void {
 	// Loop through post types.
 	foreach ( CACHED_POST_TYPE_SLUGS as $post_type ) {
 		$args['post_type'] = $post_type;
+
+		// Add meta query if invalidating for pricing posts only.
+		if ( true === $invalidate_pricing_posts ) {
+			$args['meta_query'] = [
+				[
+					'key'   => '_has_a_block_with_pricing_information',
+					'value' => '1',
+				],
+			];
+		}
 
 		// Run query.
 		$query    = new WP_Query( $args );
@@ -117,7 +154,7 @@ function flush_and_warm_up_page_cache(): void {
 	do_action(
 		'quark_page_cache_flushed',
 		[
-			'time_took' => $execution_time,
+			'time_taken' => $execution_time,
 		]
 	);
 }
@@ -138,4 +175,77 @@ function setup_stream_connectors( array $connectors = [] ): array {
 
 	// Return the connectors.
 	return $connectors;
+}
+
+/**
+ * Set meta for pricing block page.
+ *
+ * @param int $post_id Post ID.
+ *
+ * @return bool True if meta set, false otherwise.
+ */
+function set_meta_for_pricing_block_posts( int $post_id = 0 ): bool {
+	// Bail if saving a revision OR Bail if doing autosave.
+	if ( wp_is_post_revision( $post_id ) || ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) ) {
+		return false;
+	}
+
+	// Get post ID.
+	if ( 0 === $post_id ) {
+		$post_id = absint( get_the_ID() );
+	}
+
+	// Get post.
+	$post = get_post( $post_id );
+
+	// Bail if no post.
+	if ( ! $post instanceof WP_Post || ! in_array( $post->post_type, CACHED_POST_TYPE_SLUGS, true ) ) {
+		return false;
+	}
+
+	// get post content.
+	$content = get_post_field( 'post_content', $post_id );
+
+	// Parse blocks.
+	$blocks = parse_blocks( $content );
+
+	// Skip if we don't have any blocks.
+	if ( empty( $blocks ) ) {
+		return false;
+	}
+
+	// Flatten blocks.
+	$blocks            = _flatten_blocks( $blocks );
+	$has_pricing_block = false;
+
+	// Loop through blocks to find the pricing blocks.
+	foreach ( $blocks as $block ) {
+		// Skip if we don't have a block name.
+		if ( empty( $block['blockName'] ) ) {
+			continue;
+		}
+
+		// Skip if block name is not in the pricing blocks.
+		if ( in_array( $block['blockName'], PRICING_BLOCKS, true ) ) {
+			// Set flag to true.
+			$has_pricing_block = true;
+
+			// break the loop.
+			break;
+		}
+	}
+
+	// Update post meta if pricing block found.
+	if ( true === $has_pricing_block ) {
+		// Set pricing block meta.
+		update_post_meta( $post_id, '_has_a_block_with_pricing_information', true );
+
+		// Return true if pricing block found.
+		return true;
+	} else {
+		delete_post_meta( $post_id, '_has_a_block_with_pricing_information' );
+	}
+
+	// Return false if no pricing block found.
+	return false;
 }

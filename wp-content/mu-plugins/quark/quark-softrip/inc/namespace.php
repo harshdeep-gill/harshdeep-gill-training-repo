@@ -532,7 +532,7 @@ function flush_page_cache( array $data = [] ): void {
 	}
 
 	// Flush cache and warm up.
-	flush_and_warm_up_page_cache();
+	flush_and_warm_up_page_cache( 'manually' === get_initiated_via() );
 }
 
 /**
