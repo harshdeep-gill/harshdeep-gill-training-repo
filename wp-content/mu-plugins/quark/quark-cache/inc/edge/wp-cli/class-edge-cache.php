@@ -15,7 +15,7 @@ use function WP_CLI\Utils\get_flag_value;
 /**
  * Edge Cache CLI commands.
  */
-class Edge_Cache extends WP_CLI {
+class Edge_Cache {
 	/**
 	 * Flush Edge cache and warm it up.
 	 *
