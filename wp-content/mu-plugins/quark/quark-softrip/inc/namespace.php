@@ -530,8 +530,17 @@ function flush_page_cache( array $data = [] ): void {
 		return;
 	}
 
+	// Get initiated via.
+	$initiated_via = get_initiated_via();
+
+	// Bail if initiated manually.
+	if ( 'manually' === $initiated_via ) {
+		// @todo Implement a GitHub action to flush cache - https://tuispecialist.atlassian.net/browse/QE-1035.
+		return;
+	}
+
 	// Flush cache and warm up.
-	flush_and_warm_edge_cache();
+	flush_and_warm_edge_cache( true );
 }
 
 /**
