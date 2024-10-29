@@ -7274,6 +7274,132 @@
 	/>
 </x-component-demo>
 
+<x-component-demo :keys="[ 'months-selector' ]">
+	@php
+		$years = [ 2024, 2025, 2026 ];
+		$months = [
+			[
+				'label' => 'November 2024',
+				'value' => '11-2024',
+				'count' => '6',
+			],
+			[
+				'label' => 'December 2024',
+				'value' => '12-2024',
+				'count' => '9',
+			],
+			[
+				'label' => 'January 2025',
+				'value' => '01-2025',
+				'count' => '9',
+			],
+			[
+				'label' => 'February 2025',
+				'value' => '02-2025',
+				'count' => '6',
+			],
+			[
+				'label' => 'March 2025',
+				'value' => '03-2025',
+				'count' => '5',
+			],
+			[
+				'label' => 'April 2025',
+				'value' => '04-2025',
+				'count' => '1',
+			],
+			[
+				'label' => 'May 2025',
+				'value' => '05-2025',
+				'count' => '7',
+			],
+			[
+				'label' => 'June 2025',
+				'value' => '06-2025',
+				'count' => '7',
+			],
+			[
+				'label' => 'July 2025',
+				'value' => '07-2025',
+				'count' => '5',
+			],
+			[
+				'label' => 'August 2025',
+				'value' => '08-2025',
+				'count' => '6',
+			],
+			[
+				'label' => 'September 2025',
+				'value' => '09-2025',
+				'count' => '5',
+			],
+			[
+				'label' => 'November 2025',
+				'value' => '11-2025',
+				'count' => '6',
+			],
+			[
+				'label' => 'December 2025',
+				'value' => '12-2025',
+				'count' => '11',
+			],
+			[
+				'label' => 'January 2026',
+				'value' => '01-2026',
+				'count' => '9',
+			],
+			[
+				'label' => 'February 2026',
+				'value' => '02-2026',
+				'count' => '9',
+			],
+			[
+				'label' => 'March 2026',
+				'value' => '03-2026',
+				'count' => '3',
+			],
+			[
+				'label' => 'May 2026',
+				'value' => '05-2026',
+				'count' => '1',
+			],
+			[
+				'label' => 'June 2026',
+				'value' => '06-2026',
+				'count' => '1',
+			],
+			[
+				'label' => 'July 2026',
+				'value' => '07-2026',
+				'count' => '3',
+			],
+			[
+				'label' => 'August 2026',
+				'value' => '08-2026',
+				'count' => '5',
+			],
+			[
+				'label' => 'September 2026',
+				'value' => '09-2026',
+				'count' => '3',
+			],
+		];
+	@endphp
+
+	<x-section>
+		<x-months-multi-select
+			:is_multi_select="false"
+			:available_months="$months"
+		>
+			<x-months-multi-select.carousel>
+				@foreach ( $years as $year )
+					<x-months-multi-select.slide :years="[ $year ]" />
+				@endforeach
+			</x-months-multi-select.carousel>
+		</x-months-multi-select>
+	</x-section>
+</x-component-demo>
+
 <x-component-demo :keys="[ 'footer' ]">
 	@php
 		$social_links = [
