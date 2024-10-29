@@ -19,6 +19,7 @@ export class MonthsMultiSelect extends HTMLElement {
 	private availableMonths: Array<object> | null;
 	private _value: string[];
 	static observedAttributes = [ 'available-months', 'value' ];
+	private updatedValueAttribute: boolean;
 
 	/**
 	 * Constructor.
@@ -31,6 +32,7 @@ export class MonthsMultiSelect extends HTMLElement {
 		this.resetButtons = this.querySelectorAll( '.months-multi-select__reset-button' );
 		this.availableMonths = JSON.parse( this.getAttribute( 'available-months' ) ?? '' );
 		this._value = [];
+		this.updatedValueAttribute = false;
 
 		// Get the value attribute.
 		const valueAttribute = this.getAttribute( 'value' ) ?? '';
@@ -84,6 +86,14 @@ export class MonthsMultiSelect extends HTMLElement {
 			// Disable unavailable month options.
 			this.disableUnavailableMonthOptions( JSON.parse( this.getAttribute( 'available-months' ) ?? '' ) );
 		} else if ( 'value' === name ) {
+			// Check if it was set by this component itself.
+			if ( this.updatedValueAttribute ) {
+				this.updatedValueAttribute = false;
+
+				// Do nothing.
+				return;
+			}
+
 			// Get the value.
 			this.value = newValue.split( ',' ).filter( ( v ) => v !== '' );
 		}
@@ -180,6 +190,7 @@ export class MonthsMultiSelect extends HTMLElement {
 		}
 
 		// Set the value attribute
+		this.updatedValueAttribute = true;
 		this.setAttribute( 'value', this._value.toString() );
 
 		// Dispatch change event.
