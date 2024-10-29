@@ -308,7 +308,7 @@ function get_occupancy_promotions_by_occupancy_id_and_promotion_id( int $occupan
 		$cached_value = wp_cache_get( $cache_key, CACHE_GROUP );
 
 		// Return cached value if exists.
-		if ( ! empty( $cached_value ) && is_array( $cached_value ) ) {
+		if ( is_array( $cached_value ) ) {
 			return $cached_value;
 		}
 	}
@@ -390,7 +390,7 @@ function get_occupancy_promotions_by_occupancy( int $occupancy_id = 0, bool $for
 		$cached_value = wp_cache_get( $cache_key, CACHE_GROUP );
 
 		// Return cached value if exists.
-		if ( ! empty( $cached_value ) && is_array( $cached_value ) ) {
+		if ( is_array( $cached_value ) ) {
 			return $cached_value;
 		}
 	}
@@ -672,7 +672,7 @@ function get_occupancy_promo_by_id( int $id = 0, bool $force = false ): array {
 		$cached_value = wp_cache_get( $cache_key, CACHE_GROUP );
 
 		// Return cached value if exists.
-		if ( ! empty( $cached_value ) && is_array( $cached_value ) ) {
+		if ( is_array( $cached_value ) ) {
 			return $cached_value;
 		}
 	}

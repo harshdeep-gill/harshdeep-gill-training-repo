@@ -1274,22 +1274,44 @@ function get_minimum_duration_itinerary( int $post_id = 0 ): WP_Post|null {
  * Get Starting From Price for Expedition.
  * From set Itineraries.
  *
- * @param int $post_id Post ID.
+ * @param int  $post_id Post ID.
+ * @param bool $force   Whether cached value should be ignored.
  *
  * @return array{
  *    original: int,
  *    discounted: int,
  * }
  */
-function get_starting_from_price( int $post_id = 0 ): array {
-	// Get post.
-	$post = get( $post_id );
-
-	// Starting from price.
+function get_starting_from_price( int $post_id = 0, bool $force = false ): array {
+	// Default starting from price.
 	$lowest_prices = [
 		'original'   => 0,
 		'discounted' => 0,
 	];
+
+	// Bail if no post ID.
+	if ( empty( $post_id ) ) {
+		return $lowest_prices;
+	}
+
+	// Current currency.
+	$currency = get_current_currency();
+
+	// Cache key.
+	$cache_key = CACHE_KEY . '_starting_from_price_' . $post_id . '_' . $currency;
+
+	// If not forced, check cache.
+	if ( ! $force ) {
+		$cached_value = wp_cache_get( $cache_key, CACHE_GROUP );
+
+		// Check for cached value.
+		if ( is_array( $cached_value ) && isset( $cached_value['original'], $cached_value['discounted'] ) ) {
+			return $cached_value;
+		}
+	}
+
+	// Get post.
+	$post = get( $post_id );
 
 	// Check for post.
 	if ( empty( $post['post'] ) || ! $post['post'] instanceof WP_Post ) {
@@ -1303,9 +1325,6 @@ function get_starting_from_price( int $post_id = 0 ): array {
 	if ( empty( $itineraries ) ) {
 		return $lowest_prices;
 	}
-
-	// Current currency.
-	$currency = get_current_currency();
 
 	// Loop through itineraries and get minimum price.
 	foreach ( $itineraries as $itinerary ) {
@@ -1327,6 +1346,9 @@ function get_starting_from_price( int $post_id = 0 ): array {
 			$lowest_prices = $price;
 		}
 	}
+
+	// Set cache.
+	wp_cache_set( $cache_key, $lowest_prices, CACHE_GROUP );
 
 	// Return starting from price.
 	return $lowest_prices;

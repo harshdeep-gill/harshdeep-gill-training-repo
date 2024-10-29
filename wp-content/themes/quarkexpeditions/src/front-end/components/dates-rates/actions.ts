@@ -618,7 +618,7 @@ export const setNextPage = () => {
  */
 export const setPerPage = ( updatedValue: number ) => {
 	// Is this a valid updated totalPages?
-	if ( Number.isNaN( updatedValue ) || updatedValue < DEFAULT_STATE.perPage ) {
+	if ( Number.isNaN( updatedValue ) || ! getState().allowedPerPage.includes( updatedValue ) ) {
 		// No, reject the update.
 		return;
 	}
@@ -634,6 +634,24 @@ export const setPerPage = ( updatedValue: number ) => {
 
 	// Fetch results.
 	fetchResults();
+};
+
+/**
+ * Sets the allowedPerPage state.
+ *
+ * @param { number[] } updatedArray New updated array to be assigned.
+ */
+export const setAllowedPerPage = ( updatedArray: number[] ) => {
+	// Check length
+	if ( updatedArray.length === 0 ) {
+		// Bail.
+		return;
+	}
+
+	// Set the state.
+	setState( {
+		allowedPerPage: [ ...updatedArray ],
+	} );
 };
 
 /**

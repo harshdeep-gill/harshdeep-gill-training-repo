@@ -1,9 +1,10 @@
 /**
  * Tracking.
  */
+import { getCampaignIdsFromCookies } from '../../global/store/actions';
 
 // Campaign params.
-export const campaignParams: string[] = [ 'utm_source', 'utm_term', 'utm_campaign', 'utm_keyword', 'utm_content', 'utm_theme', 'utm_medium', 'gclid', 'msclkid', 'fbid', 'fbclid' ];
+export const campaignParams: string[] = [ 'utm_source', 'utm_term', 'utm_campaign', 'utm_keyword', 'utm_content', 'utm_theme', 'utm_medium', 'gclid', 'msclkid', 'fbid', 'fbclid', 'pclid' ];
 
 /**
  * Get campaign params from URL.
@@ -58,7 +59,15 @@ export const getGaCookie = (): string => {
  */
 export const initializeTracking = (): void => {
 	// Get URL campaign params.
-	const urlCampaignParams = getCampaignParamsFromUrl();
+	let urlCampaignParams = getCampaignParamsFromUrl();
+
+	// Check if we have any campaign params.
+	if ( ! Object.keys( urlCampaignParams ).length ) {
+		// Get campaign ids from cookies.
+		urlCampaignParams = getCampaignIdsFromCookies();
+	}
+
+	// Get GA cookie.
 	const gaCookie = getGaCookie();
 
 	// Trigger an event.
