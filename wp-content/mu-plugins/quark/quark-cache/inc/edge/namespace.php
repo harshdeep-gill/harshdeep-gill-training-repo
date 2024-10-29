@@ -165,6 +165,9 @@ function flush_and_warm_edge_cache( bool $pricing_pages_only = false ): void {
 			if ( $progress ) {
 				$progress->tick();
 			}
+
+			// delay for 50 milliseconds.
+			usleep( 50000 );
 		}
 
 		// End time.
