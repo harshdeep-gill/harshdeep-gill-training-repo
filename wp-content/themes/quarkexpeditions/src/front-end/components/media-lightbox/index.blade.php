@@ -88,6 +88,8 @@
 				<button><x-svg name="cross" /></button>
 			</tp-lightbox-close>
 
+			<tp-lightbox-count class="media-lightbox__count" format="$current/$total"></tp-lightbox-count>
+
 			<tp-lightbox-content class="media-lightbox__content"></tp-lightbox-content>
 
 			<tp-lightbox-previous class="media-lightbox__prev">
@@ -97,8 +99,6 @@
 			<tp-lightbox-next class="media-lightbox__next">
 				<button class="media-lightbox__next-button"><x-svg name="chevron-left" /></button>
 			</tp-lightbox-next>
-
-			<tp-lightbox-count class="media-lightbox__count" format="$current/$total"></tp-lightbox-count>
 		</dialog>
 	</tp-lightbox>
 </x-once>

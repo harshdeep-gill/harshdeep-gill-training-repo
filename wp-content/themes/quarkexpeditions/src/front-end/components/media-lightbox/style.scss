@@ -66,14 +66,15 @@
 		font-size: var(--font-size-small);
 		line-height: var(--line-height-small);
 		padding-top: var(--spacing-5);
-		width: fit-content;
 		min-height: 46px;
+		display: block;
+		text-align: center;
 	}
 
 	dialog {
 
 		&::backdrop {
-			background-color: rgba(0, 0, 0, 0.9);
+			background-color: rgb(0, 0, 0);
 		}
 
 		/* stylelint-disable-next-line selector-pseudo-class-no-unknown */
@@ -148,9 +149,8 @@
 		font-size: var(--font-size-small);
 		line-height: var(--line-height-small);
 		display: block;
-		position: absolute;
-		bottom: 0;
-		right: 0;
+		text-align: center;
+		margin-bottom: var(--spacing-5);
 	}
 
 	&__prev,
