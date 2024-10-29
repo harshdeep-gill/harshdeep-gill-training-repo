@@ -49,6 +49,14 @@ export default class ExpeditionCard extends HTMLElement {
 	}
 
 	/**
+	 * Connected Callback.
+	 */
+	connectedCallback() {
+		// Update hidden items.
+		this.updateAdventuresHiddenItems();
+	}
+
+	/**
 	 * Toogle the dropdown.
 	 */
 	toggle() {
@@ -121,24 +129,25 @@ export default class ExpeditionCard extends HTMLElement {
 				// Default behavior for larger screens.
 				totalWidth += option.clientWidth;
 
+				// Check if More Option should be visible.
+				if ( totalWidth < this.adventuresContainer!.clientWidth && index === this.adventuresItems!.length - 2 ) {
+					// Add hidden class.
+					this.adventurescountWrap!.classList.add( 'expedition-cards__options-count-wrap--hidden' );
+				}
+
 				// Width check.
-				if ( totalWidth > this.adventuresContainer!.clientWidth - this.adventurescountWrap!.clientWidth ) {
+				if ( ( totalWidth + this.adventurescountWrap!.clientWidth ) > this.adventuresContainer!.clientWidth ) {
 					// Add hidden class
 					option.classList.add( 'expedition-cards__option--hidden' );
+
+					// Update the count markup. We are updating the count before incrementing to avoid the more option count.
+					this.adventurescountSpan!.textContent = hiddenCount.toString();
+
+					// Update the count.
 					hiddenCount++;
 				}
 			}
 		} );
-
-		// Update count and toggle visibility.
-		if ( hiddenCount > 0 ) {
-			// Set the text and remvoe hidden class.
-			this.adventurescountSpan!.textContent = hiddenCount.toString();
-			this.adventurescountWrap!.classList.remove( 'expedition-cards__options-count-wrap--hidden' );
-		} else {
-			// Add class.
-			this.adventurescountWrap!.classList.add( 'expedition-cards__options-count-wrap--hidden' );
-		}
 	}
 }
 
