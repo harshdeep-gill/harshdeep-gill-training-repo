@@ -171,7 +171,7 @@ function flush_and_warm_edge_cache( bool $pricing_pages_only = false ): void {
 			wp_remote_get(
 				$permalink,
 				[
-					'blocking' => false,
+					'timeout' => '0.5',
 				]
 			);
 
