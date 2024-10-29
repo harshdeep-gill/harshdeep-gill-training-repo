@@ -12,7 +12,7 @@ use WP_CLI;
 use WP_Error;
 use WP_Query;
 
-use function Quark\PageCache\flush_and_warm_up_page_cache;
+use function Quark\Cache\Edge\flush_and_warm_edge_cache;
 use function Quark\Softrip\Departures\update_departures;
 use function Quark\Softrip\AdventureOptions\get_table_sql as get_adventure_options_table_sql;
 use function Quark\Softrip\Occupancies\get_table_sql as get_occupancies_table_sql;
@@ -23,7 +23,6 @@ use function Quark\Softrip\Cleanup\do_cleanup;
 use function Quark\Softrip\Occupancies\get_table_name as get_occupancies_table_name;
 use function Quark\Softrip\OccupancyPromotions\get_table_name as get_occupancy_promotions_table_name;
 use function Quark\Softrip\Promotions\get_table_name as get_promotions_table_name;
-use function Travelopia\Cache\clear_all_edge_cache_paths;
 
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
 use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
@@ -532,7 +531,7 @@ function flush_page_cache( array $data = [] ): void {
 	}
 
 	// Flush cache and warm up.
-	flush_and_warm_up_page_cache( 'manually' === get_initiated_via() );
+	flush_and_warm_edge_cache( 'manually' === get_initiated_via() );
 }
 
 /**

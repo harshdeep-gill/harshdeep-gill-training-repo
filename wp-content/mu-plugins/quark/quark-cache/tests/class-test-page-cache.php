@@ -5,12 +5,12 @@
  * @package quark-page-cache
  */
 
-namespace Quark\PageCache\Tests;
+namespace Quark\Cache\Tests;
 
 use WP_UnitTestCase;
 use WP_Post;
 
-use function Quark\PageCache\flush_and_warm_up_page_cache;
+use function Quark\Cache\Edge\flush_and_warm_edge_cache;
 
 /**
  * Class Test_Page_Cache
@@ -25,13 +25,13 @@ class Test_Page_Cache extends WP_UnitTestCase {
 	private $time_taken;
 
 	/**
-	 * Test flush_and_warm_up_page_cache function.
+	 * Test flush_and_warm_edge_cache function.
 	 *
-	 * @covers \Quark\PageCache\flush_and_warm_up_page_cache
+	 * @covers \Quark\PageCache\flush_and_warm_edge_cache
 	 *
 	 * @return void
 	 */
-	public function test_flush_and_warm_up_page_cache(): void {
+	public function test_flush_and_warm_edge_cache(): void {
 		// Attach the hook.
 		add_action( 'quark_page_cache_flushed', [ $this, 'quark_page_cache_flushed' ] );
 
@@ -43,7 +43,7 @@ class Test_Page_Cache extends WP_UnitTestCase {
 		$this->assertEmpty( $this->time_taken );
 
 		// Call the function.
-		flush_and_warm_up_page_cache();
+		flush_and_warm_edge_cache();
 
 		// Test that the action is fired after the function is called.
 		$this->assertNotEmpty( did_action( 'quark_page_cache_flushed' ) );

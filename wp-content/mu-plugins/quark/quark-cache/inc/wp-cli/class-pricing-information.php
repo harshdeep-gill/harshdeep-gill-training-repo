@@ -12,10 +12,10 @@ use WP_CLI;
 use WP_CLI\ExitException;
 use WP_Query;
 
-use function WP_CLI\Utils\make_progress_bar;
-use function Quark\PageCache\set_meta_for_pricing_block_posts;
+use const Quark\Cache\Edge\CACHED_POST_TYPE_SLUGS;
 
-use const Quark\PageCache\CACHED_POST_TYPE_SLUGS;
+use function Quark\Cache\set_meta_for_pricing_block_posts;
+use function WP_CLI\Utils\make_progress_bar;
 
 /**
  * Class Pricing_Information.

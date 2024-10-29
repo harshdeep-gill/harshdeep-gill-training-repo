@@ -2,10 +2,10 @@
 /**
  * Stream connector.
  *
- * @package quark-page-cache
+ * @package quark-cache
  */
 
-namespace Quark\PageCache;
+namespace Quark\Cache\Edge;
 
 use WP_Stream\Connector;
 
@@ -18,7 +18,7 @@ class Stream_Connector extends Connector {
 	 *
 	 * @var string
 	 */
-	public $name = 'quark_page_cache';
+	public $name = 'quark_edge_cache';
 
 	/**
 	 * Actions registered for this connector.
@@ -26,7 +26,7 @@ class Stream_Connector extends Connector {
 	 * @var string[]
 	 */
 	public $actions = [
-		'quark_page_cache_flushed',
+		'quark_edge_cache_flushed',
 	];
 
 	/**
@@ -64,26 +64,26 @@ class Stream_Connector extends Connector {
 	}
 
 	/**
-	 * Callback for `quark_page_cache_flushed` action.
+	 * Callback for `quark_edge_cache_flushed` action.
 	 *
 	 * @param mixed[] $data Data passed to the action.
 	 *
 	 * @return void
 	 */
-	public function callback_quark_page_cache_flushed( array $data = [] ): void {
+	public function callback_quark_edge_cache_flushed( array $data = [] ): void {
 		// Validate data.
-		if ( empty( $data ) || empty( $data['time_took'] ) || ! is_scalar( $data['time_took'] ) ) {
+		if ( empty( $data ) || empty( $data['time_taken'] ) || ! is_scalar( $data['time_taken'] ) ) {
 			return;
 		}
 
 		// Format time took to two decimal places.
-		$time_took = number_format( floatval( $data['time_took'] ), 3 );
+		$time_taken = number_format( floatval( $data['time_taken'] ), 3 );
 
 		// Prepare message.
 		$message = sprintf(
 			// translators: %s is the time took in seconds.
-			__( 'Page cache flushed. Time took: %s seconds.', 'qrk' ),
-			$time_took
+			__( 'Edge cache flushed and warmed up. Time taken: %s seconds.', 'qrk' ),
+			$time_taken
 		);
 
 		// Log action.
