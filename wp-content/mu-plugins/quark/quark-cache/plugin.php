@@ -13,6 +13,7 @@ namespace Quark\Cache;
 
 require_once __DIR__ . '/inc/namespace.php';
 require_once __DIR__ . '/inc/edge/namespace.php';
+require_once __DIR__ . '/inc/edge/wp-cli/class-edge-cache.php';
 require_once __DIR__ . '/inc/wp-cli/class-pricing-information.php';
 
 // Kick it off.
