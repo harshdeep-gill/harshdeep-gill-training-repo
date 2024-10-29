@@ -19,7 +19,7 @@
 					<x-expedition-cards.grid-column>
 						<x-expedition-cards.promo-tag text="{{ $card['promotion_banner'] ?? '' }}" />
 						<x-expedition-cards.date>{{ $card['duration_dates'] ?? '' }}</x-expedition-cards.date>
-						<x-expedition-cards.title>{{ $card['expedition_name'] ?? '' }}</x-expedition-cards.title>
+						<x-expedition-cards.title href="{{ $card['expedition_link'] ?? '' }}">{{ $card['expedition_name'] ?? '' }}</x-expedition-cards.title>
 
 						<x-expedition-cards.icons>
 							<x-expedition-cards.icon icon="ship">{{ $card['ship_name'] ?? '' }}</x-expedition-cards.icon>
