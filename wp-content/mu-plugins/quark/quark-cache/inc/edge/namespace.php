@@ -7,6 +7,8 @@
 
 namespace Quark\Cache\Edge;
 
+use cli\progress\Bar;
+use WP_CLI;
 use WP_Query;
 
 use function Quark\Core\doing_tests;
@@ -47,18 +49,27 @@ const CACHED_POST_TYPE_SLUGS = [
 function bootstrap(): void {
 	// Register Stream log connector.
 	add_filter( 'wp_stream_connectors', __NAMESPACE__ . '\\setup_stream_connectors' );
+
+	// CLI commands.
+	if ( defined( 'WP_CLI' ) && true === WP_CLI ) {
+		WP_CLI::add_command( 'quark-cache edge', __NAMESPACE__ . '\\WP_CLI\\Edge_Cache' );
+	}
 }
 
 /**
  * Flush page cache and warm it up.
  *
- * @param bool $invalidate_pricing_posts Invalidate all posts edge cache.
+ * @param bool $pricing_pages_only Invalidate pricing pages only. Default is false.
  *
  * @return void
  */
-function flush_and_warm_edge_cache( bool $invalidate_pricing_posts = true ): void {
+function flush_and_warm_edge_cache( bool $pricing_pages_only = false ): void {
 	// Start time.
 	$start_time = microtime( true );
+
+	// Check if in CLI.
+	$is_in_cli = defined( 'WP_CLI' ) && true === WP_CLI;
+	$progress  = null;
 
 	// Prepare query args.
 	$args = [
@@ -77,7 +88,7 @@ function flush_and_warm_edge_cache( bool $invalidate_pricing_posts = true ): voi
 		$args['post_type'] = $post_type;
 
 		// Add meta query if invalidating for pricing posts only.
-		if ( true === $invalidate_pricing_posts ) {
+		if ( true === $pricing_pages_only ) {
 			$args['meta_query'] = [
 				[
 					'key'   => '_has_a_block_with_pricing_information',
@@ -92,6 +103,13 @@ function flush_and_warm_edge_cache( bool $invalidate_pricing_posts = true ): voi
 
 		// Bail if no posts.
 		if ( empty( $post_ids ) ) {
+			// Log action.
+			if ( $is_in_cli ) {
+				WP_CLI::log( WP_CLI::colorize( '%YNo ' . $post_type . ' posts found.%n' ) );
+				WP_CLI::log( '' );
+			}
+
+			// Continue to next post type.
 			continue;
 		}
 
@@ -103,12 +121,29 @@ function flush_and_warm_edge_cache( bool $invalidate_pricing_posts = true ): voi
 			continue;
 		}
 
+		// Total posts.
+		$total_posts     = count( $post_ids );
+		$counter         = 0;
+		$post_start_time = microtime( true );
+
+		// Initialize progress bar.
+		if ( $is_in_cli ) {
+			WP_CLI::log( WP_CLI::colorize( '%GFound ' . $total_posts . ' ' . $post_type . ' posts.%n' ) );
+			$progress = new Bar( "Processing $post_type", $total_posts );
+		}
+
 		// Get permalink.
 		foreach ( $post_ids as $post_id ) {
 			$permalink = get_permalink( $post_id );
 
 			// Bail if no permalink.
 			if ( ! $permalink ) {
+				// Update progress bar.
+				if ( $progress ) {
+					$progress->tick();
+				}
+
+				// Continue to next post.
 				continue;
 			}
 
@@ -122,6 +157,31 @@ function flush_and_warm_edge_cache( bool $invalidate_pricing_posts = true ): voi
 					'blocking' => false,
 				]
 			);
+
+			// Update counter.
+			++$counter;
+
+			// Update progress bar.
+			if ( $progress ) {
+				$progress->tick();
+			}
+		}
+
+		// End time.
+		$post_end_time = microtime( true );
+
+		// Finish progress bar.
+		if ( $progress ) {
+			$progress->finish();
+		}
+
+		// Log action.
+		if ( $is_in_cli ) {
+			WP_CLI::log( WP_CLI::colorize( '%GProcessed ' . $counter . ' out of ' . $total_posts . ' ' . $post_type . ' posts.%n' ) );
+			WP_CLI::log( WP_CLI::colorize( '%GTime taken: ' . ( $post_end_time - $post_start_time ) . ' seconds.%n' ) );
+
+			// New line.
+			WP_CLI::log( '' );
 		}
 	}
 
@@ -133,7 +193,8 @@ function flush_and_warm_edge_cache( bool $invalidate_pricing_posts = true ): voi
 	do_action(
 		'quark_edge_cache_flushed',
 		[
-			'time_taken' => $execution_time,
+			'time_taken'         => $execution_time,
+			'pricing_pages_only' => $pricing_pages_only,
 		]
 	);
 }
