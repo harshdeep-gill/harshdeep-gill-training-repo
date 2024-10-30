@@ -88,7 +88,6 @@
 				flex-direction: column;
 				justify-content: space-between;
 				height: 100%;
-
 			}
 		}
 	}
@@ -228,7 +227,6 @@
 		}
 
 		@media screen and (max-width: calc(grid-size(md) - 1px) ) {
-			// display: none;
 			top: 50%;
 		}
 	}
