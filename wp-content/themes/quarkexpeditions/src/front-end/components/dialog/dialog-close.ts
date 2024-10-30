@@ -39,6 +39,9 @@ export class QuarkDialogCloseElement extends HTMLElement {
 		// Close dialog.
 		this.dialog?.close();
 
+		// Toggle open attribute.
+		this.dialog?.parentElement?.toggleAttribute( 'open' );
+
 		// Remove scroll from body.
 		document.querySelector( 'body' )?.classList?.remove( 'prevent-scroll' );
 	}
