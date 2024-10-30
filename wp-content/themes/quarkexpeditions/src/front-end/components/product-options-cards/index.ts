@@ -63,6 +63,9 @@ export class ProductOptionsCards extends HTMLElement {
 	hideCardDetailsElement( detailsId: string ): void {
 		// Hide the details element.
 		this.cardDetailsMap.get( detailsId )?.setAttribute( 'data-hidden', 'yes' );
+
+		// Scroll cards into view.
+		this?.scrollIntoView();
 	}
 
 	/**
@@ -71,8 +74,14 @@ export class ProductOptionsCards extends HTMLElement {
 	 * @param { string } detailsId The dom id of the details element.
 	 */
 	showCardDetailsElement( detailsId: string ): void {
+		// Get the details element.
+		const detailsElement = this.cardDetailsMap.get( detailsId );
+
 		// Show the details element.
-		this.cardDetailsMap.get( detailsId )?.removeAttribute( 'data-hidden' );
+		detailsElement?.removeAttribute( 'data-hidden' );
+
+		// Scroll details into view.
+		detailsElement?.scrollIntoView();
 	}
 
 	/**

@@ -86,6 +86,9 @@ export default class DepartureCard extends HTMLElement {
 		// Toggle `open` attribute.
 		this.setAttribute( 'open', 'true' );
 		this.moreDetails?.classList.add( 'departure-cards__more-details--active' );
+
+		// Scroll details into view.
+		this.moreDetails?.scrollIntoView();
 	}
 
 	/**
@@ -95,6 +98,9 @@ export default class DepartureCard extends HTMLElement {
 		// Remove 'open' attribute.
 		this.removeAttribute( 'open' );
 		this.moreDetails?.classList.remove( 'departure-cards__more-details--active' );
+
+		// Scroll the current card into view.
+		this.scrollIntoView();
 	}
 
 	/**
