@@ -133,9 +133,10 @@ function flush_and_warm_edge_cache( bool $pricing_pages_only = false ): void {
 		$post_ids = array_map( 'absint', $post_ids );
 
 		// Skip if doing tests.
-		// if ( doing_tests() || 'local' === $environment ) {
-		// continue;
-		// }
+		if ( doing_tests() || 'local' === $environment ) {
+			continue;
+		}
+
 		// Total posts.
 		$total_posts     = count( $post_ids );
 		$counter         = 0;
@@ -177,16 +178,19 @@ function flush_and_warm_edge_cache( bool $pricing_pages_only = false ): void {
 			}
 
 			// edge cache.
-			// clear_edge_cache_paths( [ $paths['path'] ] );
+			clear_edge_cache_paths( [ $paths['path'] ] );
+
 			// delay for 200 milliseconds.
-			// usleep( 200000 );
+			usleep( 200000 );
+
 			// Make request to warm cache.
-			// wp_remote_get(
-			// $permalink,
-			// [
-			// 'timeout' => '0.5',
-			// ]
-			// );
+			wp_remote_get(
+				$permalink,
+				[
+					'timeout' => '0.5',
+				]
+			);
+
 			// Update counter.
 			++$counter;
 
