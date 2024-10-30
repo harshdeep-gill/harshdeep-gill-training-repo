@@ -67,7 +67,7 @@ function bootstrap(): void {
  *
  * @return void
  */
-function flush_and_warm_edge_cache( bool $pricing_pages_only = false ): void {
+function flush_and_warm_edge_cache( bool $pricing_pages_only = true ): void {
 	// Start time.
 	$start_time = microtime( true );
 
@@ -281,5 +281,5 @@ function flush_page_cache( array $data = [] ): void {
 	}
 
 	// Flush cache and warm up.
-	flush_and_warm_edge_cache( true );
+	flush_and_warm_edge_cache();
 }
