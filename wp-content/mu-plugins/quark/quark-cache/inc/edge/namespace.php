@@ -82,6 +82,7 @@ function flush_and_warm_edge_cache( bool $pricing_pages_only = false ): void {
 		'fields'                 => 'ids',
 		'update_post_meta_cache' => false,
 		'update_post_term_cache' => false,
+		'ignore_sticky_posts'    => true,
 	];
 
 	// Get environment.

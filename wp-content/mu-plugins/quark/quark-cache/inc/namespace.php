@@ -42,7 +42,8 @@ function bootstrap(): void {
 }
 
 /**
- * Set meta for pricing block page.
+ * Set post meta for any post that contains a block which displays pricing.
+ * We require this to selectively bust only those posts' edge cache.
  *
  * @param int $post_id Post ID.
  *
