@@ -20,7 +20,8 @@
       "default": "yellow",
       "enum": [
         "yellow",
-        "black"
+        "black",
+        "white"
       ]
     },
     "btnText": {

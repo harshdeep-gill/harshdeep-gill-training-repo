@@ -66,6 +66,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 		$card_attributes = [
 			'slot'        => quark_get_component( COMPONENT . '.title', [ 'title' => $inner_block->attributes['title'] ?? '' ] ),
 			'url'         => $inner_block->attributes['url']['url'] ?? '',
+			'target'      => ! empty( $inner_block->attributes['url']['newWindow'] ) ? '_blank' : '_self',
 			'size'        => $inner_block->attributes['size'],
 			'orientation' => $inner_block->attributes['orientation'],
 		];

@@ -1,11 +1,12 @@
 @props( [
-	'image_id'        => 0,
-	'immersive'       => 'no',
-	'content_overlap' => false,
-	'overlay_opacity' => 0,
-	'left'            => [],
-	'right'           => [],
-	'dark_mode'       => false,
+	'image_id'            => 0,
+	'immersive'           => 'no',
+	'content_overlap'     => false,
+	'overlay_opacity'     => 0,
+	'left'                => [],
+	'right'               => [],
+	'dark_mode'           => false,
+	'hero_details_slider' => [],
 ] )
 
 @php
@@ -46,7 +47,12 @@
 					@endif
 
 					@if ( 'thumbnail_cards' === $key )
-						{!! $item !!}
+						<x-search-hero.thumbnail-cards
+							:items="$item['items'] ?? []"
+							:hero_details_slider="$hero_details_slider"
+						>
+							{!! $item['slot'] !!}
+						</x-search-hero.thumbnail-cards>
 					@endif
 				@endforeach
 			</x-search-hero.left>

@@ -64,6 +64,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 
 				// Initialize attributes.
 				$url     = $inner_block->attributes['url']['url'];
+				$target  = ! empty( $inner_block->attributes['url']['newWindow'] ) ? '_blank' : '';
 				$content = '';
 
 				// Build title slot.
@@ -86,8 +87,9 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 				$cards .= quark_get_component(
 					COMPONENT . '.card',
 					[
-						'url'  => $url,
-						'slot' => $content,
+						'url'    => $url,
+						'target' => $target,
+						'slot'   => $content,
 					]
 				);
 			}

@@ -13,8 +13,9 @@ use function Quark\Expeditions\get_expedition_ship_ids;
 use function Quark\ShipDecks\get_deck_data;
 use function Quark\Ships\get_ship_data;
 
-const COMPONENT    = 'parts.ships';
-const COLLAGE_PART = 'parts.collage';
+const COMPONENT_SHIPS = 'parts.ships';
+const COMPONENT_SHIP  = 'parts.ship';
+const COLLAGE_PART    = 'parts.collage';
 
 /**
  * Bootstrap this block.
@@ -181,9 +182,19 @@ function render( array $attributes = [] ): string {
 		];
 	}
 
+	// Return single ship if only one ship found.
+	if ( 1 === count( $ships_data ) ) {
+		return quark_get_component(
+			COMPONENT_SHIP,
+			[
+				'ship' => array_shift( $ships_data ),
+			]
+		);
+	}
+
 	// Return built component.
 	return quark_get_component(
-		COMPONENT,
+		COMPONENT_SHIPS,
 		[
 			'ships' => $ships_data,
 		]
