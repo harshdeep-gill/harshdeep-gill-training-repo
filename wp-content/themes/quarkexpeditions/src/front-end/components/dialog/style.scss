@@ -146,6 +146,6 @@
 
 	&::backdrop {
 		background-color: var(--color-black);
-		filter: blur(80px);
+		opacity: 0.7;
 	}
 }

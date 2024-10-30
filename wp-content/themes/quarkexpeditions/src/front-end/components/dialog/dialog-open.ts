@@ -51,6 +51,9 @@ export class QuarkDialogOpenElement extends HTMLElement {
 		// Open the dialog.
 		this.dialog?.showModal();
 
+		// Toggle open attribute.
+		this.dialog?.parentElement?.toggleAttribute( 'open' );
+
 		// Add scroll from body.
 		document.querySelector( 'body' )?.classList?.add( 'prevent-scroll' );
 	}
