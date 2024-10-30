@@ -134,9 +134,8 @@ function flush_and_warm_edge_cache( bool $pricing_pages_only = false ): void {
 
 		// Skip if doing tests.
 		// if ( doing_tests() || 'local' === $environment ) {
-		// 	continue;
+		// continue;
 		// }
-
 		// Total posts.
 		$total_posts     = count( $post_ids );
 		$counter         = 0;
@@ -179,18 +178,15 @@ function flush_and_warm_edge_cache( bool $pricing_pages_only = false ): void {
 
 			// edge cache.
 			// clear_edge_cache_paths( [ $paths['path'] ] );
-
 			// delay for 200 milliseconds.
 			// usleep( 200000 );
-
 			// Make request to warm cache.
 			// wp_remote_get(
-			// 	$permalink,
-			// 	[
-			// 		'timeout' => '0.5',
-			// 	]
+			// $permalink,
+			// [
+			// 'timeout' => '0.5',
+			// ]
 			// );
-
 			// Update counter.
 			++$counter;
 
@@ -228,6 +224,7 @@ function flush_and_warm_edge_cache( bool $pricing_pages_only = false ): void {
 		]
 	);
 
+	// Log action.
 	if ( $is_in_cli ) {
 		// Success message.
 		WP_CLI::log( '' );
