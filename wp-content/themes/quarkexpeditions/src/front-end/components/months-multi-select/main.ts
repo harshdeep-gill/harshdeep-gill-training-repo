@@ -157,24 +157,33 @@ export class MonthsMultiSelect extends HTMLElement {
 		}
 
 		// Get the values that are not in the new value array ( Essentially, the values that are no longer selected ).
-		const valuesToUnselect = this._value.filter( ( v ) => ! value.includes( v ) && '' !== v );
+		const oldValue = this._value.filter( ( v ) => ! value.includes( v ) && '' !== v );
+
+		// Get the new values to select.
+		const newValue = value.filter( ( v ) => ! this._value.includes( v ) && '' !== v );
+
+		// Is the old array the same as new array?
+		if ( oldValue.length === 0 && newValue.length === 0 ) {
+			// Yes. bail.
+			return;
+		}
 
 		// Check if we have some values to unselect.
-		if ( valuesToUnselect.length ) {
+		if ( oldValue.length ) {
 			// Value attribute selector.
-			const valueAttributeSelector = valuesToUnselect.map( ( val ) => `quark-months-multi-select-option[value="${ val }"]` ).join( ',' );
+			const valueAttributeSelector = oldValue.map( ( val ) => `quark-months-multi-select-option[value="${ val }"]` ).join( ',' );
 
 			// Get the options to unselect.
 			this.querySelectorAll( valueAttributeSelector ).forEach( ( opt ) => opt.removeAttribute( 'selected' ) );
 		}
 
 		// Set the value
-		this._value = [];
+		this._value = this._value.filter( ( v ) => ! oldValue.includes( v ) && ! newValue.includes( v ) && '' !== v );
 
 		// Check if we have some values to select.
-		if ( value.length ) {
+		if ( newValue.length ) {
 			// Value attribute selector.
-			const valueAttributeSelector = value.filter( ( val ) => '' !== val ).map( ( val ) => `quark-months-multi-select-option[value="${ val }"][disabled="no"]` ).join( ',' );
+			const valueAttributeSelector = newValue.filter( ( val ) => '' !== val ).map( ( val ) => `quark-months-multi-select-option[value="${ val }"][disabled="no"]` ).join( ',' );
 
 			// Check if we have the selector
 			if ( valueAttributeSelector !== '' ) {
