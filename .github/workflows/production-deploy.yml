@@ -28,7 +28,7 @@ jobs:
           node-version: '20.x'
 
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Composer cache
         id: composer-deploy-cache
