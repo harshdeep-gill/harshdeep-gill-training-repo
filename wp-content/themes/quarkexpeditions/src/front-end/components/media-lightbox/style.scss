@@ -118,7 +118,7 @@
 			border: none;
 			overflow: hidden;
 
-			@media screen and (max-width: grid-size(md)) {
+			@media screen and (max-width: calc(grid-size(md) - 1px) ) {
 				border-radius: 0;
 			}
 		}
