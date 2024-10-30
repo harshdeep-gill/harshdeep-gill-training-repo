@@ -22,7 +22,6 @@ use function Quark\Softrip\Cleanup\do_cleanup;
 use function Quark\Softrip\Occupancies\get_table_name as get_occupancies_table_name;
 use function Quark\Softrip\OccupancyPromotions\get_table_name as get_occupancy_promotions_table_name;
 use function Quark\Softrip\Promotions\get_table_name as get_promotions_table_name;
-use function Travelopia\Cache\clear_all_edge_cache_paths;
 
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
 use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
@@ -55,9 +54,6 @@ function bootstrap(): void {
 
 	// Register Stream log connector.
 	add_filter( 'wp_stream_connectors', __NAMESPACE__ . '\\setup_stream_connectors' );
-
-	// Flush page cache on sync completion.
-	add_action( 'quark_softrip_sync_completed', __NAMESPACE__ . '\\flush_page_cache' );
 
 	// Delete custom data on departure post deletion.
 	add_action( 'delete_post_' . DEPARTURE_POST_TYPE, __NAMESPACE__ . '\\delete_custom_data' );
@@ -358,6 +354,15 @@ function do_sync( array $itinerary_post_ids = [], array $specific_departure_post
 		}
 	}
 
+	// End progress bar.
+	if ( $is_in_cli ) {
+		$progress->finish();
+
+		// End notice.
+		WP_CLI::success( sprintf( 'Completed %d items with %d failed items', $counter, ( $total - $counter ) ) );
+		WP_CLI::log( '' );
+	}
+
 	// Log the sync completed.
 	do_action(
 		'quark_softrip_sync_completed',
@@ -367,14 +372,6 @@ function do_sync( array $itinerary_post_ids = [], array $specific_departure_post
 			'via'     => $initiated_via,
 		]
 	);
-
-	// End progress bar.
-	if ( $is_in_cli ) {
-		$progress->finish();
-
-		// End notice.
-		WP_CLI::success( sprintf( 'Completed %d items with %d failed items', $counter, ( $total - $counter ) ) );
-	}
 
 	// Return true if successful.
 	return $counter === $total;
@@ -514,24 +511,6 @@ function get_engine_collate(): string {
 
 	// Return the engine and collate string.
 	return $engine_collate;
-}
-
-/**
- * Flush edge page cache.
- *
- * @param mixed[] $data Data args.
- *
- * @return void
- */
-function flush_page_cache( array $data = [] ): void {
-	// Validate data.
-	if ( empty( $data['success'] ) ) {
-		// Bail out.
-		return;
-	}
-
-	// Flush CDN page cache.
-	clear_all_edge_cache_paths();
 }
 
 /**
