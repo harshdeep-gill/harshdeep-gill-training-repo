@@ -80,8 +80,16 @@
 		/* stylelint-disable-next-line selector-pseudo-class-no-unknown */
 		&:modal {
 			background-color: transparent;
-			width: 90%;
-			max-width: var(--wrap-width);
+			width: 100%;
+
+			@media screen and (max-width: grid-size(md)) {
+				max-width: 100%;
+				display: flex;
+				flex-direction: column;
+				justify-content: space-between;
+				height: 100%;
+
+			}
 		}
 	}
 
@@ -94,6 +102,14 @@
 			@include fade-in(0.8s);
 		}
 
+		@media screen and (max-width: grid-size(md)) {
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
+			height: 100%;
+			flex: 2;
+		}
+
 		img,
 		iframe,
 		.wistia_embed {
@@ -102,6 +118,10 @@
 			display: block;
 			border: none;
 			overflow: hidden;
+
+			@media screen and (max-width: grid-size(md)) {
+				border-radius: 0;
+			}
 		}
 
 		iframe,
@@ -115,11 +135,9 @@
 			margin-inline: auto;
 			object-fit: cover;
 			max-height: 80vh;
-			min-height: 200px;
-			width: auto;
 
-			@media screen and (min-width: grid-size(lg)) and (min-height: 700px) {
-				min-height: 600px;
+			@media screen and (min-width: grid-size(md)) {
+				width: auto;
 			}
 		}
 	}
@@ -151,6 +169,11 @@
 		display: block;
 		text-align: center;
 		margin-bottom: var(--spacing-5);
+
+		@media screen and (max-width: grid-size(md)) {
+			margin-bottom: 0;
+			flex: 1;
+		}
 	}
 
 	&__prev,
@@ -166,13 +189,21 @@
 	}
 
 	&__prev-button {
-		left: var(--spacing-5);
+		left: 0;
 		transform: translateY(-50%);
+
+		@media screen and (max-width: grid-size(md)) {
+			left: var(--spacing-5);
+		}
 	}
 
 	&__next-button {
-		right: var(--spacing-5);
+		right: 0;
 		transform: translateY(-50%);
+
+		@media screen and (max-width: grid-size(md)) {
+			right: var(--spacing-5);
+		}
 
 		svg {
 			transform: rotate(180deg);
@@ -186,7 +217,7 @@
 		width: 40px;
 		height: 40px;
 		border-radius: 50%;
-		background-color: var(--color-black);
+		border: 1px solid var(--color-white);
 		z-index: 2;
 
 		@include transition(background-color);
@@ -194,6 +225,11 @@
 		@media screen and (min-width: grid-size(lg)) {
 			width: 46px;
 			height: 46px;
+		}
+
+		@media screen and (max-width: calc(grid-size(md) - 1px) ) {
+			// display: none;
+			top: 50%;
 		}
 	}
 
