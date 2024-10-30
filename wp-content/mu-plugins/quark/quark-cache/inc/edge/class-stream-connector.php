@@ -36,7 +36,7 @@ class Stream_Connector extends Connector {
 	 */
 	public function get_label(): string {
 		// Return translated connector label.
-		return __( 'Page Cache', 'qrk' );
+		return __( 'Edge Cache', 'qrk' );
 	}
 
 	/**
@@ -47,7 +47,7 @@ class Stream_Connector extends Connector {
 	public function get_context_labels(): array {
 		// Return translated context labels.
 		return [
-			'page_cache' => __( 'Page Cache', 'qrk' ),
+			'edge_cache' => __( 'Edge Cache', 'qrk' ),
 		];
 	}
 
@@ -95,7 +95,7 @@ class Stream_Connector extends Connector {
 			$message,
 			[],
 			0,
-			'page_cache',
+			'edge_cache',
 			'flushed'
 		);
 	}
