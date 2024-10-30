@@ -56,9 +56,6 @@ function bootstrap(): void {
 	// Register Stream log connector.
 	add_filter( 'wp_stream_connectors', __NAMESPACE__ . '\\setup_stream_connectors' );
 
-	// Flush page cache on sync completion.
-	add_action( 'quark_softrip_sync_completed', __NAMESPACE__ . '\\flush_page_cache', 9999 );
-
 	// Delete custom data on departure post deletion.
 	add_action( 'delete_post_' . DEPARTURE_POST_TYPE, __NAMESPACE__ . '\\delete_custom_data' );
 }
@@ -358,6 +355,15 @@ function do_sync( array $itinerary_post_ids = [], array $specific_departure_post
 		}
 	}
 
+	// End progress bar.
+	if ( $is_in_cli ) {
+		$progress->finish();
+
+		// End notice.
+		WP_CLI::success( sprintf( 'Completed %d items with %d failed items', $counter, ( $total - $counter ) ) );
+		WP_CLI::log( '' );
+	}
+
 	// Log the sync completed.
 	do_action(
 		'quark_softrip_sync_completed',
@@ -367,14 +373,6 @@ function do_sync( array $itinerary_post_ids = [], array $specific_departure_post
 			'via'     => $initiated_via,
 		]
 	);
-
-	// End progress bar.
-	if ( $is_in_cli ) {
-		$progress->finish();
-
-		// End notice.
-		WP_CLI::success( sprintf( 'Completed %d items with %d failed items', $counter, ( $total - $counter ) ) );
-	}
 
 	// Return true if successful.
 	return $counter === $total;
@@ -514,33 +512,6 @@ function get_engine_collate(): string {
 
 	// Return the engine and collate string.
 	return $engine_collate;
-}
-
-/**
- * Flush edge page cache.
- *
- * @param mixed[] $data Data args.
- *
- * @return void
- */
-function flush_page_cache( array $data = [] ): void {
-	// Validate data.
-	if ( empty( $data['success'] ) ) {
-		// Bail out.
-		return;
-	}
-
-	// Get initiated via.
-	$initiated_via = get_initiated_via();
-
-	// Bail if initiated manually.
-	if ( 'manually' === $initiated_via ) {
-		// @todo Implement a GitHub action to flush cache - https://tuispecialist.atlassian.net/browse/QE-1035.
-		return;
-	}
-
-	// Flush cache and warm up.
-	flush_and_warm_edge_cache( true );
 }
 
 /**

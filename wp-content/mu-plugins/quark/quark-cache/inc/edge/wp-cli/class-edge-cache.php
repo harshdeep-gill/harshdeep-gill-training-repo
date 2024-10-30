@@ -7,8 +7,6 @@
 
 namespace Quark\Cache\Edge\WP_CLI;
 
-use WP_CLI;
-
 use function Quark\Cache\Edge\flush_and_warm_edge_cache;
 use function WP_CLI\Utils\get_flag_value;
 
@@ -46,17 +44,7 @@ class Edge_Cache {
 		// Get pricing pages only flag.
 		$pricing_pages_only = (bool) get_flag_value( $options, 'pricing-pages-only', false );
 
-		// Prepare welcome message.
-		if ( $pricing_pages_only ) {
-			WP_CLI::log( WP_CLI::colorize( '%YFlushing and warming edge cache for pricing pages only...%n' ) );
-		} else {
-			WP_CLI::log( WP_CLI::colorize( '%YFlushing and warming edge cache for all pages...%n' ) );
-		}
-
 		// Flush and warm edge cache.
 		flush_and_warm_edge_cache( $pricing_pages_only );
-
-		// Success message.
-		WP_CLI::success( 'Edge cache flushed and warmed.' );
 	}
 }

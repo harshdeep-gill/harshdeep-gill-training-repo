@@ -12,6 +12,7 @@ use WP_CLI;
 use WP_Query;
 
 use function Quark\Core\doing_tests;
+use function Quark\Softrip\get_initiated_via;
 use function Travelopia\Cache\clear_edge_cache_paths;
 
 use const Quark\AdventureOptions\POST_TYPE as ADVENTURE_OPTIONS_POST_TYPE;
@@ -54,6 +55,9 @@ function bootstrap(): void {
 	if ( defined( 'WP_CLI' ) && true === WP_CLI ) {
 		WP_CLI::add_command( 'quark-cache edge', __NAMESPACE__ . '\\WP_CLI\\Edge_Cache' );
 	}
+
+	// Flush page cache on sync completion.
+	add_action( 'quark_softrip_sync_completed', __NAMESPACE__ . '\\flush_page_cache', 9999 );
 }
 
 /**
@@ -83,6 +87,19 @@ function flush_and_warm_edge_cache( bool $pricing_pages_only = false ): void {
 	// Get environment.
 	$environment = wp_get_environment_type();
 
+	// Log message in CLI.
+	if ( $is_in_cli ) {
+		// Welcome message.
+		if ( $pricing_pages_only ) {
+			WP_CLI::log( WP_CLI::colorize( '%YFlushing and warming edge cache for pricing pages only...%n' ) );
+		} else {
+			WP_CLI::log( WP_CLI::colorize( '%YFlushing and warming edge cache for all pages...%n' ) );
+		}
+
+		// New line.
+		WP_CLI::log( '' );
+	}
+
 	// Loop through post types.
 	foreach ( CACHED_POST_TYPE_SLUGS as $post_type ) {
 		$args['post_type'] = $post_type;
@@ -106,7 +123,6 @@ function flush_and_warm_edge_cache( bool $pricing_pages_only = false ): void {
 			// Log action.
 			if ( $is_in_cli ) {
 				WP_CLI::log( WP_CLI::colorize( '%YNo ' . $post_type . ' posts found.%n' ) );
-				WP_CLI::log( '' );
 			}
 
 			// Continue to next post type.
@@ -117,9 +133,9 @@ function flush_and_warm_edge_cache( bool $pricing_pages_only = false ): void {
 		$post_ids = array_map( 'absint', $post_ids );
 
 		// Skip if doing tests.
-		if ( doing_tests() || 'local' === $environment ) {
-			continue;
-		}
+		// if ( doing_tests() || 'local' === $environment ) {
+		// 	continue;
+		// }
 
 		// Total posts.
 		$total_posts     = count( $post_ids );
@@ -162,18 +178,18 @@ function flush_and_warm_edge_cache( bool $pricing_pages_only = false ): void {
 			}
 
 			// edge cache.
-			clear_edge_cache_paths( [ $paths['path'] ] );
+			// clear_edge_cache_paths( [ $paths['path'] ] );
 
 			// delay for 200 milliseconds.
-			usleep( 200000 );
+			// usleep( 200000 );
 
 			// Make request to warm cache.
-			wp_remote_get(
-				$permalink,
-				[
-					'timeout' => '0.5',
-				]
-			);
+			// wp_remote_get(
+			// 	$permalink,
+			// 	[
+			// 		'timeout' => '0.5',
+			// 	]
+			// );
 
 			// Update counter.
 			++$counter;
@@ -196,9 +212,6 @@ function flush_and_warm_edge_cache( bool $pricing_pages_only = false ): void {
 		if ( $is_in_cli ) {
 			WP_CLI::log( WP_CLI::colorize( '%GProcessed ' . $counter . ' out of ' . $total_posts . ' ' . $post_type . ' posts.%n' ) );
 			WP_CLI::log( WP_CLI::colorize( '%GTime taken: ' . ( $post_end_time - $post_start_time ) . ' seconds.%n' ) );
-
-			// New line.
-			WP_CLI::log( '' );
 		}
 	}
 
@@ -214,6 +227,14 @@ function flush_and_warm_edge_cache( bool $pricing_pages_only = false ): void {
 			'pricing_pages_only' => $pricing_pages_only,
 		]
 	);
+
+	if ( $is_in_cli ) {
+		// Success message.
+		WP_CLI::log( '' );
+		WP_CLI::success( 'Edge cache flushed and warmed.' );
+		WP_CLI::log( WP_CLI::colorize( '%GTotal time taken: ' . $execution_time . ' seconds.%n' ) );
+		WP_CLI::log( '' );
+	}
 }
 
 /**
@@ -232,4 +253,31 @@ function setup_stream_connectors( array $connectors = [] ): array {
 
 	// Return the connectors.
 	return $connectors;
+}
+
+/**
+ * Flush edge page cache.
+ *
+ * @param mixed[] $data Data args.
+ *
+ * @return void
+ */
+function flush_page_cache( array $data = [] ): void {
+	// Validate data.
+	if ( empty( $data['success'] ) ) {
+		// Bail out.
+		return;
+	}
+
+	// Get initiated via.
+	$initiated_via = get_initiated_via();
+
+	// Bail if initiated manually.
+	if ( 'manually' === $initiated_via ) {
+		// @todo Implement a GitHub action to flush cache - https://tuispecialist.atlassian.net/browse/QE-1035.
+		return;
+	}
+
+	// Flush cache and warm up.
+	flush_and_warm_edge_cache( true );
 }
