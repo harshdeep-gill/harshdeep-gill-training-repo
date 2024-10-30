@@ -18,6 +18,7 @@ export default class ExpeditionSearchSidebarFilters extends HTMLElement {
 	 */
 	private readonly linkedModal: TPModalElement | null;
 	private readonly modalOpener: QuarkModalOpenElement | null;
+	private readonly searchWrapper: HTMLCollectionOf<Element>;
 
 	/**
 	 * Constructor
@@ -29,6 +30,7 @@ export default class ExpeditionSearchSidebarFilters extends HTMLElement {
 		// Initialize properties.
 		this.modalOpener = this.querySelector( 'quark-modal-open' );
 		this.linkedModal = null;
+		this.searchWrapper = document.getElementsByTagName( 'quark-expedition-search' );
 
 		// Check if we have modal opener
 		if ( this.modalOpener ) {
@@ -44,6 +46,25 @@ export default class ExpeditionSearchSidebarFilters extends HTMLElement {
 					}
 				} );
 			}
+		}
+
+		// Check if we have search wrapper.
+		if ( this.searchWrapper && this.searchWrapper.length > 0 ) {
+			// Add Scroll event listener.
+			document.addEventListener( 'scroll', () => {
+				// Get end position of the search wrapper.
+				const searchWrapperEndPosition = this.searchWrapper[ 0 ].getBoundingClientRect().bottom;
+
+				// get position of the ExpeditionSearchSidebarFilters.
+				const expeditionSearchSidebarFiltersPosition = this.getBoundingClientRect().top;
+
+				// Check if the ExpeditionSearchSidebarFilters is at the bottom of the search wrapper.
+				if ( expeditionSearchSidebarFiltersPosition >= searchWrapperEndPosition ) {
+					this.style.visibility = 'hidden';
+				} else {
+					this.style.visibility = 'visible';
+				}
+			} );
 		}
 
 		// Append body.
