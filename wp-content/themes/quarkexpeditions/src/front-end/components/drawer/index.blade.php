@@ -3,6 +3,7 @@
 	'class'               => '',
 	'compact'             => false,
 	'animation_direction' => 'left',
+	'close_on_desktop'    => false,
 ] )
 
 @php
@@ -25,6 +26,7 @@
 	@class( $classes )
 	overlay-click-close="yes"
 	animation-direction="{{ $animation_direction }}"
+	close-on-desktop="{{ $close_on_desktop }}"
 >
 	<quark-drawer-content @class( $content_classes )>
 		<x-content :content="$slot" />
