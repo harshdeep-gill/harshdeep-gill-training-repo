@@ -64,7 +64,7 @@
 							'height' => 600,
 						],
 						'responsive' => [
-							'sizes'  => [ '(min-width: 1036px) 1200px', '100vw' ],
+							'sizes'  => [ '(min-width: 1140px) 1200px', '100vw' ],
 							'widths' => [ 360, 400, 600, 800, 1024, 1200 ],
 						],
 						'focal_point' => [],
