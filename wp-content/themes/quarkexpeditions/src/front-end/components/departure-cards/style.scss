@@ -70,6 +70,7 @@
 		font-weight: var(--font-weight-bold);
 		display: flex;
 		align-items: center;
+		white-space: nowrap;
 		position: relative;
 		min-height: 30px;
 		padding: 0 var(--spacing-2) 0 var(--spacing-3);

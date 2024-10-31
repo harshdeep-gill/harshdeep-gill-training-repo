@@ -19,7 +19,7 @@
 		$classes[] = sprintf( 'btn--color-%s', $color );
 	}
 
-	if ( ! empty( $appearance ) && 'outline' === $appearance ) {
+	if ( ( ! empty( $appearance ) && 'outline' === $appearance ) || ( ! empty( $color ) && 'white' === $color ) ) {
 		$classes[] = 'btn--outline';
 	}
 

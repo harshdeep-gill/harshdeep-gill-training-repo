@@ -13,7 +13,7 @@
 
 <x-hero-card-slider :arrows="$show_controls" :interval="$interval" :auto_slide="'auto' === $transition_type">
 	@foreach ( $items as $item )
-		<x-hero-card-slider.card :url="$item['cta']['url'] ?? ''">
+		<x-hero-card-slider.card :url="$item['cta']['url'] ?? ''" :target="$item['cta']['target'] ?? ''">
 			@if ( ! empty( $item['media_id'] ) && 'video' === $item['media_type'] )
 				<x-hero-card-slider.video video_id="{{ $item['media_id'] }}" />
 			@endif

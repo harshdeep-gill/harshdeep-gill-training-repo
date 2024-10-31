@@ -59,6 +59,7 @@
 								role="button"
 								disabled="{{ $is_past_date ? 'yes' : 'no' }}"
 								selected="no"
+								label="{{ sprintf( '%s, %s', $month_name_mapping[ $month ] ?? '', $year ) }}"
 								value="{{ $option_item_value ?? '' }}"
 							>
 								{{ $month }}

@@ -107,9 +107,8 @@
 	&__nav {
 		display: flex;
 		align-items: center;
-		gap: var(--spacing-6);
+		gap: var(--spacing-4);
 		margin-top: var(--spacing-6);
-
 	}
 
 	&__cta-button {
@@ -125,8 +124,8 @@
 
 	&__arrow-button {
 		background-color: var(--color-black);
-		width: 32px;
-		height: 32px;
+		width: 27px;
+		height: 27px;
 		border-radius: 50%;
 		padding: 0;
 		display: flex;
@@ -135,13 +134,14 @@
 		cursor: pointer;
 
 		svg {
-			transform: scale(1.2);
+			width: 7px;
+			height: 11px;
 		}
 
 		&--right {
 
 			svg {
-				transform: rotate(180deg) scale(1.2);
+				transform: rotate(180deg);
 			}
 		}
 	}

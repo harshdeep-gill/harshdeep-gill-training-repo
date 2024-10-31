@@ -1268,7 +1268,7 @@ function get_discount_label( int $original_price = 0, int $discounted_price = 0 
 	// Prepare the discount label.
 	$discount_label = sprintf(
 		// translators: %s: Discount Percentage.
-		__( 'Save upto %s%%', 'qrk' ),
+		__( 'Save up to %s%%', 'qrk' ),
 		number_format( $discount_percentage, 0 )
 	);
 

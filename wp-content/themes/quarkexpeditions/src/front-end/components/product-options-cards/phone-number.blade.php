@@ -7,12 +7,6 @@
 	if ( empty( $phone_number ) ) {
 		return;
 	}
-
-	if ( ! empty( $text ) ) {
-		$text = sprintf( '%s: %s', $text, $phone_number );
-	} else {
-		$text = $phone_number;
-	}
 @endphp
 
 <x-button
@@ -20,5 +14,8 @@
     appearance="outline"
     href="tel:{{ $phone_number }}"
 >
-    <x-escape :content="$text" />
+    <div class="product-options-cards__call-text">
+		<x-escape :content="$text" />
+	</div>
+	<x-escape :content="$phone_number" />
 </x-button>

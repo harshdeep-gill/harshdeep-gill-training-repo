@@ -1,5 +1,6 @@
 @props( [
 	'url'         => '',
+	'target'      => '',
 	'size'        => 'medium',
 	'orientation' => 'portrait',
 	'image_id'    => 0,
@@ -33,7 +34,7 @@
 @endphp
 
 <tp-slider-slide @class( $classes )>
-	<x-maybe-link href="{{ $url }}">
+	<x-maybe-link href="{{ $url }}" target="{{ $target }}">
 		@if ( ! empty( $image_id ) )
 			<x-thumbnail-cards.image
 				:image_id="$image_id"
