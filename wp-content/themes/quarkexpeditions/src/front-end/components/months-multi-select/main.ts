@@ -141,7 +141,7 @@ export class MonthsMultiSelect extends HTMLElement {
 		this.value = [];
 
 		// Dispatch reset custom event.
-		this.dispatchEvent( new CustomEvent( 'reset', { bubbles: true } ) );
+		this.dispatchEvent( new CustomEvent( 'reset' ) );
 	}
 
 	/**
@@ -203,7 +203,7 @@ export class MonthsMultiSelect extends HTMLElement {
 		this.setAttribute( 'value', this._value.toString() );
 
 		// Dispatch change event.
-		this.dispatchEvent( new CustomEvent( 'change', { bubbles: true } ) );
+		this.dispatchEvent( new CustomEvent( 'change' ) );
 	}
 
 	/**
@@ -253,7 +253,7 @@ export class MonthsMultiSelect extends HTMLElement {
 
 				// Push the value.
 				this.value.push( value );
-				this.dispatchEvent( new CustomEvent( 'change', { bubbles: true } ) );
+				this.dispatchEvent( new CustomEvent( 'change' ) );
 			}
 		}
 	}
@@ -284,7 +284,7 @@ export class MonthsMultiSelect extends HTMLElement {
 
 		// Set the value.
 		this.value.splice( valueIndex, 1 );
-		this.dispatchEvent( new CustomEvent( 'change', { bubbles: true } ) );
+		this.dispatchEvent( new CustomEvent( 'change' ) );
 	}
 
 	/**
