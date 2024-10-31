@@ -140,7 +140,7 @@
 						@endif
 
 						<x-expedition-cards.buttons>
-							<x-button href="{{ '#more-details-' . $card['departure_id'] }}" class="expedition-cards__cta" size="big">
+							<x-button class="expedition-cards__cta" size="big">
 								{{ __( 'View Cabin Pricing', 'qrk' ) }}
 							</x-button>
 							<x-button href="{{ $card['expedition_link'] ?? '' }}" color="black" size="big">
@@ -150,7 +150,7 @@
 					</x-expedition-cards.grid-column>
 				</x-expedition-cards.grid>
 
-				<x-expedition-cards.more-details id="{{ 'more-details-' . $card['departure_id'] }}">
+				<x-expedition-cards.more-details>
 					<h4>
 						<x-escape :content="__( 'Cabins Options', 'qrk' )"/>
 					</h4>
