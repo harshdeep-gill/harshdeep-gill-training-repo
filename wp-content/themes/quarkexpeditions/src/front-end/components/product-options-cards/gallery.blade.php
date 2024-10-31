@@ -33,17 +33,17 @@
 	if ( ! empty( $full_size ) ) {
 		$image_args = [
 			'size' => [
-				'width'  => 1160,
+				'width'  => 1200,
 				'height' => 600,
 			],
 			'responsive' => [
-				'sizes'  => [ '(min-width: 1024px) 928px', '(min-width: 768px) 660px', '520px' ],
-				'widths' => [ 520, 660, 1160 ],
+				'sizes'  => [ '(min-width: 992px) 1200px', '100vw' ],
+				'widths' => [ 360, 400, 600, 800, 1024, 1200 ],
 			],
+			'focal_point' => [],
 			'transform' => [
 				'crop' => 'fit',
-				'quality' => 100
-			]
+			],
 		];
 	}
 
