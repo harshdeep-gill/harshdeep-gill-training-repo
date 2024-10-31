@@ -3013,7 +3013,7 @@
 			<x-section.title title="Our Biggest Savings! 50% off these Antarctic 2024 Voyages" />
 		</x-section.heading>
 		<x-product-cards>
-			<x-product-cards.card url="#">
+			<x-product-cards.card>
 				<x-product-cards.image
 					image_id="29"
 				>
@@ -3035,7 +3035,7 @@
 				</x-product-cards.buttons>
 			</x-product-cards.card>
 
-			<x-product-cards.card url="#">
+			<x-product-cards.card>
 				<x-product-cards.image
 					image_id="36"
 					:is_immersive="false"
@@ -3058,7 +3058,7 @@
 				</x-product-cards.buttons>
 			</x-product-cards.card>
 
-			<x-product-cards.card url="#">
+			<x-product-cards.card>
 				<x-product-cards.image
 					image_id="32"
 					:is_immersive="false"
@@ -3362,7 +3362,7 @@
 			<x-section.title title="Our Biggest Savings! 50% off these Antarctic 2024 Voyages" />
 		</x-section.heading>
 		<x-product-cards>
-			<x-product-cards.card url="#">
+			<x-product-cards.card>
 				<x-product-cards.image
 					image_id="29"
 				>
@@ -3384,7 +3384,7 @@
 				</x-product-cards.buttons>
 			</x-product-cards.card>
 
-			<x-product-cards.card url="#">
+			<x-product-cards.card>
 				<x-product-cards.image
 					image_id="36"
 					:is_immersive="false"
@@ -3407,7 +3407,7 @@
 				</x-product-cards.buttons>
 			</x-product-cards.card>
 
-			<x-product-cards.card url="#">
+			<x-product-cards.card>
 				<x-product-cards.image
 					image_id="32"
 					:is_immersive="false"
@@ -3435,10 +3435,11 @@
 
 <x-component-demo :keys="[ 'product-cards' ]">
 	<x-product-cards align="center">
-		<x-product-cards.card url="#">
+		<x-product-cards.card>
 			<x-product-cards.image
 				image_id="29"
 				:is_immersive="true"
+				url="#"
 			>
 				<x-product-cards.badge-cta text="Save 50%" />
 				<x-product-cards.badge-time text="Just Added" />
@@ -3463,10 +3464,11 @@
 			</x-product-cards.buttons>
 		</x-product-cards.card>
 
-		<x-product-cards.card url="#">
+		<x-product-cards.card>
 			<x-product-cards.image
 				image_id="36"
 				:is_immersive="false"
+				url="#"
 			>
 				<x-product-cards.badge-sold-out />
 				<x-product-cards.badge-time text="Just Added" />
@@ -3493,7 +3495,7 @@
 	</x-product-cards>
 
 	<x-product-cards>
-		<x-product-cards.card url="#">
+		<x-product-cards.card>
 			<x-product-cards.image
 				image_id="29"
 			>
@@ -3519,7 +3521,7 @@
 			</x-product-cards.buttons>
 		</x-product-cards.card>
 
-		<x-product-cards.card url="#">
+		<x-product-cards.card>
 			<x-product-cards.image
 				image_id="36"
 				:is_immersive="false"
@@ -3546,7 +3548,7 @@
 			</x-product-cards.buttons>
 		</x-product-cards.card>
 
-		<x-product-cards.card url="#">
+		<x-product-cards.card>
 			<x-product-cards.image
 				image_id="32"
 				:is_immersive="false"
@@ -3575,7 +3577,7 @@
 	</x-product-cards>
 
 	<x-product-cards layout="grid">
-		<x-product-cards.card url="#">
+		<x-product-cards.card>
 			<x-product-cards.image
 				image_id="29"
 			>
@@ -3597,7 +3599,7 @@
 			</x-product-cards.buttons>
 		</x-product-cards.card>
 
-		<x-product-cards.card url="#">
+		<x-product-cards.card>
 			<x-product-cards.image
 				image_id="36"
 				:is_immersive="false"
@@ -3620,7 +3622,7 @@
 			</x-product-cards.buttons>
 		</x-product-cards.card>
 
-		<x-product-cards.card url="#">
+		<x-product-cards.card>
 			<x-product-cards.image
 				image_id="32"
 				:is_immersive="false"
@@ -3643,7 +3645,7 @@
 			</x-product-cards.buttons>
 		</x-product-cards.card>
 
-		<x-product-cards.card url="#">
+		<x-product-cards.card>
 			<x-product-cards.image
 				image_id="29"
 			>
@@ -3665,7 +3667,7 @@
 			</x-product-cards.buttons>
 		</x-product-cards.card>
 
-		<x-product-cards.card url="#">
+		<x-product-cards.card>
 			<x-product-cards.image
 				image_id="36"
 				:is_immersive="false"
@@ -3688,7 +3690,7 @@
 			</x-product-cards.buttons>
 		</x-product-cards.card>
 
-		<x-product-cards.card url="#">
+		<x-product-cards.card>
 			<x-product-cards.image
 				image_id="32"
 				:is_immersive="false"
@@ -3713,7 +3715,7 @@
 	</x-product-cards>
 
 	<x-product-cards :carousel_overflow="false">
-		<x-product-cards.card url="#">
+		<x-product-cards.card>
 			<x-product-cards.image
 				image_id="29"
 			>
@@ -3735,7 +3737,7 @@
 			</x-product-cards.buttons>
 		</x-product-cards.card>
 
-		<x-product-cards.card url="#">
+		<x-product-cards.card>
 			<x-product-cards.image
 				image_id="36"
 				:is_immersive="false"
@@ -3758,7 +3760,7 @@
 			</x-product-cards.buttons>
 		</x-product-cards.card>
 
-		<x-product-cards.card url="#">
+		<x-product-cards.card>
 			<x-product-cards.image
 				image_id="32"
 				:is_immersive="false"
@@ -3781,7 +3783,7 @@
 			</x-product-cards.buttons>
 		</x-product-cards.card>
 
-		<x-product-cards.card url="#">
+		<x-product-cards.card>
 			<x-product-cards.image
 				image_id="29"
 			>
@@ -3803,7 +3805,7 @@
 			</x-product-cards.buttons>
 		</x-product-cards.card>
 
-		<x-product-cards.card url="#">
+		<x-product-cards.card>
 			<x-product-cards.image
 				image_id="36"
 				:is_immersive="false"
@@ -3826,7 +3828,7 @@
 			</x-product-cards.buttons>
 		</x-product-cards.card>
 
-		<x-product-cards.card url="#">
+		<x-product-cards.card>
 			<x-product-cards.image
 				image_id="32"
 				:is_immersive="false"
@@ -3851,7 +3853,7 @@
 	</x-product-cards>
 
 	<x-product-cards :carousel_overflow="true">
-		<x-product-cards.card url="#">
+		<x-product-cards.card>
 			<x-product-cards.image
 				image_id="29"
 			>
@@ -3873,7 +3875,7 @@
 			</x-product-cards.buttons>
 		</x-product-cards.card>
 
-		<x-product-cards.card url="#">
+		<x-product-cards.card>
 			<x-product-cards.image
 				image_id="36"
 				:is_immersive="false"
@@ -3896,7 +3898,7 @@
 			</x-product-cards.buttons>
 		</x-product-cards.card>
 
-		<x-product-cards.card url="#">
+		<x-product-cards.card>
 			<x-product-cards.image
 				image_id="32"
 				:is_immersive="false"
@@ -3919,7 +3921,7 @@
 			</x-product-cards.buttons>
 		</x-product-cards.card>
 
-		<x-product-cards.card url="#">
+		<x-product-cards.card>
 			<x-product-cards.image
 				image_id="29"
 			>
@@ -3941,7 +3943,7 @@
 			</x-product-cards.buttons>
 		</x-product-cards.card>
 
-		<x-product-cards.card url="#">
+		<x-product-cards.card>
 			<x-product-cards.image
 				image_id="36"
 				:is_immersive="false"
@@ -3964,7 +3966,7 @@
 			</x-product-cards.buttons>
 		</x-product-cards.card>
 
-		<x-product-cards.card url="#">
+		<x-product-cards.card>
 			<x-product-cards.image
 				image_id="32"
 				:is_immersive="false"
@@ -3991,7 +3993,7 @@
 	<h2>Variation - 1</h2>
 
 	<x-product-cards>
-		<x-product-cards.card url="#">
+		<x-product-cards.card>
 			<x-product-cards.image
 				image_id="29"
 				:is_immersive="true"
@@ -4004,7 +4006,7 @@
 			<x-product-cards.price-content text="From $XX,XXX USD per person" />
 		</x-product-cards.card>
 
-		<x-product-cards.card url="#">
+		<x-product-cards.card>
 			<x-product-cards.image
 				image_id="29"
 				:is_immersive="true"
@@ -4016,7 +4018,7 @@
 			<x-product-cards.price-content text="From $XX,XXX USD per person" />
 		</x-product-cards.card>
 
-		<x-product-cards.card url="#">
+		<x-product-cards.card>
 			<x-product-cards.image
 				image_id="29"
 				:is_immersive="true"
@@ -4033,7 +4035,7 @@
 	<h2>Variation - 2</h2>
 
 	<x-product-cards>
-		<x-product-cards.card url="#">
+		<x-product-cards.card>
 			<x-product-cards.image
 				image_id="29"
 				:is_immersive="true"
@@ -4070,7 +4072,7 @@
 			</x-product-cards.buttons>
 		</x-product-cards.card>
 
-		<x-product-cards.card url="#">
+		<x-product-cards.card>
 			<x-product-cards.image
 				image_id="29"
 				:is_immersive="true"
@@ -4107,7 +4109,7 @@
 			</x-product-cards.buttons>
 		</x-product-cards.card>
 
-		<x-product-cards.card url="#">
+		<x-product-cards.card>
 			<x-product-cards.image
 				image_id="29"
 				:is_immersive="true"
@@ -4148,7 +4150,7 @@
 	<h2>Variation - 3</h2>
 
 	<x-product-cards>
-		<x-product-cards.card url="#">
+		<x-product-cards.card>
 			<x-product-cards.image
 				image_id="29"
 			>
@@ -4177,7 +4179,7 @@
 			</x-product-cards.transfer_package>
 		</x-product-cards.card>
 
-		<x-product-cards.card url="#">
+		<x-product-cards.card>
 			<x-product-cards.image
 				image_id="29"
 			>
@@ -4206,7 +4208,7 @@
 			</x-product-cards.transfer_package>
 		</x-product-cards.card>
 
-		<x-product-cards.card url="#">
+		<x-product-cards.card>
 			<x-product-cards.image
 				image_id="29"
 			>
@@ -4243,7 +4245,7 @@
 			<x-section.heading-link url="#">See All</x-section.heading-link>
 		</x-section.heading>
 		<x-product-cards>
-			<x-product-cards.card url="#">
+			<x-product-cards.card>
 				<x-product-cards.image
 					image_id="29"
 				>
@@ -4264,7 +4266,7 @@
 					<x-button size="big" appearance="outline">Learn More</x-button>
 				</x-product-cards.buttons>
 			</x-product-cards.card>
-			<x-product-cards.card url="#">
+			<x-product-cards.card>
 				<x-product-cards.image
 					image_id="36"
 					:is_immersive="false"
@@ -4286,7 +4288,7 @@
 					<x-button size="big" icon="phone">Book: +1 (866) 220-1915</x-button>
 				</x-product-cards.buttons>
 			</x-product-cards.card>
-			<x-product-cards.card url="#">
+			<x-product-cards.card>
 				<x-product-cards.image
 					image_id="32"
 					:is_immersive="false"

@@ -12,7 +12,7 @@
 	@foreach ( $cards as $card )
 		<x-product-cards.card>
 			@if ( ! empty( $card['image_id'] ) )
-				<x-product-cards.image :image_id="$card['image_id']" />
+				<x-product-cards.image :image_id="$card['image_id']" url="{{ $card['url'] }}" />
 			@endif
 
 			@if ( ! empty( $card['departure_date'] ) )

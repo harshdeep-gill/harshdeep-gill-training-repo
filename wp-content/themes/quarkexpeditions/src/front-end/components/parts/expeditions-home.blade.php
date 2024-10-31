@@ -15,6 +15,7 @@
 				<x-product-cards.image
 					:is_immersive="true"
 					:image_id="$card['image_id']"
+					url="{{ $card['url'] }}"
 				/>
 			@endif
 			@if ( ! empty(  $card['itinerary_days'] ) )
