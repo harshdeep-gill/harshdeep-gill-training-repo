@@ -39,6 +39,10 @@
 		@media screen and (min-width: grid-size(sm)) {
 			flex-wrap: nowrap;
 		}
+
+		tp-multi-select-options {
+			min-width: 98px;
+		}
 	}
 
 	&__results {

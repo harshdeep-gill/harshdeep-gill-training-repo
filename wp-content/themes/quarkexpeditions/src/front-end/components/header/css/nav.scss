@@ -169,6 +169,12 @@
 		quark-header-nav-menu-dropdown[open] & {
 			opacity: 1;
 			visibility: visible;
+
+			@media screen and (max-height: 720px) {
+				border-radius: var(--border-radius-large);
+				height: 66vh;
+				overflow: auto;
+			}
 		}
 
 		&::before {

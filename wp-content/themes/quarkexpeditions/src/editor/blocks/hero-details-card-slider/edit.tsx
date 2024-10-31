@@ -200,12 +200,15 @@ export default function edit( { className, attributes, setAttributes, clientId }
 								<div className={ classnames( 'overline', 'hero-card-slider__' + innerBlocks?.[ 0 ]?.attributes?.tagType ) }>
 									{ innerBlocks?.[ 0 ]?.attributes?.tagText }
 								</div>
-								<div className="hero-card-slider__title">
+								<div className="hero-card-slider__title h4">
 									{ innerBlocks?.[ 0 ]?.attributes?.title }
 								</div>
 								<div className="hero-card-slider__description">
 									{ innerBlocks?.[ 0 ]?.attributes?.descriptionText }
 								</div>
+								<span className="hero-card-slider__cta-text">
+									{ innerBlocks?.[ 0 ]?.attributes?.cta?.text }
+								</span>
 							</div>
 						</div>
 					</div>

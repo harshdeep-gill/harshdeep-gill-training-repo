@@ -2140,7 +2140,8 @@ class Test_Adventure_Options extends Softrip_TestCase {
 		$cache_key4 = CACHE_KEY_PREFIX . '_departure_adventure_option_term_id_' . $adventure_option_term_id1;
 		get_departures_by_adventure_option_term_id( $adventure_option_term_id1 );
 		$actual_from_cache = wp_cache_get( $cache_key4, CACHE_GROUP );
-		$this->assertNotEmpty( $actual_from_cache );
+		$this->assertNotFalse( $actual_from_cache );
+		$this->assertEmpty( $actual_from_cache );
 
 		// Delete adventure option by id.
 		$expected = true;

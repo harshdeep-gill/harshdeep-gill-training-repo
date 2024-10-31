@@ -202,6 +202,12 @@
 		gap: var(--spacing-4);
 		flex-wrap: wrap;
 		align-items: baseline;
+		width: 100%;
+
+		quark-dynamic-phone-number,
+		quark-dynamic-phone-number > a {
+			width: 100%;
+		}
 
 		&-text {
 			margin-bottom: 0;
@@ -210,6 +216,15 @@
 
 		.btn {
 			white-space: normal;
+		}
+
+		@media screen and (min-width: grid-size(md)) {
+			width: auto;
+
+			quark-dynamic-phone-number,
+			quark-dynamic-phone-number > a {
+				width: auto;
+			}
 		}
 	}
 
@@ -416,6 +431,19 @@
 		> p {
 			margin-bottom: 0;
 		}
+
+		quark-dynamic-phone-number,
+		quark-dynamic-phone-number > a {
+			width: 100%;
+		}
+
+		@media screen and (min-width: grid-size(md)) {
+
+			quark-dynamic-phone-number,
+			quark-dynamic-phone-number > a {
+				width: auto;
+			}
+		}
 	}
 
 	&__tooltip {
@@ -520,6 +548,11 @@
 	}
 
 	&__dialog {
+		display: none;
+
+		&[open] {
+			display: flex;
+		}
 
 		.dialog {
 			margin-bottom: 0;
@@ -610,6 +643,14 @@
 			.departure-cards__drawer-open {
 				z-index: 10;
 			}
+		}
+	}
+
+	&__call-text {
+		display: block;
+
+		@media screen and (min-width: grid-size(md)) {
+			display: inline;
 		}
 	}
 }

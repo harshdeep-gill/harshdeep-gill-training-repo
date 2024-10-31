@@ -79,7 +79,7 @@
 			<x-hero.left>
 				<x-hero.title-container>
 					<x-hero.overline>Antarctic 2024</x-hero.overline>
-					<x-hero.savings text="Save upto 24%" />
+					<x-hero.savings text="Save up to 24%" />
 					<x-hero.title title="Antarctic Voyages" />
 					<x-hero.sub-title title="Choose the Leader in Polar Adventure" />
 					<x-hero.description>
@@ -1500,7 +1500,7 @@
 			<x-collage.image size="small" image_id="32" title="Image 3" />
 			<x-collage.image size="small" image_id="36" title="Image 4" />
 			<x-collage.image size="large" image_id="31" title="Image 5" />
-			<x-collage.image size="medium" image_id="35" title="Image 6" />
+			<x-collage.image size="small" image_id="35" title="Image 6" />
 			<x-collage.image size="medium" image_id="30" title="Image 7" />
 			<x-collage.image size="x-large" image_id="34" title="Image 8" />
 			<x-collage.image size="small" image_id="32" />

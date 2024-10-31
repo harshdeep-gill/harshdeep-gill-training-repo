@@ -86,6 +86,9 @@ export default class DepartureCard extends HTMLElement {
 		// Toggle `open` attribute.
 		this.setAttribute( 'open', 'true' );
 		this.moreDetails?.classList.add( 'departure-cards__more-details--active' );
+
+		// Scroll details into view.
+		this.moreDetails?.scrollIntoView();
 	}
 
 	/**
@@ -95,6 +98,9 @@ export default class DepartureCard extends HTMLElement {
 		// Remove 'open' attribute.
 		this.removeAttribute( 'open' );
 		this.moreDetails?.classList.remove( 'departure-cards__more-details--active' );
+
+		// Scroll the current card into view.
+		this.scrollIntoView();
 	}
 
 	/**
@@ -206,24 +212,25 @@ export default class DepartureCard extends HTMLElement {
 				// Default behavior for larger screens.
 				totalWidth += option.clientWidth;
 
+				// Check if More Option should be visible.
+				if ( totalWidth < this.adventuresContainer!.clientWidth && index === this.adventuresItems!.length - 2 ) {
+					// Add hidden class.
+					this.adventurescountWrap!.classList.add( 'departure-cards__options-count-wrap--hidden' );
+				}
+
 				// Width check.
-				if ( totalWidth > this.adventuresContainer!.clientWidth - this.adventurescountWrap!.clientWidth ) {
+				if ( ( totalWidth + this.adventurescountWrap!.clientWidth ) > this.adventuresContainer!.clientWidth ) {
 					// Add hidden class
 					option.classList.add( 'departure-cards__option--hidden' );
+
+					// Update the count markup. We are updating the count before incrementing to avoid the more option count.
+					this.adventurescountSpan!.textContent = hiddenCount.toString();
+
+					// Update the count.
 					hiddenCount++;
 				}
 			}
 		} );
-
-		// Update count and toggle visibility.
-		if ( hiddenCount > 0 ) {
-			// Set the text and remvoe hidden class.
-			this.adventurescountSpan!.textContent = hiddenCount.toString();
-			this.adventurescountWrap!.classList.remove( 'departure-cards__options-count-wrap--hidden' );
-		} else {
-			// Add class.
-			this.adventurescountWrap!.classList.add( 'departure-cards__options-count-wrap--hidden' );
-		}
 	}
 }
 

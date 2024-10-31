@@ -67,6 +67,7 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 						options={ [
 							{ label: __( 'Manual', 'qrk' ), value: 'manual' },
 							{ label: __( 'Recent', 'qrk' ), value: 'recent' },
+							{ label: __( 'Auto', 'qrk' ), value: 'auto' },
 						] }
 						onChange={ ( selection ) => setAttributes( { selection } ) }
 					/>

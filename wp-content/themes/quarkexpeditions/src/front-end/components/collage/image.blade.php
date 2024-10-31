@@ -1,6 +1,6 @@
 @props( [
 	'image_id' => 0,
-	'size'     => 'medium',
+	'size'     => 'small',
 	'title'    => '',
 ] )
 
@@ -19,23 +19,51 @@
 		$classes[] = 'collage__image-item--' . $size;
 	}
 
+	// Build image args.
+	if ( 'small' === $size ) {
+		$width = 600;
+		$height = 600;
+		$picture = [
+			'(min-width: 1024px)' => [ 600, 600 ],
+			'(min-width: 768px)'  => [ 624, 352 ],
+			'(min-width: 375px)'  => [ 546, 308 ],
+		];
+	} elseif ( 'medium' === $size ) {
+		$width = 544;
+		$height = 256;
+		$picture = [
+			'(min-width: 1024px)' => [ 1088, 512 ],
+			'(min-width: 768px)'  => [ 624, 352 ],
+			'(min-width: 375px)'  => [ 546, 308 ],
+		];
+	} elseif ( 'large' === $size ) {
+		$width = 832;
+		$height = 256;
+		$picture = [
+			'(min-width: 1024px)' => [ 1300, 400 ],
+			'(min-width: 768px)'  => [ 624, 352 ],
+			'(min-width: 375px)'  => [ 546, 308 ],
+		];
+	} else {
+		$width = 1400;
+		$height = 320;
+		$picture = [
+			'(min-width: 1024px)' => [ 1400, 320 ],
+			'(min-width: 768px)'  => [ 624, 352 ],
+			'(min-width: 375px)'  => [ 546, 308 ],
+		];
+	}
+
 	$image_args = [
 		'size' => [
-			'width'  => 1152,
-			'height' => 648,
+			'width'   => $width,
+			'height'  => $height,
+			'picture' => $picture,
 		],
-		'responsive' => [
-			'sizes'  => match( $size ) {
-				'small'   => [ '(min-width: 360px) 400px', '100vw' ],
-				'medium'  => [ '(min-width: 560px) 600px', '100vw' ],
-				'large'   => [ '(min-width: 840px) 900px', '100vw' ],
-				'x-large' => [ '(min-width: 992px) 1152px', '100vw' ],
-			},
-			'widths' => [ 360, 450, 576, 768, 992, 1120 ],
+		'transform'   => [
+			'crop'    => 'fill',
+			'quality' => 90,
 		],
-		'transform' => [
-			'crop' => 'fill',
-		]
 	];
 @endphp
 
