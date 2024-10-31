@@ -1,6 +1,7 @@
 @props( [
 	'image_id'     => 0,
 	'is_immersive' => false,
+	'url'          => '',
 ] )
 
 @php
@@ -25,16 +26,23 @@
 	$classes = [ 'product-cards__image' ];
 
 	// Check if the `is_immersive` is set.
-	if ( ! empty( $is_immersive) && true === $is_immersive ) {
+	if ( ! empty( $is_immersive ) && true === $is_immersive ) {
 		$classes[] = 'product-cards__image-immersive';
+	}
+
+	// Check if the `url` is set.
+	if ( ! empty( $url ) ) {
+		$classes[] = 'product-cards__image-has-url';
 	}
 @endphp
 
 <figure @class( $classes )>
-	<x-image
-		:image_id="$image_id"
-		:args="$image_args"
-	/>
+	<x-maybe-link href="{{ $url }}" class="product-cards__image-link">
+		<x-image
+			:image_id="$image_id"
+			:args="$image_args"
+		/>
+	</x-maybe-link>
 
 	{!! $slot !!}
 </figure>

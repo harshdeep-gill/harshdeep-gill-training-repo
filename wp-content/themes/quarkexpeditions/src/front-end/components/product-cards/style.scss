@@ -227,7 +227,8 @@
 		}
 	}
 
-	&__image-immersive {
+	&__image-immersive:not(&__image-has-url),
+	&__image-immersive &__image-link {
 
 		&::after {
 			background: linear-gradient(0deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 50%);
