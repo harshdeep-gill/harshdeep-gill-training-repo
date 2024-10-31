@@ -158,7 +158,7 @@
 		</x-button>
 	</x-drawer.drawer-open>
 
-	<x-drawer id="header-drawer" class="header__drawer">
+	<x-drawer id="header-drawer" class="header__drawer" close_on_desktop="true">
 		<x-drawer.header>
 			<x-header.site-logo />
 		</x-drawer.header>
