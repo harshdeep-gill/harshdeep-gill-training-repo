@@ -1,6 +1,5 @@
 @props( [
 	'href' => '',
-	'slot' => '',
 ] )
 
 @php
