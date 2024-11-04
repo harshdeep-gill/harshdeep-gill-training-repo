@@ -59,7 +59,7 @@ export default class FormNewsletter extends HTMLElement {
 		if ( successElement ) {
 			// Scroll to the element.
 			window.scrollTo( {
-				top: successElement.offsetTop,
+				top: 0,
 				behavior: 'smooth',
 			} );
 		}
