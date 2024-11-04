@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "aws/aws-crt-php",
-            "version": "v1.2.6",
+            "version": "v1.2.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/awslabs/aws-crt-php.git",
-                "reference": "a63485b65b6b3367039306496d49737cf1995408"
+                "reference": "d71d9906c7bb63a28295447ba12e74723bd3730e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/awslabs/aws-crt-php/zipball/a63485b65b6b3367039306496d49737cf1995408",
-                "reference": "a63485b65b6b3367039306496d49737cf1995408",
+                "url": "https://api.github.com/repos/awslabs/aws-crt-php/zipball/d71d9906c7bb63a28295447ba12e74723bd3730e",
+                "reference": "d71d9906c7bb63a28295447ba12e74723bd3730e",
                 "shasum": ""
             },
             "require": {
@@ -56,22 +56,22 @@
             ],
             "support": {
                 "issues": "https://github.com/awslabs/aws-crt-php/issues",
-                "source": "https://github.com/awslabs/aws-crt-php/tree/v1.2.6"
+                "source": "https://github.com/awslabs/aws-crt-php/tree/v1.2.7"
             },
-            "time": "2024-06-13T17:21:28+00:00"
+            "time": "2024-10-18T22:15:13+00:00"
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.324.1",
+            "version": "3.325.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "5b824a9b8015a38f18c53b023975c0f63c7bd3dc"
+                "reference": "9e354a5e0cd1d563ec85245e3000e98e16a44fce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/5b824a9b8015a38f18c53b023975c0f63c7bd3dc",
-                "reference": "5b824a9b8015a38f18c53b023975c0f63c7bd3dc",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/9e354a5e0cd1d563ec85245e3000e98e16a44fce",
+                "reference": "9e354a5e0cd1d563ec85245e3000e98e16a44fce",
                 "shasum": ""
             },
             "require": {
@@ -154,9 +154,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.324.1"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.325.2"
             },
-            "time": "2024-10-11T18:22:01+00:00"
+            "time": "2024-11-01T18:08:38+00:00"
         },
         {
             "name": "carbonphp/carbon-doctrine-types",
@@ -597,16 +597,16 @@
         },
         {
             "name": "guzzlehttp/promises",
-            "version": "2.0.3",
+            "version": "2.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/promises.git",
-                "reference": "6ea8dd08867a2a42619d65c3deb2c0fcbf81c8f8"
+                "reference": "f9c436286ab2892c7db7be8c8da4ef61ccf7b455"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/promises/zipball/6ea8dd08867a2a42619d65c3deb2c0fcbf81c8f8",
-                "reference": "6ea8dd08867a2a42619d65c3deb2c0fcbf81c8f8",
+                "url": "https://api.github.com/repos/guzzle/promises/zipball/f9c436286ab2892c7db7be8c8da4ef61ccf7b455",
+                "reference": "f9c436286ab2892c7db7be8c8da4ef61ccf7b455",
                 "shasum": ""
             },
             "require": {
@@ -660,7 +660,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/promises/issues",
-                "source": "https://github.com/guzzle/promises/tree/2.0.3"
+                "source": "https://github.com/guzzle/promises/tree/2.0.4"
             },
             "funding": [
                 {
@@ -676,7 +676,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-07-18T10:29:17+00:00"
+            "time": "2024-10-17T10:06:22+00:00"
         },
         {
             "name": "guzzlehttp/psr7",
@@ -2134,16 +2134,16 @@
         },
         {
             "name": "symfony/finder",
-            "version": "v6.4.11",
+            "version": "v6.4.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/finder.git",
-                "reference": "d7eb6daf8cd7e9ac4976e9576b32042ef7253453"
+                "reference": "daea9eca0b08d0ed1dc9ab702a46128fd1be4958"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/finder/zipball/d7eb6daf8cd7e9ac4976e9576b32042ef7253453",
-                "reference": "d7eb6daf8cd7e9ac4976e9576b32042ef7253453",
+                "url": "https://api.github.com/repos/symfony/finder/zipball/daea9eca0b08d0ed1dc9ab702a46128fd1be4958",
+                "reference": "daea9eca0b08d0ed1dc9ab702a46128fd1be4958",
                 "shasum": ""
             },
             "require": {
@@ -2178,7 +2178,7 @@
             "description": "Finds files and directories via an intuitive fluent interface",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/finder/tree/v6.4.11"
+                "source": "https://github.com/symfony/finder/tree/v6.4.13"
             },
             "funding": [
                 {
@@ -2194,7 +2194,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-08-13T14:27:37+00:00"
+            "time": "2024-10-01T08:30:56+00:00"
         },
         {
             "name": "symfony/polyfill-mbstring",
@@ -2358,16 +2358,16 @@
         },
         {
             "name": "symfony/translation",
-            "version": "v6.4.12",
+            "version": "v6.4.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/translation.git",
-                "reference": "cf8360b8352b086be620fae8342c4d96e391a489"
+                "reference": "bee9bfabfa8b4045a66bf82520e492cddbaffa66"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/translation/zipball/cf8360b8352b086be620fae8342c4d96e391a489",
-                "reference": "cf8360b8352b086be620fae8342c4d96e391a489",
+                "url": "https://api.github.com/repos/symfony/translation/zipball/bee9bfabfa8b4045a66bf82520e492cddbaffa66",
+                "reference": "bee9bfabfa8b4045a66bf82520e492cddbaffa66",
                 "shasum": ""
             },
             "require": {
@@ -2433,7 +2433,7 @@
             "description": "Provides tools to internationalize your application",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/translation/tree/v6.4.12"
+                "source": "https://github.com/symfony/translation/tree/v6.4.13"
             },
             "funding": [
                 {
@@ -2449,7 +2449,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-09-16T06:02:54+00:00"
+            "time": "2024-09-27T18:14:25+00:00"
         },
         {
             "name": "symfony/translation-contracts",
@@ -2531,24 +2531,24 @@
         },
         {
             "name": "travelopia/advanced-custom-fields-pro",
-            "version": "6.3.8",
+            "version": "6.3.10",
             "source": {
                 "type": "git",
                 "url": "git@github.com:Travelopia/advanced-custom-fields-pro.git",
-                "reference": "4cb547c39f04f6fe35206f6c0d05c5c2b3f64e22"
+                "reference": "3ee9a847be1b9f78723185423f4daedc9f1d5038"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Travelopia/advanced-custom-fields-pro/zipball/4cb547c39f04f6fe35206f6c0d05c5c2b3f64e22",
-                "reference": "4cb547c39f04f6fe35206f6c0d05c5c2b3f64e22",
+                "url": "https://api.github.com/repos/Travelopia/advanced-custom-fields-pro/zipball/3ee9a847be1b9f78723185423f4daedc9f1d5038",
+                "reference": "3ee9a847be1b9f78723185423f4daedc9f1d5038",
                 "shasum": ""
             },
             "type": "wordpress-plugin",
             "support": {
-                "source": "https://github.com/Travelopia/advanced-custom-fields-pro/tree/6.3.8",
+                "source": "https://github.com/Travelopia/advanced-custom-fields-pro/tree/6.3.10",
                 "issues": "https://github.com/Travelopia/advanced-custom-fields-pro/issues"
             },
-            "time": "2024-10-09T06:05:21+00:00"
+            "time": "2024-11-01T03:52:31+00:00"
         },
         {
             "name": "travelopia/wordpress-blade",
@@ -2907,15 +2907,15 @@
         },
         {
             "name": "wpackagist-plugin/wordpress-seo",
-            "version": "23.6",
+            "version": "23.7",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/wordpress-seo/",
-                "reference": "tags/23.6"
+                "reference": "tags/23.7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/wordpress-seo.23.6.zip"
+                "url": "https://downloads.wordpress.org/plugin/wordpress-seo.23.7.zip"
             },
             "require": {
                 "composer/installers": "^1.0 || ^2.0"
@@ -3737,16 +3737,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "1.12.6",
+            "version": "1.12.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "dc4d2f145a88ea7141ae698effd64d9df46527ae"
+                "reference": "dc2b9976bd8b0f84ec9b0e50cc35378551de7af0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/dc4d2f145a88ea7141ae698effd64d9df46527ae",
-                "reference": "dc4d2f145a88ea7141ae698effd64d9df46527ae",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/dc2b9976bd8b0f84ec9b0e50cc35378551de7af0",
+                "reference": "dc2b9976bd8b0f84ec9b0e50cc35378551de7af0",
                 "shasum": ""
             },
             "require": {
@@ -3791,7 +3791,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-10-06T15:03:59+00:00"
+            "time": "2024-10-18T11:12:07+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
