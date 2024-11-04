@@ -140,7 +140,7 @@
 						@endif
 
 						<x-expedition-cards.buttons>
-							<x-button href="" class="expedition-cards__cta" size="big">
+							<x-button class="expedition-cards__cta" size="big">
 								{{ __( 'View Cabin Pricing', 'qrk' ) }}
 							</x-button>
 							<x-button href="{{ $card['expedition_link'] ?? '' }}" color="black" size="big">
