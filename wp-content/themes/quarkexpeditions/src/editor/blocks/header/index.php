@@ -147,7 +147,8 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 						}
 
 						// Add attributes of current item.
-						$component_attributes['primary_nav']['items'][] = $mega_menu_item_attributes;
+						$component_attributes['primary_nav']['items'][]  = $mega_menu_item_attributes;
+						$component_attributes['primary_nav']['has_more'] = $nav_inner_block->attributes['hasMoreButton'] ?? false;
 					}
 				}
 				break;
