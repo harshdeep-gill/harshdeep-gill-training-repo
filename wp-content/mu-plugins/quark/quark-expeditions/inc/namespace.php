@@ -25,7 +25,7 @@ use function Quark\Localization\get_current_currency;
 use function Quark\Ships\get as get_ship;
 use function Quark\Softrip\Departures\get_departures_by_itinerary;
 use function Quark\Softrip\Itineraries\get_end_date;
-use function Quark\Softrip\Itineraries\get_lowest_price;
+use function Quark\Itineraries\get_lowest_price;
 use function Quark\Softrip\Itineraries\get_related_ships;
 use function Quark\Softrip\Itineraries\get_start_date;
 
@@ -1275,14 +1275,13 @@ function get_minimum_duration_itinerary( int $post_id = 0 ): WP_Post|null {
  * From set Itineraries.
  *
  * @param int  $post_id Post ID.
- * @param bool $force   Whether cached value should be ignored.
  *
  * @return array{
  *    original: int,
  *    discounted: int,
  * }
  */
-function get_starting_from_price( int $post_id = 0, bool $force = false ): array {
+function get_starting_from_price( int $post_id = 0 ): array {
 	// Default starting from price.
 	$lowest_prices = [
 		'original'   => 0,
@@ -1296,19 +1295,6 @@ function get_starting_from_price( int $post_id = 0, bool $force = false ): array
 
 	// Current currency.
 	$currency = get_current_currency();
-
-	// Cache key.
-	$cache_key = CACHE_KEY . '_starting_from_price_' . $post_id . '_' . $currency;
-
-	// If not forced, check cache.
-	if ( ! $force ) {
-		$cached_value = wp_cache_get( $cache_key, CACHE_GROUP );
-
-		// Check for cached value.
-		if ( is_array( $cached_value ) && isset( $cached_value['original'], $cached_value['discounted'] ) ) {
-			return $cached_value;
-		}
-	}
 
 	// Get post.
 	$post = get( $post_id );
@@ -1346,9 +1332,6 @@ function get_starting_from_price( int $post_id = 0, bool $force = false ): array
 			$lowest_prices = $price;
 		}
 	}
-
-	// Set cache.
-	wp_cache_set( $cache_key, $lowest_prices, CACHE_GROUP );
 
 	// Return starting from price.
 	return $lowest_prices;

@@ -19,9 +19,11 @@ use function Quark\Expeditions\bust_post_cache as bust_expedition_post_cache;
 use function Quark\Expeditions\get as get_expedition;
 use function Quark\ItineraryDays\get as get_itinerary_day;
 use function Quark\Leads\get_request_a_quote_url;
+use function Quark\Localization\get_currencies;
 use function Quark\Localization\get_current_currency;
 use function Quark\Ships\get as get_ship;
-use function Quark\Softrip\Itineraries\get_lowest_price;
+use function Quark\Softrip\Departures\get_departures_by_itinerary;
+use function Quark\Softrip\Departures\get_lowest_price as get_departure_lowest_price;
 use function Quark\Softrip\Itineraries\get_related_ships;
 
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
@@ -1111,4 +1113,66 @@ function get_tax_type_details( int $post_id = 0 ): array {
 
 	// Return tax types.
 	return $tax_types;
+}
+
+/**
+ * Get lowest price for itinerary.
+ *
+ * @param int    $post_id  Itinerary post ID.
+ * @param string $currency Currency code.
+ * @param bool   $force    Whether cached value should be ignored.
+ *
+ * @return array{
+ *  original: int,
+ *  discounted: int,
+ * }
+ */
+function get_lowest_price( int $post_id = 0, string $currency = DEFAULT_CURRENCY, bool $force = false ): array {
+	// Uppercase the currency code.
+	$currency = strtoupper( $currency );
+
+	// Setup default return values.
+	$lowest_price = [
+		'original'   => 0,
+		'discounted' => 0,
+	];
+
+	// Return default values if no post ID.
+	if ( empty( $post_id ) || ! in_array( $currency, get_currencies(), true ) ) {
+		return $lowest_price;
+	}
+
+	// Cache key.
+	$cache_key = CACHE_KEY . '_lowest_price_' . $post_id . '_' . $currency;
+
+	// If not forced, check cache.
+	if ( ! $force ) {
+		$cached_value = wp_cache_get( $cache_key, CACHE_GROUP );
+
+		// Check for cached value.
+		if ( is_array( $cached_value ) && ! empty( $cached_value['original'] ) && ! empty( $cached_value['discounted'] ) ) {
+			return $cached_value;
+		}
+	}
+
+	// Get all departure posts for the itinerary.
+	$departure_post_ids = get_departures_by_itinerary( $post_id );
+
+	// Loop through each departure post.
+	foreach ( $departure_post_ids as $departure_post_id ) {
+		// Get the lowest price for the departure.
+		$departure_price = get_departure_lowest_price( $departure_post_id, $currency );
+
+		// If the discounted price is less than the current discounted price, update the discounted and original price.
+		if ( empty( $lowest_price['discounted'] ) || $departure_price['discounted'] < $lowest_price['discounted'] ) {
+			$lowest_price['discounted'] = $departure_price['discounted'];
+			$lowest_price['original']   = $departure_price['original'];
+		}
+	}
+
+	// Set cache.
+	wp_cache_set( $cache_key, $lowest_price, CACHE_GROUP );
+
+	// Return the lowest price.
+	return $lowest_price;
 }
