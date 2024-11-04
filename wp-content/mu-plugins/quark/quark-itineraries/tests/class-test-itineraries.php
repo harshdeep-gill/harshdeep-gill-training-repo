@@ -21,6 +21,11 @@ use const Quark\StaffMembers\SEASON_TAXONOMY;
 use const Quark\Ships\POST_TYPE as SHIPS_POST_TYPE;
 use const Quark\ItineraryDays\POST_TYPE as ITINERARY_DAYS_POST_TYPE;
 use const Quark\Expeditions\POST_TYPE as EXPEDITION_POST_TYPE;
+use const Quark\Localization\AUD_CURRENCY;
+use const Quark\Localization\DEFAULT_CURRENCY;
+use const Quark\Localization\EUR_CURRENCY;
+use const Quark\Localization\GBP_CURRENCY;
+use const Quark\Localization\USD_CURRENCY;
 
 /**
  * Class Test_Itineraries.
@@ -1309,6 +1314,9 @@ class Test_Itineraries extends Softrip_TestCase {
 		 * @return void
 		 */
 	public function test_get_lowest_price(): void {
+		// Cache prefix.
+		$cache_prefix = CACHE_KEY . '_lowest_price_';
+
 		// Invalid post ID.
 		$expected = [
 			'original'   => 0,
@@ -1328,11 +1336,14 @@ class Test_Itineraries extends Softrip_TestCase {
 		$this->assertIsInt( $itinerary_id );
 
 		// Itinerary with no departure.
-		$expected = [
+		$expected  = [
 			'original'   => 0,
 			'discounted' => 0,
 		];
+		$cache_key = $cache_prefix . $itinerary_id . '_' . DEFAULT_CURRENCY;
+		$this->assertFalse( wp_cache_get( $cache_key, CACHE_GROUP ) );
 		$this->assertEquals( $expected, get_lowest_price( $itinerary_id ) );
+		$this->assertNotEmpty( wp_cache_get( $cache_key, CACHE_GROUP ) );
 
 		// Setup mock response.
 		add_filter( 'pre_http_request', 'Quark\Tests\Softrip\mock_softrip_http_request', 10, 3 );
@@ -1372,40 +1383,65 @@ class Test_Itineraries extends Softrip_TestCase {
 		$itinerary_id = $itinerary_posts[0];
 		$this->assertIsInt( $itinerary_id );
 
+		// USD cache key.
+		$cache_key_usd = $cache_prefix . $itinerary_id . '_' . USD_CURRENCY;
+
 		// Get lowest price for itinerary with package code ABC-123 with USD currency.
+		$this->assertFalse( wp_cache_get( $cache_key_usd, CACHE_GROUP ) );
 		$expected = [
 			'original'   => 34895,
 			'discounted' => 26171,
 		];
 		$this->assertEquals( $expected, get_lowest_price( $itinerary_id ) );
+		$this->assertNotEmpty( wp_cache_get( $cache_key_usd, CACHE_GROUP ) );
+
+		// AUD cache key.
+		$cache_key_aud = $cache_prefix . $itinerary_id . '_' . AUD_CURRENCY;
 
 		// Get lowest price for itinerary with package code ABC-123 with AUD currency.
+		$this->assertFalse( wp_cache_get( $cache_key_aud, CACHE_GROUP ) );
 		$expected = [
 			'original'   => 54795,
 			'discounted' => 41096,
 		];
-		$this->assertEquals( $expected, get_lowest_price( $itinerary_id, 'AUD' ) );
+		$this->assertEquals( $expected, get_lowest_price( $itinerary_id, AUD_CURRENCY ) );
+		$this->assertNotEmpty( wp_cache_get( $cache_key_aud, CACHE_GROUP ) );
+
+		// EUR cache key.
+		$cache_key_eur = $cache_prefix . $itinerary_id . '_' . EUR_CURRENCY;
 
 		// Get lowest price for itinerary with package code ABC-123 with EUR currency.
+		$this->assertFalse( wp_cache_get( $cache_key_eur, CACHE_GROUP ) );
 		$expected = [
 			'original'   => 32495,
 			'discounted' => 24371,
 		];
-		$this->assertEquals( $expected, get_lowest_price( $itinerary_id, 'EUR' ) );
+		$this->assertEquals( $expected, get_lowest_price( $itinerary_id, EUR_CURRENCY ) );
+		$this->assertNotEmpty( wp_cache_get( $cache_key_eur, CACHE_GROUP ) );
+
+		// GBP cache key.
+		$cache_key_gbp = $cache_prefix . $itinerary_id . '_' . GBP_CURRENCY;
 
 		// Get lowest price for itinerary with package code ABC-123 with GBP currency.
+		$this->assertFalse( wp_cache_get( $cache_key_gbp, CACHE_GROUP ) );
 		$expected = [
 			'original'   => 27995,
 			'discounted' => 20996,
 		];
 		$this->assertEquals( $expected, get_lowest_price( $itinerary_id, 'GBP' ) );
+		$this->assertNotEmpty( wp_cache_get( $cache_key_gbp, CACHE_GROUP ) );
+
+		// Invalid currency cache key.
+		$cache_key_invalid = $cache_prefix . $itinerary_id . '_INVALID';
 
 		// Get lowest price for itinerary with package code ABC-123 with invalid currency.
+		$this->assertFalse( wp_cache_get( $cache_key_invalid, CACHE_GROUP ) );
 		$expected = [
 			'original'   => 0,
 			'discounted' => 0,
 		];
 		$this->assertEquals( $expected, get_lowest_price( $itinerary_id, 'INVALID' ) );
+		$this->assertFalse( wp_cache_get( $cache_key_invalid, CACHE_GROUP ) );
 
 		// Get itinerary with package code DEF-456.
 		$itinerary_posts = get_posts(
@@ -1433,40 +1469,65 @@ class Test_Itineraries extends Softrip_TestCase {
 		$itinerary_id = $itinerary_posts[0];
 		$this->assertIsInt( $itinerary_id );
 
+		// USD cache key.
+		$cache_key_usd = $cache_prefix . $itinerary_id . '_' . USD_CURRENCY;
+
 		// Get lowest price for itinerary with package code DEF-456 with USD currency.
+		$this->assertFalse( wp_cache_get( $cache_key_usd, CACHE_GROUP ) );
 		$expected = [
 			'original'   => 0,
 			'discounted' => 0,
 		];
 		$this->assertEquals( $expected, get_lowest_price( $itinerary_id ) );
+		$this->assertNotEmpty( wp_cache_get( $cache_key_usd, CACHE_GROUP ) );
+
+		// AUD cache key.
+		$cache_key_aud = $cache_prefix . $itinerary_id . '_' . AUD_CURRENCY;
 
 		// Get lowest price for itinerary with package code DEF-456 with AUD currency.
+		$this->assertFalse( wp_cache_get( $cache_key_aud, CACHE_GROUP ) );
 		$expected = [
 			'original'   => 0,
 			'discounted' => 0,
 		];
 		$this->assertEquals( $expected, get_lowest_price( $itinerary_id, 'AUD' ) );
+		$this->assertNotEmpty( wp_cache_get( $cache_key_aud, CACHE_GROUP ) );
+
+		// EUR cache key.
+		$cache_key_eur = $cache_prefix . $itinerary_id . '_' . EUR_CURRENCY;
 
 		// Get lowest price for itinerary with package code DEF-456 with EUR currency.
+		$this->assertFalse( wp_cache_get( $cache_key_eur, CACHE_GROUP ) );
 		$expected = [
 			'original'   => 0,
 			'discounted' => 0,
 		];
 		$this->assertEquals( $expected, get_lowest_price( $itinerary_id, 'EUR' ) );
+		$this->assertNotEmpty( wp_cache_get( $cache_key_eur, CACHE_GROUP ) );
+
+		// GBP cache key.
+		$cache_key_gbp = $cache_prefix . $itinerary_id . '_' . GBP_CURRENCY;
 
 		// Get lowest price for itinerary with package code DEF-456 with GBP currency.
+		$this->assertFalse( wp_cache_get( $cache_key_gbp, CACHE_GROUP ) );
 		$expected = [
 			'original'   => 0,
 			'discounted' => 0,
 		];
 		$this->assertEquals( $expected, get_lowest_price( $itinerary_id, 'GBP' ) );
+		$this->assertNotEmpty( wp_cache_get( $cache_key_gbp, CACHE_GROUP ) );
+
+		// Invalid currency cache key.
+		$cache_key_invalid = $cache_prefix . $itinerary_id . '_INVALID';
 
 		// Get lowest price for itinerary with package code DEF-456 with invalid currency.
+		$this->assertFalse( wp_cache_get( $cache_key_invalid, CACHE_GROUP ) );
 		$expected = [
 			'original'   => 0,
 			'discounted' => 0,
 		];
 		$this->assertEquals( $expected, get_lowest_price( $itinerary_id, 'INVALID' ) );
+		$this->assertFalse( wp_cache_get( $cache_key_invalid, CACHE_GROUP ) );
 
 		// Get itinerary with package code HIJ-456.
 		$itinerary_posts = get_posts(

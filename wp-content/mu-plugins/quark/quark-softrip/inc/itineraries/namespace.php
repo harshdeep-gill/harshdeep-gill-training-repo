@@ -8,7 +8,6 @@
 namespace Quark\Softrip\Itineraries;
 
 use function Quark\Softrip\Departures\get_departures_by_itinerary;
-use function Quark\Softrip\Departures\get_lowest_price as get_departure_lowest_price;
 use function Quark\Softrip\Departures\get_related_ship;
 use function Quark\Softrip\Departures\get_start_date as get_departure_start_date;
 use function Quark\Softrip\Departures\get_end_date as get_departure_end_date;
