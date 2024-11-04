@@ -43,6 +43,26 @@ export default class FormNewsletter extends HTMLElement {
 		// Hide content and show thank you instead.
 		this.content.style.display = 'none';
 		this.successMessage.style.display = 'flex';
+
+		// Scroll to the success message
+		this.scrollToSuccessMessage();
+	}
+
+	/**
+	 * Scroll to the success message element.
+	 */
+	scrollToSuccessMessage(): void {
+		// Set the scroll element.
+		const successElement = document.getElementById( 'form-newsletter__success' );
+
+		// Check if the element exists.
+		if ( successElement ) {
+			// Scroll to the element.
+			window.scrollTo( {
+				top: 0,
+				behavior: 'smooth',
+			} );
+		}
 	}
 }
 

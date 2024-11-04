@@ -78,7 +78,7 @@
 					<x-form.submit size="big">{{ __( 'Submit', 'qrk' ) }}</x-form.submit>
 				</x-form.buttons>
 			</div>
-			<div class="form-newsletter__success">
+			<div id="form-newsletter__success" class="form-newsletter__success">
 				<h1 class="form-newsletter__success-title"> {{ __( 'You\'ve Been Subscribed', 'qrk' ) }} </h1>
 				<div class="form-newsletter__success-info">
 					<p>{{ __( 'Thanks for signing up for our monthly newsletter.', 'qrk' ) }}
