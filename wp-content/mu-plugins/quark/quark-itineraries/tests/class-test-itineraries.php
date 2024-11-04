@@ -1300,4 +1300,233 @@ class Test_Itineraries extends Softrip_TestCase {
 		$this->assertEqualsCanonicalizing( [ 123, 456 ], get_post_meta( $expedition_1->ID, 'related_itineraries', true ) );
 		$this->assertEqualsCanonicalizing( [ 123 ], get_post_meta( $expedition_2->ID, 'related_itineraries', true ) );
 	}
+
+		/**
+	 * Test get lowest price.
+	 *
+	 * @covers \Quark\Itineraries\get_lowest_price
+	 *
+	 * @return void
+	 */
+	public function test_get_lowest_price(): void {
+		// Invalid post ID.
+		$expected = [
+			'original'   => 0,
+			'discounted' => 0,
+		];
+		$this->assertEquals( $expected, get_lowest_price() );
+
+		// Invalid currency.
+		$expected = [
+			'original'   => 0,
+			'discounted' => 0,
+		];
+		$this->assertEquals( $expected, get_lowest_price( 1, 'INVALID' ) );
+
+		// Create an itinerary post.
+		$itinerary_id = $this->factory()->post->create( [ 'post_type' => POST_TYPE ] );
+		$this->assertIsInt( $itinerary_id );
+
+		// Itinerary with no departure.
+		$expected = [
+			'original'   => 0,
+			'discounted' => 0,
+		];
+		$this->assertEquals( $expected, get_lowest_price( $itinerary_id ) );
+
+		// Setup mock response.
+		add_filter( 'pre_http_request', 'Quark\Tests\Softrip\mock_softrip_http_request', 10, 3 );
+
+		// Flush cache before sync.
+		wp_cache_flush();
+
+		// Sync softrip with existing posts.
+		do_sync();
+
+		// Flush cache after sync.
+		wp_cache_flush();
+
+		// Get itinerary post with package code ABC-123.
+		$itinerary_posts = get_posts(
+			[
+				'post_type'              => POST_TYPE,
+				'no_found_rows'          => true,
+				'update_post_term_cache' => false,
+				'update_post_meta_cache' => false,
+				'suppress_filters'       => false,
+				'ignore_sticky_posts'    => true,
+				'fields'                 => 'ids',
+				'meta_query'             => [
+					[
+						'key'     => 'softrip_package_code',
+						'value'   => 'ABC-123',
+						'compare' => '=',
+					],
+				],
+			]
+		);
+		$this->assertNotEmpty( $itinerary_posts );
+		$this->assertEquals( 1, count( $itinerary_posts ) );
+
+		// Itinerary id.
+		$itinerary_id = $itinerary_posts[0];
+		$this->assertIsInt( $itinerary_id );
+
+		// Get lowest price for itinerary with package code ABC-123 with USD currency.
+		$expected = [
+			'original'   => 34895,
+			'discounted' => 26171,
+		];
+		$this->assertEquals( $expected, get_lowest_price( $itinerary_id ) );
+
+		// Get lowest price for itinerary with package code ABC-123 with AUD currency.
+		$expected = [
+			'original'   => 54795,
+			'discounted' => 41096,
+		];
+		$this->assertEquals( $expected, get_lowest_price( $itinerary_id, 'AUD' ) );
+
+		// Get lowest price for itinerary with package code ABC-123 with EUR currency.
+		$expected = [
+			'original'   => 32495,
+			'discounted' => 24371,
+		];
+		$this->assertEquals( $expected, get_lowest_price( $itinerary_id, 'EUR' ) );
+
+		// Get lowest price for itinerary with package code ABC-123 with GBP currency.
+		$expected = [
+			'original'   => 27995,
+			'discounted' => 20996,
+		];
+		$this->assertEquals( $expected, get_lowest_price( $itinerary_id, 'GBP' ) );
+
+		// Get lowest price for itinerary with package code ABC-123 with invalid currency.
+		$expected = [
+			'original'   => 0,
+			'discounted' => 0,
+		];
+		$this->assertEquals( $expected, get_lowest_price( $itinerary_id, 'INVALID' ) );
+
+		// Get itinerary with package code DEF-456.
+		$itinerary_posts = get_posts(
+			[
+				'post_type'              => POST_TYPE,
+				'no_found_rows'          => true,
+				'update_post_term_cache' => false,
+				'update_post_meta_cache' => false,
+				'suppress_filters'       => false,
+				'ignore_sticky_posts'    => true,
+				'fields'                 => 'ids',
+				'meta_query'             => [
+					[
+						'key'     => 'softrip_package_code',
+						'value'   => 'DEF-456',
+						'compare' => '=',
+					],
+				],
+			]
+		);
+		$this->assertNotEmpty( $itinerary_posts );
+		$this->assertEquals( 1, count( $itinerary_posts ) );
+
+		// Itinerary id.
+		$itinerary_id = $itinerary_posts[0];
+		$this->assertIsInt( $itinerary_id );
+
+		// Get lowest price for itinerary with package code DEF-456 with USD currency.
+		$expected = [
+			'original'   => 0,
+			'discounted' => 0,
+		];
+		$this->assertEquals( $expected, get_lowest_price( $itinerary_id ) );
+
+		// Get lowest price for itinerary with package code DEF-456 with AUD currency.
+		$expected = [
+			'original'   => 0,
+			'discounted' => 0,
+		];
+		$this->assertEquals( $expected, get_lowest_price( $itinerary_id, 'AUD' ) );
+
+		// Get lowest price for itinerary with package code DEF-456 with EUR currency.
+		$expected = [
+			'original'   => 0,
+			'discounted' => 0,
+		];
+		$this->assertEquals( $expected, get_lowest_price( $itinerary_id, 'EUR' ) );
+
+		// Get lowest price for itinerary with package code DEF-456 with GBP currency.
+		$expected = [
+			'original'   => 0,
+			'discounted' => 0,
+		];
+		$this->assertEquals( $expected, get_lowest_price( $itinerary_id, 'GBP' ) );
+
+		// Get lowest price for itinerary with package code DEF-456 with invalid currency.
+		$expected = [
+			'original'   => 0,
+			'discounted' => 0,
+		];
+		$this->assertEquals( $expected, get_lowest_price( $itinerary_id, 'INVALID' ) );
+
+		// Get itinerary with package code HIJ-456.
+		$itinerary_posts = get_posts(
+			[
+				'post_type'              => POST_TYPE,
+				'no_found_rows'          => true,
+				'update_post_term_cache' => false,
+				'update_post_meta_cache' => false,
+				'suppress_filters'       => false,
+				'ignore_sticky_posts'    => true,
+				'fields'                 => 'ids',
+				'meta_query'             => [
+					[
+						'key'     => 'softrip_package_code',
+						'value'   => 'HIJ-456',
+						'compare' => '=',
+					],
+				],
+			]
+		);
+		$this->assertNotEmpty( $itinerary_posts );
+		$this->assertEquals( 1, count( $itinerary_posts ) );
+
+		// Itinerary id.
+		$itinerary_id = $itinerary_posts[0];
+		$this->assertIsInt( $itinerary_id );
+
+		// Get lowest price for itinerary with package code HIJ-456 with USD currency.
+		$expected = [
+			'original'   => 10995,
+			'discounted' => 9896,
+		];
+		$this->assertEquals( $expected, get_lowest_price( $itinerary_id ) );
+
+		// Get lowest price for itinerary with package code HIJ-456 with AUD currency.
+		$expected = [
+			'original'   => 17200,
+			'discounted' => 15480,
+		];
+		$this->assertEquals( $expected, get_lowest_price( $itinerary_id, 'AUD' ) );
+
+		// Get lowest price for itinerary with package code HIJ-456 with EUR currency.
+		$expected = [
+			'original'   => 10200,
+			'discounted' => 9180,
+		];
+		$this->assertEquals( $expected, get_lowest_price( $itinerary_id, 'EUR' ) );
+
+		// Get lowest price for itinerary with package code HIJ-456 with GBP currency.
+		$expected = [
+			'original'   => 10300,
+			'discounted' => 8240,
+		];
+		$this->assertEquals( $expected, get_lowest_price( $itinerary_id, 'GBP' ) );
+
+		// Get lowest price for itinerary with package code HIJ-456 with invalid currency.
+		$expected = [
+			'original'   => 0,
+			'discounted' => 0,
+		];
+		$this->assertEquals( $expected, get_lowest_price( $itinerary_id, 'INVALID' ) );
+	}
 }
