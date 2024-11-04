@@ -1274,7 +1274,7 @@ function get_minimum_duration_itinerary( int $post_id = 0 ): WP_Post|null {
  * Get Starting From Price for Expedition.
  * From set Itineraries.
  *
- * @param int  $post_id Post ID.
+ * @param int $post_id Post ID.
  *
  * @return array{
  *    original: int,

@@ -1302,12 +1302,12 @@ class Test_Itineraries extends Softrip_TestCase {
 	}
 
 		/**
-	 * Test get lowest price.
-	 *
-	 * @covers \Quark\Itineraries\get_lowest_price
-	 *
-	 * @return void
-	 */
+		 * Test get lowest price.
+		 *
+		 * @covers \Quark\Itineraries\get_lowest_price
+		 *
+		 * @return void
+		 */
 	public function test_get_lowest_price(): void {
 		// Invalid post ID.
 		$expected = [
