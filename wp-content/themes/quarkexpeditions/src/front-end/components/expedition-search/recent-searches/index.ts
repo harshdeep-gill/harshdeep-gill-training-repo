@@ -38,7 +38,7 @@ export default class QuarkExpeditionSearchRecentSearches extends HTMLElement {
 		 * Setup on content load event
 		 * This has been used instead of window.onload because window.onload can be overwritten.
 		 */
-		window.addEventListener( 'load', this.setupSubscription.bind( this ) );
+		window.addEventListener( 'load', this.updateComponent.bind( this ) );
 	}
 
 	/**
@@ -161,14 +161,13 @@ export default class QuarkExpeditionSearchRecentSearches extends HTMLElement {
 	}
 
 	/**
-	 * Sets up the store subscription after content is loaded to prevent undefined errors.
+	 * Sets up the update process for the component.
 	 */
-	setupSubscription() {
+	updateComponent() {
 		// Get the subscribe function.
-		const { subscribe: subscribeToFiltersBarStore, getState: getFiltersBarState } = zustand.stores.searchFiltersBar;
+		const { getState: getFiltersBarState } = zustand.stores.searchFiltersBar;
 
 		// Subscribe to the store.
-		subscribeToFiltersBarStore( this.update.bind( this ) );
 		this.update( getFiltersBarState() );
 	}
 }
