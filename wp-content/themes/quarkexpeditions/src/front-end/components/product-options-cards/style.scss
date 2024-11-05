@@ -276,8 +276,6 @@
 		}
 
 		#{$self}__gallery {
-			--card-details-gallery-slide-max-width: 100%;
-			--arrow-lateral-inset: calc((100% - var(--card-details-gallery-slide-max-width)) / 2 + var(--spacing-3));
 
 			&-slides {
 				gap: var(--spacing-4);
@@ -286,23 +284,12 @@
 
 			&-slider {
 				position: relative;
-			}
-
-			@media screen and (min-width: grid-size(sm)) {
-				--card-details-gallery-slide-max-width: 511px;
-			}
-
-			@media screen and (min-width: grid-size(md)) {
-				--card-details-gallery-slide-max-width: 660px;
-			}
-
-			@media screen and (min-width: grid-size(lg)) {
-				--card-details-gallery-slide-max-width: 928px;
+				padding-inline: var(--spacing-7);
 			}
 
 			&-slide {
 				overflow: hidden;
-				max-width: var(--card-details-gallery-slide-max-width);
+				max-width: 100%;
 
 				@media screen and (min-width: grid-size(sm)) {
 					border-radius: var(--border-radius-large);
@@ -317,27 +304,14 @@
 				}
 			}
 
-			&-track {
-				margin-inline: calc((100% - var(--card-details-gallery-slide-max-width)) / 2);
-				overflow: visible;
-			}
-
-			@media screen and (min-width: grid-size(sm)) {
-				--arrow-lateral-inset: calc((100% - var(--card-details-gallery-slide-max-width)) / 2 - var(--spacing-5));
-			}
-
-			@media screen and (min-width: grid-size(md)) {
-				--arrow-lateral-inset: calc((100% - var(--card-details-gallery-slide-max-width)) / 2 - var(--spacing-7));
-			}
-
 			&-arrow-button {
 
 				&--right {
-					right: var(--arrow-lateral-inset);
+					right: 0;
 				}
 
 				&--left {
-					left: var(--arrow-lateral-inset);
+					left: 0;
 				}
 			}
 		}

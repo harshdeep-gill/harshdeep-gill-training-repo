@@ -16,7 +16,7 @@
 	}
 
 	if ( ! empty( $full_size ) ) {
-		$classes[] = 'full-width';
+		$classes[] = 'product-options-cards__gallery-full-width';
 	}
 
 	$image_args = [
