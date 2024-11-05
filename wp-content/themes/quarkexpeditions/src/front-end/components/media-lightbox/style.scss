@@ -138,6 +138,10 @@
 			@media screen and (min-width: grid-size(md)) {
 				width: auto;
 			}
+
+			@media screen and (min-width: grid-size(md)) and (max-height: 650px) {
+				height: 70vh;
+			}
 		}
 	}
 
