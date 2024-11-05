@@ -61,7 +61,7 @@ function bootstrap(): void {
 	add_filter( 'rest_prepare_taxonomy', __NAMESPACE__ . '\\hide_excursion_metabox', 10, 3 );
 
 	// Other hooks.
-	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
+	add_action( 'save_post', __NAMESPACE__ . '\\bust_post_cache' );
 	add_filter( 'travelopia_seo_structured_data_schema', __NAMESPACE__ . '\\seo_structured_data' );
 
 	// Bust cache for details data.
@@ -680,6 +680,14 @@ function opt_in( array $post_types = [] ): array {
  * @return void
  */
 function bust_post_cache( int $post_id = 0 ): void {
+	// Get post type.
+	$post_type = get_post_type( $post_id );
+
+	// Check for post type.
+	if ( POST_TYPE !== $post_type ) {
+		return;
+	}
+
 	// Clear cache for this post.
 	wp_cache_delete( CACHE_KEY . "_$post_id", CACHE_GROUP );
 

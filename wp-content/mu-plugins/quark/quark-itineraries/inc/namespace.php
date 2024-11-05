@@ -52,7 +52,7 @@ function bootstrap(): void {
 	add_filter( 'qe_season_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
 
 	// Other hooks.
-	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
+	add_action( 'save_post', __NAMESPACE__ . '\\bust_post_cache' );
 	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\update_related_expedition_on_itineraries_save', 1 );
 
 	// Admin stuff.
@@ -340,6 +340,14 @@ function opt_in( array $post_types = [] ): array {
  * @return void
  */
 function bust_post_cache( int $post_id = 0 ): void {
+	// Get post type.
+	$post_type = get_post_type( $post_id );
+
+	// Check for post type.
+	if ( POST_TYPE !== $post_type ) {
+		return;
+	}
+
 	// Clear cache for this post.
 	wp_cache_delete( CACHE_KEY . "_$post_id", CACHE_GROUP );
 
