@@ -30,6 +30,7 @@
 <x-section
 	@class( $classes )
 	:full_width="true"
+	:wrap="true"
 >
 	<x-product-cards.carousel :layout="$layout">
 		{!! $slot !!}

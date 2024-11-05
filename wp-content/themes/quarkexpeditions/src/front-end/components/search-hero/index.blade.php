@@ -29,7 +29,7 @@
 		class="search-hero__overlay"
 		style={!! $overlay_style !!}
 	></div>
-	<div class="search-hero__wrap">
+	<div class="search-hero__wrap wrap">
 		{!! $slot !!}
 	</div>
 </x-section>

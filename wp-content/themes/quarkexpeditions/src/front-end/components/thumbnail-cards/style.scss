@@ -28,22 +28,15 @@
 	&__slider {
 		overflow-x: visible;
 		width: 100vw;
-		margin-inline: var(--grid-col-gutter);
 
 		&:has(div.thumbnail-cards__nav) {
 			#{$self}__track {
 				margin-bottom: 0;
 			}
 		}
-
-		@media screen and (min-width: 1120px) {
-			margin-inline: 0;
-		}
 	}
 
 	&__track {
-		padding-left: var(--spacing-5);
-		margin-left: calc(-1 * var(--spacing-5));
 		scrollbar-width: none; /* Firefox */
 
 		&::-webkit-scrollbar {
@@ -63,7 +56,6 @@
 		display: flex;
 		column-gap: var(--spacing-5);
 		margin-top: var(--spacing-6);
-		margin-left: calc(-1 * var(--spacing-1));
 
 		@media screen and (min-width: calc(grid-size(lg) + 1px)) {
 			display: none;
@@ -90,7 +82,6 @@
 				transform: scale(1.03);
 			}
 		}
-
 
 		&-title {
 			width: 100%;

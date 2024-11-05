@@ -74,9 +74,9 @@
 	--spacing-8: 64px;
 	--spacing-9: 96px;
 
-	--wrap-width: 1120px;
+	--wrap-width: 864px;
 	--wrap-width-medium: 720px;
-	--narrow-wrap-width: 865px;
+	--narrow-wrap-width: 864px;
 	--grid-section-gutter: var(--spacing-8);
 	--grid-row-gutter: var(--spacing-5);
 	--grid-col-gutter: var(--spacing-5);
@@ -133,6 +133,11 @@
 
 		// Scroll Offset.
 		--scroll-offset: var(--spacing-6);
+	}
+
+	@media screen and (min-width: calc(grid-size(lg) + 1px)) {
+		// Update the wrap width.
+		--wrap-width: 1120px;
 	}
 
 	@media screen and (min-width: grid-size(xl)) {

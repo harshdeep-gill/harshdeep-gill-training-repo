@@ -61,8 +61,6 @@
 	}
 
 	&__track {
-		margin: 0 calc(-1 * 18px) calc(-1 * var(--spacing-6));
-		padding: 0 18px var(--spacing-6);
 		scrollbar-width: none; /* Firefox */
 
 		&::-webkit-scrollbar {

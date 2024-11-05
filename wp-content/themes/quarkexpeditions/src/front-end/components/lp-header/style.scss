@@ -75,16 +75,10 @@
 	}
 
 	&__wrap {
-		max-width: var(--wrap-width);
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		padding: var(--spacing-4) 0;
-		margin: auto;
-
-		@media screen and (max-width: 1120px) {
-			margin: 0 var(--grid-col-gutter);
-		}
+		padding-block: var(--spacing-4);
 	}
 
 	&__logo {
