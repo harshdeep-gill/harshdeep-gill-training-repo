@@ -15,10 +15,6 @@
 		$classes[] = $class;
 	}
 
-	if ( ! empty( $full_size ) ) {
-		$classes[] = 'product-options-cards__gallery-full-width';
-	}
-
 	$image_args = [
 		'size' => [
 			'width'  => 400,
