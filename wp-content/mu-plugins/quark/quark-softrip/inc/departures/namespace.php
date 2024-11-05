@@ -601,7 +601,7 @@ function get_departures_by_itinerary( int $itinerary_post_id = 0 ): array {
 	// Prepare args.
 	$args = [
 		'post_type'              => DEPARTURE_POST_TYPE,
-		'posts_per_page'         => 100, // @todo Change to -1 if departures are more than 100.
+		'posts_per_page'         => -1,
 		'no_found_rows'          => true,
 		'update_post_term_cache' => false,
 		'update_post_meta_cache' => false,
