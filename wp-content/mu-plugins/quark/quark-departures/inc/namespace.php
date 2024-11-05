@@ -68,9 +68,6 @@ function bootstrap(): void {
 	add_action( 'qe_expedition_post_cache_busted', __NAMESPACE__ . '\\bust_card_data_cache_on_expedition_update' );
 	add_action( 'qe_itinerary_post_cache_busted', __NAMESPACE__ . '\\bust_card_data_cache_on_itinerary_update' );
 
-	// Bust cache on term update.
-	add_action( 'set_object_terms', __NAMESPACE__ . '\\bust_post_cache_on_term_assign', 10, 6 );
-
 	// Admin stuff.
 	if ( is_admin() ) {
 		// Custom fields.
@@ -351,32 +348,6 @@ function get( int $post_id = 0 ): array {
 
 	// Return data.
 	return $data;
-}
-
-/**
- * Bust cache on term assign.
- *
- * @param int                    $object_id Object ID.
- * @param array{string|int}|null $terms     An array of object term IDs or slugs.
- * @param array{string|int}|null $tt_ids    An array of term taxonomy IDs.
- * @param string                 $taxonomy  Taxonomy slug.
- *
- * @return void
- */
-function bust_post_cache_on_term_assign( int $object_id = 0, array $terms = null, array $tt_ids = null, string $taxonomy = '' ): void {
-	// Check for spoken language taxonomy.
-	if ( in_array( $taxonomy, [ SPOKEN_LANGUAGE_TAXONOMY, PROMOTION_TAG ], true ) ) {
-		// Get post.
-		$post = get( $object_id );
-
-		// Check for post.
-		if ( ! $post['post'] instanceof WP_Post || POST_TYPE !== $post['post']->post_type ) {
-			return;
-		}
-
-		// Bust cache.
-		bust_post_cache( $post['post']->ID );
-	}
 }
 
 /**

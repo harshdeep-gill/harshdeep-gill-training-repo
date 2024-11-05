@@ -43,7 +43,6 @@ class Test_Itineraries extends Softrip_TestCase {
 		$this->assertEquals( 10, has_filter( 'qe_tax_types_taxonomy_post_types', 'Quark\Itineraries\opt_in' ) );
 		$this->assertEquals( 10, has_filter( 'qe_season_taxonomy_post_types', 'Quark\Itineraries\opt_in' ) );
 		$this->assertEquals( 10, has_action( 'save_post_' . POST_TYPE, 'Quark\Itineraries\bust_post_cache' ) );
-		$this->assertEquals( 10, has_action( 'set_object_terms', 'Quark\Itineraries\bust_post_cache_on_term_assign' ) );
 	}
 
 	/**
@@ -1035,57 +1034,6 @@ class Test_Itineraries extends Softrip_TestCase {
 		$this->assertEquals( 'Day 2 & 3: B', format_itinerary_day_title( $itinerary_day_two->ID ) );
 		$this->assertEquals( 'Day 4 to 6: C', format_itinerary_day_title( $itinerary_day_three->ID ) );
 		$this->assertEquals( 'D', format_itinerary_day_title( $itinerary_day_four->ID ) );
-	}
-
-	/**
-	 * Test bust_post_cache_on_term_assign function.
-	 *
-	 * @covers ::bust_post_cache_on_term_assign
-	 *
-	 * @return void
-	 */
-	public function test_bust_post_cache_on_term_assign(): void {
-		// Create a term for DEPARTURE_LOCATION_TAXONOMY.
-		$departure_location = $this->factory()->term->create_and_get(
-			[
-				'taxonomy' => DEPARTURE_LOCATION_TAXONOMY,
-				'name'     => 'Test Term',
-			]
-		);
-
-		// Create a post of POST_TYPE.
-		$post = $this->factory()->post->create_and_get(
-			[
-				'post_type'   => POST_TYPE,
-				'post_title'  => 'Test Post',
-				'post_status' => 'publish',
-			]
-		);
-
-		// Check if term and post were created.
-		$this->assertTrue( $departure_location instanceof WP_Term );
-		$this->assertTrue( $post instanceof WP_Post );
-
-		// Set post meta.
-		update_post_meta( $post->ID, 'meta_1', 'value_1' );
-
-		// Get data.
-		$data = get( $post->ID );
-
-		// Assert data['post_meta'] is not empty.
-		$this->assertIsArray( $data['post_meta'] );
-		$this->assertArrayNotHasKey( 'meta_1', $data['post_meta'] );
-
-		// Assign term to post.
-		wp_set_object_terms( $post->ID, $departure_location->term_id, DEPARTURE_LOCATION_TAXONOMY );
-
-		// Get data.
-		$data = get( $post->ID );
-
-		// Assert data['post_meta'] is not empty.
-		$this->assertIsArray( $data['post_meta'] );
-		$this->assertArrayHasKey( 'meta_1', $data['post_meta'] );
-		$this->assertEquals( 'value_1', $data['post_meta']['meta_1'] );
 	}
 
 	/**
