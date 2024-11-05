@@ -19,7 +19,7 @@
 					<x-expedition-cards.grid-column>
 						<x-expedition-cards.promo-tag text="{{ $card['promotion_banner'] ?? '' }}" />
 						<x-expedition-cards.date>{{ $card['duration_dates'] ?? '' }}</x-expedition-cards.date>
-						<x-expedition-cards.title>{{ $card['expedition_name'] ?? '' }}</x-expedition-cards.title>
+						<x-expedition-cards.title href="{{ $card['expedition_link'] ?? '' }}">{{ $card['expedition_name'] ?? '' }}</x-expedition-cards.title>
 
 						<x-expedition-cards.icons>
 							<x-expedition-cards.icon icon="ship">{{ $card['ship_name'] ?? '' }}</x-expedition-cards.icon>
@@ -140,7 +140,7 @@
 						@endif
 
 						<x-expedition-cards.buttons>
-							<x-button href="" class="expedition-cards__cta" size="big">
+							<x-button class="expedition-cards__cta" size="big">
 								{{ __( 'View Cabin Pricing', 'qrk' ) }}
 							</x-button>
 							<x-button href="{{ $card['expedition_link'] ?? '' }}" color="black" size="big">

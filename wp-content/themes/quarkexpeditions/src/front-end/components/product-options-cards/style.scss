@@ -307,6 +307,14 @@
 				@media screen and (min-width: grid-size(sm)) {
 					border-radius: var(--border-radius-large);
 				}
+
+				img {
+					border-radius: var(--border-radius-large);
+					max-height: 600px;
+					width: auto;
+					margin: 0 auto;
+					display: block;
+				}
 			}
 
 			&-track {

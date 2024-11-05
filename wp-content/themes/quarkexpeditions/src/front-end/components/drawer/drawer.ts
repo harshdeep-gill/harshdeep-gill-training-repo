@@ -19,6 +19,14 @@ export class QuarkDrawerElement extends HTMLElement {
 
 		// Event listeners.
 		this.addEventListener( 'click', this.handleClick.bind( this ) );
+
+		// Get props - close-on-desktop.
+		const closeOnDesktop = this.getAttribute( 'close-on-desktop' );
+
+		// Close the drawer on resize.
+		if ( 'true' === closeOnDesktop ) {
+			window.addEventListener( 'resize', this.handleResize.bind( this ) );
+		}
 	}
 
 	/**
@@ -73,6 +81,16 @@ export class QuarkDrawerElement extends HTMLElement {
 		if ( e.target === this ) {
 			e.preventDefault();
 			e.stopPropagation();
+			this.close();
+		}
+	}
+
+	/**
+	 * Handle when the window is resized.
+	 */
+	handleResize(): void {
+		// Close the drawer if it is open and the window is resized to desktop.
+		if ( 1280 <= window.innerWidth && this.hasAttribute( 'open' ) ) {
 			this.close();
 		}
 	}

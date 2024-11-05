@@ -116,7 +116,7 @@ export const updateDepartureMonths = ( months: SearchFiltersBarMonthState[] ) =>
  */
 export const fetchFilterOptions = ( type: string = 'destinations' ) => {
 	// Get State.
-	const { filtersApiUrl, selectedDestinations, selectedMonths } = getState();
+	const { filtersApiUrl, selectedDestinations, selectedMonths }: SearchFiltersBarState = getState();
 	let updatedApiUrl = filtersApiUrl;
 
 	// Check if the url exists.
@@ -135,12 +135,9 @@ export const fetchFilterOptions = ( type: string = 'destinations' ) => {
 	}
 
 	// If request type is months, then update the api url with the query param.
-	if ( 'months' === type && selectedMonths ) {
-		// Get the first selected month value.
-		const months = Array.from( selectedMonths );
-
+	if ( 'months' === type && selectedMonths.length ) {
 		// Add the query param.
-		updatedApiUrl = `${ filtersApiUrl }?month=${ months[ 0 ] }`;
+		updatedApiUrl = `${ filtersApiUrl }?month=${ selectedMonths[ 0 ]?.value }`;
 	}
 
 	// Fetch relevant filter options.
