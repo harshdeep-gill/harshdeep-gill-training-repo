@@ -28,8 +28,8 @@ function bootstrap(): void {
 	add_filter( 'travelopia_primary_term_taxonomies', __NAMESPACE__ . '\\primary_term_taxonomies', 10, 2 );
 
 	// Other hooks.
-	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\calculate_post_reading_time', 10, 3 );
-	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
+	add_action( 'save_post', __NAMESPACE__ . '\\calculate_post_reading_time', 10, 3 );
+	add_action( 'save_post', __NAMESPACE__ . '\\bust_post_cache' );
 
 	// Breadcrumbs.
 	add_filter( 'travelopia_breadcrumbs_ancestors', __NAMESPACE__ . '\\breadcrumbs_ancestors' );
@@ -45,9 +45,6 @@ function bootstrap(): void {
 
 	// SEO.
 	add_filter( 'travelopia_seo_structured_data_schema', __NAMESPACE__ . '\\seo_structured_data' );
-
-	// Other hooks.
-	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
 }
 
 /**
@@ -75,6 +72,14 @@ function update_blog_posts_admin_menu_label( object $labels = null ): object {
  * @return void
  */
 function bust_post_cache( int $post_id = 0 ): void {
+	// Get post type.
+	$post_type = get_post_type( $post_id );
+
+	// Bail if post type does not match.
+	if ( POST_TYPE !== $post_type ) {
+		return;
+	}
+
 	// Delete the post cache.
 	wp_cache_delete( CACHE_KEY . "_$post_id", CACHE_GROUP );
 

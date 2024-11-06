@@ -53,7 +53,7 @@ function bootstrap(): void {
 
 	// Other hooks.
 	add_action( 'save_post', __NAMESPACE__ . '\\bust_post_cache' );
-	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\update_related_expedition_on_itineraries_save', 1 );
+	add_action( 'save_post', __NAMESPACE__ . '\\update_related_expedition_on_itineraries_save', 1 );
 
 	// Admin stuff.
 	if ( is_admin() ) {

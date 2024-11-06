@@ -23,7 +23,7 @@ function bootstrap(): void {
 	add_action( 'init', __NAMESPACE__ . '\\register_offer_post_type' );
 
 	// Other hooks.
-	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
+	add_action( 'save_post', __NAMESPACE__ . '\\bust_post_cache' );
 }
 
 /**
@@ -83,6 +83,14 @@ function register_offer_post_type(): void {
  * @return void
  */
 function bust_post_cache( int $post_id = 0 ): void {
+	// Get post type.
+	$post_type = get_post_type( $post_id );
+
+	// Bail if post type does not match.
+	if ( POST_TYPE !== $post_type ) {
+		return;
+	}
+
 	// Clear cache for this post.
 	wp_cache_delete( CACHE_KEY . "_$post_id", CACHE_GROUP );
 
