@@ -77,6 +77,9 @@ function bootstrap(): void {
 		require_once __DIR__ . '/../custom-fields/departures.php';
 		require_once __DIR__ . '/../custom-fields/spoken-languages.php';
 		require_once __DIR__ . '/../custom-fields/promotion-tags.php';
+
+		// Custom styles for ACF fields.
+		add_action( 'acf/input/admin_head', __NAMESPACE__ . '\\acf_styles_for_read_only_fields' );
 	}
 }
 
@@ -1338,4 +1341,34 @@ function get_promotions_description( int $departure_id = 0 ): array {
 
 	// Return promo descriptions.
 	return $promo_descriptions;
+}
+
+/**
+ * Add custom styles for read-only ACF fields.
+ *
+ * @return void
+ */
+function acf_styles_for_read_only_fields(): void {
+	// Get the current screen information.
+	$screen = get_current_screen();
+
+	// Check if we're on a post edit screen and ACF is active.
+	if ( $screen && function_exists( 'acf' ) && POST_TYPE === $screen->post_type ) {
+		echo '<style>
+            /* Read-only styling for ACF Fields with class .quark-readonly-field */
+			.acf-field.quark-readonly-field {
+			    position: relative;
+				cursor: not-allowed;
+			}
+
+			.acf-field.quark-readonly-field .acf-input {
+				pointer-events: none;
+			}
+
+			.quark-readonly-field .acf-fields,
+			.quark-readonly-field .select2 .select2-selection {
+				background-color: #f0f0f1;
+			}
+        </style>';
+	}
 }
