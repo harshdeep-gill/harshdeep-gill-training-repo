@@ -1306,13 +1306,13 @@ class Test_Itineraries extends Softrip_TestCase {
 		$this->assertEqualsCanonicalizing( [ 123 ], get_post_meta( $expedition_2->ID, 'related_itineraries', true ) );
 	}
 
-		/**
-		 * Test get lowest price.
-		 *
-		 * @covers \Quark\Itineraries\get_lowest_price
-		 *
-		 * @return void
-		 */
+	/**
+	 * Test get lowest price.
+	 *
+	 * @covers \Quark\Itineraries\get_lowest_price
+	 *
+	 * @return void
+	 */
 	public function test_get_lowest_price(): void {
 		// Cache prefix.
 		$cache_prefix = CACHE_KEY . '_lowest_price_';
