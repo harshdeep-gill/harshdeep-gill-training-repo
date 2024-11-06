@@ -163,6 +163,8 @@ function set_meta_for_pricing_block_posts( int $post_id = 0 ): bool {
  * @param int    $term_id Term ID.
  * @param int    $tt_id Term taxonomy ID.
  * @param string $taxonomy Taxonomy slug.
+ *
+ * @return void
  */
 function bust_cache_on_term_update( int $term_id = 0, int $tt_id = 0, string $taxonomy = '' ): void {
 	// Bail if no term ID or taxonomy.
@@ -178,10 +180,12 @@ function bust_cache_on_term_update( int $term_id = 0, int $tt_id = 0, string $ta
 		return;
 	}
 
+	// Loop through object IDs.
 	foreach ( $object_ids as $object_id ) {
 		// Convert to int.
 		$object_id = absint( $object_id );
 
+		// Skip if empty.
 		if ( empty( $object_id ) ) {
 			continue;
 		}
@@ -199,104 +203,104 @@ function bust_cache_on_term_update( int $term_id = 0, int $tt_id = 0, string $ta
  * @return void
  */
 function bust_post_cache_by_id( int $post_id = 0 ): void {
-			// Get post type.
-		$post_type = get_post_type( $post_id );
+	// Get post type.
+	$post_type = get_post_type( $post_id );
 
+	// Bust cache based on post type.
 	switch ( $post_type ) {
-		case DEPARTURE_POST_TYPE: {
-			// Bust cache for departure.
+		// Bust cache for departure.
+		case DEPARTURE_POST_TYPE:
 			bust_departure_post_cache( $post_id );
 			break;
-		}
-		case EXPEDITION_POST_TYPE: {
-			// Bust cache for expedition.
+
+		// Bust cache for expedition.
+		case EXPEDITION_POST_TYPE:
 			bust_expedition_post_cache( $post_id );
 			break;
-		}
-		case ITINERARY_POST_TYPE: {
-			// Bust cache for itinerary.
+
+		// Bust cache for itinerary.
+		case ITINERARY_POST_TYPE:
 			bust_itinerary_post_cache( $post_id );
 			break;
-		}
-		case STAFF_MEMBER_POST_TYPE: {
-			// Bust cache for staff member.
+
+		// Bust cache for staff member.
+		case STAFF_MEMBER_POST_TYPE:
 			bust_staff_member_post_cache( $post_id );
 			break;
-		}
-		case ADVENTURE_OPTION_POST_TYPE: {
-			// Bust cache for adventure option.
+
+		// Bust cache for adventure option.
+		case ADVENTURE_OPTION_POST_TYPE:
 			bust_adventure_option_post_cache( $post_id );
 			break;
-		}
-		case BLOG_POST_TYPE: {
-			// Bust cache for blog post.
+
+		// Bust cache for blog post.
+		case BLOG_POST_TYPE:
 			bust_blog_post_cache( $post_id );
 			break;
-		}
-		case CABIN_CATEGORY_POST_TYPE: {
-			// Bust cache for cabin category.
+
+		// Bust cache for cabin category.
+		case CABIN_CATEGORY_POST_TYPE:
 			bust_cabin_category_cache( $post_id );
 			break;
-		}
-		case SHIP_POST_TYPE: {
-			// Bust cache for ship.
+
+		// Bust cache for ship.
+		case SHIP_POST_TYPE:
 			bust_ship_cache( $post_id );
 			break;
-		}
-		case SHIP_DECK_POST_TYPE: {
-			// Bust cache for ship deck.
+
+		// Bust cache for ship deck.
+		case SHIP_DECK_POST_TYPE:
 			bust_ship_deck_cache( $post_id );
 			break;
-		}
-		case REGION_POST_TYPE: {
-			// Bust cache for region.
+
+		// Bust cache for region.
+		case REGION_POST_TYPE:
 			bust_region_cache( $post_id );
 			break;
-		}
-		case PORTS_POST_TYPE: {
-			// Bust cache for port.
+
+		// Bust cache for port.
+		case PORTS_POST_TYPE:
 			bust_port_cache( $post_id );
 			break;
-		}
-		case BROCHURE_POST_TYPE: {
-			// Bust cache for brochure.
+
+		// Bust cache for brochure.
+		case BROCHURE_POST_TYPE:
 			bust_brochure_cache( $post_id );
 			break;
-		}
-		case POLICY_PAGE_POST_TYPE: {
-			// Bust cache for policy page.
+
+		// Bust cache for policy page.
+		case POLICY_PAGE_POST_TYPE:
 			bust_policy_page_cache( $post_id );
 			break;
-		}
-		case AUTHOR_POST_TYPE: {
-			// Bust cache for author.
+
+		// Bust cache for author.
+		case AUTHOR_POST_TYPE:
 			bust_author_cache( $post_id );
 			break;
-		}
-		case OFFER_POST_TYPE: {
-			// Bust cache for offer.
+
+		// Bust cache for offer.
+		case OFFER_POST_TYPE:
 			bust_offer_cache( $post_id );
 			break;
-		}
-		case EXCLUSION_SET_POST_TYPE: {
-			// Bust cache for exclusion set.
+
+		// Bust cache for exclusion set.
+		case EXCLUSION_SET_POST_TYPE:
 			bust_exclusion_set_cache( $post_id );
 			break;
-		}
-		case ITINERARY_DAY_POST_TYPE: {
-			// Bust cache for itinerary day.
+
+		// Bust cache for itinerary day.
+		case ITINERARY_DAY_POST_TYPE:
 			bust_itinerary_day_cache( $post_id );
 			break;
-		}
-		case INCLUSION_SET_POST_TYPE: {
-			// Bust cache for inclusion set.
+
+		// Bust cache for inclusion set.
+		case INCLUSION_SET_POST_TYPE:
 			bust_inclusion_set_cache( $post_id );
 			break;
-		}
-		case PRE_POST_TRIP_OPTION_POST_TYPE: {
-			// Bust cache for pre/post trip option.
+
+		// Bust cache for pre/post trip option.
+		case PRE_POST_TRIP_OPTION_POST_TYPE:
 			bust_pre_post_trip_option_cache( $post_id );
 			break;
-		}
 	}
 }
