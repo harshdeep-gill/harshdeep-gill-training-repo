@@ -11,6 +11,10 @@
     "align": {
       "type": "string",
       "default": "left"
+    },
+    "layout": {
+      "type": "string",
+      "default": "carousel"
     }
   },
   "supports": {
