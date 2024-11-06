@@ -5,7 +5,7 @@
 	'currency'        => '',
 	'filters_data'    => [],
 	'page'            => 1,
-	'nextPage'        => 1,
+	'next_page'        => 1,
 ] )
 
 @php
