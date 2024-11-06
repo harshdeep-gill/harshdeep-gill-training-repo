@@ -1,6 +1,7 @@
 @props( [
-	'align' => 'left',
-	'items' => [],
+	'align'  => 'left',
+	'items'  => [],
+	'layout' => 'carousel',
 ] )
 
 @php
@@ -9,7 +10,7 @@
 	}
 @endphp
 
-<x-product-cards :align="$align">
+<x-product-cards :align="$align" :layout="$layout">
 	@foreach ( $items as $card )
 		@if ( 'product-card' === $card['type'] )
 			<x-product-cards.card>

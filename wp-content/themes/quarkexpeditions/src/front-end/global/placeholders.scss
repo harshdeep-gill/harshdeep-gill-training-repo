@@ -33,6 +33,10 @@
 		margin-top: calc(var(--grid-section-gutter) * -1);
 	}
 
+	.wp-block-post-content > &:last-child {
+		margin-bottom: calc(var(--grid-section-gutter) * -1);
+	}
+
 	#{$self} + .block-library-block__reusable-block-container:has(> &) {
 		margin-top: calc(var(--grid-section-gutter) * -1);
 	}

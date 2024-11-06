@@ -107,6 +107,23 @@ function redirect_legacy_search_query_params(): void {
 		return;
 	}
 
+	// Flag to check if query param present.
+	$is_query_param_present = false;
+
+	// Loop over each legacy query param and check if it is present.
+	foreach ( LEGACY_QUERY_PARAMS_MAPPING as $legacy_key => $value ) {
+		// Check if current legacy key is available in query params.
+		if ( ! empty( $query_params[ $legacy_key ] ) ) {
+			$is_query_param_present = true;
+			break;
+		}
+	}
+
+	// Bail if no query param present.
+	if ( ! $is_query_param_present ) {
+		return;
+	}
+
 	// Get all filter options.
 	$filter_options = build_filter_options( array_column( LEGACY_QUERY_PARAMS_MAPPING, 'new_key' ) );
 

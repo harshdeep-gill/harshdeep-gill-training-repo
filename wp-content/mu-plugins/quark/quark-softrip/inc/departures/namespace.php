@@ -23,8 +23,8 @@ use function Quark\Softrip\Promotions\update_promotions;
 
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
 use const Quark\Departures\SPOKEN_LANGUAGE_TAXONOMY;
-use const Quark\Expeditions\CACHE_KEY as EXPEDITION_CACHE_KEY;
-use const Quark\Expeditions\CACHE_GROUP as EXPEDITION_CACHE_GROUP;
+use const Quark\Itineraries\CACHE_KEY as ITINERARY_CACHE_KEY;
+use const Quark\Itineraries\CACHE_GROUP as ITINERARY_CACHE_GROUP;
 use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
 use const Quark\Localization\DEFAULT_CURRENCY;
 
@@ -392,10 +392,10 @@ function update_departures( array $raw_departures = [], string $softrip_package_
 			if ( $is_occupancies_updated ) {
 				// Bust starting price cache of expedition.
 				foreach ( get_currencies() as $currency ) {
-					$cache_key = EXPEDITION_CACHE_KEY . '_starting_from_price_' . $expedition_post_id . '_' . $currency;
+					$cache_key = ITINERARY_CACHE_KEY . '_lowest_price_' . $itinerary_post_id . '_' . $currency;
 
 					// Delete cache.
-					wp_cache_delete( $cache_key, EXPEDITION_CACHE_GROUP );
+					wp_cache_delete( $cache_key, ITINERARY_CACHE_GROUP );
 				}
 			}
 		} else {
