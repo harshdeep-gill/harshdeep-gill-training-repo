@@ -42,7 +42,7 @@ class Test_Itineraries extends Softrip_TestCase {
 		$this->assertEquals( 10, has_filter( 'qe_departure_location_taxonomy_post_types', 'Quark\Itineraries\opt_in' ) );
 		$this->assertEquals( 10, has_filter( 'qe_tax_types_taxonomy_post_types', 'Quark\Itineraries\opt_in' ) );
 		$this->assertEquals( 10, has_filter( 'qe_season_taxonomy_post_types', 'Quark\Itineraries\opt_in' ) );
-		$this->assertEquals( 10, has_action( 'save_post_' . POST_TYPE, 'Quark\Itineraries\bust_post_cache' ) );
+		$this->assertEquals( 10, has_action( 'save_post', 'Quark\Itineraries\bust_post_cache' ) );
 	}
 
 	/**
@@ -82,6 +82,9 @@ class Test_Itineraries extends Softrip_TestCase {
 
 		// Assign term to post.
 		wp_set_object_terms( $post_1->ID, $departure_location_1->term_id, DEPARTURE_LOCATION_TAXONOMY );
+
+		// Bust cache.
+		bust_post_cache( $post_1->ID );
 
 		// Get post.
 		$the_post = get( $post_1->ID );
@@ -426,6 +429,9 @@ class Test_Itineraries extends Softrip_TestCase {
 
 		// Assign term to post.
 		wp_set_post_terms( $post->ID, [ $season->term_id ], SEASON_TAXONOMY );
+
+		// Bust cache.
+		bust_post_cache( $post->ID );
 
 		// Test getting trip group.
 		$this->assertEquals(
@@ -1078,6 +1084,9 @@ class Test_Itineraries extends Softrip_TestCase {
 
 		// Assign tax type to post.
 		wp_set_object_terms( $post->ID, $tax_type->term_id, TAX_TYPE_TAXONOMY );
+
+		// Bust post cache.
+		bust_post_cache( $post->ID );
 
 		// Get tax type details.
 		$tax_type_details = get_tax_type_details( $post->ID );
