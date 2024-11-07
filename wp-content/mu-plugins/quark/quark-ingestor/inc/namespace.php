@@ -1332,8 +1332,8 @@ function get_cabins_data( int $expedition_post_id = 0, int $itinerary_post_id = 
 /**
  * Get occupancies data.
  *
- * @param int $itinerary_post_id Itinerary post ID.
- * @param int $departure_post_id Departure post ID.
+ * @param int $itinerary_post_id      Itinerary post ID.
+ * @param int $departure_post_id      Departure post ID.
  * @param int $cabin_category_post_id Cabin category ID.
  *
  * @return array{}|array<int,
