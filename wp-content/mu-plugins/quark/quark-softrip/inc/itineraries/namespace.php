@@ -8,58 +8,9 @@
 namespace Quark\Softrip\Itineraries;
 
 use function Quark\Softrip\Departures\get_departures_by_itinerary;
-use function Quark\Softrip\Departures\get_lowest_price as get_departure_lowest_price;
 use function Quark\Softrip\Departures\get_related_ship;
 use function Quark\Softrip\Departures\get_start_date as get_departure_start_date;
 use function Quark\Softrip\Departures\get_end_date as get_departure_end_date;
-use function Quark\Localization\get_currencies;
-
-use const Quark\Localization\DEFAULT_CURRENCY;
-
-/**
- * Get lowest price for itinerary.
- *
- * @param int    $post_id Itinerary post ID.
- * @param string $currency Currency code.
- *
- * @return array{
- *  original: int,
- *  discounted: int,
- * }
- */
-function get_lowest_price( int $post_id = 0, string $currency = DEFAULT_CURRENCY ): array {
-	// Uppercase the currency code.
-	$currency = strtoupper( $currency );
-
-	// Setup default return values.
-	$lowest_price = [
-		'original'   => 0,
-		'discounted' => 0,
-	];
-
-	// Return default values if no post ID.
-	if ( empty( $post_id ) || ! in_array( $currency, get_currencies(), true ) ) {
-		return $lowest_price;
-	}
-
-	// Get all departure posts for the itinerary.
-	$departure_post_ids = get_departures_by_itinerary( $post_id );
-
-	// Loop through each departure post.
-	foreach ( $departure_post_ids as $departure_post_id ) {
-		// Get the lowest price for the departure.
-		$departure_price = get_departure_lowest_price( $departure_post_id, $currency );
-
-		// If the discounted price is less than the current discounted price, update the discounted and original price.
-		if ( empty( $lowest_price['discounted'] ) || $departure_price['discounted'] < $lowest_price['discounted'] ) {
-			$lowest_price['discounted'] = $departure_price['discounted'];
-			$lowest_price['original']   = $departure_price['original'];
-		}
-	}
-
-	// Return the lowest price.
-	return $lowest_price;
-}
 
 /**
  * Get related ships for itinerary.

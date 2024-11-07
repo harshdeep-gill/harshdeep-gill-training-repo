@@ -45,8 +45,13 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 
 	// Initialize attributes.
 	$attributes = [
-		'align' => $block->attributes['align'] ?? 'left',
+		'layout' => $block->attributes['layout'] ?? 'carousel',
 	];
+
+	// Add the alignment only if grid is selected.
+	if ( 'grid' === $attributes['layout'] ) {
+		$attributes['align'] = $block->attributes['align'] ?? 'left';
+	}
 
 	// Build slot.
 	foreach ( $block->inner_blocks as $inner_block ) {

@@ -10,16 +10,23 @@ namespace Quark\Softrip\Tests\Departures;
 use Quark\Tests\Softrip\Softrip_TestCase;
 
 use function Quark\Expeditions\get_starting_from_price;
+use function Quark\Itineraries\get_lowest_price;
 use function Quark\Localization\set_current_currency;
 use function Quark\Softrip\Departures\update_departures;
 use function Quark\Softrip\do_sync;
 
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
 use const Quark\Departures\SPOKEN_LANGUAGE_TAXONOMY;
-use const Quark\Expeditions\CACHE_GROUP as EXPEDITION_CACHE_GROUP;
-use const Quark\Expeditions\CACHE_KEY as EXPEDITION_CACHE_KEY;
+use const Quark\Itineraries\CACHE_GROUP as ITINERARY_CACHE_GROUP;
+use const Quark\Itineraries\CACHE_KEY as ITINERARY_CACHE_KEY;
 use const Quark\Expeditions\POST_TYPE as EXPEDITION_POST_TYPE;
 use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
+use const Quark\Localization\AUD_CURRENCY;
+use const Quark\Localization\CAD_CURRENCY;
+use const Quark\Localization\DEFAULT_CURRENCY;
+use const Quark\Localization\EUR_CURRENCY;
+use const Quark\Localization\GBP_CURRENCY;
+use const Quark\Localization\USD_CURRENCY;
 use const Quark\Ships\POST_TYPE as SHIP_POST_TYPE;
 
 /**
@@ -1035,49 +1042,82 @@ class Test_Update_Departures extends Softrip_TestCase {
 		$this->assertIsInt( $departure_post1 );
 
 		// Get expedition id.
+		$itinerary_id = absint( get_post_meta( $departure_post1, 'itinerary', true ) );
+		$this->assertIsInt( $itinerary_id );
+
+		// Get starting price of this itinerary.
+		$cache_key_prefix = ITINERARY_CACHE_KEY . '_lowest_price_' . $itinerary_id;
+		$cache_key_usd    = $cache_key_prefix . '_' . DEFAULT_CURRENCY;
+		$this->assertFalse( wp_cache_get( $cache_key_usd, ITINERARY_CACHE_GROUP ) );
+		$starting_price_usd = get_lowest_price( $itinerary_id );
+		$this->assertEquals( 9896, $starting_price_usd['discounted'] );
+		$this->assertEquals( 10995, $starting_price_usd['original'] );
+		$this->assertNotFalse( wp_cache_get( $cache_key_usd, ITINERARY_CACHE_GROUP ) );
+
+		// Get starting price of this itinerary in EUR.
+		$cache_key_eur = $cache_key_prefix . '_' . EUR_CURRENCY;
+		$this->assertFalse( wp_cache_get( $cache_key_eur, ITINERARY_CACHE_GROUP ) );
+		$starting_price_eur = get_lowest_price( $itinerary_id, EUR_CURRENCY );
+		$this->assertEquals( 9180, $starting_price_eur['discounted'] );
+		$this->assertEquals( 10200, $starting_price_eur['original'] );
+		$this->assertNotFalse( wp_cache_get( $cache_key_eur, ITINERARY_CACHE_GROUP ) );
+
+		// Get starting price of this itinerary in GBP.
+		$cache_key_gbp = $cache_key_prefix . '_' . GBP_CURRENCY;
+		$this->assertFalse( wp_cache_get( $cache_key_gbp, ITINERARY_CACHE_GROUP ) );
+		$starting_price_gbp = get_lowest_price( $itinerary_id, GBP_CURRENCY );
+		$this->assertEquals( 8240, $starting_price_gbp['discounted'] );
+		$this->assertEquals( 10300, $starting_price_gbp['original'] );
+		$this->assertNotFalse( wp_cache_get( $cache_key_gbp, ITINERARY_CACHE_GROUP ) );
+
+		// Get starting price of this itinerary in AUD.
+		$cache_key_aud = $cache_key_prefix . '_' . AUD_CURRENCY;
+		$this->assertFalse( wp_cache_get( $cache_key_aud, ITINERARY_CACHE_GROUP ) );
+		$starting_price_aud = get_lowest_price( $itinerary_id, AUD_CURRENCY );
+		$this->assertEquals( 15480, $starting_price_aud['discounted'] );
+		$this->assertEquals( 17200, $starting_price_aud['original'] );
+		$this->assertNotFalse( wp_cache_get( $cache_key_aud, ITINERARY_CACHE_GROUP ) );
+
+		// Get starting price of this itinerary in CAD.
+		$cache_key_cad = $cache_key_prefix . '_' . CAD_CURRENCY;
+		$this->assertFalse( wp_cache_get( $cache_key_cad, ITINERARY_CACHE_GROUP ) );
+		$starting_price_cad = get_lowest_price( $itinerary_id, CAD_CURRENCY );
+		$this->assertEquals( 13410, $starting_price_cad['discounted'] );
+		$this->assertEquals( 14900, $starting_price_cad['original'] );
+		$this->assertNotFalse( wp_cache_get( $cache_key_cad, ITINERARY_CACHE_GROUP ) );
+
+		// Expedition id.
 		$expedition_id = absint( get_post_meta( $departure_post1, 'related_expedition', true ) );
-		$this->assertIsInt( $expedition_id );
 
 		// Get starting price of this expedition.
-		set_current_currency( 'USD' );
-		$cache_key_prefix   = EXPEDITION_CACHE_KEY . '_starting_from_price_' . $expedition_id;
-		$cache_key_usd      = $cache_key_prefix . '_USD';
+		set_current_currency( DEFAULT_CURRENCY );
 		$starting_price_usd = get_starting_from_price( $expedition_id );
 		$this->assertEquals( 9896, $starting_price_usd['discounted'] );
 		$this->assertEquals( 10995, $starting_price_usd['original'] );
-		$this->assertNotFalse( wp_cache_get( $cache_key_usd, EXPEDITION_CACHE_GROUP ) );
 
 		// Get starting price of this expedition in EUR.
-		set_current_currency( 'EUR' );
-		$cache_key_eur      = $cache_key_prefix . '_EUR';
+		set_current_currency( EUR_CURRENCY );
 		$starting_price_eur = get_starting_from_price( $expedition_id );
 		$this->assertEquals( 9180, $starting_price_eur['discounted'] );
 		$this->assertEquals( 10200, $starting_price_eur['original'] );
-		$this->assertNotFalse( wp_cache_get( $cache_key_eur, EXPEDITION_CACHE_GROUP ) );
 
 		// Get starting price of this expedition in GBP.
-		set_current_currency( 'GBP' );
-		$cache_key_gbp      = $cache_key_prefix . '_GBP';
+		set_current_currency( GBP_CURRENCY );
 		$starting_price_gbp = get_starting_from_price( $expedition_id );
 		$this->assertEquals( 8240, $starting_price_gbp['discounted'] );
 		$this->assertEquals( 10300, $starting_price_gbp['original'] );
-		$this->assertNotFalse( wp_cache_get( $cache_key_gbp, EXPEDITION_CACHE_GROUP ) );
 
 		// Get starting price of this expedition in AUD.
-		set_current_currency( 'AUD' );
-		$cache_key_aud      = $cache_key_prefix . '_AUD';
+		set_current_currency( AUD_CURRENCY );
 		$starting_price_aud = get_starting_from_price( $expedition_id );
 		$this->assertEquals( 15480, $starting_price_aud['discounted'] );
 		$this->assertEquals( 17200, $starting_price_aud['original'] );
-		$this->assertNotFalse( wp_cache_get( $cache_key_aud, EXPEDITION_CACHE_GROUP ) );
 
 		// Get starting price of this expedition in CAD.
-		set_current_currency( 'CAD' );
-		$cache_key_cad      = $cache_key_prefix . '_CAD';
+		set_current_currency( CAD_CURRENCY );
 		$starting_price_cad = get_starting_from_price( $expedition_id );
 		$this->assertEquals( 13410, $starting_price_cad['discounted'] );
 		$this->assertEquals( 14900, $starting_price_cad['original'] );
-		$this->assertNotFalse( wp_cache_get( $cache_key_cad, EXPEDITION_CACHE_GROUP ) );
 
 		// Update price for HIJ-456.
 		$hij_raw_departure = [
@@ -1204,48 +1244,67 @@ class Test_Update_Departures extends Softrip_TestCase {
 		$departure_post = $departure_posts[0];
 		$this->assertIsInt( $departure_post );
 
-		// Cache should be flushed.
-		$this->assertFalse( wp_cache_get( $cache_key_usd, EXPEDITION_CACHE_GROUP ) );
-		$this->assertFalse( wp_cache_get( $cache_key_eur, EXPEDITION_CACHE_GROUP ) );
-		$this->assertFalse( wp_cache_get( $cache_key_gbp, EXPEDITION_CACHE_GROUP ) );
-		$this->assertFalse( wp_cache_get( $cache_key_aud, EXPEDITION_CACHE_GROUP ) );
+		// Cache should have been busted.
+		$this->assertFalse( wp_cache_get( $cache_key_usd, ITINERARY_CACHE_GROUP ) );
+		$this->assertFalse( wp_cache_get( $cache_key_eur, ITINERARY_CACHE_GROUP ) );
+		$this->assertFalse( wp_cache_get( $cache_key_gbp, ITINERARY_CACHE_GROUP ) );
+		$this->assertFalse( wp_cache_get( $cache_key_aud, ITINERARY_CACHE_GROUP ) );
 
 		// Get updated starting price of this expedition.
-		set_current_currency( 'USD' );
+		$starting_price_usd = get_lowest_price( $itinerary_id );
+		$this->assertEquals( 4100, $starting_price_usd['discounted'] );
+		$this->assertEquals( 5490, $starting_price_usd['original'] );
+		$this->assertNotFalse( wp_cache_get( $cache_key_usd, ITINERARY_CACHE_GROUP ) );
+
+		// Get updated starting price of this expedition in EUR.
+		$starting_price_eur = get_lowest_price( $itinerary_id, EUR_CURRENCY );
+		$this->assertEquals( 1256, $starting_price_eur['discounted'] );
+		$this->assertEquals( 1570, $starting_price_eur['original'] );
+		$this->assertNotFalse( wp_cache_get( $cache_key_eur, ITINERARY_CACHE_GROUP ) );
+
+		// Get updated starting price of this expedition in GBP.
+		$starting_price_gbp = get_lowest_price( $itinerary_id, GBP_CURRENCY );
+		$this->assertEquals( 1080, $starting_price_gbp['discounted'] );
+		$this->assertEquals( 1350, $starting_price_gbp['original'] );
+		$this->assertNotFalse( wp_cache_get( $cache_key_gbp, ITINERARY_CACHE_GROUP ) );
+
+		// Get updated starting price of this expedition in AUD.
+		$starting_price_aud = get_lowest_price( $itinerary_id, AUD_CURRENCY );
+		$this->assertEquals( 2120, $starting_price_aud['discounted'] );
+		$this->assertEquals( 2600, $starting_price_aud['original'] );
+		$this->assertNotFalse( wp_cache_get( $cache_key_aud, ITINERARY_CACHE_GROUP ) );
+
+		// Get updated starting price of this expedition in CAD.
+		$starting_price_cad = get_lowest_price( $itinerary_id, CAD_CURRENCY );
+		$this->assertEquals( 1832, $starting_price_cad['discounted'] );
+		$this->assertEquals( 2290, $starting_price_cad['original'] );
+		$this->assertNotFalse( wp_cache_get( $cache_key_cad, ITINERARY_CACHE_GROUP ) );
+
+		// Set currency back to USD.
+		set_current_currency( USD_CURRENCY );
 		$starting_price_usd = get_starting_from_price( $expedition_id );
 		$this->assertEquals( 4100, $starting_price_usd['discounted'] );
 		$this->assertEquals( 5490, $starting_price_usd['original'] );
-		$this->assertNotFalse( wp_cache_get( $cache_key_usd, EXPEDITION_CACHE_GROUP ) );
 
-		// Get updated starting price of this expedition in EUR.
-		set_current_currency( 'EUR' );
+		// Set currency back to EUR.
+		set_current_currency( EUR_CURRENCY );
 		$starting_price_eur = get_starting_from_price( $expedition_id );
 		$this->assertEquals( 1256, $starting_price_eur['discounted'] );
 		$this->assertEquals( 1570, $starting_price_eur['original'] );
-		$this->assertNotFalse( wp_cache_get( $cache_key_eur, EXPEDITION_CACHE_GROUP ) );
 
-		// Get updated starting price of this expedition in GBP.
-		set_current_currency( 'GBP' );
+		// Set currency back to GBP.
+		set_current_currency( GBP_CURRENCY );
 		$starting_price_gbp = get_starting_from_price( $expedition_id );
 		$this->assertEquals( 1080, $starting_price_gbp['discounted'] );
 		$this->assertEquals( 1350, $starting_price_gbp['original'] );
-		$this->assertNotFalse( wp_cache_get( $cache_key_gbp, EXPEDITION_CACHE_GROUP ) );
 
-		// Get updated starting price of this expedition in AUD.
-		set_current_currency( 'AUD' );
+		// Set currency back to AUD.
+		set_current_currency( AUD_CURRENCY );
 		$starting_price_aud = get_starting_from_price( $expedition_id );
 		$this->assertEquals( 2120, $starting_price_aud['discounted'] );
 		$this->assertEquals( 2600, $starting_price_aud['original'] );
-		$this->assertNotFalse( wp_cache_get( $cache_key_aud, EXPEDITION_CACHE_GROUP ) );
-
-		// Get updated starting price of this expedition in CAD.
-		set_current_currency( 'CAD' );
-		$starting_price_cad = get_starting_from_price( $expedition_id );
-		$this->assertEquals( 1832, $starting_price_cad['discounted'] );
-		$this->assertEquals( 2290, $starting_price_cad['original'] );
-		$this->assertNotFalse( wp_cache_get( $cache_key_cad, EXPEDITION_CACHE_GROUP ) );
 
 		// Reset currency.
-		set_current_currency( 'USD' );
+		set_current_currency( DEFAULT_CURRENCY );
 	}
 }
