@@ -29,7 +29,7 @@ function bootstrap(): void {
 	add_filter( 'qe_destination_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
 
 	// Cache Purge.
-	add_action( 'save_post', __NAMESPACE__ . '\\bust_post_cache' );
+	add_action( 'save_post', __NAMESPACE__ . '\\bust_post_cache', 11 );
 
 	// Breadcrumbs.
 	add_filter( 'travelopia_breadcrumbs_ancestors', __NAMESPACE__ . '\\breadcrumbs_ancestors' );

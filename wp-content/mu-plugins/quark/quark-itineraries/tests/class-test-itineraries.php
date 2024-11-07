@@ -47,7 +47,7 @@ class Test_Itineraries extends Softrip_TestCase {
 		$this->assertEquals( 10, has_filter( 'qe_departure_location_taxonomy_post_types', 'Quark\Itineraries\opt_in' ) );
 		$this->assertEquals( 10, has_filter( 'qe_tax_types_taxonomy_post_types', 'Quark\Itineraries\opt_in' ) );
 		$this->assertEquals( 10, has_filter( 'qe_season_taxonomy_post_types', 'Quark\Itineraries\opt_in' ) );
-		$this->assertEquals( 10, has_action( 'save_post', 'Quark\Itineraries\bust_post_cache' ) );
+		$this->assertEquals( 11, has_action( 'save_post', 'Quark\Itineraries\bust_post_cache' ) );
 	}
 
 	/**

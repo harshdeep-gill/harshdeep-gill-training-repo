@@ -25,7 +25,7 @@ function bootstrap(): void {
 	add_action( 'init', __NAMESPACE__ . '\\register_ship_deck_post_type' );
 
 	// Other hooks.
-	add_action( 'save_post', __NAMESPACE__ . '\\bust_post_cache' );
+	add_action( 'save_post', __NAMESPACE__ . '\\bust_post_cache', 11 );
 
 	// Admin stuff.
 	if ( is_admin() || ( defined( 'WP_CLI' ) && true === WP_CLI ) ) {

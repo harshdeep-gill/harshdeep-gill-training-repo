@@ -61,7 +61,7 @@ function bootstrap(): void {
 	add_filter( 'qe_promotion_tag_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
 
 	// Other hooks.
-	add_action( 'save_post', __NAMESPACE__ . '\\bust_post_cache' );
+	add_action( 'save_post', __NAMESPACE__ . '\\bust_post_cache', 11 );
 
 	// Bust cache for departure card data.
 	add_action( 'qe_departure_post_cache_busted', __NAMESPACE__ . '\\bust_card_data_cache' );

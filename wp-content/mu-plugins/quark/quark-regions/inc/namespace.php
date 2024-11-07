@@ -31,7 +31,7 @@ function bootstrap(): void {
 	add_filter( 'post_type_link', __NAMESPACE__ . '\\get_custom_permalink', 10, 3 );
 
 	// Other hooks.
-	add_action( 'save_post', __NAMESPACE__ . '\\bust_post_cache' );
+	add_action( 'save_post', __NAMESPACE__ . '\\bust_post_cache', 11 );
 }
 
 /**

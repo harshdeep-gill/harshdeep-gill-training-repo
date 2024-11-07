@@ -28,7 +28,7 @@ function bootstrap(): void {
 	add_filter( 'qe_inclusion_exclusion_category_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
 
 	// Other hooks.
-	add_action( 'save_post', __NAMESPACE__ . '\\bust_post_cache' );
+	add_action( 'save_post', __NAMESPACE__ . '\\bust_post_cache', 11 );
 
 	// Admin stuff.
 	if ( is_admin() ) {

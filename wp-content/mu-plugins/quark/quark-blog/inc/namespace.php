@@ -29,7 +29,7 @@ function bootstrap(): void {
 
 	// Other hooks.
 	add_action( 'save_post', __NAMESPACE__ . '\\calculate_post_reading_time', 10, 3 );
-	add_action( 'save_post', __NAMESPACE__ . '\\bust_post_cache' );
+	add_action( 'save_post', __NAMESPACE__ . '\\bust_post_cache', 11 );
 
 	// Breadcrumbs.
 	add_filter( 'travelopia_breadcrumbs_ancestors', __NAMESPACE__ . '\\breadcrumbs_ancestors' );

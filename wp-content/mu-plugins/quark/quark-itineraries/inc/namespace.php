@@ -54,7 +54,7 @@ function bootstrap(): void {
 	add_filter( 'qe_season_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
 
 	// Other hooks.
-	add_action( 'save_post', __NAMESPACE__ . '\\bust_post_cache' );
+	add_action( 'save_post', __NAMESPACE__ . '\\bust_post_cache', 11 );
 	add_action( 'save_post', __NAMESPACE__ . '\\update_related_expedition_on_itineraries_save', 1 );
 	add_action( 'qe_departure_post_cache_busted', __NAMESPACE__ . '\\bust_lowest_price_cache_by_departure' );
 

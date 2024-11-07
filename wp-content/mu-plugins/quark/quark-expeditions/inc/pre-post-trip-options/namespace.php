@@ -23,7 +23,7 @@ function bootstrap(): void {
 	add_action( 'init', __NAMESPACE__ . '\\register_pre_post_trip_post_type' );
 
 	// Other hooks.
-	add_action( 'save_post', __NAMESPACE__ . '\\bust_post_cache' );
+	add_action( 'save_post', __NAMESPACE__ . '\\bust_post_cache', 11 );
 }
 
 /**
