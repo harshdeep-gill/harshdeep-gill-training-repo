@@ -38,6 +38,7 @@ use const Quark\CabinCategories\CABIN_CLASS_TAXONOMY;
 use const Quark\Departures\FLIGHT_SEEING_TID;
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
 use const Quark\Departures\SPOKEN_LANGUAGE_TAXONOMY;
+use const Quark\Departures\ULTRAMARINE_SHIP_CODE;
 use const Quark\Expeditions\DESTINATION_TAXONOMY;
 use const Quark\Expeditions\POST_TYPE as EXPEDITION_POST_TYPE;
 use const Quark\Itineraries\DEPARTURE_LOCATION_TAXONOMY;
@@ -1632,7 +1633,7 @@ function get_included_adventure_options_data( int $expedition_post_id = 0, int $
 	$ship_code = get_post_meta( $departure_post_id, 'ship_code', true );
 
 	// Remove Flight seeing for all except Ultramarine.
-	if ( 'ULT' !== $ship_code && array_key_exists( FLIGHT_SEEING_TID, $included_options_data ) ) {
+	if ( ULTRAMARINE_SHIP_CODE !== $ship_code && array_key_exists( FLIGHT_SEEING_TID, $included_options_data ) ) {
 		unset( $included_options_data[ FLIGHT_SEEING_TID ] );
 	}
 
