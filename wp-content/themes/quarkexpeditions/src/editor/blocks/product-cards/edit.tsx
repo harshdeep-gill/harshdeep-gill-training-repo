@@ -57,15 +57,27 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 		<>
 			<InspectorControls>
 				<PanelBody title={ __( 'Product Cards Grid Options', 'qrk' ) }>
+					{ attributes.layout === 'grid' &&
+						<SelectControl
+							label={ __( 'Product Cards Alignment', 'qrk' ) }
+							help={ __( 'Select the cards alignment', 'qrk' ) }
+							value={ attributes.align }
+							options={ [
+								{ label: __( 'Left', 'qrk' ), value: 'left' },
+								{ label: __( 'Center', 'qrk' ), value: 'center' },
+							] }
+							onChange={ ( align: string ) => setAttributes( { align } ) }
+						/>
+					}
 					<SelectControl
-						label={ __( 'Product Cards Alignment', 'qrk' ) }
-						help={ __( 'Select the cards alignment', 'qrk' ) }
-						value={ attributes.align }
+						label={ __( 'Product Cards layout', 'qrk' ) }
+						help={ __( 'Select the cards layout', 'qrk' ) }
+						value={ attributes.layout }
 						options={ [
-							{ label: __( 'Left', 'qrk' ), value: 'left' },
-							{ label: __( 'Center', 'qrk' ), value: 'center' },
+							{ label: __( 'Carousel', 'qrk' ), value: 'carousel' },
+							{ label: __( 'Grid', 'qrk' ), value: 'grid' },
 						] }
-						onChange={ ( align: string ) => setAttributes( { align } ) }
+						onChange={ ( layout: string ) => setAttributes( { layout } ) }
 					/>
 				</PanelBody>
 			</InspectorControls>

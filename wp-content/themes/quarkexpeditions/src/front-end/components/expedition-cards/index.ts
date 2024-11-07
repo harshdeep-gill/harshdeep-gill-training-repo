@@ -77,6 +77,9 @@ export default class ExpeditionCard extends HTMLElement {
 		// Toggle `open` attribute.
 		this.setAttribute( 'open', 'true' );
 		this.moreDetails?.classList.add( 'expedition-cards__more-details--active' );
+
+		// Scroll details into view.
+		this.moreDetails?.scrollIntoView();
 	}
 
 	/**
@@ -86,6 +89,9 @@ export default class ExpeditionCard extends HTMLElement {
 		// Remove 'open' attribute.
 		this.removeAttribute( 'open' );
 		this.moreDetails?.classList.remove( 'expedition-cards__more-details--active' );
+
+		// Scroll the current card into view.
+		this.scrollIntoView();
 	}
 
 	/**

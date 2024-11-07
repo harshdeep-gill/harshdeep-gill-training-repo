@@ -12,7 +12,12 @@
 		"header"
 	],
 	"textdomain": "qrk",
-	"attributes": {},
+	"attributes": {
+		"hasMoreButton": {
+			"type": "boolean",
+			"default": false
+		}
+	},
 	"supports": {
 		"alignWide": false,
 		"anchor": true,

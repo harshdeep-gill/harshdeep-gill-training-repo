@@ -48,7 +48,14 @@ export class LoadMore extends HTMLElement {
 	 */
 	update( state: ExpeditionSearchState ): void {
 		// Get state.
-		const { hasNextPage, loadMoreResults: loadMoreState, remainingCount, page } = state;
+		const { hasNextPage, loadMoreResults: loadMoreState, remainingCount, page, loading } = state;
+
+		// If loading, hide the Load more button.
+		if ( loading ) {
+			this.loadMoreButton?.setAttribute( 'data-hidden', '' );
+		} else {
+			this.loadMoreButton?.removeAttribute( 'data-hidden' );
+		}
 
 		// If next page is available, show the Load more button, else hide it.
 		if ( hasNextPage ) {

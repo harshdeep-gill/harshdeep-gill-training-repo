@@ -67,8 +67,8 @@ export default class ExpeditionSearchFilterMonths extends HTMLElement {
 		// Set updating flag.
 		this.isFilterUpdating = true;
 
-		// Unselect all the months first.
-		this.monthsMultiSelect.unSelectAll();
+		// New value for month selector.
+		const newValue: string[] = [];
 
 		// Loop through the options to select.
 		months.forEach( ( month ) => {
@@ -79,8 +79,11 @@ export default class ExpeditionSearchFilterMonths extends HTMLElement {
 			}
 
 			// Select the month option.
-			this.monthsMultiSelect?.select( month.value );
+			newValue.push( month.value );
 		} );
+
+		// Set the value
+		this.monthsMultiSelect.value = newValue;
 
 		// Null check.
 		if ( this.filterCountElement ) {
@@ -109,7 +112,7 @@ export default class ExpeditionSearchFilterMonths extends HTMLElement {
 		}
 
 		// Get the values
-		const values = Array.from( this.monthsMultiSelect.value );
+		const values = this.monthsMultiSelect.value;
 
 		// Check if we have the values
 		if ( 0 === values.length ) {
@@ -129,7 +132,7 @@ export default class ExpeditionSearchFilterMonths extends HTMLElement {
 			}
 
 			// Return the value attribute selector.
-			return `[value="${ value }"]`;
+			return `quark-months-multi-select-option[value="${ value }"]`;
 		} ).filter( ( singleSelector ) => singleSelector !== '' ).join( ',' );
 
 		// Empty check.
@@ -139,7 +142,7 @@ export default class ExpeditionSearchFilterMonths extends HTMLElement {
 		}
 
 		// Get the selected options
-		const selectedOptions: NodeListOf<MonthsMultiSelectOption> = this.querySelectorAll( `quark-months-multi-select-option${ valueAttributeSelector }` );
+		const selectedOptions: NodeListOf<MonthsMultiSelectOption> = this.querySelectorAll( valueAttributeSelector );
 
 		// Initialize months
 		const months: ExpeditionSearchFilterState[] = [];

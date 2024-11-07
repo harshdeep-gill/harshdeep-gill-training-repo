@@ -5,8 +5,13 @@ import { __ } from '@wordpress/i18n';
 import {
 	InnerBlocks,
 	useBlockProps,
+	InspectorControls,
 	useInnerBlocksProps,
 } from '@wordpress/block-editor';
+import {
+	PanelBody,
+	ToggleControl,
+} from '@wordpress/components';
 
 /**
  * External dependencies.
@@ -21,10 +26,12 @@ import * as menuItem from '../menu-item';
 /**
  * Edit Component.
  *
- * @param {Object} props           Component properties.
- * @param {string} props.className Class name.
+ * @param {Object}   props               Component properties.
+ * @param {string}   props.className     Class name.
+ * @param {Array}    props.attributes    Block attributes.
+ * @param {Function} props.setAttributes Set block attributes.
  */
-export default function Edit( { className }: BlockEditAttributes ) {
+export default function edit( { className, attributes, setAttributes }: BlockEditAttributes ): JSX.Element {
 	// eslint-disable-next-line react-hooks/rules-of-hooks
 	const blockProps = useBlockProps( {
 		className: classnames( className, 'header__primary-nav' ),
@@ -52,8 +59,20 @@ export default function Edit( { className }: BlockEditAttributes ) {
 
 	// Return block.
 	return (
-		<nav { ...blockProps } >
-			<ul { ...innerBlockProps } />
-		</nav>
+		<>
+			<InspectorControls>
+				<PanelBody title={ __( 'Header Options', 'qrk' ) }>
+					<ToggleControl
+						label={ __( 'Display More button', 'qrk' ) }
+						help={ __( 'Show or hide the More button', 'qrk' ) }
+						checked={ attributes.hasMoreButton }
+						onChange={ ( value ) => setAttributes( { hasMoreButton: value } ) }
+					/>
+				</PanelBody>
+			</InspectorControls>
+			<nav { ...blockProps } >
+				<ul { ...innerBlockProps } />
+			</nav>
+		</>
 	);
 }

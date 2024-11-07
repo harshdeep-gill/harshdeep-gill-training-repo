@@ -25,6 +25,7 @@
 <x-section
 	@class( $classes )
 	:full_width="true"
+	:seamless="true"
 >
 	@if ( ! empty( $title ) )
 		<x-section.heading>
