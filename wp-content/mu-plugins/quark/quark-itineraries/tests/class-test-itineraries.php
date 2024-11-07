@@ -216,8 +216,8 @@ class Test_Itineraries extends Softrip_TestCase {
 		// Set mandatory transfer price to post meta.
 		update_post_meta( $post_1->ID, 'mandatory_transfer_price_usd', 100 );
 		update_post_meta( $post_1->ID, 'mandatory_transfer_price_cad', 200 );
-		update_post_meta( $post_1->ID, 'supplemental_price_usd', 300 );
-		update_post_meta( $post_1->ID, 'supplemental_price_eur', 400 );
+		update_post_meta( $post_1->ID, 'supplement_price_usd', 300 );
+		update_post_meta( $post_1->ID, 'supplement_price_eur', 400 );
 
 		// Bust cache.
 		bust_post_cache( $post_1->ID );

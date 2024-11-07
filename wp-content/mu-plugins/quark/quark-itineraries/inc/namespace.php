@@ -56,6 +56,7 @@ function bootstrap(): void {
 	// Other hooks.
 	add_action( 'save_post', __NAMESPACE__ . '\\bust_post_cache' );
 	add_action( 'save_post', __NAMESPACE__ . '\\update_related_expedition_on_itineraries_save', 1 );
+	add_action( 'qe_departure_post_cache_busted', __NAMESPACE__ . '\\bust_lowest_price_cache_by_departure' );
 
 	// Admin stuff.
 	if ( is_admin() ) {
@@ -352,6 +353,9 @@ function bust_post_cache( int $post_id = 0 ): void {
 
 	// Clear cache for this post.
 	wp_cache_delete( CACHE_KEY . "_$post_id", CACHE_GROUP );
+
+	// Bust lowest price cache.
+	bust_lowest_price_cache( $post_id );
 
 	// Trigger action to clear cache for this post.
 	do_action( 'qe_itinerary_post_cache_busted', $post_id );
@@ -911,7 +915,7 @@ function get_supplemental_price( int $post_id = 0, string $currency = DEFAULT_CU
 	}
 
 	// Get meta key.
-	$meta_key = sprintf( 'supplemental_price_%s', strtolower( $currency ) );
+	$meta_key = sprintf( 'supplement_price_%s', strtolower( $currency ) );
 
 	// Check for meta key exists.
 	if ( empty( $itinerary['post_meta'][ $meta_key ] ) || ! is_numeric( $itinerary['post_meta'][ $meta_key ] ) ) {
@@ -951,7 +955,14 @@ function get_included_transfer_package_details( int $post_id = 0, string $curren
 	}
 
 	// Get included transfer package.
-	$details['price']           = get_mandatory_transfer_price( $post_id, $currency );
+	$details['price'] = get_mandatory_transfer_price( $post_id, $currency );
+
+	// Bail if empty price.
+	if ( empty( $details['price'] ) ) {
+		return $details;
+	}
+
+	// Format price.
 	$details['formatted_price'] = format_price( $details['price'], $currency );
 
 	// Get included transfer package.
@@ -1154,4 +1165,55 @@ function get_lowest_price( int $post_id = 0, string $currency = DEFAULT_CURRENCY
 
 	// Return the lowest price.
 	return $lowest_price;
+}
+
+/**
+ * Bust cache for lowest price.
+ *
+ * @param int $post_id  Itinerary post ID.
+ *
+ * @return void
+ */
+function bust_lowest_price_cache( int $post_id = 0 ): void {
+	// Bail if no post ID.
+	if ( empty( $post_id ) ) {
+		return;
+	}
+
+	// Currencies.
+	$currencies = get_currencies();
+
+	// Loop through each currency.
+	foreach ( $currencies as $currency ) {
+		// Bust cache for lowest price.
+		wp_cache_delete( CACHE_KEY . '_lowest_price_' . $post_id . '_' . $currency, CACHE_GROUP );
+	}
+}
+
+/**
+ * Bust cache for lowest price by departure.
+ *
+ * @param int $departure_id Departure post ID.
+ *
+ * @return void
+ */
+function bust_lowest_price_cache_by_departure( int $departure_id = 0 ): void {
+	// Bail if no departure ID.
+	if ( empty( $departure_id ) ) {
+		return;
+	}
+
+	// Get itinerary.
+	$itinerary_post_id = get_post_meta( $departure_id, 'itinerary', true );
+
+	// Validate itinerary.
+	if ( empty( $itinerary_post_id ) ) {
+		return;
+	}
+
+	// Convert to integer.
+	$itinerary_post_id = absint( $itinerary_post_id );
+
+	// Bust cache for lowest price.
+	bust_lowest_price_cache( $itinerary_post_id );
 }
