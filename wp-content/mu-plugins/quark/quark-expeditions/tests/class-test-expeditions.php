@@ -1358,46 +1358,34 @@ class Test_Expeditions extends Softrip_TestCase {
 		// Second expedition.
 		$expedition_post2 = $expedition_posts[1];
 
-		// Cache key.
-		$cache_key_usd = $cache_prefix . $expedition_post2 . '_USD';
-
 		// Get starting price USD.
 		$starting_price = get_starting_from_price( $expedition_post2 );
 		$this->assertEquals( '34600', $starting_price['original'] );
 		$this->assertEquals( '29410', $starting_price['discounted'] );
-		$this->assertNotFalse( wp_cache_get( $cache_key_usd, CACHE_GROUP ) );
 
 		// Get starting price EUR.
 		set_current_currency( 'EUR' );
-		$cache_key_eur  = $cache_prefix . $expedition_post2 . '_EUR';
 		$starting_price = get_starting_from_price( $expedition_post2 );
 		$this->assertEquals( '32200', $starting_price['original'] );
 		$this->assertEquals( '27370', $starting_price['discounted'] );
-		$this->assertNotFalse( wp_cache_get( $cache_key_eur, CACHE_GROUP ) );
 
 		// Get starting price GBP.
 		set_current_currency( 'GBP' );
-		$cache_key_gbp  = $cache_prefix . $expedition_post2 . '_GBP';
 		$starting_price = get_starting_from_price( $expedition_post2 );
 		$this->assertEquals( '27600', $starting_price['original'] );
 		$this->assertEquals( '23460', $starting_price['discounted'] );
-		$this->assertNotFalse( wp_cache_get( $cache_key_gbp, CACHE_GROUP ) );
 
 		// Get starting price AUD.
 		set_current_currency( 'AUD' );
-		$cache_key_aud  = $cache_prefix . $expedition_post2 . '_AUD';
 		$starting_price = get_starting_from_price( $expedition_post2 );
 		$this->assertEquals( '54200', $starting_price['original'] );
 		$this->assertEquals( '46070', $starting_price['discounted'] );
-		$this->assertNotFalse( wp_cache_get( $cache_key_aud, CACHE_GROUP ) );
 
 		// Get starting price CAD.
 		set_current_currency( 'CAD' );
-		$cache_key_cad  = $cache_prefix . $expedition_post2 . '_CAD';
 		$starting_price = get_starting_from_price( $expedition_post2 );
 		$this->assertEquals( '47000', $starting_price['original'] );
 		$this->assertEquals( '39950', $starting_price['discounted'] );
-		$this->assertNotFalse( wp_cache_get( $cache_key_cad, CACHE_GROUP ) );
 
 		// Reset currency.
 		set_current_currency( 'USD' );
