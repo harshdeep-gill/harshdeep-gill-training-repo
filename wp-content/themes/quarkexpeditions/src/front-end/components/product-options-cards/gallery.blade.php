@@ -50,7 +50,7 @@
 	<tp-slider
 		class="product-options-cards__gallery-slider"
 		swipe="yes"
-		behaviour="slide"
+		behaviour="fade"
 		infinite="yes"
 	>
 		<tp-slider-track class="product-options-cards__gallery-track">

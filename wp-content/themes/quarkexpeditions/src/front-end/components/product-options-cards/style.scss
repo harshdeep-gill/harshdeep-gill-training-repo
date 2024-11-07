@@ -543,6 +543,7 @@
 
 		.dialog__content {
 			background-color: var(--color-white);
+			max-width: 100%;
 			padding-bottom: var(--spacing-5);
 		}
 
@@ -603,6 +604,7 @@
 		#{$self}__gallery-slide {
 			border-radius: var(--border-radius-large);
 			overflow: hidden;
+			max-height: none;
 		}
 	}
 
