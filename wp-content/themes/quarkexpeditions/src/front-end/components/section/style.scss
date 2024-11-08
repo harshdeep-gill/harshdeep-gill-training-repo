@@ -151,6 +151,7 @@
 	}
 
 	&__image-gradient-top {
+		padding-top: var(--spacing-1);
 
 		&::after {
 			background-image: linear-gradient(var(--section-gradient-color), transparent 40%);
@@ -158,6 +159,7 @@
 	}
 
 	&__image-gradient-bottom {
+		padding-bottom: var(--spacing-1);
 
 		&::after {
 			background-image: linear-gradient(transparent 60%, var(--section-gradient-color));
@@ -165,6 +167,7 @@
 	}
 
 	&__image-gradient-both {
+		padding-block: var(--spacing-1);
 
 		&::after {
 			background-image: linear-gradient(var(--section-gradient-color), transparent 40%, transparent 60%, var(--section-gradient-color));
