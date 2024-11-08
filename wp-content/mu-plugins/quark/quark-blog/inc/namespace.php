@@ -29,6 +29,8 @@ function bootstrap(): void {
 
 	// Other hooks.
 	add_action( 'save_post', __NAMESPACE__ . '\\calculate_post_reading_time', 10, 3 );
+
+	// Cache bust. Assigning non-standard priority to avoid race conditions with ACF.
 	add_action( 'save_post', __NAMESPACE__ . '\\bust_post_cache', 11 );
 
 	// Breadcrumbs.

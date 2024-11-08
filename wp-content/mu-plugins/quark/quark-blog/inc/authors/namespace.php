@@ -22,7 +22,7 @@ function bootstrap(): void {
 	// Register post type.
 	add_action( 'init', __NAMESPACE__ . '\\register_blog_author_post_type' );
 
-	// Other hooks.
+	// Other hooks. Assigning non-standard priority to avoid race conditions with ACF.
 	add_action( 'save_post', __NAMESPACE__ . '\\bust_post_cache', 11 );
 
 	// Admin stuff.

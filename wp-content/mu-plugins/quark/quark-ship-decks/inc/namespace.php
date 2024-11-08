@@ -24,7 +24,7 @@ function bootstrap(): void {
 	// Post type.
 	add_action( 'init', __NAMESPACE__ . '\\register_ship_deck_post_type' );
 
-	// Other hooks.
+	// Other hooks. Assigning non-standard priority to avoid race conditions with ACF.
 	add_action( 'save_post', __NAMESPACE__ . '\\bust_post_cache', 11 );
 
 	// Admin stuff.

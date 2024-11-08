@@ -55,7 +55,12 @@ function bootstrap(): void {
 	add_filter( 'solr_index_custom_fields', __NAMESPACE__ . '\\solr_index_custom_fields' );
 	add_filter( 'solr_build_document', __NAMESPACE__ . '\\filter_solr_build_document', 10, 2 );
 
-	// Hooks for re-indexing departures on update.
+	/**
+	 * Hooks for re-indexing departures on update.
+	 * This is required as some expedition(destination taxonomy) and itinerary(season taxonomy) data is indexed on Solr.
+	 */
+
+	// Track posts to be reindexed. Assigning lower priority so that it runs at the end.
 	add_action( 'save_post', __NAMESPACE__ . '\\track_posts_to_be_reindexed', 999, 3 );
 	add_action( SCHEDULE_REINDEX_HOOK, __NAMESPACE__ . '\\reindex_departures' );
 	add_filter( 'wp_stream_connectors', __NAMESPACE__ . '\\setup_stream_connectors' );

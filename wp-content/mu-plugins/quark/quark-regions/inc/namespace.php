@@ -30,7 +30,7 @@ function bootstrap(): void {
 	add_action( 'init', __NAMESPACE__ . '\\rewrite_rules' );
 	add_filter( 'post_type_link', __NAMESPACE__ . '\\get_custom_permalink', 10, 3 );
 
-	// Other hooks.
+	// Other hooks. Assigning non-standard priority to avoid race conditions with ACF.
 	add_action( 'save_post', __NAMESPACE__ . '\\bust_post_cache', 11 );
 }
 
