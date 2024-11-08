@@ -7,7 +7,7 @@
 ] )
 
 @php
-	$title             = 'Almost there!';
+	$title             = 'Almost there';
 	$subtitle          = 'We just need a bit more info to help personalize your itinerary.';
 	$salesforce_object = 'Webform_Landing_Page__c';
 @endphp

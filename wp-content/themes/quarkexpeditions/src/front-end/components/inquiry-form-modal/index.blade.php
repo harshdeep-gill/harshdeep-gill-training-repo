@@ -1,13 +1,13 @@
 @props( [
-	'thank_you_page'     => '',
-	'form_id'            => 'inquiry-form',
-	'modal_id'           => 'inquiry-form-modal',
-	'countries'          => [],
-	'states'             => [],
+	'thank_you_page' => '',
+	'form_id'        => 'inquiry-form',
+	'modal_id'       => 'inquiry-form-modal',
+	'countries'      => [],
+	'states'         => [],
 ] )
 
 @php
-	$title             = 'Almost there!';
+	$title             = 'Almost there';
 	$subtitle          = 'We just need a bit more info to help personalize your itinerary.';
 	$salesforce_object = 'Webform_Landing_Page__c';
 @endphp
