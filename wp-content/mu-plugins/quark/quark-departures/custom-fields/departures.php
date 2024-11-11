@@ -25,7 +25,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 					'conditional_logic'    => 0,
 					'wrapper'              => [
 						'width' => '50',
-						'class' => '',
+						'class' => 'quark-readonly-field',
 						'id'    => '',
 					],
 					'post_type'            => [
@@ -38,7 +38,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 					'allow_null'           => 0,
 					'bidirectional'        => 0,
 					'ui'                   => 1,
-					'disabled'             => 1,
+					'readonly'             => 1,
 					'bidirectional_target' => [],
 				],
 				[
@@ -52,7 +52,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 					'conditional_logic'    => 0,
 					'wrapper'              => [
 						'width' => '50',
-						'class' => '',
+						'class' => 'quark-readonly-field',
 						'id'    => '',
 					],
 					'post_type'            => [
@@ -65,7 +65,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 					'allow_null'           => 0,
 					'bidirectional'        => 0,
 					'ui'                   => 1,
-					'disabled'             => 1,
+					'readonly'             => 1,
 					'bidirectional_target' => [],
 				],
 				[
@@ -79,7 +79,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 					'conditional_logic' => 0,
 					'wrapper'           => [
 						'width' => '',
-						'class' => '',
+						'class' => 'quark-readonly-field',
 						'id'    => '',
 					],
 					'layout'            => 'block',
@@ -95,7 +95,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 							'conditional_logic' => 0,
 							'wrapper'           => [
 								'width' => '50',
-								'class' => '',
+								'class' => 'quark-readonly-field',
 								'id'    => '',
 							],
 							'default_value'     => '',
@@ -103,7 +103,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 							'placeholder'       => '',
 							'prepend'           => '',
 							'append'            => '',
-							'disabled'          => 1,
+							'readonly'          => 1,
 						],
 						[
 							'key'               => 'field_65f16c852a17e',
@@ -116,7 +116,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 							'conditional_logic' => 0,
 							'wrapper'           => [
 								'width' => '50',
-								'class' => '',
+								'class' => 'quark-readonly-field',
 								'id'    => '',
 							],
 							'default_value'     => '',
@@ -124,7 +124,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 							'placeholder'       => '',
 							'prepend'           => '',
 							'append'            => '',
-							'disabled'          => 1,
+							'readonly'          => 1,
 						],
 					],
 				],
@@ -139,13 +139,13 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 					'conditional_logic' => 0,
 					'wrapper'           => [
 						'width' => '50',
-						'class' => '',
+						'class' => 'quark-readonly-field',
 						'id'    => '',
 					],
 					'display_format'    => 'd/m/Y',
 					'return_format'     => 'd/m/Y',
 					'first_day'         => 1,
-					'disabled'          => 1,
+					'readonly'          => 1,
 				],
 				[
 					'key'               => 'field_65f16c6c2a17d',
@@ -158,13 +158,13 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 					'conditional_logic' => 0,
 					'wrapper'           => [
 						'width' => '50',
-						'class' => '',
+						'class' => 'quark-readonly-field',
 						'id'    => '',
 					],
 					'display_format'    => 'd/m/Y',
 					'return_format'     => 'd/m/Y',
 					'first_day'         => 1,
-					'disabled'          => 1,
+					'readonly'          => 1,
 				],
 				[
 					'key'               => 'field_65f174892a182',
@@ -177,7 +177,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 					'conditional_logic' => 0,
 					'wrapper'           => [
 						'width' => '50',
-						'class' => '',
+						'class' => 'quark-readonly-field',
 						'id'    => '',
 					],
 					'default_value'     => '',
@@ -187,7 +187,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 					'step'              => '',
 					'prepend'           => '',
 					'append'            => '',
-					'disabled'          => 1,
+					'readonly'          => 1,
 				],
 				[
 					'key'                  => 'field_65f177aaa9b95',
@@ -200,7 +200,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 					'conditional_logic'    => 0,
 					'wrapper'              => [
 						'width' => '50',
-						'class' => '',
+						'class' => 'quark-readonly-field',
 						'id'    => '',
 					],
 					'post_type'            => [
@@ -214,7 +214,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 					'bidirectional'        => 0,
 					'ui'                   => 1,
 					'bidirectional_target' => [],
-					'disabled'             => 1,
+					'readonly'             => 1,
 				],
 				[
 					'key'                  => 'field_65f2785fa9b96',
@@ -227,7 +227,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 					'conditional_logic'    => 0,
 					'wrapper'              => [
 						'width' => '',
-						'class' => '',
+						'class' => 'quark-readonly-field',
 						'id'    => '',
 					],
 					'taxonomy'             => 'qrk_adventure_option_category',
@@ -240,7 +240,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 					'bidirectional'        => 0,
 					'multiple'             => 0,
 					'bidirectional_target' => [],
-					'disabled'             => 1,
+					'readonly'             => 1,
 				],
 				[
 					'key'                  => 'field_66aa10e42d4f5',
