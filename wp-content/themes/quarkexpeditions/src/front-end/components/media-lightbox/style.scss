@@ -114,7 +114,12 @@
 			margin-inline: auto;
 			object-fit: cover;
 			max-height: 80vh;
+			min-height: 200px;
 			width: auto;
+
+			@media screen and (min-width: grid-size(lg)) and (min-height: 700px) {
+				min-height: 600px;
+			}
 		}
 	}
 
