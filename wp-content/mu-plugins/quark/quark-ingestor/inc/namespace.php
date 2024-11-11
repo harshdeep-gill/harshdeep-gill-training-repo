@@ -35,8 +35,10 @@ use function Quark\Softrip\Promotions\get_promotions_by_id;
 
 use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
 use const Quark\CabinCategories\CABIN_CLASS_TAXONOMY;
+use const Quark\Departures\FLIGHT_SEEING_TID;
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
 use const Quark\Departures\SPOKEN_LANGUAGE_TAXONOMY;
+use const Quark\Departures\ULTRAMARINE_SHIP_CODE;
 use const Quark\Expeditions\DESTINATION_TAXONOMY;
 use const Quark\Expeditions\POST_TYPE as EXPEDITION_POST_TYPE;
 use const Quark\Itineraries\DEPARTURE_LOCATION_TAXONOMY;
@@ -1016,7 +1018,7 @@ function get_departures_data( int $expedition_post_id = 0, int $itinerary_post_i
 		$departure_data['cabins'] = get_cabins_data( $expedition_post_id, $itinerary_post_id, $departure_post_id );
 
 		// Add included adventure options data.
-		$departure_data['adventureOptions']['includedOptions'] = get_included_adventure_options_data( $expedition_post_id );
+		$departure_data['adventureOptions']['includedOptions'] = get_included_adventure_options_data( $expedition_post_id, $departure_post_id );
 		$departure_data['adventureOptions']['paidOptions']     = get_paid_adventure_options_data( $departure_post_id );
 
 		// Add departure data.
@@ -1330,8 +1332,8 @@ function get_cabins_data( int $expedition_post_id = 0, int $itinerary_post_id = 
 /**
  * Get occupancies data.
  *
- * @param int $itinerary_post_id Itinerary post ID.
- * @param int $departure_post_id Departure post ID.
+ * @param int $itinerary_post_id      Itinerary post ID.
+ * @param int $departure_post_id      Departure post ID.
  * @param int $cabin_category_post_id Cabin category ID.
  *
  * @return array{}|array<int,
@@ -1550,6 +1552,7 @@ function get_occupancies_data( int $itinerary_post_id = 0, int $departure_post_i
  * Get included adventure options.
  *
  * @param int $expedition_post_id Expedition post ID.
+ * @param int $departure_post_id  Departure post ID.
  *
  * @return array{}|array<int,
  *   array{
@@ -1560,12 +1563,12 @@ function get_occupancies_data( int $itinerary_post_id = 0, int $departure_post_i
  *   }
  * >
  */
-function get_included_adventure_options_data( int $expedition_post_id = 0 ): array {
+function get_included_adventure_options_data( int $expedition_post_id = 0, int $departure_post_id = 0 ): array {
 	// Initialize included options data.
 	$included_options_data = [];
 
 	// Early return if no expedition, itinerary or departure post ID.
-	if ( empty( $expedition_post_id ) ) {
+	if ( empty( $expedition_post_id ) || empty( $departure_post_id ) ) {
 		return $included_options_data;
 	}
 
@@ -1624,6 +1627,14 @@ function get_included_adventure_options_data( int $expedition_post_id = 0 ): arr
 			'icon'      => $adventure_option_category_data['icon'],
 			'optionIds' => implode( ', ', $adventure_option_category_data['optionIds'] ),
 		];
+	}
+
+	// Get ship ID from departure.
+	$ship_code = get_post_meta( $departure_post_id, 'ship_code', true );
+
+	// Remove Flight seeing for all except Ultramarine.
+	if ( ULTRAMARINE_SHIP_CODE !== $ship_code && array_key_exists( FLIGHT_SEEING_TID, $included_options_data ) ) {
+		unset( $included_options_data[ FLIGHT_SEEING_TID ] );
 	}
 
 	// Return included options data.
