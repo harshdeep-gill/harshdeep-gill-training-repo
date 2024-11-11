@@ -1056,6 +1056,7 @@ class Test_Ingestor extends Softrip_TestCase {
 				'heroImage'    => [],
 				'modified'     => get_the_modified_date( 'Y-m-d H:i:s', $expedition_post_id ),
 				'highlights'   => [],
+				'url'          => get_permalink( $expedition_post_id ),
 
 			];
 		$actual = get_expedition_data( $expedition_post_id );
@@ -1221,6 +1222,7 @@ class Test_Ingestor extends Softrip_TestCase {
 					'thumbnailUrl' => wp_get_attachment_image_url( $media_post_id1, 'thumbnail' ),
 					'alt'          => $alt_text1,
 				],
+				'url'          => get_permalink( $expedition_post_id ),
 			];
 		$actual   = get_expedition_data( $expedition_post_id );
 		$this->assertEquals( $expected, $actual );
@@ -3034,6 +3036,7 @@ class Test_Ingestor extends Softrip_TestCase {
 				'heroImage'    => [],
 				'modified'     => get_the_modified_date( 'Y-m-d H:i:s', $expedition_post_id ),
 				'highlights'   => [],
+				'url'          => get_permalink( $expedition_post_id ),
 			],
 			$expedition_data
 		);
@@ -3053,6 +3056,7 @@ class Test_Ingestor extends Softrip_TestCase {
 				'heroImage'    => [],
 				'modified'     => get_the_modified_date( 'Y-m-d H:i:s', $expedition_post_id2 ),
 				'highlights'   => [],
+				'url'          => get_permalink( $expedition_post_id2 ),
 			],
 			$expedition_data2
 		);
