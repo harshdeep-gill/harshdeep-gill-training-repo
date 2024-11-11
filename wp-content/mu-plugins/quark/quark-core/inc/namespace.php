@@ -11,11 +11,11 @@ use JB\Cloudinary\Core as Cloudinary_Core;
 use JB\Cloudinary\Frontend as Cloudinary_Frontend;
 
 use WP_Post;
+use WP_Screen;
 use WP_Term;
 use WP_Query;
 use WP_User;
 
-use function Travelopia\Cache\clear_all_edge_cache_paths;
 use function Travelopia\Core\cached_nav_menu;
 
 use const Quark\Localization\AUD_CURRENCY;
@@ -68,6 +68,9 @@ function bootstrap(): void {
 		require_once __DIR__ . '/../custom-fields/options-social.php';
 		require_once __DIR__ . '/../custom-fields/attachments.php';
 		require_once __DIR__ . '/../custom-fields/pages-setup.php';
+
+		// Custom styles for ACF fields.
+		add_action( 'acf/input/admin_head', __NAMESPACE__ . '\\acf_styles_for_read_only_fields' );
 	}
 }
 
@@ -811,4 +814,36 @@ function limit_revisions_for_posts( int $num = 0, WP_Post $post = null ): int {
 
 	// Return number of revisions.
 	return $num;
+}
+
+/**
+ * Add custom styles for read-only ACF fields.
+ *
+ * @return void
+ */
+function acf_styles_for_read_only_fields(): void {
+	// Get the current screen information.
+	$screen = get_current_screen();
+
+	// Check if we're on a post edit screen and ACF is active.
+	if ( $screen instanceof WP_Screen && 'post' === $screen->base ) {
+		?>
+		<style>
+			/* Read-only styling for ACF Fields with class .quark-readonly-field */
+			.acf-field.quark-readonly-field {
+				position: relative;
+				cursor: not-allowed;
+			}
+
+			.acf-field.quark-readonly-field .acf-input {
+				pointer-events: none;
+			}
+
+			.quark-readonly-field .acf-fields,
+			.quark-readonly-field .select2 .select2-selection {
+				background-color: #f0f0f1;
+			}
+		</style>
+		<?php
+	}
 }

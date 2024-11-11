@@ -43,6 +43,7 @@ const PROMOTION_TAG            = 'qrk_promotion_tags';
 const CACHE_KEY                = POST_TYPE;
 const CACHE_GROUP              = POST_TYPE;
 const FLIGHT_SEEING_TID        = 289; // Flight seeing Adventure Option Term ID.
+const ULTRAMARINE_SHIP_CODE    = 'ULT'; // Ultramarine Ship Code.
 
 /**
  * Bootstrap plugin.
@@ -494,7 +495,7 @@ function get_included_adventure_options( int $post_id = 0 ): array {
 	}
 
 	// Remove Flight seeing for all except Ultramarine.
-	if ( 'ULT' !== $ship_code && array_key_exists( FLIGHT_SEEING_TID, $included_adventure_options ) ) {
+	if ( ULTRAMARINE_SHIP_CODE !== $ship_code && array_key_exists( FLIGHT_SEEING_TID, $included_adventure_options ) ) {
 		unset( $included_adventure_options[ FLIGHT_SEEING_TID ] );
 	}
 
