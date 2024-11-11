@@ -229,7 +229,7 @@
 	}
 
 	&__options-count-wrap {
-		display: flex;
+		display: none;
 		align-items: center;
 		gap: var(--spacing-2);
 
@@ -237,8 +237,10 @@
 			display: none;
 		}
 
-		&--hidden {
-			display: none;
+		&--visible {
+			display: flex;
+			align-items: center;
+			gap: var(--spacing-2);
 		}
 	}
 
@@ -413,7 +415,6 @@
 		display: inline-flex;
 		cursor: pointer;
 		vertical-align: middle;
-		margin-left: var(--spacing-1);
 		white-space: normal;
 
 		&:hover {
