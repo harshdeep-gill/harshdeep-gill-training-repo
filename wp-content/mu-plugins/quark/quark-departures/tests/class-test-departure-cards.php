@@ -1130,6 +1130,9 @@ class Test_Departure_Cards extends Softrip_TestCase {
 			DESTINATION_TAXONOMY
 		);
 
+		// Bust cache after setting terms.
+		bust_post_cache( $departure_post_1 );
+
 		// departure posts.
 		$departure_query_args = [
 			'post_type'              => POST_TYPE,

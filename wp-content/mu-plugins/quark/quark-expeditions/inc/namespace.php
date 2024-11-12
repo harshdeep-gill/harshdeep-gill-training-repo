@@ -25,7 +25,7 @@ use function Quark\Localization\get_current_currency;
 use function Quark\Ships\get as get_ship;
 use function Quark\Softrip\Departures\get_departures_by_itinerary;
 use function Quark\Softrip\Itineraries\get_end_date;
-use function Quark\Itineraries\get_lowest_price;
+use function Quark\Itineraries\get_lowest_price as get_itinerary_lowest_price;
 use function Quark\Softrip\Itineraries\get_related_ships;
 use function Quark\Softrip\Itineraries\get_start_date;
 
@@ -60,14 +60,14 @@ function bootstrap(): void {
 	add_filter( 'qe_excursion_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
 	add_filter( 'rest_prepare_taxonomy', __NAMESPACE__ . '\\hide_excursion_metabox', 10, 3 );
 
-	// Other hooks.
-	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
+	// Other hooks. Assigning non-standard priority to avoid race conditions with ACF.
+	add_action( 'save_post', __NAMESPACE__ . '\\bust_post_cache', 11 );
 	add_filter( 'travelopia_seo_structured_data_schema', __NAMESPACE__ . '\\seo_structured_data' );
 
 	// Bust cache for details data.
 	add_action( 'qe_expedition_post_cache_busted', __NAMESPACE__ . '\\bust_details_cache' );
-	add_action( 'qe_itinerary_post_cache_busted', __NAMESPACE__ . '\\bust_details_cache_on_itinerary_update', 1 );
-	add_action( 'qe_departure_post_cache_busted', __NAMESPACE__ . '\\bust_details_cache_on_departure_update', 1 );
+	add_action( 'qe_itinerary_post_cache_busted', __NAMESPACE__ . '\\bust_details_cache_on_itinerary_update' );
+	add_action( 'qe_departure_post_cache_busted', __NAMESPACE__ . '\\bust_details_cache_on_departure_update' );
 
 	// Breadcrumbs.
 	add_filter( 'travelopia_breadcrumbs_ancestors', __NAMESPACE__ . '\\breadcrumbs_ancestors' );
@@ -680,6 +680,14 @@ function opt_in( array $post_types = [] ): array {
  * @return void
  */
 function bust_post_cache( int $post_id = 0 ): void {
+	// Get post type.
+	$post_type = get_post_type( $post_id );
+
+	// Check for post type.
+	if ( POST_TYPE !== $post_type ) {
+		return;
+	}
+
 	// Clear cache for this post.
 	wp_cache_delete( CACHE_KEY . "_$post_id", CACHE_GROUP );
 
@@ -1324,7 +1332,7 @@ function get_starting_from_price( int $post_id = 0 ): array {
 		}
 
 		// Get lowest price for Itinerary.
-		$price = get_lowest_price( $itinerary['post']->ID, $currency );
+		$price = get_itinerary_lowest_price( $itinerary['post']->ID, $currency );
 
 		// Check minimum price.
 		if ( ! empty( $price['discounted'] ) && ( empty( $lowest_price ) || $price['discounted'] < $lowest_price ) ) {
@@ -1854,27 +1862,16 @@ function bust_details_cache_on_itinerary_update( int $itinerary_id = 0 ): void {
 		$itinerary_id = absint( get_the_ID() );
 	}
 
-	// Get post.
-	$itinerary = get_itinerary( $itinerary_id );
-
-	// Check for Itinerary.
-	if ( empty( $itinerary['post'] ) || ! $itinerary['post'] instanceof WP_Post ) {
-		return;
-	}
-
 	// Get related Expedition ID.
-	$expedition_ids = $itinerary['post_meta']['related_expedition'] ?? 0;
+	$expedition_id = absint( get_post_meta( $itinerary_id, 'related_expedition', true ) );
 
-	// Check for Expedition IDs.
-	if ( empty( $expedition_ids ) || ! is_array( $expedition_ids ) ) {
+	// Validate for Expedition ID.
+	if ( empty( $expedition_id ) ) {
 		return;
 	}
 
-	// Bust cache for each Expedition.
-	foreach ( $expedition_ids as $expedition_id ) {
-		// Bust cache for Expedition.
-		bust_details_cache( absint( $expedition_id ) );
-	}
+	// Bust cache for Expedition.
+	bust_details_cache( $expedition_id );
 }
 
 /**

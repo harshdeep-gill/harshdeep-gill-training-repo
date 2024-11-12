@@ -213,9 +213,10 @@ export default class DepartureCard extends HTMLElement {
 				totalWidth += option.clientWidth;
 
 				// Check if More Option should be visible.
-				if ( totalWidth < this.adventuresContainer!.clientWidth && index === this.adventuresItems!.length - 2 ) {
+				if ( totalWidth > this.adventuresContainer!.clientWidth && index === this.adventuresItems!.length - 2 ) {
 					// Add hidden class.
-					this.adventurescountWrap!.classList.add( 'departure-cards__options-count-wrap--hidden' );
+					this.adventurescountWrap!.classList.add( 'departure-cards__options-count-wrap--visible' );
+					this.adventurescountWrap?.classList.remove( 'departure-cards__options-count-wrap--hidden' );
 				}
 
 				// Width check.
@@ -231,6 +232,12 @@ export default class DepartureCard extends HTMLElement {
 				}
 			}
 		} );
+
+		// Check if we have any hidden items?
+		if ( 0 === hiddenCount ) {
+			this.adventurescountWrap?.classList.remove( 'departure-cards__options-count-wrap--visible' );
+			this.adventurescountWrap?.classList.add( 'departure-cards__options-count-wrap--hidden' );
+		}
 	}
 }
 
