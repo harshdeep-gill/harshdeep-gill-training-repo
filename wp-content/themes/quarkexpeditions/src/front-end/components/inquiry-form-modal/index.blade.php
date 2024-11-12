@@ -89,7 +89,7 @@
 			<div class="inquiry-form__thank-you">
 				<x-svg name="logo" />
 				<div class="inquiry-form__thank-you-text">
-					<h4 class="inquiry-form__thank-you-text-heading">Thank you!</h4>
+					<h4 class="inquiry-form__thank-you-text-heading">Thank you</h4>
 					<p class="inquiry-form__thank-you-text-body">A Quark Expeditions Polar Travel Advisor will be in touch with you shortly.</p>
 				</div>
 			</div>
