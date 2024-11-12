@@ -50,9 +50,8 @@ function bootstrap(): void {
 	// Opt into stuff.
 	add_filter( 'qe_cabin_classes_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
 
-	// Other hooks.
-	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
-	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_cabin_code_lookup_cache' );
+	// Other hooks. Assigning non-standard priority to avoid race conditions with ACF.
+	add_action( 'save_post', __NAMESPACE__ . '\\bust_post_cache', 11 );
 
 	// Admin stuff.
 	if ( is_admin() || ( defined( 'WP_CLI' ) && true === WP_CLI ) ) {
@@ -197,6 +196,14 @@ function set_cabin_classes_taxonomy_menu_position(): void {
  * @return void
  */
 function bust_post_cache( int $post_id = 0 ): void {
+	// Get post type.
+	$post_type = get_post_type( $post_id );
+
+	// Check for post type.
+	if ( POST_TYPE !== $post_type ) {
+		return;
+	}
+
 	// Clear cache for this post.
 	wp_cache_delete( CACHE_KEY . "_$post_id", CACHE_GROUP );
 
@@ -315,19 +322,6 @@ function get( int $post_id = 0 ): array {
 
 	// Return data.
 	return $data;
-}
-
-/**
- * Bust Cabin code lookup cache.
- *
- * @return void
- */
-function bust_cabin_code_lookup_cache(): void {
-	// Delete the code cache.
-	wp_cache_delete( CACHE_KEY . '_all_cabins', CACHE_GROUP );
-
-	// Trigger action to clear cache.
-	do_action( 'qe_cabin_code_lookup_cache_busted' );
 }
 
 /**

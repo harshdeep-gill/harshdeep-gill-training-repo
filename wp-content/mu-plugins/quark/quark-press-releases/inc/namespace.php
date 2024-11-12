@@ -9,8 +9,6 @@ namespace Quark\PressReleases;
 
 use WP_Post;
 
-use function Travelopia\Breadcrumbs\get_breadcrumbs;
-
 const POST_TYPE = 'qrk_press_release';
 
 /**

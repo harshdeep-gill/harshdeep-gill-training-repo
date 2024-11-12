@@ -17,7 +17,6 @@ use function Quark\Search\solr_scheme;
 use function Quark\Search\Departures\parse_filters;
 use function Quark\Search\Departures\get_filters_from_url;
 use function Quark\Search\Departures\reindex_departures;
-use function Quark\Search\Departures\bust_search_cache;
 use function Quark\Search\public_rest_api_routes;
 
 use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
@@ -33,7 +32,6 @@ use const Quark\Search\Departures\FACET_TYPE_RANGE;
 use const Quark\Search\Departures\REINDEX_POST_IDS_OPTION_KEY;
 use const Quark\Search\Departures\SCHEDULE_REINDEX_HOOK;
 use const Quark\Search\REST_API_NAMESPACE;
-use const Quark\Search\Departures\CACHE_GROUP;
 
 /**
  * Class Test_Search.

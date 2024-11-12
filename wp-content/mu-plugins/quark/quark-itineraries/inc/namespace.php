@@ -53,12 +53,12 @@ function bootstrap(): void {
 	add_filter( 'qe_tax_types_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
 	add_filter( 'qe_season_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
 
-	// Other hooks.
-	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
-	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\update_related_expedition_on_itineraries_save', 1 );
+	// Post cache bust. Assigning non-standard priority to avoid race conditions with ACF.
+	add_action( 'save_post', __NAMESPACE__ . '\\bust_post_cache', 11 );
 
-	// Bust cache on term update.
-	add_action( 'set_object_terms', __NAMESPACE__ . '\\bust_post_cache_on_term_assign', 10, 6 );
+	// Update related expedition on itineraries save. Assigning higher priority to run before any other cache bust.
+	add_action( 'save_post', __NAMESPACE__ . '\\update_related_expedition_on_itineraries_save', 1 );
+	add_action( 'qe_departure_post_cache_busted', __NAMESPACE__ . '\\bust_lowest_price_cache_by_departure' );
 
 	// Admin stuff.
 	if ( is_admin() ) {
@@ -345,37 +345,22 @@ function opt_in( array $post_types = [] ): array {
  * @return void
  */
 function bust_post_cache( int $post_id = 0 ): void {
+	// Get post type.
+	$post_type = get_post_type( $post_id );
+
+	// Check for post type.
+	if ( POST_TYPE !== $post_type ) {
+		return;
+	}
+
 	// Clear cache for this post.
 	wp_cache_delete( CACHE_KEY . "_$post_id", CACHE_GROUP );
 
+	// Bust lowest price cache.
+	bust_lowest_price_cache( $post_id );
+
 	// Trigger action to clear cache for this post.
 	do_action( 'qe_itinerary_post_cache_busted', $post_id );
-}
-
-/**
- * Bust cache on term assign.
- *
- * @param int                    $object_id Object ID.
- * @param array{string|int}|null $terms     An array of object term IDs or slugs.
- * @param array{string|int}|null $tt_ids    An array of term taxonomy IDs.
- * @param string                 $taxonomy  Taxonomy slug.
- *
- * @return void
- */
-function bust_post_cache_on_term_assign( int $object_id = 0, array $terms = null, array $tt_ids = null, string $taxonomy = '' ): void {
-	// Check for taxonomy.
-	if ( in_array( $taxonomy, [ DEPARTURE_LOCATION_TAXONOMY, TAX_TYPE_TAXONOMY, SEASON_TAXONOMY ], true ) ) {
-		// Get post.
-		$post = get( $object_id );
-
-		// Check for post.
-		if ( ! $post['post'] instanceof WP_Post || POST_TYPE !== $post['post']->post_type ) {
-			return;
-		}
-
-		// Bust cache.
-		bust_post_cache( $post['post']->ID );
-	}
 }
 
 /**
@@ -932,7 +917,7 @@ function get_supplemental_price( int $post_id = 0, string $currency = DEFAULT_CU
 	}
 
 	// Get meta key.
-	$meta_key = sprintf( 'supplemental_price_%s', strtolower( $currency ) );
+	$meta_key = sprintf( 'supplement_price_%s', strtolower( $currency ) );
 
 	// Check for meta key exists.
 	if ( empty( $itinerary['post_meta'][ $meta_key ] ) || ! is_numeric( $itinerary['post_meta'][ $meta_key ] ) ) {
@@ -972,7 +957,14 @@ function get_included_transfer_package_details( int $post_id = 0, string $curren
 	}
 
 	// Get included transfer package.
-	$details['price']           = get_mandatory_transfer_price( $post_id, $currency );
+	$details['price'] = get_mandatory_transfer_price( $post_id, $currency );
+
+	// Bail if empty price.
+	if ( empty( $details['price'] ) ) {
+		return $details;
+	}
+
+	// Format price.
 	$details['formatted_price'] = format_price( $details['price'], $currency );
 
 	// Get included transfer package.
@@ -1175,4 +1167,55 @@ function get_lowest_price( int $post_id = 0, string $currency = DEFAULT_CURRENCY
 
 	// Return the lowest price.
 	return $lowest_price;
+}
+
+/**
+ * Bust cache for lowest price.
+ *
+ * @param int $post_id  Itinerary post ID.
+ *
+ * @return void
+ */
+function bust_lowest_price_cache( int $post_id = 0 ): void {
+	// Bail if no post ID.
+	if ( empty( $post_id ) ) {
+		return;
+	}
+
+	// Currencies.
+	$currencies = get_currencies();
+
+	// Loop through each currency.
+	foreach ( $currencies as $currency ) {
+		// Bust cache for lowest price.
+		wp_cache_delete( CACHE_KEY . '_lowest_price_' . $post_id . '_' . $currency, CACHE_GROUP );
+	}
+}
+
+/**
+ * Bust cache for lowest price by departure.
+ *
+ * @param int $departure_id Departure post ID.
+ *
+ * @return void
+ */
+function bust_lowest_price_cache_by_departure( int $departure_id = 0 ): void {
+	// Bail if no departure ID.
+	if ( empty( $departure_id ) ) {
+		return;
+	}
+
+	// Get itinerary.
+	$itinerary_post_id = get_post_meta( $departure_id, 'itinerary', true );
+
+	// Validate itinerary.
+	if ( empty( $itinerary_post_id ) ) {
+		return;
+	}
+
+	// Convert to integer.
+	$itinerary_post_id = absint( $itinerary_post_id );
+
+	// Bust cache for lowest price.
+	bust_lowest_price_cache( $itinerary_post_id );
 }

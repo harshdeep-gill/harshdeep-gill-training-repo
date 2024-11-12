@@ -2163,11 +2163,11 @@ class Test_Occupancies extends Softrip_TestCase {
 
 		// Add the supplemental price for USD.
 		$supplemental_price_usd = 10;
-		update_post_meta( $itinerary_post_id, 'supplemental_price_usd', $supplemental_price_usd );
+		update_post_meta( $itinerary_post_id, 'supplement_price_usd', $supplemental_price_usd );
 
 		// Add the supplemental price for AUD.
 		$supplemental_price_aud = 20;
-		update_post_meta( $itinerary_post_id, 'supplemental_price_aud', $supplemental_price_aud );
+		update_post_meta( $itinerary_post_id, 'supplement_price_aud', $supplemental_price_aud );
 
 		// Flush the itinerary cache.
 		wp_cache_delete( ITINERARIES_CACHE_KEY . "_$itinerary_post_id", ITINERARIES_CACHE_GROUP );
@@ -2290,7 +2290,7 @@ class Test_Occupancies extends Softrip_TestCase {
 
 		// Add supplemental price for USD for the departure.
 		$supplemental_price_usd = 100;
-		update_post_meta( $itinerary_post_id, 'supplemental_price_usd', $supplemental_price_usd );
+		update_post_meta( $itinerary_post_id, 'supplement_price_usd', $supplemental_price_usd );
 
 		// Add mandatory transfer price for USD for the departure.
 		$mandatory_transfer_price_usd = 50;
@@ -2452,7 +2452,7 @@ class Test_Occupancies extends Softrip_TestCase {
 
 		// Add the supplemental price for USD.
 		$supplemental_price_usd = 10;
-		update_post_meta( $itinerary_post_id, 'supplemental_price_usd', $supplemental_price_usd );
+		update_post_meta( $itinerary_post_id, 'supplement_price_usd', $supplemental_price_usd );
 
 		// Flush the itinerary cache.
 		wp_cache_delete( ITINERARIES_CACHE_KEY . "_$itinerary_post_id", ITINERARIES_CACHE_GROUP );
@@ -2483,7 +2483,7 @@ class Test_Occupancies extends Softrip_TestCase {
 		$this->assertEquals( $expected, $actual );
 
 		// Delete supplemental price for USD.
-		delete_post_meta( $itinerary_post_id, 'supplemental_price_usd' );
+		delete_post_meta( $itinerary_post_id, 'supplement_price_usd' );
 
 		// Flush the itinerary cache.
 		wp_cache_delete( ITINERARIES_CACHE_KEY . "_$itinerary_post_id", ITINERARIES_CACHE_GROUP );
@@ -3017,7 +3017,7 @@ class Test_Occupancies extends Softrip_TestCase {
 
 		// Add supplemental price for USD for the departure.
 		$supplemental_price_usd = 10;
-		update_post_meta( $itinerary_post_id, 'supplemental_price_usd', $supplemental_price_usd );
+		update_post_meta( $itinerary_post_id, 'supplement_price_usd', $supplemental_price_usd );
 
 		// Add mandatory transfer price for USD for the departure.
 		$mandatory_transfer_price_usd = 5;
