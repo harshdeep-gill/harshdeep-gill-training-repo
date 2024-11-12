@@ -88,6 +88,9 @@ class Test_Departures extends Softrip_TestCase {
 		// Assign term to post.
 		wp_set_object_terms( $post_1->ID, $spoken_language_term->term_id, SPOKEN_LANGUAGE_TAXONOMY );
 
+		// Bust post cache after setting term.
+		bust_post_cache( $post_1->ID );
+
 		// Get post.
 		$the_post = get( $post_1->ID );
 
@@ -265,6 +268,9 @@ class Test_Departures extends Softrip_TestCase {
 			],
 			SPOKEN_LANGUAGE_TAXONOMY
 		);
+
+		// Bust post cache.
+		bust_post_cache( $post_1->ID );
 
 		// Get languages.
 		$languages = get_languages( $post_1->ID );
