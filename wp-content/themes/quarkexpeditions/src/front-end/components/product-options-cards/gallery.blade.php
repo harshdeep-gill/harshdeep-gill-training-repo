@@ -15,10 +15,6 @@
 		$classes[] = $class;
 	}
 
-	if ( ! empty( $full_size ) ) {
-		$classes[] = 'full-width';
-	}
-
 	$image_args = [
 		'size' => [
 			'width'  => 400,
@@ -54,7 +50,7 @@
 	<tp-slider
 		class="product-options-cards__gallery-slider"
 		swipe="yes"
-		behaviour="slide"
+		behaviour="fade"
 		infinite="yes"
 	>
 		<tp-slider-track class="product-options-cards__gallery-track">
