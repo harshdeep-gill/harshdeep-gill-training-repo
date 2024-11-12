@@ -7,11 +7,7 @@
 
 namespace Quark\Ingestor\Itineraries;
 
-use cli\progress\Bar;
-use WP_CLI;
-use WP_Error;
 use WP_Post;
-use WP_Query;
 
 use function Quark\Core\get_raw_text_from_html;
 use function Quark\Expeditions\get as get_expedition;
@@ -40,6 +36,42 @@ use const Quark\StaffMembers\SEASON_TAXONOMY;
  *     startLocation: string,
  *     endLocation: string,
  *     departures: mixed[],
+ *     modified: string,
+ *     season: string,
+ *     embarkation: string,
+ *     embarkationPortCode: string,
+ *     disembarkation: string,
+ *     disembarkationPortCode: string,
+ *     itineraryMap: array{}|array{
+ *        id: int,
+ *        fullSizeUrl: string,
+ *        thumbnailUrl: string,
+ *        alt: string,
+ *     },
+ *     days: array<int, array{
+ *        id: int,
+ *        title: string,
+ *        dayStartNumber: int,
+ *        dayEndNumber: int,
+ *        location: string,
+ *        portCode: string,
+ *        portLocation: string,
+ *        description: string,
+ *     }>,
+ *     inclusions: array<int, array{
+ *        id: int,
+ *        title: string,
+ *        items: string[],
+ *        categoryId: int,
+ *        categoryName: string,
+ *     }>,
+ *     exclusions: array<int, array{
+ *        id: int,
+ *        title: string,
+ *        items: string[],
+ *        categoryId: int,
+ *        categoryName: string,
+ *     }>,
  *   }
  * >
  */
@@ -139,7 +171,7 @@ function get_itineraries( int $expedition_post_id = 0 ): array {
 
 		// Check for term.
 		if ( ! empty( $start_location_term ) && is_array( $start_location_term ) ) {
-			$itinerary_data['startLocation'] = $start_location_term['name'];
+			$itinerary_data['startLocation'] = strval( $start_location_term['name'] ?? '' );
 		}
 
 		// Get end location from meta.
@@ -150,7 +182,7 @@ function get_itineraries( int $expedition_post_id = 0 ): array {
 
 		// Check for term.
 		if ( ! empty( $end_location_term ) && is_array( $end_location_term ) ) {
-			$itinerary_data['endLocation'] = $end_location_term['name'];
+			$itinerary_data['endLocation'] = strval( $end_location_term['name'] ?? '' );
 		}
 
 		// Get embarkation from meta.
@@ -163,7 +195,7 @@ function get_itineraries( int $expedition_post_id = 0 ): array {
 			// Validate post.
 			if ( ! empty( $embarkation_port_post['post'] ) && $embarkation_port_post['post'] instanceof WP_Post ) {
 				$itinerary_data['embarkation']         = get_raw_text_from_html( $embarkation_port_post['post']->post_title );
-				$itinerary_data['embarkationPortCode'] = $embarkation_port_post['post_meta']['port_code'] ?? '';
+				$itinerary_data['embarkationPortCode'] = strval( $embarkation_port_post['post_meta']['port_code'] ?? '' );
 			}
 		}
 
@@ -177,7 +209,7 @@ function get_itineraries( int $expedition_post_id = 0 ): array {
 			// Validate post.
 			if ( ! empty( $disembarkation_port_post['post'] ) && $disembarkation_port_post['post'] instanceof WP_Post ) {
 				$itinerary_data['disembarkation']         = get_raw_text_from_html( $disembarkation_port_post['post']->post_title );
-				$itinerary_data['disembarkationPortCode'] = $disembarkation_port_post['post_meta']['port_code'] ?? '';
+				$itinerary_data['disembarkationPortCode'] = strval( $disembarkation_port_post['post_meta']['port_code'] ?? '' );
 			}
 		}
 
@@ -201,7 +233,7 @@ function get_itineraries( int $expedition_post_id = 0 ): array {
 				$itinerary_data['itineraryMap'] = [
 					'id'           => $itinerary_map_image_id,
 					'fullSizeUrl'  => $full_size_url,
-					'thumbnailUrl' => $thumbnail_url,
+					'thumbnailUrl' => strval( $thumbnail_url ),
 					'alt'          => $alt_text,
 				];
 			}
@@ -232,7 +264,16 @@ function get_itineraries( int $expedition_post_id = 0 ): array {
  *
  * @param int $itinerary_post_id Itinerary ID.
  *
- * @return mixed[]
+ * @return array<int, array{
+ *    id: int,
+ *    title: string,
+ *    dayStartNumber: int,
+ *    dayEndNumber: int,
+ *    location: string,
+ *    portCode: string,
+ *    portLocation: string,
+ *    description: string,
+ * }>
  */
 function get_itinerary_days( int $itinerary_post_id = 0 ): array {
 	// Initialize itinerary days.
@@ -279,6 +320,7 @@ function get_itinerary_days( int $itinerary_post_id = 0 ): array {
 
 		// Prepare itinerary day data.
 		$itinerary_day_data = [
+			'id'             => $itinerary_day_post_id,
 			'title'          => strval( $itinerary_day_post['post_meta']['day_title'] ?? '' ),
 			'dayStartNumber' => absint( $itinerary_day_post['post_meta']['day_number_from'] ?? 0 ),
 			'dayEndNumber'   => absint( $itinerary_day_post['post_meta']['day_number_to'] ?? 0 ),
@@ -298,7 +340,7 @@ function get_itinerary_days( int $itinerary_post_id = 0 ): array {
 
 			// Validate post.
 			if ( ! empty( $port_post['post'] ) && $port_post['post'] instanceof WP_Post ) {
-				$itinerary_day_data['portCode']     = $port_post['post_meta']['port_code'] ?? '';
+				$itinerary_day_data['portCode']     = strval( $port_post['post_meta']['port_code'] ?? '' );
 				$itinerary_day_data['portLocation'] = get_raw_text_from_html( $port_post['post']->post_title );
 			}
 		}
@@ -315,7 +357,13 @@ function get_itinerary_days( int $itinerary_post_id = 0 ): array {
  *
  * @param int $itinerary_post_id Itinerary ID.
  *
- * @return mixed[]
+ * @return array<int, array{
+ *    id: int,
+ *    title: string,
+ *    items: string[],
+ *    categoryId: int,
+ *    categoryName: string,
+ * }>
  */
 function get_inclusions_data( int $itinerary_post_id = 0 ): array {
 	// Initialize inclusions.
@@ -366,8 +414,8 @@ function get_inclusions_data( int $itinerary_post_id = 0 ): array {
 
 		// Check for post taxonomies.
 		if ( ! empty( $inclusion_post['post_taxonomies'] ) && ! empty( $inclusion_post['post_taxonomies'][ INCLUSION_EXCLUSION_CATEGORY ] ) && is_array( $inclusion_post['post_taxonomies'][ INCLUSION_EXCLUSION_CATEGORY ] ) ) {
-			$category_id   = $inclusion_post['post_taxonomies'][ INCLUSION_EXCLUSION_CATEGORY ][0]['term_id'] ?? 0;
-			$category_name = $inclusion_post['post_taxonomies'][ INCLUSION_EXCLUSION_CATEGORY ][0]['name'] ?? '';
+			$category_id   = absint( $inclusion_post['post_taxonomies'][ INCLUSION_EXCLUSION_CATEGORY ][0]['term_id'] ?? 0 );
+			$category_name = strval( $inclusion_post['post_taxonomies'][ INCLUSION_EXCLUSION_CATEGORY ][0]['name'] ?? '' );
 		}
 
 		// Initialize inclusion items.
@@ -386,11 +434,11 @@ function get_inclusions_data( int $itinerary_post_id = 0 ): array {
 
 		// Prepare inclusion data.
 		$inclusion_data = [
-			'id'            => $inclusion_post_id,
-			'title'         => $inclusion_post['post_meta']['display_title'] ?? '',
-			'items'         => $inclusion_items,
-			'category_id'   => $category_id,
-			'category_name' => $category_name,
+			'id'           => $inclusion_post_id,
+			'title'        => strval( $inclusion_post['post_meta']['display_title'] ?? '' ),
+			'items'        => $inclusion_items,
+			'categoryId'   => $category_id,
+			'categoryName' => $category_name,
 		];
 
 		// Add inclusion data to inclusions.
@@ -405,7 +453,13 @@ function get_inclusions_data( int $itinerary_post_id = 0 ): array {
  *
  * @param int $itinerary_post_id Itinerary ID.
  *
- * @return mixed[]
+ * @return array<int, array{
+ *    id: int,
+ *    title: string,
+ *    items: string[],
+ *    categoryId: int,
+ *    categoryName: string,
+ * }>
  */
 function get_exclusions_data( int $itinerary_post_id = 0 ): array {
 	// Initialize inclusions.
@@ -456,8 +510,8 @@ function get_exclusions_data( int $itinerary_post_id = 0 ): array {
 
 		// Check for post taxonomies.
 		if ( ! empty( $exclusion_post['post_taxonomies'] ) && ! empty( $exclusion_post['post_taxonomies'][ INCLUSION_EXCLUSION_CATEGORY ] ) && is_array( $exclusion_post['post_taxonomies'][ INCLUSION_EXCLUSION_CATEGORY ] ) ) {
-			$category_id   = $exclusion_post['post_taxonomies'][ INCLUSION_EXCLUSION_CATEGORY ][0]['term_id'] ?? 0;
-			$category_name = $exclusion_post['post_taxonomies'][ INCLUSION_EXCLUSION_CATEGORY ][0]['name'] ?? '';
+			$category_id   = absint( $exclusion_post['post_taxonomies'][ INCLUSION_EXCLUSION_CATEGORY ][0]['term_id'] ?? 0 );
+			$category_name = strval( $exclusion_post['post_taxonomies'][ INCLUSION_EXCLUSION_CATEGORY ][0]['name'] ?? '' );
 		}
 
 		// Initialize inclusion items.
@@ -476,11 +530,11 @@ function get_exclusions_data( int $itinerary_post_id = 0 ): array {
 
 		// Prepare inclusion data.
 		$exclusion_data = [
-			'id'            => $exclusion_post_id,
-			'title'         => $exclusion_post['post_meta']['display_title'] ?? '',
-			'items'         => $exclusion_items,
-			'category_id'   => $category_id,
-			'category_name' => $category_name,
+			'id'           => $exclusion_post_id,
+			'title'        => strval( $exclusion_post['post_meta']['display_title'] ?? '' ),
+			'items'        => $exclusion_items,
+			'categoryId'   => $category_id,
+			'categoryName' => $category_name,
 		];
 
 		// Add inclusion data to inclusions.
