@@ -7,8 +7,6 @@
 .thumbnail-cards {
 	$self: &;
 
-	overflow-x: hidden;
-
 	&__image-wrap {
 		margin-bottom: 0;
 		overflow: hidden;

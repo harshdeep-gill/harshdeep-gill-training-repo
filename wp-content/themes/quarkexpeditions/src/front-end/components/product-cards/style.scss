@@ -19,8 +19,11 @@
 	}
 
 	&__slider {
-		overflow-x: visible;
-		margin-inline: var(--grid-col-gutter);
+		// width: 100vw;
+
+		@media screen and (min-width: grid-size(xl)) {
+			// width: auto;
+		}
 
 		#{$self}--has-overflow & {
 
@@ -33,10 +36,6 @@
 			#{$self}__track {
 				margin-bottom: 0;
 			}
-		}
-
-		@media screen and (min-width: 1120px) {
-			margin-inline: 0;
 		}
 
 		&[total="2"] {
@@ -62,6 +61,16 @@
 
 	&__track {
 		scrollbar-width: none; /* Firefox */
+		margin-left: calc(-50vw + 50%);
+		margin-right: calc(-50vw + 50%);
+		max-width: 100vw;
+		padding: 0 var(--grid-col-gutter);
+
+		@media screen and (min-width: grid-size(xl)) {
+			margin-inline: -18px;
+			padding-inline: 18px;
+			max-width: initial;
+		}
 
 		&::-webkit-scrollbar {
 			display: none;
@@ -78,15 +87,22 @@
 	}
 
 	&__slides {
-		gap: var(--spacing-6);
+		gap: var(--spacing-4);
 		align-items: stretch;
+		max-width: var(--wrap-width);
+		margin-inline: auto;
+
+		@media screen and (min-width: grid-size(lg)) {
+			gap: var(--spacing-6);
+		}
 	}
 
 	// Carousel layout.
 	&__slide {
+		max-width: calc(100vw - 2 * var(--spacing-6));
 
 		@media screen and (min-width: grid-size(sm)) {
-			flex: 0 0 352px;
+			max-width: 352px;
 		}
 	}
 

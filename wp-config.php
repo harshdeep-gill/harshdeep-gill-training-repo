@@ -99,7 +99,7 @@ define( 'NONCE_SALT', env( 'NONCE_SALT' ) );
  */
 define( 'SAVEQUERIES', true );
 define( 'WP_DEBUG', true );
-define( 'WP_DEBUG_DISPLAY', true );
+define( 'WP_DEBUG_DISPLAY', false );
 define( 'WP_DEBUG_LOG', false );
 define( 'SCRIPT_DEBUG', true );
 define( 'DISALLOW_WP_CRON', false );

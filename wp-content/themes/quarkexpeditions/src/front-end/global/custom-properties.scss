@@ -74,9 +74,9 @@
 	--spacing-8: 64px;
 	--spacing-9: 96px;
 
-	--wrap-width: 864px;
-	--wrap-width-medium: 720px;
 	--narrow-wrap-width: 864px;
+	--wrap-width-medium: 720px;
+	--wrap-width: var(--narrow-wrap-width);
 	--grid-section-gutter: var(--spacing-8);
 	--grid-row-gutter: var(--spacing-5);
 	--grid-col-gutter: var(--spacing-5);
