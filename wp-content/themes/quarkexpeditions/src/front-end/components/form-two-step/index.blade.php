@@ -211,7 +211,7 @@
 			>
 				<x-button type="button">
 					{{ __( 'Request a Quote', 'qrk' ) }}
-					<x-button.sub-title title="It only takes 2 minutes!" />
+					<x-button.sub-title title="It only takes 2 minutes" />
 				</x-button>
 			</x-form-two-step.modal-cta>
 		</x-form.buttons>
