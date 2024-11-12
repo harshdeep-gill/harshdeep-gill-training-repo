@@ -109,14 +109,14 @@ function get_ship_data( int $departure_post_id = 0 ): array {
 		'id'             => $ship_id,
 		'code'           => $ship_code,
 		'name'           => get_raw_text_from_html( $ship_post['post']->post_title ),
+		'url'            => get_permalink( $ship_id ),
 		'description'    => strval( $ship_post['post_meta']['description'] ?? '' ),
 		'modified'       => $ship_post['post']->post_modified,
-		'heroImage'      => [],
-		'images'         => [],
-		'url'            => get_permalink( $ship_id ),
 		'specifications' => [],
 		'amenities'      => [],
 		'deckPlanImage'  => [],
+		'heroImage'      => [],
+		'images'         => [],
 	];
 
 	// Get hero image.

@@ -150,7 +150,6 @@ function get_itineraries( int $expedition_post_id = 0 ): array {
 			'durationInDays'         => $duration_in_days,
 			'startLocation'          => '',
 			'endLocation'            => '',
-			'departures'             => [],
 			'modified'               => $itinerary_post['post']->post_modified,
 			'season'                 => $season,
 			'embarkation'            => '',
@@ -161,6 +160,7 @@ function get_itineraries( int $expedition_post_id = 0 ): array {
 			'days'                   => [],
 			'inclusions'             => [],
 			'exclusions'             => [],
+			'departures'             => [],
 		];
 
 		// Get start location from meta.

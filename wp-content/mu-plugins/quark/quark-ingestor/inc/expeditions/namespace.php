@@ -81,11 +81,11 @@ function get_expedition_data( int $expedition_post_id = 0 ): array {
 		'description'  => '',
 		'images'       => [],
 		'destinations' => [],
-		'itineraries'  => [],
 		'heroImage'    => [],
 		'modified'     => $expedition_post['post']->post_modified,
 		'highlights'   => [],
 		'url'          => get_permalink( $expedition_post_id ),
+		'itineraries'  => [],
 	];
 
 	// Get hero image.
