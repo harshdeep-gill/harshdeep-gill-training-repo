@@ -7,19 +7,15 @@
 
 namespace Quark\Ingestor\Departures;
 
-use cli\progress\Bar;
-use WP_CLI;
-use WP_Error;
 use WP_Post;
-use WP_Query;
 
 use function Quark\Core\get_raw_text_from_html;
 use function Quark\Departures\get as get_departure;
 use function Quark\Ingestor\AdventureOptions\get_included_adventure_options_data;
 use function Quark\Ingestor\AdventureOptions\get_paid_adventure_options_data;
 use function Quark\Ingestor\Cabins\get_cabins_data;
-use function Quark\Ships\get as get_ship;
-use function Quark\Softrip\Departures\get_related_ship;
+use function Quark\Ingestor\Promotions\get_promotions_data;
+use function Quark\Ingestor\Ships\get_ship_data;
 
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
 use const Quark\Departures\SPOKEN_LANGUAGE_TAXONOMY;
@@ -32,7 +28,7 @@ use const Quark\Departures\SPOKEN_LANGUAGE_TAXONOMY;
  *
  * @return array{}|array<int,
  *   array{
- *    id: string,
+ *    id: int,
  *    name: string,
  *    published: bool,
  *    startDate: string,
@@ -99,12 +95,15 @@ function get_departures_data( int $expedition_post_id = 0, int $itinerary_post_i
 
 		// Initialize departure data.
 		$departure_data = [
-			'id'               => $softrip_id,
+			'id'               => $departure_post_id,
 			'name'             => get_raw_text_from_html( $departure_post['post']->post_title ),
 			'published'        => 'publish' === $departure_post['post']->post_status,
 			'startDate'        => $departure_post['post_meta']['start_date'] ?? '',
 			'endDate'          => $departure_post['post_meta']['end_date'] ?? '',
 			'durationInDays'   => absint( $departure_post['post_meta']['duration'] ?? '' ),
+			'softrip_id'       => $softrip_id,
+			'code'             => $departure_post['post_meta']['softrip_code'] ?? '',
+			'modified'         => $departure_post['post']->post_modified,
 			'ship'             => [],
 			'languages'        => '',
 			'cabins'           => [],
@@ -112,28 +111,11 @@ function get_departures_data( int $expedition_post_id = 0, int $itinerary_post_i
 				'includedOptions' => [],
 				'paidOptions'     => [],
 			],
+			'promotions'       => [],
 		];
 
-		// Get related ship.
-		$ship_id = get_related_ship( $departure_post_id );
-
-		// Check for ship ID.
-		if ( ! empty( $ship_id ) ) {
-			// Get ship post.
-			$ship_post = get_ship( $ship_id );
-
-			// Get code.
-			$ship_code = strval( get_post_meta( $ship_id, 'ship_code', true ) );
-
-			// Check for ship code.
-			if ( ! empty( $ship_post['post'] ) && $ship_post['post'] instanceof WP_Post && ! empty( $ship_code ) ) {
-				$departure_data['ship'] = [
-					'id'   => $ship_id,
-					'code' => $ship_code,
-					'name' => get_raw_text_from_html( $ship_post['post']->post_title ),
-				];
-			}
-		}
+		// Add ship data.
+		$departure_data['ship'] = get_ship_data( $departure_post_id );
 
 		// Get languages.
 		if ( array_key_exists( SPOKEN_LANGUAGE_TAXONOMY, $departure_post['post_taxonomies'] ) && is_array( $departure_post['post_taxonomies'][ SPOKEN_LANGUAGE_TAXONOMY ] ) && ! empty( $departure_post['post_taxonomies'][ SPOKEN_LANGUAGE_TAXONOMY ] ) ) {
@@ -164,6 +146,9 @@ function get_departures_data( int $expedition_post_id = 0, int $itinerary_post_i
 		// Add included adventure options data.
 		$departure_data['adventureOptions']['includedOptions'] = get_included_adventure_options_data( $expedition_post_id, $departure_post_id );
 		$departure_data['adventureOptions']['paidOptions']     = get_paid_adventure_options_data( $departure_post_id );
+
+		// Add promotions data.
+		$departure_data['promotions'] = get_promotions_data( $departure_post_id );
 
 		// Add departure data.
 		$departures_data[] = $departure_data;
