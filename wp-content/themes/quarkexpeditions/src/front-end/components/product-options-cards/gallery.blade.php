@@ -15,10 +15,6 @@
 		$classes[] = $class;
 	}
 
-	if ( ! empty( $full_size ) ) {
-		$classes[] = 'full-width';
-	}
-
 	$image_args = [
 		'size' => [
 			'width'  => 400,

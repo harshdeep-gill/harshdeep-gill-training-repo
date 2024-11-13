@@ -2520,11 +2520,28 @@ class Test_Ingestor extends Softrip_TestCase {
 		// Assign this category to the adventure option post.
 		wp_set_post_terms( $adventure_option_post_id1, [ $adventure_option_category_term_id ], ADVENTURE_OPTION_CATEGORY );
 
+		// Test without departure id.
+		$actual   = get_included_adventure_options_data( $expedition_post_id );
+		$expected = [];
+		$this->assertEquals( $expected, $actual );
+
+		// Create departure post.
+		$departure_post_id = $this->factory()->post->create(
+			[
+				'post_type'  => DEPARTURE_POST_TYPE,
+				'meta_input' => [
+					'softrip_id' => 'UNQ-123:2025-01-01',
+					'ship_code'  => 'POQ',
+				],
+			]
+		);
+		$this->assertIsInt( $departure_post_id );
+
 		// Flush the cache.
 		wp_cache_flush();
 
 		// Test with expedition that has related adventure options and assigned category.
-		$actual   = get_included_adventure_options_data( $expedition_post_id );
+		$actual   = get_included_adventure_options_data( $expedition_post_id, $departure_post_id );
 		$expected = [
 			[
 				'id'        => $adventure_option_category_term_id,
@@ -2543,7 +2560,7 @@ class Test_Ingestor extends Softrip_TestCase {
 		update_term_meta( $adventure_option_category_term_id, 'icon', $media_post_id1 );
 
 		// Test with expedition that has related adventure options and assigned category with icon.
-		$actual   = get_included_adventure_options_data( $expedition_post_id );
+		$actual   = get_included_adventure_options_data( $expedition_post_id, $departure_post_id );
 		$expected = [
 			[
 				'id'        => $adventure_option_category_term_id,
@@ -2559,7 +2576,7 @@ class Test_Ingestor extends Softrip_TestCase {
 		update_term_meta( $adventure_option_category_term_id, 'softrip_1_id', 'DEF' );
 
 		// Test with expedition that has related adventure options and assigned category with icon and option ids.
-		$actual   = get_included_adventure_options_data( $expedition_post_id );
+		$actual   = get_included_adventure_options_data( $expedition_post_id, $departure_post_id );
 		$expected = [
 			[
 				'id'        => $adventure_option_category_term_id,

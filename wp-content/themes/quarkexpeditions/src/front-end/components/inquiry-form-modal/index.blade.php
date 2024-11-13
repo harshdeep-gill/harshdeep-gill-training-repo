@@ -1,13 +1,13 @@
 @props( [
-	'thank_you_page'     => '',
-	'form_id'            => 'inquiry-form',
-	'modal_id'           => 'inquiry-form-modal',
-	'countries'          => [],
-	'states'             => [],
+	'thank_you_page' => '',
+	'form_id'        => 'inquiry-form',
+	'modal_id'       => 'inquiry-form-modal',
+	'countries'      => [],
+	'states'         => [],
 ] )
 
 @php
-	$title             = 'Almost there!';
+	$title             = 'Almost there';
 	$subtitle          = 'We just need a bit more info to help personalize your itinerary.';
 	$salesforce_object = 'Webform_Landing_Page__c';
 @endphp
@@ -89,7 +89,7 @@
 			<div class="inquiry-form__thank-you">
 				<x-svg name="logo" />
 				<div class="inquiry-form__thank-you-text">
-					<h4 class="inquiry-form__thank-you-text-heading">Thank you!</h4>
+					<h4 class="inquiry-form__thank-you-text-heading">Thank you</h4>
 					<p class="inquiry-form__thank-you-text-body">A Quark Expeditions Polar Travel Advisor will be in touch with you shortly.</p>
 				</div>
 			</div>

@@ -7,7 +7,7 @@
 ] )
 
 @php
-	$title             = 'Almost there!';
+	$title             = 'Almost there';
 	$subtitle          = 'We just need a bit more info to help personalize your itinerary.';
 	$salesforce_object = 'Webform_Landing_Page__c';
 @endphp
@@ -88,7 +88,7 @@
 			<div class="form-two-step__thank-you">
 				<x-svg name="logo" />
 				<div class="form-two-step__thank-you-text">
-					<h4 class="form-two-step__thank-you-text-heading">Thank you!</h4>
+					<h4 class="form-two-step__thank-you-text-heading">Thank you</h4>
 					<p class="form-two-step__thank-you-text-body">A Quark Expeditions Polar Travel Advisor will be in touch with you shortly.</p>
 				</div>
 			</div>

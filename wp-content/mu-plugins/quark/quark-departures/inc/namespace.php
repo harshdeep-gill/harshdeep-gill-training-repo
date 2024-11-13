@@ -43,6 +43,7 @@ const PROMOTION_TAG            = 'qrk_promotion_tags';
 const CACHE_KEY                = POST_TYPE;
 const CACHE_GROUP              = POST_TYPE;
 const FLIGHT_SEEING_TID        = 289; // Flight seeing Adventure Option Term ID.
+const ULTRAMARINE_SHIP_CODE    = 'ULT'; // Ultramarine Ship Code.
 
 /**
  * Bootstrap plugin.
@@ -60,16 +61,13 @@ function bootstrap(): void {
 	add_filter( 'qe_spoken_language_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
 	add_filter( 'qe_promotion_tag_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
 
-	// Other hooks.
-	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
+	// Other hooks. Assigning non-standard priority to avoid race conditions with ACF.
+	add_action( 'save_post', __NAMESPACE__ . '\\bust_post_cache', 11 );
 
 	// Bust cache for departure card data.
 	add_action( 'qe_departure_post_cache_busted', __NAMESPACE__ . '\\bust_card_data_cache' );
 	add_action( 'qe_expedition_post_cache_busted', __NAMESPACE__ . '\\bust_card_data_cache_on_expedition_update' );
 	add_action( 'qe_itinerary_post_cache_busted', __NAMESPACE__ . '\\bust_card_data_cache_on_itinerary_update' );
-
-	// Bust cache on term update.
-	add_action( 'set_object_terms', __NAMESPACE__ . '\\bust_post_cache_on_term_assign', 10, 6 );
 
 	// Admin stuff.
 	if ( is_admin() ) {
@@ -237,6 +235,14 @@ function opt_in( array $post_types = [] ): array {
  * @return void
  */
 function bust_post_cache( int $post_id = 0 ): void {
+	// Get post type.
+	$post_type = get_post_type( $post_id );
+
+	// Bail out if not Departure post type.
+	if ( POST_TYPE !== $post_type ) {
+		return;
+	}
+
 	// Clear cache for this post.
 	wp_cache_delete( CACHE_KEY . "_$post_id", CACHE_GROUP );
 
@@ -354,32 +360,6 @@ function get( int $post_id = 0 ): array {
 }
 
 /**
- * Bust cache on term assign.
- *
- * @param int                    $object_id Object ID.
- * @param array{string|int}|null $terms     An array of object term IDs or slugs.
- * @param array{string|int}|null $tt_ids    An array of term taxonomy IDs.
- * @param string                 $taxonomy  Taxonomy slug.
- *
- * @return void
- */
-function bust_post_cache_on_term_assign( int $object_id = 0, array $terms = null, array $tt_ids = null, string $taxonomy = '' ): void {
-	// Check for spoken language taxonomy.
-	if ( in_array( $taxonomy, [ SPOKEN_LANGUAGE_TAXONOMY, PROMOTION_TAG ], true ) ) {
-		// Get post.
-		$post = get( $object_id );
-
-		// Check for post.
-		if ( ! $post['post'] instanceof WP_Post || POST_TYPE !== $post['post']->post_type ) {
-			return;
-		}
-
-		// Bust cache.
-		bust_post_cache( $post['post']->ID );
-	}
-}
-
-/**
  * Get paid adventure options.
  *
  * @param int $post_id Departure Post ID.
@@ -494,7 +474,7 @@ function get_included_adventure_options( int $post_id = 0 ): array {
 	}
 
 	// Remove Flight seeing for all except Ultramarine.
-	if ( 'ULT' !== $ship_code && array_key_exists( FLIGHT_SEEING_TID, $included_adventure_options ) ) {
+	if ( ULTRAMARINE_SHIP_CODE !== $ship_code && array_key_exists( FLIGHT_SEEING_TID, $included_adventure_options ) ) {
 		unset( $included_adventure_options[ FLIGHT_SEEING_TID ] );
 	}
 
@@ -872,7 +852,7 @@ function get_cards_data( array $departure_ids = [], string $currency = DEFAULT_C
 }
 
 /**
- * Bust Departure card data cache.
+ * Bust departure card data and dates rates card data cache on departure post update.
  *
  * @param int $post_id Departure Post ID.
  *
