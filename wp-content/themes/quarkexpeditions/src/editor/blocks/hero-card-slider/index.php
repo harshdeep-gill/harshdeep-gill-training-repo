@@ -44,6 +44,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 	// Prepare the component attributes.
 	$component_attributes = [
 		'show_controls'   => $attributes['showControls'],
+		'is_lightbox'     => $attributes['isLightbox'],
 		'transition_type' => $attributes['transitionType'],
 		'interval'        => $attributes['interval'],
 		'items'           => [],

@@ -93,6 +93,12 @@ export default function edit( { className, attributes, setAttributes }: BlockEdi
 						} }
 						value={ attributes.items }
 					/>
+					<ToggleControl
+						label={ __( 'Is Lightbox?', 'qrk' ) }
+						help={ __( 'Display the images in a lightbox on click?', 'qrk' ) }
+						checked={ attributes.isLightbox }
+						onChange={ ( isLightbox ) => setAttributes( { isLightbox } ) }
+					/>
 				</PanelBody>
 			</InspectorControls>
 			<div { ...blockProps }>
