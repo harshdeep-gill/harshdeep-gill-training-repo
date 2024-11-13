@@ -1,10 +1,11 @@
 @props( [
-	'name'            => '',
-	'path'            => '',
-	'title'           => '',
-	'media'           => true,
-	'fullscreen_icon' => 'hidden',
-	'image_id'        => 0,
+	'name'                     => '',
+	'path'                     => '',
+	'title'                    => '',
+	'media'                    => true,
+	'fullscreen_icon'          => 'hidden',
+	'fullscreen_icon_position' => 'bottom',
+	'image_id'                 => 0,
 ] )
 
 @php
@@ -16,10 +17,20 @@
 	quark_enqueue_script( 'tp-lightbox' );
 
 	$classes = [ 'media-lightbox' ];
+	$fullscreen_classes = [ 'media-lightbox__fullscreen' ];
 
 	if ( 'visible' === $fullscreen_icon ) {
-		$classes[] = 'media-lightbox--fullscreen-icon-visible';
+		$fullscreen_classes[] = 'media-lightbox__fullscreen-icon--visible';
 	}
+
+	// Add fullscreen icon position class.
+	if ( ! empty( $fullscreen_icon_position ) ) {
+			$fullscreen_icon_positions = [ 'bottom', 'top' ];
+
+			if ( in_array( $fullscreen_icon_position, $fullscreen_icon_positions, true ) ) {
+				$fullscreen_classes[] = sprintf( 'media-lightbox__fullscreen-icon--position-%s', $fullscreen_icon_position );
+			}
+		}
 @endphp
 
 <quark-media-lightbox class="media-lightbox__link">
@@ -32,7 +43,7 @@
 				<figure class="media-lightbox__image-wrap">
 					{!! $slot !!}
 				</figure>
-				<span class="media-lightbox__fullscreen">
+				<span @class($fullscreen_classes)>
 					<x-svg name="fullscreen" />
 				</span>
 			@else
