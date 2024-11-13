@@ -7,7 +7,7 @@ import {
 	RichText,
 	InspectorControls,
 } from '@wordpress/block-editor';
-import { Icon, PanelBody, SelectControl } from '@wordpress/components';
+import { PanelBody, SelectControl } from '@wordpress/components';
 
 /**
  * Internal dependencies.
@@ -55,11 +55,6 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 		selectedIcon = icons[ iconName ] ?? '';
 	}
 
-	// Fallback icon.
-	if ( ! selectedIcon || '' === selectedIcon ) {
-		selectedIcon = <Icon icon="no" />;
-	}
-
 	// Return the block's markup.
 	return (
 		<>
@@ -93,9 +88,10 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 				</PanelBody>
 			</InspectorControls>
 			<div { ...blockProps } >
-				<span className="icon-badge__icon">
+				{ '' !== selectedIcon && <span className="icon-badge__icon">
 					{ selectedIcon }
 				</span>
+				}
 				<RichText
 					tagName="span"
 					className={ classnames( 'icon-badge__description' ) }
