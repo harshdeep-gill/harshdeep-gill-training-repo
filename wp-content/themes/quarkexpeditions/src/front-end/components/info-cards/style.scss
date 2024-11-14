@@ -72,7 +72,7 @@
 		}
 	}
 
-	&:not(:has(&__nav[data-layout="carousel"])) {
+	&:not([data-layout="carousel"]) {
 
 		@media screen and (min-width: grid-size(lg)) {
 
@@ -103,7 +103,7 @@
 		}
 	}
 
-	&:not(:has(&__nav[data-mobile-carousel])) {
+	&:not([data-mobile-carousel]) {
 
 		@media screen and (max-width: calc(grid-size(lg) - 1px)) {
 
@@ -127,7 +127,7 @@
 		}
 	}
 
-	&:has(&__nav[data-layout="collage"]) {
+	&[data-layout="collage"] {
 
 		@media screen and (min-width: grid-size(lg)) {
 
@@ -179,7 +179,7 @@
 		@media screen and (min-width: grid-size(lg)) {
 			display: none;
 
-			&[data-layout="carousel"] {
+			#{$self}[data-layout="carousel"] & {
 				display: flex;
 			}
 		}
