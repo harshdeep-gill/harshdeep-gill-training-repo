@@ -102,16 +102,10 @@
 				background: linear-gradient(0deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 30%);
 			}
 		}
-
 	}
 
 	&__wrap {
-		max-width: var(--wrap-width);
 		height: 100%;
-
-		@media screen and (max-width: 1120px) {
-			margin: 0 var(--grid-col-gutter);
-		}
 	}
 
 	&__image {

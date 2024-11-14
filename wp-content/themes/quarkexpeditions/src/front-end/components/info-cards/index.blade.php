@@ -25,6 +25,7 @@
 <x-section
 	@class( $classes )
 	:full_width="true"
+	:wrap="true"
 	:seamless="true"
 >
 	@if ( ! empty( $title ) )
@@ -36,6 +37,7 @@
 			/>
 		</x-section.heading>
 	@endif
+
 	<x-info-cards.carousel :layout="$layout" :mobile_carousel="$mobile_carousel">
 		{!! $slot !!}
 	</x-info-cards.carousel>
