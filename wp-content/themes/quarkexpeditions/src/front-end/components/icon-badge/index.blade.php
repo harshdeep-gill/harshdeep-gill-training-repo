@@ -17,15 +17,13 @@
 	}
 
 	$classes = [ 'icon-badge', $background_color_class, $class ];
-
-	if ( empty( $icon ) ) {
-		$icon = 'alert';
-	}
 @endphp
 
 <div @class( $classes )>
-	<span class="icon-badge__icon">
-		<x-svg name="{{ $icon }}" />
-	</span>
+	@if ( ! empty( $icon ) )
+		<span class="icon-badge__icon">
+			<x-svg name="{{ $icon }}" />
+		</span>
+	@endif
 	<span class="icon-badge__description"><x-escape :content="$text" /></span>
 </div>

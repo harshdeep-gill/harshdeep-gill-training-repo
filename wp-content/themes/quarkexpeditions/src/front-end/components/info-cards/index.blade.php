@@ -25,6 +25,7 @@
 <x-section
 	@class( $classes )
 	:full_width="true"
+	:wrap="true"
 	:seamless="true"
 	data-layout="{{ $layout }}"
 	data-mobile-carousel="{{ $mobile_carousel }}"
@@ -38,7 +39,8 @@
 			/>
 		</x-section.heading>
 	@endif
-	<x-info-cards.carousel :layout="$layout">
+
+  <x-info-cards.carousel :layout="$layout">
 		{!! $slot !!}
 	</x-info-cards.carousel>
 </x-section>

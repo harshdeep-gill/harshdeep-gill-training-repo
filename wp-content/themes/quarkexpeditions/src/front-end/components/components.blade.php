@@ -295,7 +295,7 @@
 <x-component-demo :keys="[ 'section-image' ]">
 	<x-section :full_width="true" :padding="true">
 	<x-section.image :image_id="26" gradient_color="gray-5" gradient_position="bottom" />
-		<div class="section__content-wrap">
+		<div class="section__content-wrap wrap">
 			<ul>
 				<li>Most exciting and wonderful, and educational experience of my life</li>
 				<li>Most exciting and wonderful, and educational experience of my life</li>

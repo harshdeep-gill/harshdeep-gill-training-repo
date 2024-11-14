@@ -36,7 +36,7 @@
 		class="hero__overlay"
 		style={!! $overlay_style !!}
 	></div>
-	<div class="hero__wrap">
+	<div class="hero__wrap wrap">
 		{!! $slot !!}
 	</div>
 </x-section>
