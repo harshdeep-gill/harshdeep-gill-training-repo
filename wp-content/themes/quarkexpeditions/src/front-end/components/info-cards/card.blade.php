@@ -1,5 +1,6 @@
 @props( [
-	'url' => '',
+	'url'    => '',
+	'target' => '',
 ] )
 
 @php
@@ -13,6 +14,7 @@
 <tp-slider-slide @class( $classes )>
 	<x-maybe-link
 		:href="$url"
+		:target="$target"
 		fallback_tag="div"
 	>
 		{!! $slot !!}

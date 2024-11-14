@@ -16,8 +16,8 @@
 	"textdomain": "qrk",
 	"attributes": {
 		"url": {
-			"type": "string",
-			"default": ""
+			"type": "object",
+			"default": {}
 		},
 		"contentPosition": {
 			"type": "string",

@@ -193,8 +193,9 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 			$cards .= quark_get_component(
 				COMPONENT . '.card',
 				[
-					'url'  => $inner_block->attributes['url'],
-					'slot' => $card,
+					'url'    => $inner_block->attributes['url']['url'] ?? '',
+					'target' => ! empty( $inner_block->attributes['url']['newWindow'] ) ? '_blank' : '',
+					'slot'   => $card,
 				]
 			);
 		}
