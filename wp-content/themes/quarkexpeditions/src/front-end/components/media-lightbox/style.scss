@@ -36,15 +36,22 @@
 		display: flex;
 		align-items: center;
 		position: absolute;
-		bottom: 24px;
 		right: 24px;
 		padding: var(--spacing-3);
 		opacity: 0;
 
 		@include transition();
+
+		&-icon--position-bottom {
+			bottom: 24px;
+		}
+
+		&-icon--position-top {
+			top: 24px;
+		}
 	}
 
-	&--fullscreen-icon-visible {
+	&__fullscreen-icon--visible {
 
 		#{$self}__fullscreen {
 			opacity: 1;

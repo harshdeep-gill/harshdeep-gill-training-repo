@@ -1,8 +1,8 @@
 @props( [
-	'class'           => '',
-	'interval'        => 5,
-	'arrows'          => false,
-	'auto_slide'      => false,
+	'class'       => '',
+	'interval'    => 5,
+	'arrows'      => false,
+	'auto_slide'  => false,
 ] )
 
 @php
