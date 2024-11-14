@@ -67,11 +67,20 @@
 		img,
 		video {
 			display: block;
-			position: absolute;
-			z-index: 1;
 			width: 100%;
 			height: 100%;
 			object-fit: cover;
+		}
+
+		#{$self}__image img,
+		#{$self}__image video {
+			position: absolute;
+			z-index: 1;
+		}
+
+		#{$self}__image-lightbox img,
+		#{$self}__image-lightbox video {
+			position: static;
 		}
 	}
 

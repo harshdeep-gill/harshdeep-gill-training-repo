@@ -65,7 +65,8 @@
 		margin-top: var(--spacing-3);
 	}
 
-	.btn {
+	.btn,
+	.section & .btn {
 		width: 100%;
 		padding-left: var(--spacing-1);
 		padding-right: var(--spacing-1);
