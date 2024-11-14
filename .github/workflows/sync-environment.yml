@@ -9,7 +9,7 @@ on:
         type: choice
         options:
           - 'qa'
-          - 'staging'
+          - 'dev'
 
 permissions:
   contents: read
