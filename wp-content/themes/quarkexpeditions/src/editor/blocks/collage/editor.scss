@@ -3,6 +3,7 @@
 	&__image-item,
 	&__video-item {
 		background-color: var(--color-gray-30);
+		min-height: 256px;
 		max-height: 256px;
 		overflow: hidden;
 	}
