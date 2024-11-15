@@ -40,7 +40,7 @@ export class Tooltip extends HTMLElement {
 		this.addEventListener( 'mouseleave', () => this.tooltipPopoverElement?.hidePopover() );
 
 		// Window scroll event.
-		if ( this.tooltipPopoverElement && this.tooltipContentElement ) {
+		if ( this.tooltipPopoverElement && this.tooltipContentElement && typeof this.tooltipPopoverElement.hidePopover === 'function' ) {
 			window.addEventListener( 'scroll', throttle( this.handleWindowScroll.bind( this ), 2000 ), true );
 		}
 	}
