@@ -80,7 +80,12 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 	const imageClasses = classnames( 'section__image-wrap', 'full-width', 'section__image-gradient-' + attributes.gradientPosition );
 
 	// Section classes.
-	const sectionClasses = classnames( className, 'section', attributes.hasBackground || attributes.hasBackgroundImage ? 'full-width' : '' );
+	const sectionClasses = classnames(
+		className,
+		'section',
+		attributes.hasBackground || attributes.hasBackgroundImage ? 'full-width' : '',
+		{ 'color-context--dark': 'black' === attributes.backgroundColor },
+	);
 
 	// Return block.
 	return (
