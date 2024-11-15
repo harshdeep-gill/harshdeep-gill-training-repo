@@ -1,4 +1,7 @@
-import { throttle } from "../../global/utility";
+/**
+ * Utility functions.
+ */
+import { throttle } from '../../global/utility';
 
 /**
  * Global variables.

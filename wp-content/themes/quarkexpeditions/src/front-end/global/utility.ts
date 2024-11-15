@@ -139,20 +139,24 @@ export const convertPropertiesFromSnakeCaseToCamelCase = ( data: object = {} ): 
 /**
  * Throttle a callback function.
  *
- * @param callbackFunction Callback function.
- * @param delay 		   Delay in ms.
+ * @param {Function} callbackFunction Callback function.
+ * @param {number}   delay            Delay in ms.
  */
-export const throttle = (callbackFunction: Function, delay: number) => {
+export const throttle = ( callbackFunction: Function, delay: number ) => {
+	// Timer flag.
 	let timerFlag: null | NodeJS.Timeout = null;
-  
-	// Returning a throttled version 
-	return (...args: any) => {
+
+	// Returning a throttled version
+	return ( ...args: any ) => {
 		// If the timerFlag is null, execute the main function
-	  if (timerFlag === null) {
-		callbackFunction(...args);
-		timerFlag = setTimeout(() => {
-		  timerFlag = null; // Clear the timerFlag after the delay
-		}, delay);
-	  }
+		if ( timerFlag === null ) {
+			// Execute the callback function
+			callbackFunction( ...args );
+
+			// Reset.
+			timerFlag = setTimeout( () => {
+				timerFlag = null; // Clear the timerFlag after the delay
+			}, delay );
+		}
 	};
-  }
+};
