@@ -46,8 +46,7 @@
 		}
 	}
 
-	.two-columns {
-
+	.two-columns.two-columns {
 		grid-template-columns: 600px 1fr;
 
 		@media screen and (max-width: calc(grid-size(lg) - 1px)) {
