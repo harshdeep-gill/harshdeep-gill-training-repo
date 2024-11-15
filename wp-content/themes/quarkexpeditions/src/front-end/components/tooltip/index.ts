@@ -1,3 +1,5 @@
+import { throttle } from "../../global/utility";
+
 /**
  * Global variables.
  */
@@ -34,8 +36,10 @@ export class Tooltip extends HTMLElement {
 		this.addEventListener( 'mouseenter', () => this.tooltipPopoverElement?.showPopover() );
 		this.addEventListener( 'mouseleave', () => this.tooltipPopoverElement?.hidePopover() );
 
-		// Window scroll
-		window.addEventListener( 'scroll', this.handleWindowScroll.bind( this ), true );
+		// Window scroll event.
+		if ( this.tooltipPopoverElement && this.tooltipContentElement ) {
+			window.addEventListener( 'scroll', throttle( this.handleWindowScroll.bind( this ), 2000 ), true );
+		}
 	}
 
 	/**
@@ -55,7 +59,7 @@ export class Tooltip extends HTMLElement {
 	}
 
 	/**
-	 * Postion of tooltip.
+	 * Position of tooltip.
 	 */
 	positionTooltip() {
 		// Check if tooltip is available.
