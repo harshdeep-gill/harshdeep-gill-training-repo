@@ -120,6 +120,7 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 							{ label: __( 'Canadian High Arctic', 'qrk' ), value: 'Canadian High Arctic' },
 							{ label: __( 'North Pole', 'qrk' ), value: 'North Pole' },
 							{ label: __( 'Russian High Arctic', 'qrk' ), value: 'Russian High Arctic' },
+							{ label: __( 'Iceland', 'qrk' ), value: 'Iceland' },
 						] }
 						onChange={ ( subRegion: string ) => setAttributes( { subRegion } ) }
 					/>
