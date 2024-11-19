@@ -1,9 +1,9 @@
 @props( [
-	'instagramPostId' => '',
+	'instagram_post_id' => '',
 ] )
 
 @php
-	if ( empty( $instagramPostId ) ) {
+	if ( empty( $instagram_post_id ) ) {
 		return;
 	}
 
@@ -11,6 +11,6 @@
 @endphp
 
 <div class="instagram-embed">
-	<blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/{{ $instagramPostId }}" data-instgrm-version="14">
+	<blockquote class="instagram-media instagram-embed__media" data-instgrm-permalink="https://www.instagram.com/p/{{ $instagram_post_id }}">
 	</blockquote>
 </div>

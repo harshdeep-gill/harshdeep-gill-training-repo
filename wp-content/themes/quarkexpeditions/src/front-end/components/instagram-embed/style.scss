@@ -1,15 +1,17 @@
 /**
- * Inquiry form modal
+ * Instagram Embed
  */
-@import "../../scss";
 
-.instagram-embed .instagram-media {
-	max-width: 658px;
-	width: calc(100% - var(--spacing-4));
-	border-radius: var(--border-small);
-	border: 1px solid var(--color-gray-20);
-	box-shadow: none;
-	display: block;
-	margin: var(--spacing-4) 0;
-	padding: 0;
+.instagram-embed {
+
+	&__media {
+		max-width: 658px;
+		width: 100%;
+		border-radius: var(--border-small);
+		border: 1px solid var(--color-gray-20);
+		box-shadow: none;
+		display: block;
+		margin: var(--spacing-4) 0;
+		padding: 0;
+	}
 }

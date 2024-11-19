@@ -21,8 +21,7 @@ function bootstrap(): void {
 	register_block_type_from_metadata(
 		__DIR__,
 		[
-			'render_callback'   => __NAMESPACE__ . '\\render',
-			'skip_inner_blocks' => true,
+			'render_callback' => __NAMESPACE__ . '\\render',
 		]
 	);
 }
@@ -51,5 +50,5 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 	}
 
 	// Return the component markup.
-	return quark_get_component( COMPONENT, [ 'instagramPostId' => $instagram_post_id ] );
+	return quark_get_component( COMPONENT, [ 'instagram_post_id' => $instagram_post_id ] );
 }

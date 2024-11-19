@@ -54,7 +54,7 @@ export default function Edit( { attributes, setAttributes }: BlockEditAttributes
 				{ attributes.instagramPostId ? (
 					<iframe
 						title={ __( 'Instagram Embed', 'qrk' ) }
-						className="qrk-instagram-embed"
+						className="instagram-embed__media"
 						src={ `https://www.instagram.com/p/${ attributes.instagramPostId }/embed` }
 					/>
 				) : (
