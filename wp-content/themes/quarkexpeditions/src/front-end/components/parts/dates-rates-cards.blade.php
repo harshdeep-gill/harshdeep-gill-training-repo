@@ -185,8 +185,10 @@
 										$is_sold_out = $availability_status_code === 'S';
 									@endphp
 									<x-dates-rates.item.table-column :is_pay_in_full="$is_pay_in_full" :is_sold_out="$is_sold_out" :is_discounted="$is_discounted">
-										@if ( !empty( $cabin['promos'][$promo_code] ) )
+										@if ( ! empty( $cabin['promos'][$promo_code] ) )
 											{{ $cabin['promos'][$promo_code] }}
+										@else
+											-
 										@endif
 									</x-dates-rates.item.table-column>
 								@endforeach
