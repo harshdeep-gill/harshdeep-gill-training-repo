@@ -1,6 +1,10 @@
 .product-cards {
 	margin-inline: auto;
 
+	.wrap {
+		padding-inline: 0;
+	}
+
 	&__image {
 		height: 240px;
 		background-color: var(--color-gray-30);
