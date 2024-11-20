@@ -75,7 +75,7 @@
 							'height' => 600,
 						],
 						'responsive' => [
-							'sizes'  => [ '(min-width: 992px) 1200px', '100vw' ],
+							'sizes'  => [ '(min-width: 1140px) 1200px', '100vw' ],
 							'widths' => [ 360, 400, 600, 800, 1024, 1200 ],
 						],
 						'focal_point' => [],
@@ -90,26 +90,26 @@
 			</p>
 		</template>
 	</tp-lightbox-trigger>
+
+	<x-once id="media-lightbox">
+		<tp-lightbox id="media-lightbox" class="media-lightbox">
+			<dialog class="media-lightbox__dialog">
+				<tp-lightbox-close class="media-lightbox__close">
+					<button><x-svg name="cross" /></button>
+				</tp-lightbox-close>
+
+				<tp-lightbox-count class="media-lightbox__count" format="$current/$total"></tp-lightbox-count>
+
+				<tp-lightbox-content class="media-lightbox__content"></tp-lightbox-content>
+
+				<tp-lightbox-previous class="media-lightbox__prev">
+					<button class="media-lightbox__prev-button"><x-svg name="chevron-left" /></button>
+				</tp-lightbox-previous>
+
+				<tp-lightbox-next class="media-lightbox__next">
+					<button class="media-lightbox__next-button"><x-svg name="chevron-left" /></button>
+				</tp-lightbox-next>
+			</dialog>
+		</tp-lightbox>
+	</x-once>
 </quark-media-lightbox>
-
-<x-once id="media-lightbox">
-	<tp-lightbox id="media-lightbox" class="media-lightbox">
-		<dialog class="media-lightbox__dialog">
-			<tp-lightbox-close class="media-lightbox__close">
-				<button><x-svg name="cross" /></button>
-			</tp-lightbox-close>
-
-			<tp-lightbox-content class="media-lightbox__content"></tp-lightbox-content>
-
-			<tp-lightbox-previous class="media-lightbox__prev">
-				<button class="media-lightbox__prev-button"><x-svg name="chevron-left" /></button>
-			</tp-lightbox-previous>
-
-			<tp-lightbox-next class="media-lightbox__next">
-				<button class="media-lightbox__next-button"><x-svg name="chevron-left" /></button>
-			</tp-lightbox-next>
-
-			<tp-lightbox-count class="media-lightbox__count" format="$current/$total"></tp-lightbox-count>
-		</dialog>
-	</tp-lightbox>
-</x-once>
