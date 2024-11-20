@@ -202,6 +202,17 @@
 		margin-top: var(--spacing-6);
 	}
 
+	&__slider--grid,
+	&__slider--collage {
+
+		#{$self}__nav {
+
+			@media screen and (min-width: grid-size(xl)) {
+				display: none;
+			}
+		}
+	}
+
 	&__arrow-button {
 		background-color: var(--color-black);
 		width: 27px;
