@@ -21,7 +21,6 @@ function setup(): void {
 	add_filter( 'wp_resource_hints', __NAMESPACE__ . '\\resource_hints', 10, 2 );
 	add_filter( 'wp_kses_allowed_html', __NAMESPACE__ . '\\kses_custom_allowed_html', 10, 2 );
 	add_filter( 'template_include', __NAMESPACE__ . '\\remove_default_title_tag' );
-	add_filter( 'render_block', __NAMESPACE__ . '\\render_instagram_embed', 10, 2 );
 }
 
 /**
@@ -924,47 +923,4 @@ function remove_default_title_tag( string $template = '' ): string {
 
 	// Return the template as-it-is.
 	return $template;
-}
-
-/**
- * Render Instagram embeds with custom markup.
- *
- * @param string $block_content The block content.
- * @param mixed  $block The block data.
- *
- * @return string
- */
-function render_instagram_embed( string $block_content = '', mixed $block = [] ): string {
-	// Check if the block is an embed block and for Instagram specifically.
-	if (
-		is_array( $block ) &&
-		! empty( $block['blockName'] ) && 'core/embed' === $block['blockName']
-		&& ! empty( $block['attrs']['url'] ) && str_contains( $block['attrs']['url'], 'www.instagram.com/' )
-	) {
-		// Extract the URL being embedded.
-		$url = esc_url( $block['attrs']['url'] );
-
-		// Get instagram post ID from URL.
-		$parsed_url = wp_parse_url( $url, PHP_URL_PATH );
-
-		// Check if the URL is valid and contains the Instagram post ID.
-		if ( empty( $parsed_url ) || ! str_contains( strval( $parsed_url ), '/p/' ) ) {
-			return $block_content;
-		}
-
-		// Remove last slash and break the URL into parts.
-		$url_parts = explode( '/', rtrim( strval( $parsed_url ), '/' ) );
-
-		// Get the last part of the URL.
-		$instagram_post_id = end( $url_parts );
-
-		// Check if the post ID is valid.
-		if ( $instagram_post_id ) {
-			// Customize the embed rendering.
-			return quark_get_component( 'instagram-embed', [ 'instagram_post_id' => $instagram_post_id ] );
-		}
-	}
-
-	// Return the block content.
-	return $block_content;
 }
