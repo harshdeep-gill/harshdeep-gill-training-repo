@@ -10,7 +10,7 @@
 	quark_component_enqueue_assets( 'product-options-cards' );
 	quark_component_enqueue_assets( 'dialog' );
 	quark_component_enqueue_assets( 'tooltip' );
-	quark_component_enqueue_assets( 'popover-polyfill' );
+	quark_enqueue_script( 'popover-polyfill' );
 @endphp
 
 <quark-expedition-search class="expedition-search" loading="false">
