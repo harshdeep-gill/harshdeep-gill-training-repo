@@ -100,11 +100,12 @@
 												// Sort options based on length.
 												uasort( $card['paid_adventure_options'], fn( $a, $b ) => strlen( $a ) <=> strlen( $b ) );
 											@endphp
-											@foreach( $card['paid_adventure_options'] as $option )
-												<x-expedition-cards.adventure-option title="{{ $option }}"/>
-											@endforeach
 
-											<x-expedition-cards.adventure-options-tooltip>
+											@if( ! empty( $card['paid_adventure_options'] ) )
+												<x-expedition-cards.adventure-option title="{{ array_values( $card['paid_adventure_options'] )[0] }}"/>
+											@endif
+
+											<x-expedition-cards.adventure-options-tooltip :count="count( $card['paid_adventure_options'] ) - 1">
 												<ul>
 													@foreach( $card['paid_adventure_options'] as $option )
 														<li>{{ $option }}</li>
