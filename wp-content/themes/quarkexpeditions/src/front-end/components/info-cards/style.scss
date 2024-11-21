@@ -43,6 +43,13 @@
 
 		&[total="3"] {
 
+			#{$self}__slides {
+
+				@media screen and (min-width: grid-size(xl)) {
+					left: initial !important;
+				}
+			}
+
 			#{$self}__nav {
 
 				@media screen and (min-width: grid-size(xl)) {
@@ -193,6 +200,17 @@
 		display: flex;
 		column-gap: var(--spacing-5);
 		margin-top: var(--spacing-6);
+	}
+
+	&__slider--grid,
+	&__slider--collage {
+
+		#{$self}__nav {
+
+			@media screen and (min-width: grid-size(xl)) {
+				display: none;
+			}
+		}
 	}
 
 	&__arrow-button {
