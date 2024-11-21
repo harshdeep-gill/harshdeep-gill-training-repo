@@ -6,7 +6,6 @@
 
 .bento-collage {
 	$self: &;
-	overflow-x: hidden;
 
 	&__image-wrap {
 		margin-bottom: 0;
@@ -23,70 +22,27 @@
 		@include transition(transform);
 	}
 
-	&__slider {
-		overflow-x: visible;
-		margin-inline: var(--grid-col-gutter);
-
-		#{$self}--has-overflow & {
-			width: 100vw;
-		}
-
-		&:has(div.thumbnail-cards__nav) {
-			#{$self}__track {
-				margin-bottom: 0;
-			}
-		}
-
-		@media screen and (min-width: 1120px) {
-			margin-inline: 0;
-		}
-	}
-
 	&__track {
-		padding-left: var(--spacing-5);
-		margin-left: calc(-1 * var(--spacing-5));
 		scrollbar-width: none; /* Firefox */
+		margin-inline: calc(-50vw + 50%);
+		max-width: 100vw;
+		padding-inline: var(--grid-col-gutter);
 
 		&::-webkit-scrollbar {
 			display: none;
 		}
-
-		#{$self}--has-overflow & {
-
-			@media screen and (min-width: grid-size(sm)) {
-				overflow-x: visible;
-			}
-		}
 	}
 
 	&__slides {
-		gap: var(--spacing-5);
-		display: grid;
-		grid-auto-flow: column;
-		grid-auto-columns: max-content;
-	}
+		gap: var(--spacing-6);
+		max-width: var(--wrap-width);
+		margin-inline: auto;
 
-	&:not(:has(&__nav[data-mobile-carousel])) {
-
-		@media screen and (max-width: calc(grid-size(lg) - 1px)) {
-
-			#{$self}__nav {
-				display: none;
-			}
-
-			#{$self}__slides {
-				grid-auto-flow: row;
-				grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-				gap: var(--spacing-5);
-			}
-
-			#{$self}__slider {
-				width: auto;
-			}
-
-			#{$self}__card {
-				max-width: unset;
-			}
+		@media screen and (min-width: grid-size(md)) {
+			left: initial !important;
+			display: grid;
+			grid-template-columns: repeat(6, 1fr);
+			grid-template-rows: repeat(6, 1fr);
 		}
 	}
 
@@ -94,14 +50,9 @@
 		display: flex;
 		column-gap: var(--spacing-5);
 		margin-top: var(--spacing-6);
-		margin-left: calc(-1 * var(--spacing-1));
 
-		@media screen and (min-width: grid-size(lg)) {
+		@media screen and (min-width: grid-size(md)) {
 			display: none;
-
-			&[data-layout="carousel"] {
-				display: flex;
-			}
 		}
 	}
 
@@ -130,13 +81,15 @@
 	}
 
 	&__card {
-		max-width: calc(100vw - 2 * var(--grid-col-gutter));
+		border-radius: var(--border-radius-large);
 		overflow: hidden;
 		position: relative;
-		border-radius: var(--border-radius-large);
+		grid-row: span 3 / span 3;
+		max-height: 520px;
+		height: 100%;
 
-		@media screen and (min-width: grid-size(sm)) {
-			max-width: 352px;
+		@media screen and (min-width: grid-size(md)) {
+			grid-column: span 3 / span 3;
 		}
 
 		&:hover {
@@ -146,6 +99,38 @@
 				transform: scale(1.03);
 			}
 		}
+
+		&--small {
+
+			@media screen and (min-width: calc( grid-size(lg) + 1px )) {
+				grid-column: span 2 / span 2;
+			}
+		}
+
+		&--medium {
+
+			@media screen and (min-width: calc( grid-size(lg) + 1px )) {
+				grid-column: span 3 / span 3;
+			}
+		}
+
+		&--large {
+
+			@media screen and (min-width: calc( grid-size(lg) + 1px )) {
+				grid-column: span 4 / span 4;
+			}
+		}
+
+		&--full {
+
+			@media screen and (min-width: calc( grid-size(lg) + 1px )) {
+				grid-column: span 6 / span 6;
+			}
+		}
+	}
+
+	&__maybe-link {
+		height: 100%;
 	}
 
 	&__card-title {

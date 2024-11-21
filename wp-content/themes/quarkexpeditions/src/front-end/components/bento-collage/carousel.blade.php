@@ -1,8 +1,3 @@
-@props( [
-	'layout'          => 'grid',
-	'mobile_carousel' => true,
-] )
-
 @php
 	if ( empty( $slot ) ) {
 		return;
@@ -13,11 +8,7 @@
 @endphp
 
 <div class="bento-collage__carousel">
-	<tp-slider
-		class="bento-collage__slider"
-		swipe="yes"
-		infinite="yes"
-	>
+	<tp-slider class="bento-collage__slider" swipe="yes" infinite="yes">
 		<tp-slider-track class="bento-collage__track">
 			<tp-slider-slides class="bento-collage__slides">
 				{!! $slot !!}
@@ -25,16 +16,7 @@
 		</tp-slider-track>
 
 		@if ( $slide_count > 1 )
-			<div
-				class="bento-collage__nav"
-				@if ( ! empty( $layout ) && in_array( $layout, [ 'grid', 'collage', 'carousel' ], true ) )
-					data-layout="{{ $layout }}"
-				@endif
-
-				@if ( ! empty( $mobile_carousel ) )
-					data-mobile-carousel="{{ $mobile_carousel }}"
-				@endif
-			>
+			<div class="bento-collage__nav">
 				<tp-slider-arrow direction="previous">
 					<button class="bento-collage__arrow-button bento-collage__arrow-button--left">
 						<x-svg name="chevron-left" />
