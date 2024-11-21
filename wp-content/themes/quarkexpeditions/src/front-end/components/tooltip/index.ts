@@ -80,7 +80,9 @@ export class Tooltip extends HTMLElement {
 		}
 
 		// Hide the popover
-		this.tooltipPopoverElement?.hidePopover();
+		if ( this.tooltipPopoverElement?.matches( ':popover-open' ) ) {
+			this.tooltipPopoverElement?.hidePopover();
+		}
 	}
 
 	/**
