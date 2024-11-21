@@ -315,7 +315,7 @@
 												</x-product-options-cards.discounts>
 											@endif
 
-											<p class="product-options-cards__help-text">{{ __( 'Not ready to book?', 'qrk' ) }} <a href="#">{{ __( 'Request a quote', 'qrk' ) }}</a></p>
+											<p class="product-options-cards__help-text">{{ __( 'Not ready to book?', 'qrk' ) }} <a href="{!! esc_url( $card['request_a_quote_url'] ) !!}">{{ __( 'Request a quote', 'qrk' ) }}</a></p>
 										</x-dialog.body>
 
 										@if ( ! empty( $cabin['occupancies'] ) && is_array( $cabin['occupancies'] ) && is_array( $cabin['occupancies'][0] ) && ! empty( $cabin['occupancies'][0]['checkout_url'] ) )
