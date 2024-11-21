@@ -7,6 +7,7 @@ import {
 	Placeholder,
 	SelectControl,
 	RangeControl,
+	ToggleControl,
 } from '@wordpress/components';
 import {
 	InspectorControls,
@@ -127,6 +128,12 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 								max={ 100 }
 							/>
 					}
+					<ToggleControl
+						label={ __( 'Show Departure Date', 'qrk' ) }
+						help={ __( 'Show departure date with days for the expeditions', 'qrk' ) }
+						checked={ attributes.showDepartureDate }
+						onChange={ ( showDepartureDate ) => setAttributes( { showDepartureDate } ) }
+					/>
 				</PanelBody>
 			</InspectorControls>
 			<Section className={ classnames( className ) }>

@@ -71,7 +71,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 		static function ( $inner_block ) use ( &$component_attributes ) {
 			// Check if inner block is a CTA Banner Overline.
 			if ( 'quark/cta-banner-overline' === $inner_block['blockName'] ) {
-				$component_attributes['overline'] = $inner_block['attrs']['text'];
+				$component_attributes['overline'] = ! empty( $inner_block['attrs']['text'] ) ? $inner_block['attrs']['text'] : '';
 
 				// Return false to remove the block.
 				return false;

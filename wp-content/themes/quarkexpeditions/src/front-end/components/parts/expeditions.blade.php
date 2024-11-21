@@ -8,17 +8,26 @@
 	}
 @endphp
 
-<x-product-cards carousel_overflow="true">
+<x-product-cards>
 	@foreach ( $cards as $card )
 		<x-product-cards.card>
 			@if ( ! empty( $card['image_id'] ) )
-				<x-product-cards.image :image_id="$card['image_id']" />
+				<x-product-cards.image :image_id="$card['image_id']" url="{{ $card['url'] }}" />
 			@endif
-			@if ( ! empty(  $card['itinerary_days'] ) )
+
+			@if ( ! empty( $card['departure_date'] ) )
 				@php
-					$duration = sprintf( __( '%d day itinerary', 'qrk' ), $card['itinerary_days'] )
+					$card['departure_date']  = sprintf( __( 'Departs %s', 'qrk' ), $card['departure_date'] );
+					$card['departure_date'] .= ! empty( $card['itinerary_days'] ) ? sprintf( __( ' | %s Days', 'qrk' ), $card['itinerary_days'] ) : '';
 				@endphp
-				<x-product-cards.itinerary :duration="$duration" />
+				<x-product-cards.itinerary :duration="$card['departure_date']" />
+			@else
+				@if ( ! empty(  $card['itinerary_days'] ) )
+					@php
+						$duration = sprintf( __( '%d day itinerary', 'qrk' ), $card['itinerary_days'] )
+					@endphp
+					<x-product-cards.itinerary :duration="$duration" />
+				@endif
 			@endif
 
 			@if ( ! empty( $card['title'] ) )

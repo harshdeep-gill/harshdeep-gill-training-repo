@@ -15,10 +15,6 @@
 		$classes[] = $class;
 	}
 
-	if ( ! empty( $full_size ) ) {
-		$classes[] = 'full-width';
-	}
-
 	$image_args = [
 		'size' => [
 			'width'  => 400,
@@ -31,14 +27,19 @@
 	];
 
 	if ( ! empty( $full_size ) ) {
-		$image_args['size'] = [
-			'width'  => 928,
-			'height' => 480,
-		];
-
-		$image_args['responsive'] = [
-			'sizes'  => [ '(min-width: 1024px) 928px', '(min-width: 768px) 660px', '520px' ],
-			'widths' => [ 520, 660, 1056 ],
+		$image_args = [
+			'size' => [
+				'width'  => 1200,
+				'height' => 600,
+			],
+			'responsive' => [
+				'sizes'  => [ '(min-width: 992px) 1200px', '100vw' ],
+				'widths' => [ 360, 400, 600, 800, 1024, 1200 ],
+			],
+			'focal_point' => [],
+			'transform' => [
+				'crop' => 'fit',
+			],
 		];
 	}
 

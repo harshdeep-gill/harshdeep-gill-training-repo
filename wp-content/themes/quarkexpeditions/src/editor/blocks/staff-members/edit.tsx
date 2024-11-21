@@ -5,7 +5,7 @@ import { __ } from '@wordpress/i18n';
 import {
 	PanelBody,
 	SelectControl,
-	RangeControl,
+	TextControl,
 	ToggleControl,
 	Placeholder,
 } from '@wordpress/components';
@@ -101,15 +101,25 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 								onSelect={ ( departments: Array<{ term_id: number }> ) => setAttributes( { departmentIds: departments.map( ( department ) => department.term_id ) } ) }
 								buttonLabel={ __( 'Select Department', 'qrk' ) }
 							/>
-							<RangeControl
+							<TextControl
 								label={ __( 'Total Posts', 'qrk' ) }
 								help={ __( 'Select the total number of members to be displayed', 'qrk' ) }
 								value={ attributes.totalPosts }
 								onChange={ ( totalPosts ) => setAttributes( { totalPosts } ) }
-								min={ 1 }
-								max={ 20 }
+								type={ 'number' }
 							/>
 						</>
+					}
+					{ 'manual' !== attributes.selection &&
+						<ToggleControl
+							label={ __( 'Has Pagination?', 'qrk' ) }
+							checked={ attributes.hasPagination }
+							help={ __( 'Show pagination for the staff members on frontend.', 'qrk' ) }
+							onChange={ ( hasPagination: boolean ) => {
+								// Set hasPagination.
+								setAttributes( { hasPagination } );
+							} }
+						/>
 					}
 					<ToggleControl
 						label={ __( 'Is Carousel?', 'qrk' ) }

@@ -45,10 +45,12 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 
 	// Initialize departures URL.
 	$departures_url = '';
+	$target         = '_self';
 
 	// Check for block attributes.
 	if ( is_array( $attributes['departuresUrl'] ) && isset( $attributes['departuresUrl']['url'] ) ) {
 		$departures_url = $attributes['departuresUrl']['url'];
+		$target         = ! empty( $attributes['departuresUrl']['newWindow'] ) ? '_blank' : '';
 	}
 
 	// Current post ID.
@@ -77,6 +79,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 		$expedition_details_card_data,
 		[
 			'title'            => '',
+			'sub_title'        => '',
 			'region'           => '',
 			'duration'         => '',
 			'from_price'       => '',
@@ -87,6 +90,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 			'from_date'        => '',
 			'to_date'          => '',
 			'departures_url'   => $departures_url,
+			'target'           => $target,
 		]
 	);
 

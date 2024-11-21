@@ -9,7 +9,16 @@
 		"breadcrumbs"
 	],
 	"textdomain": "qrk",
-	"attributes": {},
+	"attributes": {
+		"textColor": {
+			"type": "string",
+			"default": "black",
+			"enum": [
+				"white",
+				"black"
+			]
+		}
+  },
 	"supports": {
 		"alignWide": false,
 		"anchor": true,

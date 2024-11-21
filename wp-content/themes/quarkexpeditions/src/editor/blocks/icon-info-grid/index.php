@@ -44,7 +44,8 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 
 	// Build component attributes.
 	$component_attributes = [
-		'slot' => '',
+		'slot'             => '',
+		'desktop_carousel' => $attributes['desktopCarousel'],
 	];
 
 	// Render inner blocks.
@@ -59,13 +60,16 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 			'slot' => '',
 		];
 
-		// Icon.
-		$icon_info_grid_item_component_attributes['slot'] .= quark_get_component(
-			COMPONENT . '.icon',
-			[
-				'icon' => $icon_info_grid_item_block->attributes['icon'],
-			]
-		);
+		// If has Icon is false remove Icon.
+		if ( $icon_info_grid_item_block->attributes['hasIcon'] ) {
+			// Icon.
+			$icon_info_grid_item_component_attributes['slot'] .= quark_get_component(
+				COMPONENT . '.icon',
+				[
+					'icon' => $icon_info_grid_item_block->attributes['icon'],
+				]
+			);
+		}
 
 		// Render inner blocks.
 		foreach ( $icon_info_grid_item_block->inner_blocks as $inner_block ) {

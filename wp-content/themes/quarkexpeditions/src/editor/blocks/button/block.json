@@ -20,7 +20,8 @@
       "default": "yellow",
       "enum": [
         "yellow",
-        "black"
+        "black",
+        "white"
       ]
     },
     "btnText": {
@@ -41,7 +42,7 @@
     },
     "isSizeBig": {
       "type": "boolean",
-      "default": false
+      "default": true
     },
     "appearance": {
       "type": "string",

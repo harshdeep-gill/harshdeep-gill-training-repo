@@ -10,6 +10,7 @@ import {
 import {
 	PanelBody,
 	SelectControl,
+	ToggleControl,
 } from '@wordpress/components';
 
 /**
@@ -42,24 +43,50 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 		template: [ [ 'core/heading', { level: 4 } ], [ 'core/paragraph' ] ],
 	} );
 
+	// Prepare icon.
+	let selectedIcon: any = '';
+
+	// Set icon.
+	if ( attributes.icon && '' !== attributes.icon ) {
+		// Kebab-case to camel-case.
+		const iconName: string = attributes.icon.replace( /-([a-z])/g, ( _: any, group:string ) => group.toUpperCase() );
+		selectedIcon = icons[ iconName ] ?? '';
+	}
+
 	// Return the block's markup.
 	return (
 		<div { ...blockProps } >
 			<InspectorControls>
 				<PanelBody title={ __( 'Icon Info Grid Item Options', 'qrk' ) }>
-					<SelectControl
-						label={ __( 'Icon', 'qrk' ) }
-						value={ attributes.icon }
-						options={ [
-							{ label: 'Star', value: 'star' },
-						] }
-						onChange={ ( value ) => setAttributes( { icon: value } ) }
+					<ToggleControl
+						label={ __( 'Has Icon?', 'qrk' ) }
+						checked={ attributes.hasIcon }
+						onChange={ ( hasIcon: boolean ) => setAttributes( { hasIcon } ) }
+						help={ __( 'Does the card require Icon.', 'qrk' ) }
 					/>
+					{ attributes.hasIcon &&
+						<SelectControl
+							label={ __( 'Icon', 'qrk' ) }
+							value={ attributes.icon }
+							options={ [
+								{ label: 'Star', value: 'star' },
+								{ label: 'Ship', value: 'ship' },
+								{ label: 'Sun', value: 'sun' },
+								{ label: 'Compass', value: 'compass' },
+								{ label: 'Aid Icon', value: 'aid-icon' },
+								{ label: 'Departure Notification', value: 'departure-notification' },
+								{ label: 'Training', value: 'training' },
+							] }
+							onChange={ ( value ) => setAttributes( { icon: value } ) }
+						/>
+					}
 				</PanelBody>
 			</InspectorControls>
-			<div className={ 'icon-info-grid__icon' }>
-				{ icons?.[ attributes.icon ] }
-			</div>
+			{	attributes.hasIcon &&
+				<div className={ 'icon-info-grid__icon' }>
+					{ selectedIcon }
+				</div>
+			}
 			<div { ...innerBlockProps } />
 		</div>
 	);

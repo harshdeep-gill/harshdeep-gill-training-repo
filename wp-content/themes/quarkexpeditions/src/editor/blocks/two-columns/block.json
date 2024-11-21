@@ -11,6 +11,10 @@
 		"columns"
 	],
 	"attributes": {
+		"anchor": {
+			"type": "string",
+			"default": ""
+		},
 		"hasBorder": {
 			"type": "boolean",
 			"default": true

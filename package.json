@@ -45,6 +45,7 @@
     "copy-webpack-plugin": "^12.0.2",
     "css-loader": "^6.10.0",
     "fast-glob": "^3.3.2",
+    "fork-ts-checker-webpack-plugin": "^9.0.2",
     "mini-css-extract-plugin": "^2.8.1",
     "postcss": "^8.4.38",
     "postcss-loader": "^8.1.1",
@@ -61,7 +62,8 @@
     "zustand": "^4.5.4"
   },
   "dependencies": {
-    "@travelopia/web-components": "^0.6.9",
+    "@oddbird/popover-polyfill": "^0.4.4",
+    "@travelopia/web-components": "^0.7.1",
     "normalize.css": "^8.0.1",
     "query-string": "^9.1.0"
   }

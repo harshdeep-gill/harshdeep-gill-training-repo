@@ -1,13 +1,14 @@
 @props( [
 	'text' => '',
+	'url'  => '',
 ] )
 
 @php
-	if ( empty( $text ) ) {
+	if ( empty( $text ) || empty( $url ) ) {
 		return;
 	}
 @endphp
 
-<p class="dates-rates__expedition-title">
+<a class="dates-rates__expedition-title" href="{{ $url }}">
 	<x-escape :content="$text" />
-</p>
+</a>

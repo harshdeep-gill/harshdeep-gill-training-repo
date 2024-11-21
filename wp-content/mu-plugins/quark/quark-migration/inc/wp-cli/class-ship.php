@@ -16,10 +16,10 @@ use WP_CLI\ExitException;
 
 use function Quark\Migration\Drupal\get_database;
 use function Quark\Migration\Drupal\get_term_by_id;
-use function Quark\Migration\Drupal\prepare_content;
 use function Quark\Migration\Drupal\prepare_for_migration;
 use function Quark\Migration\Drupal\get_post_by_id;
 use function Quark\Migration\Drupal\download_file_by_mid;
+use function Quark\Migration\Drupal\prepare_seo_data;
 use function Quark\Migration\WordPress\qrk_sanitize_attribute;
 use function WP_CLI\Utils\make_progress_bar;
 
@@ -160,7 +160,6 @@ class Ship {
 		$created_at   = gmdate( 'Y-m-d H:i:s' );
 		$modified_at  = gmdate( 'Y-m-d H:i:s' );
 		$status       = 'draft';
-		$post_content = '';
 		$post_excerpt = '';
 		$post_name    = '';
 
@@ -204,6 +203,101 @@ class Ship {
 			$post_name = end( $parts );
 		}
 
+		// Default post content for ship.
+		$post_content = '<!-- wp:quark/hero {"immersive":"bottom","contentOverlap":false, "syncPostThumbnail":true} -->
+			<!-- wp:quark/breadcrumbs /-->
+
+			<!-- wp:quark/hero-content -->
+			<!-- wp:quark/hero-content-left -->
+			<!-- wp:quark/hero-title {"title":"Expedition Ships","syncPostTitle":true } /-->
+			<!-- /wp:quark/hero-content-left -->
+			<!-- /wp:quark/hero-content -->
+			<!-- /wp:quark/hero -->
+
+			<!-- wp:quark/secondary-navigation -->
+			<!-- wp:quark/secondary-navigation-menu -->
+			<!-- wp:quark/secondary-navigation-item {"title":"Overview","url":{"url":"overview","text":"","newWindow":false}} /-->
+
+			<!-- wp:quark/secondary-navigation-item {"title":"Features & Amenities","url":{"url":"features-and-amenities","text":"","newWindow":false}} /-->
+
+			<!-- wp:quark/secondary-navigation-item {"title":"Deck Plans & Cabins","url":{"url":"deck-plans-and-cabins","text":"","newWindow":false}} /-->
+			<!-- /wp:quark/secondary-navigation-menu -->
+
+			<!-- wp:quark/secondary-navigation-cta-buttons -->
+			<!-- wp:quark/button {"backgroundColor":"black","btnText":"Download Brochure"} /-->
+
+			<!-- wp:quark/button {"url":{"url":"#upcoming-departures","text":"","newWindow":false},"btnText":"Upcoming Departures"} /-->
+			<!-- /wp:quark/secondary-navigation-cta-buttons -->
+			<!-- /wp:quark/secondary-navigation -->
+
+			<!-- wp:quark/section {"anchor":"overview","title":"Overview","titleAlignment":"left","headingLevel":2} -->
+			<!-- wp:paragraph -->
+			<p></p>
+			<!-- /wp:paragraph -->
+
+			<!-- wp:quark/ship-specifications /-->
+
+			<!-- wp:quark/collage -->
+			<!-- wp:quark/collage-media-item /-->
+
+			<!-- wp:quark/collage-media-item /-->
+
+			<!-- wp:quark/collage-media-item /-->
+
+			<!-- wp:quark/collage-media-item /-->
+			<!-- /wp:quark/collage -->
+			<!-- /wp:quark/section -->
+
+			<!-- wp:quark/section {"title":"Features of the Vessel","titleAlignment":"left"} -->
+			<!-- wp:quark/ship-vessel-features -->
+			<!-- wp:quark/ship-vessel-features-card /-->
+
+			<!-- wp:quark/ship-vessel-features-card /-->
+
+			<!-- wp:quark/ship-vessel-features-card /-->
+			<!-- /wp:quark/ship-vessel-features -->
+			<!-- /wp:quark/section -->
+
+			<!-- wp:quark/section {"anchor":"features-and-amenities","title":"Features & Amenities","titleAlignment":"left","headingLevel":2} -->
+			<!-- wp:quark/ship-features-amenities -->
+			<!-- wp:quark/ship-features-amenities-card /-->
+
+			<!-- wp:quark/ship-features-amenities-card /-->
+
+			<!-- wp:quark/ship-features-amenities-card /-->
+			<!-- /wp:quark/ship-features-amenities -->
+			<!-- /wp:quark/section -->
+
+			<!-- wp:quark/section {"titleAlignment":"left","hasDescription":true} -->
+			<!-- wp:quark/media-carousel /-->
+			<!-- /wp:quark/section -->
+
+			<!-- wp:quark/section {"titleAlignment":"left"} -->
+			<!-- wp:quark/media-description-cards -->
+			<!-- wp:quark/media-description-card /-->
+
+			<!-- wp:quark/media-description-card /-->
+
+			<!-- wp:quark/media-description-card /-->
+			<!-- /wp:quark/media-description-cards -->
+			<!-- /wp:quark/section -->
+
+			<!-- wp:quark/section {"titleAlignment":"left"} -->
+			<!-- wp:quark/ship-related-adventure-options /-->
+			<!-- /wp:quark/section -->
+
+			<!-- wp:quark/section {"anchor":"deck-plans-and-cabins","title":"Deck Plans & Cabins","titleAlignment":"left","headingLevel":2} -->
+			<!-- wp:quark/ship-decks /-->
+			<!-- /wp:quark/section -->
+
+			<!-- wp:quark/section {"title":"Comparison of All Cabins","titleAlignment":"left"} -->
+			<!-- wp:quark/ship-cabin-categories /-->
+			<!-- /wp:quark/section -->
+
+			<!-- wp:quark/section {"anchor":"upcoming-departures","title":"Upcoming Departures","titleAlignment":"left","headingLevel":2} -->
+			<!-- wp:quark/book-departures-ships /-->
+			<!-- /wp:quark/section -->';
+
 		// Prepare post data.
 		$data = [
 			'post_type'         => POST_TYPE,
@@ -214,15 +308,38 @@ class Ship {
 			'post_modified'     => $modified_at,
 			'post_modified_gmt' => $modified_at,
 			'post_name'         => $post_name,
-			'post_content'      => '',
+			'post_content'      => $post_content,
 			'post_excerpt'      => $post_excerpt,
 			'post_status'       => $status,
 			'comment_status'    => 'closed',
 			'ping_status'       => 'closed',
-			'meta_input'        => [
-				'drupal_id' => $nid,
-			],
+			'meta_input'        => [],
 		];
+
+		// SEO meta data.
+		if ( ! empty( $item['metatags'] ) && is_string( $item['metatags'] ) ) {
+			$seo_data = prepare_seo_data( json_decode( $item['metatags'], true ) );
+
+			// Merge seo data if not empty.
+			if ( ! empty( $seo_data ) ) {
+				$data['meta_input'] = array_merge( $seo_data, $data['meta_input'] );
+			}
+		}
+
+		// Set fallback as excerpt if meta description is empty.
+		if ( empty( $data['meta_input']['_yoast_wpseo_metadesc'] ) ) {
+			$data['meta_input']['_yoast_wpseo_metadesc'] = $data['post_excerpt'];
+		}
+
+		// Get featured image.
+		if ( ! empty( $item['hero_banner_id'] ) ) {
+			$wp_thumbnail_id = $this->get_featured_image( absint( $item['hero_banner_id'] ) );
+
+			// Set featured image.
+			if ( ! empty( $wp_thumbnail_id ) ) {
+				$data['meta_input']['_thumbnail_id'] = $wp_thumbnail_id;
+			}
+		}
 
 		// Set ship_category term_id.
 		if ( ! empty( $item['ship_category_term_id'] ) ) {
@@ -348,6 +465,63 @@ class Ship {
 			$data['meta_input']['related_decks'] = $related_decks;
 		}
 
+		// Set Ship Amenities - Cabin.
+		if ( ! empty( $item['amenities_cabin'] ) ) {
+			$amenities_cabin = array_map( 'strval', explode( ',,', strval( $item['amenities_cabin'] ) ) );
+			$cabin_count     = 0;
+
+			// Set amenities cabin.
+			foreach ( $amenities_cabin as $index => $amenity ) {
+				$cabin_meta_key                        = sprintf( 'cabin_%d_item', $index );
+				$data['meta_input'][ $cabin_meta_key ] = $amenity;
+
+				// Set - cabin count.
+				++$cabin_count;
+			}
+
+			// Set - set count.
+			$data['meta_input']['cabin'] = $cabin_count;
+		}
+
+		// Set Ship Amenities - Aboard.
+		if ( ! empty( $item['amenities_aboard'] ) ) {
+			$amenities_aboard = array_map( 'strval', explode( ',,', strval( $item['amenities_aboard'] ) ) );
+			$aboard_count     = 0;
+
+			// Set amenities aboard.
+			foreach ( $amenities_aboard as $index => $amenity ) {
+				$aboard_meta_key                        = sprintf( 'aboard_%d_item', $index );
+				$data['meta_input'][ $aboard_meta_key ] = $amenity;
+
+				// Set - aboard count.
+				++$aboard_count;
+			}
+
+			// Set - set count.
+			$data['meta_input']['aboard'] = $aboard_count;
+		}
+
+		// Set Ship Amenities - Activities.
+		if ( ! empty( $item['amenities_activities'] ) ) {
+			$amenities_activities = array_map( 'strval', explode( ',,', strval( $item['amenities_activities'] ) ) );
+			$activities_count     = 0;
+
+			// Set amenities activities.
+			foreach ( $amenities_activities as $index => $amenity ) {
+				$activities_meta_key                        = sprintf( 'activities_%d_item', $index );
+				$data['meta_input'][ $activities_meta_key ] = $amenity;
+
+				// Set - activities count.
+				++$activities_count;
+			}
+
+			// Set - set count.
+			$data['meta_input']['activities'] = $activities_count;
+		}
+
+		// Set meta - drupal_id.
+		$data['meta_input']['drupal_id'] = $nid;
+
 		// Return normalized data.
 		return $data;
 	}
@@ -395,7 +569,11 @@ class Ship {
 			field_year_built.field_year_built_value AS year_built,
 			field_zodiacs.field_zodiacs_value AS zodiacs,
 			field_deck_plan.field_deck_plan_target_id AS deck_plan,
-			(SELECT GROUP_CONCAT( field_ship_decks_target_id ORDER BY delta SEPARATOR ', ' ) FROM node__field_ship_decks AS field_ship_decks WHERE node.nid = field_ship_decks.entity_id AND field_ship_decks.langcode = node.langcode) AS related_decks
+			field_hero_banner.field_hero_banner_target_id AS hero_banner_id,
+			(SELECT GROUP_CONCAT( field_ship_decks_target_id ORDER BY delta SEPARATOR ', ' ) FROM node__field_ship_decks AS field_ship_decks WHERE node.nid = field_ship_decks.entity_id AND field_ship_decks.langcode = node.langcode) AS related_decks,
+			(SELECT GROUP_CONCAT( field_amenities_cabin_value ORDER BY delta SEPARATOR ',, ' ) FROM node__field_amenities_cabin AS field_amenities_cabin WHERE node.nid = field_amenities_cabin.entity_id AND field_amenities_cabin.langcode = node.langcode) AS amenities_cabin,
+			(SELECT GROUP_CONCAT( field_amenities_aboard_value ORDER BY delta SEPARATOR ',, ' ) FROM node__field_amenities_aboard AS field_amenities_aboard WHERE node.nid = field_amenities_aboard.entity_id AND field_amenities_aboard.langcode = node.langcode) AS amenities_aboard,
+			(SELECT GROUP_CONCAT( field_amenities_activities_value ORDER BY delta SEPARATOR ',, ' ) FROM node__field_amenities_activities AS field_amenities_activities WHERE node.nid = field_amenities_activities.entity_id AND field_amenities_activities.langcode = node.langcode) AS amenities_activities
 		FROM
 			node
 				LEFT JOIN node_field_data AS field_data ON node.nid = field_data.nid AND node.langcode = field_data.langcode
@@ -422,6 +600,7 @@ class Ship {
 				LEFT JOIN paragraph__field_year_built AS field_year_built ON field_ship_specifications.field_ship_specifications_target_id = field_year_built.entity_id
 				LEFT JOIN paragraph__field_zodiacs AS field_zodiacs ON field_ship_specifications.field_ship_specifications_target_id = field_zodiacs.entity_id
 				LEFT JOIN node__field_deck_plan AS field_deck_plan ON node.nid = field_deck_plan.entity_id AND node.langcode = field_deck_plan.langcode
+				LEFT JOIN node__field_hero_banner AS field_hero_banner ON node.nid = field_hero_banner.entity_id AND node.langcode = field_hero_banner.langcode
 		WHERE
 			node.type = 'ship';";
 
@@ -438,5 +617,54 @@ class Ship {
 
 		// Return data.
 		return $result;
+	}
+
+	/**
+	 * Get featured image.
+	 *
+	 * @param int $hero_id Hero block ID.
+	 *
+	 * @return int Hero block image.
+	 */
+	protected function get_featured_image( int $hero_id = 0 ): int {
+		// Bail out if empty.
+		if ( empty( $hero_id ) ) {
+			return 0;
+		}
+
+		// Get database connection.
+		$drupal_database = get_database();
+
+		// Query.
+		$query = "SELECT
+			paragraph.id,
+			field_hb_image.field_hb_image_target_id
+		FROM
+			paragraphs_item_field_data AS paragraph
+				LEFT JOIN paragraph__field_hb_image AS field_hb_image ON paragraph.id = field_hb_image.entity_id AND paragraph.langcode = field_hb_image.langcode
+		WHERE
+			paragraph.type = 'hero_banner' AND paragraph.id = %s AND paragraph.langcode = 'en'";
+
+		// Fetch data.
+		$result = $drupal_database->get_row( $drupal_database->prepare( $query, $hero_id ), ARRAY_A );
+
+		// Check if data is not array.
+		if ( ! is_array( $result ) ) {
+			WP_CLI::line( 'Unable to fetch hero_banner data!' );
+
+			// Bail out.
+			return 0;
+		}
+
+		// Set attributes.
+		$image_target_id = ! empty( $result['field_hb_image_target_id'] ) ? download_file_by_mid( absint( $result['field_hb_image_target_id'] ) ) : '';
+
+		// Check if image found.
+		if ( $image_target_id instanceof WP_Error ) {
+			return 0;
+		}
+
+		// Return hero block data.
+		return absint( $image_target_id );
 	}
 }

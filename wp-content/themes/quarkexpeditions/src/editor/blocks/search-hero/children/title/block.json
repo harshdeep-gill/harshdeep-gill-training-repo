@@ -1,0 +1,39 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Search Hero - Title",
+	"name": "quark/search-hero-title",
+	"description": "Search Hero Title text.",
+	"category": "widgets",
+	"keywords": [
+		"search",
+		"hero",
+		"title",
+		"text"
+	],
+	"usesContext": [
+		"postId",
+		"postType"
+	],
+	"textdomain": "qrk",
+	"attributes": {
+		"title": {
+			"type": "string",
+			"default": ""
+		},
+		"syncPostTitle": {
+			"type": "boolean",
+			"default": false
+		}
+	},
+	"parent": [
+		"quark/search-hero-title-container"
+	],
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

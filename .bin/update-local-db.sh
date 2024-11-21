@@ -9,8 +9,7 @@ echo 'Importing database...'
 pv $1 | mysql -uroot -proot -h 0.0.0.0 quark
 
 echo 'Replacing paths...'
-#wp search-replace www.quarkexpeditions local.quarkexpeditions --all-tables
-wp search-replace staging.quarkexpeditions local.quarkexpeditions --all-tables
+wp search-replace www.quarkexpeditions local.quarkexpeditions --all-tables
 
 echo 'Flushing cache...'
 wp cache flush

@@ -74,8 +74,9 @@
 	--spacing-8: 64px;
 	--spacing-9: 96px;
 
-	--wrap-width: 1120px;
-	--narrow-wrap-width: 865px;
+	--narrow-wrap-width: 864px;
+	--wrap-width-medium: 720px;
+	--wrap-width: var(--narrow-wrap-width);
 	--grid-section-gutter: var(--spacing-8);
 	--grid-row-gutter: var(--spacing-5);
 	--grid-col-gutter: var(--spacing-5);
@@ -111,8 +112,9 @@
 	 */
 	--header-height: 96px;
 	--wp-admin-bar-height: 0px; // stylelint-disable-line
-	--scroll-offset: 32px;
+	--scroll-offset: var(--spacing-4);
 	--lp-header-z-index: 10;
+	--header-z-index: 102;
 	--scroll-padding-top: calc(var(--header-height) + var(--wp-admin-bar-height) + var(--scroll-offset));
 
 	/**
@@ -128,6 +130,14 @@
 		--h4-font-size: 22px;
 		--h4-line-height: 30px;
 		--h5-line-height: 26px;
+
+		// Scroll Offset.
+		--scroll-offset: var(--spacing-6);
+	}
+
+	@media screen and (min-width: calc(grid-size(lg) + 1px)) {
+		// Update the wrap width.
+		--wrap-width: 1120px;
 	}
 
 	@media screen and (min-width: grid-size(xl)) {
@@ -141,9 +151,8 @@
 		--h4-line-height: 32px;
 		--h5-font-size: 20px;
 		--h5-line-height: 28px;
-	}
 
-	@media screen and (min-width: grid-size(lg)) {
+		// Grid gaps.
 		--grid-row-gutter: var(--spacing-6);
 		--grid-col-gutter: var(--spacing-6);
 		--grid-section-gutter: var(--spacing-9);

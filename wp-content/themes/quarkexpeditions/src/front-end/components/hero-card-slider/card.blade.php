@@ -1,5 +1,7 @@
 @props( [
-	'class' => '',
+	'class'  => '',
+	'url'    => '',
+	'target' => '',
 ] )
 
 @php
@@ -14,7 +16,20 @@
 	}
 @endphp
 
-
 <tp-slider-slide @class( $classes )>
+	@if ( ! empty( $url ) )
+		<a
+			href="{{ $url }}"
+			class="hero-card-slider__card-link"
+			@if ( ! empty( $target ) )
+				target="{{ $target }}"
+			@endif
+		>
+	@endif
+
 	{!! $slot !!}
+
+	@if ( ! empty( $url ) )
+		</a>
+	@endif
 </tp-slider-slide>

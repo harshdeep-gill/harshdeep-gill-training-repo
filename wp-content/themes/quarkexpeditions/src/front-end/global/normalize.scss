@@ -15,3 +15,7 @@ html.dom-content-loaded body {
 	scroll-behavior: smooth;
 	scroll-padding-top: var(--scroll-padding-top);
 }
+
+.embeddedMessagingConversationButtonWrapper {
+	z-index: 99 !important;
+}

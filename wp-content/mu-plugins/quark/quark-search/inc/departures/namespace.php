@@ -12,7 +12,6 @@ use WP_Post;
 use WP_Term;
 use Solarium\QueryType\Update\Query\Document\Document;
 
-use function Quark\Departures\get as get_departure;
 use function Quark\Departures\get_included_adventure_options;
 use function Quark\Departures\get_paid_adventure_options;
 use function Quark\Expeditions\get as get_expedition_post;
@@ -21,6 +20,7 @@ use function Quark\Localization\get_currencies;
 use function Quark\Localization\get_current_currency;
 use function Quark\Search\update_post_in_index;
 use function Quark\Softrip\Departures\get_lowest_price;
+use function Quark\Softrip\get_initiated_via;
 
 use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
@@ -55,14 +55,16 @@ function bootstrap(): void {
 	add_filter( 'solr_index_custom_fields', __NAMESPACE__ . '\\solr_index_custom_fields' );
 	add_filter( 'solr_build_document', __NAMESPACE__ . '\\filter_solr_build_document', 10, 2 );
 
-	// Bust search cache on departure update.
-	// TODO - Improve this to bust cache once per auto sync or manual sync.
-	add_action( 'save_post_' . DEPARTURE_POST_TYPE, __NAMESPACE__ . '\\bust_search_cache' );
+	/**
+	 * Hooks for re-indexing departures on update.
+	 * This is required as some expedition(destination taxonomy) and itinerary(season taxonomy) data is indexed on Solr.
+	 */
 
-	// Hooks for re-indexing departures on update.
+	// Track posts to be reindexed. Assigning lower priority so that it runs at the end.
 	add_action( 'save_post', __NAMESPACE__ . '\\track_posts_to_be_reindexed', 999, 3 );
 	add_action( SCHEDULE_REINDEX_HOOK, __NAMESPACE__ . '\\reindex_departures' );
 	add_filter( 'wp_stream_connectors', __NAMESPACE__ . '\\setup_stream_connectors' );
+	add_action( 'quark_softrip_sync_departure_updated', __NAMESPACE__ . '\\reindex_synced_departure' );
 }
 
 /**
@@ -289,7 +291,7 @@ function get_filters_from_url(): array {
  *     months: string[],
  *     durations: array<int, string[]>,
  *     ships: string[],
- *     sort: string,
+ *     sort: string[],
  *     page: int,
  *     posts_per_load: int,
  *     currency: string,
@@ -310,7 +312,7 @@ function parse_filters( array $filters = [] ): array {
 			MONTH_FILTER_KEY            => [],
 			DURATION_FILTER_KEY         => [],
 			SHIP_FILTER_KEY             => [],
-			SORT_FILTER_KEY             => 'date-now',
+			SORT_FILTER_KEY             => [ 'date-now' ],
 			PAGE_FILTER_KEY             => 1,
 			PER_PAGE_FILTER_KEY         => 10,
 			DESTINATION_FILTER_KEY      => [],
@@ -391,6 +393,13 @@ function parse_filters( array $filters = [] ): array {
 		$filters[ ITINERARY_LENGTH_FILTER_KEY ] = array_filter( array_map( 'trim', $filters[ ITINERARY_LENGTH_FILTER_KEY ] ) );
 	}
 
+	// Parse sort.
+	if ( is_string( $filters[ SORT_FILTER_KEY ] ) ) {
+		$filters[ SORT_FILTER_KEY ] = array_filter( array_map( 'trim', explode( ',', $filters[ SORT_FILTER_KEY ] ) ) );
+	} elseif ( is_array( $filters[ SORT_FILTER_KEY ] ) ) {
+		$filters[ SORT_FILTER_KEY ] = array_filter( array_map( 'trim', $filters[ SORT_FILTER_KEY ] ) );
+	}
+
 	// Return parsed filters.
 	return [
 		SEASON_FILTER_KEY           => (array) $filters[ SEASON_FILTER_KEY ],
@@ -400,7 +409,7 @@ function parse_filters( array $filters = [] ): array {
 		DURATION_FILTER_KEY         => (array) $filters[ DURATION_FILTER_KEY ],
 		SHIP_FILTER_KEY             => (array) $filters[ SHIP_FILTER_KEY ],
 		PAGE_FILTER_KEY             => absint( $filters[ PAGE_FILTER_KEY ] ),
-		SORT_FILTER_KEY             => $filters[ SORT_FILTER_KEY ],
+		SORT_FILTER_KEY             => (array) $filters[ SORT_FILTER_KEY ],
 		PER_PAGE_FILTER_KEY         => absint( $filters[ PER_PAGE_FILTER_KEY ] ),
 		CURRENCY_FILTER_KEY         => $filters[ CURRENCY_FILTER_KEY ],
 		DESTINATION_FILTER_KEY      => (array) $filters[ DESTINATION_FILTER_KEY ],
@@ -430,7 +439,7 @@ function search( array $filters = [], array $facets = [], bool $retrieve_all = f
 	$filters = parse_filters( $filters );
 
 	// Get the filters.
-	$sort              = $filters[ SORT_FILTER_KEY ];
+	$sorts             = array_map( 'strval', (array) $filters[ SORT_FILTER_KEY ] );
 	$seasons           = array_map( 'strval', (array) $filters[ SEASON_FILTER_KEY ] );
 	$months            = array_map( 'strval', (array) $filters[ MONTH_FILTER_KEY ] );
 	$expeditions       = array_map( 'absint', (array) $filters[ EXPEDITION_FILTER_KEY ] );
@@ -457,7 +466,7 @@ function search( array $filters = [], array $facets = [], bool $retrieve_all = f
 	$search->set_destinations( $destinations );
 	$search->set_languages( $languages );
 	$search->set_itinerary_lengths( $itinerary_lengths );
-	$search->set_sort( $sort, $filters[ CURRENCY_FILTER_KEY ] );
+	$search->set_sorts( $sorts, $filters[ CURRENCY_FILTER_KEY ] );
 
 	// Set page and posts per page.
 	if ( empty( $retrieve_all ) ) {
@@ -482,28 +491,6 @@ function search( array $filters = [], array $facets = [], bool $retrieve_all = f
 }
 
 /**
- * Bust search cache on departure update.
- *
- * @return void
- */
-function bust_search_cache(): void {
-	// Bust cache by group if supported.
-	if ( function_exists( 'wp_cache_delete_group' ) ) {
-		// Bust cache by group.
-		wp_cache_delete_group( CACHE_GROUP );
-	} else {
-		// Bust cache by key.
-		wp_cache_delete( 'search_filter_region_season_data', CACHE_GROUP );
-		wp_cache_delete( 'search_filter_expeditions_data', CACHE_GROUP );
-		wp_cache_delete( 'search_filter_adventure_options_data', CACHE_GROUP );
-		wp_cache_delete( 'search_filter_departure_month_data', CACHE_GROUP );
-		wp_cache_delete( 'search_filter_departure_duration_data', CACHE_GROUP );
-		wp_cache_delete( 'search_filter_ship_data', CACHE_GROUP );
-		wp_cache_delete( 'search_filter_itinerary_length_data', CACHE_GROUP );
-	}
-}
-
-/**
  * Track posts to be reindexed.
  *
  * @param int          $post_id Post ID.
@@ -514,12 +501,12 @@ function bust_search_cache(): void {
  */
 function track_posts_to_be_reindexed( int $post_id = 0, ?WP_Post $post = null, bool $update = false ): void {
 	// Validate post. Reindex only on update.
-	if ( empty( $post ) || ! $post instanceof WP_Post || empty( $update ) ) {
+	if ( empty( $post_id ) || empty( $update ) ) {
 		return;
 	}
 
 	// Get post type.
-	$post_type = $post->post_type;
+	$post_type = get_post_type( $post_id );
 
 	// Return if not a supported post type.
 	if ( ! in_array( $post_type, [ EXPEDITION_POST_TYPE, ITINERARY_POST_TYPE ], true ) ) {
@@ -697,4 +684,79 @@ function reindex_departures(): void {
 
 	// Clear the cron.
 	wp_clear_scheduled_hook( SCHEDULE_REINDEX_HOOK );
+}
+
+/**
+ * Get departures by expeditions and months.
+ *
+ * @param int      $expedition_id Expedition ID.
+ * @param string[] $months       Months.
+ *
+ * @return int[]
+ */
+function get_departures_by_expeditions_and_months( int $expedition_id = 0, array $months = [] ): array {
+	// Search for departures.
+	$departures_search = new Search();
+
+	// Set expedition.
+	$departures_search->set_expeditions( [ $expedition_id ] );
+
+	// Set months.
+	$departures_search->set_months( $months );
+
+	// Sort by date.
+	$departures_search->set_sorts( [ 'date-now' ] );
+
+	// Return search results.
+	return $departures_search->search();
+}
+
+/**
+ * Reindex synced departure.
+ *
+ * @param mixed[] $data Data passed to the action.
+ *
+ * @return void
+ */
+function reindex_synced_departure( array $data = [] ): void {
+	// Validate data.
+	if ( empty( $data ) || empty( $data['post_id'] ) || empty( $data['updated_fields'] ) || ! is_array( $data['updated_fields'] ) ) {
+		return;
+	}
+
+	// Skip if occupancies are not updated or departure post is updated.
+	if ( empty( $data['updated_fields']['occupancies'] ) || ! empty( $data['updated_fields']['departure_post'] ) ) {
+		return;
+	}
+
+	// Departure post id.
+	$departure_post_id = absint( $data['post_id'] );
+
+	// Validate departure post id.
+	if ( empty( $departure_post_id ) ) {
+		return;
+	}
+
+	// Get initiated via.
+	$initiated_via = get_initiated_via();
+
+	// Add itinerary to reindex list if initiated manually.
+	if ( 'manually' === $initiated_via ) {
+		// Get itinerary.
+		$itinerary_post_id = absint( get_post_meta( $departure_post_id, 'itinerary', true ) );
+
+		// Skip if no itinerary.
+		if ( empty( $itinerary_post_id ) ) {
+			return;
+		}
+
+		// Add to reindex list.
+		track_posts_to_be_reindexed( $itinerary_post_id, null, true );
+
+		// Done.
+		return;
+	}
+
+	// Trigger reindex.
+	update_post_in_index( $departure_post_id );
 }

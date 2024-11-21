@@ -189,6 +189,12 @@ function get_region_season_filter_options( array $region_season_facet = [] ): ar
 			continue;
 		}
 
+		// Get term meta.
+		$term_meta = get_term_meta( $region_term->term_id, 'show_next_year', true );
+
+		// Check if term meta is not empty.
+		$to_show_next_year = ! empty( $term_meta );
+
 		// Get last 4 characters as season.
 		$season = substr( $region_season, 4 );
 
@@ -205,13 +211,28 @@ function get_region_season_filter_options( array $region_season_facet = [] ): ar
 			continue;
 		}
 
+		// Set tab title.
+		if ( $to_show_next_year ) {
+			$season_label = sprintf( '%d.%d', $season_term->name, absint( substr( $season_term->name, -2 ) ) + 1 );
+		} else {
+			$season_label = sprintf( '%d', $season_term->name );
+		}
+
 		// Prepare region and season data.
 		$filter_data[ $region_season ] = [
-			'label' => sprintf( '%s %s', $region_term->name, $season_term->name ),
+			'label' => sprintf( '%s %s', $region_term->name, $season_label ),
 			'value' => $region_season,
 			'count' => absint( $count ),
 		];
 	}
+
+	// Sort alphabetically by label.
+	uasort(
+		$filter_data,
+		function ( $a, $b ) {
+			return strcasecmp( $a['label'], $b['label'] );
+		}
+	);
 
 	// Return filter data.
 	return array_values( $filter_data );
@@ -272,6 +293,14 @@ function get_expedition_filter_options( array $expedition_facet = [] ): array {
 		];
 	}
 
+	// Sort alphabetically by label.
+	uasort(
+		$filter_data,
+		function ( $a, $b ) {
+			return strcasecmp( $a['label'], $b['label'] );
+		}
+	);
+
 	// Return filter data.
 	return array_values( $filter_data );
 }
@@ -331,6 +360,14 @@ function get_ship_filter_options( array $ship_facet = [] ): array {
 		];
 	}
 
+	// Sort alphabetically by label.
+	uasort(
+		$filter_data,
+		function ( $a, $b ) {
+			return strcasecmp( $a['label'], $b['label'] );
+		}
+	);
+
 	// Return filter data.
 	return array_values( $filter_data );
 }
@@ -386,6 +423,14 @@ function get_adventure_options_filter_options( array $adventure_options_facet = 
 			'count' => $count,
 		];
 	}
+
+	// Sort alphabetically by label.
+	uasort(
+		$filter_data,
+		function ( $a, $b ) {
+			return strcasecmp( $a['label'], $b['label'] );
+		}
+	);
 
 	// Return filter data.
 	return array_values( $filter_data );
@@ -898,6 +943,7 @@ function build_filter_options( array $filter_keys = [], array $selected_filters 
 
 		// Check if filter key exists in solr facet result.
 		if ( empty( $solr_facet_result[ $filter['solr_facet']['key'] ] ) ) {
+			$filter_options[ $filter_key ] = [];
 			continue;
 		}
 
@@ -906,6 +952,7 @@ function build_filter_options( array $filter_keys = [], array $selected_filters 
 
 		// Validate facet data.
 		if ( ! is_array( $facet_data ) || empty( $facet_data['values'] ) ) {
+			$filter_options[ $filter_key ] = [];
 			continue;
 		}
 
@@ -1035,6 +1082,45 @@ function get_destination_and_month_filter_options( int $destination_term_id = 0,
 		$selected_filters[ DESTINATION_FILTER_KEY ] = [ $destination_term_id ];
 	} elseif ( ! empty( $month ) ) {
 		$selected_filters[ MONTH_FILTER_KEY ] = [ $month ];
+	}
+
+	// Get filter options.
+	$filter_options = build_filter_options( $filter_keys, $selected_filters );
+
+	// Return filter options.
+	return $filter_options;
+}
+
+/**
+ * Get month options by expedition.
+ *
+ * @param int $expedition_id Expedition ID.
+ *
+ * @return array<string, array<int, array{
+ *    label: string,
+ *    value: string|int,
+ *    count?:int,
+ *    children?: array<int, array{
+ *       label: string,
+ *       value:int|string,
+ *       count?:int,
+ *       parent_id: int|string
+ *     }>
+ * }>>
+ */
+function get_expeditions_and_month_options_by_expedition( int $expedition_id = 0 ): array {
+	// Filter keys.
+	$filter_keys = [
+		EXPEDITION_FILTER_KEY,
+		MONTH_FILTER_KEY,
+	];
+
+	// Initialize selected filters.
+	$selected_filters = [];
+
+	// Check if expedition ID is empty.
+	if ( $expedition_id ) {
+		$selected_filters[ EXPEDITION_FILTER_KEY ] = [ $expedition_id ];
 	}
 
 	// Get filter options.

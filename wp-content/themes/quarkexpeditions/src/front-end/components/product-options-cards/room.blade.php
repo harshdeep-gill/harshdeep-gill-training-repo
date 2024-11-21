@@ -1,5 +1,10 @@
 @props( [
-	'class' => '',
+	'class'        => '',
+	'id'           => '',
+	'name'         => '',
+	'checked'      => '',
+	'checkout_url' => '',
+	'mask'         => '',
 ] )
 
 @php
@@ -14,6 +19,13 @@
 	}
 @endphp
 
-<x-form.radio @class( $classes )>
+<x-form.radio
+	@class( $classes )
+	name="{{ $name }}"
+	id="{{ $id }}"
+	checked="{{ $checked }}"
+	mask="{{ $mask }}"
+	value="{!! esc_url( $checkout_url ) !!}"
+>
 	{!! $slot !!}
 </x-form.radio>

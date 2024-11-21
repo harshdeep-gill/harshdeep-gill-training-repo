@@ -45,17 +45,24 @@ export default class DepartureCard extends HTMLElement {
 		this.dropdownButton = this.querySelector( '.departure-cards__cta' );
 		this.moreDetails = this.querySelector( '.departure-cards__more-details' );
 
-		// Run after DOM Content Loaded.
-		document.addEventListener( 'DOMContentLoaded', () => {
-			// Run after DOM Content Loaded.
-			this.updateOfferHiddenItems();
-			this.updateAdventuresHiddenItems();
-		} );
-
 		// Events.
 		window.addEventListener( 'resize', debounce( this.updateOfferHiddenItems.bind( this ), 10 ), { passive: true } );
 		window.addEventListener( 'resize', debounce( this.updateAdventuresHiddenItems.bind( this ), 10 ), { passive: true } );
+		window.addEventListener( 'load', () => {
+			// Update the hidden items.
+			this.updateOfferHiddenItems();
+			this.updateAdventuresHiddenItems();
+		} );
 		this.dropdownButton?.addEventListener( 'click', this.toggle.bind( this ) );
+	}
+
+	/**
+	 * Connected callback.
+	 */
+	connectedCallback() {
+		// Need to do this here as well since some cards may load dynamically on filter change or load more, etc.
+		this.updateOfferHiddenItems();
+		this.updateAdventuresHiddenItems();
 	}
 
 	/**
@@ -79,6 +86,9 @@ export default class DepartureCard extends HTMLElement {
 		// Toggle `open` attribute.
 		this.setAttribute( 'open', 'true' );
 		this.moreDetails?.classList.add( 'departure-cards__more-details--active' );
+
+		// Scroll details into view.
+		this.moreDetails?.scrollIntoView();
 	}
 
 	/**
@@ -88,6 +98,9 @@ export default class DepartureCard extends HTMLElement {
 		// Remove 'open' attribute.
 		this.removeAttribute( 'open' );
 		this.moreDetails?.classList.remove( 'departure-cards__more-details--active' );
+
+		// Scroll the current card into view.
+		this.scrollIntoView();
 	}
 
 	/**
@@ -199,23 +212,31 @@ export default class DepartureCard extends HTMLElement {
 				// Default behavior for larger screens.
 				totalWidth += option.clientWidth;
 
+				// Check if More Option should be visible.
+				if ( totalWidth > this.adventuresContainer!.clientWidth && index === this.adventuresItems!.length - 2 ) {
+					// Add hidden class.
+					this.adventurescountWrap!.classList.add( 'departure-cards__options-count-wrap--visible' );
+					this.adventurescountWrap?.classList.remove( 'departure-cards__options-count-wrap--hidden' );
+				}
+
 				// Width check.
-				if ( totalWidth > this.adventuresContainer!.clientWidth - this.adventurescountWrap!.clientWidth ) {
+				if ( ( totalWidth + this.adventurescountWrap!.clientWidth ) > this.adventuresContainer!.clientWidth ) {
 					// Add hidden class
 					option.classList.add( 'departure-cards__option--hidden' );
+
+					// Update the count markup. We are updating the count before incrementing to avoid the more option count.
+					this.adventurescountSpan!.textContent = hiddenCount.toString();
+
+					// Update the count.
 					hiddenCount++;
 				}
 			}
 		} );
 
-		// Update count and toggle visibility.
-		if ( hiddenCount > 0 ) {
-			// Set the text and remvoe hidden class.
-			this.adventurescountSpan!.textContent = hiddenCount.toString();
-			this.adventurescountWrap!.classList.remove( 'departure-cards__options-count-wrap--hidden' );
-		} else {
-			// Add class.
-			this.adventurescountWrap!.classList.add( 'departure-cards__options-count-wrap--hidden' );
+		// Check if we have any hidden items?
+		if ( 0 === hiddenCount ) {
+			this.adventurescountWrap?.classList.remove( 'departure-cards__options-count-wrap--visible' );
+			this.adventurescountWrap?.classList.add( 'departure-cards__options-count-wrap--hidden' );
 		}
 	}
 }

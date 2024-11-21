@@ -13,7 +13,6 @@ use WP_REST_Request;
 use WP_REST_Response;
 use WP_REST_Server;
 
-use function Quark\Core\get_visitor_geo_country;
 use function Quark\OfficePhoneNumbers\get_office_phone_number;
 
 use const Quark\OfficePhoneNumbers\REST_API_NAMESPACE;
@@ -56,10 +55,7 @@ class Phone_Number extends WP_REST_Controller {
 	 * @return WP_REST_Response|WP_Error
 	 */
 	public function get( WP_REST_Request $request ): WP_REST_Response|WP_Error { // phpcs:ignore Travelopia.Functions.FunctionArgsDefaultValue.Missing
-		// Get the visitor's country.
-		$country = get_visitor_geo_country();
-
 		// Return the matching rule.
-		return rest_ensure_response( get_office_phone_number( $country ) );
+		return rest_ensure_response( get_office_phone_number() );
 	}
 }

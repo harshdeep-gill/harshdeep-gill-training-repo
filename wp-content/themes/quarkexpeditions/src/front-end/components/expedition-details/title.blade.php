@@ -8,6 +8,7 @@
 	}
 @endphp
 
-<h2 class="expedition-details__title h1">
-	<x-escape content="{{ $title }}"/>
-</h2>
+<h1 class="expedition-details__title h1">
+	<x-escape :content="$title" />
+	{!! $slot !!}
+</h1>

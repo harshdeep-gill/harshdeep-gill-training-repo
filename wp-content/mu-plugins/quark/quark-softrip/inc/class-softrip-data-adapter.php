@@ -26,8 +26,9 @@ class Softrip_Data_Adapter {
 		// Check Username and Password are set.
 		if (
 			! defined( 'QUARK_SOFTRIP_ADAPTER_BASE_URL' ) ||
-			! defined( 'QUARK_SOFTRIP_ADAPTER_USERNAME' ) ||
-			! defined( 'QUARK_SOFTRIP_ADAPTER_PASSWORD' )
+			! defined( 'QUARK_SOFTRIP_ADAPTER_API_KEY' ) ||
+			empty( QUARK_SOFTRIP_ADAPTER_BASE_URL ) ||
+			empty( QUARK_SOFTRIP_ADAPTER_API_KEY )
 		) {
 			return new WP_Error( 'qrk_softrip_no_auth', __( 'Softrip credentials missing', 'qrk' ) );
 		}
@@ -38,9 +39,9 @@ class Softrip_Data_Adapter {
 		// Set the request args.
 		$args = [
 			'method'  => $method,
-			'timeout' => 20,
+			'timeout' => 30,
 			'headers' => [
-				'Authorization' => 'basic ' . base64_encode( QUARK_SOFTRIP_ADAPTER_USERNAME . ':' . QUARK_SOFTRIP_ADAPTER_PASSWORD ), // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
+				'x-api-key' => QUARK_SOFTRIP_ADAPTER_API_KEY,
 			],
 		];
 

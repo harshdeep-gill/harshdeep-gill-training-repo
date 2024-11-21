@@ -9,13 +9,9 @@
 	background-color: var(--color-gray-90);
 	color: var(--color-white);
 	padding: var(--spacing-7) var(--spacing-5);
-	margin-top: var(--spacing-7);
+	margin-top: var(--grid-section-gutter);
 
-	@media screen and (min-width: grid-size(md)) {
-		margin-top: var(--grid-section-gutter);
-	}
-
-	@media screen and (min-width: grid-size(xxxl)) {
+	@media screen and (min-width: grid-size(lg)) {
 		padding-inline: 80px;
 	}
 
@@ -385,5 +381,6 @@
 		margin-left: auto;
 		margin-right: auto;
 		max-width: 350px;
+		text-align: left;
 	}
 }

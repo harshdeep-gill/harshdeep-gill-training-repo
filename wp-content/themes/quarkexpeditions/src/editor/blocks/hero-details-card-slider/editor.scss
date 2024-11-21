@@ -1,0 +1,10 @@
+.hero-details-card-slider {
+	border-radius: var(--border-radius-small);
+
+	&--edit-mode {
+
+		&::before {
+			display: none;
+		}
+	}
+}

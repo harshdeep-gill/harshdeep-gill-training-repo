@@ -1,6 +1,7 @@
 @props( [
 	'border'          => false,
 	'stack_on_tablet' => false,
+	'id'              => '',
 ] )
 
 @php
@@ -26,7 +27,7 @@
 	}
 @endphp
 
-<x-section>
+<x-section id="{{ $id }}">
 	<div @class( $classes )>
 		{!! $slot !!}
 	</div>

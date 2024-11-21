@@ -3,6 +3,7 @@
 	'label'              => '',
 	'name'               => '',
 	'allowed_file_types' => [],
+	'allowed_file_size'  => 8,
 	'form'               => '',
 ] )
 
@@ -20,7 +21,7 @@
 	}
 @endphp
 
-<quark-file-input class="quark-file-input">
+<quark-file-input class="quark-file-input" allowed_file_size="{{ $allowed_file_size }}">
 	<label
 		for="{{ $dom_id }}"
 		{{ $attributes->filter( fn ( $value, $key ) => ! in_array( $key, [ 'label', 'id', 'name', 'allowed_file_types', 'form' ] ) ) }}

@@ -17,7 +17,6 @@ use function Quark\Search\solr_scheme;
 use function Quark\Search\Departures\parse_filters;
 use function Quark\Search\Departures\get_filters_from_url;
 use function Quark\Search\Departures\reindex_departures;
-use function Quark\Search\Departures\bust_search_cache;
 use function Quark\Search\public_rest_api_routes;
 
 use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
@@ -33,7 +32,6 @@ use const Quark\Search\Departures\FACET_TYPE_RANGE;
 use const Quark\Search\Departures\REINDEX_POST_IDS_OPTION_KEY;
 use const Quark\Search\Departures\SCHEDULE_REINDEX_HOOK;
 use const Quark\Search\REST_API_NAMESPACE;
-use const Quark\Search\Departures\CACHE_GROUP;
 
 /**
  * Class Test_Search.
@@ -117,7 +115,7 @@ class Test_Search extends WP_UnitTestCase {
 				],
 				'page'              => 1,
 				'posts_per_load'    => 10,
-				'sort'              => 'date-now',
+				'sort'              => [ 'date-now' ],
 				'currency'          => 'USD',
 				'destinations'      => [],
 				'languages'         => [],
@@ -155,7 +153,7 @@ class Test_Search extends WP_UnitTestCase {
 				],
 				'page'              => 1,
 				'posts_per_load'    => 10,
-				'sort'              => 'date-now',
+				'sort'              => [ 'date-now' ],
 				'currency'          => 'USD',
 				'destinations'      => [],
 				'languages'         => [],
@@ -193,7 +191,7 @@ class Test_Search extends WP_UnitTestCase {
 				],
 				'page'              => 1,
 				'posts_per_load'    => 10,
-				'sort'              => 'date-now',
+				'sort'              => [ 'date-now' ],
 				'currency'          => EUR_CURRENCY,
 				'destinations'      => [],
 				'languages'         => [],
@@ -233,7 +231,7 @@ class Test_Search extends WP_UnitTestCase {
 				],
 				'page'              => 1,
 				'posts_per_load'    => 10,
-				'sort'              => 'date-now',
+				'sort'              => [ 'date-now' ],
 				'currency'          => EUR_CURRENCY,
 				'destinations'      => [
 					281,
@@ -280,6 +278,12 @@ class Test_Search extends WP_UnitTestCase {
 				'update_post_meta_cache' => false,
 				'update_post_term_cache' => false,
 				'posts_per_page'         => 10,
+				'meta_query'             => [
+					[
+						'key'     => 'related_expedition',
+						'compare' => 'EXISTS',
+					],
+				],
 			],
 			$solr_search->get_args(),
 			'Failed to test Solr Search default arguments.'
@@ -311,6 +315,11 @@ class Test_Search extends WP_UnitTestCase {
 					],
 				],
 				'meta_query'             => [
+					'relation' => 'AND',
+					[
+						'key'     => 'related_expedition',
+						'compare' => 'EXISTS',
+					],
 					[
 						'key'     => 'region_season',
 						'value'   => [ 2024, 2025 ],
@@ -342,6 +351,10 @@ class Test_Search extends WP_UnitTestCase {
 				'orderby'                => 'meta_value_num',
 				'meta_key'               => 'duration',
 				'meta_query'             => [
+					[
+						'key'     => 'related_expedition',
+						'compare' => 'EXISTS',
+					],
 					[
 						'key'     => 'related_expedition',
 						'value'   => array_unique( [ 20, 15, 20, 25 ] ),
@@ -379,6 +392,11 @@ class Test_Search extends WP_UnitTestCase {
 				'update_post_term_cache' => false,
 				'posts_per_page'         => 10,
 				'meta_query'             => [
+					'relation' => 'AND',
+					[
+						'key'     => 'related_expedition',
+						'compare' => 'EXISTS',
+					],
 					[
 						'relation' => 'OR',
 						[
@@ -405,9 +423,9 @@ class Test_Search extends WP_UnitTestCase {
 
 		// Make private method accessible.
 		$class         = new ReflectionClass( $solr_search );
-		$set_solr_sort = $class->getMethod( 'set_sort' );
-		$set_solr_sort->invokeArgs( $solr_search, [ 'date-now' ] );
-		$set_solr_sort->invokeArgs( $solr_search, [ 'duration-long' ] );
+		$set_solr_sort = $class->getMethod( 'set_sorts' );
+		$set_solr_sort->invokeArgs( $solr_search, [ [ 'date-now' ] ] );
+		$set_solr_sort->invokeArgs( $solr_search, [ [ 'duration-long' ] ] );
 		$sorts = $class->getProperty( 'sorts' );
 
 		// Make private property accessible and test.
@@ -424,10 +442,10 @@ class Test_Search extends WP_UnitTestCase {
 
 		// Make private method accessible.
 		$class         = new ReflectionClass( $solr_search );
-		$set_solr_sort = $class->getMethod( 'set_sort' );
+		$set_solr_sort = $class->getMethod( 'set_sorts' );
 
 		// Without empty sort args.
-		$set_solr_sort->invokeArgs( $solr_search, [ '' ] );
+		$set_solr_sort->invokeArgs( $solr_search, [ [ '' ] ] );
 		$sorts = $class->getProperty( 'sorts' );
 
 		// Assert empty sort.
@@ -441,10 +459,10 @@ class Test_Search extends WP_UnitTestCase {
 
 		// Make private method accessible.
 		$class         = new ReflectionClass( $solr_search );
-		$set_solr_sort = $class->getMethod( 'set_sort' );
+		$set_solr_sort = $class->getMethod( 'set_sorts' );
 
 		// Pass price based sorting, but without any currency - should sort by USD.
-		$set_solr_sort->invokeArgs( $solr_search, [ 'price-low' ] );
+		$set_solr_sort->invokeArgs( $solr_search, [ [ 'price-low' ] ] );
 
 		// Assert sort by price USD.
 		$this->assertEquals(
@@ -459,7 +477,7 @@ class Test_Search extends WP_UnitTestCase {
 		$class       = new ReflectionClass( $solr_search );
 
 		// Pass EUR price based sorting.
-		$set_solr_sort->invokeArgs( $solr_search, [ 'price-low', 'EUR' ] );
+		$set_solr_sort->invokeArgs( $solr_search, [ [ 'price-low' ], 'EUR' ] );
 
 		// Assert sort by price EUR.
 		$this->assertEquals(
@@ -474,7 +492,7 @@ class Test_Search extends WP_UnitTestCase {
 		$class       = new ReflectionClass( $solr_search );
 
 		// Pass invalid currency.
-		$set_solr_sort->invokeArgs( $solr_search, [ 'price-low', 'invalid' ] );
+		$set_solr_sort->invokeArgs( $solr_search, [ [ 'price-low' ], 'invalid' ] );
 
 		// Assert sort by price USD.
 		$this->assertEmpty(
@@ -505,6 +523,12 @@ class Test_Search extends WP_UnitTestCase {
 						'field'            => 'term_id',
 						'terms'            => [ 1, 2, 3 ],
 						'include_children' => false,
+					],
+				],
+				'meta_query'             => [
+					[
+						'key'     => 'related_expedition',
+						'compare' => 'EXISTS',
 					],
 				],
 			],
@@ -543,6 +567,10 @@ class Test_Search extends WP_UnitTestCase {
 				],
 				'meta_query'             => [
 					'relation' => 'AND',
+					[
+						'key'     => 'related_expedition',
+						'compare' => 'EXISTS',
+					],
 					[
 						'key'     => 'related_expedition',
 						'value'   => [ 4, 5, 6 ],
@@ -604,7 +632,7 @@ class Test_Search extends WP_UnitTestCase {
 		$solr_search->set_ships( [ 7, 8, 9 ] );
 		$solr_search->set_durations( [ [ 10, 11 ], [ 12, 15 ] ] );
 		$solr_search->set_months( [ '01-2024', '02-2024', '03-2024' ] );
-		$solr_search->set_sort( 'price-low', 'EUR' );
+		$solr_search->set_sorts( [ 'price-low' ], 'EUR' );
 		$solr_search->set_seasons( [ '2024', '2025' ] );
 		$solr_search->set_destinations( [ 1, 2, 3 ] );
 		$solr_search->set_languages( [ 1, 2, 3 ] );
@@ -644,6 +672,10 @@ class Test_Search extends WP_UnitTestCase {
 				],
 				'meta_query'             => [
 					'relation' => 'AND',
+					[
+						'key'     => 'related_expedition',
+						'compare' => 'EXISTS',
+					],
 					[
 						'key'     => 'related_expedition',
 						'value'   => [ 4, 5, 6 ],
@@ -1043,6 +1075,7 @@ class Test_Search extends WP_UnitTestCase {
 		// Test.
 		$expected = [
 			'/' . REST_API_NAMESPACE . '/filter-options/by-destination-and-month',
+			'/' . REST_API_NAMESPACE . '/filter-options/by-expedition',
 		];
 		$actual   = public_rest_api_routes();
 		$this->assertEquals( $expected, $actual );

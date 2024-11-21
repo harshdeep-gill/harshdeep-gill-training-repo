@@ -11,7 +11,7 @@ import { TPMultiSelectElement } from '@travelopia/web-components';
 /**
  * Internal Dependencies.
  */
-import { setPerPage } from '../actions';
+import { setAllowedPerPage, setPerPage } from '../actions';
 
 /**
  * Store
@@ -48,6 +48,9 @@ export default class DatesRatesPaginationItemsPerPageElement extends HTMLElement
 		// Events
 		this.itemsPerPageSelector.addEventListener( 'change', this.handleChange.bind( this ) );
 
+		// Set allowed per page filter values
+		this.updateAllowedPerPage();
+
 		// Subscribe to the store.
 		subscribe( this.update.bind( this ) );
 
@@ -62,7 +65,7 @@ export default class DatesRatesPaginationItemsPerPageElement extends HTMLElement
 	 */
 	update( state: DatesRatesState ) {
 		// Null check.
-		if ( ! this.itemsPerPageSelector ) {
+		if ( ! this.itemsPerPageSelector || ! this.itemsPerPageSelector.select ) {
 			// Bail.
 			return;
 		}
@@ -95,5 +98,40 @@ export default class DatesRatesPaginationItemsPerPageElement extends HTMLElement
 
 		// Set the per page value.
 		setPerPage( value );
+	}
+
+	/**
+	 * Updates the allowedPerPage state.
+	 */
+	updateAllowedPerPage() {
+		// Get the state.
+		const { allowedPerPage }: DatesRatesState = getState();
+
+		// Has it already been set?
+		if ( allowedPerPage.length || ! this.itemsPerPageSelector ) {
+			// Bail.
+			return;
+		}
+
+		// New value init.
+		const newAllowedPerPage: number[] = [];
+
+		// Get the options and populate the array.
+		this.itemsPerPageSelector.querySelectorAll( 'tp-multi-select-option' ).forEach( ( opt ) => {
+			// Get the value
+			const optValue = parseInt( opt.getAttribute( 'value' ) ?? '' );
+
+			// Do we have an invalue number?
+			if ( Number.isNaN( optValue ) || optValue < 1 ) {
+				// yes, return.
+				return;
+			}
+
+			// Push the value in the array.
+			newAllowedPerPage.push( optValue );
+		} );
+
+		// Set the state.
+		setAllowedPerPage( newAllowedPerPage );
 	}
 }

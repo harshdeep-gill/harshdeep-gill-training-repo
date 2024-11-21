@@ -53,13 +53,14 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 	}
 
 	// Column 2.
-	if ( ! empty( $columns_data[1] ) ) {
+	if ( false === $attributes['hasOnlyChild'] && ! empty( $columns_data[1] ) ) {
 		$column_2 .= implode( '', array_map( 'render_block', $columns_data[1]['innerBlocks'] ) );
 	}
 
 	// Build component attributes.
 	$component_attributes = [
 		'border' => $attributes['hasBorder'] ?? true,
+		'id'     => $attributes['anchor'] ?? '',
 		'slot'   => quark_get_component(
 			COMPONENT . '.column',
 			[

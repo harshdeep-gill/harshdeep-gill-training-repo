@@ -4,13 +4,14 @@
 import { __ } from '@wordpress/i18n';
 import {
 	useBlockProps,
-	RichText,
 	InspectorControls,
+	useInnerBlocksProps,
 } from '@wordpress/block-editor';
 import {
 	PanelBody,
 	SelectControl,
 	Icon,
+	ToggleControl,
 } from '@wordpress/components';
 
 /**
@@ -24,6 +25,13 @@ import icons from '../../../icons';
 import classnames from 'classnames';
 
 /**
+ * Child blocks.
+ */
+import * as highlightTitle from '../title';
+import * as highlightOverline from '../overline';
+import * as highlightText from '../text';
+
+/**
  * Edit Component.
  *
  * @param {Object}   props               Component properties.
@@ -35,6 +43,18 @@ export default function edit( { className, attributes, setAttributes }: BlockEdi
 	// Prepare block props.
 	const blocksProps = useBlockProps( {
 		className: classnames( className, 'highlights__item' ),
+	} );
+
+	// Prepare InnerBlocks props.
+	const innerBlockProps = useInnerBlocksProps( {
+		className: 'highlights__content',
+	}, {
+		allowedBlocks: [ highlightTitle.name, highlightOverline.name, highlightText.name ],
+		template: [
+			[ highlightTitle.name ],
+			[ highlightOverline.name ],
+			[ highlightText.name ],
+		],
 	} );
 
 	// Prepare icon.
@@ -51,6 +71,11 @@ export default function edit( { className, attributes, setAttributes }: BlockEdi
 	if ( ! selectedIcon || '' === selectedIcon ) {
 		selectedIcon = <Icon icon="no" />;
 	}
+
+	// Icon class.
+	const iconClasses = classnames( 'highlights__icon', {
+		'highlights__icon--border': attributes.border,
+	} );
 
 	// Return the block's markup.
 	return (
@@ -69,22 +94,50 @@ export default function edit( { className, attributes, setAttributes }: BlockEdi
 							{ label: __( 'House', 'qrk' ), value: 'house' },
 							{ label: __( 'Iceberg', 'qrk' ), value: 'iceberg' },
 							{ label: __( 'Flight Seeing', 'qrk' ), value: 'flightseeing' },
+							{ label: __( 'Time', 'qrk' ), value: 'time2' },
+							{ label: __( 'Brochure', 'qrk' ), value: 'brochure' },
+							{ label: __( 'Dollar Sign', 'qrk' ), value: 'dollar-sign' },
+							{ label: __( 'Explore', 'qrk' ), value: 'explore' },
+							{ label: __( 'Ship', 'qrk' ), value: 'ship' },
+							{ label: __( 'Presentations', 'qrk' ), value: 'presentations' },
+							{ label: __( 'Wildlife Penguin', 'qrk' ), value: 'wildlife-penguin' },
+							{ label: __( 'Paddling Excursions', 'qrk' ), value: 'paddling-excursions' },
+							{ label: __( 'Flight', 'qrk' ), value: 'flight' },
+							{ label: __( 'Helicopter', 'qrk' ), value: 'helicopter' },
+							{ label: __( 'Bird', 'qrk' ), value: 'bird' },
+							{ label: __( 'Fly The Drake', 'qrk' ), value: 'fly-the-drake' },
+							{ label: __( 'Landscapes', 'qrk' ), value: 'landscapes' },
+							{ label: __( 'Drink', 'qrk' ), value: 'drink' },
+							{ label: __( 'Building', 'qrk' ), value: 'building' },
+							{ label: __( 'Footsteps', 'qrk' ), value: 'footsteps' },
+							{ label: __( 'Sea Kayaking', 'qrk' ), value: 'sea-kayaking' },
+							{ label: __( 'Relaxed Traveling', 'qrk' ), value: 'relaxed-traveling' },
+							{ label: __( 'Wildlife Polar Bear', 'qrk' ), value: 'wildlife-polar-bear' },
+							{ label: __( 'Hiking', 'qrk' ), value: 'hiking' },
+							{ label: __( 'Camera', 'qrk' ), value: 'camera' },
+							{ label: __( 'Sun', 'qrk' ), value: 'sun' },
+							{ label: __( 'Checklister', 'qrk' ), value: 'checklister' },
+							{ label: __( 'Hot Air Balloon', 'qrk' ), value: 'hot-air-balloon' },
+							{ label: __( 'Binoculars', 'qrk' ), value: 'binoculars' },
+							{ label: __( 'Mountain Biking', 'qrk' ), value: 'mountain-biking' },
+							{ label: __( 'Viking Ship', 'qrk' ), value: 'viking-ship' },
+							{ label: __( 'Pin', 'qrk' ), value: 'pin' },
 						] }
 						onChange={ ( icon: string ) => setAttributes( { icon } ) }
+					/>
+					<ToggleControl
+						label={ __( 'Icon border?', 'qrk' ) }
+						help={ __( 'Add a border to the Icon.', 'qrk' ) }
+						checked={ attributes.border }
+						onChange={ ( border: boolean ) => setAttributes( { border } ) }
 					/>
 				</PanelBody>
 			</InspectorControls>
 			<div { ...blocksProps }>
-				<div className="highlights__icon">
+				<div className={ iconClasses }>
 					{ selectedIcon }
 				</div>
-				<RichText
-					tagName="p"
-					placeholder={ __( 'Write highlight…', 'qrk' ) }
-					value={ attributes.title }
-					onChange={ ( title: string ) => setAttributes( { title } ) }
-					allowedFormats={ [] }
-				/>
+				<div { ...innerBlockProps } />
 			</div>
 		</>
 	);

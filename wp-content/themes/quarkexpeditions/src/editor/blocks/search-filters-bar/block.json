@@ -1,0 +1,41 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "quark/search-filters-bar",
+	"description": "Block to display search filters bar",
+	"title": "Search Filters Bar",
+	"category": "layout",
+	"keywords": [
+		"search",
+		"filters",
+		"bar"
+	],
+	"textdomain": "qrk",
+	"attributes": {
+		"antarcticImage": {
+			"type": "object"
+		},
+		"arcticImage": {
+			"type": "object"
+		},
+		"antarcticCtaUrl": {
+			"type": "object",
+			"default": {}
+		},
+		"arcticCtaUrl": {
+			"type": "object",
+			"default": {}
+		},
+		"allDestinationsUrl": {
+			"type": "object",
+			"default": {}
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

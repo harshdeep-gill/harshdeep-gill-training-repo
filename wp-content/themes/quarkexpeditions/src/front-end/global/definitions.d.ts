@@ -90,3 +90,16 @@ interface QueryString {
 	stringify: Function;
 	parse: Function;
 }
+
+// Global state type.
+interface GlobalState {
+	currency: string,
+	phoneNumberRule: {
+		phoneNumber: string,
+		prefix: string,
+	},
+	dynamicPhoneNumber: {
+		apiEndpoint: string,
+		defaultPhoneNumber: string,
+	},
+}

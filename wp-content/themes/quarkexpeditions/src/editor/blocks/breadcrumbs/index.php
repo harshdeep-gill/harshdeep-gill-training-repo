@@ -54,6 +54,9 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 	// Build component attributes.
 	$component_attributes['breadcrumbs'] = $breadcrumbs;
 
+	// Set appearance.
+	$component_attributes['appearance'] = 'black' === $attributes['textColor'] ? 'light' : 'dark';
+
 	// Return rendered component.
 	return quark_get_component( COMPONENT, $component_attributes );
 }

@@ -88,6 +88,9 @@ function update_occupancy_promotions( array $raw_occupancy_promotions = [], int 
 	// Initialize the formatted data.
 	$promos_data = [];
 
+	// Initialize any updated.
+	$any_updated = false;
+
 	// Loop through the raw occupancy promotions.
 	foreach ( $raw_occupancy_promotions as $raw_occupancy_promotion ) {
 		// Skip if not array.
@@ -152,7 +155,7 @@ function update_occupancy_promotions( array $raw_occupancy_promotions = [], int 
 		}
 
 		// Add to occupancy promotions by promotion code.
-		$existing_occupancy_promotions_by_promo_code[ $existing_promotion['code'] ] = $existing_promotion['id'];
+		$existing_occupancy_promotions_by_promo_code[ $existing_promotion['code'] ] = $existing_occupancy_promotion['id'];
 	}
 
 	// Setup defaults.
@@ -200,11 +203,16 @@ function update_occupancy_promotions( array $raw_occupancy_promotions = [], int 
 		// If the occupancy promotion exists, update it.
 		if ( ! empty( $existing_occupancy_promotion ) && is_array( $existing_occupancy_promotion ) && ! empty( $existing_occupancy_promotion['id'] ) ) {
 			// Update the occupancy promotion.
-			$wpdb->update(
+			$is_updated = $wpdb->update(
 				$table_name,
 				$promo_data,
 				[ 'id' => $existing_occupancy_promotion['id'] ]
 			);
+
+			// Set any updated.
+			if ( $is_updated > 0 ) {
+				$any_updated = true;
+			}
 
 			// Set the updated ID.
 			$updated_id = $existing_occupancy_promotion['id'];
@@ -216,7 +224,8 @@ function update_occupancy_promotions( array $raw_occupancy_promotions = [], int 
 			);
 
 			// Get the inserted ID.
-			$updated_id = $wpdb->insert_id;
+			$updated_id  = $wpdb->insert_id;
+			$any_updated = true;
 		}
 
 		// Skip if no updated ID.
@@ -252,11 +261,16 @@ function update_occupancy_promotions( array $raw_occupancy_promotions = [], int 
 		$id = $existing_occupancy_promotions_by_promo_code[ $non_updated_promotion_code ];
 
 		// Delete the occupancy promotion by ID.
-		delete_occupancy_promotions_by_id( $id );
+		$is_deleted = delete_occupancy_promotions_by_id( $id );
+
+		// Set any updated.
+		if ( $is_deleted ) {
+			$any_updated = true;
+		}
 	}
 
 	// Return success.
-	return true;
+	return $any_updated;
 }
 
 /**
@@ -294,7 +308,7 @@ function get_occupancy_promotions_by_occupancy_id_and_promotion_id( int $occupan
 		$cached_value = wp_cache_get( $cache_key, CACHE_GROUP );
 
 		// Return cached value if exists.
-		if ( ! empty( $cached_value ) && is_array( $cached_value ) ) {
+		if ( is_array( $cached_value ) ) {
 			return $cached_value;
 		}
 	}
@@ -376,7 +390,7 @@ function get_occupancy_promotions_by_occupancy( int $occupancy_id = 0, bool $for
 		$cached_value = wp_cache_get( $cache_key, CACHE_GROUP );
 
 		// Return cached value if exists.
-		if ( ! empty( $cached_value ) && is_array( $cached_value ) ) {
+		if ( is_array( $cached_value ) ) {
 			return $cached_value;
 		}
 	}
@@ -658,7 +672,7 @@ function get_occupancy_promo_by_id( int $id = 0, bool $force = false ): array {
 		$cached_value = wp_cache_get( $cache_key, CACHE_GROUP );
 
 		// Return cached value if exists.
-		if ( ! empty( $cached_value ) && is_array( $cached_value ) ) {
+		if ( is_array( $cached_value ) ) {
 			return $cached_value;
 		}
 	}

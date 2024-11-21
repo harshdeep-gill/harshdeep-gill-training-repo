@@ -12,7 +12,6 @@
 	&__slider {
 		overflow-x: visible;
 		width: 100vw;
-		margin-inline: var(--grid-col-gutter);
 		padding-block: var(--spacing-4);
 
 		&:has(div.review-cards__nav) {
@@ -21,14 +20,36 @@
 			}
 		}
 
-		@media screen and (min-width: 1120px) {
-			margin-inline: 0;
+		&[total="2"] {
+
+			#{$self}__nav {
+
+				@media screen and (min-width: grid-size(md)) {
+					display: none;
+				}
+			}
+		}
+
+		&[total="3"] {
+
+			#{$self}__slides {
+
+				@media screen and (min-width: grid-size(xl)) {
+					left: initial !important;
+				}
+			}
+
+			#{$self}__nav {
+
+				@media screen and (min-width: grid-size(xl)) {
+					display: none;
+				}
+			}
 		}
 	}
 
 	&__track {
-		padding: 0 0 var(--spacing-4) var(--spacing-5);
-		margin-left: calc(-1 * var(--spacing-5));
+		padding: 0 0 var(--spacing-4);
 		margin-bottom: var(--spacing-7);
 		scrollbar-width: none; /* Firefox */
 
@@ -49,17 +70,9 @@
 		display: flex;
 		column-gap: var(--spacing-5);
 		margin-top: var(--spacing-6);
-		margin-left: calc(-1 * var(--spacing-1));
 
 		@media screen and (min-width: grid-size(md)) {
-			margin-top: var(--spacing-7);
-		}
-
-		@media screen and (min-width: grid-size(lg)) {
-
-			&[data-is-carousel="false"] {
-				display: none;
-			}
+			margin-top: calc(var(--spacing-7) - var(--spacing-4));
 		}
 	}
 

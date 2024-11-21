@@ -19,6 +19,10 @@
 		align-items: flex-end;
 	}
 
+	&[open] {
+		z-index: 102;
+	}
+
 	&--open {
 
 		@include fade-in;

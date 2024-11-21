@@ -11,7 +11,7 @@
 
 	$classes = [ 'product-cards' ];
 
-	if ( ! empty( $align ) && 'center' === $align ) {
+	if ( ! empty( $align ) && 'grid' === $layout && 'center' === $align ) {
 		$classes[] = 'product-cards--align-center';
 	}
 
@@ -30,6 +30,7 @@
 <x-section
 	@class( $classes )
 	:full_width="true"
+	:wrap="true"
 >
 	<x-product-cards.carousel :layout="$layout">
 		{!! $slot !!}

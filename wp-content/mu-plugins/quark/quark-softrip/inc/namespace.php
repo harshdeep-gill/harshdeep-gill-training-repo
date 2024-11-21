@@ -18,15 +18,17 @@ use function Quark\Softrip\Occupancies\get_table_sql as get_occupancies_table_sq
 use function Quark\Softrip\Promotions\get_table_sql as get_promotions_table_sql;
 use function Quark\Softrip\OccupancyPromotions\get_table_sql as get_occupancy_promotions_table_sql;
 use function Quark\Softrip\AdventureOptions\get_table_name as get_adventure_options_table_name;
+use function Quark\Softrip\Cleanup\do_cleanup;
 use function Quark\Softrip\Occupancies\get_table_name as get_occupancies_table_name;
 use function Quark\Softrip\OccupancyPromotions\get_table_name as get_occupancy_promotions_table_name;
 use function Quark\Softrip\Promotions\get_table_name as get_promotions_table_name;
 
+use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
 use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
 
 const SCHEDULE_RECURRENCE       = 'qrk_softrip_4_hourly';
 const SCHEDULE_HOOK             = 'qrk_softrip_sync';
-const ITINERARY_SYNC_BATCH_SIZE = 5;
+const ITINERARY_SYNC_BATCH_SIZE = 1;
 const TABLE_PREFIX_NAME         = 'qrk_';
 
 /**
@@ -52,6 +54,9 @@ function bootstrap(): void {
 
 	// Register Stream log connector.
 	add_filter( 'wp_stream_connectors', __NAMESPACE__ . '\\setup_stream_connectors' );
+
+	// Delete custom data on departure post deletion.
+	add_action( 'delete_post_' . DEPARTURE_POST_TYPE, __NAMESPACE__ . '\\delete_custom_data' );
 }
 
 /**
@@ -199,7 +204,7 @@ function do_sync( array $itinerary_post_ids = [], array $specific_departure_post
 				'update_post_meta_cache' => false,
 				'update_term_meta_cache' => false,
 				'ignore_sticky_posts'    => true,
-				'post_status'            => [ 'draft', 'publish' ],
+				'post_status'            => [ 'publish' ],
 				'posts_per_page'         => -1,
 			];
 
@@ -277,10 +282,33 @@ function do_sync( array $itinerary_post_ids = [], array $specific_departure_post
 		$raw_departures = synchronize_itinerary_departures( $softrip_codes );
 
 		// Handle if an error is found.
-		if ( ! is_array( $raw_departures ) || empty( $raw_departures ) ) {
+		if ( $raw_departures instanceof WP_Error || ! is_array( $raw_departures ) || empty( $raw_departures ) ) {
 			// Update progress bar.
 			if ( $is_in_cli ) {
 				$progress->tick( count( $softrip_codes ) );
+			}
+
+			// If WP_Error.
+			if ( $raw_departures instanceof WP_Error ) {
+				// Log the error.
+				do_action(
+					'quark_softrip_sync_error',
+					[
+						'error' => $raw_departures->get_error_message(),
+						'via'   => $initiated_via,
+						'codes' => $softrip_codes,
+					]
+				);
+			} else {
+				// Log the error.
+				do_action(
+					'quark_softrip_sync_error',
+					[
+						'error' => 'No departure or invalid data returned',
+						'via'   => $initiated_via,
+						'codes' => $softrip_codes,
+					]
+				);
 			}
 
 			// Skip since there was an error.
@@ -295,6 +323,16 @@ function do_sync( array $itinerary_post_ids = [], array $specific_departure_post
 				if ( $is_in_cli ) {
 					$progress->tick();
 				}
+
+				// Log the error.
+				do_action(
+					'quark_softrip_sync_error',
+					[
+						'error' => 'No departure or invalid data found',
+						'via'   => $initiated_via,
+						'codes' => [ $softrip_package_code ],
+					]
+				);
 
 				// Skip since there was an error, or departures are empty.
 				continue;
@@ -316,6 +354,15 @@ function do_sync( array $itinerary_post_ids = [], array $specific_departure_post
 		}
 	}
 
+	// End progress bar.
+	if ( $is_in_cli ) {
+		$progress->finish();
+
+		// End notice.
+		WP_CLI::success( sprintf( 'Completed %d items with %d failed items', $counter, ( $total - $counter ) ) );
+		WP_CLI::log( '' );
+	}
+
 	// Log the sync completed.
 	do_action(
 		'quark_softrip_sync_completed',
@@ -325,14 +372,6 @@ function do_sync( array $itinerary_post_ids = [], array $specific_departure_post
 			'via'     => $initiated_via,
 		]
 	);
-
-	// End progress bar.
-	if ( $is_in_cli ) {
-		$progress->finish();
-
-		// End notice.
-		WP_CLI::success( sprintf( 'Completed %d items with %d failed items', $counter, ( $total - $counter ) ) );
-	}
 
 	// Return true if successful.
 	return $counter === $total;
@@ -344,14 +383,14 @@ function do_sync( array $itinerary_post_ids = [], array $specific_departure_post
  * @return string
  */
 function get_initiated_via(): string {
-	// Check if in CLI.
-	if ( defined( 'WP_CLI' ) && true === WP_CLI ) {
-		return 'CLI';
-	}
-
 	// Check if in cron.
 	if ( defined( 'DOING_CRON' ) && true === DOING_CRON ) {
 		return 'cron';
+	}
+
+	// Check if in CLI.
+	if ( defined( 'WP_CLI' ) && true === WP_CLI ) {
+		return 'CLI';
 	}
 
 	// Default to manually.
@@ -472,4 +511,21 @@ function get_engine_collate(): string {
 
 	// Return the engine and collate string.
 	return $engine_collate;
+}
+
+/**
+ * Delete departure data on departure post deletion.
+ *
+ * @param int $post_id Post ID.
+ *
+ * @return void
+ */
+function delete_custom_data( int $post_id = 0 ): void {
+	// Validate post ID.
+	if ( empty( $post_id ) ) {
+		return;
+	}
+
+	// Remove departure data.
+	do_cleanup( [ $post_id ], false );
 }

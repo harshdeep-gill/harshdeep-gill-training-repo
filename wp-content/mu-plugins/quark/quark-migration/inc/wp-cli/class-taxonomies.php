@@ -371,9 +371,13 @@ class Taxonomies {
 				}
 
 				// Prepare slug.
-				if ( is_string( $item['name'] ) ) {
-					$slug = trim( $item['name'] );
-					$slug = sanitize_title( $slug );
+				if ( is_string( $item['drupal_url'] ) ) {
+					/**
+					 * Break the url into parts and use the last part as post name.
+					 * i.e. - /staff/david-woody-wood
+					 */
+					$parts = explode( '/', $item['drupal_url'] );
+					$slug  = end( $parts );
 				}
 
 				// Prepare arguments.

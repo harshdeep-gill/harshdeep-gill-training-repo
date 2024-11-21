@@ -4,11 +4,6 @@
 const { customElements, HTMLElement } = window;
 
 /**
- * Internal Dependency.
- */
-import { debounce } from '../../global/utility';
-
-/**
  * Sub Navigation Class.
  */
 export default class SecondaryNavigation extends HTMLElement {
@@ -62,7 +57,7 @@ export default class SecondaryNavigation extends HTMLElement {
 		 * allowing the browser to optimize the scroll performance.
 		 * Without this you will get warning.
 		 */
-		this.ownerDocument.addEventListener( 'scroll', debounce( this.onScroll.bind( this ), 10 ), { passive: true } );
+		this.ownerDocument.addEventListener( 'scroll', this.onScroll.bind( this ), { passive: true } );
 
 		// Run on resize events.
 		window.addEventListener( 'resize', this.updateNav.bind( this ) );
@@ -140,6 +135,9 @@ export default class SecondaryNavigation extends HTMLElement {
 			topSpacing = document.getElementById( 'wpadminbar' )?.offsetHeight ?? topSpacing;
 			topSpacing = topSpacing + 12;
 		}
+
+		// Add header height to top spacing with padding.
+		topSpacing += this.headerHeight - 32;
 
 		// Check if the page is scrolled down.
 		if ( this.navigationElement?.getBoundingClientRect()?.top < topSpacing ) {
@@ -257,7 +255,7 @@ export default class SecondaryNavigation extends HTMLElement {
 			 */
 			const sectionTop = this.isMobile() ? containerSection.offsetTop - this.mobileTopOffset : containerSection.offsetTop - this.desktopTopOffset;
 			const sectionId = currentSection.getAttribute( 'id' );
-			const activeItem = document.querySelector( '.secondary-navigation__navigation-item[data-anchor*=' + sectionId + ']' );
+			const activeItem = document.querySelector( '.secondary-navigation__navigation-item[data-anchor="#' + sectionId + '"]' );
 
 			/**
 			 * If our current scroll position enters the space where current section on screen is,
@@ -269,6 +267,9 @@ export default class SecondaryNavigation extends HTMLElement {
 				scrollY > sectionTop - ( window.innerHeight / 2 ) &&
 				scrollY <= sectionTop + sectionHeight
 			) {
+				// Ensure only one item is active at a time.
+				this.clearActiveItems();
+
 				// Add active class.
 				activeItem?.classList?.add( 'secondary-navigation__navigation-item--active' );
 
@@ -413,17 +414,25 @@ export default class SecondaryNavigation extends HTMLElement {
 			return;
 		}
 
-		// Check for all content items.
-		if ( this.allContentItems ) {
-			// Loop through all content items.
-			this.allContentItems.forEach( ( item ) => {
-				// Remove any existing active class from other items.
-				item.classList.remove( 'secondary-navigation__navigation-item--active' );
-			} );
-		}
+		// Ensure only one item is active at a time.
+		this.clearActiveItems();
 
 		// Add class to the current active content item.
 		itemElement.classList.add( 'secondary-navigation__navigation-item--active' );
+	}
+
+	/**
+	 * Remove active class from all content items.
+	 */
+	clearActiveItems() {
+		// Check for all content items.
+		if ( this.allContentItems ) {
+			// Loop through all content items and remove the active class.
+			this.allContentItems.forEach( ( item ) => {
+				// Remove the active class.
+				item.classList.remove( 'secondary-navigation__navigation-item--active' );
+			} );
+		}
 	}
 
 	/**

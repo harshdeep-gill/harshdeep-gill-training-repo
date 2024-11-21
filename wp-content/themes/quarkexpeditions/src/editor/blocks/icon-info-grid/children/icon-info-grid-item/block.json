@@ -16,11 +16,21 @@
       "quark/icon-info-grid"
     ],
     "attributes": {
+      "hasIcon": {
+        "type": "boolean",
+        "default": "true"
+      },
       "icon": {
         "type": "string",
         "default": "star",
         "enum": [
-          "star"
+          "star",
+          "ship",
+          "compass",
+          "sun",
+          "aid-icon",
+          "departure-notification",
+          "training"
         ]
       }
     },

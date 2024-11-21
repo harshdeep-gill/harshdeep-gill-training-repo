@@ -1,4 +1,5 @@
 @import "../../scss";
+@import "./range-slider/range-slider";
 
 .form {
 	$self: &;
@@ -11,9 +12,7 @@
 
 	&-field {
 
-		&[required="yes"],
-		&[checkbox-group-required="yes"],
-		&[radio-group-required="yes"] {
+		&[required="yes"] {
 
 			#{$self}__required-indicator {
 				display: inline;
@@ -22,7 +21,46 @@
 		}
 	}
 
+	&-field-group {
+
+		&[required="yes"],
+		&[checkbox-group-required="yes"],
+		&[checkbox-field-required="yes"],
+		&[radio-group-required="yes"] {
+
+			> label #{$self}__required-indicator,
+			.form-field-group__group > .checkbox-container:only-child #{$self}__required-indicator {
+				display: inline;
+				color: var(--color-error-50);
+			}
+		}
+	}
+
 	&__inline-dropdown .tp-multi-select-options-container {
 		max-width: 230px;
+	}
+
+	&__label-optional-text {
+		color: var(--color-gray-50);
+		font-weight: 400;
+	}
+
+	tp-form-submit[submitting] button[type="submit"] {
+		position: relative;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: var(--spacing-2);
+
+		&::after {
+			content: "";
+			position: relative;
+			width: var(--font-size);
+			height: var(--font-size);
+			border: 2px solid;
+			border-radius: 100%;
+			border-left: 2px solid transparent;
+			animation: spin 1s linear infinite;
+		}
 	}
 }

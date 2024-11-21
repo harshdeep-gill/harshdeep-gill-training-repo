@@ -14,11 +14,20 @@ use function Quark\Core\format_price;
 use function Quark\InclusionSets\get as inclusion_sets_get;
 use function Quark\PolicyPages\get as get_policy_page_post;
 use function Quark\Brochures\get as get_brochure;
+use function Quark\Departures\bust_post_cache as bust_departure_post_cache;
+use function Quark\Expeditions\bust_post_cache as bust_expedition_post_cache;
+use function Quark\Expeditions\get as get_expedition;
 use function Quark\ItineraryDays\get as get_itinerary_day;
+use function Quark\Leads\get_request_a_quote_url;
+use function Quark\Localization\get_currencies;
+use function Quark\Localization\get_current_currency;
 use function Quark\Ships\get as get_ship;
-use function Quark\Softrip\Itineraries\get_lowest_price;
+use function Quark\Softrip\Departures\get_departures_by_itinerary;
+use function Quark\Softrip\Departures\get_lowest_price as get_departure_lowest_price;
 use function Quark\Softrip\Itineraries\get_related_ships;
 
+use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
+use const Quark\Expeditions\DESTINATION_TAXONOMY;
 use const Quark\Localization\DEFAULT_CURRENCY;
 use const Quark\StaffMembers\SEASON_TAXONOMY;
 
@@ -44,16 +53,136 @@ function bootstrap(): void {
 	add_filter( 'qe_tax_types_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
 	add_filter( 'qe_season_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
 
-	// Other hooks.
-	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
+	// Post cache bust. Assigning non-standard priority to avoid race conditions with ACF.
+	add_action( 'save_post', __NAMESPACE__ . '\\bust_post_cache', 11 );
 
-	// Bust cache on term update.
-	add_action( 'set_object_terms', __NAMESPACE__ . '\\bust_post_cache_on_term_assign', 10, 6 );
+	// Update related expedition on itineraries save. Assigning higher priority to run before any other cache bust.
+	add_action( 'save_post', __NAMESPACE__ . '\\update_related_expedition_on_itineraries_save', 1 );
+	add_action( 'qe_departure_post_cache_busted', __NAMESPACE__ . '\\bust_lowest_price_cache_by_departure' );
 
 	// Admin stuff.
 	if ( is_admin() ) {
 		// Custom fields.
 		require_once __DIR__ . '/../custom-fields/itineraries.php';
+		require_once __DIR__ . '/../custom-fields/tax-types.php';
+		require_once __DIR__ . '/../custom-fields/departure-locations.php';
+	}
+}
+
+/**
+ * Update related itineraries meta of Expedition.
+ *
+ * @param int $post_id Post ID.
+ *
+ * @return void
+ */
+function update_related_expedition_on_itineraries_save( int $post_id = 0 ): void {
+	// Bail if post ID is not provided.
+	if ( empty( $post_id ) ) {
+		return;
+	}
+
+	// Avoid running on auto-save, bulk edit, or during an Ajax request.
+	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+		return;
+	}
+
+	// Ensure this only runs for the intended post type.
+	if ( get_post_type( $post_id ) !== POST_TYPE ) {
+		return;
+	}
+
+	// Meta key that we are monitoring in Post A.
+	$meta_key = 'related_expedition';
+
+	// Get the old meta value before the update.
+	$old_expedition_post_id = absint( get_post_meta( $post_id, $meta_key, true ) );
+
+	// Check if there is a new value being set in the post request.
+	$new_expedition_post_id = ! empty( $_POST['acf'] ) && ! empty( $_POST['acf']['field_65f2dab2046df'] ) ? absint( sanitize_text_field( $_POST['acf']['field_65f2dab2046df'] ) ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing
+
+	// Skip if both value are same.
+	if ( $old_expedition_post_id === $new_expedition_post_id ) {
+		return;
+	}
+
+	// If the old meta value existed and has been updated in the new data.
+	// Let's remove it from the old expedition post.
+	if ( ! empty( $old_expedition_post_id ) ) {
+		// Get Expedition post meta 'related_itineraries' from old meta value.
+		$related_itineraries = get_post_meta( $old_expedition_post_id, 'related_itineraries', true );
+
+		// Check if related_itineraries is not empty.
+		if ( ! empty( $related_itineraries ) && is_array( $related_itineraries ) ) {
+			// Remove the current itinerary from the related_itineraries.
+			$related_itineraries = array_diff( $related_itineraries, [ $post_id ] );
+
+			// Update the expedition post meta 'related_itineraries'.
+			update_post_meta( $old_expedition_post_id, 'related_itineraries', array_unique( $related_itineraries ) );
+
+			// Bust cache.
+			bust_expedition_post_cache( $old_expedition_post_id );
+		}
+	}
+
+	// Add relation to new Expedition.
+	if ( ! empty( $new_expedition_post_id ) ) {
+		// Get Expedition post meta 'related_itineraries' from new meta value.
+		$related_itineraries = get_post_meta( $new_expedition_post_id, 'related_itineraries', true );
+
+		// Check if related_itineraries is not empty.
+		if ( ! empty( $related_itineraries ) && is_array( $related_itineraries ) ) {
+			// Add the current itinerary to the related_itineraries.
+			$related_itineraries[] = $post_id;
+
+			// Update the expedition post meta 'related_itineraries'.
+			update_post_meta( $new_expedition_post_id, 'related_itineraries', array_unique( $related_itineraries ) );
+		} else {
+			// Update the expedition post meta 'related_itineraries'.
+			update_post_meta( $new_expedition_post_id, 'related_itineraries', [ $post_id ] );
+		}
+
+		// Bust cache.
+		bust_expedition_post_cache( $new_expedition_post_id );
+	}
+
+	/**
+	 * Update related expedition on departure posts.
+	 * Departures are children of itineraries.
+	 */
+
+	// Get departures of this itinerary.
+	$departure_post_ids = get_children(
+		[
+			'post_parent'            => $post_id,
+			'post_type'              => DEPARTURE_POST_TYPE,
+			'post_status'            => [ 'publish', 'draft' ],
+			'posts_per_page'         => -1,
+			'fields'                 => 'ids',
+			'orderby'                => 'ID',
+			'update_post_meta_cache' => false,
+			'update_post_term_cache' => false,
+			'no_found_rows'          => true,
+		],
+		ARRAY_N
+	);
+
+	// Validate departure post IDs.
+	$departure_post_ids = array_map( 'absint', $departure_post_ids );
+
+	// Loop through each departure.
+	foreach ( $departure_post_ids as $departure_post_id ) {
+		// Update related expedition on departure.
+		if ( ! empty( $new_expedition_post_id ) ) {
+			// Update related expedition.
+			update_post_meta( $departure_post_id, 'related_expedition', $new_expedition_post_id );
+		} else {
+			// Remove related expedition.
+			delete_post_meta( $departure_post_id, 'related_expedition' );
+		}
+
+		// Bust cache.
+		bust_departure_post_cache( $departure_post_id );
 	}
 }
 
@@ -216,37 +345,22 @@ function opt_in( array $post_types = [] ): array {
  * @return void
  */
 function bust_post_cache( int $post_id = 0 ): void {
+	// Get post type.
+	$post_type = get_post_type( $post_id );
+
+	// Check for post type.
+	if ( POST_TYPE !== $post_type ) {
+		return;
+	}
+
 	// Clear cache for this post.
 	wp_cache_delete( CACHE_KEY . "_$post_id", CACHE_GROUP );
 
+	// Bust lowest price cache.
+	bust_lowest_price_cache( $post_id );
+
 	// Trigger action to clear cache for this post.
 	do_action( 'qe_itinerary_post_cache_busted', $post_id );
-}
-
-/**
- * Bust cache on term assign.
- *
- * @param int                    $object_id Object ID.
- * @param array{string|int}|null $terms     An array of object term IDs or slugs.
- * @param array{string|int}|null $tt_ids    An array of term taxonomy IDs.
- * @param string                 $taxonomy  Taxonomy slug.
- *
- * @return void
- */
-function bust_post_cache_on_term_assign( int $object_id = 0, array $terms = null, array $tt_ids = null, string $taxonomy = '' ): void {
-	// Check for taxonomy.
-	if ( in_array( $taxonomy, [ DEPARTURE_LOCATION_TAXONOMY, TAX_TYPE_TAXONOMY, SEASON_TAXONOMY ], true ) ) {
-		// Get post.
-		$post = get( $object_id );
-
-		// Check for post.
-		if ( ! $post['post'] instanceof WP_Post || POST_TYPE !== $post['post']->post_type ) {
-			return;
-		}
-
-		// Bust cache.
-		bust_post_cache( $post['post']->ID );
-	}
 }
 
 /**
@@ -400,11 +514,37 @@ function get_season( int $post_id = 0 ): array {
 /**
  * Prepare details for itinerary tabs.
  *
- * @param array<int> $itineraries Array of itinerary post IDs.
+ * @param int $expedition_id Expedition post ID.
  *
  * @return array<string|int, mixed>
  */
-function get_details_tabs_data( array $itineraries = [] ): array {
+function get_details_tabs_data( int $expedition_id = 0 ): array {
+	// Validate expedition ID.
+	if ( empty( $expedition_id ) ) {
+		return [];
+	}
+
+	// Get expedition.
+	$expedition = get_expedition( $expedition_id );
+
+	// Validate expedition.
+	if ( empty( $expedition['post'] ) || ! $expedition['post'] instanceof WP_Post ) {
+		return [];
+	}
+
+	// Check if the expedition meta is empty.
+	if ( empty( $expedition['post_meta']['related_itineraries'] ) ) {
+		return [];
+	}
+
+	// Get the itineraries.
+	$itineraries = $expedition['post_meta']['related_itineraries'];
+
+	// Check if the itineraries is an array.
+	if ( ! is_array( $itineraries ) ) {
+		return [];
+	}
+
 	// Build the component attributes.
 	$details = [];
 
@@ -478,8 +618,11 @@ function get_details_tabs_data( array $itineraries = [] ): array {
 			}
 		}
 
-		// TODO: Add currency change support.
-		$price = format_price( get_lowest_price( $itinerary['post']->ID )['original'] );
+		// Currency.
+		$currency = get_current_currency();
+
+		// Get the itinerary lowest price.
+		$price = format_price( get_lowest_price( $itinerary['post']->ID, $currency )['discounted'], $currency );
 
 		// Translators: %s is the lowest price.
 		$price = ! empty( $price ) ? sprintf( __( '%s per person', 'qrk' ), $price ) : '';
@@ -533,13 +676,51 @@ function get_details_tabs_data( array $itineraries = [] ): array {
 		}
 
 		// Active tab for seasons tabs.
-		if ( ! isset( $details['active_tab'] ) || absint( $season['slug'] ) > absint( $details['active_tab'] ) ) {
+		if ( ! isset( $details['active_tab'] ) || absint( $season['slug'] ) < absint( $details['active_tab'] ) ) {
 			$details['active_tab'] = $season['slug'];
 		}
 
 		// Seasons tab data.
-		$details['itinerary_groups'][ $season['slug'] ]['tab_id']    = $season['slug'];
-		$details['itinerary_groups'][ $season['slug'] ]['tab_title'] = sprintf( '%d.%d Season', $season['name'], absint( substr( $season['name'], -2 ) ) + 1 );
+		$details['itinerary_groups'][ $season['slug'] ]['tab_id'] = $season['slug'];
+
+		// To show next year - show only if root destination term has meta show_next_year set to true.
+		$to_show_next_year = false;
+
+		// Get destination terms of expedition.
+		$destinations = $expedition['post_taxonomies'][ DESTINATION_TAXONOMY ] ?? [];
+
+		// Check if destinations is not empty.
+		if ( is_array( $destinations ) && ! empty( $destinations ) ) {
+			// Select destination whose parent is empty.
+			$destinations = array_filter(
+				$destinations,
+				fn( $destination ) => empty( $destination['parent'] )
+			);
+
+			// Check if destinations is not empty.
+			if ( ! empty( $destinations ) ) {
+				// Select first.
+				$destination = reset( $destinations );
+
+				// Check if destination is not empty.
+				if ( ! empty( $destination ) && is_array( $destination ) && ! empty( $destination['term_id'] ) ) {
+					// Get term meta.
+					$term_meta = get_term_meta( $destination['term_id'], 'show_next_year', true );
+
+					// Check if term meta is not empty.
+					if ( ! empty( $term_meta ) ) {
+						$to_show_next_year = true;
+					}
+				}
+			}
+		}
+
+		// Set tab title.
+		if ( $to_show_next_year ) {
+			$details['itinerary_groups'][ $season['slug'] ]['tab_title'] = sprintf( '%d.%d Season', $season['name'], absint( substr( $season['name'], -2 ) ) + 1 );
+		} else {
+			$details['itinerary_groups'][ $season['slug'] ]['tab_title'] = sprintf( '%d Season', $season['name'] );
+		}
 
 		// Active tab for itinerary tabs.
 		if ( ! isset( $details['itinerary_groups'][ $season['slug'] ]['active_tab'] ) ) {
@@ -548,24 +729,24 @@ function get_details_tabs_data( array $itineraries = [] ): array {
 
 		// Append the itinerary to the component attributes.
 		$details['itinerary_groups'][ $season['slug'] ]['itineraries'][] = [
-			'tab_id'             => $tab_id,
-			'tab_title'          => $tab_title,
-			'tab_subtitle'       => $tab_subtitle,
-			'tab_content_header' => $tab_content_header,
-			'duration'           => $duration,
-			'departing_from'     => $departing_from,
-			'itinerary_days'     => $itinerary_days,
-			'map'                => $itinerary['post_meta']['map'] ?? 0,
-			'price'              => $price,
-			'brochure'           => $brochure,
-			'ships'              => $ships,
+			'tab_id'              => $tab_id,
+			'tab_title'           => $tab_title,
+			'tab_subtitle'        => $tab_subtitle,
+			'tab_content_header'  => $tab_content_header,
+			'duration'            => $duration,
+			'departing_from'      => $departing_from,
+			'itinerary_days'      => $itinerary_days,
+			'map'                 => $itinerary['post_meta']['map'] ?? 0,
+			'price'               => $price,
+			'brochure'            => $brochure,
+			'ships'               => $ships,
+			'request_a_quote_url' => get_request_a_quote_url( 0, $expedition_id ),
 		];
 	}
 
 	// Sort the itinerary groups.
 	if ( isset( $details['itinerary_groups'] ) ) {
 		ksort( $details['itinerary_groups'] );
-		$details['itinerary_groups'] = array_reverse( $details['itinerary_groups'] );
 	}
 
 	// Return the component attributes.
@@ -736,7 +917,7 @@ function get_supplemental_price( int $post_id = 0, string $currency = DEFAULT_CU
 	}
 
 	// Get meta key.
-	$meta_key = sprintf( 'supplemental_price_%s', strtolower( $currency ) );
+	$meta_key = sprintf( 'supplement_price_%s', strtolower( $currency ) );
 
 	// Check for meta key exists.
 	if ( empty( $itinerary['post_meta'][ $meta_key ] ) || ! is_numeric( $itinerary['post_meta'][ $meta_key ] ) ) {
@@ -776,7 +957,14 @@ function get_included_transfer_package_details( int $post_id = 0, string $curren
 	}
 
 	// Get included transfer package.
-	$details['price']           = get_mandatory_transfer_price( $post_id, $currency );
+	$details['price'] = get_mandatory_transfer_price( $post_id, $currency );
+
+	// Bail if empty price.
+	if ( empty( $details['price'] ) ) {
+		return $details;
+	}
+
+	// Format price.
 	$details['formatted_price'] = format_price( $details['price'], $currency );
 
 	// Get included transfer package.
@@ -863,4 +1051,171 @@ function get_policy_banner_details( int $itinerary_id = 0 ): array {
 		'description' => ! empty( $policy_post['post_meta']['marketing_option_summary'] ) ? strval( $policy_post['post_meta']['marketing_option_summary'] ) : '',
 		'permalink'   => strval( $policy_post['permalink'] ),
 	];
+}
+
+/**
+ * Get tax type details.
+ *
+ * @param int $post_id Post ID.
+ *
+ * @return array<int, array{
+ *   id: int,
+ *   name: string,
+ *   description: string,
+ *   rate: int,
+ * }>
+ */
+function get_tax_type_details( int $post_id = 0 ): array {
+	// Initialize tax types.
+	$tax_types = [];
+
+	// Get itinerary.
+	$itinerary = get( $post_id );
+
+	// Validate itinerary.
+	if ( ! $itinerary['post'] instanceof WP_Post ) {
+		return $tax_types;
+	}
+
+	// Validate taxonomies.
+	if ( empty( $itinerary['post_taxonomies'] ) || empty( $itinerary['post_taxonomies'][ TAX_TYPE_TAXONOMY ] ) || ! is_array( $itinerary['post_taxonomies'][ TAX_TYPE_TAXONOMY ] ) ) {
+		return $tax_types;
+	}
+
+	// Loop through taxonomies.
+	foreach ( $itinerary['post_taxonomies'][ TAX_TYPE_TAXONOMY ] as $tax_type ) {
+		$tax_type = [
+			'id'          => absint( $tax_type['term_id'] ),
+			'name'        => strval( $tax_type['name'] ),
+			'description' => strval( $tax_type['description'] ),
+			'rate'        => 0,
+		];
+
+		// Get rate from term meta.
+		$rate = absint( get_term_meta( $tax_type['id'], 'rate', true ) );
+
+		// Check for rate.
+		if ( $rate ) {
+			$tax_type['rate'] = $rate;
+		}
+
+		// Append tax type.
+		$tax_types[] = $tax_type;
+	}
+
+	// Return tax types.
+	return $tax_types;
+}
+
+/**
+ * Get lowest price for itinerary.
+ *
+ * @param int    $post_id  Itinerary post ID.
+ * @param string $currency Currency code.
+ * @param bool   $force    Whether cached value should be ignored.
+ *
+ * @return array{
+ *  original: int,
+ *  discounted: int,
+ * }
+ */
+function get_lowest_price( int $post_id = 0, string $currency = DEFAULT_CURRENCY, bool $force = false ): array {
+	// Uppercase the currency code.
+	$currency = strtoupper( $currency );
+
+	// Setup default return values.
+	$lowest_price = [
+		'original'   => 0,
+		'discounted' => 0,
+	];
+
+	// Return default values if no post ID.
+	if ( empty( $post_id ) || ! in_array( $currency, get_currencies(), true ) ) {
+		return $lowest_price;
+	}
+
+	// Cache key.
+	$cache_key = CACHE_KEY . '_lowest_price_' . $post_id . '_' . $currency;
+
+	// If not forced, check cache.
+	if ( ! $force ) {
+		$cached_value = wp_cache_get( $cache_key, CACHE_GROUP );
+
+		// Check for cached value.
+		if ( is_array( $cached_value ) && ! empty( $cached_value['original'] ) && ! empty( $cached_value['discounted'] ) ) {
+			return $cached_value;
+		}
+	}
+
+	// Get all departure posts for the itinerary.
+	$departure_post_ids = get_departures_by_itinerary( $post_id );
+
+	// Loop through each departure post.
+	foreach ( $departure_post_ids as $departure_post_id ) {
+		// Get the lowest price for the departure.
+		$departure_price = get_departure_lowest_price( $departure_post_id, $currency );
+
+		// If the discounted price is less than the current discounted price, update the discounted and original price.
+		if ( empty( $lowest_price['discounted'] ) || $departure_price['discounted'] < $lowest_price['discounted'] ) {
+			$lowest_price['discounted'] = $departure_price['discounted'];
+			$lowest_price['original']   = $departure_price['original'];
+		}
+	}
+
+	// Set cache.
+	wp_cache_set( $cache_key, $lowest_price, CACHE_GROUP );
+
+	// Return the lowest price.
+	return $lowest_price;
+}
+
+/**
+ * Bust cache for lowest price.
+ *
+ * @param int $post_id  Itinerary post ID.
+ *
+ * @return void
+ */
+function bust_lowest_price_cache( int $post_id = 0 ): void {
+	// Bail if no post ID.
+	if ( empty( $post_id ) ) {
+		return;
+	}
+
+	// Currencies.
+	$currencies = get_currencies();
+
+	// Loop through each currency.
+	foreach ( $currencies as $currency ) {
+		// Bust cache for lowest price.
+		wp_cache_delete( CACHE_KEY . '_lowest_price_' . $post_id . '_' . $currency, CACHE_GROUP );
+	}
+}
+
+/**
+ * Bust cache for lowest price by departure.
+ *
+ * @param int $departure_id Departure post ID.
+ *
+ * @return void
+ */
+function bust_lowest_price_cache_by_departure( int $departure_id = 0 ): void {
+	// Bail if no departure ID.
+	if ( empty( $departure_id ) ) {
+		return;
+	}
+
+	// Get itinerary.
+	$itinerary_post_id = get_post_meta( $departure_id, 'itinerary', true );
+
+	// Validate itinerary.
+	if ( empty( $itinerary_post_id ) ) {
+		return;
+	}
+
+	// Convert to integer.
+	$itinerary_post_id = absint( $itinerary_post_id );
+
+	// Bust cache for lowest price.
+	bust_lowest_price_cache( $itinerary_post_id );
 }

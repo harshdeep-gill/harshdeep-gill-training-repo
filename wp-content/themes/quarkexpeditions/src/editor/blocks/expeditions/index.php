@@ -13,8 +13,10 @@ use WP_Query;
 use function Quark\Core\format_price;
 use function Quark\Expeditions\get_minimum_duration;
 use function Quark\Expeditions\get_minimum_duration_itinerary;
+use function Quark\Expeditions\get_starting_from_date;
 use function Quark\Expeditions\get_starting_from_price;
 use function Quark\Itineraries\get_included_transfer_package_details;
+use function Quark\Localization\get_current_currency;
 
 use const Quark\Expeditions\POST_TYPE as EXPEDITION_POST_TYPE;
 
@@ -50,9 +52,11 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 		return $content;
 	}
 
-	// Total posts.
-	$total_departures = 0;
-	$expedition_ids   = [];
+	// Initialize expedition IDs.
+	$expedition_ids = [];
+
+	// Currency.
+	$currency = get_current_currency();
 
 	// If the selection is manual, we need to check if we have IDs.
 	if ( 'manual' === $attributes['selection'] ) {
@@ -62,8 +66,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 		}
 
 		// Get the expedition IDs.
-		$expedition_ids   = $attributes['ids'];
-		$total_departures = count( $expedition_ids );
+		$expedition_ids = $attributes['ids'];
 	} elseif ( 'byTerms' === $attributes['selection'] ) {
 		// Return empty if selection by terms, but no terms or taxonomy were selected.
 		if ( empty( $attributes['termIds'] ) || empty( $attributes['taxonomies'] ) ) {
@@ -119,6 +122,11 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 
 	// Build cards.
 	foreach ( $expedition_ids as $expedition_id ) {
+		// Check if Expedition is published.
+		if ( 'publish' !== get_post_status( $expedition_id ) ) {
+			continue;
+		}
+
 		// Add Included Transfer package data.
 		$minimum_duration_itinerary = get_minimum_duration_itinerary( $expedition_id );
 		$transfer_package_data      = [];
@@ -126,7 +134,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 		// Check if we have a minimum duration itinerary.
 		if ( ! empty( $minimum_duration_itinerary ) ) {
 			// Get included transfer package data.
-			$transfer_package_data = get_included_transfer_package_details( $minimum_duration_itinerary->ID );
+			$transfer_package_data = get_included_transfer_package_details( $minimum_duration_itinerary->ID, $currency );
 
 			// Reset if no inclusion sets.
 			if ( empty( $transfer_package_data['sets'] ) ) {
@@ -137,14 +145,23 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 		// Get Prices Data.
 		$prices_data = get_starting_from_price( $expedition_id );
 
+		// Get Departure Date.
+		$departure_date = $attributes['showDepartureDate'] ? get_starting_from_date( $expedition_id ) : false;
+
+		// Build departure date.
+		if ( ! empty( $departure_date ) ) {
+			$departure_date = gmdate( 'F j, Y', absint( strtotime( $departure_date ) ) );
+		}
+
 		// Build card data.
 		$cards[] = [
 			'title'            => get_the_title( $expedition_id ),
 			'url'              => get_the_permalink( $expedition_id ),
 			'image_id'         => get_post_thumbnail_id( $expedition_id ),
 			'itinerary_days'   => get_minimum_duration( $expedition_id ),
-			'original_price'   => format_price( $prices_data['original'] ),
-			'discounted_price' => format_price( $prices_data['discounted'] ),
+			'departure_date'   => $departure_date,
+			'original_price'   => format_price( $prices_data['original'], $currency ),
+			'discounted_price' => format_price( $prices_data['discounted'], $currency ),
 			'transfer_package' => $transfer_package_data,
 		];
 	}

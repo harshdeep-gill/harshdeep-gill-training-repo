@@ -1,3 +1,8 @@
+@props( [
+	'class'      => '',
+	'validation' => [],
+] )
+
 @aware( [
 	'id'         => '',
 	'name'       => '',
@@ -18,6 +23,10 @@
 <label
 	@if ( ! empty( $for ) )
 		for="{{ $for }}"
+	@endif
+
+	@if ( ! empty( $class ) )
+		class="{{ $class }}"
 	@endif
 >
 	{!! $slot !!}

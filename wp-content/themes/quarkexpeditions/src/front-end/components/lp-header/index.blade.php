@@ -15,7 +15,7 @@
 @endphp
 
 <quark-lp-header @class( $classes )>
-	<div class="lp-header__wrap">
+	<div class="lp-header__wrap wrap">
 		<x-lp-header.logo
 			:url="$logo_url"
 		/>

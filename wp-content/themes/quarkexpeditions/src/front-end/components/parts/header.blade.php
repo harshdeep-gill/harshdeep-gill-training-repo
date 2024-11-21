@@ -16,7 +16,7 @@
 	@if ( ! empty( $primary_nav['items'] ) )
 		<x-header.primary-nav>
 			@foreach ( $primary_nav['items'] as $item )
-				<x-header.nav-item :title="$item['title'] ?? ''">
+				<x-header.nav-item :title="$item['title'] ?? ''" url="{{ $item['url'] ?? '' }}" target="{{ $item['target'] ?? '' }}">
 					@if ( ! empty( $item['contents'] ) )
 						<x-header.nav-item-dropdown-content>
 							@foreach ( $item['contents'] as $content_item )
@@ -25,12 +25,14 @@
 										<x-header.nav-item-featured :image_id="$content_item['image_id'] ?? 0">
 											<x-header.nav-item-featured-title :title="$content_item['title'] ?? ''" />
 											<x-header.nav-item-featured-subtitle :subtitle="$content_item['subtitle'] ?? ''" />
-											<x-button href="{{ $content_item['url'] ?? '' }}" size="big">
-												{!! $content_item['cta_text'] ?? '' !!}
-											</x-button>
+											@if ( ! empty( $content_item['cta_text'] ) )
+												<x-button href="{{ $content_item['url'] ?? '' }}" size="big" target="{{ $content_item['target'] ?? '' }}">
+													{!! $content_item['cta_text'] !!}
+												</x-button>
+											@endif
 										</x-header.nav-item-featured>
 									</x-header.nav-item-dropdown-content-column>
-								@elseif ( 'slot' === $content_item['type'] )
+								@elseif ( 'slot' === $content_item['type'] && ! empty( $content_item['slot'] ) )
 									<x-header.nav-item-dropdown-content-column>
 										{!! $content_item['slot'] ?? '' !!}
 									</x-header.nav-item-dropdown-content-column>
@@ -40,65 +42,83 @@
 					@endif
 				</x-header.nav-item>
 			@endforeach
-			@php
-				// Get the last item in the primary nav.
-				$last_array_key = array_key_last( $primary_nav['items'] );
-				$last_menu_item = $primary_nav['items'][$last_array_key];
-			@endphp
-			{{-- More menu item. --}}
-			<x-header.nav-item title="More" class="header__more-menu-item">
-				<x-header.nav-item-dropdown-content>
-					@foreach ( $item['contents'] as $content_item )
-						@if ( 'featured-section' === $content_item['type'] )
-							<x-header.nav-item-dropdown-content-column>
-								<x-header.nav-item-featured :image_id="$content_item['image_id'] ?? 0">
-									<x-header.nav-item-featured-title :title="$content_item['title'] ?? ''" />
-									<x-header.nav-item-featured-subtitle :subtitle="$content_item['subtitle'] ?? ''" />
-									<x-button href="{{ $content_item['url'] ?? '' }}" size="big">
-										{!! $content_item['cta_text'] ?? '' !!}
-									</x-button>
-								</x-header.nav-item-featured>
-							</x-header.nav-item-dropdown-content-column>
-						@elseif ( 'menu-items' === $content_item['type'] )
-							<x-header.nav-item-dropdown-content-column>
-								<x-two-columns>
-									<x-two-columns.column>
-										<x-menu-list title="More">
-											@foreach ( $content_item['items'][0]['menu_list_items']['items'] as $menu_item )
-												<x-menu-list.item
-													:title="$menu_item['title'] ?? ''"
-													:url="$menu_item['url'] ?? ''"
-												/>
-											@endforeach
-
-											{{-- More items from Secondary Nav. --}}
-											@if ( ! empty( $secondary_nav['items'] ) )
-												@foreach ( $secondary_nav['items'] as $nav_item )
-													@if ( ! empty( $nav_item['url'] ) )
-														<x-menu-list.item
-															:title="$nav_item['title'] ?? ''"
-															:url="$nav_item['url'] ?? ''"
-														/>
-													@endif
-												@endforeach
+			@if ( $primary_nav['has_more'] )
+				@php
+					// Get the last item in the primary nav.
+					$last_array_key = array_key_last( $primary_nav['items'] );
+					$last_menu_item = $primary_nav['items'][$last_array_key];
+				@endphp
+				{{-- More menu item. --}}
+				<x-header.nav-item title="More" class="header__more-menu-item">
+					@if ( ! empty( $item['contents'] ) )
+						<x-header.nav-item-dropdown-content>
+							@foreach ( $item['contents'] as $content_item )
+								@if ( 'featured-section' === $content_item['type'] )
+									<x-header.nav-item-dropdown-content-column>
+										<x-header.nav-item-featured :image_id="$content_item['image_id'] ?? 0">
+											<x-header.nav-item-featured-title :title="$content_item['title'] ?? ''" />
+											<x-header.nav-item-featured-subtitle :subtitle="$content_item['subtitle'] ?? ''" />
+											@if ( ! empty( $content_item['cta_text'] ) )
+												<x-button href="{{ $content_item['url'] ?? '' }}" size="big" target="{{ $content_item['target'] ?? '' }}">
+													{!! $content_item['cta_text'] !!}
+												</x-button>
 											@endif
-										</x-menu-list>
-									</x-two-columns.column>
-								</x-two-columns>
-							</x-header.nav-item-dropdown-content-column>
-						@endif
-					@endforeach
-				</x-header.nav-item-dropdown-content>
-			</x-header.nav-item>
+										</x-header.nav-item-featured>
+									</x-header.nav-item-dropdown-content-column>
+								@elseif ( 'menu-items' === $content_item['type'] && ! empty( $content_item['items'][0]['menu_list_items'] ) )
+									<x-header.nav-item-dropdown-content-column>
+										<x-two-columns>
+												<x-two-columns.column>
+													<x-menu-list title="More">
+														@foreach ( $content_item['items'][0]['menu_list_items']['items'] as $menu_item )
+															<x-menu-list.item
+																:title="$menu_item['title'] ?? ''"
+																:url="$menu_item['url'] ?? ''"
+																:target="$menu_item['target'] ?? ''"
+															/>
+														@endforeach
+
+														{{-- More items from Secondary Nav. --}}
+														@if ( ! empty( $secondary_nav['items'] ) )
+															@foreach ( $secondary_nav['items'] as $nav_item )
+																@if ( ! empty( $nav_item['url'] ) )
+																	<x-menu-list.item
+																		:title="$nav_item['title'] ?? ''"
+																		:url="$nav_item['url'] ?? ''"
+																		:target="$nav_item['target'] ?? ''"
+																	/>
+																@endif
+															@endforeach
+														@endif
+													</x-menu-list>
+												</x-two-columns.column>
+										</x-two-columns>
+									</x-header.nav-item-dropdown-content-column>
+								@elseif ( 'slot' === $content_item['type'] && ! empty( $content_item['slot'] ) )
+									<x-header.nav-item-dropdown-content-column>
+										{!! $content_item['slot'] !!}
+									</x-header.nav-item-dropdown-content-column>
+								@endif
+							@endforeach
+						</x-header.nav-item-dropdown-content>
+					@endif
+				</x-header.nav-item>
+			@endif
 		</x-header.primary-nav>
 	@endif
 	@if ( ! empty( $secondary_nav['items'] ) )
 		<x-header.secondary-nav>
 			@foreach ( $secondary_nav['items'] as $item )
+				@if ( 'search-item' === $item['type'] )
+					<x-header.search />
+					@continue
+				@endif
+
 				<x-header.nav-item
 					:title="$item['title'] ?? ''"
 					:icon="$item['icon'] ?? ''"
 					url="{{ $item['url'] ?? '' }}"
+					target="{{ $item['target'] ?? '' }}"
 				/>
 			@endforeach
 		</x-header.secondary-nav>
@@ -122,6 +142,7 @@
 					<x-button
 						class="{{ $cta_button['class'] ?? '' }}"
 						href="{{ $cta_button['url'] ?? '' }}"
+						target="{{ $cta_button['target'] ?? '' }}"
 						size="big"
 						:color="$cta_button['color'] ?? ''"
 						:appearance="$cta_button['appearance'] ?? ''"
@@ -139,7 +160,7 @@
 		</x-button>
 	</x-drawer.drawer-open>
 
-	<x-drawer id="header-drawer" class="header__drawer">
+	<x-drawer id="header-drawer" class="header__drawer" close_on_desktop="true">
 		<x-drawer.header>
 			<x-header.site-logo />
 		</x-drawer.header>
@@ -159,6 +180,7 @@
 										<x-header.nav-item-featured
 											:image_id="$content_item['image_id'] ?? 0"
 											url="{{ $content_item['url'] ?? '' }}"
+											target="{{ $content_item['target'] ?? '' }}"
 											size="small"
 										>
 											<x-header.nav-item-featured-title :title="$content_item['title'] ?? ''" />
@@ -174,6 +196,7 @@
 														<x-menu-list.item
 															:title="$menu_list_item['title'] ?? ''"
 															:url="$menu_list_item['url'] ?? ''"
+															:target="$menu_list_item['target'] ?? ''"
 														/>
 													@endforeach
 												</x-menu-list>
@@ -186,6 +209,7 @@
 														<x-menu-list.item
 															:title="$thumbnail_item['title'] ?? ''"
 															:url="$thumbnail_item['url'] ?? ''"
+															:target="$thumbnail_item['target'] ?? ''"
 															class="header__drawer-thumbnail-card-link"
 														/>
 													@endforeach
@@ -207,7 +231,7 @@
 					@foreach ( $secondary_nav['items'] as $nav_item )
 						@if ( ! empty( $nav_item['url'] ) )
 							<li>
-								<a href="{{ $nav_item['url'] ?? '' }}">{!! $nav_item['title'] ?? '' !!}</a>
+								<a href="{{ $nav_item['url'] ?? '' }}" target="{{ $nav_item['target'] ?? '' }}">{!! $nav_item['title'] ?? '' !!}</a>
 							</li>
 						@endif
 					@endforeach
@@ -217,7 +241,7 @@
 						@foreach ( $cta_buttons as $button )
 							@if ( 'contact' === $button['type'] )
 								<li>
-									<a href="{{ $button['url'] ?? '' }}" class="dynamic-phone-number__link dynamic-phone-number-and-prefix">
+									<a href="{{ $button['url'] ?? '' }}" target="{{ $button['target'] ?? '' }}">
 										{!! $button['drawer_text'] ?? '' !!}
 										{!! $button['text'] ?? '' !!}
 									</a>
@@ -233,7 +257,8 @@
 					@if ( 'raq' === $button['type'] )
 						<x-button
 							:href="$button['url'] ?? ''"
-							class="header__drawer-request-quote-btn dynamic-phone-number__link dynamic-phone-number__text"
+							:target="$button['target'] ?? ''"
+							class="header__drawer-request-quote-btn"
 							size="big"
 						>
 							{!! $button['text'] ?? '' !!}

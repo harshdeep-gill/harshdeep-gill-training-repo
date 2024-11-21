@@ -185,6 +185,11 @@ class Blog {
 				}
 			}
 
+			// Set fallback as excerpt if meta description is empty.
+			if ( empty( $data['meta_input']['_yoast_wpseo_metadesc'] ) ) {
+				$data['meta_input']['_yoast_wpseo_metadesc'] = $data['post_excerpt'];
+			}
+
 			// Check post exist or not.
 			$wp_post = get_post_by_id( $blog_post['drupal_id'], POST_TYPE );
 

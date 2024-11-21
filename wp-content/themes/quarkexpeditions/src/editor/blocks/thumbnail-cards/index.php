@@ -53,20 +53,37 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 		}
 
 		// Check if we have an image.
-		if ( empty( $inner_block->attributes['image']['id'] ) || 'quark/thumbnail-cards-card' !== $inner_block->name ) {
+		if ( 'quark/thumbnail-cards-card' !== $inner_block->name ) {
+			continue;
+		}
+
+		// Check for both media type and image.
+		if ( empty( $inner_block->attributes['image'] ) && empty( $inner_block->attributes['video'] ) ) {
+			continue;
+		}
+
+		// Attributes.
+		$card_attributes = [
+			'slot'        => quark_get_component( COMPONENT . '.title', [ 'title' => $inner_block->attributes['title'] ?? '' ] ),
+			'url'         => $inner_block->attributes['url']['url'] ?? '',
+			'target'      => ! empty( $inner_block->attributes['url']['newWindow'] ) ? '_blank' : '_self',
+			'size'        => $inner_block->attributes['size'],
+			'orientation' => $inner_block->attributes['orientation'],
+		];
+
+		// Check for media type.
+		if ( 'image' === $inner_block->attributes['mediaType'] ) {
+			$card_attributes['image_id'] = $inner_block->attributes['image']['id'];
+		} elseif ( 'video' === $inner_block->attributes['mediaType'] ) {
+			$card_attributes['video_id'] = $inner_block->attributes['video']['id'];
+		} else {
 			continue;
 		}
 
 		// Add item.
 		$slot .= quark_get_component(
 			COMPONENT . '.card',
-			[
-				'slot'        => quark_get_component( COMPONENT . '.title', [ 'title' => $inner_block->attributes['title'] ?? '' ] ),
-				'image_id'    => $inner_block->attributes['image']['id'],
-				'url'         => $inner_block->attributes['url']['url'] ?? '',
-				'size'        => $inner_block->attributes['size'],
-				'orientation' => $inner_block->attributes['orientation'],
-			]
+			$card_attributes
 		);
 	}
 

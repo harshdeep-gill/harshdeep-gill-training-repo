@@ -7,11 +7,14 @@
   "keywords": [ "product", "cards", "expeditions" ],
   "category": "layout",
   "textdomain": "qrk",
-  "parent": [ "" ],
   "attributes": {
     "align": {
       "type": "string",
       "default": "left"
+    },
+    "layout": {
+      "type": "string",
+      "default": "carousel"
     }
   },
   "supports": {

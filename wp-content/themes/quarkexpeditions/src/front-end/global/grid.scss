@@ -5,7 +5,8 @@
 @use "sass:math";
 
 // Disable scroll when modal opens.
-body.prevent-scroll {
+body.prevent-scroll,
+html.prevent-scroll {
 	overflow: hidden;
 }
 

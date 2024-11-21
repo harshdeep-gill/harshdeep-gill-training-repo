@@ -24,7 +24,10 @@ use function Quark\Expeditions\get_formatted_date_range;
 use function Quark\Expeditions\get_minimum_duration_itinerary;
 use function Quark\Expeditions\get_total_departures;
 use function Quark\Expeditions\get_ships;
+use function Quark\Expeditions\get_breadcrumbs_ancestors;
 use function Quark\Expeditions\get_seo_structured_data;
+use function Quark\Expeditions\get_starting_from_price;
+use function Quark\Localization\set_current_currency;
 use function Quark\Softrip\Departures\get_departures_by_itinerary;
 use function Quark\Softrip\do_sync;
 
@@ -35,6 +38,8 @@ use const Quark\Expeditions\POST_TYPE;
 use const Quark\Expeditions\EXPEDITION_CATEGORY_TAXONOMY;
 use const Quark\Ships\POST_TYPE as SHIP_POST_TYPE;
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
+use const Quark\Expeditions\CACHE_GROUP;
+use const Quark\Expeditions\CACHE_KEY;
 use const Quark\ItineraryDays\POST_TYPE as ITINERARY_DAY_POST_TYPE;
 
 /**
@@ -385,7 +390,7 @@ class Test_Expeditions extends Softrip_TestCase {
 		// Create post.
 		$post_1 = $this->factory()->post->create_and_get(
 			[
-				'post_title'   => 'Test Post',
+				'post_title'   => 'Test Post: Sub title',
 				'post_content' => 'Post content',
 				'post_status'  => 'publish',
 				'post_type'    => POST_TYPE,
@@ -488,7 +493,8 @@ class Test_Expeditions extends Softrip_TestCase {
 
 		// Assert expedition_details_card_data is correct.
 		$expected_data = [
-			'title'            => $post_1->post_title,
+			'title'            => 'Test Post',
+			'sub_title'        => 'Sub title',
 			'region'           => $term_1->name,
 			'duration'         => 11,
 			'from_price'       => [
@@ -515,6 +521,9 @@ class Test_Expeditions extends Softrip_TestCase {
 
 		// Sync softrip with exising posts.
 		do_sync();
+
+		// Flush cache.
+		wp_cache_flush();
 
 		// Get get_details_data.
 		$expedition_details_card_data = get_details_data( $post_1->ID );
@@ -1232,5 +1241,153 @@ class Test_Expeditions extends Softrip_TestCase {
 		wp_delete_post( $itinerary_post_2->ID, true );
 		wp_delete_post( $itinerary_post_3->ID, true );
 		wp_delete_post( $expedition_post->ID, true );
+	}
+
+	/**
+	 * Test get breadcrumbs ancestors.
+	 *
+	 * @covers \Quark\Expeditions\get_breadcrumbs_ancestors()
+	 *
+	 * @return void
+	 */
+	public function test_get_breadcrumbs_ancestors(): void {
+		// Test without any post id.
+		$this->assertEmpty( get_breadcrumbs_ancestors() );
+
+		// Create a blog post.
+		$post = $this->factory()->post->create_and_get(
+			[
+				'post_title'   => 'Test Post',
+				'post_content' => 'Post content',
+				'post_status'  => 'publish',
+				'post_type'    => POST_TYPE,
+			]
+		);
+
+		// Assert created post is instance of WP_Post.
+		$this->assertTrue( $post instanceof WP_Post );
+
+		// Test without any active post.
+		$this->assertEmpty( get_breadcrumbs_ancestors( $post->ID ) );
+
+		// Create a page.
+		$page = $this->factory()->post->create_and_get(
+			[
+				'post_title' => 'Test Page',
+				'post_type'  => 'page',
+			]
+		);
+
+		// Assert created page is instance of WP_Post.
+		$this->assertTrue( $page instanceof WP_Post );
+
+		// Set as archive page.
+		update_option( 'options_expeditions_page', $page->ID );
+
+		// Test with archive page.
+		$this->assertEquals(
+			[
+				[
+					'title' => $page->post_title,
+					'url'   => get_permalink( $page->ID ),
+				],
+			],
+			get_breadcrumbs_ancestors( $post->ID )
+		);
+	}
+
+	/**
+	 * Test get starting price.
+	 *
+	 * @covers \Quark\Expeditions\get_starting_from_price()
+	 *
+	 * @return void
+	 */
+	public function test_get_starting_from_price(): void {
+		// Default lowest price.
+		$default_lowest_price = [
+			'discounted' => 0,
+			'original'   => 0,
+		];
+
+		// Cache prefix.
+		$cache_prefix = CACHE_KEY . '_starting_from_price_';
+
+		// Test without any post id.
+		$this->assertEquals( $default_lowest_price, get_starting_from_price() );
+
+		// Invalid post id.
+		$this->assertEquals( $default_lowest_price, get_starting_from_price( 0 ) );
+
+		// Non-expedition post.
+		$this->assertEquals( $default_lowest_price, get_starting_from_price( 1938 ) );
+		$cache_key = $cache_prefix . '1938';
+		$this->assertFalse( wp_cache_get( $cache_key, CACHE_GROUP ) );
+
+		// Setup mock response.
+		add_filter( 'pre_http_request', 'Quark\Tests\Softrip\mock_softrip_http_request', 10, 3 );
+
+		// Sync softrip with existing posts.
+		do_sync();
+
+		// Remove filter.
+		remove_filter( 'pre_http_request', 'Quark\Tests\Softrip\mock_softrip_http_request' );
+
+		// Get one expedition.
+		$expedition_posts = get_posts(
+			[
+				'post_type'      => POST_TYPE,
+				'posts_per_page' => 5,
+				'fields'         => 'ids',
+				'no_found_rows'  => true,
+			]
+		);
+		$this->assertNotEmpty( $expedition_posts );
+
+		// Convert to integer.
+		$expedition_posts = array_map( 'absint', $expedition_posts );
+
+		// First expedition.
+		$expedition_post1 = $expedition_posts[0];
+
+		// Get starting price.
+		$starting_price = get_starting_from_price( $expedition_post1 );
+		$this->assertEmpty( $starting_price['discounted'] );
+		$this->assertEmpty( $starting_price['original'] );
+
+		// Second expedition.
+		$expedition_post2 = $expedition_posts[1];
+
+		// Get starting price USD.
+		$starting_price = get_starting_from_price( $expedition_post2 );
+		$this->assertEquals( '34600', $starting_price['original'] );
+		$this->assertEquals( '29410', $starting_price['discounted'] );
+
+		// Get starting price EUR.
+		set_current_currency( 'EUR' );
+		$starting_price = get_starting_from_price( $expedition_post2 );
+		$this->assertEquals( '32200', $starting_price['original'] );
+		$this->assertEquals( '27370', $starting_price['discounted'] );
+
+		// Get starting price GBP.
+		set_current_currency( 'GBP' );
+		$starting_price = get_starting_from_price( $expedition_post2 );
+		$this->assertEquals( '27600', $starting_price['original'] );
+		$this->assertEquals( '23460', $starting_price['discounted'] );
+
+		// Get starting price AUD.
+		set_current_currency( 'AUD' );
+		$starting_price = get_starting_from_price( $expedition_post2 );
+		$this->assertEquals( '54200', $starting_price['original'] );
+		$this->assertEquals( '46070', $starting_price['discounted'] );
+
+		// Get starting price CAD.
+		set_current_currency( 'CAD' );
+		$starting_price = get_starting_from_price( $expedition_post2 );
+		$this->assertEquals( '47000', $starting_price['original'] );
+		$this->assertEquals( '39950', $starting_price['discounted'] );
+
+		// Reset currency.
+		set_current_currency( 'USD' );
 	}
 }

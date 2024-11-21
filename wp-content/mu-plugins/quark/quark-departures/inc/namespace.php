@@ -10,7 +10,6 @@ namespace Quark\Departures;
 use WP_Post;
 use WP_Term_Query;
 
-use function Quark\CabinCategories\get as get_cabin_category_data;
 use function Quark\CabinCategories\get_cabin_details_by_departure;
 use function Quark\Core\format_price;
 use function Quark\Expeditions\get_region_terms;
@@ -26,19 +25,16 @@ use function Quark\Softrip\Departures\get_end_date;
 use function Quark\Softrip\Departures\get_lowest_price;
 use function Quark\Softrip\Departures\get_related_ship;
 use function Quark\Softrip\Departures\get_start_date;
-use function Quark\Softrip\Occupancies\get_lowest_price_by_cabin_category_and_departure;
-use function Quark\Softrip\Occupancies\get_lowest_price_by_cabin_category_and_departure_and_promotion_code;
-use function Quark\Softrip\Occupancies\get_cabin_category_post_ids_by_departure;
 use function Quark\Softrip\Promotions\get_promotions_by_code;
 use function Quark\Softrip\AdventureOptions\get_adventure_option_by_departure_post_id;
 use function Quark\AdventureOptions\get as get_adventure_option_post_data;
-use function Quark\CabinCategories\get_availability_status_description;
-use function Quark\CabinCategories\get_cabin_availability_status;
-use function Quark\CabinCategories\get_available_cabin_spaces;
-use function Quark\Checkout\get_checkout_url;
+use function Quark\CabinCategories\get_cabin_price_data_by_departure;
+use function Quark\Itineraries\get_tax_type_details;
+use function Quark\Leads\get_request_a_quote_url;
 use function Quark\Localization\get_currencies;
 
 use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
+use const Quark\Expeditions\EXPEDITION_CATEGORY_TAXONOMY;
 use const Quark\Localization\DEFAULT_CURRENCY;
 
 const POST_TYPE                = 'qrk_departure';
@@ -46,6 +42,8 @@ const SPOKEN_LANGUAGE_TAXONOMY = 'qrk_spoken_language';
 const PROMOTION_TAG            = 'qrk_promotion_tags';
 const CACHE_KEY                = POST_TYPE;
 const CACHE_GROUP              = POST_TYPE;
+const FLIGHT_SEEING_TID        = 289; // Flight seeing Adventure Option Term ID.
+const ULTRAMARINE_SHIP_CODE    = 'ULT'; // Ultramarine Ship Code.
 
 /**
  * Bootstrap plugin.
@@ -63,16 +61,13 @@ function bootstrap(): void {
 	add_filter( 'qe_spoken_language_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
 	add_filter( 'qe_promotion_tag_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
 
-	// Other hooks.
-	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
+	// Other hooks. Assigning non-standard priority to avoid race conditions with ACF.
+	add_action( 'save_post', __NAMESPACE__ . '\\bust_post_cache', 11 );
 
 	// Bust cache for departure card data.
 	add_action( 'qe_departure_post_cache_busted', __NAMESPACE__ . '\\bust_card_data_cache' );
 	add_action( 'qe_expedition_post_cache_busted', __NAMESPACE__ . '\\bust_card_data_cache_on_expedition_update' );
 	add_action( 'qe_itinerary_post_cache_busted', __NAMESPACE__ . '\\bust_card_data_cache_on_itinerary_update' );
-
-	// Bust cache on term update.
-	add_action( 'set_object_terms', __NAMESPACE__ . '\\bust_post_cache_on_term_assign', 10, 6 );
 
 	// Admin stuff.
 	if ( is_admin() ) {
@@ -111,7 +106,6 @@ function register_departure_post_type(): void {
 		'hierarchical'        => false,
 		'supports'            => [
 			'title',
-			'revisions',
 		],
 		'show_ui'             => true,
 		'show_in_menu'        => true,
@@ -241,6 +235,14 @@ function opt_in( array $post_types = [] ): array {
  * @return void
  */
 function bust_post_cache( int $post_id = 0 ): void {
+	// Get post type.
+	$post_type = get_post_type( $post_id );
+
+	// Bail out if not Departure post type.
+	if ( POST_TYPE !== $post_type ) {
+		return;
+	}
+
 	// Clear cache for this post.
 	wp_cache_delete( CACHE_KEY . "_$post_id", CACHE_GROUP );
 
@@ -358,32 +360,6 @@ function get( int $post_id = 0 ): array {
 }
 
 /**
- * Bust cache on term assign.
- *
- * @param int                    $object_id Object ID.
- * @param array{string|int}|null $terms     An array of object term IDs or slugs.
- * @param array{string|int}|null $tt_ids    An array of term taxonomy IDs.
- * @param string                 $taxonomy  Taxonomy slug.
- *
- * @return void
- */
-function bust_post_cache_on_term_assign( int $object_id = 0, array $terms = null, array $tt_ids = null, string $taxonomy = '' ): void {
-	// Check for spoken language taxonomy.
-	if ( in_array( $taxonomy, [ SPOKEN_LANGUAGE_TAXONOMY, PROMOTION_TAG ], true ) ) {
-		// Get post.
-		$post = get( $object_id );
-
-		// Check for post.
-		if ( ! $post['post'] instanceof WP_Post || POST_TYPE !== $post['post']->post_type ) {
-			return;
-		}
-
-		// Bust cache.
-		bust_post_cache( $post['post']->ID );
-	}
-}
-
-/**
  * Get paid adventure options.
  *
  * @param int $post_id Departure Post ID.
@@ -457,6 +433,9 @@ function get_included_adventure_options( int $post_id = 0 ): array {
 	// Get Expedition ID from meta.
 	$expedition_id = $departure['post_meta']['related_expedition'] ?? '';
 
+	// Get ship ID from departure.
+	$ship_code = get_post_meta( $post_id, 'ship_code', true );
+
 	// Check meta is empty.
 	if ( empty( $expedition_id ) ) {
 		return $included_adventure_options;
@@ -482,12 +461,25 @@ function get_included_adventure_options( int $post_id = 0 ): array {
 			continue;
 		}
 
-		// Merge Adventure Options.
-		$included_adventure_options = array_merge( $included_adventure_options, $adventure_option_post['post_taxonomies'][ ADVENTURE_OPTION_CATEGORY ] );
+		// Loop through Adventure Option taxonomies.
+		foreach ( $adventure_option_post['post_taxonomies'][ ADVENTURE_OPTION_CATEGORY ] as $adventure_option ) {
+			// Check for term_id.
+			if ( ! is_array( $adventure_option ) || empty( $adventure_option['term_id'] ) ) {
+				continue;
+			}
+
+			// Add Adventure Option to included options.
+			$included_adventure_options[ $adventure_option['term_id'] ] = $adventure_option;
+		}
+	}
+
+	// Remove Flight seeing for all except Ultramarine.
+	if ( ULTRAMARINE_SHIP_CODE !== $ship_code && array_key_exists( FLIGHT_SEEING_TID, $included_adventure_options ) ) {
+		unset( $included_adventure_options[ FLIGHT_SEEING_TID ] );
 	}
 
 	// Return Adventure Options.
-	return $included_adventure_options;
+	return array_values( $included_adventure_options );
 }
 
 /**
@@ -571,6 +563,7 @@ function get_promotion_tags( int $post_id = 0 ): array {
  *     departure_id: int,
  *     expedition_name: string,
  *     expedition_link: string,
+ *     expedition_slider_images: int[],
  *     package_id: string,
  *     duration_days: int,
  *     duration_dates: string,
@@ -578,6 +571,7 @@ function get_promotion_tags( int $post_id = 0 ): array {
  *     languages: string,
  *     paid_adventure_options: string[],
  *     lowest_price: array<string, string>,
+ *     request_a_quote_url: string,
  *     transfer_package_details: array{
  *       title: string,
  *       sets: string[],
@@ -599,6 +593,7 @@ function get_promotion_tags( int $post_id = 0 ): array {
  *        gallery: mixed,
  *        cabin_code: string,
  *        type: string,
+ *        sort_priority: int,
  *        specifications: array{
  *           availability_status: string,
  *           availability_description: string,
@@ -608,7 +603,6 @@ function get_promotion_tags( int $post_id = 0 ): array {
  *           size: string,
  *           bed_configuration: string
  *       },
- *       checkout_url: string,
  *       from_price: array{
  *          discounted_price: string,
  *          original_price: string,
@@ -656,6 +650,14 @@ function get_card_data( int $departure_id = 0, string $currency = DEFAULT_CURREN
 		$ship_name = $ship_data['post']->post_title;
 	}
 
+	// Initialize hero image ids.
+	$hero_slider_image_ids = [];
+
+	// Get hero slider image ids.
+	if ( ! empty( $expedition_post['data'] ) && ! empty( $expedition_post['data']['hero_card_slider_image_ids'] ) && is_array( $expedition_post['data']['hero_card_slider_image_ids'] ) ) {
+		$hero_slider_image_ids = array_map( 'absint', $expedition_post['data']['hero_card_slider_image_ids'] );
+	}
+
 	// Get the lowest price.
 	$lowest_price = get_lowest_price( $departure_id, $currency );
 
@@ -663,11 +665,39 @@ function get_card_data( int $departure_id = 0, string $currency = DEFAULT_CURREN
 	$prices['discounted_price'] = format_price( $lowest_price['discounted'], $currency );
 	$prices['original_price']   = format_price( $lowest_price['original'], $currency );
 
+	// Initialize expedition category.
+	$expedition_category = [];
+
+	// Prepare expedition category.
+	if ( ! empty( $expedition_post['post_taxonomies'][ EXPEDITION_CATEGORY_TAXONOMY ] ) ) {
+		// Get expedition categories.
+		$expedition_categories = $expedition_post['post_taxonomies'][ EXPEDITION_CATEGORY_TAXONOMY ];
+
+		// Validate expedition categories.
+		if ( is_array( $expedition_categories ) ) {
+			// Loop through expedition categories.
+			foreach ( $expedition_categories as $category ) {
+				// Validate category.
+				if ( empty( $category['name'] ) ) {
+					continue;
+				}
+
+				// Add category to expedition category.
+				$expedition_category[] = [
+					'name'        => $category['name'],
+					'description' => $category['description'] ?? '',
+				];
+			}
+		}
+	}
+
 	// Prepare the departure card details.
 	$data = [
 		'departure_id'             => $departure_id,
 		'expedition_name'          => $expedition_name,
 		'expedition_link'          => $expedition_post['permalink'],
+		'expedition_slider_images' => $hero_slider_image_ids,
+		'expedition_categories'    => $expedition_category,
 		'package_id'               => strval( $departure['post_meta']['softrip_package_code'] ?? '' ),
 		'duration_days'            => absint( $departure['post_meta']['duration'] ?? 0 ),
 		'duration_dates'           => get_start_end_departure_date( $departure_id ),
@@ -682,6 +712,7 @@ function get_card_data( int $departure_id = 0, string $currency = DEFAULT_CURREN
 		'cabins'                   => get_cabin_details_by_departure( $departure_id, $currency ),
 		'promotion_banner'         => get_discount_label( $lowest_price['original'], $lowest_price['discounted'] ),
 		'promotions'               => get_promotions_description( $departure_id ),
+		'request_a_quote_url'      => get_request_a_quote_url( $departure_id ),
 	];
 
 	// Set cache and return data.
@@ -762,6 +793,7 @@ function get_start_end_departure_date( int $post_id = 0 ): string {
  *      languages: string,
  *      paid_adventure_options: string[],
  *      lowest_price: array<string, string>,
+ *      request_a_quote_url: string,
  *      transfer_package_details: array{
  *        title: string,
  *        sets: array<string>,
@@ -820,7 +852,7 @@ function get_cards_data( array $departure_ids = [], string $currency = DEFAULT_C
 }
 
 /**
- * Bust Departure card data cache.
+ * Bust departure card data and dates rates card data cache on departure post update.
  *
  * @param int $post_id Departure Post ID.
  *
@@ -899,6 +931,7 @@ function bust_card_data_cache_on_expedition_update( int $expedition_id = 0 ): vo
  * @param string $currency     Currency.
  *
  * @return array{}|array{
+ *     departure_id: int,
  *     region: string,
  *     ship_title: string,
  *     ship_link: string|false,
@@ -950,6 +983,8 @@ function bust_card_data_cache_on_expedition_update( int $expedition_id = 0 ): vo
  *             checkout_url: string,
  *             brochure_price: string,
  *             promos: array{}|string[],
+ *             type: string,
+ *             sort_priority: int,
  *          }
  *     >,
  * }
@@ -1052,9 +1087,6 @@ function get_dates_rates_card_data( int $departure_id = 0, string $currency = DE
 		];
 	}
 
-	// Check for cabins.
-	$cabin_ids = get_cabin_category_post_ids_by_departure( $departure_id );
-
 	// Available promos.
 	$available_promos = [];
 
@@ -1073,56 +1105,9 @@ function get_dates_rates_card_data( int $departure_id = 0, string $currency = DE
 		}
 	}
 
-	// Prepare the cabin price data.
-	$cabin_price_data = [];
-
-	// Loop through cabin_ids.
-	foreach ( $cabin_ids as $cabin_id ) {
-		// Get cabin category data.
-		$cabin_data = get_cabin_category_data( absint( $cabin_id ) );
-
-		// Check if cabin category data is empty.
-		if ( empty( $cabin_data['post'] ) || ! $cabin_data['post'] instanceof WP_Post ) {
-			continue;
-		}
-
-		// Get cabin code from meta.
-		$cabin_code = strval( $cabin_data['post_meta']['cabin_category_id'] ?? '' );
-
-		// Skip if no cabin code.
-		if ( empty( $cabin_code ) ) {
-			continue;
-		}
-
-		// Get availability status.
-		$cabin_spaces_available   = get_available_cabin_spaces( $departure_id, $cabin_id );
-		$availability_status      = get_cabin_availability_status( $departure_id, $cabin_id );
-		$availability_description = get_availability_status_description( $availability_status );
-
-		// Prepare the cabin data.
-		$cabin_price_data[ $cabin_code ] = [
-			'name'                     => strval( $cabin_data['post_meta']['cabin_name'] ?? '' ),
-			'availability_status'      => $availability_status,
-			'availability_description' => $availability_description,
-			'spaces_available'         => $cabin_spaces_available,
-			'promos'                   => [],
-			'checkout_url'             => get_checkout_url( $departure_id, $cabin_id, $currency ),
-		];
-
-		// Get the lowest price for the cabin.
-		$cabin_price = get_lowest_price_by_cabin_category_and_departure( $cabin_id, $departure_id, $currency );
-
-		// Set the brochure price.
-		$cabin_price_data[ $cabin_code ]['brochure_price'] = format_price( $cabin_price['original'], $currency );
-
-		// Loop through available_promos for each promo.
-		foreach ( $available_promos as $promo_code => $promo_data ) {
-			$cabin_price_data[ $cabin_code ]['promos'][ $promo_code ] = format_price( get_lowest_price_by_cabin_category_and_departure_and_promotion_code( $cabin_id, $departure_id, $promo_code, $currency ), $currency );
-		}
-	}
-
 	// Prepare the departure card details.
 	$data = [
+		'departure_id'               => $departure_id,
 		'region'                     => implode( ', ', $regions ),
 		'ship_title'                 => $ship_name,
 		'ship_link'                  => get_permalink( $ship_id ),
@@ -1137,7 +1122,9 @@ function get_dates_rates_card_data( int $departure_id = 0, string $currency = DE
 		'paid_adventure_options'     => $paid_adventure_options_data,
 		'transfer_package_details'   => get_included_transfer_package_details( $itinerary_id, $currency ),
 		'available_promos'           => $available_promos,
-		'cabin_data'                 => $cabin_price_data,
+		'cabin_data'                 => get_cabin_price_data_by_departure( $departure_id, $currency ),
+		'request_a_quote_url'        => get_request_a_quote_url( $departure_id ),
+		'tax_types'                  => get_tax_type_details( $itinerary_id ),
 	];
 
 	// Set cache and return data.
@@ -1154,6 +1141,7 @@ function get_dates_rates_card_data( int $departure_id = 0, string $currency = DE
  * @param string $currency      The currency.
  *
  * @return array{}|array<int, array{}|array{
+ *     departure_id: int,
  *     region: string,
  *     ship_title: string,
  *     ship_link: string|false,
@@ -1204,6 +1192,8 @@ function get_dates_rates_card_data( int $departure_id = 0, string $currency = DE
  *             spaces_available: int,
  *             brochure_price: string,
  *             promos: array{}|string[],
+ *             type: string,
+ *             sort_priority: int,
  *          }
  *     >,
  * }>
@@ -1220,7 +1210,15 @@ function get_dates_rates_cards_data( array $departure_ids = [], string $currency
 	// Loop through departure_ids.
 	foreach ( $departure_ids as $departure_id ) {
 		// Get departure card data.
-		$departure_cards[ $departure_id ] = get_dates_rates_card_data( $departure_id, $currency );
+		$card_data = get_dates_rates_card_data( $departure_id, $currency );
+
+		// Validate card_data.
+		if ( empty( $card_data ) ) {
+			continue;
+		}
+
+		// Add card data to departure cards.
+		$departure_cards[ $departure_id ] = $card_data;
 	}
 
 	// Return departure cards data.
@@ -1250,7 +1248,7 @@ function get_discount_label( int $original_price = 0, int $discounted_price = 0 
 	// Prepare the discount label.
 	$discount_label = sprintf(
 		// translators: %s: Discount Percentage.
-		__( 'Save upto %s%%', 'qrk' ),
+		__( 'Save up to %s%%', 'qrk' ),
 		number_format( $discount_percentage, 0 )
 	);
 

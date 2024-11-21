@@ -136,8 +136,167 @@ class Test_Departures extends Softrip_TestCase {
 		// Related ship post id.
 		$related_ship_id = get_id_from_ship_code( $raw_departure_data['shipCode'] );
 
-		// Test with valid raw departure data, itinerary post id, and expedition post id.
+		// Test with raw departure data, itinerary post id, and expedition post id but without cabins.
 		$expected = [
+			'post_title'  => '123',
+			'post_type'   => DEPARTURE_POST_TYPE,
+			'post_parent' => 123,
+			'meta_input'  => [
+				'related_expedition'   => 456,
+				'itinerary'            => 123,
+				'related_ship'         => $related_ship_id,
+				'softrip_package_code' => 'DEF',
+				'softrip_id'           => '123',
+				'softrip_code'         => 'ABC',
+				'start_date'           => '2021-01-01',
+				'end_date'             => '2021-01-02',
+				'duration'             => 2,
+				'ship_code'            => 'GHI',
+				'softrip_market_code'  => 'JKL',
+			],
+		];
+		$actual   = format_raw_departure_data( $raw_departure_data, 123, 456 );
+		$this->assertEquals( $expected, $actual );
+
+		// Add empty cabin array to the raw departure data.
+		$raw_departure_data['cabins'] = [];
+
+		// Add occupancy to the cabin.
+		$raw_departure_data['cabins'][0]['occupancies'] = [
+			[
+				'saleStatusCode' => 'O',
+				'promoCode'      => 'PROMO',
+				'price'          => '100',
+				'currency'       => 'USD',
+			],
+		];
+
+		// Test with raw departure data, itinerary post id, expedition post id, and cabins.
+		$expected =
+		[
+			'post_title'  => '123',
+			'post_type'   => DEPARTURE_POST_TYPE,
+			'post_parent' => 123,
+			'meta_input'  => [
+				'related_expedition'   => 456,
+				'itinerary'            => 123,
+				'related_ship'         => $related_ship_id,
+				'softrip_package_code' => 'DEF',
+				'softrip_id'           => '123',
+				'softrip_code'         => 'ABC',
+				'start_date'           => '2021-01-01',
+				'end_date'             => '2021-01-02',
+				'duration'             => 2,
+				'ship_code'            => 'GHI',
+				'softrip_market_code'  => 'JKL',
+			],
+		];
+		$actual   = format_raw_departure_data( $raw_departure_data, 123, 456 );
+		$this->assertEquals( $expected, $actual );
+
+		// Add occupancy to any cabin.
+		$raw_departure_data['cabins'][1]['occupancies'] = [
+			[
+				'saleStatusCode' => 'O',
+				'promoCode'      => 'PROMO',
+				'price'          => '100',
+				'currency'       => 'USD',
+			],
+		];
+
+		// Test with raw departure data, itinerary post id, expedition post id, and cabins.
+		$expected =
+		[
+			'post_title'  => '123',
+			'post_type'   => DEPARTURE_POST_TYPE,
+			'post_parent' => 123,
+			'meta_input'  => [
+				'related_expedition'   => 456,
+				'itinerary'            => 123,
+				'related_ship'         => $related_ship_id,
+				'softrip_package_code' => 'DEF',
+				'softrip_id'           => '123',
+				'softrip_code'         => 'ABC',
+				'start_date'           => '2021-01-01',
+				'end_date'             => '2021-01-02',
+				'duration'             => 2,
+				'ship_code'            => 'GHI',
+				'softrip_market_code'  => 'JKL',
+			],
+		];
+		$actual   = format_raw_departure_data( $raw_departure_data, 123, 456 );
+		$this->assertEquals( $expected, $actual );
+
+		// Add occupancy to all cabins.
+		$raw_departure_data['cabins'][2]['occupancies'] = [
+			[
+				'promoCode' => 'PROMO',
+				'price'     => '100',
+				'currency'  => 'USD',
+			],
+		];
+
+		// Test with raw departure data, itinerary post id, expedition post id, and cabins.
+		$expected =
+		[
+			'post_title'  => '123',
+			'post_type'   => DEPARTURE_POST_TYPE,
+			'post_parent' => 123,
+			'meta_input'  => [
+				'related_expedition'   => 456,
+				'itinerary'            => 123,
+				'related_ship'         => $related_ship_id,
+				'softrip_package_code' => 'DEF',
+				'softrip_id'           => '123',
+				'softrip_code'         => 'ABC',
+				'start_date'           => '2021-01-01',
+				'end_date'             => '2021-01-02',
+				'duration'             => 2,
+				'ship_code'            => 'GHI',
+				'softrip_market_code'  => 'JKL',
+			],
+		];
+		$actual   = format_raw_departure_data( $raw_departure_data, 123, 456 );
+		$this->assertEquals( $expected, $actual );
+
+		// Test with raw departure data, itinerary post id, expedition post id, and cabins with multiple occupancies.
+		$raw_departure_data['cabins'] = [
+			[
+				'id'          => 'MYS',
+				'occupancies' => [
+					[
+						'promoCode' => 'PROMO',
+						'price'     => '100',
+						'currency'  => 'USD',
+					],
+				],
+			],
+			[
+				'id'          => 'MYS2',
+				'occupancies' => [
+					[
+						'promoCode' => 'PROMO',
+						'price'     => '100',
+						'currency'  => 'USD',
+					],
+				],
+			],
+			[
+				'id'          => 'MYS3',
+				'occupancies' => [
+					[
+						'saleStatusCode' => 'O',
+						'promoCode'      => 'PROMO',
+						'price'          => '100',
+						'currency'       => 'USD',
+					],
+				],
+			],
+		];
+
+		// Test with raw departure data, itinerary post id, expedition post id, and cabins.
+		$expected =
+		[
 			'post_title'  => '123',
 			'post_type'   => DEPARTURE_POST_TYPE,
 			'post_parent' => 123,
@@ -547,9 +706,10 @@ class Test_Departures extends Softrip_TestCase {
 		$this->assertIsInt( $another_departure_post_id );
 
 		// Test with an itinerary post id with multiple departures.
-		$expected = [ $another_departure_post_id, $departure_post_id ];
-		$actual   = get_departures_by_itinerary( $itinerary_post_id );
-		$this->assertEquals( $expected, $actual );
+		$actual = get_departures_by_itinerary( $itinerary_post_id );
+		$this->assertSame( 2, count( $actual ) );
+		$this->assertContains( $another_departure_post_id, $actual );
+		$this->assertContains( $departure_post_id, $actual );
 	}
 
 	/**

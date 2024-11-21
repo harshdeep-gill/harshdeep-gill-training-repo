@@ -7,6 +7,7 @@
 
 namespace Quark\Regions;
 
+use WP;
 use WP_Post;
 
 const POST_TYPE   = 'qrk_region';
@@ -25,8 +26,12 @@ function bootstrap(): void {
 	// Opt into stuff.
 	add_filter( 'qe_destination_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
 
-	// Other hooks.
-	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
+	// Permalink and rewrite rules.
+	add_action( 'init', __NAMESPACE__ . '\\rewrite_rules' );
+	add_filter( 'post_type_link', __NAMESPACE__ . '\\get_custom_permalink', 10, 3 );
+
+	// Other hooks. Assigning non-standard priority to avoid race conditions with ACF.
+	add_action( 'save_post', __NAMESPACE__ . '\\bust_post_cache', 11 );
 }
 
 /**
@@ -59,6 +64,8 @@ function register_region_post_type(): void {
 			'title',
 			'editor',
 			'page-attributes',
+			'excerpt',
+			'revisions',
 		],
 		'show_ui'             => true,
 		'show_in_menu'        => true,
@@ -389,6 +396,14 @@ function opt_in( array $post_types = [] ): array {
  * @return void
  */
 function bust_post_cache( int $post_id = 0 ): void {
+	// Get post type.
+	$post_type = get_post_type( $post_id );
+
+	// Check for post type.
+	if ( POST_TYPE !== $post_type ) {
+		return;
+	}
+
 	// Clear cache for this post.
 	wp_cache_delete( CACHE_KEY . "_$post_id", CACHE_GROUP );
 
@@ -446,4 +461,41 @@ function get( int $page_id = 0 ): array {
 
 	// Return data.
 	return $data;
+}
+
+/**
+ * Rewrite rules for this post type.
+ *
+ * @return void
+ */
+function rewrite_rules(): void {
+	// Match URLs with one level post.
+	add_rewrite_rule(
+		'^([^/]+)/?$',
+		'index.php?' . POST_TYPE . '=$matches[1]'
+	);
+
+	// Match URLs with one or more slashes for parent-child relations.
+	add_rewrite_rule(
+		'^([^/]+)/([^/]+)/?$',
+		'index.php?' . POST_TYPE . '=$matches[1]/$matches[2]'
+	);
+}
+
+/**
+ * Get custom permalink for this post type.
+ *
+ * @param string       $permalink Original permalink.
+ * @param WP_Post|null $post      Post object.
+ *
+ * @return string
+ */
+function get_custom_permalink( string $permalink = '', WP_Post $post = null ): string {
+	// Return permalink if post is not a post type.
+	if ( ! $post instanceof WP_Post || POST_TYPE !== $post->post_type ) {
+		return $permalink;
+	}
+
+	// Construct permalink.
+	return str_replace( '/regions', '', $permalink );
 }

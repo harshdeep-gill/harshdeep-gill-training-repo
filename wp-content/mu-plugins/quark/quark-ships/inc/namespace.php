@@ -31,14 +31,14 @@ function bootstrap(): void {
 	add_filter( 'qe_ship_category_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
 	add_filter( 'qe_adventure_options_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
 
-	// Other hooks.
-	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
-	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_ship_code_lookup_cache' );
+	// Other hooks. Assigning non-standard priority to avoid race conditions with ACF.
+	add_action( 'save_post', __NAMESPACE__ . '\\bust_post_cache', 11 );
 
 	// Admin stuff.
 	if ( is_admin() ) {
 		// Custom fields.
 		require_once __DIR__ . '/../custom-fields/ships.php';
+		require_once __DIR__ . '/../custom-fields/api-data.php';
 	}
 }
 
@@ -71,6 +71,7 @@ function register_ship_post_type(): void {
 		'supports'            => [
 			'title',
 			'editor',
+			'thumbnail',
 			'revisions',
 			'excerpt',
 		],
@@ -437,8 +438,19 @@ function opt_in( array $post_types = [] ): array {
  * @return void
  */
 function bust_post_cache( int $post_id = 0 ): void {
+	// Get post type.
+	$post_type = get_post_type( $post_id );
+
+	// Bail out if post type does not match.
+	if ( POST_TYPE !== $post_type ) {
+		return;
+	}
+
 	// Clear cache for this post.
 	wp_cache_delete( CACHE_KEY . "_$post_id", CACHE_GROUP );
+
+	// Delete ship lookup cache.
+	wp_cache_delete( CACHE_KEY . '_all_ships', CACHE_GROUP );
 
 	// Trigger action to clear cache for this post.
 	do_action( 'qe_ship_cache_busted', $post_id );

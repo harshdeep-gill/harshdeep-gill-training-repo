@@ -70,6 +70,7 @@
 		font-weight: var(--font-weight-bold);
 		display: flex;
 		align-items: center;
+		white-space: nowrap;
 		position: relative;
 		min-height: 30px;
 		padding: 0 var(--spacing-2) 0 var(--spacing-3);
@@ -228,7 +229,7 @@
 	}
 
 	&__options-count-wrap {
-		display: flex;
+		display: none;
 		align-items: center;
 		gap: var(--spacing-2);
 
@@ -236,8 +237,10 @@
 			display: none;
 		}
 
-		&--hidden {
-			display: none;
+		&--visible {
+			display: flex;
+			align-items: center;
+			gap: var(--spacing-2);
 		}
 	}
 
@@ -333,8 +336,13 @@
 
 	&__transfer-package-content {
 
+		.drawer__header {
+			padding-right: var(--spacing-6);
+		}
+
 		.drawer__content {
 			max-width: 640px;
+			width: 100%;
 			padding: var(--spacing-5);
 		}
 
@@ -407,7 +415,6 @@
 		display: inline-flex;
 		cursor: pointer;
 		vertical-align: middle;
-		margin-left: var(--spacing-1);
 		white-space: normal;
 
 		&:hover {

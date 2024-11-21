@@ -22,8 +22,8 @@ function bootstrap(): void {
 	// Post type.
 	add_action( 'init', __NAMESPACE__ . '\\register_port_post_type' );
 
-	// Other hooks.
-	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
+	// Other hooks. Assigning non-standard priority to avoid race conditions with ACF.
+	add_action( 'save_post', __NAMESPACE__ . '\\bust_post_cache', 11 );
 
 	// Admin stuff.
 	if ( is_admin() ) {
@@ -61,7 +61,6 @@ function register_port_post_type(): void {
 		'supports'            => [
 			'title',
 			'editor',
-			'revisions',
 		],
 		'show_ui'             => true,
 		'show_in_menu'        => 'edit.php?post_type=qrk_itinerary',
@@ -86,6 +85,14 @@ function register_port_post_type(): void {
  * @return void
  */
 function bust_post_cache( int $post_id = 0 ): void {
+	// Get post type.
+	$post_type = get_post_type( $post_id );
+
+	// Check for post type.
+	if ( POST_TYPE !== $post_type ) {
+		return;
+	}
+
 	// Clear cache for this post.
 	wp_cache_delete( CACHE_KEY . "_$post_id", CACHE_GROUP );
 

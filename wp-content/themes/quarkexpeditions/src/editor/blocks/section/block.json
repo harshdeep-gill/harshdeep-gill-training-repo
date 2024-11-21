@@ -32,7 +32,7 @@
 		},
 		"headingLevel": {
 			"type": "string",
-			"default": "3"
+			"default": "2"
 		},
 		"hasDescription": {
 			"type": "boolean",
@@ -54,6 +54,22 @@
 			"type": "string",
 			"default": "gray",
 			"enum": [ "black", "gray" ]
+		},
+		"hasBackgroundImage": {
+			"type": "boolean",
+			"default": false
+		},
+		"backgroundImage": {
+			"type": "object"
+		},
+		"gradientPosition": {
+			"type": "string",
+			"default": "none"
+		},
+		"gradientColor": {
+			"type": "string",
+			"default": "black",
+			"enum": [ "black", "gray-5", "white" ]
 		},
 		"hasPadding": {
 			"type": "boolean",

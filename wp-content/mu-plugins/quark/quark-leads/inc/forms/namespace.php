@@ -13,12 +13,16 @@ namespace Quark\Leads\Forms;
  * @return array<string,string>
  */
 function get_countries(): array {
-	// Key value pairs for country-code/country-name.
-	static $countries = [
+	// Priority countries.
+	$priority_countries = [
 		'AU' => 'Australia',
 		'CA' => 'Canada',
 		'US' => 'United States',
 		'GB' => 'United Kingdom',
+	];
+
+	// Key value pairs for country-code/country-name.
+	static $countries = [
 		'AD' => 'Andorra',
 		'AE' => 'United Arab Emirates',
 		'AF' => 'Afghanistan',
@@ -267,6 +271,12 @@ function get_countries(): array {
 		'ZW' => 'Zimbabwe',
 	];
 
+	// Sort countries alphabetically.
+	asort( $countries );
+
+	// Merge all countries.
+	$countries = array_merge( $priority_countries, $countries );
+
 	// Return the countries.
 	return $countries;
 }
@@ -353,6 +363,7 @@ function get_states(): array {
 			'WA' => 'Washington',
 			'WI' => 'Wisconsin',
 			'WV' => 'West Virginia',
+			'WY' => 'Wyoming',
 		],
 		'CA' => [
 			'AB' => 'Alberta',

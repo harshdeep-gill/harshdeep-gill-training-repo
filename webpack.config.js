@@ -10,6 +10,7 @@ const TerserPlugin = require( 'terser-webpack-plugin' );
 const WebpackNotifierPlugin = require( 'webpack-notifier' );
 const MiniCssExtractPlugin = require( 'mini-css-extract-plugin' );
 const RemoveEmptyScriptsPlugin = require( 'webpack-remove-empty-scripts' );
+const ForkTsCheckerWebpackPlugin = require( 'fork-ts-checker-webpack-plugin' );
 const WebpackWatchedGlobEntries = require( 'webpack-watched-glob-entries-plugin' );
 const DependencyExtractionWebpackPlugin = require( '@wordpress/dependency-extraction-webpack-plugin' );
 
@@ -32,7 +33,14 @@ module.exports = ( env ) => {
 			rules: [
 				{
 					test: /\.tsx?$/,
-					use: 'ts-loader',
+					use: [
+						{
+							loader: 'ts-loader',
+							options: {
+								transpileOnly: true,
+							},
+						},
+					],
 					exclude: /node_modules/,
 				},
 				{
@@ -135,6 +143,7 @@ module.exports = ( env ) => {
 					} );
 				},
 			},
+			new ForkTsCheckerWebpackPlugin(),
 		],
 		externals: {
 			wp: 'wp',
@@ -196,7 +205,9 @@ module.exports = ( env ) => {
 			TPAccordionItemElement: `${ themePath }/src/vendor/tp-accordion.js`,
 			TPMultiSelectElement: `${ themePath }/src/vendor/tp-multi-select.js`,
 			TPToggleAttributeElement: `${ themePath }/src/vendor/tp-toggle-attribute.js`,
+			TPNumberSpinnerElement: `${ themePath }/src/vendor/tp-number-spinner.js`,
 			queryString: `${ themePath }/src/vendor/querystring.js`,
+			popoverPolyfill: `${ themePath }/src/vendor/popover-polyfill.js`,
 		},
 		output: {
 			...buildConfig.output,

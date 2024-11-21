@@ -12,7 +12,7 @@
 
 	$image_args = [
 		'size' => [
-			'width'  => 350,
+			'width'  => 352,
 			'height' => 520,
 		],
 		'responsive' => [

@@ -9,6 +9,8 @@ namespace Quark\OfficePhoneNumbers;
 
 use Quark\OfficePhoneNumbers\RestApi\Phone_Number;
 
+use function Quark\Core\get_visitor_geo_country;
+
 const OFFICE_CACHE_KEY = 'office_phone_number_data';
 const CACHE_GROUP      = 'qrk_options';
 
@@ -28,6 +30,9 @@ function bootstrap(): void {
 	// REST API hooks.
 	add_action( 'rest_api_init', __NAMESPACE__ . '\\register_rest_endpoints' );
 	add_filter( 'travelopia_security_public_rest_api_routes', __NAMESPACE__ . '\\security_public_rest_api_routes' );
+
+	// Replace [quark_default_phone_number] string with the default phone number.
+	add_filter( 'quark_front_end_markup', __NAMESPACE__ . '\\replace_default_phone_number_shortcode' );
 
 	// Custom fields.
 	if ( is_admin() ) {
@@ -72,16 +77,9 @@ function office_phone_number_front_end_data( array $data = [] ): array {
 
 	// Add dynamic phone number data.
 	$data['dynamic_phone_number'] = [
-		'api_endpoint' => '',
+		'api_endpoint'         => home_url( 'wp-json/' . REST_API_NAMESPACE . '/phone-number/get' ),
+		'default_phone_number' => get_option( 'options_default_phone_number', '' ),
 	];
-
-	// Update phone number if any rules match.
-	$data['dynamic_phone_number'] = array_merge(
-		$data['dynamic_phone_number'],
-		[
-			'api_endpoint' => home_url( 'wp-json/' . REST_API_NAMESPACE . '/phone-number/get' ),
-		]
-	);
 
 	// Return updated data.
 	return $data;
@@ -223,11 +221,11 @@ function get_corporate_office_phone_number(): array {
  * @param string $country_code Country code.
  *
  * @return array{}|array{
- *    phone: string,
+ *    phone_number: string,
  *    prefix: string,
  * }
  */
-function get_office_phone_number( string $country_code = 'US' ): array {
+function get_office_phone_number_by_country_code( string $country_code = 'US' ): array {
 	// Cache key.
 	$cache_key = OFFICE_CACHE_KEY . '_' . $country_code;
 
@@ -248,8 +246,8 @@ function get_office_phone_number( string $country_code = 'US' ): array {
 		// Check if country code matches.
 		if ( in_array( strtoupper( $country_code ), (array) $office['coverage'], true ) ) {
 			$data = [
-				'phone'  => strval( $office['phone'] ),
-				'prefix' => strval( $office['phone_number_prefix'] ),
+				'phone_number' => strval( $office['phone'] ),
+				'prefix'       => strval( $office['phone_number_prefix'] ),
 			];
 			break;
 		}
@@ -266,6 +264,30 @@ function get_office_phone_number( string $country_code = 'US' ): array {
 
 	// Return empty array if country code is empty.
 	return [];
+}
+
+/**
+ * Get office phone number by geo location.
+ *
+ * @return array{}|array{
+ *     phone_number: string,
+ *     prefix: string,
+ * }
+ */
+function get_office_phone_number(): array {
+	// Get the visitor's country.
+	$country = get_visitor_geo_country();
+
+	// Get office phone number by country code.
+	$office_phone_number = get_office_phone_number_by_country_code( $country );
+
+	// Use corporate office phone number if no local office phone number is found.
+	if ( empty( $office_phone_number ) ) {
+		$office_phone_number = get_corporate_office_phone_number();
+	}
+
+	// Return the matching rule.
+	return $office_phone_number;
 }
 
 /**
@@ -288,4 +310,22 @@ function purge_local_office_data_cache( string $page_id = '', string $page_slug 
 
 	// Trigger action to clear cache for office data.
 	do_action( 'qe_office_data_cache_busted' );
+}
+
+/**
+ * Replace shortcode with the default phone number.
+ *
+ * @param string $markup The current markup.
+ *
+ * @return string
+ */
+function replace_default_phone_number_shortcode( string $markup = '' ): string {
+	// Replace shortcode with default phone number.
+	return strval(
+		str_replace(
+			'[quark_default_phone_number]',
+			strval( get_option( 'options_default_phone_number', '' ) ),
+			$markup
+		)
+	);
 }

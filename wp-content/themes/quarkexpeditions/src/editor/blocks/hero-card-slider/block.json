@@ -28,6 +28,10 @@
       "items": {
         "type": "array",
         "default": []
+      },
+	  "isLightbox": {
+        "type": "boolean",
+        "default": false
       }
     },
     "supports": {

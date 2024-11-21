@@ -22,8 +22,10 @@
 	];
 @endphp
 
-<x-image
-	class="media-cta-banner__image"
-	:args="$image_args"
-	:image_id="$image_id"
-/>
+<div class="media-cta-banner__image-wrap">
+	<x-image
+		class="media-cta-banner__image"
+		:args="$image_args"
+		:image_id="$image_id"
+	/>
+</div>

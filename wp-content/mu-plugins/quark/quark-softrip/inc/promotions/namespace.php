@@ -61,8 +61,17 @@ function get_table_sql(): string {
  */
 function update_promotions( array $raw_promotions_data = [], int $departure_post_id = 0 ): bool {
 	// Bail out if no data.
-	if ( empty( $raw_promotions_data ) || ! is_array( $raw_promotions_data ) || empty( $departure_post_id ) ) {
+	if ( ! is_array( $raw_promotions_data ) || empty( $departure_post_id ) ) {
 		return false;
+	}
+
+	// If empty promotions data, delete all promotions.
+	if ( empty( $raw_promotions_data ) ) {
+		// Delete from meta.
+		delete_post_meta( $departure_post_id, 'promotion_codes' );
+
+		// Return success.
+		return true;
 	}
 
 	// Get the global $wpdb object.
@@ -73,6 +82,9 @@ function update_promotions( array $raw_promotions_data = [], int $departure_post
 
 	// Updated promotion codes.
 	$updated_promotion_codes = [];
+
+	// Initialize if any updated.
+	$any_updated = false;
 
 	// Loop through each raw promotion data.
 	foreach ( $raw_promotions_data as $raw_promotion_data ) {
@@ -107,6 +119,11 @@ function update_promotions( array $raw_promotions_data = [], int $departure_post
 				[ 'id' => $existing_promotion_data['id'] ]
 			);
 
+			// Fire the action on update.
+			if ( $is_saved > 0 ) {
+				$any_updated = true;
+			}
+
 			// Get the updated ID.
 			$updated_id = $is_saved ? $existing_promotion_data['id'] : 0;
 		} else {
@@ -117,7 +134,8 @@ function update_promotions( array $raw_promotions_data = [], int $departure_post
 			);
 
 			// Get the inserted ID.
-			$updated_id = $wpdb->insert_id;
+			$updated_id  = $wpdb->insert_id;
+			$any_updated = true;
 		}
 
 		// Add the updated promotion code.
@@ -134,10 +152,15 @@ function update_promotions( array $raw_promotions_data = [], int $departure_post
 	}
 
 	// Update promotion code on departure meta.
-	update_post_meta( $departure_post_id, 'promotion_codes', $updated_promotion_codes );
+	$is_saved = update_post_meta( $departure_post_id, 'promotion_codes', $updated_promotion_codes );
 
-	// Return success.
-	return true;
+	// If meta saved, set any updated to true.
+	if ( ! empty( $is_saved ) ) {
+		$any_updated = true;
+	}
+
+	// Return if any updated.
+	return $any_updated;
 }
 
 /**
@@ -236,7 +259,7 @@ function get_promotions_by_code( string $code = '', bool $force = false ): array
 		$cached_value = wp_cache_get( $cache_key );
 
 		// Check if we have the data.
-		if ( ! empty( $cached_value ) && is_array( $cached_value ) ) {
+		if ( is_array( $cached_value ) ) {
 			return $cached_value;
 		}
 	}
@@ -416,7 +439,7 @@ function get_promotions_by_id( int $promotion_id = 0, bool $direct = false ): ar
 		$cached_value = wp_cache_get( $cache_key );
 
 		// Check if we have the data.
-		if ( ! empty( $cached_value ) && is_array( $cached_value ) ) {
+		if ( is_array( $cached_value ) ) {
 			return $cached_value;
 		}
 	}

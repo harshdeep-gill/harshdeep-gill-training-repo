@@ -19,7 +19,7 @@
 		$classes[] = sprintf( 'btn--color-%s', $color );
 	}
 
-	if ( ! empty( $appearance ) && 'outline' === $appearance ) {
+	if ( ( ! empty( $appearance ) && 'outline' === $appearance ) || ( ! empty( $color ) && 'white' === $color ) ) {
 		$classes[] = 'btn--outline';
 	}
 
@@ -43,7 +43,7 @@
 @endphp
 
 @if ( ! empty( $href ) )
-	<a href="{{ $href }}"
+	<a href="{!! esc_url( $href ) !!}"
 	   class="{{ $classes }}"
 	   @if ( ! empty( $target ) )
 		   target="{{ $target }}"

@@ -9,6 +9,7 @@ namespace Quark\Expeditions;
 
 use WP_Post;
 use WP_Error;
+use WP_Screen;
 use WP_Term;
 use WP_REST_Response;
 use WP_Taxonomy;
@@ -19,10 +20,12 @@ use function Quark\Itineraries\format_itinerary_day_title;
 use function Quark\ItineraryDays\get as get_itinerary_day;
 use function Quark\Departures\get as get_departure;
 use function Quark\Core\format_price;
+use function Quark\Localization\get_currencies;
+use function Quark\Localization\get_current_currency;
 use function Quark\Ships\get as get_ship;
 use function Quark\Softrip\Departures\get_departures_by_itinerary;
 use function Quark\Softrip\Itineraries\get_end_date;
-use function Quark\Softrip\Itineraries\get_lowest_price;
+use function Quark\Itineraries\get_lowest_price as get_itinerary_lowest_price;
 use function Quark\Softrip\Itineraries\get_related_ships;
 use function Quark\Softrip\Itineraries\get_start_date;
 
@@ -57,14 +60,20 @@ function bootstrap(): void {
 	add_filter( 'qe_excursion_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
 	add_filter( 'rest_prepare_taxonomy', __NAMESPACE__ . '\\hide_excursion_metabox', 10, 3 );
 
-	// Other hooks.
-	add_action( 'save_post_' . POST_TYPE, __NAMESPACE__ . '\\bust_post_cache' );
+	// Other hooks. Assigning non-standard priority to avoid race conditions with ACF.
+	add_action( 'save_post', __NAMESPACE__ . '\\bust_post_cache', 11 );
 	add_filter( 'travelopia_seo_structured_data_schema', __NAMESPACE__ . '\\seo_structured_data' );
 
 	// Bust cache for details data.
 	add_action( 'qe_expedition_post_cache_busted', __NAMESPACE__ . '\\bust_details_cache' );
-	add_action( 'qe_itinerary_post_cache_busted', __NAMESPACE__ . '\\bust_details_cache_on_itinerary_update', 1 );
-	add_action( 'qe_departure_post_cache_busted', __NAMESPACE__ . '\\bust_details_cache_on_departure_update', 1 );
+	add_action( 'qe_itinerary_post_cache_busted', __NAMESPACE__ . '\\bust_details_cache_on_itinerary_update' );
+	add_action( 'qe_departure_post_cache_busted', __NAMESPACE__ . '\\bust_details_cache_on_departure_update' );
+
+	// Breadcrumbs.
+	add_filter( 'travelopia_breadcrumbs_ancestors', __NAMESPACE__ . '\\breadcrumbs_ancestors' );
+
+	// Related Itineraries Meta box.
+	add_action( 'add_meta_boxes', __NAMESPACE__ . '\\add_related_itineraries_meta_box' );
 
 	// Admin stuff.
 	if ( is_admin() ) {
@@ -106,6 +115,7 @@ function register_expedition_post_type(): void {
 			'editor',
 			'revisions',
 			'thumbnail',
+			'excerpt',
 		],
 		'show_ui'             => true,
 		'show_in_menu'        => true,
@@ -343,7 +353,7 @@ function register_expedition_post_type(): void {
 						],
 						[
 							[
-								'quark/included-activities',
+								'quark/related-adventure-options',
 								[
 									'showDescription' => false,
 								],
@@ -670,6 +680,14 @@ function opt_in( array $post_types = [] ): array {
  * @return void
  */
 function bust_post_cache( int $post_id = 0 ): void {
+	// Get post type.
+	$post_type = get_post_type( $post_id );
+
+	// Check for post type.
+	if ( POST_TYPE !== $post_type ) {
+		return;
+	}
+
 	// Clear cache for this post.
 	wp_cache_delete( CACHE_KEY . "_$post_id", CACHE_GROUP );
 
@@ -753,7 +771,7 @@ function get_seo_structured_data( int $post_id = 0 ): array {
 	if ( ! empty( $expedition_price ) ) {
 		$product_schema['offers'] = [
 			'@type'         => 'Offer',
-			'price'         => get_starting_from_price( $post_id )['discounted'],
+			'price'         => $expedition_price,
 			'priceCurrency' => 'USD',
 			'url'           => $expedition['permalink'],
 		];
@@ -1272,14 +1290,22 @@ function get_minimum_duration_itinerary( int $post_id = 0 ): WP_Post|null {
  * }
  */
 function get_starting_from_price( int $post_id = 0 ): array {
-	// Get post.
-	$post = get( $post_id );
-
-	// Starting from price.
+	// Default starting from price.
 	$lowest_prices = [
 		'original'   => 0,
 		'discounted' => 0,
 	];
+
+	// Bail if no post ID.
+	if ( empty( $post_id ) ) {
+		return $lowest_prices;
+	}
+
+	// Current currency.
+	$currency = get_current_currency();
+
+	// Get post.
+	$post = get( $post_id );
 
 	// Check for post.
 	if ( empty( $post['post'] ) || ! $post['post'] instanceof WP_Post ) {
@@ -1306,7 +1332,7 @@ function get_starting_from_price( int $post_id = 0 ): array {
 		}
 
 		// Get lowest price for Itinerary.
-		$price = get_lowest_price( $itinerary['post']->ID );
+		$price = get_itinerary_lowest_price( $itinerary['post']->ID, $currency );
 
 		// Check minimum price.
 		if ( ! empty( $price['discounted'] ) && ( empty( $lowest_price ) || $price['discounted'] < $lowest_price ) ) {
@@ -1678,8 +1704,11 @@ function get_formatted_date_range( int $post_id = 0 ): string {
  * }
  */
 function get_details_data( int $post_id = 0 ): array {
+	// Currency.
+	$currency = get_current_currency();
+
 	// Check for cached version.
-	$cache_key    = CACHE_KEY . "_details_$post_id";
+	$cache_key    = CACHE_KEY . "_details_$post_id" . '_' . $currency;
 	$cached_value = wp_cache_get( $cache_key, CACHE_GROUP );
 
 	// Check for cached value.
@@ -1705,13 +1734,16 @@ function get_details_data( int $post_id = 0 ): array {
 
 	// Check if title parts are available.
 	if ( ! empty( $title_parts[0] ) ) {
-		$title = trim( $title_parts[0] );
+		$title     = trim( $title_parts[0] );
+		$sub_title = trim( $title_parts[1] ?? '' );
 	} else {
-		$title = $post['post']->post_title;
+		$title     = $post['post']->post_title;
+		$sub_title = '';
 	}
 
 	// Set title.
-	$data['title'] = $title;
+	$data['title']     = $title;
+	$data['sub_title'] = $sub_title;
 
 	// Init $tags.
 	$tags = [];
@@ -1762,8 +1794,8 @@ function get_details_data( int $post_id = 0 ): array {
 	// Set starting from price.
 	$prices             = get_starting_from_price( $post_id );
 	$data['from_price'] = [
-		'original'   => format_price( $prices['original'] ),
-		'discounted' => format_price( $prices['discounted'] ),
+		'original'   => format_price( $prices['original'], $currency ),
+		'discounted' => format_price( $prices['discounted'], $currency ),
 	];
 
 	// Set starting from locations list.
@@ -1807,8 +1839,14 @@ function get_details_data( int $post_id = 0 ): array {
  * @return void
  */
 function bust_details_cache( int $post_id = 0 ): void {
-	// Clear cache for this post.
-	wp_cache_delete( CACHE_KEY . "_details_$post_id", CACHE_GROUP );
+	// Currencies.
+	$currencies = get_currencies();
+
+	// Loop through currencies and bust cache.
+	foreach ( $currencies as $currency ) {
+		// Clear cache for this post.
+		wp_cache_delete( CACHE_KEY . "_details_$post_id" . '_' . $currency, CACHE_GROUP );
+	}
 }
 
 /**
@@ -1824,27 +1862,16 @@ function bust_details_cache_on_itinerary_update( int $itinerary_id = 0 ): void {
 		$itinerary_id = absint( get_the_ID() );
 	}
 
-	// Get post.
-	$itinerary = get_itinerary( $itinerary_id );
-
-	// Check for Itinerary.
-	if ( empty( $itinerary['post'] ) || ! $itinerary['post'] instanceof WP_Post ) {
-		return;
-	}
-
 	// Get related Expedition ID.
-	$expedition_ids = $itinerary['post_meta']['related_expedition'] ?? 0;
+	$expedition_id = absint( get_post_meta( $itinerary_id, 'related_expedition', true ) );
 
-	// Check for Expedition IDs.
-	if ( empty( $expedition_ids ) || ! is_array( $expedition_ids ) ) {
+	// Validate for Expedition ID.
+	if ( empty( $expedition_id ) ) {
 		return;
 	}
 
-	// Bust cache for each Expedition.
-	foreach ( $expedition_ids as $expedition_id ) {
-		// Bust cache for Expedition.
-		bust_details_cache( absint( $expedition_id ) );
-	}
+	// Bust cache for Expedition.
+	bust_details_cache( $expedition_id );
 }
 
 /**
@@ -1952,4 +1979,113 @@ function get_destination_term_by_code( string $code = '' ): null|WP_Term {
 
 	// Return null if no term is found.
 	return null;
+}
+
+/**
+ * Add related Itineraries meta box.
+ *
+ * @return void
+ */
+function add_related_itineraries_meta_box(): void {
+	// Get current screen detail.
+	$screen = get_current_screen();
+
+	// If it's not post type screen then bail out.
+	if ( ! $screen instanceof WP_Screen || empty( $screen->post_type ) || POST_TYPE !== $screen->post_type ) {
+		return;
+	}
+
+	// Add meta box.
+	add_meta_box( 'related-itineraries', 'Related Itineraries', __NAMESPACE__ . '\\add_related_itineraries_meta_box_content', [ POST_TYPE ], 'side', 'low' );
+}
+
+/**
+ * Add related Itineraries meta box content.
+ *
+ * @param WP_Post|null $post Post object.
+ *
+ * @return void
+ */
+function add_related_itineraries_meta_box_content( WP_Post $post = null ): void {
+	// Validate is post is not empty and type of current post type.
+	if ( ! $post instanceof WP_Post || POST_TYPE !== $post->post_type ) {
+		return;
+	}
+
+	// Get Related Itineraries meta.
+	$related_itineraries = get_post_meta( $post->ID, 'related_itineraries', true );
+
+	// If Related Itineraries is not exists then bail out.
+	if ( ! is_array( $related_itineraries ) || empty( $related_itineraries ) ) {
+		echo '<p>The itineraries have not been mapped to the expedition.</p>';
+
+		// Return.
+		return;
+	}
+
+	// List Itineraries.
+	foreach ( $related_itineraries as $itinerary_id ) {
+		printf(
+			'<p>%1$s -- <em>%2$s</em> <a href="%3$s" target="_blank">(Edit)</a></p>',
+			esc_html( get_the_title( $itinerary_id ) ),
+			esc_html( strval( get_post_status( $itinerary_id ) ) ),
+			esc_url( strval( get_edit_post_link( $itinerary_id ) ) )
+		);
+	}
+}
+
+/**
+ * Breadcrumbs ancestors for this post type.
+ *
+ * @param mixed[] $breadcrumbs Breadcrumbs.
+ *
+ * @return mixed[]
+ */
+function breadcrumbs_ancestors( array $breadcrumbs = [] ): array {
+	// Check if current query is for this post type.
+	if ( ! is_singular( POST_TYPE ) ) {
+		return $breadcrumbs;
+	}
+
+	// Return breadcrumbs.
+	return array_merge(
+		$breadcrumbs,
+		get_breadcrumbs_ancestors( absint( get_the_ID() ) )
+	);
+}
+
+/**
+ * Get breadcrumbs ancestor.
+ *
+ * @param int $post_id Post ID.
+ *
+ * @return array{}|array{
+ *     array{
+ *         title: string,
+ *         url: string,
+ *     }
+ * }
+ */
+function get_breadcrumbs_ancestors( int $post_id = 0 ): array {
+	// Initialize breadcrumbs.
+	$breadcrumbs = [];
+
+	// Bail if post ID is not set.
+	if ( empty( $post_id ) ) {
+		return $breadcrumbs;
+	}
+
+	// Get archive page.
+	$expeditions_landing_page = absint( get_option( 'options_expeditions_page', 0 ) );
+
+	// Get it's title and URL for breadcrumbs if it's set.
+	if ( ! empty( $expeditions_landing_page ) ) {
+		$breadcrumbs[] = [
+			'title' => get_the_title( $expeditions_landing_page ),
+			'url'   => strval( get_permalink( $expeditions_landing_page ) ),
+		];
+	}
+
+	// Return updated breadcrumbs.
+	return $breadcrumbs;
 }

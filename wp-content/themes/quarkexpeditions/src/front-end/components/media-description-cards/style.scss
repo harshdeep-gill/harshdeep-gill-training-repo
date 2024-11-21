@@ -15,7 +15,7 @@
 	&:not(&--desktop-carousel) {
 		#{$self}__slides-container {
 
-			@media screen and (min-width: grid-size(lg)) {
+			@media screen and (min-width: grid-size(xl)) {
 				display: grid;
 				row-gap: var(--spacing-7);
 				height: auto !important;
@@ -27,7 +27,7 @@
 
 		#{$self}__nav {
 
-			@media screen and (min-width: grid-size(lg)) {
+			@media screen and (min-width: grid-size(xl)) {
 				display: none;
 			}
 		}
@@ -42,7 +42,7 @@
 				flex: 0 0 calc(45% - var(--spacing-4));
 			}
 
-			@media screen and (min-width: grid-size(lg)) {
+			@media screen and (min-width: grid-size(xl)) {
 				background-color: transparent;
 				min-width: auto;
 				box-shadow: none;
@@ -72,16 +72,20 @@
 		box-shadow: var(--shadow-1);
 		flex: 0 0 100%;
 		padding: var(--spacing-5);
+		display: flex;
 	}
 
 	&__card {
 		position: relative;
 		overflow: hidden;
 		min-width: 0;
+		display: flex;
+		flex-direction: column;
 	}
 
 	&__content {
 		margin-top: var(--spacing-5);
+		flex: 1;
 
 		&:first-child {
 			margin-top: 0;
@@ -103,15 +107,25 @@
 	&__nav {
 		display: flex;
 		align-items: center;
-		gap: var(--spacing-6);
+		gap: var(--spacing-4);
 		margin-top: var(--spacing-6);
+	}
 
+	&__cta-button {
+		margin-top: var(--spacing-5);
+
+		.btn {
+			width: 100%;
+			height: 100%;
+			padding: 17px 20px;
+			line-height: 1.25;
+		}
 	}
 
 	&__arrow-button {
 		background-color: var(--color-black);
-		width: 32px;
-		height: 32px;
+		width: 27px;
+		height: 27px;
 		border-radius: 50%;
 		padding: 0;
 		display: flex;
@@ -120,13 +134,14 @@
 		cursor: pointer;
 
 		svg {
-			transform: scale(1.2);
+			width: 7px;
+			height: 11px;
 		}
 
 		&--right {
 
 			svg {
-				transform: rotate(180deg) scale(1.2);
+				transform: rotate(180deg);
 			}
 		}
 	}

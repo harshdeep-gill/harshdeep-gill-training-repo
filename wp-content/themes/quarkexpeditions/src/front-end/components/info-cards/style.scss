@@ -24,12 +24,6 @@
 	}
 
 	&__slider {
-		overflow-x: visible;
-		margin-inline: var(--grid-col-gutter);
-
-		#{$self}--has-overflow & {
-			width: 100vw;
-		}
 
 		&:has(div.thumbnail-cards__nav) {
 			#{$self}__track {
@@ -37,15 +31,45 @@
 			}
 		}
 
-		@media screen and (min-width: 1120px) {
-			margin-inline: 0;
+		&[total="2"] {
+
+			#{$self}__nav {
+
+				@media screen and (min-width: grid-size(md)) {
+					display: none;
+				}
+			}
+		}
+
+		&[total="3"] {
+
+			#{$self}__slides {
+
+				@media screen and (min-width: grid-size(xl)) {
+					left: initial !important;
+				}
+			}
+
+			#{$self}__nav {
+
+				@media screen and (min-width: grid-size(xl)) {
+					display: none;
+				}
+			}
 		}
 	}
 
 	&__track {
-		padding-left: var(--spacing-5);
-		margin-left: calc(-1 * var(--spacing-5));
 		scrollbar-width: none; /* Firefox */
+		margin-inline: calc(-50vw + 50%);
+		max-width: 100vw;
+		padding-inline: var(--grid-col-gutter);
+
+		@media screen and (min-width: grid-size(xl)) {
+			margin-inline: calc(-1 * var(--grid-col-gutter));
+			padding-inline: var(--grid-col-gutter);
+			max-width: initial;
+		}
 
 		&::-webkit-scrollbar {
 			display: none;
@@ -60,15 +84,21 @@
 	}
 
 	&__slides {
-		gap: var(--spacing-5);
+		gap: var(--spacing-4);
 		display: grid;
 		grid-auto-flow: column;
 		grid-auto-columns: max-content;
+		max-width: var(--wrap-width);
+		margin-inline: auto;
+
+		@media screen and (min-width: grid-size(xl)) {
+			gap: var(--spacing-6);
+		}
 	}
 
 	&:not(:has(&__nav[data-layout="carousel"])) {
 
-		@media screen and (min-width: grid-size(lg)) {
+		@media screen and (min-width: grid-size(xl)) {
 
 			#{$self}__carousel {
 				overflow-x: hidden;
@@ -84,8 +114,6 @@
 			#{$self}__slides {
 				grid-auto-flow: row;
 				grid-template-columns: repeat(auto-fill, minmax(267px, 1fr));
-				column-gap: var(--spacing-6);
-				row-gap: var(--spacing-4);
 				max-width: 100%;
 			}
 
@@ -96,7 +124,6 @@
 			#{$self}__card {
 				max-width: unset;
 			}
-
 		}
 	}
 
@@ -111,7 +138,7 @@
 			#{$self}__slides {
 				grid-auto-flow: row;
 				grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-				gap: var(--spacing-5);
+				row-gap: var(--spacing-5);
 			}
 
 			#{$self}__slider {
@@ -126,10 +153,34 @@
 
 	&:has(&__nav[data-layout="collage"]) {
 
-		@media screen and (min-width: grid-size(lg)) {
+		@media screen and (min-width: grid-size(xl)) {
 
 			#{$self}__slides {
 				grid-template-columns: repeat(4, minmax(210px, 1fr));
+				grid-template-rows: repeat(2, 388px);
+				left: initial !important;
+
+				&[total-slides="3"] {
+
+					#{$self}__card {
+
+						&:nth-child(2),
+						&:nth-child(3) {
+							grid-column: 3 / span 2;
+						}
+					}
+				}
+
+				&[total-slides="4"] {
+
+					#{$self}__card {
+
+						&:last-child {
+							grid-row: 2 / 3;
+							grid-column: 3 / span 2;
+						}
+					}
+				}
 			}
 
 			#{$self}__card {
@@ -149,13 +200,15 @@
 		display: flex;
 		column-gap: var(--spacing-5);
 		margin-top: var(--spacing-6);
-		margin-left: calc(-1 * var(--spacing-1));
+	}
 
-		@media screen and (min-width: grid-size(lg)) {
-			display: none;
+	&__slider--grid,
+	&__slider--collage {
 
-			&[data-layout="carousel"] {
-				display: flex;
+		#{$self}__nav {
+
+			@media screen and (min-width: grid-size(xl)) {
+				display: none;
 			}
 		}
 	}
@@ -185,10 +238,11 @@
 	}
 
 	&__card {
-		max-width: calc(100vw - 2 * var(--grid-col-gutter));
+		max-width: calc(100vw - 2 * var(--spacing-6));
 		overflow: hidden;
 		position: relative;
 		border-radius: var(--border-radius-large);
+		min-height: 100%;
 
 		@media screen and (min-width: grid-size(sm)) {
 			max-width: 352px;

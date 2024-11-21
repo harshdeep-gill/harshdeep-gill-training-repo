@@ -11,6 +11,7 @@ use JB\Cloudinary\Core as Cloudinary_Core;
 use JB\Cloudinary\Frontend as Cloudinary_Frontend;
 
 use WP_Post;
+use WP_Screen;
 use WP_Term;
 use WP_Query;
 use WP_User;
@@ -32,9 +33,6 @@ const REST_API_NAMESPACE = 'quark-core/v1';
  * @return void
  */
 function bootstrap(): void {
-	// Layout.
-	add_action( 'template_redirect', __NAMESPACE__ . '\\layout' );
-
 	// Other hooks.
 	add_action( 'admin_menu', __NAMESPACE__ . '\\setup_settings' );
 	add_action( 'init', __NAMESPACE__ . '\\nav_menus' );
@@ -55,36 +53,25 @@ function bootstrap(): void {
 	add_filter( 'add_attachment', __NAMESPACE__ . '\\update_svg_content', 10, 4 );
 	add_filter( 'upload_mimes', __NAMESPACE__ . '\\allow_mime_types' );
 
+	// Get front-end markup for manipulation.
+	add_filter( 'wp_body_open', __NAMESPACE__ . '\\start_output_buffering' );
+	add_filter( 'wp_footer', __NAMESPACE__ . '\\end_output_buffering' );
+
+	// Set Excerpt length - Set higher priority to override other plugins.
+	add_filter( 'excerpt_length', __NAMESPACE__ . '\\increase_excerpt_length', 999 );
+
+	// Limit post revision.
+	add_filter( 'wp_revisions_to_keep', __NAMESPACE__ . '\\limit_revisions_for_posts', 10, 2 );
+
 	// Custom fields.
 	if ( is_admin() ) {
 		require_once __DIR__ . '/../custom-fields/options-social.php';
 		require_once __DIR__ . '/../custom-fields/attachments.php';
 		require_once __DIR__ . '/../custom-fields/pages-setup.php';
-	}
-}
 
-/**
- * Front-end layout.
- *
- * @return void
- */
-function layout(): void {
-	// Check if 404 page.
-	if ( is_404() ) {
-		add_filter( 'quark_front_end_data', __NAMESPACE__ . '\\layout_404' );
+		// Custom styles for ACF fields.
+		add_action( 'acf/input/admin_head', __NAMESPACE__ . '\\acf_styles_for_read_only_fields' );
 	}
-}
-
-/**
- * Layout: 404.
- *
- * @param mixed[] $data Front-end data.
- *
- * @return mixed[]
- */
-function layout_404( array $data = [] ): array {
-	// Return updated data.
-	return $data;
 }
 
 /**
@@ -192,9 +179,12 @@ function core_front_end_data( array $data = [] ): array {
 	return array_merge(
 		$data,
 		[
-			'current_url'  => get_permalink(),
-			'header'       => $header_options,
-			'social_links' => $social_options,
+			'current_url'     => get_permalink(),
+			'site_url'        => home_url(),
+			'site_name'       => get_bloginfo( 'name' ),
+			'header'          => $header_options,
+			'social_links'    => $social_options,
+			'search_page_url' => strval( get_permalink( absint( get_option( 'options_expedition_search_page' ) ) ) ),
 		]
 	);
 }
@@ -493,6 +483,19 @@ function order_terms_by_hierarchy( array $terms = [], string $taxonomy = '' ): a
 			$organised_terms[ $term->term_id ]['parent_term'] = $term;
 		} else {
 			$organised_terms[ $term->parent ]['child_terms'][] = $term;
+
+			// Check parent term added.
+			if ( empty( $organised_terms[ $term->parent ]['parent_term'] ) ) {
+				$parent_term = get_term( $term->parent, $taxonomy );
+
+				// Check for term.
+				if ( ! $parent_term instanceof WP_Term ) {
+					continue;
+				}
+
+				// Add parent term.
+				$organised_terms[ $parent_term->term_id ]['parent_term'] = $parent_term;
+			}
 		}
 	}
 
@@ -554,17 +557,64 @@ function get_pagination_links( array $args = [] ): string {
 		$args['query'] = $wp_query;
 	}
 
+	// Get current page number.
+	$current = max( 1, $args['query']->get( 'paged' ) );
+	$total   = $args['query']->max_num_pages;
+
 	// Get pagination links.
-	$pagination_links = strval(
-		paginate_links(
-			[
-				'current'   => max( 1, $args['query']->get( 'paged' ) ),
-				'total'     => $args['query']->max_num_pages,
-				'prev_text' => __( 'Previous', 'qrk' ),
-				'next_text' => __( 'Next ', 'qrk' ),
-			]
-		)
+	$pagination_links = paginate_links(
+		[
+			'current'   => $current,
+			'total'     => $total,
+			'prev_text' => __( 'Previous', 'qrk' ),
+			'next_text' => __( 'Next ', 'qrk' ),
+			'type'      => 'array',
+		]
 	);
+
+	// Prepare pagination links.
+	if ( is_array( $pagination_links ) ) {
+		$previous = '';
+		$next     = '';
+
+		// Shift previous link.
+		if ( $current && 1 < $current ) {
+			$previous = array_shift( $pagination_links );
+		}
+
+		// Pop next link.
+		if ( $current < $total ) {
+			$next = array_pop( $pagination_links );
+		}
+
+		// Get First and Last page.
+		$first_page = strval( array_shift( $pagination_links ) );
+		$last_page  = strval( array_pop( $pagination_links ) );
+
+		// Check for dots.
+		$has_dots_after_first_page = false;
+		$has_dots_before_last_page = false;
+
+		// Check for dots.
+		if ( ! empty( $pagination_links[0] ) ) {
+			$has_dots_after_first_page = str_contains( $pagination_links[0], 'dots' );
+		}
+
+		// Check for dots.
+		if ( ! empty( $pagination_links[ count( $pagination_links ) - 1 ] ) ) {
+			$has_dots_before_last_page = str_contains( $pagination_links[ count( $pagination_links ) - 1 ], 'dots' );
+		}
+
+		// Prepare pagination links.
+		$pagination_links = sprintf(
+			"%s\n%s\n%s\n%s\n%s",
+			$previous,
+			! $has_dots_after_first_page ? $first_page : '',
+			implode( "\n", $pagination_links ),
+			! $has_dots_before_last_page ? $last_page : '',
+			$next
+		);
+	}
 
 	// Bail out if pagination links are empty.
 	if ( empty( $pagination_links ) ) {
@@ -591,4 +641,209 @@ function get_pagination_links( array $args = [] ): string {
 
 	// All done, return build pagination links.
 	return $pagination_links;
+}
+
+/**
+ * Get first pagination link.
+ *
+ * @param array<mixed|string> $args Pagination args.
+ *
+ * @return string
+ */
+function get_first_pagination_link( array $args = [] ): string {
+	// Build args.
+	$args = wp_parse_args(
+		$args,
+		[
+			'noindex' => false,
+		]
+	);
+
+	// Get first page link.
+	$first_page_link = get_pagenum_link();
+
+	// Check if we have first page link.
+	if ( empty( $first_page_link ) ) {
+		return '';
+	}
+
+	// Check for noindex.
+	if ( true === $args['noindex'] ) {
+		$first_page_link = str_replace( ' href=', ' rel="noindex, nofollow" href=', $first_page_link );
+	}
+
+	// Remove trailing slash from main page.
+	$current_post = get_queried_object();
+
+	// Check if current post is instance of WP_Post.
+	if ( $current_post instanceof WP_Post ) {
+		$post_slug       = $current_post->post_name;
+		$first_page_link = str_replace( $post_slug . '/"', $post_slug . '"', $first_page_link );
+	} elseif ( $current_post instanceof WP_Term ) {
+		$first_page_link = str_replace( $current_post->slug . '/"', $current_post->slug . '"', $first_page_link );
+	} elseif ( $current_post instanceof WP_User ) {
+		$first_page_link = str_replace( $current_post->data->user_login . '/"', $current_post->data->user_login . '"', $first_page_link );
+	}
+
+	// Return first page link.
+	return $first_page_link;
+}
+
+/**
+ * Get last pagination link.
+ *
+ * @param array<mixed|string> $args Pagination args.
+ *
+ * @return string
+ */
+function get_last_pagination_link( array $args = [] ): string {
+	// Build args.
+	$args = wp_parse_args(
+		$args,
+		[
+			'total'   => 1,
+			'noindex' => false,
+		]
+	);
+
+	// Get last page link.
+	$last_page_link = get_pagenum_link( $args['total'] );
+
+	// Check if we have last page link.
+	if ( empty( $last_page_link ) ) {
+		return '';
+	}
+
+	// Check for noindex.
+	if ( true === $args['noindex'] ) {
+		$last_page_link = str_replace( ' href=', ' rel="noindex, nofollow" href=', $last_page_link );
+	}
+
+	// Remove trailing slash from main page.
+	$current_post = get_queried_object();
+
+	// Check if current post is instance of WP_Post.
+	if ( $current_post instanceof WP_Post ) {
+		$post_slug      = $current_post->post_name;
+		$last_page_link = str_replace( $post_slug . '/"', $post_slug . '"', $last_page_link );
+	} elseif ( $current_post instanceof WP_Term ) {
+		$last_page_link = str_replace( $current_post->slug . '/"', $current_post->slug . '"', $last_page_link );
+	} elseif ( $current_post instanceof WP_User ) {
+		$last_page_link = str_replace( $current_post->data->user_login . '/"', $current_post->data->user_login . '"', $last_page_link );
+	}
+
+	// Return last page link.
+	return $last_page_link;
+}
+
+/**
+ * Check if we are in the block editor.
+ * We don't have any functionality to identify if we are in the block editor inside the block render callback.
+ *
+ * Warning: This function is not 100% reliable, it's just a workaround.
+ * And the function should be used strictly inside render callback.
+ *
+ * Reference:
+ * https://wordpress.stackexchange.com/questions/398378/gutenberg-how-to-hide-server-side-render-output-in-the-editor-but-keep-it-in-fr
+ *
+ * @return bool
+ */
+function is_block_editor(): bool {
+	// Check if we are in the block editor.
+	if ( wp_is_serving_rest_request() ) {
+		return true;
+	}
+
+	// Not in the block editor.
+	return false;
+}
+
+/**
+ * Start output buffering.
+ *
+ * @return void
+ */
+function start_output_buffering(): void {
+	// Start output buffering.
+	ob_start();
+}
+
+/**
+ * End output buffering.
+ *
+ * @return void
+ */
+function end_output_buffering(): void {
+	// Get the buffered content.
+	$content = ob_get_clean();
+
+	// Apply filters before rendered.
+	$content = strval( apply_filters( 'quark_front_end_markup', $content ) );
+
+	// Render the markup.
+	echo $content; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+}
+
+/**
+ * Increase excerpt length.
+ *
+ * @return int
+ */
+function increase_excerpt_length(): int {
+	// Return excerpt length.
+	return 255;
+}
+
+/**
+ * Limit revisions for posts.
+ *
+ * @param int          $num Number of revisions to save for the posts.
+ * @param WP_Post|null $post Post object.
+ *
+ * @return int Number of revisions to save for the posts.
+ */
+function limit_revisions_for_posts( int $num = 0, WP_Post $post = null ): int {
+	// Check if post is not null and post type supports revisions.
+	if (
+		$post instanceof WP_Post
+		&& post_type_supports( $post->post_type, 'revisions' )
+	) {
+		// Limit to 5 revisions for posts.
+		$num = 5;
+	}
+
+	// Return number of revisions.
+	return $num;
+}
+
+/**
+ * Add custom styles for read-only ACF fields.
+ *
+ * @return void
+ */
+function acf_styles_for_read_only_fields(): void {
+	// Get the current screen information.
+	$screen = get_current_screen();
+
+	// Check if we're on a post edit screen and ACF is active.
+	if ( $screen instanceof WP_Screen && 'post' === $screen->base ) {
+		?>
+		<style>
+			/* Read-only styling for ACF Fields with class .quark-readonly-field */
+			.acf-field.quark-readonly-field {
+				position: relative;
+				cursor: not-allowed;
+			}
+
+			.acf-field.quark-readonly-field .acf-input {
+				pointer-events: none;
+			}
+
+			.quark-readonly-field .acf-fields,
+			.quark-readonly-field .select2 .select2-selection {
+				background-color: #f0f0f1;
+			}
+		</style>
+		<?php
+	}
 }

@@ -9,8 +9,7 @@ namespace Quark\Core;
 
 use WP_UnitTestCase;
 use WP_Term;
-
-use function Quark\Core\get_front_end_data;
+use WP_Post;
 
 use const Quark\Localization\USD_CURRENCY;
 use const Quark\Localization\AUD_CURRENCY;
@@ -18,6 +17,8 @@ use const Quark\Localization\CAD_CURRENCY;
 use const Quark\Localization\DEFAULT_CURRENCY;
 use const Quark\Localization\EUR_CURRENCY;
 use const Quark\Localization\GBP_CURRENCY;
+
+use const Quark\Brochures\POST_TYPE as BROCHURE_POST_TYPE;
 
 /**
  * Class Test_Core.
@@ -48,7 +49,8 @@ class Test_Core extends WP_UnitTestCase {
 			'leads_api_endpoint'   => 'http://test.quarkexpeditions.com/wp-json/quark-leads/v1/leads/create',
 			'current_url'          => false,
 			'dynamic_phone_number' => [
-				'api_endpoint' => 'http://test.quarkexpeditions.com/wp-json/qrk-phone-numbers/v1/phone-number/get',
+				'api_endpoint'         => 'http://test.quarkexpeditions.com/wp-json/qrk-phone-numbers/v1/phone-number/get',
+				'default_phone_number' => '+1234567890',
 			],
 			'currencies'           => [
 				USD_CURRENCY => [
@@ -73,7 +75,14 @@ class Test_Core extends WP_UnitTestCase {
 				],
 			],
 			'default_currency'     => DEFAULT_CURRENCY,
+			'filters_api_url'      => home_url( 'wp-json/quark-search/v1/filter-options/by-destination-and-month' ),
+			'search_page_url'      => '',
+			'site_url'             => 'http://test.quarkexpeditions.com',
+			'site_name'            => 'Quark',
 		];
+
+		// Update default phone number.
+		update_option( 'options_default_phone_number', '+1234567890' );
 
 		// Test front-end data.
 		$this->assertEquals(
@@ -328,5 +337,48 @@ class Test_Core extends WP_UnitTestCase {
 		wp_delete_term( $child_term_2->term_id, 'test_taxonomy' );
 		wp_delete_term( $child_term_3->term_id, 'test_taxonomy' );
 		unregister_taxonomy( 'test_taxonomy' );
+	}
+
+	/**
+	 * Test limit_revisions_for_posts.
+	 *
+	 * @covers \Quark\Core\limit_revisions_for_posts()
+	 *
+	 * @return void
+	 */
+	public function test_limit_revisions_for_posts(): void {
+		// Create a post.
+		$post = $this->factory()->post->create_and_get();
+
+		// Assert the $post.
+		$this->assertTrue( $post instanceof WP_Post );
+
+		// Assert the post has the default number of revisions.
+		$this->assertEquals(
+			5,
+			wp_revisions_to_keep( $post )
+		);
+
+		// Assert the post has the correct number of revisions.
+		$this->assertEquals(
+			5,
+			wp_revisions_to_keep( $post )
+		);
+
+		// Create A post of Brochure type.
+		$brochure_post = $this->factory()->post->create_and_get(
+			[
+				'post_type' => BROCHURE_POST_TYPE,
+			]
+		);
+
+		// Assert the $brochure_post.
+		$this->assertTrue( $brochure_post instanceof WP_Post );
+
+		// Assert the post has the default number of revisions.
+		$this->assertEquals(
+			0,
+			wp_revisions_to_keep( $brochure_post )
+		);
 	}
 }

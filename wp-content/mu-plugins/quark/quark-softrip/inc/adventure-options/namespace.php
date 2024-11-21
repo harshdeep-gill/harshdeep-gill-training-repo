@@ -66,7 +66,7 @@ function get_table_sql(): string {
  * @param mixed[] $raw_adventure_options Raw adventure options data from Softrip to update with.
  * @param int     $departure_post_id     Departure post ID.
  *
- * @return boolean
+ * @return boolean Whether any adventure options were updated/inserted.
  */
 function update_adventure_options( array $raw_adventure_options = [], int $departure_post_id = 0 ): bool {
 	// Bail out if empty departure post ID.
@@ -99,6 +99,9 @@ function update_adventure_options( array $raw_adventure_options = [], int $depar
 		// Add to the map.
 		$existing_adventure_options_by_softrip_option_id[ $existing_adventure_option['softrip_option_id'] ] = absint( $existing_adventure_option['id'] );
 	}
+
+	// Initialize if any updated.
+	$any_updated = false;
 
 	// Initialize updated option ids.
 	$updated_option_ids = [];
@@ -134,11 +137,16 @@ function update_adventure_options( array $raw_adventure_options = [], int $depar
 
 		// If existing, update the adventure option, else insert.
 		if ( ! empty( $existing_adventure_option['id'] ) ) {
-			$wpdb->update(
+			$is_updated = $wpdb->update(
 				$table_name,
 				$formatted_adventure_option,
 				[ 'id' => $existing_adventure_option['id'] ]
 			);
+
+			// Check if updated.
+			if ( $is_updated > 0 ) {
+				$any_updated = true;
+			}
 
 			// Get the updated ID.
 			$updated_id = $existing_adventure_option['id'];
@@ -150,6 +158,9 @@ function update_adventure_options( array $raw_adventure_options = [], int $depar
 
 			// Get the inserted ID.
 			$updated_id = $wpdb->insert_id;
+
+			// Set any updated to true.
+			$any_updated = true;
 		}
 
 		// Skip if no updated ID.
@@ -179,10 +190,18 @@ function update_adventure_options( array $raw_adventure_options = [], int $depar
 		}
 
 		// Delete the non-updated option.
-		$wpdb->delete(
+		$is_deleted = $wpdb->delete(
 			$table_name,
 			[ 'id' => $non_updated_option_id ]
 		);
+
+		// Skip if not deleted.
+		if ( empty( $is_deleted ) ) {
+			continue;
+		}
+
+		// Set any updated to true.
+		$any_updated = true;
 
 		// Bust caches.
 		wp_cache_delete( CACHE_KEY_PREFIX . '_softrip_option_id_' . $non_updated_option_id, CACHE_GROUP );
@@ -195,8 +214,13 @@ function update_adventure_options( array $raw_adventure_options = [], int $depar
 	// Update the post meta.
 	update_post_meta( $departure_post_id, 'adventure_options', $adventure_option_term_ids );
 
-	// Return successful.
-	return true;
+	// Bust the cache.
+	foreach ( $adventure_option_term_ids as $adventure_option_term_id ) {
+		wp_cache_delete( CACHE_KEY_PREFIX . '_departure_adventure_option_term_id_' . $adventure_option_term_id, CACHE_GROUP );
+	}
+
+	// Return if any updated.
+	return $any_updated;
 }
 
 /**
@@ -431,7 +455,7 @@ function get_adventure_option_by_departure_post_id( int $departure_post_id = 0, 
  * @param string  $softrip_option_id The Softrip option ID.
  * @param boolean $force           Whether to bypass the cache.
  *
- * @return array{}|array{
+ * @return array{}|array<int,
  *   array{
  *     id: int,
  *     softrip_option_id: string,
@@ -446,7 +470,7 @@ function get_adventure_option_by_departure_post_id( int $departure_post_id = 0, 
  *     price_per_person_gbp: int,
  *     price_per_person_eur: int
  *   }
- * }
+ * >
  */
 function get_adventure_option_by_softrip_option_id( string $softrip_option_id = '', bool $force = false ): array {
 	// Validate Softrip option ID.
@@ -575,7 +599,7 @@ function format_row_data_from_db( array $row_data = [] ): array {
  *
  * @param array<int, string[]> $rows_data The rows data.
  *
- * @return array{}|array{
+ * @return array{}|array<int,
  *   array{
  *     id: int,
  *     softrip_option_id: string,
@@ -590,7 +614,7 @@ function format_row_data_from_db( array $row_data = [] ): array {
  *     price_per_person_gbp: int,
  *     price_per_person_eur: int
  *   }
- * }
+ * >
  */
 function format_rows_data_from_db( array $rows_data = [] ): array {
 	// Bail out if empty rows data.
@@ -616,4 +640,207 @@ function format_rows_data_from_db( array $rows_data = [] ): array {
 
 	// Return the formatted data.
 	return $formatted_data;
+}
+
+/**
+ * Get departures by adventure option term id.
+ *
+ * @param integer $adventure_option_term_id The adventure option term ID.
+ * @param boolean $force                    Whether to bypass the cache.
+ *
+ * @return int[]
+ */
+function get_departures_by_adventure_option_term_id( int $adventure_option_term_id = 0, bool $force = false ): array {
+	// Validate adventure option term ID.
+	if ( empty( $adventure_option_term_id ) ) {
+		return [];
+	}
+
+	// Cache key.
+	$cache_key = CACHE_KEY_PREFIX . "_departure_adventure_option_term_id_$adventure_option_term_id";
+
+	// If not direct, check for cached version.
+	if ( empty( $force ) ) {
+		// Check for cached version.
+		$cached_value = wp_cache_get( $cache_key, CACHE_GROUP );
+
+		// Check for cached value.
+		if ( is_array( $cached_value ) ) {
+			return $cached_value;
+		}
+	}
+
+	// Get global DB object.
+	global $wpdb;
+
+	// Get the table name.
+	$table_name = get_table_name();
+
+	// Load the departures.
+	$departure_ids = $wpdb->get_col(
+		$wpdb->prepare(
+			'
+			SELECT
+				departure_post_id
+			FROM
+				%i
+			WHERE
+				adventure_option_term_id = %d
+			GROUP BY
+				departure_post_id
+			',
+			[
+				$table_name,
+				$adventure_option_term_id,
+			]
+		)
+	);
+
+	// Convert to int.
+	$departure_ids = array_map( 'absint', $departure_ids );
+
+	// Cache the value.
+	wp_cache_set( $cache_key, $departure_ids, CACHE_GROUP );
+
+	// Return the departure IDs.
+	return $departure_ids;
+}
+
+/**
+ * Get adventure option by ID.
+ *
+ * @param int  $id    The adventure option ID.
+ * @param bool $force Whether to bypass the cache.
+ *
+ * @return array{}|array<int,
+ *   array{
+ *     id: int,
+ *     softrip_option_id: string,
+ *     departure_post_id: int,
+ *     softrip_package_code: string,
+ *     service_ids: string,
+ *     spaces_available: int,
+ *     adventure_option_term_id: int,
+ *     price_per_person_usd: int,
+ *     price_per_person_cad: int,
+ *     price_per_person_aud: int,
+ *     price_per_person_gbp: int,
+ *     price_per_person_eur: int
+ *   }
+ * >
+ */
+function get_adventure_options_by_id( int $id = 0, bool $force = false ): array {
+	// Bail out if empty ID.
+	if ( empty( $id ) ) {
+		return [];
+	}
+
+	// Cache key.
+	$cache_key = CACHE_KEY_PREFIX . '_id_' . $id;
+
+	// If not direct, get from cache.
+	if ( empty( $force ) ) {
+		// Check cache.
+		$cached_value = wp_cache_get( $cache_key, CACHE_GROUP );
+
+		// Return cached value if exists.
+		if ( is_array( $cached_value ) ) {
+			return $cached_value;
+		}
+	}
+
+	// Get global DB object.
+	global $wpdb;
+
+	// Get the table name.
+	$table_name = get_table_name();
+
+	// Load the adventure option.
+	$adventure_option = $wpdb->get_results(
+		$wpdb->prepare(
+			'
+			SELECT
+				*
+			FROM
+				%i
+			WHERE
+				id = %d
+			',
+			[
+				$table_name,
+				$id,
+			]
+		),
+		ARRAY_A
+	);
+
+	// Bail out if not array.
+	if ( ! is_array( $adventure_option ) ) {
+		return [];
+	}
+
+	// Format the row data.
+	$formatted_data = format_rows_data_from_db( $adventure_option );
+
+	// Cache the value.
+	wp_cache_set( $cache_key, $formatted_data, CACHE_GROUP );
+
+	// Return the adventure option.
+	return $formatted_data;
+}
+
+/**
+ * Delete adventure option by id.
+ *
+ * @param int $id The adventure option ID.
+ *
+ * @return boolean Whether the adventure option was deleted.
+ */
+function delete_adventure_option_by_id( int $id = 0 ): bool {
+	// Bail out if empty ID.
+	if ( empty( $id ) ) {
+		return false;
+	}
+
+	// Get global DB object.
+	global $wpdb;
+
+	// Get the table name.
+	$table_name = get_table_name();
+
+	// Get the adventure option.
+	$adventure_options = get_adventure_options_by_id( $id );
+
+	// Bail out if empty.
+	if ( empty( $adventure_options ) || 1 < count( $adventure_options ) ) {
+		return false;
+	}
+
+	// Get first item.
+	$adventure_option = $adventure_options[0];
+
+	// Bail out if empty.
+	if ( empty( $adventure_option['id'] ) ) {
+		return false;
+	}
+
+	// Delete the adventure option.
+	$is_deleted = $wpdb->delete(
+		$table_name,
+		[ 'id' => $adventure_option['id'] ]
+	);
+
+	// Return false if not deleted.
+	if ( empty( $is_deleted ) ) {
+		return false;
+	}
+
+	// Bust caches.
+	wp_cache_delete( CACHE_KEY_PREFIX . '_id_' . $id, CACHE_GROUP );
+	wp_cache_delete( CACHE_KEY_PREFIX . '_softrip_option_id_' . $adventure_option['softrip_option_id'], CACHE_GROUP );
+	wp_cache_delete( CACHE_KEY_PREFIX . '_departure_post_id_' . $adventure_option['departure_post_id'], CACHE_GROUP );
+	wp_cache_delete( CACHE_KEY_PREFIX . '_departure_adventure_option_term_id_' . $adventure_option['adventure_option_term_id'], CACHE_GROUP );
+
+	// Return success.
+	return true;
 }

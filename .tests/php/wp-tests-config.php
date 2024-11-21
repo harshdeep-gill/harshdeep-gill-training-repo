@@ -10,7 +10,7 @@
 // Modify the $_SERVER global for testing environment.
 $_SERVER['HTTP_HOST'] = 'test.quarkexpeditions.com';
 
-// Define database constants for GH Actions or local testing.
+// Define database constants for GitHub Actions or local testing.
 if ( ! empty( getenv( 'GITHUB_ACTIONS' ) ) ) {
 	define( 'DB_NAME', getenv( 'DB_NAME' ) );
 	define( 'DB_USER', getenv( 'DB_USER' ) );
@@ -29,10 +29,13 @@ define( 'WP_DEBUG_DISPLAY', true );
 define( 'WP_TESTS_DOMAIN', 'localhost' );
 define( 'WP_TESTS_EMAIL', 'admin@example.org' );
 define( 'WP_TESTS_TITLE', 'Test Blog' );
-define( 'WP_ENVIRONMENT_TYPE', 'development' );
 define( 'WP_PHP_BINARY', 'php' );
 define( 'WP_TESTS_MULTISITE', false );
 define( 'WP_TESTS', true );
+define( 'WP_RUN_CORE_TESTS', false );
+
+// Set WP_ENVIRONMENT_TYPE to development via putenv so that it can be changed at runtime in tests.
+putenv( 'WP_ENVIRONMENT_TYPE=development' ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.runtime_configuration_putenv
 
 // Define Site URL.
 if ( ! defined( 'WP_SITEURL' ) ) {
@@ -73,10 +76,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 	define( 'ABSPATH', dirname( __DIR__ ) . '/../wp/' );
 }
 
+/**
+ * Set following constants via putenv so that these can be changed at runtime in tests and hence, tested.
+ */
+
 // Softrip API credentials.
-define( 'QUARK_SOFTRIP_ADAPTER_BASE_URL', 'https://softrip-adapter.dev' );
-define( 'QUARK_SOFTRIP_ADAPTER_USERNAME', 'test' );
-define( 'QUARK_SOFTRIP_ADAPTER_PASSWORD', 'test' );
+putenv( 'QUARK_SOFTRIP_ADAPTER_BASE_URL=https://softrip-adapter.dev' );
+putenv( 'QUARK_SOFTRIP_ADAPTER_API_KEY=test' );
+
+// Ingestor API credentials.
+putenv( 'QUARK_INGESTOR_BASE_URL=https://ingestor-adapter.dev' );
+putenv( 'QUARK_INGESTOR_API_KEY=test' );
 
 // Checkout base URL.
 define( 'QUARK_CHECKOUT_BASE_URL', 'https://local-checkout.quarkexpeditions.com' );

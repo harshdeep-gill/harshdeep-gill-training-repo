@@ -15,37 +15,6 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 			'title'                 => 'Expeditions',
 			'fields'                => [
 				[
-					'key'                  => 'field_6690db15ee66a',
-					'label'                => 'Related Itineraries',
-					'name'                 => 'related_itineraries',
-					'aria-label'           => '',
-					'type'                 => 'relationship',
-					'instructions'         => '',
-					'required'             => 1,
-					'conditional_logic'    => 0,
-					'wrapper'              => [
-						'width' => '',
-						'class' => '',
-						'id'    => '',
-					],
-					'post_type'            => [
-						0 => 'qrk_itinerary',
-					],
-					'post_status'          => '',
-					'taxonomy'             => '',
-					'filters'              => [
-						0 => 'search',
-					],
-					'return_format'        => 'id',
-					'min'                  => '',
-					'max'                  => '',
-					'elements'             => '',
-					'bidirectional'        => 1,
-					'bidirectional_target' => [
-						0 => 'field_65f2dab2046df',
-					],
-				],
-				[
 					'key'                  => 'field_66910d27ee66b',
 					'label'                => 'Included Activities',
 					'name'                 => 'included_activities',

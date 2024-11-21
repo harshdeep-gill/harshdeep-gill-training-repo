@@ -9,5 +9,5 @@
 @endphp
 
 <div class="media-text-cta__secondary-text">
-	<x-escape :content="$text" />
+	{!! $text !!}
 </div>

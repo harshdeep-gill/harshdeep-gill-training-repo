@@ -377,6 +377,10 @@
 		}
 	}
 
+	&__title {
+		margin-bottom: 0;
+	}
+
 	quark-dates-rates-pagination-items-per-page.dates-rates__result-count-selector {
 		display: contents;
 
@@ -408,10 +412,22 @@
 				justify-content: end;
 			}
 		}
+
+		button {
+			color: var(--color-black);
+		}
 	}
 
 	&__accordion-content--no-transition {
 		transition: none;
+	}
+
+	&__gst {
+
+		svg {
+			width: 20px;
+			height: 20px;
+		}
 	}
 }
 

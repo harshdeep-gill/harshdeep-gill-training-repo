@@ -11,13 +11,21 @@ use WP_Post;
 use WP_Term;
 use Quark\Tests\Softrip\Softrip_TestCase;
 
+use function Quark\Expeditions\bust_post_cache as bust_expedition_post_cache;
 use function Quark\Softrip\do_sync;
 
+use const Quark\Expeditions\DESTINATION_TAXONOMY;
 use const Quark\InclusionSets\POST_TYPE as INCLUSION_SETS_POST_TYPE;
 use const Quark\PolicyPages\POST_TYPE as POLICY_PAGES_POST_TYPE;
 use const Quark\StaffMembers\SEASON_TAXONOMY;
 use const Quark\Ships\POST_TYPE as SHIPS_POST_TYPE;
 use const Quark\ItineraryDays\POST_TYPE as ITINERARY_DAYS_POST_TYPE;
+use const Quark\Expeditions\POST_TYPE as EXPEDITION_POST_TYPE;
+use const Quark\Localization\AUD_CURRENCY;
+use const Quark\Localization\DEFAULT_CURRENCY;
+use const Quark\Localization\EUR_CURRENCY;
+use const Quark\Localization\GBP_CURRENCY;
+use const Quark\Localization\USD_CURRENCY;
 
 /**
  * Class Test_Itineraries.
@@ -39,8 +47,7 @@ class Test_Itineraries extends Softrip_TestCase {
 		$this->assertEquals( 10, has_filter( 'qe_departure_location_taxonomy_post_types', 'Quark\Itineraries\opt_in' ) );
 		$this->assertEquals( 10, has_filter( 'qe_tax_types_taxonomy_post_types', 'Quark\Itineraries\opt_in' ) );
 		$this->assertEquals( 10, has_filter( 'qe_season_taxonomy_post_types', 'Quark\Itineraries\opt_in' ) );
-		$this->assertEquals( 10, has_action( 'save_post_' . POST_TYPE, 'Quark\Itineraries\bust_post_cache' ) );
-		$this->assertEquals( 10, has_action( 'set_object_terms', 'Quark\Itineraries\bust_post_cache_on_term_assign' ) );
+		$this->assertEquals( 11, has_action( 'save_post', 'Quark\Itineraries\bust_post_cache' ) );
 	}
 
 	/**
@@ -80,6 +87,9 @@ class Test_Itineraries extends Softrip_TestCase {
 
 		// Assign term to post.
 		wp_set_object_terms( $post_1->ID, $departure_location_1->term_id, DEPARTURE_LOCATION_TAXONOMY );
+
+		// Bust cache.
+		bust_post_cache( $post_1->ID );
 
 		// Get post.
 		$the_post = get( $post_1->ID );
@@ -206,8 +216,8 @@ class Test_Itineraries extends Softrip_TestCase {
 		// Set mandatory transfer price to post meta.
 		update_post_meta( $post_1->ID, 'mandatory_transfer_price_usd', 100 );
 		update_post_meta( $post_1->ID, 'mandatory_transfer_price_cad', 200 );
-		update_post_meta( $post_1->ID, 'supplemental_price_usd', 300 );
-		update_post_meta( $post_1->ID, 'supplemental_price_eur', 400 );
+		update_post_meta( $post_1->ID, 'supplement_price_usd', 300 );
+		update_post_meta( $post_1->ID, 'supplement_price_eur', 400 );
 
 		// Bust cache.
 		bust_post_cache( $post_1->ID );
@@ -424,6 +434,9 @@ class Test_Itineraries extends Softrip_TestCase {
 
 		// Assign term to post.
 		wp_set_post_terms( $post->ID, [ $season->term_id ], SEASON_TAXONOMY );
+
+		// Bust cache.
+		bust_post_cache( $post->ID );
 
 		// Test getting trip group.
 		$this->assertEquals(
@@ -707,26 +720,43 @@ class Test_Itineraries extends Softrip_TestCase {
 			];
 		}
 
-		// Get details tabs data.
-		$details = get_details_tabs_data( $itinerary_posts );
+		// Test without expedition id.
+		$details = get_details_tabs_data();
+		$this->assertEmpty( $details );
+
+		// Create expedition post.
+		$expedition_post = $this->factory()->post->create_and_get(
+			[
+				'post_type'   => EXPEDITION_POST_TYPE,
+				'post_title'  => 'Test Expedition',
+				'post_status' => 'publish',
+				'meta_input'  => [
+					'related_itineraries' => $itinerary_posts,
+				],
+			]
+		);
+		$this->assertTrue( $expedition_post instanceof WP_Post );
+
+		// Test with expedition id.
+		$details = get_details_tabs_data( $expedition_post->ID );
 
 		// Prepare expected details.
 		$expected_details = [
-			'active_tab'       => '2023',
+			'active_tab'       => '2022',
 			'itinerary_groups' => [
-				[
-					'tab_id'      => '2023',
-					'tab_title'   => '2023.24 Season',
-					'active_tab'  => 'tab-2',
+				2022 => [
+					'tab_id'      => '2022',
+					'tab_title'   => '2022 Season',
+					'active_tab'  => 'tab-1',
 					'itineraries' => [
 						[
-							'tab_id'             => 'tab-2',
-							'tab_title'          => '11 Days',
-							'tab_subtitle'       => 'From Japan',
-							'tab_content_header' => 'From Japan, 11 days',
-							'duration'           => '11 days',
-							'departing_from'     => 'Japan',
-							'itinerary_days'     => [
+							'tab_id'              => 'tab-1',
+							'tab_title'           => '10 Days',
+							'tab_subtitle'        => 'From India',
+							'tab_content_header'  => 'From India, 10 days, on ' . $expected_ship_oex[0]['name'],
+							'duration'            => '10 days',
+							'departing_from'      => $departure_location_india->name,
+							'itinerary_days'      => [
 								[
 									'title'   => 'Day 1: A',
 									'content' => 'Day One content',
@@ -740,26 +770,121 @@ class Test_Itineraries extends Softrip_TestCase {
 									'content' => 'Day Three content',
 								],
 							],
-							'map'                => 0,
-							'price'              => '',
-							'brochure'           => '',
-							'ships'              => [],
+							'map'                 => 0,
+							'price'               => '$26,171 USD per person',
+							'brochure'            => '',
+							'ships'               => $expected_ship_oex,
+							'request_a_quote_url' => '',
+						],
+						[
+							'tab_id'              => 'tab-3',
+							'tab_title'           => '12 Days',
+							'tab_subtitle'        => 'From India',
+							'tab_content_header'  => 'From India, 12 days, on ' . $expected_ship_ult[0]['name'],
+							'duration'            => '12 days',
+							'departing_from'      => 'India',
+							'itinerary_days'      => [
+								[
+									'title'   => 'Day 1: A',
+									'content' => 'Day One content',
+								],
+								[
+									'title'   => 'Day 2 & 3: B',
+									'content' => 'Day Two content',
+								],
+								[
+									'title'   => 'Day 4 to 6: C',
+									'content' => 'Day Three content',
+								],
+							],
+							'map'                 => 0,
+							'price'               => '$29,410 USD per person',
+							'brochure'            => '',
+							'ships'               => $expected_ship_ult,
+							'request_a_quote_url' => '',
 						],
 					],
 				],
-				[
+				2023 => [
+					'tab_id'      => '2023',
+					'tab_title'   => '2023 Season',
+					'active_tab'  => 'tab-2',
+					'itineraries' => [
+						[
+							'tab_id'              => 'tab-2',
+							'tab_title'           => '11 Days',
+							'tab_subtitle'        => 'From Japan',
+							'tab_content_header'  => 'From Japan, 11 days',
+							'duration'            => '11 days',
+							'departing_from'      => 'Japan',
+							'itinerary_days'      => [
+								[
+									'title'   => 'Day 1: A',
+									'content' => 'Day One content',
+								],
+								[
+									'title'   => 'Day 2 & 3: B',
+									'content' => 'Day Two content',
+								],
+								[
+									'title'   => 'Day 4 to 6: C',
+									'content' => 'Day Three content',
+								],
+							],
+							'map'                 => 0,
+							'price'               => '',
+							'brochure'            => '',
+							'ships'               => [],
+							'request_a_quote_url' => '',
+						],
+					],
+				],
+			],
+		];
+
+		// Assert details.
+		$this->assertEquals( $expected_details, $details );
+
+		// Create a destination term.
+		$destination = $this->factory()->term->create_and_get(
+			[
+				'taxonomy' => DESTINATION_TAXONOMY,
+				'name'     => 'Test Destination',
+			]
+		);
+
+		// Check if term was created.
+		$this->assertTrue( $destination instanceof WP_Term );
+
+		// Assign destination term to posts.
+		wp_set_post_terms( $expedition_post->ID, [ $destination->term_id ], DESTINATION_TAXONOMY );
+
+		// Update term meta.
+		update_term_meta( $destination->term_id, 'show_next_year', true );
+
+		// Bust expedition post cache.
+		bust_expedition_post_cache( $expedition_post->ID );
+
+		// Test with expedition id.
+		$details = get_details_tabs_data( $expedition_post->ID );
+
+		// Prepare expected details.
+		$expected_details = [
+			'active_tab'       => '2022',
+			'itinerary_groups' => [
+				2022 => [
 					'tab_id'      => '2022',
 					'tab_title'   => '2022.23 Season',
 					'active_tab'  => 'tab-1',
 					'itineraries' => [
 						[
-							'tab_id'             => 'tab-1',
-							'tab_title'          => '10 Days',
-							'tab_subtitle'       => 'From India',
-							'tab_content_header' => 'From India, 10 days, on ' . $expected_ship_oex[0]['name'],
-							'duration'           => '10 days',
-							'departing_from'     => $departure_location_india->name,
-							'itinerary_days'     => [
+							'tab_id'              => 'tab-1',
+							'tab_title'           => '10 Days',
+							'tab_subtitle'        => 'From India',
+							'tab_content_header'  => 'From India, 10 days, on ' . $expected_ship_oex[0]['name'],
+							'duration'            => '10 days',
+							'departing_from'      => $departure_location_india->name,
+							'itinerary_days'      => [
 								[
 									'title'   => 'Day 1: A',
 									'content' => 'Day One content',
@@ -773,19 +898,20 @@ class Test_Itineraries extends Softrip_TestCase {
 									'content' => 'Day Three content',
 								],
 							],
-							'map'                => 0,
-							'price'              => '$34,895 USD per person',
-							'brochure'           => '',
-							'ships'              => $expected_ship_oex,
+							'map'                 => 0,
+							'price'               => '$26,171 USD per person',
+							'brochure'            => '',
+							'ships'               => $expected_ship_oex,
+							'request_a_quote_url' => '',
 						],
 						[
-							'tab_id'             => 'tab-3',
-							'tab_title'          => '12 Days',
-							'tab_subtitle'       => 'From India',
-							'tab_content_header' => 'From India, 12 days, on ' . $expected_ship_ult[0]['name'],
-							'duration'           => '12 days',
-							'departing_from'     => 'India',
-							'itinerary_days'     => [
+							'tab_id'              => 'tab-3',
+							'tab_title'           => '12 Days',
+							'tab_subtitle'        => 'From India',
+							'tab_content_header'  => 'From India, 12 days, on ' . $expected_ship_ult[0]['name'],
+							'duration'            => '12 days',
+							'departing_from'      => 'India',
+							'itinerary_days'      => [
 								[
 									'title'   => 'Day 1: A',
 									'content' => 'Day One content',
@@ -799,10 +925,45 @@ class Test_Itineraries extends Softrip_TestCase {
 									'content' => 'Day Three content',
 								],
 							],
-							'map'                => 0,
-							'price'              => '$34,600 USD per person',
-							'brochure'           => '',
-							'ships'              => $expected_ship_ult,
+							'map'                 => 0,
+							'price'               => '$29,410 USD per person',
+							'brochure'            => '',
+							'ships'               => $expected_ship_ult,
+							'request_a_quote_url' => '',
+						],
+					],
+				],
+				2023 => [
+					'tab_id'      => '2023',
+					'tab_title'   => '2023.24 Season',
+					'active_tab'  => 'tab-2',
+					'itineraries' => [
+						[
+							'tab_id'              => 'tab-2',
+							'tab_title'           => '11 Days',
+							'tab_subtitle'        => 'From Japan',
+							'tab_content_header'  => 'From Japan, 11 days',
+							'duration'            => '11 days',
+							'departing_from'      => 'Japan',
+							'itinerary_days'      => [
+								[
+									'title'   => 'Day 1: A',
+									'content' => 'Day One content',
+								],
+								[
+									'title'   => 'Day 2 & 3: B',
+									'content' => 'Day Two content',
+								],
+								[
+									'title'   => 'Day 4 to 6: C',
+									'content' => 'Day Three content',
+								],
+							],
+							'map'                 => 0,
+							'price'               => '',
+							'brochure'            => '',
+							'ships'               => [],
+							'request_a_quote_url' => '',
 						],
 					],
 				],
@@ -887,22 +1048,20 @@ class Test_Itineraries extends Softrip_TestCase {
 	}
 
 	/**
-	 * Test bust_post_cache_on_term_assign function.
+	 * Test get tax types.
 	 *
-	 * @covers ::bust_post_cache_on_term_assign
+	 * @covers ::get_tax_type_details
 	 *
 	 * @return void
 	 */
-	public function test_bust_post_cache_on_term_assign(): void {
-		// Create a term for DEPARTURE_LOCATION_TAXONOMY.
-		$departure_location = $this->factory()->term->create_and_get(
-			[
-				'taxonomy' => DEPARTURE_LOCATION_TAXONOMY,
-				'name'     => 'Test Term',
-			]
-		);
+	public function test_get_tax_type_details(): void {
+		// Empty post id.
+		$this->assertEmpty( get_tax_type_details() );
 
-		// Create a post of POST_TYPE.
+		// Invalid post id.
+		$this->assertEmpty( get_tax_type_details( 9348 ) );
+
+		// Create a post.
 		$post = $this->factory()->post->create_and_get(
 			[
 				'post_type'   => POST_TYPE,
@@ -911,29 +1070,481 @@ class Test_Itineraries extends Softrip_TestCase {
 			]
 		);
 
-		// Check if term and post were created.
-		$this->assertTrue( $departure_location instanceof WP_Term );
+		// Check if post was created.
 		$this->assertTrue( $post instanceof WP_Post );
 
-		// Set post meta.
-		update_post_meta( $post->ID, 'meta_1', 'value_1' );
+		// Empty tax type.
+		$this->assertEmpty( get_tax_type_details( $post->ID ) );
 
-		// Get data.
-		$data = get( $post->ID );
+		// Add tax type term.
+		$tax_type = $this->factory()->term->create_and_get(
+			[
+				'taxonomy' => TAX_TYPE_TAXONOMY,
+				'name'     => 'Test Tax Type',
+			]
+		);
 
-		// Assert data['post_meta'] is not empty.
-		$this->assertIsArray( $data['post_meta'] );
-		$this->assertArrayNotHasKey( 'meta_1', $data['post_meta'] );
+		// Check if term was created.
+		$this->assertTrue( $tax_type instanceof WP_Term );
 
-		// Assign term to post.
-		wp_set_object_terms( $post->ID, $departure_location->term_id, DEPARTURE_LOCATION_TAXONOMY );
+		// Assign tax type to post.
+		wp_set_object_terms( $post->ID, $tax_type->term_id, TAX_TYPE_TAXONOMY );
 
-		// Get data.
-		$data = get( $post->ID );
+		// Bust post cache.
+		bust_post_cache( $post->ID );
 
-		// Assert data['post_meta'] is not empty.
-		$this->assertIsArray( $data['post_meta'] );
-		$this->assertArrayHasKey( 'meta_1', $data['post_meta'] );
-		$this->assertEquals( 'value_1', $data['post_meta']['meta_1'] );
+		// Get tax type details.
+		$tax_type_details = get_tax_type_details( $post->ID );
+		$this->assertNotEmpty( $tax_type_details );
+
+		// Expected.
+		$expected_details = [
+			[
+				'id'          => $tax_type->term_id,
+				'name'        => $tax_type->name,
+				'description' => $tax_type->description,
+				'rate'        => 0,
+			],
+		];
+		$this->assertEquals( $expected_details, $tax_type_details );
+
+		// Add 'rate' term meta.
+		update_term_meta( $tax_type->term_id, 'rate', 10 );
+
+		// Get tax type details.
+		$tax_type_details = get_tax_type_details( $post->ID );
+		$this->assertNotEmpty( $tax_type_details );
+
+		// Expected.
+		$expected_details = [
+			[
+				'id'          => $tax_type->term_id,
+				'name'        => $tax_type->name,
+				'description' => $tax_type->description,
+				'rate'        => 10,
+			],
+		];
+		$this->assertEquals( $expected_details, $tax_type_details );
+	}
+
+	/**
+	 * Test update_related_expedition_on_itineraries_save function.
+	 *
+	 * @covers ::update_related_expedition_on_itineraries_save
+	 *
+	 * @return void
+	 */
+	public function test_update_related_expedition_on_itineraries_save(): void {
+		// Mock $_POST data.
+		global $_POST; // phpcs:ignore
+
+		// Create expedition post.
+		$expedition_1 = $this->factory()->post->create_and_get(
+			[
+				'post_type'   => EXPEDITION_POST_TYPE,
+				'post_title'  => 'Test Expedition 1',
+				'post_status' => 'publish',
+			]
+		);
+
+		// Create two expedition post.
+		$expedition_2 = $this->factory()->post->create_and_get(
+			[
+				'post_type'   => EXPEDITION_POST_TYPE,
+				'post_title'  => 'Test Expedition 2',
+				'post_status' => 'publish',
+			]
+		);
+
+		// Verify posts were created.
+		$this->assertTrue( $expedition_1 instanceof WP_Post );
+		$this->assertTrue( $expedition_2 instanceof WP_Post );
+
+		// Case 1 - it skips different post_type.
+		// Create a post.
+		$post = $this->factory()->post->create_and_get(
+			[
+				'post_type'   => 'post',
+				'post_title'  => 'Test Post',
+				'post_status' => 'publish',
+				'meta_input'  => [
+					'related_expedition' => $expedition_1->ID,
+				],
+			]
+		);
+
+		// Check if post was created.
+		$this->assertTrue( $post instanceof WP_Post );
+
+		// Mock $_POST data.
+		$_POST['acf']['field_65f2dab2046df'] = $expedition_1->ID;
+
+		// Update the post using update_post().
+		$args = [
+			'ID'           => $post->ID,
+			'post_content' => 'Lorem ipsum',
+		];
+		wp_update_post( $args );
+
+		// Verify no meta was added.
+		$this->assertEmpty( get_post_meta( $expedition_1->ID, 'related_itineraries', true ) );
+
+		// Case 2 - it skips same meta data.
+		// Create an itinerary post.
+		$post = $this->factory()->post->create_and_get(
+			[
+				'post_type'   => POST_TYPE,
+				'post_title'  => 'Test Post',
+				'post_status' => 'publish',
+				'meta_input'  => [
+					'related_expedition' => $expedition_1->ID,
+				],
+			]
+		);
+
+		// Check if post was created.
+		$this->assertTrue( $post instanceof WP_Post );
+
+		// Update the post using update_post().
+		$args = [
+			'ID'           => $post->ID,
+			'post_content' => 'Lorem ipsum',
+			'meta_input'   => [
+				'related_expedition' => $expedition_1->ID,
+			],
+		];
+
+		// Update the post using update_post().
+		wp_update_post( $args );
+
+		// Verify no meta was added.
+		$this->assertEmpty( get_post_meta( $expedition_1->ID, 'related_itineraries', true ) );
+
+		// Case 3 - it updates meta data.
+		// Mock $_POST data.
+		$_POST['acf']['field_65f2dab2046df'] = $expedition_2->ID;
+
+		// Update the post using update_post().
+		wp_update_post( $args );
+
+		// Verify no meta was added.
+		$this->assertEquals( [ $post->ID ], get_post_meta( $expedition_2->ID, 'related_itineraries', true ) );
+
+		// Case 4 - it removes meta data.
+		// Set Expedition meta.
+		update_post_meta( $post->ID, 'related_expedition', $expedition_1->ID );
+		update_post_meta( $expedition_1->ID, 'related_itineraries', [ 123, $post->ID, 456 ] );
+		update_post_meta( $expedition_2->ID, 'related_itineraries', [ 123 ] );
+
+		// Mock $_POST data.
+		$_POST['acf']['field_65f2dab2046df'] = $expedition_2->ID;
+
+		// Update the post using update_post().
+		wp_update_post( $args );
+
+		// Now it should remove the post ID from $expedition_1 - related_itineraries and added to $expedition_2.
+		$this->assertEqualsCanonicalizing( [ 123, 456 ], get_post_meta( $expedition_1->ID, 'related_itineraries', true ) );
+		$this->assertEqualsCanonicalizing( [ 123, $post->ID ], get_post_meta( $expedition_2->ID, 'related_itineraries', true ) );
+
+		// Case 5 - it removes old meta data.
+		// Mock $_POST data.
+		$_POST['acf']['field_65f2dab2046df'] = '';
+
+		// Set Expedition meta.
+		update_post_meta( $post->ID, 'related_expedition', $expedition_1->ID );
+		update_post_meta( $expedition_1->ID, 'related_itineraries', [ 123, $post->ID, 456 ] );
+		update_post_meta( $expedition_2->ID, 'related_itineraries', [ 123 ] );
+
+		// Update the post using update_post().
+		wp_update_post( $args );
+
+		// Now it should remove the post ID from $expedition_1 - related_itineraries.
+		$this->assertEqualsCanonicalizing( [ 123, 456 ], get_post_meta( $expedition_1->ID, 'related_itineraries', true ) );
+		$this->assertEqualsCanonicalizing( [ 123 ], get_post_meta( $expedition_2->ID, 'related_itineraries', true ) );
+	}
+
+	/**
+	 * Test get lowest price.
+	 *
+	 * @covers \Quark\Itineraries\get_lowest_price
+	 *
+	 * @return void
+	 */
+	public function test_get_lowest_price(): void {
+		// Cache prefix.
+		$cache_prefix = CACHE_KEY . '_lowest_price_';
+
+		// Invalid post ID.
+		$expected = [
+			'original'   => 0,
+			'discounted' => 0,
+		];
+		$this->assertEquals( $expected, get_lowest_price() );
+
+		// Invalid currency.
+		$expected = [
+			'original'   => 0,
+			'discounted' => 0,
+		];
+		$this->assertEquals( $expected, get_lowest_price( 1, 'INVALID' ) );
+
+		// Create an itinerary post.
+		$itinerary_id = $this->factory()->post->create( [ 'post_type' => POST_TYPE ] );
+		$this->assertIsInt( $itinerary_id );
+
+		// Itinerary with no departure.
+		$expected  = [
+			'original'   => 0,
+			'discounted' => 0,
+		];
+		$cache_key = $cache_prefix . $itinerary_id . '_' . DEFAULT_CURRENCY;
+		$this->assertFalse( wp_cache_get( $cache_key, CACHE_GROUP ) );
+		$this->assertEquals( $expected, get_lowest_price( $itinerary_id ) );
+		$this->assertNotEmpty( wp_cache_get( $cache_key, CACHE_GROUP ) );
+
+		// Setup mock response.
+		add_filter( 'pre_http_request', 'Quark\Tests\Softrip\mock_softrip_http_request', 10, 3 );
+
+		// Flush cache before sync.
+		wp_cache_flush();
+
+		// Sync softrip with existing posts.
+		do_sync();
+
+		// Flush cache after sync.
+		wp_cache_flush();
+
+		// Get itinerary post with package code ABC-123.
+		$itinerary_posts = get_posts(
+			[
+				'post_type'              => POST_TYPE,
+				'no_found_rows'          => true,
+				'update_post_term_cache' => false,
+				'update_post_meta_cache' => false,
+				'suppress_filters'       => false,
+				'ignore_sticky_posts'    => true,
+				'fields'                 => 'ids',
+				'meta_query'             => [
+					[
+						'key'     => 'softrip_package_code',
+						'value'   => 'ABC-123',
+						'compare' => '=',
+					],
+				],
+			]
+		);
+		$this->assertNotEmpty( $itinerary_posts );
+		$this->assertEquals( 1, count( $itinerary_posts ) );
+
+		// Itinerary id.
+		$itinerary_id = $itinerary_posts[0];
+		$this->assertIsInt( $itinerary_id );
+
+		// USD cache key.
+		$cache_key_usd = $cache_prefix . $itinerary_id . '_' . USD_CURRENCY;
+
+		// Get lowest price for itinerary with package code ABC-123 with USD currency.
+		$this->assertFalse( wp_cache_get( $cache_key_usd, CACHE_GROUP ) );
+		$expected = [
+			'original'   => 34895,
+			'discounted' => 26171,
+		];
+		$this->assertEquals( $expected, get_lowest_price( $itinerary_id ) );
+		$this->assertNotEmpty( wp_cache_get( $cache_key_usd, CACHE_GROUP ) );
+
+		// AUD cache key.
+		$cache_key_aud = $cache_prefix . $itinerary_id . '_' . AUD_CURRENCY;
+
+		// Get lowest price for itinerary with package code ABC-123 with AUD currency.
+		$this->assertFalse( wp_cache_get( $cache_key_aud, CACHE_GROUP ) );
+		$expected = [
+			'original'   => 54795,
+			'discounted' => 41096,
+		];
+		$this->assertEquals( $expected, get_lowest_price( $itinerary_id, AUD_CURRENCY ) );
+		$this->assertNotEmpty( wp_cache_get( $cache_key_aud, CACHE_GROUP ) );
+
+		// EUR cache key.
+		$cache_key_eur = $cache_prefix . $itinerary_id . '_' . EUR_CURRENCY;
+
+		// Get lowest price for itinerary with package code ABC-123 with EUR currency.
+		$this->assertFalse( wp_cache_get( $cache_key_eur, CACHE_GROUP ) );
+		$expected = [
+			'original'   => 32495,
+			'discounted' => 24371,
+		];
+		$this->assertEquals( $expected, get_lowest_price( $itinerary_id, EUR_CURRENCY ) );
+		$this->assertNotEmpty( wp_cache_get( $cache_key_eur, CACHE_GROUP ) );
+
+		// GBP cache key.
+		$cache_key_gbp = $cache_prefix . $itinerary_id . '_' . GBP_CURRENCY;
+
+		// Get lowest price for itinerary with package code ABC-123 with GBP currency.
+		$this->assertFalse( wp_cache_get( $cache_key_gbp, CACHE_GROUP ) );
+		$expected = [
+			'original'   => 27995,
+			'discounted' => 20996,
+		];
+		$this->assertEquals( $expected, get_lowest_price( $itinerary_id, 'GBP' ) );
+		$this->assertNotEmpty( wp_cache_get( $cache_key_gbp, CACHE_GROUP ) );
+
+		// Invalid currency cache key.
+		$cache_key_invalid = $cache_prefix . $itinerary_id . '_INVALID';
+
+		// Get lowest price for itinerary with package code ABC-123 with invalid currency.
+		$this->assertFalse( wp_cache_get( $cache_key_invalid, CACHE_GROUP ) );
+		$expected = [
+			'original'   => 0,
+			'discounted' => 0,
+		];
+		$this->assertEquals( $expected, get_lowest_price( $itinerary_id, 'INVALID' ) );
+		$this->assertFalse( wp_cache_get( $cache_key_invalid, CACHE_GROUP ) );
+
+		// Get itinerary with package code DEF-456.
+		$itinerary_posts = get_posts(
+			[
+				'post_type'              => POST_TYPE,
+				'no_found_rows'          => true,
+				'update_post_term_cache' => false,
+				'update_post_meta_cache' => false,
+				'suppress_filters'       => false,
+				'ignore_sticky_posts'    => true,
+				'fields'                 => 'ids',
+				'meta_query'             => [
+					[
+						'key'     => 'softrip_package_code',
+						'value'   => 'DEF-456',
+						'compare' => '=',
+					],
+				],
+			]
+		);
+		$this->assertNotEmpty( $itinerary_posts );
+		$this->assertEquals( 1, count( $itinerary_posts ) );
+
+		// Itinerary id.
+		$itinerary_id = $itinerary_posts[0];
+		$this->assertIsInt( $itinerary_id );
+
+		// USD cache key.
+		$cache_key_usd = $cache_prefix . $itinerary_id . '_' . USD_CURRENCY;
+
+		// Get lowest price for itinerary with package code DEF-456 with USD currency.
+		$this->assertFalse( wp_cache_get( $cache_key_usd, CACHE_GROUP ) );
+		$expected = [
+			'original'   => 0,
+			'discounted' => 0,
+		];
+		$this->assertEquals( $expected, get_lowest_price( $itinerary_id ) );
+		$this->assertNotEmpty( wp_cache_get( $cache_key_usd, CACHE_GROUP ) );
+
+		// AUD cache key.
+		$cache_key_aud = $cache_prefix . $itinerary_id . '_' . AUD_CURRENCY;
+
+		// Get lowest price for itinerary with package code DEF-456 with AUD currency.
+		$this->assertFalse( wp_cache_get( $cache_key_aud, CACHE_GROUP ) );
+		$expected = [
+			'original'   => 0,
+			'discounted' => 0,
+		];
+		$this->assertEquals( $expected, get_lowest_price( $itinerary_id, 'AUD' ) );
+		$this->assertNotEmpty( wp_cache_get( $cache_key_aud, CACHE_GROUP ) );
+
+		// EUR cache key.
+		$cache_key_eur = $cache_prefix . $itinerary_id . '_' . EUR_CURRENCY;
+
+		// Get lowest price for itinerary with package code DEF-456 with EUR currency.
+		$this->assertFalse( wp_cache_get( $cache_key_eur, CACHE_GROUP ) );
+		$expected = [
+			'original'   => 0,
+			'discounted' => 0,
+		];
+		$this->assertEquals( $expected, get_lowest_price( $itinerary_id, 'EUR' ) );
+		$this->assertNotEmpty( wp_cache_get( $cache_key_eur, CACHE_GROUP ) );
+
+		// GBP cache key.
+		$cache_key_gbp = $cache_prefix . $itinerary_id . '_' . GBP_CURRENCY;
+
+		// Get lowest price for itinerary with package code DEF-456 with GBP currency.
+		$this->assertFalse( wp_cache_get( $cache_key_gbp, CACHE_GROUP ) );
+		$expected = [
+			'original'   => 0,
+			'discounted' => 0,
+		];
+		$this->assertEquals( $expected, get_lowest_price( $itinerary_id, 'GBP' ) );
+		$this->assertNotEmpty( wp_cache_get( $cache_key_gbp, CACHE_GROUP ) );
+
+		// Invalid currency cache key.
+		$cache_key_invalid = $cache_prefix . $itinerary_id . '_INVALID';
+
+		// Get lowest price for itinerary with package code DEF-456 with invalid currency.
+		$this->assertFalse( wp_cache_get( $cache_key_invalid, CACHE_GROUP ) );
+		$expected = [
+			'original'   => 0,
+			'discounted' => 0,
+		];
+		$this->assertEquals( $expected, get_lowest_price( $itinerary_id, 'INVALID' ) );
+		$this->assertFalse( wp_cache_get( $cache_key_invalid, CACHE_GROUP ) );
+
+		// Get itinerary with package code HIJ-456.
+		$itinerary_posts = get_posts(
+			[
+				'post_type'              => POST_TYPE,
+				'no_found_rows'          => true,
+				'update_post_term_cache' => false,
+				'update_post_meta_cache' => false,
+				'suppress_filters'       => false,
+				'ignore_sticky_posts'    => true,
+				'fields'                 => 'ids',
+				'meta_query'             => [
+					[
+						'key'     => 'softrip_package_code',
+						'value'   => 'HIJ-456',
+						'compare' => '=',
+					],
+				],
+			]
+		);
+		$this->assertNotEmpty( $itinerary_posts );
+		$this->assertEquals( 1, count( $itinerary_posts ) );
+
+		// Itinerary id.
+		$itinerary_id = $itinerary_posts[0];
+		$this->assertIsInt( $itinerary_id );
+
+		// Get lowest price for itinerary with package code HIJ-456 with USD currency.
+		$expected = [
+			'original'   => 10995,
+			'discounted' => 9896,
+		];
+		$this->assertEquals( $expected, get_lowest_price( $itinerary_id ) );
+
+		// Get lowest price for itinerary with package code HIJ-456 with AUD currency.
+		$expected = [
+			'original'   => 17200,
+			'discounted' => 15480,
+		];
+		$this->assertEquals( $expected, get_lowest_price( $itinerary_id, 'AUD' ) );
+
+		// Get lowest price for itinerary with package code HIJ-456 with EUR currency.
+		$expected = [
+			'original'   => 10200,
+			'discounted' => 9180,
+		];
+		$this->assertEquals( $expected, get_lowest_price( $itinerary_id, 'EUR' ) );
+
+		// Get lowest price for itinerary with package code HIJ-456 with GBP currency.
+		$expected = [
+			'original'   => 10300,
+			'discounted' => 8240,
+		];
+		$this->assertEquals( $expected, get_lowest_price( $itinerary_id, 'GBP' ) );
+
+		// Get lowest price for itinerary with package code HIJ-456 with invalid currency.
+		$expected = [
+			'original'   => 0,
+			'discounted' => 0,
+		];
+		$this->assertEquals( $expected, get_lowest_price( $itinerary_id, 'INVALID' ) );
 	}
 }

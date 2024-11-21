@@ -37,12 +37,21 @@ const {
 	LinkButton,
 	ColorPaletteControl,
 	LinkControl,
+	ImageControl,
+	Img,
 } = gumponents.components;
 
 // Background colors.
 export const colors: { [key: string]: string }[] = [
 	{ name: __( 'Black', 'qrk' ), color: '#232933', slug: 'black' },
 	{ name: __( 'Gray', 'qrk' ), color: '#F5F7FB', slug: 'gray' },
+];
+
+// Gradient colors.
+export const gradientColors: { [key: string]: string }[] = [
+	{ name: __( 'Black', 'qrk' ), color: 'black', slug: 'black' },
+	{ name: __( 'Gray', 'qrk' ), color: '#F5F7FB', slug: 'gray-5' },
+	{ name: __( 'White', 'qrk' ), color: 'white', slug: 'white' },
 ];
 
 /**
@@ -66,6 +75,17 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 
 	// Inner blocks props.
 	const innerBlocksProps = useInnerBlocksProps( { className: 'section__content' } );
+
+	// Image Classes.
+	const imageClasses = classnames( 'section__image-wrap', 'full-width', 'section__image-gradient-' + attributes.gradientPosition );
+
+	// Section classes.
+	const sectionClasses = classnames(
+		className,
+		'section',
+		attributes.hasBackground || attributes.hasBackgroundImage ? 'full-width' : '',
+		{ 'color-context--dark': 'black' === attributes.backgroundColor },
+	);
 
 	// Return block.
 	return (
@@ -110,6 +130,7 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 					<ToggleControl
 						label={ __( 'Has Background', 'qrk' ) }
 						checked={ attributes.hasBackground }
+						disabled={ attributes.hasBackgroundImage }
 						onChange={ () => setAttributes( {
 							hasBackground: ! attributes.hasBackground,
 							hasPadding: ! attributes.hasBackground,
@@ -134,13 +155,69 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 						/>
 					}
 					<ToggleControl
-						label={ __( 'Is Narrow', 'qrk' ) }
-						checked={ attributes.isNarrow }
+						label={ __( 'Has Background Image', 'qrk' ) }
+						checked={ attributes.hasBackgroundImage }
+						disabled={ attributes.hasBackground }
 						onChange={ () => setAttributes( {
-							isNarrow: ! attributes.isNarrow,
+							hasBackgroundImage: ! attributes.hasBackgroundImage,
+							hasPadding: ! attributes.hasBackgroundImage,
+							isNarrow: false,
 						} ) }
-						help={ __( 'Does this section have narrow width?', 'qrk' ) }
+						help={ __( 'Does this section have a background image?', 'qrk' ) }
 					/>
+					{ attributes.hasBackgroundImage &&
+						<ImageControl
+							label={ __( 'Image', 'qrk' ) }
+							value={ attributes.backgroundImage ? attributes.backgroundImage.id : null }
+							size="large"
+							help={ __( 'Choose an image', 'qrk' ) }
+							onChange={ ( backgroundImage: Object ) => setAttributes( {
+								backgroundImage,
+								hasPadding: ! attributes.backgroundImage,
+							} ) }
+						/>
+					}
+					{ attributes.hasBackgroundImage && attributes.backgroundImage &&
+						<>
+							<SelectControl
+								label={ __( 'Gradient Position', 'qrk' ) }
+								help={ __( 'Select the gradient position.', 'qrk' ) }
+								value={ attributes.gradientPosition }
+								options={ [
+									{ label: __( 'None', 'qrk' ), value: 'none' },
+									{ label: __( 'Top', 'qrk' ), value: 'top' },
+									{ label: __( 'Bottom', 'qrk' ), value: 'bottom' },
+									{ label: __( 'Both', 'qrk' ), value: 'both' },
+								] }
+								onChange={ ( gradientPosition: string ) => setAttributes( { gradientPosition } ) }
+							/>
+							<ColorPaletteControl
+								label={ __( 'Image Gradient Color', 'qrk' ) }
+								help={ __( 'Select the gradient color.', 'qrk' ) }
+								value={ gradientColors.find( ( color ) => color.slug === attributes.gradientColor )?.color }
+								colors={ gradientColors.filter( ( color ) => [ 'black', 'gray-5', 'white' ].includes( color.slug ) ) }
+								onChange={ ( gradientColor: {
+									color: string;
+									slug: string;
+								} ): void => {
+									// Set the background color attribute.
+									if ( gradientColor.slug && [ 'black', 'gray-5', 'white' ].includes( gradientColor.slug ) ) {
+										setAttributes( { gradientColor: gradientColor.slug } );
+									}
+								} }
+							/>
+						</>
+					}
+					{ ! attributes.hasBackgroundImage &&
+						<ToggleControl
+							label={ __( 'Is Narrow', 'qrk' ) }
+							checked={ attributes.isNarrow }
+							onChange={ () => setAttributes( {
+								isNarrow: ! attributes.isNarrow,
+							} ) }
+							help={ __( 'Does this section have narrow width?', 'qrk' ) }
+						/>
+					}
 					<ToggleControl
 						label={ __( 'Has Padding', 'qrk' ) }
 						checked={ attributes.hasPadding }
@@ -176,13 +253,27 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 				</PanelBody>
 			</InspectorControls>
 			<Section
-				className={ classnames( className, 'section' ) }
+				{ ...blockProps }
+				className={ classnames( className, sectionClasses ) }
 				background={ attributes.hasBackground }
 				backgroundColor={ attributes.backgroundColor }
 				padding={ attributes.hasPadding }
 				seamless={ attributes.hasBackground }
 				narrow={ attributes.isNarrow }
 			>
+				{ attributes.hasBackgroundImage && attributes.backgroundImage && 'none' !== attributes.gradientColor &&
+					<div
+						className={ imageClasses }
+						style={ {
+							'--section-gradient-color': 'var(--color-' + attributes.gradientColor + ')',
+						} as React.CSSProperties }
+					>
+						<Img
+							className="section__image"
+							value={ attributes.backgroundImage }
+						/>
+					</div>
+				}
 				<div className="section__heading">
 					{ attributes.hasTitle && (
 						<RichText
@@ -210,9 +301,7 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 						allowedFormats={ [] }
 					/>
 				) }
-				<div { ...blockProps }>
-					<div { ...innerBlocksProps } />
-				</div>
+				<div { ...innerBlocksProps } />
 				{ attributes.hasCta && (
 					<div className={
 						`section__cta-button ${ 'black' === attributes.backgroundColor && attributes.hasBackground ? 'color-context--dark' : '' }`

@@ -9,12 +9,15 @@ namespace Quark\Tests\AdventureOptions;
 
 use Quark\Tests\Softrip\Softrip_TestCase;
 
+use function Quark\Softrip\AdventureOptions\delete_adventure_option_by_id;
 use function Quark\Softrip\AdventureOptions\format_adventure_option_data;
 use function Quark\Softrip\AdventureOptions\format_row_data_from_db;
 use function Quark\Softrip\AdventureOptions\format_rows_data_from_db;
 use function Quark\Softrip\AdventureOptions\get_adventure_option_by_departure_post_id;
 use function Quark\Softrip\AdventureOptions\get_adventure_option_by_softrip_option_id;
 use function Quark\Softrip\AdventureOptions\get_adventure_option_taxonomy_term_by_service_id;
+use function Quark\Softrip\AdventureOptions\get_adventure_options_by_id;
+use function Quark\Softrip\AdventureOptions\get_departures_by_adventure_option_term_id;
 use function Quark\Softrip\AdventureOptions\get_table_name;
 use function Quark\Softrip\AdventureOptions\get_table_sql;
 use function Quark\Softrip\AdventureOptions\update_adventure_options;
@@ -149,7 +152,7 @@ class Test_Adventure_Options extends Softrip_TestCase {
 
 		// Test with valid data.
 		$raw_adventure_options = [];
-		$expected              = true;
+		$expected              = false;
 		$actual                = update_adventure_options( $raw_adventure_options, $departure_post_id1 );
 		$this->assertSame( $expected, $actual );
 
@@ -1771,5 +1774,394 @@ class Test_Adventure_Options extends Softrip_TestCase {
 		];
 		$actual   = format_rows_data_from_db( $row_data );
 		$this->assertEquals( $expected, $actual );
+	}
+
+	/**
+	 * Test get adventure option by id.
+	 *
+	 * @covers \Quark\Softrip\AdventureOptions\get_adventure_options_by_id
+	 *
+	 * @return void
+	 */
+	public function test_get_adventure_options_by_id(): void {
+		// Setup variables.
+		$table_name = get_table_name();
+		global $wpdb;
+		$softrip_option_id1 = 'OPT-123';
+		$softrip_option_id2 = 'OPT-456';
+
+		// Test with no arguments.
+		$expected = [];
+		$actual   = get_adventure_options_by_id();
+		$this->assertSame( $expected, $actual );
+
+		// Test with default softrip option id.
+		$softrip_option_id = 0;
+		$expected          = [];
+		$actual            = get_adventure_options_by_id( $softrip_option_id );
+		$this->assertSame( $expected, $actual );
+
+		// Create a departure.
+		$softrip_package_code1 = 'UNQ-123';
+		$departure_post_id1    = $this->factory()->post->create(
+			[
+				'post_type'  => DEPARTURE_POST_TYPE,
+				'meta_input' => [
+					'softrip_package_code' => $softrip_package_code1,
+				],
+			]
+		);
+		$this->assertIsInt( $departure_post_id1 );
+
+		// Create another departure.
+		$softrip_package_code2 = 'UNQ-456';
+		$departure_post_id2    = $this->factory()->post->create(
+			[
+				'post_type'  => DEPARTURE_POST_TYPE,
+				'meta_input' => [
+					'softrip_package_code' => $softrip_package_code2,
+				],
+			]
+		);
+		$this->assertIsInt( $departure_post_id2 );
+
+		// Test with valid softrip option id.
+		$expected = [];
+		$actual   = get_adventure_options_by_id( 123 );
+		$this->assertSame( $expected, $actual );
+
+		// Clear the cache.
+		wp_cache_delete( CACHE_KEY_PREFIX . '_id_123', CACHE_GROUP );
+
+		// Create some adventure option taxonomy term.
+		$adventure_option_term_id1 = $this->factory()->term->create( [ 'taxonomy' => ADVENTURE_OPTION_CATEGORY ] );
+		$adventure_option_term_id2 = $this->factory()->term->create( [ 'taxonomy' => ADVENTURE_OPTION_CATEGORY ] );
+		$this->assertIsInt( $adventure_option_term_id1 );
+		$this->assertIsInt( $adventure_option_term_id2 );
+
+		// Initialize service 1, 2.
+		$service_id1 = 'service_id_1';
+		$service_id2 = 'service_id_2';
+
+		// Attach service id to term meta.
+		update_term_meta( $adventure_option_term_id1, 'softrip_0_id', $service_id1 );
+		update_term_meta( $adventure_option_term_id2, 'softrip_0_id', $service_id2 );
+
+		// Raw adventure option for departure 1.
+		$raw_adventure_option1 = [
+			'id'              => $softrip_option_id1,
+			'price'           => [
+				'USD' => [
+					'pricePerPerson' => 100,
+				],
+				'CAD' => [
+					'pricePerPerson' => 344,
+				],
+				'AUD' => [
+					'pricePerPerson' => 293,
+				],
+				'GBP' => [
+					'pricePerPerson' => 234,
+				],
+				'EUR' => [
+					'pricePerPerson' => 123,
+				],
+			],
+			'spacesAvailable' => 11,
+			'serviceIds'      => [ $service_id1, $service_id2 ],
+		];
+
+		// Format adventure option data.
+		$adventure_option_data1 = format_adventure_option_data( $raw_adventure_option1, $departure_post_id1 );
+		$this->assertNotEmpty( $adventure_option_data1 );
+
+		// Insert adventure option data.
+		$wpdb->insert( $table_name, $adventure_option_data1 );
+
+		// Get inserted id.
+		$adventure_option_id1 = $wpdb->insert_id;
+
+		// Cache should be empty.
+		$cache_key1        = CACHE_KEY_PREFIX . "_id_$adventure_option_id1";
+		$actual_from_cache = wp_cache_get( $cache_key1, CACHE_GROUP );
+
+		// Get adventure option by departure post id.
+		$actual = get_adventure_options_by_id( $adventure_option_id1 );
+		$this->assertNotEmpty( $actual );
+		$this->assertIsArray( $actual );
+		$this->assertCount( 1, $actual );
+
+		// Cache should have been prepared.
+		$actual_from_cache = wp_cache_get( $cache_key1, CACHE_GROUP );
+		$this->assertNotEmpty( $actual_from_cache );
+		$this->assertIsArray( $actual_from_cache );
+		$this->assertEquals( $actual, $actual_from_cache );
+
+		// Get first adventure option data.
+		$actual1 = $actual[0];
+		$this->assertIsArray( $actual1 );
+		$this->assertNotEmpty( $actual1 );
+
+		// Verify each field.
+		$this->assertArrayHasKey( 'id', $actual1 );
+		$this->assertEquals( $adventure_option_id1, $actual1['id'] );
+		$this->assertArrayHasKey( 'softrip_option_id', $actual1 );
+		$this->assertEquals( $raw_adventure_option1['id'], $actual1['softrip_option_id'] );
+		$this->assertArrayHasKey( 'departure_post_id', $actual1 );
+		$this->assertEquals( $departure_post_id1, $actual1['departure_post_id'] );
+		$this->assertArrayHasKey( 'softrip_package_code', $actual1 );
+		$this->assertEquals( $softrip_package_code1, $actual1['softrip_package_code'] );
+		$this->assertArrayHasKey( 'service_ids', $actual1 );
+		$this->assertEquals( implode( ',', $raw_adventure_option1['serviceIds'] ), $actual1['service_ids'] );
+		$this->assertArrayHasKey( 'spaces_available', $actual1 );
+		$this->assertEquals( $raw_adventure_option1['spacesAvailable'], $actual1['spaces_available'] );
+		$this->assertArrayHasKey( 'adventure_option_term_id', $actual1 );
+		$this->assertEquals( $adventure_option_term_id1, $actual1['adventure_option_term_id'] );
+		$this->assertArrayHasKey( 'price_per_person_usd', $actual1 );
+		$this->assertEquals( $raw_adventure_option1['price']['USD']['pricePerPerson'], $actual1['price_per_person_usd'] );
+		$this->assertArrayHasKey( 'price_per_person_cad', $actual1 );
+		$this->assertEquals( $raw_adventure_option1['price']['CAD']['pricePerPerson'], $actual1['price_per_person_cad'] );
+		$this->assertArrayHasKey( 'price_per_person_aud', $actual1 );
+		$this->assertEquals( $raw_adventure_option1['price']['AUD']['pricePerPerson'], $actual1['price_per_person_aud'] );
+		$this->assertArrayHasKey( 'price_per_person_gbp', $actual1 );
+		$this->assertEquals( $raw_adventure_option1['price']['GBP']['pricePerPerson'], $actual1['price_per_person_gbp'] );
+		$this->assertArrayHasKey( 'price_per_person_eur', $actual1 );
+		$this->assertEquals( $raw_adventure_option1['price']['EUR']['pricePerPerson'], $actual1['price_per_person_eur'] );
+
+		// Raw adventure option for departure 2.
+		$raw_adventure_option2 = [
+			'id'              => $softrip_option_id2,
+			'price'           => [
+				'USD' => [
+					'pricePerPerson' => 200,
+				],
+				'CAD' => [
+					'pricePerPerson' => 344,
+				],
+				'AUD' => [
+					'pricePerPerson' => 293,
+				],
+				'GBP' => [
+					'pricePerPerson' => 234,
+				],
+				'EUR' => [
+					'pricePerPerson' => 123,
+				],
+			],
+			'spacesAvailable' => 22,
+			'serviceIds'      => [ $service_id2 ],
+		];
+
+		// Format adventure option data.
+		$adventure_option_data2 = format_adventure_option_data( $raw_adventure_option2, $departure_post_id2 );
+		$this->assertNotEmpty( $adventure_option_data2 );
+
+		// Insert adventure option data.
+		$wpdb->insert( $table_name, $adventure_option_data2 );
+
+		// Get inserted id.
+		$adventure_option_id2 = $wpdb->insert_id;
+
+		// Cache should be empty.
+		$cache_key2        = CACHE_KEY_PREFIX . "_id_$adventure_option_id2";
+		$actual_from_cache = wp_cache_get( $cache_key2, CACHE_GROUP );
+		$this->assertFalse( $actual_from_cache );
+
+		// Get adventure option by departure post id.
+		$actual = get_adventure_options_by_id( $adventure_option_id2 );
+		$this->assertNotEmpty( $actual );
+		$this->assertIsArray( $actual );
+		$this->assertCount( 1, $actual );
+
+		// Cache should have been prepared.
+		$actual_from_cache = wp_cache_get( $cache_key2, CACHE_GROUP );
+		$this->assertNotEmpty( $actual_from_cache );
+		$this->assertIsArray( $actual_from_cache );
+		$this->assertEquals( $actual, $actual_from_cache );
+
+		// Get first adventure option data.
+		$actual2 = $actual[0];
+		$this->assertIsArray( $actual2 );
+		$this->assertNotEmpty( $actual2 );
+
+		// Verify each field.
+		$this->assertArrayHasKey( 'id', $actual2 );
+		$this->assertEquals( $adventure_option_id2, $actual2['id'] );
+		$this->assertArrayHasKey( 'softrip_option_id', $actual2 );
+		$this->assertEquals( $raw_adventure_option2['id'], $actual2['softrip_option_id'] );
+		$this->assertArrayHasKey( 'departure_post_id', $actual2 );
+		$this->assertEquals( $departure_post_id2, $actual2['departure_post_id'] );
+		$this->assertArrayHasKey( 'softrip_package_code', $actual2 );
+		$this->assertEquals( $softrip_package_code2, $actual2['softrip_package_code'] );
+		$this->assertArrayHasKey( 'service_ids', $actual2 );
+		$this->assertEquals( implode( ',', $raw_adventure_option2['serviceIds'] ), $actual2['service_ids'] );
+		$this->assertArrayHasKey( 'spaces_available', $actual2 );
+		$this->assertEquals( $raw_adventure_option2['spacesAvailable'], $actual2['spaces_available'] );
+		$this->assertArrayHasKey( 'adventure_option_term_id', $actual2 );
+		$this->assertEquals( $adventure_option_term_id2, $actual2['adventure_option_term_id'] );
+		$this->assertArrayHasKey( 'price_per_person_usd', $actual2 );
+		$this->assertEquals( $raw_adventure_option2['price']['USD']['pricePerPerson'], $actual2['price_per_person_usd'] );
+		$this->assertArrayHasKey( 'price_per_person_cad', $actual2 );
+		$this->assertEquals( $raw_adventure_option2['price']['CAD']['pricePerPerson'], $actual2['price_per_person_cad'] );
+		$this->assertArrayHasKey( 'price_per_person_aud', $actual2 );
+		$this->assertEquals( $raw_adventure_option2['price']['AUD']['pricePerPerson'], $actual2['price_per_person_aud'] );
+		$this->assertArrayHasKey( 'price_per_person_gbp', $actual2 );
+		$this->assertEquals( $raw_adventure_option2['price']['GBP']['pricePerPerson'], $actual2['price_per_person_gbp'] );
+		$this->assertArrayHasKey( 'price_per_person_eur', $actual2 );
+		$this->assertEquals( $raw_adventure_option2['price']['EUR']['pricePerPerson'], $actual2['price_per_person_eur'] );
+	}
+
+	/**
+	 * Test delete adventure option by id.
+	 *
+	 * @covers \Quark\Softrip\AdventureOptions\delete_adventure_option_by_id
+	 *
+	 * @return void
+	 */
+	public function test_delete_adventure_option_by_id(): void {
+		// Setup variables.
+		$table_name = get_table_name();
+		global $wpdb;
+		$softrip_option_id1 = 'OPT-123';
+		$softrip_option_id2 = 'OPT-456';
+
+		// Test with no arguments.
+		$expected = false;
+		$actual   = delete_adventure_option_by_id();
+		$this->assertSame( $expected, $actual );
+
+		// Test with default softrip option id.
+		$softrip_option_id = 0;
+		$expected          = false;
+		$actual            = delete_adventure_option_by_id( $softrip_option_id );
+		$this->assertSame( $expected, $actual );
+
+		// Create a departure.
+		$softrip_package_code1 = 'UNQ-123';
+		$departure_post_id1    = $this->factory()->post->create(
+			[
+				'post_type'  => DEPARTURE_POST_TYPE,
+				'meta_input' => [
+					'softrip_package_code' => $softrip_package_code1,
+				],
+			]
+		);
+		$this->assertIsInt( $departure_post_id1 );
+
+		// Create another departure.
+		$softrip_package_code2 = 'UNQ-456';
+		$departure_post_id2    = $this->factory()->post->create(
+			[
+				'post_type'  => DEPARTURE_POST_TYPE,
+				'meta_input' => [
+					'softrip_package_code' => $softrip_package_code2,
+				],
+			]
+		);
+		$this->assertIsInt( $departure_post_id2 );
+
+		// Test with valid softrip option id.
+		$expected = false;
+		$actual   = delete_adventure_option_by_id( 123 );
+		$this->assertSame( $expected, $actual );
+
+		// Clear the cache.
+		wp_cache_delete( CACHE_KEY_PREFIX . '_id_123', CACHE_GROUP );
+
+		// Create some adventure option taxonomy term.
+		$adventure_option_term_id1 = $this->factory()->term->create( [ 'taxonomy' => ADVENTURE_OPTION_CATEGORY ] );
+		$adventure_option_term_id2 = $this->factory()->term->create( [ 'taxonomy' => ADVENTURE_OPTION_CATEGORY ] );
+		$this->assertIsInt( $adventure_option_term_id1 );
+		$this->assertIsInt( $adventure_option_term_id2 );
+
+		// Initialize service 1, 2.
+		$service_id1 = 'service_id_1';
+		$service_id2 = 'service_id_2';
+
+		// Attach service id to term meta.
+		update_term_meta( $adventure_option_term_id1, 'softrip_0_id', $service_id1 );
+		update_term_meta( $adventure_option_term_id2, 'softrip_0_id', $service_id2 );
+
+		// Raw adventure option for departure 1.
+		$raw_adventure_option1 = [
+			'id'              => $softrip_option_id1,
+			'price'           => [
+				'USD' => [
+					'pricePerPerson' => 100,
+				],
+				'CAD' => [
+					'pricePerPerson' => 344,
+				],
+				'AUD' => [
+					'pricePerPerson' => 293,
+				],
+				'GBP' => [
+					'pricePerPerson' => 234,
+				],
+				'EUR' => [
+					'pricePerPerson' => 123,
+				],
+			],
+			'spacesAvailable' => 11,
+			'serviceIds'      => [ $service_id1, $service_id2 ],
+		];
+
+		// Format adventure option data.
+		$adventure_option_data1 = format_adventure_option_data( $raw_adventure_option1, $departure_post_id1 );
+		$this->assertNotEmpty( $adventure_option_data1 );
+
+		// Insert adventure option data.
+		$wpdb->insert( $table_name, $adventure_option_data1 );
+
+		// Flush cache.
+		// wp_cache_flush();
+		// Get inserted id.
+		$adventure_option_id1 = $wpdb->insert_id;
+
+		// Cache should have been prepared.
+		$cache_key1 = CACHE_KEY_PREFIX . "_id_$adventure_option_id1";
+		get_adventure_options_by_id( $adventure_option_id1 );
+		$actual_from_cache = wp_cache_get( $cache_key1, CACHE_GROUP );
+		$this->assertNotEmpty( $actual_from_cache );
+
+		// Cache key 2.
+		$cache_key2 = CACHE_KEY_PREFIX . "_softrip_option_id_$softrip_option_id1";
+		get_adventure_option_by_softrip_option_id( $softrip_option_id1 );
+		$actual_from_cache = wp_cache_get( $cache_key2, CACHE_GROUP );
+		$this->assertNotEmpty( $actual_from_cache );
+
+		// Cache key 3.
+		$cache_key3 = CACHE_KEY_PREFIX . "_departure_post_id_$departure_post_id1";
+		get_adventure_option_by_departure_post_id( $departure_post_id1 );
+		$actual_from_cache = wp_cache_get( $cache_key3, CACHE_GROUP );
+		$this->assertNotEmpty( $actual_from_cache );
+
+		// Cache key 4.
+		$cache_key4 = CACHE_KEY_PREFIX . '_departure_adventure_option_term_id_' . $adventure_option_term_id1;
+		get_departures_by_adventure_option_term_id( $adventure_option_term_id1 );
+		$actual_from_cache = wp_cache_get( $cache_key4, CACHE_GROUP );
+		$this->assertNotFalse( $actual_from_cache );
+		$this->assertEmpty( $actual_from_cache );
+
+		// Delete adventure option by id.
+		$expected = true;
+		$actual   = delete_adventure_option_by_id( $adventure_option_id1 );
+		$this->assertSame( $expected, $actual );
+
+		// Cache should have been cleared.
+		$actual_from_cache = wp_cache_get( $cache_key1, CACHE_GROUP );
+		$this->assertFalse( $actual_from_cache );
+
+		// Cache key 2.
+		$actual_from_cache = wp_cache_get( $cache_key2, CACHE_GROUP );
+		$this->assertFalse( $actual_from_cache );
+
+		// Cache key 3.
+		$actual_from_cache = wp_cache_get( $cache_key3, CACHE_GROUP );
+		$this->assertFalse( $actual_from_cache );
+
+		// Cache key 4.
+		$actual_from_cache = wp_cache_get( $cache_key4, CACHE_GROUP );
+		$this->assertFalse( $actual_from_cache );
 	}
 }

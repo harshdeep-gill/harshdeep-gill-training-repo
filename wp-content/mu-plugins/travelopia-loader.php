@@ -27,6 +27,7 @@ $tp_mu_plugins = array(
 	'travelopia/travelopia-tracking/plugin.php',
 	'travelopia/travelopia-dynamic-permalinks/plugin.php',
 	'travelopia/travelopia-salesforce/plugin.php',
+	'travelopia/travelopia-cache/plugin.php',
 	'wordpress-blade/plugin.php',
 	'quark/quark-core/plugin.php',
 	'quark/quark-pages/plugin.php',
@@ -50,12 +51,15 @@ $tp_mu_plugins = array(
 	'quark/quark-offers/plugin.php',
 	'quark/quark-regions/plugin.php',
 	'quark/quark-policy-pages/plugin.php',
-	'quark/quark-migration/plugin.php',
 	'quark/quark-softrip/plugin.php',
 	'quark/quark-office-phone-numbers/plugin.php',
 	'quark/quark-search/plugin.php',
 	'quark/quark-checkout/plugin.php',
 	'quark/quark-localization/plugin.php',
+	'quark/quark-ingestor/plugin.php',
+	'quark/quark-seo/plugin.php',
+	'quark/quark-tracking/plugin.php',
+	'quark/quark-cache/plugin.php',
 );
 
 foreach ( $tp_mu_plugins as $file ) {

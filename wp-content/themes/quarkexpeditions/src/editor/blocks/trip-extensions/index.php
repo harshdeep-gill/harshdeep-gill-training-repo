@@ -62,7 +62,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 		$pre_post_trip = get_pre_post_trip_option( absint( $pre_post_trip ) );
 
 		// Check if the related pre-post trip is empty.
-		if ( ! $pre_post_trip['post'] instanceof WP_Post ) {
+		if ( ! $pre_post_trip['post'] instanceof WP_Post || 'publish' !== $pre_post_trip['post']->post_status ) {
 			continue;
 		}
 

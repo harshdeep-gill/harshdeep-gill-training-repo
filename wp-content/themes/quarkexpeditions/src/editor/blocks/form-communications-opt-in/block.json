@@ -1,0 +1,28 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Form - Onboard Email Opt In",
+	"name": "quark/form-onboard-email-opt-in",
+	"description": "Add the Onboard Email Opt In form to the page.",
+	"category": "layout",
+	"keywords": [
+		"Onboard",
+		"Email",
+		"Opt",
+		"in"
+	],
+	"textdomain": "qrk",
+	"attributes": {
+		"thankYouPage": {
+			"type": "object",
+			"default": null
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}
