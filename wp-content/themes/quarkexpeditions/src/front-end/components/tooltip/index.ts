@@ -39,7 +39,12 @@ export class Tooltip extends HTMLElement {
 		this.tooltipPopoverElement?.addEventListener( 'toggle', this.handleTooltipToggled.bind( this ) );
 		this.tooltipPopoverElement?.addEventListener( 'beforetoggle', this.handleBeforeToggled.bind( this ) );
 		this.addEventListener( 'mouseenter', () => this.tooltipPopoverElement?.showPopover() );
-		this.addEventListener( 'mouseleave', () => this.tooltipPopoverElement?.hidePopover() );
+		this.addEventListener( 'mouseleave', () => {
+			// Check and hide popover.
+			if ( this.tooltipPopoverElement?.matches( ':popover-open' ) ) {
+				this.tooltipPopoverElement?.hidePopover();
+			}
+		} );
 	}
 
 	/**
