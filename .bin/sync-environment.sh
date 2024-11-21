@@ -30,9 +30,9 @@ terminus wp quark-expeditions.$TARGET_ENVIRONMENT -- search-replace www.quarkexp
 terminus wp quark-expeditions.$TARGET_ENVIRONMENT -- cache flush
 
 # Import Departures
-set +x
+set +e
 terminus wp quark-expeditions.$TARGET_ENVIRONMENT -- quark-softrip sync all
-set -x
+set -e
 
 # Flush cache
 terminus wp quark-expeditions.$TARGET_ENVIRONMENT -- cache flush
