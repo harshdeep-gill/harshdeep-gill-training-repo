@@ -777,6 +777,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 			'duration_dates'           => 'January 9-25, 2025',
 			'request_a_quote_url'      => get_request_a_quote_url( $departure_post_1 ),
 			'starting_from_location'   => self::$departure_location_terms[0]->name,
+			'cta_button_status'        => 'A',
 			'promotion_tags'           => [
 				'promotion_tag_1',
 				'promotion_tag_3',
@@ -884,6 +885,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 			'duration_dates'           => 'February 28 - March 11, 2026',
 			'request_a_quote_url'      => get_request_a_quote_url( $departure_post_2 ),
 			'starting_from_location'   => self::$departure_location_terms[0]->name,
+			'cta_button_status'        => 'S',
 			'promotion_tags'           => [
 				'promotion_tag_1',
 				'promotion_tag_3',
@@ -990,6 +992,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 			'promotion_tags'           => [],
 			'promotion_banner'         => 'Save up to 15%',
 			'request_a_quote_url'      => get_request_a_quote_url( $departure_post_3 ),
+			'cta_button_status'        => 'A',
 			'lowest_price'             => [
 				'discounted_price' => '$40,069 USD',
 				'original_price'   => '$47,105 USD',

@@ -138,12 +138,12 @@
 									Price: {{ $card['transfer_package_details']['formatted_price'] ?? '' }}</strong></p>
 						</x-departure-cards.transfer_package>
 					@endif
-					<x-departure-cards.cta text="View Cabin Pricing & Options"/>
+					<x-departure-cards.cta text="{{ 'S' === $card['cta_button_status'] ? __( 'Sold Out', 'qrk' ) : __( 'View Cabin Pricing & Options', 'qrk' ) }}" :availability_status="$card['cta_button_status']" />
 				</x-departure-cards.body-column>
 			</x-departure-cards.body>
 
-			@if( ! empty( $card['cabins'] ) && is_array( $card['cabins'] ) ) @endif
-			<x-departure-cards.more-details>
+			@if( ! empty( $card['cabins'] ) && is_array( $card['cabins'] ) && 'S' !== $card['cta_button_status'] )
+				<x-departure-cards.more-details>
 				<h4>
 					<x-escape :content="__( 'Cabins Options', 'qrk' )"/>
 				</h4>
@@ -404,6 +404,7 @@
 					</x-product-options-cards.more-details>
 				</x-product-options-cards>
 			</x-departure-cards.more-details>
+			@endif
 		</x-departure-cards.card>
 	@endforeach
 </x-departure-cards>

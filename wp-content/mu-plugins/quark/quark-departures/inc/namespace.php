@@ -572,6 +572,7 @@ function get_promotion_tags( int $post_id = 0 ): array {
  *     paid_adventure_options: string[],
  *     lowest_price: array<string, string>,
  *     request_a_quote_url: string,
+ *     cta_button_status: string,
  *     transfer_package_details: array{
  *       title: string,
  *       sets: string[],
@@ -691,6 +692,29 @@ function get_card_data( int $departure_id = 0, string $currency = DEFAULT_CURREN
 		}
 	}
 
+	// Get cabins.
+	$cabins = get_cabin_details_by_departure( $departure_id, $currency );
+
+	// Initialize CTA button status.
+	$cta_button_status = 'A';
+
+	// Get Departure CTA Button status.
+	foreach ( $cabins as $cabin ) {
+		// Check for availability status.
+		if ( empty( $cabin['specifications']['availability_status'] ) ) {
+			continue;
+		}
+
+		// if all cabins are sold out then set CTA button text to Sold Out.
+		if ( 'S' !== $cabin['specifications']['availability_status'] ) {
+			$cta_button_status = 'A';
+			break;
+		}
+
+		// Set CTA button status to Sold Out.
+		$cta_button_status = 'S';
+	}
+
 	// Prepare the departure card details.
 	$data = [
 		'departure_id'             => $departure_id,
@@ -709,10 +733,11 @@ function get_card_data( int $departure_id = 0, string $currency = DEFAULT_CURREN
 		'promotion_tags'           => get_promotion_tags( $departure_id ),
 		'ship_name'                => $ship_name,
 		'banner_details'           => get_policy_banner_details( $itinerary_id ),
-		'cabins'                   => get_cabin_details_by_departure( $departure_id, $currency ),
+		'cabins'                   => $cabins,
 		'promotion_banner'         => get_discount_label( $lowest_price['original'], $lowest_price['discounted'] ),
 		'promotions'               => get_promotions_description( $departure_id ),
 		'request_a_quote_url'      => get_request_a_quote_url( $departure_id ),
+		'cta_button_status'        => $cta_button_status,
 	];
 
 	// Set cache and return data.
@@ -794,6 +819,7 @@ function get_start_end_departure_date( int $post_id = 0 ): string {
  *      paid_adventure_options: string[],
  *      lowest_price: array<string, string>,
  *      request_a_quote_url: string,
+ *      cta_button_status: string,
  *      transfer_package_details: array{
  *        title: string,
  *        sets: array<string>,
