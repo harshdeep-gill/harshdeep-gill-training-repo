@@ -198,7 +198,7 @@
 	}
 
 	&__prev-button {
-		left: 0;
+		left: var(--spacing-3);
 		transform: translateY(-50%);
 
 		@media screen and (max-width: grid-size(md)) {
@@ -207,7 +207,7 @@
 	}
 
 	&__next-button {
-		right: 0;
+		right: var(--spacing-3);
 		transform: translateY(-50%);
 
 		@media screen and (max-width: grid-size(md)) {
