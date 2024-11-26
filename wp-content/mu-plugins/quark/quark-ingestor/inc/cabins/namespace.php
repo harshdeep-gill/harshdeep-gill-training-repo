@@ -7,11 +7,7 @@
 
 namespace Quark\Ingestor\Cabins;
 
-use cli\progress\Bar;
-use WP_CLI;
-use WP_Error;
 use WP_Post;
-use WP_Query;
 
 use function Quark\CabinCategories\get as get_cabin_category;
 use function Quark\Core\get_raw_text_from_html;
@@ -30,7 +26,7 @@ use const Quark\CabinCategories\CABIN_CLASS_TAXONOMY;
  *
  * @return array{}|array<int,
  *   array{
- *      id: string,
+ *      id: int,
  *      name: string,
  *      code: string,
  *      description: string,
@@ -189,12 +185,15 @@ function get_cabins_data( int $expedition_post_id = 0, int $itinerary_post_id = 
 		}
 
 		// Cabin category id as per Softrip.
-		$cabin_category_id = $departure_softrip_id . ':' . $cabin_category_code;
+		$cabin_category_softrip_id = $departure_softrip_id . ':' . $cabin_category_code;
 
 		// Initialize cabin category data.
 		$cabin_category_data = [
-			'id'             => $cabin_category_id,
-			'name'           => get_raw_text_from_html( $cabin_category_post['post']->post_title ),
+			'id'             => $cabin_category_post_id,
+			'modified'       => $cabin_category_post['post']->post_modified,
+			'softrip_id'     => $cabin_category_softrip_id,
+			'name'           => strval( $cabin_category_post['post_meta']['cabin_name'] ?? '' ),
+			'title'          => get_raw_text_from_html( $cabin_category_post['post']->post_title ),
 			'code'           => $cabin_category_code,
 			'description'    => get_raw_text_from_html( $cabin_category_post['post']->post_content ),
 			'bedDescription' => $cabin_category_post['post_meta']['cabin_bed_configuration'] ?? '',

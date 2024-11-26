@@ -1053,8 +1053,13 @@ class Test_Ingestor extends Softrip_TestCase {
 				'images'       => [],
 				'destinations' => [],
 				'itineraries'  => [],
+				'heroImage'    => [],
+				'modified'     => get_the_modified_date( 'Y-m-d H:i:s', $expedition_post_id ),
+				'highlights'   => [],
+				'url'          => get_permalink( $expedition_post_id ),
+
 			];
-		$actual   = get_expedition_data( $expedition_post_id );
+		$actual = get_expedition_data( $expedition_post_id );
 		$this->assertEquals( $expected, $actual );
 
 		// Add itinerary to the expedition post.
@@ -1111,7 +1116,40 @@ class Test_Ingestor extends Softrip_TestCase {
 			<!-- /wp:quark/expedition-hero-content -->
 			<!-- /wp:quark/expedition-hero -->
 
-			<!-- wp:quark/book-departures-expeditions /-->',
+			<!-- wp:quark/book-departures-expeditions /-->
+			<!-- wp:quark/column -->
+<!-- wp:quark/highlights {"title":"Highlights"} -->
+<!-- wp:quark/highlight-item {"icon":"explore"} -->
+<!-- wp:quark/highlight-item-text {"text":"Explore highlights of the Antarctic Peninsula"} /-->
+<!-- /wp:quark/highlight-item -->
+
+<!-- wp:quark/highlight-item {"icon":"ship"} -->
+<!-- wp:quark/highlight-item-text {"text":"Travel safely and comfortably aboard any Quark Expeditions ice-strengthened vessel"} /-->
+<!-- /wp:quark/highlight-item -->
+
+<!-- wp:quark/highlight-item {"icon":"presentations"} -->
+<!-- wp:quark/highlight-item-text {"text":"Enjoy presentations on wildlife, history, glaciology \u0026amp; geology by our onboard polar experts"} /-->
+<!-- /wp:quark/highlight-item -->
+
+<!-- wp:quark/highlight-item {"icon":"wildlife-penguin"} -->
+<!-- wp:quark/highlight-item-text {"text":"Experience abundant wildlife, such as penguins, seals and whales"} /-->
+<!-- /wp:quark/highlight-item -->
+
+<!-- wp:quark/highlight-item {"icon":"paddling-excursions"} -->
+<!-- wp:quark/highlight-item-text {"text":"Immerse yourself in the icy realm of the Antarctic, with an optional paddling excursion"} /-->
+
+<!-- wp:quark/highlight-item-text {"text":"ABCD"} /-->
+<!-- /wp:quark/highlight-item -->
+
+<!-- wp:quark/highlight-item -->
+<!-- wp:quark/highlight-item-title {"title":"Wow"} /-->
+
+<!-- wp:quark/highlight-item-overline {"overline":"This is the best expedition."} /-->
+<!-- /wp:quark/highlight-item -->
+<!-- /wp:quark/highlights -->
+<!-- /wp:quark/column -->
+			
+			',
 			$media_post_id1,
 			$media_post_id2,
 			wp_get_attachment_image_url( $media_post_id1, 'medium' ),
@@ -1128,6 +1166,9 @@ class Test_Ingestor extends Softrip_TestCase {
 				],
 			]
 		);
+
+		// Set featured image.
+		set_post_thumbnail( $expedition_post_id, $media_post_id1 );
 
 		// Flush the cache.
 		wp_cache_flush();
@@ -1166,6 +1207,22 @@ class Test_Ingestor extends Softrip_TestCase {
 						'durationInDays' => 0,
 					],
 				],
+				'modified'     => get_the_modified_date( 'Y-m-d H:i:s', $expedition_post_id ),
+				'highlights'   => [
+					'Explore highlights of the Antarctic Peninsula',
+					'Travel safely and comfortably aboard any Quark Expeditions ice-strengthened vessel',
+					'Enjoy presentations on wildlife, history, glaciology u0026amp; geology by our onboard polar experts',
+					'Experience abundant wildlife, such as penguins, seals and whales',
+					'Immerse yourself in the icy realm of the Antarctic, with an optional paddling excursion',
+					'ABCD',
+				],
+				'heroImage'    => [
+					'id'           => $media_post_id1,
+					'fullSizeUrl'  => wp_get_attachment_url( $media_post_id1 ),
+					'thumbnailUrl' => wp_get_attachment_image_url( $media_post_id1, 'thumbnail' ),
+					'alt'          => $alt_text1,
+				],
+				'url'          => get_permalink( $expedition_post_id ),
 			];
 		$actual   = get_expedition_data( $expedition_post_id );
 		$this->assertEquals( $expected, $actual );
@@ -2976,6 +3033,10 @@ class Test_Ingestor extends Softrip_TestCase {
 				'images'       => [],
 				'destinations' => [],
 				'itineraries'  => [],
+				'heroImage'    => [],
+				'modified'     => get_the_modified_date( 'Y-m-d H:i:s', $expedition_post_id ),
+				'highlights'   => [],
+				'url'          => get_permalink( $expedition_post_id ),
 			],
 			$expedition_data
 		);
@@ -2992,6 +3053,10 @@ class Test_Ingestor extends Softrip_TestCase {
 				'images'       => [],
 				'destinations' => [],
 				'itineraries'  => [],
+				'heroImage'    => [],
+				'modified'     => get_the_modified_date( 'Y-m-d H:i:s', $expedition_post_id2 ),
+				'highlights'   => [],
+				'url'          => get_permalink( $expedition_post_id2 ),
 			],
 			$expedition_data2
 		);

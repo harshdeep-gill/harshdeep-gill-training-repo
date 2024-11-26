@@ -15,6 +15,26 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 			'title'                 => 'API Data',
 			'fields'                => [
 				[
+					'key'               => 'field_66f672a260f92',
+					'label'             => 'Description',
+					'name'              => 'description',
+					'aria-label'        => '',
+					'type'              => 'textarea',
+					'instructions'      => 'Add text here that will be used as description in integrated applications',
+					'required'          => 0,
+					'conditional_logic' => 0,
+					'wrapper'           => [
+						'width' => '',
+						'class' => '',
+						'id'    => '',
+					],
+					'default_value'     => '',
+					'maxlength'         => '',
+					'placeholder'       => '',
+					'prepend'           => '',
+					'append'            => '',
+				],
+				[
 					'key'               => 'field_66f6729260f93',
 					'label'             => 'Cabin',
 					'name'              => 'cabin',
