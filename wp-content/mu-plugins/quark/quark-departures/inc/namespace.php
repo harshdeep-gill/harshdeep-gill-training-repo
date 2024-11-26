@@ -34,6 +34,8 @@ use function Quark\Leads\get_request_a_quote_url;
 use function Quark\Localization\get_currencies;
 
 use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
+use const Quark\CabinCategories\AVAILABLE_STATUS;
+use const Quark\CabinCategories\SOLD_OUT_STATUS;
 use const Quark\Expeditions\EXPEDITION_CATEGORY_TAXONOMY;
 use const Quark\Localization\DEFAULT_CURRENCY;
 
@@ -695,25 +697,8 @@ function get_card_data( int $departure_id = 0, string $currency = DEFAULT_CURREN
 	// Get cabins.
 	$cabins = get_cabin_details_by_departure( $departure_id, $currency );
 
-	// Initialize CTA button status.
-	$cta_button_status = 'A';
-
-	// Get Departure CTA Button status.
-	foreach ( $cabins as $cabin ) {
-		// Check for availability status.
-		if ( empty( $cabin['specifications']['availability_status'] ) ) {
-			continue;
-		}
-
-		// if all cabins are sold out then set CTA button text to Sold Out.
-		if ( 'S' !== $cabin['specifications']['availability_status'] ) {
-			$cta_button_status = 'A';
-			break;
-		}
-
-		// Set CTA button status to Sold Out.
-		$cta_button_status = 'S';
-	}
+	// Departure status.
+	$cta_button_status = get_departure_availability_status( $departure_id, $cabins );
 
 	// Prepare the departure card details.
 	$data = [
@@ -1344,4 +1329,50 @@ function get_promotions_description( int $departure_id = 0 ): array {
 
 	// Return promo descriptions.
 	return $promo_descriptions;
+}
+
+/**
+ * Get Departure Availability Status.
+ *
+ * @param int     $departure_id Departure ID.
+ * @param mixed[] $cabins Cabin details.
+ *
+ * @return string
+ */
+function get_departure_availability_status( int $departure_id = 0, array $cabins = [] ): string {
+	// Check for Cabin data.
+	if ( ! is_array( $cabins ) || empty( $cabins ) ) {
+		$cabins = get_cabin_details_by_departure( $departure_id );
+	}
+
+	// Check for cabins.
+	if ( empty( $cabins ) ) {
+		return SOLD_OUT_STATUS;
+	}
+
+	// Initialize departure availability status.
+	$departure_availability_status = AVAILABLE_STATUS;
+
+	// Get Departure CTA Button status.
+	foreach ( $cabins as $cabin ) {
+		// Check for availability status.
+		if ( empty( $cabin['specifications'] ) || empty( $cabin['specifications']['availability_status'] ) ) {
+			continue;
+		}
+
+		// if all cabins are sold out then set CTA button text to Sold Out.
+		if ( 'S' !== $cabin['specifications']['availability_status'] ) {
+			// Set status to Available.
+			$departure_availability_status = AVAILABLE_STATUS;
+
+			// Break the loop.
+			break;
+		}
+
+		// Set status to Sold Out.
+		$departure_availability_status = SOLD_OUT_STATUS;
+	}
+
+	// Return departure availability status.
+	return $departure_availability_status;
 }

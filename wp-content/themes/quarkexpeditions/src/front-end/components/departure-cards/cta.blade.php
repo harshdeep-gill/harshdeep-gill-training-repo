@@ -5,13 +5,14 @@
 
 @php
 	if ( empty( $text ) ) {
-		return;
+		$text = __( 'View Cabin Pricing & Options', 'qrk' );
 	}
 
 	$appearance = '';
 	$disabled   = false;
 
 	if ( ! empty( $availability_status ) && 'S' === $availability_status ) {
+		$text       = __( 'Sold Out', 'qrk' );
 		$appearance = 'outline';
 		$disabled   = true;
 	}
