@@ -45,6 +45,15 @@ export default class QuarkMediaLightbox extends HTMLElement {
 		// Events.
 		this.triggerButton?.addEventListener( 'click', this.handleTriggerClick.bind( this ) );
 
+		// If the lightbox is the child of this element, we should take it out as a child of the body.
+		const lightboxChild = this.querySelector( 'tp-lightbox' );
+
+		// Is it there?
+		if ( lightboxChild ) {
+			// Yes, take it out.
+			document.body.appendChild( lightboxChild );
+		}
+
 		// Get lightbox id
 		const lightboxID = this.triggerElement.getAttribute( 'lightbox' ) ?? '';
 

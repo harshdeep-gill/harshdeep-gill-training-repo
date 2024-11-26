@@ -41,6 +41,11 @@
 
 			if ( in_array( $background_color, $background_colors, true ) ) {
 				$classes[] = sprintf( 'section--has-background-%s', $background_color );
+
+				// If background color is black, set color context dark.
+				if ( 'black' === $background_color ) {
+					$classes[] = 'color-context--dark';
+				}
 			}
 		}
 	}

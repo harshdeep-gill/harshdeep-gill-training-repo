@@ -5,6 +5,7 @@
 
 	quark_enqueue_script( 'querystring' );
 	quark_component_enqueue_assets( 'tooltip' );
+	quark_enqueue_script( 'popover-polyfill' );
 @endphp
 
 <quark-dates-rates class="dates-rates">

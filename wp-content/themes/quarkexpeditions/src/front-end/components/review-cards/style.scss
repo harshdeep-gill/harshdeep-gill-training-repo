@@ -12,17 +12,12 @@
 	&__slider {
 		overflow-x: visible;
 		width: 100vw;
-		margin-inline: var(--grid-col-gutter);
 		padding-block: var(--spacing-4);
 
 		&:has(div.review-cards__nav) {
 			#{$self}__track {
 				margin-bottom: 0;
 			}
-		}
-
-		@media screen and (min-width: 1120px) {
-			margin-inline: 0;
 		}
 
 		&[total="2"] {
@@ -37,6 +32,13 @@
 
 		&[total="3"] {
 
+			#{$self}__slides {
+
+				@media screen and (min-width: grid-size(xl)) {
+					left: initial !important;
+				}
+			}
+
 			#{$self}__nav {
 
 				@media screen and (min-width: grid-size(xl)) {
@@ -47,8 +49,7 @@
 	}
 
 	&__track {
-		padding: 0 0 var(--spacing-4) var(--spacing-5);
-		margin-left: calc(-1 * var(--spacing-5));
+		padding: 0 0 var(--spacing-4);
 		margin-bottom: var(--spacing-7);
 		scrollbar-width: none; /* Firefox */
 

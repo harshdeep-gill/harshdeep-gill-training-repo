@@ -4,6 +4,16 @@
 const { customElements, HTMLElement } = window;
 
 /**
+ * External dependencies
+ */
+import { TPModalElement } from '@travelopia/web-components';
+
+/**
+ * Internal Dependency.
+ */
+import { debounce } from '../../global/utility';
+
+/**
  * Itinerary Tabs Class.
  */
 export default class ItineraryTabs extends HTMLElement {
@@ -12,10 +22,7 @@ export default class ItineraryTabs extends HTMLElement {
 	 *
 	 * @private
 	 */
-	private tabsNavItems: NodeListOf<HTMLElement>;
-	private tabsTabItems: NodeListOf<HTMLElement>;
-	private tabs: HTMLElement | null;
-	private closeButtons: NodeListOf<HTMLElement>;
+	private modalElements: NodeListOf <TPModalElement>;
 
 	/**
 	 * Constructor.
@@ -25,19 +32,10 @@ export default class ItineraryTabs extends HTMLElement {
 		super();
 
 		// Elements.
-		this.tabsNavItems = this.querySelectorAll( 'tp-tabs-nav-item' );
-		this.tabsTabItems = this.querySelectorAll( 'tp-tabs-tab' );
-		this.tabs = this.querySelector( 'tp-tabs' );
-		this.closeButtons = this.querySelectorAll( '.itinerary-details__button-close' );
+		this.modalElements = document.querySelectorAll( '.itinerary-details__modal' ) as NodeListOf <TPModalElement>;
 
-		// Update tabs.
-		this.updateTabStatusForMobile();
-
-		// Event for close button.
-		this.closeButtons?.forEach( ( closeButton ): void => {
-			// Update tabs.
-			closeButton?.addEventListener( 'click', this.updateTabStatusForMobile.bind( this ) );
-		} );
+		// Events.
+		window.addEventListener( 'resize', debounce( this.handleModalClose.bind( this ), 10 ), { passive: true } );
 	}
 
 	/**
@@ -45,37 +43,24 @@ export default class ItineraryTabs extends HTMLElement {
 	 */
 	isMobile() {
 		// Return true if screen is mobile.
-		return 768 >= window.innerWidth;
+		return 768 > window.innerWidth;
 	}
 
 	/**
-	 * Update tab status.
+	 * Handle modal close.
 	 */
-	updateTabStatusForMobile(): void {
-		// Check for the screen size.
+	handleModalClose() {
+		// Check the window width
 		if ( ! this.isMobile() ) {
-			// No, bail early.
-			return;
+			// Foreach loop.
+			this.modalElements.forEach( ( modalElement: TPModalElement ) => {
+				// Check if modal opened.
+				if ( modalElement.getAttribute( 'open' ) === 'yes' ) {
+					// Close the modal.
+					modalElement?.close();
+				}
+			} );
 		}
-
-		// Remove 'current-tab' attribute.
-		this.tabs?.removeAttribute( 'current-tab' );
-
-		/**
-		 * Remove 'active' attribute from all nav items.
-		 */
-		this.tabsNavItems?.forEach( ( tabsNavItem ): void => {
-			// Remove 'active' attribute.
-			tabsNavItem.removeAttribute( 'active' );
-		} );
-
-		/**
-		 * Remove 'open' attribute from all tab items.
-		 */
-		this.tabsTabItems?.forEach( ( tabsTabItem ): void => {
-			// Remove 'open' attribute.
-			tabsTabItem.removeAttribute( 'open' );
-		} );
 	}
 }
 
