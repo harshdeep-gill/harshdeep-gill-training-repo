@@ -96,6 +96,7 @@ function get_departures_data( int $expedition_post_id = 0, int $itinerary_post_i
 		// Initialize departure data.
 		$departure_data = [
 			'id'               => $departure_post_id,
+			'drupalId'         => absint( $departure_post['post_meta']['drupal_id'] ?? 0 ),
 			'name'             => get_raw_text_from_html( $departure_post['post']->post_title ),
 			'published'        => 'publish' === $departure_post['post']->post_status,
 			'startDate'        => $departure_post['post_meta']['start_date'] ?? '',

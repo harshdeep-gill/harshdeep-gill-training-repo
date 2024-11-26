@@ -107,6 +107,7 @@ function get_ship_data( int $departure_post_id = 0 ): array {
 	// Prepare ship data.
 	$ship_data = [
 		'id'             => $ship_id,
+		'drupalId'       => absint( $ship_post['post_meta']['drupal_id'] ?? 0 ),
 		'code'           => $ship_code,
 		'name'           => get_raw_text_from_html( $ship_post['post']->post_title ),
 		'url'            => get_permalink( $ship_id ),

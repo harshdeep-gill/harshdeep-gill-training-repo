@@ -190,8 +190,9 @@ function get_cabins_data( int $expedition_post_id = 0, int $itinerary_post_id = 
 		// Initialize cabin category data.
 		$cabin_category_data = [
 			'id'             => $cabin_category_post_id,
+			'drupalId'       => absint( $cabin_category_post['post_meta']['drupal_id'] ?? 0 ),
 			'modified'       => $cabin_category_post['post']->post_modified,
-			'softrip_id'     => $cabin_category_softrip_id,
+			'softripId'      => $cabin_category_softrip_id,
 			'name'           => strval( $cabin_category_post['post_meta']['cabin_name'] ?? '' ),
 			'title'          => get_raw_text_from_html( $cabin_category_post['post']->post_title ),
 			'code'           => $cabin_category_code,

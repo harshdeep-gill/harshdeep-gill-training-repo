@@ -144,6 +144,7 @@ function get_itineraries( int $expedition_post_id = 0 ): array {
 		// Initialize itinerary data.
 		$itinerary_data = [
 			'id'                     => $itinerary_post_id,
+			'drupalId'               => absint( $itinerary_post['post_meta']['drupal_id'] ?? 0 ),
 			'packageId'              => $softrip_package_code,
 			'name'                   => get_raw_text_from_html( $itinerary_post['post']->post_title ),
 			'published'              => 'publish' === $itinerary_post['post']->post_status,
