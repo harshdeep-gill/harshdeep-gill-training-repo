@@ -81,46 +81,90 @@ function get_expedition_data( int $expedition_post_id = 0 ): array {
 		'description'  => '',
 		'images'       => [],
 		'destinations' => [],
+		'heroImage'    => [],
+		'modified'     => $expedition_post['post']->post_modified,
+		'highlights'   => [],
+		'url'          => get_permalink( $expedition_post_id ),
 		'itineraries'  => [],
 	];
 
-	// Get images.
-	if ( ! empty( $expedition_post['data'] ) && ! empty( $expedition_post['data']['hero_card_slider_image_ids'] ) && is_array( $expedition_post['data']['hero_card_slider_image_ids'] ) ) {
-		$image_ids = array_map( 'absint', $expedition_post['data']['hero_card_slider_image_ids'] );
+	// Get hero image.
+	$featured_image_id = get_post_thumbnail_id( $expedition_post_id );
 
-		// Loop through image IDs.
-		foreach ( $image_ids as $image_id ) {
-			// Full size url.
-			$full_size_url = wp_get_attachment_image_url( $image_id, 'full' );
+	// Validate featured image ID.
+	if ( ! empty( $featured_image_id ) ) {
+		// Full size url.
+		$full_size_url = wp_get_attachment_image_url( $featured_image_id, 'full' );
 
-			// Validate full size url.
-			if ( empty( $full_size_url ) ) {
-				continue;
-			}
-
+		// Validate full size url.
+		if ( ! empty( $full_size_url ) ) {
 			// Thumbnail url.
-			$thumbnail_url = wp_get_attachment_image_url( $image_id, 'thumbnail' );
-
-			// Validate thumbnail url.
-			if ( empty( $thumbnail_url ) ) {
-				continue;
-			}
+			$thumbnail_url = wp_get_attachment_image_url( $featured_image_id, 'thumbnail' );
 
 			// Alt text.
-			$alt_text = strval( get_post_meta( $image_id, '_wp_attachment_image_alt', true ) );
+			$alt_text = strval( get_post_meta( $featured_image_id, '_wp_attachment_image_alt', true ) );
 
 			// Get title if alt text is empty.
 			if ( empty( $alt_text ) ) {
-				$alt_text = get_post_field( 'post_title', $image_id );
+				$alt_text = get_post_field( 'post_title', $featured_image_id );
 			}
 
-			// Add image.
-			$expedition_data['images'][] = [
-				'id'           => $image_id,
+			// Add hero image.
+			$expedition_data['heroImage'] = [
+				'id'           => $featured_image_id,
 				'fullSizeUrl'  => $full_size_url,
 				'thumbnailUrl' => $thumbnail_url,
 				'alt'          => $alt_text,
 			];
+		}
+	}
+
+	// Check for data.
+	if ( ! empty( $expedition_post['data'] ) ) {
+		// Add hero card slider images.
+		if ( ! empty( $expedition_post['data']['hero_card_slider_image_ids'] ) && is_array( $expedition_post['data']['hero_card_slider_image_ids'] ) ) {
+
+			$image_ids = array_map( 'absint', $expedition_post['data']['hero_card_slider_image_ids'] );
+
+			// Loop through image IDs.
+			foreach ( $image_ids as $image_id ) {
+				// Full size url.
+				$full_size_url = wp_get_attachment_image_url( $image_id, 'full' );
+
+				// Validate full size url.
+				if ( empty( $full_size_url ) ) {
+					continue;
+				}
+
+				// Thumbnail url.
+				$thumbnail_url = wp_get_attachment_image_url( $image_id, 'thumbnail' );
+
+				// Validate thumbnail url.
+				if ( empty( $thumbnail_url ) ) {
+					continue;
+				}
+
+				// Alt text.
+				$alt_text = strval( get_post_meta( $image_id, '_wp_attachment_image_alt', true ) );
+
+				// Get title if alt text is empty.
+				if ( empty( $alt_text ) ) {
+					$alt_text = get_post_field( 'post_title', $image_id );
+				}
+
+				// Add image.
+				$expedition_data['images'][] = [
+					'id'           => $image_id,
+					'fullSizeUrl'  => $full_size_url,
+					'thumbnailUrl' => $thumbnail_url,
+					'alt'          => $alt_text,
+				];
+			}
+		}
+
+		// Add highlights.
+		if ( ! empty( $expedition_post['data']['highlights'] ) && is_array( $expedition_post['data']['highlights'] ) ) {
+			$expedition_data['highlights'] = $expedition_post['data']['highlights'];
 		}
 	}
 
