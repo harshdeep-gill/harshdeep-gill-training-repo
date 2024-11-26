@@ -349,6 +349,7 @@ function get_itinerary_days( int $itinerary_post_id = 0 ): array {
 		$itinerary_days_data[] = $itinerary_day_data;
 	}
 
+	// Itinerary days data.
 	return $itinerary_days_data;
 }
 
@@ -445,6 +446,7 @@ function get_inclusions_data( int $itinerary_post_id = 0 ): array {
 		$inclusions_exclusions_data[] = $inclusion_data;
 	}
 
+	// Inclusions data.
 	return $inclusions_exclusions_data;
 }
 
@@ -541,5 +543,6 @@ function get_exclusions_data( int $itinerary_post_id = 0 ): array {
 		$exclusions_data[] = $exclusion_data;
 	}
 
+	// Exclusions data.
 	return $exclusions_data;
 }

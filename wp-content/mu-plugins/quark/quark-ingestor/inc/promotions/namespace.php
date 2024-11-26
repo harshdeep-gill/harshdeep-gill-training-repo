@@ -63,5 +63,6 @@ function get_promotions_data( int $departure_post_id = 0 ): array {
 		$promotions_data[] = $promotion_data;
 	}
 
+	// Return promotions data.
 	return $promotions_data;
 }

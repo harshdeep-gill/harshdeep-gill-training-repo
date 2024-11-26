@@ -294,6 +294,7 @@ function get_ship_specifications_data( int $ship_post_id = 0 ): array {
 		];
 	}
 
+	// Return ship specifications data.
 	return $ship_specifications_data;
 }
 
@@ -360,5 +361,6 @@ function get_ship_amenities_data( int $ship_post_id = 0 ): array {
 		}
 	}
 
+	// Return ship amenities data.
 	return $ship_amenities_data;
 }

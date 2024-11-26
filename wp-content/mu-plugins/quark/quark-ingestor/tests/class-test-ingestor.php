@@ -1057,9 +1057,8 @@ class Test_Ingestor extends Softrip_TestCase {
 				'modified'     => get_the_modified_date( 'Y-m-d H:i:s', $expedition_post_id ),
 				'highlights'   => [],
 				'url'          => get_permalink( $expedition_post_id ),
-
 			];
-		$actual = get_expedition_data( $expedition_post_id );
+		$actual   = get_expedition_data( $expedition_post_id );
 		$this->assertEquals( $expected, $actual );
 
 		// Add itinerary to the expedition post.

@@ -123,7 +123,7 @@ function get_expedition_data( int $expedition_post_id = 0 ): array {
 	if ( ! empty( $expedition_post['data'] ) ) {
 		// Add hero card slider images.
 		if ( ! empty( $expedition_post['data']['hero_card_slider_image_ids'] ) && is_array( $expedition_post['data']['hero_card_slider_image_ids'] ) ) {
-
+			// Map image IDs.
 			$image_ids = array_map( 'absint', $expedition_post['data']['hero_card_slider_image_ids'] );
 
 			// Loop through image IDs.

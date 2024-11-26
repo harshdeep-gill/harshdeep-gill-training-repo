@@ -1042,6 +1042,7 @@ function parse_block_attributes( WP_Post $post = null ): array {
 				$hero_card_slider_image_ids[] = $item['id'];
 			}
 		} elseif ( 'quark/highlight-item-text' === $block['blockName'] ) {
+			// Check for attributes.
 			if ( ! isset( $block['attrs'] ) || ! is_array( $block['attrs'] ) || empty( $block['attrs']['text'] ) ) {
 				continue;
 			}
