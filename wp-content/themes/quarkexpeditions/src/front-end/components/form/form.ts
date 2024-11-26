@@ -13,7 +13,6 @@ import { TPFormElement, TPFormSubmitElement } from '@travelopia/web-components';
  * Internal Dependencies.
  */
 import { getRecaptchaToken, setupRecaptcha } from './recaptcha';
-import './tracking';
 import { getCampaignParamsFromUrl, getGaCookie } from './tracking';
 import { getCampaignIdsFromCookies } from '../../global/store/actions';
 
@@ -207,6 +206,7 @@ export default class Form extends HTMLElement {
 		// Get GA cookie.
 		const gaCookie = getGaCookie();
 
+		// Check if we have any campaign params.
 		if ( urlCampaignParams ) {
 			// Fill in the details into corresponding hidden fields.
 			for ( const key in urlCampaignParams ) {

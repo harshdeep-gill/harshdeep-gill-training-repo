@@ -10,7 +10,7 @@ export const campaignParams: string[] = [ 'utm_source', 'utm_term', 'utm_campaig
  *
  * @return {Object} Campaign params.
  */
-export const getCampaignParamsFromUrl = (): any => {
+export const getCampaignParamsFromUrl = (): {[name: string]: string} => {
 	// Initialize.
 	const urlCampaignParams: {[name: string]: string} = {};
 
