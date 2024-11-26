@@ -92,7 +92,7 @@
 	</tp-lightbox-trigger>
 
 	<x-once id="media-lightbox">
-		<tp-lightbox id="media-lightbox" class="media-lightbox">
+		<tp-lightbox id="media-lightbox" class="media-lightbox" swipe="yes">
 			<dialog class="media-lightbox__dialog">
 				<tp-lightbox-close class="media-lightbox__close">
 					<button><x-svg name="cross" /></button>
