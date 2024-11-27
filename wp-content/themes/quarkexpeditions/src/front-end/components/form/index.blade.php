@@ -13,7 +13,7 @@
 	'marketing_fields'  => true,
 	'webform_url'       => true,
 	'referrer_url'      => false,
-	'ga_client_id'      => false,
+	'ga_client_id'      => true,
 ] )
 
 <quark-form
