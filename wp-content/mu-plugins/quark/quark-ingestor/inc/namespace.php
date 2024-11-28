@@ -16,6 +16,7 @@ use WP_Query;
 use function Quark\Core\init_auto_cloudinary;
 use function Quark\Ingestor\Expeditions\get_expedition_data;
 use function Quark\Softrip\get_initiated_via;
+use function get_post_modified_time as wp_get_post_modified_time;
 
 use const Quark\Expeditions\POST_TYPE as EXPEDITION_POST_TYPE;
 
@@ -546,7 +547,8 @@ function get_image_details( int $image_id = 0 ): array {
  * @return string
  */
 function get_post_modified_time( int|WP_Post $post = 0 ): string {
-	$modified_time = \get_post_modified_time( 'c', true, $post );
+	// Get modified time.
+	$modified_time = wp_get_post_modified_time( 'c', true, $post );
 
 	// Validate modified time.
 	if ( ! is_string( $modified_time ) ) {

@@ -70,14 +70,14 @@ function get_promotions_data( int $departure_post_id = 0 ): array {
 
 		// Add promotion data to promotions data.
 		$promotions_data[] = [
-			'id' => $promotion_data['id'],
-			'code' => $promotion_data['code'],
-			'startDate' => $promotion_data['start_date'],
-			'endDate' => $promotion_data['end_date'],
-			'description' => $promotion_data['description'],
-			'discountType' => $promotion_data['discount_type'],
+			'id'            => $promotion_data['id'],
+			'code'          => $promotion_data['code'],
+			'startDate'     => $promotion_data['start_date'],
+			'endDate'       => $promotion_data['end_date'],
+			'description'   => $promotion_data['description'],
+			'discountType'  => $promotion_data['discount_type'],
 			'discountValue' => $promotion_data['discount_value'],
-			'isPIF' => boolval( $promotion_data['is_pif'] ),
+			'isPIF'         => boolval( $promotion_data['is_pif'] ),
 		];
 	}
 
