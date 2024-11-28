@@ -10,6 +10,8 @@ namespace Quark\Ingestor\Ships;
 use WP_Post;
 
 use function Quark\Core\get_raw_text_from_html;
+use function Quark\Ingestor\get_image_details;
+use function Quark\Ingestor\get_post_modified_time;
 use function Quark\Ships\get as get_ship_post;
 use function Quark\Softrip\Departures\get_related_ship;
 
@@ -112,7 +114,7 @@ function get_ship_data( int $departure_post_id = 0 ): array {
 		'name'           => get_raw_text_from_html( $ship_post['post']->post_title ),
 		'url'            => get_permalink( $ship_id ),
 		'description'    => strval( $ship_post['post_meta']['description'] ?? '' ),
-		'modified'       => $ship_post['post']->post_modified,
+		'modified'       => get_post_modified_time( $ship_post['post'] ),
 		'specifications' => [],
 		'amenities'      => [],
 		'deckPlanImage'  => [],
@@ -125,30 +127,8 @@ function get_ship_data( int $departure_post_id = 0 ): array {
 
 	// Validate featured image ID.
 	if ( ! empty( $featured_image_id ) ) {
-		// Full size url.
-		$full_size_url = wp_get_attachment_image_url( $featured_image_id, 'full' );
-
-		// Validate full size url.
-		if ( ! empty( $full_size_url ) ) {
-			// Thumbnail url.
-			$thumbnail_url = wp_get_attachment_image_url( $featured_image_id, 'thumbnail' );
-
-			// Alt text.
-			$alt_text = strval( get_post_meta( $featured_image_id, '_wp_attachment_image_alt', true ) );
-
-			// Get title if alt text is empty.
-			if ( empty( $alt_text ) ) {
-				$alt_text = get_post_field( 'post_title', $featured_image_id );
-			}
-
-			// Add hero image.
-			$ship_data['heroImage'] = [
-				'id'        => $featured_image_id,
-				'fullSize'  => $full_size_url,
-				'thumbnail' => $thumbnail_url,
-				'alt'       => $alt_text,
-			];
-		}
+		// Add hero image.
+		$ship_data['heroImage'] = get_image_details( $featured_image_id );
 	}
 
 	// Get collage images.
@@ -171,32 +151,16 @@ function get_ship_data( int $departure_post_id = 0 ): array {
 				continue;
 			}
 
-			// Full size url.
-			$full_size_url = wp_get_attachment_image_url( $image_id, 'full' );
+			// Get image details.
+			$image_details = get_image_details( $image_id );
 
-			// Validate full size url.
-			if ( empty( $full_size_url ) ) {
+			// Validate.
+			if ( empty( $image_details ) ) {
 				continue;
 			}
 
-			// Thumbnail url.
-			$thumbnail_url = wp_get_attachment_image_url( $image_id, 'thumbnail' );
-
-			// Alt text.
-			$alt_text = strval( get_post_meta( $image_id, '_wp_attachment_image_alt', true ) );
-
-			// Get title if alt text is empty.
-			if ( empty( $alt_text ) ) {
-				$alt_text = get_post_field( 'post_title', $image_id );
-			}
-
 			// Add image.
-			$ship_data['images'][] = [
-				'id'        => $image_id,
-				'fullSize'  => $full_size_url,
-				'thumbnail' => $thumbnail_url,
-				'alt'       => $alt_text,
-			];
+			$ship_data['images'][] = $image_details;
 		}
 	}
 
@@ -205,30 +169,8 @@ function get_ship_data( int $departure_post_id = 0 ): array {
 
 	// Validate deck plan image ID.
 	if ( ! empty( $deck_plan_image_id ) ) {
-		// Full size url.
-		$full_size_url = wp_get_attachment_image_url( $deck_plan_image_id, 'full' );
-
-		// Validate full size url.
-		if ( ! empty( $full_size_url ) ) {
-			// Thumbnail url.
-			$thumbnail_url = wp_get_attachment_image_url( $deck_plan_image_id, 'thumbnail' );
-
-			// Alt text.
-			$alt_text = strval( get_post_meta( $deck_plan_image_id, '_wp_attachment_image_alt', true ) );
-
-			// Get title if alt text is empty.
-			if ( empty( $alt_text ) ) {
-				$alt_text = get_post_field( 'post_title', $deck_plan_image_id );
-			}
-
-			// Add deck plan image.
-			$ship_data['deckPlanImage'] = [
-				'id'        => $deck_plan_image_id,
-				'fullSize'  => $full_size_url,
-				'thumbnail' => $thumbnail_url,
-				'alt'       => $alt_text,
-			];
-		}
+		// Add deck plan image.
+		$ship_data['deckPlanImage'] = get_image_details( $deck_plan_image_id );
 	}
 
 	// Get ship specifications data.

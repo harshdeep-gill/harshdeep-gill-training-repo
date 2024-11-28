@@ -10,6 +10,7 @@ namespace Quark\Ingestor;
 use cli\progress\Bar;
 use WP_CLI;
 use WP_Error;
+use WP_Post;
 use WP_Query;
 
 use function Quark\Core\init_auto_cloudinary;
@@ -475,4 +476,83 @@ function get_all_data(): array {
 
 	// Return results.
 	return $results;
+}
+
+/**
+ * Get image details.
+ *
+ * @param int $image_id Image ID.
+ *
+ * @return array{}|array{
+ *   id: int,
+ *   fullSizeUrl: string,
+ *   thumbnailUrl: string,
+ *   alt: string,
+ *   title: string,
+ *   dimensions: array{
+ *     width: int,
+ *     height: int,
+ *   }
+ * }
+ */
+function get_image_details( int $image_id = 0 ): array {
+	// Validate id.
+	if ( empty( $image_id ) ) {
+		return [];
+	}
+
+	// Skip if not id of an image attachment.
+	if ( ! wp_attachment_is( 'image', $image_id ) ) {
+		return [];
+	}
+
+	// Full size image.
+	$full_size_image = wp_get_attachment_image_src( $image_id, 'full' );
+
+	// Validate image.
+	if ( empty( $full_size_image ) ) {
+		return [];
+	}
+
+	// Thumbnail url.
+	$thumbnail_url = strval( wp_get_attachment_image_url( $image_id, 'thumbnail' ) );
+
+	// Alt text.
+	$alt_text = strval( get_post_meta( $image_id, '_wp_attachment_image_alt', true ) );
+
+	// Title text.
+	$title_text = get_post_field( 'post_title', $image_id );
+
+	// Return image details.
+	return [
+		'type'         => 'image',
+		'id'           => $image_id,
+		'fullSizeUrl'  => $full_size_image[0],
+		'thumbnailUrl' => $thumbnail_url,
+		'alt'          => $alt_text,
+		'title'        => $title_text,
+		'dimensions'   => [
+			'width'  => $full_size_image[1],
+			'height' => $full_size_image[2],
+		],
+	];
+}
+
+/**
+ * Get modified time of a post.
+ *
+ * @param int|WP_Post $post Post ID or WP_Post object.
+ *
+ * @return string
+ */
+function get_post_modified_time( int|WP_Post $post = 0 ): string {
+	$modified_time = \get_post_modified_time( 'c', true, $post );
+
+	// Validate modified time.
+	if ( ! is_string( $modified_time ) ) {
+		return '';
+	}
+
+	// Return modified time.
+	return $modified_time;
 }

@@ -14,6 +14,8 @@ use function Quark\Expeditions\get as get_expedition;
 use function Quark\InclusionSets\get as get_inclusion_set;
 use function Quark\ExclusionSets\get as get_exclusion_set;
 use function Quark\Ingestor\Departures\get_departures_data;
+use function Quark\Ingestor\get_image_details;
+use function Quark\Ingestor\get_post_modified_time;
 use function Quark\Itineraries\get as get_itinerary;
 use function Quark\ItineraryDays\get as get_itinerary_day;
 use function Quark\Ports\get as get_port;
@@ -151,7 +153,7 @@ function get_itineraries( int $expedition_post_id = 0 ): array {
 			'durationInDays'         => $duration_in_days,
 			'startLocation'          => '',
 			'endLocation'            => '',
-			'modified'               => $itinerary_post['post']->post_modified,
+			'modified'               => get_post_modified_time( $itinerary_post['post'] ),
 			'season'                 => $season,
 			'embarkation'            => '',
 			'embarkationPortCode'    => '',
@@ -219,25 +221,8 @@ function get_itineraries( int $expedition_post_id = 0 ): array {
 
 		// Validate image ID.
 		if ( ! empty( $itinerary_map_image_id ) ) {
-			// Full size url.
-			$full_size_url = wp_get_attachment_image_url( $itinerary_map_image_id, 'full' );
-
-			// Validate full size url.
-			if ( ! empty( $full_size_url ) ) {
-				// Thumbnail url.
-				$thumbnail_url = wp_get_attachment_image_url( $itinerary_map_image_id, 'thumbnail' );
-
-				// Alt text.
-				$alt_text = strval( get_post_meta( $itinerary_map_image_id, '_wp_attachment_image_alt', true ) );
-
-				// Add image data.
-				$itinerary_data['itineraryMap'] = [
-					'id'           => $itinerary_map_image_id,
-					'fullSizeUrl'  => $full_size_url,
-					'thumbnailUrl' => strval( $thumbnail_url ),
-					'alt'          => $alt_text,
-				];
-			}
+			// Add image data.
+			$itinerary_data['itineraryMap'] = get_image_details( $itinerary_map_image_id );
 		}
 
 		// Add days data.

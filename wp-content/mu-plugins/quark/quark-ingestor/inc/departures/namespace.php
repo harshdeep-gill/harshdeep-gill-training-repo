@@ -14,6 +14,7 @@ use function Quark\Departures\get as get_departure;
 use function Quark\Ingestor\AdventureOptions\get_included_adventure_options_data;
 use function Quark\Ingestor\AdventureOptions\get_paid_adventure_options_data;
 use function Quark\Ingestor\Cabins\get_cabins_data;
+use function Quark\Ingestor\get_post_modified_time;
 use function Quark\Ingestor\Promotions\get_promotions_data;
 use function Quark\Ingestor\Ships\get_ship_data;
 
@@ -104,7 +105,7 @@ function get_departures_data( int $expedition_post_id = 0, int $itinerary_post_i
 			'durationInDays'   => absint( $departure_post['post_meta']['duration'] ?? '' ),
 			'softrip_id'       => $softrip_id,
 			'code'             => $departure_post['post_meta']['softrip_code'] ?? '',
-			'modified'         => $departure_post['post']->post_modified,
+			'modified'         => get_post_modified_time( $departure_post['post'] ),
 			'languages'        => '',
 			'ship'             => [],
 			'cabins'           => [],

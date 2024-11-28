@@ -12,6 +12,7 @@ use WP_Post;
 use function Quark\CabinCategories\get as get_cabin_category;
 use function Quark\Core\get_raw_text_from_html;
 use function Quark\Departures\get as get_departure;
+use function Quark\Ingestor\get_image_details;
 use function Quark\Ingestor\Occupancies\get_occupancies_data;
 use function Quark\Softrip\Occupancies\get_cabin_category_post_ids_by_departure;
 
@@ -191,7 +192,7 @@ function get_cabins_data( int $expedition_post_id = 0, int $itinerary_post_id = 
 		$cabin_category_data = [
 			'id'             => $cabin_category_post_id,
 			'drupalId'       => absint( $cabin_category_post['post_meta']['drupal_id'] ?? 0 ),
-			'modified'       => $cabin_category_post['post']->post_modified,
+			'modified'       => get_post_modified_time( 'c', true, $cabin_category_post_id ),
 			'softripId'      => $cabin_category_softrip_id,
 			'name'           => strval( $cabin_category_post['post_meta']['cabin_name'] ?? '' ),
 			'title'          => get_raw_text_from_html( $cabin_category_post['post']->post_title ),
@@ -276,37 +277,16 @@ function get_cabins_data( int $expedition_post_id = 0, int $itinerary_post_id = 
 
 			// Loop through media IDs.
 			foreach ( $media_ids as $media_id ) {
-				// Full size url.
-				$full_size_url = wp_get_attachment_image_url( $media_id, 'full' );
+				// Get image details.
+				$image_details = get_image_details( $media_id );
 
-				// Validate full size url.
-				if ( empty( $full_size_url ) ) {
+				// Check for image details.
+				if ( empty( $image_details ) ) {
 					continue;
-				}
-
-				// Thumbnail url.
-				$thumbnail_url = wp_get_attachment_image_url( $media_id, 'thumbnail' );
-
-				// Validate thumbnail url.
-				if ( empty( $thumbnail_url ) ) {
-					continue;
-				}
-
-				// Alt text.
-				$alt_text = strval( get_post_meta( $media_id, '_wp_attachment_image_alt', true ) );
-
-				// Get title if alt text is empty.
-				if ( empty( $alt_text ) ) {
-					$alt_text = get_post_field( 'post_title', $media_id );
 				}
 
 				// Add media.
-				$cabin_category_data['media'][] = [
-					'id'           => $media_id,
-					'fullSizeUrl'  => $full_size_url,
-					'thumbnailUrl' => $thumbnail_url,
-					'alt'          => $alt_text,
-				];
+				$cabin_category_data['media'][] = $image_details;
 			}
 		}
 

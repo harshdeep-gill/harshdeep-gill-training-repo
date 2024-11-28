@@ -12,6 +12,7 @@ use WP_Post;
 use function Quark\AdventureOptions\get as get_adventure_option_post;
 use function Quark\Core\get_raw_text_from_html;
 use function Quark\Expeditions\get as get_expedition;
+use function Quark\Ingestor\get_image_details;
 use function Quark\Localization\get_currencies;
 use function Quark\Softrip\AdventureOptions\get_adventure_option_by_departure_post_id;
 
@@ -173,37 +174,16 @@ function get_adventure_option_category_data_from_meta( int $adventure_option_cat
 		} elseif ( 'image' === $meta_key ) {
 			// Loop through each image.
 			foreach ( $meta_value as $attachment_id ) {
-				// Full size url.
-				$full_size_url = wp_get_attachment_image_url( $attachment_id, 'full' );
+				// Get image details.
+				$image_details = get_image_details( $attachment_id );
 
-				// Validate full size url.
-				if ( empty( $full_size_url ) ) {
+				// Check if empty.
+				if ( empty( $image_details ) ) {
 					continue;
-				}
-
-				// Thumbnail url.
-				$thumbnail_url = wp_get_attachment_image_url( $attachment_id, 'thumbnail' );
-
-				// Validate thumbnail url.
-				if ( empty( $thumbnail_url ) ) {
-					continue;
-				}
-
-				// Alt text.
-				$alt_text = strval( get_post_meta( $attachment_id, '_wp_attachment_image_alt', true ) );
-
-				// Get title if alt text is empty.
-				if ( empty( $alt_text ) ) {
-					$alt_text = get_post_field( 'post_title', $attachment_id );
 				}
 
 				// Add image.
-				$adventure_option_category_data['images'][] = [
-					'id'           => $attachment_id,
-					'fullSizeUrl'  => $full_size_url,
-					'thumbnailUrl' => $thumbnail_url,
-					'alt'          => $alt_text,
-				];
+				$adventure_option_category_data['images'][] = $image_details;
 			}
 		} elseif ( 'icon' === $meta_key ) {
 			// Get icon attachment id.
