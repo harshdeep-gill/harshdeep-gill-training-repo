@@ -17,7 +17,16 @@ use function Quark\Softrip\Promotions\get_promotions_by_code;
  *
  * @param int $departure_post_id Departure post ID.
  *
- * @return mixed[]
+ * @return array{}|array<int, array{
+ *   id: int,
+ *   code: string,
+ *   startDate: string,
+ *   endDate: string,
+ *   description: string,
+ *   discountType: string,
+ *   discountValue: string,
+ *   isPIF: bool,
+ * }>
  */
 function get_promotions_data( int $departure_post_id = 0 ): array {
 	// Initialize promotions data.
@@ -60,7 +69,16 @@ function get_promotions_data( int $departure_post_id = 0 ): array {
 		$promotion_data = reset( $promotion_data );
 
 		// Add promotion data to promotions data.
-		$promotions_data[] = $promotion_data;
+		$promotions_data[] = [
+			'id' => $promotion_data['id'],
+			'code' => $promotion_data['code'],
+			'startDate' => $promotion_data['start_date'],
+			'endDate' => $promotion_data['end_date'],
+			'description' => $promotion_data['description'],
+			'discountType' => $promotion_data['discount_type'],
+			'discountValue' => $promotion_data['discount_value'],
+			'isPIF' => boolval( $promotion_data['is_pif'] ),
+		];
 	}
 
 	// Return promotions data.
