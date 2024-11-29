@@ -138,11 +138,11 @@
 									Price: {{ $card['transfer_package_details']['formatted_price'] ?? '' }}</strong></p>
 						</x-departure-cards.transfer_package>
 					@endif
-					<x-departure-cards.cta :availability_status="$card['cta_button_status']" />
+					<x-departure-cards.cta :availability_status="$card['departure_status'] ?? ''" />
 				</x-departure-cards.body-column>
 			</x-departure-cards.body>
 
-			@if( ! empty( $card['cabins'] ) && is_array( $card['cabins'] ) && 'S' !== $card['cta_button_status'] )
+			@if( ! empty( $card['cabins'] ) && is_array( $card['cabins'] ) )
 				<x-departure-cards.more-details>
 				<h4>
 					<x-escape :content="__( 'Cabins Options', 'qrk' )"/>

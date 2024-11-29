@@ -31,9 +31,6 @@ Buttons
 
 	&--disabled {
 		cursor: default;
-
-		&:active {
-			pointer-events: none;
-		}
+		pointer-events: none;
 	}
 }

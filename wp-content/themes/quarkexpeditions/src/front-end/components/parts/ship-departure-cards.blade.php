@@ -143,7 +143,7 @@
 							</p>
 						</x-departure-cards.transfer_package>
 					@endif
-					<x-departure-cards.cta :availability_status="$card['cta_button_status']" />
+					<x-departure-cards.cta :availability_status="$card['departure_status'] ?? ''" />
 				</x-departure-cards.body-column>
 			</x-departure-cards.body>
 
