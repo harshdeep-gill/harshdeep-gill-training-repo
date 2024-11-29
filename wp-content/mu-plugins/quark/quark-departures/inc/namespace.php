@@ -574,7 +574,7 @@ function get_promotion_tags( int $post_id = 0 ): array {
  *     paid_adventure_options: string[],
  *     lowest_price: array<string, string>,
  *     request_a_quote_url: string,
- *     cta_button_status: string,
+ *     departure_status: string,
  *     transfer_package_details: array{
  *       title: string,
  *       sets: string[],
@@ -698,7 +698,7 @@ function get_card_data( int $departure_id = 0, string $currency = DEFAULT_CURREN
 	$cabins = get_cabin_details_by_departure( $departure_id, $currency );
 
 	// Departure status.
-	$cta_button_status = get_departure_availability_status( $departure_id, $cabins );
+	$departure_status = get_departure_availability_status( $departure_id, $cabins );
 
 	// Prepare the departure card details.
 	$data = [
@@ -718,11 +718,11 @@ function get_card_data( int $departure_id = 0, string $currency = DEFAULT_CURREN
 		'promotion_tags'           => get_promotion_tags( $departure_id ),
 		'ship_name'                => $ship_name,
 		'banner_details'           => get_policy_banner_details( $itinerary_id ),
-		'cabins'                   => $cabins,
+		'cabins'                   => SOLD_OUT_STATUS === $departure_status ? [] : $cabins,
 		'promotion_banner'         => get_discount_label( $lowest_price['original'], $lowest_price['discounted'] ),
 		'promotions'               => get_promotions_description( $departure_id ),
 		'request_a_quote_url'      => get_request_a_quote_url( $departure_id ),
-		'cta_button_status'        => $cta_button_status,
+		'departure_status'         => $departure_status,
 	];
 
 	// Set cache and return data.
@@ -804,7 +804,7 @@ function get_start_end_departure_date( int $post_id = 0 ): string {
  *      paid_adventure_options: string[],
  *      lowest_price: array<string, string>,
  *      request_a_quote_url: string,
- *      cta_button_status: string,
+ *      departure_status: string,
  *      transfer_package_details: array{
  *        title: string,
  *        sets: array<string>,
@@ -1334,14 +1334,14 @@ function get_promotions_description( int $departure_id = 0 ): array {
 /**
  * Get Departure Availability Status.
  *
- * @param int     $departure_id Departure ID.
- * @param mixed[] $cabins Cabin details.
+ * @param int          $departure_id Departure ID.
+ * @param mixed[]|null $cabins Cabin details.
  *
  * @return string
  */
-function get_departure_availability_status( int $departure_id = 0, array $cabins = [] ): string {
-	// Check for Cabin data.
-	if ( ! is_array( $cabins ) || empty( $cabins ) ) {
+function get_departure_availability_status( int $departure_id = 0, array|null $cabins = null ): string {
+	// If cabins are not provided, get them.
+	if ( ! is_array( $cabins ) ) {
 		$cabins = get_cabin_details_by_departure( $departure_id );
 	}
 
@@ -1351,28 +1351,25 @@ function get_departure_availability_status( int $departure_id = 0, array $cabins
 	}
 
 	// Initialize departure availability status.
-	$departure_availability_status = AVAILABLE_STATUS;
+	$departure_availability_status = SOLD_OUT_STATUS;
 
 	// Get Departure CTA Button status.
 	foreach ( $cabins as $cabin ) {
 		// Check for availability status.
-		if ( empty( $cabin['specifications'] ) || empty( $cabin['specifications']['availability_status'] ) ) {
+		if ( ! is_array( $cabin ) || empty( $cabin['specifications'] ) || empty( $cabin['specifications']['availability_status'] ) ) {
 			continue;
 		}
 
-		// if all cabins are sold out then set CTA button text to Sold Out.
-		if ( 'S' !== $cabin['specifications']['availability_status'] ) {
+		// Check for available status.
+		if ( SOLD_OUT_STATUS !== $cabin['specifications']['availability_status'] ) {
 			// Set status to Available.
 			$departure_availability_status = AVAILABLE_STATUS;
 
 			// Break the loop.
 			break;
 		}
-
-		// Set status to Sold Out.
-		$departure_availability_status = SOLD_OUT_STATUS;
 	}
 
-	// Return departure availability status.
+	// Return.
 	return $departure_availability_status;
 }
