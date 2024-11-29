@@ -692,10 +692,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 		$card_data['cabins'] = $card_data['cabins'] ?? [];
 
 		// Assert cabin count.
-		$this->assertCount( 1, $card_data['cabins'] );
-
-		// Assert occupancy count.
-		$this->assertCount( 0, $card_data['cabins']['OEX-SGL']['occupancies'] );
+		$this->assertCount( 0, $card_data['cabins'] );
 
 		// remove cabins from card_data.
 		unset( $card_data['cabins'] );
@@ -992,7 +989,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 			'promotion_tags'           => [],
 			'promotion_banner'         => 'Save up to 15%',
 			'request_a_quote_url'      => get_request_a_quote_url( $departure_post_3 ),
-			'cta_button_status'        => 'A',
+			'departure_status'         => 'A',
 			'lowest_price'             => [
 				'discounted_price' => '$40,069 USD',
 				'original_price'   => '$47,105 USD',
