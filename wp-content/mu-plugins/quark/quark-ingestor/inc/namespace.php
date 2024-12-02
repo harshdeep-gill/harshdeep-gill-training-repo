@@ -524,10 +524,14 @@ function get_image_details( int $image_id = 0 ): array {
 	// Title text.
 	$title_text = get_post_field( 'post_title', $image_id );
 
+	// Drupal id.
+	$drupal_id = absint( get_post_meta( $image_id, 'drupal_fid', true ) );
+
 	// Return image details.
 	return [
 		'type'         => 'image',
 		'id'           => $image_id,
+		'drupalId'     => $drupal_id,
 		'fullSizeUrl'  => $full_size_image[0],
 		'thumbnailUrl' => $thumbnail_url,
 		'alt'          => $alt_text,
