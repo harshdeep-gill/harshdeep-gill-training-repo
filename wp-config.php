@@ -179,6 +179,17 @@ define( 'QUARK_GITHUB_ACTIONS_TOKEN', env( 'QUARK_GITHUB_ACTIONS_TOKEN' ) );
 define( 'QUARK_GITHUB_API_DISPATCH_URL', env( 'QUARK_GITHUB_API_DISPATCH_URL' ) );
 define( 'QUARK_GITHUB_ACTIONS_REF', env( 'QUARK_GITHUB_ACTIONS_REF' ) );
 
+/**
+ * Multisite.
+ */
+define( 'WP_ALLOW_MULTISITE', true );
+define( 'MULTISITE', true );
+define( 'SUBDOMAIN_INSTALL', true );
+define( 'DOMAIN_CURRENT_SITE',  env( 'DOMAIN_CURRENT_SITE' ) );
+define( 'PATH_CURRENT_SITE', '/' );
+define( 'SITE_ID_CURRENT_SITE', 1 );
+define( 'BLOG_ID_CURRENT_SITE', 1 );
+
 /* That's all, stop editing! Happy publishing. */
 
 /** Absolute path to the WordPress directory. */
