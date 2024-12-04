@@ -77,13 +77,6 @@
 			row-gap: 60px;
 		}
 
-		> *:nth-child(5) {
-
-			@media screen and (min-width: grid-size(lg)) {
-				grid-column-start: 2;
-			}
-		}
-
 		#{$self}__column ~ #{$self}__column {
 
 			@media screen and (max-width: calc(grid-size(lg) - 1px)) {
@@ -269,7 +262,8 @@
 		max-width: 460px;
 	}
 
-	&__payment-options {
+	&__payment-options,
+	&__associations {
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -280,6 +274,10 @@
 		@media screen and (min-width: grid-size(lg)) {
 			justify-content: flex-start;
 		}
+	}
+
+	&__associations {
+		gap: var(--spacing-5);
 	}
 
 	// Social Links.

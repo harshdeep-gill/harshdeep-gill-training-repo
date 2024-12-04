@@ -27,6 +27,10 @@
 								<x-footer.payment-options />
 							@break
 
+							@case ( 'associations' )
+								<x-footer.associations />
+							@break
+
 							@case ( 'logo' )
 								<x-footer.logo />
 							@break
@@ -61,6 +65,10 @@
 
 							@case ( 'payment-options' )
 								<x-footer.payment-options />
+							@break
+
+							@case ( 'associations' )
+								<x-footer.associations />
 							@break
 
 							@case ( 'logo' )
