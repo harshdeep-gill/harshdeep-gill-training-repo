@@ -179,6 +179,9 @@ define( 'QUARK_GITHUB_ACTIONS_TOKEN', env( 'QUARK_GITHUB_ACTIONS_TOKEN' ) );
 define( 'QUARK_GITHUB_API_DISPATCH_URL', env( 'QUARK_GITHUB_API_DISPATCH_URL' ) );
 define( 'QUARK_GITHUB_ACTIONS_REF', env( 'QUARK_GITHUB_ACTIONS_REF' ) );
 
+// China Site blog ID.
+define( 'QUARK_CHINA_SITE_BLOG_ID', env( 'QUARK_CHINA_SITE_BLOG_ID' ) );
+
 /**
  * Multisite.
  */
