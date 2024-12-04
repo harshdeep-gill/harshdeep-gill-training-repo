@@ -17,6 +17,7 @@
 				display: grid;
 				row-gap: var(--spacing-7);
 				height: auto !important;
+				left: initial !important;
 
 				@include grid-columns(3);
 			}
@@ -66,6 +67,13 @@
 
 			@media screen and (min-width: grid-size(xl)) {
 				display: none;
+			}
+		}
+
+		#{$self}__slides-container {
+
+			@media screen and (min-width: grid-size(xl)) {
+				left: initial !important;
 			}
 		}
 	}
