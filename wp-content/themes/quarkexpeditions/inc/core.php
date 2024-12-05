@@ -7,6 +7,8 @@
 
 namespace Quark\Theme\Core;
 
+use function Quark\Core\is_china_website;
+
 /**
  * Setup.
  *
@@ -164,6 +166,7 @@ function register_scripts(): void {
 				'url'    => home_url( '/wp-json/quark-core/v1/partial/get' ),
 				'method' => 'POST',
 			],
+			'isChinaSite'      => is_china_website(),
 		]
 	);
 

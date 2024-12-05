@@ -7,6 +7,8 @@
 
 namespace Quark\Theme\Blocks;
 
+use function Quark\Core\is_china_website;
+
 /**
  * Setup.
  *
@@ -58,6 +60,17 @@ function register_blocks(): void {
 
 		// Require block.
 		require_once $block_path;
+
+		// Load only if the current site is China site.
+		if ( is_china_website() ) {
+			// Get DISABLE_ON_CHINA_SITE constant from block.
+			$disable_on_china_site = defined( $namespace . '\\DISABLE_ON_CHINA_SITE' ) && constant( $namespace . '\\DISABLE_ON_CHINA_SITE' );
+
+			// If block is disabled on China site, skip registration.
+			if ( $disable_on_china_site ) {
+				continue;
+			}
+		}
 
 		// Get callable function name.
 		$callable = $namespace . '\\bootstrap';

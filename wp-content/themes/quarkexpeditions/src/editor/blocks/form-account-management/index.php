@@ -11,7 +11,8 @@ use WP_Block;
 
 use function Quark\Leads\Forms\get_states;
 
-const COMPONENT = 'form-account-management';
+const COMPONENT             = 'form-account-management';
+const DISABLE_ON_CHINA_SITE = true;
 
 /**
  * Bootstrap this block.

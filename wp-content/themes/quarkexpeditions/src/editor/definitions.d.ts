@@ -51,4 +51,7 @@ interface Window {
 		DynamicImage: new () => React.Component<any>,
 		getDynamicImageUrl: Function,
 	},
+	quarkSiteData: {
+		isChinaSite: boolean,
+	},
 }

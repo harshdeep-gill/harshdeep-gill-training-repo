@@ -29,6 +29,12 @@ export const settings: BlockConfiguration = {
  * Initialization.
  */
 export const init = (): void => {
+	// Check if the block should be disabled on the China site.
+	if ( window?.quarkSiteData && window.quarkSiteData?.isChinaSite && metadata.supports?.disableOnChinaSite ) {
+		// bail early.
+		return;
+	}
+
 	// Register block.
 	registerBlockType( name, settings );
 };
