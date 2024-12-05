@@ -8,13 +8,14 @@
 
 	&__track {
 		border-radius: var(--border-radius-large);
-		margin-left: calc(-1 * var(--grid-col-gutter));
-		margin-right: calc(-1 * var(--grid-col-gutter));
-		padding-left: var(--grid-col-gutter);
-		padding-right: var(--grid-col-gutter);
+		margin-inline: calc(-50vw + 50%);
+		max-width: 100vw;
+		padding-inline: var(--grid-col-gutter);
 	}
 
 	&__slides-container {
+		max-width: var(--wrap-width);
+		margin-inline: auto;
 
 		@media screen and (min-width: grid-size(lg)) {
 			display: grid;

@@ -442,31 +442,30 @@ export default class SecondaryNavigation extends HTMLElement {
 	 * @return {null|void} Null.
 	 */
 	scrollLeftOnMobile( item: HTMLElement | Element ): null | void {
-		// Check for mobile only.
+		// Check for mobile view only.
 		if ( ! this.isMobile() ) {
 			// No, bail early.
-			return null;
+			return;
 		}
 
-		// Get the element position.
-		const itemHorizontalPosition = item.getBoundingClientRect().x;
-		let navWrapperScrollPosition = 0;
-
-		// Check if element exists.
-		if ( this.navigationWrapper ) {
-			navWrapperScrollPosition = this.navigationWrapper.scrollLeft;
+		// Ensure navigationWrapper exists.
+		if ( ! this.navigationWrapper ) {
+			// No, bail early.
+			return;
 		}
 
-		/**
-		 * Offset is added to increase the horizontal scroll position,
-		 * so that tab link after the clicked one, peeps in.
-		 */
-		const offset = item.getBoundingClientRect().width - 32; // 32 is padding right.
-		const middle = navWrapperScrollPosition + itemHorizontalPosition - offset;
+		// Get the position of the clicked item relative to the viewport.
+		const itemRect = item.getBoundingClientRect();
+		const wrapperRect = this.navigationWrapper.getBoundingClientRect();
 
-		// Scroll to middle position.
-		this.navigationWrapper?.scrollTo( {
-			left: middle,
+		// Calculate the offset needed to center the item within the wrapper.
+		const itemCenterOffset = itemRect.left - wrapperRect.left + ( itemRect.width / 2 );
+		const wrapperCenter = wrapperRect.width / 2;
+		const scrollPosition = this.navigationWrapper.scrollLeft + ( itemCenterOffset - wrapperCenter );
+
+		// Scroll to the calculated position to center the item.
+		this.navigationWrapper.scrollTo( {
+			left: scrollPosition,
 			behavior: 'smooth',
 		} );
 	}
