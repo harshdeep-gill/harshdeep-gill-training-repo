@@ -25,11 +25,11 @@ fi
 
 # Search and Replace environment domain
 terminus wp quark-expeditions.$TARGET_ENVIRONMENT -- search-replace www.quarkexpeditions.com $DOMAIN_NAME.quarkexpeditions.com --all-tables
-terminus wp quark-expeditions.$TARGET_ENVIRONMENT -- search-replace china.quarkexpeditions.com china.$DOMAIN_NAME.quarkexpeditions.com --all-tables
+terminus wp quark-expeditions.$TARGET_ENVIRONMENT -- search-replace china.quarkexpeditions.com $DOMAIN_NAME.quarkexpeditions.cn --all-tables
 
 # Flush cache
 terminus wp quark-expeditions.$TARGET_ENVIRONMENT -- cache flush --url=$DOMAIN_NAME.quarkexpeditions.com
-terminus wp quark-expeditions.$TARGET_ENVIRONMENT -- cache flush --url=china.$DOMAIN_NAME.quarkexpeditions.com
+terminus wp quark-expeditions.$TARGET_ENVIRONMENT -- cache flush --url=$DOMAIN_NAME.quarkexpeditions.ch
 
 # Import Departures
 set +e
@@ -38,7 +38,7 @@ set -e
 
 # Flush cache
 terminus wp quark-expeditions.$TARGET_ENVIRONMENT -- cache flush --url=$DOMAIN_NAME.quarkexpeditions.com
-terminus wp quark-expeditions.$TARGET_ENVIRONMENT -- cache flush --url=china.$DOMAIN_NAME.quarkexpeditions.com
+terminus wp quark-expeditions.$TARGET_ENVIRONMENT -- cache flush --url=$DOMAIN_NAME.quarkexpeditions.ch
 # Repost solr schema
 terminus wp quark-expeditions.$TARGET_ENVIRONMENT -- solr repost-schema --url=$DOMAIN_NAME.quarkexpeditions.com
 
@@ -48,10 +48,10 @@ terminus wp quark-expeditions.$TARGET_ENVIRONMENT -- solr index --url=$DOMAIN_NA
 
 # Flush rewrite rules
 terminus wp quark-expeditions.$TARGET_ENVIRONMENT -- rewrite flush --url=$DOMAIN_NAME.quarkexpeditions.com
-terminus wp quark-expeditions.$TARGET_ENVIRONMENT -- rewrite flush --url=china.$DOMAIN_NAME.quarkexpeditions.com
+terminus wp quark-expeditions.$TARGET_ENVIRONMENT -- rewrite flush --url=$DOMAIN_NAME.quarkexpeditions.cn
 
 # Final cache flush
 terminus wp quark-expeditions.$TARGET_ENVIRONMENT -- cache flush --url=$DOMAIN_NAME.quarkexpeditions.com
-terminus wp quark-expeditions.$TARGET_ENVIRONMENT -- cache flush --url=china.$DOMAIN_NAME.quarkexpeditions.com
+terminus wp quark-expeditions.$TARGET_ENVIRONMENT -- cache flush --url=$DOMAIN_NAME.quarkexpeditions.cn
 
 set +x

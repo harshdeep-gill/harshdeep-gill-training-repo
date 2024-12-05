@@ -5,7 +5,7 @@
  * @package quark-china-site
  */
 
-namespace Quark\ChinaSite;
+namespace Quark\China;
 
 /**
  * Bootstrap the plugin.
@@ -15,6 +15,14 @@ namespace Quark\ChinaSite;
 function bootstrap(): void {
 	// Disable the default "Posts" post type.
 	add_action( 'admin_menu', __NAMESPACE__ . '\\disable_default_post_type' );
+
+	// Remove plugin that are not needed for china website.
+	remove_action( 'plugins_loaded', 'Quark\Departures\bootstrap' );
+	remove_action( 'plugins_loaded', 'Quark\Softrip\bootstrap' );
+	remove_action( 'plugins_loaded', 'Quark\Softrip\bootstrap' );
+	remove_action( 'plugins_loaded', 'Quark\Softrip\ManualSync\bootstrap' );
+	remove_action( 'plugins_loaded', 'Quark\Softrip\Cleanup\bootstrap' );
+	remove_action( 'plugins_loaded', 'Quark\Softrip\Admin\bootstrap' );
 }
 
 /**

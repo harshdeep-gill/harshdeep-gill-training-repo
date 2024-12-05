@@ -60,7 +60,7 @@ $tp_mu_plugins = array(
 	'quark/quark-seo/plugin.php',
 	'quark/quark-tracking/plugin.php',
 	'quark/quark-cache/plugin.php',
-	'quark/quark-china-site/plugin.php',
+	'quark/quark-china/plugin.php',
 );
 
 foreach ( $tp_mu_plugins as $file ) {
