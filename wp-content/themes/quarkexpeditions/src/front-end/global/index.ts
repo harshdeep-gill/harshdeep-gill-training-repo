@@ -46,3 +46,4 @@ initialize( {} );
  */
 import './phone-number';
 import './tracking';
+import './performance';
