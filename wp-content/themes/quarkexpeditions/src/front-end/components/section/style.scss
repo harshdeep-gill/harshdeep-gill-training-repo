@@ -83,7 +83,7 @@
 			}
 		}
 
-		& + & {
+		& + &:not(&.section--seamless-with-padding) {
 			padding-top: 0;
 		}
 	}
