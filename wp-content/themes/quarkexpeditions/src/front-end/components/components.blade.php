@@ -7192,17 +7192,6 @@
 	</x-section>
 </x-component-demo>
 
-<x-component-demo :keys="[ 'dates-rates' ]">
-	@php
-		$dates_rates_filter_data = Quark\Theme\Search_Filters\get_filters_for_dates_rates();
-
-		$currency = Quark\Localization\get_current_currency();
-	@endphp
-	<x-section>
-		<x-parts.dates-rates :filter_data="$dates_rates_filter_data" :currency="$currency" />
-	</x-section>
-</x-component-demo>
-
 <x-component-demo :keys="[ 'table' ]">
 	<x-section>
 		<x-section.heading>
