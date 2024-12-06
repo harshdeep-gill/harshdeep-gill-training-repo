@@ -30,9 +30,18 @@
 	@extend %full-width;
 }
 
-.is-root-container > .wp-block {
+.is-root-container > .wp-block:not(.wp-block-quark-search-hero) {
 	margin-left: auto;
 	margin-right: auto;
+	margin-block: var(--grid-section-gutter);
+
+	&:first-child {
+		margin-top: 0;
+	}
+
+	&:last-child {
+		margin-bottom: 0;
+	}
 }
 
 .block-library-block__reusable-block-container:has(> .full-width),
@@ -67,4 +76,17 @@
 
 .block-editor-button-block-appender {
 	background-color: var(--color-gray-30);
+}
+
+.media-cta-banner__media-wrap {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.media-cta-banner__image {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
 }

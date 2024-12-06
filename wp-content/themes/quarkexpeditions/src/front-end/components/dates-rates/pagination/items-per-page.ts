@@ -65,7 +65,7 @@ export default class DatesRatesPaginationItemsPerPageElement extends HTMLElement
 	 */
 	update( state: DatesRatesState ) {
 		// Null check.
-		if ( ! this.itemsPerPageSelector ) {
+		if ( ! this.itemsPerPageSelector || ! this.itemsPerPageSelector.select ) {
 			// Bail.
 			return;
 		}
