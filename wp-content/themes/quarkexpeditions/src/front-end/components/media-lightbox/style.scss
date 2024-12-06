@@ -195,6 +195,10 @@
 				cursor: not-allowed;
 			}
 		}
+
+		@media screen and (max-width: calc(grid-size(md) - 1px)) {
+			display: none;
+		}
 	}
 
 	&__prev-button {
