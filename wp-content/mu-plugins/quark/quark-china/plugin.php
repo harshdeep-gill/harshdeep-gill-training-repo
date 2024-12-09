@@ -22,4 +22,4 @@ if ( ! is_china_website() ) {
 require_once __DIR__ . '/inc/namespace.php';
 
 // Kick it off.
-add_action( 'plugins_loaded', __NAMESPACE__ . '\\bootstrap', 1 );
+add_action( 'muplugins_loaded', __NAMESPACE__ . '\\bootstrap' );
