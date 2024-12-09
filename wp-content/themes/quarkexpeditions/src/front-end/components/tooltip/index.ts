@@ -1,6 +1,7 @@
 /**
  * Utility functions.
  */
+import { Provider } from '@wordpress/components/build-types/slot-fill';
 import { throttle } from '../../global/utility';
 
 /**
@@ -43,6 +44,16 @@ export class Tooltip extends HTMLElement {
 			// Check and hide popover.
 			if ( this.tooltipPopoverElement?.matches( ':popover-open' ) ) {
 				this.tooltipPopoverElement?.hidePopover();
+			}
+		} );
+
+		// Click
+		this.addEventListener( 'click', () => {
+			// Check and hide popover.
+			if ( this.tooltipPopoverElement?.matches( ':popover-open' ) ) {
+				this.tooltipPopoverElement?.hidePopover();
+			} else {
+				this.tooltipPopoverElement?.showPopover();
 			}
 		} );
 	}
