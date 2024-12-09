@@ -145,6 +145,7 @@ function register_scripts(): void {
 	wp_register_script( 'tp-multi-select', get_template_directory_uri() . '/dist/vendor/tpmultiselectelement.js', [], $assets_version, true );
 	wp_register_script( 'trustpilot', 'https://widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js', [], $assets_version, true );
 	wp_register_script( 'wistia-embed', 'https://fast.wistia.com/assets/external/E-v1.js', [], $assets_version, true );
+	wp_register_script( 'instagram-embed', 'https://www.instagram.com/embed.js', [], $assets_version, true );
 	wp_register_script( 'tp-lightbox', get_template_directory_uri() . '/dist/vendor/tplightboxelement.js', [], $assets_version, true );
 	wp_register_script( 'tp-toggle-attribute', get_template_directory_uri() . '/dist/vendor/tptoggleattributeelement.js', [], $assets_version, true );
 	wp_register_script( 'tp-number-spinner', get_template_directory_uri() . '/dist/vendor/tpnumberspinnerelement.js', [], $assets_version, true );

@@ -229,18 +229,12 @@
 	}
 
 	&__options-count-wrap {
-		display: none;
+		display: flex;
 		align-items: center;
 		gap: var(--spacing-2);
 
 		&::before {
 			display: none;
-		}
-
-		&--visible {
-			display: flex;
-			align-items: center;
-			gap: var(--spacing-2);
 		}
 	}
 

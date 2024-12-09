@@ -224,6 +224,7 @@ function process_column_block( array $block = [] ): array {
 					'quark/footer-social-links',
 					'quark/footer-icon',
 					'quark/footer-payment-options',
+					'quark/footer-associations',
 					'quark/button',
 					'quark/footer-logo',
 					'core/paragraph',
@@ -290,6 +291,11 @@ function process_column_block( array $block = [] ): array {
 				// Footer payment options.
 				case 'quark/footer-payment-options':
 					$column['content'][] = [ 'type' => 'payment-options' ];
+					break;
+
+				// Footer payment options.
+				case 'quark/footer-associations':
+					$column['content'][] = [ 'type' => 'associations' ];
 					break;
 
 				// Footer logo.

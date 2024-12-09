@@ -25,12 +25,12 @@
 
 	// Add fullscreen icon position class.
 	if ( ! empty( $fullscreen_icon_position ) ) {
-			$fullscreen_icon_positions = [ 'bottom', 'top' ];
+		$fullscreen_icon_positions = [ 'bottom', 'top' ];
 
-			if ( in_array( $fullscreen_icon_position, $fullscreen_icon_positions, true ) ) {
-				$fullscreen_classes[] = sprintf( 'media-lightbox__fullscreen-icon--position-%s', $fullscreen_icon_position );
-			}
+		if ( in_array( $fullscreen_icon_position, $fullscreen_icon_positions, true ) ) {
+			$fullscreen_classes[] = sprintf( 'media-lightbox__fullscreen-icon--position-%s', $fullscreen_icon_position );
 		}
+	}
 @endphp
 
 <quark-media-lightbox class="media-lightbox__link">
@@ -92,7 +92,7 @@
 	</tp-lightbox-trigger>
 
 	<x-once id="media-lightbox">
-		<tp-lightbox id="media-lightbox" class="media-lightbox">
+		<tp-lightbox id="media-lightbox" class="media-lightbox" swipe="yes">
 			<dialog class="media-lightbox__dialog">
 				<tp-lightbox-close class="media-lightbox__close">
 					<button><x-svg name="cross" /></button>
