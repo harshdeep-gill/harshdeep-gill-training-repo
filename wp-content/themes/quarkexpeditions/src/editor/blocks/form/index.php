@@ -15,7 +15,6 @@ use function Quark\Leads\Forms\get_states;
 const COMPONENT_JOB_APPLICATION = 'form-job-application';
 const COMPONENT_CONTACT_US      = 'form-contact-us';
 const COMPONENT_NEWSLETTER      = 'form-newsletter';
-const DISABLE_ON_CHINA_SITE     = true;
 
 /**
  * Bootstrap this block.

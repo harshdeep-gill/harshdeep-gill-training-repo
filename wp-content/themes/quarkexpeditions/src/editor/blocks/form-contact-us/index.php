@@ -12,8 +12,7 @@ use WP_Block;
 use function Quark\Leads\Forms\get_countries;
 use function Quark\Leads\Forms\get_states;
 
-const COMPONENT             = 'form-contact-us';
-const DISABLE_ON_CHINA_SITE = true;
+const COMPONENT = 'form-contact-us';
 
 /**
  * Bootstrap this block.

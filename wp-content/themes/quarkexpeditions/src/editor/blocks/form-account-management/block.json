@@ -24,7 +24,6 @@
 		"anchor": true,
 		"className": false,
 		"html": false,
-		"customClassName": false,
-    "disableOnChinaSite": true
+		"customClassName": false
 	}
 }
