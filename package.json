@@ -63,7 +63,7 @@
   },
   "dependencies": {
     "@oddbird/popover-polyfill": "^0.4.4",
-    "@travelopia/web-components": "^0.7.1",
+    "@travelopia/web-components": "^0.7.3",
     "normalize.css": "^8.0.1",
     "query-string": "^9.1.0"
   }
