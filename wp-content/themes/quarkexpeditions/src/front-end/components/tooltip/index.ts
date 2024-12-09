@@ -1,7 +1,6 @@
 /**
  * Utility functions.
  */
-import { Provider } from '@wordpress/components/build-types/slot-fill';
 import { throttle } from '../../global/utility';
 
 /**
