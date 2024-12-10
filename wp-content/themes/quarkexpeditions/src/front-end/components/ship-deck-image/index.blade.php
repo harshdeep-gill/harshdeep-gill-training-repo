@@ -37,23 +37,32 @@
 			'format'  => 'svg',
 		]
 	];
+
+	// Classes.
+	$classes = [ 'ship-deck-image' ];
+
+	if ( ! empty( $vertical_image_id ) ) {
+	    $classes[] = 'ship-deck-image--has-vertical-image';
+	}
 @endphp
 
-@if ( ! empty( $horizontal_image_id ) )
-	<figure @class( [ $class, 'ship-deck-image--horizontal' ] ) >
-		<x-image
-			:image_id="$horizontal_image_id"
-			:alt="$alt"
-			:args="$horizontal_args"
-		/>
-	</figure>
-@endif
-@if ( ! empty( $vertical_image_id ) )
-	<figure @class( [ $class, 'ship-deck-image--vertical' ] ) >
-		<x-image
-			:image_id="$vertical_image_id"
-			:alt="$alt"
-			:args="$vertical_args"
-		/>
-	</figure>
-@endif
+<div @class( $classes )>
+	@if ( ! empty( $horizontal_image_id ) )
+		<figure @class( [ $class, 'ship-deck-image__horizontal' ] ) >
+			<x-image
+				:image_id="$horizontal_image_id"
+				:alt="$alt"
+				:args="$horizontal_args"
+			/>
+		</figure>
+	@endif
+	@if ( ! empty( $vertical_image_id ) )
+		<figure @class( [ $class, 'ship-deck-image__vertical' ] ) >
+			<x-image
+				:image_id="$vertical_image_id"
+				:alt="$alt"
+				:args="$vertical_args"
+			/>
+		</figure>
+	@endif
+</div>
