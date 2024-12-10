@@ -12,6 +12,31 @@
 
 	// Set default class.
 	$class = 'ship-deck-image';
+
+	// Image args.
+	$horizontal_args = [
+		'size' => [
+			'width'  => 2400,
+			'height' => 500,
+		],
+		'transform' => [
+			'crop'    => 'fit',
+			'quality' => 100,
+			'format'  => 'svg',
+		]
+	];
+
+	$vertical_args = [
+		'size' => [
+			'width'  => 500,
+			'height' => 2400,
+		],
+		'transform' => [
+			'crop'    => 'fit',
+			'quality' => 100,
+			'format'  => 'svg',
+		]
+	];
 @endphp
 
 @if ( ! empty( $horizontal_image_id ) )
@@ -19,6 +44,7 @@
 		<x-image
 			:image_id="$horizontal_image_id"
 			:alt="$alt"
+			:args="$horizontal_args"
 		/>
 	</figure>
 @endif
@@ -27,6 +53,7 @@
 		<x-image
 			:image_id="$vertical_image_id"
 			:alt="$alt"
+			:args="$vertical_args"
 		/>
 	</figure>
 @endif
