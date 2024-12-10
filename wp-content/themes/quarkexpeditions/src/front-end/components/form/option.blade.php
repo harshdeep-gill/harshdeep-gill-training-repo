@@ -5,8 +5,8 @@
 ] )
 
 <tp-multi-select-option
-	value="{{ $value }}"
-	label="{{ $label }}"
+	value="{!! esc_attr( $value ) !!}"
+	label="{!! esc_attr( $label ) !!}"
 	@if ( ! empty( $selected ) )
 		selected="{{ $selected }}"
 	@endif
