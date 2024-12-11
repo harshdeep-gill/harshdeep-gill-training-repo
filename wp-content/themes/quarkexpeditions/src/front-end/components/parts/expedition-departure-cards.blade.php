@@ -128,6 +128,7 @@
 						<x-departure-cards.transfer_package
 							drawer_id="{{ $departure_id }}"
 							drawer_title="Mandatory Transfer Package"
+							label="{!! $card['transfer_package_details']['offer_inclusion_text'] !!}"
 						>
 							<p><strong>{{ $card['transfer_package_details']['title'] ?? '' }}</strong></p>
 							<ul>
