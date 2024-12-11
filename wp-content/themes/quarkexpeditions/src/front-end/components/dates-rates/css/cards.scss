@@ -49,6 +49,10 @@
 			min-width: calc(50vw + var(--wrap-width) / 2 - var(--grid-col-gutter));
 		}
 
+		@media screen and (min-width: grid-size(xxl)) {
+			min-width: initial;
+		}
+
 		& + & {
 			margin-top: var(--spacing-5);
 		}

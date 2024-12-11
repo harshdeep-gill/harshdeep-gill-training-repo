@@ -2023,6 +2023,258 @@
 	</x-collage>
 </x-component-demo>
 
+<x-component-demo :keys="[ 'bento-collage' ]">
+
+	<x-section>
+		<x-section.heading>
+			<x-section.title title="Award winning polar expeditions" heading_level="1" align="left" />
+		</x-section.heading>
+
+		<x-section.description>Quark Expeditions is a multi-award winning tour operator and recognised by industry leaders. We offer the most varied itineraries in the polar industry.</x-section.description>
+
+		<x-bento-collage>
+			<x-bento-collage.card size="large">
+				<x-bento-collage.image image_id="123" />
+				<x-bento-collage.content position="top">
+					<x-bento-collage.title title="Game Changing Ships" />
+					<x-bento-collage.description>
+						<p>We boast the most diverse fleet of small polar vessels, allowing us to navigate hard-to-reach places and provide an intimate onboard atmosphere.</p>
+					</x-bento-collage.description>
+					<x-bento-collage.cta text="View Our Ships" url="#" />
+				</x-bento-collage.content>
+			</x-bento-collage.card>
+
+			<x-bento-collage.card size="small">
+				<x-bento-collage.image image_id="123" />
+				<x-bento-collage.content position="top">
+					<x-bento-collage.title title="Game Changing Ships" />
+					<x-bento-collage.description>
+						<p>We boast the most diverse fleet of small polar vessels, allowing us to navigate hard-to-reach places and provide an intimate onboard atmosphere.</p>
+					</x-bento-collage.description>
+					<x-bento-collage.cta text="View Our Ships" url="#" />
+				</x-bento-collage.content>
+			</x-bento-collage.card>
+
+			<x-bento-collage.card size="small">
+				<x-bento-collage.image image_id="123" />
+				<x-bento-collage.content position="top">
+					<x-bento-collage.title title="Game Changing Ships" />
+					<x-bento-collage.description>
+						<p>We boast the most diverse fleet of small polar vessels, allowing us to navigate hard-to-reach places and provide an intimate onboard atmosphere.</p>
+					</x-bento-collage.description>
+					<x-bento-collage.cta text="View Our Ships" url="#" />
+				</x-bento-collage.content>
+			</x-bento-collage.card>
+
+			<x-bento-collage.card size="large">
+				<x-bento-collage.image image_id="123" />
+				<x-bento-collage.content position="top">
+					<x-bento-collage.title title="Game Changing Ships" />
+					<x-bento-collage.description>
+						<p>We boast the most diverse fleet of small polar vessels, allowing us to navigate hard-to-reach places and provide an intimate onboard atmosphere.</p>
+					</x-bento-collage.description>
+					<x-bento-collage.cta text="View Our Ships" url="#" />
+				</x-bento-collage.content>
+			</x-bento-collage.card>
+
+			<x-bento-collage.card size="small">
+				<x-bento-collage.image image_id="123" />
+				<x-bento-collage.content position="top">
+					<x-bento-collage.title title="Game Changing Ships" />
+					<x-bento-collage.description>
+						<p>We boast the most diverse fleet of small polar vessels, allowing us to navigate hard-to-reach places and provide an intimate onboard atmosphere.</p>
+					</x-bento-collage.description>
+					<x-bento-collage.cta text="View Our Ships" url="#" />
+				</x-bento-collage.content>
+			</x-bento-collage.card>
+
+			<x-bento-collage.card size="large">
+				<x-bento-collage.image image_id="123" />
+				<x-bento-collage.content position="top">
+					<x-bento-collage.title title="Game Changing Ships" />
+					<x-bento-collage.description>
+						<p>We boast the most diverse fleet of small polar vessels, allowing us to navigate hard-to-reach places and provide an intimate onboard atmosphere.</p>
+					</x-bento-collage.description>
+					<x-bento-collage.cta text="View Our Ships" url="#" />
+				</x-bento-collage.content>
+			</x-bento-collage.card>
+		</x-bento-collage>
+
+		<x-bento-collage>
+			<x-bento-collage.card size="large">
+				<x-bento-collage.image image_id="123" />
+				<x-bento-collage.content position="bottom">
+					<x-bento-collage.title title="Game Changing Ships" />
+					<x-bento-collage.description>
+						<p>We boast the most diverse fleet of small polar vessels, allowing us to navigate hard-to-reach places and provide an intimate onboard atmosphere.</p>
+					</x-bento-collage.description>
+					<x-bento-collage.cta text="View Our Ships" url="#" />
+				</x-bento-collage.content>
+			</x-bento-collage.card>
+
+			<x-bento-collage.card size="small">
+				<x-bento-collage.image image_id="123" />
+				<x-bento-collage.content position="bottom">
+					<x-bento-collage.title title="Game Changing Ships" />
+					<x-bento-collage.description>
+						<p>We boast the most diverse fleet of small polar vessels, allowing us to navigate hard-to-reach places and provide an intimate onboard atmosphere.</p>
+					</x-bento-collage.description>
+					<x-bento-collage.cta text="View Our Ships" url="#" />
+				</x-bento-collage.content>
+			</x-bento-collage.card>
+
+			<x-bento-collage.card size="small">
+				<x-bento-collage.image image_id="123" />
+				<x-bento-collage.content position="bottom">
+					<x-bento-collage.title title="Game Changing Ships" />
+					<x-bento-collage.description>
+						<p>We boast the most diverse fleet of small polar vessels, allowing us to navigate hard-to-reach places and provide an intimate onboard atmosphere.</p>
+					</x-bento-collage.description>
+					<x-bento-collage.cta text="View Our Ships" url="#" />
+				</x-bento-collage.content>
+			</x-bento-collage.card>
+
+			<x-bento-collage.card size="large">
+				<x-bento-collage.image image_id="123" />
+				<x-bento-collage.content position="bottom">
+					<x-bento-collage.title title="Game Changing Ships" />
+					<x-bento-collage.description>
+						<p>We boast the most diverse fleet of small polar vessels, allowing us to navigate hard-to-reach places and provide an intimate onboard atmosphere.</p>
+					</x-bento-collage.description>
+					<x-bento-collage.cta text="View Our Ships" url="#" />
+				</x-bento-collage.content>
+			</x-bento-collage.card>
+		</x-bento-collage>
+
+		<x-bento-collage>
+			<x-bento-collage.card size="large">
+				<x-bento-collage.image image_id="123" />
+				<x-bento-collage.content position="bottom">
+					<x-bento-collage.title title="Game Changing Ships" />
+					<x-bento-collage.description>
+						<p>We boast the most diverse fleet of small polar vessels, allowing us to navigate hard-to-reach places and provide an intimate onboard atmosphere.</p>
+					</x-bento-collage.description>
+					<x-bento-collage.cta text="View Our Ships" url="#" />
+				</x-bento-collage.content>
+			</x-bento-collage.card>
+
+			<x-bento-collage.card size="small">
+				<x-bento-collage.image image_id="123" />
+				<x-bento-collage.content position="bottom">
+					<x-bento-collage.title title="Game Changing Ships" />
+					<x-bento-collage.description>
+						<p>We boast the most diverse fleet of small polar vessels, allowing us to navigate hard-to-reach places and provide an intimate onboard atmosphere.</p>
+					</x-bento-collage.description>
+					<x-bento-collage.cta text="View Our Ships" url="#" />
+				</x-bento-collage.content>
+			</x-bento-collage.card>
+
+			<x-bento-collage.card size="full">
+				<x-bento-collage.image image_id="123" />
+				<x-bento-collage.content position="bottom">
+					<x-bento-collage.title title="Game Changing Ships" />
+					<x-bento-collage.description>
+						<p>We boast the most diverse fleet of small polar vessels, allowing us to navigate hard-to-reach places and provide an intimate onboard atmosphere.</p>
+					</x-bento-collage.description>
+					<x-bento-collage.cta text="View Our Ships" url="#" />
+				</x-bento-collage.content>
+			</x-bento-collage.card>
+		</x-bento-collage>
+
+		<x-bento-collage>
+			<x-bento-collage.card size="medium">
+				<x-bento-collage.image image_id="123" />
+				<x-bento-collage.content position="bottom">
+					<x-bento-collage.title title="Game Changing Ships" />
+					<x-bento-collage.description>
+						<p>We boast the most diverse fleet of small polar vessels, allowing us to navigate hard-to-reach places and provide an intimate onboard atmosphere.</p>
+					</x-bento-collage.description>
+					<x-bento-collage.cta text="View Our Ships" url="#" />
+				</x-bento-collage.content>
+			</x-bento-collage.card>
+
+			<x-bento-collage.card size="medium">
+				<x-bento-collage.image image_id="123" />
+				<x-bento-collage.content position="top">
+					<x-bento-collage.title title="Game Changing Ships" />
+					<x-bento-collage.description>
+						<p>We boast the most diverse fleet of small polar vessels, allowing us to navigate hard-to-reach places and provide an intimate onboard atmosphere.</p>
+					</x-bento-collage.description>
+					<x-bento-collage.cta text="View Our Ships" url="#" />
+				</x-bento-collage.content>
+			</x-bento-collage.card>
+
+			<x-bento-collage.card size="medium">
+				<x-bento-collage.image image_id="123" />
+				<x-bento-collage.content position="top">
+					<x-bento-collage.title title="Game Changing Ships" />
+					<x-bento-collage.description>
+						<p>We boast the most diverse fleet of small polar vessels, allowing us to navigate hard-to-reach places and provide an intimate onboard atmosphere.</p>
+					</x-bento-collage.description>
+					<x-bento-collage.cta text="View Our Ships" url="#" />
+				</x-bento-collage.content>
+			</x-bento-collage.card>
+
+			<x-bento-collage.card size="medium">
+				<x-bento-collage.image image_id="123" />
+				<x-bento-collage.content position="top">
+					<x-bento-collage.title title="Game Changing Ships" />
+					<x-bento-collage.description>
+						<p>We boast the most diverse fleet of small polar vessels, allowing us to navigate hard-to-reach places and provide an intimate onboard atmosphere.</p>
+					</x-bento-collage.description>
+					<x-bento-collage.cta text="View Our Ships" url="#" />
+				</x-bento-collage.content>
+			</x-bento-collage.card>
+		</x-bento-collage>
+
+		<x-bento-collage>
+			<x-bento-collage.card size="large">
+				<x-bento-collage.image image_id="123" />
+				<x-bento-collage.content position="top">
+					<x-bento-collage.title title="Game Changing Ships" />
+					<x-bento-collage.description>
+						<p>We boast the most diverse fleet of small polar vessels, allowing us to navigate hard-to-reach places and provide an intimate onboard atmosphere.</p>
+					</x-bento-collage.description>
+					<x-bento-collage.cta text="View Our Ships" url="#" />
+				</x-bento-collage.content>
+			</x-bento-collage.card>
+
+			<x-bento-collage.card size="small">
+				<x-bento-collage.image image_id="123" />
+				<x-bento-collage.content position="top">
+					<x-bento-collage.title title="Game Changing Ships" />
+					<x-bento-collage.description>
+						<p>We boast the most diverse fleet of small polar vessels, allowing us to navigate hard-to-reach places and provide an intimate onboard atmosphere.</p>
+					</x-bento-collage.description>
+					<x-bento-collage.cta text="View Our Ships" url="#" />
+				</x-bento-collage.content>
+			</x-bento-collage.card>
+
+			<x-bento-collage.card size="small">
+				<x-bento-collage.image image_id="123" />
+				<x-bento-collage.content position="bottom">
+					<x-bento-collage.title title="Game Changing Ships" />
+					<x-bento-collage.description>
+						<p>We boast the most diverse fleet of small polar vessels, allowing us to navigate hard-to-reach places and provide an intimate onboard atmosphere.</p>
+					</x-bento-collage.description>
+					<x-bento-collage.cta text="View Our Ships" url="#" />
+				</x-bento-collage.content>
+			</x-bento-collage.card>
+
+			<x-bento-collage.card size="large">
+				<x-bento-collage.image image_id="123" />
+				<x-bento-collage.content position="top">
+					<x-bento-collage.title title="Game Changing Ships" />
+					<x-bento-collage.description>
+						<p>We boast the most diverse fleet of small polar vessels, allowing us to navigate hard-to-reach places and provide an intimate onboard atmosphere.</p>
+					</x-bento-collage.description>
+					<x-bento-collage.cta text="View Our Ships" url="#" />
+				</x-bento-collage.content>
+			</x-bento-collage.card>
+		</x-bento-collage>
+	</x-section>
+</x-component-demo>
+
 <x-component-demo :keys="[ 'logo-grid', 'feel-safe' ]">
 	<x-section :narrow="true">
 		<h3 style="text-align: center;">Feel safe with a globally accredited company</h3>
@@ -6937,17 +7189,6 @@
 				</x-featured-media-accordions.accordion>
 			</x-featured-media-accordions.accordions>
 		</x-featured-media-accordions>
-	</x-section>
-</x-component-demo>
-
-<x-component-demo :keys="[ 'dates-rates' ]">
-	@php
-		$dates_rates_filter_data = Quark\Theme\Search_Filters\get_filters_for_dates_rates();
-
-		$currency = Quark\Localization\get_current_currency();
-	@endphp
-	<x-section>
-		<x-parts.dates-rates :filter_data="$dates_rates_filter_data" :currency="$currency" />
 	</x-section>
 </x-component-demo>
 
