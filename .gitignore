@@ -62,3 +62,7 @@ wp-content/mu-plugins/wordpress-blade/
 wp-content/themes/*
 !wp-content/themes/quarkexpeditions/
 !wp-content/themes/quarkexpeditions/src/vendor/
+
+# --- Languages
+wp-content/languages/*
+!wp-content/languages/zh_CN.mo
