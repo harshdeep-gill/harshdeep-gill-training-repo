@@ -969,7 +969,7 @@ function get_included_transfer_package_details( int $post_id = 0, string $curren
 
 	// Offer Inclusion Text.
 	if ( ! empty( $itinerary['post_meta']['offer_inclusion_text'] ) ) {
-		$details['offer_inclusion_text'] = $itinerary['post_meta']['offer_inclusion_text'] ?? '';
+		$details['offer_inclusion_text'] = $itinerary['post_meta']['offer_inclusion_text'];
 	}
 
 	// Get included transfer package.
