@@ -100,6 +100,7 @@ import * as currencySwitcher from './currency-switcher';
 import * as searchHero from './search-hero';
 import * as heroDetailsCardSlider from './hero-details-card-slider';
 import * as instagramEmbed from './instagram-embed';
+import * as bentoCollage from './bento-collage';
 
 /**
  * Add blocks.
@@ -196,6 +197,7 @@ const blocks = [
 	searchHero,
 	heroDetailsCardSlider,
 	instagramEmbed,
+	bentoCollage,
 ];
 
 // Register blocks for ships.
