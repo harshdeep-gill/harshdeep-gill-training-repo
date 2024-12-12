@@ -19,7 +19,7 @@ async function yieldToMain() {
  *
  * @return {void}
  */
-function addEventListenerWithYieldToMain( element: HTMLElement, event: string, callback: () => void, useCapture = false ) {
+function addEventListenerWithYieldToMain( element: HTMLElement | Document, event: string, callback: () => void, options: boolean | AddEventListenerOptions = false ) {
 	if ( ! ( element instanceof HTMLElement ) || typeof callback !== 'function' ) {
 		throw new Error( 'Invalid argument' );
 	}
@@ -27,7 +27,7 @@ function addEventListenerWithYieldToMain( element: HTMLElement, event: string, c
 	element.addEventListener( event, async () => {
 		await yieldToMain();
 		callback();
-	}, useCapture );
+	}, options );
 }
 
 // add in window object
