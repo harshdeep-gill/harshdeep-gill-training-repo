@@ -3,8 +3,10 @@
  *
  * @return {Promise<void>}
  */
-async function yieldToMain() {
+async function yieldToMain(): Promise<void> {
+	// Return a promise.
 	return new Promise( ( resolve ) => {
+		// Set timeout to resolve.
 		setTimeout( resolve, 0 );
 	} );
 }
@@ -12,19 +14,22 @@ async function yieldToMain() {
 /**
  * Event listener abstract with yield to main thread.
  *
- * @param {HTMLElement} element
- * @param {string}      event
- * @param {Function}    callback
- * @param {boolean}     useCapture
- *
+ * @param {HTMLElement}                     element
+ * @param {string}                          event
+ * @param {Function}                        callback
+ * @param {boolean|AddEventListenerOptions} options
  * @return {void}
  */
-function addEventListenerWithYieldToMain( element: HTMLElement | Document, event: string, callback: () => void, options: boolean | AddEventListenerOptions = false ) {
+function addEventListenerWithYieldToMain( element: HTMLElement | Document, event: string, callback: () => void, options: boolean | AddEventListenerOptions = false ): void {
+	// Check if element is valid.
 	if ( ! ( element instanceof HTMLElement ) || typeof callback !== 'function' ) {
+		// Throw error.
 		throw new Error( 'Invalid argument' );
 	}
 
+	// Add event listener.
 	element.addEventListener( event, async () => {
+		// Yield to main thread.
 		await yieldToMain();
 		callback();
 	}, options );
