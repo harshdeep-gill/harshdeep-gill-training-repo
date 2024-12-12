@@ -230,7 +230,9 @@
 											</x-departure-cards.transfer_package>
 
 											<div class="product-options-cards__tooltip">
-												<span>{{ __( 'Inc. Transfer Package', 'qrk' ) }}</span>
+												<span>
+													{{ $card['transfer_package_details']['offer_inclusion_text'] ? $card['transfer_package_details']['offer_inclusion_text'] : __( 'Incl. Transfer Package', 'qrk' ) }}
+												</span>
 												<x-tooltip icon="info">
 													<h5>{{ $card['transfer_package_details']['title'] }}</h5>
 
