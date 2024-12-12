@@ -231,7 +231,7 @@
 
 											<div class="product-options-cards__tooltip">
 												<span>
-													{{ $card['transfer_package_details']['offer_inclusion_text'] ? $card['transfer_package_details']['offer_inclusion_text'] : __( 'Incl. Transfer Package', 'qrk' ) }}
+													{!! $card['transfer_package_details']['offer_inclusion_text'] ? $card['transfer_package_details']['offer_inclusion_text'] : __( 'Incl. Transfer Package', 'qrk' ) !!}
 												</span>
 												<x-tooltip icon="info">
 													<h5>{{ $card['transfer_package_details']['title'] }}</h5>
