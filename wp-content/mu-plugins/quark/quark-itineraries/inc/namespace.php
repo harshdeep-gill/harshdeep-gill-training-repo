@@ -945,10 +945,11 @@ function get_included_transfer_package_details( int $post_id = 0, string $curren
 	// get Itinerary.
 	$itinerary = get( $post_id );
 	$details   = [
-		'title'           => '',
-		'sets'            => [],
-		'price'           => 0,
-		'formatted_price' => '0',
+		'title'                => '',
+		'sets'                 => [],
+		'price'                => 0,
+		'formatted_price'      => '0',
+		'offer_inclusion_text' => '',
 	];
 
 	// Validate.
