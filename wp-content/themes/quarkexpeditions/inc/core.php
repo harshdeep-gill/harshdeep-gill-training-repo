@@ -21,6 +21,7 @@ function setup(): void {
 	add_filter( 'wp_resource_hints', __NAMESPACE__ . '\\resource_hints', 10, 2 );
 	add_filter( 'wp_kses_allowed_html', __NAMESPACE__ . '\\kses_custom_allowed_html', 10, 2 );
 	add_filter( 'template_include', __NAMESPACE__ . '\\remove_default_title_tag' );
+	add_filter( 'wp_img_tag_add_auto_sizes', '__return_false' );
 }
 
 /**
