@@ -34,7 +34,7 @@ const { ImageControl, Img, LinkControl } = gumponents.components;
 export default function Edit( { className, attributes, setAttributes }: BlockEditAttributes ) : JSX.Element {
 	// eslint-disable-next-line react-hooks/rules-of-hooks
 	const blocksProps = useBlockProps( {
-		className: classnames( className, 'bento-collage__card', 'color-context--dark', 'bento-collage-card--' + attributes.size ),
+		className: classnames( className, 'bento-collage__card', 'color-context--dark', 'bento-collage__card--' + attributes.size ),
 	} );
 
 	// Content classes.
