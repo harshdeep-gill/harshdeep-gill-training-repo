@@ -1,7 +1,7 @@
 /**
  * Global variables.
  */
-const { HTMLElement } = window;
+const { HTMLElement, addEventListenerWithYieldToMain } = window;
 
 /**
  * QuarkDialogCloseElement Class.
@@ -23,11 +23,17 @@ export class QuarkDialogCloseElement extends HTMLElement {
 		// Get the button inside.
 		this.button = this.querySelector( 'button' );
 
-		// Attach event listener.
-		this.button?.addEventListener( 'click', this.closeDialog.bind( this ) );
-
 		// Get the dialog element.
 		this.dialog = this.closest( 'quark-dialog dialog' );
+
+		// Validate.
+		if ( ! this.dialog || ! this.button ) {
+			// Dialog or button not found, bail.
+			return;
+		}
+
+		// Attach event listener.
+		addEventListenerWithYieldToMain( this.button, 'click', this.closeDialog.bind( this ) );
 	}
 
 	/**

@@ -46,4 +46,12 @@
 			display: block;
 		}
 	}
+
+	@media screen and (max-width: 1024px) {
+		--is-mobile: 1;
+	}
+
+	@media screen and (min-width: 1025px) {
+		--is-mobile: 0;
+	}
 }

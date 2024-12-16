@@ -8,6 +8,7 @@ const { HTMLElement } = window;
  */
 import { TPModalElement } from '@travelopia/web-components';
 import { QuarkModalOpenElement } from '../../modal/modal-open';
+import { throttle } from '../../../global/utility';
 
 /**
  * ExpeditionSearch Class.
@@ -38,20 +39,20 @@ export default class ExpeditionSearchSidebarFilters extends HTMLElement {
 
 			// Do we have a modal?
 			if ( this.linkedModal ) {
-				window.addEventListener( 'resize', () => {
+				window.addEventListener( 'resize', throttle( () => {
 					// Check the window width
 					if ( window.innerWidth > 1024 && this.linkedModal?.hasAttribute( 'open' ) ) {
 						this.linkedModal?.removeAttribute( 'open' );
 						document.body.classList.remove( 'prevent-scroll' );
 					}
-				} );
+				} ) );
 			}
 		}
 
 		// Check if we have search wrapper.
 		if ( this.searchWrapper && this.searchWrapper.length > 0 ) {
 			// Add Scroll event listener.
-			document.addEventListener( 'scroll', () => {
+			document.addEventListener( 'scroll', throttle( () => {
 				// Get end position of the search wrapper.
 				const searchWrapperEndPosition = this.searchWrapper[ 0 ].getBoundingClientRect().bottom;
 
@@ -64,7 +65,7 @@ export default class ExpeditionSearchSidebarFilters extends HTMLElement {
 				} else {
 					this.style.visibility = 'visible';
 				}
-			} );
+			} ) );
 		}
 
 		// Append body.

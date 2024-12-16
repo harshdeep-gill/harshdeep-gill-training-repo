@@ -12,6 +12,7 @@ export default class Tabs extends HTMLElement {
 	 */
 	private navigationWrapper: HTMLElement | null;
 	private tabsNavItems: NodeListOf<HTMLElement>;
+	private isMobile: boolean;
 
 	/**
 	 * Constructor.
@@ -23,6 +24,9 @@ export default class Tabs extends HTMLElement {
 		// Elements.
 		this.navigationWrapper = this.querySelector( '.tabs__nav' );
 		this.tabsNavItems = this.querySelectorAll( 'tp-tabs-nav-item' );
+
+		// Check if it's mobile view.
+		this.isMobile = this.checkIsMobile();
 
 		// Initialize event listeners.
 		this.tabsNavItems?.forEach( ( tabItem: HTMLElement ): void => {
@@ -37,9 +41,9 @@ export default class Tabs extends HTMLElement {
 	/**
 	 * Check if it's mobile view.
 	 */
-	isMobile(): boolean {
-		// Return true if screen width is 1024px or less.
-		return window.innerWidth <= 1024;
+	checkIsMobile(): boolean {
+		// Check if the custom property is set to 1.
+		return getComputedStyle( this ).getPropertyValue( '--is-mobile' ) === '1';
 	}
 
 	/**
@@ -48,9 +52,9 @@ export default class Tabs extends HTMLElement {
 	 * @param {HTMLElement} item The item to scroll into view.
 	 * @return {void}
 	 */
-	scrollToCenter( item: HTMLElement ): void {
+	async scrollToCenter( item: HTMLElement ): Promise<void> {
 		// Check for mobile view only.
-		if ( ! this.isMobile() ) {
+		if ( ! this.isMobile ) {
 			// No, bail early.
 			return;
 		}
