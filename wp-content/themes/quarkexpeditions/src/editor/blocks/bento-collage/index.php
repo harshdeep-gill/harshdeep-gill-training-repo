@@ -54,16 +54,16 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 
 		// Build collage items with attributes.
 		$component_attributes['items'][] = [
-			'size'             => $inner_block->attributes['size'],
-			'image_id'         => $inner_block->attributes['image']['id'],
-			'title'            => $inner_block->attributes['title'],
-			'description'      => $inner_block->attributes['description'],
-			'content_position' => $inner_block->attributes['contentPosition'],
+			'size'             => $inner_block->attributes['size'] ?? 'medium',
+			'image_id'         => $inner_block->attributes['image']['id'] ?? 0,
+			'title'            => $inner_block->attributes['title'] ?? '',
+			'description'      => $inner_block->attributes['description'] ?? '',
+			'content_position' => $inner_block->attributes['contentPosition'] ?? 'bottom',
 			'cta'              => [
-				'text'   => $inner_block->attributes['ctaText'],
-				'url'    => $inner_block->attributes['url'],
-				'target' => ! empty( $inner_block->attributes['url']['newWindow'] ) ? '_blank' : '',
-			]
+				'text'   => $inner_block->attributes['ctaText'] ?? '',
+				'url'    => $inner_block->attributes['link']['url'] ?? '',
+				'target' => empty( $inner_block->attributes['link']['newWindow'] ) ? '' : '_blank',
+			],
 		];
 	}
 
