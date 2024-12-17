@@ -188,6 +188,8 @@ define( 'QUARK_GITHUB_ACTIONS_REF', env( 'QUARK_GITHUB_ACTIONS_REF' ) );
 // China Site blog ID.
 define( 'QUARK_CHINA_SITE_BLOG_ID', env( 'QUARK_CHINA_SITE_BLOG_ID' ) );
 
+// DeepL.
+define( 'TRAVELOPIA_TRANSLATION_DEEPL_AUTH_KEY', env( 'TRAVELOPIA_TRANSLATION_DEEPL_AUTH_KEY' ) );
 /**
  * Multisite.
  */
