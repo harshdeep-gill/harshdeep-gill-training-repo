@@ -15,27 +15,27 @@
 		<x-dates-rates.filters.chips>
 
 			@if ( ! empty( $filter_data['seasons'] ) )
-				<x-dates-rates.filters.chip drawer_id="dates-rates-filters" title="Region & Season" accordion_id="filters-accordion-seasons" />
+				<x-dates-rates.filters.chip drawer_id="dates-rates-filters" title="{{ __( 'Region & Season', 'qrk' ) }}" accordion_id="filters-accordion-seasons" />
 			@endif
 
 			@if ( ! empty( $filter_data['expeditions'] ) )
-				<x-dates-rates.filters.chip drawer_id="dates-rates-filters" title="Expedition" accordion_id="filters-accordion-expeditions" />
+				<x-dates-rates.filters.chip drawer_id="dates-rates-filters" title="{{ __( 'Expedition', 'qrk' ) }}" accordion_id="filters-accordion-expeditions" />
 			@endif
 
 			@if ( ! empty( $filter_data['adventure_options'] ) )
-				<x-dates-rates.filters.chip drawer_id="dates-rates-filters" title="Adventure Options" accordion_id="filters-accordion-adventure-options" />
+				<x-dates-rates.filters.chip drawer_id="dates-rates-filters" title="{{ __( 'Adventure Options', 'qrk' ) }}" accordion_id="filters-accordion-adventure-options" />
 			@endif
 
 			@if ( ! empty( $filter_data['months'] ) )
-				<x-dates-rates.filters.chip drawer_id="dates-rates-filters" title="Departure Month" accordion_id="filters-accordion-months" />
+				<x-dates-rates.filters.chip drawer_id="dates-rates-filters" title="{{ __( 'Departure Month', 'qrk' ) }}" accordion_id="filters-accordion-months" />
 			@endif
 
 			@if ( ! empty( $filter_data['durations'] ) )
-				<x-dates-rates.filters.chip drawer_id="dates-rates-filters" title="Duration" accordion_id="filters-accordion-durations" />
+				<x-dates-rates.filters.chip drawer_id="dates-rates-filters" title="{{ __( 'Duration', 'qrk' ) }}" accordion_id="filters-accordion-durations" />
 			@endif
 
 			@if ( ! empty( $filter_data['ships'] ) )
-				<x-dates-rates.filters.chip drawer_id="dates-rates-filters" title="Ship" accordion_id="filters-accordion-ships" />
+				<x-dates-rates.filters.chip drawer_id="dates-rates-filters" title="{{ __( 'Ship', 'qrk' ) }}" accordion_id="filters-accordion-ships" />
 			@endif
 
 		</x-dates-rates.filters.chips>

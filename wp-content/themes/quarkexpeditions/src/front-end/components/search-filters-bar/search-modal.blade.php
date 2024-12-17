@@ -29,7 +29,7 @@
 					<x-search-filters-bar.destinations />
 					<x-search-filters-bar.departure-months />
 				</div>
-				<x-search-filters-bar.search-button text="Search Expeditions" />
+				<x-search-filters-bar.search-button text="{{ __( 'Search Expeditions', 'qrk' ) }}" />
 			</quark-search-filters-bar>
 
 			{{-- Filter options --}}

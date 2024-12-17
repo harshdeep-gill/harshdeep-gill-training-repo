@@ -40,13 +40,13 @@
 						<x-form.row>
 							<tp-toggle-attribute trigger="select" target=".form-contact-us__existing-booking-info" value="existing_booking" attribute="required" class="form-contact-us__inquiry-type">
 								<x-form.field :validation="[ 'required' ]">
-									<x-form.select label="Inquiry Type" name="fields[Inquiry_Type__c]">
+									<x-form.select :label="__( 'Inquiry Type', 'qrk' )" name="fields[Inquiry_Type__c]">
 										<x-form.option value="">- Select -</x-form.option>
-										<x-form.option value="trip_information" label="Trip Information">Trip Information</x-form.option>
-										<x-form.option value="new_booking" label="A New Booking">A New Booking</x-form.option>
-										<x-form.option value="existing_booking" label="An Existing Booking">An Existing Booking</x-form.option>
-										<x-form.option value="subscription" label="Mailing List Subscription">Mailing List Subscription</x-form.option>
-										<x-form.option value="general" label="Other">Other</x-form.option>
+										<x-form.option value="trip_information" :label="__( 'Trip Information', 'qrk' )">{!! __( 'Trip Information', 'qrk' ) !!}</x-form.option>
+										<x-form.option value="new_booking" :label="__( 'A New Booking', 'qrk' )">{!! __( 'A New Booking', 'qrk' ) !!}</x-form.option>
+										<x-form.option value="existing_booking" :label="__( 'An Existing Booking', 'qrk' )">{!! __( 'An Existing Booking', 'qrk' ) !!}</x-form.option>
+										<x-form.option value="subscription" :label="__( 'Mailing List Subscription', 'qrk' )">{!! __( 'Mailing List Subscription', 'qrk' ) !!}</x-form.option>
+										<x-form.option value="general" :label="__( 'Other', 'qrk' )">{!! __( 'Other', 'qrk' ) !!}</x-form.option>
 									</x-form.select>
 								</x-form.field>
 							</tp-toggle-attribute>
@@ -55,47 +55,47 @@
 					<x-form.row>
 						<tp-toggle-attribute trigger="select" target=".form-contact-us__existing-booking-agency-info" attribute="required">
 							<x-form.field class="form-contact-us__existing-booking-info">
-								<x-form.select label="How did you book?" name="fields[Booking_Type__c]">
-									<x-form.option value="">- Select -</x-form.option>
-									<x-form.option value="direct" label="I booked with Quark Expeditions">I booked with Quark Expeditions</x-form.option>
-									<x-form.option value="agent" label="I booked with a Travel Agent or Third Party">I booked with a Travel Agent or Third Party</x-form.option>
+								<x-form.select :label="__( 'How did you book?', 'qrk' )" name="fields[Booking_Type__c]">
+									<x-form.option value="">{!! __( '- Select -', 'qrk' ) !!}</x-form.option>
+									<x-form.option value="direct" :label="__( 'I booked with Quark Expeditions', 'qrk' )">{!! __( 'I booked with Quark Expeditions', 'qrk' ) !!}</x-form.option>
+									<x-form.option value="agent" :label="__( 'I booked with a Travel Agent or Third Party', 'qrk' )">{!! __( 'I booked with a Travel Agent or Third Party', 'qrk' ) !!}</x-form.option>
 								</x-form.select>
 							</x-form.field>
 						</tp-toggle-attribute>
 					</x-form.row>
 					<x-form.row>
 						<x-form.field :validation="[ 'no-empty-spaces' ]" class="form-contact-us__existing-booking-agency-info" data-toggle-value="direct,agent">
-							<x-form.input type="text" label="Reservation Number" placeholder="Enter Reservation Number" name="fields[Reservation_Number__c]" />
+							<x-form.input type="text" :label="__( 'Reservation Number', 'qrk' )" :placeholder="__( 'Enter Reservation Number', 'qrk' )" name="fields[Reservation_Number__c]" />
 						</x-form.field>
 					</x-form.row>
 					<x-form.row>
 						<x-form.field :validation="[ 'no-empty-spaces' ]" class="form-contact-us__existing-booking-agency-info" data-toggle-value="agent">
-							<x-form.input type="text" label="Agency Name" placeholder="Enter Agency Name" name="fields[Agency_Name__c]" />
+							<x-form.input type="text" :label="__( 'Agency Name', 'qrk' )" :placeholder="__( 'Enter Agency Name', 'qrk' )" name="fields[Agency_Name__c]" />
 						</x-form.field>
 					</x-form.row>
 					<x-form.row>
 						<x-form.field :validation="[ 'no-empty-spaces' ]" class="form-contact-us__existing-booking-agency-info" data-toggle-value="agent">
-							<x-form.input type="text" label="Agent Name" placeholder="Enter Agent Name" name="fields[Agency_Contact_Name__c]" />
+							<x-form.input type="text" :label="__( 'Agent Name', 'qrk' )" :placeholder="__( 'Enter Agent Name', 'qrk' )" name="fields[Agency_Contact_Name__c]" />
 						</x-form.field>
 					</x-form.row>
 					<x-form.row>
 						<x-form.field :validation="[ 'required', 'no-empty-spaces' ]">
-							<x-form.input type="text" label="First Name" placeholder="Enter First Name" name="fields[FirstName__c]" />
+							<x-form.input type="text" :label="__( 'First Name', 'qrk' )" :placeholder="__( 'Enter First Name', 'qrk' )" name="fields[FirstName__c]" />
 						</x-form.field>
 					</x-form.row>
 					<x-form.row>
 						<x-form.field :validation="[ 'required', 'no-empty-spaces' ]">
-							<x-form.input type="text" label="Last Name" placeholder="Enter Last Name" name="fields[LastName__c]" />
+							<x-form.input type="text" :label="__( 'Last Name', 'qrk' )" :placeholder="__( 'Enter Last Name', 'qrk' )" name="fields[LastName__c]" />
 						</x-form.field>
 					</x-form.row>
 					<x-form.row>
 						<x-form.field :validation="[ 'required', 'email' ]">
-							<x-form.input type="email" label="Email Address" placeholder="Enter Email Address" name="fields[Email__c]" />
+							<x-form.input type="email" :label="__( 'Email Address', 'qrk' )" :placeholder="__( 'Enter Email Address', 'qrk' )" name="fields[Email__c]" />
 						</x-form.field>
 					</x-form.row>
 					<x-form.row>
 						<x-form.field :validation="[ 'required' ]">
-							<x-form.input type="tel" label="Phone Number" placeholder="Enter Phone Number" name="fields[Phone__c]" />
+							<x-form.input type="tel" :label="__( 'Phone Number', 'qrk' )" :placeholder="__( 'Enter Phone Number', 'qrk' )" name="fields[Phone__c]" />
 						</x-form.field>
 					</x-form.row>
 					<x-form.row>
@@ -109,24 +109,24 @@
 					</x-form.row>
 					<x-form.row>
 						<x-form.field :validation="[ 'required' ]">
-							<x-form.textarea label="Comments" placeholder="Enter your comments" name="fields[Comments__c]" />
+							<x-form.textarea :label="__( 'Comments', 'qrk' )" :placeholder="__( 'Enter your comments', 'qrk' )" name="fields[Comments__c]" />
 						</x-form.field>
 					</x-form.row>
 					<x-form.row>
 						<x-form.field-group>
-							<x-form.checkbox name="fields[Subscribe_to_Newsletter__c]" label="I would like to receive news and promotions from Quark Expeditions." />
+							<x-form.checkbox name="fields[Subscribe_to_Newsletter__c]" :label="__( 'I would like to receive news and promotions from Quark Expeditions.', 'qrk' )" />
 						</x-form.field-group>
 					</x-form.row>
 					<x-form.row>
 						<x-form.field-group :validation="[ 'checkbox-field-required' ]" class="form-contact-us__privacy-statement">
-							<x-form.checkbox name="fields[Privacy_Policy_Agreement__c]" label="I have read and agree to the privacy statement." />
+							<x-form.checkbox name="fields[Privacy_Policy_Agreement__c]" :label="__( 'I have read and agree to the privacy statement.', 'qrk' )" />
 						</x-form.field-group>
 					</x-form.row>
 				</div>
 			</div>
 
 			<x-form.buttons>
-				<x-form.submit size="big" color="black">Submit</x-form.submit>
+				<x-form.submit size="big" color="black">{!! __( 'Submit', 'qrk') !!}</x-form.submit>
 			</x-form.buttons>
 		</x-form>
 	</quark-form-contact-us>

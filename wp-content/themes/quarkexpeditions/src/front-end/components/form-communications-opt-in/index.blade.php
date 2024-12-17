@@ -32,23 +32,23 @@
 		<div class="form-communications-opt-in__form">
 			<h3 class="form-communications-opt-in__title">{{ __( 'Register Your Email Now', 'qrk' ) }}</h3>
 			<p class="form-communications-opt-in__instructions">
-				<x-escape content="In addition to your photographic journal, voyage video, Captain’s log, bios, and daily itineraries you will receive an exciting perk for you or your friends plus other future offers." />
+				<x-escape :content="__( 'In addition to your photographic journal, voyage video, Captain’s log, bios, and daily itineraries you will receive an exciting perk for you or your friends plus other future offers.', 'qrk' )" />
 			</p>
 
 
 			<x-form.row>
 				<x-form.field :validation="[ 'required', 'no-empty-spaces' ]">
-					<x-form.input type="text" label="First Name" placeholder="Enter First Name" name="fields[First_Name__c]" />
+					<x-form.input type="text" :label="__( 'First Name', 'qrk' )" :placeholder="__( 'Enter First Name', 'qrk' )" name="fields[First_Name__c]" />
 				</x-form.field>
 			</x-form.row>
 			<x-form.row>
 				<x-form.field :validation="[ 'required', 'no-empty-spaces' ]">
-					<x-form.input type="text" label="Last Name" placeholder="Enter Last Name" name="fields[Last_Name__c]" />
+					<x-form.input type="text" :label="__( 'Last Name', 'qrk' )" :placeholder="__( 'Enter Last Name', 'qrk' )" name="fields[Last_Name__c]" />
 				</x-form.field>
 			</x-form.row>
 			<x-form.row>
 				<x-form.field :validation="[ 'required', 'email' ]">
-					<x-form.input type="email" label="Email" placeholder="Enter Email" name="fields[Email__c]" />
+					<x-form.input type="email" :label="__( 'Email', 'qrk' )" :placeholder="__( 'Enter Email', 'qrk' )" name="fields[Email__c]" />
 				</x-form.field>
 			</x-form.row>
 			<x-form.row>
@@ -57,7 +57,7 @@
 		</div>
 
 		<x-form.buttons>
-			<x-form.submit size="big" color="black">Submit</x-form.submit>
+			<x-form.submit size="big" color="black">{{ __( 'Submit', 'qrk' ) }}</x-form.submit>
 		</x-form.buttons>
 	</div>
 </x-form>

@@ -26,7 +26,7 @@
 					</x-listing-cards.description>
 				@endif
 				<x-listing-cards.cta>
-					<x-button :href="$card['permalink'] ?? ''" size="big" color="black">Read More</x-button>
+					<x-button :href="$card['permalink'] ?? ''" size="big" color="black">{!! __( 'Read More', 'qrk' ) !!}</x-button>
 				</x-listing-cards.cta>
 			</x-listing-cards.card>
 		@endforeach

@@ -129,11 +129,11 @@
 
 					<x-form.row>
 						<x-form.field :validation="[ 'required', 'email' ]">
-							<x-form.input type="email" label="Email" placeholder="Enter Email" name="fields[Email__c]" />
+							<x-form.input type="email" label="Email" placeholder="{{ __( 'Enter Email', 'qrk' ) }}" name="fields[Email__c]" />
 						</x-form.field>
 
 						<x-form.field :validation="[ 'required', 'phone-field-validation' ]">
-							<x-form.input type="tel" maxlength="20" label="{{ __( 'Phone Number', 'qrk' ) }}" placeholder="eg. (123) 456 7890" name="fields[Phone__c]" />
+							<x-form.input type="tel" maxlength="20" label="{{ __( 'Phone Number', 'qrk' ) }}" placeholder="{{ __( 'eg. (123) 456 7890', 'qrk' ) }}" name="fields[Phone__c]" />
 						</x-form.field>
 					</x-form.row>
 

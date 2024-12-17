@@ -1,7 +1,7 @@
 @props( [
-	'title' => '',
-	'author'       => '',
-	'rating'       => '',
+	'title'  => '',
+	'author' => '',
+	'rating' => '',
 ] )
 
 <tp-slider-slide class="reviews-carousel__slide">

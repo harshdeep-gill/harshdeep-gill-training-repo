@@ -19,8 +19,8 @@
 
 <div type="button" @class( $classes )>
 	<div class="search-filters-bar__modal-open-button-content">
-		<div class="search-filters-bar__modal-open-button-label body-small">{{ __( $label, 'qrk' ) }}</div>
-		<div class="search-filters-bar__modal-open-button-placeholder">{{ __( $placeholder, 'qrk' ) }}</div>
+		<div class="search-filters-bar__modal-open-button-label body-small"><x-content :content="$label" /></div>
+		<div class="search-filters-bar__modal-open-button-placeholder"><x-content :content="$placeholder" /></div>
 	</div>
 	<div class="search-filters-bar__modal-open-button-icon">
 		<x-svg name="chevron-left" />

@@ -47,7 +47,7 @@
 			@if ( ! empty( $card['transfer_package'] ) )
 				<x-product-cards.transfer_package
 					drawer_id="transfer-package-{{ $loop->index }}"
-					drawer_title="{!! __( 'Mandatory Transfer package', 'qrk' ) !!}"
+					:drawer_title="__( 'Mandatory Transfer package', 'qrk' )"
 					label="{!! $card['transfer_package']['offer_inclusion_text'] !!}"
 				>
 					<strong>{!! $card['transfer_package']['title'] !!}</strong>
@@ -63,7 +63,7 @@
 					@endphp
 					<strong> {!! $price !!}</strong>
 
-				</x-product-cards.transfer-package>
+				</x-product-cards.transfer_package>
 			@endif
 		</x-product-cards.card>
 	@endforeach
