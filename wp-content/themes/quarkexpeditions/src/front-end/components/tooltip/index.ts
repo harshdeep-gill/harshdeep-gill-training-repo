@@ -38,10 +38,17 @@ export class Tooltip extends HTMLElement {
 		// Events
 		this.tooltipPopoverElement?.addEventListener( 'toggle', this.handleTooltipToggled.bind( this ) );
 		this.tooltipPopoverElement?.addEventListener( 'beforetoggle', this.handleBeforeToggled.bind( this ) );
-		this.addEventListener( 'mouseenter', () => this.tooltipPopoverElement?.showPopover() );
-		this.addEventListener( 'mouseleave', () => {
+
+		// Setup pointer events. We only need to do this in case of a mouse. Touch will work without it.
+		this.addEventListener( 'pointerenter', ( evt: PointerEvent ) => {
+			// Check if it was a mouse and proceed accordingly.
+			if ( 'mouse' === evt.pointerType && ! this.tooltipPopoverElement?.matches( ':popover-open' ) ) {
+				this.tooltipPopoverElement?.showPopover();
+			}
+		} );
+		this.addEventListener( 'pointerleave', ( evt: PointerEvent ) => {
 			// Check and hide popover.
-			if ( this.tooltipPopoverElement?.matches( ':popover-open' ) ) {
+			if ( 'mouse' === evt.pointerType && this.tooltipPopoverElement?.matches( ':popover-open' ) ) {
 				this.tooltipPopoverElement?.hidePopover();
 			}
 		} );

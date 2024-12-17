@@ -70,7 +70,7 @@
 								@else
 									@foreach ( $field['options'] as $option )
 										<x-form.option
-											value="{{ $option['value'] ?? '' }}"
+											value="{!! $option['value'] ?? '' !!}"
 											label="{{ $option['text'] ?? '' }}"
 										>
 											{{ $option['text'] ?? '' }}
@@ -103,7 +103,7 @@
 								@else
 									@foreach ( $field['options'] as $option )
 										<x-form.option
-											value="{{ $option['value'] ?? '' }}"
+											value="{!! $option['value'] ?? '' !!}"
 											label="{{ $option['text'] ?? '' }}"
 										>
 											{{ $option['text'] ?? '' }}
@@ -130,7 +130,7 @@
 								@else
 									@foreach ( $field['options'] as $option )
 										<x-form.option
-											value="{{ $option['value'] ?? '' }}"
+											value="{!! $option['value'] ?? '' !!}"
 											label="{{ $option['text'] ?? '' }}"
 										>
 											{{ $option['text'] ?? '' }}
@@ -165,7 +165,7 @@
 								@else
 									@foreach ( $field['options'] as $option )
 										<x-form.option
-											value="{{ $option['value'] ?? '' }}"
+											value="{!! $option['value'] ?? '' !!}"
 											label="{{ $option['text'] ?? '' }}"
 										>
 											{{ $option['text'] ?? '' }}
@@ -187,7 +187,7 @@
 								@if ( ! empty( $field['options'] ) )
 									@foreach ( $field['options'] as $option )
 										<x-form.option
-											value="{{ $option['value'] ?? '' }}"
+											value="{!! $option['value'] ?? '' !!}"
 											label="{{ $option['text'] ?? '' }}"
 										>
 											{{ $option['text'] ?? '' }}
