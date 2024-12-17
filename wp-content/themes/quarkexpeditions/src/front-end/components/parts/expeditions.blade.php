@@ -48,6 +48,7 @@
 				<x-product-cards.transfer_package
 					drawer_id="transfer-package-{{ $loop->index }}"
 					drawer_title="{!! __( 'Mandatory Transfer package', 'qrk' ) !!}"
+					label="{!! $card['transfer_package']['offer_inclusion_text'] !!}"
 				>
 					<strong>{!! $card['transfer_package']['title'] !!}</strong>
 
