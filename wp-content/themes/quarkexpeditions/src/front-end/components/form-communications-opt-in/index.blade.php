@@ -20,6 +20,7 @@
 	@class( $classes )
 	marketing_fields=false
 	webform_url=false
+	ga_client_id=false
 >
    {{--
 		Need to update this input field ( From line: 29) in future as we are not sure about the value for this field.

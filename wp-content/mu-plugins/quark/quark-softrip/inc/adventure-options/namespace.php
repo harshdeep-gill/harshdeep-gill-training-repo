@@ -265,12 +265,20 @@ function format_adventure_option_data( array $raw_adventure_option = [], int $de
 		return [];
 	}
 
+	// Spaces available.
+	$spaces_available = intval( $raw_adventure_option['spacesAvailable'] ); // phpcs:ignore Travelopia.PHP.PreferAbsintOverIntval.UseAbsInt
+
+	// Ensure spaces available is not negative.
+	if ( $spaces_available < 0 ) {
+		$spaces_available = 0;
+	}
+
 	// Initialize formatted data.
 	$formatted_data = [
 		'softrip_option_id'        => sanitize_text_field( strval( $raw_adventure_option['id'] ) ),
 		'departure_post_id'        => $departure_post_id,
 		'softrip_package_code'     => '',
-		'spaces_available'         => absint( $raw_adventure_option['spacesAvailable'] ),
+		'spaces_available'         => $spaces_available,
 		'service_ids'              => '',
 		'adventure_option_term_id' => 0,
 		'price_per_person_usd'     => 0,

@@ -108,7 +108,7 @@
 									<strong>{{ __( 'Brochure Price', 'qrk' ) }}</strong>
 
 									@if ( !empty( $card['transfer_package_details'] ) && !empty( $card['transfer_package_details']['title'] ) )
-										({{ __( 'Incl. Transfer Package', 'qrk' ) }})
+										{!! $card['transfer_package_details']['offer_inclusion_text'] ? $card['transfer_package_details']['offer_inclusion_text'] : __( 'Incl. Transfer Package', 'qrk' ) !!}
 										<x-tooltip icon="info">
 											<h5>{{ $card['transfer_package_details']['title'] }}</h5>
 
