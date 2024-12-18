@@ -39,7 +39,6 @@ export default function Edit( { className }: BlockEditAttributes ): JSX.Element 
 		}
 	);
 
-
 	// Return the block's markup.
 	return (
 		<ul { ...innerBlockProps } />
