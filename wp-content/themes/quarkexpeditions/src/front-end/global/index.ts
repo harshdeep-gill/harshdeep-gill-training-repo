@@ -41,7 +41,7 @@ declare global {
 			default_phone_number?: string; // eslint-disable-line
 		};
 		yieldToMain: () => Promise<void>;
-		addEventListenerWithYieldToMain: ( element: HTMLElement, event: string, callback: () => void, useCapture?: boolean ) => void;
+		addEventListenerWithYieldToMain: ( element: HTMLElement, event: string, callback: () => void, options: boolean | AddEventListenerOptions ) => void;
 	}
 }
 

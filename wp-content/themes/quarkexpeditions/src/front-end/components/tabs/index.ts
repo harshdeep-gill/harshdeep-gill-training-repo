@@ -25,6 +25,7 @@ export default class Tabs extends HTMLElement {
 		this.navigationWrapper = this.querySelector( '.tabs__nav' );
 		this.tabsNavItems = this.querySelectorAll( 'tp-tabs-nav-item' );
 
+		// Check if mobile.
 		this.isMobile = window.innerWidth <= 1024;
 
 		// Initialize event listeners.

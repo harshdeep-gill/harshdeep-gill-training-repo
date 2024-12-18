@@ -14,10 +14,10 @@ async function yieldToMain(): Promise<void> {
 /**
  * Event listener abstract with yield to main thread.
  *
- * @param {HTMLElement}                     element
- * @param {string}                          event
- * @param {Function}                        callback
- * @param {boolean|AddEventListenerOptions} options
+ * @param {HTMLElement} element
+ * @param {string}      event
+ * @param {Function}    callback
+ * @param {boolean}     options
  * @return {void}
  */
 function addEventListenerWithYieldToMain( element: HTMLElement | Document, event: string, callback: () => void, options: boolean | AddEventListenerOptions = false ): void {
