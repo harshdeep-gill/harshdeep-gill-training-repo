@@ -34,6 +34,8 @@ use function Quark\Leads\get_request_a_quote_url;
 use function Quark\Localization\get_currencies;
 
 use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
+use const Quark\CabinCategories\AVAILABLE_STATUS;
+use const Quark\CabinCategories\SOLD_OUT_STATUS;
 use const Quark\Expeditions\EXPEDITION_CATEGORY_TAXONOMY;
 use const Quark\Localization\DEFAULT_CURRENCY;
 
@@ -572,6 +574,7 @@ function get_promotion_tags( int $post_id = 0 ): array {
  *     paid_adventure_options: string[],
  *     lowest_price: array<string, string>,
  *     request_a_quote_url: string,
+ *     departure_status: string,
  *     transfer_package_details: array{
  *       title: string,
  *       sets: string[],
@@ -691,6 +694,12 @@ function get_card_data( int $departure_id = 0, string $currency = DEFAULT_CURREN
 		}
 	}
 
+	// Get cabins.
+	$cabins = get_cabin_details_by_departure( $departure_id, $currency );
+
+	// Departure status.
+	$departure_status = get_departure_availability_status( $departure_id, $cabins );
+
 	// Prepare the departure card details.
 	$data = [
 		'departure_id'             => $departure_id,
@@ -709,10 +718,11 @@ function get_card_data( int $departure_id = 0, string $currency = DEFAULT_CURREN
 		'promotion_tags'           => get_promotion_tags( $departure_id ),
 		'ship_name'                => $ship_name,
 		'banner_details'           => get_policy_banner_details( $itinerary_id ),
-		'cabins'                   => get_cabin_details_by_departure( $departure_id, $currency ),
+		'cabins'                   => SOLD_OUT_STATUS === $departure_status ? [] : $cabins,
 		'promotion_banner'         => get_discount_label( $lowest_price['original'], $lowest_price['discounted'] ),
 		'promotions'               => get_promotions_description( $departure_id ),
 		'request_a_quote_url'      => get_request_a_quote_url( $departure_id ),
+		'departure_status'         => $departure_status,
 	];
 
 	// Set cache and return data.
@@ -794,6 +804,7 @@ function get_start_end_departure_date( int $post_id = 0 ): string {
  *      paid_adventure_options: string[],
  *      lowest_price: array<string, string>,
  *      request_a_quote_url: string,
+ *      departure_status: string,
  *      transfer_package_details: array{
  *        title: string,
  *        sets: array<string>,
@@ -1318,4 +1329,47 @@ function get_promotions_description( int $departure_id = 0 ): array {
 
 	// Return promo descriptions.
 	return $promo_descriptions;
+}
+
+/**
+ * Get Departure Availability Status.
+ *
+ * @param int          $departure_id Departure ID.
+ * @param mixed[]|null $cabins Cabin details.
+ *
+ * @return string
+ */
+function get_departure_availability_status( int $departure_id = 0, array|null $cabins = null ): string {
+	// If cabins are not provided, get them.
+	if ( ! is_array( $cabins ) ) {
+		$cabins = get_cabin_details_by_departure( $departure_id );
+	}
+
+	// Check for cabins.
+	if ( empty( $cabins ) ) {
+		return SOLD_OUT_STATUS;
+	}
+
+	// Initialize departure availability status.
+	$departure_availability_status = SOLD_OUT_STATUS;
+
+	// Get Departure CTA Button status.
+	foreach ( $cabins as $cabin ) {
+		// Check for availability status.
+		if ( ! is_array( $cabin ) || empty( $cabin['specifications'] ) || empty( $cabin['specifications']['availability_status'] ) ) {
+			continue;
+		}
+
+		// Check for available status.
+		if ( SOLD_OUT_STATUS !== $cabin['specifications']['availability_status'] ) {
+			// Set status to Available.
+			$departure_availability_status = AVAILABLE_STATUS;
+
+			// Break the loop.
+			break;
+		}
+	}
+
+	// Return.
+	return $departure_availability_status;
 }

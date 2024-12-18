@@ -224,7 +224,7 @@
 
 		&--color-black:hover,
 		&--outline:not(:hover) {
-			background-color: transparent;
+			background-color: var(--color-black);
 			border-color: var(--color-white);
 			color: var(--color-white);
 
