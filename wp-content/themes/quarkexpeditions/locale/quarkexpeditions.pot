@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Quark Expeditions\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-17 19:29+0530\n"
+"POT-Creation-Date: 2024-12-18 17:59+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Travelopia Team <noreply@enchantingtravels.com>\n"
 "Language-Team: Travelopia Team\n"
@@ -46,21 +46,6 @@ msgstr ""
 msgid "Please Call"
 msgstr ""
 
-#: mu-plugins/quark/quark-cache/inc/edge/class-stream-connector.php:39
-#: mu-plugins/quark/quark-cache/inc/edge/class-stream-connector.php:50
-msgid "Edge Cache"
-msgstr ""
-
-#: mu-plugins/quark/quark-cache/inc/edge/class-stream-connector.php:62
-msgid "Flush & Warm up"
-msgstr ""
-
-#. translators: 1: Time taken, 2: Pricing pages only flag.
-#: mu-plugins/quark/quark-cache/inc/edge/class-stream-connector.php:88
-#, php-format
-msgid "Edge cache flushed and warmed in %1$s seconds. Pricing pages only: %2$s"
-msgstr ""
-
 #: mu-plugins/quark/quark-core/inc/namespace.php:569
 #: themes/quarkexpeditions/dist/blade/1fae2d694ca3af09090716f41a614458.php:4
 #: themes/quarkexpeditions/dist/blade/1fae2d694ca3af09090716f41a614458.php:11
@@ -82,143 +67,20 @@ msgstr ""
 msgid "%1$s - Offer Code %2$s"
 msgstr ""
 
-#: mu-plugins/quark/quark-ingestor/inc/class-stream-connector.php:46
-msgid "Ingestor"
-msgstr ""
-
-#: mu-plugins/quark/quark-ingestor/inc/class-stream-connector.php:57
-msgid "Ingestor Push"
-msgstr ""
-
-#: mu-plugins/quark/quark-ingestor/inc/class-stream-connector.php:69
-msgid "Push Initiated"
-msgstr ""
-
-#: mu-plugins/quark/quark-ingestor/inc/class-stream-connector.php:70
-msgid "Push Completed"
-msgstr ""
-
-#: mu-plugins/quark/quark-ingestor/inc/class-stream-connector.php:71
-msgid "Push Error"
-msgstr ""
-
-#: mu-plugins/quark/quark-ingestor/inc/class-stream-connector.php:72
-msgid "Push Success"
-msgstr ""
-
-#: mu-plugins/quark/quark-ingestor/inc/class-stream-connector.php:73
-msgid "Dispatch GitHub Event"
-msgstr ""
-
-#. translators: 1: Total count, 2: Initiated via, 3: Changed only
-#: mu-plugins/quark/quark-ingestor/inc/class-stream-connector.php:105
+#. translators: %1$s: Expedition start Month, %2$s: Expedition start Year
+#: mu-plugins/quark/quark-expeditions/inc/namespace.php:1674
 #, php-format
-msgid "Push initiated for %1$d expedition(s) via %2$s | Changed only: %3$s."
+msgid "in %1$s %2$s"
 msgstr ""
 
-#: mu-plugins/quark/quark-ingestor/inc/class-stream-connector.php:108
-#: mu-plugins/quark/quark-ingestor/inc/class-stream-connector.php:161
-#: mu-plugins/quark/quark-ingestor/inc/class-stream-connector.php:265
-#: themes/quarkexpeditions/dist/blade/8b8495316de32b971b87cb17a54460d0.php:668
-#: themes/quarkexpeditions/dist/blade/8b8495316de32b971b87cb17a54460d0.php:675
-#: themes/quarkexpeditions/dist/blade/8b8495316de32b971b87cb17a54460d0.php:752
-#: themes/quarkexpeditions/dist/blade/8b8495316de32b971b87cb17a54460d0.php:759
-#: themes/quarkexpeditions/dist/blade/8b8495316de32b971b87cb17a54460d0.php:877
-#: themes/quarkexpeditions/dist/blade/8b8495316de32b971b87cb17a54460d0.php:884
-#: themes/quarkexpeditions/dist/blade/8b8495316de32b971b87cb17a54460d0.php:2695
-#: themes/quarkexpeditions/dist/blade/8b8495316de32b971b87cb17a54460d0.php:2702
-msgid "Yes"
-msgstr ""
-
-#: mu-plugins/quark/quark-ingestor/inc/class-stream-connector.php:108
-#: mu-plugins/quark/quark-ingestor/inc/class-stream-connector.php:161
-#: mu-plugins/quark/quark-ingestor/inc/class-stream-connector.php:265
-#: themes/quarkexpeditions/dist/blade/8b8495316de32b971b87cb17a54460d0.php:688
-#: themes/quarkexpeditions/dist/blade/8b8495316de32b971b87cb17a54460d0.php:695
-#: themes/quarkexpeditions/dist/blade/8b8495316de32b971b87cb17a54460d0.php:772
-#: themes/quarkexpeditions/dist/blade/8b8495316de32b971b87cb17a54460d0.php:779
-#: themes/quarkexpeditions/dist/blade/8b8495316de32b971b87cb17a54460d0.php:897
-#: themes/quarkexpeditions/dist/blade/8b8495316de32b971b87cb17a54460d0.php:904
-#: themes/quarkexpeditions/dist/blade/8b8495316de32b971b87cb17a54460d0.php:2715
-#: themes/quarkexpeditions/dist/blade/8b8495316de32b971b87cb17a54460d0.php:2722
-msgid "No"
-msgstr ""
-
-#. translators: 1: Total count, 2: Initiated via, 3: Success count, 4: Changed only
-#: mu-plugins/quark/quark-ingestor/inc/class-stream-connector.php:157
+#. translators: %1$s: Expedition start Month, %2$s: Expedition start Year, %3$s: Expedition end Month, %4$s: Expedition end Year
+#: mu-plugins/quark/quark-expeditions/inc/namespace.php:1679
 #, php-format
-msgid "Push completed for %1$d expedition(s) via %2$s | Successful: %3$d | Changed only: %4$s."
-msgstr ""
-
-#. translators: 1: Initiated via, 2: Error message
-#: mu-plugins/quark/quark-ingestor/inc/class-stream-connector.php:209
-#, php-format
-msgid "Push failed via %1$s | %2$s"
-msgstr ""
-
-#. translators: 1: Expedition post title, 2: Initiated via, 3: Error message
-#: mu-plugins/quark/quark-ingestor/inc/class-stream-connector.php:216
-#, php-format
-msgid "Push failed for \"%1$s\" via %2$s | %3$s"
-msgstr ""
-
-#. translators: 1: Expedition post title, 2: Initiated via, 3: Changed only
-#: mu-plugins/quark/quark-ingestor/inc/class-stream-connector.php:262
-#, php-format
-msgid "Push successful for \"%1$s\" via %2$s | Changed only: %3$s | Hash: %4$s"
-msgstr ""
-
-#. translators: 1: Error message
-#: mu-plugins/quark/quark-ingestor/inc/class-stream-connector.php:325
-#, php-format
-msgid "Dispatch GitHub event for urgent push failed | %1$s | Expedition ids: %2$s"
-msgstr ""
-
-#. translators: 1: Success message
-#: mu-plugins/quark/quark-ingestor/inc/class-stream-connector.php:332
-#, php-format
-msgid "Dispatch GitHub event for urgent push successful | %1$s | Expedition ids: %2$s"
-msgstr ""
-
-#: mu-plugins/quark/quark-ingestor/inc/class-stream-connector.php:398
-#: mu-plugins/quark/quark-softrip/inc/class-stream-connector.php:357
-msgid "Edit"
-msgstr ""
-
-#: mu-plugins/quark/quark-ingestor/inc/namespace.php:187
-msgid "No expeditions found."
-msgstr ""
-
-#: mu-plugins/quark/quark-ingestor/inc/namespace.php:239
-msgid "Expedition data is empty."
-msgstr ""
-
-#: mu-plugins/quark/quark-ingestor/inc/namespace.php:263
-msgid "Invalid JSON data."
-msgstr ""
-
-#: mu-plugins/quark/quark-ingestor/inc/namespace.php:292
-msgid "No changes detected."
-msgstr ""
-
-#: mu-plugins/quark/quark-ingestor/inc/namespace.php:339
-msgid "Failed to push data."
-msgstr ""
-
-#: mu-plugins/quark/quark-ingestor/inc/namespace.php:384
-msgid "Invalid expedition post ID."
-msgstr ""
-
-#: mu-plugins/quark/quark-ingestor/inc/namespace.php:389
-msgid "Invalid expedition data."
-msgstr ""
-
-#: mu-plugins/quark/quark-ingestor/inc/namespace.php:399
-msgid "Ingestor credentials missing"
+msgid "between %1$s %2$s to %3$s %4$s"
 msgstr ""
 
 #: mu-plugins/quark/quark-itineraries/inc/namespace.php:574
-#: mu-plugins/quark/quark-search/inc/filters/namespace.php:587
+#: mu-plugins/quark/quark-search/inc/filters/namespace.php:588
 msgid "Day"
 msgid_plural "Days"
 msgstr[0] ""
@@ -230,12 +92,43 @@ msgid_plural "days"
 msgstr[0] ""
 msgstr[1] ""
 
-#: mu-plugins/quark/quark-itineraries/inc/namespace.php:628
+#: mu-plugins/quark/quark-itineraries/inc/namespace.php:588
+#: themes/quarkexpeditions/dist/blade/b8c661c921cd7e3267629deb35fb98cf.php:162
+#, php-format
+msgid "From %s"
+msgstr ""
+
+#: mu-plugins/quark/quark-itineraries/inc/namespace.php:630
 #, php-format
 msgid "%s per person"
 msgstr ""
 
-#: mu-plugins/quark/quark-itineraries/inc/namespace.php:993
+#: mu-plugins/quark/quark-itineraries/inc/namespace.php:723
+#, php-format
+msgid "%1$d.%2$d Season"
+msgstr ""
+
+#: mu-plugins/quark/quark-itineraries/inc/namespace.php:726
+#, php-format
+msgid "%d Season"
+msgstr ""
+
+#: mu-plugins/quark/quark-itineraries/inc/namespace.php:790
+#, php-format
+msgid "Day %1$s: %2$s"
+msgstr ""
+
+#: mu-plugins/quark/quark-itineraries/inc/namespace.php:800
+#, php-format
+msgid "Day %1$s & %2$s: %3$s"
+msgstr ""
+
+#: mu-plugins/quark/quark-itineraries/inc/namespace.php:811
+#, php-format
+msgid "Day %1$s to %2$s: %3$s"
+msgstr ""
+
+#: mu-plugins/quark/quark-itineraries/inc/namespace.php:1000
 msgid "Includes"
 msgstr ""
 
@@ -271,50 +164,10 @@ msgstr ""
 msgid "GBP"
 msgstr ""
 
-#: mu-plugins/quark/quark-search/inc/departures/class-stream-connector.php:42
-msgid "Search"
-msgstr ""
-
-#: mu-plugins/quark/quark-search/inc/departures/class-stream-connector.php:53
-msgid "Solr search reindex"
-msgstr ""
-
-#: mu-plugins/quark/quark-search/inc/departures/class-stream-connector.php:65
-msgid "Solr reindex Initiated"
-msgstr ""
-
-#: mu-plugins/quark/quark-search/inc/departures/class-stream-connector.php:66
-msgid "Solr reindex Completed"
-msgstr ""
-
-#: mu-plugins/quark/quark-search/inc/departures/class-stream-connector.php:67
-msgid "Solr reindex Failed"
-msgstr ""
-
-#. translators: %s: Total number of items to reindex.
-#: mu-plugins/quark/quark-search/inc/departures/class-stream-connector.php:87
+#. translators: %s: Duration value.
+#: mu-plugins/quark/quark-search/inc/filters/namespace.php:540
 #, php-format
-msgid "Solr reindex initiated. Total items to reindex: %1$d."
-msgstr ""
-
-#. translators: %1$d: Total, %2$d: Success, %3$d: Failed.
-#: mu-plugins/quark/quark-search/inc/departures/class-stream-connector.php:117
-#, php-format
-msgid "Solr reindex completed. Total: %1$d, Success: %2$d, Failed: %3$d ."
-msgstr ""
-
-#. translators: %s: Error message.
-#: mu-plugins/quark/quark-search/inc/departures/class-stream-connector.php:149
-#, php-format
-msgid "Solr reindex failed for post ID %1$d with error %2$s."
-msgstr ""
-
-#: mu-plugins/quark/quark-search/inc/departures/namespace.php:584
-msgid "Invalid post."
-msgstr ""
-
-#: mu-plugins/quark/quark-search/inc/departures/namespace.php:602
-msgid "Unsupported post type. Neither a expedition, nor a itinerary post."
+msgid "%s Days"
 msgstr ""
 
 #: mu-plugins/quark/quark-search/inc/rest-api/class-destination-month-filters.php:41
@@ -342,139 +195,13 @@ msgstr ""
 msgid "&raquo;"
 msgstr ""
 
-#: mu-plugins/quark/quark-softrip/inc/class-softrip-data-adapter.php:33
-msgid "Softrip credentials missing"
-msgstr ""
-
-#: mu-plugins/quark/quark-softrip/inc/class-stream-connector.php:47
-#: mu-plugins/quark/quark-softrip/inc/cleanup/class-stream-connector.php:42
-msgid "Softrip"
-msgstr ""
-
-#: mu-plugins/quark/quark-softrip/inc/class-stream-connector.php:58
-msgid "Softrip Sync"
-msgstr ""
-
-#: mu-plugins/quark/quark-softrip/inc/class-stream-connector.php:70
-msgid "Sync Initiated"
-msgstr ""
-
-#: mu-plugins/quark/quark-softrip/inc/class-stream-connector.php:71
-msgid "Sync Completed"
-msgstr ""
-
-#: mu-plugins/quark/quark-softrip/inc/class-stream-connector.php:72
-msgid "Departure Updated"
-msgstr ""
-
-#: mu-plugins/quark/quark-softrip/inc/class-stream-connector.php:73
-msgid "Departure Expired"
-msgstr ""
-
-#: mu-plugins/quark/quark-softrip/inc/class-stream-connector.php:74
-msgid "Sync Error"
-msgstr ""
-
-#: mu-plugins/quark/quark-softrip/inc/class-stream-connector.php:75
-msgid "Departure No Updates"
-msgstr ""
-
-#. translators: %1$s: Via, %2$s: Count, %3$d: Total.
-#: mu-plugins/quark/quark-softrip/inc/class-stream-connector.php:95
-#, php-format
-msgid "Softrip sync initiated via %1$s | Total %2$s : %3$d"
-msgstr ""
-
-#: mu-plugins/quark/quark-softrip/inc/class-stream-connector.php:97
-#: mu-plugins/quark/quark-softrip/inc/class-stream-connector.php:131
-#: mu-plugins/quark/quark-softrip/inc/class-stream-connector.php:132
+#: mu-plugins/quark/quark-softrip/inc/class-stream-connector.php:96
+#: mu-plugins/quark/quark-softrip/inc/class-stream-connector.php:129
+#: mu-plugins/quark/quark-softrip/inc/class-stream-connector.php:130
 msgid "itinerary"
 msgid_plural "itineraries"
 msgstr[0] ""
 msgstr[1] ""
-
-#. translators: %1$s: Via, %2$d: Successful, %3$d: Failed, %4$s: Successful, %5$s: Failed.
-#: mu-plugins/quark/quark-softrip/inc/class-stream-connector.php:127
-#, php-format
-msgid "Softrip sync completed via %1$s | Successful %4$s: %2$d | Failed %5$s: %3$d"
-msgstr ""
-
-#: mu-plugins/quark/quark-softrip/inc/class-stream-connector.php:153
-#: themes/quarkexpeditions/dist/blade/1128923f71e2a0fef676ef8da474bb56.php:597
-#: themes/quarkexpeditions/dist/blade/390996578bd251148b753691eb878009.php:93
-#: themes/quarkexpeditions/dist/blade/390996578bd251148b753691eb878009.php:100
-#: themes/quarkexpeditions/dist/blade/464b04c20acfa89d9d988672f88bce30.php:549
-#: themes/quarkexpeditions/dist/blade/464b04c20acfa89d9d988672f88bce30.php:556
-#: themes/quarkexpeditions/dist/blade/95d091770db0a0297fa1120e6290dd56.php:549
-#: themes/quarkexpeditions/dist/blade/95d091770db0a0297fa1120e6290dd56.php:556
-#: themes/quarkexpeditions/dist/blade/ff503ac70bb7ef7eddaa005e6c43e93c.php:50
-#: themes/quarkexpeditions/dist/blade/ff503ac70bb7ef7eddaa005e6c43e93c.php:57
-msgid "Adventure Options"
-msgstr ""
-
-#: mu-plugins/quark/quark-softrip/inc/class-stream-connector.php:154
-msgid "Promotions"
-msgstr ""
-
-#: mu-plugins/quark/quark-softrip/inc/class-stream-connector.php:155
-msgid "Occupancies"
-msgstr ""
-
-#: mu-plugins/quark/quark-softrip/inc/class-stream-connector.php:156
-msgid "Departure Post"
-msgstr ""
-
-#. translators: %1$s: Softrip ID, %2$s: Updated Fields.
-#: mu-plugins/quark/quark-softrip/inc/class-stream-connector.php:190
-#, php-format
-msgid "\"%1$s\" synced | Updated fields: %2$s"
-msgstr ""
-
-#. translators: %1$s: Softrip ID, %2$d: Post ID.
-#: mu-plugins/quark/quark-softrip/inc/class-stream-connector.php:221
-#, php-format
-msgid "\"%1$s\" expired"
-msgstr ""
-
-#. translators: %1$s: Via, %2$s: Error, %3$s: Codes.
-#: mu-plugins/quark/quark-softrip/inc/class-stream-connector.php:256
-#, php-format
-msgid "Softrip sync error via %1$s | Error: %2$s | Codes: %3$s"
-msgstr ""
-
-#. translators: %1$s: Via, %2$s: Error.
-#: mu-plugins/quark/quark-softrip/inc/class-stream-connector.php:265
-#, php-format
-msgid "Softrip sync error via %1$s | Error: %2$s"
-msgstr ""
-
-#. translators: %1$s: Softrip ID.
-#: mu-plugins/quark/quark-softrip/inc/class-stream-connector.php:297
-#, php-format
-msgid "\"%1$s\" no updates"
-msgstr ""
-
-#: mu-plugins/quark/quark-softrip/inc/cleanup/class-stream-connector.php:53
-msgid "Softrip Cleanup"
-msgstr ""
-
-#: mu-plugins/quark/quark-softrip/inc/cleanup/class-stream-connector.php:65
-msgid "Cleanup Initiated"
-msgstr ""
-
-#: mu-plugins/quark/quark-softrip/inc/cleanup/class-stream-connector.php:66
-msgid "Cleanup Completed"
-msgstr ""
-
-#: mu-plugins/quark/quark-softrip/inc/cleanup/class-stream-connector.php:67
-msgid "Cleanup Failed"
-msgstr ""
-
-#. translators: %1$s: Via, %2$d: Total, %3$s: Departures.
-#: mu-plugins/quark/quark-softrip/inc/cleanup/class-stream-connector.php:87
-#, php-format
-msgid "Softrip cleanup initiated by %1$s for %2$d %3$s."
-msgstr ""
 
 #: mu-plugins/quark/quark-softrip/inc/cleanup/class-stream-connector.php:90
 #: mu-plugins/quark/quark-softrip/inc/cleanup/class-stream-connector.php:122
@@ -485,52 +212,8 @@ msgid_plural "departures"
 msgstr[0] ""
 msgstr[1] ""
 
-#. translators: %1$s: Via, %2$d: Successful, %3$s: Departures, %4$d: Total.
-#: mu-plugins/quark/quark-softrip/inc/cleanup/class-stream-connector.php:119
-#, php-format
-msgid "Softrip cleanup completed by %1$s with %2$d successful %3$s out of %4$d."
-msgstr ""
-
-#. translators: %1$s: Via, %2$d: Departure ID, %3$s: Message.
-#: mu-plugins/quark/quark-softrip/inc/cleanup/class-stream-connector.php:152
-#, php-format
-msgid "Softrip cleanup failed by %1$s for departure %2$d with message: %3$s."
-msgstr ""
-
-#: mu-plugins/quark/quark-softrip/inc/departures/namespace.php:227
-msgid "No valid occupancies found for new departure."
-msgstr ""
-
-#: mu-plugins/quark/quark-softrip/inc/departures/namespace.php:245
-msgid "No valid occupancies found for existing draft departure."
-msgstr ""
-
-#: mu-plugins/quark/quark-softrip/inc/departures/namespace.php:262
-msgid "No valid occupancies found for existing departure. So, converting to draft."
-msgstr ""
-
-#: mu-plugins/quark/quark-softrip/inc/manual-sync/namespace.php:75
 #: mu-plugins/quark/quark-softrip/inc/manual-sync/namespace.php:154
-#: mu-plugins/quark/quark-softrip/inc/manual-sync/namespace.php:503
 msgid "Sync"
-msgstr ""
-
-#: mu-plugins/quark/quark-softrip/inc/manual-sync/namespace.php:264
-msgid "Successfully synchronized"
-msgstr ""
-
-#: mu-plugins/quark/quark-softrip/inc/manual-sync/namespace.php:264
-msgid "Failed to synchronize"
-msgstr ""
-
-#: mu-plugins/quark/quark-softrip/inc/manual-sync/namespace.php:421
-#, php-format
-msgid "Successfully synchronized %s"
-msgstr ""
-
-#: mu-plugins/quark/quark-softrip/inc/manual-sync/namespace.php:428
-#, php-format
-msgid "Failed to synchronize %s"
 msgstr ""
 
 #: themes/quarkexpeditions/dist/blade/026452cdced26b09ce0e689633b4f22d.php:35
@@ -933,6 +616,18 @@ msgstr ""
 #: themes/quarkexpeditions/dist/blade/de2ee9b58ccb645f6b702037673bb146.php:50
 #: themes/quarkexpeditions/dist/blade/de2ee9b58ccb645f6b702037673bb146.php:57
 msgid "Languages"
+msgstr ""
+
+#: themes/quarkexpeditions/dist/blade/1128923f71e2a0fef676ef8da474bb56.php:597
+#: themes/quarkexpeditions/dist/blade/390996578bd251148b753691eb878009.php:93
+#: themes/quarkexpeditions/dist/blade/390996578bd251148b753691eb878009.php:100
+#: themes/quarkexpeditions/dist/blade/464b04c20acfa89d9d988672f88bce30.php:549
+#: themes/quarkexpeditions/dist/blade/464b04c20acfa89d9d988672f88bce30.php:556
+#: themes/quarkexpeditions/dist/blade/95d091770db0a0297fa1120e6290dd56.php:549
+#: themes/quarkexpeditions/dist/blade/95d091770db0a0297fa1120e6290dd56.php:556
+#: themes/quarkexpeditions/dist/blade/ff503ac70bb7ef7eddaa005e6c43e93c.php:50
+#: themes/quarkexpeditions/dist/blade/ff503ac70bb7ef7eddaa005e6c43e93c.php:57
+msgid "Adventure Options"
 msgstr ""
 
 #: themes/quarkexpeditions/dist/blade/1128923f71e2a0fef676ef8da474bb56.php:748
@@ -1989,6 +1684,28 @@ msgstr ""
 msgid "Have you sailed with Quarks Expeditions as a passenger?"
 msgstr ""
 
+#: themes/quarkexpeditions/dist/blade/8b8495316de32b971b87cb17a54460d0.php:668
+#: themes/quarkexpeditions/dist/blade/8b8495316de32b971b87cb17a54460d0.php:675
+#: themes/quarkexpeditions/dist/blade/8b8495316de32b971b87cb17a54460d0.php:752
+#: themes/quarkexpeditions/dist/blade/8b8495316de32b971b87cb17a54460d0.php:759
+#: themes/quarkexpeditions/dist/blade/8b8495316de32b971b87cb17a54460d0.php:877
+#: themes/quarkexpeditions/dist/blade/8b8495316de32b971b87cb17a54460d0.php:884
+#: themes/quarkexpeditions/dist/blade/8b8495316de32b971b87cb17a54460d0.php:2695
+#: themes/quarkexpeditions/dist/blade/8b8495316de32b971b87cb17a54460d0.php:2702
+msgid "Yes"
+msgstr ""
+
+#: themes/quarkexpeditions/dist/blade/8b8495316de32b971b87cb17a54460d0.php:688
+#: themes/quarkexpeditions/dist/blade/8b8495316de32b971b87cb17a54460d0.php:695
+#: themes/quarkexpeditions/dist/blade/8b8495316de32b971b87cb17a54460d0.php:772
+#: themes/quarkexpeditions/dist/blade/8b8495316de32b971b87cb17a54460d0.php:779
+#: themes/quarkexpeditions/dist/blade/8b8495316de32b971b87cb17a54460d0.php:897
+#: themes/quarkexpeditions/dist/blade/8b8495316de32b971b87cb17a54460d0.php:904
+#: themes/quarkexpeditions/dist/blade/8b8495316de32b971b87cb17a54460d0.php:2715
+#: themes/quarkexpeditions/dist/blade/8b8495316de32b971b87cb17a54460d0.php:2722
+msgid "No"
+msgstr ""
+
 #: themes/quarkexpeditions/dist/blade/8b8495316de32b971b87cb17a54460d0.php:742
 #: themes/quarkexpeditions/dist/blade/8b8495316de32b971b87cb17a54460d0.php:749
 msgid "Do you have experience working on a cruise line or expedition vessel?"
@@ -2597,11 +2314,6 @@ msgstr ""
 #: themes/quarkexpeditions/dist/blade/b8c661c921cd7e3267629deb35fb98cf.php:72
 #, php-format
 msgid " Departs %s"
-msgstr ""
-
-#: themes/quarkexpeditions/dist/blade/b8c661c921cd7e3267629deb35fb98cf.php:162
-#, php-format
-msgid "From %s"
 msgstr ""
 
 #: themes/quarkexpeditions/dist/blade/b9a86b7a7a6bafde5057bce92cf63448.php:22
