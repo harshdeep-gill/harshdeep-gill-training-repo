@@ -2,7 +2,7 @@
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-import { useBlockProps } from '@wordpress/block-editor';
+import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 
 /**
  * External dependencies.
@@ -12,7 +12,7 @@ import classnames from 'classnames';
 /**
  * Internal dependencies.
  */
-import icons from '../../../icons';
+import * as associationLink from '../association-link';
 
 /**
  * Edit Component.
@@ -24,15 +24,24 @@ export default function Edit( { className }: BlockEditAttributes ): JSX.Element 
 	// eslint-disable-next-line react-hooks/rules-of-hooks
 	const blockProps = useBlockProps( { className: classnames( className, 'footer__associations' ) } );
 
+	// eslint-disable-next-line react-hooks/rules-of-hooks
+	const innerBlockProps = useInnerBlocksProps(
+		{ ...blockProps },
+		{
+			allowedBlocks: [ associationLink.name ],
+			template: [
+				[ associationLink.name, { type: 'iaato' } ],
+				[ associationLink.name, { type: 'aeco' } ],
+			],
+
+			// @ts-ignore
+			orientation: 'horizontal',
+		}
+	);
+
+
 	// Return the block's markup.
 	return (
-		<ul { ...blockProps } >
-			<li className="footer__association">
-				{ icons.association.iaato }
-			</li>
-			<li className="footer__association">
-				{ icons.association.aeco }
-			</li>
-		</ul>
+		<ul { ...innerBlockProps } />
 	);
 }
