@@ -44,7 +44,7 @@ class Stream_Connector extends Connector {
 	 */
 	public function get_label(): string {
 		// Return label.
-		return __( 'Softrip', 'qrk' );
+		return 'Softrip';
 	}
 
 	/**
@@ -55,7 +55,7 @@ class Stream_Connector extends Connector {
 	public function get_context_labels(): array {
 		// Return labels.
 		return [
-			'softrip_sync' => __( 'Softrip Sync', 'qrk' ),
+			'softrip_sync' => 'Softrip Sync',
 		];
 	}
 
@@ -67,12 +67,12 @@ class Stream_Connector extends Connector {
 	public function get_action_labels(): array {
 		// Return labels.
 		return [
-			'sync_initiated'            => __( 'Sync Initiated', 'qrk' ),
-			'sync_completed'            => __( 'Sync Completed', 'qrk' ),
-			'sync_departure_updated'    => __( 'Departure Updated', 'qrk' ),
-			'sync_departure_expired'    => __( 'Departure Expired', 'qrk' ),
-			'sync_error'                => __( 'Sync Error', 'qrk' ),
-			'sync_departure_no_updates' => __( 'Departure No Updates', 'qrk' ),
+			'sync_initiated'            => 'Sync Initiated',
+			'sync_completed'            => 'Sync Completed',
+			'sync_departure_updated'    => 'Departure Updated',
+			'sync_departure_expired'    => 'Departure Expired',
+			'sync_error'                => 'Sync Error',
+			'sync_departure_no_updates' => 'Departure No Updates',
 		];
 	}
 
@@ -91,8 +91,7 @@ class Stream_Connector extends Connector {
 
 		// Prepare message.
 		$message = sprintf(
-			// translators: %1$s: Via, %2$s: Count, %3$d: Total.
-			__( 'Softrip sync initiated via %1$s | Total %2$s : %3$d', 'qrk' ),
+			'Softrip sync initiated via %1$s | Total %2$s : %3$d',
 			strval( $data['via'] ),
 			_n( 'itinerary', 'itineraries', absint( $data['count'] ), 'qrk' ),
 			absint( $data['count'] )
@@ -123,8 +122,7 @@ class Stream_Connector extends Connector {
 
 		// Prepare message.
 		$message = sprintf(
-			// translators: %1$s: Via, %2$d: Successful, %3$d: Failed, %4$s: Successful, %5$s: Failed.
-			__( 'Softrip sync completed via %1$s | Successful %4$s: %2$d | Failed %5$s: %3$d', 'qrk' ),
+			'Softrip sync completed via %1$s | Successful %4$s: %2$d | Failed %5$s: %3$d',
 			strval( $data['via'] ),
 			absint( $data['success'] ),
 			absint( $data['failed'] ),
@@ -150,10 +148,10 @@ class Stream_Connector extends Connector {
 	public function get_departure_update_fields_mapping(): array {
 		// Return mapping.
 		return [
-			'adventure_options' => __( 'Adventure Options', 'qrk' ),
-			'promotions'        => __( 'Promotions', 'qrk' ),
-			'occupancies'       => __( 'Occupancies', 'qrk' ),
-			'departure_post'    => __( 'Departure Post', 'qrk' ),
+			'adventure_options' => 'Adventure Options',
+			'promotions'        => 'Promotions',
+			'occupancies'       => 'Occupancies',
+			'departure_post'    => 'Departure Post',
 		];
 	}
 
@@ -186,9 +184,8 @@ class Stream_Connector extends Connector {
 
 		// Prepare message.
 		$message = sprintf(
-			// translators: %1$s: Softrip ID, %2$s: Updated Fields.
-			__( '"%1$s" synced | Updated fields: %2$s', 'qrk' ),
-			strval( $data['softrip_id'] ),
+			'"%1$s" synced | Updated fields: %2$s',
+			$data['softrip_id'],
 			implode( ', ', $updated_field_labels )
 		);
 
@@ -217,9 +214,8 @@ class Stream_Connector extends Connector {
 
 		// Prepare message.
 		$message = sprintf(
-			// translators: %1$s: Softrip ID, %2$d: Post ID.
-			__( '"%1$s" expired', 'qrk' ),
-			strval( $data['softrip_id'] ),
+			'"%1$s" expired',
+			$data['softrip_id'],
 		);
 
 		// Log action.
@@ -245,25 +241,20 @@ class Stream_Connector extends Connector {
 			return;
 		}
 
-		// Initialize message.
-		$message = '';
-
 		// Check if codes are available.
 		if ( ! empty( $data['codes'] ) && is_array( $data['codes'] ) ) {
 			// Prepare message.
 			$message = sprintf(
-				// translators: %1$s: Via, %2$s: Error, %3$s: Codes.
-				__( 'Softrip sync error via %1$s | Error: %2$s | Codes: %3$s', 'qrk' ),
-				strval( $data['via'] ),
+				'Softrip sync error via %1$s | Error: %2$s | Codes: %3$s',
+				$data['via'],
 				strval( $data['error'] ),
 				implode( ', ', $data['codes'] )
 			);
 		} else {
 			// Prepare message.
 			$message = sprintf(
-				// translators: %1$s: Via, %2$s: Error.
-				__( 'Softrip sync error via %1$s | Error: %2$s', 'qrk' ),
-				strval( $data['via'] ),
+				'Softrip sync error via %1$s | Error: %2$s',
+				$data['via'],
 				strval( $data['error'] )
 			);
 		}
@@ -293,9 +284,8 @@ class Stream_Connector extends Connector {
 
 		// Prepare message.
 		$message = sprintf(
-			// translators: %1$s: Softrip ID.
-			__( '"%1$s" no updates', 'qrk' ),
-			strval( $data['softrip_id'] )
+			'"%1$s" no updates',
+			$data['softrip_id']
 		);
 
 		// Log action.
@@ -354,7 +344,7 @@ class Stream_Connector extends Connector {
 		}
 
 		// Add edit link.
-		$links[ __( 'Edit', 'qrk' ) ] = $edit_url;
+		$links['Edit'] = $edit_url;
 
 		// Return links.
 		return $links;

@@ -536,7 +536,8 @@ function get_duration_filter_options( array $duration_facet = [] ): array {
 
 		// Prepare duration data.
 		$filter_data[ $duration ] = [
-			'label' => sprintf( '%s Days', $duration_value ),
+			/* translators: %s: Duration value. */
+			'label' => sprintf( __( '%s Days', 'qrk' ), $duration_value ),
 			'value' => $duration_value,
 			'count' => absint( $count ),
 		];
