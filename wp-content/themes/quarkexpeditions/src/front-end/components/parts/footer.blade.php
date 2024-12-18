@@ -69,9 +69,6 @@
 
 							@case ( 'associations' )
 								<x-footer.associations :association_links="$column_inner_content['attributes']['association_links']" />
-								@php
-									var_dump( $column_inner_content );
-								@endphp
 							@break
 
 							@case ( 'logo' )
@@ -80,7 +77,6 @@
 
 							@default
 								{!! $column_inner_content['content'] !!}
-
 						@endswitch
 					@endforeach
 				</x-footer.column>

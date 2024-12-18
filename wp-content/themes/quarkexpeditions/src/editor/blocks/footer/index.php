@@ -302,7 +302,6 @@ function process_column_block( array $block = [] ): array {
 						],
 					];
 
-					$association_links['test'] = 'yes';
 					// Check if inner blocks exist.
 					if ( ! empty( $column_inner_block['innerBlocks'] ) ) {
 						// Loop through the inner blocks.
