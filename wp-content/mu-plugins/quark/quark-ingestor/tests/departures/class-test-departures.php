@@ -11,6 +11,9 @@ use Quark\Tests\Softrip\Softrip_TestCase;
 
 use function Quark\Core\get_raw_text_from_html;
 use function Quark\Ingestor\Departures\get_departures_data;
+use function Quark\Ingestor\get_post_modified_time;
+use function Quark\Ingestor\Promotions\get_promotions_data;
+use function Quark\Ingestor\Ships\get_ship_data;
 
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
 use const Quark\Departures\SPOKEN_LANGUAGE_TAXONOMY;
@@ -67,6 +70,7 @@ class Test_Departures extends Softrip_TestCase {
 					'softrip_id'         => 'UNQ-123:2025-01-01',
 					'itinerary'          => $itinerary_post_id,
 					'related_expedition' => $expedition_post_id,
+					'softrip_code'       => 'OEX20250101',
 				],
 			]
 		);
@@ -79,8 +83,13 @@ class Test_Departures extends Softrip_TestCase {
 		$actual   = get_departures_data( $expedition_post_id, $itinerary_post_id );
 		$expected = [
 			[
-				'id'               => 'UNQ-123:2025-01-01',
+				'id'               => $departure_post_id1,
 				'name'             => get_raw_text_from_html( get_the_title( $departure_post_id1 ) ),
+				'drupalId'         => 0,
+				'softripId'        => 'UNQ-123:2025-01-01',
+				'url'              => '',
+				'code'             => 'OEX20250101',
+				'modified'         => get_post_modified_time( $departure_post_id1 ),
 				'published'        => true,
 				'startDate'        => '',
 				'endDate'          => '',
@@ -92,6 +101,7 @@ class Test_Departures extends Softrip_TestCase {
 					'includedOptions' => [],
 					'paidOptions'     => [],
 				],
+				'promotions'       => get_promotions_data( $departure_post_id1 ),
 			],
 		];
 		$this->assertEquals( $expected, $actual );
@@ -136,23 +146,25 @@ class Test_Departures extends Softrip_TestCase {
 		$actual   = get_departures_data( $expedition_post_id, $itinerary_post_id );
 		$expected = [
 			[
-				'id'               => 'UNQ-123:2025-01-01',
+				'id'               => $departure_post_id1,
 				'name'             => get_raw_text_from_html( get_the_title( $departure_post_id1 ) ),
+				'drupalId'         => 0,
+				'softripId'        => 'UNQ-123:2025-01-01',
+				'url'              => '',
+				'code'             => 'OEX20250101',
+				'modified'         => get_post_modified_time( $departure_post_id1 ),
 				'published'        => true,
 				'startDate'        => '2025-01-01',
 				'endDate'          => '2025-01-02',
 				'durationInDays'   => 2,
-				'ship'             => [
-					'code' => 'OQP',
-					'id'   => $ship_post_id,
-					'name' => get_raw_text_from_html( get_the_title( $ship_post_id ) ),
-				],
+				'ship'             => get_ship_data( $ship_post_id ),
 				'languages'        => 'EN',
 				'cabins'           => [],
 				'adventureOptions' => [
 					'includedOptions' => [],
 					'paidOptions'     => [],
 				],
+				'promotions'       => get_promotions_data( $departure_post_id1 ),
 			],
 		];
 		$this->assertEquals( $expected, $actual );
@@ -169,6 +181,7 @@ class Test_Departures extends Softrip_TestCase {
 					'start_date'         => '2025-01-01',
 					'end_date'           => '2025-01-02',
 					'duration'           => 2,
+					'softrip_code'       => 'OEX20250101',
 				],
 			]
 		);
@@ -205,42 +218,46 @@ class Test_Departures extends Softrip_TestCase {
 		$actual   = get_departures_data( $expedition_post_id, $itinerary_post_id );
 		$expected = [
 			[
-				'id'               => 'UNQ-456:2025-01-01',
+				'id'               => $departure_post_id2,
 				'name'             => get_raw_text_from_html( get_the_title( $departure_post_id2 ) ),
+				'drupalId'         => 0,
+				'softripId'        => 'UNQ-456:2025-01-01',
+				'url'              => '',
+				'code'             => 'OEX20250101',
+				'modified'         => get_post_modified_time( $departure_post_id2 ),
 				'published'        => true,
 				'startDate'        => '2025-01-01',
 				'endDate'          => '2025-01-02',
 				'durationInDays'   => 2,
-				'ship'             => [
-					'code' => 'LOP',
-					'id'   => $ship_post_id2,
-					'name' => get_raw_text_from_html( get_the_title( $ship_post_id2 ) ),
-				],
+				'ship'             => get_ship_data( $ship_post_id2 ),
 				'languages'        => 'FR',
 				'cabins'           => [],
 				'adventureOptions' => [
 					'includedOptions' => [],
 					'paidOptions'     => [],
 				],
+				'promotions'       => get_promotions_data( $departure_post_id2 ),
 			],
 			[
-				'id'               => 'UNQ-123:2025-01-01',
+				'id'               => $departure_post_id1,
 				'name'             => get_raw_text_from_html( get_the_title( $departure_post_id1 ) ),
+				'drupalId'         => 0,
+				'softripId'        => 'UNQ-123:2025-01-01',
+				'url'              => '',
+				'code'             => 'OEX20250101',
+				'modified'         => get_post_modified_time( $departure_post_id1 ),
 				'published'        => true,
 				'startDate'        => '2025-01-01',
 				'endDate'          => '2025-01-02',
 				'durationInDays'   => 2,
-				'ship'             => [
-					'code' => 'OQP',
-					'id'   => $ship_post_id,
-					'name' => get_raw_text_from_html( get_the_title( $ship_post_id ) ),
-				],
+				'ship'             => get_ship_data( $ship_post_id ),
 				'languages'        => 'EN',
 				'cabins'           => [],
 				'adventureOptions' => [
 					'includedOptions' => [],
 					'paidOptions'     => [],
 				],
+				'promotions'       => get_promotions_data( $departure_post_id1 ),
 			],
 		];
 		$this->assertEquals( $expected, $actual );
