@@ -144,7 +144,7 @@
 							</p>
 						</x-departure-cards.transfer_package>
 					@endif
-					<x-departure-cards.cta text="{{ __( 'View Cabin Pricing & Options', 'qrk' ) }}"/>
+					<x-departure-cards.cta :availability_status="$card['departure_status'] ?? ''" />
 				</x-departure-cards.body-column>
 			</x-departure-cards.body>
 

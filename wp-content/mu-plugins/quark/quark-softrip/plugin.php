@@ -26,8 +26,13 @@ require_once __DIR__ . '/inc/admin/namespace.php';
 // Register Autoloader.
 spl_autoload_register( __NAMESPACE__ . '\\autoload' );
 
-// Kick it off.
-add_action( 'plugins_loaded', __NAMESPACE__ . '\\bootstrap' );
-add_action( 'plugins_loaded', __NAMESPACE__ . '\\ManualSync\\bootstrap' );
+// Skip sync class init if SOFTRIP PUSH disabled.
+if ( ! defined( 'QUARK_SOFTRIP_SYNC_DISABLE' ) || true !== QUARK_SOFTRIP_SYNC_DISABLE ) {
+	// Kick it off.
+	add_action( 'plugins_loaded', __NAMESPACE__ . '\\bootstrap' );
+	add_action( 'plugins_loaded', __NAMESPACE__ . '\\ManualSync\\bootstrap' );
+}
+
+// Kick off other classes.
 add_action( 'plugins_loaded', __NAMESPACE__ . '\\Cleanup\\bootstrap' );
 add_action( 'plugins_loaded', __NAMESPACE__ . '\\Admin\\bootstrap' );

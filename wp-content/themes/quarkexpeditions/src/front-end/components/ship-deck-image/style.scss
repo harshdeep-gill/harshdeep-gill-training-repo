@@ -5,7 +5,7 @@
 
 .ship-deck-image {
 
-	&--horizontal {
+	&--has-vertical-image &__horizontal {
 		display: none;
 
 		@media screen and (min-width: grid-size(md)) {
@@ -13,7 +13,7 @@
 		}
 	}
 
-	&--vertical {
+	&__vertical {
 		display: block;
 
 		img {

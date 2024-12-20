@@ -13,7 +13,8 @@ import { TPFormElement, TPFormSubmitElement } from '@travelopia/web-components';
  * Internal Dependencies.
  */
 import { getRecaptchaToken, setupRecaptcha } from './recaptcha';
-import './tracking';
+import { getCampaignParamsFromUrl, getGaCookie } from './tracking';
+import { getCampaignIdsFromCookies } from '../../global/store/actions';
 
 /**
  * Form Class.
@@ -43,9 +44,6 @@ export default class Form extends HTMLElement {
 		this.form = this.querySelector( 'form' );
 		this.recaptchaTokenField = this.querySelector( 'input[name="recaptcha_token"]' );
 		this.thankYouPageUrl = this.getAttribute( 'thank-you-url' ) || '';
-
-		// Events.
-		window.addEventListener( 'visitor-tracked', ( ( event: CustomEvent ) => this.updateTrackingInfo( event ) ) as EventListener );
 	}
 
 	/**
@@ -185,39 +183,49 @@ export default class Form extends HTMLElement {
 			} ).catch( ( error ) => handleError( error ) );
 		};
 
+		// Update tracking info.
+		this.updateTrackingInfo();
+
 		// Send the request!
 		sendRequest();
 	}
 
 	/**
 	 * Update tracking info.
-	 *
-	 * @param {Event} e Tracking event.
 	 */
-	updateTrackingInfo( e: CustomEvent ): void {
-		// Check if we have details.
-		if ( ! e.detail || ! e.detail.urlCampaignParams || 0 === e.detail.urlCampaignParams.length ) {
-			// We don't, bail early.
-			return;
+	updateTrackingInfo(): void {
+		// Get URL campaign params.
+		let urlCampaignParams = getCampaignParamsFromUrl();
+
+		// Check if we have any campaign params.
+		if ( ! Object.keys( urlCampaignParams ).length ) {
+			// Get campaign ids from cookies.
+			urlCampaignParams = getCampaignIdsFromCookies();
 		}
 
-		// Fill in the details into corresponding hidden fields.
-		for ( const key in e.detail.urlCampaignParams ) {
-			const field: HTMLElement | null = this.querySelector( `.form__${ key.replace( '_', '-' ) }` );
+		// Get GA cookie.
+		const gaCookie = getGaCookie();
 
-			// Update adwords data.
-			if ( field && 'value' in field ) {
-				field.value = decodeURIComponent( e.detail.urlCampaignParams[ key ] );
+		// Check if we have any campaign params.
+		if ( urlCampaignParams ) {
+			// Fill in the details into corresponding hidden fields.
+			for ( const key in urlCampaignParams ) {
+				const field: HTMLElement | null = this.querySelector( `.form__${ key.replace( '_', '-' ) }` );
+
+				// Update Adwords data.
+				if ( field && 'value' in field ) {
+					field.value = decodeURIComponent( urlCampaignParams[ key ] );
+				}
 			}
 		}
 
 		// Get the detail cookie
-		if ( e.detail.gaCookie ) {
+		if ( gaCookie ) {
 			const field: HTMLElement | null = this.querySelector( '.form__ga-client' );
 
 			// Update the cookie field
 			if ( field && 'value' in field ) {
-				field.value = decodeURIComponent( e.detail.gaCookie );
+				field.value = decodeURIComponent( gaCookie );
 			}
 		}
 	}

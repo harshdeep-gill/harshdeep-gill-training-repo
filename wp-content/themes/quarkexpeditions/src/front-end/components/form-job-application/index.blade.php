@@ -24,6 +24,7 @@
 	thank_you_page="{{ $thank_you_page }}"
 	:marketing_fields="false"
 	:webform_url="false"
+	ga_client_id=false
 	@class( $classes )
 >
 	<div class="form-job-application__content">

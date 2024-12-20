@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b5a3f374d5eeb51858ddc26072117f26",
+    "content-hash": "d94ea5644243d908335c53f1d5e0af5d",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -2640,16 +2640,16 @@
         },
         {
             "name": "travelopia/wordpress-packages",
-            "version": "1.27.8",
+            "version": "1.27.9",
             "source": {
                 "type": "git",
                 "url": "git@github.com:Travelopia/wordpress-packages.git",
-                "reference": "655b014fddc40c91cd25087477d5c59a3a0ea6c0"
+                "reference": "1409849fd5b95284d99c1fad539741516a4330f4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Travelopia/wordpress-packages/zipball/655b014fddc40c91cd25087477d5c59a3a0ea6c0",
-                "reference": "655b014fddc40c91cd25087477d5c59a3a0ea6c0",
+                "url": "https://api.github.com/repos/Travelopia/wordpress-packages/zipball/1409849fd5b95284d99c1fad539741516a4330f4",
+                "reference": "1409849fd5b95284d99c1fad539741516a4330f4",
                 "shasum": ""
             },
             "require": {
@@ -2682,10 +2682,10 @@
             },
             "description": "Common WordPress packages for the Travelopia Network.",
             "support": {
-                "source": "https://github.com/Travelopia/wordpress-packages/tree/1.27.8",
+                "source": "https://github.com/Travelopia/wordpress-packages/tree/1.27.9",
                 "issues": "https://github.com/Travelopia/wordpress-packages/issues"
             },
-            "time": "2024-11-28T12:10:11+00:00"
+            "time": "2024-12-10T12:05:24+00:00"
         },
         {
             "name": "voku/portable-ascii",

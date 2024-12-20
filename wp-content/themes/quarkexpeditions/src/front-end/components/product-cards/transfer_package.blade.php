@@ -1,6 +1,7 @@
 @props( [
 	'drawer_id'    => '',
 	'drawer_title' => '',
+	'label'        => '',
 ] )
 
 @php
@@ -11,7 +12,7 @@
 
 <div class="product-cards__transfer-package">
 	<div class="product-cards__transfer-package-header">
-		<p class="product-cards__transfer-package-label">{{ __( '(Incl. Transfer package)', 'qrk' ) }}</p>
+		<p class="product-cards__transfer-package-label">{!! $label ? $label : __( '(Incl. Transfer package)', 'qrk' ) !!}</p>
 
 		<x-drawer.drawer-open drawer_id="{{ $drawer_id }}" class="product-cards__drawer-open">
 			<x-svg name="info" />

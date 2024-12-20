@@ -945,10 +945,11 @@ function get_included_transfer_package_details( int $post_id = 0, string $curren
 	// get Itinerary.
 	$itinerary = get( $post_id );
 	$details   = [
-		'title'           => '',
-		'sets'            => [],
-		'price'           => 0,
-		'formatted_price' => '0',
+		'title'                => '',
+		'sets'                 => [],
+		'price'                => 0,
+		'formatted_price'      => '0',
+		'offer_inclusion_text' => '',
 	];
 
 	// Validate.
@@ -966,6 +967,11 @@ function get_included_transfer_package_details( int $post_id = 0, string $curren
 
 	// Format price.
 	$details['formatted_price'] = format_price( $details['price'], $currency );
+
+	// Offer Inclusion Text.
+	if ( ! empty( $itinerary['post_meta']['offer_inclusion_text'] ) ) {
+		$details['offer_inclusion_text'] = $itinerary['post_meta']['offer_inclusion_text'];
+	}
 
 	// Get included transfer package.
 	$transfer_package_id = $itinerary['post_meta']['mandatory_transfer_package_inclusion'] ?? 0;

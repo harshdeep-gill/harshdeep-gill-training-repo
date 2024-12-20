@@ -22,6 +22,11 @@ require_once __DIR__ . '/inc/adventure-options/namespace.php';
 require_once __DIR__ . '/inc/promotions/namespace.php';
 require_once __DIR__ . '/inc/ships/namespace.php';
 
+// Check if INGESTOR PUSH disabled.
+if ( defined( 'QUARK_INGESTOR_PUSH_DISABLE' ) && true === QUARK_INGESTOR_PUSH_DISABLE ) {
+	return;
+}
+
 // Kick it off.
 add_action( 'plugins_loaded', __NAMESPACE__ . '\\bootstrap' );
 add_action( 'plugins_loaded', __NAMESPACE__ . '\\Urgent\\bootstrap' );

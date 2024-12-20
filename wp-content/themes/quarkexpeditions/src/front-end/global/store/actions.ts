@@ -157,9 +157,9 @@ export const setCampaignIdsInCookies = ( campaignIds: any ): void => {
  *
  * @return {Object} Campaign ids.
  */
-export const getCampaignIdsFromCookies = (): any => {
+export const getCampaignIdsFromCookies = (): {[name: string]: string} => {
 	// Initialize.
-	const campaignIds: any = {};
+	const campaignIds: {[name: string]: string} = {};
 
 	// Get the campaign params from cookies and return.
 	campaignParamIds.forEach( ( value: string ) => {
