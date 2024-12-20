@@ -41,7 +41,7 @@ export default class FancyVideo extends HTMLElement {
 	playVideo() {
 		// Check if the video iframe element exists.
 		if ( this.videoElement instanceof HTMLIFrameElement ) {
-			this.videoElement.src = `${ this.videoURL }?autoplay=1`;
+			this.videoElement.src = `${ this.videoURL }?autoplay=1&enablejsapi=1`;
 		} else {
 			this.videoElement?.setAttribute( 'play', 'yes' );
 		}
