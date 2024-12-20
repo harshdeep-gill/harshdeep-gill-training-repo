@@ -34,6 +34,9 @@ function bootstrap(): void {
 	// Breadcrumbs.
 	add_filter( 'travelopia_breadcrumbs_ancestors', __NAMESPACE__ . '\\breadcrumbs_ancestors' );
 
+	// Add term meta keys to be translated while content sync.
+	add_filter( 'qrk_translation_term_meta_keys', __NAMESPACE__ . '\\translate_term_meta_keys' );
+
 	// Admin stuff.
 	if ( is_admin() ) {
 		// Custom fields.
@@ -437,4 +440,21 @@ function get_breadcrumbs_ancestors(): array {
 
 	// Return updated breadcrumbs.
 	return $breadcrumbs;
+}
+
+/**
+ * Translate term meta keys.
+ *
+ * @param array<string, string> $meta_keys Meta keys.
+ *
+ * @return array<string, string|string[]>
+ */
+function translate_term_meta_keys( array $meta_keys = [] ): array {
+	// Meta keys for translation.
+	$extra_keys = [
+		'image' => [ 'attachment', 'icon' ],
+	];
+
+	// Return meta keys to be translated.
+	return array_merge( $meta_keys, $extra_keys );
 }
