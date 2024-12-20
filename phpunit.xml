@@ -9,7 +9,6 @@
 	<testsuites>
 		<testsuite name="et-tests">
 			<directory prefix="class-test-" suffix=".php">wp-content/mu-plugins/quark/quark-*/tests</directory>
-			<exclude>wp-content/mu-plugins/quark/quark-ingestor/tests</exclude>
 		</testsuite>
 	</testsuites>
 	<php>
