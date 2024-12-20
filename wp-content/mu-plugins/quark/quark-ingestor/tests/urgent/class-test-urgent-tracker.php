@@ -21,6 +21,7 @@ use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
 use const Quark\CabinCategories\POST_TYPE as CABIN_POST_TYPE;
 use const Quark\Expeditions\POST_TYPE as EXPEDITION_POST_TYPE;
 use const Quark\Ingestor\Urgent\URGENTLY_CHANGED_EXPEDITION_IDS_OPTION;
+use const Quark\Tests\Ingestor\TEST_IMAGE_PATH;
 
 /**
  * Class Test_Urgent_Tracker
@@ -172,9 +173,9 @@ class Test_Urgent_Tracker extends Softrip_TestCase {
 		 */
 
 		// Create some media post.
-		$media_post_id1 = $this->factory()->attachment->create_upload_object( __DIR__ . '/../data/test.jpg' );
+		$media_post_id1 = $this->factory()->attachment->create_upload_object( TEST_IMAGE_PATH );
 		$this->assertIsInt( $media_post_id1 );
-		$media_post_id2 = $this->factory()->attachment->create_upload_object( __DIR__ . '/../data/test.jpg' );
+		$media_post_id2 = $this->factory()->attachment->create_upload_object( TEST_IMAGE_PATH );
 		$this->assertIsInt( $media_post_id2 );
 
 		// Post content.
@@ -413,9 +414,9 @@ class Test_Urgent_Tracker extends Softrip_TestCase {
 		delete_option( URGENTLY_CHANGED_EXPEDITION_IDS_OPTION );
 
 		// Create some media post.
-		$media_post_id1 = $this->factory()->attachment->create_upload_object( __DIR__ . '/../data/test.jpg' );
+		$media_post_id1 = $this->factory()->attachment->create_upload_object( TEST_IMAGE_PATH );
 		$this->assertIsInt( $media_post_id1 );
-		$media_post_id2 = $this->factory()->attachment->create_upload_object( __DIR__ . '/../data/test.jpg' );
+		$media_post_id2 = $this->factory()->attachment->create_upload_object( TEST_IMAGE_PATH );
 		$this->assertIsInt( $media_post_id2 );
 
 		// Add cabin image ids in meta.
@@ -673,7 +674,7 @@ class Test_Urgent_Tracker extends Softrip_TestCase {
 		delete_option( URGENTLY_CHANGED_EXPEDITION_IDS_OPTION );
 
 		// Add image id in meta.
-		update_term_meta( $adventure_term1, 'image', $this->factory()->attachment->create_upload_object( __DIR__ . '/../data/test.jpg' ) );
+		update_term_meta( $adventure_term1, 'image', $this->factory()->attachment->create_upload_object( TEST_IMAGE_PATH ) );
 
 		// Do action. Ideally this do_action will be done by the WP as part of the term update.
 		do_action( 'saved_' . ADVENTURE_OPTION_CATEGORY, $adventure_term1 ); // phpcs:ignore

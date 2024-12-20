@@ -24,6 +24,8 @@ use const Quark\Expeditions\POST_TYPE as EXPEDITION_POST_TYPE;
 use const Quark\Ingestor\DATA_HASH_KEY;
 use const Quark\Ingestor\SCHEDULE_HOOK;
 
+const TEST_IMAGE_PATH = __DIR__ . '/data/test-image.jpg';
+
 /**
  * Class Test_Ingestor
  */

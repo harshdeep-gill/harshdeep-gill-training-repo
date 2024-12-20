@@ -11,6 +11,8 @@ use Quark\Tests\Softrip\Softrip_TestCase;
 
 use function Quark\Core\get_raw_text_from_html;
 use function Quark\Ingestor\Cabins\get_cabins_data;
+use function Quark\Ingestor\get_image_details;
+use function Quark\Ingestor\get_post_modified_time;
 use function Quark\Softrip\Occupancies\get_description_and_pax_count_by_mask;
 use function Quark\Softrip\Occupancies\update_occupancies;
 
@@ -21,6 +23,7 @@ use const Quark\Expeditions\POST_TYPE as EXPEDITION_POST_TYPE;
 use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
 use const Quark\ShipDecks\POST_TYPE as DECK_POST_TYPE;
 use const Quark\Ships\POST_TYPE as SHIP_POST_TYPE;
+use const Quark\Tests\Ingestor\TEST_IMAGE_PATH;
 
 /**
  * Class Test_Cabins
@@ -99,6 +102,8 @@ class Test_Cabins extends Softrip_TestCase {
 				'post_type'  => CABIN_CATEGORY_POST_TYPE,
 				'meta_input' => [
 					'cabin_category_id' => 'POQ-SGL',
+					'drupal_id'         => 81,
+					'cabin_name'        => 'Explorer Single',
 				],
 			]
 		);
@@ -162,8 +167,12 @@ class Test_Cabins extends Softrip_TestCase {
 		$actual   = get_cabins_data( $expedition_post_id, $itinerary_post_id, $departure_post_id );
 		$expected = [
 			[
-				'id'             => 'UNQ-123:2025-01-01:POQ-SGL',
-				'name'           => get_raw_text_from_html( get_the_title( $cabin_post_id1 ) ),
+				'id'             => $cabin_post_id1,
+				'name'           => 'Explorer Single',
+				'drupalId'       => 81,
+				'modified'       => get_post_modified_time( $cabin_post_id1 ),
+				'title'          => get_raw_text_from_html( get_the_title( $cabin_post_id1 ) ),
+				'softripId'      => 'UNQ-123:2025-01-01:POQ-SGL',
 				'code'           => 'POQ-SGL',
 				'description'    => get_raw_text_from_html( get_the_content( null, false, $cabin_post_id1 ) ),
 				'bedDescription' => '',
@@ -279,9 +288,9 @@ class Test_Cabins extends Softrip_TestCase {
 		update_post_meta( $cabin_post_id1, 'cabin_occupancy_pax_range_to', '2' );
 
 		// Create two media posts.
-		$media_post_id1 = $this->factory()->attachment->create_upload_object( __DIR__ . '/data/cabin.jpg' );
+		$media_post_id1 = $this->factory()->attachment->create_upload_object( TEST_IMAGE_PATH );
 		$this->assertIsInt( $media_post_id1 );
-		$media_post_id2 = $this->factory()->attachment->create_upload_object( __DIR__ . '/data/cabin.jpg' );
+		$media_post_id2 = $this->factory()->attachment->create_upload_object( TEST_IMAGE_PATH );
 		$this->assertIsInt( $media_post_id2 );
 
 		// Get alt text for media post.
@@ -305,8 +314,12 @@ class Test_Cabins extends Softrip_TestCase {
 		$actual   = get_cabins_data( $expedition_post_id, $itinerary_post_id, $departure_post_id );
 		$expected = [
 			[
-				'id'             => 'UNQ-123:2025-01-01:POQ-SGL',
-				'name'           => get_raw_text_from_html( get_the_title( $cabin_post_id1 ) ),
+				'id'             => $cabin_post_id1,
+				'name'           => 'Explorer Single',
+				'drupalId'       => 81,
+				'modified'       => get_post_modified_time( $cabin_post_id1 ),
+				'title'          => get_raw_text_from_html( get_the_title( $cabin_post_id1 ) ),
+				'softripId'      => 'UNQ-123:2025-01-01:POQ-SGL',
 				'code'           => 'POQ-SGL',
 				'description'    => get_raw_text_from_html( get_the_content( null, false, $cabin_post_id1 ) ),
 				'bedDescription' => 'Twin',
@@ -315,18 +328,8 @@ class Test_Cabins extends Softrip_TestCase {
 				'size'           => '100 - 200',
 				'occupancySize'  => '1 - 2',
 				'media'          => [
-					[
-						'id'           => $media_post_id1,
-						'fullSizeUrl'  => wp_get_attachment_url( $media_post_id1 ),
-						'thumbnailUrl' => wp_get_attachment_image_url( $media_post_id1, 'thumbnail' ),
-						'alt'          => $alt_text1,
-					],
-					[
-						'id'           => $media_post_id2,
-						'fullSizeUrl'  => wp_get_attachment_url( $media_post_id2 ),
-						'thumbnailUrl' => wp_get_attachment_image_url( $media_post_id2, 'thumbnail' ),
-						'alt'          => 'Cabin 2',
-					],
+					get_image_details( $media_post_id1 ),
+					get_image_details( $media_post_id2 ),
 				],
 				'occupancies'    => [
 					[

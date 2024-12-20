@@ -24,6 +24,7 @@ use const Quark\Localization\GBP_CURRENCY;
 use const Quark\Localization\USD_CURRENCY;
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
 use const Quark\Expeditions\POST_TYPE as EXPEDITION_POST_TYPE;
+use const Quark\Tests\Ingestor\TEST_IMAGE_PATH;
 
 /**
  * Class Test_Adventure_Options
@@ -124,7 +125,7 @@ class Test_Adventure_Options extends Softrip_TestCase {
 		$this->assertEquals( $expected, $actual );
 
 		// Create attachments.
-		$media_post_id1 = $this->factory()->attachment->create_upload_object( __DIR__ . '/data/test.jpg' );
+		$media_post_id1 = $this->factory()->attachment->create_upload_object( TEST_IMAGE_PATH );
 		$this->assertIsInt( $media_post_id1 );
 
 		// Update icon on adventure option category.
@@ -198,7 +199,7 @@ class Test_Adventure_Options extends Softrip_TestCase {
 		$this->assertEquals( $default_expected, $actual );
 
 		// Create attachments.
-		$media_post_id1 = $this->factory()->attachment->create_upload_object( __DIR__ . '/data/test.jpg' );
+		$media_post_id1 = $this->factory()->attachment->create_upload_object( TEST_IMAGE_PATH );
 		$this->assertIsInt( $media_post_id1 );
 
 		// Update icon on adventure option category.
@@ -227,7 +228,7 @@ class Test_Adventure_Options extends Softrip_TestCase {
 		$this->assertEquals( $expected, $actual );
 
 		// Create attachment.
-		$media_post_id2 = $this->factory()->attachment->create_upload_object( __DIR__ . '/data/test.jpg' );
+		$media_post_id2 = $this->factory()->attachment->create_upload_object( TEST_IMAGE_PATH );
 		$this->assertIsInt( $media_post_id2 );
 		$alt_text = get_post_meta( $media_post_id2, '_wp_attachment_image_alt', true );
 
@@ -296,11 +297,11 @@ class Test_Adventure_Options extends Softrip_TestCase {
 		$adventure_option_category_name2 = $adventure_option_category_term2['name'];
 
 		// Create attachments.
-		$media_post_id1 = $this->factory()->attachment->create_upload_object( __DIR__ . '/data/test.jpg' );
+		$media_post_id1 = $this->factory()->attachment->create_upload_object( TEST_IMAGE_PATH );
 		$this->assertIsInt( $media_post_id1 );
-		$media_post_id2 = $this->factory()->attachment->create_upload_object( __DIR__ . '/data/test.jpg' );
+		$media_post_id2 = $this->factory()->attachment->create_upload_object( TEST_IMAGE_PATH );
 		$this->assertIsInt( $media_post_id2 );
-		$media_post_id3 = $this->factory()->attachment->create_upload_object( __DIR__ . '/data/test.jpg' );
+		$media_post_id3 = $this->factory()->attachment->create_upload_object( TEST_IMAGE_PATH );
 		$this->assertIsInt( $media_post_id3 );
 
 		// Update alt text on media 2.

@@ -17,6 +17,7 @@ use function Quark\Ingestor\Expeditions\get_expedition_data;
 use const Quark\Expeditions\DESTINATION_TAXONOMY;
 use const Quark\Expeditions\POST_TYPE as EXPEDITION_POST_TYPE;
 use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
+use const Quark\Tests\Ingestor\TEST_IMAGE_PATH;
 
 /**
  * Class Test_Expeditions
@@ -82,9 +83,9 @@ class Test_Expeditions extends Softrip_TestCase {
 		update_post_meta( $expedition_post_id, 'related_itineraries', [ $itinerary_post_id ] );
 
 		// Create some media post.
-		$media_post_id1 = $this->factory()->attachment->create_upload_object( __DIR__ . '/data/test.jpg' );
+		$media_post_id1 = $this->factory()->attachment->create_upload_object( TEST_IMAGE_PATH );
 		$this->assertIsInt( $media_post_id1 );
-		$media_post_id2 = $this->factory()->attachment->create_upload_object( __DIR__ . '/data/test.jpg' );
+		$media_post_id2 = $this->factory()->attachment->create_upload_object( TEST_IMAGE_PATH );
 		$this->assertIsInt( $media_post_id2 );
 
 		// Get alt text for media post.
