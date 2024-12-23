@@ -190,21 +190,22 @@ function get_cabins_data( int $expedition_post_id = 0, int $itinerary_post_id = 
 
 		// Initialize cabin category data.
 		$cabin_category_data = [
-			'id'             => $cabin_category_post_id,
-			'drupalId'       => absint( $cabin_category_post['post_meta']['drupal_id'] ?? 0 ),
-			'modified'       => get_post_modified_time( 'c', true, $cabin_category_post_id ),
-			'softripId'      => $cabin_category_softrip_id,
-			'name'           => strval( $cabin_category_post['post_meta']['cabin_name'] ?? '' ),
-			'title'          => get_raw_text_from_html( $cabin_category_post['post']->post_title ),
-			'code'           => $cabin_category_code,
-			'description'    => get_raw_text_from_html( $cabin_category_post['post']->post_content ),
-			'bedDescription' => $cabin_category_post['post_meta']['cabin_bed_configuration'] ?? '',
-			'type'           => '',
-			'location'       => '',
-			'size'           => '',
-			'occupancySize'  => '',
-			'media'          => [],
-			'occupancies'    => [],
+			'id'              => $cabin_category_post_id,
+			'drupalId'        => absint( $cabin_category_post['post_meta']['drupal_id'] ?? 0 ),
+			'modified'        => get_post_modified_time( 'c', true, $cabin_category_post_id ),
+			'softripId'       => $cabin_category_softrip_id,
+			'name'            => strval( $cabin_category_post['post_meta']['cabin_name'] ?? '' ),
+			'title'           => get_raw_text_from_html( $cabin_category_post['post']->post_title ),
+			'code'            => $cabin_category_code,
+			'description'     => get_raw_text_from_html( $cabin_category_post['post']->post_content ),
+			'bedDescription'  => $cabin_category_post['post_meta']['cabin_bed_configuration'] ?? '',
+			'spacesAvailable' => absint( get_post_meta( $departure_post_id, 'cabin_spaces_available_' . $cabin_category_post_id, true ) ),
+			'type'            => '',
+			'location'        => '',
+			'size'            => '',
+			'occupancySize'   => '',
+			'media'           => [],
+			'occupancies'     => [],
 		];
 
 		// Get cabin category type from cabin_class taxonomy.

@@ -112,11 +112,12 @@ class Test_Cabins extends Softrip_TestCase {
 		// Insert occupancies for this cabin.
 		$raw_cabins_data = [
 			[
-				'id'          => 'UNQ-123:2025-01-01:POQ-SGL',
-				'code'        => 'POQ-SGL',
-				'name'        => 'Explorer Single',
-				'departureId' => 'UNQ-123:2025-01-01',
-				'occupancies' => [
+				'id'              => 'UNQ-123:2025-01-01:POQ-SGL',
+				'code'            => 'POQ-SGL',
+				'name'            => 'Explorer Single',
+				'departureId'     => 'UNQ-123:2025-01-01',
+				'spacesAvailable' => 10,
+				'occupancies'     => [
 					[
 						'id'             => 'UNQ-123:2025-01-01:POQ-SGL:A',
 						'name'           => 'UNQ-123:2025-01-01:POQ-SGL:A',
@@ -167,21 +168,22 @@ class Test_Cabins extends Softrip_TestCase {
 		$actual   = get_cabins_data( $expedition_post_id, $itinerary_post_id, $departure_post_id );
 		$expected = [
 			[
-				'id'             => $cabin_post_id1,
-				'name'           => 'Explorer Single',
-				'drupalId'       => 81,
-				'modified'       => get_post_modified_time( $cabin_post_id1 ),
-				'title'          => get_raw_text_from_html( get_the_title( $cabin_post_id1 ) ),
-				'softripId'      => 'UNQ-123:2025-01-01:POQ-SGL',
-				'code'           => 'POQ-SGL',
-				'description'    => get_raw_text_from_html( get_the_content( null, false, $cabin_post_id1 ) ),
-				'bedDescription' => '',
-				'type'           => '',
-				'location'       => '',
-				'size'           => '',
-				'occupancySize'  => '',
-				'media'          => [],
-				'occupancies'    => [
+				'id'              => $cabin_post_id1,
+				'name'            => 'Explorer Single',
+				'drupalId'        => 81,
+				'modified'        => get_post_modified_time( $cabin_post_id1 ),
+				'title'           => get_raw_text_from_html( get_the_title( $cabin_post_id1 ) ),
+				'softripId'       => 'UNQ-123:2025-01-01:POQ-SGL',
+				'code'            => 'POQ-SGL',
+				'description'     => get_raw_text_from_html( get_the_content( null, false, $cabin_post_id1 ) ),
+				'bedDescription'  => '',
+				'type'            => '',
+				'location'        => '',
+				'size'            => '',
+				'occupancySize'   => '',
+				'media'           => [],
+				'spacesAvailable' => 10,
+				'occupancies'     => [
 					[
 						'id'                      => 'UNQ-123:2025-01-01:POQ-SGL:SAA',
 						'mask'                    => 'SAA',
@@ -314,24 +316,25 @@ class Test_Cabins extends Softrip_TestCase {
 		$actual   = get_cabins_data( $expedition_post_id, $itinerary_post_id, $departure_post_id );
 		$expected = [
 			[
-				'id'             => $cabin_post_id1,
-				'name'           => 'Explorer Single',
-				'drupalId'       => 81,
-				'modified'       => get_post_modified_time( $cabin_post_id1 ),
-				'title'          => get_raw_text_from_html( get_the_title( $cabin_post_id1 ) ),
-				'softripId'      => 'UNQ-123:2025-01-01:POQ-SGL',
-				'code'           => 'POQ-SGL',
-				'description'    => get_raw_text_from_html( get_the_content( null, false, $cabin_post_id1 ) ),
-				'bedDescription' => 'Twin',
-				'type'           => implode( ', ', [ $cabin_class_term_name, $cabin_class_term_name2 ] ),
-				'location'       => implode( ', ', [ 'Deck 1', 'Deck 2' ] ),
-				'size'           => '100 - 200',
-				'occupancySize'  => '1 - 2',
-				'media'          => [
+				'id'              => $cabin_post_id1,
+				'name'            => 'Explorer Single',
+				'drupalId'        => 81,
+				'modified'        => get_post_modified_time( $cabin_post_id1 ),
+				'title'           => get_raw_text_from_html( get_the_title( $cabin_post_id1 ) ),
+				'softripId'       => 'UNQ-123:2025-01-01:POQ-SGL',
+				'code'            => 'POQ-SGL',
+				'description'     => get_raw_text_from_html( get_the_content( null, false, $cabin_post_id1 ) ),
+				'bedDescription'  => 'Twin',
+				'type'            => implode( ', ', [ $cabin_class_term_name, $cabin_class_term_name2 ] ),
+				'location'        => implode( ', ', [ 'Deck 1', 'Deck 2' ] ),
+				'size'            => '100 - 200',
+				'occupancySize'   => '1 - 2',
+				'spacesAvailable' => 10,
+				'media'           => [
 					get_image_details( $media_post_id1 ),
 					get_image_details( $media_post_id2 ),
 				],
-				'occupancies'    => [
+				'occupancies'     => [
 					[
 						'id'                      => 'UNQ-123:2025-01-01:POQ-SGL:SAA',
 						'mask'                    => 'SAA',
