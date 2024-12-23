@@ -226,7 +226,7 @@ function get_itineraries( int $expedition_post_id = 0 ): array {
 		}
 
 		// Add days data.
-		$itinerary_data['days'] = get_itinerary_days( $itinerary_post_id );
+		$itinerary_data['days'] = get_itinerary_days_data( $itinerary_post_id );
 
 		// Add inclusions data.
 		$itinerary_data['inclusions'] = get_inclusions_data( $itinerary_post_id );
@@ -261,7 +261,7 @@ function get_itineraries( int $expedition_post_id = 0 ): array {
  *    description: string,
  * }>
  */
-function get_itinerary_days( int $itinerary_post_id = 0 ): array {
+function get_itinerary_days_data( int $itinerary_post_id = 0 ): array {
 	// Initialize itinerary days.
 	$itinerary_days_data = [];
 
