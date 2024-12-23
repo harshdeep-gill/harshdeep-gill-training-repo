@@ -10,7 +10,11 @@ namespace Quark\Tests\Ingestor\Itineraries;
 use Quark\Tests\Softrip\Softrip_TestCase;
 
 use function Quark\Core\get_raw_text_from_html;
+use function Quark\Ingestor\get_post_modified_time;
+use function Quark\Ingestor\Itineraries\get_exclusions_data;
+use function Quark\Ingestor\Itineraries\get_inclusions_data;
 use function Quark\Ingestor\Itineraries\get_itineraries;
+use function Quark\Ingestor\Itineraries\get_itinerary_days_data;
 
 use const Quark\Expeditions\POST_TYPE as EXPEDITION_POST_TYPE;
 use const Quark\Itineraries\DEPARTURE_LOCATION_TAXONOMY;
@@ -53,7 +57,14 @@ class Test_Itineraries extends Softrip_TestCase {
 		$this->assertEquals( $expected, $actual );
 
 		// Create a itinerary post without softrip code.
-		$itinerary_post_id1 = $this->factory()->post->create( [ 'post_type' => ITINERARY_POST_TYPE ] );
+		$itinerary_post_id1 = $this->factory()->post->create(
+			[
+				'post_type'  => ITINERARY_POST_TYPE,
+				'meta_input' => [
+					'drupal_id' => 123,
+				],
+			]
+		);
 		$this->assertIsInt( $itinerary_post_id1 );
 
 		// Assign itinerary to the expedition post.
@@ -77,14 +88,25 @@ class Test_Itineraries extends Softrip_TestCase {
 		$actual   = get_itineraries( $expedition_post_id );
 		$expected = [
 			[
-				'id'             => $itinerary_post_id1,
-				'packageId'      => 'UNQ-123',
-				'name'           => get_raw_text_from_html( get_the_title( $itinerary_post_id1 ) ),
-				'published'      => true,
-				'startLocation'  => '',
-				'endLocation'    => '',
-				'departures'     => [],
-				'durationInDays' => 7,
+				'id'                     => $itinerary_post_id1,
+				'packageId'              => 'UNQ-123',
+				'name'                   => get_raw_text_from_html( get_the_title( $itinerary_post_id1 ) ),
+				'published'              => true,
+				'startLocation'          => '',
+				'endLocation'            => '',
+				'departures'             => [],
+				'durationInDays'         => 7,
+				'drupalId'               => 123,
+				'modified'               => get_post_modified_time( $itinerary_post_id1 ),
+				'season'                 => '',
+				'embarkation'            => '',
+				'embarkationPortCode'    => '',
+				'disembarkation'         => '',
+				'disembarkationPortCode' => '',
+				'itineraryMap'           => [],
+				'days'                   => get_itinerary_days_data( $itinerary_post_id1 ),
+				'inclusions'             => get_inclusions_data( $itinerary_post_id1 ),
+				'exclusions'             => get_exclusions_data( $itinerary_post_id1 ),
 			],
 		];
 		$this->assertEquals( $expected, $actual );
@@ -116,14 +138,25 @@ class Test_Itineraries extends Softrip_TestCase {
 		$actual   = get_itineraries( $expedition_post_id );
 		$expected = [
 			[
-				'id'             => $itinerary_post_id1,
-				'packageId'      => 'UNQ-123',
-				'name'           => get_raw_text_from_html( get_the_title( $itinerary_post_id1 ) ),
-				'published'      => true,
-				'startLocation'  => $start_location_term_name,
-				'endLocation'    => $end_location_term_name,
-				'departures'     => [],
-				'durationInDays' => 7,
+				'id'                     => $itinerary_post_id1,
+				'packageId'              => 'UNQ-123',
+				'name'                   => get_raw_text_from_html( get_the_title( $itinerary_post_id1 ) ),
+				'published'              => true,
+				'startLocation'          => $start_location_term_name,
+				'endLocation'            => $end_location_term_name,
+				'departures'             => [],
+				'durationInDays'         => 7,
+				'drupalId'               => 123,
+				'modified'               => get_post_modified_time( $itinerary_post_id1 ),
+				'season'                 => '',
+				'embarkation'            => '',
+				'embarkationPortCode'    => '',
+				'disembarkation'         => '',
+				'disembarkationPortCode' => '',
+				'itineraryMap'           => [],
+				'days'                   => get_itinerary_days_data( $itinerary_post_id1 ),
+				'inclusions'             => get_inclusions_data( $itinerary_post_id1 ),
+				'exclusions'             => get_exclusions_data( $itinerary_post_id1 ),
 			],
 		];
 		$this->assertEquals( $expected, $actual );
@@ -149,24 +182,46 @@ class Test_Itineraries extends Softrip_TestCase {
 		$actual   = get_itineraries( $expedition_post_id );
 		$expected = [
 			[
-				'id'             => $itinerary_post_id1,
-				'packageId'      => 'UNQ-123',
-				'name'           => get_raw_text_from_html( get_the_title( $itinerary_post_id1 ) ),
-				'published'      => true,
-				'startLocation'  => $start_location_term_name,
-				'endLocation'    => $end_location_term_name,
-				'departures'     => [],
-				'durationInDays' => 7,
+				'id'                     => $itinerary_post_id1,
+				'packageId'              => 'UNQ-123',
+				'name'                   => get_raw_text_from_html( get_the_title( $itinerary_post_id1 ) ),
+				'published'              => true,
+				'startLocation'          => $start_location_term_name,
+				'endLocation'            => $end_location_term_name,
+				'departures'             => [],
+				'durationInDays'         => 7,
+				'drupalId'               => 123,
+				'modified'               => get_post_modified_time( $itinerary_post_id1 ),
+				'season'                 => '',
+				'embarkation'            => '',
+				'embarkationPortCode'    => '',
+				'disembarkation'         => '',
+				'disembarkationPortCode' => '',
+				'itineraryMap'           => [],
+				'days'                   => get_itinerary_days_data( $itinerary_post_id1 ),
+				'inclusions'             => get_inclusions_data( $itinerary_post_id1 ),
+				'exclusions'             => get_exclusions_data( $itinerary_post_id1 ),
 			],
 			[
-				'id'             => $itinerary_post_id2,
-				'packageId'      => 'UNQ-456',
-				'name'           => get_raw_text_from_html( get_the_title( $itinerary_post_id2 ) ),
-				'published'      => true,
-				'startLocation'  => '',
-				'endLocation'    => '',
-				'departures'     => [],
-				'durationInDays' => 0,
+				'id'                     => $itinerary_post_id2,
+				'packageId'              => 'UNQ-456',
+				'name'                   => get_raw_text_from_html( get_the_title( $itinerary_post_id2 ) ),
+				'published'              => true,
+				'startLocation'          => '',
+				'endLocation'            => '',
+				'departures'             => [],
+				'durationInDays'         => 0,
+				'drupalId'               => 0,
+				'modified'               => get_post_modified_time( $itinerary_post_id1 ),
+				'season'                 => '',
+				'embarkation'            => '',
+				'embarkationPortCode'    => '',
+				'disembarkation'         => '',
+				'disembarkationPortCode' => '',
+				'itineraryMap'           => [],
+				'days'                   => get_itinerary_days_data( $itinerary_post_id1 ),
+				'inclusions'             => get_inclusions_data( $itinerary_post_id1 ),
+				'exclusions'             => get_exclusions_data( $itinerary_post_id1 ),
 			],
 		];
 		$this->assertEquals( $expected, $actual );
