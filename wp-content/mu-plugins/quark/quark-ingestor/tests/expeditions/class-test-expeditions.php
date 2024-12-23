@@ -13,6 +13,8 @@ use WP_Error;
 use function Quark\Core\get_raw_text_from_html;
 use function Quark\Ingestor\Expeditions\get_destination_terms;
 use function Quark\Ingestor\Expeditions\get_expedition_data;
+use function Quark\Ingestor\get_image_details;
+use function Quark\Ingestor\get_post_modified_time;
 
 use const Quark\Expeditions\DESTINATION_TAXONOMY;
 use const Quark\Expeditions\POST_TYPE as EXPEDITION_POST_TYPE;
@@ -61,9 +63,10 @@ class Test_Expeditions extends Softrip_TestCase {
 				'destinations' => [],
 				'itineraries'  => [],
 				'heroImage'    => [],
-				'modified'     => get_the_modified_date( 'Y-m-d H:i:s', $expedition_post_id ),
+				'modified'     => get_post_modified_time( $expedition_post_id ),
 				'highlights'   => [],
 				'url'          => get_permalink( $expedition_post_id ),
+				'drupalId'     => 0,
 			];
 		$actual   = get_expedition_data( $expedition_post_id );
 		$this->assertEquals( $expected, $actual );
@@ -185,33 +188,34 @@ class Test_Expeditions extends Softrip_TestCase {
 				'published'    => true,
 				'description'  => 'Here is the overview. Surfing You never know the world until you explore it.',
 				'images'       => [
-					[
-						'id'           => $media_post_id1,
-						'fullSizeUrl'  => wp_get_attachment_url( $media_post_id1 ),
-						'thumbnailUrl' => wp_get_attachment_image_url( $media_post_id1, 'thumbnail' ),
-						'alt'          => $alt_text1,
-					],
-					[
-						'id'           => $media_post_id2,
-						'fullSizeUrl'  => wp_get_attachment_url( $media_post_id2 ),
-						'thumbnailUrl' => wp_get_attachment_image_url( $media_post_id2, 'thumbnail' ),
-						'alt'          => $alt_text2,
-					],
-				], // @todo Get description after parsing post content.
+					get_image_details( $media_post_id1 ),
+					get_image_details( $media_post_id2 ),
+				],
 				'destinations' => [],
 				'itineraries'  => [
 					[
-						'id'             => $itinerary_post_id,
-						'packageId'      => 'UNQ-123',
-						'name'           => get_raw_text_from_html( get_the_title( $itinerary_post_id ) ),
-						'published'      => true,
-						'startLocation'  => '',
-						'endLocation'    => '',
-						'departures'     => [],
-						'durationInDays' => 0,
+						'id'                     => $itinerary_post_id,
+						'packageId'              => 'UNQ-123',
+						'name'                   => get_raw_text_from_html( get_the_title( $itinerary_post_id ) ),
+						'published'              => true,
+						'drupalId'               => 0,
+						'startLocation'          => '',
+						'endLocation'            => '',
+						'departures'             => [],
+						'durationInDays'         => 0,
+						'modified'               => get_post_modified_time( $itinerary_post_id ),
+						'season'                 => '',
+						'embarkation'            => '',
+						'embarkationPortCode'    => '',
+						'disembarkation'         => '',
+						'disembarkationPortCode' => '',
+						'itineraryMap'           => [],
+						'days'                   => [],
+						'inclusions'             => [],
+						'exclusions'             => [],
 					],
 				],
-				'modified'     => get_the_modified_date( 'Y-m-d H:i:s', $expedition_post_id ),
+				'modified'     => get_post_modified_time( $expedition_post_id ),
 				'highlights'   => [
 					'Explore highlights of the Antarctic Peninsula',
 					'Travel safely and comfortably aboard any Quark Expeditions ice-strengthened vessel',
@@ -220,13 +224,9 @@ class Test_Expeditions extends Softrip_TestCase {
 					'Immerse yourself in the icy realm of the Antarctic, with an optional paddling excursion',
 					'ABCD',
 				],
-				'heroImage'    => [
-					'id'           => $media_post_id1,
-					'fullSizeUrl'  => wp_get_attachment_url( $media_post_id1 ),
-					'thumbnailUrl' => wp_get_attachment_image_url( $media_post_id1, 'thumbnail' ),
-					'alt'          => $alt_text1,
-				],
+				'heroImage'    => get_image_details( $media_post_id1 ),
 				'url'          => get_permalink( $expedition_post_id ),
+				'drupalId'     => 0,
 			];
 		$actual   = get_expedition_data( $expedition_post_id );
 		$this->assertEquals( $expected, $actual );
