@@ -29,6 +29,12 @@ const SHIP_SPECIFICATION_MAPPING = [
 		'payload_key' => 'length',
 	],
 	[
+		'meta_key'    => 'breadth',
+		'id'          => 'breadth',
+		'type'        => 'Breadth',
+		'payload_key' => 'breadth',
+	],
+	[
 		'meta_key'    => 'draft',
 		'id'          => 'draft',
 		'type'        => 'Draft',
@@ -63,6 +69,60 @@ const SHIP_SPECIFICATION_MAPPING = [
 		'id'          => 'staff',
 		'type'        => 'Staff and Crew',
 		'payload_key' => 'staffAndCrew',
+	],
+	[
+		'meta_key'    => 'draft',
+		'id'          => 'draft',
+		'type'        => 'Draft',
+		'payload_key' => 'draft',
+	],
+	[
+		'meta_key'    => 'guest_ratio',
+		'id'          => 'guest_ratio',
+		'type'        => 'Guest Ratio',
+		'payload_key' => 'guestRatio',
+	],
+	[
+		'meta_key'    => 'stabilizers',
+		'id'          => 'stabilizers',
+		'type'        => 'Stabilizers',
+		'payload_key' => 'stabilizers',
+	],
+	[
+		'meta_key'    => 'propulsion',
+		'id'          => 'propulsion',
+		'type'        => 'Propulsion',
+		'payload_key' => 'propulsion',
+	],
+	[
+		'meta_key'    => 'zodiacs',
+		'id'          => 'zodiacs',
+		'type'        => 'Zodiacs',
+		'payload_key' => 'zodiacs',
+	],
+	[
+		'meta_key'    => 'voltage',
+		'id'          => 'voltage',
+		'type'        => 'Voltage',
+		'payload_key' => 'voltage',
+	],
+	[
+		'meta_key'    => 'gross_tonnage',
+		'id'          => 'gross_tonnage',
+		'type'        => 'Gross Tonnage',
+		'payload_key' => 'grossTonnage',
+	],
+	[
+		'meta_key'    => 'year_built',
+		'id'          => 'year_built',
+		'type'        => 'Year Built',
+		'payload_key' => 'yearBuilt',
+	],
+	[
+		'meta_key'    => 'year_refurbished',
+		'id'          => 'year_refurbished',
+		'type'        => 'Year Refurbished',
+		'payload_key' => 'yearRefurbished',
 	],
 ];
 
