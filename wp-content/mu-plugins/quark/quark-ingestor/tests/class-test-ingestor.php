@@ -15,6 +15,7 @@ use function Quark\Ingestor\cron_is_scheduled;
 use function Quark\Ingestor\cron_schedule_push;
 use function Quark\Ingestor\do_push;
 use function Quark\Ingestor\get_all_data;
+use function Quark\Ingestor\get_image_details;
 use function Quark\Ingestor\get_post_modified_time;
 use function Quark\Ingestor\push_expedition_data;
 use function Quark\Softrip\do_sync;
@@ -1089,5 +1090,54 @@ class Test_Ingestor extends Softrip_TestCase {
 			],
 			$expedition_data2
 		);
+	}
+
+	/**
+	 * Test get image details.
+	 *
+	 * @covers \Quark\Ingestor\get_image_details
+	 *
+	 * @return void
+	 */
+	public function test_get_image_details(): void {
+		// Default expected.
+		$default_expected = [];
+
+		// Test with no arguments.
+		$actual = get_image_details();
+		$this->assertEquals( $default_expected, $actual );
+
+		// Test with invalid image id.
+		$actual = get_image_details( 9999 );
+		$this->assertEquals( $default_expected, $actual );
+
+		// Create some media post.
+		$media_post_id1 = $this->factory()->attachment->create_upload_object( TEST_IMAGE_PATH );
+		$this->assertIsInt( $media_post_id1 );
+
+		// Get alt text.
+		$alt_text = get_post_meta( $media_post_id1, '_wp_attachment_image_alt', true );
+
+		// Test with valid image id.
+		$actual = get_image_details( $media_post_id1 );
+		$this->assertIsArray( $actual );
+
+		// Expected.
+		$expected = [
+			'id'           => $media_post_id1,
+			'fullSizeUrl'  => wp_get_attachment_url( $media_post_id1 ),
+			'thumbnailUrl' => wp_get_attachment_image_url( $media_post_id1, 'thumbnail' ),
+			'alt'          => $alt_text,
+			'type'         => 'image',
+			'drupalId'     => 0,
+			'title'        => get_the_title( $media_post_id1 ),
+			'dimensions'   => [
+				'width'  => 1,
+				'height' => 1,
+			],
+		];
+
+		// Assert.
+		$this->assertEquals( $expected, $actual );
 	}
 }
