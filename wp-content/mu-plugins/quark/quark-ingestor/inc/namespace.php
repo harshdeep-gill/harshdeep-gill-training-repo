@@ -218,7 +218,7 @@ function do_push( array $expedition_post_ids = [], bool $changed_only = true ): 
 		}
 
 		// JSON encode expedition data.
-		$json_expedition_data = wp_json_encode( $expedition_data );
+		$json_expedition_data = wp_json_encode( $expedition_data, JSON_UNESCAPED_UNICODE );
 
 		// Validate JSON.
 		if ( empty( $json_expedition_data ) ) {
