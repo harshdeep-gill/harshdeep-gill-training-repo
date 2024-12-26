@@ -131,8 +131,9 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 							];
 
 							// Add title.
-							$title['title']      = $child_block->attributes['title'] ?? '';
-							$title['text_color'] = $child_block->attributes['textColor'] ?? '';
+							$title['title']          = $child_block->attributes['title'] ?? '';
+							$title['text_color']     = $child_block->attributes['textColor'] ?? '';
+							$title['use_promo_font'] = $child_block->attributes['usePromoFont'] ?? false;
 
 							// Add to attributes.
 							$component_attributes['left'][] = $title;
@@ -158,8 +159,9 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 							];
 
 							// Add subtitle.
-							$subtitle['subtitle']   = $child_block->attributes['subtitle'] ?? '';
-							$subtitle['text_color'] = $child_block->attributes['textColor'] ?? '';
+							$subtitle['subtitle']       = $child_block->attributes['subtitle'] ?? '';
+							$subtitle['text_color']     = $child_block->attributes['textColor'] ?? '';
+							$subtitle['use_promo_font'] = $child_block->attributes['usePromoFont'] ?? false;
 
 							// Add to attributes.
 							$component_attributes['left'][] = $subtitle;
@@ -172,8 +174,9 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 							];
 
 							// Add description.
-							$description['description'] = implode( '', array_map( 'render_block', $child_block->parsed_block['innerBlocks'] ) );
-							$description['text_color']  = $child_block->attributes['textColor'] ?? '';
+							$description['description']    = implode( '', array_map( 'render_block', $child_block->parsed_block['innerBlocks'] ) );
+							$description['text_color']     = $child_block->attributes['textColor'] ?? '';
+							$description['use_promo_font'] = $child_block->attributes['usePromoFont'] ?? false;
 
 							// Add to attributes.
 							$component_attributes['left'][] = $description;
