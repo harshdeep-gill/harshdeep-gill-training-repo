@@ -6,5 +6,5 @@
 	font-display: swap;
 	src:
 		local(""),
-		url("knockout-49-liteweight-regular.otf");
+		url(knockout-49-liteweight-regular.otf) format("opentype");
 }
