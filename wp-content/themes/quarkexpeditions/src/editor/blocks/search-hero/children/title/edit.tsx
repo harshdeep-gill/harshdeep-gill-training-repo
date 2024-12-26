@@ -60,7 +60,7 @@ export default function Edit( { className, attributes, setAttributes, context }:
 
 	// Set the block properties.
 	const blockProps = useBlockProps( {
-		className: classnames( className, 'search-hero__title' ),
+		className: classnames( className, 'search-hero__title', attributes.usePromoFont ? 'font-family--promo' : '' ),
 	} );
 
 	// Return the block's markup.
@@ -73,6 +73,12 @@ export default function Edit( { className, attributes, setAttributes, context }:
 						checked={ attributes.syncPostTitle }
 						onChange={ ( syncPostTitle ) => setAttributes( { syncPostTitle } ) }
 						help={ __( 'Should the hero title be synced with the post title?', 'qrk' ) }
+					/>
+					<ToggleControl
+						label={ __( 'Use Promo Font', 'qrk' ) }
+						checked={ attributes.usePromoFont }
+						onChange={ ( usePromoFont ) => setAttributes( { usePromoFont } ) }
+						help={ __( 'Should this text be in the Promo Font?', 'qrk' ) }
 					/>
 				</PanelBody>
 			</InspectorControls>

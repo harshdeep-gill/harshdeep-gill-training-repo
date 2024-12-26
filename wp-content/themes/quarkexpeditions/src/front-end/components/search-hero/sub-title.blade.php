@@ -9,7 +9,7 @@
 		return;
 	}
 
-	$classes = [ 'search-hero__sub-title' ];
+	$classes = [ 'search-hero__sub-title', 'h5' ];
 
 	if ( ! empty( $text_color ) && 'white' === $text_color ) {
 		$classes[] = 'color-context--dark';
@@ -20,6 +20,6 @@
 	}
 @endphp
 
-<div @class( $classes )>
-	<h5 class="h5"><x-escape :content="$title" /></h5>
+<h5 @class( $classes )>
+	<x-escape :content="$title" />
 </div>
