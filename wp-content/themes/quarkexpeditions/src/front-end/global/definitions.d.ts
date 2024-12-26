@@ -39,6 +39,47 @@ interface Window {
 		};
 	};
 	queryString?: QueryString;
+	YT?: typeof YT;
+	onYouTubeIframeAPIReady: Function;
+}
+
+/**
+ * YouTube Player API.
+ */
+declare namespace YT {
+	interface PlayerOptions {
+		height: string;
+		width: string;
+		videoId: string;
+		events?: {
+			onReady?: Function;
+			onStateChange?: Function;
+		};
+	}
+
+	/**
+	 * YouTube Player Class.
+	 */
+	class Player {
+		/**
+		 * Constructs new YouTube Player Instance.
+		 *
+		 * @param id The ID of the DOM element that is to be attached to the player.
+		 * @param options The configuration options for the player.
+		 */
+		constructor( id: string, options: YT.PlayerOptions );
+
+		playVideo(): void;
+	}
+
+	const PlayerState: {
+		UNSTARTED: -1,
+		ENDED: 0,
+		PLAYING: 1,
+		PAUSED: 2,
+		BUFFERING: 3,
+		QUEUED: 4,
+	};
 }
 
 /**
