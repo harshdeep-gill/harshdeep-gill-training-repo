@@ -452,7 +452,8 @@ function get_breadcrumbs_ancestors(): array {
 function translate_term_meta_keys( array $meta_keys = [] ): array {
 	// Meta keys for translation.
 	$extra_keys = [
-		'image' => [ 'attachment', 'icon' ],
+		'image' => 'attachment',
+		'icon'  => 'attachment',
 	];
 
 	// Return meta keys to be translated.

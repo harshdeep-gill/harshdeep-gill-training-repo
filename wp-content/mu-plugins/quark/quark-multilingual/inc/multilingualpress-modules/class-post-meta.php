@@ -261,12 +261,17 @@ class Post_Meta implements ModuleServiceProvider {
 	/**
 	 * Filter post meta values.
 	 *
-	 * @param array<string, mixed> $post_meta Post meta.
-	 * @param RelationshipContext  $context   Context.
+	 * @param array<string, mixed>     $post_meta Post meta.
+	 * @param RelationshipContext|null $context   Context.
 	 *
 	 * @return array<string, mixed>
 	 */
-	public static function filter_post_meta_values( array $post_meta, RelationshipContext $context ): array { // phpcs:ignore Travelopia.Functions.FunctionArgsDefaultValue.Missing
+	public static function filter_post_meta_values( array $post_meta = [], ?RelationshipContext $context = null ): array { // phpcs:ignore Travelopia.Functions.FunctionArgsDefaultValue.Missing
+		// Bail if context is not an instance of RelationshipContext.
+		if ( ! $context instanceof RelationshipContext ) {
+			return $post_meta;
+		}
+
 		// Get the source and destination site ids.
 		$source_site_id      = $context->sourceSiteId();
 		$destination_site_id = $context->remoteSiteId();
@@ -302,8 +307,8 @@ class Post_Meta implements ModuleServiceProvider {
 				continue;
 			}
 
-			// Store updated meta value.
-			$updated_meta_value = [];
+			// Get the meta value.
+			$original_meta_value = maybe_unserialize( $meta_value[0] );
 
 			// Loop through meta keys for translation.
 			foreach ( $meta_keys as $key => $type ) {
@@ -312,13 +317,17 @@ class Post_Meta implements ModuleServiceProvider {
 					continue;
 				}
 
-				// Get the meta value.
-				$meta_value = maybe_unserialize( $meta_value[0] );
-
-				// Check if meta value is an array after unserialize.
-				if ( is_array( $meta_value ) ) {
-					$meta_value = $meta_value[0];
+				// Store the first value from original meta value.
+				// Meta value should always be a string at this point.
+				// If an array of values need to be translated, a custom function should be used.
+				if ( is_array( $original_meta_value ) ) {
+					$meta_value = $original_meta_value[0] ?? '';
+				} else {
+					$meta_value = $original_meta_value;
 				}
+
+				// Initialize updated meta value.
+				$updated_meta_value = [];
 
 				// Check the type of meta value.
 				if ( 'attachment' === $type ) {
@@ -395,12 +404,42 @@ class Post_Meta implements ModuleServiceProvider {
 							break;
 						}
 					}
-				}
-			}
+				} elseif ( is_callable( $type ) ) {
+					// If meta value is an array after unserialize, loop through the array.
+					if ( is_array( $original_meta_value ) ) {
+						// Store the translated values.
+						$translated_values = [];
 
-			// Update post meta with translated values.
-			if ( ! empty( $updated_meta_value ) ) {
-				$post_meta[ $meta_key ] = $updated_meta_value;
+						// Loop through the original meta value.
+						foreach ( $original_meta_value as $value ) {
+							// Call the function to get the translated value.
+							$translated_value = $type( $meta_key, $value, $source_site_id, $destination_site_id );
+
+							// Update meta value with translated value.
+							if ( ! empty( $translated_value ) ) {
+								$translated_values[] = $translated_value;
+							}
+						}
+
+						// Update meta value with translated value.
+						if ( ! empty( $translated_values ) ) {
+							$updated_meta_value[] = $translated_values;
+						}
+					} else {
+						// Call the function to get the translated value.
+						$translated_value = $type( $meta_key, $meta_value, $source_site_id, $destination_site_id );
+
+						// Update meta value with translated value.
+						if ( ! empty( $translated_value ) ) {
+							$updated_meta_value[] = $translated_value;
+						}
+					}
+				}
+
+				// Update post meta with translated values.
+				if ( ! empty( $updated_meta_value ) ) {
+					$post_meta[ $meta_key ] = $updated_meta_value;
+				}
 			}
 		}
 
