@@ -1,7 +1,7 @@
 /**
  * Global variables.
  */
-const { HTMLElement } = window;
+const { HTMLElement, addEventListenerWithYieldToMain } = window;
 
 /**
  * QuarkDialogOpenElement Class.
@@ -39,7 +39,7 @@ export class QuarkDialogOpenElement extends HTMLElement {
 		}
 
 		// Events.
-		this.addEventListener( 'click', this.openDialog.bind( this ) );
+		addEventListenerWithYieldToMain( this, 'click', this.openDialog.bind( this ) );
 	}
 
 	/**

@@ -1,7 +1,7 @@
 /**
  * Global variables.
  */
-const { HTMLElement, customElements } = window;
+const { HTMLElement, customElements, addEventListenerWithYieldToMain } = window;
 
 /**
  * Internal dependencies.
@@ -136,7 +136,7 @@ export class ProductOptionsCards extends HTMLElement {
 		} );
 
 		// Event listener for card.
-		card.addEventListener( 'click', () => {
+		addEventListenerWithYieldToMain( card, 'click', () => {
 			// Check if card is open.
 			const isOpen = card.hasAttribute( 'data-open' );
 

@@ -6,7 +6,12 @@ const { customElements, HTMLElement } = window;
 /**
  * Internal Dependency.
  */
-import { debounce } from '../../global/utility';
+import { throttle } from '../../global/utility';
+
+/**
+ * External Dependency.
+ */
+const { addEventListenerWithYieldToMain } = window;
 
 /**
  * Departure Card.
@@ -37,13 +42,21 @@ export default class DepartureCard extends HTMLElement {
 		this.dropdownButton = this.querySelector( '.departure-cards__cta' );
 		this.moreDetails = this.querySelector( '.departure-cards__more-details' );
 
+		// Check for existence.
+		if ( ! this.dropdownButton ) {
+			// Bail.
+			return;
+		}
+
 		// Events.
-		window.addEventListener( 'resize', debounce( this.updateOfferHiddenItems.bind( this ), 10 ), { passive: true } );
+		window.addEventListener( 'resize', throttle( this.updateOfferHiddenItems.bind( this ), 10 ), { passive: true } );
 		window.addEventListener( 'load', () => {
 			// Update the hidden items.
 			this.updateOfferHiddenItems();
 		} );
-		this.dropdownButton?.addEventListener( 'click', this.toggle.bind( this ) );
+
+		// Add event listener.
+		addEventListenerWithYieldToMain( this.dropdownButton, 'click', this.toggle.bind( this ) );
 	}
 
 	/**

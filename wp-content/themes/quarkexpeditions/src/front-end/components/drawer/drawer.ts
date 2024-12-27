@@ -1,4 +1,9 @@
 /**
+ * Quark Drawer Element.
+ */
+import { throttle } from '../../global/utility';
+
+/**
  * Global variables.
  */
 const { HTMLElement } = window;
@@ -25,7 +30,7 @@ export class QuarkDrawerElement extends HTMLElement {
 
 		// Close the drawer on resize.
 		if ( 'true' === closeOnDesktop ) {
-			window.addEventListener( 'resize', this.handleResize.bind( this ) );
+			window.addEventListener( 'resize', throttle( this.handleResize.bind( this ) ) );
 		}
 	}
 

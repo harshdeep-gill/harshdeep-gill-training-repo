@@ -1,4 +1,9 @@
 /**
+ * Internal dependencies.
+ */
+import { throttle } from '../../global/utility';
+
+/**
  * Global variables.
  */
 const { customElements, HTMLElement } = window;
@@ -57,10 +62,10 @@ export default class SecondaryNavigation extends HTMLElement {
 		 * allowing the browser to optimize the scroll performance.
 		 * Without this you will get warning.
 		 */
-		this.ownerDocument.addEventListener( 'scroll', this.onScroll.bind( this ), { passive: true } );
+		this.ownerDocument.addEventListener( 'scroll', throttle( this.onScroll.bind( this ) ), { passive: true } );
 
 		// Run on resize events.
-		window.addEventListener( 'resize', this.updateNav.bind( this ) );
+		window.addEventListener( 'resize', throttle( this.updateNav.bind( this ) ) );
 		this.updateNav();
 
 		// Highlight content item by hash on initial render.

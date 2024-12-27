@@ -142,7 +142,7 @@ export const convertPropertiesFromSnakeCaseToCamelCase = ( data: object = {} ): 
  * @param {Function} callbackFunction Callback function.
  * @param {number}   delay            Delay in ms.
  */
-export const throttle = ( callbackFunction: Function, delay: number ) => {
+export const throttle = ( callbackFunction: Function, delay: number = 100 ) => {
 	// Timer flag.
 	let timerFlag: null | NodeJS.Timeout = null;
 
