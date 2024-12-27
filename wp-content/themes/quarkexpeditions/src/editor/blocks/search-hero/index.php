@@ -224,7 +224,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 								$item['media_id'] = $card_item['attrs']['media']['id'] ?? 0;
 								$item['tag_text'] = ! empty( $card_item['attrs']['hasTag'] ) ? $card_item['attrs']['tagText'] : '';
 								$item['title']    = $card_item['attrs']['title'] ?? '';
-								$item['cta']      = ! empty( $card_item['attrs']['hasCtaLink'] ) ? $card_item['attrs']['cta'] : [];
+								$item['cta']      = ! empty( $card_item['attrs']['hasCtaLink'] ) && ! empty( $card_item['attrs']['cta'] ) ? $card_item['attrs']['cta'] : [];
 
 								// Add item attributes.
 								$component_attributes['hero_details_slider']['items'][] = $item;
