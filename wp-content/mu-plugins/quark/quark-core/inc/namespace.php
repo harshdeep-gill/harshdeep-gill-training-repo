@@ -409,11 +409,6 @@ function doing_automated_test(): bool {
  * @return string Formatted price.
  */
 function format_price( float $price = 0, string $currency = DEFAULT_CURRENCY ): string {
-	// Check if price is empty.
-	if ( empty( $price ) ) {
-		return '';
-	}
-
 	// Set default separators.
 	$string_format = '%1$s%2$s %3$s';
 

@@ -1,0 +1,39 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Footer Association Link",
+	"name": "quark/footer-association-link",
+	"description": "Display an association link.",
+	"parent": [
+		"quark/footer-associations"
+	],
+	"category": "layout",
+	"keywords": [
+		"footer",
+		"association",
+		"link"
+	],
+	"textdomain": "qrk",
+	"attributes": {
+		"type": {
+			"type": "string",
+			"default": "",
+			"enum": [
+				"iaato",
+				"aeco",
+				""
+			]
+		},
+		"url": {
+			"type": "object",
+			"default": {}
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

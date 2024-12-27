@@ -9,6 +9,11 @@ const { zustand, fetchPartial } = window;
 const { setState, getState } = zustand.stores.bookDeparturesExpeditions;
 
 /**
+ * External dependencies.
+ */
+const { yieldToMain } = window;
+
+/**
  * Initialize data for the component.
  *
  * @param {Object} settings              Settings.
@@ -171,7 +176,10 @@ export const markupUpdated = () => {
 /**
  * Load more results.
  */
-export const loadMoreResults = () => {
+export const loadMoreResults = async () => {
+	// Update UI by yielding to main thread.
+	await yieldToMain();
+
 	// Get state.
 	const { hasNextPage, nextPage } = getState();
 

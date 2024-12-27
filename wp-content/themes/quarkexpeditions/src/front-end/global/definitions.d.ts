@@ -103,3 +103,12 @@ interface GlobalState {
 		defaultPhoneNumber: string,
 	},
 }
+
+/**
+ * Event Listener Options interface.
+ */
+interface AddEventListenerOptions extends EventListenerOptions {
+	passive?: boolean;
+	once?: boolean;
+	signal?: AbortSignal;
+}
