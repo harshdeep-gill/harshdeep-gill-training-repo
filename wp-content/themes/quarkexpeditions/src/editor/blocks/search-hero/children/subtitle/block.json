@@ -23,7 +23,11 @@
 				"white",
 				"black"
 			]
-		}
+		},
+    "usePromoFont": {
+      "type": "boolean",
+      "default": false
+    }
 	},
 	"parent": [
 		"quark/search-hero-title-container"

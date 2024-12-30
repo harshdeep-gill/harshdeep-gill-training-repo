@@ -30,11 +30,11 @@
 							@endif
 
 							@if ( 'title' === $text_item['type'] && ! empty( $text_item['text'] ) )
-								<x-search-hero.title :title="$text_item['text']" :color="$text_item['color']" />
+								<x-search-hero.title :title="$text_item['text']" :color="$text_item['color']" :use_promo_font="$text_item['use_promo_font']" />
 							@endif
 
 							@if ( 'subtitle' === $text_item['type'] && ! empty( $text_item['text'] ) )
-								<x-search-hero.sub-title :title="$text_item['text']" :text_color="$text_item['color']" />
+								<x-search-hero.sub-title :title="$text_item['text']" :text_color="$text_item['color']" :use_promo_font="$text_item['use_promo_font']" />
 							@endif
 
 						@endforeach
