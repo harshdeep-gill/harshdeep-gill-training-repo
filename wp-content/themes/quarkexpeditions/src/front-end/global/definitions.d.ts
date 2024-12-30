@@ -64,14 +64,16 @@ declare namespace YT {
 		/**
 		 * Constructs new YouTube Player Instance.
 		 *
-		 * @param id The ID of the DOM element that is to be attached to the player.
-		 * @param options The configuration options for the player.
+		 * @param {string} id      The ID of the DOM element that is to be attached to the player.
+		 * @param {Object} options The configuration options for the player.
 		 */
 		constructor( id: string, options: YT.PlayerOptions );
 
+		// Play Video Method.
 		playVideo(): void;
 	}
 
+	// Player States.
 	const PlayerState: {
 		UNSTARTED: -1,
 		ENDED: 0,
