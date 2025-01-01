@@ -151,12 +151,15 @@
 
 		#{$self}__text-graphic {
 			margin-inline: auto;
+
+			@media screen and (min-width: grid-size(lg)) {
+				margin-inline: 0;
+			}
 		}
 
 		#{$self}__title-container {
 			text-align: center;
 			max-width: unset;
-			margin-inline: auto;
 
 			@media screen and (min-width: grid-size(lg)) {
 				text-align: unset;
