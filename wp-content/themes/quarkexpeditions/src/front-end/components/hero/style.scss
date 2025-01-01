@@ -33,6 +33,8 @@
 
 		@media screen and (min-width: grid-size(sm)) {
 
+			margin-block: var(--spacing-6);
+
 			&--size-small {
 				max-width: 320px;
 				height: 230px;
