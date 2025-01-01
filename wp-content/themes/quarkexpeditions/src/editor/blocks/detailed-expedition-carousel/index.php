@@ -23,6 +23,7 @@ use const Quark\Expeditions\POST_TYPE as EXPEDITION_POST_TYPE;
 
 const HOME_COMPONENT   = 'parts.expeditions-home';
 const OFFERS_COMPONENT = 'parts.expeditions-offers';
+const BLOCK_NAME       = 'quark/detailed-expeditions-carousel';
 
 /**
  * Bootstrap this block.
@@ -37,6 +38,9 @@ function bootstrap(): void {
 			'render_callback' => __NAMESPACE__ . '\\render',
 		]
 	);
+
+	// Add block attributes to translate.
+	add_filter( 'qrk_translation_block_attributes', __NAMESPACE__ . '\\block_attributes_to_translate' );
 }
 
 /**
@@ -186,4 +190,22 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 	return 'offers' === $attributes['variation']
 		? quark_get_component( OFFERS_COMPONENT, [ 'cards' => $cards ] )
 		: quark_get_component( HOME_COMPONENT, [ 'cards' => $cards ] );
+}
+
+/**
+ * Block attributes that need to be translatable.
+ *
+ * @param mixed[] $blocks_and_attributes Blocks and attributes.
+ *
+ * @return mixed[]
+ */
+function block_attributes_to_translate( array $blocks_and_attributes = [] ): array {
+	// Add data to translate.
+	$blocks_and_attributes[ BLOCK_NAME ] = [
+		'post_id' => [ 'ids' ],
+		'term_id' => [ 'termIds' ],
+	];
+
+	// Return updated data.
+	return $blocks_and_attributes;
 }
