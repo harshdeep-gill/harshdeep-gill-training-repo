@@ -40,6 +40,7 @@ import * as heroContentLeft from './children/hero-content-left';
 import * as heroContentRight from './children/hero-content-right';
 import * as heroDescription from './children/hero-description';
 import * as heroTitle from './children/hero-title';
+import * as heroTitleBicolor from './children/hero-title-bicolor';
 import * as heroSubtitle from './children/hero-subtitle';
 import * as overline from './children/overline';
 import * as heroTextGraphic from './children/hero-text-graphic';
@@ -58,6 +59,7 @@ export const init = (): void => {
 	registerBlockType( heroContentRight.name, heroContentRight.settings );
 	registerBlockType( heroDescription.name, heroDescription.settings );
 	registerBlockType( heroTitle.name, heroTitle.settings );
+	registerBlockType( heroTitleBicolor.name, heroTitleBicolor.settings );
 	registerBlockType( heroTextGraphic.name, heroTextGraphic.settings );
 	registerBlockType( heroSubtitle.name, heroSubtitle.settings );
 	registerBlockType( overline.name, overline.settings );
