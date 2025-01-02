@@ -92,15 +92,14 @@ function get_translation_adapter(): string {
 /**
  * Update translated strings to include block translations.
  *
- * @TODO: Port this function to a MultilingualPress module.
- *
- * @param string[] $strings       Translated strings.
- * @param string   $language      Language.
- * @param string   $from_language From language.
+ * @param string[] $strings                Translated strings.
+ * @param string   $language               Language.
+ * @param string   $from_language          From language.
+ * @param bool     $translate_dynamic_urls Translate dynamic URLs.
  *
  * @return string[]
  */
-function translate_block_strings( array $strings = [], string $language = '', string $from_language = '' ): array {
+function translate_block_strings( array $strings = [], string $language = '', string $from_language = '', bool $translate_dynamic_urls = true ): array {
 	// Check if we have strings.
 	if ( empty( $strings ) || ! function_exists( 'Travelopia\Translation\translate_strings' ) ) {
 		return $strings;
@@ -135,6 +134,12 @@ function translate_block_strings( array $strings = [], string $language = '', st
 
 	// Traverse strings.
 	foreach ( $strings as $key => $string ) {
+		// Translate dynamic URLs from content.
+		// Since classic post doesn't have blocks, process it before checking for blocks.
+		if ( $translate_dynamic_urls ) {
+			$strings[ $key ] = translate_dynamic_url_from_content( $strings[ $key ], $from_site_id, $to_site_id );
+		}
+
 		// Check if we have blocks in the first place.
 		if ( ! has_blocks( $string ) ) {
 			continue;
@@ -450,4 +455,90 @@ function translate_block_strings( array $strings = [], string $language = '', st
 
 	// Return updated strings.
 	return $strings;
+}
+
+/**
+ * Translate dynamic URL from content.
+ *
+ * @param string $content      The content from where URLs need to translate.
+ * @param int    $from_site_id From Site ID.
+ * @param int    $to_site_id   To Site ID.
+ *
+ * @return string Translated content.
+ */
+function translate_dynamic_url_from_content( string $content = '', int $from_site_id = 0, int $to_site_id = 0 ): string {
+	// Check if we have content, from site ID and to site ID.
+	if ( empty( $content ) || empty( $from_site_id ) || empty( $to_site_id ) ) {
+		return $content;
+	}
+
+	// Get home URL.
+	$home_url = get_home_url( $from_site_id );
+	$home_url = rtrim( $home_url, '/' );
+
+	// Regex to find dynamic links within content.
+	$regex = '/"(?P<url>(?:' . preg_quote( $home_url, '/' ) . ')\/post\/(?P<post_id>[0-9]+)(?P<query_params>[#|?].+)?)"/mU';
+
+	// Decode the quotes before parseing the content.
+	$content_to_parse = str_replace( '\u0022', '"', $content );
+
+	// Look for dynamic links within content.
+	preg_match_all( $regex, $content_to_parse, $matches );
+
+	// Check if we have matches.
+	if ( ! empty( $matches['post_id'] ) ) {
+		// Get URLs and post IDs.
+		$urls     = $matches['url'];
+		$post_ids = $matches['post_id'];
+
+		// Links found, traverse them.
+		foreach ( $post_ids as $match_key => $post_id ) {
+			// Get original post and translations.
+			$original_post_id   = absint( $post_id );
+			$translated_post_id = 0;
+			$post_translations  = get_post_translations( $original_post_id, $from_site_id );
+			$query_params       = $matches['query_params'][ $match_key ] ?? '';
+
+			// Get translated post in "to" site.
+			if ( ! empty( $post_translations ) ) {
+				foreach ( $post_translations as $post_translation ) {
+					if ( $to_site_id === $post_translation['site_id'] && ! empty( $post_translation['post_id'] ) ) {
+						$translated_post_id = absint( $post_translation['post_id'] );
+						break;
+					}
+				}
+			}
+
+			// Get original URL.
+			$original_url = $urls[ $match_key ];
+
+			// Check if we have a translated post ID.
+			if ( ! empty( $translated_post_id ) ) {
+				// Update translated URL.
+				$translated_url = home_url( "/post/$translated_post_id" . $query_params );
+			} else {
+				$translated_url = get_fallback_url();
+			}
+
+			// Update translations in strings.
+			$content = str_replace(
+				strval( $original_url ),
+				strval( $translated_url ),
+				$content
+			);
+		}
+	}
+
+	// Return updated content.
+	return $content;
+}
+
+/**
+ * Get fallback URL.
+ *
+ * @return string
+ */
+function get_fallback_url(): string {
+	// Return home URL.
+	return home_url( '/broken-url' );
 }

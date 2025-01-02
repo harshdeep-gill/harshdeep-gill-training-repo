@@ -16,8 +16,8 @@ use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
 use const Quark\Expeditions\DESTINATION_TAXONOMY;
 use const Quark\AdventureOptions\POST_TYPE as ADVENTURE_OPTIONS_POST_TYPE;
 
-const BLOCK_NAME = 'quark/adventure-options';
 const COMPONENT  = 'parts.adventure-options';
+const BLOCK_NAME = 'quark/adventure-options';
 
 /**
  * Bootstrap this block.
