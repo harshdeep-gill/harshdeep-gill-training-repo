@@ -15,6 +15,7 @@ use function Quark\Ingestor\cron_is_scheduled;
 use function Quark\Ingestor\cron_schedule_push;
 use function Quark\Ingestor\do_push;
 use function Quark\Ingestor\get_all_data;
+use function Quark\Ingestor\get_id;
 use function Quark\Ingestor\get_image_details;
 use function Quark\Ingestor\get_post_modified_time;
 use function Quark\Ingestor\push_expedition_data;
@@ -1054,7 +1055,7 @@ class Test_Ingestor extends Softrip_TestCase {
 		$this->assertIsArray( $expedition_data );
 		$this->assertEquals(
 			[
-				'id'           => $expedition_post_id,
+				'id'           => get_id( $expedition_post_id ),
 				'name'         => get_raw_text_from_html( get_the_title( $expedition_post_id ) ),
 				'published'    => true,
 				'description'  => '',
@@ -1074,7 +1075,7 @@ class Test_Ingestor extends Softrip_TestCase {
 		$this->assertIsArray( $expedition_data2 );
 		$this->assertEquals(
 			[
-				'id'           => $expedition_post_id2,
+				'id'           => get_id( $expedition_post_id2 ),
 				'name'         => get_raw_text_from_html( get_the_title( $expedition_post_id2 ) ),
 				'published'    => false,
 				'description'  => '',

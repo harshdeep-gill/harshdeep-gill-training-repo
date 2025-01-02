@@ -10,6 +10,7 @@ namespace Quark\Ingestor\Tests\Ships;
 use Quark\Tests\Softrip\Softrip_TestCase;
 
 use function Quark\Core\get_raw_text_from_html;
+use function Quark\Ingestor\get_id;
 use function Quark\Ingestor\get_image_details;
 use function Quark\Ingestor\get_post_modified_time;
 use function Quark\Ingestor\Ships\get_ship_amenities_data;
@@ -188,7 +189,7 @@ class Test_Ships extends Softrip_TestCase {
 
 		// Test.
 		$expected_data = [
-			'id'             => $ship_post_id,
+			'id'             => get_id( $ship_post_id ),
 			'code'           => 'OQP',
 			'name'           => get_raw_text_from_html( get_the_title( $ship_post_id ) ),
 			'url'            => get_permalink( $ship_post_id ),

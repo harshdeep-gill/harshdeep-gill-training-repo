@@ -11,6 +11,7 @@ use Quark\Tests\Softrip\Softrip_TestCase;
 
 use function Quark\Core\get_raw_text_from_html;
 use function Quark\Ingestor\Cabins\get_cabins_data;
+use function Quark\Ingestor\get_id;
 use function Quark\Ingestor\get_image_details;
 use function Quark\Ingestor\get_post_modified_time;
 use function Quark\Softrip\Occupancies\get_description_and_pax_count_by_mask;
@@ -168,7 +169,7 @@ class Test_Cabins extends Softrip_TestCase {
 		$actual   = get_cabins_data( $expedition_post_id, $itinerary_post_id, $departure_post_id );
 		$expected = [
 			[
-				'id'              => $cabin_post_id1,
+				'id'              => get_id( $cabin_post_id1 ),
 				'name'            => 'Explorer Single',
 				'modified'        => get_post_modified_time( $cabin_post_id1 ),
 				'title'           => get_raw_text_from_html( get_the_title( $cabin_post_id1 ) ),
@@ -315,7 +316,7 @@ class Test_Cabins extends Softrip_TestCase {
 		$actual   = get_cabins_data( $expedition_post_id, $itinerary_post_id, $departure_post_id );
 		$expected = [
 			[
-				'id'              => $cabin_post_id1,
+				'id'              => get_id( $cabin_post_id1 ),
 				'name'            => 'Explorer Single',
 				'modified'        => get_post_modified_time( $cabin_post_id1 ),
 				'title'           => get_raw_text_from_html( get_the_title( $cabin_post_id1 ) ),

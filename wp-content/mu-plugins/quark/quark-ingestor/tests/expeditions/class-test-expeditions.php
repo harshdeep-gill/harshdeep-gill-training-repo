@@ -13,6 +13,7 @@ use WP_Error;
 use function Quark\Core\get_raw_text_from_html;
 use function Quark\Ingestor\Expeditions\get_destination_terms;
 use function Quark\Ingestor\Expeditions\get_expedition_data;
+use function Quark\Ingestor\get_id;
 use function Quark\Ingestor\get_image_details;
 use function Quark\Ingestor\get_post_modified_time;
 
@@ -55,7 +56,7 @@ class Test_Expeditions extends Softrip_TestCase {
 		// Test without assigning any data.
 		$expected =
 			[
-				'id'           => $expedition_post_id,
+				'id'           => get_id( $expedition_post_id ),
 				'name'         => get_raw_text_from_html( get_the_title( $expedition_post_id ) ),
 				'published'    => true,
 				'description'  => '',
@@ -182,7 +183,7 @@ class Test_Expeditions extends Softrip_TestCase {
 		// Test with assigned itinerary.
 		$expected =
 			[
-				'id'           => $expedition_post_id,
+				'id'           => get_id( $expedition_post_id ),
 				'name'         => get_raw_text_from_html( get_the_title( $expedition_post_id ) ),
 				'published'    => true,
 				'description'  => 'Here is the overview. Surfing You never know the world until you explore it.',
@@ -193,7 +194,7 @@ class Test_Expeditions extends Softrip_TestCase {
 				'destinations' => [],
 				'itineraries'  => [
 					[
-						'id'                     => $itinerary_post_id,
+						'id'                     => get_id( $itinerary_post_id ),
 						'packageId'              => 'UNQ-123',
 						'name'                   => get_raw_text_from_html( get_the_title( $itinerary_post_id ) ),
 						'published'              => true,

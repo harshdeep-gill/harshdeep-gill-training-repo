@@ -11,6 +11,7 @@ use Quark\Tests\Softrip\Softrip_TestCase;
 
 use function Quark\Core\get_raw_text_from_html;
 use function Quark\Ingestor\Departures\get_departures_data;
+use function Quark\Ingestor\get_id;
 use function Quark\Ingestor\get_post_modified_time;
 use function Quark\Ingestor\Promotions\get_promotions_data;
 use function Quark\Ingestor\Ships\get_ship_data;
@@ -83,7 +84,7 @@ class Test_Departures extends Softrip_TestCase {
 		$actual   = get_departures_data( $expedition_post_id, $itinerary_post_id );
 		$expected = [
 			[
-				'id'               => $departure_post_id1,
+				'id'               => get_id( $departure_post_id1 ),
 				'name'             => get_raw_text_from_html( get_the_title( $departure_post_id1 ) ),
 				'softripId'        => 'UNQ-123:2025-01-01',
 				'url'              => '',
@@ -145,7 +146,7 @@ class Test_Departures extends Softrip_TestCase {
 		$actual   = get_departures_data( $expedition_post_id, $itinerary_post_id );
 		$expected = [
 			[
-				'id'               => $departure_post_id1,
+				'id'               => get_id( $departure_post_id1 ),
 				'name'             => get_raw_text_from_html( get_the_title( $departure_post_id1 ) ),
 				'softripId'        => 'UNQ-123:2025-01-01',
 				'url'              => '',
@@ -216,7 +217,7 @@ class Test_Departures extends Softrip_TestCase {
 		$actual   = get_departures_data( $expedition_post_id, $itinerary_post_id );
 		$expected = [
 			[
-				'id'               => $departure_post_id2,
+				'id'               => get_id( $departure_post_id2 ),
 				'name'             => get_raw_text_from_html( get_the_title( $departure_post_id2 ) ),
 				'softripId'        => 'UNQ-456:2025-01-01',
 				'url'              => '',
@@ -236,7 +237,7 @@ class Test_Departures extends Softrip_TestCase {
 				'promotions'       => get_promotions_data( $departure_post_id2 ),
 			],
 			[
-				'id'               => $departure_post_id1,
+				'id'               => get_id( $departure_post_id1 ),
 				'name'             => get_raw_text_from_html( get_the_title( $departure_post_id1 ) ),
 				'softripId'        => 'UNQ-123:2025-01-01',
 				'url'              => '',

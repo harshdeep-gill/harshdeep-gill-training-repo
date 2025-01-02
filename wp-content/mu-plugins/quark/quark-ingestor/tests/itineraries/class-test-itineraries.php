@@ -12,6 +12,7 @@ use Quark\Tests\Softrip\Softrip_TestCase;
 use function Quark\Core\get_raw_text_from_html;
 use function Quark\ExclusionSets\bust_post_cache as bust_exclusion_post_cache;
 use function Quark\InclusionSets\bust_post_cache as bust_inclusion_post_cache;
+use function Quark\Ingestor\get_id;
 use function Quark\Ingestor\get_post_modified_time;
 use function Quark\Ingestor\Itineraries\get_exclusions_data;
 use function Quark\Ingestor\Itineraries\get_inclusions_data;
@@ -98,7 +99,7 @@ class Test_Itineraries extends Softrip_TestCase {
 		$actual   = get_itineraries( $expedition_post_id );
 		$expected = [
 			[
-				'id'                     => $itinerary_post_id1,
+				'id'                     => get_id( $itinerary_post_id1 ),
 				'packageId'              => 'UNQ-123',
 				'name'                   => get_raw_text_from_html( get_the_title( $itinerary_post_id1 ) ),
 				'published'              => true,
@@ -147,7 +148,7 @@ class Test_Itineraries extends Softrip_TestCase {
 		$actual   = get_itineraries( $expedition_post_id );
 		$expected = [
 			[
-				'id'                     => $itinerary_post_id1,
+				'id'                     => get_id( $itinerary_post_id1 ),
 				'packageId'              => 'UNQ-123',
 				'name'                   => get_raw_text_from_html( get_the_title( $itinerary_post_id1 ) ),
 				'published'              => true,
@@ -244,7 +245,7 @@ class Test_Itineraries extends Softrip_TestCase {
 		$actual   = get_itineraries( $expedition_post_id );
 		$expected = [
 			[
-				'id'                     => $itinerary_post_id1,
+				'id'                     => get_id( $itinerary_post_id1 ),
 				'packageId'              => 'UNQ-123',
 				'name'                   => get_raw_text_from_html( get_the_title( $itinerary_post_id1 ) ),
 				'published'              => true,
@@ -264,7 +265,7 @@ class Test_Itineraries extends Softrip_TestCase {
 				'exclusions'             => get_exclusions_data( $itinerary_post_id1 ),
 			],
 			[
-				'id'                     => $itinerary_post_id2,
+				'id'                     => get_id( $itinerary_post_id2 ),
 				'packageId'              => 'UNQ-456',
 				'name'                   => get_raw_text_from_html( get_the_title( $itinerary_post_id2 ) ),
 				'published'              => true,
