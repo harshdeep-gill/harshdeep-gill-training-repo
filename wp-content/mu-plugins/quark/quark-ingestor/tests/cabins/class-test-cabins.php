@@ -170,7 +170,6 @@ class Test_Cabins extends Softrip_TestCase {
 			[
 				'id'              => $cabin_post_id1,
 				'name'            => 'Explorer Single',
-				'drupalId'        => 81,
 				'modified'        => get_post_modified_time( $cabin_post_id1 ),
 				'title'           => get_raw_text_from_html( get_the_title( $cabin_post_id1 ) ),
 				'softripId'       => 'UNQ-123:2025-01-01:POQ-SGL',
@@ -318,7 +317,6 @@ class Test_Cabins extends Softrip_TestCase {
 			[
 				'id'              => $cabin_post_id1,
 				'name'            => 'Explorer Single',
-				'drupalId'        => 81,
 				'modified'        => get_post_modified_time( $cabin_post_id1 ),
 				'title'           => get_raw_text_from_html( get_the_title( $cabin_post_id1 ) ),
 				'softripId'       => 'UNQ-123:2025-01-01:POQ-SGL',

@@ -122,7 +122,6 @@ class Test_Adventure_Options extends Softrip_TestCase {
 				'name'      => $adventure_option_category_name,
 				'icon'      => '',
 				'optionIds' => '',
-				'drupalId'  => 0,
 			],
 		];
 		$this->assertEquals( $expected, $actual );
@@ -142,7 +141,6 @@ class Test_Adventure_Options extends Softrip_TestCase {
 				'name'      => $adventure_option_category_name,
 				'icon'      => wp_get_attachment_image_url( $media_post_id1, 'thumbnail' ),
 				'optionIds' => '',
-				'drupalId'  => 0,
 			],
 		];
 		$this->assertEquals( $expected, $actual );
@@ -150,7 +148,6 @@ class Test_Adventure_Options extends Softrip_TestCase {
 		// Add option ids to the category.
 		update_term_meta( $adventure_option_category_term_id, 'softrip_0_id', 'ABC' );
 		update_term_meta( $adventure_option_category_term_id, 'softrip_1_id', 'DEF' );
-		update_term_meta( $adventure_option_category_term_id, 'drupal_term_id', 456 );
 
 		// Test with expedition that has related adventure options and assigned category with icon and option ids.
 		$actual   = get_included_adventure_options_data( $expedition_post_id, $departure_post_id );
@@ -160,7 +157,6 @@ class Test_Adventure_Options extends Softrip_TestCase {
 				'name'      => $adventure_option_category_name,
 				'icon'      => wp_get_attachment_image_url( $media_post_id1, 'thumbnail' ),
 				'optionIds' => 'ABC, DEF',
-				'drupalId'  => 456,
 			],
 		];
 		$this->assertEquals( $expected, $actual );
@@ -182,7 +178,6 @@ class Test_Adventure_Options extends Softrip_TestCase {
 			'icon'      => '',
 			'optionIds' => [],
 			'images'    => [],
-			'drupalId'  => 0,
 		];
 
 		// Test with no arguments.
@@ -218,14 +213,12 @@ class Test_Adventure_Options extends Softrip_TestCase {
 			'icon'      => wp_get_attachment_image_url( $media_post_id1, 'full' ),
 			'optionIds' => [],
 			'images'    => [],
-			'drupalId'  => 0,
 		];
 		$this->assertEquals( $expected, $actual );
 
 		// Add option ids to the category.
 		update_term_meta( $adventure_option_category_term_id, 'softrip_0_id', 'ABC' );
 		update_term_meta( $adventure_option_category_term_id, 'softrip_1_id', 'DEF' );
-		update_term_meta( $adventure_option_category_term_id, 'drupal_term_id', 456 );
 
 		// Test with term id that has icon and option ids meta.
 		$actual   = get_adventure_option_category_data_from_meta( $adventure_option_category_term_id );
@@ -233,7 +226,6 @@ class Test_Adventure_Options extends Softrip_TestCase {
 			'icon'      => wp_get_attachment_image_url( $media_post_id1, 'full' ),
 			'optionIds' => [ 'ABC', 'DEF' ],
 			'images'    => [],
-			'drupalId'  => 456,
 		];
 		$this->assertEquals( $expected, $actual );
 
@@ -258,7 +250,6 @@ class Test_Adventure_Options extends Softrip_TestCase {
 			'images'    => [
 				get_image_details( $media_post_id2 ),
 			],
-			'drupalId'  => 456,
 		];
 		$this->assertEquals( $expected, $actual );
 	}
@@ -412,7 +403,6 @@ class Test_Adventure_Options extends Softrip_TestCase {
 				'name'            => get_raw_text_from_html( $adventure_option_category_name1 ),
 				'icon'            => wp_get_attachment_image_url( $media_post_id1, 'full' ),
 				'optionIds'       => 'ABC, DEF',
-				'drupalId'        => 123,
 				'images'          => [
 					get_image_details( $media_post_id2 ),
 				],
@@ -448,7 +438,6 @@ class Test_Adventure_Options extends Softrip_TestCase {
 				'images'          => [
 					get_image_details( $media_post_id3 ),
 				],
-				'drupalId'        => 0,
 				'spacesAvailable' => 0,
 				'price'           => [
 					AUD_CURRENCY => [

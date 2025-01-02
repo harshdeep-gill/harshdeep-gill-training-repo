@@ -189,7 +189,6 @@ class Test_Ships extends Softrip_TestCase {
 		// Test.
 		$expected_data = [
 			'id'             => $ship_post_id,
-			'drupalId'       => 834,
 			'code'           => 'OQP',
 			'name'           => get_raw_text_from_html( get_the_title( $ship_post_id ) ),
 			'url'            => get_permalink( $ship_post_id ),

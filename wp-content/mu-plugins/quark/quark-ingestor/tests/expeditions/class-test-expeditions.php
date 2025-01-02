@@ -66,7 +66,6 @@ class Test_Expeditions extends Softrip_TestCase {
 				'modified'     => get_post_modified_time( $expedition_post_id ),
 				'highlights'   => [],
 				'url'          => get_permalink( $expedition_post_id ),
-				'drupalId'     => 0,
 			];
 		$actual   = get_expedition_data( $expedition_post_id );
 		$this->assertEquals( $expected, $actual );
@@ -198,7 +197,6 @@ class Test_Expeditions extends Softrip_TestCase {
 						'packageId'              => 'UNQ-123',
 						'name'                   => get_raw_text_from_html( get_the_title( $itinerary_post_id ) ),
 						'published'              => true,
-						'drupalId'               => 0,
 						'startLocation'          => '',
 						'endLocation'            => '',
 						'departures'             => [],
@@ -226,7 +224,6 @@ class Test_Expeditions extends Softrip_TestCase {
 				],
 				'heroImage'    => get_image_details( $media_post_id1 ),
 				'url'          => get_permalink( $expedition_post_id ),
-				'drupalId'     => 0,
 			];
 		$actual   = get_expedition_data( $expedition_post_id );
 		$this->assertEquals( $expected, $actual );

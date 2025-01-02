@@ -85,7 +85,6 @@ class Test_Departures extends Softrip_TestCase {
 			[
 				'id'               => $departure_post_id1,
 				'name'             => get_raw_text_from_html( get_the_title( $departure_post_id1 ) ),
-				'drupalId'         => 0,
 				'softripId'        => 'UNQ-123:2025-01-01',
 				'url'              => '',
 				'code'             => 'OEX20250101',
@@ -148,7 +147,6 @@ class Test_Departures extends Softrip_TestCase {
 			[
 				'id'               => $departure_post_id1,
 				'name'             => get_raw_text_from_html( get_the_title( $departure_post_id1 ) ),
-				'drupalId'         => 0,
 				'softripId'        => 'UNQ-123:2025-01-01',
 				'url'              => '',
 				'code'             => 'OEX20250101',
@@ -220,7 +218,6 @@ class Test_Departures extends Softrip_TestCase {
 			[
 				'id'               => $departure_post_id2,
 				'name'             => get_raw_text_from_html( get_the_title( $departure_post_id2 ) ),
-				'drupalId'         => 0,
 				'softripId'        => 'UNQ-456:2025-01-01',
 				'url'              => '',
 				'code'             => 'OEX20250101',
@@ -241,7 +238,6 @@ class Test_Departures extends Softrip_TestCase {
 			[
 				'id'               => $departure_post_id1,
 				'name'             => get_raw_text_from_html( get_the_title( $departure_post_id1 ) ),
-				'drupalId'         => 0,
 				'softripId'        => 'UNQ-123:2025-01-01',
 				'url'              => '',
 				'code'             => 'OEX20250101',

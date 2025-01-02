@@ -1065,7 +1065,6 @@ class Test_Ingestor extends Softrip_TestCase {
 				'modified'     => get_post_modified_time( $expedition_post_id ),
 				'highlights'   => [],
 				'url'          => get_permalink( $expedition_post_id ),
-				'drupalId'     => 0,
 			],
 			$expedition_data
 		);
@@ -1086,7 +1085,6 @@ class Test_Ingestor extends Softrip_TestCase {
 				'modified'     => get_post_modified_time( $expedition_post_id2 ),
 				'highlights'   => [],
 				'url'          => get_permalink( $expedition_post_id2 ),
-				'drupalId'     => 0,
 			],
 			$expedition_data2
 		);
@@ -1129,7 +1127,6 @@ class Test_Ingestor extends Softrip_TestCase {
 			'thumbnailUrl' => wp_get_attachment_image_url( $media_post_id1, 'thumbnail' ),
 			'alt'          => $alt_text,
 			'type'         => 'image',
-			'drupalId'     => 0,
 			'title'        => get_the_title( $media_post_id1 ),
 			'dimensions'   => [
 				'width'  => 1,

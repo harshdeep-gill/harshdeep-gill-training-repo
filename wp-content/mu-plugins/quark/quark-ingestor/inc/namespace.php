@@ -22,6 +22,7 @@ use const Quark\Expeditions\POST_TYPE as EXPEDITION_POST_TYPE;
 
 const SCHEDULE_HOOK = 'qrk_ingestor_push';
 const DATA_HASH_KEY = '_ingestor_data_hash';
+const START_ID      = 130000;
 
 /**
  * Bootstrap.
@@ -524,14 +525,10 @@ function get_image_details( int $image_id = 0 ): array {
 	// Title text.
 	$title_text = get_post_field( 'post_title', $image_id );
 
-	// Drupal id.
-	$drupal_id = absint( get_post_meta( $image_id, 'drupal_fid', true ) );
-
 	// Return image details.
 	return [
 		'type'         => 'image',
 		'id'           => $image_id,
-		'drupalId'     => $drupal_id,
 		'fullSizeUrl'  => $full_size_image[0],
 		'thumbnailUrl' => $thumbnail_url,
 		'alt'          => $alt_text,
@@ -561,4 +558,47 @@ function get_post_modified_time( int|WP_Post $post = 0 ): string {
 
 	// Return modified time.
 	return $modified_time;
+}
+
+/**
+ * Get drupal ID from post meta. If empty, generate a new one.
+ * This is done to let content API queryable by legacy drupal ID.
+ *
+ * @param int $post_id Post ID.
+ *
+ * @return int
+ */
+function get_id( int $post_id = 0 ): int {
+	// Get drupal ID.
+	$drupal_id = absint( get_post_meta( $post_id, 'drupal_id', true ) );
+
+	// Generate new ID if empty.
+	if ( empty( $drupal_id ) ) {
+		$drupal_id = generate_id();
+
+		// Update post meta.
+		update_post_meta( $post_id, 'drupal_id', $drupal_id );
+	}
+
+	// Return drupal ID.
+	return $drupal_id;
+}
+
+/**
+ * Generate a ID.
+ *
+ * @return int
+ */
+function generate_id(): int {
+	// Get current counter from options.
+	$counter = get_option( 'qrk_ingestor_id_counter', START_ID );
+
+	// Increment counter.
+	++$counter;
+
+	// Update counter.
+	update_option( 'qrk_ingestor_id_counter', $counter );
+
+	// Return counter.
+	return $counter;
 }
