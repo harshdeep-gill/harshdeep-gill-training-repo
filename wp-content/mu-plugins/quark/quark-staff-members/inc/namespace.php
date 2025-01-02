@@ -43,6 +43,9 @@ function bootstrap(): void {
 	// SEO.
 	add_filter( 'travelopia_seo_structured_data_schema', __NAMESPACE__ . '\\seo_structured_data' );
 
+	// Add meta keys to be translated while content sync.
+	add_filter( 'qrk_translation_meta_keys', __NAMESPACE__ . '\\translate_meta_keys' );
+
 	// Admin stuff.
 	if ( is_admin() ) {
 		// Custom fields.
@@ -685,4 +688,26 @@ function get_breadcrumbs_ancestors(): array {
 
 	// Return updated breadcrumbs.
 	return $breadcrumbs;
+}
+
+/**
+ * Translate meta keys.
+ *
+ * @param array<string, string> $meta_keys Meta keys.
+ *
+ * @return array<string, string|string[]>
+ */
+function translate_meta_keys( array $meta_keys = [] ): array {
+	// Meta keys for translation.
+	$extra_keys = [
+		'job_title'            => 'string',
+		'first_name'           => 'string',
+		'last_name'            => 'string',
+		'hometown'             => 'string',
+		'countries_travelled'  => 'post',
+		'favorite_destination' => 'post',
+	];
+
+	// Return meta keys to be translated.
+	return array_merge( $meta_keys, $extra_keys );
 }
