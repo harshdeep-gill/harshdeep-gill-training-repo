@@ -131,7 +131,8 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 								// Get the props.
 								$title_bicolor['white_text']     = $text_block->attributes['whiteText'] ?? '';
 								$title_bicolor['yellow_text']    = $text_block->attributes['yellowText'] ?? '';
-								$title_bicolor['use_promo_font'] = $text_block->attributes['usePromoFont'] ?? '';
+								$title_bicolor['yellow_first']   = $text_block->attributes['yellowFirst'] ?? false;
+								$title_bicolor['use_promo_font'] = $text_block->attributes['usePromoFont'] ?? false;
 
 								// Add to attributes.
 								$title_container['title_bicolor'] = $title_bicolor;

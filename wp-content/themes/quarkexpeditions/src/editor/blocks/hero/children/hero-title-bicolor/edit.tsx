@@ -36,6 +36,35 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 		),
 	} );
 
+	// Richtexts in array to control their order.
+	const richtexts = [
+		<RichText
+			tagName="span"
+			className="hero__title--white-text"
+			key="hero__title--white-text"
+			placeholder={ __( 'Write the white text…', 'qrk' ) }
+			value={ attributes.whiteText }
+			onChange={ ( whiteText ) => setAttributes( { whiteText } ) }
+			allowedFormats={ [] }
+		/>,
+		' ',
+		<RichText
+			tagName="span"
+			className="hero__title--yellow-text"
+			key="hero__title--yellow-text"
+			placeholder={ __( 'Write the yellow text…', 'qrk' ) }
+			value={ attributes.yellowText }
+			onChange={ ( yellowText ) => setAttributes( { yellowText } ) }
+			allowedFormats={ [] }
+		/>,
+	];
+
+	// Check if the yellow text input should be first?
+	if ( attributes.yellowFirst ) {
+		// Yes, it should.
+		richtexts.reverse();
+	}
+
 	// Return the block's markup.
 	return (
 		<>
@@ -47,25 +76,16 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 						onChange={ ( usePromoFont ) => setAttributes( { usePromoFont } ) }
 						help={ __( 'Should this text be in the Promo Font?', 'qrk' ) }
 					/>
+					<ToggleControl
+						label={ __( 'Yellow text first', 'qrk' ) }
+						checked={ attributes.yellowFirst }
+						onChange={ ( yellowFirst ) => setAttributes( { yellowFirst } ) }
+						help={ __( 'Should the yellow text be first?', 'qrk' ) }
+					/>
 				</PanelBody>
 			</InspectorControls>
 			<h1 { ...blockProps }>
-				<RichText
-					tagName="span"
-					className="hero__title--white-text"
-					placeholder={ __( 'Write the white text…', 'qrk' ) }
-					value={ attributes.whiteText }
-					onChange={ ( whiteText ) => setAttributes( { whiteText } ) }
-					allowedFormats={ [] }
-				/>
-				<RichText
-					tagName="span"
-					className="hero__title--yellow-text"
-					placeholder={ __( 'Write the yellow text…', 'qrk' ) }
-					value={ attributes.yellowText }
-					onChange={ ( yellowText ) => setAttributes( { yellowText } ) }
-					allowedFormats={ [] }
-				/>
+				{ ...richtexts }
 			</h1>
 		</>
 	);

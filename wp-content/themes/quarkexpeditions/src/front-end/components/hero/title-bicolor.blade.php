@@ -1,6 +1,7 @@
 @props( [
 	'white_text'     => '',
 	'yellow_text'    => '',
+	'yellow_first'   => false,
 	'use_promo_font' => false,
 ] )
 
@@ -17,10 +18,19 @@
 @endphp
 
 <h1 @class( $classes )>
-	<span class="hero__title--white-text">
-		<x-content :content="$white_text" />
-	</span>
-	<span class="hero__title--yellow-text">
-		<x-content :content="$yellow_text" />
-	</span>
+	@if ( ! empty( $yellow_first ) )
+		<span class="hero__title--yellow-text">
+			<x-content :content="$yellow_text" />
+		</span>
+		<span class="hero__title--white-text">
+			<x-content :content="$white_text" />
+		</span>
+	@else
+		<span class="hero__title--white-text">
+			<x-content :content="$white_text" />
+		</span>
+		<span class="hero__title--yellow-text">
+			<x-content :content="$yellow_text" />
+		</span>
+	@endif
 </h1>

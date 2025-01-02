@@ -25,6 +25,10 @@
 		"usePromoFont": {
 			"type": "boolean",
 			"default": false
+		},
+		"yellowFirst": {
+			"type": "boolean",
+			"default": false
 		}
 	},
 	"parent": [

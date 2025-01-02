@@ -35,7 +35,7 @@
 
 							@if ( 'title_bicolor' === $text_item['type'] )
 								@if ( ! empty( $text_item['white_text'] && ! empty( $text_item['yellow_text'] ) ) )
-									<x-search-hero.title-bicolor :white_text="$text_item['white_text']" :yellow_text="$text_item['yellow_text']" :use_promo_font="$text_item['use_promo_font']" />
+									<x-search-hero.title-bicolor :white_text="$text_item['white_text']" :yellow_text="$text_item['yellow_text']" :yellow_first="$text_item['yellow_first']" :use_promo_font="$text_item['use_promo_font']" />
 								@endif
 							@endif
 

@@ -148,7 +148,8 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 							// Get the props.
 							$title_bicolor['white_text']     = $child_block->attributes['whiteText'] ?? '';
 							$title_bicolor['yellow_text']    = $child_block->attributes['yellowText'] ?? '';
-							$title_bicolor['use_promo_font'] = $child_block->attributes['usePromoFont'] ?? '';
+							$title_bicolor['yellow_first']   = $child_block->attributes['yellowFirst'] ?? false;
+							$title_bicolor['use_promo_font'] = $child_block->attributes['usePromoFont'] ?? false;
 
 							// Add to attributes.
 							$component_attributes['left'][] = $title_bicolor;
