@@ -14,6 +14,7 @@ use function Quark\Expeditions\get as get_expedition;
 use function Quark\InclusionSets\get as get_inclusion_set;
 use function Quark\ExclusionSets\get as get_exclusion_set;
 use function Quark\Ingestor\Departures\get_departures_data;
+use function Quark\Ingestor\get_id;
 use function Quark\Ingestor\get_image_details;
 use function Quark\Ingestor\get_post_modified_time;
 use function Quark\Itineraries\get as get_itinerary;
@@ -145,8 +146,7 @@ function get_itineraries( int $expedition_post_id = 0 ): array {
 
 		// Initialize itinerary data.
 		$itinerary_data = [
-			'id'                     => $itinerary_post_id,
-			'drupalId'               => absint( $itinerary_post['post_meta']['drupal_id'] ?? 0 ),
+			'id'                     => get_id( $itinerary_post_id ),
 			'packageId'              => $softrip_package_code,
 			'name'                   => get_raw_text_from_html( $itinerary_post['post']->post_title ),
 			'published'              => 'publish' === $itinerary_post['post']->post_status,

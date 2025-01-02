@@ -10,6 +10,7 @@ namespace Quark\Ingestor\Ships;
 use WP_Post;
 
 use function Quark\Core\get_raw_text_from_html;
+use function Quark\Ingestor\get_id;
 use function Quark\Ingestor\get_image_details;
 use function Quark\Ingestor\get_post_modified_time;
 use function Quark\Ships\get as get_ship_post;
@@ -168,8 +169,7 @@ function get_ship_data( int $departure_post_id = 0 ): array {
 
 	// Prepare ship data.
 	$ship_data = [
-		'id'             => $ship_id,
-		'drupalId'       => absint( $ship_post['post_meta']['drupal_id'] ?? 0 ),
+		'id'             => get_id( $ship_id ),
 		'code'           => $ship_code,
 		'name'           => get_raw_text_from_html( $ship_post['post']->post_title ),
 		'url'            => get_permalink( $ship_id ),

@@ -11,6 +11,7 @@ use WP_Post;
 
 use function Quark\Core\get_raw_text_from_html;
 use function Quark\Expeditions\get as get_expedition;
+use function Quark\Ingestor\get_id;
 use function Quark\Ingestor\get_image_details;
 use function Quark\Ingestor\get_post_modified_time;
 use function Quark\Ingestor\Itineraries\get_itineraries;
@@ -73,8 +74,7 @@ function get_expedition_data( int $expedition_post_id = 0 ): array {
 
 	// Initialize expedition data.
 	$expedition_data = [
-		'id'           => $expedition_post_id,
-		'drupalId'     => absint( $expedition_post['post_meta']['drupal_id'] ?? 0 ),
+		'id'           => get_id( $expedition_post_id ),
 		'name'         => get_raw_text_from_html( $expedition_post['post']->post_title ),
 		'published'    => 'publish' === $expedition_post['post']->post_status,
 		'description'  => '',

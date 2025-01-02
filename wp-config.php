@@ -100,7 +100,7 @@ define( 'NONCE_SALT', env( 'NONCE_SALT' ) );
 define( 'SAVEQUERIES', true );
 define( 'WP_DEBUG', true );
 define( 'WP_DEBUG_DISPLAY', true );
-define( 'WP_DEBUG_LOG', false );
+define( 'WP_DEBUG_LOG', true );
 define( 'SCRIPT_DEBUG', true );
 define( 'DISALLOW_WP_CRON', false );
 define( 'WP_MEMORY_LIMIT', '512M' );

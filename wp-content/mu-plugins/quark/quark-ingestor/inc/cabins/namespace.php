@@ -12,6 +12,7 @@ use WP_Post;
 use function Quark\CabinCategories\get as get_cabin_category;
 use function Quark\Core\get_raw_text_from_html;
 use function Quark\Departures\get as get_departure;
+use function Quark\Ingestor\get_id;
 use function Quark\Ingestor\get_image_details;
 use function Quark\Ingestor\Occupancies\get_occupancies_data;
 use function Quark\Softrip\Occupancies\get_cabin_category_post_ids_by_departure;
@@ -190,8 +191,7 @@ function get_cabins_data( int $expedition_post_id = 0, int $itinerary_post_id = 
 
 		// Initialize cabin category data.
 		$cabin_category_data = [
-			'id'              => $cabin_category_post_id,
-			'drupalId'        => absint( $cabin_category_post['post_meta']['drupal_id'] ?? 0 ),
+			'id'              => get_id( $cabin_category_post_id ),
 			'modified'        => get_post_modified_time( 'c', true, $cabin_category_post_id ),
 			'softripId'       => $cabin_category_softrip_id,
 			'name'            => strval( $cabin_category_post['post_meta']['cabin_name'] ?? '' ),

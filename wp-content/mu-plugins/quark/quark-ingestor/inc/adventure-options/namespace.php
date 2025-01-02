@@ -100,7 +100,6 @@ function get_included_adventure_options_data( int $expedition_post_id = 0, int $
 		// Add included option data.
 		$included_options_data[ $adventure_option_category_id ] = [
 			'id'        => $adventure_option_category_id,
-			'drupalId'  => $adventure_option_category_data['drupalId'],
 			'name'      => get_raw_text_from_html( $adventure_option_category['name'] ),
 			'icon'      => $adventure_option_category_data['icon'],
 			'optionIds' => implode( ', ', $adventure_option_category_data['optionIds'] ),
@@ -127,7 +126,6 @@ function get_included_adventure_options_data( int $expedition_post_id = 0, int $
  * @return array{
  *   icon: string,
  *   optionIds: string[],
- *   drupalId: int,
  *   images: array{}|array<int,
  *     array{
  *       id: int,
@@ -144,7 +142,6 @@ function get_adventure_option_category_data_from_meta( int $adventure_option_cat
 		'icon'      => '',
 		'optionIds' => [],
 		'images'    => [],
-		'drupalId'  => 0,
 	];
 
 	// Early return if no adventure option category ID.
@@ -196,9 +193,6 @@ function get_adventure_option_category_data_from_meta( int $adventure_option_cat
 			if ( ! empty( $icon_url ) ) {
 				$adventure_option_category_data['icon'] = $icon_url;
 			}
-		} elseif ( 'drupal_term_id' === $meta_key ) {
-			// Get drupal term id.
-			$adventure_option_category_data['drupalId'] = absint( $meta_value[0] );
 		}
 	}
 
@@ -294,7 +288,6 @@ function get_paid_adventure_options_data( int $departure_post_id = 0 ): array {
 		// Initialize adventure option data.
 		$paid_adventure_option_data = [
 			'id'              => $adventure_option_category_term_id,
-			'drupalId'        => $adventure_option_category_data['drupalId'],
 			'name'            => get_raw_text_from_html( $adventure_option_category_name ),
 			'icon'            => $adventure_option_category_data['icon'],
 			'optionIds'       => implode( ', ', $adventure_option_category_data['optionIds'] ),

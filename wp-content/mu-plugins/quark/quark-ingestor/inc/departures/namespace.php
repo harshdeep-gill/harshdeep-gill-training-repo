@@ -14,6 +14,7 @@ use function Quark\Departures\get as get_departure;
 use function Quark\Ingestor\AdventureOptions\get_included_adventure_options_data;
 use function Quark\Ingestor\AdventureOptions\get_paid_adventure_options_data;
 use function Quark\Ingestor\Cabins\get_cabins_data;
+use function Quark\Ingestor\get_id;
 use function Quark\Ingestor\get_post_modified_time;
 use function Quark\Ingestor\Promotions\get_promotions_data;
 use function Quark\Ingestor\Ships\get_ship_data;
@@ -96,8 +97,7 @@ function get_departures_data( int $expedition_post_id = 0, int $itinerary_post_i
 
 		// Initialize departure data.
 		$departure_data = [
-			'id'               => $departure_post_id,
-			'drupalId'         => absint( $departure_post['post_meta']['drupal_id'] ?? 0 ),
+			'id'               => get_id( $departure_post_id ),
 			'name'             => get_raw_text_from_html( $departure_post['post']->post_title ),
 			'published'        => 'publish' === $departure_post['post']->post_status,
 			'url'              => '',
