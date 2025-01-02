@@ -118,6 +118,14 @@
 
 	&__title {
 		margin-bottom: 0;
+
+		&.font-family--promo {
+			line-height: 38px;
+
+			@media screen and (min-width: calc(grid-size(lg) + 1px)) {
+				line-height: 52px;
+			}
+		}
 	}
 
 	&__sub-title {
