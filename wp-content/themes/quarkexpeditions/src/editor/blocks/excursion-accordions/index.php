@@ -13,7 +13,8 @@ use function Quark\Core\order_terms_by_hierarchy;
 
 use const Quark\Expeditions\EXCURSION_TAXONOMY;
 
-const COMPONENT = 'parts.excursion-accordions';
+const COMPONENT  = 'parts.excursion-accordions';
+const BLOCK_NAME = 'quark/excursion-accordion';
 
 /**
  * Bootstrap this block.
@@ -28,6 +29,9 @@ function bootstrap(): void {
 			'render_callback' => __NAMESPACE__ . '\\render',
 		]
 	);
+
+	// Add block attributes to translate.
+	add_filter( 'qrk_translation_block_attributes', __NAMESPACE__ . '\\block_attributes_to_translate' );
 }
 
 /**
@@ -96,4 +100,21 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 
 	// Return rendered component.
 	return quark_get_component( COMPONENT, $component_attributes );
+}
+
+/**
+ * Block attributes that need to be translatable.
+ *
+ * @param mixed[] $blocks_and_attributes Blocks and attributes.
+ *
+ * @return mixed[]
+ */
+function block_attributes_to_translate( array $blocks_and_attributes = [] ): array {
+	// Add data to translate.
+	$blocks_and_attributes[ BLOCK_NAME ] = [
+		'term_id' => [ 'destinationTermIds' ],
+	];
+
+	// Return updated data.
+	return $blocks_and_attributes;
 }
