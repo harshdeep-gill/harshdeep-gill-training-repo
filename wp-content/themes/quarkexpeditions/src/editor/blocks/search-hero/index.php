@@ -114,8 +114,9 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 								];
 
 								// Add title.
-								$title['text']  = $text_block->attributes['title'] ?? '';
-								$title['color'] = $text_block->attributes['textColor'] ?? '';
+								$title['text']           = $text_block->attributes['title'] ?? '';
+								$title['color']          = $text_block->attributes['textColor'] ?? '';
+								$title['use_promo_font'] = $text_block->attributes['usePromoFont'] ?? false;
 
 								// Add to attributes.
 								$title_container['title'] = $title;
@@ -128,8 +129,9 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 								];
 
 								// Add subtitle.
-								$subtitle['text']  = $text_block->attributes['subtitle'] ?? '';
-								$subtitle['color'] = $text_block->attributes['textColor'] ?? '';
+								$subtitle['text']           = $text_block->attributes['subtitle'] ?? '';
+								$subtitle['color']          = $text_block->attributes['textColor'] ?? '';
+								$subtitle['use_promo_font'] = $text_block->attributes['usePromoFont'] ?? false;
 
 								// Add to title container.
 								$title_container['subtitle'] = $subtitle;
