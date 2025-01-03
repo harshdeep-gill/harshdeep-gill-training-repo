@@ -10,7 +10,8 @@ namespace Quark\Theme\Blocks\Tabs;
 use WP_Block;
 use WP_Block_List;
 
-const COMPONENT = 'parts.tabs';
+const COMPONENT  = 'parts.tabs';
+const BLOCK_NAME = 'quark/tabs';
 
 /**
  * Bootstrap this block.
@@ -26,6 +27,9 @@ function bootstrap(): void {
 			'skip_inner_blocks' => true,
 		]
 	);
+
+	// Add block attributes to translate.
+	add_filter( 'qrk_translation_block_attributes', __NAMESPACE__ . '\\block_attributes_to_translate' );
 }
 
 /**
@@ -111,4 +115,21 @@ function get_tab_index( int $block_index = 0, int $tab_index = 1 ): string {
 
 	// Return tab id.
 	return $tab_id . '-' . $tab_index;
+}
+
+/**
+ * Block attributes that need to be translatable.
+ *
+ * @param mixed[] $blocks_and_attributes Blocks and attributes.
+ *
+ * @return mixed[]
+ */
+function block_attributes_to_translate( array $blocks_and_attributes = [] ): array {
+	// Add data to translate.
+	$blocks_and_attributes[ BLOCK_NAME . '-tab' ] = [
+		'text' => [ 'title' ],
+	];
+
+	// Return updated data.
+	return $blocks_and_attributes;
 }
