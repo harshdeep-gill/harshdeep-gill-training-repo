@@ -105,7 +105,7 @@ import * as bentoCollage from './bento-collage';
 /**
  * Add blocks.
  */
-const blocks = [
+let blocks = [
 	components,
 	section,
 	lpHeader,
@@ -205,6 +205,30 @@ if ( typenow && 'qrk_ship' === typenow ) {
 	blocks.push( shipCabinCategories );
 	blocks.push( shipSpecifications );
 	blocks.push( bookDeparturesShip );
+}
+
+// Check if the block should be disabled on the China site.
+if ( window?.quarkSiteData && window.quarkSiteData?.isChinaSite ) {
+	// List of blocks to disable on the China site.
+	const disableOnChina = [
+		form,
+		formContactUs,
+		formDoNotSellInformation,
+		formSnowHillNewsletter,
+		formJobApplication,
+		formNewsletter,
+		formAccessDeletionRequest,
+		formCommunicationsOptIn,
+		formRequestAQuote,
+		relatedPosts,
+		bookDeparturesExpeditions,
+		datesAndRates,
+		bookDeparturesShip,
+		blogPostCards,
+	];
+
+	// Remove the blocks from the list of blocks to register.
+	blocks = blocks.filter( ( block ) => ! disableOnChina.includes( block ) );
 }
 
 /**

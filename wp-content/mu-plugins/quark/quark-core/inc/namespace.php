@@ -842,3 +842,13 @@ function acf_styles_for_read_only_fields(): void {
 		<?php
 	}
 }
+
+/**
+ * Check if the website is a China website.
+ *
+ * @return bool
+ */
+function is_china_website(): bool {
+	// Check if the website is a China website.
+	return defined( 'QUARK_CHINA_SITE_BLOG_ID' ) && QUARK_CHINA_SITE_BLOG_ID === get_current_blog_id();
+}

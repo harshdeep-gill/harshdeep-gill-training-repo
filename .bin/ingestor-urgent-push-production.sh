@@ -9,4 +9,4 @@ echo "$PANTHEON_SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
 mkdir -p ~/.ssh && echo "StrictHostKeyChecking no" >> ~/.ssh/config
 
 # Run Command
-terminus wp quark-expeditions.live -- quark-ingestor push urgent
+terminus wp quark-expeditions.live -- quark-ingestor push urgent --url=www.quarkexpeditions.com

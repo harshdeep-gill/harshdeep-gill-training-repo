@@ -7,6 +7,8 @@
 
 namespace Quark\Theme\Blocks;
 
+use function Quark\Core\is_china_website;
+
 /**
  * Setup.
  *
