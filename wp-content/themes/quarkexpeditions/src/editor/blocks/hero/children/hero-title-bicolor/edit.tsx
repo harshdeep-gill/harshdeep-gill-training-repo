@@ -60,7 +60,7 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 	];
 
 	// Check if the yellow text input should be first?
-	if ( attributes.yellowFirst ) {
+	if ( attributes.switchColors ) {
 		// Yes, it should.
 		richtexts.reverse();
 	}
@@ -78,8 +78,8 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 					/>
 					<ToggleControl
 						label={ __( 'Yellow text first', 'qrk' ) }
-						checked={ attributes.yellowFirst }
-						onChange={ ( yellowFirst ) => setAttributes( { yellowFirst } ) }
+						checked={ attributes.switchColors }
+						onChange={ ( switchColors ) => setAttributes( { switchColors } ) }
 						help={ __( 'Should the yellow text be first?', 'qrk' ) }
 					/>
 				</PanelBody>

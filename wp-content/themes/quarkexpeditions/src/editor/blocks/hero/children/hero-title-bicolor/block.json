@@ -25,7 +25,7 @@
 			"type": "boolean",
 			"default": false
 		},
-		"yellowFirst": {
+		"switchColors": {
 			"type": "boolean",
 			"default": false
 		}

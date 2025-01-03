@@ -1,7 +1,7 @@
 @props( [
 	'use_promo_font' => false,
 	'yellow_text'    => '',
-	'yellow_first'   => false,
+	'switch_colors'   => false,
 	'white_text'     => '',
 ] )
 
@@ -18,7 +18,7 @@
 @endphp
 
 <h1 @class( $classes )>
-	@if ( ! empty( $yellow_first ) )
+	@if ( ! empty( $switch_colors ) )
 		<span class="search-hero__title--yellow-text">
 			<x-content :content="$yellow_text" />
 		</span>
