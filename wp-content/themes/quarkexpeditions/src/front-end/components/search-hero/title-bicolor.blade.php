@@ -1,7 +1,7 @@
 @props( [
 	'use_promo_font' => false,
 	'yellow_text'    => '',
-	'switch_colors'   => false,
+	'switch_colors'  => false,
 	'white_text'     => '',
 ] )
 
@@ -19,17 +19,17 @@
 
 <h1 @class( $classes )>
 	@if ( ! empty( $switch_colors ) )
-		<span class="search-hero__title--yellow-text">
+		<span class="search-hero__title--color-yellow">
 			<x-content :content="$yellow_text" />
 		</span>
-		<span class="search-hero__title--white-text">
+		<span class="search-hero__title--color-white">
 			<x-content :content="$white_text" />
 		</span>
 	@else
-		<span class="search-hero__title--white-text">
+		<span class="search-hero__title--color-white">
 			<x-content :content="$white_text" />
 		</span>
-		<span class="search-hero__title--yellow-text">
+		<span class="search-hero__title--color-yellow">
 			<x-content :content="$yellow_text" />
 		</span>
 	@endif

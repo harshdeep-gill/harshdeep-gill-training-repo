@@ -19,17 +19,17 @@
 
 <h1 @class( $classes )>
 	@if ( ! empty( $switch_colors ) )
-		<span class="hero__title--yellow-text">
+		<span class="hero__title--color-yellow">
 			<x-content :content="$yellow_text" />
 		</span>
-		<span class="hero__title--white-text">
+		<span class="hero__title--color-white">
 			<x-content :content="$white_text" />
 		</span>
 	@else
-		<span class="hero__title--white-text">
+		<span class="hero__title--color-white">
 			<x-content :content="$white_text" />
 		</span>
-		<span class="hero__title--yellow-text">
+		<span class="hero__title--color-yellow">
 			<x-content :content="$yellow_text" />
 		</span>
 	@endif

@@ -40,8 +40,8 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 	const richtexts = [
 		<RichText
 			tagName="span"
-			className="search-hero__title--white-text"
-			key="search-hero__title--white-text"
+			className="search-hero__title--color-white"
+			key="search-hero__title--color-white"
 			placeholder={ __( 'Write the white text…', 'qrk' ) }
 			value={ attributes.whiteText }
 			onChange={ ( whiteText ) => setAttributes( { whiteText } ) }
@@ -50,8 +50,8 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 		' ',
 		<RichText
 			tagName="span"
-			className="search-hero__title--yellow-text"
-			key="search-hero__title--yellow-text"
+			className="search-hero__title--color-yellow"
+			key="search-hero__title--color-yellow"
 			placeholder={ __( 'Write the yellow text…', 'qrk' ) }
 			value={ attributes.yellowText }
 			onChange={ ( yellowText ) => setAttributes( { yellowText } ) }
