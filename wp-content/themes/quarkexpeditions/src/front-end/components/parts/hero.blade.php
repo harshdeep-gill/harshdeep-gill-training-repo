@@ -39,7 +39,7 @@
 
 					@if ( 'text-graphic' === $item['type'] )
 						@if ( ! empty( $item['image_id'] ) )
-							<x-hero.text-graphic :image_id="$item['image_id']" />
+							<x-hero.text-graphic :image_id="$item['image_id']" :size="$item['size']" />
 						@endif
 					@endif
 

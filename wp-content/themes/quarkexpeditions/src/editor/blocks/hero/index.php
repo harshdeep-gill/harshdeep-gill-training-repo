@@ -141,15 +141,18 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 
 						// Text Graphic.
 						case 'quark/hero-text-graphic':
-							$textgraphic = [
+							$text_graphic = [
 								'type' => 'text-graphic',
 							];
 
 							// Add image id.
-							$textgraphic['image_id'] = $child_block->attributes['image']['id'] ?? '';
+							$text_graphic['image_id'] = $child_block->attributes['image']['id'] ?? '';
+
+							// Add size.
+							$text_graphic['size'] = $child_block->attributes['imageSize'] ?? 'large';
 
 							// Add to attributes.
-							$component_attributes['left'][] = $textgraphic;
+							$component_attributes['left'][] = $text_graphic;
 							break;
 
 						// Subtitle.
