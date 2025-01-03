@@ -1547,4 +1547,44 @@ class Test_Itineraries extends Softrip_TestCase {
 		];
 		$this->assertEquals( $expected, get_lowest_price( $itinerary_id, 'INVALID' ) );
 	}
+
+	/**
+	 * Test for translate_meta_keys.
+	 *
+	 * @covers \Quark\Itineraries\translate_meta_keys()
+	 *
+	 * @return void
+	 */
+	public function test_translate_meta_keys(): void {
+		// Input data.
+		$input = [
+			'meta_key' => 'string',
+			'icon'     => 'attachment',
+		];
+
+		// Assert data.
+		$this->assertEquals(
+			[
+				'meta_key'                             => 'string',
+				'icon'                                 => 'attachment',
+				'boilerplate'                          => 'string',
+				'related_expedition'                   => 'post',
+				'start_location'                       => 'taxonomy',
+				'end_location'                         => 'taxonomy',
+				'embarkation_port'                     => 'post',
+				'disembarkation_port'                  => 'post',
+				'brochure'                             => 'post',
+				'map'                                  => 'attachment',
+				'inclusions'                           => 'post',
+				'exclusions'                           => 'post',
+				'itinerary_days'                       => 'Quark\Itineraries\translate_meta_key',
+				'offer_inclusion_text'                 => 'string',
+				'mandatory_transfer_package_inclusion' => 'post',
+				'mandatory_transfer_package_exclusion' => 'post',
+				'tnc_cancellation_policy'              => 'post',
+				'tnc_terms_and_conditions'             => 'post',
+			],
+			translate_meta_keys( $input )
+		);
+	}
 }

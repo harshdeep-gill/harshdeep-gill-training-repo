@@ -27,6 +27,9 @@ function bootstrap(): void {
 	// Other hooks. Assigning non-standard priority to avoid race conditions with ACF.
 	add_action( 'save_post', __NAMESPACE__ . '\\bust_post_cache', 11 );
 
+	// Add meta keys to be translated while content sync.
+	add_filter( 'qrk_translation_meta_keys', __NAMESPACE__ . '\\translate_meta_keys' );
+
 	// Admin stuff.
 	if ( is_admin() || ( defined( 'WP_CLI' ) && true === WP_CLI ) ) {
 		// Custom fields.
@@ -357,4 +360,27 @@ function get_cabin_options( array $cabin_options_ids = [] ): array {
 
 	// Return cabin options data.
 	return $cabin_options;
+}
+
+/**
+ * Translate meta keys.
+ *
+ * @param array<string, string> $meta_keys Meta keys.
+ *
+ * @return array<string, string|string[]>
+ */
+function translate_meta_keys( array $meta_keys = [] ): array {
+	// Meta keys for translation.
+	$extra_keys = [
+		'deck_name'                     => 'string',
+		'deck_plan_image'               => 'attachment',
+		'vertical_deck_plan_image'      => 'attachment',
+		'cabin_categories'              => 'post',
+		'public_spaces_\d+_title'       => 'string',
+		'public_spaces_\d+_image'       => 'attachment',
+		'public_spaces_\d+_description' => 'string',
+	];
+
+	// Return meta keys to be translated.
+	return array_merge( $meta_keys, $extra_keys );
 }

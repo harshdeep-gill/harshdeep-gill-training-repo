@@ -7,7 +7,8 @@
 
 namespace Quark\Theme\Blocks\Section;
 
-const COMPONENT = 'parts.section';
+const COMPONENT  = 'parts.section';
+const BLOCK_NAME = 'quark/section';
 
 /**
  * Bootstrap this block.
@@ -22,6 +23,9 @@ function bootstrap(): void {
 			'render_callback' => __NAMESPACE__ . '\\render',
 		]
 	);
+
+	// Add block attributes to translate.
+	add_filter( 'qrk_translation_block_attributes', __NAMESPACE__ . '\\block_attributes_to_translate' );
 }
 
 /**
@@ -99,4 +103,29 @@ function render( array $attributes = [], string $content = '' ): string {
 
 	// Return rendered component.
 	return quark_get_component( COMPONENT, $component_attributes );
+}
+
+/**
+ * Block attributes that need to be translatable.
+ *
+ * @param mixed[] $blocks_and_attributes Blocks and attributes.
+ *
+ * @return mixed[]
+ */
+function block_attributes_to_translate( array $blocks_and_attributes = [] ): array {
+	// Add data to translate.
+	$blocks_and_attributes[ BLOCK_NAME ] = [
+		'text'   => [
+			'title',
+			'description',
+		],
+		'image'  => [ 'backgroundImage' ],
+		'object' => [
+			'ctaButton'   => [ 'text' ],
+			'headingLink' => [ 'text' ],
+		],
+	];
+
+	// Return updated data.
+	return $blocks_and_attributes;
 }

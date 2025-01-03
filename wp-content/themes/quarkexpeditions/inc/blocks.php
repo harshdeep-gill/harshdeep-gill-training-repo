@@ -7,8 +7,6 @@
 
 namespace Quark\Theme\Blocks;
 
-use function Quark\Core\is_china_website;
-
 /**
  * Setup.
  *
@@ -27,11 +25,6 @@ function setup(): void {
  * @return void
  */
 function register_blocks(): void {
-	// Prevent redundant execution in the WP Admin.
-	if ( is_admin() ) {
-		return;
-	}
-
 	// Path to blocks file.
 	$blocks_path = __DIR__ . '/../dist/blocks.php';
 

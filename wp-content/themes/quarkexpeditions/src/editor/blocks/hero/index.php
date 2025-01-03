@@ -9,7 +9,8 @@ namespace Quark\Theme\Blocks\Hero;
 
 use WP_Block;
 
-const COMPONENT = 'parts.hero';
+const COMPONENT  = 'parts.hero';
+const BLOCK_NAME = 'quark/hero';
 
 /**
  * Bootstrap this block.
@@ -25,6 +26,9 @@ function bootstrap(): void {
 			'skip_inner_blocks' => true, // Skip inner block rendering to avoid render callbacks to those blocks.
 		]
 	);
+
+	// Add block attributes to translate.
+	add_filter( 'qrk_translation_block_attributes', __NAMESPACE__ . '\\block_attributes_to_translate' );
 }
 
 /**
@@ -304,4 +308,46 @@ function update_block_attribute( WP_Block $block = null, string $name = '', mixe
 
 	// Return the block.
 	return $block;
+}
+
+/**
+ * Block attributes that need to be translatable.
+ *
+ * @param mixed[] $blocks_and_attributes Blocks and attributes.
+ *
+ * @return mixed[]
+ */
+function block_attributes_to_translate( array $blocks_and_attributes = [] ): array {
+	// Add data to translate.
+	$blocks_and_attributes[ BLOCK_NAME ] = [
+		'image' => [ 'image' ],
+	];
+
+	// Add data to translate.
+	$blocks_and_attributes[ BLOCK_NAME . '-circle-badge' ] = [
+		'text' => [ 'text' ],
+	];
+
+	// Add data to translate.
+	$blocks_and_attributes[ BLOCK_NAME . '-subtitle' ] = [
+		'text' => [ 'subtitle' ],
+	];
+
+	// Add data to translate.
+	$blocks_and_attributes[ BLOCK_NAME . '-title' ] = [
+		'text' => [ 'title' ],
+	];
+
+	// Add data to translate.
+	$blocks_and_attributes[ BLOCK_NAME . '-overline' ] = [
+		'text' => [ 'overline' ],
+	];
+
+	// Add data to translate.
+	$blocks_and_attributes[ BLOCK_NAME . '-text-graphic' ] = [
+		'image' => [ 'image' ],
+	];
+
+	// Return updated data.
+	return $blocks_and_attributes;
 }
