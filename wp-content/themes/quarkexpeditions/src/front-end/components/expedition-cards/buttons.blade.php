@@ -5,5 +5,5 @@
 @endphp
 
 <div class="expedition-cards__buttons">
-	<x-content :content="$slot" />
+	{!! $slot !!}
 </div>

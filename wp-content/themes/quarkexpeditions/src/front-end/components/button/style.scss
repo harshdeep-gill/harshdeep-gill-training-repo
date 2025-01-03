@@ -28,4 +28,9 @@ Buttons
 			fill: var(--color-white);
 		}
 	}
+
+	&--disabled {
+		cursor: default;
+		pointer-events: none;
+	}
 }
