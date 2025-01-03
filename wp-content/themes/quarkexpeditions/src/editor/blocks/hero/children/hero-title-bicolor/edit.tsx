@@ -59,9 +59,9 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 		/>,
 	];
 
-	// Check if the yellow text input should be first?
+	// Check if the colors should be switched?
 	if ( attributes.switchColors ) {
-		// Yes, it should.
+		// Yes, they should.
 		richtexts.reverse();
 	}
 
@@ -77,10 +77,10 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 						help={ __( 'Should this text be in the Promo Font?', 'qrk' ) }
 					/>
 					<ToggleControl
-						label={ __( 'Yellow text first', 'qrk' ) }
+						label={ __( 'Switch colors', 'qrk' ) }
 						checked={ attributes.switchColors }
 						onChange={ ( switchColors ) => setAttributes( { switchColors } ) }
-						help={ __( 'Should the yellow text be first?', 'qrk' ) }
+						help={ __( 'Should the Colors be switched?', 'qrk' ) }
 					/>
 				</PanelBody>
 			</InspectorControls>
