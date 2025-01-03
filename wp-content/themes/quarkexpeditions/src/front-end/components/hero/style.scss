@@ -26,6 +26,32 @@
 		}
 	}
 
+	&__text-graphic {
+		max-width: 230px;
+		height: 170px;
+		margin-block: var(--spacing-4);
+
+		@media screen and (min-width: grid-size(sm)) {
+
+			margin-block: var(--spacing-6);
+
+			&--size-small {
+				max-width: 320px;
+				height: 230px;
+			}
+
+			&--size-medium {
+				max-width: 430px;
+				height: 300px;
+			}
+
+			&--size-large {
+				max-width: 640px;
+				height: 460px;
+			}
+		}
+	}
+
 	.breadcrumbs {
 		margin-bottom: var(--spacing-8);
 		position: relative;
@@ -125,6 +151,14 @@
 
 	&--text-center {
 
+		#{$self}__text-graphic {
+			margin-inline: auto;
+
+			@media screen and (min-width: grid-size(lg)) {
+				margin-inline: 0;
+			}
+		}
+
 		#{$self}__title-container {
 			text-align: center;
 			max-width: unset;
@@ -165,6 +199,14 @@
 			@media screen and (min-width: grid-size(lg)) {
 				line-height: 52px;
 			}
+		}
+
+		&--color-white {
+			color: var(--color-white);
+		}
+
+		&--color-yellow {
+			color: var(--color-yellow);
 		}
 	}
 
