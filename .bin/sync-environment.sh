@@ -15,14 +15,24 @@ grep -qxF 'StrictHostKeyChecking no' ~/.ssh/config || echo "StrictHostKeyCheckin
 # Clone Database from Source to Target Environment
 terminus env:clone-content quark-expeditions.live $TARGET_ENVIRONMENT --db-only --yes
 
+# Set Domain Name for Search and Replace
+DOMAIN_NAME=$TARGET_ENVIRONMENT
+
+# Set Staging Domain Name for Search and Replace
+if [ $TARGET_ENVIRONMENT == 'dev' ]; then
+ DOMAIN_NAME='staging'
+fi
+
 # Search and Replace environment domain
-terminus wp quark-expeditions.$TARGET_ENVIRONMENT -- search-replace www.quarkexpeditions.com $TARGET_ENVIRONMENT.quarkexpeditions.com --all-tables
+terminus wp quark-expeditions.$TARGET_ENVIRONMENT -- search-replace www.quarkexpeditions.com $DOMAIN_NAME.quarkexpeditions.com --all-tables
 
 # Flush cache
 terminus wp quark-expeditions.$TARGET_ENVIRONMENT -- cache flush
 
 # Import Departures
+set +e
 terminus wp quark-expeditions.$TARGET_ENVIRONMENT -- quark-softrip sync all
+set -e
 
 # Flush cache
 terminus wp quark-expeditions.$TARGET_ENVIRONMENT -- cache flush

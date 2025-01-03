@@ -39,9 +39,23 @@
 					display: none;
 				}
 			}
+
+			#{$self}__slides {
+
+				@media screen and (min-width: grid-size(md)) {
+					left: initial !important;
+				}
+			}
 		}
 
 		&[total="3"] {
+
+			#{$self}__slides {
+
+				@media screen and (min-width: grid-size(xl)) {
+					left: initial !important;
+				}
+			}
 
 			#{$self}__nav {
 
@@ -108,6 +122,7 @@
 				grid-auto-flow: row;
 				grid-template-columns: repeat(auto-fill, minmax(267px, 1fr));
 				max-width: 100%;
+				left: initial !important;
 			}
 
 			#{$self}__slider {
@@ -199,6 +214,17 @@
 
 			#{$self}[data-layout="carousel"] & {
 				display: flex;
+			}
+		}
+	}
+
+	&__slider--grid,
+	&__slider--collage {
+
+		#{$self}__nav {
+
+			@media screen and (min-width: grid-size(xl)) {
+				display: none;
 			}
 		}
 	}

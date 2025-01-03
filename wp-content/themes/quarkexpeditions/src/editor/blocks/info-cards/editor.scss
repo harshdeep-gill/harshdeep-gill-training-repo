@@ -1,17 +1,25 @@
 .quark-info-cards .info-cards {
 
+	.wrap {
+		padding-inline: 0;
+	}
+
 	&__slider {
 		display: flex;
 		flex-wrap: wrap;
-		padding-left: var(--typography-spacing);
 	}
 
 	&__card {
 		margin-bottom: var(--typography-spacing);
+		width: 352px;
 
 		.block-list-appender {
 			display: none;
 		}
+	}
+
+	&__card-content {
+		position: absolute;
 	}
 
 	&__image-wrap {
@@ -24,7 +32,14 @@
 
 	.block-list-appender {
 		position: relative;
-		width: 340px;
+		width: 352px;
+	}
+}
+
+.info-cards {
+
+	.wrap {
+		padding-inline: 0;
 	}
 }
 

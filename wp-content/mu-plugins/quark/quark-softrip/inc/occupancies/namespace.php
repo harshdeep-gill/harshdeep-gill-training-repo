@@ -1193,6 +1193,11 @@ function get_lowest_price_by_cabin_category_and_departure_and_promotion_code( in
 		}
 	}
 
+	// Bail if empty lowest price.
+	if ( empty( $lowest_price ) ) {
+		return $lowest_price;
+	}
+
 	// Add supplemental and mandatory price.
 	$updated_price = add_supplemental_and_mandatory_price(
 		[

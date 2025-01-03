@@ -402,12 +402,21 @@ function process_raq_form( array $lead_data = [] ): array {
 
 	// Check for empty departure start date.
 	if ( ! empty( $departure_start_date ) ) {
+		// Get Departure Year.
 		$departure_year = absint( gmdate( 'Y', $departure_start_date ) );
+
+		// Get Departure month.
+		$departure_month = absint( gmdate( 'm', $departure_start_date ) );
 	}
 
 	// Prepare Preferred season travel.
 	if ( 'ANT' === $region && ! empty( $departure_year ) ) {
-		// Add 1 year to the departure year. But only the last 2 digits. TODO: Rework on this post launch after business review. [QE-869].
+		// if departure month is less than 3, then reduce 1 year to the departure year.
+		if ( ! empty( $departure_month ) && $departure_month < 3 ) {
+			--$departure_year;
+		}
+
+		// Add 1 year to the departure year. But only the last 2 digits.
 		$preferred_season_travel = $departure_year . '-' . ( $departure_year % 100 + 1 );
 	} elseif ( 'ARC' === $region && ! empty( $departure_year ) ) {
 		$preferred_season_travel = $departure_year;

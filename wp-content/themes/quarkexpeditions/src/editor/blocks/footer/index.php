@@ -224,6 +224,7 @@ function process_column_block( array $block = [] ): array {
 					'quark/footer-social-links',
 					'quark/footer-icon',
 					'quark/footer-payment-options',
+					'quark/footer-associations',
 					'quark/button',
 					'quark/footer-logo',
 					'core/paragraph',
@@ -290,6 +291,35 @@ function process_column_block( array $block = [] ): array {
 				// Footer payment options.
 				case 'quark/footer-payment-options':
 					$column['content'][] = [ 'type' => 'payment-options' ];
+					break;
+
+				// Association Links.
+				case 'quark/footer-associations':
+					$association_links = [
+						'type'       => 'associations',
+						'attributes' => [
+							'association_links' => [],
+						],
+					];
+
+					// Check if inner blocks exist.
+					if ( ! empty( $column_inner_block['innerBlocks'] ) ) {
+						// Loop through the inner blocks.
+						foreach ( $column_inner_block['innerBlocks'] as $maybe_association_link ) {
+							// Check for inner block type.
+							if ( 'quark/footer-association-link' !== $maybe_association_link['blockName'] ) {
+								continue;
+							}
+
+							// Append the Association link.
+							if ( ! empty( $maybe_association_link['attrs']['type'] ) && ! empty( $maybe_association_link['attrs']['url']['url'] ) ) {
+								$association_links['attributes']['association_links'][ $maybe_association_link['attrs']['type'] ] = $maybe_association_link['attrs']['url']['url'];
+							}
+						}
+					}
+
+					// Add to the column.
+					$column['content'][] = $association_links;
 					break;
 
 				// Footer logo.

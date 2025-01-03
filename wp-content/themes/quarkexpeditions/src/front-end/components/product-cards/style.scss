@@ -50,6 +50,13 @@
 
 		&[total="3"] {
 
+			#{$self}__slides {
+
+				@media screen and (min-width: grid-size(xl)) {
+					left: initial !important;
+				}
+			}
+
 			#{$self}__nav {
 
 				@media screen and (min-width: grid-size(xl)) {

@@ -473,6 +473,31 @@ class Test_Adventure_Options extends Softrip_TestCase {
 		$actual               = format_adventure_option_data( $raw_adventure_option, $departure_post_id );
 		$this->assertEquals( $expected, $actual );
 
+		// Test with negative spaces available.
+		$departure_post_id    = 9271;
+		$raw_adventure_option = [
+			'id'              => '123',
+			'price'           => [
+				[],
+			],
+			'spacesAvailable' => -1,
+		];
+		$expected             = [
+			'softrip_option_id'        => '123',
+			'departure_post_id'        => 9271,
+			'softrip_package_code'     => '',
+			'service_ids'              => '',
+			'spaces_available'         => 0,
+			'adventure_option_term_id' => 0,
+			'price_per_person_usd'     => 0,
+			'price_per_person_cad'     => 0,
+			'price_per_person_aud'     => 0,
+			'price_per_person_gbp'     => 0,
+			'price_per_person_eur'     => 0,
+		];
+		$actual               = format_adventure_option_data( $raw_adventure_option, $departure_post_id );
+		$this->assertEquals( $expected, $actual );
+
 		// Create a departure.
 		$softrip_package_code = 'PQO-123';
 		$departure_post_id    = $this->factory()->post->create(

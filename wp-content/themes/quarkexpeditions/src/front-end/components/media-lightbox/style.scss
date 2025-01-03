@@ -25,7 +25,6 @@
 
 		button {
 			display: block;
-			height: 100%;
 		}
 	}
 
@@ -73,21 +72,29 @@
 		font-size: var(--font-size-small);
 		line-height: var(--line-height-small);
 		padding-top: var(--spacing-5);
-		width: fit-content;
 		min-height: 46px;
+		display: block;
+		text-align: center;
 	}
 
 	dialog {
 
 		&::backdrop {
-			background-color: rgba(0, 0, 0, 0.9);
+			background-color: rgb(0, 0, 0);
 		}
 
 		/* stylelint-disable-next-line selector-pseudo-class-no-unknown */
 		&:modal {
 			background-color: transparent;
-			width: 90%;
-			max-width: var(--wrap-width);
+			width: 100%;
+
+			@media screen and (max-width: grid-size(md)) {
+				max-width: 100%;
+				display: flex;
+				flex-direction: column;
+				justify-content: space-between;
+				height: 100%;
+			}
 		}
 	}
 
@@ -100,6 +107,14 @@
 			@include fade-in(0.8s);
 		}
 
+		@media screen and (max-width: grid-size(md)) {
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
+			height: 100%;
+			flex: 2;
+		}
+
 		img,
 		iframe,
 		.wistia_embed {
@@ -108,6 +123,10 @@
 			display: block;
 			border: none;
 			overflow: hidden;
+
+			@media screen and (max-width: calc(grid-size(md) - 1px) ) {
+				border-radius: 0;
+			}
 		}
 
 		iframe,
@@ -121,11 +140,13 @@
 			margin-inline: auto;
 			object-fit: cover;
 			max-height: 80vh;
-			min-height: 200px;
-			width: auto;
 
-			@media screen and (min-width: grid-size(lg)) and (min-height: 700px) {
-				min-height: 600px;
+			@media screen and (min-width: grid-size(md)) {
+				width: auto;
+			}
+
+			@media screen and (min-width: grid-size(md)) and (max-height: 650px) {
+				height: 70vh;
 			}
 		}
 	}
@@ -155,9 +176,13 @@
 		font-size: var(--font-size-small);
 		line-height: var(--line-height-small);
 		display: block;
-		position: absolute;
-		bottom: 0;
-		right: 0;
+		text-align: center;
+		margin-bottom: var(--spacing-5);
+
+		@media screen and (max-width: grid-size(md)) {
+			margin-bottom: 0;
+			flex: 1;
+		}
 	}
 
 	&__prev,
@@ -170,16 +195,28 @@
 				cursor: not-allowed;
 			}
 		}
+
+		@media screen and (max-width: calc(grid-size(md) - 1px)) {
+			display: none;
+		}
 	}
 
 	&__prev-button {
-		left: var(--spacing-5);
+		left: var(--spacing-3);
 		transform: translateY(-50%);
+
+		@media screen and (max-width: grid-size(md)) {
+			left: var(--spacing-5);
+		}
 	}
 
 	&__next-button {
-		right: var(--spacing-5);
+		right: var(--spacing-3);
 		transform: translateY(-50%);
+
+		@media screen and (max-width: grid-size(md)) {
+			right: var(--spacing-5);
+		}
 
 		svg {
 			transform: rotate(180deg);
@@ -193,7 +230,7 @@
 		width: 40px;
 		height: 40px;
 		border-radius: 50%;
-		background-color: var(--color-black);
+		border: 1px solid var(--color-white);
 		z-index: 2;
 
 		@include transition(background-color);
@@ -201,6 +238,14 @@
 		@media screen and (min-width: grid-size(lg)) {
 			width: 46px;
 			height: 46px;
+		}
+
+		@media screen and (max-width: calc(grid-size(md) - 1px) ) {
+			top: 50%;
+		}
+
+		@media screen and (max-width: calc(grid-size(md) - 1px)) {
+			background-color: rgba(0, 0, 0, 0.1);
 		}
 	}
 

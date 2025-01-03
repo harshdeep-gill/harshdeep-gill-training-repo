@@ -24,7 +24,6 @@
 			thank_you_page="{{ $thank_you_page }}"
 			:webform_url="false"
 			:referrer_url="true"
-			:ga_client_id="true"
 		>
 			<div class="form-contact-us__content">
 				<div class="form-contact-us__form">

@@ -33,7 +33,7 @@
 
 					@if ( 'title' === $item['type'] )
 						@if ( ! empty( $item['title'] ) )
-							<x-hero.title :title="$item['title']" :text_color="$item['text_color']" />
+							<x-hero.title :title="$item['title']" :text_color="$item['text_color']" :use_promo_font="$item['use_promo_font']" />
 						@endif
 					@endif
 
@@ -45,13 +45,13 @@
 
 					@if ( 'subtitle' === $item['type'] )
 						@if ( ! empty( $item['subtitle'] ) )
-							<x-hero.sub-title :title="$item['subtitle']" :text_color="$item['text_color']" />
+							<x-hero.sub-title :title="$item['subtitle']" :text_color="$item['text_color']" :use_promo_font="$item['use_promo_font']" />
 						@endif
 					@endif
 
 					@if ( 'description' === $item['type'] )
 						@if ( ! empty( $item['description'] ) )
-							<x-hero.description :text_color="$item['text_color']">
+							<x-hero.description :text_color="$item['text_color']" :use_promo_font="$item['use_promo_font']">
 								{!! $item['description'] !!}
 							</x-hero.description>
 						@endif

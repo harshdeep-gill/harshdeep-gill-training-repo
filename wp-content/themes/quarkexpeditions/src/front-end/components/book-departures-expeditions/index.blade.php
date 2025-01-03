@@ -8,7 +8,7 @@
 	quark_component_enqueue_assets( 'options-button' );
 	quark_component_enqueue_assets( 'dialog' );
 	quark_component_enqueue_assets( 'tooltip' );
-	quark_component_enqueue_assets( 'popover-polyfill' );
+	quark_enqueue_script( 'popover-polyfill' );
 @endphp
 
 <quark-book-departures-expeditions class="book-departures-expeditions" loading="false">

@@ -1,12 +1,12 @@
 /**
  * Global variables.
  */
-const { HTMLElement, customElements } = window;
+const { HTMLElement, customElements, addEventListenerWithYieldToMain } = window;
 
 /**
  * Internal dependencies.
  */
-import { slideElementDown, slideElementUp } from '../../global/utility';
+import { debounce, slideElementDown, slideElementUp } from '../../global/utility';
 
 /**
  * class ProductOptionsCards.
@@ -19,6 +19,7 @@ export class ProductOptionsCards extends HTMLElement {
 	private readonly cardDetails: NodeListOf<HTMLElement>;
 	private readonly cardDetailsMap: Map<string, HTMLElement>;
 	private readonly moreDetailsElement: HTMLElement | null;
+	private dialogElements: NodeListOf <HTMLDialogElement>;
 
 	/**
 	 * Constructor.
@@ -32,10 +33,14 @@ export class ProductOptionsCards extends HTMLElement {
 		this.cardDetails = this.querySelectorAll( '.product-options-cards__card-details' );
 		this.cardDetailsMap = new Map<string, HTMLElement>();
 		this.moreDetailsElement = this.querySelector( '.product-options-cards__more-details' );
+		this.dialogElements = document.querySelectorAll( '.dialog' ) as NodeListOf <HTMLDialogElement>;
 
 		// Setup cards.
 		this.cards.forEach( this.setupCard.bind( this ) );
 		this.cardDetails.forEach( this.setCheckoutURL.bind( this ) );
+
+		// Events.
+		window.addEventListener( 'resize', debounce( this.handleDialogClose.bind( this ), 10 ), { passive: true } );
 	}
 
 	/**
@@ -131,7 +136,7 @@ export class ProductOptionsCards extends HTMLElement {
 		} );
 
 		// Event listener for card.
-		card.addEventListener( 'click', () => {
+		addEventListenerWithYieldToMain( card, 'click', () => {
 			// Check if card is open.
 			const isOpen = card.hasAttribute( 'data-open' );
 
@@ -203,6 +208,37 @@ export class ProductOptionsCards extends HTMLElement {
 				}
 			} );
 		} );
+	}
+
+	/**
+	 * Check if it's mobile view.
+	 */
+	isMobile() {
+		// Return true if screen is mobile.
+		return 768 > window.innerWidth;
+	}
+
+	/**
+	 * Handle modal close.
+	 */
+	handleDialogClose() {
+		// Check the window width
+		if ( ! this.isMobile() ) {
+			// Foreach loop.
+			this.dialogElements.forEach( ( dialogElement: HTMLDialogElement ) => {
+				// Check if modal opened.
+				if ( dialogElement.hasAttribute( 'open' ) ) {
+					// Close dialog.
+					dialogElement?.close();
+
+					// Toggle open attribute.
+					dialogElement?.parentElement?.toggleAttribute( 'open' );
+
+					// Remove scroll from body.
+					document.querySelector( 'body' )?.classList?.remove( 'prevent-scroll' );
+				}
+			} );
+		}
 	}
 }
 

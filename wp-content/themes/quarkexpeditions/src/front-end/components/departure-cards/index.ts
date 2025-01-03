@@ -6,7 +6,12 @@ const { customElements, HTMLElement } = window;
 /**
  * Internal Dependency.
  */
-import { debounce } from '../../global/utility';
+import { throttle } from '../../global/utility';
+
+/**
+ * External Dependency.
+ */
+const { addEventListenerWithYieldToMain } = window;
 
 /**
  * Departure Card.
@@ -19,10 +24,6 @@ export default class DepartureCard extends HTMLElement {
 	private offers: NodeListOf<Element> | null;
 	private offerCountButton: HTMLElement | null;
 	private offerCountSpan: HTMLElement | null;
-	private adventuresContainer: HTMLElement | null;
-	private adventuresItems: NodeListOf<Element> | null;
-	private adventurescountWrap: HTMLElement | null;
-	private adventurescountSpan: HTMLElement | null;
 	private moreDetails: HTMLElement | null;
 	private dropdownButton: HTMLButtonElement | null;
 
@@ -38,22 +39,24 @@ export default class DepartureCard extends HTMLElement {
 		this.offers = this.querySelectorAll( '.departure-cards__offer' );
 		this.offerCountButton = this.querySelector( '.departure-cards__offer-count-button' );
 		this.offerCountSpan = this.querySelector( '.departure-cards__offer-count' );
-		this.adventuresContainer = this.querySelector( '.departure-cards__options-list' );
-		this.adventuresItems = this.querySelectorAll( '.departure-cards__option' );
-		this.adventurescountWrap = this.querySelector( '.departure-cards__options-count-wrap' );
-		this.adventurescountSpan = this.querySelector( '.departure-cards__options-count' );
 		this.dropdownButton = this.querySelector( '.departure-cards__cta' );
 		this.moreDetails = this.querySelector( '.departure-cards__more-details' );
 
+		// Check for existence.
+		if ( ! this.dropdownButton ) {
+			// Bail.
+			return;
+		}
+
 		// Events.
-		window.addEventListener( 'resize', debounce( this.updateOfferHiddenItems.bind( this ), 10 ), { passive: true } );
-		window.addEventListener( 'resize', debounce( this.updateAdventuresHiddenItems.bind( this ), 10 ), { passive: true } );
+		window.addEventListener( 'resize', throttle( this.updateOfferHiddenItems.bind( this ), 10 ), { passive: true } );
 		window.addEventListener( 'load', () => {
 			// Update the hidden items.
 			this.updateOfferHiddenItems();
-			this.updateAdventuresHiddenItems();
 		} );
-		this.dropdownButton?.addEventListener( 'click', this.toggle.bind( this ) );
+
+		// Add event listener.
+		addEventListenerWithYieldToMain( this.dropdownButton, 'click', this.toggle.bind( this ) );
 	}
 
 	/**
@@ -62,7 +65,6 @@ export default class DepartureCard extends HTMLElement {
 	connectedCallback() {
 		// Need to do this here as well since some cards may load dynamically on filter change or load more, etc.
 		this.updateOfferHiddenItems();
-		this.updateAdventuresHiddenItems();
 	}
 
 	/**
@@ -168,75 +170,6 @@ export default class DepartureCard extends HTMLElement {
 				// Add class.
 				this.offerCountButton.classList.add( 'departure-cards__offer-count-button--hidden' );
 			}
-		}
-	}
-
-	/**
-	 * Toggle the visibility of the "items" in adventures based on screen size.
-	 * On mobile, hide all except the first item.
-	 */
-	updateAdventuresHiddenItems(): void {
-		// Check if the element exists.
-		if ( ! this.adventuresContainer ) {
-			// Return.
-			return;
-		}
-
-		// Set hidden count and total width.
-		let hiddenCount = 0;
-		let totalWidth = 0;
-
-		// Set is mobile variable.
-		const isMobile = window.innerWidth < 576;
-
-		// For each loop.
-		this.adventuresItems?.forEach( ( option, index ) => {
-			// Remove hidden class.
-			option.classList.remove( 'departure-cards__option--hidden' );
-
-			// On mobile, only show the first item.
-			if ( isMobile ) {
-				// Check for first item.
-				if ( index === 0 ) {
-					// Set the total width.
-					totalWidth += option.clientWidth;
-
-					// Always show the first item.
-					return;
-				}
-
-				// Add hidden class.
-				option.classList.add( 'departure-cards__option--hidden' );
-				hiddenCount++;
-			} else {
-				// Default behavior for larger screens.
-				totalWidth += option.clientWidth;
-
-				// Check if More Option should be visible.
-				if ( totalWidth > this.adventuresContainer!.clientWidth && index === this.adventuresItems!.length - 2 ) {
-					// Add hidden class.
-					this.adventurescountWrap!.classList.add( 'departure-cards__options-count-wrap--visible' );
-					this.adventurescountWrap?.classList.remove( 'departure-cards__options-count-wrap--hidden' );
-				}
-
-				// Width check.
-				if ( ( totalWidth + this.adventurescountWrap!.clientWidth ) > this.adventuresContainer!.clientWidth ) {
-					// Add hidden class
-					option.classList.add( 'departure-cards__option--hidden' );
-
-					// Update the count markup. We are updating the count before incrementing to avoid the more option count.
-					this.adventurescountSpan!.textContent = hiddenCount.toString();
-
-					// Update the count.
-					hiddenCount++;
-				}
-			}
-		} );
-
-		// Check if we have any hidden items?
-		if ( 0 === hiddenCount ) {
-			this.adventurescountWrap?.classList.remove( 'departure-cards__options-count-wrap--visible' );
-			this.adventurescountWrap?.classList.add( 'departure-cards__options-count-wrap--hidden' );
 		}
 	}
 }

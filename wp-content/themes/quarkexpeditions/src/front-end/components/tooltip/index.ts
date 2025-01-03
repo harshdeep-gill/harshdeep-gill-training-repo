@@ -1,4 +1,9 @@
 /**
+ * Utility functions.
+ */
+import { throttle } from '../../global/utility';
+
+/**
  * Global variables.
  */
 const { customElements, HTMLElement } = window;
@@ -15,6 +20,7 @@ export class Tooltip extends HTMLElement {
 	private tooltipContentElement: HTMLElement | null;
 	private readonly MINIMUM_BUFFER_DISTANCE_VALUE = 20;
 	private readonly TOOLTIP_POPOVER_MAX_DIMENSION = 360;
+	private subscribedEventListeners: { element: EventTarget, event: string, handler: EventListenerOrEventListenerObject }[];
 
 	/**
 	 * Constructor.
@@ -27,15 +33,50 @@ export class Tooltip extends HTMLElement {
 		this.tooltipPopoverElement = this.querySelector( '.tooltip__description' );
 		this.tooltipArrowElement = this.querySelector( '.tooltip__arrow' );
 		this.tooltipContentElement = this.querySelector( '.tooltip__description-content' );
+		this.subscribedEventListeners = [];
 
 		// Events
 		this.tooltipPopoverElement?.addEventListener( 'toggle', this.handleTooltipToggled.bind( this ) );
 		this.tooltipPopoverElement?.addEventListener( 'beforetoggle', this.handleBeforeToggled.bind( this ) );
-		this.addEventListener( 'mouseenter', () => this.tooltipPopoverElement?.showPopover() );
-		this.addEventListener( 'mouseleave', () => this.tooltipPopoverElement?.hidePopover() );
 
-		// Window scroll
-		window.addEventListener( 'scroll', this.handleWindowScroll.bind( this ), true );
+		// Setup pointer events. We only need to do this in case of a mouse. Touch will work without it.
+		this.addEventListener( 'pointerenter', ( evt: PointerEvent ) => {
+			// Check if it was a mouse and proceed accordingly.
+			if ( 'mouse' === evt.pointerType && ! this.tooltipPopoverElement?.matches( ':popover-open' ) ) {
+				this.tooltipPopoverElement?.showPopover();
+			}
+		} );
+		this.addEventListener( 'pointerleave', ( evt: PointerEvent ) => {
+			// Check and hide popover.
+			if ( 'mouse' === evt.pointerType && this.tooltipPopoverElement?.matches( ':popover-open' ) ) {
+				this.tooltipPopoverElement?.hidePopover();
+			}
+		} );
+	}
+
+	/**
+	 * Connected Callback
+	 */
+	connectedCallback() {
+		// Adding it here because when it was being added in the constructor, there were some instances where the object was created but not connected to the dom causing dangling listeners.
+		if ( this.tooltipPopoverElement && this.tooltipContentElement && typeof this.tooltipPopoverElement.hidePopover === 'function' ) {
+			const throttledListener = throttle( this.handleWindowScroll.bind( this ), 2000 );
+			window.addEventListener( 'scroll', throttledListener, true );
+
+			// Add into subscribed event listeners
+			this.subscribedEventListeners.push( { element: window, event: 'scroll', handler: throttledListener } );
+		}
+	}
+
+	/**
+	 * Disconnected Callback.
+	 */
+	disconnectedCallback() {
+		// Loop through the listeners
+		this.subscribedEventListeners.forEach( ( entry ) => {
+			// Remove the event listeners.
+			entry.element.removeEventListener( entry.event, entry.handler, true );
+		} );
 	}
 
 	/**
@@ -51,11 +92,13 @@ export class Tooltip extends HTMLElement {
 		}
 
 		// Hide the popover
-		this.tooltipPopoverElement?.hidePopover();
+		if ( this.tooltipPopoverElement?.matches( ':popover-open' ) ) {
+			this.tooltipPopoverElement?.hidePopover();
+		}
 	}
 
 	/**
-	 * Postion of tooltip.
+	 * Position of tooltip.
 	 */
 	positionTooltip() {
 		// Check if tooltip is available.

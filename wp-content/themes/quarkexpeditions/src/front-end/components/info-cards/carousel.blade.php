@@ -9,11 +9,18 @@
 
 	// Get slide count.
 	$slide_count = quark_get_slot_child_count( $slot );
+
+	// Classes
+	$classes = [ 'info-cards__slider' ];
+
+	if ( ! empty( $layout ) ) {
+		$classes[] = sprintf( 'info-cards__slider--%s', $layout );
+	}
 @endphp
 
 <div class="info-cards__carousel">
 	<tp-slider
-		class="info-cards__slider"
+		@class( $classes )
 		swipe="yes"
 		infinite="yes"
 	>

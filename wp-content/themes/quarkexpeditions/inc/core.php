@@ -21,6 +21,7 @@ function setup(): void {
 	add_filter( 'wp_resource_hints', __NAMESPACE__ . '\\resource_hints', 10, 2 );
 	add_filter( 'wp_kses_allowed_html', __NAMESPACE__ . '\\kses_custom_allowed_html', 10, 2 );
 	add_filter( 'template_include', __NAMESPACE__ . '\\remove_default_title_tag' );
+	add_filter( 'wp_img_tag_add_auto_sizes', '__return_false' );
 }
 
 /**
@@ -90,6 +91,7 @@ function register_styles(): void {
 	wp_register_style( 'tp-multi-select', get_template_directory_uri() . '/dist/vendor/tpmultiselectelement.css', [], $assets_version );
 	wp_enqueue_style( 'qrk-global', get_template_directory_uri() . '/dist/global.css', [], $assets_version );
 	wp_enqueue_style( 'nunito-sans', get_template_directory_uri() . '/src/assets/fonts/nunito-sans/nunito-sans.css', [], '1' );
+	wp_enqueue_style( 'knockout-49-liteweight-regular', get_template_directory_uri() . '/src/assets/fonts/knockout-49-liteweight-regular/knockout-49-liteweight-regular.css', [], '1' );
 	wp_enqueue_style( 'source-serif-4', get_template_directory_uri() . '/src/assets/fonts/source-serif-4/source-serif-4.css', [], '1' );
 	wp_register_style( 'intl-tel-input-css', get_template_directory_uri() . '/dist/vendor/intltelinput.css', [], $assets_version );
 	wp_register_style( 'tp-slider', get_template_directory_uri() . '/dist/vendor/tpsliderelement.css', [], $assets_version );
@@ -105,6 +107,7 @@ function register_styles(): void {
 		function ( $handles = [] ) {
 			$handles[] = 'nunito-sans';
 			$handles[] = 'source-serif-4';
+			$handles[] = 'knockout-49-liteweight-regular';
 			$handles[] = 'intl-tel-input-css';
 			$handles[] = 'tp-slider';
 			$handles[] = 'tp-tabs';
@@ -143,6 +146,7 @@ function register_scripts(): void {
 	wp_register_script( 'tp-multi-select', get_template_directory_uri() . '/dist/vendor/tpmultiselectelement.js', [], $assets_version, true );
 	wp_register_script( 'trustpilot', 'https://widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js', [], $assets_version, true );
 	wp_register_script( 'wistia-embed', 'https://fast.wistia.com/assets/external/E-v1.js', [], $assets_version, true );
+	wp_register_script( 'instagram-embed', 'https://www.instagram.com/embed.js', [], $assets_version, true );
 	wp_register_script( 'tp-lightbox', get_template_directory_uri() . '/dist/vendor/tplightboxelement.js', [], $assets_version, true );
 	wp_register_script( 'tp-toggle-attribute', get_template_directory_uri() . '/dist/vendor/tptoggleattributeelement.js', [], $assets_version, true );
 	wp_register_script( 'tp-number-spinner', get_template_directory_uri() . '/dist/vendor/tpnumberspinnerelement.js', [], $assets_version, true );

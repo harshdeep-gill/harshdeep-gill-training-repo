@@ -27,6 +27,10 @@
 								<x-footer.payment-options />
 							@break
 
+							@case ( 'associations' )
+								<x-footer.associations :association_links="$column_inner_content['attributes']['association_links']" />
+							@break
+
 							@case ( 'logo' )
 								<x-footer.logo />
 							@break
@@ -63,13 +67,16 @@
 								<x-footer.payment-options />
 							@break
 
+							@case ( 'associations' )
+								<x-footer.associations :association_links="$column_inner_content['attributes']['association_links']" />
+							@break
+
 							@case ( 'logo' )
 								<x-footer.logo />
 							@break
 
 							@default
 								{!! $column_inner_content['content'] !!}
-
 						@endswitch
 					@endforeach
 				</x-footer.column>

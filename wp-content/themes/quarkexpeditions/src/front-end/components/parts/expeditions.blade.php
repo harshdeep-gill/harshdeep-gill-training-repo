@@ -47,7 +47,8 @@
 			@if ( ! empty( $card['transfer_package'] ) )
 				<x-product-cards.transfer_package
 					drawer_id="transfer-package-{{ $loop->index }}"
-					drawer_title="{!! __( 'Mandatory Transfer package', 'qrk' ) !!}"
+					drawer_title="{!! ! empty( $card['transfer_package']['mandatory_transfer_title'] ) ? $card['transfer_package']['mandatory_transfer_title'] : __( 'Mandatory Transfer Package', 'qrk') !!}"
+					label="{!! $card['transfer_package']['offer_inclusion_text'] !!}"
 				>
 					<strong>{!! $card['transfer_package']['title'] !!}</strong>
 

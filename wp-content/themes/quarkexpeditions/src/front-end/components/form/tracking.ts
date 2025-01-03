@@ -1,7 +1,6 @@
 /**
  * Tracking.
  */
-import { getCampaignIdsFromCookies } from '../../global/store/actions';
 
 // Campaign params.
 export const campaignParams: string[] = [ 'utm_source', 'utm_term', 'utm_campaign', 'utm_keyword', 'utm_content', 'utm_theme', 'utm_medium', 'gclid', 'msclkid', 'fbid', 'fbclid', 'pclid' ];
@@ -11,9 +10,9 @@ export const campaignParams: string[] = [ 'utm_source', 'utm_term', 'utm_campaig
  *
  * @return {Object} Campaign params.
  */
-export const getCampaignParamsFromUrl = (): any => {
+export const getCampaignParamsFromUrl = (): {[name: string]: string} => {
 	// Initialize.
-	const urlCampaignParams: any = {};
+	const urlCampaignParams: {[name: string]: string} = {};
 
 	// Get the campaign params from url and return.
 	campaignParams.forEach( ( value: string ) => {
@@ -53,26 +52,3 @@ export const getGaCookie = (): string => {
 	// Return the cookie.
 	return gaCookie;
 };
-
-/**
- * Initialize tracking.
- */
-export const initializeTracking = (): void => {
-	// Get URL campaign params.
-	let urlCampaignParams = getCampaignParamsFromUrl();
-
-	// Check if we have any campaign params.
-	if ( ! Object.keys( urlCampaignParams ).length ) {
-		// Get campaign ids from cookies.
-		urlCampaignParams = getCampaignIdsFromCookies();
-	}
-
-	// Get GA cookie.
-	const gaCookie = getGaCookie();
-
-	// Trigger an event.
-	window.dispatchEvent( new CustomEvent( 'visitor-tracked', { detail: { urlCampaignParams, gaCookie } } ) );
-};
-
-// Track when DOM is ready.
-window.addEventListener( 'DOMContentLoaded', initializeTracking );

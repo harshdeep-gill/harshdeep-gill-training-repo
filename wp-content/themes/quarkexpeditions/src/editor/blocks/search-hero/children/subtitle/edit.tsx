@@ -7,7 +7,7 @@ import {
 	RichText,
 	InspectorControls,
 } from '@wordpress/block-editor';
-import { PanelBody } from '@wordpress/components';
+import { PanelBody, ToggleControl } from '@wordpress/components';
 
 /**
  * External dependencies.
@@ -39,7 +39,12 @@ export const colors: { [key: string]: string }[] = [
 export default function Edit( { className, attributes, setAttributes }: BlockEditAttributes ): JSX.Element {
 	// eslint-disable-next-line react-hooks/rules-of-hooks
 	const blockProps = useBlockProps( {
-		className: classnames( className, 'search-hero__sub-title', 'white' === attributes.textColor ? 'color-context--dark' : '' ),
+		className: classnames(
+			className,
+			'search-hero__sub-title',
+			'white' === attributes.textColor ? 'color-context--dark' : '',
+			attributes.usePromoFont ? 'font-family--promo' : '',
+		),
 	} );
 
 	// Return the block's markup.
@@ -61,6 +66,12 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 								setAttributes( { textColor: textColor.slug } );
 							}
 						} }
+					/>
+					<ToggleControl
+						label={ __( 'Use Promo Font', 'qrk' ) }
+						checked={ attributes.usePromoFont }
+						onChange={ ( usePromoFont ) => setAttributes( { usePromoFont } ) }
+						help={ __( 'Should this text be in the Promo Font?', 'qrk' ) }
 					/>
 				</PanelBody>
 			</InspectorControls>

@@ -1,0 +1,10 @@
+@font-face {
+	font-family: "Knockout 49 Liteweight Regular";
+	font-style: normal;
+	font-weight: 400;
+	font-stretch: 100%;
+	font-display: swap;
+	src:
+		local(""),
+		url(knockout-49-liteweight-regular.otf) format("opentype");
+}

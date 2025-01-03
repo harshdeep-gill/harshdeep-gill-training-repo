@@ -12,4 +12,8 @@
 	&__card {
 		background-color: var(--color-gray-30);
 	}
+
+	&__card--size-medium {
+		max-width: 160px !important;
+	}
 }

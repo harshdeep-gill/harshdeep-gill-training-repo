@@ -135,3 +135,28 @@ export const convertPropertiesFromSnakeCaseToCamelCase = ( data: object = {} ): 
 	// Return the new converted object.
 	return convert( data );
 };
+
+/**
+ * Throttle a callback function.
+ *
+ * @param {Function} callbackFunction Callback function.
+ * @param {number}   delay            Delay in ms.
+ */
+export const throttle = ( callbackFunction: Function, delay: number = 100 ) => {
+	// Timer flag.
+	let timerFlag: null | NodeJS.Timeout = null;
+
+	// Returning a throttled version
+	return ( ...args: any ) => {
+		// If the timerFlag is null, execute the main function
+		if ( timerFlag === null ) {
+			// Execute the callback function
+			callbackFunction( ...args );
+
+			// Reset.
+			timerFlag = setTimeout( () => {
+				timerFlag = null; // Clear the timerFlag after the delay
+			}, delay );
+		}
+	};
+};

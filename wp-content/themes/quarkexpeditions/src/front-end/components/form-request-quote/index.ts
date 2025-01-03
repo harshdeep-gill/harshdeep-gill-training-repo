@@ -157,6 +157,9 @@ export default class FormRequestQuote extends HTMLElement {
 	showToastMessage(): void {
 		// Show toast message.
 		this.toastMessage?.show();
+
+		// Scroll to the toast.
+		this.toastMessage?.scrollIntoView( { behavior: 'smooth' } );
 	}
 
 	/**

@@ -6,10 +6,18 @@
 .icon-info-grid {
 	$self: &;
 
+	&__track {
+		margin-inline: calc(-50vw + 50%);
+		max-width: 100vw;
+		padding-inline: var(--grid-col-gutter);
+	}
+
 	&__slides-container {
 		column-gap: var(--spacing-6);
 		height: 100%;
 		align-items: stretch;
+		max-width: var(--wrap-width);
+		margin-inline: auto;
 
 		@media screen and (min-width: grid-size(xl)) {
 
@@ -17,17 +25,11 @@
 				display: grid;
 				row-gap: var(--spacing-7);
 				height: auto !important;
+				left: initial !important;
 
 				@include grid-columns(3);
 			}
 		}
-	}
-
-	&__track {
-		margin-left: calc(-1 * var(--grid-col-gutter));
-		margin-right: calc(-1 * var(--grid-col-gutter));
-		padding-left: var(--grid-col-gutter);
-		padding-right: var(--grid-col-gutter);
 	}
 
 	&__slide {
@@ -66,6 +68,13 @@
 
 			@media screen and (min-width: grid-size(xl)) {
 				display: none;
+			}
+		}
+
+		#{$self}__slides-container {
+
+			@media screen and (min-width: grid-size(xl)) {
+				left: initial !important;
 			}
 		}
 	}

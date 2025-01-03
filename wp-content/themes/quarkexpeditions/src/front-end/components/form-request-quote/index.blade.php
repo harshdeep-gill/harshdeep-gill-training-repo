@@ -49,7 +49,6 @@
 				id="{{ $form_id }}"
 				thank_you_page="{{ $thank_you_page }}"
 				class="form-request-quote__form"
-				:ga_client_id="true"
 			>
 				{{-- Step 1 --}}
 				<x-form-request-quote.tab id="travel-details" class="form-request-quote__step-1" open="yes">

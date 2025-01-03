@@ -1,0 +1,30 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Instagram Embed",
+	"name": "quark/instagram-embed",
+	"description": "Embed Instagram posts.",
+	"category": "layout",
+	"textdomain": "qrk",
+	"keywords": [
+		"instagram",
+		"embed"
+	],
+	"attributes": {
+    "instagramPostId": {
+      "type": "string",
+      "default": ""
+    },
+    "url": {
+      "type": "string",
+      "default": ""
+    }
+  },
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

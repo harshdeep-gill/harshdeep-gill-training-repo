@@ -83,11 +83,12 @@
 											// Sort options based on length.
 											uasort( $card['paid_adventure_options'], fn( $a, $b ) => strlen( $a ) <=> strlen( $b ) );
 										@endphp
-										@foreach( $card['paid_adventure_options'] as $option )
-											<x-departure-cards.adventure-option title="{{ $option ?? '' }}"/>
-										@endforeach
 
-										<x-departure-cards.adventure-options-tooltip>
+										@if ( ! empty( $card['paid_adventure_options'] ) )
+											<x-departure-cards.adventure-option title="{{ array_values( $card['paid_adventure_options'] )[0] ?? '' }}"/>
+										@endif
+
+										<x-departure-cards.adventure-options-tooltip :count="count( $card['paid_adventure_options'] ) - 1">
 											@if ( ! empty( $card['paid_adventure_options'] ) )
 												<ul>
 													@foreach( $card['paid_adventure_options'] as $option )
@@ -143,7 +144,7 @@
 							</p>
 						</x-departure-cards.transfer_package>
 					@endif
-					<x-departure-cards.cta text="{{ __( 'View Cabin Pricing & Options', 'qrk' ) }}"/>
+					<x-departure-cards.cta :availability_status="$card['departure_status'] ?? ''" />
 				</x-departure-cards.body-column>
 			</x-departure-cards.body>
 
@@ -315,7 +316,7 @@
 												</x-product-options-cards.discounts>
 											@endif
 
-											<p class="product-options-cards__help-text">{{ __( 'Not ready to book?', 'qrk' ) }} <a href="#">{{ __( 'Request a quote', 'qrk' ) }}</a></p>
+											<p class="product-options-cards__help-text">{{ __( 'Not ready to book?', 'qrk' ) }} <a href="{!! esc_url( $card['request_a_quote_url'] ) !!}">{{ __( 'Request a quote', 'qrk' ) }}</a></p>
 										</x-dialog.body>
 
 										@if ( ! empty( $cabin['occupancies'] ) && is_array( $cabin['occupancies'] ) && is_array( $cabin['occupancies'][0] ) && ! empty( $cabin['occupancies'][0]['checkout_url'] ) )

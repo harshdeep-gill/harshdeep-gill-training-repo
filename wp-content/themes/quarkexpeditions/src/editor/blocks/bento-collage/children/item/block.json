@@ -1,0 +1,55 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Bento Collage Item",
+	"name": "quark/bento-collage-item",
+	"description": "Bento Collage Item.",
+	"parent": [
+		"quark/bento-collage"
+	],
+	"category": "layout",
+	"keywords": [
+		"bento",
+		"collage",
+		"item"
+	],
+	"textdomain": "qrk",
+	"attributes": {
+		"size": {
+			"type": "string",
+			"default": "medium",
+			"enum": [ "small", "medium", "large", "full" ]
+		},
+		"contentPosition": {
+			"type": "string",
+			"default": "bottom",
+			"enum": [ "top", "bottom" ]
+		},
+		"image": {
+			"type": "object",
+			"default": {}
+		},
+		"title": {
+			"type": "string",
+			"default": ""
+		},
+		"description": {
+			"type": "string",
+			"default": ""
+		},
+		"ctaText": {
+			"type": "string",
+			"default": ""
+		},
+		"link": {
+			"type": "object",
+			"default": null
+		}
+	},
+	"supports": {
+		"alignWide": false,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

@@ -4,21 +4,12 @@
 const { customElements, HTMLElement } = window;
 
 /**
- * Internal Dependency.
- */
-import { debounce } from '../../global/utility';
-
-/**
  * Expedition Card.
  */
 export default class ExpeditionCard extends HTMLElement {
 	/**
 	 * Properties.
 	 */
-	private adventuresContainer: HTMLElement | null;
-	private adventuresItems: NodeListOf<Element> | null;
-	private adventurescountWrap: HTMLElement | null;
-	private adventurescountSpan: HTMLElement | null;
 	private moreDetails: HTMLElement | null;
 	private dropdownButton: HTMLButtonElement | null;
 
@@ -30,30 +21,11 @@ export default class ExpeditionCard extends HTMLElement {
 		super();
 
 		// Elements.
-		this.adventuresContainer = this.querySelector( '.expedition-cards__options-list' );
-		this.adventuresItems = this.querySelectorAll( '.expedition-cards__option' );
-		this.adventurescountWrap = this.querySelector( '.expedition-cards__options-count-wrap' );
-		this.adventurescountSpan = this.querySelector( '.expedition-cards__options-count' );
 		this.dropdownButton = this.querySelector( '.expedition-cards__cta' );
 		this.moreDetails = this.querySelector( '.expedition-cards__more-details' );
 
-		// Run after DOM Content Loaded.
-		document.addEventListener( 'DOMContentLoaded', () => {
-			// Run after DOM Content Loaded.
-			this.updateAdventuresHiddenItems();
-		} );
-
 		// Events.
-		window.addEventListener( 'resize', debounce( this.updateAdventuresHiddenItems.bind( this ), 10 ), { passive: true } );
 		this.dropdownButton?.addEventListener( 'click', this.toggle.bind( this ) );
-	}
-
-	/**
-	 * Connected Callback.
-	 */
-	connectedCallback() {
-		// Update hidden items.
-		this.updateAdventuresHiddenItems();
 	}
 
 	/**
@@ -92,75 +64,6 @@ export default class ExpeditionCard extends HTMLElement {
 
 		// Scroll the current card into view.
 		this.scrollIntoView();
-	}
-
-	/**
-	 * Toggle the visibility of the "items" in adventures based on screen size.
-	 * On mobile, hide all except the first item.
-	 */
-	updateAdventuresHiddenItems(): void {
-		// Check if the element exists.
-		if ( ! this.adventuresContainer ) {
-			// Return.
-			return;
-		}
-
-		// Set hidden count and total width.
-		let hiddenCount = 0;
-		let totalWidth = 0;
-
-		// Set is mobile variable.
-		const isMobile = window.innerWidth < 576;
-
-		// For each loop.
-		this.adventuresItems?.forEach( ( option, index ) => {
-			// Remove hidden class.
-			option.classList.remove( 'expedition-cards__option--hidden' );
-
-			// On mobile, only show the first item.
-			if ( isMobile ) {
-				// Check for first item.
-				if ( index === 0 ) {
-					// Set the total width.
-					totalWidth += option.clientWidth;
-
-					// Always show the first item.
-					return;
-				}
-
-				// Add hidden class.
-				option.classList.add( 'expedition-cards__option--hidden' );
-				hiddenCount++;
-			} else {
-				// Default behavior for larger screens.
-				totalWidth += option.clientWidth;
-
-				// Check if More Option should be visible.
-				if ( totalWidth > this.adventuresContainer!.clientWidth && index === this.adventuresItems!.length - 2 ) {
-					// Add hidden class.
-					this.adventurescountWrap!.classList.add( 'expedition-cards__options-count-wrap--visible' );
-					this.adventurescountWrap?.classList.remove( 'expedition-cards__options-count-wrap--hidden' );
-				}
-
-				// Width check.
-				if ( ( totalWidth + this.adventurescountWrap!.clientWidth ) > this.adventuresContainer!.clientWidth ) {
-					// Add hidden class
-					option.classList.add( 'expedition-cards__option--hidden' );
-
-					// Update the count markup. We are updating the count before incrementing to avoid the more option count.
-					this.adventurescountSpan!.textContent = hiddenCount.toString();
-
-					// Update the count.
-					hiddenCount++;
-				}
-			}
-		} );
-
-		// Check if we have any hidden items?
-		if ( 0 === hiddenCount ) {
-			this.adventurescountWrap?.classList.remove( 'expedition-cards__options-count-wrap--visible' );
-			this.adventurescountWrap?.classList.add( 'expedition-cards__options-count-wrap--hidden' );
-		}
 	}
 }
 

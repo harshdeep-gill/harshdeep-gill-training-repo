@@ -1,0 +1,24 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Associations",
+	"name": "quark/footer-associations",
+	"description": "Display the associations.",
+	"parent": [
+		"quark/footer-column"
+	],
+	"category": "layout",
+	"keywords": [
+		"footer",
+		"associations"
+	],
+	"textdomain": "qrk",
+	"attributes": {},
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

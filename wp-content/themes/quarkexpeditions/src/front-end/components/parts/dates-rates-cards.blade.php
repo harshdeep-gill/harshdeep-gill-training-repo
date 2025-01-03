@@ -108,7 +108,7 @@
 									<strong>{{ __( 'Brochure Price', 'qrk' ) }}</strong>
 
 									@if ( !empty( $card['transfer_package_details'] ) && !empty( $card['transfer_package_details']['title'] ) )
-										({{ __( 'Incl. Transfer Package', 'qrk' ) }})
+										{!! $card['transfer_package_details']['offer_inclusion_text'] ? $card['transfer_package_details']['offer_inclusion_text'] : __( 'Incl. Transfer Package', 'qrk' ) !!}
 										<x-tooltip icon="info">
 											<h5>{{ $card['transfer_package_details']['title'] }}</h5>
 
@@ -185,8 +185,10 @@
 										$is_sold_out = $availability_status_code === 'S';
 									@endphp
 									<x-dates-rates.item.table-column :is_pay_in_full="$is_pay_in_full" :is_sold_out="$is_sold_out" :is_discounted="$is_discounted">
-										@if ( !empty( $cabin['promos'][$promo_code] ) )
+										@if ( ! empty( $cabin['promos'][$promo_code] ) )
 											{{ $cabin['promos'][$promo_code] }}
+										@else
+											-
 										@endif
 									</x-dates-rates.item.table-column>
 								@endforeach

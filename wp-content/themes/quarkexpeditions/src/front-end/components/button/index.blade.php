@@ -10,6 +10,7 @@
 	'icon'          => '',
 	'icon_position' => 'left',
 	'loading'       => false,
+	'disabled' 		=> false,
 ] )
 
 @php
@@ -25,6 +26,10 @@
 
 	if ( ! empty( $size ) ) {
 		$classes[] = sprintf( 'btn--size-%s', $size );
+	}
+
+	if ( ! empty( $disabled ) && true === $disabled ) {
+		$classes[] = 'btn--disabled';
 	}
 
 	if ( ! empty( $class ) ) {

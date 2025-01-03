@@ -431,3 +431,19 @@
 	}
 }
 
+body:has(.dates-rates) {
+
+	// Update the wrap width.
+	--wrap-width: 100%;
+
+	.entry-content {
+		margin-left: calc(-50vw + 50%);
+		margin-right: calc(-50vw + 50%);
+		max-width: 100vw;
+		padding: 0 var(--grid-col-gutter);
+
+		@media screen and (min-width: grid-size(lg)) {
+			padding: 0 80px;
+		}
+	}
+}

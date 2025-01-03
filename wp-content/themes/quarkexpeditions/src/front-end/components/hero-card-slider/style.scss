@@ -8,12 +8,28 @@
 	--hero-card-aspect-ratio: 78 / 113;
 
 	max-width: var(--hero-card-slider-max-width);
-	overflow: hidden;
 	position: relative;
 	border-radius: var(--border-radius-large);
 
+	@media screen and (min-width: grid-size(lg)) {
+		overflow: hidden;
+	}
+
+	&__track {
+		margin-inline: calc(-50vw + 50%);
+		max-width: 100vw;
+		padding-inline: var(--grid-col-gutter);
+
+		@media screen and (min-width: grid-size(lg)) {
+			margin-inline: initial;
+			padding-inline: initial;
+		}
+	}
+
 	&__slides {
 		gap: var(--spacing-6);
+		max-width: var(--wrap-width);
+		margin-inline: auto;
 
 		@media screen and (min-width: grid-size(lg)) {
 			gap: unset;
@@ -192,14 +208,13 @@
 			display: none;
 			position: absolute;
 			z-index: 99;
-			translate: 0 -50%;
 
 			&[direction="previous"] {
-				inset: 50% auto auto var(--spacing-2);
+				inset: 60% auto auto var(--spacing-2);
 			}
 
 			&[direction="next"] {
-				inset: 50% var(--spacing-2) auto auto;
+				inset: 60% var(--spacing-2) auto auto;
 			}
 		}
 	}
