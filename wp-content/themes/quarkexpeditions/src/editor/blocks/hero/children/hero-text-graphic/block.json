@@ -12,8 +12,12 @@
 	],
 	"textdomain": "qrk",
 	"attributes": {
-    "image": {
+		"image": {
 			"type": "object"
+		},
+		"imageSize": {
+			"type": "string",
+			"default": "large"
 		}
   	},
 	"parent": [

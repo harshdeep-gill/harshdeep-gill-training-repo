@@ -139,17 +139,36 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 							$component_attributes['left'][] = $title;
 							break;
 
+						// Title bicolor.
+						case 'quark/hero-title-bicolor':
+							$title_bicolor = [
+								'type' => 'title_bicolor',
+							];
+
+							// Get the props.
+							$title_bicolor['white_text']     = $child_block->attributes['whiteText'] ?? '';
+							$title_bicolor['yellow_text']    = $child_block->attributes['yellowText'] ?? '';
+							$title_bicolor['switch_colors']  = $child_block->attributes['switchColors'] ?? false;
+							$title_bicolor['use_promo_font'] = $child_block->attributes['usePromoFont'] ?? false;
+
+							// Add to attributes.
+							$component_attributes['left'][] = $title_bicolor;
+							break;
+
 						// Text Graphic.
 						case 'quark/hero-text-graphic':
-							$textgraphic = [
+							$text_graphic = [
 								'type' => 'text-graphic',
 							];
 
 							// Add image id.
-							$textgraphic['image_id'] = $child_block->attributes['image']['id'] ?? '';
+							$text_graphic['image_id'] = $child_block->attributes['image']['id'] ?? '';
+
+							// Add size.
+							$text_graphic['size'] = $child_block->attributes['imageSize'] ?? 'large';
 
 							// Add to attributes.
-							$component_attributes['left'][] = $textgraphic;
+							$component_attributes['left'][] = $text_graphic;
 							break;
 
 						// Subtitle.

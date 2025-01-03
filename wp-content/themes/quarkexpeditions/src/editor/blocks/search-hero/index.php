@@ -122,6 +122,22 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 								$title_container['title'] = $title;
 								break;
 
+							// Title bicolor.
+							case 'quark/search-hero-title-bicolor':
+								$title_bicolor = [
+									'type' => 'title_bicolor',
+								];
+
+								// Get the props.
+								$title_bicolor['white_text']     = $text_block->attributes['whiteText'] ?? '';
+								$title_bicolor['yellow_text']    = $text_block->attributes['yellowText'] ?? '';
+								$title_bicolor['switch_colors']  = $text_block->attributes['switchColors'] ?? false;
+								$title_bicolor['use_promo_font'] = $text_block->attributes['usePromoFont'] ?? false;
+
+								// Add to attributes.
+								$title_container['title_bicolor'] = $title_bicolor;
+								break;
+
 							// Subtitle.
 							case 'quark/search-hero-subtitle':
 								$subtitle = [

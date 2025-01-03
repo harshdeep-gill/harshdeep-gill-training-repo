@@ -39,6 +39,7 @@ import * as contentLeft from './children/content-left';
 import * as contentRight from './children/content-right';
 import * as overline from './children/overline';
 import * as title from './children/title';
+import * as titleBicolor from './children/title-bicolor';
 import * as subtitle from './children/subtitle';
 import * as titleContainer from './children/title-container';
 import * as searchBar from './children/search-bar';
@@ -55,6 +56,7 @@ export const init = (): void => {
 	registerBlockType( contentRight.name, contentRight.settings );
 	registerBlockType( overline.name, overline.settings );
 	registerBlockType( title.name, title.settings );
+	registerBlockType( titleBicolor.name, titleBicolor.settings );
 	registerBlockType( subtitle.name, subtitle.settings );
 	registerBlockType( titleContainer.name, titleContainer.settings );
 	registerBlockType( searchBar.name, searchBar.settings );
