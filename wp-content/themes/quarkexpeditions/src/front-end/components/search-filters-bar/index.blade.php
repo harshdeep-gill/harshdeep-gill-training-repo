@@ -34,7 +34,7 @@
 			/>
 		</x-modal.modal-open>
 	</x-search-filters-bar.search-modal-open-container>
-	<x-search-filters-bar.search-button text="Search Expeditions" />
+	<x-search-filters-bar.search-button text="{{ __( 'Search Expeditions', 'qrk' ) }}" />
 	<x-search-filters-bar.search-modal
 		:modal_id="$modal_id"
 		:is_search_page="$is_search_page"

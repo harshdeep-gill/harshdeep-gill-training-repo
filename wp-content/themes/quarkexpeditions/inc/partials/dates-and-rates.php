@@ -75,7 +75,7 @@ function render( array $output = [], string $name = '', array $data = [] ): arra
 			'parts.dates-rates-cards',
 			$attributes
 		),
-		'noResultsMarkup' => 'No results found.',
+		'noResultsMarkup' => __( 'No results found.', 'qrk' ),
 		'data'            => [
 			'resultCount'    => $search_results['result_count'],
 			'page'           => $search_results['current_page'],
