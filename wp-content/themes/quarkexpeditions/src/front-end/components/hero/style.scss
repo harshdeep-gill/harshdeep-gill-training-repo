@@ -192,6 +192,14 @@
 
 	&__title {
 		margin-bottom: 0;
+
+		&--color-white {
+			color: var(--color-white);
+		}
+
+		&--color-yellow {
+			color: var(--color-yellow);
+		}
 	}
 
 	&__sub-title {
