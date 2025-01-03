@@ -28,7 +28,7 @@
 			<x-form.row>
 				<tp-toggle-attribute trigger="select" target=".form-contact-us__request-type" value="request_type" attribute="required">
 					<x-form.field :validation="[ 'required' ]">
-						<x-form.select label="{{ __( 'Request Type', 'qrk' ) }}" name="fields[Request_Type__c]">
+						<x-form.select :label="__( 'Request Type', 'qrk' )" name="fields[Request_Type__c]">
 							<x-form.option value="">{{ __( '- Select -', 'qrk' ) }}</x-form.option>
 							<x-form.option value="my_information_request" label="{{ __( 'Inform me about what categories of personal information you collect about me', 'qrk' ) }}">{{ __( 'Inform me about what categories of personal information you collect about me', 'qrk' ) }}</x-form.option>
 							<x-form.option value="access_request" label="{{ __( 'Give me access to the specific pieces of personal information you store about me', 'qrk' ) }}">{{ __( 'Give me access to the specific pieces of personal information you store about me', 'qrk' ) }}</x-form.option>
