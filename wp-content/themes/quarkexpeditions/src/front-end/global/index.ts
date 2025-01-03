@@ -25,6 +25,13 @@ import './store';
 import { initialize } from './store/actions';
 
 /**
+ * Global JavaScript.
+ */
+import './phone-number';
+import './tracking';
+import './performance';
+
+/**
  * TypeScript Stuff.
  */
 declare global {
@@ -33,6 +40,8 @@ declare global {
 			api_endpoint?: string; // eslint-disable-line
 			default_phone_number?: string; // eslint-disable-line
 		};
+		yieldToMain: () => Promise<void>;
+		addEventListenerWithYieldToMain: ( element: HTMLElement, event: string, callback: () => void, options: boolean | AddEventListenerOptions ) => void;
 	}
 }
 
@@ -40,9 +49,3 @@ declare global {
  * Initialize global store.
  */
 initialize( {} );
-
-/**
- * Global JavaScript.
- */
-import './phone-number';
-import './tracking';

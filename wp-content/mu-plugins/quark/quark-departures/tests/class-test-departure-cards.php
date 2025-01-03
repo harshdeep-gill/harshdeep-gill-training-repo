@@ -749,7 +749,8 @@ class Test_Departure_Cards extends Softrip_TestCase {
 	 *         sets: array<string>,
 	 *         price: float,
 	 *         formatted_price: string,
-	 *         offer_inclusion_text: string
+	 *         offer_inclusion_text: string,
+	 *         mandatory_transfer_title: string,
 	 *     },
 	 *     paid_adventure_options: array<int, string>,
 	 *     banner_details: array{
@@ -786,15 +787,16 @@ class Test_Departure_Cards extends Softrip_TestCase {
 				'original_price'   => '$34,800 USD',
 			],
 			'transfer_package_details' => [
-				'title'                => 'Includes',
-				'sets'                 => [
+				'title'                    => 'Includes',
+				'sets'                     => [
 					'Test Item 4',
 					'Test Item 5',
 					'Test Item 6',
 				],
-				'price'                => 200,
-				'formatted_price'      => '$200 USD',
-				'offer_inclusion_text' => '',
+				'price'                    => 200,
+				'formatted_price'          => '$200 USD',
+				'offer_inclusion_text'     => '',
+				'mandatory_transfer_title' => '',
 			],
 			'paid_adventure_options'   => [
 				self::$adventure_option_terms[0]->term_id => self::$adventure_option_terms[0]->name,
@@ -860,6 +862,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 	 *         price: float,
 	 *         formatted_price: string,
 	 *         offer_inclusion_text: string,
+	 *         mandatory_transfer_title: string,
 	 *     },
 	 *     paid_adventure_options: string[],
 	 *     banner_details: array{
@@ -896,15 +899,16 @@ class Test_Departure_Cards extends Softrip_TestCase {
 				'original_price'   => '$35,095 USD',
 			],
 			'transfer_package_details' => [
-				'title'                => 'Includes',
-				'sets'                 => [
+				'title'                    => 'Includes',
+				'sets'                     => [
 					'Test Item 4',
 					'Test Item 5',
 					'Test Item 6',
 				],
-				'price'                => 200,
-				'formatted_price'      => '$200 USD',
-				'offer_inclusion_text' => '',
+				'price'                    => 200,
+				'formatted_price'          => '$200 USD',
+				'offer_inclusion_text'     => '',
+				'mandatory_transfer_title' => '',
 			],
 			'paid_adventure_options'   => [],
 			'banner_details'           => [
@@ -1000,15 +1004,16 @@ class Test_Departure_Cards extends Softrip_TestCase {
 				'original_price'   => '$47,105 USD',
 			],
 			'transfer_package_details' => [
-				'title'                => 'Includes',
-				'sets'                 => [
+				'title'                    => 'Includes',
+				'sets'                     => [
 					'Test Item 4',
 					'Test Item 5',
 					'Test Item 6',
 				],
-				'price'                => 200,
-				'formatted_price'      => '$200 USD',
-				'offer_inclusion_text' => '',
+				'price'                    => 200,
+				'formatted_price'          => '$200 USD',
+				'offer_inclusion_text'     => '',
+				'mandatory_transfer_title' => '',
 			],
 			'paid_adventure_options'   => [],
 			'banner_details'           => [
@@ -1174,15 +1179,16 @@ class Test_Departure_Cards extends Softrip_TestCase {
 			'paid_adventure_options'     => [],
 			'request_a_quote_url'        => get_request_a_quote_url( $departure_post_1 ),
 			'transfer_package_details'   => [
-				'title'                => 'Includes',
-				'sets'                 => [
+				'title'                    => 'Includes',
+				'sets'                     => [
 					'Test Item 4',
 					'Test Item 5',
 					'Test Item 6',
 				],
-				'price'                => 200,
-				'formatted_price'      => '$200 USD',
-				'offer_inclusion_text' => '',
+				'price'                    => 200,
+				'formatted_price'          => '$200 USD',
+				'offer_inclusion_text'     => '',
+				'mandatory_transfer_title' => '',
 			],
 			'tax_types'                  => [],
 			'cabin_data'                 => [
@@ -1379,15 +1385,16 @@ class Test_Departure_Cards extends Softrip_TestCase {
 				'paid_adventure_options'     => [],
 				'request_a_quote_url'        => get_request_a_quote_url( $departure_post_1 ),
 				'transfer_package_details'   => [
-					'title'                => 'Includes',
-					'sets'                 => [
+					'title'                    => 'Includes',
+					'sets'                     => [
 						'Test Item 4',
 						'Test Item 5',
 						'Test Item 6',
 					],
-					'price'                => 200,
-					'formatted_price'      => '$200 USD',
-					'offer_inclusion_text' => '',
+					'price'                    => 200,
+					'formatted_price'          => '$200 USD',
+					'offer_inclusion_text'     => '',
+					'mandatory_transfer_title' => '',
 				],
 				'tax_types'                  => [],
 				'cabin_data'                 => [
@@ -1423,15 +1430,16 @@ class Test_Departure_Cards extends Softrip_TestCase {
 				'paid_adventure_options'     => [],
 				'request_a_quote_url'        => get_request_a_quote_url( $departure_post_2 ),
 				'transfer_package_details'   => [
-					'title'                => 'Includes',
-					'sets'                 => [
+					'title'                    => 'Includes',
+					'sets'                     => [
 						'Test Item 4',
 						'Test Item 5',
 						'Test Item 6',
 					],
-					'price'                => 200,
-					'formatted_price'      => '$200 USD',
-					'offer_inclusion_text' => '',
+					'price'                    => 200,
+					'formatted_price'          => '$200 USD',
+					'offer_inclusion_text'     => '',
+					'mandatory_transfer_title' => '',
 				],
 				'tax_types'                  => [],
 				'cabin_data'                 => [

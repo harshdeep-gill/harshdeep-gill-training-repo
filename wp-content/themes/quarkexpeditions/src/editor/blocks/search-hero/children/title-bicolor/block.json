@@ -1,0 +1,44 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Search Hero - Title Bicolor",
+	"name": "quark/search-hero-title-bicolor",
+	"description": "Search Hero Title text in two colors.",
+	"category": "widgets",
+	"keywords": [
+		"search",
+		"hero",
+		"title",
+		"text",
+    "bicolor"
+	],
+	"textdomain": "qrk",
+	"attributes": {
+		"whiteText": {
+			"type": "string",
+			"default": ""
+		},
+		"yellowText": {
+			"type": "string",
+			"default": ""
+		},
+		"usePromoFont": {
+			"type": "boolean",
+			"default": false
+		},
+		"switchColors": {
+			"type": "boolean",
+			"default": false
+		}
+	},
+	"parent": [
+		"quark/search-hero-title-container"
+	],
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

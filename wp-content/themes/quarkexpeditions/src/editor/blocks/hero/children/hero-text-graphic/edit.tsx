@@ -6,7 +6,7 @@ import {
 	useBlockProps,
 	InspectorControls,
 } from '@wordpress/block-editor';
-import { PanelBody } from '@wordpress/components';
+import { PanelBody, SelectControl } from '@wordpress/components';
 
 /**
  * External dependencies.
@@ -45,20 +45,35 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 
 	// Set the block properties.
 	const blockProps = useBlockProps( {
-		className: classnames( className, 'hero__text-graphic' ),
+		className: classnames(
+			className,
+			'hero__text-graphic',
+			attributes.imageSize ? `hero__text-graphic--size-${ attributes.imageSize }` : '',
+		),
 	} );
 
 	// Return the block's markup.
 	return (
 		<>
 			<InspectorControls>
-				<PanelBody title={ __( 'Description Options', 'qrk' ) }>
+				<PanelBody title={ __( 'Hero Text Graphic Options', 'qrk' ) }>
 					<ImageControl
 						label={ __( 'Image', 'qrk' ) }
 						value={ attributes.image ? attributes.image.id : null }
 						size="large"
 						help={ __( 'Choose an image', 'qrk' ) }
 						onChange={ ( image: object ) => setAttributes( { image } ) }
+					/>
+					<SelectControl
+						label={ __( 'Image Size', 'qrk' ) }
+						help={ __( 'Select the image size from these options', 'qrk' ) }
+						value={ attributes.imageSize }
+						options={ [
+							{ label: __( 'Large', 'qrk' ), value: 'large' },
+							{ label: __( 'Medium', 'qrk' ), value: 'medium' },
+							{ label: __( 'Small', 'qrk' ), value: 'small' },
+						] }
+						onChange={ ( imageSize: string ) => setAttributes( { imageSize } ) }
 					/>
 				</PanelBody>
 			</InspectorControls>

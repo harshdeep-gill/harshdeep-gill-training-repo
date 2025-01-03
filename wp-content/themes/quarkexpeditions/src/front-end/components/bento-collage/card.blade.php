@@ -1,6 +1,7 @@
 @props( [
-	'url'  => '',
-	'size' => 'medium',
+	'url'    => '',
+	'size'   => 'medium',
+	'target' => '',
 ] )
 
 @php
@@ -16,7 +17,7 @@
 @endphp
 
 <tp-slider-slide @class( $classes )>
-	<x-maybe-link :href="$url" class="bento-collage__maybe-link" fallback_tag="div">
+	<x-maybe-link :href="$url" class="bento-collage__maybe-link" fallback_tag="div" target="{{ $target }}">
 		{!! $slot !!}
 	</x-maybe-link>
 </tp-slider-slide>

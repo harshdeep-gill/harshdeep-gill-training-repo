@@ -498,8 +498,8 @@ class Test_Expeditions extends Softrip_TestCase {
 			'region'           => $term_1->name,
 			'duration'         => 11,
 			'from_price'       => [
-				'original'   => '',
-				'discounted' => '',
+				'original'   => '$0.00 USD',
+				'discounted' => '$0.00 USD',
 			],
 			'starting_from'    => [
 				$departure_location_term_1->term_id => [

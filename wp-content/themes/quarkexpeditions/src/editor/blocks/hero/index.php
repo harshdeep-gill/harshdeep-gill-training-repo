@@ -131,24 +131,44 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 							];
 
 							// Add title.
-							$title['title']      = $child_block->attributes['title'] ?? '';
-							$title['text_color'] = $child_block->attributes['textColor'] ?? '';
+							$title['title']          = $child_block->attributes['title'] ?? '';
+							$title['text_color']     = $child_block->attributes['textColor'] ?? '';
+							$title['use_promo_font'] = $child_block->attributes['usePromoFont'] ?? false;
 
 							// Add to attributes.
 							$component_attributes['left'][] = $title;
 							break;
 
+						// Title bicolor.
+						case 'quark/hero-title-bicolor':
+							$title_bicolor = [
+								'type' => 'title_bicolor',
+							];
+
+							// Get the props.
+							$title_bicolor['white_text']     = $child_block->attributes['whiteText'] ?? '';
+							$title_bicolor['yellow_text']    = $child_block->attributes['yellowText'] ?? '';
+							$title_bicolor['switch_colors']  = $child_block->attributes['switchColors'] ?? false;
+							$title_bicolor['use_promo_font'] = $child_block->attributes['usePromoFont'] ?? false;
+
+							// Add to attributes.
+							$component_attributes['left'][] = $title_bicolor;
+							break;
+
 						// Text Graphic.
 						case 'quark/hero-text-graphic':
-							$textgraphic = [
+							$text_graphic = [
 								'type' => 'text-graphic',
 							];
 
 							// Add image id.
-							$textgraphic['image_id'] = $child_block->attributes['image']['id'] ?? '';
+							$text_graphic['image_id'] = $child_block->attributes['image']['id'] ?? '';
+
+							// Add size.
+							$text_graphic['size'] = $child_block->attributes['imageSize'] ?? 'large';
 
 							// Add to attributes.
-							$component_attributes['left'][] = $textgraphic;
+							$component_attributes['left'][] = $text_graphic;
 							break;
 
 						// Subtitle.
@@ -158,8 +178,9 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 							];
 
 							// Add subtitle.
-							$subtitle['subtitle']   = $child_block->attributes['subtitle'] ?? '';
-							$subtitle['text_color'] = $child_block->attributes['textColor'] ?? '';
+							$subtitle['subtitle']       = $child_block->attributes['subtitle'] ?? '';
+							$subtitle['text_color']     = $child_block->attributes['textColor'] ?? '';
+							$subtitle['use_promo_font'] = $child_block->attributes['usePromoFont'] ?? false;
 
 							// Add to attributes.
 							$component_attributes['left'][] = $subtitle;
@@ -172,8 +193,9 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 							];
 
 							// Add description.
-							$description['description'] = implode( '', array_map( 'render_block', $child_block->parsed_block['innerBlocks'] ) );
-							$description['text_color']  = $child_block->attributes['textColor'] ?? '';
+							$description['description']    = implode( '', array_map( 'render_block', $child_block->parsed_block['innerBlocks'] ) );
+							$description['text_color']     = $child_block->attributes['textColor'] ?? '';
+							$description['use_promo_font'] = $child_block->attributes['usePromoFont'] ?? false;
 
 							// Add to attributes.
 							$component_attributes['left'][] = $description;

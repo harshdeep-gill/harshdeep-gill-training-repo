@@ -93,7 +93,6 @@ export default function edit( { className, attributes, setAttributes }: BlockEdi
 							{ label: __( 'Whale Tail', 'qrk' ), value: 'whale-tail' },
 							{ label: __( 'House', 'qrk' ), value: 'house' },
 							{ label: __( 'Iceberg', 'qrk' ), value: 'iceberg' },
-							{ label: __( 'Flight Seeing', 'qrk' ), value: 'flightseeing' },
 							{ label: __( 'Time', 'qrk' ), value: 'time2' },
 							{ label: __( 'Brochure', 'qrk' ), value: 'brochure' },
 							{ label: __( 'Dollar Sign', 'qrk' ), value: 'dollar-sign' },
@@ -108,7 +107,6 @@ export default function edit( { className, attributes, setAttributes }: BlockEdi
 							{ label: __( 'Fly The Drake', 'qrk' ), value: 'fly-the-drake' },
 							{ label: __( 'Landscapes', 'qrk' ), value: 'landscapes' },
 							{ label: __( 'Drink', 'qrk' ), value: 'drink' },
-							{ label: __( 'Building', 'qrk' ), value: 'building' },
 							{ label: __( 'Footsteps', 'qrk' ), value: 'footsteps' },
 							{ label: __( 'Sea Kayaking', 'qrk' ), value: 'sea-kayaking' },
 							{ label: __( 'Relaxed Traveling', 'qrk' ), value: 'relaxed-traveling' },
@@ -122,6 +120,9 @@ export default function edit( { className, attributes, setAttributes }: BlockEdi
 							{ label: __( 'Mountain Biking', 'qrk' ), value: 'mountain-biking' },
 							{ label: __( 'Viking Ship', 'qrk' ), value: 'viking-ship' },
 							{ label: __( 'Pin', 'qrk' ), value: 'pin' },
+							{ label: __( 'OX Icon', 'qrk' ), value: 'ox-icon' },
+							{ label: __( 'Fjord', 'qrk' ), value: 'fjord' },
+							{ label: __( 'Eclipse', 'qrk' ), value: 'eclipse' },
 						] }
 						onChange={ ( icon: string ) => setAttributes( { icon } ) }
 					/>

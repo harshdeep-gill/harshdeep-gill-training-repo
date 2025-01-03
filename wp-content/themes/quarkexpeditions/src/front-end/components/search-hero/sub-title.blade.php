@@ -1,6 +1,7 @@
 @props( [
-	'title'      => '',
-	'text_color' => '',
+	'title'          => '',
+	'text_color'     => '',
+	'use_promo_font' => false,
 ] )
 
 @php
@@ -8,13 +9,17 @@
 		return;
 	}
 
-	$classes = [ 'search-hero__sub-title' ];
+	$classes = [ 'search-hero__sub-title', 'h5' ];
 
 	if ( ! empty( $text_color ) && 'white' === $text_color ) {
 		$classes[] = 'color-context--dark';
 	}
+
+	if ( ! empty( $use_promo_font ) ) {
+		$classes[] = 'font-family--promo';
+	}
 @endphp
 
-<div @class( $classes )>
-	<h5 class="h5"><x-escape :content="$title" /></h5>
+<h5 @class( $classes )>
+	<x-escape :content="$title" />
 </div>

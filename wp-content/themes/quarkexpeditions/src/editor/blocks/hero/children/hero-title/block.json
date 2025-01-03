@@ -31,6 +31,10 @@
 		"syncPostTitle": {
 			"type": "boolean",
 			"default": false
+		},
+		"usePromoFont": {
+			"type": "boolean",
+			"default": false
 		}
 	},
 	"parent": [
