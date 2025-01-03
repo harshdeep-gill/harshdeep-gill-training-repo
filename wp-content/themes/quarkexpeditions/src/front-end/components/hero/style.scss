@@ -193,6 +193,14 @@
 	&__title {
 		margin-bottom: 0;
 
+		&.font-family--promo {
+			line-height: 38px;
+
+			@media screen and (min-width: grid-size(lg)) {
+				line-height: 52px;
+			}
+		}
+
 		&--color-white {
 			color: var(--color-white);
 		}
