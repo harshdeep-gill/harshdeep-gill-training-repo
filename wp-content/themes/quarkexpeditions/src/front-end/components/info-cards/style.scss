@@ -135,7 +135,7 @@
 		}
 	}
 
-	&:not([data-mobile-carousel]) {
+	&:not([data-mobile-carousel="1"]) {
 
 		@media screen and (max-width: calc(grid-size(lg) - 1px)) {
 
