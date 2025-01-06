@@ -14,6 +14,7 @@ use function Quark\Core\get_raw_text_from_html;
 use function Quark\Ingestor\cron_is_scheduled;
 use function Quark\Ingestor\cron_schedule_push;
 use function Quark\Ingestor\do_push;
+use function Quark\Ingestor\generate_virtual_drupal_id;
 use function Quark\Ingestor\get_all_data;
 use function Quark\Ingestor\get_id;
 use function Quark\Ingestor\get_image_details;
@@ -25,6 +26,8 @@ use const Quark\CabinCategories\POST_TYPE as CABIN_CATEGORY_POST_TYPE;
 use const Quark\Expeditions\POST_TYPE as EXPEDITION_POST_TYPE;
 use const Quark\Ingestor\DATA_HASH_KEY;
 use const Quark\Ingestor\SCHEDULE_HOOK;
+use const Quark\Ingestor\START_ID;
+use const Quark\Ingestor\VIRTUAL_DRUPAL_ID_COUNTER_KEY;
 
 const TEST_IMAGE_PATH = __DIR__ . '/data/test-image.jpg';
 
@@ -1136,6 +1139,94 @@ class Test_Ingestor extends Softrip_TestCase {
 		];
 
 		// Assert.
+		$this->assertEquals( $expected, $actual );
+	}
+
+	/**
+	 * Test get id.
+	 *
+	 * @covers \Quark\Ingestor\get_id
+	 *
+	 * @return void
+	 */
+	public function test_get_id(): void {
+		// Default expected.
+		$default_expected = 0;
+
+		// Test with no arguments.
+		$actual = get_id();
+		$this->assertEquals( $default_expected, $actual );
+
+		// Test with invalid post id.
+		$actual = get_id( 9999 );
+		$this->assertEquals( $default_expected, $actual );
+
+		// Create a post.
+		$post_id = $this->factory()->post->create();
+		$this->assertIsInt( $post_id );
+
+		// Test with valid post id.
+		$actual           = get_id( $post_id );
+		$expected_post_id = START_ID + 1;
+		$this->assertEquals( $expected_post_id, $actual );
+
+		// Create a cabin category post.
+		$cabin_category_post = $this->factory()->post->create(
+			[
+				'post_type' => CABIN_CATEGORY_POST_TYPE,
+			]
+		);
+		$this->assertIsInt( $cabin_category_post );
+
+		// Test with cabin category post.
+		$actual                     = get_id( $cabin_category_post );
+		$expected_cabin_category_id = START_ID + 2;
+		$this->assertEquals( $expected_cabin_category_id, $actual );
+
+		// Create another post.
+		$post_id2 = $this->factory()->post->create(
+			[
+				'meta_input' => [
+					'drupal_id' => 123,
+				],
+			]
+		);
+		$this->assertIsInt( $post_id2 );
+
+		// Test with valid post id.
+		$actual            = get_id( $post_id2 );
+		$expected_post_id2 = 123;
+		$this->assertEquals( $expected_post_id2, $actual );
+	}
+
+	/**
+	 * Test generate virtual drupal ID.
+	 *
+	 * @covers \Quark\Ingestor\generate_virtual_drupal_id
+	 *
+	 * @return void
+	 */
+	public function test_generate_virtual_drupal_id(): void {
+		// Option should be empty.
+		$actual = get_option( VIRTUAL_DRUPAL_ID_COUNTER_KEY );
+		$this->assertEmpty( $actual );
+
+		// Test with first call.
+		$actual = generate_virtual_drupal_id();
+		$this->assertEquals( START_ID + 1, $actual );
+
+		// Option should be updated.
+		$expected = START_ID + 1;
+		$actual   = get_option( VIRTUAL_DRUPAL_ID_COUNTER_KEY );
+		$this->assertEquals( $expected, $actual );
+
+		// Test with second call.
+		$actual = generate_virtual_drupal_id();
+		$this->assertEquals( START_ID + 2, $actual );
+
+		// Option should be updated.
+		$expected = START_ID + 2;
+		$actual   = get_option( VIRTUAL_DRUPAL_ID_COUNTER_KEY );
 		$this->assertEquals( $expected, $actual );
 	}
 }

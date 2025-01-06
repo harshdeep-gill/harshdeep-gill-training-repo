@@ -20,9 +20,10 @@ use function get_post_modified_time as wp_get_post_modified_time;
 
 use const Quark\Expeditions\POST_TYPE as EXPEDITION_POST_TYPE;
 
-const SCHEDULE_HOOK = 'qrk_ingestor_push';
-const DATA_HASH_KEY = '_ingestor_data_hash';
-const START_ID      = 130000;
+const SCHEDULE_HOOK                 = 'qrk_ingestor_push';
+const DATA_HASH_KEY                 = '_ingestor_data_hash';
+const START_ID                      = 130000;
+const VIRTUAL_DRUPAL_ID_COUNTER_KEY = 'qrk_ingestor_virtual_drupal_id_counter';
 
 /**
  * Bootstrap.
@@ -569,12 +570,22 @@ function get_post_modified_time( int|WP_Post $post = 0 ): string {
  * @return int
  */
 function get_id( int $post_id = 0 ): int {
+	// Validate post id.
+	if ( empty( $post_id ) ) {
+		return 0;
+	}
+
+	// Check if post exists.
+	if ( false === get_post_status( $post_id ) ) {
+		return 0;
+	}
+
 	// Get drupal ID.
 	$drupal_id = absint( get_post_meta( $post_id, 'drupal_id', true ) );
 
 	// Generate new ID if empty.
 	if ( empty( $drupal_id ) ) {
-		$drupal_id = generate_id();
+		$drupal_id = generate_virtual_drupal_id();
 
 		// Update post meta.
 		update_post_meta( $post_id, 'drupal_id', $drupal_id );
@@ -585,19 +596,19 @@ function get_id( int $post_id = 0 ): int {
 }
 
 /**
- * Generate a ID.
+ * Generate a virtual Drupal ID.
  *
  * @return int
  */
-function generate_id(): int {
+function generate_virtual_drupal_id(): int {
 	// Get current counter from options.
-	$counter = get_option( 'qrk_ingestor_id_counter', START_ID );
+	$counter = get_option( VIRTUAL_DRUPAL_ID_COUNTER_KEY, START_ID );
 
 	// Increment counter.
 	++$counter;
 
 	// Update counter.
-	update_option( 'qrk_ingestor_id_counter', $counter );
+	update_option( VIRTUAL_DRUPAL_ID_COUNTER_KEY, $counter );
 
 	// Return counter.
 	return $counter;
