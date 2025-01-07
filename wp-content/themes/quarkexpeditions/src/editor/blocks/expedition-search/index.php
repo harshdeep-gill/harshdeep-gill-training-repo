@@ -54,7 +54,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 	$filter_query = get_selected_filters_from_query_params();
 
 	// Init selected filters.
-	$selected_filter = array_merge(
+	$selected_filters = array_merge(
 		[
 			'posts_per_load' => 8,
 			'currency'       => $currency,
@@ -63,8 +63,11 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 		$filter_query
 	);
 
+	// Filters data.
+	$expedition_search_filters_data = get_filters_for_sidebar_search();
+
 	// Search for Departure post.
-	$search_results = search( $selected_filter );
+	$search_results = search( $selected_filters );
 
 	// Build component attributes.
 	$component_attributes = [
@@ -72,7 +75,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 		'remaining_count' => $search_results['remaining_count'],
 		'cards'           => get_cards_data( array_map( 'absint', $search_results['ids'] ), $currency ),
 		'currency'        => $currency,
-		'filters_data'    => get_filters_for_sidebar_search(),
+		'filters_data'    => $expedition_search_filters_data,
 		'page'            => $search_results['current_page'],
 		'next_page'       => $search_results['next_page'],
 	];
