@@ -987,6 +987,7 @@ function get( int $post_id = 0 ): array {
  *
  * @return array{}|array{
  *    hero_card_slider_image_ids: int[],
+ *    highlights: string[],
  * }
  */
 function parse_block_attributes( WP_Post $post = null ): array {
@@ -1008,6 +1009,9 @@ function parse_block_attributes( WP_Post $post = null ): array {
 
 	// Initialize attributes.
 	$hero_card_slider_image_ids = [];
+
+	// Initialize highlights.
+	$highlights = [];
 
 	// Loop through blocks.
 	foreach ( $flattened_blocks as $block ) {
@@ -1037,12 +1041,21 @@ function parse_block_attributes( WP_Post $post = null ): array {
 				// Add image id to array.
 				$hero_card_slider_image_ids[] = $item['id'];
 			}
+		} elseif ( 'quark/highlight-item-text' === $block['blockName'] ) {
+			// Check for attributes.
+			if ( ! isset( $block['attrs'] ) || ! is_array( $block['attrs'] ) || empty( $block['attrs']['text'] ) ) {
+				continue;
+			}
+
+			// Add highlight text to array.
+			$highlights[] = $block['attrs']['text'];
 		}
 	}
 
 	// Return attributes.
 	return [
 		'hero_card_slider_image_ids' => $hero_card_slider_image_ids,
+		'highlights'                 => $highlights,
 	];
 }
 

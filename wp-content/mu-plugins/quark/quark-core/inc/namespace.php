@@ -515,6 +515,15 @@ function get_raw_text_from_html( string $html = '' ): string {
 	// Get pure text.
 	$text = wp_strip_all_tags( $html, true );
 
+	// Remove non-breaking space.
+	$text = str_replace( '&nbsp;', ' ', $text );
+
+	// Decode HTML entities.
+	$text = html_entity_decode( $text );
+
+	// Convert encoding to UTF-8.
+	$text = mb_convert_encoding( $text, 'UTF-8', 'UTF-8' );
+
 	// Return pure text.
 	return $text;
 }

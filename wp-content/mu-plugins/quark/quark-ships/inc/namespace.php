@@ -936,7 +936,7 @@ function get_cabins_and_decks( int $ship_id = 0 ): array {
  * @param WP_Post|null $post The post object.
  *
  * @return array{}|array{
- *     collage: array{} | array{
+ *    collage: array{} | array{
  *       media_type: string,
  *       size: string,
  *       caption: string,
