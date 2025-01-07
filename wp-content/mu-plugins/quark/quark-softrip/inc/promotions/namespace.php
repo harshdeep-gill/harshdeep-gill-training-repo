@@ -175,6 +175,7 @@ function update_promotions( array $raw_promotions_data = [], int $departure_post
  *   discount_type: string,
  *   discount_value: string,
  *   code: string,
+ *   currency: string|null,
  *   is_pif: int,
  * }
  */
@@ -218,6 +219,7 @@ function format_data( array $raw_promotion_data = [] ): array {
 		'discount_type'  => sanitize_text_field( strval( $raw_promotion_data['discountType'] ) ),
 		'discount_value' => sanitize_text_field( strval( $raw_promotion_data['discountValue'] ) ),
 		'code'           => sanitize_text_field( strval( $raw_promotion_data['promotionCode'] ) ),
+		'currency'       => ! empty( $raw_promotion_data['currency'] ) ? sanitize_text_field( strval( $raw_promotion_data['currency'] ) ) : null,
 		'is_pif'         => absint( $raw_promotion_data['isPIF'] ),
 	];
 
@@ -240,6 +242,7 @@ function format_data( array $raw_promotion_data = [] ): array {
  *     description: string,
  *     discount_type: string,
  *     discount_value: string,
+ *     currency: string|null,
  *     is_pif: int,
  *   }
  * >
@@ -316,6 +319,7 @@ function get_promotions_by_code( string $code = '', bool $force = false ): array
  *   description: string,
  *   discount_type: string,
  *   discount_value: string,
+ *   currency: string|null,
  *   is_pif: int,
  * }
  */
@@ -334,6 +338,7 @@ function format_row_data_from_db( array $row_data = [] ): array {
 		'description',
 		'discount_type',
 		'discount_value',
+		'currency',
 		'is_pif',
 	];
 
@@ -353,6 +358,7 @@ function format_row_data_from_db( array $row_data = [] ): array {
 		'description'    => sanitize_text_field( strval( $row_data['description'] ) ),
 		'discount_type'  => sanitize_text_field( strval( $row_data['discount_type'] ) ),
 		'discount_value' => sanitize_text_field( strval( $row_data['discount_value'] ) ),
+		'currency'       => ! empty( $row_data['currency'] ) ? sanitize_text_field( strval( $row_data['currency'] ) ) : null,
 		'is_pif'         => absint( $row_data['is_pif'] ),
 	];
 
@@ -374,6 +380,7 @@ function format_row_data_from_db( array $row_data = [] ): array {
  *     description: string,
  *     discount_type: string,
  *     discount_value: string,
+ *     currency: string|null,
  *     is_pif: int,
  *   }
  * >
@@ -420,6 +427,7 @@ function format_rows_data_from_db( array $rows_data = [] ): array {
  *     description: string,
  *     discount_type: string,
  *     discount_value: string,
+ *     currency: string|null,
  *     is_pif: int,
  *   }
  * >
