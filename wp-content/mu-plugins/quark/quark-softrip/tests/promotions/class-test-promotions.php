@@ -20,6 +20,7 @@ use function Quark\Softrip\Promotions\get_table_sql;
 use function Quark\Softrip\Promotions\update_promotions;
 
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
+use const Quark\Localization\GBP_CURRENCY;
 use const Quark\Softrip\Promotions\CACHE_GROUP;
 use const Quark\Softrip\Promotions\CACHE_KEY_PREFIX;
 use const Quark\Softrip\TABLE_PREFIX_NAME;
@@ -65,7 +66,8 @@ class Test_Promotions extends Softrip_TestCase {
 			description VARCHAR(255) NOT NULL,
 			discount_type VARCHAR(255) NOT NULL,
 			discount_value VARCHAR(255) NOT NULL,
-			is_pif TINYINT(1) NOT NULL
+			is_pif TINYINT(1) NOT NULL,
+			currency VARCHAR(255) DEFAULT NULL
 		) $engine_collate";
 		$actual       = get_table_sql();
 
@@ -430,7 +432,7 @@ class Test_Promotions extends Softrip_TestCase {
 		$actual             = format_data( $raw_promotion_data );
 		$this->assertSame( $expected, $actual );
 
-		// Test with valid data.
+		// Test with currency as null.
 		$expected           = [
 			'end_date'       => '2021-01-01T00:00:00',
 			'start_date'     => '2021-01-01T00:00:00',
@@ -438,6 +440,7 @@ class Test_Promotions extends Softrip_TestCase {
 			'discount_type'  => 'percentage',
 			'discount_value' => '10',
 			'code'           => 'test-promotion',
+			'currency'       => null,
 			'is_pif'         => 1,
 		];
 		$raw_promotion_data = [
@@ -447,6 +450,31 @@ class Test_Promotions extends Softrip_TestCase {
 			'isPIF'         => true,
 			'startDate'     => '2021-01-01T00:00:00',
 			'endDate'       => '2021-01-01T00:00:00',
+			'promotionCode' => 'test-promotion',
+			'currencyCode'  => null,
+		];
+		$actual             = format_data( $raw_promotion_data );
+		$this->assertSame( $expected, $actual );
+
+		// Test with valid data.
+		$expected           = [
+			'end_date'       => '2021-01-01T00:00:00',
+			'start_date'     => '2021-01-01T00:00:00',
+			'description'    => 'Test Promotion',
+			'discount_type'  => 'percentage',
+			'discount_value' => '10',
+			'code'           => 'test-promotion',
+			'currency'       => 'USD',
+			'is_pif'         => 1,
+		];
+		$raw_promotion_data = [
+			'description'   => 'Test Promotion',
+			'discountType'  => 'percentage',
+			'discountValue' => '10',
+			'isPIF'         => true,
+			'startDate'     => '2021-01-01T00:00:00',
+			'endDate'       => '2021-01-01T00:00:00',
+			'currencyCode'  => 'USD',
 			'promotionCode' => 'test-promotion',
 		];
 		$actual             = format_data( $raw_promotion_data );
@@ -461,6 +489,7 @@ class Test_Promotions extends Softrip_TestCase {
 			'is_pif'         => 0,
 			'start_date'     => '2021-01-01T00:00:00',
 			'end_date'       => '2',
+			'currency'       => null,
 		];
 		$raw_promotion_data = [
 			'description'   => '<h1>Test Promotion</h1>',
@@ -744,6 +773,7 @@ class Test_Promotions extends Softrip_TestCase {
 			'description'    => 'Test Promotion',
 			'discount_type'  => 'percentage',
 			'discount_value' => '10',
+			'currency'       => null,
 			'is_pif'         => 1,
 		];
 		$raw_promotion_data = [
@@ -755,6 +785,7 @@ class Test_Promotions extends Softrip_TestCase {
 			'discount_type'  => 'percentage',
 			'discount_value' => '10',
 			'is_pif'         => '1',
+			'currency'       => null,
 		];
 		$actual             = format_row_data_from_db( $raw_promotion_data );
 		$this->assertSame( $expected, $actual );
@@ -768,6 +799,7 @@ class Test_Promotions extends Softrip_TestCase {
 			'description'    => 'Test Promotion',
 			'discount_type'  => 'percentage',
 			'discount_value' => '10',
+			'currency'       => 'USD',
 			'is_pif'         => 0,
 		];
 		$raw_promotion_data = [
@@ -779,6 +811,7 @@ class Test_Promotions extends Softrip_TestCase {
 			'discount_type'  => 'percentage',
 			'discount_value' => '10',
 			'is_pif'         => '0',
+			'currency'       => 'USD',
 		];
 		$actual             = format_row_data_from_db( $raw_promotion_data );
 		$this->assertSame( $expected, $actual );
@@ -812,6 +845,7 @@ class Test_Promotions extends Softrip_TestCase {
 				'description'    => 'Test Promotion',
 				'discount_type'  => 'percentage',
 				'discount_value' => '10',
+				'currency'       => null,
 				'is_pif'         => 1,
 			],
 			[
@@ -822,6 +856,7 @@ class Test_Promotions extends Softrip_TestCase {
 				'description'    => 'Test Promotion 2',
 				'discount_type'  => 'percentage',
 				'discount_value' => '10',
+				'currency'       => GBP_CURRENCY,
 				'is_pif'         => 0,
 			],
 		];
@@ -835,6 +870,7 @@ class Test_Promotions extends Softrip_TestCase {
 				'discount_type'  => 'percentage',
 				'discount_value' => '10',
 				'is_pif'         => '1',
+				'currency'       => null,
 			],
 			[
 				'id'             => '2',
@@ -844,6 +880,7 @@ class Test_Promotions extends Softrip_TestCase {
 				'description'    => 'Test Promotion 2',
 				'discount_type'  => 'percentage',
 				'discount_value' => '10',
+				'currency'       => GBP_CURRENCY,
 				'is_pif'         => '0',
 			],
 		];
