@@ -720,7 +720,7 @@ function get_card_data( int $departure_id = 0, string $currency = DEFAULT_CURREN
 		'banner_details'           => get_policy_banner_details( $itinerary_id ),
 		'cabins'                   => SOLD_OUT_STATUS === $departure_status ? [] : $cabins,
 		'promotion_banner'         => get_discount_label( $lowest_price['original'], $lowest_price['discounted'] ),
-		'promotions'               => get_promotions_description( $departure_id ),
+		'promotions'               => get_promotions_description( $departure_id, $currency ),
 		'request_a_quote_url'      => get_request_a_quote_url( $departure_id ),
 		'departure_status'         => $departure_status,
 	];
@@ -1109,10 +1109,21 @@ function get_dates_rates_card_data( int $departure_id = 0, string $currency = DE
 		foreach ( $promotion_codes as $promo_code ) {
 			$promo_data = get_promotions_by_code( strval( $promo_code ) );
 
-			// Check for promo data.
-			if ( ! empty( $promo_data ) ) {
-				$available_promos[ strval( $promo_code ) ] = $promo_data[0];
+			// Bail if promo data is empty.
+			if ( empty( $promo_data ) ) {
+				continue;
 			}
+
+			// First element is the promo data.
+			$promo_data = $promo_data[0];
+
+			// Check for currency.
+			if ( ! empty( $promo_data['currency'] ) && $currency !== $promo_data['currency'] ) {
+				continue;
+			}
+
+			// Add promo data to available promos.
+			$available_promos[ strval( $promo_code ) ] = $promo_data;
 		}
 
 		// Sort promos.
@@ -1273,11 +1284,12 @@ function get_discount_label( int $original_price = 0, int $discounted_price = 0 
 /**
  * Get promotions description.
  *
- * @param int $departure_id Departure ID.
+ * @param int    $departure_id Departure ID.
+ * @param string $currency     Currency.
  *
  * @return string[]
  */
-function get_promotions_description( int $departure_id = 0 ): array {
+function get_promotions_description( int $departure_id = 0, string $currency = DEFAULT_CURRENCY ): array {
 	// Check for departure ID.
 	if ( empty( $departure_id ) ) {
 		return [];
@@ -1314,6 +1326,11 @@ function get_promotions_description( int $departure_id = 0 ): array {
 
 		// Get first promo data.
 		$promo_data = $promo_data[0];
+
+		// Check for currency.
+		if ( ! empty( $promo_data['currency'] ) && $currency !== $promo_data['currency'] ) {
+			continue;
+		}
 
 		// Prepare promo description.
 		$promo_description = sprintf(

@@ -618,10 +618,21 @@ function get_cabin_price_data_by_departure( int $departure_id = 0, string $curre
 		foreach ( $promotion_codes as $promo_code ) {
 			$promo_data = get_promotions_by_code( strval( $promo_code ) );
 
-			// Check for promo data.
-			if ( ! empty( $promo_data ) ) {
-				$available_promos[ strval( $promo_code ) ] = $promo_data[0];
+			// Bail if no promo data.
+			if ( empty( $promo_data ) ) {
+				continue;
 			}
+
+			// First item.
+			$promo_data = $promo_data[0];
+
+			// Check for currency.
+			if ( ! empty( $promo_data['currency'] ) && $currency !== $promo_data['currency'] ) {
+				continue;
+			}
+
+			// Check for promo data.
+			$available_promos[ strval( $promo_code ) ] = $promo_data;
 		}
 	}
 
