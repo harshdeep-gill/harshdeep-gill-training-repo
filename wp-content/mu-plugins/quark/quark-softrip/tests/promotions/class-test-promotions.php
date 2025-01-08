@@ -67,7 +67,8 @@ class Test_Promotions extends Softrip_TestCase {
 			discount_type VARCHAR(255) NOT NULL,
 			discount_value VARCHAR(255) NOT NULL,
 			is_pif TINYINT(1) NOT NULL,
-			currency VARCHAR(255) DEFAULT NULL
+			currency VARCHAR(255) DEFAULT NULL,
+			pricing_basis VARCHAR(255) DEFAULT NULL
 		) $engine_collate";
 		$actual       = get_table_sql();
 
@@ -442,6 +443,7 @@ class Test_Promotions extends Softrip_TestCase {
 			'code'           => 'test-promotion',
 			'currency'       => null,
 			'is_pif'         => 1,
+			'pricing_basis'  => null,
 		];
 		$raw_promotion_data = [
 			'description'   => 'Test Promotion',
@@ -466,6 +468,7 @@ class Test_Promotions extends Softrip_TestCase {
 			'code'           => 'test-promotion',
 			'currency'       => 'USD',
 			'is_pif'         => 1,
+			'pricing_basis'  => 'test',
 		];
 		$raw_promotion_data = [
 			'description'   => 'Test Promotion',
@@ -476,6 +479,7 @@ class Test_Promotions extends Softrip_TestCase {
 			'endDate'       => '2021-01-01T00:00:00',
 			'currencyCode'  => 'USD',
 			'promotionCode' => 'test-promotion',
+			'pricingBasis'  => 'test',
 		];
 		$actual             = format_data( $raw_promotion_data );
 		$this->assertSame( $expected, $actual );
@@ -490,6 +494,7 @@ class Test_Promotions extends Softrip_TestCase {
 			'start_date'     => '2021-01-01T00:00:00',
 			'end_date'       => '2',
 			'currency'       => null,
+			'pricing_basis'  => null,
 		];
 		$raw_promotion_data = [
 			'description'   => '<h1>Test Promotion</h1>',
@@ -775,6 +780,7 @@ class Test_Promotions extends Softrip_TestCase {
 			'discount_value' => '10',
 			'currency'       => null,
 			'is_pif'         => 1,
+			'pricing_basis'  => 'per_person',
 		];
 		$raw_promotion_data = [
 			'id'             => '1',
@@ -786,6 +792,7 @@ class Test_Promotions extends Softrip_TestCase {
 			'discount_value' => '10',
 			'is_pif'         => '1',
 			'currency'       => null,
+			'pricing_basis'  => 'per_person',
 		];
 		$actual             = format_row_data_from_db( $raw_promotion_data );
 		$this->assertSame( $expected, $actual );
@@ -801,6 +808,7 @@ class Test_Promotions extends Softrip_TestCase {
 			'discount_value' => '10',
 			'currency'       => 'USD',
 			'is_pif'         => 0,
+			'pricing_basis'  => null,
 		];
 		$raw_promotion_data = [
 			'id'             => '1',
@@ -812,6 +820,7 @@ class Test_Promotions extends Softrip_TestCase {
 			'discount_value' => '10',
 			'is_pif'         => '0',
 			'currency'       => 'USD',
+			'pricing_basis'  => null,
 		];
 		$actual             = format_row_data_from_db( $raw_promotion_data );
 		$this->assertSame( $expected, $actual );
@@ -847,6 +856,7 @@ class Test_Promotions extends Softrip_TestCase {
 				'discount_value' => '10',
 				'currency'       => null,
 				'is_pif'         => 1,
+				'pricing_basis'  => null,
 			],
 			[
 				'id'             => 2,
@@ -858,6 +868,7 @@ class Test_Promotions extends Softrip_TestCase {
 				'discount_value' => '10',
 				'currency'       => GBP_CURRENCY,
 				'is_pif'         => 0,
+				'pricing_basis'  => 'per_booking',
 			],
 		];
 		$raw_promotion_data = [
@@ -882,6 +893,7 @@ class Test_Promotions extends Softrip_TestCase {
 				'discount_value' => '10',
 				'currency'       => GBP_CURRENCY,
 				'is_pif'         => '0',
+				'pricing_basis'  => 'per_booking',
 			],
 		];
 		$actual             = format_rows_data_from_db( $raw_promotion_data );
