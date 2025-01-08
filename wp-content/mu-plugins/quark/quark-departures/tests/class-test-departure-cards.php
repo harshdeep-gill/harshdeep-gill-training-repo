@@ -1178,6 +1178,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 			'included_adventure_options' => [],
 			'paid_adventure_options'     => [],
 			'request_a_quote_url'        => get_request_a_quote_url( $departure_post_1 ),
+			'free_promos'                => [],
 			'transfer_package_details'   => [
 				'title'                    => 'Includes',
 				'sets'                     => [
@@ -1383,6 +1384,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 				'languages'                  => 'english',
 				'included_adventure_options' => [],
 				'paid_adventure_options'     => [],
+				'free_promos'                => [],
 				'request_a_quote_url'        => get_request_a_quote_url( $departure_post_1 ),
 				'transfer_package_details'   => [
 					'title'                    => 'Includes',
@@ -1428,6 +1430,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 				'languages'                  => 'spoken_language_1, spoken_language_2',
 				'included_adventure_options' => [],
 				'paid_adventure_options'     => [],
+				'free_promos'                => [],
 				'request_a_quote_url'        => get_request_a_quote_url( $departure_post_2 ),
 				'transfer_package_details'   => [
 					'title'                    => 'Includes',
