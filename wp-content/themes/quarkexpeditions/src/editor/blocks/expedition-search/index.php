@@ -64,7 +64,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 	);
 
 	// Filters data.
-	$expedition_search_filters_data = get_filters_for_sidebar_search();
+	$expedition_search_filters_data = get_filters_for_sidebar_search( $selected_filters );
 
 	// Search for Departure post.
 	$search_results = search( $selected_filters );
