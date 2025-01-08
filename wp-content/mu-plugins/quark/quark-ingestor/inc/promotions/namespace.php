@@ -77,6 +77,7 @@ function get_promotions_data( int $departure_post_id = 0 ): array {
 			'description'   => $promotion_data['description'],
 			'discountType'  => $promotion_data['discount_type'],
 			'discountValue' => $promotion_data['discount_value'],
+			'currency'      => $promotion_data['currency'],
 			'isPIF'         => boolval( $promotion_data['is_pif'] ),
 		];
 	}
