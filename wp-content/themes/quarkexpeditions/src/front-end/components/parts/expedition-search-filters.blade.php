@@ -1,5 +1,6 @@
 @props( [
 	'filters_data' => [],
+	'is_compact'   => false,
 ] )
 
 @php
@@ -8,4 +9,4 @@
 	}
 @endphp
 
-<x-expedition-search.sidebar-filters.content :filters_data="$filters_data" />
+<x-expedition-search.sidebar-filters.content :filters_data="$filters_data" :is_compact="$is_compact" />

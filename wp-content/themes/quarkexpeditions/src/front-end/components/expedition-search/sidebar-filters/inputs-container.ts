@@ -11,7 +11,7 @@ import { TPAccordionItemElement } from '@travelopia/web-components';
 /**
  * Internal dependencies.
  */
-import { filtersMarkupUpdated } from '../actions';
+import { filtersMarkupUpdated, compactFiltersMarkupUpdated } from '../actions';
 
 /**
  * Store
@@ -27,6 +27,7 @@ export default class ExpeditionSearchSidebarFiltersInputsContainerElement extend
 	 */
 	private lastOpenedAccordionItemId: string;
 	private accordionItems: NodeListOf<TPAccordionItemElement> | null;
+	public isCompact: boolean;
 
 	/**
 	 * Constructor
@@ -38,6 +39,7 @@ export default class ExpeditionSearchSidebarFiltersInputsContainerElement extend
 		// Initialize properties.
 		this.lastOpenedAccordionItemId = '';
 		this.accordionItems = this.querySelectorAll( '.accordion__item' );
+		this.isCompact = !! this.getAttribute( 'compact' );
 
 		// Handle events
 		this.setupAccordionEvents();
@@ -53,16 +55,19 @@ export default class ExpeditionSearchSidebarFiltersInputsContainerElement extend
 	 */
 	update( state: ExpeditionSearchState ) {
 		// Get the state.
-		const { updateFiltersMarkup, filtersMarkup } = state;
+		const { updateFiltersMarkup, filtersMarkup, updateCompactFiltersMarkup, compactFiltersMarkup } = state;
 
-		// Should we update filters markup?
-		if ( ! ( updateFiltersMarkup && filtersMarkup ) ) {
-			// Nope, Bail.
+		// Check the type of filters and update accordingly.
+		if ( this.isCompact && updateCompactFiltersMarkup && compactFiltersMarkup ) {
+			this.innerHTML = compactFiltersMarkup;
+		} else if ( ! this.isCompact && updateFiltersMarkup && filtersMarkup ) {
+			this.innerHTML = filtersMarkup;
+		} else {
+			// Bail out.
 			return;
 		}
 
-		// Update the markup.
-		this.innerHTML = filtersMarkup;
+		// Get the items.
 		this.accordionItems = this.querySelectorAll( '.accordion__item' );
 
 		// Setup events.
@@ -84,8 +89,12 @@ export default class ExpeditionSearchSidebarFiltersInputsContainerElement extend
 			accordionItemContent.addEventListener( 'animationend', () => accordionItemContent.classList.remove( 'expedition-search__accordion-content--no-transition' ) );
 		}
 
-		// Updated callback.
-		filtersMarkupUpdated();
+		// Check and fire action accordingly.
+		if ( this.isCompact ) {
+			compactFiltersMarkupUpdated();
+		} else {
+			filtersMarkupUpdated();
+		}
 	}
 
 	/**

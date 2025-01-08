@@ -80,6 +80,7 @@ interface PartialData {
 	noResultsMarkup?: string,
 	data: any;
 	filtersMarkup?: string;
+	compactFiltersMarkup?: string;
 }
 
 /**

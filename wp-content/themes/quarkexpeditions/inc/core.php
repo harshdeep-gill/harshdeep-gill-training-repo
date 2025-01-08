@@ -546,7 +546,10 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'results-count'   => true,
 					'server-rendered' => true,
 				],
-				'quark-expedition-search-sidebar-filters-inputs-container' => true,
+				'quark-expedition-search-sidebar-filters-inputs-container' => [
+					'compact' => true,
+					'class'   => true,
+				],
 				'quark-range-slider'                                       => [
 					'class'          => true,
 					'prefix'         => true,
