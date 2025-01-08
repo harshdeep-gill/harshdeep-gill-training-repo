@@ -392,23 +392,26 @@ export const updateSort = ( sort: string ) => {
  */
 const filterUpdated = ( response: PartialData ) => {
 	// Get state.
-	const { page } = getState();
+	const { page, filtersMarkup: filtersMarkupInState } = getState();
 
 	// Get response data.
 	const {
 		markup,
 		data: { resultCount, nextPage, remainingCount },
 		noResultsMarkup,
+		filtersMarkup,
 	} = response;
 
 	// Set state.
 	setState( {
 		markup: markup ?? '',
+		filtersMarkup: filtersMarkup ? filtersMarkup : filtersMarkupInState,
 		noResultsMarkup,
 		resultCount,
 		hasNextPage: nextPage && nextPage > page,
 		nextPage,
 		updateMarkup: true,
+		updateFiltersMarkup: true,
 		resetMarkup: false,
 		loading: false,
 		remainingCount,
@@ -491,6 +494,20 @@ export const markupUpdated = () => {
 	if ( loadMoreResults ) {
 		updatePayload.loadMoreResults = false;
 	}
+
+	// Reset all the relevant states, when markup is updated.
+	setState( updatePayload );
+};
+
+/**
+ * Filters updated callback.
+ */
+export const filtersMarkupUpdated = () => {
+	// Initialize the update object.
+	const updatePayload: ExpeditionsSearchStateUpdateObject = {
+		updateFiltersMarkup: false,
+		filtersMarkup: '',
+	};
 
 	// Reset all the relevant states, when markup is updated.
 	setState( updatePayload );

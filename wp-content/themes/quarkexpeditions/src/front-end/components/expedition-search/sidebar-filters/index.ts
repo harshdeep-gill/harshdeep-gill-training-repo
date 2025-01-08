@@ -20,6 +20,7 @@ import ExpeditionSearchFilterCabinClasses from './content/cabin/cabin-classes';
 import ExpeditionSearchFilterTravelers from './content/cabin/travelers';
 import ExpeditionSearchFiltersCtaClearElement from './cta-clear';
 import ExpeditionSearchFiltersCtaViewResultsElement from './cta-view-results';
+import ExpeditionSearchSidebarFiltersInputContainerElement from './inputs-container';
 
 // Define elements.
 customElements.define( 'quark-expedition-search-sidebar-filters', ExpeditionSearchSidebarFilters );
@@ -36,3 +37,4 @@ customElements.define( 'quark-expedition-search-filter-cabin-classes', Expeditio
 customElements.define( 'quark-expedition-search-filter-travelers', ExpeditionSearchFilterTravelers );
 customElements.define( 'quark-expedition-search-filters-cta-clear-all', ExpeditionSearchFiltersCtaClearElement );
 customElements.define( 'quark-expedition-search-filters-cta-view-results', ExpeditionSearchFiltersCtaViewResultsElement );
+customElements.define( 'quark-expedition-search-sidebar-filters-inputs-container', ExpeditionSearchSidebarFiltersInputContainerElement );

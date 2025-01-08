@@ -64,6 +64,7 @@ interface ExpeditionSearchState {
 	markup: string,
 	noResultsMarkup: string,
 	updateMarkup: boolean,
+	updateFiltersMarkup: boolean,
 	resetMarkup: boolean,
 	initialized: boolean,
 	loading: boolean,
@@ -81,6 +82,7 @@ interface ExpeditionSearchState {
 	initialItineraryLengths: number[],
 	baseUrl: string,
 	allowedParams: ExpeditionSearchAllowedParam[],
+	filtersMarkup: string,
 }
 
 /**

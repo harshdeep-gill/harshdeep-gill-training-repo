@@ -65,7 +65,7 @@ function render( array $output = [], string $name = '', array $data = [] ): arra
 
 	// Filters attributes.
 	$filters_attributes = [
-		'filter_data' => get_filters_for_sidebar_search( $selected_filter ),
+		'filters_data' => get_filters_for_sidebar_search( $selected_filter ),
 	];
 
 	// Return rendered partial.

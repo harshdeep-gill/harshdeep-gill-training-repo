@@ -13,6 +13,7 @@ import { MonthsMultiSelectOption } from '../../../../months-multi-select/months-
  * Internal dependencies
  */
 import { updateMonths } from '../../../actions';
+import ExpeditionSearchSidebarFiltersInputsContainerElement from '../../inputs-container';
 
 /**
  * Get Store.
@@ -165,5 +166,8 @@ export default class ExpeditionSearchFilterMonths extends HTMLElement {
 
 		// Update the months
 		updateMonths( months );
+
+		// Set it as the last opened accordion item.
+		this.closest<ExpeditionSearchSidebarFiltersInputsContainerElement>( 'quark-expedition-search-sidebar-filters-inputs-container' )?.setLastOpenedAccordionItemId( this.closest( 'tp-accordion-item' )?.id ?? '' );
 	}
 }

@@ -1,13 +1,11 @@
 @props( [
-	'filter_data' => [],
+	'filters_data' => [],
 ] )
 
 @php
-	if ( empty( $filter_data ) || ! is_array( $filter_data ) ) {
+	if ( empty( $filters_data ) || ! is_array( $filters_data ) ) {
 		return;
 	}
-
-	var_dump( $filter_data );
 @endphp
 
-<x-expedition-search.sidebar-filters :filters_data="$filters_data" />
+<x-expedition-search.sidebar-filters.content :filters_data="$filters_data" />
