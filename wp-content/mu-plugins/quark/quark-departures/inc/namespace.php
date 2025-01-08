@@ -1114,6 +1114,9 @@ function get_dates_rates_card_data( int $departure_id = 0, string $currency = DE
 				$available_promos[ strval( $promo_code ) ] = $promo_data[0];
 			}
 		}
+
+		// Sort promos.
+		$available_promos = sort_promotions_by_type_and_value( $available_promos );
 	}
 
 	// Prepare the departure card details.
@@ -1372,4 +1375,58 @@ function get_departure_availability_status( int $departure_id = 0, array|null $c
 
 	// Return.
 	return $departure_availability_status;
+}
+
+/**
+ * Sort promotions by discount type, value.
+ * Order of sorting: fixed_off, percentage_off, pif.
+ *
+ * @param mixed[] $promotions Promotions.
+ *
+ * @return mixed[]
+ */
+function sort_promotions_by_type_and_value( array $promotions = [] ): array {
+	// Bail if empty.
+	if ( empty( $promotions ) || ! is_array( $promotions ) ) {
+		return [];
+	}
+
+	// Sort.
+	uasort(
+		$promotions,
+		function ( $a, $b ) {
+			// Check if a and b are arrays.
+			if ( ! is_array( $a ) || ! is_array( $b ) ) {
+				return 0;
+			}
+
+			// Check for discount type.
+			if ( empty( $a['discount_type'] ) || empty( $b['discount_type'] ) || empty( $a['discount_value'] ) || empty( $b['discount_value'] ) || ! array_key_exists( 'is_pif', $a ) || ! array_key_exists( 'is_pif', $b ) ) {
+				return 0;
+			}
+
+			// The sort order for discount types.
+			$sort_order = [
+				'fixed_off'      => 1,
+				'percentage_off' => 2,
+			];
+
+			// For same discount type, sort by discount value (highest to lowest).
+			if ( $a['discount_type'] === $b['discount_type'] ) {
+				// If any one has pif, sort by pif.
+				if ( $a['is_pif'] || $b['is_pif'] ) {
+					return $a['is_pif'] <=> $b['is_pif'];
+				}
+
+				// Sort by discount value.
+				return $b['discount_value'] <=> $a['discount_value'];
+			}
+
+			// For different discount types, sort by fixed_off first, then percentage_off, then pif.
+			return $sort_order[ $a['discount_type'] ] <=> $sort_order[ $b['discount_type'] ];
+		}
+	);
+
+	// Return sorted promotions.
+	return $promotions;
 }
