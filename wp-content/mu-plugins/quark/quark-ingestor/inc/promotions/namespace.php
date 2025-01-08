@@ -24,8 +24,10 @@ use function Quark\Softrip\Promotions\get_promotions_by_code;
  *   endDate: string,
  *   description: string,
  *   discountType: string,
- *   discountValue: string,
+ *   discountValue: float,
  *   isPIF: bool,
+ *   currency: string|null,
+ *   pricingBasis: string|null,
  * }>
  */
 function get_promotions_data( int $departure_post_id = 0 ): array {
@@ -76,7 +78,7 @@ function get_promotions_data( int $departure_post_id = 0 ): array {
 			'endDate'       => $promotion_data['end_date'],
 			'description'   => $promotion_data['description'],
 			'discountType'  => $promotion_data['discount_type'],
-			'discountValue' => $promotion_data['discount_value'],
+			'discountValue' => floatval( $promotion_data['discount_value'] ),
 			'currency'      => $promotion_data['currency'],
 			'isPIF'         => boolval( $promotion_data['is_pif'] ),
 			'pricingBasis'  => $promotion_data['pricing_basis'],
