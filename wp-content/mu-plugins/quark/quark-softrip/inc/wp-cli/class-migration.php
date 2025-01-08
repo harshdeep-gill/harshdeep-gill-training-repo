@@ -104,4 +104,92 @@ class Migration {
 			WP_CLI::success( "Successfully added '$currency_column' column to the '$promotions_table' table." );
 		}
 	}
+
+	/**
+	 * Adds a pricing basis column to the promotions table.
+	 *
+	 * @param mixed[] $args       WP CLI arguments.
+	 * @param mixed[] $args_assoc WP CLI associative arguments.
+	 *
+	 * @subcommand add-pricing-basis-column
+	 *
+	 * ## OPTIONS
+	 * [--dry-run]
+	 * : Whether to run the command in dry-run mode. Default is false.
+	 *
+	 * @synopsis [--dry-run]
+	 *
+	 * @return void
+	 */
+	public function add_pricing_basis_column( array $args = [], array $args_assoc = [] ): void {
+		// Get options.
+		$options = wp_parse_args(
+			$args_assoc,
+			[
+				'dry-run' => false,
+			]
+		);
+
+		// Get the dry-run flag.
+		$dry_run = (bool) get_flag_value( $options, 'dry-run', false );
+
+		// Global WPDB.
+		global $wpdb;
+
+		// Get promotions table name.
+		$promotions_table = get_table_name();
+
+		// Define the column to add.
+		$column_name = 'pricing_basis';
+
+		// Check if the column already exists.
+		$column_exists = $wpdb->get_results(
+			$wpdb->prepare(
+				'SHOW COLUMNS FROM %i LIKE %s',
+				[
+					$promotions_table,
+					$column_name,
+				]
+			)
+		);
+
+		// If dry-run mode is enabled, just output the status.
+		if ( $dry_run ) {
+			// Output the status.
+			if ( $column_exists ) {
+				WP_CLI::success( "'$column_name' column already exists in the '$promotions_table' table." );
+			} else {
+				WP_CLI::success( "'$column_name' column does not exist in the '$promotions_table' table." );
+			}
+
+			// Return early.
+			return;
+		}
+
+		// If the column already exists, return early.
+		if ( $column_exists ) {
+			WP_CLI::success( "'$column_name' column already exists in the '$promotions_table' table." );
+
+			// Return early.
+			return;
+		}
+
+		// Add the column.
+		$result = $wpdb->get_results(
+			$wpdb->prepare(
+				'ALTER TABLE %i ADD %i VARCHAR(255) NULL',
+				[
+					$promotions_table,
+					$column_name,
+				]
+			)
+		);
+
+		// Output the status.
+		if ( false === $result ) {
+			WP_CLI::error( "Failed to add '$column_name' column to the '$promotions_table' table." );
+		} else {
+			WP_CLI::success( "Successfully added '$column_name' column to the '$promotions_table' table." );
+		}
+	}
 }
