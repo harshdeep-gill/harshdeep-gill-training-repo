@@ -10,6 +10,8 @@ namespace Quark\Multilingual;
 use Inpsyde\MultilingualPress\NavMenu\ServiceProvider;
 use WP_Post;
 
+use function cli\err;
+use function Quark\Theme\Blocks\register_blocks;
 use function Travelopia\Multilingual\get_languages;
 use function Travelopia\Multilingual\get_post_translations;
 use function Travelopia\Multilingual\get_term_translations;
@@ -131,6 +133,7 @@ function translate_block_strings( array $strings = [], string $language = '', st
 
 	// Block and attribute translation mapping.
 	$block_attributes_to_translate = (array) apply_filters( 'qrk_translation_block_attributes', [] );
+	$disabled_block                = (array) apply_filters( 'qrk_translation_disable_blocks', [] );
 
 	// Traverse strings.
 	foreach ( $strings as $key => $string ) {
@@ -164,6 +167,11 @@ function translate_block_strings( array $strings = [], string $language = '', st
 			// Check if we have a valid block.
 			if ( ! is_array( $parsed_block ) || empty( $parsed_block['blockName'] ) ) {
 				continue;
+			}
+
+			// Check if this block is disabled.
+			if ( in_array( $parsed_block['blockName'], $disabled_block, true ) ) {
+				$strings[ $key ] = str_replace( serialize_block( $parsed_block ), '', $strings[ $key ] );
 			}
 
 			// Check if this is one of our translatable blocks.

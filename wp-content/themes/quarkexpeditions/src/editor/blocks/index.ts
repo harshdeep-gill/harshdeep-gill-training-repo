@@ -220,11 +220,19 @@ if ( window?.quarkSiteData && window.quarkSiteData?.isChinaSite ) {
 		formAccessDeletionRequest,
 		formCommunicationsOptIn,
 		formRequestAQuote,
+		formTwoStep,
 		relatedPosts,
 		bookDeparturesExpeditions,
 		datesAndRates,
 		bookDeparturesShip,
+		authorInfo,
 		blogPostCards,
+		components,
+		currencySwitcher,
+		expeditionSearch,
+		lpFormModalCta,
+		relatedPosts,
+		searchFiltersBar,
 	];
 
 	// Remove the blocks from the list of blocks to register.

@@ -15,14 +15,14 @@ namespace Quark\China;
 function bootstrap(): void {
 	// Disable the default "Posts" post type.
 	add_action( 'admin_menu', __NAMESPACE__ . '\\disable_default_post_type' );
+	add_action( 'quark_expedition_title_separator', __NAMESPACE__ . '\\expedition_title_separator' );
+
+	// Update Frontend data - To modify front end data use hook with 11 priority.
+	add_action( 'quark_front_end_data', __NAMESPACE__ . '\\update_front_end_data', 11 );
 
 	// Remove plugin that are not needed for china website.
-	remove_action( 'plugins_loaded', 'Quark\Departures\bootstrap' );
 	remove_action( 'plugins_loaded', 'Quark\Softrip\bootstrap' );
 	remove_action( 'plugins_loaded', 'Quark\Softrip\bootstrap' );
-	remove_action( 'plugins_loaded', 'Quark\Softrip\ManualSync\bootstrap' );
-	remove_action( 'plugins_loaded', 'Quark\Softrip\Cleanup\bootstrap' );
-	remove_action( 'plugins_loaded', 'Quark\Softrip\Admin\bootstrap' );
 }
 
 /**
@@ -46,4 +46,29 @@ function disable_default_post_type(): void {
 function unregister_default_post_type(): void {
 	// Unregister the "Posts" post type.
 	unregister_post_type( 'post' );
+}
+
+/**
+ * Change the expedition title separator.
+ *
+ * @return string
+ */
+function expedition_title_separator(): string {
+	// Return the separator for china site.
+	return '：';
+}
+
+/**
+ * Update Frontend data.
+ *
+ * @param mixed[] $data Frontend data.
+ *
+ * @return mixed[]
+ */
+function update_front_end_data( array $data = [] ): array {
+	// Update the frontend data.
+	$data['currencies'] = [];
+
+	// Return the updated data.
+	return $data;
 }

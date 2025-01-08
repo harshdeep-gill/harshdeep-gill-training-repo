@@ -17,21 +17,24 @@
 @endphp
 
 <quark-expedition-search-filters class="expedition-search__filters">
-	<x-form.field class="expedition-search__filters-currency">
-		<x-form.inline-dropdown :label="__( 'Currency', 'qrk' )">
+	@if( ! empty( $currencies ) )
+		<x-form.field class="expedition-search__filters-currency">
+			<x-form.inline-dropdown :label="__( 'Currency', 'qrk' )">
 
-			@foreach ( $currencies as $code => $currency_data )
-				@if ( ! is_array( $currency_data ) || empty( $currency_data['symbol'] ) || empty( $currency_data['display'] ) )
-					@continue
-				@endif
+				@foreach ( $currencies as $code => $currency_data )
+					@if ( ! is_array( $currency_data ) || empty( $currency_data['symbol'] ) || empty( $currency_data['display'] ) )
+						@continue
+					@endif
 
-				<x-form.option value="{{ $code }}" label="{{ $currency_data['display'] }}" selected="{{ $currency === $code ? 'yes' : '' }}">
-					{{ $currency_data['display'] }}
-				</x-form.option>
-			@endforeach
+					<x-form.option value="{{ $code }}" label="{{ $currency_data['display'] }}" selected="{{ $currency === $code ? 'yes' : '' }}">
+						{{ $currency_data['display'] }}
+					</x-form.option>
+				@endforeach
 
-		</x-form.inline-dropdown>
-	</x-form.field>
+			</x-form.inline-dropdown>
+		</x-form.field>
+	@endif
+
 	<x-form.field class="expedition-search__filters-sort">
 		<x-form.inline-dropdown label="{{ __( 'Sort', 'qrk' ) }}">
 			<x-form.option value="date-now" label="{{ __( 'Date (upcoming to later)', 'qrk' ) }}" selected="yes">
