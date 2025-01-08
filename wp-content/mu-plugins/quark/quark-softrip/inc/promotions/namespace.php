@@ -45,7 +45,8 @@ function get_table_sql(): string {
 			discount_type VARCHAR(255) NOT NULL,
 			discount_value VARCHAR(255) NOT NULL,
 			is_pif TINYINT(1) NOT NULL,
-			currency VARCHAR(255) DEFAULT NULL
+			currency VARCHAR(255) DEFAULT NULL,
+			pricing_basis VARCHAR(255) DEFAULT NULL
 		) $engine_collate";
 
 	// Return the SQL.
@@ -178,6 +179,7 @@ function update_promotions( array $raw_promotions_data = [], int $departure_post
  *   code: string,
  *   currency: string|null,
  *   is_pif: int,
+ *   pricing_basis: string|null,
  * }
  */
 function format_data( array $raw_promotion_data = [] ): array {
@@ -196,6 +198,7 @@ function format_data( array $raw_promotion_data = [] ): array {
 		'promotionCode' => '',
 		'isPIF'         => 0,
 		'currencyCode'  => null,
+		'pricingBasis'  => null,
 	];
 
 	// Apply the defaults.
@@ -223,6 +226,7 @@ function format_data( array $raw_promotion_data = [] ): array {
 		'code'           => sanitize_text_field( strval( $raw_promotion_data['promotionCode'] ) ),
 		'currency'       => ! empty( $raw_promotion_data['currencyCode'] ) ? sanitize_text_field( strval( $raw_promotion_data['currencyCode'] ) ) : null,
 		'is_pif'         => absint( $raw_promotion_data['isPIF'] ),
+		'pricing_basis'  => ! empty( $raw_promotion_data['pricingBasis'] ) ? sanitize_text_field( strval( $raw_promotion_data['pricingBasis'] ) ) : null,
 	];
 
 	// Return the formatted data.
@@ -246,6 +250,7 @@ function format_data( array $raw_promotion_data = [] ): array {
  *     discount_value: string,
  *     currency: string|null,
  *     is_pif: int,
+ *     pricing_basis: string|null,
  *   }
  * >
  */
@@ -323,6 +328,7 @@ function get_promotions_by_code( string $code = '', bool $force = false ): array
  *   discount_value: string,
  *   currency: string|null,
  *   is_pif: int,
+ *   pricing_basis: string|null,
  * }
  */
 function format_row_data_from_db( array $row_data = [] ): array {
@@ -362,6 +368,7 @@ function format_row_data_from_db( array $row_data = [] ): array {
 		'discount_value' => sanitize_text_field( strval( $row_data['discount_value'] ) ),
 		'currency'       => ! empty( $row_data['currency'] ) ? sanitize_text_field( strval( $row_data['currency'] ) ) : null,
 		'is_pif'         => absint( $row_data['is_pif'] ),
+		'pricing_basis'  => ! empty( $row_data['pricing_basis'] ) ? sanitize_text_field( strval( $row_data['pricing_basis'] ) ) : null,
 	];
 
 	// Return the formatted data.
@@ -384,6 +391,7 @@ function format_row_data_from_db( array $row_data = [] ): array {
  *     discount_value: string,
  *     currency: string|null,
  *     is_pif: int,
+ *     pricing_basis: string|null,
  *   }
  * >
  */
@@ -431,6 +439,7 @@ function format_rows_data_from_db( array $rows_data = [] ): array {
  *     discount_value: string,
  *     currency: string|null,
  *     is_pif: int,
+ *     pricing_basis: string|null,
  *   }
  * >
  */

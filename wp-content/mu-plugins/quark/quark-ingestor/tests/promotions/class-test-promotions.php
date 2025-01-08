@@ -119,6 +119,7 @@ class Test_Promotions extends Softrip_TestCase {
 				'discountValue' => $expected_promotion['discount_value'],
 				'currency'      => $expected_promotion['currency'],
 				'isPIF'         => $expected_promotion['is_pif'],
+				'pricingBasis'  => $expected_promotion['pricing_basis'],
 			],
 			[
 				'id'            => $expected_promotion2['id'],
@@ -130,6 +131,7 @@ class Test_Promotions extends Softrip_TestCase {
 				'discountValue' => $expected_promotion2['discount_value'],
 				'currency'      => $expected_promotion2['currency'],
 				'isPIF'         => $expected_promotion2['is_pif'],
+				'pricingBasis'  => $expected_promotion2['pricing_basis'],
 			],
 		];
 		$this->assertEquals( $expected, $promotions_data );
