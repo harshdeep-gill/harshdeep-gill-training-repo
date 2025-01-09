@@ -45,10 +45,10 @@
 				<h3 class="form-job-application__title">{{ __( 'Contact Information', 'qrk' ) }}</h3>
 				<x-form.row>
 					<x-form.field :validation="[ 'required', 'no-empty-spaces' ]">
-						<x-form.input type="text" label="{{ __( 'First Name', 'qrk' ) }}" name="fields[FirstName__c]" placeholder="Enter First Name" />
+						<x-form.input type="text" label="{{ __( 'First Name', 'qrk' ) }}" name="fields[FirstName__c]" placeholder="{{ __( 'Enter First Name', 'qrk' ) }}" />
 					</x-form.field>
 					<x-form.field :validation="[ 'required', 'no-empty-spaces' ]">
-						<x-form.input type="text" label="{{ __( 'Last Name', 'qrk' ) }}" name="fields[LastName__c]" placeholder="Enter Last Name" />
+						<x-form.input type="text" label="{{ __( 'Last Name', 'qrk' ) }}" name="fields[LastName__c]" placeholder="{{ __( 'Enter Last Name', 'qrk' ) }}" />
 					</x-form.field>
 				</x-form.row>
 				<x-form.row>
@@ -61,20 +61,20 @@
 				</x-form.row>
 				<x-form.row>
 					<x-form.field :validation="[ 'required' ]">
-						<x-form.input type="text" label="{{ __( 'Address 1', 'qrk' ) }}" name="fields[Address1__c]" placeholder="Enter Address 1" />
+						<x-form.input type="text" label="{{ __( 'Address 1', 'qrk' ) }}" name="fields[Address1__c]" placeholder="{{ __( 'Enter Address 1', 'qrk' ) }}" />
 					</x-form.field>
 				</x-form.row>
 				<x-form.row>
 					<x-form.field>
-						<x-form.input type="text" label="{{ __( 'Address 2', 'qrk' ) }}" name="fields[Address2__c]" placeholder="Enter Address 2" />
+						<x-form.input type="text" label="{{ __( 'Address 2', 'qrk' ) }}" name="fields[Address2__c]" placeholder="{{ __( 'Enter Address 2', 'qrk' ) }}" />
 					</x-form.field>
 				</x-form.row>
 				<x-form.row>
 					<x-form.field :validation="[ 'required' ]">
-						<x-form.input type="text" label="{{ __( 'Postal Code', 'qrk' ) }}" name="fields[Postal_Code__c]" placeholder="Enter Postal Code" />
+						<x-form.input type="text" label="{{ __( 'Postal Code', 'qrk' ) }}" name="fields[Postal_Code__c]" placeholder="{{ __( 'Enter Postal Code', 'qrk' ) }}" />
 					</x-form.field>
 					<x-form.field :validation="[ 'required' ]">
-						<x-form.input type="text" label="{{ __( 'City', 'qrk' ) }}" name="fields[City__c]" placeholder="Enter City" />
+						<x-form.input type="text" label="{{ __( 'City', 'qrk' ) }}" name="fields[City__c]" placeholder="{{ __( 'Enter City', 'qrk' ) }}" />
 					</x-form.field>
 				</x-form.row>
 				<x-form.row>
@@ -105,7 +105,7 @@
 						</tp-toggle-attribute>
 					</x-form.row>
 					<x-form.field class="form-job-application__experience">
-						<x-form.textarea label="{{ __( 'Describe your experience, your role and what company you worked for.', 'qrk' ) }}" name="fields[Experience_with_Cruise_Line_or_Vessel__c]" placeholder="Describe" />
+						<x-form.textarea label="{{ __( 'Describe your experience, your role and what company you worked for.', 'qrk' ) }}" name="fields[Experience_with_Cruise_Line_or_Vessel__c]" placeholder="{{ __( 'Describe', 'qrk' ) }}" />
 					</x-form.field>
 				</div>
 
@@ -120,7 +120,7 @@
 					</x-form.row>
 
 					<x-form.field class="form-job-application__polar-experience">
-						<x-form.textarea label="{{ __( 'Describe your experience working in the Polar Regions.', 'qrk' ) }}" name="fields[Experience_in_Polar_Regions__c]" placeholder="Describe" />
+						<x-form.textarea label="{{ __( 'Describe your experience working in the Polar Regions.', 'qrk' ) }}" name="fields[Experience_in_Polar_Regions__c]" placeholder="{{ __( 'Describe', 'qrk' ) }}" />
 					</x-form.field>
 				</div>
 
@@ -173,7 +173,7 @@
 						</x-form.field-group>
 					</x-form.row>
 					<x-form.field class="form-job-application__other-languages">
-						<x-form.input type="text" label="{{ __( 'Other Languages Spoken', 'qrk' ) }}" name="fields[Other_Languages__c][]" placeholder="Enter Other Language you Speak"/>
+						<x-form.input type="text" label="{{ __( 'Other Languages Spoken', 'qrk' ) }}" name="fields[Other_Languages__c][]" placeholder="{{ __( 'Enter Other Language you Speak', 'qrk' ) }}"/>
 					</x-form.field>
 				</div>
 
@@ -231,7 +231,7 @@
 						</x-form.field-group>
 					</x-form.row>
 					<x-form.field class="form-job-application__other-degree">
-						<x-form.input type="text" label="{{ __( 'Other Degree Area', 'qrk' ) }}" name="fields[Other_Degrees__c]" placeholder="Enter Subjects" />
+						<x-form.input type="text" label="{{ __( 'Other Degree Area', 'qrk' ) }}" name="fields[Other_Degrees__c]" placeholder="{{ __( 'Enter Subjects', 'qrk' ) }}" />
 					</x-form.field>
 				</div>
 
@@ -269,11 +269,11 @@
 					</tp-toggle-attribute>
 				</x-form.row>
 				<x-form.field class="form-job-application__referrer-name">
-					<x-form.input type="text" label="{{ __( 'Who referred you?', 'qrk' ) }}" name="fields[Referrer_Name__c]" placeholder="Enter Name" />
+					<x-form.input type="text" label="{{ __( 'Who referred you?', 'qrk' ) }}" name="fields[Referrer_Name__c]" placeholder="{{ __( 'Enter Name', 'qrk' ) }}" />
 				</x-form.field>
 
 				<x-form.field class="form-job-application__additional-information">
-					<x-form.textarea label="{{ __( 'Do you have any additional comments or questions?', 'qrk' ) }}" name="fields[Comments_Questions__c]" placeholder="Enter Additional Information" />
+					<x-form.textarea label="{{ __( 'Do you have any additional comments or questions?', 'qrk' ) }}" name="fields[Comments_Questions__c]" placeholder="{{ __( 'Enter Additional Information', 'qrk' ) }}" />
 				</x-form.field>
 			</div>
 

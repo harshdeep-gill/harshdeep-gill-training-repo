@@ -7,7 +7,7 @@
 		return;
 	}
 
-	$duration = $duration . ' min read';
+	$duration = $duration . ' ' . __( 'min read', 'qrk' );
 @endphp
 
 <p class="post-author-info__duration">

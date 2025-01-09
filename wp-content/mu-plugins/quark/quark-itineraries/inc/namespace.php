@@ -588,7 +588,9 @@ function get_details_tabs_data( int $expedition_id = 0 ): array {
 			if ( $start_location instanceof WP_Term ) {
 				// Set the departing from.
 				$departing_from = $start_location->name;
-				$tab_subtitle   = sprintf( 'From %s', $start_location->name );
+
+				// Translators: %s is the start location name.
+				$tab_subtitle = sprintf( __( 'From %s', 'qrk' ), $start_location->name );
 			}
 		}
 
@@ -722,9 +724,11 @@ function get_details_tabs_data( int $expedition_id = 0 ): array {
 
 		// Set tab title.
 		if ( $to_show_next_year ) {
-			$details['itinerary_groups'][ $season['slug'] ]['tab_title'] = sprintf( '%d.%d Season', $season['name'], absint( substr( $season['name'], -2 ) ) + 1 );
+			/* Translators: %d.%d is the season name. */
+			$details['itinerary_groups'][ $season['slug'] ]['tab_title'] = sprintf( __( '%1$d.%2$d Season', 'qrk' ), $season['name'], absint( substr( $season['name'], -2 ) ) + 1 );
 		} else {
-			$details['itinerary_groups'][ $season['slug'] ]['tab_title'] = sprintf( '%d Season', $season['name'] );
+			/* Translators: %d is the season name */
+			$details['itinerary_groups'][ $season['slug'] ]['tab_title'] = sprintf( __( '%d Season', 'qrk' ), $season['name'] );
 		}
 
 		// Active tab for itinerary tabs.
@@ -787,7 +791,8 @@ function format_itinerary_day_title( int $itinerary_day = 0 ): string {
 	// Example: Day 1: Day Title.
 	if ( absint( $itinerary_day['post_meta']['day_number_from'] ) === absint( $itinerary_day['post_meta']['day_number_to'] ) ) {
 		return sprintf(
-			'Day %s: %s',
+			/* Translators: %s: Day number from, %s: Day title */
+			__( 'Day %1$s: %2$s', 'qrk' ),
 			$itinerary_day['post_meta']['day_number_from'],
 			strval( $itinerary_day['post_meta']['day_title'] )
 		);
@@ -796,7 +801,8 @@ function format_itinerary_day_title( int $itinerary_day = 0 ): string {
 	// Return: Day 1 & 2: Day Title.
 	if ( absint( $itinerary_day['post_meta']['day_number_from'] ) + 1 === absint( $itinerary_day['post_meta']['day_number_to'] ) ) {
 		return sprintf(
-			'Day %s & %s: %s',
+			/* Translators: %s: Day number from, %s: Day number to, %s: Day title */
+			__( 'Day %1$s & %2$s: %3$s', 'qrk' ),
 			$itinerary_day['post_meta']['day_number_from'],
 			$itinerary_day['post_meta']['day_number_to'],
 			strval( $itinerary_day['post_meta']['day_title'] )
@@ -806,7 +812,8 @@ function format_itinerary_day_title( int $itinerary_day = 0 ): string {
 	// Return: Day 3 to 5: Day Title.
 	if ( absint( $itinerary_day['post_meta']['day_number_from'] ) + 1 < absint( $itinerary_day['post_meta']['day_number_to'] ) ) {
 		return sprintf(
-			'Day %s to %s: %s',
+			/* Translators: %s: Day number from, %s: Day number to, %s: Day title */
+			__( 'Day %1$s to %2$s: %3$s', 'qrk' ),
 			$itinerary_day['post_meta']['day_number_from'],
 			$itinerary_day['post_meta']['day_number_to'],
 			strval( $itinerary_day['post_meta']['day_title'] )

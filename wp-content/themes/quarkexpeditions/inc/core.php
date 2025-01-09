@@ -73,7 +73,7 @@ function theme_support(): void {
 	remove_action( 'wp_head', 'rsd_link' );
 
 	// Localization.
-	load_theme_textdomain( 'mr', get_stylesheet_directory() . '/locale' );
+	load_theme_textdomain( 'qrk', get_stylesheet_directory() . '/locale' );
 }
 
 /**

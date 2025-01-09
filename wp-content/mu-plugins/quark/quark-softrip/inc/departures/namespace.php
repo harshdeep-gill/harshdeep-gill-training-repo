@@ -224,7 +224,7 @@ function update_departures( array $raw_departures = [], string $softrip_package_
 		if ( ! $has_valid_occupancies ) {
 			// Skip if not existing.
 			if ( ! $is_existing ) {
-				$message = __( 'No valid occupancies found for new departure.', 'qrk' );
+				$message = 'No valid occupancies found for new departure.';
 
 				// Log error.
 				do_action(
@@ -242,7 +242,7 @@ function update_departures( array $raw_departures = [], string $softrip_package_
 				// Check if already draft.
 				if ( 'draft' === get_post_status( $existing_departure_codes[ $departure_softrip_id ] ) ) {
 					// Prepare message.
-					$message = __( 'No valid occupancies found for existing draft departure.', 'qrk' );
+					$message = 'No valid occupancies found for existing draft departure.';
 
 					// Log error.
 					do_action(
@@ -259,7 +259,7 @@ function update_departures( array $raw_departures = [], string $softrip_package_
 				}
 
 				// Prepare message.
-				$message = __( 'No valid occupancies found for existing departure. So, converting to draft.', 'qrk' );
+				$message = 'No valid occupancies found for existing departure. So, converting to draft.';
 
 				// Unpublish the post.
 				wp_update_post(

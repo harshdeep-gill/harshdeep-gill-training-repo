@@ -1676,11 +1676,13 @@ function get_formatted_date_range( int $post_id = 0 ): string {
 
 	// Same month and year.
 	if ( $start_month === $end_month && $start_year === $end_year ) {
-		return sprintf( 'in %s %s', $start_month, $start_year );
+		/* translators: %1$s: Expedition start Month, %2$s: Expedition start Year */
+		return sprintf( __( 'in %1$s %2$s', 'qrk' ), $start_month, $start_year );
 	}
 
 	// Same year, different months OR Different year.
-	return sprintf( 'between %s %s to %s %s', $start_month, $start_year, $end_month, $end_year );
+	/* translators: %1$s: Expedition start Month, %2$s: Expedition start Year, %3$s: Expedition end Month, %4$s: Expedition end Year */
+	return sprintf( __( 'between %1$s %2$s to %3$s %4$s', 'qrk' ), $start_month, $start_year, $end_month, $end_year );
 }
 
 /**
