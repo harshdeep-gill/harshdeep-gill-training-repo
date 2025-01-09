@@ -726,7 +726,7 @@ function get_card_data( int $departure_id = 0, string $currency = DEFAULT_CURREN
 		'banner_details'           => get_policy_banner_details( $itinerary_id ),
 		'cabins'                   => SOLD_OUT_STATUS === $departure_status ? [] : $cabins,
 		'promotion_banner'         => get_discount_label( $lowest_price['original'], $lowest_price['discounted'] ),
-		'promotions'               => get_promotions_description( $departure_id ),
+		'promotions'               => get_promotions_description( $departure_id, $currency ),
 		'request_a_quote_url'      => get_request_a_quote_url( $departure_id ),
 		'departure_status'         => $departure_status,
 	];
@@ -1115,11 +1115,25 @@ function get_dates_rates_card_data( int $departure_id = 0, string $currency = DE
 		foreach ( $promotion_codes as $promo_code ) {
 			$promo_data = get_promotions_by_code( strval( $promo_code ) );
 
-			// Check for promo data.
-			if ( ! empty( $promo_data ) ) {
-				$available_promos[ strval( $promo_code ) ] = $promo_data[0];
+			// Bail if promo data is empty.
+			if ( empty( $promo_data ) ) {
+				continue;
 			}
+
+			// First element is the promo data.
+			$promo_data = $promo_data[0];
+
+			// Check for currency.
+			if ( ! empty( $promo_data['currency'] ) && $currency !== $promo_data['currency'] ) {
+				continue;
+			}
+
+			// Add promo data to available promos.
+			$available_promos[ strval( $promo_code ) ] = $promo_data;
 		}
+
+		// Sort promos.
+		$available_promos = sort_promotions_by_type_and_value( $available_promos );
 	}
 
 	// Prepare the departure card details.
@@ -1276,11 +1290,12 @@ function get_discount_label( int $original_price = 0, int $discounted_price = 0 
 /**
  * Get promotions description.
  *
- * @param int $departure_id Departure ID.
+ * @param int    $departure_id Departure ID.
+ * @param string $currency     Currency.
  *
  * @return string[]
  */
-function get_promotions_description( int $departure_id = 0 ): array {
+function get_promotions_description( int $departure_id = 0, string $currency = DEFAULT_CURRENCY ): array {
 	// Check for departure ID.
 	if ( empty( $departure_id ) ) {
 		return [];
@@ -1317,6 +1332,11 @@ function get_promotions_description( int $departure_id = 0 ): array {
 
 		// Get first promo data.
 		$promo_data = $promo_data[0];
+
+		// Check for currency.
+		if ( ! empty( $promo_data['currency'] ) && $currency !== $promo_data['currency'] ) {
+			continue;
+		}
 
 		// Prepare promo description.
 		$promo_description = sprintf(
@@ -1378,6 +1398,60 @@ function get_departure_availability_status( int $departure_id = 0, array|null $c
 
 	// Return.
 	return $departure_availability_status;
+}
+
+/**
+ * Sort promotions by discount type, value.
+ * Order of sorting: fixed_off, percentage_off, pif.
+ *
+ * @param mixed[] $promotions Promotions.
+ *
+ * @return mixed[]
+ */
+function sort_promotions_by_type_and_value( array $promotions = [] ): array {
+	// Bail if empty.
+	if ( empty( $promotions ) || ! is_array( $promotions ) ) {
+		return [];
+	}
+
+	// Sort.
+	uasort(
+		$promotions,
+		function ( $a, $b ) {
+			// Check if a and b are arrays.
+			if ( ! is_array( $a ) || ! is_array( $b ) ) {
+				return 0;
+			}
+
+			// Check for discount type.
+			if ( empty( $a['discount_type'] ) || empty( $b['discount_type'] ) || empty( $a['discount_value'] ) || empty( $b['discount_value'] ) || ! array_key_exists( 'is_pif', $a ) || ! array_key_exists( 'is_pif', $b ) ) {
+				return 0;
+			}
+
+			// The sort order for discount types.
+			$sort_order = [
+				'fixed_off'      => 1,
+				'percentage_off' => 2,
+			];
+
+			// For same discount type, sort by discount value (highest to lowest).
+			if ( $a['discount_type'] === $b['discount_type'] ) {
+				// If any one has pif, sort by pif.
+				if ( $a['is_pif'] || $b['is_pif'] ) {
+					return $a['is_pif'] <=> $b['is_pif'];
+				}
+
+				// Sort by discount value.
+				return $b['discount_value'] <=> $a['discount_value'];
+			}
+
+			// For different discount types, sort by fixed_off first, then percentage_off, then pif.
+			return $sort_order[ $a['discount_type'] ] <=> $sort_order[ $b['discount_type'] ];
+		}
+	);
+
+	// Return sorted promotions.
+	return $promotions;
 }
 
 /**
