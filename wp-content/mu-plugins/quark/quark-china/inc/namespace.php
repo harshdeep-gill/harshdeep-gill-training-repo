@@ -7,6 +7,10 @@
 
 namespace Quark\China;
 
+use WP_Post;
+
+use function Quark\Itineraries\get as get_itinerary;
+
 /**
  * Bootstrap the plugin.
  *
@@ -16,6 +20,9 @@ function bootstrap(): void {
 	// Disable the default "Posts" post type.
 	add_action( 'admin_menu', __NAMESPACE__ . '\\disable_default_post_type' );
 	add_action( 'quark_expedition_title_separator', __NAMESPACE__ . '\\expedition_title_separator' );
+
+	// Override ships for itinerary.
+	add_filter( 'qrk_override_related_ships', __NAMESPACE__ . '\\override_related_ships', 10, 2 );
 
 	// Update Frontend data - To modify front end data use hook with 11 priority.
 	add_action( 'quark_front_end_data', __NAMESPACE__ . '\\update_front_end_data', 11 );
@@ -88,4 +95,30 @@ function update_front_end_data( array $data = [] ): array {
 function deregister_brochure_acf_field_on_load(): false {
 	// Deregister the brochure ACF field.
 	return false;
+}
+
+/**
+ * Override related ships for itinerary.
+ *
+ * @param int[] $ships Ship IDs.
+ * @param int   $itinerary_id Itinerary ID.
+ *
+ * @return int[]
+ */
+function override_related_ships( array $ships = [], int $itinerary_id = 0 ): array {
+	// get post.
+	$itinerary_post = get_itinerary( $itinerary_id );
+
+	// If post not found then return empty array.
+	if ( ! $itinerary_post['post'] instanceof WP_Post ) {
+		return $ships;
+	}
+
+	// Check if the expedition meta is empty.
+	if ( empty( $itinerary_post['post_meta']['qrk_related_ships'] ) || ! is_array( $itinerary_post['post_meta']['qrk_related_ships'] ) ) {
+		return $ships;
+	}
+
+	// return the related ship.
+	return $itinerary_post['post_meta']['qrk_related_ships'];
 }
