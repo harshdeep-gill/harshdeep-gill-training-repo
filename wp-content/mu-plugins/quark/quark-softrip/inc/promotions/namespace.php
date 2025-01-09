@@ -44,7 +44,9 @@ function get_table_sql(): string {
 			description VARCHAR(255) NOT NULL,
 			discount_type VARCHAR(255) NOT NULL,
 			discount_value VARCHAR(255) NOT NULL,
-			is_pif TINYINT(1) NOT NULL
+			is_pif TINYINT(1) NOT NULL,
+			currency VARCHAR(255) DEFAULT NULL,
+			pricing_basis VARCHAR(255) DEFAULT NULL
 		) $engine_collate";
 
 	// Return the SQL.
@@ -175,7 +177,9 @@ function update_promotions( array $raw_promotions_data = [], int $departure_post
  *   discount_type: string,
  *   discount_value: string,
  *   code: string,
+ *   currency: string|null,
  *   is_pif: int,
+ *   pricing_basis: string|null,
  * }
  */
 function format_data( array $raw_promotion_data = [] ): array {
@@ -193,6 +197,8 @@ function format_data( array $raw_promotion_data = [] ): array {
 		'discountValue' => '',
 		'promotionCode' => '',
 		'isPIF'         => 0,
+		'currencyCode'  => null,
+		'pricingBasis'  => null,
 	];
 
 	// Apply the defaults.
@@ -218,7 +224,9 @@ function format_data( array $raw_promotion_data = [] ): array {
 		'discount_type'  => sanitize_text_field( strval( $raw_promotion_data['discountType'] ) ),
 		'discount_value' => sanitize_text_field( strval( $raw_promotion_data['discountValue'] ) ),
 		'code'           => sanitize_text_field( strval( $raw_promotion_data['promotionCode'] ) ),
+		'currency'       => ! empty( $raw_promotion_data['currencyCode'] ) ? sanitize_text_field( strval( $raw_promotion_data['currencyCode'] ) ) : null,
 		'is_pif'         => absint( $raw_promotion_data['isPIF'] ),
+		'pricing_basis'  => ! empty( $raw_promotion_data['pricingBasis'] ) ? sanitize_text_field( strval( $raw_promotion_data['pricingBasis'] ) ) : null,
 	];
 
 	// Return the formatted data.
@@ -240,7 +248,9 @@ function format_data( array $raw_promotion_data = [] ): array {
  *     description: string,
  *     discount_type: string,
  *     discount_value: string,
+ *     currency: string|null,
  *     is_pif: int,
+ *     pricing_basis: string|null,
  *   }
  * >
  */
@@ -306,7 +316,7 @@ function get_promotions_by_code( string $code = '', bool $force = false ): array
 /**
  * Format promotion row from database.
  *
- * @param string[] $row_data Row data from database.
+ * @param array<string, string|null> $row_data Row data from database.
  *
  * @return array{}|array{
  *   id: int,
@@ -316,7 +326,9 @@ function get_promotions_by_code( string $code = '', bool $force = false ): array
  *   description: string,
  *   discount_type: string,
  *   discount_value: string,
+ *   currency: string|null,
  *   is_pif: int,
+ *   pricing_basis: string|null,
  * }
  */
 function format_row_data_from_db( array $row_data = [] ): array {
@@ -334,6 +346,7 @@ function format_row_data_from_db( array $row_data = [] ): array {
 		'description',
 		'discount_type',
 		'discount_value',
+		'currency',
 		'is_pif',
 	];
 
@@ -353,7 +366,9 @@ function format_row_data_from_db( array $row_data = [] ): array {
 		'description'    => sanitize_text_field( strval( $row_data['description'] ) ),
 		'discount_type'  => sanitize_text_field( strval( $row_data['discount_type'] ) ),
 		'discount_value' => sanitize_text_field( strval( $row_data['discount_value'] ) ),
+		'currency'       => ! empty( $row_data['currency'] ) ? sanitize_text_field( strval( $row_data['currency'] ) ) : null,
 		'is_pif'         => absint( $row_data['is_pif'] ),
+		'pricing_basis'  => ! empty( $row_data['pricing_basis'] ) ? sanitize_text_field( strval( $row_data['pricing_basis'] ) ) : null,
 	];
 
 	// Return the formatted data.
@@ -363,7 +378,7 @@ function format_row_data_from_db( array $row_data = [] ): array {
 /**
  * Format rows data from database.
  *
- * @param array<int, string[]> $rows_data Rows data from database.
+ * @param array<int, array<string, string|null>> $rows_data Rows data from database.
  *
  * @return array{}|array<int,
  *   array{
@@ -374,7 +389,9 @@ function format_row_data_from_db( array $row_data = [] ): array {
  *     description: string,
  *     discount_type: string,
  *     discount_value: string,
+ *     currency: string|null,
  *     is_pif: int,
+ *     pricing_basis: string|null,
  *   }
  * >
  */
@@ -420,7 +437,9 @@ function format_rows_data_from_db( array $rows_data = [] ): array {
  *     description: string,
  *     discount_type: string,
  *     discount_value: string,
+ *     currency: string|null,
  *     is_pif: int,
+ *     pricing_basis: string|null,
  *   }
  * >
  */

@@ -1,4 +1,9 @@
 /**
+ * Internal Dependencies.
+ */
+import { throttle } from '../../global/utility';
+
+/**
  * class LPHeader.
  */
 class LPHeader extends HTMLElement {
@@ -10,7 +15,7 @@ class LPHeader extends HTMLElement {
 		super();
 
 		// Events
-		this.ownerDocument.addEventListener( 'scroll', this.onBodyScroll.bind( this ) );
+		this.ownerDocument.addEventListener( 'scroll', throttle( this.onBodyScroll.bind( this ) ) );
 	}
 
 	/**

@@ -81,16 +81,29 @@
 							$cta_url  = $cta_urls[$destination_array_key]['url'] ?? '#';
 							$cta_text = $cta_urls[$destination_array_key]['text'] ?? '';
 						@endphp
-						<x-thumbnail-cards :is_carousel="false">
-							<x-thumbnail-cards.card
-								size="small"
-								url="{{ $cta_url }}"
-								orientation="landscape"
+						<a
+							href="{{ $cta_url }}"
+							class="search-filters-bar__destinations-cta"
+						>
+							<x-image
+								:args="[
+									'size'       => [
+										'width'  => 240,
+										'height' => 188,
+									],
+									'responsive' => [
+										'sizes'  => [ '250px' ],
+										'widths' => [ 180, 220, 250, 350, 400 ],
+									],
+									'transform'  => [
+										'crop'    => 'fill',
+										'gravity' => 'auto'
+									]
+								]"
 								:image_id="$image_id"
-							>
-								<x-thumbnail-cards.title :title="$cta_text" align="bottom" />
-							</x-thumbnail-cards.card>
-						</x-thumbnail-cards>
+							/>
+							<p><x-escape :content="$cta_text" /></p>
+						</a>
 					@endif
 				</x-two-columns.column>
 			@endforeach

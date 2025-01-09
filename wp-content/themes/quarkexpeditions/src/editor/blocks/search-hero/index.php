@@ -118,11 +118,28 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 								];
 
 								// Add title.
-								$title['text']  = $text_block->attributes['title'] ?? '';
-								$title['color'] = $text_block->attributes['textColor'] ?? '';
+								$title['text']           = $text_block->attributes['title'] ?? '';
+								$title['color']          = $text_block->attributes['textColor'] ?? '';
+								$title['use_promo_font'] = $text_block->attributes['usePromoFont'] ?? false;
 
 								// Add to attributes.
 								$title_container['title'] = $title;
+								break;
+
+							// Title bicolor.
+							case 'quark/search-hero-title-bicolor':
+								$title_bicolor = [
+									'type' => 'title_bicolor',
+								];
+
+								// Get the props.
+								$title_bicolor['white_text']     = $text_block->attributes['whiteText'] ?? '';
+								$title_bicolor['yellow_text']    = $text_block->attributes['yellowText'] ?? '';
+								$title_bicolor['switch_colors']  = $text_block->attributes['switchColors'] ?? false;
+								$title_bicolor['use_promo_font'] = $text_block->attributes['usePromoFont'] ?? false;
+
+								// Add to attributes.
+								$title_container['title_bicolor'] = $title_bicolor;
 								break;
 
 							// Subtitle.
@@ -132,8 +149,9 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 								];
 
 								// Add subtitle.
-								$subtitle['text']  = $text_block->attributes['subtitle'] ?? '';
-								$subtitle['color'] = $text_block->attributes['textColor'] ?? '';
+								$subtitle['text']           = $text_block->attributes['subtitle'] ?? '';
+								$subtitle['color']          = $text_block->attributes['textColor'] ?? '';
+								$subtitle['use_promo_font'] = $text_block->attributes['usePromoFont'] ?? false;
 
 								// Add to title container.
 								$title_container['subtitle'] = $subtitle;
@@ -228,7 +246,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 								$item['media_id'] = $card_item['attrs']['media']['id'] ?? 0;
 								$item['tag_text'] = ! empty( $card_item['attrs']['hasTag'] ) ? $card_item['attrs']['tagText'] : '';
 								$item['title']    = $card_item['attrs']['title'] ?? '';
-								$item['cta']      = ! empty( $card_item['attrs']['hasCtaLink'] ) ? $card_item['attrs']['cta'] : [];
+								$item['cta']      = ! empty( $card_item['attrs']['hasCtaLink'] ) && ! empty( $card_item['attrs']['cta'] ) ? $card_item['attrs']['cta'] : [];
 
 								// Add item attributes.
 								$component_attributes['hero_details_slider']['items'][] = $item;

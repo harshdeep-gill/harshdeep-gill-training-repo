@@ -18,6 +18,7 @@ use function Quark\Departures\get_paid_adventure_options;
 use function Quark\Departures\get_languages;
 use function Quark\Departures\get_promotion_tags;
 use function Quark\Departures\get_start_end_departure_date;
+use function Quark\Departures\sort_promotions_by_type_and_value;
 use function Quark\Departures\translate_meta_keys;
 use function Quark\Localization\get_currencies;
 use function Quark\Softrip\Departures\get_departures_by_itinerary;
@@ -647,6 +648,407 @@ class Test_Departures extends Softrip_TestCase {
 				'expedition_team_\d+_departure_staff_role' => 'Quark\Departures\translate_meta_key',
 			],
 			translate_meta_keys( $input )
+		);
+	}
+
+	/**
+	 * Test sort promotions by type and value.
+	 *
+	 * @covers \Quark\Departures\sort_promotions_by_type_and_value()
+	 *
+	 * @return void
+	 */
+	public function test_sort_promotions_by_type_and_value(): void {
+		// Promotions data.
+		$promotions_data = [];
+
+		// Empty promotions data.
+		$sorted_promotions = sort_promotions_by_type_and_value( $promotions_data );
+		$this->assertEmpty( $sorted_promotions );
+
+		// Invalid promotions data.
+		$promotions_data = [
+			1,
+			2,
+			3,
+		];
+
+		// Invalid promotions data.
+		$sorted_promotions = sort_promotions_by_type_and_value( $promotions_data );
+		$this->assertSame( $promotions_data, $sorted_promotions );
+
+		// Array promotions data but invalid keys.
+		$promotions_data = [
+			[
+				'type'  => 'discount',
+				'value' => 10,
+			],
+			[
+				'type'  => 'discount',
+				'value' => 20,
+			],
+			[
+				'type'  => 'discount',
+				'value' => 5,
+			],
+			[
+				'type'  => 'discount',
+				'value' => 15,
+			],
+		];
+
+		// Test.
+		$sorted_promotions = sort_promotions_by_type_and_value( $promotions_data );
+		$this->assertSame( $promotions_data, $sorted_promotions );
+
+		// Add discount_type but not discount_value.
+		$promotions_data = [
+			'ABC' => [
+				'discount_type' => 'percentage_off',
+			],
+			'DEF' => [
+				'discount_type' => 'percentage_off',
+			],
+		];
+
+		// Test.
+		$sorted_promotions = sort_promotions_by_type_and_value( $promotions_data );
+		$this->assertSame( $promotions_data, $sorted_promotions );
+
+		// Add discount_value but not discount_type.
+		$promotions_data = [
+			'ABC' => [
+				'discount_value' => 10,
+			],
+			'DEF' => [
+				'discount_value' => 20,
+			],
+		];
+
+		// Test.
+		$sorted_promotions = sort_promotions_by_type_and_value( $promotions_data );
+		$this->assertSame( $promotions_data, $sorted_promotions );
+
+		// Add discount_type and discount_value but no is_pif.
+		$promotions_data = [
+			'ABC' => [
+				'discount_type'  => 'percentage_off',
+				'discount_value' => 10,
+			],
+			'DEF' => [
+				'discount_type'  => 'percentage_off',
+				'discount_value' => 20,
+			],
+		];
+
+		// Test.
+		$sorted_promotions = sort_promotions_by_type_and_value( $promotions_data );
+		$this->assertSame( $promotions_data, $sorted_promotions );
+
+		// Add discount_type, discount_value and is_pif.
+		$promotions_data = [
+			'ABC' => [
+				'discount_type'  => 'percentage_off',
+				'discount_value' => 0.1,
+				'is_pif'         => 1,
+			],
+			'DEF' => [
+				'discount_type'  => 'percentage_off',
+				'discount_value' => 0.2,
+				'is_pif'         => 0,
+			],
+		];
+
+		// Test with percentage_off types and one is pif.
+		$sorted_promotions = sort_promotions_by_type_and_value( $promotions_data );
+		$this->assertSame(
+			[
+				'DEF' => [
+					'discount_type'  => 'percentage_off',
+					'discount_value' => 0.2,
+					'is_pif'         => 0,
+				],
+				'ABC' => [
+					'discount_type'  => 'percentage_off',
+					'discount_value' => 0.1,
+					'is_pif'         => 1,
+				],
+			],
+			$sorted_promotions
+		);
+
+		// Add discount_type, discount_value and is_pif.
+		$promotions_data = [
+			'ABC' => [
+				'discount_type'  => 'percentage_off',
+				'discount_value' => 0.1,
+				'is_pif'         => 1,
+			],
+			'DEF' => [
+				'discount_type'  => 'percentage_off',
+				'discount_value' => 0.2,
+				'is_pif'         => 1,
+			],
+		];
+
+		// Test with percentage_off types and both are pif.
+		$sorted_promotions = sort_promotions_by_type_and_value( $promotions_data );
+		$this->assertSame(
+			[
+				'ABC' => [
+					'discount_type'  => 'percentage_off',
+					'discount_value' => 0.1,
+					'is_pif'         => 1,
+				],
+				'DEF' => [
+					'discount_type'  => 'percentage_off',
+					'discount_value' => 0.2,
+					'is_pif'         => 1,
+				],
+			],
+			$sorted_promotions
+		);
+
+		// Add discount_type, discount_value and is_pif.
+		$promotions_data = [
+			'ABC' => [
+				'discount_type'  => 'percentage_off',
+				'discount_value' => 0.1,
+				'is_pif'         => 0,
+			],
+			'DEF' => [
+				'discount_type'  => 'percentage_off',
+				'discount_value' => 0.2,
+				'is_pif'         => 0,
+			],
+		];
+
+		// Test with percentage_off types and both are not pif.
+		$sorted_promotions = sort_promotions_by_type_and_value( $promotions_data );
+		$this->assertSame(
+			[
+				'DEF' => [
+					'discount_type'  => 'percentage_off',
+					'discount_value' => 0.2,
+					'is_pif'         => 0,
+				],
+				'ABC' => [
+					'discount_type'  => 'percentage_off',
+					'discount_value' => 0.1,
+					'is_pif'         => 0,
+				],
+			],
+			$sorted_promotions
+		);
+
+		// Add discount_type, discount_value and is_pif.
+		$promotions_data = [
+			'ABC' => [
+				'discount_type'  => 'fixed_off',
+				'discount_value' => 0.1,
+				'is_pif'         => 1,
+			],
+			'DEF' => [
+				'discount_type'  => 'fixed_off',
+				'discount_value' => 0.2,
+				'is_pif'         => 0,
+			],
+		];
+
+		// Test with fixed_off types and one is pif.
+		$sorted_promotions = sort_promotions_by_type_and_value( $promotions_data );
+		$this->assertSame(
+			[
+				'DEF' => [
+					'discount_type'  => 'fixed_off',
+					'discount_value' => 0.2,
+					'is_pif'         => 0,
+				],
+				'ABC' => [
+					'discount_type'  => 'fixed_off',
+					'discount_value' => 0.1,
+					'is_pif'         => 1,
+				],
+			],
+			$sorted_promotions
+		);
+
+		// Add discount_type, discount_value and is_pif.
+		$promotions_data = [
+			'ABC' => [
+				'discount_type'  => 'fixed_off',
+				'discount_value' => 0.1,
+				'is_pif'         => 1,
+			],
+			'DEF' => [
+				'discount_type'  => 'fixed_off',
+				'discount_value' => 0.2,
+				'is_pif'         => 1,
+			],
+		];
+
+		// Test with fixed_off types and both are pif.
+		$sorted_promotions = sort_promotions_by_type_and_value( $promotions_data );
+		$this->assertSame(
+			[
+				'ABC' => [
+					'discount_type'  => 'fixed_off',
+					'discount_value' => 0.1,
+					'is_pif'         => 1,
+				],
+				'DEF' => [
+					'discount_type'  => 'fixed_off',
+					'discount_value' => 0.2,
+					'is_pif'         => 1,
+				],
+			],
+			$sorted_promotions
+		);
+
+		// Add discount_type, discount_value and is_pif.
+		$promotions_data = [
+			'ABC' => [
+				'discount_type'  => 'fixed_off',
+				'discount_value' => 0.1,
+				'is_pif'         => 0,
+			],
+			'DEF' => [
+				'discount_type'  => 'fixed_off',
+				'discount_value' => 0.2,
+				'is_pif'         => 0,
+			],
+		];
+
+		// Test with fixed_off types and both are not pif.
+		$sorted_promotions = sort_promotions_by_type_and_value( $promotions_data );
+		$this->assertSame(
+			[
+				'DEF' => [
+					'discount_type'  => 'fixed_off',
+					'discount_value' => 0.2,
+					'is_pif'         => 0,
+				],
+				'ABC' => [
+					'discount_type'  => 'fixed_off',
+					'discount_value' => 0.1,
+					'is_pif'         => 0,
+				],
+			],
+			$sorted_promotions
+		);
+
+		// Add discount_type, discount_value and is_pif.
+		$promotions_data = [
+			'ABC' => [
+				'discount_type'  => 'fixed_off',
+				'discount_value' => 0.1,
+				'is_pif'         => 0,
+			],
+			'DEF' => [
+				'discount_type'  => 'fixed_off',
+				'discount_value' => 0.2,
+				'is_pif'         => 0,
+			],
+			'GHI' => [
+				'discount_type'  => 'percentage_off',
+				'discount_value' => 0.1,
+				'is_pif'         => 0,
+			],
+			'JKL' => [
+				'discount_type'  => 'percentage_off',
+				'discount_value' => 0.2,
+				'is_pif'         => 0,
+			],
+		];
+
+		// Test with mixed types and none are pif.
+		$sorted_promotions = sort_promotions_by_type_and_value( $promotions_data );
+		$this->assertSame(
+			[
+				'DEF' => [
+					'discount_type'  => 'fixed_off',
+					'discount_value' => 0.2,
+					'is_pif'         => 0,
+				],
+				'ABC' => [
+					'discount_type'  => 'fixed_off',
+					'discount_value' => 0.1,
+					'is_pif'         => 0,
+				],
+				'JKL' => [
+					'discount_type'  => 'percentage_off',
+					'discount_value' => 0.2,
+					'is_pif'         => 0,
+				],
+				'GHI' => [
+					'discount_type'  => 'percentage_off',
+					'discount_value' => 0.1,
+					'is_pif'         => 0,
+				],
+			],
+			$sorted_promotions
+		);
+
+		// Add discount_type, discount_value and is_pif.
+		$promotions_data = [
+			'ABC' => [
+				'discount_type'  => 'fixed_off',
+				'discount_value' => 0.1,
+				'is_pif'         => 1,
+			],
+			'DEF' => [
+				'discount_type'  => 'fixed_off',
+				'discount_value' => 0.2,
+				'is_pif'         => 0,
+			],
+			'GHI' => [
+				'discount_type'  => 'percentage_off',
+				'discount_value' => 0.1,
+				'is_pif'         => 1,
+			],
+			'JKL' => [
+				'discount_type'  => 'percentage_off',
+				'discount_value' => 0.2,
+				'is_pif'         => 0,
+			],
+			'MNO' => [
+				'discount_type'  => 'fixed_off',
+				'discount_value' => 0.3,
+				'is_pif'         => 1,
+			],
+		];
+
+		// Test with mixed types and some are pif.
+		$sorted_promotions = sort_promotions_by_type_and_value( $promotions_data );
+		$this->assertSame(
+			[
+				'DEF' => [
+					'discount_type'  => 'fixed_off',
+					'discount_value' => 0.2,
+					'is_pif'         => 0,
+				],
+				'ABC' => [
+					'discount_type'  => 'fixed_off',
+					'discount_value' => 0.1,
+					'is_pif'         => 1,
+				],
+				'MNO' => [
+					'discount_type'  => 'fixed_off',
+					'discount_value' => 0.3,
+					'is_pif'         => 1,
+				],
+				'JKL' => [
+					'discount_type'  => 'percentage_off',
+					'discount_value' => 0.2,
+					'is_pif'         => 0,
+				],
+				'GHI' => [
+					'discount_type'  => 'percentage_off',
+					'discount_value' => 0.1,
+					'is_pif'         => 1,
+				],
+			],
+			$sorted_promotions
 		);
 	}
 }
