@@ -1573,7 +1573,6 @@ class Test_Itineraries extends Softrip_TestCase {
 				'end_location'                         => 'taxonomy',
 				'embarkation_port'                     => 'post',
 				'disembarkation_port'                  => 'post',
-				'brochure'                             => 'post',
 				'map'                                  => 'attachment',
 				'inclusions'                           => 'post',
 				'exclusions'                           => 'post',

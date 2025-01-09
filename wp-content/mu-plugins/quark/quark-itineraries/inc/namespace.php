@@ -11,6 +11,7 @@ use WP_Post;
 use WP_Term;
 
 use function Quark\Core\format_price;
+use function Quark\Core\is_china_website;
 use function Quark\InclusionSets\get as inclusion_sets_get;
 use function Quark\PolicyPages\get as get_policy_page_post;
 use function Quark\Brochures\get as get_brochure;
@@ -100,11 +101,16 @@ function update_related_expedition_on_itineraries_save( int $post_id = 0 ): void
 	// Meta key that we are monitoring in Post A.
 	$meta_key = 'related_expedition';
 
+	// Check if the ACF data in post request is empty.
+	if ( empty( $_POST['acf'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
+		return;
+	}
+
 	// Get the old meta value before the update.
 	$old_expedition_post_id = absint( get_post_meta( $post_id, $meta_key, true ) );
 
 	// Check if there is a new value being set in the post request.
-	$new_expedition_post_id = ! empty( $_POST['acf'] ) && ! empty( $_POST['acf']['field_65f2dab2046df'] ) ? absint( sanitize_text_field( $_POST['acf']['field_65f2dab2046df'] ) ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing
+	$new_expedition_post_id = ! empty( $_POST['acf']['field_65f2dab2046df'] ) ? absint( sanitize_text_field( $_POST['acf']['field_65f2dab2046df'] ) ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing
 
 	// Skip if both value are same.
 	if ( $old_expedition_post_id === $new_expedition_post_id ) {
@@ -1255,7 +1261,6 @@ function translate_meta_keys( array $meta_keys = [] ): array {
 		'end_location'                         => 'taxonomy',
 		'embarkation_port'                     => 'post',
 		'disembarkation_port'                  => 'post',
-		'brochure'                             => 'post',
 		'map'                                  => 'attachment',
 		'inclusions'                           => 'post',
 		'exclusions'                           => 'post',

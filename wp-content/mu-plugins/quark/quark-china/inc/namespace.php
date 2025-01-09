@@ -21,8 +21,15 @@ function bootstrap(): void {
 	add_action( 'quark_front_end_data', __NAMESPACE__ . '\\update_front_end_data', 11 );
 
 	// Remove plugin that are not needed for china website.
+	remove_action( 'plugins_loaded', 'Quark\Departures\bootstrap' );
 	remove_action( 'plugins_loaded', 'Quark\Softrip\bootstrap' );
-	remove_action( 'plugins_loaded', 'Quark\Softrip\bootstrap' );
+	remove_action( 'plugins_loaded', 'Quark\Brochures\bootstrap' );
+	remove_action( 'plugins_loaded', 'Quark\Softrip\ManualSync\bootstrap' );
+	remove_action( 'plugins_loaded', 'Quark\Softrip\Cleanup\bootstrap' );
+	remove_action( 'plugins_loaded', 'Quark\Softrip\Admin\bootstrap' );
+
+	// Remove ACF field for brochure.
+	add_filter( 'acf/load_field/name=brochure', __NAMESPACE__ . '\\deregister_brochure_acf_field_on_load' );
 }
 
 /**
@@ -71,4 +78,14 @@ function update_front_end_data( array $data = [] ): array {
 
 	// Return the updated data.
 	return $data;
+}
+
+/**
+ * Deregister the brochure ACF field on load.
+ *
+ * @return false
+ */
+function deregister_brochure_acf_field_on_load(): false {
+	// Deregister the brochure ACF field.
+	return false;
 }
