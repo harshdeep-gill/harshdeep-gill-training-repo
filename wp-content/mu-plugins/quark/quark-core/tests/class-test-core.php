@@ -381,4 +381,86 @@ class Test_Core extends WP_UnitTestCase {
 			wp_revisions_to_keep( $brochure_post )
 		);
 	}
+
+	/**
+	 * Test get raw text from HTML.
+	 *
+	 * @covers \Quark\Core\get_raw_text_from_html()
+	 *
+	 * @return void
+	 */
+	public function test_get_raw_text_from_html(): void {
+		// Default expected.
+		$default_expected = '';
+
+		// Test without arguments.
+		$this->assertEquals(
+			$default_expected,
+			get_raw_text_from_html()
+		);
+
+		// Test with empty string.
+		$this->assertEquals(
+			$default_expected,
+			get_raw_text_from_html( '' )
+		);
+
+		// Test with plain text.
+		$this->assertEquals(
+			'Hello World',
+			get_raw_text_from_html( 'Hello World' )
+		);
+
+		// Prepare a HTML.
+		$html     = '<div>Hello <strong>World</strong></div>';
+		$expected = 'Hello World';
+		$actual   = get_raw_text_from_html( $html );
+		$this->assertSame( $expected, $actual );
+
+		// Prepare HTML with line breaks.
+		$html     = "<div>Hello\nWorld</div>";
+		$expected = 'Hello World';
+		$actual   = get_raw_text_from_html( $html );
+		$this->assertSame( $expected, $actual );
+
+		// Prepare HTML with entities.
+		$html     = 'Hello&nbsp;World &amp; Universe';
+		$expected = 'Hello World & Universe';
+		$this->assertEquals(
+			$expected,
+			get_raw_text_from_html( $html )
+		);
+
+		// Prepare HTML with special characters.
+		$html     = '<p>© 2024 Company</p>';
+		$expected = '© 2024 Company';
+		$this->assertEquals(
+			$expected,
+			get_raw_text_from_html( $html )
+		);
+
+		// Prepare HTML with mixed encoding.
+		$html     = "<div>Â<div>¡<div>\xC2\xA1Hola! &#9731;</div>";
+		$expected = 'Â¡¡Hola! ☃';
+		$this->assertEquals(
+			$expected,
+			get_raw_text_from_html( $html )
+		);
+
+		// Prepare HTML with broken HTML.
+		$html     = '<div><span>Broken HTML';
+		$expected = 'Broken HTML';
+		$this->assertEquals(
+			$expected,
+			get_raw_text_from_html( $html )
+		);
+
+		// Prepare HTML with nested tags.
+		$html     = '<div><span>Nested <b>Tags</b></span></div>';
+		$expected = 'Nested Tags';
+		$this->assertEquals(
+			$expected,
+			get_raw_text_from_html( $html )
+		);
+	}
 }
