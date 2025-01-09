@@ -34,6 +34,9 @@ function bootstrap(): void {
 	// Other hooks. Assigning non-standard priority to avoid race conditions with ACF.
 	add_action( 'save_post', __NAMESPACE__ . '\\bust_post_cache', 11 );
 
+	// Add meta keys to be translated while content sync.
+	add_filter( 'qrk_translation_meta_keys', __NAMESPACE__ . '\\translate_meta_keys' );
+
 	// Admin stuff.
 	if ( is_admin() ) {
 		// Custom fields.
@@ -1075,4 +1078,39 @@ function parse_block_attributes( WP_Post $post = null ): array {
 		'vessel_features' => $ship_vessel_features,
 		'ship_amenities'  => $ship_amenities,
 	];
+}
+
+/**
+ * Translate meta keys.
+ *
+ * @param array<string, string> $meta_keys Meta keys.
+ *
+ * @return array<string, string|string[]>
+ */
+function translate_meta_keys( array $meta_keys = [] ): array {
+	// Meta keys for translation.
+	$extra_keys = [
+		'deck_plan_image'  => 'attachment',
+		'staff_and_crew'   => 'string',
+		'draft'            => 'string',
+		'registration'     => 'string',
+		'guests'           => 'string',
+		'guest_ratio'      => 'string',
+		'stabilizers'      => 'string',
+		'propulsion'       => 'string',
+		'lifeboats'        => 'string',
+		'zodiacs'          => 'string',
+		'voltage'          => 'string',
+		'length'           => 'string',
+		'ice_class'        => 'string',
+		'breadth'          => 'string',
+		'gross_tonnage'    => 'string',
+		'cruising_speed'   => 'string',
+		'year_built'       => 'string',
+		'year_refurbished' => 'string',
+		'related_decks'    => __NAMESPACE__ . '\\translate_meta_key',
+	];
+
+	// Return meta keys to be translated.
+	return array_merge( $meta_keys, $extra_keys );
 }

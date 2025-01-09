@@ -27,6 +27,8 @@ use function Quark\Expeditions\get_ships;
 use function Quark\Expeditions\get_breadcrumbs_ancestors;
 use function Quark\Expeditions\get_seo_structured_data;
 use function Quark\Expeditions\get_starting_from_price;
+use function Quark\Expeditions\translate_meta_keys;
+use function Quark\Expeditions\translate_term_meta_keys;
 use function Quark\Localization\set_current_currency;
 use function Quark\Softrip\Departures\get_departures_by_itinerary;
 use function Quark\Softrip\do_sync;
@@ -1389,5 +1391,59 @@ class Test_Expeditions extends Softrip_TestCase {
 
 		// Reset currency.
 		set_current_currency( 'USD' );
+	}
+
+	/**
+	 * Test for translate_meta_keys.
+	 *
+	 * @covers \Quark\Expeditions\translate_meta_keys()
+	 *
+	 * @return void
+	 */
+	public function test_translate_meta_keys(): void {
+		// Input data.
+		$input = [
+			'meta_key' => 'string',
+			'icon'     => 'attachment',
+		];
+
+		// Assert data.
+		$this->assertEquals(
+			[
+				'meta_key'                  => 'string',
+				'icon'                      => 'attachment',
+				'overview'                  => 'text',
+				'included_activities'       => 'Quark\Expeditions\translate_meta_key',
+				'related_adventure_options' => 'Quark\Expeditions\translate_meta_key',
+				'related_pre_post_trips'    => 'Quark\Expeditions\translate_meta_key',
+				'related_itineraries'       => 'Quark\Expeditions\translate_meta_key',
+			],
+			translate_meta_keys( $input )
+		);
+	}
+
+	/**
+	 * Test for translate_meta_keys.
+	 *
+	 * @covers \Quark\Expeditions\translate_term_meta_keys()
+	 *
+	 * @return void
+	 */
+	public function test_translate_term_meta_keys(): void {
+		// Input data.
+		$input = [
+			'meta_key' => 'string',
+			'icon'     => 'attachment',
+		];
+
+		// Assert data.
+		$this->assertEquals(
+			[
+				'meta_key'          => 'string',
+				'icon'              => 'attachment',
+				'destination_image' => 'attachment',
+			],
+			translate_term_meta_keys( $input )
+		);
 	}
 }
