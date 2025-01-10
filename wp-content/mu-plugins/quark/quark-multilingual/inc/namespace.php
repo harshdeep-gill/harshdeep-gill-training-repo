@@ -10,6 +10,8 @@ namespace Quark\Multilingual;
 use Inpsyde\MultilingualPress\NavMenu\ServiceProvider;
 use Inpsyde\MultilingualPress\TranslationUi\Post\RelationshipContext;
 use Inpsyde\MultilingualPress\Framework\Http\Request;
+use WP_CLI;
+use Exception;
 use WP_Post;
 
 use function Quark\Core\get_china_site_blog_id;
@@ -26,14 +28,22 @@ use const Quark\Itineraries\POST_TYPE;
  * Bootstrap plugin.
  *
  * @return void
+ *
+ * @throws Exception Exception.
  */
 function bootstrap(): void {
-	// Hooks and filter.
+	// Translation - Hooks and filter.
 	add_filter( 'travelopia_translation_adapter', __NAMESPACE__ . '\\get_translation_adapter', 10, 1 );
 	add_filter( 'travelopia_translation_output_strings', __NAMESPACE__ . '\\translate_block_strings', 10, 3 );
+	add_filter( 'travelopia_translation_input_strings', __NAMESPACE__ . '\\decode_multilingualpress_translation_strings' );
 
-	// Hooks and filter.
-	add_action( 'multilingualpress.metabox_after_relate_posts', __NAMESPACE__ . '\\translate_overwritten_content', 10, 2 );
+	// Other Hooks and filter.
+	add_action( 'multilingualpress.metabox_after_relate_posts', __NAMESPACE__ . '\\convert_ship_ids', 10, 2 );
+
+	// CLI commands.
+	if ( defined( 'WP_CLI' ) && true === WP_CLI ) {
+		WP_CLI::add_command( 'quark-migrate pattern-clone', __NAMESPACE__ . '\\WP_CLI\\Pattern_Clone' );
+	}
 }
 
 /**
@@ -96,6 +106,32 @@ function multilingualpress_modules( array $modules = [] ): array {
 function get_translation_adapter(): string {
 	// Return DeepL as translation adapter.
 	return 'deepl';
+}
+
+/**
+ * Use json_decode() on all translations in MultilingualPress.
+ *
+ * @param string[] $strings Array of translation string.
+ *
+ * @return string[] The decoded translation.
+ */
+function decode_multilingualpress_translation_strings( array $strings = [] ): array {
+	// Check if we have strings.
+	if ( empty( $strings ) || ! function_exists( 'Travelopia\Translation\translate_strings' ) ) {
+		return $strings;
+	}
+
+	// Traverse strings.
+	foreach ( $strings as $key => $string ) {
+		// Decode translation.
+		$decoded_translation = str_replace( '\u0026', '&', $string );
+
+		// Update strings.
+		$strings[ $key ] = $decoded_translation;
+	}
+
+	// Return updated strings.
+	return $strings;
 }
 
 /**
@@ -566,7 +602,7 @@ function get_fallback_url(): string {
  *
  * @return void
  */
-function translate_overwritten_content( RelationshipContext $context = null, Request $request = null ): void {
+function convert_ship_ids( RelationshipContext $context = null, Request $request = null ): void {
 	// Bail out if we don't have the required context or request.
 	if ( ! $context instanceof RelationshipContext || ! $request instanceof Request ) {
 		return;
