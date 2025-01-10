@@ -82,9 +82,6 @@ class Pattern_Clone {
 		// Initialize variables.
 		$posts_count = 0;
 
-		// Flush the cache.
-		wp_cache_flush();
-
 		// Log posts migration start.
 		WP_CLI::log( PHP_EOL . PHP_EOL );
 		WP_CLI::log( 'Starting WP Blocks migration.' );
@@ -151,9 +148,6 @@ class Pattern_Clone {
 				WP_CLI::success( 'Source Post ID : ' . $post_id . ' | Translated Post ID : ' . $translated_post_id );
 			}
 		}
-
-		// Flush the cache.
-		wp_cache_flush();
 
 		// Log posts migration completion.
 		WP_CLI::log( PHP_EOL . PHP_EOL );
