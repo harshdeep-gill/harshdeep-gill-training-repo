@@ -28,8 +28,17 @@ function get_related_ships( int $post_id = 0 ): array {
 		return $ships;
 	}
 
+	// Allow overriding the related ships.
+	$ships = apply_filters( 'qrk_override_related_ships', $ships, $post_id );
+
+	// Return if ships are already set.
+	if ( ! empty( $ships ) && is_array( $ships ) ) {
+		return $ships;
+	}
+
 	// Get all departure posts for the itinerary.
 	$departure_post_ids = get_departures_by_itinerary( $post_id );
+	$ships              = [];
 
 	// Loop through each departure post.
 	foreach ( $departure_post_ids as $departure_post_id ) {

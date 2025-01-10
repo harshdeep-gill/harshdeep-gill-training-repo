@@ -11,6 +11,7 @@ use WP_Block;
 use WP_Query;
 
 use function Quark\Core\format_price;
+use function Quark\Core\is_china_website;
 use function Quark\Expeditions\get_minimum_duration;
 use function Quark\Expeditions\get_minimum_duration_itinerary;
 use function Quark\Expeditions\get_starting_from_date;
@@ -168,6 +169,17 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 			'discounted_price' => format_price( $prices_data['discounted'], $currency ),
 			'transfer_package' => $transfer_package_data,
 		];
+	}
+
+	// If china site remove price and transfer package data.
+	if ( is_china_website() ) {
+		// Remove price and transfer package data.
+		foreach ( $cards as $key => $card ) {
+			$cards[ $key ]['original_price']   = '';
+			$cards[ $key ]['discounted_price'] = '';
+			$cards[ $key ]['transfer_package'] = [];
+			$cards[ $key ]['departure_date']   = '';
+		}
 	}
 
 	// Return built component.

@@ -861,3 +861,13 @@ function is_china_website(): bool {
 	// Check if the website is a China website.
 	return defined( 'QUARK_CHINA_SITE_BLOG_ID' ) && QUARK_CHINA_SITE_BLOG_ID === get_current_blog_id();
 }
+
+/**
+ * Get the blog ID for the china site.
+ *
+ * @return int
+ */
+function get_china_site_blog_id(): int {
+	// Return the blog ID for the china site.
+	return defined( 'QUARK_CHINA_SITE_BLOG_ID' ) ? QUARK_CHINA_SITE_BLOG_ID : false;
+}

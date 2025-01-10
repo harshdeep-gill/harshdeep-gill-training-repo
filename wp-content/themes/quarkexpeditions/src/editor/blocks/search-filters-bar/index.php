@@ -26,8 +26,8 @@ function bootstrap(): void {
 		]
 	);
 
-	// Add block attributes to translate.
-	add_filter( 'qrk_translation_block_attributes', __NAMESPACE__ . '\\block_attributes_to_translate' );
+	// Disable translation for this block.
+	add_filter( 'qrk_translation_disable_blocks', __NAMESPACE__ . '\\disable_translation' );
 }
 
 /**
@@ -116,4 +116,19 @@ function block_attributes_to_translate( array $blocks_and_attributes = [] ): arr
 
 	// Return updated data.
 	return $blocks_and_attributes;
+}
+
+/**
+ * Disable translation for this block.
+ *
+ * @param string[] $blocks The block names.
+ *
+ * @return string[] The block names.
+ */
+function disable_translation( array $blocks = [] ): array {
+	// Add block name to disable translation.
+	$blocks[] = BLOCK_NAME;
+
+	// Return block names.
+	return $blocks;
 }

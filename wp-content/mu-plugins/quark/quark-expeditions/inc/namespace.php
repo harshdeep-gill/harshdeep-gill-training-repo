@@ -1751,7 +1751,8 @@ function get_details_data( int $post_id = 0 ): array {
 	}
 
 	// Break title with colon.
-	$title_parts = explode( ':', $post['post']->post_title );
+	$separator   = apply_filters( 'quark_expedition_title_separator', ':' );
+	$title_parts = explode( empty( $separator ) ? ':' : strval( $separator ), $post['post']->post_title );
 
 	// Check if title parts are available.
 	if ( ! empty( $title_parts[0] ) ) {

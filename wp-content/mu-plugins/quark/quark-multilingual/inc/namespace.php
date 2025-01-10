@@ -8,23 +8,42 @@
 namespace Quark\Multilingual;
 
 use Inpsyde\MultilingualPress\NavMenu\ServiceProvider;
+use Inpsyde\MultilingualPress\TranslationUi\Post\RelationshipContext;
+use Inpsyde\MultilingualPress\Framework\Http\Request;
+use WP_CLI;
+use Exception;
 use WP_Post;
 
+use function Quark\Core\get_china_site_blog_id;
+use function Quark\Softrip\Itineraries\get_related_ships;
 use function Travelopia\Multilingual\get_languages;
 use function Travelopia\Multilingual\get_post_translations;
 use function Travelopia\Multilingual\get_term_translations;
 use function Travelopia\Multilingual\get_translated_image;
 use function Travelopia\Translation\translate_strings;
 
+use const Quark\Itineraries\POST_TYPE;
+
 /**
  * Bootstrap plugin.
  *
  * @return void
+ *
+ * @throws Exception Exception.
  */
 function bootstrap(): void {
-	// Hooks and filter.
+	// Translation - Hooks and filter.
 	add_filter( 'travelopia_translation_adapter', __NAMESPACE__ . '\\get_translation_adapter', 10, 1 );
 	add_filter( 'travelopia_translation_output_strings', __NAMESPACE__ . '\\translate_block_strings', 10, 3 );
+	add_filter( 'travelopia_translation_input_strings', __NAMESPACE__ . '\\decode_multilingualpress_translation_strings' );
+
+	// Other Hooks and filter.
+	add_action( 'multilingualpress.metabox_after_relate_posts', __NAMESPACE__ . '\\convert_ship_ids', 10, 2 );
+
+	// CLI commands.
+	if ( defined( 'WP_CLI' ) && true === WP_CLI ) {
+		WP_CLI::add_command( 'quark-migrate pattern-clone', __NAMESPACE__ . '\\WP_CLI\\Pattern_Clone' );
+	}
 }
 
 /**
@@ -90,6 +109,32 @@ function get_translation_adapter(): string {
 }
 
 /**
+ * Use json_decode() on all translations in MultilingualPress.
+ *
+ * @param string[] $strings Array of translation string.
+ *
+ * @return string[] The decoded translation.
+ */
+function decode_multilingualpress_translation_strings( array $strings = [] ): array {
+	// Check if we have strings.
+	if ( empty( $strings ) || ! function_exists( 'Travelopia\Translation\translate_strings' ) ) {
+		return $strings;
+	}
+
+	// Traverse strings.
+	foreach ( $strings as $key => $string ) {
+		// Decode translation.
+		$decoded_translation = str_replace( '\u0026', '&', $string );
+
+		// Update strings.
+		$strings[ $key ] = $decoded_translation;
+	}
+
+	// Return updated strings.
+	return $strings;
+}
+
+/**
  * Update translated strings to include block translations.
  *
  * @param string[] $strings                Translated strings.
@@ -131,6 +176,7 @@ function translate_block_strings( array $strings = [], string $language = '', st
 
 	// Block and attribute translation mapping.
 	$block_attributes_to_translate = (array) apply_filters( 'qrk_translation_block_attributes', [] );
+	$disabled_block                = (array) apply_filters( 'qrk_translation_disable_blocks', [] );
 
 	// Traverse strings.
 	foreach ( $strings as $key => $string ) {
@@ -164,6 +210,11 @@ function translate_block_strings( array $strings = [], string $language = '', st
 			// Check if we have a valid block.
 			if ( ! is_array( $parsed_block ) || empty( $parsed_block['blockName'] ) ) {
 				continue;
+			}
+
+			// Check if this block is disabled.
+			if ( in_array( $parsed_block['blockName'], $disabled_block, true ) ) {
+				$strings[ $key ] = str_replace( serialize_block( $parsed_block ), '', $strings[ $key ] );
 			}
 
 			// Check if this is one of our translatable blocks.
@@ -541,4 +592,68 @@ function translate_dynamic_url_from_content( string $content = '', int $from_sit
 function get_fallback_url(): string {
 	// Return home URL.
 	return home_url( '/broken-url' );
+}
+
+/**
+ * Get ships from main site itinary to store in china site as meta data.
+ *
+ * @param RelationshipContext|null $context Relationship context.
+ * @param Request|null             $request Request object.
+ *
+ * @return void
+ */
+function convert_ship_ids( RelationshipContext $context = null, Request $request = null ): void {
+	// Bail out if we don't have the required context or request.
+	if ( ! $context instanceof RelationshipContext || ! $request instanceof Request ) {
+		return;
+	}
+
+	// Look for translation values.
+	$remote_site_id = $context->remoteSiteId();
+	$source_site_id = $context->sourceSiteId();
+
+	// Check if we have the China site ID.
+	if ( get_china_site_blog_id() === $remote_site_id ) {
+		// Get source post.
+		$source_post = $context->sourcePost();
+
+		// Check if source the post type is ITINERARY.
+		if ( POST_TYPE === $source_post->post_type ) {
+			// Switch to source site.
+			switch_to_blog( $source_site_id );
+
+			// Get related ships.
+			$ship_ids = get_related_ships( $source_post->ID );
+
+			// Switch back to remote site.
+			switch_to_blog( $remote_site_id );
+
+			// Initialize translated ship IDs.
+			$translated_ship_ids = [];
+
+			// Get the ship ids from the remote site.
+			foreach ( $ship_ids as $key => $ship_id ) {
+				// Get the translated post ID.
+				$post_translations = get_post_translations( $ship_id, $source_site_id );
+
+				// Get translated post in "to" site.
+				if ( ! empty( $post_translations ) ) {
+					foreach ( $post_translations as $post_translation ) {
+						if ( $remote_site_id === $post_translation['site_id'] && ! empty( $post_translation['post_id'] ) ) {
+							$translated_ship_ids[] = absint( $post_translation['post_id'] );
+						}
+					}
+				}
+			}
+
+			// Get remote post ID.
+			$remote_post_id = $context->remotePostId();
+
+			// Store the ship ids in the remote post.
+			if ( ! empty( $remote_post_id ) ) {
+				// Store the ship ids in the remote post.
+				update_post_meta( $remote_post_id, 'qrk_related_ships', $translated_ship_ids );
+			}
+		}
+	}
 }
