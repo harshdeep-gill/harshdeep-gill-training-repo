@@ -409,11 +409,6 @@ function doing_automated_test(): bool {
  * @return string Formatted price.
  */
 function format_price( float $price = 0, string $currency = DEFAULT_CURRENCY ): string {
-	// Check if price is empty.
-	if ( empty( $price ) ) {
-		return '';
-	}
-
 	// Set default separators.
 	$string_format = '%1$s%2$s %3$s';
 
@@ -519,6 +514,15 @@ function get_raw_text_from_html( string $html = '' ): string {
 
 	// Get pure text.
 	$text = wp_strip_all_tags( $html, true );
+
+	// Remove non-breaking space.
+	$text = str_replace( '&nbsp;', ' ', $text );
+
+	// Decode HTML entities.
+	$text = html_entity_decode( $text );
+
+	// Convert encoding to UTF-8.
+	$text = mb_convert_encoding( $text, 'UTF-8', 'UTF-8' );
 
 	// Return pure text.
 	return $text;
@@ -846,4 +850,24 @@ function acf_styles_for_read_only_fields(): void {
 		</style>
 		<?php
 	}
+}
+
+/**
+ * Check if the website is a China website.
+ *
+ * @return bool
+ */
+function is_china_website(): bool {
+	// Check if the website is a China website.
+	return defined( 'QUARK_CHINA_SITE_BLOG_ID' ) && QUARK_CHINA_SITE_BLOG_ID === get_current_blog_id();
+}
+
+/**
+ * Get the blog ID for the china site.
+ *
+ * @return int
+ */
+function get_china_site_blog_id(): int {
+	// Return the blog ID for the china site.
+	return defined( 'QUARK_CHINA_SITE_BLOG_ID' ) ? QUARK_CHINA_SITE_BLOG_ID : false;
 }

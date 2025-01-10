@@ -1,0 +1,21 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "Bento Collage",
+	"name": "quark/bento-collage",
+	"description": "Bento Collage Block.",
+	"category": "layout",
+	"keywords": [
+		"bento",
+		"collage"
+	],
+  "attributes": {},
+	"textdomain": "qrk",
+	"supports": {
+		"alignWide": false,
+		"anchor": true,
+		"className": false,
+		"html": false,
+		"customClassName": false
+	}
+}

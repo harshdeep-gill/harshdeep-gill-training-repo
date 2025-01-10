@@ -11,6 +11,7 @@ use WP_Post;
 use WP_Term;
 
 use function Quark\Core\format_price;
+use function Quark\Core\is_china_website;
 use function Quark\InclusionSets\get as inclusion_sets_get;
 use function Quark\PolicyPages\get as get_policy_page_post;
 use function Quark\Brochures\get as get_brochure;
@@ -25,6 +26,8 @@ use function Quark\Ships\get as get_ship;
 use function Quark\Softrip\Departures\get_departures_by_itinerary;
 use function Quark\Softrip\Departures\get_lowest_price as get_departure_lowest_price;
 use function Quark\Softrip\Itineraries\get_related_ships;
+
+use function Travelopia\Multilingual\get_post_translations;
 
 use const Quark\Departures\POST_TYPE as DEPARTURE_POST_TYPE;
 use const Quark\Expeditions\DESTINATION_TAXONOMY;
@@ -59,6 +62,9 @@ function bootstrap(): void {
 	// Update related expedition on itineraries save. Assigning higher priority to run before any other cache bust.
 	add_action( 'save_post', __NAMESPACE__ . '\\update_related_expedition_on_itineraries_save', 1 );
 	add_action( 'qe_departure_post_cache_busted', __NAMESPACE__ . '\\bust_lowest_price_cache_by_departure' );
+
+	// Add meta keys to be translated while content sync.
+	add_filter( 'qrk_translation_meta_keys', __NAMESPACE__ . '\\translate_meta_keys' );
 
 	// Admin stuff.
 	if ( is_admin() ) {
@@ -95,11 +101,16 @@ function update_related_expedition_on_itineraries_save( int $post_id = 0 ): void
 	// Meta key that we are monitoring in Post A.
 	$meta_key = 'related_expedition';
 
+	// Check if the ACF data in post request is empty.
+	if ( empty( $_POST['acf'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
+		return;
+	}
+
 	// Get the old meta value before the update.
 	$old_expedition_post_id = absint( get_post_meta( $post_id, $meta_key, true ) );
 
 	// Check if there is a new value being set in the post request.
-	$new_expedition_post_id = ! empty( $_POST['acf'] ) && ! empty( $_POST['acf']['field_65f2dab2046df'] ) ? absint( sanitize_text_field( $_POST['acf']['field_65f2dab2046df'] ) ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing
+	$new_expedition_post_id = ! empty( $_POST['acf']['field_65f2dab2046df'] ) ? absint( sanitize_text_field( $_POST['acf']['field_65f2dab2046df'] ) ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing
 
 	// Skip if both value are same.
 	if ( $old_expedition_post_id === $new_expedition_post_id ) {
@@ -952,11 +963,12 @@ function get_included_transfer_package_details( int $post_id = 0, string $curren
 	// get Itinerary.
 	$itinerary = get( $post_id );
 	$details   = [
-		'title'                => '',
-		'sets'                 => [],
-		'price'                => 0,
-		'formatted_price'      => '0',
-		'offer_inclusion_text' => '',
+		'title'                    => '',
+		'sets'                     => [],
+		'price'                    => 0,
+		'formatted_price'          => '0',
+		'offer_inclusion_text'     => '',
+		'mandatory_transfer_title' => '',
 	];
 
 	// Validate.
@@ -967,13 +979,13 @@ function get_included_transfer_package_details( int $post_id = 0, string $curren
 	// Get included transfer package.
 	$details['price'] = get_mandatory_transfer_price( $post_id, $currency );
 
-	// Bail if empty price.
-	if ( empty( $details['price'] ) ) {
-		return $details;
-	}
-
 	// Format price.
 	$details['formatted_price'] = format_price( $details['price'], $currency );
+
+	// Mandatory Transfer Package Title.
+	if ( ! empty( $itinerary['post_meta']['mandatory_transfer_title'] ) ) {
+		$details['mandatory_transfer_title'] = $itinerary['post_meta']['mandatory_transfer_title'];
+	}
 
 	// Offer Inclusion Text.
 	if ( ! empty( $itinerary['post_meta']['offer_inclusion_text'] ) ) {
@@ -1231,4 +1243,72 @@ function bust_lowest_price_cache_by_departure( int $departure_id = 0 ): void {
 
 	// Bust cache for lowest price.
 	bust_lowest_price_cache( $itinerary_post_id );
+}
+
+/**
+ * Translate meta keys.
+ *
+ * @param array<string, string> $meta_keys Meta keys.
+ *
+ * @return array<string, string|string[]>
+ */
+function translate_meta_keys( array $meta_keys = [] ): array {
+	// Meta keys for translation.
+	$extra_keys = [
+		'boilerplate'                          => 'string',
+		'related_expedition'                   => 'post',
+		'start_location'                       => 'taxonomy',
+		'end_location'                         => 'taxonomy',
+		'embarkation_port'                     => 'post',
+		'disembarkation_port'                  => 'post',
+		'map'                                  => 'attachment',
+		'inclusions'                           => 'post',
+		'exclusions'                           => 'post',
+		'itinerary_days'                       => __NAMESPACE__ . '\\translate_meta_key',
+		'offer_inclusion_text'                 => 'string',
+		'mandatory_transfer_package_inclusion' => 'post',
+		'mandatory_transfer_package_exclusion' => 'post',
+		'tnc_cancellation_policy'              => 'post',
+		'tnc_terms_and_conditions'             => 'post',
+	];
+
+	// Return meta keys to be translated.
+	return array_merge( $meta_keys, $extra_keys );
+}
+
+/**
+ * Callable to translate a meta value by meta key.
+ *
+ * @param string $meta_key            Meta key name.
+ * @param string $meta_value          Meta key value.
+ * @param int    $source_site_id      Source site ID.
+ * @param int    $destination_site_id Destination site ID.
+ *
+ * @return string Translated value.
+ */
+function translate_meta_key( string $meta_key = '', string $meta_value = '', int $source_site_id = 0, int $destination_site_id = 0 ): string {
+	// Bail if required data is not available.
+	if ( empty( $meta_key ) || empty( $meta_value ) || empty( $source_site_id ) || empty( $destination_site_id ) ) {
+		return $meta_value;
+	}
+
+	// Check for itinerary days meta key.
+	if ( 'itinerary_days' === $meta_key ) {
+		// Get translated deck ID.
+		$itinerary_day = get_post_translations(
+			absint( $meta_value ),
+			$source_site_id
+		);
+
+		// Loop through translated posts.
+		foreach ( $itinerary_day as $post ) {
+			if ( $post['site_id'] === $destination_site_id ) {
+				// Update meta value.
+				$meta_value = $post['post_id'];
+			}
+		}
+	}
+
+	// Return meta value.
+	return strval( $meta_value );
 }

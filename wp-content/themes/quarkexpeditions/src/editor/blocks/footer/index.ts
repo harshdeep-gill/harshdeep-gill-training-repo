@@ -35,6 +35,7 @@ import * as footerSocialLink from './children/social-link';
 import * as footerSocialLinks from './children/social-links';
 import * as footerTop from './children/top';
 import * as footerAssociations from './children/associations';
+import * as footerAssociationLink from './children/association-link';
 
 /**
  * Block name.
@@ -72,4 +73,5 @@ export const init = (): void => {
 	registerBlockType( footerSocialLinks.name, footerSocialLinks.settings );
 	registerBlockType( footerTop.name, footerTop.settings );
 	registerBlockType( footerAssociations.name, footerAssociations.settings );
+	registerBlockType( footerAssociationLink.name, footerAssociationLink.settings );
 };

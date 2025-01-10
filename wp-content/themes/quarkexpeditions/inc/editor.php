@@ -10,6 +10,7 @@ namespace Quark\Theme\Editor;
 use WP_Screen;
 
 use function Quark\Theme\Core\get_assets_version;
+use function Quark\Core\is_china_website;
 
 /**
  * Setup.
@@ -67,6 +68,7 @@ function enqueue_block_editor_assets(): void {
 	wp_enqueue_style( 'quark-editor-custom', get_stylesheet_directory_uri() . '/dist/editor-custom.css', [], '1' );
 	wp_enqueue_style( 'nunito-sans', get_template_directory_uri() . '/src/assets/fonts/nunito-sans/nunito-sans.css', [], '1' );
 	wp_enqueue_style( 'source-serif-4', get_template_directory_uri() . '/src/assets/fonts/source-serif-4/source-serif-4.css', [], '1' );
+	wp_enqueue_style( 'knockout-49-liteweight-regular', get_template_directory_uri() . '/src/assets/fonts/knockout-49-liteweight-regular/knockout-49-liteweight-regular.css', [], '1' );
 
 	// JavaScript.
 	$assets_version = get_assets_version();
@@ -90,6 +92,15 @@ function enqueue_block_editor_assets(): void {
 		$deps,
 		$assets_version,
 		false
+	);
+
+	// Localize editor script.
+	wp_localize_script(
+		'quark-editor',
+		'quarkSiteData',
+		[
+			'isChinaSite' => is_china_website(),
+		]
 	);
 }
 

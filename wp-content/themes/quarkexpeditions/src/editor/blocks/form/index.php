@@ -15,6 +15,7 @@ use function Quark\Leads\Forms\get_states;
 const COMPONENT_JOB_APPLICATION = 'form-job-application';
 const COMPONENT_CONTACT_US      = 'form-contact-us';
 const COMPONENT_NEWSLETTER      = 'form-newsletter';
+const BLOCK_NAME                = 'quark/form';
 
 /**
  * Bootstrap this block.
@@ -29,6 +30,9 @@ function bootstrap(): void {
 			'render_callback' => __NAMESPACE__ . '\\render',
 		]
 	);
+
+	// Disable translation for this block.
+	add_filter( 'qrk_translation_disable_blocks', __NAMESPACE__ . '\\disable_translation' );
 }
 
 /**
@@ -83,4 +87,19 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 
 	// Return built component.
 	return quark_get_component( $component, $component_attributes );
+}
+
+/**
+ * Disable translation for this block.
+ *
+ * @param string[] $blocks The block names.
+ *
+ * @return string[] The block names.
+ */
+function disable_translation( array $blocks = [] ): array {
+	// Add block name to disable translation.
+	$blocks[] = BLOCK_NAME;
+
+	// Return block names.
+	return $blocks;
 }

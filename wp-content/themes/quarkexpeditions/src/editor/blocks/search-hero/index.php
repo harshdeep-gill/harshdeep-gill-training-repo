@@ -10,7 +10,8 @@ namespace Quark\Theme\Blocks\SearchHero;
 use WP_Block;
 use WP_Block_List;
 
-const COMPONENT = 'parts.search-hero';
+const COMPONENT  = 'parts.search-hero';
+const BLOCK_NAME = 'quark/search-hero';
 
 /**
  * Bootstrap this block.
@@ -26,6 +27,9 @@ function bootstrap(): void {
 			'skip_inner_blocks' => true, // Skip inner block rendering to avoid render callbacks to those blocks.
 		]
 	);
+
+	// Add block attributes to translate.
+	add_filter( 'qrk_translation_block_attributes', __NAMESPACE__ . '\\block_attributes_to_translate' );
 }
 
 /**
@@ -114,11 +118,28 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 								];
 
 								// Add title.
-								$title['text']  = $text_block->attributes['title'] ?? '';
-								$title['color'] = $text_block->attributes['textColor'] ?? '';
+								$title['text']           = $text_block->attributes['title'] ?? '';
+								$title['color']          = $text_block->attributes['textColor'] ?? '';
+								$title['use_promo_font'] = $text_block->attributes['usePromoFont'] ?? false;
 
 								// Add to attributes.
 								$title_container['title'] = $title;
+								break;
+
+							// Title bicolor.
+							case 'quark/search-hero-title-bicolor':
+								$title_bicolor = [
+									'type' => 'title_bicolor',
+								];
+
+								// Get the props.
+								$title_bicolor['white_text']     = $text_block->attributes['whiteText'] ?? '';
+								$title_bicolor['yellow_text']    = $text_block->attributes['yellowText'] ?? '';
+								$title_bicolor['switch_colors']  = $text_block->attributes['switchColors'] ?? false;
+								$title_bicolor['use_promo_font'] = $text_block->attributes['usePromoFont'] ?? false;
+
+								// Add to attributes.
+								$title_container['title_bicolor'] = $title_bicolor;
 								break;
 
 							// Subtitle.
@@ -128,8 +149,9 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 								];
 
 								// Add subtitle.
-								$subtitle['text']  = $text_block->attributes['subtitle'] ?? '';
-								$subtitle['color'] = $text_block->attributes['textColor'] ?? '';
+								$subtitle['text']           = $text_block->attributes['subtitle'] ?? '';
+								$subtitle['color']          = $text_block->attributes['textColor'] ?? '';
+								$subtitle['use_promo_font'] = $text_block->attributes['usePromoFont'] ?? false;
 
 								// Add to title container.
 								$title_container['subtitle'] = $subtitle;
@@ -224,7 +246,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 								$item['media_id'] = $card_item['attrs']['media']['id'] ?? 0;
 								$item['tag_text'] = ! empty( $card_item['attrs']['hasTag'] ) ? $card_item['attrs']['tagText'] : '';
 								$item['title']    = $card_item['attrs']['title'] ?? '';
-								$item['cta']      = ! empty( $card_item['attrs']['hasCtaLink'] ) ? $card_item['attrs']['cta'] : [];
+								$item['cta']      = ! empty( $card_item['attrs']['hasCtaLink'] ) && ! empty( $card_item['attrs']['cta'] ) ? $card_item['attrs']['cta'] : [];
 
 								// Add item attributes.
 								$component_attributes['hero_details_slider']['items'][] = $item;
@@ -246,4 +268,36 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 
 	// Return the component.
 	return quark_get_component( COMPONENT, $component_attributes );
+}
+
+/**
+ * Block attributes that need to be translatable.
+ *
+ * @param mixed[] $blocks_and_attributes Blocks and attributes.
+ *
+ * @return mixed[]
+ */
+function block_attributes_to_translate( array $blocks_and_attributes = [] ): array {
+	// Add data to translate.
+	$blocks_and_attributes[ BLOCK_NAME ] = [
+		'image' => [ 'backgroundImage' ],
+	];
+
+	// Add data to translate.
+	$blocks_and_attributes[ BLOCK_NAME . '-overline' ] = [
+		'text' => [ 'overline' ],
+	];
+
+	// Add data to translate.
+	$blocks_and_attributes[ BLOCK_NAME . '-title' ] = [
+		'text' => [ 'title' ],
+	];
+
+	// Add data to translate.
+	$blocks_and_attributes[ BLOCK_NAME . '-subtitle' ] = [
+		'text' => [ 'subtitle' ],
+	];
+
+	// Return updated data.
+	return $blocks_and_attributes;
 }

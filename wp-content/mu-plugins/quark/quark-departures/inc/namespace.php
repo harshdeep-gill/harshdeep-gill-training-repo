@@ -33,6 +33,9 @@ use function Quark\Itineraries\get_tax_type_details;
 use function Quark\Leads\get_request_a_quote_url;
 use function Quark\Localization\get_currencies;
 
+use function Travelopia\Multilingual\get_post_translations;
+use function Travelopia\Multilingual\get_term_translations;
+
 use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
 use const Quark\CabinCategories\AVAILABLE_STATUS;
 use const Quark\CabinCategories\SOLD_OUT_STATUS;
@@ -70,6 +73,9 @@ function bootstrap(): void {
 	add_action( 'qe_departure_post_cache_busted', __NAMESPACE__ . '\\bust_card_data_cache' );
 	add_action( 'qe_expedition_post_cache_busted', __NAMESPACE__ . '\\bust_card_data_cache_on_expedition_update' );
 	add_action( 'qe_itinerary_post_cache_busted', __NAMESPACE__ . '\\bust_card_data_cache_on_itinerary_update' );
+
+	// Add meta keys to be translated while content sync.
+	add_filter( 'qrk_translation_meta_keys', __NAMESPACE__ . '\\translate_meta_keys' );
 
 	// Admin stuff.
 	if ( is_admin() ) {
@@ -720,7 +726,7 @@ function get_card_data( int $departure_id = 0, string $currency = DEFAULT_CURREN
 		'banner_details'           => get_policy_banner_details( $itinerary_id ),
 		'cabins'                   => SOLD_OUT_STATUS === $departure_status ? [] : $cabins,
 		'promotion_banner'         => get_discount_label( $lowest_price['original'], $lowest_price['discounted'] ),
-		'promotions'               => get_promotions_description( $departure_id ),
+		'promotions'               => get_promotions_description( $departure_id, $currency ),
 		'request_a_quote_url'      => get_request_a_quote_url( $departure_id ),
 		'departure_status'         => $departure_status,
 	];
@@ -1109,11 +1115,25 @@ function get_dates_rates_card_data( int $departure_id = 0, string $currency = DE
 		foreach ( $promotion_codes as $promo_code ) {
 			$promo_data = get_promotions_by_code( strval( $promo_code ) );
 
-			// Check for promo data.
-			if ( ! empty( $promo_data ) ) {
-				$available_promos[ strval( $promo_code ) ] = $promo_data[0];
+			// Bail if promo data is empty.
+			if ( empty( $promo_data ) ) {
+				continue;
 			}
+
+			// First element is the promo data.
+			$promo_data = $promo_data[0];
+
+			// Check for currency.
+			if ( ! empty( $promo_data['currency'] ) && $currency !== $promo_data['currency'] ) {
+				continue;
+			}
+
+			// Add promo data to available promos.
+			$available_promos[ strval( $promo_code ) ] = $promo_data;
 		}
+
+		// Sort promos.
+		$available_promos = sort_promotions_by_type_and_value( $available_promos );
 	}
 
 	// Prepare the departure card details.
@@ -1270,11 +1290,12 @@ function get_discount_label( int $original_price = 0, int $discounted_price = 0 
 /**
  * Get promotions description.
  *
- * @param int $departure_id Departure ID.
+ * @param int    $departure_id Departure ID.
+ * @param string $currency     Currency.
  *
  * @return string[]
  */
-function get_promotions_description( int $departure_id = 0 ): array {
+function get_promotions_description( int $departure_id = 0, string $currency = DEFAULT_CURRENCY ): array {
 	// Check for departure ID.
 	if ( empty( $departure_id ) ) {
 		return [];
@@ -1312,6 +1333,11 @@ function get_promotions_description( int $departure_id = 0 ): array {
 		// Get first promo data.
 		$promo_data = $promo_data[0];
 
+		// Check for currency.
+		if ( ! empty( $promo_data['currency'] ) && $currency !== $promo_data['currency'] ) {
+			continue;
+		}
+
 		// Prepare promo description.
 		$promo_description = sprintf(
 			// translators: %1$s: Promo Description, %2$s: Promo Code.
@@ -1335,7 +1361,7 @@ function get_promotions_description( int $departure_id = 0 ): array {
  * Get Departure Availability Status.
  *
  * @param int          $departure_id Departure ID.
- * @param mixed[]|null $cabins Cabin details.
+ * @param mixed[]|null $cabins       Cabin details.
  *
  * @return string
  */
@@ -1372,4 +1398,143 @@ function get_departure_availability_status( int $departure_id = 0, array|null $c
 
 	// Return.
 	return $departure_availability_status;
+}
+
+/**
+ * Sort promotions by discount type, value.
+ * Order of sorting: fixed_off, percentage_off, pif.
+ *
+ * @param mixed[] $promotions Promotions.
+ *
+ * @return mixed[]
+ */
+function sort_promotions_by_type_and_value( array $promotions = [] ): array {
+	// Bail if empty.
+	if ( empty( $promotions ) || ! is_array( $promotions ) ) {
+		return [];
+	}
+
+	// Sort.
+	uasort(
+		$promotions,
+		function ( $a, $b ) {
+			// Check if a and b are arrays.
+			if ( ! is_array( $a ) || ! is_array( $b ) ) {
+				return 0;
+			}
+
+			// Check for discount type.
+			if ( empty( $a['discount_type'] ) || empty( $b['discount_type'] ) || empty( $a['discount_value'] ) || empty( $b['discount_value'] ) || ! array_key_exists( 'is_pif', $a ) || ! array_key_exists( 'is_pif', $b ) ) {
+				return 0;
+			}
+
+			// The sort order for discount types.
+			$sort_order = [
+				'fixed_off'      => 1,
+				'percentage_off' => 2,
+			];
+
+			// For same discount type, sort by discount value (highest to lowest).
+			if ( $a['discount_type'] === $b['discount_type'] ) {
+				// If any one has pif, sort by pif.
+				if ( $a['is_pif'] || $b['is_pif'] ) {
+					return $a['is_pif'] <=> $b['is_pif'];
+				}
+
+				// Sort by discount value.
+				return $b['discount_value'] <=> $a['discount_value'];
+			}
+
+			// For different discount types, sort by fixed_off first, then percentage_off, then pif.
+			return $sort_order[ $a['discount_type'] ] <=> $sort_order[ $b['discount_type'] ];
+		}
+	);
+
+	// Return sorted promotions.
+	return $promotions;
+}
+
+/**
+ * Translate meta keys.
+ *
+ * @param array<string, string> $meta_keys Meta keys.
+ *
+ * @return array<string, string|string[]>
+ */
+function translate_meta_keys( array $meta_keys = [] ): array {
+	// Meta keys for translation.
+	$extra_keys = [
+		'related_expedition'                       => 'post',
+		'related_ship'                             => 'post',
+		'itinerary'                                => 'post',
+		'expedition_team_\d+_staff_member'         => 'post',
+		'related_departures'                       => __NAMESPACE__ . '\\translate_meta_key',
+		'adventure_options'                        => __NAMESPACE__ . '\\translate_meta_key',
+		'related_promotion_tags'                   => __NAMESPACE__ . '\\translate_meta_key',
+		'expedition_team_\d+_departure_staff_role' => __NAMESPACE__ . '\\translate_meta_key',
+	];
+
+	// Return meta keys to be translated.
+	return array_merge( $meta_keys, $extra_keys );
+}
+
+/**
+ * Callable to translate a meta value by meta key.
+ *
+ * @param string $meta_key            Meta key name.
+ * @param string $meta_value          Meta key value.
+ * @param int    $source_site_id      Source site ID.
+ * @param int    $destination_site_id Destination site ID.
+ *
+ * @return string Translated value.
+ */
+function translate_meta_key( string $meta_key = '', string $meta_value = '', int $source_site_id = 0, int $destination_site_id = 0 ): string {
+	// Bail if required data is not available.
+	if ( empty( $meta_key ) || empty( $meta_value ) || empty( $source_site_id ) || empty( $destination_site_id ) ) {
+		return $meta_value;
+	}
+
+	// Taxonomies keys.
+	$taxonomies_keys = [
+		'adventure_options',
+		'related_promotion_tags',
+	];
+
+	// Translate the taxonomies meta key.
+	if (
+		in_array( $meta_key, $taxonomies_keys, true )
+		|| preg_match( '/expedition_team_\d+_departure_staff_role/', $meta_key )
+	) {
+		// Get translated term id.
+		$translated_terms = get_term_translations(
+			absint( $meta_value ),
+			$source_site_id,
+		);
+
+		// Loop through translated terms.
+		foreach ( $translated_terms as $term ) {
+			if ( $term['site_id'] === $destination_site_id ) {
+				// Update meta value with translated term id.
+				$meta_value = $term['term_id'];
+				break;
+			}
+		}
+	} elseif ( 'related_departures' === $meta_key ) {
+		// Get translated deck ID.
+		$deck_post = get_post_translations(
+			absint( $meta_value ),
+			$source_site_id
+		);
+
+		// Loop through translated posts.
+		foreach ( $deck_post as $post ) {
+			if ( $post['site_id'] === $destination_site_id ) {
+				// Update meta value.
+				$meta_value = $post['post_id'];
+			}
+		}
+	}
+
+	// Return meta value.
+	return strval( $meta_value );
 }

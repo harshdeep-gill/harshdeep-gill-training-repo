@@ -33,25 +33,31 @@
 
 					@if ( 'title' === $item['type'] )
 						@if ( ! empty( $item['title'] ) )
-							<x-hero.title :title="$item['title']" :text_color="$item['text_color']" />
+							<x-hero.title :title="$item['title']" :text_color="$item['text_color']" :use_promo_font="$item['use_promo_font']" />
+						@endif
+					@endif
+
+					@if ( 'title_bicolor' === $item['type'] )
+						@if ( ! empty( $item['white_text'] && ! empty( $item['yellow_text'] ) ) )
+							<x-hero.title-bicolor :white_text="$item['white_text']" :yellow_text="$item['yellow_text']" :switch_colors="$item['switch_colors']" :use_promo_font="$item['use_promo_font']" />
 						@endif
 					@endif
 
 					@if ( 'text-graphic' === $item['type'] )
 						@if ( ! empty( $item['image_id'] ) )
-							<x-hero.text-graphic :image_id="$item['image_id']" />
+							<x-hero.text-graphic :image_id="$item['image_id']" :size="$item['size']" />
 						@endif
 					@endif
 
 					@if ( 'subtitle' === $item['type'] )
 						@if ( ! empty( $item['subtitle'] ) )
-							<x-hero.sub-title :title="$item['subtitle']" :text_color="$item['text_color']" />
+							<x-hero.sub-title :title="$item['subtitle']" :text_color="$item['text_color']" :use_promo_font="$item['use_promo_font']" />
 						@endif
 					@endif
 
 					@if ( 'description' === $item['type'] )
 						@if ( ! empty( $item['description'] ) )
-							<x-hero.description :text_color="$item['text_color']">
+							<x-hero.description :text_color="$item['text_color']" :use_promo_font="$item['use_promo_font']">
 								{!! $item['description'] !!}
 							</x-hero.description>
 						@endif

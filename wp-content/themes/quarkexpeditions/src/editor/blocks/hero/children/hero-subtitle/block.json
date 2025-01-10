@@ -23,6 +23,10 @@
 				"white",
 				"black"
 			]
+		},
+		"usePromoFont": {
+			"type": "boolean",
+			"default": false
 		}
 	},
 	"parent": [

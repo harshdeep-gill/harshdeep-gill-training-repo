@@ -10,7 +10,8 @@ namespace Quark\Theme\Blocks\Footer;
 use WP_Block;
 use WP_Block_List;
 
-const COMPONENT = 'parts.footer';
+const COMPONENT  = 'parts.footer';
+const BLOCK_NAME = 'quark/footer';
 
 /**
  * Bootstrap this block.
@@ -26,6 +27,9 @@ function bootstrap(): void {
 			'skip_inner_blocks' => true,
 		]
 	);
+
+	// Add block attributes to translate.
+	add_filter( 'qrk_translation_block_attributes', __NAMESPACE__ . '\\block_attributes_to_translate' );
 }
 
 /**
@@ -293,9 +297,33 @@ function process_column_block( array $block = [] ): array {
 					$column['content'][] = [ 'type' => 'payment-options' ];
 					break;
 
-				// Footer payment options.
+				// Association Links.
 				case 'quark/footer-associations':
-					$column['content'][] = [ 'type' => 'associations' ];
+					$association_links = [
+						'type'       => 'associations',
+						'attributes' => [
+							'association_links' => [],
+						],
+					];
+
+					// Check if inner blocks exist.
+					if ( ! empty( $column_inner_block['innerBlocks'] ) ) {
+						// Loop through the inner blocks.
+						foreach ( $column_inner_block['innerBlocks'] as $maybe_association_link ) {
+							// Check for inner block type.
+							if ( 'quark/footer-association-link' !== $maybe_association_link['blockName'] ) {
+								continue;
+							}
+
+							// Append the Association link.
+							if ( ! empty( $maybe_association_link['attrs']['type'] ) && ! empty( $maybe_association_link['attrs']['url']['url'] ) ) {
+								$association_links['attributes']['association_links'][ $maybe_association_link['attrs']['type'] ] = $maybe_association_link['attrs']['url']['url'];
+							}
+						}
+					}
+
+					// Add to the column.
+					$column['content'][] = $association_links;
 					break;
 
 				// Footer logo.
@@ -377,4 +405,31 @@ function process_navigation_block( array $block = [] ): array {
 
 	// Return the processed navigation block.
 	return $navigation;
+}
+
+/**
+ * Block attributes that need to be translatable.
+ *
+ * @param mixed[] $blocks_and_attributes Blocks and attributes.
+ *
+ * @return mixed[]
+ */
+function block_attributes_to_translate( array $blocks_and_attributes = [] ): array {
+	// Add data to translate.
+	$blocks_and_attributes[ BLOCK_NAME . '-column-title' ] = [
+		'text' => [ 'title' ],
+	];
+
+	// Add data to translate.
+	$blocks_and_attributes[ BLOCK_NAME . '-navigation' ] = [
+		'text' => [ 'title' ],
+	];
+
+	// Add data to translate.
+	$blocks_and_attributes[ BLOCK_NAME . '-navigation-item' ] = [
+		'text' => [ 'title' ],
+	];
+
+	// Return updated data.
+	return $blocks_and_attributes;
 }

@@ -208,14 +208,13 @@
 			display: none;
 			position: absolute;
 			z-index: 99;
-			translate: 0 -50%;
 
 			&[direction="previous"] {
-				inset: 50% auto auto var(--spacing-2);
+				inset: 60% auto auto var(--spacing-2);
 			}
 
 			&[direction="next"] {
-				inset: 50% var(--spacing-2) auto auto;
+				inset: 60% var(--spacing-2) auto auto;
 			}
 		}
 	}

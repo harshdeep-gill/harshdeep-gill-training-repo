@@ -7,6 +7,8 @@
 
 namespace Quark\Theme\Core;
 
+use function Quark\Core\is_china_website;
+
 /**
  * Setup.
  *
@@ -91,6 +93,7 @@ function register_styles(): void {
 	wp_register_style( 'tp-multi-select', get_template_directory_uri() . '/dist/vendor/tpmultiselectelement.css', [], $assets_version );
 	wp_enqueue_style( 'qrk-global', get_template_directory_uri() . '/dist/global.css', [], $assets_version );
 	wp_enqueue_style( 'nunito-sans', get_template_directory_uri() . '/src/assets/fonts/nunito-sans/nunito-sans.css', [], '1' );
+	wp_enqueue_style( 'knockout-49-liteweight-regular', get_template_directory_uri() . '/src/assets/fonts/knockout-49-liteweight-regular/knockout-49-liteweight-regular.css', [], '1' );
 	wp_enqueue_style( 'source-serif-4', get_template_directory_uri() . '/src/assets/fonts/source-serif-4/source-serif-4.css', [], '1' );
 	wp_register_style( 'intl-tel-input-css', get_template_directory_uri() . '/dist/vendor/intltelinput.css', [], $assets_version );
 	wp_register_style( 'tp-slider', get_template_directory_uri() . '/dist/vendor/tpsliderelement.css', [], $assets_version );
@@ -106,6 +109,7 @@ function register_styles(): void {
 		function ( $handles = [] ) {
 			$handles[] = 'nunito-sans';
 			$handles[] = 'source-serif-4';
+			$handles[] = 'knockout-49-liteweight-regular';
 			$handles[] = 'intl-tel-input-css';
 			$handles[] = 'tp-slider';
 			$handles[] = 'tp-tabs';
@@ -166,6 +170,7 @@ function register_scripts(): void {
 				'url'    => home_url( '/wp-json/quark-core/v1/partial/get' ),
 				'method' => 'POST',
 			],
+			'isChinaSite'      => is_china_website(),
 		]
 	);
 

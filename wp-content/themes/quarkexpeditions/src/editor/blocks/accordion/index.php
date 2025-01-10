@@ -9,7 +9,8 @@ namespace Quark\Theme\Blocks\Accordion;
 
 use WP_Block;
 
-const COMPONENT = 'parts.accordion';
+const BLOCK_NAME = 'quark/accordion';
+const COMPONENT  = 'parts.accordion';
 
 /**
  * Bootstrap this block.
@@ -25,6 +26,9 @@ function bootstrap(): void {
 			'skip_inner_blocks' => true,
 		]
 	);
+
+	// Add block attributes to translate.
+	add_filter( 'qrk_translation_block_attributes', __NAMESPACE__ . '\\block_attributes_to_translate' );
 }
 
 /**
@@ -155,4 +159,21 @@ function add_faq_schema( array $faq_schema = [] ): void {
 			return $schema;
 		}
 	);
+}
+
+/**
+ * Block attributes that need to be translatable.
+ *
+ * @param mixed[] $blocks_and_attributes Blocks and attributes.
+ *
+ * @return mixed[]
+ */
+function block_attributes_to_translate( array $blocks_and_attributes = [] ): array {
+	// Add data to translate.
+	$blocks_and_attributes[ BLOCK_NAME . '-item' ] = [
+		'text' => [ 'title' ],
+	];
+
+	// Return updated data.
+	return $blocks_and_attributes;
 }

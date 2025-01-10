@@ -126,7 +126,7 @@
 						@if( ! empty( $card['transfer_package_details'] && ! empty( $card['transfer_package_details']['sets'] ) ) )
 							<x-expedition-cards.transfer_package
 								drawer_id="{{ 'drawer' . $card['departure_id'] }}"
-								:drawer_title="__( 'Mandatory Transfer Package', 'qrk' )"
+								drawer_title="{!! ! empty( $card['transfer_package_details']['mandatory_transfer_title'] ) ? $card['transfer_package_details']['mandatory_transfer_title'] : __( 'Mandatory Transfer Package', 'qrk') !!}"
 								label="{!! $card['transfer_package_details']['offer_inclusion_text'] !!}"
 							>
 								<p><strong>{{ $card['transfer_package_details']['title'] ?? '' }}</strong></p>
@@ -136,7 +136,7 @@
 									@endforeach
 								</ul>
 								<p>
-									<strong>{{ __( 'Package Price: ', 'qrk' ) }} {{ $card['transfer_package_details']['formatted_price'] ?? '' }}</strong>
+									<strong>{{ __( 'Package Price: ', 'qrk' ) }} {{ $card['transfer_package_details']['formatted_price'] }}</strong>
 								</p>
 							</x-expedition-cards.transfer_package>
 						@endif

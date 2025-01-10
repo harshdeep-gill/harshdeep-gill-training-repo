@@ -13,6 +13,9 @@ export default class HeaderNavMenu extends HTMLElement {
 	private bodyElement: HTMLElement | null;
 	private menuButton: HTMLButtonElement | null;
 
+	// Static property to ensure listeners are added only once.
+	private static isEventListenerAdded = false;
+
 	/**
 	 * Constructor.
 	 */
@@ -27,23 +30,50 @@ export default class HeaderNavMenu extends HTMLElement {
 		// Event for dropdown button.
 		this.menuButton?.addEventListener( 'click', this.toggle.bind( this ) );
 
-		// Event to close the dropdown on keydown.
-		this.ownerDocument.defaultView?.addEventListener( 'keydown', this.handleDropdownCloseOnKeyDown.bind( this ) );
-
-		// Event to close dropdown on document click.
-		this.ownerDocument.defaultView?.addEventListener( 'click', this.handleDropdownCloseOnDocumentClick.bind( this ) );
+		// Add global event listeners once.
+		if ( ! HeaderNavMenu.isEventListenerAdded ) {
+			HeaderNavMenu.addGlobalEventListeners();
+			HeaderNavMenu.isEventListenerAdded = true;
+		}
 	}
 
 	/**
-	 * Toogle the dropdown.
+	 * Add global event listeners.
+	 */
+	private static addGlobalEventListeners() {
+		// Keyboard event to close dropdowns.
+		const handleDropdownCloseOnKeyDown = ( event: KeyboardEvent ) => {
+			// Close all dropdowns on 'Escape' key press.
+			if ( event.key === 'Escape' ) {
+				event.preventDefault();
+				HeaderNavMenu.closeAllDropdowns();
+			}
+		};
+
+		// Click event to close dropdowns.
+		const handleDropdownCloseOnDocumentClick = ( event: Event ) => {
+			// Get the target element.
+			const targetElement = event.target as HTMLElement;
+
+			// Close all dropdowns if the click is outside dropdowns and buttons.
+			if ( ! targetElement.closest( '.header__nav-item-link' ) && ! targetElement.closest( '.header__nav-item-dropdown-content' ) ) {
+				HeaderNavMenu.closeAllDropdowns();
+			}
+		};
+
+		// Attach event listeners.
+		window.addEventListener( 'keydown', handleDropdownCloseOnKeyDown );
+		window.addEventListener( 'click', handleDropdownCloseOnDocumentClick );
+	}
+
+	/**
+	 * Toggle the dropdown.
 	 */
 	toggle() {
-		// Check if the tooltip is open.
-		if ( 'true' === this.getAttribute( 'open' ) ) {
-			// Close, if open.
+		// Check if the dropdown is open.
+		if ( this.getAttribute( 'open' ) === 'true' ) {
 			this.close();
 		} else {
-			// Open, if closed.
 			this.open();
 		}
 	}
@@ -52,13 +82,9 @@ export default class HeaderNavMenu extends HTMLElement {
 	 * Open dropdown.
 	 */
 	open() {
-		// Close all dropdowns.
-		this.closeAllDropdowns();
-
-		// Toggle `open` attribute.
+		// Close all dropdowns before opening this one.
+		HeaderNavMenu.closeAllDropdowns();
 		this.setAttribute( 'open', 'true' );
-
-		// Add class to the body element.
 		this.bodyElement?.classList.add( 'has-navigation-dropdown-open' );
 	}
 
@@ -68,63 +94,16 @@ export default class HeaderNavMenu extends HTMLElement {
 	close() {
 		// Remove 'open' attribute.
 		this.removeAttribute( 'open' );
-
-		// Remove class from the body element.
-		if ( this.bodyElement?.classList.contains( 'has-navigation-dropdown-open' ) ) {
-			this.bodyElement?.classList.remove( 'has-navigation-dropdown-open' );
-		}
+		this.bodyElement?.classList.remove( 'has-navigation-dropdown-open' );
 	}
 
 	/**
-	 * Close the all dropdowns.
+	 * Close all dropdowns.
 	 */
-	closeAllDropdowns() {
+	private static closeAllDropdowns() {
 		// Get all dropdowns.
 		const dropdowns = document.querySelectorAll( 'quark-header-nav-menu-dropdown' );
-
-		// Close all opened dropdowns.
-		dropdowns.forEach( ( dropdown ) => {
-			// Remove 'open' attribute.
-			dropdown.removeAttribute( 'open' );
-		} );
-	}
-
-	/**
-	 * Event: 'keydown'
-	 *
-	 * @param {KeyboardEvent} event Event.
-	 */
-	handleDropdownCloseOnKeyDown( event: KeyboardEvent ) {
-		// If the escape key is pressed, return.
-		if ( 'Escape' !== event.key ) {
-			// Early return.
-			return;
-		}
-
-		// Close dropdown.
-		event.preventDefault();
-		this.close();
-	}
-
-	/**
-	 * Handle Dropdown Close,
-	 * if we click on anywhere else on the
-	 * HTML document.
-	 *
-	 * @param {Event} event Event.
-	 */
-	handleDropdownCloseOnDocumentClick( event: Event ) {
-		// Get target element.
-		const targetElement = event.target as HTMLElement;
-
-		// If user has clicked inside dropdown or dropdown button cta, return.
-		if ( targetElement.closest( '.header__nav-item-link' ) || targetElement.closest( '.header__nav-item-dropdown-content' ) ) {
-			// Early return.
-			return;
-		}
-
-		// Close the dropdown.
-		this.close();
+		dropdowns.forEach( ( dropdown ) => dropdown.removeAttribute( 'open' ) );
 	}
 }
 
