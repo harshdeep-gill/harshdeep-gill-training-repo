@@ -24,6 +24,7 @@ use function Quark\Multilingual\translate_block_strings;
 use function Travelopia\Multilingual\get_language_from_site_id;
 use function Travelopia\Multilingual\get_post_translations;
 use function Travelopia\Multilingual\get_term_translations;
+use function Travelopia\Translation\translate_strings;
 use function Inpsyde\MultilingualPress\resolve;
 
 /**
@@ -377,13 +378,38 @@ class Site_Clone {
 		// Switch to target Site.
 		switch_to_blog( $target_site_id );
 
+		// Get language.
+		$from_language = get_language_from_site_id( $source_site_id );
+		$to_language   = get_language_from_site_id( $target_site_id );
+
+		// Initialize translated name and description.
+		$translated_name        = $term->name;
+		$translated_description = $term->description;
+
+		// Translate content.
+		$value = translate_strings(
+			[
+				$term->name,
+				$term->description,
+			],
+			$to_language,
+			$from_language
+		);
+
+		// Check if we have a translated value and add to translations.
+		if ( is_array( $value ) && ! empty( $value ) ) {
+			$translated_name        = $value[0] ?? '';
+			$translated_description = $value[1] ?? '';
+		}
+
 		// Create term.
 		$translated_term = wp_insert_term(
-			$term->name,
+			$translated_name,
 			$term->taxonomy,
 			[
 				'parent'      => $translated_parent_term_id,
-				'description' => $term->description,
+				'slug'        => $term->slug,
+				'description' => $translated_description,
 			]
 		);
 
