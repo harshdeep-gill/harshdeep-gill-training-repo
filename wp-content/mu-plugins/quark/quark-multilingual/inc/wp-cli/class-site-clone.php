@@ -27,6 +27,38 @@ use function Travelopia\Multilingual\get_term_translations;
 use function Travelopia\Translation\translate_strings;
 use function Inpsyde\MultilingualPress\resolve;
 
+use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
+use const Quark\CabinCategories\CABIN_CLASS_TAXONOMY;
+use const Quark\Departures\SPOKEN_LANGUAGE_TAXONOMY;
+use const Quark\Expeditions\DESTINATION_TAXONOMY;
+use const Quark\Expeditions\EXCURSION_TAXONOMY;
+use const Quark\Expeditions\EXPEDITION_CATEGORY_TAXONOMY;
+use const Quark\Expeditions\EXPEDITION_TAG_TAXONOMY;
+use const Quark\InclusionSets\INCLUSION_EXCLUSION_CATEGORY;
+use const Quark\Itineraries\DEPARTURE_LOCATION_TAXONOMY;
+use const Quark\Itineraries\TAX_TYPE_TAXONOMY;
+use const Quark\Ships\SHIP_CATEGORY_TAXONOMY;
+use const Quark\StaffMembers\DEPARTMENT_TAXONOMY;
+use const Quark\StaffMembers\DEPARTURE_STAFF_ROLE_TAXONOMY;
+use const Quark\StaffMembers\SEASON_TAXONOMY;
+use const Quark\AdventureOptions\POST_TYPE as ADVENTURE_OPTION_POST_TYPE;
+use const Quark\CabinCategories\POST_TYPE as CABIN_CATEGORY_POST_TYPE;
+use const Quark\PolicyPages\POST_TYPE as POLICY_PAGE_POST_TYPE;
+use const Quark\ExclusionSets\POST_TYPE as EXCLUSION_SET_POST_TYPE;
+use const Quark\Expeditions\POST_TYPE as EXPEDITION_POST_TYPE;
+use const Quark\Expeditions\PrePostTripOptions\POST_TYPE as PRE_POST_TRIP_POST_TYPE;
+use const Quark\InclusionSets\POST_TYPE as INCLUSION_SET_POST_TYPE;
+use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
+use const Quark\ItineraryDays\POST_TYPE as ITINERARY_DAY_POST_TYPE;
+use const Quark\LandingPages\POST_TYPE as LANDING_PAGE_POST_TYPE;
+use const Quark\Offers\POST_TYPE as OFFER_POST_TYPE;
+use const Quark\Ports\POST_TYPE as PORT_POST_TYPE;
+use const Quark\PressReleases\POST_TYPE as PRESS_RELEASE_POST_TYPE;
+use const Quark\Regions\POST_TYPE as REGION_POST_TYPE;
+use const Quark\Ships\POST_TYPE as SHIP_POST_TYPE;
+use const Quark\ShipDecks\POST_TYPE as SHIP_DECK_POST_TYPE;
+use const Quark\StaffMembers\POST_TYPE as STAFF_MEMBER_POST_TYPE;
+
 /**
  * Class Site Clone.
  */
@@ -89,9 +121,6 @@ class Site_Clone {
 		$terms_count = 0;
 		$posts_count = 0;
 
-		// Flush the cache.
-		wp_cache_flush();
-
 		/**
 		 * Get All Terms and it's data from Source Site.
 		 */
@@ -101,20 +130,20 @@ class Site_Clone {
 				'orderby'    => 'parent',
 				'order'      => 'ASC',
 				'taxonomy'   => [
-					'qrk_adventure_option_category',
-					'qrk_cabin_class',
-					'qrk_department',
-					'qrk_departure_location',
-					'qrk_destination',
-					'qrk_excursion',
-					'qrk_expedition_category',
-					'qrk_expedition_tag',
-					'qrk_inclusion_exclusion_category',
-					'qrk_season',
-					'qrk_ship_categories',
-					'qrk_spoken_language',
-					'qrk_staff_role',
-					'qrk_tax_type',
+					ADVENTURE_OPTION_CATEGORY,
+					CABIN_CLASS_TAXONOMY,
+					DEPARTMENT_TAXONOMY,
+					DEPARTURE_LOCATION_TAXONOMY,
+					DESTINATION_TAXONOMY,
+					EXCURSION_TAXONOMY,
+					EXPEDITION_CATEGORY_TAXONOMY,
+					EXPEDITION_TAG_TAXONOMY,
+					INCLUSION_EXCLUSION_CATEGORY,
+					SEASON_TAXONOMY,
+					SHIP_CATEGORY_TAXONOMY,
+					SPOKEN_LANGUAGE_TAXONOMY,
+					DEPARTURE_STAFF_ROLE_TAXONOMY,
+					TAX_TYPE_TAXONOMY,
 				],
 			]
 		);
@@ -166,9 +195,6 @@ class Site_Clone {
 			}
 		}
 
-		// Flush the cache.
-		wp_cache_flush();
-
 		// Log terms migration completion.
 		WP_CLI::log( PHP_EOL . PHP_EOL );
 		WP_CLI::log( 'Terms migration completed.' );
@@ -182,23 +208,23 @@ class Site_Clone {
 
 		// List of allowed post types.
 		$post_types = [
-			'qrk_adventure_option',
-			'qrk_agreement',
-			'qrk_cabin_category',
-			'qrk_exclusion_set',
-			'qrk_expedition',
-			'qrk_inclusion_set',
-			'qrk_itinerary',
-			'qrk_itinerary_day',
-			'qrk_landing_page',
-			'qrk_offer',
-			'qrk_port',
-			'qrk_pre_post_trip',
-			'qrk_press_release',
-			'qrk_region',
-			'qrk_ship',
-			'qrk_ship_deck',
-			'qrk_staff_member',
+			ADVENTURE_OPTION_POST_TYPE,
+			POLICY_PAGE_POST_TYPE,
+			CABIN_CATEGORY_POST_TYPE,
+			EXCLUSION_SET_POST_TYPE,
+			EXPEDITION_POST_TYPE,
+			INCLUSION_SET_POST_TYPE,
+			ITINERARY_POST_TYPE,
+			ITINERARY_DAY_POST_TYPE,
+			LANDING_PAGE_POST_TYPE,
+			OFFER_POST_TYPE,
+			PORT_POST_TYPE,
+			PRE_POST_TRIP_POST_TYPE,
+			PRESS_RELEASE_POST_TYPE,
+			REGION_POST_TYPE,
+			SHIP_POST_TYPE,
+			SHIP_DECK_POST_TYPE,
+			STAFF_MEMBER_POST_TYPE,
 			'wp_block',
 			'page',
 			'wp_template',
