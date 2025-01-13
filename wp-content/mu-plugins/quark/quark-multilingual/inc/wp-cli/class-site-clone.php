@@ -639,7 +639,7 @@ class Site_Clone {
 		);
 
 		// If post type does not support Gutenberg then translate the content.
-		if ( ! in_array( $post_data['post_type'], $post_types_that_use_inherit_content, true ) ) {
+		if ( ! in_array( $post_data['post_type'], $post_types_that_use_inherit_content, true ) && 'wp_block' !== $post_data['post_type'] ) {
 			// Get language.
 			$from_language = get_language_from_site_id( $source_site_id );
 			$to_language   = get_language_from_site_id( $target_site_id );

@@ -125,6 +125,7 @@ function decode_multilingualpress_translation_strings( array $strings = [] ): ar
 	foreach ( $strings as $key => $string ) {
 		// Decode translation.
 		$decoded_translation = str_replace( '\u0026', '&', $string );
+		$decoded_translation = str_replace( '\u003cbr\u003e\u003cbr\u003e', '<br />', $decoded_translation );
 
 		// Update strings.
 		$strings[ $key ] = $decoded_translation;

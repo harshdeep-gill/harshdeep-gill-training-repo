@@ -224,7 +224,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
  */
 function block_attributes_to_translate( array $blocks_and_attributes = [] ): array {
 	// Add data to translate.
-	$blocks_and_attributes['quark/info-cards'] = [
+	$blocks_and_attributes['quark/info-card'] = [
 		'image' => [ 'image' ],
 	];
 
