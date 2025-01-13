@@ -7,6 +7,7 @@
 
 namespace Quark\Theme\Blocks\LPFormModalCta;
 
+use function Quark\Core\is_china_website;
 use function Quark\Leads\Forms\get_countries;
 use function Quark\Leads\Forms\get_states;
 
@@ -39,6 +40,11 @@ function bootstrap(): void {
  * @return string The block markup.
  */
 function render( array $attributes = [] ): string {
+	// if china site, return empty string.
+	if ( is_china_website() ) {
+		return '';
+	}
+
 	// Initialize the component attributes.
 	$component_attributes = [
 		'text'          => $attributes['text'],

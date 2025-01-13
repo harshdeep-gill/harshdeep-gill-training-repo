@@ -1,6 +1,6 @@
 <?php
 /**
- * Migrate: Pattern Clone.
+ * Migrate: Site Clone.
  *
  * @package quark-multilingual
  */
@@ -9,25 +9,30 @@ namespace Quark\Multilingual\WP_CLI;
 
 use Inpsyde\MultilingualPress\Framework\Api\ContentRelations;
 use Inpsyde\MultilingualPress\Framework\Database\Exception\NonexistentTable;
+use Inpsyde\MultilingualPress\TranslationUi\Term\RelationshipContext as TermRelationshipContext;
 use Inpsyde\MultilingualPress\TranslationUi\Post\RelationshipContext as PostRelationshipContext;
 use Quark\Multilingual\MultilingualPress_Modules\Post_Meta;
+use Quark\Multilingual\MultilingualPress_Modules\Term_Meta;
 use WP_CLI;
 use WP_CLI\ExitException;
 use WP_Error;
 use WP_Post;
+use WP_Term;
+use WP_Term_Query;
 
 use function Quark\Multilingual\translate_block_strings;
 use function Travelopia\Multilingual\get_language_from_site_id;
 use function Travelopia\Multilingual\get_post_translations;
+use function Travelopia\Multilingual\get_term_translations;
 use function Inpsyde\MultilingualPress\resolve;
 
 /**
- * Class Pattern Clone.
+ * Class Site Clone.
  */
-class Pattern_Clone {
+class Site_Clone {
 
 	/**
-	 * Clone patterns to Target Site.
+	 * Clone content to Target Site.
 	 *
 	 * @param mixed[]              $args       Arguments.
 	 * @param array<string, mixed> $args_assoc Associative arguments.
@@ -80,14 +85,131 @@ class Pattern_Clone {
 		$target_site_id = absint( $options['target-site-id'] );
 
 		// Initialize variables.
+		$terms_count = 0;
 		$posts_count = 0;
+
+		// Flush the cache.
+		wp_cache_flush();
+
+		/**
+		 * Get All Terms and it's data from Source Site.
+		 */
+		$taxonomy_query = new WP_Term_Query(
+			[
+				'hide_empty' => false,
+				'orderby'    => 'parent',
+				'order'      => 'ASC',
+				'taxonomy'   => [
+					'qrk_adventure_option_category',
+					'qrk_cabin_class',
+					'qrk_department',
+					'qrk_departure_location',
+					'qrk_destination',
+					'qrk_excursion',
+					'qrk_expedition_category',
+					'qrk_expedition_tag',
+					'qrk_inclusion_exclusion_category',
+					'qrk_season',
+					'qrk_ship_categories',
+					'qrk_spoken_language',
+					'qrk_staff_role',
+					'qrk_tax_type',
+				],
+			]
+		);
+
+		// Get terms.
+		$terms = $taxonomy_query->terms;
+
+		// Loop through terms.
+		foreach ( $terms as $term ) {
+			// Validate term.
+			if ( ! $term instanceof WP_Term ) {
+				continue;
+			}
+
+			// Get original term and parent term id.
+			$term_id = absint( $term->term_id );
+
+			// Get translated term ID.
+			$translated_term_id = $this->get_translated_term_id( $term_id, $source_site_id, $target_site_id );
+
+			// Check if term is already migrated.
+			if ( ! empty( $translated_term_id ) ) {
+				continue;
+			}
+
+			// Log for dry run.
+			if ( $is_dry_run ) {
+				// Log the message.
+				WP_CLI::log( 'Source Term ID : ' . $term_id );
+
+				// Increment terms count.
+				++$terms_count;
+
+				// Continue.
+				continue;
+			}
+
+			// Migrate terms.
+			$translated_term_id = $this->translate_and_get_term( $term_id, $source_site_id, $target_site_id );
+
+			// Increment terms count.
+			++$terms_count;
+
+			// Check if term is migrated.
+			if ( $translated_term_id instanceof WP_Error ) {
+				WP_CLI::warning( 'Source Term ID : ' . $term_id . ' | Error : ' . $translated_term_id->get_error_message() );
+			} else {
+				WP_CLI::success( 'Source Term ID : ' . $term_id . ' | Translated Term ID: ' . $translated_term_id );
+			}
+		}
+
+		// Flush the cache.
+		wp_cache_flush();
+
+		// Log terms migration completion.
+		WP_CLI::log( PHP_EOL . PHP_EOL );
+		WP_CLI::log( 'Terms migration completed.' );
 
 		// Log posts migration start.
 		WP_CLI::log( PHP_EOL . PHP_EOL );
-		WP_CLI::log( 'Starting WP Blocks migration.' );
+		WP_CLI::log( 'Starting Posts migration.' );
 
 		// Global variables.
 		global $wpdb;
+
+		// List of allowed post types.
+		$post_types = [
+			'qrk_adventure_option',
+			'qrk_agreement',
+			'qrk_cabin_category',
+			'qrk_exclusion_set',
+			'qrk_expedition',
+			'qrk_inclusion_set',
+			'qrk_itinerary',
+			'qrk_itinerary_day',
+			'qrk_landing_page',
+			'qrk_offer',
+			'qrk_port',
+			'qrk_pre_post_trip',
+			'qrk_press_release',
+			'qrk_region',
+			'qrk_ship',
+			'qrk_ship_deck',
+			'qrk_staff_member',
+			'wp_block',
+			'page',
+			'wp_template',
+			'wp_template_part',
+		];
+
+		// List of allowed post status.
+		$post_status = [
+			'publish',
+			'draft',
+			'future',
+		];
 
 		// Get posts.
 		// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared
@@ -95,11 +217,13 @@ class Pattern_Clone {
 			"
 			SELECT
 				ID,
+				post_parent,
 				post_type
 			FROM
 				$wpdb->posts AS posts
 			WHERE
-				post_type = 'wp_block'
+				post_type IN ('" . implode( "','", $post_types ) . "') AND
+				post_status IN ('" . implode( "','", $post_status ) . "')
 			ORDER BY
 				post_parent, ID
 			",
@@ -149,14 +273,174 @@ class Pattern_Clone {
 			}
 		}
 
+		// Flush the cache.
+		wp_cache_flush();
+
 		// Log posts migration completion.
 		WP_CLI::log( PHP_EOL . PHP_EOL );
-		WP_CLI::log( 'Patterns migration completed.' );
+		WP_CLI::log( 'Posts migration completed.' );
 
 		// Log terms and posts count.
 		WP_CLI::log( PHP_EOL . PHP_EOL );
 		WP_CLI::success( 'Migration completed.' );
-		WP_CLI::success( 'Migrated Patterns ' . $posts_count . ' Out of ' . count( $posts ) );
+		WP_CLI::success( 'Migrated Terms ' . $terms_count . ' Out of ' . count( $terms ) );
+		WP_CLI::success( 'Migrated Posts ' . $posts_count . ' Out of ' . count( $posts ) );
+	}
+
+	/**
+	 * Get Translated Term ID.
+	 *
+	 * @param int $original_term_id Original term ID.
+	 * @param int $source_site_id   Source site ID.
+	 * @param int $target_site_id   Target site ID.
+	 *
+	 * @return int Translated term ID.
+	 */
+	private function get_translated_term_id( int $original_term_id = 0, int $source_site_id = 0, int $target_site_id = 0 ): int {
+		// Validate original term ID, source site ID and target site ID.
+		if ( empty( $original_term_id ) || empty( $source_site_id ) || empty( $target_site_id ) ) {
+			return 0;
+		}
+
+		// Initialize translated term ID.
+		$translated_term_id = 0;
+
+		// get translated term IDs.
+		$term_translations = get_term_translations( $original_term_id, $source_site_id );
+
+		// Loop through term translations.
+		if ( ! empty( $term_translations ) ) {
+			foreach ( $term_translations as $term_translation ) {
+				if ( $target_site_id === $term_translation['site_id'] && ! empty( $term_translation['term_id'] ) ) {
+					$translated_term_id = absint( $term_translation['term_id'] );
+					break;
+				}
+			}
+		}
+
+		// Return translated term ID.
+		return $translated_term_id;
+	}
+
+	/**
+	 * Create and Translate Term.
+	 *
+	 * @param int $source_term_id Source term ID.
+	 * @param int $source_site_id Source site ID.
+	 * @param int $target_site_id Target site ID.
+	 *
+	 * @throws NonexistentTable Throws exception.
+	 *
+	 * @return int|WP_Error Translated term ID.
+	 */
+	private function translate_and_get_term( int $source_term_id = 0, int $source_site_id = 0, int $target_site_id = 0 ): int|WP_Error {
+		// Validate source term ID, source site ID and target site ID.
+		if ( empty( $source_term_id ) || empty( $source_site_id ) || empty( $target_site_id ) ) {
+			return new WP_Error(
+				'qrk_migration_error',
+				'Invalid source term ID, source site ID or target site ID.'
+			);
+		}
+
+		// Get translated term ID.
+		$translated_term_id = $this->get_translated_term_id( $source_term_id, $source_site_id, $target_site_id );
+
+		// Check if term is already migrated.
+		if ( ! empty( $translated_term_id ) ) {
+			return $translated_term_id;
+		}
+
+		// Get source term and term meta.
+		$term = get_term( $source_term_id );
+
+		// Check if term is not empty.
+		if ( ! $term instanceof WP_Term ) {
+			return new WP_Error(
+				'qrk_migration_error',
+				'Invalid source term ID.'
+			);
+		}
+
+		// Get term data.
+		$parent_id        = absint( $term->parent );
+		$source_term_meta = (array) get_term_meta( $term->term_id );
+
+		// Initialize translated parent term ID.
+		$translated_term_id        = 0;
+		$translated_parent_term_id = 0;
+
+		// Translate parent term.
+		if ( ! empty( $parent_id ) ) {
+			$translated_parent_term_id = $this->translate_and_get_term( $parent_id, $source_site_id, $target_site_id );
+		}
+
+		// Switch to target Site.
+		switch_to_blog( $target_site_id );
+
+		// Create term.
+		$translated_term = wp_insert_term(
+			$term->name,
+			$term->taxonomy,
+			[
+				'parent'      => $translated_parent_term_id,
+				'description' => $term->description,
+			]
+		);
+
+		// Check if term is created.
+		if ( $translated_term instanceof WP_Error ) {
+			// Restore original site.
+			restore_current_blog();
+
+			// Return error.
+			return $translated_term;
+		}
+
+		// Get translated term ID.
+		$translated_term_id = absint( $translated_term['term_id'] );
+
+		// Create relationship context.
+		$relationship_context = new TermRelationshipContext(
+			[
+				'remote_term_id' => $translated_term_id,
+				'remote_site_id' => $target_site_id,
+				'source_term_id' => $source_term_id,
+				'source_site_id' => $source_site_id,
+			]
+		);
+
+		// Translate term meta.
+		$translated_term_meta = Term_Meta::filter_meta_values( $source_term_meta, $relationship_context );
+
+		// Update terms meta.
+		foreach ( $translated_term_meta as $meta_key => $meta_value ) {
+			if ( is_array( $meta_value ) && ! empty( $meta_value[0] ) ) {
+				// Update term meta.
+				update_term_meta( $translated_term_id, strval( $meta_key ), $meta_value[0] );
+			}
+		}
+
+		// Get translated term IDs.
+		$term_translations_data = get_term_translations( $source_term_id, $source_site_id );
+		$term_translations      = [];
+
+		// Loop through term translations.
+		foreach ( $term_translations_data as $term_translation_data ) {
+			$term_translations[ $term_translation_data['site_id'] ] = $term_translation_data['term_id'];
+		}
+
+		// Add target site term ID.
+		$term_translations[ $source_site_id ] = $source_term_id;
+		$term_translations[ $target_site_id ] = $translated_term_id;
+
+		// Create relationship.
+		$this->create_relationship( $term_translations, 'term' );
+
+		// Restore original site.
+		restore_current_blog();
+
+		// Return translated term ID.
+		return $translated_term_id;
 	}
 
 	/**
@@ -279,7 +563,7 @@ class Pattern_Clone {
 		];
 
 		// Check if post meta is not empty, and fill the data.
-		if ( ! empty( $translated_post_meta ) ) {
+		if ( ! empty( $translated_post_meta ) && is_array( $translated_post_meta ) ) {
 			$post_data['meta_input'] = array_map(
 				fn( $value ) => maybe_unserialize( is_array( $value ) && ! empty( $value ) ? $value[0] : '' ),
 				$translated_post_meta
@@ -336,6 +620,39 @@ class Pattern_Clone {
 
 			// Return error.
 			return $translated_post_id;
+		}
+
+		// Migrate post taxonomies.
+		if ( ! empty( $post['post_taxonomies'] ) ) {
+			foreach ( $post['post_taxonomies'] as $taxonomy => $taxonomy_terms ) {
+				// Check if taxonomy terms are not empty, and fill the data.
+				if ( ! is_array( $taxonomy_terms ) ) {
+					continue;
+				}
+
+				// Loop through taxonomy terms.
+				foreach ( $taxonomy_terms as $taxonomy_term ) {
+					// Check if term ID is empty.
+					if ( ! is_array( $taxonomy_term ) || empty( $taxonomy_term['term_id'] ) ) {
+						continue;
+					}
+
+					// Get original term ID.
+					$term_id = absint( $taxonomy_term['term_id'] );
+
+					// Get translated term ID.
+					$translated_term_id = $this->get_translated_term_id( $term_id, $source_site_id, $target_site_id );
+
+					// Check if we have translated term or not.
+					if ( ! empty( $translated_term_id ) ) {
+						// If we have translated term then use it.
+						wp_set_object_terms( $translated_post_id, $translated_term_id, $taxonomy, true );
+					} else {
+						// If we don't have translated term then use the slug.
+						wp_set_object_terms( $translated_post_id, [ $taxonomy_term['slug'] ], $taxonomy, true );
+					}
+				}
+			}
 		}
 
 		// Get relationship ID.
@@ -446,9 +763,9 @@ class Pattern_Clone {
 	 *
 	 * @throws NonexistentTable Throws exception.
 	 *
-	 * @return void
+	 * @return int
 	 */
-	private function create_relationship( array $content_ids = [], string $type = 'post' ): void {
+	private function create_relationship( array $content_ids = [], string $type = 'post' ): int {
 		/**
 		 * Content relations API instance.
 		 *
@@ -456,7 +773,7 @@ class Pattern_Clone {
 		 */
 		$api = resolve( ContentRelations::class );
 
-		// Create relationship ID.
-		$api->createRelationship( $content_ids, $type );
+		// Return relationship ID.
+		return $api->createRelationship( $content_ids, $type );
 	}
 }

@@ -12,7 +12,7 @@
 namespace Quark\Multilingual;
 
 require_once __DIR__ . '/inc/namespace.php';
-require_once __DIR__ . '/inc/wp-cli/class-pattern-clone.php';
+require_once __DIR__ . '/inc/wp-cli/class-site-clone.php';
 
 // Kick it off.
 add_action( 'plugins_loaded', __NAMESPACE__ . '\\bootstrap' );

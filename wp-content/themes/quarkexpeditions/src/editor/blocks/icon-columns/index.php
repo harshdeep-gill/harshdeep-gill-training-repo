@@ -95,7 +95,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 function block_attributes_to_translate( array $blocks_and_attributes = [] ): array {
 	// Add data to translate.
 	$blocks_and_attributes[ BLOCK_NAME . '-column' ] = [
-		'text' => [ 'text' ],
+		'text' => [ 'title' ],
 	];
 
 	// Return updated data.
