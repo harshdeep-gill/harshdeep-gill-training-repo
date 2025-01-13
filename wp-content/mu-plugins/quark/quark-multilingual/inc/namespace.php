@@ -42,7 +42,7 @@ function bootstrap(): void {
 
 	// CLI commands.
 	if ( defined( 'WP_CLI' ) && true === WP_CLI ) {
-		WP_CLI::add_command( 'quark-migrate pattern-clone', __NAMESPACE__ . '\\WP_CLI\\Pattern_Clone' );
+		WP_CLI::add_command( 'quark-migrate site-clone', __NAMESPACE__ . '\\WP_CLI\\Site_Clone' );
 	}
 }
 
