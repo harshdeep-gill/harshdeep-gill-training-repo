@@ -1,9 +1,9 @@
 @props( [
-	'url'       => '',
+	'url' => '',
 ] )
 
 @php
-	$logo_name = 'logo';
+	$logo_name = 'logo-v2';
 @endphp
 
 <a href="{{ $url }}" class="lp-header__logo">

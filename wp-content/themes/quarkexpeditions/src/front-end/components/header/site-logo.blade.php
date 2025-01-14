@@ -4,5 +4,5 @@
 @endphp
 
 <a href="{{ $url }}" class="header__logo" aria-label="{{ $site_name }}">
-	<x-svg name="logo" />
+	<x-svg name="logo-v2" />
 </a>
