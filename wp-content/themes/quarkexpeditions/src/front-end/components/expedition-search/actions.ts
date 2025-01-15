@@ -42,6 +42,7 @@ const parseUrl = (): ExpeditionSearchFiltersFromUrl | null => {
 
 	// Initialize the saved filters object.
 	const urlFilters: ExpeditionSearchFiltersFromUrl = {
+		selectedFilters: [ ...DEFAULT_STATE.selectedFilters ],
 		destinations: pluckValues( DEFAULT_STATE.destinations ),
 		months: pluckValues( DEFAULT_STATE.months ),
 		itineraryLengths: [ ...DEFAULT_STATE.itineraryLengths ],
@@ -69,6 +70,9 @@ const parseUrl = (): ExpeditionSearchFiltersFromUrl | null => {
 
 		// @ts-ignore Get and assign the filter values.
 		urlFilters[ key ] = values;
+
+		// Push the selected filter in order.
+		urlFilters.selectedFilters.push( <ExpeditionSearchFilterType>key );
 	} );
 
 	// Return selected filters state.
@@ -122,7 +126,7 @@ const buildUrlFromFilters = (): string => {
 
 	// Get current state.
 	const currentState: ExpeditionSearchState = getState();
-	const { baseUrl, allowedParams } = currentState;
+	const { baseUrl, allowedParams, selectedFilters } = currentState;
 
 	// Prepare URL params.
 	const urlParams: {
@@ -138,7 +142,7 @@ const buildUrlFromFilters = (): string => {
 	}
 
 	// Loop through allowed params and build url params.
-	allowedParams.forEach( ( selectedFilter ) => {
+	selectedFilters.forEach( ( selectedFilter ) => {
 		// Do we have any selected values?
 		if ( currentState[ selectedFilter ].length === 0 ) {
 			// Nope, bail.
@@ -211,15 +215,12 @@ export const initialize = ( settings: {
 } ): void => {
 	// Get current state.
 	const currentState: ExpeditionSearchState = getState();
-	const selectedFilters: ExpeditionSearchFilters = {
-		sort: 'date-now',
-	};
 
 	// Initial update object.
 	const initialUpdatePayload: ExpeditionsSearchStateUpdateObject = {
 		...currentState,
 		...settings,
-		selectedFilters,
+		sort: 'date-now',
 		initialized: true,
 		updateMarkup: ! settings.serverRenderData,
 		baseUrl: window.location.origin + window.location.pathname,
@@ -260,8 +261,11 @@ export const initialize = ( settings: {
 		 * saving the labels in the URL is not a good idea.
 		 */
 
+		// Set the selected Filters.
+		initialUpdatePayload.selectedFilters = urlFilters.selectedFilters;
+
 		// Loop through the url filters.
-		for ( const key of currentState.allowedParams ) {
+		initialUpdatePayload.selectedFilters.forEach( ( key ) => {
 			// Check if it is itinerary length.
 			if ( 'itineraryLengths' !== key ) {
 				// Loop through the url filters and assign to update object.
@@ -292,7 +296,7 @@ export const initialize = ( settings: {
 					return Number.isNaN( intValue ) ? 0 : intValue;
 				} ).slice( 0, 2 );
 			}
-		}
+		} );
 	}
 
 	// Get the range slider for it.
@@ -365,21 +369,19 @@ const stateInitialized = ( response: PartialData ) => {
  */
 export const updateSort = ( sort: string ) => {
 	// Get State.
-	const { selectedFilters } = getState();
-	const updatedFilters = { ...selectedFilters };
+	const updateObject: ExpeditionsSearchStateUpdateObject = {
+		loading: true,
+		page: 1,
+		updateMarkup: true,
+	};
 
 	// If sort exists, update the value.
 	if ( sort ) {
-		updatedFilters.sort = sort;
+		updateObject.sort = sort;
 	}
 
 	// Set state.
-	setState( {
-		loading: true,
-		selectedFilters: updatedFilters,
-		page: 1,
-		updateMarkup: true,
-	} );
+	setState( updateObject );
 
 	// Fetch Results.
 	fetchResults( filterUpdated );
@@ -438,37 +440,40 @@ export const fetchResults = ( callback: Function ) => {
 		} );
 	}
 
+	// Get the current state.
+	const currentState: ExpeditionSearchState = getState();
+
 	// Get data from state.
 	const {
 		selectedFilters,
 		page,
 		partial,
 		selector,
-		destinations,
-		months,
 		itineraryLengths,
-		ships,
-		adventureOptions,
-		languages,
-		expeditions,
-		cabinClasses,
-		travelers,
-	}: ExpeditionSearchState = getState();
+	}: ExpeditionSearchState = currentState;
 
 	// Fetch partial.
 	fetchPartial( partial, {
 		selectedFilters: {
-			...selectedFilters,
+			...Object.fromEntries( selectedFilters.map( ( selectedFilter ) => {
+				// Get the snake cased key.
+				const snakeCasedKey = camelToSnakeCase( selectedFilter );
+
+				// Initialize filter value.
+				let filterValues;
+
+				// Check if we can pluck the values.
+				if ( 'itineraryLengths' !== selectedFilter ) {
+					// Get the filter values.
+					filterValues = pluckValues( currentState[ selectedFilter ] );
+				} else {
+					filterValues = itineraryLengths;
+				}
+
+				// Return the entry.
+				return [ snakeCasedKey, filterValues ];
+			} ) ),
 			page,
-			destinations: pluckValues( destinations ),
-			months: pluckValues( months ),
-			itinerary_lengths: itineraryLengths,
-			ships: pluckValues( ships ),
-			adventure_options: pluckValues( adventureOptions ),
-			languages: pluckValues( languages ),
-			expeditions: pluckValues( expeditions ),
-			cabin_classes: pluckValues( cabinClasses ),
-			travelers: pluckValues( travelers ),
 		},
 	}, callback, selector ).catch( () => {
 		// Set state.
@@ -613,11 +618,12 @@ export const showSearchFiltersAction = () => {
  */
 export const addDestinations = ( destinationsToAdd: ExpeditionSearchFilterState[] ) => {
 	// Get the state.
-	const { destinations }: ExpeditionSearchState = getState();
+	const { destinations, selectedFilters }: ExpeditionSearchState = getState();
 
 	// Initialize the update Object.
 	const updateObject: ExpeditionsSearchStateUpdateObject = {
 		destinations: [ ...destinations ],
+		selectedFilters: [ ...selectedFilters ],
 	};
 
 	// Loop through the valid destinations.
@@ -639,6 +645,12 @@ export const addDestinations = ( destinationsToAdd: ExpeditionSearchFilterState[
 		updateObject.destinations?.push( destinationToAdd );
 	} );
 
+	// Check if it is already selected.
+	if ( updateObject.selectedFilters && ! updateObject.selectedFilters.includes( 'destinations' ) ) {
+		// Nope, push it.
+		updateObject.selectedFilters.push( 'destinations' );
+	}
+
 	// Set the state
 	setState( updateObject );
 
@@ -659,7 +671,7 @@ export const addDestination = ( destinationToAdd: ExpeditionSearchFilterState ) 
 	}
 
 	// Get the state.
-	const { destinations }: ExpeditionSearchState = getState();
+	const { destinations, selectedFilters }: ExpeditionSearchState = getState();
 
 	// Check if it is already selected.
 	if ( destinations.findIndex( ( existingDestination ) => existingDestination.value === destinationToAdd.value ) > -1 ) {
@@ -668,7 +680,9 @@ export const addDestination = ( destinationToAdd: ExpeditionSearchFilterState ) 
 	}
 
 	// Initialize update object.
-	const updateObject: ExpeditionsSearchStateUpdateObject = {};
+	const updateObject: ExpeditionsSearchStateUpdateObject = {
+		selectedFilters: [ ...selectedFilters ],
+	};
 
 	// Does this destination have a parent?
 	if ( ! destinationToAdd.parent ) {
@@ -678,6 +692,12 @@ export const addDestination = ( destinationToAdd: ExpeditionSearchFilterState ) 
 	} else {
 		// Just add it normally.
 		updateObject.destinations = [ ...destinations, destinationToAdd ];
+	}
+
+	// Check if it is already selected.
+	if ( updateObject.selectedFilters && ! updateObject.selectedFilters.includes( 'destinations' ) ) {
+		// Nope, push it.
+		updateObject.selectedFilters.push( 'destinations' );
 	}
 
 	// Set the state;
@@ -694,13 +714,18 @@ export const addDestination = ( destinationToAdd: ExpeditionSearchFilterState ) 
  */
 export const removeDestination = ( destinationValue: string ) => {
 	// Get the state.
-	const { destinations }: ExpeditionSearchState = getState();
+	const { destinations, selectedFilters }: ExpeditionSearchState = getState();
 
 	// Initialize the update object.
 	const updateObject: ExpeditionsSearchStateUpdateObject = {};
 
 	// Filter the destinations.
 	updateObject.destinations = destinations.filter( ( existingDestination ) => existingDestination.value !== destinationValue && existingDestination.parent !== destinationValue );
+
+	// Remove the selected filter if no filters are selected.
+	if ( updateObject.destinations.length === 0 ) {
+		updateObject.selectedFilters = selectedFilters.filter( ( selectedFilter ) => selectedFilter !== 'destinations' );
+	}
 
 	// Set the state.
 	setState( updateObject );
@@ -722,7 +747,7 @@ export const addShip = ( shipToAdd: ExpeditionSearchFilterState ) => {
 	}
 
 	// Get the state.
-	const { ships }: ExpeditionSearchState = getState();
+	const { ships, selectedFilters }: ExpeditionSearchState = getState();
 
 	// Check if it is already selected.
 	if ( ships.findIndex( ( existingShip ) => existingShip.value === shipToAdd.value ) > -1 ) {
@@ -731,10 +756,18 @@ export const addShip = ( shipToAdd: ExpeditionSearchFilterState ) => {
 	}
 
 	// Initialize update object.
-	const updateObject: ExpeditionsSearchStateUpdateObject = {};
+	const updateObject: ExpeditionsSearchStateUpdateObject = {
+		selectedFilters: [ ...selectedFilters ],
+	};
 
 	// Add the ship.
 	updateObject.ships = [ ...ships, shipToAdd ];
+
+	// Check if it is already selected.
+	if ( updateObject.selectedFilters && ! updateObject.selectedFilters.includes( 'ships' ) ) {
+		// Nope, push it.
+		updateObject.selectedFilters.push( 'ships' );
+	}
 
 	// Set the state;
 	setState( updateObject );
@@ -750,13 +783,18 @@ export const addShip = ( shipToAdd: ExpeditionSearchFilterState ) => {
  */
 export const removeShip = ( shipValue: string ) => {
 	// Get the state.
-	const { ships }: ExpeditionSearchState = getState();
+	const { ships, selectedFilters }: ExpeditionSearchState = getState();
 
 	// Initialize the update object.
 	const updateObject: ExpeditionsSearchStateUpdateObject = {};
 
 	// Filter the ships.
 	updateObject.ships = ships.filter( ( existingShip ) => existingShip.value !== shipValue );
+
+	// Remove the selected filter if no filters are selected.
+	if ( updateObject.ships.length === 0 ) {
+		updateObject.selectedFilters = selectedFilters.filter( ( selectedFilter ) => selectedFilter !== 'ships' );
+	}
 
 	// Set the state.
 	setState( updateObject );
@@ -778,7 +816,7 @@ export const addAdventureOption = ( adventureOptionToAdd: ExpeditionSearchFilter
 	}
 
 	// Get the state.
-	const { adventureOptions }: ExpeditionSearchState = getState();
+	const { adventureOptions, selectedFilters }: ExpeditionSearchState = getState();
 
 	// Check if it is already selected.
 	if ( adventureOptions.findIndex( ( existingAdventureOption ) => existingAdventureOption.value === adventureOptionToAdd.value ) > -1 ) {
@@ -787,10 +825,18 @@ export const addAdventureOption = ( adventureOptionToAdd: ExpeditionSearchFilter
 	}
 
 	// Initialize update object.
-	const updateObject: ExpeditionsSearchStateUpdateObject = {};
+	const updateObject: ExpeditionsSearchStateUpdateObject = {
+		selectedFilters: [ ...selectedFilters ],
+	};
 
 	// Add the adventureOption.
 	updateObject.adventureOptions = [ ...adventureOptions, adventureOptionToAdd ];
+
+	// Check if it is already selected.
+	if ( updateObject.selectedFilters && ! updateObject.selectedFilters.includes( 'adventureOptions' ) ) {
+		// Nope, push it.
+		updateObject.selectedFilters.push( 'adventureOptions' );
+	}
 
 	// Set the state;
 	setState( updateObject );
@@ -806,13 +852,18 @@ export const addAdventureOption = ( adventureOptionToAdd: ExpeditionSearchFilter
  */
 export const removeAdventureOption = ( adventureOptionValue: string ) => {
 	// Get the state.
-	const { adventureOptions }: ExpeditionSearchState = getState();
+	const { adventureOptions, selectedFilters }: ExpeditionSearchState = getState();
 
 	// Initialize the update object.
 	const updateObject: ExpeditionsSearchStateUpdateObject = {};
 
 	// Filter the adventureOptions.
 	updateObject.adventureOptions = adventureOptions.filter( ( existingAdventureOption ) => existingAdventureOption.value !== adventureOptionValue );
+
+	// Remove the selected filter if no filters are selected.
+	if ( updateObject.adventureOptions.length === 0 ) {
+		updateObject.selectedFilters = selectedFilters.filter( ( selectedFilter ) => selectedFilter !== 'adventureOptions' );
+	}
 
 	// Set the state.
 	setState( updateObject );
@@ -834,7 +885,7 @@ export const addLanguage = ( languageToAdd: ExpeditionSearchFilterState ) => {
 	}
 
 	// Get the state.
-	const { languages }: ExpeditionSearchState = getState();
+	const { languages, selectedFilters }: ExpeditionSearchState = getState();
 
 	// Check if it is already selected.
 	if ( languages.findIndex( ( existingLanguage ) => existingLanguage.value === languageToAdd.value ) > -1 ) {
@@ -843,10 +894,18 @@ export const addLanguage = ( languageToAdd: ExpeditionSearchFilterState ) => {
 	}
 
 	// Initialize update object.
-	const updateObject: ExpeditionsSearchStateUpdateObject = {};
+	const updateObject: ExpeditionsSearchStateUpdateObject = {
+		selectedFilters: [ ...selectedFilters ],
+	};
 
 	// Add the language.
 	updateObject.languages = [ ...languages, languageToAdd ];
+
+	// Check if it is already selected.
+	if ( updateObject.selectedFilters && ! updateObject.selectedFilters.includes( 'languages' ) ) {
+		// Nope, push it.
+		updateObject.selectedFilters.push( 'languages' );
+	}
 
 	// Set the state;
 	setState( updateObject );
@@ -862,13 +921,18 @@ export const addLanguage = ( languageToAdd: ExpeditionSearchFilterState ) => {
  */
 export const removeLanguage = ( languageValue: string ) => {
 	// Get the state.
-	const { languages }: ExpeditionSearchState = getState();
+	const { languages, selectedFilters }: ExpeditionSearchState = getState();
 
 	// Initialize the update object.
 	const updateObject: ExpeditionsSearchStateUpdateObject = {};
 
 	// Filter the languages.
 	updateObject.languages = languages.filter( ( existingLanguage ) => existingLanguage.value !== languageValue );
+
+	// Remove the selected filter if no filters are selected.
+	if ( updateObject.languages.length === 0 ) {
+		updateObject.selectedFilters = selectedFilters.filter( ( selectedFilter ) => selectedFilter !== 'languages' );
+	}
 
 	// Set the state.
 	setState( updateObject );
@@ -890,7 +954,7 @@ export const addExpedition = ( expeditionToAdd: ExpeditionSearchFilterState ) =>
 	}
 
 	// Get the state.
-	const { expeditions }: ExpeditionSearchState = getState();
+	const { expeditions, selectedFilters }: ExpeditionSearchState = getState();
 
 	// Check if it is already selected.
 	if ( expeditions.findIndex( ( existingExpedition ) => existingExpedition.value === expeditionToAdd.value ) > -1 ) {
@@ -899,10 +963,18 @@ export const addExpedition = ( expeditionToAdd: ExpeditionSearchFilterState ) =>
 	}
 
 	// Initialize update object.
-	const updateObject: ExpeditionsSearchStateUpdateObject = {};
+	const updateObject: ExpeditionsSearchStateUpdateObject = {
+		selectedFilters: [ ...selectedFilters ],
+	};
 
 	// Add the expedition.
 	updateObject.expeditions = [ ...expeditions, expeditionToAdd ];
+
+	// Check if it is already selected.
+	if ( updateObject.selectedFilters && ! updateObject.selectedFilters.includes( 'expeditions' ) ) {
+		// Nope, push it.
+		updateObject.selectedFilters.push( 'expeditions' );
+	}
 
 	// Set the state;
 	setState( updateObject );
@@ -918,13 +990,18 @@ export const addExpedition = ( expeditionToAdd: ExpeditionSearchFilterState ) =>
  */
 export const removeExpedition = ( expeditionValue: string ) => {
 	// Get the state.
-	const { expeditions }: ExpeditionSearchState = getState();
+	const { expeditions, selectedFilters }: ExpeditionSearchState = getState();
 
 	// Initialize the update object.
 	const updateObject: ExpeditionsSearchStateUpdateObject = {};
 
 	// Filter the expeditions.
 	updateObject.expeditions = expeditions.filter( ( existingExpedition ) => existingExpedition.value !== expeditionValue );
+
+	// Remove the selected filter if no filters are selected.
+	if ( updateObject.expeditions.length === 0 ) {
+		updateObject.selectedFilters = selectedFilters.filter( ( selectedFilter ) => selectedFilter !== 'expeditions' );
+	}
 
 	// Set the state.
 	setState( updateObject );
@@ -946,7 +1023,7 @@ export const addCabinClass = ( cabinClassToAdd: ExpeditionSearchFilterState ) =>
 	}
 
 	// Get the state.
-	const { cabinClasses }: ExpeditionSearchState = getState();
+	const { cabinClasses, selectedFilters }: ExpeditionSearchState = getState();
 
 	// Check if it is already selected.
 	if ( cabinClasses.findIndex( ( existingCabinClass ) => existingCabinClass.value === cabinClassToAdd.value ) > -1 ) {
@@ -955,10 +1032,18 @@ export const addCabinClass = ( cabinClassToAdd: ExpeditionSearchFilterState ) =>
 	}
 
 	// Initialize update object.
-	const updateObject: ExpeditionsSearchStateUpdateObject = {};
+	const updateObject: ExpeditionsSearchStateUpdateObject = {
+		selectedFilters: [ ...selectedFilters ],
+	};
 
 	// Add the cabinClass.
 	updateObject.cabinClasses = [ ...cabinClasses, cabinClassToAdd ];
+
+	// Check if it is already selected.
+	if ( updateObject.selectedFilters && ! updateObject.selectedFilters.includes( 'cabinClasses' ) ) {
+		// Nope, push it.
+		updateObject.selectedFilters.push( 'cabinClasses' );
+	}
 
 	// Set the state;
 	setState( updateObject );
@@ -971,13 +1056,18 @@ export const addCabinClass = ( cabinClassToAdd: ExpeditionSearchFilterState ) =>
  */
 export const removeCabinClass = ( cabinClassValue: string ) => {
 	// Get the state.
-	const { cabinClasses }: ExpeditionSearchState = getState();
+	const { cabinClasses, selectedFilters }: ExpeditionSearchState = getState();
 
 	// Initialize the update object.
 	const updateObject: ExpeditionsSearchStateUpdateObject = {};
 
 	// Filter the cabinClasses.
 	updateObject.cabinClasses = cabinClasses.filter( ( existingCabinClass ) => existingCabinClass.value !== cabinClassValue );
+
+	// Remove the selected filter if no filters are selected.
+	if ( updateObject.cabinClasses.length === 0 ) {
+		updateObject.selectedFilters = selectedFilters.filter( ( selectedFilter ) => selectedFilter !== 'cabinClasses' );
+	}
 
 	// Set the state.
 	setState( updateObject );
@@ -996,7 +1086,7 @@ export const addTraveler = ( travelerToAdd: ExpeditionSearchFilterState ) => {
 	}
 
 	// Get the state.
-	const { travelers }: ExpeditionSearchState = getState();
+	const { travelers, selectedFilters }: ExpeditionSearchState = getState();
 
 	// Check if it is already selected.
 	if ( travelers.findIndex( ( existingTraveler ) => existingTraveler.value === travelerToAdd.value ) > -1 ) {
@@ -1005,10 +1095,18 @@ export const addTraveler = ( travelerToAdd: ExpeditionSearchFilterState ) => {
 	}
 
 	// Initialize update object.
-	const updateObject: ExpeditionsSearchStateUpdateObject = {};
+	const updateObject: ExpeditionsSearchStateUpdateObject = {
+		selectedFilters: [ ...selectedFilters ],
+	};
 
 	// Add the traveler.
 	updateObject.travelers = [ ...travelers, travelerToAdd ];
+
+	// Check if it is already selected.
+	if ( updateObject.selectedFilters && ! updateObject.selectedFilters.includes( 'travelers' ) ) {
+		// Nope, push it.
+		updateObject.selectedFilters.push( 'travelers' );
+	}
 
 	// Set the state;
 	setState( updateObject );
@@ -1021,13 +1119,18 @@ export const addTraveler = ( travelerToAdd: ExpeditionSearchFilterState ) => {
  */
 export const removeTraveler = ( travelerValue: string ) => {
 	// Get the state.
-	const { travelers }: ExpeditionSearchState = getState();
+	const { travelers, selectedFilters }: ExpeditionSearchState = getState();
 
 	// Initialize the update object.
 	const updateObject: ExpeditionsSearchStateUpdateObject = {};
 
 	// Filter the travelers.
 	updateObject.travelers = travelers.filter( ( existingTraveler ) => existingTraveler.value !== travelerValue );
+
+	// Remove the selected filter if no filters are selected.
+	if ( updateObject.travelers.length === 0 ) {
+		updateObject.selectedFilters = selectedFilters.filter( ( selectedFilter ) => selectedFilter !== 'travelers' );
+	}
 
 	// Set the state.
 	setState( updateObject );
@@ -1046,7 +1149,7 @@ export const addMonth = ( monthToAdd: ExpeditionSearchFilterState ) => {
 	}
 
 	// Get the state.
-	const { months }: ExpeditionSearchState = getState();
+	const { months, selectedFilters }: ExpeditionSearchState = getState();
 
 	// Check if it is already selected.
 	if ( months.findIndex( ( existingMonth ) => existingMonth.value === monthToAdd.value ) > -1 ) {
@@ -1055,10 +1158,18 @@ export const addMonth = ( monthToAdd: ExpeditionSearchFilterState ) => {
 	}
 
 	// Initialize update object.
-	const updateObject: ExpeditionsSearchStateUpdateObject = {};
+	const updateObject: ExpeditionsSearchStateUpdateObject = {
+		selectedFilters: [ ...selectedFilters ],
+	};
 
 	// Add the month.
 	updateObject.months = [ ...months, monthToAdd ];
+
+	// Check if it is already selected.
+	if ( updateObject.selectedFilters && ! updateObject.selectedFilters.includes( 'months' ) ) {
+		// Nope, push it.
+		updateObject.selectedFilters.push( 'months' );
+	}
 
 	// Set the state;
 	setState( updateObject );
@@ -1074,9 +1185,10 @@ export const addMonth = ( monthToAdd: ExpeditionSearchFilterState ) => {
  */
 export const updateMonths = ( monthsToAdd: ExpeditionSearchFilterState[] ) => {
 	// Get the current months state.
-	const { months }: ExpeditionSearchState = getState();
+	const { months, selectedFilters }: ExpeditionSearchState = getState();
 	const updateObject: ExpeditionsSearchStateUpdateObject = {
 		months: [ ...months ],
+		selectedFilters: [ ...selectedFilters ],
 	};
 
 	// Sanity checks
@@ -1097,6 +1209,12 @@ export const updateMonths = ( monthsToAdd: ExpeditionSearchFilterState[] ) => {
 	// Set the state
 	setState( updateObject );
 
+	// Check if it is already selected.
+	if ( updateObject.selectedFilters && ! updateObject.selectedFilters.includes( 'months' ) ) {
+		// Nope, push it.
+		updateObject.selectedFilters.push( 'months' );
+	}
+
 	// Fetch the results
 	fetchResults( filterUpdated );
 };
@@ -1108,13 +1226,18 @@ export const updateMonths = ( monthsToAdd: ExpeditionSearchFilterState[] ) => {
  */
 export const removeMonth = ( monthValue: string ) => {
 	// Get the state.
-	const { months }: ExpeditionSearchState = getState();
+	const { months, selectedFilters }: ExpeditionSearchState = getState();
 
 	// Initialize the update object.
 	const updateObject: ExpeditionsSearchStateUpdateObject = {};
 
 	// Filter the months.
 	updateObject.months = months.filter( ( existingMonth ) => existingMonth.value !== monthValue );
+
+	// Remove the selected filter if no filters are selected.
+	if ( updateObject.months.length === 0 ) {
+		updateObject.selectedFilters = selectedFilters.filter( ( selectedFilter ) => selectedFilter !== 'months' );
+	}
 
 	// Set the state.
 	setState( updateObject );
@@ -1214,11 +1337,25 @@ export const updateItineraryLength = ( updatedItineraryLengths: [ number, number
 		return;
 	}
 
+	// Get the selected filters.
+	const { selectedFilters }: ExpeditionSearchState = getState();
+
 	// Initialize update object.
-	const updateObject: ExpeditionsSearchStateUpdateObject = {};
+	const updateObject: ExpeditionsSearchStateUpdateObject = {
+		selectedFilters: [ ...selectedFilters ],
+	};
 
 	// Update the itineraryLength.
 	updateObject.itineraryLengths = [ ...updatedItineraryLengths ];
+
+	// Remove the selected filter.
+	updateObject.selectedFilters = selectedFilters.filter( ( selectedFilter ) => selectedFilter !== 'itineraryLengths' );
+
+	// Check if it is already selected.
+	if ( updateObject.selectedFilters && ! updateObject.selectedFilters.includes( 'itineraryLengths' ) ) {
+		// Nope, push it.
+		updateObject.selectedFilters.push( 'itineraryLengths' );
+	}
 
 	// Update the state;
 	setState( updateObject );
@@ -1235,6 +1372,7 @@ export const clearAllFilters = () => {
 	const { initialItineraryLengths }: ExpeditionSearchState = getState();
 	// Prepare the update object.
 	const updateObject: ExpeditionsSearchStateUpdateObject = {
+		selectedFilters: [ ...DEFAULT_STATE.selectedFilters ],
 		destinations: [ ...DEFAULT_STATE.destinations ],
 		months: [ ...DEFAULT_STATE.months ],
 		itineraryLengths: [ ...initialItineraryLengths ],
