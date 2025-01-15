@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0622f521f5eb8db020a39ea2c78b0c95",
+    "content-hash": "445fd933f05ef81bd62ec571833df425",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -2552,20 +2552,20 @@
         },
         {
             "name": "travelopia/multilingualpress",
-            "version": "4.8.0",
+            "version": "4.7.3",
             "source": {
                 "type": "git",
                 "url": "git@github.com:Travelopia/multilingualpress.git",
-                "reference": "abf54a5834ed8816e287cac9ce4ac411636df099"
+                "reference": "0f427a8ef2a1bc0534e544281f348545bd3bd295"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Travelopia/multilingualpress/zipball/abf54a5834ed8816e287cac9ce4ac411636df099",
-                "reference": "abf54a5834ed8816e287cac9ce4ac411636df099",
+                "url": "https://api.github.com/repos/Travelopia/multilingualpress/zipball/0f427a8ef2a1bc0534e544281f348545bd3bd295",
+                "reference": "0f427a8ef2a1bc0534e544281f348545bd3bd295",
                 "shasum": ""
             },
             "type": "wordpress-plugin",
-            "time": "2025-01-08T03:20:39+00:00"
+            "time": "2024-10-25T07:39:42+00:00"
         },
         {
             "name": "travelopia/wordpress-blade",
