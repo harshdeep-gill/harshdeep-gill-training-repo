@@ -11,6 +11,7 @@
 		@php
 			$ship_title = $card['ship_title'] ?? '';
 			$number_of_promos = $card['available_promos'] ? count($card['available_promos']) : 0;
+			$number_of_promos += $card['free_promos'] ? count($card['free_promos']) : 0;
 			$number_of_cabins = ! empty( $card['cabin_data'] ) ? count( $card['cabin_data'] ) : 0;
 			$number_of_table_rows = $number_of_promos + 2; // 2 for brochure-price row and availability row.
 
@@ -266,6 +267,32 @@
 									<x-dates-rates.item.table-column>
 										<x-dates-rates.item.table-column-title>
 											<x-dates-rates.item.gst-rate :rate="$tax_type['rate']" />
+										</x-dates-rates.item.table-column-title>
+									</x-dates-rates.item.table-column>
+
+									@for ( $i = $number_of_cabins; $i > 0; $i-- )
+										<x-dates-rates.item.table-column>
+											<x-dates-rates.item.gst-icon />
+										</x-dates-rates.item.table-column>
+									@endfor
+
+								</x-dates-rates.item.table-row>
+							@endif
+						@endforeach
+					@endif
+
+					{{-- Free promos --}}
+					@if ( ! empty( $card['free_promos'] ) && is_array( $card['free_promos'] ) )
+						@foreach ( $card['free_promos'] as $free_promo_data )
+							@if ( ! empty( $free_promo_data ) && is_array( $free_promo_data ) && ! empty( $free_promo_data['description'] ) )
+								<x-dates-rates.item.table-row>
+									<x-dates-rates.item.table-column>
+										<x-dates-rates.item.table-column-title>
+										<span>
+											<strong>
+												{{ $free_promo_data['description'] }}
+											</strong>
+										</span>
 										</x-dates-rates.item.table-column-title>
 									</x-dates-rates.item.table-column>
 

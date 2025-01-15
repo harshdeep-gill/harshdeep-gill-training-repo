@@ -1101,6 +1101,9 @@ function get_dates_rates_card_data( int $departure_id = 0, string $currency = DE
 	// Available promos.
 	$available_promos = [];
 
+	// Free promos.
+	$free_promos = [];
+
 	// Get Available Promos for the Departure.
 	if ( ! empty( $departure['post_meta']['promotion_codes'] ) ) {
 		$promotion_codes = $departure['post_meta']['promotion_codes'];
@@ -1116,6 +1119,14 @@ function get_dates_rates_card_data( int $departure_id = 0, string $currency = DE
 
 			// First element is the promo data.
 			$promo_data = $promo_data[0];
+
+			// Bail if discount value is 0.
+			if ( empty( $promo_data['discount_value'] ) ) {
+				$free_promos[ strval( $promo_code ) ] = $promo_data;
+
+				// Skip to next promo.
+				continue;
+			}
 
 			// Check for currency.
 			if ( ! empty( $promo_data['currency'] ) && $currency !== $promo_data['currency'] ) {
@@ -1147,6 +1158,7 @@ function get_dates_rates_card_data( int $departure_id = 0, string $currency = DE
 		'paid_adventure_options'     => $paid_adventure_options_data,
 		'transfer_package_details'   => get_included_transfer_package_details( $itinerary_id, $currency ),
 		'available_promos'           => $available_promos,
+		'free_promos'                => $free_promos,
 		'cabin_data'                 => get_cabin_price_data_by_departure( $departure_id, $currency ),
 		'request_a_quote_url'        => get_request_a_quote_url( $departure_id ),
 		'tax_types'                  => get_tax_type_details( $itinerary_id ),
