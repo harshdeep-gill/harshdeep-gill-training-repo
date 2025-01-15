@@ -450,6 +450,7 @@ export const fetchResults = ( callback: Function ) => {
 		partial,
 		selector,
 		itineraryLengths,
+		sort,
 	}: ExpeditionSearchState = currentState;
 
 	// Fetch partial.
@@ -474,6 +475,7 @@ export const fetchResults = ( callback: Function ) => {
 				return [ snakeCasedKey, filterValues ];
 			} ) ),
 			page,
+			sort,
 		},
 	}, callback, selector ).catch( () => {
 		// Set state.
