@@ -810,6 +810,9 @@ class Test_Departure_Cards extends Softrip_TestCase {
 			],
 			'promotions'               => [
 				'Save 15% - Offer Code 15PROMO',
+				'One Year Priority Pass™ Membership - Offer Code PRIOPASS',
+				'Free Single Supplement on Standard Cabins - Offer Code SGLPROMO',
+				'$1000 USD Flight Credit - Offer Code FLIGHTUSD',
 			],
 		];
 
@@ -1178,7 +1181,6 @@ class Test_Departure_Cards extends Softrip_TestCase {
 			'included_adventure_options' => [],
 			'paid_adventure_options'     => [],
 			'request_a_quote_url'        => get_request_a_quote_url( $departure_post_1 ),
-			'free_promos'                => [],
 			'transfer_package_details'   => [
 				'title'                    => 'Includes',
 				'sets'                     => [
@@ -1202,7 +1204,8 @@ class Test_Departure_Cards extends Softrip_TestCase {
 					'type'                     => '',
 					'sort_priority'            => 0,
 					'promos'                   => [
-						'15PROMO' => '$38,369 USD',
+						'15PROMO'   => '$38,369 USD',
+						'FLIGHTUSD' => '$38,369 USD',
 					],
 					'checkout_url'             => 'https://local-checkout.quarkexpeditions.com?package_id=JKL-012&departure_date=2025-01-09&cabin_code=ULT-SGL&currency=USD',
 				],
@@ -1214,11 +1217,16 @@ class Test_Departure_Cards extends Softrip_TestCase {
 					'spaces_available'         => 20,
 					'brochure_price'           => '$34,800 USD',
 					'promos'                   => [
-						'15PROMO' => '$29,610 USD',
+						'15PROMO'   => '$29,610 USD',
+						'FLIGHTUSD' => '$29,610 USD',
 					],
 					'type'                     => '',
 					'sort_priority'            => 0,
 				],
+			],
+			'free_promos'                => [
+				'PRIOPASS' => get_promotions_by_code( 'PRIOPASS' )[0],
+				'SGLPROMO' => get_promotions_by_code( 'SGLPROMO' )[0],
 			],
 		];
 
@@ -1244,7 +1252,8 @@ class Test_Departure_Cards extends Softrip_TestCase {
 		}
 
 		// Get promotions data.
-		$expected_data['available_promos']['15PROMO'] = get_promotions_by_code( '15PROMO' )[0];
+		$expected_data['available_promos']['15PROMO']   = get_promotions_by_code( '15PROMO' )[0];
+		$expected_data['available_promos']['FLIGHTUSD'] = get_promotions_by_code( 'FLIGHTUSD' )[0];
 
 		// Assert data.
 		$this->assertEqualSetsWithIndex( $expected_data, $card_data );
@@ -1430,7 +1439,10 @@ class Test_Departure_Cards extends Softrip_TestCase {
 				'languages'                  => 'spoken_language_1, spoken_language_2',
 				'included_adventure_options' => [],
 				'paid_adventure_options'     => [],
-				'free_promos'                => [],
+				'free_promos'                => [
+					'PRIOPASS' => get_promotions_by_code( 'PRIOPASS' )[0],
+					'SGLPROMO' => get_promotions_by_code( 'SGLPROMO' )[0],
+				],
 				'request_a_quote_url'        => get_request_a_quote_url( $departure_post_2 ),
 				'transfer_package_details'   => [
 					'title'                    => 'Includes',
@@ -1453,7 +1465,8 @@ class Test_Departure_Cards extends Softrip_TestCase {
 						'spaces_available'         => 10,
 						'brochure_price'           => '$45,105 USD',
 						'promos'                   => [
-							'15PROMO' => '$38,369 USD',
+							'15PROMO'   => '$38,369 USD',
+							'FLIGHTUSD' => '$38,369 USD',
 						],
 						'checkout_url'             => 'https://local-checkout.quarkexpeditions.com?package_id=JKL-012&departure_date=2025-01-09&cabin_code=ULT-SGL&currency=USD',
 						'type'                     => '',
@@ -1466,7 +1479,8 @@ class Test_Departure_Cards extends Softrip_TestCase {
 						'spaces_available'         => 20,
 						'brochure_price'           => '$34,800 USD',
 						'promos'                   => [
-							'15PROMO' => '$29,610 USD',
+							'15PROMO'   => '$29,610 USD',
+							'FLIGHTUSD' => '$29,610 USD',
 						],
 						'checkout_url'             => 'https://local-checkout.quarkexpeditions.com?package_id=JKL-012&departure_date=2025-01-09&cabin_code=ULT-DBL&currency=USD',
 						'type'                     => '',
@@ -1474,7 +1488,8 @@ class Test_Departure_Cards extends Softrip_TestCase {
 					],
 				],
 				'available_promos'           => [
-					'15PROMO' => get_promotions_by_code( '15PROMO' )[0],
+					'15PROMO'   => get_promotions_by_code( '15PROMO' )[0],
+					'FLIGHTUSD' => get_promotions_by_code( 'FLIGHTUSD' )[0],
 				],
 			],
 		];
