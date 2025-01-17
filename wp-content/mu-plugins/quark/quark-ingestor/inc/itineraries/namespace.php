@@ -371,6 +371,8 @@ function get_itinerary_days_data( int $itinerary_post_id = 0 ): array {
 					$itinerary_day_data['location'] = strval( $end_location_term['name'] ?? '' );
 				}
 			}
+		} else {
+			$itinerary_day_data['location'] = __( 'Cruising', 'qrk' );
 		}
 
 		// Add itinerary day data to itinerary days.
