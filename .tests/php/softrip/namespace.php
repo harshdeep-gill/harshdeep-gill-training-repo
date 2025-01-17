@@ -271,7 +271,16 @@ function mock_softrip_http_request( array|false $response = [], array $parsed_ar
 											'pricePerPerson' => 44905,
 											'currencyCode'   => 'USD',
 											'promos'         => [
-												'15PROMO' => [
+												'15PROMO'   => [
+													'promoPricePerPerson' => 38169,
+												],
+												'PRIOPOASS' => [
+													'promoPricePerPerson' => 38169,
+												],
+												'SGLPROMO'  => [
+													'promoPricePerPerson' => 38169,
+												],
+												'FLIGHTUSD' => [
 													'promoPricePerPerson' => 38169,
 												],
 											],
@@ -280,7 +289,10 @@ function mock_softrip_http_request( array|false $response = [], array $parsed_ar
 											'pricePerPerson' => 70605,
 											'currencyCode'   => 'AUD',
 											'promos'         => [
-												'15PROMO' => [
+												'15PROMO'   => [
+													'promoPricePerPerson' => 60014,
+												],
+												'PRIOPOASS' => [
 													'promoPricePerPerson' => 60014,
 												],
 											],
@@ -289,7 +301,10 @@ function mock_softrip_http_request( array|false $response = [], array $parsed_ar
 											'pricePerPerson' => 61205,
 											'currencyCode'   => 'CAD',
 											'promos'         => [
-												'15PROMO' => [
+												'15PROMO'   => [
+													'promoPricePerPerson' => 52024,
+												],
+												'PRIOPOASS' => [
 													'promoPricePerPerson' => 52024,
 												],
 											],
@@ -298,7 +313,16 @@ function mock_softrip_http_request( array|false $response = [], array $parsed_ar
 											'pricePerPerson' => 41905,
 											'currencyCode'   => 'EUR',
 											'promos'         => [
-												'15PROMO' => [
+												'15PROMO'   => [
+													'promoPricePerPerson' => 35619,
+												],
+												'PRIOPOASS' => [
+													'promoPricePerPerson' => 35619,
+												],
+												'SGLPROMOE' => [
+													'promoPricePerPerson' => 35619,
+												],
+												'FLIGHTEUR' => [
 													'promoPricePerPerson' => 35619,
 												],
 											],
@@ -307,7 +331,10 @@ function mock_softrip_http_request( array|false $response = [], array $parsed_ar
 											'pricePerPerson' => 35905,
 											'currencyCode'   => 'GBP',
 											'promos'         => [
-												'15PROMO' => [
+												'15PROMO'   => [
+													'promoPricePerPerson' => 30519,
+												],
+												'PRIOPOASS' => [
 													'promoPricePerPerson' => 30519,
 												],
 											],
@@ -336,7 +363,16 @@ function mock_softrip_http_request( array|false $response = [], array $parsed_ar
 											'pricePerPerson' => 74900,
 											'currencyCode'   => 'USD',
 											'promos'         => [
-												'15PROMO' => [
+												'15PROMO'   => [
+													'promoPricePerPerson' => 63665,
+												],
+												'PRIOPOASS' => [
+													'promoPricePerPerson' => 63665,
+												],
+												'SGLPROMO'  => [
+													'promoPricePerPerson' => 63665,
+												],
+												'FLIGHTUSD' => [
 													'promoPricePerPerson' => 63665,
 												],
 											],
@@ -345,7 +381,10 @@ function mock_softrip_http_request( array|false $response = [], array $parsed_ar
 											'pricePerPerson' => 117500,
 											'currencyCode'   => 'AUD',
 											'promos'         => [
-												'15PROMO' => [
+												'15PROMO'   => [
+													'promoPricePerPerson' => 99875,
+												],
+												'PRIOPOASS' => [
 													'promoPricePerPerson' => 99875,
 												],
 											],
@@ -354,7 +393,10 @@ function mock_softrip_http_request( array|false $response = [], array $parsed_ar
 											'pricePerPerson' => 102000,
 											'currencyCode'   => 'CAD',
 											'promos'         => [
-												'15PROMO' => [
+												'15PROMO'   => [
+													'promoPricePerPerson' => 86700,
+												],
+												'PRIOPOASS' => [
 													'promoPricePerPerson' => 86700,
 												],
 											],
@@ -363,8 +405,17 @@ function mock_softrip_http_request( array|false $response = [], array $parsed_ar
 											'pricePerPerson' => 69900,
 											'currencyCode'   => 'EUR',
 											'promos'         => [
-												'15PROMO' => [
+												'15PROMO'   => [
 													'promoPricePerPerson' => 59415,
+												],
+												'PRIOPOASS' => [
+													'promoPricePerPerson' => 59415,
+												],
+												'SGLPROMOE' => [
+													'promoPricePerPerson' => 38169,
+												],
+												'FLIGHTEUR' => [
+													'promoPricePerPerson' => 38169,
 												],
 											],
 										],
@@ -372,7 +423,10 @@ function mock_softrip_http_request( array|false $response = [], array $parsed_ar
 											'pricePerPerson' => 59900,
 											'currencyCode'   => 'GBP',
 											'promos'         => [
-												'15PROMO' => [
+												'15PROMO'   => [
+													'promoPricePerPerson' => 50915,
+												],
+												'PRIOPOASS' => [
 													'promoPricePerPerson' => 50915,
 												],
 											],
@@ -392,7 +446,16 @@ function mock_softrip_http_request( array|false $response = [], array $parsed_ar
 											'pricePerPerson' => 34600,
 											'currencyCode'   => 'USD',
 											'promos'         => [
-												'15PROMO' => [
+												'15PROMO'   => [
+													'promoPricePerPerson' => 29410,
+												],
+												'PRIOPOASS' => [
+													'promoPricePerPerson' => 29410,
+												],
+												'SGLPROMO'  => [
+													'promoPricePerPerson' => 29410,
+												],
+												'FLIGHTUSD' => [
 													'promoPricePerPerson' => 29410,
 												],
 											],
@@ -401,7 +464,10 @@ function mock_softrip_http_request( array|false $response = [], array $parsed_ar
 											'pricePerPerson' => 54200,
 											'currencyCode'   => 'AUD',
 											'promos'         => [
-												'15PROMO' => [
+												'15PROMO'   => [
+													'promoPricePerPerson' => 46070,
+												],
+												'PRIOPOASS' => [
 													'promoPricePerPerson' => 46070,
 												],
 											],
@@ -410,7 +476,10 @@ function mock_softrip_http_request( array|false $response = [], array $parsed_ar
 											'pricePerPerson' => 47000,
 											'currencyCode'   => 'CAD',
 											'promos'         => [
-												'15PROMO' => [
+												'15PROMO'   => [
+													'promoPricePerPerson' => 39950,
+												],
+												'PRIOPOASS' => [
 													'promoPricePerPerson' => 39950,
 												],
 											],
@@ -419,7 +488,16 @@ function mock_softrip_http_request( array|false $response = [], array $parsed_ar
 											'pricePerPerson' => 32200,
 											'currencyCode'   => 'EUR',
 											'promos'         => [
-												'15PROMO' => [
+												'15PROMO'   => [
+													'promoPricePerPerson' => 27370,
+												],
+												'PRIOPOASS' => [
+													'promoPricePerPerson' => 27370,
+												],
+												'SGLPROMOE' => [
+													'promoPricePerPerson' => 27370,
+												],
+												'FLIGHTEUR' => [
 													'promoPricePerPerson' => 27370,
 												],
 											],
@@ -428,7 +506,10 @@ function mock_softrip_http_request( array|false $response = [], array $parsed_ar
 											'pricePerPerson' => 27600,
 											'currencyCode'   => 'GBP',
 											'promos'         => [
-												'15PROMO' => [
+												'15PROMO'   => [
+													'promoPricePerPerson' => 23460,
+												],
+												'PRIOPOASS' => [
 													'promoPricePerPerson' => 23460,
 												],
 											],
@@ -447,6 +528,61 @@ function mock_softrip_http_request( array|false $response = [], array $parsed_ar
 							'discountType'  => 'percentage_off',
 							'discountValue' => '0.15',
 							'promotionCode' => '15PROMO',
+							'isPIF'         => false,
+						],
+						[
+							'endDate'       => '2050-12-31T00:00:00',
+							'startDate'     => '2023-09-28T00:00:00',
+							'description'   => 'One Year Priority Pass™ Membership',
+							'currencyCode'  => null,
+							'discountType'  => 'percentage_off',
+							'discountValue' => 0,
+							'promotionCode' => 'PRIOPASS',
+							'pricingBasis'  => 'per_person',
+							'isPIF'         => false,
+						],
+						[
+							'endDate'       => '2050-12-31T00:00:00',
+							'startDate'     => '2023-09-28T00:00:00',
+							'description'   => 'Free Single Supplement on Standard Cabins',
+							'currencyCode'  => 'EUR',
+							'discountType'  => 'percentage_off',
+							'discountValue' => 0,
+							'promotionCode' => 'SGLPROMOE',
+							'pricingBasis'  => 'per_person',
+							'isPIF'         => false,
+						],
+						[
+							'endDate'       => '2050-12-31T00:00:00',
+							'startDate'     => '2023-09-28T00:00:00',
+							'description'   => 'Free Single Supplement on Standard Cabins',
+							'currencyCode'  => 'USD',
+							'discountType'  => 'percentage_off',
+							'discountValue' => 0,
+							'promotionCode' => 'SGLPROMO',
+							'pricingBasis'  => 'per_person',
+							'isPIF'         => false,
+						],
+						[
+							'endDate'       => '2025-04-01T00:00:00',
+							'startDate'     => '2025-01-06T00:00:00',
+							'description'   => '$1400 EUR Flight Credit',
+							'currencyCode'  => 'EUR',
+							'discountType'  => 'fixed_off',
+							'discountValue' => 1400,
+							'promotionCode' => 'FLIGHTEUR',
+							'pricingBasis'  => 'per_person',
+							'isPIF'         => false,
+						],
+						[
+							'endDate'       => '2025-04-01T00:00:00',
+							'startDate'     => '2025-01-06T00:00:00',
+							'description'   => '$1000 USD Flight Credit',
+							'currencyCode'  => 'USD',
+							'discountType'  => 'fixed_off',
+							'discountValue' => 1400,
+							'promotionCode' => 'FLIGHTUSD',
+							'pricingBasis'  => 'per_person',
 							'isPIF'         => false,
 						],
 					],
