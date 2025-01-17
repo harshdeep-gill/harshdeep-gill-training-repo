@@ -37,6 +37,7 @@ type ExpeditionSearchAllowedParam = ExpeditionSearchFilterType; // Add more valu
  * type ExpeditionSearchFiltersFromUrl
  */
 type ExpeditionSearchFiltersFromUrl = {
+	selectedFilters: ExpeditionSearchFilterType[],
 	destinations: string[],
 	months: string[],
 	itineraryLengths: number[],
@@ -54,7 +55,7 @@ type ExpeditionSearchFiltersFromUrl = {
 interface ExpeditionSearchState {
 	partial: string,
 	selector: string,
-	selectedFilters: ExpeditionSearchFilters;
+	selectedFilters: ExpeditionSearchFilterType[];
 	shipId: number,
 	page: number,
 	nextPage: number,
@@ -85,6 +86,7 @@ interface ExpeditionSearchState {
 	allowedParams: ExpeditionSearchAllowedParam[],
 	filtersMarkup: string,
 	compactFiltersMarkup: string,
+	sort: string,
 }
 
 /**
