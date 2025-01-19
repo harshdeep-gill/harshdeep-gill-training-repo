@@ -23,7 +23,9 @@ use function Quark\Softrip\Occupancies\get_occupancies_by_cabin_category_and_dep
 use function Quark\Softrip\Occupancies\get_occupancy_data_by_id;
 use function Quark\Softrip\Occupancies\is_occupancy_on_sale;
 use function Quark\Softrip\OccupancyPromotions\get_lowest_price as get_occupancy_promotion_lowest_price;
+use function Quark\Softrip\OccupancyPromotions\get_occupancy_promotions_by_occupancy;
 use function Quark\Softrip\Promotions\get_promotions_by_code;
+use function Quark\Softrip\Promotions\get_promotions_by_id;
 
 use const Quark\Localization\DEFAULT_CURRENCY;
 use const Quark\Ships\POST_TYPE as SHIP_POST_TYPE;
@@ -443,7 +445,8 @@ function get_cabin_categories_data( int $cabin_id = 0 ): array {
  *         discounted_price: string,
  *         original_price: string,
  *     },
- *     occupancies: array<int<0, max>, array<string, mixed>>
+ *     occupancies: array<int<0, max>, array<string, mixed>>,
+ *     promo_codes: array<string>
  * }>
  */
 function get_cabin_details_by_departure( int $departure_post_id = 0, string $currency = DEFAULT_CURRENCY ): array {
@@ -522,6 +525,7 @@ function get_cabin_details_by_departure( int $departure_post_id = 0, string $cur
 			],
 			'from_price'     => $formatted_price,
 			'occupancies'    => [],
+			'promo_codes'    => [],
 		];
 
 		// Get all occupancies for this cabin and departure.
@@ -549,6 +553,42 @@ function get_cabin_details_by_departure( int $departure_post_id = 0, string $cur
 
 			// Add occupancy detail to occupancies.
 			$struct['occupancies'][] = $occupancy_detail;
+		}
+
+		// Get promotions.
+		if ( ! empty( $occupancies ) ) {
+			// First occupancy.
+			$occupancy = $occupancies[0];
+
+			// Bail if not valid.
+			if ( empty( $occupancy['id'] ) ) {
+				continue;
+			}
+
+			// Get occupancy promotions.
+			$occupancy_promotions = get_occupancy_promotions_by_occupancy( $occupancy['id'] );
+
+			// Validate.
+			if ( empty( $occupancy_promotions ) ) {
+				continue;
+			}
+
+			// Loop through the occupancy promotions.
+			foreach ( $occupancy_promotions as $occupancy_promotion ) {
+				// Get promotion detail.
+				$promotion_detail = get_promotions_by_id( $occupancy_promotion['promotion_id'] );
+
+				// Validate promotion detail.
+				if ( empty( $promotion_detail ) ) {
+					continue;
+				}
+
+				// Pick the first item.
+				$promotion_detail = $promotion_detail[0];
+
+				// Add promotion detail to cabin structure.
+				$struct['promo_codes'][] = $promotion_detail['code'];
+			}
 		}
 
 		// Add cabin category data to cabin categories data.
@@ -942,7 +982,6 @@ function get_size_range( int $cabin_category_post_id = 0 ): string {
  *     original_price: string,
  *     discounted_price: string,
  *   },
- *   promotions: mixed[],
  *   checkout_url: string,
  * }
  */
@@ -1007,7 +1046,6 @@ function get_occupancy_detail( int $occupancy_id = 0, int $departure_post_id = 0
 			'original_price'   => format_price( $price_with_supplement_mandatory['original'], $currency ),
 			'discounted_price' => format_price( $price_with_supplement_mandatory['discounted'], $currency ),
 		],
-		'promotions'   => [],
 		'checkout_url' => get_checkout_url( $departure_post_id, $occupancy['cabin_category_post_id'], $currency, $mask ),
 	];
 
