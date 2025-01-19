@@ -627,7 +627,7 @@ function get_cabin_price_data_by_departure( int $departure_id = 0, string $curre
 			$promo_data = $promo_data[0];
 
 			// Check for currency & discount value - exclude free promotions.
-			if ( empty( $promo_data['discount_value'] ) || ( ! empty( $promo_data['currency'] ) && $currency !== $promo_data['currency'] ) ) {
+			if ( ! empty( $promo_data['currency'] ) && $currency !== $promo_data['currency'] ) {
 				continue;
 			}
 
@@ -682,17 +682,29 @@ function get_cabin_price_data_by_departure( int $departure_id = 0, string $curre
 			'checkout_url'             => get_checkout_url( $departure_id, $cabin_id, $currency ),
 			'type'                     => $cabin_class_data['name'] ?? '',
 			'sort_priority'            => $cabin_class_data['sort_priority'] ?? 0,
+			'brochure_price'          => '',
 		];
 
 		// Get the lowest price for the cabin.
 		$cabin_price = get_lowest_price_by_cabin_category_and_departure( $cabin_id, $departure_id, $currency );
+
+		// Skip if no cabin price.
+		if ( empty( $cabin_price['original'] ) ) {
+			continue;
+		}
 
 		// Set the brochure price.
 		$cabin_price_data[ $cabin_code ]['brochure_price'] = format_price( $cabin_price['original'], $currency );
 
 		// Loop through available_promos for each promo.
 		foreach ( $available_promos as $promo_code => $promo_data ) {
-			$cabin_price_data[ $cabin_code ]['promos'][ $promo_code ] = format_price( get_lowest_price_by_cabin_category_and_departure_and_promotion_code( $cabin_id, $departure_id, $promo_code, $currency ), $currency );
+			$discounted_lowest_price = get_lowest_price_by_cabin_category_and_departure_and_promotion_code( $cabin_id, $departure_id, $promo_code, $currency );
+			if ( empty( $discounted_lowest_price ) ) {
+				continue;
+			}
+
+			// Add promo to cabin data.
+			$cabin_price_data[ $cabin_code ]['promos'][ $promo_code ] = format_price( $discounted_lowest_price, $currency );
 		}
 	}
 
