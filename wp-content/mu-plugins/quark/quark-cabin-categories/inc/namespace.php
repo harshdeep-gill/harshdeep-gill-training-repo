@@ -586,6 +586,11 @@ function get_cabin_details_by_departure( int $departure_post_id = 0, string $cur
 				// Pick the first item.
 				$promotion_detail = $promotion_detail[0];
 
+				// Check for currency.
+				if ( ! empty( $promotion_detail['currency'] ) && $currency !== $promotion_detail['currency'] ) {
+					continue;
+				}
+
 				// Add promotion detail to cabin structure.
 				$struct['promo_codes'][] = $promotion_detail['code'];
 			}
