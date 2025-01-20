@@ -24,6 +24,14 @@
 	}
 
 	&__slider {
+		overflow-x: clip;
+
+		#{$self}--has-overflow & {
+
+			@media screen and (min-width: grid-size(sm)) {
+				overflow-x: visible;
+			}
+		}
 
 		&:has(div.thumbnail-cards__nav) {
 			#{$self}__track {
