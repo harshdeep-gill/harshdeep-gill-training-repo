@@ -137,7 +137,7 @@
 
 	&:not([data-mobile-carousel="1"]) {
 
-		@media screen and (max-width: calc(grid-size(lg) - 1px)) {
+		@media screen and (max-width: calc(grid-size(xl) - 1px)) {
 
 			#{$self}__nav {
 				display: none;
@@ -209,7 +209,7 @@
 		column-gap: var(--spacing-5);
 		margin-top: var(--spacing-6);
 
-		@media screen and (min-width: grid-size(lg)) {
+		@media screen and (min-width: grid-size(xl)) {
 			display: none;
 
 			#{$self}[data-layout="carousel"] & {
