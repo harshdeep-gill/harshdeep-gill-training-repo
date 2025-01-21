@@ -2139,7 +2139,7 @@ function translate_term_meta_keys( array $meta_keys = [] ): array {
 function translate_meta_keys( array $meta_keys = [] ): array {
 	// Meta keys for translation.
 	$extra_keys = [
-		'overview'                  => 'text',
+		'overview'                  => 'string',
 		'included_activities'       => __NAMESPACE__ . '\\translate_meta_key',
 		'related_adventure_options' => __NAMESPACE__ . '\\translate_meta_key',
 		'related_pre_post_trips'    => __NAMESPACE__ . '\\translate_meta_key',

@@ -313,7 +313,7 @@ class Post_Meta implements ModuleServiceProvider {
 			// Loop through meta keys for translation.
 			foreach ( $meta_keys as $key => $type ) {
 				// Do a preg match because $key can be a string or a regex.
-				if ( ! preg_match( '/' . $key . '/', $meta_key ) ) {
+				if ( $meta_key !== $key || ( str_contains( $key, '\\' ) && ! preg_match( '/' . $key . '/', $meta_key ) ) ) {
 					continue;
 				}
 
