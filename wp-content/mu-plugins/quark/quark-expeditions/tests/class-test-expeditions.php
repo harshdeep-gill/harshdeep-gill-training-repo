@@ -1412,7 +1412,7 @@ class Test_Expeditions extends Softrip_TestCase {
 			[
 				'meta_key'                  => 'string',
 				'icon'                      => 'attachment',
-				'overview'                  => 'text',
+				'overview'                  => 'string',
 				'included_activities'       => 'Quark\Expeditions\translate_meta_key',
 				'related_adventure_options' => 'Quark\Expeditions\translate_meta_key',
 				'related_pre_post_trips'    => 'Quark\Expeditions\translate_meta_key',
