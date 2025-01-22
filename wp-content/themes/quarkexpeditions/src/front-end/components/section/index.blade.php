@@ -63,6 +63,7 @@
 		id="{{ $id }}"
 	@endif
 	@class( $classes )
+	{{ $attributes->filter( fn ( $value, $key ) => str_starts_with( $key, 'data-' ) ) }}
 	>
 	@if ( ! empty( $wrap ) )
 		<div class="wrap">

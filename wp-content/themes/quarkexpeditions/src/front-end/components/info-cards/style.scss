@@ -24,6 +24,14 @@
 	}
 
 	&__slider {
+		overflow-x: clip;
+
+		#{$self}--has-overflow & {
+
+			@media screen and (min-width: grid-size(sm)) {
+				overflow-x: visible;
+			}
+		}
 
 		&:has(div.thumbnail-cards__nav) {
 			#{$self}__track {
@@ -103,7 +111,7 @@
 		}
 	}
 
-	&:not(:has(&__nav[data-layout="carousel"])) {
+	&:not([data-layout="carousel"]) {
 
 		@media screen and (min-width: grid-size(xl)) {
 
@@ -135,9 +143,9 @@
 		}
 	}
 
-	&:not(:has(&__nav[data-mobile-carousel])) {
+	&:not([data-mobile-carousel="1"]) {
 
-		@media screen and (max-width: calc(grid-size(lg) - 1px)) {
+		@media screen and (max-width: calc(grid-size(xl) - 1px)) {
 
 			#{$self}__nav {
 				display: none;
@@ -159,7 +167,7 @@
 		}
 	}
 
-	&:has(&__nav[data-layout="collage"]) {
+	&[data-layout="collage"] {
 
 		@media screen and (min-width: grid-size(xl)) {
 
@@ -208,6 +216,14 @@
 		display: flex;
 		column-gap: var(--spacing-5);
 		margin-top: var(--spacing-6);
+
+		@media screen and (min-width: grid-size(xl)) {
+			display: none;
+
+			#{$self}[data-layout="carousel"] & {
+				display: flex;
+			}
+		}
 	}
 
 	&__slider--grid,

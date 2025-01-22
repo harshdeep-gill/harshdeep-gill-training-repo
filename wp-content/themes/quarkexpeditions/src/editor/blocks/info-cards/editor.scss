@@ -10,7 +10,6 @@
 	}
 
 	&__card {
-		width: 352px;
 
 		.block-list-appender {
 			display: none;
@@ -40,4 +39,11 @@
 	.wrap {
 		padding-inline: 0;
 	}
+}
+
+.editor-styles-wrapper .info-cards[data-layout="carousel"] .info-cards__slides {
+	grid-template-columns: repeat(auto-fill, minmax(267px, 1fr));
+	width: 100%;
+	grid-auto-flow: initial;
+	grid-auto-columns: initial;
 }
