@@ -5,6 +5,7 @@
 
 	quark_enqueue_script( 'querystring' );
 	quark_component_enqueue_assets( 'tooltip' );
+	quark_component_enqueue_assets( 'drawer' );
 	quark_enqueue_script( 'popover-polyfill' );
 @endphp
 

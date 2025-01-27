@@ -170,9 +170,12 @@
 							<x-dates-rates.item.table-row>
 								<x-dates-rates.item.table-column :is_pay_in_full="$is_pay_in_full">
 									<x-dates-rates.item.table-column-title>
-										<strong>
-											{{ $promo_data['description'] }}
-										</strong>
+										<x-dates-rates.item.promo-code
+											drawer_id="{{ 'promo-code' . $promo_data['code'] }}"
+											drawer_title="{!! $promo_data['description'] !!}"
+											label="{!! $promo_data['description'] !!}"
+											promo_code="{!! $promo_data['code'] !!}"
+										/>
 									</x-dates-rates.item.table-column-title>
 								</x-dates-rates.item.table-column>
 
