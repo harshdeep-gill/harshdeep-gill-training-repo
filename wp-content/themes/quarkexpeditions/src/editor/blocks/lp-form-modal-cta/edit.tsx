@@ -90,6 +90,7 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 							{ label: __( '2025', 'qrk' ), value: '2025' },
 							{ label: __( '2025-26', 'qrk' ), value: '2025-26' },
 							{ label: __( '2026', 'qrk' ), value: '2026' },
+							{ label: __( '2026-27', 'qrk' ), value: '2026-27' },
 						] }
 						onChange={ ( season: string ) => setAttributes( { season } ) }
 					/>
