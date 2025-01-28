@@ -637,10 +637,14 @@
 	}
 }
 
-.expedition-cards__transfer-package-content .drawer__body {
-	padding-bottom: var(--spacing-9);
+.expedition-cards__transfer-package-content,
+.departure-cards__transfer-package-content {
 
-	@media screen and (min-width: grid-size(sm)) {
-		padding-bottom: 0;
+	.drawer__body {
+		padding-bottom: var(--spacing-9);
+
+		@media screen and (min-width: grid-size(sm)) {
+			padding-bottom: 0;
+		}
 	}
 }
