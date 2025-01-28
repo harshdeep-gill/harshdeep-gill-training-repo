@@ -242,15 +242,15 @@ function mock_softrip_http_request( array|false $response = [], array $parsed_ar
 		$data['JKL-012'] = [
 			'departures' => [
 				[
-					'id'          => 'JKL-012:2025-01-09',
-					'code'        => 'ULT20250109',
-					'packageCode' => 'JKL-012',
-					'startDate'   => '2025-01-09',
-					'endDate'     => '2025-01-25',
-					'duration'    => 16,
-					'shipCode'    => 'ULT',
-					'marketCode'  => 'ANT',
-					'cabins'      => [
+					'id'               => 'JKL-012:2025-01-09',
+					'code'             => 'ULT20250109',
+					'packageCode'      => 'JKL-012',
+					'startDate'        => '2025-01-09',
+					'endDate'          => '2025-01-25',
+					'duration'         => 16,
+					'shipCode'         => 'ULT',
+					'marketCode'       => 'ANT',
+					'cabins'           => [
 						[
 							'id'              => 'JKL-012:2025-01-09:ULT-SGL',
 							'code'            => 'ULT-SGL',
@@ -519,7 +519,7 @@ function mock_softrip_http_request( array|false $response = [], array $parsed_ar
 							],
 						],
 					],
-					'promotions'  => [
+					'promotions'       => [
 						[
 							'endDate'       => '2050-12-31T00:00:00',
 							'startDate'     => '2023-09-28T00:00:00',
@@ -584,6 +584,37 @@ function mock_softrip_http_request( array|false $response = [], array $parsed_ar
 							'promotionCode' => 'FLIGHTUSD',
 							'pricingBasis'  => 'per_person',
 							'isPIF'         => false,
+						],
+					],
+					'adventureOptions' => [
+						[
+							'id'              => 'JKL-012:2025-01-09:KAYAK',
+							'spacesAvailable' => 10,
+							'serviceIds'      => [
+								'KAYAK',
+							],
+							'price'           => [
+								'GBP' => [
+									'currencyCode'   => 'GBP',
+									'pricePerPerson' => 640,
+								],
+								'EUR' => [
+									'currencyCode'   => 'EUR',
+									'pricePerPerson' => 740,
+								],
+								'USD' => [
+									'currencyCode'   => 'USD',
+									'pricePerPerson' => 795,
+								],
+								'CAD' => [
+									'currencyCode'   => 'CAD',
+									'pricePerPerson' => 1090,
+								],
+								'AUD' => [
+									'currencyCode'   => 'AUD',
+									'pricePerPerson' => 1250,
+								],
+							],
 						],
 					],
 				],

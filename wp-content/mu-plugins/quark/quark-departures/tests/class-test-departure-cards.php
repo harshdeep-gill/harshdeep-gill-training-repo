@@ -33,6 +33,7 @@ use const Quark\Itineraries\POST_TYPE as ITINERARY_POST_TYPE;
 use const Quark\Expeditions\POST_TYPE as EXPEDITION_POST_TYPE;
 use const Quark\Expeditions\DESTINATION_TAXONOMY;
 use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
+use const Quark\Localization\DEFAULT_CURRENCY;
 use const Quark\PolicyPages\POST_TYPE as POLICY_PAGES_POST_TYPE;
 use const Quark\Ships\POST_TYPE as SHIP_POST_TYPE;
 
@@ -752,7 +753,14 @@ class Test_Departure_Cards extends Softrip_TestCase {
 	 *         offer_inclusion_text: string,
 	 *         mandatory_transfer_title: string,
 	 *     },
-	 *     paid_adventure_options: array<int, string>,
+	 *     paid_adventure_options: array<int, array{
+	 *        title: string,
+	 *        icon_image_id: int,
+	 *        image_id: int,
+	 *        spaces_available: int,
+	 *        price_per_person: string,
+	 *        currency: string,
+	 *     }>,
 	 *     banner_details: array{
 	 *         title: string,
 	 *         icon_id: int,
@@ -799,8 +807,14 @@ class Test_Departure_Cards extends Softrip_TestCase {
 				'mandatory_transfer_title' => '',
 			],
 			'paid_adventure_options'   => [
-				self::$adventure_option_terms[0]->term_id => self::$adventure_option_terms[0]->name,
-				self::$adventure_option_terms[2]->term_id => self::$adventure_option_terms[2]->name,
+				[
+					'title'            => 'adventure_option-1',
+					'icon_image_id'    => 234,
+					'image_id'         => 0,
+					'spaces_available' => 10,
+					'price_per_person' => '$795 USD',
+					'currency'         => 'USD',
+				],
 			],
 			'banner_details'           => [
 				'title'       => 'value 2',
@@ -1179,7 +1193,16 @@ class Test_Departure_Cards extends Softrip_TestCase {
 			'end_location'               => self::$departure_location_terms[1]->name,
 			'languages'                  => 'spoken_language_1, spoken_language_2',
 			'included_adventure_options' => [],
-			'paid_adventure_options'     => [],
+			'paid_adventure_options'     => [
+				[
+					'title'            => 'adventure_option-1',
+					'icon_image_id'    => 234,
+					'image_id'         => 0,
+					'spaces_available' => 10,
+					'price_per_person' => '$795 USD',
+					'currency'         => DEFAULT_CURRENCY,
+				],
+			],
 			'request_a_quote_url'        => get_request_a_quote_url( $departure_post_1 ),
 			'transfer_package_details'   => [
 				'title'                    => 'Includes',
@@ -1438,7 +1461,16 @@ class Test_Departure_Cards extends Softrip_TestCase {
 				'end_location'               => self::$departure_location_terms[1]->name,
 				'languages'                  => 'spoken_language_1, spoken_language_2',
 				'included_adventure_options' => [],
-				'paid_adventure_options'     => [],
+				'paid_adventure_options'     => [
+					[
+						'title'            => 'adventure_option-1',
+						'icon_image_id'    => 234,
+						'image_id'         => 0,
+						'spaces_available' => 10,
+						'price_per_person' => '$795 USD',
+						'currency'         => DEFAULT_CURRENCY,
+					],
+				],
 				'free_promos'                => [
 					'PRIOPASS' => get_promotions_by_code( 'PRIOPASS' )[0],
 					'SGLPROMO' => get_promotions_by_code( 'SGLPROMO' )[0],
@@ -1686,14 +1718,16 @@ class Test_Departure_Cards extends Softrip_TestCase {
 			[
 				[
 					'title'            => 'adventure_option-1',
-					'icon_image_id'    => '234',
+					'icon_image_id'    => 234,
 					'spaces_available' => 0,
+					'image_id'         => 0,
 					'price_per_person' => '$1,090 CAD',
 					'currency'         => 'CAD',
 				],
 				[
 					'title'            => 'adventure_option-2',
-					'icon_image_id'    => '987',
+					'icon_image_id'    => 987,
+					'image_id'         => 0,
 					'price_per_person' => '$270 CAD',
 					'spaces_available' => 13,
 					'currency'         => 'CAD',
