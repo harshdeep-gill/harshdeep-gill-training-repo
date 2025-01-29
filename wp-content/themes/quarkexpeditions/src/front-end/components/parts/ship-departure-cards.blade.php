@@ -81,18 +81,18 @@
 									<x-departure-cards.adventure-options>
 										@php
 											// Sort options based on length.
-											uasort( $card['paid_adventure_options'], fn( $a, $b ) => strlen( $a ) <=> strlen( $b ) );
+											uasort( $card['paid_adventure_options'], fn( $a, $b ) => strlen( $a['title'] ) <=> strlen( $b['title'] ) );
 										@endphp
 
 										@if ( ! empty( $card['paid_adventure_options'] ) )
-											<x-departure-cards.adventure-option title="{{ array_values( $card['paid_adventure_options'] )[0] ?? '' }}"/>
+											<x-departure-cards.adventure-option title="{{ array_values( $card['paid_adventure_options'] )[0]['title'] ?? '' }}"/>
 										@endif
 
 										<x-departure-cards.adventure-options-tooltip :count="count( $card['paid_adventure_options'] ) - 1">
 											@if ( ! empty( $card['paid_adventure_options'] ) )
 												<ul>
 													@foreach( $card['paid_adventure_options'] as $option )
-														<li>{{ $option }}</li>
+														<li>{{ $option['title'] }}</li>
 													@endforeach
 												</ul>
 											@endif
