@@ -27,6 +27,8 @@
 	:full_width="true"
 	:wrap="true"
 	:seamless="true"
+	data-layout="{{ $layout }}"
+	data-mobile-carousel="{{ $mobile_carousel }}"
 >
 	@if ( ! empty( $title ) )
 		<x-section.heading>
@@ -38,7 +40,7 @@
 		</x-section.heading>
 	@endif
 
-	<x-info-cards.carousel :layout="$layout" :mobile_carousel="$mobile_carousel">
+  <x-info-cards.carousel :layout="$layout">
 		{!! $slot !!}
 	</x-info-cards.carousel>
 </x-section>

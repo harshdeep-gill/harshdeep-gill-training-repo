@@ -7,7 +7,7 @@ import {
 	useInnerBlocksProps,
 	InspectorControls,
 } from '@wordpress/block-editor';
-import { PanelBody, TextControl, SelectControl } from '@wordpress/components';
+import { PanelBody, SelectControl } from '@wordpress/components';
 
 /**
  * External dependencies.
@@ -18,7 +18,7 @@ const { gumponents } = window;
 /**
  * External components.
  */
-const { ImageControl, Img } = gumponents.components;
+const { ImageControl, Img, LinkControl } = gumponents.components;
 
 /**
  * Child blocks.
@@ -59,10 +59,11 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 		<>
 			<InspectorControls>
 				<PanelBody title={ __( 'Info Cards - Card Options', 'qrk' ) }>
-					<TextControl
-						label="Enter URL for the Card"
+					<LinkControl
+						label={ __( 'Enter URL for the Card', 'qrk' ) }
 						value={ attributes.url }
-						onChange={ ( url ) => setAttributes( { url } ) }
+						help={ __( 'Enter a URL for this item', 'qrk' ) }
+						onChange={ ( url: object ) => setAttributes( { url } ) }
 					/>
 					<SelectControl
 						label={ __( 'Content Position', 'qrk' ) }

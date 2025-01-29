@@ -1,15 +1,18 @@
 @props( [
-	'languages' => [],
+	'languages'  => [],
+	'is_compact' => false,
 ] )
 
 @php
 	if ( empty( $languages ) || ! is_array( $languages ) ) {
 		return;
 	}
+
+	$the_id = 'expedition-search-filter-languages' . ( ! empty( $is_compact ) ? '-compact' : '' );
 @endphp
 
-<quark-expedition-search-filter-languages>
-	<x-accordion.item>
+<x-accordion.item id="{{ $the_id }}">
+	<quark-expedition-search-filter-languages>
 		<x-accordion.item-handle>
 			<x-escape :content=" __( 'Languages', 'qrk' ) " /> <span class="expedition-search__filter-count"></span>
 		</x-accordion-item.handle>
@@ -24,5 +27,5 @@
 				@endforeach
 			</x-form.field-group>
 		</x-accordion.item-content>
+	</quark-expedition-search-filter-languages>
 </x-accordion.item>
-</quark-expedition-search-filter-languages>

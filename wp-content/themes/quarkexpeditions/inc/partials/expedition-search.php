@@ -10,6 +10,7 @@ namespace Quark\Theme\Partials\ExpeditionSearch;
 use function Quark\Departures\get_cards_data;
 use function Quark\Localization\get_current_currency;
 use function Quark\Search\Departures\search;
+use function Quark\Theme\Search_Filters\get_filters_for_sidebar_search;
 
 const PARTIAL_NAME = 'expedition-search';
 
@@ -62,15 +63,28 @@ function render( array $output = [], string $name = '', array $data = [] ): arra
 		'cards' => get_cards_data( array_map( 'absint', $search_results['ids'] ), $currency ),
 	];
 
+	// Filters attributes.
+	$filters_attributes = [
+		'filters_data' => get_filters_for_sidebar_search( $selected_filter ),
+	];
+
 	// Return rendered partial.
 	return [
-		'markup'          => quark_get_component( 'parts.expedition-search-result-cards', $attributes ),
-		'noResultsMarkup' => __( 'No results found', 'qrk' ),
-		'data'            => [
+		'markup'               => quark_get_component( 'parts.expedition-search-result-cards', $attributes ),
+		'noResultsMarkup'      => __( 'No results found', 'qrk' ),
+		'data'                 => [
 			'resultCount'    => $search_results['result_count'],
 			'page'           => $search_results['current_page'],
 			'nextPage'       => $search_results['next_page'],
 			'remainingCount' => $search_results['remaining_count'],
 		],
+		'filtersMarkup'        => quark_get_component(
+			'parts.expedition-search-filters',
+			$filters_attributes
+		),
+		'compactFiltersMarkup' => quark_get_component(
+			'parts.expedition-search-filters',
+			array_merge( $filters_attributes, [ 'is_compact' => true ] ),
+		),
 	];
 }

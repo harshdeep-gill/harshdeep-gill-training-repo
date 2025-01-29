@@ -21,7 +21,6 @@ function setup(): void {
 	add_filter( 'wp_resource_hints', __NAMESPACE__ . '\\resource_hints', 10, 2 );
 	add_filter( 'wp_kses_allowed_html', __NAMESPACE__ . '\\kses_custom_allowed_html', 10, 2 );
 	add_filter( 'template_include', __NAMESPACE__ . '\\remove_default_title_tag' );
-	add_filter( 'wp_img_tag_add_auto_sizes', '__return_false' );
 }
 
 /**
@@ -227,98 +226,98 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 		$tags = array_merge(
 			$tags,
 			[
-				'quark-lp-header'                                  => [
+				'quark-lp-header'                                          => [
 					'class'  => true,
 					'data-*' => true,
 					'style'  => true,
 				],
-				'quark-form'                                       => [
+				'quark-form'                                               => [
 					'class'         => true,
 					'data-action'   => true,
 					'style'         => true,
 					'thank-you-url' => true,
 				],
-				'quark-inquiry-form-modal'                         => [
+				'quark-inquiry-form-modal'                                 => [
 					'class' => true,
 				],
-				'quark-modal-open'                                 => [
+				'quark-modal-open'                                         => [
 					'class'    => true,
 					'modal-id' => true,
 				],
-				'quark-fancy-video'                                => [
+				'quark-fancy-video'                                        => [
 					'class' => true,
 					'url'   => true,
 				],
-				'quark-departure-card'                             => [
+				'quark-departure-card'                                     => [
 					'class' => true,
 				],
-				'quark-expedition-card'                            => [
+				'quark-expedition-card'                                    => [
 					'class' => true,
 				],
-				'quark-toast-message'                              => [
+				'quark-toast-message'                                      => [
 					'class'   => true,
 					'visible' => true,
 				],
-				'quark-media-lightbox'                             => [
+				'quark-media-lightbox'                                     => [
 					'class' => true,
 					'name'  => true,
 				],
-				'quark-lp-form-modal-cta'                          => [
+				'quark-lp-form-modal-cta'                                  => [
 					'class'  => true,
 					'data-*' => true,
 				],
-				'quark-video-icons-card'                           => [
+				'quark-video-icons-card'                                   => [
 					'class'    => true,
 					'video_id' => true,
 				],
-				'quark-hero-overlay'                               => [
+				'quark-hero-overlay'                                       => [
 					'class'  => true,
 					'data-*' => true,
 				],
-				'quark-secondary-navigation'                       => [
+				'quark-secondary-navigation'                               => [
 					'class' => true,
 				],
-				'quark-form-two-step'                              => [
+				'quark-form-two-step'                                      => [
 					'class' => true,
 				],
-				'quark-form-two-step-modal'                        => [
+				'quark-form-two-step-modal'                                => [
 					'class' => true,
 				],
-				'quark-form-two-step-modal-cta'                    => [
+				'quark-form-two-step-modal-cta'                            => [
 					'class'  => true,
 					'data-*' => true,
 				],
-				'quark-table-of-contents'                          => [
+				'quark-table-of-contents'                                  => [
 					'class' => true,
 				],
-				'quark-form-two-step-compact-modal'                => [
+				'quark-form-two-step-compact-modal'                        => [
 					'class' => true,
 				],
-				'quark-form-two-step-compact-modal-cta'            => [
+				'quark-form-two-step-compact-modal-cta'                    => [
 					'class'  => true,
 					'data-*' => true,
 				],
-				'quark-gated-brochure-modal-cta'                   => [
+				'quark-gated-brochure-modal-cta'                           => [
 					'class'  => true,
 					'data-*' => true,
 				],
-				'quark-hero-card-slider'                           => [
+				'quark-hero-card-slider'                                   => [
 					'class' => true,
 				],
-				'quark-thumbnail-cards-slider'                     => [
+				'quark-thumbnail-cards-slider'                             => [
 					'class' => true,
 				],
-				'quark-tabs'                                       => [
+				'quark-tabs'                                               => [
 					'class' => true,
 				],
-				'quark-itinerary-tabs'                             => [
+				'quark-itinerary-tabs'                                     => [
 					'class' => true,
 				],
-				'quark-header-nav-menu-dropdown'                   => [
+				'quark-header-nav-menu-dropdown'                           => [
 					'class' => true,
 					'open'  => true,
 				],
-				'quark-drawer'                                     => [
+				'quark-drawer'                                             => [
 					'id'                  => true,
 					'class'               => true,
 					'overlay-click-close' => true,
@@ -326,63 +325,63 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'data-*'              => true,
 					'animation-direction' => true,
 				],
-				'quark-drawer-content'                             => [
+				'quark-drawer-content'                                     => [
 					'class' => true,
 				],
-				'quark-drawer-close'                               => [
+				'quark-drawer-close'                                       => [
 					'class' => true,
 				],
-				'quark-drawer-open'                                => [
+				'quark-drawer-open'                                        => [
 					'class'     => true,
 					'drawer-id' => true,
 				],
-				'quark-footer-accordion'                           => [
+				'quark-footer-accordion'                                   => [
 					'class'  => true,
 					'active' => true,
 				],
-				'quark-tooltip'                                    => [
+				'quark-tooltip'                                            => [
 					'class' => true,
 				],
-				'quark-dates-rates-filter-chip'                    => [
+				'quark-dates-rates-filter-chip'                            => [
 					'class'        => true,
 					'accordion_id' => true,
 					'type'         => true,
 				],
-				'quark-dates-rates-table'                          => [
+				'quark-dates-rates-table'                                  => [
 					'class' => true,
 				],
-				'quark-country-selector'                           => [
+				'quark-country-selector'                                   => [
 					'class' => true,
 				],
-				'quark-currency-switcher'                          => [
+				'quark-currency-switcher'                                  => [
 					'class' => true,
 				],
-				'quark-load-more'                                  => [
+				'quark-load-more'                                          => [
 					'class'   => true,
 					'loading' => true,
 				],
-				'quark-book-departures-expeditions'                => [
+				'quark-book-departures-expeditions'                        => [
 					'class'   => true,
 					'loading' => true,
 				],
-				'quark-book-departures-expeditions-load-more'      => [
+				'quark-book-departures-expeditions-load-more'              => [
 					'class'   => true,
 					'loading' => true,
 					'active'  => true,
 				],
-				'quark-book-departures-expeditions-results'        => [
+				'quark-book-departures-expeditions-results'                => [
 					'class'  => true,
 					'data-*' => true,
 				],
-				'quark-featured-media-accordions'                  => [
+				'quark-featured-media-accordions'                          => [
 					'class' => true,
 				],
-				'quark-wistia-embed'                               => [
+				'quark-wistia-embed'                                       => [
 					'class'    => true,
 					'video-id' => true,
 					'play'     => true,
 				],
-				'quark-dates-rates-results'                        => [
+				'quark-dates-rates-results'                                => [
 					'class'           => true,
 					'data-*'          => true,
 					'partial'         => true,
@@ -394,151 +393,151 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'result-count'    => true,
 					'server-rendered' => true,
 				],
-				'quark-dates-rates-filters-controller'             => [
+				'quark-dates-rates-filters-controller'                     => [
 					'class'  => true,
 					'data-*' => true,
 				],
-				'quark-dates-rates-selected-filters'               => [
+				'quark-dates-rates-selected-filters'                       => [
 					'class' => true,
 					'empty' => true,
 				],
-				'quark-dates-rates-selected-filter-pill'           => [
+				'quark-dates-rates-selected-filter-pill'                   => [
 					'class'  => true,
 					'filter' => true,
 					'value'  => true,
 					'data-*' => true,
 				],
-				'quark-dates-rates-filter-currency-dropdown'       => [
+				'quark-dates-rates-filter-currency-dropdown'               => [
 					'class' => true,
 				],
-				'quark-dates-rates-filter-currency-radios'         => [
+				'quark-dates-rates-filter-currency-radios'                 => [
 					'class' => true,
 				],
-				'quark-dates-rates-filter-sticky-filter'           => [
+				'quark-dates-rates-filter-sticky-filter'                   => [
 					'class' => true,
 				],
-				'quark-dates-rates-filter-sticky-currency'         => [
+				'quark-dates-rates-filter-sticky-currency'                 => [
 					'class' => true,
 				],
-				'quark-dates-rates-filter-seasons'                 => [
+				'quark-dates-rates-filter-seasons'                         => [
 					'class' => true,
 				],
-				'quark-dates-rates-filter-expeditions'             => [
+				'quark-dates-rates-filter-expeditions'                     => [
 					'class' => true,
 				],
-				'quark-dates-rates-filter-adventure-options'       => [
+				'quark-dates-rates-filter-adventure-options'               => [
 					'class' => true,
 				],
-				'quark-dates-rates-filter-departure-months'        => [
+				'quark-dates-rates-filter-departure-months'                => [
 					'class' => true,
 				],
-				'quark-dates-rates-filter-durations'               => [
+				'quark-dates-rates-filter-durations'                       => [
 					'class' => true,
 				],
-				'quark-dates-rates-filter-ships'                   => [
+				'quark-dates-rates-filter-ships'                           => [
 					'class' => true,
 				],
-				'quark-dates-rates-filters-cta-view-results'       => [
+				'quark-dates-rates-filters-cta-view-results'               => [
 					'class' => true,
 				],
-				'quark-dates-rates-filters-cta-clear-all'          => [
+				'quark-dates-rates-filters-cta-clear-all'                  => [
 					'class' => true,
 				],
-				'quark-dates-rates-pagination-page-number'         => [
+				'quark-dates-rates-pagination-page-number'                 => [
 					'class'  => true,
 					'number' => true,
 				],
-				'quark-dates-rates-pagination-prev-page'           => [
+				'quark-dates-rates-pagination-prev-page'                   => [
 					'class'  => true,
 					'data-*' => true,
 				],
-				'quark-dates-rates-pagination-next-page'           => [
+				'quark-dates-rates-pagination-next-page'                   => [
 					'class'  => true,
 					'data-*' => true,
 				],
-				'quark-dates-rates-pagination-links-controller'    => [
+				'quark-dates-rates-pagination-links-controller'            => [
 					'class'        => true,
 					'current-page' => true,
 					'total-pages'  => true,
 				],
-				'quark-dates-rates-pagination-total-pages'         => [
+				'quark-dates-rates-pagination-total-pages'                 => [
 					'class' => true,
 				],
-				'quark-dates-rates-pagination-items-per-page'      => [
+				'quark-dates-rates-pagination-items-per-page'              => [
 					'class' => true,
 				],
-				'quark-dates-rates-results-count'                  => [
+				'quark-dates-rates-results-count'                          => [
 					'class' => true,
 				],
-				'quark-dates-rates'                                => [
+				'quark-dates-rates'                                        => [
 					'class'   => true,
 					'loading' => true,
 				],
-				'quark-dates-rates-filters-inputs-container'       => true,
-				'quark-expedition-search'                          => [
+				'quark-dates-rates-filters-inputs-container'               => true,
+				'quark-expedition-search'                                  => [
 					'class'   => true,
 					'loading' => true,
 				],
-				'quark-expedition-search-load-more'                => [
+				'quark-expedition-search-load-more'                        => [
 					'class'          => true,
 					'load-more-text' => true,
 				],
-				'quark-expedition-search-filters'                  => [
+				'quark-expedition-search-filters'                          => [
 					'class' => true,
 				],
-				'quark-expedition-search-sidebar-filters-header'   => [
+				'quark-expedition-search-sidebar-filters-header'           => [
 					'class' => true,
 				],
-				'quark-expedition-search-filter-destinations'      => [
+				'quark-expedition-search-filter-destinations'              => [
 					'class' => true,
 				],
-				'quark-expedition-search-filter-months'            => [
+				'quark-expedition-search-filter-months'                    => [
 					'class' => true,
 				],
-				'quark-expedition-search-filter-itinerary-lengths' => [
+				'quark-expedition-search-filter-itinerary-lengths'         => [
 					'class' => true,
 				],
-				'quark-expedition-search-filter-ships'             => [
+				'quark-expedition-search-filter-ships'                     => [
 					'class' => true,
 				],
-				'quark-expedition-search-filter-adventure-options' => [
+				'quark-expedition-search-filter-adventure-options'         => [
 					'class' => true,
 				],
-				'quark-expedition-search-filter-languages'         => [
+				'quark-expedition-search-filter-languages'                 => [
 					'class' => true,
 				],
-				'quark-expedition-search-filter-expeditions'       => [
+				'quark-expedition-search-filter-expeditions'               => [
 					'class' => true,
 				],
-				'quark-expedition-search-filter-cabin-classes'     => [
+				'quark-expedition-search-filter-cabin-classes'             => [
 					'class' => true,
 				],
-				'quark-expedition-search-filter-travelers'         => [
+				'quark-expedition-search-filter-travelers'                 => [
 					'class' => true,
 				],
-				'quark-expedition-search-filters-cta-clear-all'    => [
+				'quark-expedition-search-filters-cta-clear-all'            => [
 					'class' => true,
 				],
-				'quark-expedition-search-filters-cta-view-results' => [
+				'quark-expedition-search-filters-cta-view-results'         => [
 					'class' => true,
 				],
-				'quark-expedition-search-sticky-filters'           => [
+				'quark-expedition-search-sticky-filters'                   => [
 					'class' => true,
 				],
-				'quark-expedition-search-selected-filters'         => [
+				'quark-expedition-search-selected-filters'                 => [
 					'class' => true,
 				],
-				'quark-expedition-search-selected-filter-pill'     => [
+				'quark-expedition-search-selected-filter-pill'             => [
 					'class' => true,
 				],
-				'quark-expedition-search-recent-searches'          => [
+				'quark-expedition-search-recent-searches'                  => [
 					'class'  => true,
 					'data-*' => true,
 				],
-				'quark-expedition-search-sidebar-filters'          => [
+				'quark-expedition-search-sidebar-filters'                  => [
 					'class' => true,
 				],
-				'quark-expedition-search-results'                  => [
+				'quark-expedition-search-results'                          => [
 					'class'           => true,
 					'parital'         => true,
 					'selector'        => true,
@@ -546,7 +545,11 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'results-count'   => true,
 					'server-rendered' => true,
 				],
-				'quark-range-slider'                               => [
+				'quark-expedition-search-sidebar-filters-inputs-container' => [
+					'compact' => true,
+					'class'   => true,
+				],
+				'quark-range-slider'                                       => [
 					'class'          => true,
 					'prefix'         => true,
 					'min'            => true,
@@ -554,14 +557,14 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'selected-value' => true,
 					'suffix'         => true,
 				],
-				'quark-form-newsletter'                            => [
+				'quark-form-newsletter'                                    => [
 					'class' => true,
 				],
-				'tp-form'                                          => [
+				'tp-form'                                                  => [
 					'class'          => true,
 					'prevent-submit' => true,
 				],
-				'tp-form-field'                                    => [
+				'tp-form-field'                                            => [
 					'class'           => true,
 					'required'        => true,
 					'no-empty-spaces' => true,
@@ -571,103 +574,103 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'error'           => true,
 					'data-*'          => true,
 				],
-				'tp-form-submit'                                   => [
+				'tp-form-submit'                                           => [
 					'class'           => true,
 					'submitting-text' => true,
 				],
-				'tp-slider'                                        => [
+				'tp-slider'                                                => [
 					'class'           => true,
 					'flexible-height' => true,
 					'swipe'           => true,
 					'infinite'        => true,
 				],
-				'tp-tabs'                                          => [
+				'tp-tabs'                                                  => [
 					'class'       => true,
 					'current-tab' => true,
 					'update-url'  => true,
 				],
-				'tp-tabs-nav'                                      => [],
-				'tp-tabs-tab'                                      => [
+				'tp-tabs-nav'                                              => [],
+				'tp-tabs-tab'                                              => [
 					'id'    => true,
 					'class' => true,
 					'open'  => true,
 				],
-				'tp-tabs-nav-item'                                 => [
+				'tp-tabs-nav-item'                                         => [
 					'class'  => true,
 					'active' => true,
 				],
-				'tp-slider-track'                                  => [
+				'tp-slider-track'                                          => [
 					'class' => true,
 				],
-				'tp-slider-slides'                                 => [
+				'tp-slider-slides'                                         => [
 					'class' => true,
 				],
-				'tp-slider-slide'                                  => [
+				'tp-slider-slide'                                          => [
 					'class' => true,
 				],
-				'tp-slider-nav'                                    => [
+				'tp-slider-nav'                                            => [
 					'class' => true,
 				],
-				'tp-slider-arrow'                                  => [
+				'tp-slider-arrow'                                          => [
 					'class'     => true,
 					'direction' => true,
 				],
-				'tp-slider-nav-item'                               => [
+				'tp-slider-nav-item'                                       => [
 					'class'   => true,
 					'current' => true,
 				],
-				'tp-modal'                                         => [
+				'tp-modal'                                                 => [
 					'id'                  => true,
 					'class'               => true,
 					'overlay-click-close' => true,
 					'open'                => true,
 					'data-*'              => true,
 				],
-				'tp-modal-content'                                 => [
+				'tp-modal-content'                                         => [
 					'class' => true,
 				],
-				'tp-modal-close'                                   => [
+				'tp-modal-close'                                           => [
 					'class' => true,
 				],
-				'tp-accordion'                                     => [
+				'tp-accordion'                                             => [
 					'class' => true,
 				],
-				'tp-accordion-item'                                => [
+				'tp-accordion-item'                                        => [
 					'class'           => true,
 					'id'              => true,
 					'open-by-default' => true,
 				],
-				'tp-accordion-handle'                              => [
+				'tp-accordion-handle'                                      => [
 					'class' => true,
 					'id'    => true,
 				],
-				'tp-accordion-content'                             => [
+				'tp-accordion-content'                                     => [
 					'class' => true,
 				],
-				'tp-lightbox-trigger'                              => [
+				'tp-lightbox-trigger'                                      => [
 					'lightbox' => true,
 					'group'    => true,
 				],
-				'tp-lightbox'                                      => [
+				'tp-lightbox'                                              => [
 					'id'    => true,
 					'class' => true,
 				],
-				'tp-lightbox-close'                                => [
+				'tp-lightbox-close'                                        => [
 					'class' => true,
 				],
-				'tp-lightbox-content'                              => [
+				'tp-lightbox-content'                                      => [
 					'class' => true,
 				],
-				'tp-lightbox-previous'                             => [
+				'tp-lightbox-previous'                                     => [
 					'class' => true,
 				],
-				'tp-lightbox-next'                                 => [
+				'tp-lightbox-next'                                         => [
 					'class' => true,
 				],
-				'tp-lightbox-count'                                => [
+				'tp-lightbox-count'                                        => [
 					'class' => true,
 				],
-				'tp-multi-select'                                  => [
+				'tp-multi-select'                                          => [
 					'name'            => true,
 					'class'           => true,
 					'id'              => true,
@@ -675,60 +678,60 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'multiple'        => true,
 					'close-on-select' => true,
 				],
-				'tp-multi-select-field'                            => [
+				'tp-multi-select-field'                                    => [
 					'class' => true,
 					'id'    => true,
 				],
-				'tp-multi-select-pills'                            => [
+				'tp-multi-select-pills'                                    => [
 					'class' => true,
 					'id'    => true,
 				],
-				'tp-multi-select-search'                           => [
+				'tp-multi-select-search'                                   => [
 					'class' => true,
 					'id'    => true,
 				],
-				'tp-multi-select-placeholder'                      => [
+				'tp-multi-select-placeholder'                              => [
 					'class' => true,
 					'id'    => true,
 				],
-				'tp-multi-select-status'                           => [
+				'tp-multi-select-status'                                   => [
 					'class'  => true,
 					'id'     => true,
 					'format' => true,
 				],
-				'tp-multi-select-options'                          => [
+				'tp-multi-select-options'                                  => [
 					'class' => true,
 					'id'    => true,
 				],
-				'tp-multi-select-option'                           => [
+				'tp-multi-select-option'                                   => [
 					'class' => true,
 					'id'    => true,
 					'value' => true,
 					'label' => true,
 				],
-				'tp-multi-select-select-all'                       => [
+				'tp-multi-select-select-all'                               => [
 					'class'         => true,
 					'id'            => true,
 					'select-text'   => true,
 					'unselect-text' => true,
 				],
-				'tp-number-spinner'                                => [
+				'tp-number-spinner'                                        => [
 					'class' => true,
 					'id'    => true,
 					'min'   => true,
 					'max'   => true,
 					'step'  => true,
 				],
-				'tp-number-spinner-increment'                      => [
+				'tp-number-spinner-increment'                              => [
 					'class' => true,
 				],
-				'tp-number-spinner-decrement'                      => [
+				'tp-number-spinner-decrement'                              => [
 					'class' => true,
 				],
-				'tp-number-spinner-input'                          => [
+				'tp-number-spinner-input'                                  => [
 					'class' => true,
 				],
-				'iframe'                                           => [
+				'iframe'                                                   => [
 					'class'           => true,
 					'src'             => true,
 					'height'          => true,
@@ -739,7 +742,7 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'frameborder'     => true,
 					'data-*'          => true,
 				],
-				'svg'                                              => [
+				'svg'                                                      => [
 					'id'              => true,
 					'class'           => true,
 					'aria-hidden'     => true,
@@ -751,15 +754,15 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'viewbox'         => true,
 					'fill'            => true,
 				],
-				'g'                                                => [
+				'g'                                                        => [
 					'fill'      => true,
 					'fill-rule' => true,
 					'transform' => true,
 				],
-				'title'                                            => [
+				'title'                                                    => [
 					'title' => true,
 				],
-				'path'                                             => [
+				'path'                                                     => [
 					'id'             => true,
 					'd'              => true,
 					'fill'           => true,
@@ -771,16 +774,16 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'transform'      => true,
 					'opacity'        => true,
 				],
-				'mask'                                             => [
+				'mask'                                                     => [
 					'id'   => true,
 					'fill' => true,
 				],
-				'polygon'                                          => [
+				'polygon'                                                  => [
 					'id'     => true,
 					'points' => true,
 					'fill'   => true,
 				],
-				'circle'                                           => [
+				'circle'                                                   => [
 					'cx'             => true,
 					'cy'             => true,
 					'r'              => true,
@@ -789,22 +792,22 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'stroke-opacity' => true,
 					'stroke-width'   => true,
 				],
-				'defs'                                             => true,
-				'use'                                              => [
+				'defs'                                                     => true,
+				'use'                                                      => [
 					'xlink:href' => true,
 				],
-				'lineargradient'                                   => [
+				'lineargradient'                                           => [
 					'id' => true,
 					'x1' => true,
 					'x2' => true,
 					'y1' => true,
 					'y2' => true,
 				],
-				'stop'                                             => [
+				'stop'                                                     => [
 					'offset'     => true,
 					'stop-color' => true,
 				],
-				'form'                                             => [
+				'form'                                                     => [
 					'id'         => true,
 					'class'      => true,
 					'method'     => true,
@@ -812,18 +815,18 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'novalidate' => true,
 					'data-*'     => true,
 				],
-				'select'                                           => [
+				'select'                                                   => [
 					'name'     => true,
 					'class'    => true,
 					'id'       => true,
 					'form'     => true,
 					'multiple' => true,
 				],
-				'option'                                           => [
+				'option'                                                   => [
 					'value'    => true,
 					'selected' => true,
 				],
-				'input'                                            => [
+				'input'                                                    => [
 					'class'        => true,
 					'type'         => true,
 					'autocomplete' => true,
@@ -836,33 +839,33 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'form'         => true,
 					'data-*'       => true,
 				],
-				'textarea'                                         => [
+				'textarea'                                                 => [
 					'id'          => true,
 					'class'       => true,
 					'placeholder' => true,
 					'name'        => true,
 					'rows'        => true,
 				],
-				'div'                                              => [
+				'div'                                                      => [
 					'tabindex' => true,
 					'id'       => true,
 					'class'    => true,
 					'data-*'   => true,
 					'style'    => true,
 				],
-				'source'                                           => [
+				'source'                                                   => [
 					'src'    => true,
 					'type'   => true,
 					'srcset' => true,
 					'media'  => true,
 				],
-				'dialog'                                           => [
+				'dialog'                                                   => [
 					'class' => true,
 				],
-				'template'                                         => [
+				'template'                                                 => [
 					'class' => true,
 				],
-				'quark-dynamic-phone-number'                       => true,
+				'quark-dynamic-phone-number'                               => true,
 			]
 		);
 	}

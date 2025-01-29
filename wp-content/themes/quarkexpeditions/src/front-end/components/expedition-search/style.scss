@@ -369,6 +369,10 @@
 			}
 		}
 	}
+
+	&__accordion-content--no-transition {
+		transition: none;
+	}
 }
 
 tp-modal.expedition-search__filters-modal {

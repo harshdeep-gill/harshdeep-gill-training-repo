@@ -19,10 +19,12 @@
 	}
 
 	$years = array_unique( $years );
+
+	$the_id = 'expedition-search-filter-months' . ( ! empty( $is_compact ) ? '-compact' : '' );
 @endphp
 
-<quark-expedition-search-filter-months>
-	<x-accordion.item>
+<x-accordion.item id="{{ $the_id }}">
+	<quark-expedition-search-filter-months>
 		<x-accordion.item-handle>
 			<x-escape :content=" __( 'Months', 'qrk' ) " /> <span class="expedition-search__filter-count"></span>
 		</x-accordion-item.handle>
@@ -52,5 +54,5 @@
 			@endif
 
 		</x-accordion.item-content>
+	</quark-expedition-search-filter-months>
 </x-accordion.item>
-</quark-expedition-search-filter-months>
