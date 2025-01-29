@@ -1518,6 +1518,19 @@ function get_paid_adventure_options_data( int $departure_id = 0, string $currenc
 		];
 	}
 
+	uasort(
+		$paid_adventure_options_data,
+		function ( $a, $b ) {
+			// Check for spaces available.
+			if ( empty( $a['title'] ) || empty( $b['title'] ) ) {
+				return 0;
+			}
+
+			// Sort by spaces available.
+			return strlen( $a['title'] ) <=> strlen( $b['title'] );
+		}
+	);
+
 	// Return paid adventure options data.
 	return $paid_adventure_options_data;
 }

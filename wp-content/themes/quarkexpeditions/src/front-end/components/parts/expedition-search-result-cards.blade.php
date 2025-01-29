@@ -96,11 +96,6 @@
 									</x-expedition-cards.specification-label>
 									<x-expedition-cards.specification-value>
 										<x-expedition-cards.adventure-options>
-											@php
-												// Sort options based on length.
-												uasort( $card['paid_adventure_options'], fn( $a, $b ) => strlen( $a['title'] ) <=> strlen( $b['title'] ) );
-											@endphp
-
 											@if( ! empty( $card['paid_adventure_options'] ) )
 												<x-expedition-cards.adventure-option title="{{ array_values( $card['paid_adventure_options'] )[0]['title'] }}"/>
 											@endif
