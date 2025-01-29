@@ -68,7 +68,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) {
 			],
 			'menu_order'            => 0,
 			'position'              => 'normal',
-			'style'                 => 'default',
+			'style'                 => 'seamless',
 			'label_placement'       => 'top',
 			'instruction_placement' => 'label',
 			'active'                => true,

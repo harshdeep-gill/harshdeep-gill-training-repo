@@ -1,7 +1,9 @@
 @props( [
-	'primary_nav'   => [],
-	'secondary_nav' => [],
-	'cta_buttons'   => [],
+	'primary_nav'    => [],
+	'secondary_nav'  => [],
+	'cta_buttons'    => [],
+	'banner_content' => '',
+	'display_banner' => false,
 ] )
 
 @php
@@ -269,3 +271,6 @@
 		</x-drawer.body>
 	</x-drawer>
 </x-header>
+<x-site-banner :display_banner="$display_banner">
+	{!! $banner_content !!}
+</x-site-banner>

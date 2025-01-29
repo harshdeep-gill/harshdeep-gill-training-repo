@@ -1,0 +1,31 @@
+@import "../../scss/";
+
+.site-banner {
+	background-color: var(--color-site-banner);
+	color: var(--color-white);
+	text-align: center;
+	padding: var(--spacing-3) var(--grid-col-gutter);
+	margin: 0;
+
+	&__track {
+		overflow-x: hidden;
+	}
+
+	&__content {
+		width: max-content;
+		animation: site-banner-loop 20s linear infinite;
+		display: flex;
+		gap: 100vw;
+
+		@keyframes site-banner-loop {
+
+			to {
+				transform: translateX(calc(-50% - 50vw));
+			}
+		}
+	}
+
+	a {
+		text-decoration: none;
+	}
+}

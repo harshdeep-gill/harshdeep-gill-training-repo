@@ -60,13 +60,15 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 
 	// Initialize component attributes.
 	$component_attributes = [
-		'primary_nav'   => [
+		'primary_nav'    => [
 			'items' => [],
 		],
-		'secondary_nav' => [
+		'secondary_nav'  => [
 			'items' => [],
 		],
-		'cta_buttons'   => [],
+		'cta_buttons'    => [],
+		'display_banner' => get_option( 'options_display_site_wide_banner_message' ),
+		'banner_content' => get_option( 'options_site_wide_banner_message' ),
 	];
 
 	// Loop through inner blocks.
