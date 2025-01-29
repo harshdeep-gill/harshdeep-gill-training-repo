@@ -609,9 +609,6 @@ class Test_Urgent_Tracker extends Softrip_TestCase {
 		$this->assertIsArray( $option_value );
 		$this->assertEquals( $expedition_ids, $option_value );
 
-		// Reset option.
-		delete_option( URGENTLY_CHANGED_EXPEDITION_IDS_OPTION );
-
 		// Test with adventure option term ID.
 		track_adventure_option_taxonomy_change( $adventure_term2 );
 
@@ -636,7 +633,7 @@ class Test_Urgent_Tracker extends Softrip_TestCase {
 		$this->assertIsArray( $option_value );
 		$combined_ids = array_merge( $expedition_ids, $expedition_ids2 );
 		$combined_ids = array_unique( $combined_ids );
-		$this->assertEquals( $combined_ids, $option_value );
+		$this->assertEqualsCanonicalizing( $combined_ids, $option_value );
 
 		// Reset option.
 		delete_option( URGENTLY_CHANGED_EXPEDITION_IDS_OPTION );
