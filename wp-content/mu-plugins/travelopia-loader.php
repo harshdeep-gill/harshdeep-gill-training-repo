@@ -15,6 +15,24 @@ if ( defined( 'WP_INSTALLING' ) && true === WP_INSTALLING ) {
 	return;
 }
 
+// Check if sync disable constant is defined.
+if ( ! defined( 'QUARK_SOFTRIP_SYNC_DISABLE' ) ) {
+	// Get option.
+	$is_softrip_sync_disabled = (bool) get_option( 'options_disable_softrip_sync', false );
+
+	// Define Softrip sync disable constant.
+	define( 'QUARK_SOFTRIP_SYNC_DISABLE', $is_softrip_sync_disabled );
+}
+
+// Check if ingestor push disable constant is defined.
+if ( ! defined( 'QUARK_INGESTOR_PUSH_DISABLE' ) ) {
+	// Get option.
+	$is_ingestor_push_disabled = (bool) get_option( 'options_disable_ingestor_push', false );
+
+	// Define Ingestor push disable constant.
+	define( 'QUARK_INGESTOR_PUSH_DISABLE', $is_ingestor_push_disabled );
+}
+
 $tp_mu_plugins = array(
 
 	// load mu-plugins here.
