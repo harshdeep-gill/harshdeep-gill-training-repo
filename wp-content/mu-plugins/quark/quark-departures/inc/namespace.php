@@ -1518,6 +1518,7 @@ function get_paid_adventure_options_data( int $departure_id = 0, string $currenc
 		];
 	}
 
+	// Sort by title.
 	uasort(
 		$paid_adventure_options_data,
 		function ( $a, $b ) {
