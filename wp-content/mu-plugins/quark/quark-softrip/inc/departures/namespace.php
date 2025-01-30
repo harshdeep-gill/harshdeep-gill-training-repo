@@ -511,6 +511,17 @@ function format_raw_departure_data( array $raw_departure_data = [], int $itinera
 		return [];
 	}
 
+	// Ship code.
+	$ship_code = sanitize_text_field( strval( $raw_departure_data['shipCode'] ) );
+
+	// Get ship post.
+	$ship_post_id = get_id_from_ship_code( $ship_code );
+
+	// Validate.
+	if ( empty( $ship_post_id ) ) {
+		return [];
+	}
+
 	// Prepare formatted data.
 	$formatted_data = [
 		'post_title'  => sanitize_text_field( strval( $raw_departure_data['id'] ) ),
@@ -519,14 +530,14 @@ function format_raw_departure_data( array $raw_departure_data = [], int $itinera
 		'meta_input'  => [
 			'related_expedition'   => $expedition_post_id,
 			'itinerary'            => $itinerary_post_id,
-			'related_ship'         => get_id_from_ship_code( strval( $raw_departure_data['shipCode'] ) ),
+			'related_ship'         => $ship_post_id,
 			'softrip_package_code' => sanitize_text_field( strval( $raw_departure_data['packageCode'] ) ),
 			'softrip_id'           => sanitize_text_field( strval( $raw_departure_data['id'] ) ),
 			'softrip_code'         => sanitize_text_field( strval( $raw_departure_data['code'] ) ),
 			'start_date'           => sanitize_text_field( strval( $raw_departure_data['startDate'] ) ),
 			'end_date'             => sanitize_text_field( strval( $raw_departure_data['endDate'] ) ),
 			'duration'             => absint( $raw_departure_data['duration'] ),
-			'ship_code'            => sanitize_text_field( strval( $raw_departure_data['shipCode'] ) ),
+			'ship_code'            => $ship_code,
 			'softrip_market_code'  => sanitize_text_field( strval( $raw_departure_data['marketCode'] ) ),
 		],
 	];
