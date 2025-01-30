@@ -12,6 +12,9 @@
 	}
 @endphp
 
+<x-site-banner :display_banner="$display_banner">
+	{!! $banner_content !!}
+</x-site-banner>
 <x-header>
 	<x-header.site-logo />
 
@@ -271,6 +274,3 @@
 		</x-drawer.body>
 	</x-drawer>
 </x-header>
-<x-site-banner :display_banner="$display_banner">
-	{!! $banner_content !!}
-</x-site-banner>
