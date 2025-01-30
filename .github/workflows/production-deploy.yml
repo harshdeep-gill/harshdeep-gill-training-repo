@@ -47,3 +47,4 @@ jobs:
 
       - name: Deploy to production
         run: bash .bin/deploy-to-production.sh
+        
