@@ -19,6 +19,7 @@ use function Quark\Softrip\Promotions\get_table_sql as get_promotions_table_sql;
 use function Quark\Softrip\OccupancyPromotions\get_table_sql as get_occupancy_promotions_table_sql;
 use function Quark\Softrip\AdventureOptions\get_table_name as get_adventure_options_table_name;
 use function Quark\Softrip\Cleanup\do_cleanup;
+use function Quark\Softrip\Departures\get_start_date;
 use function Quark\Softrip\Occupancies\get_table_name as get_occupancies_table_name;
 use function Quark\Softrip\OccupancyPromotions\get_table_name as get_occupancy_promotions_table_name;
 use function Quark\Softrip\Promotions\get_table_name as get_promotions_table_name;
@@ -348,7 +349,7 @@ function do_sync( array $itinerary_post_ids = [], array $specific_departure_post
 					);
 				} else {
 					// Draft departures.
-					draft_departures_with_softrip_codes( [ $softrip_package_code ] );
+					draft_old_departures( [ $softrip_package_code ] );
 				}
 
 				// Skip since there was an error, or departures are empty.
@@ -554,7 +555,7 @@ function delete_custom_data( int $post_id = 0 ): void {
  *
  * @return void
  */
-function draft_departures_with_softrip_codes( array $package_codes = [] ): void {
+function draft_old_departures( array $package_codes = [] ): void {
 	// Bail if empty.
 	if ( empty( $package_codes ) ) {
 		return;
@@ -617,6 +618,14 @@ function draft_departures_with_softrip_codes( array $package_codes = [] ): void 
 			continue;
 		}
 
+		// Get start date meta.
+		$start_date = get_start_date( $departure_post_id );
+
+		// If empty start date or not in the past, skip.
+		if ( empty( $start_date ) || ! is_date_in_the_past( $start_date ) ) {
+			continue;
+		}
+
 		// Draft departure.
 		$is_updated = wp_update_post(
 			[
@@ -640,12 +649,16 @@ function draft_departures_with_softrip_codes( array $package_codes = [] ): void 
 			continue;
 		}
 
-		// Log drafted departure.
+		/**
+		 * Fires after a departure is expired and unpublished.
+		 *
+		 * @param int $departure_post_id Departure post ID.
+		 */
 		do_action(
-			'quark_softrip_sync_departure_drafted',
+			'quark_softrip_sync_departure_expired',
 			[
-				'post_id'            => $departure_post_id,
-				'softrip_package_id' => $softrip_package_id,
+				'post_id'    => $departure_post_id,
+				'softrip_id' => $softrip_package_id,
 			]
 		);
 	}
