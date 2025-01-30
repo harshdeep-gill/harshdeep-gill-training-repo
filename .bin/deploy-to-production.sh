@@ -2,8 +2,6 @@
 
 set -euxo pipefail
 
-SITE_NAME=${1:-'qa'}
-
 # Add SSH Key
 eval $(ssh-agent -s)
 rm -rf /tmp/ssh_agent.sock
