@@ -325,6 +325,7 @@ function do_sync( array $itinerary_post_ids = [], array $specific_departure_post
 					$progress->tick();
 				}
 
+				// Log error.
 				if ( ! is_string( $softrip_package_code ) ) {
 					// Log the error.
 					do_action(
@@ -553,7 +554,7 @@ function delete_custom_data( int $post_id = 0 ): void {
  *
  * @return void
  */
-function draft_departures_with_softrip_codes( array $package_codes = [] ) {
+function draft_departures_with_softrip_codes( array $package_codes = [] ): void {
 	// Bail if empty.
 	if ( empty( $package_codes ) ) {
 		return;
@@ -635,9 +636,11 @@ function draft_departures_with_softrip_codes( array $package_codes = [] ) {
 				]
 			);
 
+			// Skip.
 			continue;
 		}
 
+		// Log drafted departure.
 		do_action(
 			'quark_softrip_sync_departure_drafted',
 			[
