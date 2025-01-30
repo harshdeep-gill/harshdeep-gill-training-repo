@@ -12,9 +12,7 @@
 	}
 @endphp
 
-<x-site-banner :display_banner="$display_banner">
-	{!! $banner_content !!}
-</x-site-banner>
+<x-site-banner :message="$banner_content" :display_banner="$display_banner" />
 <x-header>
 	<x-header.site-logo />
 

@@ -6,14 +6,15 @@
 	text-align: center;
 	padding: var(--spacing-3) var(--grid-col-gutter);
 	margin: 0;
+	--site-banner-animation-duration: 20s;
 
 	&__track {
-		overflow-x: hidden;
+		overflow: hidden;
 	}
 
 	&__content {
 		width: max-content;
-		animation: site-banner-loop 20s linear infinite;
+		animation: site-banner-loop var(--site-banner-animation-duration) linear infinite;
 		display: flex;
 		gap: 100vw;
 
