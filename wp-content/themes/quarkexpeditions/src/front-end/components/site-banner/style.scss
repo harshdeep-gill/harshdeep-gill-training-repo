@@ -1,0 +1,13 @@
+@import "../../scss/";
+
+.site-banner {
+	background-color: var(--color-site-banner);
+	color: var(--color-white);
+	text-align: center;
+	padding: var(--spacing-3) var(--grid-col-gutter);
+	margin: 0;
+
+	a {
+		text-decoration: none;
+	}
+}

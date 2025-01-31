@@ -1,7 +1,9 @@
 @props( [
-	'primary_nav'   => [],
-	'secondary_nav' => [],
-	'cta_buttons'   => [],
+	'primary_nav'    => [],
+	'secondary_nav'  => [],
+	'cta_buttons'    => [],
+	'banner_content' => '',
+	'display_banner' => false,
 ] )
 
 @php
@@ -10,6 +12,7 @@
 	}
 @endphp
 
+<x-site-banner :message="$banner_content" :display_banner="$display_banner" />
 <x-header>
 	<x-header.site-logo />
 
