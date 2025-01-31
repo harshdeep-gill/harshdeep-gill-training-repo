@@ -1,11 +1,14 @@
 @import "../../scss/";
 
 .site-banner {
+	display: block;
 	background-color: var(--color-site-banner);
 	color: var(--color-white);
 	text-align: center;
 	padding: var(--spacing-3) var(--grid-col-gutter);
 	margin: 0;
+	position: relative;
+	z-index: 104;
 
 	a {
 		text-decoration: none;
