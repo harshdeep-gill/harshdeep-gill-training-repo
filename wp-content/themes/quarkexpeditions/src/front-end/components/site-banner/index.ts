@@ -15,7 +15,7 @@ export default class QuarkSiteBannerElement extends HTMLElement {
 		super();
 
 		// Setup banner height property.
-		document.querySelector<HTMLElement>(':root')?.style.setProperty('--site-banner-height', this.clientHeight + 'px');
+		document.querySelector<HTMLElement>( ':root' )?.style.setProperty( '--site-banner-height', this.clientHeight + 'px' );
 	}
 
 	/**
