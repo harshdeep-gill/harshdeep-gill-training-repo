@@ -15,15 +15,6 @@
 	}
 @endphp
 
-<div class="site-banner full-width" style="--site-banner-animation-duration:{{ $animation_duration }}s;">
-	<div class="site-banner__track">
-		<div class="site-banner__content">
-			<span class="site-banner__slide">
-				<x-content :content="$message" />
-			</span>
-			<span class="site-banner__slide">
-				<x-content :content="$message" />
-			</span>
-		</div>
-	</div>
+<div class="site-banner full-width">
+	<x-content :content="$message" />
 </div>
