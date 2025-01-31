@@ -1,6 +1,7 @@
 @import "../../scss/";
 
 .site-banner {
+	display: block;
 	background-color: var(--color-site-banner);
 	color: var(--color-white);
 	text-align: center;

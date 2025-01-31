@@ -560,6 +560,9 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 				'quark-form-newsletter'                                    => [
 					'class' => true,
 				],
+				'quark-site-banner'                                        => [
+					'class' => true,
+				],
 				'tp-form'                                                  => [
 					'class'          => true,
 					'prevent-submit' => true,

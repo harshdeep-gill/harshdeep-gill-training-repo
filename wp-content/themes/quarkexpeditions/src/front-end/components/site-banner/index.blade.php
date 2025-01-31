@@ -15,6 +15,6 @@
 	}
 @endphp
 
-<div class="site-banner full-width">
+<quark-site-banner class="site-banner full-width">
 	<x-content :content="$message" />
-</div>
+</quark-site-banner>
