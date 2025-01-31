@@ -2,6 +2,9 @@
 #  Update local database from live database.
 ##
 
+# Note: Make sure you have `pv` installed. Example: `brew install pv`
+# Usage: sh update-local-db.sh live|dev|qa
+
 ENV=${1:-live}
 SITE="quark-expeditions"
 BACKUP_FILE="backup.sql.gz"
