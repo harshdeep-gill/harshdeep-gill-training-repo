@@ -1,0 +1,82 @@
+name: WP CLI
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Choose an environment to run the WP CLI command on"
+        default: "qa"
+        type: choice
+        options:
+          - "qa"
+          - "staging"
+          - "live"
+      command:
+        description: "Choose the WP CLI command to run"
+        default: "cache_get"
+        type: choice
+        options:
+          - "cache_get"
+          - "cache_delete"
+          - "cache_flush"
+          - "cache_flush_group"
+          - "cache_edge_warmup"
+          - "cron_event_list"
+          - "cron_event_run"
+          - "softrip_sync_all"
+          - "softrip_sync_items"
+          - "ingestor_push_all"
+          - "ingestor_push_items"
+          - "ingestor_push_urgent"
+          - "solr_index"
+          - "solr_info"
+          - "solr_stats"
+          - "meta_get"
+          - "meta_list"
+      additional_params:
+        description: "Enter additional parameters (e.g., xyz --group='group1' --expiration=34)"
+        default: ""
+        type: string
+        required: false
+
+permissions:
+  contents: read
+
+jobs:
+  pre-run:
+    name: Pre-Run
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check allowed user
+        run: |
+          USER_EXISTS=$(jq -r --arg key "$GITHUB_ACTOR" '.allowed_sync_users | any(. == $key)' .github/users.json)
+          if [ "$USER_EXISTS" = "false" ]; then
+            echo "::error::$GITHUB_ACTOR is not execute commands"
+            exit 1
+          fi
+
+  wp-cli:
+    name: WP CLI command ${{ inputs.command }} on ${{ inputs.environment }}
+    needs: pre-run
+    runs-on: ubuntu-latest
+    env:
+      PANTHEON_SSH_PRIVATE_KEY: ${{ secrets.PANTHEON_SSH_PRIVATE_KEY }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+
+      - name: Install Terminus
+        uses: pantheon-systems/terminus-github-actions@main
+        with:
+          pantheon-machine-token: ${{ secrets.PANTHEON_MACHINE_TOKEN }}
+
+      - name: Run WP CLI command
+        run: bash .bin/wp-cli.sh ${{ inputs.environment }} ${{ inputs.command }} ${{ inputs.additional_params }}
