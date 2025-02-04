@@ -36,35 +36,35 @@ jobs:
         uses: actions/cache@v4
         with:
           path: vendor
-          key: composer-deploy-${{ hashFiles( 'composer.lock' ) }}-${{ hashFiles( '.github/workflows/staging-deploy.yml' ) }}
+          key: composer-deploy-${{ hashFiles( 'composer.lock' ) }}-${{ hashFiles( '.github/workflows/staging-ms-deploy.yml' ) }}
 
       - name: NodeJS cache
         id: node-deploy-cache
         uses: actions/cache@v4
         with:
           path: node_modules
-          key: node-deploy-${{ hashFiles( 'package-lock.json' ) }}-${{ hashFiles( '.github/workflows/staging-deploy.yml' ) }}
+          key: node-deploy-${{ hashFiles( 'package-lock.json' ) }}-${{ hashFiles( '.github/workflows/staging-ms-deploy.yml' ) }}
 
       - name: WP plugins cache
         id: wp-plugins-deploy-cache
         uses: actions/cache@v4
         with:
           path: wp-content/plugins
-          key: wp-plugins-deploy-${{ hashFiles( 'composer.lock' ) }}-${{ hashFiles( '.github/workflows/staging-deploy.yml' ) }}
+          key: wp-plugins-deploy-${{ hashFiles( 'composer.lock' ) }}-${{ hashFiles( '.github/workflows/staging-ms-deploy.yml' ) }}
 
       - name: Travelopia packages cache
         id: travelopia-packages-deploy-cache
         uses: actions/cache@v4
         with:
           path: wp-content/mu-plugins/travelopia
-          key: travelopia-packages-deploy-${{ hashFiles( 'composer.lock' ) }}-${{ hashFiles( '.github/workflows/staging-deploy.yml' ) }}
+          key: travelopia-packages-deploy-${{ hashFiles( 'composer.lock' ) }}-${{ hashFiles( '.github/workflows/staging-ms-deploy.yml' ) }}
 
       - name: WordPress Blade cache
         id: wordpress-blade-cache
         uses: actions/cache@v4
         with:
           path: wp-content/mu-plugins/wordpress-blade
-          key: wordpress-blade-package-deploy-${{ hashFiles( 'composer.lock' ) }}-${{ hashFiles( '.github/workflows/staging-deploy.yml' ) }}
+          key: wordpress-blade-package-deploy-${{ hashFiles( 'composer.lock' ) }}-${{ hashFiles( '.github/workflows/staging-ms-deploy.yml' ) }}
 
       - name: Install Composer dependencies
         if: steps.composer-deploy-cache.outputs.cache-hit != 'true'
