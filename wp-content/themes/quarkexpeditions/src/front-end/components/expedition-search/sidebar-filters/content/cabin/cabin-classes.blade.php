@@ -1,15 +1,18 @@
 @props( [
 	'cabin_classes' => [],
+	'is_compact'    => false,
 ] )
 
 @php
 	if ( empty( $cabin_classes ) || ! is_array( $cabin_classes ) ) {
 		return;
 	}
+
+	$the_id = 'expedition-search-filter-cabin-classes' . ( ! empty( $is_compact ) ? '-compact' : '' );
 @endphp
 
-<quark-expedition-search-filter-cabin-classes>
-	<x-accordion.item>
+<x-accordion.item id="{{ $the_id }}">
+	<quark-expedition-search-filter-cabin-classes>
 		<x-accordion.item-handle>
 			<x-escape :content="__( 'Cabin Class', 'qrk' )" /> <span class="expedition-search__filter-count"></span>
 		</x-accordion-item.handle>
@@ -24,5 +27,5 @@
 				@endforeach
 			</x-form.field-group>
 		</x-accordion.item-content>
-	</x-accordion.item>
-</quark-expedition-search-filter-cabin-classes>
+	</quark-expedition-search-filter-cabin-classes>
+</x-accordion.item>

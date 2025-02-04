@@ -310,14 +310,16 @@ function get_itinerary_days_data( int $itinerary_post_id = 0 ): array {
 			'title'          => strval( $itinerary_day_post['post_meta']['day_title'] ?? '' ),
 			'dayStartNumber' => absint( $itinerary_day_post['post_meta']['day_number_from'] ?? 0 ),
 			'dayEndNumber'   => absint( $itinerary_day_post['post_meta']['day_number_to'] ?? 0 ),
-			'location'       => strval( $itinerary_day_post['post_meta']['location'] ?? '' ),
+			'location'       => '',
 			'portCode'       => '',
 			'portLocation'   => '',
 			'description'    => get_raw_text_from_html( $itinerary_day_post['post']->post_content ),
 		];
 
 		// Add port data.
-		$port_post_id = absint( $itinerary_day_post['post_meta']['port'] ?? 0 );
+		$port_post_id     = absint( $itinerary_day_post['post_meta']['port'] ?? 0 );
+		$port_address     = '';
+		$duration_in_days = absint( $itinerary_post['post_meta']['duration_in_days'] ?? 0 );
 
 		// Validate post ID.
 		if ( ! empty( $port_post_id ) ) {
@@ -328,7 +330,49 @@ function get_itinerary_days_data( int $itinerary_post_id = 0 ): array {
 			if ( ! empty( $port_post['post'] ) && $port_post['post'] instanceof WP_Post ) {
 				$itinerary_day_data['portCode']     = strval( $port_post['post_meta']['port_code'] ?? '' );
 				$itinerary_day_data['portLocation'] = get_raw_text_from_html( $port_post['post']->post_title );
+
+				// Get port locality.
+				$port_locality = strval( $port_post['post_meta']['locality'] ?? '' );
+				$port_country  = strval( $port_post['post_meta']['country'] ?? '' );
+
+				// Validate locality and country.
+				if ( ! empty( $port_locality ) && ! empty( $port_country ) ) {
+					$port_address = $port_locality . ', ' . $port_country;
+				}
 			}
+		}
+
+		// Location.
+		if ( ! empty( $itinerary_day_post['post_meta']['location'] ) ) {
+			$itinerary_day_data['location'] = strval( $itinerary_day_post['post_meta']['location'] );
+		} elseif ( ! empty( $port_address ) ) {
+			$itinerary_day_data['location'] = $port_address;
+		} elseif ( 1 === $itinerary_day_data['dayStartNumber'] ) {
+				$start_location_term_id = absint( $itinerary_post['post_meta']['start_location'] ?? 0 );
+
+				// Validate.
+			if ( ! empty( $start_location_term_id ) ) {
+				$start_location_term = get_term( $start_location_term_id, DEPARTURE_LOCATION_TAXONOMY, ARRAY_A );
+
+				// Check for term.
+				if ( ! empty( $start_location_term ) && is_array( $start_location_term ) ) {
+					$itinerary_day_data['location'] = strval( $start_location_term['name'] ?? '' );
+				}
+			}
+		} elseif ( $itinerary_day_data['dayEndNumber'] === $duration_in_days ) {
+				$end_location_term_id = absint( $itinerary_post['post_meta']['end_location'] ?? 0 );
+
+				// Validate.
+			if ( ! empty( $end_location_term_id ) ) {
+				$end_location_term = get_term( $end_location_term_id, DEPARTURE_LOCATION_TAXONOMY, ARRAY_A );
+
+				// Check for term.
+				if ( ! empty( $end_location_term ) && is_array( $end_location_term ) ) {
+					$itinerary_day_data['location'] = strval( $end_location_term['name'] ?? '' );
+				}
+			}
+		} else {
+			$itinerary_day_data['location'] = __( 'Cruising', 'qrk' );
 		}
 
 		// Add itinerary day data to itinerary days.

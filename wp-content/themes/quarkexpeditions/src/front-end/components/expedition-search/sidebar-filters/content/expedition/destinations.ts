@@ -7,6 +7,7 @@ const { HTMLElement, zustand } = window;
  * Internal dependencies
  */
 import { addDestination, addDestinations, removeDestination } from '../../../actions';
+import ExpeditionSearchSidebarFiltersInputsContainerElement from '../../inputs-container';
 
 /**
  * Get Store.
@@ -198,5 +199,8 @@ export default class ExpeditionSearchFilterDestinations extends HTMLElement {
 			// Add the destinations.
 			addDestinations( sibilngsToAdd );
 		}
+
+		// Set it as the last opened accordion item.
+		this.closest<ExpeditionSearchSidebarFiltersInputsContainerElement>( 'quark-expedition-search-sidebar-filters-inputs-container' )?.setLastOpenedAccordionItemId( this.closest( 'tp-accordion-item' )?.id ?? '' );
 	}
 }

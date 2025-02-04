@@ -15,6 +15,11 @@ import QuarkRangeSlider from '../../../../form/range-slider';
 import { debounce } from '../../../../../global/utility';
 
 /**
+ * Internal dependencies
+ */
+import ExpeditionSearchSidebarFiltersInputsContainerElement from '../../inputs-container';
+
+/**
  * Get Store.
  */
 const { subscribe } = zustand.stores.expeditionSearch;
@@ -126,5 +131,8 @@ export default class ExpeditionSearchFilterItineraryLengths extends HTMLElement 
 
 		// Handle the slider's change event.
 		this.handleSliderEvent( evt );
+
+		// Set it as the last opened accordion item.
+		this.closest<ExpeditionSearchSidebarFiltersInputsContainerElement>( 'quark-expedition-search-sidebar-filters-inputs-container' )?.setLastOpenedAccordionItemId( this.closest( 'tp-accordion-item' )?.id ?? '' );
 	}
 }

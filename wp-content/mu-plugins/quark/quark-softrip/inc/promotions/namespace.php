@@ -210,7 +210,6 @@ function format_data( array $raw_promotion_data = [] ): array {
 		empty( $raw_promotion_data['startDate'] ) ||
 		empty( $raw_promotion_data['description'] ) ||
 		empty( $raw_promotion_data['discountType'] ) ||
-		empty( $raw_promotion_data['discountValue'] ) ||
 		empty( $raw_promotion_data['promotionCode'] )
 	) {
 		return [];

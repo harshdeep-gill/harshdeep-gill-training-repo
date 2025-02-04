@@ -1,5 +1,6 @@
 @props( [
 	'itinerary_lengths' => [],
+	'is_compact'        => false,
 ] )
 
 @php
@@ -32,15 +33,17 @@
 	if ( empty( $itinerary_length ) || 0 >= $itinerary_length[ 'min' ] || $itinerary_length['min'] > $itinerary_length['max'] ) {
 		return;
 	}
+
+	$the_id = 'expedition-search-filter-itinerary-lengths' . ( ! empty( $is_compact ) ? '-compact' : '' );
 @endphp
 
-<quark-expedition-search-filter-itinerary-lengths>
-	<x-accordion.item>
+<x-accordion.item id="{{ $the_id }}">
+	<quark-expedition-search-filter-itinerary-lengths>
 		<x-accordion.item-handle>
 			<x-escape :content=" __( 'Itinerary Lengths', 'qrk' ) " />
 		</x-accordion-item.handle>
 		<x-accordion.item-content>
 			<x-form.range-slider name="itinerary-lengths" :range_suffix="__( 'Days', 'qrk' )" :min="$itinerary_length['min']" :max="$itinerary_length['max']" />
 		</x-accordion.item-content>
+	</quark-expedition-search-filter-itinerary-lengths>
 </x-accordion.item>
-</quark-expedition-search-filter-itinerary-lengths>

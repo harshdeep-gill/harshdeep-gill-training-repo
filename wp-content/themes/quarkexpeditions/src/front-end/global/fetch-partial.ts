@@ -73,6 +73,7 @@ window.fetchPartial = async ( name: string = '', data: object = {}, callback: Fu
 					data: result.data,
 					noResultsMarkup: result?.noResultsMarkup ?? '',
 					filtersMarkup: result?.filtersMarkup ?? '',
+					compactFiltersMarkup: result?.compactFiltersMarkup ?? '',
 				} as PartialData );
 			} );
 		} ).catch( ( e ): void => {
