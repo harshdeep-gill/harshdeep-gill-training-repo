@@ -13,7 +13,7 @@ mkdir -p ~/.ssh && touch ~/.ssh/config
 grep -qxF 'StrictHostKeyChecking no' ~/.ssh/config || echo "StrictHostKeyChecking no" >> ~/.ssh/config
 
 # Clone Database from Source to Target Environment
-terminus env:clone-content quark-expeditions.live $TARGET_ENVIRONMENT --db-only --yes
+terminus env:clone-content quark-expeditions-ms.live $TARGET_ENVIRONMENT --db-only --yes
 
 # Set Domain Name for Search and Replace
 DOMAIN_NAME=$TARGET_ENVIRONMENT
@@ -24,30 +24,30 @@ if [ $TARGET_ENVIRONMENT == 'dev' ]; then
 fi
 
 # Search and Replace environment domain
-terminus wp quark-expeditions.$TARGET_ENVIRONMENT -- search-replace www.quarkexpeditions.com $DOMAIN_NAME.quarkexpeditions.com --all-tables
+terminus wp quark-expeditions-ms.$TARGET_ENVIRONMENT -- search-replace www.quarkexpeditions.com $DOMAIN_NAME.quarkexpeditions.com --all-tables
 
 # Flush cache
-terminus wp quark-expeditions.$TARGET_ENVIRONMENT -- cache flush
+terminus wp quark-expeditions-ms.$TARGET_ENVIRONMENT -- cache flush
 
 # Import Departures
 set +e
-terminus wp quark-expeditions.$TARGET_ENVIRONMENT -- quark-softrip sync all
+terminus wp quark-expeditions-ms.$TARGET_ENVIRONMENT -- quark-softrip sync all --url=$DOMAIN_NAME.quarkexpeditions.com
 set -e
 
 # Flush cache
-terminus wp quark-expeditions.$TARGET_ENVIRONMENT -- cache flush
+terminus wp quark-expeditions-ms.$TARGET_ENVIRONMENT -- cache flush
 
 # Repost solr schema
-terminus wp quark-expeditions.$TARGET_ENVIRONMENT -- solr repost-schema
+terminus wp quark-expeditions-ms.$TARGET_ENVIRONMENT -- solr repost-schema --url=$DOMAIN_NAME.quarkexpeditions.com
 
 # Index solr
-terminus wp quark-expeditions.$TARGET_ENVIRONMENT -- solr delete --all
-terminus wp quark-expeditions.$TARGET_ENVIRONMENT -- solr index
+terminus wp quark-expeditions-ms.$TARGET_ENVIRONMENT -- solr delete --all --url=$DOMAIN_NAME.quarkexpeditions.com
+terminus wp quark-expeditions-ms.$TARGET_ENVIRONMENT -- solr index --url=$DOMAIN_NAME.quarkexpeditions.com
 
 # Flush rewrite rules
-terminus wp quark-expeditions.$TARGET_ENVIRONMENT -- rewrite flush
+terminus wp quark-expeditions-ms.$TARGET_ENVIRONMENT -- rewrite flush --url=$DOMAIN_NAME.quarkexpeditions.com
 
 # Final cache flush
-terminus wp quark-expeditions.$TARGET_ENVIRONMENT -- cache flush
+terminus wp quark-expeditions-ms.$TARGET_ENVIRONMENT -- cache flush
 
 set +x
