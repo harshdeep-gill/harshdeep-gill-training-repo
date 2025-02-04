@@ -9,4 +9,4 @@ echo "$PANTHEON_SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
 mkdir -p ~/.ssh && echo "StrictHostKeyChecking no" >> ~/.ssh/config
 
 # Run Cron
-terminus wp quark-expeditions.live -- cron event run --due-now
+terminus wp quark-expeditions-ms.live -- cron event run --due-now --url=www.quarkexpeditions.com
