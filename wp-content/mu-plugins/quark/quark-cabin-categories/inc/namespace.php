@@ -632,8 +632,8 @@ function get_cabin_price_data_by_departure( int $departure_id = 0, string $curre
 			// First item.
 			$promo_data = $promo_data[0];
 
-			// Check for currency.
-			if ( ! empty( $promo_data['currency'] ) && $currency !== $promo_data['currency'] ) {
+			// Check for currency & discount value - exclude free promotions.
+			if ( empty( $promo_data['discount_value'] ) || ( ! empty( $promo_data['currency'] ) && $currency !== $promo_data['currency'] ) ) {
 				continue;
 			}
 

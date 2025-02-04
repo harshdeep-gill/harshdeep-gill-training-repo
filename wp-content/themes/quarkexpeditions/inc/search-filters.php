@@ -59,6 +59,8 @@ function get_filters_for_dates_rates( array $selected_filter = [] ): array {
 /**
  * Get filter options for sidebar search filters.
  *
+ * @param mixed[] $selected_filter Selected filters.
+ *
  * @return array<string, array<int, array{
  *     label: string,
  *     value: string|int,
@@ -71,7 +73,7 @@ function get_filters_for_dates_rates( array $selected_filter = [] ): array {
  *      }>
  * }>>
  */
-function get_filters_for_sidebar_search(): array {
+function get_filters_for_sidebar_search( array $selected_filter = [] ): array {
 	// Available filters on sidebar.
 	$filters_keys = [
 		DESTINATION_FILTER_KEY,
@@ -86,7 +88,7 @@ function get_filters_for_sidebar_search(): array {
 	];
 
 	// Build filter options.
-	$filter_options = build_filter_options( $filters_keys );
+	$filter_options = build_filter_options( $filters_keys, $selected_filter );
 
 	// Return available filters.
 	return $filter_options;

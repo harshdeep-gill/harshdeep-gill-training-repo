@@ -33,7 +33,7 @@
 
 	&:has(+ .hero--immersive-all),
 	&:has(+ .hero--immersive-top) {
-		margin-bottom: calculate-rem(-122px);
+		margin-bottom: calculate-rem(-96px);
 
 		&:not(#{$self}--compact) {
 			box-shadow: none;
@@ -78,7 +78,8 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		padding-block: var(--spacing-4);
+		padding-block: var(--spacing-2);
+		height: 96px;
 	}
 
 	&__logo {

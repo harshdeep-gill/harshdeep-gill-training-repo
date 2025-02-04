@@ -20,7 +20,7 @@ export default class ExpeditionSearchSidebarFilters extends HTMLElement {
 	/**
 	 * Properties.
 	 */
-	private readonly filtersContent: HTMLElement | null;
+	private filtersContent: HTMLElement | null;
 
 	/**
 	 * Constructor
@@ -33,7 +33,7 @@ export default class ExpeditionSearchSidebarFilters extends HTMLElement {
 		subscribe( this.update.bind( this ) );
 
 		// Elements.
-		this.filtersContent = this.querySelector( '.expedition-search__sidebar-filters-content' );
+		this.filtersContent = null;
 	}
 
 	/**
@@ -42,6 +42,9 @@ export default class ExpeditionSearchSidebarFilters extends HTMLElement {
 	 * @param {Object} state State.
 	 */
 	update( state: ExpeditionSearchState ): void {
+		// Get the element.
+		this.filtersContent = this.querySelector( '.expedition-search__sidebar-filters-content' );
+
 		// Null check.
 		if ( ! this.filtersContent ) {
 			// Bail.

@@ -68,6 +68,7 @@ function bootstrap(): void {
 		require_once __DIR__ . '/../custom-fields/options-social.php';
 		require_once __DIR__ . '/../custom-fields/attachments.php';
 		require_once __DIR__ . '/../custom-fields/pages-setup.php';
+		require_once __DIR__ . '/../custom-fields/general.php';
 
 		// Custom styles for ACF fields.
 		add_action( 'acf/input/admin_head', __NAMESPACE__ . '\\acf_styles_for_read_only_fields' );
@@ -84,6 +85,15 @@ function setup_settings(): void {
 	if ( ! function_exists( 'acf_add_options_page' ) ) {
 		return;
 	}
+
+	// General.
+	acf_add_options_sub_page(
+		[
+			'page_title'  => 'General',
+			'menu_title'  => 'General',
+			'parent_slug' => 'site-settings',
+		]
+	);
 
 	// Social.
 	acf_add_options_sub_page(

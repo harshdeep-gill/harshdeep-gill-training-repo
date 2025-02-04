@@ -14,7 +14,7 @@ export const STORE_NAME = 'expeditionSearch';
 export const DEFAULT_STATE: ExpeditionSearchState = {
 	partial: '',
 	selector: '',
-	selectedFilters: {},
+	selectedFilters: [],
 	shipId: 0,
 	page: 1,
 	nextPage: 1,
@@ -22,8 +22,12 @@ export const DEFAULT_STATE: ExpeditionSearchState = {
 	resultCount: 0,
 	remainingCount: 0,
 	markup: '',
+	filtersMarkup: '',
+	compactFiltersMarkup: '',
 	noResultsMarkup: '',
 	updateMarkup: false,
+	updateFiltersMarkup: false,
+	updateCompactFiltersMarkup: false,
 	resetMarkup: false,
 	loadMoreResults: false,
 	loading: false,
@@ -51,6 +55,7 @@ export const DEFAULT_STATE: ExpeditionSearchState = {
 		'cabinClasses',
 		'travelers',
 	],
+	sort: '',
 };
 
 /**

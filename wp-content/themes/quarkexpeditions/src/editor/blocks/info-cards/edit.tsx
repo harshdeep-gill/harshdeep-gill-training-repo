@@ -84,7 +84,7 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 					/>
 				</PanelBody>
 			</InspectorControls>
-			<div { ...blockProps } >
+			<div { ...blockProps } data-layout={ attributes.layout } >
 				<div className="info-cards__carousel">
 					<div className="info-cards__slider">
 						<div { ...innerBlockProps } />
