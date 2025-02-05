@@ -199,7 +199,7 @@ function get_ship_data( int $departure_post_id = 0 ): array {
 		// Loop through collage images.
 		foreach ( $collage_images as $collage_image ) {
 			// Validate collage image.
-			if ( empty( $collage_image ) || ! is_array( $collage_image ) ) {
+			if ( empty( $collage_image ) || ! is_array( $collage_image ) || empty( $collage_image['image_id'] ) ) {
 				continue;
 			}
 
