@@ -7,6 +7,7 @@ const { customElements, HTMLElement } = window;
  * Internal Dependency.
  */
 import { throttle } from '../../global/utility';
+import { QuarkDrawerElement } from '../drawer/drawer';
 
 /**
  * External Dependency.
@@ -26,6 +27,7 @@ export default class DepartureCard extends HTMLElement {
 	private offerCountSpan: HTMLElement | null;
 	private moreDetails: HTMLElement | null;
 	private dropdownButton: HTMLButtonElement | null;
+	private adventureOptionsDrawer: QuarkDrawerElement | null;
 
 	/**
 	 * Constructor.
@@ -41,6 +43,7 @@ export default class DepartureCard extends HTMLElement {
 		this.offerCountSpan = this.querySelector( '.departure-cards__offer-count' );
 		this.dropdownButton = this.querySelector( '.departure-cards__cta' );
 		this.moreDetails = this.querySelector( '.departure-cards__more-details' );
+		this.adventureOptionsDrawer = document.getElementById( this.getAttribute( 'aop-drawer-id' ) ?? '' ) as QuarkDrawerElement | null;
 
 		// Check for existence.
 		if ( ! this.dropdownButton ) {
@@ -54,6 +57,26 @@ export default class DepartureCard extends HTMLElement {
 			// Update the hidden items.
 			this.updateOfferHiddenItems();
 		} );
+
+		// Do we have a drawer?
+		if ( this.adventureOptionsDrawer ) {
+			window.addEventListener( 'resize', throttle( () => {
+				// Check the window width.
+				if ( window.innerWidth > 576 && this.adventureOptionsDrawer?.hasAttribute( 'open' ) ) {
+					this.adventureOptionsDrawer?.removeAttribute( 'open' );
+					document.body.classList.remove( 'prevent-scroll' );
+				}
+			} ) );
+
+			// Setup open event.
+			this.adventureOptionsDrawer.addEventListener( 'open', throttle( () => {
+				// Check the window width.
+				if ( window.innerWidth > 576 ) {
+					this.adventureOptionsDrawer?.removeAttribute( 'open' );
+					document.body.classList.remove( 'prevent-scroll' );
+				}
+			} ) );
+		}
 
 		// Add event listener.
 		addEventListenerWithYieldToMain( this.dropdownButton, 'click', this.toggle.bind( this ) );
