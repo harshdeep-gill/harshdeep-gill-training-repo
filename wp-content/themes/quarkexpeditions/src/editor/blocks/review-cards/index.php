@@ -10,7 +10,8 @@ namespace Quark\Theme\Blocks\ReviewCards;
 use WP_Block;
 use WP_Block_List;
 
-const COMPONENT = 'parts.review-cards';
+const COMPONENT  = 'parts.review-cards';
+const BLOCK_NAME = 'quark/review-cards';
 
 /**
  * Bootstrap this block.
@@ -26,6 +27,9 @@ function bootstrap(): void {
 			'skip_inner_blocks' => true,
 		]
 	);
+
+	// Add block attributes to translate.
+	add_filter( 'qrk_translation_block_attributes', __NAMESPACE__ . '\\block_attributes_to_translate' );
 }
 
 /**
@@ -156,4 +160,31 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 
 	// Return the component markup.
 	return quark_get_component( COMPONENT, $component_attributes );
+}
+
+/**
+ * Block attributes that need to be translatable.
+ *
+ * @param mixed[] $blocks_and_attributes Blocks and attributes.
+ *
+ * @return mixed[]
+ */
+function block_attributes_to_translate( array $blocks_and_attributes = [] ): array {
+	// Add data to translate.
+	$blocks_and_attributes[ BLOCK_NAME . '-author' ] = [
+		'text' => [ 'author' ],
+	];
+
+	// Add data to translate.
+	$blocks_and_attributes[ BLOCK_NAME . '-details' ] = [
+		'text' => [ 'authorDetails' ],
+	];
+
+	// Add data to translate.
+	$blocks_and_attributes[ BLOCK_NAME . '-title' ] = [
+		'text' => [ 'title' ],
+	];
+
+	// Return updated data.
+	return $blocks_and_attributes;
 }

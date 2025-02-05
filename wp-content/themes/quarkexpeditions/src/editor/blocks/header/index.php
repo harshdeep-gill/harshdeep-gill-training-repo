@@ -12,7 +12,8 @@ use WP_Block_List;
 
 use function Quark\OfficePhoneNumbers\get_corporate_office_phone_number;
 
-const COMPONENT = 'parts.header';
+const COMPONENT  = 'parts.header';
+const BLOCK_NAME = 'quark/header';
 
 /**
  * Bootstrap this block.
@@ -28,6 +29,9 @@ function bootstrap(): void {
 			'skip_inner_blocks' => true,
 		]
 	);
+
+	// Add block attributes to translate.
+	add_filter( 'qrk_translation_block_attributes', __NAMESPACE__ . '\\block_attributes_to_translate' );
 }
 
 /**
@@ -375,4 +379,34 @@ function extract_menu_list_items( array $blocks = [] ): array {
 
 	// Return extracted items.
 	return $items;
+}
+
+/**
+ * Block attributes that need to be translatable.
+ *
+ * @param mixed[] $blocks_and_attributes Blocks and attributes.
+ *
+ * @return mixed[]
+ */
+function block_attributes_to_translate( array $blocks_and_attributes = [] ): array {
+	// Add data to translate.
+	$blocks_and_attributes[ BLOCK_NAME . '-menu-item' ] = [
+		'text' => [
+			'title',
+			'placeholder',
+		],
+	];
+
+	// Add data to translate.
+	$blocks_and_attributes[ BLOCK_NAME . '-menu-item-featured-section' ] = [
+		'text'  => [
+			'title',
+			'subtitle',
+			'ctaText',
+		],
+		'image' => [ 'image' ],
+	];
+
+	// Return updated data.
+	return $blocks_and_attributes;
 }

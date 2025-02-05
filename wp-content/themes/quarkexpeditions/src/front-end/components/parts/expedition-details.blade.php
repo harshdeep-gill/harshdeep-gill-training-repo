@@ -67,9 +67,11 @@
 		</x-expedition-details.row>
 	@endif
 
-	<x-expedition-details.cta>
-		<x-button size="big" color="black" href="{{ $departures_url }}" target="{{ $target }}">
-			<x-escape :content="__( 'View all Departures', 'qrk' )"/>
-		</x-button>
-	</x-expedition-details.cta>
+	@if( ! empty( $departures_url ) )
+		<x-expedition-details.cta>
+			<x-button size="big" color="black" href="{{ $departures_url }}" target="{{ $target }}">
+				<x-escape :content="__( 'View all Departures', 'qrk' )"/>
+			</x-button>
+		</x-expedition-details.cta>
+	@endif
 </x-expedition-details>

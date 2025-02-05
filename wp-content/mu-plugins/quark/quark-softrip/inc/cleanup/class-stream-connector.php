@@ -39,7 +39,7 @@ class Stream_Connector extends Connector {
 	 */
 	public function get_label(): string {
 		// Return label.
-		return __( 'Softrip', 'qrk' );
+		return 'Softrip';
 	}
 
 	/**
@@ -50,7 +50,7 @@ class Stream_Connector extends Connector {
 	public function get_context_labels(): array {
 		// Return labels.
 		return [
-			'softrip_cleanup' => __( 'Softrip Cleanup', 'qrk' ),
+			'softrip_cleanup' => 'Softrip Cleanup',
 		];
 	}
 
@@ -62,9 +62,9 @@ class Stream_Connector extends Connector {
 	public function get_action_labels(): array {
 		// Return labels.
 		return [
-			'cleanup_initiated' => __( 'Cleanup Initiated', 'qrk' ),
-			'cleanup_completed' => __( 'Cleanup Completed', 'qrk' ),
-			'cleanup_failed'    => __( 'Cleanup Failed', 'qrk' ),
+			'cleanup_initiated' => 'Cleanup Initiated',
+			'cleanup_completed' => 'Cleanup Completed',
+			'cleanup_failed'    => 'Cleanup Failed',
 		];
 	}
 
@@ -84,7 +84,7 @@ class Stream_Connector extends Connector {
 		// Prepare message.
 		$message = sprintf(
 			// translators: %1$s: Via, %2$d: Total, %3$s: Departures.
-			__( 'Softrip cleanup initiated by %1$s for %2$d %3$s.', 'qrk' ),
+			'Softrip cleanup initiated by %1$s for %2$d %3$s.',
 			strval( $data['via'] ),
 			absint( $data['total'] ),
 			_n( 'departure', 'departures', absint( $data['total'] ), 'qrk' )
@@ -116,7 +116,7 @@ class Stream_Connector extends Connector {
 		// Prepare message.
 		$message = sprintf(
 			// translators: %1$s: Via, %2$d: Successful, %3$s: Departures, %4$d: Total.
-			__( 'Softrip cleanup completed by %1$s with %2$d successful %3$s out of %4$d.', 'qrk' ),
+			'Softrip cleanup completed by %1$s with %2$d successful %3$s out of %4$d.',
 			strval( $data['via'] ),
 			absint( $data['success'] ),
 			_n( 'departure', 'departures', absint( $data['success'] ), 'qrk' ),
@@ -149,7 +149,7 @@ class Stream_Connector extends Connector {
 		// Prepare message.
 		$message = sprintf(
 			// translators: %1$s: Via, %2$d: Departure ID, %3$s: Message.
-			__( 'Softrip cleanup failed by %1$s for departure %2$d with message: %3$s.', 'qrk' ),
+			'Softrip cleanup failed by %1$s for departure %2$d with message: %3$s.',
 			strval( $data['via'] ),
 			absint( $data['departure_post_id'] ),
 			strval( $data['message'] )

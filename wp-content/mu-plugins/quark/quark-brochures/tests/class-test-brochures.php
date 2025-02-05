@@ -10,6 +10,8 @@ namespace Quark\Brochures\Tests;
 use WP_UnitTestCase;
 use WP_Post;
 
+use function Quark\Brochures\translate_meta_keys;
+
 use const Quark\Brochures\POST_TYPE;
 
 /**
@@ -27,6 +29,7 @@ class Test_Brochures extends WP_UnitTestCase {
 	public function test_bootstrap(): void {
 		// Test if post type hook is registered.
 		$this->assertEquals( 10, has_filter( 'init', 'Quark\Brochures\register_brochure_post_type' ) );
+		$this->assertEquals( 10, has_filter( 'qrk_translation_meta_keys', 'Quark\Brochures\translate_meta_keys' ) );
 	}
 
 	/**
@@ -76,6 +79,31 @@ class Test_Brochures extends WP_UnitTestCase {
 				],
 			],
 			\Quark\Brochures\get( $post_1->ID )
+		);
+	}
+
+	/**
+	 * Test for translate_meta_keys.
+	 *
+	 * @covers \Quark\Brochures\translate_meta_keys()
+	 *
+	 * @return void
+	 */
+	public function test_translate_meta_keys(): void {
+		// Input data.
+		$input = [
+			'meta_key' => 'string',
+			'icon'     => 'attachment',
+		];
+
+		// Assert data.
+		$this->assertEquals(
+			[
+				'meta_key'     => 'string',
+				'icon'         => 'attachment',
+				'brochure_pdf' => 'attachment',
+			],
+			translate_meta_keys( $input )
 		);
 	}
 }

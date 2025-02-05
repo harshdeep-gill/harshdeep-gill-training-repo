@@ -24,7 +24,7 @@
 		</x-form.label>
 
 		<select class="country-selector__country-select" name="{{ $country_code_field_name }}">
-			<option value="">- Select -</option>
+			<option value="">{{ __( '- Select -', 'qrk' ) }}</option>
 			@foreach ( $countries as $country_code => $country_name )
 				<option value="{{ $country_code }}">{{ $country_name }}</option>
 			@endforeach
@@ -38,7 +38,7 @@
 			</x-form.label>
 
 			<select class="country-selector__state-select" name="{{ $state_code_field_name }}">
-				<option value="">- Select -</option>
+				<option value="">{{ __( '- Select -', 'qrk' ) }}</option>
 				@foreach ( $country_states as $state_code => $state_name )
 					<option value="{{ $state_code }}">{{ $state_name }}</option>
 				@endforeach

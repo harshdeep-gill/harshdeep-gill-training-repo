@@ -8,7 +8,7 @@
 @endphp
 
 <div class="expedition-search__result-count">
-	{{ __( 'Showing', 'qrk' ); }}
+	{{ __( 'Showing', 'qrk' ) }}
 	<span class="expedition-search__result-count-value">{{ $count ?? 0 }}</span>
 	{{ $expedition_count_text ?? 'expeditions' }}
 </div>

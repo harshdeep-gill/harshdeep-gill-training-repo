@@ -9,7 +9,8 @@ namespace Quark\Theme\Blocks\ReviewsCarousel;
 
 use WP_Block;
 
-const COMPONENT = 'reviews-carousel';
+const COMPONENT  = 'reviews-carousel';
+const BLOCK_NAME = 'quark/reviews-carousel';
 
 /**
  * Bootstrap this block.
@@ -25,6 +26,9 @@ function bootstrap(): void {
 			'skip_inner_blocks' => true,
 		]
 	);
+
+	// Add block attributes to translate.
+	add_filter( 'qrk_translation_block_attributes', __NAMESPACE__ . '\\block_attributes_to_translate' );
 }
 
 /**
@@ -76,4 +80,21 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 
 	// Return the component markup.
 	return quark_get_component( COMPONENT, $component_attributes );
+}
+
+/**
+ * Block attributes that need to be translatable.
+ *
+ * @param mixed[] $blocks_and_attributes Blocks and attributes.
+ *
+ * @return mixed[]
+ */
+function block_attributes_to_translate( array $blocks_and_attributes = [] ): array {
+	// Add data to translate.
+	$blocks_and_attributes[ BLOCK_NAME . '-item' ] = [
+		'text' => [ 'title', 'review', 'author' ],
+	];
+
+	// Return updated data.
+	return $blocks_and_attributes;
 }

@@ -52,7 +52,7 @@
 					$last_menu_item = $primary_nav['items'][$last_array_key];
 				@endphp
 				{{-- More menu item. --}}
-				<x-header.nav-item title="More" class="header__more-menu-item">
+				<x-header.nav-item :title="__( 'More', 'qrk' )" class="header__more-menu-item">
 					@if ( ! empty( $item['contents'] ) )
 						<x-header.nav-item-dropdown-content>
 							@foreach ( $item['contents'] as $content_item )
@@ -72,7 +72,7 @@
 									<x-header.nav-item-dropdown-content-column>
 										<x-two-columns>
 												<x-two-columns.column>
-													<x-menu-list title="More">
+													<x-menu-list :title="__( 'More', 'qrk' )">
 														@foreach ( $content_item['items'][0]['menu_list_items']['items'] as $menu_item )
 															<x-menu-list.item
 																:title="$menu_item['title'] ?? ''"
