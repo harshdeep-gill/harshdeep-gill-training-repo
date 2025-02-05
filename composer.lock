@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d94ea5644243d908335c53f1d5e0af5d",
+    "content-hash": "445fd933f05ef81bd62ec571833df425",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -2549,6 +2549,23 @@
                 "issues": "https://github.com/Travelopia/advanced-custom-fields-pro/issues"
             },
             "time": "2024-11-19T04:08:01+00:00"
+        },
+        {
+            "name": "travelopia/multilingualpress",
+            "version": "4.7.3",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:Travelopia/multilingualpress.git",
+                "reference": "0f427a8ef2a1bc0534e544281f348545bd3bd295"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Travelopia/multilingualpress/zipball/0f427a8ef2a1bc0534e544281f348545bd3bd295",
+                "reference": "0f427a8ef2a1bc0534e544281f348545bd3bd295",
+                "shasum": ""
+            },
+            "type": "wordpress-plugin",
+            "time": "2024-10-25T07:39:42+00:00"
         },
         {
             "name": "travelopia/wordpress-blade",
@@ -6103,6 +6120,6 @@
         "ext-dom": "*",
         "ext-libxml": "*"
     },
-    "platform-dev": [],
+    "platform-dev": {},
     "plugin-api-version": "2.6.0"
 }

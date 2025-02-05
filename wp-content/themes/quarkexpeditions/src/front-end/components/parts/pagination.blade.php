@@ -16,11 +16,11 @@
 	<x-pagination.total-pages :current_page="$current_page" :total_pages="$total_pages" />
 	<x-pagination.links>
 		@if ( ! empty( $first_page_link ) )
-			<x-pagination.first-page :href="$first_page_link" >First</x-pagination.first-page>
+			<x-pagination.first-page :href="$first_page_link" >{!! __( 'First', 'qrk' ) !!}</x-pagination.first-page>
 		@endif
 		{!! $pagination !!}
 		@if ( ! empty( $last_page_link ) )
-			<x-pagination.last-page :href="$last_page_link" >Last</x-pagination.last-page>
+			<x-pagination.last-page :href="$last_page_link" >{!! __( 'Last', 'qrk' ) !!}</x-pagination.last-page>
 		@endif
 	</x-pagination.links>
 </x-pagination>

@@ -9,7 +9,8 @@ namespace Quark\Theme\Blocks\SearchFilterBar;
 
 use WP_Block;
 
-const COMPONENT = 'parts.search-filters-bar';
+const COMPONENT  = 'parts.search-filters-bar';
+const BLOCK_NAME = 'quark/search-filters-bar';
 
 /**
  * Bootstrap this block.
@@ -24,6 +25,9 @@ function bootstrap(): void {
 			'render_callback' => __NAMESPACE__ . '\\render',
 		]
 	);
+
+	// Disable translation for this block.
+	add_filter( 'qrk_translation_disable_blocks', __NAMESPACE__ . '\\disable_translation' );
 }
 
 /**
@@ -87,4 +91,44 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 
 	// Return built component.
 	return quark_get_component( COMPONENT, $component_attributes );
+}
+
+/**
+ * Block attributes that need to be translatable.
+ *
+ * @param mixed[] $blocks_and_attributes Blocks and attributes.
+ *
+ * @return mixed[]
+ */
+function block_attributes_to_translate( array $blocks_and_attributes = [] ): array {
+	// Add data to translate.
+	$blocks_and_attributes[ BLOCK_NAME ] = [
+		'image'  => [
+			'antarcticImage',
+			'arcticImage',
+		],
+		'object' => [
+			'antarcticCtaUrl'    => [ 'text' ],
+			'arcticCtaUrl'       => [ 'text' ],
+			'allDestinationsUrl' => [ 'text' ],
+		],
+	];
+
+	// Return updated data.
+	return $blocks_and_attributes;
+}
+
+/**
+ * Disable translation for this block.
+ *
+ * @param string[] $blocks The block names.
+ *
+ * @return string[] The block names.
+ */
+function disable_translation( array $blocks = [] ): array {
+	// Add block name to disable translation.
+	$blocks[] = BLOCK_NAME;
+
+	// Return block names.
+	return $blocks;
 }

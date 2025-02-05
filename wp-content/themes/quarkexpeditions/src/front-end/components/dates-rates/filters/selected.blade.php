@@ -7,5 +7,5 @@
 	</template>
 	<div class="dates-rates__selected-filters-list">
 	</div>
-	<button class="dates-rates__selected-filters-clear-all">Clear All</button>
+	<button class="dates-rates__selected-filters-clear-all">{{ __( 'Clear All', 'qrk' ) }}</button>
 </quark-dates-rates-selected-filters>

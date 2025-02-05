@@ -71,8 +71,10 @@ if ( empty( $itinerary_groups ) ) {
 												@endforeach
 											@endif
 
-											<dt>{{ __( 'Starting from', 'qrk' ) }}</dt>
-											<dd>{{ $itinerary['price'] ?? '' }} </dd>
+											@if( ! empty( $itinerary['price'] ) )
+												<dt>{{ __( 'Starting from', 'qrk' ) }}</dt>
+												<dd>{{ $itinerary['price'] }} </dd>
+											@endif
 										</dl>
 										@if( ! empty( $itinerary['brochure'] ) )
 											<x-itinerary-details.download-button url="{{ $itinerary['brochure'] }}" />
@@ -154,8 +156,10 @@ if ( empty( $itinerary_groups ) ) {
 													@endforeach
 												@endif
 
-												<dt>{{ __( 'Starting from', 'qrk' ) }}</dt>
-												<dd>{{ $itinerary['price'] ?? '' }} </dd>
+												@if( ! empty( $itinerary['price'] ) )
+													<dt>{{ __( 'Starting from', 'qrk' ) }}</dt>
+													<dd>{{ $itinerary['price'] }} </dd>
+												@endif
 											</dl>
 											@if( ! empty( $itinerary['brochure'] ) )
 												<x-itinerary-details.download-button url="{{ $itinerary['brochure'] }}" />

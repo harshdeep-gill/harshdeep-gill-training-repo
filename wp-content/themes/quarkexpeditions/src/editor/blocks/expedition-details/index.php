@@ -9,6 +9,7 @@ namespace Quark\Theme\Blocks\ExpeditionDetails;
 
 use WP_Block;
 
+use function Quark\Core\is_china_website;
 use function Quark\Expeditions\get_details_data;
 
 const COMPONENT = 'parts.expedition-details';
@@ -93,6 +94,12 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 			'target'           => $target,
 		]
 	);
+
+	// Unset from price if china site.
+	if ( is_china_website() ) {
+		unset( $expedition_details_card_data['from_price'] );
+		unset( $expedition_details_card_data['total_departures'] );
+	}
 
 	// Return built component - Expedition Details.
 	return quark_get_component( COMPONENT, $expedition_details_card_data );

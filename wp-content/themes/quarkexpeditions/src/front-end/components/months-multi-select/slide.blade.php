@@ -11,18 +11,18 @@
 	$month_options = [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec' ];
 
 	$month_name_mapping = [
-		'Jan'  => 'January',
-		'Feb'  => 'February',
-		'Mar'  => 'March',
-		'Apr'  => 'April',
-		'May'  => 'May',
-		'Jun'  => 'June',
-		'Jul'  => 'July',
-		'Aug'  => 'Aug',
-		'Sept' => 'September',
-		'Oct'  => 'October',
-		'Nov'  => 'November',
-		'Dec'  => 'December',
+		'Jan'  => __( 'January', 'qrk' ),
+		'Feb'  => __( 'February', 'qrk' ),
+		'Mar'  => __( 'March', 'qrk' ),
+		'Apr'  => __( 'April', 'qrk' ),
+		'May'  => __( 'May', 'qrk' ),
+		'Jun'  => __( 'June', 'qrk' ),
+		'Jul'  => __( 'July', 'qrk' ),
+		'Aug'  => __( 'Aug', 'qrk' ),
+		'Sept' => __( 'September', 'qrk' ),
+		'Oct'  => __( 'October', 'qrk' ),
+		'Nov'  => __( 'November', 'qrk' ),
+		'Dec'  => __( 'December', 'qrk' ),
 	];
 @endphp
 

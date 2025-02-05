@@ -12,7 +12,7 @@
 @endphp
 
 <div class="book-departures-expeditions__result-count">
-	{{ __( 'Showing', 'qrk' ); }}
+	{{ __( 'Showing', 'qrk' ) }}
 	<span class="book-departures-expeditions__result-count-value">{{ $count ?? 0 }}</span>
 	{{ $departure_count_text ?? 'departures' }}
 </div>

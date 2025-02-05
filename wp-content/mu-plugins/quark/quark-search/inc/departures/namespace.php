@@ -581,7 +581,7 @@ function reindex_departures(): void {
 				'quark_search_reindex_failed',
 				[
 					'post_id' => $post_id,
-					'error'   => __( 'Invalid post.', 'qrk' ),
+					'error'   => 'Invalid post.',
 				]
 			);
 
@@ -599,7 +599,7 @@ function reindex_departures(): void {
 				'quark_search_reindex_failed',
 				[
 					'post_id' => $post_id,
-					'error'   => __( 'Unsupported post type. Neither a expedition, nor a itinerary post.', 'qrk' ),
+					'error'   => 'Unsupported post type. Neither a expedition, nor a itinerary post.',
 				]
 			);
 
