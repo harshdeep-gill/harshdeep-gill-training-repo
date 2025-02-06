@@ -35,7 +35,6 @@ class Stream_Connector extends Connector {
 		'quark_softrip_sync_departure_expired',
 		'quark_softrip_sync_error',
 		'quark_softrip_sync_departure_no_updates',
-		'quark_softrip_sync_departure_drafted',
 	];
 
 	/**
@@ -197,36 +196,6 @@ class Stream_Connector extends Connector {
 			absint( $data['post_id'] ),
 			'softrip_sync',
 			'sync_departure_updated'
-		);
-	}
-
-	/**
-	 * Callback for `quark_softrip_sync_departure_drafted` action.
-	 *
-	 * @param mixed[] $data Data passed to the action.
-	 *
-	 * @return void
-	 */
-	public function callback_quark_softrip_sync_departure_drafted( array $data = [] ): void {
-		// Validate data.
-		if ( empty( $data ) || empty( $data['post_id'] ) || empty( $data['softrip_package_id'] ) ) {
-			return;
-		}
-
-		// Prepare message.
-		$message = sprintf(
-			// translators: %1$s: Softrip ID.
-			__( '"%1$s" drafted', 'qrk' ),
-			strval( $data['softrip_package_id'] )
-		);
-
-		// Log action.
-		$this->log(
-			$message,
-			[],
-			absint( $data['post_id'] ),
-			'softrip_sync',
-			'sync_departure_drafted'
 		);
 	}
 
