@@ -19,6 +19,7 @@ use function Quark\StaffMembers\get_department;
 use function Quark\StaffMembers\get_departments;
 use function Quark\StaffMembers\get_roles;
 use function Quark\StaffMembers\get_structured_data;
+use function Quark\StaffMembers\translate_meta_keys;
 
 use const Quark\StaffMembers\DEPARTMENT_TAXONOMY;
 use const Quark\StaffMembers\DEPARTURE_STAFF_ROLE_TAXONOMY;
@@ -499,6 +500,36 @@ class Test_Staff_Members extends WP_UnitTestCase {
 		$this->assertEquals(
 			$expected,
 			get_structured_data( $post->ID )
+		);
+	}
+
+	/**
+	 * Test for translate_meta_keys.
+	 *
+	 * @covers \Quark\StaffMembers\translate_meta_keys()
+	 *
+	 * @return void
+	 */
+	public function test_translate_meta_keys(): void {
+		// Input data.
+		$input = [
+			'meta_key' => 'string',
+			'icon'     => 'attachment',
+		];
+
+		// Assert data.
+		$this->assertEquals(
+			[
+				'meta_key'             => 'string',
+				'icon'                 => 'attachment',
+				'job_title'            => 'string',
+				'first_name'           => 'string',
+				'last_name'            => 'string',
+				'hometown'             => 'string',
+				'countries_travelled'  => 'post',
+				'favorite_destination' => 'post',
+			],
+			translate_meta_keys( $input )
 		);
 	}
 }

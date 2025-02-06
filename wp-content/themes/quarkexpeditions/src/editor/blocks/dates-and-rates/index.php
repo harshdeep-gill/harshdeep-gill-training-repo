@@ -15,7 +15,8 @@ use function Quark\Search\Departures\search;
 use function Quark\Search\Filters\get_selected_filters_from_query_params;
 use function Quark\Theme\Search_Filters\get_filters_for_dates_rates;
 
-const COMPONENT = 'parts.dates-rates';
+const COMPONENT  = 'parts.dates-rates';
+const BLOCK_NAME = 'quark/dates-and-rates';
 
 /**
  * Bootstrap this block.
@@ -30,6 +31,9 @@ function bootstrap(): void {
 			'render_callback' => __NAMESPACE__ . '\\render',
 		]
 	);
+
+	// Disable translation for this block.
+	add_filter( 'qrk_translation_disable_blocks', __NAMESPACE__ . '\\disable_translation' );
 }
 
 /**
@@ -80,4 +84,19 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 
 	// Return rendered component.
 	return quark_get_component( COMPONENT, $component_attributes );
+}
+
+/**
+ * Disable translation for this block.
+ *
+ * @param string[] $blocks The block names.
+ *
+ * @return string[] The block names.
+ */
+function disable_translation( array $blocks = [] ): array {
+	// Add block name to disable translation.
+	$blocks[] = BLOCK_NAME;
+
+	// Return block names.
+	return $blocks;
 }

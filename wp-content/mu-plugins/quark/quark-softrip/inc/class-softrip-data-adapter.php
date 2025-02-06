@@ -30,7 +30,7 @@ class Softrip_Data_Adapter {
 			empty( QUARK_SOFTRIP_ADAPTER_BASE_URL ) ||
 			empty( QUARK_SOFTRIP_ADAPTER_API_KEY )
 		) {
-			return new WP_Error( 'qrk_softrip_no_auth', __( 'Softrip credentials missing', 'qrk' ) );
+			return new WP_Error( 'qrk_softrip_no_auth', 'Softrip credentials missing' );
 		}
 
 		// Create the URL.

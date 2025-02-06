@@ -14,6 +14,7 @@ use WP_Term;
 use function Quark\ShipDecks\get_cabin_options;
 use function Quark\ShipDecks\prepare_public_spaces;
 use function Quark\ShipDecks\get_deck_data;
+use function Quark\ShipDecks\translate_meta_keys;
 
 use const Quark\ShipDecks\POST_TYPE as SHIP_DECK_POST_TYPE;
 use const Quark\CabinCategories\POST_TYPE as CABIN_CATEGORY_POST_TYPE;
@@ -346,6 +347,37 @@ class Test_Ship_Decks extends WP_UnitTestCase {
 				],
 			],
 			get_cabin_options( [ $cabin_category_post_1->ID, $cabin_category_post_2->ID ] )
+		);
+	}
+
+	/**
+	 * Test for translate_meta_keys.
+	 *
+	 * @covers \Quark\ShipDecks\translate_meta_keys()
+	 *
+	 * @return void
+	 */
+	public function test_translate_meta_keys(): void {
+		// Input data.
+		$input = [
+			'meta_key' => 'string',
+			'icon'     => 'attachment',
+		];
+
+		// Assert data.
+		$this->assertEquals(
+			[
+				'meta_key'                      => 'string',
+				'icon'                          => 'attachment',
+				'deck_name'                     => 'string',
+				'deck_plan_image'               => 'attachment',
+				'vertical_deck_plan_image'      => 'attachment',
+				'cabin_categories'              => 'post',
+				'public_spaces_\d+_title'       => 'string',
+				'public_spaces_\d+_image'       => 'attachment',
+				'public_spaces_\d+_description' => 'string',
+			],
+			translate_meta_keys( $input )
 		);
 	}
 }

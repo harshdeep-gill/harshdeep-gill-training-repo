@@ -8,6 +8,7 @@
 	'right'           => [],
 	'dark_mode'       => false,
 	'breadcrumbs'     => '',
+	'is_404'          => false,
 ] )
 
 @php
@@ -16,7 +17,7 @@
 	}
 @endphp
 
-<x-hero :immersive="$immersive" :text_align="$text_align" :overlay_opacity="$overlay_opacity" :content_overlap="$content_overlap">
+<x-hero :immersive="$immersive" :text_align="$text_align" :overlay_opacity="$overlay_opacity" :content_overlap="$content_overlap" :is_404="$is_404">
 	<x-hero.image :image_id="$image_id" />
 	{!! $breadcrumbs !!}
 	<x-hero.content>
@@ -39,7 +40,12 @@
 
 					@if ( 'title_bicolor' === $item['type'] )
 						@if ( ! empty( $item['white_text'] && ! empty( $item['yellow_text'] ) ) )
-							<x-hero.title-bicolor :white_text="$item['white_text']" :yellow_text="$item['yellow_text']" :switch_colors="$item['switch_colors']" :use_promo_font="$item['use_promo_font']" />
+							<x-search-hero.title-bicolor
+								white_text="{!! $item['white_text'] !!}"
+								yellow_text="{!! $item['yellow_text'] !!}"
+								:switch_colors="$item['switch_colors']"
+								:use_promo_font="$item['use_promo_font']"
+							/>
 						@endif
 					@endif
 
@@ -81,6 +87,12 @@
 				@if( 'button' === $item['type'])
 					@if ( ! empty( $item['button'] ) )
 						{!! $item['button'] !!}
+					@endif
+				@endif
+
+				@if( 'buttons' === $item['type'])
+					@if ( ! empty( $item['buttons'] ) )
+						{!! $item['buttons'] !!}
 					@endif
 				@endif
 			@endforeach

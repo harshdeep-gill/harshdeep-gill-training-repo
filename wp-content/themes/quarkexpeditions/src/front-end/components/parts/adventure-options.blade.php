@@ -29,7 +29,7 @@
 				<x-info-cards.description>
 					{!! $card['excerpt'] !!}
 				</x-info-cards.description>
-				<x-info-cards.cta text="Read Post" />
+				<x-info-cards.cta :text="__( 'Read Post', 'qrk' )" />
 			</x-info-cards.content>
 		</x-info-cards.card>
 	@endforeach

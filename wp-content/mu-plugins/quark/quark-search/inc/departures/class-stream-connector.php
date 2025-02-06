@@ -39,7 +39,7 @@ class Stream_Connector extends Connector {
 	 */
 	public function get_label(): string {
 		// Return label.
-		return __( 'Search', 'qrk' );
+		return 'Search';
 	}
 
 	/**
@@ -50,7 +50,7 @@ class Stream_Connector extends Connector {
 	public function get_context_labels(): array {
 		// Return labels.
 		return [
-			'search_reindex' => __( 'Solr search reindex', 'qrk' ),
+			'search_reindex' => 'Solr search reindex',
 		];
 	}
 
@@ -62,9 +62,9 @@ class Stream_Connector extends Connector {
 	public function get_action_labels(): array {
 		// Return labels.
 		return [
-			'reindex_initiated' => __( 'Solr reindex Initiated', 'qrk' ),
-			'reindex_completed' => __( 'Solr reindex Completed', 'qrk' ),
-			'reindex_failed'    => __( 'Solr reindex Failed', 'qrk' ),
+			'reindex_initiated' => 'Solr reindex Initiated',
+			'reindex_completed' => 'Solr reindex Completed',
+			'reindex_failed'    => 'Solr reindex Failed',
 		];
 	}
 
@@ -83,8 +83,7 @@ class Stream_Connector extends Connector {
 
 		// Prepare message.
 		$message = sprintf(
-			/* translators: %s: Total number of items to reindex. */
-			__( 'Solr reindex initiated. Total items to reindex: %1$d.', 'qrk' ),
+			'Solr reindex initiated. Total items to reindex: %1$d.',
 			absint( $args['total'] )
 		);
 
@@ -113,8 +112,7 @@ class Stream_Connector extends Connector {
 
 		// Prepare message.
 		$message = sprintf(
-			// translators: %1$d: Total, %2$d: Success, %3$d: Failed.
-			__( 'Solr reindex completed. Total: %1$d, Success: %2$d, Failed: %3$d .', 'qrk' ),
+			'Solr reindex completed. Total: %1$d, Success: %2$d, Failed: %3$d .',
 			absint( $args['total'] ),
 			absint( $args['success'] ),
 			absint( $args['failed'] )
@@ -145,8 +143,7 @@ class Stream_Connector extends Connector {
 
 		// Prepare message.
 		$message = sprintf(
-			/* translators: %s: Error message. */
-			__( 'Solr reindex failed for post ID %1$d with error %2$s.', 'qrk' ),
+			'Solr reindex failed for post ID %1$d with error %2$s.',
 			absint( $args['post_id'] ),
 			strval( $args['error'] )
 		);

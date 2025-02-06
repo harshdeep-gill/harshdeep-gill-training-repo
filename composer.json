@@ -25,6 +25,14 @@
       "type":"vcs",
       "url":"git@github.com:Travelopia/wordpress-blocks.git",
       "only": ["travelopia/wordpress-blocks"]
+    },
+    {
+      "type": "vcs",
+      "url": "git@github.com:Travelopia/multilingualpress.git",
+      "only": [
+        "travelopia/multilingualpress"
+      ],
+      "no-api": true
     }
   ],
   "extra": {
@@ -40,6 +48,7 @@
     "php": "^8.2",
     "composer/installers": "^v1.12.0",
     "travelopia/advanced-custom-fields-pro": "*",
+    "travelopia/multilingualpress": "4.7.3",
     "travelopia/wordpress-blade": "*",
     "travelopia/wordpress-blocks": "^1.1.1",
     "travelopia/wordpress-packages": "*",

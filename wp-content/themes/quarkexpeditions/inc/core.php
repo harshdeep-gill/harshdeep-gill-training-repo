@@ -7,6 +7,8 @@
 
 namespace Quark\Theme\Core;
 
+use function Quark\Core\is_china_website;
+
 /**
  * Setup.
  *
@@ -70,7 +72,7 @@ function theme_support(): void {
 	remove_action( 'wp_head', 'rsd_link' );
 
 	// Localization.
-	load_theme_textdomain( 'mr', get_stylesheet_directory() . '/locale' );
+	load_theme_textdomain( 'qrk', get_stylesheet_directory() . '/locale' );
 }
 
 /**
@@ -167,6 +169,7 @@ function register_scripts(): void {
 				'url'    => home_url( '/wp-json/quark-core/v1/partial/get' ),
 				'method' => 'POST',
 			],
+			'isChinaSite'      => is_china_website(),
 		]
 	);
 
@@ -558,6 +561,9 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'suffix'         => true,
 				],
 				'quark-form-newsletter'                                    => [
+					'class' => true,
+				],
+				'quark-site-banner'                                        => [
 					'class' => true,
 				],
 				'tp-form'                                                  => [

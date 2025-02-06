@@ -18,7 +18,8 @@ use function Quark\Core\is_block_editor;
 
 use const Quark\Blog\POST_TYPE as BLOG_POST_TYPE;
 
-const COMPONENT = 'parts.blog-post-cards';
+const COMPONENT  = 'parts.blog-post-cards';
+const BLOCK_NAME = 'quark/blog-post-cards';
 
 /**
  * Bootstrap this block.
@@ -33,6 +34,9 @@ function bootstrap(): void {
 			'render_callback' => __NAMESPACE__ . '\\render',
 		]
 	);
+
+	// Disable translation for this block.
+	add_filter( 'qrk_translation_disable_blocks', __NAMESPACE__ . '\\disable_translation' );
 }
 
 /**
@@ -166,4 +170,19 @@ function render( array $attributes = [] ): string {
 			'last_page_link'     => $current_page !== $posts->max_num_pages ? get_last_pagination_link( [ 'total' => $posts->max_num_pages ] ) : '',
 		]
 	);
+}
+
+/**
+ * Disable translation for this block.
+ *
+ * @param string[] $blocks The block names.
+ *
+ * @return string[] The block names.
+ */
+function disable_translation( array $blocks = [] ): array {
+	// Add block name to disable translation.
+	$blocks[] = BLOCK_NAME;
+
+	// Return block names.
+	return $blocks;
 }
