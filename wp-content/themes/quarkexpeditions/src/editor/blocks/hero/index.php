@@ -56,6 +56,7 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 		'left'            => [],
 		'right'           => [],
 		'breadcrumbs'     => '',
+		'is_404'          => is_404(),
 	];
 
 	// Parse inner blocks.
@@ -258,6 +259,19 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 
 							// Add to attributes.
 							$component_attributes['left'][] = $button;
+							break;
+
+						// Quark buttons.
+						case 'quark/buttons':
+							$buttons = [
+								'type' => 'buttons',
+							];
+
+							// Add buttons.
+							$buttons['buttons'] = render_block( $child_block->parsed_block );
+
+							// Add to attributes.
+							$component_attributes['left'][] = $buttons;
 							break;
 					}
 				}

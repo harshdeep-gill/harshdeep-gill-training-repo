@@ -8,6 +8,7 @@
 	'right'           => [],
 	'dark_mode'       => false,
 	'breadcrumbs'     => '',
+	'is_404'          => false,
 ] )
 
 @php
@@ -16,7 +17,7 @@
 	}
 @endphp
 
-<x-hero :immersive="$immersive" :text_align="$text_align" :overlay_opacity="$overlay_opacity" :content_overlap="$content_overlap">
+<x-hero :immersive="$immersive" :text_align="$text_align" :overlay_opacity="$overlay_opacity" :content_overlap="$content_overlap" :is_404="$is_404">
 	<x-hero.image :image_id="$image_id" />
 	{!! $breadcrumbs !!}
 	<x-hero.content>
@@ -86,6 +87,12 @@
 				@if( 'button' === $item['type'])
 					@if ( ! empty( $item['button'] ) )
 						{!! $item['button'] !!}
+					@endif
+				@endif
+
+				@if( 'buttons' === $item['type'])
+					@if ( ! empty( $item['buttons'] ) )
+						{!! $item['buttons'] !!}
 					@endif
 				@endif
 			@endforeach
