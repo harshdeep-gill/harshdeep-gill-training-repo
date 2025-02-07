@@ -597,7 +597,7 @@ function draft_old_departures( array $package_codes = [] ): void {
 		do_action(
 			'quark_softrip_sync_error',
 			[
-				'error' => 'No departure posts found for the package codes',
+				'error' => 'No published departure posts found for the package codes',
 				'via'   => $initiated_via,
 				'codes' => $package_codes,
 			]
