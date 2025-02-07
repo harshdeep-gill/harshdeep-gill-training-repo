@@ -18,7 +18,7 @@
 
 <quark-book-departures-expeditions-filters class="book-departures-expeditions__filters">
 	<x-form.field class="book-departures-expeditions__filters-currency">
-		<x-form.inline-dropdown label="Currency">
+		<x-form.inline-dropdown :label="__( 'Currency', 'qrk' )">
 
 			@foreach ( $currencies as $code => $currency_data )
 				@if ( ! is_array( $currency_data ) || empty( $currency_data['display'] ) )
@@ -37,17 +37,17 @@
 		</x-form.inline-dropdown>
 	</x-form.field>
 	<x-form.field class="book-departures-expeditions__filters-sort">
-		<x-form.inline-dropdown label="Sort">
-			<x-form.option value="date-now" label="Date (upcoming to later)" selected="yes">
+		<x-form.inline-dropdown label="{{ __( 'Sort', 'qrk' ) }}">
+			<x-form.option value="date-now" :label="__( 'Date (upcoming to later)', 'qrk' )" selected="yes">
 				{{ __( 'Date (upcoming to later)', 'qrk' ) }}
 			</x-form.option>
-			<x-form.option value="date-later" label="Date (later to upcoming)">
+			<x-form.option value="date-later" :label="__( 'Date (later to upcoming)', 'qrk' )">
 				{{ __( 'Date (later to upcoming)', 'qrk' ) }}
 			</x-form.option>
-			<x-form.option value="price-low" label="Price (low to high)">
+			<x-form.option value="price-low" :label="__( 'Price (low to high)', 'qrk' )">
 				{{ __( 'Price (low to high)', 'qrk' ) }}
 			</x-form.option>
-			<x-form.option value="price-high" label="Price (high to low)">
+			<x-form.option value="price-high" :label="__( 'Price (high to low)', 'qrk' )">
 				{{ __( 'Price (high to low)', 'qrk' ) }}
 			</x-form.option>
 		</x-form.inline-dropdown>

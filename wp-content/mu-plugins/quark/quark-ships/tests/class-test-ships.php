@@ -13,7 +13,7 @@ use WP_Term;
 
 use function Quark\Ships\get_ship_data;
 use function Quark\Ships\get_cabins_and_decks;
-use function Quark\Ships\parse_block_attributes;
+use function Quark\Ships\translate_meta_keys;
 use function Quark\Ships\get;
 
 use const Quark\Ships\POST_TYPE as SHIP_POST_TYPE;
@@ -432,6 +432,49 @@ class Test_Ships extends WP_UnitTestCase {
 				],
 			],
 			$the_post
+		);
+	}
+
+	/**
+	 * Test for translate_meta_keys.
+	 *
+	 * @covers \Quark\Ships\translate_meta_keys()
+	 *
+	 * @return void
+	 */
+	public function test_translate_meta_keys(): void {
+		// Input data.
+		$input = [
+			'meta_key' => 'string',
+			'icon'     => 'attachment',
+		];
+
+		// Assert data.
+		$this->assertEquals(
+			[
+				'meta_key'         => 'string',
+				'icon'             => 'attachment',
+				'deck_plan_image'  => 'attachment',
+				'staff_and_crew'   => 'string',
+				'draft'            => 'string',
+				'registration'     => 'string',
+				'guests'           => 'string',
+				'guest_ratio'      => 'string',
+				'stabilizers'      => 'string',
+				'propulsion'       => 'string',
+				'lifeboats'        => 'string',
+				'zodiacs'          => 'string',
+				'voltage'          => 'string',
+				'length'           => 'string',
+				'ice_class'        => 'string',
+				'breadth'          => 'string',
+				'gross_tonnage'    => 'string',
+				'cruising_speed'   => 'string',
+				'year_built'       => 'string',
+				'year_refurbished' => 'string',
+				'related_decks'    => 'Quark\Ships\translate_meta_key',
+			],
+			translate_meta_keys( $input )
 		);
 	}
 }

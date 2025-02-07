@@ -72,7 +72,7 @@ function create_admin_bar_menus( ?WP_Admin_Bar $admin_bar = null ): void {
 			'id'     => sprintf( 'sync-%s', $post_type ),
 			'parent' => null,
 			'group'  => null,
-			'title'  => '<span class="ab-icon dashicons-update-alt"></span>' . esc_html__( 'Sync', 'qrk' ),
+			'title'  => '<span class="ab-icon dashicons-update-alt"></span> Sync',
 			'href'   => get_sync_admin_url( absint( get_the_ID() ) ),
 		]
 	);
@@ -261,7 +261,7 @@ function enqueue_admin_scripts(): void {
 
 	// Prepare localization data.
 	$l10n_data = [
-		'message' => $is_success ? __( 'Successfully synchronized', 'qrk' ) : __( 'Failed to synchronize', 'qrk' ),
+		'message' => $is_success ? 'Successfully synchronized' : 'Failed to synchronize',
 		'type'    => $is_success ? 'success' : 'error',
 	];
 
@@ -416,18 +416,10 @@ function show_sync_admin_notice(): void {
 
 	// Prepare message based on success.
 	$message = $is_success ? sprintf(
-		// translators: %s: Post title.
-		__(
-			'Successfully synchronized %s',
-			'qrk'
-		),
+		'Successfully synchronized %s',
 		$post_title
 	) : sprintf(
-		// translators: %s: Post title.
-		__(
-			'Failed to synchronize %s',
-			'qrk'
-		),
+		'Failed to synchronize %s',
 		$post_title
 	);
 
@@ -500,7 +492,7 @@ function add_sync_action_on_row( array $row_actions = [], WP_Post $post = null )
 	$row_actions['sync'] = sprintf(
 		'<a href="%s">%s</a>',
 		get_sync_admin_url( absint( $post->ID ), $redirect_to ),
-		esc_html__( 'Sync', 'qrk' )
+		'Sync'
 	);
 
 	// Return the row actions.

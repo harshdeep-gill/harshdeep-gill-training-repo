@@ -1,4 +1,4 @@
-name: Deploy to staging
+name: Deploy to Staging
 
 concurrency: staging
 
@@ -79,7 +79,7 @@ jobs:
       - name: Deploy to Pantheon
         env:
           PANTHEON_SSH_PRIVATE_KEY: ${{ secrets.PANTHEON_SSH_PRIVATE_KEY }}
-          PANTHEON_GIT_REPOSITORY: ${{ secrets.PANTHEON_GIT_REPOSITORY }}
+          PANTHEON_GIT_REPOSITORY: ${{ secrets.PANTHEON_MS_GIT_REPOSITORY }}
           PANTHEON_GIT_BRANCH: master
           RELEASE_VERSION: ${{ github.ref_name }}
         run: bash .bin/deploy.sh

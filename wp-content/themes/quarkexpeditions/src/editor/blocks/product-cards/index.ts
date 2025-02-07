@@ -57,7 +57,11 @@ export const init = (): void => {
 	registerBlockType( title.name, title.settings );
 	registerBlockType( description.name, description.settings );
 	registerBlockType( itinerary.name, itinerary.settings );
-	registerBlockType( price.name, price.settings );
 	registerBlockType( subtitle.name, subtitle.settings );
 	registerBlockType( buttons.name, buttons.settings );
+
+	// Check if the block should be disabled on the China site.
+	if ( ! ( window?.quarkSiteData && window.quarkSiteData?.isChinaSite ) ) {
+		registerBlockType( price.name, price.settings );
+	}
 };

@@ -98,7 +98,7 @@
 									</x-dates-rates.expedition.meta-item>
 								</x-dates-rates.expedition.meta>
 								@if ( ! empty( $card['request_a_quote_url'] ) )
-									<x-dates-rates.expedition.cta text="Request a Quote" :url="$card['request_a_quote_url']" />
+									<x-dates-rates.expedition.cta :text="__( 'Request a Quote', 'qrk' )" :url="$card['request_a_quote_url']" />
 								@endif
 							</x-dates-rates.expedition>
 						</x-dates-rates.item.table-column>
@@ -108,7 +108,7 @@
 								<x-dates-rates.item.table-column-title>
 									<strong>{{ __( 'Brochure Price', 'qrk' ) }}</strong>
 
-									@if ( !empty( $card['transfer_package_details'] ) && !empty( $card['transfer_package_details']['title'] ) )
+									@if ( !empty( $card['transfer_package_details'] ) && ! empty( $card['transfer_package_details']['title'] ) )
 										{!! $card['transfer_package_details']['offer_inclusion_text'] ? $card['transfer_package_details']['offer_inclusion_text'] : __( 'Incl. Transfer Package', 'qrk' ) !!}
 										<x-tooltip icon="info">
 											<h5>{{ $card['transfer_package_details']['title'] }}</h5>

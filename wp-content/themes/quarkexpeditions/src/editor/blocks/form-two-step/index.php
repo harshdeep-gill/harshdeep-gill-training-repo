@@ -15,6 +15,7 @@ use function Quark\Leads\Forms\get_states;
 
 const COMPONENT                    = 'form-two-step';
 const FORM_FIELD_BLOCK_NAME_PREFIX = 'form-field-';
+const BLOCK_NAME                   = 'quark/form-two-step';
 
 /**
  * Bootstrap this block.
@@ -30,6 +31,9 @@ function bootstrap(): void {
 			'skip_inner_blocks' => true,
 		]
 	);
+
+	// Disable translation for this block.
+	add_filter( 'qrk_translation_disable_blocks', __NAMESPACE__ . '\\disable_translation' );
 }
 
 /**
@@ -132,4 +136,19 @@ function parse_field_options( string $options = '' ): array {
 
 	// Return parsed options.
 	return $options_data;
+}
+
+/**
+ * Disable translation for this block.
+ *
+ * @param string[] $blocks The block names.
+ *
+ * @return string[] The block names.
+ */
+function disable_translation( array $blocks = [] ): array {
+	// Add block name to disable translation.
+	$blocks[] = BLOCK_NAME;
+
+	// Return block names.
+	return $blocks;
 }

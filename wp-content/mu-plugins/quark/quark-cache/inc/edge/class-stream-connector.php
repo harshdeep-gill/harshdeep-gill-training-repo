@@ -36,7 +36,7 @@ class Stream_Connector extends Connector {
 	 */
 	public function get_label(): string {
 		// Return translated connector label.
-		return __( 'Edge Cache', 'qrk' );
+		return 'Edge Cache';
 	}
 
 	/**
@@ -47,7 +47,7 @@ class Stream_Connector extends Connector {
 	public function get_context_labels(): array {
 		// Return translated context labels.
 		return [
-			'edge_cache' => __( 'Edge Cache', 'qrk' ),
+			'edge_cache' => 'Edge Cache',
 		];
 	}
 
@@ -59,7 +59,7 @@ class Stream_Connector extends Connector {
 	public function get_action_labels(): array {
 		// Return translated action labels.
 		return [
-			'flushed' => __( 'Flush & Warm up', 'qrk' ),
+			'flushed' => 'Flush & Warm up',
 		];
 	}
 
@@ -84,8 +84,7 @@ class Stream_Connector extends Connector {
 
 		// Prepare message.
 		$message = sprintf(
-			/* translators: 1: Time taken, 2: Pricing pages only flag. */
-			__( 'Edge cache flushed and warmed in %1$s seconds. Pricing pages only: %2$s', 'qrk' ),
+			'Edge cache flushed and warmed in %1$s seconds. Pricing pages only: %2$s',
 			$time_taken,
 			$pricing_pages_only ? 'Yes' : 'No'
 		);

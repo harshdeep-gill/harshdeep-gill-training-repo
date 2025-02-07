@@ -8,6 +8,6 @@
 	<div class="expedition-search__selected-filters-container">
 		<div class="expedition-search__selected-filters-list">
 		</div>
-		<button class="expedition-search__selected-filters-clear-all">Clear All</button>
+		<button class="expedition-search__selected-filters-clear-all">{{ __( 'Clear All', 'qrk' ) }}</button>
 	</div>
 </quark-expedition-search-selected-filters>

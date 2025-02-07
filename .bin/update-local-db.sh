@@ -6,7 +6,7 @@
 # Usage: sh update-local-db.sh live|dev|qa
 
 ENV=${1:-live}
-SITE="quark-expeditions"
+SITE="quark-expeditions-ms"
 BACKUP_FILE="backup.sql.gz"
 OUTPUT_FILE="import.sql"
 DATABASE_NAME="quark"

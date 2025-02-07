@@ -11,6 +11,7 @@ use WP_Post;
 use WP_UnitTestCase;
 
 use function Quark\AdventureOptions\get_breadcrumbs_ancestors;
+use function Quark\AdventureOptions\translate_term_meta_keys;
 
 /**
  * Class Test_Adventure_Options.
@@ -49,6 +50,31 @@ class Test_Adventure_Options extends WP_UnitTestCase {
 				],
 			],
 			get_breadcrumbs_ancestors()
+		);
+	}
+
+	/**
+	 * Test for translate_term_meta_keys.
+	 *
+	 * @covers \Quark\AdventureOptions\translate_term_meta_keys()
+	 *
+	 * @return void
+	 */
+	public function test_translate_term_meta_keys(): void {
+		// Input data.
+		$input = [
+			'meta_key' => 'string',
+			'icon'     => 'attachment',
+		];
+
+		// Assert data.
+		$this->assertEquals(
+			[
+				'meta_key' => 'string',
+				'image'    => 'attachment',
+				'icon'     => 'attachment',
+			],
+			translate_term_meta_keys( $input )
 		);
 	}
 }
