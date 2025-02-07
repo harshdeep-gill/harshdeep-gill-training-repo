@@ -16,7 +16,7 @@ COMMAND=$2
 shift 2 
 
 # Collect additional params.
-ADDITIONAL_PARAMS="$@"
+ADDITIONAL_PARAMS=("$@")
 
 # Site to environment map.
 declare -A site_to_env_map=(
@@ -71,12 +71,12 @@ TARGET_ENVIRONMENT=${site_to_env_map[$SITE_NAME]}
 WP_CLI_PREFIX=${command_to_wp_cli_map[$COMMAND]}
 
 # Construct the WP-CLI command
-WP_CLI_COMMAND="terminus wp quark-expeditions-ms.$TARGET_ENVIRONMENT -- $WP_CLI_PREFIX $ADDITIONAL_PARAMS"
+WP_CLI_COMMAND="terminus wp quark-expeditions-ms.$TARGET_ENVIRONMENT -- $WP_CLI_PREFIX \"${ADDITIONAL_PARAMS[@]}\""
 
 # Debugging output
 echo "Executing: $WP_CLI_COMMAND"
 
 # Execute the WP-CLI command
-$WP_CLI_COMMAND
+eval "$WP_CLI_COMMAND" # Use eval with caution, but necessary here.
 
 set +x
