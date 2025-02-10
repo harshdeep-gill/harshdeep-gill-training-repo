@@ -161,12 +161,17 @@ function create_lead( array $lead_data = [] ): array|WP_Error {
 		$lead_data['recaptcha'] instanceof WP_Error
 		|| empty( $lead_data['salesforce_object'] )
 		|| empty( $lead_data['fields'] )
+		|| ! empty( $lead_data['fields']['confirm_phone'] )
+		|| ! empty( $lead_data['fields']['confirm_email'] )
 	) {
 		do_action( 'quark_leads_invalid_data' );
 
 		// Return an error.
 		return new WP_Error( 'quark_leads_invalid_data', 'Invalid data for leads.' );
 	}
+
+	// Delete confirm(honeypot) fields.
+	unset( $lead_data['fields']['confirm_phone'], $lead_data['fields']['confirm_email'] );
 
 	// Build request URL.
 	$request_url = build_salesforce_request_uri( $lead_data['salesforce_object'] );
