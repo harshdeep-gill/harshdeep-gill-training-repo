@@ -63,4 +63,14 @@
 			animation: spin 1s linear infinite;
 		}
 	}
+
+	&__confirm {
+		&-phone {
+			display: none;
+		}
+
+		&-email {
+			display: none;
+		}
+	}
 }
