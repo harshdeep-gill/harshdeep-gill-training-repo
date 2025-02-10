@@ -69,6 +69,9 @@
 			@endif
 
 			{{ $slot }}
+
+			<input type="text" name="fields[confirm_phone]" class="form__confirm-phone">
+			<input type="email" name="fields[confirm_email]" class="form__confirm-email">
 		</form>
 	</tp-form>
 </quark-form>
