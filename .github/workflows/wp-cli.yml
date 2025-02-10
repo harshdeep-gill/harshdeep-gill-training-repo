@@ -58,6 +58,41 @@ jobs:
             exit 1
           fi
 
+      - name: Validate args
+        env:
+          environment: ${{ inputs.environment }}
+          command: ${{ inputs.command }}
+          additional_params: ${{ inputs.additional_params }}
+        run: |
+          if [ -z "$environment" ]; then
+            echo "::error::Environment is required"
+            exit 1
+          fi
+          if [ -z "$command" ]; then
+            echo "::error::Command is required"
+            exit 1
+          fi
+          if [ -n "$additional_params" ]; then
+              safe_regex='^[a-zA-Z0-9/_=.-]+$'
+              if [[ ! "$additional_params" =~ $safe_regex ]]; then
+                echo "::error::Invalid additional parameters"
+                exit 1
+              fi
+              blocked_words='(rm|eval|exec|system|passthru|shell_exec|php_exec|python_exec|wget|curl|>|<|`|\$\(.*\))'
+              if [[ "$additional_params" =~ $blocked_words ]]; then
+                echo "::error::Blocked words found in additional parameters"
+                exit 1
+              fi
+              if echo "$ADDITIONAL_PARAMS" | grep -q '\$('; then
+                echo "::error::Command substitution detected (e.g., \$(curl))"
+                exit 1
+              fi
+              if echo "$ADDITIONAL_PARAMS" | grep -q '`'; then
+                echo "::error::Backticks execution detected (`command`)"
+                exit 1
+              fi
+          fi
+
   wp-cli:
     name: WP CLI command ${{ inputs.command }} on ${{ inputs.environment }}
     needs: pre-run
