@@ -44,7 +44,7 @@
 			</x-form.row>
 			<x-form.row>
 				<x-form.field :validation="[ 'required', 'no-empty-spaces' ]">
-					<x-form.input type="text" label="{{ __( 'Last Name', 'qrk' ) }}Last Name" placeholder="{{ __( 'Enter Last Name', 'qrk' ) }}" name="fields[Last_Name__c]" />
+					<x-form.input type="text" label="{{ __( 'Last Name', 'qrk' ) }}" placeholder="{{ __( 'Enter Last Name', 'qrk' ) }}" name="fields[Last_Name__c]" />
 				</x-form.field>
 			</x-form.row>
 			<x-form.row>

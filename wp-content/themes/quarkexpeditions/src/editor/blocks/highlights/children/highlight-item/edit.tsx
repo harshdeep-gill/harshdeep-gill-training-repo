@@ -123,6 +123,10 @@ export default function edit( { className, attributes, setAttributes }: BlockEdi
 							{ label: __( 'OX Icon', 'qrk' ), value: 'ox-icon' },
 							{ label: __( 'Fjord', 'qrk' ), value: 'fjord' },
 							{ label: __( 'Eclipse', 'qrk' ), value: 'eclipse' },
+							{ label: __( 'Discuss', 'qrk' ), value: 'discuss' },
+							{ label: __( 'Learn', 'qrk' ), value: 'learn' },
+							{ label: __( 'Data', 'qrk' ), value: 'data' },
+							{ label: __( 'Digital Screen', 'qrk' ), value: 'digital-screen' },
 						] }
 						onChange={ ( icon: string ) => setAttributes( { icon } ) }
 					/>
