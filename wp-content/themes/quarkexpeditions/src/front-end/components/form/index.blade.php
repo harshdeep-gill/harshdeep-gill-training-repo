@@ -70,8 +70,12 @@
 
 			{{ $slot }}
 
-			<input type="text" name="fields[confirm_phone]" class="form__confirm-phone">
-			<input type="email" name="fields[confirm_email]" class="form__confirm-email">
+			<x-form.field class="form__confirm-phone">
+				<x-form.input type="text" label="{{ __( 'Confirm Phone', 'qrk' ) }}" placeholder="{{ __( 'Confirm Phone', 'qrk' ) }}" name="fields[confirm_phone]" />
+			</x-form.field>
+			<x-form.field class="form__confirm-email">
+				<x-form.input type="email" label="{{ __( 'Confirm Email', 'qrk' ) }}" placeholder="{{ __( 'Confirm Email', 'qrk' ) }}" name="fields[confirm_email]" />
+			</x-form.field>
 		</form>
 	</tp-form>
 </quark-form>
