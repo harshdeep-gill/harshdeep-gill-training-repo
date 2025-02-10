@@ -568,13 +568,13 @@ function get_cabin_details_by_departure( int $departure_post_id = 0, string $cur
 			// Get occupancy promotions.
 			$occupancy_promotions = get_occupancy_promotions_by_occupancy( $occupancy['id'] );
 
-			// Validate.
-			if ( empty( $occupancy_promotions ) ) {
-				continue;
-			}
-
 			// Loop through the occupancy promotions.
 			foreach ( $occupancy_promotions as $occupancy_promotion ) {
+				// Validate promo id.
+				if ( empty( $occupancy_promotion['promotion_id'] ) ) {
+					continue;
+				}
+
 				// Get promotion detail.
 				$promotion_detail = get_promotions_by_id( $occupancy_promotion['promotion_id'] );
 
