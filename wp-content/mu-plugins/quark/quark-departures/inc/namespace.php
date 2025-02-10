@@ -33,6 +33,9 @@ use function Quark\Itineraries\get_tax_type_details;
 use function Quark\Leads\get_request_a_quote_url;
 use function Quark\Localization\get_currencies;
 
+use function Travelopia\Multilingual\get_post_translations;
+use function Travelopia\Multilingual\get_term_translations;
+
 use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
 use const Quark\CabinCategories\AVAILABLE_STATUS;
 use const Quark\CabinCategories\SOLD_OUT_STATUS;
@@ -70,6 +73,9 @@ function bootstrap(): void {
 	add_action( 'qe_departure_post_cache_busted', __NAMESPACE__ . '\\bust_card_data_cache' );
 	add_action( 'qe_expedition_post_cache_busted', __NAMESPACE__ . '\\bust_card_data_cache_on_expedition_update' );
 	add_action( 'qe_itinerary_post_cache_busted', __NAMESPACE__ . '\\bust_card_data_cache_on_itinerary_update' );
+
+	// Add meta keys to be translated while content sync.
+	add_filter( 'qrk_translation_meta_keys', __NAMESPACE__ . '\\translate_meta_keys' );
 
 	// Admin stuff.
 	if ( is_admin() ) {
@@ -1360,7 +1366,7 @@ function get_promotions_description( int $departure_id = 0, string $currency = D
  * Get Departure Availability Status.
  *
  * @param int          $departure_id Departure ID.
- * @param mixed[]|null $cabins Cabin details.
+ * @param mixed[]|null $cabins       Cabin details.
  *
  * @return string
  */
@@ -1451,4 +1457,89 @@ function sort_promotions_by_type_and_value( array $promotions = [] ): array {
 
 	// Return sorted promotions.
 	return $promotions;
+}
+
+/**
+ * Translate meta keys.
+ *
+ * @param array<string, string> $meta_keys Meta keys.
+ *
+ * @return array<string, string|string[]>
+ */
+function translate_meta_keys( array $meta_keys = [] ): array {
+	// Meta keys for translation.
+	$extra_keys = [
+		'related_expedition'                       => 'post',
+		'related_ship'                             => 'post',
+		'itinerary'                                => 'post',
+		'expedition_team_\d+_staff_member'         => 'post',
+		'related_departures'                       => __NAMESPACE__ . '\\translate_meta_key',
+		'adventure_options'                        => __NAMESPACE__ . '\\translate_meta_key',
+		'related_promotion_tags'                   => __NAMESPACE__ . '\\translate_meta_key',
+		'expedition_team_\d+_departure_staff_role' => __NAMESPACE__ . '\\translate_meta_key',
+	];
+
+	// Return meta keys to be translated.
+	return array_merge( $meta_keys, $extra_keys );
+}
+
+/**
+ * Callable to translate a meta value by meta key.
+ *
+ * @param string $meta_key            Meta key name.
+ * @param string $meta_value          Meta key value.
+ * @param int    $source_site_id      Source site ID.
+ * @param int    $destination_site_id Destination site ID.
+ *
+ * @return string Translated value.
+ */
+function translate_meta_key( string $meta_key = '', string $meta_value = '', int $source_site_id = 0, int $destination_site_id = 0 ): string {
+	// Bail if required data is not available.
+	if ( empty( $meta_key ) || empty( $meta_value ) || empty( $source_site_id ) || empty( $destination_site_id ) ) {
+		return $meta_value;
+	}
+
+	// Taxonomies keys.
+	$taxonomies_keys = [
+		'adventure_options',
+		'related_promotion_tags',
+	];
+
+	// Translate the taxonomies meta key.
+	if (
+		in_array( $meta_key, $taxonomies_keys, true )
+		|| preg_match( '/expedition_team_\d+_departure_staff_role/', $meta_key )
+	) {
+		// Get translated term id.
+		$translated_terms = get_term_translations(
+			absint( $meta_value ),
+			$source_site_id,
+		);
+
+		// Loop through translated terms.
+		foreach ( $translated_terms as $term ) {
+			if ( $term['site_id'] === $destination_site_id ) {
+				// Update meta value with translated term id.
+				$meta_value = $term['term_id'];
+				break;
+			}
+		}
+	} elseif ( 'related_departures' === $meta_key ) {
+		// Get translated deck ID.
+		$deck_post = get_post_translations(
+			absint( $meta_value ),
+			$source_site_id
+		);
+
+		// Loop through translated posts.
+		foreach ( $deck_post as $post ) {
+			if ( $post['site_id'] === $destination_site_id ) {
+				// Update meta value.
+				$meta_value = $post['post_id'];
+			}
+		}
+	}
+
+	// Return meta value.
+	return strval( $meta_value );
 }

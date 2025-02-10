@@ -9,10 +9,12 @@ namespace Quark\Theme\Blocks\BookDeparturesShips;
 
 use WP_Post;
 
+use function Quark\Core\is_china_website;
 use function Quark\Localization\get_current_currency;
 use function Quark\Ships\get as get_ship;
 
-const COMPONENT = 'parts.book-departures-ships';
+const COMPONENT  = 'parts.book-departures-ships';
+const BLOCK_NAME = 'quark/book-departures-ships';
 
 /**
  * Bootstrap this block.
@@ -27,6 +29,9 @@ function bootstrap(): void {
 			'render_callback' => __NAMESPACE__ . '\\render',
 		]
 	);
+
+	// Disable translation for this block.
+	add_filter( 'qrk_translation_disable_blocks', __NAMESPACE__ . '\\disable_translation' );
 }
 
 /**
@@ -38,6 +43,11 @@ function bootstrap(): void {
  * @return string The block markup.
  */
 function render( array $attributes = [], string $content = '' ): string {
+	// Bail out if its china site.
+	if ( is_china_website() ) {
+		return '';
+	}
+
 	// Get the ship.
 	$ship = get_ship();
 
@@ -60,4 +70,19 @@ function render( array $attributes = [], string $content = '' ): string {
 			'currency' => $currency,
 		]
 	);
+}
+
+/**
+ * Disable translation for this block.
+ *
+ * @param string[] $blocks The block names.
+ *
+ * @return string[] The block names.
+ */
+function disable_translation( array $blocks = [] ): array {
+	// Add block name to disable translation.
+	$blocks[] = BLOCK_NAME;
+
+	// Return block names.
+	return $blocks;
 }

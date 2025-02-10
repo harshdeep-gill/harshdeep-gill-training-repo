@@ -13,6 +13,7 @@ import {
 import * as formModalCta from '../../../lp-form-modal-cta';
 import * as iconBadge from '../../../icon-badge';
 import * as quarkButton from '../../../button';
+import * as quarkButtons from '../../../buttons';
 
 /**
  * External dependencies.
@@ -53,6 +54,7 @@ export default function Edit( { className }: BlockEditAttributes ): JSX.Element 
 				heroDescription.name,
 				heroTextGraphic.name,
 				quarkButton.name,
+				quarkButtons.name,
 			],
 			template: [
 				[ overline.name ],

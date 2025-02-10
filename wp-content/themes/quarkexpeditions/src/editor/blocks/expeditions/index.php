@@ -11,6 +11,7 @@ use WP_Block;
 use WP_Query;
 
 use function Quark\Core\format_price;
+use function Quark\Core\is_china_website;
 use function Quark\Expeditions\get_minimum_duration;
 use function Quark\Expeditions\get_minimum_duration_itinerary;
 use function Quark\Expeditions\get_starting_from_date;
@@ -20,7 +21,8 @@ use function Quark\Localization\get_current_currency;
 
 use const Quark\Expeditions\POST_TYPE as EXPEDITION_POST_TYPE;
 
-const COMPONENT = 'parts.expeditions';
+const COMPONENT  = 'parts.expeditions';
+const BLOCK_NAME = 'quark/expeditions';
 
 /**
  * Bootstrap this block.
@@ -35,6 +37,9 @@ function bootstrap(): void {
 			'render_callback' => __NAMESPACE__ . '\\render',
 		]
 	);
+
+	// Add block attributes to translate.
+	add_filter( 'qrk_translation_block_attributes', __NAMESPACE__ . '\\block_attributes_to_translate' );
 }
 
 /**
@@ -166,6 +171,17 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 		];
 	}
 
+	// If china site remove price and transfer package data.
+	if ( is_china_website() ) {
+		// Remove price and transfer package data.
+		foreach ( $cards as $key => $card ) {
+			$cards[ $key ]['original_price']   = '';
+			$cards[ $key ]['discounted_price'] = '';
+			$cards[ $key ]['transfer_package'] = [];
+			$cards[ $key ]['departure_date']   = '';
+		}
+	}
+
 	// Return built component.
 	return quark_get_component(
 		COMPONENT,
@@ -173,4 +189,22 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 			'cards' => $cards,
 		]
 	);
+}
+
+/**
+ * Block attributes that need to be translatable.
+ *
+ * @param mixed[] $blocks_and_attributes Blocks and attributes.
+ *
+ * @return mixed[]
+ */
+function block_attributes_to_translate( array $blocks_and_attributes = [] ): array {
+	// Add data to translate.
+	$blocks_and_attributes[ BLOCK_NAME ] = [
+		'post_id' => [ 'ids' ],
+		'term_id' => [ 'termIds' ],
+	];
+
+	// Return updated data.
+	return $blocks_and_attributes;
 }

@@ -16,7 +16,8 @@ use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
 use const Quark\Expeditions\DESTINATION_TAXONOMY;
 use const Quark\AdventureOptions\POST_TYPE as ADVENTURE_OPTIONS_POST_TYPE;
 
-const COMPONENT = 'parts.adventure-options';
+const COMPONENT  = 'parts.adventure-options';
+const BLOCK_NAME = 'quark/adventure-options';
 
 /**
  * Bootstrap this block.
@@ -31,6 +32,9 @@ function bootstrap(): void {
 			'render_callback' => __NAMESPACE__ . '\\render',
 		]
 	);
+
+	// Add block attributes to translate.
+	add_filter( 'qrk_translation_block_attributes', __NAMESPACE__ . '\\block_attributes_to_translate' );
 }
 
 /**
@@ -130,4 +134,22 @@ function render( array $attributes = [] ): string {
 			'carousel_overflow' => $attributes['carouselOverflow'],
 		]
 	);
+}
+
+/**
+ * Block attributes that need to be translatable.
+ *
+ * @param mixed[] $blocks_and_attributes Blocks and attributes.
+ *
+ * @return mixed[]
+ */
+function block_attributes_to_translate( array $blocks_and_attributes = [] ): array {
+	// Add data to translate.
+	$blocks_and_attributes[ BLOCK_NAME ] = [
+		'term_id' => [ 'termIDs' ],
+		'post_id' => [ 'ids' ],
+	];
+
+	// Return updated data.
+	return $blocks_and_attributes;
 }

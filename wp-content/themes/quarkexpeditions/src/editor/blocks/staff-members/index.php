@@ -21,7 +21,8 @@ use function Quark\Core\is_block_editor;
 use const Quark\StaffMembers\POST_TYPE as STAFF_MEMBER_POST_TYPE;
 use const Quark\StaffMembers\DEPARTMENT_TAXONOMY as STAFF_MEMBER_DEPARTMENT_TAXONOMY;
 
-const COMPONENT = 'parts.staff-members';
+const COMPONENT  = 'parts.staff-members';
+const BLOCK_NAME = 'quark/staff-members';
 
 /**
  * Bootstrap this block.
@@ -36,6 +37,9 @@ function bootstrap(): void {
 			'render_callback' => __NAMESPACE__ . '\\render',
 		]
 	);
+
+	// Add block attributes to translate.
+	add_filter( 'qrk_translation_block_attributes', __NAMESPACE__ . '\\block_attributes_to_translate' );
 }
 
 /**
@@ -170,4 +174,22 @@ function render( array $attributes = [] ): string {
 			'last_page_link'  => $current_page !== $posts->max_num_pages ? get_last_pagination_link( [ 'total' => $posts->max_num_pages ] ) : '',
 		]
 	);
+}
+
+/**
+ * Block attributes that need to be translatable.
+ *
+ * @param mixed[] $blocks_and_attributes Blocks and attributes.
+ *
+ * @return mixed[]
+ */
+function block_attributes_to_translate( array $blocks_and_attributes = [] ): array {
+	// Add data to translate.
+	$blocks_and_attributes[ BLOCK_NAME ] = [
+		'post_id' => [ 'ids' ],
+		'term_id' => [ 'departmentIds' ],
+	];
+
+	// Return updated data.
+	return $blocks_and_attributes;
 }
