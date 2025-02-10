@@ -55,8 +55,13 @@
 		overflow: hidden;
 
 		&:hover {
+
 			#{$self}__cta-text {
 				text-decoration-color: var(--color-yellow);
+			}
+
+			img {
+				transform: scale(1.03);
 			}
 		}
 
@@ -92,6 +97,8 @@
 		#{$self}__image video {
 			position: absolute;
 			z-index: 1;
+
+			@include transition(transform);
 		}
 
 		#{$self}__image-lightbox img,
