@@ -18,6 +18,28 @@ shift 2
 # Collect additional params.
 ADDITIONAL_PARAMS=("$@")
 
+# Function to validate arguments against malicious input
+validate_args() {
+    local safe_regex='^[a-zA-Z0-9/_=.-]+$' # Only allow safe characters
+    local blocked_words='(rm|eval|exec|system|passthru|shell_exec|php_exec|python_exec|wget|curl|>|<|`|\$\(.*\))' # Block dangerous commands
+    echo "Validating arguments: $@"
+
+    for arg in "$@"; do
+        if [[ ! "$arg" =~ $safe_regex ]]; then
+            echo "Error: Argument '$arg' contains unsafe characters!"
+            exit 1
+        fi
+        
+        if [[ "$arg" =~ $blocked_words ]]; then
+            echo "Error: Argument '$arg' contains blocked commands!"
+            exit 1
+        fi
+    done
+}
+
+# Validate additional parameters
+validate_args "${ADDITIONAL_PARAMS[@]}"
+
 # Site to environment map.
 declare -A site_to_env_map=(
     ["qa"]="qa"
@@ -71,12 +93,12 @@ TARGET_ENVIRONMENT=${site_to_env_map[$SITE_NAME]}
 WP_CLI_PREFIX=${command_to_wp_cli_map[$COMMAND]}
 
 # Construct the WP-CLI command
-WP_CLI_COMMAND="terminus wp quark-expeditions-ms.$TARGET_ENVIRONMENT -- $WP_CLI_PREFIX \"${ADDITIONAL_PARAMS[@]}\""
+WP_CLI_COMMAND="terminus wp quark-expeditions-ms.$TARGET_ENVIRONMENT -- $WP_CLI_PREFIX ${ADDITIONAL_PARAMS[@]}"
 
 # Debugging output
 echo "Executing: $WP_CLI_COMMAND"
 
 # Execute the WP-CLI command
-eval "$WP_CLI_COMMAND" # Use eval with caution, but necessary here.
+eval "$WP_CLI_COMMAND"
 
 set +x
