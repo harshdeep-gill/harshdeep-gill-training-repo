@@ -30,8 +30,6 @@
 		<x-drawer.body class="dates-rates__promo-code-content-body">
 			<strong>{{ __( 'Terms & Conditions', 'qrk' ) }}</strong>
 			<div class="dates-rates__promo-code-tnc">
-				<x-content :content="__( 'Indicates the discount percent offer in effect at the time this record that was updated. Each passenger\'s full name is required at time of booking in order to initiate a hold, or to process a confirmed booking. Offer applies to voyage only, not applicable to transfer packages, adventure options, additional hotel accommodations, pre/post tours, insurance, flights, or group bookings. Quark Expeditions® has the right to limit, change or discontinue the promo savings discount offer at any time without notice. If combined with a dollar value discount, this offer will be applied afterwards. Only a hold booking or a confirmed booking can guarantee the offer. No cash value. Brochure Terms & Conditions apply.
-', 'qrk' )" />
 			</div>
 			<strong>{{ __( 'Promo Code: ', 'qrk' ) }} <x-escape :content="$promo_code"/></strong>
 		</x-drawer.body>
