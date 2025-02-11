@@ -301,6 +301,10 @@
 
 	&__options-drawer {
 
+		&[open] {
+			z-index: 115;
+		}
+
 		#{$self}__tooltip-header {
 			display: none;
 		}
