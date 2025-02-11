@@ -612,7 +612,7 @@
 		opacity: 0;
 		display: flex;
 		position: fixed;
-		z-index: 5;
+		z-index: 111;
 		bottom: 0;
 		left: 0;
 		background-color: var(--color-white);
@@ -633,6 +633,18 @@
 
 		@media screen and (min-width: grid-size(sm)) {
 			display: none;
+		}
+	}
+}
+
+.expedition-cards__transfer-package-content,
+.departure-cards__transfer-package-content {
+
+	.drawer__body {
+		padding-bottom: var(--spacing-9);
+
+		@media screen and (min-width: grid-size(sm)) {
+			padding-bottom: 0;
 		}
 	}
 }

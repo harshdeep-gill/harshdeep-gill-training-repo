@@ -25,6 +25,21 @@ const CURRENCIES   = [
 // Default currency and cookie.
 const DEFAULT_CURRENCY = USD_CURRENCY;
 const CURRENCY_COOKIE  = 'STYXKEY_currency';
+const DEFAULT_LOCALE   = 'us';
+const LOCALES          = [
+	'us' => [
+		'site_id'          => 1,
+		'locale'           => 'en-US',
+		'name'             => 'USA',
+		'fallback_site_id' => 0,
+	],
+	'cn' => [
+		'site_id'          => 2,
+		'locale'           => 'zn-CN',
+		'name'             => 'CN',
+		'fallback_site_id' => 0,
+	],
+];
 
 /**
  * Bootstrap the plugin.
@@ -150,4 +165,19 @@ function front_end_data( array $data = [] ): array {
 
 	// Return data.
 	return $data;
+}
+
+/**
+ * Get locales.
+ *
+ * @return array<string, array{
+ *     site_id: int,
+ *     locale: string,
+ *     name: string,
+ *     fallback_site_id: int
+ * }>
+ */
+function get_locales(): array {
+	// Return all locales.
+	return LOCALES;
 }

@@ -25,6 +25,9 @@ use function Quark\Softrip\Occupancies\is_occupancy_on_sale;
 use function Quark\Softrip\OccupancyPromotions\get_lowest_price as get_occupancy_promotion_lowest_price;
 use function Quark\Softrip\Promotions\get_promotions_by_code;
 
+use function Travelopia\Multilingual\get_translated_image;
+use function Travelopia\Multilingual\get_post_translations;
+
 use const Quark\Localization\DEFAULT_CURRENCY;
 use const Quark\Ships\POST_TYPE as SHIP_POST_TYPE;
 
@@ -52,6 +55,9 @@ function bootstrap(): void {
 
 	// Other hooks. Assigning non-standard priority to avoid race conditions with ACF.
 	add_action( 'save_post', __NAMESPACE__ . '\\bust_post_cache', 11 );
+
+	// Add meta keys to be translated while content sync.
+	add_filter( 'qrk_translation_meta_keys', __NAMESPACE__ . '\\translate_meta_keys' );
 
 	// Admin stuff.
 	if ( is_admin() || ( defined( 'WP_CLI' ) && true === WP_CLI ) ) {
@@ -1131,4 +1137,74 @@ function get_availability_status_description( string $status = '' ): string {
 		default:
 			return '';
 	}
+}
+
+/**
+ * Translate meta keys.
+ *
+ * @param array<string, string> $meta_keys Meta keys.
+ *
+ * @return array<string, string|string[]>
+ */
+function translate_meta_keys( array $meta_keys = [] ): array {
+	// Meta keys for translation.
+	$extra_keys = [
+		'cabin_name'              => 'string',
+		'cabin_bed_configuration' => 'string',
+		'related_ship'            => 'post',
+		'cabin_images'            => __NAMESPACE__ . '\\translate_meta_key',
+		'related_decks'           => __NAMESPACE__ . '\\translate_meta_key',
+	];
+
+	// Return meta keys to be translated.
+	return array_merge( $meta_keys, $extra_keys );
+}
+
+/**
+ * Callable to translate a meta value by meta key.
+ *
+ * @param string $meta_key            Meta key name.
+ * @param string $meta_value          Meta key value.
+ * @param int    $source_site_id      Source site ID.
+ * @param int    $destination_site_id Destination site ID.
+ *
+ * @return string Translated value.
+ */
+function translate_meta_key( string $meta_key = '', string $meta_value = '', int $source_site_id = 0, int $destination_site_id = 0 ): string {
+	// Bail if required data is not available.
+	if ( empty( $meta_key ) || empty( $meta_value ) || empty( $source_site_id ) || empty( $destination_site_id ) ) {
+		return $meta_value;
+	}
+
+	// Translate the `cabin_images` meta key.
+	if ( 'cabin_images' === $meta_key ) {
+		$post = get_translated_image(
+			absint( $meta_value ),
+			$source_site_id,
+			$destination_site_id
+		);
+
+		// Check if post is an instance of WP_Post.
+		if ( $post instanceof WP_Post ) {
+			// Update meta value.
+			$meta_value = strval( $post->ID );
+		}
+	} elseif ( 'related_decks' === $meta_key ) {
+		// Get translated deck ID.
+		$deck_post = get_post_translations(
+			absint( $meta_value ),
+			$source_site_id
+		);
+
+		// Loop through translated posts.
+		foreach ( $deck_post as $post ) {
+			if ( $post['site_id'] === $destination_site_id ) {
+				// Update meta value.
+				$meta_value = $post['post_id'];
+			}
+		}
+	}
+
+	// Return meta value.
+	return strval( $meta_value );
 }

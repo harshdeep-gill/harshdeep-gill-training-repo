@@ -265,36 +265,11 @@ function format_adventure_option_data( array $raw_adventure_option = [], int $de
 		return [];
 	}
 
-	// Spaces available.
-	$spaces_available = intval( $raw_adventure_option['spacesAvailable'] ); // phpcs:ignore Travelopia.PHP.PreferAbsintOverIntval.UseAbsInt
+	// Service Ids.
+	$service_ids = '';
 
-	// Ensure spaces available is not negative.
-	if ( $spaces_available < 0 ) {
-		$spaces_available = 0;
-	}
-
-	// Initialize formatted data.
-	$formatted_data = [
-		'softrip_option_id'        => sanitize_text_field( strval( $raw_adventure_option['id'] ) ),
-		'departure_post_id'        => $departure_post_id,
-		'softrip_package_code'     => '',
-		'spaces_available'         => $spaces_available,
-		'service_ids'              => '',
-		'adventure_option_term_id' => 0,
-		'price_per_person_usd'     => 0,
-		'price_per_person_cad'     => 0,
-		'price_per_person_aud'     => 0,
-		'price_per_person_gbp'     => 0,
-		'price_per_person_eur'     => 0,
-	];
-
-	// Get the package code.
-	$softrip_package_code = get_post_meta( $departure_post_id, 'softrip_package_code', true );
-
-	// Add package code to formatted data.
-	if ( ! empty( $softrip_package_code ) ) {
-		$formatted_data['softrip_package_code'] = strval( $softrip_package_code );
-	}
+	// Adventure Option term id.
+	$adventure_option_term_id = 0;
 
 	// Add service ids and term id to formatted data.
 	if ( ! empty( $raw_adventure_option['serviceIds'] ) && is_array( $raw_adventure_option['serviceIds'] ) ) {
@@ -309,13 +284,49 @@ function format_adventure_option_data( array $raw_adventure_option = [], int $de
 
 			// Add first term to formatted data and break.
 			if ( ! empty( $term_ids ) ) {
-				$formatted_data['adventure_option_term_id'] = $term_ids[0];
+				$adventure_option_term_id = $term_ids[0];
 				break;
 			}
 		}
 
 		// Store service ids in formatted data.
-		$formatted_data['service_ids'] = implode( ',', $service_ids );
+		$service_ids = implode( ',', $service_ids );
+	}
+
+	// Validate term ID.
+	if ( empty( $adventure_option_term_id ) ) {
+		return [];
+	}
+
+	// Spaces available.
+	$spaces_available = intval( $raw_adventure_option['spacesAvailable'] ); // phpcs:ignore Travelopia.PHP.PreferAbsintOverIntval.UseAbsInt
+
+	// Ensure spaces available is not negative.
+	if ( $spaces_available < 0 ) {
+		$spaces_available = 0;
+	}
+
+	// Initialize formatted data.
+	$formatted_data = [
+		'softrip_option_id'        => sanitize_text_field( strval( $raw_adventure_option['id'] ) ),
+		'departure_post_id'        => $departure_post_id,
+		'softrip_package_code'     => '',
+		'spaces_available'         => $spaces_available,
+		'service_ids'              => $service_ids,
+		'adventure_option_term_id' => $adventure_option_term_id,
+		'price_per_person_usd'     => 0,
+		'price_per_person_cad'     => 0,
+		'price_per_person_aud'     => 0,
+		'price_per_person_gbp'     => 0,
+		'price_per_person_eur'     => 0,
+	];
+
+	// Get the package code.
+	$softrip_package_code = get_post_meta( $departure_post_id, 'softrip_package_code', true );
+
+	// Add package code to formatted data.
+	if ( ! empty( $softrip_package_code ) ) {
+		$formatted_data['softrip_package_code'] = strval( $softrip_package_code );
 	}
 
 	// Loop through the currencies.

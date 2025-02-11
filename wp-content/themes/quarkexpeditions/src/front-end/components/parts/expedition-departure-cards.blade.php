@@ -176,28 +176,28 @@
 											<x-product-options-cards.specifications>
 												@if( ! empty( $cabin['specifications']['occupancy'] ) )
 													<x-product-options-cards.specification
-														label="Occupancy"
+														:label="__( 'Occupancy', 'qrk' )"
 														value="{{ $cabin['specifications']['occupancy'] }}"
 													/>
 												@endif
 
 												@if( ! empty( $cabin['specifications']['bed_configuration'] ) )
 													<x-product-options-cards.specification
-														label="Number of Beds"
+														:label="__( 'Number of Beds', 'qrk' )"
 														value="{{ $cabin['specifications']['bed_configuration'] }}"
 													/>
 												@endif
 
 												@if( ! empty( $cabin['specifications']['location'] ) )
 													<x-product-options-cards.specification
-														label="Location"
+														:label="__( 'Location', 'qrk' )"
 														value="{{ $cabin['specifications']['location'] }}"
 													/>
 												@endif
 
 												@if( ! empty( $cabin['specifications']['size'] ) )
 													<x-product-options-cards.specification
-														label="Cabin Size"
+														:label="__( 'Cabin Size', 'qrk' )"
 														value="{{ $cabin['specifications']['size'] }}"
 													/>
 												@endif
@@ -215,7 +215,7 @@
 											<x-product-options-cards.transfer-package>
 												<x-departure-cards.transfer_package
 													drawer_id="transfer-price-{{ $cabin_code . '_' . $departure_id }}"
-													drawer_title="Mandatory Transfer Package"
+													:drawer_title="__( 'Mandatory Transfer Package', 'qrk' )"
 												>
 													<p><strong>{{ $card['transfer_package_details']['title'] ?? '' }}</strong></p>
 													<ul>
@@ -230,8 +230,8 @@
 
 												<div class="product-options-cards__tooltip">
 													<span>
-													{!! $card['transfer_package_details']['offer_inclusion_text'] ? $card['transfer_package_details']['offer_inclusion_text'] : __( 'Incl. Transfer Package', 'qrk' ) !!}
-												</span>
+														{!! $card['transfer_package_details']['offer_inclusion_text'] ? $card['transfer_package_details']['offer_inclusion_text'] : __( 'Incl. Transfer Package', 'qrk' ) !!}
+													</span>
 													<x-tooltip icon="info">
 														<h5>{{ $card['transfer_package_details']['title'] }}</h5>
 
@@ -289,7 +289,7 @@
 																		no_of_guests="{{ $occupancy['no_of_guests'] ?? '' }}"
 																	/>
 																@endif
-																<x-product-options-cards.room-subtitle subtitle="Price of the cabin for one guest"/>
+																<x-product-options-cards.room-subtitle :subtitle="__( 'Price of the cabin for one guest', 'qrk' )"/>
 															</x-product-options-cards.room-title-container>
 
 															@if( ! empty( $occupancy['price'] ) && is_array( $occupancy['price'] ) )
@@ -358,7 +358,7 @@
 									@endif
 
 									@if( ! empty( $cabin['occupancies'] ) && is_array( $cabin['occupancies'] ) )
-										<x-product-options-cards.rooms title="Select Rooms">
+										<x-product-options-cards.rooms :title="__( 'Select Rooms', 'qrk' )">
 											@foreach( $cabin['occupancies'] as $index => $occupancy )
 												<x-product-options-cards.room checkout_url="{!! $occupancy['checkout_url'] !!}" name="room-type-{{ $departure_id }}-{{ $cabin_code }}" checked="{{ $index == 0 ? 'checked' : '' }}" mask="{{ $occupancy['name'] ?? '' }}">
 													<x-product-options-cards.room-title-container>
@@ -368,7 +368,7 @@
 																no_of_guests="{{ $occupancy['no_of_guests'] ?? '' }}"
 															/>
 														@endif
-														<x-product-options-cards.room-subtitle subtitle="Price of the cabin for one guest"/>
+														<x-product-options-cards.room-subtitle :subtitle="__( 'Price of the cabin for one guest', 'qrk' )"/>
 													</x-product-options-cards.room-title-container>
 
 													@if( ! empty( $occupancy['price'] ) && is_array( $occupancy['price'] ) )

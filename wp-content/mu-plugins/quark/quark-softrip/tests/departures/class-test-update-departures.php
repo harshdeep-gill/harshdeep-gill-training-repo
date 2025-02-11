@@ -80,7 +80,7 @@ class Test_Update_Departures extends Softrip_TestCase {
 			],
 			[ // Valid departure.
 				'id'          => 'PQO-892:2027-09-05',
-				'code'        => 'OMI20250905',
+				'code'        => 'OMX20250905',
 				'packageCode' => 'PQO-892',
 				'startDate'   => '2027-09-05',
 				'endDate'     => '2027-09-15',
@@ -96,6 +96,32 @@ class Test_Update_Departures extends Softrip_TestCase {
 						'occupancies' => [
 							[
 								'id'             => 'OCC-2',
+								'name'           => 'Single',
+								'mask'           => 'A',
+								'saleStatusCode' => 'O',
+							],
+						],
+					],
+				],
+			],
+			[ // Valid departure.
+				'id'          => 'WOP-892:2027-09-05',
+				'code'        => 'UIP20250905',
+				'packageCode' => 'WOP-892',
+				'startDate'   => '2027-09-05',
+				'endDate'     => '2027-09-15',
+				'duration'    => 10,
+				'shipCode'    => 'UIP',
+				'marketCode'  => 'PRC',
+				'cabins'      => [
+					[
+						'id'          => 'CAB-2',
+						'code'        => 'CAB-2',
+						'name'        => 'Cabin 2',
+						'departureId' => 'WOP-892:2027-09-05',
+						'occupancies' => [
+							[
+								'id'             => 'POL-2',
 								'name'           => 'Single',
 								'mask'           => 'A',
 								'saleStatusCode' => 'O',
@@ -188,6 +214,17 @@ class Test_Update_Departures extends Softrip_TestCase {
 		);
 		$this->assertIsInt( $ship_id_omx );
 
+		// Create a ship post for OMI.
+		$ship_id_omi = $this->factory()->post->create(
+			[
+				'post_type'  => SHIP_POST_TYPE,
+				'meta_input' => [
+					'ship_code' => 'OMI',
+				],
+			]
+		);
+		$this->assertIsInt( $ship_id_omi );
+
 		// Test with itinerary having expedition - proper update.
 		$actual = update_departures( $pqo_raw_departures, $pqo_softrip_package_code );
 		$this->assertTrue( $actual );
@@ -244,7 +281,7 @@ class Test_Update_Departures extends Softrip_TestCase {
 		$this->assertEquals( $pqo_raw_departures[0]['marketCode'], get_post_meta( $departure_post1, 'softrip_market_code', true ) );
 
 		// There should be no related_ship as ship post doesn't exists for the first departure.
-		$this->assertEquals( 0, get_post_meta( $departure_post1, 'related_ship', true ) );
+		$this->assertEquals( $ship_id_omi, get_post_meta( $departure_post1, 'related_ship', true ) );
 
 		// English should be set.
 		$spoken_language_terms = wp_get_post_terms( $departure_post1, SPOKEN_LANGUAGE_TAXONOMY, [ 'fields' => 'slugs' ] );
@@ -306,17 +343,6 @@ class Test_Update_Departures extends Softrip_TestCase {
 
 		// Assert the same departure posts.
 		$this->assertEquals( $departure_posts, $departure_posts2 );
-
-		// Create OMI ship post.
-		$ship_id_omi = $this->factory()->post->create(
-			[
-				'post_type'  => SHIP_POST_TYPE,
-				'meta_input' => [
-					'ship_code' => 'OMI',
-				],
-			]
-		);
-		$this->assertIsInt( $ship_id_omi );
 
 		// Let's try updating some fields of the first departure.
 		$pqo_raw_departures[0]['startDate'] = '2027-08-27';

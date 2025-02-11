@@ -9,7 +9,6 @@ namespace Quark\CabinCategories\Tests;
 
 use Quark\Tests\Softrip\Softrip_TestCase;
 use WP_Post;
-use WP_Query;
 use WP_Term;
 
 use function Quark\CabinCategories\get_availability_status_description;
@@ -17,6 +16,7 @@ use function Quark\CabinCategories\get_cabin_availability_status;
 use function Quark\CabinCategories\get_cabin_categories_data;
 use function Quark\CabinCategories\get_cabin_details_by_departure;
 use function Quark\CabinCategories\get_available_cabin_spaces;
+use function Quark\CabinCategories\translate_meta_keys;
 use function Quark\Softrip\do_sync;
 use function Quark\Softrip\Occupancies\delete_occupancy_by_id;
 use function Quark\Softrip\Occupancies\get_cabin_category_post_ids_by_departure;
@@ -769,5 +769,34 @@ class Test_Cabin_Categories extends Softrip_TestCase {
 		// Get cabin availability status for cabin 5 - should be unavailable as there is no occupancy.
 		$availability_status5 = get_cabin_availability_status( $departure_post_id1, $cabin_post_id5 );
 		$this->assertSame( UNAVAILABLE_STATUS, $availability_status5 );
+	}
+
+	/**
+	 * Test for translate_meta_keys.
+	 *
+	 * @covers \Quark\CabinCategories\translate_meta_keys()
+	 *
+	 * @return void
+	 */
+	public function test_translate_meta_keys(): void {
+		// Input data.
+		$input = [
+			'meta_key' => 'string',
+			'icon'     => 'attachment',
+		];
+
+		// Assert data.
+		$this->assertEquals(
+			[
+				'meta_key'                => 'string',
+				'icon'                    => 'attachment',
+				'cabin_name'              => 'string',
+				'cabin_bed_configuration' => 'string',
+				'related_ship'            => 'post',
+				'cabin_images'            => 'Quark\CabinCategories\translate_meta_key',
+				'related_decks'           => 'Quark\CabinCategories\translate_meta_key',
+			],
+			translate_meta_keys( $input )
+		);
 	}
 }

@@ -7,8 +7,8 @@
 ] )
 
 @php
-	$title             = 'Almost there';
-	$subtitle          = 'We just need a bit more info to help personalize your itinerary.';
+	$title             = __( 'Almost there', 'qrk' );
+	$subtitle          = __( 'We just need a bit more info to help personalize your itinerary.', 'qrk' );
 	$salesforce_object = 'Webform_Landing_Page__c';
 @endphp
 
@@ -42,18 +42,18 @@
 				<x-modal.body>
 					<x-form.row>
 						<x-form.field :validation="[ 'required', 'no-empty-spaces' ]">
-							<x-form.input type="text" label="First Name" placeholder="Enter First Name" name="fields[FirstName__c]" />
+							<x-form.input type="text" :label="__( 'First Name', 'qrk' )" :placeholder="__( 'Enter First Name', 'qrk' )" name="fields[FirstName__c]" />
 						</x-form.field>
 						<x-form.field :validation="[ 'required', 'no-empty-spaces' ]">
-							<x-form.input type="text" label="Last Name" placeholder="Enter Last Name" name="fields[LastName__c]" />
+							<x-form.input type="text" :label="__( 'Last Name', 'qrk' )" :placeholder="__( 'Enter Last Name', 'qrk' )" name="fields[LastName__c]" />
 						</x-form.field>
 					</x-form.row>
 					<x-form.row>
 						<x-form.field :validation="[ 'required', 'email' ]">
-							<x-form.input type="email" label="Email" placeholder="Enter Email" name="fields[Email__c]" />
+							<x-form.input type="email" :label="__( 'Email', 'qrk' )" :placeholder="__( 'Enter Email', 'qrk' )" name="fields[Email__c]" />
 						</x-form.field>
 						<x-form.field :validation="[ 'required' ]">
-							<x-form.input type="tel" label="Phone Number" placeholder="eg. (123) 456 7890" name="fields[Phone__c]" />
+							<x-form.input type="tel" :label="__( 'Phone Number', 'qrk' )" :placeholder="__( 'eg. (123) 456 7890', 'qrk' )" name="fields[Phone__c]" />
 						</x-form.field>
 					</x-form.row>
 					<x-form.row>
@@ -61,35 +61,35 @@
 					</x-form.row>
 					<x-form.row>
 						<x-form.field :validation="[ 'required' ]">
-							<x-form.select label="I would like to" name="fields[Journey_Stage__c]">
-							<x-form.option value="Dreaming" label="Learn more about Polar Travel">Learn more about Polar Travel</x-form.option>
-							<x-form.option value="Planning" label="Plan a trip">Plan a trip</x-form.option>
-							<x-form.option value="Booking" label="Book a trip">Book a trip</x-form.option>
+							<x-form.select :label="__( 'I would like to', 'qrk' )" name="fields[Journey_Stage__c]">
+							<x-form.option value="Dreaming" :label="__( 'Learn more about Polar Travel', 'qrk' )">{!! __( 'Learn more about Polar Travel', 'qrk' ) !!}</x-form.option>
+							<x-form.option value="Planning" :label="__( 'Plan a trip', 'qrk' )">{!! __( 'Plan a trip', 'qrk' ) !!}</x-form.option>
+							<x-form.option value="Booking" :label="__( 'Book a trip', 'qrk' )">{!! __( 'Book a trip', 'qrk' ) !!}</x-form.option>
 							</x-form.select>
 						</x-form.field>
 					</x-form.row>
 
 					<x-form.row>
 						<x-form.field>
-							<x-form.textarea label="What else would you like us to know?" placeholder="eg. Lorem ipsum" name="fields[Comments__c]" />
+							<x-form.textarea :label="__( 'What else would you like us to know?', 'qrk' )" :placeholder="__( 'eg. Lorem ipsum', 'qrk' )" name="fields[Comments__c]" />
 						</x-form.field>
 					</x-form.row>
 				</x-modal.body>
 				<x-modal.footer>
 					<x-form.buttons>
-						<x-form.submit>Request a Quote</x-form.submit>
+						<x-form.submit>{!! __( 'Request a Quote', 'qrk' ) !!}</x-form.submit>
 					</x-form.buttons>
 				</x-modal.footer>
 			</div>
-			<x-toast-message type="error" message="Fields marked with an asterisk (*) are required" />
+			<x-toast-message type="error" :message="__( 'Fields marked with an asterisk (*) are required', 'qrk' )" />
 		</x-form>
 
 		@if ( empty( $thank_you_page ) )
 			<div class="form-two-step__thank-you">
 				<x-svg name="logo" />
 				<div class="form-two-step__thank-you-text">
-					<h4 class="form-two-step__thank-you-text-heading">Thank you</h4>
-					<p class="form-two-step__thank-you-text-body">A Quark Expeditions Polar Travel Advisor will be in touch with you shortly.</p>
+					<h4 class="form-two-step__thank-you-text-heading">{!! __( 'Thank you', 'qrk' ) !!}</h4>
+					<p class="form-two-step__thank-you-text-body">{!! __( 'A Quark Expeditions Polar Travel Advisor will be in touch with you shortly.', 'qrk' ) !!}</p>
 				</div>
 			</div>
 		@endif

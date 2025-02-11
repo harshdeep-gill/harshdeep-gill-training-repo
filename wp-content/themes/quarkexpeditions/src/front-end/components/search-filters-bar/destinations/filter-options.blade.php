@@ -15,8 +15,8 @@
 
 	$image_args = [
 		'transform' => [
-			'height' => 72,
-			'width'  => 72,
+			'height'  => 72,
+			'width'   => 72,
 			'crop'    => 'fill',
 			'gravity' => 'auto',
 			'quality' => 100,
@@ -112,7 +112,7 @@
 		{{-- Filter options in accordion for mobile --}}
 		<x-accordion>
 			<x-accordion.item id="search-filters-bar-destinations-accordion" :open="true">
-				<x-accordion.item-handle title="Destinations" />
+				<x-accordion.item-handle :title="__( 'Destinations', 'qrk' )" />
 				<x-accordion.item-content>
 					@if ( ! empty( $destinations ) )
 						@foreach ( $destinations as $destination_item )

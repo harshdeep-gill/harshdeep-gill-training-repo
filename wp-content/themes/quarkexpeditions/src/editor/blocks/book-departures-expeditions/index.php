@@ -12,7 +12,8 @@ use WP_Post;
 use function Quark\Expeditions\get as get_expedition;
 use function Quark\Localization\get_current_currency;
 
-const COMPONENT = 'parts.book-departures-expeditions';
+const COMPONENT  = 'parts.book-departures-expeditions';
+const BLOCK_NAME = 'quark/book-departures-expeditions';
 
 /**
  * Bootstrap this block.
@@ -27,6 +28,9 @@ function bootstrap(): void {
 			'render_callback' => __NAMESPACE__ . '\\render',
 		]
 	);
+
+	// Disable translation for this block.
+	add_filter( 'qrk_translation_disable_blocks', __NAMESPACE__ . '\\disable_translation' );
 }
 
 /**
@@ -60,4 +64,19 @@ function render( array $attributes = [], string $content = '' ): string {
 			'currency'      => $currency,
 		]
 	);
+}
+
+/**
+ * Disable translation for this block.
+ *
+ * @param string[] $blocks The block names.
+ *
+ * @return string[] The block names.
+ */
+function disable_translation( array $blocks = [] ): array {
+	// Add block name to disable translation.
+	$blocks[] = BLOCK_NAME;
+
+	// Return block names.
+	return $blocks;
 }

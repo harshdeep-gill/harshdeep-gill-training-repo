@@ -68,6 +68,7 @@ function bootstrap(): void {
 		require_once __DIR__ . '/../custom-fields/options-social.php';
 		require_once __DIR__ . '/../custom-fields/attachments.php';
 		require_once __DIR__ . '/../custom-fields/pages-setup.php';
+		require_once __DIR__ . '/../custom-fields/general.php';
 
 		// Custom styles for ACF fields.
 		add_action( 'acf/input/admin_head', __NAMESPACE__ . '\\acf_styles_for_read_only_fields' );
@@ -84,6 +85,15 @@ function setup_settings(): void {
 	if ( ! function_exists( 'acf_add_options_page' ) ) {
 		return;
 	}
+
+	// General.
+	acf_add_options_sub_page(
+		[
+			'page_title'  => 'General',
+			'menu_title'  => 'General',
+			'parent_slug' => 'site-settings',
+		]
+	);
 
 	// Social.
 	acf_add_options_sub_page(
@@ -850,4 +860,24 @@ function acf_styles_for_read_only_fields(): void {
 		</style>
 		<?php
 	}
+}
+
+/**
+ * Check if the website is a China website.
+ *
+ * @return bool
+ */
+function is_china_website(): bool {
+	// Check if the website is a China website.
+	return defined( 'QUARK_CHINA_SITE_BLOG_ID' ) && QUARK_CHINA_SITE_BLOG_ID === get_current_blog_id();
+}
+
+/**
+ * Get the blog ID for the china site.
+ *
+ * @return int
+ */
+function get_china_site_blog_id(): int {
+	// Return the blog ID for the china site.
+	return defined( 'QUARK_CHINA_SITE_BLOG_ID' ) ? QUARK_CHINA_SITE_BLOG_ID : false;
 }

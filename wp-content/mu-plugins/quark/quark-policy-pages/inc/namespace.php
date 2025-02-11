@@ -25,6 +25,9 @@ function bootstrap(): void {
 	// Other hooks. Assigning non-standard priority to avoid race conditions with ACF.
 	add_action( 'save_post', __NAMESPACE__ . '\\bust_post_cache', 11 );
 
+	// Add meta keys to be translated while content sync.
+	add_filter( 'qrk_translation_meta_keys', __NAMESPACE__ . '\\translate_meta_keys' );
+
 	// Admin stuff.
 	if ( is_admin() ) {
 		// Custom fields.
@@ -176,4 +179,23 @@ function get( int $post_id = 0 ): array {
 
 	// Return data.
 	return $data;
+}
+
+/**
+ * Translate meta keys.
+ *
+ * @param array<string, string> $meta_keys Meta keys.
+ *
+ * @return array<string, string|string[]>
+ */
+function translate_meta_keys( array $meta_keys = [] ): array {
+	// Meta keys for translation.
+	$extra_keys = [
+		'alternate_title'          => 'string',
+		'marketing_option_icon'    => 'attachment',
+		'marketing_option_summary' => 'string',
+	];
+
+	// Return meta keys to be translated.
+	return array_merge( $meta_keys, $extra_keys );
 }

@@ -25,7 +25,7 @@
 			{!! $slot !!}
 			<quark-expedition-search-filters>
 				<x-form.field class="expedition-search__filters-sort">
-					<x-form.select label="Sort by:">
+					<x-form.select label="{{ __( 'Sort by:', 'qrk' ) }}">
 						<x-form.option value="date-now" label="{{ __( 'Date (upcoming to later)', 'qrk' ) }}" selected="yes">
 							{{ __( 'Date (upcoming to later)', 'qrk' ) }}
 						</x-form.option>

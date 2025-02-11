@@ -10,6 +10,7 @@ namespace Quark\Theme\Editor;
 use WP_Screen;
 
 use function Quark\Theme\Core\get_assets_version;
+use function Quark\Core\is_china_website;
 
 /**
  * Setup.
@@ -91,6 +92,15 @@ function enqueue_block_editor_assets(): void {
 		$deps,
 		$assets_version,
 		false
+	);
+
+	// Localize editor script.
+	wp_localize_script(
+		'quark-editor',
+		'quarkSiteData',
+		[
+			'isChinaSite' => is_china_website(),
+		]
 	);
 }
 

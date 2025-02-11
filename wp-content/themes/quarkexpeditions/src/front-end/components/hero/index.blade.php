@@ -3,6 +3,7 @@
 	'text_align'      => '',
 	'overlay_opacity' => 0,
 	'content_overlap' => true,
+	'is_404'          => false,
 ] )
 
 @php
@@ -24,6 +25,10 @@
 		$classes[] = 'hero--text-' . $text_align;
 	} else {
 		$classes[] = 'hero--text-left';
+	}
+
+	if ( ! empty( $is_404 ) ) {
+		$classes[] = 'hero--404';
 	}
 
 	$overlay_opacity = $overlay_opacity / 100;

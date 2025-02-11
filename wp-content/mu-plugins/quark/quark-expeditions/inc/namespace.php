@@ -29,6 +29,8 @@ use function Quark\Itineraries\get_lowest_price as get_itinerary_lowest_price;
 use function Quark\Softrip\Itineraries\get_related_ships;
 use function Quark\Softrip\Itineraries\get_start_date;
 
+use function Travelopia\Multilingual\get_post_translations;
+
 use const Quark\Itineraries\DEPARTURE_LOCATION_TAXONOMY;
 
 const POST_TYPE                    = 'qrk_expedition';
@@ -74,6 +76,10 @@ function bootstrap(): void {
 
 	// Related Itineraries Meta box.
 	add_action( 'add_meta_boxes', __NAMESPACE__ . '\\add_related_itineraries_meta_box' );
+
+	// Add meta keys to be translated while content sync.
+	add_filter( 'qrk_translation_meta_keys', __NAMESPACE__ . '\\translate_meta_keys' );
+	add_filter( 'qrk_translation_term_meta_keys', __NAMESPACE__ . '\\translate_term_meta_keys' );
 
 	// Admin stuff.
 	if ( is_admin() ) {
@@ -1683,11 +1689,13 @@ function get_formatted_date_range( int $post_id = 0 ): string {
 
 	// Same month and year.
 	if ( $start_month === $end_month && $start_year === $end_year ) {
-		return sprintf( 'in %s %s', $start_month, $start_year );
+		/* translators: %1$s: Expedition start Month, %2$s: Expedition start Year */
+		return sprintf( __( 'in %1$s %2$s', 'qrk' ), $start_month, $start_year );
 	}
 
 	// Same year, different months OR Different year.
-	return sprintf( 'between %s %s to %s %s', $start_month, $start_year, $end_month, $end_year );
+	/* translators: %1$s: Expedition start Month, %2$s: Expedition start Year, %3$s: Expedition end Month, %4$s: Expedition end Year */
+	return sprintf( __( 'between %1$s %2$s to %3$s %4$s', 'qrk' ), $start_month, $start_year, $end_month, $end_year );
 }
 
 /**
@@ -1743,7 +1751,8 @@ function get_details_data( int $post_id = 0 ): array {
 	}
 
 	// Break title with colon.
-	$title_parts = explode( ':', $post['post']->post_title );
+	$separator   = apply_filters( 'quark_expedition_title_separator', ':' );
+	$title_parts = explode( empty( $separator ) ? ':' : strval( $separator ), $post['post']->post_title );
 
 	// Check if title parts are available.
 	if ( ! empty( $title_parts[0] ) ) {
@@ -2101,4 +2110,87 @@ function get_breadcrumbs_ancestors( int $post_id = 0 ): array {
 
 	// Return updated breadcrumbs.
 	return $breadcrumbs;
+}
+
+/**
+ * Translate meta keys.
+ *
+ * @param array<string, string> $meta_keys Meta keys.
+ *
+ * @return array<string, string|string[]>
+ */
+function translate_term_meta_keys( array $meta_keys = [] ): array {
+	// Meta keys for translation.
+	$extra_keys = [
+		'destination_image' => 'attachment',
+	];
+
+	// Return meta keys to be translated.
+	return array_merge( $meta_keys, $extra_keys );
+}
+
+/**
+ * Translate meta keys.
+ *
+ * @param array<string, string> $meta_keys Meta keys.
+ *
+ * @return array<string, string|string[]>
+ */
+function translate_meta_keys( array $meta_keys = [] ): array {
+	// Meta keys for translation.
+	$extra_keys = [
+		'overview'                  => 'string',
+		'included_activities'       => __NAMESPACE__ . '\\translate_meta_key',
+		'related_adventure_options' => __NAMESPACE__ . '\\translate_meta_key',
+		'related_pre_post_trips'    => __NAMESPACE__ . '\\translate_meta_key',
+		'related_itineraries'       => __NAMESPACE__ . '\\translate_meta_key',
+	];
+
+	// Return meta keys to be translated.
+	return array_merge( $meta_keys, $extra_keys );
+}
+
+/**
+ * Callable to translate a meta value by meta key.
+ *
+ * @param string $meta_key            Meta key name.
+ * @param string $meta_value          Meta key value.
+ * @param int    $source_site_id      Source site ID.
+ * @param int    $destination_site_id Destination site ID.
+ *
+ * @return string Translated value.
+ */
+function translate_meta_key( string $meta_key = '', string $meta_value = '', int $source_site_id = 0, int $destination_site_id = 0 ): string {
+	// Bail if required data is not available.
+	if ( empty( $meta_key ) || empty( $meta_value ) || empty( $source_site_id ) || empty( $destination_site_id ) ) {
+		return $meta_value;
+	}
+
+	// Post meta keys to be translated.
+	$post_meta_keys = [
+		'included_activities',
+		'related_adventure_options',
+		'related_pre_post_trips',
+		'related_itineraries',
+	];
+
+	// Translate the posts meta key.
+	if ( in_array( $meta_key, $post_meta_keys, true ) ) {
+		// Get translated deck ID.
+		$deck_post = get_post_translations(
+			absint( $meta_value ),
+			$source_site_id
+		);
+
+		// Loop through translated posts.
+		foreach ( $deck_post as $post ) {
+			if ( $post['site_id'] === $destination_site_id ) {
+				// Update meta value.
+				$meta_value = $post['post_id'];
+			}
+		}
+	}
+
+	// Return meta value.
+	return strval( $meta_value );
 }

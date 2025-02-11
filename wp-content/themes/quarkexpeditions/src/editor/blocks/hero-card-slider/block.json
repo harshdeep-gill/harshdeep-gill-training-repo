@@ -29,7 +29,7 @@
         "type": "array",
         "default": []
       },
-	  "isLightbox": {
+	    "isLightbox": {
         "type": "boolean",
         "default": true
       }
