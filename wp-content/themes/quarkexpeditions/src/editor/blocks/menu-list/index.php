@@ -95,6 +95,11 @@ function block_attributes_to_translate( array $blocks_and_attributes = [] ): arr
 		'text' => [ 'title' ],
 	];
 
+	// Add data to translate.
+	$blocks_and_attributes[ BLOCK_NAME . '-item' ] = [
+		'text' => [ 'title' ],
+	];
+
 	// Return updated data.
 	return $blocks_and_attributes;
 }
