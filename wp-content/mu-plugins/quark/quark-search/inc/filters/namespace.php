@@ -84,7 +84,7 @@ const FILTERS_MAPPING = [
 			'type' => FACET_TYPE_RANGE,
 			'args' => [
 				'start' => 'NOW/MONTH',
-				'end'   => 'NOW/MONTH+2YEAR',
+				'end'   => 'NOW/MONTH+3YEAR',
 				'gap'   => '+1MONTH',
 			],
 		],
