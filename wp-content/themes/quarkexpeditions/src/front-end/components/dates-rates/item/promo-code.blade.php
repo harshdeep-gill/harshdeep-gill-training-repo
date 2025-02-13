@@ -28,7 +28,6 @@
 		@endif
 
 		<x-drawer.body class="dates-rates__promo-code-content-body">
-			<strong>{{ __( 'Terms & Conditions', 'qrk' ) }}</strong>
 			<strong>{{ __( 'Promo Code: ', 'qrk' ) }} <x-escape :content="$promo_code"/></strong>
 		</x-drawer.body>
 	</x-drawer>
