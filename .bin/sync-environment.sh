@@ -25,9 +25,11 @@ fi
 
 # Search and Replace environment domain
 terminus wp quark-expeditions-ms.$TARGET_ENVIRONMENT -- search-replace www.quarkexpeditions.com $DOMAIN_NAME.quarkexpeditions.com --all-tables
+terminus wp quark-expeditions-ms.$TARGET_ENVIRONMENT -- search-replace wp.quarkexpeditions.cn $DOMAIN_NAME.quarkexpeditions.cn --all-tables
 
 # Flush cache
-terminus wp quark-expeditions-ms.$TARGET_ENVIRONMENT -- cache flush
+terminus wp quark-expeditions-ms.$TARGET_ENVIRONMENT -- cache flush --url=$DOMAIN_NAME.quarkexpeditions.com
+terminus wp quark-expeditions-ms.$TARGET_ENVIRONMENT -- cache flush --url=$DOMAIN_NAME.quarkexpeditions.cn
 
 # Import Departures
 set +e
@@ -35,7 +37,7 @@ terminus wp quark-expeditions-ms.$TARGET_ENVIRONMENT -- quark-softrip sync all -
 set -e
 
 # Flush cache
-terminus wp quark-expeditions-ms.$TARGET_ENVIRONMENT -- cache flush
+terminus wp quark-expeditions-ms.$TARGET_ENVIRONMENT -- cache flush --url=$DOMAIN_NAME.quarkexpeditions.com
 
 # Repost solr schema
 terminus wp quark-expeditions-ms.$TARGET_ENVIRONMENT -- solr repost-schema --url=$DOMAIN_NAME.quarkexpeditions.com
@@ -48,6 +50,6 @@ terminus wp quark-expeditions-ms.$TARGET_ENVIRONMENT -- solr index --url=$DOMAIN
 terminus wp quark-expeditions-ms.$TARGET_ENVIRONMENT -- rewrite flush --url=$DOMAIN_NAME.quarkexpeditions.com
 
 # Final cache flush
-terminus wp quark-expeditions-ms.$TARGET_ENVIRONMENT -- cache flush
+terminus wp quark-expeditions-ms.$TARGET_ENVIRONMENT -- cache flush --url=$DOMAIN_NAME.quarkexpeditions.com
 
 set +x
