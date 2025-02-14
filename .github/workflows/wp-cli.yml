@@ -1,0 +1,117 @@
+name: WP CLI
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Choose an environment to run the WP CLI command on"
+        default: "qa"
+        type: choice
+        options:
+          - "qa"
+          - "staging"
+          - "live"
+      command:
+        description: "Choose the WP CLI command to run"
+        default: "cache_get"
+        type: choice
+        options:
+          - "cache_get"
+          - "cache_delete"
+          - "cache_flush"
+          - "cache_flush_group"
+          - "cache_edge_warmup"
+          - "cron_event_list"
+          - "cron_event_run"
+          - "softrip_sync_all"
+          - "softrip_sync_items"
+          - "ingestor_push_all"
+          - "ingestor_push_items"
+          - "ingestor_push_urgent"
+          - "solr_index"
+          - "solr_info"
+          - "solr_stats"
+          - "meta_get"
+          - "meta_list"
+      additional_params:
+        description: "Enter additional parameters (e.g., xyz --group='group1' --expiration=34)"
+        default: ""
+        type: string
+        required: false
+
+permissions:
+  contents: read
+
+jobs:
+  pre-run:
+    name: Pre-Run
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check allowed user
+        run: |
+          USER_EXISTS=$(jq -r --arg key "$GITHUB_ACTOR" '.allowed_users | any(. == $key)' .github/users.json)
+          if [ "$USER_EXISTS" = "false" ]; then
+            echo "::error::$GITHUB_ACTOR is not execute commands"
+            exit 1
+          fi
+
+      - name: Validate args
+        env:
+          environment: ${{ inputs.environment }}
+          command: ${{ inputs.command }}
+          additional_params: ${{ inputs.additional_params }}
+        run: |
+          if [ -z "$environment" ]; then
+            echo "::error::Environment is required"
+            exit 1
+          fi
+          if [ -z "$command" ]; then
+            echo "::error::Command is required"
+            exit 1
+          fi
+          if [ -n "$additional_params" ]; then
+              safe_regex='^[a-zA-Z0-9/_=.-]+$'
+              if [[ ! "$additional_params" =~ $safe_regex ]]; then
+                echo "::error::Invalid additional parameters"
+                exit 1
+              fi
+              blocked_words='(rm|eval|exec|system|passthru|shell_exec|php_exec|python_exec|wget|curl|>|<|`|\$\(.*\))'
+              if [[ "$additional_params" =~ $blocked_words ]]; then
+                echo "::error::Blocked words found in additional parameters"
+                exit 1
+              fi
+              if echo "$ADDITIONAL_PARAMS" | grep -q '\$('; then
+                echo "::error::Command substitution detected (e.g., \$(curl))"
+                exit 1
+              fi
+              if echo "$ADDITIONAL_PARAMS" | grep -q '`'; then
+                echo "::error::Backticks execution detected (`command`)"
+                exit 1
+              fi
+          fi
+
+  wp-cli:
+    name: WP CLI command ${{ inputs.command }} on ${{ inputs.environment }}
+    needs: pre-run
+    runs-on: ubuntu-latest
+    env:
+      PANTHEON_SSH_PRIVATE_KEY: ${{ secrets.PANTHEON_SSH_PRIVATE_KEY }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+
+      - name: Install Terminus
+        uses: pantheon-systems/terminus-github-actions@main
+        with:
+          pantheon-machine-token: ${{ secrets.PANTHEON_MACHINE_TOKEN }}
+
+      - name: Run WP CLI command
+        run: bash .bin/wp-cli.sh ${{ inputs.environment }} ${{ inputs.command }} ${{ inputs.additional_params }}

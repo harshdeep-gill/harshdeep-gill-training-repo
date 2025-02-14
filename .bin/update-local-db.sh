@@ -50,8 +50,8 @@ echo 'Flushing cache...'
 wp cache flush
 
 echo 'Deactivating and activating plugins...'
-wp plugin deactivate s3-uploads change-wp-admin-login two-factor stream pantheon-advanced-page-cache aws-ses-wp-mail
-wp plugin activate query-monitor
+wp plugin deactivate s3-uploads change-wp-admin-login two-factor stream pantheon-advanced-page-cache aws-ses-wp-mail --network
+wp plugin activate query-monitor --network
 
 echo 'Cleaning PII...'
 mysql -u root -proot -h 0.0.0.0 $DATABASE_NAME -e 'UPDATE wp_users SET user_email = CONCAT( "user", wp_users.ID, "@travelopia.com" )' # Reset all users' email address.
