@@ -20,7 +20,7 @@
 	}
 
 	&[open] {
-		z-index: 110;
+		z-index: var(--fixed-z-index);
 	}
 
 	&--open {

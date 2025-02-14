@@ -22,7 +22,10 @@
 	}
 
 	&__modal {
-		z-index: 103;
+
+		&.modal[open] {
+			z-index: 115;
+		}
 
 		.search-filters-bar {
 			display: none;
