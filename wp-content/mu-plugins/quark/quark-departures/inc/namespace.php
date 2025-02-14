@@ -590,6 +590,7 @@ function get_promotion_tags( int $post_id = 0 ): array {
  *     promotion_tags: string[],
  *     ship_name: string,
  *     promotion_banner: string,
+ *     promotions: array<string, string>,
  *     banner_details: array{
  *        title: string,
  *        description: string,
@@ -616,7 +617,8 @@ function get_promotion_tags( int $post_id = 0 ): array {
  *          discounted_price: string,
  *          original_price: string,
  *      },
- *      occupancies: array<int<0, max>, array<string, mixed>>
+ *      occupancies: array<int<0, max>, array<string, mixed>>,
+ *      promo_codes: string[],
  *     }>,
  * }
  */
@@ -1107,9 +1109,6 @@ function get_dates_rates_card_data( int $departure_id = 0, string $currency = DE
 	// Available promos.
 	$available_promos = [];
 
-	// Free promos.
-	$free_promos = [];
-
 	// Get Available Promos for the Departure.
 	if ( ! empty( $departure['post_meta']['promotion_codes'] ) ) {
 		$promotion_codes = $departure['post_meta']['promotion_codes'];
@@ -1128,14 +1127,6 @@ function get_dates_rates_card_data( int $departure_id = 0, string $currency = DE
 
 			// Check for currency.
 			if ( ! empty( $promo_data['currency'] ) && $currency !== $promo_data['currency'] ) {
-				continue;
-			}
-
-			// Bail if discount value is 0.
-			if ( empty( $promo_data['discount_value'] ) ) {
-				$free_promos[ strval( $promo_code ) ] = $promo_data;
-
-				// Skip to next promo.
 				continue;
 			}
 
@@ -1164,7 +1155,6 @@ function get_dates_rates_card_data( int $departure_id = 0, string $currency = DE
 		'paid_adventure_options'     => $paid_adventure_options_data,
 		'transfer_package_details'   => get_included_transfer_package_details( $itinerary_id, $currency ),
 		'available_promos'           => $available_promos,
-		'free_promos'                => $free_promos,
 		'cabin_data'                 => get_cabin_price_data_by_departure( $departure_id, $currency ),
 		'request_a_quote_url'        => get_request_a_quote_url( $departure_id ),
 		'tax_types'                  => get_tax_type_details( $itinerary_id ),
@@ -1305,7 +1295,7 @@ function get_discount_label( int $original_price = 0, int $discounted_price = 0 
  * @param int    $departure_id Departure ID.
  * @param string $currency     Currency.
  *
- * @return string[]
+ * @return array<string, string>
  */
 function get_promotions_description( int $departure_id = 0, string $currency = DEFAULT_CURRENCY ): array {
 	// Check for departure ID.
@@ -1334,8 +1324,11 @@ function get_promotions_description( int $departure_id = 0, string $currency = D
 
 	// Loop through available_promos.
 	foreach ( $available_promos as $promo_code ) {
+		// Promo code.
+		$promo_code = strval( $promo_code );
+
 		// Get promo data.
-		$promo_data = get_promotions_by_code( strval( $promo_code ) );
+		$promo_data = get_promotions_by_code( $promo_code );
 
 		// Check for promo data.
 		if ( empty( $promo_data ) ) {
@@ -1362,7 +1355,7 @@ function get_promotions_description( int $departure_id = 0, string $currency = D
 		);
 
 		// Add promo description to array.
-		$promo_descriptions[] = $promo_description;
+		$promo_descriptions[ $promo_code ] = $promo_description;
 	}
 
 	// Return promo descriptions.

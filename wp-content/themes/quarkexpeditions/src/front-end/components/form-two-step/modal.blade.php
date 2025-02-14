@@ -61,7 +61,7 @@
 					</x-form.row>
 					<x-form.row>
 						<x-form.field :validation="[ 'required' ]">
-							<x-form.select label="I would like to', 'qrk' )" name="fields[Journey_Stage__c]">
+							<x-form.select :label="__( 'I would like to', 'qrk' )" name="fields[Journey_Stage__c]">
 							<x-form.option value="Dreaming" :label="__( 'Learn more about Polar Travel', 'qrk' )">{!! __( 'Learn more about Polar Travel', 'qrk' ) !!}</x-form.option>
 							<x-form.option value="Planning" :label="__( 'Plan a trip', 'qrk' )">{!! __( 'Plan a trip', 'qrk' ) !!}</x-form.option>
 							<x-form.option value="Booking" :label="__( 'Book a trip', 'qrk' )">{!! __( 'Book a trip', 'qrk' ) !!}</x-form.option>

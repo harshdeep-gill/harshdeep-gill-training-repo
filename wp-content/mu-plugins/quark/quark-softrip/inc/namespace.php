@@ -301,6 +301,16 @@ function do_sync( array $itinerary_post_ids = [], array $specific_departure_post
 						'codes' => $softrip_codes,
 					]
 				);
+			} elseif ( ! is_array( $raw_departures ) ) {
+				// Log the error.
+				do_action(
+					'quark_softrip_sync_error',
+					[
+						'error' => 'Invalid data returned from API',
+						'via'   => $initiated_via,
+						'codes' => $softrip_codes,
+					]
+				);
 			} else {
 				// Log the error.
 				do_action(

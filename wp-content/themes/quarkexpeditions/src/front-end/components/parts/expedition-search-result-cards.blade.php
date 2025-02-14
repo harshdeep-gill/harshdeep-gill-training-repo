@@ -311,11 +311,12 @@
 													</x-product-options-cards.rooms>
 												@endif
 
-												@if( ! empty( $card['promotions'] ) && is_array( $card['promotions'] ) )
+												{{-- Promo Description --}}
+												@if( ! empty( $card['promotions'] ) && is_array( $card['promotions'] ) && ! empty( $cabin['promo_codes'] ) && is_array( $cabin['promo_codes'] ) )
 													<x-product-options-cards.discounts>
-														@foreach( $card['promotions'] as $promotion )
-															@if( ! empty( $promotion ) )
-																<x-product-options-cards.discount name="{{ $promotion }}"/>
+														@foreach( $cabin['promo_codes'] as $promo_code )
+															@if( ! empty( $promo_code ) && ! empty( $card['promotions'][$promo_code] ) )
+																<x-product-options-cards.discount name="{{ $card['promotions'][$promo_code] }}"/>
 															@endif
 														@endforeach
 													</x-product-options-cards.discounts>
@@ -389,11 +390,12 @@
 											</x-product-options-cards.rooms>
 										@endif
 
-										@if( ! empty( $card['promotions'] ) && is_array( $card['promotions'] ) )
+										{{-- Promo Description --}}
+										@if( ! empty( $card['promotions'] ) && is_array( $card['promotions'] ) && ! empty( $cabin['promo_codes'] ) && is_array( $cabin['promo_codes'] ) )
 											<x-product-options-cards.discounts>
-												@foreach( $card['promotions'] as $promotion )
-													@if( ! empty( $promotion ) )
-														<x-product-options-cards.discount name="{{ $promotion }}"/>
+												@foreach( $cabin['promo_codes'] as $promo_code )
+													@if( ! empty( $promo_code ) && ! empty( $card['promotions'][$promo_code] ) )
+														<x-product-options-cards.discount name="{{ $card['promotions'][$promo_code] }}"/>
 													@endif
 												@endforeach
 											</x-product-options-cards.discounts>

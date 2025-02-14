@@ -268,9 +268,13 @@ class Test_Cabin_Categories extends Softrip_TestCase {
 							'original_price'   => '$44,905 USD',
 							'discounted_price' => '$38,169 USD',
 						],
-						'promotions'   => [],
 						'checkout_url' => 'https://local-checkout.quarkexpeditions.com?package_id=JKL-012&departure_date=2025-01-09&cabin_code=ULT-SGL&currency=USD&mask=A',
 					],
+				],
+				'promo_codes'    => [
+					'15PROMO',
+					'SGLPROMO',
+					'FLIGHTUSD',
 				],
 			],
 			'ULT-DBL' => [
@@ -302,7 +306,6 @@ class Test_Cabin_Categories extends Softrip_TestCase {
 							'original_price'   => '$74,900 USD',
 							'discounted_price' => '$63,665 USD',
 						],
-						'promotions'   => [],
 						'checkout_url' => 'https://local-checkout.quarkexpeditions.com?package_id=JKL-012&departure_date=2025-01-09&cabin_code=ULT-DBL&currency=USD&mask=A',
 					],
 					[
@@ -313,9 +316,13 @@ class Test_Cabin_Categories extends Softrip_TestCase {
 							'original_price'   => '$34,600 USD',
 							'discounted_price' => '$29,410 USD',
 						],
-						'promotions'   => [],
 						'checkout_url' => 'https://local-checkout.quarkexpeditions.com?package_id=JKL-012&departure_date=2025-01-09&cabin_code=ULT-DBL&currency=USD&mask=AA',
 					],
+				],
+				'promo_codes'    => [
+					'15PROMO',
+					'SGLPROMO',
+					'FLIGHTUSD',
 				],
 			],
 		];
@@ -395,9 +402,13 @@ class Test_Cabin_Categories extends Softrip_TestCase {
 							'original_price'   => '$44,905 USD',
 							'discounted_price' => '$38,169 USD',
 						],
-						'promotions'   => [],
 						'checkout_url' => 'https://local-checkout.quarkexpeditions.com?package_id=JKL-012&departure_date=2025-01-09&cabin_code=ULT-SGL&currency=USD&mask=A',
 					],
+				],
+				'promo_codes'    => [
+					'15PROMO',
+					'SGLPROMO',
+					'FLIGHTUSD',
 				],
 			],
 			'ULT-DBL' => [
@@ -429,7 +440,6 @@ class Test_Cabin_Categories extends Softrip_TestCase {
 							'original_price'   => '$74,900 USD',
 							'discounted_price' => '$63,665 USD',
 						],
-						'promotions'   => [],
 						'checkout_url' => 'https://local-checkout.quarkexpeditions.com?package_id=JKL-012&departure_date=2025-01-09&cabin_code=ULT-DBL&currency=USD&mask=A',
 					],
 					[
@@ -440,9 +450,13 @@ class Test_Cabin_Categories extends Softrip_TestCase {
 							'original_price'   => '$34,600 USD',
 							'discounted_price' => '$29,410 USD',
 						],
-						'promotions'   => [],
 						'checkout_url' => 'https://local-checkout.quarkexpeditions.com?package_id=JKL-012&departure_date=2025-01-09&cabin_code=ULT-DBL&currency=USD&mask=AA',
 					],
+				],
+				'promo_codes'    => [
+					'15PROMO',
+					'SGLPROMO',
+					'FLIGHTUSD',
 				],
 			],
 		];
@@ -492,9 +506,13 @@ class Test_Cabin_Categories extends Softrip_TestCase {
 							'original_price'   => '$44,905 USD',
 							'discounted_price' => '$38,169 USD',
 						],
-						'promotions'   => [],
 						'checkout_url' => 'https://local-checkout.quarkexpeditions.com?package_id=JKL-012&departure_date=2025-01-09&cabin_code=ULT-SGL&currency=USD&mask=A',
 					],
+				],
+				'promo_codes'    => [
+					'15PROMO',
+					'SGLPROMO',
+					'FLIGHTUSD',
 				],
 			],
 			'ULT-DBL' => [
@@ -526,7 +544,6 @@ class Test_Cabin_Categories extends Softrip_TestCase {
 							'original_price'   => '$74,900 USD',
 							'discounted_price' => '$63,665 USD',
 						],
-						'promotions'   => [],
 						'checkout_url' => 'https://local-checkout.quarkexpeditions.com?package_id=JKL-012&departure_date=2025-01-09&cabin_code=ULT-DBL&currency=USD&mask=A',
 					],
 					[
@@ -537,9 +554,13 @@ class Test_Cabin_Categories extends Softrip_TestCase {
 							'original_price'   => '$34,600 USD',
 							'discounted_price' => '$29,410 USD',
 						],
-						'promotions'   => [],
 						'checkout_url' => 'https://local-checkout.quarkexpeditions.com?package_id=JKL-012&departure_date=2025-01-09&cabin_code=ULT-DBL&currency=USD&mask=AA',
 					],
+				],
+				'promo_codes'    => [
+					'15PROMO',
+					'SGLPROMO',
+					'FLIGHTUSD',
 				],
 			],
 		];

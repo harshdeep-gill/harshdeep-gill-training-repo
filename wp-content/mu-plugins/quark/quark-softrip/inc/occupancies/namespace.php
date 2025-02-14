@@ -1137,6 +1137,11 @@ function get_lowest_price_by_cabin_category_and_departure( int $cabin_category_p
 		}
 	}
 
+	// Bail if empty lowest price.
+	if ( empty( $lowest_price['original'] ) ) {
+		return $lowest_price;
+	}
+
 	// Add mandatory transfer price and supplemental price.
 	$lowest_price = add_supplemental_and_mandatory_price( $lowest_price, $departure_post_id, $currency );
 
