@@ -63,7 +63,7 @@
 					@endphp
 					<strong> {!! $price !!}</strong>
 
-				</x-product-cards.transfer-package>
+				</x-product-cards.transfer_package>
 			@endif
 		</x-product-cards.card>
 	@endforeach

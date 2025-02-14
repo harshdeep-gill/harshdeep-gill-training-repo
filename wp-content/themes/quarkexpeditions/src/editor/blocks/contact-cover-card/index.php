@@ -10,7 +10,8 @@ namespace Quark\Theme\Blocks\ContactCoverCard;
 use WP_Block;
 use WP_Block_List;
 
-const COMPONENT = 'parts.contact-cover-card';
+const COMPONENT  = 'parts.contact-cover-card';
+const BLOCK_NAME = 'quark/contact-cover-card';
 
 /**
  * Bootstrap this block.
@@ -26,6 +27,9 @@ function bootstrap(): void {
 			'skip_inner_blocks' => true,
 		]
 	);
+
+	// Add block attributes to translate.
+	add_filter( 'qrk_translation_block_attributes', __NAMESPACE__ . '\\block_attributes_to_translate' );
 }
 
 /**
@@ -127,4 +131,39 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 
 	// Return rendered component.
 	return quark_get_component( COMPONENT, $component_attributes );
+}
+
+/**
+ * Block attributes that need to be translatable.
+ *
+ * @param mixed[] $blocks_and_attributes Blocks and attributes.
+ *
+ * @return mixed[]
+ */
+function block_attributes_to_translate( array $blocks_and_attributes = [] ): array {
+	// Add data to translate.
+	$blocks_and_attributes[ BLOCK_NAME ] = [
+		'image' => [ 'image' ],
+	];
+
+	// Add data to translate.
+	$blocks_and_attributes[ BLOCK_NAME . '-contact-info-item' ] = [
+		'text' => [
+			'label',
+			'value',
+		],
+	];
+
+	// Add data to translate.
+	$blocks_and_attributes[ BLOCK_NAME . '-description' ] = [
+		'text' => [ 'helpText' ],
+	];
+
+	// Add data to translate.
+	$blocks_and_attributes[ BLOCK_NAME . '-title' ] = [
+		'text' => [ 'title' ],
+	];
+
+	// Return updated data.
+	return $blocks_and_attributes;
 }

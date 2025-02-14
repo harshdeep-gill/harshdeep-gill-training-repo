@@ -40,7 +40,7 @@
 
 <div class="color-palette">
 	<div class="color-palette__colors-row typography-spacing">
-		<h3>Primary Solids / Buttons</h3>
+		<h3>{!! __( 'Primary Solids / Buttons', 'qrk' ) !!}</h3>
 		<div class="color-palette__color-set">
 			@foreach( $colors[ 'primary' ] as $primary_color => $primary_color_hex )
 				<div class="color-palette__color">
@@ -58,7 +58,7 @@
 <br/>
 
 <div class="color-palette__colors-row typography-spacing">
-	<h3>Grayscale</h3>
+	<h3>{!! __( 'Grayscale', 'qrk' ) !!}</h3>
 	<div class="color-palette__color-set">
 		@foreach( $colors[ 'grayscale' ] as $grayscale_color => $grayscale_color_hex)
 			<div class="color-palette__color">
@@ -75,7 +75,7 @@
 <br/>
 
 <div class="color-palette__colors-row typography-spacing">
-	<h3>State Colors</h3>
+	<h3>{!! __( 'State Colors', 'qrk' ) !!}</h3>
 	<div class="color-palette__color-set">
 		@foreach( $colors[ 'states' ] as $state_color => $state_color_hex )
 			<div class="color-palette__color">

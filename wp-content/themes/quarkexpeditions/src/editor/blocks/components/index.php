@@ -9,7 +9,8 @@ namespace Quark\Theme\Blocks\Components;
 
 use WP_Block;
 
-const COMPONENT = 'components';
+const COMPONENT  = 'components';
+const BLOCK_NAME = 'quark/components';
 
 /**
  * Bootstrap this block.
@@ -24,6 +25,9 @@ function bootstrap(): void {
 			'render_callback' => __NAMESPACE__ . '\\render',
 		]
 	);
+
+	// Disable translation for this block.
+	add_filter( 'qrk_translation_disable_blocks', __NAMESPACE__ . '\\disable_translation' );
 }
 
 /**
@@ -43,4 +47,19 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 
 	// Return rendered component.
 	return quark_get_component( COMPONENT );
+}
+
+/**
+ * Disable translation for this block.
+ *
+ * @param string[] $blocks The block names.
+ *
+ * @return string[] The block names.
+ */
+function disable_translation( array $blocks = [] ): array {
+	// Add block name to disable translation.
+	$blocks[] = BLOCK_NAME;
+
+	// Return block names.
+	return $blocks;
 }

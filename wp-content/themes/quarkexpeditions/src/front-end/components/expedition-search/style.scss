@@ -377,6 +377,10 @@
 
 tp-modal.expedition-search__filters-modal {
 
+	&[open] {
+		z-index: 115;
+	}
+
 	.modal__body > .h4 {
 		display: block;
 		border-bottom: 1px solid var(--color-gray-20);

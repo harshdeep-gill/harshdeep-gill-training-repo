@@ -25,10 +25,13 @@
 				<x-product-cards.overline :text="$duration" />
 			@endif
 
-			@if ( ! empty( $card['title'] ) && ! empty( $card['subtitle'] ) )
+			@if ( ! empty( $card['title'] ) )
 				<x-maybe-link href="{{ $card['url'] }}">
 					<x-product-cards.title :title="$card['title']" />
 				</x-maybe-link>
+			@endif
+
+			@if ( ! empty( $card['subtitle'] ) )
 				<x-product-cards.subtitle :title="$card['subtitle']" />
 			@endif
 

@@ -429,6 +429,10 @@
 			height: 20px;
 		}
 	}
+
+	&__dash {
+		color: var(--color-black);
+	}
 }
 
 body:has(.dates-rates) {

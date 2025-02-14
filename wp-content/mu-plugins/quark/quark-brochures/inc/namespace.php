@@ -28,6 +28,9 @@ function bootstrap(): void {
 	// Opt into stuff.
 	add_filter( 'qe_season_taxonomy_post_types', __NAMESPACE__ . '\\opt_in' );
 
+	// Add meta keys to be translated while content sync.
+	add_filter( 'qrk_translation_meta_keys', __NAMESPACE__ . '\\translate_meta_keys' );
+
 	// Custom fields.
 	if ( is_admin() ) {
 		require_once __DIR__ . '/../custom-fields/brochures.php';
@@ -187,4 +190,21 @@ function get( int $post_id = 0 ): array {
 
 	// Return data.
 	return $data;
+}
+
+/**
+ * Translate meta keys.
+ *
+ * @param array<string, string> $meta_keys Meta keys.
+ *
+ * @return array<string, string|string[]>
+ */
+function translate_meta_keys( array $meta_keys = [] ): array {
+	// Meta keys for translation.
+	$extra_keys = [
+		'brochure_pdf' => 'attachment',
+	];
+
+	// Return meta keys to be translated.
+	return array_merge( $meta_keys, $extra_keys );
 }

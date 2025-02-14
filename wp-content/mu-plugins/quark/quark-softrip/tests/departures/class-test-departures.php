@@ -66,8 +66,8 @@ class Test_Departures extends Softrip_TestCase {
 		$this->assertEquals( $expected, $actual );
 
 		// Test with default values.
-		$actual = [];
-		$actual = format_raw_departure_data( [], 0, 0 );
+		$expected = [];
+		$actual   = format_raw_departure_data( [], 0, 0 );
 		$this->assertEquals( $expected, $actual );
 
 		/**
@@ -116,6 +116,12 @@ class Test_Departures extends Softrip_TestCase {
 		$raw_departure_data['marketCode'] = '';
 		$expected                         = [];
 		$actual                           = format_raw_departure_data( $raw_departure_data, 123, 456 );
+		$this->assertEquals( $expected, $actual );
+
+		// Non-existent ship code.
+		$raw_departure_data['shipCode'] = 'NON-EXISTENT';
+		$expected                       = [];
+		$actual                         = format_raw_departure_data( $raw_departure_data, 123, 456 );
 		$this->assertEquals( $expected, $actual );
 
 		/**

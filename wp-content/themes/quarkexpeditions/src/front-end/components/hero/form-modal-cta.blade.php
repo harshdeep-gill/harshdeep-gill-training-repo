@@ -8,23 +8,23 @@
 	class="hero__form-modal-cta color-context--dark"
 	form_id="inquiry-form"
 	:countries="[
-		'IN' => 'India',
-		'AU' => 'Australia',
-		'US' => 'United States',
-		'CA' => 'Canada',
+		'IN' => __( 'India', 'qrk' ),
+		'AU' => __( 'Australia', 'qrk' ),
+		'US' => __( 'United States', 'qrk' ),
+		'CA' => __( 'Canada', 'qrk' ),
 	]"
 	:states="[
 		'AU' => [
-			'ACT' => 'Australian Capital Territory',
-			'JBT' => 'Jervis Bay Territory',
+			'ACT' => __( 'Australian Capital Territory', 'qrk' ),
+			'JBT' => __( 'Jervis Bay Territory', 'qrk' ),
 		],
 		'US' => [
-			'AA' => 'Armed Forces Americas',
-			'AE' => 'Armed Forces Europe',
+			'AA' => __( 'Armed Forces Americas', 'qrk' ),
+			'AE' => __( 'Armed Forces Europe', 'qrk' ),
 		],
 		'CA' => [
-			'AB' => 'Alberta',
-			'BC' => 'British Columbia',
+			'AB' => __( 'Alberta', 'qrk' ),
+			'BC' => __( 'British Columbia', 'qrk' ),
 		],
 	]"
 >

@@ -19,6 +19,7 @@ use function Quark\Departures\get_languages;
 use function Quark\Departures\get_promotion_tags;
 use function Quark\Departures\get_start_end_departure_date;
 use function Quark\Departures\sort_promotions_by_type_and_value;
+use function Quark\Departures\translate_meta_keys;
 use function Quark\Localization\get_currencies;
 use function Quark\Softrip\Departures\get_departures_by_itinerary;
 use function Quark\Softrip\do_sync;
@@ -616,6 +617,38 @@ class Test_Departures extends Softrip_TestCase {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Test for translate_meta_keys.
+	 *
+	 * @covers \Quark\Departures\translate_meta_keys()
+	 *
+	 * @return void
+	 */
+	public function test_translate_meta_keys(): void {
+		// Input data.
+		$input = [
+			'meta_key' => 'string',
+			'icon'     => 'attachment',
+		];
+
+		// Assert data.
+		$this->assertEquals(
+			[
+				'meta_key'                                 => 'string',
+				'icon'                                     => 'attachment',
+				'related_expedition'                       => 'post',
+				'related_ship'                             => 'post',
+				'itinerary'                                => 'post',
+				'expedition_team_\d+_staff_member'         => 'post',
+				'related_departures'                       => 'Quark\Departures\translate_meta_key',
+				'adventure_options'                        => 'Quark\Departures\translate_meta_key',
+				'related_promotion_tags'                   => 'Quark\Departures\translate_meta_key',
+				'expedition_team_\d+_departure_staff_role' => 'Quark\Departures\translate_meta_key',
+			],
+			translate_meta_keys( $input )
+		);
 	}
 
 	/**

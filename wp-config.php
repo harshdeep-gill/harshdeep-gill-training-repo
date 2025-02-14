@@ -179,6 +179,22 @@ define( 'QUARK_GITHUB_ACTIONS_TOKEN', env( 'QUARK_GITHUB_ACTIONS_TOKEN' ) );
 define( 'QUARK_GITHUB_API_DISPATCH_URL', env( 'QUARK_GITHUB_API_DISPATCH_URL' ) );
 define( 'QUARK_GITHUB_ACTIONS_REF', env( 'QUARK_GITHUB_ACTIONS_REF' ) );
 
+// China Site blog ID.
+define( 'QUARK_CHINA_SITE_BLOG_ID', env( 'QUARK_CHINA_SITE_BLOG_ID' ) );
+
+// DeepL.
+define( 'TRAVELOPIA_TRANSLATION_DEEPL_AUTH_KEY', env( 'TRAVELOPIA_TRANSLATION_DEEPL_AUTH_KEY' ) );
+/**
+ * Multisite.
+ */
+define( 'WP_ALLOW_MULTISITE', true );
+define( 'MULTISITE', true );
+define( 'SUBDOMAIN_INSTALL', false );
+define( 'DOMAIN_CURRENT_SITE',  env( 'DOMAIN_CURRENT_SITE' ) );
+define( 'PATH_CURRENT_SITE', '/' );
+define( 'SITE_ID_CURRENT_SITE', 1 );
+define( 'BLOG_ID_CURRENT_SITE', 1 );
+
 /* That's all, stop editing! Happy publishing. */
 
 /** Absolute path to the WordPress directory. */
