@@ -11,7 +11,6 @@
 		@php
 			$ship_title = $card['ship_title'] ?? '';
 			$number_of_promos = $card['available_promos'] ? count($card['available_promos']) : 0;
-			$number_of_promos += $card['free_promos'] ? count($card['free_promos']) : 0;
 			$number_of_cabins = ! empty( $card['cabin_data'] ) ? count( $card['cabin_data'] ) : 0;
 			$number_of_table_rows = $number_of_promos + 2; // 2 for brochure-price row and availability row.
 
@@ -144,12 +143,16 @@
 								@endphp
 								<x-dates-rates.item.table-column :is_sold_out="$is_sold_out">
 
-									@if ( empty($cabin['promos'] ) )
-										{{ $cabin['brochure_price'] ?? 0 }}
+									@if ( empty( $cabin['brochure_price'] ) )
+										<x-dates-rates.item.dash-icon />
 									@else
-										<del>
+										@if ( empty($cabin['promos'] ) )
 											{{ $cabin['brochure_price'] ?? 0 }}
-										</del>
+										@else
+											<del>
+												{{ $cabin['brochure_price'] ?? 0 }}
+											</del>
+										@endif
 									@endif
 
 								</x-dates-rates.item.table-column>
@@ -187,9 +190,13 @@
 									@endphp
 									<x-dates-rates.item.table-column :is_pay_in_full="$is_pay_in_full" :is_sold_out="$is_sold_out" :is_discounted="$is_discounted">
 										@if ( ! empty( $cabin['promos'][$promo_code] ) )
-											{{ $cabin['promos'][$promo_code] }}
+											@if ( empty( $promo_data['discount_value'] ) )
+												<x-dates-rates.item.check-icon />
+											@else
+												{{ $cabin['promos'][$promo_code] }}
+											@endif
 										@else
-											-
+											<x-dates-rates.item.dash-icon />
 										@endif
 									</x-dates-rates.item.table-column>
 								@endforeach
@@ -272,33 +279,7 @@
 
 									@for ( $i = $number_of_cabins; $i > 0; $i-- )
 										<x-dates-rates.item.table-column>
-											<x-dates-rates.item.gst-icon />
-										</x-dates-rates.item.table-column>
-									@endfor
-
-								</x-dates-rates.item.table-row>
-							@endif
-						@endforeach
-					@endif
-
-					{{-- Free promos --}}
-					@if ( ! empty( $card['free_promos'] ) && is_array( $card['free_promos'] ) )
-						@foreach ( $card['free_promos'] as $free_promo_data )
-							@if ( ! empty( $free_promo_data ) && is_array( $free_promo_data ) && ! empty( $free_promo_data['description'] ) )
-								<x-dates-rates.item.table-row>
-									<x-dates-rates.item.table-column>
-										<x-dates-rates.item.table-column-title>
-										<span>
-											<strong>
-												{{ $free_promo_data['description'] }}
-											</strong>
-										</span>
-										</x-dates-rates.item.table-column-title>
-									</x-dates-rates.item.table-column>
-
-									@for ( $i = $number_of_cabins; $i > 0; $i-- )
-										<x-dates-rates.item.table-column>
-											<x-dates-rates.item.gst-icon />
+											<x-dates-rates.item.check-icon />
 										</x-dates-rates.item.table-column>
 									@endfor
 
