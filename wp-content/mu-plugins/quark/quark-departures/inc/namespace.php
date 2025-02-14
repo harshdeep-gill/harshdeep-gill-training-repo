@@ -125,6 +125,9 @@ function register_departure_post_type(): void {
 		'can_export'          => true,
 		'rewrite'             => false,
 		'capability_type'     => 'post',
+		'capabilities'        => [
+			'create_posts' => 'do_not_allow',
+		],
 	];
 
 	// Register post type.
