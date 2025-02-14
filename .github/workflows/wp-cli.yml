@@ -52,7 +52,7 @@ jobs:
 
       - name: Check allowed user
         run: |
-          USER_EXISTS=$(jq -r --arg key "$GITHUB_ACTOR" '.allowed_sync_users | any(. == $key)' .github/users.json)
+          USER_EXISTS=$(jq -r --arg key "$GITHUB_ACTOR" '.allowed_users | any(. == $key)' .github/users.json)
           if [ "$USER_EXISTS" = "false" ]; then
             echo "::error::$GITHUB_ACTOR is not execute commands"
             exit 1
