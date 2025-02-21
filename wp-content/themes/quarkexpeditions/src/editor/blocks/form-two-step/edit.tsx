@@ -129,6 +129,7 @@ export default function Edit( { className, attributes, setAttributes }: BlockEdi
 							{ label: __( 'ULT', 'qrk' ), value: 'ULT' },
 							{ label: __( 'WEX', 'qrk' ), value: 'WEX' },
 							{ label: __( 'OEX', 'qrk' ), value: 'OEX' },
+							{ label: __( 'WVO', 'qrk' ), value: 'WVO' },
 						] }
 						onChange={ ( ship: string ) => setAttributes( { ship } ) }
 					/>
